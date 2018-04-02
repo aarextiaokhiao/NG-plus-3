@@ -1265,6 +1265,12 @@ function onLoad() {
         }
     }
 
+    // player.version is currently 11
+    if (player.options.notation = "Default") {
+        player.options.notation = "Brackets";
+        document.getElementById("notation").innerHTML = ("Notation: Brackets")
+    }
+
     toggleCrunchMode()
     toggleCrunchMode()
     toggleCrunchMode()
@@ -7249,7 +7255,7 @@ setInterval(function() {
         giveAchievement("You're a mistake")
     }
 
-
+	
     document.getElementById("infinitiedBank").style.display = (player.infinitiedBank > -4) ? "block" : "none"
     document.getElementById("infinitiedBank").innerHTML = "You have " + (player.infinitiedBank+4).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",") + " banked infinities."
 
