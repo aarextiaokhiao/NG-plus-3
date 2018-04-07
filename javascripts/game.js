@@ -50,7 +50,7 @@ var player = {
     infinityPoints: new Decimal(0),
     infinitied: -1,
     infinitiedBank: -4,
-    totalTimePlayed: -1728000,
+    totalTimePlayed: 0,
     bestInfinityTime: 9999999999,
     thisInfinityTime: 0,
     resets: 0,
@@ -197,13 +197,13 @@ var player = {
         auto: [false, false, false]
     },
     timestudy: {
-        theorem: -7,
+        theorem: -6,
         amcost: new Decimal("1e20000"),
-        ipcost: new Decimal(1),
+        ipcost: new Decimal(0.5),
         epcost: new Decimal(1),
         studies: [],
     },
-    eternityChalls: {},
+    eternityChalls: {eterc1:-6,eterc11:1},
     eternityChallGoal: new Decimal(Number.MAX_VALUE),
     currentEternityChall: "",
     eternityChallUnlocked: 0,
@@ -241,8 +241,8 @@ var player = {
             duration: 10,
             warning: 0,
         }
-    }
-
+    },
+	newGameMinusUpdate: 1
 };
 
 /*var c = document.getElementById("game");
@@ -1289,6 +1289,16 @@ function onLoad() {
     toggleCrunchMode()
     toggleCrunchMode()
 
+	if (player.newGameMinusUpdate==undefined) {
+		player.totalTimePlayed+=1728000
+		player.timestudy.theorem+=1
+		player.timestudy.ipcost=Decimal.div(player.timestudy.ipcost,2)
+		if (player.eternityChalls.eterc1==undefined) player.eternityChalls.eterc1=-6
+		else player.eternityChalls.eterc1-=6
+		if (player.eternityChalls.eterc11==undefined) player.eternityChalls.eterc11=1
+		else if (player.eternityChalls.eterc11<5) player.eternityChalls.eterc11+=1
+		player.newGameMinusUpdate=1
+	}
 
     if (player.options.newsHidden) {
         document.getElementById("game").style.display = "none";
@@ -1972,7 +1982,7 @@ function updateDimensions() {
     document.getElementById("totalmoney").innerHTML = 'You have made a total of ' + shortenMoney(player.totalmoney) + ' antimatter.';
     document.getElementById("totalresets").innerHTML = 'You have done ' + player.resets + ' dimensional boosts/shifts.';
     document.getElementById("galaxies").innerHTML = 'You have ' + Math.round(player.galaxies+((player.infinitied==-1&&player.eternities==-20)?1:0)) + ' Antimatter Galaxies.';
-    document.getElementById("totalTime").innerHTML = "You have played for " + timeDisplay(player.totalTimePlayed+1728000) + ".";
+    document.getElementById("totalTime").innerHTML = "You have played for " + timeDisplay(player.totalTimePlayed) + ".";
 
     if (player.bestInfinityTime == 9999999999) {
         document.getElementById("bestInfinity").innerHTML = ""
