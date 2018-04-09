@@ -1286,13 +1286,15 @@ function onLoad() {
     toggleCrunchMode()
 
 	if (player.newGameMinusUpdate==undefined) {
-		player.totalTimePlayed+=1728000
-		player.timestudy.theorem+=1
-		player.timestudy.ipcost=Decimal.div(player.timestudy.ipcost,2)
-		if (player.eternityChalls.eterc1==undefined) player.eternityChalls.eterc1=-6
-		else player.eternityChalls.eterc1-=6
-		if (player.eternityChalls.eterc11==undefined) player.eternityChalls.eterc11=1
-		else if (player.eternityChalls.eterc11<5) player.eternityChalls.eterc11+=1
+		if (Math.round(new Decimal(player.timestudy.ipcost).mantissa)==1) {
+			player.totalTimePlayed+=1728000
+			player.timestudy.theorem+=1
+			player.timestudy.ipcost=Decimal.div(player.timestudy.ipcost,2)
+			if (player.eternityChalls.eterc1==undefined) player.eternityChalls.eterc1=-6
+			else player.eternityChalls.eterc1-=6
+			if (player.eternityChalls.eterc11==undefined) player.eternityChalls.eterc11=1
+			else if (player.eternityChalls.eterc11<5) player.eternityChalls.eterc11+=1
+		}
 		player.newGameMinusUpdate=1
 	}
 
