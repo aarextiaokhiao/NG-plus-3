@@ -6,6 +6,7 @@ var autoS = true;
 var shiftDown = false;
 var controlDown = false;
 var justImported = false;
+var forceHardReset = false;
 var player = {
     money: new Decimal(10),
     tickSpeedCost: new Decimal(1000),
@@ -236,13 +237,14 @@ var player = {
         secretThemeKey: 0,
         eternityconfirm: true,
         commas: true,
+        updateRate: 50,
         chart: {
             updateRate: 1000,
             duration: 10,
             warning: 0,
         }
     },
-	newGameMinusUpdate: 1
+	newGameMinusUpdate: 1.01
 };
 
 /*var c = document.getElementById("game");
@@ -1804,6 +1806,7 @@ function getDimensionRateOfChange(tier) {
     }
 
     let toGain = getDimensionProductionPerSecond(tier + 1)
+    if (tier == 7 && player.currentEternityChall == "eterc7") toGain = DimensionProduction(1)
 
     var name = TIER_NAMES[tier];
     if (player.currentChallenge == "challenge7") {
@@ -2144,7 +2147,10 @@ function updateChallenges() {
         }
 
         document.getElementById("challTabButtons").style.display = "table"
-        for (var i=1; i<=player.postChallUnlocked; i++) document.getElementById("postc"+i+"div").style.display = "inline-block"
+        for (var i=1; i<9; i++) {
+            if (player.postChallUnlocked >= i) document.getElementById("postc"+i+"div").style.display = "inline-block"
+            else document.getElementById("postc"+i+"div").style.display = "none"
+        }
 
 
 
@@ -3649,7 +3655,7 @@ function buyManyDimensionAutobuyer(tier, bulk) {
             var x = bulk
 
         if ((player.dimensionMultDecrease > 3 || player.currentChallenge == "postc5" || player.currentChallenge == "challenge5")) {
-            while (player.money.gte(player[name + "Cost"].times(10)) && x > 0) {
+            while ((player.money.gte(player[name + "Cost"].times(10)) && player.money.lte(Number.MAX_VALUE)) || (player.money.gte(player[name + "Cost"].times(10)) && player.currentChallenge != "challenge5")) {
                     player.money = player.money.minus(player[name + "Cost"].times(10))
                     if (player.currentChallenge != "challenge5" && player.currentChallenge != "postc5") player[name + "Cost"] = player[name + "Cost"].times(getDimensionCostMultiplier(tier))
                     else if (player.currentChallenge == "postc5") multiplyPC5Costs(player[name + 'Cost'], tier)
@@ -4868,11 +4874,24 @@ document.getElementById("importbtn").onclick = function () {
         setTheme(player.options.theme);
     } else {
         save_data = JSON.parse(atob(save_data), function(k, v) { return (v === Infinity) ? "Infinity" : v; });
+        if(verify_save(save_data)) forceHardReset = true
+        if(verify_save(save_data)) document.getElementById("reset").click();
+        forceHardReset = false
         if (!save_data || !verify_save(save_data)) {
             alert('could not load the save..');
             load_custom_game();
             return;
         }
+        totalMult = 1
+        currentMult = 1
+        infinitiedMult = 1
+        achievementMult = 1
+        challengeMult = 1
+        unspentBonus = 1
+        infDimPow = 1
+        postc8Mult = new Decimal(0)
+        mult18 = new Decimal(1)
+        ec10bonus = new Decimal(1)
         player = save_data;
         save_game();
         load_game();
@@ -4885,9 +4904,10 @@ document.getElementById("importbtn").onclick = function () {
 
 
 document.getElementById("reset").onclick = function () {
-    if (confirm("Do you really want to erase all your progress?")) {
+    if (!forceHardReset && confirm("Do you really want to erase all your progress?") || forceHardReset) {
         set_save('dimensionSaveNGM', defaultStart);
         player = defaultStart
+        infDimPow = 1;
         save_game();
         load_game();
         updateCosts();
@@ -7357,7 +7377,7 @@ function gameLoop(diff) {
     if (player.currentEternityChall === "eterc12") diff = diff / 1000;
     if (player.thisInfinityTime < -10) player.thisInfinityTime = Infinity
     if (player.bestInfinityTime < -10) player.bestInfinityTime = Infinity
-    if (diff > player.autoTime && !player.break) player.infinityPoints = player.infinityPoints.plus(player.autoIP.times(diff -player.autoTime))
+    //if (diff > player.autoTime && !player.break) player.infinityPoints = player.infinityPoints.plus(player.autoIP.times(diff -player.autoTime))
     /*if (player.currentChallenge == "postc6" && player.matter.gte(1)) player.matter = player.matter.plus(diff/10)
     else */
     player.matter = player.matter.times(Decimal.pow((1.03 + player.resets/200 + player.galaxies/100), diff));
@@ -7999,7 +8019,7 @@ function simulateTime(seconds) {
         ticks = 1000;
     }
     let ticksDone = 0
-    for (i=0; i<ticks; i++) {
+    for (ticksDone=0; ticksDone<ticks; ticksDone++) {
         gameLoop(50+bonusDiff)
         ticksDone++;
     }
