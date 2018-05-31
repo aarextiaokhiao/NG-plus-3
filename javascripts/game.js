@@ -401,7 +401,7 @@ function set_save(name, value) {
 
 function get_save(name) {
     try {
-        if (localStorage.getItem("dimensionSave") !== null) {
+        if (localStorage.getItem("dimensionSave_AarexModifications") !== null) {
             return JSON.parse(atob(localStorage.getItem(name), function(k, v) { return (v === Infinity) ? "Infinity" : v; }));
         }
     } catch(e) { console.log("Fuck IE"); }
@@ -1609,7 +1609,7 @@ function formatValue(notation, value, places, placesUnder1000) {
             if (player.options.commas === "Commas") return (pow / inflog).toFixed(Math.max(infPlaces, places)).toString().split(".")[0].replace(/\B(?=(\d{3})+(?!\d))/g, ",")+"."+(pow / inflog).toFixed(Math.max(infPlaces, places)).toString().split(".")[1]+"∞"
             else return (pow / inflog).toFixed(Math.max(infPlaces, places))+"∞"
         }
-        if (notation.includes("engineering") || notation.includes("Engineering")) pow = power - (power % 3)
+        if (notation === "Engineering" || notation === "Mixed engineering") pow = power - (power % 3)
         else pow = power
         if (power > 100000  && !(player.options.commas === "Commas")) pow = formatValue(player.options.commas, pow, 3, 3)
         if (power > 100000  && player.options.commas === "Commas") pow = pow.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
