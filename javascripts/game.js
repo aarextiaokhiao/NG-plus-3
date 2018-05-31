@@ -1352,7 +1352,7 @@ function loadFromString(string) {
 
 
 function load_game() {
-    var save_data = get_save('dimensionSave');
+    var save_data = get_save('dimensionSave_AarexModifications');
     if (!save_data) return;
     player = save_data;
     onLoad()
@@ -1360,7 +1360,7 @@ function load_game() {
 
 
 function save_game() {
-    set_save('dimensionSave', player);
+    set_save('dimensionSave_AarexModifications', player);
     $.notify("Game saved", "info")
 }
 
@@ -3369,9 +3369,6 @@ function giveAchievement(name) {
     $.notify(name, "success");
     player.achievements.push(allAchievementNums[name]);
     document.getElementById(name).className = "achievementunlocked"
-    try {
-        kongregate.stats.submit('Achievements', player.achievements.length);
-    } catch (err) {console.log("Couldn't load Kongregate API")}
     if (name == "All your IP are belong to us" || name == "MAXIMUM OVERDRIVE") {
         player.infMult = player.infMult.times(4);
         player.autoIP = player.autoIP.times(4);
@@ -4936,7 +4933,7 @@ document.getElementById("importbtn").onclick = function () {
 
 document.getElementById("reset").onclick = function () {
     if (!forceHardReset && confirm("Do you really want to erase all your progress?") || forceHardReset) {
-        set_save('dimensionSave', defaultStart);
+        set_save('dimensionSave_AarexModifications', defaultStart);
         player = defaultStart
         infDimPow = 1;
         save_game();
@@ -6296,9 +6293,6 @@ function eternity(force) {
             document.getElementById("replicantidiv").style.display="inline-block"
             document.getElementById("replicantiunlock").style.display="none"
         }
-        try {
-            kongregate.stats.submit('Eternities', player.eternities);
-        } catch (err) {console.log("Couldn't load Kongregate API")}
         if (player.eternities > 2 && player.replicanti.galaxybuyer === undefined) player.replicanti.galaxybuyer = false
         document.getElementById("infinityPoints1").innerHTML = "You have <span class=\"IPAmount1\">"+shortenDimensions(player.infinityPoints)+"</span> Infinity points."
         document.getElementById("infinityPoints2").innerHTML = "You have <span class=\"IPAmount2\">"+shortenDimensions(player.infinityPoints)+"</span> Infinity points."
@@ -7356,8 +7350,6 @@ setInterval(function() {
 
     document.getElementById("infinitiedBank").style.display = (player.infinitiedBank > 0) ? "block" : "none"
     document.getElementById("infinitiedBank").innerHTML = "You have " + player.infinitiedBank.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",") + " banked infinities."
-
-    document.getElementById("galaxyThreshold").innerHTML = shortenMoney(1e3)
 	
     if (infchallengeTimes < 7.5) giveAchievement("Never again")
     if (player.infinityPoints.gte(new Decimal("1e22000")) && player.timestudy.studies.length == 0) giveAchievement("What do I have to do to get rid of you")
