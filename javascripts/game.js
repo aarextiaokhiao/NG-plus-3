@@ -181,8 +181,6 @@ var player = {
         power: new Decimal(1),
         bought: 0
     },
-        bought: 0
-    },
     offlineProd: 0,
     offlineProdCost: 1e7,
     challengeTarget: 0,
@@ -2503,7 +2501,7 @@ function getTimeDimensionDescription(tier) {
 
     let description = shortenDimensions(player['timeDimension'+tier].amount);
 
-    if (tier < 8) {
+    if (tier < 4) {
         description += '  (+' + formatValue(player.options.notation, getTimeDimensionRateOfChange(tier), 2, 2) + '%/s)';
     }
 
@@ -2511,7 +2509,7 @@ function getTimeDimensionDescription(tier) {
 }
 
 function updateTimeDimensions() {
-    for (let tier = 1; tier <= 8; ++tier) {
+    for (let tier = 1; tier <= 4; ++tier) {
         document.getElementById("timeD"+tier).innerHTML = DISPLAY_NAMES[tier] + " Time Dimension x" + shortenMoney(getTimeDimensionPower(tier));
         document.getElementById("timeAmount"+tier).innerHTML = getTimeDimensionDescription(tier);
     }
