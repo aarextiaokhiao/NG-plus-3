@@ -2208,7 +2208,7 @@ function DimensionDescription(tier) {
 
     let description = shortenDimensions(player['infinityDimension'+tier].amount) + ' (' + player['infinityDimension'+tier].bought + ')';
 
-    if (tier < 4) {
+    if (tier < 8) {
         description += '  (+' + formatValue(player.options.notation, DimensionRateOfChange(tier), 2, 2) + '%/s)';
     }
 
@@ -2227,7 +2227,7 @@ function DimensionRateOfChange(tier) {
 
 
 function updateInfinityDimensions() {
-    for (let tier = 1; tier <= 4; ++tier) {
+    for (let tier = 1; tier <= 8; ++tier) {
         document.getElementById("infD"+tier).innerHTML = DISPLAY_NAMES[tier] + " Infinity Dimension x" + shortenMoney(DimensionPower(tier));
         document.getElementById("infAmount"+tier).innerHTML = DimensionDescription(tier);
         var name = TIER_NAMES[tier];
