@@ -2094,6 +2094,9 @@ function updateCosts() {
     for (var i=1; i<=8; i++) {
 
         document.getElementById("infMax"+i).innerHTML = "Cost: " + shortenCosts(player["infinityDimension"+i].cost) + " IP"
+	}
+	
+	for (var i=1; i<=4; i++) {
         document.getElementById("timeMax"+i).innerHTML = "Cost: " + shortenDimensions(player["timeDimension"+i].cost) + " EP"
     }
 }
@@ -2207,7 +2210,7 @@ function DimensionDescription(tier) {
 
     let description = shortenDimensions(player['infinityDimension'+tier].amount) + ' (' + player['infinityDimension'+tier].bought + ')';
 
-    if (tier < 8) {
+    if (tier < 4) {
         description += '  (+' + formatValue(player.options.notation, DimensionRateOfChange(tier), 2, 2) + '%/s)';
     }
 
@@ -2226,7 +2229,7 @@ function DimensionRateOfChange(tier) {
 
 
 function updateInfinityDimensions() {
-    for (let tier = 1; tier <= 8; ++tier) {
+    for (let tier = 1; tier <= 4; ++tier) {
         document.getElementById("infD"+tier).innerHTML = DISPLAY_NAMES[tier] + " Infinity Dimension x" + shortenMoney(DimensionPower(tier));
         document.getElementById("infAmount"+tier).innerHTML = DimensionDescription(tier);
         var name = TIER_NAMES[tier];
