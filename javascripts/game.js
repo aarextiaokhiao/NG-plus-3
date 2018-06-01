@@ -2591,9 +2591,29 @@ function buyWithEP() {
 }
 
 function maxTheorems() {
-    while (buyWithAntimatter()) continue
-    while (buyWithIP()) continue
-    while (buyWithEP()) continue
+	var gainTT = Math.floor((player.money.log10() - player.timestudy.amcost.log10()) / 20000 + 1)
+	if (gainTT > 0) {
+		player.timestudy.theorem += gainTT
+		player.timestudy.amcost = player.timestudy.amcost.times(Decimal.pow("1e20000", gainTT))
+		player.money = player.money.sub(player.timestudy.amcost.div("1e20000"))
+	}
+	
+	gainTT = Math.floor((player.infinityPoints.log10() - player.timestudy.ipcost.log10()) / 100 + 1)
+	if (gainTT > 0) {
+		player.timestudy.theorem += gainTT
+		player.timestudy.ipcost = player.timestudy.ipcost.times(Decimal.pow("1e100", gainTT))
+		player.infinityPoints = player.infinityPoints.sub(player.timestudy.ipcost.div("1e100"))
+	}
+	
+	gainTT = Math.floor(player.eternityPoints.div(player.timestudy.epcost).plus(1).log2())
+	if (gainTT > 0 && player.timeDimension1.bought > 0) {
+		player.timestudy.theorem += gainTT
+		player.eternityPoints = player.eternityPoints.sub(Decimal.pow(2, gainTT).sub(1).times(player.timestudy.epcost))
+		player.timestudy.epcost = player.timestudy.epcost.times(Decimal.pow(2, gainTT))
+	}
+	
+	updateTheoremButtons()
+	updateTimeStudyButtons()
 }
 
 function updateTheoremButtons() {
@@ -8128,13 +8148,14 @@ function maxBuyGalaxies() {
 }
 
 function maxBuyDimBoosts(manual) {
-    if (player.autobuyers[9].priority > player.resets || player.overXGalaxies <= player.galaxies || getShiftRequirement(0).tier < 8 || manual == true) {
+    if (player.autobuyers[9].priority >= player.eightBought || player.overXGalaxies <= player.galaxies || getShiftRequirement(0).tier < 8 || manual == true) {
         var r = 0;
         var shiftRequirement = getShiftRequirement(0)
         if (shiftRequirement.tier < 8) r = 1
-        else {
-        	r = Math.min(Math.floor((player.eightBought - shiftRequirement.amount)/shiftRequirement.mult + 1),(player.overXGalaxies <= player.galaxies || manual == true) ? Number.MAX_VALUE : Math.floor((player.autobuyers[9].priority - shiftRequirement.amount) / shiftRequirement.mult + 1))
-        }
+        else if (player.currentEternityChall == "eterc5") {
+			r = 1
+			while (player.eightBought >= getShiftRequirement(r).amount && (player.autobuyers[9].priority >= player.eightBought || player.overXGalaxies <= player.galaxies || manual == true)) r++
+		} else r = Math.min(Math.floor((player.eightBought - shiftRequirement.amount)/shiftRequirement.mult + 1),(player.overXGalaxies <= player.galaxies || manual == true) ? Number.MAX_VALUE : Math.floor((player.autobuyers[9].priority - shiftRequirement.amount) / shiftRequirement.mult + 1))
 
         if (r >= 750) giveAchievement("Costco sells dimboosts now")
         if (r > 0) softReset(r)
