@@ -1783,14 +1783,8 @@ function getMoneyPerSecond() {
 function getDimensionDescription(tier) {
     var name = TIER_NAMES[tier];
 
-    let description = shortenDimensions(player[name + 'Amount']) + ' (' + dimBought(tier) + ')';
-    if (tier == 8) description = Math.round(player[name + 'Amount']) + ' (' + dimBought(tier) + ')';
-
-    if (tier < 8) {
-        description += '  (+' + formatValue(player.options.notation, getDimensionRateOfChange(tier), 2, 2) + '%/s)';
-    }
-
-    return description;
+    if (tier == 8 || (tier > 5 && (player.currentChallenge === "challenge4" || player.currentChallenge === "postc1")) || (tier > 3 && player.currentEternityChall === "eterc3")) return Math.round(player[name + 'Amount']) + ' (' + dimBought(tier) + ')';
+    else return shortenDimensions(player[name + 'Amount']) + ' (' + dimBought(tier) + ')  (+' + formatValue(player.options.notation, getDimensionRateOfChange(tier), 2, 2) + '%/s)';
 }
 
 function getDimensionRateOfChange(tier) {
@@ -2068,30 +2062,30 @@ function updateDimensions() {
 }
 
 function updateCosts() {
-    document.getElementById("first").innerHTML = 'Cost: ' + shortenCosts(player.firstCost);
-    document.getElementById("second").innerHTML = 'Cost: ' + shortenCosts(player.secondCost);
-    document.getElementById("third").innerHTML = 'Cost: ' + shortenCosts(player.thirdCost);
-    document.getElementById("fourth").innerHTML = 'Cost: ' + shortenCosts(player.fourthCost);
-    document.getElementById("fifth").innerHTML = 'Cost: ' + shortenCosts(player.fifthCost);
-    document.getElementById("sixth").innerHTML = 'Cost: ' + shortenCosts(player.sixthCost);
-    document.getElementById("seventh").innerHTML = 'Cost: ' + shortenCosts(player.seventhCost);
-    document.getElementById("eight").innerHTML = 'Cost: ' + shortenCosts(player.eightCost);
+    document.getElementById("first").innerHTML = 'Cost: ' + shortenPreInfCosts(player.firstCost);
+    document.getElementById("second").innerHTML = 'Cost: ' + shortenPreInfCosts(player.secondCost);
+    document.getElementById("third").innerHTML = 'Cost: ' + shortenPreInfCosts(player.thirdCost);
+    document.getElementById("fourth").innerHTML = 'Cost: ' + shortenPreInfCosts(player.fourthCost);
+    document.getElementById("fifth").innerHTML = 'Cost: ' + shortenPreInfCosts(player.fifthCost);
+    document.getElementById("sixth").innerHTML = 'Cost: ' + shortenPreInfCosts(player.sixthCost);
+    document.getElementById("seventh").innerHTML = 'Cost: ' + shortenPreInfCosts(player.seventhCost);
+    document.getElementById("eight").innerHTML = 'Cost: ' + shortenPreInfCosts(player.eightCost);
 
-    document.getElementById("firstMax").innerHTML = 'Until 10, Cost: ' + shortenCosts(player.firstCost.times(10 - dimBought(1)));
-    document.getElementById("secondMax").innerHTML = 'Until 10, Cost: ' + shortenCosts(player.secondCost.times(10 - dimBought(2)));
-    document.getElementById("thirdMax").innerHTML = 'Until 10, Cost: ' + shortenCosts(player.thirdCost.times(10 - dimBought(3)));
-    document.getElementById("fourthMax").innerHTML = 'Until 10, Cost: ' + shortenCosts(player.fourthCost.times(10 - dimBought(4)));
-    document.getElementById("fifthMax").innerHTML = 'Until 10, Cost: ' + shortenCosts(player.fifthCost.times(10 - dimBought(5)));
-    document.getElementById("sixthMax").innerHTML = 'Until 10, Cost: ' + shortenCosts(player.sixthCost.times(10 - dimBought(6)));
-    document.getElementById("seventhMax").innerHTML = 'Until 10, Cost: ' + shortenCosts(player.seventhCost.times(10 - dimBought(7)));
-    document.getElementById("eightMax").innerHTML = 'Until 10, Cost: ' + shortenCosts(player.eightCost.times(10 - dimBought(8)));
+    document.getElementById("firstMax").innerHTML = 'Until 10, Cost: ' + shortenPreInfCosts(player.firstCost.times(10 - dimBought(1)));
+    document.getElementById("secondMax").innerHTML = 'Until 10, Cost: ' + shortenPreInfCosts(player.secondCost.times(10 - dimBought(2)));
+    document.getElementById("thirdMax").innerHTML = 'Until 10, Cost: ' + shortenPreInfCosts(player.thirdCost.times(10 - dimBought(3)));
+    document.getElementById("fourthMax").innerHTML = 'Until 10, Cost: ' + shortenPreInfCosts(player.fourthCost.times(10 - dimBought(4)));
+    document.getElementById("fifthMax").innerHTML = 'Until 10, Cost: ' + shortenPreInfCosts(player.fifthCost.times(10 - dimBought(5)));
+    document.getElementById("sixthMax").innerHTML = 'Until 10, Cost: ' + shortenPreInfCosts(player.sixthCost.times(10 - dimBought(6)));
+    document.getElementById("seventhMax").innerHTML = 'Until 10, Cost: ' + shortenPreInfCosts(player.seventhCost.times(10 - dimBought(7)));
+    document.getElementById("eightMax").innerHTML = 'Until 10, Cost: ' + shortenPreInfCosts(player.eightCost.times(10 - dimBought(8)));
 
-    document.getElementById("tickSpeed").innerHTML = 'Cost: ' + shortenCosts(player.tickSpeedCost);
+    document.getElementById("tickSpeed").innerHTML = 'Cost: ' + shortenPreInfCosts(player.tickSpeedCost);
 
 
     for (var i=1; i<=8; i++) {
 
-        document.getElementById("infMax"+i).innerHTML = "Cost: " + shortenCosts(player["infinityDimension"+i].cost) + " IP"
+        document.getElementById("infMax"+i).innerHTML = "Cost: " + shortenInfDimCosts(player["infinityDimension"+i].cost) + " IP"
 	}
 	
 	for (var i=1; i<=4; i++) {
@@ -2206,13 +2200,8 @@ function updateEternityChallenges() {
 function DimensionDescription(tier) {
     var name = TIER_NAMES[tier];
 
-    let description = shortenDimensions(player['infinityDimension'+tier].amount) + ' (' + player['infinityDimension'+tier].bought + ')';
-
-    if (tier < 8) {
-        description += '  (+' + formatValue(player.options.notation, DimensionRateOfChange(tier), 2, 2) + '%/s)';
-    }
-
-    return description;
+    if (tier == 8 && (ECTimesCompleted("eterc7") === 0 || player.currentEternityChall === "eterc12")) return Math.round(player['infinityDimension'+tier].amount);
+    else return shortenDimensions(player['infinityDimension'+tier].amount)+' (+' + formatValue(player.options.notation, DimensionRateOfChange(tier), 2, 2) + '%/s)';
 }
 
 
@@ -2242,7 +2231,8 @@ function updateInfinityDimensions() {
 
 function DimensionProduction(tier) {
     if (player.currentEternityChall == "eterc10") return new Decimal(0)
-    var dim = player["infinityDimension"+tier]
+    if (tier == 9) return getTimeDimensionProduction(1).pow(ECTimesCompleted("eterc7")*0.2).minus(1).times(10)
+    else var dim = player["infinityDimension"+tier]
     var ret = dim.amount
     if (player.currentEternityChall == "eterc11") return ret
     if (player.currentEternityChall == "eterc7") ret = ret.dividedBy(player.tickspeed.dividedBy(1000))
@@ -3104,6 +3094,16 @@ shorten = function (money) {
 
 shortenCosts = function (money) {
     return formatValue(player.options.notation, money, 0, 0);
+};
+
+shortenPreInfCosts = function (money) {
+	if (money.mantissa == 1) return formatValue(player.options.notation, money, 0, 0);
+	return formatValue(player.options.notation, money, 2, 2);
+};
+
+shortenInfDimCosts = function (money) {
+	if (ECTimesCompleted("eterc12") == 0) return formatValue(player.options.notation, money, 0, 0);
+	return formatValue(player.options.notation, money, 2, 2);
 };
 
 shortenDimensions = function (money) {
@@ -6505,7 +6505,10 @@ function startChallenge(name, target) {
 
 
     IPminpeak = new Decimal(0)
-    if (player.currentChallenge.includes("post")) player.break = true
+    if (player.currentChallenge.includes("post")) {
+		player.break = true
+		document.getElementById("break").innerHTML = "FIX INFINITY"
+    }
     if (player.achievements.includes("r36")) player.tickspeed = player.tickspeed.times(0.98);
     if (player.achievements.includes("r45")) player.tickspeed = player.tickspeed.times(0.98);
     if (player.achievements.includes("r66")) player.tickspeed = player.tickspeed.times(0.98);
