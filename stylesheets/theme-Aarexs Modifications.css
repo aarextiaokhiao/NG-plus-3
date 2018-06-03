@@ -1,0 +1,289 @@
+body {
+    background-color: #191919 !important
+}
+.container, .statstab {
+    font-family:'Inconsolata', monospace !important
+}
+#container div {
+    color: #e5e5e5
+}
+#container button {
+    font-family:'Inconsolata', monospace !important;
+    background-color: #191919;
+    color: #e5e5e5;
+    border-color: #0072e5;
+    border-radius: 0px !important
+}
+#container button:hover {
+    background-color: #0072e5;
+    color: #191919;
+}
+#footer {display: none}
+.achievementlocked {
+	background-color: #727272 !important;
+	border-color: #720000 !important;
+	border-radius: 0px !important
+}
+.achievementunlocked {
+	background-color: #00e500 !important;
+	border-color: #007200 !important;
+	border-radius: 0px !important
+}
+.completedrow {
+	background-color: #007200 !important
+}
+#progress {
+    bottom: 5px !important;
+    background-color: #191919 !important;
+    border-radius: 0px !important
+}
+#progressbar {
+    background-color: #00e500 !important;
+    border-radius: 0px !important
+}
+#progresspercent {
+    color: #191919 !important;
+    border-radius: 0px !important
+}
+#coinAmount {
+    color: #0072e5 !important
+}
+.storebtn, .completedchallengesbtn {
+    border-color: #00e500 !important;
+    background-color: #191919 !important;
+    color: #e5e5e5 !important;
+    border-radius: 0px !important
+}
+.storebtn:hover {
+    background-color: #00e500 !important;
+    color: #191919 !important
+}
+.unavailablebtn, .infinistorebtnlocked, .milestonerewardlocked, .eternityupbtnlocked, .lockedchallengesbtn {
+    border-color: #e50000 !important;
+    color: #e5e5e5 !important
+}
+.unavailablebtn:hover, .infinistorebtnlocked:hover, .infinistorebtnbought:hover, .onchallengebtn:hover, .completedchallengesbtn:hover, .milestonerewardlocked:hover, .milestonereward:hover, .timestudylocked:hover, .eternityupbtnlocked:hover, .eternitychallengestudylocked:hover, .lockedchallengesbtn:hover {
+    background-color: #191919 !important;
+    color: #e5e5e5 !important
+}
+.challengediv {
+    background-color: #191919 !important;
+    border-color: #0072e5 !important;
+    border-radius: 0px !important
+}
+.challengesbtn {
+    border-color: #009900 !important
+}
+.challengesbtn:hover {
+    background-color: #009900 !important
+}
+.onchallengebtn {
+    background-color: #191919;
+    color: #e5e5e5 !important;
+    border-color: #e5e500 !important
+}
+#infinityPoints1 {
+    color: #e5e5e5 !important
+}
+#bigcrunch, #infinitybtn, #postInfinityButton, #idtabbtn button, #infinitydimensions td[align=right] .storebtn, #replicantichance.storebtn, #replicantiinterval.storebtn, #replicantimax.storebtn, #challTabButtons td:nth-child(2) button, #infchallengesbtn {
+    border-color: #e2bd00 !important
+}
+#bigcrunch:hover, #infinitybtn:hover, #postInfinityButton:hover, #idtabbtn button:hover, #infinitydimensions td[align=right] .storebtn:hover, #replicantichance.storebtn:hover, #replicantiinterval.storebtn:hover, #replicantimax.storebtn:hover, #challTabButtons td:nth-child(2) button:hover, #infchallengesbtn:hover {
+    background-color: #e2bd00 !important
+}
+.IPAmount1, .IPAmount2, #infPowAmount, #infDimMultAmount, #replicantiamount, #replicantimult {
+    color: #e2bd00 !important
+}
+.infinistorebtn1, .infinistorebtn3 {
+    border-color: #e2bd00 !important
+}
+.infinistorebtn2, .infinistorebtn4 {
+    border-color: #ccaa00 !important
+}
+.infinistorebtn1:hover, .infinistorebtn3:hover {
+    background-color: #e2bd00 !important
+}
+.infinistorebtn2:hover, .infinistorebtn4:hover {
+    background-color: #ccaa00 !important
+}
+.infinistorebtnbought {
+    border-color: #00e500 !important
+}
+.autoBuyerDiv {
+    border-color: #727272;
+    border-radius: 0px
+}
+.infchallengediv {
+    background-color: #191919 !important;
+    border-color: #e2bd00 !important;
+    border-radius: 0px !important
+}
+#eternitybtn, #eternitystorebtn, #pasteternities, #tdtabbtn button, #timedimensions table .storebtn, .eternityupbtn, .milestonereward, .timestudy, #eterctabbtn {
+    border-color: #7100e2 !important;
+    animation: none
+}
+#eternitybtn:hover, #eternitystorebtn:hover, #pasteternities:hover, #tdtabbtn button:hover, #timedimensions table .storebtn:hover, .timestudy:hover, #eterctabbtn:hover {
+    background-color: #7100e2 !important
+}
+#TTbuttons {
+    font-family:'Inconsolata', monospace !important
+}
+#theorembuybackground {
+    background-color: #e5e5e5;
+    border-color: #191919;
+    border-radius: 0px
+}
+#TTbuttons button {
+    font-family:'Inconsolata', monospace !important;
+    border-radius: 0px
+}
+.timetheorembtnlocked {
+    background-color: #191919;
+    color: #e5e5e5;
+    border-color: #e50000
+}
+.timetheorembtnlocked:hover {
+    background-color: #191919;
+}
+.timetheorembtn {
+    background-color: #191919;
+    color: #e5e5e5;
+    border-color: #7100e2
+}
+.timetheorembtn:hover {
+    background-color: #7100e2;
+    color: #191919;
+}
+.EPAmount2, #timeShardAmount, #tickThreshold {
+    color: #7100e2 !important
+}
+.timestudylocked, .timestudy, .eternitychallengestudylocked, .eternitychallengestudy {
+    background-color: #191919 !important;
+    color: #e5e5e5 !important
+}
+.timestudylocked, .eternitychallengestudylocked {
+    border-color: #e50000 !important
+}
+.timestudybought, .eternityupbtnbought {
+    background-color: #7100e2 !important;
+    color: #191919 !important;
+    border-color: #191919 !important
+}
+.timestudy.normaldimstudy {
+    background-color: #191919 !important;
+    color: #e5e5e5 !important;
+    border-color: #0072e5 !important;
+    animation: none
+}
+.timestudy.normaldimstudy:hover, .timestudybought.normaldimstudy {
+    background-color: #0072e5 !important;
+    color: #191919 !important;
+}
+.timestudy.infdimstudy {
+    background-color: #191919 !important;
+    color: #e5e5e5 !important;
+    border-color: #e2bd00 !important;
+    animation: none
+}
+.timestudy.infdimstudy:hover, .timestudybought.infdimstudy {
+    background-color: #e2bd00 !important;
+    color: #191919 !important;
+}
+.timestudy.timedimstudy {
+    background-color: #191919 !important;
+    color: #e5e5e5 !important;
+    border-color: #7100e2 !important;
+    animation: none
+}
+.timestudy.timedimstudy:hover, .timestudybought.infdimstudy {
+    background-color: #7100e2 !important;
+    color: #191919 !important;
+}
+.timestudy.activestudy {
+    background-color: #191919 !important;
+    color: #e5e5e5 !important;
+    border-color: #990000 !important;
+    animation: none
+}
+.timestudy.activestudy:hover, .timestudybought.activestudy {
+    background-color: #990000 !important;
+    color: #191919 !important;
+}
+.timestudy.passivestudy {
+    background-color: #191919 !important;
+    color: #e5e5e5 !important;
+    border-color: #7200e5 !important;
+    animation: none
+}
+.timestudy.passivestudy:hover, .timestudybought.passivestudy {
+    background-color: #7200e5 !important;
+    color: #191919 !important;
+}
+.timestudy.idlestudy {
+    background-color: #191919 !important;
+    color: #e5e5e5 !important;
+    border-color: #0072e5 !important;
+    animation: none
+}
+.timestudy.idlestudy:hover, .timestudybought.idlestudy {
+    background-color: #0072e5 !important;
+    color: #191919 !important;
+}
+.eternitychallengestudy {
+    border-color: #7100e2 !important;
+    animation: none
+}
+.eternitychallengestudy:hover {
+    background-color: #7100e2 !important;
+    color: #191919 !important
+}
+.eterchallengediv {
+    background-color: #191919 !important;
+    border-color: #7100e2 !important;
+    border-radius: 0px !important
+}
+.timestudy.darkstudy {
+    background-color: #191919 !important;
+    color: #e5e5e5 !important;
+    border-color: #4c0099 important;
+    animation: none
+}
+.timestudy.darkstudy:hover, .timestudybought.darkstudy {
+    background-color: #4c0099 !important;
+    color: #191919 !important;
+}
+.timestudy.lightstudy {
+    background-color: #191919 !important;
+    color: #e5e5e5 !important;
+    border-color: #ac72e5 !important;
+    animation: none
+}
+.timestudy.lightstudy:hover, .timestudybought.lightstudy {
+    background-color: #ac72e5 !important;
+    color: #191919 !important;
+}
+
+.notifyjs-bootstrap-info {
+ 	background-color: #0072e5;
+ 	font-family: 'Inconsolata', monospace;
+    border: 2px #004C99 solid;
+    border-radius: 0px;
+}
+.notifyjs-bootstrap-success {
+ 	background-color: #00e500;
+ 	font-family: 'Inconsolata', monospace;
+    border: 2px #009900 solid;
+    border-radius: 0px;
+}
+.notifyjs-bootstrap-warn {
+ 	background-color: #e5e500;
+ 	font-family: 'Inconsolata', monospace; 
+    border: 2px #999900 solid;
+    border-radius: 0px;
+}
+.notifyjs-bootstrap-error {
+ 	background-color: #e50000;
+ 	font-family: 'Inconsolata', monospace;
+    border: 2px #990000 solid;
+    border-radius: 0px;
+}

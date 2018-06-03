@@ -756,7 +756,14 @@ function setTheme(name) {
         document.getElementById("theme").innerHTML="Current theme: " + name;
     }
 
-    if (name === undefined) return;
+    if (name === undefined) {
+		document.getElementById("theme").style['font-size'] = '20px'
+		return;
+    }
+    if (name === "Aarex's Modifications") {
+		document.getElementById("theme").style['font-size'] = '16px'
+		name = "Aarexs Modifications"
+    }
 
     var head = document.head;
     var link = document.createElement('link');
@@ -783,6 +790,8 @@ document.getElementById("theme").onclick = function () {
         normalDimChart.data.datasets[0].borderColor = '#000'
     } else if (player.options.theme === "Inverted") {
         player.options.theme = "Inverted Metro";
+    } else if (player.options.theme === "Inverted Metro") {
+        player.options.theme = "Aarex's Modifications";
     } else {
         player.options.theme = undefined;
         Chart.defaults.global.defaultFontColor = 'black';
@@ -2200,7 +2209,7 @@ function updateEternityChallenges() {
 function DimensionDescription(tier) {
     var name = TIER_NAMES[tier];
 
-    if (tier == 8 && (ECTimesCompleted("eterc7") === 0 || player.currentEternityChall === "eterc12")) return Math.round(player['infinityDimension'+tier].amount);
+    if (tier == 8 && (ECTimesCompleted("eterc7") === 0 || player.currentEternityChall === "eterc12") && player.currentEternityChall !== "eterc7") return Math.round(player['infinityDimension'+tier].amount);
     else return shortenDimensions(player['infinityDimension'+tier].amount)+' (+' + formatValue(player.options.notation, DimensionRateOfChange(tier), 2, 2) + '%/s)';
 }
 
@@ -2231,7 +2240,10 @@ function updateInfinityDimensions() {
 
 function DimensionProduction(tier) {
     if (player.currentEternityChall == "eterc10") return new Decimal(0)
-    if (tier == 9) return getTimeDimensionProduction(1).pow(ECTimesCompleted("eterc7")*0.2).minus(1).times(10)
+    if (tier == 9) {
+		if (player.currentEternityChall == "eterc7") return getTimeDimensionProduction(1).times(10)
+		return getTimeDimensionProduction(1).pow(ECTimesCompleted("eterc7")*0.2).minus(1).times(10)
+    }
     else var dim = player["infinityDimension"+tier]
     var ret = dim.amount
     if (player.currentEternityChall == "eterc11") return ret
@@ -7924,21 +7936,45 @@ function gameLoop(diff) {
     if (player.infinityUpgrades.includes("autoBuyerUpgrade")) document.getElementById("postinfi33").className = "infinistorebtnbought"
 
     if (player.currentChallenge !== "") {
-        document.getElementById("progressbar").style.width = Decimal.min((Decimal.log10(player.money.plus(1)) / Decimal.log10(player.challengeTarget) * 100), 100).toFixed(2) + "%"
-        document.getElementById("progresspercent").innerHTML = Decimal.min((Decimal.log10(player.money.plus(1)) / Decimal.log10(player.challengeTarget) * 100), 100).toFixed(2) + "%"
+        var percentage = Decimal.min((Decimal.log10(player.money.plus(1)) / Decimal.log10(player.challengeTarget) * 100), 100).toFixed(2) + "%"
+        document.getElementById("progressbar").style.width = percentage
+        document.getElementById("progresspercent").innerHTML = percentage
         document.getElementById("progresspercent").setAttribute('ach-tooltip',"Percentage to challenge goal")
     } else if (!player.break) {
-        document.getElementById("progressbar").style.width = Decimal.min((Decimal.log10(player.money.plus(1)) / Decimal.log10(Number.MAX_VALUE) * 100), 100).toFixed(2) + "%"
-        document.getElementById("progresspercent").innerHTML = Decimal.min((Decimal.log10(player.money.plus(1)) / Decimal.log10(Number.MAX_VALUE) * 100), 100).toFixed(2) + "%"
+        var percentage = Decimal.min((Decimal.log10(player.money.plus(1)) / Decimal.log10(Number.MAX_VALUE) * 100), 100).toFixed(2) + "%"
+        document.getElementById("progressbar").style.width = percentage
+        document.getElementById("progresspercent").innerHTML = percentage
         document.getElementById("progresspercent").setAttribute('ach-tooltip',"Percentage to Infinity")
     } else if (player.infDimensionsUnlocked.includes(false)) {
-        document.getElementById("progressbar").style.width = Decimal.min(player.money.e / getNewInfReq().e * 100, 100).toFixed(2) + "%"
-        document.getElementById("progresspercent").innerHTML = Decimal.min(player.money.e / getNewInfReq().e * 100, 100).toFixed(2) + "%"
+        var percentage = Decimal.min(player.money.e / getNewInfReq().e * 100, 100).toFixed(2) + "%"
+        document.getElementById("progressbar").style.width = percentage
+        document.getElementById("progresspercent").innerHTML = percentage
         document.getElementById("progresspercent").setAttribute('ach-tooltip',"Percentage to next dimension unlock")
-    } else {
-        document.getElementById("progressbar").style.width = Decimal.min(Decimal.log10(player.infinityPoints.plus(1)) / Decimal.log10(Number.MAX_VALUE)  * 100, 100).toFixed(2) + "%"
-        document.getElementById("progresspercent").innerHTML = Decimal.min(Decimal.log10(player.infinityPoints.plus(1)) / Decimal.log10(Number.MAX_VALUE)  * 100, 100).toFixed(2) + "%"
+    } else if (player.currentEternityChall !== '') {
+        var percentage = Decimal.min(Decimal.log10(player.infinityPoints.plus(1)) / player.eternityChallGoal.log10() * 100, 100).toFixed(2) + "%"
+        document.getElementById("progressbar").style.width = percentage
+        document.getElementById("progresspercent").innerHTML = percentage
+        document.getElementById("progresspercent").setAttribute('ach-tooltip',"Percentage to Eternity Challenge goal")
+    } else if (player.infinityPoints.lt(Number.MAX_VALUE) || player.eternities == 0) {
+        var percentage = Decimal.min(Decimal.log10(player.infinityPoints.plus(1)) / Decimal.log10(Number.MAX_VALUE)  * 100, 100).toFixed(2) + "%"
+        document.getElementById("progressbar").style.width = percentage
+        document.getElementById("progresspercent").innerHTML = percentage
         document.getElementById("progresspercent").setAttribute('ach-tooltip',"Percentage to Eternity")
+    } else {
+        var gepLog = gainedEternityPoints().log2()
+        var goal = Math.pow(2,Math.ceil(Math.log10(gepLog) / Math.log10(2)))
+        if (goal == 1024 && !player.achievements.includes('r127')) {
+			goal = Decimal.sub(Number.MAX_VALUE, player.eternityPoints).log2()
+			var percentage = Decimal.min(gepLog / goal * 100, 100).toFixed(2) + "%"
+			document.getElementById("progressbar").style.width = percentage
+			document.getElementById("progresspercent").innerHTML = percentage
+			document.getElementById("progresspercent").setAttribute('ach-tooltip','Percentage to "But I wanted another prestige layer..."')
+        } else {
+			var percentage = Decimal.min(gepLog / goal * 100, 100).toFixed(2) + "%"
+			document.getElementById("progressbar").style.width = percentage
+			document.getElementById("progresspercent").innerHTML = percentage
+			document.getElementById("progresspercent").setAttribute('ach-tooltip',"Percentage to "+shortenDimensions(Decimal.pow(2,goal))+" EP gain")
+        }
     }
 
     if (player.eternities > 0) {
