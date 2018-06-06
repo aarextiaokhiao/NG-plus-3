@@ -2147,7 +2147,6 @@ function updateTickSpeed() {
     else {
         document.getElementById("tickSpeedAmount").innerHTML = 'Tickspeed: ' + (player.tickspeed.m * 100).toFixed(0) + ' / ' + shorten(Decimal.pow(10,2 - exp));
     }
-    }
 }
 
 
