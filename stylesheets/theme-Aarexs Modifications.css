@@ -58,16 +58,17 @@ body {
     background-color: #00e500 !important;
     color: #191919 !important
 }
-.unavailablebtn, .infinistorebtnlocked, .milestonerewardlocked, .eternityupbtnlocked, .lockedchallengesbtn {
+.unavailablebtn, .infinistorebtnlocked, .newdimlocked, .milestonerewardlocked, .eternityupbtnlocked, .lockedchallengesbtn {
     border-color: #e50000 !important;
     color: #e5e5e5 !important
 }
-.unavailablebtn:hover, .infinistorebtnlocked:hover, .infinistorebtnbought:hover, .onchallengebtn:hover, .completedchallengesbtn:hover, .milestonerewardlocked:hover, .milestonereward:hover, .timestudylocked:hover, .eternityupbtnlocked:hover, .eternitychallengestudylocked:hover, .lockedchallengesbtn:hover {
+.unavailablebtn:hover, .infinistorebtnlocked:hover, .newdimlocked:hover, .infinistorebtnbought:hover, .onchallengebtn:hover, .completedchallengesbtn:hover, .milestonerewardlocked:hover, .milestonereward:hover, .timestudylocked:hover, .eternityupbtnlocked:hover, .eternitychallengestudylocked:hover, .lockedchallengesbtn:hover {
     background-color: #191919 !important;
     color: #e5e5e5 !important
 }
 .challengediv {
     background-color: #191919 !important;
+    font-family:'Inconsolata', monospace !important;
     border-color: #0072e5 !important;
     border-radius: 0px !important
 }
@@ -85,10 +86,10 @@ body {
 #infinityPoints1 {
     color: #e5e5e5 !important
 }
-#bigcrunch, #infinitybtn, #postInfinityButton, #idtabbtn button, #infinitydimensions td[align=right] .storebtn, #replicantichance.storebtn, #replicantiinterval.storebtn, #replicantimax.storebtn, #challTabButtons td:nth-child(2) button, #infchallengesbtn {
+#bigcrunch, #infinitybtn, #postInfinityButton, #idtabbtn button, .newdim, #infinitydimensions td:nth-child(4) .storebtn, #replicantichance.storebtn, #replicantiinterval.storebtn, #replicantimax.storebtn, #challTabButtons td:nth-child(2) button, #infchallengesbtn {
     border-color: #e2bd00 !important
 }
-#bigcrunch:hover, #infinitybtn:hover, #postInfinityButton:hover, #idtabbtn button:hover, #infinitydimensions td[align=right] .storebtn:hover, #replicantichance.storebtn:hover, #replicantiinterval.storebtn:hover, #replicantimax.storebtn:hover, #challTabButtons td:nth-child(2) button:hover, #infchallengesbtn:hover {
+#bigcrunch:hover, #infinitybtn:hover, #postInfinityButton:hover, #idtabbtn button:hover, .newdim:hover, td:nth-child(4) .storebtn:hover, #replicantichance.storebtn:hover, #replicantiinterval.storebtn:hover, #replicantimax.storebtn:hover, #challTabButtons td:nth-child(2) button:hover, #infchallengesbtn:hover {
     background-color: #e2bd00 !important
 }
 .IPAmount1, .IPAmount2, #infPowAmount, #infDimMultAmount, #replicantiamount, #replicantimult {
@@ -115,6 +116,7 @@ body {
 }
 .infchallengediv {
     background-color: #191919 !important;
+    font-family:'Inconsolata', monospace !important;
     border-color: #e2bd00 !important;
     border-radius: 0px !important
 }
@@ -129,30 +131,28 @@ body {
     font-family:'Inconsolata', monospace !important
 }
 #theorembuybackground {
-    background-color: #e5e5e5;
-    border-color: #191919;
-    border-radius: 0px
+    background-color: #e5e5e5 !important;
+    border-color: #191919 !important;
+    border-top-left-radius: 0px !important;
+    border-top-right-radius: 0px !important;
 }
 #TTbuttons button {
     font-family:'Inconsolata', monospace !important;
     border-radius: 0px
 }
 .timetheorembtnlocked {
-    background-color: #191919;
-    color: #e5e5e5;
-    border-color: #e50000
-}
-.timetheorembtnlocked:hover {
-    background-color: #191919;
+    background-color: #191919 !important;
+    color: #e5e5e5 !important;
+    border-color: #e50000 !important
 }
 .timetheorembtn {
-    background-color: #191919;
-    color: #e5e5e5;
-    border-color: #7100e2
+    background-color: #191919 !important;
+    color: #e5e5e5 !important;
+    border-color: #7100e2 !important
 }
 .timetheorembtn:hover {
-    background-color: #7100e2;
-    color: #191919;
+    background-color: #7100e2 !important;
+    color: #191919 !important;
 }
 .EPAmount2, #timeShardAmount, #tickThreshold {
     color: #7100e2 !important
@@ -164,7 +164,7 @@ body {
 .timestudylocked, .eternitychallengestudylocked {
     border-color: #e50000 !important
 }
-.timestudybought, .eternityupbtnbought {
+.timestudybought, .eternityupbtnbought, .eternitychallengestudybought {
     background-color: #7100e2 !important;
     color: #191919 !important;
     border-color: #191919 !important
@@ -195,7 +195,7 @@ body {
     border-color: #7100e2 !important;
     animation: none
 }
-.timestudy.timedimstudy:hover, .timestudybought.infdimstudy {
+.timestudy.timedimstudy:hover, .timestudybought.timedimstudy {
     background-color: #7100e2 !important;
     color: #191919 !important;
 }
@@ -230,15 +230,16 @@ body {
     color: #191919 !important;
 }
 .eternitychallengestudy {
-    border-color: #7100e2 !important;
+    border-color: #724c99 !important;
     animation: none
 }
-.eternitychallengestudy:hover {
-    background-color: #7100e2 !important;
+.eternitychallengestudy:hover, .eternitychallengestudybought {
+    background-color: #724c99 !important;
     color: #191919 !important
 }
 .eterchallengediv {
     background-color: #191919 !important;
+    font-family:'Inconsolata', monospace !important;
     border-color: #7100e2 !important;
     border-radius: 0px !important
 }
