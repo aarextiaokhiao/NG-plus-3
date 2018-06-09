@@ -133,8 +133,8 @@ body {
 #theorembuybackground {
     background-color: #e5e5e5 !important;
     border-color: #191919 !important;
-    border-top-left-radius: 0px !important;
-    border-top-right-radius: 0px !important;
+	border-top-left-radius: 0px !important;
+	border-top-right-radius: 0px !important;
 }
 #TTbuttons button {
     font-family:'Inconsolata', monospace !important;
@@ -246,12 +246,18 @@ body {
 .timestudy.darkstudy {
     background-color: #191919 !important;
     color: #e5e5e5 !important;
-    border-color: #4c0099 important;
+    border-color: #4c0099 !important;
     animation: none
 }
-.timestudy.darkstudy:hover, .timestudybought.darkstudy {
+.timestudy.darkstudy:hover {
     background-color: #4c0099 !important;
     color: #191919 !important;
+    border-color: #4c0099 !important
+}
+.timestudybought.darkstudy {
+    background-color: #4c0099 !important;
+    color: #191919 !important;
+    border-color: #191919 !important
 }
 .timestudy.lightstudy {
     background-color: #191919 !important;
@@ -259,9 +265,15 @@ body {
     border-color: #ac72e5 !important;
     animation: none
 }
-.timestudy.lightstudy:hover, .timestudybought.lightstudy {
+.timestudy.lightstudy:hover {
     background-color: #ac72e5 !important;
     color: #191919 !important;
+    border-color: #ac72e5 !important
+}
+.timestudybought.lightstudy {
+    background-color: #ac72e5 !important;
+    color: #191919 !important;
+    border-color: #191919 !important
 }
 
 .notifyjs-bootstrap-info {

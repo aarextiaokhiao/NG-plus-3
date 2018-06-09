@@ -834,9 +834,9 @@
                     <td><div><button id="eternityconf" onclick="toggleEternityConf()" class="storebtn" style="color:black; width: 200px; height: 55px; font-size:120%; display: none">Eternity confirmation ON</button></div></td>
                 </tr>
                 <tr>
-                    <td><div><button class="storebtn" style="width: 200px; height: 55px; opacity: 0;"></button></div></td>
                     <td><div class="storebtn" style="color:black; width: 198px; height: 55px; font-size:130%; text-align: center;"><b id="updaterate">Update Rate: 50ms</b><input id="updaterateslider" style="width: 170px;" type="range" min="33" max="200" value="50" class="slider" ></div></td>
-                    <td><div><button class="storebtn" style="width: 200px; height: 55px; opacity: 0;"></button></div></td>
+                    <td><div><button id="decimalMode" onclick="switchDecimalMode()" class="storebtn" style="color:black; width: 200px; height: 55px; font-size: 12px">Decimal mode: Performance & inaccurate</button></div></td>
+                    <td><div><button id="ngmMode" onclick="newGameMinus()" class="storebtn" style="color:black; width: 200px; height: 55px; font-size: 20px">New Game Minus OFF</button></div></td>
                 </tr>
                 <tr>
                     
@@ -2358,10 +2358,11 @@
 
 <script type="text/javascript"src="PlayFab/PlayFabClientApi.js"></script>
 <script type="text/javascript" src="javascripts/autobuyer.js"></script>
+<script type="text/javascript" src="javascripts/break_infinity.min.js"></script>
 <script type="text/javascript" src="javascripts/logarithmica_numerus_lite.js?1"></script>
 <script type="text/javascript" src="javascripts/chart.js"></script>
 <script type="text/javascript" src="javascripts/lz-string.js"></script>
-<script type="text/javascript" src="javascripts/game.js?4"></script>
+<script type="text/javascript" src="javascripts/game.js?5"></script>
 
 <script type="text/javascript" src="javascripts/sha512.js"></script>
 

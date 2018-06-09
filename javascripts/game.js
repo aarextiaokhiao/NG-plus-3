@@ -7,6 +7,15 @@ var shiftDown = false;
 var controlDown = false;
 var justImported = false;
 var forceHardReset = false;
+var aarexModificationsMetaSave = localStorage.getItem("AD_aarexModifications")
+if (aarexModificationsMetaSave == null) aarexModificationsMetaSave = {newGameMinus: false}
+else aarexModificationsMetaSave = JSON.parse(atob(aarexModificationsMetaSave))
+var saveID = aarexModificationsMetaSave.newGameMinus ? "dimensionSave_NGM" : "dimensionSave_AarexModifications"
+var dimensionSave = null
+get_save(saveID)
+var useBreakInfinity = false
+if (dimensionSave !== null) if (dimensionSave.aarexModifications !== undefined) useBreakInfinity = dimensionSave.aarexModifications.breakInfinity
+if (useBreakInfinity) Decimal = Decimal_BI
 var player = {
     money: new Decimal(10),
     tickSpeedCost: new Decimal(1000),
@@ -23,7 +32,7 @@ var player = {
     secondAmount: new Decimal(0),
     thirdAmount: new Decimal(0),
     fourthAmount: new Decimal(0),
-    firstBought: 0,
+    firstBought: aarexModificationsMetaSave.newGameMinus ? 5 : 0,
     secondBought: 0,
     thirdBought: 0,
     fourthBought: 0,
@@ -35,7 +44,7 @@ var player = {
     sixthBought: 0,
     seventhBought: 0,
     eightBought: 0,
-    firstPow: new Decimal(1),
+    firstPow: new Decimal(aarexModificationsMetaSave.newGameMinus ? 0.1 : 1),
     secondPow: new Decimal(1),
     thirdPow: new Decimal(1),
     fourthPow: new Decimal(1),
@@ -44,18 +53,18 @@ var player = {
     seventhPow: new Decimal(1),
     eightPow: new Decimal(1),
     sacrificed: new Decimal(0),
-    achievements: [],
+    achievements: aarexModificationsMetaSave.newGameMinus ? ["r85"] : [],
     infinityUpgrades: [],
     challenges: [],
     currentChallenge: "",
     infinityPoints: new Decimal(0),
-    infinitied: 0,
-    infinitiedBank: 0,
+    infinitied: aarexModificationsMetaSave.newGameMinus ? -1 : 0,
+    infinitiedBank: aarexModificationsMetaSave.newGameMinus ? -4 : 0,
     totalTimePlayed: 0,
     bestInfinityTime: 9999999999,
     thisInfinityTime: 0,
     resets: 0,
-    galaxies: 0,
+    galaxies: aarexModificationsMetaSave.newGameMinus ? -1 : 0,
     tickDecrease: 0.9,
     totalmoney: new Decimal(0),
     achPow: 1,
@@ -69,29 +78,29 @@ var player = {
     chall3Pow: new Decimal(0.01),
     matter: new Decimal(0),
     chall11Pow: new Decimal(1),
-    partInfinityPoint: 0,
-    partInfinitied: 0,
+    partInfinityPoint: aarexModificationsMetaSave.newGameMinus ? -1e300 : 0,
+    partInfinitied: aarexModificationsMetaSave.newGameMinus ? -1e8 : 0,
     break: false,
     challengeTimes: [600*60*24*31, 600*60*24*31, 600*60*24*31, 600*60*24*31, 600*60*24*31, 600*60*24*31, 600*60*24*31, 600*60*24*31, 600*60*24*31, 600*60*24*31, 600*60*24*31],
     infchallengeTimes: [600*60*24*31, 600*60*24*31, 600*60*24*31, 600*60*24*31, 600*60*24*31, 600*60*24*31, 600*60*24*31, 600*60*24*31],
-    lastTenRuns: [[600*60*24*31, 1], [600*60*24*31, 1], [600*60*24*31, 1], [600*60*24*31, 1], [600*60*24*31, 1], [600*60*24*31, 1], [600*60*24*31, 1], [600*60*24*31, 1], [600*60*24*31, 1], [600*60*24*31, 1]],
-    lastTenEternities: [[600*60*24*31, 1], [600*60*24*31, 1], [600*60*24*31, 1], [600*60*24*31, 1], [600*60*24*31, 1], [600*60*24*31, 1], [600*60*24*31, 1], [600*60*24*31, 1], [600*60*24*31, 1], [600*60*24*31, 1]],
-    infMult: new Decimal(1),
-    infMultCost: new Decimal(10),
+    lastTenRuns: [[600*60*24*31, 0], [600*60*24*31, 0], [600*60*24*31, 0], [600*60*24*31, 0], [600*60*24*31, 0], [600*60*24*31, 0], [600*60*24*31, 0], [600*60*24*31, 0], [600*60*24*31, 0], [600*60*24*31, 0]],
+    lastTenEternities: [[600*60*24*31, 0], [600*60*24*31, 0], [600*60*24*31, 0], [600*60*24*31, 0], [600*60*24*31, 0], [600*60*24*31, 0], [600*60*24*31, 0], [600*60*24*31, 0], [600*60*24*31, 0], [600*60*24*31, 0]],
+    infMult: new Decimal(aarexModificationsMetaSave.newGameMinus ? 0.5 : 1),
+    infMultCost: new Decimal(aarexModificationsMetaSave.newGameMinus ? 30 : 10),
     tickSpeedMultDecrease: 10,
     tickSpeedMultDecreaseCost: 3e6,
-    dimensionMultDecrease: 10,
+    dimensionMultDecrease: aarexModificationsMetaSave.newGameMinus ? 11 : 10,
     dimensionMultDecreaseCost: 1e8,
     overXGalaxies: 10,
     version: 10,
     infDimensionsUnlocked: [false, false, false, false, false, false, false, false],
     infinityPower: new Decimal(1),
-    spreadingCancer: 0,
+    spreadingCancer: aarexModificationsMetaSave.newGameMinus ? -990 : 0,
     postChallUnlocked: 0,
     postC4Tier: 0,
     postC3Reward: new Decimal(1),
     eternityPoints: new Decimal(0),
-    eternities: 0,
+    eternities: aarexModificationsMetaSave.newGameMinus ? -20 : 0,
     thisEternity: 0,
     bestEternity: 9999999999,
     eternityUpgrades: [],
@@ -122,35 +131,35 @@ var player = {
         cost: new Decimal(1e20),
         amount: new Decimal(0),
         bought: 0,
-        power: new Decimal(1),
+        power: new Decimal(aarexModificationsMetaSave.newGameMinus ? 0.0000125 : 1),
         baseAmount: 0
     },
     infinityDimension5 : {
         cost: new Decimal(1e140),
         amount: new Decimal(0),
         bought: 0,
-        power: new Decimal(1),
+        power: new Decimal(aarexModificationsMetaSave.newGameMinus ? 0.01 : 1),
         baseAmount: 0
     },
     infinityDimension6 : {
         cost: new Decimal(1e200),
         amount: new Decimal(0),
         bought: 0,
-        power: new Decimal(1),
+        power: new Decimal(aarexModificationsMetaSave.newGameMinus ? 0.015 : 1),
         baseAmount: 0
     },
     infinityDimension7 : {
         cost: new Decimal(1e250),
         amount: new Decimal(0),
         bought: 0,
-        power: new Decimal(1),
+        power: new Decimal(aarexModificationsMetaSave.newGameMinus ? 0.01 : 1),
         baseAmount: 0
     },
     infinityDimension8 : {
         cost: new Decimal(1e280),
         amount: new Decimal(0),
         bought: 0,
-        power: new Decimal(1),
+        power: new Decimal(aarexModificationsMetaSave.newGameMinus ? 0.01 : 1),
         baseAmount: 0
     },
     infDimBuyers: [false, false, false, false, false, false, false, false],
@@ -160,25 +169,25 @@ var player = {
     timeDimension1: {
         cost: new Decimal(1),
         amount: new Decimal(0),
-        power: new Decimal(1),
+        power: new Decimal(aarexModificationsMetaSave.newGameMinus ? 0.1 : 1),
         bought: 0
     },
     timeDimension2: {
         cost: new Decimal(5),
         amount: new Decimal(0),
-        power: new Decimal(1),
+        power: new Decimal(aarexModificationsMetaSave.newGameMinus ? 0.05 : 1),
         bought: 0
     },
     timeDimension3: {
         cost: new Decimal(100),
         amount: new Decimal(0),
-        power: new Decimal(1),
+        power: new Decimal(aarexModificationsMetaSave.newGameMinus ? 0.03 : 1),
         bought: 0
     },
     timeDimension4: {
         cost: new Decimal(1000),
         amount: new Decimal(0),
-        power: new Decimal(1),
+        power: new Decimal(aarexModificationsMetaSave.newGameMinus ? 0.02 : 1),
         bought: 0
     },
     offlineProd: 0,
@@ -190,7 +199,7 @@ var player = {
         unl: false,
         chance: 0.01,
         chanceCost: new Decimal(1e150),
-        interval: 1000,
+        interval: aarexModificationsMetaSave.newGameMinus ? 5000 : 1000,
         intervalCost: new Decimal(1e140),
         gal: 0,
         galaxies: 0,
@@ -198,13 +207,13 @@ var player = {
         auto: [false, false, false]
     },
     timestudy: {
-        theorem: 0,
+        theorem: aarexModificationsMetaSave.newGameMinus ? -6 : 0,
         amcost: new Decimal("1e20000"),
-        ipcost: new Decimal(1),
+        ipcost: new Decimal(aarexModificationsMetaSave.newGameMinus ? 0.5 : 1),
         epcost: new Decimal(1),
         studies: [],
     },
-    eternityChalls: {},
+    eternityChalls: aarexModificationsMetaSave.newGameMinus ? {eterc1:-6,eterc11:1} : {},
     eternityChallGoal: new Decimal(Number.MAX_VALUE),
     currentEternityChall: "",
     eternityChallUnlocked: 0,
@@ -243,8 +252,10 @@ var player = {
             duration: 10,
             warning: 0,
         }
+    },
+    aarexModifications: {
+        breakInfinity: false
     }
-
 };
 
 /*var c = document.getElementById("game");
@@ -260,7 +271,6 @@ var sixthButton = document.getElementById("sixth");
 var seventhButton = document.getElementById("seventh");
 var eightButton = document.getElementById("eight");
 var tickSpeedButton = document.getElementById("tickSpeed");
-
 
 if (!String.prototype.includes) {
     String.prototype.includes = function(search, start) {
@@ -401,9 +411,8 @@ function set_save(name, value) {
 
 function get_save(name) {
     try {
-        if (localStorage.getItem("dimensionSave_AarexModifications") !== null) {
-            return JSON.parse(atob(localStorage.getItem(name), function(k, v) { return (v === Infinity) ? "Infinity" : v; }));
-        }
+        dimensionSave = localStorage.getItem(name)
+        if (dimensionSave !== null) dimensionSave = JSON.parse(atob(dimensionSave, function(k, v) { return (v === Infinity) ? "Infinity" : v; }))
     } catch(e) { console.log("Fuck IE"); }
 }
 
@@ -1149,7 +1158,18 @@ function onLoad() {
 		if (player.options.commas) player.options.commas = "Commas"
 		else player.options.commas = player.options.notation
 	}
+	
+    if (player.aarexModifications === undefined) {
+        player.aarexModifications = {
+            breakInfinity: false
+        }
+    }
 
+    if (player.aarexModifications.breakInfinity !== useBreakInfinity) {
+        save_game()
+        document.location.reload(true)
+        return
+    }
     transformSaveToDecimal();
     updateCosts();
     updateTickSpeed();
@@ -1174,6 +1194,10 @@ function onLoad() {
     if (!player.replicanti.auto[2]) document.getElementById("replauto3").innerHTML = "Auto: OFF"
 
     loadAutoBuyerSettings();
+    for (lastRun=0; lastRun<10 ; lastRun++) {
+        if (player.lastTenRuns[lastRun][0] == 26784000 && player.lastTenRuns[lastRun][1].eq(1)) player.lastTenRuns[lastRun] = [26784000, new Decimal(0)]
+        if (player.lastTenEternities[lastRun][0] == 26784000 && player.lastTenEternities[lastRun][1].eq(1)) player.lastTenEternities[lastRun] = [26784000, new Decimal(0)]
+    }
     updateLastTenRuns()
     updateLastTenEternities()
 
@@ -1304,9 +1328,7 @@ function onLoad() {
     toggleCrunchMode()
 
 
-    if (player.options.newsHidden) {
-        document.getElementById("game").style.display = "none";
-    }
+    if (player.options.newsHidden) document.getElementById("game").style.display = "none";
     if (player.options.challConf) {
         document.getElementById("challengeconfirmation").innerHTML = "Challenge confirmation OFF"
     } else {
@@ -1321,6 +1343,9 @@ function onLoad() {
     else document.getElementById("chartDipsOnOff").checked = false
 
     if (!player.options.hotkeys) document.getElementById("hotkeys").innerHTML = "Enable hotkeys"
+    if (player.aarexModifications.breakInfinity) document.getElementById("decimalMode").innerHTML = "Decimal mode: Inperformance and accurate"
+    if (aarexModificationsMetaSave.newGameMinus) document.getElementById("ngmMode").innerHTML = "New Game Minus ON"
+    else document.getElementById("ngmMode").innerHTML = "New Game Minus OFF"
     updateAutobuyers();
     setAchieveTooltip();
     updatePriorities();
@@ -1359,15 +1384,17 @@ function loadFromString(string) {
 
 
 function load_game() {
-    var save_data = get_save('dimensionSave_AarexModifications');
-    if (!save_data) return;
-    player = save_data;
+    if (!dimensionSave) {
+        if (aarexModificationsMetaSave.newGameMinus) document.getElementById("ngmMode").innerHTML = "New Game Minus ON"
+        return;
+	}
+    player = dimensionSave;
     onLoad()
 }
 
 
 function save_game() {
-    set_save('dimensionSave_AarexModifications', player);
+    set_save(saveID, player);
     $.notify("Game saved", "info")
 }
 
@@ -2000,7 +2027,7 @@ function updateDimensions() {
         var tickmult = getTickSpeedMultiplier()
         if (Decimal.lt(tickmult,1e-9)) document.getElementById("tickLabel").innerHTML = "Divide the tick interval by " + shortenDimensions(Decimal.recip(tickmult)) + '.'
         else {
-            tickmult = Decimal.toNumber(tickmult)
+            tickmult = new Decimal(tickmult).toNumber()
             var places = 0
             if (tickmult < 0.2) places = Math.floor(Math.log10(Math.round(1/tickmult)))
             document.getElementById("tickLabel").innerHTML = 'Reduce the tick interval by ' + ((1 - tickmult) * 100).toFixed(places) + '%.';
@@ -2145,7 +2172,7 @@ function updateTickSpeed() {
     var exp = player.tickspeed.e;
     if (exp > 1) document.getElementById("tickSpeedAmount").innerHTML = 'Tickspeed: ' + player.tickspeed.toFixed(0);
     else {
-        document.getElementById("tickSpeedAmount").innerHTML = 'Tickspeed: ' + (player.tickspeed.m * 100).toFixed(0) + ' / ' + shorten(Decimal.pow(10,2 - exp));
+        document.getElementById("tickSpeedAmount").innerHTML = 'Tickspeed: ' + Math.min(player.tickspeed.m * 100, 999).toFixed(0) + ' / ' + shorten(Decimal.pow(10,2 - exp));
     }
 }
 
@@ -3054,7 +3081,8 @@ function softReset(bulk) {
         eterc8repl: player.eterc8repl,
         dimlife: player.dimlife,
         dead: player.dead,
-        options: player.options
+        options: player.options,
+        aarexModifications: player.aarexModifications
     };
     if (player.currentChallenge == "challenge10" || player.currentChallenge == "postc1") {
         player.thirdCost = new Decimal(100)
@@ -3298,12 +3326,14 @@ function preformat(int) {
 }
 
 function timeDisplayShort(time) {
-    if (time <= 100) return (time/10).toFixed(3) + " seconds"
-    if (time <= 600) return (time/10).toFixed(2) + " seconds"
     time = time / 10
-    return preformat(Math.floor(time/3600)) + ":" + preformat(Math.floor((time%3600)/60)) + ":" + preformat(Math.floor(time%60))
-
-    }
+    if (time < 10) return time.toFixed(3) + " seconds"
+    if (time < 60) return time.toFixed(2) + " seconds"
+    if (time < 3600) return Math.floor(time/60) + ":" + preformat(Math.floor(time%60))
+    if (time < 86400) return Math.floor(time/3600) + ":" + preformat(Math.floor((time/60)%60)) + ":" + preformat(Math.floor(time%60))
+    if (time < 31536000) return Math.floor(time/86400) + 'd, ' + Math.floor((time/3600)%24) + ":" + preformat(Math.floor((time/60)%60)) + ":" + preformat(Math.floor(time%60))
+    return Math.floor(time/31536000) + 'y, ' + Math.floor((time/86400)%365) + 'd, ' + Math.floor((time/3600)%24) + ":" + preformat(Math.floor((time/60)%60)) + ":" + preformat(Math.floor(time%60))
+}
 
 const allAchievements = {
   r11 : "You gotta start somewhere",
@@ -4853,7 +4883,8 @@ function galaxyReset() {
         eterc8repl: player.eterc8repl,
         dimlife: player.dimlife,
         dead: player.dead,
-        options: player.options
+        options: player.options,
+        aarexModifications: player.aarexModifications
     };
 
     if (player.currentChallenge == "challenge10" || player.currentChallenge == "postc1") {
@@ -4977,13 +5008,22 @@ document.getElementById("importbtn").onclick = function () {
         setTheme(player.options.theme);
     } else {
         save_data = JSON.parse(atob(save_data), function(k, v) { return (v === Infinity) ? "Infinity" : v; });
-        if(verify_save(save_data)) forceHardReset = true
-        if(verify_save(save_data)) document.getElementById("reset").click();
-        forceHardReset = false
-        if (!save_data || !verify_save(save_data)) {
-            alert('could not load the save..');
-            load_custom_game();
-            return;
+        if (!verify_save(save_data)) {
+            forceHardReset = true
+            document.getElementById("reset").click()
+            forceHardReset = false
+            return
+        } else if (!save_data) {
+            alert('could not load the save..')
+            return
+        } else {
+            var checkNGM = new Decimal(save_data.timestudy.ipcost).mantissa != 1
+            if ((checkNGM && !aarexModificationsMetaSave.newGameMinus) || (!checkNGM && aarexModificationsMetaSave.newGameMinus)) {
+                aarexModificationsMetaSave.newGameMinus = !(aarexModificationsMetaSave.newGameMinus)
+                localStorage.setItem('AD_aarexModifications',btoa(JSON.stringify(aarexModificationsMetaSave)))
+                save_game()
+                saveID = aarexModificationsMetaSave.newGameMinus ? "dimensionSave_NGM" : "dimensionSave_AarexModifications"
+            }
         }
         totalMult = 1
         currentMult = 1
@@ -4996,10 +5036,7 @@ document.getElementById("importbtn").onclick = function () {
         mult18 = new Decimal(1)
         ec10bonus = new Decimal(1)
         player = save_data;
-        save_game();
-        load_game();
-        updateChallenges()
-        transformSaveToDecimal()
+        onLoad()
     }
 };
 
@@ -5008,10 +5045,15 @@ document.getElementById("importbtn").onclick = function () {
 
 document.getElementById("reset").onclick = function () {
     if (!forceHardReset && confirm("Do you really want to erase all your progress?") || forceHardReset) {
-        set_save('dimensionSave_AarexModifications', defaultStart);
+        set_save(saveID, defaultStart);
+        defaultStart.lastUpdate = new Date().getTime()
         player = defaultStart
         infDimPow = 1;
         save_game();
+        if (player.aarexModifications.breakInfinity != useBreakInfinity) {
+            document.location.reload(true)
+            return
+        }
         load_game();
         updateCosts();
         clearInterval(player.interval);
@@ -5659,17 +5701,17 @@ function toggleHotkeys() {
 
 
 function updateChallengeTimes() {
-document.getElementById("challengetime2").innerHTML = "Challenge  " + 2 + " time record: " + timeDisplayShort(player.challengeTimes[0])
-    document.getElementById("challengetime3").innerHTML = "Challenge  " + 3 + " time record: " + timeDisplayShort(player.challengeTimes[1])
-    document.getElementById("challengetime4").innerHTML = "Challenge  " + 4 + " time record: " + timeDisplayShort(player.challengeTimes[6])
-    document.getElementById("challengetime5").innerHTML = "Challenge  " + 5 + " time record: " + timeDisplayShort(player.challengeTimes[4])
-    document.getElementById("challengetime6").innerHTML = "Challenge  " + 6 + " time record: " + timeDisplayShort(player.challengeTimes[8])
-    document.getElementById("challengetime7").innerHTML = "Challenge  " + 7 + " time record: " + timeDisplayShort(player.challengeTimes[7])
-    document.getElementById("challengetime8").innerHTML = "Challenge  " + 8 + " time record: " + timeDisplayShort(player.challengeTimes[9])
-    document.getElementById("challengetime9").innerHTML = "Challenge  " + 9 + " time record: " + timeDisplayShort(player.challengeTimes[3])
-    document.getElementById("challengetime10").innerHTML = "Challenge " + 10 + " time record: " + timeDisplayShort(player.challengeTimes[2])
-    document.getElementById("challengetime11").innerHTML = "Challenge " + 11 + " time record: " + timeDisplayShort(player.challengeTimes[10])
-    document.getElementById("challengetime12").innerHTML = "Challenge " + 12 + " time record: " + timeDisplayShort(player.challengeTimes[5])
+    document.getElementById("challengetime2").innerHTML = "Second Dimension Autobuyer Challenge time record: " + timeDisplayShort(player.challengeTimes[0])
+    document.getElementById("challengetime3").innerHTML = "Third Dimension Autobuyer Challenge time record: " + timeDisplayShort(player.challengeTimes[1])
+    document.getElementById("challengetime4").innerHTML = "Fourth Dimension Autobuyer Challenge time record: " + timeDisplayShort(player.challengeTimes[6])
+    document.getElementById("challengetime5").innerHTML = "Fifth Dimension Autobuyer Challenge time record: " + timeDisplayShort(player.challengeTimes[4])
+    document.getElementById("challengetime6").innerHTML = "Sixth Dimension Autobuyer Challenge time record: " + timeDisplayShort(player.challengeTimes[8])
+    document.getElementById("challengetime7").innerHTML = "Seventh Dimension Autobuyer Challenge time record: " + timeDisplayShort(player.challengeTimes[7])
+    document.getElementById("challengetime8").innerHTML = "Eighth Dimension Autobuyer Challenge time record: " + timeDisplayShort(player.challengeTimes[9])
+    document.getElementById("challengetime9").innerHTML = "Tickspeed Autobuyer Challenge time record: " + timeDisplayShort(player.challengeTimes[3])
+    document.getElementById("challengetime10").innerHTML = "Automated Dimension Boosts Challenge time record: " + timeDisplayShort(player.challengeTimes[2])
+    document.getElementById("challengetime11").innerHTML = "Automated Galaxies Challenge time record: " + timeDisplayShort(player.challengeTimes[10])
+    document.getElementById("challengetime12").innerHTML = "Automated Big Crunches Challenge time record: " + timeDisplayShort(player.challengeTimes[5])
 	var temp = 0
 	for (var i=0; i<11; i++) {
 		temp += player.challengeTimes[i]
@@ -5687,58 +5729,63 @@ document.getElementById("challengetime2").innerHTML = "Challenge  " + 2 + " time
 
 var bestRunIppm = new Decimal(0)
 function updateLastTenRuns() {
-    let tempBest = 0
+    var listed = 0
+    var tempBest = 0
     var tempTime = new Decimal(0)
     var tempIP = new Decimal(0)
-    for (var i=0; i<10;i++) {
-        tempTime = tempTime.plus(player.lastTenRuns[i][0])
-        tempIP = tempIP.plus(player.lastTenRuns[i][1])
-    }
-    tempTime = tempTime.dividedBy(10)
-    tempIP = tempIP.dividedBy(10)
     for (var i=0; i<10; i++) {
-        var ippm = player.lastTenRuns[i][1].dividedBy(player.lastTenRuns[i][0]/600)
-        if (ippm.gt(tempBest)) tempBest = ippm
-        var tempstring = shorten(ippm) + " IP/min"
-        if (ippm<1) tempstring = shorten(ippm*60) + " IP/hour"
-        document.getElementById("run"+(i+1)).innerHTML = "The infinity "+(i+1)+" infinities ago took " + timeDisplayShort(player.lastTenRuns[i][0]) + " and gave " + shortenDimensions(player.lastTenRuns[i][1]) +" IP. "+ tempstring
+        if (player.lastTenRuns[i][1].gt(0)) {
+            var ippm = player.lastTenRuns[i][1].dividedBy(player.lastTenRuns[i][0]/600)
+            if (ippm.gt(tempBest)) tempBest = ippm
+            var tempstring = shorten(ippm) + " IP/min"
+            if (ippm<1) tempstring = shorten(ippm*60) + " IP/hour"
+            document.getElementById("run"+(i+1)).innerHTML = "The infinity " + (i == 0 ? '1 infinity' : (i+1) + ' infinities') + " ago took " + timeDisplayShort(player.lastTenRuns[i][0]) + " and gave " + shortenDimensions(player.lastTenRuns[i][1]) +" IP. "+ tempstring
+            tempTime = tempTime.plus(player.lastTenRuns[i][0])
+            tempIP = tempIP.plus(player.lastTenRuns[i][1])
+            listed++
+        } else document.getElementById("run"+(i+1)).innerHTML = ""
     }
+    if (listed > 1) {
+        tempTime = tempTime.dividedBy(listed)
+        tempIP = tempIP.dividedBy(listed)
+        var ippm = tempIP.dividedBy(tempTime/600)
+        var tempstring = shorten(ippm) + " IP/min"
+        averageIP = tempIP
+        if (ippm<1) tempstring = shorten(ippm*60) + " IP/hour"
+        document.getElementById("averagerun").innerHTML = "Last " + listed + " infinities average time: "+ timeDisplayShort(tempTime)+" Average IP gain: "+shortenDimensions(tempIP)+" IP. "+tempstring
 
-    var ippm = tempIP.dividedBy(tempTime/600)
-    var tempstring = shorten(ippm) + " IP/min"
-    if (ippm<1) tempstring = shorten(ippm*60) + " IP/hour"
-    document.getElementById("averagerun").innerHTML = "Last 10 infinities average time: "+ timeDisplayShort(tempTime)+" Average IP gain: "+shortenDimensions(tempIP)+" IP. "+tempstring
+        if (tempBest.gte(1e8)) giveAchievement("Oh hey, you're still here");
+        if (tempBest.gte(1e300)) giveAchievement("MAXIMUM OVERDRIVE");
 
-    if (tempBest.gte(1e8)) giveAchievement("Oh hey, you're still here");
-    if (tempBest.gte(1e300)) giveAchievement("MAXIMUM OVERDRIVE");
-
-    bestRunIppm = tempBest
+        bestRunIppm = tempBest
+    } else document.getElementById("averagerun").innerHTML = ""
 }
 
 var averageEp = new Decimal(0)
 function updateLastTenEternities() {
-    let tempBest = 0
+    var listed = 0
     var tempTime = new Decimal(0)
     var tempEP = new Decimal(0)
-    for (var i=0; i<10;i++) {
-        tempTime = tempTime.plus(player.lastTenEternities[i][0])
-        tempEP = tempEP.plus(player.lastTenEternities[i][1])
-    }
-    tempTime = tempTime.dividedBy(10)
-    tempEP = tempEP.dividedBy(10)
     for (var i=0; i<10; i++) {
-        var eppm = player.lastTenEternities[i][1].dividedBy(player.lastTenEternities[i][0]/600)
-        if (eppm.gt(tempBest)) tempBest = eppm
-        var tempstring = shorten(eppm) + " EP/min"
-        if (eppm<1) tempstring = shorten(eppm*60) + " EP/hour"
-        document.getElementById("eternityrun"+(i+1)).innerHTML = "The Eternity "+(i+1)+" eternities ago took " + timeDisplayShort(player.lastTenEternities[i][0]) + " and gave " + shortenDimensions(player.lastTenEternities[i][1]) +" EP. "+ tempstring
+        if (player.lastTenEternities[i][1].gt(0)) {
+            var eppm = player.lastTenEternities[i][1].dividedBy(player.lastTenEternities[i][0]/600)
+            var tempstring = shorten(eppm) + " EP/min"
+            if (eppm<1) tempstring = shorten(eppm*60) + " EP/hour"
+            document.getElementById("eternityrun"+(i+1)).innerHTML = "The Eternity " + (i == 0 ? '1 eternity' : (i+1) + ' eternities') + " ago took " + timeDisplayShort(player.lastTenEternities[i][0]) + " and gave " + shortenDimensions(player.lastTenEternities[i][1]) +" EP. "+ tempstring
+            tempTime = tempTime.plus(player.lastTenEternities[i][0])
+            tempEP = tempEP.plus(player.lastTenEternities[i][1])
+            listed++
+        } else document.getElementById("eternityrun"+(i+1)).innerHTML = ""
     }
-
-    var eppm = tempEP.dividedBy(tempTime/600)
-    var tempstring = shorten(eppm) + " EP/min"
-    averageEp = tempEP
-    if (eppm<1) tempstring = shorten(eppm*60) + " EP/hour"
-    document.getElementById("averageEternityRun").innerHTML = "Last 10 eternities average time: "+ timeDisplayShort(tempTime)+" Average EP gain: "+shortenDimensions(tempEP)+" EP. "+tempstring
+    if (listed > 1) {
+        tempTime = tempTime.dividedBy(listed)
+        tempEP = tempEP.dividedBy(listed)
+        var eppm = tempEP.dividedBy(tempTime/600)
+        var tempstring = shorten(eppm) + " EP/min"
+        averageEp = tempEP
+        if (eppm<1) tempstring = shorten(eppm*60) + " EP/hour"
+        document.getElementById("averageEternityRun").innerHTML = "Last " + listed + " eternities average time: "+ timeDisplayShort(tempTime)+" Average EP gain: "+shortenDimensions(tempEP)+" EP. "+tempstring
+    } else document.getElementById("averageEternityRun").innerHTML = ""
 }
 
 function addEternityTime(time, ep) {
@@ -5969,7 +6016,8 @@ document.getElementById("bigcrunch").onclick = function () {
         eterc8repl: player.eterc8repl,
         dimlife: player.dimlife,
         dead: player.dead,
-        options: player.options
+        options: player.options,
+        aarexModifications: player.aarexModifications
         };
 
         if (!player.options.retryChallenge) player.currentChallenge = ""
@@ -6192,7 +6240,7 @@ function eternity(force) {
             chall11Pow: new Decimal(1),
             challengeTimes: player.challengeTimes,
             infchallengeTimes: player.infchallengeTimes,
-            lastTenRuns: [[600*60*24*31, new Decimal(1)], [600*60*24*31, new Decimal(1)], [600*60*24*31, new Decimal(1)], [600*60*24*31, new Decimal(1)], [600*60*24*31, new Decimal(1)], [600*60*24*31, new Decimal(1)], [600*60*24*31, new Decimal(1)], [600*60*24*31, new Decimal(1)], [600*60*24*31, new Decimal(1)], [600*60*24*31, new Decimal(1)]],
+            lastTenRuns: [[600*60*24*31, new Decimal(0)], [600*60*24*31, new Decimal(0)], [600*60*24*31, new Decimal(0)], [600*60*24*31, new Decimal(0)], [600*60*24*31, new Decimal(0)], [600*60*24*31, new Decimal(0)], [600*60*24*31, new Decimal(0)], [600*60*24*31, new Decimal(0)], [600*60*24*31, new Decimal(0)], [600*60*24*31, new Decimal(0)]],
             lastTenEternities: player.lastTenEternities,
             infMult: new Decimal(1),
             infMultCost: new Decimal(10),
@@ -6317,7 +6365,8 @@ function eternity(force) {
             eterc8repl: 40,
             dimlife: true,
             dead: true,
-            options: player.options
+            options: player.options,
+            aarexModifications: player.aarexModifications
         };
         if (player.respec) respecTimeStudies()
         player.respec = false
@@ -6551,7 +6600,8 @@ function startChallenge(name, target) {
       eterc8repl: player.eterc8repl,
       dimlife: player.dimlife,
       dead: player.dead,
-      options: player.options
+      options: player.options,
+      aarexModifications: player.aarexModifications
     };
 	if (player.currentChallenge == "challenge10" || player.currentChallenge == "postc1") {
         player.thirdCost = new Decimal(100)
@@ -6977,7 +7027,7 @@ function startEternityChallenge(name, startgoal, goalIncrease) {
             chall11Pow: new Decimal(1),
             challengeTimes: player.challengeTimes,
             infchallengeTimes: player.infchallengeTimes,
-            lastTenRuns: [[600*60*24*31, new Decimal(1)], [600*60*24*31, new Decimal(1)], [600*60*24*31, new Decimal(1)], [600*60*24*31, new Decimal(1)], [600*60*24*31, new Decimal(1)], [600*60*24*31, new Decimal(1)], [600*60*24*31, new Decimal(1)], [600*60*24*31, new Decimal(1)], [600*60*24*31, new Decimal(1)], [600*60*24*31, new Decimal(1)]],
+            lastTenRuns: [[600*60*24*31, new Decimal(0)], [600*60*24*31, new Decimal(0)], [600*60*24*31, new Decimal(0)], [600*60*24*31, new Decimal(0)], [600*60*24*31, new Decimal(0)], [600*60*24*31, new Decimal(0)], [600*60*24*31, new Decimal(0)], [600*60*24*31, new Decimal(0)], [600*60*24*31, new Decimal(0)], [600*60*24*31, new Decimal(0)]],
             lastTenEternities: player.lastTenEternities,
             infMult: new Decimal(1),
             infMultCost: new Decimal(10),
@@ -7098,7 +7148,8 @@ function startEternityChallenge(name, startgoal, goalIncrease) {
             eterc8repl: 40,
             dimlife: true,
             dead: true,
-            options: player.options
+            options: player.options,
+            aarexModifications: player.aarexModifications
         };
 
         if (player.replicanti.unl) player.replicanti.amount = new Decimal(1)
@@ -8016,6 +8067,11 @@ function gameLoop(diff) {
         document.getElementById("progressbar").style.width = percentage
         document.getElementById("progresspercent").innerHTML = percentage
         document.getElementById("progresspercent").setAttribute('ach-tooltip',"Percentage to Eternity")
+    } else if (player.achievements.includes('r127') && !player.achievements.includes('r128') && player.timestudy.studies.length == 0) {
+        var percentage = Decimal.min(Decimal.log10(player.infinityPoints.plus(1)) / 220, 100).toFixed(2) + "%"
+        document.getElementById("progressbar").style.width = percentage
+        document.getElementById("progresspercent").innerHTML = percentage
+        document.getElementById("progresspercent").setAttribute('ach-tooltip','Percentage to "What do I have to do to get rid of you"')
     } else {
         var gepLog = gainedEternityPoints().log2()
         var goal = Math.pow(2,Math.ceil(Math.log10(gepLog) / Math.log10(2)))
@@ -8891,3 +8947,22 @@ setInterval( function() {
         ec10bonus = new Decimal(1)
     }
 }, 100)
+
+function switchDecimalMode() {
+	if (confirm('This option switch the Decimal library to '+(player.aarexModifications.breakInfinity?'logarithmica_numerus_lite':'break_infinity.min')+'.js. Are you sure you want to do that?')) {
+		clearInterval(gameLoopIntervalId)
+		player.aarexModifications.breakInfinity = !(player.aarexModifications.breakInfinity)
+		save_game()
+		document.location.reload(true)
+	}
+}
+
+function newGameMinus() {
+	if (confirm('This option switch the game mode '+(aarexModificationsMetaSave.newGameMinus?'back to normal mode':'to New Game Minus, made by slabdrill')+'. Are you sure you want to do that?')) {
+		clearInterval(gameLoopIntervalId)
+		aarexModificationsMetaSave.newGameMinus = !(aarexModificationsMetaSave.newGameMinus)
+		localStorage.setItem('AD_aarexModifications',btoa(JSON.stringify(aarexModificationsMetaSave)))
+		save_game()
+		document.location.reload(true)
+	}
+}
