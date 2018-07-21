@@ -6,7 +6,6 @@
     <title>Antimatter Dimensions</title>
     <link rel="icon" type="image/png" href="icon.png">
     <meta name="Antimatter Dimensions" content="A game about huge numbers and watching them go up." charset="utf-8"/>
-    <h1 id="hiddenheader" style="display: none">Antimatter Dimensions</h1>
     <script type="text/javascript" src='https://cdn1.kongregate.com/javascripts/kongregate_api.js'></script>
     <script type="text/javascript" src="javascripts/jquery-3.2.1.min.js"></script>
     <script type="text/javascript" src="javascripts/notify.js"></script>
@@ -835,8 +834,8 @@
                 </tr>
                 <tr>
                     <td><div class="storebtn" style="color:black; width: 198px; height: 55px; font-size:130%; text-align: center;"><b id="updaterate">Update Rate: 50ms</b><input id="updaterateslider" style="width: 170px;" type="range" min="33" max="200" value="50" class="slider" ></div></td>
-                    <td><div><button id="decimalMode" onclick="switchDecimalMode()" class="storebtn" style="color:black; width: 200px; height: 55px; font-size: 12px">Decimal mode: Performance & inaccurate</button></div></td>
-                    <td><div><button id="ngmMode" onclick="newGameMinus()" class="storebtn" style="color:black; width: 200px; height: 55px; font-size: 20px">New Game Minus OFF</button></div></td>
+                    <td><div><button id="decimalMode" onclick="switchDecimalMode()" class="storebtn" style="color:black; width: 200px; height: 55px; font-size: 12px"></button></div></td>
+                    <td><div><button id="ngmMode" onclick="newGameMinus()" class="storebtn" style="color:black; width: 200px; height: 55px; font-size: 20px"></button></div></td>
                 </tr>
                 <tr>
                     
@@ -846,7 +845,7 @@
                 
                 
             </table>
-            <div style="display: none;"><textarea id="exportOutput" style="color:black; width: 200px; height: 55px;"></textarea></div>
+            <div style="display:none;position:fixed;left:0;top:0"><textarea id="exportOutput" style="color:black; width: 200px; height: 55px;"></textarea></div>
             <p>Hotkeys: 1-8 for buy 10 dimension, shift+1-8 for buy 1 dimension, T to buy max tickspeed, shift+T to buy one tickspeed, M for max all<br>S for sacrifice, D for dimension boost, G for galaxy, C for crunch, A for toggle autobuyers, R for replicanti galaxies, E for eternity.<br>You can hold shift while buying time studies to buy all up until that point and see each study's number.<br>Hotkeys do not work while holding control.</p>
             <div id="footercontainer">
                 <table id="footer">
@@ -2340,6 +2339,10 @@
         <div id="failPopup">You failed the challenge, you will now exit it.</div>
         <button class="storebtn" style="font-size: 15px" onclick="closeToolTip()" style="display: inline">Okay</button>
     </div>
+	<div class="popup" id="welcome">
+        <div><text style='font-size:12px'>Welcome to Antimatter Dimensions: New Game Minus Mod!<br><br>Credits to:<br>Hevipelle for original game<br>slabdrill for NG- idea</text></div>
+        <button class="storebtn" style="font-size: 15px" onclick="closeToolTip()" style="display: inline">Okay</button>
+    </div>
     <div class="popup" id="offlineprogress" style="width: 450px; height: 200px;">
         <div id="offlinePopup" style="height: 150px">You made X antimatter and stuff</div>
         <button class="storebtn" style="font-size: 15px" onclick="closeToolTip()" style="display: inline">Okay</button>
@@ -2362,7 +2365,7 @@
 <script type="text/javascript" src="javascripts/logarithmica_numerus_lite.js?1"></script>
 <script type="text/javascript" src="javascripts/chart.js"></script>
 <script type="text/javascript" src="javascripts/lz-string.js"></script>
-<script type="text/javascript" src="javascripts/game.js?5"></script>
+<script type="text/javascript" src="javascripts/game.js?6"></script>
 
 <script type="text/javascript" src="javascripts/sha512.js"></script>
 

@@ -12,256 +12,256 @@ if (aarexModificationsMetaSave == null) aarexModificationsMetaSave = {newGameMin
 else aarexModificationsMetaSave = JSON.parse(atob(aarexModificationsMetaSave))
 var saveID = aarexModificationsMetaSave.newGameMinus ? "dimensionSave_NGM" : "dimensionSave_AarexModifications"
 var dimensionSave = null
-get_save(saveID)
+var player
 var useBreakInfinity = false
+get_save(saveID)
 if (dimensionSave !== null) if (dimensionSave.aarexModifications !== undefined) useBreakInfinity = dimensionSave.aarexModifications.breakInfinity
 if (useBreakInfinity) Decimal = Decimal_BI
-var player = {
-    money: new Decimal(10),
-    tickSpeedCost: new Decimal(1000),
-    tickspeed: new Decimal(1000),
-    firstCost: new Decimal(10),
-    secondCost: new Decimal(100),
-    thirdCost: new Decimal(10000),
-    fourthCost: new Decimal(1000000),
-    fifthCost: new Decimal(1e9),
-    sixthCost: new Decimal(1e13),
-    seventhCost: new Decimal(1e18),
-    eightCost: new Decimal(1e24),
-    firstAmount: new Decimal(0),
-    secondAmount: new Decimal(0),
-    thirdAmount: new Decimal(0),
-    fourthAmount: new Decimal(0),
-    firstBought: aarexModificationsMetaSave.newGameMinus ? 5 : 0,
-    secondBought: 0,
-    thirdBought: 0,
-    fourthBought: 0,
-    fifthAmount: new Decimal(0),
-    sixthAmount: new Decimal(0),
-    seventhAmount: new Decimal(0),
-    eightAmount: new Decimal(0),
-    fifthBought: 0,
-    sixthBought: 0,
-    seventhBought: 0,
-    eightBought: 0,
-    firstPow: new Decimal(aarexModificationsMetaSave.newGameMinus ? 0.1 : 1),
-    secondPow: new Decimal(1),
-    thirdPow: new Decimal(1),
-    fourthPow: new Decimal(1),
-    fifthPow: new Decimal(1),
-    sixthPow: new Decimal(1),
-    seventhPow: new Decimal(1),
-    eightPow: new Decimal(1),
-    sacrificed: new Decimal(0),
-    achievements: aarexModificationsMetaSave.newGameMinus ? ["r85"] : [],
-    infinityUpgrades: [],
-    challenges: [],
-    currentChallenge: "",
-    infinityPoints: new Decimal(0),
-    infinitied: aarexModificationsMetaSave.newGameMinus ? -1 : 0,
-    infinitiedBank: aarexModificationsMetaSave.newGameMinus ? -4 : 0,
-    totalTimePlayed: 0,
-    bestInfinityTime: 9999999999,
-    thisInfinityTime: 0,
-    resets: 0,
-    galaxies: aarexModificationsMetaSave.newGameMinus ? -1 : 0,
-    tickDecrease: 0.9,
-    totalmoney: new Decimal(0),
-    achPow: 1,
-    newsArray: [],
-    interval: null,
-    lastUpdate: new Date().getTime(),
-    autobuyers: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12],
-    costMultipliers: [new Decimal(1e3), new Decimal(1e4), new Decimal(1e5), new Decimal(1e6), new Decimal(1e8), new Decimal(1e10), new Decimal(1e12), new Decimal(1e15)],
-    tickspeedMultiplier: new Decimal(10),
-    chall2Pow: 1,
-    chall3Pow: new Decimal(0.01),
-    matter: new Decimal(0),
-    chall11Pow: new Decimal(1),
-    partInfinityPoint: aarexModificationsMetaSave.newGameMinus ? -1e300 : 0,
-    partInfinitied: aarexModificationsMetaSave.newGameMinus ? -1e8 : 0,
-    break: false,
-    challengeTimes: [600*60*24*31, 600*60*24*31, 600*60*24*31, 600*60*24*31, 600*60*24*31, 600*60*24*31, 600*60*24*31, 600*60*24*31, 600*60*24*31, 600*60*24*31, 600*60*24*31],
-    infchallengeTimes: [600*60*24*31, 600*60*24*31, 600*60*24*31, 600*60*24*31, 600*60*24*31, 600*60*24*31, 600*60*24*31, 600*60*24*31],
-    lastTenRuns: [[600*60*24*31, 0], [600*60*24*31, 0], [600*60*24*31, 0], [600*60*24*31, 0], [600*60*24*31, 0], [600*60*24*31, 0], [600*60*24*31, 0], [600*60*24*31, 0], [600*60*24*31, 0], [600*60*24*31, 0]],
-    lastTenEternities: [[600*60*24*31, 0], [600*60*24*31, 0], [600*60*24*31, 0], [600*60*24*31, 0], [600*60*24*31, 0], [600*60*24*31, 0], [600*60*24*31, 0], [600*60*24*31, 0], [600*60*24*31, 0], [600*60*24*31, 0]],
-    infMult: new Decimal(aarexModificationsMetaSave.newGameMinus ? 0.5 : 1),
-    infMultCost: new Decimal(aarexModificationsMetaSave.newGameMinus ? 30 : 10),
-    tickSpeedMultDecrease: 10,
-    tickSpeedMultDecreaseCost: 3e6,
-    dimensionMultDecrease: aarexModificationsMetaSave.newGameMinus ? 11 : 10,
-    dimensionMultDecreaseCost: 1e8,
-    overXGalaxies: 10,
-    version: 10,
-    infDimensionsUnlocked: [false, false, false, false, false, false, false, false],
-    infinityPower: new Decimal(1),
-    spreadingCancer: aarexModificationsMetaSave.newGameMinus ? -990 : 0,
-    postChallUnlocked: 0,
-    postC4Tier: 0,
-    postC3Reward: new Decimal(1),
-    eternityPoints: new Decimal(0),
-    eternities: aarexModificationsMetaSave.newGameMinus ? -20 : 0,
-    thisEternity: 0,
-    bestEternity: 9999999999,
-    eternityUpgrades: [],
-    epmult: new Decimal(1),
-    epmultCost: new Decimal(500),
-    infinityDimension1 : {
-        cost: new Decimal(1e8),
-        amount: new Decimal(0),
-        bought: 0,
-        power: new Decimal(1),
-        baseAmount: 0
-    },
-    infinityDimension2 : {
-        cost: new Decimal(1e9),
-        amount: new Decimal(0),
-        bought: 0,
-        power: new Decimal(1),
-        baseAmount: 0
-    },
-    infinityDimension3 : {
-        cost: new Decimal(1e10),
-        amount: new Decimal(0),
-        bought: 0,
-        power: new Decimal(1),
-        baseAmount: 0
-    },
-    infinityDimension4 : {
-        cost: new Decimal(1e20),
-        amount: new Decimal(0),
-        bought: 0,
-        power: new Decimal(aarexModificationsMetaSave.newGameMinus ? 0.0000125 : 1),
-        baseAmount: 0
-    },
-    infinityDimension5 : {
-        cost: new Decimal(1e140),
-        amount: new Decimal(0),
-        bought: 0,
-        power: new Decimal(aarexModificationsMetaSave.newGameMinus ? 0.01 : 1),
-        baseAmount: 0
-    },
-    infinityDimension6 : {
-        cost: new Decimal(1e200),
-        amount: new Decimal(0),
-        bought: 0,
-        power: new Decimal(aarexModificationsMetaSave.newGameMinus ? 0.015 : 1),
-        baseAmount: 0
-    },
-    infinityDimension7 : {
-        cost: new Decimal(1e250),
-        amount: new Decimal(0),
-        bought: 0,
-        power: new Decimal(aarexModificationsMetaSave.newGameMinus ? 0.01 : 1),
-        baseAmount: 0
-    },
-    infinityDimension8 : {
-        cost: new Decimal(1e280),
-        amount: new Decimal(0),
-        bought: 0,
-        power: new Decimal(aarexModificationsMetaSave.newGameMinus ? 0.01 : 1),
-        baseAmount: 0
-    },
-    infDimBuyers: [false, false, false, false, false, false, false, false],
-    timeShards: new Decimal(0),
-    tickThreshold: new Decimal(1),
-    totalTickGained: 0,
-    timeDimension1: {
-        cost: new Decimal(1),
-        amount: new Decimal(0),
-        power: new Decimal(aarexModificationsMetaSave.newGameMinus ? 0.1 : 1),
-        bought: 0
-    },
-    timeDimension2: {
-        cost: new Decimal(5),
-        amount: new Decimal(0),
-        power: new Decimal(aarexModificationsMetaSave.newGameMinus ? 0.05 : 1),
-        bought: 0
-    },
-    timeDimension3: {
-        cost: new Decimal(100),
-        amount: new Decimal(0),
-        power: new Decimal(aarexModificationsMetaSave.newGameMinus ? 0.03 : 1),
-        bought: 0
-    },
-    timeDimension4: {
-        cost: new Decimal(1000),
-        amount: new Decimal(0),
-        power: new Decimal(aarexModificationsMetaSave.newGameMinus ? 0.02 : 1),
-        bought: 0
-    },
-    offlineProd: 0,
-    offlineProdCost: 1e7,
-    challengeTarget: 0,
-    autoSacrifice: 1,
-    replicanti: {
-        amount: new Decimal(0),
-        unl: false,
-        chance: 0.01,
-        chanceCost: new Decimal(1e150),
-        interval: aarexModificationsMetaSave.newGameMinus ? 5000 : 1000,
-        intervalCost: new Decimal(1e140),
-        gal: 0,
-        galaxies: 0,
-        galCost: new Decimal(1e170),
-        auto: [false, false, false]
-    },
-    timestudy: {
-        theorem: aarexModificationsMetaSave.newGameMinus ? -6 : 0,
-        amcost: new Decimal("1e20000"),
-        ipcost: new Decimal(aarexModificationsMetaSave.newGameMinus ? 0.5 : 1),
-        epcost: new Decimal(1),
-        studies: [],
-    },
-    eternityChalls: aarexModificationsMetaSave.newGameMinus ? {eterc1:-6,eterc11:1} : {},
-    eternityChallGoal: new Decimal(Number.MAX_VALUE),
-    currentEternityChall: "",
-    eternityChallUnlocked: 0,
-    etercreq: 0,
-    autoIP: new Decimal(0),
-    autoTime: 1e300,
-    infMultBuyer: false,
-    autoCrunchMode: "amount",
-    respec: false,
-    eternityBuyer: {
-        limit: new Decimal(0),
-        isOn: false
-    },
-    eterc8ids: 50,
-    eterc8repl: 40,
-    dimlife: true,
-    dead: true,
-    options: {
-        newsHidden: true,
-        notation: "Scientific",
-        //Standard = normal prefixed numbers, Scientific = standard form, Engineering = powers of 3.
-        scientific: false,
-        challConf: false,
-        sacrificeConfirmation: true,
-        retryChallenge: false,
-        bulkOn: true,
-        cloud: true,
-        hotkeys: true,
-        theme: undefined,
-        secretThemeKey: 0,
-        eternityconfirm: true,
-        commas: "Commas",
-        updateRate: 50,
-        chart: {
-            updateRate: 1000,
-            duration: 10,
-            warning: 0,
+function updateNewPlayer() {
+    player = {
+        money: new Decimal(10),
+        tickSpeedCost: new Decimal(1000),
+        tickspeed: new Decimal(1000),
+        firstCost: new Decimal(10),
+        secondCost: new Decimal(100),
+        thirdCost: new Decimal(10000),
+        fourthCost: new Decimal(1000000),
+        fifthCost: new Decimal(1e9),
+        sixthCost: new Decimal(1e13),
+        seventhCost: new Decimal(1e18),
+        eightCost: new Decimal(1e24),
+        firstAmount: new Decimal(0),
+        secondAmount: new Decimal(0),
+        thirdAmount: new Decimal(0),
+        fourthAmount: new Decimal(0),
+        firstBought: aarexModificationsMetaSave.newGameMinus ? 5 : 0,
+        secondBought: 0,
+        thirdBought: 0,
+        fourthBought: 0,
+        fifthAmount: new Decimal(0),
+        sixthAmount: new Decimal(0),
+        seventhAmount: new Decimal(0),
+        eightAmount: new Decimal(0),
+        fifthBought: 0,
+        sixthBought: 0,
+        seventhBought: 0,
+        eightBought: 0,
+        firstPow: new Decimal(aarexModificationsMetaSave.newGameMinus ? 0.1 : 1),
+        secondPow: new Decimal(1),
+        thirdPow: new Decimal(1),
+        fourthPow: new Decimal(1),
+        fifthPow: new Decimal(1),
+        sixthPow: new Decimal(1),
+        seventhPow: new Decimal(1),
+        eightPow: new Decimal(1),
+        sacrificed: new Decimal(0),
+        achievements: aarexModificationsMetaSave.newGameMinus ? ["r85"] : [],
+        infinityUpgrades: [],
+        challenges: [],
+        currentChallenge: "",
+        infinityPoints: new Decimal(0),
+        infinitied: aarexModificationsMetaSave.newGameMinus ? -1 : 0,
+        infinitiedBank: aarexModificationsMetaSave.newGameMinus ? -4 : 0,
+        totalTimePlayed: 0,
+        bestInfinityTime: 9999999999,
+        thisInfinityTime: 0,
+        resets: 0,
+        galaxies: aarexModificationsMetaSave.newGameMinus ? -1 : 0,
+        tickDecrease: 0.9,
+        totalmoney: new Decimal(0),
+        achPow: 1,
+        newsArray: [],
+        interval: null,
+        lastUpdate: new Date().getTime(),
+        autobuyers: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12],
+        costMultipliers: [new Decimal(1e3), new Decimal(1e4), new Decimal(1e5), new Decimal(1e6), new Decimal(1e8), new Decimal(1e10), new Decimal(1e12), new Decimal(1e15)],
+        tickspeedMultiplier: new Decimal(10),
+        chall2Pow: 1,
+        chall3Pow: new Decimal(0.01),
+        matter: new Decimal(0),
+        chall11Pow: new Decimal(1),
+        partInfinityPoint: aarexModificationsMetaSave.newGameMinus ? -1e300 : 0,
+        partInfinitied: aarexModificationsMetaSave.newGameMinus ? -1e8 : 0,
+        break: false,
+        challengeTimes: [600*60*24*31, 600*60*24*31, 600*60*24*31, 600*60*24*31, 600*60*24*31, 600*60*24*31, 600*60*24*31, 600*60*24*31, 600*60*24*31, 600*60*24*31, 600*60*24*31],
+        infchallengeTimes: [600*60*24*31, 600*60*24*31, 600*60*24*31, 600*60*24*31, 600*60*24*31, 600*60*24*31, 600*60*24*31, 600*60*24*31],
+        lastTenRuns: [[600*60*24*31, 0], [600*60*24*31, 0], [600*60*24*31, 0], [600*60*24*31, 0], [600*60*24*31, 0], [600*60*24*31, 0], [600*60*24*31, 0], [600*60*24*31, 0], [600*60*24*31, 0], [600*60*24*31, 0]],
+        lastTenEternities: [[600*60*24*31, 0], [600*60*24*31, 0], [600*60*24*31, 0], [600*60*24*31, 0], [600*60*24*31, 0], [600*60*24*31, 0], [600*60*24*31, 0], [600*60*24*31, 0], [600*60*24*31, 0], [600*60*24*31, 0]],
+        infMult: new Decimal(aarexModificationsMetaSave.newGameMinus ? 0.5 : 1),
+        infMultCost: new Decimal(aarexModificationsMetaSave.newGameMinus ? 30 : 10),
+        tickSpeedMultDecrease: 10,
+        tickSpeedMultDecreaseCost: 3e6,
+        dimensionMultDecrease: aarexModificationsMetaSave.newGameMinus ? 11 : 10,
+        dimensionMultDecreaseCost: 1e8,
+        overXGalaxies: 10,
+        version: 10,
+        infDimensionsUnlocked: [false, false, false, false, false, false, false, false],
+        infinityPower: new Decimal(1),
+        spreadingCancer: aarexModificationsMetaSave.newGameMinus ? -990 : 0,
+        postChallUnlocked: 0,
+        postC4Tier: 0,
+        postC3Reward: new Decimal(1),
+        eternityPoints: new Decimal(0),
+        eternities: aarexModificationsMetaSave.newGameMinus ? -20 : 0,
+        thisEternity: 0,
+        bestEternity: 9999999999,
+        eternityUpgrades: [],
+        epmult: new Decimal(1),
+        epmultCost: new Decimal(500),
+        infinityDimension1 : {
+            cost: new Decimal(1e8),
+            amount: new Decimal(0),
+            bought: 0,
+            power: new Decimal(1),
+            baseAmount: 0
+        },
+        infinityDimension2 : {
+            cost: new Decimal(1e9),
+            amount: new Decimal(0),
+            bought: 0,
+            power: new Decimal(1),
+            baseAmount: 0
+        },
+        infinityDimension3 : {
+            cost: new Decimal(1e10),
+            amount: new Decimal(0),
+            bought: 0,
+            power: new Decimal(1),
+            baseAmount: 0
+        },
+        infinityDimension4 : {
+            cost: new Decimal(1e20),
+            amount: new Decimal(0),
+            bought: 0,
+            power: new Decimal(aarexModificationsMetaSave.newGameMinus ? 0.0000125 : 1),
+            baseAmount: 0
+        },
+        infinityDimension5 : {
+            cost: new Decimal(1e140),
+            amount: new Decimal(0),
+            bought: 0,
+            power: new Decimal(aarexModificationsMetaSave.newGameMinus ? 0.01 : 1),
+            baseAmount: 0
+        },
+        infinityDimension6 : {
+            cost: new Decimal(1e200),
+            amount: new Decimal(0),
+            bought: 0,
+            power: new Decimal(aarexModificationsMetaSave.newGameMinus ? 0.015 : 1),
+            baseAmount: 0
+        },
+        infinityDimension7 : {
+            cost: new Decimal(1e250),
+            amount: new Decimal(0),
+            bought: 0,
+            power: new Decimal(aarexModificationsMetaSave.newGameMinus ? 0.01 : 1),
+            baseAmount: 0
+        },
+        infinityDimension8 : {
+            cost: new Decimal(1e280),
+            amount: new Decimal(0),
+            bought: 0,
+            power: new Decimal(aarexModificationsMetaSave.newGameMinus ? 0.01 : 1),
+            baseAmount: 0
+        },
+        infDimBuyers: [false, false, false, false, false, false, false, false],
+        timeShards: new Decimal(0),
+        tickThreshold: new Decimal(1),
+        totalTickGained: 0,
+        timeDimension1: {
+            cost: new Decimal(1),
+            amount: new Decimal(0),
+            power: new Decimal(aarexModificationsMetaSave.newGameMinus ? 0.1 : 1),
+            bought: 0
+        },
+        timeDimension2: {
+            cost: new Decimal(5),
+            amount: new Decimal(0),
+            power: new Decimal(aarexModificationsMetaSave.newGameMinus ? 0.05 : 1),
+            bought: 0
+        },
+        timeDimension3: {
+            cost: new Decimal(100),
+            amount: new Decimal(0),
+            power: new Decimal(aarexModificationsMetaSave.newGameMinus ? 0.03 : 1),
+            bought: 0
+        },
+        timeDimension4: {
+            cost: new Decimal(1000),
+            amount: new Decimal(0),
+            power: new Decimal(aarexModificationsMetaSave.newGameMinus ? 0.02 : 1),
+            bought: 0
+        },
+        offlineProd: 0,
+        offlineProdCost: 1e7,
+        challengeTarget: 0,
+        autoSacrifice: 1,
+        replicanti: {
+            amount: new Decimal(0),
+            unl: false,
+            chance: 0.01,
+            chanceCost: new Decimal(1e150),
+            interval: aarexModificationsMetaSave.newGameMinus ? 5000 : 1000,
+            intervalCost: new Decimal(1e140),
+            gal: 0,
+            galaxies: 0,
+            galCost: new Decimal(1e170),
+            auto: [false, false, false]
+        },
+        timestudy: {
+            theorem: aarexModificationsMetaSave.newGameMinus ? -6 : 0,
+            amcost: new Decimal("1e20000"),
+            ipcost: new Decimal(aarexModificationsMetaSave.newGameMinus ? 0.5 : 1),
+            epcost: new Decimal(1),
+            studies: [],
+        },
+        eternityChalls: aarexModificationsMetaSave.newGameMinus ? {eterc1:-6,eterc11:1} : {},
+        eternityChallGoal: new Decimal(Number.MAX_VALUE),
+        currentEternityChall: "",
+        eternityChallUnlocked: 0,
+        etercreq: 0,
+        autoIP: new Decimal(0),
+        autoTime: 1e300,
+        infMultBuyer: false,
+        autoCrunchMode: "amount",
+        respec: false,
+        eternityBuyer: {
+            limit: new Decimal(0),
+            isOn: false
+        },
+        eterc8ids: 50,
+        eterc8repl: 40,
+        dimlife: true,
+        dead: true,
+        options: {
+            newsHidden: true,
+            notation: "Scientific",
+            //Standard = normal prefixed numbers, Scientific = standard form, Engineering = powers of 3.
+            scientific: false,
+            challConf: false,
+            sacrificeConfirmation: true,
+            retryChallenge: false,
+            bulkOn: true,
+            cloud: true,
+            hotkeys: true,
+            theme: undefined,
+            secretThemeKey: 0,
+            eternityconfirm: true,
+            commas: "Commas",
+            updateRate: 50,
+            chart: {
+                updateRate: 1000,
+                duration: 10,
+                warning: 0,
+            }
+        },
+        aarexModifications: {
+            breakInfinity: false
         }
-    },
-    aarexModifications: {
-        breakInfinity: false
     }
-};
+}
+updateNewPlayer()
 
-/*var c = document.getElementById("game");
-var ctx = c.getContext("2d");*/
-
-var defaultStart = $.extend(true, {}, player);
 var firstButton = document.getElementById("first");
 var secondButton = document.getElementById("second");
 var thirdButton = document.getElementById("third");
@@ -1164,9 +1164,7 @@ function onLoad() {
             breakInfinity: false
         }
     }
-
     if (player.aarexModifications.breakInfinity !== useBreakInfinity) {
-        save_game()
         document.location.reload(true)
         return
     }
@@ -1185,9 +1183,7 @@ function onLoad() {
     toggleEternityConf()
     toggleEternityConf()
 	
-    if (player.options.commas === "Mixed Scientific") document.getElementById("commas").innerHTML = "M. Scientific on exponents"
-    else if (player.options.commas === "Mixed Engineering") document.getElementById("commas").innerHTML = "M. Engineering on exponents"
-	else document.getElementById("commas").innerHTML = player.options.commas + " on exponents"
+    document.getElementById("commas").innerHTML = (player.options.commas === "Mixed Scientific"?"M. Scientific":player.options.commas === "Mixed Engineering"?"M. Engineering":player.options.commas === "Emojis"?"Cancer":player.options.commas) + " on exponents"
 	
     if (!player.replicanti.auto[0]) document.getElementById("replauto1").innerHTML = "Auto: OFF"
     if (!player.replicanti.auto[1]) document.getElementById("replauto2").innerHTML = "Auto: OFF"
@@ -1225,7 +1221,7 @@ function onLoad() {
     if (player.break == true) document.getElementById("break").innerHTML = "FIX INFINITY"
     document.getElementById("infiMult").innerHTML = "Multiply infinity points from all sources by 2 <br>currently: "+shortenDimensions(player.infMult.times(kongIPMult)) +"x<br>Cost: "+shortenCosts(player.infMultCost)+" IP"
 
-    document.getElementById("notation").innerHTML = "Notation: " + player.options.notation
+    document.getElementById("notation").innerHTML = "Notation: "+(player.options.notation=="Emojis"?"Cancer":player.options.notation)
 
     if (player.infinitied == 0 && player.eternities == 0) document.getElementById("infinityPoints2").style.display = "none"
 
@@ -1323,6 +1319,24 @@ function onLoad() {
         document.getElementById("notation").innerHTML = ("Notation: Brackets")
     }
 
+    if (player.aarexModifications.newGameMinusUpdate === undefined) {
+		if (checkNGM() > 0) {
+			player.aarexModifications.newGameMinusUpdate = (player.newGameMinusUpdate === undefined ? checkNGM() : 1.1)
+			delete player.newGameMinusUpdate
+		}
+    }
+    if (player.aarexModifications.newGameMinusVersion < 1.1) {
+        player.totalTimePlayed+=1728000
+        player.timestudy.theorem+=1
+        player.timestudy.ipcost=Decimal.div(player.timestudy.ipcost,2)
+        if (player.eternityChalls.eterc1==undefined) player.eternityChalls.eterc1=-6
+        else player.eternityChalls.eterc1-=6
+        if (player.eternityChalls.eterc11==undefined) player.eternityChalls.eterc11=1
+        else if (player.eternityChalls.eterc11<5) player.eternityChalls.eterc11+=1
+        player.aarexModifications.newGameMinusVersion=1.1
+        $.notify("Your NG- save has been updated because slabdrill nerfed Eternity Challenges.", "info")
+    }
+
     toggleCrunchMode()
     toggleCrunchMode()
     toggleCrunchMode()
@@ -1343,9 +1357,10 @@ function onLoad() {
     else document.getElementById("chartDipsOnOff").checked = false
 
     if (!player.options.hotkeys) document.getElementById("hotkeys").innerHTML = "Enable hotkeys"
-    if (player.aarexModifications.breakInfinity) document.getElementById("decimalMode").innerHTML = "Decimal mode: Inperformance and accurate"
-    if (aarexModificationsMetaSave.newGameMinus) document.getElementById("ngmMode").innerHTML = "New Game Minus ON"
-    else document.getElementById("ngmMode").innerHTML = "New Game Minus OFF"
+
+    document.getElementById("ngmMode").innerHTML = "New Game Minus O"+(aarexModificationsMetaSave.newGameMinus?"N":"FF")
+    document.getElementById("decimalMode").innerHTML = "Decimal mode: "+(player.aarexModifications.breakInfinity?"Inperformance and accurate":"Performance and inaccurate")
+
     updateAutobuyers();
     setAchieveTooltip();
     updatePriorities();
@@ -1369,10 +1384,18 @@ function onLoad() {
     if (diff > 1000*1000) {
         simulateTime(diff/1000)
     }
-
+    if (player.totalTimePlayed === 0 && player.aarexModifications.newGameMinusUpdate !== undefined) document.getElementById('welcome').style.display='block'
 }
 
-
+function checkNGM() {
+	if (Math.round(new Decimal(player.timestudy.ipcost).mantissa) != 1) return 1.1
+	var totalTTgained = player.timestudy.theorem
+	for (id=0;id<all.length;id++) {
+		if (player.timestudy.studies.includes[all[id]]) totalTTgained += studyCosts[id]
+	}
+	if (new Decimal(player.timestudy.amcost).e / 20000 + new Decimal(player.timestudy.ipcost).e / 100 + Math.round(new Decimal(player.timestudy.epcost).log(2)) - 1 != totalTTgained) return 1
+	return 0
+}
 
 function loadFromString(string) {
     var save = LZString.decompressFromEncodedURIComponent(string)
@@ -1384,11 +1407,7 @@ function loadFromString(string) {
 
 
 function load_game() {
-    if (!dimensionSave) {
-        if (aarexModificationsMetaSave.newGameMinus) document.getElementById("ngmMode").innerHTML = "New Game Minus ON"
-        return;
-	}
-    player = dimensionSave;
+    if (dimensionSave) player = dimensionSave
     onLoad()
 }
 
@@ -2037,6 +2056,11 @@ function updateDimensions() {
         document.getElementById("tickSpeedMax").style.visibility = "visible";
         document.getElementById("tickLabel").style.visibility = "visible";
         document.getElementById("tickSpeedAmount").style.visibility = "visible";
+    } else {
+        document.getElementById("tickSpeed").style.visibility = "hidden";
+        document.getElementById("tickSpeedMax").style.visibility = "hidden";
+        document.getElementById("tickLabel").style.visibility = "hidden";
+        document.getElementById("tickSpeedAmount").style.visibility = "hidden";
     }
 
     document.getElementById("totalmoney").innerHTML = 'You have made a total of ' + shortenMoney(player.totalmoney) + ' antimatter.';
@@ -4550,44 +4574,32 @@ function toggleReplAuto(i) {
 function toggleCommas() {
     if (player.options.commas === "Game percentages") {
         player.options.commas = "Commas";
-        document.getElementById("commas").innerHTML = ("Commas on exponents")
 	} else if (player.options.commas === "Commas") {
         player.options.commas = "Scientific";
-        document.getElementById("commas").innerHTML = ("Scientific on exponents")	
     } else if (player.options.commas === "Scientific") {
         player.options.commas = "Engineering";
-        document.getElementById("commas").innerHTML = ("Engineering on exponents")
     } else if (player.options.commas === "Engineering") {
         player.options.commas = "Letters";
-        document.getElementById("commas").innerHTML = ("Letters on exponents")
     } else if (player.options.commas === "Letters") {
         player.options.commas = "Standard";
-        document.getElementById("commas").innerHTML = ("Standard on exponents")
     } else if (player.options.commas === "Standard") {
         player.options.commas = "Emojis";
-        document.getElementById("commas").innerHTML = ("Cancer on exponents")
     } else if (player.options.commas === "Emojis") {
         player.options.commas = "Mixed scientific";
-        document.getElementById("commas").innerHTML = ("M. Scientific on exponents")
     } else if (player.options.commas === "Mixed scientific") {
         player.options.commas = "Mixed engineering";
-        document.getElementById("commas").innerHTML = ("M. Engineering on exponents")
     } else if (player.options.commas === "Mixed engineering") {
         player.options.commas = "Logarithm";
-        document.getElementById("commas").innerHTML = ("Logarithm on exponents")
     } else if (player.options.commas === "Logarithm") {
         player.options.commas = "Brackets";
-        document.getElementById("commas").innerHTML = ("Brackets on exponents")
     } else if (player.options.commas === "Brackets") {
         player.options.commas = "Infinity";
-        document.getElementById("commas").innerHTML = ("Infinity on exponents")
     } else if (player.options.commas === "Infinity") {
         player.options.commas = "Greek";
-        document.getElementById("commas").innerHTML = ("Greek on exponents")
     } else if (player.options.commas === "Greek") {
         player.options.commas = "Game percentages";
-        document.getElementById("commas").innerHTML = ("Game percentages on exponents")
     }
+    document.getElementById("commas").innerHTML = (player.options.commas === "Mixed Scientific"?"M. Scientific":player.options.commas === "Mixed Engineering"?"M. Engineering":player.options.commas === "Emojis"?"Cancer":player.options.commas) + " on exponents"
 }
 
 
@@ -5017,11 +5029,11 @@ document.getElementById("importbtn").onclick = function () {
             alert('could not load the save..')
             return
         } else {
-            var checkNGM = new Decimal(save_data.timestudy.ipcost).mantissa != 1
-            if ((checkNGM && !aarexModificationsMetaSave.newGameMinus) || (!checkNGM && aarexModificationsMetaSave.newGameMinus)) {
-                aarexModificationsMetaSave.newGameMinus = !(aarexModificationsMetaSave.newGameMinus)
+            var checked = checkNGM(true) > 0
+            if (checked != aarexModificationsMetaSave.newGameMinus) {
+                aarexModificationsMetaSave.newGameMinus = checked
                 localStorage.setItem('AD_aarexModifications',btoa(JSON.stringify(aarexModificationsMetaSave)))
-                save_game()
+                set_save(saveID, player)
                 saveID = aarexModificationsMetaSave.newGameMinus ? "dimensionSave_NGM" : "dimensionSave_AarexModifications"
             }
         }
@@ -5045,36 +5057,15 @@ document.getElementById("importbtn").onclick = function () {
 
 document.getElementById("reset").onclick = function () {
     if (!forceHardReset && confirm("Do you really want to erase all your progress?") || forceHardReset) {
-        set_save(saveID, defaultStart);
-        defaultStart.lastUpdate = new Date().getTime()
-        player = defaultStart
-        infDimPow = 1;
-        save_game();
+        clearInterval(player.interval)
+        updateNewPlayer()
+        set_save(saveID, player)
         if (player.aarexModifications.breakInfinity != useBreakInfinity) {
             document.location.reload(true)
             return
         }
-        load_game();
-        updateCosts();
-        clearInterval(player.interval);
-        //updateInterval();
-
-        document.getElementById("secondRow").style.display = "none";
-        document.getElementById("thirdRow").style.display = "none";
-        document.getElementById("tickSpeed").style.visibility = "hidden";
-        document.getElementById("tickSpeedMax").style.visibility = "hidden";
-        document.getElementById("tickLabel").style.visibility = "hidden";
-        document.getElementById("tickSpeedAmount").style.visibility = "hidden";
-        document.getElementById("fourthRow").style.display = "none";
-        document.getElementById("fifthRow").style.display = "none";
-        document.getElementById("sixthRow").style.display = "none";
-        document.getElementById("seventhRow").style.display = "none";
-        document.getElementById("eightRow").style.display = "none";
-        showDimTab('antimatterdimensions')
-        updateTickSpeed();
-        updateDimensions();
-        updateChallenges();
-        updateAutobuyers();
+        onLoad()
+        startInterval()
     }
 };
 
@@ -5172,41 +5163,30 @@ document.getElementById("notation").onclick = function () {
     player.options.scientific = !player.options.scientific;
     if (player.options.notation === "Game percentages") {
         player.options.notation = "Scientific";
-        document.getElementById("notation").innerHTML = ("Notation: Scientific")
     } else if (player.options.notation === "Scientific") {
         player.options.notation = "Engineering";
-        document.getElementById("notation").innerHTML = ("Notation: Engineering")
     } else if (player.options.notation === "Engineering") {
         player.options.notation = "Letters";
-        document.getElementById("notation").innerHTML = ("Notation: Letters")
     } else if (player.options.notation === "Letters") {
         player.options.notation = "Standard";
-        document.getElementById("notation").innerHTML = ("Notation: Standard")
     } else if (player.options.notation === "Standard") {
         player.options.notation = "Emojis";
-        document.getElementById("notation").innerHTML = ("Notation: Cancer")
     } else if (player.options.notation === "Emojis") {
         player.options.notation = "Mixed scientific";
-        document.getElementById("notation").innerHTML = ("Notation: Mixed scientific")
     } else if (player.options.notation === "Mixed scientific") {
         player.options.notation = "Mixed engineering";
-        document.getElementById("notation").innerHTML = ("Notation: Mixed engineering")
     } else if (player.options.notation === "Mixed engineering") {
         player.options.notation = "Logarithm";
-        document.getElementById("notation").innerHTML = ("Notation: Logarithm")
     } else if (player.options.notation === "Logarithm") {
         player.options.notation = "Brackets";
-        document.getElementById("notation").innerHTML = ("Notation: Brackets")
     } else if (player.options.notation === "Brackets") {
         player.options.notation = "Infinity";
-        document.getElementById("notation").innerHTML = ("Notation: Infinity")
     } else if (player.options.notation === "Infinity") {
         player.options.notation = "Greek";
-        document.getElementById("notation").innerHTML = ("Notation: Greek")
     } else if (player.options.notation === "Greek") {
         player.options.notation = "Game percentages";
-        document.getElementById("notation").innerHTML = ("Notation: Game percentages")
     }
+    document.getElementById("notation").innerHTML = "Notation: "+(player.options.notation=="Emojis"?"Cancer":player.options.notation)
 
     updateLastTenRuns();
     updateLastTenEternities();
@@ -8762,12 +8742,17 @@ function showEternityTab(tabName, init) {
     drawStudyTree();
 }
 
+function closeToolTip() {
+    var elements = document.getElementsByClassName("popup")
+    for (var i=0; i<elements.length; i++) elements[i].style.display = "none"
+}
+
+setInterval(function () {
+    save_game()
+}, 30000);
 
 
-
-function init() {
-    console.log('init');
-
+window.onload = function() {
     //setup the onclick callbacks for the buttons
     document.getElementById('dimensionsbtn').onclick = function () {
         showTab('dimensions');
@@ -8804,32 +8789,11 @@ function init() {
     updateAutobuyers();
     updateChallengeTimes()
 
-    //if (typeof kongregate === 'undefined') document.getElementById("shopbtn").style.display = "none"
-
-}
-
-function closeToolTip() {
-    var elements = document.getElementsByClassName("popup")
-    for (var i=0; i<elements.length; i++) elements[i].style.display = "none"
-}
-
-setInterval(function () {
-    save_game()
-}, 30000);
-
-updateCosts();
-//updateInterval();
-updateDimensions();
-document.getElementById("hiddenheader").style.display = "none";
-
-
-window.onload = function() {
     startInterval()
-    setTimeout(function() {
+    setTimeout(function(){
         document.getElementById("container").style.display = "block"
         document.getElementById("loading").style.display = "none"
-    }, 1000)
-
+    },1000)
 }
 
 window.addEventListener('keydown', function(event) {
@@ -8921,7 +8885,6 @@ window.addEventListener('keydown', function(event) {
 
 
 
-init();
 var totalMult = 1
 var currentMult = 1
 var infinitiedMult = 1
@@ -8950,19 +8913,22 @@ setInterval( function() {
 
 function switchDecimalMode() {
 	if (confirm('This option switch the Decimal library to '+(player.aarexModifications.breakInfinity?'logarithmica_numerus_lite':'break_infinity.min')+'.js. Are you sure you want to do that?')) {
-		clearInterval(gameLoopIntervalId)
 		player.aarexModifications.breakInfinity = !(player.aarexModifications.breakInfinity)
-		save_game()
+		set_save(saveID, player)
 		document.location.reload(true)
 	}
 }
 
 function newGameMinus() {
 	if (confirm('This option switch the game mode '+(aarexModificationsMetaSave.newGameMinus?'back to normal mode':'to New Game Minus, made by slabdrill')+'. Are you sure you want to do that?')) {
-		clearInterval(gameLoopIntervalId)
+		set_save(saveID, player)
 		aarexModificationsMetaSave.newGameMinus = !(aarexModificationsMetaSave.newGameMinus)
 		localStorage.setItem('AD_aarexModifications',btoa(JSON.stringify(aarexModificationsMetaSave)))
-		save_game()
-		document.location.reload(true)
+		saveID = aarexModificationsMetaSave.newGameMinus ? "dimensionSave_NGM" : "dimensionSave_AarexModifications"
+		clearInterval(gameLoopIntervalId)
+		get_save(saveID)
+		updateNewPlayer()
+		load_game()
+		startInterval()
 	}
 }
