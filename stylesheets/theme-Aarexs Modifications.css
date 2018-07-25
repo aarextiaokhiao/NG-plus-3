@@ -1,13 +1,13 @@
 body {
     background-color: #191919 !important
 }
-.container, .statstab {
+.container, .statstab, b {
     font-family:'Inconsolata', monospace !important
 }
 #container div {
     color: #e5e5e5
 }
-#container button {
+#container button, .popup button {
     font-family:'Inconsolata', monospace !important;
     background-color: #191919;
     color: #e5e5e5;
@@ -18,19 +18,26 @@ body {
     background-color: #0072e5;
     color: #191919;
 }
-#footer {display: none}
+#footer {
+    display: none
+}
 .achievementlocked {
-	background-color: #727272 !important;
-	border-color: #720000 !important;
-	border-radius: 0px !important
+    background-color: #727272 !important;
+    border-color: #720000 !important;
+    border-radius: 0px !important
 }
 .achievementunlocked {
-	background-color: #00e500 !important;
-	border-color: #007200 !important;
-	border-radius: 0px !important
+    background-color: #00e500 !important;
+    border-color: #007200 !important;
+    border-radius: 0px !important
 }
 .completedrow {
-	background-color: #007200 !important
+    background-color: #007200 !important
+}
+.achievementhidden {
+    background-color: #727272 !important;
+    border-color: #191919 !important;
+    border-radius: 0px !important
 }
 #progress {
     bottom: 5px !important;
@@ -58,13 +65,24 @@ body {
     background-color: #00e500 !important;
     color: #191919 !important
 }
-.unavailablebtn, .infinistorebtnlocked, .newdimlocked, .milestonerewardlocked, .eternityupbtnlocked, .lockedchallengesbtn {
+.unavailablebtn, .infinistorebtnlocked, .newdimlocked, .milestonerewardlocked, .eternityupbtnlocked, .lockedchallengesbtn, .dilationupglocked, .dilationupgrebuyablelocked {
     border-color: #e50000 !important;
     color: #e5e5e5 !important
 }
-.unavailablebtn:hover, .infinistorebtnlocked:hover, .newdimlocked:hover, .infinistorebtnbought:hover, .onchallengebtn:hover, .completedchallengesbtn:hover, .milestonerewardlocked:hover, .milestonereward:hover, .timestudylocked:hover, .eternityupbtnlocked:hover, .eternitychallengestudylocked:hover, .lockedchallengesbtn:hover {
+.unavailablebtn:hover, .infinistorebtnlocked:hover, .newdimlocked:hover, .infinistorebtnbought:hover, .onchallengebtn:hover, .completedchallengesbtn:hover, .milestonerewardlocked:hover, .milestonereward:hover, .timestudylocked:hover, .eternityupbtnlocked:hover, .eternitychallengestudylocked:hover, .lockedchallengesbtn:hover, .dilationupglocked:hover, .dilationupgbought:hover, .dilationupgrebuyablelocked:hover, .dilationupgrebuyablebought:hover {
     background-color: #191919 !important;
     color: #e5e5e5 !important
+}
+.popup {
+    font-family:'Inconsolata', monospace !important;
+	background-color: #191919;
+	color: #e5e5e5;
+	border: 2px solid #0072e5;
+	border-radius: 0px
+}
+strong { color: #0072e5 }
+.floatingText {
+    color: #00e500 !important
 }
 .challengediv {
     background-color: #191919 !important;
@@ -107,7 +125,7 @@ body {
 .infinistorebtn2:hover, .infinistorebtn4:hover {
     background-color: #ccaa00 !important
 }
-.infinistorebtnbought {
+.infinistorebtnbought, .dilationupgbought, .dilationupgrebuyablebought {
     border-color: #00e500 !important
 }
 .autoBuyerDiv {
@@ -133,12 +151,16 @@ body {
 #theorembuybackground {
     background-color: #e5e5e5 !important;
     border-color: #191919 !important;
-	border-top-left-radius: 0px !important;
-	border-top-right-radius: 0px !important;
+    border-top-left-radius: 0px !important;
+    border-top-right-radius: 0px !important
 }
 #TTbuttons button {
     font-family:'Inconsolata', monospace !important;
     border-radius: 0px
+}
+#timestudies #footer {
+    display:block;
+    visibility:hidden
 }
 .timetheorembtnlocked {
     background-color: #191919 !important;
@@ -152,7 +174,7 @@ body {
 }
 .timetheorembtn:hover {
     background-color: #7100e2 !important;
-    color: #191919 !important;
+    color: #191919 !important
 }
 .EPAmount2, #timeShardAmount, #tickThreshold {
     color: #7100e2 !important
@@ -275,28 +297,52 @@ body {
     color: #191919 !important;
     border-color: #191919 !important
 }
-
+#tachyonParticleAmount, #dilatedTimeAmount, #dilatedTimePerSecond {
+    color: #72e572 !important
+}
+#galaxyThreshold, #dilatedGalaxies {
+    color: #0072e5 !important
+}
+#dilationTabbtn, .dilationbtn, .dilationupg, .dilationupgrebuyable {
+    background-color: #191919 !important;
+    color: #e5e5e5 !important;
+    border-color: #72e572 !important;
+    animation: none
+}
+#dilationTabbtn:hover, .dilationbtn:hover, .dilationupg:hover, .dilationupgrebuyable:hover {
+    background-color: #72e572 !important;
+    color: #191919 !important;
+    animation: none
+}
+#timestudies .dilationupgbought {
+    background-color: #72e572 !important;
+    color: #191919 !important;
+    border-color: #191919 !important
+}
+#dilstudy6 {
+    border-color: #0072e5 !important
+}
 .notifyjs-bootstrap-info {
- 	background-color: #0072e5;
- 	font-family: 'Inconsolata', monospace;
+    background-color: #0072e5;
+    font-family:'Inconsolata', monospace;
     border: 2px #004C99 solid;
-    border-radius: 0px;
+    border-radius: 0px
 }
 .notifyjs-bootstrap-success {
- 	background-color: #00e500;
- 	font-family: 'Inconsolata', monospace;
+    background-color: #00e500;
+    font-family:'Inconsolata', monospace;
     border: 2px #009900 solid;
-    border-radius: 0px;
+    border-radius: 0px
 }
 .notifyjs-bootstrap-warn {
- 	background-color: #e5e500;
- 	font-family: 'Inconsolata', monospace; 
+    background-color: #e5e500;
+    font-family:'Inconsolata', monospace;
     border: 2px #999900 solid;
-    border-radius: 0px;
+    border-radius: 0px
 }
 .notifyjs-bootstrap-error {
- 	background-color: #e50000;
- 	font-family: 'Inconsolata', monospace;
+    background-color: #e50000;
+    font-family:'Inconsolata', monospace;
     border: 2px #990000 solid;
-    border-radius: 0px;
+    border-radius: 0px
 }

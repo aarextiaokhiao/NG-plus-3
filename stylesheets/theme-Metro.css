@@ -115,6 +115,10 @@ input, select {
     border: 1px solid #EF5350 !important;
 }
 
+.achievementhidden {
+    border-width: 1px !important;
+}
+
 .infinistorebtn1 {
     border: 1px solid black !important;
 }
@@ -457,6 +461,21 @@ input, select {
     background: #9E9E9E !important;
     box-shadow: 1px 1px 1px 0px #000;
     border: none !important;
+}
+
+.dilationbtn {
+    border-width: 1px !important;
+}
+
+.dilationupglocked, .dilationupgrebuyablelocked {
+    color: black !important;
+    background: #9E9E9E !important;
+    box-shadow: 1px 1px 1px 0px #000;
+    border: none !important;
+}
+
+.dilationupglocked:hover, .dilationupgrebuyablelocked:hover {
+    background: #EF5350 !important;
 }
 
 @keyframes metroStudyGlowIn {

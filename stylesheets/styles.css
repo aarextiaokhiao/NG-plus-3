@@ -19,7 +19,6 @@ button {
     padding: 1px 6px;
 }
 
-
 #game {
     border: 2px solid black;
     border-radius: 4px;
@@ -33,7 +32,7 @@ button {
 #TTbuttons {
     font-family: Typewriter;
 }
-  
+
 #news {
     color: #000000;
     /*transition: transform 1s;*/
@@ -46,7 +45,7 @@ button {
 }
 
 .challengesbtn {
-    
+
     width:150px;
     height: 30px;
     color: black;
@@ -86,7 +85,7 @@ button {
     left: 0;
     bottom: 5px;
 }
-  
+
 .challengediv {
     display:table;
     text-align:center;
@@ -394,7 +393,7 @@ button {
     transition-duration: 0.2s;
     cursor: pointer;
     position: absolute;
-    left: 80%;
+    left: 75%;
     width: 210px;
     height: 70px;
     font-family: Typewriter;
@@ -423,10 +422,10 @@ button {
 }
 
 .IP {
-    left:81.5%;
+    left: 75%;
     position: absolute;
     font-size: 12px;
-    width: 150px;
+    width: 210px;
 }
 
 .IPAmount2 {
@@ -434,11 +433,11 @@ button {
 }
 
 .EP {
-    right:81.5%;
+    right: 75%;
     position: absolute;
     font-size: 12px;
-    width: 150px;
-} 
+    width: 210px;
+}
 
 .EPAmount2 {
     font-weight: bold;
@@ -450,7 +449,7 @@ button {
     transition-duration: 0.2s;
     cursor: pointer;
     position: absolute;
-    right: 80%;
+    right: 75%;
     width: 200px;
     height: 60px;
     font-family: Typewriter;
@@ -473,7 +472,7 @@ button {
     border-radius: 4px;
     transition-duration: 0.2s;
     position: absolute;
-    right: 80%;
+    right: 75%;
     width: 200px;
     height: 60px;
     color: #000000;
@@ -494,7 +493,7 @@ button {
     transition-duration: 0.2s;
     cursor: pointer;
     position: absolute;
-    right: 80%;
+    right: 75%;
     width: 210px;
     height: 70px;
     font-family: Typewriter;
@@ -547,31 +546,48 @@ button {
     background: white;
 }
 
-.achievementlocked {
-    background: #A3A3A3;
-    border: 2px solid #B84B5F;
-    width: 100px;
-    height: 100px;
+.achievementhidden {
+    background-image: url("../images/achhidden.png") !important;
+    background-color: #555;
+    border: 2px solid #000;
+    width: 104px;
+    height: 104px;
     border-radius: 8px;
     margin: 0px auto;
     text-align: center;
     font-family: TypeWriter;
     color: black;
     font-size: 70%;
+    user-select: none;
+}
+
+.achievementlocked {
+    background: #A3A3A3;
+    border: 2px solid #B84B5F;
+    width: 104px;
+    height: 104px;
+    border-radius: 8px;
+    margin: 0px auto;
+    text-align: center;
+    font-family: TypeWriter;
+    color: black;
+    font-size: 70%;
+    user-select: none;
 }
 
 .achievementunlocked {
     border: 2px solid #127A20;
     background: #5AC467;
     color: black;
-    width: 100px;
-    height: 100px;
+    width: 104px;
+    height: 104px;
     border-radius: 8px;
     margin: 0px auto;
     text-align: center;
     font-family: TypeWriter;
     color: black;
     font-size: 70%;
+    user-select: none;
 }
 
 .autoBuyerDiv {
@@ -617,7 +633,7 @@ button {
     position: relative;
     top: 50%;
     left: 40%;
-    
+
 }
 
 .crunchbtn:hover {
@@ -630,9 +646,10 @@ button {
 }
 
 .popup {
-    position: absolute;
-    left: 33%;
-    top: 33%;
+	position: fixed;
+	left: 50%;
+	top: 50%;
+	transform: translateX(-50%) translateY(-50%);
     border: 3px solid black;
     width: 300px;
     height: 120px;
@@ -646,6 +663,45 @@ button {
     padding-bottom: 15px;
     display: none;
 }
+
+.optionmenu {
+	flex-direction: column;
+	justify-content: center;
+	align-items: center;
+	height: 300px;
+}
+
+#loadmenu {
+	height: 300px;
+	width: 450px;
+}
+
+.optionmenu div {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	margin: 10px;
+}
+
+#loadmenu div { margin: 0px; }
+
+#loadmenu .closebtn, .optionmenu .closebtn {
+	width: 30px;
+	height: 30px;
+	font-size: 1.5rem;
+	line-height: 1.5rem;
+	position: fixed;
+	top: 5px;
+	right: 5px;
+}
+
+#loadmenu .storebtn, .optionmenu .storebtn {
+	margin: 5px;
+}
+
+#saves { width: 100%; }
+
+#welcomeMessage { font-size:12px; }
 
 #footercontainer {
     bottom: 0;
@@ -722,6 +778,7 @@ button {
 
 #replicantiresettoggle {
     margin-top: 3px;
+    margin-right: 6px;
 }
 
 .eternitychallengestudy {
@@ -756,7 +813,6 @@ button {
     vertical-align: top;
     margin:7px;
     animation: studyGlowIn 7s infinite;
-
 }
 
 .small {
@@ -936,7 +992,7 @@ button {
     font-size: 0.85rem;
     position: fixed;
     left: 50%;
-    
+
     bottom: 5px;
     z-index: 1;
 }
@@ -978,25 +1034,34 @@ button {
     position: fixed;
     bottom: 80px;
     left: 50%;
-    margin-left: -114px;
     font-size: 15px;
+    transform: translateX(-50%);
+}
+
+#studytreeloadsavetext {
+    color: black;
+    position: fixed;
+    bottom: 82px;
+    left: 50%;
+    margin-left: 145px;
+    font-size: 10px;
 }
 
 #theorembuybackground {
     background: #E0E0E0;
-    width: 550px;
+    width: 570px;
     height: 110px;
     position: fixed;
     bottom: 0;
     left: 50%;
-    margin-left: -277px;
+    margin-left: -287px;
     border: 2px solid black;
     border-bottom: none;
     border-top-left-radius: 7px;
     border-top-right-radius: 7px;
 }
 
-#studyTreeCanvas {
+#studyTreeCanvas, #dilationCanvas {
     top: 0;
     left: 0;
     position: absolute;
@@ -1102,6 +1167,158 @@ button {
 
 #production {
     font-size: 12px;
+}
+
+.dilationbtn {
+    color: #64DD17;
+    background: black;
+    font-weight: bold;
+    font-size: 0.7rem;
+    border: 2px solid #64DD17;
+    width: 190px;
+    height: 90px;
+    transition-duration: 0.2s;
+    cursor: pointer;
+    border-radius: 4px;
+    font-family: Typewriter;
+    animation: dilationBtnGlow 10s infinite;
+}
+
+.dilationbtn:hover {
+    color: #64DD17;
+    background: white;
+}
+
+.dilationupg {
+    color: #64DD17;
+    background: black;
+    font-weight: bold;
+    font-size: 0.65rem;
+    border: 1px solid #64DD17;
+    width: 170px;
+    height: 80px;
+    transition-duration: 0.2s;
+    cursor: pointer;
+    border-radius: 4px;
+    font-family: Typewriter;
+    animation: dilationBtnGlow 10s infinite;
+    vertical-align: top;
+    margin:7px;
+}
+
+.dilationupgrebuyable {
+    color: #64ddad;
+    background: black;
+    font-weight: bold;
+    font-size: 0.65rem;
+    border: 1px solid #64ddad;
+    width: 170px;
+    height: 80px;
+    transition-duration: 0.2s;
+    cursor: pointer;
+    border-radius: 4px;
+    font-family: Typewriter;
+    animation: dilationBtnGlow2 10s infinite;
+    vertical-align: top;
+    margin:7px;
+}
+
+.dilationupgbought {
+    color: black;
+    background: #64DD17;
+    font-weight: bold;
+    font-family: Typewriter;
+    border: 1px solid black;
+    width: 170px;
+    height: 80px;
+    transition-duration: 0.2s;
+    border-radius: 4px;
+    font-size: 0.65rem;
+    vertical-align: top;
+    margin:7px;
+}
+
+.dilationupgrebuyablelocked {
+    color: #181818;
+    background: #5F5F5F;
+    font-weight: bold;
+    font-family: Typewriter;
+    border: 1px solid #64ddad;
+    width: 170px;
+    height: 80px;
+    transition-duration: 0.2s;
+    border-radius: 4px;
+    font-size: 0.65rem;
+    vertical-align: top;
+    margin:7px;
+}
+
+.dilationupglocked {
+    color: #181818;
+    background: #5F5F5F;
+    font-weight: bold;
+    font-family: Typewriter;
+    border: 1px solid #3e8a0f;
+    width: 170px;
+    height: 80px;
+    transition-duration: 0.2s;
+    border-radius: 4px;
+    font-size: 0.65rem;
+    vertical-align: top;
+    margin:7px;
+}
+
+.dilationupglocked:hover {
+    color: #1D1D1D;
+    background: #660000;
+}
+
+.dilationupg:hover {
+    color: #64DD17;
+    background: white;
+}
+
+.dilationupgrebuyable:hover {
+    color: #64ddad;
+    background: white;
+}
+
+.glyph {
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    height: 50px !important;
+    width: 50px !important;
+    background: black;
+    font-size: 1.5rem;
+    transition-duration: 0.2s;
+    cursor: pointer;
+    font-family: Typewriter;
+}
+
+.glyph:hover {
+    background: white;
+}
+
+.glyph.normalglyph {
+    color: #22aa48;
+    border: 1px solid #22aa48;
+    box-shadow: inset #22aa48 0px 0px 10px 2px, #22aa48 0px 0px 10px 2px;
+    text-shadow: #22aa48 -1px 1px 2px;
+}
+
+.infinityglyph {
+    color: #B67F33;
+    border: 1px solid #B67F33;
+    box-shadow: inset #B67F33 0px 0px 10px 2px, #B67F33 0px 0px 10px 2px;
+    text-shadow: #B67F33 -1px 1px 2px;
+}
+
+.timeglyph {
+    color: #B241E3;
+    border: 1px solid #B241E3;
+    box-shadow: inset #B241E3 0px 0px 10px 2px, #B241E3 0px 0px 10px 2px;
+    text-shadow: #B241E3 -1px 1px 2px;
 }
 
 @keyframes glow {
@@ -1406,6 +1623,22 @@ br {
 }
 
 
+.floatingText {
+    position: absolute;
+    bottom: 20px;
+    left: 150px;
+    animation: float 1s 1;
+    color: green;
+    font-size: 1.2em;
+    opacity: 0;
+}
+
+.rel {
+    position: relative;
+}
+  
+
+
 
 
 @media print,
@@ -1540,8 +1773,42 @@ screen and (max-width: 480px) {
     100% {box-shadow: inset 0px 0px 3px 0px black;}
 }
 
+@keyframes dilationBtnGlow {
+    0%  {box-shadow: inset 5px 0px 20px #64DD17;}
+    25% {box-shadow: inset 0px 5px 20px #64DD17;}
+    50% {box-shadow: inset -5px 0px 20px #64DD17;}
+    75% {box-shadow: inset 0px -5px 20px #64DD17;}
+    100% {box-shadow: inset 5px 0px 20px #64DD17;}
+}
+
+@keyframes dilationBtnGlow2 {
+    0%  {box-shadow: inset -5px 0px 20px #64ddad;}
+    25% {box-shadow: inset 0px -5px 20px #64ddad;}
+    50% {box-shadow: inset 5px 0px 20px #64ddad;}
+    75% {box-shadow: inset 0px 5px 20px #64ddad;}
+    100% {box-shadow: inset -5px 0px 20px #64ddad;}
+}
+
 @keyframes barrelRoll {
     0%  {transform: rotateZ(0deg);}
     50% {transform: rotateZ(360deg);}
     100% {transform: rotateZ(360deg);}
 }
+
+@keyframes spin3d {
+    0%  {transform: rotate3d(5.2, -2.8, 1.4, 0deg);}
+    100% {transform: rotate3d(5.2, -2.8, 1.4, 360deg);}
+}
+
+@keyframes float {
+    0% { bottom: 0px; opacity: 0;}
+    50% {opacity: 1; }
+    100% { bottom: 50px; opacity: 0;}
+}
+
+@keyframes implode {
+    0% {transform:scale(1); filter:blur(0px)}
+    50% {transform:scale(0); filter:blur(5px)}
+    100% {transform:scale(1); filter:blur(0px)}
+}
+

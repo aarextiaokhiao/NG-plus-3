@@ -6,6 +6,10 @@ body {
     filter: invert(100%);
 }
 
+.popup {
+    filter: invert(100%);
+}
+
 * {
     border-radius: 0px !important;
 }
@@ -121,6 +125,10 @@ input, select {
 .achievementlocked {
     background-color: #9E9E9E !important;
     border: 1px solid #EF5350 !important;
+}
+
+.achievementhidden {
+    border-width: 1px !important;
 }
 
 .infinistorebtn1 {
@@ -239,7 +247,7 @@ input, select {
     background: #10acaf !important;
 }
 
-#timetheorems {
+#timetheorems, #studytreeloadsavetext {
     color: #bbb !important;
 }
 
@@ -471,6 +479,21 @@ input, select {
     background: #9E9E9E !important;
     box-shadow: 1px 1px 1px 0px #000;
     border: none !important;
+}
+
+.dilationbtn {
+    border-width: 1px !important;
+}
+
+.dilationupglocked, .dilationupgrebuyablelocked {
+    color: black !important;
+    background: #9E9E9E !important;
+    box-shadow: 1px 1px 1px 0px #000;
+    border: none !important;
+}
+
+.dilationupglocked:hover, .dilationupgrebuyablelocked:hover {
+    background: #EF5350 !important;
 }
 
 @keyframes metroStudyGlowIn {

@@ -77,6 +77,7 @@
 		static fromMantissaExponent(m,e) {
 			var value=new Decimal()
 			value.logarithm=e+Math.log10(m)
+			return value
 		}
 		
 		static toString(value) {
