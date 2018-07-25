@@ -227,10 +227,14 @@ function preformat(int) {
   else return int
 }
 
-function timeDisplayShort(time) {
+function timeDisplayShort(time, rep) {
     time = time / 10
-    if (time < 10) return time.toFixed(3) + " seconds"
-    if (time < 60) return time.toFixed(2) + " seconds"
+    if (rep && time < 0.1) {
+        if (time < 1e-3) return (time * 1e6).toFixed(time < 1e-4 ? 2 : 1) + " µs"
+        if (time < 0.01) return (time * 1e3).toFixed(3) + " ms"
+        return (time * 100).toFixed(time < 0.01 ? 3 : 2) + " cs"
+    }
+    if (time < 60) return time.toFixed(time < 10 ? 3 : 2) + " s" + (rep ? "" : "econds")
     if (time < 3600) return Math.floor(time/60) + ":" + preformat(Math.floor(time%60))
     if (time < 86400) return Math.floor(time/3600) + ":" + preformat(Math.floor((time/60)%60)) + ":" + preformat(Math.floor(time%60))
     if (time < 31536000) return Math.floor(time/86400) + 'd, ' + Math.floor((time/3600)%24) + ":" + preformat(Math.floor((time/60)%60)) + ":" + preformat(Math.floor(time%60))

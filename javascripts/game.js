@@ -880,7 +880,7 @@ function updateDimensions() {
             document.getElementById("besteternity").textContent = ""
             document.getElementById("thiseternity").textContent = ""
         } else {
-            document.getElementById("eternitied").textContent = "You have Eternitied " + player.eternities.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",") + " times."
+            document.getElementById("eternitied").textContent = "You have Eternitied " + (player.eternities < 1e12 ? player.eternities.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",") : shortenMoney(player.eternities)) + " times."
             document.getElementById("besteternity").textContent = "You have spent "+timeDisplay(player.thisEternity)+" in this Eternity."
             document.getElementById("thiseternity").textContent = "Your fastest Eternity is in "+timeDisplay(player.bestEternity)+"."
         }
@@ -1426,12 +1426,11 @@ document.getElementById("postinfi31").onclick = function() {
         player.tickSpeedMultDecrease--;
         if (player.tickSpeedMultDecrease > 2) document.getElementById("postinfi31").innerHTML = "Tickspeed cost multiplier increase <br>"+player.tickSpeedMultDecrease+"x -> "+(player.tickSpeedMultDecrease-1)+"x<br>Cost: "+shortenDimensions(player.tickSpeedMultDecreaseCost) +" IP"
         else {
-            if (player.aarexModifications.newGamePlusPlusVersion) {
+            if (player.aarexModifications.newGamePlusVersion&&player.aarexModifications.newGamePlusPlusVersion) {
                 for (c=1;c<6;c++) player.tickSpeedMultDecrease-=0.07
                 $.notify("Your tickspeed cost multiplier increase has been decreased to 1.65x because you are playing NG++ mode.")
                 document.getElementById("postinfi31").innerHTML = "Tickspeed cost multiplier increase <br>"+player.tickSpeedMultDecrease.toFixed(2)+"x"
-            }
-            document.getElementById("postinfi31").innerHTML = "Tickspeed cost multiplier increase <br>"+player.tickSpeedMultDecrease+"x"
+            } else document.getElementById("postinfi31").innerHTML = "Tickspeed cost multiplier increase <br>"+player.tickSpeedMultDecrease+"x"
         }
     }
 }
@@ -1459,16 +1458,14 @@ document.getElementById("postinfi42").onclick = function() {
         player.dimensionMultDecrease--;
         if (player.dimensionMultDecrease > 3) document.getElementById("postinfi42").innerHTML = "Dimension cost multiplier increase <br>"+player.dimensionMultDecrease+"x -> "+(player.dimensionMultDecrease-1)+"x<br>Cost: "+shortenCosts(player.dimensionMultDecreaseCost) +" IP"
         else {
-            if (player.aarexModifications.newGamePlusPlusVersion) {
+            if (player.aarexModifications.newGamePlusVersion) {
                 for (c=1;c<6;c++) player.dimensionMultDecrease-=0.2
-                $.notify("Your dimension cost multiplier increase has been decreased to 2x because you are playing NG++ mode.")
-            } else if (player.aarexModifications.newGamePlusVersion) {
-                for (c=1;c<6;c++) {
-                    player.tickSpeedMultDecrease-=0.07
-                    player.dimensionMultDecrease-=0.2
+                if (!player.aarexModifications.newGamePlusPlusVersion) {
+                    for (c=1;c<6;c++) player.tickSpeedMultDecrease-=0.07
+                    $.notify("Your tickspeed cost multiplier increase has been decreased to 1.65x too.")
+                    document.getElementById("postinfi31").innerHTML = "Tickspeed cost multiplier increase <br>"+player.tickSpeedMultDecrease.toFixed(2)+"x"
                 }
-                $.notify("Your dimension/tickspeed cost multiplier increase has been decreased because you are playing NG+ mode.")
-                document.getElementById("postinfi31").innerHTML = "Tickspeed cost multiplier increase <br>"+player.tickSpeedMultDecrease.toFixed(2)+"x"
+                $.notify("Your dimension cost multiplier increase has been decreased to 2x because you are playing NG+ mode.")
             }
             document.getElementById("postinfi42").innerHTML = "Dimension cost multiplier increase <br>"+player.dimensionMultDecrease.toFixed(0)+"x"
         }
@@ -2199,9 +2196,9 @@ function changeSaveDesc(saveId) {
 			player.options.commas=temp.options.commas
 		}
 		if (temp.dilation?temp.dilation.studies.includes(1):false) {
-			if (temp.dilation.studies.includes(5)) message+="Tachyon particles: "+shortenMoney(new Decimal(temp.dilation.totalTachyonParticles))
-			else if (temp.dilation.upgrades.includes(10)) message+="Time Theorems: "+shortenDimensions(getTotalTT(temp))+", Tachyon particles: "+shortenMoney(new Decimal(temp.dilation.totalTachyonParticles))
-			else message+="Eternity points: "+shortenDimensions(temp.eternityPoints)+", Tachyon particles: "+shortenMoney(new Decimal(temp.dilation.totalTachyonParticles))
+			message+="Tachyon particles: "+shortenMoney(new Decimal(temp.dilation.totalTachyonParticles))+", Dilated time: "+shortenMoney(new Decimal(temp.dilation.dilatedTime))
+			if (!temp.dilation.studies.includes(5)) message+="Time Theorems: "+shortenDimensions(getTotalTT(temp))+", "+message
+			else if (!temp.dilation.upgrades.includes(10)) message+="Eternity points: "+shortenDimensions(player.eternityPoints)+", "+message
 		} else {
 			var totalChallengeCompletions=(temp.aarexModifications.newGameMinusVersion?-6:0)
 			for (ec=1;ec<13;ec++) totalChallengeCompletions+=(temp.eternityChalls['eterc'+ec]?temp.eternityChalls['eterc'+ec]:0)
@@ -2222,7 +2219,6 @@ function changeSaveDesc(saveId) {
 		player.options.notation=originalNotation
 		player.options.commas=originalCommas
 	} catch (_) {
-		console.log(_)
 		var message="New game"
 	}
 	element.innerHTML=message
@@ -3470,8 +3466,8 @@ function eternity(force, auto) {
         if (player.achievements.includes("r131")) player.infinitiedBank += Math.floor(player.infinitied*0.05)
         if (player.infinitiedBank > 5000000000) giveAchievement("No ethical consumption");
         if (player.dilation.active && (!force || player.infinityPoints.gte(Number.MAX_VALUE))) {
-            player.dilation.totalTachyonParticles = player.dilation.totalTachyonParticles.plus(getDilGain())
-            player.dilation.tachyonParticles = player.dilation.tachyonParticles.plus(getDilGain())
+            player.dilation.totalTachyonParticles = player.dilation.totalTachyonParticles.max(getDilGain())
+            player.dilation.tachyonParticles = player.dilation.tachyonParticles.max(getDilGain())
         }
         player.challenges = temp
         player = {
@@ -4550,15 +4546,7 @@ function startDilatedEternity() {
     giveAchievement("I told you already, time is relative")
     eternity(true)
     if (!onActive) player.dilation.active = true;
-    var totalMult = 1
-    var currentMult = 1
-    var infinitiedMult = 1
-    var achievementMult = 1
-    var challengeMult = 1
-    var unspentBonus = 1
-    var postc8Mult = new Decimal(0)
-    var mult18 = new Decimal(1)
-    var ec10bonus = new Decimal(1)
+    updatePowers()
     startInterval()
 }
 
@@ -4567,12 +4555,14 @@ function unlockDilation() {
     if (player.timestudy.theorem < 5000) return
     if (ECTimesCompleted("eterc12") !== 5) return
     if (ECTimesCompleted("eterc11") !== 5) return
+    if (getTotalTT(player) < 13000) return
     player.timestudy.theorem -= 5000
-    document.getElementById("dilationunlock").className = "dilationupgbought"
-    updateTimeStudyButtons()
+    player.dilation.studies.push(1)
     showEternityTab("dilation")
-    document.getElementById("dilationunlock").innerHTML = "Unlock time dilation<span>Cost: 5000 Time Theorems"
+    document.getElementById("dilstudy1").className = "dilationupgbought"
+    document.getElementById("dilstudy1").innerHTML = "Unlock time dilation<span>Cost: 5000 Time Theorems"
     document.getElementById("dilationConfirmBtn").style.display = "inline-block"
+    updateTimeStudyButtons()
 }
 
 
@@ -5258,8 +5248,7 @@ function gameLoop(diff) {
     if (player.replicanti.galaxybuyer && player.replicanti.amount.gte(Number.MAX_VALUE) && !player.timestudy.studies.includes(131)) {
         document.getElementById("replicantireset").click()
     }
-    if (player.timestudy.studies.includes(22) ? player.replicanti.interval !== 1 : (player.replicanti.interval !== 50)) document.getElementById("replicantiinterval").innerHTML = "Interval: "+(interval).toFixed(3)+"ms<br>-> "+Math.max(interval*0.9).toFixed(3)+" Costs: "+shortenCosts(player.replicanti.intervalCost)+" IP"
-    else document.getElementById("replicantiinterval").textContent = "Interval: "+(interval).toFixed(3)+"ms"
+    document.getElementById("replicantiinterval").innerHTML = "Interval: "+timeDisplayShort(interval / 1e2, true) + (player.replicanti.interval > (player.timestudy.studies.includes(22) ? 1 : 50) ? "<br>-> "+timeDisplayShort(interval * 9e-3, true)+" Cost: "+shortenCosts(player.replicanti.intervalCost)+" IP" : "")
 
 
     if (player.infMultBuyer) {
@@ -5273,7 +5262,6 @@ function gameLoop(diff) {
             if (player.autoCrunchMode == "amount") document.getElementById("priority12").value = player.autobuyers[11].priority
         }
     }
-
 
     var estimate = Math.max((Math.log(Number.MAX_VALUE) - current) / est, 0)
     document.getElementById("replicantiapprox").textContent ="Approximately "+ timeDisplay(estimate*10) + " Until Infinite Replicanti"
@@ -6235,7 +6223,7 @@ var unspentBonus = 1
 var postc8Mult = new Decimal(0)
 var mult18 = 1
 var ec10bonus = new Decimal(1)
-setInterval( function() {
+function updatePowers() {
     totalMult = Math.pow(player.totalmoney.e+1, 0.5)
     currentMult = Math.pow(player.money.e+1, 0.5)
     if (player.timestudy.studies.includes(31)) infinitiedMult = 1 + Math.pow(Math.log10(getInfinitied()+1)*10, 4)
@@ -6250,7 +6238,8 @@ setInterval( function() {
     } else {
         ec10bonus = new Decimal(1)
     }
-}, 100)
+}
+setInterval(updatePowers, 100)
 
 function switchDecimalMode() {
 	if (confirm('This option switch the Decimal library to '+(player.aarexModifications.breakInfinity?'logarithmica_numerus_lite':'break_infinity.min')+'.js. Are you sure you want to do that?')) {

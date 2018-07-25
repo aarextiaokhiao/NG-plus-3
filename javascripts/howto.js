@@ -22,16 +22,23 @@ function save() {
 	localStorage.setItem("howToSpoilers", spoilers)
 }
 
-function get_save(name) {
-    if (localStorage.getItem("dimensionSave") !== null) {
-        return JSON.parse(atob(localStorage.getItem(name), function(k, v) { return (v === Infinity) ? "Infinity" : v; }))
-	}
+function get_save(id) {
+    try {
+        var dimensionSave = localStorage.getItem(btoa('dsAM_'+id))
+        if (dimensionSave !== null) dimensionSave = JSON.parse(atob(dimensionSave, function(k, v) { return (v === Infinity) ? "Infinity" : v; }))
+        return dimensionSave
+    } catch(e) { console.log("Fuck IE"); }
 }
 
 function load_game() {
-    var save_data = get_save('dimensionSave');
-    if (!save_data) return;
-	player = save_data;
+	metaSave = localStorage.getItem('AD_aarexModifications')
+	if (metaSave == null) metaSave = {}
+	else metaSave = JSON.parse(atob(metaSave))
+	if (metaSave.current == undefined) {
+		metaSave.current = 1
+		metaSave.saveOrder = [1]
+	}
+	player = get_save(metaSave.current)
 }
 
 function showspoilers() {
@@ -47,68 +54,25 @@ function showspoilers() {
 }
 
 function updateSpoilers() {
-	var displayed = 0;
-	if (spoilers === 0) {
-		for (i=1; i<19; i++) {
-			displayed = 0;
-			if (i === 5 && (player.resets >= 4 || player.infinitied >= 1 || player.eternities >= 1)) {
-				(displayed === 0) ? displayed = 1 : displayed = 0;
+	var displayed = spoilers;
+	for (i=19; i>0; i--) {
+		if (i != 7) {
+			if (!displayed) {
+				if (i < 5) displayed = 1
+				else if (player) {
+					if (i == 5 && player.resets > 4) displayed = 1
+					if (i == 9 && player.achievements.includes("r21")) displayed = 1
+					if (i == 10 && player.achievements.includes("r41")) displayed = 1
+					if (i == 11 && player.infDimensionsUnlocked[0]) displayed = 1
+					if (i == 12 && player.postChallUnlocked > 0) displayed = 1
+					if (i == 13 && player.replicanti.unlocked) displayed = 1
+					if (i == 17 && player.achievements.includes("r96")) displayed = 1
+					if (i == 18 && (player.eternityChallUnlocked > 0 || player.eternityChalls.eterc1)) displayed = 1
+					if (i == 19 && player.dilation.studies.includes(1)) displayed = 1
+				}
 			}
-			if (i === 6 && (player.galaxies >= 1 || player.infinitied >= 1 || player.eternities >= 1)) {
-				(displayed === 0) ? displayed = 1 : displayed = 0;
-			}
-			if (i === 8 && (player.infinitied >= 1 || player.eternities >= 1)) {
-				(displayed === 0) ? displayed = 1 : displayed = 0;
-			}
-			if (i === 9 && (player.infinitied >= 1 || player.eternities >= 1)) {
-				(displayed === 0) ? displayed = 1 : displayed = 0;
-			}
-			if (i === 10 && (player.infinitied >= 1 || player.eternities >= 1)) {
-				(displayed === 0) ? displayed = 1 : displayed = 0;
-			}
-			if (i === 11 && (player.autobuyers[11].interval>100 || player.eternities >= 1)) {
-				(displayed === 0) ? displayed = 1 : displayed = 0;
-			}
-			if (i === 12 && (player.infDimensionsUnlocked[0] == true || player.eternities >= 1)) {
-				(displayed === 0) ? displayed = 1 : displayed = 0;
-			}
-			if (i === 13 && (player.postChallUnlocked >= 5 || player.eternities >= 1)) {
-				(displayed === 0) ? displayed = 1 : displayed = 0;
-			}
-			if (i === 14 && (player.replicanti.unl || player.eternities >= 1)) {
-				(displayed === 0) ? displayed = 1 : displayed = 0;
-			}
-			if (i === 15 && (player.replicanti.unl || player.eternities >= 1)) {
-				(displayed === 0) ? displayed = 1 : displayed = 0;
-			}
-			if (i === 16 && (player.replicanti.unl || player.eternities >= 1)) {
-				(displayed === 0) ? displayed = 1 : displayed = 0;
-			}
-			if (i === 17 && (player.replicanti.unl || player.eternities >= 1)) {
-				(displayed === 0) ? displayed = 1 : displayed = 0;
-			}
-			if (i === 18 && player.eternities >= 1) { 
-				(displayed === 0) ? displayed = 1 : displayed = 0; 
-			} 
-			if (i === 19 && player.eternities >= 1) { 
-				(displayed === 0) ? displayed = 1 : displayed = 0; 
-			} 
-			if (i < 5 || i === 7) {
-				(displayed === 0) ? displayed = 1 : displayed = 0;
-			}
-
-			if (displayed === 1) {
-				document.getElementById("div"+i+"btn").style.display = "block";
-				document.getElementById("div"+i+"hr").style.display = "block";
-			} else {
-				document.getElementById("div"+i+"btn").style.display = "none";
-				document.getElementById("div"+i+"hr").style.display = "none";
-			}
-		}
-	} else {
-		for (i=1; i<19; i++) {
-			document.getElementById("div"+i+"btn").style.display = "block";
-			document.getElementById("div"+i+"hr").style.display = "block";
+			document.getElementById("div"+i+"btn").style.display = displayed ? "block" : "none";
+			document.getElementById("div"+i+"hr").style.display = displayed ? "block" : "none";
 		}
 	}
 }

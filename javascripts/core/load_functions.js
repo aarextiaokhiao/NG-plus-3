@@ -662,14 +662,6 @@ if (player.version < 5) {
   updatePriorities();
   updateTheoremButtons();
   updateTimeStudyButtons();
-  totalMult = Math.pow(player.totalmoney.e+1, 0.5)
-  currentMult = Math.pow(player.money.e+1, 0.5)
-  infinitiedMult = 1+Math.log10(getInfinitied()+1)*10
-  achievementMult = Math.max(Math.pow((player.achievements.length-30), 3)/40,1)
-  challengeMult = Decimal.max(10*3000/worstChallengeTime, 1)
-  unspentBonus = player.infinityPoints.dividedBy(2).pow(1.5).plus(1)
-  IPminpeak = new Decimal(0)
-  EPminpeak = new Decimal(0)
   transformSaveToDecimal();
   updateChallengeTimes();
   updateMilestones();
@@ -679,6 +671,7 @@ if (player.version < 5) {
   checkForEndMe();
   updateEternityChallenges();
   updateDilationUpgradeCosts()
+  updatePowers()
   var detectNGPStart = player.lastUpdate == 1531944153054
   if (player.aarexModifications.offlineProgress) {
       let diff = new Date().getTime() - player.lastUpdate
@@ -757,7 +750,7 @@ function delete_save(saveId) {
 	for (id=0;id<metaSave.saveOrder.length;id++) {
 		if (alreadyDeleted) document.getElementById("save_"+metaSave.saveOrder[id]+"_title").innerHTML="Save #"+id
 		if (metaSave.saveOrder[id]==saveId) {
-			localStorage.clear(btoa("dsAM_"+metaSave.saveOrder[id]))
+			localStorage.removeItem(btoa("dsAM_"+saveId))
 			alreadyDeleted=true
 			document.getElementById("saves").deleteRow(id)
 			loadedSaves--
@@ -958,7 +951,7 @@ function initiateMetaSave() {
 }
 
 function migrateOldSaves() {
-	if (metaSave.newGameMinus) {
+	if (metaSave.newGameMinus!=undefined) {
 		metaSave.saveOrder = []
 		var ngSave = localStorage.getItem('dimensionSave_aarexModifications')
 		if (ngSave != null) {
@@ -977,7 +970,7 @@ function migrateOldSaves() {
 				localStorage.setItem(btoa('dsAM_1'), btoa(JSON.stringify(ngSave, function(k, v) { return (v === Infinity) ? "Infinity" : v; })));
 			}
 		}
-		localStorage.clear('dimensionSave_aarexModifications')
+		localStorage.removeItem('dimensionSave_aarexModifications')
 		var ngmSave = localStorage.getItem('dimensionSave_NGM')
 		if (ngmSave != null) {
 			ngmSave = JSON.parse(atob(ngmSave, function(k, v) { return (v === Infinity) ? "Infinity" : v; }))
@@ -995,7 +988,7 @@ function migrateOldSaves() {
 				localStorage.setItem(btoa('dsAM_4'), btoa(JSON.stringify(ngmSave, function(k, v) { return (v === Infinity) ? "Infinity" : v; })));
 			}
 		}
+		localStorage.removeItem('dimensionSave_NGM')
 		delete metaSave.newGameMinus
-		localStorage.clear('dimensionSave_NGM')
 	}
 }
