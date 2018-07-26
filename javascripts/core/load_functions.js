@@ -225,8 +225,8 @@ function onLoad() {
 
   document.getElementById("totaltickgained").textContent = "You've gained "+shortenDimensions(player.totalTickGained)+" tickspeed upgrades."
 
-  var IPminpeak = new Decimal(0)
-  var EPminpeak = new Decimal(0)
+  IPminpeak = new Decimal(0)
+  EPminpeak = new Decimal(0)
 
   if (typeof player.autobuyers[9].bulk !== "number") {
       player.autobuyers[9].bulk = 1
@@ -708,6 +708,8 @@ function load_game() {
 	if (break_infinity_js==null) {
 		if (player.aarexModifications) break_infinity_js=player.aarexModifications.breakInfinity
 		if (break_infinity_js) Decimal = Decimal_BI
+		initCost = [null, new Decimal(10), new Decimal(1e2), new Decimal(1e4), new Decimal(1e6), new Decimal(1e9), new Decimal(1e12), new Decimal(1e18), new Decimal(1e24)]
+		costMults = [null, new Decimal(1e3), new Decimal(1e4), new Decimal(1e5), new Decimal(1e6), new Decimal(1e8), new Decimal(1e10), new Decimal(1e12), new Decimal(1e15)]
 		nextAt = [new Decimal("1e2000"), new Decimal("1e5000"), new Decimal("1e12000"), new Decimal("1e14000"), new Decimal("1e18000"), new Decimal("1e20000"), new Decimal("1e23000"), new Decimal("1e28000")]
 		goals = [new Decimal("1e850"), new Decimal("1e10500"), new Decimal("1e5000"), new Decimal("1e13000"), new Decimal("1e11111"), new Decimal("2e22222"), new Decimal("1e10000"), new Decimal("1e27000")]
 	}
@@ -919,12 +921,12 @@ function loadAutoBuyerSettings() {
   }
   document.getElementById("priority10").value = player.autobuyers[9].priority
   document.getElementById("priority11").value = player.autobuyers[10].priority
-  document.getElementById("priority12").value = player.autobuyers[11].priority
+  document.getElementById("priority12").value = player.autoCrunchMode == "amount" ? player.autobuyers[11].priority : formatValue("Scientific", player.autobuyers[11].priority, 2, 0)
   document.getElementById("overGalaxies").value = player.overXGalaxies
   document.getElementById("bulkDimboost").value = player.autobuyers[9].bulk
   document.getElementById("prioritySac").value = player.autoSacrifice.priority
   document.getElementById("bulkgalaxy").value = player.autobuyers[10].bulk
-  document.getElementById("priority13").value = player.eternityBuyer.limit
+  document.getElementById("priority13").value = formatValue("Scientific", player.eternityBuyer.limit, 2, 0)
 
 }
 

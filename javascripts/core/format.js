@@ -229,10 +229,10 @@ function preformat(int) {
 
 function timeDisplayShort(time, rep) {
     time = time / 10
-    if (rep && time < 0.1) {
+    if (rep && time < 1) {
         if (time < 1e-3) return (time * 1e6).toFixed(time < 1e-4 ? 2 : 1) + " µs"
         if (time < 0.01) return (time * 1e3).toFixed(3) + " ms"
-        return (time * 100).toFixed(time < 0.01 ? 3 : 2) + " cs"
+        return (time * 100).toFixed(time < 0.1 ? 3 : 2) + " cs"
     }
     if (time < 60) return time.toFixed(time < 10 ? 3 : 2) + " s" + (rep ? "" : "econds")
     if (time < 3600) return Math.floor(time/60) + ":" + preformat(Math.floor(time%60))

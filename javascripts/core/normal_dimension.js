@@ -341,8 +341,8 @@ function hasInfinityMult(tier) {
     }
     
     
-    const initCost = [null, new Decimal(10), new Decimal(1e2), new Decimal(1e4), new Decimal(1e6), new Decimal(1e9), new Decimal(1e12), new Decimal(1e18), new Decimal(1e24)]
-    const costMults = [null, new Decimal(1e3), new Decimal(1e4), new Decimal(1e5), new Decimal(1e6), new Decimal(1e8), new Decimal(1e10), new Decimal(1e12), new Decimal(1e15)]
+    var initCost
+    var costMults
     function buyManyDimensionAutobuyer(tier, bulk) {
     
         var name = TIER_NAMES[tier];
