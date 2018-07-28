@@ -905,7 +905,7 @@ function updateDimensions() {
 
     if (document.getElementById("stats").style.display == "block" && document.getElementById("statistics").style.display == "block") {
         document.getElementById("totalmoney").textContent = 'You have made a total of ' + shortenMoney(player.totalmoney) + ' antimatter.'
-        document.getElementById("totalresets").textContent = 'You have done ' + getFullExpansion(player.resets) + ' dimensional boosts/shifts.'
+        document.getElementById("totalresets").textContent = 'You have done ' + getFullExpansion(player.resets) + ' dimension boosts/shifts.'
         document.getElementById("galaxies").textContent = 'You have ' + getFullExpansion(player.galaxies) + ' Antimatter Galaxies.'
         document.getElementById("totalTime").textContent = "You have played for " + timeDisplay(player.totalTimePlayed) + "."
 
@@ -2178,7 +2178,7 @@ var occupied=false
 document.getElementById("load").onclick = function () {
 	closeToolTip();
 	document.getElementById("loadmenu").style.display = "block";
-	changeSaveDesc(metaSave.current)
+	changeSaveDesc(metaSave.current, savePlacement)
 	clearInterval(loadSavesIntervalId)
 	occupied=false
 	loadSavesIntervalId=setInterval(function(){
@@ -2193,8 +2193,8 @@ document.getElementById("load").onclick = function () {
 		}
 		try {
 			var id=metaSave.saveOrder[loadedSaves]
-			latestRow.innerHTML = getSaveLayout(id)
-			changeSaveDesc(id)
+			latestRow.innerHTML=getSaveLayout(id)
+			changeSaveDesc(id, loadedSaves+1)
 			loadedSaves++
 			onLoading=false
 		} catch (_) {}
@@ -2206,7 +2206,7 @@ function getSaveLayout(id) {
 	return "<b id='save_"+id+"_title'>Save #"+(loadedSaves+1)+"</b><div id='save_"+id+"_desc'></div><button class='storebtn' onclick='change_save("+id+")'>Load</button><button class='storebtn' onclick='delete_save("+id+")'>Delete</button><button class='storebtn' onclick='rename_save("+id+")'>Rename</button>"
 }
 
-function changeSaveDesc(saveId) {
+function changeSaveDesc(saveId, placement) {
 	var element=document.getElementById("save_"+saveId+"_desc")
 	if (element==undefined) return
 	try {
@@ -2229,7 +2229,7 @@ function changeSaveDesc(saveId) {
 		}
 		if (temp.dilation?temp.dilation.studies.includes(1):false) {
 			message+="Tachyon particles: "+shortenMoney(new Decimal(temp.dilation.totalTachyonParticles))+", Dilated time: "+shortenMoney(new Decimal(temp.dilation.dilatedTime))
-			if (temp.dilation.studies.includes(6)) message+=", Best meta-antimatter: "+shortenMoney(new Decimal(temp.meta.bestAntimatter))+", Meta-dimensional shifts/boosts: "+temp.meta.resets
+			if (temp.dilation.studies.includes(6)) message+=", Best meta-antimatter: "+shortenMoney(new Decimal(temp.meta.bestAntimatter))+", Meta-dimension shifts/boosts: "+temp.meta.resets
 			else if (!temp.dilation.studies.includes(5)) message="Time Theorems: "+shortenMoney(getTotalTT(temp))+", "+message
 			else if (!temp.dilation.upgrades.includes(10)) message="Eternity points: "+shortenDimensions(player.eternityPoints)+", "+message
 		} else {
@@ -2246,13 +2246,13 @@ function changeSaveDesc(saveId) {
 					message+=", Challenge completions: "+totalChallengeCompletions
 				}
 			} else if (temp.infinitied>(temp.aarexModifications.newGameMinusVersion?990:temp.aarexModifications.newGamePlusVersion?1:0)) message+="Infinity points: "+shortenDimensions(new Decimal(temp.infinityPoints))+", Infinities: "+temp.infinitied.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")+", Challenge completions: "+temp.challenges.length
-			else message+="Antimatter: "+shortenMoney(new Decimal(temp.money))+", Dimensional shifts/boosts: "+temp.resets+", Galaxies: "+temp.galaxies
+			else message+="Antimatter: "+shortenMoney(new Decimal(temp.money))+", Dimension shifts/boosts: "+temp.resets+", Galaxies: "+temp.galaxies
 		}
 		player.break=originalBreak
 		player.options.notation=originalNotation
 		player.options.commas=originalCommas
 
-		if (temp.aarexModifications.save_name) document.getElementById("save_"+saveId+"_title").textContent=temp.aarexModifications.save_name
+		document.getElementById("save_"+saveId+"_title").textContent=temp.aarexModifications.save_name?temp.aarexModifications.save_name:"Save #"+placement
 	} catch (_) {
 		var message="New game"
 	}
@@ -2295,8 +2295,11 @@ function verify_save(obj) {
     return true;
 }
 
+var onImport = false
 function import_save(new_save) {
+    onImport = true
     var save_data = prompt("Input your save. "+(new_save?"":"(your current save file will be overwritten!)"));
+    onImport = false
     if (save_data.constructor !== String) save_data = "";
     if (sha512_256(save_data.replace(/\s/g, '').toUpperCase()) === "80b7fdc794f5dfc944da6a445a3f21a2d0f7c974d044f2ea25713037e96af9e3") {
         document.getElementById("body").style.animation = "barrelRoll 5s 1";
@@ -2325,7 +2328,7 @@ function import_save(new_save) {
         player.options.secretThemeKey = save_data;
         setTheme(player.options.theme);
     } else {
-        var decoded_save_data = JSON.parse(atob(save_data), function(k, v) { return (v === Infinity) ? "Infinity" : v; });
+        var decoded_save_data = JSON.parse(atob(save_data, function(k, v) { return (v === Infinity) ? "Infinity" : v; }));
         if (!verify_save(decoded_save_data)) {
             forceHardReset = true
             document.getElementById("reset").click()
@@ -2342,8 +2345,8 @@ function import_save(new_save) {
 			latestRow=document.getElementById("saves").insertRow(loadedSaves)
 			latestRow.innerHTML = getSaveLayout(newSaveId)
 			localStorage.setItem(btoa("dsAM_"+newSaveId),save_data)
-			changeSaveDesc(newSaveId)
 			loadedSaves++
+			changeSaveDesc(newSaveId, loadedSaves)
 			localStorage.setItem("AD_aarexModifications",btoa(JSON.stringify(metaSave)))
 			return
         }
@@ -4808,23 +4811,6 @@ function newDimension() {
     }
 }
 var blink = true
-setInterval(function() {
-    $.getJSON('version.txt', function(data){
-        //data is actual content of version.txt, so
-        //do whatever you need with it
-        //I'd compare it with last result and if it's different
-        //show the message received and nag for attention
-        //like this:
-        if (data.version > player.version) {
-            player.version = data.version
-            document.getElementById("update").style.display = "block"
-            document.getElementById("updatePopup").innerHTML = data.message
-            //or some more resilient method
-            //like forced news bar with message running over and over
-        }
-    })
-}, 60000)
-
 var nextAt
 var goals
 
@@ -5346,7 +5332,7 @@ function gameLoop(diff) {
 
     var currentEPmin = gainedEternityPoints().dividedBy(player.thisEternity/600)
     if (currentEPmin.gt(EPminpeak) && player.infinityPoints.gte(Number.MAX_VALUE)) EPminpeak = currentEPmin
-    document.getElementById("eternitybtn").innerHTML = (player.dilation.active||gainedEternityPoints().lt(1e6)||player.currentEternityChall!==""||player.options.theme=="Aarex's Modifications" ? "<b>" + (player.currentEternityChall!=="" ? "Other challenges await..." : player.eternities>0 ? "" : "Other times await...") + " I need to become Eternal.</b><br>" : "") + (player.eternities > 0 && (player.currentEternityChall==""||player.options.theme=="Aarex's Modifications") ? "Gain <b>"+shortenDimensions(gainedEternityPoints())+"</b> Eternity points.<br>" + (player.dilation.active&&player.options.theme!="Aarex's Modifications" ? "" : shortenDimensions(currentEPmin)+" EP/min<br>Peaked at "+shortenDimensions(EPminpeak)+" EP/min<br>") + (player.dilation.active ? "+" + shortenMoney(Math.round(Math.max(Math.pow(Decimal.log10(player.money) / 400, 1.5) * (Math.pow(3, player.dilation.rebuyables[3])) - player.dilation.totalTachyonParticles, 0) * 10)/10) +" Tachyon particles." : "") : "")
+    document.getElementById("eternitybtn").innerHTML = (player.dilation.active||gainedEternityPoints().lt(1e6)||player.currentEternityChall!==""||player.options.theme=="Aarex's Modifications" ? "<b>" + (player.currentEternityChall!=="" ? "Other challenges await..." : player.eternities>0 ? "" : "Other times await...") + " I need to become Eternal.</b><br>" : "") + (player.eternities > 0 && (player.currentEternityChall==""||player.options.theme=="Aarex's Modifications") ? "Gain <b>"+shortenDimensions(gainedEternityPoints())+"</b> Eternity points.<br>" + (player.dilation.active&&player.options.theme!="Aarex's Modifications" ? "" : shortenDimensions(currentEPmin)+" EP/min<br>Peaked at "+shortenDimensions(EPminpeak)+" EP/min<br>") + (player.dilation.active ? "+" + shortenMoney(Math.max(getDilGain() - player.dilation.totalTachyonParticles, 0)) +" Tachyon particles." : "") : "")
     updateMoney();
     updateCoinPerSec();
     updateDimensions()
@@ -5750,7 +5736,7 @@ function gameLoop(diff) {
     document.getElementById("infinityPoints1").innerHTML = "You have <span class=\"IPAmount1\">"+shortenDimensions(player.infinityPoints)+"</span> Infinity points."
     document.getElementById("infinityPoints2").innerHTML = "You have <span class=\"IPAmount2\">"+shortenDimensions(player.infinityPoints)+"</span> Infinity points."
 
-    if (document.getElementById("loadmenu").style.display == "block") changeSaveDesc(metaSave.current)
+    if (document.getElementById("loadmenu").style.display == "block") changeSaveDesc(metaSave.current, savePlacement)
 
     player.lastUpdate = thisUpdate;
 }
@@ -6085,6 +6071,7 @@ function showEternityTab(tabName, init) {
     if (tabName === 'timestudies' && !init) document.getElementById("TTbuttons").style.display = "block"
     else document.getElementById("TTbuttons").style.display = "none"
     resizeCanvas()
+	closeToolTip()
 }
 
 function showAchTab(tabName) {
@@ -6181,7 +6168,6 @@ window.addEventListener('keydown', function(event) {
     if (event.keyCode == 17) controlDown = true;
     if (event.keyCode == 16) {
         shiftDown = true;
-        document.getElementById("studytreeloadsavetext").textContent = "save:"
         drawStudyTree()
     }
     if ((controlDown && shiftDown && (event.keyCode == 67 || event.keyCode == 73 || event.keyCode == 74)) || event.keyCode == 123) {
@@ -6193,7 +6179,6 @@ window.addEventListener('keyup', function(event) {
     if (event.keyCode == 17) controlDown = false;
     if (event.keyCode == 16) {
         shiftDown = false;
-        document.getElementById("studytreeloadsavetext").textContent = "load:"
         drawStudyTree()
     }
 }, false);
@@ -6201,12 +6186,11 @@ window.addEventListener('keyup', function(event) {
 window.onfocus = function() {
     controlDown = false;
     shiftDown = false;
-    document.getElementById("studytreeloadsavetext").textContent = "load:"
     drawStudyTree()
 }
 
 window.addEventListener('keydown', function(event) {
-    if (!player.options.hotkeys || controlDown === true || document.activeElement.type === "text") return false
+    if (!player.options.hotkeys || controlDown === true || document.activeElement.type === "text" || onImport) return false
     const tmp = event.keyCode;
     if (tmp >= 49 && tmp <= 56) {
         if (shiftDown) buyOneDimension(tmp-48)

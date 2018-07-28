@@ -384,7 +384,9 @@ function exportStudyTree() {
 };
 
 function importStudyTree(input) {
+  onImport = true
   if (typeof input !== 'string') var input = prompt()
+  onImport = false
   if (sha512_256(input) == "08b819f253b684773e876df530f95dcb85d2fb052046fa16ec321c65f3330608") giveAchievement("You followed the instructions")
   if (input === "") return false
   var studiesToBuy = input.split("|")[0].split(",");
@@ -398,12 +400,94 @@ function importStudyTree(input) {
   }
 };
 
-function studyTreeSaveButton(num) {
-    if (shiftDown) {
-        localStorage.setItem("studyTree"+num, player.timestudy.studies + "|" + player.eternityChallUnlocked);
-        $.notify("Study tree "+num+" saved", "info")
-    } else if (localStorage.getItem("studyTree"+num) !== null && localStorage.getItem("studyTree"+num) !== "|0") {
-        importStudyTree(localStorage.getItem("studyTree"+num));
-        $.notify("Study tree "+num+" loaded", "info")
-    }
+function new_preset(importing) {
+	onImport=true
+	if (importing) {
+		var input=prompt()
+		if (input === null) return
+	} else var input=player.timestudy.studies + "|" + player.eternityChallUnlocked
+	onImport = false
+	var placement=1
+	if (metaSave.presetsOrder.includes(placement)) placement++
+	localStorage.setItem(btoa("dsAM_ST_"+placement),btoa(JSON.stringify({preset:input})))
+	metaSave.presetsOrder.push(placement)
+	latestRow=document.getElementById("presets").insertRow(loadedPresets)
+	latestRow.innerHTML=getPresetLayout(placement)
+	loadedPresets++
+	changePresetTitle(placement, loadedPresets)
+	$.notify("Preset created", "info")
+}
+
+function save_preset(id) {
+	localStorage.setItem(btoa("dsAM_ST_"+id),btoa(JSON.stringify({preset:player.timestudy.studies + "|" + player.eternityChallUnlocked, title:JSON.parse(atob(localStorage.getItem(btoa("dsAM_ST_"+id)))).title})))
+	$.notify("Preset saved", "info")
+}
+
+function load_preset(id) {
+	importStudyTree(JSON.parse(atob(localStorage.getItem(btoa("dsAM_ST_"+id)))).preset)
+	closeToolTip()
+	$.notify("Preset loaded", "info")
+}
+
+function delete_preset(presetId) {
+	if (!confirm("Do you really want to erase this preset? You will lose access if you do that!")) return
+	var alreadyDeleted=false
+	var newPresetsOrder=[]
+	for (id=0;id<metaSave.presetsOrder.length;id++) {
+		if (alreadyDeleted) changePresetTitle(metaSave.presetsOrder[id], id)
+		else if (metaSave.presetsOrder[id]==presetId) {
+			localStorage.removeItem(btoa("dsAM_ST_"+presetId))
+			alreadyDeleted=true
+			document.getElementById("presets").deleteRow(id)
+			loadedPresets--
+		} else newPresetsOrder.push(metaSave.presetsOrder[id])
+	}
+	metaSave.presetsOrder=newPresetsOrder
+	localStorage.setItem("AD_aarexModifications",btoa(JSON.stringify(metaSave)))
+	$.notify("Preset deleted", "info")
+}
+
+function rename_preset(id) {
+	var save_name = prompt("Input a new name of this preset. It is necessary to rename it into related names!")
+	localStorage.setItem(btoa("dsAM_ST_"+id),btoa(JSON.stringify({preset:JSON.parse(atob(localStorage.getItem(btoa("dsAM_ST_"+id)))).preset, title:save_name})))
+	placement=1
+	while (metaSave.presetsOrder[placement-1]!=id) placement++
+	changePresetTitle(id, placement)
+	$.notify("Preset renamed", "info")
+}
+
+var loadedPresets=0
+function openStudyPresets() {
+	closeToolTip()
+	document.getElementById("presetsmenu").style.display = "block";
+	clearInterval(loadSavesIntervalId)
+	occupied=false
+	loadSavesIntervalId=setInterval(function(){
+		if (occupied) return
+		else occupied=true
+		if (loadedPresets==metaSave.presetsOrder.length) {
+			clearInterval(loadSavesIntervalId)
+			return
+		} else if (!onLoading) {
+			latestRow=document.getElementById("presets").insertRow(loadedPresets)
+			onLoading=true
+		}
+		try {
+			var id=metaSave.presetsOrder[loadedPresets]
+			latestRow.innerHTML=getPresetLayout(id)
+			changePresetTitle(id, loadedPresets+1)
+			loadedPresets++
+			onLoading=false
+		} catch (_) {}
+		occupied=false
+	}, 0)
+}
+
+function getPresetLayout(id) {
+	return "<b id='preset_"+id+"_title'>Preset #"+(loadedPresets+1)+"</b><br><button class='storebtn' onclick='save_preset("+id+")'>Save</button><button class='storebtn' onclick='load_preset("+id+")'>Load</button><button class='storebtn' onclick='delete_preset("+id+")'>Delete</button><button class='storebtn' onclick='rename_preset("+id+")'>Rename</button>"
+}
+
+function changePresetTitle(id, placement) {
+	var title=JSON.parse(atob(localStorage.getItem(btoa("dsAM_ST_"+id)))).title
+	document.getElementById("preset_"+id+"_title").textContent=title?title:"Preset #"+placement
 }

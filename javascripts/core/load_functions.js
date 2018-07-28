@@ -567,7 +567,6 @@ if (player.version < 5) {
   if (player.aarexModifications.newGamePlusVersion === undefined) if (player.eternities < 20 && ECTimesCompleted("eterc1") > 0) player.aarexModifications.newGamePlusVersion = 1
   if (player.aarexModifications.newGamePlusPlusVersion === undefined) { 
       if (player.dilation.rebuyables[4] !== undefined) {
-          player.aarexModifications.newGamePlusPlusVersion = 2
           var migratedUpgrades = []
           for (id=5;id<14;id++) {
               if (player.dilation.upgrades.includes(id)) {
@@ -575,10 +574,13 @@ if (player.version < 5) {
                   else migratedUpgrades.push(Math.floor(id/4)*3+id%4)
               }
           }
-          for (dim=1;dim<9;dim++) {
-              player.meta[dim].bought += player.meta[dim].tensBought * 10
-              delete player.meta[dim].tensBought
-          }
+          if (player.meta) {
+              for (dim=1;dim<9;dim++) {
+                  player.meta[dim].bought += player.meta[dim].tensBought * 10
+                  delete player.meta[dim].tensBought
+              }
+              player.aarexModifications.newGamePlusPlusVersion = 2
+          } else player.aarexModifications.newGamePlusPlusVersion = 1
           player.dilation.upgrades=migratedUpgrades
           resetDilationGalaxies()
       }
@@ -728,9 +730,12 @@ function checkNGM(imported) {
 	return 0
 }
 
+var savePlacement
 function load_game() {
 	var dimensionSave=get_save(metaSave.current)
 	if (dimensionSave!=null) player=dimensionSave
+	savePlacement=1
+	while (metaSave.saveOrder[savePlacement-1]!=metaSave.current) savePlacement++
 	if (break_infinity_js==null) {
 		if (player.aarexModifications) break_infinity_js=player.aarexModifications.breakInfinity
 		if (break_infinity_js) Decimal = Decimal_BI
@@ -754,11 +759,13 @@ function change_save(id) {
   clearInterval(gameLoopIntervalId)
   var oldId=metaSave.current
   metaSave.current=id
-  changeSaveDesc(oldId)
+  changeSaveDesc(oldId, savePlacement)
   updateNewPlayer()
   closeToolTip()
   load_game()
-  changeSaveDesc(metaSave.current)
+  savePlacement=1
+  while (metaSave.saveOrder[savePlacement-1]!=id) savePlacement++
+  changeSaveDesc(metaSave.current, savePlacement)
 
   $.notify("Save loaded", "info")
   localStorage.setItem("AD_aarexModifications",btoa(JSON.stringify(metaSave)))
@@ -781,7 +788,9 @@ function rename_save(id) {
 		temp_save.aarexModifications.save_name = save_name
 	}
 	set_save(id, temp_save)
-	changeSaveDesc(id)
+	placement=1
+	while (metaSave.saveOrder[placement-1]!=id) placement++
+	changeSaveDesc(id, placement)
 	$.notify("Save renamed", "info")
 }
 
@@ -793,8 +802,10 @@ function delete_save(saveId) {
 	var alreadyDeleted=false
 	var newSaveOrder=[]
 	for (id=0;id<metaSave.saveOrder.length;id++) {
-		if (alreadyDeleted) document.getElementById("save_"+metaSave.saveOrder[id]+"_title").innerHTML="Save #"+id
-		if (metaSave.saveOrder[id]==saveId) {
+		if (alreadyDeleted) {
+			changeSaveDesc(metaSave.saveOrder[id], id)
+			if (id+1==savePlacement) savePlacement--
+		} if (metaSave.saveOrder[id]==saveId) {
 			localStorage.removeItem(btoa("dsAM_"+saveId))
 			alreadyDeleted=true
 			document.getElementById("saves").deleteRow(id)
@@ -819,14 +830,15 @@ function new_game(id) {
 	while (metaSave.saveOrder.includes(metaSave.current)) metaSave.current++
 	metaSave.saveOrder.push(metaSave.current)
 	localStorage.setItem("AD_aarexModifications",btoa(JSON.stringify(metaSave)))
-	changeSaveDesc(oldId)
+	changeSaveDesc(oldId, savePlacement)
 	latestRow=document.getElementById("saves").insertRow(loadedSaves)
 	latestRow.innerHTML = getSaveLayout(metaSave.current)
-	changeSaveDesc(metaSave.current)
 	loadedSaves++
-    closeToolTip()
-    onLoad()
-    startInterval()
+	changeSaveDesc(metaSave.current, loadedSaves)
+	savePlacement=loadedSaves
+	closeToolTip()
+	onLoad()
+	startInterval()
 	
 	$.notify("Save created", "info")
 	localStorage.setItem("AD_aarexModifications",btoa(JSON.stringify(metaSave)))
@@ -995,7 +1007,7 @@ function get_save(id) {
 
 function initiateMetaSave() {
 	metaSave = localStorage.getItem('AD_aarexModifications')
-	if (metaSave == null) metaSave = {}
+	if (metaSave == null) metaSave = {presetsOrder:[], version:2}
 	else metaSave = JSON.parse(atob(metaSave))
 	if (metaSave.current == undefined) {
 		metaSave.current = 1
@@ -1044,4 +1056,16 @@ function migrateOldSaves() {
 		localStorage.removeItem('dimensionSave_NGM')
 		delete metaSave.newGameMinus
 	}
+	if (metaSave.version == undefined) {
+		metaSave.presetsOrder=[]
+		for (id=1;id<4;id++) {
+			var studyTreePreset=localStorage.getItem("studyTree"+id)
+			if (studyTreePreset !== null) {
+				metaSave.presetsOrder.push(id)
+				localStorage.setItem(btoa("dsAM_ST_"+id),btoa(JSON.stringify({preset:studyTreePreset})))
+				localStorage.removeItem("studyTree"+id)
+			}
+		}
+	}
+	metaSave.version=2
 }

@@ -223,23 +223,27 @@ function setInitialDimensionPower () {
 }
 
 function maxBuyDimBoosts(manual) {
-	if (player.autobuyers[9].priority >= player.eightBought || player.overXGalaxies <= player.galaxies || getShiftRequirement(0).tier < 8 || manual == true) {
+	if (player.autobuyers[9].priority >= player.eightBought || player.galaxies >= player.overXGalaxies || getShiftRequirement(0).tier < 8 || manual) {
+		var bought = player[TIER_NAMES[getShiftRequirement(0).tier] + "Bought"]
 		var r
 		if (player.currentEternityChall == "eterc5") {
 			r = 1
-			while (player.eightBought >= getShiftRequirement(r).amount && (player.autobuyers[9].priority >= player.eightBought || player.overXGalaxies <= player.galaxies || manual == true)) r++
+			while (bought >= getShiftRequirement(r).amount && (player.autobuyers[9].priority >= player.eightBought || player.galaxies >= player.overXGalaxies || getShiftRequirement(0).tier < 8 || manual)) r++
 		} else {
-			var endPoint = 17e4
-			do {
-				endPoint += 5e3
-				var sr = getShiftRequirement(endPoint - player.resets - 1)
-				var utwo = Math.min(player.eightBought, ((player.overXGalaxies >= player.galaxies) || manual) ? 1/0 : player.autobuyers[9].priority) - sr.amount
-				r = Math.floor(utwo / sr.mult + endPoint)
-			} while (r > endPoint)
+			var sr = getShiftRequirement(3 - player.resets)
+			var ut = Math.min(bought, (player.galaxies >= player.overXGalaxies || manual) ? 1/0 : player.autobuyers[9].priority)
+			r = Math.floor((ut - sr.amount) / sr.mult + 5)
+			if (r > 2e5) {
+				var b = 2 + sr.mult
+				var solution = (-b + Math.sqrt(b * b + 8 * ((r + 1) / 2e4 - 10) * sr.mult)) / 4
+				var setPoint = 2e5 + 2e4 * Math.floor(solution)
+				sr = getShiftRequirement(setPoint - player.resets)
+				r = Math.floor((ut - sr.amount) / sr.mult + setPoint + 1)
+			}
 			r -= player.resets
 		}
 
-		if (r >= 750) giveAchievement("Costco sells dimboosts now")
+		if (r > 749) giveAchievement("Costco sells dimboosts now")
 		if (r > 0) softReset(r)
 	}
 }
@@ -257,10 +261,10 @@ function getShiftRequirement(bulk) {
 
   if (player.currentEternityChall == "eterc5") {
       amount += Math.pow(resetNum, 3) + resetNum
-  } else if (resetNum >= 1.9e5) {
-      var displacement = Math.ceil((resetNum - 189999) / 5e3)
-      var offset = resetNum % 5e3 + 1
-      amount += displacement * (displacement - 1) * 1e4 + offset * displacement * 4
+  } else if (resetNum >= 2e5) {
+      var displacement = Math.ceil((resetNum - 2e5 + 1) / 2e4)
+      var offset = resetNum % 2e4 + 1
+      amount += displacement * (displacement - 1) * 4e4 + offset * displacement * 4
       mult += displacement * 4
   }
 

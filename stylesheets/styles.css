@@ -671,7 +671,7 @@ button {
 	height: 300px;
 }
 
-#loadmenu {
+.loadmenu {
 	height: 300px;
 	width: 450px;
 }
@@ -683,9 +683,9 @@ button {
 	margin: 10px;
 }
 
-#loadmenu div { margin: 0px; }
+.loadmenu div { margin: 0px; }
 
-#loadmenu .closebtn, .optionmenu .closebtn {
+.loadmenu .closebtn, .optionmenu .closebtn {
 	width: 30px;
 	height: 30px;
 	font-size: 1.5rem;
@@ -695,7 +695,7 @@ button {
 	right: 5px;
 }
 
-#loadmenu .storebtn, .optionmenu .storebtn {
+.loadmenu .storebtn, .optionmenu .storebtn {
 	margin: 5px;
 }
 

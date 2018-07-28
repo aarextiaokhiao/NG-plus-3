@@ -6,7 +6,6 @@
     <title>Antimatter Dimensions</title>
     <link rel="icon" type="image/png" href="icon.png">
     <meta name="Antimatter Dimensions" content="A game about huge numbers and watching them go up." charset="utf-8"/>
-    <script type="text/javascript" src='https://cdn1.kongregate.com/javascripts/kongregate_api.js'></script>
     <script type="text/javascript" src="javascripts/jquery-3.2.1.min.js"></script>
     <script type="text/javascript" src="javascripts/notify.js"></script>
     <link rel="stylesheet" type="text/css" href="stylesheets/styles.css?3">
@@ -2714,10 +2713,6 @@
 
         </div>
     </div>
-    <div class="popup" id="update">
-        <div id="updatePopup">The last test.</div>
-        <button class="storebtn" style="font-size: 15px" onclick="closeToolTip()" style="display: inline">Okay</button>
-    </div>
     <div class="popup" id="challfail">
         <div id="failPopup">You failed the challenge, you will now exit it.</div>
         <button class="storebtn" style="font-size: 15px" onclick="closeToolTip()" style="display: inline">Okay</button>
@@ -2730,7 +2725,7 @@
         <div id="offlinePopup" style="height: 150px">You made X antimatter and stuff</div>
         <button class="storebtn" style="font-size: 15px" onclick="closeToolTip()" style="display: inline">Okay</button>
 	</div>
-	<div class="popup" id="loadmenu" style="overflow-y:hidden">
+	<div class="popup loadmenu" id="loadmenu" style="overflow-y:hidden">
 		<button class="closebtn storebtn" onclick="closeToolTip()">&times;</button>
 		<button class="storebtn" style="font-size: 15px" onclick="new_game()" style="display: inline">New save</button>
 		<button class="storebtn" id='ngmBtn' style="font-size: 15px" onclick="toggle_mode('ngm')" style="display: inline">NG-: OFF</button><br>
@@ -2739,6 +2734,15 @@
 		<button class="storebtn" style="font-size: 15px" onclick="import_save(true)" style="display: inline">Import</button>
 		<div style="height:230px;overflow-y:auto">
 			<table id='saves'>
+			</table>
+		</div>
+	</div>
+	<div class="popup loadmenu" id="presetsmenu" style="overflow-y:hidden">
+		<button class="closebtn storebtn" onclick="closeToolTip()">&times;</button>
+		<button class="storebtn" style="font-size: 15px" onclick="new_preset()" style="display: inline">New preset</button>
+		<button class="storebtn" style="font-size: 15px" onclick="new_preset(true)" style="display: inline">Import</button>
+		<div style="height:270px;overflow-y:auto">
+			<table id='presets'>
 			</table>
 		</div>
 	</div>
@@ -2756,15 +2760,12 @@
 	</div>
     <div id="TTbuttons" style="display:none;">
         <button class="timetheorembtn" onclick="maxTheorems()" style="margin-left:-276px; width:130px; height: 30px; font-size: 0.75rem; bottom: 77px;">Buy max Theorems</button>
-        <button class="timetheorembtn" onclick="studyTreeSaveButton(1)" style="margin-left:176px; width:30px; height: 30px; font-size: 0.75rem; bottom: 77px;">1</button>
-        <button class="timetheorembtn" onclick="studyTreeSaveButton(2)" style="margin-left:211px; width:30px; height: 30px; font-size: 0.75rem; bottom: 77px;">2</button>
-        <button class="timetheorembtn" onclick="studyTreeSaveButton(3)" style="margin-left:246px; width:30px; height: 30px; font-size: 0.75rem; bottom: 77px;">3</button>
+        <button class="timetheorembtn" onclick="openStudyPresets()" style="margin-left:146px; width:130px; height: 30px; font-size: 0.75rem; bottom: 77px;">Presets</button>
         <button class="timetheorembtn" onclick="buyWithAntimatter()" id="theoremam" style="margin-left: -276px">Buy Time Theorems <br>Cost: 1e20000 antimatter</button>
         <button class="timetheorembtn" onclick="buyWithIP()" id="theoremip" style="margin-left: -86px">Buy Time Theorems <br>Cost: 1 IP</button>
         <button class="timetheorembtnlocked" onclick="buyWithEP()" id="theoremep" style="margin-left: 106px">Buy Time Theorems <br>Cost: 1 EP</button>
         <div id="theorembuybackground"></div>
         <p id="timetheorems" style="position: fixed;">You have 0 Time Theorems.</p>
-        <p id="studytreeloadsavetext" style="position: fixed;">load:</p>
     </div>
 </body>
 
@@ -2784,13 +2785,13 @@
 <script type="text/javascript" src="javascripts/core/infinity_dimension.js"></script>
 <script type="text/javascript" src="javascripts/core/time_dimension.js?1"></script>
 <script type="text/javascript" src="javascripts/core/meta_dimension.js"></script>
-<script type="text/javascript" src="javascripts/core/dimboost.js?1"></script>
-<script type="text/javascript" src="javascripts/core/timestudies.js?2"></script>
+<script type="text/javascript" src="javascripts/core/dimboost.js?2"></script>
+<script type="text/javascript" src="javascripts/core/timestudies.js?3></script>
 <script type="text/javascript" src="javascripts/core/canvases.js?1"></script>
 <script type="text/javascript" src="javascripts/core/devtools.js"></script>
-<script type="text/javascript" src="javascripts/core/load_functions.js?3"></script>
+<script type="text/javascript" src="javascripts/core/load_functions.js?4"></script>
 <script type="text/javascript" src="javascripts/core/newsticker.js"></script>
-<script type="text/javascript" src="javascripts/game.js?10"></script>
+<script type="text/javascript" src="javascripts/game.js?11"></script>
 <script type="text/javascript" src="javascripts/sha512.js"></script>
 
 
