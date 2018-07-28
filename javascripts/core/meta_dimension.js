@@ -152,5 +152,5 @@ function getDil14Bonus () {
 }
 
 function getDil17Bonus () {
-	return 1 + Math.log10(player.meta.bestAntimatter);
+	return Math.log10(player.meta.bestAntimatter);
 }

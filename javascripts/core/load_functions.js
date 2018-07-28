@@ -565,7 +565,7 @@ if (player.version < 5) {
   }
   if (player.aarexModifications.newGamePlusVersion === undefined) if (player.eternities < 20 && ECTimesCompleted("eterc1") > 0) player.aarexModifications.newGamePlusVersion = 1
   if (player.aarexModifications.newGamePlusPlusVersion === undefined) { 
-      if (player.dilation.rebuyables[4] !== undefined) {
+      if (player.dilation.rebuyables[4] !== null) {
           var migratedUpgrades = []
           var v2_1check=player.version>13
           for (id=5;id<(v2_1check?18:14);id++) if (player.dilation.upgrades.includes(id)) migratedUpgrades.push(id>16?10:(id>12&&v2_1check)?("ngpp"+(id-10)):(id%4<1)?("ngpp"+(id/4-1)):Math.floor(id/4)*3+id%4)
@@ -591,18 +591,15 @@ if (player.version < 5) {
 
       player.meta = {resets: 0, antimatter: 10, bestAntimatter: 10}
       for (dim=1;dim<9;dim++) player.meta[dim] = {amount: 0, bought: 0, cost: initCost[dim]}
-      player.aarexModifications.newGamePlusPlusVersion = 2
       $.notify('Your NG++ save has been updated because dan-simon added a new feature.', 'info')
   }
-  if (player.aarexModifications.newGamePlusPlusVersion < 2.1) {
-      resetDilationGalaxies()
-      $.notify('NG++ was updated to include more dilation upgrades.', 'info')
-  }
-  player.aarexModifications.newGamePlusPlusVersion = 2.1
+  if (player.aarexModifications.newGamePlusPlusVersion < 2.1) $.notify('NG++ was updated to include more dilation upgrades.', 'info')
+  if (player.aarexModifications.newGamePlusPlusVersion < 2.11) player.aarexModifications.newGamePlusPlusVersion = 2.11
+  if (player.dilation.rebuyables[4] == null) delete player.aarexModifications.newGamePlusPlusVersion
   if (player.aarexModifications.newGameMinusMinusVersion === undefined) {
       if ((Decimal.gt(player.postC3Reward, 1) && player.infinitied < 1 && player.eternities < 1) || (Math.round(new Decimal(player.achPow).log(5) * 100) % 100 < 1 && Decimal.gt(player.achPow, 1))) {
           player.aarexModifications.newGameMinusMinusVersion = 1
-	      updateAchievements()
+          updateAchievements()
       }
   }
 

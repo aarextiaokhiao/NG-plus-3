@@ -32,7 +32,7 @@ function updateNewPlayer(reseted) {
             ngpp: player.aarexModifications.newGamePlusPlusVersion !== undefined,
             ngmm: player.aarexModifications.newGameMinusMinusVersion !== undefined
         }
-	} else var modesChosen = modes
+    } else var modesChosen = modes
     player = {
         money: new Decimal(10),
         tickSpeedCost: new Decimal(1000),
@@ -332,7 +332,7 @@ function updateNewPlayer(reseted) {
         player.aarexModifications.newGamePlusVersion = 1
     }
     if (modesChosen.ngpp) {
-        player.aarexModifications.newGamePlusPlusVersion = 2.1
+        player.aarexModifications.newGamePlusPlusVersion = 2.11
         player.dilation.rebuyables[4] = 0
         player.meta = {resets: 0, antimatter: 10, bestAntimatter: 10}
         for (dim=1;dim<9;dim++) player.meta[dim] = {amount: new Decimal(0), bought: 0, cost: initCost[dim]}
