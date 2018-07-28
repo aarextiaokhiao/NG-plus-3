@@ -586,7 +586,7 @@ if (player.version < 5) {
   if (player.aarexModifications.newGamePlusPlusVersion < 2) {
       for (dim=1;dim<5;dim++) {
           var dim = player["timeDimension" + dim]
-          if (Decimal.gte(dim.cost, "1e20000")) dim.cost = Decimal.pow(timeDimCostMults[tier]*2.2, dim.bought).times(timeDimStartCosts[tier]).times(Decimal.pow(new Decimal('1e1000'),Math.pow(dim.cost.log(10) / 1000 - 20, 2)))
+          if (Decimal.gte(dim.cost, "1e20000")) dim.cost = Decimal.pow(timeDimCostMults[dim]*2.2, dim.bought).times(timeDimStartCosts[dim]).times(Decimal.pow(new Decimal('1e1000'),Math.pow(dim.cost.log(10) / 1000 - 20, 2)))
       }
       resetDilationGalaxies()
 
