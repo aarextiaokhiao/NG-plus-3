@@ -129,7 +129,10 @@ function buyTimeDimension(tier) {
       dim.cost = Decimal.pow(timeDimCostMults[tier]*2.2, dim.bought).times(timeDimStartCosts[tier])
   }
   if (dim.cost.gte("1e20000")) {
-      dim.cost = Decimal.pow(timeDimCostMults[tier]*2.5, dim.bought).times(timeDimStartCosts[tier])
+      // rather than fixed cost scaling as before, quadratic cost scaling
+      // to avoid exponential growth
+      dim.cost = dim.cost.times(Decimal.pow(new Decimal('1e1000'),
+      Math.pow(dim.cost.log(10) / 1000 - 20, 2)));
   }
   if (tier > 4) {
     dim.cost = Decimal.pow(timeDimCostMults[tier]*100, dim.bought).times(timeDimStartCosts[tier])

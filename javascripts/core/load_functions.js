@@ -567,7 +567,7 @@ if (player.version < 5) {
   if (player.aarexModifications.newGamePlusVersion === undefined) if (player.eternities < 20 && ECTimesCompleted("eterc1") > 0) player.aarexModifications.newGamePlusVersion = 1
   if (player.aarexModifications.newGamePlusPlusVersion === undefined) { 
       if (player.dilation.rebuyables[4] !== undefined) {
-          player.aarexModifications.newGamePlusPlusVersion = 1
+          player.aarexModifications.newGamePlusPlusVersion = 2
           var migratedUpgrades = []
           for (id=5;id<14;id++) {
               if (player.dilation.upgrades.includes(id)) {
@@ -575,8 +575,25 @@ if (player.version < 5) {
                   else migratedUpgrades.push(Math.floor(id/4)*3+id%4)
               }
           }
+          for (dim=1;dim<9;dim++) {
+              player.meta[dim].bought += player.meta[dim].tensBought * 10
+              delete player.meta[dim].tensBought
+          }
           player.dilation.upgrades=migratedUpgrades
+          resetDilationGalaxies()
       }
+  }
+  if (player.aarexModifications.newGamePlusPlusVersion < 2) {
+      for (dim=1;dim<5;dim++) {
+          var dim = player["timeDimension" + dim]
+          if (Decimal.gte(dim.cost, "1e20000")) dim.cost = Decimal.pow(timeDimCostMults[tier]*2.2, dim.bought).times(timeDimStartCosts[tier]).times(Decimal.pow(new Decimal('1e1000'),Math.pow(dim.cost.log(10) / 1000 - 20, 2)))
+      }
+      resetDilationGalaxies()
+
+      player.meta = {resets: 0, antimatter: 10, bestAntimatter: 10}
+      for (dim=1;dim<9;dim++) player.meta[dim] = {amount: 0, bought: 0, cost: initCost[dim]}
+      player.aarexModifications.newGamePlusPlusVersion = 2
+      $.notify('Your NG++ save has been updated because dan-simon added a new feature.', 'info')
   }
 
   //updates TD costs to harsher scaling
@@ -596,6 +613,12 @@ if (player.version < 5) {
         player.achievements.splice(player.achievements.indexOf("s36"), 1)
         updateAchievements();
     }
+  }
+
+  if (player.version < 12.2) {
+    player.version = 12.2
+    player.sixthCost = Decimal.times(player.sixthCost, 10)
+    if (player.meta) player.meta[6].cost = Decimal.times(player.meta[6].cost, 10)
   }
 
   // player.version is currently 12.1
@@ -657,6 +680,9 @@ if (player.version < 5) {
 
   document.getElementById("decimalMode").innerHTML = "Decimal mode: "+(player.aarexModifications.breakInfinity?"Inperformance and accurate":"Performance and inaccurate")
 
+  document.getElementById("secretstudy").style.opacity = 0
+  document.getElementById("secretstudy").style.cursor = "pointer"
+
   updateAutobuyers();
   setAchieveTooltip();
   updatePriorities();
@@ -683,7 +709,7 @@ if (player.version < 5) {
       ngModeMessages=[]
       if (player.aarexModifications.newGamePlusPlusVersion) {
           if (!player.aarexModifications.newGamePlusVersion) ngModeMessages.push("WARNING! You are disabling NG+ features on NG++! Standard NG++ have all of NG++ features and I recommend you to create a new save with NG+ and NG++ modes on.")
-          ngModeMessages.push("Welcome to NG++ mode, made by dan-simon! In this mode, more dilation upgrades are added to push the end-game further.")
+          ngModeMessages.push("Welcome to NG++ mode, made by dan-simon! In this mode, more dilation upgrades and meta-dimensions are added to push the end-game further.")
       } else if (player.aarexModifications.newGamePlusVersion) ngModeMessages.push("Welcome to NG+ mode, made by earthernsence! Right now, you start with all Eternity Challenges completed and 1 infinitied.")
       if (player.aarexModifications.newGameMinusVersion) ngModeMessages.push("Welcome to NG- mode! Everything are nerfed by the creator slabdrill, making the end-game harder to reach.")
       closeToolTip()
@@ -708,7 +734,7 @@ function load_game() {
 	if (break_infinity_js==null) {
 		if (player.aarexModifications) break_infinity_js=player.aarexModifications.breakInfinity
 		if (break_infinity_js) Decimal = Decimal_BI
-		initCost = [null, new Decimal(10), new Decimal(1e2), new Decimal(1e4), new Decimal(1e6), new Decimal(1e9), new Decimal(1e12), new Decimal(1e18), new Decimal(1e24)]
+		initCost = [null, new Decimal(10), new Decimal(1e2), new Decimal(1e4), new Decimal(1e6), new Decimal(1e9), new Decimal(1e13), new Decimal(1e18), new Decimal(1e24)]
 		costMults = [null, new Decimal(1e3), new Decimal(1e4), new Decimal(1e5), new Decimal(1e6), new Decimal(1e8), new Decimal(1e10), new Decimal(1e12), new Decimal(1e15)]
 		nextAt = [new Decimal("1e2000"), new Decimal("1e5000"), new Decimal("1e12000"), new Decimal("1e14000"), new Decimal("1e18000"), new Decimal("1e20000"), new Decimal("1e23000"), new Decimal("1e28000")]
 		goals = [new Decimal("1e850"), new Decimal("1e10500"), new Decimal("1e5000"), new Decimal("1e13000"), new Decimal("1e11111"), new Decimal("2e22222"), new Decimal("1e10000"), new Decimal("1e27000")]
@@ -740,6 +766,23 @@ function change_save(id) {
   showStatsTab('stats')
   showChallengesTab('challenges')
   showEternityTab('timestudies', true)
+}
+
+function rename_save(id) {
+	var save_name = prompt("Input a new name of this save. It is necessary to rename it into related names!")
+	if (metaSave.current == id) player.aarexModifications.save_name = save_name
+	else {
+		var temp_save = get_save(id)
+		if (temp_save.aarexModifications !== null) temp_save.aarexModifications = {
+			dilationConf: false,
+			offlineProgress: true,
+			breakInfinity: false
+		}
+		temp_save.aarexModifications.save_name = save_name
+	}
+	set_save(id, temp_save)
+	changeSaveDesc(id)
+	$.notify("Save renamed", "info")
 }
 
 function delete_save(saveId) {
@@ -778,8 +821,7 @@ function new_game(id) {
 	localStorage.setItem("AD_aarexModifications",btoa(JSON.stringify(metaSave)))
 	changeSaveDesc(oldId)
 	latestRow=document.getElementById("saves").insertRow(loadedSaves)
-	var id=metaSave.saveOrder[loadedSaves]
-	latestRow.innerHTML = "<b id='save_"+metaSave.current+"_title'>Save #"+(loadedSaves+1)+"</b><div id='save_"+metaSave.current+"_desc'></div><button class='storebtn' onclick='change_save("+metaSave.current+")'>Load</button><button class='storebtn' onclick='delete_save("+metaSave.current+")'>Delete</button>"
+	latestRow.innerHTML = getSaveLayout(metaSave.current)
 	changeSaveDesc(metaSave.current)
 	loadedSaves++
     closeToolTip()
@@ -868,6 +910,15 @@ function transformSaveToDecimal() {
   player.timeDimension6.power = new Decimal(player.timeDimension6.power)
   player.timeDimension7.power = new Decimal(player.timeDimension7.power)
   player.timeDimension8.power = new Decimal(player.timeDimension8.power)
+
+  if (player.meta !== undefined) {
+      player.meta.antimatter = new Decimal(player.meta.antimatter);
+      player.meta.bestAntimatter = new Decimal(player.meta.bestAntimatter);
+      for (let i = 1; i <= 8; i++) {
+          player.meta[i].amount = new Decimal(player.meta[i].amount);
+          player.meta[i].cost = new Decimal(player.meta[i].cost);
+      }
+  }
   player.timeShards = new Decimal(player.timeShards)
   player.eternityPoints = new Decimal(player.eternityPoints)
   player.tickThreshold = new Decimal(player.tickThreshold)

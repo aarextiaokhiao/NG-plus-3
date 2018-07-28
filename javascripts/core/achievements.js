@@ -186,7 +186,8 @@ function giveAchievement(name) {
 
     if (player.achievements.includes(allAchievementNums[name])) return false
 
-    $.notify(name, "success");
+    if (name == "A sound financial decision") localStorage.setItem(btoa("dsAM_asfd"), "gg")
+    else $.notify(name, "success");
     player.achievements.push(allAchievementNums[name]);
     document.getElementById(name).className = "achievementunlocked"
     if (name == "All your IP are belong to us" || name == "MAXIMUM OVERDRIVE") {

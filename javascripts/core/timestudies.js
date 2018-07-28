@@ -71,8 +71,7 @@ function updateTheoremButtons() {
   document.getElementById("theoremep").innerHTML = "Buy Time Theorems <br>Cost: "+shortenDimensions(player.timestudy.epcost)+" EP"
   document.getElementById("theoremip").innerHTML = "Buy Time Theorems <br>Cost: "+shortenCosts(player.timestudy.ipcost)+" IP"
   document.getElementById("theoremam").innerHTML = "Buy Time Theorems <br>Cost: "+shortenCosts(player.timestudy.amcost)
-  if (player.timestudy.theorem>99999) document.getElementById("timetheorems").innerHTML = "You have <span style='display:inline' class=\"TheoremAmount\">"+shortenMoney(player.timestudy.theorem)+"</span> Time "+"Theorems."
-  else document.getElementById("timetheorems").innerHTML = "You have <span style='display:inline' class=\"TheoremAmount\">"+player.timestudy.theorem.toFixed(0)+"</span> Time "+ (player.timestudy.theorem == 1 ? "Theorem." : "Theorems.")
+  document.getElementById("timetheorems").innerHTML = "You have <span style='display:inline' class=\"TheoremAmount\">"+(player.timestudy.theorem>99999?shortenMoney(player.timestudy.theorem):getFullExpansion(player.timestudy.theorem))+"</span> Time Theorem"+ (player.timestudy.theorem == 1 ? "." : "s.")
 }
 
 function buyTimeStudy(name, cost, check) {
@@ -111,9 +110,12 @@ function buyTimeStudy(name, cost, check) {
 
 function buyDilationStudy(name, cost) {
     if (player.timestudy.theorem >= cost && !player.dilation.studies.includes(name)) {
-        if (name === 1) {
+        if (name < 2) {
             showEternityTab("dilation")
             document.getElementById("dilstudy1").innerHTML = "Unlock time dilation<span>Cost: 5000 Time Theorems"
+        } else if (name > 5) {
+            showTab("dimensions")
+            showDimTab("metadimensions")
         }
         player.dilation.studies.push(name)
         player.timestudy.theorem -= cost
@@ -255,11 +257,12 @@ function updateTimeStudyButtons() {
       }
   }
 
-  for (i=1; i<6; i++) {
+  for (i=1; i<7; i++) {
     if (player.dilation.studies.includes(i)) document.getElementById("dilstudy"+i).className = "dilationupgbought"
-    else if (player.timestudy.theorem >= Math.pow(10, i+4) && player.dilation.studies.includes(i-1)) document.getElementById("dilstudy"+i).className = "dilationupg"
+    else if (player.timestudy.theorem >= ([null, 1e5, 1e6, 1e7, 1e8, 1e9, 1e24])[i] && player.dilation.studies.includes(i-1)) document.getElementById("dilstudy"+i).className = "dilationupg"
     else document.getElementById("dilstudy"+i).className = "timestudylocked"
   }
+  document.getElementById("dilstudy6").style.display = player.meta ? "" : "none"
 }
 
 function studiesUntil(id) {

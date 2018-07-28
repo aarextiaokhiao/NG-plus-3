@@ -288,6 +288,11 @@
                         <td><button class="timestudylocked" id="dilstudy5" onclick="buyDilationStudy(5, 1e9)">Unlock the 8th Time Dimension<span>Cost: 1,000,000,000 Time Theorems</button></td>
                     </tr>
                 </table>
+                <table class="table" id="studytable">
+                    <tr>
+                        <td><button class="timestudylocked" id="dilstudy6" onclick="buyDilationStudy(6, 1e24)">Unlock Meta Dimensions<span>Cost: <span id="metaCost" style="display: inline;">1e24</span> Time Theorems</button></td>
+                    </tr>
+                </table>
                 <div style="height: 60px;"></div>
                 <div>
                     <table id="footer">
@@ -295,7 +300,7 @@
                             <td>
                                 <div style="text-align:center">
                                     <a href="howto.html" target="_newtab">How to play  </a> |
-                                    <a href="about.html" target="_newtab">About   </a> |
+                                    <a href="about.html" onclick="giveAchievement('A sound financial decision')" target="_newtab">About   </a> |
                                     <a href="changelog.html" target="_newtab">Changelog   </a>
                                 </div>
                             </td>
@@ -347,7 +352,7 @@
                             <td>
                                 <div style="text-align:center">
                                     <a href="howto.html" target="_newtab">How to play  </a> |
-                                    <a href="about.html" target="_newtab">About   </a> |
+                                    <a href="about.html" onclick="giveAchievement('A sound financial decision')" target="_newtab">About   </a> |
                                     <a href="changelog.html" target="_newtab">Changelog   </a>
                                 </div>
                             </td>
@@ -460,7 +465,7 @@
                             <td>
                                 <div style="text-align:center">
                                     <a href="howto.html" target="_newtab">How to play  </a> |
-                                    <a href="about.html" target="_newtab">About   </a> |
+                                    <a href="about.html" onclick="giveAchievement('A sound financial decision')" target="_newtab">About   </a> |
                                     <a href="changelog.html" target="_newtab">Changelog   </a>
 								</div>
                             </td>
@@ -533,7 +538,7 @@
                             <td>
                                 <div style="text-align:center">
                                     <a href="howto.html" target="_newtab">How to play  </a> |
-                                    <a href="about.html" target="_newtab">About   </a> |
+                                    <a href="about.html" onclick="giveAchievement('A sound financial decision')" target="_newtab">About   </a> |
                                     <a href="changelog.html" target="_newtab">Changelog   </a>
                                 </div>
                             </td>
@@ -548,6 +553,7 @@
                     <td id="dtabbtn"><button class="secondarytabbtn" onclick="showDimTab('antimatterdimensions')">Dimensions</button></td>
                     <td id="idtabbtn"><button class="secondarytabbtn" onclick="showDimTab('infinitydimensions')">Infinity Dimensions</button></td>
                     <td id="tdtabbtn"><button class="secondarytabbtn" onclick="showDimTab('timedimensions')">Time Dimensions</button></td>
+                    <td id="mdtabbtn"><button class="secondarytabbtn" onclick="showDimTab('metadimensions')">Meta Dimensions</button></td>
                     <td id="prodtabbtn"><button class="secondarytabbtn" onclick="showDimTab('production')">Production</button></td>
                 </tr>
             </table>
@@ -697,7 +703,7 @@
             <div id="infinitydimensions" class="dimtab">
                 <span id="EC12Pow"></span>
                 <div>
-                    <p>You have <span id="infPowAmount" style="font-size:35px; color: black">0</span> infinity power. translated to <span id="infDimMultAmount" style="font-size:35px; color: black">0</span>x multiplier on all dimensions</p>
+                    <p>You have <span id="infPowAmount" style="font-size:35px; color: black">0</span> infinity power. Translated to <span id="infDimMultAmount" style="font-size:35px; color: black">0</span>x multiplier on all dimensions</p>
                 </div>
                 <div id="infPowPerSec">You are getting 0 antimatter per second.</div>
                 <table class="table" >
@@ -915,6 +921,142 @@
                             </tr>
                         </table>
             </div>
+            <div id="metadimensions" class="dimtab">
+                  <div>
+                      <p>You have <span id="metaAntimatterAmount" style="font-size:35px; color: black">0</span> meta-antimatter.<p>
+                      <p>Your best ever meta-antimatter was <span id="metaAntimatterBest" style="font-size:35px; color: black">0</span>. Translated to <span id="metaAntimatterEffect" style="font-size:35px; color: black">0</span>x extra multiplier per dimension boost.</p>
+                  </div>
+                  <div id="metaAntimatterPerSec">You are getting 0 meta-antimatter per second.</div>
+                  <br/>
+                  <button id="metaMaxAll" class="storebtn" style="font-size: 12px">Max all</button>
+                  <br/>
+                  <table>
+                    <tbody>
+                      <tr id="1MetaRow" style="display: none; font-size: 15px">
+                          <td id="1MetaD" class="rel">
+                              First Meta Dimension
+                          </td>
+                          <td>
+                              <div id="meta1Amount" align="left">0 (0)</div>
+                          </td>
+                          <td align="right" width="10%">
+                              <button id="meta1" style="color:black; height: 25px; font-size: 10px; width: 135px" class="storebtn">Cost: 1000000</button>
+                          </td>
+                          <td align="right" width="10%">
+                              <button id="metaMax1" style="color:black; width:210px; height: 25px; font-size: 10px" class="storebtn">Cost: 10</button>
+                          </td>
+                      </tr>
+                      <tr id="2MetaRow" style="display: none; font-size: 15px">
+                          <td id="2MetaD" class="rel">
+                              Second Meta Dimension
+                          </td>
+                          <td>
+                              <div id="meta2Amount" align="left">0 (0)</div>
+                          </td>
+                          <td align="right" width="10%">
+                              <button id="meta2" style="color:black; height: 25px; font-size: 10px; width: 135px" class="storebtn">Cost: 1000000</button>
+                          </td>
+                          <td align="right" width="10%">
+                              <button id="metaMax2" style="color:black; width:210px; height: 25px; font-size: 10px" class="storebtn">Cost: 10</button>
+                          </td>
+                      </tr>
+                      <tr id="3MetaRow" style="display: none; font-size: 15px">
+                          <td id="3MetaD" class="rel">
+                              Third Meta Dimension
+                          </td>
+                          <td>
+                              <div id="meta3Amount" align="left">0 (0)</div>
+                          </td>
+                          <td align="right" width="10%">
+                              <button id="meta3" style="color:black; height: 25px; font-size: 10px; width: 135px" class="storebtn">Cost: 1000000</button>
+                          </td>
+                          <td align="right" width="10%">
+                              <button id="metaMax3" style="color:black; width:210px; height: 25px; font-size: 10px" class="storebtn">Cost: 10</button>
+                          </td>
+                      </tr>
+                      <tr id="4MetaRow" style="display: none; font-size: 15px">
+                          <td id="4MetaD" class="rel">
+                              Fourth Meta Dimension
+                          </td>
+                          <td>
+                              <div id="meta4Amount" align="left">0 (0)</div>
+                          </td>
+                          <td align="right" width="10%">
+                              <button id="meta4" style="color:black; height: 25px; font-size: 10px; width: 135px" class="storebtn">Cost: 1000000</button>
+                          </td>
+                          <td align="right" width="10%">
+                              <button id="metaMax4" style="color:black; width:210px; height: 25px; font-size: 10px" class="storebtn">Cost: 10</button>
+                          </td>
+                      </tr>
+                      <tr id="5MetaRow" style="display: none; font-size: 15px">
+                          <td id="5MetaD" class="rel">
+                              Fifth Meta Dimension
+                          </td>
+                          <td>
+                              <div id="meta5Amount" align="left">0 (0)</div>
+                          </td>
+                          <td align="right" width="10%">
+                              <button id="meta5" style="color:black; height: 25px; font-size: 10px; width: 135px" class="storebtn">Cost: 1000000</button>
+                          </td>
+                          <td align="right" width="10%">
+                              <button id="metaMax5" style="color:black; width:210px; height: 25px; font-size: 10px" class="storebtn">Cost: 10</button>
+                          </td>
+                      </tr>
+                      <tr id="6MetaRow" style="display: none; font-size: 15px">
+                          <td id="6MetaD" class="rel">
+                              Sixth Meta Dimension
+                          </td>
+                          <td>
+                              <div id="meta6Amount" align="left">0 (0)</div>
+                          </td>
+                          <td align="right" width="10%">
+                              <button id="meta6" style="color:black; height: 25px; font-size: 10px; width: 135px" class="storebtn">Cost: 1000000</button>
+                          </td>
+                          <td align="right" width="10%">
+                              <button id="metaMax6" style="color:black; width:210px; height: 25px; font-size: 10px" class="storebtn">Cost: 10</button>
+                          </td>
+                      </tr>
+                      <tr id="7MetaRow" style="display: none; font-size: 15px">
+                          <td id="7MetaD" class="rel">
+                              Seventh Meta Dimension
+                          </td>
+                          <td>
+                              <div id="meta7Amount" align="left">0 (0)</div>
+                          </td>
+                          <td align="right" width="10%">
+                              <button id="meta7" style="color:black; height: 25px; font-size: 10px; width: 135px" class="storebtn">Cost: 1000000</button>
+                          </td>
+                          <td align="right" width="10%">
+                              <button id="metaMax7" style="color:black; width:210px; height: 25px; font-size: 10px" class="storebtn">Cost: 10</button>
+                          </td>
+                      </tr>
+                      <tr id="8MetaRow" style="display: none; font-size: 15px">
+                          <td id="8MetaD" class="rel">
+                              Eighth Meta Dimension
+                          </td>
+                          <td>
+                              <div id="meta8Amount" align="left">0 (0)</div>
+                          </td>
+                          <td align="right" width="10%">
+                              <button id="meta8" style="color:black; height: 25px; font-size: 10px; width: 135px" class="storebtn">Cost: 1000000</button>
+                          </td>
+                          <td align="right" width="10%">
+                              <button id="metaMax8" style="color:black; width:210px; height: 25px; font-size: 10px" class="storebtn">Cost: 10</button>
+                          </td>
+                      </tr>
+                    </tbody>
+                </table>
+                <table style="width: 100%">
+                    <tr style="font-size: 15px">
+                      <td id="metaResetLabel">
+                          Meta-Dimension Shift: requires 20 Fourth Meta Dimensions
+                      </td>
+                      <td>
+                          <button id="metaSoftReset" style="color:black; width: 200px; height: 25px; font-size: 9px" class="storebtn">Reset the game for a new Dimension</button>
+                      </td>
+                  </tr>
+                </table>
+            </div>
             <div id="production" class="dimtab">
                 <b>seconds of history:</b>
                 <input type="number" value="10" onchange="updateChartValues()" id="chartDurationInput"></input>
@@ -937,7 +1079,7 @@
                         <td>
                             <div style="text-align:center">
                                 <a href="howto.html" target="_newtab">How to play  </a> |
-                                <a href="about.html" target="_newtab">About   </a> |
+                                <a href="about.html" onclick="giveAchievement('A sound financial decision')" target="_newtab">About   </a> |
                                 <a href="changelog.html" target="_newtab">Changelog   </a>
                             </div>
                         </td>
@@ -955,7 +1097,7 @@
                 </tr>
                 <tr>
                     <td><div><button id="exportbtn" class="storebtn" style="color:black; width: 200px; height: 55px; font-size: 20px">Export</button></div></td>
-                    <td><div><button id="importbtn" class="storebtn" style="color:black; width: 200px; height: 55px; font-size: 20px">Import</button></div></td>
+                    <td><div><button id="importbtn" class="storebtn" onclick='import_save()' style="color:black; width: 200px; height: 55px; font-size: 20px">Import</button></div></td>
                     <td><div><button id="offlineProgress" onclick='toggleOfflineProgress()' class="storebtn" style="color:black; width: 200px; height: 55px; font-size: 15px"></button></div></td>
                 </tr>
                 <tr>
@@ -987,7 +1129,7 @@
                         <td>
                             <div style="text-align:center">
                                 <a href="howto.html" target="_newtab">How to play  </a> |
-                                <a href="about.html" target="_newtab">About   </a> |
+                                <a href="about.html" onclick="giveAchievement('A sound financial decision')" target="_newtab">About   </a> |
                                 <a href="changelog.html" target="_newtab">Changelog   </a>
                             </div>
                         </td>
@@ -1087,7 +1229,7 @@
                         <td>
                             <div style="text-align:center">
                                 <a href="howto.html" target="_newtab">How to play  </a> |
-                                <a href="about.html" target="_newtab">About   </a> |
+                                <a href="about.html" onclick="giveAchievement('A sound financial decision')" target="_newtab">About   </a> |
                                 <a href="changelog.html" target="_newtab">Changelog   </a>
                             </div>
                         </td>
@@ -1533,7 +1675,7 @@
                         <td>
                             <div style="text-align:center">
                                 <a href="howto.html" target="_newtab">How to play  </a> |
-                                <a href="about.html" target="_newtab">About   </a> |
+                                <a href="about.html" onclick="giveAchievement('A sound financial decision')" target="_newtab">About   </a> |
                                 <a href="changelog.html" target="_newtab">Changelog   </a>
                             </div>
                         </td>
@@ -2049,7 +2191,7 @@
                     <td>
                         <div style="text-align:center">
                             <a href="howto.html" target="_newtab">How to play  </a> |
-                            <a href="about.html" target="_newtab">About   </a> |
+                            <a href="about.html" onclick="giveAchievement('A sound financial decision')" target="_newtab">About   </a> |
                             <a href="changelog.html" target="_newtab">Changelog   </a>
                         </div>
                     </td>
@@ -2141,7 +2283,7 @@
                         <td>
                             <div style="text-align:center">
                                 <a href="howto.html" target="_newtab">How to play  </a> |
-                                <a href="about.html" target="_newtab">About   </a> |
+                                <a href="about.html" onclick="giveAchievement('A sound financial decision')" target="_newtab">About   </a> |
                                 <a href="changelog.html" target="_newtab">Changelog   </a>
                             </div>
                         </td>
@@ -2449,7 +2591,7 @@
                         <td>
                             <div style="text-align:center">
                                 <a href="howto.html" target="_newtab">How to play  </a> |
-                                <a href="about.html" target="_newtab">About   </a> |
+                                <a href="about.html" onclick="giveAchievement('A sound financial decision')" target="_newtab">About   </a> |
                                 <a href="changelog.html" target="_newtab">Changelog   </a>
                             </div>
                         </td>
@@ -2525,7 +2667,7 @@
                             <td>
                                 <div style="text-align:center">
                                     <a href="howto.html" target="_newtab">How to play  </a> |
-                                    <a href="about.html" target="_newtab">About   </a> |
+                                    <a href="about.html" onclick="giveAchievement('A sound financial decision')" target="_newtab">About   </a> |
                                     <a href="changelog.html" target="_newtab">Changelog   </a>
                                 </div>
                             </td>
@@ -2560,7 +2702,7 @@
                             <td>
                                 <div style="text-align:center">
                                     <a href="howto.html" target="_newtab">How to play  </a> |
-                                    <a href="about.html" target="_newtab">About   </a> |
+                                    <a href="about.html" onclick="giveAchievement('A sound financial decision')" target="_newtab">About   </a> |
                                     <a href="changelog.html" target="_newtab">Changelog   </a>
                 
                                 </div>
@@ -2594,6 +2736,7 @@
 		<button class="storebtn" id='ngmBtn' style="font-size: 15px" onclick="toggle_mode('ngm')" style="display: inline">NG-: OFF</button><br>
 		<button class="storebtn" id='ngpBtn' style="font-size: 15px" onclick="toggle_mode('ngp')" style="display: inline">NG+: OFF</button>
 		<button class="storebtn" id='ngppBtn' style="font-size: 15px" onclick="toggle_mode('ngpp')" style="display: inline">NG++: OFF</button>
+		<button class="storebtn" style="font-size: 15px" onclick="import_save(true)" style="display: inline">Import</button>
 		<div style="height:230px;overflow-y:auto">
 			<table id='saves'>
 			</table>
@@ -2627,27 +2770,27 @@
 
 
 
-<script type="text/javascript"src="PlayFab/PlayFabClientApi.js"></script>
 <script type="text/javascript" src="javascripts/autobuyer.js"></script>
 <script type="text/javascript" src="javascripts/break_infinity.min.js?1"></script>
 <script type="text/javascript" src="javascripts/logarithmica_numerus_lite.js?1"></script>
 <script type="text/javascript" src="javascripts/chart.js"></script>
 <script type="text/javascript" src="javascripts/lz-string.js"></script>
 <script type="text/javascript" src="javascripts/core/polyfill.js"></script>
-<script type="text/javascript" src="javascripts/core/format.js?2"></script>
+<script type="text/javascript" src="javascripts/core/format.js?3"></script>
 <script type="text/javascript" src="javascripts/core/achievements.js"></script>
 <script type="text/javascript" src="javascripts/core/chart.js"></script>
-<script type="text/javascript" src="javascripts/core/tickspeed.js"></script>
-<script type="text/javascript" src="javascripts/core/normal_dimension.js?1"></script>
+<script type="text/javascript" src="javascripts/core/tickspeed.js?1"></script>
+<script type="text/javascript" src="javascripts/core/normal_dimension.js?2"></script>
 <script type="text/javascript" src="javascripts/core/infinity_dimension.js"></script>
-<script type="text/javascript" src="javascripts/core/time_dimension.js"></script>
-<script type="text/javascript" src="javascripts/core/dimboost.js"></script>
-<script type="text/javascript" src="javascripts/core/timestudies.js?1"></script>
-<script type="text/javascript" src="javascripts/core/canvases.js"></script>
+<script type="text/javascript" src="javascripts/core/time_dimension.js?1"></script>
+<script type="text/javascript" src="javascripts/core/meta_dimension.js"></script>
+<script type="text/javascript" src="javascripts/core/dimboost.js?1"></script>
+<script type="text/javascript" src="javascripts/core/timestudies.js?2"></script>
+<script type="text/javascript" src="javascripts/core/canvases.js?1"></script>
 <script type="text/javascript" src="javascripts/core/devtools.js"></script>
 <script type="text/javascript" src="javascripts/core/load_functions.js?2"></script>
 <script type="text/javascript" src="javascripts/core/newsticker.js"></script>
-<script type="text/javascript" src="javascripts/game.js?9"></script>
+<script type="text/javascript" src="javascripts/game.js?10"></script>
 <script type="text/javascript" src="javascripts/sha512.js"></script>
 
 

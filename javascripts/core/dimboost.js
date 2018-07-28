@@ -9,6 +9,7 @@ function getDimensionBoostPower() {
   if (player.achievements.includes("r101")) ret = ret*1.01
   if (player.timestudy.studies.includes(83)) ret = Decimal.pow(1.0004, player.totalTickGained).times(ret);
   if (player.timestudy.studies.includes(231)) ret = Decimal.pow(player.resets, 0.3).times(ret)
+  if (player.dilation.studies.includes(6)) ret = getExtraDimensionBoostPower().times(ret)
   return Decimal.fromValue(ret)
 }
 
@@ -151,6 +152,7 @@ function softReset(bulk) {
       dilation: player.dilation,
       why: player.why,
       options: player.options,
+      meta: player.meta,
       aarexModifications: player.aarexModifications
   };
   if (player.currentChallenge == "challenge10" || player.currentChallenge == "postc1") {
@@ -221,37 +223,45 @@ function setInitialDimensionPower () {
 }
 
 function maxBuyDimBoosts(manual) {
-    if (player.autobuyers[9].priority >= player.eightBought || player.overXGalaxies <= player.galaxies || getShiftRequirement(0).tier < 8 || manual == true) {
-        var r = 0;
-        var shiftRequirement = getShiftRequirement(0)
-        if (shiftRequirement.tier < 8) r = 1
-        else if (player.currentEternityChall == "eterc5") {
+	if (player.autobuyers[9].priority >= player.eightBought || player.overXGalaxies <= player.galaxies || getShiftRequirement(0).tier < 8 || manual == true) {
+		var r
+		if (player.currentEternityChall == "eterc5") {
 			r = 1
 			while (player.eightBought >= getShiftRequirement(r).amount && (player.autobuyers[9].priority >= player.eightBought || player.overXGalaxies <= player.galaxies || manual == true)) r++
-		} else r = Math.min(Math.floor((player.eightBought - shiftRequirement.amount)/shiftRequirement.mult + 1),(player.overXGalaxies <= player.galaxies || manual == true) ? Number.MAX_VALUE : Math.floor((player.autobuyers[9].priority - shiftRequirement.amount) / shiftRequirement.mult + 1))
+		} else {
+			var endPoint = 17e4
+			do {
+				endPoint += 5e3
+				var sr = getShiftRequirement(endPoint - player.resets - 1)
+				var utwo = Math.min(player.eightBought, ((player.overXGalaxies >= player.galaxies) || manual) ? 1/0 : player.autobuyers[9].priority) - sr.amount
+				r = Math.floor(utwo / sr.mult + endPoint)
+			} while (r > endPoint)
+			r -= player.resets
+		}
 
-        if (r >= 750) giveAchievement("Costco sells dimboosts now")
-        if (r > 0) softReset(r)
-    }
-
+		if (r >= 750) giveAchievement("Costco sells dimboosts now")
+		if (r > 0) softReset(r)
+	}
 }
 
 function getShiftRequirement(bulk) {
   let amount = 20;
-  if (player.currentChallenge == "challenge4") {
-      tier = Math.min(player.resets + bulk + 4, 6)
-      if (tier == 6) amount += (player.resets+bulk - 2) * 20;
-  } else {
-      tier = Math.min(player.resets + bulk + 4, 8)
-  }
-
   let mult = 15
+  var resetNum = player.resets + bulk
+  var maxTier = player.currentChallenge == "challenge4" ? 6 : 8
+  tier = Math.min(resetNum + 4, maxTier)
   if (player.timestudy.studies.includes(211)) mult -= 5
   if (player.timestudy.studies.includes(222)) mult -= 2
+  if (player.currentChallenge == "challenge4") mult = 20
+  if (tier == maxTier) amount += (resetNum + 4 - maxTier) * mult
 
-  if (tier == 8) amount += Math.ceil((player.resets+bulk - 4) * mult);
   if (player.currentEternityChall == "eterc5") {
-      amount += Math.pow(player.resets+bulk, 3) + player.resets+bulk
+      amount += Math.pow(resetNum, 3) + resetNum
+  } else if (resetNum >= 1.9e5) {
+      var displacement = Math.ceil((resetNum - 189999) / 5e3)
+      var offset = resetNum % 5e3 + 1
+      amount += displacement * (displacement - 1) * 1e4 + offset * displacement * 4
+      mult += displacement * 4
   }
 
   if (player.infinityUpgrades.includes("resetBoost")) amount -= 9;
@@ -262,11 +272,12 @@ function getShiftRequirement(bulk) {
 
 document.getElementById("softReset").onclick = function () {
   var name = TIER_NAMES[getShiftRequirement(0).tier]
-  if ((!player.break && player.money.gt(Number.MAX_VALUE)) || player[name + "Amount"] < getShiftRequirement(0).amount) return;
+  if ((!player.break && player.money.gt(Number.MAX_VALUE)) || player[name + "Bought"] < getShiftRequirement(0).amount) return;
   auto = false;
+  var pastResets = player.resets
   if (player.infinityUpgrades.includes("bulkBoost")) maxBuyDimBoosts(true);
   else softReset(1)
-  
+  if (player.resets <= pastResets) return
   var dimensionBoostPower = new Decimal(getDimensionBoostPower())
-  for (var tier = 1; tier<9; tier++) if (player.resets >= tier) floatText(TIER_NAMES[tier] + "D", "x" + shortenDimensions(dimensionBoostPower.pow(player.resets + 1 - tier)))
+  for (var tier = 1; tier < 9; tier++) if (player.resets >= tier) floatText(TIER_NAMES[tier] + "D", "x" + shortenDimensions(dimensionBoostPower.pow(player.resets + 1 - tier)))
 };

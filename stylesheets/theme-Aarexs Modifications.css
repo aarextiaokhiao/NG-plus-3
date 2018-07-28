@@ -1,7 +1,7 @@
 body {
     background-color: #191919 !important
 }
-.container, .statstab, b {
+.container, .statstab, b, input {
     font-family:'Inconsolata', monospace !important
 }
 #container div {
@@ -107,7 +107,7 @@ strong { color: #0072e5 }
 #bigcrunch, #infinitybtn, #postInfinityButton, #idtabbtn button, .newdim, #infinitydimensions td:nth-child(4) .storebtn, #replicantichance.storebtn, #replicantiinterval.storebtn, #replicantimax.storebtn, #challTabButtons td:nth-child(2) button, #infchallengesbtn {
     border-color: #e2bd00 !important
 }
-#bigcrunch:hover, #infinitybtn:hover, #postInfinityButton:hover, #idtabbtn button:hover, .newdim:hover, td:nth-child(4) .storebtn:hover, #replicantichance.storebtn:hover, #replicantiinterval.storebtn:hover, #replicantimax.storebtn:hover, #challTabButtons td:nth-child(2) button:hover, #infchallengesbtn:hover {
+#bigcrunch:hover, #infinitybtn:hover, #postInfinityButton:hover, #idtabbtn button:hover, .newdim:hover, #infinitydimensions td:nth-child(4) .storebtn:hover, #replicantichance.storebtn:hover, #replicantiinterval.storebtn:hover, #replicantimax.storebtn:hover, #challTabButtons td:nth-child(2) button:hover, #infchallengesbtn:hover {
     background-color: #e2bd00 !important
 }
 .IPAmount1, .IPAmount2, #infPowAmount, #infDimMultAmount, #replicantiamount, #replicantimult {
@@ -319,8 +319,15 @@ strong { color: #0072e5 }
     color: #191919 !important;
     border-color: #191919 !important
 }
-#dilstudy6 {
-    border-color: #0072e5 !important
+#dilstudy6.dilationupg, #mdtabbtn .secondarytabbtn, #metadimensions .storebtn {
+    border-color: #00e5e5 !important
+}
+#dilstudy6.dilationupg:hover, #mdtabbtn .secondarytabbtn:hover, #metadimensions .storebtn:hover {
+    background-color: #00e5e5 !important
+}
+#dilstudy6.dilationupgbought {background-color: #00e5e5 !important}
+#metaAntimatterAmount, #metaAntimatterBest, #metaAntimatterEffect {
+    color: #00e5e5 !important
 }
 .notifyjs-bootstrap-info {
     background-color: #0072e5;

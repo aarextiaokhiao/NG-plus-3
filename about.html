@@ -1,20 +1,37 @@
 <head>
-<link href='https://fonts.googleapis.com/css?family=Roboto' rel='stylesheet'>
-<title>About me</title>
-<style>
-body {background-color:#191919; color:#E5E5E5; text-align: center; font-family:'Roboto'; margin:0px}
-div {text-align: center; font-size:12px; width: 100%; margin: 0px}
-li {font-size:18px}
-h1 {font-size:24px}
-#title {background-color:#BFBFBF; color:#191919; font-size: 36px}
-#subTitle {background-color:#999999; color:#191919}
-</style>
+	<link href='https://fonts.googleapis.com/css?family=Roboto' rel='stylesheet'>
+	<script type="text/javascript" src="javascripts/jquery-3.2.1.min.js"></script>
+	<script type="text/javascript" src="javascripts/notify.js"></script>
+	<script type="text/javascript" src="javascripts/about.js"></script>
+	<title>About me</title>
+	<style>
+		@font-face {
+			font-family: Typewriter;
+			src: url('MonospaceTypewriter.ttf');
+		}
+
+		body {background-color:#191919; margin:0px}
+		#body {height:100%;
+			width:100%;
+			color:#E5E5E5;
+			text-align: center;
+			font-family:'Roboto';
+			margin:0px}
+		#body div {text-align: center; font-size:12px; width: 100%; margin: 0px}
+		#body li {font-size:18px}
+		#body h1 {font-size:24px}
+		#body #title {background-color:#BFBFBF; color:#191919; font-size: 36px}
+		#body #subTitle {background-color:#999999; color:#191919}
+
+		.notifyjs-bootstrap-success { font-family: Typewriter; }
+	</style>
 </head>
-<body class='normal'>
-<div style='width: 100%'>
-	<div id='title'>Antimatter Dimensions | Aarex's Modifications</div>
-	<div id='subTitle'>Edited by Aarex, original from <a href='http://ivark.github.io/' target="_newtab">Antimatter Dimensions</a></div>
-</div>
-<div style='font-size:24px'>This is Aarex's modification of Antimatter Dimensions. This modification adds more options, more notations, new large number library, and more New Game modes. This also improves the game performance and statistics.</div>
+<body class='normal' onload="giveachievement()">
+	<div id='body'>
+		<div style='width: 100%'>
+			<div id='title'>Antimatter Dimensions | Aarex's Modifications</div>
+			<div id='subTitle'>Edited by Aarex, original from <a href='http://ivark.github.io/' target="_newtab">Antimatter Dimensions</a></div>
+		</div>
+		<div style='font-size:24px'>This is Aarex's modification of Antimatter Dimensions. This modification adds more options, more notations, new large number library, and more New Game modes. This also improves the game performance and statistics.</div>
+	</div>
 </body>
-</html>

@@ -78,22 +78,10 @@ function getDimensionFinalMultiplier(tier) {
   return multiplier;
 }
 
-
-function getMoneyPerSecond() {
-  return getDimensionFinalMultiplier(1)*Math.floor(player.firstAmount)/player.tickspeed;
-}
-
 function getDimensionDescription(tier) {
   var name = TIER_NAMES[tier];
-
-  let description = shortenDimensions(player[name + 'Amount']) + ' (' + dimBought(tier) + ')';
-  if (tier == 8) description = Math.round(player[name + 'Amount']) + ' (' + dimBought(tier) + ')';
-
-  if (tier < 8) {
-      description += '  (+' + formatValue(player.options.notation, getDimensionRateOfChange(tier), 2, 2) + '%/s)';
-  }
-
-  return description;
+  if (tier > Math.min(player.currentEternityChall == "eterc3" ? 3 : (player.currentChallenge == "challenge4" || player.currentChallenge == "postc1") ? 5 : 7, player.resets + 3)) return getFullExpansion(player[name + 'Bought']) + ' (' + dimBought(tier) + ')';
+  else return shortenDimensions(player[name + 'Amount']) + ' (' + dimBought(tier) + ')  (+' + formatValue(player.options.notation, getDimensionRateOfChange(tier), 2, 2) + '%/s)';
 }
 
 function getDimensionRateOfChange(tier) {

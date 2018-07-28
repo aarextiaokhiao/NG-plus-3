@@ -105,7 +105,9 @@ function drawTreeBranch(num1, num2) {
     ctx.lineWidth=15;
     ctx.beginPath();
     if ((player.timestudy.studies.includes(name1) && player.timestudy.studies.includes(name2) && !isECName) || (player.timestudy.studies.includes(name1) && (player.eternityChallUnlocked === name2 && isECName)) || (player.dilation.studies.includes(name2-1) && (player.dilation.studies.includes(name2) && isDilStudyName))) {
-        if (name2 < 20 && isECName) {
+        if (name2 == 6 && isDilStudyName && player.options.theme == "Aarex's Modifications") {
+            ctx.strokeStyle="#00E5E5";
+        } else if (name2 < 20 && isECName) {
             ctx.strokeStyle="#490066";
         } else if (name2 < 20) {
             ctx.strokeStyle="#64DD17";
@@ -125,7 +127,9 @@ function drawTreeBranch(num1, num2) {
             ctx.strokeStyle="#000000";
         }
     } else {
-        if (name2 < 20) {
+        if (name2 == 6 && isDilStudyName && player.options.theme == "Aarex's Modifications") {
+            ctx.strokeStyle="#007272";
+        } else if (name2 < 20) {
             ctx.strokeStyle="#4b3753";
         } else if (name2 == 71 || name2 == 81 || name2 == 91 || name2 == 101 || name1 == 101) {
             ctx.strokeStyle="#37533f";
@@ -241,6 +245,7 @@ function drawStudyTree() {
     drawTreeBranch("dilstudy2", "dilstudy3")
     drawTreeBranch("dilstudy3", "dilstudy4")
     drawTreeBranch("dilstudy4", "dilstudy5")
+    if (player.meta) drawTreeBranch("dilstudy5", "dilstudy6")
     if (shiftDown && document.getElementById("eternitystore").style.display !== "none" && document.getElementById("timestudies").style.display !== "none") {
         for (i=0; i<all.length; i++) {
             var start = document.getElementById(all[i]).getBoundingClientRect();

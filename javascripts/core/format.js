@@ -178,6 +178,11 @@ function convToGreek(num) {
 	return result
 }
 
+function getFullExpansion(num) {
+	if (num < 1e12) return num.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")
+	else return shorten(num)
+}
+
 shorten = function (money) {
   return formatValue(player.options.notation, money, 2, 2);
 };
