@@ -484,7 +484,7 @@ function openStudyPresets() {
 }
 
 function getPresetLayout(id) {
-	return "<b id='preset_"+id+"_title'>Preset #"+(loadedPresets+1)+"</b><br><button class='storebtn' onclick='save_preset("+id+")'>Save</button><button class='storebtn' onclick='load_preset("+id+")'>Load</button><button class='storebtn' onclick='delete_preset("+id+")'>Delete</button><button class='storebtn' onclick='rename_preset("+id+")'>Rename</button>"
+	return "<b id='preset_"+id+"_title'>Preset #"+(loadedPresets+1)+"</b><br><button class='storebtn' onclick='save_preset("+id+")'>Save</button><button class='storebtn' onclick='load_preset("+id+")'>Load</button><button class='storebtn' onclick='rename_preset("+id+")'>Rename</button><button class='storebtn' onclick='delete_preset("+id+")'>Delete</button>"
 }
 
 function changePresetTitle(id, placement) {

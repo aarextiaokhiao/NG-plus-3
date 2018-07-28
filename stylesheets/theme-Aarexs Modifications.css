@@ -319,13 +319,17 @@ strong { color: #0072e5 }
     color: #191919 !important;
     border-color: #191919 !important
 }
-#dilstudy6.dilationupg, #mdtabbtn .secondarytabbtn, #metadimensions .storebtn {
+#dilstudy6.dilationupg, #mdtabbtn .secondarytabbtn, #metadimensions .storebtn, #dil14.dilationupg, #dil15.dilationupg, #dil16.dilationupg, #dil17.dilationupg {
     border-color: #00e5e5 !important
 }
-#dilstudy6.dilationupg:hover, #mdtabbtn .secondarytabbtn:hover, #metadimensions .storebtn:hover {
+#dilstudy6.dilationupg:hover, #mdtabbtn .secondarytabbtn:hover, #metadimensions .storebtn:hover, #dil13.dilationupg:hover, #dil14.dilationupg:hover, #dil15.dilationupg:hover, #dil16.dilationupg:hover {
     background-color: #00e5e5 !important
 }
-#dilstudy6.dilationupgbought {background-color: #00e5e5 !important}
+#dilstudy6.dilationupgbought, #dil14.dilationupgbought, #dil15.dilationupgbought, #dil16.dilationupgbought, #dil17.dilationupgbought {
+	background-color: #00e5e5 !important;
+    color: #191919 !important;
+	border-color: #191919 !important
+}
 #metaAntimatterAmount, #metaAntimatterBest, #metaAntimatterEffect {
     color: #00e5e5 !important
 }

@@ -21,22 +21,18 @@ var metaSave = null
 var modes = {
     ngm: false,
     ngp: false,
-    ngpp: false
+    ngpp: false,
+    ngmm: false
 }
 function updateNewPlayer(reseted) {
     if (reseted) {
         var modesChosen = {
             ngm: player.aarexModifications.newGameMinusVersion !== undefined,
             ngp: player.aarexModifications.newGamePlusVersion !== undefined,
-            ngpp: player.aarexModifications.newGamePlusPlusVersion !== undefined
+            ngpp: player.aarexModifications.newGamePlusPlusVersion !== undefined,
+            ngmm: player.aarexModifications.newGameMinusMinusVersion !== undefined
         }
-	} else {
-        var modesChosen = {
-            ngm: modes.ngm,
-            ngp: modes.ngp,
-            ngpp: modes.ngpp
-        }
-	}
+	} else var modesChosen = modes
     player = {
         money: new Decimal(10),
         tickSpeedCost: new Decimal(1000),
@@ -336,10 +332,13 @@ function updateNewPlayer(reseted) {
         player.aarexModifications.newGamePlusVersion = 1
     }
     if (modesChosen.ngpp) {
-        player.aarexModifications.newGamePlusPlusVersion = 2
+        player.aarexModifications.newGamePlusPlusVersion = 2.1
         player.dilation.rebuyables[4] = 0
         player.meta = {resets: 0, antimatter: 10, bestAntimatter: 10}
         for (dim=1;dim<9;dim++) player.meta[dim] = {amount: new Decimal(0), bought: 0, cost: initCost[dim]}
+    }
+    if (modesChosen.ngmm) {
+        player.aarexModifications.newGameMinusMinusVersion = 1
     }
 }
 updateNewPlayer()
@@ -486,15 +485,6 @@ if (!String.prototype.includes) {
         });
       }
 
-var canvas = document.getElementById("studyTreeCanvas");
-var ctx = canvas.getContext("2d");
-window.addEventListener("resize", resizeCanvas);
-
-function resizeCanvas() {
-    canvas.width = document.body.scrollWidth;
-    canvas.height = document.body.scrollHeight;
-    drawStudyTree();
-}
 
 Array.max = function( array ){
     return Math.max.apply( Math, array );
@@ -745,6 +735,7 @@ function getGalaxyRequirement() {
     let amount = 80 + ((player.galaxies) * 60);
     if (player.timestudy.studies.includes(42)) amount = 80 + ((player.galaxies) * 52)
     if (player.currentChallenge == "challenge4") amount = 99 + ((player.galaxies) * 90)
+    if (player.aarexModifications.newGameMinusMinusVersion) amount -= 20;
 
     let galaxyCostScalingStart = getGalaxyCostScalingStart()
     if (player.currentEternityChall == "eterc5") {
@@ -774,7 +765,9 @@ function updateWorstChallengeTime() {
 
 
 function sacrificeConf() {
+    document.getElementById("confirmation").checked = player.options.sacrificeConfirmation
     player.options.sacrificeConfirmation = !player.options.sacrificeConfirmation
+    document.getElementById("sacConfirmBtn").textContent = "Sacrifice confirmation: O" + (player.options.sacrificeConfirmation ? "N" : "FF")
 }
 
 function getDilExp() {
@@ -789,6 +782,7 @@ function getDilGain() {
 function getDilTimeGainPerSecond() {
 	let gain = player.dilation.tachyonParticles.times(Math.pow(2, player.dilation.rebuyables[1]))
 	if (player.dilation.upgrades.includes('ngpp2')) gain = gain.times(Math.pow(player.eternities, .1))
+	if (player.dilation.upgrades.includes('ngpp6')) gain = gain.times(getDil17Bonus())
 	return gain;
 }
 
@@ -1036,6 +1030,10 @@ function updateChallenges() {
             buttonss[i].textContent = "Start"
         }
 
+        if (isIC3Trapped()) {
+            document.getElementById("postc3").className = "onchallengebtn";
+            document.getElementById("postc3").textContent = "Trapped in"
+        }
 
         for (var i=0; i < player.challenges.length; i++) {
             document.getElementById(player.challenges[i]).className = "completedchallengesbtn";
@@ -1044,17 +1042,16 @@ function updateChallenges() {
 
 
         if (player.money.gte(new Decimal("1e2000")) || Object.keys(player.eternityChalls).length > 0 || player.eternityChallUnlocked !== 0) document.getElementById("challTabButtons").style.display = "table"
-        for (var i=1; i<9; i++) {
-            if (player.postChallUnlocked >= i) {
-                document.getElementById("postc"+i+"div").style.display = "inline-block"
-            } else document.getElementById("postc"+i+"div").style.display = "none"
-        }
+        for (var i=1; i<9; i++) document.getElementById("postc"+i+"div").style.display = (player.postChallUnlocked >= i || (i == 3 && player.aarexModifications.newGameMinusMinusVersion)) ? "inline-block" : "none"
     } catch (err) {
         console.log(err)
         updateChallenges()
     }
 }
 
+function isIC3Trapped() {
+	return !player.challenges.includes("postc3") && player.aarexModifications.newGameMinusMinusVersion !== undefined
+}
 
 function updateEternityChallenges() {
 
@@ -2111,6 +2108,12 @@ function galaxyReset() {
     if (player.achievements.includes("r45")) player.tickspeed = player.tickspeed.times(0.98);
     if (player.achievements.includes("r83")) player.tickspeed = player.tickspeed.times(Decimal.pow(0.95,player.galaxies));
 
+    if (!player.aarexModifications.newGameMinusMinusVersion && player.infinitied < 1 && player.eternities == 0) {
+        document.getElementById("confirmation").style.display = "none"
+        document.getElementById("confirmations").style.display = "inline-block";
+    }
+    if (player.infinitied < 1 && player.eternities == 0) document.getElementById("sacrifice").style.display = "none"
+    if (player.aarexModifications.newGameMinusMinusVersion) document.getElementById("gSacrifice").style.display = "inline-block"
     if (player.eternities < 30) {
         document.getElementById("secondRow").style.display = "none";
         document.getElementById("thirdRow").style.display = "none";
@@ -2203,7 +2206,7 @@ document.getElementById("load").onclick = function () {
 };
 
 function getSaveLayout(id) {
-	return "<b id='save_"+id+"_title'>Save #"+(loadedSaves+1)+"</b><div id='save_"+id+"_desc'></div><button class='storebtn' onclick='change_save("+id+")'>Load</button><button class='storebtn' onclick='delete_save("+id+")'>Delete</button><button class='storebtn' onclick='rename_save("+id+")'>Rename</button>"
+	return "<b id='save_"+id+"_title'>Save #"+(loadedSaves+1)+"</b><div id='save_"+id+"_desc'></div><button class='storebtn' onclick='change_save("+id+")'>Load</button><button class='storebtn' onclick='rename_save("+id+")'>Rename</button><button class='storebtn' onclick='delete_save("+id+")'>Delete</button>"
 }
 
 function changeSaveDesc(saveId, placement) {
@@ -2214,6 +2217,7 @@ function changeSaveDesc(saveId, placement) {
 		var temp=isSaveCurrent?player:get_save(saveId)
 		if (temp.aarexModifications==null) temp.aarexModifications={}
 		var message=temp.aarexModifications.newGameMinusVersion?"NG-, ":""
+		if (temp.aarexModifications.newGameMinusMinusVersion) message+="NG--, "
 		if (temp.aarexModifications.newGamePlusPlusVersion) {
 			message+="NG++, "
 			if (!temp.aarexModifications.newGamePlusVersion) message+="No NG+ features, "
@@ -2261,7 +2265,7 @@ function changeSaveDesc(saveId, placement) {
 
 function toggle_mode(id) {
 	modes[id]=!modes[id]
-	document.getElementById(id+"Btn").textContent=(id=="ngpp"?"NG++":id=="ngp"?"NG+":"NG-")+": O"+(modes[id]?"N":"FF")
+	document.getElementById(id+"Btn").textContent=(id=="ngpp"?"NG++":id=="ngp"?"NG+":id=="ngmm"?"NG--":"NG-")+": O"+(modes[id]?"N":"FF")
 	if (id=="ngpp"&&modes.ngpp&&!modes.ngp) toggle_mode("ngp")
 }
 
@@ -2612,6 +2616,21 @@ document.getElementById("sacrifice").onclick = function () {
     return sacrifice();
 }
 
+document.getElementById("gSacrifice").onclick = function () {
+    return galacticSacrifice();
+}
+
+function getGSAmount() {
+    return Decimal.min(Math.max(player.galaxies + player.replicanti.galaxies + player.dilation.freeGalaxies, 0), player.eightAmount.div(50).floor())
+}
+
+function galacticSacrifice() {
+	if (getGSAmount().eq(0)) return
+    if (player.options.sacrificeConfirmation) if (!confirm("Galactic Sacrifice will do a galaxy reset, and then remove all of your galaxies, in exchange of infinity points which can be use to buy many powerful upgrades, but it will take a lot of time to recover, are you sure you wanna do this?")) return
+    player.infinityPoints = player.infinityPoints.add(getGSAmount())
+    player.galaxies = -1
+    galaxyReset()
+}
 
 function updateAutobuyers() {
     var autoBuyerDim1 = new Autobuyer (1)
@@ -3181,6 +3200,7 @@ document.getElementById("bigcrunch").onclick = function () {
         if (player.currentChallenge != "" && !player.challenges.includes(player.currentChallenge)) {
             player.challenges.push(player.currentChallenge);
         }
+        if (player.money.gte("1e5000") && isIC3Trapped()) player.challenges.push("postc3")
         if (player.challenges.length > 12) giveAchievement("Infinitely Challenging");
         if (player.challenges.length == 20) giveAchievement("Anti-antichallenged");
         if (!player.break || player.currentChallenge != "") {
@@ -3828,6 +3848,7 @@ function exitChallenge() {
 }
 
 function startChallenge(name, target) {
+    if (name == "postc3" && isIC3Trapped()) return
     if (player.options.challConf && name != "") if (!confirm("You will start over with just your infinity upgrades, and achievements. You need to reach " + (name.includes("post") ? "a set goal" : "infinity") + " with special conditions. NOTE: The rightmost infinity upgrade column doesn't work on challenges.")) return
     if (player.currentChallenge != "") document.getElementById(player.currentChallenge).textContent = "Start"
     player = {
@@ -4640,7 +4661,8 @@ function unlockDilation() {
                                5e6,         1e9,        5e7,
                                2e12,        1e10,       1e11,
                                             1e15,
-                              [1e8, 1e4],   1e20,       1e25]
+                              [1e8, 1e4],   1e20,       1e25,
+                              1e50,    1e60,    1e80,   1e100]
 
 
 function buyDilationUpgrade(id, costInc) {
@@ -4668,11 +4690,11 @@ function buyDilationUpgrade(id, costInc) {
 }
 
 function updateDilationUpgradeButtons() {
-    for (var i = 1; i < 14; i++) {
-        if (i > 10 && player.dilation.rebuyables[4] === undefined) {
+    for (var i = 1; i < 18; i++) {
+        if (i > 10 && i < 14 && player.dilation.rebuyables[4] === undefined) {
 			document.getElementById("n"+(i-10)).style.display = "none"
         } else {
-            if (i > 10) document.getElementById("n"+(i-10)).style.display = "table-cell"
+            if (i > 10 && i < 14) document.getElementById("n"+(i-10)).style.display = "table-cell"
             if (i < 4 || i == 11) {
                 document.getElementById("dil"+i).className = ( getRebuyableDilUpgCost(i > 3 ? 4 : i).gt(player.dilation.dilatedTime) ) ? "dilationupgrebuyablelocked" : "dilationupgrebuyable";
             } else if (player.dilation.upgrades.includes(i > 11 ? "ngpp" + (i - 11) : i)) {
@@ -4684,6 +4706,11 @@ function updateDilationUpgradeButtons() {
     }
     document.getElementById("dil7desc").textContent = "Currently: "+shortenMoney(player.dilation.dilatedTime.pow(1000).max(1))+"x"
     document.getElementById("dil10desc").textContent = "Currently: "+shortenMoney(Math.floor(player.dilation.tachyonParticles.div(20000).max(1)))+"/s"
+    if (player.dilation.studies.includes(6)) {
+        document.getElementById("mddilupg").style.display = ""
+        document.getElementById("dil14desc").textContent = "Currently: "+shortenMoney(getDil14Bonus()) + 'x';
+        document.getElementById("dil17desc").textContent = "Currently: "+shortenMoney(getDil17Bonus()) + 'x';
+    } else document.getElementById("mddilupg").style.display = "none"
 }
 
 function getRebuyableDilUpgCost(id) {
@@ -4710,6 +4737,7 @@ function updateDilationUpgradeCosts() {
         document.getElementById("dil12cost").textContent = "Cost: " + shortenCosts(DIL_UPG_COSTS[12]) + " dilated time"
         document.getElementById("dil13cost").textContent = "Cost: " + shortenCosts(DIL_UPG_COSTS[13]) + " dilated time"
     }
+    if (player.dilation.studies.includes(6)) for (id=14;id<18;id++) document.getElementById("dil"+id+"cost").textContent = "Cost: " + shortenCosts(DIL_UPG_COSTS[id]) + " dilated time"
 }
 
 function gainDilationGalaxies() {
@@ -4834,7 +4862,7 @@ setInterval(function() {
 
 
 
-    if (player.infinitied == 0 && player.infinityPoints.lt(new Decimal(1e50)) && player.eternities <= 0) document.getElementById("infinityPoints2").style.display = "none"
+    if (player.infinitied == 0 && player.infinityPoints.lt(new Decimal(1e50)) && player.infinityUpgrades.length < 1 && player.eternities <= 0) document.getElementById("infinityPoints2").style.display = "none"
     else document.getElementById("infinityPoints2").style.display = "inline-block"
 
     if (blink && !player.achievements.includes("r78")) {
@@ -5222,7 +5250,7 @@ function gameLoop(diff) {
     }
 
 
-    if (player.money.gte(Number.MAX_VALUE) && (!player.break || (player.currentChallenge != "" && player.money.gte(player.challengeTarget)))) {
+    if (player.money.gte(Number.MAX_VALUE) && (!player.break || (player.currentChallenge != "" && player.money.gte(player.challengeTarget)) || (isIC3Trapped() && player.money.gte("1e5000")))) {
         document.getElementById("bigcrunch").style.display = 'inline-block';
         if ((player.currentChallenge == "" || player.options.retryChallenge) && (player.bestInfinityTime <= 600 || player.break)) {}
         else {
@@ -5399,7 +5427,7 @@ function gameLoop(diff) {
         document.getElementById("tickSpeedMax").className = 'unavailablebtn';
     }
 
-    if ((player.infinityPoints.gt(0) || player.eternities !== 0) && !isEmptiness) {
+    if ((player.infinityPoints.gt(0) || player.eternities !== 0 || player.infinityUpgrades.length != 0) && !isEmptiness) {
         document.getElementById("infinitybtn").style.display = "inline-block";
         document.getElementById("challengesbtn").style.display = "inline-block";
         document.getElementById("infi11").className = "infinistorebtn1"
@@ -5500,18 +5528,7 @@ function gameLoop(diff) {
     if (player.autobuyers[11]%1 === 0 || player.autobuyers[11].interval>100) document.getElementById("break").className = "infinistorebtnlocked"
     else document.getElementById("break").className = "infinistorebtn2"
 
-
-    if (player.resets > 4) {
-        document.getElementById("confirmation").style.display = "inline-block";
-        document.getElementById("sacrifice").style.display = "inline-block";
-    } else {
-        document.getElementById("confirmation").style.display = "none";
-        document.getElementById("sacrifice").style.display = "none";
-    }
-
-    if (player.infinitied > 0) document.getElementById("sacrifice").style.display = "inline-block";
-
-    if (player.eightAmount > 0 && player.resets > 4 && player.currentEternityChall !== "eterc3") document.getElementById("sacrifice").className = "storebtn"
+    if (player.eightBought > 0 && player.resets > 4 && player.currentEternityChall !== "eterc3") document.getElementById("sacrifice").className = "storebtn"
     else document.getElementById("sacrifice").className = "unavailablebtn"
 
     if (player.autobuyers[11]%1 !== 0 && player.autobuyers[11].interval == 100) {
@@ -5720,8 +5737,15 @@ function gameLoop(diff) {
     document.getElementById("newDimensionButton").textContent = "Get " + shortenCosts(getNewInfReq()) + " antimatter to unlock a new Dimension."
 
     document.getElementById("sacrifice").setAttribute('ach-tooltip', "Boosts 8th Dimension by " + formatValue(player.options.notation, calcSacrificeBoost(), 2, 2) + "x");
-
     document.getElementById("sacrifice").textContent = "Dimensional Sacrifice ("+formatValue(player.options.notation, calcSacrificeBoost(), 2, 2)+"x)"
+
+    if (document.getElementById("gSacrifice").style.display === "inline-block") {
+        document.getElementById("gSacrifice").innerHTML = "Galactic Sacrifice (" + formatValue(player.options.notation, getGSAmount(), 2, 0) + " IP)"
+        document.getElementById("gSacrifice").setAttribute('ach-tooltip', "Gain " + formatValue(player.options.notation, getGSAmount(), 2, 0) + " IP")
+        if (getGSAmount().gt(0)) document.getElementById("gSacrifice").className = "storebtn"
+        else document.getElementById("gSacrifice").className = "unavailablebtn"
+    }
+
     if (isNaN(player.totalmoney)) player.totalmoney = new Decimal(10)
     if (player.timestudy.studies.includes(181)) player.infinityPoints = player.infinityPoints.plus(gainedInfinityPoints().times(diff/1000))
     if (player.dilation.upgrades.includes(10)) {

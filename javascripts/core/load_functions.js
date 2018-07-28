@@ -232,7 +232,6 @@ function onLoad() {
       player.autobuyers[9].bulk = 1
   }
 
-  if (player.options.sacrificeConfirmation == false) document.getElementById("confirmation").checked = "true"
   if (player.version === undefined) { // value will need to be adjusted when update goes live
       for (var i = 0; i < player.autobuyers.length; i++) {
           if (player.autobuyers[i]%1 !== 0) player.infinityPoints = player.infinityPoints + player.autobuyers[i].cost - 1
@@ -568,18 +567,17 @@ if (player.version < 5) {
   if (player.aarexModifications.newGamePlusPlusVersion === undefined) { 
       if (player.dilation.rebuyables[4] !== undefined) {
           var migratedUpgrades = []
-          for (id=5;id<14;id++) {
-              if (player.dilation.upgrades.includes(id)) {
-                  if (id%4<1) migratedUpgrades.push("ngpp" + (id/4-1))
-                  else migratedUpgrades.push(Math.floor(id/4)*3+id%4)
-              }
-          }
+          var v2_1check=player.version>13
+          for (id=5;id<(v2_1check?18:14);id++) if (player.dilation.upgrades.includes(id)) migratedUpgrades.push(id>16?10:(id>12&&v2_1check)?("ngpp"+(id-10)):(id%4<1)?("ngpp"+(id/4-1)):Math.floor(id/4)*3+id%4)
           if (player.meta) {
               for (dim=1;dim<9;dim++) {
                   player.meta[dim].bought += player.meta[dim].tensBought * 10
                   delete player.meta[dim].tensBought
               }
-              player.aarexModifications.newGamePlusPlusVersion = 2
+              if (v2_1check) {
+                  player.version = 12.1
+                  player.aarexModifications.newGamePlusPlusVersion = 2.1
+              } else player.aarexModifications.newGamePlusPlusVersion = 2
           } else player.aarexModifications.newGamePlusPlusVersion = 1
           player.dilation.upgrades=migratedUpgrades
           resetDilationGalaxies()
@@ -590,12 +588,22 @@ if (player.version < 5) {
           var dim = player["timeDimension" + dim]
           if (Decimal.gte(dim.cost, "1e20000")) dim.cost = Decimal.pow(timeDimCostMults[dim]*2.2, dim.bought).times(timeDimStartCosts[dim]).times(Decimal.pow(new Decimal('1e1000'),Math.pow(dim.cost.log(10) / 1000 - 20, 2)))
       }
-      resetDilationGalaxies()
 
       player.meta = {resets: 0, antimatter: 10, bestAntimatter: 10}
       for (dim=1;dim<9;dim++) player.meta[dim] = {amount: 0, bought: 0, cost: initCost[dim]}
       player.aarexModifications.newGamePlusPlusVersion = 2
       $.notify('Your NG++ save has been updated because dan-simon added a new feature.', 'info')
+  }
+  if (player.aarexModifications.newGamePlusPlusVersion < 2.1) {
+      resetDilationGalaxies()
+      $.notify('NG++ was updated to include more dilation upgrades.', 'info')
+  }
+  player.aarexModifications.newGamePlusPlusVersion = 2.1
+  if (player.aarexModifications.newGameMinusMinusVersion === undefined) {
+      if ((Decimal.gt(player.postC3Reward, 1) && player.infinitied < 1 && player.eternities < 1) || (Math.round(new Decimal(player.achPow).log(5) * 100) % 100 < 1 && Decimal.gt(player.achPow, 1))) {
+          player.aarexModifications.newGameMinusMinusVersion = 1
+	      updateAchievements()
+      }
   }
 
   //updates TD costs to harsher scaling
@@ -638,13 +646,17 @@ if (player.version < 5) {
       document.getElementById("game").style.display = "none";
   }
 
-  if (player.infinitied !== 0 || player.eternities !== 0) document.getElementById("confirmations").style.display = "inline-block"
-  else document.getElementById("confirmations").style.display = "none"
-  if (player.eternities !== 0) document.getElementById("eternityconf").style.display = "inline-block"
-  else document.getElementById("eternityconf").style.display = "none"
-  if (player.dilation.studies.includes(1)) document.getElementById("dilationConfirmBtn").style.display = "inline-block"
-  else document.getElementById("dilationConfirmBtn").style.display = "none"
+  document.getElementById("confirmations").style.display = (player.resets > 4 || player.infinitied !== 0 || player.eternities !== 0) ? "inline-block" : "none"
+  document.getElementById("confirmation").style.display = (player.resets > 4 || player.infinitied > 0 || player.eternities !== 0) ? "inline-block" : "none"
+  document.getElementById("sacrifice").style.display = (player.resets > 4 || player.infinitied > 0 || player.eternities !== 0) ? "inline-block" : "none"
+  document.getElementById("gSacrifice").style.display = (player.aarexModifications.newGameMinusMinusVersion && (player.galaxies > 0 || player.infinitied > 0 || player.eternities !== 0)) ? "inline-block" : "none"
+  document.getElementById("sacConfirmBtn").style.display = (player.resets > 4 || player.infinitied > 0 || player.eternities !== 0) ? "inline-block" : "none"
+  document.getElementById("challengeconfirmation").style.display = (player.infinitied !== 0 || player.eternities !== 0) ? "inline-block" : "none"
+  document.getElementById("eternityconf").style.display = player.eternities !== 0 ? "inline-block" : "none"
+  document.getElementById("dilationConfirmBtn").style.display = player.dilation.studies.includes(1) ? "inline-block" : "none"
 
+  document.getElementById("confirmation").checked = !player.options.sacrificeConfirmation
+  document.getElementById("sacConfirmBtn").textContent = "Sacrifice confirmation: O" + (player.options.sacrificeConfirmation ? "N" : "FF")
   document.getElementById("challengeconfirmation").textContent = "Challenge confirmation: O" + (player.options.challConf ? "N" : "FF")
   document.getElementById("eternityconf").textContent = "Eternity confirmation: O" + (player.options.eternityconfirm ? "N" : "FF")
   document.getElementById("dilationConfirmBtn").textContent = "Dilation confirmation: O" + (player.aarexModifications.dilationConf ? "N" : "FF")
@@ -713,6 +725,7 @@ if (player.version < 5) {
           if (!player.aarexModifications.newGamePlusVersion) ngModeMessages.push("WARNING! You are disabling NG+ features on NG++! Standard NG++ have all of NG++ features and I recommend you to create a new save with NG+ and NG++ modes on.")
           ngModeMessages.push("Welcome to NG++ mode, made by dan-simon! In this mode, more dilation upgrades and meta-dimensions are added to push the end-game further.")
       } else if (player.aarexModifications.newGamePlusVersion) ngModeMessages.push("Welcome to NG+ mode, made by earthernsence! Right now, you start with all Eternity Challenges completed and 1 infinitied.")
+      if (player.aarexModifications.newGameMinusMinusVersion) ngModeMessages.push('Welcome to NG-- mode created by Nyan cat! Dilation is always locked but have more balancing, IC3 trap, and a new feature called "Galactic Sacrifice".')
       if (player.aarexModifications.newGameMinusVersion) ngModeMessages.push("Welcome to NG- mode! Everything are nerfed by the creator slabdrill, making the end-game harder to reach.")
       closeToolTip()
       showNextModeMessage()

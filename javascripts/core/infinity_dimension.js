@@ -40,7 +40,7 @@ function DimensionProduction(tier) {
   if (player.currentEternityChall == "eterc7") ret = ret.dividedBy(player.tickspeed.dividedBy(1000))
   if (player.challenges.includes("postc6")) {
       let tick = new Decimal(player.tickspeed)
-      if (player.dilation.active) {
+      if (player.dilation.active || player.aarexModifications.newGameMinusMinusVersion) {
         tick = Decimal.pow(10, Math.pow(Math.abs(tick.log10()), 0.75))
         if (player.dilation.upgrades.includes(9)) {
           tick = Decimal.pow(10, Math.pow(Math.abs(tick.log10()), 1.05))
@@ -98,8 +98,8 @@ function DimensionPower(tier) {
 
   if (mult.lt(0)) mult = new Decimal(0)
 
-  if (player.dilation.active) {
-    mult = Decimal.pow(10, Math.pow(mult.log10(), 0.75))
+  if (player.dilation.active || player.aarexModifications.newGameMinusMinusVersion) {
+    mult = Decimal.pow(10, Math.pow(mult.max(1).log10(), 0.75))
     if (player.dilation.upgrades.includes(9)) {
       mult = Decimal.pow(10, Math.pow(mult.log10(), 1.05))
     }

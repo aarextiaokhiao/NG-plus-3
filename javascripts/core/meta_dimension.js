@@ -6,10 +6,13 @@ function getMetaDimensionMultiplier (tier) {
   if (player.currentEternityChall === "eterc11") {
     return new Decimal(1);
   }
-  let multiplier = Decimal.pow(2, Math.floor(player.meta[tier].bought / 10)).times(Decimal.pow(2, Math.max(0, player.meta.resets - tier + 1))).times(getDilationMetaDimensionMultiplier());
-
+  let multiplier = Decimal.pow(2, Math.floor(player.meta[tier].bought / 10)).times(Decimal.pow(player.dilation.upgrades.includes("ngpp4") ? 3 : 2, Math.max(0, player.meta.resets - tier + 1))).times(getDilationMetaDimensionMultiplier());
+  if (player.dilation.upgrades.includes("ngpp3")) {
+    multiplier = multiplier.times(getDil14Bonus());
+  }
+  
   if (multiplier.lt(1)) multiplier = new Decimal(1)
-  if (player.dilation.active) {
+  if (player.dilation.active || player.aarexModifications.newGameMinusMinusVersion) {
     multiplier = Decimal.pow(10, Math.pow(multiplier.log10(), 0.75))
     if (player.dilation.upgrades.includes(11)) {
       multiplier = Decimal.pow(10, Math.pow(multiplier.log10(), 1.05))
@@ -141,5 +144,13 @@ function getMetaDimensionProduction(tier) {
 }
 
 function getExtraDimensionBoostPower() {
-	return player.meta.bestAntimatter.pow(8).plus(1)
+	return player.meta.bestAntimatter.pow(player.dilation.upgrades.includes("ngpp5") ? 10 : 8).plus(1)
+}
+
+function getDil14Bonus () {
+	return 1 + Math.log10(1 - Math.min(0, player.tickspeed.log(10)));
+}
+
+function getDil17Bonus () {
+	return 1 + Math.log10(player.meta.bestAntimatter);
 }

@@ -150,7 +150,14 @@ newsArray = [//always true
 ["Person with money likes to support this game.", "kongDimMult > 1 || kongIPMult > 1", "s3"],
 ["Whale is bad at making smart purchases.", "kongIPMult > 500 && kongDimMult < 5e307", "s4"],
 ["Whale complains that the game broke.", "kongDimMult > 5e307", "s5"],
-["Whale complains that their buying isn't doing anything.", "kongIPMult > 1.8e16", "s6"]
+["Whale complains that their buying isn't doing anything.", "kongIPMult > 1.8e16", "s6"],
+//Aarex's Modifications
+["A brave man tried NG- and NG-- modes at the same time, but he will be dead before he would complete this mode.", 'player.achievements.includes("r22") && player.aarexModifications.newGameMinusVersion && player.aarexModifications.newGameMinusMinusVersion', "am1"],
+["You would be dead if you started writing down your antimatter amount", 'player.achievements.includes("r22") && player.money.gt(Decimal.pow(10, 3 * 86400 * 365.2425 * 79.3 / 10))', "am2"],
+["If you just broke the game, the psychic helper wants you to reset the game.", 'player.achievements.includes("r22") && isNaN(break_infinity_js ? player.money.logarithm : player.money)', "am3"],
+["I wish I would create NG+++ while dan-simon is currently updating NG++ every day.", 'player.achievements.includes("r22") && player.aarexModifications.newGamePlusPlusVersion', "am4"],
+["I failed to big crunch for sacrificing my galaxies only.", 'player.achievements.includes("r22") && player.aarexModifications.newGameMinusMinusVersion', "am5"],
+["Did you just do 4 modes at once? Impossible!", 'player.achievements.includes("r22") && player.aarexModifications.newGameMinusVersion && player.aarexModifications.newGameMinusMinusVersion && player.aarexModifications.newGamePlusVersion && player.aarexModifications.newGamePlusPlusVersion', "am6"]
 ];}
 
 var s = document.getElementById('news');
