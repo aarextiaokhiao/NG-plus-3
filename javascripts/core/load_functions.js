@@ -565,7 +565,7 @@ if (player.version < 5) {
   }
   if (player.aarexModifications.newGamePlusVersion === undefined) if (player.eternities < 20 && ECTimesCompleted("eterc1") > 0) player.aarexModifications.newGamePlusVersion = 1
   if (player.aarexModifications.newGamePlusPlusVersion === undefined) { 
-      if (player.dilation.rebuyables[4] !== null) {
+      if (player.dilation.rebuyables[4] !== undefined) {
           var migratedUpgrades = []
           var v2_1check=player.version>13
           for (id=5;id<(v2_1check?18:14);id++) if (player.dilation.upgrades.includes(id)) migratedUpgrades.push(id>16?10:(id>12&&v2_1check)?("ngpp"+(id-10)):(id%4<1)?("ngpp"+(id/4-1)):Math.floor(id/4)*3+id%4)
