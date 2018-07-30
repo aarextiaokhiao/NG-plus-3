@@ -221,5 +221,5 @@ function toggleAutoEterMode() {
 
 // v2.21
 function getDil15Bonus () {
-	return ~player.dilation.upgrades.includes("ngpp4") ? 2 : Math.log(player.dilation.dilatedTime.max(1e10).min(1e100).log(10)) / Math.log(10) + 1;
+	return !player.dilation.upgrades.includes("ngpp4") ? 2 : Math.log(player.dilation.dilatedTime.max(1e10).min(1e100).log(10)) / Math.log(10) + 1;
 }
