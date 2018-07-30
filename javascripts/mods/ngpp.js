@@ -6,7 +6,8 @@ function getMetaDimensionMultiplier (tier) {
   if (player.currentEternityChall === "eterc11") {
     return new Decimal(1);
   }
-  let multiplier = Decimal.pow(2, Math.floor(player.meta[tier].bought / 10)).times(Decimal.pow(player.dilation.upgrades.includes("ngpp4") ? 4 : 2, Math.max(0, player.meta.resets - tier + 1))).times(getDilationMetaDimensionMultiplier());
+  let power = getDil15Bonus()
+  let multiplier = Decimal.pow(power, Math.floor(player.meta[tier].bought / 10)).times(Decimal.pow(power, Math.max(0, player.meta.resets - tier + 1))).times(getDilationMetaDimensionMultiplier());
   if (player.dilation.upgrades.includes("ngpp3")) {
     multiplier = multiplier.times(getDil14Bonus());
   }
@@ -216,4 +217,9 @@ function toggleAutoEterMode() {
 	else if (player.autoEterMode == "replicanti" && player.eternities >= 1e13) player.autoEterMode = "peak"
 	else if (player.autoEterMode) player.autoEterMode = "amount"
 	updateAutoEterMode()
+}
+
+// v2.21
+function getDil15Bonus () {
+	return ~player.dilation.upgrades.includes("ngpp4") ? 2 : Math.log(player.dilation.dilatedTime.max(1e10).min(1e100).log(10)) / Math.log(10) + 1;
 }

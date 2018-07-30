@@ -18,11 +18,16 @@ function resizeCanvas() {
     canvas.height = 0;
     canvas3.width = 0;
     canvas3.height = 0;
+    msc.width = 0;
+    msc.height = 0;
     canvas.width = document.body.scrollWidth;
     canvas.height = document.body.scrollHeight;
     canvas3.width = document.body.scrollWidth;
     canvas3.height = document.body.scrollHeight;
+    msc.width = document.body.scrollWidth;
+    msc.height = document.body.scrollHeight;
     drawStudyTree();
+    drawMasteryTree();
 }
 
 function point(x, y, ctz){
@@ -127,7 +132,7 @@ function drawTreeBranch(num1, num2) {
             ctx.strokeStyle="#000000";
         }
     } else {
-        if (name2 == 6 && player.options.theme == "Aarex's Modifications") {
+        if (name2 == 6 && isDilStudyName && player.options.theme == "Aarex's Modifications") {
             ctx.strokeStyle="#007272";
         } else if (name2 < 20) {
             ctx.strokeStyle="#4b3753";

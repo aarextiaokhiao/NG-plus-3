@@ -303,13 +303,13 @@ strong { color: #0072e5 }
 #galaxyThreshold, #dilatedGalaxies {
     color: #0072e5 !important
 }
-#dilationTabbtn, .dilationbtn, .dilationupg, .dilationupgrebuyable {
+#dilationTabbtn button, .dilationbtn, .dilationupg, .dilationupgrebuyable {
     background-color: #191919 !important;
     color: #e5e5e5 !important;
     border-color: #72e572 !important;
     animation: none
 }
-#dilationTabbtn:hover, .dilationbtn:hover, .dilationupg:hover, .dilationupgrebuyable:hover {
+#dilationTabbtn button:hover, .dilationbtn:hover, .dilationupg:hover, .dilationupgrebuyable:hover {
     background-color: #72e572 !important;
     color: #191919 !important;
     animation: none
@@ -319,10 +319,10 @@ strong { color: #0072e5 }
     color: #191919 !important;
     border-color: #191919 !important
 }
-#dilstudy6.dilationupg, #mdtabbtn .secondarytabbtn, #metadimensions .storebtn, #dil14.dilationupg, #dil15.dilationupg, #dil16.dilationupg, #dil17.dilationupg, #masteryportal, #masterystudyunlock, #masterystudies .dilationupg {
+#dilstudy6.dilationupg, #mdtabbtn .secondarytabbtn, #metadimensions .storebtn, #dil14.dilationupg, #dil15.dilationupg, #dil16.dilationupg, #dil17.dilationupg, #masteryportal, #masterystudyunlock button, #masterystudies .dilationupg {
     border-color: #00e5e5 !important
 }
-#dilstudy6.dilationupg:hover, #mdtabbtn .secondarytabbtn:hover, #metadimensions .storebtn:hover, #dil13.dilationupg:hover, #dil14.dilationupg:hover, #dil15.dilationupg:hover, #dil16.dilationupg:hover, #masteryportal:hover, #masterystudyunlock:hover, #masterystudies .dilationupg:hover {
+#dilstudy6.dilationupg:hover, #mdtabbtn .secondarytabbtn:hover, #metadimensions .storebtn:hover, #dil13.dilationupg:hover, #dil14.dilationupg:hover, #dil15.dilationupg:hover, #dil16.dilationupg:hover, #masteryportal:hover, #masterystudyunlock button:hover, #masterystudies .dilationupg:hover {
     background-color: #00e5e5 !important
 }
 #dilstudy6.dilationupgbought, #dil14.dilationupgbought, #dil15.dilationupgbought, #dil16.dilationupgbought, #dil17.dilationupgbought, #masterystudies .dilationupgbought {

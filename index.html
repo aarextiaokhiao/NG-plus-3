@@ -77,10 +77,10 @@
             <table class="table" align="center" style="margin: auto">
                 <tr>
                     <td><button class="secondarytabbtn" onclick="showEternityTab('timestudies')">Time studies</button></td>
-                    <td><button class="secondarytabbtn" id="masterystudyunlock" onclick="showEternityTab('masterystudies')">Mastery studies</button></td>
+                    <td id="masterystudyunlock"><button class="secondarytabbtn" onclick="showEternityTab('masterystudies')">Mastery studies</button></td>
                     <td><button class="secondarytabbtn" onclick="showEternityTab('eternityupgrades')">Eternity upgrades</button></td>
                     <td><button class="secondarytabbtn" onclick="showEternityTab('milestones')">Eternity milestones</button></td>
-                    <td><button class="secondarytabbtn" onclick="showEternityTab('dilation')" id="dilationTabbtn">Time dilation</button></td>
+                    <td id="dilationTabbtn"><button class="secondarytabbtn" onclick="showEternityTab('dilation')">Time dilation</button></td>
                 </tr>
             </table>
             <div style="display: none;"><textarea id="treeExportOutput" style="color:black; width: 200px; height: 55px;"></textarea></div>
@@ -321,10 +321,9 @@
                     <td><button class="storebtn" onclick="respecToggle()" id="respec2" style="width:150px; height: 40px; font-size: 10px; margin: auto">Respec time studies on next Eternity</button><td>
                     <td><button class="storebtn" onclick="importStudyTree()" style="width:150px; height: 40px; font-size: 10px; margin: auto">Import tree</button><td>
                 </tr>
-                <br><span>NOTE: Outlines are coming soon until the next update comes.</span><br>
                 <table class="table" id="studytable">
                     <tr>
-                        <td><button class="dilationupg" onclick="showEternityTab('timestudies')">Lead back to time studies.</button></td>
+                        <td><button class="dilationupg" id="back" onclick="showEternityTab('timestudies')">Lead back to time studies.</button></td>
                     </tr>
                 </table>
                 <table class="table" id="studytable">
@@ -611,7 +610,7 @@
                             <button class="timestudy" id="dil14" onclick="buyDilationUpgrade(14)">Gain a multiplier to meta-dimensions based on tickspeed (1 + log(1 + log(x))).<br><span id="dil14desc"></span><br><span id="dil14cost"></span></button>
                         </td>
                         <td>
-                            <button class="timestudy" id="dil15" onclick="buyDilationUpgrade(15)">Meta-dimension shifts and boosts are 4x (from 2x).<br><span id="dil15cost"></span></button>
+                            <button class="timestudy" id="dil15" onclick="buyDilationUpgrade(15)">Meta-dimension shifts, boosts, and per-ten upgrades are boosted by dilated time.<br><span id="dil15desc"></span><br><span id="dil15cost"></span></button>
                         </td>
                         <td>
                             <button class="timestudy" id="dil16" onclick="buyDilationUpgrade(16)">Meta-antimatter effect on dimension boosts is stronger.<br><span id="dil16cost"></span></button>
@@ -1239,7 +1238,7 @@
                 </tr>
                 <tr>
                     <td></td>
-                    <td><div><button id="decimalMode" onclick="switchDecimalMode()" class="storebtn" style="color:black; width: 200px; height: 55px; font-size: 12px"></button></div></td>
+                    <td><div><button id="decimalMode" onclick="switchDecimalMode()" class="storebtn" style="color:black; width: 200px; height: 55px"></button></div></td>
                     <td></td>
                 </tr>
             </table>
@@ -2910,16 +2909,16 @@
 <script type="text/javascript" src="javascripts/core/normal_dimension.js?3"></script>
 <script type="text/javascript" src="javascripts/core/infinity_dimension.js?1"></script>
 <script type="text/javascript" src="javascripts/core/time_dimension.js?3"></script>
-<script type="text/javascript" src="javascripts/core/dimboost.js?4"></script>
+<script type="text/javascript" src="javascripts/core/dimboost.js?5"></script>
 <script type="text/javascript" src="javascripts/core/timestudies.js?5"></script>
-<script type="text/javascript" src="javascripts/core/canvases.js?2"></script>
+<script type="text/javascript" src="javascripts/core/canvases.js?3"></script>
 <script type="text/javascript" src="javascripts/core/devtools.js"></script>
-<script type="text/javascript" src="javascripts/core/load_functions.js?8"></script>
+<script type="text/javascript" src="javascripts/core/load_functions.js?9"></script>
 <script type="text/javascript" src="javascripts/core/newsticker.js?1"></script>
 <script type="text/javascript" src="javascripts/mods/ngmm.js"></script>
-<script type="text/javascript" src="javascripts/mods/ngpp.js"></script>
-<script type="text/javascript" src="javascripts/mods/ngppp.js"></script>
-<script type="text/javascript" src="javascripts/game.js?14"></script>
+<script type="text/javascript" src="javascripts/mods/ngpp.js?1"></script>
+<script type="text/javascript" src="javascripts/mods/ngppp.js?1"></script>
+<script type="text/javascript" src="javascripts/game.js?15"></script>
 <script type="text/javascript" src="javascripts/sha512.js"></script>
 
 

@@ -23,8 +23,9 @@ function softReset(bulk) {
   }
   if (player.dilation.upgrades.includes("ngpp3") && player.eternities >= 1e9 && player.aarexModifications.newGame3PlusVersion){
       var power = player[TIER_NAMES[tier] + 'Pow']
-	  var dimensionBoostPower = new Decimal(getDimensionBoostPower())
-      for (tier = 1; tier < 9; tier++) player[TIER_NAMES[tier] + 'Pow'] = player[TIER_NAMES[tier] + 'Pow'].times(dimensionBoostPower.pow(Math.max(player.resets + 1 - tier, 0) - Math.max(oldResets + 1 - tier, 0)))
+      var temp = new Decimal(getDimensionBoostPower())
+      for (tier = 1; tier < 9; tier++) player[TIER_NAMES[tier] + 'Pow'] = player[TIER_NAMES[tier] + 'Pow'].div(player.dbPower.pow(Math.max(oldResets + 1 - tier, 0))).times(temp.pow(Math.max(player.resets + 1 - tier, 0)))
+      player.dbPower = temp
       return
   }
   player = {
@@ -75,6 +76,7 @@ function softReset(bulk) {
       seventhPow: player.seventhPow,
       eightPow: player.eighthPow,
       resets: player.resets,
+      dbPower: player.dbPower,
       galaxies: player.galaxies,
       galaxyPoints: player.galaxyPoints,
       tickDecrease: player.tickDecrease,

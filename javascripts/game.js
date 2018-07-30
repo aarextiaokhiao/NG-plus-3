@@ -332,7 +332,7 @@ function updateNewPlayer(reseted) {
         player.aarexModifications.newGamePlusVersion = 1
     }
     if (modesChosen.ngpp) {
-        player.aarexModifications.newGamePlusPlusVersion = 2.2
+        player.aarexModifications.newGamePlusPlusVersion = 2.21
         player.autoEterMode = "amount"
         player.dilation.rebuyables[4] = 0
         player.meta = {resets: 0, antimatter: 10, bestAntimatter: 10}
@@ -343,7 +343,8 @@ function updateNewPlayer(reseted) {
         player.galaxyPoints = 0
     }
     if (modesChosen.ngpp > 1) {
-        player.aarexModifications.newGame3PlusVersion = 1
+        player.aarexModifications.newGame3PlusVersion = 1.01
+        player.dbPower = new Decimal(1)
         player.peakSpent = 0
         player.masterystudies = []
         player.autoEterOptions = {}
@@ -1964,6 +1965,7 @@ function galaxyReset() {
         bestInfinityTime: player.bestInfinityTime,
         thisInfinityTime: player.thisInfinityTime,
         resets: 0,
+        dbPower: player.dbPower ? new Decimal(1) : undefined,
         galaxies: player.galaxies + 1,
         galaxyPoints: player.galaxyPoints,
         totalmoney: player.totalmoney,
@@ -3256,6 +3258,7 @@ document.getElementById("bigcrunch").onclick = function () {
             bestInfinityTime: (player.currentEternityChall !== "eterc12") ? Math.min(player.bestInfinityTime, player.thisInfinityTime) : player.bestInfinityTime,
             thisInfinityTime: 0,
             resets: 0,
+            dbPower: player.dbPower ? new Decimal(1) : undefined,
             galaxies: 0,
             galaxyPoints: player.galaxyPoints ? new Decimal(0) : undefined,
             tickDecrease: 0.9,
@@ -3561,6 +3564,7 @@ function eternity(force, auto) {
             bestInfinityTime: 9999999999,
             thisInfinityTime: 0,
             resets: (player.eternities > 2) ? 4 : 0,
+            dbPower: player.dbPower ? new Decimal(1) : undefined,
             galaxies: (player.eternities > 2) ? 1 : 0,
             galaxyPoints: player.galaxyPoints ? new Decimal(0) : undefined,
             tickDecrease: 0.9,
@@ -3802,8 +3806,17 @@ function eternity(force, auto) {
             loadAutoBuyerSettings()
         }
         Marathon2 = 0;
-        for (d=1;d<9;d++) if (player.autoEterOptions["td"+d]) while (buyTimeDimension(d)) {}
-        if (player.autoEterOptions.epmult) buyMaxEPMult()
+        if (player.aarexModifications.newGame3PlusVersion) {
+            for (d=1;d<9;d++) {
+                try {
+                    if (player.autoEterOptions["td"+d]) while (buyTimeDimension(d)) {}
+                } catch (_) {}
+            }
+            try {
+                if (player.autoEterOptions.epmult) buyMaxEPMult()
+            } catch (_) {}
+            if (player.dilation.upgrades.includes("ngpp3")&&player.eternities>=1e9) player.dbPower=new Decimal(1)
+        }
     }
 }
 
@@ -3874,6 +3887,7 @@ function startChallenge(name, target) {
       bestInfinityTime: player.bestInfinityTime,
       thisInfinityTime: 0,
       resets: 0,
+      dbPower: player.dbPower ? new Decimal(1) : undefined,
       galaxies: 0,
       galaxyPoints: player.galaxyPoints ? new Decimal(0) : undefined,
       tickDecrease: 0.9,
@@ -4368,6 +4382,7 @@ function startEternityChallenge(name, startgoal, goalIncrease) {
             bestInfinityTime: 9999999999,
             thisInfinityTime: 0,
             resets: (player.eternities > 2) ? 4 : 0,
+            dbPower: player.dbPower ? new Decimal(1) : undefined,
             galaxies: (player.eternities > 2) ? 1 : 0,
             galaxyPoints: player.galaxyPoints ? new Decimal(0) : undefined,
             tickDecrease: 0.9,
@@ -4591,8 +4606,7 @@ function startEternityChallenge(name, startgoal, goalIncrease) {
         document.getElementById("eternityPoints2").innerHTML = "You have <span class=\"EPAmount2\">"+shortenDimensions(player.eternityPoints)+"</span> Eternity point"+((player.eternityPoints.eq(1)) ? "." : "s.")
         updateEternityChallenges()
         Marathon2 = 0;
-
-
+        if (player.aarexModifications.newGame3PlusVersion&&player.dilation.upgrades.includes("ngpp3")&&player.eternities>=1e9) player.dbPower=new Decimal(1)
     }
 }
 
@@ -4651,8 +4665,11 @@ function buyDilationUpgrade(id, costInc) {
         player.dilation.dilatedTime = player.dilation.dilatedTime.minus(DIL_UPG_COSTS[id])
         player.dilation.upgrades.push(id > 11 ? "ngpp" + (id - 11) : id)
         if (id == 4) player.dilation.freeGalaxies *= 2 // Double the current galaxies
-        if (id == 13) updateMilestones()
-        if (id == 14 && player.aarexModifications.newGame3PlusVersion) document.getElementById("masterystudyunlock").style.display=""
+        if (id == 14) {
+            updateMilestones()
+            if (player.aarexModifications.newGame3PlusVersion&&player.eternities>=1e9) player.dbPower=new Decimal(getDimensionBoostPower())
+        }
+        if (id == 15 && player.aarexModifications.newGame3PlusVersion) document.getElementById("masterystudyunlock").style.display=""
     } else { // Is rebuyable
         let realCost = getRebuyableDilUpgCost(id > 3 ? 4 : id)
         if (player.dilation.dilatedTime.lt(realCost)) return
@@ -4690,6 +4707,7 @@ function updateDilationUpgradeButtons() {
     if (player.dilation.studies.includes(6)) {
         document.getElementById("mddilupg").style.display = ""
         document.getElementById("dil14desc").textContent = "Currently: "+shortenMoney(getDil14Bonus()) + 'x';
+        document.getElementById("dil15desc").textContent = "Currently: "+shortenMoney(getDil15Bonus()) + 'x';
         document.getElementById("dil17desc").textContent = "Currently: "+shortenMoney(getDil17Bonus()) + 'x';
     } else document.getElementById("mddilupg").style.display = "none"
 }
@@ -5039,7 +5057,7 @@ setInterval(function() {
     if (Math.random() < 0.00001) giveAchievement("Do you feel lucky? Well do ya punk?")
     if ((player.matter.gte(2.586e15) && player.currentChallenge == "postc6") || player.matter.gte(Number.MAX_VALUE)) giveAchievement("It's not called matter dimensions is it?")
 
-    document.getElementById("dilationTabbtn").style.display = (player.dilation.studies.includes(1)) ? "inline-block" : "none"
+    document.getElementById("dilationTabbtn").style.display = (player.dilation.studies.includes(1)) ? "table-cell" : "none"
     updateDilationUpgradeButtons()
 
     if (player.infinityDimension1.baseAmount == 0 &&

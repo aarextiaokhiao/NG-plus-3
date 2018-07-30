@@ -561,9 +561,9 @@ if (player.version < 5) {
       for (i=1;i<=8;i++) player["timeDimension"+i].power = player["timeDimension"+i].power.div(pow_div[i]);
       if (player.eternityChalls.eterc11 == 1) delete player.eternityChalls.eterc11
       else player.eternityChalls.eterc11--
-      player.aarexModifications.newGameMinusVersion = 2.2
       $.notify('Your NG- save has been updated due to few balancing issues.', 'info')
   }
+  if (player.aarexModifications.newGameMinusVersion < 2.21) player.aarexModifications.newGameMinusVersion = 2.21
   if (player.aarexModifications.newGamePlusVersion === undefined) if (player.eternities < 20 && ECTimesCompleted("eterc1") > 0) player.aarexModifications.newGamePlusVersion = 1
   if (player.aarexModifications.newGamePlusPlusVersion === undefined) { 
       if (player.dilation.rebuyables[4] !== undefined) {
@@ -606,6 +606,10 @@ if (player.version < 5) {
       resetDilationGalaxies()
   }
   if (player.dilation.rebuyables[4] == null) delete player.aarexModifications.newGamePlusPlusVersion
+  if (player.aarexModifications.newGame3PlusVersion < 1.01) {
+      player.aarexModifications.dbPower = new Decimal(getDimensionBoostPower())
+      player.aarexModifications.newGame3PlusVersion = 1.01
+  }
   if (player.aarexModifications.newGameMinusMinusVersion === undefined) {
       if (player.galaxyPoints) player.aarexModifications.newGameMinusMinusVersion = 1.1
       else if ((Decimal.gt(player.postC3Reward, 1) && player.infinitied < 1 && player.eternities < 1) || (Math.round(new Decimal(player.achPow).log(5) * 100) % 100 < 1 && Decimal.gt(player.achPow, 1))) player.aarexModifications.newGameMinusMinusVersion = 1
@@ -703,7 +707,7 @@ if (player.version < 5) {
 
   if (!player.options.hotkeys) document.getElementById("hotkeys").textContent = "Enable hotkeys"
 
-  document.getElementById("decimalMode").innerHTML = "Decimal mode: "+(player.aarexModifications.breakInfinity?"Inperformance and accurate":"Performance and inaccurate")
+  document.getElementById("decimalMode").innerHTML = "Decimal mode: "+(player.aarexModifications.breakInfinity?"Slow but accurate":"Fast but inaccurate")
 
   document.getElementById("secretstudy").style.opacity = 0
   document.getElementById("secretstudy").style.cursor = "pointer"
@@ -842,12 +846,18 @@ function rename_save(id) {
 function move(id,offset) {
 	placement=0
 	while (metaSave.saveOrder[placement]!=id) placement++
-	if (offset<0) if (placement<-offset) return
-	else if (placement>metaSave.saveOrder.length-offset-1) return
+	if (offset<0) {
+		if (placement<-offset) return
+	} else if (placement>metaSave.saveOrder.length-offset-1) return
 	var temp=metaSave.saveOrder[placement]
 	if (temp==metaSave.current) savePlacement+=offset
+	if (metaSave.saveOrder[placement+offset]==metaSave.current) savePlacement-=offset
 	metaSave.saveOrder[placement]=metaSave.saveOrder[placement+offset]
 	metaSave.saveOrder[placement+offset]=temp
+	document.getElementById("saves").rows[placement].innerHTML=getSaveLayout(metaSave.saveOrder[placement])
+	document.getElementById("saves").rows[placement+offset].innerHTML=getSaveLayout(id)
+	changeSaveDesc(metaSave.saveOrder[placement], placement+1)
+	changeSaveDesc(id, placement+offset+1)
 	localStorage.setItem("AD_aarexModifications",btoa(JSON.stringify(metaSave)))
 }
 
@@ -889,7 +899,7 @@ function new_game(id) {
 	localStorage.setItem("AD_aarexModifications",btoa(JSON.stringify(metaSave)))
 	changeSaveDesc(oldId, savePlacement)
 	latestRow=document.getElementById("saves").insertRow(loadedSaves)
-	latestRow.innerHTML = getSaveLayout(metaSave.current)
+	latestRow.innerHTML=getSaveLayout(metaSave.current)
 	loadedSaves++
 	changeSaveDesc(metaSave.current, loadedSaves)
 	savePlacement=loadedSaves
@@ -1030,6 +1040,10 @@ function transformSaveToDecimal() {
   player.dilation.dilatedTime = new Decimal(player.dilation.dilatedTime)
   player.dilation.totalTachyonParticles = new Decimal(player.dilation.totalTachyonParticles)
   player.dilation.nextThreshold = new Decimal(player.dilation.nextThreshold)
+
+  if (player.aarexModifications.newGame3PlusVersion) {
+      player.dbPower = new Decimal(player.dbPower)
+  }
 }
 
 
