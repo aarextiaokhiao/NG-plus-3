@@ -16,8 +16,17 @@ function getDimensionBoostPower() {
 function softReset(bulk) {
   //if (bulk < 1) bulk = 1 (fixing issue 184)
   if (!player.break && player.money.gt(Number.MAX_VALUE)) return;
+  var oldResets = player.resets
   player.resets+=bulk;
-  if (bulk >= 750) giveAchievement("Costco sells dimboosts now");
+  if (player.resets >= 10) {
+      giveAchievement("Boosting to the max");
+  }
+  if (player.dilation.upgrades.includes("ngpp3") && player.eternities >= 1e9 && player.aarexModifications.newGame3PlusVersion){
+      var power = player[TIER_NAMES[tier] + 'Pow']
+	  var dimensionBoostPower = new Decimal(getDimensionBoostPower())
+      for (tier = 1; tier < 9; tier++) player[TIER_NAMES[tier] + 'Pow'] = player[TIER_NAMES[tier] + 'Pow'].times(dimensionBoostPower.pow(Math.max(player.resets + 1 - tier, 0) - Math.max(oldResets + 1 - tier, 0)))
+      return
+  }
   player = {
       money: player.achievements.includes("r111") ? player.money : new Decimal(10),
       tickSpeedCost: new Decimal(1000),
@@ -67,6 +76,7 @@ function softReset(bulk) {
       eightPow: player.eighthPow,
       resets: player.resets,
       galaxies: player.galaxies,
+      galaxyPoints: player.galaxyPoints,
       tickDecrease: player.tickDecrease,
       totalmoney: player.totalmoney,
       interval: null,
@@ -143,6 +153,7 @@ function softReset(bulk) {
       autoTime: player.autoTime,
       infMultBuyer: player.infMultBuyer,
       autoCrunchMode: player.autoCrunchMode,
+      autoEterMode: player.autoEterMode,
       respec: player.respec,
       eternityBuyer: player.eternityBuyer,
       eterc8ids: player.eterc8ids,
@@ -215,10 +226,6 @@ if (player.currentChallenge == "postc2") {
   if (player.achievements.includes("r54")) player.money = new Decimal(2e5).max(player.money);
   if (player.achievements.includes("r55")) player.money = new Decimal(1e10).max(player.money);
   if (player.achievements.includes("r78")) player.money = new Decimal(1e25).max(player.money);
-
-  if (player.resets >= 10) {
-      giveAchievement("Boosting to the max");
-  }
 }
 
 function setInitialDimensionPower () {
@@ -237,10 +244,10 @@ function maxBuyDimBoosts(manual) {
 			var sr = getShiftRequirement(3 - player.resets)
 			var ut = Math.min(bought, (player.galaxies >= player.overXGalaxies || manual) ? 1/0 : player.autobuyers[9].priority)
 			r = Math.floor((ut - sr.amount) / sr.mult + 5)
-			if (r > 2e5) {
+			if (r > 3e5) {
 				var b = 2 + sr.mult
-				var solution = (-b + Math.sqrt(b * b + 8 * ((r + 1) / 2e4 - 10) * sr.mult)) / 4
-				var setPoint = 2e5 + 2e4 * Math.floor(solution)
+				var solution = (-b + Math.sqrt(b * b + 8 * ((r + 1) / 3e4 - 10) * sr.mult)) / 4
+				var setPoint = 3e5 + 3e4 * Math.floor(solution)
 				sr = getShiftRequirement(setPoint - player.resets)
 				r = Math.floor((ut - sr.amount) / sr.mult + setPoint + 1)
 			}
@@ -265,10 +272,10 @@ function getShiftRequirement(bulk) {
 
   if (player.currentEternityChall == "eterc5") {
       amount += Math.pow(resetNum, 3) + resetNum
-  } else if (resetNum >= 2e5) {
-      var displacement = Math.ceil((resetNum - 2e5 + 1) / 2e4)
-      var offset = resetNum % 2e4 + 1
-      amount += displacement * (displacement - 1) * 4e4 + offset * displacement * 4
+  } else if (resetNum >= 3e5) {
+      var displacement = Math.ceil((resetNum - 3e5 + 1) / 3e4)
+      var offset = resetNum % 3e4 + 1
+      amount += displacement * (displacement - 1) * 6e4 + offset * displacement * 4
       mult += displacement * 4
   }
 

@@ -263,6 +263,7 @@ function updateTimeStudyButtons() {
     else document.getElementById("dilstudy"+i).className = "timestudylocked"
   }
   document.getElementById("dilstudy6").style.display = player.meta ? "" : "none"
+  document.getElementById("masteryportal").style.display = player.dilation.upgrades.includes("ngpp4") && player.aarexModifications.newGame3PlusVersion ? "" : "none"
 }
 
 function studiesUntil(id) {

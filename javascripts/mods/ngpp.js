@@ -6,7 +6,7 @@ function getMetaDimensionMultiplier (tier) {
   if (player.currentEternityChall === "eterc11") {
     return new Decimal(1);
   }
-  let multiplier = Decimal.pow(2, Math.floor(player.meta[tier].bought / 10)).times(Decimal.pow(player.dilation.upgrades.includes("ngpp4") ? 3 : 2, Math.max(0, player.meta.resets - tier + 1))).times(getDilationMetaDimensionMultiplier());
+  let multiplier = Decimal.pow(2, Math.floor(player.meta[tier].bought / 10)).times(Decimal.pow(player.dilation.upgrades.includes("ngpp4") ? 4 : 2, Math.max(0, player.meta.resets - tier + 1))).times(getDilationMetaDimensionMultiplier());
   if (player.dilation.upgrades.includes("ngpp3")) {
     multiplier = multiplier.times(getDil14Bonus());
   }
@@ -153,4 +153,67 @@ function getDil14Bonus () {
 
 function getDil17Bonus () {
 	return Math.log10(player.meta.bestAntimatter);
+}
+
+function updateMetaDimensions () {
+	document.getElementById("metaAntimatterAmount").textContent = shortenMoney(player.meta.antimatter);
+	document.getElementById("metaAntimatterBest").textContent = shortenMoney(player.meta.bestAntimatter);
+	document.getElementById("metaAntimatterEffect").textContent = shortenMoney(getExtraDimensionBoostPower())
+	document.getElementById("metaAntimatterPerSec").textContent = 'You are getting ' + shortenDimensions(getMetaDimensionProduction(1)) + ' meta-antimatter per second.';
+	for (let tier = 1; tier <= 8; ++tier) {
+		if (!canBuyMetaDimension(tier) && document.getElementById(tier + "MetaRow").style.display !== "table-row") {
+			break;
+		}
+		document.getElementById(tier + "MetaD").childNodes[0].nodeValue = DISPLAY_NAMES[tier] + " Meta Dimension x" + formatValue(player.options.notation, getMetaDimensionMultiplier(tier), 1, 1);
+		document.getElementById("meta" + tier + "Amount").textContent = getMetaDimensionDescription(tier);
+	}
+	for (let tier = 1; tier <= 8; ++tier) {
+		if (!canBuyMetaDimension(tier)) {
+			break;
+		}
+		document.getElementById(tier + "MetaRow").style.display = "table-row";
+		document.getElementById(tier + "MetaRow").style.visibility = "visible";
+	}
+	for (let tier = 1; tier <= 8; ++tier) {
+		document.getElementById('meta' + tier).className = canAffordMetaDimension(player.meta[tier].cost) ? 'storebtn' : 'unavailablebtn';
+		document.getElementById('metaMax' + tier).className = canAffordMetaDimension(getMetaMaxCost(tier)) ? 'storebtn' : 'unavailablebtn';
+	}
+	var isMetaShift = player.meta.resets < 4
+	var metaShiftRequirement = getMetaShiftRequirement()
+        document.getElementById("metaResetLabel").textContent = 'Meta-Dimension ' + (isMetaShift ? "Shift" : "Boost") + ' ('+ getFullExpansion(player.meta.resets) +'): requires ' + getFullExpansion(metaShiftRequirement.amount) + " " + DISPLAY_NAMES[metaShiftRequirement.tier] + " Meta Dimensions"
+        document.getElementById("metaSoftReset").textContent = "Reset meta-dimensions for " + (isMetaShift ? "a new dimension" : "the boost")
+	if (player.meta[metaShiftRequirement.tier].bought >= metaShiftRequirement.amount) {
+		document.getElementById("metaSoftReset").className = 'storebtn';
+	} else {
+		document.getElementById("metaSoftReset").className = 'unavailablebtn';
+	}
+}
+
+// v2.2
+function updateAutoEterMode() {
+	if (player.autoEterMode == "time") {
+		document.getElementById("toggleautoetermode").textContent = "Auto eternity mode: time"
+		document.getElementById("eterlimittext").textContent = "Seconds between eternities:"
+	} else if (player.autoEterMode == "relative") {
+		document.getElementById("toggleautoetermode").textContent = "Auto eternity mode: X times last eternity"
+		document.getElementById("eterlimittext").textContent = "X times last eternity:"
+	} else if (player.autoEterMode == "replicanti") {
+		document.getElementById("toggleautoetermode").textContent = "Auto eternity mode: replicanti"
+		document.getElementById("eterlimittext").textContent = "Amount of replicanti to wait until reset:"
+	} else if (player.autoEterMode == "peak") {
+		document.getElementById("toggleautoetermode").textContent = "Auto eternity mode: peak"
+		document.getElementById("eterlimittext").textContent = "Seconds to wait after latest peak gain:"
+	} else {
+		document.getElementById("toggleautoetermode").textContent = "Auto eternity mode: amount"
+		document.getElementById("eterlimittext").textContent = "Amount of EP to wait until reset:"
+	}
+}
+
+function toggleAutoEterMode() {
+	if (player.autoEterMode == "amount") player.autoEterMode = "time"
+	else if (player.autoEterMode == "time") player.autoEterMode = "relative"
+	else if (player.autoEterMode == "relative" && player.dilation.upgrades.includes("ngpp3") && player.eternities >= 4e11 && player.aarexModifications.newGame3PlusVersion) player.autoEterMode = "replicanti"
+	else if (player.autoEterMode == "replicanti" && player.eternities >= 1e13) player.autoEterMode = "peak"
+	else if (player.autoEterMode) player.autoEterMode = "amount"
+	updateAutoEterMode()
 }

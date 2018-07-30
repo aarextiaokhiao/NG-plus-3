@@ -138,11 +138,11 @@ strong { color: #0072e5 }
     border-color: #e2bd00 !important;
     border-radius: 0px !important
 }
-#eternitybtn, #eternitystorebtn, #pasteternities, #tdtabbtn button, #timedimensions table .storebtn, .eternityupbtn, .milestonereward, .timestudy, #eterctabbtn {
+#eternitybtn, #eternitystorebtn, #pasteternities, #tdtabbtn button, #timedimensions td:nth-child(4) .storebtn, .eternityupbtn, .milestonereward, .timestudy, #eterctabbtn {
     border-color: #7100e2 !important;
     animation: none
 }
-#eternitybtn:hover, #eternitystorebtn:hover, #pasteternities:hover, #tdtabbtn button:hover, #timedimensions table .storebtn:hover, .timestudy:hover, #eterctabbtn:hover {
+#eternitybtn:hover, #eternitystorebtn:hover, #pasteternities:hover, #tdtabbtn button:hover, #timedimensions td:nth-child(4) .storebtn:hover, .timestudy:hover, #eterctabbtn:hover {
     background-color: #7100e2 !important
 }
 #TTbuttons {
@@ -158,7 +158,7 @@ strong { color: #0072e5 }
     font-family:'Inconsolata', monospace !important;
     border-radius: 0px
 }
-#timestudies #footer {
+#timestudies #footer, #masterystudies #footer {
     display:block;
     visibility:hidden
 }
@@ -319,13 +319,13 @@ strong { color: #0072e5 }
     color: #191919 !important;
     border-color: #191919 !important
 }
-#dilstudy6.dilationupg, #mdtabbtn .secondarytabbtn, #metadimensions .storebtn, #dil14.dilationupg, #dil15.dilationupg, #dil16.dilationupg, #dil17.dilationupg {
+#dilstudy6.dilationupg, #mdtabbtn .secondarytabbtn, #metadimensions .storebtn, #dil14.dilationupg, #dil15.dilationupg, #dil16.dilationupg, #dil17.dilationupg, #masteryportal, #masterystudyunlock, #masterystudies .dilationupg {
     border-color: #00e5e5 !important
 }
-#dilstudy6.dilationupg:hover, #mdtabbtn .secondarytabbtn:hover, #metadimensions .storebtn:hover, #dil13.dilationupg:hover, #dil14.dilationupg:hover, #dil15.dilationupg:hover, #dil16.dilationupg:hover {
+#dilstudy6.dilationupg:hover, #mdtabbtn .secondarytabbtn:hover, #metadimensions .storebtn:hover, #dil13.dilationupg:hover, #dil14.dilationupg:hover, #dil15.dilationupg:hover, #dil16.dilationupg:hover, #masteryportal:hover, #masterystudyunlock:hover, #masterystudies .dilationupg:hover {
     background-color: #00e5e5 !important
 }
-#dilstudy6.dilationupgbought, #dil14.dilationupgbought, #dil15.dilationupgbought, #dil16.dilationupgbought, #dil17.dilationupgbought {
+#dilstudy6.dilationupgbought, #dil14.dilationupgbought, #dil15.dilationupgbought, #dil16.dilationupgbought, #dil17.dilationupgbought, #masterystudies .dilationupgbought {
 	background-color: #00e5e5 !important;
     color: #191919 !important;
 	border-color: #191919 !important

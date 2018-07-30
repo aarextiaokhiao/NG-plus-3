@@ -127,7 +127,7 @@ function drawTreeBranch(num1, num2) {
             ctx.strokeStyle="#000000";
         }
     } else {
-        if (name2 == 6 && isDilStudyName && player.options.theme == "Aarex's Modifications") {
+        if (name2 == 6 && player.options.theme == "Aarex's Modifications") {
             ctx.strokeStyle="#007272";
         } else if (name2 < 20) {
             ctx.strokeStyle="#4b3753";
@@ -246,6 +246,7 @@ function drawStudyTree() {
     drawTreeBranch("dilstudy3", "dilstudy4")
     drawTreeBranch("dilstudy4", "dilstudy5")
     if (player.meta) drawTreeBranch("dilstudy5", "dilstudy6")
+    if (player.dilation.upgrades.includes("ngpp4") && player.aarexModifications.newGame3PlusVersion) drawTreeBranch("dilstudy6", "masteryportal")
     if (shiftDown && document.getElementById("eternitystore").style.display !== "none" && document.getElementById("timestudies").style.display !== "none") {
         for (i=0; i<all.length; i++) {
             var start = document.getElementById(all[i]).getBoundingClientRect();

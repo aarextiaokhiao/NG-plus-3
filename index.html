@@ -77,13 +77,14 @@
             <table class="table" align="center" style="margin: auto">
                 <tr>
                     <td><button class="secondarytabbtn" onclick="showEternityTab('timestudies')">Time studies</button></td>
+                    <td><button class="secondarytabbtn" id="masterystudyunlock" onclick="showEternityTab('masterystudies')">Mastery studies</button></td>
                     <td><button class="secondarytabbtn" onclick="showEternityTab('eternityupgrades')">Eternity upgrades</button></td>
                     <td><button class="secondarytabbtn" onclick="showEternityTab('milestones')">Eternity milestones</button></td>
                     <td><button class="secondarytabbtn" onclick="showEternityTab('dilation')" id="dilationTabbtn">Time dilation</button></td>
                 </tr>
             </table>
+            <div style="display: none;"><textarea id="treeExportOutput" style="color:black; width: 200px; height: 55px;"></textarea></div>
             <div class="eternitytab" id="timestudies" style="font-size: 15px">
-                <div style="display: none;"><textarea id="treeExportOutput" style="color:black; width: 200px; height: 55px;"></textarea></div>
                 <canvas id="studyTreeCanvas"></canvas>
                 <tr>
                     <td><button class="storebtn" onclick="exportStudyTree()" style="width:150px; height: 40px; font-size: 10px; margin: auto">Export tree</button><td>
@@ -292,6 +293,69 @@
                         <td><button class="timestudylocked" id="dilstudy6" onclick="buyDilationStudy(6, 1e24)">Unlock Meta Dimensions<span>Cost: <span id="metaCost" style="display: inline;">1e24</span> Time Theorems</button></td>
                     </tr>
                 </table>
+                <table class="table" id="studytable">
+                    <tr>
+                        <td><button class="dilationupg" id="masteryportal" onclick="showEternityTab('masterystudies')">Continue into mastery studies.</button></td>
+                    </tr>
+                </table>
+                <div style="height: 60px;"></div>
+                <div>
+                    <table id="footer">
+                        <tr>
+                            <td>
+                                <div style="text-align:center">
+                                    <a href="howto.html" target="_newtab">How to play  </a> |
+                                    <a href="about.html" onclick="giveAchievement('A sound financial decision')" target="_newtab">About   </a> |
+                                    <a href="changelog.html" target="_newtab">Changelog   </a>
+                                </div>
+                            </td>
+                        </tr>
+                    </table>
+                </div>
+            </div>
+            <div class="eternitytab" id="masterystudies" style="font-size: 15px">
+                <canvas id="studyTreeCanvas2"></canvas>
+                <span>Mastery study cost multiplier: <text id='costmult'></text>x</span><br>
+                <tr>
+                    <td><button class="storebtn" onclick="exportStudyTree()" style="width:150px; height: 40px; font-size: 10px; margin: auto">Export tree</button><td>
+                    <td><button class="storebtn" onclick="respecToggle()" id="respec2" style="width:150px; height: 40px; font-size: 10px; margin: auto">Respec time studies on next Eternity</button><td>
+                    <td><button class="storebtn" onclick="importStudyTree()" style="width:150px; height: 40px; font-size: 10px; margin: auto">Import tree</button><td>
+                </tr>
+                <br><span>NOTE: Outlines are coming soon until the next update comes.</span><br>
+                <table class="table" id="studytable">
+                    <tr>
+                        <td><button class="dilationupg" onclick="showEternityTab('timestudies')">Lead back to time studies.</button></td>
+                    </tr>
+                </table>
+                <table class="table" id="studytable">
+                    <tr>
+                        <td><button class="timestudylocked" id="dilstudy7" onclick="buyMasteryStudy(false, 7)">Unlock the 1st Time Dimension autobuyer<br>Cost: <span id="dilstudy7Cost" style="display: inline;"></span> Time Theorems</button></td>
+                        <td><button class="timestudylocked" id="dilstudy8" onclick="buyMasteryStudy(false, 8)">Unlock the 6th Time Dimension autobuyer<br>Cost: <span id="dilstudy8Cost" style="display: inline;"></span> Time Theorems</button></td>
+                    </tr>
+                </table>
+                <table class="table" id="studytable">
+                    <tr>
+                        <td><button class="timestudylocked" id="dilstudy9" onclick="buyMasteryStudy(false, 9)">Unlock the 8th Time Dimension autobuyer<br>Cost: <span id="dilstudy9Cost" style="display: inline;"></span> Time Theorems</button></td>
+                        <td><button class="timestudylocked" id="dilstudy10" onclick="buyMasteryStudy(false, 10)">Unlock the 3rd Time Dimension autobuyer<br>Cost: <span id="dilstudy10Cost" style="display: inline;"></span> Time Theorems</button></td>
+                    </tr>
+                </table>
+                <table class="table" id="studytable">
+                    <tr>
+                        <td><button class="timestudylocked" id="dilstudy11" onclick="buyMasteryStudy(false, 11)">Unlock 5x EP mult autobuyer<br>Cost: <span id="dilstudy11Cost" style="display: inline;"></span> Time Theorems</button></td>
+                    </tr>
+                </table>
+                <table class="table" id="studytable">
+                    <tr>
+                        <td><button class="timestudylocked" id="dilstudy12" onclick="buyMasteryStudy(false, 12)">Unlock the 2nd Time Dimension autobuyer<br>Cost: <span id="dilstudy12Cost" style="display: inline;"></span> Time Theorems</button></td>
+                        <td><button class="timestudylocked" id="dilstudy13" onclick="buyMasteryStudy(false, 13)">Unlock the 7th Time Dimension autobuyer<br>Cost: <span id="dilstudy13Cost" style="display: inline;"></span> Time Theorems</button></td>
+                    </tr>
+                </table>
+                <table class="table" id="studytable">
+                    <tr>
+                        <td><button class="timestudylocked" id="dilstudy14" onclick="buyMasteryStudy(false, 14)">Unlock the 5th Time Dimension autobuyer<br>Cost: <span id="dilstudy14Cost" style="display: inline;"></span> Time Theorems</button></td>
+                        <td><button class="timestudylocked" id="dilstudy15" onclick="buyMasteryStudy(false, 15)">Unlock the 4th Time Dimension autobuyer<br>Cost: <span id="dilstudy15Cost" style="display: inline;"></span> Time Theorems</button></td>
+                    </tr>
+                </table>
                 <div style="height: 60px;"></div>
                 <div>
                     <table id="footer">
@@ -345,6 +409,7 @@
                     </tr>
                 </table>
                 <div><button class="storebtn" onclick="buyMaxEPMult()" style="height: 25px; width: 190px; font-size:10px; margin-top: -3px;">Max EP mult</button></div>
+                <div><button id="epmultauto" class="storebtn" onclick="toggleAutoEter('epmult')" style="height: 25px; width: 190px; font-size:10px; margin-top: 3px;"></button></div>
                 <div id="footercontainer">
                     <table id="footer">
                         <tr>
@@ -458,6 +523,24 @@
                         <td><button class="milestonerewardlocked" id="reward23">Unlock autobuyer for Eternities</button></td>
                     </tr>
                 </table>
+                <table id='mdmilestones'>
+                    <tr>
+                        <td class="milestoneText" id='milestone24'></td>
+                        <td class="milestoneText" id='milestone25'></td>
+                    </tr>
+                    <tr>
+                        <td><button class="milestonerewardlocked" id="reward24">Everything does not reset until galaxy reset</button></td>
+                        <td><button class="milestonerewardlocked" id="reward25">Unlock bulk buy replicated galaxies</button></td>
+                    </tr>
+                    <tr>
+                        <td class="milestoneText" id='milestone26'></td>
+                        <td class="milestoneText" id='milestone27'></td>
+                    </tr>
+                    <tr>
+                        <td><button class="milestonerewardlocked" id="reward26">Unlock replicanti mode for eternity autobuyer</button></td>
+                        <td><button class="milestonerewardlocked" id="reward27">Unlock peak mode for eternity autobuyer</button></td>
+                    </tr>
+                </table>
                 <div>
                     <table id="footer">
                         <tr>
@@ -528,7 +611,7 @@
                             <button class="timestudy" id="dil14" onclick="buyDilationUpgrade(14)">Gain a multiplier to meta-dimensions based on tickspeed (1 + log(1 + log(x))).<br><span id="dil14desc"></span><br><span id="dil14cost"></span></button>
                         </td>
                         <td>
-                            <button class="timestudy" id="dil15" onclick="buyDilationUpgrade(15)">Meta-dimension shifts and boosts are 3x (from 2x).<br><span id="dil15cost"></span></button>
+                            <button class="timestudy" id="dil15" onclick="buyDilationUpgrade(15)">Meta-dimension shifts and boosts are 4x (from 2x).<br><span id="dil15cost"></span></button>
                         </td>
                         <td>
                             <button class="timestudy" id="dil16" onclick="buyDilationUpgrade(16)">Meta-antimatter effect on dimension boosts is stronger.<br><span id="dil16cost"></span></button>
@@ -574,7 +657,7 @@
                 <p></p>
                 <input id="confirmation" type="checkbox" style="width:20px; height: 18px; display: none" ach-tooltip="No confirmation when doing Dimensional Sacrifice" onchange="sacrificeConf()">
                 <button id="sacrifice" class="storebtn" style="font-size:12px; width: 320px; display: none" ach-tooltip="">Dimensional Sacrifice</button>
-                <button id="gSacrifice" class="storebtn" style="font-size:12px; width: 320px; display: none" ach-tooltip=""></button>
+                <button id="gSacrifice" class="storebtn" style="font-size:12px; width: 320px; display: none" onclick="galacticSacrifice()" ach-tooltip=""></button>
                 <button id="maxall" class="storebtn" style="font-size: 12px">Max all (M)</Button>
                 <span id="chall2Pow"></span>
                 <span id="chall3Pow"></span>
@@ -853,6 +936,9 @@
                                 <td>
                                     <div id="timeAmount1">0 (0)</div>
                                 </td>
+                                <td>
+                                    <button id="td1auto" style="width:70px; font-size: 10px; float: right; visibility: hidden" onclick="switchAutoEter('td1')" class="storebtn">Auto: ON</button>
+                                </td>
                                 <td align="right" width="10%">
                                     <button id="timeMax1" style="color:black; width:195px; height:30px" class="storebtn" align="right" onclick="buyTimeDimension(1)">Cost: 10</button>
                                 </td>
@@ -863,6 +949,10 @@
                                 </td>
                                 <td>
                                     <div id="timeAmount2" align="left">0 (0)</div>
+                                </td>
+                                <td>
+                                    <button id="td2auto" style="width:70px; font-size: 10px; float: right; visibility: hidden" onclick="switchAutoEter('td2')" class="storebtn">Auto: ON</button>
+                                </td>
                                 <td>
                                     <button id="timeMax2" style="color:black; width:195px; height:30px" class="storebtn" onclick="buyTimeDimension(2)">Cost: 10</button>
                                 </td>
@@ -873,6 +963,9 @@
                                 </td>
                                 <td>
                                     <div id="timeAmount3" align="left">0 (0)</div>
+                                </td>
+                                <td>
+                                    <button id="td3auto" style="width:70px; font-size: 10px; float: right; visibility: hidden" onclick="switchAutoEter('td3')" class="storebtn">Auto: ON</button>
                                 </td>
                                 <td>
                                     <button id="timeMax3" style="color:black; width:195px; height:30px" class="storebtn" onclick="buyTimeDimension(3)">Cost: 10</button>
@@ -886,6 +979,9 @@
                                     <div id="timeAmount4" align="left">0 (0)</div>
                                 </td>
                                 <td>
+                                    <button id="td4auto" style="width:70px; font-size: 10px; float: right; visibility: hidden" onclick="switchAutoEter('td4')" class="storebtn">Auto: ON</button>
+                                </td>
+                                <td>
                                     <button id="timeMax4" style="color:black; width:195px; height:30px" class="storebtn" onclick="buyTimeDimension(4)">Cost: 10</button>
                                 </td>
                             </tr>
@@ -895,6 +991,9 @@
                                 </td>
                                 <td>
                                     <div id="timeAmount5" align="left">0 (0)</div>
+                                </td>
+                                <td>
+                                    <button id="td5auto" style="width:70px; font-size: 10px; float: right; visibility: hidden" onclick="switchAutoEter('td5')" class="storebtn">Auto: ON</button>
                                 </td>
                                 <td>
                                     <button id="timeMax5" style="color:black; width:195px; height:30px" class="storebtn" onclick="buyTimeDimension(5)">Cost: 10</button>
@@ -908,6 +1007,9 @@
                                     <div id="timeAmount6" align="left">0 (0)</div>
                                 </td>
                                 <td>
+                                    <button id="td6auto" style="width:70px; font-size: 10px; float: right; visibility: hidden" onclick="switchAutoEter('td6')" class="storebtn">Auto: ON</button>
+                                </td>
+                                <td>
                                     <button id="timeMax6" style="color:black; width:195px; height:30px" class="storebtn" onclick="buyTimeDimension(6)">Cost: 10</button>
                                 </td>
                             </tr>
@@ -919,6 +1021,9 @@
                                     <div id="timeAmount7" align="left">0 (0)</div>
                                 </td>
                                 <td>
+                                    <button id="td7auto" style="width:70px; font-size: 10px; float: right; visibility: hidden" onclick="switchAutoEter('td7')" class="storebtn">Auto: ON</button>
+                                </td>
+                                <td>
                                     <button id="timeMax7" style="color:black; width:195px; height:30px" class="storebtn" onclick="buyTimeDimension(7)">Cost: 10</button>
                                 </td>
                             </tr>
@@ -928,6 +1033,9 @@
                                 </td>
                                 <td>
                                     <div id="timeAmount8" align="left">0 (0)</div>
+                                </td>
+                                <td>
+                                    <button id="td8auto" style="width:70px; font-size: 10px; float: right; visibility: hidden" onclick="switchAutoEter('td8')" class="storebtn">Auto: ON</button>
                                 </td>
                                 <td>
                                     <button id="timeMax8" style="color:black; width:195px; height:30px" class="storebtn" onclick="buyTimeDimension(8)">Cost: 10</button>
@@ -2310,12 +2418,13 @@
             <br>
             <table class="table" style="margin: 0 auto">
                 <button class="storebtn" id="toggleautobuyers" style="font-size: 100%; width: 150px; height: 40px; margin: 3px" onclick="toggleAutoBuyers()">Enable/disable autobuyers</button>
-                <button class="storebtn" id="togglebulk" style="font-size: 100%; width: 150px; height: 40px;margin: 3px" onclick="toggleBulk()">Disable bulk buy                     </button>
+                <button class="storebtn" id="togglebulk" style="font-size: 100%; width: 150px; height: 40px;margin: 3px" onclick="toggleBulk()">Disable bulk buy</button>
                 <button class="storebtn" id="togglecrunchmode" style="font-size: 100%; width: 150px; height: 40px;margin: 3px; display: none" onclick="toggleCrunchMode()">Auto crunch mode: amount</button>
+                <button class="storebtn" id="toggleautoetermode" style="font-size: 100%; width: 150px; height: 40px;margin: 3px; display: none" onclick="toggleAutoEterMode()">Auto eternity mode: amount</button>
                 <br>
                 <div class="autoBuyerDiv" id="autoBuyerEter">
                     <div>Automatic Eternity</div>
-                    <div><span>Amount of EP to wait until reset:</span>
+                    <div><span id='eterlimittext'>Amount of EP to wait until reset:</span>
                     <input type="text" onchange="updatePriorities()" id="priority13"></input></div>
                     <br>
                     <span style="font-size: 80%">Is active</span>
@@ -2794,21 +2903,23 @@
 <script type="text/javascript" src="javascripts/chart.js"></script>
 <script type="text/javascript" src="javascripts/lz-string.js"></script>
 <script type="text/javascript" src="javascripts/core/polyfill.js"></script>
-<script type="text/javascript" src="javascripts/core/format.js?3"></script>
+<script type="text/javascript" src="javascripts/core/format.js?4"></script>
 <script type="text/javascript" src="javascripts/core/achievements.js?1"></script>
 <script type="text/javascript" src="javascripts/core/chart.js"></script>
 <script type="text/javascript" src="javascripts/core/tickspeed.js?2"></script>
 <script type="text/javascript" src="javascripts/core/normal_dimension.js?3"></script>
 <script type="text/javascript" src="javascripts/core/infinity_dimension.js?1"></script>
-<script type="text/javascript" src="javascripts/core/time_dimension.js?2"></script>
-<script type="text/javascript" src="javascripts/core/meta_dimension.js?2"></script>
-<script type="text/javascript" src="javascripts/core/dimboost.js?3"></script>
-<script type="text/javascript" src="javascripts/core/timestudies.js?4"></script>
-<script type="text/javascript" src="javascripts/core/canvases.js?1"></script>
+<script type="text/javascript" src="javascripts/core/time_dimension.js?3"></script>
+<script type="text/javascript" src="javascripts/core/dimboost.js?4"></script>
+<script type="text/javascript" src="javascripts/core/timestudies.js?5"></script>
+<script type="text/javascript" src="javascripts/core/canvases.js?2"></script>
 <script type="text/javascript" src="javascripts/core/devtools.js"></script>
-<script type="text/javascript" src="javascripts/core/load_functions.js?7"></script>
+<script type="text/javascript" src="javascripts/core/load_functions.js?8"></script>
 <script type="text/javascript" src="javascripts/core/newsticker.js?1"></script>
-<script type="text/javascript" src="javascripts/game.js?13"></script>
+<script type="text/javascript" src="javascripts/mods/ngmm.js"></script>
+<script type="text/javascript" src="javascripts/mods/ngpp.js"></script>
+<script type="text/javascript" src="javascripts/mods/ngppp.js"></script>
+<script type="text/javascript" src="javascripts/game.js?14"></script>
 <script type="text/javascript" src="javascripts/sha512.js"></script>
 
 

@@ -122,20 +122,14 @@ function buyTimeDimension(tier) {
   dim.amount = dim.amount.plus(1);
   dim.bought += 1
   dim.cost = Decimal.pow(timeDimCostMults[tier], dim.bought).times(timeDimStartCosts[tier])
-  if (dim.cost.gte(Number.MAX_VALUE)) {
-      dim.cost = Decimal.pow(timeDimCostMults[tier]*1.5, dim.bought).times(timeDimStartCosts[tier])
-  }
-  if (dim.cost.gte("1e1300")) {
-      dim.cost = Decimal.pow(timeDimCostMults[tier]*2.2, dim.bought).times(timeDimStartCosts[tier])
-  }
-  if (dim.cost.gte("1e20000")) {
+  if (dim.cost.gte(Number.MAX_VALUE)) dim.cost = Decimal.pow(timeDimCostMults[tier]*1.5, dim.bought).times(timeDimStartCosts[tier])
+  if (dim.cost.gte("1e1300")) dim.cost = Decimal.pow(timeDimCostMults[tier]*2.2, dim.bought).times(timeDimStartCosts[tier])
+  if (tier > 4) dim.cost = Decimal.pow(timeDimCostMults[tier]*100, dim.bought).times(timeDimStartCosts[tier])
+  if (dim.cost.gte(tier > 4 ? "1e100000" : "1e20000")) {
       // rather than fixed cost scaling as before, quadratic cost scaling
       // to avoid exponential growth
       dim.cost = dim.cost.times(Decimal.pow(new Decimal('1e1000'),
-      Math.pow(dim.cost.log(10) / 1000 - 20, 2)));
-  }
-  if (tier > 4) {
-    dim.cost = Decimal.pow(timeDimCostMults[tier]*100, dim.bought).times(timeDimStartCosts[tier])
+      Math.pow(dim.cost.log(10) / 1000 - (tier > 4 ? 100 : 20), 2)));
   }
   dim.power = dim.power.times(2)
   updateEternityUpgrades()

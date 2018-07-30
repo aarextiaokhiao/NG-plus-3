@@ -227,6 +227,7 @@ function onLoad() {
 
   IPminpeak = new Decimal(0)
   EPminpeak = new Decimal(0)
+  if (player.peakSpent) player.peakSpent = 0
 
   if (typeof player.autobuyers[9].bulk !== "number") {
       player.autobuyers[9].bulk = 1
@@ -574,7 +575,8 @@ if (player.version < 5) {
                   player.meta[dim].bought += player.meta[dim].tensBought * 10
                   delete player.meta[dim].tensBought
               }
-              if (v2_1check) {
+              if (player.autoEterMode) player.aarexModifications.newGamePlusPlusVersion = 2.2
+              else if (v2_1check) {
                   player.version = 12.1
                   player.aarexModifications.newGamePlusPlusVersion = 2.1
               } else player.aarexModifications.newGamePlusPlusVersion = 2
@@ -591,16 +593,28 @@ if (player.version < 5) {
 
       player.meta = {resets: 0, antimatter: 10, bestAntimatter: 10}
       for (dim=1;dim<9;dim++) player.meta[dim] = {amount: 0, bought: 0, cost: initCost[dim]}
-      $.notify('Your NG++ save has been updated because dan-simon added a new feature.', 'info')
   }
-  if (player.aarexModifications.newGamePlusPlusVersion < 2.1) $.notify('NG++ was updated to include more dilation upgrades.', 'info')
-  if (player.aarexModifications.newGamePlusPlusVersion < 2.11) player.aarexModifications.newGamePlusPlusVersion = 2.11
+  if (player.aarexModifications.newGamePlusPlusVersion < 2.2) {
+      for (dim=1;dim<5;dim++) {
+          var dim = player["timeDimension" + dim]
+          if (Decimal.gte(dim.cost, "1e100000")) dim.cost = Decimal.pow(timeDimCostMults[dim]*100, dim.bought).times(timeDimStartCosts[dim]).times(Decimal.pow(new Decimal('1e1000'),Math.pow(dim.cost.log(10) / 1000 - 100, 2)))
+      }
+
+      player.autoEterMode == "amount"
+      $.notify('NG++ was updated to include more features.', 'info')
+      player.aarexModifications.newGamePlusPlusVersion = 2.2
+      resetDilationGalaxies()
+  }
   if (player.dilation.rebuyables[4] == null) delete player.aarexModifications.newGamePlusPlusVersion
   if (player.aarexModifications.newGameMinusMinusVersion === undefined) {
-      if ((Decimal.gt(player.postC3Reward, 1) && player.infinitied < 1 && player.eternities < 1) || (Math.round(new Decimal(player.achPow).log(5) * 100) % 100 < 1 && Decimal.gt(player.achPow, 1))) {
-          player.aarexModifications.newGameMinusMinusVersion = 1
-          updateAchievements()
-      }
+      if (player.galaxyPoints) player.aarexModifications.newGameMinusMinusVersion = 1.1
+      else if ((Decimal.gt(player.postC3Reward, 1) && player.infinitied < 1 && player.eternities < 1) || (Math.round(new Decimal(player.achPow).log(5) * 100) % 100 < 1 && Decimal.gt(player.achPow, 1))) player.aarexModifications.newGameMinusMinusVersion = 1
+      if (player.aarexModifications.newGameMinusMinusVersion) updateAchievements()
+  }
+  if (player.aarexModifications.newGameMinusMinusVersion < 1.1) {
+      player.galaxyPoints = 0
+      $.notify('Your NG-- save has been updated because Nyan cat made a new prestige layer that is between galaxies and infinity.', 'info')
+      player.aarexModifications.newGameMinusMinusVersion = 1.1
   }
 
   //updates TD costs to harsher scaling
@@ -621,7 +635,6 @@ if (player.version < 5) {
         updateAchievements();
     }
   }
-
   if (player.version < 12.2) {
     player.version = 12.2
     player.sixthCost = Decimal.times(player.sixthCost, 10)
@@ -634,9 +647,10 @@ if (player.version < 5) {
       document.getElementById("notation").textContent = ("Notation: Brackets")
   }
 
-  toggleCrunchMode()
-  toggleCrunchMode()
-  toggleCrunchMode()
+  for (s=0;s<3;s++){
+      toggleCrunchMode()
+  }
+  updateAutoEterMode()
 
 
   if (player.options.newsHidden) {
@@ -694,11 +708,22 @@ if (player.version < 5) {
   document.getElementById("secretstudy").style.opacity = 0
   document.getElementById("secretstudy").style.cursor = "pointer"
 
+  document.getElementById("masterystudyunlock").style.display = player.dilation.upgrades.includes("ngpp4") && player.aarexModifications.newGame3PlusVersion ? "" : "none"
+
   updateAutobuyers();
   setAchieveTooltip();
   updatePriorities();
   updateTheoremButtons();
   updateTimeStudyButtons();
+  if (player.aarexModifications.newGame3PlusVersion) {
+      updateMasteryStudyCosts()
+      updateMasteryStudyButtons()
+      for (i=1;i<9;i++) {
+          var name=i<2?'epmult':'td'+(i<3?1:i<4?6:i<5?8:i<6?3:i<7?2:i<8?7:i<9?5:4)
+          document.getElementById(name+'auto').textContent="Auto: O"+(player.autoEterOptions[name]?"N":"FF")
+          document.getElementById(name+'auto').style.visibility=player.autoEterOptions[name]==undefined?"hidden":"visible"
+      }
+  }
   transformSaveToDecimal();
   updateChallengeTimes();
   updateMilestones();
@@ -720,7 +745,8 @@ if (player.version < 5) {
       ngModeMessages=[]
       if (player.aarexModifications.newGamePlusPlusVersion) {
           if (!player.aarexModifications.newGamePlusVersion) ngModeMessages.push("WARNING! You are disabling NG+ features on NG++! Standard NG++ have all of NG++ features and I recommend you to create a new save with NG+ and NG++ modes on.")
-          ngModeMessages.push("Welcome to NG++ mode, made by dan-simon! In this mode, more dilation upgrades and meta-dimensions are added to push the end-game further.")
+          if (player.aarexModifications.newGame3PlusVersion) ngModeMessages.push("Welcome to NG+++ mode, the extension of dan-simon's NG++ mode! In this mode, more time & dilation studies, more eternity milestones, and dilated challenges were added.")
+          else ngModeMessages.push("Welcome to NG++ mode, made by dan-simon! In this mode, more dilation upgrades and meta-dimensions are added to push the end-game further.")
       } else if (player.aarexModifications.newGamePlusVersion) ngModeMessages.push("Welcome to NG+ mode, made by earthernsence! Right now, you start with all Eternity Challenges completed and 1 infinitied.")
       if (player.aarexModifications.newGameMinusMinusVersion) ngModeMessages.push('Welcome to NG-- mode created by Nyan cat! Dilation is always locked but have more balancing, IC3 trap, and a new feature called "Galactic Sacrifice".')
       if (player.aarexModifications.newGameMinusVersion) ngModeMessages.push("Welcome to NG- mode! Everything are nerfed by the creator slabdrill, making the end-game harder to reach.")
@@ -758,10 +784,19 @@ function load_game() {
 	startInterval()
 }
 
-
 function save_game(silent) {
   set_save(metaSave.current, player);
   if (!silent) $.notify("Game saved", "info")
+}
+
+function overwrite_save(id) {
+	if (id==metaSave.current) {
+		save_game()
+		return
+	}
+	if (!confirm("Are you really sure you want to overwrite the save? You might lose your progress!")) return
+	set_save(id, player)
+	$.notify("Save overwritten", "info")
 }
 
 function change_save(id) {
@@ -802,6 +837,18 @@ function rename_save(id) {
 	while (metaSave.saveOrder[placement-1]!=id) placement++
 	changeSaveDesc(id, placement)
 	$.notify("Save renamed", "info")
+}
+
+function move(id,offset) {
+	placement=0
+	while (metaSave.saveOrder[placement]!=id) placement++
+	if (offset<0) if (placement<-offset) return
+	else if (placement>metaSave.saveOrder.length-offset-1) return
+	var temp=metaSave.saveOrder[placement]
+	if (temp==metaSave.current) savePlacement+=offset
+	metaSave.saveOrder[placement]=metaSave.saveOrder[placement+offset]
+	metaSave.saveOrder[placement+offset]=temp
+	localStorage.setItem("AD_aarexModifications",btoa(JSON.stringify(metaSave)))
 }
 
 function delete_save(saveId) {
@@ -895,6 +942,9 @@ function transformSaveToDecimal() {
   player.totalmoney = new Decimal(player.totalmoney)
   player.chall3Pow = new Decimal(player.chall3Pow)
   player.chall11Pow = new Decimal(player.chall11Pow)
+  if (player.galaxyPoints !== undefined) {
+      player.galaxyPoints = new Decimal(player.galaxyPoints)
+  }
   player.costMultipliers = [new Decimal(player.costMultipliers[0]), new Decimal(player.costMultipliers[1]), new Decimal(player.costMultipliers[2]), new Decimal(player.costMultipliers[3]), new Decimal(player.costMultipliers[4]), new Decimal(player.costMultipliers[5]), new Decimal(player.costMultipliers[6]), new Decimal(player.costMultipliers[7])]
   player.tickspeedMultiplier = new Decimal(player.tickspeedMultiplier)
   player.matter = new Decimal(player.matter)
@@ -968,7 +1018,7 @@ function transformSaveToDecimal() {
 
   player.autoIP = new Decimal(player.autoIP)
 
-  if (player.autobuyers[11].priority !== undefined && player.autobuyers[11].priority !== null && player.autobuyers[11].priority !== "undefined")player.autobuyers[11].priority = new Decimal(player.autobuyers[11].priority)
+  if (player.autobuyers[11].priority !== undefined && player.autobuyers[11].priority !== null && player.autobuyers[11].priority !== "undefined") player.autobuyers[11].priority = new Decimal(player.autobuyers[11].priority)
 
   player.epmultCost = new Decimal(player.epmultCost)
   player.epmult = new Decimal(player.epmult)
