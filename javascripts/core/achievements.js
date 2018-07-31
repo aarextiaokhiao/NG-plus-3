@@ -103,6 +103,14 @@ const allAchievements = {
   r136 : "I told you already, time is relative",
   r137 : "Now you're thinking with dilation!",
   r138 : "This is what I have to do to get rid of you.",
+  ngpp11 : "I'm so meta",
+  ngpp12 : "And still no ninth dimension...",
+  ngpp13 : "In the grim darkness of the far endgame",
+  ngpp14 : "Meta-boosting to the max",
+  ngpp15 : "The cap is a million, not a trillion",
+  ngpp16 : "It will never be enough",
+  ngpp17 : "GAS GAS GAS",
+  ngpp18 : "Universal harmony",
   s11 : "The first one's always free",
   s12 : "Just in case",
   s13 : "It pays to have respect",
@@ -186,6 +194,8 @@ function giveAchievement(name) {
 
     if (player.achievements.includes(allAchievementNums[name])) return false
 
+    if (name=="Universal harmony"&&(player.galaxies<700&&player.replicanti.galaxies+extraReplGalaxies<700&&player.dilation.freeGalaxies<700)) return
+
     if (name == "A sound financial decision") localStorage.setItem(btoa("dsAM_asfd"), "gg")
     else $.notify(name, "success");
     player.achievements.push(allAchievementNums[name]);
@@ -199,53 +209,57 @@ function giveAchievement(name) {
 }
 
 function updateAchievements() {
-  var amount = 0
-  for (var i=1; i<document.getElementById("achievementtable").children[0].children.length+1; i++) {
-      var n = 0
-      var achNum = i * 10
-      for (var l=0; l<8; l++) {
-          achNum += 1;
-          var name = allAchievements["r"+achNum]
-          if (player.achievements.includes("r"+achNum)) {
-              n++
-              document.getElementById(name).className = "achievementunlocked"
-          } else {
-              document.getElementById(name).className = "achievementlocked"
-          }
-      }
-      if (n == 8) {
-          amount++
-          document.getElementById("achRow"+i).className = "completedrow"
-      } else {
-          document.getElementById("achRow"+i).className = ""
-      }
-  }
-  for (var i=1; i<document.getElementById("secretachievementtable").children[0].children.length+1; i++) {
-      var n = 0
-      var achNum = i * 10
-      for (var l=0; l<8; l++) {
-          achNum += 1;
-          var name = allAchievements["s"+achNum]
-          if (player.achievements.includes("s"+achNum)) {
-              n++
-              document.getElementById(name).setAttribute('ach-tooltip', secretAchievementTooltips["s"+achNum])
-              document.getElementById(name).className = "achievementunlocked"
-          } else {
-              document.getElementById(name).className = "achievementhidden"
-              document.getElementById(name).setAttribute('ach-tooltip', (name[name.length-1] !== "?" && name[name.length-1] !== "!" && name[name.length-1] !== ".") ? name+"." : name)
-          }
-      }
-      if (n == 8) {
-          document.getElementById("secretAchRow"+i).className = "completedrow"
-      } else {
-          document.getElementById("secretAchRow"+i).className = ""
-      }
-  }
+	var amount = 0
+	for (var i=1; i<15; i++) {
+		if (i>13) var shown=!(!player.meta)
+		else var shown=true
+		document.getElementById("achRow"+i).style.display=shown?"":"none"
+		if (shown) {
+			var n = 0
+			var achNum = i * 10
+			for (var l=0; l<8; l++) {
+				achNum += 1;
+				var achId=achNum>140?"ngpp"+(achNum-130):"r"+achNum
+				var name=allAchievements[achId]
+				if (player.achievements.includes(achId)) {
+					n++
+					document.getElementById(name).className = "achievementunlocked"
+				} else {
+					document.getElementById(name).className = "achievementlocked"
+				}
+			}
+			if (n == 8) {
+				amount++
+				document.getElementById("achRow"+i).className = "completedrow"
+			} else {
+				document.getElementById("achRow"+i).className = ""
+			}
+		}
+	}
+	for (var i=1; i<document.getElementById("secretachievementtable").children[0].children.length+1; i++) {
+		var n = 0
+		var achNum = i * 10
+		for (var l=0; l<8; l++) {
+			achNum += 1;
+			var name = allAchievements["s"+achNum]
+			if (player.achievements.includes("s"+achNum)) {
+				n++
+				document.getElementById(name).setAttribute('ach-tooltip', secretAchievementTooltips["s"+achNum])
+				document.getElementById(name).className = "achievementunlocked"
+			} else {
+				document.getElementById(name).className = "achievementhidden"
+				document.getElementById(name).setAttribute('ach-tooltip', (name[name.length-1] !== "?" && name[name.length-1] !== "!" && name[name.length-1] !== ".") ? name+"." : name)
+			}
+		}
+		if (n == 8) {
+			document.getElementById("secretAchRow"+i).className = "completedrow"
+		} else {
+			document.getElementById("secretAchRow"+i).className = ""
+		}
+	}
 
-  player.achPow = Decimal.pow(player.aarexModifications.newGameMinusMinusVersion ? 5 : 1.5, amount)
-
-  document.getElementById("achmultlabel").textContent = "Current achievement multiplier on each Dimension: " + player.achPow.toFixed(1) + "x"
-
+	player.achPow = Decimal.pow(player.aarexModifications.newGameMinusMinusVersion ? 5 : 1.5, amount)
+	document.getElementById("achmultlabel").textContent = "Current achievement multiplier on each Dimension: " + player.achPow.toFixed(1) + "x"
 }
 
 function getSecretAchAmount() {

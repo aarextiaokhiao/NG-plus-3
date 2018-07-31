@@ -6,11 +6,12 @@ function getMetaDimensionMultiplier (tier) {
   if (player.currentEternityChall === "eterc11") {
     return new Decimal(1);
   }
-  let power = getDil15Bonus()
-  let multiplier = Decimal.pow(power, Math.floor(player.meta[tier].bought / 10)).times(Decimal.pow(power, Math.max(0, player.meta.resets - tier + 1))).times(getDilationMetaDimensionMultiplier());
-  if (player.dilation.upgrades.includes("ngpp3")) {
+  let power = player.dilation.upgrades.includes("ngpp4") ? getDil15Bonus() : 2
+  let multiplier = Decimal.pow(Math.min(power, 2.5), Math.floor(player.meta[tier].bought / 10)).times(Decimal.pow(power*(player.achievements.includes("ngpp14")?1.01:1), Math.max(0, player.meta.resets - tier + 1))).times(getDilationMetaDimensionMultiplier());
+  if (player.dilation.upgrades.includes("ngpp13")) {
     multiplier = multiplier.times(getDil14Bonus());
   }
+  if (player.achievements.includes("ngpp12")) multiplier = multiplier.times(1.1)
   
   if (multiplier.lt(1)) multiplier = new Decimal(1)
   if (player.dilation.active || player.aarexModifications.newGameMinusMinusVersion) {
@@ -63,12 +64,13 @@ function metaBoost() {
     if (player.meta[req.tier].amount.lt(req.amount)) {
         return false;
     }
-    player.meta.antimatter = new Decimal(10);
+    player.meta.resets++;
+    if (player.meta.resets>9) giveAchievement("Meta-boosting to the max")
+    player.meta.antimatter = new Decimal(player.achievements.includes("ngpp12")?100:10);
     clearMetaDimensions();
     for (let i = 2; i <= 8; i++) {
       document.getElementById(i + "MetaRow").style.display = "none"
     }
-    player.meta.resets++;
     return true;
 }
 
@@ -95,6 +97,7 @@ function metaBuyOneDimension(tier) {
     if (player.meta[tier].bought === 10) {
         player.meta[tier].cost = player.meta[tier].cost.times(getMetaDimensionCostMultiplier(tier));
     }
+    if (tier>7) giveAchievement("And still no ninth dimension...")
     return true;
 }
 
@@ -114,6 +117,7 @@ function metaBuyManyDimension(tier) {
     player.meta[tier].amount = player.meta[tier].amount.plus(10 - dimMetaBought(tier));
     player.meta[tier].cost = player.meta[tier].cost.times(getMetaDimensionCostMultiplier(tier));
     player.meta[tier].bought += 10 - dimMetaBought(tier)
+    if (tier>7) giveAchievement("And still no ninth dimension...")
     return true;
 }
 
@@ -221,5 +225,5 @@ function toggleAutoEterMode() {
 
 // v2.21
 function getDil15Bonus () {
-	return !player.dilation.upgrades.includes("ngpp4") ? 2 : Math.log(player.dilation.dilatedTime.max(1e10).min(1e100).log(10)) / Math.log(10) + 1;
+	return Math.log(player.dilation.dilatedTime.max(1e10).min(1e100).log(10)) / Math.log(10) + 1;
 }

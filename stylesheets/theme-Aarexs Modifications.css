@@ -84,6 +84,15 @@ strong { color: #0072e5 }
 .floatingText {
     color: #00e500 !important
 }
+#galaxybtn {
+    border-color: #2d5be5 !important
+}
+#galaxyPoints {
+    color: #e5e5e5 !important
+}
+#GP {
+    color: #2d5be5 !important
+}
 .challengediv {
     background-color: #191919 !important;
     font-family:'Inconsolata', monospace !important;

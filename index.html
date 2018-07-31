@@ -65,6 +65,7 @@
             <button id="statisticsbtn" style="font-family: Typewriter; font-size: 20px" class="tabbtn">Statistics</button>
             <button id="achievementsbtn" style="font-family: Typewriter; font-size: 20px" class="tabbtn">Achievements</button>
             <button id="challengesbtn" style="font-family: Typewriter; font-size: 20px" class="tabbtn">Challenges</button>
+            <button id="galaxybtn" style="font-family: Typewriter; font-size: 20px; display: none" onclick='showTab("galaxy")'>Galaxy</button>
             <button id="infinitybtn" style="font-family: Typewriter; font-size: 20px; display: none" class="infinitybtn">Infinity</button>
             <button id="eternitystorebtn" style="font-family: Typewriter; font-size: 20px; display: none" class="eternitytabbtn">Eternity</button>
         </div>
@@ -328,31 +329,7 @@
                 </table>
                 <table class="table" id="studytable">
                     <tr>
-                        <td><button class="timestudylocked" id="dilstudy7" onclick="buyMasteryStudy(false, 7)">Unlock the 1st Time Dimension autobuyer<br>Cost: <span id="dilstudy7Cost" style="display: inline;"></span> Time Theorems</button></td>
-                        <td><button class="timestudylocked" id="dilstudy8" onclick="buyMasteryStudy(false, 8)">Unlock the 6th Time Dimension autobuyer<br>Cost: <span id="dilstudy8Cost" style="display: inline;"></span> Time Theorems</button></td>
-                    </tr>
-                </table>
-                <table class="table" id="studytable">
-                    <tr>
-                        <td><button class="timestudylocked" id="dilstudy9" onclick="buyMasteryStudy(false, 9)">Unlock the 8th Time Dimension autobuyer<br>Cost: <span id="dilstudy9Cost" style="display: inline;"></span> Time Theorems</button></td>
-                        <td><button class="timestudylocked" id="dilstudy10" onclick="buyMasteryStudy(false, 10)">Unlock the 3rd Time Dimension autobuyer<br>Cost: <span id="dilstudy10Cost" style="display: inline;"></span> Time Theorems</button></td>
-                    </tr>
-                </table>
-                <table class="table" id="studytable">
-                    <tr>
-                        <td><button class="timestudylocked" id="dilstudy11" onclick="buyMasteryStudy(false, 11)">Unlock 5x EP mult autobuyer<br>Cost: <span id="dilstudy11Cost" style="display: inline;"></span> Time Theorems</button></td>
-                    </tr>
-                </table>
-                <table class="table" id="studytable">
-                    <tr>
-                        <td><button class="timestudylocked" id="dilstudy12" onclick="buyMasteryStudy(false, 12)">Unlock the 2nd Time Dimension autobuyer<br>Cost: <span id="dilstudy12Cost" style="display: inline;"></span> Time Theorems</button></td>
-                        <td><button class="timestudylocked" id="dilstudy13" onclick="buyMasteryStudy(false, 13)">Unlock the 7th Time Dimension autobuyer<br>Cost: <span id="dilstudy13Cost" style="display: inline;"></span> Time Theorems</button></td>
-                    </tr>
-                </table>
-                <table class="table" id="studytable">
-                    <tr>
-                        <td><button class="timestudylocked" id="dilstudy14" onclick="buyMasteryStudy(false, 14)">Unlock the 5th Time Dimension autobuyer<br>Cost: <span id="dilstudy14Cost" style="display: inline;"></span> Time Theorems</button></td>
-                        <td><button class="timestudylocked" id="dilstudy15" onclick="buyMasteryStudy(false, 15)">Unlock the 4th Time Dimension autobuyer<br>Cost: <span id="dilstudy15Cost" style="display: inline;"></span> Time Theorems</button></td>
+                        <td><button class="timestudylocked" id="dilstudy7">New Mastery Studies will be out soon.</td>
                     </tr>
                 </table>
                 <div style="height: 60px;"></div>
@@ -1041,6 +1018,7 @@
                                 </td>
                             </tr>
                         </table>
+                        <button id="togglealltimedims"style="width:140px; height: 30px; font-size: 12px; visibility: hidden" onclick="toggleAllTimeDims()" class="storebtn">Toggle all ON/OFF</button>
             </div>
             <div id="metadimensions" class="dimtab">
                   <div>
@@ -1706,6 +1684,32 @@
                                 <div id="This is what I have to do to get rid of you." class="achievement achievementlocked" style="background-image: url(images/96.png)" ach-tooltip="Reach 1e20000 IP without any time studies while dilated."><br></div>
                             </td>
                         </tr>
+                        <tr id="achRow14">
+                            <td>
+                                <div id="I'm so meta" class="achievement achievementlocked" style="background-image: url(images/97.png)" ach-tooltip="Unlock meta dimensions."><br></div>
+                            </td>
+                            <td>
+                                <div id="And still no ninth dimension..." class="achievement achievementlocked" style="background-image: url(images/98.png)" ach-tooltip="Get the eighth meta-dimension. Reward: All meta-dimensions are 10% stronger and you start with 100 meta-antimatter on reset."><br></div>
+                            </td>
+                            <td>
+                                <div id="In the grim darkness of the far endgame" class="achievement achievementlocked" style="background-image: url(images/99.png)" ach-tooltip="Get 1e40,000 EP."><br></div>
+                            </td>
+                            <td>
+                                <div id="Meta-boosting to the max" class="achievement achievementlocked" style="background-image: url(images/100.png)" ach-tooltip="Get 10 meta-dimension boosts. Reward: Meta-dimension boosts are each 1.01x stronger."><br></div>
+                            </td>
+                            <td>
+                                <div id="The cap is a million, not a trillion" class="achievement achievementlocked" style="background-image: url(images/101.png)" ach-tooltip="Get 1e12 eternities. Reward: Eternity upgrade 2 uses a better formula."><br></div>
+                            </td>
+                            <td>
+                                <div id="It will never be enough" class="achievement achievementlocked" style="background-image: url(images/102.png)" ach-tooltip="Reach 1e100,000 replicanti. Reward: You can buy max replicanti galaxies."><br></div>
+                            </td>
+                            <td>
+                                <div id="GAS GAS GAS" class="achievement achievementlocked" style="background-image: url(images/103.png)" ach-tooltip="Get 1,000,000 tickspeed upgrades from time dimensions. Reward: Autobuyers for max TD and x5 EP."><br></div>
+                            </td>
+                            <td>
+                                <div id="Universal harmony" class="achievement achievementlocked" style="background-image: url(images/104.png)" ach-tooltip="Have at least 700 normal, replicanti, and free dilated galaxies. Reward: Galaxies are 0.1% stronger."><br></div>
+                            </td>
+                        </tr>
                 </table>
             </div>
             <div id="secretachievements" class="achtab" style="display:none;">
@@ -2319,10 +2323,22 @@
                 </tr>
             </table>
         </div>
-
-
-
-
+        <div id="galaxy" class="tab" align="center" style="display: none">
+            <div id="galaxyPoints" style="color: black; font-size: 15px; width: 40%; margin: 0 auto"></div>
+            <div>
+                <table id="footer">
+                    <tr>
+                        <td>
+                            <div style="text-align:center">
+                                <a href="howto.html" target="_newtab">How to play  </a> |
+                                <a href="about.html" onclick="giveAchievement('A sound financial decision')" target="_newtab">About   </a> |
+                                <a href="changelog.html" target="_newtab">Changelog   </a>
+                            </div>
+                        </td>
+                    </tr>
+                </table>
+            </div>
+        </div>
         <div id="infinity" class="tab" align="center" style="display: none">
             <br>
             <div id="infinityPoints1" style="color: black; font-size: 15px; width: 40%; margin: 0 auto">You have made x Infinity points.</div>
@@ -2817,6 +2833,8 @@
                 <button class="storebtn" id="replicantireset" onclick="replicantiGalaxy()" style="width: 200px; height: 70px; font-size: 12px">Reset replicanti amount, but get a free galaxy</button>
                 <br>
                 <button class="storebtn" id="replicantiresettoggle" onclick="replicantiGalaxyAutoToggle()" style="width: 200px; height: 25px; font-size: 12px; display: none">Auto galaxy OFF</button>
+                <br>
+                <button class="storebtn" id="replicantibulkmodetoggle" onclick="replicantiGalaxyBulkModeToggle()" style="width: 200px; height: 25px; font-size: 12px; display: none">Galaxy bulk mode: single</button>
             </div>
             <div id="footercontainer">
                     <table id="footer">

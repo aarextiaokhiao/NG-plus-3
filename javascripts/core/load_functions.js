@@ -563,7 +563,6 @@ if (player.version < 5) {
       else player.eternityChalls.eterc11--
       $.notify('Your NG- save has been updated due to few balancing issues.', 'info')
   }
-  if (player.aarexModifications.newGameMinusVersion < 2.21) player.aarexModifications.newGameMinusVersion = 2.21
   if (player.aarexModifications.newGamePlusVersion === undefined) if (player.eternities < 20 && ECTimesCompleted("eterc1") > 0) player.aarexModifications.newGamePlusVersion = 1
   if (player.aarexModifications.newGamePlusPlusVersion === undefined) { 
       if (player.dilation.rebuyables[4] !== undefined) {
@@ -575,15 +574,30 @@ if (player.version < 5) {
                   player.meta[dim].bought += player.meta[dim].tensBought * 10
                   delete player.meta[dim].tensBought
               }
-              if (player.autoEterMode) player.aarexModifications.newGamePlusPlusVersion = 2.2
-              else if (v2_1check) {
-                  player.version = 12.1
-                  player.aarexModifications.newGamePlusPlusVersion = 2.1
-              } else player.aarexModifications.newGamePlusPlusVersion = 2
-          } else player.aarexModifications.newGamePlusPlusVersion = 1
+          }
+          if (player.ep5xAutobuyer) {
+              player.aarexModifications.newGamePlusPlusVersion = 2.3
+              player.autoEterOptions = {epmult:player.ep5xAutobuyer}
+              for (dim=1;dim<9;dim++) player.autoEterOptions["td"+dim] = player.timeDimensionAutobuyer
+              var newAchievements=[]
+              for (id=0;id<player.achievements.length;i++) newAchievements.push(player.achievements[id].split("r14")[1]?"ngpp1"+player.achievements[id].split("r14")[1]:"")
+              player.achievements=newAchievements
+              delete player.timeDimensionAutobuyer
+              delete player.ep5xAutobuyer
+          } else if (player.autoEterMode) player.aarexModifications.newGamePlusPlusVersion = 2.2
+          else if (v2_1check) {
+              player.version = 12.1
+              player.aarexModifications.newGamePlusPlusVersion = 2.1
+          } else if (player.meta) player.aarexModifications.newGamePlusPlusVersion = 2
+          else player.aarexModifications.newGamePlusPlusVersion = 1
           player.dilation.upgrades=migratedUpgrades
           resetDilationGalaxies()
       }
+  } else if (player.dilation.rebuyables[4] == null) {
+      delete player.aarexModifications.meta
+      delete player.aarexModifications.autoEterMode
+      delete player.aarexModifications.autoEterOptions
+
   }
   if (player.aarexModifications.newGamePlusPlusVersion < 2) {
       for (dim=1;dim<5;dim++) {
@@ -603,12 +617,18 @@ if (player.version < 5) {
       player.autoEterMode == "amount"
       $.notify('NG++ was updated to include more features.', 'info')
       player.aarexModifications.newGamePlusPlusVersion = 2.2
-      resetDilationGalaxies()
   }
-  if (player.dilation.rebuyables[4] == null) delete player.aarexModifications.newGamePlusPlusVersion
-  if (player.aarexModifications.newGame3PlusVersion < 1.01) {
-      player.aarexModifications.dbPower = new Decimal(getDimensionBoostPower())
-      player.aarexModifications.newGame3PlusVersion = 1.01
+  if (player.aarexModifications.newGamePlusPlusVersion < 2.3) {
+      if (player.autoEterOptions.epmult==undefined) player.autoEterOptions.epmult=false
+      for (dim=1;dim<9;dim++) if (player.autoEterOptions["td"+dim]==undefined) player.autoEterOptions["td"+dim]=false
+      $.notify('NG++ was updated to include more features.', 'info')
+      player.aarexModifications.newGamePlusPlusVersion = 2.3
+  }
+  if (player.aarexModifications.newGamePlusPlusVersion < 2.21) player.aarexModifications.newGamePlusPlusVersion = 2.21
+  if (player.aarexModifications.newGame3PlusVersion < 1.01) player.aarexModifications.dbPower = new Decimal(getDimensionBoostPower())
+  if (player.aarexModifications.newGame3PlusVersion < 1.02) {
+      player.aarexModifications.newGame3PlusVersion = 1.02
+      player.masterystudies = []
   }
   if (player.aarexModifications.newGameMinusMinusVersion === undefined) {
       if (player.galaxyPoints) player.aarexModifications.newGameMinusMinusVersion = 1.1
@@ -719,14 +739,16 @@ if (player.version < 5) {
   updatePriorities();
   updateTheoremButtons();
   updateTimeStudyButtons();
+  if (player.meta) {
+      document.getElementById('epmultauto').style.display=player.achievements.includes("ngpp17")?"":"none"
+      for (i=1;i<9;i++) {
+          document.getElementById("td"+i+'auto').textContent="Auto: O"+(player.autoEterOptions["td"+i+'auto']?"N":"FF")
+          document.getElementById("td"+i+'auto').style.visibility=player.achievements.includes("ngpp17")?"visible":"hidden"
+      }
+  }
   if (player.aarexModifications.newGame3PlusVersion) {
       updateMasteryStudyCosts()
       updateMasteryStudyButtons()
-      for (i=1;i<9;i++) {
-          var name=i<2?'epmult':'td'+(i<3?1:i<4?6:i<5?8:i<6?3:i<7?2:i<8?7:i<9?5:4)
-          document.getElementById(name+'auto').textContent="Auto: O"+(player.autoEterOptions[name]?"N":"FF")
-          document.getElementById(name+'auto').style.visibility=player.autoEterOptions[name]==undefined?"hidden":"visible"
-      }
   }
   transformSaveToDecimal();
   updateChallengeTimes();

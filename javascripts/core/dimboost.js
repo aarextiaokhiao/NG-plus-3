@@ -166,6 +166,8 @@ function softReset(bulk) {
       why: player.why,
       options: player.options,
       meta: player.meta,
+      masterystudies: player.masterystudies,
+      autoEterOptions: player.autoEterOptions,
       aarexModifications: player.aarexModifications
   };
   if (player.currentChallenge == "challenge10" || player.currentChallenge == "postc1") {

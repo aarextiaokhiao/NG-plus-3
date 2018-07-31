@@ -46,6 +46,14 @@ button {
     background: #1565C0 !important;
 }
 
+.galaxybtn {
+  background: #000000 !important;
+}
+
+.galaxybtn:hover {
+  background: #1E90FF !important;
+}
+
 .infinitybtn {
     color: #000 !important;
     background: #F5F5F5 !important;
