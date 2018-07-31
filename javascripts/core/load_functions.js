@@ -580,7 +580,7 @@ if (player.version < 5) {
               player.autoEterOptions = {epmult:player.ep5xAutobuyer}
               for (dim=1;dim<9;dim++) player.autoEterOptions["td"+dim] = player.timeDimensionAutobuyer
               var newAchievements=[]
-              for (id=0;id<player.achievements.length;i++) newAchievements.push(player.achievements[id].split("r14")[1]?"ngpp1"+player.achievements[id].split("r14")[1]:"")
+              for (id=0;id<player.achievements.length;id++) newAchievements.push(player.achievements[id].split("r14")[1]?"ngpp1"+player.achievements[id].split("r14")[1]:player.achievements[id])
               player.achievements=newAchievements
               delete player.timeDimensionAutobuyer
               delete player.ep5xAutobuyer
@@ -619,8 +619,9 @@ if (player.version < 5) {
       player.aarexModifications.newGamePlusPlusVersion = 2.2
   }
   if (player.aarexModifications.newGamePlusPlusVersion < 2.3) {
-      if (player.autoEterOptions.epmult==undefined) player.autoEterOptions.epmult=false
-      for (dim=1;dim<9;dim++) if (player.autoEterOptions["td"+dim]==undefined) player.autoEterOptions["td"+dim]=false
+      var autoEterOptions={epmult:player.autoEterOptions?player.autoEterOptions.epMult===true:false}
+      for (dim=1;dim<9;dim++) if (player.autoEterOptions?player.autoEterOptions["td"+dim]===undefined:true) player.autoEterOptions["td"+dim]=false
+      player.autoEterOptions=autoEterOptions
       $.notify('NG++ was updated to include more features.', 'info')
       player.aarexModifications.newGamePlusPlusVersion = 2.3
   }
