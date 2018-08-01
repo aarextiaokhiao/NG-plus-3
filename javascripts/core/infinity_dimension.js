@@ -2,7 +2,7 @@
 
 
 function DimensionDescription(tier) {
-  if (tier == 8 && (ECTimesCompleted("eterc7") === 0 || player.currentEternityChall === "eterc12") && player.currentEternityChall !== "eterc7") return Math.round(player['infinityDimension'+tier].amount);
+  if (tier == 8 && (ECTimesCompleted("eterc7") === 0 || player.currentEternityChall === "eterc12") && player.currentEternityChall !== "eterc7") return getFullExpansion(player["infinityDimension"+tier].amount.round());
   else return shortenDimensions(player['infinityDimension'+tier].amount)+' (+' + formatValue(player.options.notation, DimensionRateOfChange(tier), 2, 2) + '%/s)';
 }
 
@@ -83,7 +83,7 @@ function DimensionPower(tier) {
       mult = mult.times(player.eternityPoints.plus(1))
   }
 
-  if (player.eternityUpgrades.includes(2)) mult = mult.times(Decimal.pow(Math.min(player.eternities, 100000)/200 + 1, Math.log(Math.min(player.eternities, 100000)*2+1)/Math.log(4)).times(new Decimal((player.eternities-100000)/200 + 1).times(Math.log((player.eternities- 100000)*2+1)/Math.log(4)).max(1)))
+  if (player.eternityUpgrades.includes(2)) mult = mult.times(getEU2Mult())
 
   if (player.eternityUpgrades.includes(3)) mult = mult.times(Decimal.pow(2,300/Math.max(infchallengeTimes, player.achievements.includes("r112") ? 6.1 : 7.5)))
 
@@ -252,3 +252,9 @@ function loadInfAutoBuyers() {
 }
 
 var infDimPow = 1
+
+function getEU2Mult() {
+	var cap = Math.min(player.eternities, 100000)
+	var soft = player.eternities - cap
+	return Decimal.pow(cap/200 + 1, Math.log(cap*2+1)/Math.log(4)).times(new Decimal(soft/200 + 1).times(Math.log(soft*2+1)/Math.log(4)).max(1)).max(player.achievements.includes("ngpp15")?Decimal.pow(player.eternities, Math.pow(Math.log10(player.eternities), 3.5)):1)
+}

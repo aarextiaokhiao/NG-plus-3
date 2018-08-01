@@ -65,13 +65,30 @@ function maxTheorems() {
 }
 
 function updateTheoremButtons() {
-  document.getElementById("theoremam").className = player.money.gte(player.timestudy.amcost) ? "timetheorembtn" : "timetheorembtnlocked"
-  document.getElementById("theoremip").className = player.infinityPoints.gte(player.timestudy.ipcost) ? "timetheorembtn" : "timetheorembtnlocked"
-  document.getElementById("theoremep").className = player.eternityPoints.gte(player.timestudy.epcost) ? "timetheorembtn" : "timetheorembtnlocked"
-  document.getElementById("theoremep").innerHTML = "Buy Time Theorems <br>Cost: "+shortenDimensions(player.timestudy.epcost)+" EP"
-  document.getElementById("theoremip").innerHTML = "Buy Time Theorems <br>Cost: "+shortenCosts(player.timestudy.ipcost)+" IP"
-  document.getElementById("theoremam").innerHTML = "Buy Time Theorems <br>Cost: "+shortenCosts(player.timestudy.amcost)
-  document.getElementById("timetheorems").innerHTML = "You have <span style='display:inline' class=\"TheoremAmount\">"+(player.timestudy.theorem>99999?shortenMoney(player.timestudy.theorem):getFullExpansion(player.timestudy.theorem))+"</span> Time Theorem"+ (player.timestudy.theorem == 1 ? "." : "s.")
+	if (player.dilation.upgrades.includes(9)) {
+		document.getElementById("theoremmax").style.display="none"
+		document.getElementById("theoremam").style.display="none"
+		document.getElementById("theoremip").style.display="none"
+		document.getElementById("theoremep").style.display="none"
+		document.getElementById("timetheorems").style.bottom="0"
+		document.getElementById("presetsbtn").style.bottom="-3px"
+		document.getElementById("theorembuybackground").style.bottom = "-80px"
+	} else {
+		document.getElementById("theoremmax").style.display=""
+		document.getElementById("theoremam").style.display=""
+		document.getElementById("theoremip").style.display=""
+		document.getElementById("theoremep").style.display=""
+		document.getElementById("timetheorems").style.bottom="80px"
+		document.getElementById("presetsbtn").style.bottom="77px"
+		document.getElementById("theorembuybackground").style.bottom = "0"
+		document.getElementById("theoremam").className = player.money.gte(player.timestudy.amcost) ? "timetheorembtn" : "timetheorembtnlocked"
+		document.getElementById("theoremip").className = player.infinityPoints.gte(player.timestudy.ipcost) ? "timetheorembtn" : "timetheorembtnlocked"
+		document.getElementById("theoremep").className = player.eternityPoints.gte(player.timestudy.epcost) ? "timetheorembtn" : "timetheorembtnlocked"
+		document.getElementById("theoremep").innerHTML = "Buy Time Theorems <br>Cost: "+shortenDimensions(player.timestudy.epcost)+" EP"
+		document.getElementById("theoremip").innerHTML = "Buy Time Theorems <br>Cost: "+shortenCosts(player.timestudy.ipcost)+" IP"
+		document.getElementById("theoremam").innerHTML = "Buy Time Theorems <br>Cost: "+shortenCosts(player.timestudy.amcost)
+	}
+	document.getElementById("timetheorems").innerHTML = "You have <span style='display:inline' class=\"TheoremAmount\">"+(player.timestudy.theorem>99999?shortenMoney(player.timestudy.theorem):getFullExpansion(player.timestudy.theorem))+"</span> Time Theorem"+ (player.timestudy.theorem == 1 ? "." : "s.")
 }
 
 function buyTimeStudy(name, cost, check) {
@@ -350,6 +367,20 @@ function respecTimeStudies() {
   updateTimeStudyButtons()
   updateTheoremButtons()
   drawStudyTree()
+  if (player.aarexModifications.newGame3PlusVersion) {
+      var respecedMS=[]
+      for (id=0;id<player.masterystudies.length;id++) {
+          var t = player.masterystudies[id].split("t")[1]
+          if (t) {
+              player.timestudy.theorem+=masterystudies.costs.time[t]
+          } else player.masterystudies.push(player.masterystudies[id])
+      }
+      player.masterystudies=respecedMS
+      drawMasteryTree()
+      updateMasteryStudyCosts()
+      updateMasteryStudyButtons()
+  }
+  ipMultPower=2
   if (player.replicanti.galaxybuyer) document.getElementById("replicantiresettoggle").textContent = "Auto galaxy ON"
   else document.getElementById("replicantiresettoggle").textContent = "Auto galaxy OFF"
 }
@@ -417,6 +448,7 @@ function new_preset(importing) {
 	latestRow.innerHTML=getPresetLayout(placement)
 	loadedPresets++
 	changePresetTitle(placement, loadedPresets)
+	localStorage.setItem("AD_aarexModifications",btoa(JSON.stringify(metaSave)))
 	$.notify("Preset created", "info")
 }
 

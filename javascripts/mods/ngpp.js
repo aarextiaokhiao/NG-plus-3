@@ -7,7 +7,7 @@ function getMetaDimensionMultiplier (tier) {
     return new Decimal(1);
   }
   let power = player.dilation.upgrades.includes("ngpp4") ? getDil15Bonus() : 2
-  let multiplier = Decimal.pow(Math.min(power, 2.5), Math.floor(player.meta[tier].bought / 10)).times(Decimal.pow(power*(player.achievements.includes("ngpp14")?1.01:1), Math.max(0, player.meta.resets - tier + 1))).times(getDilationMetaDimensionMultiplier());
+  let multiplier = Decimal.pow(power, Math.floor(player.meta[tier].bought / 10)).times(Decimal.pow(power*(player.achievements.includes("ngpp14")?1.01:1), Math.max(0, player.meta.resets - tier + 1))).times(getDilationMetaDimensionMultiplier());
   if (player.dilation.upgrades.includes("ngpp13")) {
     multiplier = multiplier.times(getDil14Bonus());
   }
@@ -202,6 +202,9 @@ function updateAutoEterMode() {
 	} else if (player.autoEterMode == "relative") {
 		document.getElementById("toggleautoetermode").textContent = "Auto eternity mode: X times last eternity"
 		document.getElementById("eterlimittext").textContent = "X times last eternity:"
+	} else if (player.autoEterMode == "relativebest") {
+		document.getElementById("toggleautoetermode").textContent = "Auto eternity mode: X times best of last 10"
+        document.getElementById("eterlimittext").textContent = "X times best of last 10 eternities:"
 	} else if (player.autoEterMode == "replicanti") {
 		document.getElementById("toggleautoetermode").textContent = "Auto eternity mode: replicanti"
 		document.getElementById("eterlimittext").textContent = "Amount of replicanti to wait until reset:"
@@ -217,7 +220,8 @@ function updateAutoEterMode() {
 function toggleAutoEterMode() {
 	if (player.autoEterMode == "amount") player.autoEterMode = "time"
 	else if (player.autoEterMode == "time") player.autoEterMode = "relative"
-	else if (player.autoEterMode == "relative" && player.dilation.upgrades.includes("ngpp3") && player.eternities >= 4e11 && player.aarexModifications.newGame3PlusVersion) player.autoEterMode = "replicanti"
+	else if (player.autoEterMode == "relative") player.autoEterMode = "relativebest"
+	else if (player.autoEterMode == "relativebest" && player.dilation.upgrades.includes("ngpp3") && player.eternities >= 4e11 && player.aarexModifications.newGame3PlusVersion) player.autoEterMode = "replicanti"
 	else if (player.autoEterMode == "replicanti" && player.eternities >= 1e13) player.autoEterMode = "peak"
 	else if (player.autoEterMode) player.autoEterMode = "amount"
 	updateAutoEterMode()
@@ -225,5 +229,31 @@ function toggleAutoEterMode() {
 
 // v2.21
 function getDil15Bonus () {
-	return Math.log(player.dilation.dilatedTime.max(1e10).min(1e100).log(10)) / Math.log(10) + 1;
+	return Math.log10(player.dilation.dilatedTime.max(1e10).min(1e100).log(10)) + 1;
+}
+
+// v2.3
+function toggleAllTimeDims() {
+	var turnOn
+	var id=1
+	while (id<9&&turnOn===undefined) {
+		if (!player.autoEterOptions["td"+id]) turnOn=true
+		else if (id>7) turnOn=false
+		id++
+	}
+	for (id=1;id<9;id++) {
+		player.autoEterOptions["td"+id]=turnOn
+		document.getElementById("td"+id+'auto').textContent="Auto: O"+(turnOn?"N":"FF")
+	}
+}
+
+function toggleAutoEter(id) {
+	player.autoEterOptions[id]=!player.autoEterOptions[id]
+	document.getElementById(id+'auto').textContent="Auto: O"+(player.autoEterOptions[id]?"N":"FF")
+}
+
+// v2.301
+function replicantiGalaxyBulkModeToggle() {
+	player.galaxyMaxBulk=!player.galaxyMaxBulk
+	document.getElementById('replicantibulkmodetoggle').textContent="Mode: "+(player.galaxyMaxBulk?"Max":"Singles")
 }

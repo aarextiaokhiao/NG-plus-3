@@ -194,7 +194,7 @@ function giveAchievement(name) {
 
     if (player.achievements.includes(allAchievementNums[name])) return false
 
-    if (name=="Universal harmony"&&(player.galaxies<700&&player.replicanti.galaxies+extraReplGalaxies<700&&player.dilation.freeGalaxies<700)) return
+    if (name=="Universal harmony"&&(player.galaxies<700||player.replicanti.galaxies+extraReplGalaxies<700||player.dilation.freeGalaxies<700)) return
 
     if (name == "A sound financial decision") localStorage.setItem(btoa("dsAM_asfd"), "gg")
     else $.notify(name, "success");
@@ -205,6 +205,11 @@ function giveAchievement(name) {
         player.autoIP = player.autoIP.times(4);
         if (player.autoCrunchMode == "amount" && player.autobuyers[11].priority != undefined) player.autobuyers[11].priority = player.autobuyers[11].priority.times(4);
     }
+    if (name == "The gap is a million, not a trillion") {
+        document.getElementById('epmultauto').style.display=""
+        for (i=1;i<9;i++) document.getElementById("td"+i+'auto').style.visibility="visible"
+    }
+    if (name == "It will never be enough") document.getElementById('replicantibulkmodetoggle').style.display="inline-block"
     updateAchievements();
 }
 

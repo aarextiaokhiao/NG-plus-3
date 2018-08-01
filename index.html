@@ -248,14 +248,14 @@
                 </table>
                 <table class="table" id="studytable">
                     <tr class="wideRow">
-                        <td><button class="timestudy darkstudy" style="margin: 1px; width: 120px; font-size: 0.55rem; padding: 3px;" id="221" onclick="buyTimeStudy(221, 900)">Dimensional boosts affect time dimensions with reduced power.<span>Cost: 900 Time Theorems</button></td>
-                        <td><button class="timestudy lightstudy" style="margin: 1px; width: 120px; font-size: 0.55rem; padding: 3px;" id="222" onclick="buyTimeStudy(222, 900)">Dimensional boost costs scale by another 2 less.<span>Cost: 900 Time Theorems</button></td>
-                        <td><button class="timestudy darkstudy" style="margin: 1px; width: 120px; font-size: 0.55rem; padding: 3px;" id="223" onclick="buyTimeStudy(223, 900)">Galaxy cost scaling starts 7 galaxies later.<span>Cost: 900 Time Theorems</button></td>
-                        <td><button class="timestudy lightstudy" style="margin: 1px; width: 120px; font-size: 0.55rem; padding: 3px;" id="224" onclick="buyTimeStudy(224, 900)">Galaxy cost scaling starts 1 galaxy later for every 2000 dimensional boosts.<span>Cost: 900 Time Theorems</button></td>
-                        <td><button class="timestudy darkstudy" style="margin: 1px; width: 120px; font-size: 0.55rem; padding: 3px;" id="225" onclick="buyTimeStudy(225, 900)">You gain extra RGs based on how high above infinity your replicanti are.<span>Cost: 900 Time Theorems</button></td>
-                        <td><button class="timestudy lightstudy" style="margin: 1px; width: 120px; font-size: 0.55rem; padding: 3px;" id="226" onclick="buyTimeStudy(226, 900)">You gain extra RGs based on your max RGs.<span>Cost: 900 Time Theorems</button></td>
-                        <td><button class="timestudy darkstudy" style="margin: 1px; width: 120px; font-size: 0.55rem; padding: 3px;" id="227" onclick="buyTimeStudy(227, 900)">Sacrifice affects the 4th Time Dimension with reduced effect.<span>Cost: 900 Time Theorems</button></td>
-                        <td><button class="timestudy lightstudy" style="margin: 1px; width: 120px; font-size: 0.55rem; padding: 3px;" id="228" onclick="buyTimeStudy(228, 900)">Sacrifice scales better.<span>Cost: 900 Time Theorems</button></td>
+                        <td><button class="timestudy darkstudy" id="221" onclick="buyTimeStudy(221, 900)">Dimensional boosts affect time dimensions with reduced power.<span>Cost: 900 Time Theorems</button></td>
+                        <td><button class="timestudy lightstudy" id="222" onclick="buyTimeStudy(222, 900)">Dimensional boost costs scale by another 2 less.<span>Cost: 900 Time Theorems</button></td>
+                        <td><button class="timestudy darkstudy" id="223" onclick="buyTimeStudy(223, 900)">Galaxy cost scaling starts 7 galaxies later.<span>Cost: 900 Time Theorems</button></td>
+                        <td><button class="timestudy lightstudy" id="224" onclick="buyTimeStudy(224, 900)">Galaxy cost scaling starts 1 galaxy later for every 2000 dimensional boosts.<span>Cost: 900 Time Theorems</button></td>
+                        <td><button class="timestudy darkstudy" id="225" onclick="buyTimeStudy(225, 900)">You gain extra RGs based on how high above infinity your replicanti are.<span>Cost: 900 Time Theorems</button></td>
+                        <td><button class="timestudy lightstudy" id="226" onclick="buyTimeStudy(226, 900)">You gain extra RGs based on your max RGs.<span>Cost: 900 Time Theorems</button></td>
+                        <td><button class="timestudy darkstudy" id="227" onclick="buyTimeStudy(227, 900)">Sacrifice affects the 4th Time Dimension with reduced effect.<span>Cost: 900 Time Theorems</button></td>
+                        <td><button class="timestudy lightstudy" id="228" onclick="buyTimeStudy(228, 900)">Sacrifice scales better.<span>Cost: 900 Time Theorems</button></td>
                     </tr>
                 </table>
                 <table class="table" id="studytable">
@@ -329,7 +329,35 @@
                 </table>
                 <table class="table" id="studytable">
                     <tr>
-                        <td><button class="timestudylocked" id="dilstudy7">New Mastery Studies will be out soon.</td>
+                        <td><button class="timestudylocked" id="timestudy241" onclick='buyMasteryStudy(true, 241)'>You gain 2.2x (from 2x) more IP by buying IP mult.<br><span id="ts241Cost" style="display: inline;"></span></button></td>
+                    </tr>
+                </table>
+                <table class="table" id="studytable">
+                    <tr>
+                        <td><button class="timestudylocked" id="timestudy251">???<br><span id="ts251Cost" style="display: inline;"></span></button></td>
+                        <td><button class="timestudylocked" id="timestudy252">???<br><span id="ts252Cost" style="display: inline;"></span></button></td>
+                        <td><button class="timestudylocked" id="timestudy253">???<br><span id="ts253Cost" style="display: inline;"></span></button></td>
+                    </tr>
+                </table>
+                <table class="table" id="studytable">
+                    <tr class="wideRow">
+                        <td><button class="timestudylocked" id="timestudy261">???<br><span id="ts261Cost" style="display: inline;"></span></button></td>
+                        <td><button class="timestudylocked" id="timestudy262">???<br><span id="ts262Cost" style="display: inline;"></span></button></td>
+                        <td><button class="timestudylocked" id="timestudy263">???<br><span id="ts263Cost" style="display: inline;"></span></button></td>
+                        <td><button class="timestudylocked" id="timestudy264">???<br><span id="ts264Cost" style="display: inline;"></span></button></td>
+                        <td><button class="timestudylocked" id="timestudy265">???<br><span id="ts265Cost" style="display: inline;"></span></button></td>
+                        <td><button class="timestudylocked" id="timestudy266">???<br><span id="ts266Cost" style="display: inline;"></span></button></td>
+                    </tr>
+                </table>
+                <table class="table" id="studytable">
+                    <tr>
+                        <td><button class="timestudylocked" id="ec13unl">???<br>Cost: Infinite Time Theorems</button></td>
+                        <td><button class="timestudylocked" id="ec14unl">???<br>Cost: Infinite Time Theorems</button></td>
+                    </tr>
+                </table>
+                <table class="table" id="studytable">
+                    <tr>
+                        <td><button class="timestudylocked" id="dc1unl">???<br>Cost: Infinite Time Theorems</button></td>
                     </tr>
                 </table>
                 <div style="height: 60px;"></div>
@@ -506,7 +534,7 @@
                     </tr>
                     <tr>
                         <td><button class="milestonerewardlocked" id="reward24">Everything does not reset until galaxy reset</button></td>
-                        <td><button class="milestonerewardlocked" id="reward25">Unlock bulk buy replicated galaxies</button></td>
+                        <td><button class="milestonerewardlocked" id="reward25">You permanently keep replicanti chance & interval</button></td>
                     </tr>
                     <tr>
                         <td class="milestoneText" id='milestone26'></td>
@@ -584,13 +612,13 @@
                     </tr>
                     <tr id="mddilupg">
                         <td>
-                            <button class="timestudy" id="dil14" onclick="buyDilationUpgrade(14)">Gain a multiplier to meta-dimensions based on tickspeed (1 + log(1 + log(x))).<br><span id="dil14desc"></span><br><span id="dil14cost"></span></button>
+                            <button class="timestudy" id="dil14" onclick="buyDilationUpgrade(14)" style='font-size:10px'>Gain a multiplier to meta-dimensions based on tickspeed (1+log(1+log(x))).<br><span id="dil14desc"></span><br><span id="dil14cost"></span></button>
                         </td>
                         <td>
-                            <button class="timestudy" id="dil15" onclick="buyDilationUpgrade(15)">Meta-dimension shifts, boosts, and per-ten upgrades are boosted by dilated time.<br><span id="dil15desc"></span><br><span id="dil15cost"></span></button>
+                            <button class="timestudy" id="dil15" onclick="buyDilationUpgrade(15)" style='font-size:10px'>Meta-dimension shifts, boosts, and per-ten upgrades are boosted by dilated time.<br><span id="dil15desc"></span><br><span id="dil15cost"></span></button>
                         </td>
                         <td>
-                            <button class="timestudy" id="dil16" onclick="buyDilationUpgrade(16)">Meta-antimatter effect on dimension boosts is stronger.<br><span id="dil16cost"></span></button>
+                            <button class="timestudy" id="dil16" onclick="buyDilationUpgrade(16)">Meta-antimatter effect on dimension boosts is stronger.<br>(8x -> 10x)<br><span id="dil16cost"></span></button>
                         </td>
                         <td>
                             <button class="timestudy" id="dil17" onclick="buyDilationUpgrade(17)">Dilated time production is boosted based on best meta-antimatter (log(x)).<br><span id="dil17desc"></span><br><span id="dil17cost"></span></button>
@@ -913,7 +941,7 @@
                                     <div id="timeAmount1">0 (0)</div>
                                 </td>
                                 <td>
-                                    <button id="td1auto" style="width:70px; font-size: 10px; float: right; visibility: hidden" onclick="switchAutoEter('td1')" class="storebtn">Auto: ON</button>
+                                    <button id="td1auto" style="width:70px; font-size: 10px; float: right; visibility: hidden" onclick="toggleAutoEter('td1')" class="storebtn">Auto: ON</button>
                                 </td>
                                 <td align="right" width="10%">
                                     <button id="timeMax1" style="color:black; width:195px; height:30px" class="storebtn" align="right" onclick="buyTimeDimension(1)">Cost: 10</button>
@@ -927,7 +955,7 @@
                                     <div id="timeAmount2" align="left">0 (0)</div>
                                 </td>
                                 <td>
-                                    <button id="td2auto" style="width:70px; font-size: 10px; float: right; visibility: hidden" onclick="switchAutoEter('td2')" class="storebtn">Auto: ON</button>
+                                    <button id="td2auto" style="width:70px; font-size: 10px; float: right; visibility: hidden" onclick="toggleAutoEter('td2')" class="storebtn">Auto: ON</button>
                                 </td>
                                 <td>
                                     <button id="timeMax2" style="color:black; width:195px; height:30px" class="storebtn" onclick="buyTimeDimension(2)">Cost: 10</button>
@@ -941,7 +969,7 @@
                                     <div id="timeAmount3" align="left">0 (0)</div>
                                 </td>
                                 <td>
-                                    <button id="td3auto" style="width:70px; font-size: 10px; float: right; visibility: hidden" onclick="switchAutoEter('td3')" class="storebtn">Auto: ON</button>
+                                    <button id="td3auto" style="width:70px; font-size: 10px; float: right; visibility: hidden" onclick="toggleAutoEter('td3')" class="storebtn">Auto: ON</button>
                                 </td>
                                 <td>
                                     <button id="timeMax3" style="color:black; width:195px; height:30px" class="storebtn" onclick="buyTimeDimension(3)">Cost: 10</button>
@@ -955,7 +983,7 @@
                                     <div id="timeAmount4" align="left">0 (0)</div>
                                 </td>
                                 <td>
-                                    <button id="td4auto" style="width:70px; font-size: 10px; float: right; visibility: hidden" onclick="switchAutoEter('td4')" class="storebtn">Auto: ON</button>
+                                    <button id="td4auto" style="width:70px; font-size: 10px; float: right; visibility: hidden" onclick="toggleAutoEter('td4')" class="storebtn">Auto: ON</button>
                                 </td>
                                 <td>
                                     <button id="timeMax4" style="color:black; width:195px; height:30px" class="storebtn" onclick="buyTimeDimension(4)">Cost: 10</button>
@@ -969,7 +997,7 @@
                                     <div id="timeAmount5" align="left">0 (0)</div>
                                 </td>
                                 <td>
-                                    <button id="td5auto" style="width:70px; font-size: 10px; float: right; visibility: hidden" onclick="switchAutoEter('td5')" class="storebtn">Auto: ON</button>
+                                    <button id="td5auto" style="width:70px; font-size: 10px; float: right; visibility: hidden" onclick="toggleAutoEter('td5')" class="storebtn">Auto: ON</button>
                                 </td>
                                 <td>
                                     <button id="timeMax5" style="color:black; width:195px; height:30px" class="storebtn" onclick="buyTimeDimension(5)">Cost: 10</button>
@@ -983,7 +1011,7 @@
                                     <div id="timeAmount6" align="left">0 (0)</div>
                                 </td>
                                 <td>
-                                    <button id="td6auto" style="width:70px; font-size: 10px; float: right; visibility: hidden" onclick="switchAutoEter('td6')" class="storebtn">Auto: ON</button>
+                                    <button id="td6auto" style="width:70px; font-size: 10px; float: right; visibility: hidden" onclick="toggleAutoEter('td6')" class="storebtn">Auto: ON</button>
                                 </td>
                                 <td>
                                     <button id="timeMax6" style="color:black; width:195px; height:30px" class="storebtn" onclick="buyTimeDimension(6)">Cost: 10</button>
@@ -997,7 +1025,7 @@
                                     <div id="timeAmount7" align="left">0 (0)</div>
                                 </td>
                                 <td>
-                                    <button id="td7auto" style="width:70px; font-size: 10px; float: right; visibility: hidden" onclick="switchAutoEter('td7')" class="storebtn">Auto: ON</button>
+                                    <button id="td7auto" style="width:70px; font-size: 10px; float: right; visibility: hidden" onclick="toggleAutoEter('td7')" class="storebtn">Auto: ON</button>
                                 </td>
                                 <td>
                                     <button id="timeMax7" style="color:black; width:195px; height:30px" class="storebtn" onclick="buyTimeDimension(7)">Cost: 10</button>
@@ -1011,7 +1039,7 @@
                                     <div id="timeAmount8" align="left">0 (0)</div>
                                 </td>
                                 <td>
-                                    <button id="td8auto" style="width:70px; font-size: 10px; float: right; visibility: hidden" onclick="switchAutoEter('td8')" class="storebtn">Auto: ON</button>
+                                    <button id="td8auto" style="width:70px; font-size: 10px; float: right; visibility: hidden" onclick="toggleAutoEter('td8')" class="storebtn">Auto: ON</button>
                                 </td>
                                 <td>
                                     <button id="timeMax8" style="color:black; width:195px; height:30px" class="storebtn" onclick="buyTimeDimension(8)">Cost: 10</button>
@@ -2832,8 +2860,7 @@
                 <br>
                 <button class="storebtn" id="replicantireset" onclick="replicantiGalaxy()" style="width: 200px; height: 70px; font-size: 12px">Reset replicanti amount, but get a free galaxy</button>
                 <br>
-                <button class="storebtn" id="replicantiresettoggle" onclick="replicantiGalaxyAutoToggle()" style="width: 200px; height: 25px; font-size: 12px; display: none">Auto galaxy OFF</button>
-                <br>
+                <button class="storebtn" id="replicantiresettoggle" onclick="replicantiGalaxyAutoToggle()" style="width: 200px; height: 25px; font-size: 12px; display: none">Auto galaxy OFF</button><br>
                 <button class="storebtn" id="replicantibulkmodetoggle" onclick="replicantiGalaxyBulkModeToggle()" style="width: 200px; height: 25px; font-size: 12px; display: none">Galaxy bulk mode: single</button>
             </div>
             <div id="footercontainer">
@@ -2902,8 +2929,8 @@
         <button id="dilationConfirmBtn" class="storebtn" onclick="toggleDilaConf()" style="width: 200px; height: 55px; font-size: 15px" style="display: inline"></button>
 	</div>
     <div id="TTbuttons" style="display:none;">
-        <button class="timetheorembtn" onclick="maxTheorems()" style="margin-left:-276px; width:130px; height: 30px; font-size: 0.75rem; bottom: 77px;">Buy max Theorems</button>
-        <button class="timetheorembtn" onclick="openStudyPresets()" style="margin-left:146px; width:130px; height: 30px; font-size: 0.75rem; bottom: 77px;">Presets</button>
+        <button class="timetheorembtn" onclick="maxTheorems()" id="theoremmax" style="margin-left:-276px; width:130px; height: 30px; font-size: 0.75rem; bottom: 77px;">Buy max Theorems</button>
+        <button class="timetheorembtn" onclick="openStudyPresets()" id="presetsbtn" style="margin-left:146px; width:130px; height: 30px; font-size: 0.75rem; bottom: 77px;">Presets</button>
         <button class="timetheorembtn" onclick="buyWithAntimatter()" id="theoremam" style="margin-left: -276px">Buy Time Theorems <br>Cost: 1e20000 antimatter</button>
         <button class="timetheorembtn" onclick="buyWithIP()" id="theoremip" style="margin-left: -86px">Buy Time Theorems <br>Cost: 1 IP</button>
         <button class="timetheorembtnlocked" onclick="buyWithEP()" id="theoremep" style="margin-left: 106px">Buy Time Theorems <br>Cost: 1 EP</button>
@@ -2921,22 +2948,22 @@
 <script type="text/javascript" src="javascripts/lz-string.js"></script>
 <script type="text/javascript" src="javascripts/core/polyfill.js"></script>
 <script type="text/javascript" src="javascripts/core/format.js?4"></script>
-<script type="text/javascript" src="javascripts/core/achievements.js?1"></script>
+<script type="text/javascript" src="javascripts/core/achievements.js?2"></script>
 <script type="text/javascript" src="javascripts/core/chart.js"></script>
 <script type="text/javascript" src="javascripts/core/tickspeed.js?2"></script>
 <script type="text/javascript" src="javascripts/core/normal_dimension.js?3"></script>
-<script type="text/javascript" src="javascripts/core/infinity_dimension.js?1"></script>
-<script type="text/javascript" src="javascripts/core/time_dimension.js?3"></script>
-<script type="text/javascript" src="javascripts/core/dimboost.js?5"></script>
-<script type="text/javascript" src="javascripts/core/timestudies.js?5"></script>
+<script type="text/javascript" src="javascripts/core/infinity_dimension.js?2"></script>
+<script type="text/javascript" src="javascripts/core/time_dimension.js?4"></script>
+<script type="text/javascript" src="javascripts/core/dimboost.js?6"></script>
+<script type="text/javascript" src="javascripts/core/timestudies.js?6"></script>
 <script type="text/javascript" src="javascripts/core/canvases.js?3"></script>
 <script type="text/javascript" src="javascripts/core/devtools.js"></script>
-<script type="text/javascript" src="javascripts/core/load_functions.js?9"></script>
+<script type="text/javascript" src="javascripts/core/load_functions.js?10"></script>
 <script type="text/javascript" src="javascripts/core/newsticker.js?1"></script>
 <script type="text/javascript" src="javascripts/mods/ngmm.js"></script>
-<script type="text/javascript" src="javascripts/mods/ngpp.js?1"></script>
-<script type="text/javascript" src="javascripts/mods/ngppp.js?1"></script>
-<script type="text/javascript" src="javascripts/game.js?15"></script>
+<script type="text/javascript" src="javascripts/mods/ngpp.js?2"></script>
+<script type="text/javascript" src="javascripts/mods/ngppp.js?2"></script>
+<script type="text/javascript" src="javascripts/game.js?16"></script>
 <script type="text/javascript" src="javascripts/sha512.js"></script>
 
 

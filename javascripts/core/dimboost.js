@@ -168,6 +168,7 @@ function softReset(bulk) {
       meta: player.meta,
       masterystudies: player.masterystudies,
       autoEterOptions: player.autoEterOptions,
+      galaxyMaxBulk: player.galaxyMaxBulk,
       aarexModifications: player.aarexModifications
   };
   if (player.currentChallenge == "challenge10" || player.currentChallenge == "postc1") {

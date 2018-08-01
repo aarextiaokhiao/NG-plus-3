@@ -417,7 +417,6 @@ if (player.version < 5) {
 
 
   if (player.break == true) document.getElementById("break").textContent = "FIX INFINITY"
-  document.getElementById("infiMult").innerHTML = "Multiply infinity points from all sources by 2 <br>currently: "+shortenDimensions(player.infMult.times(kongIPMult)) +"x<br>Cost: "+shortenCosts(player.infMultCost)+" IP"
 
   document.getElementById("notation").textContent = "Notation: "+(player.options.notation=="Emojis"?"Cancer":player.options.notation)
 
@@ -620,12 +619,21 @@ if (player.version < 5) {
   }
   if (player.aarexModifications.newGamePlusPlusVersion < 2.3) {
       var autoEterOptions={epmult:player.autoEterOptions?player.autoEterOptions.epMult===true:false}
-      for (dim=1;dim<9;dim++) if (player.autoEterOptions?player.autoEterOptions["td"+dim]===undefined:true) player.autoEterOptions["td"+dim]=false
+      for (dim=1;dim<9;dim++) if (player.autoEterOptions?player.autoEterOptions["td"+dim]:true) player.autoEterOptions["td"+dim]=false
       player.autoEterOptions=autoEterOptions
       $.notify('NG++ was updated to include more features.', 'info')
       player.aarexModifications.newGamePlusPlusVersion = 2.3
   }
-  if (player.aarexModifications.newGamePlusPlusVersion < 2.21) player.aarexModifications.newGamePlusPlusVersion = 2.21
+  if (player.aarexModifications.newGamePlusPlusVersion < 2.301) {
+      var metaAchCheck = player.dilation.studies.includes(6)
+      var noD9AchCheck = player.meta[8].bought > 0 || player.meta.resets > 4
+      var metaBoostCheck = player.meta.resets > 9
+      if (metaBoostCheck) giveAchievement("And still no ninth dimension...")
+      if (noD9AchCheck||metaBoostCheck) giveAchievement("Meta-boosting to the max")
+      if (metaAchCheck||noD9AchCheck||metaBoostCheck) giveAchievement("I'm so meta")
+      player.galaxyMaxBulk = false
+      player.aarexModifications.newGamePlusPlusVersion = 2.301
+  }
   if (player.aarexModifications.newGame3PlusVersion < 1.01) player.aarexModifications.dbPower = new Decimal(getDimensionBoostPower())
   if (player.aarexModifications.newGame3PlusVersion < 1.02) {
       player.aarexModifications.newGame3PlusVersion = 1.02
@@ -641,6 +649,10 @@ if (player.version < 5) {
       $.notify('Your NG-- save has been updated because Nyan cat made a new prestige layer that is between galaxies and infinity.', 'info')
       player.aarexModifications.newGameMinusMinusVersion = 1.1
   }
+
+  ipMultPower=2
+  if (player.aarexModifications.newGame3PlusVersion) if (player.masterystudies.includes("t241")) ipMultPower=2.2
+  document.getElementById("infiMult").innerHTML = "Multiply infinity points from all sources by "+ipMultPower+"<br>currently: "+shortenDimensions(player.infMult.times(kongIPMult)) +"x<br>Cost: "+shortenCosts(player.infMultCost)+" IP"
 
   //updates TD costs to harsher scaling
   if (player.version < 12) {
@@ -740,12 +752,14 @@ if (player.version < 5) {
   updatePriorities();
   updateTheoremButtons();
   updateTimeStudyButtons();
+  document.getElementById('epmultauto').style.display=player.achievements.includes("ngpp17")?"":"none"
+  for (i=1;i<9;i++) document.getElementById("td"+i+'auto').style.visibility=player.achievements.includes("ngpp17")?"visible":"hidden"
+  document.getElementById('togglealltimedims').style.visibility=player.achievements.includes("ngpp17")?"visible":"hidden"
+  document.getElementById('replicantibulkmodetoggle').style.display=player.achievements.includes("ngpp16")?"inline-block":"none"
+  document.getElementById('replicantibulkmodetoggle').textContent="Mode: "+(player.galaxyMaxBulk?"Max":"Singles")
   if (player.meta) {
-      document.getElementById('epmultauto').style.display=player.achievements.includes("ngpp17")?"":"none"
-      for (i=1;i<9;i++) {
-          document.getElementById("td"+i+'auto').textContent="Auto: O"+(player.autoEterOptions["td"+i+'auto']?"N":"FF")
-          document.getElementById("td"+i+'auto').style.visibility=player.achievements.includes("ngpp17")?"visible":"hidden"
-      }
+      document.getElementById('epmultauto').textContent="Auto: O"+(player.autoEterOptions.epmult?"N":"FF")
+      for (i=1;i<9;i++) document.getElementById("td"+i+'auto').textContent="Auto: O"+(player.autoEterOptions["td"+i]?"N":"FF")
   }
   if (player.aarexModifications.newGame3PlusVersion) {
       updateMasteryStudyCosts()

@@ -75,15 +75,8 @@ function getTimeDimensionRateOfChange(tier) {
 }
 
 function getTimeDimensionDescription(tier) {
-  var name = TIER_NAMES[tier];
-
-  let description = shortenDimensions(player['timeDimension'+tier].amount);
-
-  if (tier < 8) {
-      description += '  (+' + formatValue(player.options.notation, getTimeDimensionRateOfChange(tier), 2, 2) + '%/s)';
-  }
-
-  return description;
+  if (tier > 7 || (tier > 3 && !player.dilation.studies.includes(tier - 2))) return getFullExpansion(player['timeDimension' + tier].bought)
+  else return shortenDimensions(player['timeDimension' + tier].amount) + ' (+' + formatValue(player.options.notation, getTimeDimensionRateOfChange(tier), 2, 2) + '%/s)';
 }
 
 function updateTimeDimensions() {
