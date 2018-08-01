@@ -332,7 +332,7 @@ function updateNewPlayer(reseted) {
         player.aarexModifications.newGamePlusVersion = 1
     }
     if (modesChosen.ngpp) {
-        player.aarexModifications.newGamePlusPlusVersion = 2.3
+        player.aarexModifications.newGamePlusPlusVersion = 2.301
         player.autoEterMode = "amount"
         player.dilation.rebuyables[4] = 0
         player.meta = {resets: 0, antimatter: 10, bestAntimatter: 10}
@@ -1328,8 +1328,8 @@ function buyEternityUpgrade(name, cost) {
 function buyEPMult() {
     if (player.eternityPoints.gte(player.epmultCost)) {
         player.epmult = player.epmult.times(5)
-        if (player.autoEterMode === 'amount') {
-            player.eternityBuyer.limit = player.eternityBuyer.limit.times(5);
+        if (player.autoEterMode === undefined || player.autoEterMode === 'amount') {
+            player.eternityBuyer.limit = Decimal.times(player.eternityBuyer.limit, 5);
             document.getElementById("priority13").value = formatValue("Scientific", player.eternityBuyer.limit, 2, 0);
         }
         player.eternityPoints = player.eternityPoints.minus(player.epmultCost)

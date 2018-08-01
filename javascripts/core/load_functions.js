@@ -614,12 +614,11 @@ if (player.version < 5) {
       }
 
       player.autoEterMode == "amount"
-      $.notify('NG++ was updated to include more features.', 'info')
       player.aarexModifications.newGamePlusPlusVersion = 2.2
   }
   if (player.aarexModifications.newGamePlusPlusVersion < 2.3) {
       var autoEterOptions={epmult:player.autoEterOptions?player.autoEterOptions.epMult===true:false}
-      for (dim=1;dim<9;dim++) if (player.autoEterOptions?player.autoEterOptions["td"+dim]:true) player.autoEterOptions["td"+dim]=false
+      for (dim=1;dim<9;dim++) if (player.autoEterOptions===undefined?true:player.autoEterOptions["td"+dim]) autoEterOptions["td"+dim]=false
       player.autoEterOptions=autoEterOptions
       $.notify('NG++ was updated to include more features.', 'info')
       player.aarexModifications.newGamePlusPlusVersion = 2.3
