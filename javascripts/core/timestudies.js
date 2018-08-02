@@ -367,7 +367,7 @@ function respecTimeStudies() {
   updateTimeStudyButtons()
   updateTheoremButtons()
   drawStudyTree()
-  if (player.aarexModifications.newGame3PlusVersion) {
+  if (player.masterystudies) {
       var respecedMS=[]
       for (id=0;id<player.masterystudies.length;id++) {
           var t = player.masterystudies[id].split("t")[1]
@@ -397,7 +397,14 @@ function exportStudyTree() {
   let parent = output.parentElement;
 
   parent.style.display = "";
-  output.value = player.timestudy.studies + "|" + player.eternityChallUnlocked;
+  var mtsstudies=[]
+  if (player.masterystudies) {
+      for (id=0;id<player.masterystudies.length;id++) {
+          var t = player.masterystudies[id].split("t")[1]
+          if (t) mtsstudies.push(t)
+      }
+  }
+  output.value = player.timestudy.studies + (mtsstudies.length > 0 ? "," + mtsstudies + "|" : "|") + player.eternityChallUnlocked;
 
   output.onblur = function() {
       parent.style.display = "none";
@@ -424,7 +431,8 @@ function importStudyTree(input) {
   if (input === "") return false
   var studiesToBuy = input.split("|")[0].split(",");
   for (i=0; i<studiesToBuy.length; i++) {
-      document.getElementById(studiesToBuy[i]).click();
+      if (studiesToBuy[i]>240) buyMasteryStudy(true, studiesToBuy[i])
+      else document.getElementById(studiesToBuy[i]).click();
   }
   if (parseInt(input.split("|")[1]) !== 0) {
       justImported = true;
@@ -438,7 +446,16 @@ function new_preset(importing) {
 	if (importing) {
 		var input=prompt()
 		if (input === null) return
-	} else var input=player.timestudy.studies + "|" + player.eternityChallUnlocked
+	} else {
+		var mtsstudies=[]
+		if (player.masterystudies) {
+			for (id=0;id<player.masterystudies.length;id++) {
+				var t = player.masterystudies[id].split("t")[1]
+				if (t) mtsstudies.push(t)
+			}
+		}
+		var input=player.timestudy.studies + (mtsstudies.length > 0 ? "," + mtsstudies + "|" : "|") + player.eternityChallUnlocked
+	}
 	onImport = false
 	var placement=1
 	if (metaSave.presetsOrder.includes(placement)) placement++
@@ -453,7 +470,14 @@ function new_preset(importing) {
 }
 
 function save_preset(id) {
-	localStorage.setItem(btoa("dsAM_ST_"+id),btoa(JSON.stringify({preset:player.timestudy.studies + "|" + player.eternityChallUnlocked, title:JSON.parse(atob(localStorage.getItem(btoa("dsAM_ST_"+id)))).title})))
+	var mtsstudies=[]
+	if (player.masterystudies) {
+		for (id=0;id<player.masterystudies.length;id++) {
+			var t = player.masterystudies[id].split("t")[1]
+			if (t) mtsstudies.push(t)
+		}
+	}
+	localStorage.setItem(btoa("dsAM_ST_"+id),btoa(JSON.stringify({preset:player.timestudy.studies + (mtsstudies.length > 0 ? "," + mtsstudies + "|" : "|") + player.eternityChallUnlocked, title:JSON.parse(atob(localStorage.getItem(btoa("dsAM_ST_"+id)))).title})))
 	$.notify("Preset saved", "info")
 }
 

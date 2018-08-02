@@ -1,8 +1,8 @@
-masterystudies={initialCosts:{time:{241: 1e40},
+masterystudies={initialCosts:{time:{241: 1e41, 251: 1e43, 252: 1e43, 253: 1e43, 261: 1e44, 262: 1e44, 263: 1e44, 264: 1e44, 265: 1e44, 266: 1e44},
 		dil:{}},
 	costs:{time:{},
 		dil:{}},
-	costmults:{time:{241: 1},
+	costmults:{time:{241: 1, 251: 3, 252: 3, 253: 3, 261: 4, 262: 4, 263: 4, 264: 4, 265: 4, 266: 4},
 		dil:{}},
 	costmult:1,
 	allTimeStudies:[241, 251, 252, 253, 261, 262, 263, 264, 265, 266]}
@@ -17,14 +17,15 @@ function updateMasteryStudyButtons() {
 		else if (canBuyMasteryStudy(true, name)) div.className="timestudy"
 		else div.className="timestudylocked"
 	}
-	/*for (id=7;id<16;id++) {
+	for (id=7;id<8;id++) {
 		var element=document.getElementById("dilstudy"+id)
 		var cost=masterystudies.costs.dil[id]
 		if (player.masterystudies.includes("d"+id)) element.className="dilationupgbought"
 		else if (canBuyMasteryStudy(false, id)) element.className="dilationupg"
 		else element.className="timestudylocked"
-		document.getElementById("dilstudy"+id+"Cost").textContent=shorten(cost)
-	}*/
+		document.getElementById("ds"+id+"Cost").textContent="Cost: "+shorten(cost)+" Time Theorems"
+	}
+	document.getElementById("ts262Current").textContent="Currently: "+shorten(getTS262Mult())+"x"
 }
 
 function updateMasteryStudyCosts() {
@@ -44,7 +45,7 @@ function updateMasteryStudyCosts() {
 		var name=masterystudies.allTimeStudies[id]
 		if (!player.masterystudies.includes("t"+name)) masterystudies.costs.time[name]=masterystudies.initialCosts.time[name]*masterystudies.costmult
 	}
-	//for (id=7;id<16;id++) masterystudies.costs.dil[id]=masterystudies.initialCosts.dil[id]*masterystudies.costmult
+	for (id=7;id<8;id++) if (!player.masterystudies.includes("d"+id)) masterystudies.costs.dil[id]=masterystudies.initialCosts.dil[id]*masterystudies.costmult
 }
 
 function buyMasteryStudy(isTime, id) {
@@ -68,13 +69,14 @@ function buyMasteryStudy(isTime, id) {
 
 function canBuyMasteryStudy(isTime, id) {
 	if (isTime) {
-		if (row>24) return false //temp
 		if (player.timestudy.theorem<masterystudies.costs.time[id]||player.masterystudies.includes('t'+id)) return false
 		var row=Math.floor(id/10)
+		for (check=1;check<10;check++) if (player.masterystudies.includes('t'+(row+1).toString()+check)) return false
 		var col=id%10
-		if (row>25) return player.masterystudies.includes('t25'+Math.ceil(col/2))
+		if (row>25) return player.masterystudies.includes('t25'+Math.ceil(col/2))&&col<3
 		else if (row>24) return player.masterystudies.includes('t241')
 	} else {
+		return false //temp
 		if (player.timestudy.theorem<masterystudies.costs.dil[id]||player.masterystudies.includes('d'+id)) return false
 	}
 	return true
@@ -96,6 +98,8 @@ function drawMasteryBranch(num1, num2) {
 	if (type=="dc"?player.eternityChallUnlocked=="d"+num2.slice(2,4):type=="ec"?player.eternityChallUnlocked==num2.slice(2,4):player.masterystudies.includes(type=="d"?"d"+num2.split("dilstudy")[1]:"t"+num2.split("timestudy")[1])) {
 		if ((type=="d"||type=="dc")&&player.options.theme == "Aarex's Modifications") {
 			msctx.strokeStyle="#00E5E5";
+		} else if (type=="d"||type=="dc") {
+			ctx.strokeStyle="#64DD17";
 		} else if (type=="ec") {
 			msctx.strokeStyle="#490066";
 		} else {
@@ -104,6 +108,8 @@ function drawMasteryBranch(num1, num2) {
 	} else {
 		if ((type=="d"||type=="dc")&&player.options.theme == "Aarex's Modifications") {
 			msctx.strokeStyle="#007272";
+		} else if (type=="d"||type=="dc") {
+			msctx.strokeStyle="#4b3753";
 		} else {
 			msctx.strokeStyle="#444";
 		}
@@ -114,7 +120,7 @@ function drawMasteryBranch(num1, num2) {
 }
 
 function drawMasteryTree() {
-    msctx.clearRect(0, 0, msc.width, msc.height);
+	msctx.clearRect(0, 0, msc.width, msc.height);
 	drawMasteryBranch("back", "timestudy241")
 	drawMasteryBranch("timestudy241", "timestudy251")
 	drawMasteryBranch("timestudy241", "timestudy252")
@@ -131,6 +137,12 @@ function drawMasteryTree() {
 	drawMasteryBranch("timestudy264", "ec14unl")
 	drawMasteryBranch("timestudy265", "ec14unl")
 	drawMasteryBranch("timestudy266", "ec14unl")
-	drawMasteryBranch("ec13unl", "dc1unl")
-	drawMasteryBranch("ec14unl", "dc1unl")
+	drawMasteryBranch("timestudy252", "dilstudy7")
+	drawMasteryBranch("dilstudy7", "dc1unl")
+}
+
+//v1.1
+
+function getTS262Mult() {
+	return Math.sqrt(player.resets) / 10
 }

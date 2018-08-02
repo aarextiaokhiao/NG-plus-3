@@ -634,10 +634,8 @@ if (player.version < 5) {
       player.aarexModifications.newGamePlusPlusVersion = 2.301
   }
   if (player.aarexModifications.newGame3PlusVersion < 1.01) player.aarexModifications.dbPower = new Decimal(getDimensionBoostPower())
-  if (player.aarexModifications.newGame3PlusVersion < 1.02) {
-      player.aarexModifications.newGame3PlusVersion = 1.02
-      player.masterystudies = []
-  }
+  if (player.aarexModifications.newGame3PlusVersion < 1.02) player.masterystudies = []
+  if (player.aarexModifications.newGame3PlusVersion < 1.1) player.aarexModifications.newGame3PlusVersion = 1.1
   if (player.aarexModifications.newGameMinusMinusVersion === undefined) {
       if (player.galaxyPoints) player.aarexModifications.newGameMinusMinusVersion = 1.1
       else if ((Decimal.gt(player.postC3Reward, 1) && player.infinitied < 1 && player.eternities < 1) || (Math.round(new Decimal(player.achPow).log(5) * 100) % 100 < 1 && Decimal.gt(player.achPow, 1))) player.aarexModifications.newGameMinusMinusVersion = 1

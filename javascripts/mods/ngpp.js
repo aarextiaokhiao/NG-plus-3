@@ -12,6 +12,7 @@ function getMetaDimensionMultiplier (tier) {
     multiplier = multiplier.times(getDil14Bonus());
   }
   if (player.achievements.includes("ngpp12")) multiplier = multiplier.times(1.1)
+  if (player.masterystudies) if (player.masterystudies.includes("t262")) multiplier = multiplier.times(getTS262Mult())
   
   if (multiplier.lt(1)) multiplier = new Decimal(1)
   if (player.dilation.active || player.aarexModifications.newGameMinusMinusVersion) {
@@ -250,6 +251,13 @@ function toggleAllTimeDims() {
 function toggleAutoEter(id) {
 	player.autoEterOptions[id]=!player.autoEterOptions[id]
 	document.getElementById(id+'auto').textContent="Auto: O"+(player.autoEterOptions[id]?"N":"FF")
+}
+
+function doAutoEterTick() {
+	if (player.achievements.includes("ngpp17")) {
+		for (d=1;d<9;d++) if (player.autoEterOptions["td"+d]) while (buyTimeDimension(d)) {}
+		if (player.autoEterOptions.epmult) buyMaxEPMult()
+	}
 }
 
 // v2.301

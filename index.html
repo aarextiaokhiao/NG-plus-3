@@ -334,15 +334,15 @@
                 </table>
                 <table class="table" id="studytable">
                     <tr>
-                        <td><button class="timestudylocked" id="timestudy251">???<br><span id="ts251Cost" style="display: inline;"></span></button></td>
-                        <td><button class="timestudylocked" id="timestudy252">???<br><span id="ts252Cost" style="display: inline;"></span></button></td>
-                        <td><button class="timestudylocked" id="timestudy253">???<br><span id="ts253Cost" style="display: inline;"></span></button></td>
+                        <td><button class="timestudylocked" id="timestudy251" onclick='buyMasteryStudy(true, 251)'>Remote cost scaling starts 1 galaxy later per 3,000 dimension boosts.<br><span id="ts251Cost" style="display: inline;"></span></button></td>
+                        <td><button class="timestudylocked" id="timestudy252" onclick='buyMasteryStudy(true, 252)'>Remote cost scaling starts 1 galaxy later per 9 free galaxies.<br><span id="ts252Cost" style="display: inline;"></span></button></td>
+                        <td><button class="timestudylocked" id="timestudy253" style='font-size:10px' onclick='buyMasteryStudy(true, 253)'>Remote cost scaling starts 1 galaxy later per 4/3 extra replicated galaxies.<br><span id="ts253Cost" style="display: inline;"></span></button></td>
                     </tr>
                 </table>
                 <table class="table" id="studytable">
                     <tr class="wideRow">
-                        <td><button class="timestudylocked" id="timestudy261">???<br><span id="ts261Cost" style="display: inline;"></span></button></td>
-                        <td><button class="timestudylocked" id="timestudy262">???<br><span id="ts262Cost" style="display: inline;"></span></button></td>
+                        <td><button class="timestudylocked" id="timestudy261" onclick='buyMasteryStudy(true, 261)'>Dimensional boost costs scale by another 2 less.<br><span id="ts261Cost" style="display: inline;"></span></button></td>
+                        <td><button class="timestudylocked" id="timestudy262" onclick='buyMasteryStudy(true, 262)'>Dimensional boosts affects First Meta Dimensions.<br><span id="ts262Current" style="display: inline;"></span><br><span id="ts262Cost" style="display: inline;"></span></button></td>
                         <td><button class="timestudylocked" id="timestudy263">???<br><span id="ts263Cost" style="display: inline;"></span></button></td>
                         <td><button class="timestudylocked" id="timestudy264">???<br><span id="ts264Cost" style="display: inline;"></span></button></td>
                         <td><button class="timestudylocked" id="timestudy265">???<br><span id="ts265Cost" style="display: inline;"></span></button></td>
@@ -352,6 +352,7 @@
                 <table class="table" id="studytable">
                     <tr>
                         <td><button class="timestudylocked" id="ec13unl">???<br>Cost: Infinite Time Theorems</button></td>
+                        <td><button class="timestudylocked" id="dilstudy7">???<br><span id="ds7Cost" style="display: inline;"></span></button></td>
                         <td><button class="timestudylocked" id="ec14unl">???<br>Cost: Infinite Time Theorems</button></td>
                     </tr>
                 </table>
@@ -2951,18 +2952,18 @@
 <script type="text/javascript" src="javascripts/core/achievements.js?2"></script>
 <script type="text/javascript" src="javascripts/core/chart.js"></script>
 <script type="text/javascript" src="javascripts/core/tickspeed.js?2"></script>
-<script type="text/javascript" src="javascripts/core/normal_dimension.js?3"></script>
-<script type="text/javascript" src="javascripts/core/infinity_dimension.js?2"></script>
+<script type="text/javascript" src="javascripts/core/normal_dimension.js?4"></script>
+<script type="text/javascript" src="javascripts/core/infinity_dimension.js?3"></script>
 <script type="text/javascript" src="javascripts/core/time_dimension.js?4"></script>
-<script type="text/javascript" src="javascripts/core/dimboost.js?6"></script>
-<script type="text/javascript" src="javascripts/core/timestudies.js?6"></script>
+<script type="text/javascript" src="javascripts/core/dimboost.js?7"></script>
+<script type="text/javascript" src="javascripts/core/timestudies.js?7"></script>
 <script type="text/javascript" src="javascripts/core/canvases.js?3"></script>
 <script type="text/javascript" src="javascripts/core/devtools.js"></script>
-<script type="text/javascript" src="javascripts/core/load_functions.js?10"></script>
+<script type="text/javascript" src="javascripts/core/load_functions.js?11"></script>
 <script type="text/javascript" src="javascripts/core/newsticker.js?1"></script>
 <script type="text/javascript" src="javascripts/mods/ngmm.js"></script>
-<script type="text/javascript" src="javascripts/mods/ngpp.js?2"></script>
-<script type="text/javascript" src="javascripts/mods/ngppp.js?2"></script>
+<script type="text/javascript" src="javascripts/mods/ngpp.js?3"></script>
+<script type="text/javascript" src="javascripts/mods/ngppp.js?3"></script>
 <script type="text/javascript" src="javascripts/game.js?16"></script>
 <script type="text/javascript" src="javascripts/sha512.js"></script>
 

@@ -256,5 +256,5 @@ var infDimPow = 1
 function getEU2Mult() {
 	var cap = Math.min(player.eternities, 100000)
 	var soft = player.eternities - cap
-	return Decimal.pow(cap/200 + 1, Math.log(cap*2+1)/Math.log(4)).times(new Decimal(soft/200 + 1).times(Math.log(soft*2+1)/Math.log(4)).max(1)).max(player.achievements.includes("ngpp15")?Decimal.pow(player.eternities, Math.pow(Math.log10(player.eternities), 3.5)):1)
+	return Decimal.pow(cap/200 + 1, Math.log(cap*2+1)/Math.log(4)).times(new Decimal(soft/200 + 1).times(Math.log(soft*2+1)/Math.log(4)).max(1)).max(player.achievements.includes("ngpp15")?Decimal.pow(player.eternities, Math.pow(Math.log10(player.eternities), 3.75)):1)
 }
