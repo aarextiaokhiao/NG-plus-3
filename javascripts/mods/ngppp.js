@@ -144,5 +144,5 @@ function drawMasteryTree() {
 //v1.1
 
 function getTS262Mult() {
-	return Math.sqrt(player.resets) / 10
+	return Math.sqrt(player.resets) / 20
 }

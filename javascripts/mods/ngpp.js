@@ -62,7 +62,7 @@ function getMetaShiftRequirement () {
 
 function metaBoost() {
     let req = getMetaShiftRequirement();
-    if (player.meta[req.tier].amount.lt(req.amount)) {
+    if (player.meta[req.tier].bought<req.amount) {
         return false;
     }
     player.meta.resets++;
