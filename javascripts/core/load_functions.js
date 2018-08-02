@@ -575,6 +575,7 @@ if (player.version < 5) {
               }
           }
           if (player.ep5xAutobuyer) {
+              player.aarexModifications.newGamePlusVersion = 1
               player.aarexModifications.newGamePlusPlusVersion = 2.3
               player.autoEterOptions = {epmult:player.ep5xAutobuyer}
               for (dim=1;dim<9;dim++) player.autoEterOptions["td"+dim] = player.timeDimensionAutobuyer
@@ -583,6 +584,12 @@ if (player.version < 5) {
               player.achievements=newAchievements
               delete player.timeDimensionAutobuyer
               delete player.ep5xAutobuyer
+              if (confirm("Do you want to migrate your NG++ save into new NG+++ mode?")) {
+                  player.aarexModifications.newGame3PlusVersion = 1.2
+                  player.dbPower = 1
+                  player.peakSpent = 0
+                  player.masterystudies = []
+              }
           } else if (player.autoEterMode) player.aarexModifications.newGamePlusPlusVersion = 2.2
           else if (v2_1check) {
               player.version = 12.1
@@ -635,7 +642,10 @@ if (player.version < 5) {
   if (player.aarexModifications.newGamePlusPlusVersion < 2.302) player.aarexModifications.newGamePlusPlusVersion = 2.302
   if (player.aarexModifications.newGame3PlusVersion < 1.01) player.aarexModifications.dbPower = new Decimal(getDimensionBoostPower())
   if (player.aarexModifications.newGame3PlusVersion < 1.02) player.masterystudies = []
-  if (player.aarexModifications.newGame3PlusVersion < 1.11) player.aarexModifications.newGame3PlusVersion = 1.11
+  if (player.aarexModifications.newGame3PlusVersion < 1.2) {
+      player.replicanti.chanceCost = Decimal.pow(1e15, player.replicanti.chance * 100 + 9)
+      player.aarexModifications.newGame3PlusVersion = 1.2
+  }
   if (player.aarexModifications.newGameMinusMinusVersion === undefined) {
       if (player.galaxyPoints) player.aarexModifications.newGameMinusMinusVersion = 1.1
       else if ((Decimal.gt(player.postC3Reward, 1) && player.infinitied < 1 && player.eternities < 1) || (Math.round(new Decimal(player.achPow).log(5) * 100) % 100 < 1 && Decimal.gt(player.achPow, 1))) player.aarexModifications.newGameMinusMinusVersion = 1

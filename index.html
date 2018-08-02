@@ -296,7 +296,7 @@
                 </table>
                 <table class="table" id="studytable">
                     <tr>
-                        <td><button class="dilationupg" id="masteryportal" onclick="showEternityTab('masterystudies')">Continue into mastery studies.</button></td>
+                        <td><button class="dilationupg" id="masteryportal" onclick="portal()"></button></td>
                     </tr>
                 </table>
                 <div style="height: 60px;"></div>
@@ -341,12 +341,12 @@
                 </table>
                 <table class="table" id="studytable">
                     <tr class="wideRow">
-                        <td><button class="timestudylocked" id="timestudy261" onclick='buyMasteryStudy(true, 261)'>Dimensional boost costs scale by another 2 less.<br><span id="ts261Cost" style="display: inline;"></span></button></td>
-                        <td><button class="timestudylocked" id="timestudy262" onclick='buyMasteryStudy(true, 262)'>Dimensional boosts affects Meta Dimensions at reduced rate.<br><span id="ts262Current" style="display: inline;"></span><br><span id="ts262Cost" style="display: inline;"></span></button></td>
-                        <td><button class="timestudylocked" id="timestudy263">???<br><span id="ts263Cost" style="display: inline;"></span></button></td>
-                        <td><button class="timestudylocked" id="timestudy264">???<br><span id="ts264Cost" style="display: inline;"></span></button></td>
-                        <td><button class="timestudylocked" id="timestudy265">???<br><span id="ts265Cost" style="display: inline;"></span></button></td>
-                        <td><button class="timestudylocked" id="timestudy266">???<br><span id="ts266Cost" style="display: inline;"></span></button></td>
+                        <td><button class="timestudylocked" id="timestudy261">Dimensional boost costs scale by another 1 less.<br><span id="ts261Cost" style="display: inline;"></span></button></td>
+                        <td><button class="timestudylocked" id="timestudy262">Dimensional boosts affects Meta Dimensions at reduced rate.<br><span id="ts262Current" style="display: inline;"></span><br><span id="ts262Cost" style="display: inline;"></span></button></td>
+                        <td><button class="timestudylocked" id="timestudy263">Meta-dimension boosts affects dilated time production.<br><span id="ts263Cost" style="display: inline;"></span></button></td>
+                        <td><button class="timestudylocked" id="timestudy264">You gain more tachyon particles based on your galaxies.<br><span id="ts264Cost" style="display: inline;"></span></button></td>
+                        <td><button class="timestudylocked" id="timestudy265">You can reach over 100% replicate chance.<br><span id="ts265Cost" style="display: inline;"></span></button></td>
+                        <td><button class="timestudylocked" id="timestudy266">Post-400 max replicated galaxies cost grows smaller.<br><span id="ts266Cost" style="display: inline;"></span></button></td>
                     </tr>
                 </table>
                 <table class="table" id="studytable">
@@ -358,7 +358,38 @@
                 </table>
                 <table class="table" id="studytable">
                     <tr>
-                        <td><button class="timestudylocked" id="dc1unl">???<br>Cost: Infinite Time Theorems</button></td>
+                        <td><button class="timestudylocked" id="mc2unl">???<br>Cost: Infinite Time Theorems</button></td>
+                        <td><button class="timestudylocked" id="mc1unl">???<br>Cost: Infinite Time Theorems</button></td>
+                        <td><button class="timestudylocked" id="mc3unl">???<br>Cost: Infinite Time Theorems</button></td>
+                    </tr>
+                </table>
+                <table class="table" id="studytable">
+                    <tr class='wideRow'>
+                        <td><button class="timestudylocked" id="timestudy271">???<br><span id="ts271Cost" style="display: inline;"></span></button></td>
+                        <td><button class="timestudylocked" id="timestudy272">???<br><span id="ts272Cost" style="display: inline;"></span></button></td>
+                    </tr>
+                </table>
+                <table class="table" id="studytable">
+                    <tr class='wideRow'>
+                        <td><button class="timestudylocked" id="timestudy281">???<br><span id="ts281Cost" style="display: inline;"></span></button></td>
+                        <td><button class="timestudylocked" id="timestudy282">???<br><span id="ts282Cost" style="display: inline;"></span></button></td>
+                    </tr>
+                </table>
+                <table class="table" id="studytable">
+                    <tr class='wideRow'>
+                        <td><button class="timestudylocked" id="timestudy291">???<br><span id="ts291Cost" style="display: inline;"></span></button></td>
+                        <td><button class="timestudylocked" id="timestudy292">???<br><span id="ts292Cost" style="display: inline;"></span></button></td>
+                    </tr>
+                </table>
+                <table class="table" id="studytable">
+                    <tr class='wideRow'>
+                        <td><button class="timestudylocked" id="timestudy301">???<br><span id="ts301Cost" style="display: inline;"></span></button></td>
+                        <td><button class="timestudylocked" id="timestudy302">???<br><span id="ts302Cost" style="display: inline;"></span></button></td>
+                    </tr>
+                </table>
+                <table class="table" id="studytable">
+                    <tr>
+                        <td><button class="timestudylocked" id="mc4unl">???<br>Cost: Infinite Time Theorems</button></td>
                     </tr>
                 </table>
                 <div style="height: 60px;"></div>
@@ -2955,16 +2986,16 @@
 <script type="text/javascript" src="javascripts/core/normal_dimension.js?4"></script>
 <script type="text/javascript" src="javascripts/core/infinity_dimension.js?3"></script>
 <script type="text/javascript" src="javascripts/core/time_dimension.js?4"></script>
-<script type="text/javascript" src="javascripts/core/dimboost.js?7"></script>
-<script type="text/javascript" src="javascripts/core/timestudies.js?7"></script>
-<script type="text/javascript" src="javascripts/core/canvases.js?3"></script>
+<script type="text/javascript" src="javascripts/core/dimboost.js?8"></script>
+<script type="text/javascript" src="javascripts/core/timestudies.js?8"></script>
+<script type="text/javascript" src="javascripts/core/canvases.js?4"></script>
 <script type="text/javascript" src="javascripts/core/devtools.js"></script>
-<script type="text/javascript" src="javascripts/core/load_functions.js?11"></script>
-<script type="text/javascript" src="javascripts/core/newsticker.js?1"></script>
+<script type="text/javascript" src="javascripts/core/load_functions.js?12"></script>
+<script type="text/javascript" src="javascripts/core/newsticker.js?2"></script>
 <script type="text/javascript" src="javascripts/mods/ngmm.js"></script>
 <script type="text/javascript" src="javascripts/mods/ngpp.js?3"></script>
-<script type="text/javascript" src="javascripts/mods/ngppp.js?3"></script>
-<script type="text/javascript" src="javascripts/game.js?16"></script>
+<script type="text/javascript" src="javascripts/mods/ngppp.js?4"></script>
+<script type="text/javascript" src="javascripts/game.js?17"></script>
 <script type="text/javascript" src="javascripts/sha512.js"></script>
 
 

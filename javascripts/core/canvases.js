@@ -251,7 +251,7 @@ function drawStudyTree() {
     drawTreeBranch("dilstudy3", "dilstudy4")
     drawTreeBranch("dilstudy4", "dilstudy5")
     if (player.meta) drawTreeBranch("dilstudy5", "dilstudy6")
-    if (player.dilation.upgrades.includes("ngpp4") && player.aarexModifications.newGame3PlusVersion) drawTreeBranch("dilstudy6", "masteryportal")
+    if (player.masterystudies) drawTreeBranch("dilstudy6", "masteryportal")
     if (shiftDown && document.getElementById("eternitystore").style.display !== "none" && document.getElementById("timestudies").style.display !== "none") {
         for (i=0; i<all.length; i++) {
             var start = document.getElementById(all[i]).getBoundingClientRect();

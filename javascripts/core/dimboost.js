@@ -272,7 +272,7 @@ function getShiftRequirement(bulk) {
   tier = Math.min(resetNum + 4, maxTier)
   if (player.timestudy.studies.includes(211)) mult -= 5
   if (player.timestudy.studies.includes(222)) mult -= 2
-  if (player.masterystudies) if (player.masterystudies.includes("t261")) mult -= 2
+  if (player.masterystudies) if (player.masterystudies.includes("t261")) mult -= 1
   if (player.currentChallenge == "challenge4") mult = 20
   if (tier == maxTier) amount += (resetNum + 4 - maxTier) * mult
 

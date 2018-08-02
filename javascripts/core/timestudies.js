@@ -1,3 +1,5 @@
+presets={}
+
 // Time studies
 
 function buyWithAntimatter() {
@@ -281,7 +283,11 @@ function updateTimeStudyButtons() {
     else document.getElementById("dilstudy"+i).className = "timestudylocked"
   }
   document.getElementById("dilstudy6").style.display = player.meta ? "" : "none"
-  document.getElementById("masteryportal").style.display = player.dilation.upgrades.includes("ngpp4") && player.aarexModifications.newGame3PlusVersion ? "" : "none"
+  document.getElementById("masteryportal").style.display = player.masterystudies ? "" : "none"
+  if (player.masterystudies) {
+      document.getElementById("masteryportal").textContent = player.dilation.upgrades.includes("ngpp4") ? "Continue to mastery studies." : !player.dilation.studies.includes(1) ? "To be continued...." : "Mastery portal (" + (player.dilation.studies.includes(6) ? "66%: requires "+shortenCosts(1e60)+" dilated time upgrade)" : "33%: requires meta-dimensions)") 
+      document.getElementById("masteryportal").className = player.dilation.upgrades.includes("ngpp4") ? "dilationupg" : "timestudylocked"
+  }
 }
 
 function studiesUntil(id) {
@@ -454,12 +460,13 @@ function new_preset(importing) {
 				if (t) mtsstudies.push(t)
 			}
 		}
-		var input=player.timestudy.studies + (mtsstudies.length > 0 ? "," + mtsstudies + "|" : "|") + player.eternityChallUnlocked
+		var input=player.timestudy.studies+(mtsstudies.length>0?","+mtsstudies:"")+"|"+player.eternityChallUnlocked
 	}
 	onImport = false
 	var placement=1
-	if (metaSave.presetsOrder.includes(placement)) placement++
-	localStorage.setItem(btoa("dsAM_ST_"+placement),btoa(JSON.stringify({preset:input})))
+	while (metaSave.presetsOrder.includes(placement)) placement++
+	presets[placement]={preset:input}
+	localStorage.setItem(btoa("dsAM_ST_"+placement),btoa(JSON.stringify(presets[placement])))
 	metaSave.presetsOrder.push(placement)
 	latestRow=document.getElementById("presets").insertRow(loadedPresets)
 	latestRow.innerHTML=getPresetLayout(placement)
@@ -472,17 +479,18 @@ function new_preset(importing) {
 function save_preset(id) {
 	var mtsstudies=[]
 	if (player.masterystudies) {
-		for (id=0;id<player.masterystudies.length;id++) {
-			var t = player.masterystudies[id].split("t")[1]
+		for (mid=0;mid<player.masterystudies.length;mid++) {
+			var t = player.masterystudies[mid].split("t")[1]
 			if (t) mtsstudies.push(t)
 		}
 	}
-	localStorage.setItem(btoa("dsAM_ST_"+id),btoa(JSON.stringify({preset:player.timestudy.studies + (mtsstudies.length > 0 ? "," + mtsstudies + "|" : "|") + player.eternityChallUnlocked, title:JSON.parse(atob(localStorage.getItem(btoa("dsAM_ST_"+id)))).title})))
+	presets[id].preset=player.timestudy.studies+(mtsstudies.length>0?","+mtsstudies:"")+"|"+player.eternityChallUnlocked
+	localStorage.setItem(btoa("dsAM_ST_"+id),btoa(JSON.stringify(presets[id])))
 	$.notify("Preset saved", "info")
 }
 
 function load_preset(id) {
-	importStudyTree(JSON.parse(atob(localStorage.getItem(btoa("dsAM_ST_"+id)))).preset)
+	importStudyTree(presets[id].preset)
 	closeToolTip()
 	$.notify("Preset loaded", "info")
 }
@@ -492,8 +500,11 @@ function delete_preset(presetId) {
 	var alreadyDeleted=false
 	var newPresetsOrder=[]
 	for (id=0;id<metaSave.presetsOrder.length;id++) {
-		if (alreadyDeleted) changePresetTitle(metaSave.presetsOrder[id], id)
-		else if (metaSave.presetsOrder[id]==presetId) {
+		if (alreadyDeleted) {
+			newPresetsOrder.push(metaSave.presetsOrder[id])
+			changePresetTitle(metaSave.presetsOrder[id], id)
+		} else if (metaSave.presetsOrder[id]==presetId) {
+			delete presets[presetId]
 			localStorage.removeItem(btoa("dsAM_ST_"+presetId))
 			alreadyDeleted=true
 			document.getElementById("presets").deleteRow(id)
@@ -506,8 +517,8 @@ function delete_preset(presetId) {
 }
 
 function rename_preset(id) {
-	var save_name = prompt("Input a new name of this preset. It is necessary to rename it into related names!")
-	localStorage.setItem(btoa("dsAM_ST_"+id),btoa(JSON.stringify({preset:JSON.parse(atob(localStorage.getItem(btoa("dsAM_ST_"+id)))).preset, title:save_name})))
+	presets[id].title=prompt("Input a new name of this preset. It is necessary to rename it into related names!")
+	localStorage.setItem(btoa("dsAM_ST_"+id),btoa(JSON.stringify(presets[id])))
 	placement=1
 	while (metaSave.presetsOrder[placement-1]!=id) placement++
 	changePresetTitle(id, placement)
@@ -546,6 +557,6 @@ function getPresetLayout(id) {
 }
 
 function changePresetTitle(id, placement) {
-	var title=JSON.parse(atob(localStorage.getItem(btoa("dsAM_ST_"+id)))).title
-	document.getElementById("preset_"+id+"_title").textContent=title?title:"Preset #"+placement
+	if (presets[id]===undefined) presets[id]=JSON.parse(atob(localStorage.getItem(btoa('dsAM_ST_'+id))))
+	document.getElementById("preset_"+id+"_title").textContent=presets[id].title?presets[id].title:"Preset #"+placement
 }

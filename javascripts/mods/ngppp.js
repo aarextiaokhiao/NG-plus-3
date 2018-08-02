@@ -2,11 +2,15 @@ masterystudies={initialCosts:{time:{241: 1e41, 251: 1e43, 252: 1e43, 253: 1e43, 
 		dil:{}},
 	costs:{time:{},
 		dil:{}},
-	costmults:{time:{241: 1, 251: 3, 252: 3, 253: 3, 261: 4, 262: 4, 263: 4, 264: 4, 265: 4, 266: 4},
+	costmults:{time:{241: 1, 251: 3, 252: 3, 253: 3, 261: 9, 262: 9, 263: 9, 264: 9, 265: 9, 266: 9},
 		dil:{}},
 	costmult:1,
-	allTimeStudies:[241, 251, 252, 253, 261, 262, 263, 264, 265, 266]}
+	allTimeStudies:[241, 251, 252, 253, 261, 262, 263, 264, 265, 266, 271, 272, 281, 282, 291, 292, 301, 302]}
 
+function portal() {
+	if (player.dilation.upgrades.includes("ngpp4")) showEternityTab("masterystudies")
+}
+	
 function updateMasteryStudyButtons() {
 	document.getElementById("costmult").textContent=shorten(masterystudies.costmult)
 	for (id=0;id<masterystudies.allTimeStudies.length;id++) {
@@ -73,8 +77,12 @@ function canBuyMasteryStudy(isTime, id) {
 		var row=Math.floor(id/10)
 		for (check=1;check<10;check++) if (player.masterystudies.includes('t'+(row+1).toString()+check)) return false
 		var col=id%10
+		if (row>27&&col>1) return player.masterystudies.includes('t'+row+'1')||player.masterystudies.includes('t'+(row-1)+'2')
+		if (row>27) return (player.masterystudies.includes('t'+(row-1)+'1')||player.masterystudies.includes('t'+(row-1)+'2'))&&!player.masterystudies.includes('t'+row+'2')
+		if (row>26&&col>1) return player.masterystudies.includes('t271')
+		if (row>26) return false
 		if (row>25) return player.masterystudies.includes('t25'+Math.ceil(col/2))&&col<3
-		else if (row>24) return player.masterystudies.includes('t241')
+		if (row>24) return player.masterystudies.includes('t241')
 	} else {
 		return false //temp
 		if (player.timestudy.theorem<masterystudies.costs.dil[id]||player.masterystudies.includes('d'+id)) return false
@@ -86,7 +94,7 @@ var msc = document.getElementById("studyTreeCanvas2");
 var msctx = msc.getContext("2d");
 function drawMasteryBranch(num1, num2) {
 	if (document.getElementById("eternitystore").style.display === "none" || document.getElementById("masterystudies").style.display === "none" || player.masterystudies === undefined) return
-	var type=num2.split("un")[1]?(num2.split("d")[1]?"dc":"ec"):num2.split("di")[1]?"d":"t"
+	var type=num2.split("mc")[1]?"m":num2.split("un")[1]?"ec":num2.split("di")[1]?"d":"t"
 	var start=document.getElementById(num1).getBoundingClientRect();
 	var end=document.getElementById(num2).getBoundingClientRect();
 	var x1=start.left + (start.width / 2) + (document.documentElement.scrollLeft || document.body.scrollLeft);
@@ -96,9 +104,9 @@ function drawMasteryBranch(num1, num2) {
 	msctx.lineWidth=15;
 	msctx.beginPath();
 	if (type=="dc"?player.eternityChallUnlocked=="d"+num2.slice(2,4):type=="ec"?player.eternityChallUnlocked==num2.slice(2,4):player.masterystudies.includes(type=="d"?"d"+num2.split("dilstudy")[1]:"t"+num2.split("timestudy")[1])) {
-		if ((type=="d"||type=="dc")&&player.options.theme == "Aarex's Modifications") {
+		if ((type=="d"||type=="m")&&player.options.theme == "Aarex's Modifications") {
 			msctx.strokeStyle="#00E5E5";
-		} else if (type=="d"||type=="dc") {
+		} else if (type=="d"||type=="m") {
 			ctx.strokeStyle="#64DD17";
 		} else if (type=="ec") {
 			msctx.strokeStyle="#490066";
@@ -106,7 +114,7 @@ function drawMasteryBranch(num1, num2) {
 			msctx.strokeStyle="#000000";
 		}
 	} else {
-		if ((type=="d"||type=="dc")&&player.options.theme == "Aarex's Modifications") {
+		if ((type=="d"||type=="m")&&player.options.theme == "Aarex's Modifications") {
 			msctx.strokeStyle="#007272";
 		} else if (type=="d"||type=="dc") {
 			msctx.strokeStyle="#4b3753";
@@ -138,11 +146,29 @@ function drawMasteryTree() {
 	drawMasteryBranch("timestudy265", "ec14unl")
 	drawMasteryBranch("timestudy266", "ec14unl")
 	drawMasteryBranch("timestudy252", "dilstudy7")
-	drawMasteryBranch("dilstudy7", "dc1unl")
+	drawMasteryBranch("dilstudy7", "mc1unl")
+	drawMasteryBranch("ec13unl", "mc2unl")
+	drawMasteryBranch("ec14unl", "mc3unl")
+	drawMasteryBranch("mc1unl", "timestudy271")
+	drawMasteryBranch("timestudy271", "timestudy272")
+	drawMasteryBranch("timestudy271", "timestudy281")
+	drawMasteryBranch("timestudy272", "timestudy281")
+	drawMasteryBranch("timestudy272", "timestudy282")
+	drawMasteryBranch("timestudy281", "timestudy282")
+	drawMasteryBranch("timestudy281", "timestudy291")
+	drawMasteryBranch("timestudy282", "timestudy291")
+	drawMasteryBranch("timestudy282", "timestudy292")
+	drawMasteryBranch("timestudy291", "timestudy292")
+	drawMasteryBranch("timestudy291", "timestudy301")
+	drawMasteryBranch("timestudy292", "timestudy301")
+	drawMasteryBranch("timestudy292", "timestudy302")
+	drawMasteryBranch("timestudy301", "timestudy302")
+	drawMasteryBranch("timestudy301", "mc4unl")
+	drawMasteryBranch("timestudy302", "mc4unl")
 }
 
 //v1.1
 
 function getTS262Mult() {
-	return Math.sqrt(player.resets) / 20
+	return Math.max(player.resets/15e3-19,1)
 }
