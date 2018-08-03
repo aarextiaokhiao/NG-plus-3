@@ -55,7 +55,7 @@ function showspoilers() {
 
 function updateSpoilers() {
 	var displayed = spoilers;
-	for (i=19; i>0; i--) {
+	for (i=21; i>0; i--) {
 		if (i != 7) {
 			if (!displayed) {
 				if (i < 5) displayed = 1
@@ -69,6 +69,8 @@ function updateSpoilers() {
 					if (i == 17 && player.achievements.includes("r96")) displayed = 1
 					if (i == 18 && (player.eternityChallUnlocked > 0 || player.eternityChalls.eterc1)) displayed = 1
 					if (i == 19 && player.dilation.studies.includes(1)) displayed = 1
+					if (i == 20 && player.dilation.studies.includes(6)) displayed = 1
+					if (i == 21 && player.masterystudies && player.dilation.upgrades.includes("ngpp4")) displayed = 1
 				}
 			}
 			document.getElementById("div"+i+"btn").style.display = displayed ? "block" : "none";

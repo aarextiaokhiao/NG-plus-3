@@ -5358,7 +5358,7 @@ function gameLoop(diff) {
     var current = player.replicanti.amount.ln()
 
     if (player.replicanti.unl && (diff > 5 || interval < 50 || player.timestudy.studies.includes(192))) {
-        if (player.timestudy.studies.includes(192)) player.replicanti.amount = Decimal.pow(Math.E, current +Math.log((diff*est/10) * (Math.log10(getReplSpeed())/308)+1) / (Math.log10(getReplSpeed())/308) * Math.log10(player.replicanti.chance + 1) / Math.log10(2))
+        if (player.timestudy.studies.includes(192)) player.replicanti.amount = Decimal.pow(Math.E, current +Math.log((diff*est/10) * (Math.log10(getReplSpeed())/308)+1) / (Math.log10(getReplSpeed())/308))
         else player.replicanti.amount = Decimal.pow(Math.E, current +(diff*est/10)).min(Number.MAX_VALUE)
         replicantiTicks = 0
     } else {
