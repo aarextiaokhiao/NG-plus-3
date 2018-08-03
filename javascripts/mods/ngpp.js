@@ -56,7 +56,7 @@ function clearMetaDimensions () {
 function getMetaShiftRequirement () {
   return {
     tier: Math.min(8, player.meta.resets + 4),
-    amount: Math.max(20, -40 + 15 * player.meta.resets)
+    amount: Math.max(20, -40 + 15 * player.meta.resets) + Math.max(10 * player.meta.resets - 110, 0)
   }
 }
 
@@ -95,7 +95,7 @@ function metaBuyOneDimension(tier) {
     player.meta.antimatter = player.meta.antimatter.minus(cost);
     player.meta[tier].amount = player.meta[tier].amount.plus(1);
     player.meta[tier].bought++;
-    if (player.meta[tier].bought === 10) {
+    if (player.meta[tier].bought % 10 < 1) {
         player.meta[tier].cost = player.meta[tier].cost.times(getMetaDimensionCostMultiplier(tier));
     }
     if (tier>7) giveAchievement("And still no ninth dimension...")
@@ -158,7 +158,7 @@ function getDil14Bonus () {
 }
 
 function getDil17Bonus () {
-	return Math.log10(player.meta.bestAntimatter);
+	return Math.sqrt(player.meta.bestAntimatter.log10())/2;
 }
 
 function updateMetaDimensions () {

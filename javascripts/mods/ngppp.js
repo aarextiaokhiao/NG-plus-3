@@ -81,7 +81,7 @@ function canBuyMasteryStudy(isTime, id) {
 		if (row>27) return (player.masterystudies.includes('t'+(row-1)+'1')||player.masterystudies.includes('t'+(row-1)+'2'))&&!player.masterystudies.includes('t'+row+'2')
 		if (row>26&&col>1) return player.masterystudies.includes('t271')
 		if (row>26) return false
-		if (row>25) return player.masterystudies.includes('t25'+Math.ceil(col/2))&&col<3
+		if (row>25) return player.masterystudies.includes('t25'+Math.ceil(col/2))
 		if (row>24) return player.masterystudies.includes('t241')
 	} else {
 		return false //temp

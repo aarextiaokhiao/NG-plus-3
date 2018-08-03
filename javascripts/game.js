@@ -346,7 +346,7 @@ function updateNewPlayer(reseted) {
         player.galaxyPoints = 0
     }
     if (modesChosen.ngpp > 1) {
-        player.aarexModifications.newGame3PlusVersion = 1.2
+        player.aarexModifications.newGame3PlusVersion = 1.21
         player.dbPower = 1
         player.peakSpent = 0
         player.masterystudies = []
@@ -793,7 +793,7 @@ function sacrificeConf() {
 
 function getDilPower() {
 	var ret = Math.pow(3, player.dilation.rebuyables[3]) 
-	if (player.masterystudies) if (player.masterystudies.includes("t264")) ret *= Math.pow(Math.log10(player.galaxies+1),2)+1
+	if (player.masterystudies) if (player.masterystudies.includes("t264")) ret *= Math.pow(player.galaxies,0.25)/2+1
 	return ret
 }
 
@@ -809,8 +809,8 @@ function getDilGain() {
 function getDilTimeGainPerSecond() {
 	let gain = player.dilation.tachyonParticles.times(Math.pow(2, player.dilation.rebuyables[1]))
 	if (player.dilation.upgrades.includes('ngpp2')) gain = gain.times(Math.pow(player.eternities, .1))
+	if (player.masterystudies) if (player.masterystudies.includes("t263")) gain = gain.times(player.meta.resets)
 	if (player.dilation.upgrades.includes('ngpp6')) gain = gain.times(getDil17Bonus())
-	if (player.masterystudies) if (player.masterystudies.includes("t263")) gain = gain.times(Math.pow(player.meta.resets,2))
 	return gain;
 }
 
@@ -3476,7 +3476,7 @@ document.getElementById("bigcrunch").onclick = function () {
         }
 
         if (player.eternities >= 40 && player.replicanti.auto[0] && player.currentEternityChall !== "eterc8") {
-            var maxCost = (player.masterystudies ? player.masterystudies.includes("t265") : false) ? 1/0 : new Decimal("1e1635")
+            var maxCost = (player.masterystudies ? player.masterystudies.includes("t265") : false) ? 1/0 : "1e1620"
             var bought = Math.max(Math.floor(player.infinityPoints.min(maxCost).div(player.replicanti.chanceCost).log(1e15) + 1), 0)
             player.replicanti.chance += bought * 0.01
             player.replicanti.chanceCost = player.replicanti.chanceCost.times(Decimal.pow(1e15, bought))
@@ -3734,7 +3734,6 @@ function eternity(force, auto) {
                 amount: player.eternities > 48 ? new Decimal(1) : new Decimal(0),
                 unl: player.eternities > 48 ? true : false,
                 chance: (player.dilation.upgrades.includes("ngpp3")&&player.eternities>=2e10&&player.masterystudies) ? Math.min(player.replicanti.chance, 1) : 0.01,
-                chanceCost: Decimal.pow(1e15, player.replicanti.chance * 100 + 9),
                 interval: (player.dilation.upgrades.includes("ngpp3")&&player.eternities>=2e10&&player.masterystudies) ? Math.max(player.replicanti.interval,player.timestudy.studies.includes(22)?1:50) : 1000,
                 intervalCost: new Decimal(1e140),
                 gal: 0,
@@ -3777,6 +3776,7 @@ function eternity(force, auto) {
         if (player.replicanti.unl) player.replicanti.amount = new Decimal(1)
         player.replicanti.galaxies = 0
         extraReplGalaxies = 0
+        player.replicanti.chanceCost = Decimal.pow(1e15, player.replicanti.chance * 100 + 9)
         document.getElementById("respec").className = "storebtn"
         document.getElementById("respec2").className = "storebtn"
         if (player.achievements.includes("r36")) player.tickspeed = player.tickspeed.times(0.98);
@@ -4549,7 +4549,6 @@ function startEternityChallenge(name, startgoal, goalIncrease) {
                 amount: player.eternities > 48 ? 1 : 0,
                 unl: player.eternities > 48 ? true : false,
                 chance: (player.dilation.upgrades.includes("ngpp3")&&player.eternities>=2e10&&player.masterystudies) ? Math.min(player.replicanti.chance, 1) : 0.01,
-                chanceCost: Decimal.pow(1e15, player.replicanti.chance * 100 + 9),
                 interval: (player.dilation.upgrades.includes("ngpp3")&&player.eternities>=2e10&&player.masterystudies) ? Math.max(player.replicanti.interval,player.timestudy.studies.includes(22)?1:50) : 1000,
                 intervalCost: new Decimal(1e140),
                 gal: 0,
@@ -4588,6 +4587,7 @@ function startEternityChallenge(name, startgoal, goalIncrease) {
         if (player.replicanti.unl) player.replicanti.amount = new Decimal(1)
         player.replicanti.galaxies = 0
         extraReplGalaxies = 0
+        player.replicanti.chanceCost = Decimal.pow(1e15, player.replicanti.chance * 100 + 9)
         if (player.achievements.includes("r36")) player.tickspeed = player.tickspeed.times(0.98);
         if (player.achievements.includes("r45")) player.tickspeed = player.tickspeed.times(0.98);
         if (player.eternities < 30) {
@@ -4770,11 +4770,13 @@ function updateDilationUpgradeButtons() {
 function getRebuyableDilUpgCost(id) {
 	var costGroup = DIL_UPG_COSTS[id>3?11:id]
 	var amount = player.dilation.rebuyables[id]
-	return new Decimal(costGroup[0]).times(Decimal.pow(costGroup[1], amount + Math.max(amount * (id - 3) - 17, 0) * (amount - 16) / 4))
+	var scaleStart = Math.floor(80-Math.log10(costGroup[0]))/Math.log10(costGroup[1])
+	return new Decimal(costGroup[0]).times(Decimal.pow(costGroup[1],amount+Math.max(amount-scaleStart+1, 0)*(amount-scaleStart+2)/4))
 }
 
 function updateDilationUpgradeCosts() {
-    document.getElementById("dil1cost").textContent = "Cost: " + shortenCosts(getRebuyableDilUpgCost(1)) + " dilated time"
+    var dil1cost = getRebuyableDilUpgCost(1)
+    document.getElementById("dil1cost").textContent = "Cost: " + (dil1cost.gt(1e80) ? formatValue(player.options.notation, dil1cost, 1, 1) : shortenCosts(dil1cost)) + " dilated time"
     document.getElementById("dil2cost").textContent = "Cost: " + shortenCosts(getRebuyableDilUpgCost(2)) + " dilated time"
     document.getElementById("dil3cost").textContent = "Cost: " + formatValue(player.options.notation, getRebuyableDilUpgCost(3), 1, 1) + " dilated time"
     document.getElementById("dil4cost").textContent = "Cost: " + shortenCosts(DIL_UPG_COSTS[4]) + " dilated time"
@@ -5018,7 +5020,7 @@ setInterval(function() {
     doAutoEterTick()
 
     if (player.eternities >= 40 && player.replicanti.auto[0] && player.currentEternityChall !== "eterc8") {
-        var maxCost = (player.masterystudies ? player.masterystudies.includes("t265") : false) ? 1/0 : new Decimal("1e1635")
+        var maxCost = (player.masterystudies ? player.masterystudies.includes("t265") : false) ? 1/0 : new Decimal("1e1620")
         var bought = Math.max(Math.floor(player.infinityPoints.min(maxCost).div(player.replicanti.chanceCost).log(1e15) + 1), 0)
         player.replicanti.chance += bought * 0.01
         player.replicanti.chanceCost = player.replicanti.chanceCost.times(Decimal.pow(1e15, bought))

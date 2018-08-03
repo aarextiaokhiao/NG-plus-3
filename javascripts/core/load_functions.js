@@ -642,9 +642,9 @@ if (player.version < 5) {
   if (player.aarexModifications.newGamePlusPlusVersion < 2.302) player.aarexModifications.newGamePlusPlusVersion = 2.302
   if (player.aarexModifications.newGame3PlusVersion < 1.01) player.aarexModifications.dbPower = new Decimal(getDimensionBoostPower())
   if (player.aarexModifications.newGame3PlusVersion < 1.02) player.masterystudies = []
-  if (player.aarexModifications.newGame3PlusVersion < 1.2) {
+  if (player.aarexModifications.newGame3PlusVersion < 1.21) {
       player.replicanti.chanceCost = Decimal.pow(1e15, player.replicanti.chance * 100 + 9)
-      player.aarexModifications.newGame3PlusVersion = 1.2
+      player.aarexModifications.newGame3PlusVersion = 1.21
   }
   if (player.aarexModifications.newGameMinusMinusVersion === undefined) {
       if (player.galaxyPoints) player.aarexModifications.newGameMinusMinusVersion = 1.1
