@@ -1105,8 +1105,8 @@ function transformSaveToDecimal() {
           player.meta[i].cost = new Decimal(player.meta[i].cost);
       }
   }
-  if (player.quantum == undefined : false ? player.quantum.last10 !== undefined) {
-      for (i=0;i<9;i++) player.quantum.last10[i][1] = new Decimal(player.quantum.last10[i][1])
+  if (player.quantum == undefined ? false : player.quantum.last10 !== undefined) {
+      for (i=0;i<10;i++) player.quantum.last10[i][1] = new Decimal(player.quantum.last10[i][1])
       player.quantum.quarks = new Decimal(player.quantum.neutronstar.quarks);
       player.quantum.neutronstar.quarks = new Decimal(player.quantum.neutronstar.quarks);
       player.quantum.neutronstar.metaAntimatter = new Decimal(player.quantum.neutronstar.metaAntimatter);
