@@ -102,9 +102,8 @@
 		
 		static toNumber(value) {
 			value=new Decimal(value)
-			if (value.logarithm>=309||value.logarithm<=-309) {
-				return Number.POSITIVE_INFINITY
-			}
+			if (value.logarithm>=309) return Number.POSITIVE_INFINITY
+			if (value.logarithm<=-309) return 0
 			return Math.pow(10,value.logarithm)
 		}
 		

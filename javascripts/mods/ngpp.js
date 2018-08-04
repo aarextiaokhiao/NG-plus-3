@@ -56,7 +56,7 @@ function clearMetaDimensions () {
 function getMetaShiftRequirement () {
   return {
     tier: Math.min(8, player.meta.resets + 4),
-    amount: Math.max(20, -40 + 15 * player.meta.resets) + Math.max(10 * player.meta.resets - 110, 0)
+    amount: Math.max(20, -40 + 15 * player.meta.resets) + Math.max(5 * player.meta.resets - 55, 0)
   }
 }
 
@@ -150,7 +150,7 @@ function getMetaDimensionProduction(tier) {
 }
 
 function getExtraDimensionBoostPower() {
-	return player.meta.bestAntimatter.pow(player.dilation.upgrades.includes("ngpp5") ? 10 : 8).plus(1)
+	return player.currentEternityChall=="eterc14" ? new Decimal(1) : player.meta.bestAntimatter.pow(!player.dilation.upgrades.includes("ngpp5") ? 8 : 10+ECTimesCompleted("eterc13")*0.2).plus(1)
 }
 
 function getDil14Bonus () {

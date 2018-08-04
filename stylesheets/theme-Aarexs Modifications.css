@@ -84,8 +84,11 @@ strong { color: #0072e5 }
 .floatingText {
     color: #00e500 !important
 }
-#galaxybtn {
+#galaxybtn, #galaxy .infinistorebtn1, #galaxy .infinistorebtn2, #galaxy .infinistorebtn3 {
     border-color: #2d5be5 !important
+}
+#galaxybtn:hover, #galaxy .infinistorebtn1:hover, #galaxy .infinistorebtn2:hover, #galaxy .infinistorebtn3:hover {
+    background-color: #2d5be5 !important
 }
 #galaxyPoints {
     color: #e5e5e5 !important
@@ -329,10 +332,12 @@ strong { color: #0072e5 }
     border-color: #191919 !important
 }
 #dilstudy6.dilationupg, #mdtabbtn .secondarytabbtn, #metadimensions .storebtn, #dil14.dilationupg, #dil15.dilationupg, #dil16.dilationupg, #dil17.dilationupg, #masteryportal.dilationupg, #masterystudyunlock button, #masterystudies .dilationupg {
-    border-color: #00e5e5 !important
+    border-color: #00e5e5 !important;
+    animation: none
 }
 #dilstudy6.dilationupg:hover, #mdtabbtn .secondarytabbtn:hover, #metadimensions .storebtn:hover, #dil13.dilationupg:hover, #dil14.dilationupg:hover, #dil15.dilationupg:hover, #dil16.dilationupg:hover, #masteryportal.dilationupg:hover, #masterystudyunlock button:hover, #masterystudies .dilationupg:hover {
-    background-color: #00e5e5 !important
+    background-color: #00e5e5 !important;
+    animation: none
 }
 #dilstudy6.dilationupgbought, #dil14.dilationupgbought, #dil15.dilationupgbought, #dil16.dilationupgbought, #dil17.dilationupgbought, #masterystudies .dilationupgbought {
 	background-color: #00e5e5 !important;
@@ -341,6 +346,14 @@ strong { color: #0072e5 }
 }
 #metaAntimatterAmount, #metaAntimatterBest, #metaAntimatterEffect {
     color: #00e5e5 !important
+}
+.metachallengestudy {
+	border-color: #006666 !important;
+    animation: none
+}
+.metachallengestudy:hover {
+	background-color: #006666 !important;
+    animation: none
 }
 .notifyjs-bootstrap-info {
     background-color: #0072e5;

@@ -642,19 +642,29 @@ if (player.version < 5) {
   if (player.aarexModifications.newGamePlusPlusVersion < 2.302) player.aarexModifications.newGamePlusPlusVersion = 2.302
   if (player.aarexModifications.newGame3PlusVersion < 1.01) player.aarexModifications.dbPower = new Decimal(getDimensionBoostPower())
   if (player.aarexModifications.newGame3PlusVersion < 1.02) player.masterystudies = []
-  if (player.aarexModifications.newGame3PlusVersion < 1.21) {
-      player.replicanti.chanceCost = Decimal.pow(1e15, player.replicanti.chance * 100 + 9)
-      player.aarexModifications.newGame3PlusVersion = 1.21
-  }
+  if (player.aarexModifications.newGame3PlusVersion < 1.21) player.replicanti.chanceCost = Decimal.pow(1e15, player.replicanti.chance * 100 + 9)
+  if (player.aarexModifications.newGame3PlusVersion < 1.25) player.aarexModifications.newGame3PlusVersion = 1.25
   if (player.aarexModifications.newGameMinusMinusVersion === undefined) {
-      if (player.galaxyPoints) player.aarexModifications.newGameMinusMinusVersion = 1.1
+      if (player.galacticSacrifice) {
+          player.galacticSacrifice.time = (player.lastUpdate - player.galacticSacrifice.last) / 100
+          player.aarexModifications.newGameMinusMinusVersion = 1.2
+          delete player.galacticSacrifice.last
+	  }
+      else if (player.galaxyPoints) player.aarexModifications.newGameMinusMinusVersion = 1.1
       else if ((Decimal.gt(player.postC3Reward, 1) && player.infinitied < 1 && player.eternities < 1) || (Math.round(new Decimal(player.achPow).log(5) * 100) % 100 < 1 && Decimal.gt(player.achPow, 1))) player.aarexModifications.newGameMinusMinusVersion = 1
       if (player.aarexModifications.newGameMinusMinusVersion) updateAchievements()
   }
   if (player.aarexModifications.newGameMinusMinusVersion < 1.1) {
       player.galaxyPoints = 0
       $.notify('Your NG-- save has been updated because Nyan cat made a new prestige layer that is between galaxies and infinity.', 'info')
-      player.aarexModifications.newGameMinusMinusVersion = 1.1
+  }
+  if (player.aarexModifications.newGameMinusMinusVersion < 1.2) {
+      player.galacticSacrifice = {}
+      player.galacticSacrifice = resetGalacticSacrifice()
+      player.galacticSacrifice.galaxyPoints = player.galaxyPoints
+      $.notify('Your NG-- save has been updated because dan-simon made upgrades for Galactic Sacrifice.', 'info')
+      player.aarexModifications.newGameMinusMinusVersion = 1.2
+      delete player.galaxyPoints
   }
 
   ipMultPower=2
@@ -996,9 +1006,7 @@ function transformSaveToDecimal() {
   player.totalmoney = new Decimal(player.totalmoney)
   player.chall3Pow = new Decimal(player.chall3Pow)
   player.chall11Pow = new Decimal(player.chall11Pow)
-  if (player.galaxyPoints !== undefined) {
-      player.galaxyPoints = new Decimal(player.galaxyPoints)
-  }
+  if (player.galacticSacrifice !== undefined) player.galacticSacrifice.galaxyPoints = new Decimal(player.galacticSacrifice.galaxyPoints)
   player.costMultipliers = [new Decimal(player.costMultipliers[0]), new Decimal(player.costMultipliers[1]), new Decimal(player.costMultipliers[2]), new Decimal(player.costMultipliers[3]), new Decimal(player.costMultipliers[4]), new Decimal(player.costMultipliers[5]), new Decimal(player.costMultipliers[6]), new Decimal(player.costMultipliers[7])]
   player.tickspeedMultiplier = new Decimal(player.tickspeedMultiplier)
   player.matter = new Decimal(player.matter)

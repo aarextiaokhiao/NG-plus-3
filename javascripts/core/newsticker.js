@@ -152,17 +152,18 @@ newsArray = [//always true
 ["Whale complains that the game broke.", "kongDimMult > 5e307", "s5"],
 ["Whale complains that their buying isn't doing anything.", "kongIPMult > 1.8e16", "s6"],
 //Aarex's Modifications
-["A brave man tried NG- and NG-- modes at the same time, but he will be dead before he would complete this mode.", 'player.achievements.includes("r22") && player.aarexModifications.newGameMinusVersion && player.galaxyPoints', "am1"],
+["A brave man tried NG- and NG-- modes at the same time, but he will be dead before he would complete this mode.", 'player.achievements.includes("r22") && player.aarexModifications.newGameMinusVersion && player.galacticSacrifice', "am1"],
 ["You would be dead if you started writing down your antimatter amount", 'player.achievements.includes("r22") && player.money.gt(Decimal.pow(10, 3 * 86400 * 365.2425 * 79.3 / 10))', "am2"],
 ["If you just broke the game, the psychic helper wants you to reset the game.", 'player.achievements.includes("r22") && isNaN(break_infinity_js ? player.money.logarithm : player.money)', "am3"],
 ["I wish I would create NG+++ while dan-simon is currently updating NG++ every day.", 'player.achievements.includes("r22") && player.meta', "am4"],
-["I failed to big crunch for sacrificing my galaxies only.", 'player.achievements.includes("r22") && player.galaxyPoints', "am5"],
-["Did you just do 4 modes at once? Impossible!", 'player.achievements.includes("r22") && player.aarexModifications.newGameMinusVersion && player.galaxyPoints && player.aarexModifications.newGamePlusVersion && player.meta', "am6"],
+["I failed to big crunch for sacrificing my galaxies only.", 'player.achievements.includes("r22") && player.galacticSacrifice', "am5"],
+["Did you just do 4 modes at once? Impossible!", 'player.achievements.includes("r22") && player.aarexModifications.newGameMinusVersion && player.galacticSacrifice && player.aarexModifications.newGamePlusVersion && player.meta', "am6"],
 ["You are a ghost now!", 'player.achievements.includes("r22") && player.money.gt(Decimal.pow(10, 3 * 86400 * 365.2425 * 79.3))', "am7"],
 ["another aarex masterpiece ~ Spanosa", 'player.achievements.includes("r22")', "am8"],
 ["In dan-simon's version, only this achievement was enough to break the game.", 'player.achievements.includes("r22") && player.achievements.includes("ngpp7")', "am9"],
 ["Is there meta-infinity?", 'player.achievements.includes("r22") && (player.meta ? player.meta.bestAntimatter.gte(Number.MAX_VALUE) : false)', "am10"],
-["NG++-+- was confirmed.", 'player.achievements.includes("r22") && player.masterystudies', "am11"]
+["NG++-+- was confirmed.", 'player.achievements.includes("r22") && player.masterystudies', "am11"],
+["You wanted a prestige layer so here you go.", 'player.achievements.includes("r22") && player.galacticSacrifice && player.eternities > (player.aarexModifications.newGameMinusVersion?-20:0)', "am12"]
 ];}
 
 document.addEventListener("visibilitychange", function() {if (!document.hidden) {scrollNextMessage();}}, false);

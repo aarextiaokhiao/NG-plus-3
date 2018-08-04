@@ -5,7 +5,11 @@ function getDimensionBoostPower() {
   if (player.infinityUpgrades.includes("resetMult")) ret = 2.5
   if (player.challenges.includes("postc7")) ret = 4
   if (player.currentChallenge == "postc7" || player.timestudy.studies.includes(81)) ret = 10
-
+  if (player.galacticSacrifice) {
+      if (player.galacticSacrifice.upgrades.includes(23)) {
+          ret *= galUpgrade23() / 2;
+      }
+  }
   if (player.achievements.includes("r101")) ret = ret*1.01
   if (player.timestudy.studies.includes(83)) ret = Decimal.pow(1.0004, player.totalTickGained).times(ret);
   if (player.timestudy.studies.includes(231)) ret = Decimal.pow(player.resets, 0.3).times(ret)
@@ -21,7 +25,8 @@ function softReset(bulk) {
   if (player.resets >= 10) {
       giveAchievement("Boosting to the max");
   }
-  if (player.dilation.upgrades.includes("ngpp3") && player.eternities >= 1e9 && player.aarexModifications.newGame3PlusVersion){
+  if (player.dilation.upgrades.includes("ngpp3") && player.eternities >= 1e9 && player.aarexModifications.newGame3PlusVersion) {
+      if (player.currentEternityChall=='eterc13') return
       var power = player[TIER_NAMES[tier] + 'Pow']
       var temp = new Decimal(getDimensionBoostPower())
       for (tier = 1; tier < 9; tier++) player[TIER_NAMES[tier] + 'Pow'] = player[TIER_NAMES[tier] + 'Pow'].div(player.dbPower.pow(Math.max(oldResets + 1 - tier, 0))).times(temp.pow(Math.max(player.resets + 1 - tier, 0)))
@@ -78,7 +83,7 @@ function softReset(bulk) {
       resets: player.resets,
       dbPower: player.dbPower,
       galaxies: player.galaxies,
-      galaxyPoints: player.galaxyPoints,
+      galacticSacrifice: player.galacticSacrifice,
       tickDecrease: player.tickDecrease,
       totalmoney: player.totalmoney,
       interval: null,
@@ -112,7 +117,7 @@ function softReset(bulk) {
       spreadingCancer: player.spreadingCancer,
       postChallUnlocked: player.postChallUnlocked,
       postC4Tier: 1,
-      postC3Reward: new Decimal(1),
+      postC3Reward: getPostC3RewardStart(),
       infinityDimension1: player.infinityDimension1,
       infinityDimension2: player.infinityDimension2,
       infinityDimension3: player.infinityDimension3,
@@ -235,7 +240,7 @@ if (player.currentChallenge == "postc2") {
 
 function setInitialDimensionPower () {
 	var dimensionBoostPower = new Decimal(getDimensionBoostPower())
-	for (tier = 1; tier < 9; tier++) player[TIER_NAMES[tier] + 'Pow'] = dimensionBoostPower.pow(player.resets + 1 - tier).max(1)
+	for (tier = 1; tier < 9; tier++) player[TIER_NAMES[tier] + 'Pow'] = player.currentEternityChall=='eterc13' ? new Decimal(1) : dimensionBoostPower.pow(player.resets + 1 - tier).max(1)
 }
 
 function maxBuyDimBoosts(manual) {
@@ -273,6 +278,7 @@ function getShiftRequirement(bulk) {
   if (player.timestudy.studies.includes(211)) mult -= 5
   if (player.timestudy.studies.includes(222)) mult -= 2
   if (player.masterystudies) if (player.masterystudies.includes("t261")) mult -= 1
+  if (player.galacticSacrifice) if (player.galacticSacrifice.upgrades.includes(21)) mult = 5
   if (player.currentChallenge == "challenge4") mult = 20
   if (tier == maxTier) amount += (resetNum + 4 - maxTier) * mult
 
@@ -299,6 +305,7 @@ document.getElementById("softReset").onclick = function () {
   if (player.infinityUpgrades.includes("bulkBoost")) maxBuyDimBoosts(true);
   else softReset(1)
   if (player.resets <= pastResets) return
+  if (player.currentEternityChall=='eterc13') return
   var dimensionBoostPower = new Decimal(getDimensionBoostPower())
   for (var tier = 1; tier < 9; tier++) if (player.resets >= tier) floatText(TIER_NAMES[tier] + "D", "x" + shortenDimensions(dimensionBoostPower.pow(player.resets + 1 - tier)))
 };

@@ -368,6 +368,10 @@ function respecTimeStudies() {
       case 12:
       player.timestudy.theorem += 1
       break;
+
+      case 13:
+      case 14:
+      player.timestudy.theorem += masterystudies.costs.ec[player.eternityChallUnlocked]
   }
   player.eternityChallUnlocked = 0
   updateTimeStudyButtons()
@@ -437,12 +441,14 @@ function importStudyTree(input) {
   if (input === "") return false
   var studiesToBuy = input.split("|")[0].split(",");
   for (i=0; i<studiesToBuy.length; i++) {
-      if (studiesToBuy[i]>240) buyMasteryStudy(true, studiesToBuy[i])
+      if (studiesToBuy[i]>240) buyMasteryStudy("t", studiesToBuy[i])
       else document.getElementById(studiesToBuy[i]).click();
   }
-  if (parseInt(input.split("|")[1]) !== 0) {
+  var ec=parseInt(input.split("|")[1])
+  if (ec > 0) {
       justImported = true;
-      document.getElementById("ec"+parseInt(input.split("|")[1])+"unl").click();
+      if (ec > 12) buyMasteryStudy("ec", ec)
+      else document.getElementById("ec"+parseInt(input.split("|")[1])+"unl").click();
       setTimeout(function(){ justImported = false; }, 100);
   }
 };

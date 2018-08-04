@@ -32,7 +32,6 @@ function updateInfinityDimensions() {
 }
 
 function DimensionProduction(tier) {
-  if (player.currentEternityChall == "eterc10") return new Decimal(0)
   if (tier == 9) return getTimeDimensionProduction(1).pow(player.currentEternityChall == "eterc7" ? 1 : ECTimesCompleted("eterc7")*0.2).minus(1).times(10)
   var dim = player["infinityDimension"+tier]
   var ret = dim.amount
@@ -40,7 +39,7 @@ function DimensionProduction(tier) {
   if (player.currentEternityChall == "eterc7") ret = ret.dividedBy(player.tickspeed.dividedBy(1000))
   if (player.challenges.includes("postc6")) {
       let tick = new Decimal(player.tickspeed)
-      if (player.dilation.active || player.aarexModifications.newGameMinusMinusVersion) {
+      if (player.dilation.active || player.galacticSacrifice) {
         tick = Decimal.pow(10, Math.pow(Math.abs(tick.log10()), 0.75))
         if (player.dilation.upgrades.includes(9)) {
           tick = Decimal.pow(10, Math.pow(Math.abs(tick.log10()), 1.05))
@@ -70,6 +69,7 @@ function DimensionPower(tier) {
 
       mult = mult.times(replmult)
   }
+  if (player.currentEternityChall=='eterc14') return replmult
 
   if (player.timestudy.studies.includes(72) && tier == 4) {
       mult = mult.times(calcTotalSacrificeBoost().pow(0.04).max(1).min("1e30000"))
@@ -90,7 +90,7 @@ function DimensionPower(tier) {
   if (player.timestudy.studies.includes(92)) mult = mult.times(Decimal.pow(2, 600/Math.max(player.bestEternity, 20)))
   if (player.timestudy.studies.includes(162)) mult = mult.times(1e11)
   if (ECTimesCompleted("eterc2") !== 0 && tier == 1) mult = mult.times(player.infinityPower.pow(1.5/(700-ECTimesCompleted("eterc2")*100)).min(new Decimal("1e100")).plus(1))
-  if (player.currentEternityChall == "eterc2") mult = mult.times(0)
+  if (player.currentEternityChall == "eterc2" || player.currentEternityChall == "eterc10" || player.currentEternityChall == "eterc13") mult = mult.times(0)
 
   if (ECTimesCompleted("eterc4") !== 0) mult = mult.times(player.infinityPoints.pow(0.003 + ECTimesCompleted("eterc4")*0.002).min(new Decimal("1e200")))
 
@@ -98,7 +98,7 @@ function DimensionPower(tier) {
 
   if (mult.lt(0)) mult = new Decimal(0)
 
-  if (player.dilation.active || player.aarexModifications.newGameMinusMinusVersion) {
+  if (player.dilation.active || player.galacticSacrifice) {
     mult = Decimal.pow(10, Math.pow(mult.max(1).log10(), 0.75))
     if (player.dilation.upgrades.includes(9)) {
       mult = Decimal.pow(10, Math.pow(mult.log10(), 1.05))
@@ -256,5 +256,5 @@ var infDimPow = 1
 function getEU2Mult() {
 	var cap = Math.min(player.eternities, 100000)
 	var soft = player.eternities - cap
-	return Decimal.pow(cap/200 + 1, Math.log(cap*2+1)/Math.log(4)).times(new Decimal(soft/200 + 1).times(Math.log(soft*2+1)/Math.log(4)).max(1)).max(player.achievements.includes("ngpp15")?Decimal.pow(player.eternities, Math.pow(Math.log10(player.eternities), 3.75)):1)
+	return Decimal.pow(cap/200 + 1, Math.log(cap*2+1)/Math.log(4)).times(new Decimal(soft/200 + 1).times(Math.log(soft*2+1)/Math.log(4)).max(1)).max(player.achievements.includes("ngpp15")?Decimal.pow(10, Math.pow(Math.log10(player.eternities), 4.75)):1)
 }

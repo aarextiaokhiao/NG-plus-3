@@ -62,12 +62,20 @@ function getDimensionFinalMultiplier(tier) {
   if (player.currentChallenge == "postc8") multiplier = multiplier.times(postc8Mult)
 
   if (player.currentChallenge == "postc4" && player.postC4Tier != tier) multiplier = multiplier.pow(0.25)
-  if (player.challenges.includes("postc4")) multiplier = multiplier.pow(1.05);
+  if (player.challenges.includes("postc4") && player.galacticSacrifice === undefined) multiplier = multiplier.pow(1.05);
   if (player.currentEternityChall == "eterc10") multiplier = multiplier.times(ec10bonus)
   if (player.timestudy.studies.includes(193)) multiplier = multiplier.times(Decimal.pow(1.03, player.eternities).min("1e13000"))
   if (tier == 8 && player.timestudy.studies.includes(214)) multiplier = multiplier.times((calcTotalSacrificeBoost().pow(8)).min("1e46000").times(calcTotalSacrificeBoost().pow(1.1).min(new Decimal("1e125000"))))
+	  
+  if (player.galacticSacrifice) {
+      if (player.galacticSacrifice.upgrades.includes(12)) multiplier = multiplier.times(galUpgrade12())
+      if (player.galacticSacrifice.upgrades.includes(13)) multiplier = multiplier.times(galUpgrade13())
+      if (player.challenges.includes("postc4")) multiplier = multiplier.pow(1.05);
+      if (player.galacticSacrifice.upgrades.includes(31)) multiplier = multiplier.pow(1.05);
+  }
+
   if (multiplier.lt(1)) multiplier = new Decimal(1)
-  if (player.dilation.active || player.aarexModifications.newGameMinusMinusVersion) {
+  if (player.dilation.active || player.galacticSacrifice) {
     multiplier = Decimal.pow(10, Math.pow(multiplier.log10(), 0.75))
     if (player.dilation.upgrades.includes(9)) {
       multiplier = Decimal.pow(10, Math.pow(multiplier.log10(), 1.05))
@@ -170,6 +178,7 @@ function hasInfinityMult(tier) {
         if (player.infinityUpgrades.includes('dimMult')) dimMult *= 1.1;
         if (player.achievements.includes("r58")) dimMult *= 1.01;
         dimMult += ECTimesCompleted("eterc3") * 0.8
+        if (player.galacticSacrifice) if (player.galacticSacrifice.upgrades.includes(33)) dimMult *= galUpgrade33() / 2;
         return dimMult;
     }
     
@@ -548,9 +557,9 @@ function getDimensionProductionPerSecond(tier) {
         else if (tier == 2) ret = player[TIER_NAMES[tier] + 'Amount'].floor().pow(1.5).times(getDimensionFinalMultiplier(tier)).dividedBy(player.tickspeed.dividedBy(1000))
     }
     if (player.currentChallenge == "challenge2" || player.currentChallenge == "postc1") ret = ret.times(player.chall2Pow)
-    if (player.dilation.active || player.aarexModifications.newGameMinusMinusVersion) {
+    if (player.dilation.active || player.galacticSacrifice) {
         let tick = new Decimal(player.tickspeed)
-        var maximum = player.aarexModifications.newGameMinusMinusVersion ? 3 : 0
+        var maximum = player.galacticSacrifice ? 3 : 0
         tick = Decimal.pow(10, Math.pow(Math.max(Math.abs(tick.log10()), maximum), 0.75))
         if (player.dilation.upgrades.includes(9)) {
             tick = Decimal.pow(10, Math.pow(Math.max(Math.abs(tick.log10()), maximum), 1.05))
