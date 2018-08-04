@@ -279,14 +279,14 @@ function updateTimeStudyButtons() {
 
   for (i=1; i<7; i++) {
     if (player.dilation.studies.includes(i)) document.getElementById("dilstudy"+i).className = "dilationupgbought"
-    else if (player.timestudy.theorem >= ([null, 1e5, 1e6, 1e7, 1e8, 1e9, 1e24])[i] && player.dilation.studies.includes(i-1)) document.getElementById("dilstudy"+i).className = "dilationupg"
+    else if (player.timestudy.theorem >= ([null, 5e3, 1e6, 1e7, 1e8, 1e9, 1e24])[i] && (player.dilation.studies.includes(i-1) || (i<2 && ECTimesCompleted("eterc11") > 4 && ECTimesCompleted("eterc12") > 4 && getTotalTT(player) >= 13e3))) document.getElementById("dilstudy"+i).className = "dilationupg"
     else document.getElementById("dilstudy"+i).className = "timestudylocked"
   }
   document.getElementById("dilstudy6").style.display = player.meta ? "" : "none"
   document.getElementById("masteryportal").style.display = player.masterystudies ? "" : "none"
   if (player.masterystudies) {
-      document.getElementById("masteryportal").textContent = player.dilation.upgrades.includes("ngpp4") ? "Continue to mastery studies." : !player.dilation.studies.includes(1) ? "To be continued...." : "Mastery portal (" + (player.dilation.studies.includes(6) ? "66%: requires "+shortenCosts(1e60)+" dilated time upgrade)" : "33%: requires meta-dimensions)") 
-      document.getElementById("masteryportal").className = player.dilation.upgrades.includes("ngpp4") ? "dilationupg" : "timestudylocked"
+      document.getElementById("masteryportal").textContent = player.dilation.upgrades.includes("ngpp6") ? "Continue to mastery studies." : !player.dilation.studies.includes(1) ? "To be continued...." : "Mastery portal (" + (player.dilation.studies.includes(6) ? "66%: requires "+shortenCosts(1e60)+" dilated time upgrade)" : "33%: requires meta-dimensions)") 
+      document.getElementById("masteryportal").className = player.dilation.upgrades.includes("ngpp6") ? "dilationupg" : "timestudylocked"
   }
 }
 

@@ -5,12 +5,8 @@ function getDimensionBoostPower() {
   if (player.infinityUpgrades.includes("resetMult")) ret = 2.5
   if (player.challenges.includes("postc7")) ret = 4
   if (player.currentChallenge == "postc7" || player.timestudy.studies.includes(81)) ret = 10
-  if (player.galacticSacrifice) {
-      if (player.galacticSacrifice.upgrades.includes(23)) {
-          ret *= galUpgrade23() / 2;
-      }
-  }
   if (player.achievements.includes("r101")) ret = ret*1.01
+  if (player.galacticSacrifice) if (player.galacticSacrifice.upgrades.includes(23)) ret = galUpgrade23().div(2).times(ret)
   if (player.timestudy.studies.includes(83)) ret = Decimal.pow(1.0004, player.totalTickGained).times(ret);
   if (player.timestudy.studies.includes(231)) ret = Decimal.pow(player.resets, 0.3).times(ret)
   if (player.dilation.studies.includes(6)) ret = getExtraDimensionBoostPower().times(ret)
@@ -174,6 +170,7 @@ function softReset(bulk) {
       masterystudies: player.masterystudies,
       autoEterOptions: player.autoEterOptions,
       galaxyMaxBulk: player.galaxyMaxBulk,
+      quantum: player.quantum,
       aarexModifications: player.aarexModifications
   };
   if (player.currentChallenge == "challenge10" || player.currentChallenge == "postc1") {
@@ -183,6 +180,10 @@ function softReset(bulk) {
       player.sixthCost = new Decimal(2e4)
       player.seventhCost = new Decimal(2e5)
       player.eightCost = new Decimal(4e6)
+  }
+  if (player.galacticSacrifice) if (player.galacticSacrifice.upgrades.includes(11)) for (d=1;d<8;d++) {
+      var name = TIER_NAMES[d]
+      player[name+"Cost"] = player[name+"Cost"].div(10)
   }
   if (player.currentChallenge == "postc1") player.costMultipliers = [new Decimal(1e3),new Decimal(5e3),new Decimal(1e4),new Decimal(1.2e4),new Decimal(1.8e4),new Decimal(2.6e4),new Decimal(3.2e4),new Decimal(4.2e4)];
   if (player.resets == 1 && player.currentChallenge == "") {
@@ -254,10 +255,10 @@ function maxBuyDimBoosts(manual) {
 			var sr = getShiftRequirement(3 - player.resets)
 			var ut = Math.min(bought, (player.galaxies >= player.overXGalaxies || manual) ? 1/0 : player.autobuyers[9].priority)
 			r = Math.floor((ut - sr.amount) / sr.mult + 5)
-			if (r > 3e5) {
+			if (r > 56e4) {
 				var b = 2 + sr.mult
-				var solution = (-b + Math.sqrt(b * b + 8 * ((r + 1) / 3e4 - 10) * sr.mult)) / 4
-				var setPoint = 3e5 + 3e4 * Math.floor(solution)
+				var solution = (-b + Math.sqrt(b * b + 8 * ((r + 1) / 4e4 - 14) * sr.mult)) / 4
+				var setPoint = 56e4 + 4e4 * Math.floor(solution)
 				sr = getShiftRequirement(setPoint - player.resets)
 				r = Math.floor((ut - sr.amount) / sr.mult + setPoint + 1)
 			}
@@ -284,10 +285,10 @@ function getShiftRequirement(bulk) {
 
   if (player.currentEternityChall == "eterc5") {
       amount += Math.pow(resetNum, 3) + resetNum
-  } else if (resetNum >= 3e5) {
-      var displacement = Math.ceil((resetNum - 3e5 + 1) / 3e4)
-      var offset = resetNum % 3e4 + 1
-      amount += displacement * (displacement - 1) * 6e4 + offset * displacement * 4
+  } else if (resetNum >= 56e4) {
+      var displacement = Math.ceil((resetNum - 56e4 + 1) / 4e4)
+      var offset = resetNum % 4e4 + 1
+      amount += displacement * (displacement - 1) * 8e4 + offset * displacement * 4
       mult += displacement * 4
   }
 

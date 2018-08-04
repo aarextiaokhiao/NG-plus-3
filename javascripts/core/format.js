@@ -56,6 +56,29 @@ const inflog = Math.log10(Number.MAX_VALUE)
 function formatValue(notation, value, places, placesUnder1000) {
 
     if ((Decimal.lte(value,Number.MAX_VALUE) || (player.break && (player.currentChallenge == "" || !new Decimal(Number.MAX_VALUE).equals(player.challengeTarget)) )) && (Decimal.gte(value,1000))) {
+        if (notation === "Hexadecimal") {
+            value = Decimal.pow(value, 1/Math.log10(16))
+            var mantissa = Math.pow(value.m, Math.log10(16))
+            var power = value.e
+            if (mantissa > 16 - Math.pow(16, -2)/2) {
+                mantissa = 1
+                power++
+            }
+            var digits=[0,1,2,3,4,5,6,7,8,9,'A','B','C','D','E','F']
+            mantissa=digits[Math.floor(mantissa)].toString()+'.'+digits[Math.floor(mantissa*16)%16].toString()+digits[Math.floor(mantissa*256)%16].toString()
+            if (power > 100000 && !(player.options.commas === "Commas")) return mantissa + "e" + formatValue(player.options.commas, power, 3, 3)
+            else {
+                var digit=0
+                var result=''
+                var temp=power
+                while (power>0) {
+                    result=digits[power%16].toString()+(temp>1e5&&digit>0&&digit%3<1?',':'')+result
+                    power=Math.floor(power/16)
+                    digit++
+                }
+                return mantissa + "e" + result;
+            }
+        }
         if (value instanceof Decimal) {
            var power = value.e
            var matissa = value.mantissa
@@ -73,7 +96,7 @@ function formatValue(notation, value, places, placesUnder1000) {
             if (power > 100000  && player.options.commas === "Commas") return (matissa + "e" + power.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ","));
             return (matissa + "e" + power);
         }
-        if (notation === "Greek") {
+        if (notation === "Greek" || notation === "Morse code") {
             if (matissa>=10-Math.pow(10,-places)/2) {
                 matissa=Math.pow(10,places)
                 power-=places+1
@@ -82,8 +105,8 @@ function formatValue(notation, value, places, placesUnder1000) {
                 power-=places
             }
             if (power > 100000  && !(player.options.commas === "Commas")) power = formatValue(player.options.commas, power, 3, 3)
-            else power = convToGreek(power)
-            return convToGreek(matissa)+'e'+power
+            else power = convTo(notation, power)
+            return convTo(notation, matissa)+'e'+power
         }
         if (notation === "Infinity") {
             const inflog = Math.log10(Number.MAX_VALUE)
@@ -165,15 +188,23 @@ function formatValue(notation, value, places, placesUnder1000) {
     }
 }
 
-function convToGreek(num) {
-	const marks=[["","A","B","Γ","Δ","E","Ϛ","Z","H","Θ"],["","I","K","Λ","M","N","Ξ","O","Π","Ϟ"],["","P","Σ","T","Y","Φ","X","Ψ","Ω","Ϡ"]]
+function convTo(notation, num) {
 	var result=""
-	var needMark=false
-	while (num>0) {
-		if (needMark) result=','+marks[2][Math.floor(num/100)%10]+marks[1][Math.floor(num/10)%10]+marks[0][num%10]+result
-		else result=marks[2][Math.floor(num/100)%10]+marks[1][Math.floor(num/10)%10]+marks[0][num%10]
-		num=Math.floor(num/1000)
-		needMark=true
+	if (notation=='Greek') {
+		const marks=[["","A","B","Γ","Δ","E","Ϛ","Z","H","Θ"],["","I","K","Λ","M","N","Ξ","O","Π","Ϟ"],["","P","Σ","T","Y","Φ","X","Ψ","Ω","Ϡ"]]
+		var needMark=false
+		while (num>0) {
+			if (needMark) result=','+marks[2][Math.floor(num/100)%10]+marks[1][Math.floor(num/10)%10]+marks[0][num%10]+result
+			else result=marks[2][Math.floor(num/100)%10]+marks[1][Math.floor(num/10)%10]+marks[0][num%10]
+			num=Math.floor(num/1000)
+			needMark=true
+		}
+	} else {
+		while (num>0) {
+			var mod=num%10
+			result=(mod>0&&mod<6?"·":'-')+(mod>1&&mod<7?"·":'-')+(mod>2&&mod<8?"·":'-')+(mod>3&&mod<9?"·":'-')+(mod>4?"·":'-')+(result==""?"":" "+result)
+			num=Math.floor(num/10)
+		}
 	}
 	return result
 }

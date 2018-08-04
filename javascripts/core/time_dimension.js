@@ -105,8 +105,22 @@ function updateTimeDimensions() {
 
 var timeDimCostMults = [null, 3, 9, 27, 81, 243, 729, 2187, 6561]
 var timeDimStartCosts = [null, 1, 5, 100, 1000, "1e2350", "1e2650", "1e3000", "1e3350"]
-function buyTimeDimension(tier) {
 
+function timeDimCost(tier, bought) {
+	cost = Decimal.pow(timeDimCostMults[tier], bought).times(timeDimStartCosts[tier])
+	if (cost.gte(Number.MAX_VALUE)) cost = Decimal.pow(timeDimCostMults[tier]*1.5, bought).times(timeDimStartCosts[tier])
+	if (cost.gte("1e1300")) cost = Decimal.pow(timeDimCostMults[tier]*2.2, bought).times(timeDimStartCosts[tier])
+	if (tier > 4) cost = Decimal.pow(timeDimCostMults[tier]*100, bought).times(timeDimStartCosts[tier])
+	if (cost.gte(tier > 4 ? "1e300000" : "1e20000")) {
+		// rather than fixed cost scaling as before, quadratic cost scaling
+		// to avoid exponential growth
+		cost = cost.times(Decimal.pow(new Decimal('1e1000'),
+		Math.pow(cost.log(10) / 1000 - (tier > 4 ? 300 : 20), 2)));
+	}
+	return cost
+}
+
+function buyTimeDimension(tier) {
   var dim = player["timeDimension"+tier]
   if (tier > 4 && !player.dilation.studies.includes(tier-3)) return false
   if (player.eternityPoints.lt(dim.cost)) return false
@@ -114,16 +128,7 @@ function buyTimeDimension(tier) {
   player.eternityPoints = player.eternityPoints.minus(dim.cost)
   dim.amount = dim.amount.plus(1);
   dim.bought += 1
-  dim.cost = Decimal.pow(timeDimCostMults[tier], dim.bought).times(timeDimStartCosts[tier])
-  if (dim.cost.gte(Number.MAX_VALUE)) dim.cost = Decimal.pow(timeDimCostMults[tier]*1.5, dim.bought).times(timeDimStartCosts[tier])
-  if (dim.cost.gte("1e1300")) dim.cost = Decimal.pow(timeDimCostMults[tier]*2.2, dim.bought).times(timeDimStartCosts[tier])
-  if (tier > 4) dim.cost = Decimal.pow(timeDimCostMults[tier]*100, dim.bought).times(timeDimStartCosts[tier])
-  if (dim.cost.gte(tier > 4 ? "1e100000" : "1e20000")) {
-      // rather than fixed cost scaling as before, quadratic cost scaling
-      // to avoid exponential growth
-      dim.cost = dim.cost.times(Decimal.pow(new Decimal('1e1000'),
-      Math.pow(dim.cost.log(10) / 1000 - (tier > 4 ? 100 : 20), 2)));
-  }
+  dim.cost = timeDimCost(tier, dim.bought)
   dim.power = dim.power.times(2)
   updateEternityUpgrades()
   return true
@@ -134,9 +139,41 @@ function resetTimeDimensions() {
       var dim = player["timeDimension"+i]
       dim.amount = new Decimal(dim.bought)
   }
+}
 
+function buyMaxTimeDimension(tier) {
+	var time=Date.now()
+	if (tier>4&&!player.dilation.studies.includes(tier-3)) return
+	var dim=player['timeDimension'+tier]
+	if (player.eternityPoints.lt(dim.cost)) return
+	var increment=1
+	while (player.eternityPoints.gte(timeDimCost(tier,dim.bought+increment*2-1))) {
+		increment*=2
+	}
+	var toBuy=increment
+	for (p=0;p<53;p++) {
+		increment/=2
+		if (increment<1) break
+		if (player.eternityPoints.gte(timeDimCost(tier,dim.bought+toBuy+increment-1))) toBuy+=increment
+	}
+	var num=toBuy
+	var newEP=player.eternityPoints
+	while (num>0) {
+		var temp=newEP
+		var cost=timeDimCost(tier,dim.bought+num-1)
+		if (newEP.lt(cost)) {
+			newEP=player.eternityPoints.sub(cost)
+			toBuy--
+		} else newEP=newEP.sub(cost)
+		if (newEP.eq(temp)||num>9007199254740992) break
+		num--
+	}
+	dim.amount=dim.amount.plus(toBuy);
+	dim.bought+=toBuy
+	dim.cost=timeDimCost(tier, dim.bought)
+	dim.power=dim.power.times(Decimal.pow(2, toBuy))
 }
 
 function buyMaxTimeDimensions() {
-  for(var i=1; i<9; i++) while(buyTimeDimension(i)) continue
+  for (i=1; i<9; i++) buyMaxTimeDimension(i)
 }

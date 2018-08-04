@@ -562,6 +562,21 @@ button {
     background: white;
 }
 
+#quantumtabbtn {
+    color: #32c832;
+    background: #0a640a;
+    border: 2px solid #32c832;
+    font-weight: bold;
+    border-radius: 4px;
+    transition-duration: 0.2s;
+    cursor: pointer;
+}
+
+#quantumtabbtn:hover {
+    background: #32c832;
+    color: #0a640a;
+}
+
 #galaxyPoints { color: #4169E1 !important; }
 
 .achievementhidden {

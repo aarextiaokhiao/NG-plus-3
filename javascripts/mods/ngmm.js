@@ -1,6 +1,6 @@
 function getGSAmount() {
 	let galaxies = player.galaxies + player.replicanti.galaxies + player.dilation.freeGalaxies;
-	let ret = new Decimal(galaxies * player.eightAmount.div(50).toNumber());
+	let ret = new Decimal(galaxies * player.eightAmount.div(20).toNumber());
 	if (player.galacticSacrifice.upgrades.includes(32)) {
 		return ret.times(galUpgrade32()).floor();
 	} else {
@@ -11,8 +11,8 @@ function getGSAmount() {
 function galacticSacrifice() {
 	if (getGSAmount().eq(0)) return
 	if (player.options.sacrificeConfirmation) if (!confirm("Galactic Sacrifice will do a galaxy reset, and then remove all of your galaxies, in exchange of galaxy points which can be use to buy many powerful upgrades, but it will take a lot of time to recover, are you sure you wanna do this?")) return
-	player.galaxies = -1
 	player.galacticSacrifice.galaxyPoints = player.galacticSacrifice.galaxyPoints.plus(getGSAmount())
+	player.galaxies = -1
 	player.galacticSacrifice.times++
 	player.galacticSacrifice.time = 0
 	galaxyReset()
@@ -49,30 +49,34 @@ function buyGalaxyUpgrade(i) {
 	if (player.galacticSacrifice.upgrades.includes(i) || player.galacticSacrifice.galaxyPoints.lt(galUpgradeCosts[i])) return
 	player.galacticSacrifice.upgrades.push(i)
 	player.galacticSacrifice.galaxyPoints = player.galacticSacrifice.galaxyPoints.sub(galUpgradeCosts[i])
+	if (i==11) for (d=1;d<8;d++) {
+		var name = TIER_NAMES[d]
+		player[name+"Cost"] = player[name+"Cost"].div(10)
+	}
 }
 
 let galUpgrade12 = function () {
 	return 2 * Math.pow(1 + player.galacticSacrifice.time / 600, 0.5);
 }
 let galUpgrade13 = function () {
-	return Math.pow(1 + player.galacticSacrifice.galaxyPoints / 5, 3);
+	return player.galacticSacrifice.galaxyPoints.div(5).plus(1).pow(3)
 }
 let galUpgrade23 = function () {
-	return 2 + player.galacticSacrifice.galaxyPoints / 50;
+	return player.galacticSacrifice.galaxyPoints.div(50).plus(2)
 }
 let galUpgrade32 = function () {
 	return player.totalmoney.pow(0.003);
 }
 let galUpgrade33 = function () {
-	return 2 + player.galacticSacrifice.galaxyPoints / 200;
+	return player.galacticSacrifice.galaxyPoints.div(200).plus(2)
 }
 
 function galacticUpgradeSpanDisplay () {
-	document.getElementById('galspan12').innerHTML = galUpgrade12().toFixed(2)
-	document.getElementById('galspan13').innerHTML = galUpgrade13().toFixed(2)
-	document.getElementById('galspan23').innerHTML = galUpgrade23().toFixed(2)
-	document.getElementById('galspan32').innerHTML = galUpgrade32().toFixed(2)
-	document.getElementById('galspan33').innerHTML = galUpgrade33().toFixed(2)
+	document.getElementById('galspan12').innerHTML = formatValue(player.options.notation, galUpgrade12(), 1, 1)
+	document.getElementById('galspan13').innerHTML = formatValue(player.options.notation, galUpgrade13(), 1, 1)
+	document.getElementById('galspan23').innerHTML = formatValue(player.options.notation, galUpgrade23(), 1, 1)
+	document.getElementById('galspan32').innerHTML = formatValue(player.options.notation, galUpgrade32(), 1, 1)
+	document.getElementById('galspan33').innerHTML = formatValue(player.options.notation, galUpgrade33(), 1, 1)
 }
 
 function galacticUpgradeButtonTypeDisplay () {

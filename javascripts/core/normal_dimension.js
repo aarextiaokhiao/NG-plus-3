@@ -178,7 +178,7 @@ function hasInfinityMult(tier) {
         if (player.infinityUpgrades.includes('dimMult')) dimMult *= 1.1;
         if (player.achievements.includes("r58")) dimMult *= 1.01;
         dimMult += ECTimesCompleted("eterc3") * 0.8
-        if (player.galacticSacrifice) if (player.galacticSacrifice.upgrades.includes(33)) dimMult *= galUpgrade33() / 2;
+        if (player.galacticSacrifice) if (player.galacticSacrifice.upgrades.includes(33)) dimMult = galUpgrade33().div(2).times(dimMult);
         return dimMult;
     }
     
@@ -560,9 +560,9 @@ function getDimensionProductionPerSecond(tier) {
     if (player.dilation.active || player.galacticSacrifice) {
         let tick = new Decimal(player.tickspeed)
         var maximum = player.galacticSacrifice ? 3 : 0
-        tick = Decimal.pow(10, Math.pow(Math.max(Math.abs(tick.log10()), maximum), 0.75))
+        tick = Decimal.pow(10, Math.pow(Math.max(player.galacticSacrifice?3-tick.log10():Math.abs(tick.log10()), maximum), 0.75))
         if (player.dilation.upgrades.includes(9)) {
-            tick = Decimal.pow(10, Math.pow(Math.max(Math.abs(tick.log10()), maximum), 1.05))
+            tick = Decimal.pow(10, Math.pow(Math.max(player.galacticSacrifice?3-tick.log10():Math.abs(tick.log10()), maximum), 1.05))
         }
         ret = Decimal.floor(player[TIER_NAMES[tier] + 'Amount']).times(getDimensionFinalMultiplier(tier)).times(1000).times(tick)
     }

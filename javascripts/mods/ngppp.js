@@ -1,5 +1,5 @@
-masterystudies={initialCosts:{time:{241: 1e41, 251: 1e43, 252: 1e43, 253: 1e43, 261: 1e44, 262: 1e44, 263: 1e44, 264: 1e44, 265: 1e44, 266: 1e44},
-		ec:{13:2e49, 14:2e49}},
+masterystudies={initialCosts:{time:{241: 1e67, 251: 1e69, 252: 1e69, 253: 1e69, 261: 1e70, 262: 1e70, 263: 1e70, 264: 1e70, 265: 1e70, 266: 1e70},
+		ec:{13:2e75, 14:2e75}},
 	costs:{time:{},
 		ec:{},
 		dil:{7:1e52},
@@ -12,7 +12,7 @@ masterystudies={initialCosts:{time:{241: 1e41, 251: 1e43, 252: 1e43, 253: 1e43, 
 	reqs:{}}
 
 function portal() {
-	if (player.dilation.upgrades.includes("ngpp4")) showEternityTab("masterystudies")
+	if (player.dilation.upgrades.includes("ngpp6")) showEternityTab("masterystudies")
 }
 	
 function updateMasteryStudyButtons() {

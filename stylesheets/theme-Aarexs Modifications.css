@@ -347,6 +347,12 @@ strong { color: #0072e5 }
 #metaAntimatterAmount, #metaAntimatterBest, #metaAntimatterEffect {
     color: #00e5e5 !important
 }
+#quantum.storebtn, #quantumtabbtn, #pastquantums {
+    border-color: #009900 !important;
+}
+#quantum.storebtn:hover, #quantumtabbtn:hover, #pastquantums:hover {
+    background-color: #009900 !important
+}
 .metachallengestudy {
 	border-color: #006666 !important;
     animation: none
