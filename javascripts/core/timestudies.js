@@ -59,6 +59,7 @@ function maxTheorems() {
 	if (gainTT > 0 && player.timeDimension1.bought > 0) {
 		player.timestudy.theorem += gainTT
 		player.eternityPoints = player.eternityPoints.sub(Decimal.pow(2, gainTT).sub(1).times(player.timestudy.epcost))
+		if (!break_infinity_js && isNaN(player.eternityPoints.logarithm)) player.eternityPoints = new Decimal(0)
 		player.timestudy.epcost = player.timestudy.epcost.times(Decimal.pow(2, gainTT))
 	}
 	updateTheoremButtons()
@@ -67,7 +68,7 @@ function maxTheorems() {
 }
 
 function updateTheoremButtons() {
-	if (player.dilation.upgrades.includes(9)) {
+	if (player.dilation.upgrades.includes(10)) {
 		document.getElementById("theoremmax").style.display="none"
 		document.getElementById("theoremam").style.display="none"
 		document.getElementById("theoremip").style.display="none"

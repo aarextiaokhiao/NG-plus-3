@@ -194,7 +194,7 @@ function updateMetaDimensions () {
 		document.getElementById("metaSoftReset").className = 'unavailablebtn';
 	}
     var QS = quarkGain()
-    var req = Decimal.pow(Number.MAX_VALUE,player.masterystudies?1.5:1)
+    var req = Decimal.pow(Number.MAX_VALUE,player.masterystudies?1.4:1)
     document.getElementById("quantumResetLabel").textContent = 'Quantum: requires '+shorten(req)+' meta-antimatter'
     document.getElementById("quantum").textContent = 'Lose all your previous progress, but '+(player.quantum.times<1||player.meta.antimatter.lt(req)?'get a boost':'gain '+shortenDimensions(QS)+' quark'+(QS.lt(2)?'':'s')+' for boosts')
 	document.getElementById("quantum").className = player.meta.antimatter.lt(req) ? 'unavailablebtn' : 'storebtn'
@@ -550,6 +550,7 @@ function quantum() {
 			autoTime: 1e300,
 			infMultBuyer: headstart ? player.infMultBuyer : false,
 			autoCrunchMode: headstart ? player.autoCrunchMode : "amount",
+			autoEterMode: headstart ? player.autoEterMode : "amount",
 			respec: false,
 			eternityBuyer: headstart ? player.eternityBuyer : {
 				limit: new Decimal(0),
@@ -731,7 +732,7 @@ function quantum() {
 	},1000)
 }
 let quarkGain = function () {
-	if (player.masterystudies) return Decimal.pow(10, player.meta.antimatter.log10() / 308 - 1.3).times(quarkMult()).floor()
+	if (player.masterystudies) return Decimal.pow(10, player.meta.antimatter.log10() / 308 - 1.2).times(quarkMult()).floor()
 	return Decimal.pow(10, player.meta.antimatter.log(10) / Math.log10(Number.MAX_VALUE) - 1).times(quarkMult()).floor();
 }
 

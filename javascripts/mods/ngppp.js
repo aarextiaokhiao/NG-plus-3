@@ -1,14 +1,14 @@
-masterystudies={initialCosts:{time:{241: 1e67, 251: 1e69, 252: 1e69, 253: 1e69, 261: 1e70, 262: 1e70, 263: 1e70, 264: 1e70, 265: 1e70, 266: 1e70},
-		ec:{13:2e75, 14:2e75}},
+masterystudies={initialCosts:{time:{241: 1e71, 251: 2e71, 252: 2e71, 253: 2e71, 261: 5e71, 262: 5e71, 263: 5e71, 264: 5e71, 265: 5e71, 266: 5e71},
+		ec:{13:1e72, 14:1e72}},
 	costs:{time:{},
 		ec:{},
 		dil:{},
 		mc:{}},
-	costmults:{241: 1, 251: 3, 252: 3, 253: 3, 261: 9, 262: 9, 263: 9, 264: 9, 265: 9, 266: 9},
+	costmults:{241: 1, 251: 2.5, 252: 2.5, 253: 2.5, 261: 6, 262: 6, 263: 6, 264: 6, 265: 6, 266: 6},
 	costmult:1,
 	allTimeStudies:[241, 251, 252, 253, 261, 262, 263, 264, 265, 266],
-	initialReqs:{13:422e3,14:923e4},
-	incrementReqs:{13:2e3,14:2e4},
+	initialReqs:{13:728e3,14:255e5},
+	incrementReqs:{13:6e3,14:9e5},
 	reqs:{}}
 
 function portal() {

@@ -168,6 +168,7 @@ function buyMaxTimeDimension(tier) {
 		if (newEP.eq(temp)||num>9007199254740992) break
 		num--
 	}
+	player.eternityPoints=newEP
 	dim.amount=dim.amount.plus(toBuy);
 	dim.bought+=toBuy
 	dim.cost=timeDimCost(tier, dim.bought)
