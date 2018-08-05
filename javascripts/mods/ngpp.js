@@ -636,15 +636,17 @@ function quantum() {
 			quantum: player.quantum,
 			aarexModifications: player.aarexModifications
 		};
-		var diffrg=player.quantum.usedQuarks.r.min(player.quantum.usedQuarks.g)
-		var diffgb=player.quantum.usedQuarks.g.min(player.quantum.usedQuarks.b)
-		var diffbr=player.quantum.usedQuarks.b.min(player.quantum.usedQuarks.r)
-		player.quantum.usedQuarks.r=player.quantum.usedQuarks.r.sub(diffrg)
-		player.quantum.usedQuarks.g=player.quantum.usedQuarks.g.sub(diffgb)
-		player.quantum.usedQuarks.b=player.quantum.usedQuarks.b.sub(diffbr)
-		player.quantum.gluons.rg=player.quantum.gluons.rg.add(diffrg)
-		player.quantum.gluons.gb=player.quantum.gluons.gb.add(diffgb)
-		player.quantum.gluons.br=player.quantum.gluons.br.add(diffbr)
+		if (player.masterystudies) {
+			var diffrg=player.quantum.usedQuarks.r.min(player.quantum.usedQuarks.g)
+			var diffgb=player.quantum.usedQuarks.g.min(player.quantum.usedQuarks.b)
+			var diffbr=player.quantum.usedQuarks.b.min(player.quantum.usedQuarks.r)
+			player.quantum.usedQuarks.r=player.quantum.usedQuarks.r.sub(diffrg)
+			player.quantum.usedQuarks.g=player.quantum.usedQuarks.g.sub(diffgb)
+			player.quantum.usedQuarks.b=player.quantum.usedQuarks.b.sub(diffbr)
+			player.quantum.gluons.rg=player.quantum.gluons.rg.add(diffrg)
+			player.quantum.gluons.gb=player.quantum.gluons.gb.add(diffgb)
+			player.quantum.gluons.br=player.quantum.gluons.br.add(diffbr)
+		}
 		
 		setInitialDimensionPower()
 		updatePowers()

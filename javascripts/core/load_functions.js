@@ -581,16 +581,18 @@ if (player.version < 5) {
                   player.aarexModifications.newGamePlusPlusVersion = 2.1
               } else if (player.meta) player.aarexModifications.newGamePlusPlusVersion = 2
           } else player.aarexModifications.newGamePlusPlusVersion = 1
-          if (player.ep5xAutobuyer) {
+          var newAchievements=[]
+          var v2_3check=player.ep5xAutobuyer!==undefined
+          for (id=0;id<player.achievements.length;id++) {
+              r=player.achievements[id].split("r")[1]
+              newAchievements.push(r>138?"ngpp"+(r-130):player.achievements[id])
+              if (r>138) v2_3check=true
+          }
+          if (v2_3check) {
               player.aarexModifications.newGamePlusVersion = 1
               player.aarexModifications.newGamePlusPlusVersion = 2.3
               player.autoEterOptions = {epmult:player.ep5xAutobuyer}
               for (dim=1;dim<9;dim++) player.autoEterOptions["td"+dim] = player.timeDimensionAutobuyer
-              var newAchievements=[]
-              for (id=0;id<player.achievements.length;id++) {
-                  r=player.achievements[id].split("r")[1]
-                  newAchievements.push(r>138?"ngpp"+(r-130):player.achievements[id])
-              }
               player.achievements=newAchievements
               updateAchievements()
               delete player.timeDimensionAutobuyer
@@ -667,8 +669,8 @@ if (player.version < 5) {
       if (metaAchCheck||noD9AchCheck||metaBoostCheck) giveAchievement("I'm so meta")
       player.galaxyMaxBulk = false
   }
-  var quantumRestore = false
-  if ((player.quantum ? false : player.aarexModifications.newGamePlusPlusVersion > 2.9) || player.aarexModifications.newGamePlusPlusVersion < 2.901) {
+  var quantumRestore = player.aarexModifications.newGamePlusPlusVersion < 2.9 || (player.quantum ? false : player.aarexModifications.newGamePlusPlusVersion > 2.4)
+  if (quantumRestore) {
       var quantumRestore = true
       player.quantum = {
           times: 0,
@@ -703,9 +705,9 @@ if (player.version < 5) {
       player.aarexModifications.newGamePlusPlusVersion = 2.901
   }
   if (player.aarexModifications.newGame3PlusVersion < 1.01) player.aarexModifications.dbPower = new Decimal(getDimensionBoostPower())
-  if (player.aarexModifications.newGame3PlusVersion < 1.02) player.masterystudies = []
+  if ((player.aarexModifications.newGame3PlusVersion && !player.masterystudies) || player.aarexModifications.newGame3PlusVersion < 1.02) player.masterystudies = []
   if (player.aarexModifications.newGame3PlusVersion < 1.21) player.replicanti.chanceCost = Decimal.pow(1e15, player.replicanti.chance * 100 + 9)
-  if (player.aarexModifications.newGame3PlusVersion < 1.5) {
+  if ((quantumRestore && player.masterystudies) || player.aarexModifications.newGame3PlusVersion < 1.5) {
       player.quantum.usedQuarks = {
           r: 0,
           g: 0,
@@ -717,7 +719,7 @@ if (player.version < 5) {
           b: 0
       }
   }
-  if (player.aarexModifications.newGame3PlusVersion < 1.51) {
+  if ((quantumRestore && player.masterystudies) || player.aarexModifications.newGame3PlusVersion < 1.51) {
       player.quantum.gluons = {
           rg: 0,
           gb: 0,
@@ -828,7 +830,6 @@ if (player.version < 5) {
   document.getElementById("quantumConfirmBtn").textContent = "Quantum confirmation: O" + (player.aarexModifications.quantumConf ? "N" : "FF")
 
   document.getElementById("quantumtabbtn").style.display = quantumed ? "" : "none"
-  updateColorCharge()
 
   document.getElementById("chartDurationInput").value = player.options.chart.duration;
   document.getElementById("chartUpdateRateInput").value = player.options.chart.updateRate;
@@ -896,6 +897,7 @@ if (player.version < 5) {
   updateEternityChallenges();
   updateDilationUpgradeCosts()
   updateLastTenQuantums()
+  updateColorCharge()
   updatePowers()
   var detectNGPStart = player.lastUpdate == 1531944153054
   if (player.aarexModifications.offlineProgress) {
@@ -1159,8 +1161,9 @@ function transformSaveToDecimal() {
           player.meta[i].cost = new Decimal(player.meta[i].cost);
       }
       if (player.quantum) {
-          for (i=0;i<10;i++) player.quantum.last10[i][1] = new Decimal(player.quantum.last10[i][1])
+          if (player.quantum.last10) for (i=0;i<10;i++) player.quantum.last10[i][1] = new Decimal(player.quantum.last10[i][1])
           player.quantum.quarks = new Decimal(player.quantum.quarks);
+          if (!player.masterystudies) player.quantum.gluons = (player.quantum.gluons ? player.quantum.gluons.rg !== null : true) ? new Decimal(0) : new Decimal(player.quantum.gluons);
           player.quantum.neutronstar.quarks = new Decimal(player.quantum.neutronstar.quarks);
           player.quantum.neutronstar.metaAntimatter = new Decimal(player.quantum.neutronstar.metaAntimatter);
           player.quantum.neutronstar.dilatedTime = new Decimal(player.quantum.neutronstar.dilatedTime);
@@ -1216,7 +1219,7 @@ function transformSaveToDecimal() {
           player.quantum.colorPowers.g = new Decimal(player.quantum.colorPowers.g)
           player.quantum.colorPowers.b = new Decimal(player.quantum.colorPowers.b)
       }
-      if (player.aarexModifications.newGame3PlusVersion > 1.5) {
+      if (player.quantum ? player.aarexModifications.newGame3PlusVersion > 1.5 : false) {
           player.quantum.gluons.rg = new Decimal(player.quantum.gluons.rg)
           player.quantum.gluons.gb = new Decimal(player.quantum.gluons.gb)
           player.quantum.gluons.br = new Decimal(player.quantum.gluons.br)
