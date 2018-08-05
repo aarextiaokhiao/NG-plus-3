@@ -1216,7 +1216,7 @@ function transformSaveToDecimal() {
           player.quantum.colorPowers.g = new Decimal(player.quantum.colorPowers.g)
           player.quantum.colorPowers.b = new Decimal(player.quantum.colorPowers.b)
       }
-      if (player.quantum ? player.quantum.gluons : false) {
+      if (player.aarexModifications.newGame3PlusVersion > 1.5) {
           player.quantum.gluons.rg = new Decimal(player.quantum.gluons.rg)
           player.quantum.gluons.gb = new Decimal(player.quantum.gluons.gb)
           player.quantum.gluons.br = new Decimal(player.quantum.gluons.br)
