@@ -227,6 +227,7 @@ function onLoad() {
 
   IPminpeak = new Decimal(0)
   EPminpeak = new Decimal(0)
+  QKminpeak = new Decimal(0)
   if (player.peakSpent) player.peakSpent = 0
 
   if (typeof player.autobuyers[9].bulk !== "number") {
@@ -604,10 +605,25 @@ if (player.version < 5) {
           }
           player.aarexModifications.newGamePlusVersion = 1
           if (confirm("Do you want to migrate your NG++ save into new NG+++ mode?")) {
-              player.aarexModifications.newGame3PlusVersion = 1.26
+              player.aarexModifications.newGame3PlusVersion = 1.51
               player.dbPower = 1
               player.peakSpent = 0
               player.masterystudies = []
+              player.quantum.usedQuarks = {
+                  r: 0,
+                  g: 0,
+                  b: 0
+              }
+              player.quantum.colorPowers = {
+                  r: 0,
+                  g: 0,
+                  b: 0
+              }
+              player.quantum.gluons = {
+                  rg: 0,
+                  gb: 0,
+                  br: 0
+              }
           }
           player.dilation.upgrades=migratedUpgrades
           resetDilationGalaxies()
@@ -651,7 +667,9 @@ if (player.version < 5) {
       if (metaAchCheck||noD9AchCheck||metaBoostCheck) giveAchievement("I'm so meta")
       player.galaxyMaxBulk = false
   }
-  if (player.aarexModifications.newGamePlusPlusVersion < 2.9) {
+  var quantumRestore = false
+  if ((player.quantum ? false : player.aarexModifications.newGamePlusPlusVersion > 2.9) || player.aarexModifications.newGamePlusPlusVersion < 2.901) {
+      var quantumRestore = true
       player.quantum = {
           times: 0,
           quarks: 0,
@@ -673,13 +691,15 @@ if (player.version < 5) {
           },
           upgrades: []
       }
-      player.aarexModifications.quantumConf = true
-      $.notify('NG++ was updated to include quantum reset.', 'info')
   }
-  if (player.aarexModifications.newGamePlusPlusVersion < 2.901) {
+  if (quantumRestore || player.aarexModifications.newGamePlusPlusVersion < 2.901) {
       player.quantum.time = player.totalTimePlayed
       player.quantum.best = 9999999999
       player.quantum.last10 = [[600*60*24*31, 0], [600*60*24*31, 0], [600*60*24*31, 0], [600*60*24*31, 0], [600*60*24*31, 0], [600*60*24*31, 0], [600*60*24*31, 0], [600*60*24*31, 0], [600*60*24*31, 0], [600*60*24*31, 0]]
+  }
+  if (player.aarexModifications.newGamePlusPlusVersion < 2.901) {
+      player.aarexModifications.quantumConf = true
+      $.notify('NG++ was updated to include quantum reset.', 'info')
       player.aarexModifications.newGamePlusPlusVersion = 2.901
   }
   if (player.aarexModifications.newGame3PlusVersion < 1.01) player.aarexModifications.dbPower = new Decimal(getDimensionBoostPower())
@@ -696,12 +716,14 @@ if (player.version < 5) {
           g: 0,
           b: 0
       }
+  }
+  if (player.aarexModifications.newGame3PlusVersion < 1.51) {
       player.quantum.gluons = {
           rg: 0,
           gb: 0,
           br: 0
       }
-      player.aarexModifications.newGame3PlusVersion=1.5
+      player.aarexModifications.newGame3PlusVersion=1.51
   }
   if (player.aarexModifications.newGame3PlusVersion==undefined) {
       colorBoosts={
@@ -734,7 +756,13 @@ if (player.version < 5) {
           var name = TIER_NAMES[d]
           player[name+"Cost"] = Decimal.div(player[name+"Cost"], 10)
 	  }
-      player.aarexModifications.newGameMinusMinusVersion = 1.21
+  }
+  if (player.aarexModifications.newGameMinusMinusVersion < 1.22) {
+      if (player.galacticSacrifice.upgrades.includes(11)) for (d=1;d<8;d++) {
+          var name = TIER_NAMES[d]
+          player[name+"Cost"] = Decimal.div(player[name+"Cost"], 10)
+	  }
+      player.aarexModifications.newGameMinusMinusVersion = 1.22
   }
 
   ipMultPower=2
@@ -1130,13 +1158,13 @@ function transformSaveToDecimal() {
           player.meta[i].amount = new Decimal(player.meta[i].amount);
           player.meta[i].cost = new Decimal(player.meta[i].cost);
       }
-  }
-  if (player.quantum == undefined ? false : player.quantum.last10 !== undefined) {
-      for (i=0;i<10;i++) player.quantum.last10[i][1] = new Decimal(player.quantum.last10[i][1])
-      player.quantum.quarks = new Decimal(player.quantum.quarks);
-      player.quantum.neutronstar.quarks = new Decimal(player.quantum.neutronstar.quarks);
-      player.quantum.neutronstar.metaAntimatter = new Decimal(player.quantum.neutronstar.metaAntimatter);
-      player.quantum.neutronstar.dilatedTime = new Decimal(player.quantum.neutronstar.dilatedTime);
+      if (player.quantum) {
+          for (i=0;i<10;i++) player.quantum.last10[i][1] = new Decimal(player.quantum.last10[i][1])
+          player.quantum.quarks = new Decimal(player.quantum.quarks);
+          player.quantum.neutronstar.quarks = new Decimal(player.quantum.neutronstar.quarks);
+          player.quantum.neutronstar.metaAntimatter = new Decimal(player.quantum.neutronstar.metaAntimatter);
+          player.quantum.neutronstar.dilatedTime = new Decimal(player.quantum.neutronstar.dilatedTime);
+      }
   }
   player.timeShards = new Decimal(player.timeShards)
   player.eternityPoints = new Decimal(player.eternityPoints)
@@ -1180,13 +1208,15 @@ function transformSaveToDecimal() {
 
   if (player.masterystudies) {
       player.dbPower = new Decimal(player.dbPower)
-      if (player.quantum.usedQuarks) {
+      if (player.quantum ? player.quantum.usedQuarks : false) {
           player.quantum.usedQuarks.r = new Decimal(player.quantum.usedQuarks.r)
           player.quantum.usedQuarks.g = new Decimal(player.quantum.usedQuarks.g)
           player.quantum.usedQuarks.b = new Decimal(player.quantum.usedQuarks.b)
           player.quantum.colorPowers.r = new Decimal(player.quantum.colorPowers.r)
           player.quantum.colorPowers.g = new Decimal(player.quantum.colorPowers.g)
           player.quantum.colorPowers.b = new Decimal(player.quantum.colorPowers.b)
+      }
+      if (player.quantum ? player.quantum.gluons : false) {
           player.quantum.gluons.rg = new Decimal(player.quantum.gluons.rg)
           player.quantum.gluons.gb = new Decimal(player.quantum.gluons.gb)
           player.quantum.gluons.br = new Decimal(player.quantum.gluons.br)

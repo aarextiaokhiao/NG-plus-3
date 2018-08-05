@@ -194,7 +194,7 @@ function updateMetaDimensions () {
 		document.getElementById("metaSoftReset").className = 'unavailablebtn';
 	}
     var QS = quarkGain()
-    var req = Decimal.pow(Number.MAX_VALUE,player.masterystudies?1.6:1)
+    var req = Decimal.pow(Number.MAX_VALUE,player.masterystudies?1.5:1)
     document.getElementById("quantumResetLabel").textContent = 'Quantum: requires '+shorten(req)+' meta-antimatter'
     document.getElementById("quantum").textContent = 'Lose all your previous progress, but '+(player.quantum.times<1||player.meta.antimatter.lt(req)?'get a boost':'gain '+shortenDimensions(QS)+' quark'+(QS.lt(2)?'':'s')+' for boosts')
 	document.getElementById("quantum").className = player.meta.antimatter.lt(req) ? 'unavailablebtn' : 'storebtn'
@@ -288,7 +288,8 @@ function quantum() {
 		showChallengesTab("challenges")
 		showInfTab("preinf")
 		showEternityTab("timestudies")
-		showTab("dimensions")
+		if (document.getElementById("quantumtab").style.display=="none") showTab("dimensions")
+		else document.getElementById("TTbuttons").style.display="none"
 		if (!quantumed) {
 			quantumed=true
 			document.getElementById("quantumtabbtn").style.display=""
@@ -304,7 +305,15 @@ function quantum() {
 		player.quantum.times++
 		player.quantum.quarks = player.quantum.quarks.plus(quarkGain());
 		document.getElementById("quarks").innerHTML="You have <b id='QK'>"+shortenDimensions(player.quantum.quarks)+"</b> quark"+(player.quantum.quarks.lt(2)?".":"s.")
-		player.quantum.gluons = 0;
+		if (player.masterystudies) {
+			if (!player.quantum.gluons.rg) {
+				player.quantum.gluons = {
+					rg: new Decimal(0),
+					gb: new Decimal(0),
+					br: new Decimal(0)
+				}
+			}
+		} else player.quantum.gluons = 0;
 		player = {
 			money: new Decimal(10),
 			tickSpeedCost: new Decimal(1000),
@@ -627,18 +636,15 @@ function quantum() {
 			quantum: player.quantum,
 			aarexModifications: player.aarexModifications
 		};
-		var diff=player.quantum.usedQuarks.r.min(player.quantum.usedQuarks.g)
-		//player.quantum.gluons.rg=player.quantum.gluons.rg.add(diff)
-		player.quantum.usedQuarks.r=player.quantum.usedQuarks.r.sub(diff)
-		
-		var diff=player.quantum.usedQuarks.g.min(player.quantum.usedQuarks.b)
-		//player.quantum.gluons.gb=player.quantum.gluons.gb.add(diff)
-		player.quantum.usedQuarks.g=player.quantum.usedQuarks.g.sub(diff)
-		
-		var diff=player.quantum.usedQuarks.b.min(player.quantum.usedQuarks.r)
-		//player.quantum.gluons.br=player.quantum.gluons.br.add(diff)
-		player.quantum.usedQuarks.b=player.quantum.usedQuarks.b.sub(diff)
-		//Gluons are coming soon...
+		var diffrg=player.quantum.usedQuarks.r.min(player.quantum.usedQuarks.g)
+		var diffgb=player.quantum.usedQuarks.g.min(player.quantum.usedQuarks.b)
+		var diffbr=player.quantum.usedQuarks.b.min(player.quantum.usedQuarks.r)
+		player.quantum.usedQuarks.r=player.quantum.usedQuarks.r.sub(diffrg)
+		player.quantum.usedQuarks.g=player.quantum.usedQuarks.g.sub(diffgb)
+		player.quantum.usedQuarks.b=player.quantum.usedQuarks.b.sub(diffbr)
+		player.quantum.gluons.rg=player.quantum.gluons.rg.add(diffrg)
+		player.quantum.gluons.gb=player.quantum.gluons.gb.add(diffgb)
+		player.quantum.gluons.br=player.quantum.gluons.br.add(diffbr)
 		
 		setInitialDimensionPower()
 		updatePowers()
@@ -719,7 +725,7 @@ function quantum() {
 	},1000)
 }
 let quarkGain = function () {
-	if (player.masterystudies) return new Decimal(1)
+	if (player.masterystudies) return Decimal.pow(10, player.meta.antimatter.log10() / 308 - 1.3).times(quarkMult()).floor()
 	return Decimal.pow(10, player.meta.antimatter.log(10) / Math.log10(Number.MAX_VALUE) - 1).times(quarkMult()).floor();
 }
 
@@ -733,7 +739,7 @@ let quarkMult = function () {
 
 function toggleQuantumConf() {
     player.aarexModifications.quantumConf = !player.aarexModifications.quantumConf
-    document.getElementById("quantumConfirmBtn").textContent = "Dilation confirmation: O" + (player.aarexModifications.quantumConf ? "N" : "FF")
+    document.getElementById("quantumConfirmBtn").textContent = "Quantum confirmation: O" + (player.aarexModifications.quantumConf ? "N" : "FF")
 }
 
 var averageQk = new Decimal(0)

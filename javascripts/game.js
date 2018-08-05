@@ -366,12 +366,12 @@ function updateNewPlayer(reseted) {
 		}
     }
     if (modesChosen.ngmm) {
-        player.aarexModifications.newGameMinusMinusVersion = 1.21
+        player.aarexModifications.newGameMinusMinusVersion = 1.22
         player.galacticSacrifice = {}
         player.galacticSacrifice = resetGalacticSacrifice()
     }
     if (modesChosen.ngpp > 1) {
-        player.aarexModifications.newGame3PlusVersion = 1.5
+        player.aarexModifications.newGame3PlusVersion = 1.51
         player.dbPower = 1
         player.peakSpent = 0
         player.masterystudies = []
@@ -2175,7 +2175,7 @@ function galaxyReset() {
     }
     if (player.galacticSacrifice) if (player.galacticSacrifice.upgrades.includes(11)) for (d=1;d<8;d++) {
         var name = TIER_NAMES[d]
-        player[name+"Cost"] = player[name+"Cost"].div(10)
+        player[name+"Cost"] = player[name+"Cost"].div(100)
     }
     if (player.resets == 0 && player.currentChallenge == "") {
         if (player.infinityUpgrades.includes("skipReset1")) player.resets++;
@@ -3483,7 +3483,7 @@ document.getElementById("bigcrunch").onclick = function () {
         };
         if (player.galacticSacrifice) if (player.galacticSacrifice.upgrades.includes(11)) for (d=1;d<8;d++) {
             var name = TIER_NAMES[d]
-            player[name+"Cost"] = player[name+"Cost"].div(10)
+            player[name+"Cost"] = player[name+"Cost"].div(100)
         }
         if (player.bestInfinityTime <= 0.01) giveAchievement("Less than or equal to 0.001");
 
@@ -5053,7 +5053,7 @@ setInterval(function() {
 
     document.getElementById("eternitybtn").style.display = (player.infinityPoints.gte(player.eternityChallGoal) && (player.infDimensionsUnlocked[7] || player.eternities > 24)) ? "inline-block" : "none"
 
-    var req = Decimal.pow(Number.MAX_VALUE,player.masterystudies?1.6:1)
+    var req = Decimal.pow(Number.MAX_VALUE,player.masterystudies?1.5:1)
     var preQuantumEnd = quantumed || (player.meta ? player.meta.bestAntimatter.gte(req) : false)
     document.getElementById("bigcrunch").parentElement.style.top = preQuantumEnd ? "139px" : "19px"
     document.getElementById("quantumBlock").style.display = preQuantumEnd ? "" : "none"
@@ -5512,9 +5512,8 @@ function gameLoop(diff) {
 
     }
     if (player.replicanti.amount !== 0) replicantiTicks += player.options.updateRate
-    extraReplGalaxies = Math.floor(player.timestudy.studies.includes(225) ? player.replicanti.amount.e / 1e3 : player.timestudy.studies.includes(226) ? player.replicanti.gal / 15 : 0)
+    extraReplGalaxies = Math.floor((player.timestudy.studies.includes(225) ? player.replicanti.amount.e / 1e3 : player.timestudy.studies.includes(226) ? player.replicanti.gal / 15 : 0) * colorBoosts.g)
     if (extraReplGalaxies > 99) extraReplGalaxies = Math.floor(Math.sqrt(0.25 + 2 * (extraReplGalaxies - 99)) + 98.5)
-
 
     if (current == Decimal.ln(Number.MAX_VALUE) && player.thisInfinityTime < 600*30) giveAchievement("Is this safe?");
     if (player.replicanti.galaxies >= 10 && player.thisInfinityTime < 150) giveAchievement("The swarm");
@@ -5538,8 +5537,8 @@ function gameLoop(diff) {
     }
     if (player.masterystudies) {
         player.quantum.colorPowers[colorCharge.color]=player.quantum.colorPowers[colorCharge.color].add(colorCharge.charge.times(diff/10))
-        colorBoosts.r=Math.sqrt(player.quantum.colorPowers.r.add(1).log10())/15+1
-        colorBoosts.g=1
+        colorBoosts.r=Math.sqrt(player.quantum.colorPowers.r.add(1).log10())/10+1
+        colorBoosts.g=Math.pow(player.quantum.colorPowers.g.add(1).log10()*3+1,2)
         colorBoosts.b=1
     }
 
@@ -5553,10 +5552,17 @@ function gameLoop(diff) {
     document.getElementById("replicantimult").textContent = shorten(replmult.max(1))
 
     var currentEPmin = gainedEternityPoints().dividedBy(player.thisEternity/600)
-    if (currentEPmin.gt(EPminpeak) && player.infinityPoints.gte(Number.MAX_VALUE)) EPminpeak = currentEPmin
-    else if (player.peakSpent !== undefined) player.peakSpent += diff
+    if (currentEPmin.gt(EPminpeak) && player.infinityPoints.gte(Number.MAX_VALUE)) {
+        EPminpeak = currentEPmin
+        if (player.peakSpent) player.peakSpent = 0
+    } else if (player.peakSpent) player.peakSpent += diff
+
+    if (quantumed) {
+        var currentQKmin = quarkGain().dividedBy(player.quantum.time/600)
+        if (currentQKmin.gt(QKminpeak) && player.meta.antimatter.gte(Decimal.pow(Number.MAX_VALUE,player.masterystudies?1.6:1))) QKminpeak = currentQKmin
+    }
     document.getElementById("eternitybtn").innerHTML = (player.dilation.active||gainedEternityPoints().lt(1e6)||player.currentEternityChall!==""||(player.options.theme=="Aarex's Modifications"&&player.options.notation!="Morse code") ? "<b>" + (player.currentEternityChall!=="" ? "Other challenges await..." : player.eternities>0 ? "" : "Other times await...") + " I need to become Eternal.</b><br>" : "") + (player.eternities > 0 && (player.currentEternityChall==""||player.options.theme=="Aarex's Modifications") ? "Gain <b>"+shortenDimensions(gainedEternityPoints())+"</b> Eternity points." + ((player.dilation.active||EPminpeak.gte("1e30003"))&&(player.options.theme!="Aarex's Modifications"||player.options.notation=='Morse code') ? "" : "<br>" + shortenDimensions(currentEPmin)+" EP/min") + ((player.dilation.active&&player.options.theme!="Aarex's Modifications")||player.options.notation=='Morse code' ? "" : "<br>Peaked at "+shortenDimensions(EPminpeak)+" EP/min") + (player.dilation.active ? "<br>+" + shortenMoney(Math.max(getDilGain() - player.dilation.totalTachyonParticles, 0)) +" Tachyon particles." : "") : "")
-    document.getElementById("quantumbtn").innerHTML = quantumed ? ("I need to go quantum.<br>Gain "+shortenDimensions(quarkGain())+" quark"+(quarkGain().eq(1)?".":"s.")) : "My computer is not powerful enough... I need to go quantum."
+    document.getElementById("quantumbtn").innerHTML = quantumed ? ("I need to go quantum.<br>Gain "+shortenDimensions(quarkGain())+" quark"+(quarkGain().eq(1)?"":"s")+".<br>"+shortenMoney(QKminpeak)+" QK/min<br>Peaked at "+shortenMoney(currentQKmin)+" QK/min") : "My computer is not powerful enough... I need to go quantum."
     updateMoney();
     updateCoinPerSec();
     updateDimensions()

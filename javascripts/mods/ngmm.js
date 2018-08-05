@@ -51,7 +51,7 @@ function buyGalaxyUpgrade(i) {
 	player.galacticSacrifice.galaxyPoints = player.galacticSacrifice.galaxyPoints.sub(galUpgradeCosts[i])
 	if (i==11) for (d=1;d<8;d++) {
 		var name = TIER_NAMES[d]
-		player[name+"Cost"] = player[name+"Cost"].div(10)
+		player[name+"Cost"] = player[name+"Cost"].div(100)
 	}
 }
 
