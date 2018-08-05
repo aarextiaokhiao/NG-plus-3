@@ -541,7 +541,7 @@ function quantum() {
 				epcost: new Decimal(1),
 				studies: [],
 			},
-			eternityChalls: headstart ? player.eternityChalls : {},
+			eternityChalls: {},
 			eternityChallGoal: new Decimal(Number.MAX_VALUE),
 			currentEternityChall: "",
 			eternityChallUnlocked: 0,
@@ -636,6 +636,7 @@ function quantum() {
 			quantum: player.quantum,
 			aarexModifications: player.aarexModifications
 		};
+		if (headstart) for (ec=1;ec<13;ec++) player.eternityChalls['eterc'+ec]=5
 		if (player.masterystudies) {
 			var diffrg=player.quantum.usedQuarks.r.min(player.quantum.usedQuarks.g)
 			var diffgb=player.quantum.usedQuarks.g.min(player.quantum.usedQuarks.b)
@@ -700,7 +701,10 @@ function quantum() {
 		}
 		document.getElementById("break").textContent = "BREAK INFINITY"
 		document.getElementById("abletobreak").style.display = "block"
-		player.replicanti.galaxybuyer = false
+		if (!headstart) {
+			document.getElementById("replicantiresettoggle").style.display = "inline-block"
+			delete player.replicanti.galaxybuyer
+		} else document.getElementById("replicantiresettoggle").style.display = "none"
 		document.getElementById("infinityPoints1").innerHTML = "You have <span class=\"IPAmount1\">"+shortenDimensions(player.infinityPoints)+"</span> Infinity points."
 		document.getElementById("infinityPoints2").innerHTML = "You have <span class=\"IPAmount2\">"+shortenDimensions(player.infinityPoints)+"</span> Infinity points."
 		document.getElementById("replicantireset").innerHTML = "Reset replicanti amount, but get a free galaxy<br>"+player.replicanti.galaxies + " replicated galaxies created."
