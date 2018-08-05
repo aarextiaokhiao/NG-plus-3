@@ -2,7 +2,7 @@
 
 
 function DimensionDescription(tier) {
-  if (tier == 8 && (ECTimesCompleted("eterc7") === 0 || player.currentEternityChall === "eterc12") && player.currentEternityChall !== "eterc7") return getFullExpansion(player["infinityDimension"+tier].amount.round());
+  if (tier == 8 && (ECTimesCompleted("eterc7") === 0 || player.currentEternityChall === "eterc12") && player.currentEternityChall !== "eterc7") return getFullExpansion(Math.round(player["infinityDimension"+tier].amount.toNumber()));
   else return shortenDimensions(player['infinityDimension'+tier].amount)+' (+' + formatValue(player.options.notation, DimensionRateOfChange(tier), 2, 2) + '%/s)';
 }
 

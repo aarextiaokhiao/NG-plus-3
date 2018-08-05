@@ -371,10 +371,25 @@ function updateNewPlayer(reseted) {
         player.galacticSacrifice = resetGalacticSacrifice()
     }
     if (modesChosen.ngpp > 1) {
-        player.aarexModifications.newGame3PlusVersion = 1.26
+        player.aarexModifications.newGame3PlusVersion = 1.5
         player.dbPower = 1
         player.peakSpent = 0
         player.masterystudies = []
+        player.quantum.usedQuarks = {
+            r: 0,
+            g: 0,
+            b: 0
+        }
+        player.quantum.colorPowers = {
+            r: 0,
+            g: 0,
+            b: 0
+        }
+        player.quantum.gluons = {
+            rg: 0,
+            gb: 0,
+            br: 0
+        }
     }
 }
 updateNewPlayer()
@@ -713,6 +728,10 @@ let kongEPMult = 1
 
 
 function showTab(tabName) {
+    if (tabName=='quantum' && !player.masterystudies) {
+        alert("Coming soon.")
+        return
+    }
     //iterate over all elements in div_tab class. Hide everything that's not tabName and show tabName
     var tabs = document.getElementsByClassName('tab');
     var tab;
@@ -905,6 +924,7 @@ function updateDimensions() {
     }
 
     if (document.getElementById("dimensions").style.display == "block" && document.getElementById("metadimensions").style.display == "block") updateMetaDimensions()
+    if (document.getElementById("quantumtab").style.display == "block") updateQuantumTabs()
 
     if (player.bestInfinityTime == 9999999999) {
         document.getElementById("bestInfinity").textContent = ""
@@ -3672,7 +3692,7 @@ function eternity(force, auto) {
             eightPow: new Decimal(1),
             sacrificed: new Decimal(0),
             achievements: player.achievements,
-            challenges: (player.eternities > 0 && player.achievements.includes("r133")) ? ["challenge1", "challenge2", "challenge3", "challenge4", "challenge5", "challenge6", "challenge7", "challenge8", "challenge9", "challenge10", "challenge11", "challenge12", "postc1", "postc2", "postc3", "postc4", "postc5", "postc6", "postc7", "postc8"] : (player.eternities > 0) ? ["challenge1", "challenge2", "challenge3", "challenge4", "challenge5", "challenge6", "challenge7", "challenge8", "challenge9", "challenge10", "challenge11", "challenge12"] : [],
+            challenges: challengesCompletedOnEternity(),
             currentChallenge: "",
             infinityUpgrades: player.infinityUpgrades,
             infinityPoints: new Decimal(0),
@@ -3934,6 +3954,13 @@ function eternity(force, auto) {
         doAutoEterTick()
         if (player.masterystudies&&player.dilation.upgrades.includes("ngpp3")&&player.eternities>=1e9) player.dbPower=new Decimal(1)
     }
+}
+
+function challengesCompletedOnEternity() {
+	var array = []
+	if (player.eternities>0) for (i=1;i<13;i++) array.push("challenge"+i)
+	if (player.achievements.includes("r133")) for (i=1;i<9;i++) array.push("postc"+i)
+	return array
 }
 
 function gainEternitiedStat() { return (player.dilation.upgrades.includes('ngpp2') ? Math.floor(Decimal.pow(player.dilation.dilatedTime, .1).toNumber()): 1); }
@@ -4655,6 +4682,7 @@ function startEternityChallenge(name, startgoal, goalIncrease) {
             masterystudies: player.masterystudies,
             autoEterOptions: player.autoEterOptions,
             galaxyMaxBulk: player.galaxyMaxBulk,
+            quantum: player.quantum,
             aarexModifications: player.aarexModifications
         };
         player.dilation.active = false
@@ -5025,6 +5053,13 @@ setInterval(function() {
 
     document.getElementById("eternitybtn").style.display = (player.infinityPoints.gte(player.eternityChallGoal) && (player.infDimensionsUnlocked[7] || player.eternities > 24)) ? "inline-block" : "none"
 
+    var req = Decimal.pow(Number.MAX_VALUE,player.masterystudies?1.6:1)
+    var preQuantumEnd = quantumed || (player.meta ? player.meta.bestAntimatter.gte(req) : false)
+    document.getElementById("bigcrunch").parentElement.style.top = preQuantumEnd ? "139px" : "19px"
+    document.getElementById("quantumBlock").style.display = preQuantumEnd ? "" : "none"
+    document.getElementById("quantumbtn").style.display = (player.meta ? player.meta.antimatter.gte(req) : false) ? "" : "none"
+    document.getElementById("quarks").style.display = quantumed ? "" : "none"
+    if (quantumed) document.getElementById("quarks").innerHTML = "You have <b id='QK'>"+shortenDimensions(player.quantum.quarks)+"</b> quark"+(player.quantum.quarks.eq(1)?".":"s.")
 
     for (var i=1; i <=8; i++) {
         document.getElementById("postc"+i+"goal").textContent = "Goal: "+shortenCosts(goals[i-1])
@@ -5501,6 +5536,12 @@ function gameLoop(diff) {
             if (player.autoCrunchMode == "amount") document.getElementById("priority12").value = formatValue("Scientific", player.autobuyers[11].priority, 2, 0);
         }
     }
+    if (player.masterystudies) {
+        player.quantum.colorPowers[colorCharge.color]=player.quantum.colorPowers[colorCharge.color].add(colorCharge.charge.times(diff/10))
+        colorBoosts.r=Math.sqrt(player.quantum.colorPowers.r.add(1).log10())/15+1
+        colorBoosts.g=1
+        colorBoosts.b=1
+    }
 
     var estimate = Math.max((Math.log(Number.MAX_VALUE) - current) / est, 0)
     document.getElementById("replicantiapprox").textContent ="Approximately "+ timeDisplay(estimate*10) + " Until Infinite Replicanti"
@@ -5515,6 +5556,7 @@ function gameLoop(diff) {
     if (currentEPmin.gt(EPminpeak) && player.infinityPoints.gte(Number.MAX_VALUE)) EPminpeak = currentEPmin
     else if (player.peakSpent !== undefined) player.peakSpent += diff
     document.getElementById("eternitybtn").innerHTML = (player.dilation.active||gainedEternityPoints().lt(1e6)||player.currentEternityChall!==""||(player.options.theme=="Aarex's Modifications"&&player.options.notation!="Morse code") ? "<b>" + (player.currentEternityChall!=="" ? "Other challenges await..." : player.eternities>0 ? "" : "Other times await...") + " I need to become Eternal.</b><br>" : "") + (player.eternities > 0 && (player.currentEternityChall==""||player.options.theme=="Aarex's Modifications") ? "Gain <b>"+shortenDimensions(gainedEternityPoints())+"</b> Eternity points." + ((player.dilation.active||EPminpeak.gte("1e30003"))&&(player.options.theme!="Aarex's Modifications"||player.options.notation=='Morse code') ? "" : "<br>" + shortenDimensions(currentEPmin)+" EP/min") + ((player.dilation.active&&player.options.theme!="Aarex's Modifications")||player.options.notation=='Morse code' ? "" : "<br>Peaked at "+shortenDimensions(EPminpeak)+" EP/min") + (player.dilation.active ? "<br>+" + shortenMoney(Math.max(getDilGain() - player.dilation.totalTachyonParticles, 0)) +" Tachyon particles." : "") : "")
+    document.getElementById("quantumbtn").innerHTML = quantumed ? ("I need to go quantum.<br>Gain "+shortenDimensions(quarkGain())+" quark"+(quarkGain().eq(1)?".":"s.")) : "My computer is not powerful enough... I need to go quantum."
     updateMoney();
     updateCoinPerSec();
     updateDimensions()
@@ -5798,7 +5840,7 @@ function gameLoop(diff) {
         var gepLog = gainedEternityPoints().log2()
         var goal = Math.pow(2,Math.ceil(Math.log10(gepLog) / Math.log10(2)))
         if (goal > 1048576) {
-			var percentage = Math.min(player.meta.antimatter.log(Number.MAX_VALUE) * 100, 100).toFixed(2) + "%"
+			var percentage = Math.min(player.meta.antimatter.log(Number.MAX_VALUE) / (player.masterystudies?1.6:1) * 100, 100).toFixed(2) + "%"
 			document.getElementById("progressbar").style.width = percentage
 			document.getElementById("progresspercent").textContent = percentage
 			document.getElementById("progresspercent").setAttribute('ach-tooltip','Percentage to quantum')
@@ -6339,6 +6381,7 @@ window.onload = function() {
     showDimTab('antimatterdimensions')
     showChallengesTab('challenges')
     showEternityTab('timestudies', true)
+    showQuantumTab('uquarks')
     initiateMetaSave()
     migrateOldSaves()
     localStorage.setItem('AD_aarexModifications', btoa(JSON.stringify(metaSave)))

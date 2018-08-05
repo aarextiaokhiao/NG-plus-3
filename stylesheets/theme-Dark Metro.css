@@ -121,6 +121,14 @@ input {
     background: white !important;
 }
 
+.quantumbtn {
+    background: #0a640a !important;
+}
+
+.quantumbtn:hover {
+    background: #32c832 !important;
+}
+
 .eternitytabbtn {
     color: #673AB7 !important;
     border: 1px solid #673AB7 !important;

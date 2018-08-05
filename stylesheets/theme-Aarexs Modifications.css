@@ -347,20 +347,18 @@ strong { color: #0072e5 }
 #metaAntimatterAmount, #metaAntimatterBest, #metaAntimatterEffect {
     color: #00e5e5 !important
 }
-#quantum.storebtn, #quantumtabbtn, #pastquantums {
-    border-color: #009900 !important;
+#quantum.storebtn, .quantumbtn, #pastquantums {
+    border-color: #009900 !important
 }
-#quantum.storebtn:hover, #quantumtabbtn:hover, #pastquantums:hover {
+#quantum.storebtn:hover, .quantumbtn:hover, #pastquantums:hover {
     background-color: #009900 !important
 }
-.metachallengestudy {
-	border-color: #006666 !important;
-    animation: none
+#QK {
+    color: #009900 !important
 }
-.metachallengestudy:hover {
-	background-color: #006666 !important;
-    animation: none
-}
+.red { color: #e50000 }
+.green { color: #00e500 }
+.blue { color: #0000e5 }
 .notifyjs-bootstrap-info {
     background-color: #0072e5;
     font-family:'Inconsolata', monospace;

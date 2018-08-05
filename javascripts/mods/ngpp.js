@@ -194,9 +194,10 @@ function updateMetaDimensions () {
 		document.getElementById("metaSoftReset").className = 'unavailablebtn';
 	}
     var QS = quarkGain()
-    document.getElementById("quantumResetLabel").textContent = 'Quantum: requires '+shorten(Number.MAX_VALUE)+' meta-antimatter'
-    document.getElementById("quantum").textContent = 'Lose all your previous progress, but '+(player.quantum.times<1||player.meta.antimatter.lt(Number.MAX_VALUE)?'get a boost':'gain'+shortenDimensions(QS)+' quark'+(QS.lt(2)?'':'s')+' for boosts')
-	document.getElementById("quantum").className = player.meta.antimatter.lt(Number.MAX_VALUE) ? 'unavailablebtn' : 'storebtn'
+    var req = Decimal.pow(Number.MAX_VALUE,player.masterystudies?1.6:1)
+    document.getElementById("quantumResetLabel").textContent = 'Quantum: requires '+shorten(req)+' meta-antimatter'
+    document.getElementById("quantum").textContent = 'Lose all your previous progress, but '+(player.quantum.times<1||player.meta.antimatter.lt(req)?'get a boost':'gain '+shortenDimensions(QS)+' quark'+(QS.lt(2)?'':'s')+' for boosts')
+	document.getElementById("quantum").className = player.meta.antimatter.lt(req) ? 'unavailablebtn' : 'storebtn'
 }
 
 // v2.2
@@ -274,12 +275,9 @@ function replicantiGalaxyBulkModeToggle() {
 quantumed = false
 function quantum() {
 	if (player.meta.antimatter.lt(Number.MAX_VALUE)||implosionCheck) return
-	var headstart = player.aarexModifications.newGamePlusVersion > 0
-	if (player.aarexModifications.quantumConf) if (!confirm("Quantum will reset everything eternity resets, and "+(headstart?"also some other things like dilation":"everything else except your options, statistics, and achievements")+". You will gain a quark and unlock various upgrades.")) return
-	if (player.quantum.times<1) {
-		if (!confirm("Are you sure you want to do that? You will lose everything you have! This is work on progress!")) return
-		if (player.masterystudies) if (!confirm("CAUTION: YOU WILL ALSO LOSE YOUR MASTERY STUDIES, WHICH IS A FORKED FEATURE FROM NG++ TO NG+++. I RECOMMEND YOU TO NOT GOING QUANTUM TO KEEP YOUR PROGRESS. ARE YOU REALLY SURE YOU WANT TO DO THAT?!")) return
-	}
+	var headstart = player.aarexModifications.newGamePlusVersion > 0 && !player.masterystudies
+	if (player.aarexModifications.quantumConf) if (!confirm("Quantum will reset everything eternity resets, and "+(headstart?"also some other things like dilation":"also time studies, eternity challenges, dilation, "+(player.masterystudies?"meta dimensions, and mastery studies":"and meta dimensions"))+". You will gain a quark and unlock various upgrades.")) return
+	if (player.quantum.times<1) if (!confirm("Are you sure you want to do that? You will lose everything you have! "+(player.masterystudies?"":"This is work on progress!"))) return
 	implosionCheck=1
 	dev.implode()
 	setTimeout(function(){
@@ -292,9 +290,11 @@ function quantum() {
 		showEternityTab("timestudies")
 		showTab("dimensions")
 		if (!quantumed) {
-			quantumed = true
-			document.getElementById("quantumtabbtn").style.display = ""
+			quantumed=true
+			document.getElementById("quantumtabbtn").style.display=""
+			document.getElementById("quarks").style.display=""
 		}
+		document.getElementById("quantumbtn").style.display="none"
         for (var i=player.quantum.last10.length-1; i>0; i--) {
             player.quantum.last10[i] = player.quantum.last10[i-1]
         }
@@ -303,6 +303,7 @@ function quantum() {
 		player.quantum.time=0
 		player.quantum.times++
 		player.quantum.quarks = player.quantum.quarks.plus(quarkGain());
+		document.getElementById("quarks").innerHTML="You have <b id='QK'>"+shortenDimensions(player.quantum.quarks)+"</b> quark"+(player.quantum.quarks.lt(2)?".":"s.")
 		player.quantum.gluons = 0;
 		player = {
 			money: new Decimal(10),
@@ -626,6 +627,19 @@ function quantum() {
 			quantum: player.quantum,
 			aarexModifications: player.aarexModifications
 		};
+		var diff=player.quantum.usedQuarks.r.min(player.quantum.usedQuarks.g)
+		//player.quantum.gluons.rg=player.quantum.gluons.rg.add(diff)
+		player.quantum.usedQuarks.r=player.quantum.usedQuarks.r.sub(diff)
+		
+		var diff=player.quantum.usedQuarks.g.min(player.quantum.usedQuarks.b)
+		//player.quantum.gluons.gb=player.quantum.gluons.gb.add(diff)
+		player.quantum.usedQuarks.r=player.quantum.usedQuarks.r.sub(diff)
+		
+		var diff=player.quantum.usedQuarks.b.min(player.quantum.usedQuarks.r)
+		//player.quantum.gluons.br=player.quantum.gluons.br.add(diff)
+		player.quantum.usedQuarks.r=player.quantum.usedQuarks.r.sub(diff)
+		//Gluons are coming soon...
+		
 		setInitialDimensionPower()
 		updatePowers()
 		if (player.replicanti.unl) player.replicanti.amount = new Decimal(1)
@@ -699,11 +713,13 @@ function quantum() {
 		updateMasteryStudyCosts()
 		updateMasteryStudyButtons()
 		drawMasteryTree()
+		updateColorCharge()
 		Marathon2 = 0;
 		document.getElementById("quantumConfirmBtn").style.display = "inline-block"
 	},1000)
 }
 let quarkGain = function () {
+	if (player.masterystudies) return new Decimal(1)
 	return Decimal.pow(10, player.meta.antimatter.log(10) / Math.log10(Number.MAX_VALUE) - 1).times(quarkMult()).floor();
 }
 

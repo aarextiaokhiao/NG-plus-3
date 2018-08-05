@@ -685,7 +685,31 @@ if (player.version < 5) {
   if (player.aarexModifications.newGame3PlusVersion < 1.01) player.aarexModifications.dbPower = new Decimal(getDimensionBoostPower())
   if (player.aarexModifications.newGame3PlusVersion < 1.02) player.masterystudies = []
   if (player.aarexModifications.newGame3PlusVersion < 1.21) player.replicanti.chanceCost = Decimal.pow(1e15, player.replicanti.chance * 100 + 9)
-  if (player.aarexModifications.newGame3PlusVersion < 1.26) player.aarexModifications.newGame3PlusVersion = 1.26
+  if (player.aarexModifications.newGame3PlusVersion < 1.5) {
+      player.quantum.usedQuarks = {
+          r: 0,
+          g: 0,
+          b: 0
+      }
+      player.quantum.colorPowers = {
+          r: 0,
+          g: 0,
+          b: 0
+      }
+      player.quantum.gluons = {
+          rg: 0,
+          gb: 0,
+          br: 0
+      }
+      player.aarexModifications.newGame3PlusVersion=1.5
+  }
+  if (player.aarexModifications.newGame3PlusVersion==undefined) {
+      colorBoosts={
+          r:1,
+          g:1,
+          b:1
+      }
+  }
   if (player.aarexModifications.newGameMinusMinusVersion === undefined) {
       if (player.galacticSacrifice) {
           player.galacticSacrifice.time = (player.lastUpdate - player.galacticSacrifice.last) / 100
@@ -776,6 +800,7 @@ if (player.version < 5) {
   document.getElementById("quantumConfirmBtn").textContent = "Quantum confirmation: O" + (player.aarexModifications.quantumConf ? "N" : "FF")
 
   document.getElementById("quantumtabbtn").style.display = quantumed ? "" : "none"
+  updateColorCharge()
 
   document.getElementById("chartDurationInput").value = player.options.chart.duration;
   document.getElementById("chartUpdateRateInput").value = player.options.chart.updateRate;
@@ -928,6 +953,7 @@ function change_save(id) {
   showStatsTab('stats')
   showChallengesTab('challenges')
   showEternityTab('timestudies', true)
+  showQuantumTab('uquarks')
 }
 
 function rename_save(id) {
@@ -1107,7 +1133,7 @@ function transformSaveToDecimal() {
   }
   if (player.quantum == undefined ? false : player.quantum.last10 !== undefined) {
       for (i=0;i<10;i++) player.quantum.last10[i][1] = new Decimal(player.quantum.last10[i][1])
-      player.quantum.quarks = new Decimal(player.quantum.neutronstar.quarks);
+      player.quantum.quarks = new Decimal(player.quantum.quarks);
       player.quantum.neutronstar.quarks = new Decimal(player.quantum.neutronstar.quarks);
       player.quantum.neutronstar.metaAntimatter = new Decimal(player.quantum.neutronstar.metaAntimatter);
       player.quantum.neutronstar.dilatedTime = new Decimal(player.quantum.neutronstar.dilatedTime);
@@ -1152,8 +1178,19 @@ function transformSaveToDecimal() {
   player.dilation.totalTachyonParticles = new Decimal(player.dilation.totalTachyonParticles)
   player.dilation.nextThreshold = new Decimal(player.dilation.nextThreshold)
 
-  if (player.aarexModifications.newGame3PlusVersion) {
+  if (player.masterystudies) {
       player.dbPower = new Decimal(player.dbPower)
+      if (player.quantum.usedQuarks) {
+          player.quantum.usedQuarks.r = new Decimal(player.quantum.usedQuarks.r)
+          player.quantum.usedQuarks.g = new Decimal(player.quantum.usedQuarks.g)
+          player.quantum.usedQuarks.b = new Decimal(player.quantum.usedQuarks.b)
+          player.quantum.colorPowers.r = new Decimal(player.quantum.colorPowers.r)
+          player.quantum.colorPowers.g = new Decimal(player.quantum.colorPowers.g)
+          player.quantum.colorPowers.b = new Decimal(player.quantum.colorPowers.b)
+          player.quantum.gluons.rg = new Decimal(player.quantum.gluons.rg)
+          player.quantum.gluons.gb = new Decimal(player.quantum.gluons.gb)
+          player.quantum.gluons.br = new Decimal(player.quantum.gluons.br)
+      }
   }
 }
 

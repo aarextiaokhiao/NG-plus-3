@@ -394,6 +394,7 @@ button {
     cursor: pointer;
     position: absolute;
     left: 75%;
+    top: 40px;
     width: 210px;
     height: 70px;
     font-family: Typewriter;
@@ -443,6 +444,29 @@ button {
     font-weight: bold;
 }
 
+#quickQuantum {
+	height:120px;
+	text-align:center;
+}
+
+#quarks {
+	position:absolute;
+	right:50%;
+	transform:translate(105px,0);
+	width:210px;
+	font-size:12px;
+}
+
+#quantumbtn {
+	cursor: pointer;
+	position: absolute;
+	transform: translate(-50%,0);
+	top: 40px;
+	width: 210px;
+	height: 70px;
+    font-size: 11px
+}
+
 .newdim {
     font-weight: bold;
     border-radius: 4px;
@@ -450,6 +474,7 @@ button {
     cursor: pointer;
     position: absolute;
     right: 75%;
+    top: 40px;
     width: 200px;
     height: 60px;
     font-family: Typewriter;
@@ -473,6 +498,7 @@ button {
     transition-duration: 0.2s;
     position: absolute;
     right: 75%;
+    top: 40px;
     width: 200px;
     height: 60px;
     color: #000000;
@@ -494,6 +520,7 @@ button {
     cursor: pointer;
     position: absolute;
     right: 75%;
+    top: 40px;
     width: 210px;
     height: 70px;
     font-family: Typewriter;
@@ -562,17 +589,18 @@ button {
     background: white;
 }
 
-#quantumtabbtn {
+.quantumbtn {
     color: #32c832;
     background: #0a640a;
     border: 2px solid #32c832;
+    font-family: Typewriter;
     font-weight: bold;
     border-radius: 4px;
     transition-duration: 0.2s;
     cursor: pointer;
 }
 
-#quantumtabbtn:hover {
+.quantumbtn:hover {
     background: #32c832;
     color: #0a640a;
 }
@@ -1655,10 +1683,21 @@ br {
 .rel {
     position: relative;
 }
-  
 
+#uquarks table {
+	width:100%
+}
 
+#uquarks td {
+	min-width:33%;
+	width:33%;
+	max-width:33%;
+	text-align:center
+}
 
+.red { color: #bf0000 }
+.green { color: #00bf00 }
+.blue { color: #0000bf }
 
 @media print,
 screen and (max-width: 960px) {

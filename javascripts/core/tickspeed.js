@@ -21,6 +21,7 @@ function getTickSpeedMultiplier() {
       if (player.achievements.includes("r86")) perGalaxy *= 1.01;
       if (player.achievements.includes("ngpp8")) perGalaxy *= 1.001;
       if (player.timestudy.studies.includes(212)) perGalaxy *= Math.min(Math.pow(player.timeShards.max(2).log2(), 0.005), 1.1)
+      perGalaxy *= colorBoosts.r
 
       return baseMultiplier-(player.galaxies*perGalaxy);
   } else {
@@ -36,9 +37,10 @@ function getTickSpeedMultiplier() {
       if (player.infinityUpgrades.includes("postGalaxy")) galaxies *= 1.5;
       if (player.challenges.includes("postc5")) galaxies *= 1.1;
       if (player.achievements.includes("r86")) galaxies *= 1.01
-      if (player.achievements.includes("ngpp8")) perGalaxy *= 1.001;
+      if (player.achievements.includes("ngpp8")) galaxies *= 1.001;
       if (player.timestudy.studies.includes(212)) galaxies *= Math.min(Math.pow(player.timeShards.max(2).log2(), 0.005), 1.1)
       if (player.timestudy.studies.includes(232)) galaxies *= Math.pow(1+player.galaxies/1000, 0.2)
+      galaxies *= colorBoosts.r
 
       return Decimal.pow(perGalaxy, galaxies - 2).times(baseMultiplier)
   }

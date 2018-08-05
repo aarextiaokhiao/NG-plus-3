@@ -64,6 +64,14 @@ button {
     background: #FF9800 !important;
 }
 
+.quantumbtn {
+    background: #0a640a !important;
+}
+
+.quantumbtn:hover {
+    background: #32c832 !important;
+}
+
 input {
     background-color: #455A64 !important;
     border: 1px solid black !important;

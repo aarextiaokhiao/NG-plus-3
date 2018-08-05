@@ -35,18 +35,25 @@
         <div id='game' style='display:none'>
             <div id='news'>.</div>
         </div>
+        <div style="position: relative">
+            <div class="IP" id="infinityPoints2"></div>
+            <button id="postInfinityButton" class="postinfcrunch">Big Crunch for x Infinity Points</button>
+        </div>
+        <div style="position: relative">
+            <div class="EP" id="eternityPoints2"></div>
+            <button id="newDimensionButton" class="newdim" onclick="newDimension()">Get x antimatter to unlock a new Dimension.</button>
+            <button id="eternitybtn" class="eternitybtn" onclick="eternity()">Other times await.. I need to become Eternal</button>
+        </div>
+        <div style="position: relative">
+            <div id="quarks"></div>
+            <button id="quantumbtn" class="quantumbtn" onclick="quantum()">Other times await.. I need to become Eternal</button>
+        </div>
+        <div id='quantumBlock' style='height:120px'></div>
         <div id="matter"></div>
-        <div style="position: relative"><div class="IP" id="infinityPoints2"></div></div>
-        <div style="position: relative"><div class="EP" id="eternityPoints2"></div></div>
         <div>
             <p>You have <span id="coinAmount" style="font-size:25px; color: black">0</span> antimatter.</p>
         </div>
 
-        <div style="position: relative">
-            <button id="postInfinityButton" class="postinfcrunch">Big Crunch for x Infinity Points</button>
-            <button id="newDimensionButton" class="newdim" onclick="newDimension()">Get x antimatter to unlock a new Dimension.</button>
-            <button id="eternitybtn" class="eternitybtn" onclick="eternity()">Other times await.. I need to become Eternal</button>
-        </div>
         <div id="coinsPerSec">You are getting 0 antimatter per second.</div>
 
         <tr id="tickSpeedRow" style="visibility: hidden">
@@ -68,7 +75,7 @@
             <button id="galaxybtn" style="font-family: Typewriter; font-size: 20px; display: none" onclick='showTab("galaxy")'>Galaxy</button>
             <button id="infinitybtn" style="font-family: Typewriter; font-size: 20px; display: none" class="infinitybtn">Infinity</button>
             <button id="eternitystorebtn" style="font-family: Typewriter; font-size: 20px; display: none" class="eternitytabbtn">Eternity</button>
-            <button id="quantumtabbtn" style="font-family: Typewriter; font-size: 20px; display: none" onclick='alert("Coming soon.")'>Quantum</button>
+            <button id="quantumtabbtn" style="font-family: Typewriter; font-size: 20px; display: none" class="quantumbtn" onclick='showTab("quantumtab")'>Quantum</button>
         </div>
         <div id="emptiness" class="tab" style="font-size: 150%">
             <br>
@@ -353,44 +360,7 @@
                 <table class="table" id="studytable">
                     <tr>
                         <td><button class="eternitychallengestudy" id="ec13unl" onclick='buyMasteryStudy("ec", 13)'>Eternity Challenge 13<br>Requirement: <span id="ec13Req" style="display: inline;"></span> dimension boosts<br><span id="ec13Cost" style="display: inline;"></span></button></td>
-                        <td><button class="timestudy dilationupg" id="dilstudy7">Unlock Meta Challenges (coming soon!)<br><span id="ds7Cost" style="display: inline;"></span></button></td>
                         <td><button class="eternitychallengestudy" id="ec14unl" onclick='buyMasteryStudy("ec", 14)'>Eternity Challenge 14<br>Requirement: <span id="ec14Req" style="display: inline;"></span>% replicate chance<br><span id="ec14Cost" style="display: inline;"></span></button></td>
-                    </tr>
-                </table>
-                <table class="table" id="studytable">
-                    <tr>
-                        <td><button class="timestudylocked" id="mc2unl">Meta Challenge 2<br>Feat: ???<br>Cost: ??? Time Theorems</button></td>
-                        <td><button class="timestudylocked" id="mc1unl">Meta Challenge 1<br>Feat: ???<br>Cost: ??? Time Theorems</button></td>
-                        <td><button class="timestudylocked" id="mc3unl">Meta Challenge 3<br>Feat: ???<br>Cost: ??? Time Theorems</button></td>
-                    </tr>
-                </table>
-                <table class="table" id="studytable">
-                    <tr class='wideRow'>
-                        <td><button class="timestudy" id="timestudy271">???<br><span id="ts271Cost" style="display: inline;"></span></button></td>
-                        <td><button class="timestudy" id="timestudy272">???<br><span id="ts272Cost" style="display: inline;"></span></button></td>
-                    </tr>
-                </table>
-                <table class="table" id="studytable">
-                    <tr class='wideRow'>
-                        <td><button class="timestudy" id="timestudy281">???<br><span id="ts281Cost" style="display: inline;"></span></button></td>
-                        <td><button class="timestudy" id="timestudy282">???<br><span id="ts282Cost" style="display: inline;"></span></button></td>
-                    </tr>
-                </table>
-                <table class="table" id="studytable">
-                    <tr class='wideRow'>
-                        <td><button class="timestudy" id="timestudy291">???<br><span id="ts291Cost" style="display: inline;"></span></button></td>
-                        <td><button class="timestudy" id="timestudy292">???<br><span id="ts292Cost" style="display: inline;"></span></button></td>
-                    </tr>
-                </table>
-                <table class="table" id="studytable">
-                    <tr class='wideRow'>
-                        <td><button class="timestudy" id="timestudy301">???<br><span id="ts301Cost" style="display: inline;"></span></button></td>
-                        <td><button class="timestudy" id="timestudy302">???<br><span id="ts302Cost" style="display: inline;"></span></button></td>
-                    </tr>
-                </table>
-                <table class="table" id="studytable">
-                    <tr>
-                        <td><button class="timestudylocked" id="mc4unl">Meta Challenge 4<br>Feat: ???<br>Cost: ??? Time Theorems</button></td>
                     </tr>
                 </table>
                 <div style="height: 60px;"></div>
@@ -835,7 +805,6 @@
                 <button id="quickReset" style="color:black; width: 200px; height: 50px; font-size: 12px; display: none" class="storebtn">Lose a reset, returning to the start of the reset</button>
             </div>
             <div id="infinitydimensions" class="dimtab">
-                <span id="EC12Pow"></span>
                 <div>
                     <p>You have <span id="infPowAmount" style="font-size:35px; color: black">0</span> infinity power. Translated to <span id="infDimMultAmount" style="font-size:35px; color: black">0</span>x multiplier on all dimensions</p>
                 </div>
@@ -3013,6 +2982,56 @@
         </div>
 
         </div>
+		<div class='tab' id='quantumtab'>
+			<tr>
+				<td><button class="secondarytabbtn" onclick="showQuantumTab('uquarks')">Quarks</button><td>
+				<td><button class="secondarytabbtn" onclick="alert('To be continued...')">Gluons</button><td>
+			</tr>
+			<div class='quantumtab' id='uquarks'>
+				<table><tr>
+					<td>
+						<p>You have <span class="red" id="redQuarks" style="font-size:35px">0</span> red quarks.</p>
+						<button class='storebtn' onclick='assignQuark("r")'>Assign</button>
+					</td>
+					<td>
+						<p>You have <span class="green" id="greenQuarks" style="font-size:35px">0</span> green quarks.</p>
+						<button class='storebtn' onclick='assignQuark("g")'>Assign</button>
+					</td>
+					<td>
+						<p>You have <span class="blue" id="blueQuarks" style="font-size:35px">0</span> blue quarks.</p>
+						<button class='storebtn' onclick='assignQuark("b")'>Assign</button>
+					</td>
+				</tr></table>
+				<p>You are increasing <span id='powerRate' style="font-size:35px">0</span> per second at <span id='colorCharge'></span> charge.</p>
+				<table><tr>
+					<td>
+						<p>You have <span class="red" id="redPower" style="font-size:35px">0.0</span> red power.<br>
+						Translated to <span class="red" id="redTranslation" style="font-size:35px">0.0</span>% more galaxy efficiency.</p>
+					</td>
+					<td>
+						<p>You have <span class="green" id="greenPower" style="font-size:35px">0.0</span> green power.<br>
+						Translated to <span class="green" id="greenTranslation" style="font-size:35px">N/A</span>.</p>
+					</td>
+					<td>
+						<p>You have <span class="blue" id="bluePower" style="font-size:35px">0.0</span> blue power.<br>
+						Translated to <span class="blue" id="blueTranslation" style="font-size:35px">N/A</span>.</p>
+					</td>
+				</tr></table>
+			</div>
+			<div id="footercontainer">
+				<table id="footer">
+					<tr>
+						<td>
+							<div style="text-align:center">
+								<a href="howto.html" target="_newtab">How to play  </a> |
+								<a href="about.html" onclick="giveAchievement('A sound financial decision')" target="_newtab">About   </a> |
+								<a href="changelog.html" target="_newtab">Changelog   </a>
+							</div>
+						</td>
+					</tr>
+				</table>
+			</div>
+		</div>
     </div>
     <div class="popup" id="challfail">
         <div id="failPopup">You failed the challenge, you will now exit it.</div>
@@ -3084,20 +3103,20 @@
 <script type="text/javascript" src="javascripts/core/format.js?4"></script>
 <script type="text/javascript" src="javascripts/core/achievements.js?3"></script>
 <script type="text/javascript" src="javascripts/core/chart.js"></script>
-<script type="text/javascript" src="javascripts/core/tickspeed.js?4"></script>
+<script type="text/javascript" src="javascripts/core/tickspeed.js?5"></script>
 <script type="text/javascript" src="javascripts/core/normal_dimension.js?5"></script>
-<script type="text/javascript" src="javascripts/core/infinity_dimension.js?4"></script>
+<script type="text/javascript" src="javascripts/core/infinity_dimension.js?5"></script>
 <script type="text/javascript" src="javascripts/core/time_dimension.js?6"></script>
 <script type="text/javascript" src="javascripts/core/dimboost.js?10"></script>
-<script type="text/javascript" src="javascripts/core/timestudies.js?10"></script>
+<script type="text/javascript" src="javascripts/core/timestudies.js?11"></script>
 <script type="text/javascript" src="javascripts/core/canvases.js?4"></script>
 <script type="text/javascript" src="javascripts/core/devtools.js"></script>
-<script type="text/javascript" src="javascripts/core/load_functions.js?15"></script>
+<script type="text/javascript" src="javascripts/core/load_functions.js?16"></script>
 <script type="text/javascript" src="javascripts/core/newsticker.js?3"></script>
 <script type="text/javascript" src="javascripts/mods/ngmm.js?2"></script>
-<script type="text/javascript" src="javascripts/mods/ngpp.js?6"></script>
-<script type="text/javascript" src="javascripts/mods/ngppp.js?7"></script>
-<script type="text/javascript" src="javascripts/game.js?21"></script>
+<script type="text/javascript" src="javascripts/mods/ngpp.js?7"></script>
+<script type="text/javascript" src="javascripts/mods/ngppp.js?8"></script>
+<script type="text/javascript" src="javascripts/game.js?22"></script>
 <script type="text/javascript" src="javascripts/sha512.js"></script>
 
 
