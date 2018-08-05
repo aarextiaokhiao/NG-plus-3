@@ -633,11 +633,11 @@ function quantum() {
 		
 		var diff=player.quantum.usedQuarks.g.min(player.quantum.usedQuarks.b)
 		//player.quantum.gluons.gb=player.quantum.gluons.gb.add(diff)
-		player.quantum.usedQuarks.r=player.quantum.usedQuarks.r.sub(diff)
+		player.quantum.usedQuarks.g=player.quantum.usedQuarks.g.sub(diff)
 		
 		var diff=player.quantum.usedQuarks.b.min(player.quantum.usedQuarks.r)
 		//player.quantum.gluons.br=player.quantum.gluons.br.add(diff)
-		player.quantum.usedQuarks.r=player.quantum.usedQuarks.r.sub(diff)
+		player.quantum.usedQuarks.b=player.quantum.usedQuarks.b.sub(diff)
 		//Gluons are coming soon...
 		
 		setInitialDimensionPower()
