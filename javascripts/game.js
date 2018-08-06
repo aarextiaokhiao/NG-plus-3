@@ -2469,7 +2469,7 @@ function import_save(new_save,get_save,no_ask) {
 
 function import_save_all() {
     onImport = true
-    var datas = prompt("Input your saves. "+(new_save?"":"(all your save files will be overwritten!)"));
+    var datas = prompt("Input your saves. "+"(all your save files will be overwritten!)");
     onImport = false
     if (datas.constructor !== String) datas = "";
     var decoded_datas = JSON.parse(atob(datas, function(k, v) { return (v === Infinity) ? "Infinity" : v; }));
