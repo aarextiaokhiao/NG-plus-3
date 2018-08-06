@@ -2494,7 +2494,7 @@ function import_save_all() {
         import_save(false,btoa(JSON.stringify(current_save)),true)
     }
     change_save(decoded_datas.metaSave.current)
-    metaSave = decoded_datas.metaSave.current
+    metaSave = decoded_datas.metaSave
 };
 
 
