@@ -2233,7 +2233,7 @@ document.getElementById("exportbtn").onclick = function () {
 
     try {
         if (document.execCommand('copy')) {
-            $.notify("exported to clipboard", "info");
+            $.notify("Exported save #"+metaSave.current+" to clipboard", "info");
             output.blur();
         }
     } catch(ex) {
@@ -2261,7 +2261,7 @@ document.getElementById("exportallbtn").onclick = function () {
 
     try {
         if (document.execCommand('copy')) {
-            $.notify("exported to clipboard", "info");
+            $.notify("Exported saves to clipboard", "info");
             output.blur();
         }
     } catch(ex) {
@@ -2444,7 +2444,7 @@ function import_save(new_save,in_save,no_ask) {
             document.getElementById("reset").click()
             forceHardReset = false
             return
-        } else if (!decoded_save_data) {
+        } else if (!decoded_save_data||!save_data) {
             alert('could not load the save..')
             return
         }
@@ -2474,7 +2474,7 @@ function import_save_all() {
     if (datas.constructor !== String) datas = "";
     var decoded_datas = JSON.parse(atob(datas, function(k, v) { return (v === Infinity) ? "Infinity" : v; }));
     var save_datas = decoded_datas.save_datas;
-    if (!save_datas) {
+    if (!save_datas||!decoded_datas||!datas) {
         alert('could not load the saves..')
         return
     }
