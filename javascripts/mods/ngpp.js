@@ -275,7 +275,7 @@ function replicantiGalaxyBulkModeToggle() {
 // v2.9
 quantumed = false
 function quantum() {
-	if (player.meta.antimatter.lt(Number.MAX_VALUE)||implosionCheck) return
+	if (!isQuantumReached()||implosionCheck) return
 	var headstart = player.aarexModifications.newGamePlusVersion > 0 && !player.masterystudies
 	if (player.aarexModifications.quantumConf) if (!confirm("Quantum will reset everything eternity resets, and "+(headstart?"also some other things like dilation":"also time studies, eternity challenges, dilation, "+(player.masterystudies?"meta dimensions, and mastery studies":"and meta dimensions"))+". You will gain a quark and unlock various upgrades.")) return
 	if (player.quantum.times<1) if (!confirm("Are you sure you want to do that? You will lose everything you have! "+(player.masterystudies?"":"This is work on progress!"))) return
