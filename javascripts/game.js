@@ -2241,6 +2241,33 @@ document.getElementById("exportbtn").onclick = function () {
     }
 };
 
+document.getElementById("exportallbtn").onclick = function () {
+    let output = document.getElementById('exportOutput');
+    let parent = output.parentElement;
+
+    parent.style.display = "";
+    output.value = "";
+    for (var i=1;i<=metaSave.saveOrder.length;i++){
+        output.value += btoa(JSON.stringify(get_save(i), function(k, v) { return (v === Infinity) ? "Infinity" : v; }));
+    }
+
+    output.onblur = function() {
+        parent.style.display = "none";
+    }
+
+    output.focus();
+    output.select();
+
+    try {
+        if (document.execCommand('copy')) {
+            $.notify("exported to clipboard", "info");
+            output.blur();
+        }
+    } catch(ex) {
+        // well, we tried.
+    }
+};
+
 
 document.getElementById("save").onclick = function () {
     saved++
@@ -2435,6 +2462,32 @@ function import_save(new_save) {
     }
 };
 
+function import_save_all(new_save) {
+    onImport = true
+    var save_datas = prompt("Input your save. "+(new_save?"":"(all your save files will be overwritten!)"));
+    onImport = false
+    if (save_datas.constructor !== String) save_datas = "";
+    var decoded_save_datas = JSON.parse(atob(save_datas, function(k, v) { return (v === Infinity) ? "Infinity" : v; }));
+    if (!decoded_save_datas) {
+        alert('could not load the saves..')
+        return
+    }
+    for (var i=1;i<=decoded_save_datas.length;i++){
+        var current_save=decoded_save_datas[i]
+        change_save(i)
+        if (!verify_save(current_save)) {
+            forceHardReset = true
+            document.getElementById("reset").click()
+            forceHardReset = false
+            continue
+        } else if (!current_save) {
+            alert('could not load the save #'+i+'..')
+            continue
+        }
+        import_save(btoa(current_save))
+    }
+    startInterval()
+};
 
 
 
