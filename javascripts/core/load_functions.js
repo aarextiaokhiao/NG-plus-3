@@ -987,7 +987,7 @@ function change_save(id) {
   while (metaSave.saveOrder[savePlacement-1]!=id) savePlacement++
   changeSaveDesc(metaSave.current, savePlacement)
 
-  $.notify("Save loaded", "info")
+  $.notify("Save #"+id+" loaded", "info")
   localStorage.setItem("AD_aarexModifications",btoa(JSON.stringify(metaSave)))
   showDimTab('antimatterdimensions')
   showStatsTab('stats')
