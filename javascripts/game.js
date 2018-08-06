@@ -2491,7 +2491,7 @@ function import_save_all() {
             new_game(i)
             continue
         }
-        import_save(false,btoa(current_save),true)
+        import_save(false,btoa(JSON.stringify(current_save)),true)
     }
     metaSave = datas.metaSave
     change_save(metaSave.current)
