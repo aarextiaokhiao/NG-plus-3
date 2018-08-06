@@ -2402,11 +2402,15 @@ function verify_save(obj) {
 }
 
 var onImport = false
-function import_save(new_save) {
-    onImport = true
-    var save_data = prompt("Input your save. "+(new_save?"":"(your current save file will be overwritten!)"));
-    onImport = false
-    if (save_data.constructor !== String) save_data = "";
+function import_save(new_save,get_save,no_ask) {
+    if (!no_ask) {
+        onImport = true
+        var save_data = prompt("Input your save. "+(new_save?"":"(your current save file will be overwritten!)"));
+        onImport = false
+        if (save_data.constructor !== String) save_data = "";
+    } else {
+        save_data = get_save
+    }
     if (sha512_256(save_data.replace(/\s/g, '').toUpperCase()) === "80b7fdc794f5dfc944da6a445a3f21a2d0f7c974d044f2ea25713037e96af9e3") {
         document.getElementById("body").style.animation = "barrelRoll 5s 1";
         giveAchievement("Do a barrel roll!")
@@ -2463,9 +2467,9 @@ function import_save(new_save) {
     }
 };
 
-function import_save_all(new_save) {
+function import_save_all() {
     onImport = true
-    var datas = prompt("Input your save. "+(new_save?"":"(all your save files will be overwritten!)"));
+    var datas = prompt("Input your saves. "+(new_save?"":"(all your save files will be overwritten!)"));
     onImport = false
     if (datas.constructor !== String) datas = "";
     var decoded_datas = JSON.parse(atob(datas, function(k, v) { return (v === Infinity) ? "Infinity" : v; }));
@@ -2484,9 +2488,10 @@ function import_save_all(new_save) {
             continue
         } else if (!current_save) {
             alert('could not load the save #'+i+'..')
+            new_game(i)
             continue
         }
-        import_save(btoa(current_save))
+        import_save(false,btoa(current_save),true)
     }
     metaSave = datas.metaSave
     change_save(metaSave.current)
