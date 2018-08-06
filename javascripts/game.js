@@ -2493,7 +2493,7 @@ function import_save_all() {
         }
         import_save(false,btoa(JSON.stringify(current_save)),true)
     }
-    metaSave = datas.metaSave
+    metaSave = decoded_datas.metaSave
     change_save(metaSave.current)
 };
 
