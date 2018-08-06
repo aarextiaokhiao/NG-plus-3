@@ -2246,10 +2246,11 @@ document.getElementById("exportallbtn").onclick = function () {
     let parent = output.parentElement;
 
     parent.style.display = "";
-    output.value = "";
+    let save_datas = [];
     for (var i=1;i<=metaSave.saveOrder.length;i++){
-        output.value += btoa(JSON.stringify(get_save(i), function(k, v) { return (v === Infinity) ? "Infinity" : v; }));
+        save_datas.push(get_save(i));
     }
+    output.value += btoa(JSON.stringify({save_datas:save_datas, metaSave:metaSave}, function(k, v) { return (v === Infinity) ? "Infinity" : v; }));
 
     output.onblur = function() {
         parent.style.display = "none";
@@ -2464,16 +2465,17 @@ function import_save(new_save) {
 
 function import_save_all(new_save) {
     onImport = true
-    var save_datas = prompt("Input your save. "+(new_save?"":"(all your save files will be overwritten!)"));
+    var datas = prompt("Input your save. "+(new_save?"":"(all your save files will be overwritten!)"));
     onImport = false
-    if (save_datas.constructor !== String) save_datas = "";
-    var decoded_save_datas = JSON.parse(atob(save_datas, function(k, v) { return (v === Infinity) ? "Infinity" : v; }));
-    if (!decoded_save_datas) {
+    if (datas.constructor !== String) datas = "";
+    var decoded_datas = JSON.parse(atob(datas, function(k, v) { return (v === Infinity) ? "Infinity" : v; }));
+    var save_datas = decoded_datas.save_datas;
+    if (!save_datas) {
         alert('could not load the saves..')
         return
     }
-    for (var i=1;i<=decoded_save_datas.length;i++){
-        var current_save=decoded_save_datas[i]
+    for (var i=1;i<=save_datas.length;i++){
+        var current_save=save_datas[i]
         change_save(i)
         if (!verify_save(current_save)) {
             forceHardReset = true
@@ -2486,7 +2488,8 @@ function import_save_all(new_save) {
         }
         import_save(btoa(current_save))
     }
-    startInterval()
+    metaSave = datas.metaSave
+    change_save(metaSave.current)
 };
 
 
