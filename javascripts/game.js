@@ -2250,7 +2250,7 @@ document.getElementById("exportallbtn").onclick = function () {
     for (var i=1;i<=metaSave.saveOrder.length;i++){
         save_datas.push(get_save(i));
     }
-    output.value += btoa(JSON.stringify({save_datas:save_datas, metaSave:metaSave}, function(k, v) { return (v === Infinity) ? "Infinity" : v; }));
+    output.value = btoa(JSON.stringify({save_datas:save_datas, metaSave:metaSave}, function(k, v) { return (v === Infinity) ? "Infinity" : v; }));
 
     output.onblur = function() {
         parent.style.display = "none";
@@ -2479,7 +2479,7 @@ function import_save_all() {
         return
     }
     for (var i=1;i<=save_datas.length;i++){
-        var current_save=save_datas[i]
+        var current_save=save_datas[i-1]
         change_save(i)
         if (!verify_save(current_save)) {
             forceHardReset = true
