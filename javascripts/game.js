@@ -366,7 +366,7 @@ function updateNewPlayer(reseted) {
 		}
     }
     if (modesChosen.ngmm) {
-        player.aarexModifications.newGameMinusMinusVersion = 1.22
+        player.aarexModifications.newGameMinusMinusVersion = 1.23
         player.galacticSacrifice = {}
         player.galacticSacrifice = resetGalacticSacrifice()
     }
@@ -5680,7 +5680,7 @@ function gameLoop(diff) {
     }
     if ((player.galacticSacrifice ? (player.galacticSacrifice.times > 0 || player.infinitied > 0 || player.eternities != 0 || quantumed) : false) && !isEmptiness) {
         document.getElementById("galaxybtn").style.display = "inline-block"
-        document.getElementById("galaxyPoints").innerHTML = "You have <span id='GP'>"+shortenDimensions(player.galacticSacrifice.galaxyPoints)+"</span> Galaxy point"+(player.galacticSacrifice.galaxyPoints.eq(1)?"s.":".")
+        document.getElementById("galaxyPoints").innerHTML = "You have <span id='GP'>"+shortenDimensions(player.galacticSacrifice.galaxyPoints)+"</span> Galaxy point"+(player.galacticSacrifice.galaxyPoints.eq(1)?".":"s.")
     } else {
         document.getElementById("galaxybtn").style.display = "none";
     }

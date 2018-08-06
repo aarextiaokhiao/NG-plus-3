@@ -772,8 +772,8 @@ if (player.version < 5) {
           var name = TIER_NAMES[d]
           player[name+"Cost"] = Decimal.div(player[name+"Cost"], 10)
 	  }
-      player.aarexModifications.newGameMinusMinusVersion = 1.22
   }
+  if (player.aarexModifications.newGameMinusMinusVersion < 1.22) player.aarexModifications.newGameMinusMinusVersion = 1.23
 
   ipMultPower=2
   if (player.masterystudies) if (player.masterystudies.includes("t241")) ipMultPower=2.2

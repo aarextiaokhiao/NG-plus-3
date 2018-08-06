@@ -59,7 +59,9 @@ let galUpgrade12 = function () {
 	return 2 * Math.pow(1 + player.galacticSacrifice.time / 600, 0.5);
 }
 let galUpgrade13 = function () {
-	return player.galacticSacrifice.galaxyPoints.div(5).plus(1).pow(3)
+	var ret = player.galacticSacrifice.galaxyPoints.div(5).plus(1).pow(3)
+	if (ret.gt(100)) ret = Decimal.pow(10, 1+Math.sqrt(ret.log10()-1))
+	return ret
 }
 let galUpgrade23 = function () {
 	return player.galacticSacrifice.galaxyPoints.div(50).plus(2)
@@ -68,7 +70,9 @@ let galUpgrade32 = function () {
 	return player.totalmoney.pow(0.003);
 }
 let galUpgrade33 = function () {
-	return player.galacticSacrifice.galaxyPoints.div(200).plus(2)
+	var ret = player.galacticSacrifice.galaxyPoints.div(200).plus(2)
+	if (ret.gt(10)) ret = Decimal.pow(10, Math.sqrt(ret.log10()))
+	return ret
 }
 
 function galacticUpgradeSpanDisplay () {
@@ -77,6 +81,7 @@ function galacticUpgradeSpanDisplay () {
 	document.getElementById('galspan23').innerHTML = formatValue(player.options.notation, galUpgrade23(), 1, 1)
 	document.getElementById('galspan32').innerHTML = formatValue(player.options.notation, galUpgrade32(), 1, 1)
 	document.getElementById('galspan33').innerHTML = formatValue(player.options.notation, galUpgrade33(), 1, 1)
+	document.getElementById('galcost33').innerHTML = shortenCosts(1e3)
 }
 
 function galacticUpgradeButtonTypeDisplay () {
