@@ -702,7 +702,13 @@ if (player.version < 5) {
   if (player.aarexModifications.newGamePlusPlusVersion < 2.901) {
       player.aarexModifications.quantumConf = true
       $.notify('NG++ was updated to include quantum reset.', 'info')
-      player.aarexModifications.newGamePlusPlusVersion = 2.901
+  }
+  if (player.aarexModifications.newGamePlusPlusVersion < 2.9011) {
+      if (player.autoEterOptions === undefined) {
+          player.autoEterOptions = {epmult:false}
+          for (dim=1;dim<9;dim++) player.autoEterOptions["td"+dim] = false
+      }
+      player.aarexModifications.newGamePlusPlusVersion = 2.9011
   }
   if (player.aarexModifications.newGame3PlusVersion < 1.01) player.aarexModifications.dbPower = new Decimal(getDimensionBoostPower())
   if ((player.aarexModifications.newGame3PlusVersion && !player.masterystudies) || player.aarexModifications.newGame3PlusVersion < 1.02) player.masterystudies = []
