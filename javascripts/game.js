@@ -2233,7 +2233,35 @@ document.getElementById("exportbtn").onclick = function () {
 
     try {
         if (document.execCommand('copy')) {
-            $.notify("exported to clipboard", "info");
+            $.notify("Exported save #"+metaSave.current+" to clipboard", "info");
+            output.blur();
+        }
+    } catch(ex) {
+        // well, we tried.
+    }
+};
+
+document.getElementById("exportallbtn").onclick = function () {
+    let output = document.getElementById('exportOutput');
+    let parent = output.parentElement;
+
+    parent.style.display = "";
+    let save_datas = [];
+    for (var i=1;i<=metaSave.saveOrder.length;i++){
+        save_datas.push(get_save(i));
+    }
+    output.value = btoa(JSON.stringify({save_datas:save_datas, metaSave:metaSave}, function(k, v) { return (v === Infinity) ? "Infinity" : v; }));
+
+    output.onblur = function() {
+        parent.style.display = "none";
+    }
+
+    output.focus();
+    output.select();
+
+    try {
+        if (document.execCommand('copy')) {
+            $.notify("Exported saves to clipboard", "info");
             output.blur();
         }
     } catch(ex) {
@@ -2374,11 +2402,15 @@ function verify_save(obj) {
 }
 
 var onImport = false
-function import_save(new_save) {
-    onImport = true
-    var save_data = prompt("Input your save. "+(new_save?"":"(your current save file will be overwritten!)"));
-    onImport = false
-    if (save_data.constructor !== String) save_data = "";
+function import_save(new_save,in_save,no_ask) {
+    if (!no_ask) {
+        onImport = true
+        var save_data = prompt("Input your save. "+(new_save?"":"(your current save file will be overwritten!)"));
+        onImport = false
+        if (save_data.constructor !== String) save_data = "";
+    } else {
+        save_data = in_save
+    }
     if (sha512_256(save_data.replace(/\s/g, '').toUpperCase()) === "80b7fdc794f5dfc944da6a445a3f21a2d0f7c974d044f2ea25713037e96af9e3") {
         document.getElementById("body").style.animation = "barrelRoll 5s 1";
         giveAchievement("Do a barrel roll!")
@@ -2412,7 +2444,7 @@ function import_save(new_save) {
             document.getElementById("reset").click()
             forceHardReset = false
             return
-        } else if (!decoded_save_data) {
+        } else if (!decoded_save_data||!save_data) {
             alert('could not load the save..')
             return
         }
@@ -2435,6 +2467,35 @@ function import_save(new_save) {
     }
 };
 
+function import_save_all() {
+    onImport = true
+    var datas = prompt("Input your saves. "+"(all your save files will be overwritten!)");
+    onImport = false
+    if (datas.constructor !== String) datas = "";
+    var decoded_datas = JSON.parse(atob(datas, function(k, v) { return (v === Infinity) ? "Infinity" : v; }));
+    var save_datas = decoded_datas.save_datas;
+    if (!save_datas||!decoded_datas||!datas) {
+        alert('could not load the saves..')
+        return
+    }
+    for (var i=1;i<=save_datas.length;i++){
+        var current_save=save_datas[i-1]
+        change_save(i)
+        if (!verify_save(current_save)) {
+            forceHardReset = true
+            document.getElementById("reset").click()
+            forceHardReset = false
+            continue
+        } else if (!current_save) {
+            alert('could not load the save #'+i+'..')
+            new_game(i)
+            continue
+        }
+        import_save(false,btoa(JSON.stringify(current_save)),true)
+    }
+    change_save(decoded_datas.metaSave.current)
+    metaSave = decoded_datas.metaSave
+};
 
 
 
