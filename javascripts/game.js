@@ -2402,14 +2402,14 @@ function verify_save(obj) {
 }
 
 var onImport = false
-function import_save(new_save,get_save,no_ask) {
+function import_save(new_save,in_save,no_ask) {
     if (!no_ask) {
         onImport = true
         var save_data = prompt("Input your save. "+(new_save?"":"(your current save file will be overwritten!)"));
         onImport = false
         if (save_data.constructor !== String) save_data = "";
     } else {
-        save_data = get_save
+        save_data = in_save
     }
     if (sha512_256(save_data.replace(/\s/g, '').toUpperCase()) === "80b7fdc794f5dfc944da6a445a3f21a2d0f7c974d044f2ea25713037e96af9e3") {
         document.getElementById("body").style.animation = "barrelRoll 5s 1";
