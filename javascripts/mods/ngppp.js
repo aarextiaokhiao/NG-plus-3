@@ -173,6 +173,7 @@ function updateQuantumTabs() {
 		document.getElementById("bluePower").textContent=shortenMoney(player.quantum.colorPowers.b)
 		document.getElementById("redTranslation").textContent=((colorBoosts.r-1)*100).toFixed(1)
 		document.getElementById("greenTranslation").textContent=shortenDimensions((colorBoosts.g-1)*100)
+		document.getElementById("blueTranslation").textContent=shortenMoney(colorBoosts.b)
 	}
 }
 
@@ -212,6 +213,7 @@ function updateColorCharge() {
 	document.getElementById("greenQuarks").textContent=shortenDimensions(player.quantum.usedQuarks.g)
 	document.getElementById("blueQuarks").textContent=shortenDimensions(player.quantum.usedQuarks.b)
 	var canAssign=player.quantum.quarks.gt(0)
+	document.getElementById("boost").style.display=player.dilation.active?"":"none"
 	document.getElementById("redAssign").className=canAssign?"storebtn":"unavailablebtn"
 	document.getElementById("greenAssign").className=canAssign?"storebtn":"unavailablebtn"
 	document.getElementById("blueAssign").className=canAssign?"storebtn":"unavailablebtn"

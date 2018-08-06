@@ -733,10 +733,8 @@ if (player.version < 5) {
       }
       player.aarexModifications.newGame3PlusVersion=1.51
   }
-  if (player.aarexModifications.newGame3PlusVersion < 1.511) {
-      if (player.autoEterMode !== undefined) player.autoEterMode = "amount"
-      player.aarexModifications.newGame3PlusVersion=1.511
-  }
+  if (player.aarexModifications.newGame3PlusVersion < 1.511) if (player.autoEterMode !== undefined) player.autoEterMode = "amount"
+  if (player.aarexModifications.newGame3PlusVersion < 1.52) player.aarexModifications.newGame3PlusVersion=1.52
   if (player.aarexModifications.newGame3PlusVersion==undefined) {
       colorBoosts={
           r:1,

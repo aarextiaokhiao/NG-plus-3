@@ -158,7 +158,7 @@ function getDil14Bonus () {
 }
 
 function getDil17Bonus () {
-	return Math.sqrt(player.meta.bestAntimatter.log10());
+	return Math.sqrt(player.meta.bestAntimatter.log10())/(player.masterystudies?1:2);
 }
 
 function updateMetaDimensions () {
@@ -195,9 +195,10 @@ function updateMetaDimensions () {
 	}
     var QS = quarkGain()
     var req = Decimal.pow(Number.MAX_VALUE,player.masterystudies?1.4:1)
-    document.getElementById("quantumResetLabel").textContent = 'Quantum: requires '+shorten(req)+' meta-antimatter'
-    document.getElementById("quantum").textContent = 'Lose all your previous progress, but '+(player.quantum.times<1||player.meta.antimatter.lt(req)?'get a boost':'gain '+shortenDimensions(QS)+' quark'+(QS.lt(2)?'':'s')+' for boosts')
-	document.getElementById("quantum").className = player.meta.antimatter.lt(req) ? 'unavailablebtn' : 'storebtn'
+    var reqGotten = isQuantumReached()
+    document.getElementById("quantumResetLabel").textContent = 'Quantum: requires '+shorten(req)+' meta-antimatter'+(player.masterystudies?" and 2 completions each for EC13 & 14":"")
+    document.getElementById("quantum").textContent = 'Lose all your previous progress, but '+(player.quantum.times>0&&reqGotten?'gain '+shortenDimensions(QS)+' quark'+(QS.lt(2)?'':'s')+' for boosts':'get a boost')
+    document.getElementById("quantum").className = reqGotten?'storebtn':'unavailablebtn'
 }
 
 // v2.2
@@ -731,6 +732,11 @@ function quantum() {
 		document.getElementById("quantumConfirmBtn").style.display = "inline-block"
 	},1000)
 }
+
+function isQuantumReached() {
+	return Decimal.pow(Number.MAX_VALUE,player.masterystudies?1.4:1).lte(player.meta.antimatter)&&(!player.masterystudies||(ECTimesCompleted("eterc13")>1&&ECTimesCompleted("eterc14")>1))
+}
+
 let quarkGain = function () {
 	if (player.masterystudies) return Decimal.pow(10, player.meta.antimatter.log10() / 308 - 1.2).times(quarkMult()).floor()
 	return Decimal.pow(10, player.meta.antimatter.log(10) / Math.log10(Number.MAX_VALUE) - 1).times(quarkMult()).floor();

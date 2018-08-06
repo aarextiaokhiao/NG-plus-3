@@ -371,7 +371,7 @@ function updateNewPlayer(reseted) {
         player.galacticSacrifice = resetGalacticSacrifice()
     }
     if (modesChosen.ngpp > 1) {
-        player.aarexModifications.newGame3PlusVersion = 1.511
+        player.aarexModifications.newGame3PlusVersion = 1.52
         player.dbPower = 1
         player.peakSpent = 0
         player.masterystudies = []
@@ -863,6 +863,7 @@ function getDilTimeGainPerSecond() {
 	if (player.dilation.upgrades.includes('ngpp2')) gain = gain.times(Math.pow(player.eternities, .1))
 	if (player.masterystudies) if (player.masterystudies.includes("t263")) gain = gain.times(player.meta.resets+1)
 	if (player.dilation.upgrades.includes('ngpp6')) gain = gain.times(getDil17Bonus())
+	gain = gain.times(colorBoosts.b)
 	return gain;
 }
 
@@ -3904,7 +3905,10 @@ function eternity(force, auto) {
         };
         if (player.respec) respecTimeStudies()
         player.respec = false
-        player.dilation.active = false
+        if (player.dilation.active) {
+            if (player.masterystudies && quantumed) updateColorCharge()
+            player.dilation.active = false
+        }
         giveAchievement("Time is relative")
         if (player.eternities >= 100) giveAchievement("This mile took an Eternity");
         if (player.replicanti.unl) player.replicanti.amount = new Decimal(1)
@@ -4729,7 +4733,10 @@ function startEternityChallenge(name, startgoal, goalIncrease) {
         quantum: player.quantum,
         aarexModifications: player.aarexModifications
     };
-    player.dilation.active = false
+    if (player.dilation.active) {
+        if (player.masterystudies && quantumed) updateColorCharge()
+        player.dilation.active = false
+    }
     if (player.replicanti.unl) player.replicanti.amount = new Decimal(1)
     player.replicanti.galaxies = 0
     extraReplGalaxies = 0
@@ -4817,6 +4824,7 @@ function startDilatedEternity() {
     eternity(true)
     if (!onActive) player.dilation.active = true;
     updatePowers()
+    if (player.masterystudies && quantumed) updateColorCharge()
     startInterval()
 }
 
@@ -4912,6 +4920,7 @@ function updateDilationUpgradeButtons() {
         document.getElementById("mddilupg").style.display = ""
         document.getElementById("dil14desc").textContent = "Currently: "+shortenMoney(getDil14Bonus()) + 'x';
         document.getElementById("dil15desc").textContent = "Currently: "+shortenMoney(getDil15Bonus()) + 'x';
+        document.getElementById("dil17formula").textContent = "(log(x)^0.5"+(player.masterystudies?")":"/2)")
         document.getElementById("dil17desc").textContent = "Currently: "+shortenMoney(getDil17Bonus()) + 'x';
     } else document.getElementById("mddilupg").style.display = "none"
 }
@@ -4924,22 +4933,22 @@ function getRebuyableDilUpgCost(id) {
 }
 
 function updateDilationUpgradeCosts() {
-    document.getElementById("dil1cost").textContent = "Cost: " + shortenCosts(getRebuyableDilUpgCost(1)) + " dilated time"
-    document.getElementById("dil2cost").textContent = "Cost: " + shortenCosts(getRebuyableDilUpgCost(2)) + " dilated time"
-    document.getElementById("dil3cost").textContent = "Cost: " + formatValue(player.options.notation, getRebuyableDilUpgCost(3), 1, 1) + " dilated time"
-    document.getElementById("dil4cost").textContent = "Cost: " + shortenCosts(DIL_UPG_COSTS[4]) + " dilated time"
-    document.getElementById("dil5cost").textContent = "Cost: " + shortenCosts(DIL_UPG_COSTS[5]) + " dilated time"
-    document.getElementById("dil6cost").textContent = "Cost: " + shortenCosts(DIL_UPG_COSTS[6]) + " dilated time"
-    document.getElementById("dil7cost").textContent = "Cost: " + shortenCosts(DIL_UPG_COSTS[7]) + " dilated time"
-    document.getElementById("dil8cost").textContent = "Cost: " + shortenCosts(DIL_UPG_COSTS[8]) + " dilated time"
-    document.getElementById("dil9cost").textContent = "Cost: " + shortenCosts(DIL_UPG_COSTS[9]) + " dilated time"
-    document.getElementById("dil10cost").textContent = "Cost: " + shortenCosts(DIL_UPG_COSTS[10]) + " dilated time"
-    if (player.dilation.rebuyables[4] !== undefined) {
-        document.getElementById("dil11cost").textContent = "Cost: " + shortenCosts(getRebuyableDilUpgCost(4)) + " dilated time"
-        document.getElementById("dil12cost").textContent = "Cost: " + shortenCosts(DIL_UPG_COSTS[12]) + " dilated time"
-        document.getElementById("dil13cost").textContent = "Cost: " + shortenCosts(DIL_UPG_COSTS[13]) + " dilated time"
-    }
-    if (player.dilation.studies.includes(6)) for (id=14;id<18;id++) document.getElementById("dil"+id+"cost").textContent = "Cost: " + shortenCosts(DIL_UPG_COSTS[id]) + " dilated time"
+	document.getElementById("dil1cost").textContent = "Cost: " + shortenCosts(getRebuyableDilUpgCost(1)) + " dilated time"
+	document.getElementById("dil2cost").textContent = "Cost: " + shortenCosts(getRebuyableDilUpgCost(2)) + " dilated time"
+	document.getElementById("dil3cost").textContent = "Cost: " + formatValue(player.options.notation, getRebuyableDilUpgCost(3), 1, 1) + " dilated time"
+	document.getElementById("dil4cost").textContent = "Cost: " + shortenCosts(DIL_UPG_COSTS[4]) + " dilated time"
+	document.getElementById("dil5cost").textContent = "Cost: " + shortenCosts(DIL_UPG_COSTS[5]) + " dilated time"
+	document.getElementById("dil6cost").textContent = "Cost: " + shortenCosts(DIL_UPG_COSTS[6]) + " dilated time"
+	document.getElementById("dil7cost").textContent = "Cost: " + shortenCosts(DIL_UPG_COSTS[7]) + " dilated time"
+	document.getElementById("dil8cost").textContent = "Cost: " + shortenCosts(DIL_UPG_COSTS[8]) + " dilated time"
+	document.getElementById("dil9cost").textContent = "Cost: " + shortenCosts(DIL_UPG_COSTS[9]) + " dilated time"
+	document.getElementById("dil10cost").textContent = "Cost: " + shortenCosts(DIL_UPG_COSTS[10]) + " dilated time"
+	if (player.meta) {
+		document.getElementById("dil11cost").textContent = "Cost: " + shortenCosts(getRebuyableDilUpgCost(4)) + " dilated time"
+		document.getElementById("dil12cost").textContent = "Cost: " + shortenCosts(DIL_UPG_COSTS[12]) + " dilated time"
+		document.getElementById("dil13cost").textContent = "Cost: " + shortenCosts(DIL_UPG_COSTS[13]) + " dilated time"
+		if (player.dilation.studies.includes(6)) for (id=14;id<18;id++) document.getElementById("dil"+id+"cost").textContent = "Cost: " + shortenCosts(DIL_UPG_COSTS[id]) + " dilated time"
+	}
 }
 
 function gainDilationGalaxies() {
@@ -4947,12 +4956,9 @@ function gainDilationGalaxies() {
 		let thresholdMult = 1.35 + 3.65 * Math.pow(0.8, player.dilation.rebuyables[2])
 		let galaxyMult = player.dilation.upgrades.includes(4) ? 2 : 1
 		let thresholdGalaxies = player.dilation.freeGalaxies / galaxyMult
-		let oldThresholdExp = thresholdGalaxies + Math.max(thresholdGalaxies - 999, 0) * (thresholdGalaxies - 998) / 4
-		let timesGained = player.dilation.dilatedTime.div(player.dilation.nextThreshold).log(thresholdMult) + 1 + oldThresholdExp
-		if (timesGained > 1e3) timesGained = Math.sqrt(1.25 * 1.25 - 1e3 + timesGained) * 2 + 997.5
-		timesGained = Math.floor(timesGained)
+		let timesGained = Math.floor(player.dilation.dilatedTime.div(player.dilation.nextThreshold).log(thresholdMult) + 1 + thresholdGalaxies)
 		player.dilation.freeGalaxies = timesGained * galaxyMult
-		player.dilation.nextThreshold = Decimal.pow(thresholdMult, timesGained + Math.max(timesGained - 999, 0) * (timesGained - 998) / 4 - oldThresholdExp).times(player.dilation.nextThreshold)
+		player.dilation.nextThreshold = Decimal.pow(thresholdMult, timesGained - thresholdGalaxies).times(player.dilation.nextThreshold)
 		giveAchievement("Universal harmony")
 	}
 }
@@ -5098,10 +5104,10 @@ setInterval(function() {
     document.getElementById("eternitybtn").style.display = (player.infinityPoints.gte(player.eternityChallGoal) && (player.infDimensionsUnlocked[7] || player.eternities > 24)) ? "inline-block" : "none"
 
     var req = Decimal.pow(Number.MAX_VALUE,player.masterystudies?1.4:1)
-    var preQuantumEnd = quantumed || (player.meta ? player.meta.bestAntimatter.gte(req) : false)
+    var preQuantumEnd = quantumed || (player.meta ? player.meta.bestAntimatter.gte(req)&&(!player.masterystudies||(ECTimesCompleted("eterc13")>1&&ECTimesCompleted("eterc14")>1)) : false)
     document.getElementById("bigcrunch").parentElement.style.top = preQuantumEnd ? "139px" : "19px"
     document.getElementById("quantumBlock").style.display = preQuantumEnd ? "" : "none"
-    document.getElementById("quantumbtn").style.display = (player.meta ? player.meta.antimatter.gte(req) : false) ? "" : "none"
+    document.getElementById("quantumbtn").style.display = (player.meta ? isQuantumReached() : false) ? "" : "none"
     document.getElementById("quarks").style.display = quantumed ? "" : "none"
     if (quantumed) document.getElementById("quarks").innerHTML = "You have <b id='QK'>"+shortenDimensions(player.quantum.quarks)+"</b> quark"+(player.quantum.quarks.eq(1)?".":"s.")
 
@@ -5425,8 +5431,9 @@ function gameLoop(diff) {
 
     if (player.masterystudies) {
         player.quantum.colorPowers[colorCharge.color]=player.quantum.colorPowers[colorCharge.color].add(colorCharge.charge.times(diff/10))
-        colorBoosts.r=Math.sqrt(player.quantum.colorPowers.r.add(1).log10())/10+1
+        colorBoosts.r=Math.pow(player.quantum.colorPowers.r.add(1).log10(),player.dilation.active?2/3:0.5)/10+1
         colorBoosts.g=Math.pow(player.quantum.colorPowers.g.add(1).log10()*2+1,2)
+        colorBoosts.b=Math.pow(10,Math.sqrt(player.quantum.colorPowers.b.add(1).log10()))
     }
     if (player.meta) {
         player.meta.antimatter = player.meta.antimatter.plus(getMetaDimensionProduction(1).times(diff/10))
@@ -5892,7 +5899,7 @@ function gameLoop(diff) {
 			var percentage = Math.min(player.meta.antimatter.log(Number.MAX_VALUE) / (player.masterystudies?1.4:1) * 100, 100).toFixed(2) + "%"
 			document.getElementById("progressbar").style.width = percentage
 			document.getElementById("progresspercent").textContent = percentage
-			document.getElementById("progresspercent").setAttribute('ach-tooltip','Percentage to quantum')
+			document.getElementById("progresspercent").setAttribute('ach-tooltip',(player.masterystudies?"Meta-antimatter p":"P")+'ercentage to quantum')
         } else if (goal > 131072 && !player.achievements.includes('ngpp13')) {
 			goal = Decimal.sub("1e40000", player.eternityPoints).log2()
 			var percentage = Math.min(gepLog / goal * 100, 100).toFixed(2) + "%"
