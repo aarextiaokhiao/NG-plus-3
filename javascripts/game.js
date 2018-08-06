@@ -2478,6 +2478,7 @@ function import_save_all() {
         alert('could not load the saves..')
         return
     }
+    metaSave.saveOrder = decoded_datas.metaSave.saveOrder
     for (var i=1;i<=save_datas.length;i++){
         var current_save=save_datas[i-1]
         change_save(i)
@@ -2494,7 +2495,9 @@ function import_save_all() {
         import_save(false,btoa(JSON.stringify(current_save)),true)
     }
     change_save(decoded_datas.metaSave.current)
-    metaSave = decoded_datas.metaSave
+    metaSave.current = decoded_datas.metaSave.current
+    metaSave.presetsOrder = decoded_datas.metaSave.presetsOrder
+    metaSave.version = decoded_datas.metaSave.version
 };
 
 
