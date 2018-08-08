@@ -129,7 +129,7 @@ function buyTimeStudy(name, cost, check) {
 }
 
 function buyDilationStudy(name, cost) {
-    if (player.timestudy.theorem >= cost && !player.dilation.studies.includes(name)) {
+    if (player.timestudy.theorem >= cost && !player.dilation.studies.includes(name) && player.dilation.studies.includes(name-1)) {
         if (name < 2) {
             showEternityTab("dilation")
             document.getElementById("dilstudy1").innerHTML = "Unlock time dilation<span>Cost: 5000 Time Theorems"
