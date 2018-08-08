@@ -71,7 +71,7 @@ function getDimensionFinalMultiplier(tier) {
       if (player.galacticSacrifice.upgrades.includes(12)) multiplier = multiplier.times(galUpgrade12())
       if (player.galacticSacrifice.upgrades.includes(13)) multiplier = multiplier.times(galUpgrade13())
       if (player.challenges.includes("postc4")) multiplier = multiplier.pow(1.05);
-      if (player.galacticSacrifice.upgrades.includes(31)) multiplier = multiplier.pow(1.05);
+      if (player.galacticSacrifice.upgrades.includes(31)) multiplier = multiplier.pow(1.1);
   }
 
   if (multiplier.lt(1)) multiplier = new Decimal(1)

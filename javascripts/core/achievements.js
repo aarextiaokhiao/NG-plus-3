@@ -170,15 +170,17 @@ function clearOldAchieves(){
     var achieveKey;
     var values = Object.keys(allAchievements).map(function(e) { return allAchievements[e] });
     for (var i = 0; i < player.achievements.length; i++) {
-      if (parseInt(player.achievements[i].split("r14")[1])>0) {
-      } else if (values.indexOf(player.achievements[i]) !== -1 ) {  // does index[i] exist in allAchievements as a value?
+      if (values.indexOf(player.achievements[i]) !== -1 ) {  // does index[i] exist in allAchievements as a value?
         toRemove.push(i); // mark it for removal
         achieveKey = Object.keys(allAchievements).find(function(key){ return allAchievements[key] === player.achievements[i];});
         if (!player.achievements.includes(achieveKey)) { // check if new key already exists as well
             player.achievements.push(achieveKey); // if not... add it
         }
       } else if (allAchievements[player.achievements[i]] === undefined){
-        toRemove.push(i);
+        var r=player.achievements[i].find("r")
+        if (r>-1) r=parseInt(player.achievements[i].split("r")[1])
+        else r=0
+        if (r<140) toRemove.push(i)
       }
     }
 

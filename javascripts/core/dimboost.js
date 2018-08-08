@@ -21,10 +21,11 @@ function softReset(bulk) {
   if (player.resets >= 10) {
       giveAchievement("Boosting to the max");
   }
-  if (player.dilation.upgrades.includes("ngpp3") && player.eternities >= 1e9 && player.aarexModifications.newGame3PlusVersion) {
+  if (player.dilation.upgrades.includes("ngpp3") && player.eternities >= 1e9 && player.masterystudies) {
       if (player.currentEternityChall=='eterc13') return
       var power = player[TIER_NAMES[tier] + 'Pow']
       var temp = new Decimal(getDimensionBoostPower())
+      if (player.dbPower === undefined || isNaN(break_infinity_js ? player.dbPower : player.dbPower.logarithm)) player.dbPower = temp
       for (tier = 1; tier < 9; tier++) player[TIER_NAMES[tier] + 'Pow'] = player[TIER_NAMES[tier] + 'Pow'].div(player.dbPower.pow(Math.max(oldResets + 1 - tier, 0))).times(temp.pow(Math.max(player.resets + 1 - tier, 0)))
       player.dbPower = temp
       return
@@ -252,9 +253,10 @@ function maxBuyDimBoosts(manual) {
 			r = 1
 			while (bought >= getShiftRequirement(r).amount && (player.autobuyers[9].priority >= player.eightBought || player.galaxies >= player.overXGalaxies || getShiftRequirement(0).tier < 8 || manual)) r++
 		} else {
-			var sr = getShiftRequirement(3 - player.resets)
+			var hasGDBUpg = player.galacticSacrifice ? player.galacticSacrifice.upgrades.includes(21) : false
+			var sr = getShiftRequirement((hasGDBUpg ? 5 : 3) - player.resets)
 			var ut = Math.min(bought, (player.galaxies >= player.overXGalaxies || manual) ? 1/0 : player.autobuyers[9].priority)
-			r = Math.floor((ut - sr.amount) / sr.mult + 5)
+			r = Math.floor((ut - sr.amount) / sr.mult + (hasGDBUpg ? 7 : 5))
 			if (r > 56e4) {
 				var b = 2 + sr.mult
 				var solution = (-b + Math.sqrt(b * b + 8 * ((r + 1) / 4e4 - 14) * sr.mult)) / 4
@@ -279,9 +281,10 @@ function getShiftRequirement(bulk) {
   if (player.timestudy.studies.includes(211)) mult -= 5
   if (player.timestudy.studies.includes(222)) mult -= 2
   if (player.masterystudies) if (player.masterystudies.includes("t261")) mult -= 1
-  if (player.galacticSacrifice) if (player.galacticSacrifice.upgrades.includes(21)) mult = 5
-  if (player.currentChallenge == "challenge4") mult = 20
-  if (tier == maxTier) amount += (resetNum + 4 - maxTier) * mult
+  var hasGDBUpg = player.galacticSacrifice ? player.galacticSacrifice.upgrades.includes(21) : false
+  if (hasGDBUpg) mult = 5
+  if (player.currentChallenge == "challenge4") mult += 5
+  if (tier == maxTier) amount += Math.max(resetNum + (hasGDBUpg ? 2 : 4) - maxTier, 0) * mult
 
   if (player.currentEternityChall == "eterc5") {
       amount += Math.pow(resetNum, 3) + resetNum

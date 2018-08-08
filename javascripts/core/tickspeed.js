@@ -22,6 +22,7 @@ function getTickSpeedMultiplier() {
       if (player.achievements.includes("ngpp8")) perGalaxy *= 1.001;
       if (player.timestudy.studies.includes(212)) perGalaxy *= Math.min(Math.pow(player.timeShards.max(2).log2(), 0.005), 1.1)
       perGalaxy *= colorBoosts.r
+      if (GUBought("rg2")) galaxies *= Math.pow(player.dilation.freeGalaxies/5e3+1,0.25)
 
       return baseMultiplier-(player.galaxies*perGalaxy);
   } else {
@@ -41,6 +42,7 @@ function getTickSpeedMultiplier() {
       if (player.timestudy.studies.includes(212)) galaxies *= Math.min(Math.pow(player.timeShards.max(2).log2(), 0.005), 1.1)
       if (player.timestudy.studies.includes(232)) galaxies *= Math.pow(1+player.galaxies/1000, 0.2)
       galaxies *= colorBoosts.r
+      if (GUBought("rg2")) galaxies *= Math.pow(player.dilation.freeGalaxies/3e3+1,0.25)
 
       return Decimal.pow(perGalaxy, galaxies - 2).times(baseMultiplier)
   }

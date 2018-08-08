@@ -142,7 +142,6 @@ function resetTimeDimensions() {
 }
 
 function buyMaxTimeDimension(tier) {
-	var time=Date.now()
 	if (tier>4&&!player.dilation.studies.includes(tier-3)) return
 	var dim=player['timeDimension'+tier]
 	if (player.eternityPoints.lt(dim.cost)) return

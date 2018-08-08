@@ -33,7 +33,7 @@ function updateMasteryStudyButtons() {
 		document.getElementById("ec"+id+"Cost").textContent="Cost: "+shorten(masterystudies.costs.ec[id])+" Time Theorems"
 		document.getElementById("ec"+id+"Req").textContent=getFullExpansion(masterystudies.reqs[id])
 	}
-	document.getElementById("ts262Current").textContent="Currently: "+shorten(getTS262Mult())+"x"
+	for (id=262;id<265;id++) document.getElementById("ts"+id+"Current").textContent="Currently: "+shorten(getMTSMult(id))+"x"
 }
 
 function updateMasteryStudyCosts() {
@@ -71,7 +71,7 @@ function buyMasteryStudy(type, id) {
 		updateMasteryStudyButtons()
 		drawMasteryTree()
 		
-		if (id==241) {
+		if (id==241&&!GUBought("gb3")) {
 			ipMultPower=2.2
 			document.getElementById("infiMult").innerHTML = "Multiply infinity points from all sources by "+ipMultPower+"<br>currently: "+shorten(player.infMult.times(kongIPMult)) +"x<br>Cost: "+shortenCosts(player.infMultCost)+" IP"
 		}
@@ -139,9 +139,19 @@ function drawMasteryTree() {
 	drawMasteryBranch("timestudy266", "ec14unl")
 }
 
+function setupText() {
+	for (id=0;id<masterystudies.allTimeStudies.length;id++) {
+		var name=masterystudies.allTimeStudies[id]
+		var div=document.getElementById("timestudy"+name)
+		div.innerHTML=div.innerHTML+"<br><span id='ts"+name+"Cost'></span>"
+	}
+}
+
 //v1.1
-function getTS262Mult() {
-	return Math.max(player.resets/15e3-19,1)
+function getMTSMult(id) {
+	if (id==262) return Math.max(player.resets/15e3-19,1)
+	if (id==263) return player.meta.resets+1
+	if (id==264) return Math.pow(player.galaxies+1,0.25)*2
 }
 
 //v1.3
@@ -149,7 +159,7 @@ function getEC14Power() {
 	return player.currentEterChall=='eterc14'?5:ECTimesCompleted("eterc14")*2
 }
 
-//v2
+//v1.5
 function showQuantumTab(tabName) {
 	//iterate over all elements in div_tab class. Hide everything that's not tabName and show tabName
 	var tabs = document.getElementsByClassName('quantumtab');
@@ -174,6 +184,10 @@ function updateQuantumTabs() {
 		document.getElementById("redTranslation").textContent=((colorBoosts.r-1)*100).toFixed(1)
 		document.getElementById("greenTranslation").textContent=shortenDimensions((colorBoosts.g-1)*100)
 		document.getElementById("blueTranslation").textContent=shortenMoney(colorBoosts.b)
+	}
+	if (document.getElementById("gluons").style.display=="block") {
+		document.getElementById("brupg1current").textContent="Currently: "+shortenMoney(player.dilation.dilatedTime.add(1).log10()+1)+"x"
+		document.getElementById("brupg2current").textContent="Currently: "+shortenMoney(Decimal.pow(2.2, Math.pow(calcTotalSacrificeBoost().log10()/1e6, 0.25)))+"x"
 	}
 }
 
@@ -224,4 +238,46 @@ function assignQuark(color) {
 	player.quantum.quarks=new Decimal(0)
 	document.getElementById("QK").textContent=0
 	updateColorCharge()
+	updateGluons()
+}
+
+GUCosts=[null, 1, 2, 4]
+
+function updateGluons() {
+	if (!player.masterystudies) return
+	else if (!player.quantum.gluons.rg) {
+		player.quantum.gluons = {
+			rg: new Decimal(0),
+			gb: new Decimal(0),
+			br: new Decimal(0)
+		}
+	}
+	document.getElementById("rg").textContent=shortenDimensions(player.quantum.gluons.rg)
+	document.getElementById("gb").textContent=shortenDimensions(player.quantum.gluons.gb)
+	document.getElementById("br").textContent=shortenDimensions(player.quantum.gluons.br)
+	document.getElementById("rggain").textContent=shortenDimensions(player.quantum.usedQuarks.r.min(player.quantum.usedQuarks.g))
+	document.getElementById("gbgain").textContent=shortenDimensions(player.quantum.usedQuarks.g.min(player.quantum.usedQuarks.b))
+	document.getElementById("brgain").textContent=shortenDimensions(player.quantum.usedQuarks.b.min(player.quantum.usedQuarks.r))
+	var names=["rg","gb","br"]
+	for (u=1;u<4;u++) {
+		for (c=0;c<3;c++) {
+			var div=document.getElementById(names[c]+"upg"+u)
+			if (GUBought(names[c]+u)) div.className="gluonupgradebought "+names[c]
+			else if (player.quantum.gluons[names[c]].lt(GUCosts[u])) div.className="gluonupgrade unavailablebtn"
+			else div.className="gluonupgrade "+names[c]
+		}
+	}
+}
+
+function buyGluonUpg(color, id) {
+	var name=color+id
+	if (player.quantum.upgrades.includes(name)||player.quantum.gluons[color].lt(GUCosts[id])) return
+	player.quantum.upgrades.push(name)
+	player.quantum.gluons[color]=player.quantum.gluons[color].sub(GUCosts[id])
+	updateGluons()
+}
+
+function GUBought(id) {
+	if (!player.masterystudies) return false
+	return player.quantum.upgrades.includes(id)
 }

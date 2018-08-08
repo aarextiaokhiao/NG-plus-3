@@ -1,3 +1,4 @@
+var inflationCheck = false
 function onLoad() {
   if (player.totalmoney === undefined || isNaN(player.totalmoney)) player.totalmoney = player.money;
   if (player.options === undefined) {
@@ -225,6 +226,7 @@ function onLoad() {
 
   document.getElementById("totaltickgained").textContent = "You've gained "+shortenDimensions(player.totalTickGained)+" tickspeed upgrades."
 
+  GPminpeak = new Decimal(0)
   IPminpeak = new Decimal(0)
   EPminpeak = new Decimal(0)
   QKminpeak = new Decimal(0)
@@ -734,7 +736,7 @@ if (player.version < 5) {
       player.aarexModifications.newGame3PlusVersion=1.51
   }
   if (player.aarexModifications.newGame3PlusVersion < 1.511) if (player.autoEterMode !== undefined) player.autoEterMode = "amount"
-  if (player.aarexModifications.newGame3PlusVersion < 1.52) player.aarexModifications.newGame3PlusVersion=1.52
+  if (player.aarexModifications.newGame3PlusVersion < 1.75) player.aarexModifications.newGame3PlusVersion=1.75
   if (player.aarexModifications.newGame3PlusVersion==undefined) {
       colorBoosts={
           r:1,
@@ -773,10 +775,20 @@ if (player.version < 5) {
           player[name+"Cost"] = Decimal.div(player[name+"Cost"], 10)
 	  }
   }
-  if (player.aarexModifications.newGameMinusMinusVersion < 1.22) player.aarexModifications.newGameMinusMinusVersion = 1.23
-
+  if (player.aarexModifications.newGameMinusMinusVersion < 1.24) {
+      console.log(player.aarexModifications.newGameMinusMinusVersion)
+      player.aarexModifications.newGameMinusMinusVersion = 1.24
+      if (ECTimesCompleted("eterc6")>0) {
+          forceHardReset=true
+          inflationCheck=true
+          document.getElementById("reset").click()
+          forceHardReset=false
+          return
+	  }
+  }
   ipMultPower=2
   if (player.masterystudies) if (player.masterystudies.includes("t241")) ipMultPower=2.2
+  if (GUBought("gb3")) ipMultPower=2.3
   document.getElementById("infiMult").innerHTML = "Multiply infinity points from all sources by "+ipMultPower+"<br>currently: "+shortenDimensions(player.infMult.times(kongIPMult)) +"x<br>Cost: "+shortenCosts(player.infMultCost)+" IP"
 
   //updates TD costs to harsher scaling
@@ -819,7 +831,8 @@ if (player.version < 5) {
       document.getElementById("game").style.display = "none";
   }
 
-  quantumed = player.quantum ? player.quantum.times > 0 : false
+  quantumed = false
+  if (player.meta !== undefined) quantumed = player.quantum.times > 0
   document.getElementById("confirmations").style.display = (player.resets > 4 || player.infinitied !== 0 || player.eternities !== 0 || quantumed) ? "inline-block" : "none"
   document.getElementById("confirmation").style.display = (player.resets > 4 || player.infinitied > 0 || player.eternities !== 0 || quantumed) ? "inline-block" : "none"
   document.getElementById("sacrifice").style.display = (player.resets > 4 || player.infinitied > 0 || player.eternities !== 0 || quantumed) ? "inline-block" : "none"
@@ -906,6 +919,7 @@ if (player.version < 5) {
   updateDilationUpgradeCosts()
   updateLastTenQuantums()
   updateColorCharge()
+  updateGluons()
   updatePowers()
   var detectNGPStart = player.lastUpdate == 1531944153054
   if (player.aarexModifications.offlineProgress) {
@@ -914,15 +928,22 @@ if (player.version < 5) {
           simulateTime(diff/1000)
       }
   } else player.lastUpdate = new Date().getTime()
-  if (detectNGPStart || player.totalTimePlayed < 1) {
+  if (detectNGPStart || player.totalTimePlayed < 1 || inflationCheck) {
       ngModeMessages=[]
-      if (player.aarexModifications.newGamePlusPlusVersion) {
+      if (player.meta) {
           if (!player.aarexModifications.newGamePlusVersion) ngModeMessages.push("WARNING! You are disabling NG+ features on NG++! Standard NG++ have all of NG++ features and I recommend you to create a new save with NG+ and NG++ modes on.")
-          if (player.aarexModifications.newGame3PlusVersion) ngModeMessages.push("Welcome to NG+++ mode, the extension of dan-simon's NG++ mode! In this mode, more time & dilation studies, more eternity milestones, and dilated challenges were added.")
+          if (player.masterystudies) ngModeMessages.push("Welcome to NG+++ mode, the extension of dan-simon's NG++ mode! In this mode, more time & dilation studies, more eternity milestones, and dilated challenges were added.")
           else ngModeMessages.push("Welcome to NG++ mode, made by dan-simon! In this mode, more dilation upgrades and meta-dimensions are added to push the end-game further.")
       } else if (player.aarexModifications.newGamePlusVersion) ngModeMessages.push("Welcome to NG+ mode, made by earthernsence! Right now, you start with all Eternity Challenges completed and 1 infinitied.")
-      if (player.aarexModifications.newGameMinusMinusVersion) ngModeMessages.push('Welcome to NG-- mode created by Nyan cat! Dilation is always locked but have more balancing, IC3 trap, and a new feature called "Galactic Sacrifice".')
+      if (player.galacticSacrifice) ngModeMessages.push('Welcome to NG-- mode created by Nyan cat! Dilation is always locked but have more balancing, IC3 trap, and a new feature called "Galactic Sacrifice".')
       if (player.aarexModifications.newGameMinusVersion) ngModeMessages.push("Welcome to NG- mode! Everything are nerfed by the creator slabdrill, making the end-game harder to reach.")
+      if (player.aarexModifications.newGameMinusVersion&&player.galacticSacrifice&&player.meta&&player.masterystudies){
+          ngModeMessages = []
+          if (!player.aarexModifications.newGamePlusVersion) ngModeMessages.push("WARNING! You are disabling NG+ features on NG+-+-+! Standard NG+-+-+ have all of NG++ features and I recommend you to create a new save with NG-, NG--, NG+ and NG+++ modes on.")
+          ngModeMessages.push("Welcome to NG+-+-+ mode, created by earthernsence! This mode combines NG--, NG-, and NG+++ features. Good luck!")
+      }
+      if (inflationCheck) ngModeMessages = ["I'm terribly sorry. But your save was appeared that there is an inflation, which it defeats the rule of incremental games. Your save was forced to reset everything."]
+      inflationCheck = false
       closeToolTip()
       showNextModeMessage()
   }
@@ -1275,6 +1296,10 @@ function initiateMetaSave() {
 	if (metaSave.current == undefined) {
 		metaSave.current = 1
 		metaSave.saveOrder = [1]
+	}
+	if (!metaSave.current) {
+		metaSave.current = 1
+		metaSave.alert = true
 	}
 }
 

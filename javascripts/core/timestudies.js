@@ -392,7 +392,7 @@ function respecTimeStudies() {
       updateMasteryStudyCosts()
       updateMasteryStudyButtons()
   }
-  ipMultPower=2
+  if (!GUBought("gb3")) ipMultPower=2
   if (player.replicanti.galaxybuyer) document.getElementById("replicantiresettoggle").textContent = "Auto galaxy ON"
   else document.getElementById("replicantiresettoggle").textContent = "Auto galaxy OFF"
 }

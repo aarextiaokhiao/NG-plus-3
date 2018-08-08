@@ -84,16 +84,16 @@ strong { color: #0072e5 }
 .floatingText {
     color: #00e500 !important
 }
-#galaxybtn, #galaxy .infinistorebtn1, #galaxy .infinistorebtn2, #galaxy .infinistorebtn3 {
+#galaxybtn, #galaxy .infinistorebtn1, #galaxy .infinistorebtn2, #galaxy .infinistorebtn3, #sacrificebtn {
     border-color: #2d5be5 !important
 }
-#galaxybtn:hover, #galaxy .infinistorebtn1:hover, #galaxy .infinistorebtn2:hover, #galaxy .infinistorebtn3:hover {
+#galaxybtn:hover, #galaxy .infinistorebtn1:hover, #galaxy .infinistorebtn2:hover, #galaxy .infinistorebtn3:hover, #sacrificebtn:hover {
     background-color: #2d5be5 !important
 }
 #galaxyPoints {
     color: #e5e5e5 !important
 }
-#GP {
+.GPAmount {
     color: #2d5be5 !important
 }
 .challengediv {
@@ -359,6 +359,19 @@ strong { color: #0072e5 }
 .red { color: #e50000 }
 .green { color: #00e500 }
 .blue { color: #0000e5 }
+.gluonupgrade.rg, .gluonupgrade.gb, .gluonupgrade.br {
+	background-color: #191919 !important;
+	box-shadow: none !important;
+	color: #e5e5e5 !important
+}
+.gluonupgrade.rg:hover, .gluonupgrade.gb:hover, .gluonupgrade.br:hover {
+	box-shadow: none !important;
+	color: #191919 !important
+}
+.gluonupgradebought.rg, .gluonupgradebought.gb, .gluonupgradebought.br {
+	border: 2px solid #191919 !important;
+	color: #191919 !important
+}
 .notifyjs-bootstrap-info {
     background-color: #0072e5;
     font-family:'Inconsolata', monospace;
@@ -382,4 +395,89 @@ strong { color: #0072e5 }
     font-family:'Inconsolata', monospace;
     border: 2px #990000 solid;
     border-radius: 0px
+}
+
+@keyframes rg {
+	0% {color: #e50000}
+	25% {color: #e5e500}
+	50% {color: #00e500}
+	75% {color: #e5e500}
+	100% {color: #e50000}
+}
+@keyframes gb {
+	0% {color: #00e500}
+	25% {color: #00e5e5}
+	50% {color: #0000e5}
+	75% {color: #00e5e5}
+	100% {color: #00e500}
+}
+@keyframes br {
+	0% {color: #0000e5}
+	25% {color: #e500e5}
+	50% {color: #e50000}
+	75% {color: #e500e5}
+	100% {color: #0000e5}
+}
+@keyframes rgupg {
+	0% {border: 2px solid #e50000}
+	25% {border: 2px solid #e5e500}
+	50% {border: 2px solid #00e500}
+	75% {border: 2px solid #e5e500}
+	100% {border: 2px solid #e50000}
+}
+@keyframes gbupg {
+	0% {border: 2px solid #00e500}
+	25% {border: 2px solid #00e5e5}
+	50% {border: 2px solid #0000e5}
+	75% {border: 2px solid #00e5e5}
+	100% {border: 2px solid #00e500}
+}
+@keyframes brupg {
+	0% {border: 2px solid #0000e5}
+	25% {border: 2px solid #e500e5}
+	50% {border: 2px solid #e50000}
+	75% {border: 2px solid #e500e5}
+	100% {border: 2px solid #0000e5}
+}
+@keyframes rgupghover {
+	0% {background-color: #e50000; border: 2px solid #e50000}
+	25% {background-color: #e5e500; border: 2px solid #e5e500}
+	50% {background-color: #00e500; border: 2px solid #00e500}
+	75% {background-color: #e5e500; border: 2px solid #e5e500}
+	100% {background-color: #e50000; border: 2px solid #e50000}
+}
+@keyframes gbupghover {
+	0% {background-color: #00e500; border: 2px solid #00e500}
+	25% {background-color: #00e5e5; border: 2px solid #00e5e5}
+	50% {background-color: #0000e5; border: 2px solid #0000e5}
+	75% {background-color: #00e5e5; border: 2px solid #00e5e5}
+	100% {background-color: #00e500; border: 2px solid #00e500}
+}
+@keyframes brupghover {
+	0% {background-color: #0000e5; border: 2px solid #0000e5}
+	25% {background-color: #e500e5; border: 2px solid #e500e5}
+	50% {background-color: #e50000; border: 2px solid #e50000}
+	75% {background-color: #e500e5; border: 2px solid #e500e5}
+	100% {background-color: #0000e5; border: 2px solid #0000e5}
+}
+@keyframes rgupgbought {
+	0% {background-color: #e57272}
+	25% {background-color: #e5e572}
+	50% {background-color: #72e572}
+	75% {background-color: #e5e572}
+	100% {background-color: #e57272}
+}
+@keyframes gbupgbought {
+	0% {background-color: #72e572}
+	25% {background-color: #72e5e5}
+	50% {background-color: #7272e5}
+	75% {background-color: #72e5e5}
+	100% {background-color: #72e572}
+}
+@keyframes brupgbought {
+	0% {background-color: #7272e5}
+	25% {background-color: #e572e5}
+	50% {background-color: #e57272}
+	75% {background-color: #e572e5}
+	100% {background-color: #7272e5}
 }

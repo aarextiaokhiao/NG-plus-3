@@ -12,7 +12,8 @@ function getMetaDimensionMultiplier (tier) {
     multiplier = multiplier.times(getDil14Bonus());
   }
   if (player.achievements.includes("ngpp12")) multiplier = multiplier.times(1.1)
-  if (player.masterystudies) if (player.masterystudies.includes("t262")) multiplier = multiplier.times(getTS262Mult())
+  if (player.masterystudies) if (player.masterystudies.includes("t262")) multiplier = multiplier.times(getMTSMult(262))
+  if (GUBought("rg3")&&tier<2) multiplier = multiplier.times(player.resets)
   
   if (multiplier.lt(1)) multiplier = new Decimal(1)
   if (player.dilation.active || player.aarexModifications.newGameMinusMinusVersion) {
@@ -295,6 +296,8 @@ function quantum() {
 			quantumed=true
 			document.getElementById("quantumtabbtn").style.display=""
 			document.getElementById("quarks").style.display=""
+			document.getElementById("galaxyPoints2").className = "GP"
+			document.getElementById("sacpos").className = "sacpos"
 		}
 		document.getElementById("quantumbtn").style.display="none"
         for (var i=player.quantum.last10.length-1; i>0; i--) {
@@ -306,6 +309,7 @@ function quantum() {
 		player.quantum.times++
 		player.quantum.quarks = player.quantum.quarks.plus(quarkGain());
 		document.getElementById("quarks").innerHTML="You have <b id='QK'>"+shortenDimensions(player.quantum.quarks)+"</b> quark"+(player.quantum.quarks.lt(2)?".":"s.")
+		document.getElementById("galaxyPoints2").innerHTML="You have <span class='GPAmount'>0</span> Galaxy points."
 		if (player.masterystudies) {
 			if (!player.quantum.gluons.rg) {
 				player.quantum.gluons = {
@@ -649,13 +653,15 @@ function quantum() {
 			player.quantum.gluons.rg=player.quantum.gluons.rg.add(diffrg)
 			player.quantum.gluons.gb=player.quantum.gluons.gb.add(diffgb)
 			player.quantum.gluons.br=player.quantum.gluons.br.add(diffbr)
+			updateColorCharge()
+			updateGluons()
 		}
 		
 		setInitialDimensionPower()
 		updatePowers()
 		if (player.replicanti.unl) player.replicanti.amount = new Decimal(1)
 		player.replicanti.galaxies = 0
-		ipMultPower=2
+		ipMultPower=GUBought("gb3")?2.3:2
 		document.getElementById("respec").className = "storebtn"
 		if (player.achievements.includes("r36")) player.tickspeed = player.tickspeed.times(0.98);
 		if (player.achievements.includes("r45")) player.tickspeed = player.tickspeed.times(0.98);
@@ -681,8 +687,10 @@ function quantum() {
 			var infchalls = Array.from(document.getElementsByClassName('infchallengediv'))
 			for (var i = 0; i< infchalls.length; i++) infchalls[i].style.display = "none"
 		}
-		IPminpeak = new Decimal(0)
+		GPminpeak = new Decimal(0)
+		Iminpeak = new Decimal(0)
 		EPminpeak = new Decimal(0)
+		QKminpeak = new Decimal(0)
 		updateAutobuyers()
 		updateMilestones()
 		resetTimeDimensions()
@@ -727,7 +735,6 @@ function quantum() {
 		updateMasteryStudyCosts()
 		updateMasteryStudyButtons()
 		drawMasteryTree()
-		updateColorCharge()
 		Marathon2 = 0;
 		document.getElementById("quantumConfirmBtn").style.display = "inline-block"
 	},1000)
@@ -738,7 +745,7 @@ function isQuantumReached() {
 }
 
 let quarkGain = function () {
-	if (player.masterystudies) return Decimal.pow(10, player.meta.antimatter.log10() / 308 - 1.2).times(quarkMult()).floor()
+	if (player.masterystudies) return Decimal.pow(10, player.meta.antimatter.log10() / 280 - 1.3).times(quarkMult()).floor();
 	return Decimal.pow(10, player.meta.antimatter.log(10) / Math.log10(Number.MAX_VALUE) - 1).times(quarkMult()).floor();
 }
 

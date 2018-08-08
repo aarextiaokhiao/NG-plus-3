@@ -60,7 +60,7 @@ let galUpgrade12 = function () {
 }
 let galUpgrade13 = function () {
 	var ret = player.galacticSacrifice.galaxyPoints.div(5).plus(1).pow(3)
-	if (ret.gt(100)) ret = Decimal.pow(10, 1+Math.sqrt(ret.log10()-1))
+	if (ret.gt(100)) ret = Math.sqrt(ret.log10()-1)*100
 	return ret
 }
 let galUpgrade23 = function () {
@@ -71,7 +71,7 @@ let galUpgrade32 = function () {
 }
 let galUpgrade33 = function () {
 	var ret = player.galacticSacrifice.galaxyPoints.div(200).plus(2)
-	if (ret.gt(10)) ret = Decimal.pow(10, Math.sqrt(ret.log10()))
+	if (ret.gt(10)) ret = Math.sqrt(ret.log10())*10
 	return ret
 }
 

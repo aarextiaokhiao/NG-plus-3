@@ -45,7 +45,11 @@
             <button id="eternitybtn" class="eternitybtn" onclick="eternity()">Other times await.. I need to become Eternal</button>
         </div>
         <div style="position: relative">
-            <div id="quarks"></div>
+            <div class="EP" id="galaxyPoints2">You have <span class='GPAmount'>0</span> Galaxy points.</div>
+            <span id="sacpos" class="eterpos"><button id="sacrificebtn" class="storebtn" onclick="galacticSacrifice()"></button></span>
+        </div>
+        <div style="position: relative">
+            <div class="QK" id="quarks"></div>
             <button id="quantumbtn" class="quantumbtn" onclick="quantum()">Other times await.. I need to become Eternal</button>
         </div>
         <div id='quantumBlock' style='height:120px'></div>
@@ -337,24 +341,24 @@
                 </table>
                 <table class="table" id="studytable">
                     <tr>
-                        <td><button class="timestudylocked" id="timestudy241" onclick='buyMasteryStudy("t", 241)'>You gain 2.2x (from 2x) more IP by buying IP mult.<br><span id="ts241Cost" style="display: inline;"></span></button></td>
+                        <td><button class="timestudylocked" id="timestudy241" onclick='buyMasteryStudy("t", 241)'>You gain 2.2x (from 2x) more IP by buying IP mult.</button></td>
                     </tr>
                 </table>
                 <table class="table" id="studytable">
                     <tr>
-                        <td><button class="timestudylocked" id="timestudy251" onclick='buyMasteryStudy("t", 251)'>Remote cost scaling starts 1 galaxy later per 3,000 dimension boosts.<br><span id="ts251Cost" style="display: inline;"></span></button></td>
-                        <td><button class="timestudylocked" id="timestudy252" onclick='buyMasteryStudy("t", 252)'>Remote cost scaling starts 1 galaxy later per 7 free galaxies.<br><span id="ts252Cost" style="display: inline;"></span></button></td>
-                        <td><button class="timestudylocked" id="timestudy253" style='font-size:10px' onclick='buyMasteryStudy("t", 253)'>Remote cost scaling starts 20 galaxies later per 9 extra replicated galaxies.<br><span id="ts253Cost" style="display: inline;"></span></button></td>
+                        <td><button class="timestudylocked" id="timestudy251" onclick='buyMasteryStudy("t", 251)'>Remote cost scaling starts 1 galaxy later per 3,000 dimension boosts.</button></td>
+                        <td><button class="timestudylocked" id="timestudy252" onclick='buyMasteryStudy("t", 252)'>Remote cost scaling starts 1 galaxy later per 7 free galaxies.</button></td>
+                        <td><button class="timestudylocked" id="timestudy253" style='font-size:10px' onclick='buyMasteryStudy("t", 253)'>Remote cost scaling starts 20 galaxies later per 9 extra replicated galaxies.</button></td>
                     </tr>
                 </table>
                 <table class="table" id="studytable">
                     <tr class="wideRow">
-                        <td><button class="timestudylocked" id="timestudy261" onclick='buyMasteryStudy("t", 261)'>Dimensional boost costs scale by another 1 less.<br><span id="ts261Cost" style="display: inline;"></span></button></td>
-                        <td><button class="timestudylocked" id="timestudy262" onclick='buyMasteryStudy("t", 262)'>Dimensional boosts affects Meta Dimensions at reduced rate.<br><span id="ts262Current" style="display: inline;"></span><br><span id="ts262Cost" style="display: inline;"></span></button></td>
-                        <td><button class="timestudylocked" id="timestudy263" onclick='buyMasteryStudy("t", 263)'>Meta-dimension boosts affects dilated time production.<br><span id="ts263Cost" style="display: inline;"></span></button></td>
-                        <td><button class="timestudylocked" id="timestudy264" onclick='buyMasteryStudy("t", 264)'>You gain more tachyon particles based on your galaxies.<br><span id="ts264Cost" style="display: inline;"></span></button></td>
-                        <td><button class="timestudylocked" id="timestudy265" onclick='buyMasteryStudy("t", 265)'>You can reach over 100% replicate chance.<br><span id="ts265Cost" style="display: inline;"></span></button></td>
-                        <td><button class="timestudylocked" id="timestudy266" onclick='buyMasteryStudy("t", 266)'>Post-400 max replicated galaxies cost grows smaller.<br><span id="ts266Cost" style="display: inline;"></span></button></td>
+                        <td><button class="timestudylocked" id="timestudy261" onclick='buyMasteryStudy("t", 261)'>Dimensional boost costs scale by another 1 less.</button></td>
+                        <td><button class="timestudylocked" id="timestudy262" onclick='buyMasteryStudy("t", 262)'>Dimensional boosts affects Meta Dimensions at reduced rate.<br><span id="ts262Current"></span></button></td>
+                        <td><button class="timestudylocked" id="timestudy263" onclick='buyMasteryStudy("t", 263)'>Meta-dimension boosts affects dilated time production.<br><span id="ts263Current"></span></button></td>
+                        <td><button class="timestudylocked" id="timestudy264" onclick='buyMasteryStudy("t", 264)'>You gain more tachyon particles based on your galaxies.<br><span id="ts264Current"></span></button></td>
+                        <td><button class="timestudylocked" id="timestudy265" onclick='buyMasteryStudy("t", 265)'>You can reach over 100% replicate chance.</button></td>
+                        <td><button class="timestudylocked" id="timestudy266" onclick='buyMasteryStudy("t", 266)'>Post-400 max replicated galaxies cost grows smaller.</button></td>
                     </tr>
                 </table>
                 <table class="table" id="studytable">
@@ -2434,10 +2438,10 @@
 				</tr>
         <tr>
 				    <td>
-                <button id="galaxy21" class="infinistorebtn1" onclick="buyGalaxyUpgrade(21)">Decrease the dimension boost cost multiplier to 5.<br>Cost: 1 GP</button>
+                <button id="galaxy21" class="infinistorebtn1" onclick="buyGalaxyUpgrade(21)">Decrease the dimension boost cost multiplier to 5 and cost scaling starts 2 later.<br>Cost: 1 GP</button>
             </td>
             <td>
-                <button id="galaxy22" class="infinistorebtn2" onclick="buyGalaxyUpgrade(22)">Galaxies are 5x as effectiveness, the first galaxy costs 70, and the cost multiplier is decreased to 30.<br>Cost: 5 GP</button>
+                <button id="galaxy22" class="infinistorebtn2" onclick="buyGalaxyUpgrade(22)">Galaxies are 5x stronger and costs 20 less after the first, and the cost multiplier is decreased to 30.<br>Cost: 5 GP</button>
             </td>
             <td>
                 <button id="galaxy23" class="infinistorebtn3" onclick="buyGalaxyUpgrade(23)">Dimension boosts are stronger based on your galaxy points.<br>Currently: <span id='galspan23'>x</span>x<br>Cost: 100 GP</button>
@@ -2445,7 +2449,7 @@
 				</tr>
         <tr>
 				    <td>
-                <button id="galaxy31" class="infinistorebtn1" onclick="buyGalaxyUpgrade(31)">Dimension multipliers are increased.<br>(x^1.05)<br>Cost: 2 GP</button>
+                <button id="galaxy31" class="infinistorebtn1" onclick="buyGalaxyUpgrade(31)">Dimension multipliers are increased.<br>(x^1.1)<br>Cost: 2 GP</button>
             </td>
             <td>
                 <button id="galaxy32" class="infinistorebtn2" onclick="buyGalaxyUpgrade(32)">Gain more galaxy points based on your total antimatter.<br>Currently: <span id='galspan32'>x</span>x<br>Cost: 8 GP</button>
@@ -2984,10 +2988,10 @@
 		<div class='tab' id='quantumtab'>
 			<tr>
 				<td><button class="secondarytabbtn" onclick="showQuantumTab('uquarks')">Quarks</button><td>
-				<td><button class="secondarytabbtn" onclick="alert('To be continued...')">Gluons</button><td>
+				<td><button class="secondarytabbtn" onclick="showQuantumTab('gluons')">Gluons</button><td>
 			</tr>
 			<div class='quantumtab' id='uquarks'>
-				<table><tr>
+				<table class='qtable'><tr>
 					<td>
 						<p>You have <span class="red" id="redQuarks" style="font-size:35px">0</span> red quarks.</p>
 						<button class='storebtn' id='redAssign' onclick='assignQuark("r")'>Assign</button>
@@ -3002,19 +3006,38 @@
 					</td>
 				</tr></table>
 				<p>You are increasing <span id='powerRate' style="font-size:35px">0</span> per second at <span id='colorCharge'></span> charge.</p>
-				<table><tr>
+				<table class='qtable'><tr>
 					<td>
 						<p>You have <span class="red" id="redPower" style="font-size:35px">0.0</span> red power.<br>
 						Translated to <span id="boost">boosted </span><span class="red" id="redTranslation" style="font-size:35px">0.0</span>% more galaxy efficiency.</p>
 					</td>
 					<td>
 						<p>You have <span class="green" id="greenPower" style="font-size:35px">0.0</span> green power.<br>
-						Translated to <span class="green" id="greenTranslation" style="font-size:35px">0</span>% less extra replicated galaxy scaling.</p>
+						Translated to <span class="green" id="greenTranslation" style="font-size:35px">0</span>% more extra replicated galaxies.</p>
 					</td>
 					<td>
 						<p>You have <span class="blue" id="bluePower" style="font-size:35px">0.0</span> blue power.<br>
 						Translated to <span class="blue" id="blueTranslation" style="font-size:35px">1.0</span>x more dilated time production.</p>
 					</td>
+				</tr></table>
+			</div>
+			<div class='quantumtab' id='gluons'>
+				<table class='qtable'><tr>
+					<td><p>You have <span id="rg" style="font-size:35px">0</span> red-green gluons.<br>+<span id='rggain'>0</span> on next quantum.</p></td>
+					<td><p>You have <span id="gb" style="font-size:35px">0</span> green-blue gluons.<br>+<span id='gbgain'>0</span> on next quantum.</p></td>
+					<td><p>You have <span id="br" style="font-size:35px">0</span> blue-red gluons.<br>+<span id='brgain'>0</span> on next quantum.</p></td>
+				</tr><tr>
+					<td><button id='rgupg1' onclick='buyGluonUpg("rg",1)'>Remote galaxy cost scaling grows slower.<br>Cost: 1 RG gluons</button></td>
+					<td><button id='gbupg1' onclick='buyGluonUpg("gb",1)'>You gain more replicanti based on your tickspeed reduction multiplier.<br>Cost: 1 GB gluons</button></td>
+					<td><button id='brupg1' onclick='buyGluonUpg("br",1)'>You gain more tachyon particles based on your dilated time.<br><span id='brupg1current'></span><br>Cost: 1 BR gluons</button></td>
+				</tr><tr>
+					<td><button id='rgupg2' onclick='buyGluonUpg("rg",2)'>Galaxies are more effective based on your free galaxies.<br>Cost: 2 RG gluons</button></td>
+					<td><button id='gbupg2' onclick='buyGluonUpg("gb",2)'>Replicanti interval increases 2x slower.<br>Cost: 2 GB gluons</button></td>
+					<td><button id='brupg2' onclick='buyGluonUpg("br",2)'>Sacrifice affects dilated time production.<br><span id='brupg2current'></span><br><span id='brupg1current'></span>Cost: 2 BR gluons</button></td>
+				</tr><tr>
+					<td><button id='rgupg3' onclick='buyGluonUpg("rg",3)'>First Meta Dimension is boosted by dimension boosts.<br>Cost: 4 RG gluons</button></td>
+					<td><button id='gbupg3' onclick='buyGluonUpg("gb",3)'>You gain 2.3x more IP by buying IP mult.<br>Cost: 4 GB gluons</button></td>
+					<td><button id='brupg3' onclick='buyGluonUpg("br",3)'>Tachyon particles are little bit stronger.<br>Cost: 4 BR gluons</button></td>
 				</tr></table>
 			</div>
 			<div id="footercontainer">
@@ -3039,6 +3062,11 @@
 	<div class="popup optionmenu" id="welcome">
         <div><text id="welcomeMessage"></text></div>
         <button class="storebtn" style="font-size: 15px" onclick="showNextModeMessage()" style="display: inline">Okay</button>
+    </div>
+    <div class="popup" id="sorry">
+        I'm sorry for the save data wipe. I recommend you to export your save data and save it in your backup saves folder. Thanks. <3<br>
+        <button class="storebtn" style="font-size: 15px" onclick="document.getElementById('exportallbtn').click()" style="display: inline">Export all</button>
+        <button class="storebtn" style="font-size: 15px" onclick="load_saves()" style="display: inline">Okay</button>
     </div>
     <div class="popup" id="offlineprogress" style="width: 450px; height: 200px;">
         <div id="offlinePopup" style="height: 150px">You made X antimatter and stuff</div>
@@ -3099,23 +3127,23 @@
 <script type="text/javascript" src="javascripts/chart.js"></script>
 <script type="text/javascript" src="javascripts/lz-string.js"></script>
 <script type="text/javascript" src="javascripts/core/polyfill.js"></script>
-<script type="text/javascript" src="javascripts/core/format.js?4"></script>
-<script type="text/javascript" src="javascripts/core/achievements.js?3"></script>
+<script type="text/javascript" src="javascripts/core/format.js?5"></script>
+<script type="text/javascript" src="javascripts/core/achievements.js?4"></script>
 <script type="text/javascript" src="javascripts/core/chart.js"></script>
-<script type="text/javascript" src="javascripts/core/tickspeed.js?5"></script>
-<script type="text/javascript" src="javascripts/core/normal_dimension.js?5"></script>
+<script type="text/javascript" src="javascripts/core/tickspeed.js?6"></script>
+<script type="text/javascript" src="javascripts/core/normal_dimension.js?6"></script>
 <script type="text/javascript" src="javascripts/core/infinity_dimension.js?5"></script>
-<script type="text/javascript" src="javascripts/core/time_dimension.js?7"></script>
-<script type="text/javascript" src="javascripts/core/dimboost.js?11"></script>
-<script type="text/javascript" src="javascripts/core/timestudies.js?14"></script>
+<script type="text/javascript" src="javascripts/core/time_dimension.js?8"></script>
+<script type="text/javascript" src="javascripts/core/dimboost.js?12"></script>
+<script type="text/javascript" src="javascripts/core/timestudies.js?15"></script>
 <script type="text/javascript" src="javascripts/core/canvases.js?4"></script>
 <script type="text/javascript" src="javascripts/core/devtools.js"></script>
-<script type="text/javascript" src="javascripts/core/load_functions.js?20"></script>
+<script type="text/javascript" src="javascripts/core/load_functions.js?21"></script>
 <script type="text/javascript" src="javascripts/core/newsticker.js?3"></script>
-<script type="text/javascript" src="javascripts/mods/ngmm.js?4"></script>
-<script type="text/javascript" src="javascripts/mods/ngpp.js?10"></script>
-<script type="text/javascript" src="javascripts/mods/ngppp.js?11"></script>
-<script type="text/javascript" src="javascripts/game.js?25"></script>
+<script type="text/javascript" src="javascripts/mods/ngmm.js?5"></script>
+<script type="text/javascript" src="javascripts/mods/ngpp.js?11"></script>
+<script type="text/javascript" src="javascripts/mods/ngppp.js?12"></script>
+<script type="text/javascript" src="javascripts/game.js?26"></script>
 <script type="text/javascript" src="javascripts/sha512.js"></script>
 
 

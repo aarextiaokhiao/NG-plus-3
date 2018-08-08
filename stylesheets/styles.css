@@ -385,6 +385,38 @@ button {
     border-radius: 4px;
 }
 
+.GP {
+    right: 75%;
+    position: absolute;
+    top: 120px;
+    font-size: 12px;
+    width: 210px;
+}
+
+#sacrificebtn {
+	width: 210px;
+	height: 70px;
+	font-family: Typewriter;
+	font-size: 11px
+}
+
+.eterpos {
+	position: absolute;
+	right: 75%;
+	top: 40px;
+}
+
+.quantumpos {
+	position: absolute;
+	transform: translate(-50%,0);
+	top: 40px;
+}
+
+.sacpos {
+	position: absolute;
+	right: 75%;
+	top: 160px;
+}
 
 .postinfcrunch {
     background: #E0E0E0;
@@ -422,6 +454,10 @@ button {
     width: 150px
 }
 
+#galaxyPoints2 .GPAmount {
+    font-weight: bold;
+}
+
 .IP {
     left: 75%;
     position: absolute;
@@ -449,7 +485,7 @@ button {
 	text-align:center;
 }
 
-#quarks {
+.QK {
 	position:absolute;
 	right:50%;
 	transform:translate(105px,0);
@@ -460,7 +496,7 @@ button {
 #quantumbtn {
 	cursor: pointer;
 	position: absolute;
-	transform: translate(-50%,0);
+	transform: translate(-50%, 0);
 	top: 40px;
 	width: 210px;
 	height: 70px;
@@ -1684,11 +1720,11 @@ br {
     position: relative;
 }
 
-#uquarks table {
+.qtable {
 	width:100%
 }
 
-#uquarks td {
+.qtable td {
 	min-width:33%;
 	width:33%;
 	max-width:33%;
@@ -1698,6 +1734,43 @@ br {
 .red { color: #bf0000 }
 .green { color: #00bf00 }
 .blue { color: #0000bf }
+
+#rg { animation: rg 5s infinite }
+#gb { animation: gb 5s infinite }
+#br { animation: br 5s infinite }
+
+.gluonupgrade, .gluonupgradebought {
+    font-weight: bold;
+    width: 190px;
+    height: 90px;
+    transition-duration: 0.2s;
+    border-radius: 4px;
+    font-size: 12px;
+    font-family: Typewriter;
+    vertical-align: top;
+    margin:7px;
+}
+
+.gluonupgrade.rg { animation: rgupg 5s infinite }
+.gluonupgrade.gb { animation: gbupg 5s infinite }
+.gluonupgrade.br { animation: brupg 5s infinite }
+
+.gluonupgrade.rg:hover {
+	animation: rgupghover 5s infinite;
+	cursor: pointer
+}
+.gluonupgrade.gb:hover {
+	animation: gbupghover 5s infinite;
+	cursor: pointer
+}
+.gluonupgrade.br:hover {
+	animation: brupghover 5s infinite;
+	cursor: pointer
+}
+
+.gluonupgradebought.rg { animation: rgupgbought 5s infinite }
+.gluonupgradebought.gb { animation: gbupgbought 5s infinite }
+.gluonupgradebought.br { animation: brupgbought 5s infinite }
 
 @media print,
 screen and (max-width: 960px) {
@@ -1839,14 +1912,6 @@ screen and (max-width: 480px) {
     100% {box-shadow: inset 5px 0px 20px #64DD17;}
 }
 
-@keyframes metaChallengeBtnGlow {
-    0%  {box-shadow: inset 5px 0px 20px #009999;}
-    25% {box-shadow: inset 0px 5px 20px #009999;}
-    50% {box-shadow: inset -5px 0px 20px #009999;}
-    75% {box-shadow: inset 0px -5px 20px #009999;}
-    100% {box-shadow: inset 5px 0px 20px #009999;}
-}
-
 @keyframes dilationBtnGlow2 {
     0%  {box-shadow: inset -5px 0px 20px #64ddad;}
     25% {box-shadow: inset 0px -5px 20px #64ddad;}
@@ -1878,3 +1943,98 @@ screen and (max-width: 480px) {
     100% {transform:scale(1); filter:blur(0px)}
 }
 
+@keyframes rg {
+	0% {color: #bf0000}
+	25% {color: #bfbf00}
+	50% {color: #00bf00}
+	75% {color: #bfbf00}
+	100% {color: #bf0000}
+}
+
+@keyframes gb {
+	0% {color: #00bf00}
+	25% {color: #00bfbf}
+	50% {color: #0000bf}
+	75% {color: #00bfbf}
+	100% {color: #00bf00}
+}
+
+@keyframes br {
+	0% {color: #0000bf}
+	25% {color: #bf00bf}
+	50% {color: #bf0000}
+	75% {color: #bf00bf}
+	100% {color: #0000bf}
+}
+
+@keyframes rgupg {
+	0% {background-color: #1f0000; border: 1px solid #3f0000; box-shadow: inset 0px 0px 5px 0px #7f0000; color: #7f0000}
+	25% {background-color: #1f1f00; border: 1px solid #3f3f00; box-shadow: inset 0px 0px 10px 0px #7f7f00; color: #7f7f00}
+	50% {background-color: #001f00; border: 1px solid #003f00; box-shadow: inset 0px 0px 20px 0px #007f00; color: #007f00}
+	75% {background-color: #1f1f00; border: 1px solid #3f3f00; box-shadow: inset 0px 0px 10px 0px #7f7f00; color: #7f7f00}
+	100% {background-color: #1f0000; border: 1px solid #3f0000; box-shadow: inset 0px 0px 5px 0px #7f0000; color: #7f0000}
+}
+
+@keyframes gbupg {
+	0% {background-color: #001f00; border: 1px solid #003f00; box-shadow: inset 0px 0px 5px 0px #007f00; color: #007f00}
+	25% {background-color: #001f1f; border: 1px solid #003f3f; box-shadow: inset 0px 0px 5px 0px #007f7f; color: #007f7f}
+	50% {background-color: #00001f; border: 1px solid #00003f; box-shadow: inset 0px 0px 5px 0px #00007f; color: #00007f}
+	75% {background-color: #001f1f; border: 1px solid #003f3f; box-shadow: inset 0px 0px 5px 0px #007f7f; color: #007f7f}
+	100% {background-color: #001f00; border: 1px solid #003f00; box-shadow: inset 0px 0px 5px 0px #007f00; color: #007f00}
+}
+
+@keyframes brupg {
+	0% {background-color: #00001f; border: 1px solid #00003f; box-shadow: inset 0px 0px 5px 0px #00007f; color: #00007f}
+	25% {background-color: #1f001f; border: 1px solid #3f003f; box-shadow: inset 0px 0px 5px 0px #7f007f; color: #7f007f}
+	50% {background-color: #1f0000; border: 1px solid #3f0000; box-shadow: inset 0px 0px 5px 0px #7f0000; color: #7f0000}
+	75% {background-color: #1f001f; border: 1px solid #3f003f; box-shadow: inset 0px 0px 5px 0px #7f007f; color: #7f007f}
+	100% {background-color: #00001f; border: 1px solid #00003f; box-shadow: inset 0px 0px 5px 0px #00007f; color: #00007f}
+}
+
+@keyframes rgupghover {
+	0% {background-color: #7f0000; border: 1px solid #3f0000; box-shadow: inset 0px 0px 5px 0px #bf0000; color: #1f0000}
+	25% {background-color: #7f7f00; border: 1px solid #3f3f00; box-shadow: inset 0px 0px 10px 0px #bfbf00; color: #1f1f00}
+	50% {background-color: #007f00; border: 1px solid #003f00; box-shadow: inset 0px 0px 20px 0px #00bf00; color: #001f00}
+	75% {background-color: #7f7f00; border: 1px solid #3f3f00; box-shadow: inset 0px 0px 10px 0px #bfbf00; color: #1f1f00}
+	100% {background-color: #7f0000; border: 1px solid #3f0000; box-shadow: inset 0px 0px 5px 0px #bf0000; color: #1f0000}
+}
+
+@keyframes gbupghover {
+	0% {background-color: #007f00; border: 1px solid #003f00; box-shadow: inset 0px 0px 5px 0px #00bf00; color: #001f00}
+	25% {background-color: #007f7f; border: 1px solid #003f3f; box-shadow: inset 0px 0px 5px 0px #00bfbf; color: #001f1f}
+	50% {background-color: #00007f; border: 1px solid #00003f; box-shadow: inset 0px 0px 5px 0px #0000bf; color: #00001f}
+	75% {background-color: #007f7f; border: 1px solid #003f3f; box-shadow: inset 0px 0px 5px 0px #00bfbf; color: #001f1f}
+	100% {background-color: #007f00; border: 1px solid #003f00; box-shadow: inset 0px 0px 5px 0px #00bf00; color: #001f00}
+}
+
+@keyframes brupghover {
+	0% {background-color: #00007f; border: 1px solid #00003f; box-shadow: inset 0px 0px 5px 0px #0000bf; color: #00001f}
+	25% {background-color: #7f007f; border: 1px solid #3f003f; box-shadow: inset 0px 0px 5px 0px #bf00bf; color: #1f001f}
+	50% {background-color: #7f0000; border: 1px solid #3f0000; box-shadow: inset 0px 0px 5px 0px #bf0000; color: #1f0000}
+	75% {background-color: #7f007f; border: 1px solid #3f003f; box-shadow: inset 0px 0px 5px 0px #bf00bf; color: #1f001f}
+	100% {background-color: #00007f; border: 1px solid #00003f; box-shadow: inset 0px 0px 5px 0px #0000bf; color: #00001f}
+}
+
+@keyframes rgupgbought {
+	0% {background-color: #bf0000; border: 1px solid #7f0000; color: #1f0000}
+	25% {background-color: #bfbf00; border: 1px solid #7f7f00; color: #1f1f00}
+	50% {background-color: #00bf00; border: 1px solid #007f00; color: #001f00}
+	75% {background-color: #bfbf00; border: 1px solid #7f7f00; color: #1f1f00}
+	100% {background-color: #bf0000; border: 1px solid #7f0000; color: #1f0000}
+}
+
+@keyframes gbupgbought {
+	0% {background-color: #00bf00; border: 1px solid #007f00; color: #001f00}
+	25% {background-color: #00bfbf; border: 1px solid #007f7f; color: #001f1f}
+	50% {background-color: #0000bf; border: 1px solid #00007f; color: #00001f}
+	75% {background-color: #00bfbf; border: 1px solid #007f7f; color: #001f1f}
+	100% {background-color: #00bf00; border: 1px solid #007f00; color: #001f00}
+}
+
+@keyframes brupgbought {
+	0% {background-color: #0000bf; border: 1px solid #00007f; color: #00001f}
+	25% {background-color: #bf00bf; border: 1px solid #7f007f; color: #1f001f}
+	50% {background-color: #bf0000; border: 1px solid #7f0000; color: #1f0000}
+	75% {background-color: #bf00bf; border: 1px solid #7f007f; color: #1f001f}
+	100% {background-color: #0000bf; border: 1px solid #00007f; color: #00001f}
+}

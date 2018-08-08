@@ -54,7 +54,7 @@ function getAbbreviation(e) {
 
 const inflog = Math.log10(Number.MAX_VALUE)
 function formatValue(notation, value, places, placesUnder1000) {
-
+    if (notation === "Same notation") notation = player.options.notation
     if ((Decimal.lte(value,Number.MAX_VALUE) || (player.break && (player.currentChallenge == "" || !new Decimal(Number.MAX_VALUE).equals(player.challengeTarget)) )) && (Decimal.gte(value,1000))) {
         if (notation === "Hexadecimal") {
             value = Decimal.pow(value, 1/Math.log10(16))
@@ -263,11 +263,14 @@ function preformat(int) {
   else return int
 }
 
+let small = ['','m','μ','n','p','f','a','z','y']
 function timeDisplayShort(time, rep) {
     time = time / 10
     if (rep && time < 1) {
-        if (time < 1e-3) return (time * 1e6).toFixed(time < 1e-4 ? 2 : 1) + " µs"
-        if (time < 0.01) return (time * 1e3).toFixed(3) + " ms"
+        if (time < 0.01) {
+			var log = Math.floor(Math.log10(time))
+			return (time * Math.pow(1e3, Math.ceil(-log/3))).toFixed((-log-1)%3+1) + " "+small[Math.ceil(-log/3)]+"s"
+		}
         return (time * 100).toFixed(time < 0.1 ? 3 : 2) + " cs"
     }
     if (time < 60) return time.toFixed(time < 10 ? 3 : 2) + " s" + (rep ? "" : "econds")
