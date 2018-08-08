@@ -6,11 +6,11 @@ function getDimensionBoostPower() {
   if (player.challenges.includes("postc7")) ret = 4
   if (player.currentChallenge == "postc7" || player.timestudy.studies.includes(81)) ret = 10
   if (player.achievements.includes("r101")) ret = ret*1.01
-  if (player.galacticSacrifice) if (player.galacticSacrifice.upgrades.includes(23)) ret = galUpgrade23().div(2).times(ret)
+  if (player.galacticSacrifice ? player.galacticSacrifice.upgrades.includes(23) : false) ret *= player.galacticSacrifice.galaxyPoints.min(150).toNumber()/100+1
   if (player.timestudy.studies.includes(83)) ret = Decimal.pow(1.0004, player.totalTickGained).times(ret);
   if (player.timestudy.studies.includes(231)) ret = Decimal.pow(player.resets, 0.3).times(ret)
   if (player.dilation.studies.includes(6)) ret = getExtraDimensionBoostPower().times(ret)
-  return Decimal.fromValue(ret)
+  return new Decimal(ret)
 }
 
 function softReset(bulk) {
@@ -24,7 +24,7 @@ function softReset(bulk) {
   if (player.dilation.upgrades.includes("ngpp3") && player.eternities >= 1e9 && player.masterystudies) {
       if (player.currentEternityChall=='eterc13') return
       var power = player[TIER_NAMES[tier] + 'Pow']
-      var temp = new Decimal(getDimensionBoostPower())
+      var temp = getDimensionBoostPower()
       if (player.dbPower === undefined || isNaN(break_infinity_js ? player.dbPower : player.dbPower.logarithm)) player.dbPower = temp
       for (tier = 1; tier < 9; tier++) player[TIER_NAMES[tier] + 'Pow'] = player[TIER_NAMES[tier] + 'Pow'].div(player.dbPower.pow(Math.max(oldResets + 1 - tier, 0))).times(temp.pow(Math.max(player.resets + 1 - tier, 0)))
       player.dbPower = temp
@@ -241,7 +241,7 @@ if (player.currentChallenge == "postc2") {
 }
 
 function setInitialDimensionPower () {
-	var dimensionBoostPower = new Decimal(getDimensionBoostPower())
+	var dimensionBoostPower = getDimensionBoostPower()
 	for (tier = 1; tier < 9; tier++) player[TIER_NAMES[tier] + 'Pow'] = player.currentEternityChall=='eterc13' ? new Decimal(1) : dimensionBoostPower.pow(player.resets + 1 - tier).max(1)
 }
 
@@ -310,6 +310,6 @@ document.getElementById("softReset").onclick = function () {
   else softReset(1)
   if (player.resets <= pastResets) return
   if (player.currentEternityChall=='eterc13') return
-  var dimensionBoostPower = new Decimal(getDimensionBoostPower())
+  var dimensionBoostPower = getDimensionBoostPower()
   for (var tier = 1; tier < 9; tier++) if (player.resets >= tier) floatText(TIER_NAMES[tier] + "D", "x" + shortenDimensions(dimensionBoostPower.pow(player.resets + 1 - tier)))
 };

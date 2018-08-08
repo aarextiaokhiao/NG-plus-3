@@ -1,6 +1,7 @@
 function getGSAmount() {
 	let galaxies = player.galaxies + player.replicanti.galaxies + player.dilation.freeGalaxies;
-	let ret = new Decimal(galaxies * player.eightAmount.div(20).toNumber());
+	let ret = new Decimal(Math.max(galaxies * (player.resets - (player.currentChallenge=="challenge4"?2:4)), 0));
+	ret = ret.times(player.eightAmount.toNumber()/50+1)
 	if (player.galacticSacrifice.upgrades.includes(32)) {
 		return ret.times(galUpgrade32()).floor();
 	} else {
@@ -59,28 +60,24 @@ let galUpgrade12 = function () {
 	return 2 * Math.pow(1 + player.galacticSacrifice.time / 600, 0.5);
 }
 let galUpgrade13 = function () {
-	var ret = player.galacticSacrifice.galaxyPoints.div(5).plus(1).pow(3)
-	if (ret.gt(100)) ret = Math.sqrt(ret.log10()-1)*100
-	return ret
-}
-let galUpgrade23 = function () {
-	return player.galacticSacrifice.galaxyPoints.div(50).plus(2)
+	return player.galacticSacrifice.galaxyPoints.div(5).plus(1).pow(3)
 }
 let galUpgrade32 = function () {
-	return player.totalmoney.pow(0.003);
+	return player.totalmoney.pow(0.003).add(1);
 }
 let galUpgrade33 = function () {
 	var ret = player.galacticSacrifice.galaxyPoints.div(200).plus(2)
 	if (ret.gt(10)) ret = Math.sqrt(ret.log10())*10
-	return ret
+	else ret = ret.toNumber()
+	return ret/2
 }
 
 function galacticUpgradeSpanDisplay () {
 	document.getElementById('galspan12').innerHTML = formatValue(player.options.notation, galUpgrade12(), 1, 1)
 	document.getElementById('galspan13').innerHTML = formatValue(player.options.notation, galUpgrade13(), 1, 1)
-	document.getElementById('galspan23').innerHTML = formatValue(player.options.notation, galUpgrade23(), 1, 1)
+	document.getElementById('galspan23').innerHTML = shortenMoney(getDimensionBoostPower().times(player.galacticSacrifice.upgrades.includes(23)?1:player.galacticSacrifice.galaxyPoints.min(150).toNumber()/100+1))
 	document.getElementById('galspan32').innerHTML = formatValue(player.options.notation, galUpgrade32(), 1, 1)
-	document.getElementById('galspan33').innerHTML = formatValue(player.options.notation, galUpgrade33(), 1, 1)
+	document.getElementById('galspan33').innerHTML = shorten(getDimensionPowerMultiplier(true)*(player.galacticSacrifice.upgrades.includes(23)?1:galUpgrade33()))
 	document.getElementById('galcost33').innerHTML = shortenCosts(1e3)
 }
 

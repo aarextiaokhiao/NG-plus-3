@@ -776,8 +776,6 @@ if (player.version < 5) {
 	  }
   }
   if (player.aarexModifications.newGameMinusMinusVersion < 1.24) {
-      console.log(player.aarexModifications.newGameMinusMinusVersion)
-      player.aarexModifications.newGameMinusMinusVersion = 1.24
       if (ECTimesCompleted("eterc6")>0) {
           forceHardReset=true
           inflationCheck=true
@@ -786,6 +784,7 @@ if (player.version < 5) {
           return
 	  }
   }
+  if (player.aarexModifications.newGameMinusMinusVersion < 1.25) player.aarexModifications.newGameMinusMinusVersion = 1.25
   ipMultPower=2
   if (player.masterystudies) if (player.masterystudies.includes("t241")) ipMultPower=2.2
   if (GUBought("gb3")) ipMultPower=2.3

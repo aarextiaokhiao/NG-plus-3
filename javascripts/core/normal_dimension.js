@@ -169,16 +169,16 @@ function hasInfinityMult(tier) {
         return true;
     }
     
-    function getDimensionPowerMultiplier(tier) {
+    function getDimensionPowerMultiplier(nonrandom) {
         let dimMult = 2;
     
     
-        if (player.currentChallenge == "challenge9" || player.currentChallenge == "postc1") dimMult = Math.pow(10/0.30,Math.random())*0.30
+        if ((player.currentChallenge == "challenge9" || player.currentChallenge == "postc1")&&!nonrandom) dimMult = Math.pow(10/0.30,Math.random())*0.30
     
         if (player.infinityUpgrades.includes('dimMult')) dimMult *= 1.1;
         if (player.achievements.includes("r58")) dimMult *= 1.01;
         dimMult += ECTimesCompleted("eterc3") * 0.8
-        if (player.galacticSacrifice) if (player.galacticSacrifice.upgrades.includes(33)) dimMult = galUpgrade33().div(2).times(dimMult);
+        if (player.galacticSacrifice) if (player.galacticSacrifice.upgrades.includes(33)) dimMult *= galUpgrade33();
         return dimMult;
     }
     

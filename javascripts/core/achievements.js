@@ -177,9 +177,9 @@ function clearOldAchieves(){
             player.achievements.push(achieveKey); // if not... add it
         }
       } else if (allAchievements[player.achievements[i]] === undefined){
-        var r=player.achievements[i].find("r")
-        if (r>-1) r=parseInt(player.achievements[i].split("r")[1])
-        else r=0
+        var r=player.achievements[i].indexOf("r")
+        if (r<0) r=0
+        else r=parseInt(player.achievements[i].split("r")[1])
         if (r<140) toRemove.push(i)
       }
     }
