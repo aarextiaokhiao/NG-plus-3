@@ -1,4 +1,5 @@
 var inflationCheck = false
+var notifyId = 0
 function onLoad() {
   if (player.totalmoney === undefined || isNaN(player.totalmoney)) player.totalmoney = player.money;
   if (player.options === undefined) {
@@ -736,7 +737,7 @@ if (player.version < 5) {
       player.aarexModifications.newGame3PlusVersion=1.51
   }
   if (player.aarexModifications.newGame3PlusVersion < 1.511) if (player.autoEterMode !== undefined) player.autoEterMode = "amount"
-  if (player.aarexModifications.newGame3PlusVersion < 1.75) player.aarexModifications.newGame3PlusVersion=1.75
+  if (player.aarexModifications.newGame3PlusVersion < 1.79) player.aarexModifications.newGame3PlusVersion=1.79
   if (player.aarexModifications.newGame3PlusVersion==undefined) {
       colorBoosts={
           r:1,
@@ -835,7 +836,7 @@ if (player.version < 5) {
   document.getElementById("confirmations").style.display = (player.resets > 4 || player.infinitied !== 0 || player.eternities !== 0 || quantumed) ? "inline-block" : "none"
   document.getElementById("confirmation").style.display = (player.resets > 4 || player.infinitied > 0 || player.eternities !== 0 || quantumed) ? "inline-block" : "none"
   document.getElementById("sacrifice").style.display = (player.resets > 4 || player.infinitied > 0 || player.eternities !== 0 || quantumed) ? "inline-block" : "none"
-  document.getElementById("gSacrifice").style.display = (player.aarexModifications.newGameMinusMinusVersion && (player.galaxies > 0 || player.infinitied > 0 || player.eternities !== 0 || quantumed)) ? "inline-block" : "none"
+  document.getElementById("gSacrifice").style.display = (player.galacticSacrifice ? (player.galaxies > 0 || player.galacticSacrifice.times > 0 || player.infinitied > 0 || player.eternities !== 0 || quantumed) : false) ? "inline-block" : "none"
   document.getElementById("sacConfirmBtn").style.display = (player.resets > 4 || player.infinitied > 0 || player.eternities !== 0 || quantumed) ? "inline-block" : "none"
   document.getElementById("challengeconfirmation").style.display = (player.infinitied !== 0 || player.eternities !== 0 || quantumed) ? "inline-block" : "none"
   document.getElementById("eternityconf").style.display = (player.eternities !== 0 || quantumed) ? "inline-block" : "none"
@@ -882,7 +883,8 @@ if (player.version < 5) {
 
   if (!player.options.hotkeys) document.getElementById("hotkeys").textContent = "Enable hotkeys"
 
-  document.getElementById("decimalMode").innerHTML = "Decimal mode: "+(player.aarexModifications.breakInfinity?"Slow but accurate":"Fast but inaccurate")
+  document.getElementById("decimalMode").innerHTML = "Decimal mode: "+(break_infinity_js?"Slow but accurate":"Fast but inaccurate")
+  document.getElementById("decimalMode").style.display = Decimal.gt(player.totalmoney,"1e9000000000000000") ? "none" : ""
 
   document.getElementById("secretstudy").style.opacity = 0
   document.getElementById("secretstudy").style.cursor = "pointer"
@@ -919,9 +921,14 @@ if (player.version < 5) {
   updateLastTenQuantums()
   updateColorCharge()
   updateGluons()
+  updateSpeedruns()
+  notifyId=speedrunMilestonesReached
   updatePowers()
   var detectNGPStart = player.lastUpdate == 1531944153054
-  if (player.aarexModifications.offlineProgress) {
+  if (player.aarexModifications.switch) {
+      softReset(0)
+      delete player.aarexModifications.switch
+  } else if (player.aarexModifications.offlineProgress) {
       let diff = new Date().getTime() - player.lastUpdate
       if (diff > 1000*1000) {
           simulateTime(diff/1000)

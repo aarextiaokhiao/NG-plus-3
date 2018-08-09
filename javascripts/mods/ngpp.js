@@ -261,10 +261,12 @@ function toggleAutoEter(id) {
 }
 
 function doAutoEterTick() {
+	if (!player.meta) return
 	if (player.achievements.includes("ngpp17")) {
 		for (d=1;d<9;d++) if (player.autoEterOptions["td"+d]) buyMaxTimeDimension(d)
 		if (player.autoEterOptions.epmult) buyMaxEPMult()
 	}
+	if (player.autoEterOptions.tt && !player.dilation.upgrades.includes(10)) maxTheorems()
 }
 
 // v2.301
@@ -305,6 +307,8 @@ function quantum() {
         }
         player.quantum.last10[0] = [player.quantum.time, quarkGain()]
 		player.quantum.best=Math.min(player.quantum.best, player.quantum.time)
+		updateSpeedruns()
+		var oheHeadstart = speedrunMilestonesReached > 0
 		player.quantum.time=0
 		player.quantum.times++
 		player.quantum.quarks = player.quantum.quarks.plus(quarkGain());
@@ -357,28 +361,28 @@ function quantum() {
 			eightPow: new Decimal(1),
 			sacrificed: new Decimal(0),
 			achievements: player.achievements,
-			challenges: headstart ? player.challenges : player.achievements.includes("r133") ? ["postc1", "postc2", "postc3", "postc4", "postc5", "postc6", "postc7", "postc8"] : [],
+			challenges: oheHeadstart ? player.challenges : player.achievements.includes("r133") ? ["postc1", "postc2", "postc3", "postc4", "postc5", "postc6", "postc7", "postc8"] : [],
 			currentChallenge: "",
-			infinityUpgrades: headstart ? player.infinityUpgrades : [],
+			infinityUpgrades: oheHeadstart ? player.infinityUpgrades : [],
 			infinityPoints: new Decimal(0),
 			infinitied: 0,
-			infinitiedBank: headstart ? player.infinitiedBank : 0,
+			infinitiedBank: oheHeadstart ? player.infinitiedBank : 0,
 			totalTimePlayed: player.totalTimePlayed,
 			bestInfinityTime: 9999999999,
 			thisInfinityTime: 0,
-			resets: headstart ? 4 : 0,
+			resets: oheHeadstart ? 4 : 0,
 			dbPower: player.dbPower ? new Decimal(1) : undefined,
-			galaxies: headstart ? 1 : 0,
+			galaxies: oheHeadstart ? 1 : 0,
 			galacticSacrifice: resetGalacticSacrifice(),
 			tickDecrease: 0.9,
 			totalmoney: player.totalmoney,
 			interval: null,
 			lastUpdate: player.lastUpdate,
 			achPow: player.achPow,
-			autobuyers: headstart ? player.autobuyers : [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12],
+			autobuyers: oheHeadstart ? player.autobuyers : [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12],
 			partInfinityPoint: 0,
 			partInfinitied: 0,
-			break: headstart ? player.break : false,
+			break: oheHeadstart ? player.break : false,
 			costMultipliers: [new Decimal(1e3), new Decimal(1e4), new Decimal(1e5), new Decimal(1e6), new Decimal(1e8), new Decimal(1e10), new Decimal(1e12), new Decimal(1e15)],
 			tickspeedMultiplier: new Decimal(10),
 			chall2Pow: 1,
@@ -392,21 +396,21 @@ function quantum() {
 			lastTenEternities: [[600*60*24*31, new Decimal(0)], [600*60*24*31, new Decimal(0)], [600*60*24*31, new Decimal(0)], [600*60*24*31, new Decimal(0)], [600*60*24*31, new Decimal(0)], [600*60*24*31, new Decimal(0)], [600*60*24*31, new Decimal(0)], [600*60*24*31, new Decimal(0)], [600*60*24*31, new Decimal(0)], [600*60*24*31, new Decimal(0)]],
 			infMult: new Decimal(1),
 			infMultCost: new Decimal(10),
-			tickSpeedMultDecrease: headstart ? player.tickSpeedMultDecrease : 10,
-			tickSpeedMultDecreaseCost: headstart ? player.tickSpeedMultDecreaseCost : 3e6,
-			dimensionMultDecrease: headstart ? player.dimensionMultDecrease : 10,
-			dimensionMultDecreaseCost: headstart ? player.dimensionMultDecreaseCost : 1e8,
+			tickSpeedMultDecrease: oheHeadstart ? player.tickSpeedMultDecrease : 10,
+			tickSpeedMultDecreaseCost: oheHeadstart ? player.tickSpeedMultDecreaseCost : 3e6,
+			dimensionMultDecrease: oheHeadstart ? player.dimensionMultDecrease : 10,
+			dimensionMultDecreaseCost: oheHeadstart ? player.dimensionMultDecreaseCost : 1e8,
 			version: player.version,
 			postChallUnlocked: (player.achievements.includes("r133")) ? 8 : 0,
 			postC4Tier: 1,
 			postC3Reward: new Decimal(1),
-			overXGalaxies: headstart ? player.overXGalaxies : 0,
+			overXGalaxies: oheHeadstart ? player.overXGalaxies : 0,
 			spreadingCancer: player.spreadingCancer,
 			postChallUnlocked: 0,
 			postC4Tier: 0,
 			postC3Reward: new Decimal(1),
 			eternityPoints: new Decimal(0),
-			eternities: headstart ? player.eternities : 0,
+			eternities: headstart ? player.eternities : oheHeadstart ? 20000 : 0,
 			thisEternity: 0,
 			bestEternity: headstart ? player.bestEternity : 9999999999,
 			eternityUpgrades: [],
@@ -470,7 +474,7 @@ function quantum() {
 				power: new Decimal(1),
 				baseAmount: 0
 			},
-			infDimBuyers: headstart ? player.infDimBuyers : [false, false, false, false, false, false, false, false],
+			infDimBuyers: oheHeadstart ? player.infDimBuyers : [false, false, false, false, false, false, false, false],
 			timeShards: new Decimal(0),
 			tickThreshold: new Decimal(1),
 			totalTickGained: 0,
@@ -522,13 +526,13 @@ function quantum() {
 				power: new Decimal(1),
 				bought: 0
 			},
-			offlineProd: headstart ? player.offlineProd : 0,
-			offlineProdCost: headstart ? player.offlineProdCost : 1e7,
+			offlineProd: oheHeadstart ? player.offlineProd : 0,
+			offlineProdCost: oheHeadstart ? player.offlineProdCost : 1e7,
 			challengeTarget: 0,
-			autoSacrifice: headstart ? player.autoSacrifice : 1,
+			autoSacrifice: oheHeadstart ? player.autoSacrifice : 1,
 			replicanti: {
 				amount: new Decimal(0),
-				unl: headstart ? player.replicanti.unl : false,
+				unl: oheHeadstart ? player.replicanti.unl : false,
 				chance: 0.01,
 				chanceCost: new Decimal(1e150),
 				interval: 1000,
@@ -536,8 +540,8 @@ function quantum() {
 				gal: 0,
 				galaxies: 0,
 				galCost: new Decimal(1e170),
-				galaxybuyer: headstart ? player.replicanti.galaxybuyer : undefined,
-				auto: headstart ? player.replicanti.auto : [false, false, false]
+				galaxybuyer: oheHeadstart ? player.replicanti.galaxybuyer : undefined,
+				auto: oheHeadstart ? player.replicanti.auto : [false, false, false]
 			},
 			timestudy: {
 				theorem: 0,
@@ -553,11 +557,11 @@ function quantum() {
 			etercreq: 0,
 			autoIP: new Decimal(0),
 			autoTime: 1e300,
-			infMultBuyer: headstart ? player.infMultBuyer : false,
-			autoCrunchMode: headstart ? player.autoCrunchMode : "amount",
-			autoEterMode: headstart ? player.autoEterMode : "amount",
+			infMultBuyer: oheHeadstart ? player.infMultBuyer : false,
+			autoCrunchMode: oheHeadstart ? player.autoCrunchMode : "amount",
+			autoEterMode: oheHeadstart ? player.autoEterMode : "amount",
 			respec: false,
-			eternityBuyer: headstart ? player.eternityBuyer : {
+			eternityBuyer: oheHeadstart ? player.eternityBuyer : {
 				limit: new Decimal(0),
 				isOn: false
 			},
@@ -566,7 +570,7 @@ function quantum() {
 			dimlife: true,
 			dead: true,
 			dilation: {
-				studies: [],
+				studies: speedrunMilestonesReached > 5 ? [1,2,3,4,5,6] : speedrunMilestonesReached > 3 ? [1] : [],
 				active: false,
 				tachyonParticles: new Decimal(0),
 				dilatedTime: new Decimal(0),
@@ -643,6 +647,7 @@ function quantum() {
 			aarexModifications: player.aarexModifications
 		};
 		if (headstart) for (ec=1;ec<13;ec++) player.eternityChalls['eterc'+ec]=5
+        else if (speedrunMilestonesReached>2) for (ec=1;ec<15;ec++) player.eternityChalls['eterc'+ec] = 5
 		if (player.masterystudies) {
 			var diffrg=player.quantum.usedQuarks.r.min(player.quantum.usedQuarks.g)
 			var diffgb=player.quantum.usedQuarks.g.min(player.quantum.usedQuarks.b)
@@ -688,7 +693,7 @@ function quantum() {
 			for (var i = 0; i< infchalls.length; i++) infchalls[i].style.display = "none"
 		}
 		GPminpeak = new Decimal(0)
-		Iminpeak = new Decimal(0)
+		IPminpeak = new Decimal(0)
 		EPminpeak = new Decimal(0)
 		QKminpeak = new Decimal(0)
 		updateAutobuyers()
@@ -765,7 +770,7 @@ function toggleQuantumConf() {
 var averageQk = new Decimal(0)
 var bestQk
 function updateLastTenQuantums() {
-	if (player.meta == undefined) return
+	if (!player.meta) return
     var listed = 0
     var tempTime = new Decimal(0)
     var tempQK = new Decimal(0)

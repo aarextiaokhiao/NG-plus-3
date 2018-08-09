@@ -371,7 +371,7 @@ function updateNewPlayer(reseted) {
         player.galacticSacrifice = resetGalacticSacrifice()
     }
     if (modesChosen.ngpp > 1) {
-        player.aarexModifications.newGame3PlusVersion = 1.75
+        player.aarexModifications.newGame3PlusVersion = 1.79
         player.dbPower = 1
         player.peakSpent = 0
         player.masterystudies = []
@@ -2214,7 +2214,8 @@ function galaxyReset() {
         document.getElementById("confirmations").style.display = "inline-block";
     }
     if (player.infinitied < 1 && player.eternities == 0) document.getElementById("sacrifice").style.display = "none"
-    if (player.aarexModifications.newGameMinusMinusVersion) document.getElementById("gSacrifice").style.display = "inline-block"
+    document.getElementById("gSacrifice").style.display = "none"
+    if (player.galacticSacrifice && player.galaxies > 0) document.getElementById("gSacrifice").style.display = "inline-block"
     if (player.eternities < 30) {
         document.getElementById("secondRow").style.display = "none";
         document.getElementById("thirdRow").style.display = "none";
@@ -3426,6 +3427,8 @@ document.getElementById("bigcrunch").onclick = function () {
         }
         auto = autoS; //only allow autoing if prev crunch was autoed
         autoS = true;
+        var galacticUpgradesOnInfinity=[]
+        if (player.galacticSacrifice&&player.achievements.includes("r36")) for (id=0;id<player.galacticSacrifice.upgrades.length;id++) galacticUpgradesOnInfinity.push(player.galacticSacrifice.upgrades[id])
         player = {
             money: new Decimal(10),
             tickSpeedCost: new Decimal(1000),
@@ -3476,7 +3479,7 @@ document.getElementById("bigcrunch").onclick = function () {
             resets: 0,
             dbPower: player.dbPower ? new Decimal(1) : undefined,
             galaxies: 0,
-            galacticSacrifice: player.achievements.includes('r36') ? player.galacticSacrifice : resetGalacticSacrifice(),
+            galacticSacrifice: resetGalacticSacrifice(),
             tickDecrease: 0.9,
             totalmoney: player.totalmoney,
             interval: null,
@@ -3570,9 +3573,12 @@ document.getElementById("bigcrunch").onclick = function () {
             quantum: player.quantum,
             aarexModifications: player.aarexModifications
         };
-        if (player.galacticSacrifice) if (player.galacticSacrifice.upgrades.includes(11)) for (d=1;d<8;d++) {
-            var name = TIER_NAMES[d]
-            player[name+"Cost"] = player[name+"Cost"].div(100)
+        if (player.galacticSacrifice&&player.achievements.includes("r36")) {
+            player.galacticSacrifice.upgrades=galacticUpgradesOnInfinity
+            if (player.galacticSacrifice.upgrades.includes(11)) for (d=1;d<8;d++) {
+               var name = TIER_NAMES[d]
+               player[name+"Cost"] = player[name+"Cost"].div(100)
+            }
         }
         if (player.bestInfinityTime <= 0.01) giveAchievement("Less than or equal to 0.001");
 
@@ -5228,6 +5234,7 @@ setInterval(function() {
     else document.getElementById("challengetimesbtn").style.display = "none"
     if (player.infinitied > 0  || player.eternities > 0 || quantumed) document.getElementById("pastinfs").style.display = "inline-block"
     else document.getElementById("pastinfs").style.display = "none"
+    document.getElementById("speedrunsbtn").style.display = (player.masterystudies && quantumed) ? "" : "none"
 
     if (player.infinitied !== 0 || player.eternities !== 0 || quantumed) document.getElementById("bigCrunchAnimBtn").style.display = "inline-block"
     else document.getElementById("bigCrunchAnimBtn").style.display = "none"
@@ -5374,6 +5381,11 @@ setInterval(function() {
     if (player.timestudy.studies.length == 0 && player.dilation.active && player.infinityPoints.e >= 20000) giveAchievement("This is what I have to do to get rid of you.")
     if (player.why >= 1e6) giveAchievement("Should we tell them about buy max...")
     giveAchievement("Universal harmony")
+
+    if (speedrunMilestonesReached>notifyId) {
+        $.notify("You unlocked "+speedrunMilestones[notifyId]+"h speedrun milestone! "+(["You now start with 20,000 eternities when going quantum","You unlocked time theorem autobuyer","You now start with all Eternity Challenges completed","You now start with dilation unlocked","You unlocked a new option for eternity autobuyer","You now start with all dilation studies unlocked","You unlocked first meta dimension autobuyer","You unlocked second meta dimension autobuyer","You unlocked third meta dimension autobuyer","You unlocked fourth meta dimension autobuyer","You unlocked fifth meta dimension autobuyer","You unlocked sixth meta dimension autobuyer","You unlocked seventh meta dimension autobuyer","You unlocked eighth meta dimension autobuyer","You unlocked meta-dimension boost autobuyer","You unlocked quantum autobuyer"])[notifyId]+".","success")
+        notifyId++
+    }
 }, 1000)
 
 function fact(v) {
@@ -5469,8 +5481,24 @@ function gameLoop(diff) {
             player.money = player.money.plus(getDimensionProductionPerSecond(1).times(diff/10).times(player.chall3Pow));
             player.totalmoney = player.totalmoney.plus(getDimensionProductionPerSecond(1).times(diff/10).times(player.chall3Pow));
         } else {
+            var tempm = player.money
+            var temptm = player.totalmoney
             player.money = player.money.plus(getDimensionProductionPerSecond(1).times(diff/10));
-            player.totalmoney = player.totalmoney.plus(getDimensionProductionPerSecond(1).times(diff/10));
+            player.totalmoney = player.totalmoney.plus(getDimensionProductionPerSecond(1).times(diff/10))
+            if (player.totalmoney.gt("1e9000000000000000")) {
+                  document.getElementById("decimalMode").style.display = "none"
+                  if (break_infinity_js) {
+                      player.money = tempm
+                      player.totalmoney = temptm
+                      clearInterval(gameLoopIntervalId)
+                      alert("You have reached the limit of break_infinity.js and you will be forced to switch to logarithmica_numerus.js and soft reset right now.")
+                      player.aarexModifications.breakInfinity = !player.aarexModifications.breakInfinity
+                      player.aarexModifications.switch = true
+                      save_game(true)
+                      document.location.reload(true)
+                      return
+                  }
+            }
         }
         if (player.currentChallenge == "challenge7") {
             player.money = player.money.plus(getDimensionProductionPerSecond(2).times(diff/10));

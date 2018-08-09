@@ -207,12 +207,15 @@ function updateColorCharge() {
 		for (s=1;s<4;s++) {
 			var search=''
 			for (i=0;i<3;i++) {
-				if (!sorted.includes(colors[i])&&Decimal.gte(player.quantum.usedQuarks[colors[i]],search==''?0:player.quantum.usedQuarks[search])) search=colors[i]
+				if (!sorted.includes(colors[i])&&player.quantum.usedQuarks[colors[i]].gte(search==''?0:player.quantum.usedQuarks[search])) search=colors[i]
 			}
 			sorted.push(search)
 		}
 		colorCharge={color:sorted[0],charge:Decimal.sub(player.quantum.usedQuarks[sorted[0]],player.quantum.usedQuarks[sorted[1]]).sub(player.quantum.usedQuarks[sorted[2]])}
-	} else colorCharge={color:'r',charge:new Decimal(0)}
+	} else {
+		colorCharge={color:'r',charge:new Decimal(0)}
+		return
+	}
 	document.getElementById("powerRate").textContent=shortenDimensions(colorCharge.charge)
 	if (colorCharge.charge.eq(0)) {
 		document.getElementById("powerRate").className=''
@@ -222,7 +225,6 @@ function updateColorCharge() {
 		document.getElementById("powerRate").className=color
 		document.getElementById("colorCharge").textContent=color
 	}
-	if (!player.masterystudies) return
 	document.getElementById("redQuarks").textContent=shortenDimensions(player.quantum.usedQuarks.r)
 	document.getElementById("greenQuarks").textContent=shortenDimensions(player.quantum.usedQuarks.g)
 	document.getElementById("blueQuarks").textContent=shortenDimensions(player.quantum.usedQuarks.b)
@@ -241,6 +243,7 @@ function assignQuark(color) {
 	updateGluons()
 }
 
+//v1.75
 GUCosts=[null, 1, 2, 4]
 
 function updateGluons() {
@@ -280,4 +283,31 @@ function buyGluonUpg(color, id) {
 function GUBought(id) {
 	if (!player.masterystudies) return false
 	return player.quantum.upgrades.includes(id)
+}
+
+//v1.8
+var speedrunMilestonesReached
+var speedrunMilestones = [12,10,9,8,7.5,6,5,4.5,4,3,2.5,2,1.75,1.5,1.25,1]
+function updateSpeedruns() {
+	speedrunMilestonesReached = 0
+	if (player.masterystudies) {
+		for (i=0;i<16;i++) {
+			if (player.quantum.best>speedrunMilestones[i]*36e3) break
+			speedrunMilestonesReached++
+		}
+		for (i=1;i<17;i++) document.getElementById("speedrunMilestone"+i).className="achievement achievement"+(speedrunMilestonesReached>=i?"un":"")+"locked"
+	}
+}
+
+function toggleAutoTT() {
+	if (speedrunMilestonesReached<1) maxTheorems()
+	else player.autoEterOptions.tt = !player.autoEterOptions.tt
+	document.getElementById("theoremmax").innerHTML = speedrunMilestonesReached > 2 ? ("Auto max: O"+(player.autoEterOptions.tt?"N":"FF")) : "Buy max Theorems"
+}
+
+//Coming soon
+function doAutoMetaTick() {
+	if (!player.masterystudies) return
+	for (dim=1;dim<9;dim++) if (player.autoEterOptions["md"+dim]) while (canAffordMetaDimension(getMetaMaxCost(tier))) metaBuyManyDimension(tier)
+	if (player.autoEterOptions.metaBoost) metaBoost()
 }

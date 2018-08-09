@@ -1409,6 +1409,7 @@
                 <tr>
                     <td><button class="secondarytabbtn" onclick="showAchTab('normalachievements')">Achievements</button></td>
                     <td><button class="secondarytabbtn" onclick="showAchTab('secretachievements')">Secret Achievements</button></td>
+                    <td id='speedrunsbtn'><button class="secondarytabbtn" onclick="showAchTab('speedruns')">Quantum Speedruns</button></td>
                 </tr>
             </table>
             <div id="normalachievements" class="achtab">
@@ -1859,6 +1860,31 @@
                         <td>
                             <div id="Professional bodybuilder" class="achievement achievementlocked" style="background-image: url(images/s24.png)" ach-tooltip="Professional bodybuilder."><br></div>
                         </td>
+                    </tr>
+                </table>
+            </div>
+            <div id="speedruns" class="achtab" style="display:none;">
+                <span>Rewards for post-8h milestones are coming soon.</span>
+                <table id="secretachievementtable" style="margin: auto">
+                    <tr id="speedrunRow1">
+                        <td><div id="speedrunMilestone1" ach-tooltip="Reward: Start with 20,000 eternities.">12 hours</div></td>
+                        <td><div id="speedrunMilestone2" ach-tooltip="Reward: Unlock time theorem autobuyer.">10 hours</div></td>
+                        <td><div id="speedrunMilestone3" ach-tooltip="Reward: Start with all Eternity Challenges completed.">9 hours</div></td>
+                        <td><div id="speedrunMilestone4" ach-tooltip="Reward: Start with dilation unlocked.">8 hours</div></td>
+                        <td><div id="speedrunMilestone5" ach-tooltip="Reward: Unlock dilation option for eternity autobuyer. (COMING SOON)">7.5 hours</div></td>
+                        <td><div id="speedrunMilestone6" ach-tooltip="Reward: Start with all dilation studies unlocked.">6 hours</div></td>
+                        <td><div id="speedrunMilestone7" ach-tooltip="Reward: Unlock the first meta dimension autobuyer.">5 hours</div></td>
+                        <td><div id="speedrunMilestone8" ach-tooltip="Reward: Unlock the second meta dimension autobuyer.">4.5 hours</div></td>
+                    </tr>
+                    <tr id="speedrunRow2">
+                        <td><div id="speedrunMilestone9" ach-tooltip="Reward: Unlock the third meta dimension autobuyer.">4 hours</div></td>
+                        <td><div id="speedrunMilestone10" ach-tooltip="Reward: Unlock the fourth meta dimension autobuyer.">3 hours</div></td>
+                        <td><div id="speedrunMilestone11" ach-tooltip="Reward: Unlock the fifth meta dimension autobuyer.">2.5 hours</div></td>
+                        <td><div id="speedrunMilestone12" ach-tooltip="Reward: Unlock the sixth meta dimension autobuyer.">2 hours</div></td>
+                        <td><div id="speedrunMilestone13" ach-tooltip="Reward: Unlock the seventh meta dimension autobuyer.">1.75 hours</div></td>
+                        <td><div id="speedrunMilestone14" ach-tooltip="Reward: Unlock the eighth meta dimension autobuyer.">1.5 hours</div></td>
+                        <td><div id="speedrunMilestone15" ach-tooltip="Reward: Unlock meta-dimension boost autobuyer.">1.25 hours</div></td>
+                        <td><div id="speedrunMilestone16" ach-tooltip="Reward: Unlock quantum autobuyer.">1 hour</div></td>
                     </tr>
                 </table>
             </div>
@@ -3109,7 +3135,7 @@
         <button id="quantumConfirmBtn" class="storebtn" onclick="toggleQuantumConf()" style="width: 200px; height: 55px; font-size: 15px" style="display: inline"></button>
 	</div>
     <div id="TTbuttons" style="display:none;">
-        <button class="timetheorembtn" onclick="maxTheorems()" id="theoremmax" style="margin-left:-276px; width:130px; height: 30px; font-size: 0.75rem; bottom: 77px;">Buy max Theorems</button>
+        <button class="timetheorembtn" onclick="toggleAutoTT()" id="theoremmax" style="margin-left:-276px; width:130px; height: 30px; font-size: 0.75rem; bottom: 77px;">Buy max Theorems</button>
         <button class="timetheorembtn" onclick="openStudyPresets()" id="presetsbtn" style="margin-left:146px; width:130px; height: 30px; font-size: 0.75rem; bottom: 77px;">Presets</button>
         <button class="timetheorembtn" onclick="buyWithAntimatter()" id="theoremam" style="margin-left: -276px">Buy Time Theorems <br>Cost: 1e20000 antimatter</button>
         <button class="timetheorembtn" onclick="buyWithIP()" id="theoremip" style="margin-left: -86px">Buy Time Theorems <br>Cost: 1 IP</button>
@@ -3134,16 +3160,16 @@
 <script type="text/javascript" src="javascripts/core/normal_dimension.js?7"></script>
 <script type="text/javascript" src="javascripts/core/infinity_dimension.js?5"></script>
 <script type="text/javascript" src="javascripts/core/time_dimension.js?8"></script>
-<script type="text/javascript" src="javascripts/core/dimboost.js?13"></script>
-<script type="text/javascript" src="javascripts/core/timestudies.js?15"></script>
+<script type="text/javascript" src="javascripts/core/dimboost.js?14"></script>
+<script type="text/javascript" src="javascripts/core/timestudies.js?16"></script>
 <script type="text/javascript" src="javascripts/core/canvases.js?4"></script>
 <script type="text/javascript" src="javascripts/core/devtools.js"></script>
-<script type="text/javascript" src="javascripts/core/load_functions.js?22"></script>
+<script type="text/javascript" src="javascripts/core/load_functions.js?23"></script>
 <script type="text/javascript" src="javascripts/core/newsticker.js?3"></script>
-<script type="text/javascript" src="javascripts/mods/ngmm.js?6"></script>
-<script type="text/javascript" src="javascripts/mods/ngpp.js?11"></script>
-<script type="text/javascript" src="javascripts/mods/ngppp.js?12"></script>
-<script type="text/javascript" src="javascripts/game.js?27"></script>
+<script type="text/javascript" src="javascripts/mods/ngmm.js?7"></script>
+<script type="text/javascript" src="javascripts/mods/ngpp.js?12"></script>
+<script type="text/javascript" src="javascripts/mods/ngppp.js?13"></script>
+<script type="text/javascript" src="javascripts/game.js?28"></script>
 <script type="text/javascript" src="javascripts/sha512.js"></script>
 
 

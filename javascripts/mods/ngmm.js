@@ -16,6 +16,7 @@ function galacticSacrifice() {
 	player.galaxies = -1
 	player.galacticSacrifice.times++
 	player.galacticSacrifice.time = 0
+	GPminpeak = new Decimal(0)
 	galaxyReset()
 }
 
@@ -62,20 +63,20 @@ let galUpgrade12 = function () {
 let galUpgrade13 = function () {
 	return player.galacticSacrifice.galaxyPoints.div(5).plus(1).pow(3)
 }
+let galUpgrade23 = function () {
+	return Math.min(1+player.galacticSacrifice.galaxyPoints.max(1).log10()*0.875,5)
+}
 let galUpgrade32 = function () {
 	return player.totalmoney.pow(0.003).add(1);
 }
 let galUpgrade33 = function () {
-	var ret = player.galacticSacrifice.galaxyPoints.div(200).plus(2)
-	if (ret.gt(10)) ret = Math.sqrt(ret.log10())*10
-	else ret = ret.toNumber()
-	return ret/2
+	return player.galacticSacrifice.galaxyPoints.log10()/2+1
 }
 
 function galacticUpgradeSpanDisplay () {
 	document.getElementById('galspan12').innerHTML = formatValue(player.options.notation, galUpgrade12(), 1, 1)
-	document.getElementById('galspan13').innerHTML = formatValue(player.options.notation, galUpgrade13(), 1, 1)
-	document.getElementById('galspan23').innerHTML = shortenMoney(getDimensionBoostPower().times(player.galacticSacrifice.upgrades.includes(23)?1:player.galacticSacrifice.galaxyPoints.min(150).toNumber()/100+1))
+	document.getElementById('galspan13').innerHTML = shorten(galUpgrade13())
+	document.getElementById('galspan23').innerHTML = shortenMoney(getDimensionBoostPower().times(player.galacticSacrifice.upgrades.includes(23)?1:galUpgrade23()))
 	document.getElementById('galspan32').innerHTML = formatValue(player.options.notation, galUpgrade32(), 1, 1)
 	document.getElementById('galspan33').innerHTML = shorten(getDimensionPowerMultiplier(true)*(player.galacticSacrifice.upgrades.includes(23)?1:galUpgrade33()))
 	document.getElementById('galcost33').innerHTML = shortenCosts(1e3)

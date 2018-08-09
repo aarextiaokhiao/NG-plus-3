@@ -687,6 +687,10 @@ button {
     user-select: none;
 }
 
+#speedruns .achievement {
+	font-size: 12px
+}
+
 .autoBuyerDiv {
     border: solid 1px grey;
     width:230px;
