@@ -368,7 +368,7 @@ function sacrificeGalaxy(id) {
 	else if (id>2) amount=100
 	else if (id>1) amount=10
 	if (amount>player.galaxies-player.quantum.electrons.sacGals) return
-	if (player.options.sacrificeConfirmation) if (!confirm("Sacrificing your sacrifice will do a galaxy reset, but you will not gain galaxies and only reduce your tick interval. You will gain a boost for multiplier per ten dimensions. Are you sure you want to do that?")) return
+	if (player.options.sacrificeConfirmation) if (!confirm("Sacrificing your galaxies reduces your tick interval. You will gain a boost for multiplier per ten dimensions. Are you sure you want to do that?")) return
 	player.quantum.electrons.sacGals+=amount
 	var ret=new Decimal(2)
 	player.quantum.electrons.amount=ret.times(amount).add(player.quantum.electrons.amount)
