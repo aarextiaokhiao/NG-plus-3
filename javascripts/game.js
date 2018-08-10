@@ -1037,7 +1037,7 @@ function updateDimensions() {
             if (player.dilation.totalTachyonParticles - gain > 0) document.getElementById("enabledilation").innerHTML = "Disable dilation.<br>Reach " + shortenMoney(req) + " antimatter to gain more Tachyon Particles."
             else document.getElementById("enabledilation").textContent = "Disable dilation."
         }
-        else document.getElementById("enabledilation").textContent = "Dilate time."+(player.eternityBuyer.isOn&&player.eternityBuyer.dilationMode ? " " + (player.eternityBuyer.dilationPerAmount - player.eternityBuyer.statBeforeDilation) + " left before dilation." : "")
+        else document.getElementById("enabledilation").textContent = "Dilate time."+((player.eternityBuyer.isOn&&player.eternityBuyer.dilationMode?!isNaN(player.eternityBuyer.statBeforeDilation):false) ? " " + (player.eternityBuyer.dilationPerAmount - player.eternityBuyer.statBeforeDilation) + " left before dilation." : "")
     }
 }
 
@@ -3033,7 +3033,7 @@ function updateAutobuyers() {
             startDilatedEternity(true)
             return
         }
-        if (player.quantum.autobuyer) player.quantum.autobuyer.enabled = document.getElementById("quantumison").checked
+        if (player.quantum) if (player.quantum.autobuyer) player.quantum.autobuyer.enabled = document.getElementById("quantumison").checked
     }
     priorityOrder()
 }
@@ -3214,7 +3214,7 @@ function updateCheckBoxes() {
     document.getElementById("eternityison").checked = player.eternityBuyer.isOn
     if (player.masterystudies) {
          document.getElementById("dilatedeternityison").checked = player.eternityBuyer.dilationMode
-         if (player.quantum.autobuyer) document.getElementById("quantumison").checked = player.quantum.autobuyer.enabled
+         if (player.quantum) if (player.quantum.autobuyer) document.getElementById("quantumison").checked = player.quantum.autobuyer.enabled
     }
 }
 

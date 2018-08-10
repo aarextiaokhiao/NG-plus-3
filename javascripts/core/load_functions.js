@@ -610,7 +610,7 @@ if (player.version < 5) {
           }
           player.aarexModifications.newGamePlusVersion = 1
           if (confirm("Do you want to migrate your NG++ save into new NG+++ mode?")) {
-              player.aarexModifications.newGame3PlusVersion = 1.51
+              player.aarexModifications.newGame3PlusVersion = 1.8
               player.dbPower = 1
               player.peakSpent = 0
               player.masterystudies = []
@@ -629,6 +629,18 @@ if (player.version < 5) {
                   gb: 0,
                   br: 0
               }
+              player.eternityBuyer.dilationMode = false
+              player.eternityBuyer.statBeforeDilation = 0
+              player.eternityBuyer.dilationPerAmount = 10
+              player.quantum.autobuyer = {
+                  enabled: false,
+                  limit: 1,
+                  mode: "amount"
+              }
+              player.quantum.electrons = {
+                  amount: 0,
+                  sacGals: 0
+              }
           }
           player.dilation.upgrades=migratedUpgrades
           resetDilationGalaxies()
@@ -637,6 +649,7 @@ if (player.version < 5) {
       delete player.aarexModifications.meta
       delete player.aarexModifications.autoEterMode
       delete player.aarexModifications.autoEterOptions
+      delete player.quantum
 
   }
   if (player.aarexModifications.newGamePlusPlusVersion < 2) {
@@ -672,9 +685,8 @@ if (player.version < 5) {
       if (metaAchCheck||noD9AchCheck||metaBoostCheck) giveAchievement("I'm so meta")
       player.galaxyMaxBulk = false
   }
-  var quantumRestore = player.aarexModifications.newGamePlusPlusVersion < 2.9 || (player.quantum ? false : player.aarexModifications.newGamePlusPlusVersion > 2.4)
+  var quantumRestore = player.aarexModifications.newGamePlusPlusVersion < 2.9 || (!player.quantum && player.aarexModifications.newGamePlusPlusVersion > 2.4)
   if (quantumRestore) {
-      var quantumRestore = true
       player.quantum = {
           times: 0,
           quarks: 0,
@@ -737,6 +749,12 @@ if (player.version < 5) {
       player.aarexModifications.newGame3PlusVersion=1.51
   }
   if (player.aarexModifications.newGame3PlusVersion < 1.511) if (player.autoEterMode !== undefined) player.autoEterMode = "amount"
+  if ((player.quantum ? !player.quantum.electrons : false) && player.masterystudies) {
+      player.quantum.electrons = {
+          amount: 0,
+          sacGals: 0
+      }
+  }
   if (player.aarexModifications.newGame3PlusVersion < 1.8) {
       player.eternityBuyer.dilationMode = false
       player.eternityBuyer.statBeforeDilation = 0
@@ -745,10 +763,6 @@ if (player.version < 5) {
           enabled: false,
           limit: 1,
           mode: "amount"
-      }
-      player.quantum.electrons = {
-          amount: 0,
-          sacGals: 0
       }
       player.aarexModifications.newGame3PlusVersion=1.8
   }
@@ -1283,7 +1297,7 @@ function transformSaveToDecimal() {
           player.quantum.gluons.gb = new Decimal(player.quantum.gluons.gb)
           player.quantum.gluons.br = new Decimal(player.quantum.gluons.br)
       }
-      if (player.quantum ? player.aarexModifications.newGame3PlusVersion > 1.79 : false) player.quantum.electrons.amount = new Decimal(player.quantum.electrons.amount)
+      if (player.quantum ? player.quantum.electrons : false) player.quantum.electrons.amount = new Decimal(player.quantum.electrons.amount)
   }
 }
 
@@ -1307,7 +1321,7 @@ function loadAutoBuyerSettings() {
   document.getElementById("priority13").value = formatValue("Scientific", player.eternityBuyer.limit, 2, 0)
   if (player.masterystudies) {
       document.getElementById("prioritydil").value = player.eternityBuyer.dilationPerAmount
-      if (player.quantum.autobuyer) document.getElementById("priorityquantum").value = formatValue("Scientific", player.quantum.autobuyer.limit, 2, 0)
+      if (player.quantum) if (player.quantum.autobuyer) document.getElementById("priorityquantum").value = formatValue("Scientific", player.quantum.autobuyer.limit, 2, 0)
   }
 }
 
