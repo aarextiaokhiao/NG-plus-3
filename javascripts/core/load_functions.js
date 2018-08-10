@@ -737,7 +737,21 @@ if (player.version < 5) {
       player.aarexModifications.newGame3PlusVersion=1.51
   }
   if (player.aarexModifications.newGame3PlusVersion < 1.511) if (player.autoEterMode !== undefined) player.autoEterMode = "amount"
-  if (player.aarexModifications.newGame3PlusVersion < 1.79) player.aarexModifications.newGame3PlusVersion=1.79
+  if (player.aarexModifications.newGame3PlusVersion < 1.8) {
+      player.eternityBuyer.dilationMode = false
+      player.eternityBuyer.statBeforeDilation = 0
+      player.eternityBuyer.dilationPerAmount = 10
+      player.quantum.autobuyer = {
+          enabled: false,
+          limit: 1,
+          mode: "amount"
+      }
+      player.quantum.electrons = {
+          amount: 0,
+          sacGals: 0
+      }
+      player.aarexModifications.newGame3PlusVersion=1.8
+  }
   if (player.aarexModifications.newGame3PlusVersion==undefined) {
       colorBoosts={
           r:1,
@@ -833,11 +847,11 @@ if (player.version < 5) {
 
   quantumed = false
   if (player.meta !== undefined) quantumed = player.quantum.times > 0
-  document.getElementById("confirmations").style.display = (player.resets > 4 || player.infinitied !== 0 || player.eternities !== 0 || quantumed) ? "inline-block" : "none"
-  document.getElementById("confirmation").style.display = (player.resets > 4 || player.infinitied > 0 || player.eternities !== 0 || quantumed) ? "inline-block" : "none"
+  document.getElementById("confirmations").style.display = (player.resets > 4 || player.galaxies > 0 || (player.galacticSacrifice ? player.galacticSacrifice.times > 0 : false) || player.infinitied !== 0 || player.eternities !== 0 || quantumed) ? "inline-block" : "none"
+  document.getElementById("confirmation").style.display = (player.resets > 4 || player.galaxies > 0 || (player.galacticSacrifice ? player.galacticSacrifice.times > 0 : false) || player.infinitied > 0 || player.eternities !== 0 || quantumed) ? "inline-block" : "none"
   document.getElementById("sacrifice").style.display = (player.resets > 4 || player.infinitied > 0 || player.eternities !== 0 || quantumed) ? "inline-block" : "none"
   document.getElementById("gSacrifice").style.display = (player.galacticSacrifice ? (player.galaxies > 0 || player.galacticSacrifice.times > 0 || player.infinitied > 0 || player.eternities !== 0 || quantumed) : false) ? "inline-block" : "none"
-  document.getElementById("sacConfirmBtn").style.display = (player.resets > 4 || player.infinitied > 0 || player.eternities !== 0 || quantumed) ? "inline-block" : "none"
+  document.getElementById("sacConfirmBtn").style.display = (player.resets > 4 || player.galaxies > 0 || (player.galacticSacrifice ? player.galacticSacrifice.times > 0 : false) || player.infinitied > 0 || player.eternities !== 0 || quantumed) ? "inline-block" : "none"
   document.getElementById("challengeconfirmation").style.display = (player.infinitied !== 0 || player.eternities !== 0 || quantumed) ? "inline-block" : "none"
   document.getElementById("eternityconf").style.display = (player.eternities !== 0 || quantumed) ? "inline-block" : "none"
   document.getElementById("dilationConfirmBtn").style.display = (player.dilation.studies.includes(1) || quantumed) ? "inline-block" : "none"
@@ -901,13 +915,18 @@ if (player.version < 5) {
   document.getElementById('togglealltimedims').style.visibility=player.achievements.includes("ngpp17")?"visible":"hidden"
   document.getElementById('replicantibulkmodetoggle').style.display=player.achievements.includes("ngpp16")?"inline-block":"none"
   document.getElementById('replicantibulkmodetoggle').textContent="Mode: "+(player.galaxyMaxBulk?"Max":"Singles")
+  document.getElementById('electronstabbtn').style.display=(player.masterystudies?player.masterystudies.includes("d7"):false)?"":"none"
   if (player.meta) {
       document.getElementById('epmultauto').textContent="Auto: O"+(player.autoEterOptions.epmult?"N":"FF")
       for (i=1;i<9;i++) document.getElementById("td"+i+'auto').textContent="Auto: O"+(player.autoEterOptions["td"+i]?"N":"FF")
   }
-  if (player.aarexModifications.newGame3PlusVersion) {
+  if (player.masterystudies) {
       updateMasteryStudyCosts()
       updateMasteryStudyButtons()
+      document.getElementById('rebuyupgauto').textContent="Rebuyable upgrade auto: O"+(player.autoEterOptions.rebuyupg?"N":"FF")
+      document.getElementById('metaboostauto').textContent="Meta-boost auto: O"+(player.autoEterOptions.metaboost?"N":"FF")
+      document.getElementById('prioritydil').value=player.eternityBuyer.dilationPerAmount
+      document.getElementById('priorityquantum').value=formatValue("Scientific", new Decimal(player.quantum.autobuyer.limit), 2, 0)
   }
   transformSaveToDecimal();
   updateChallengeTimes();
@@ -922,6 +941,11 @@ if (player.version < 5) {
   updateColorCharge()
   updateGluons()
   updateSpeedruns()
+  document.getElementById('dilationmode').style.display=speedrunMilestonesReached>4?"":"none"
+  document.getElementById('rebuyupgauto').style.display=speedrunMilestonesReached>6?"":"none"
+  document.getElementById('toggleallmetadims').style.display=speedrunMilestonesReached>7?"":"none"
+  document.getElementById('metaboostauto').style.display=speedrunMilestonesReached>14?"":"none"
+  document.getElementById("autoBuyerQuantum").style.display=speedrunMilestonesReached>15?"":"none"
   notifyId=speedrunMilestonesReached
   updatePowers()
   var detectNGPStart = player.lastUpdate == 1531944153054
@@ -1259,6 +1283,7 @@ function transformSaveToDecimal() {
           player.quantum.gluons.gb = new Decimal(player.quantum.gluons.gb)
           player.quantum.gluons.br = new Decimal(player.quantum.gluons.br)
       }
+      if (player.quantum ? player.aarexModifications.newGame3PlusVersion > 1.79 : false) player.quantum.electrons.amount = new Decimal(player.quantum.electrons.amount)
   }
 }
 
@@ -1280,7 +1305,10 @@ function loadAutoBuyerSettings() {
   document.getElementById("prioritySac").value = player.autoSacrifice.priority
   document.getElementById("bulkgalaxy").value = player.autobuyers[10].bulk
   document.getElementById("priority13").value = formatValue("Scientific", player.eternityBuyer.limit, 2, 0)
-
+  if (player.masterystudies) {
+      document.getElementById("prioritydil").value = player.eternityBuyer.dilationPerAmount
+      if (player.quantum.autobuyer) document.getElementById("priorityquantum").value = formatValue("Scientific", player.quantum.autobuyer.limit, 2, 0)
+  }
 }
 
 function set_save(id, value) {

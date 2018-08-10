@@ -5,12 +5,14 @@ function canBuyTickSpeed() {
 
 function getTickSpeedMultiplier() {
   if (player.currentChallenge == "postc3" || isIC3Trapped()) return 1;
-  if (player.galaxies + player.replicanti.galaxies + player.dilation.freeGalaxies < 3) {
+  var realnormalgalaxies = player.galaxies
+  if (player.masterystudies) realnormalgalaxies = Math.max(player.galaxies-player.quantum.electrons.sacGals,0)
+  if (realnormalgalaxies + player.replicanti.galaxies + player.dilation.freeGalaxies < 3) {
       let baseMultiplier = 0.9;
-      if (player.galaxies == 0) baseMultiplier = 0.89
+      if (realnormalgalaxies == 0) baseMultiplier = 0.89
       if (player.currentChallenge == "challenge6" || player.currentChallenge == "postc1") baseMultiplier = 0.93;
       let perGalaxy = 0.02;
-      let galaxies = player.galaxies+player.replicanti.galaxies+player.dilation.freeGalaxies
+      let galaxies = realnormalgalaxies+player.replicanti.galaxies+player.dilation.freeGalaxies
       if (player.timestudy.studies.includes(133)) galaxies += player.replicanti.galaxies/2
       if (player.timestudy.studies.includes(132)) galaxies += player.replicanti.galaxies*0.4
       galaxies += extraReplGalaxies
@@ -22,14 +24,14 @@ function getTickSpeedMultiplier() {
       if (player.achievements.includes("ngpp8")) perGalaxy *= 1.001;
       if (player.timestudy.studies.includes(212)) perGalaxy *= Math.min(Math.pow(player.timeShards.max(2).log2(), 0.005), 1.1)
       perGalaxy *= colorBoosts.r
-      if (GUBought("rg2")) galaxies *= Math.pow(player.dilation.freeGalaxies/5e3+1,0.25)
+      if (GUBought("rg2")) perGalaxy *= Math.pow(player.dilation.freeGalaxies/5e3+1,0.25)
 
-      return baseMultiplier-(player.galaxies*perGalaxy);
+      return baseMultiplier-(realnormalgalaxies*perGalaxy);
   } else {
       let baseMultiplier = 0.8
       if (player.currentChallenge == "challenge6" || player.currentChallenge == "postc1") baseMultiplier = 0.83
       let perGalaxy = 0.965
-      let galaxies = player.galaxies-2+player.replicanti.galaxies+player.dilation.freeGalaxies
+      let galaxies = realnormalgalaxies-2+player.replicanti.galaxies+player.dilation.freeGalaxies
       if (player.timestudy.studies.includes(133)) galaxies += player.replicanti.galaxies/2
       if (player.timestudy.studies.includes(132)) galaxies += player.replicanti.galaxies*0.4
       galaxies += extraReplGalaxies
@@ -40,7 +42,7 @@ function getTickSpeedMultiplier() {
       if (player.achievements.includes("r86")) galaxies *= 1.01
       if (player.achievements.includes("ngpp8")) galaxies *= 1.001;
       if (player.timestudy.studies.includes(212)) galaxies *= Math.min(Math.pow(player.timeShards.max(2).log2(), 0.005), 1.1)
-      if (player.timestudy.studies.includes(232)) galaxies *= Math.pow(1+player.galaxies/1000, 0.2)
+      if (player.timestudy.studies.includes(232)) galaxies *= Math.pow(1+realnormalgalaxies/1000, 0.2)
       galaxies *= colorBoosts.r
       if (GUBought("rg2")) galaxies *= Math.pow(player.dilation.freeGalaxies/3e3+1,0.25)
 

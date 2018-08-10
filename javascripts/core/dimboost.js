@@ -215,6 +215,7 @@ if (player.currentChallenge == "postc2") {
       document.getElementById("confirmation").style.display = "inline-block";
       document.getElementById("sacrifice").style.display = "inline-block";
       document.getElementById("confirmations").style.display = "inline-block";
+      document.getElementById("sacConfirmBtn").style.display = "inline-block";
   }
   if (player.eternities < 30) {
       document.getElementById("secondRow").style.display = "none";

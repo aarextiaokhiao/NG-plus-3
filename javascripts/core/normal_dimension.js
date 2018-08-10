@@ -179,6 +179,7 @@ function hasInfinityMult(tier) {
         if (player.achievements.includes("r58")) dimMult *= 1.01;
         dimMult += ECTimesCompleted("eterc3") * 0.8
         if (player.galacticSacrifice) if (player.galacticSacrifice.upgrades.includes(33)) dimMult *= galUpgrade33();
+        if (player.masterystudies) dimMult = Decimal.pow(dimMult, getMPTPower())
         return dimMult;
     }
     

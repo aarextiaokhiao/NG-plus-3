@@ -27,10 +27,11 @@
         ga('send', 'pageview');
 
     </script>
+    <script type="text/javascript" src="javascripts/stuck.js"></script>
 </head>
 <img id="loading" src="images/Loading.png">
 <div id="snow" style="display: none; "></div>
-<body id="body" style="height: 95vh; ">
+<body id="body" style="height: 95vh; " onload="initGame()">
     <div id="container" class="container" style="color:#4F5957; font-family: Typewriter; text-align:center; font-size: 11px; display:none">
         <div id='game' style='display:none'>
             <div id='news'>.</div>
@@ -367,6 +368,11 @@
                         <td><button class="eternitychallengestudy" id="ec14unl" onclick='buyMasteryStudy("ec", 14)'>Eternity Challenge 14<br>Requirement: <span id="ec14Req" style="display: inline;"></span>% replicate chance<br><span id="ec14Cost" style="display: inline;"></span></button></td>
                     </tr>
                 </table>
+                <table class="table" id="studytable">
+                    <tr>
+                        <td><button class="timestudylocked" id="dilstudy7" onclick='buyMasteryStudy("d", 7)'>Unlock Electrons<br><span id="ds7Cost"></span></button></td>
+                    </tr>
+                </table>
                 <div style="height: 60px;"></div>
                 <div>
                     <table id="footer">
@@ -574,6 +580,7 @@
                 <button id="enabledilation" class="dilationbtn" onclick="startDilatedEternity()">Dilate time.</button>
                 <p>You have <span id="dilatedTimeAmount" style="font-size:35px; color: black">0</span> dilated time <span id="dilatedTimePerSecond" style="font-size:25px; color: black">0</span></p>
                 <p>Next free galaxy at <span id="galaxyThreshold" style="font-size:25px; color: black">1000</span> dilated time, gained total of <span id="dilatedGalaxies" style="font-size:25px; color: black">0</span></p>
+                <button id="rebuyupgauto" style="width:250px; height: 30px; font-size: 12px" onclick="toggleAutoEter('rebuyupg')" class="storebtn"></button>
                 <table>
                     <tr>
                         <td>
@@ -1196,6 +1203,8 @@
                       </td>
                   </tr>
                 </table>
+                <button id="metaboostauto" style="width:160px; height: 30px; font-size: 12px" onclick="toggleAutoEter('metaboost')" class="storebtn">Toggle all ON/OFF</button>
+                <button id="toggleallmetadims" style="width:300px; height: 30px; font-size: 12px" onclick="toggleAllMetaDims()" class="storebtn">Toggle all meta-dims autobuyer ON/OFF</button>
             </div>
             <div id="production" class="dimtab">
                 <b>seconds of history:</b>
@@ -1861,27 +1870,27 @@
                 </table>
             </div>
             <div id="speedruns" class="achtab" style="display:none;">
-                <span>Rewards for post-8h milestones are coming soon.</span>
+                <div>Get your best quantum to reach below the requirement for a reward!</div>
                 <table id="secretachievementtable" style="margin: auto">
                     <tr id="speedrunRow1">
                         <td><div id="speedrunMilestone1" ach-tooltip="Reward: Start with 20,000 eternities.">12 hours</div></td>
                         <td><div id="speedrunMilestone2" ach-tooltip="Reward: Unlock time theorem autobuyer.">10 hours</div></td>
-                        <td><div id="speedrunMilestone3" ach-tooltip="Reward: Start with all Eternity Challenges completed.">9 hours</div></td>
+                        <td><div id="speedrunMilestone3" ach-tooltip="Reward: Start with all Eternity Challenges completed and eternity upgrades bought.">9 hours</div></td>
                         <td><div id="speedrunMilestone4" ach-tooltip="Reward: Start with dilation unlocked.">8 hours</div></td>
-                        <td><div id="speedrunMilestone5" ach-tooltip="Reward: Unlock dilation option for eternity autobuyer. (COMING SOON)">7.5 hours</div></td>
-                        <td><div id="speedrunMilestone6" ach-tooltip="Reward: Start with all dilation studies unlocked.">6 hours</div></td>
-                        <td><div id="speedrunMilestone7" ach-tooltip="Reward: Unlock the first meta dimension autobuyer.">5 hours</div></td>
-                        <td><div id="speedrunMilestone8" ach-tooltip="Reward: Unlock the second meta dimension autobuyer.">4.5 hours</div></td>
+                        <td><div id="speedrunMilestone5" ach-tooltip="Reward: Unlock dilation option for eternity autobuyer.">6 hours</div></td>
+                        <td><div id="speedrunMilestone6" ach-tooltip="Reward: Start with all dilation studies & non-rebuyable dilation upgrades before meta dimensions unlocked.">5 hours</div></td>
+                        <td><div id="speedrunMilestone7" ach-tooltip="Reward: Unlock the first meta dimension autobuyer and rebuyable dilation upgrades autobuyer.">4 hours</div></td>
+                        <td><div id="speedrunMilestone8" ach-tooltip="Reward: Unlock the second meta dimension autobuyer.">3.5 hours</div></td>
                     </tr>
                     <tr id="speedrunRow2">
-                        <td><div id="speedrunMilestone9" ach-tooltip="Reward: Unlock the third meta dimension autobuyer.">4 hours</div></td>
-                        <td><div id="speedrunMilestone10" ach-tooltip="Reward: Unlock the fourth meta dimension autobuyer.">3 hours</div></td>
-                        <td><div id="speedrunMilestone11" ach-tooltip="Reward: Unlock the fifth meta dimension autobuyer.">2.5 hours</div></td>
-                        <td><div id="speedrunMilestone12" ach-tooltip="Reward: Unlock the sixth meta dimension autobuyer.">2 hours</div></td>
-                        <td><div id="speedrunMilestone13" ach-tooltip="Reward: Unlock the seventh meta dimension autobuyer.">1.75 hours</div></td>
-                        <td><div id="speedrunMilestone14" ach-tooltip="Reward: Unlock the eighth meta dimension autobuyer.">1.5 hours</div></td>
-                        <td><div id="speedrunMilestone15" ach-tooltip="Reward: Unlock meta-dimension boost autobuyer.">1.25 hours</div></td>
-                        <td><div id="speedrunMilestone16" ach-tooltip="Reward: Unlock quantum autobuyer.">1 hour</div></td>
+                        <td><div id="speedrunMilestone9" ach-tooltip="Reward: Unlock the third meta dimension autobuyer.">3 hours</div></td>
+                        <td><div id="speedrunMilestone10" ach-tooltip="Reward: Unlock the fourth meta dimension autobuyer.">2.5 hours</div></td>
+                        <td><div id="speedrunMilestone11" ach-tooltip="Reward: Unlock the fifth meta dimension autobuyer and keep time studies.">2 hours</div></td>
+                        <td><div id="speedrunMilestone12" ach-tooltip="Reward: Unlock the sixth meta dimension autobuyer.">1.6 hours</div></td>
+                        <td><div id="speedrunMilestone13" ach-tooltip="Reward: Unlock the seventh meta dimension autobuyer.">1.2 hours</div></td>
+                        <td><div id="speedrunMilestone14" ach-tooltip="Reward: Unlock the eighth meta dimension autobuyer and keep all non-rebuyable dilation upgrades.">48 minutes</div></td>
+                        <td><div id="speedrunMilestone15" ach-tooltip="Reward: Unlock meta-dimension boost autobuyer.">24 minutes</div></td>
+                        <td><div id="speedrunMilestone16" ach-tooltip="Reward: Unlock quantum autobuyer.">1 minute</div></td>
                     </tr>
                 </table>
             </div>
@@ -2593,14 +2602,31 @@
                 <button class="storebtn" id="togglecrunchmode" style="font-size: 100%; width: 150px; height: 40px;margin: 3px; display: none" onclick="toggleCrunchMode()">Auto crunch mode: amount</button>
                 <button class="storebtn" id="toggleautoetermode" style="font-size: 100%; width: 150px; height: 40px;margin: 3px; display: none" onclick="toggleAutoEterMode()">Auto eternity mode: amount</button>
                 <br>
-                <div class="autoBuyerDiv" id="autoBuyerEter">
+                <tr>
+                <td></td>
+                <td id="autoBuyerEter"><div class="autoBuyerDiv" style="display:block">
                     <div>Automatic Eternity</div>
                     <div><span id='eterlimittext'>Amount of EP to wait until reset:</span>
                     <input type="text" onchange="updatePriorities()" id="priority13"></input></div>
                     <br>
                     <span style="font-size: 80%">Is active</span>
                     <input type="checkbox" onchange="updateAutobuyers()"  id="eternityison"></input>
-                </div>
+                    <div id='dilationmode'>
+                        <div>Amount of eternities to wait until dilate time:
+                        <input type="text" onchange="updatePriorities()" id="prioritydil"></input></div>
+                        <span style="font-size: 80%">Is active</span>
+                        <input type="checkbox" onchange="updateAutobuyers()"  id="dilatedeternityison"></input>
+                    </div>
+                </div></td>
+                <td id="autoBuyerQuantum"><div class="autoBuyerDiv" style="display:block">
+                    <div>Automatic Quantum</div>
+                    <div>Amount of QK to wait until reset:
+                    <input type="text" onchange="updatePriorities()" id="priorityquantum"></input></div>
+                    <br>
+                    <span style="font-size: 80%">Is active</span>
+                    <input type="checkbox" onchange="updateAutobuyers()"  id="quantumison"></input>
+                </div></td>
+                </tr>
                 <tr>
                         <td>
                             <div class="autoBuyerDiv" id="autoBuyerDimBoost" style="font-size: 11px;">
@@ -3009,10 +3035,13 @@
 
         </div>
 		<div class='tab' id='quantumtab'>
-			<tr>
-				<td><button class="secondarytabbtn" onclick="showQuantumTab('uquarks')">Quarks</button><td>
-				<td><button class="secondarytabbtn" onclick="showQuantumTab('gluons')">Gluons</button><td>
-			</tr>
+			<table class="table" align="center" style="margin: auto">
+				<tr>
+					<td><button class="secondarytabbtn" onclick="showQuantumTab('uquarks')">Quarks</button></td>
+					<td><button class="secondarytabbtn" onclick="showQuantumTab('gluons')">Gluons</button></td>
+					<td id='electronstabbtn'><button class="secondarytabbtn" onclick="showQuantumTab('electrons')">Electrons</button></td>
+				</tr>
+			</table>
 			<div class='quantumtab' id='uquarks'>
 				<table class='qtable'><tr>
 					<td>
@@ -3046,9 +3075,9 @@
 			</div>
 			<div class='quantumtab' id='gluons'>
 				<table class='qtable'><tr>
-					<td><p>You have <span id="rg" style="font-size:35px">0</span> red-green gluons.<br>+<span id='rggain'>0</span> on next quantum.</p></td>
-					<td><p>You have <span id="gb" style="font-size:35px">0</span> green-blue gluons.<br>+<span id='gbgain'>0</span> on next quantum.</p></td>
-					<td><p>You have <span id="br" style="font-size:35px">0</span> blue-red gluons.<br>+<span id='brgain'>0</span> on next quantum.</p></td>
+					<td><p>You have <span id="rg" style="font-size:35px">0</span> red-green gluons.<br>+<span id='rggain'>0</span> on next quantum from red quarks.</p></td>
+					<td><p>You have <span id="gb" style="font-size:35px">0</span> green-blue gluons.<br>+<span id='gbgain'>0</span> on next quantum from green quarks.</p></td>
+					<td><p>You have <span id="br" style="font-size:35px">0</span> blue-red gluons.<br>+<span id='brgain'>0</span> on next quantum from blue quarks.</p></td>
 				</tr><tr>
 					<td><button id='rgupg1' onclick='buyGluonUpg("rg",1)'>Remote galaxy cost scaling grows slower.<br>Cost: 1 RG gluons</button></td>
 					<td><button id='gbupg1' onclick='buyGluonUpg("gb",1)'>You gain more replicanti based on your tickspeed reduction multiplier.<br>Cost: 1 GB gluons</button></td>
@@ -3062,6 +3091,16 @@
 					<td><button id='gbupg3' onclick='buyGluonUpg("gb",3)'>You gain 2.3x more IP by buying IP mult.<br>Cost: 4 GB gluons</button></td>
 					<td><button id='brupg3' onclick='buyGluonUpg("br",3)'>Tachyon particles are little bit stronger.<br>Cost: 4 BR gluons</button></td>
 				</tr></table>
+			</div>
+			<div class='quantumtab' id='electrons'>
+				You have <span id="electronsAmount" style="font-size:35px">0</span> electrons.<br>
+				Multiplier per ten dimensions is raised to the power of <span id="electronsTranslation" style="font-size:35px">1.00</span>.<br>
+				You sacrificed <span id='sacrificedGals'>0</span> galaxies.<br>
+				<button class='storebtn' id='sacrifice1' onclick='sacrificeGalaxy(1)' style='width:250px'>Sacrifice 1 normal galaxy</button><br>
+				<button class='storebtn' id='sacrifice2' onclick='sacrificeGalaxy(2)' style='width:250px'>Sacrifice 10 normal galaxies</button><br>
+				<button class='storebtn' id='sacrifice3' onclick='sacrificeGalaxy(3)' style='width:250px'>Sacrifice 100 normal galaxies</button><br>
+				<button class='storebtn' id='sacrifice4' onclick='sacrificeGalaxy(4)' style='width:250px'>Sacrifice 1,000 normal galaxies</button><br>
+				<button class='storebtn' id='sacrifice5' onclick='sacrificeGalaxy(5)' style='width:250px'>Sacrifice 50%</button>
 			</div>
 			<div id="footercontainer">
 				<table id="footer">
@@ -3081,6 +3120,10 @@
     <div class="popup" id="challfail">
         <div id="failPopup">You failed the challenge, you will now exit it.</div>
         <button class="storebtn" style="font-size: 15px" onclick="closeToolTip()" style="display: inline">Okay</button>
+    </div>
+    <div class="popup" id="stuck">
+        <div>If you stuck at the loading screen, please click "Okay" to load the game!</div><br><br>
+        <button class="storebtn" style="font-size: 15px" onclick="initGame()" style="display: inline">Okay</button>
     </div>
 	<div class="popup optionmenu" id="welcome">
         <div><text id="welcomeMessage"></text></div>
@@ -3143,10 +3186,6 @@
     <div id="progress" style="display:none">
         <div id="progressbar"><span id="progresspercent" ach-tooltip="Percentage until Infinity">0%</span></div>
     </div>
-</body>
-
-
-
 <script type="text/javascript" src="javascripts/autobuyer.js"></script>
 <script type="text/javascript" src="javascripts/break_infinity.min.js?1"></script>
 <script type="text/javascript" src="javascripts/logarithmica_numerus_lite.js?2"></script>
@@ -3157,21 +3196,19 @@
 <script type="text/javascript" src="javascripts/core/achievements.js?5"></script>
 <script type="text/javascript" src="javascripts/core/chart.js"></script>
 <script type="text/javascript" src="javascripts/core/tickspeed.js?6"></script>
-<script type="text/javascript" src="javascripts/core/normal_dimension.js?7"></script>
+<script type="text/javascript" src="javascripts/core/normal_dimension.js?8"></script>
 <script type="text/javascript" src="javascripts/core/infinity_dimension.js?5"></script>
 <script type="text/javascript" src="javascripts/core/time_dimension.js?8"></script>
-<script type="text/javascript" src="javascripts/core/dimboost.js?14"></script>
-<script type="text/javascript" src="javascripts/core/timestudies.js?16"></script>
+<script type="text/javascript" src="javascripts/core/dimboost.js?15"></script>
+<script type="text/javascript" src="javascripts/core/timestudies.js?17"></script>
 <script type="text/javascript" src="javascripts/core/canvases.js?4"></script>
 <script type="text/javascript" src="javascripts/core/devtools.js"></script>
 <script type="text/javascript" src="javascripts/core/load_functions.js?23"></script>
 <script type="text/javascript" src="javascripts/core/newsticker.js?3"></script>
-<script type="text/javascript" src="javascripts/mods/ngmm.js?7"></script>
-<script type="text/javascript" src="javascripts/mods/ngpp.js?12"></script>
-<script type="text/javascript" src="javascripts/mods/ngppp.js?13"></script>
-<script type="text/javascript" src="javascripts/game.js?28"></script>
+<script type="text/javascript" src="javascripts/mods/ngmm.js?8"></script>
+<script type="text/javascript" src="javascripts/mods/ngpp.js?13"></script>
+<script type="text/javascript" src="javascripts/mods/ngppp.js?14"></script>
+<script type="text/javascript" src="javascripts/game.js?29"></script>
 <script type="text/javascript" src="javascripts/sha512.js"></script>
-
-
-
+</body>
 </html>

@@ -846,6 +846,7 @@ button {
 }
 
 #progresspercent {
+    font-family: Typewriter;
     pointer-events: all !important;
 }
 

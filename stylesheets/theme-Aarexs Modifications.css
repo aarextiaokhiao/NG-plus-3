@@ -49,6 +49,7 @@ body {
     border-radius: 0px !important
 }
 #progresspercent {
+    font-family:'Inconsolata', monospace !important;
     color: #191919 !important;
     border-radius: 0px !important
 }
@@ -347,10 +348,10 @@ strong { color: #0072e5 }
 #metaAntimatterAmount, #metaAntimatterBest, #metaAntimatterEffect {
     color: #00e5e5 !important
 }
-#quantum.storebtn, .quantumbtn, #pastquantums {
+#quantum.storebtn, .quantumbtn, #pastquantums, #speedrunsbtn button {
     border-color: #009900 !important
 }
-#quantum.storebtn:hover, .quantumbtn:hover, #pastquantums:hover {
+#quantum.storebtn:hover, .quantumbtn:hover, #pastquantums:hover, #speedrunsbtn button:hover {
     background-color: #009900 !important
 }
 #QK {
@@ -372,6 +373,9 @@ strong { color: #0072e5 }
 	border: 2px solid #191919 !important;
 	color: #191919 !important
 }
+#dilstudy7.dilationupg, #electronstabbtn button, #electrons .storebtn { border: 2px solid #d2e500 !important }
+#dilstudy7.dilationupg:hover, #electronstabbtn button:hover, #dilstudy7.dilationupgbought, #electrons .storebtn:hover { background-color: #d2e500 !important }
+#electronsAmount, #electronsTranslation { color: #d2e500 !important }
 .notifyjs-bootstrap-info {
     background-color: #0072e5;
     font-family:'Inconsolata', monospace;

@@ -2,7 +2,7 @@ masterystudies={initialCosts:{time:{241: 1e71, 251: 2e71, 252: 2e71, 253: 2e71, 
 		ec:{13:1e72, 14:1e72}},
 	costs:{time:{},
 		ec:{},
-		dil:{},
+		dil:{7: 2e82},
 		mc:{}},
 	costmults:{241: 1, 251: 2.5, 252: 2.5, 253: 2.5, 261: 6, 262: 6, 263: 6, 264: 6, 265: 6, 266: 6},
 	costmult:1,
@@ -34,6 +34,13 @@ function updateMasteryStudyButtons() {
 		document.getElementById("ec"+id+"Req").textContent=getFullExpansion(masterystudies.reqs[id])
 	}
 	for (id=262;id<265;id++) document.getElementById("ts"+id+"Current").textContent="Currently: "+shorten(getMTSMult(id))+"x"
+	if (quantumed) for (id=7;id<8;id++) {
+		var div=document.getElementById("dilstudy"+id)
+		if (player.masterystudies.includes("d"+id)) div.className="dilationupgbought"
+		else if (canBuyMasteryStudy('d', id)) div.className="dilationupg"
+		else div.className="timestudylocked"
+		document.getElementById("ds"+id+"Cost").textContent="Cost: "+shorten(masterystudies.costs.dil[id])+" Time Theorems"
+	}
 }
 
 function updateMasteryStudyCosts() {
@@ -56,16 +63,17 @@ function updateMasteryStudyCosts() {
 	}
 }
 
-var types = {t:"time",ec:"ec"}
+var types = {t:"time",ec:"ec",d:"dil"}
 function buyMasteryStudy(type, id) {
 	if (canBuyMasteryStudy(type, id)) {
 		player.timestudy.theorem-=masterystudies.costs[types[type]][id]
-		if (type=='t') player.masterystudies.push(type+id)
-		else {
+		if (type=='ec') {
 			player.eternityChallUnlocked=id
 			showTab("challenges")
 			showChallengesTab("eternitychallenges")
 			updateEternityChallenges()
+		} else {
+			player.masterystudies.push(type+id)
 		}
 		updateMasteryStudyCosts()
 		updateMasteryStudyButtons()
@@ -74,6 +82,11 @@ function buyMasteryStudy(type, id) {
 		if (id==241&&!GUBought("gb3")) {
 			ipMultPower=2.2
 			document.getElementById("infiMult").innerHTML = "Multiply infinity points from all sources by "+ipMultPower+"<br>currently: "+shorten(player.infMult.times(kongIPMult)) +"x<br>Cost: "+shortenCosts(player.infMultCost)+" IP"
+		}
+		if (id==7) {
+			showTab("quantumtab")
+			showQuantumTab("electrons")
+			document.getElementById("electronstabbtn").style.display=""
 		}
 	}
 }
@@ -86,6 +99,9 @@ function canBuyMasteryStudy(type, id) {
 		var col=id%10
 		if (row>25) return player.masterystudies.includes('t25'+Math.ceil(col/2))
 		if (row>24) return player.masterystudies.includes('t241')
+	} else if (type=='d') {
+		if (player.timestudy.theorem<masterystudies.costs.dil[id]||player.masterystudies.includes('d'+id)) return false
+		if (id>6) if (player.masterystudies.includes(252)) return
 	} else {
 		if (player.timestudy.theorem<masterystudies.costs.ec[id]||player.eternityChallUnlocked) return false
 		if (id>13) if (Math.round(player.replicanti.chance*100)<masterystudies.reqs[14]||!(player.masterystudies.includes('t264')||player.masterystudies.includes('t265')||player.masterystudies.includes('t266'))) return false
@@ -98,7 +114,7 @@ var msc = document.getElementById("studyTreeCanvas2");
 var msctx = msc.getContext("2d");
 function drawMasteryBranch(num1, num2) {
 	if (document.getElementById("eternitystore").style.display === "none" || document.getElementById("masterystudies").style.display === "none" || player.masterystudies === undefined) return
-	var type=num2.split("ec")[1]?"ec":"t"
+	var type=num2.split("ec")[1]?"ec":num2.split("di")[1]?"d":"t"
 	var start=document.getElementById(num1).getBoundingClientRect();
 	var end=document.getElementById(num2).getBoundingClientRect();
 	var x1=start.left + (start.width / 2) + (document.documentElement.scrollLeft || document.body.scrollLeft);
@@ -107,12 +123,16 @@ function drawMasteryBranch(num1, num2) {
 	var y2=end.top + (end.height / 2) + (document.documentElement.scrollTop || document.body.scrollTop);
 	msctx.lineWidth=15;
 	msctx.beginPath();
-	if (type=="t"?player.masterystudies.includes("t"+num2.split("timestudy")[1]):player.eternityChallUnlocked==num2.slice(2,4)) {
-		if (type=="ec") {
+	if (type=="ec"?player.eternityChallUnlocked==num2.slice(2,4):player.masterystudies.includes(type+num2.split("study")[1])) {
+		if (type=="d" && player.options.theme == "Aarex's Modifications") {
+			msctx.strokeStyle="#D2E500";
+		} else if (type=="ec") {
 			msctx.strokeStyle="#490066";
 		} else {
 			msctx.strokeStyle="#000000";
 		}
+	} else if (type=="d" && player.options.theme == "Aarex's Modifications") {
+		msctx.strokeStyle="#697200";
 	} else msctx.strokeStyle="#444";
 	msctx.moveTo(x1, y1);
 	msctx.lineTo(x2, y2);
@@ -137,6 +157,10 @@ function drawMasteryTree() {
 	drawMasteryBranch("timestudy264", "ec14unl")
 	drawMasteryBranch("timestudy265", "ec14unl")
 	drawMasteryBranch("timestudy266", "ec14unl")
+	if (quantumed) {
+		document.getElementById("dilstudy7").style.display=""
+		drawMasteryBranch("timestudy252", "dilstudy7")
+	} else document.getElementById("dilstudy7").style.display="none"
 }
 
 function setupText() {
@@ -188,6 +212,12 @@ function updateQuantumTabs() {
 	if (document.getElementById("gluons").style.display=="block") {
 		document.getElementById("brupg1current").textContent="Currently: "+shortenMoney(player.dilation.dilatedTime.add(1).log10()+1)+"x"
 		document.getElementById("brupg2current").textContent="Currently: "+shortenMoney(Decimal.pow(2.2, Math.pow(calcTotalSacrificeBoost().log10()/1e6, 0.25)))+"x"
+	}
+	if (document.getElementById("electrons").style.display=="block") {
+		document.getElementById("electronsAmount").textContent=shortenDimensions(player.quantum.electrons.amount)
+		document.getElementById("electronsTranslation").textContent=shortenDimensions(getMPTPower())
+		document.getElementById("sacrificedGals").textContent=getFullExpansion(player.quantum.electrons.sacGals)
+		for (i=1;i<6;i++) document.getElementById("sacrifice"+i).className=Math.pow(10,i>4?0:i-1)>player.galaxies-player.quantum.electrons.sacGals?"unavailablebtn":"storebtn"
 	}
 }
 
@@ -285,9 +315,9 @@ function GUBought(id) {
 	return player.quantum.upgrades.includes(id)
 }
 
-//v1.8
+//v1.79
 var speedrunMilestonesReached
-var speedrunMilestones = [12,10,9,8,7.5,6,5,4.5,4,3,2.5,2,1.75,1.5,1.25,1]
+var speedrunMilestones = [12,10,9,8,6,5,4,3.5,3,2.5,2,1.6,1.2,0.8,0.4,1/60]
 function updateSpeedruns() {
 	speedrunMilestonesReached = 0
 	if (player.masterystudies) {
@@ -296,6 +326,7 @@ function updateSpeedruns() {
 			speedrunMilestonesReached++
 		}
 		for (i=1;i<17;i++) document.getElementById("speedrunMilestone"+i).className="achievement achievement"+(speedrunMilestonesReached>=i?"un":"")+"locked"
+		for (i=1;i<3;i++) document.getElementById("speedrunRow"+i).className=speedrunMilestonesReached>=i*8?"completedrow":""
 	}
 }
 
@@ -305,9 +336,44 @@ function toggleAutoTT() {
 	document.getElementById("theoremmax").innerHTML = speedrunMilestonesReached > 2 ? ("Auto max: O"+(player.autoEterOptions.tt?"N":"FF")) : "Buy max Theorems"
 }
 
-//Coming soon
+//v1.8
 function doAutoMetaTick() {
 	if (!player.masterystudies) return
-	for (dim=1;dim<9;dim++) if (player.autoEterOptions["md"+dim]) while (canAffordMetaDimension(getMetaMaxCost(tier))) metaBuyManyDimension(tier)
-	if (player.autoEterOptions.metaBoost) metaBoost()
+	if (player.autoEterOptions.rebuyupg) {
+		buyDilationUpgrade(11)
+		buyDilationUpgrade(3)
+		buyDilationUpgrade(1)
+		buyDilationUpgrade(2)
+	}
+	for (dim=8;dim>0;dim--) if (player.autoEterOptions["md"+dim]) while (canBuyMetaDimension(dim) && canAffordMetaDimension(getMetaMaxCost(dim))) metaBuyManyDimension(dim)
+	if (player.autoEterOptions.metaboost) metaBoost()
+}
+
+function toggleAllMetaDims() {
+	var turnOn
+	var id=1
+	var stop=Math.min(speedrunMilestonesReached-5,9)
+	while (id<stop&&turnOn===undefined) {
+		if (!player.autoEterOptions["md"+id]) turnOn=true
+		else if (id>stop-2) turnOn=false
+		id++
+	}
+	for (id=1;id<stop;id++) player.autoEterOptions["md"+id]=turnOn
+}
+
+function sacrificeGalaxy(id) {
+	var amount=1
+	if (id>4) amount=Math.ceil((player.galaxies-player.quantum.electrons.sacGals)/2)
+	else if (id>3) amount=1e3
+	else if (id>2) amount=100
+	else if (id>1) amount=10
+	if (amount>player.galaxies-player.quantum.electrons.sacGals) return
+	if (player.options.sacrificeConfirmation) if (!confirm("Sacrificing your sacrifice will do a galaxy reset, but you will not gain galaxies and only reduce your tick interval. You will gain a boost for multiplier per ten dimensions. Are you sure you want to do that?")) return
+	player.quantum.electrons.sacGals+=amount
+	var ret=new Decimal(2)
+	player.quantum.electrons.amount=ret.times(amount).add(player.quantum.electrons.amount)
+}
+
+function getMPTPower() {
+	return 1+player.quantum.electrons.amount.toNumber()
 }

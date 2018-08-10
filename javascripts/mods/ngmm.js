@@ -1,6 +1,6 @@
 function getGSAmount() {
 	let galaxies = player.galaxies + player.replicanti.galaxies + player.dilation.freeGalaxies;
-	let ret = new Decimal(Math.max(galaxies * (player.resets - (player.currentChallenge=="challenge4"?2:4)), 0));
+	let ret = new Decimal(galaxies * Math.max(player.resets - (player.currentChallenge=="challenge4"?2:4), 0));
 	ret = ret.times(player.eightAmount.toNumber()/50+1)
 	if (player.galacticSacrifice.upgrades.includes(32)) {
 		return ret.times(galUpgrade32()).floor();
@@ -70,7 +70,7 @@ let galUpgrade32 = function () {
 	return player.totalmoney.pow(0.003).add(1);
 }
 let galUpgrade33 = function () {
-	return player.galacticSacrifice.galaxyPoints.log10()/2+1
+	return player.galacticSacrifice.galaxyPoints.max(1).log10()/2+1
 }
 
 function galacticUpgradeSpanDisplay () {
