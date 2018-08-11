@@ -134,6 +134,7 @@ function buyDilationStudy(name, cost) {
         if (name < 2) {
             showEternityTab("dilation")
             document.getElementById("dilstudy1").innerHTML = "Unlock time dilation<span>Cost: 5000 Time Theorems"
+            if (player.eternityUpgrades.length<1&&player.masterystudies) giveAchievement("Work harder.")
         } else if (name > 5) {
             giveAchievement("I'm so meta")
             showTab("dimensions")
@@ -207,7 +208,7 @@ function canBuyStudy(name) {
       break;
 
       case 12:
-      if (hasRow(row-1) && !hasRow(row)) return true; else return false
+      if (hasRow(row-1) && (!hasRow(row) || (player.masterystudies ? player.masterystudies.includes("t272") : false))) return true; else return false
       break;
 
       case 7:
@@ -313,7 +314,6 @@ function studiesUntil(id) {
   }
   buyTimeStudy(id, studyCosts[all.indexOf(id)], 0);
 }
-
 
 function respecTimeStudies() {
   for (var i=0; i<all.length; i++) {

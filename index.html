@@ -368,11 +368,26 @@
                         <td><button class="eternitychallengestudy" id="ec14unl" onclick='buyMasteryStudy("ec", 14)'>Eternity Challenge 14<br>Requirement: <span id="ec14Req" style="display: inline;"></span>% replicate chance<br><span id="ec14Cost" style="display: inline;"></span></button></td>
                     </tr>
                 </table>
+                <div id='quantumstudies'>
                 <table class="table" id="studytable">
                     <tr>
                         <td><button class="timestudylocked" id="dilstudy7" onclick='buyMasteryStudy("d", 7)'>Unlock Electrons<br><span id="ds7Cost"></span></button></td>
                     </tr>
                 </table>
+                <table class="table" id="studytable">
+                    <tr>
+                        <td><button class="timestudylocked" id="timestudy271" onclick='buyMasteryStudy("t", 271)'>Uncap the replicanti interval but have cost scaling.</button></td>
+                        <td><button class="timestudylocked" id="timestudy272" onclick='buyMasteryStudy("t", 272)'>Pick all paths on all 3-way splits in time studies.</button></td>
+                        <td><button class="timestudylocked" id="timestudy273" onclick='buyMasteryStudy("t", 273)'>Replicate chance is massively increased.</button></td>
+                    </tr>
+                </table>
+                <table class="table" id="studytable">
+                    <tr>
+                        <td><button class="timestudylocked" id="timestudy281" style='font-size:10px' onclick='buyMasteryStudy("t", 281)'>Replicanti multiplier boosts DT production at greatly reduced rate.<br><span id="ts281Current"></span></button></td>
+                        <td><button class="timestudylocked" id="timestudy282" style='font-size:10px' onclick='buyMasteryStudy("t", 282)'>Replicanti multiplier boosts Meta Dimensions at greatly reduced rate.<br><span id="ts282Current"></span></button></td>
+                    </tr>
+                </table>
+                </div>
                 <div style="height: 60px;"></div>
                 <div>
                     <table id="footer">
@@ -1785,6 +1800,32 @@
                                 <div id="Universal harmony" class="achievement achievementlocked" style="background-image: url(images/104.png)" ach-tooltip="Have at least 700 normal, replicanti, and free dilated galaxies. Reward: Galaxies are 0.1% stronger."><br></div>
                             </td>
                         </tr>
+                        <tr id="achRow15">
+                            <td>
+                                <div id="I don't have enough fuel!" class="achievement achievementlocked" style="background-image: url(images/105.png)"><br></div>
+                            </td>
+                            <td>
+                                <div id="To sub-atomic!" class="achievement achievementlocked" style="background-image: url(images/106.png)" ach-tooltip="Go quantum."><br></div>
+                            </td>
+                            <td>
+                                <div id="Hadronization" class="achievement achievementlocked" style="background-image: url(images/107.png)" ach-tooltip="Have colored quarks but no color charge."><br></div>
+                            </td>
+                            <td>
+                                <div id="Work harder." class="achievement achievementlocked" style="background-image: url(images/108.png)" ach-tooltip="Unlock dilation without buying eternity upgrades."><br></div>
+                            </td>
+                            <td>
+                                <div id="No more tax fraud!" class="achievement achievementlocked" style="background-image: url(images/109.png)" ach-tooltip="Have 900 galaxies without unlocking dilation."><br></div>
+                            </td>
+                            <td>
+                                <div id="And the winner is..." class="achievement achievementlocked" style="background-image: url(images/110.png)" ach-tooltip="Complete quantum speedruns."><br></div>
+                            </td>
+                            <td>
+                                <div id="Old age" class="achievement achievementlocked" style="background-image: url(images/111.png)"><br></div>
+                            </td>
+                            <td>
+                                <div id="I already rid of you..." class="achievement achievementlocked" style="background-image: url(images/112.png)"><br></div>
+                            </td>
+                        </tr>
                 </table>
             </div>
             <div id="secretachievements" class="achtab" style="display:none;">
@@ -1871,25 +1912,27 @@
             </div>
             <div id="speedruns" class="achtab" style="display:none;">
                 <div>Get your best quantum to reach below the requirement for a reward!</div>
+                <button class='storebtn' id='reward3disable' onclick='disableReward(3)' style='width:180px'>6 hours reward: ON</button>
+                <button class='storebtn' id='reward4disable' onclick='disableReward(4)' style='width:180px'>4.5 hours reward: ON</button>
                 <table id="secretachievementtable" style="margin: auto">
                     <tr id="speedrunRow1">
                         <td><div id="speedrunMilestone1" ach-tooltip="Reward: Start with 20,000 eternities.">12 hours</div></td>
-                        <td><div id="speedrunMilestone2" ach-tooltip="Reward: Unlock time theorem autobuyer.">10 hours</div></td>
-                        <td><div id="speedrunMilestone3" ach-tooltip="Reward: Start with all Eternity Challenges completed and eternity upgrades bought.">9 hours</div></td>
-                        <td><div id="speedrunMilestone4" ach-tooltip="Reward: Start with dilation unlocked.">8 hours</div></td>
-                        <td><div id="speedrunMilestone5" ach-tooltip="Reward: Unlock dilation option for eternity autobuyer.">6 hours</div></td>
-                        <td><div id="speedrunMilestone6" ach-tooltip="Reward: Start with all dilation studies & non-rebuyable dilation upgrades before meta dimensions unlocked.">5 hours</div></td>
-                        <td><div id="speedrunMilestone7" ach-tooltip="Reward: Unlock the first meta dimension autobuyer and rebuyable dilation upgrades autobuyer.">4 hours</div></td>
-                        <td><div id="speedrunMilestone8" ach-tooltip="Reward: Unlock the second meta dimension autobuyer.">3.5 hours</div></td>
+                        <td><div id="speedrunMilestone2" ach-tooltip="Reward: Unlock time theorem autobuyer.">9 hours</div></td>
+                        <td><div id="speedrunMilestone3" ach-tooltip="Reward: Start with all Eternity Challenges completed and eternity upgrades bought.">6 hours</div></td>
+                        <td><div id="speedrunMilestone4" ach-tooltip="Reward: Start with dilation unlocked.">4.5 hours</div></td>
+                        <td><div id="speedrunMilestone5" ach-tooltip="Reward: Unlock dilation option for eternity autobuyer.">3 hours</div></td>
+                        <td><div id="speedrunMilestone6" ach-tooltip="Reward: Start with all dilation studies & non-rebuyable dilation upgrades before meta dimensions unlocked.">2 hours</div></td>
+                        <td><div id="speedrunMilestone7" ach-tooltip="Reward: Unlock the first meta dimension autobuyer and rebuyable dilation upgrades autobuyer.">1 hours</div></td>
+                        <td><div id="speedrunMilestone8" ach-tooltip="Reward: Unlock the second meta dimension autobuyer.">53.3 minutes</div></td>
                     </tr>
                     <tr id="speedrunRow2">
-                        <td><div id="speedrunMilestone9" ach-tooltip="Reward: Unlock the third meta dimension autobuyer.">3 hours</div></td>
-                        <td><div id="speedrunMilestone10" ach-tooltip="Reward: Unlock the fourth meta dimension autobuyer.">2.5 hours</div></td>
-                        <td><div id="speedrunMilestone11" ach-tooltip="Reward: Unlock the fifth meta dimension autobuyer and keep time studies.">2 hours</div></td>
-                        <td><div id="speedrunMilestone12" ach-tooltip="Reward: Unlock the sixth meta dimension autobuyer.">1.6 hours</div></td>
-                        <td><div id="speedrunMilestone13" ach-tooltip="Reward: Unlock the seventh meta dimension autobuyer.">1.2 hours</div></td>
-                        <td><div id="speedrunMilestone14" ach-tooltip="Reward: Unlock the eighth meta dimension autobuyer and keep all non-rebuyable dilation upgrades.">48 minutes</div></td>
-                        <td><div id="speedrunMilestone15" ach-tooltip="Reward: Unlock meta-dimension boost autobuyer.">24 minutes</div></td>
+                        <td><div id="speedrunMilestone9" ach-tooltip="Reward: Unlock the third meta dimension autobuyer.">46.7 minutes</div></td>
+                        <td><div id="speedrunMilestone10" ach-tooltip="Reward: Unlock the fourth meta dimension autobuyer.">40 minutes</div></td>
+                        <td><div id="speedrunMilestone11" ach-tooltip="Reward: Unlock the fifth meta dimension autobuyer and keep time studies.">33.3 minutes</div></td>
+                        <td><div id="speedrunMilestone12" ach-tooltip="Reward: Unlock the sixth meta dimension autobuyer.">26.7 minutes</div></td>
+                        <td><div id="speedrunMilestone13" ach-tooltip="Reward: Unlock the seventh meta dimension autobuyer.">20 minutes</div></td>
+                        <td><div id="speedrunMilestone14" ach-tooltip="Reward: Unlock the eighth meta dimension autobuyer and keep all non-rebuyable dilation upgrades.">13.3 minutes</div></td>
+                        <td><div id="speedrunMilestone15" ach-tooltip="Reward: Unlock meta-dimension boost autobuyer.">6.67 minutes</div></td>
                         <td><div id="speedrunMilestone16" ach-tooltip="Reward: Unlock quantum autobuyer.">1 minute</div></td>
                     </tr>
                 </table>
@@ -3101,6 +3144,15 @@
 				<button class='storebtn' id='sacrifice3' onclick='sacrificeGalaxy(3)' style='width:250px'>Sacrifice 100 normal galaxies</button><br>
 				<button class='storebtn' id='sacrifice4' onclick='sacrificeGalaxy(4)' style='width:250px'>Sacrifice 1,000 normal galaxies</button><br>
 				<button class='storebtn' id='sacrifice5' onclick='sacrificeGalaxy(5)' style='width:250px'>Sacrifice 50%</button>
+				<button class='storebtn' id='sacrifice6' onclick='sacrificeGalaxy(6)' style='width:250px'>Sacrifice all</button>
+				<br><br>
+				You will gain <span id='electronsGainMult'>2</span> electrons per 1 sacrificed galaxy.<br>
+				<table class="table" align="center" style="margin: auto"><tr>
+					<td><button class='gluonupgrade storebtn' id='electronupg1' onclick='buyElectronUpg(1)'></button></td>
+					<td><button class='gluonupgrade storebtn' id='electronupg2' onclick='buyElectronUpg(2)'></button></td>
+					<td><button class='gluonupgrade storebtn' id='electronupg3' onclick='buyElectronUpg(3)'></button></td>
+					<td><button class='gluonupgrade storebtn' id='electronupg4' onclick='buyElectronUpg(4)'></button></td>
+				</tr></table>
 			</div>
 			<div id="footercontainer">
 				<table id="footer">
@@ -3192,23 +3244,23 @@
 <script type="text/javascript" src="javascripts/chart.js"></script>
 <script type="text/javascript" src="javascripts/lz-string.js"></script>
 <script type="text/javascript" src="javascripts/core/polyfill.js"></script>
-<script type="text/javascript" src="javascripts/core/format.js?5"></script>
-<script type="text/javascript" src="javascripts/core/achievements.js?5"></script>
+<script type="text/javascript" src="javascripts/core/format.js?6"></script>
+<script type="text/javascript" src="javascripts/core/achievements.js?6"></script>
 <script type="text/javascript" src="javascripts/core/chart.js"></script>
-<script type="text/javascript" src="javascripts/core/tickspeed.js?6"></script>
-<script type="text/javascript" src="javascripts/core/normal_dimension.js?8"></script>
+<script type="text/javascript" src="javascripts/core/tickspeed.js?7"></script>
+<script type="text/javascript" src="javascripts/core/normal_dimension.js?9"></script>
 <script type="text/javascript" src="javascripts/core/infinity_dimension.js?5"></script>
-<script type="text/javascript" src="javascripts/core/time_dimension.js?8"></script>
+<script type="text/javascript" src="javascripts/core/time_dimension.js?9"></script>
 <script type="text/javascript" src="javascripts/core/dimboost.js?15"></script>
-<script type="text/javascript" src="javascripts/core/timestudies.js?17"></script>
+<script type="text/javascript" src="javascripts/core/timestudies.js?18"></script>
 <script type="text/javascript" src="javascripts/core/canvases.js?4"></script>
 <script type="text/javascript" src="javascripts/core/devtools.js"></script>
-<script type="text/javascript" src="javascripts/core/load_functions.js?23"></script>
+<script type="text/javascript" src="javascripts/core/load_functions.js?24"></script>
 <script type="text/javascript" src="javascripts/core/newsticker.js?3"></script>
 <script type="text/javascript" src="javascripts/mods/ngmm.js?8"></script>
-<script type="text/javascript" src="javascripts/mods/ngpp.js?13"></script>
-<script type="text/javascript" src="javascripts/mods/ngppp.js?14"></script>
-<script type="text/javascript" src="javascripts/game.js?29"></script>
+<script type="text/javascript" src="javascripts/mods/ngpp.js?14"></script>
+<script type="text/javascript" src="javascripts/mods/ngppp.js?15"></script>
+<script type="text/javascript" src="javascripts/game.js?30"></script>
 <script type="text/javascript" src="javascripts/sha512.js"></script>
 </body>
 </html>

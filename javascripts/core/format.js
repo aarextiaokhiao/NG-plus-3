@@ -23,17 +23,7 @@ function getAbbreviation(e) {
     ['', 'U', 'D', 'T', 'Qa', 'Qt', 'Sx', 'Sp', 'O', 'N'],
     ['', 'Dc', 'Vg', 'Tg', 'Qd', 'Qi', 'Se', 'St', 'Og', 'Nn'],
     ['', 'Ce', 'Dn', 'Tc', 'Qe', 'Qu', 'Sc', 'Si', 'Oe', 'Ne']]
-    const prefixes2 = ['', 'MI', 'MC', 'NA', 'PC', 'FM', 'AT', 'ZP', 'YC', 'XN', 
-	'VE', 'ME', 'DE', 'TE', 'TeE', 'PE', 'HE', 'HeE', 'OC', 'EC', 
-	'IS', 'MS', 'DS', 'TS', 'TeS', 'PS', 'HS', 'HeS', 'OS', 'ES', 
-	'TN', 'MTN', 'DTN', 'TTN', 'TeTN', 'PTN', 'HTN', 'HeTN', 'OTN', 'ETN', 
-	'TeC', 'MTeC', 'DTeC', 'TTeC', 'TeTeC', 'PTeC', 'HTeC', 'HeTeC', 'OTeC', 'ETeC', 
-	'PC', 'MPC', 'DPC', 'TPC', 'TePC', 'PPC', 'HPC', 'HePC', 'OPC', 'EPC', 
-	'HC', 'MHC', 'DHC', 'THC', 'TeHC', 'PHC', 'HHC', 'HeHC', 'OHC', 'EHC', 
-	'HeC', 'MHeC', 'DHeC', 'THeC', 'TeHeC', 'PHeC', 'HHeC', 'HeHeC', 'OHeC', 'EHeC', 
-	'OC', 'MOC', 'DOC', 'TOC', 'TeOC', 'POC', 'HOC', 'HeOC', 'OOC', 'EOC', 
-	'EC', 'MEC', 'DEC', 'TEC', 'TeEC', 'PEC', 'HEC', 'HeEC', 'OEC', 'EEC', 
-	'HT', 'MHT', 'DHT']
+    const prefixes2 = ['', 'MI', 'MC', 'NA']
 	var result = ''
     e = Math.floor(e/3)-1;
 	e2 = 0
@@ -47,6 +37,41 @@ function getAbbreviation(e) {
 		}
 		e = Math.floor(e/1000)
 		e2++
+	}
+	return result
+}
+
+function getShortAbbreviation(e) {
+	const prefixes = [
+	['', 'U', 'D', 'T', 'Qa', 'Qt', 'Sx', 'Sp', 'O', 'N'],
+	['', 'Dc', 'Vg', 'Tg', 'Qd', 'Qi', 'Se', 'St', 'Og', 'Nn'],
+	['', 'Ce', 'Dn', 'Tc', 'Qe', 'Qu', 'Sc', 'Si', 'Oe', 'Ne']]
+	const prefixes2 = ['', 'MI', 'MC', 'NA', 'PC', 'FM', 'AT', 'ZP', 'YC', 'XN', 
+	'VE', 'ME', 'DE', 'TE', 'TeE', 'PE', 'HE', 'HeE', 'OC', 'EC', 
+	'IS', 'MS', 'DS', 'TS', 'TeS', 'PS', 'HS', 'HeS', 'OS', 'ES', 
+	'TN', 'MTN', 'DTN', 'TTN', 'TeTN', 'PTN', 'HTN', 'HeTN', 'OTN', 'ETN', 
+	'TeC', 'MTeC', 'DTeC', 'TTeC', 'TeTeC', 'PTeC', 'HTeC', 'HeTeC', 'OTeC', 'ETeC', 
+	'PC', 'MPC', 'DPC', 'TPC', 'TePC', 'PPC', 'HPC', 'HePC', 'OPC', 'EPC', 
+	'HC', 'MHC', 'DHC', 'THC', 'TeHC', 'PHC', 'HHC', 'HeHC', 'OHC', 'EHC', 
+	'HeC', 'MHeC', 'DHeC', 'THeC', 'TeHeC', 'PHeC', 'HHeC', 'HeHeC', 'OHeC', 'EHeC', 
+	'OC', 'MOC', 'DOC', 'TOC', 'TeOC', 'POC', 'HOC', 'HeOC', 'OOC', 'EOC', 
+	'EC', 'MEC', 'DEC', 'TEC', 'TeEC', 'PEC', 'HEC', 'HeEC', 'OEC', 'EEC', 
+	'HT', 'MHT', 'DHT']
+	var result = ''
+	var id = Math.floor(e/3-1)
+	var log = Math.floor(Math.log10(id))
+	var step = Math.max(Math.floor(log/3-3),0)
+	id = Math.round(id/Math.pow(10,Math.max(log-9,0)))*Math.pow(10,Math.max(log-9,0)%3)
+    while (id > 0) {		
+		var partE = id % 1000
+		if (partE > 0) {
+			if (partE == 1 && step > 0) var prefix = ""
+			else var prefix = prefixes[0][partE % 10] + prefixes[1][Math.floor(partE/10) % 10] + prefixes[2][Math.floor(partE/100)]
+			if (result == "") result = prefix + prefixes2[step]
+			else result = prefix + prefixes2[step] + '-' + result
+		}
+		id = Math.floor(id/1000)
+		step++
 	}
 	return result
 }
@@ -68,6 +93,7 @@ function formatValue(notation, value, places, placesUnder1000) {
             mantissa=digits[Math.floor(mantissa)].toString()+'.'+digits[Math.floor(mantissa*16)%16].toString()+digits[Math.floor(mantissa*256)%16].toString()
             if (power > 100000 && !(player.options.commas === "Commas")) return mantissa + "e" + formatValue(player.options.commas, power, 3, 3)
             else {
+                if (power >=1e12) return mantissa + "e" + formatValue(player.options.notation, power, 3, 3)
                 var digit=0
                 var result=''
                 var temp=power
@@ -92,8 +118,8 @@ function formatValue(notation, value, places, placesUnder1000) {
                 matissa = (1).toFixed(places);
                 power++;
             }
-            if (power > 100000  && !(player.options.commas === "Commas")) return (matissa + "e" + formatValue(player.options.commas, power, 3, 3))
-            if (power > 100000  && player.options.commas === "Commas") return (matissa + "e" + power.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ","));
+            if (power > 100000  && player.options.commas === "Commas") return (matissa + "e" + getFullExpansion(power));
+            if (power > 100000) return (matissa + "e" + formatValue(player.options.commas, power, 3, 3))
             return (matissa + "e" + power);
         }
         if (notation === "Greek" || notation === "Morse code") {
@@ -104,7 +130,7 @@ function formatValue(notation, value, places, placesUnder1000) {
                 matissa=Math.round(matissa*Math.pow(10,places))
                 power-=places
             }
-            if (power > 100000  && !(player.options.commas === "Commas")) power = formatValue(player.options.commas, power, 3, 3)
+            if ((power > 100000  && !(player.options.commas === "Commas")) || power >= 1e12) power = formatValue(player.options.commas, power, 3, 3)
             else power = convTo(notation, power)
             return convTo(notation, matissa)+'e'+power
         }
@@ -115,6 +141,7 @@ function formatValue(notation, value, places, placesUnder1000) {
             if (reduced < 1000) var infPlaces = 4
             else var infPlaces = 3
             if (player.options.commas === "Commas") {
+                if (reduced>=1e12) return formatValue(player.options.notation, reduced, 3, 3)+"∞"
 				var splits=reduced.toFixed(Math.max(infPlaces, places)).split(".")
 				return splits[0].replace(/\B(?=(\d{3})+(?!\d))/g, ",")+"."+splits[1]+"∞"
             } else {
@@ -128,10 +155,13 @@ function formatValue(notation, value, places, placesUnder1000) {
         if (notation === "Engineering" || notation === "Mixed engineering") pow = power - (power % 3)
         else pow = power
         if (power > 100000  && !(player.options.commas === "Commas")) pow = formatValue(player.options.commas, pow, 3, 3)
-        if (power > 100000  && player.options.commas === "Commas") pow = pow.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+        if (power > 100000  && player.options.commas === "Commas") pow = getFullExpansion(pow);
 
         if (notation === "Logarithm") {
-            if (power > 100000  && player.options.commas === "Commas") return "e"+Decimal.log10(value).toFixed(places).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+            if (power > 100000  && player.options.commas === "Commas") {
+                if (power >= 1e12) return "ee"+Math.log10(Decimal.log10(value)).toFixed(3)
+                return "e"+Decimal.log10(value).toFixed(places).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+            }
             if (power > 100000  && !(player.options.commas === "Logarithm")) return "e"+formatValue(player.options.commas, Decimal.log10(value), 3, 3)
             if (power > 100000  && !(player.options.commas === "Commas")) return "ee"+Math.log10(Decimal.log10(value)).toFixed(3)
             else return "e"+Decimal.log10(value).toFixed(places)
@@ -140,6 +170,7 @@ function formatValue(notation, value, places, placesUnder1000) {
         if (notation === "Brackets") {
           var table = [")", "[", "{", "]", "(", "}"];
           var log6 = Math.LN10 / Math.log(6) * Decimal.log10(value);
+          if (log6 >= 1e12) return "e" + formatValue("Brackets", log6)
           var wholePartOfLog = Math.floor(log6);
           var decimalPartOfLog = log6 - wholePartOfLog;
           //Easier to convert a number between 0-35 to base 6 than messing with fractions and shit
@@ -165,6 +196,7 @@ function formatValue(notation, value, places, placesUnder1000) {
 
         if (notation === "Standard" || notation === "Mixed scientific") {
             if (power <= 303) return matissa + " " + FormatList[(power - (power % 3)) / 3];
+            else if (power > 3e11+2) return getShortAbbreviation(power) + "s";
             else return matissa + " " + getAbbreviation(power);
         } else if (notation === "Mixed engineering") {
             if (power <= 33) return matissa + " " + FormatList[(power - (power % 3)) / 3];

@@ -842,6 +842,7 @@ button {
     color: black;
     font-size: 16px;
     border-radius: 5px;
+    text-align: center;
     transition-duration: 0.1s;
 }
 
@@ -1777,6 +1778,19 @@ br {
 .gluonupgradebought.gb { animation: gbupgbought 5s infinite }
 .gluonupgradebought.br { animation: brupgbought 5s infinite }
 
+.gluonupgrade.storebtn {
+	background: black;
+	border-color: #8e991e;
+	color: #8e991e;
+	animation: electronupg 5s infinite
+}
+
+.gluonupgrade.storebtn:hover {
+	background: #8e991e;
+	color: #ffffff;
+	animation: electronupg 5s infinite
+}
+
 @media print,
 screen and (max-width: 960px) {
     div.wrapper {
@@ -2042,4 +2056,10 @@ screen and (max-width: 480px) {
 	50% {background-color: #bf0000; border: 1px solid #7f0000; color: #1f0000}
 	75% {background-color: #bf00bf; border: 1px solid #7f007f; color: #1f001f}
 	100% {background-color: #0000bf; border: 1px solid #00007f; color: #00001f}
+}
+
+@keyframes electronupg {
+    0%  {box-shadow: inset 0px 0px 20px 0px #8e991e;}
+    50% {box-shadow: inset 0px 0px 40px 0px #8e991e;}
+    100% {box-shadow: inset 0px 0px 20px 0px #8e991e;}
 }

@@ -111,6 +111,14 @@ const allAchievements = {
   ngpp16 : "It will never be enough",
   ngpp17 : "GAS GAS GAS",
   ngpp18 : "Universal harmony",
+  ng3p11 : "I don't have enough fuel!",
+  ng3p12 : "To sub-atomic!",
+  ng3p13 : "Hadronization",
+  ng3p14 : "Work harder.",
+  ng3p15 : "No more tax fraud!",
+  ng3p16 : "And the winner is...",
+  ng3p17 : "Old age",
+  ng3p18 : "I already rid of you...",
   s11 : "The first one's always free",
   s12 : "Just in case",
   s13 : "It pays to have respect",
@@ -198,8 +206,6 @@ function giveAchievement(name) {
     if (player.achievements.includes(allAchievementNums[name])) return false
 
     if (name=="Universal harmony"&&(player.galaxies<700||player.replicanti.galaxies+extraReplGalaxies<700||player.dilation.freeGalaxies<700)) return
-
-    if (name == "A sound financial decision") localStorage.setItem(btoa("dsAM_asfd"), "gg")
     else $.notify(name, "success");
     player.achievements.push(allAchievementNums[name]);
     document.getElementById(name).className = "achievementunlocked"
@@ -208,7 +214,7 @@ function giveAchievement(name) {
         player.autoIP = player.autoIP.times(4);
         if (player.autoCrunchMode == "amount" && player.autobuyers[11].priority != undefined) player.autobuyers[11].priority = player.autobuyers[11].priority.times(4);
     }
-    if (name == "The gap is a million, not a trillion") {
+    if (name == "GAS GAS GAS") {
         document.getElementById('epmultauto').style.display=""
         for (i=1;i<9;i++) document.getElementById("td"+i+'auto').style.visibility="visible"
     }
@@ -218,8 +224,9 @@ function giveAchievement(name) {
 
 function updateAchievements() {
 	var amount = 0
-	for (var i=1; i<15; i++) {
-		if (i>13) var shown=!(!player.meta)
+	for (var i=1; i<16; i++) {
+		if (i>14) var shown=!(!player.masterystudies)
+		else if (i>13) var shown=!(!player.meta)
 		else var shown=true
 		document.getElementById("achRow"+i).style.display=shown?"":"none"
 		if (shown) {
@@ -227,7 +234,7 @@ function updateAchievements() {
 			var achNum = i * 10
 			for (var l=0; l<8; l++) {
 				achNum += 1;
-				var achId=achNum>140?"ngpp"+(achNum-130):"r"+achNum
+				var achId=achNum>150?"ng3p"+(achNum-140):achNum>140?"ngpp"+(achNum-130):"r"+achNum
 				var name=allAchievements[achId]
 				if (player.achievements.includes(achId)) {
 					n++

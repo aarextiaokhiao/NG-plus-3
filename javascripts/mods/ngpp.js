@@ -12,7 +12,9 @@ function getMetaDimensionMultiplier (tier) {
     multiplier = multiplier.times(getDil14Bonus());
   }
   if (player.achievements.includes("ngpp12")) multiplier = multiplier.times(1.1)
-  if (player.masterystudies) if (player.masterystudies.includes("t262")) multiplier = multiplier.times(getMTSMult(262))
+  if (player.masterystudies) {
+      if (player.masterystudies.includes("t262")) multiplier = multiplier.times(getMTSMult(262))
+  }
   if (GUBought("rg3")&&tier<2) multiplier = multiplier.times(player.resets)
   
   if (multiplier.lt(1)) multiplier = new Decimal(1)
@@ -423,7 +425,7 @@ function quantum(auto) {
 			eternities: headstart ? player.eternities : oheHeadstart ? 20000 : 0,
 			thisEternity: 0,
 			bestEternity: headstart ? player.bestEternity : 9999999999,
-			eternityUpgrades: speedrunMilestonesReached > 5 ? [1,2,3,4,5,6] : [],
+			eternityUpgrades: isRewardEnabled(3) ? [1,2,3,4,5,6] : [],
 			epmult: new Decimal(1),
 			epmultCost: new Decimal(500),
 			infDimensionsUnlocked: [false, false, false, false, false, false, false, false],
@@ -580,7 +582,7 @@ function quantum(auto) {
 			dimlife: true,
 			dead: true,
 			dilation: {
-				studies: speedrunMilestonesReached > 5 ? [1,2,3,4,5,6] : speedrunMilestonesReached > 3 ? [1] : [],
+				studies: isRewardEnabled(4) ? (speedrunMilestonesReached > 5 ? [1,2,3,4,5,6] : [1]) : [],
 				active: false,
 				tachyonParticles: new Decimal(0),
 				dilatedTime: new Decimal(0),
@@ -659,6 +661,7 @@ function quantum(auto) {
 		if (headstart) for (ec=1;ec<13;ec++) player.eternityChalls['eterc'+ec]=5
 		else if (speedrunMilestonesReached>2) for (ec=1;ec<15;ec++) player.eternityChalls['eterc'+ec] = 5
 		if (player.masterystudies) {
+			giveAchievement("To sub-atomic!")
 			var diffrg=player.quantum.usedQuarks.r.min(player.quantum.usedQuarks.g)
 			var diffgb=player.quantum.usedQuarks.g.min(player.quantum.usedQuarks.b)
 			var diffbr=player.quantum.usedQuarks.b.min(player.quantum.usedQuarks.r)
@@ -668,10 +671,8 @@ function quantum(auto) {
 			player.quantum.gluons.rg=player.quantum.gluons.rg.add(diffrg)
 			player.quantum.gluons.gb=player.quantum.gluons.gb.add(diffgb)
 			player.quantum.gluons.br=player.quantum.gluons.br.add(diffbr)
-			player.quantum.electrons = {
-				amount: new Decimal(0),
-				sacGals: 0
-			}
+			player.quantum.electrons.amount=new Decimal(0)
+			player.quantum.electrons.sacGals=0
 			updateColorCharge()
 			updateGluons()
 			if (!oheHeadstart) {
@@ -776,7 +777,10 @@ function quantum(auto) {
 		updateTheoremButtons()
 		updateTimeStudyButtons()
 		drawStudyTree()
-		document.getElementById("masterystudyunlock").style.display = "none";
+		if (speedrunMilestonesReached < 14 || !isRewardEnabled(4)) {
+			document.getElementById("masterystudyunlock").style.display = "none";
+			document.getElementById("electronstabbtn").style.display = "none";
+		}
 		updateMasteryStudyCosts()
 		updateMasteryStudyButtons()
 		drawMasteryTree()

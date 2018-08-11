@@ -26,7 +26,7 @@ function getTickSpeedMultiplier() {
       perGalaxy *= colorBoosts.r
       if (GUBought("rg2")) perGalaxy *= Math.pow(player.dilation.freeGalaxies/5e3+1,0.25)
 
-      return baseMultiplier-(realnormalgalaxies*perGalaxy);
+      return Math.max(baseMultiplier-(realnormalgalaxies*perGalaxy),0.83);
   } else {
       let baseMultiplier = 0.8
       if (player.currentChallenge == "challenge6" || player.currentChallenge == "postc1") baseMultiplier = 0.83

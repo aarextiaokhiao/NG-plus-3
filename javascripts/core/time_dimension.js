@@ -6,7 +6,10 @@ function getTimeDimensionPower(tier) {
   var ret = dim.power.pow(2)
 
   if (player.timestudy.studies.includes(11) && tier == 1) ret = ret.dividedBy(player.tickspeed.dividedBy(1000).pow(0.005).times(0.95).plus(player.tickspeed.dividedBy(1000).pow(0.0003).times(0.05)).max(Decimal.fromMantissaExponent(1, -2500)))
-  if (player.achievements.includes("r105")) ret = ret.div(player.tickspeed.div(1000).pow(0.000005))
+  if (player.achievements.includes("r105")) {
+      var mult = Decimal.div(1000,player.tickspeed).pow(0.000005)
+      ret = ret.times(mult)
+  }
 
   ret = ret.times(kongAllDimMult)
 

@@ -752,7 +752,9 @@ if (player.version < 5) {
   if ((player.quantum ? !player.quantum.electrons : false) && player.masterystudies) {
       player.quantum.electrons = {
           amount: 0,
-          sacGals: 0
+          sacGals: 0,
+          mult: 2,
+          rebuyables: [0,0,0,0]
       }
   }
   if (player.aarexModifications.newGame3PlusVersion < 1.8) {
@@ -764,7 +766,13 @@ if (player.version < 5) {
           limit: 1,
           mode: "amount"
       }
-      player.aarexModifications.newGame3PlusVersion=1.8
+  }
+  if (player.aarexModifications.newGame3PlusVersion < 1.9) {
+      player.replicanti.intervalCost = Decimal.pow(1e10, Math.round(Math.log10(1000/player.replicanti.interval)/-Math.log10(0.9))+14)
+      player.quantum.disabledRewards={}
+      player.quantum.electrons.mult=2
+      player.quantum.electrons.costs=[0,0,0,0]
+      player.aarexModifications.newGame3PlusVersion=1.9
   }
   if (player.aarexModifications.newGame3PlusVersion==undefined) {
       colorBoosts={
@@ -937,6 +945,9 @@ if (player.version < 5) {
   if (player.masterystudies) {
       updateMasteryStudyCosts()
       updateMasteryStudyButtons()
+      if (quantumed) giveAchievement("To sub-atomic!")
+      document.getElementById('reward3disable').textContent="6 hours reward: O"+(player.quantum.disabledRewards[3]?"FF":"N")
+      document.getElementById('reward4disable').textContent="4.5 hours reward: O"+(player.quantum.disabledRewards[4]?"FF":"N")
       document.getElementById('rebuyupgauto').textContent="Rebuyable upgrade auto: O"+(player.autoEterOptions.rebuyupg?"N":"FF")
       document.getElementById('metaboostauto').textContent="Meta-boost auto: O"+(player.autoEterOptions.metaboost?"N":"FF")
       document.getElementById('prioritydil').value=player.eternityBuyer.dilationPerAmount
@@ -955,6 +966,7 @@ if (player.version < 5) {
   updateColorCharge()
   updateGluons()
   updateSpeedruns()
+  updateElectrons()
   document.getElementById('dilationmode').style.display=speedrunMilestonesReached>4?"":"none"
   document.getElementById('rebuyupgauto').style.display=speedrunMilestonesReached>6?"":"none"
   document.getElementById('toggleallmetadims').style.display=speedrunMilestonesReached>7?"":"none"
@@ -1321,7 +1333,10 @@ function loadAutoBuyerSettings() {
   document.getElementById("priority13").value = formatValue("Scientific", player.eternityBuyer.limit, 2, 0)
   if (player.masterystudies) {
       document.getElementById("prioritydil").value = player.eternityBuyer.dilationPerAmount
-      if (player.quantum) if (player.quantum.autobuyer) document.getElementById("priorityquantum").value = formatValue("Scientific", player.quantum.autobuyer.limit, 2, 0)
+      if (player.quantum) if (player.quantum.autobuyer) {
+          if (isNaN(break_infinity_js ? player.quantum.autobuyer.limit : player.quantum.autobuyer.limit.logarithm)) player.quantum.autobuyer.limit = new Decimal(1)
+          document.getElementById("priorityquantum").value = formatValue("Scientific", player.quantum.autobuyer.limit)
+      }
   }
 }
 
