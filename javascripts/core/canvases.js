@@ -10,6 +10,8 @@ var canvas = document.getElementById("studyTreeCanvas");
 var ctx = canvas.getContext("2d");
 var canvas3 = document.getElementById("dilationCanvas");
 var ctx3 = canvas3.getContext("2d");
+var msc = document.getElementById("studyTreeCanvas2");
+var msctx = msc.getContext("2d");
 
 window.addEventListener("resize", resizeCanvas);
 
