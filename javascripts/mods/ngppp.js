@@ -259,8 +259,8 @@ function updateColorCharge() {
 			}
 			sorted.push(search)
 		}
-		if (player.quantum.usedQuarks.r.gt(0)&&colorCharge.charge.eq(0)) giveAchievement("Hadronization")
 		colorCharge={color:sorted[0],charge:Decimal.sub(player.quantum.usedQuarks[sorted[0]],player.quantum.usedQuarks[sorted[1]]).sub(player.quantum.usedQuarks[sorted[2]])}
+	if (player.quantum.usedQuarks.r.gt(0)&&colorCharge.charge.eq(0)) giveAchievement("Hadronization")
 	} else {
 		colorCharge={color:'r',charge:new Decimal(0)}
 		return
