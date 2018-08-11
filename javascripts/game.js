@@ -371,7 +371,7 @@ function updateNewPlayer(reseted) {
         player.galacticSacrifice = resetGalacticSacrifice()
     }
     if (modesChosen.ngpp > 1) {
-        player.aarexModifications.newGame3PlusVersion = 1.9
+        player.aarexModifications.newGame3PlusVersion = 1.901
         player.dbPower = 1
         player.peakSpent = 0
         player.masterystudies = []

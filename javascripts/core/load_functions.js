@@ -610,7 +610,7 @@ if (player.version < 5) {
           }
           player.aarexModifications.newGamePlusVersion = 1
           if (confirm("Do you want to migrate your NG++ save into new NG+++ mode?")) {
-              player.aarexModifications.newGame3PlusVersion = 1.8
+              player.aarexModifications.newGame3PlusVersion = 1.901
               player.dbPower = 1
               player.peakSpent = 0
               player.masterystudies = []
@@ -637,10 +637,18 @@ if (player.version < 5) {
                   limit: 1,
                   mode: "amount"
               }
+              player.quantum.autobuyer = {
+                  enabled: false,
+                  limit: 1,
+                  mode: "amount"
+              }
               player.quantum.electrons = {
                   amount: 0,
-                  sacGals: 0
+                  sacGals: 0,
+                  mult: 2,
+                  rebuyables: [0,0,0,0]
               }
+              player.quantum.disabledRewards = {}
           }
           player.dilation.upgrades=migratedUpgrades
           resetDilationGalaxies()
@@ -771,8 +779,11 @@ if (player.version < 5) {
       player.replicanti.intervalCost = Decimal.pow(1e10, Math.round(Math.log10(1000/player.replicanti.interval)/-Math.log10(0.9))+14)
       player.quantum.disabledRewards={}
       player.quantum.electrons.mult=2
-      player.quantum.electrons.costs=[0,0,0,0]
       player.aarexModifications.newGame3PlusVersion=1.9
+  }
+  if (player.aarexModifications.newGame3PlusVersion < 1.901) {
+      if (!player.quantum.electrons.rebuyables) player.quantum.electrons.rebuyables=[0,0,0,0]
+      player.aarexModifications.newGame3PlusVersion=1.901
   }
   if (player.aarexModifications.newGame3PlusVersion==undefined) {
       colorBoosts={
