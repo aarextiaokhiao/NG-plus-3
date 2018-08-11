@@ -1346,7 +1346,7 @@ function loadAutoBuyerSettings() {
       document.getElementById("prioritydil").value = player.eternityBuyer.dilationPerAmount
       if (player.quantum) if (player.quantum.autobuyer) {
           if (isNaN(break_infinity_js ? player.quantum.autobuyer.limit : player.quantum.autobuyer.limit.logarithm)) player.quantum.autobuyer.limit = new Decimal(1)
-          document.getElementById("priorityquantum").value = formatValue("Scientific", player.quantum.autobuyer.limit)
+          document.getElementById("priorityquantum").value = formatValue("Scientific", player.quantum.autobuyer.limit, 2, 0)
       }
   }
 }
