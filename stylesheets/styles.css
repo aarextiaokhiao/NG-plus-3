@@ -142,6 +142,24 @@ button {
     position: relative;
 }
 
+.quantumchallengediv {
+	display:table;
+	text-align:center;
+	width: 350px;
+	height: 105px;
+	color: #32c832;
+	background: #0a640a;
+	font-weight: bold;
+	font-family: Typewriter;
+	border: 3px solid #32c832;
+	border-radius: 10px;
+	font-size: 80%;
+	transition-duration: 0.2s;
+	padding: 2px;
+	margin: 3px 8px;
+	position: relative;
+}
+
 .completedchallengesbtn {
   width:150px;
   height: 30px;
@@ -1251,6 +1269,42 @@ button {
     transition-duration: 0.2s;
     border-radius: 4px;
     font-family: Typewriter;
+}
+
+.eternityttbtn {
+    color: #b341e0;
+    background: black;
+    font-weight: bold;
+    font-size: 10px;
+    border: 1px solid #b341e0;
+    width: 230px;
+    height: 120px;
+    transition-duration: 0.2s;
+    cursor: pointer;
+    border-radius: 4px;
+    font-family: Typewriter;
+}
+
+.eternityttbtn:hover {
+    color: #511568;
+    background: white;
+}
+
+.eternityttbtnlocked {
+    color: #181818;
+    background: #5F5F5F;
+    font-weight: bold;
+    font-size: 10px;
+    border: 1px solid #b341e0;
+    width: 230px;
+    height: 120px;
+    transition-duration: 0.2s;
+    border-radius: 4px;
+    font-family: Typewriter;
+}
+
+.eternityttbtnlocked:hover {
+    background: #737373;
 }
 
 .milestonereward {

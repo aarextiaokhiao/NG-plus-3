@@ -16,6 +16,7 @@ function getMetaDimensionMultiplier (tier) {
       if (player.masterystudies.includes("t262")) multiplier = multiplier.times(getMTSMult(262))
   }
   if (GUBought("rg3")&&tier<2) multiplier = multiplier.times(player.resets)
+  if (GUBought("br4")) multiplier = multiplier.times(Decimal.pow(getDimensionPowerMultiplier(), 0.0003))
   
   if (multiplier.lt(1)) multiplier = new Decimal(1)
   if (player.dilation.active || player.aarexModifications.newGameMinusMinusVersion) {
@@ -199,9 +200,9 @@ function updateMetaDimensions () {
 		document.getElementById("metaSoftReset").className = 'unavailablebtn';
 	}
     var QS = quarkGain()
-    var req = Decimal.pow(Number.MAX_VALUE,player.masterystudies?1.45:1)
+    var req = player.masterystudies?quantumChallenges.goals[player.quantum.challenge]:Number.MAX_VALUE
     var reqGotten = isQuantumReached()
-    document.getElementById("quantumResetLabel").textContent = 'Quantum: requires '+shorten(req)+' meta-antimatter'+(player.masterystudies?" and 2 completions each for EC13 & 14":"")
+    document.getElementById("quantumResetLabel").textContent = 'Quantum: requires '+shorten(new Decimal(req))+' meta-antimatter'+(player.masterystudies?" and 2 completions each for EC13 & 14":"")
     document.getElementById("quantum").textContent = 'Lose all your previous progress, but '+(player.quantum.times>0&&reqGotten?'gain '+shortenDimensions(QS)+' quark'+(QS.lt(2)?'':'s')+' for boosts':'get a boost')
     document.getElementById("quantum").className = reqGotten?'storebtn':'unavailablebtn'
 }
@@ -281,12 +282,17 @@ function replicantiGalaxyBulkModeToggle() {
 
 // v2.9
 quantumed = false
-function quantum(auto) {
-	if (!isQuantumReached()||implosionCheck) return
+function quantum(auto,force,challid) {
+	if (!(isQuantumReached()||force)||implosionCheck) return
 	var headstart = player.aarexModifications.newGamePlusVersion > 0 && !player.masterystudies
-	if (player.aarexModifications.quantumConf && !auto) if (!confirm("Quantum will reset everything eternity resets, and "+(headstart?"also some other things like dilation":"also time studies, eternity challenges, dilation, "+(player.masterystudies?"meta dimensions, and mastery studies":"and meta dimensions"))+". You will gain a quark and unlock various upgrades.")) return
-	if (player.quantum.times<1) if (!confirm("Are you sure you want to do that? You will lose everything you have! "+(player.masterystudies?"":"This is work on progress!"))) return
-	var implode = player.quantum.best > 599
+	if (player.aarexModifications.quantumConf&&!(auto||force)) if (!confirm(player.masterystudies?"Quantum will reset everything eternity resets, and "+(headstart?"also some other things like dilation":"also time studies, eternity challenges, dilation, "+(player.masterystudies?"meta dimensions, and mastery studies":"and meta dimensions"))+". You will gain a quark and unlock various upgrades.":"But wait! Quantum will erases almost everything that you have and rewards nothing! However, this is not a win. You need to reach real Infinite antimatter to win! (it's impossible)")) return
+	if (player.quantum.times<1) if (!confirm("Are you sure you want to do that? You will lose everything you have!")) return
+	if (player.masterystudies) if (challid>0) {
+		if (player.quantum.electrons.amount.lt(quantumChallenges.costs[challid])||player.quantum.challenge>0) return
+		if (player.options.challConf) if (!confirm("You will do a quantum reset but you will not gain quarks and keep your electrons & sacrificed galaxies. You have to reach the set goal of meta-antimatter to complete this challenge.")) return
+		player.quantum.electrons.amount=player.quantum.electrons.amount.sub(quantumChallenges.costs[challid])
+	}
+	var implode = !(auto||force)&&player.quantum.best > 599
 	if (implode) {
 		implosionCheck=1
 		dev.implode()
@@ -299,12 +305,10 @@ function quantum(auto) {
 			showDimTab("antimatterdimensions")
 			showChallengesTab("challenges")
 			showInfTab("preinf")
-			showEternityTab("timestudies")
+			showEternityTab("timestudies", true)
 			if (document.getElementById("quantumtab").style.display=="none") showTab("dimensions")
-			else document.getElementById("TTbuttons").style.display="none"
-		} else if (document.getElementById("masterystudies").style.display=="block") {
-			showEternityTab("timestudies")
-			if (document.getElementById("eternitystore").style.display=="none") document.getElementById("TTbuttons").style.display="none"
+		} else if (document.getElementById("timedilation").style.display=="block"||document.getElementById("masterystudies").style.display=="block") {
+			showEternityTab("timestudies", document.getElementById("eternitystore").style.display=="block")
 		}
 		if (!quantumed) {
 			quantumed=true
@@ -313,17 +317,22 @@ function quantum(auto) {
 			document.getElementById("galaxyPoints2").className = "GP"
 			document.getElementById("sacpos").className = "sacpos"
 		}
-		document.getElementById("quantumbtn").style.display="none"
-        for (var i=player.quantum.last10.length-1; i>0; i--) {
-            player.quantum.last10[i] = player.quantum.last10[i-1]
-        }
-        player.quantum.last10[0] = [player.quantum.time, quarkGain()]
+		if (!force) {
+			document.getElementById("quantumbtn").style.display="none"
+			for (var i=player.quantum.last10.length-1; i>0; i--) {
+				player.quantum.last10[i] = player.quantum.last10[i-1]
+			}
+			player.quantum.last10[0] = [player.quantum.time, quarkGain()]
+		}
 		player.quantum.best=Math.min(player.quantum.best, player.quantum.time)
 		updateSpeedruns()
+		if (speedrunMilestonesReached > 15) giveAchievement("And the winner is...")
 		var oheHeadstart = speedrunMilestonesReached > 0
 		player.quantum.time=0
-		player.quantum.times++
-		player.quantum.quarks = player.quantum.quarks.plus(quarkGain());
+		if (!force) {
+			player.quantum.times++
+			player.quantum.quarks = player.quantum.quarks.plus(quarkGain());
+		}
 		document.getElementById("quarks").innerHTML="You have <b id='QK'>"+shortenDimensions(player.quantum.quarks)+"</b> quark"+(player.quantum.quarks.lt(2)?".":"s.")
 		document.getElementById("galaxyPoints2").innerHTML="You have <span class='GPAmount'>0</span> Galaxy points."
 		if (player.masterystudies) {
@@ -408,7 +417,7 @@ function quantum(auto) {
 			lastTenEternities: [[600*60*24*31, new Decimal(0)], [600*60*24*31, new Decimal(0)], [600*60*24*31, new Decimal(0)], [600*60*24*31, new Decimal(0)], [600*60*24*31, new Decimal(0)], [600*60*24*31, new Decimal(0)], [600*60*24*31, new Decimal(0)], [600*60*24*31, new Decimal(0)], [600*60*24*31, new Decimal(0)], [600*60*24*31, new Decimal(0)]],
 			infMult: new Decimal(1),
 			infMultCost: new Decimal(10),
-			tickSpeedMultDecrease: oheHeadstart ? player.tickSpeedMultDecrease : 10,
+			tickSpeedMultDecrease: oheHeadstart ? player.tickSpeedMultDecrease : GUBought("gb4") ? 1.25 : 10,
 			tickSpeedMultDecreaseCost: oheHeadstart ? player.tickSpeedMultDecreaseCost : 3e6,
 			dimensionMultDecrease: oheHeadstart ? player.dimensionMultDecrease : 10,
 			dimensionMultDecreaseCost: oheHeadstart ? player.dimensionMultDecreaseCost : 1e8,
@@ -671,10 +680,19 @@ function quantum(auto) {
 			player.quantum.gluons.rg=player.quantum.gluons.rg.add(diffrg)
 			player.quantum.gluons.gb=player.quantum.gluons.gb.add(diffgb)
 			player.quantum.gluons.br=player.quantum.gluons.br.add(diffbr)
-			player.quantum.electrons.amount=new Decimal(0)
-			player.quantum.electrons.sacGals=0
+			if (challid<1) {
+				player.quantum.electrons.amount=new Decimal(0)
+				player.quantum.electrons.sacGals=0
+			}
+			if (!force&&player.quantum.challenge>player.quantum.challenges) {
+				player.quantum.challenges=player.quantum.challenge
+				player.quantum.electrons.mult+=0.25
+			}
+			player.quantum.challenge=challid
 			updateColorCharge()
 			updateGluons()
+			updateElectrons()
+			updateQuantumChallenges()
 			if (!oheHeadstart) {
 				player.eternityBuyer.dilationMode = false
 				player.eternityBuyer.statBeforeDilation = 0
@@ -790,11 +808,15 @@ function quantum(auto) {
 }
 
 function isQuantumReached() {
-	return Decimal.pow(Number.MAX_VALUE,player.masterystudies?1.45:1).lte(player.meta.antimatter)&&(!player.masterystudies||(ECTimesCompleted("eterc13")>1&&ECTimesCompleted("eterc14")>1))
+	return player.meta.antimatter.gte(player.masterystudies?quantumChallenges.goals[player.quantum.challenge]:Number.MAX_VALUE)&&(!player.masterystudies||(ECTimesCompleted("eterc13")>1&&ECTimesCompleted("eterc14")>1))
 }
 
 let quarkGain = function () {
-	if (player.masterystudies) return Decimal.pow(10, player.meta.antimatter.log10() / 280 - 1.355).times(quarkMult()).floor();
+	if (player.masterystudies) {
+		var log = player.meta.antimatter.log10() / 280 - 1.355
+		if (log > 1.2) log = log*log/1.2
+		return Decimal.pow(10, log).times(Decimal.pow(2, player.quantum.multPower)).floor();
+	}
 	return Decimal.pow(10, player.meta.antimatter.log(10) / Math.log10(Number.MAX_VALUE) - 1).times(quarkMult()).floor();
 }
 

@@ -1,10 +1,11 @@
-function getDimensionBoostPower() {
+function getDimensionBoostPower(next) {
   if (player.currentChallenge == "challenge11" || player.currentChallenge == "postc1") return Decimal.fromNumber(1);
 
   var ret = 2
   if (player.infinityUpgrades.includes("resetMult")) ret = 2.5
   if (player.challenges.includes("postc7")) ret = 4
   if (player.currentChallenge == "postc7" || player.timestudy.studies.includes(81)) ret = 10
+  if (player.boughtDims) ret += player.timestudy.ers_studies[4] + (next ? 1 : 0)
   if (player.achievements.includes("r101")) ret = ret*1.01
   if (player.galacticSacrifice ? player.galacticSacrifice.upgrades.includes(23) : false) ret *= galUpgrade23()
   if (player.timestudy.studies.includes(83)) ret = Decimal.pow(1.0004, player.totalTickGained).times(ret);
@@ -58,6 +59,7 @@ function softReset(bulk) {
       sixthBought: 0,
       seventhBought: 0,
       eightBought: 0,
+      boughtDims: player.boughtDims,
       sacrificed: new Decimal(0),
       achievements: player.achievements,
       challenges: player.challenges,

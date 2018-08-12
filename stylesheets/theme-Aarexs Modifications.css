@@ -66,11 +66,11 @@ body {
     background-color: #00e500 !important;
     color: #191919 !important
 }
-.unavailablebtn, .infinistorebtnlocked, .newdimlocked, .milestonerewardlocked, .eternityupbtnlocked, .lockedchallengesbtn, .dilationupglocked, .dilationupgrebuyablelocked {
+.unavailablebtn, .infinistorebtnlocked, .newdimlocked, .milestonerewardlocked, .eternityupbtnlocked, .eternityttbtnlocked, .lockedchallengesbtn, .dilationupglocked, .dilationupgrebuyablelocked {
     border-color: #e50000 !important;
     color: #e5e5e5 !important
 }
-.unavailablebtn:hover, .infinistorebtnlocked:hover, .newdimlocked:hover, .infinistorebtnbought:hover, .onchallengebtn:hover, .completedchallengesbtn:hover, .milestonerewardlocked:hover, .milestonereward:hover, .timestudylocked:hover, .eternityupbtnlocked:hover, .eternitychallengestudylocked:hover, .lockedchallengesbtn:hover, .dilationupglocked:hover, .dilationupgbought:hover, .dilationupgrebuyablelocked:hover, .dilationupgrebuyablebought:hover {
+.unavailablebtn:hover, .infinistorebtnlocked:hover, .newdimlocked:hover, .infinistorebtnbought:hover, .onchallengebtn:hover, .completedchallengesbtn:hover, .milestonerewardlocked:hover, .milestonereward:hover, .timestudylocked:hover, .eternityupbtnlocked:hover, .eternityttbtnlocked:hover, .eternitychallengestudylocked:hover, .lockedchallengesbtn:hover, .dilationupglocked:hover, .dilationupgbought:hover, .dilationupgrebuyablelocked:hover, .dilationupgrebuyablebought:hover {
     background-color: #191919 !important;
     color: #e5e5e5 !important
 }
@@ -151,11 +151,11 @@ strong { color: #0072e5 }
     border-color: #e2bd00 !important;
     border-radius: 0px !important
 }
-#eternitybtn, #eternitystorebtn, #pasteternities, #tdtabbtn button, #timedimensions td:nth-child(4) .storebtn, .eternityupbtn, .milestonereward, .timestudy, #eterctabbtn {
+#eternitybtn, #eternitystorebtn, #pasteternities, #tdtabbtn button, #timedimensions td:nth-child(4) .storebtn, .eternityupbtn, .milestonereward, .timestudy, .eternityttbtn, #eterctabbtn {
     border-color: #7100e2 !important;
     animation: none
 }
-#eternitybtn:hover, #eternitystorebtn:hover, #pasteternities:hover, #tdtabbtn button:hover, #timedimensions td:nth-child(4) .storebtn:hover, .timestudy:hover, #eterctabbtn:hover {
+#eternitybtn:hover, #eternitystorebtn:hover, #pasteternities:hover, #tdtabbtn button:hover, #timedimensions td:nth-child(4) .storebtn:hover, .eternityttbtn:hover, #eterctabbtn:hover {
     background-color: #7100e2 !important
 }
 #TTbuttons {
@@ -348,10 +348,10 @@ strong { color: #0072e5 }
 #metaAntimatterAmount, #metaAntimatterBest, #metaAntimatterEffect {
     color: #00e5e5 !important
 }
-#quantum.storebtn, .quantumbtn, #pastquantums, #speedrunsbtn button {
+#quantum.storebtn, .quantumbtn, #pastquantums, #speedrunsbtn button, #qctabbtn {
     border-color: #009900 !important
 }
-#quantum.storebtn:hover, .quantumbtn:hover, #pastquantums:hover, #speedrunsbtn button:hover {
+#quantum.storebtn:hover, .quantumbtn:hover, #pastquantums:hover, #speedrunsbtn button:hover, #qctabbtn:hover {
     background-color: #009900 !important
 }
 #QK {
@@ -376,6 +376,12 @@ strong { color: #0072e5 }
 #dilstudy7.dilationupg, #electronstabbtn button, #electrons .storebtn { border: 2px solid #d2e500 !important }
 #dilstudy7.dilationupg:hover, #electronstabbtn button:hover, #dilstudy7.dilationupgbought, #electrons .storebtn:hover { background-color: #d2e500 !important }
 #electronsAmount, #electronsTranslation { color: #d2e500 !important }
+.quantumchallengediv {
+    background-color: #191919 !important;
+    font-family:'Inconsolata', monospace !important;
+    border-color: #009900 !important;
+    border-radius: 0px !important
+}
 .notifyjs-bootstrap-info {
     background-color: #0072e5;
     font-family:'Inconsolata', monospace;

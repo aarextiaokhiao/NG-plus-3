@@ -1,6 +1,6 @@
 function getGSAmount() {
 	let galaxies = player.galaxies + player.replicanti.galaxies + player.dilation.freeGalaxies;
-	let ret = new Decimal(galaxies * Math.max(player.resets - (player.currentChallenge=="challenge4"?2:4), 0));
+	let ret = new Decimal(Math.pow(Math.max(galaxies, 0), 1.5) * Math.max(player.resets - (player.currentChallenge=="challenge4"?2:4), 0));
 	ret = ret.times(player.eightAmount.toNumber()/50+1)
 	if (player.galacticSacrifice.upgrades.includes(32)) {
 		return ret.times(galUpgrade32()).floor();
@@ -11,7 +11,7 @@ function getGSAmount() {
 
 function galacticSacrifice() {
 	if (getGSAmount().eq(0)) return
-	if (player.options.sacrificeConfirmation) if (!confirm("Galactic Sacrifice will do a galaxy reset, and then remove all of your galaxies, in exchange of galaxy points which can be use to buy many powerful upgrades, but it will take a lot of time to recover, are you sure you wanna do this?")) return
+	if (player.options.sacrificeConfirmation) if (!confirm("Galactic Sacrifice will do a galaxy reset, and then remove all of your galaxies, in exchange of galaxy points which can be use to buy many overpowered upgrades, but it will take a lot of time to recover, are you sure you wanna do this?")) return
 	player.galacticSacrifice.galaxyPoints = player.galacticSacrifice.galaxyPoints.plus(getGSAmount())
 	player.galaxies = -1
 	player.galacticSacrifice.times++
@@ -64,13 +64,13 @@ let galUpgrade13 = function () {
 	return player.galacticSacrifice.galaxyPoints.div(5).plus(1).pow(3)
 }
 let galUpgrade23 = function () {
-	return Math.min(1+player.galacticSacrifice.galaxyPoints.max(1).log10()*0.875,5)
+	return Math.min(1+player.galacticSacrifice.galaxyPoints.max(1).log10()*0.75,5)
 }
 let galUpgrade32 = function () {
 	return player.totalmoney.pow(0.003).add(1);
 }
 let galUpgrade33 = function () {
-	return player.galacticSacrifice.galaxyPoints.max(1).log10()/2+1
+	return player.galacticSacrifice.galaxyPoints.max(1).log10()/4+1
 }
 
 function galacticUpgradeSpanDisplay () {

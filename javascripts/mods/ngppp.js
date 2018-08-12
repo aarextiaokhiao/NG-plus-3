@@ -2,7 +2,7 @@ masterystudies={initialCosts:{time:{241: 1e71, 251: 2e71, 252: 2e71, 253: 2e71, 
 		ec:{13:1e72, 14:1e72}},
 	costs:{time:{},
 		ec:{},
-		dil:{7: 2e82},
+		dil:{7: 2e82, 8: 1e84},
 		mc:{}},
 	costmults:{241: 1, 251: 2.5, 252: 2.5, 253: 2.5, 261: 6, 262: 6, 263: 6, 264: 6, 265: 6, 266: 6, 271: 2, 272: 2, 273: 2, 281: 4, 282: 4},
 	costmult:1,
@@ -34,12 +34,14 @@ function updateMasteryStudyButtons() {
 		document.getElementById("ec"+id+"Req").textContent=getFullExpansion(masterystudies.reqs[id])
 	}
 	for (id=262;id<265;id++) document.getElementById("ts"+id+"Current").textContent="Currently: "+shorten(getMTSMult(id))+"x"
-	if (quantumed) for (id=7;id<8;id++) {
-		var div=document.getElementById("dilstudy"+id)
-		if (player.masterystudies.includes("d"+id)) div.className="dilationupgbought"
-		else if (canBuyMasteryStudy('d', id)) div.className="dilationupg"
-		else div.className="timestudylocked"
-		document.getElementById("ds"+id+"Cost").textContent="Cost: "+shorten(masterystudies.costs.dil[id])+" Time Theorems"
+	if (quantumed) {
+		for (id=7;id<9;id++) {
+			var div=document.getElementById("dilstudy"+id)
+			if (player.masterystudies.includes("d"+id)) div.className="dilationupgbought"
+			else if (canBuyMasteryStudy('d', id)) div.className="dilationupg"
+			else div.className="timestudylocked"
+			document.getElementById("ds"+id+"Cost").textContent="Cost: "+shorten(masterystudies.costs.dil[id])+" Time Theorems"
+		}
 		for (id=281;id<283;id++) document.getElementById("ts"+id+"Current").textContent="Currently: "+shorten(getMTSMult(id))+"x"
 	}
 }
@@ -89,21 +91,27 @@ function buyMasteryStudy(type, id) {
 			showQuantumTab("electrons")
 			document.getElementById("electronstabbtn").style.display=""
 		}
+		if (id==8) {
+			showTab("challenges")
+			showChallengesTab("quantumchallenges")
+			updateQuantumChallenges()
+		}
 	}
 }
 
 function canBuyMasteryStudy(type, id) {
 	if (type=='t') {
-		if (player.timestudy.theorem<masterystudies.costs.time[id]||player.masterystudies.includes('t'+id)||player.eternityChallUnlocked) return false
+		if (player.timestudy.theorem<masterystudies.costs.time[id]||player.masterystudies.includes('t'+id)||player.eternityChallUnlocked>12) return false
 		var row=Math.floor(id/10)
 		for (check=1;check<10;check++) if (player.masterystudies.includes('t'+(row+1).toString()+check)) return false
 		var col=id%10
-		if (row>27) return player.masterystudies.includes('t26'+col)||player.masterystudies.includes('t26'+(col+1))
+		if (row>27) return player.masterystudies.includes('t27'+col)||player.masterystudies.includes('t26'+(col+1))
 		if (row>26) return player.masterystudies.includes('t252')&&player.masterystudies.includes('d7')
 		if (row>25) return player.masterystudies.includes('t25'+Math.ceil(col/2))
 		if (row>24) return player.masterystudies.includes('t241')
 	} else if (type=='d') {
 		if (player.timestudy.theorem<masterystudies.costs.dil[id]||player.masterystudies.includes('d'+id)) return false
+		if (id>7) if (player.masterystudies.includes(272)) return
 		if (id>6) if (player.masterystudies.includes(252)) return
 	} else {
 		if (player.timestudy.theorem<masterystudies.costs.ec[id]||player.eternityChallUnlocked) return false
@@ -113,8 +121,6 @@ function canBuyMasteryStudy(type, id) {
 	return true
 }
 
-var msc = document.getElementById("studyTreeCanvas2");
-var msctx = msc.getContext("2d");
 function drawMasteryBranch(num1, num2) {
 	if (document.getElementById("eternitystore").style.display === "none" || document.getElementById("masterystudies").style.display === "none" || player.masterystudies === undefined) return
 	var type=num2.split("ec")[1]?"ec":num2.split("di")[1]?"d":"t"
@@ -128,14 +134,14 @@ function drawMasteryBranch(num1, num2) {
 	msctx.beginPath();
 	if (type=="ec"?player.eternityChallUnlocked==num2.slice(2,4):player.masterystudies.includes(type+num2.split("study")[1])) {
 		if (type=="d" && player.options.theme == "Aarex's Modifications") {
-			msctx.strokeStyle="#D2E500";
+			msctx.strokeStyle=parseInt(num2.split("study")[1])>7?"#00E5E5":"#D2E500";
 		} else if (type=="ec") {
 			msctx.strokeStyle="#490066";
 		} else {
 			msctx.strokeStyle="#000000";
 		}
 	} else if (type=="d" && player.options.theme == "Aarex's Modifications") {
-		msctx.strokeStyle="#697200";
+		msctx.strokeStyle=parseInt(num2.split("study")[1])?"#007272":"#697200";
 	} else msctx.strokeStyle="#444";
 	msctx.moveTo(x1, y1);
 	msctx.lineTo(x2, y2);
@@ -170,6 +176,7 @@ function drawMasteryTree() {
 		drawMasteryBranch("timestudy272","timestudy281")
 		drawMasteryBranch("timestudy272","timestudy282")
 		drawMasteryBranch("timestudy273","timestudy282")
+		drawMasteryBranch("timestudy272", "dilstudy8")
 	} else document.getElementById("quantumstudies").style.display="none"
 }
 
@@ -229,9 +236,10 @@ function updateQuantumTabs() {
 	if (document.getElementById("gluons").style.display=="block") {
 		document.getElementById("brupg1current").textContent="Currently: "+shortenMoney(player.dilation.dilatedTime.add(1).log10()+1)+"x"
 		document.getElementById("brupg2current").textContent="Currently: "+shortenMoney(Decimal.pow(2.2, Math.pow(calcTotalSacrificeBoost().log10()/1e6, 0.25)))+"x"
+		document.getElementById("brupg4current").textContent="Currently: "+shortenMoney(Decimal.pow(getDimensionPowerMultiplier(), 0.0003))+"x"
 	}
 	if (document.getElementById("electrons").style.display=="block") {
-		for (i=1;i<7;i++) document.getElementById("sacrifice"+i).className=Math.pow(10,i>4?0:i-1)>player.galaxies-player.quantum.electrons.sacGals?"unavailablebtn":"storebtn"
+		for (i=1;i<7;i++) document.getElementById("sacrifice"+i).className=(Math.pow(10,i>4?0:i-1)>player.galaxies-player.quantum.electrons.sacGals||player.quantum.challenge>0)?"unavailablebtn":"storebtn"
 		document.getElementById("electronupg1").className="gluonupgrade "+(player.timestudy.theorem<getElectronUpgCost(1)?"unavailabl":"stor")+"ebtn"
 		document.getElementById("electronupg2").className="gluonupgrade "+(player.dilation.dilatedTime.lt(getElectronUpgCost(2))?"unavailabl":"stor")+"ebtn"
 		document.getElementById("electronupg3").className="gluonupgrade "+(player.meta.antimatter.lt(getElectronUpgCost(3))?"unavailabl":"stor")+"ebtn"
@@ -260,7 +268,7 @@ function updateColorCharge() {
 			sorted.push(search)
 		}
 		colorCharge={color:sorted[0],charge:Decimal.sub(player.quantum.usedQuarks[sorted[0]],player.quantum.usedQuarks[sorted[1]]).sub(player.quantum.usedQuarks[sorted[2]])}
-	if (player.quantum.usedQuarks.r.gt(0)&&colorCharge.charge.eq(0)) giveAchievement("Hadronization")
+		if (player.quantum.usedQuarks.r.gt(0)&&colorCharge.charge.eq(0)) giveAchievement("Hadronization")
 	} else {
 		colorCharge={color:'r',charge:new Decimal(0)}
 		return
@@ -293,7 +301,7 @@ function assignQuark(color) {
 }
 
 //v1.75
-GUCosts=[null, 1, 2, 4]
+GUCosts=[null, 1, 2, 4, 100]
 
 function updateGluons() {
 	if (!player.masterystudies) return
@@ -311,7 +319,7 @@ function updateGluons() {
 	document.getElementById("gbgain").textContent=shortenDimensions(player.quantum.usedQuarks.g.min(player.quantum.usedQuarks.b))
 	document.getElementById("brgain").textContent=shortenDimensions(player.quantum.usedQuarks.b.min(player.quantum.usedQuarks.r))
 	var names=["rg","gb","br"]
-	for (u=1;u<4;u++) {
+	for (u=1;u<5;u++) {
 		for (c=0;c<3;c++) {
 			var div=document.getElementById(names[c]+"upg"+u)
 			if (GUBought(names[c]+u)) div.className="gluonupgradebought "+names[c]
@@ -319,6 +327,13 @@ function updateGluons() {
 			else div.className="gluonupgrade "+names[c]
 		}
 	}
+	var c=Decimal.pow(100, Math.floor(player.quantum.multPower/3)).times(500)
+	var t=player.quantum.multPower%3
+	var div=document.getElementById("qkmult")
+	document.getElementById("qkmultcurrent").textContent="Currently: "+shortenDimensions(Decimal.pow(2, player.quantum.multPower))+"x"
+	document.getElementById("qkmultcost").textContent="Cost: "+shortenDimensions(c)+" "+names[t].toUpperCase()+" gluons"
+	if (player.quantum.gluons[names[t]].lt(c)) div.className="gluonupgrade unavailablebtn"
+	else div.className="gluonupgrade "+names[t]
 }
 
 function buyGluonUpg(color, id) {
@@ -327,6 +342,7 @@ function buyGluonUpg(color, id) {
 	player.quantum.upgrades.push(name)
 	player.quantum.gluons[color]=player.quantum.gluons[color].sub(GUCosts[id])
 	updateGluons()
+	if (name=="gb4") player.tickSpeedMultDecrease=1.25
 }
 
 function GUBought(id) {
@@ -381,7 +397,7 @@ function toggleAllMetaDims() {
 }
 
 function sacrificeGalaxy(id) {
-	if (player.galaxies-player.quantum.electrons.sacGals<1) return
+	if (player.galaxies-player.quantum.electrons.sacGals<1||player.quantum.challenge>0) return
 	var amount=1
 	if (id>5) amount=player.galaxies-player.quantum.electrons.sacGals
 	else if (id>4) amount=Math.ceil((player.galaxies-player.quantum.electrons.sacGals)/2)
@@ -396,11 +412,12 @@ function sacrificeGalaxy(id) {
 }
 
 function getMPTPower() {
-	var a = player.quantum.electrons.amount.add(1)
-	return a.toNumber()
+	var a = player.quantum.electrons.amount
+	if (GUBought("rg4")) a = a.times(0.7)
+	return a.toNumber()+1
 }
 
-//v2
+//v1.8
 function isRewardEnabled(id) {
 	if (!player.masterystudies) return false
 	return speedrunMilestonesReached>=id&&!player.quantum.disabledRewards[id]
@@ -423,8 +440,9 @@ function updateElectrons() {
 	}
 }
 
+//v1.9
 function getElectronUpgCost(u) {
-	var baseCost=([0,81,153,638,26])[u]+Math.pow(player.quantum.electrons.rebuyables[u-1]*Math.max(player.quantum.electrons.rebuyables[u-1]-1,1)+1,2)
+	var baseCost=([0,83,153,638,26])[u]+Math.pow(player.quantum.electrons.rebuyables[u-1]*Math.max(player.quantum.electrons.rebuyables[u-1]-1,1)+1,u<2?1:2)
 	if (u>3) return baseCost
 	if (u<2) return Math.pow(10,baseCost)
 	return Decimal.pow(10,baseCost)
@@ -451,4 +469,40 @@ function buyElectronUpg(u) {
 	player.quantum.electrons.rebuyables[u-1]++
 	player.quantum.electrons.mult+=0.25
 	updateElectrons()
+}
+
+//v2
+function buyQuarkMult() {
+	var c=Decimal.pow(100, Math.floor(player.quantum.multPower/3)).times(500)
+	var t=player.quantum.gluons[(["rg","gb","br"])[player.quantum.multPower%3]]
+	if (t.gte(c)) {
+		t=t.sub(c)
+		player.quantum.multPower++
+		updateGluons()
+	}
+}
+
+var quantumChallenges={
+	costs:[0,15500],
+	goals:["9.318318743182394e446","1e525"]
+}
+
+function updateQuantumChallenges() {
+	if (player.masterystudies ? !player.masterystudies.includes("d8") : true) {
+		document.getElementById("qctabbtn").style.display="none"
+		return
+	} else document.getElementById("qctabbtn").style.display=""
+	for (qc=1;qc<2;qc++) {
+		var property = "qc"+qc
+		document.getElementById(property+"div").style.display=player.quantum.challenges>qc-2?"inline-block":"none"
+		document.getElementById(property).textContent=player.quantum.challenge==qc?"Running":player.quantum.challenges>=qc?"Completed":"Start"
+		document.getElementById(property).className=player.quantum.challenge==qc?"onchallengebtn":player.quantum.challenges>=qc?"completedchallengesbtn":"challengesbtn"
+		document.getElementById(property+"cost").textContent="Cost: "+shortenDimensions(quantumChallenges.costs[qc])+" electrons"
+		document.getElementById(property+"goal").textContent="Goal: "+shortenMoney(new Decimal(quantumChallenges.goals[qc]))+" MA"
+	}
+}
+
+function inQC(num) {
+	if (player.masterystudies) return player.quantum.challenge==num
+	return false
 }

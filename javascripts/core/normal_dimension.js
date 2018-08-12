@@ -88,7 +88,7 @@ function getDimensionFinalMultiplier(tier) {
 
 function getDimensionDescription(tier) {
   var name = TIER_NAMES[tier];
-  if (tier > Math.min(player.currentEternityChall == "eterc3" ? 3 : (player.currentChallenge == "challenge4" || player.currentChallenge == "postc1") ? 5 : 7, player.resets + 3)) return getFullExpansion(tier > 7 && player.currentChallenge == "challenge11" ? Math.round(player[name + "Amount"].toNumber()) : player[name + 'Bought']) + ' (' + dimBought(tier) + ')';
+  if (tier > Math.min(inQC(1) ? 1 : player.currentEternityChall == "eterc3" ? 3 : (player.currentChallenge == "challenge4" || player.currentChallenge == "postc1") ? 5 : 7, player.resets + 3)) return getFullExpansion(tier > 7 && player.currentChallenge == "challenge11" ? Math.round(player[name + "Amount"].toNumber()) : player[name + 'Bought']) + ' (' + dimBought(tier) + ')';
   else return shortenDimensions(player[name + 'Amount']) + ' (' + dimBought(tier) + ')  (+' + formatValue(player.options.notation, getDimensionRateOfChange(tier), 2, 2) + '%/s)';
 }
 

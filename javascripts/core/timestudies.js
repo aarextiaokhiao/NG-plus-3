@@ -92,6 +92,7 @@ function updateTheoremButtons() {
 		document.getElementById("theoremam").innerHTML = "Buy Time Theorems <br>Cost: "+shortenCosts(player.timestudy.amcost)
 		document.getElementById("theoremmax").innerHTML = (speedrunMilestonesReached > 2 && player.masterystudies) ? ("Auto max: O"+(player.autoEterOptions.tt?"N":"FF")) : "Buy max Theorems"
 	}
+	document.getElementById("presetsbtn").style.display=player.boughtDims?"none":""
 	document.getElementById("timetheorems").innerHTML = "You have <span style='display:inline' class=\"TheoremAmount\">"+(player.timestudy.theorem>99999?shortenMoney(player.timestudy.theorem):getFullExpansion(Math.floor(player.timestudy.theorem)))+"</span> Time Theorem"+ (player.timestudy.theorem == 1 ? "." : "s.")
 }
 
@@ -238,6 +239,19 @@ function canBuyStudy(name) {
 var all = [11, 21, 22, 33, 31, 32, 41, 42, 51, 61, 62, 71, 72, 73, 81, 82 ,83, 91, 92, 93, 101, 102, 103, 111, 121, 122, 123, 131, 132, 133, 141, 142, 143, 151, 161, 162, 171, 181, 191, 192, 193, 201, 211, 212, 213, 214, 221, 222, 223, 224, 225, 226, 227, 228, 231, 232, 233, 234]
 var studyCosts = [1, 3, 2, 2, 3, 2, 4, 6, 3, 3, 3, 4, 6, 5, 4, 6, 5, 4, 5, 7, 4, 6, 6, 12, 9, 9, 9, 5, 5, 5, 4, 4, 4, 8, 7, 7, 15, 200, 400, 730, 300, 900, 120, 150, 200, 120, 900, 900, 900, 900, 900, 900, 900, 900, 500, 500, 500, 500]
 function updateTimeStudyButtons() {
+  if (player.boughtDims) {
+      var locked=getTotalTT(player)<60
+      document.getElementById("nextstudy").textContent=locked?"Next time study set unlock at 60 total Time Theorems.":""
+      document.getElementById("tsrow3").style.display=locked?"none":""
+      for (id=1;id<(locked?5:7);id++) {
+          var b=player.timestudy.ers_studies[id]
+          var c=b+1
+          document.getElementById("ts"+id+"bought").textContent=getFullExpansion(b)
+          document.getElementById("ts"+id+"cost").textContent=getFullExpansion(c)
+          document.getElementById("ts"+id).className="eternityttbtn"+(player.timestudy.theorem<c?"locked":"")
+      }
+      return
+  }
   for (var i=0; i<all.length; i++) {
       if (!player.timestudy.studies.includes(all[i])) {
           if (canBuyStudy(all[i]) && studyCosts[i]<=player.timestudy.theorem) {
@@ -316,13 +330,20 @@ function studiesUntil(id) {
 }
 
 function respecTimeStudies() {
-  for (var i=0; i<all.length; i++) {
-      if (player.timestudy.studies.includes(all[i])) {
-          player.timestudy.theorem += studyCosts[i]
+  if (player.boughtDims) {
+      var temp=player.timestudy.theorem
+      for (id=1;id<7;id++) player.timestudy.theorem+=player.timestudy.ers_studies[id]*(player.timestudy.ers_studies[id]-1)/2
+      if (player.timestudy.theorem==temp) giveAchievement("You do know how these work, right?")
+      player.timestudy.ers_studies=[null,0,0,0,0,0,0]
+  } else {
+      for (var i=0; i<all.length; i++) {
+          if (player.timestudy.studies.includes(all[i])) {
+              player.timestudy.theorem += studyCosts[i]
+          }
       }
+      if (player.timestudy.studies.length === 0) giveAchievement("You do know how these work, right?")
+      player.timestudy.studies = []
   }
-  if (player.timestudy.studies.length === 0) giveAchievement("You do know how these work, right?")
-  player.timestudy.studies = []
   switch(player.eternityChallUnlocked) {
       case 1:
       player.timestudy.theorem += 30
@@ -400,9 +421,14 @@ function respecTimeStudies() {
 
 function getTotalTT(tree) {
 	var result=tree.timestudy.theorem
-	var ecCosts=[0,30,35,40,70,130,85,115,115,415,550,1,1]
-	for (id=0;id<all.length;id++) if (tree.timestudy.studies.includes(all[id])) result+=studyCosts[id]
-	return result+ecCosts[player.eternityChallUnlocked]
+	if (tree.boughtDims) {
+		for (id=1;id<7;id++) result+=tree.timestudy.ers_studies[id]*(tree.timestudy.ers_studies[id]+1)/2
+		return result
+	} else {
+		var ecCosts=[0,30,35,40,70,130,85,115,115,415,550,1,1]
+		for (id=0;id<all.length;id++) if (tree.timestudy.studies.includes(all[id])) result+=studyCosts[id]
+		return result+ecCosts[player.eternityChallUnlocked]
+	}
 }
 
 function exportStudyTree() {
@@ -443,9 +469,20 @@ function importStudyTree(input) {
   if (sha512_256(input) == "08b819f253b684773e876df530f95dcb85d2fb052046fa16ec321c65f3330608") giveAchievement("You followed the instructions")
   if (input === "") return false
   var studiesToBuy = input.split("|")[0].split(",");
+  var secondSplitPick = 0
+  var laterSecondSplits = []
   for (i=0; i<studiesToBuy.length; i++) {
-      if (studiesToBuy[i]>240) buyMasteryStudy("t", studiesToBuy[i])
-      else document.getElementById(studiesToBuy[i]).click();
+      var study=parseInt(studiesToBuy[i])
+      if (study<120||study>150||(secondSplitPick<1||study%10==secondSplitPick)) {
+          if (study>120&&study<150) secondSplitPick=study%10
+          if (study>240) buyMasteryStudy("t", study)
+          else document.getElementById(study).click();
+      } else laterSecondSplits.push(study)
+  }
+  for (i=0; i<laterSecondSplits.length; i++) {
+      var study=laterSecondSplits[i]
+      if (study>240) buyMasteryStudy("t", study)
+      else document.getElementById(study).click();
   }
   var ec=parseInt(input.split("|")[1])
   if (ec > 0) {

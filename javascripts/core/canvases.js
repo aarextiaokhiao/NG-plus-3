@@ -29,7 +29,7 @@ function resizeCanvas() {
     msc.width = document.body.scrollWidth;
     msc.height = document.body.scrollHeight;
     drawStudyTree();
-    drawMasteryTree();
+    if (player) drawMasteryTree();
 }
 
 function point(x, y, ctz){

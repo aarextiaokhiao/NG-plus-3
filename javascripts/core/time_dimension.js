@@ -8,8 +8,10 @@ function getTimeDimensionPower(tier) {
   if (player.timestudy.studies.includes(11) && tier == 1) ret = ret.dividedBy(player.tickspeed.dividedBy(1000).pow(0.005).times(0.95).plus(player.tickspeed.dividedBy(1000).pow(0.0003).times(0.05)).max(Decimal.fromMantissaExponent(1, -2500)))
   if (player.achievements.includes("r105")) {
       var mult = Decimal.div(1000,player.tickspeed).pow(0.000005)
+      if (mult.gt("1e120000")) mult = Decimal.pow(10, Math.pow(mult.log10()/12e4,0.5)*12e4)
       ret = ret.times(mult)
   }
+  if (player.achievements.includes("r117")&&player.boughtDims) ret = ret.times(player.eightAmount.max(1).pow(1/8))
 
   ret = ret.times(kongAllDimMult)
 
@@ -30,14 +32,7 @@ function getTimeDimensionPower(tier) {
   ret = ret.times(ec10bonus)
   if (player.achievements.includes("r128")) ret = ret.times(Math.max(player.timestudy.studies.length, 1))
 
-  if (player.replicanti.unl && player.replicanti.amount.gt(1) && player.dilation.upgrades.includes(5)) {
-    var replmult = Decimal.pow(Decimal.log2(player.replicanti.amount), 2)
-
-    if (player.timestudy.studies.includes(21)) replmult = replmult.plus(Decimal.pow(player.replicanti.amount, 0.032))
-    if (player.timestudy.studies.includes(102)) replmult = replmult.times(Decimal.pow(5, player.replicanti.galaxies))
-
-    ret = ret.times(replmult.pow(0.1))
-  }
+  if (player.replicanti.unl && player.replicanti.amount.gt(1) && player.dilation.upgrades.includes(5)) ret.times(getReplMult().pow(0.1))
 
   if (ret.lt(0)) {
     ret = new Decimal(0)

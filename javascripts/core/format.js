@@ -80,6 +80,7 @@ function getShortAbbreviation(e) {
 const inflog = Math.log10(Number.MAX_VALUE)
 function formatValue(notation, value, places, placesUnder1000) {
     if (notation === "Same notation") notation = player.options.notation
+    if (Decimal.eq(value, 1/0)) return "Infinite"
     if ((Decimal.lte(value,Number.MAX_VALUE) || (player.break && (player.currentChallenge == "" || !new Decimal(Number.MAX_VALUE).equals(player.challengeTarget)) )) && (Decimal.gte(value,1000))) {
         if (notation === "Hexadecimal") {
             value = Decimal.pow(value, 1/Math.log10(16))
@@ -118,9 +119,12 @@ function formatValue(notation, value, places, placesUnder1000) {
                 matissa = (1).toFixed(places);
                 power++;
             }
-            if (power > 100000  && player.options.commas === "Commas") return (matissa + "e" + getFullExpansion(power));
-            if (power > 100000) return (matissa + "e" + formatValue(player.options.commas, power, 3, 3))
-            return (matissa + "e" + power);
+            if (power > 100000) {
+                if (player.options.commas != "Commas") return matissa + "e" + formatValue(player.options.commas, power, 3, 3)
+                if (power >= 1e12 && player.options.commas == "Commas") return matissa + "e" + formatValue("Standard", power, 3, 3)
+                return matissa + "e" + getFullExpansion(power);
+            }
+            return matissa + "e" + power;
         }
         if (notation === "Greek" || notation === "Morse code") {
             if (matissa>=10-Math.pow(10,-places)/2) {
@@ -130,7 +134,7 @@ function formatValue(notation, value, places, placesUnder1000) {
                 matissa=Math.round(matissa*Math.pow(10,places))
                 power-=places
             }
-            if ((power > 100000  && !(player.options.commas === "Commas")) || power >= 1e12) power = formatValue(player.options.commas, power, 3, 3)
+            if (power > 1e5 && player.options.commas !== "Commas") power = formatValue(player.options.commas, power, 3, 3)
             else power = convTo(notation, power)
             return convTo(notation, matissa)+'e'+power
         }
@@ -141,7 +145,7 @@ function formatValue(notation, value, places, placesUnder1000) {
             if (reduced < 1000) var infPlaces = 4
             else var infPlaces = 3
             if (player.options.commas === "Commas") {
-                if (reduced>=1e12) return formatValue(player.options.notation, reduced, 3, 3)+"∞"
+                if (reduced>=1e12) return formatValue("Standard", reduced, 3, 3)+"∞"
 				var splits=reduced.toFixed(Math.max(infPlaces, places)).split(".")
 				return splits[0].replace(/\B(?=(\d{3})+(?!\d))/g, ",")+"."+splits[1]+"∞"
             } else {
@@ -154,17 +158,19 @@ function formatValue(notation, value, places, placesUnder1000) {
         }
         if (notation === "Engineering" || notation === "Mixed engineering") pow = power - (power % 3)
         else pow = power
-        if (power > 100000  && !(player.options.commas === "Commas")) pow = formatValue(player.options.commas, pow, 3, 3)
-        if (power > 100000  && player.options.commas === "Commas") pow = getFullExpansion(pow);
+        if (pow > 100000) {
+            if (player.options.commas !== "Commas") pow = formatValue(player.options.commas, pow, 3, 3)
+            else if (pow >= 1e12) pow = formatValue("Standard", pow, 3, 3)
+            else pow = getFullExpansion(pow);
+        }
 
         if (notation === "Logarithm") {
-            if (power > 100000  && player.options.commas === "Commas") {
-                if (power >= 1e12) return "ee"+Math.log10(Decimal.log10(value)).toFixed(3)
-                return "e"+Decimal.log10(value).toFixed(places).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+            if (power > 100000) {
+                if (player.options.commas !== "Commas") return "ee"+Math.log10(Decimal.log10(value)).toFixed(3)
+                else if (power >= 1e12) return "e"+formatValue("Standard", power, 3, 3)
+                else return "e"+Decimal.log10(value).toFixed(places).replace(/\B(?=(\d{3})+(?!\d))/g, ",")
             }
-            if (power > 100000  && !(player.options.commas === "Logarithm")) return "e"+formatValue(player.options.commas, Decimal.log10(value), 3, 3)
-            if (power > 100000  && !(player.options.commas === "Commas")) return "ee"+Math.log10(Decimal.log10(value)).toFixed(3)
-            else return "e"+Decimal.log10(value).toFixed(places)
+            return "e"+Decimal.log10(value).toFixed(places)
         }
 
         if (notation === "Brackets") {
@@ -200,7 +206,7 @@ function formatValue(notation, value, places, placesUnder1000) {
             else return matissa + " " + getAbbreviation(power);
         } else if (notation === "Mixed engineering") {
             if (power <= 33) return matissa + " " + FormatList[(power - (power % 3)) / 3];
-            else return (matissa + "ᴇ" + pow);
+            else return (matissa + "e" + pow);
         } else if (notation === "Engineering") {
             return (matissa + "e" + pow);
         } else if (notation === "Letters") {
@@ -222,6 +228,17 @@ function formatValue(notation, value, places, placesUnder1000) {
 
 function convTo(notation, num) {
 	var result=""
+	var rest=""
+	if (num>=1e12) {
+		var log = Math.floor(Math.log10(num))
+		var step = Math.max(Math.floor(log/3-3),0)
+		num = Math.round(num/Math.pow(10,Math.max(log-9,0)))*Math.pow(10,Math.max(log-9,0)%3)
+		if (num>=1e12) {
+			num/=1000
+			step++
+		}
+		rest=" "+FormatList[step]
+	}
 	if (notation=='Greek') {
 		const marks=[["","A","B","Γ","Δ","E","Ϛ","Z","H","Θ"],["","I","K","Λ","M","N","Ξ","O","Π","Ϟ"],["","P","Σ","T","Y","Φ","X","Ψ","Ω","Ϡ"]]
 		var needMark=false
@@ -238,12 +255,15 @@ function convTo(notation, num) {
 			num=Math.floor(num/10)
 		}
 	}
-	return result
+	return result+rest
 }
 
 function getFullExpansion(num) {
-	if (num < 1e12) return num.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")
-	else return shorten(num)
+	if (typeof(num)=="number"&&isNaN(num)) return "NaN"
+	else if (typeof(num)!="number"&&isNaN(break_infinity_js?num:num.logarithm)) return "NaN"
+	else if (num < 1e12) return num.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")
+	else if (Decimal.lt(num, 1/0)) return shorten(num)
+	else return "Infinite"
 }
 
 shorten = function (money) {

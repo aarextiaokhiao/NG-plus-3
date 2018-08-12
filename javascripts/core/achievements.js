@@ -205,6 +205,15 @@ function giveAchievement(name) {
 
     if (player.achievements.includes(allAchievementNums[name])) return false
 
+    if ((allAchievementNums[name].split("ngpp")[1]&&!player.meta)||(allAchievementNums[name].split("ng3p")[1]&&!player.masterystudies)) return false
+
+    if (player.boughtDims) {
+        var r=allAchievementNums[name].split("r")[1]
+        if (r<0) r=0
+        else r=parseInt(allAchievementNums[name].split("r")[1])
+        if (r==105||(r!=117&&r>110)) return false
+    }
+
     if (name=="Universal harmony"&&(player.galaxies<700||player.replicanti.galaxies+extraReplGalaxies<700||player.dilation.freeGalaxies<700)) return
     else $.notify(name, "success");
     player.achievements.push(allAchievementNums[name]);
@@ -214,6 +223,7 @@ function giveAchievement(name) {
         player.autoIP = player.autoIP.times(4);
         if (player.autoCrunchMode == "amount" && player.autobuyers[11].priority != undefined) player.autobuyers[11].priority = player.autobuyers[11].priority.times(4);
     }
+    if (name == "The swarm" && player.boughtDims) document.getElementById('replicantigalaxypowerdiv').style.display=""
     if (name == "GAS GAS GAS") {
         document.getElementById('epmultauto').style.display=""
         for (i=1;i<9;i++) document.getElementById("td"+i+'auto').style.visibility="visible"
@@ -227,6 +237,7 @@ function updateAchievements() {
 	for (var i=1; i<16; i++) {
 		if (i>14) var shown=!(!player.masterystudies)
 		else if (i>13) var shown=!(!player.meta)
+		else if (i>10) var shown=!player.boughtDims
 		else var shown=true
 		document.getElementById("achRow"+i).style.display=shown?"":"none"
 		if (shown) {
@@ -234,8 +245,8 @@ function updateAchievements() {
 			var achNum = i * 10
 			for (var l=0; l<8; l++) {
 				achNum += 1;
-				var achId=achNum>150?"ng3p"+(achNum-140):achNum>140?"ngpp"+(achNum-130):"r"+achNum
-				var name=allAchievements[achId]
+				var achId=achNum>150?"ng3p"+(achNum-140):achNum>140?"ngpp"+(achNum-130):"r"+((achNum==105&&player.boughtDims)?117:achNum)
+				var name=allAchievements[(achNum==105&&player.boughtDims)?"r105":achId]
 				if (player.achievements.includes(achId)) {
 					n++
 					document.getElementById(name).className = "achievementunlocked"
@@ -251,6 +262,7 @@ function updateAchievements() {
 			}
 		}
 	}
+	document.getElementById("Infinite time").style["background-image"]="url(images/"+(player.boughtDims?79:69)+".png)"
 	for (var i=1; i<document.getElementById("secretachievementtable").children[0].children.length+1; i++) {
 		var n = 0
 		var achNum = i * 10
