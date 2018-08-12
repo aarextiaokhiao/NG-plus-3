@@ -54,6 +54,7 @@ function DimensionProduction(tier) {
 function DimensionPower(tier) {
   var dim = player["infinityDimension"+tier]
   if (player.currentEternityChall == "eterc11") return new Decimal(1)
+  if (player.currentEternityChall=='eterc14') return getReplMult()
   var mult = dim.power
 
   mult = mult.times(infDimPow)
@@ -62,7 +63,6 @@ function DimensionPower(tier) {
   if (player.achievements.includes("r94") && tier == 1) mult = mult.times(2);
   if (player.achievements.includes("r75")) mult = mult.times(player.achPow);
   if (player.replicanti.unl && player.replicanti.amount.gt(1)) mult = mult.times(getReplMult())
-  if (player.currentEternityChall=='eterc14') return replmult
 
   if (player.timestudy.studies.includes(72) && tier == 4) {
       mult = mult.times(calcTotalSacrificeBoost().pow(0.04).max(1).min("1e30000"))

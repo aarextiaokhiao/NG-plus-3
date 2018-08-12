@@ -98,8 +98,8 @@ function updateTheoremButtons() {
 
 function buyTimeStudy(name, cost, check) {
   if (player.boughtDims) {
-      if (player.timestudy.theorem<player.timestudy.esr_studies[name]+1) return
-      player.timestudy.theorem-=player.timestudy.esr_studies[name]+1
+      if (player.timestudy.theorem<player.timestudy.ers_studies[name]+1) return
+      player.timestudy.theorem-=player.timestudy.ers_studies[name]+1
       player.timestudy.esr_studies[name]++
       updateTimeStudyButtons()
   } else if (shiftDown && check === undefined) studiesUntil(name);

@@ -10,7 +10,7 @@ function getDimensionBoostPower(next) {
   if (player.galacticSacrifice ? player.galacticSacrifice.upgrades.includes(23) : false) ret *= galUpgrade23()
   if (player.timestudy.studies.includes(83)) ret = Decimal.pow(1.0004, player.totalTickGained).times(ret);
   if (player.timestudy.studies.includes(231)) ret = Decimal.pow(player.resets, 0.3).times(ret)
-  if (player.dilation.studies.includes(6)) ret = getExtraDimensionBoostPower().times(ret)
+  if (player.dilation.studies.includes(6)&&player.currentEternityChall!="eterc14") ret = getExtraDimensionBoostPower().times(ret)
   return new Decimal(ret)
 }
 
