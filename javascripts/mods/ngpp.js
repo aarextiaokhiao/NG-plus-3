@@ -307,7 +307,7 @@ function quantum(auto,force,challid) {
 			showInfTab("preinf")
 			showEternityTab("timestudies", true)
 			if (document.getElementById("quantumtab").style.display=="none") showTab("dimensions")
-		} else if ((document.getElementById("timedilation").style.display=="block"||document.getElementById("masterystudies").style.display=="block")&&!isRewardEnabled(4)) {
+		} else if ((document.getElementById("dilation").style.display=="block"||document.getElementById("masterystudies").style.display=="block")&&!isRewardEnabled(4)) {
 			showEternityTab("timestudies", document.getElementById("eternitystore").style.display=="block")
 		}
 		if (!quantumed) {
