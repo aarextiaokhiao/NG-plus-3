@@ -6497,7 +6497,7 @@ function autoBuyerTick() {
     if (player.autobuyers[11]%1 !== 0) {
     if (player.autobuyers[11].ticks*100 >= player.autobuyers[11].interval && player.money.gte(Number.MAX_VALUE)) {
         if (player.autobuyers[11].isOn) {
-            if (player.autobuyers[11].requireIPPeak || IPminpeak.gt(gainedInfinityPoints().div(player.thisInfinityTime/600))) {
+            if (!player.autobuyers[11].requireIPPeak || IPminpeak.gt(gainedInfinityPoints().div(player.thisInfinityTime/600))) {
                 if (player.autoCrunchMode == "amount") {
                     if (!player.break || player.currentChallenge != "" || gainedInfinityPoints().gte(player.autobuyers[11].priority)) {
                         autoS = false;
