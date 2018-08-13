@@ -5,7 +5,7 @@ function getDimensionFinalMultiplier(tier) {
   let multiplier = new Decimal(player[name + 'Pow']);
 
   if (player.currentEternityChall == "eterc11") return player.infinityPower.pow(7).max(1).times(Decimal.pow(getDimensionBoostPower(), player.resets - tier + 1).max(1))
-  if (player.currentChallenge == "challenge7") {
+  if (player.currentChallenge == "challenge7" || inQC(4)) {
       if (tier == 4) multiplier = multiplier.pow(1.4)
       if (tier == 2) multiplier = multiplier.pow(1.7)
   }
@@ -88,7 +88,7 @@ function getDimensionFinalMultiplier(tier) {
 
 function getDimensionDescription(tier) {
   var name = TIER_NAMES[tier];
-  if (tier > Math.min(inQC(1) ? 1 : player.currentEternityChall == "eterc3" ? 3 : (player.currentChallenge == "challenge4" || player.currentChallenge == "postc1") ? 5 : 7, player.resets + 3)) return getFullExpansion(tier > 7 && player.currentChallenge == "challenge11" ? Math.round(player[name + "Amount"].toNumber()) : player[name + 'Bought']) + ' (' + dimBought(tier) + ')';
+  if (tier > Math.min((inQC(1) ? 1 : player.currentEternityChall == "eterc3" ? 3 : (player.currentChallenge == "challenge4" || player.currentChallenge == "postc1") ? 5 : 7) - (player.currentChallenge == "challenge7" || inQC(4) ? 1 : 0), player.resets + 3)) return getFullExpansion(tier > 7 && player.currentChallenge == "challenge11" ? Math.round(player[name + "Amount"].toNumber()) : player[name + 'Bought']) + ' (' + dimBought(tier) + ')';
   else return shortenDimensions(player[name + 'Amount']) + ' (' + dimBought(tier) + ')  (+' + formatValue(player.options.notation, getDimensionRateOfChange(tier), 2, 2) + '%/s)';
 }
 
@@ -101,7 +101,7 @@ function getDimensionRateOfChange(tier) {
   if (tier == 7 && player.currentEternityChall == "eterc7") toGain = DimensionProduction(1).times(10)
 
   var name = TIER_NAMES[tier];
-  if (player.currentChallenge == "challenge7") {
+  if (player.currentChallenge == "challenge7" || inQC(4)) {
       if (tier == 7) return 0
       else toGain = getDimensionProductionPerSecond(tier + 2);
   }
@@ -553,7 +553,7 @@ function dimMults() {
 
 function getDimensionProductionPerSecond(tier) {
     let ret = Decimal.floor(player[TIER_NAMES[tier] + 'Amount']).times(getDimensionFinalMultiplier(tier)).times(1000).dividedBy(player.tickspeed)
-    if (player.currentChallenge == "challenge7") {
+    if (player.currentChallenge == "challenge7" || inQC(4)) {
         if (tier == 4) ret = player[TIER_NAMES[tier] + 'Amount'].floor().pow(1.3).times(getDimensionFinalMultiplier(tier)).dividedBy(player.tickspeed.dividedBy(1000))
         else if (tier == 2) ret = player[TIER_NAMES[tier] + 'Amount'].floor().pow(1.5).times(getDimensionFinalMultiplier(tier)).dividedBy(player.tickspeed.dividedBy(1000))
     }

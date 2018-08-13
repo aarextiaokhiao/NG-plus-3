@@ -141,7 +141,7 @@ function drawMasteryBranch(num1, num2) {
 			msctx.strokeStyle="#000000";
 		}
 	} else if (type=="d" && player.options.theme == "Aarex's Modifications") {
-		msctx.strokeStyle=parseInt(num2.split("study")[1])?"#007272":"#697200";
+		msctx.strokeStyle=parseInt(num2.split("study")[1])>7?"#007272":"#697200";
 	} else msctx.strokeStyle="#444";
 	msctx.moveTo(x1, y1);
 	msctx.lineTo(x2, y2);
@@ -177,6 +177,9 @@ function drawMasteryTree() {
 		drawMasteryBranch("timestudy272","timestudy282")
 		drawMasteryBranch("timestudy273","timestudy282")
 		drawMasteryBranch("timestudy272", "dilstudy8")
+		drawMasteryBranch("dilstudy8", "dilstudy9")
+		drawMasteryBranch("dilstudy9", "dilstudy10")
+		drawMasteryBranch("dilstudy10", "dilstudy11")
 	} else document.getElementById("quantumstudies").style.display="none"
 }
 
@@ -239,7 +242,7 @@ function updateQuantumTabs() {
 		document.getElementById("brupg4current").textContent="Currently: "+shortenMoney(Decimal.pow(getDimensionPowerMultiplier(), 0.0003))+"x"
 	}
 	if (document.getElementById("electrons").style.display=="block") {
-		for (i=1;i<7;i++) document.getElementById("sacrifice"+i).className=(Math.pow(10,i>4?0:i-1)>player.galaxies-player.quantum.electrons.sacGals||player.quantum.challenge>0)?"unavailablebtn":"storebtn"
+		for (i=1;i<7;i++) document.getElementById("sacrifice"+i).className=(Math.pow(10,i>4?0:i-1)>player.galaxies-player.quantum.electrons.sacGals||!inQC(0))?"unavailablebtn":"storebtn"
 		document.getElementById("electronupg1").className="gluonupgrade "+(player.timestudy.theorem<getElectronUpgCost(1)?"unavailabl":"stor")+"ebtn"
 		document.getElementById("electronupg2").className="gluonupgrade "+(player.dilation.dilatedTime.lt(getElectronUpgCost(2))?"unavailabl":"stor")+"ebtn"
 		document.getElementById("electronupg3").className="gluonupgrade "+(player.meta.antimatter.lt(getElectronUpgCost(3))?"unavailabl":"stor")+"ebtn"
@@ -352,16 +355,16 @@ function GUBought(id) {
 
 //v1.79
 var speedrunMilestonesReached
-var speedrunMilestones = [12,9,6,4.5,3,2,1,8/9,7/9,6/9,5/9,4/9,3/9,2/9,1/9,1/60]
+var speedrunMilestones = [12,9,6,4.5,3,2,1,8/9,7/9,6/9,5/9,4/9,3/9,2/9,1/9,1/12,1/15,1/20,1/30,1/45,1/60,1/120]
 function updateSpeedruns() {
 	speedrunMilestonesReached = 0
 	if (player.masterystudies) {
-		for (i=0;i<16;i++) {
+		for (i=0;i<22;i++) {
 			if (player.quantum.best>speedrunMilestones[i]*36e3) break
 			speedrunMilestonesReached++
 		}
-		for (i=1;i<17;i++) document.getElementById("speedrunMilestone"+i).className="achievement achievement"+(speedrunMilestonesReached>=i?"un":"")+"locked"
-		for (i=1;i<3;i++) document.getElementById("speedrunRow"+i).className=speedrunMilestonesReached>=i*8?"completedrow":""
+		for (i=1;i<23;i++) document.getElementById("speedrunMilestone"+i).className="achievement achievement"+(speedrunMilestonesReached>=i?"un":"")+"locked"
+		for (i=1;i<4;i++) document.getElementById("speedrunRow"+i).className=speedrunMilestonesReached>=(i>2?22:i*8)?"completedrow":""
 	}
 }
 
@@ -397,7 +400,7 @@ function toggleAllMetaDims() {
 }
 
 function sacrificeGalaxy(id) {
-	if (player.galaxies-player.quantum.electrons.sacGals<1||player.quantum.challenge>0) return
+	if (player.galaxies-player.quantum.electrons.sacGals<1||!inQC(0)) return
 	var amount=1
 	if (id>5) amount=player.galaxies-player.quantum.electrons.sacGals
 	else if (id>4) amount=Math.ceil((player.galaxies-player.quantum.electrons.sacGals)/2)
@@ -412,6 +415,7 @@ function sacrificeGalaxy(id) {
 }
 
 function getMPTPower() {
+	if (!inQC(0)) return 1
 	var a = player.quantum.electrons.amount
 	if (GUBought("rg4")) a = a.times(0.7)
 	return a.toNumber()+1
@@ -431,6 +435,7 @@ function disableReward(id) {
 function updateElectrons() {
 	if (!player.masterystudies) return
 	document.getElementById("electronsAmount").textContent=shortenDimensions(player.quantum.electrons.amount)
+	document.getElementById("electronsAmount2").textContent="You have "+shortenDimensions(player.quantum.electrons.amount)+" electrons."
 	document.getElementById("electronsTranslation").textContent=shortenDimensions(getMPTPower())
 	document.getElementById("sacrificedGals").textContent=getFullExpansion(player.quantum.electrons.sacGals)
 	document.getElementById("electronsGainMult").textContent=shorten(player.quantum.electrons.mult)
@@ -471,7 +476,7 @@ function buyElectronUpg(u) {
 	updateElectrons()
 }
 
-//v2
+//v1.9
 function buyQuarkMult() {
 	var c=Decimal.pow(100, Math.floor(player.quantum.multPower/3)).times(500)
 	var t=player.quantum.gluons[(["rg","gb","br"])[player.quantum.multPower%3]]
@@ -483,8 +488,8 @@ function buyQuarkMult() {
 }
 
 var quantumChallenges={
-	costs:[0,15500],
-	goals:["9.318318743182394e446","1e525"]
+	costs:[0,15500,17500,19500,23000,1/0,1/0,1/0,1/0],
+	goals:[0,55e8,7e10,41e9,1/0,1/0,1/0,1/0,1/0]
 }
 
 function updateQuantumChallenges() {
@@ -492,17 +497,37 @@ function updateQuantumChallenges() {
 		document.getElementById("qctabbtn").style.display="none"
 		return
 	} else document.getElementById("qctabbtn").style.display=""
-	for (qc=1;qc<2;qc++) {
-		var property = "qc"+qc
-		document.getElementById(property+"div").style.display=player.quantum.challenges>qc-2?"inline-block":"none"
-		document.getElementById(property).textContent=player.quantum.challenge==qc?"Running":player.quantum.challenges>=qc?"Completed":"Start"
-		document.getElementById(property).className=player.quantum.challenge==qc?"onchallengebtn":player.quantum.challenges>=qc?"completedchallengesbtn":"challengesbtn"
+	document.getElementById("pairAvailable").style.display=player.masterystudies.includes("d9")?"":"none"
+	for (qc=1;qc<9;qc++) {
+		var property="qc"+qc
+		document.getElementById(property+"div").style.display=((qc<2||QCIntensity(qc-1))&&qc<4)?"inline-block":"none"
+		document.getElementById(property).textContent=inQC(qc)?"Running"+(qc!=player.quantum.challenge[0]?" (paired)":""):(QCIntensity(qc)&&(!player.masterystudies.includes("d9")||player.quantum.challenge.length!=1))?"Completed"+(QCIntensity(qc)>1?" (paired)":""):"Start"+(player.quantum.challenge.length?" (paired)":"")
+		document.getElementById(property).className=inQC(qc)?"onchallengebtn":(QCIntensity(qc)>0&&(!player.masterystudies.includes("d9")||player.quantum.challenge.length!=1))?"completedchallengesbtn":"challengesbtn"
 		document.getElementById(property+"cost").textContent="Cost: "+shortenDimensions(quantumChallenges.costs[qc])+" electrons"
-		document.getElementById(property+"goal").textContent="Goal: "+shortenMoney(new Decimal(quantumChallenges.goals[qc]))+" MA"
+		document.getElementById(property+"goal").textContent="Goal: "+shortenCosts(Decimal.pow(10,getQCGoal(qc)))+" antimatter"
 	}
 }
 
 function inQC(num) {
-	if (player.masterystudies) return player.quantum.challenge==num
-	return false
+	if (player.masterystudies) if (typeof(player.quantum.challenge)=="object") {
+		if (num<1) return player.quantum.challenge.length<1
+		return player.quantum.challenge.includes(num)
+	}
+	return num<1
+}
+
+//v2
+function getQCGoal(num) {
+	if (!player.masterystudies) return 0
+	var intensity=player.quantum.challenge.length
+	var c1=intensity>0?player.quantum.challenge[0]:num
+	var c2=c1==num?0:intensity>1?player.quantum.challenge[1]:intensity>0?num:0
+	if (!c1) return quantumChallenges.goals[0]
+	if (!c2) return quantumChallenges.goals[c1]
+	return 1e12/Math.pow(10,Math.log10(1e12/quantumChallenges.goals[c1])+Math.log10(1e12/quantumChallenges.goals[c2]))
+}
+
+function QCIntensity(num) {
+	if (player.masterystudies) if (player.quantum.challenges[num]) return player.quantum.challenges[num]
+	return 0
 }

@@ -785,7 +785,14 @@ if (player.version < 5) {
       player.quantum.multPower=0
       player.quantum.challenge=0
       player.quantum.challenges=0
-      player.aarexModifications.newGame3PlusVersion=1.95
+  }
+  if (player.aarexModifications.newGame3PlusVersion < 1.99) {
+      player.quantum.challenge=player.quantum.challenge>0?[player.quantum.challenge]:[]
+      var newChallenges={}
+      for (c=1;c<=player.quantum.challenges;c++) newChallenges[c]=1
+      player.quantum.challenges=newChallenges
+      player.quantum.metaAutobuyerWait=0
+      player.aarexModifications.newGame3PlusVersion=1.99
   }
   if (player.aarexModifications.newGame3PlusVersion==undefined) {
       colorBoosts={
@@ -1013,7 +1020,7 @@ if (player.version < 5) {
   document.getElementById('rebuyupgauto').style.display=speedrunMilestonesReached>6?"":"none"
   document.getElementById('toggleallmetadims').style.display=speedrunMilestonesReached>7?"":"none"
   document.getElementById('metaboostauto').style.display=speedrunMilestonesReached>14?"":"none"
-  document.getElementById("autoBuyerQuantum").style.display=speedrunMilestonesReached>15?"":"none"
+  document.getElementById("autoBuyerQuantum").style.display=speedrunMilestonesReached>20?"":"none"
   notifyId=speedrunMilestonesReached
   updatePowers()
   var detectNGPStart = player.lastUpdate == 1531944153054
@@ -1063,6 +1070,7 @@ function checkNGM(imported) {
 
 var savePlacement
 function load_game() {
+	if (!metaSave.saveOrder.includes(metaSave.current)) metaSave.current=metaSave.saveOrder[0]
 	var dimensionSave=get_save(metaSave.current)
 	if (dimensionSave!=null) player=dimensionSave
 	savePlacement=1
@@ -1160,16 +1168,15 @@ function delete_save(saveId) {
 	} else if (!confirm("Do you really want to erase this save? You will lose access if you do that!")) return
 	var alreadyDeleted=false
 	var newSaveOrder=[]
-	for (id=0;id<metaSave.saveOrder.length;id++) {
-		if (alreadyDeleted) {
-			changeSaveDesc(metaSave.saveOrder[id], id)
-			if (id+1==savePlacement) savePlacement--
-		} if (metaSave.saveOrder[id]==saveId) {
+	for (orderId=0;orderId<metaSave.saveOrder.length;orderId++) {
+		if (alreadyDeleted) changeSaveDesc(metaSave.saveOrder[orderId], orderId)
+		if (metaSave.saveOrder[orderId]==saveId) {
 			localStorage.removeItem(btoa("dsAM_"+saveId))
 			alreadyDeleted=true
-			document.getElementById("saves").deleteRow(id)
+			document.getElementById("saves").deleteRow(orderId)
+			if (savePlacement>orderId+1) savePlacement--
 			loadedSaves--
-		} else newSaveOrder.push(metaSave.saveOrder[id])
+		} else newSaveOrder.push(metaSave.saveOrder[orderId])
 	}
 	metaSave.saveOrder=newSaveOrder
 	if (metaSave.current==saveId) {

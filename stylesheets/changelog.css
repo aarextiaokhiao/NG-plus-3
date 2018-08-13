@@ -1,0 +1,9 @@
+@font-face {
+    font-family: Typewriter;
+    src: url('../MonospaceTypewriter.ttf');
+}
+
+body {
+	font-family: Typewriter;
+	color: rgb(79, 89, 87);
+}

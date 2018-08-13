@@ -576,6 +576,22 @@ function rename_preset(id) {
 	$.notify("Preset renamed", "info")
 }
 
+function move_preset(id,offset) {
+	placement=0
+	while (metaSave.presetsOrder[placement]!=id) placement++
+	if (offset<0) {
+		if (placement<-offset) return
+	} else if (placement>metaSave.presetsOrder.length-offset-1) return
+	var temp=metaSave.presetsOrder[placement]
+	metaSave.presetsOrder[placement]=metaSave.presetsOrder[placement+offset]
+	metaSave.presetsOrder[placement+offset]=temp
+	document.getElementById("presets").rows[placement].innerHTML=getPresetLayout(metaSave.presetsOrder[placement])
+	document.getElementById("presets").rows[placement+offset].innerHTML=getPresetLayout(id)
+	changePresetTitle(metaSave.presetsOrder[placement],placement)
+	changePresetTitle(metaSave.presetsOrder[placement+offset],placement+offset)
+	localStorage.setItem("AD_aarexModifications",btoa(JSON.stringify(metaSave)))
+}
+
 var loadedPresets=0
 function openStudyPresets() {
 	closeToolTip()
@@ -604,7 +620,7 @@ function openStudyPresets() {
 }
 
 function getPresetLayout(id) {
-	return "<b id='preset_"+id+"_title'>Preset #"+(loadedPresets+1)+"</b><br><button class='storebtn' onclick='save_preset("+id+")'>Save</button><button class='storebtn' onclick='load_preset("+id+")'>Load</button><button class='storebtn' onclick='rename_preset("+id+")'>Rename</button><button class='storebtn' onclick='delete_preset("+id+")'>Delete</button>"
+	return "<b id='preset_"+id+"_title'>Preset #"+(loadedPresets+1)+"</b><br><button class='storebtn' onclick='save_preset("+id+")'>Save</button><button class='storebtn' onclick='load_preset("+id+")'>Load</button><button class='storebtn' onclick='rename_preset("+id+")'>Rename</button><button class='storebtn' onclick='move_preset("+id+",-1)'>Move up</button><button class='storebtn' onclick='move_preset("+id+",1)'>Move down</button><button class='storebtn' onclick='delete_preset("+id+")'>Delete</button>"
 }
 
 function changePresetTitle(id, placement) {

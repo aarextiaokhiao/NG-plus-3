@@ -2,7 +2,7 @@
 
 
 function DimensionDescription(tier) {
-  if (tier == 8 && (ECTimesCompleted("eterc7") === 0 || player.currentEternityChall === "eterc12") && player.currentEternityChall !== "eterc7") return getFullExpansion(Math.round(player["infinityDimension"+tier].amount.toNumber()));
+  if (tier > (inQC(4) ? 6 : 7) && (ECTimesCompleted("eterc7") === 0 || player.currentEternityChall === "eterc12" || player.timeDimension1.amount.eq(0)) && player.currentEternityChall != "eterc7") return getFullExpansion(Math.round(player["infinityDimension"+tier].amount.toNumber()));
   else return shortenDimensions(player['infinityDimension'+tier].amount)+' (+' + formatValue(player.options.notation, DimensionRateOfChange(tier), 2, 2) + '%/s)';
 }
 
@@ -37,7 +37,7 @@ function DimensionProduction(tier) {
   var ret = dim.amount
   if (player.currentEternityChall == "eterc11") return ret
   if (player.currentEternityChall == "eterc7") ret = ret.dividedBy(player.tickspeed.dividedBy(1000))
-  if (player.challenges.includes("postc6")) {
+  if (player.challenges.includes("postc6")&&!inQC(3)) {
       let tick = new Decimal(player.tickspeed)
       if (player.dilation.active || player.galacticSacrifice) {
         tick = Decimal.pow(10, Math.pow(Math.abs(tick.log10()), 0.75))
@@ -55,6 +55,7 @@ function DimensionPower(tier) {
   var dim = player["infinityDimension"+tier]
   if (player.currentEternityChall == "eterc11") return new Decimal(1)
   if (player.currentEternityChall=='eterc14') return getReplMult()
+  if (inQC(3)) return getExtraDimensionBoostPower()
   var mult = dim.power
 
   mult = mult.times(infDimPow)

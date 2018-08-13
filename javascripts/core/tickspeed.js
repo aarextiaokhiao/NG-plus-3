@@ -5,6 +5,7 @@ function canBuyTickSpeed() {
 
 function getTickSpeedMultiplier() {
   if (player.currentChallenge == "postc3" || isIC3Trapped()) return 1;
+  if (inQC(2)) return 0.89
   var realnormalgalaxies = player.galaxies
   if (player.masterystudies) realnormalgalaxies = Math.max(player.galaxies-player.quantum.electrons.sacGals,0)
   if (realnormalgalaxies + player.replicanti.galaxies + player.dilation.freeGalaxies < 3) {
@@ -13,7 +14,7 @@ function getTickSpeedMultiplier() {
       if (realnormalgalaxies == 0) baseMultiplier = 0.89
       if (player.currentChallenge == "challenge6" || player.currentChallenge == "postc1") baseMultiplier = 0.93;
       let perGalaxy = 0.02;
-      let galaxies = realnormalgalaxies+player.replicanti.galaxies+player.dilation.freeGalaxies
+      let galaxies = realnormalgalaxies+player.replicanti.galaxies+Math.floor(player.dilation.freeGalaxies)
       if (player.timestudy.studies.includes(133)) galaxies += player.replicanti.galaxies/2
       if (player.timestudy.studies.includes(132)) galaxies += player.replicanti.galaxies*0.4
       if (player.boughtdims) galaxies += player.replicanti.galaxies*(Math.log10(player.replicanti.limit.log(2))/Math.log10(2)/10-1)
@@ -35,7 +36,7 @@ function getTickSpeedMultiplier() {
       if (player.currentChallenge == "challenge6" || player.currentChallenge == "postc1") baseMultiplier = 0.83
       let perGalaxy = 0.965
       if (GUBought("rg4")) realnormalgalaxies *= 0.4
-      let galaxies = realnormalgalaxies-2+player.replicanti.galaxies+player.dilation.freeGalaxies
+      let galaxies = realnormalgalaxies-2+player.replicanti.galaxies+Math.floor(player.dilation.freeGalaxies)
       if (player.timestudy.studies.includes(133)) galaxies += player.replicanti.galaxies/2
       if (player.timestudy.studies.includes(132)) galaxies += player.replicanti.galaxies*0.4
       galaxies += extraReplGalaxies
