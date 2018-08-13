@@ -800,14 +800,11 @@ function updateMoney() {
 }
 
 function updateCoinPerSec() {
-    var element = document.getElementById("coinsPerSec");
-    if (player.currentChallenge == "challenge3" || player.currentChallenge == "postc1") {
-      element.textContent = 'You are getting ' + shortenDimensions(getDimensionProductionPerSecond(1).times(player.chall3Pow)) + ' antimatter per second.'
-    } else if (player.currentChallenge == "challenge7") {
-      element.textContent = 'You are getting ' + (shortenDimensions(getDimensionProductionPerSecond(1).plus(getDimensionProductionPerSecond(2)))) + ' antimatter per second.'
-    } else {
-      element.textContent = 'You are getting ' + shortenDimensions(getDimensionProductionPerSecond(1)) + ' antimatter per second.'
-    }
+	var element = document.getElementById("coinsPerSec");
+	var ret = getDimensionProductionPerSecond(1)
+	if (player.currentChallenge == "challenge7" || inQC(4)) ret = ret.plus(getDimensionProductionPerSecond(2))
+	if (player.currentChallenge == "challenge3" || player.currentChallenge == "postc1") ret = ret.times(player.chall3Pow)
+	element.textContent = 'You are getting ' + shortenDimensions(ret) + ' antimatter per second.'
 }
 
 function getInfinitied() {return Math.max(player.infinitied + player.infinitiedBank, 0)}
@@ -5644,9 +5641,9 @@ function gameLoop(diff) {
 
     if (player.money.lte(Number.MAX_VALUE) || (player.break && player.currentChallenge == "") || (player.currentChallenge != "" && player.money.lte(player.challengeTarget))) {
 
-        for (let tier = (inQC(1) ? 1 : player.currentEternityChall == "eterc3" ? 3 : player.currentChallenge == "challenge7" ? 6 : 7) - (player.currentChallenge == "challenge7" || inQC(4) ? 1 : 0); tier >= 1; --tier) {
+        for (let tier = (inQC(1) ? 1 : player.currentEternityChall == "eterc3" ? 3 : (player.currentChallenge == "challenge4" || player.currentChallenge == "postc1") ? 5 : 7) - (player.currentChallenge == "challenge7" || inQC(4) ? 1 : 0); tier >= 1; --tier) {
             var name = TIER_NAMES[tier];
-            player[name + 'Amount'] = player[name + 'Amount'].plus(getDimensionProductionPerSecond(tier + (player.currentChallenge == "challenge7" ? 2 : 1)).times(diff / 100));
+            player[name + 'Amount'] = player[name + 'Amount'].plus(getDimensionProductionPerSecond(tier + (player.currentChallenge == "challenge7" || inQC(4) ? 2 : 1)).times(diff / 100));
         }
 
         if (player.currentChallenge == "challenge3" || player.currentChallenge == "postc1") {

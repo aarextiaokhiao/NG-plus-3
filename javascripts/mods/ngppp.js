@@ -509,11 +509,12 @@ function updateQuantumChallenges() {
 }
 
 function inQC(num) {
-	if (player.masterystudies) if (typeof(player.quantum.challenge)=="object") {
+	try {
 		if (num<1) return player.quantum.challenge.length<1
 		return player.quantum.challenge.includes(num)
+	} catch (_) {
+		return num<1
 	}
-	return num<1
 }
 
 //v2
@@ -521,10 +522,10 @@ function getQCGoal(num) {
 	if (!player.masterystudies) return 0
 	var intensity=player.quantum.challenge.length
 	var c1=intensity>0?player.quantum.challenge[0]:num
-	var c2=c1==num?0:intensity>1?player.quantum.challenge[1]:intensity>0?num:0
+	var c2=c1==num?0:intensity>1?player.quantum.challenge[1]:(intensity>0&&player.masterystudies.includes("d9"))?num:0
 	if (!c1) return quantumChallenges.goals[0]
 	if (!c2) return quantumChallenges.goals[c1]
-	return 1e12/Math.pow(10,Math.log10(1e12/quantumChallenges.goals[c1])+Math.log10(1e12/quantumChallenges.goals[c2]))
+	return quantumChallenges.goals[c1]*quantumChallenges.goals[c2]/1e12
 }
 
 function QCIntensity(num) {
