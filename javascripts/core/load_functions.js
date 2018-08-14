@@ -792,8 +792,8 @@ if (player.version < 5) {
       for (c=1;c<=player.quantum.challenges;c++) newChallenges[c]=1
       player.quantum.challenges=newChallenges
       player.quantum.metaAutobuyerWait=0
-      player.aarexModifications.newGame3PlusVersion=1.99
   }
+  if (player.aarexModifications.newGame3PlusVersion < 1.991) player.aarexModifications.newGame3PlusVersion=1.991
   if (player.aarexModifications.newGame3PlusVersion==undefined) {
       colorBoosts={
           r:1,
@@ -1055,6 +1055,9 @@ if (player.version < 5) {
       closeToolTip()
       showNextModeMessage()
   }
+
+  document.getElementById("game").style.display=player.options.newsHidden?"none":"block"
+  if (!player.options.newsHidden) scrollNextMessage()
 }
 
 function checkNGM(imported) {

@@ -105,7 +105,7 @@ function canBuyMasteryStudy(type, id) {
 		var row=Math.floor(id/10)
 		for (check=1;check<10;check++) if (player.masterystudies.includes('t'+(row+1).toString()+check)) return false
 		var col=id%10
-		if (row>27) return player.masterystudies.includes('t27'+col)||player.masterystudies.includes('t26'+(col+1))
+		if (row>27) return player.masterystudies.includes('t27'+col)||player.masterystudies.includes('t27'+(col+1))
 		if (row>26) return player.masterystudies.includes('t252')&&player.masterystudies.includes('d7')
 		if (row>25) return player.masterystudies.includes('t25'+Math.ceil(col/2))
 		if (row>24) return player.masterystudies.includes('t241')
@@ -447,7 +447,7 @@ function updateElectrons() {
 
 //v1.9
 function getElectronUpgCost(u) {
-	var baseCost=([0,83,153,638,26])[u]+Math.pow(player.quantum.electrons.rebuyables[u-1]*Math.max(player.quantum.electrons.rebuyables[u-1]-1,1)+1,u<2?1:2)
+	var baseCost=([0,82,153,638,26])[u]+Math.pow(player.quantum.electrons.rebuyables[u-1]*Math.max(player.quantum.electrons.rebuyables[u-1]-1,1)+1,u<2?1:2)
 	if (u>3) return baseCost
 	if (u<2) return Math.pow(10,baseCost)
 	return Decimal.pow(10,baseCost)
@@ -488,8 +488,8 @@ function buyQuarkMult() {
 }
 
 var quantumChallenges={
-	costs:[0,15500,17500,19500,23000,1/0,1/0,1/0,1/0],
-	goals:[0,55e8,7e10,41e9,1/0,1/0,1/0,1/0,1/0]
+	costs:[0,16000,17500,19400,23000,1/0,1/0,1/0,1/0],
+	goals:[0,516e7,7255e7,363e8,1/0,1/0,1/0,1/0,1/0]
 }
 
 function updateQuantumChallenges() {
@@ -521,11 +521,11 @@ function inQC(num) {
 function getQCGoal(num) {
 	if (!player.masterystudies) return 0
 	var intensity=player.quantum.challenge.length
-	var c1=intensity>0?player.quantum.challenge[0]:num
+	var c1=((intensity>0&&player.masterystudies.includes("d9"))||!num)?player.quantum.challenge[0]:num
 	var c2=c1==num?0:intensity>1?player.quantum.challenge[1]:(intensity>0&&player.masterystudies.includes("d9"))?num:0
 	if (!c1) return quantumChallenges.goals[0]
 	if (!c2) return quantumChallenges.goals[c1]
-	return quantumChallenges.goals[c1]*quantumChallenges.goals[c2]/1e12
+	return quantumChallenges.goals[c1]*quantumChallenges.goals[c2]/1e11
 }
 
 function QCIntensity(num) {

@@ -292,7 +292,7 @@ function quantum(auto,force,challid) {
 		if (player.options.challConf) if (!confirm("You will do a quantum reset but you will not gain quarks and keep your electrons & sacrificed galaxies. You have to reach the set goal of meta-antimatter to complete this challenge. NOTE: Electrons does nothing in quantum challenges and your electrons and sacrificed galaxies does not reset until you end the challenge.")) return
 		player.quantum.electrons.amount=player.quantum.electrons.amount.sub(quantumChallenges.costs[challid])
 	}
-	var implode = !(auto||force)&&speedrunMilestonesReached<20
+	var implode = !(auto||force)&&speedrunMilestonesReached<21
 	if (implode) {
 		implosionCheck=1
 		dev.implode()
@@ -422,12 +422,11 @@ function quantum(auto,force,challid) {
 			dimensionMultDecrease: oheHeadstart ? player.dimensionMultDecrease : 10,
 			dimensionMultDecreaseCost: oheHeadstart ? player.dimensionMultDecreaseCost : 1e8,
 			version: player.version,
-			postChallUnlocked: (player.achievements.includes("r133")) ? 8 : 0,
 			postC4Tier: 1,
 			postC3Reward: new Decimal(1),
 			overXGalaxies: oheHeadstart ? player.overXGalaxies : 0,
 			spreadingCancer: player.spreadingCancer,
-			postChallUnlocked: 0,
+			postChallUnlocked: (player.achievements.includes("r133")) ? 8 : 0,
 			postC4Tier: 0,
 			postC3Reward: new Decimal(1),
 			eternityPoints: new Decimal(0),
@@ -595,11 +594,11 @@ function quantum(auto,force,challid) {
 				studies: isRewardEnabled(4) ? (speedrunMilestonesReached > 5 ? [1,2,3,4,5,6] : [1]) : [],
 				active: false,
 				tachyonParticles: new Decimal(0),
-				dilatedTime: new Decimal(speedrunMilestonesReached>19?1e100:0),
+				dilatedTime: new Decimal(speedrunMilestonesReached>19 && isRewardEnabled(4)?1e100:0),
 				totalTachyonParticles: new Decimal(0),
 				nextThreshold: new Decimal(1000),
 				freeGalaxies: 0,
-				upgrades: speedrunMilestonesReached > 5 ? [4,5,6,7,8,9,10,"ngpp1","ngpp2"] : [],
+				upgrades: speedrunMilestonesReached > 5 && isRewardEnabled(4) ? [4,5,6,7,8,9,10,"ngpp1","ngpp2"] : [],
 				rebuyables: {
 					1: 0,
 					2: 0,
@@ -616,53 +615,45 @@ function quantum(auto,force,challid) {
 				'1': {
 					amount: new Decimal(0),
 					bought: 0,
-					tensBought: 0,
 					cost: new Decimal(10)
 				},
 				'2': {
 					amount: new Decimal(0),
 					bought: 0,
-					tensBought: 0,
 					cost: new Decimal(100)
 				},
 				'3': {
 					amount: new Decimal(0),
 					bought: 0,
-					tensBought: 0,
 					cost: new Decimal(1e4)
 				},
 				'4': {
 					amount: new Decimal(0),
 					bought: 0,
-					tensBought: 0,
 					cost: new Decimal(1e6)
 				},
 				'5': {
 					amount: new Decimal(0),
 					bought: 0,
-					tensBought: 0,
 					cost: new Decimal(1e9)
 				},
 				'6': {
 					amount: new Decimal(0),
 					bought: 0,
-					tensBought: 0,
 					cost: new Decimal(1e13)
 				},
 				'7': {
 					amount: new Decimal(0),
 					bought: 0,
-					tensBought: 0,
 					cost: new Decimal(1e18)
 				},
 				'8': {
 					amount: new Decimal(0),
 					bought: 0,
-					tensBought: 0,
 					cost: new Decimal(1e24)
 				}
 			},
-			masterystudies: player.masterystudies ? (speedrunMilestonesReached > 5 ? player.masterystudies : []) : undefined,
+			masterystudies: player.masterystudies ? player.masterystudies : undefined,
 			autoEterOptions: player.autoEterOptions,
 			galaxyMaxBulk: player.galaxyMaxBulk,
 			quantum: player.quantum,
@@ -729,13 +720,12 @@ function quantum(auto,force,challid) {
 				var d = player.masterystudies[id].split("d")[1]
 				if ((t&&speedrunMilestonesReached>15&&((speedrunMilestonesReached>5&&isRewardEnabled(4))||parseInt(t)<270))||(d&&speedrunMilestonesReached>5&&isRewardEnabled(4))) respecedMS.push(player.masterystudies[id])
 			}
-			player.masterystudies=respecedMS
-			if (speedrunMilestonesReached>13) {
-				player.dilation.upgrades.push("ngpp3")
-				player.dilation.upgrades.push("ngpp4")
-				player.dilation.upgrades.push("ngpp5")
-				player.dilation.upgrades.push("ngpp6")
+			if (speedrunMilestonesReached<6&&!isRewardEnabled(4)) {
+				document.getElementById("qctabbtn").style.display="none"
+				document.getElementById("electronstabbtn").style.display="none"
 			}
+			player.masterystudies=respecedMS
+			if (speedrunMilestonesReached>13&&isRewardEnabled(4)) for (i=3;i<7;i++) player.dilation.upgrades.push("ngpp"+i)
 		}
 		for (let i = 2; i <= 8; i++) if (!canBuyMetaDimension(i)) document.getElementById(i + "MetaRow").style.display = "none"
 		
@@ -745,6 +735,8 @@ function quantum(auto,force,challid) {
 		player.replicanti.galaxies = 0
 		ipMultPower=GUBought("gb3")?2.3:2
 		document.getElementById("respec").className = "storebtn"
+		document.getElementById("respec2").className = "storebtn"
+		document.getElementById("respec3").className = "storebtn"
 		if (player.achievements.includes("r36")) player.tickspeed = player.tickspeed.times(0.98);
 		if (player.achievements.includes("r45")) player.tickspeed = player.tickspeed.times(0.98);
 		document.getElementById("matter").style.display = "none";

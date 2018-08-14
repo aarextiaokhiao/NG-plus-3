@@ -163,8 +163,15 @@ newsArray = [//always true
 ["In dan-simon's version, only this achievement was enough to break the game.", 'player.achievements.includes("r22") && player.achievements.includes("ngpp7")', "am9"],
 ["Is there meta-infinity?", 'player.achievements.includes("r22") && (player.meta ? player.meta.bestAntimatter.gte(Number.MAX_VALUE) : false)', "am10"],
 ["NG++-+- was confirmed.", 'player.achievements.includes("r22") && player.masterystudies', "am11"],
-["You wanted a prestige layer so here you go.", 'player.achievements.includes("r22") && player.galacticSacrifice && player.eternities > (player.aarexModifications.newGameMinusVersion?-20:0)', "am12"]
-];}
+["You wanted a prestige layer so here you go.", 'player.achievements.includes("r22") && player.galacticSacrifice && player.eternities > (player.aarexModifications.newGameMinusVersion?-20:0)', "am12"],
+["You are challenging in a challenge in a challenge. Challenge-ception.", "player.achievements.includes('r22') && player.currentChallenge != '' && player.currentEternityChall != '' && !inQC(0)", "am13"],
+["New updates are coming in a day, not 5 hours. Sorry, jokers!", "player.achievements.includes('r22')", "am14"],
+["Whale complained that matter and antimatter are balanced and the universe would not be existed.", "player.achievements.includes('r22')", "am15"],
+["Congratulations for beating NG+++! Here is the sneak peak of the future updates. There will be 5 more quantum challenges coming in the next update. Then there will be paired challenges that you can do 2 quantum challenges at once for higher rewards. Next comes replicants that is so complex. - With replicants feature, you can reset replicanti, including replicated galaxies, for replicants. - Replicants can gather quarks for extra replicated galaxies. - You can buy quantum food for gluons to feed a replicant to become a queen replicant. However, there is the limit of queens that can be increased by spending gluons. - Queens can lay eggons. 1 eggon will be hatched per fixed time length for baby replicants. - Babies would gather quarks slower and can be turned to normal replicants by feeding less quantum food than queens. And that's all about replicants. When I complete replicants, v2 will be out because I ran out of ideas for now.", "player.achievements.includes('r22') && QCIntensity(3)", "am16"],
+["NEWS: THIS NEWS CHANNEL WAS SHUT DOWN FOR BEING DESTROYED.", "player.achievements.includes('r21') && player.achievements.includes('r22')", "am17"],
+["hackers are coming", "player.achievements.includes('r22') && player.newsArray.length >= 210", "am18"],
+["Whale complained that Infinity Challenge 5 is not the hardest.", "player.achievements.includes('r22') && player.masterystudies", "am19"],
+["You are now a pre-historic ghost!", "player.achievements.includes('r22') && player.money.gte(Decimal.pow(10, 191140458264))", "am20"]];}
 
 document.addEventListener("visibilitychange", function() {if (!document.hidden) {scrollNextMessage();}}, false);
 var scrollTimeouts = [];
