@@ -51,12 +51,32 @@ function buyGalaxyUpgrade(i) {
 	if (player.galacticSacrifice.upgrades.includes(i) || player.galacticSacrifice.galaxyPoints.lt(galUpgradeCosts[i])) return
 	player.galacticSacrifice.upgrades.push(i)
 	player.galacticSacrifice.galaxyPoints = player.galacticSacrifice.galaxyPoints.sub(galUpgradeCosts[i])
-	if (i==11) for (d=1;d<8;d++) {
-		var name = TIER_NAMES[d]
-		player[name+"Cost"] = player[name+"Cost"].div(100)
+	if (i==11) reduceDimCosts()
+}
+
+function reduceDimCosts() {
+	if (player.galacticSacrifice) if (player.galacticSacrifice.upgrades.includes(11)) {
+		for (d=1;d<8;d++) {
+			var name = TIER_NAMES[d]
+			player[name+"Cost"] = player[name+"Cost"].div(galUpgrade11())
+		}
 	}
 }
 
+let galUpgrade11 = function () {
+	let x = player.infinitied;
+	let y;
+	if (x === 0) {
+		y = 2;
+	} else if (x < 5) {
+		y = x + 2;
+	} else if (x < 100) {
+		y = Math.pow(x + 5, .5) + 5;
+	} else {
+		y = Math.pow(Math.log(x), Math.log(x) / 10) + 15;
+	}
+	return Decimal.pow(10, y);
+}
 let galUpgrade12 = function () {
 	return 2 * Math.pow(1 + player.galacticSacrifice.time / 600, 0.5);
 }
@@ -74,6 +94,7 @@ let galUpgrade33 = function () {
 }
 
 function galacticUpgradeSpanDisplay () {
+	document.getElementById('galspan11').innerHTML = shortenDimensions(galUpgrade11())
 	document.getElementById('galspan12').innerHTML = formatValue(player.options.notation, galUpgrade12(), 1, 1)
 	document.getElementById('galspan13').innerHTML = shorten(galUpgrade13())
 	document.getElementById('galspan23').innerHTML = shortenMoney(getDimensionBoostPower().times(player.galacticSacrifice.upgrades.includes(23)?1:galUpgrade23()))

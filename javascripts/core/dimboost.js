@@ -185,10 +185,7 @@ function softReset(bulk) {
       player.seventhCost = new Decimal(2e5)
       player.eightCost = new Decimal(4e6)
   }
-  if (player.galacticSacrifice) if (player.galacticSacrifice.upgrades.includes(11)) for (d=1;d<8;d++) {
-      var name = TIER_NAMES[d]
-      player[name+"Cost"] = player[name+"Cost"].div(100)
-  }
+  reduceDimCosts()
   if (player.currentChallenge == "postc1") player.costMultipliers = [new Decimal(1e3),new Decimal(5e3),new Decimal(1e4),new Decimal(1.2e4),new Decimal(1.8e4),new Decimal(2.6e4),new Decimal(3.2e4),new Decimal(4.2e4)];
   if (player.resets == 1 && player.currentChallenge == "") {
       if (player.infinityUpgrades.includes("skipReset2")) player.resets++;

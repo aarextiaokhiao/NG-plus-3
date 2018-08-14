@@ -275,13 +275,11 @@ shortenCosts = function (money) {
 };
 
 shortenPreInfCosts = function (money) {
-	if (money.mantissa == 1 || money.exponent < 309) return formatValue(player.options.notation, money, 0, 0);
-	return formatValue(player.options.notation, money, 2, 2);
+	return formatValue(player.options.notation, money, (money.mantissa>1&&money.exponent>308)?2:0, 0);
 };
 
 shortenInfDimCosts = function (money) {
-	if (ECTimesCompleted("eterc12") == 0) return formatValue(player.options.notation, money, 0, 0);
-	return formatValue(player.options.notation, money, 2, 2);
+	return formatValue(player.options.notation, money, ECTimesCompleted("eterc12")?2:0, 0);
 };
 
 shortenDimensions = function (money) {

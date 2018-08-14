@@ -569,7 +569,7 @@ if (player.version < 5) {
       $.notify('Your NG- save has been updated due to few balancing issues.', 'info')
   }
   if (player.aarexModifications.newGamePlusVersion === undefined) if (player.eternities < 20 && ECTimesCompleted("eterc1") > 0) player.aarexModifications.newGamePlusVersion = 1
-  if (player.aarexModifications.newGamePlusPlusVersion === undefined) { 
+  if (player.aarexModifications.newGamePlusPlusVersion === undefined && !player.masterystudies) { 
       if (player.dilation.rebuyables[4] !== undefined) {
           var migratedUpgrades = []
           var v2_1check=player.version>13
@@ -841,7 +841,14 @@ if (player.version < 5) {
           return
 	  }
   }
-  if (player.aarexModifications.newGameMinusMinusVersion < 1.25) player.aarexModifications.newGameMinusMinusVersion = 1.25
+  if (player.aarexModifications.newGameMinusMinusVersion < 1.26) {
+      if (player.galacticSacrifice.upgrades.includes(11)) for (d=1;d<8;d++) {
+          var name = TIER_NAMES[d]
+          player[name+"Cost"] = Decimal.times(player[name+"Cost"], 100)
+      }
+      reduceDimCosts()
+      player.aarexModifications.newGameMinusMinusVersion = 1.26
+  }
   if (player.aarexModifications.ersVersion === undefined && player.boughtDims) {
       newAchievements=[]
       for (id=0;id<player.achievements.length;id++) {
@@ -858,12 +865,17 @@ if (player.version < 5) {
       player.timestudy.ers_studies=[]
       for (s=0;s<7;s++) player.timestudy.ers_studies[s]=player.timestudy.studies[s]
       player.timestudy.studies=[]
-      player.currentEternityChall=""
-      player.eternityChallUnlocked=0
+      player.currentEternityChall=player.eternityChallenges.current?"eterc"+player.eternityChallenges.current:""
+      player.eternityChallUnlocked=player.eternityChallenges.unlocked
       player.eternityChalls={}
+      for (c in player.eternityChallenges.done) player.eternityChalls["eterc"+c]=player.eternityChallenges.done[parseInt(c)]
       player.tickspeed=player.tickspeed.div(Decimal.pow(getTickSpeedMultiplier(),player.totalTickGained))
       player.totalTickGained=0
       player.tickThreshold=new Decimal(1)
+      if (player.darkMatter) {
+          player.eterc8repl=player.ec8PurchasesMade.repl
+          player.eterc8ids=player.ec8PurchasesMade.ids
+      }
       player.aarexModifications.ersVersion=1
       delete player.eternityChallenges
   }
@@ -1346,6 +1358,7 @@ function transformSaveToDecimal() {
   if (player.boughtDims) {
       player.replicanti.limit = new Decimal(player.replicanti.limit)
       player.replicanti.newLimit = new Decimal(player.replicanti.newLimit)
+      if (player.darkMatter) player.darkMatter = new Decimal(player.darkMatter)
   }
 
   player.dilation.tachyonParticles = new Decimal(player.dilation.tachyonParticles)

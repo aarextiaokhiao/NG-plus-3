@@ -79,7 +79,7 @@ function DimensionPower(tier) {
 
   if (player.eternityUpgrades.includes(2)) mult = mult.times(getEU2Mult())
 
-  if (player.eternityUpgrades.includes(3)) mult = mult.times(Decimal.pow(2,300/Math.max(infchallengeTimes, player.achievements.includes("r112") ? 6.1 : 7.5)))
+  if (player.eternityUpgrades.includes(3)) mult = mult.times(getEU3Mult())
 
   if (player.timestudy.studies.includes(92)) mult = mult.times(Decimal.pow(2, 600/Math.max(player.bestEternity, 20)))
   if (player.timestudy.studies.includes(162)) mult = mult.times(1e11)
@@ -248,7 +248,13 @@ function loadInfAutoBuyers() {
 var infDimPow = 1
 
 function getEU2Mult() {
+	if (player.boughtDims) return Decimal.pow(player.eternities, Math.log(player.eternities*2+1)/Math.log(4))
 	var cap = Math.min(player.eternities, 100000)
 	var soft = player.eternities - cap
 	return Decimal.pow(cap/200 + 1, Math.log(cap*2+1)/Math.log(4)).times(new Decimal(soft/200 + 1).times(Math.log(soft*2+1)/Math.log(4)).max(1)).max(player.achievements.includes("ngpp15")?Decimal.pow(10, Math.pow(Math.log10(player.eternities), 4.75)):1)
+}
+
+function getEU3Mult() {
+	if (player.boughtDims) return player.timeShards.div(1e12).plus(1)
+	return Decimal.pow(2,300/Math.max(infchallengeTimes, player.achievements.includes("r112") ? 6.1 : 7.5))
 }

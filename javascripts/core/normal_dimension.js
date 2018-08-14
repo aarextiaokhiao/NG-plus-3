@@ -552,20 +552,19 @@ function dimMults() {
 }
 
 function getDimensionProductionPerSecond(tier) {
-    let ret = Decimal.floor(player[TIER_NAMES[tier] + 'Amount']).times(getDimensionFinalMultiplier(tier)).times(1000).dividedBy(player.tickspeed)
-    if (player.currentChallenge == "challenge7" || inQC(4)) {
-        if (tier == 4) ret = player[TIER_NAMES[tier] + 'Amount'].floor().pow(1.3).times(getDimensionFinalMultiplier(tier)).dividedBy(player.tickspeed.dividedBy(1000))
-        else if (tier == 2) ret = player[TIER_NAMES[tier] + 'Amount'].floor().pow(1.5).times(getDimensionFinalMultiplier(tier)).dividedBy(player.tickspeed.dividedBy(1000))
-    }
-    if (player.currentChallenge == "challenge2" || player.currentChallenge == "postc1") ret = ret.times(player.chall2Pow)
-    if (player.dilation.active || player.galacticSacrifice) {
-        let tick = new Decimal(player.tickspeed)
-        var maximum = player.galacticSacrifice ? 3 : 0
-        tick = Decimal.pow(10, Math.pow(Math.max(player.galacticSacrifice?3-tick.log10():Math.abs(tick.log10()), maximum), 0.75))
-        if (player.dilation.upgrades.includes(9)) {
-            tick = Decimal.pow(10, Math.pow(Math.max(player.galacticSacrifice?3-tick.log10():Math.abs(tick.log10()), maximum), 1.05))
-        }
-        ret = Decimal.floor(player[TIER_NAMES[tier] + 'Amount']).times(getDimensionFinalMultiplier(tier)).times(1000).times(tick)
-    }
-    return ret;
+	let ret = player[TIER_NAMES[tier] + 'Amount'].floor()
+	if (player.currentChallenge == "challenge7" || inQC(4)) {
+		if (tier == 4) ret = ret.pow(1.3)
+		else if (tier == 2) ret = ret.pow(1.5)
+	}
+	ret = ret.times(getDimensionFinalMultiplier(tier))
+	if (player.currentChallenge == "challenge2" || player.currentChallenge == "postc1") ret = ret.times(player.chall2Pow)
+	let tick = new Decimal(player.tickspeed)
+	if (player.dilation.active || player.galacticSacrifice) {
+		var maximum = player.galacticSacrifice ? 3 : 0
+		tick = Decimal.pow(10, Math.pow(Math.abs(maximum-tick.log10()), 0.75))
+		if (player.dilation.upgrades.includes(9)) tick = Decimal.pow(10, Math.pow(Math.abs(maximum-tick.log10()), 1.05))
+		return ret.times(Decimal.pow(10,3-maximum)).times(tick);
+	}
+	return ret.div(tick.div(1e3));
 }

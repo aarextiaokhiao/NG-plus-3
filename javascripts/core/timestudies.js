@@ -100,7 +100,7 @@ function buyTimeStudy(name, cost, check) {
   if (player.boughtDims) {
       if (player.timestudy.theorem<player.timestudy.ers_studies[name]+1) return
       player.timestudy.theorem-=player.timestudy.ers_studies[name]+1
-      player.timestudy.esr_studies[name]++
+      player.timestudy.ers_studies[name]++
       updateTimeStudyButtons()
   } else if (shiftDown && check === undefined) studiesUntil(name);
   else if (player.timestudy.theorem >= cost && canBuyStudy(name) && !player.timestudy.studies.includes(name)) {
@@ -337,7 +337,7 @@ function studiesUntil(id) {
 function respecTimeStudies() {
   if (player.boughtDims) {
       var temp=player.timestudy.theorem
-      for (id=1;id<7;id++) player.timestudy.theorem+=player.timestudy.ers_studies[id]*(player.timestudy.ers_studies[id]-1)/2
+      for (id=1;id<7;id++) player.timestudy.theorem+=player.timestudy.ers_studies[id]*(player.timestudy.ers_studies[id]+1)/2
       if (player.timestudy.theorem==temp) giveAchievement("You do know how these work, right?")
       player.timestudy.ers_studies=[null,0,0,0,0,0,0]
   } else {
