@@ -2988,11 +2988,17 @@ function updateAutobuyers() {
     if (player.challenges.includes("challenge4") && player.autobuyers[9] == 10) {
         player.autobuyers[9] = autoBuyerDimBoost
         document.getElementById("autoBuyerDimBoost").style.display = "inline-block"
-    } else document.getElementById("autoBuyerDimBoost").style.display = "none"
+    } else {
+        document.getElementById("autoBuyerDimBoost").style.display = "none"
+        document.getElementById("buyerBtnDimBoost").style.display = ""
+    }
     if (player.challenges.includes("challenge5") && player.autobuyers[8] == 9) {
         player.autobuyers[8] = autoBuyerTickspeed
         document.getElementById("autoBuyerTickSpeed").style.display = "inline-block"
-    } else document.getElementById("autoBuyerTickSpeed").style.display = "none"
+    } else {
+        document.getElementById("autoBuyerTickSpeed").style.display = "none"
+        document.getElementById("buyerBtnTickSpeed").style.display = ""
+    }
     if (player.challenges.includes("challenge6") && player.autobuyers[4] == 5) {
         player.autobuyers[4] = autoBuyerDim5
         document.getElementById("autoBuyer5").style.display = "inline-block"
@@ -3000,7 +3006,10 @@ function updateAutobuyers() {
     if (player.challenges.includes("challenge7") && player.autobuyers[11] == 12) {
         player.autobuyers[11] = autoBuyerInf
         document.getElementById("autoBuyerInf").style.display = "inline-block"
-    } else document.getElementById("autoBuyerInf").style.display = "none"
+    } else {
+        document.getElementById("autoBuyerInf").style.display = "none"
+        document.getElementById("buyerBtnInf").style.display = ""
+    }
     if (player.challenges.includes("challenge8") && player.autobuyers[3] == 4) {
         player.autobuyers[3] = autoBuyerDim4
         document.getElementById("autoBuyer4").style.display = "inline-block"
@@ -3020,7 +3029,10 @@ function updateAutobuyers() {
     if (player.challenges.includes("challenge12") && player.autobuyers[10] == 11) {
         player.autobuyers[10] = autoBuyerGalaxy
         document.getElementById("autoBuyerGalaxies").style.display = "inline-block"
-    } else document.getElementById("autoBuyerGalaxies").style.display = "none"
+    } else {
+        document.getElementById("autoBuyerGalaxies").style.display = "none"
+        document.getElementById("buyerBtnGalaxies").style.display = ""
+    }
 
     if (player.challenges.includes("postc2") && player.autoSacrifice == 1) {
         player.autoSacrifice = autoSacrifice
