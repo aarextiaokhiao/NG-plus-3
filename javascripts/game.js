@@ -368,7 +368,7 @@ function updateNewPlayer(reseted) {
 		}
     }
     if (modesChosen.ngmm) {
-        player.aarexModifications.newGameMinusMinusVersion = 1.26
+        player.aarexModifications.newGameMinusMinusVersion = 1.27
         player.galacticSacrifice = {}
         player.galacticSacrifice = resetGalacticSacrifice()
     }
@@ -1698,7 +1698,15 @@ function updateInfCosts() {
 }
 
 function getPostC3RewardMult() {
-	return (player.galaxies*(player.galacticSacrifice?0.025:0.005))+1.05
+	let perGalaxy = 0.005;
+	if (player.galacticSacrifice) {
+		if (player.galacticSacrifice.upgrades.includes(22)) perGalaxy *= 5;
+		if (player.infinityUpgrades.includes("galaxyBoost")) perGalaxy *= 2;
+		if (player.infinityUpgrades.includes("postGalaxy")) perGalaxy *= 1.5;
+		if (player.challenges.includes("postc5")) perGalaxy *= 1.1;
+		if (player.achievements.includes("r86")) perGalaxy *= 1.01;
+	}
+	return player.galaxies*perGalaxy+1.05
 }
 
 function getPostC3RewardStart() {
@@ -2696,6 +2704,8 @@ function setAchieveTooltip() {
     var noPointAchieve = document.getElementById("There's no point in doing that");
     var sanic = document.getElementById("Supersanic")
     var forgotAchieve = document.getElementById("I forgot to nerf that")
+    let fast = document.getElementById("That's fast!");
+    let lot = document.getElementById("That's a lot of infinites");
     var potato = document.getElementById("Faster than a potato")
     let potato2 = document.getElementById("Faster than a squared potato")
     let potato3 = document.getElementById("Faster than a potato^286078")
@@ -2740,6 +2750,9 @@ function setAchieveTooltip() {
     noPointAchieve.setAttribute('ach-tooltip', "Buy a single First Dimension when you have over " + formatValue(player.options.notation, 1e150, 0, 0) + " of them. Reward: First Dimensions are 10% stronger.");
     forgotAchieve.setAttribute('ach-tooltip', "Get any Dimension multiplier over " + formatValue(player.options.notation, 1e31, 0, 0)) + ". Reward: First Dimensions are 5% stronger.";
     sanic.setAttribute('ach-tooltip', "Have antimatter/sec exceed your current antimatter above " + formatValue(player.options.notation, 1e63, 0, 0));
+    fast.setAttribute('ach-tooltip', "Go infinite in under 2 hours. Reward: Start with "+shortenCosts(1e3)+" antimatter"+(player.galacticSacrifice?" and 1 galaxy sacrified stat, and get a multiplier to galaxy points based on fastest infinity (5 hours / x, 10x softcap).":"."));
+    fast.setAttribute('ach-tooltip', "Go infinite in under 2 hours. Reward: Start with "+shortenCosts(1e3)+" antimatter"+(player.galacticSacrifice?" and 1 galaxy sacrified stat, and get a multiplier to galaxy points based on fastest infinity (5 hours / x, 10x softcap).":"."));
+    lot.setAttribute('ach-tooltip', "Reach Infinity 10 times."+(player.galacticSacrifice?" Reward: Start infinity with galaxy points based on your infinities (x^2/100).":""));
     potato.setAttribute('ach-tooltip', "Get more than " + formatValue(player.options.notation, 1e29, 0, 0) + " ticks per second. Reward: Reduces starting tick interval by 2%.");
     potato2.setAttribute('ach-tooltip', "Get more than " + formatValue(player.options.notation, 1e58, 0, 0) + " ticks per second. Reward: Reduces starting tick interval by 2%.");
     potato3.setAttribute('ach-tooltip', "Get more than "+shortenCosts(new Decimal("1e8296262"))+" ticks per second.")
@@ -2895,7 +2908,8 @@ function sacrifice(auto = false) {
     if (player.eightAmount == 0) return false;
     if (player.resets < 5) return false
     if (player.currentEternityChall == "eterc3") return false
-    if (player.currentChallenge == "challenge11" && (calcTotalSacrificeBoost().gte(Number.MAX_VALUE) || player.chall11Pow.gte(Number.MAX_VALUE))) return false
+    var maxPower = player.galacticSacrifice ? "1e8888" : Number.MAX_VALUE
+    if (player.currentChallenge == "challenge11" && (calcTotalSacrificeBoost().gte(maxPower) || player.chall11Pow.gte(maxPower))) return false
     if (!auto) floatText("eightD", "x" + shortenMoney(calcSacrificeBoost()))
     if (calcSacrificeBoost().gte(Number.MAX_VALUE)) giveAchievement("Yet another infinity reference");
     player.eightPow = player.eightPow.times(calcSacrificeBoost())
@@ -2910,7 +2924,7 @@ function sacrifice(auto = false) {
 
     }
     if (calcTotalSacrificeBoost() >= 600) giveAchievement("The Gods are pleased");
-    if (calcTotalSacrificeBoost().gte("1e9000")) giveAchievement("IT'S OVER 9000");
+    if (calcTotalSacrificeBoost().gte("1e9000") && player.currentChallenge !== "challenge11") giveAchievement("IT'S OVER 9000");
 }
 
 
@@ -3730,6 +3744,13 @@ document.getElementById("bigcrunch").onclick = function () {
             quantum: player.quantum,
             aarexModifications: player.aarexModifications
         };
+        if (player.galacticSacrifice) {
+            player.galacticSacrifice.upgrades=galacticUpgradesOnInfinity
+            if (player.achievements.includes('r33')) {
+                player.galacticSacrifice.galaxyPoints = player.galacticSacrifice.galaxyPoints.max(Math.floor(Math.pow(player.infinitied, 2) / 100));
+                player.galacticSacrifice.times = Math.max(player.galacticSacrifice.times, 1);
+            }
+        }
         reduceDimCosts()
         if (player.bestInfinityTime <= 0.01) giveAchievement("Less than or equal to 0.001");
 
@@ -4253,8 +4274,10 @@ function startChallenge(name, target) {
         if (player.autobuyers[11]%1===0) return
         if (player.autobuyers[11].interval>100) return
     }
-    if (player.options.challConf && name != "") if (!confirm("You will start over with just your infinity upgrades, and achievements. You need to reach " + (name.includes("post") ? "a set goal" : "infinity") + " with special conditions. NOTE: The rightmost infinity upgrade column doesn't work on challenges"+(player.galacticSacrifice?", and you will lose all your galaxy points.":"."))) return
+    if (player.options.challConf && name != "") if (!confirm("You will start over with just your infinity upgrades, and achievements. You need to reach " + (name.includes("post") ? "a set goal" : "infinity") + " with special conditions. NOTE: The rightmost infinity upgrade column doesn't work on challenges.")) return
     if (player.currentChallenge != "") document.getElementById(player.currentChallenge).textContent = "Start"
+    var galacticUpgradesOnInfinity=[]
+    if (player.galacticSacrifice&&player.achievements.includes("r36")) for (id=0;id<player.galacticSacrifice.upgrades.length;id++) galacticUpgradesOnInfinity.push(player.galacticSacrifice.upgrades[id])
     player = {
         money: new Decimal(10),
         tickSpeedCost: new Decimal(1000),
@@ -4401,6 +4424,13 @@ function startChallenge(name, target) {
       quantum: player.quantum,
       aarexModifications: player.aarexModifications
     };
+    if (player.galacticSacrifice) {
+        player.galacticSacrifice.upgrades=galacticUpgradesOnInfinity
+        if (player.achievements.includes('r33')) {
+            player.galacticSacrifice.galaxyPoints = player.galacticSacrifice.galaxyPoints.max(Math.floor(Math.pow(player.infinitied, 2) / 100));
+            player.galacticSacrifice.times = Math.max(player.galacticSacrifice.times, 1);
+        }
+    }
 	if (player.currentChallenge == "challenge10" || player.currentChallenge == "postc1") {
         player.thirdCost = new Decimal(100)
         player.fourthCost = new Decimal(500)
@@ -4409,6 +4439,7 @@ function startChallenge(name, target) {
         player.seventhCost = new Decimal(2e5)
         player.eightCost = new Decimal(4e6)
     }
+    reduceDimCosts()
     if (player.currentChallenge == "postc1") player.costMultipliers = [new Decimal(1e3),new Decimal(5e3),new Decimal(1e4),new Decimal(1.2e4),new Decimal(1.8e4),new Decimal(2.6e4),new Decimal(3.2e4),new Decimal(4.2e4)];
     if (player.currentChallenge == "postc2") {
         player.eightAmount = new Decimal(1);
@@ -5214,7 +5245,7 @@ function calcPerSec(amount, pow, hasMult) {
 }
 
 document.getElementById("quickReset").onclick = function () {
-    if (player.resets == 0) player.resets--;
+    if (player.resets == 0 || (player.galacticSacrifice && player.currentChallenge === 'challenge5')) player.resets--;
     else player.resets -= 2;
     softReset(1);
 }

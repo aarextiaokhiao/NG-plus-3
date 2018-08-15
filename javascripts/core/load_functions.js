@@ -804,7 +804,7 @@ if (player.version < 5) {
   if (player.aarexModifications.newGameMinusMinusVersion === undefined) {
       if (player.galacticSacrifice) {
           player.galacticSacrifice.time = (player.lastUpdate - player.galacticSacrifice.last) / 100
-          player.aarexModifications.newGameMinusMinusVersion = 1.2
+          player.aarexModifications.newGameMinusMinusVersion = 1.27
           delete player.galacticSacrifice.last
 	  }
       else if (player.galaxyPoints) player.aarexModifications.newGameMinusMinusVersion = 1.1
@@ -847,8 +847,8 @@ if (player.version < 5) {
           player[name+"Cost"] = Decimal.times(player[name+"Cost"], 100)
       }
       reduceDimCosts()
-      player.aarexModifications.newGameMinusMinusVersion = 1.26
   }
+  if (player.aarexModifications.newGameMinusMinusVersion) player.aarexModifications.newGameMinusMinusVersion = 1.27
   if (player.aarexModifications.ersVersion === undefined && player.boughtDims) {
       newAchievements=[]
       for (id=0;id<player.achievements.length;id++) {
@@ -981,6 +981,9 @@ if (player.version < 5) {
   document.getElementById("secretstudy").style.cursor = "pointer"
 
   document.getElementById("masterystudyunlock").style.display = player.dilation.upgrades.includes("ngpp6") && player.masterystudies ? "" : "none"
+
+  document.getElementById("d5AutoChallengeDesc").textContent=player.galacticSacrifice?"Does nothing.":"Tickspeed starts at 7%."
+  document.getElementById("autoCrunchChallengeDesc").textContent="Each dimension produces the dimension 2 below it; first dimensions produce reduced antimatter. "+(player.galacticSacrifice?"Galaxies are far more powerful.":"")
 
   updateAutobuyers();
   setAchieveTooltip();
