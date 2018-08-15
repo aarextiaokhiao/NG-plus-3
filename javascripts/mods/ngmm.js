@@ -57,7 +57,7 @@ function buyGalaxyUpgrade(i) {
 
 function reduceDimCosts() {
 	if (player.galacticSacrifice) if (player.galacticSacrifice.upgrades.includes(11)) {
-		for (d=1;d<8;d++) {
+		for (d=1;d<9;d++) {
 			var name = TIER_NAMES[d]
 			player[name+"Cost"] = player[name+"Cost"].div(galUpgrade11())
 		}
