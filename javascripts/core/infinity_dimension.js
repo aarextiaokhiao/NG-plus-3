@@ -2,13 +2,13 @@
 
 
 function DimensionDescription(tier) {
-  if (tier > (inQC(4) ? 6 : 7) && (ECTimesCompleted("eterc7") === 0 || player.currentEternityChall === "eterc12" || player.timeDimension1.amount.eq(0)) && player.currentEternityChall != "eterc7") return getFullExpansion(Math.round(player["infinityDimension"+tier].amount.toNumber()));
+  if (tier > (inQC(4) ? 6 : 7) && (ECTimesCompleted("eterc7") === 0 || player.currentEternityChall === "eterc12" || player.timeDimension1.amount.eq(0) || tier == 7) && player.currentEternityChall != "eterc7") return getFullExpansion(Math.round(player["infinityDimension"+tier].amount.toNumber()));
   else return shortenDimensions(player['infinityDimension'+tier].amount)+' (+' + formatValue(player.options.notation, DimensionRateOfChange(tier), 2, 2) + '%/s)';
 }
 
 
 function DimensionRateOfChange(tier) {
-  var toGain = DimensionProduction(tier+1)
+  var toGain = DimensionProduction(tier+(inQC(4)&&tier<8?2:1))
   var current = Decimal.max(player["infinityDimension"+tier].amount, 1);
   var change  = toGain.times(10).dividedBy(current);
   return change;
@@ -35,8 +35,13 @@ function DimensionProduction(tier) {
   if (tier == 9) return getTimeDimensionProduction(1).pow(player.currentEternityChall == "eterc7" ? 1 : ECTimesCompleted("eterc7")*0.2).minus(1).times(10)
   var dim = player["infinityDimension"+tier]
   var ret = dim.amount
+  if (inQC(4)) {
+      if (tier == 1) ret = ret.plus(player.infinityDimension2.amount.floor().pow(1.3))
+      if (tier == 4) ret = ret.pow(1.5)
+  }
   if (player.currentEternityChall == "eterc11") return ret
   if (player.currentEternityChall == "eterc7") ret = ret.dividedBy(player.tickspeed.dividedBy(1000))
+  ret = ret.times(DimensionPower(tier))
   if (player.challenges.includes("postc6")&&!inQC(3)) {
       let tick = new Decimal(player.tickspeed)
       if (player.dilation.active || player.galacticSacrifice) {
@@ -46,9 +51,9 @@ function DimensionProduction(tier) {
         }
       }
       tick = new Decimal(1).dividedBy(tick)
-      return ret.times(DimensionPower(tier)).times(tick.times(1000).pow(0.0005))
+      return ret.times(tick.times(1000).pow(0.0005))
   }
-  else return ret.times(DimensionPower(tier))
+  else return ret
 }
 
 function DimensionPower(tier) {

@@ -18,9 +18,10 @@ function getMetaDimensionMultiplier (tier) {
   }
   if (GUBought("rg3")&&tier<2) multiplier = multiplier.times(player.resets)
   if (GUBought("br4")) multiplier = multiplier.times(Decimal.pow(getDimensionPowerMultiplier(), 0.0003))
+  if (tier%2>0) multiplier = multiplier.times(QC4Reward)
   
   if (multiplier.lt(1)) multiplier = new Decimal(1)
-  if (player.dilation.active || player.aarexModifications.newGameMinusMinusVersion) {
+  if (player.dilation.active || player.galacticSacrifice) {
     multiplier = Decimal.pow(10, Math.pow(multiplier.log10(), 0.75))
     if (player.dilation.upgrades.includes(11)) {
       multiplier = Decimal.pow(10, Math.pow(multiplier.log10(), 1.05))
@@ -36,7 +37,7 @@ function getMetaDimensionDescription(tier) {
 }
 
 function getMetaDimensionRateOfChange(tier) {
-  let toGain = getMetaDimensionProduction(tier + 1);
+  let toGain = getMetaDimensionProduction(tier + (inQC(4)?2:1));
 
   var current = player.meta[tier].amount.max(1);
   var change  = toGain.times(10).dividedBy(current);
@@ -61,7 +62,7 @@ function clearMetaDimensions () {
 function getMetaShiftRequirement () {
   return {
     tier: Math.min(8, player.meta.resets + 4),
-    amount: Math.max(20, -40 + 15 * player.meta.resets) + Math.max(5 * player.meta.resets - 75, 0)
+    amount: Math.max((inQC(4) ? 5 : 15) * (player.meta.resets - 4),0) + Math.max(inQC(4) ? 0 : 5 * player.meta.resets - 75, 0) + 20
   }
 }
 
@@ -151,7 +152,12 @@ document.getElementById("metaSoftReset").onclick = function () {
 }
 
 function getMetaDimensionProduction(tier) {
-    return Decimal.floor(player.meta[tier].amount).times(getMetaDimensionMultiplier(tier));
+	let ret = player.meta[tier].amount.floor()
+	if (inQC(4)) {
+		if (tier==1) ret = ret.plus(player.meta[2].amount.floor().pow(1.3))
+		else if (tier==4) ret = ret.pow(1.5)
+	}
+	return ret.times(getMetaDimensionMultiplier(tier));
 }
 
 function getExtraDimensionBoostPower() {

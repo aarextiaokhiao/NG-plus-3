@@ -793,7 +793,7 @@ if (player.version < 5) {
       player.quantum.challenges=newChallenges
       player.quantum.metaAutobuyerWait=0
   }
-  if (player.aarexModifications.newGame3PlusVersion < 1.991) player.aarexModifications.newGame3PlusVersion=1.991
+  if (player.aarexModifications.newGame3PlusVersion < 1.992) player.aarexModifications.newGame3PlusVersion=1.992
   if (player.aarexModifications.newGame3PlusVersion==undefined) {
       colorBoosts={
           r:1,
@@ -1144,11 +1144,11 @@ function rename_save(id) {
 	if (metaSave.current == id) player.aarexModifications.save_name = save_name
 	else {
 		var temp_save = get_save(id)
-		if (temp_save.aarexModifications !== null) temp_save.aarexModifications = {
-			dilationConf: false,
-			offlineProgress: true,
-			breakInfinity: false
-		}
+		if (!temp_save.aarexModifications) temp_save.aarexModifications={
+            dilationConf: false,
+            offlineProgress: true,
+            breakInfinity: false
+        }
 		temp_save.aarexModifications.save_name = save_name
 	}
 	set_save(id, temp_save)

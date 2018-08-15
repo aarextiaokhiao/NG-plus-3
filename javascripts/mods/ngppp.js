@@ -488,8 +488,8 @@ function buyQuarkMult() {
 }
 
 var quantumChallenges={
-	costs:[0,16000,17500,19400,23000,1/0,1/0,1/0,1/0],
-	goals:[0,516e7,7255e7,363e8,1/0,1/0,1/0,1/0,1/0]
+	costs:[0,16000,17500,19400,24500,1/0,1/0,1/0,1/0],
+	goals:[0,516e7,7255e7,363e8,863e8,1/0,1/0,1/0,1/0]
 }
 
 function updateQuantumChallenges() {
@@ -500,7 +500,7 @@ function updateQuantumChallenges() {
 	document.getElementById("pairAvailable").style.display=player.masterystudies.includes("d9")?"":"none"
 	for (qc=1;qc<9;qc++) {
 		var property="qc"+qc
-		document.getElementById(property+"div").style.display=((qc<2||QCIntensity(qc-1))&&qc<4)?"inline-block":"none"
+		document.getElementById(property+"div").style.display=((qc<2||QCIntensity(qc-1))&&qc<5)?"inline-block":"none"
 		document.getElementById(property).textContent=inQC(qc)?"Running"+(qc!=player.quantum.challenge[0]?" (paired)":""):(QCIntensity(qc)&&(!player.masterystudies.includes("d9")||player.quantum.challenge.length!=1))?"Completed"+(QCIntensity(qc)>1?" (paired)":""):"Start"+(player.quantum.challenge.length?" (paired)":"")
 		document.getElementById(property).className=inQC(qc)?"onchallengebtn":(QCIntensity(qc)>0&&(!player.masterystudies.includes("d9")||player.quantum.challenge.length!=1))?"completedchallengesbtn":"challengesbtn"
 		document.getElementById(property+"cost").textContent="Cost: "+shortenDimensions(quantumChallenges.costs[qc])+" electrons"

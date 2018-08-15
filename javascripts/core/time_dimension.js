@@ -57,6 +57,10 @@ function getTimeDimensionProduction(tier) {
   var dim = player["timeDimension"+tier]
   if (player.currentEternityChall == "eterc11") return dim.amount
   var ret = dim.amount
+  if (inQC(4)) {
+      if (tier == 1) ret = ret.plus(player.timeDimension2.amount.floor().pow(1.3))
+      if (tier == 4) ret = ret.pow(1.5)
+  }
   ret = ret.times(getTimeDimensionPower(tier))
   if (player.currentEternityChall == "eterc7") {
       ret = ret.dividedBy(player.tickspeed.dividedBy(1000))
@@ -67,7 +71,7 @@ function getTimeDimensionProduction(tier) {
 
 
 function getTimeDimensionRateOfChange(tier) {
-  let toGain = getTimeDimensionProduction(tier+1)
+  let toGain = getTimeDimensionProduction(tier+(inQC(4)?2:1))
   var current = Decimal.max(player["timeDimension"+tier].amount, 1);
   var change  = toGain.times(10).dividedBy(current);
   return change;
