@@ -804,7 +804,7 @@ if (player.version < 5) {
   if (player.aarexModifications.newGameMinusMinusVersion === undefined) {
       if (player.galacticSacrifice) {
           player.galacticSacrifice.time = (player.lastUpdate - player.galacticSacrifice.last) / 100
-          player.aarexModifications.newGameMinusMinusVersion = 1.27
+          player.aarexModifications.newGameMinusMinusVersion = 1.28
           delete player.galacticSacrifice.last
 	  }
       else if (player.galaxyPoints) player.aarexModifications.newGameMinusMinusVersion = 1.1
@@ -848,7 +848,7 @@ if (player.version < 5) {
       }
       reduceDimCosts()
   }
-  if (player.aarexModifications.newGameMinusMinusVersion) player.aarexModifications.newGameMinusMinusVersion = 1.27
+  if (player.aarexModifications.newGameMinusMinusVersion < 1.28) player.aarexModifications.newGameMinusMinusVersion = 1.28
   if (player.aarexModifications.ersVersion === undefined && player.boughtDims) {
       newAchievements=[]
       for (id=0;id<player.achievements.length;id++) {
@@ -982,8 +982,12 @@ if (player.version < 5) {
 
   document.getElementById("masterystudyunlock").style.display = player.dilation.upgrades.includes("ngpp6") && player.masterystudies ? "" : "none"
 
+  if (!player.galacticSacrifice) document.getElementById("infi33").innerHTML = "Increase Dimension Boost multiplier <br>2x -> 2.5x<br>Cost: 7 IP"
   document.getElementById("d5AutoChallengeDesc").textContent=player.galacticSacrifice?"Does nothing.":"Tickspeed starts at 7%."
   document.getElementById("autoCrunchChallengeDesc").textContent="Each dimension produces the dimension 2 below it; first dimensions produce reduced antimatter. "+(player.galacticSacrifice?"Galaxies are far more powerful.":"")
+  document.getElementById("ic7desc").textContent="You can't get antimatter Galaxies, but dimensional boost multiplier "+(player.galacticSacrifice?"is cubed":"2.5x -> 10x")
+  document.getElementById("ic7reward").textContent="Reward: Dimensional boost multiplier "+(player.galacticSacrifice?"is squared":"2.5x -> 4x")
+  document.getElementById("81").innerHTML="Dimensional boost power "+(player.galacticSacrifice?"is cubed":"becomes 10x")+"<span>Cost: 4 Time Theorems"
 
   updateAutobuyers();
   setAchieveTooltip();

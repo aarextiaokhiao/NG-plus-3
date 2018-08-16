@@ -2,14 +2,21 @@ function getDimensionBoostPower(next) {
   if (player.currentChallenge == "challenge11" || player.currentChallenge == "postc1") return Decimal.fromNumber(1);
 
   var ret = 2
-  if (player.infinityUpgrades.includes("resetMult")) ret = 2.5
-  if (player.challenges.includes("postc7")) ret = 4
-  if (player.currentChallenge == "postc7" || player.timestudy.studies.includes(81)) ret = 10
+  if (!player.galacticSacrifice) {
+      if (player.infinityUpgrades.includes("resetMult")) ret = 2.5
+      if (player.challenges.includes("postc7")) ret = 4
+      if (player.currentChallenge == "postc7" || player.timestudy.studies.includes(81)) ret = 10
+  }
   if (player.boughtDims) ret += player.timestudy.ers_studies[4] + (next ? 1 : 0)
-  if (player.achievements.includes("r101")) ret = ret*1.01
   if (player.galacticSacrifice ? player.galacticSacrifice.upgrades.includes(23) : false) ret *= galUpgrade23()
+  if (player.infinityUpgrades.includes("resetMult")&&player.galacticSacrifice) ret *= 1.2 + 0.05 * player.infinityPoints.max(1).log(10)
+  if (player.achievements.includes("r101")) ret = ret*1.01
   if (player.timestudy.studies.includes(83)) ret = Decimal.pow(1.0004, player.totalTickGained).times(ret);
   if (player.timestudy.studies.includes(231)) ret = Decimal.pow(player.resets, 0.3).times(ret)
+  if (player.galacticSacrifice) {
+      if (player.currentChallenge == "postc7" || player.timestudy.studies.includes(81)) ret = Math.pow(ret,3)
+      else if (player.challenges.includes("postc7")) ret = Math.pow(ret,2)
+  }
   if (player.dilation.studies.includes(6)&&player.currentEternityChall!="eterc14"&&!inQC(3)) ret = getExtraDimensionBoostPower().times(ret)
   return new Decimal(ret)
 }

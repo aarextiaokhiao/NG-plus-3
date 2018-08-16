@@ -25,7 +25,7 @@ function getDimensionFinalMultiplier(tier) {
 
   if (hasInfinityMult(tier)) multiplier = multiplier.times(dimMults());
   if (tier == 1) {
-      if (player.infinityUpgrades.includes("unspentBonus")) multiplier = multiplier.times(unspentBonus);
+      if (player.infinityUpgrades.includes("unspentBonus")&&!player.galacticSacrifice) multiplier = multiplier.times(unspentBonus);
       if (player.achievements.includes("r28")) multiplier = multiplier.times(1.1);
       if (player.achievements.includes("r31")) multiplier = multiplier.times(1.05);
       if (player.achievements.includes("r71")) multiplier = multiplier.times(3);
@@ -58,8 +58,10 @@ function getDimensionFinalMultiplier(tier) {
   multiplier = multiplier.times(player.postC3Reward)
   if (player.challenges.includes("postc8") && tier < 8 && tier > 1) multiplier = multiplier.times(mult18);
 
-  if (player.currentChallenge == "postc6") multiplier = multiplier.dividedBy(player.matter.max(1))
-  if (player.currentChallenge == "postc8") multiplier = multiplier.times(postc8Mult)
+  if (!player.galacticSacrifice) {
+      if (player.currentChallenge == "postc6") multiplier = multiplier.dividedBy(player.matter.max(1))
+      if (player.currentChallenge == "postc8") multiplier = multiplier.times(postc8Mult)
+  }
 
   if (player.currentChallenge == "postc4" && player.postC4Tier != tier) multiplier = multiplier.pow(0.25)
   if (player.challenges.includes("postc4") && player.galacticSacrifice === undefined) multiplier = multiplier.pow(1.05);
@@ -83,6 +85,11 @@ function getDimensionFinalMultiplier(tier) {
   }
 
   if (player.dilation.upgrades.includes(6)) multiplier = multiplier.times(player.dilation.dilatedTime.max(1).pow(308))
+  if (player.galacticSacrifice) {
+      if (player.infinityUpgrades.includes("unspentBonus")&&tier<2) multiplier = multiplier.times(unspentBonus);
+      if (player.currentChallenge == "postc6") multiplier = multiplier.dividedBy(player.matter.max(1))
+      if (player.currentChallenge == "postc8") multiplier = multiplier.times(postc8Mult)
+  }
   return multiplier;
 }
 
@@ -543,7 +550,7 @@ document.getElementById("eightMax").onclick = function () {
 function timeMult() {
     var mult = new Decimal(1)
     if (player.infinityUpgrades.includes("timeMult")) mult = mult.times(Math.pow(player.totalTimePlayed / 1200, 0.15));
-    if (player.infinityUpgrades.includes("timeMult2")) mult = mult.times(Decimal.max(Math.pow(player.thisInfinityTime / 2400, 0.25), 1));
+    if (player.infinityUpgrades.includes("timeMult2")) mult = mult.times(Decimal.max(Math.pow(player.thisInfinityTime / 2400, player.galacticSacrifice?3:0.25), 1));
     if (player.achievements.includes("r76")) mult = mult.times(Math.pow(player.totalTimePlayed / (600*60*48), 0.05));
     return mult;
 }
