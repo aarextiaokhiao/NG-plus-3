@@ -373,7 +373,7 @@ function updateNewPlayer(reseted) {
         player.galacticSacrifice = resetGalacticSacrifice()
     }
     if (modesChosen.ngpp > 1) {
-        player.aarexModifications.newGame3PlusVersion = 1.992
+        player.aarexModifications.newGame3PlusVersion = 1.993
         player.dbPower = 1
         player.peakSpent = 0
         player.masterystudies = []
@@ -934,7 +934,7 @@ function updateDimensions() {
 
         var shiftRequirement = getShiftRequirement(0);
         var isShift = player.resets < ((player.currentChallenge == "challenge4" || player.currentChallenge == "postc1") ? 2 : 4)
-        document.getElementById("resetLabel").textContent = 'Dimension ' + (isShift ? "Shift" : player.resets < 56e4 ? "Boost" : "Supersonic") + ' ('+ getFullExpansion(player.resets) +'): requires ' + getFullExpansion(shiftRequirement.amount) + " " + DISPLAY_NAMES[shiftRequirement.tier] + " Dimensions"
+        document.getElementById("resetLabel").textContent = 'Dimension ' + (isShift ? "Shift" : player.resets < getSupersonicStart() ? "Boost" : "Supersonic") + ' ('+ getFullExpansion(player.resets) +'): requires ' + getFullExpansion(shiftRequirement.amount) + " " + DISPLAY_NAMES[shiftRequirement.tier] + " Dimensions"
         document.getElementById("softReset").textContent = "Reset the game for " + (isShift ? "a new dimension" : "the boost")
         var totalReplGalaxies = player.replicanti.galaxies + extraReplGalaxies
         document.getElementById("secondResetLabel").textContent = (player.galaxies < 1400 ? (player.galaxies < getGalaxyCostScalingStart() ? '' : player.galaxies < getRemoteGalaxyScalingStart() ? 'Distant ' : 'Remote ') + 'Antimatter' : 'Dark Matter') + ' Galaxies ('+ getFullExpansion(player.galaxies) + ((totalReplGalaxies + player.dilation.freeGalaxies) > 0 ? ' + ' + getFullExpansion(totalReplGalaxies)  + (player.dilation.freeGalaxies > 0 ? ' + ' + getFullExpansion(Math.floor(player.dilation.freeGalaxies)) : '') : '') +'): requires ' + getFullExpansion(getGalaxyRequirement()) + ' '+DISPLAY_NAMES[player.currentChallenge === 'challenge4' ? 6 : 8]+' Dimensions';
@@ -1091,8 +1091,9 @@ function updateCosts() {
         document.getElementById("infMax"+i).innerHTML = "Cost: " + shortenInfDimCosts(player["infinityDimension"+i].cost) + " IP"
         document.getElementById("timeMax"+i).innerHTML = "Cost: " + shortenDimensions(player["timeDimension"+i].cost) + " EP"
         if (player.meta) {
-            document.getElementById("meta"+i).innerHTML = speedrunMilestonesReached > i+5 ? "Auto: O"+(player.autoEterOptions["md"+i] ? "N" : "FF") : "Cost: " + shortenDimensions(player.meta[i].cost) + " MA"
-            document.getElementById("metaMax"+i).innerHTML = (speedrunMilestonesReached > i+5 ? (shiftDown ? "Singles" : "Cost") : "Until 10") + ": " + shortenDimensions((shiftDown && speedrunMilestonesReached > i+5) ? player.meta[i].cost : getMetaMaxCost(i)) + " MA"
+            var useTwo = player.meta[i].cost.gt("1e1100")||player.options.notation=="Logarithm"
+            document.getElementById("meta"+i).innerHTML = speedrunMilestonesReached > i+5 ? "Auto: O"+(player.autoEterOptions["md"+i] ? "N" : "FF") : "Cost: " + formatValue(player.options.notation, player.meta[i].cost, useTwo?2:0, 0) + " MA"
+            document.getElementById("metaMax"+i).innerHTML = (speedrunMilestonesReached > i+5 ? (shiftDown ? "Singles" : "Cost") : "Until 10") + ": " + formatValue(player.options.notation, ((shiftDown && speedrunMilestonesReached > i+5) ? player.meta[i].cost : getMetaMaxCost(i)), useTwo?2:0, 0) + " MA"
         }
     }
 }
@@ -1787,6 +1788,7 @@ function upgradeReplicantiGalaxy() {
         }
         player.replicanti.gal += 1
         if (player.replicanti.gal >= 3e3) player.replicanti.galCost = player.replicanti.galCost.times(Decimal.pow("1e10000", player.replicanti.gal - 2995))
+        if (inQC(5)) player.replicanti.galCost = Decimal.pow(1e170, Math.pow(1.2, player.replicanti.gal))
         if (player.currentEternityChall == "eterc8") player.eterc8repl-=1
         document.getElementById("eterc8repl").textContent = "You have "+player.eterc8repl+" purchases left."
         return true
@@ -4249,7 +4251,10 @@ function challengesCompletedOnEternity() {
 	return array
 }
 
-function gainEternitiedStat() { return (player.dilation.upgrades.includes('ngpp2') ? Math.floor(Decimal.pow(player.dilation.dilatedTime, .1).toNumber()): 1); }
+function gainEternitiedStat() {
+	if (player.eternities < 0 && player.achievements.includes("ng3p12")) return 20
+	return player.dilation.upgrades.includes('ngpp2') ? Math.floor(Decimal.pow(player.dilation.dilatedTime, .1).toNumber()) : 1
+}
 
 function exitChallenge() {
     if (player.currentChallenge !== "") {
@@ -5221,7 +5226,7 @@ function updateDilationUpgradeCosts() {
 
 function gainDilationGalaxies() {
 	if (player.dilation.nextThreshold.lte(player.dilation.dilatedTime)) {
-		let thresholdMult = 1.35 + 3.65 * Math.pow(0.8, player.dilation.rebuyables[2])
+		let thresholdMult = inQC(5) ? Math.pow(10, 2.8) : 1.35 + 3.65 * Math.pow(0.8, player.dilation.rebuyables[2])
 		let galaxyMult = player.dilation.upgrades.includes(4) ? 2 : 1
 		galaxyMult *= QCIntensity(2)*0.4+1
 		let thresholdGalaxies = player.dilation.freeGalaxies / galaxyMult
@@ -5742,7 +5747,7 @@ function gameLoop(diff) {
         }
     }
     if (player.meta) {
-        if (QCIntensity(4)) QC4Reward = Decimal.pow(10, Math.pow(player.meta[2].amount.times(player.meta[4].amount).times(player.meta[6].amount).times(player.meta[8].amount).max(1e10).log10(), 0.5)/10)
+        if (QCIntensity(4)) QC4Reward = Decimal.pow(10, Math.pow(player.meta[2].amount.times(player.meta[4].amount).times(player.meta[6].amount).times(player.meta[8].amount).max(1).log10(), 0.5)/10)
         else QC4Reward = new Decimal(1)
         player.meta.antimatter = player.meta.antimatter.plus(getMetaDimensionProduction(1).times(diff/10))
         if (inQC(4)) player.meta.antimatter = player.meta.antimatter.plus(getMetaDimensionProduction(1).times(diff/10))

@@ -257,11 +257,13 @@ function maxBuyDimBoosts(manual) {
 			var hasGDBUpg = player.galacticSacrifice ? player.galacticSacrifice.upgrades.includes(21) : false
 			var sr = getShiftRequirement((hasGDBUpg ? 5 : 3) - player.resets)
 			var ut = Math.min(bought, (player.galaxies >= player.overXGalaxies || manual) ? 1/0 : player.autobuyers[9].priority)
+			var ssstart = getSupersonicStart()
 			r = Math.floor((ut - sr.amount) / sr.mult + (hasGDBUpg ? 7 : 5))
-			if (r > 56e4) {
-				var b = 2 + sr.mult
-				var solution = (-b + Math.sqrt(b * b + 8 * ((r + 1) / 4e4 - 14) * sr.mult)) / 4
-				var setPoint = 56e4 + 4e4 * Math.floor(solution)
+			if (r > ssstart) {
+                var a = getSupersonicMultIncrease() / 2
+				var b = a + sr.mult
+				var solution = (-b + Math.sqrt(b * b + (4 * a) * ((r - ssstart + 1) / 4e4) * sr.mult)) / (2 * a)
+				var setPoint = ssstart + 4e4 * Math.floor(solution)
 				sr = getShiftRequirement(setPoint - player.resets)
 				r = Math.floor((ut - sr.amount) / sr.mult + setPoint + 1)
 			}
@@ -286,20 +288,31 @@ function getShiftRequirement(bulk) {
   if (hasGDBUpg) mult = 5
   if (player.currentChallenge == "challenge4") mult += 5
   if (tier == maxTier) amount += Math.max(resetNum + (hasGDBUpg ? 2 : 4) - maxTier, 0) * mult
-
+  var costStart = getSupersonicStart()
   if (player.currentEternityChall == "eterc5") {
       amount += Math.pow(resetNum, 3) + resetNum
-  } else if (resetNum >= 56e4) {
-      var displacement = Math.ceil((resetNum - 56e4 + 1) / 4e4)
+  } else if (resetNum >= costStart) {
+      var displacement = Math.ceil((resetNum - costStart + 1) / 4e4)
       var offset = resetNum % 4e4 + 1
-      amount += displacement * (displacement - 1) * 8e4 + offset * displacement * 4
-      mult += displacement * 4
+      var inc = getSupersonicMultIncrease()
+      amount += displacement * (displacement - 1) * 2e4 * inc + offset * displacement * inc
+      mult += displacement * inc
   }
 
   if (player.infinityUpgrades.includes("resetBoost")) amount -= 9;
   if (player.challenges.includes("postc5")) amount -= 1
 
   return { tier: tier, amount: amount, mult: mult };
+}
+
+function getSupersonicStart() {
+	if (inQC(5)) return 0
+	return 56e4
+}
+
+function getSupersonicMultIncrease() {
+	if (inQC(5)) return 20
+	return 4
 }
 
 document.getElementById("softReset").onclick = function () {

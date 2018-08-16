@@ -793,7 +793,7 @@ if (player.version < 5) {
       player.quantum.challenges=newChallenges
       player.quantum.metaAutobuyerWait=0
   }
-  if (player.aarexModifications.newGame3PlusVersion < 1.992) player.aarexModifications.newGame3PlusVersion=1.992
+  if (player.aarexModifications.newGame3PlusVersion < 1.993) player.aarexModifications.newGame3PlusVersion=1.993
   if (player.aarexModifications.newGame3PlusVersion==undefined) {
       colorBoosts={
           r:1,

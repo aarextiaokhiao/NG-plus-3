@@ -100,10 +100,17 @@ function metaBuyOneDimension(tier) {
     player.meta[tier].amount = player.meta[tier].amount.plus(1);
     player.meta[tier].bought++;
     if (player.meta[tier].bought % 10 < 1) {
-        player.meta[tier].cost = player.meta[tier].cost.times(getMetaDimensionCostMultiplier(tier));
+        player.meta[tier].cost = getMetaCost(tier, player.meta[tier].bought/10)
     }
     if (tier>7) giveAchievement("And still no ninth dimension...")
     return true;
+}
+
+function getMetaCost(tier, boughtTen) {
+	let cost=initCost[tier].times(costMults[tier].pow(boughtTen))
+	let scalingStart=Math.ceil(Decimal.div("1e1100", initCost[tier]).log(costMults[tier]))
+	if (boughtTen>=scalingStart) cost=cost.times(Decimal.pow(10,(boughtTen-scalingStart+1)*(boughtTen-scalingStart+2)/2))
+	return cost
 }
 
 function getMetaMaxCost(tier) {
@@ -120,10 +127,38 @@ function metaBuyManyDimension(tier) {
     }
     player.meta.antimatter = player.meta.antimatter.minus(cost);
     player.meta[tier].amount = player.meta[tier].amount.plus(10 - dimMetaBought(tier));
-    player.meta[tier].cost = player.meta[tier].cost.times(getMetaDimensionCostMultiplier(tier));
     player.meta[tier].bought += 10 - dimMetaBought(tier)
+    player.meta[tier].cost = getMetaCost(tier, player.meta[tier].bought/10)
     if (tier>7) giveAchievement("And still no ninth dimension...")
     return true;
+}
+
+function buyMaxMetaDimension(tier) {
+	var currentBought=Math.floor(player.meta[tier].bought/10)
+	var bought=Math.floor(player.meta.antimatter.div(10).div(initCost[tier]).log(costMults[tier])+1)
+	var scalingStart=Math.ceil(Decimal.div("1e1100", initCost[tier]).log(costMults[tier]))
+	if (bought>=scalingStart) {
+		b=costMults[tier].log10()+0.5
+		bought=Math.floor(-b+Math.sqrt(b*b+2*(bought-scalingStart+1)*costMults[tier].log10()))+scalingStart
+	}
+	bought-=currentBought
+	if (bought<1||!canBuyMetaDimension(tier)) return
+	var num=bought
+	var tempMA=player.meta.antimatter
+	while (num>0) {
+		var temp=tempMA
+		var cost=getMetaCost(tier,currentBought+num-1)
+		if (cost.gt(tempMA)) {
+			tempMA=player.meta.antimatter.sub(cost)
+			bought--
+		} else tempMA=tempMA.sub(cost)
+		if (temp.eq(tempMA)||currentBought+num>9007199254740991) break
+		num--
+	}
+	player.meta.antimatter=tempMA
+    player.meta[tier].amount=player.meta[tier].amount.add(-(player.meta[tier].bought)%10+bought*10)
+    player.meta[tier].bought+=-(player.meta[tier].bought)%10+bought*10
+    player.meta[tier].cost=getMetaCost(tier,Math.floor(player.meta[tier].bought/10))
 }
 
 function canAffordMetaDimension(cost) {
@@ -142,6 +177,7 @@ for (let i = 1; i <= 8; i++) {
 }
 
 document.getElementById("metaMaxAll").onclick = function () {
+    //for (let i = 1; i <= 8; i++) buyMaxMetaDimension(i) NOTE: IT IS BROKEN RIGHT NOW
     for (let i = 1; i <= 8; i++) {
       while (metaBuyManyDimension(i)) {};
     }
@@ -393,7 +429,7 @@ function quantum(auto,force,challid) {
 			infinityUpgrades: oheHeadstart ? player.infinityUpgrades : [],
 			infinityPoints: new Decimal(0),
 			infinitied: 0,
-			infinitiedBank: oheHeadstart ? player.infinitiedBank : 0,
+			infinitiedBank: headstart ? player.infinitiedBank : 0,
 			totalTimePlayed: player.totalTimePlayed,
 			bestInfinityTime: 9999999999,
 			thisInfinityTime: 0,

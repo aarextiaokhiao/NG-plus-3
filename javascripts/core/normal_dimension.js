@@ -170,6 +170,7 @@ function hasInfinityMult(tier) {
     }
     
     function getDimensionPowerMultiplier(nonrandom) {
+        if (inQC(5)) return 1
         let dimMult = 2;
     
     
@@ -179,6 +180,7 @@ function hasInfinityMult(tier) {
         if (player.achievements.includes("r58")) dimMult *= 1.01;
         dimMult += ECTimesCompleted("eterc3") * 0.8
         if (player.galacticSacrifice) if (player.galacticSacrifice.upgrades.includes(33)) dimMult *= galUpgrade33();
+        if (QCIntensity(5)) dimMult += Math.log10(1+player.resets)*QCIntensity(5)
         if (player.masterystudies) dimMult = Decimal.pow(dimMult, getMPTPower())
         return dimMult;
     }
