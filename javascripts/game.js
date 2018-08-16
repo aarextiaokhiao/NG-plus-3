@@ -6985,8 +6985,8 @@ function getUnspentBonus() {
 	x = player.infinityPoints
 	if (player.galacticSacrifice) {
 		if (x.lt(100)) return x.pow(2.5).div(1.7).plus(1)
-		else return player.infinityPoints.dividedBy(2).pow(1.5).plus(1)
-	} else return Decimal.pow(x.plus(1).log(10) + 1, 10)
+		else return Decimal.pow(x.plus(1).log(10) + 1, 10)
+	} else return x.dividedBy(2).pow(1.5).plus(1)
 }
 
 var totalMult = 1
