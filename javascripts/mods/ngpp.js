@@ -19,6 +19,7 @@ function getMetaDimensionMultiplier (tier) {
   if (GUBought("rg3")&&tier<2) multiplier = multiplier.times(player.resets)
   if (GUBought("br4")) multiplier = multiplier.times(Decimal.pow(getDimensionPowerMultiplier(), 0.0003))
   if (tier%2>0) multiplier = multiplier.times(QC4Reward)
+  if (QCIntensity(6)) multiplier = multiplier.times(player.achPow)
   
   if (multiplier.lt(1)) multiplier = new Decimal(1)
   if (player.dilation.active || player.galacticSacrifice) {
@@ -76,6 +77,7 @@ function metaBoost() {
     player.meta.antimatter = new Decimal(speedrunMilestonesReached>17?1e25:player.achievements.includes("ngpp12")?100:10);
     clearMetaDimensions();
     for (let i = 2; i <= 8; i++) if (!canBuyMetaDimension(i)) document.getElementById(i + "MetaRow").style.display = "none"
+    document.getElementById("quantumbtn").style.display="none"
     return true;
 }
 
@@ -134,20 +136,21 @@ function metaBuyManyDimension(tier) {
 }
 
 function buyMaxMetaDimension(tier) {
+	if (!canBuyMetaDimension(tier)) return
+	if (getMetaMaxCost(tier).gt(player.meta.antimatter)) return
 	var currentBought=Math.floor(player.meta[tier].bought/10)
-	var bought=Math.floor(player.meta.antimatter.div(10).div(initCost[tier]).log(costMults[tier])+1)
+	var bought=player.meta.antimatter.div(10).div(initCost[tier]).log(costMults[tier])+1
 	var scalingStart=Math.ceil(Decimal.div("1e1100", initCost[tier]).log(costMults[tier]))
 	if (bought>=scalingStart) {
 		b=costMults[tier].log10()+0.5
-		bought=Math.floor(-b+Math.sqrt(b*b+2*(bought-scalingStart+1)*costMults[tier].log10()))+scalingStart
+		bought=Math.sqrt(b*b+2*(bought-scalingStart)*costMults[tier].log10())-b+scalingStart
 	}
-	bought-=currentBought
-	if (bought<1||!canBuyMetaDimension(tier)) return
+	bought=Math.floor(bought)-currentBought
 	var num=bought
 	var tempMA=player.meta.antimatter
 	while (num>0) {
 		var temp=tempMA
-		var cost=getMetaCost(tier,currentBought+num-1)
+		var cost=getMetaCost(tier,currentBought+num-1).times(10)
 		if (cost.gt(tempMA)) {
 			tempMA=player.meta.antimatter.sub(cost)
 			bought--
@@ -156,8 +159,8 @@ function buyMaxMetaDimension(tier) {
 		num--
 	}
 	player.meta.antimatter=tempMA
-    player.meta[tier].amount=player.meta[tier].amount.add(-(player.meta[tier].bought)%10+bought*10)
-    player.meta[tier].bought+=-(player.meta[tier].bought)%10+bought*10
+    player.meta[tier].amount=player.meta[tier].amount.add(bought*10-(player.meta[tier].bought)%10)
+    player.meta[tier].bought+=bought*10-(player.meta[tier].bought)%10
     player.meta[tier].cost=getMetaCost(tier,Math.floor(player.meta[tier].bought/10))
 }
 
@@ -177,10 +180,7 @@ for (let i = 1; i <= 8; i++) {
 }
 
 document.getElementById("metaMaxAll").onclick = function () {
-    //for (let i = 1; i <= 8; i++) buyMaxMetaDimension(i) NOTE: IT IS BROKEN RIGHT NOW
-    for (let i = 1; i <= 8; i++) {
-      while (metaBuyManyDimension(i)) {};
-    }
+    for (let i = 1; i <= 8; i++) buyMaxMetaDimension(i)
 }
 
 document.getElementById("metaSoftReset").onclick = function () {
@@ -349,7 +349,7 @@ function quantum(auto,force,challid) {
 			showInfTab("preinf")
 			showEternityTab("timestudies", true)
 			if (document.getElementById("quantumtab").style.display=="none") showTab("dimensions")
-		} else if ((document.getElementById("dilation").style.display=="block"||document.getElementById("masterystudies").style.display=="block")&&!isRewardEnabled(4)) {
+		} else if ((document.getElementById("dilation").style.display=="block"&&!isRewardEnabled(4))||(document.getElementById("masterystudies").style.display=="block"&&(speedrunMilestonesReached<6||!isRewardEnabled(4)))) {
 			showEternityTab("timestudies", document.getElementById("eternitystore").style.display=="block")
 		}
 		if (!quantumed) {
@@ -359,8 +359,8 @@ function quantum(auto,force,challid) {
 			document.getElementById("galaxyPoints2").className = "GP"
 			document.getElementById("sacpos").className = "sacpos"
 		}
+		document.getElementById("quantumbtn").style.display="none"
 		if (!force) {
-			document.getElementById("quantumbtn").style.display="none"
 			for (var i=player.quantum.last10.length-1; i>0; i--) {
 				player.quantum.last10[i] = player.quantum.last10[i-1]
 			}
@@ -466,6 +466,7 @@ function quantum(auto,force,challid) {
 			version: player.version,
 			postC4Tier: 1,
 			postC3Reward: new Decimal(1),
+			postC8Mult: new Decimal(1),
 			overXGalaxies: oheHeadstart ? player.overXGalaxies : 0,
 			spreadingCancer: player.spreadingCancer,
 			postChallUnlocked: (player.achievements.includes("r133")) ? 8 : 0,
@@ -695,7 +696,7 @@ function quantum(auto,force,challid) {
 					cost: new Decimal(1e24)
 				}
 			},
-			masterystudies: player.masterystudies ? player.masterystudies : undefined,
+			masterystudies: player.masterystudies ? (speedrunMilestonesReached > 5 && isRewardEnabled(4) ? player.masterystudies : []) : undefined,
 			autoEterOptions: player.autoEterOptions,
 			galaxyMaxBulk: player.galaxyMaxBulk,
 			quantum: player.quantum,
@@ -756,18 +757,18 @@ function quantum(auto,force,challid) {
 			document.getElementById('toggleallmetadims').style.display=speedrunMilestonesReached>7?"":"none"
 			document.getElementById('metaboostauto').style.display=speedrunMilestonesReached>14?"":"none"
 			document.getElementById("autoBuyerQuantum").style.display=speedrunMilestonesReached>20?"":"none"
-			var respecedMS=[]
-			for (id=0;id<player.masterystudies.length;id++) {
-				var t = player.masterystudies[id].split("t")[1]
-				var d = player.masterystudies[id].split("d")[1]
-				if ((t&&speedrunMilestonesReached>15&&((speedrunMilestonesReached>5&&isRewardEnabled(4))||parseInt(t)<270))||(d&&speedrunMilestonesReached>5&&isRewardEnabled(4))) respecedMS.push(player.masterystudies[id])
-			}
-			if (speedrunMilestonesReached<6&&!isRewardEnabled(4)) {
+			if (speedrunMilestonesReached<6||!isRewardEnabled(4)) {
 				document.getElementById("qctabbtn").style.display="none"
 				document.getElementById("electronstabbtn").style.display="none"
 			}
-			player.masterystudies=respecedMS
 			if (speedrunMilestonesReached>13&&isRewardEnabled(4)) for (i=3;i<7;i++) player.dilation.upgrades.push("ngpp"+i)
+			updateMasteryStudyCosts()
+			updateMasteryStudyButtons()
+		}
+		if (speedrunMilestonesReached<1) {
+			document.getElementById("infmultbuyer").textContent="Autobuy IP mult OFF"
+			document.getElementById("togglecrunchmode").textContent="Auto crunch mode: amount"
+			document.getElementById("limittext").textContent="Amount of IP to wait until reset:"
 		}
 		for (let i = 2; i <= 8; i++) if (!canBuyMetaDimension(i)) document.getElementById(i + "MetaRow").style.display = "none"
 		
@@ -781,7 +782,8 @@ function quantum(auto,force,challid) {
 		document.getElementById("respec3").className = "storebtn"
 		if (player.achievements.includes("r36")) player.tickspeed = player.tickspeed.times(0.98);
 		if (player.achievements.includes("r45")) player.tickspeed = player.tickspeed.times(0.98);
-		document.getElementById("matter").style.display = "none";
+		if (inQC(6)) document.getElementById("matter").style.display = "block";
+		else document.getElementById("matter").style.display = "none";
 		document.getElementById("quickReset").style.display = "none";
 		if (player.infinitied >= 1 && !player.challenges.includes("challenge1")) player.challenges.push("challenge1");
 		updateAutobuyers();
@@ -849,8 +851,6 @@ function quantum(auto,force,challid) {
 			document.getElementById("masterystudyunlock").style.display = "none";
 			document.getElementById("electronstabbtn").style.display = "none";
 		}
-		updateMasteryStudyCosts()
-		updateMasteryStudyButtons()
 		drawMasteryTree()
 		Marathon2 = 0;
 		document.getElementById("quantumConfirmBtn").style.display = "inline-block"
@@ -863,6 +863,7 @@ function isQuantumReached() {
 
 let quarkGain = function () {
 	if (player.masterystudies) {
+		if (!quantumed) return new Decimal(1)
 		var log = player.meta.antimatter.log10() / 280 - 1.355
 		if (log > 1.2) log = log*log/1.2
 		return Decimal.pow(10, log).times(Decimal.pow(2, player.quantum.multPower)).floor();
@@ -879,8 +880,8 @@ let quarkMult = function () {
 }
 
 function toggleQuantumConf() {
-    player.aarexModifications.quantumConf = !player.aarexModifications.quantumConf
-    document.getElementById("quantumConfirmBtn").textContent = "Quantum confirmation: O" + (player.aarexModifications.quantumConf ? "N" : "FF")
+	player.aarexModifications.quantumConf = !player.aarexModifications.quantumConf
+	document.getElementById("quantumConfirmBtn").textContent = "Quantum confirmation: O" + (player.aarexModifications.quantumConf ? "N" : "FF")
 }
 
 var averageQk = new Decimal(0)

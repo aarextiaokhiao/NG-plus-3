@@ -5,7 +5,7 @@ function getDimensionBoostPower(next) {
   if (!player.galacticSacrifice) {
       if (player.infinityUpgrades.includes("resetMult")) ret = 2.5
       if (player.challenges.includes("postc7")) ret = 4
-      if (player.currentChallenge == "postc7" || player.timestudy.studies.includes(81)) ret = 10
+      if (player.currentChallenge == "postc7" || inQC(6) || player.timestudy.studies.includes(81)) ret = 10
   }
   if (player.boughtDims) ret += player.timestudy.ers_studies[4] + (next ? 1 : 0)
   if (player.galacticSacrifice ? player.galacticSacrifice.upgrades.includes(23) : false) ret *= galUpgrade23()
@@ -14,7 +14,7 @@ function getDimensionBoostPower(next) {
   if (player.timestudy.studies.includes(83)) ret = Decimal.pow(1.0004, player.totalTickGained).times(ret);
   if (player.timestudy.studies.includes(231)) ret = Decimal.pow(player.resets, 0.3).times(ret)
   if (player.galacticSacrifice) {
-      if (player.currentChallenge == "postc7" || player.timestudy.studies.includes(81)) ret = Math.pow(ret,3)
+      if (player.currentChallenge == "postc7" || inQC(6) || player.timestudy.studies.includes(81)) ret = Math.pow(ret,3)
       else if (player.challenges.includes("postc7")) ret = Math.pow(ret,2)
   }
   if (player.dilation.studies.includes(6)&&player.currentEternityChall!="eterc14"&&!inQC(3)) ret = getExtraDimensionBoostPower().times(ret)
@@ -30,6 +30,8 @@ function softReset(bulk) {
       giveAchievement("Boosting to the max");
   }
   if (player.dilation.upgrades.includes("ngpp3") && player.eternities >= 1e9 && player.masterystudies && player.aarexModifications.switch === undefined) {
+      player.matter = new Decimal(0)
+      player.postC8Mult = new Decimal(1)
       if (player.currentEternityChall=='eterc13') return
       var power = player[TIER_NAMES[tier] + 'Pow']
       var temp = getDimensionBoostPower()
@@ -124,6 +126,7 @@ function softReset(bulk) {
       postChallUnlocked: player.postChallUnlocked,
       postC4Tier: 1,
       postC3Reward: getPostC3RewardStart(),
+      postC8Mult: new Decimal(1),
       infinityDimension1: player.infinityDimension1,
       infinityDimension2: player.infinityDimension2,
       infinityDimension3: player.infinityDimension3,
@@ -254,6 +257,7 @@ function setInitialDimensionPower () {
 }
 
 function maxBuyDimBoosts(manual) {
+	if (inQC(6)) return
 	if (player.autobuyers[9].priority >= player.eightBought || player.galaxies >= player.overXGalaxies || getShiftRequirement(0).tier < 8 || manual) {
 		var bought = player[TIER_NAMES[getShiftRequirement(0).tier] + "Bought"]
 		var r
@@ -267,7 +271,7 @@ function maxBuyDimBoosts(manual) {
 			var ssstart = getSupersonicStart()
 			r = Math.floor((ut - sr.amount) / sr.mult + (hasGDBUpg ? 7 : 5))
 			if (r > ssstart) {
-                var a = getSupersonicMultIncrease() / 2
+				var a = getSupersonicMultIncrease() / 2
 				var b = a + sr.mult
 				var solution = (-b + Math.sqrt(b * b + (4 * a) * ((r - ssstart + 1) / 4e4) * sr.mult)) / (2 * a)
 				var setPoint = ssstart + 4e4 * Math.floor(solution)
@@ -323,6 +327,7 @@ function getSupersonicMultIncrease() {
 }
 
 document.getElementById("softReset").onclick = function () {
+  if (inQC(6)) return
   var name = TIER_NAMES[getShiftRequirement(0).tier]
   if ((!player.break && player.money.gt(Number.MAX_VALUE)) || player[name + "Bought"] < getShiftRequirement(0).amount) return;
   auto = false;

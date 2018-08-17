@@ -33,7 +33,9 @@ function getTimeDimensionPower(tier) {
   ret = ret.times(ec10bonus)
   if (player.achievements.includes("r128")) ret = ret.times(Math.max(player.timestudy.studies.length, 1))
 
-  if (player.replicanti.unl && player.replicanti.amount.gt(1) && player.dilation.upgrades.includes(5)) ret.times(getReplMult().pow(0.1))
+  if (player.replicanti.unl && player.replicanti.amount.gt(1) && player.dilation.upgrades.includes(5)) ret = ret.times(getReplMult().pow(0.1))
+
+  if (inQC(6)) ret = ret.times(player.postC8Mult).dividedBy(player.matter.max(1))
 
   if (ret.lt(0)) {
     ret = new Decimal(0)
@@ -133,6 +135,7 @@ function buyTimeDimension(tier) {
   dim.bought += 1
   dim.cost = timeDimCost(tier, dim.bought)
   dim.power = dim.power.times(2)
+  if (inQC(6)) player.postC8Mult = new Decimal(1)
   updateEternityUpgrades()
   return true
 }
@@ -175,6 +178,8 @@ function buyMaxTimeDimension(tier) {
 	dim.bought+=toBuy
 	dim.cost=timeDimCost(tier, dim.bought)
 	dim.power=dim.power.times(Decimal.pow(2, toBuy))
+	if (inQC(6)) player.postC8Mult = new Decimal(1)
+	updateEternityUpgrades()
 }
 
 function buyMaxTimeDimensions() {

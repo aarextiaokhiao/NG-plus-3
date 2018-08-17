@@ -58,6 +58,7 @@ function onLoad() {
   if (player.spreadingCancer === undefined) player.spreadingCancer = 0
   if (player.postC4Tier === undefined) player.postC4Tier = 0
   if (player.postC3Reward === undefined) player.postC3Reward = new Decimal(1)
+  if (player.postC8Mult === undefined) player.postC8Mult = new Decimal(1)
   if (player.offlineProd === undefined) player.offlineProd = 0
   if (player.offlineProdCost === undefined) player.offlineProdCost = 1e7
   if (player.autoSacrifice === undefined) player.autoSacrifice = 1
@@ -431,7 +432,7 @@ if (player.version < 5) {
 
   if (player.infinitied == 0 && player.eternities == 0) document.getElementById("infinityPoints2").style.display = "none"
 
-  if (player.currentChallenge == "challenge12" || player.currentChallenge == "postc1" || player.currentChallenge == "postc6") document.getElementById("matter").style.display = "inline-block";
+  if (player.currentChallenge == "challenge12" || player.currentChallenge == "postc1" || player.currentChallenge == "postc6" || inQC(6)) document.getElementById("matter").style.display = "inline-block";
   else document.getElementById("matter").style.display = "none";
 
 
@@ -727,12 +728,13 @@ if (player.version < 5) {
       player.aarexModifications.quantumConf = true
       $.notify('NG++ was updated to include quantum reset.', 'info')
   }
-  if (player.aarexModifications.newGamePlusPlusVersion < 2.9011) {
-      if (player.autoEterOptions === undefined) {
-          player.autoEterOptions = {epmult:false}
-          for (dim=1;dim<9;dim++) player.autoEterOptions["td"+dim] = false
-      }
-      player.aarexModifications.newGamePlusPlusVersion = 2.9011
+  if (player.aarexModifications.newGamePlusPlusVersion < 2.9011 && player.autoEterOptions === undefined) {
+      player.autoEterOptions = {epmult:false}
+      for (dim=1;dim<9;dim++) player.autoEterOptions["td"+dim] = false
+  }
+  if (player.aarexModifications.newGamePlusPlusVersion < 2.9012) {
+      if (player.aarexModifications.quantumConf===undefined) player.aarexModifications.quantumConf=false
+      player.aarexModifications.newGamePlusPlusVersion = 2.9012
   }
   if (player.aarexModifications.newGame3PlusVersion < 1.01) player.aarexModifications.dbPower = new Decimal(getDimensionBoostPower())
   if ((player.aarexModifications.newGame3PlusVersion && !player.masterystudies) || player.aarexModifications.newGame3PlusVersion < 1.02) player.masterystudies = []
@@ -793,7 +795,7 @@ if (player.version < 5) {
       player.quantum.challenges=newChallenges
       player.quantum.metaAutobuyerWait=0
   }
-  if (player.aarexModifications.newGame3PlusVersion < 1.993) player.aarexModifications.newGame3PlusVersion=1.993
+  if (player.aarexModifications.newGame3PlusVersion < 1.994) player.aarexModifications.newGame3PlusVersion=1.994
   if (player.aarexModifications.newGame3PlusVersion==undefined) {
       colorBoosts={
           r:1,
@@ -985,7 +987,7 @@ if (player.version < 5) {
   if (!player.galacticSacrifice) document.getElementById("infi33").innerHTML = "Increase Dimension Boost multiplier <br>2x -> 2.5x<br>Cost: 7 IP"
   document.getElementById("d5AutoChallengeDesc").textContent=player.galacticSacrifice?"Does nothing.":"Tickspeed starts at 7%."
   document.getElementById("autoCrunchChallengeDesc").textContent="Each dimension produces the dimension 2 below it; first dimensions produce reduced antimatter. "+(player.galacticSacrifice?"Galaxies are far more powerful.":"")
-  document.getElementById("ic7desc").textContent="You can't get antimatter Galaxies, but dimensional boost multiplier "+(player.galacticSacrifice?"is cubed":"2.5x -> 10x")
+  document.getElementById("ic7desc").textContent="You can't get Antimatter Galaxies, but dimensional boost multiplier "+(player.galacticSacrifice?"is cubed":"2.5x -> 10x")
   document.getElementById("ic7reward").textContent="Reward: Dimensional boost multiplier "+(player.galacticSacrifice?"is squared":"2.5x -> 4x")
   document.getElementById("81").innerHTML="Dimensional boost power "+(player.galacticSacrifice?"is cubed":"becomes 10x")+"<span>Cost: 4 Time Theorems"
 
@@ -1332,6 +1334,7 @@ function transformSaveToDecimal() {
   player.eternityPoints = new Decimal(player.eternityPoints)
   player.tickThreshold = new Decimal(player.tickThreshold)
   player.postC3Reward = new Decimal(player.postC3Reward)
+  player.postC8Mult = new Decimal(player.postC8Mult)
 
   for (var i=0; i<10; i++) {
       player.lastTenRuns[i][1] = new Decimal(player.lastTenRuns[i][1])

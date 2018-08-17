@@ -95,6 +95,8 @@ function DimensionPower(tier) {
 
   if (ECTimesCompleted("eterc9") !== 0) mult = mult.times(player.timeShards.pow(ECTimesCompleted("eterc9")*0.1).plus(1).min(new Decimal("1e400")))
 
+  if (inQC(6)) mult = mult.times(player.postC8Mult).dividedBy(player.matter.max(1))
+
   if (mult.lt(0)) mult = new Decimal(0)
 
   if (player.dilation.active || player.galacticSacrifice) {
@@ -191,6 +193,7 @@ function buyManyInfinityDimension(tier) {
 
   if (player.currentEternityChall == "eterc8") player.eterc8ids-=1
   document.getElementById("eterc8ids").textContent = "You have "+player.eterc8ids+" purchases left."
+  if (inQC(6)) player.postC8Mult = new Decimal(1)
   return true
 }
 

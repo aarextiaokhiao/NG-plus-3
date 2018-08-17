@@ -36,7 +36,7 @@ function getTickSpeedMultiplier() {
       if (player.currentChallenge == "challenge6" || player.currentChallenge == "postc1") baseMultiplier = 0.83
       let perGalaxy = 0.965
       if (GUBought("rg4")) realnormalgalaxies *= 0.4
-      let galaxies = realnormalgalaxies-2+player.replicanti.galaxies+Math.floor(player.dilation.freeGalaxies)
+      let galaxies = Math.max(realnormalgalaxies-2,0)+player.replicanti.galaxies+Math.floor(player.dilation.freeGalaxies)
       if (player.timestudy.studies.includes(133)) galaxies += player.replicanti.galaxies/2
       if (player.timestudy.studies.includes(132)) galaxies += player.replicanti.galaxies*0.4
       galaxies += extraReplGalaxies
@@ -72,7 +72,7 @@ function buyTickSpeed() {
   if (player.currentChallenge == "challenge2" || player.currentChallenge == "postc1") player.chall2Pow = 0
   player.tickspeed = player.tickspeed.times(getTickSpeedMultiplier());
   if (player.challenges.includes("postc3") || player.currentChallenge == "postc3" || isIC3Trapped()) player.postC3Reward = player.postC3Reward.times(getPostC3RewardMult())
-  postc8Mult = new Decimal(1)
+  player.postC8Mult = new Decimal(1)
   player.why = player.why + 1
   return true;
 }
@@ -116,7 +116,7 @@ function buyMaxTickSpeed() {
 			if (player.tickSpeedCost.gte(Number.MAX_VALUE)) player.tickspeedMultiplier = player.tickspeedMultiplier.times(player.tickSpeedMultDecrease);
 			player.tickspeed = player.tickspeed.times(mult);
 			if (player.challenges.includes("postc3") || player.currentChallenge == "postc3" || isIC3Trapped()) player.postC3Reward = player.postC3Reward.times(1.05+(player.galaxies*0.005))
-			postc8Mult = new Decimal(1)
+			player.postC8Mult = new Decimal(1)
 			if (!cannotUsePostInfTickSpeed()) buyMaxPostInfTickSpeed(mult);
 		}
 	} else {

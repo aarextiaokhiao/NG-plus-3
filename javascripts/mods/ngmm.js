@@ -31,7 +31,7 @@ function resetGalacticSacrifice() {
 }
 
 function isIC3Trapped() {
-	return (!player.challenges.includes("postc3") && player.aarexModifications.newGameMinusMinusVersion !== undefined) || player.currentEternityChall === "eterc14"
+	return (!player.challenges.includes("postc3") && player.aarexModifications.newGameMinusMinusVersion !== undefined) || player.currentEternityChall === "eterc14" || inQC(6)
 }
 
 //v1.2
