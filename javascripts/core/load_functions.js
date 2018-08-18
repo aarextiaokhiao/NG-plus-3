@@ -612,7 +612,7 @@ if (player.version < 5) {
           }
           player.aarexModifications.newGamePlusVersion = 1
           if (confirm("Do you want to migrate your NG++ save into new NG+++ mode?")) {
-              player.aarexModifications.newGame3PlusVersion = 1.901
+              player.aarexModifications.newGame3PlusVersion = 1.997
               player.dbPower = 1
               player.peakSpent = 0
               player.masterystudies = []
@@ -639,11 +639,6 @@ if (player.version < 5) {
                   limit: 1,
                   mode: "amount"
               }
-              player.quantum.autobuyer = {
-                  enabled: false,
-                  limit: 1,
-                  mode: "amount"
-              }
               player.quantum.electrons = {
                   amount: 0,
                   sacGals: 0,
@@ -651,6 +646,16 @@ if (player.version < 5) {
                   rebuyables: [0,0,0,0]
               }
               player.quantum.disabledRewards = {}
+              player.quantum.metaAutobuyerWait = 0
+              player.quantum.multPower = 0
+              player.quantum.challenge = []
+              player.quantum.challenges = {}
+              player.quantum.pairedChallenges = {
+                  order: {},
+                  current: 0,
+                  completed: 0,
+                  respec: false
+              }
           }
           player.dilation.upgrades=migratedUpgrades
           resetDilationGalaxies()
@@ -795,7 +800,15 @@ if (player.version < 5) {
       player.quantum.challenges=newChallenges
       player.quantum.metaAutobuyerWait=0
   }
-  if (player.aarexModifications.newGame3PlusVersion < 1.994) player.aarexModifications.newGame3PlusVersion=1.994
+  if (player.aarexModifications.newGame3PlusVersion < 1.997) {
+      player.quantum.pairedChallenges = {
+          order: {},
+          current: 0,
+          completed: 0,
+          respec: false
+      }
+      player.aarexModifications.newGame3PlusVersion=1.997
+  }
   if (player.aarexModifications.newGame3PlusVersion==undefined) {
       colorBoosts={
           r:1,
@@ -1017,6 +1030,7 @@ if (player.version < 5) {
       document.getElementById('metaboostauto').textContent="Meta-boost auto: O"+(player.autoEterOptions.metaboost?"N":"FF")
       document.getElementById('prioritydil').value=player.eternityBuyer.dilationPerAmount
       document.getElementById('priorityquantum').value=formatValue("Scientific", new Decimal(player.quantum.autobuyer.limit), 2, 0)
+      document.getElementById("respecPC").className=player.quantum.pairedChallenges.respec?"quantumbtn":"storebtn"
   }
   transformSaveToDecimal();
   updateChallengeTimes();
@@ -1041,7 +1055,7 @@ if (player.version < 5) {
   document.getElementById('rebuyupgauto').style.display=speedrunMilestonesReached>6?"":"none"
   document.getElementById('toggleallmetadims').style.display=speedrunMilestonesReached>7?"":"none"
   document.getElementById('metaboostauto').style.display=speedrunMilestonesReached>14?"":"none"
-  document.getElementById("autoBuyerQuantum").style.display=speedrunMilestonesReached>20?"":"none"
+  document.getElementById("autoBuyerQuantum").style.display=speedrunMilestonesReached>22?"":"none"
   notifyId=speedrunMilestonesReached
   updatePowers()
   var detectNGPStart = player.lastUpdate == 1531944153054

@@ -2,7 +2,7 @@ masterystudies={initialCosts:{time:{241: 1e71, 251: 2e71, 252: 2e71, 253: 2e71, 
 		ec:{13:1e72, 14:1e72}},
 	costs:{time:{},
 		ec:{},
-		dil:{7: 2e82, 8: 1e84},
+		dil:{7: 2e82, 8: 1e84, 9: 6e85},
 		mc:{}},
 	costmults:{241: 1, 251: 2.5, 252: 2.5, 253: 2.5, 261: 6, 262: 6, 263: 6, 264: 6, 265: 6, 266: 6, 271: 2, 272: 2, 273: 2, 281: 4, 282: 4},
 	costmult:1,
@@ -35,7 +35,7 @@ function updateMasteryStudyButtons() {
 	}
 	for (id=262;id<265;id++) document.getElementById("ts"+id+"Current").textContent="Currently: "+shorten(getMTSMult(id))+"x"
 	if (quantumed) {
-		for (id=7;id<9;id++) {
+		for (id=7;id<10;id++) {
 			var div=document.getElementById("dilstudy"+id)
 			if (player.masterystudies.includes("d"+id)) div.className="dilationupgbought"
 			else if (canBuyMasteryStudy('d', id)) div.className="dilationupg"
@@ -91,7 +91,7 @@ function buyMasteryStudy(type, id) {
 			showQuantumTab("electrons")
 			document.getElementById("electronstabbtn").style.display=""
 		}
-		if (id==8) {
+		if (id>7) {
 			showTab("challenges")
 			showChallengesTab("quantumchallenges")
 			updateQuantumChallenges()
@@ -111,8 +111,9 @@ function canBuyMasteryStudy(type, id) {
 		if (row>24) return player.masterystudies.includes('t241')
 	} else if (type=='d') {
 		if (player.timestudy.theorem<masterystudies.costs.dil[id]||player.masterystudies.includes('d'+id)) return false
-		if (id>7) if (player.masterystudies.includes(272)) return
-		if (id>6) if (player.masterystudies.includes(252)) return
+		if (id>8) return player.masterystudies.includes("d8")
+		if (id>7) return player.masterystudies.includes("t272")
+		if (id>6) return player.masterystudies.includes("t252")
 	} else {
 		if (player.timestudy.theorem<masterystudies.costs.ec[id]||player.eternityChallUnlocked) return false
 		if (id==14) if (Math.round(player.replicanti.chance*100)<masterystudies.reqs[14]||!(player.masterystudies.includes('t264')||player.masterystudies.includes('t265')||player.masterystudies.includes('t266'))) return false
@@ -265,12 +266,10 @@ function updateColorCharge() {
 		var colors=['r','g','b']
 		for (s=1;s<4;s++) {
 			var search=''
-			for (i=0;i<3;i++) {
-				if (!sorted.includes(colors[i])&&player.quantum.usedQuarks[colors[i]].gte(search==''?0:player.quantum.usedQuarks[search])) search=colors[i]
-			}
+			for (i=0;i<3;i++) if (!sorted.includes(colors[i])&&(search==''||player.quantum.usedQuarks[colors[i]].gte(player.quantum.usedQuarks[search]))) search=colors[i]
 			sorted.push(search)
 		}
-		colorCharge={color:sorted[0],charge:Decimal.add(player.quantum.usedQuarks[sorted[0]],player.quantum.usedQuarks[sorted[2]]).sub(player.quantum.usedQuarks[sorted[1]])}
+		colorCharge={color:sorted[0],charge:Decimal.sub(player.quantum.usedQuarks[sorted[0]]).sub(player.quantum.usedQuarks[sorted[1]])}
 		if (player.quantum.usedQuarks[sorted[0]].gt(0)&&colorCharge.charge.eq(0)) giveAchievement("Hadronization")
 	} else {
 		colorCharge={color:'r',charge:new Decimal(0)}
@@ -355,16 +354,16 @@ function GUBought(id) {
 
 //v1.79
 var speedrunMilestonesReached
-var speedrunMilestones = [12,9,6,4.5,3,2,1,8/9,7/9,6/9,5/9,4/9,3/9,2/9,1/9,1/12,1/15,1/20,1/30,1/45,1/60,1/120]
+var speedrunMilestones = [12,9,6,4.5,3,2,1,8/9,7/9,6/9,5/9,4/9,3/9,2/9,1/9,1/12,1/15,7/120,1/20,1/24,1/30,1/45,1/60,1/120]
 function updateSpeedruns() {
 	speedrunMilestonesReached = 0
 	if (player.masterystudies) {
-		for (i=0;i<22;i++) {
+		for (i=0;i<24;i++) {
 			if (player.quantum.best>speedrunMilestones[i]*36e3) break
 			speedrunMilestonesReached++
 		}
-		for (i=1;i<23;i++) document.getElementById("speedrunMilestone"+i).className="achievement achievement"+(speedrunMilestonesReached>=i?"un":"")+"locked"
-		for (i=1;i<4;i++) document.getElementById("speedrunRow"+i).className=speedrunMilestonesReached>=(i>2?22:i*8)?"completedrow":""
+		for (i=1;i<25;i++) document.getElementById("speedrunMilestone"+i).className="achievement achievement"+(speedrunMilestonesReached>=i?"un":"")+"locked"
+		for (i=1;i<4;i++) document.getElementById("speedrunRow"+i).className=speedrunMilestonesReached>=i*8?"completedrow":""
 	}
 }
 
@@ -488,24 +487,50 @@ function buyQuarkMult() {
 }
 
 var quantumChallenges={
-	costs:[0,16000,17500,19400,24500,28000,31500,1/0,1/0],
-	goals:[0,516e7,7255e7,363e8,863e8,98e8,171e6,1/0,1/0]
+	costs:[0,16e3,17500,19400,24500,28e3,3e4,31700,33500],
+	goals:[0,516e7,7255e7,363e8,863e8,98e8,171e6,9222e7,287e7]
 }
 
+var assigned
+var pcFocus=0
 function updateQuantumChallenges() {
 	if (player.masterystudies ? !player.masterystudies.includes("d8") : true) {
 		document.getElementById("qctabbtn").style.display="none"
 		return
 	} else document.getElementById("qctabbtn").style.display=""
-	document.getElementById("pairAvailable").style.display=player.masterystudies.includes("d9")?"":"none"
+	assigned=[]
+	var assignedNums={}
+	document.getElementById("pairedchallenges").style.display = player.masterystudies.includes("d9") ? "" : "none"
+	document.getElementById("respecPC").style.display = player.masterystudies.includes("d9") ? "" : "none"
+	for (pc=1;pc<5;pc++) {
+		var subChalls=player.quantum.pairedChallenges.order[pc]
+		if (subChalls) for (sc=0;sc<2;sc++) {
+			var subChall=subChalls[sc]
+			if (subChall) {
+				assigned.push(subChall)
+				assignedNums[subChall]=pc
+			}
+		}
+		if (player.masterystudies.includes("d9")) {
+			var property="pc"+pc
+			var sc1=player.quantum.pairedChallenges.order[pc]?player.quantum.pairedChallenges.order[pc][0]:0
+			var sc2=(sc1?player.quantum.pairedChallenges.order[pc].length>1:false)?player.quantum.pairedChallenges.order[pc][1]:0
+			document.getElementById(property+"desc").textContent="Paired Challenge "+pc+": Both Quantum Challenge "+(sc1?sc1:"?")+" and "+(sc2?sc2:"?")+" are applied."
+			document.getElementById(property+"cost").textContent="Cost: "+(sc2?shorten(getQCCost(pc+8)):"???")+" electrons"
+			document.getElementById(property+"goal").textContent="Goal: "+(sc2?shortenCosts(Decimal.pow(10,getQCGoal(pc+8))):"???")+" antimatter"
+			document.getElementById(property).textContent=pcFocus==pc?"Cancel":(player.quantum.pairedChallenges.order[pc]?player.quantum.pairedChallenges.order[pc].length<2:true)?"Assign":player.quantum.pairedChallenges.completed>=pc?"Completed":player.quantum.pairedChallenges.completed+1<pc?"Locked":player.quantum.pairedChallenges.current==pc?"Running":"Start"
+			document.getElementById(property).className=pcFocus==pc||(player.quantum.pairedChallenges.order[pc]?player.quantum.pairedChallenges.order[pc].length<2:true)?"challengesbtn":player.quantum.pairedChallenges.completed>=pc?"completedchallengesbtn":player.quantum.pairedChallenges.completed+1<pc?"lockedchallengesbtn":player.quantum.pairedChallenges.current==pc?"onchallengebtn":"challengesbtn"
+		}
+	}
 	for (qc=1;qc<9;qc++) {
 		var property="qc"+qc
-		document.getElementById(property+"div").style.display=((qc<2||QCIntensity(qc-1))&&qc<7)?"inline-block":"none"
-		document.getElementById(property).textContent=inQC(qc)?"Running"+(qc!=player.quantum.challenge[0]?" (paired)":""):(QCIntensity(qc)&&(!player.masterystudies.includes("d9")||player.quantum.challenge.length!=1))?"Completed"+(QCIntensity(qc)>1?" (paired)":""):"Start"+(player.quantum.challenge.length?" (paired)":"")
-		document.getElementById(property).className=inQC(qc)?"onchallengebtn":(QCIntensity(qc)>0&&(!player.masterystudies.includes("d9")||player.quantum.challenge.length!=1))?"completedchallengesbtn":"challengesbtn"
+		document.getElementById(property+"div").style.display=(qc<2||QCIntensity(qc-1))?"inline-block":"none"
+		document.getElementById(property).textContent=((!assigned.includes(qc)&&pcFocus)?"Choose":inQC(qc)?"Running":QCIntensity(qc)?(assigned.includes(qc)?"Assigned":"Completed"):"Start")+(assigned.includes(qc)?" (PC"+assignedNums[qc]+")":"")
+		document.getElementById(property).className=(!assigned.includes(qc)&&pcFocus)?"challengesbtn":inQC(qc)?"onchallengebtn":QCIntensity(qc)?"completedchallengesbtn":"challengesbtn"
 		document.getElementById(property+"cost").textContent="Cost: "+shortenDimensions(quantumChallenges.costs[qc])+" electrons"
 		document.getElementById(property+"goal").textContent="Goal: "+shortenCosts(Decimal.pow(10,getQCGoal(qc)))+" antimatter"
 	}
+	document.getElementById("qc7desc").textContent="Dimension & tickspeed cost multiplier increases are "+shortenCosts(1e100)+"x. Multiplier per ten dimensions and meta-antimatter effect are disabled."
 }
 
 function inQC(num) {
@@ -517,12 +542,21 @@ function inQC(num) {
 	}
 }
 
-//v2
+//v1.95?
 function getQCGoal(num) {
 	if (!player.masterystudies) return 0
 	var intensity=player.quantum.challenge.length
-	var c1=((intensity>0&&player.masterystudies.includes("d9"))||!num)?player.quantum.challenge[0]:num
-	var c2=c1==num?0:intensity>1?player.quantum.challenge[1]:(intensity>0&&player.masterystudies.includes("d9"))?num:0
+	var c1
+	var c2
+	if (!num) {
+		c1=player.quantum.challenge[0]
+		c2=player.quantum.challenge[1]
+	} else if (num<9) {
+		c1=num
+	} else if (player.quantum.pairedChallenges.order[num-8]) {
+		c1=player.quantum.pairedChallenges.order[num-8][0]
+		c2=player.quantum.pairedChallenges.order[num-8][1]
+	}
 	if (!c1) return quantumChallenges.goals[0]
 	if (!c2) return quantumChallenges.goals[c1]
 	return quantumChallenges.goals[c1]*quantumChallenges.goals[c2]/1e11
@@ -531,4 +565,15 @@ function getQCGoal(num) {
 function QCIntensity(num) {
 	if (player.masterystudies) if (player.quantum.challenges[num]) return player.quantum.challenges[num]
 	return 0
+}
+
+//v1.997
+function respecTogglePC() {
+	player.quantum.pairedChallenges.respec=!player.quantum.pairedChallenges.respec
+	document.getElementById("respecPC").className=player.quantum.pairedChallenges.respec?"quantumbtn":"storebtn"
+}
+
+function getQCCost(num) {
+	if (num>8) return quantumChallenges.costs[player.quantum.pairedChallenges.order[num-8][0]]+quantumChallenges.costs[player.quantum.pairedChallenges.order[num-8][1]]
+	return quantumChallenges.costs[num]
 }

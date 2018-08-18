@@ -438,9 +438,9 @@
                 </table>
                 <table class="table" id="studytable">
                     <tr>
-                        <td><button class="timestudylocked" id="dilstudy9">Unlock Paired Challenges<br>(Coming soon!)</button></td>
+                        <td><button class="timestudylocked" id="dilstudy9" onclick='buyMasteryStudy("d", 9)'>Unlock Paired Challenges<br><span id="ds9Cost"></span></button></td>
                         <td><button class="timestudylocked" id="dilstudy10">Unlock Replicants<br>(Coming soon!)</button></td>
-                        <td><button class="timestudylocked" id="dilstudy11">To be continued...</button></td>
+                        <td><button class="timestudylocked" id="dilstudy11">Unlock Emperor Dimensions<br>(Coming soon!)</button></td>
                     </tr>
                 </table>
                 </div>
@@ -1977,14 +1977,14 @@
                         <td><div id="speedrunMilestone3" ach-tooltip="Reward: Start with all Eternity Challenges completed and eternity upgrades bought.">6 hours</div></td>
                         <td><div id="speedrunMilestone4" ach-tooltip="Reward: Start with dilation unlocked.">4.5 hours</div></td>
                         <td><div id="speedrunMilestone5" ach-tooltip="Reward: Unlock dilation option for eternity autobuyer.">3 hours</div></td>
-                        <td><div id="speedrunMilestone6" ach-tooltip="Reward: Start with all dilation studies & non-rebuyable dilation upgrades before meta dimensions unlocked.">2 hours</div></td>
+                        <td><div id="speedrunMilestone6" ach-tooltip="Reward: Start with all dilation studies & non-rebuyable dilation upgrades before Meta Dimensions unlocked except passive TT gen upgrade.">2 hours</div></td>
                         <td><div id="speedrunMilestone7" ach-tooltip="Reward: Unlock the first meta dimension autobuyer and rebuyable dilation upgrades autobuyer.">1 hours</div></td>
                         <td><div id="speedrunMilestone8" ach-tooltip="Reward: Unlock the second meta dimension autobuyer.">53.3 minutes</div></td>
                     </tr>
                     <tr id="speedrunRow2">
                         <td><div id="speedrunMilestone9" ach-tooltip="Reward: Unlock the third meta dimension autobuyer.">46.7 minutes</div></td>
                         <td><div id="speedrunMilestone10" ach-tooltip="Reward: Unlock the fourth meta dimension autobuyer.">40 minutes</div></td>
-                        <td><div id="speedrunMilestone11" ach-tooltip="Reward: Unlock the fifth meta dimension autobuyer and keep time studies.">33.3 minutes</div></td>
+                        <td><div id="speedrunMilestone11" ach-tooltip="Reward: Unlock the fifth meta dimension autobuyer and keep time studies and passive TT gen upgrade.">33.3 minutes</div></td>
                         <td><div id="speedrunMilestone12" ach-tooltip="Reward: Unlock the sixth meta dimension autobuyer.">26.7 minutes</div></td>
                         <td><div id="speedrunMilestone13" ach-tooltip="Reward: Unlock the seventh meta dimension autobuyer.">20 minutes</div></td>
                         <td><div id="speedrunMilestone14" ach-tooltip="Reward: Unlock the eighth meta dimension autobuyer and keep all non-rebuyable dilation upgrades.">13.3 minutes</div></td>
@@ -1992,14 +1992,14 @@
                         <td><div id="speedrunMilestone16" ach-tooltip="Reward: You keep all time studies in mastery studies.">5 minutes</div></td>
                     </tr>
                     <tr id="speedrunRow3">
-                        <td></td>
-                        <td><div id="speedrunMilestone17" ach-tooltip="Reward: Start with all possible meta-dimensions available.">4 minutes</div></td>
-                        <td><div id="speedrunMilestone18">3 minutes</div></td>
-                        <td><div id="speedrunMilestone19" ach-tooltip="Reward: Rebuyable dilation upgrade and Meta Dimensions autobuyers are 3x faster.">2 minutes</div></td>
-                        <td><div id="speedrunMilestone20">1.5 minutes</div></td>
-                        <td><div id="speedrunMilestone21" ach-tooltip="Reward: Unlock quantum autobuyer.">1 minute</div></td>
-                        <td><div id="speedrunMilestone22" ach-tooltip="Reward: Replicanti does not reset on Eternity.">30 seconds</div></td>
-                        <td></td>
+                        <td><div id="speedrunMilestone17" ach-tooltip="Reward: Start with all possible Meta Dimensions available.">4 minutes</div></td>
+                        <td><div id="speedrunMilestone18">3.5 minutes</div></td>
+                        <td><div id="speedrunMilestone19">3 minutes</div></td>
+                        <td><div id="speedrunMilestone20" ach-tooltip="Reward: You can turn on automatic replicated galaxies anytime.">2.5 minutes</div></td>
+                        <td><div id="speedrunMilestone21" ach-tooltip="Reward: Rebuyable dilation upgrade and Meta Dimensions autobuyers are 3x faster.">2 minutes</div></td>
+                        <td><div id="speedrunMilestone22">1.5 minutes</div></td>
+                        <td><div id="speedrunMilestone23" ach-tooltip="Reward: Unlock quantum autobuyer.">1 minute</div></td>
+                        <td><div id="speedrunMilestone24" ach-tooltip="Reward: Replicanti does not reset on Eternity.">30 seconds</div></td>
                     </tr>
                 </table>
             </div>
@@ -2553,7 +2553,6 @@
             </div>
             <div id="quantumchallenges" class="challengeTab">
                 <div>Spend electrons to start quantum challenges.</div>
-                <div id='pairAvailable'>You can start a second quantum challenge at the same time for higher rewards.</div>
                 <div id='electronsAmount2'></div>
                 <table  class="table" style="margin: 0 auto">
                     <tr>
@@ -2589,7 +2588,7 @@
                     <tr>
                         <td>
                             <div class="quantumchallengediv" id="qc3div" style="height: 140px">
-                                <span>Infinity Dimensions can be only boosted by meta-antimatter. Meta-antimatter never boosts dimension boosts.</span>
+                                <span>Infinity Dimensions can be only boosted by meta-antimatter. Meta-antimatter effect is disabled.</span>
                                 <br>
                                 <br>
                                 <div class="outer">
@@ -2649,7 +2648,7 @@
                     <tr>
                         <td>
                             <div class="quantumchallengediv" id="qc7div" style="height: 180px">
-                                <span>???</span>
+                                <span id="qc7desc"></span>
                                 <br>
                                 <br>
                                 <div class="outer">
@@ -2657,13 +2656,13 @@
                                     <br>
                                     <span id="qc7cost"></span><br>
                                     <span id="qc7goal"></span><br>
-                                    Reward: +0.25x for electron gain multiplier and ???.
+                                    Reward: +0.25x for electron gain multiplier and decrease the free tickspeed upgrade threshold increase by 0.02x.
                                 </div>
                             </div>
                         </td>
                         <td>
                             <div class="quantumchallengediv" id="qc8div" style="height: 180px">
-                                <span>???</span>
+                                <span>Infinity and Time Dimensions, and Meta-Dimension Boosts are disabled.</span>
                                 <br>
                                 <br>
                                 <div class="outer">
@@ -2671,7 +2670,70 @@
                                     <br>
                                     <span id="qc8cost"></span><br>
                                     <span id="qc8goal"></span><br>
-                                    Reward: +0.25x for electron gain multiplier and ???.
+                                    Reward: +0.25x for electron gain multiplier and extra replicated galaxy scaling grows slower.
+                                </div>
+                            </div>
+                        </td>
+                    </tr>
+                </table>
+                <button class="storebtn" onclick="respecTogglePC()" id="respecPC" style="width:150px; height: 40px; font-size: 10px; border-width: 1px; margin: auto">Respec paired challenges on next quantum</button>
+                <table class="table" id="pairedchallenges" style="margin: 0 auto">
+                    <tr>
+                        <td>
+                            <div class="quantumchallengediv" style="height: 180px">
+                                <span id="pc1desc">Paired Challenge 1: Both Quantum Challenges ? and ? are applied.</span>
+                                <br>
+                                <br>
+                                <div class="outer">
+                                    <button id="pc1" class="challengesbtn" onclick="quantum(false, true, 9)">Assign</button>
+                                    <br>
+                                    <span id="pc1cost">Cost: ??? electrons</span><br>
+                                    <span id="pc1goal">Goal: ??? electrons</span><br>
+                                    Reward: Boost the reward for these sub-challenges.
+                                </div>
+                            </div>
+                        </td>
+                        <td>
+                            <div class="quantumchallengediv" style="height: 180px">
+                                <span id="pc2desc">Paired Challenge 2: Both Quantum Challenges ? and ? are applied.</span>
+                                <br>
+                                <br>
+                                <div class="outer">
+                                    <button id="pc2" class="challengesbtn" onclick="quantum(false, true, 10)">Assign</button>
+                                    <br>
+                                    <span id="pc2cost">Cost: ??? electrons</span><br>
+                                    <span id="pc2goal">Goal: ??? electrons</span><br>
+                                    Reward: Boost the reward for these sub-challenges.
+                                </div>
+                            </div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <div class="quantumchallengediv" style="height: 180px">
+                                <span id="pc3desc">Paired Challenge 3: Both Quantum Challenges ? and ? are applied.</span>
+                                <br>
+                                <br>
+                                <div class="outer">
+                                    <button id="pc3" class="challengesbtn" onclick="quantum(false, true, 11)">Assign</button>
+                                    <br>
+                                    <span id="pc3cost">Cost: ??? electrons</span><br>
+                                    <span id="pc3goal">Goal: ??? electrons</span><br>
+                                    Reward: Boost the reward for these sub-challenges.
+                                </div>
+                            </div>
+                        </td>
+                        <td>
+                            <div class="quantumchallengediv" style="height: 180px">
+                                <span id="pc4desc">Paired Challenge 4: Both Quantum Challenges ? and ? are applied.</span>
+                                <br>
+                                <br>
+                                <div class="outer">
+                                    <button id="pc4" class="challengesbtn" onclick="quantum(false, true, 12)">Assign</button>
+                                    <br>
+                                    <span id="pc4cost">Cost: ??? electrons</span><br>
+                                    <span id="pc4goal">Goal: ??? electrons</span><br>
+                                    Reward: Boost the reward for these sub-challenges.
                                 </div>
                             </div>
                         </td>
@@ -3463,21 +3525,21 @@
 <script type="text/javascript" src="javascripts/core/format.js?8"></script>
 <script type="text/javascript" src="javascripts/core/achievements.js?7"></script>
 <script type="text/javascript" src="javascripts/core/chart.js"></script>
-<script type="text/javascript" src="javascripts/core/tickspeed.js?10"></script>
-<script type="text/javascript" src="javascripts/core/normal_dimension.js?14"></script>
-<script type="text/javascript" src="javascripts/core/infinity_dimension.js?10"></script>
-<script type="text/javascript" src="javascripts/core/time_dimension.js?13"></script>
-<script type="text/javascript" src="javascripts/core/dimboost.js?21"></script>
+<script type="text/javascript" src="javascripts/core/tickspeed.js?11"></script>
+<script type="text/javascript" src="javascripts/core/normal_dimension.js?15"></script>
+<script type="text/javascript" src="javascripts/core/infinity_dimension.js?11"></script>
+<script type="text/javascript" src="javascripts/core/time_dimension.js?14"></script>
+<script type="text/javascript" src="javascripts/core/dimboost.js?22"></script>
 <script type="text/javascript" src="javascripts/core/timestudies.js?20"></script>
 <script type="text/javascript" src="javascripts/core/canvases.js?5"></script>
 <script type="text/javascript" src="javascripts/core/devtools.js"></script>
-<script type="text/javascript" src="javascripts/core/load_functions.js?32"></script>
+<script type="text/javascript" src="javascripts/core/load_functions.js?33"></script>
 <script type="text/javascript" src="javascripts/core/newsticker.js?4"></script>
 <script type="text/javascript" src="javascripts/mods/ngmm.js?11"></script>
 <script type="text/javascript" src="javascripts/mods/ers.js"></script>
-<script type="text/javascript" src="javascripts/mods/ngpp.js?20"></script>
-<script type="text/javascript" src="javascripts/mods/ngppp.js?21"></script>
-<script type="text/javascript" src="javascripts/game.js?38"></script>
+<script type="text/javascript" src="javascripts/mods/ngpp.js?21"></script>
+<script type="text/javascript" src="javascripts/mods/ngppp.js?22"></script>
+<script type="text/javascript" src="javascripts/game.js?39"></script>
 <script type="text/javascript" src="javascripts/sha512.js"></script>
 </body>
 </html>

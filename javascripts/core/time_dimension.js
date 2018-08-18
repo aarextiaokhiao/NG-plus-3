@@ -55,7 +55,7 @@ function getTimeDimensionPower(tier) {
 
 
 function getTimeDimensionProduction(tier) {
-  if (player.currentEternityChall == "eterc10") return new Decimal(0)
+  if (player.currentEternityChall == "eterc1" || player.currentEternityChall == "eterc10" || inQC(8)) return new Decimal(0)
   var dim = player["timeDimension"+tier]
   if (player.currentEternityChall == "eterc11") return dim.amount
   var ret = dim.amount
