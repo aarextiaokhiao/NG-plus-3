@@ -91,7 +91,7 @@ function buyMasteryStudy(type, id) {
 			showQuantumTab("electrons")
 			document.getElementById("electronstabbtn").style.display=""
 		}
-		if (id>7) {
+		if (id>7&&type=="d") {
 			showTab("challenges")
 			showChallengesTab("quantumchallenges")
 			updateQuantumChallenges()
