@@ -1970,7 +1970,6 @@ function toggleCommas() {
     updateGluons()
     updateElectrons()
     updateQuantumChallenges()
-    updateReplicants()
     document.getElementById("epmult").innerHTML = "You gain 5 times more EP<p>Currently: "+shortenDimensions(player.epmult)+"x<p>Cost: "+shortenDimensions(player.epmultCost)+" EP"
 }
 
@@ -2852,7 +2851,6 @@ document.getElementById("notation").onclick = function () {
     updateGluons()
     updateElectrons()
     updateQuantumChallenges()
-    updateReplicants()
     document.getElementById("epmult").innerHTML = "You gain 5 times more EP<p>Currently: "+shortenDimensions(player.epmult)+"x<p>Cost: "+shortenDimensions(player.epmultCost)+" EP"
 };
 
