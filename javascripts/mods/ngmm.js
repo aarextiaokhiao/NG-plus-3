@@ -30,6 +30,15 @@ function resetGalacticSacrifice() {
 	} : undefined
 }
 
+function newGalacticDataOnInfinity() {
+	if (player.galacticSacrifice&&player.achievements.includes("r37")) {
+		var data=player.galacticSacrifice
+		data.galaxyPoints=data.galaxyPoints.add(getGSAmount())
+		data.time=0
+		return data
+	} else return resetGalacticSacrifice()
+}
+
 function isIC3Trapped() {
 	return (!player.challenges.includes("postc3") && player.aarexModifications.newGameMinusMinusVersion !== undefined) || player.currentEternityChall === "eterc14" || inQC(6)
 }
@@ -72,9 +81,9 @@ let galUpgrade11 = function () {
 	} else if (x < 5) {
 		y = x + 2;
 	} else if (x < 100) {
-		y = Math.pow(x + 5, .5) + 5;
+		y = Math.pow(x + 5, .5) + 4;
 	} else {
-		y = Math.pow(Math.log(x), Math.log(x) / 10) + 15;
+		y = Math.pow(Math.log(x), Math.log(x) / 10) + 14;
 	}
 	return Decimal.pow(10, y);
 }
@@ -85,7 +94,7 @@ let galUpgrade13 = function () {
 	return player.galacticSacrifice.galaxyPoints.div(5).plus(1).pow(3)
 }
 let galUpgrade23 = function () {
-	return 1+player.galacticSacrifice.galaxyPoints.max(1).log10()*0.75
+	return player.galacticSacrifice.galaxyPoints.max(1).log10()*3/4+1
 }
 let galUpgrade32 = function () {
 	return player.totalmoney.pow(0.003).add(1);

@@ -25,7 +25,7 @@ function getDimensionFinalMultiplier(tier) {
 
   if (hasInfinityMult(tier)) multiplier = multiplier.times(dimMults());
   if (tier == 1) {
-      if (player.infinityUpgrades.includes("unspentBonus")&&!player.galacticSacrifice) multiplier = multiplier.times(unspentBonus);
+      if (player.infinityUpgrades.includes("unspentBonus")) multiplier = multiplier.times(unspentBonus);
       if (player.achievements.includes("r28")) multiplier = multiplier.times(1.1);
       if (player.achievements.includes("r31")) multiplier = multiplier.times(1.05);
       if (player.achievements.includes("r71")) multiplier = multiplier.times(3);
@@ -86,7 +86,6 @@ function getDimensionFinalMultiplier(tier) {
 
   if (player.dilation.upgrades.includes(6)) multiplier = multiplier.times(player.dilation.dilatedTime.max(1).pow(308))
   if (player.galacticSacrifice) {
-      if (player.infinityUpgrades.includes("unspentBonus")&&tier<2) multiplier = multiplier.times(unspentBonus);
       if (player.currentChallenge == "postc6" || inQC(6)) multiplier = multiplier.dividedBy(player.matter.max(1))
       if (player.currentChallenge == "postc8" || inQC(6)) multiplier = multiplier.times(player.postC8Mult)
   }
@@ -183,7 +182,7 @@ function hasInfinityMult(tier) {
     
         if ((player.currentChallenge == "challenge9" || player.currentChallenge == "postc1")&&!nonrandom) dimMult = Math.pow(10/0.30,Math.random())*0.30
     
-        if (player.infinityUpgrades.includes('dimMult')) dimMult *= 1.1;
+        if (player.infinityUpgrades.includes('dimMult')) dimMult *= player.galacticSacrifice?1.2:1.1
         if (player.achievements.includes("r58")) dimMult *= 1.01;
         dimMult += ECTimesCompleted("eterc3") * 0.8
         if (player.galacticSacrifice) if (player.galacticSacrifice.upgrades.includes(33)) dimMult *= galUpgrade33();
@@ -556,8 +555,7 @@ function timeMult() {
 }
 
 function dimMults() {
-    if (player.timestudy.studies.includes(31)) return Decimal.pow(1 + (getInfinitied() * 0.2), 4)
-    else return new Decimal(1 + (getInfinitied() * 0.2))
+    return Decimal.pow(1 + (getInfinitied() * 0.2),player.galacticSacrifice?1.5:1).pow(!player.timestudy.studies.includes(31)?1:player.galacticSacrifice?6:4)
 }
 
 function getDimensionProductionPerSecond(tier) {

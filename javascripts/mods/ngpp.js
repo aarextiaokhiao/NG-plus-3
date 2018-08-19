@@ -63,7 +63,7 @@ function clearMetaDimensions () {
 function getMetaShiftRequirement () {
   return {
     tier: Math.min(8, player.meta.resets + 4),
-    amount: Math.max((inQC(4) ? 5 : 15) * (player.meta.resets - 4),0) + Math.max(inQC(4) ? 0 : 5 * player.meta.resets - 75, 0) + 20
+    amount: Math.max((inQC(4) ? 5 : 15) * (player.meta.resets - 4),0) + Math.max((inQC(4) ? 20 : 5) * (player.meta.resets - (inQC(4) ? 40 : 15)), 0) + 20
   }
 }
 
@@ -150,7 +150,7 @@ function buyMaxMetaDimension(tier) {
 	var tempMA=player.meta.antimatter
 	while (num>0) {
 		var temp=tempMA
-		var cost=getMetaCost(tier,currentBought+num-1).times(10)
+		var cost=getMetaCost(tier,currentBought+num-1).times(num<2?10-(player.meta[tier].bought)%10:10)
 		if (cost.gt(tempMA)) {
 			tempMA=player.meta.antimatter.sub(cost)
 			bought--
@@ -197,7 +197,7 @@ function getMetaDimensionProduction(tier) {
 }
 
 function getExtraDimensionBoostPower() {
-	if (player.currentEternityChall=="eterc14" || inQC(3) || inQC(7)) return new Decimal(1)
+	if (player.currentEternityChall=="eterc14" || inQC(7)) return new Decimal(1)
 	if (inQC(3)) return player.meta.bestAntimatter.pow(Math.pow(player.meta.bestAntimatter.max(1e10).log10()/10,2))
 	else return player.meta.bestAntimatter.pow(!player.dilation.upgrades.includes("ngpp5") ? 8 : 9+ECTimesCompleted("eterc13")*0.2).plus(1)
 }
@@ -207,7 +207,7 @@ function getDil14Bonus () {
 }
 
 function getDil17Bonus () {
-	return Math.sqrt(player.meta.bestAntimatter.log10())/(player.masterystudies?1:2);
+	return Math.sqrt(player.meta.bestAntimatter.max(1).log10())/(player.masterystudies?1:2);
 }
 
 function updateMetaDimensions () {
@@ -330,15 +330,15 @@ function quantum(auto,force,challid) {
 	var headstart = player.aarexModifications.newGamePlusVersion > 0 && !player.masterystudies
 	if (player.aarexModifications.quantumConf&&!(auto||force)) if (!confirm(player.masterystudies?"Quantum will reset everything eternity resets, and "+(headstart?"also some other things like dilation":"also time studies, eternity challenges, dilation, "+(player.masterystudies?"meta dimensions, and mastery studies":"and meta dimensions"))+". You will gain a quark and unlock various upgrades.":"But wait! Quantum will erases almost everything that you have and rewards nothing! However, this is not a win. You need to reach real Infinite antimatter to win! (it's impossible)")) return
 	if (player.quantum.times<1) if (!confirm("Are you sure you want to do that? You will lose everything you have!")) return
+	var pc=challid-8
 	if (player.masterystudies) {
 		if (challid>0) {
-			var pc=challid-8
 			var abletostart=false
 			if (pc>0) {
 				if (player.quantum.pairedChallenges.order[pc]) if (player.quantum.pairedChallenges.order[pc].length>1) abletostart=true
 			} else if (!pcFocus) abletostart=true
 			if (abletostart) {
-				if (pc) if (player.quantum.pairedChallenges.completed+1<pc) return
+				if (pc>0) if (player.quantum.pairedChallenges.completed+1<pc) return
 				if (player.quantum.electrons.amount.lt(getQCCost(challid))||!inQC(0)) return
 				if (player.options.challConf) if (!confirm("You will do a quantum reset but you will not gain quarks and keep your electrons & sacrificed galaxies. You have to reach the set goal of meta-antimatter to complete this challenge. NOTE: Electrons does nothing in quantum challenges and your electrons and sacrificed galaxies does not reset until you end the challenge.")) return
 				player.quantum.electrons.amount=player.quantum.electrons.amount.sub(getQCCost(challid))
@@ -777,7 +777,7 @@ function quantum(auto,force,challid) {
 					document.getElementById("respecPC").className="storebtn"
 				}
 			}
-			if (pc!==undefined) {
+			if (pc>0) {
 				player.quantum.pairedChallenges.current=pc
 				player.quantum.challenge=player.quantum.pairedChallenges.order[pc]
 			} else if (challid>0) {
@@ -900,7 +900,7 @@ function quantum(auto,force,challid) {
 		drawStudyTree()
 		if (speedrunMilestonesReached < 14 || !isRewardEnabled(4)) {
 			document.getElementById("masterystudyunlock").style.display = "none";
-			document.getElementById("electronstabbtn").style.display = "none";
+			if (document.getElementById("electronstabbtn").style.display == "block") showQuantumTab("uquarks")
 		}
 		drawMasteryTree()
 		Marathon2 = 0;

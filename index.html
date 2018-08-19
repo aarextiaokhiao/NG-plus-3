@@ -432,13 +432,13 @@
                 <table class="table" id="studytable">
                     <tr>
                         <td><button class="timestudylocked" id="timestudy281" style='font-size:10px' onclick='buyMasteryStudy("t", 281)'>Replicanti multiplier boosts DT production at greatly reduced rate.<br><span id="ts281Current"></span></button></td>
-                        <td><button class="timestudylocked" id="dilstudy8" onclick='buyMasteryStudy("d", 8)'>Unlock Quantum Challenges<br><span id="ds8Cost"></span></button></td>
+                        <td><button class="timestudylocked" id="dilstudy8" onclick='buyMasteryStudy("d", 8)'>Unlock Quantum Challenges<br><span id="ds8Cost"></span><br><span id="ds8Req"></span></button></td>
                         <td><button class="timestudylocked" id="timestudy282" style='font-size:10px' onclick='buyMasteryStudy("t", 282)'>Replicanti multiplier boosts Meta Dimensions at greatly reduced rate.<br><span id="ts282Current"></span></button></td>
                     </tr>
                 </table>
                 <table class="table" id="studytable">
                     <tr>
-                        <td><button class="timestudylocked" id="dilstudy9" onclick='buyMasteryStudy("d", 9)'>Unlock Paired Challenges<br><span id="ds9Cost"></span></button></td>
+                        <td><button class="timestudylocked" id="dilstudy9" onclick='buyMasteryStudy("d", 9)'>Unlock Paired Challenges<br><span id="ds9Cost"></span><br>Requirement: Complete Quantum Challenge 8</button></td>
                         <td><button class="timestudylocked" id="dilstudy10">Unlock Replicants<br>(Coming soon!)</button></td>
                         <td><button class="timestudylocked" id="dilstudy11">Unlock Emperor Dimensions<br>(Coming soon!)</button></td>
                     </tr>
@@ -2588,7 +2588,7 @@
                     <tr>
                         <td>
                             <div class="quantumchallengediv" id="qc3div" style="height: 140px">
-                                <span>Infinity Dimensions can be only boosted by meta-antimatter. Meta-antimatter effect is disabled.</span>
+                                <span>Infinity Dimensions can be only boosted by meta-antimatter. Meta-antimatter never boosts dimension boosts.</span>
                                 <br>
                                 <br>
                                 <div class="outer">
@@ -3522,24 +3522,24 @@
 <script type="text/javascript" src="javascripts/chart.js"></script>
 <script type="text/javascript" src="javascripts/lz-string.js"></script>
 <script type="text/javascript" src="javascripts/core/polyfill.js"></script>
-<script type="text/javascript" src="javascripts/core/format.js?8"></script>
+<script type="text/javascript" src="javascripts/core/format.js?9"></script>
 <script type="text/javascript" src="javascripts/core/achievements.js?7"></script>
 <script type="text/javascript" src="javascripts/core/chart.js"></script>
 <script type="text/javascript" src="javascripts/core/tickspeed.js?11"></script>
-<script type="text/javascript" src="javascripts/core/normal_dimension.js?15"></script>
+<script type="text/javascript" src="javascripts/core/normal_dimension.js?16"></script>
 <script type="text/javascript" src="javascripts/core/infinity_dimension.js?11"></script>
 <script type="text/javascript" src="javascripts/core/time_dimension.js?14"></script>
 <script type="text/javascript" src="javascripts/core/dimboost.js?22"></script>
-<script type="text/javascript" src="javascripts/core/timestudies.js?20"></script>
+<script type="text/javascript" src="javascripts/core/timestudies.js?21"></script>
 <script type="text/javascript" src="javascripts/core/canvases.js?5"></script>
 <script type="text/javascript" src="javascripts/core/devtools.js"></script>
-<script type="text/javascript" src="javascripts/core/load_functions.js?33"></script>
+<script type="text/javascript" src="javascripts/core/load_functions.js?34"></script>
 <script type="text/javascript" src="javascripts/core/newsticker.js?4"></script>
-<script type="text/javascript" src="javascripts/mods/ngmm.js?11"></script>
+<script type="text/javascript" src="javascripts/mods/ngmm.js?12"></script>
 <script type="text/javascript" src="javascripts/mods/ers.js"></script>
-<script type="text/javascript" src="javascripts/mods/ngpp.js?21"></script>
-<script type="text/javascript" src="javascripts/mods/ngppp.js?22"></script>
-<script type="text/javascript" src="javascripts/game.js?39"></script>
+<script type="text/javascript" src="javascripts/mods/ngpp.js?22"></script>
+<script type="text/javascript" src="javascripts/mods/ngppp.js?23"></script>
+<script type="text/javascript" src="javascripts/game.js?40"></script>
 <script type="text/javascript" src="javascripts/sha512.js"></script>
 </body>
 </html>

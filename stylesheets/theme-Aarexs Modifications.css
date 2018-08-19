@@ -348,10 +348,10 @@ strong { color: #0072e5 }
 #metaAntimatterAmount, #metaAntimatterBest, #metaAntimatterEffect {
     color: #00e5e5 !important
 }
-#quantum.storebtn, .quantumbtn, #pastquantums, #speedrunsbtn button, #qctabbtn {
+#quantum.storebtn, .quantumbtn, #pastquantums, #speedrunsbtn button, #dilstudy8.dilationupg, #qctabbtn, #dilstudy9.dilationupg {
     border-color: #009900 !important
 }
-#quantum.storebtn:hover, .quantumbtn:hover, #pastquantums:hover, #speedrunsbtn button:hover, #qctabbtn:hover {
+#quantum.storebtn:hover, .quantumbtn:hover, #pastquantums:hover, #speedrunsbtn button:hover, #dilstudy8.dilationupg:hover, #dilstudy8.dilationupgbought, #qctabbtn:hover, #dilstudy9.dilationupg:hover, #dilstudy9.dilationupgbought {
     background-color: #009900 !important
 }
 #QK {
@@ -382,6 +382,8 @@ strong { color: #0072e5 }
     border-color: #009900 !important;
     border-radius: 0px !important
 }
+#dilstudy10.dilationupg { border: 2px solid #333333 !important }
+#dilstudy10.dilationupg:hover, #dilstudy10.dilationupgbought { background-color: #333333 !important }
 .notifyjs-bootstrap-info {
     background-color: #0072e5;
     font-family:'Inconsolata', monospace;

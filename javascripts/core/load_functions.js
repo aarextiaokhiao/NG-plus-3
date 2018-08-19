@@ -612,7 +612,7 @@ if (player.version < 5) {
           }
           player.aarexModifications.newGamePlusVersion = 1
           if (confirm("Do you want to migrate your NG++ save into new NG+++ mode?")) {
-              player.aarexModifications.newGame3PlusVersion = 1.997
+              player.aarexModifications.newGame3PlusVersion = 1.9975
               player.dbPower = 1
               player.peakSpent = 0
               player.masterystudies = []
@@ -737,9 +737,9 @@ if (player.version < 5) {
       player.autoEterOptions = {epmult:false}
       for (dim=1;dim<9;dim++) player.autoEterOptions["td"+dim] = false
   }
-  if (player.aarexModifications.newGamePlusPlusVersion < 2.9012) {
-      if (player.aarexModifications.quantumConf===undefined) player.aarexModifications.quantumConf=false
-      player.aarexModifications.newGamePlusPlusVersion = 2.9012
+  if (player.aarexModifications.newGamePlusPlusVersion < 2.9013) {
+      if (player.aarexModifications.quantumConf===undefined||player.quantum.times<1) player.aarexModifications.quantumConf=true
+      player.aarexModifications.newGamePlusPlusVersion = 2.9013
   }
   if (player.aarexModifications.newGame3PlusVersion < 1.01) player.aarexModifications.dbPower = new Decimal(getDimensionBoostPower())
   if ((player.aarexModifications.newGame3PlusVersion && !player.masterystudies) || player.aarexModifications.newGame3PlusVersion < 1.02) player.masterystudies = []
@@ -807,7 +807,10 @@ if (player.version < 5) {
           completed: 0,
           respec: false
       }
-      player.aarexModifications.newGame3PlusVersion=1.997
+  }
+  if (player.aarexModifications.newGame3PlusVersion < 1.9975) {
+      if (!player.quantum.challenge) player.quantum.challenge=[]
+      player.aarexModifications.newGame3PlusVersion=1.9975
   }
   if (player.aarexModifications.newGame3PlusVersion==undefined) {
       colorBoosts={
@@ -998,7 +1001,7 @@ if (player.version < 5) {
   document.getElementById("masterystudyunlock").style.display = player.dilation.upgrades.includes("ngpp6") && player.masterystudies ? "" : "none"
 
   if (!player.galacticSacrifice) document.getElementById("infi33").innerHTML = "Increase Dimension Boost multiplier <br>2x -> 2.5x<br>Cost: 7 IP"
-  document.getElementById("d5AutoChallengeDesc").textContent=player.galacticSacrifice?"Does nothing.":"Tickspeed starts at 7%."
+  document.getElementById("d5AutoChallengeDesc").textContent=player.galacticSacrifice?"Tickspeed upgrades start out useless, but galaxies make them stronger.":"Tickspeed starts at 7%."
   document.getElementById("autoCrunchChallengeDesc").textContent="Each dimension produces the dimension 2 below it; first dimensions produce reduced antimatter. "+(player.galacticSacrifice?"Galaxies are far more powerful.":"")
   document.getElementById("ic7desc").textContent="You can't get Antimatter Galaxies, but dimensional boost multiplier "+(player.galacticSacrifice?"is cubed":"2.5x -> 10x")
   document.getElementById("ic7reward").textContent="Reward: Dimensional boost multiplier "+(player.galacticSacrifice?"is squared":"2.5x -> 4x")
@@ -1015,7 +1018,6 @@ if (player.version < 5) {
   document.getElementById('togglealltimedims').style.visibility=player.achievements.includes("ngpp17")?"visible":"hidden"
   document.getElementById('replicantibulkmodetoggle').style.display=player.achievements.includes("ngpp16")?"inline-block":"none"
   document.getElementById('replicantibulkmodetoggle').textContent="Mode: "+(player.galaxyMaxBulk?"Max":"Singles")
-  document.getElementById('electronstabbtn').style.display=(player.masterystudies?player.masterystudies.includes("d7"):false)?"":"none"
   if (player.meta) {
       document.getElementById('epmultauto').textContent="Auto: O"+(player.autoEterOptions.epmult?"N":"FF")
       for (i=1;i<9;i++) document.getElementById("td"+i+'auto').textContent="Auto: O"+(player.autoEterOptions["td"+i]?"N":"FF")

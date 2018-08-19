@@ -94,7 +94,7 @@ function formatValue(notation, value, places, placesUnder1000) {
             mantissa=digits[Math.floor(mantissa)].toString()+'.'+digits[Math.floor(mantissa*16)%16].toString()+digits[Math.floor(mantissa*256)%16].toString()
             if (power > 100000 && !(player.options.commas === "Commas")) return mantissa + "e" + formatValue(player.options.commas, power, 3, 3)
             else {
-                if (power >=1e12) return mantissa + "e" + formatValue(player.options.notation, power, 3, 3)
+                if (power >= Math.pow(16, 12)) return mantissa + "e" + formatValue(player.options.notation, power, 3, 3)
                 var digit=0
                 var result=''
                 var temp=power
@@ -166,7 +166,8 @@ function formatValue(notation, value, places, placesUnder1000) {
 
         if (notation === "Logarithm") {
             if (power > 100000) {
-                if (player.options.commas !== "Commas") return "ee"+Math.log10(Decimal.log10(value)).toFixed(3)
+                if (player.options.commas === "Logarithm") return "ee"+Math.log10(Decimal.log10(value)).toFixed(3)
+                else if (player.options.commas !== "Commas") return "e"+formatValue(player.options.commas, power, 3, 3)
                 else if (power >= 1e12) return "e"+formatValue("Standard", power, 3, 3)
                 else return "e"+Decimal.log10(value).toFixed(places).replace(/\B(?=(\d{3})+(?!\d))/g, ",")
             }

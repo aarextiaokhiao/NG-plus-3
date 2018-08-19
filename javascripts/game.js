@@ -335,7 +335,7 @@ function updateNewPlayer(reseted) {
         player.aarexModifications.newGamePlusVersion = 1
     }
     if (modesChosen.ngpp) {
-        player.aarexModifications.newGamePlusPlusVersion = 2.9011
+        player.aarexModifications.newGamePlusPlusVersion = 2.9013
         player.autoEterMode = "amount"
         player.dilation.rebuyables[4] = 0
         player.meta = {resets: 0, antimatter: 10, bestAntimatter: 10}
@@ -367,6 +367,7 @@ function updateNewPlayer(reseted) {
             },
             upgrades: []
 		}
+        player.aarexModifications.quantumConf = true
     }
     if (modesChosen.ngmm) {
         player.aarexModifications.newGameMinusMinusVersion = 1.28
@@ -374,7 +375,7 @@ function updateNewPlayer(reseted) {
         player.galacticSacrifice = resetGalacticSacrifice()
     }
     if (modesChosen.ngpp > 1) {
-        player.aarexModifications.newGame3PlusVersion = 1.997
+        player.aarexModifications.newGame3PlusVersion = 1.9975
         player.dbPower = 1
         player.peakSpent = 0
         player.masterystudies = []
@@ -418,14 +419,6 @@ function updateNewPlayer(reseted) {
             completed: 0,
             respec: false
         }
-        /*player.quantum.replicants = {
-            amount: 0,
-            quantumFood: 0,
-            eggons: 0,
-            babyReplicants: 0,
-            queens: 0,
-            quarks: 0,
-        } Paired Challenges and Replicants are coming soon...*/
     }
     if (modesChosen.ers) {
         player.aarexModifications.ersVersion = 1
@@ -1721,7 +1714,9 @@ function getPostC3RewardMult() {
 		if (player.challenges.includes("postc5")) perGalaxy *= 1.1;
 		if (player.achievements.includes("r86")) perGalaxy *= 1.01;
 	}
-	return player.galaxies*perGalaxy+1.05
+	let ret = player.galaxies*perGalaxy+1.05
+	if (player.galacticSacrifice&&(player.currentChallenge=="challenge6"||player.currentChallenge=="postc1")) ret -= 0.05
+	return ret
 }
 
 function getPostC3RewardStart() {
@@ -1975,6 +1970,7 @@ function toggleCommas() {
     updateGluons()
     updateElectrons()
     updateQuantumChallenges()
+    updateReplicants()
     document.getElementById("epmult").innerHTML = "You gain 5 times more EP<p>Currently: "+shortenDimensions(player.epmult)+"x<p>Cost: "+shortenDimensions(player.epmultCost)+" EP"
 }
 
@@ -2856,6 +2852,7 @@ document.getElementById("notation").onclick = function () {
     updateGluons()
     updateElectrons()
     updateQuantumChallenges()
+    updateReplicants()
     document.getElementById("epmult").innerHTML = "You gain 5 times more EP<p>Currently: "+shortenDimensions(player.epmult)+"x<p>Cost: "+shortenDimensions(player.epmultCost)+" EP"
 };
 
@@ -3615,8 +3612,6 @@ document.getElementById("bigcrunch").onclick = function () {
         }
         auto = autoS; //only allow autoing if prev crunch was autoed
         autoS = true;
-        var galacticUpgradesOnInfinity=[]
-        if (player.galacticSacrifice&&player.achievements.includes("r36")) for (id=0;id<player.galacticSacrifice.upgrades.length;id++) galacticUpgradesOnInfinity.push(player.galacticSacrifice.upgrades[id])
         player = {
             money: new Decimal(10),
             tickSpeedCost: new Decimal(1000),
@@ -3668,7 +3663,7 @@ document.getElementById("bigcrunch").onclick = function () {
             resets: 0,
             dbPower: player.dbPower ? new Decimal(1) : undefined,
             galaxies: 0,
-            galacticSacrifice: resetGalacticSacrifice(),
+            galacticSacrifice: newGalacticDataOnInfinity(),
             tickDecrease: 0.9,
             totalmoney: player.totalmoney,
             interval: null,
@@ -3764,13 +3759,6 @@ document.getElementById("bigcrunch").onclick = function () {
             quantum: player.quantum,
             aarexModifications: player.aarexModifications
         };
-        if (player.galacticSacrifice) {
-            player.galacticSacrifice.upgrades=galacticUpgradesOnInfinity
-            if (player.achievements.includes('r33')) {
-                player.galacticSacrifice.galaxyPoints = player.galacticSacrifice.galaxyPoints.max(Math.floor(Math.pow(player.infinitied, 2) / 100));
-                player.galacticSacrifice.times = Math.max(player.galacticSacrifice.times, 1);
-            }
-        }
         reduceDimCosts()
         if (player.bestInfinityTime <= 0.01) giveAchievement("Less than or equal to 0.001");
 
@@ -4302,8 +4290,6 @@ function startChallenge(name, target) {
     }
     if (player.options.challConf && name != "") if (!confirm("You will start over with just your infinity upgrades, and achievements. You need to reach " + (name.includes("post") ? "a set goal" : "infinity") + " with special conditions. NOTE: The rightmost infinity upgrade column doesn't work on challenges.")) return
     if (player.currentChallenge != "") document.getElementById(player.currentChallenge).textContent = "Start"
-    var galacticUpgradesOnInfinity=[]
-    if (player.galacticSacrifice&&player.achievements.includes("r36")) for (id=0;id<player.galacticSacrifice.upgrades.length;id++) galacticUpgradesOnInfinity.push(player.galacticSacrifice.upgrades[id])
     player = {
         money: new Decimal(10),
         tickSpeedCost: new Decimal(1000),
@@ -4355,7 +4341,7 @@ function startChallenge(name, target) {
       resets: 0,
       dbPower: player.dbPower ? new Decimal(1) : undefined,
       galaxies: 0,
-      galacticSacrifice: resetGalacticSacrifice(),
+      galacticSacrifice: newGalacticDataOnInfinity(),
       tickDecrease: 0.9,
       totalmoney: player.totalmoney,
       interval: null,
@@ -4451,13 +4437,6 @@ function startChallenge(name, target) {
       quantum: player.quantum,
       aarexModifications: player.aarexModifications
     };
-    if (player.galacticSacrifice) {
-        player.galacticSacrifice.upgrades=galacticUpgradesOnInfinity
-        if (player.achievements.includes('r33')) {
-            player.galacticSacrifice.galaxyPoints = player.galacticSacrifice.galaxyPoints.max(Math.floor(Math.pow(player.infinitied, 2) / 100));
-            player.galacticSacrifice.times = Math.max(player.galacticSacrifice.times, 1);
-        }
-    }
 	if (player.currentChallenge == "challenge10" || player.currentChallenge == "postc1") {
         player.thirdCost = new Decimal(100)
         player.fourthCost = new Decimal(500)
@@ -5929,7 +5908,7 @@ function gameLoop(diff) {
 
     }
     if (player.replicanti.amount !== 0) replicantiTicks += player.options.updateRate
-    extraReplGalaxies = Math.floor(inQC(2) ? 0 : player.timestudy.studies.includes(225) ? player.replicanti.amount.e / 1e3 : player.timestudy.studies.includes(226) ? player.replicanti.gal / 15 : 0)
+    extraReplGalaxies = Math.floor(player.timestudy.studies.includes(225) ? player.replicanti.amount.e / 1e3 : player.timestudy.studies.includes(226) ? player.replicanti.gal / 15 : 0)
     if (extraReplGalaxies > 99) extraReplGalaxies = Math.floor(Math.sqrt(0.25 + 2 * (extraReplGalaxies - 99) * (QCIntensity(8) ? 4 : 1)) + 98.5)
     extraReplGalaxies = Math.floor(extraReplGalaxies * colorBoosts.g)
 
@@ -5972,7 +5951,7 @@ function gameLoop(diff) {
         player.peakSpent = diff + (player.peakSpent ? player.peakSpent : 0)
     }
 
-    if (quantumed) {
+    if (quantumed&&isQuantumReached()) {
         var currentQKmin = quarkGain().dividedBy(player.quantum.time/600)
         if (currentQKmin.gt(QKminpeak) && player.meta.antimatter.gte(Decimal.pow(Number.MAX_VALUE,player.masterystudies?1.2:1))) QKminpeak = currentQKmin
     }
@@ -6261,7 +6240,7 @@ function gameLoop(diff) {
         var gepLog = gainedEternityPoints().log2()
         var goal = Math.pow(2,Math.ceil(Math.log10(gepLog) / Math.log10(2)))
         if (goal > 1048576) {
-			var percentage = Math.min(player.meta.antimatter.log10() / Decimal.log10(Number.MAX_VALUE) / (player.masterystudies ? 1.45 : 1) * 100, 100).toFixed(2) + "%"
+			var percentage = Math.min(player.meta.antimatter.max(1).log10() / Decimal.log10(Number.MAX_VALUE) / (player.masterystudies ? 1.45 : 1) * 100, 100).toFixed(2) + "%"
 			document.getElementById("progressbar").style.width = percentage
 			document.getElementById("progresspercent").textContent = percentage
 			document.getElementById("progresspercent").setAttribute('ach-tooltip',(player.masterystudies?"Meta-antimatter p":"P")+'ercentage to quantum')
@@ -6596,7 +6575,7 @@ function maxBuyGalaxies(manual) {
 var timer = 0
 function autoBuyerTick() {
 
-    if (player.masterystudies) if (speedrunMilestonesReached>22&&player.quantum.autobuyer.enabled) if (quarkGain().gte(player.quantum.autobuyer.limit)) quantum(true, false, 0)
+    if (player.masterystudies) if (speedrunMilestonesReached>22&&player.quantum.autobuyer.enabled) if (quarkGain().gte(Decimal.round(player.quantum.autobuyer.limit))) quantum(true, false, 0)
 
     if (player.eternities >= 100 && player.eternityBuyer.isOn) {
         if (player.autoEterMode === undefined || player.autoEterMode == "amount") {
@@ -7019,10 +6998,8 @@ window.addEventListener('keydown', function(event) {
 
 function getUnspentBonus() {
 	x = player.infinityPoints
-	if (player.galacticSacrifice) {
-		if (x.lt(100)) return x.pow(2.5).div(1.7).plus(1)
-		else return Decimal.pow(x.plus(1).log(10) + 1, 10)
-	} else return x.dividedBy(2).pow(1.5).plus(1)
+	if (player.galacticSacrifice) return x.pow(Math.max(Decimal.min(8, Math.pow(x.max(1).log(10), .25) * 4), 1)).plus(1);
+	else return x.dividedBy(2).pow(1.5).plus(1)
 }
 
 var totalMult = 1
@@ -7035,12 +7012,11 @@ var mult18 = 1
 var ec10bonus = new Decimal(1)
 var QC4Reward
 function updatePowers() {
-    totalMult = Math.pow(player.totalmoney.e+1, 0.5)
-    currentMult = Math.pow(player.money.e+1, 0.5)
-    if (player.timestudy.studies.includes(31)) infinitiedMult = 1 + Math.pow(Math.log10(getInfinitied()+1)*10, 4)
-    else infinitiedMult = 1+Math.log10(getInfinitied()+1)*10
-    achievementMult = Math.max(Math.pow((player.achievements.length-30-getSecretAchAmount()), 3)/40,1)
-    challengeMult = Decimal.max(10*3000/worstChallengeTime, 1)
+    totalMult = Math.pow(player.totalmoney.e+1, player.galacticSacrifice?2:0.5)
+    currentMult = Math.pow(player.money.e+1, player.galacticSacrifice?2:0.5)
+    infinitiedMult = 1 + Math.pow(Math.log10(getInfinitied()+1)*(player.galacticSacrifice?100:10), player.timestudy.studies.includes(31)?4:1)
+    achievementMult = Math.max(Math.pow((player.achievements.length-30-getSecretAchAmount()), player.galacticSacrifice?5:3)/40,1)
+    challengeMult = Decimal.max(Math.pow(10*3000/worstChallengeTime,player.galacticSacrifice?2:1), 1)
     unspentBonus = getUnspentBonus()
     mult18 = getDimensionFinalMultiplier(1).times(getDimensionFinalMultiplier(8)).pow(0.02)
     if (player.currentEternityChall == "eterc10") {
