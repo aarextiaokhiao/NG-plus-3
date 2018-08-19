@@ -5555,6 +5555,7 @@ setInterval(function() {
 
     document.getElementById("infinitiedBank").style.display = (player.infinitiedBank > 0) ? "block" : "none"
     document.getElementById("infinitiedBank").textContent = "You have " + getFullExpansion(player.infinitiedBank) + " banked infinities."
+    document.getElementById("bankedInfGain").style.display = (player.achievements.includes("r131") || player.timestudy.studies.includes("191")) ? "block" : "none"
     document.getElementById("bankedInfGain").textContent = "You will gain " + Math.floor((player.infinitied/20)) + " banked infinities next Eternity"
 	
     if (infchallengeTimes < 7.5) giveAchievement("Never again")
