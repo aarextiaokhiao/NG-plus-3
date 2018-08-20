@@ -7,7 +7,7 @@ function getMetaDimensionMultiplier (tier) {
     return new Decimal(1);
   }
   let power = player.dilation.upgrades.includes("ngpp4") ? getDil15Bonus() : 2
-  let multiplier = Decimal.pow(power, Math.floor(player.meta[tier].bought / 10)).times(Decimal.pow(inQC(8)?1:power*(player.achievements.includes("ngpp14")?1.01:1), Math.max(0, player.meta.resets - tier + 1))).times(getDilationMetaDimensionMultiplier());
+  let multiplier = Decimal.pow(power*(inQC(6)?1.01:1), Math.floor(player.meta[tier].bought / 10)).times(Decimal.pow(inQC(8)?1:power*(player.achievements.includes("ngpp14")?1.01:1), Math.max(0, player.meta.resets - tier + 1))).times(getDilationMetaDimensionMultiplier());
   if (player.dilation.upgrades.includes("ngpp3")) {
     multiplier = multiplier.times(getDil14Bonus());
   }
@@ -63,7 +63,7 @@ function clearMetaDimensions () {
 function getMetaShiftRequirement () {
   return {
     tier: Math.min(8, player.meta.resets + 4),
-    amount: Math.max((inQC(4) ? 5 : 15) * (player.meta.resets - 4),0) + Math.max((inQC(4) ? 20 : 5) * (player.meta.resets - (inQC(4) ? 40 : 15)), 0) + 20
+    amount: Math.floor(Math.max((inQC(4) ? 5.5 : 15) * (player.meta.resets - 4),0) + Math.max((inQC(4) ? 0 : 5) * (player.meta.resets - 15), 0)) + 20
   }
 }
 

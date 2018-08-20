@@ -70,7 +70,7 @@ function buyTickSpeed() {
   player.money = player.money.minus(player.tickSpeedCost);
   if (player.currentChallenge != "challenge5" && player.currentChallenge != "postc5") player.tickSpeedCost = player.tickSpeedCost.times(player.tickspeedMultiplier);
   else multiplySameCosts(player.tickSpeedCost)
-  if (player.tickSpeedCost.gte(Number.MAX_VALUE)) player.tickspeedMultiplier = player.tickspeedMultiplier.times(inQC(7)?1e100:player.tickSpeedMultDecrease);
+  if (player.tickSpeedCost.gte(Number.MAX_VALUE)) player.tickspeedMultiplier = player.tickspeedMultiplier.times(inQC(7)?Number.MAX_VALUE:player.tickSpeedMultDecrease);
   if (player.currentChallenge == "challenge2" || player.currentChallenge == "postc1") player.chall2Pow = 0
   player.tickspeed = player.tickspeed.times(getTickSpeedMultiplier());
   if (player.challenges.includes("postc3") || player.currentChallenge == "postc3" || isIC3Trapped()) player.postC3Reward = player.postC3Reward.times(getPostC3RewardMult())
@@ -86,7 +86,7 @@ document.getElementById("tickSpeed").onclick = function () {
 };
 
 function buyMaxPostInfTickSpeed (mult) {
-	var mi = inQC(7)?1e100:player.tickSpeedMultDecrease
+	var mi = inQC(7)?Number.MAX_VALUE:player.tickSpeedMultDecrease
 	var a = Math.log10(Math.sqrt(mi))
 	var b = player.tickspeedMultiplier.dividedBy(Math.sqrt(mi)).log10()
 	var c = player.tickSpeedCost.dividedBy(player.money).log10()
@@ -116,7 +116,7 @@ function buyMaxTickSpeed() {
 			player.money = player.money.minus(player.tickSpeedCost);
 			if (player.currentChallenge != "challenge5" && player.currentChallenge != "postc5") player.tickSpeedCost = player.tickSpeedCost.times(player.tickspeedMultiplier);
 			else multiplySameCosts(player.tickSpeedCost)
-			if (player.tickSpeedCost.gte(Number.MAX_VALUE)) player.tickspeedMultiplier = player.tickspeedMultiplier.times(inQC(7)?1e100:player.tickSpeedMultDecrease);
+			if (player.tickSpeedCost.gte(Number.MAX_VALUE)) player.tickspeedMultiplier = player.tickspeedMultiplier.times(inQC(7)?Number.MAX_VALUE:player.tickSpeedMultDecrease);
 			player.tickspeed = player.tickspeed.times(mult);
 			if (player.challenges.includes("postc3") || player.currentChallenge == "postc3" || isIC3Trapped()) player.postC3Reward = player.postC3Reward.times(1.05+(player.galaxies*0.005))
 			player.postC8Mult = new Decimal(1)

@@ -375,7 +375,7 @@ function updateNewPlayer(reseted) {
         player.galacticSacrifice = resetGalacticSacrifice()
     }
     if (modesChosen.ngpp > 1) {
-        player.aarexModifications.newGame3PlusVersion = 1.9975
+        player.aarexModifications.newGame3PlusVersion = 1.9977
         player.dbPower = 1
         player.peakSpent = 0
         player.masterystudies = []
@@ -1344,7 +1344,7 @@ document.getElementById("maxall").onclick = function () {
                 }
 
                 if (player[name + "Cost"].gte(Number.MAX_VALUE)) {
-                    var mi = inQC(7)?1e100:player.dimensionMultDecrease
+                    var mi = inQC(7)?Number.MAX_VALUE:player.dimensionMultDecrease
                     var a = Math.log10(Math.sqrt(mi))
                     var b = player.costMultipliers[tier-1].dividedBy(Math.sqrt(mi)).log10()
                     var c = player[name + "Cost"].dividedBy(player.money).log10()

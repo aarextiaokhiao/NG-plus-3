@@ -2,7 +2,7 @@ masterystudies={initialCosts:{time:{241: 1e71, 251: 2e71, 252: 2e71, 253: 2e71, 
 		ec:{13:1e72, 14:1e72}},
 	costs:{time:{},
 		ec:{},
-		dil:{7: 2e82, 8: 1e84, 9: 6e85},
+		dil:{7: 2e82, 8: 1e84, 9: 1e85},
 		mc:{}},
 	costmults:{241: 1, 251: 2.5, 252: 2.5, 253: 2.5, 261: 6, 262: 6, 263: 6, 264: 6, 265: 6, 266: 6, 271: 2, 272: 2, 273: 2, 281: 9, 282: 9},
 	costmult:1,
@@ -115,6 +115,9 @@ function canBuyMasteryStudy(type, id) {
 		if (id>8) return player.masterystudies.includes("d8")&&player.quantum.pairedChallenges.completed>0
 		if (id>7) return player.masterystudies.includes("t272")&&QCIntensity(8)
 		if (id>6) return player.masterystudies.includes("t252")&&player.quantum.electrons.amount.gt(15900)
+		if (id>8) return player.masterystudies.includes("d8")&&QCIntensity(8)
+		if (id>7) return player.masterystudies.includes("t272")&&player.quantum.electrons.amount.gte(15900)
+		if (id>6) return player.masterystudies.includes("t252")
 	} else {
 		if (player.timestudy.theorem<masterystudies.costs.ec[id]||player.eternityChallUnlocked) return false
 		if (id==14) if (Math.round(player.replicanti.chance*100)<masterystudies.reqs[14]||!(player.masterystudies.includes('t264')||player.masterystudies.includes('t265')||player.masterystudies.includes('t266'))) return false
@@ -209,7 +212,7 @@ function getMTSMult(id) {
 
 //v1.3
 function getEC14Power() {
-	return inQC(6)?0:player.currentEterChall=='eterc14'?5:ECTimesCompleted("eterc14")*2
+	return player.currentEterChall=='eterc14'?5:ECTimesCompleted("eterc14")*2
 }
 
 //v1.5
@@ -491,8 +494,8 @@ function buyQuarkMult() {
 }
 
 var quantumChallenges={
-	costs:[0,15900,18000,19850,24100,28e3,3e4,31700,33500],
-	goals:[0,643e7,737e8,439e8,863e8,98e8,171e6,9222e7,287e7]
+	costs:[0,15900,18e3,19850,25300,27100,30500,32500,34100],
+	goals:[0,643e7,7377e7,439e8,153e8,1253e7,2455e5,684e8,286e8]
 }
 
 var assigned
@@ -534,7 +537,7 @@ function updateQuantumChallenges() {
 		document.getElementById(property+"cost").textContent="Cost: "+shortenDimensions(quantumChallenges.costs[qc])+" electrons"
 		document.getElementById(property+"goal").textContent="Goal: "+shortenCosts(Decimal.pow(10,getQCGoal(qc)))+" antimatter"
 	}
-	document.getElementById("qc7desc").textContent="Dimension & tickspeed cost multiplier increases are "+shortenCosts(1e100)+"x. Multiplier per ten dimensions and meta-antimatter effect are disabled."
+	document.getElementById("qc7desc").textContent="Dimension & tickspeed cost multiplier increases are "+shorten(Number.MAX_VALUE)+"x. Multiplier per ten dimensions and meta-antimatter effect are disabled."
 }
 
 function inQC(num) {
