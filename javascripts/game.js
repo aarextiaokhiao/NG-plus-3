@@ -5555,7 +5555,9 @@ setInterval(function() {
 
     document.getElementById("infinitiedBank").style.display = (player.infinitiedBank > 0) ? "block" : "none"
     document.getElementById("infinitiedBank").textContent = "You have " + getFullExpansion(player.infinitiedBank) + " banked infinities."
-
+    document.getElementById("bankedInfGain").style.display = (player.achievements.includes("r131") || player.timestudy.studies.includes("191")) ? "block" : "none"
+    document.getElementById("bankedInfGain").textContent = "You will gain " + Math.floor((player.infinitied/20)) + " banked infinities on next Eternity"
+	
     if (infchallengeTimes < 7.5) giveAchievement("Never again")
     if (player.infinityPoints.gte(new Decimal("1e22000")) && player.timestudy.studies.length == 0) giveAchievement("What do I have to do to get rid of you")
     if (player.replicanti.galaxies >= 180*player.galaxies && player.galaxies > 0) giveAchievement("Popular music")
