@@ -112,9 +112,6 @@ function canBuyMasteryStudy(type, id) {
 		if (row>24) return player.masterystudies.includes('t241')
 	} else if (type=='d') {
 		if (player.timestudy.theorem<masterystudies.costs.dil[id]||player.masterystudies.includes('d'+id)) return false
-		if (id>8) return player.masterystudies.includes("d8")&&player.quantum.pairedChallenges.completed>0
-		if (id>7) return player.masterystudies.includes("t272")&&QCIntensity(8)
-		if (id>6) return player.masterystudies.includes("t252")&&player.quantum.electrons.amount.gt(15900)
 		if (id>8) return player.masterystudies.includes("d8")&&QCIntensity(8)
 		if (id>7) return player.masterystudies.includes("t272")&&player.quantum.electrons.amount.gte(15900)
 		if (id>6) return player.masterystudies.includes("t252")

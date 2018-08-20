@@ -3921,8 +3921,7 @@ function eternity(force, auto) {
         for (var i=0; i<player.challenges.length; i++) {
             if (!player.challenges[i].includes("post") && player.eternities > 1) temp.push(player.challenges[i])
         }
-        if (player.timestudy.studies.includes(191)) player.infinitiedBank += Math.floor(player.infinitied*0.05)
-        if (player.achievements.includes("r131")) player.infinitiedBank += Math.floor(player.infinitied*0.05)
+        player.infinitiedBank += gainBankedInf()
         if (player.infinitiedBank > 5000000000) giveAchievement("No ethical consumption");
         if (player.dilation.active && (!force || player.infinityPoints.gte(Number.MAX_VALUE))) {
             player.dilation.totalTachyonParticles = player.dilation.totalTachyonParticles.max(getDilGain())
@@ -4260,6 +4259,13 @@ function challengesCompletedOnEternity() {
 function gainEternitiedStat() {
 	if (player.eternities < 1 && player.achievements.includes("ng3p12")) return 20
 	return player.dilation.upgrades.includes('ngpp2') ? Math.floor(Decimal.pow(player.dilation.dilatedTime, .1).toNumber()) : 1
+}
+
+function gainBankedInf() {
+	let ret = 0 
+	if (player.timestudy.studies.includes(191)) ret += Math.floor(player.infinitied*0.05)
+	if (player.achievements.includes("r131")) ret += Math.floor(player.infinitied*0.05)
+	return ret
 }
 
 function exitChallenge() {
@@ -5555,8 +5561,9 @@ setInterval(function() {
 
     document.getElementById("infinitiedBank").style.display = (player.infinitiedBank > 0) ? "block" : "none"
     document.getElementById("infinitiedBank").textContent = "You have " + getFullExpansion(player.infinitiedBank) + " banked infinities."
-    document.getElementById("bankedInfGain").style.display = (player.achievements.includes("r131") || player.timestudy.studies.includes("191")) ? "block" : "none"
-    document.getElementById("bankedInfGain").textContent = "You will gain " + Math.floor((player.infinitied/20)) + " banked infinities on next Eternity"
+    var bankedInfGain=gainBankedInf()
+    document.getElementById("bankedInfGain").style.display = bankedInfGain>0 ? "block" : "none"
+    document.getElementById("bankedInfGain").textContent = "You will gain " + getFullExpansion(bankedInfGain) + " banked infinities on next Eternity."
 	
     if (infchallengeTimes < 7.5) giveAchievement("Never again")
     if (player.infinityPoints.gte(new Decimal("1e22000")) && player.timestudy.studies.length == 0) giveAchievement("What do I have to do to get rid of you")
@@ -6302,36 +6309,72 @@ function gameLoop(diff) {
         var years = player.money.log10() / 3 / 86400 / 365.2425
         if (years>2019) {
             eventBC = years - 2018
-            if (eventBC > 12000) {
+            if (eventBC > 45e3) {
                 since = "???"
                 eventBC = 1/0 - eventBC
-            } else if (eventBC > 10000) {
+            } else if (eventBC > 4e4) {
+                since = "European early modern humans"
+                eventBC = 45e3 - eventBC
+            } else if (eventBC > 35e3) {
+                since = "first human settlement"
+                eventBC = 4e4 - eventBC
+            } else if (eventBC > 33e3) {
+                since = "oldest known figurative art"
+                eventBC = 35e3 - eventBC
+            } else if (eventBC > 31e3) {
+                since = "oldest known domesticated dog"
+                eventBC = 33e3 - eventBC
+            } else if (eventBC > 29e3) {
+                since = "Last Glacial Maximum"
+                eventBC = 31e3 - eventBC
+            } else if (eventBC > 28e3) {
+                since = "oldest ovens"
+                eventBC = 29e3 - eventBC
+            } else if (eventBC > 25e3) {
+                since = "oldest known twisted rope"
+                eventBC = 28e3 - eventBC
+            } else if (eventBC > 2e4) {
+                since = "oldest human permanent settlement (hamlet considering built of rocks and of mammoth bones)"
+                eventBC = 25e3 - eventBC
+            } else if (eventBC > 16e3) {
+                since = "rise of Kerberan culture"
+                eventBC = 2e4 - eventBC
+            } else if (eventBC > 15e3) {
+                since = "colonization of North America"
+                eventBC = 16e3 - eventBC
+            } else if (eventBC > 14e3) {
+                since = "domestication of the pig"
+                eventBC = 15e3 - eventBC
+            } else if (eventBC > 11600) {
+                since = "prehistoric warfare"
+                eventBC = 14e3 - eventBC
+            } else if (eventBC > 1e4) {
                 since = "Holocene"
-                eventBC = 12000 - eventBC
-            } else if (eventBC > 8000) {
+                eventBC = 11600 - eventBC
+            } else if (eventBC > 8e3) {
                 since = "death of other human breeds"
-                eventBC = 10000 - eventBC
-            } else if (eventBC > 6000) {
+                eventBC = 1e4 - eventBC
+            } else if (eventBC > 6e3) {
                 since = "agriculture"
-                eventBC = 8000 - eventBC
-            } else if (eventBC > 6000) {
+                eventBC = 8e3 - eventBC
+            } else if (eventBC > 6e3) {
                 since = "agriculture"
-                eventBC = 8000 - eventBC
-            } else if (eventBC > 5000) {
+                eventBC = 8e3 - eventBC
+            } else if (eventBC > 5e3) {
                 since = "farmers arrived in Europe"
-                eventBC = 6000 - eventBC
-            } else if (eventBC > 4000) {
+                eventBC = 6e3 - eventBC
+            } else if (eventBC > 4e3) {
                 since = "first metal tools"
-                eventBC = 5000 - eventBC
+                eventBC = 5e3 - eventBC
             } else if (eventBC > 3200) {
                 since = "first horse"
-                eventBC = 4000 - eventBC
-            } else if (eventBC > 3000) {
+                eventBC = 4e3 - eventBC
+            } else if (eventBC > 3e3) {
                 since = "Sumerian cuneiform writing system"
                 eventBC = 3200 - eventBC
             } else if (eventBC > 2600) {
                 since = "union of Egypt"
-                eventBC = 3000 - eventBC
+                eventBC = 3e3 - eventBC
             } else if (eventBC > 2500) {
                 since = "rise of Maya"
                 eventBC = 2600 - eventBC
