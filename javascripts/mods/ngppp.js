@@ -85,7 +85,7 @@ function buyMasteryStudy(type, id) {
 		
 		if (id==241&&!GUBought("gb3")) {
 			ipMultPower=2.2
-			document.getElementById("infiMult").innerHTML = "Multiply infinity points from all sources by "+ipMultPower+"<br>currently: "+shorten(player.infMult.times(kongIPMult)) +"x<br>Cost: "+shortenCosts(player.infMultCost)+" IP"
+			document.getElementById("infiMult").innerHTML = "Multiply infinity points from all sources by "+ipMultPower+"<br>currently: "+shorten(getIPMult()) +"x<br>Cost: "+shortenCosts(player.infMultCost)+" IP"
 		}
 		if (id==7) {
 			showTab("quantumtab")

@@ -131,9 +131,13 @@ function buyMaxTickSpeed() {
 
 
 function updateTickSpeed() {
-    var exp = player.tickspeed.e;
-    if (exp > 1) document.getElementById("tickSpeedAmount").innerHTML = 'Tickspeed: ' + player.tickspeed.toFixed(0);
-    else {
-        document.getElementById("tickSpeedAmount").innerHTML = 'Tickspeed: ' + Math.min(player.tickspeed.m * 100, 999).toFixed(0) + ' / ' + shorten(Decimal.pow(10,2 - exp));
-    }
+	var showTickspeed = Decimal.lt(player.tickspeed, 1e3) || (player.currentChallenge != "postc3" && !isIC3Trapped())
+	var label = ""
+	if (showTickspeed) {
+		var exp = player.tickspeed.e;
+		if (exp > 1) label = 'Tickspeed: ' + player.tickspeed.toFixed(0)
+		else label = 'Tickspeed: ' + Math.min(player.tickspeed.m * 100, 999).toFixed(0) + ' / ' + shorten(Decimal.pow(10,2 - exp))
+	}
+	if (player.galacticSacrifice || player.currentChallenge == "postc3" || isIC3Trapped()) label = (showTickspeed ? label + ", Tickspeed m" : "M") + "ultiplier: " + formatValue(player.options.notation, player.postC3Reward, 2, 3)
+	document.getElementById("tickSpeedAmount").innerHTML = label
 }

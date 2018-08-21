@@ -7,6 +7,7 @@ function getGSAmount() {
 		if (player.bestInfinityTime <= 18000) ret = ret.times(180000 / player.bestInfinityTime)
 		else ret = ret.times(10 * (1 + Math.pow(Math.log10(18000 / player.bestInfinityTime), 2)))
 	}
+	if (player.achievements.includes("r62")) ret = ret.times(Math.max(1, player.infinityPoints.log10()))
 	return ret.floor()
 }
 
@@ -40,7 +41,7 @@ function newGalacticDataOnInfinity() {
 }
 
 function isIC3Trapped() {
-	return (!player.challenges.includes("postc3") && player.aarexModifications.newGameMinusMinusVersion !== undefined) || player.currentEternityChall === "eterc14" || inQC(6)
+	return (!player.challenges.includes("postc3") && player.galacticSacrifice) || player.currentEternityChall === "eterc14" || inQC(6)
 }
 
 //v1.2
@@ -65,10 +66,17 @@ function buyGalaxyUpgrade(i) {
 }
 
 function reduceDimCosts() {
-	if (player.galacticSacrifice) if (player.galacticSacrifice.upgrades.includes(11)) {
-		for (d=1;d<9;d++) {
-			var name = TIER_NAMES[d]
-			player[name+"Cost"] = player[name+"Cost"].div(galUpgrade11())
+	if (player.galacticSacrifice) {
+		if (player.galacticSacrifice.upgrades.includes(11)) {
+			for (d=1;d<9;d++) {
+				var name = TIER_NAMES[d]
+				player[name+"Cost"] = player[name+"Cost"].div(galUpgrade11())
+			}
+		} else if (player.achievements.includes("r21")) {
+			for (d=1;d<9;d++) {
+				var name = TIER_NAMES[d]
+				player[name+"Cost"] = player[name+"Cost"].div(10)
+			}
 		}
 	}
 }

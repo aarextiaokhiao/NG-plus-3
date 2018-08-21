@@ -28,8 +28,9 @@ function getDimensionFinalMultiplier(tier) {
       if (player.infinityUpgrades.includes("unspentBonus")) multiplier = multiplier.times(unspentBonus);
       if (player.achievements.includes("r28")) multiplier = multiplier.times(1.1);
       if (player.achievements.includes("r31")) multiplier = multiplier.times(1.05);
-      if (player.achievements.includes("r71")) multiplier = multiplier.times(3);
-      if (player.achievements.includes("r68")) multiplier = multiplier.times(1.5);
+      if (player.achievements.includes("r71")) multiplier = multiplier.times(player.galacticSacrifice?909:3);
+      if (player.achievements.includes("r68")) multiplier = multiplier.times(player.galacticSacrifice?5:1.5);
+      if (player.galacticSacrifice) if (player.achievements.includes("r64")) multiplier = multiplier.times(1e6);
   }
 
   multiplier = multiplier.times(timeMult());
@@ -178,19 +179,21 @@ function hasInfinityMult(tier) {
     function getDimensionPowerMultiplier(nonrandom) {
         if (inQC(5)||inQC(7)) return 1
         let dimMult = 2;
-    
-    
+
+        if (player.infinityUpgrades.includes('dimMult')) dimMult = player.galacticSacrifice?infUpg12Pow():2.2
         if ((player.currentChallenge == "challenge9" || player.currentChallenge == "postc1")&&!nonrandom) dimMult = Math.pow(10/0.30,Math.random())*0.30
     
-        if (player.infinityUpgrades.includes('dimMult')) dimMult *= player.galacticSacrifice?1.2:1.1
-        if (player.achievements.includes("r58")) dimMult *= 1.01;
+        if (player.achievements.includes("r58")) dimMult = player.galacticSacrifice?Math.pow(dimMult,1.0666):dimMult*1.01;
         dimMult += ECTimesCompleted("eterc3") * 0.8
         if (player.galacticSacrifice) if (player.galacticSacrifice.upgrades.includes(33)) dimMult *= galUpgrade33();
         if (QCIntensity(5)) dimMult += Math.log10(1+player.resets)
         if (player.masterystudies) dimMult = Decimal.pow(dimMult, getMPTPower())
         return dimMult;
     }
-    
+
+    function infUpg12Pow() {
+        return 2.1 + .005 * Math.min(Math.max(player.infinitied, 0), 60)
+    }
     
     function clearDimensions(amount) {
         var tiers = [ null, "first", "second", "third", "fourth", "fifth", "sixth", "seventh", "eight" ];
@@ -548,14 +551,24 @@ document.getElementById("eightMax").onclick = function () {
 
 function timeMult() {
     var mult = new Decimal(1)
-    if (player.infinityUpgrades.includes("timeMult")) mult = mult.times(Math.pow(player.totalTimePlayed / 1200, 0.15));
-    if (player.infinityUpgrades.includes("timeMult2")) mult = mult.times(Decimal.max(Math.pow(player.thisInfinityTime / 2400, player.galacticSacrifice?3:0.25), 1));
-    if (player.achievements.includes("r76")) mult = mult.times(Math.pow(player.totalTimePlayed / (600*60*48), 0.05));
+    if (player.infinityUpgrades.includes("timeMult")) mult = mult.times(infUpg11Pow());
+    if (player.infinityUpgrades.includes("timeMult2")) mult = mult.times(infUpg13Pow());
+    if (player.achievements.includes("r76")) mult = mult.times();
     return mult;
 }
 
+function infUpg11Pow() {
+	if (player.galacticSacrifice) return Math.max(Math.pow(player.totalTimePlayed / 864e3, 0.75), 1)
+	else return Math.max(Math.pow(player.totalTimePlayed / 1200, 0.15), 1)
+}
+
+function infUpg13Pow() {
+	if (player.galacticSacrifice) return Math.pow(1 + player.thisInfinityTime / 2400, 1.5)
+	else return Math.max(Math.pow(player.thisInfinityTime / 2400, 0.25), 1)
+}
+
 function dimMults() {
-    return Decimal.pow(1 + (getInfinitied() * 0.2),player.galacticSacrifice?1.5:1).pow(!player.timestudy.studies.includes(31)?1:player.galacticSacrifice?6:4)
+    return Decimal.pow(1 + (getInfinitied() * 0.2),player.galacticSacrifice?2:1).pow(!player.timestudy.studies.includes(31)?1:4)
 }
 
 function getDimensionProductionPerSecond(tier) {
