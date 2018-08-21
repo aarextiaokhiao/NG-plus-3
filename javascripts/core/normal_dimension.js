@@ -553,7 +553,7 @@ function timeMult() {
     var mult = new Decimal(1)
     if (player.infinityUpgrades.includes("timeMult")) mult = mult.times(infUpg11Pow());
     if (player.infinityUpgrades.includes("timeMult2")) mult = mult.times(infUpg13Pow());
-    if (player.achievements.includes("r76")) mult = mult.times();
+    if (player.achievements.includes("r76")) mult = mult.times(Math.pow(player.totalTimePlayed / (600*60*48), 0.05));
     return mult;
 }
 
