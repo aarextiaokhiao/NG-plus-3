@@ -2876,6 +2876,8 @@ document.getElementById("notation").onclick = function () {
     } else if (player.options.notation === "Game percentages") {
         player.options.notation = "Hexadecimal";
     } else if (player.options.notation === "Hexadecimal") {
+        player.options.notation = "Tetration";
+    } else if (player.options.notation === "Tetration") {
         player.options.notation = "Morse code";
     }
     document.getElementById("notation").innerHTML = "Notation: "+(player.options.notation=="Emojis"?"Cancer":player.options.notation)

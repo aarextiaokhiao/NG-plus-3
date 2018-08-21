@@ -194,6 +194,14 @@ function formatValue(notation, value, places, placesUnder1000) {
           string += table[decimalPartTimes36 % 6];
           return string;
         }
+        if (notation == "Tetration") {
+          var count = -1;
+          while (value > 1) {
+            value = Decimal.log2(value);
+            count++;
+          }
+          return "2⇈" + (value + count).toFixed(Math.max(places, 0, Math.min(count-1, 4)));
+        }
 
         matissa = (matissa * Decimal.pow(10, power % 3)).toFixed(places)
         if (matissa >= 1000) {
