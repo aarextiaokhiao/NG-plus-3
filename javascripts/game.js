@@ -876,10 +876,10 @@ function updateWorstChallengeTime() {
 function updateWorstChallengeBonus() {
 	updateWorstChallengeTime()
 	// challengeTimes are in ticks (0.1s); 33us is an actual reasonable limit given EC12
-	actualWorst = Math.max(33e-6, Math.min.apply(null, player.challengeTimes) * 0.1)
+	actualWorst = Math.max(33e-6, (player.masterystudies ? Math.min.apply(null, player.challengeTimes) : worstChallengeTime) * 0.1)
 	// Change very slightly between 0.1s and 0.02s; then reward clever players
 	if (actualWorst < 0.1) {
-		if (!player.galacticSacrifice) actualWorst = 0.1 //Don't let the bonus change outside of NG+++
+		if (!player.masterystudies) actualWorst = 0.1 //Don't let the bonus change outside of NG+++
 		else if (actualWorst > 0.02) {
 			actualWorst = 0.075 + 0.25 * actualWorst;
 		} else {
@@ -2831,7 +2831,7 @@ function setAchieveTooltip() {
     let neverenough = document.getElementById("It will never be enough")
     let notenough = document.getElementById("I don't have enough fuel!")
     let old = document.getElementById("Old age")
-    let rid = document.getElementById("I already rid of you...")
+    let rid = document.getElementById("I already got rid of you...")
     let tfms = document.getElementById("speedrunMilestone18")
     let tms = document.getElementById("speedrunMilestone19")
     let tfms2 = document.getElementById("speedrunMilestone22")

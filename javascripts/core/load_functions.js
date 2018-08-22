@@ -1039,7 +1039,7 @@ if (player.version < 5) {
   if (player.masterystudies) {
       updateMasteryStudyCosts()
       updateMasteryStudyButtons()
-      if (quantumed) giveAchievement("To sub-atomic!")
+      if (quantumed) giveAchievement("Sub-atomic")
       document.getElementById('reward3disable').textContent="6 hours reward: O"+(player.quantum.disabledRewards[3]?"FF":"N")
       document.getElementById('reward4disable').textContent="4.5 hours reward: O"+(player.quantum.disabledRewards[4]?"FF":"N")
       document.getElementById('rebuyupgauto').textContent="Rebuyable upgrade auto: O"+(player.autoEterOptions.rebuyupg?"N":"FF")
