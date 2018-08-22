@@ -455,11 +455,15 @@
 		
 		static log2(value) {
 			value=new Decimal(value)
+			if (value.logarithm >= 5.411595565927716e+307) {
+				value.logarithm = Math.log10(value.logarithm) + Math.log10(3.32192809488736234787)
+				return value
+			}
 			return value.logarithm*3.32192809488736234787
 		}
 		
 		log2() {
-			return this.logarithm*3.32192809488736234787
+			return Decimal.log2(this)
 		}
 		
 		static log(value,base) {
