@@ -1975,6 +1975,8 @@ function toggleCommas() {
     } else if (player.options.commas === "Game percentages") {
         player.options.commas = "Hexadecimal";
     } else if (player.options.commas === "Hexadecimal") {
+        player.options.notation = "Tetration";
+    } else if (player.options.commas === "Tetration") {
         player.options.commas = "Morse code";
     }
     document.getElementById("commas").textContent = (player.options.commas === "Mixed Scientific"?"M. Scientific":player.options.commas === "Mixed Engineering"?"M. Engineering":player.options.commas === "Emojis"?"Cancer":player.options.commas) + " on exponents"
