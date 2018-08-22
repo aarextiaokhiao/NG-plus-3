@@ -864,6 +864,7 @@ function getGalaxyRequirement() {
 }
 
 var worstChallengeTime = 1
+var worstChallengeBonus = 1
 
 function updateWorstChallengeTime() {
     worstChallengeTime = 1
@@ -872,6 +873,20 @@ function updateWorstChallengeTime() {
     }
 }
 
+function updateWorstChallengeBonus() {
+	updateWorstChallengeTime()
+	// challengeTimes are in ticks (0.1s); 33us is an actual reasonable limit given EC12
+	actualWorst = Math.max(33e-6, Math.min.apply(null, player.challengeTimes) * 0.1)
+	// Change very slightly between 0.1s and 0.02s; then reward clever players
+	if (actualWorst < 0.1) {
+		if (actualWorst > 0.02) {
+			actualWorst = 0.075 + 0.25 * actualWorst;
+		} else {
+			actualWorst = (0.075/0.02 + 0.25) * actualWorst;
+		}
+	}
+	worstChallengeBonus = Decimal.max(3000 / actualWorst, 1);
+}
 
 function sacrificeConf() {
     document.getElementById("confirmation").checked = player.options.sacrificeConfirmation
@@ -1050,7 +1065,7 @@ function updateDimensions() {
             document.getElementById("postinfi12").innerHTML = "Power up all dimensions based on amount infinitied <br>Currently: "+(1+Math.log10(getInfinitied()+1)*10).toFixed(2)+"x<br>Cost: "+shortenCosts(1e5)+" IP"
             if (player.timestudy.studies.includes(31)) document.getElementById("postinfi12").innerHTML = "Power up all dimensions based on amount infinitied <br>Currently: "+shortenMoney(Math.pow((Math.log10(getInfinitied()+1)*10).toFixed(2), 4))+"x<br>Cost: "+shortenCosts(1e5)+" IP"
             document.getElementById("postinfi41").innerHTML = "Makes galaxies 50% stronger <br>Cost: "+shortenCosts(5e11)+" IP"
-            document.getElementById("postinfi32").innerHTML = "Power up all dimensions based on slowest challenge run<br>Currently:"+Decimal.max(10*3000/worstChallengeTime, 1).toFixed(2)+"x<br>Cost: "+shortenCosts(1e7)+" IP"
+            document.getElementById("postinfi32").innerHTML = "Power up all dimensions based on slowest challenge run<br>Currently:"+worstChallengeBonus.toFixed(2)+"x<br>Cost: "+shortenCosts(1e7)+" IP"
 
             document.getElementById("postinfi13").innerHTML = "You passively generate Infinitied stat based on your fastest infinity.<br>1 Infinity every "+timeDisplay(player.bestInfinityTime*5)+ " <br>Cost: "+shortenCosts(20e6)+" IP"
             document.getElementById("postinfi23").innerHTML = "Option to bulk buy Dimension Boosts <br>Cost: "+shortenCosts(5e9)+" IP"
@@ -3504,7 +3519,7 @@ function updateChallengeTimes() {
 		temp += player.infchallengeTimes[i]
     }
 	document.getElementById("infchallengetimesum").textContent = "Sum of infinity challenge time records is " + timeDisplayShort(temp)
-    updateWorstChallengeTime();
+    updateWorstChallengeBonus();
 }
 
 var bestRunIppm = new Decimal(0)
@@ -7153,7 +7168,7 @@ function updatePowers() {
     currentMult = Math.pow(player.money.e+1, player.galacticSacrifice?2:0.5)
     infinitiedMult = 1 + Math.pow(Math.log10(getInfinitied()+1)*(player.galacticSacrifice?100:10), player.timestudy.studies.includes(31)?4:1)
     achievementMult = Math.max(Math.pow((player.achievements.length-30-getSecretAchAmount()), player.galacticSacrifice?5:3)/40,1)
-    challengeMult = Decimal.max(Math.pow(10*3000/worstChallengeTime,player.galacticSacrifice?2:1), 1)
+    challengeMult = Decimal.pow(worstChallengeBonus, player.galacticSacrifice?2:1)
     unspentBonus = getUnspentBonus()
     mult18 = getDimensionFinalMultiplier(1).times(getDimensionFinalMultiplier(8)).pow(0.02)
     if (player.currentEternityChall == "eterc10") {
