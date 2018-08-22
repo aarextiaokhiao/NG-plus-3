@@ -69,7 +69,7 @@ function softReset(bulk) {
       seventhBought: 0,
       eightBought: 0,
       boughtDims: player.boughtDims,
-      totalBoughtDims: player.totalBoughtDims,
+      totalBoughtDims: resetTotalBought(),
       sacrificed: new Decimal(0),
       achievements: player.achievements,
       challenges: player.challenges,

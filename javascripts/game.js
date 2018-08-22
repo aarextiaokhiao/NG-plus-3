@@ -373,6 +373,7 @@ function updateNewPlayer(reseted) {
         player.aarexModifications.newGameMinusMinusVersion = 1.29
         player.galacticSacrifice = {}
         player.galacticSacrifice = resetGalacticSacrifice()
+        player.totalBoughtDims = {}
     }
     if (modesChosen.ngpp > 1) {
         player.aarexModifications.newGame3PlusVersion = 1.9978
@@ -801,6 +802,8 @@ function updateMoney() {
     var element2 = document.getElementById("matter");
     if (player.currentChallenge == "challenge12" || player.currentChallenge == "postc1") element2.textContent = "There is " + formatValue(player.options.notation, player.matter, 2, 1) + " matter."
     if (player.currentChallenge == "postc6" || inQC(6)) element2.textContent = "There is " + formatValue(player.options.notation, Decimal.pow(player.matter,20), 2, 1) + " matter."; //TODO
+    var element3 = document.getElementById("chall13Mult");
+    if (player.currentChallenge === "challenge13" || player.currentChallenge === "postc1") element3.innerHTML = formatValue(player.options.notation, productAllTotalBought(), 2, 1) + 'x multiplier on all dimensions (product of bought).'
 }
 
 function updateCoinPerSec() {
@@ -2194,7 +2197,7 @@ function galaxyReset() {
         seventhBought: 0,
         eightBought: 0,
         boughtDims: player.boughtDims,
-        totalBoughtDims: player.totalBoughtDims,
+        totalBoughtDims: resetTotalBought(),
         firstPow: new Decimal(1),
         secondPow: new Decimal(1),
         thirdPow: new Decimal(1),
@@ -3875,6 +3878,9 @@ document.getElementById("bigcrunch").onclick = function () {
         if (player.currentChallenge == "challenge12" || player.currentChallenge == "postc1" || player.currentChallenge == "postc6" || inQC(6)) document.getElementById("matter").style.display = "block";
         else document.getElementById("matter").style.display = "none";
 
+        if (player.currentChallenge == "challenge13" || player.currentChallenge == "postc1") document.getElementById("chall13Mult").style.display = "block";
+        else document.getElementById("chall13Mult").style.display = "none";
+
         document.getElementById("replicantireset").innerHTML = "Reset replicanti amount, but get a free galaxy<br>" + player.replicanti.galaxies + (extraReplGalaxies ? "+" + extraReplGalaxies : "") + " replicated galax" + ((player.replicanti.galaxies + extraReplGalaxies) == 1 ? "y" : "ies") + " created."
 
         if (player.achievements.includes("r36")) player.tickspeed = player.tickspeed.times(0.98);
@@ -3894,6 +3900,7 @@ document.getElementById("bigcrunch").onclick = function () {
             document.getElementById("seventhRow").style.display = "none";
             document.getElementById("eightRow").style.display = "none";
         }
+        document.getElementById("chall13Mult").style.display = "none";
         document.getElementById("quickReset").style.display = "none";
 
         checkForEndMe()
@@ -4273,6 +4280,7 @@ function eternity(force, auto) {
         }
         if (inQC(6)) document.getElementById("matter").style.display = "block";
         else document.getElementById("matter").style.display = "none";
+        document.getElementById("chall13Mult").style.display = "none";
         document.getElementById("quickReset").style.display = "none";
         if (player.infinitied >= 1 && !player.challenges.includes("challenge1")) player.challenges.push("challenge1");
         var autobuyers = document.getElementsByClassName('autoBuyerDiv')
@@ -4587,6 +4595,7 @@ function startChallenge(name, target) {
     document.getElementById("eightRow").style.display= "none";
     if (name == "challenge12" || player.currentChallenge == "postc1" || player.currentChallenge == "postc6" || inQC(6)) document.getElementById("matter").style.display = "block";
     else document.getElementById("matter").style.display = "none";
+    document.getElementById("chall13Mult").style.display = "none";
     document.getElementById("quickReset").style.display = "none";
 
     showTab('dimensions');
@@ -5130,6 +5139,7 @@ function startEternityChallenge(name, startgoal, goalIncrease) {
     document.getElementById("eightRow").style.display = "none";
     if (inQC(6)) document.getElementById("matter").style.display = "block";
     else document.getElementById("matter").style.display = "none";
+    document.getElementById("chall13Mult").style.display = "none";
     document.getElementById("quickReset").style.display = "none";
     var autobuyers = document.getElementsByClassName('autoBuyerDiv')
     if (player.eternities < 2) {

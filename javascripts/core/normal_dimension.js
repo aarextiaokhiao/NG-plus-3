@@ -62,8 +62,8 @@ function getDimensionFinalMultiplier(tier) {
   multiplier = multiplier.times(player.postC3Reward)
   if (player.challenges.includes("postc8") && tier < 8 && tier > 1) multiplier = multiplier.times(mult18);
 
-  if (!player.galacticSacrifice) {
-      if (player.currentChallenge === 'challenge13' || player.currentChallenge === "postc1") multiplier = multiplier.times(productAllTotalBought());
+  if (player.galacticSacrifice) if (player.currentChallenge === 'challenge13' || player.currentChallenge === "postc1") multiplier = multiplier.times(productAllTotalBought());
+  else {
       if (player.currentChallenge == "postc6" || inQC(6)) multiplier = multiplier.dividedBy(player.matter.max(1))
       if (player.currentChallenge == "postc8" || inQC(6)) multiplier = multiplier.times(player.postC8Mult)
   }
