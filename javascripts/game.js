@@ -375,7 +375,7 @@ function updateNewPlayer(reseted) {
         player.galacticSacrifice = resetGalacticSacrifice()
     }
     if (modesChosen.ngpp > 1) {
-        player.aarexModifications.newGame3PlusVersion = 1.9977
+        player.aarexModifications.newGame3PlusVersion = 1.9978
         player.dbPower = 1
         player.peakSpent = 0
         player.masterystudies = []
@@ -879,7 +879,8 @@ function updateWorstChallengeBonus() {
 	actualWorst = Math.max(33e-6, Math.min.apply(null, player.challengeTimes) * 0.1)
 	// Change very slightly between 0.1s and 0.02s; then reward clever players
 	if (actualWorst < 0.1) {
-		if (actualWorst > 0.02) {
+		if (!player.galacticSacrifice) actualWorst = 0.1 //Don't let the bonus change outside of NG+++
+		else if (actualWorst > 0.02) {
 			actualWorst = 0.075 + 0.25 * actualWorst;
 		} else {
 			actualWorst = (0.075/0.02 + 0.25) * actualWorst;

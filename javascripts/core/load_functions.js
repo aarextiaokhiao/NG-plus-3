@@ -809,7 +809,7 @@ if (player.version < 5) {
       }
   }
   if (player.aarexModifications.newGame3PlusVersion < 1.9975&&!player.quantum.challenge) player.quantum.challenge=[]
-  if (player.aarexModifications.newGame3PlusVersion < 1.9977) player.aarexModifications.newGame3PlusVersion=1.9977
+  if (player.aarexModifications.newGame3PlusVersion < 1.9978) player.aarexModifications.newGame3PlusVersion=1.9978
   if (player.aarexModifications.newGame3PlusVersion==undefined) {
       colorBoosts={
           r:1,
