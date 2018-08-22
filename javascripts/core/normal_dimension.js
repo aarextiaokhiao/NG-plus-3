@@ -5,7 +5,7 @@ function getDimensionFinalMultiplier(tier) {
   let multiplier = new Decimal(player[name + 'Pow']);
 
   if (player.currentEternityChall == "eterc11") return player.infinityPower.pow(7).max(1).times(Decimal.pow(getDimensionBoostPower(), player.resets - tier + 1).max(1))
-  if (player.currentChallenge == "challenge7" || inQC(4)) {
+  if ((player.currentChallenge == "challenge7" || inQC(4)) && !player.galacticSacrifice) {
       if (tier == 4) multiplier = multiplier.pow(1.4)
       if (tier == 2) multiplier = multiplier.pow(1.7)
   }
@@ -37,9 +37,11 @@ function getDimensionFinalMultiplier(tier) {
   if (tier == 8 && player.achievements.includes("r23")) multiplier = multiplier.times(1.1);
   else if (player.achievements.includes("r34")) multiplier = multiplier.times(1.02);
   if (tier <= 4 && player.achievements.includes("r43")) multiplier = multiplier.times(1.25);
+  if (player.galacticSacrifice&&player.achievements.includes("r31")) multiplier = multiplier.times(productAllTotalBought1());
   if (player.achievements.includes("r48")) multiplier = multiplier.times(1.1);
-  if (player.achievements.includes("r72")) multiplier = multiplier.times(1.1); // tbd
-  if (player.achievements.includes("r74") && player.currentChallenge != "") multiplier = multiplier.times(1.4);
+  if (player.achievements.includes("r72")) multiplier = multiplier.times(player.galacticSacrifice?10:1.1); // tbd
+  if (player.galacticSacrifice&&player.achievements.includes("r46")) multiplier = multiplier.times(productAllDims1());
+  if (player.achievements.includes("r74") && player.currentChallenge != "") multiplier = multiplier.times(player.galacticSacrifice?40:1.4);
   if (player.achievements.includes("r77")) multiplier = multiplier.times(1+tier/100);
   if (player.achievements.includes("r56") && player.thisInfinityTime < 1800) multiplier = multiplier.times(3600/(player.thisInfinityTime+1800));
   if (player.achievements.includes("r78") && player.thisInfinityTime < 3) multiplier = multiplier.times(3.3/(player.thisInfinityTime+0.3));
@@ -55,11 +57,13 @@ function getDimensionFinalMultiplier(tier) {
   if (player.timestudy.studies.includes(101)) multiplier = multiplier.times(Decimal.max(player.replicanti.amount, 1))
   if (player.timestudy.studies.includes(161)) multiplier = multiplier.times(new Decimal("1e616"))
   if (player.timestudy.studies.includes(234) && tier == 1) multiplier = multiplier.times(calcTotalSacrificeBoost())
+  if (tier > 1 && tier < 5) if (player.achievements.includes("r32") && player.tickspeedBoosts !== undefined) multiplier = multiplier.times(calcTotalSacrificeBoost().max(1))
 
   multiplier = multiplier.times(player.postC3Reward)
   if (player.challenges.includes("postc8") && tier < 8 && tier > 1) multiplier = multiplier.times(mult18);
 
   if (!player.galacticSacrifice) {
+      if (player.currentChallenge === 'challenge13' || player.currentChallenge === "postc1") multiplier = multiplier.times(productAllTotalBought());
       if (player.currentChallenge == "postc6" || inQC(6)) multiplier = multiplier.dividedBy(player.matter.max(1))
       if (player.currentChallenge == "postc8" || inQC(6)) multiplier = multiplier.times(player.postC8Mult)
   }
@@ -177,7 +181,7 @@ function hasInfinityMult(tier) {
     }
     
     function getDimensionPowerMultiplier(nonrandom) {
-        if (inQC(5)||inQC(7)) return 1
+        if (inQC(5)||inQC(7)||player.currentChallenge=="challenge13") return 1
         let dimMult = 2;
 
         if (player.infinityUpgrades.includes('dimMult')) dimMult = player.galacticSacrifice?infUpg12Pow():2.2
@@ -240,6 +244,11 @@ function hasInfinityMult(tier) {
     function dimBought(tier) {
         return player[TIER_NAMES[tier]+"Bought"] % 10;
     }
+
+    function recordBought (name, num) {
+        player[name + 'Bought'] += num;
+        if (player.galacticSacrifice) player.totalBoughtDims[name] = (player.totalBoughtDims[name] ? player.totalBoughtDims[name] : 0) + num;
+    }
     
     function buyOneDimension(tier) {
         var name = TIER_NAMES[tier];
@@ -277,7 +286,7 @@ function hasInfinityMult(tier) {
         }
     
         player[name + 'Amount'] = player[name + 'Amount'].plus(1);
-        player[name + 'Bought']++;
+        recordBought(name,1);
     
         if (dimBought(tier) === 0) {
             player[name + 'Pow']  = player[name + 'Pow'].times(getDimensionPowerMultiplier(tier));
@@ -335,7 +344,7 @@ function hasInfinityMult(tier) {
         }
     
         player[name + 'Amount'] = player[name + 'Amount'].plus(10 - dimBought(tier));
-        player[name + 'Bought'] = player[name + 'Bought'] + (10 - dimBought(tier));
+        recordBought(name,10 - dimBought(tier));
         player[name + 'Pow']  = player[name + 'Pow'].times(getDimensionPowerMultiplier(tier));
         if (player.currentChallenge != "challenge5" && player.currentChallenge != "postc5" ) player[name + 'Cost'] = player[name + 'Cost'].times((getDimensionCostMultiplier(tier)));
         else if (player.currentChallenge == "postc5") multiplyPC5Costs(player[name + 'Cost'], tier)
@@ -365,7 +374,7 @@ function hasInfinityMult(tier) {
                     if (cost.lt(player[TIER_NAMES[tier-2]+"Amount"]) && dimBought(tier) != 0) {
                         player[TIER_NAMES[tier-2]+"Amount"] = player[TIER_NAMES[tier-2]+"Amount"].minus(cost)
                         player[name + "Amount"] = Decimal.round(player[name + "Amount"].plus(10 - dimBought(tier)))
-                        player[name + 'Bought'] += (10 - dimBought(tier));
+                        recordBought(name,10 - dimBought(tier));
                         player[name + 'Pow']  = player[name + 'Pow'].times(getDimensionPowerMultiplier(tier))
                         player[name + "Cost"] = player[name + "Cost"].times(getDimensionCostMultiplier(tier))
                     }
@@ -374,7 +383,7 @@ function hasInfinityMult(tier) {
                         player[TIER_NAMES[tier-2]+"Amount"] = player[TIER_NAMES[tier-2]+"Amount"].minus(player[name + "Cost"].times(10))
                         player[name + "Cost"] = player[name + "Cost"].times(getDimensionCostMultiplier(tier))
                         player[name + "Amount"] = Decimal.round(player[name + "Amount"].plus(10))
-                        player[name + 'Bought'] += 10
+                        recordBought(name,10)
                         player[name + "Pow"] = player[name + "Pow"].times(getDimensionPowerMultiplier(tier))
                         if (player[name + 'Cost'].gte(Number.MAX_VALUE)) player.costMultipliers[tier-1] = player.costMultipliers[tier-1].times(inQC(7)?Number.MAX_VALUE:player.dimensionMultDecrease)
                         x--;
@@ -388,7 +397,7 @@ function hasInfinityMult(tier) {
                 if (cost.lt(player.money) && dimBought(tier) != 0) {
                     player.money = player.money.minus(cost)
                     player[name + "Amount"] = Decimal.round(player[name + "Amount"].plus(10 - dimBought(tier)))
-                    player[name + 'Bought'] += (10 - dimBought(tier));
+                    recordBought(name,10 - dimBought(tier));
                     player[name + 'Pow']  = player[name + 'Pow'].times(getDimensionPowerMultiplier(tier))
                     player[name + "Cost"] = player[name + "Cost"].times(getDimensionCostMultiplier(tier))
                 }
@@ -402,7 +411,7 @@ function hasInfinityMult(tier) {
                         else if (player.currentChallenge == "postc5") multiplyPC5Costs(player[name + 'Cost'], tier)
                         else multiplySameCosts(player[name + 'Cost'])
                         player[name + "Amount"] = Decimal.round(player[name + "Amount"].plus(10))
-                        player[name + 'Bought'] += 10
+                        recordBought(name,10)
                         player[name + "Pow"] = player[name + "Pow"].times(getDimensionPowerMultiplier(tier))
                         if (player[name + 'Cost'].gte(Number.MAX_VALUE)) player.costMultipliers[tier-1] = player.costMultipliers[tier-1].times(inQC(7)?Number.MAX_VALUE:player.dimensionMultDecrease)
                         if (player.currentChallenge == "challenge8") clearDimensions(tier-1)
@@ -417,7 +426,7 @@ function hasInfinityMult(tier) {
                         else if (player.currentChallenge == "postc5") multiplyPC5Costs(player[name + 'Cost'], tier)
                         else multiplySameCosts(player[name + 'Cost'])
                         player[name + "Amount"] = Decimal.round(player[name + "Amount"].plus(10))
-                        player[name + 'Bought'] += 10
+                        recordBought(name,10)
                         player[name + "Pow"] = player[name + "Pow"].times(getDimensionPowerMultiplier(tier))
                         if (player[name + 'Cost'].gte(Number.MAX_VALUE)) player.costMultipliers[tier-1] = player.costMultipliers[tier-1].times(inQC(7)?Number.MAX_VALUE:player.dimensionMultDecrease)
                         if (player.currentChallenge == "challenge8") clearDimensions(tier-1)
@@ -439,7 +448,7 @@ function hasInfinityMult(tier) {
                     preInfBuy = Math.floor(1 + (308 - initCost[tier].log10()) / costMults[tier].log10())
                     postInfBuy = player[name + 'Bought']/10+buying - preInfBuy - 1
                     postInfInitCost = initCost[tier].times(Decimal.pow(costMults[tier], preInfBuy))
-                    player[name + 'Bought'] += 10*buying
+                    recordBought(name,10*buying)
                     player[name + "Pow"] = player[name + "Pow"].times(Decimal.pow(getDimensionPowerMultiplier(tier), buying))
     
                     newCost = postInfInitCost.times(Decimal.pow(costMults[tier], postInfBuy)).times(Decimal.pow(mi, postInfBuy * (postInfBuy+1)/2))
@@ -584,7 +593,7 @@ function getDimensionProductionPerSecond(tier) {
 		var maximum = player.galacticSacrifice ? 3 : 0
 		tick = Decimal.pow(10, Math.pow(Math.abs(maximum-tick.log10()), 0.75))
 		if (player.dilation.upgrades.includes(9)) tick = Decimal.pow(10, Math.pow(Math.abs(maximum-tick.log10()), 1.05))
-		return ret.times(Decimal.pow(10,3-maximum)).times(tick);
+		return ret.times(Decimal.pow(10,(player.aarexModifications.newGame3MinusVersion?2:3)-maximum)).times(tick);
 	}
 	return ret.div(tick.div(1e3));
 }

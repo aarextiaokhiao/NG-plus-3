@@ -443,6 +443,7 @@ function quantum(auto,force,challid) {
 			sixthBought: 0,
 			seventhBought: 0,
 			eightBought: 0,
+			totalBoughtDims: resetTotalBought(),
 			firstPow: new Decimal(1),
 			secondPow: new Decimal(1),
 			thirdPow: new Decimal(1),
@@ -464,6 +465,7 @@ function quantum(auto,force,challid) {
 			thisInfinityTime: 0,
 			resets: oheHeadstart ? 4 : 0,
 			dbPower: player.dbPower ? new Decimal(1) : undefined,
+			tickspeedBoosts: resetTickspeedBoosts(),
 			galaxies: oheHeadstart ? 1 : 0,
 			galacticSacrifice: resetGalacticSacrifice(),
 			tickDecrease: 0.9,
@@ -960,7 +962,7 @@ function updateLastTenQuantums() {
         var qkpm = tempQK.dividedBy(tempTime/600)
         var tempstring = shorten(qkpm) + " QK/min"
         averageQk = tempQK
-        if (qkpm<1) tempstring = shorten(qkpm*60) + "QK/hour"
+        if (qkpm<1) tempstring = shorten(qkpm*60) + " QK/hour"
         document.getElementById("averageQuantumRun").textContent = "Last " + listed + " quantums average time: "+ timeDisplayShort(tempTime)+" Average QK gain: "+shortenDimensions(tempQK)+" QK. "+tempstring
     } else document.getElementById("averageQuantumRun").textContent = ""
 }

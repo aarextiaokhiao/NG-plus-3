@@ -3,57 +3,60 @@ function canBuyTickSpeed() {
   return canBuyDimension(3);
 }
 
+function getGalaxyPower(ng, bi) {
+	let galaxyPower = Math.max(ng-(bi?2:0),0)+player.replicanti.galaxies+Math.floor(player.dilation.freeGalaxies)
+	if (player.timestudy.studies.includes(133)) galaxyPower += player.replicanti.galaxies/2
+	if (player.timestudy.studies.includes(132)) galaxyPower += player.replicanti.galaxies*0.4
+	if (player.boughtdims) galaxyPower += player.replicanti.galaxies*(Math.log10(player.replicanti.limit.log(2))/Math.log10(2)/10-1)
+	galaxyPower += extraReplGalaxies
+	galaxyPower += Math.min(player.replicanti.galaxies, player.replicanti.gal) * Math.max(Math.pow(Math.log10(player.infinityPower.plus(1).log10()+1), 0.03 * ECTimesCompleted("eterc8"))-1, 0)
+	if ((player.currentChallenge=="challenge7"||inQC(4))&&player.galacticSacrifice) galaxyPower *= galaxyPower
+	return galaxyPower
+}
+
+function getGalaxyPowerEff(ng, bi) {
+	let eff = 1
+	if (player.galacticSacrifice) if (player.galacticSacrifice.upgrades.includes(22)) eff *= 5;
+	if (player.infinityUpgrades.includes("galaxyBoost")) eff *= 2;
+	if (player.infinityUpgrades.includes("postGalaxy")) eff *= player.galacticSacrifice ? 1.7 : 1.5;
+	if (player.challenges.includes("postc5")) eff *= player.galacticSacrifice ? 1.3 : 1.1;
+	if (player.achievements.includes("r86")) eff *= player.galacticSacrifice ? 1.05 : 1.01
+	if (player.galacticSacrifice) {
+		if (player.achievements.includes("r83")) eff *= 1.05
+		if (player.achievements.includes("r45")) eff *= 1.02
+	}
+	if (player.achievements.includes("ngpp8")) eff *= 1.001;
+	if (player.timestudy.studies.includes(212)) eff *= Math.min(Math.pow(player.timeShards.max(2).log2(), 0.005), 1.1)
+	if (player.timestudy.studies.includes(232)&&bi) eff *= Math.pow(1+ng/1000, 0.2)
+	eff *= colorBoosts.r
+	if (GUBought("rg2")) eff *= Math.pow(player.dilation.freeGalaxies/5e3+1,0.25)
+	if (GUBought("rg4")) eff *= 1.5
+	return eff
+}
+
 function getTickSpeedMultiplier() {
   if (player.currentChallenge == "postc3" || isIC3Trapped()) return 1;
   if (inQC(2)) return 0.89
   var realnormalgalaxies = player.galaxies
   if (player.masterystudies) realnormalgalaxies = Math.max(player.galaxies-player.quantum.electrons.sacGals,0)
-  if (realnormalgalaxies + player.replicanti.galaxies + player.dilation.freeGalaxies < 3) {
-      let baseMultiplier = 0.9;
+  if (player.galacticSacrifice) {
       if (GUBought("rg4")) realnormalgalaxies *= 0.4
+      return Decimal.pow(0.999, getGalaxyPower(realnormalgalaxies) * getGalaxyPowerEff())
+  } else if (realnormalgalaxies + player.replicanti.galaxies + player.dilation.freeGalaxies < 3) {
+      if (GUBought("rg4")) realnormalgalaxies *= 0.4
+      let baseMultiplier = 0.9;
       if (realnormalgalaxies == 0) baseMultiplier = 0.89
       if (player.currentChallenge == "challenge6" || player.currentChallenge == "postc1") baseMultiplier = 0.93;
       let perGalaxy = 0.02;
-      let galaxies = realnormalgalaxies+player.replicanti.galaxies+Math.floor(player.dilation.freeGalaxies)
-      if (player.timestudy.studies.includes(133)) galaxies += player.replicanti.galaxies/2
-      if (player.timestudy.studies.includes(132)) galaxies += player.replicanti.galaxies*0.4
-      if (player.boughtdims) galaxies += player.replicanti.galaxies*(Math.log10(player.replicanti.limit.log(2))/Math.log10(2)/10-1)
-      galaxies += extraReplGalaxies
-      galaxies += Math.min(player.replicanti.galaxies, player.replicanti.gal) * Math.max(Math.pow(Math.log10(player.infinityPower.plus(1).log10()+1), 0.03 * ECTimesCompleted("eterc8"))-1, 0)
-      if (player.infinityUpgrades.includes("galaxyBoost")) perGalaxy *= 2;
-      if (player.infinityUpgrades.includes("postGalaxy")) perGalaxy *= 1.5;
-      if (player.challenges.includes("postc5")) perGalaxy *= 1.1;
-      if (player.achievements.includes("r86")) perGalaxy *= 1.01;
-      if (player.achievements.includes("ngpp8")) perGalaxy *= 1.001;
-      if (player.timestudy.studies.includes(212)) perGalaxy *= Math.min(Math.pow(player.timeShards.max(2).log2(), 0.005), 1.1)
-      perGalaxy *= colorBoosts.r
-      if (GUBought("rg2")) perGalaxy *= Math.pow(player.dilation.freeGalaxies/5e3+1,0.25)
-      if (GUBought("rg4")) perGalaxy *= 1.5
-      if (inQC(8)) perGalaxy /= (1 + extraReplGalaxies / 1600 + player.dilation.freeGalaxies / 6e3)
+      perGalaxy *= getGalaxyPowerEff()
 
       return Math.max(baseMultiplier-(realnormalgalaxies*perGalaxy),0.83);
   } else {
+      if (GUBought("rg4")) realnormalgalaxies *= 0.4
       let baseMultiplier = 0.8
       if (player.currentChallenge == "challenge6" || player.currentChallenge == "postc1") baseMultiplier = 0.83
       let perGalaxy = 0.965
-      if (GUBought("rg4")) realnormalgalaxies *= 0.4
-      let galaxies = Math.max(realnormalgalaxies-2,0)+player.replicanti.galaxies+Math.floor(player.dilation.freeGalaxies)
-      if (player.timestudy.studies.includes(133)) galaxies += player.replicanti.galaxies/2
-      if (player.timestudy.studies.includes(132)) galaxies += player.replicanti.galaxies*0.4
-      if (player.boughtdims) galaxies += player.replicanti.galaxies*(Math.log10(player.replicanti.limit.log(2))/Math.log10(2)/10-1)
-      galaxies += extraReplGalaxies
-      galaxies += Math.min(player.replicanti.galaxies, player.replicanti.gal) * Math.max(Math.pow(Math.log10(player.infinityPower.plus(1).log10()+1), 0.03 * ECTimesCompleted("eterc8"))-1, 0)
-      if (player.infinityUpgrades.includes("galaxyBoost")) galaxies *= 2;
-      if (player.infinityUpgrades.includes("postGalaxy")) galaxies *= 1.5;
-      if (player.challenges.includes("postc5")) galaxies *= 1.1;
-      if (player.achievements.includes("r86")) galaxies *= 1.01
-      if (player.achievements.includes("ngpp8")) galaxies *= 1.001;
-      if (player.timestudy.studies.includes(212)) galaxies *= Math.min(Math.pow(player.timeShards.max(2).log2(), 0.005), 1.1)
-      if (player.timestudy.studies.includes(232)) galaxies *= Math.pow(1+realnormalgalaxies/1000, 0.2)
-      galaxies *= colorBoosts.r
-      if (GUBought("rg2")) galaxies *= Math.pow(player.dilation.freeGalaxies/3e3+1,0.25)
-      if (GUBought("rg4")) galaxies *= 1.5
-
+      let galaxies = getGalaxyPower(realnormalgalaxies) * getGalaxyPowerEff(realnormalgalaxies, true)
       return Decimal.pow(perGalaxy, galaxies - 2).times(baseMultiplier)
   }
 }

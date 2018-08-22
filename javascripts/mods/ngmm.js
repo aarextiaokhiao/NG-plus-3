@@ -1,4 +1,5 @@
 function getGSAmount() {
+	if (isEmptiness) return new Decimal(0)
 	let galaxies = player.galaxies + player.replicanti.galaxies + player.dilation.freeGalaxies;
 	let ret = new Decimal(Math.pow(Math.max(galaxies, 0), 1.5) * Math.max(player.resets - (player.currentChallenge=="challenge4"?2:4), 0));
 	ret = ret.times(player.eightAmount.toNumber()/50+1)
@@ -12,6 +13,7 @@ function getGSAmount() {
 }
 
 function galacticSacrifice() {
+	if (isEmptiness) return
 	if (getGSAmount().eq(0)) return
 	if (player.options.sacrificeConfirmation) if (!confirm("Galactic Sacrifice will do a galaxy reset, and then remove all of your galaxies, in exchange of galaxy points which can be use to buy many overpowered upgrades, but it will take a lot of time to recover, are you sure you wanna do this?")) return
 	player.galacticSacrifice.galaxyPoints = player.galacticSacrifice.galaxyPoints.plus(getGSAmount())
@@ -62,7 +64,15 @@ function buyGalaxyUpgrade(i) {
 	if (player.galacticSacrifice.upgrades.includes(i) || !(Math.floor(i/10)<2 || player.galacticSacrifice.upgrades.includes(i-10)) || player.galacticSacrifice.galaxyPoints.lt(galUpgradeCosts[i])) return
 	player.galacticSacrifice.upgrades.push(i)
 	player.galacticSacrifice.galaxyPoints = player.galacticSacrifice.galaxyPoints.sub(galUpgradeCosts[i])
-	if (i==11) reduceDimCosts()
+	if (i==11) {
+		if (player.achievements.includes("r21")) {
+			for (d=1;d<9;d++) {
+				var name = TIER_NAMES[d]
+				player[name+"Cost"] = player[name+"Cost"].times(10)
+			}
+		}
+		reduceDimCosts()
+	}
 }
 
 function reduceDimCosts() {
@@ -134,4 +144,29 @@ function galacticUpgradeButtonTypeDisplay () {
 			}
 		}
 	}
+}
+
+//v1.295
+function resetTotalBought() {
+	if (player.galacticSacrifice) return {}
+}
+
+function productAllTotalBought () {
+	var ret = 1;
+	for (i = 1; i <= 8; i++) {
+		if (player.totalBoughtDims[TIER_NAMES[i]]) ret *= Math.max(player.totalBoughtDims[TIER_NAMES[i]], 1);
+	}
+	return ret;
+}
+
+function productAllTotalBought1 () {
+	return Math.pow(Math.log10(Math.max(productAllTotalBought(), 10)), 2);
+}
+
+function productAllDims1(){
+	var ret = 0;
+	for (i = 1; i <= 8; i++) {
+		ret += Math.max(player[TIER_NAMES[i] + "Amount"].log10(), 0);
+	}
+	return Math.min(1,ret);
 }

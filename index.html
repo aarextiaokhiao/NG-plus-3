@@ -875,6 +875,14 @@
                             <button id="softReset" style="color:black; width: 200px; height: 25px; font-size: 9px" class="storebtn">Reset the game for a new Dimension</button>
                         </td>
                     </tr>
+                    <tr id="tickReset" style="font-size: 15px">
+                        <td id="tickResetLabel">
+                            Tickspeed Boost (0): requires 10 Fifth Dimensions
+                        </td>
+                        <td>
+                            <button id="tickResetBtn" style="color:black; width: 200px; height: 35px; font-size: 9px" class="storebtn" onclick="tickspeedBoost()">Lose dimension boosts for better tickspeed multiplier</button>
+                        </td>
+                    </tr>
                     <tr style="font-size: 15px">
                         <td id="secondResetLabel">
                             Antimatter Galaxies: requires 80 Eight Dimension
@@ -1368,6 +1376,7 @@
                 <br>
                 <div id="totalmoney">You have made x antimatter.</div>
                 <div id="totalresets">You have made x dimensional boosts/shifts.</div>
+                <div id="boosts"></div>
                 <div id="galaxies">You have made x Antimatter galaxies.</div>
                 <div id="spreadingCancer"></div>
                 <br>
@@ -1551,7 +1560,7 @@
                             <div id="I forgot to nerf that" class="achievement achievementlocked" style="background-image: url(images/17.png)" ach-tooltip="Get any dimension multiplier over 10 No (10e30). Reward: First Dimensions are 5% stronger."><br></div>
                         </td>
                         <td>
-                            <div id="The Gods are pleased" class="achievement achievementlocked" style="background-image: url(images/18.png)" ach-tooltip="Get over 600x from Dimension Sacrifice in total. Reward: Sacrifice is slightly stronger."><br></div>
+                            <div id="The Gods are pleased" class="achievement achievementlocked" style="background-image: url(images/18.png)"><br></div>
                         </td>
                         <td>
                             <div id="That's a lot of infinites" class="achievement achievementlocked" style="background-image: url(images/19.png)" ach-tooltip="Reach Infinity 10 times."><br></div>
@@ -2210,6 +2219,36 @@
                                     <button id="challenge7" class="challengesbtn">Start</button>
                                     <br>
                                     <span>Reward: Automated Big Crunches</span>
+                                </div>
+                            </div>
+                        </td>
+                    </tr>
+                    <tr id="ngmmchalls">
+                        <td>
+                            <div class= "challengediv">
+                                <span style="font-size: 110%">Per-ten multiplier is always 1x, but product of dimensions bought multiplies all dimensions.</span>
+                                <br>
+                                <br>
+
+                                <div class="outer">
+
+                                    <button id="challenge13" class="challengesbtn">Start</button>
+                                    <br>
+                                    <span>Reward: Automated Dimensional Sacrifice (COMING SOON)</span>
+                                </div>
+                            </div>
+                        </td>
+                        <td>
+                            <div class= "challengediv">
+                                <span style="font-size: 110%">You can only get 308 tickspeed upgrades. This count does not reset on resets. (COMING SOON)</span>
+                                <br>
+                                <br>
+
+                                <div class="outer">
+
+                                    <button id="challenge14" class="challengesbtn">Start</button>
+                                    <br>
+                                    <span>Reward: Automated Galactic Sacrifice</span>
                                 </div>
                             </div>
                         </td>
@@ -3527,21 +3566,22 @@
 <script type="text/javascript" src="javascripts/core/format.js?9"></script>
 <script type="text/javascript" src="javascripts/core/achievements.js?7"></script>
 <script type="text/javascript" src="javascripts/core/chart.js"></script>
-<script type="text/javascript" src="javascripts/core/tickspeed.js?13"></script>
-<script type="text/javascript" src="javascripts/core/normal_dimension.js?18"></script>
+<script type="text/javascript" src="javascripts/core/tickspeed.js?14"></script>
+<script type="text/javascript" src="javascripts/core/normal_dimension.js?19"></script>
 <script type="text/javascript" src="javascripts/core/infinity_dimension.js?11"></script>
 <script type="text/javascript" src="javascripts/core/time_dimension.js?14"></script>
-<script type="text/javascript" src="javascripts/core/dimboost.js?22"></script>
+<script type="text/javascript" src="javascripts/core/dimboost.js?23"></script>
 <script type="text/javascript" src="javascripts/core/timestudies.js?21"></script>
 <script type="text/javascript" src="javascripts/core/canvases.js?5"></script>
 <script type="text/javascript" src="javascripts/core/devtools.js"></script>
-<script type="text/javascript" src="javascripts/core/load_functions.js?36"></script>
+<script type="text/javascript" src="javascripts/core/load_functions.js?37"></script>
 <script type="text/javascript" src="javascripts/core/newsticker.js?4"></script>
-<script type="text/javascript" src="javascripts/mods/ngmm.js?14"></script>
+<script type="text/javascript" src="javascripts/mods/ngmm.js?15"></script>
 <script type="text/javascript" src="javascripts/mods/ers.js"></script>
-<script type="text/javascript" src="javascripts/mods/ngpp.js?23"></script>
-<script type="text/javascript" src="javascripts/mods/ngppp.js?25"></script>
-<script type="text/javascript" src="javascripts/game.js?42"></script>
+<script type="text/javascript" src="javascripts/mods/ngpp.js?24"></script>
+<script type="text/javascript" src="javascripts/mods/ngppp.js?26"></script>
+<script type="text/javascript" src="javascripts/mods/ngmmm.js"></script>
+<script type="text/javascript" src="javascripts/game.js?43"></script>
 <script type="text/javascript" src="javascripts/sha512.js"></script>
 </body>
 </html>

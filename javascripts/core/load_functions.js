@@ -823,6 +823,15 @@ if (player.version < 5) {
           player.aarexModifications.newGameMinusMinusVersion = 1.29
           delete player.galacticSacrifice.last
 	  }
+      if (player.firstTotalBought != undefined) {
+          player.totalBoughtDims = {}
+          for (d=1;d<9;d++) {
+              var name = TIER_NAMES[d]
+              player.totalBoughtDims[name] = player[name + "TotalBought"]
+              delete player[name + "TotalBought"]
+          }
+          player.aarexModifications.newGameMinusMinusVersion = 1.295
+      }
       else if (player.galaxyPoints) player.aarexModifications.newGameMinusMinusVersion = 1.1
       else if ((Decimal.gt(player.postC3Reward, 1) && player.infinitied < 1 && player.eternities < 1 && (player.quantum ? player.quantum.times < 1 : true)) || (Math.round(new Decimal(player.achPow).log(5) * 100) % 100 < 1 && Decimal.gt(player.achPow, 1))) player.aarexModifications.newGameMinusMinusVersion = 1
       if (player.aarexModifications.newGameMinusMinusVersion) updateAchievements()
@@ -864,7 +873,10 @@ if (player.version < 5) {
       }
       reduceDimCosts()
   }
-  if (player.aarexModifications.newGameMinusMinusVersion < 1.29) player.aarexModifications.newGameMinusMinusVersion = 1.29
+  if (player.aarexModifications.newGameMinusMinusVersion < 1.295) {
+      player.totalBoughtDims = {}
+      player.aarexModifications.newGameMinusMinusVersion = 1.295
+  }
   if (player.aarexModifications.ersVersion === undefined && player.boughtDims) {
       newAchievements=[]
       for (id=0;id<player.achievements.length;id++) {
@@ -1004,6 +1016,7 @@ if (player.version < 5) {
   }
   document.getElementById("d5AutoChallengeDesc").textContent=player.galacticSacrifice?"Tickspeed upgrades start out useless, but galaxies make them stronger.":"Tickspeed starts at 7%."
   document.getElementById("autoCrunchChallengeDesc").textContent="Each dimension produces the dimension 2 below it; first dimensions produce reduced antimatter. "+(player.galacticSacrifice?"Galaxies are far more powerful.":"")
+  document.getElementById("ngmmchalls").style.display=player.galacticSacrifice?"":"none"
   document.getElementById("ic7desc").textContent="You can't get Antimatter Galaxies, but dimensional boost multiplier "+(player.galacticSacrifice?"is cubed":"2.5x -> 10x")
   document.getElementById("ic7reward").textContent="Reward: Dimensional boost multiplier "+(player.galacticSacrifice?"is squared":"2.5x -> 4x")
   document.getElementById("81").innerHTML="Dimensional boost power "+(player.galacticSacrifice?"is cubed":"becomes 10x")+"<span>Cost: 4 Time Theorems"
@@ -1081,7 +1094,10 @@ if (player.version < 5) {
           else ngModeMessages.push("Welcome to NG++ mode, made by dan-simon! In this mode, more dilation upgrades and meta-dimensions are added to push the end-game further.")
       } else if (player.aarexModifications.newGamePlusVersion) ngModeMessages.push("Welcome to NG+ mode, made by earthernsence! Right now, you start with all Eternity Challenges completed and 1 infinitied.")
       if (player.boughtDims) ngModeMessages.push('Welcome to Eternity Respecced created by dan-simon! You can check out why he made this at <a href="https://dan-simon.github.io/b/eternity-respecced/about/about_game.html" target="_newtab">the link</a>.')
-      if (player.galacticSacrifice) ngModeMessages.push('Welcome to NG-- mode created by Nyan cat! Dilation is always locked but have more balancing, IC3 trap, and a new feature called "Galactic Sacrifice".')
+      if (player.galacticSacrifice) {
+          if (player.aarexModifications.newGame3MinusVersion) ngModeMessages.push('Welcome to NG--- mode, the nerfed version of NG-- mode! This mode reduces tickspeed multiplier multiplier and nerfs galaxies, but have a new feature called \"Tickspeed Boosts\" and 1 achievement buff.')
+          else ngModeMessages.push('Welcome to NG-- mode created by Nyan cat! Dilation is always locked but have more balancing, IC3 trap, and a new feature called "Galactic Sacrifice".')
+      }
       if (player.aarexModifications.newGameMinusVersion) ngModeMessages.push("Welcome to NG- mode! Everything are nerfed by the creator slabdrill, making the end-game harder to reach.")
       if (player.aarexModifications.newGameMinusVersion&&player.galacticSacrifice&&player.meta&&player.masterystudies){
           ngModeMessages = []
@@ -1156,7 +1172,7 @@ function change_save(id) {
   while (metaSave.saveOrder[savePlacement-1]!=id) savePlacement++
   changeSaveDesc(metaSave.current, savePlacement)
 
-  $.notify("Save #"+id+" loaded", "info")
+  $.notify("Save #"+savePlacement+" loaded", "info")
   localStorage.setItem("AD_aarexModifications",btoa(JSON.stringify(metaSave)))
   showDimTab('antimatterdimensions')
   showStatsTab('stats')
