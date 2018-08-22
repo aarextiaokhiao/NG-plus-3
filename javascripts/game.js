@@ -1975,7 +1975,7 @@ function toggleCommas() {
     } else if (player.options.commas === "Game percentages") {
         player.options.commas = "Hexadecimal";
     } else if (player.options.commas === "Hexadecimal") {
-        player.options.notation = "Tetration";
+        player.options.commas = "Tetration";
     } else if (player.options.commas === "Tetration") {
         player.options.commas = "Morse code";
     }
