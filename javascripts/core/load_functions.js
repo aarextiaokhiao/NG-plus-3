@@ -890,7 +890,7 @@ if (player.version < 5) {
       updateAutobuyers()
   }
   if (player.aarexModifications.newGameMinusMinusVersion < 1.301) {
-      if (player.currentChallenge=="challenge14") if (player.tickBoughtThisInf.pastResets.length<1) player.tickBoughtThisInf.pastResets.push({resets:player.resets,bought:player.tickBoughtThisInf.current+new Decimal(player.tickSpeedCost).e-3})
+      if (player.currentChallenge=="challenge14") if (player.tickBoughtThisInf.pastResets.length<1) player.tickBoughtThisInf.pastResets.push({resets:player.resets,bought:player.tickBoughtThisInf.current-new Decimal(player.tickSpeedCost).e+3})
       player.aarexModifications.newGameMinusMinusVersion = 1.301
   }
   if (player.aarexModifications.ersVersion === undefined && player.boughtDims) {
