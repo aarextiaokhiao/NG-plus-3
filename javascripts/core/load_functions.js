@@ -434,7 +434,7 @@ if (player.version < 5) {
 
   if (player.currentChallenge == "challenge12" || player.currentChallenge == "postc1" || player.currentChallenge == "postc6" || inQC(6)) document.getElementById("matter").style.display = "inline-block";
   else document.getElementById("matter").style.display = "none";
-  if (player.currentChallenge == "challenge13" || player.currentChallenge == "postc1") document.getElementById("chall13Mult").style.display = "inline-block";
+  if (player.currentChallenge == "challenge13" || (player.currentChallenge == "postc1" && player.galacticSacrifice)) document.getElementById("chall13Mult").style.display = "inline-block";
   else document.getElementById("chall13Mult").style.display = "none";
 
 
@@ -824,7 +824,8 @@ if (player.version < 5) {
           player.galacticSacrifice.time = (player.lastUpdate - player.galacticSacrifice.last) / 100
           player.aarexModifications.newGameMinusMinusVersion = 1.29
           delete player.galacticSacrifice.last
-	  }
+	  } else if (player.galaxyPoints) player.aarexModifications.newGameMinusMinusVersion = 1.1
+      else if ((Decimal.gt(player.postC3Reward, 1) && player.infinitied < 1 && player.eternities < 1 && (player.quantum ? player.quantum.times < 1 : true)) || (Math.round(new Decimal(player.achPow).log(5) * 100) % 100 < 1 && Decimal.gt(player.achPow, 1))) player.aarexModifications.newGameMinusMinusVersion = 1
       if (player.firstTotalBought != undefined) {
           player.totalBoughtDims = {}
           for (d=1;d<9;d++) {
@@ -835,14 +836,13 @@ if (player.version < 5) {
           player.aarexModifications.newGameMinusMinusVersion = 1.295
       }
       if (player.tickBoughtThisInf) {
-          player.autoSacrifice = player.autobuyers[12]
+          player.autoSacrifice = player.autobuyers[12] % 1 !== 0 ? player.autobuyers[12] : 1
           var popThis = player.autobuyers.pop()
           player.autobuyers[12] = popThis % 1 === 0 ? 13 : popThis
           player.aarexModifications.newGameMinusMinusVersion = 1.301
           updateAutobuyers()
       }
-      else if (player.galaxyPoints) player.aarexModifications.newGameMinusMinusVersion = 1.1
-      else if ((Decimal.gt(player.postC3Reward, 1) && player.infinitied < 1 && player.eternities < 1 && (player.quantum ? player.quantum.times < 1 : true)) || (Math.round(new Decimal(player.achPow).log(5) * 100) % 100 < 1 && Decimal.gt(player.achPow, 1))) player.aarexModifications.newGameMinusMinusVersion = 1
+      if (player.dimPowerIncreaseCost) player.aarexModifications.newGameMinusMinusVersion = 1.4
       if (player.aarexModifications.newGameMinusMinusVersion) updateAchievements()
   }
   if (player.aarexModifications.newGameMinusMinusVersion < 1.1) player.galaxyPoints = 0
@@ -891,7 +891,18 @@ if (player.version < 5) {
   }
   if (player.aarexModifications.newGameMinusMinusVersion < 1.301) {
       if (player.currentChallenge=="challenge14") if (player.tickBoughtThisInf.pastResets.length<1) player.tickBoughtThisInf.pastResets.push({resets:player.resets,bought:player.tickBoughtThisInf.current-new Decimal(player.tickSpeedCost).e+3})
-      player.aarexModifications.newGameMinusMinusVersion = 1.301
+  }
+  if (player.aarexModifications.newGameMinusMinusVersion < 1.4) {
+      if (player.autobuyers.length>14) {
+          player.autoSacrifice = player.autobuyers[12] % 1 !== 0 ? player.autobuyers[12] : 1
+          var popThis = player.autobuyers.pop()
+          player.autobuyers[12] = popThis % 1 === 0 ? 13 : popThis
+          player.autobuyers.pop()
+          updateAutobuyers()
+      } else if (player.autoSacrifice === 0) player.autoSacrifice = 1
+      player.extraDimPowerIncrease = 0
+      player.dimPowerIncreaseCost = 1e3
+      player.aarexModifications.newGameMinusMinusVersion = 1.4
   }
   if (player.aarexModifications.ersVersion === undefined && player.boughtDims) {
       newAchievements=[]
@@ -1035,6 +1046,8 @@ if (player.version < 5) {
       document.getElementById("infi21").innerHTML = "Increase the multiplier for buying 10 Dimensions <br>2x -> 2.2x<br>Cost: 1 IP"
       document.getElementById("infi33").innerHTML = "Increase Dimension Boost multiplier <br>2x -> 2.5x<br>Cost: 7 IP"
   }
+  var showMoreBreak = player.galacticSacrifice ? "" : "none"
+  for (i=1;i<5;i++) document.getElementById("postinfi0"+i).parentElement.style.display=showMoreBreak
   document.getElementById("d5AutoChallengeDesc").textContent=player.galacticSacrifice?"Tickspeed upgrades start out useless, but galaxies make them stronger.":"Tickspeed starts at 7%."
   document.getElementById("autoCrunchChallengeDesc").textContent="Each dimension produces the dimension 2 below it; first dimensions produce reduced antimatter. "+(player.galacticSacrifice?"Galaxies are far more powerful.":"")
   document.getElementById("ngmmchalls").style.display=player.galacticSacrifice?"":"none"

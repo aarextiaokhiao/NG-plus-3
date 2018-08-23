@@ -64,7 +64,7 @@ function getDimensionFinalMultiplier(tier) {
   multiplier = multiplier.times(player.postC3Reward)
   if (player.challenges.includes("postc8") && tier < 8 && tier > 1) multiplier = multiplier.times(mult18);
 
-  if (player.galacticSacrifice) if (player.currentChallenge === 'challenge13' || player.currentChallenge === "postc1") multiplier = multiplier.times(productAllTotalBought());
+  if (player.currentChallenge === 'challenge13' || (player.galacticSacrifice && player.currentChallenge === "postc1")) multiplier = multiplier.times(productAllTotalBought());
   else {
       if (player.currentChallenge == "postc6" || inQC(6)) multiplier = multiplier.dividedBy(player.matter.max(1))
       if (player.currentChallenge == "postc8" || inQC(6)) multiplier = multiplier.times(player.postC8Mult)
@@ -80,7 +80,7 @@ function getDimensionFinalMultiplier(tier) {
       if (player.galacticSacrifice.upgrades.includes(12)) multiplier = multiplier.times(galUpgrade12())
       if (player.galacticSacrifice.upgrades.includes(13)) multiplier = multiplier.times(galUpgrade13())
       if (player.challenges.includes("postc4")) multiplier = multiplier.pow(1.05);
-      if (player.galacticSacrifice.upgrades.includes(31)) multiplier = multiplier.pow(1.1);
+      if (player.galacticSacrifice.upgrades.includes(31)) multiplier = multiplier.pow(galUpgrade31());
   }
 
   if (multiplier.lt(1)) multiplier = new Decimal(1)
@@ -579,7 +579,11 @@ function infUpg13Pow() {
 }
 
 function dimMults() {
-    return Decimal.pow(1 + (getInfinitied() * 0.2),player.galacticSacrifice?2:1).pow(!player.timestudy.studies.includes(31)?1:4)
+    return Math.pow(1+getInfinitied()*0.2,(player.galacticSacrifice?2:1)*(player.timestudy.studies.includes(31)?4:1))
+}
+
+function getInfinitiedMult() {
+	return (player.galacticSacrifice?0:1)+Math.pow((player.galacticSacrifice?1:0)+Math.log10(getInfinitied()+1)*(player.galacticSacrifice?100:10),(player.galacticSacrifice?2:1)*(player.timestudy.studies.includes(31)?4:1))
 }
 
 function getDimensionProductionPerSecond(tier) {

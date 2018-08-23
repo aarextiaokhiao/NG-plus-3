@@ -1611,7 +1611,7 @@
                     </tr>
                     <tr id="achRow5">
                         <td>
-                            <div id="Limit Break" class="achievement achievementlocked" style="background-image: url(images/33.png)" ach-tooltip="Break Infinity."><br></div>
+                            <div id="Limit Break" class="achievement achievementlocked" style="background-image: url(images/33.png)"><br></div>
                         </td>
                         <td>
                             <div id="Age of Automation" class="achievement achievementlocked" style="background-image: url(images/34.png)" ach-tooltip="Max any 9 autobuyers."><br></div>
@@ -2823,7 +2823,7 @@
 				</tr>
         <tr>
 				    <td>
-                <button id="galaxy31" class="infinistorebtn1" onclick="buyGalaxyUpgrade(31)">Dimension multipliers are increased.<br>(x^1.1)<br>Cost: 2 GP</button>
+                <button id="galaxy31" class="infinistorebtn1" onclick="buyGalaxyUpgrade(31)">Dimension multipliers are increased.<br>Currently: x^<span id='galspan31'></span><br>Cost: 2 GP</button>
             </td>
             <td>
                 <button id="galaxy32" class="infinistorebtn2" onclick="buyGalaxyUpgrade(32)">Gain more galaxy points based on your total antimatter.<br>Currently: <span id='galspan32'>x</span>x<br>Cost: 8 GP</button>
@@ -2914,8 +2914,6 @@
                     <td>
                         <button id="infi44" class="infinistorebtn4">You start with the 8th dimension unlocked, and a Galaxy<br>Cost: 500 IP</button>
                     </td>
-                </tr>
-                <tr>
                 </tr>
             </table>
             <br>
@@ -3293,19 +3291,19 @@
             <br>
             <div id="abletobreak">You need to get Automated Big Crunch interval to 0.1 to be able to break infinity</div>
                 <br>
-                <table id="postinftable" class="table" style="margin: 0 auto">
+                <table id="breaktable" class="table" style="margin: 0 auto">
                     <tr>
-                        <td>
-                            <button class="infinistorebtnbought" style="opacity: 0"></button>
-                        </td>
                         <td>
                             <button id="break" class="infinistorebtn2" onclick="breakInfinity()" ach-tooltip="Cost multipliers post-infinity will begin increasing faster, but so will the Infinity Point gain">BREAK INFINITY</button>
                         </td>
-                        <td>
-                            <button class="infinistorebtnbought" style="opacity: 0"></button>
-                        </td>
                     </tr>
+                </table>
+                <br>
+                <table id="postinftable" class="table" style="margin: 0 auto">
                     <tr>
+                        <td>
+                            <button id="postinfi01" class="infinistorebtn1"></button>
+                        </td>
                         <td>
                             <button id="postinfi11" class="infinistorebtn1">Production based on total antimatter produced <br>Currently:<br>Cost: 10 K IP</button>
                         </td>
@@ -3318,6 +3316,9 @@
                     </tr>
                     <tr>
                         <td>
+                            <button id="postinfi02" class="infinistorebtn1"></button>
+                        </td>
+                        <td>
                             <button id="postinfi12" class="infinistorebtn1">Increase the production of all dimensions by amount infinitied <br>Currently:<br>Cost: 100 K IP</button>
                         </td>
                         <td>
@@ -3329,10 +3330,13 @@
                     </tr>
                     <tr>
                         <td>
+                            <button id="postinfi03" class="infinistorebtn1"></button>
+                        </td>
+                        <td>
                             <button id="postinfi13" class="infinistorebtn1" onclick="buyInfinityUpgrade('infinitiedGeneration',20e6)">You passively generate Infinitied stat based on your fastest infinity.<br>1 every <br>Cost: 20 M IP</button>
                         </td>
                         <td>
-                            <button id="postinfi23" class="infinistorebtn1" onclick="buyInfinityUpgrade('bulkBoost',5e9)">Option to bulk buy Dimension Boosts <br>Cost: </button>
+                            <button id="postinfi23" class="infinistorebtn1">Option to bulk buy Dimension Boosts <br>Cost: </button>
                         </td>
                         <td>
                             <button id="postinfi33" class="infinistorebtn1" onclick="buyInfinityUpgrade('autoBuyerUpgrade',1e15)">Autobuyers work twice as fast <br>Cost: 1 Qa IP</button>
@@ -3340,6 +3344,9 @@
 
                     </tr>
                     <tr>
+                        <td>
+                            <button id="postinfi04" class="infinimultbtn"></button>
+                        </td>
                         <td>
                             <button id="postinfi31" class="infinimultbtn">Tickspeed cost multiplier increase <br>10x -> 9x<br>Cost: 300 K IP</button>
                         </td>
@@ -3588,21 +3595,21 @@
 <script type="text/javascript" src="javascripts/core/achievements.js?7"></script>
 <script type="text/javascript" src="javascripts/core/chart.js"></script>
 <script type="text/javascript" src="javascripts/core/tickspeed.js?15"></script>
-<script type="text/javascript" src="javascripts/core/normal_dimension.js?20"></script>
+<script type="text/javascript" src="javascripts/core/normal_dimension.js?21"></script>
 <script type="text/javascript" src="javascripts/core/infinity_dimension.js?11"></script>
 <script type="text/javascript" src="javascripts/core/time_dimension.js?14"></script>
-<script type="text/javascript" src="javascripts/core/dimboost.js?25"></script>
+<script type="text/javascript" src="javascripts/core/dimboost.js?26"></script>
 <script type="text/javascript" src="javascripts/core/timestudies.js?21"></script>
 <script type="text/javascript" src="javascripts/core/canvases.js?5"></script>
 <script type="text/javascript" src="javascripts/core/devtools.js"></script>
-<script type="text/javascript" src="javascripts/core/load_functions.js?39"></script>
+<script type="text/javascript" src="javascripts/core/load_functions.js?40"></script>
 <script type="text/javascript" src="javascripts/core/newsticker.js?4"></script>
-<script type="text/javascript" src="javascripts/mods/ngmm.js?17"></script>
+<script type="text/javascript" src="javascripts/mods/ngmm.js?18"></script>
 <script type="text/javascript" src="javascripts/mods/ers.js"></script>
-<script type="text/javascript" src="javascripts/mods/ngpp.js?25"></script>
+<script type="text/javascript" src="javascripts/mods/ngpp.js?26"></script>
 <script type="text/javascript" src="javascripts/mods/ngppp.js?26"></script>
-<script type="text/javascript" src="javascripts/mods/ngmmm.js?1"></script>
-<script type="text/javascript" src="javascripts/game.js?45"></script>
+<script type="text/javascript" src="javascripts/mods/ngmmm.js?2"></script>
+<script type="text/javascript" src="javascripts/game.js?46"></script>
 <script type="text/javascript" src="javascripts/sha512.js"></script>
 </body>
 </html>

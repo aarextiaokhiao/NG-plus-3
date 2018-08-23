@@ -21,7 +21,7 @@ function getDimensionBoostPower(next) {
   return new Decimal(ret)
 }
 
-function softReset(bulk, noAdding) {
+function softReset(bulk) {
   //if (bulk < 1) bulk = 1 (fixing issue 184)
   if (!player.break && player.money.gt(Number.MAX_VALUE)) return;
   var oldResets = player.resets
@@ -29,7 +29,7 @@ function softReset(bulk, noAdding) {
   if (player.resets >= 10) {
       giveAchievement("Boosting to the max");
   }
-  if (player.currentChallenge=="challenge14"&&!noAdding) player.tickBoughtThisInf.pastResets.push({resets:player.resets,bought:player.tickBoughtThisInf.current})
+  if (player.currentChallenge=="challenge14") player.tickBoughtThisInf.pastResets.push({resets:player.resets,bought:player.tickBoughtThisInf.current})
   if (player.dilation.upgrades.includes("ngpp3") && player.eternities >= 1e9 && player.masterystudies && player.aarexModifications.switch === undefined) {
       player.matter = new Decimal(0)
       player.postC8Mult = new Decimal(1)
@@ -122,6 +122,8 @@ function softReset(bulk, noAdding) {
       tickSpeedMultDecreaseCost: player.tickSpeedMultDecreaseCost,
       dimensionMultDecrease: player.dimensionMultDecrease,
       dimensionMultDecreaseCost: player.dimensionMultDecreaseCost,
+      extraDimPowerIncrease: player.extraDimPowerIncrease,
+      dimPowerIncreaseCost: player.dimPowerIncreaseCost,
       version: player.version,
       overXGalaxies: player.overXGalaxies,
       infDimensionsUnlocked: player.infDimensionsUnlocked,
@@ -201,15 +203,14 @@ function softReset(bulk, noAdding) {
   }
   reduceDimCosts()
   if (player.currentChallenge == "postc1") player.costMultipliers = [new Decimal(1e3),new Decimal(5e3),new Decimal(1e4),new Decimal(1.2e4),new Decimal(1.8e4),new Decimal(2.6e4),new Decimal(3.2e4),new Decimal(4.2e4)];
-  if (player.resets == 1 && player.currentChallenge == "") {
-      if (player.infinityUpgrades.includes("skipReset2")) player.resets++;
-      if (player.infinityUpgrades.includes("skipReset3")) player.resets++;
+  if (player.currentChallenge == "") {
+      for (s=1;s<4;s++) if (player.infinityUpgrades.includes("skipReset1")&&player.resets<s) player.resets=s
       if (player.infinityUpgrades.includes("skipResetGalaxy")) {
-          player.resets++;
+          if (player.resets<4) player.resets=4
           if (player.galaxies == 0) player.galaxies = 1
       }
   }
-if (player.currentChallenge == "postc2") {
+  if (player.currentChallenge == "postc2") {
       player.eightAmount = new Decimal(1);
       player.eightBought = 1;
   }
@@ -292,17 +293,11 @@ function maxBuyDimBoosts(manual) {
 
 function getShiftRequirement(bulk) {
   let amount = 20;
-  let mult = 15
+  let mult = getDimboostCostIncrease()
   var resetNum = player.resets + bulk
   var maxTier = player.currentChallenge == "challenge4" ? 6 : 8
   tier = Math.min(resetNum + 4, maxTier)
-  if (player.timestudy.studies.includes(211)) mult -= 5
-  if (player.timestudy.studies.includes(222)) mult -= 2
-  if (player.masterystudies) if (player.masterystudies.includes("t261")) mult -= 1
-  var hasGDBUpg = player.galacticSacrifice ? player.galacticSacrifice.upgrades.includes(21) : false
-  if (hasGDBUpg) mult = 5
-  if (player.currentChallenge == "challenge4") mult += 5
-  if (tier == maxTier) amount += Math.max(resetNum + (hasGDBUpg ? 2 : 4) - maxTier, 0) * mult
+  if (tier == maxTier) amount += Math.max(resetNum + (player.galacticSacrifice ? (player.galacticSacrifice.upgrades.includes(21) ? 2 : 4) : 4) - maxTier, 0) * mult
   var costStart = getSupersonicStart()
   if (player.currentEternityChall == "eterc5") {
       amount += Math.pow(resetNum, 3) + resetNum
@@ -318,6 +313,22 @@ function getShiftRequirement(bulk) {
   if (player.challenges.includes("postc5")) amount -= 1
 
   return { tier: tier, amount: amount, mult: mult };
+}
+
+function getDimboostCostIncrease () {
+	if (false) return 15;
+	let ret = 15
+	if (player.galacticSacrifice) {
+		if (player.galacticSacrifice.upgrades.includes(21)) ret -= 10
+		if (player.infinityUpgrades.includes('dimboostCost')) ret -= 1
+		if (player.infinityUpgrades.includes("postinfi50")) ret -= 0.5
+	} else {
+		if (player.timestudy.studies.includes(211)) ret -= 5
+		if (player.timestudy.studies.includes(222)) ret -= 2
+		if (player.masterystudies) if (player.masterystudies.includes("t261")) ret -= 1
+		if (player.currentChallenge == "challenge4") ret += 5
+	}
+	return ret;
 }
 
 function getSupersonicStart() {

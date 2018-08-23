@@ -11,6 +11,7 @@ function getGSAmount() {
 	let ret = new Decimal(Math.pow(Math.max(galaxies, 0), y) * Math.max(player.resets - (player.currentChallenge=="challenge4"?2:4), 0));
 	ret = ret.times(player.eightAmount/50+1)
 	if (player.galacticSacrifice.upgrades.includes(32)) ret = ret.times(galUpgrade32())
+	if (player.infinityUpgrades.includes("galPointMult")) ret = ret.times(getPost01Mult())
 	if (player.achievements.includes('r37')) {
 		if (player.bestInfinityTime <= 18000) ret = ret.times(180000 / player.bestInfinityTime)
 		else ret = ret.times(10 * (1 + Math.pow(Math.log10(18000 / player.bestInfinityTime), 2)))
@@ -19,10 +20,10 @@ function getGSAmount() {
 	return ret.floor()
 }
 
-function galacticSacrifice() {
-	if (isEmptiness) return
+function galacticSacrifice(auto) {
+	if (!player.break && player.money.gt(Number.MAX_VALUE)) return;
 	if (getGSAmount().eq(0)) return
-	if (player.options.gSacrificeConfirmation) if (!confirm("Galactic Sacrifice will do a galaxy reset, and then remove all of your galaxies, in exchange of galaxy points which can be use to buy many overpowered upgrades, but it will take a lot of time to recover, are you sure you wanna do this?")) return
+	if (player.options.gSacrificeConfirmation&&!auto) if (!confirm("Galactic Sacrifice will do a galaxy reset, and then remove all of your galaxies, in exchange of galaxy points which can be use to buy many overpowered upgrades, but it will take a lot of time to recover, are you sure you wanna do this?")) return
 	player.galacticSacrifice.galaxyPoints = player.galacticSacrifice.galaxyPoints.plus(getGSAmount())
 	player.galaxies = -1
 	player.galacticSacrifice.times++
@@ -41,7 +42,7 @@ function resetGalacticSacrifice() {
 }
 
 function newGalacticDataOnInfinity() {
-	if (player.galacticSacrifice&&player.achievements.includes("r35")) {
+	if (player.galacticSacrifice&&player.achievements.includes("r36")) {
 		var data=player.galacticSacrifice
 		data.galaxyPoints=data.galaxyPoints.add(getGSAmount())
 		data.time=0
@@ -121,8 +122,13 @@ let galUpgrade13 = function () {
 let galUpgrade23 = function () {
 	return player.galacticSacrifice.galaxyPoints.max(1).log10()*3/4+1
 }
+let galUpgrade31 = function () {
+	return 1.1 + player.extraDimPowerIncrease * 0.02
+}
 let galUpgrade32 = function () {
-	return player.totalmoney.pow(0.003).add(1);
+	let x = player.totalmoney
+	if (!player.break) x = x.min(Number.MAX_VALUE)
+	return x.pow(0.003).add(1);
 }
 let galUpgrade33 = function () {
 	return player.galacticSacrifice.galaxyPoints.max(1).log10()/4+1
@@ -133,6 +139,7 @@ function galacticUpgradeSpanDisplay () {
 	document.getElementById('galspan12').innerHTML = shorten(galUpgrade12())
 	document.getElementById('galspan13').innerHTML = shorten(galUpgrade13())
 	document.getElementById('galspan23').innerHTML = shorten(getDimensionBoostPower().times(player.galacticSacrifice.upgrades.includes(23)?1:galUpgrade23()))
+	document.getElementById('galspan31').innerHTML = galUpgrade31().toFixed(2)
 	document.getElementById('galspan32').innerHTML = shorten(galUpgrade32())
 	document.getElementById('galspan33').innerHTML = shorten(getDimensionPowerMultiplier(true)*(player.galacticSacrifice.upgrades.includes(33)?1:galUpgrade33()))
 	document.getElementById('galcost33').innerHTML = shortenCosts(1e3)
@@ -161,7 +168,7 @@ function resetTotalBought() {
 function productAllTotalBought () {
 	var ret = 1;
 	for (i = 1; i <= 8; i++) {
-		if (player.totalBoughtDims[TIER_NAMES[i]]) ret *= Math.max(player.totalBoughtDims[TIER_NAMES[i]], 1);
+		if (player.totalBoughtDims[TIER_NAMES[i]]) ret *= Math.max(player.totalBoughtDims[TIER_NAMES[i]] ? player.totalBoughtDims[TIER_NAMES[i]] : 1, 1);
 	}
 	return ret;
 }
@@ -213,4 +220,32 @@ function upgradeSacAutobuyer() {
 
 document.getElementById("buyerBtnGalSac").onclick = function () {
 	buyAutobuyer(12);
+}
+
+//v1.4
+function getPost01Mult() {
+	return Math.min(Math.pow(player.infinitied + 1, .3), Math.pow(Math.log(player.infinitied + 3), 3))
+}
+
+document.getElementById("postinfi01").onclick = function() {
+	buyInfinityUpgrade("galPointMult",1e3);
+}
+
+document.getElementById("postinfi02").onclick = function() {
+	buyInfinityUpgrade("dimboostCost",2e4);
+}
+
+document.getElementById("postinfi03").onclick = function() {
+	buyInfinityUpgrade("galCost",5e5);
+}
+
+document.getElementById("postinfi04").onclick = function() {
+	if (player.infinityPoints.gte(player.dimPowerIncreaseCost) && player.extraDimPowerIncrease < 25) {
+		player.infinityPoints = player.infinityPoints.minus(player.dimPowerIncreaseCost)
+		player.dimPowerIncreaseCost = 1e3*Math.pow(4,player.extraDimPowerIncrease+1);
+		player.extraDimPowerIncrease += 1;
+		if (player.extraDimPowerIncrease > 15) player.dimPowerIncreaseCost = player.dimPowerIncreaseCost*Math.pow(125,player.extraDimPowerIncrease-5)
+		document.getElementById("postinfi04").innerHTML = "Dimension multipliers are further increased by g31 <br>x^" + galUpgrade31().toFixed(2) + ' -> ' + (galUpgrade31() + .02).toFixed(2) + '</br> Cost: ' + formatValue(player.options.notation, player.dimPowerIncreaseCost, 2, 2) + ' IP';
+		if (player.extraDimPowerIncrease >= 25) document.getElementById("postinfi04").innerHTML = "Dimension multipliers are further increased by g31 <br>x^" + galUpgrade31().toFixed(2);
+	}
 }

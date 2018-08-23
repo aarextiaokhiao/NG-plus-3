@@ -150,7 +150,7 @@ function buyMaxMetaDimension(tier) {
 	var tempMA=player.meta.antimatter
 	while (num>0) {
 		var temp=tempMA
-		var cost=getMetaCost(tier,currentBought+num-1).times(num<2?10-(player.meta[tier].bought)%10:10)
+		var cost=getMetaCost(tier,currentBought+num-1).times(num>1?10:10-dimMetaBought(tier))
 		if (cost.gt(tempMA)) {
 			tempMA=player.meta.antimatter.sub(cost)
 			bought--
@@ -159,9 +159,9 @@ function buyMaxMetaDimension(tier) {
 		num--
 	}
 	player.meta.antimatter=tempMA
-    player.meta[tier].amount=player.meta[tier].amount.add(bought*10-(player.meta[tier].bought)%10)
-    player.meta[tier].bought+=bought*10-(player.meta[tier].bought)%10
-    player.meta[tier].cost=getMetaCost(tier,Math.floor(player.meta[tier].bought/10))
+	player.meta[tier].amount=player.meta[tier].amount.add(bought*10-dimMetaBought(tier))
+	player.meta[tier].bought+=bought*10-dimMetaBought(tier)
+	player.meta[tier].cost=getMetaCost(tier,player.meta[tier].bought/10)
 }
 
 function canAffordMetaDimension(cost) {
@@ -495,6 +495,8 @@ function quantum(auto,force,challid) {
 			tickSpeedMultDecreaseCost: oheHeadstart ? player.tickSpeedMultDecreaseCost : 3e6,
 			dimensionMultDecrease: oheHeadstart ? player.dimensionMultDecrease : 10,
 			dimensionMultDecreaseCost: oheHeadstart ? player.dimensionMultDecreaseCost : 1e8,
+			extraDimPowerIncrease: oheHeadstart ? player.extraDimPowerIncrease : 0,
+			dimPowerIncreaseCost: oheHeadstart ? player.dimPowerIncreaseCost : 1e3,
 			version: player.version,
 			postC4Tier: 1,
 			postC3Reward: new Decimal(1),
@@ -734,6 +736,11 @@ function quantum(auto,force,challid) {
 			quantum: player.quantum,
 			aarexModifications: player.aarexModifications
 		};
+		if (player.challenges.includes("challenge1")) player.money = new Decimal(100)
+		if (player.achievements.includes("r37")) player.money = new Decimal(1000)
+		if (player.achievements.includes("r54")) player.money = new Decimal(2e5)
+		if (player.achievements.includes("r55")) player.money = new Decimal(1e10)
+		if (player.achievements.includes("r78")) player.money = new Decimal(1e25)
 		if (player.galacticSacrifice && !oheHeadstart) player.autobuyers[12]=13
 		player.challenges=challengesCompletedOnEternity()
 		if (headstart) for (ec=1;ec<13;ec++) player.eternityChalls['eterc'+ec]=5
