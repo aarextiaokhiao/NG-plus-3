@@ -370,7 +370,7 @@ function updateNewPlayer(reseted) {
         player.aarexModifications.quantumConf = true
     }
     if (modesChosen.ngmm) {
-        player.aarexModifications.newGameMinusMinusVersion = 1.3
+        player.aarexModifications.newGameMinusMinusVersion = 1.301
         player.galacticSacrifice = {}
         player.galacticSacrifice = resetGalacticSacrifice()
         player.totalBoughtDims = {}
@@ -5426,9 +5426,9 @@ function calcPerSec(amount, pow, hasMult) {
 
 function quickReset() {
 	if (inQC(6)) return
+	if (player.currentChallenge=="challenge14") if (player.tickBoughtThisInf.pastResets.length < 1) return
 	if (player.resets > 0 && !(player.galacticSacrifice && player.currentChallenge === 'challenge5')) player.resets--
 	if (player.currentChallenge=="challenge14") {
-		player.tickBoughtThisInf.current = 0
 		while (player.tickBoughtThisInf.pastResets.length > 0) {
 			let entry = player.tickBoughtThisInf.pastResets.pop()
 			if (entry.resets < player.resets) {
@@ -5438,11 +5438,11 @@ function quickReset() {
 			} else {
 				// we will have at least this many resets, set our remaining tickspeed upgrades
 				// and then throw the entry away
-				player.tickBoughtThisInf.current = entry.current;
+				player.tickBoughtThisInf.current = entry.bought;
 			}
 		}
 	}
-	softReset(0, true)
+	softReset(0)
 }
 
 

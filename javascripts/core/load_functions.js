@@ -838,7 +838,7 @@ if (player.version < 5) {
           player.autoSacrifice = player.autobuyers[12]
           var popThis = player.autobuyers.pop()
           player.autobuyers[12] = popThis % 1 === 0 ? 13 : popThis
-          player.aarexModifications.newGameMinusMinusVersion = 1.3
+          player.aarexModifications.newGameMinusMinusVersion = 1.301
           updateAutobuyers()
       }
       else if (player.galaxyPoints) player.aarexModifications.newGameMinusMinusVersion = 1.1
@@ -887,8 +887,11 @@ if (player.version < 5) {
       player.options.gSacrificeConfirmation = player.options.sacrificeConfirmation
       player.tickBoughtThisInf = resetTickBoughtThisInf()
       player.autobuyers.push(13)
-      player.aarexModifications.newGameMinusMinusVersion = 1.3
       updateAutobuyers()
+  }
+  if (player.aarexModifications.newGameMinusMinusVersion < 1.301) {
+      if (player.currentChallenge=="challenge14") if (player.tickBoughtThisInf.pastResets.length<1) player.tickBoughtThisInf.pastResets.push({resets:player.resets,bought:player.tickBoughtThisInf.current+new Decimal(player.tickSpeedCost).e-3})
+      player.aarexModifications.newGameMinusMinusVersion = 1.301
   }
   if (player.aarexModifications.ersVersion === undefined && player.boughtDims) {
       newAchievements=[]

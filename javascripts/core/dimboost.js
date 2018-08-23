@@ -24,12 +24,12 @@ function getDimensionBoostPower(next) {
 function softReset(bulk, noAdding) {
   //if (bulk < 1) bulk = 1 (fixing issue 184)
   if (!player.break && player.money.gt(Number.MAX_VALUE)) return;
-  if (player.currentChallenge=="challenge14"&&!noAdding) player.tickBoughtThisInf.resets.push({resets:player.resets,bought:player.tickBoughtThisInf.current})
   var oldResets = player.resets
   player.resets+=bulk;
   if (player.resets >= 10) {
       giveAchievement("Boosting to the max");
   }
+  if (player.currentChallenge=="challenge14"&&!noAdding) player.tickBoughtThisInf.pastResets.push({resets:player.resets,bought:player.tickBoughtThisInf.current})
   if (player.dilation.upgrades.includes("ngpp3") && player.eternities >= 1e9 && player.masterystudies && player.aarexModifications.switch === undefined) {
       player.matter = new Decimal(0)
       player.postC8Mult = new Decimal(1)

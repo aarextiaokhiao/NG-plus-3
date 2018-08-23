@@ -194,11 +194,11 @@ document.getElementById("challenge14").onclick = function () {
 }
 
 function updateTBTIonGalaxy() {
-	if (player.galacticSacrifice) return {current:player.tickBoughtThisInf.current,pastResets:[]}
+	if (player.galacticSacrifice) return {current:player.tickBoughtThisInf.current,pastResets:[{resets:0,bought:player.tickBoughtThisInf}]}
 }
 
 function resetTickBoughtThisInf() {
-	if (player.galacticSacrifice) return {current:0,pastResets:[]}
+	if (player.galacticSacrifice) return {current:0,pastResets:[{resets:0,bought:0}]}
 }
 
 function upgradeSacAutobuyer() {
