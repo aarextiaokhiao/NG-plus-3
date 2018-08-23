@@ -886,9 +886,7 @@ if (player.version < 5) {
   if (player.aarexModifications.newGameMinusMinusVersion < 1.3) {
       player.options.gSacrificeConfirmation = player.options.sacrificeConfirmation
       player.tickBoughtThisInf = resetTickBoughtThisInf()
-      player.autoSacrifice = player.autobuyers[12]
-      var popThis = player.autobuyers.pop()
-      player.autobuyers[12] = popThis % 1 === 0 ? 13 : popThis
+      player.autobuyers.push(13)
       player.aarexModifications.newGameMinusMinusVersion = 1.3
       updateAutobuyers()
   }
