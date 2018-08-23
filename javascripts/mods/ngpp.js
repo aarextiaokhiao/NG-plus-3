@@ -419,6 +419,7 @@ function quantum(auto,force,challid) {
 			money: new Decimal(10),
 			tickSpeedCost: new Decimal(1000),
 			tickspeed: new Decimal(1000),
+			tickBoughtThisInf: resetTickBoughtThisInf(),
 			firstCost: new Decimal(10),
 			secondCost: new Decimal(100),
 			thirdCost: new Decimal(10000),
@@ -457,7 +458,7 @@ function quantum(auto,force,challid) {
 			challenges: [],
 			currentChallenge: "",
 			infinityUpgrades: oheHeadstart ? player.infinityUpgrades : [],
-			infinityPoints: new Decimal(0),
+			infinityPoints: new Decimal(player.achievements.includes("r104") ? 1e25 : 0),
 			infinitied: 0,
 			infinitiedBank: headstart ? player.infinitiedBank : 0,
 			totalTimePlayed: player.totalTimePlayed,
@@ -625,7 +626,7 @@ function quantum(auto,force,challid) {
 			challengeTarget: 0,
 			autoSacrifice: oheHeadstart ? player.autoSacrifice : 1,
 			replicanti: {
-				amount: new Decimal(0),
+				amount: new Decimal(oheHeadstart ? 1 : 0),
 				unl: oheHeadstart,
 				chance: 0.01,
 				chanceCost: new Decimal(1e150),
@@ -733,11 +734,12 @@ function quantum(auto,force,challid) {
 			quantum: player.quantum,
 			aarexModifications: player.aarexModifications
 		};
+		if (player.galacticSacrifice && !oheHeadstart) player.autobuyers[12]=13
 		player.challenges=challengesCompletedOnEternity()
 		if (headstart) for (ec=1;ec<13;ec++) player.eternityChalls['eterc'+ec]=5
 		else if (speedrunMilestonesReached>2) for (ec=1;ec<15;ec++) player.eternityChalls['eterc'+ec] = 5
 		if (player.masterystudies) {
-			giveAchievement("To sub-atomic!")
+			giveAchievement("Sub-atomic")
 			var diffrg=player.quantum.usedQuarks.r.min(player.quantum.usedQuarks.g)
 			var diffgb=player.quantum.usedQuarks.g.min(player.quantum.usedQuarks.b)
 			var diffbr=player.quantum.usedQuarks.b.min(player.quantum.usedQuarks.r)

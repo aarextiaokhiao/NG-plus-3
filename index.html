@@ -747,6 +747,7 @@
                 <p></p>
                 <input id="confirmation" type="checkbox" style="width:20px; height: 18px; display: none" ach-tooltip="No confirmation when doing Dimensional Sacrifice" onchange="sacrificeConf()">
                 <button id="sacrifice" class="storebtn" style="font-size:12px; width: 320px; display: none" ach-tooltip="">Dimensional Sacrifice</button>
+                <input id="gConfirmation" type="checkbox" style="width:20px; height: 18px; display: none" ach-tooltip="No confirmation when doing Galactic Sacrifice" onchange="gSacrificeConf()">
                 <button id="gSacrifice" class="storebtn" style="font-size:12px; width: 320px; display: none" onclick="galacticSacrifice()" ach-tooltip=""></button>
                 <button id="maxall" class="storebtn" style="font-size: 12px">Max all (M)</Button>
                 <span id="chall2Pow"></span>
@@ -893,7 +894,7 @@
                         </td>
                     </tr>
                 </table>
-                <button id="quickReset" style="color:black; width: 200px; height: 50px; font-size: 12px; display: none" class="storebtn">Lose a reset, returning to the start of the reset</button>
+                <button id="quickReset" style="color:black; width: 200px; height: 50px; font-size: 12px; display: none" class="storebtn" onclick="quickReset()">Lose a reset, returning to the start of the reset</button>
             </div>
             <div id="infinitydimensions" class="dimtab">
                 <div>
@@ -1561,13 +1562,13 @@
                             <div id="I forgot to nerf that" class="achievement achievementlocked" style="background-image: url(images/17.png)" ach-tooltip="Get any dimension multiplier over 10 No (10e30). Reward: First Dimensions are 5% stronger."><br></div>
                         </td>
                         <td>
-                            <div id="The Gods are pleased" class="achievement achievementlocked" style="background-image: url(images/18.png)"><br></div>
+                            <div id="The Gods are pleased" class="achievement achievementlocked" style="background-image: url(images/18.png)" ach-tooltip="Get over 600x from Dimension Sacrifice in total."><br></div>
                         </td>
                         <td>
                             <div id="That's a lot of infinites" class="achievement achievementlocked" style="background-image: url(images/19.png)" ach-tooltip="Reach Infinity 10 times."><br></div>
                         </td>
                         <td>
-                            <div id="You didn't need it anyway" class="achievement achievementlocked" style="background-image: url(images/20.png)" ach-tooltip="Reach Infinite antimatter without having any 8th Dimensions. Reward: Dimensions 1-7 are 2% stronger."><br></div>
+                            <div id="You didn't need it anyway" class="achievement achievementlocked" style="background-image: url(images/20.png)"><br></div>
                         </td>
                         <td>
                             <div id="Don't you dare to sleep" class="achievement achievementlocked" style="background-image: url(images/10.png)" ach-tooltip="Be offline for over 6 hours in a row."><br></div>
@@ -1654,7 +1655,7 @@
                             <div id="Faster than a squared potato" class="achievement achievementlocked" style="background-image: url(images/406.png)" ach-tooltip="Reach 1e52 ticks per second. Reward: -2% tickspeed."><br></div>
                         </td>
                         <td>
-                            <div id="Infinitely Challenging" class="achievement achievementlocked" style="background-image: url(images/407.png)" ach-tooltip="Complete an infinity challenge."><br></div>
+                            <div id="Infinitely Challenging" class="achievement achievementlocked" style="background-image: url(images/407.png)"><br></div>
                         </td>
                         <td>
                             <div id="You did this again just for the achievement right?" class="achievement achievementlocked" style="background-image: url(images/408.png)"><br></div>
@@ -1665,7 +1666,7 @@
                                 <div id="ERROR 909: Dimension not found" class="achievement achievementlocked" style="background-image: url(images/41.png)"><br></div>
                             </td>
                             <td>
-                                <div id="Can't hold all these infinities" class="achievement achievementlocked" style="background-image: url(images/42.png)" ach-tooltip="Get all Dimension multipliers over 1e308. Reward: All dimensions 10% stronger."><br></div>
+                                <div id="Can't hold all these infinities" class="achievement achievementlocked" style="background-image: url(images/42.png)"><br></div>
                             </td>
                             <td>
                                 <div id="This achievement doesn't exist" class="achievement achievementlocked" style="background-image: url(images/43.png)" ach-tooltip="Get 9.9999e9999 antimatter. Reward: Dimensions are more powerful the more unspent antimatter you have."><br></div>
@@ -1680,7 +1681,7 @@
                                 <div id="One for each dimension" class="achievement achievementlocked" style="background-image: url(images/21.png)" ach-tooltip="Play for 8 days. Reward: Extremely small time multiplier."><br></div>
                             </td>
                             <td>
-                                <div id="How the antitables have turned" class="achievement achievementlocked" style="background-image: url(images/47.png)" ach-tooltip="Get 8th Dimension multiplier to be highest, 7th Dimension multiplier second highest etc. Reward: Each dimension gains a boost proportional to tier (8th dimension gets 8%, 7th gets 7%, etc.)"><br></div>
+                                <div id="How the antitables have turned" class="achievement achievementlocked" style="background-image: url(images/47.png)"><br></div>
                             </td>
                             <td>
                                 <div id="Blink of an eye" class="achievement achievementlocked" style="background-image: url(images/48.gif)" ach-tooltip="Get to Infinity in under 200 milliseconds. Reward: Start with 1e25 antimatter and all dimensions are stronger in first 300ms of infinity."><br></div>
@@ -2241,7 +2242,7 @@
                         </td>
                         <td>
                             <div class= "challengediv">
-                                <span style="font-size: 110%">You can only get 308 tickspeed upgrades. This count does not reset on resets. (COMING SOON)</span>
+                                <span style="font-size: 110%">You can only get 308 tickspeed upgrades. This count does not reset on resets.</span>
                                 <br>
                                 <br>
 
@@ -3245,16 +3246,34 @@
                         </div>
                     </td>
                 </tr>
+                <tr>
+                    <td></td>
+                    <td>
+                        <div class="autoBuyerDiv" id="autoBuyerSac">
+                            <div>Automatic Sacrifice</div>
+                            <button class="autobuyerbtn" id="buyerBtnSac" onclick="upgradeSacAutobuyer()"></button>
+                            <div id="intervalSac" style="font-size: 80%">Current interval: 0.10 seconds</div>
+                            <div><span>Sacrifice when the multiplier is over:</span>
+                            <input type="text" onchange="updatePriorities()" id="prioritySac"></input></div>
+                            <br>
+                            <span style="font-size: 80%">Is active</span>
+                            <input type="checkbox" onchange="updateAutobuyers()" id="13ison"></input>
+                        </div>
+                    </td>
+                    <td>
+                        <div class="autoBuyerDiv" id="autoBuyerGalSac">
+                            <div>Automatic Galactic Sacrifice</div>
+                            <button class="autobuyerbtn" id="buyerBtnGalSac"></button>
+                            <div style="font-size: 80%"id="intervalGalSac"></div>
+                            <div><span>Galactic sacrifice when GP gain is over:</span>
+                            <input type="text" onchange="updatePriorities()" id="priority14"></input></div>
+                            <br>
+                            <span style="font-size: 80%">Is active</span>
+                            <input type="checkbox" onchange="updateAutobuyers()" id="14ison"></input>
+                        </div>
+                    </td>
+                </tr>
             </table>
-            <div class="autoBuyerDiv" id="autoBuyerSac">
-                <div>Automatic Sacrifice</div>
-                <div id="intervalSac" style="font-size: 80%">Current interval: 0.10 seconds</div>
-                <div id="iplimit"><span>Sacrifice when the multiplier is over:</span>
-                <input type="text" onchange="updatePriorities()" id="prioritySac"></input></div>
-                <br>
-                <span style="font-size: 80%">Is active</span>
-                <input type="checkbox" onchange="updateAutobuyers()" id="13ison"></input>
-            </div>
 
             <div>
                 <table id="footer">
@@ -3540,11 +3559,12 @@
 	</div>
     <div class="popup optionmenu" id="confirmationoptions">
         <button class="closebtn storebtn" onclick="closeToolTip()">&times;</button>
-        <button id="sacConfirmBtn" onclick='sacrificeConf()' class="storebtn" style="width: 200px; height: 55px; font-size: 15px" style="display: inline"></button>
-        <button id="challengeconfirmation" class="storebtn" style="width: 200px; height: 55px; font-size: 15px" style="display: inline"></button>
-        <button id="eternityconf" onclick='toggleEternityConf()' class="storebtn" style="width: 200px; height: 55px; font-size: 15px" style="display: inline"></button>
-        <button id="dilationConfirmBtn" class="storebtn" onclick="toggleDilaConf()" style="width: 200px; height: 55px; font-size: 15px" style="display: inline"></button>
-        <button id="quantumConfirmBtn" class="storebtn" onclick="toggleQuantumConf()" style="width: 200px; height: 55px; font-size: 15px" style="display: inline"></button>
+        <button id="sacConfirmBtn" onclick='sacrificeConf()' class="storebtn" style="width: 200px; height: 45px; font-size: 12px" style="display: inline"></button>
+        <button id="gSacConfirmBtn" onclick='gSacrificeConf()' class="storebtn" style="width: 200px; height: 45px; font-size: 12px" style="display: inline"></button>
+        <button id="challengeconfirmation" class="storebtn" style="width: 200px; height: 45px; font-size: 12px" style="display: inline"></button>
+        <button id="eternityconf" onclick='toggleEternityConf()' class="storebtn" style="width: 200px; height: 45px; font-size: 12px" style="display: inline"></button>
+        <button id="dilationConfirmBtn" class="storebtn" onclick="toggleDilaConf()" style="width: 200px; height: 45px; font-size: 12px" style="display: inline"></button>
+        <button id="quantumConfirmBtn" class="storebtn" onclick="toggleQuantumConf()" style="width: 200px; height: 45px; font-size: 12px" style="display: inline"></button>
 	</div>
     <div id="TTbuttons" style="display:none;">
         <button class="timetheorembtn" onclick="toggleAutoTT()" id="theoremmax" style="margin-left:-276px; width:130px; height: 30px; font-size: 0.75rem; bottom: 77px;">Buy max Theorems</button>
@@ -3567,22 +3587,22 @@
 <script type="text/javascript" src="javascripts/core/format.js?10"></script>
 <script type="text/javascript" src="javascripts/core/achievements.js?7"></script>
 <script type="text/javascript" src="javascripts/core/chart.js"></script>
-<script type="text/javascript" src="javascripts/core/tickspeed.js?14"></script>
-<script type="text/javascript" src="javascripts/core/normal_dimension.js?19"></script>
+<script type="text/javascript" src="javascripts/core/tickspeed.js?15"></script>
+<script type="text/javascript" src="javascripts/core/normal_dimension.js?20"></script>
 <script type="text/javascript" src="javascripts/core/infinity_dimension.js?11"></script>
 <script type="text/javascript" src="javascripts/core/time_dimension.js?14"></script>
-<script type="text/javascript" src="javascripts/core/dimboost.js?23"></script>
+<script type="text/javascript" src="javascripts/core/dimboost.js?24"></script>
 <script type="text/javascript" src="javascripts/core/timestudies.js?21"></script>
 <script type="text/javascript" src="javascripts/core/canvases.js?5"></script>
 <script type="text/javascript" src="javascripts/core/devtools.js"></script>
-<script type="text/javascript" src="javascripts/core/load_functions.js?37"></script>
+<script type="text/javascript" src="javascripts/core/load_functions.js?38"></script>
 <script type="text/javascript" src="javascripts/core/newsticker.js?4"></script>
-<script type="text/javascript" src="javascripts/mods/ngmm.js?15"></script>
+<script type="text/javascript" src="javascripts/mods/ngmm.js?16"></script>
 <script type="text/javascript" src="javascripts/mods/ers.js"></script>
-<script type="text/javascript" src="javascripts/mods/ngpp.js?24"></script>
+<script type="text/javascript" src="javascripts/mods/ngpp.js?25"></script>
 <script type="text/javascript" src="javascripts/mods/ngppp.js?26"></script>
-<script type="text/javascript" src="javascripts/mods/ngmmm.js"></script>
-<script type="text/javascript" src="javascripts/game.js?43"></script>
+<script type="text/javascript" src="javascripts/mods/ngmmm.js?1"></script>
+<script type="text/javascript" src="javascripts/game.js?44"></script>
 <script type="text/javascript" src="javascripts/sha512.js"></script>
 </body>
 </html>

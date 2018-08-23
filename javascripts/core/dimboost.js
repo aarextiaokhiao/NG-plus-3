@@ -21,9 +21,10 @@ function getDimensionBoostPower(next) {
   return new Decimal(ret)
 }
 
-function softReset(bulk) {
+function softReset(bulk, noAdding) {
   //if (bulk < 1) bulk = 1 (fixing issue 184)
   if (!player.break && player.money.gt(Number.MAX_VALUE)) return;
+  if (player.currentChallenge=="challenge14"&&!noAdding) player.tickBoughtThisInf.resets.push({resets:player.resets,bought:player.tickBoughtThisInf.current})
   var oldResets = player.resets
   player.resets+=bulk;
   if (player.resets >= 10) {
@@ -44,6 +45,7 @@ function softReset(bulk) {
       money: player.achievements.includes("r111") ? player.money : new Decimal(10),
       tickSpeedCost: new Decimal(1000),
       tickspeed: new Decimal(1000),
+      tickBoughtThisInf: player.tickBoughtThisInf,
       firstCost: new Decimal(10),
       secondCost: new Decimal(100),
       thirdCost: new Decimal(10000),

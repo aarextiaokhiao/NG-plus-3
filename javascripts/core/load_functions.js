@@ -416,7 +416,7 @@ if (player.version < 5) {
       document.getElementById("replicantiunlock").style.display="inline-block"
   }
 
-  if (player.currentChallenge == "challenge12" || player.currentChallenge == "challenge9" || player.currentChallenge == "challenge5" ||
+  if (player.currentChallenge == "challenge12" || player.currentChallenge == "challenge9" || player.currentChallenge == "challenge5" || player.currentChallenge == "challenge14" ||
       player.currentChallenge == "postc1" || player.currentChallenge == "postc4" || player.currentChallenge == "postc5" || player.currentChallenge == "postc6" || player.currentChallenge == "postc8") document.getElementById("quickReset").style.display = "inline-block";
   else document.getElementById("quickReset").style.display = "none";
 
@@ -434,6 +434,8 @@ if (player.version < 5) {
 
   if (player.currentChallenge == "challenge12" || player.currentChallenge == "postc1" || player.currentChallenge == "postc6" || inQC(6)) document.getElementById("matter").style.display = "inline-block";
   else document.getElementById("matter").style.display = "none";
+  if (player.currentChallenge == "challenge13" || player.currentChallenge == "postc1") document.getElementById("chall13Mult").style.display = "inline-block";
+  else document.getElementById("chall13Mult").style.display = "none";
 
 
 
@@ -832,6 +834,13 @@ if (player.version < 5) {
           }
           player.aarexModifications.newGameMinusMinusVersion = 1.295
       }
+      if (player.tickBoughtThisInf) {
+          player.autoSacrifice = player.autobuyers[12]
+          var popThis = player.autobuyers.pop()
+          player.autobuyers[12] = popThis % 1 === 0 ? 13 : popThis
+          player.aarexModifications.newGameMinusMinusVersion = 1.3
+          updateAutobuyers()
+      }
       else if (player.galaxyPoints) player.aarexModifications.newGameMinusMinusVersion = 1.1
       else if ((Decimal.gt(player.postC3Reward, 1) && player.infinitied < 1 && player.eternities < 1 && (player.quantum ? player.quantum.times < 1 : true)) || (Math.round(new Decimal(player.achPow).log(5) * 100) % 100 < 1 && Decimal.gt(player.achPow, 1))) player.aarexModifications.newGameMinusMinusVersion = 1
       if (player.aarexModifications.newGameMinusMinusVersion) updateAchievements()
@@ -873,9 +882,15 @@ if (player.version < 5) {
       }
       reduceDimCosts()
   }
-  if (player.aarexModifications.newGameMinusMinusVersion < 1.295) {
-      player.totalBoughtDims = {}
-      player.aarexModifications.newGameMinusMinusVersion = 1.295
+  if (player.aarexModifications.newGameMinusMinusVersion < 1.295) player.totalBoughtDims = {}
+  if (player.aarexModifications.newGameMinusMinusVersion < 1.3) {
+      player.options.gSacrificeConfirmation = player.options.sacrificeConfirmation
+      player.tickBoughtThisInf = resetTickBoughtThisInf()
+      player.autoSacrifice = player.autobuyers[12]
+      var popThis = player.autobuyers.pop()
+      player.autobuyers[12] = popThis % 1 === 0 ? 13 : popThis
+      player.aarexModifications.newGameMinusMinusVersion = 1.3
+      updateAutobuyers()
   }
   if (player.aarexModifications.ersVersion === undefined && player.boughtDims) {
       newAchievements=[]
@@ -953,10 +968,13 @@ if (player.version < 5) {
   quantumed = false
   if (player.meta !== undefined) quantumed = player.quantum.times > 0
   document.getElementById("confirmations").style.display = (player.resets > 4 || player.galaxies > 0 || (player.galacticSacrifice ? player.galacticSacrifice.times > 0 : false) || player.infinitied !== 0 || player.eternities !== 0 || quantumed) ? "inline-block" : "none"
-  document.getElementById("confirmation").style.display = (player.resets > 4 || player.galaxies > 0 || (player.galacticSacrifice ? player.galacticSacrifice.times > 0 : false) || player.infinitied > 0 || player.eternities !== 0 || quantumed) ? "inline-block" : "none"
+  document.getElementById("confirmation").style.display = (player.resets > 4 || player.infinitied > 0 || player.eternities !== 0 || quantumed) ? "inline-block" : "none"
   document.getElementById("sacrifice").style.display = (player.resets > 4 || player.infinitied > 0 || player.eternities !== 0 || quantumed) ? "inline-block" : "none"
-  document.getElementById("gSacrifice").style.display = (player.galacticSacrifice ? (player.galaxies > 0 || player.galacticSacrifice.times > 0 || player.infinitied > 0 || player.eternities !== 0 || quantumed) : false) ? "inline-block" : "none"
   document.getElementById("sacConfirmBtn").style.display = (player.resets > 4 || player.galaxies > 0 || (player.galacticSacrifice ? player.galacticSacrifice.times > 0 : false) || player.infinitied > 0 || player.eternities !== 0 || quantumed) ? "inline-block" : "none"
+  var gSacDisplay = !player.galacticSacrifice ? "none" : player.galaxies > 0 || player.galacticSacrifice.times > 0 || player.infinitied > 0 || player.eternities !== 0 || quantumed ? "inline-block" : "none"
+  document.getElementById("gConfirmation").style.display = gSacDisplay
+  document.getElementById("gSacrifice").style.display = gSacDisplay
+  document.getElementById("gSacConfirmBtn").style.display = gSacDisplay
   document.getElementById("challengeconfirmation").style.display = (player.infinitied !== 0 || player.eternities !== 0 || quantumed) ? "inline-block" : "none"
   document.getElementById("eternityconf").style.display = (player.eternities !== 0 || quantumed) ? "inline-block" : "none"
   document.getElementById("dilationConfirmBtn").style.display = (player.dilation.studies.includes(1) || quantumed) ? "inline-block" : "none"
@@ -964,6 +982,8 @@ if (player.version < 5) {
 
   document.getElementById("confirmation").checked = !player.options.sacrificeConfirmation
   document.getElementById("sacConfirmBtn").textContent = "Sacrifice confirmation: O" + (player.options.sacrificeConfirmation ? "N" : "FF")
+  document.getElementById("gConfirmation").checked = !player.options.gSacrificeConfirmation
+  document.getElementById("gSacConfirmBtn").textContent = "Galactic sacrifice confirmation: O" + (player.options.gSacrificeConfirmation ? "N" : "FF")
   document.getElementById("challengeconfirmation").textContent = "Challenge confirmation: O" + (player.options.challConf ? "N" : "FF")
   document.getElementById("eternityconf").textContent = "Eternity confirmation: O" + (player.options.eternityconfirm ? "N" : "FF")
   document.getElementById("dilationConfirmBtn").textContent = "Dilation confirmation: O" + (player.aarexModifications.dilationConf ? "N" : "FF")
@@ -1447,6 +1467,7 @@ function loadAutoBuyerSettings() {
   document.getElementById("prioritySac").value = player.autoSacrifice.priority
   document.getElementById("bulkgalaxy").value = player.autobuyers[10].bulk
   document.getElementById("priority13").value = formatValue("Scientific", player.eternityBuyer.limit, 2, 0)
+  if (player.autobuyers[12] !== undefined) document.getElementById("priority14").value = formatValue("Scientific", new Decimal(player.autobuyers[12].priority), 2, 0)
   if (player.boughtDims) {
       document.getElementById("maxReplicantiCrunchSwitch").checked = player.autobuyers[11].requireMaxReplicanti;
       document.getElementById("requireIPPeak").checked = player.autobuyers[11].requireIPPeak;

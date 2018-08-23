@@ -8,7 +8,8 @@ function tickspeedBoost() {
 	var req=getTickspeedBoostRequirement()
 	if (Math.round(player[TIER_NAMES[req.tier]+"Amount"])<req.amount) return
 	player.tickspeedBoosts++
-	softReset(-player.resets)
+	softReset(-player.resets, true)
+	player.tickBoughtThisInf = updateTBTIonGalaxy()
 }
 
 function resetTickspeedBoosts() {

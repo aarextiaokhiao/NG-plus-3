@@ -1,8 +1,15 @@
 function getGSAmount() {
 	if (isEmptiness) return new Decimal(0)
 	let galaxies = player.galaxies + player.replicanti.galaxies + player.dilation.freeGalaxies;
-	let ret = new Decimal(Math.pow(Math.max(galaxies, 0), 1.5) * Math.max(player.resets - (player.currentChallenge=="challenge4"?2:4), 0));
-	ret = ret.times(player.eightAmount.toNumber()/50+1)
+	let y = 1.5 
+	if (false) {
+		y += Math.max(0, 0.05*(galaxies - 10)) + 0.005 * Math.pow(Math.max(0, galaxies-30) , 2) + 0.0005 * Math.pow(Math.max(0, galaxies-50) , 3)
+		y *= .08*player.challenges.length
+		if (y>100) y = Math.pow(316.22*y,1/3)
+		else if (y>10) y = Math.pow(10*y , .5)
+	}
+	let ret = new Decimal(Math.pow(Math.max(galaxies, 0), y) * Math.max(player.resets - (player.currentChallenge=="challenge4"?2:4), 0));
+	ret = ret.times(player.eightAmount/50+1)
 	if (player.galacticSacrifice.upgrades.includes(32)) ret = ret.times(galUpgrade32())
 	if (player.achievements.includes('r37')) {
 		if (player.bestInfinityTime <= 18000) ret = ret.times(180000 / player.bestInfinityTime)
@@ -15,7 +22,7 @@ function getGSAmount() {
 function galacticSacrifice() {
 	if (isEmptiness) return
 	if (getGSAmount().eq(0)) return
-	if (player.options.sacrificeConfirmation) if (!confirm("Galactic Sacrifice will do a galaxy reset, and then remove all of your galaxies, in exchange of galaxy points which can be use to buy many overpowered upgrades, but it will take a lot of time to recover, are you sure you wanna do this?")) return
+	if (player.options.gSacrificeConfirmation) if (!confirm("Galactic Sacrifice will do a galaxy reset, and then remove all of your galaxies, in exchange of galaxy points which can be use to buy many overpowered upgrades, but it will take a lot of time to recover, are you sure you wanna do this?")) return
 	player.galacticSacrifice.galaxyPoints = player.galacticSacrifice.galaxyPoints.plus(getGSAmount())
 	player.galaxies = -1
 	player.galacticSacrifice.times++
@@ -34,7 +41,7 @@ function resetGalacticSacrifice() {
 }
 
 function newGalacticDataOnInfinity() {
-	if (player.galacticSacrifice&&player.achievements.includes("r37")) {
+	if (player.galacticSacrifice&&player.achievements.includes("r35")) {
 		var data=player.galacticSacrifice
 		data.galaxyPoints=data.galaxyPoints.add(getGSAmount())
 		data.time=0
@@ -127,7 +134,7 @@ function galacticUpgradeSpanDisplay () {
 	document.getElementById('galspan13').innerHTML = shorten(galUpgrade13())
 	document.getElementById('galspan23').innerHTML = shorten(getDimensionBoostPower().times(player.galacticSacrifice.upgrades.includes(23)?1:galUpgrade23()))
 	document.getElementById('galspan32').innerHTML = shorten(galUpgrade32())
-	document.getElementById('galspan33').innerHTML = shorten(getDimensionPowerMultiplier(true)*(player.galacticSacrifice.upgrades.includes(23)?1:galUpgrade33()))
+	document.getElementById('galspan33').innerHTML = shorten(getDimensionPowerMultiplier(true)*(player.galacticSacrifice.upgrades.includes(33)?1:galUpgrade33()))
 	document.getElementById('galcost33').innerHTML = shortenCosts(1e3)
 }
 
@@ -169,4 +176,41 @@ function productAllDims1(){
 		ret += Math.max(player[TIER_NAMES[i] + "Amount"].log10(), 0);
 	}
 	return Math.min(1,ret);
+}
+
+document.getElementById("challenge13").onclick = function () {
+	startChallenge("challenge13", Number.MAX_VALUE);
+}
+
+//v1.3
+function gSacrificeConf() {
+	document.getElementById("gConfirmation").checked = player.options.gSacrificeConfirmation
+	player.options.gSacrificeConfirmation = !player.options.gSacrificeConfirmation
+	document.getElementById("gSacConfirmBtn").textContent = "Galactic Sacrifice confirmation: O" + (player.options.gSacrificeConfirmation ? "N" : "FF")
+}
+
+document.getElementById("challenge14").onclick = function () {
+	startChallenge("challenge14", Number.MAX_VALUE);
+}
+
+function updateTBTIonGalaxy() {
+	if (player.galacticSacrifice) return {current:player.tickBoughtThisInf.current,pastResets:[]}
+}
+
+function resetTickBoughtThisInf() {
+	if (player.galacticSacrifice) return {current:0,pastResets:[]}
+}
+
+function upgradeSacAutobuyer() {
+	if (player.infinityPoints.lt(player.autoSacrifice.cost)) return false;
+	player.infinityPoints = player.infinityPoints.minus(player.autoSacrifice.cost);
+	if (player.autoSacrifice.interval > 100) {
+		player.autoSacrifice.interval = Math.max(player.autoSacrifice.interval*0.6, 100);
+		if (player.autoSacrifice.interval > 120) player.autoSacrifice.cost *= 2; //if your last purchase wont be very strong, dont double the cost
+	}
+	updateAutobuyers();
+}
+
+document.getElementById("buyerBtnGalSac").onclick = function () {
+	buyAutobuyer(12);
 }

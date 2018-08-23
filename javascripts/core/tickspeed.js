@@ -1,5 +1,6 @@
 function canBuyTickSpeed() {
   if (player.currentEternityChall == "eterc9") return false
+  if (player.galacticSacrifice) if (player.currentChallenge=="challenge14"&&player.tickBoughtThisInf.current>307) return false
   return canBuyDimension(3);
 }
 
@@ -41,7 +42,7 @@ function getTickSpeedMultiplier() {
   if (player.masterystudies) realnormalgalaxies = Math.max(player.galaxies-player.quantum.electrons.sacGals,0)
   if (player.galacticSacrifice) {
       if (GUBought("rg4")) realnormalgalaxies *= 0.4
-      return Decimal.pow(0.999, getGalaxyPower(realnormalgalaxies) * getGalaxyPowerEff())
+      return Decimal.pow(0.998, getGalaxyPower(realnormalgalaxies) * getGalaxyPowerEff())
   } else if (realnormalgalaxies + player.replicanti.galaxies + player.dilation.freeGalaxies < 3) {
       if (GUBought("rg4")) realnormalgalaxies *= 0.4
       let baseMultiplier = 0.9;
@@ -78,6 +79,7 @@ function buyTickSpeed() {
   player.tickspeed = player.tickspeed.times(getTickSpeedMultiplier());
   if (player.challenges.includes("postc3") || player.currentChallenge == "postc3" || isIC3Trapped()) player.postC3Reward = player.postC3Reward.times(getPostC3RewardMult())
   player.postC8Mult = new Decimal(1)
+  if (player.currentChallenge=="challenge14") player.tickBoughtThisInf.current++
   player.why = player.why + 1
   return true;
 }
@@ -98,12 +100,13 @@ function buyMaxPostInfTickSpeed (mult) {
 	var buying = Math.floor((Math.sqrt(Math.pow(b, 2) - (c *a *4))-b)/(2 * a))+1
 	if (buying <= 0) return false
 	player.tickspeed = player.tickspeed.times(Decimal.pow(mult, buying));
-	if (player.challenges.includes("postc3") || player.currentChallenge == "postc3") player.postC3Reward = player.postC3Reward.times(Decimal.pow(1.05+(player.galaxies*0.005), buying))
+	if (player.challenges.includes("postc3") || player.currentChallenge == "postc3") player.postC3Reward = player.postC3Reward.times(Decimal.pow(getPostC3RewardMult(), buying))
 	player.tickSpeedCost = player.tickSpeedCost.times(player.tickspeedMultiplier.pow(buying-1)).times(Decimal.pow(mi, (buying-1)*(buying-2)/2))
 	player.tickspeedMultiplier = player.tickspeedMultiplier.times(Decimal.pow(mi, buying-1))
 	if (player.money.gte(player.tickSpeedCost)) player.money = player.money.minus(player.tickSpeedCost)
 	player.tickSpeedCost = player.tickSpeedCost.times(player.tickspeedMultiplier)
 	player.tickspeedMultiplier = player.tickspeedMultiplier.times(mi)
+	player.postC8Mult = new Decimal(1)
 }
 
 function cannotUsePostInfTickSpeed () {
@@ -111,6 +114,7 @@ function cannotUsePostInfTickSpeed () {
 }
 
 function buyMaxTickSpeed() {
+	if (player.currentChallenge == "challenge14") return false
 	if (!canBuyTickSpeed()) return false
 	var mult = getTickSpeedMultiplier()
 	if (player.currentChallenge == "challenge2" || player.currentChallenge == "postc1") player.chall2Pow = 0
@@ -121,7 +125,7 @@ function buyMaxTickSpeed() {
 			else multiplySameCosts(player.tickSpeedCost)
 			if (player.tickSpeedCost.gte(Number.MAX_VALUE)) player.tickspeedMultiplier = player.tickspeedMultiplier.times(inQC(7)?Number.MAX_VALUE:player.tickSpeedMultDecrease);
 			player.tickspeed = player.tickspeed.times(mult);
-			if (player.challenges.includes("postc3") || player.currentChallenge == "postc3" || isIC3Trapped()) player.postC3Reward = player.postC3Reward.times(1.05+(player.galaxies*0.005))
+			if (player.challenges.includes("postc3") || player.currentChallenge == "postc3" || isIC3Trapped()) player.postC3Reward = player.postC3Reward.times(getPostC3RewardMult())
 			player.postC8Mult = new Decimal(1)
 			if (!cannotUsePostInfTickSpeed()) buyMaxPostInfTickSpeed(mult);
 		}
@@ -142,5 +146,8 @@ function updateTickSpeed() {
 		else label = 'Tickspeed: ' + Math.min(player.tickspeed.m * 100, 999).toFixed(0) + ' / ' + shorten(Decimal.pow(10,2 - exp))
 	}
 	if (player.galacticSacrifice || player.currentChallenge == "postc3" || isIC3Trapped()) label = (showTickspeed ? label + ", Tickspeed m" : "M") + "ultiplier: " + formatValue(player.options.notation, player.postC3Reward, 2, 3)
-	document.getElementById("tickSpeedAmount").innerHTML = label
+	if (player.galacticSacrifice && player.currentChallenge == "challenge14") {
+		label += "<br>You have "+(308-player.tickBoughtThisInf.current)+" tickspeed purchases left."
+		document.getElementById("tickSpeedAmount").innerHTML = label
+	} else document.getElementById("tickSpeedAmount").textContent = label
 }

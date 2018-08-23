@@ -14,8 +14,9 @@ function getDimensionFinalMultiplier(tier) {
   multiplier = multiplier.times(kongDimMult)
   multiplier = multiplier.times(kongAllDimMult)
 
+  let y = Math.max(7, player.galacticSacrifice?Math.pow(player.galaxies, .7):0);
   if (player.currentEternityChall == "eterc9") multiplier = multiplier;
-  else multiplier = multiplier.times(player.infinityPower.pow(7).max(1))
+  else multiplier = multiplier.times(player.infinityPower.pow(y).max(1))
 
   if (player.infinityUpgrades.includes("totalMult")) multiplier = multiplier.times(totalMult)
   if (player.infinityUpgrades.includes("currentMult")) multiplier = multiplier.times(currentMult)
@@ -35,21 +36,23 @@ function getDimensionFinalMultiplier(tier) {
 
   multiplier = multiplier.times(timeMult());
   if (tier == 8 && player.achievements.includes("r23")) multiplier = multiplier.times(1.1);
-  else if (player.achievements.includes("r34")) multiplier = multiplier.times(1.02);
+  else if (player.achievements.includes("r34")) multiplier = multiplier.times(player.galacticSacrifice?2:1.02);
   if (tier <= 4 && player.achievements.includes("r43")) multiplier = multiplier.times(1.25);
   if (player.galacticSacrifice&&player.achievements.includes("r31")) multiplier = multiplier.times(productAllTotalBought1());
   if (player.achievements.includes("r48")) multiplier = multiplier.times(1.1);
   if (player.achievements.includes("r72")) multiplier = multiplier.times(player.galacticSacrifice?10:1.1); // tbd
   if (player.galacticSacrifice&&player.achievements.includes("r46")) multiplier = multiplier.times(productAllDims1());
   if (player.achievements.includes("r74") && player.currentChallenge != "") multiplier = multiplier.times(player.galacticSacrifice?40:1.4);
-  if (player.achievements.includes("r77")) multiplier = multiplier.times(1+tier/100);
-  if (player.achievements.includes("r56") && player.thisInfinityTime < 1800) multiplier = multiplier.times(3600/(player.thisInfinityTime+1800));
-  if (player.achievements.includes("r78") && player.thisInfinityTime < 3) multiplier = multiplier.times(3.3/(player.thisInfinityTime+0.3));
-  if (player.achievements.includes("r65") && player.currentChallenge != "" && player.thisInfinityTime < 1800) multiplier = multiplier.times(Math.max(2400/(player.thisInfinityTime+600), 1))
-  if (player.achievements.includes("r91") && player.thisInfinityTime < 50) multiplier = multiplier.times(Math.max(301-player.thisInfinityTime*6, 1))
-  if (player.achievements.includes("r92") && player.thisInfinityTime < 600) multiplier = multiplier.times(Math.max(101-player.thisInfinityTime/6, 1));
-  if (player.achievements.includes("r84")) multiplier = multiplier.times(player.money.pow(0.00004).plus(1));
-  else if (player.achievements.includes("r73")) multiplier = multiplier.times(player.money.pow(0.00002).plus(1));
+  if (player.achievements.includes("r77")) multiplier = multiplier.times(1+tier/(player.galacticSacrifice?10:100));
+  if (!player.galacticSacrifice) {
+      if (player.achievements.includes("r56") && player.thisInfinityTime < 1800) multiplier = multiplier.times(3600/(player.thisInfinityTime+1800));
+      if (player.achievements.includes("r78") && player.thisInfinityTime < 3) multiplier = multiplier.times(3.3/(player.thisInfinityTime+0.3));
+      if (player.achievements.includes("r65") && player.currentChallenge != "" && player.thisInfinityTime < 1800) multiplier = multiplier.times(Math.max(2400/(player.thisInfinityTime+600), 1))
+      if (player.achievements.includes("r91") && player.thisInfinityTime < 50) multiplier = multiplier.times(Math.max(301-player.thisInfinityTime*6, 1))
+      if (player.achievements.includes("r92") && player.thisInfinityTime < 600) multiplier = multiplier.times(Math.max(101-player.thisInfinityTime/6, 1));
+  }
+  if (player.achievements.includes("r84")) multiplier = multiplier.times(player.money.pow(player.galacticSacrifice?0.00002:0.00004).plus(1));
+  else if (player.achievements.includes("r73")) multiplier = multiplier.times(player.money.pow(player.galacticSacrifice?0.00001:0.00002).plus(1));
 
 
   if (player.timestudy.studies.includes(71) && tier !== 8) multiplier = multiplier.times(calcTotalSacrificeBoost().pow(0.25).min("1e210000"));
@@ -57,7 +60,6 @@ function getDimensionFinalMultiplier(tier) {
   if (player.timestudy.studies.includes(101)) multiplier = multiplier.times(Decimal.max(player.replicanti.amount, 1))
   if (player.timestudy.studies.includes(161)) multiplier = multiplier.times(new Decimal("1e616"))
   if (player.timestudy.studies.includes(234) && tier == 1) multiplier = multiplier.times(calcTotalSacrificeBoost())
-  if (tier > 1 && tier < 5) if (player.achievements.includes("r32") && player.tickspeedBoosts !== undefined) multiplier = multiplier.times(calcTotalSacrificeBoost().max(1))
 
   multiplier = multiplier.times(player.postC3Reward)
   if (player.challenges.includes("postc8") && tier < 8 && tier > 1) multiplier = multiplier.times(mult18);
@@ -562,7 +564,7 @@ function timeMult() {
     var mult = new Decimal(1)
     if (player.infinityUpgrades.includes("timeMult")) mult = mult.times(infUpg11Pow());
     if (player.infinityUpgrades.includes("timeMult2")) mult = mult.times(infUpg13Pow());
-    if (player.achievements.includes("r76")) mult = mult.times(Math.pow(player.totalTimePlayed / (600*60*48), 0.05));
+    if (player.achievements.includes("r76")) mult = mult.times(Math.pow(player.totalTimePlayed / (600*60*48), player.galacticSacrifice?0.1:0.05));
     return mult;
 }
 
