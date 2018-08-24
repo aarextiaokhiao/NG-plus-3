@@ -3531,7 +3531,7 @@ function updateCheckBoxes() {
          document.getElementById("dilatedeternityison").checked = player.eternityBuyer.dilationMode
          if (player.quantum) if (player.quantum.autobuyer) document.getElementById("quantumison").checked = player.quantum.autobuyer.enabled
     } else document.getElementById("dilatedeternityison").checked = false
-    if (player.autobuyers[12] % 1 !== 0 ? player.autobuyers[12].isOn : false) document.getElementById("14ison").checked = "true"
+    if (player.autobuyers[12] !== undefined ? player.autobuyers[12].isOn : false) document.getElementById("14ison").checked = "true"
     else document.getElementById("14ison").checked = ""
 }
 
