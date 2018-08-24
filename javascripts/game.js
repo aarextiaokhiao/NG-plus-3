@@ -381,7 +381,7 @@ function updateNewPlayer(reseted) {
         player.options.gSacrificeConfirmation = true
     }
     if (modesChosen.ngpp > 1) {
-        player.aarexModifications.newGame3PlusVersion = 1.9978
+        player.aarexModifications.newGame3PlusVersion = 1.99785
         player.dbPower = 1
         player.peakSpent = 0
         player.masterystudies = []
