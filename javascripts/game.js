@@ -872,7 +872,7 @@ function getGalaxyCostIncrease() {
 	if (false) return 60
 	let ret = 60
 	if (player.timestudy.studies.includes(42)) ret = 52
-	if (player.galacticSacrifice.upgrades.includes(22)) ret = 30
+	if (player.galacticSacrifice) if (player.galacticSacrifice.upgrades.includes(22)) ret = 30
 	if (player.currentChallenge == "challenge4") ret = 90
 	if (player.infinityUpgrades.includes("galCost")) ret -= 5
 	return ret;
@@ -2528,7 +2528,7 @@ function changeSaveDesc(saveId, placement) {
 		var temp=isSaveCurrent?player:get_save(saveId)
 		if (temp.aarexModifications==null) temp.aarexModifications={}
 		var message=""
-		if (temp.aarexModifications.newGameMinusVersion&&temp.meta&&temp.galacticSacrifice&&temp.masterystudies) message="NG"+(player.tickspeedBoosts==undefined?"":"-")+"+-+-+, "+(temp.aarexModifications.newGamePlusVersion?"":"No NG+ features, ")
+		if (temp.aarexModifications.newGameMinusVersion&&temp.meta&&temp.galacticSacrifice&&temp.masterystudies) message="NG"+(temp.tickspeedBoosts==undefined?"":"-")+"+-+-+, "+(temp.aarexModifications.newGamePlusVersion?"":"No NG+ features, ")
 		else {
 			if (temp.aarexModifications.newGameMinusVersion) message+="NG-, "
 			if (temp.galacticSacrifice) message+="NG--"+(temp.tickspeedBoosts!=undefined?"-":"")+", "
