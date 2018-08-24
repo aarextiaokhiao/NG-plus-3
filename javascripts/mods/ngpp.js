@@ -145,7 +145,7 @@ function buyMaxMetaDimension(tier) {
 		b=costMults[tier].log10()+0.5
 		bought=Math.sqrt(b*b+2*(bought-scalingStart)*costMults[tier].log10())-b+scalingStart
 	}
-	bought=Math.floor(bought)-currentBought
+	bought=Math.max(Math.floor(bought)-currentBought,1)
 	var num=bought
 	var tempMA=player.meta.antimatter
 	while (num>0) {
@@ -161,7 +161,7 @@ function buyMaxMetaDimension(tier) {
 	player.meta.antimatter=tempMA
 	player.meta[tier].amount=player.meta[tier].amount.add(bought*10-dimMetaBought(tier))
 	player.meta[tier].bought+=bought*10-dimMetaBought(tier)
-	player.meta[tier].cost=getMetaCost(tier,player.meta[tier].bought/10)
+	player.meta[tier].cost=getMetaCost(tier,currentBought+bought)
 }
 
 function canAffordMetaDimension(cost) {

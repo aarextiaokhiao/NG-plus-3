@@ -492,7 +492,7 @@ function buyQuarkMult() {
 
 var quantumChallenges={
 	costs:[0,15900,18e3,19850,25300,27100,30500,32500,33900],
-	goals:[0,643e7,7377e7,439e8,153e8,1253e7,2455e5,684e8,286e8]
+	goals:[0,643e7,7377e7,439e8,153e8,1253e7,2455e5,684e8,2855e7]
 }
 
 var assigned

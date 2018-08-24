@@ -381,7 +381,7 @@ function updateNewPlayer(reseted) {
         player.options.gSacrificeConfirmation = true
     }
     if (modesChosen.ngpp > 1) {
-        player.aarexModifications.newGame3PlusVersion = 1.99785
+        player.aarexModifications.newGame3PlusVersion = 1.99787
         player.dbPower = 1
         player.peakSpent = 0
         player.masterystudies = []
@@ -6132,7 +6132,7 @@ function gameLoop(diff) {
     }
     if (player.replicanti.amount !== 0) replicantiTicks += player.options.updateRate
     extraReplGalaxies = Math.floor(player.timestudy.studies.includes(225) ? player.replicanti.amount.e / 1e3 : player.timestudy.studies.includes(226) ? player.replicanti.gal / 15 : 0)
-    if (extraReplGalaxies > 99) extraReplGalaxies = Math.floor(Math.sqrt(0.25 + 2 * (extraReplGalaxies - 99) * (QCIntensity(8) ? 4 : 1)) + 98.5)
+    if (extraReplGalaxies > 99) extraReplGalaxies = Math.floor(Math.sqrt(0.25 + 2 * (extraReplGalaxies - 99) * (QCIntensity(8) ? 2 : 1)) + 98.5)
     extraReplGalaxies = Math.floor(extraReplGalaxies * colorBoosts.g)
 
     if (current == Decimal.ln(Number.MAX_VALUE) && player.thisInfinityTime < 600*30) giveAchievement("Is this safe?");
