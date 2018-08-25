@@ -5,12 +5,17 @@ function canBuyTickSpeed() {
 }
 
 function getGalaxyPower(ng, bi) {
-	let galaxyPower = Math.max(ng-(bi?2:0),0)+player.replicanti.galaxies+Math.floor(player.dilation.freeGalaxies)
-	if (player.timestudy.studies.includes(133)) galaxyPower += player.replicanti.galaxies/2
-	if (player.timestudy.studies.includes(132)) galaxyPower += player.replicanti.galaxies*0.4
-	if (player.boughtdims) galaxyPower += player.replicanti.galaxies*(Math.log10(player.replicanti.limit.log(2))/Math.log10(2)/10-1)
-	galaxyPower += extraReplGalaxies
-	galaxyPower += Math.min(player.replicanti.galaxies, player.replicanti.gal) * Math.max(Math.pow(Math.log10(player.infinityPower.plus(1).log10()+1), 0.03 * ECTimesCompleted("eterc8"))-1, 0)
+	let replGalPower = player.replicanti.galaxies
+	if (player.timestudy.studies.includes(133)) replGalPower += player.replicanti.galaxies/2
+	if (player.timestudy.studies.includes(132)) replGalPower += player.replicanti.galaxies*0.4
+	if (player.boughtdims) replGalPower += player.replicanti.galaxies*(Math.log10(player.replicanti.limit.log(2))/Math.log10(2)/10-1)
+	replGalPower += extraReplGalaxies
+	replGalPower += (GUBought("gb5") ? replGalPower : Math.min(player.replicanti.galaxies, player.replicanti.gal)) * Math.max(Math.pow(Math.log10(player.infinityPower.plus(1).log10()+1), 0.03 * ECTimesCompleted("eterc8"))-1, 0)
+	
+	let dilGalPower = Math.floor(player.dilation.freeGalaxies)
+	if (GUBought("br5")) dilGalPower *= 1 + Math.max(Math.pow(Math.log10(player.infinityPower.plus(1).log10()+1), 0.03 * ECTimesCompleted("eterc8"))-1, 0)
+
+	let galaxyPower = Math.max(ng-(bi?2:0),0)+replGalPower+dilGalPower
 	if ((player.currentChallenge=="challenge7"||inQC(4))&&player.galacticSacrifice) galaxyPower *= galaxyPower
 	return galaxyPower
 }

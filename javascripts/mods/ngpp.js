@@ -14,7 +14,7 @@ function getMetaDimensionMultiplier (tier) {
   if (player.achievements.includes("ngpp12")) multiplier = multiplier.times(1.1)
   if (player.masterystudies) {
       if (player.masterystudies.includes("t262")) multiplier = multiplier.times(getMTSMult(262))
-      if (QCIntensity(3)) multiplier = multiplier.times(Decimal.pow(10,Math.sqrt(Math.max(player.infinityPower.log10(),0)/1e9)))
+      if (QCIntensity(3)) multiplier = multiplier.times(Decimal.pow(10,Math.sqrt(Math.max(player.infinityPower.log10(),0)/(QCIntensity(3)>1?2e8:1e9))))
   }
   if (GUBought("rg3")&&tier<2) multiplier = multiplier.times(player.resets)
   if (GUBought("br4")) multiplier = multiplier.times(Decimal.pow(getDimensionPowerMultiplier(), 0.0003))

@@ -96,6 +96,7 @@ function buyMasteryStudy(type, id) {
 			showTab("challenges")
 			showChallengesTab("quantumchallenges")
 			updateQuantumChallenges()
+			if (id>8) updateGluons()
 		}
 	}
 }
@@ -304,7 +305,7 @@ function assignQuark(color) {
 }
 
 //v1.75
-GUCosts=[null, 1, 2, 4, 100]
+GUCosts=[null, 1, 2, 4, 100, 3e15]
 
 function updateGluons() {
 	if (!player.masterystudies) return
@@ -322,12 +323,20 @@ function updateGluons() {
 	document.getElementById("gbgain").textContent=shortenDimensions(player.quantum.usedQuarks.g.min(player.quantum.usedQuarks.b))
 	document.getElementById("brgain").textContent=shortenDimensions(player.quantum.usedQuarks.b.min(player.quantum.usedQuarks.r))
 	var names=["rg","gb","br"]
-	for (u=1;u<5;u++) {
-		for (c=0;c<3;c++) {
-			var div=document.getElementById(names[c]+"upg"+u)
-			if (GUBought(names[c]+u)) div.className="gluonupgradebought "+names[c]
-			else if (player.quantum.gluons[names[c]].lt(GUCosts[u])) div.className="gluonupgrade unavailablebtn"
-			else div.className="gluonupgrade "+names[c]
+	for (u=1;u<6;u++) {
+		var showRow=true
+		if (u>4) {
+			showRow=player.masterystudies.includes("d9")
+			document.getElementById("gupgrow"+u).style.display=showRow?"":"none"
+			if (showRow) for (c=0;c<3;c++) document.getElementById(names[c]+"upg"+u+"cost").textContent=shortenDimensions(GUCosts[u])
+		}
+		if (showRow) {
+			for (c=0;c<3;c++) {
+				var div=document.getElementById(names[c]+"upg"+u)
+				if (GUBought(names[c]+u)) div.className="gluonupgradebought "+names[c]
+				else if (player.quantum.gluons[names[c]].lt(GUCosts[u])) div.className="gluonupgrade unavailablebtn"
+				else div.className="gluonupgrade "+names[c]
+			}
 		}
 	}
 	var c=Decimal.pow(100, Math.floor(player.quantum.multPower/3)).times(500)
@@ -346,6 +355,7 @@ function buyGluonUpg(color, id) {
 	player.quantum.gluons[color]=player.quantum.gluons[color].sub(GUCosts[id])
 	updateGluons()
 	if (name=="gb4") player.tickSpeedMultDecrease=1.25
+	if (name=="br5") resetDilationGalaxies()
 }
 
 function GUBought(id) {
