@@ -1121,34 +1121,22 @@ function updateDimensions() {
 }
 
 function updateCosts() {
-    document.getElementById("first").innerHTML = 'Cost: ' + shortenPreInfCosts(player.firstCost);
-    document.getElementById("second").innerHTML = 'Cost: ' + shortenPreInfCosts(player.secondCost);
-    document.getElementById("third").innerHTML = 'Cost: ' + shortenPreInfCosts(player.thirdCost);
-    document.getElementById("fourth").innerHTML = 'Cost: ' + shortenPreInfCosts(player.fourthCost);
-    document.getElementById("fifth").innerHTML = 'Cost: ' + shortenPreInfCosts(player.fifthCost);
-    document.getElementById("sixth").innerHTML = 'Cost: ' + shortenPreInfCosts(player.sixthCost);
-    document.getElementById("seventh").innerHTML = 'Cost: ' + shortenPreInfCosts(player.seventhCost);
-    document.getElementById("eight").innerHTML = 'Cost: ' + shortenPreInfCosts(player.eightCost);
+	for (var dim = 1; dim <= 8; ++dim) {
+		var cost = player[TIER_NAMES[dim] + "Cost"]
+		document.getElementById(TIER_NAMES[dim]).textContent = 'Cost: ' + shortenPreInfCosts(cost)
+		document.getElementById(TIER_NAMES[dim] + "Max").textContent = 'Until 10, Cost: ' + shortenPreInfCosts(cost.times(10 - dimBought(dim)));
+	}
 
-    document.getElementById("firstMax").innerHTML = 'Until 10, Cost: ' + shortenPreInfCosts(player.firstCost.times(10 - dimBought(1)));
-    document.getElementById("secondMax").innerHTML = 'Until 10, Cost: ' + shortenPreInfCosts(player.secondCost.times(10 - dimBought(2)));
-    document.getElementById("thirdMax").innerHTML = 'Until 10, Cost: ' + shortenPreInfCosts(player.thirdCost.times(10 - dimBought(3)));
-    document.getElementById("fourthMax").innerHTML = 'Until 10, Cost: ' + shortenPreInfCosts(player.fourthCost.times(10 - dimBought(4)));
-    document.getElementById("fifthMax").innerHTML = 'Until 10, Cost: ' + shortenPreInfCosts(player.fifthCost.times(10 - dimBought(5)));
-    document.getElementById("sixthMax").innerHTML = 'Until 10, Cost: ' + shortenPreInfCosts(player.sixthCost.times(10 - dimBought(6)));
-    document.getElementById("seventhMax").innerHTML = 'Until 10, Cost: ' + shortenPreInfCosts(player.seventhCost.times(10 - dimBought(7)));
-    document.getElementById("eightMax").innerHTML = 'Until 10, Cost: ' + shortenPreInfCosts(player.eightCost.times(10 - dimBought(8)));
-
-    document.getElementById("tickSpeed").innerHTML = 'Cost: ' + shortenPreInfCosts(player.tickSpeedCost);
+    document.getElementById("tickSpeed").textContent = 'Cost: ' + shortenPreInfCosts(player.tickSpeedCost);
 
 
     for (var i=1; i<9; i++) {
-        document.getElementById("infMax"+i).innerHTML = "Cost: " + shortenInfDimCosts(player["infinityDimension"+i].cost) + " IP"
-        document.getElementById("timeMax"+i).innerHTML = "Cost: " + shortenDimensions(player["timeDimension"+i].cost) + " EP"
+        document.getElementById("infMax"+i).textContent = "Cost: " + shortenInfDimCosts(player["infinityDimension"+i].cost) + " IP"
+        document.getElementById("timeMax"+i).textContent = "Cost: " + shortenDimensions(player["timeDimension"+i].cost) + " EP"
         if (player.meta) {
             var useTwo = player.meta[i].cost.gt("1e1100")||player.options.notation=="Logarithm"
-            document.getElementById("meta"+i).innerHTML = speedrunMilestonesReached > i+5 ? "Auto: O"+(player.autoEterOptions["md"+i] ? "N" : "FF") : "Cost: " + formatValue(player.options.notation, player.meta[i].cost, useTwo?2:0, 0) + " MA"
-            document.getElementById("metaMax"+i).innerHTML = (speedrunMilestonesReached > i+5 ? (shiftDown ? "Singles" : "Cost") : "Until 10") + ": " + formatValue(player.options.notation, ((shiftDown && speedrunMilestonesReached > i+5) ? player.meta[i].cost : getMetaMaxCost(i)), useTwo?2:0, 0) + " MA"
+            document.getElementById("meta"+i).textContent = speedrunMilestonesReached > i+5 ? "Auto: O"+(player.autoEterOptions["md"+i] ? "N" : "FF") : "Cost: " + formatValue(player.options.notation, player.meta[i].cost, useTwo?2:0, 0) + " MA"
+            document.getElementById("metaMax"+i).textContent = (speedrunMilestonesReached > i+5 ? (shiftDown ? "Singles" : "Cost") : "Until 10") + ": " + formatValue(player.options.notation, ((shiftDown && speedrunMilestonesReached > i+5) ? player.meta[i].cost : getMetaMaxCost(i)), useTwo?2:0, 0) + " MA"
         }
     }
 }
