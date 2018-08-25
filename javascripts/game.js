@@ -5546,6 +5546,17 @@ var blink = true
 var nextAt
 var goals
 
+function maybeSetHTML(condition, elementName, contents) {
+	var elem = document.getElementById(elementName)
+	if (condition) {
+		elem.innerHTML = contents
+		elem.style.display = ""
+	} else {
+		elem.innerHTML = ""
+		elem.style.display = "none"
+	}
+}
+
 setInterval(function() {
     if (getDimensionFinalMultiplier(1).gte(new Decimal("1e308")) &&
         getDimensionFinalMultiplier(2).gte(new Decimal("1e308")) &&
@@ -5609,12 +5620,12 @@ setInterval(function() {
 
     document.getElementById("eternitybtn").style.display = (player.infinityPoints.gte(player.eternityChallGoal) && (player.infDimensionsUnlocked[7] || player.eternities > 24)) ? "inline-block" : "none"
 
-    if (quantumed) document.getElementById("quarks").innerHTML = "You have <b id='QK'>"+shortenDimensions(player.quantum.quarks)+"</b> quark"+(player.quantum.quarks.eq(1)?".":"s.")
+	maybeSetHTML(quantumed, "quarks", "You have <b id='QK'>"+shortenDimensions(player.quantum.quarks)+"</b> quark"+(player.quantum.quarks.eq(1)?".":"s."))
+
     document.getElementById("bigcrunch").parentElement.style.top = haveBlock ? "139px" : "19px"
     document.getElementById("quantumBlock").style.display = haveBlock ? "" : "none"
     document.getElementById("quantumbtn").style.display = "none"
     if (player.meta !== undefined) if (isQuantumReached()) document.getElementById("quantumbtn").style.display = ""
-    document.getElementById("quarks").style.display = quantumed ? "" : "none"
 
     for (var i=1; i <=8; i++) {
         document.getElementById("postc"+i+"goal").textContent = "Goal: "+shortenCosts(goals[i-1])
@@ -6729,6 +6740,8 @@ function gameLoop(diff) {
             else updateMasteryStudyButtons()
         }
     }
+
+	maybeSetHTML(quantumed && player.quantum.times > 1, "quantumClock", "Quantum time: <b>"+timeDisplayShort(player.quantum.time)+"</b>")
 
     document.getElementById("infinityPoints1").innerHTML = "You have <span class=\"IPAmount1\">"+shortenDimensions(player.infinityPoints)+"</span> Infinity points."
     document.getElementById("infinityPoints2").innerHTML = "You have <span class=\"IPAmount2\">"+shortenDimensions(player.infinityPoints)+"</span> Infinity points."
