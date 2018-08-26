@@ -300,7 +300,7 @@ function updateColorCharge() {
 function assignQuark(color) {
 	player.quantum.usedQuarks[color]=player.quantum.usedQuarks[color].add(player.quantum.quarks)
 	player.quantum.quarks=new Decimal(0)
-	document.getElementById("QK").textContent=0
+	document.getElementById("quarks").innerHTML="You have <b class='QKAmount'>0</b> quarks."
 	updateColorCharge()
 	updateGluons()
 }
