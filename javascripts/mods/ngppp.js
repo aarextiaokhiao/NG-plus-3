@@ -1,10 +1,10 @@
-masterystudies={initialCosts:{time:{241: 1e71, 251: 2e71, 252: 2e71, 253: 2e71, 261: 5e71, 262: 5e71, 263: 5e71, 264: 5e71, 265: 5e71, 266: 5e71, 271: 6.858710562414266e76, 272: 6.858710562414266e76, 273: 6.858710562414266e76, 281: 1.3717421124828532e77, 282: 1.3717421124828532e77},
+masterystudies={initialCosts:{time:{241: 1e71, 251: 2e71, 252: 2e71, 253: 2e71, 261: 5e71, 262: 5e71, 263: 5e71, 264: 5e71, 265: 5e71, 266: 5e71, 271: 2.7434842249657063e76, 272: 2.7434842249657063e76, 273: 2.7434842249657063e76, 281: 6.858710562414266e76, 282: 6.858710562414266e76},
 		ec:{13:1e72, 14:1e72}},
 	costs:{time:{},
 		ec:{},
 		dil:{7: 2e82, 8: 1e84, 9: 1e85},
 		mc:{}},
-	costmults:{241: 1, 251: 2.5, 252: 2.5, 253: 2.5, 261: 6, 262: 6, 263: 6, 264: 6, 265: 6, 266: 6, 271: 2, 272: 2, 273: 2, 281: 9, 282: 9},
+	costmults:{241: 1, 251: 2.5, 252: 2.5, 253: 2.5, 261: 6, 262: 6, 263: 6, 264: 6, 265: 6, 266: 6, 271: 2, 272: 2, 273: 2, 281: 4, 282: 4},
 	costmult:1,
 	allTimeStudies:[241, 251, 252, 253, 261, 262, 263, 264, 265, 266, 271, 272, 273, 281, 282],
 	initialReqs:{13:728e3,14:255e5},
@@ -42,7 +42,7 @@ function updateMasteryStudyButtons() {
 			else div.className="timestudylocked"
 			document.getElementById("ds"+id+"Cost").textContent="Cost: "+shorten(masterystudies.costs.dil[id])+" Time Theorems"
 		}
-		document.getElementById("ds8Req").textContent="Requirement: "+shorten(15900)+" electrons"
+		document.getElementById("ds8Req").textContent="Requirement: "+shorten(15700)+" electrons"
 		for (id=281;id<283;id++) document.getElementById("ts"+id+"Current").textContent="Currently: "+shorten(getMTSMult(id))+"x"
 	}
 }
@@ -114,7 +114,7 @@ function canBuyMasteryStudy(type, id) {
 	} else if (type=='d') {
 		if (player.timestudy.theorem<masterystudies.costs.dil[id]||player.masterystudies.includes('d'+id)) return false
 		if (id>8) return player.masterystudies.includes("d8")&&QCIntensity(8)
-		if (id>7) return player.masterystudies.includes("t272")&&player.quantum.electrons.amount.gte(15900)
+		if (id>7) return player.masterystudies.includes("t272")&&player.quantum.electrons.amount.gte(15700)
 		if (id>6) return player.masterystudies.includes("t252")
 	} else {
 		if (player.timestudy.theorem<masterystudies.costs.ec[id]||player.eternityChallUnlocked) return false
@@ -243,13 +243,14 @@ function updateQuantumTabs() {
 		document.getElementById("brupg1current").textContent="Currently: "+shortenMoney(player.dilation.dilatedTime.add(1).log10()+1)+"x"
 		document.getElementById("brupg2current").textContent="Currently: "+shortenMoney(Decimal.pow(2.2, Math.pow(calcTotalSacrificeBoost().log10()/1e6, 0.25)))+"x"
 		document.getElementById("brupg4current").textContent="Currently: "+shortenMoney(Decimal.pow(getDimensionPowerMultiplier(), 0.0003))+"x"
+		if (player.masterystudies.includes("d9")) {
+			document.getElementById("gbupg5current").textContent="Currently: "+(Math.sqrt(player.replicanti.galaxies)/6).toFixed(1)+"%"
+			document.getElementById("brupg5current").textContent="Currently: "+(Math.sqrt(player.dilation.tachyonParticles.log10())*1.2).toFixed(1)+"%"
+		}
 	}
 	if (document.getElementById("electrons").style.display=="block") {
 		for (i=1;i<7;i++) document.getElementById("sacrifice"+i).className=(Math.pow(10,i>4?0:i-1)>player.galaxies-player.quantum.electrons.sacGals||!inQC(0))?"unavailablebtn":"storebtn"
-		document.getElementById("electronupg1").className="gluonupgrade "+(player.timestudy.theorem<getElectronUpgCost(1)?"unavailabl":"stor")+"ebtn"
-		document.getElementById("electronupg2").className="gluonupgrade "+(player.dilation.dilatedTime.lt(getElectronUpgCost(2))?"unavailabl":"stor")+"ebtn"
-		document.getElementById("electronupg3").className="gluonupgrade "+(player.meta.antimatter.lt(getElectronUpgCost(3))?"unavailabl":"stor")+"ebtn"
-		document.getElementById("electronupg4").className="gluonupgrade "+(player.meta.resets<getElectronUpgCost(4)?"unavailabl":"stor")+"ebtn"
+		for (u=1;u<5;u++) document.getElementById("electronupg"+u).className="gluonupgrade "+(canBuyElectronUpg(u)?"stor":"unavailabl")+"ebtn"
 	}
 }
 
@@ -305,7 +306,7 @@ function assignQuark(color) {
 }
 
 //v1.75
-GUCosts=[null, 1, 2, 4, 100, 3e15]
+GUCosts=[null, 1, 2, 4, 100, 6e15]
 
 function updateGluons() {
 	if (!player.masterystudies) return
@@ -323,10 +324,11 @@ function updateGluons() {
 	document.getElementById("gbgain").textContent=shortenDimensions(player.quantum.usedQuarks.g.min(player.quantum.usedQuarks.b))
 	document.getElementById("brgain").textContent=shortenDimensions(player.quantum.usedQuarks.b.min(player.quantum.usedQuarks.r))
 	var names=["rg","gb","br"]
-	for (u=1;u<6;u++) {
+	for (u=1;u<7;u++) {
 		var showRow=true
 		if (u>4) {
-			showRow=player.masterystudies.includes("d9")
+			if (u>5) showRow=false
+			else showRow=player.masterystudies.includes("d9")
 			document.getElementById("gupgrow"+u).style.display=showRow?"":"none"
 			if (showRow) for (c=0;c<3;c++) document.getElementById(names[c]+"upg"+u+"cost").textContent=shortenDimensions(GUCosts[u])
 		}
@@ -365,7 +367,7 @@ function GUBought(id) {
 
 //v1.79
 var speedrunMilestonesReached
-var speedrunMilestones = [12,9,6,4.5,3,2,1,8/9,7/9,6/9,5/9,4/9,3/9,2/9,1/9,1/12,1/15,7/120,1/20,1/24,1/30,1/45,1/60,1/120]
+var speedrunMilestones = [12,9,6,4.5,3,2,1,8/9,7/9,6/9,5/9,4/9,3/9,2/9,1/9,1/12,1/15,7/120,1/20,1/24,1/30,1/40,1/60,1/120]
 function updateSpeedruns() {
 	speedrunMilestonesReached = 0
 	if (player.masterystudies) {
@@ -418,9 +420,11 @@ function sacrificeGalaxy(id) {
 	else if (id>2) amount=100
 	else if (id>1) amount=10
 	if (amount>player.galaxies-player.quantum.electrons.sacGals) return
-	if (player.options.sacrificeConfirmation) if (!confirm("Sacrificing your galaxies reduces your tick interval. You will gain a boost for multiplier per ten dimensions. Are you sure you want to do that?")) return
+	if (player.options.sacrificeConfirmation) if (!confirm("Sacrificing your galaxies reduces your tickspeed and so your tick interval. You will gain a boost for multiplier per ten dimensions. Are you sure you want to do that?")) return
+	var old=new Decimal(getTickSpeedMultiplier()).log10()
 	player.quantum.electrons.sacGals+=amount
 	player.quantum.electrons.amount=player.quantum.electrons.amount.add(player.quantum.electrons.mult*amount)
+	player.tickspeed=player.tickspeed.pow(old/new Decimal(getTickSpeedMultiplier()).log10())
 	updateElectrons()
 }
 
@@ -467,23 +471,16 @@ function getElectronUpgCost(u) {
 }
 
 function buyElectronUpg(u) {
+	if (!canBuyElectronUpg(u)) return
 	var cost=getElectronUpgCost(u)
 	if (u>3) {
-		if (player.meta.resets<cost) return
 		player.meta.resets-=cost
 		player.meta.antimatter=new Decimal(100)
 		clearMetaDimensions()
-		for (let i = 2; i <= 8; i++) document.getElementById(i + "MetaRow").style.display = "none"
-	} else if (u>2) {
-		if (player.meta.antimatter.lt(cost)) return
-		player.meta.antimatter=player.meta.antimatter.sub(cost)
-	} else if (u>1) {
-		if (player.dilation.dilatedTime.lt(cost)) return
-		player.dilation.dilatedTime=player.dilation.dilatedTime.sub(cost)
-	} else {
-		if (player.timestudy.theorem<cost) return
-		player.timestudy.theorem-=cost
-	}
+		for (let i = 2; i <= 8; i++) if (!canBuyMetaDimension(i)) document.getElementById(i + "MetaRow").style.display = "none"
+	} else if (u>2) player.meta.antimatter=player.meta.antimatter.sub(cost)
+	else if (u>1) player.dilation.dilatedTime=player.dilation.dilatedTime.sub(cost)
+	else player.timestudy.theorem-=cost
 	player.quantum.electrons.rebuyables[u-1]++
 	player.quantum.electrons.mult+=0.25
 	updateElectrons()
@@ -492,17 +489,18 @@ function buyElectronUpg(u) {
 //v1.9
 function buyQuarkMult() {
 	var c=Decimal.pow(100, Math.floor(player.quantum.multPower/3)).times(500)
-	var t=player.quantum.gluons[(["rg","gb","br"])[player.quantum.multPower%3]]
+	var color=(["rg","gb","br"])[player.quantum.multPower%3]
+	var t=player.quantum.gluons[color]
 	if (t.gte(c)) {
-		t=t.sub(c)
+		player.quantum.gluons[color]=t.sub(c)
 		player.quantum.multPower++
 		updateGluons()
 	}
 }
 
 var quantumChallenges={
-	costs:[0,15900,18e3,19850,25300,27100,30500,32500,33900],
-	goals:[0,643e7,7377e7,439e8,153e8,1253e7,2455e5,684e8,2855e7]
+	costs:[0,15700,16900,18300,22700,25750,29600,32500,33900],
+	goals:[0,6375e6,735e7,4265e7,6899e7,1231e7,251e6,684e8,2855e7]
 }
 
 var assigned
@@ -589,4 +587,13 @@ function respecTogglePC() {
 function getQCCost(num) {
 	if (num>8) return quantumChallenges.costs[player.quantum.pairedChallenges.order[num-8][0]]+quantumChallenges.costs[player.quantum.pairedChallenges.order[num-8][1]]
 	return quantumChallenges.costs[num]
+}
+
+//v1.997895
+function canBuyElectronUpg(id) {
+	if (!inQC(0)) return false
+	if (id>3) return player.meta.resets>=getElectronUpgCost(4)
+	if (id>2) return player.meta.antimatter.gte(getElectronUpgCost(3))
+	if (id>1) return player.dilation.dilatedTime.gte(getElectronUpgCost(2))
+	return player.timestudy.theorem>=getElectronUpgCost(1)
 }

@@ -2008,7 +2008,7 @@
                         <td><div id="speedrunMilestone16" ach-tooltip="Reward: You keep all time studies in mastery studies.">5 minutes</div></td>
                     </tr>
                     <tr id="speedrunRow3">
-                        <td><div id="speedrunMilestone17" ach-tooltip="Reward: Start with all possible Meta Dimensions available.">4 minutes</div></td>
+                        <td><div id="speedrunMilestone17" ach-tooltip="Reward: You can buy all Meta Dimensions if it is affordable in your current meta boost.">4 minutes</div></td>
                         <td><div id="speedrunMilestone18">3.5 minutes</div></td>
                         <td><div id="speedrunMilestone19">3 minutes</div></td>
                         <td><div id="speedrunMilestone20" ach-tooltip="Reward: You can turn on automatic replicated galaxies anytime.">2.5 minutes</div></td>
@@ -2648,7 +2648,7 @@
                         </td>
                         <td>
                             <div class="quantumchallengediv" id="qc4div" style="height: 140px">
-                                <span>Like Automatic Crunches challenge, but also applied to all dimensions. Meta-dimension boosts cost increases slower.</span>
+                                <span>Like Automatic Crunches challenge, but also applied to all dimensions. However, buff effects on Normal, Infinity, and Time Dimensions are disabled. Meta-dimension boosts cost increases slower.</span>
                                 <br>
                                 <br>
                                 <div class="outer">
@@ -3481,9 +3481,13 @@
 					<td><button id='gbupg4' onclick='buyGluonUpg("gb",4)'>Massively decrease the tickspeed cost multiplier increase to 1.25x.<br>Cost: 100 GB gluons</button></td>
 					<td><button id='brupg4' onclick='buyGluonUpg("br",4)'>Multiplier per ten dimensions boosts Meta Dimensions.<br><span id='brupg4current'></span><br>Cost: 100 BR gluons</button></td>
 				</tr><tr id='gupgrow5'>
-					<td><button id='rgupg5' onclick='buyGluonUpg("rg",5)'>Dark Matter Galaxies affects Distant Antimatter Galaxies scaling 2x slower.<br>Cost: <span id='rgupg5cost'></span> RG gluons</button></td>
-					<td><button id='gbupg5' onclick='buyGluonUpg("gb",5)'>Replicated galaxies are way stronger.<br>Cost: <span id='gbupg5cost'></span> GB gluons</button></td>
-					<td><button id='brupg5' onclick='buyGluonUpg("br",5)'>Free galaxy efficiency is the same as the replicated one.<br>Cost: <span id='brupg5cost'></span> BR gluons</button></td>
+					<td><button id='rgupg5' onclick='buyGluonUpg("rg",5)'>Slow down Dark Matter Galaxies effect by 12%.<br>Cost: <span id='rgupg5cost'></span> RG gluons</button></td>
+					<td><button id='gbupg5' onclick='buyGluonUpg("gb",5)'>Replicated galaxies slow down Dark Matter Galaxies effect.<br><span id='gbupg5current'></span><br>Cost: <span id='gbupg5cost'></span> GB gluons</button></td>
+					<td><button id='brupg5' onclick='buyGluonUpg("br",5)'>Tachyon particles slow down Dark Matter Galaxies effect.<br><span id='brupg5current'></span><br>Cost: <span id='brupg5cost'></span> BR gluons</button></td>
+				</tr><tr id='gupgrow6'>
+					<td><button id='rgupg6' onclick='buyGluonUpg("rg",6)'>Replicated galaxies are way stronger.<br>Cost: <span id='rgupg6cost'></span> GB gluons</button></td>
+					<td><button id='gbupg6' onclick='buyGluonUpg("gb",6)'>Replicated galaxies are way stronger.<br>Cost: <span id='gbupg6cost'></span> GB gluons</button></td>
+					<td><button id='brupg6' onclick='buyGluonUpg("br",6)'>Free galaxy efficiency is the same as the replicated one.<br>Cost: <span id='brupg6cost'></span> BR gluons</button></td>
 				</tr>
 				<tr><td></td><td><button id='qkmult' onclick='buyQuarkMult()'>You gain 2x more quarks.<br><span id='qkmultcurrent'></span><br><span id='qkmultcost'></span></button></td><td></td></tr></table>
 			</div>
@@ -3601,22 +3605,22 @@
 <script type="text/javascript" src="javascripts/core/format.js?10"></script>
 <script type="text/javascript" src="javascripts/core/achievements.js?7"></script>
 <script type="text/javascript" src="javascripts/core/chart.js"></script>
-<script type="text/javascript" src="javascripts/core/tickspeed.js?16"></script>
-<script type="text/javascript" src="javascripts/core/normal_dimension.js?21"></script>
-<script type="text/javascript" src="javascripts/core/infinity_dimension.js?11"></script>
-<script type="text/javascript" src="javascripts/core/time_dimension.js?14"></script>
+<script type="text/javascript" src="javascripts/core/tickspeed.js?17"></script>
+<script type="text/javascript" src="javascripts/core/normal_dimension.js?22"></script>
+<script type="text/javascript" src="javascripts/core/infinity_dimension.js?12"></script>
+<script type="text/javascript" src="javascripts/core/time_dimension.js?15"></script>
 <script type="text/javascript" src="javascripts/core/dimboost.js?26"></script>
-<script type="text/javascript" src="javascripts/core/timestudies.js?21"></script>
+<script type="text/javascript" src="javascripts/core/timestudies.js?22"></script>
 <script type="text/javascript" src="javascripts/core/canvases.js?5"></script>
 <script type="text/javascript" src="javascripts/core/devtools.js"></script>
-<script type="text/javascript" src="javascripts/core/load_functions.js?43"></script>
+<script type="text/javascript" src="javascripts/core/load_functions.js?44"></script>
 <script type="text/javascript" src="javascripts/core/newsticker.js?4"></script>
 <script type="text/javascript" src="javascripts/mods/ngmm.js?18"></script>
 <script type="text/javascript" src="javascripts/mods/ers.js"></script>
-<script type="text/javascript" src="javascripts/mods/ngpp.js?28"></script>
-<script type="text/javascript" src="javascripts/mods/ngppp.js?29"></script>
+<script type="text/javascript" src="javascripts/mods/ngpp.js?29"></script>
+<script type="text/javascript" src="javascripts/mods/ngppp.js?30"></script>
 <script type="text/javascript" src="javascripts/mods/ngmmm.js?2"></script>
-<script type="text/javascript" src="javascripts/game.js?49"></script>
+<script type="text/javascript" src="javascripts/game.js?50"></script>
 <script type="text/javascript" src="javascripts/sha512.js"></script>
 </body>
 </html>

@@ -14,6 +14,7 @@ function getMetaDimensionMultiplier (tier) {
   if (player.achievements.includes("ngpp12")) multiplier = multiplier.times(1.1)
   if (player.masterystudies) {
       if (player.masterystudies.includes("t262")) multiplier = multiplier.times(getMTSMult(262))
+      if (player.masterystudies.includes("t282")) multiplier = multiplier.times(getMTSMult(282))
       if (QCIntensity(3)) multiplier = multiplier.times(Decimal.pow(10,Math.sqrt(Math.max(player.infinityPower.log10(),0)/(QCIntensity(3)>1?2e8:1e9))))
   }
   if (GUBought("rg3")&&tier<2) multiplier = multiplier.times(player.resets)
@@ -63,7 +64,7 @@ function clearMetaDimensions () {
 function getMetaShiftRequirement () {
   return {
     tier: Math.min(8, player.meta.resets + 4),
-    amount: Math.floor(Math.max((inQC(4) ? 5.5 : 15) * (player.meta.resets - 4),0) + Math.max((inQC(4) ? 0 : 5) * (player.meta.resets - 15), 0)) + 20
+    amount: Math.floor(Math.max((inQC(4) ? 5.5 : 15) * (player.meta.resets - 4),0) + Math.max((inQC(4) ? 14.5 : 5) * (player.meta.resets - (inQC(4) ? 55 : 5)), 0)) + 20
   }
 }
 
@@ -198,7 +199,7 @@ function getMetaDimensionProduction(tier) {
 
 function getExtraDimensionBoostPower() {
 	if (player.currentEternityChall=="eterc14" || inQC(7)) return new Decimal(1)
-	if (inQC(3)) return player.meta.bestAntimatter.pow(Math.pow(player.meta.bestAntimatter.max(1e10).log10()/10,2))
+	if (inQC(3)) return player.meta.bestAntimatter.pow(Math.pow(player.meta.bestAntimatter.max(1e8).log10()/8,2))
 	else return player.meta.bestAntimatter.pow(!player.dilation.upgrades.includes("ngpp5") ? 8 : 9+ECTimesCompleted("eterc13")*0.2).plus(1)
 }
 
@@ -340,7 +341,7 @@ function quantum(auto,force,challid) {
 			if (abletostart) {
 				if (pc>0) if (player.quantum.pairedChallenges.completed+1<pc) return
 				if (player.quantum.electrons.amount.lt(getQCCost(challid))||!inQC(0)) return
-				if (player.options.challConf) if (!confirm("You will do a quantum reset but you will not gain quarks and keep your electrons & sacrificed galaxies. You have to reach the set goal of meta-antimatter to complete this challenge. NOTE: Electrons does nothing in quantum challenges and your electrons and sacrificed galaxies does not reset until you end the challenge.")) return
+				if (player.options.challConf) if (!confirm("You will do a quantum reset but you will not gain quarks, and keep your electrons & sacrificed galaxies, and you can't buy electron upgrades. You have to reach the set goal of meta-antimatter to complete this challenge. NOTE: Electrons does nothing in quantum challenges and your electrons and sacrificed galaxies does not reset until you end the challenge.")) return
 				player.quantum.electrons.amount=player.quantum.electrons.amount.sub(getQCCost(challid))
 			} else if (pcFocus&&pc<1) {
 				if (!assigned.includes(challid)) {
@@ -744,7 +745,7 @@ function quantum(auto,force,challid) {
 		if (player.galacticSacrifice && !oheHeadstart) player.autobuyers[12]=13
 		player.challenges=challengesCompletedOnEternity()
 		if (headstart) for (ec=1;ec<13;ec++) player.eternityChalls['eterc'+ec]=5
-		else if (speedrunMilestonesReached>2) for (ec=1;ec<15;ec++) player.eternityChalls['eterc'+ec] = 5
+		else if (isRewardEnabled(3)) for (ec=1;ec<15;ec++) player.eternityChalls['eterc'+ec] = 5
 		if (player.masterystudies) {
 			giveAchievement("Sub-atomic")
 			var diffrg=player.quantum.usedQuarks.r.min(player.quantum.usedQuarks.g)
@@ -760,31 +761,26 @@ function quantum(auto,force,challid) {
 				var intensity=player.quantum.challenge.length
 				var qc1=player.quantum.challenge[0]
 				var qc2=player.quantum.challenge[1]
-				if (intensity>1) {
-					if (player.quantum.challenges[qc1]<2) {
+				if (player.quantum.pairedChallenges.current>0) {
+					if (player.quantum.pairedChallenges.current>player.quantum.pairedChallenges.completed) {
 						player.quantum.challenges[qc1]=2
-						player.quantum.electrons.mult+=0.25
-					}
-					if (player.quantum.challenges[qc2]<2) {
 						player.quantum.challenges[qc2]=2
-						player.quantum.electrons.mult+=0.25
+						player.quantum.electrons.mult+=0.5
+						player.quantum.pairedChallenges.completed=player.quantum.pairedChallenges.current
 					}
-					player.quantum.pairedChallenges.completed=Math.max(player.quantum.pairedChallenges.completed,player.quantum.pairedChallenges.current)
 				} else if (!player.quantum.challenges[qc1]&&intensity>0) {
 					player.quantum.challenges[qc1]=1
 					player.quantum.electrons.mult+=0.25
 				}
 				if (player.quantum.pairedChallenges.respec) {
+					player.quantum.electrons.mult-=player.quantum.pairedChallenges.completed*0.5
 					player.quantum.pairedChallenges = {
 						order: {},
 						current: 0,
 						completed: 0,
 						respec: false
 					}
-					for (qc=1;qc<9;qc++) if (player.quantum.challenges[qc]>1) {
-						player.quantum.electrons.mult-=0.25
-						player.quantum.challenges[qc]=1
-					}
+					for (qc=1;qc<9;qc++) player.quantum.challenges[qc]=1
 					document.getElementById("respecPC").className="storebtn"
 				}
 			}
@@ -831,6 +827,7 @@ function quantum(auto,force,challid) {
 			document.getElementById("infmultbuyer").textContent="Autobuy IP mult OFF"
 			document.getElementById("togglecrunchmode").textContent="Auto crunch mode: amount"
 			document.getElementById("limittext").textContent="Amount of IP to wait until reset:"
+			document.getElementById("epmult").innerHTML = "You gain 5 times more EP<p>Currently: "+shortenDimensions(player.epmult)+"x<p>Cost: "+shortenDimensions(player.epmultCost)+" EP"
 		}
 		for (let i = 2; i <= 8; i++) if (!canBuyMetaDimension(i)) document.getElementById(i + "MetaRow").style.display = "none"
 		

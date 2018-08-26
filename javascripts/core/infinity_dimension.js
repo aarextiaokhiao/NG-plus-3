@@ -36,10 +36,7 @@ function DimensionProduction(tier) {
   if (tier == 9) return getTimeDimensionProduction(1).pow(player.currentEternityChall == "eterc7" ? 1 : ECTimesCompleted("eterc7")*0.2).minus(1).times(10)
   var dim = player["infinityDimension"+tier]
   var ret = dim.amount
-  if (inQC(4)) {
-      if (tier == 1) ret = ret.plus(player.infinityDimension2.amount.floor().pow(1.3))
-      if (tier == 4) ret = ret.pow(1.5)
-  }
+  if (inQC(4) && tier == 1) ret = ret.plus(player.infinityDimension2.amount.floor())
   if (player.currentEternityChall == "eterc11") return ret
   if (player.currentEternityChall == "eterc7") ret = ret.dividedBy(player.tickspeed.dividedBy(1000))
   ret = ret.times(DimensionPower(tier))
