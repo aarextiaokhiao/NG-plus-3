@@ -5555,9 +5555,9 @@ var blink = true
 var nextAt
 var goals
 
-function maybeSetHTML(condition, elementName, contents) {
+function setAndMaybeShow(elementName, contents) {
 	var elem = document.getElementById(elementName)
-	if (condition) {
+	if (contents) {
 		elem.innerHTML = contents
 		elem.style.display = ""
 	} else {
@@ -5629,7 +5629,9 @@ setInterval(function() {
 
     document.getElementById("eternitybtn").style.display = (player.infinityPoints.gte(player.eternityChallGoal) && (player.infDimensionsUnlocked[7] || player.eternities > 24)) ? "inline-block" : "none"
 
-    maybeSetHTML(quantumed, "quarks", "You have <b class='QKAmount'>"+shortenDimensions(player.quantum.quarks)+"</b> quark"+(player.quantum.quarks.eq(1)?".":"s."))
+	setAndMaybeShow("quarks", quantumed &&
+		("You have <b class='QKAmount'>"+shortenDimensions(player.quantum.quarks)+"</b> quark"+(player.quantum.quarks.eq(1)?".":"s.")))
+
     document.getElementById("bigcrunch").parentElement.style.top = haveBlock ? "139px" : "19px"
     document.getElementById("quantumBlock").style.display = haveBlock ? "" : "none"
     document.getElementById("quantumbtn").style.display = "none"
@@ -6750,7 +6752,8 @@ function gameLoop(diff) {
         }
     }
 
-    maybeSetHTML(player.masterystudies ? (quantumed && player.quantum.times > 1 && speedrunMilestonesReached < 24) : false, "quantumClock", "Quantum time: <b class='QKAmount'>"+timeDisplayShort(player.quantum.time)+"</b>")
+	setAndMaybeShow("quantumClock", player.masterystudies && quantumed && player.quantum.times > 1 && speedrunMilestonesReached < 24 &&
+		"Quantum time: <b class='QKAmount'>"+timeDisplayShort(player.quantum.time)+"</b>")
 
     document.getElementById("infinityPoints1").innerHTML = "You have <span class=\"IPAmount1\">"+shortenDimensions(player.infinityPoints)+"</span> Infinity points."
     document.getElementById("infinityPoints2").innerHTML = "You have <span class=\"IPAmount2\">"+shortenDimensions(player.infinityPoints)+"</span> Infinity points."
