@@ -43,7 +43,13 @@
         <div style="position: relative">
             <div class="EP" id="eternityPoints2"></div>
             <button id="newDimensionButton" class="newdim" onclick="newDimension()">Get x antimatter to unlock a new Dimension.</button>
-            <button id="eternitybtn" class="eternitybtn" onclick="eternity()">Other times await.. I need to become Eternal</button>
+            <button id="eternitybtn" class="eternitybtn" onclick="eternity()">
+                <div style="font-weight:bold" id="eternitybtnFlavor" class="hideEmpty">Other times await.. I need to become Eternal</div>
+                <div id="eternitybtnEPGain" class="hideEmpty"></div>
+                <div id="eternitybtnTPGain" class="hideEmpty"></div>
+                <div id="eternitybtnRate" class="hideEmpty"></div>
+                <div id="eternitybtnPeak" class="hideEmpty hideInMorse"></div>
+            </button>
         </div>
         <div style="position: relative">
             <div class="EP" id="galaxyPoints2">You have <span class='GPAmount'>0</span> Galaxy points.</div>

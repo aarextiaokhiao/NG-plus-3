@@ -4392,6 +4392,7 @@ function eternity(force, auto) {
         GPminpeak = new Decimal(0)
         IPminpeak = new Decimal(0)
         EPminpeak = new Decimal(0)
+        EPminpeakType = 'normal'
         updateMilestones()
         resetTimeDimensions()
         document.getElementById("eternityconf").style.display = "inline-block"
@@ -5854,6 +5855,7 @@ setInterval(function() {
         $.notify("You unlocked "+timeDisplayShort(speedrunMilestones[notifyId]*36e3)+" speedrun milestone! "+(["You now start with 20,000 eternities when going quantum","You unlocked time theorem autobuyer","You now start with all Eternity Challenges completed and\neternity upgrades bought","You now start with dilation unlocked","You unlocked a new option for eternity autobuyer","You now start with all dilation studies and\nnon-rebuyable dilation upgrades before Meta Dimensions unlocked except passive TT gen upgrade","You unlocked first meta dimension autobuyer","You unlocked second meta dimension autobuyer","You unlocked third meta dimension autobuyer","You unlocked fourth meta dimension autobuyer","You unlocked fifth meta dimension autobuyer and you now keep time studies and passive TT gen upgrade","You unlocked sixth meta dimension autobuyer","You unlocked seventh meta dimension autobuyer","You unlocked eighth meta dimension autobuyer and\nall non-rebuyable dilation upgrades","You unlocked meta-dimension boost autobuyer","You now keep all time studies in mastery studies","You now can buy all Meta Dimensions if it is affordable in your current meta boost.","You now start with "+shortenCosts(1e13)+" eternities","You now start with "+shortenCosts(1e25)+" meta-antimatter on reset","You can now turn on automatic replicated galaxies anytime","You made rebuyable dilation upgrade and Meta Dimension autobuyers 3x faster","You now start with "+shortenCosts(1e100)+" dilated time on quantum and dilated time does not reset until quantum","You unlocked quantum autobuyer","You now keep replicanti on eternity"])[notifyId]+".","success")
         notifyId++
     }
+    document.getElementsByClassName("hideInMorse").display = player.options.notation == "Morse code" ? "none" : ""
 }, 1000)
 
 function fact(v) {
@@ -5864,9 +5866,35 @@ function fact(v) {
 
 var postC2Count = 0;
 var IPminpeak = new Decimal(0)
+var EPminpeakType = 'normal'
 var EPminpeak = new Decimal(0)
 var replicantiTicks = 0
 
+function updateEPminpeak(diff) {
+	if (player.dilation.active) {
+		var gainedPoints = new Decimal(Math.max(getDilGain() - player.dilation.totalTachyonParticles, 0))
+		var oldPoints = new Decimal(player.dilation.totalTachyonParticles)
+	} else {
+		var gainedPoints = gainedEternityPoints()
+		var oldPoints = player.eternityPoints
+	}
+	var newPoints = oldPoints.plus(gainedPoints)
+	var newLog = Math.max(newPoints.log10(),0)
+	var minutes = player.thisEternity / 600
+	if (newLog > 1000 && EPminpeakType == 'normal') {
+		EPminpeakType = 'logarithm'
+		EPminpeak = new Decimal(0)
+	}
+	// for logarithm, we measure the amount of exponents gained from current
+	var currentEPmin = (EPminpeakType == 'logarithm' ? new Decimal(Math.max(0, newLog - Math.max(oldPoints.log10(), 0))) : gainedPoints).dividedBy(minutes)
+    if (currentEPmin.gt(EPminpeak) && player.infinityPoints.gte(Number.MAX_VALUE)) {
+        EPminpeak = currentEPmin
+        if (player.masterystudies) player.peakSpent = 0
+    } else if (player.masterystudies && currentEPmin.gt(0)) {    	
+        player.peakSpent = diff + (player.peakSpent ? player.peakSpent : 0)
+    }
+    return currentEPmin;
+}
 
 function gameLoop(diff) {
     var thisUpdate = new Date().getTime();
@@ -6176,19 +6204,22 @@ function gameLoop(diff) {
     document.getElementById("replicantiamount").textContent = shortenDimensions(player.replicanti.amount)
     document.getElementById("replicantimult").textContent = shorten(getReplMult())
 
-    var currentEPmin = gainedEternityPoints().dividedBy(player.thisEternity/600)
-    if (currentEPmin.gt(EPminpeak) && player.infinityPoints.gte(Number.MAX_VALUE)) {
-        EPminpeak = currentEPmin
-        if (player.masterystudies) player.peakSpent = 0
-    } else if (player.masterystudies) {
-        player.peakSpent = diff + (player.peakSpent ? player.peakSpent : 0)
-    }
-
     if (quantumed&&isQuantumReached()) {
         var currentQKmin = quarkGain().dividedBy(player.quantum.time/600)
         if (currentQKmin.gt(QKminpeak) && player.meta.antimatter.gte(Decimal.pow(Number.MAX_VALUE,player.masterystudies?1.2:1))) QKminpeak = currentQKmin
     }
-    document.getElementById("eternitybtn").innerHTML = (player.dilation.active||gainedEternityPoints().lt(1e6)||player.currentEternityChall!==""||(player.options.theme=="Aarex's Modifications"&&player.options.notation!="Morse code") ? "<b>" + (player.currentEternityChall!=="" ? "Other challenges await..." : player.eternities>0 ? "" : "Other times await...") + " I need to become Eternal.</b><br>" : "") + (player.eternities > 0 && (player.currentEternityChall==""||player.options.theme=="Aarex's Modifications") ? "Gain <b>"+shortenDimensions(gainedEternityPoints())+"</b> Eternity points." + ((player.dilation.active||EPminpeak.gte("1e30003"))&&(player.options.theme!="Aarex's Modifications"||player.options.notation=='Morse code') ? "" : "<br>" + shortenDimensions(currentEPmin)+" EP/min") + ((player.dilation.active&&player.options.theme!="Aarex's Modifications")||player.options.notation=='Morse code' ? "" : "<br>Peaked at "+shortenDimensions(EPminpeak)+" EP/min") + (player.dilation.active ? "<br>+" + shortenMoney(Math.max(getDilGain() - player.dilation.totalTachyonParticles, 0)) +" Tachyon particles." : "") : "")
+    var currentEPmin = updateEPminpeak(diff);
+    EPminpeakUnits = player.dilation.active ? 'TP' : 'EP'
+    EPminpeakUnits = (EPminpeakType == 'logarithm' ? ' log(' + EPminpeakUnits + ')' : ' ' + EPminpeakUnits) + '/min'
+    document.getElementById("eternitybtnFlavor").textContent = ((player.dilation.active||gainedEternityPoints().lt(1e6)||player.currentEternityChall!==""||(player.options.theme=="Aarex's Modifications"&&player.options.notation!="Morse code"))
+    	? ((player.currentEternityChall!=="" ? "Other challenges await..." : player.eternities>0 ? "" : "Other times await...") + " I need to become Eternal.") : "")
+	document.getElementById("eternitybtnEPGain").innerHTML = ((player.eternities > 0 && (player.currentEternityChall==""||player.options.theme=="Aarex's Modifications"))
+		? "Gain <b>"+shortenDimensions(gainedEternityPoints())+"</b> Eternity points." : "")
+	document.getElementById("eternitybtnTPGain").textContent = player.dilation.active ? '+' + shortenMoney(Math.max(getDilGain() - player.dilation.totalTachyonParticles, 0)) +" Tachyon particles." : ""
+	document.getElementById("eternitybtnRate").textContent = ((!player.dilation.active&&EPminpeak.lt("1e30003")) || (player.options.theme=="Aarex's Modifications"&&player.options.notation!='Morse code')
+		? shortenDimensions(currentEPmin)+EPminpeakUnits : "")
+	document.getElementById("eternitybtnPeak").textContent = ((!player.dilation.active||player.options.theme=="Aarex's Modifications")&&player.options.notation!='Morse code'&&EPminpeak > 0
+		? "Peaked at "+shortenDimensions(EPminpeak)+EPminpeakUnits : "")
     document.getElementById("quantumbtn").innerHTML = (!quantumed||!inQC(0)?(inQC(0)?"My computer is":player.quantum.challenge.length>1?"Paired challenge is":"My challenging skills are")+" not powerful enough... ":"")+"I need to go quantum."+(quantumed&&(inQC(0)||player.options.theme=="Aarex's Modifications")?"<br>Gain "+shortenDimensions(quarkGain())+" quark"+(quarkGain().eq(1)?"":"s")+".<br>"+shortenMoney(currentQKmin)+" QK/min<br>Peaked at "+shortenMoney(QKminpeak)+" QK/min":"")
     updateMoney();
     updateCoinPerSec();
@@ -6889,7 +6920,7 @@ function autoBuyerTick() {
             if (gainedEternityPoints().gte(bestEp.times(player.eternityBuyer.limit))) eternity(false, true)
         } else if (player.autoEterMode == "replicanti") {
             if (player.replicanti.amount.gte(player.eternityBuyer.limit)) eternity(false, true)
-        } else if (player.peakSpent >= new Decimal(player.eternityBuyer.limit).toNumber()) eternity(false, true)
+        } else if (player.peakSpent >= new Decimal(player.eternityBuyer.limit).toNumber()*10) eternity(false, true)
     }
 
     if (player.autobuyers[11]%1 !== 0) {
