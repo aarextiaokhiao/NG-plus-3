@@ -64,7 +64,7 @@ function clearMetaDimensions () {
 function getMetaShiftRequirement () {
   return {
     tier: Math.min(8, player.meta.resets + 4),
-    amount: Math.floor(Math.max((inQC(4) ? 5.5 : 15) * (player.meta.resets - 4),0) + Math.max((inQC(4) ? 14.5 : 5) * (player.meta.resets - (inQC(4) ? 55 : 5)), 0)) + 20
+    amount: Math.floor(Math.max((inQC(4) ? 5.5 : 15) * (player.meta.resets - 4),0) + Math.max((inQC(4) ? 14.5 : 5) * (player.meta.resets - (inQC(4) ? 55 : 15)), 0)) + 20
   }
 }
 
