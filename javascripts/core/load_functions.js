@@ -231,6 +231,7 @@ function onLoad() {
   GPminpeak = new Decimal(0)
   IPminpeak = new Decimal(0)
   EPminpeak = new Decimal(0)
+  EPminpeakType = 'normal'
   QKminpeak = new Decimal(0)
   if (player.peakSpent) player.peakSpent = 0
 

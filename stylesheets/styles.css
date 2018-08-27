@@ -511,6 +511,10 @@ button {
 	font-size:12px;
 }
 
+.hideEmpty:empty {
+   display: none;
+}
+
 #quantumbtn {
 	cursor: pointer;
 	position: absolute;
