@@ -354,6 +354,9 @@ strong { color: #0072e5 }
 #quantum.storebtn:hover, .quantumbtn:hover, #pastquantums:hover, #speedrunsbtn button:hover, #dilstudy8.dilationupg:hover, #dilstudy8.dilationupgbought, #qctabbtn:hover, #dilstudy9.dilationupg:hover, #dilstudy9.dilationupgbought {
     background-color: #009900 !important
 }
+#progressbar.quantumProgress {
+	background-color: #009900 !important
+}
 .QKAmount {
     color: #009900 !important
 }

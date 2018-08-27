@@ -335,14 +335,17 @@ function studiesUntil(id) {
 }
 
 function respecTimeStudies() {
-  var temp=player.timestudy.theorem
+  var gotAch=true
   if (player.boughtDims) {
+      var temp=player.timestudy.theorem
       for (id=1;id<7;id++) player.timestudy.theorem+=player.timestudy.ers_studies[id]*(player.timestudy.ers_studies[id]+1)/2
+      if (temp>player.timestudy.theorem) gotAch=false
       player.timestudy.ers_studies=[null,0,0,0,0,0,0]
   } else {
       for (var i=0; i<all.length; i++) {
           if (player.timestudy.studies.includes(all[i])) {
               player.timestudy.theorem += studyCosts[i]
+              gotAch=false
           }
       }
       player.timestudy.studies = []
@@ -410,6 +413,7 @@ function respecTimeStudies() {
           var t = player.masterystudies[id].split("t")[1]
           if (t) {
               player.timestudy.theorem+=masterystudies.costs.time[t]
+              gotAch=false
           } else respecedMS.push(player.masterystudies[id])
       }
       player.masterystudies=respecedMS
@@ -417,7 +421,7 @@ function respecTimeStudies() {
       updateMasteryStudyCosts()
       updateMasteryStudyButtons()
   }
-  if (player.timestudy.theorem==temp) giveAchievement("You do know how these work, right?")
+  if (gotAch) giveAchievement("You do know how these work, right?")
   if (!GUBought("gb3")) ipMultPower=2
   if (player.replicanti.galaxybuyer) document.getElementById("replicantiresettoggle").textContent = "Auto galaxy ON"
   else document.getElementById("replicantiresettoggle").textContent = "Auto galaxy OFF"

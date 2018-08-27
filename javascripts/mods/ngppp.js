@@ -2,7 +2,7 @@ masterystudies={initialCosts:{time:{241: 1e71, 251: 2e71, 252: 2e71, 253: 2e71, 
 		ec:{13:1e72, 14:1e72}},
 	costs:{time:{},
 		ec:{},
-		dil:{7: 2e82, 8: 1e84, 9: 1e85},
+		dil:{7: 2e82, 8: 2e84, 9: 1e85},
 		mc:{}},
 	costmults:{241: 1, 251: 2.5, 252: 2.5, 253: 2.5, 261: 6, 262: 6, 263: 6, 264: 6, 265: 6, 266: 6, 271: 2, 272: 2, 273: 2, 281: 4, 282: 4},
 	costmult:1,
@@ -42,7 +42,7 @@ function updateMasteryStudyButtons() {
 			else div.className="timestudylocked"
 			document.getElementById("ds"+id+"Cost").textContent="Cost: "+shorten(masterystudies.costs.dil[id])+" Time Theorems"
 		}
-		document.getElementById("ds8Req").textContent="Requirement: "+shorten(15700)+" electrons"
+		document.getElementById("ds8Req").textContent="Requirement: "+shorten(16900)+" electrons"
 		for (id=281;id<283;id++) document.getElementById("ts"+id+"Current").textContent="Currently: "+shorten(getMTSMult(id))+"x"
 	}
 }
@@ -114,7 +114,7 @@ function canBuyMasteryStudy(type, id) {
 	} else if (type=='d') {
 		if (player.timestudy.theorem<masterystudies.costs.dil[id]||player.masterystudies.includes('d'+id)) return false
 		if (id>8) return player.masterystudies.includes("d8")&&QCIntensity(8)
-		if (id>7) return player.masterystudies.includes("t272")&&player.quantum.electrons.amount.gte(15700)
+		if (id>7) return player.masterystudies.includes("t272")&&player.quantum.electrons.amount.gte(16900)
 		if (id>6) return player.masterystudies.includes("t252")
 	} else {
 		if (player.timestudy.theorem<masterystudies.costs.ec[id]||player.eternityChallUnlocked) return false
@@ -181,8 +181,17 @@ function drawMasteryTree() {
 		drawMasteryBranch("timestudy273","timestudy282")
 		drawMasteryBranch("timestudy272", "dilstudy8")
 		drawMasteryBranch("dilstudy8", "dilstudy9")
-		drawMasteryBranch("dilstudy9", "dilstudy10")
+		drawMasteryBranch("dilstudy9", "timestudy291")
+		drawMasteryBranch("dilstudy9", "timestudy292")
+		drawMasteryBranch("timestudy291", "timestudy301")
+		drawMasteryBranch("dilstudy9", "timestudy302")
+		drawMasteryBranch("timestudy292", "timestudy303")
+		drawMasteryBranch("timestudy301", "timestudy311")
+		drawMasteryBranch("timestudy303", "timestudy312")
+		drawMasteryBranch("timestudy302", "dilstudy10")
 		drawMasteryBranch("dilstudy10", "dilstudy11")
+		drawMasteryBranch("dilstudy11", "dilstudy12")
+		drawMasteryBranch("dilstudy12", "dilstudy13")
 	} else document.getElementById("quantumstudies").style.display="none"
 }
 
@@ -464,7 +473,8 @@ function updateElectrons() {
 
 //v1.9
 function getElectronUpgCost(u) {
-	var baseCost=([0,82,153,638,26])[u]+Math.pow(player.quantum.electrons.rebuyables[u-1]*Math.max(player.quantum.electrons.rebuyables[u-1]-1,1)+1,u<2?1:2)
+	var amount=player.quantum.electrons.rebuyables[u-1]
+	var baseCost=([0,82,153,638,26])[u]+Math.pow(amount*Math.max(amount-1,1)+1,u<2?1:2)
 	if (u>3) return baseCost
 	if (u<2) return Math.pow(10,baseCost)
 	return Decimal.pow(10,baseCost)
@@ -499,8 +509,8 @@ function buyQuarkMult() {
 }
 
 var quantumChallenges={
-	costs:[0,15700,16900,18300,22700,25750,29600,32500,33900],
-	goals:[0,6375e6,735e7,4265e7,6899e7,1231e7,251e6,684e8,2855e7]
+	costs:[0,16900,19100,21500,24200,25900,29600,32700,34450],
+	goals:[0,1043e7,7982e7,4638e7,5394e7,12e9,251e6,6224e7,2855e7]
 }
 
 var assigned

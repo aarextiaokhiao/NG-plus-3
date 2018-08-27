@@ -230,8 +230,8 @@ function onLoad() {
 
   GPminpeak = new Decimal(0)
   IPminpeak = new Decimal(0)
-  EPminpeak = new Decimal(0)
   EPminpeakType = 'normal'
+  EPminpeak = new Decimal(0)
   QKminpeak = new Decimal(0)
   if (player.peakSpent) player.peakSpent = 0
 
@@ -740,10 +740,8 @@ if (player.version < 5) {
       player.autoEterOptions = {epmult:false}
       for (dim=1;dim<9;dim++) player.autoEterOptions["td"+dim] = false
   }
-  if (player.aarexModifications.newGamePlusPlusVersion < 2.9013) {
-      if (player.aarexModifications.quantumConf===undefined||player.quantum.times<1) player.aarexModifications.quantumConf=true
-      player.aarexModifications.newGamePlusPlusVersion = 2.9013
-  }
+  if (player.aarexModifications.newGamePlusPlusVersion < 2.9013) if (player.aarexModifications.quantumConf===undefined||player.quantum.times<1) player.aarexModifications.quantumConf=true
+  if (player.aarexModifications.newGamePlusPlusVersion < 2.9014) player.aarexModifications.newGamePlusPlusVersion = 2.9014
   if (player.aarexModifications.newGame3PlusVersion < 1.01) player.aarexModifications.dbPower = new Decimal(getDimensionBoostPower())
   if ((player.aarexModifications.newGame3PlusVersion && !player.masterystudies) || player.aarexModifications.newGame3PlusVersion < 1.02) player.masterystudies = []
   if (player.aarexModifications.newGame3PlusVersion < 1.21) player.replicanti.chanceCost = Decimal.pow(1e15, player.replicanti.chance * 100 + 9)
@@ -812,7 +810,7 @@ if (player.version < 5) {
       }
   }
   if (player.aarexModifications.newGame3PlusVersion < 1.9975&&!player.quantum.challenge) player.quantum.challenge=[]
-  if (player.aarexModifications.newGame3PlusVersion < 1.997895) player.aarexModifications.newGame3PlusVersion=1.997895
+  if (player.aarexModifications.newGame3PlusVersion < 1.997897) player.aarexModifications.newGame3PlusVersion=1.997897
   if (player.aarexModifications.newGame3PlusVersion==undefined) {
       colorBoosts={
           r:1,
@@ -1034,6 +1032,8 @@ if (player.version < 5) {
 }
 
   if (!player.options.hotkeys) document.getElementById("hotkeys").textContent = "Enable hotkeys"
+
+  document.getElementsByClassName("hideInMorse").display = player.options.notation == "Morse code" ? "none" : ""
 
   document.getElementById("decimalMode").innerHTML = "Decimal mode: "+(break_infinity_js?"Slow but accurate":"Fast but inaccurate")
   document.getElementById("decimalMode").style.display = Decimal.gt(player.totalmoney,"1e9000000000000000") ? "none" : ""

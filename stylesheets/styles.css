@@ -873,6 +873,9 @@ button {
     pointer-events: all !important;
 }
 
+.quantumProgress { background-color: #0a640a !important }
+.quantumProgress #progresspercent { color: #32c832 }
+
 .greedbtn {
     height: 40px;
     width: 100px;

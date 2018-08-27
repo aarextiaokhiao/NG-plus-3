@@ -405,7 +405,7 @@ function quantum(auto,force,challid) {
 			player.quantum.times++
 			player.quantum.quarks = player.quantum.quarks.plus(quarkGain());
 		}
-		document.getElementById("quarks").innerHTML="You have <b id='QK'>"+shortenDimensions(player.quantum.quarks)+"</b> quark"+(player.quantum.quarks.lt(2)?".":"s.")
+		document.getElementById("quarks").innerHTML="You have <b class='QKAmount'>"+shortenDimensions(player.quantum.quarks)+"</b> quark"+(player.quantum.quarks.lt(2)?".":"s.")
 		document.getElementById("galaxyPoints2").innerHTML="You have <span class='GPAmount'>0</span> Galaxy points."
 		if (player.masterystudies) {
 			if (!player.quantum.gluons.rg) {
@@ -731,7 +731,7 @@ function quantum(auto,force,challid) {
 					cost: new Decimal(1e24)
 				}
 			},
-			masterystudies: player.masterystudies ? (speedrunMilestonesReached > 5 && isRewardEnabled(4) ? player.masterystudies : []) : undefined,
+			masterystudies: player.masterystudies ? (speedrunMilestonesReached > 10 && isRewardEnabled(4) ? player.masterystudies : []) : undefined,
 			autoEterOptions: player.autoEterOptions,
 			galaxyMaxBulk: player.galaxyMaxBulk,
 			quantum: player.quantum,
@@ -867,6 +867,7 @@ function quantum(auto,force,challid) {
 		}
 		GPminpeak = new Decimal(0)
 		IPminpeak = new Decimal(0)
+		EPminpeakType = 'normal'
 		EPminpeak = new Decimal(0)
 		QKminpeak = new Decimal(0)
 		updateAutobuyers()
@@ -972,4 +973,28 @@ function updateLastTenQuantums() {
         if (qkpm<1) tempstring = shorten(qkpm*60) + " QK/hour"
         document.getElementById("averageQuantumRun").textContent = "Last " + listed + " quantums average time: "+ timeDisplayShort(tempTime)+" Average QK gain: "+shortenDimensions(tempQK)+" QK. "+tempstring
     } else document.getElementById("averageQuantumRun").textContent = ""
+}
+
+//v2.9014
+function doQuantumProgress() {
+	document.getElementById("progressbar").className="quantumProgress"
+	var gqk = quarkGain()
+	if (!quantumed || player.meta.antimatter.lt(Decimal.pow(Number.MAX_VALUE, 1.45)) || !player.masterystudies || gqk.lt(2)) {
+		var percentage = Math.min(player.meta.antimatter.max(1).log10() / Decimal.log10(Number.MAX_VALUE) / (player.masterystudies ? 1.45 : 1) * 100, 100).toFixed(2) + "%"
+		document.getElementById("progressbar").style.width = percentage
+		document.getElementById("progresspercent").textContent = percentage
+		document.getElementById("progresspercent").setAttribute('ach-tooltip',(player.masterystudies?"Meta-antimatter p":"P")+'ercentage to quantum')
+	} else if (!inQC(0)) {
+		var percentage = Math.min(player.money.max(1).log10() / getQCGoal() * 100, 100).toFixed(2) + "%"
+		document.getElementById("progressbar").style.width = percentage
+		document.getElementById("progresspercent").textContent = percentage
+		document.getElementById("progresspercent").setAttribute('ach-tooltip','Percentage to Quantum Challenge goal')
+	} else {
+		var gqkLog = gqk.log2()
+		var goal = Math.pow(2,Math.ceil(Math.log10(gqkLog) / Math.log10(2)))
+		var percentage = Math.min(gqkLog / goal * 100, 100).toFixed(2) + "%"
+		document.getElementById("progressbar").style.width = percentage
+		document.getElementById("progresspercent").textContent = percentage
+		document.getElementById("progresspercent").setAttribute('ach-tooltip',"Percentage to "+shortenDimensions(Decimal.pow(2,goal))+" QK gain")
+	}
 }
