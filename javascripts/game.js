@@ -381,7 +381,7 @@ function updateNewPlayer(reseted) {
         player.options.gSacrificeConfirmation = true
     }
     if (modesChosen.ngpp > 1) {
-        player.aarexModifications.newGame3PlusVersion = 1.997897
+        player.aarexModifications.newGame3PlusVersion = 1.997899
         player.dbPower = 1
         player.peakSpent = 0
         player.masterystudies = []
@@ -836,9 +836,9 @@ function getGalaxyCostScalingStart() {
 	
     if (player.galaxies > 1399) {
 		let push = 5
-		if (GUBought("rg5")) push *= 1.12
-		if (GUBought("gb5")) push *= Math.sqrt(player.replicanti.galaxies)/600+1
-		if (GUBought("br5")) push *= Math.sqrt(player.dilation.tachyonParticles.log10())*120+1
+		if (GUBought("rg5")) push *= 1.13
+		if (GUBought("gb5")) push *= 1+Math.sqrt(player.replicanti.galaxies)/550
+		if (GUBought("br5")) push *= 1+Math.sqrt(player.dilation.tachyonParticles.max(1).log10())*0.013
 		n -= Math.ceil((player.galaxies-1399)/push)
 	}
 
@@ -2432,32 +2432,48 @@ document.getElementById("exportbtn").onclick = function () {
     }
 };
 
+var exportSaveId
+var exportAllData
+var exportAllLoopId
+var occupiedEA
 document.getElementById("exportallbtn").onclick = function () {
-    let output = document.getElementById('exportOutput');
-    let parent = output.parentElement;
+	clearInterval(exportAllLoopId)
+	exportSaveId=0
+	exportAllData = {save_datas:[], metaSave: metaSave}
+	occupiedEA=false
+	if (!confirm("WARNING! This action would use all your CPU to export all your saves after a while! Are you really sure you want to do that?!")) return
+	exportAllLoopId = setInterval(function() {
+		if (occupiedEA) return
+		else occupiedEA=true
+		try {
+			if (exportSaveId<metaSave.saveOrder.length) {
+				exportAllData.save_datas.push(get_save(metaSave.saveOrder[exportSaveId]))
+				exportSaveId++
+				occupiedEA=false
+				return
+			}
+			let output = document.getElementById('exportOutput');
+			let parent = output.parentElement;
 
-    parent.style.display = "";
-    let save_datas = [];
-    for (var i=1;i<=metaSave.saveOrder.length;i++){
-        save_datas.push(get_save(i));
-    }
-    output.value = btoa(JSON.stringify({save_datas:save_datas, metaSave:metaSave}, function(k, v) { return (v === Infinity) ? "Infinity" : v; }));
+			parent.style.display = "";
+			output.value = btoa(JSON.stringify(exportAllData, function(k, v) { return (v === Infinity) ? "Infinity" : v; }));
 
-    output.onblur = function() {
-        parent.style.display = "none";
-    }
+			output.onblur = function() {
+				parent.style.display = "none";
+			}
 
-    output.focus();
-    output.select();
+			output.focus();
+			output.select();
 
-    try {
-        if (document.execCommand('copy')) {
-            $.notify("Exported saves to clipboard", "info");
-            output.blur();
-        }
-    } catch(ex) {
-        // well, we tried.
-    }
+			if (document.execCommand('copy')) {
+				$.notify("Exported saves to clipboard", "info");
+				output.blur();
+			}
+			clearInterval(exportAllLoopId)
+		} catch(ex) {
+			// well, we tried.
+		}
+	},player.options.updateRate)
 };
 
 
@@ -2698,38 +2714,40 @@ function import_save(new_save,in_save,no_ask) {
     }
 };
 
+var importSaveId
+var importAllData
+var importAllLoopId
+var occupiedIA
 function import_save_all() {
-    onImport = true
-    var datas = prompt("Input your saves. "+"(all your save files will be overwritten!)");
-    onImport = false
-    if (datas.constructor !== String) datas = "";
-    var decoded_datas = JSON.parse(atob(datas, function(k, v) { return (v === Infinity) ? "Infinity" : v; }));
-    var save_datas = decoded_datas.save_datas;
-    if (!save_datas||!decoded_datas||!datas) {
-        alert('could not load the saves..')
-        return
-    }
-    metaSave.saveOrder = decoded_datas.metaSave.saveOrder
-    for (var i=1;i<=save_datas.length;i++){
-        var current_save=save_datas[i-1]
-        change_save(i)
-        if (!verify_save(current_save)) {
-            forceHardReset = true
-            document.getElementById("reset").click()
-            forceHardReset = false
-            continue
-        } else if (!current_save) {
-            alert('could not load the save #'+i+'..')
-            new_game(i)
-            continue
-        }
-        import_save(false,btoa(JSON.stringify(current_save)),true)
-    }
-    change_save(decoded_datas.metaSave.current)
-    metaSave.current = decoded_datas.metaSave.current
-    metaSave.presetsOrder = decoded_datas.metaSave.presetsOrder
-    metaSave.version = decoded_datas.metaSave.version
-    metaSave.alert = decoded_datas.metaSave.alert
+	clearInterval(importAllLoopId)
+	noSave=false
+	onImport=true
+	var importAllData=prompt("Input your saves. (all your save files will be overwritten!)");
+	onImport=false
+	importAllData=JSON.parse(atob(importAllData, function(k, v) { return (v === Infinity) ? "Infinity" : v; }))
+	if (importAllData==null) return
+	if (importAllData.save_datas==undefined) return
+	if (importAllData.metaSave==undefined) return
+	if (!confirm("WARNING! Without backups, this action would replace all your saves! Are you really sure you want to do that?!")) return
+	importSaveId=0
+	occupiedIA=false
+	noSave=true
+	importAllLoopId=setInterval(function(){
+		if (occupiedIA) return
+		else occupiedIA=true
+		try {
+			if (importSaveId<importAllData.metaSave.saveOrder.length) {
+				set_save(importAllData.metaSave.saveOrder[importSaveId],importAllData.save_datas[importSaveId])
+				importSaveId++
+				occupiedIA=false
+				return
+			}
+			localStorage.setItem("AD_aarexModifications",btoa(JSON.stringify(importAllData.metaSave)))
+			clearInterval(importAllLoopId)
+			document.location.reload(true)
+		} catch(_) {
+		}
+	},player.updateRate)
 };
 
 
@@ -5869,9 +5887,10 @@ var IPminpeak = new Decimal(0)
 var EPminpeakType = 'normal'
 var EPminpeak = new Decimal(0)
 var replicantiTicks = 0
+var isSmartPeakActivated = false
 
 function updateEPminpeak(diff) {
-    var isSmartPeakActivated = player.masterystudies && player.dilation.upgrades.includes("ngpp3") && player.eternities >= 1e13
+    isSmartPeakActivated = player.masterystudies && player.dilation.upgrades.includes("ngpp3") && player.eternities >= 1e13
 	if (player.dilation.active && isSmartPeakActivated) {
 		var gainedPoints = new Decimal(Math.max(getDilGain() - player.dilation.totalTachyonParticles, 0))
 		var oldPoints = new Decimal(player.dilation.totalTachyonParticles)
@@ -6173,7 +6192,7 @@ function gameLoop(diff) {
     }
     if (player.replicanti.amount !== 0) replicantiTicks += player.options.updateRate
     extraReplGalaxies = Math.floor(player.timestudy.studies.includes(225) ? player.replicanti.amount.e / 1e3 : player.timestudy.studies.includes(226) ? player.replicanti.gal / 15 : 0)
-    if (extraReplGalaxies > 99) extraReplGalaxies = Math.floor(Math.sqrt(0.25 + 2 * (extraReplGalaxies - 99) * (QCIntensity(8) ? 2 : 1)) + 98.5)
+    if (extraReplGalaxies > 99) extraReplGalaxies = Math.floor(Math.sqrt(0.25 + 2 * (extraReplGalaxies - 99) * (QCIntensity(8) ? 3 : 1)) + 98.5)
     extraReplGalaxies = Math.floor(extraReplGalaxies * colorBoosts.g)
 
     if (current == Decimal.ln(Number.MAX_VALUE) && player.thisInfinityTime < 600*30) giveAchievement("Is this safe?");
@@ -6212,7 +6231,7 @@ function gameLoop(diff) {
         if (currentQKmin.gt(QKminpeak) && player.meta.antimatter.gte(Decimal.pow(Number.MAX_VALUE,player.masterystudies?1.2:1))) QKminpeak = currentQKmin
     }
     var currentEPmin = updateEPminpeak(diff);
-    EPminpeakUnits = player.dilation.active ? 'TP' : 'EP'
+    EPminpeakUnits = player.dilation.active && isSmartPeakActivated ? 'TP' : 'EP'
     EPminpeakUnits = (EPminpeakType == 'logarithm' ? ' log(' + EPminpeakUnits + ')' : ' ' + EPminpeakUnits) + '/min'
     document.getElementById("eternitybtnFlavor").textContent = ((player.dilation.active||gainedEternityPoints().lt(1e6)||player.currentEternityChall!==""||(player.options.theme=="Aarex's Modifications"&&player.options.notation!="Morse code"))
         ? ((player.currentEternityChall!=="" ? "Other challenges await..." : player.eternities>0 ? "" : "Other times await...") + " I need to become Eternal.") : "")
@@ -6774,6 +6793,13 @@ function gameLoop(diff) {
 
     if (isNaN(player.totalmoney)) player.totalmoney = new Decimal(10)
     if (player.timestudy.studies.includes(181)) player.infinityPoints = player.infinityPoints.plus(gainedInfinityPoints().times(diff/1000))
+    if (player.masterystudies) {
+        if (player.masterystudies.includes("t291")) {
+            player.eternityPoints = player.eternityPoints.plus(gainedEternityPoints().times(diff/1000))
+            document.getElementById("eternityPoints2").innerHTML = "You have <span class=\"EPAmount2\">"+shortenDimensions(player.eternityPoints)+"</span> Eternity points."
+        }
+        if (player.dilation.active) if (player.masterystudies.includes("t292")) player.dilation.tachyonParticles = player.dilation.tachyonParticles.max(getDilGain())
+    }
     if (player.dilation.upgrades.includes(10)) {
 		player.timestudy.theorem += parseFloat(getPassiveTTGen().times(diff/10).toString())
         if ((document.getElementById("timestudies").style.display != "none" || document.getElementById("ers_timestudies").style.display != "none" || document.getElementById("masterystudies").style.display != "none") && document.getElementById("eternitystore").style.display != "none") {

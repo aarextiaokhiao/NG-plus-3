@@ -1,12 +1,12 @@
-masterystudies={initialCosts:{time:{241: 1e71, 251: 2e71, 252: 2e71, 253: 2e71, 261: 5e71, 262: 5e71, 263: 5e71, 264: 5e71, 265: 5e71, 266: 5e71, 271: 2.7434842249657063e76, 272: 2.7434842249657063e76, 273: 2.7434842249657063e76, 281: 6.858710562414266e76, 282: 6.858710562414266e76},
+masterystudies={initialCosts:{time:{241: 1e71, 251: 2e71, 252: 2e71, 253: 2e71, 261: 5e71, 262: 5e71, 263: 5e71, 264: 5e71, 265: 5e71, 266: 5e71, 271: 2.7434842249657063e76, 272: 2.7434842249657063e76, 273: 2.7434842249657063e76, 281: 6.858710562414266e76, 282: 6.858710562414266e76, 291: 2.143347050754458e77, 292: 2.143347050754458e77, 301: 2.143347050754458e77},
 		ec:{13:1e72, 14:1e72}},
 	costs:{time:{},
 		ec:{},
-		dil:{7: 2e82, 8: 2e84, 9: 1e85},
+		dil:{7: 2e82, 8: 2e84, 9: 4e85},
 		mc:{}},
-	costmults:{241: 1, 251: 2.5, 252: 2.5, 253: 2.5, 261: 6, 262: 6, 263: 6, 264: 6, 265: 6, 266: 6, 271: 2, 272: 2, 273: 2, 281: 4, 282: 4},
+	costmults:{241: 1, 251: 2.5, 252: 2.5, 253: 2.5, 261: 6, 262: 6, 263: 6, 264: 6, 265: 6, 266: 6, 271: 2, 272: 2, 273: 2, 281: 4, 282: 4, 291: 2, 292: 2, 301: 2},
 	costmult:1,
-	allTimeStudies:[241, 251, 252, 253, 261, 262, 263, 264, 265, 266, 271, 272, 273, 281, 282],
+	allTimeStudies:[241, 251, 252, 253, 261, 262, 263, 264, 265, 266, 271, 272, 273, 281, 282, 291, 292, 301],
 	initialReqs:{13:728e3,14:255e5},
 	incrementReqs:{13:6e3,14:9e5},
 	reqs:{}}
@@ -107,6 +107,8 @@ function canBuyMasteryStudy(type, id) {
 		var row=Math.floor(id/10)
 		for (check=1;check<10;check++) if (player.masterystudies.includes('t'+(row+1).toString()+check)) return false
 		var col=id%10
+		if (row>29) return player.masterystudies.includes('t291')
+		if (row>28) return player.masterystudies.includes('d9')
 		if (row>27) return player.masterystudies.includes('t27'+col)||player.masterystudies.includes('t27'+(col+1))
 		if (row>26) return player.masterystudies.includes('t252')&&player.masterystudies.includes('d7')
 		if (row>25) return player.masterystudies.includes('t25'+Math.ceil(col/2))
@@ -253,8 +255,8 @@ function updateQuantumTabs() {
 		document.getElementById("brupg2current").textContent="Currently: "+shortenMoney(Decimal.pow(2.2, Math.pow(calcTotalSacrificeBoost().log10()/1e6, 0.25)))+"x"
 		document.getElementById("brupg4current").textContent="Currently: "+shortenMoney(Decimal.pow(getDimensionPowerMultiplier(), 0.0003))+"x"
 		if (player.masterystudies.includes("d9")) {
-			document.getElementById("gbupg5current").textContent="Currently: "+(Math.sqrt(player.replicanti.galaxies)/6).toFixed(1)+"%"
-			document.getElementById("brupg5current").textContent="Currently: "+(Math.sqrt(player.dilation.tachyonParticles.log10())*1.2).toFixed(1)+"%"
+			document.getElementById("gbupg5current").textContent="Currently: "+(Math.sqrt(player.replicanti.galaxies)/5.5).toFixed(1)+"%"
+			document.getElementById("brupg5current").textContent="Currently: "+(Math.sqrt(player.dilation.tachyonParticles.max(1).log10())*1.3).toFixed(1)+"%"
 		}
 	}
 	if (document.getElementById("electrons").style.display=="block") {
@@ -315,7 +317,7 @@ function assignQuark(color) {
 }
 
 //v1.75
-GUCosts=[null, 1, 2, 4, 100, 6e15]
+GUCosts=[null, 1, 2, 4, 100, 7e15]
 
 function updateGluons() {
 	if (!player.masterystudies) return
@@ -509,8 +511,8 @@ function buyQuarkMult() {
 }
 
 var quantumChallenges={
-	costs:[0,16900,19100,21500,24200,25900,29600,32700,34450],
-	goals:[0,1043e7,7982e7,4638e7,5394e7,12e9,251e6,6224e7,2855e7]
+	costs:[0,16900,19100,21500,24200,25900,28900,32e3,33600],
+	goals:[0,1043e7,7982e7,4638e7,5394e7,1239e7,251e6,6305e7,3105e7]
 }
 
 var assigned

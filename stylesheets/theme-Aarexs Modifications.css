@@ -155,7 +155,7 @@ strong { color: #0072e5 }
     border-color: #7100e2 !important;
     animation: none
 }
-#eternitybtn:hover, #eternitystorebtn:hover, #pasteternities:hover, #tdtabbtn button:hover, #timedimensions td:nth-child(4) .storebtn:hover, .eternityttbtn:hover, #eterctabbtn:hover {
+#eternitybtn:hover, #eternitystorebtn:hover, #pasteternities:hover, #tdtabbtn button:hover, #timedimensions td:nth-child(4) .storebtn:hover, .timestudy:hover, .eternityttbtn:hover, #eterctabbtn:hover {
     background-color: #7100e2 !important
 }
 #TTbuttons {

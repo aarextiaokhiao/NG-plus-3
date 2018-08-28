@@ -10,7 +10,12 @@ function getGalaxyPower(ng, bi) {
 	if (player.timestudy.studies.includes(132)) replGalPower += player.replicanti.galaxies*0.4
 	if (player.boughtdims) replGalPower += player.replicanti.galaxies*(Math.log10(player.replicanti.limit.log(2))/Math.log10(2)/10-1)
 	replGalPower += extraReplGalaxies
-	replGalPower += (GUBought("gb6") ? replGalPower : Math.min(player.replicanti.galaxies, player.replicanti.gal)) * Math.max(Math.pow(Math.log10(player.infinityPower.plus(1).log10()+1), 0.03 * ECTimesCompleted("eterc8"))-1, 0)
+
+	var replGalExPower = Math.max(Math.pow(Math.log10(player.infinityPower.plus(1).log10()+1), 0.03 * ECTimesCompleted("eterc8"))-1, 0)
+	if (GUBought("gb6")) replGalExPower *= replGalPower
+	else if (player.masterystudies ? player.masterystudies.includes('t301') : false) replGalExPower *= (Math.min(player.replicanti.galaxies, player.replicanti.gal)*3+replGalPower)/4
+	else replGalExPower *= Math.min(player.replicanti.galaxies, player.replicanti.gal)
+	replGalPower += replGalExPower
 	
 	let dilGalPower = Math.floor(player.dilation.freeGalaxies)
 	if (GUBought("br6")) dilGalPower *= 1 + Math.max(Math.pow(Math.log10(player.infinityPower.plus(1).log10()+1), 0.03 * ECTimesCompleted("eterc8"))-1, 0)

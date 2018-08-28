@@ -573,7 +573,7 @@ if (player.version < 5) {
       $.notify('Your NG- save has been updated due to few balancing issues.', 'info')
   }
   if (player.aarexModifications.newGamePlusVersion === undefined) if (player.eternities < 20 && ECTimesCompleted("eterc1") > 0) player.aarexModifications.newGamePlusVersion = 1
-  if (player.aarexModifications.newGamePlusPlusVersion === undefined && !player.masterystudies) { 
+  if (player.aarexModifications.newGamePlusPlusVersion === undefined && !player.meta) { 
       if (player.dilation.rebuyables[4] !== undefined) {
           var migratedUpgrades = []
           var v2_1check=player.version>13
@@ -810,7 +810,7 @@ if (player.version < 5) {
       }
   }
   if (player.aarexModifications.newGame3PlusVersion < 1.9975&&!player.quantum.challenge) player.quantum.challenge=[]
-  if (player.aarexModifications.newGame3PlusVersion < 1.997897) player.aarexModifications.newGame3PlusVersion=1.997897
+  if (player.aarexModifications.newGame3PlusVersion < 1.997899) player.aarexModifications.newGame3PlusVersion=1.997899
   if (player.aarexModifications.newGame3PlusVersion==undefined) {
       colorBoosts={
           r:1,
@@ -818,13 +818,13 @@ if (player.version < 5) {
           b:1
       }
   }
-  if (player.aarexModifications.newGameMinusMinusVersion === undefined) {
+  if (player.aarexModifications.newGameMinusMinusVersion === undefined && !player.masterystudies) {
       if (player.galacticSacrifice) {
           player.galacticSacrifice.time = (player.lastUpdate - player.galacticSacrifice.last) / 100
           player.aarexModifications.newGameMinusMinusVersion = 1.29
           delete player.galacticSacrifice.last
 	  } else if (player.galaxyPoints) player.aarexModifications.newGameMinusMinusVersion = 1.1
-      else if ((Decimal.gt(player.postC3Reward, 1) && player.infinitied < 1 && player.eternities < 1 && (player.quantum ? player.quantum.times < 1 : true)) || (Math.round(new Decimal(player.achPow).log(5) * 100) % 100 < 1 && Decimal.gt(player.achPow, 1))) player.aarexModifications.newGameMinusMinusVersion = 1
+      else if ((Decimal.gt(player.postC3Reward, 1) && player.infinitied < 1 && player.eternities < 1) || (Math.round(new Decimal(player.achPow).log(5) * 100) % 100 < 1 && Decimal.gt(player.achPow, 1))) player.aarexModifications.newGameMinusMinusVersion = 1
       if (player.firstTotalBought != undefined) {
           player.totalBoughtDims = {}
           for (d=1;d<9;d++) {
@@ -1179,7 +1179,9 @@ function load_game() {
 	startInterval()
 }
 
+var noSave=false
 function save_game(silent) {
+  if (noSave) return
   set_save(metaSave.current, player);
   if (!silent) $.notify("Game saved", "info")
 }
