@@ -573,7 +573,7 @@ if (player.version < 5) {
       $.notify('Your NG- save has been updated due to few balancing issues.', 'info')
   }
   if (player.aarexModifications.newGamePlusVersion === undefined) if (player.eternities < 20 && ECTimesCompleted("eterc1") > 0) player.aarexModifications.newGamePlusVersion = 1
-  if (player.aarexModifications.newGamePlusPlusVersion === undefined && !player.meta) { 
+  if (player.aarexModifications.newGamePlusPlusVersion === undefined && !player.masterystudies) { 
       if (player.dilation.rebuyables[4] !== undefined) {
           var migratedUpgrades = []
           var v2_1check=player.version>13
@@ -818,7 +818,7 @@ if (player.version < 5) {
           b:1
       }
   }
-  if (player.aarexModifications.newGameMinusMinusVersion === undefined && !player.masterystudies) {
+  if (player.aarexModifications.newGameMinusMinusVersion === undefined && !player.meta) {
       if (player.galacticSacrifice) {
           player.galacticSacrifice.time = (player.lastUpdate - player.galacticSacrifice.last) / 100
           player.aarexModifications.newGameMinusMinusVersion = 1.29
