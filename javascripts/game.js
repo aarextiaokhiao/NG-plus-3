@@ -382,7 +382,7 @@ function updateNewPlayer(reseted) {
         player.options.gSacrificeConfirmation = true
     }
     if (modesChosen.ngpp > 1) {
-        player.aarexModifications.newGame3PlusVersion = 1.997899
+        player.aarexModifications.newGame3PlusVersion = 1.9978995
         player.dbPower = 1
         player.peakSpent = 0
         player.masterystudies = []
@@ -6207,7 +6207,7 @@ function gameLoop(diff) {
     document.getElementById("replicantimult").textContent = shorten(getReplMult())
 
     var currentQKmin = new Decimal(0)
-    if (quantumed&&isQuantumReached()) {
+    if (player.meta) if (quantumed&&isQuantumReached()) {
         currentQKmin = quarkGain().dividedBy(player.quantum.time/600)
         if (currentQKmin.gt(QKminpeak) && player.meta.antimatter.gte(Decimal.pow(Number.MAX_VALUE,player.masterystudies?1.2:1))) {
             QKminpeak = currentQKmin
