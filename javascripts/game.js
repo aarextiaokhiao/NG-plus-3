@@ -25,6 +25,7 @@ var modes = {
     ngmm: false,
     ers: false
 }
+
 function updateNewPlayer(reseted) {
     if (reseted) {
         var modesChosen = {
@@ -3236,37 +3237,16 @@ function updateAutobuyers() {
         document.getElementById("autoBuyerEter").style.display = "none"
     }
 
-    if (player.infinityUpgrades.includes("autoBuyerUpgrade")) {
-        document.getElementById("interval1").textContent = "Current interval: " + (player.autobuyers[0].interval/2000).toFixed(2) + " seconds"
-        document.getElementById("interval2").textContent = "Current interval: " + (player.autobuyers[1].interval/2000).toFixed(2) + " seconds"
-        document.getElementById("interval3").textContent = "Current interval: " + (player.autobuyers[2].interval/2000).toFixed(2) + " seconds"
-        document.getElementById("interval4").textContent = "Current interval: " + (player.autobuyers[3].interval/2000).toFixed(2) + " seconds"
-        document.getElementById("interval5").textContent = "Current interval: " + (player.autobuyers[4].interval/2000).toFixed(2) + " seconds"
-        document.getElementById("interval6").textContent = "Current interval: " + (player.autobuyers[5].interval/2000).toFixed(2) + " seconds"
-        document.getElementById("interval7").textContent = "Current interval: " + (player.autobuyers[6].interval/2000).toFixed(2) + " seconds"
-        document.getElementById("interval8").textContent = "Current interval: " + (player.autobuyers[7].interval/2000).toFixed(2) + " seconds"
-        document.getElementById("intervalTickSpeed").textContent = "Current interval: " + (player.autobuyers[8].interval/2000).toFixed(2) + " seconds"
-        document.getElementById("intervalDimBoost").textContent = "Current interval: " + (player.autobuyers[9].interval/2000).toFixed(2) + " seconds"
-        document.getElementById("intervalGalaxies").textContent = "Current interval: " + (player.autobuyers[10].interval/2000).toFixed(2) + " seconds"
-        document.getElementById("intervalInf").textContent = "Current interval: " + (player.autobuyers[11].interval/2000).toFixed(2) + " seconds"
-        document.getElementById("intervalSac").textContent = "Current interval: " + (player.autoSacrifice.interval/2000).toFixed(2) + " seconds"
-        if (player.galacticSacrifice) document.getElementById("intervalGalSac").textContent = "Current interval: " + (player.autobuyers[12].interval/2000).toFixed(2) + " seconds"
-    } else {
-        document.getElementById("interval1").textContent = "Current interval: " + (player.autobuyers[0].interval/1000).toFixed(2) + " seconds"
-        document.getElementById("interval2").textContent = "Current interval: " + (player.autobuyers[1].interval/1000).toFixed(2) + " seconds"
-        document.getElementById("interval3").textContent = "Current interval: " + (player.autobuyers[2].interval/1000).toFixed(2) + " seconds"
-        document.getElementById("interval4").textContent = "Current interval: " + (player.autobuyers[3].interval/1000).toFixed(2) + " seconds"
-        document.getElementById("interval5").textContent = "Current interval: " + (player.autobuyers[4].interval/1000).toFixed(2) + " seconds"
-        document.getElementById("interval6").textContent = "Current interval: " + (player.autobuyers[5].interval/1000).toFixed(2) + " seconds"
-        document.getElementById("interval7").textContent = "Current interval: " + (player.autobuyers[6].interval/1000).toFixed(2) + " seconds"
-        document.getElementById("interval8").textContent = "Current interval: " + (player.autobuyers[7].interval/1000).toFixed(2) + " seconds"
-        document.getElementById("intervalTickSpeed").textContent = "Current interval: " + (player.autobuyers[8].interval/1000).toFixed(2) + " seconds"
-        document.getElementById("intervalDimBoost").textContent = "Current interval: " + (player.autobuyers[9].interval/1000).toFixed(2) + " seconds"
-        document.getElementById("intervalGalaxies").textContent = "Current interval: " + (player.autobuyers[10].interval/1000).toFixed(2) + " seconds"
-        document.getElementById("intervalInf").textContent = "Current interval: " + (player.autobuyers[11].interval/1000).toFixed(2) + " seconds"
-        document.getElementById("intervalSac").textContent = "Current interval: " + (player.autoSacrifice.interval/1000).toFixed(2) + " seconds"
-        if (player.galacticSacrifice) document.getElementById("intervalGalSac").textContent = "Current interval: " + (player.autobuyers[12].interval/1000).toFixed(2) + " seconds"
-    }
+	var intervalUnits = player.infinityUpgrades.includes("autoBuyerUpgrade") ? 1/2000 : 1/1000
+	for (var tier = 1; tier <= 8; ++tier) {
+		document.getElementById("interval" + tier).textContent = "Current interval: " + (player.autobuyers[tier-1].interval * intervalUnits).toFixed(2) + " seconds"
+	}
+	document.getElementById("intervalTickSpeed").textContent = "Current interval: " + (player.autobuyers[8].interval * intervalUnits).toFixed(2) + " seconds"
+	document.getElementById("intervalDimBoost").textContent = "Current interval: " + (player.autobuyers[9].interval * intervalUnits).toFixed(2) + " seconds"
+	document.getElementById("intervalGalaxies").textContent = "Current interval: " + (player.autobuyers[10].interval * intervalUnits).toFixed(2) + " seconds"
+	document.getElementById("intervalInf").textContent = "Current interval: " + (player.autobuyers[11].interval * intervalUnits).toFixed(2) + " seconds"
+	document.getElementById("intervalSac").textContent = "Current interval: " + (player.autoSacrifice.interval * intervalUnits).toFixed(2) + " seconds"
+	if (player.galacticSacrifice) document.getElementById("intervalGalSac").textContent = "Current interval: " + (player.autobuyers[12].interval * intervalUnits).toFixed(2) + " seconds"
 
     var maxedAutobuy = 0;
     var e100autobuy = 0;
@@ -6226,9 +6206,13 @@ function gameLoop(diff) {
     document.getElementById("replicantiamount").textContent = shortenDimensions(player.replicanti.amount)
     document.getElementById("replicantimult").textContent = shorten(getReplMult())
 
+    var currentQKmin = new Decimal(0)
     if (quantumed&&isQuantumReached()) {
-        var currentQKmin = quarkGain().dividedBy(player.quantum.time/600)
-        if (currentQKmin.gt(QKminpeak) && player.meta.antimatter.gte(Decimal.pow(Number.MAX_VALUE,player.masterystudies?1.2:1))) QKminpeak = currentQKmin
+        currentQKmin = quarkGain().dividedBy(player.quantum.time/600)
+        if (currentQKmin.gt(QKminpeak) && player.meta.antimatter.gte(Decimal.pow(Number.MAX_VALUE,player.masterystudies?1.2:1))) {
+            QKminpeak = currentQKmin
+            QKminpeakValue = quarkGain()
+        }
     }
     var currentEPmin = updateEPminpeak(diff);
     EPminpeakUnits = player.dilation.active && isSmartPeakActivated ? 'TP' : 'EP'
@@ -6242,7 +6226,11 @@ function gameLoop(diff) {
         ? (EPminpeakType == "normal" ? shortenDimensions(currentEPmin) : shorten(currentEPmin))+EPminpeakUnits : "")
     document.getElementById("eternitybtnPeak").textContent = ((!player.dilation.active||player.options.theme=="Aarex's Modifications")&&player.options.notation!='Morse code'&&EPminpeak > 0
         ? "Peaked at "+(EPminpeakType == "normal" ? shortenDimensions(EPminpeak) : shorten(EPminpeak))+EPminpeakUnits : "")
-    document.getElementById("quantumbtn").innerHTML = (!quantumed||!inQC(0)?(inQC(0)?"My computer is":player.quantum.challenge.length>1?"Paired challenge is":"My challenging skills are")+" not powerful enough... ":"")+"I need to go quantum."+(quantumed&&(inQC(0)||player.options.theme=="Aarex's Modifications")?"<br>Gain "+shortenDimensions(quarkGain())+" quark"+(quarkGain().eq(1)?"":"s")+".<br>"+shortenMoney(currentQKmin)+" QK/min<br>Peaked at "+shortenMoney(QKminpeak)+" QK/min":"")
+    document.getElementById("quantumbtnFlavor").textContent = (!quantumed||!inQC(0)?(inQC(0)?"My computer is":player.quantum.challenge.length>1?"Paired challenge is":"My challenging skills are")+" not powerful enough... ":"") + "I need to go quantum."
+    var showQuarkGain = quantumed&&(inQC(0)||player.options.theme=="Aarex's Modifications")
+    document.getElementById("quantumbtnQKGain").textContent = showQuarkGain ? "Gain "+shortenDimensions(quarkGain())+" quark"+(quarkGain().eq(1)?".":"s.") : ""
+    document.getElementById("quantumbtnRate").textContent = showQuarkGain ? shortenMoney(currentQKmin)+" QK/min" : ""
+    document.getElementById("quantumbtnPeak").textContent = showQuarkGain ? shortenMoney(QKminpeak)+" QK/min at " + shortenDimensions(QKminpeakValue) + (QKminpeakValue.eq(1)?" quark.":" quarks.") : ""
     updateMoney();
     updateCoinPerSec();
     updateDimensions()

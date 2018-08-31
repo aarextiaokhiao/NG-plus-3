@@ -802,9 +802,9 @@ function quantum(auto,force,challid) {
 			updateQuantumChallenges()
 			if (!oheHeadstart) {
 				player.eternityBuyer.dilationMode = false
-				player.eternityBuyer.statBeforeDilation = 0
 				player.eternityBuyer.dilationPerAmount = 10
 			}
+			player.eternityBuyer.statBeforeDilation = 0
 			if ((player.autoEterMode=="replicanti"||player.autoEterMode=="peak")&&(speedrunMilestonesReached<18||!isRewardEnabled(4))) {
 				player.autoEterMode="amount"
 				updateAutoEterMode()
@@ -870,6 +870,7 @@ function quantum(auto,force,challid) {
 		EPminpeakType = 'normal'
 		EPminpeak = new Decimal(0)
 		QKminpeak = new Decimal(0)
+		QKminpeakValue = new Decimal(0)
 		updateAutobuyers()
 		updateMilestones()
 		resetTimeDimensions()

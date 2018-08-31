@@ -233,6 +233,7 @@ function onLoad() {
   EPminpeakType = 'normal'
   EPminpeak = new Decimal(0)
   QKminpeak = new Decimal(0)
+  QKminpeakValue = new Decimal(0)
   if (player.peakSpent) player.peakSpent = 0
 
   if (typeof player.autobuyers[9].bulk !== "number") {
