@@ -616,7 +616,7 @@ if (player.version < 5) {
           }
           player.aarexModifications.newGamePlusVersion = 1
           if (confirm("Do you want to migrate your NG++ save into new NG+++ mode?")) {
-              player.aarexModifications.newGame3PlusVersion = 1.9975
+              player.aarexModifications.newGame3PlusVersion = 1.9979
               player.dbPower = 1
               player.peakSpent = 0
               player.masterystudies = []
@@ -660,6 +660,8 @@ if (player.version < 5) {
                   completed: 0,
                   respec: false
               }
+              player.dilation.bestTP = 0
+              player.old = false
           }
           player.dilation.upgrades=migratedUpgrades
           resetDilationGalaxies()
@@ -811,7 +813,11 @@ if (player.version < 5) {
       }
   }
   if (player.aarexModifications.newGame3PlusVersion < 1.9975&&!player.quantum.challenge) player.quantum.challenge=[]
-  if (player.aarexModifications.newGame3PlusVersion < 1.9978995) player.aarexModifications.newGame3PlusVersion=1.9978995
+  if (player.aarexModifications.newGame3PlusVersion < 1.9979) {
+      player.dilation.bestTP=player.achievements.includes("ng3p18")?player.dilation.tachyonParticles:new Decimal(0)
+      player.old=false
+      player.aarexModifications.newGame3PlusVersion=1.9979
+  }
   if (player.aarexModifications.newGame3PlusVersion==undefined) {
       colorBoosts={
           r:1,
@@ -1108,6 +1114,7 @@ if (player.version < 5) {
   document.getElementById('toggleallmetadims').style.display=speedrunMilestonesReached>7?"":"none"
   document.getElementById('metaboostauto').style.display=speedrunMilestonesReached>14?"":"none"
   document.getElementById("autoBuyerQuantum").style.display=speedrunMilestonesReached>22?"":"none"
+  setAndMaybeShow('bestTP',player.achievements.includes("ng3p18"),'"Your best ever Tachyon particles was "+shorten(player.dilation.bestTP)+"."')
   notifyId=speedrunMilestonesReached
   updatePowers()
   var detectNGPStart = player.lastUpdate == 1531944153054
@@ -1464,6 +1471,7 @@ function transformSaveToDecimal() {
       }
       if (player.quantum ? player.quantum.autobuyer : false) player.quantum.autobuyer.limit = new Decimal(player.quantum.autobuyer.limit)
       if (player.quantum ? player.quantum.electrons : false) player.quantum.electrons.amount = new Decimal(player.quantum.electrons.amount)
+      if (player.dilation.bestTP) player.dilation.bestTP = new Decimal(player.dilation.bestTP)
   }
 }
 

@@ -459,28 +459,30 @@
                 <table class="table" id="studytable">
                     <tr>
                         <td><button class="timestudylocked" id="timestudy291" onclick='buyMasteryStudy("t", 291)'>You gain 1% of your EP gained on eternity each second.</button></td>
-                        <td><button class="timestudylocked" id="timestudy292" onclick='buyMasteryStudy("t", 292)'>You can gain tachyon particles while dilated.</button></td>
+                        <td><button class="timestudylocked" id="timestudy292" onclick='buyMasteryStudy("t", 292)'>You can gain tachyon particles without disabling dilation.</button></td>
                     </tr>
                 </table>
                 <table class="table" id="studytable">
                     <tr>
-                        <td><button class="timestudylocked" id="timestudy301" onclick='buyMasteryStudy("t", 301)'>Replicated galaxies are stronger based on its' efficiency.</span></button></td>
-                        <td><button class="timestudylocked" id="timestudy302">Pick all time studies before mastery studies.<br><span id="ts302Cost">Cost: ??? Time Theorems</span></button></td>
-                        <td><button class="timestudylocked" id="timestudy303">???<br><span id="ts303Cost">Cost: ??? Time Theorems</span></button></td>
+                        <td><button class="timestudylocked" id="timestudy301" style='font-size:10px' onclick='buyMasteryStudy("t", 301)'>Remote cost scaling starts 1 galaxy later per 4.45 extra replicated galaxies.</span></button></td>
+                        <td><button class="timestudylocked" id="timestudy302" onclick='buyMasteryStudy("t", 302)'>Pick all time studies before mastery studies.</button></td>
+                        <td><button class="timestudylocked" id="timestudy303" style='font-size:10px' onclick='buyMasteryStudy("t", 303)'>Meta Dimensions are stronger based on your galaxies.<br><span id="ts303Current"></span></button></td>
                     </tr>
                 </table>
                 <table class="table" id="studytable">
                     <tr>
-                        <td><button class="timestudylocked" id="timestudy311">???<br><span id="ts311Cost">Cost: ??? Time Theorems</span></button></td>
+                        <td><button class="timestudylocked" id="timestudy311" onclick='buyMasteryStudy("t", 311)'>Replicanti multiplier to Infinity Dimensions is 16.5x stronger.</span></button></td>
                         <td><button class="timestudylocked" id="dilstudy10">Unlock Replicants<br>(Coming soon!)</button></td>
                         <td><button class="timestudylocked" id="dilstudy11">Unlock Emperor Dimensions<br>(Coming soon!)</button></td>
-                        <td><button class="timestudylocked" id="timestudy312">???<br><span id="ts312Cost">Cost: ??? Time Theorems</span></button></td>
+                        <td><button class="timestudylocked" id="timestudy312" onclick='buyMasteryStudy("t", 312)'>Meta-dimension boosts are 2% stronger and costs scale by 1 less.</button></td>
                     </tr>
                 </table>
                 <table class="table" id="studytable">
                     <tr>
+                        <td><button class="timestudylocked" id="timestudy321" onclick='buyMasteryStudy("t", 321)' style='font-size:10px'>If not dilated, replicanti greatly boosts Normal Dimensions as 1,200x strong.</span></button></td>
                         <td><button class="timestudylocked" id="dilstudy12">Unlock Nanofield<br>(Coming soon!)</button></td>
                         <td><button class="timestudylocked" id="dilstudy13">Unlock Tree of Decay<br>(Coming soon!)</button></td>
+                        <td><button class="timestudylocked" id="timestudy322" style='font-size:10px' onclick='buyMasteryStudy("t", 322)'>Cancel dilation penalty for Normal Dimensions boost from replicanti.</span></button></td>
                     </tr>
                 </table>
                 </div>
@@ -688,6 +690,7 @@
                 <div>
                     <p>You have <span id="tachyonParticleAmount" style="font-size:35px; color: black">0</span> tachyon particles.</p>
                 </div>
+                <p id='bestTP'></p>
                 <button id="enabledilation" class="dilationbtn" onclick="startDilatedEternity()">Dilate time.</button>
                 <p>You have <span id="dilatedTimeAmount" style="font-size:35px; color: black">0</span> dilated time <span id="dilatedTimePerSecond" style="font-size:25px; color: black">0</span></p>
                 <p>Next free galaxy at <span id="galaxyThreshold" style="font-size:25px; color: black">1000</span> dilated time, gained total of <span id="dilatedGalaxies" style="font-size:25px; color: black">0</span></p>
@@ -737,7 +740,7 @@
                     </tr>
                     <tr id="mddilupg">
                         <td>
-                            <button class="timestudy" id="dil14" onclick="buyDilationUpgrade(14)" style='font-size:10px'>Gain a multiplier to meta-dimensions based on tickspeed (1+log(1+log(x))).<br><span id="dil14desc"></span><br><span id="dil14cost"></span></button>
+                            <button class="timestudy" id="dil14" onclick="buyDilationUpgrade(14)" style='font-size:10px'>Gain a multiplier to meta-dimensions based on tickspeed.<br>(1+log(1+log(x)))<br><span id="dil14desc"></span><br><span id="dil14cost"></span></button>
                         </td>
                         <td>
                             <button class="timestudy" id="dil15" onclick="buyDilationUpgrade(15)" style='font-size:10px'>Meta-dimension shifts, boosts, and per-ten upgrades are boosted by dilated time.<br><span id="dil15desc"></span><br><span id="dil15cost"></span></button>
@@ -1934,6 +1937,32 @@
                                 <div id="I already got rid of you..." class="achievement achievementlocked" style="background-image: url(images/112.png)"><br></div>
                             </td>
                         </tr>
+                        <tr id="achRow16">
+                            <td>
+                                <div id="Special Relativity" class="achievement achievementlocked" style="background-image: url(images/113.png)" ach-tooltip="Quantum in under 5 seconds."><br></div>
+                            </td>
+                            <td>
+                                <div id="We are not going squared." class="achievement achievementlocked" style="background-image: url(images/114.png)" ach-tooltip="Reach e??? MA with exactly 8 meta-dimension boosts."><br></div>
+                            </td>
+                            <td>
+                                <div id="This achievement doesn't exist 3" class="achievement achievementlocked" style="background-image: url(images/115.png)" ach-tooltip="Reach 9e99,999,999 EP."><br></div>
+                            </td>
+                            <td>
+                                <div id="Old memories come true" class="achievement achievementlocked" style="background-image: url(images/116.png)" ach-tooltip="Quantum while not having over 4 dimension boosts and fifth dimensions."><br></div>
+                            </td>
+                            <td>
+                                <div id="Twice in the row" class="achievement achievementlocked" style="background-image: url(images/117.png)" ach-tooltip="Complete Paired Challenge 4."><br></div>
+                            </td>
+                            <td>
+                                <div id="Infinity Morals" class="achievement achievementlocked" style="background-image: url(images/118.png)" ach-tooltip="Quantum with at most ??? meta-dimension boosts."><br></div>
+                            </td>
+                            <td>
+                                <div id="Intergalactic" class="achievement achievementlocked" style="background-image: url(images/119.png)" ach-tooltip="Reach ??? 8th Dimensions while having no replicated/free galaxies."><br></div>
+                            </td>
+                            <td>
+                                <div id="Seriously, I already got rid of you." class="achievement achievementlocked" style="background-image: url(images/120.png)" ach-tooltip="Reach e??? IP without having time studies and electrons and while dilated and in QC6."><br></div>
+                            </td>
+                        </tr>
                 </table>
             </div>
             <div id="secretachievements" class="achtab" style="display:none;">
@@ -2648,7 +2677,7 @@
                                     <br>
                                     <span id="qc1cost"></span><br>
                                     <span id="qc1goal"></span><br>
-                                    Reward: +0.25x for electron gain multiplier and First & Second Dimensions boosts dilated time production.
+                                    Reward: Add 0.25x to electron gain multiplier and First & Second Dimensions boosts dilated time production.
                                 </div>
                             </div>
                         </td>
@@ -2662,7 +2691,7 @@
                                     <br>
                                     <span id="qc2cost"></span><br>
                                     <span id="qc2goal"></span><br>
-                                    Reward: +0.25x for electron gain multiplier and get 40% more free galaxies.
+                                    Reward: Add 0.25x to electron gain multiplier and get 40% more free galaxies.
                                 </div>
                             </div>
                         </td>
@@ -2678,7 +2707,7 @@
                                     <br>
                                     <span id="qc3cost"></span><br>
                                     <span id="qc3goal"></span><br>
-                                    Reward: +0.25x for electron gain multiplier and Infinity power boosts meta dimensions at greatly reduced rate.
+                                    Reward: Add 0.25x to electron gain multiplier and Infinity power boosts meta dimensions at greatly reduced rate.
                                 </div>
                             </div>
                         </td>
@@ -2692,7 +2721,7 @@
                                     <br>
                                     <span id="qc4cost"></span><br>
                                     <span id="qc4goal"></span><br>
-                                    Reward: +0.25x for electron gain multiplier and all even Meta Dimensions boosts all odd Meta Dimensions.
+                                    Reward: Add 0.25x to electron gain multiplier and all even Meta Dimensions boosts all odd Meta Dimensions.
                                 </div>
                             </div>
                         </td>
@@ -2708,7 +2737,7 @@
                                     <br>
                                     <span id="qc5cost"></span><br>
                                     <span id="qc5goal"></span><br>
-                                    Reward: +0.25x for electron gain multiplier and multiplier per ten dimensions is boosted by dimension boosts.
+                                    Reward: Add 0.25x to electron gain multiplier and multiplier per ten dimensions is boosted by dimension boosts.
                                 </div>
                             </div>
                         </td>
@@ -2722,7 +2751,7 @@
                                     <br>
                                     <span id="qc6cost"></span><br>
                                     <span id="qc6goal"></span><br>
-                                    Reward: +0.25x for electron gain multiplier and Meta Dimensions gain a multiplier based on your achievement bonus.
+                                    Reward: Add 0.25x to electron gain multiplier and Meta Dimensions gain a multiplier based on your achievement bonus.
                                 </div>
                             </div>
                         </td>
@@ -2738,7 +2767,7 @@
                                     <br>
                                     <span id="qc7cost"></span><br>
                                     <span id="qc7goal"></span><br>
-                                    Reward: +0.25x for electron gain multiplier and decrease the free tickspeed upgrade threshold increase by 2.5%.
+                                    Reward: Add 0.25x to electron gain multiplier and decrease the free tickspeed upgrade threshold increase by 2.5%.
                                 </div>
                             </div>
                         </td>
@@ -2752,7 +2781,7 @@
                                     <br>
                                     <span id="qc8cost"></span><br>
                                     <span id="qc8goal"></span><br>
-                                    Reward: +0.25x for electron gain multiplier and extra replicated galaxy scaling is 3x faster.
+                                    Reward: Add 0.25x to electron gain multiplier and extra replicated galaxy scaling is 3x faster.
                                 </div>
                             </div>
                         </td>
@@ -3521,9 +3550,13 @@
 					<td><button id='gbupg5' onclick='buyGluonUpg("gb",5)'>Replicated galaxies slow down Dark Matter Galaxies effect.<br><span id='gbupg5current'></span><br>Cost: <span id='gbupg5cost'></span> GB gluons</button></td>
 					<td><button id='brupg5' onclick='buyGluonUpg("br",5)'>Tachyon particles slow down Dark Matter Galaxies effect.<br><span id='brupg5current'></span><br>Cost: <span id='brupg5cost'></span> BR gluons</button></td>
 				</tr><tr id='gupgrow6'>
-					<td><button id='rgupg6' onclick='buyGluonUpg("rg",6)'>Replicated galaxies are way stronger.<br>Cost: <span id='rgupg6cost'></span> GB gluons</button></td>
-					<td><button id='gbupg6' onclick='buyGluonUpg("gb",6)'>Replicated galaxies are way stronger.<br>Cost: <span id='gbupg6cost'></span> GB gluons</button></td>
-					<td><button id='brupg6' onclick='buyGluonUpg("br",6)'>Free galaxy efficiency is the same as the replicated one.<br>Cost: <span id='brupg6cost'></span> BR gluons</button></td>
+					<td><button id='rgupg6' onclick='buyGluonUpg("rg",6)'>Slow down Distant Antimatter Galaxies effect by 15%.<br>Cost: <span id='rgupg6cost'></span> RG gluons</button></td>
+					<td><button id='gbupg6' onclick='buyGluonUpg("gb",6)'>Infinity power slow down Distant Antimatter Galaxies effect.<br><span id='gbupg6current'></span><br>Cost: <span id='gbupg6cost'></span> GB gluons</button></td>
+					<td><button id='brupg6' onclick='buyGluonUpg("br",6)' style='font-size:10px'>Meta-dimension boosts slow down Distant Antimatter Galaxies effect.<br><span id='brupg6current'></span><br>Cost: <span id='brupg6cost'></span> BR gluons</button></td>
+				</tr><tr id='gupgrow7'>
+					<td><button id='rgupg7' onclick='buyGluonUpg("rg",7)'>Slow down Remote Antimatter Galaxies effect by 11%.<br>Cost: <span id='rgupg7cost'></span> RG gluons</button></td>
+					<td><button id='gbupg7' onclick='buyGluonUpg("gb",7)'>Infinity Points slow down Remote Antimatter Galaxies effect.<br><span id='gbupg7current'></span><br>Cost: <span id='gbupg7cost'></span> GB gluons</button></td>
+					<td><button id='brupg7' onclick='buyGluonUpg("br",7)'>Eternity Points slow down Remote Antimatter Galaxies effect.<br><span id='brupg7current'></span><br>Cost: <span id='brupg7cost'></span> BR gluons</button></td>
 				</tr>
 				<tr><td></td><td><button id='qkmult' onclick='buyQuarkMult()'>You gain 2x more quarks.<br><span id='qkmultcurrent'></span><br><span id='qkmultcost'></span></button></td><td></td></tr></table>
 			</div>
@@ -3638,25 +3671,25 @@
 <script type="text/javascript" src="javascripts/chart.js"></script>
 <script type="text/javascript" src="javascripts/lz-string.js"></script>
 <script type="text/javascript" src="javascripts/core/polyfill.js"></script>
-<script type="text/javascript" src="javascripts/core/format.js?10"></script>
-<script type="text/javascript" src="javascripts/core/achievements.js?7"></script>
+<script type="text/javascript" src="javascripts/core/format.js?11"></script>
+<script type="text/javascript" src="javascripts/core/achievements.js?8"></script>
 <script type="text/javascript" src="javascripts/core/chart.js"></script>
-<script type="text/javascript" src="javascripts/core/tickspeed.js?18"></script>
-<script type="text/javascript" src="javascripts/core/normal_dimension.js?22"></script>
-<script type="text/javascript" src="javascripts/core/infinity_dimension.js?12"></script>
-<script type="text/javascript" src="javascripts/core/time_dimension.js?15"></script>
-<script type="text/javascript" src="javascripts/core/dimboost.js?26"></script>
-<script type="text/javascript" src="javascripts/core/timestudies.js?23"></script>
+<script type="text/javascript" src="javascripts/core/tickspeed.js?19"></script>
+<script type="text/javascript" src="javascripts/core/normal_dimension.js?23"></script>
+<script type="text/javascript" src="javascripts/core/infinity_dimension.js?13"></script>
+<script type="text/javascript" src="javascripts/core/time_dimension.js?16"></script>
+<script type="text/javascript" src="javascripts/core/dimboost.js?27"></script>
+<script type="text/javascript" src="javascripts/core/timestudies.js?24"></script>
 <script type="text/javascript" src="javascripts/core/canvases.js?5"></script>
 <script type="text/javascript" src="javascripts/core/devtools.js"></script>
-<script type="text/javascript" src="javascripts/core/load_functions.js?47"></script>
+<script type="text/javascript" src="javascripts/core/load_functions.js?48"></script>
 <script type="text/javascript" src="javascripts/core/newsticker.js?4"></script>
 <script type="text/javascript" src="javascripts/mods/ngmm.js?18"></script>
 <script type="text/javascript" src="javascripts/mods/ers.js"></script>
 <script type="text/javascript" src="javascripts/mods/ngpp.js?31"></script>
-<script type="text/javascript" src="javascripts/mods/ngppp.js?32"></script>
+<script type="text/javascript" src="javascripts/mods/ngppp.js?33"></script>
 <script type="text/javascript" src="javascripts/mods/ngmmm.js?2"></script>
-<script type="text/javascript" src="javascripts/game.js?53"></script>
+<script type="text/javascript" src="javascripts/game.js?54"></script>
 <script type="text/javascript" src="javascripts/sha512.js"></script>
 </body>
 </html>

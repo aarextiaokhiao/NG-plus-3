@@ -68,7 +68,7 @@ function maxTheorems() {
 }
 
 function updateTheoremButtons() {
-	if (player.dilation.upgrades.includes(10)) {
+	if (getPassiveTTGen().gt(0)) {
 		document.getElementById("theoremmax").style.display="none"
 		document.getElementById("theoremam").style.display="none"
 		document.getElementById("theoremip").style.display="none"
@@ -140,7 +140,7 @@ function buyDilationStudy(name, cost) {
         if (name < 2) {
             showEternityTab("dilation")
             document.getElementById("dilstudy1").innerHTML = "Unlock time dilation<span>Cost: 5000 Time Theorems"
-            if (player.eternityUpgrades.length<1&&player.masterystudies) giveAchievement("Work harder.")
+            if (player.eternityUpgrades.length<1) giveAchievement("Work harder.")
         } else if (name > 5) {
             giveAchievement("I'm so meta")
             showTab("dimensions")

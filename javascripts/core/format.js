@@ -301,8 +301,9 @@ shortenMoney = function (money) {
 
 
 function timeDisplay(time) {
-  if (time <= 100) return (time/10).toFixed(3) + " seconds"
-  time = Decimal.floor(time / 10)
+  time = time / 10
+  if (time <= 10) return time.toFixed(3) + " seconds"
+  time = Math.floor(time)
 
 
 

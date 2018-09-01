@@ -57,7 +57,7 @@ function DimensionProduction(tier) {
 function DimensionPower(tier) {
   var dim = player["infinityDimension"+tier]
   if (player.currentEternityChall == "eterc11") return new Decimal(1)
-  if (player.currentEternityChall=='eterc14') return getReplMult()
+  if (player.currentEternityChall=='eterc14') return getIDReplMult()
   if (inQC(3)) return getExtraDimensionBoostPower()
   var mult = dim.power
 
@@ -66,7 +66,7 @@ function DimensionPower(tier) {
   mult = mult.times(kongAllDimMult)
   if (player.achievements.includes("r94") && tier == 1) mult = mult.times(2);
   if (player.achievements.includes("r75")) mult = mult.times(player.achPow);
-  if (player.replicanti.unl && player.replicanti.amount.gt(1)) mult = mult.times(getReplMult())
+  if (player.replicanti.unl && player.replicanti.amount.gt(1)) mult = mult.times(getIDReplMult())
 
   if (player.timestudy.studies.includes(72) && tier == 4) {
       mult = mult.times(calcTotalSacrificeBoost().pow(0.04).max(1).min("1e30000"))
@@ -252,6 +252,11 @@ function loadInfAutoBuyers() {
 }
 
 var infDimPow = 1
+
+function getIDReplMult() {
+	if (player.masterystudies) if (player.masterystudies.includes('t311')) return getReplMult().pow(16.5)
+	return getReplMult()
+}
 
 function getEU2Mult() {
 	if (player.boughtDims) return Decimal.pow(player.eternities, Math.log(player.eternities*2+1)/Math.log(4))

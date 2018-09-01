@@ -7,7 +7,7 @@ function getMetaDimensionMultiplier (tier) {
     return new Decimal(1);
   }
   let power = player.dilation.upgrades.includes("ngpp4") ? getDil15Bonus() : 2
-  let multiplier = Decimal.pow(power*(inQC(6)?1.01:1), Math.floor(player.meta[tier].bought / 10)).times(Decimal.pow(inQC(8)?1:power*(player.achievements.includes("ngpp14")?1.01:1), Math.max(0, player.meta.resets - tier + 1))).times(getDilationMetaDimensionMultiplier());
+  let multiplier = Decimal.pow(power*(inQC(6)?1.01:1), Math.floor(player.meta[tier].bought / 10)).times(Decimal.pow(inQC(8)?1:power*(player.achievements.includes("ngpp14")?1.01:1), Math.max(0, player.meta.resets - tier + 1)*(!player.masterystudies?1:player.masterystudies.includes('t312')?1.02:1))).times(getDilationMetaDimensionMultiplier());
   if (player.dilation.upgrades.includes("ngpp3")) {
     multiplier = multiplier.times(getDil14Bonus());
   }
@@ -15,12 +15,13 @@ function getMetaDimensionMultiplier (tier) {
   if (player.masterystudies) {
       if (player.masterystudies.includes("t262")) multiplier = multiplier.times(getMTSMult(262))
       if (player.masterystudies.includes("t282")) multiplier = multiplier.times(getMTSMult(282))
+      if (player.masterystudies.includes("t303")) multiplier = multiplier.times(getMTSMult(303))
       if (QCIntensity(3)) multiplier = multiplier.times(Decimal.pow(10,Math.sqrt(Math.max(player.infinityPower.log10(),0)/(QCIntensity(3)>1?2e8:1e9))))
   }
   if (GUBought("rg3")&&tier<2) multiplier = multiplier.times(player.resets)
   if (GUBought("br4")) multiplier = multiplier.times(Decimal.pow(getDimensionPowerMultiplier(), 0.0003))
   if (tier%2>0) multiplier = multiplier.times(QC4Reward)
-  if (QCIntensity(6)) multiplier = multiplier.times(player.achPow)
+  if (QCIntensity(6)) multiplier = multiplier.times(player.achPow.pow(QCIntensity(6)>1?3:1))
   
   if (multiplier.lt(1)) multiplier = new Decimal(1)
   if (player.dilation.active || player.galacticSacrifice) {
@@ -64,7 +65,7 @@ function clearMetaDimensions () {
 function getMetaShiftRequirement () {
   return {
     tier: Math.min(8, player.meta.resets + 4),
-    amount: Math.floor(Math.max((inQC(4) ? 5.5 : 15) * (player.meta.resets - 4),0) + Math.max((inQC(4) ? 14.5 : 5) * (player.meta.resets - (inQC(4) ? 55 : 15)), 0)) + 20
+    amount: Math.floor(Math.max(((inQC(4) ? 5.5 : 15) - (!player.masterystudies ? 0 : player.masterystudies.includes("t312") ? 1 : 0)) * (player.meta.resets - 4),0) + Math.max((inQC(4) ? 14.5 : 5) * (player.meta.resets - (inQC(4) ? 55 : 15)), 0)) + 20
   }
 }
 
@@ -198,9 +199,15 @@ function getMetaDimensionProduction(tier) {
 }
 
 function getExtraDimensionBoostPower() {
-	if (player.currentEternityChall=="eterc14" || inQC(7)) return new Decimal(1)
+	if (player.currentEternityChall=="eterc14"||inQC(7)) return new Decimal(1)
 	if (inQC(3)) return player.meta.bestAntimatter.pow(Math.pow(player.meta.bestAntimatter.max(1e8).log10()/8,2))
-	else return player.meta.bestAntimatter.pow(!player.dilation.upgrades.includes("ngpp5") ? 8 : 9+ECTimesCompleted("eterc13")*0.2).plus(1)
+	else {
+		let power=8
+		if (player.dilation.upgrades.includes("ngpp5")) power++
+		power+=ECTimesCompleted("eterc13")*0.2
+		if (player.masterystudies) if (player.masterystudies.includes('t313')) power++
+		return player.meta.bestAntimatter.pow(power).plus(1)
+	}
 }
 
 function getDil14Bonus () {
@@ -404,6 +411,7 @@ function quantum(auto,force,challid) {
 		if (!force) {
 			player.quantum.times++
 			player.quantum.quarks = player.quantum.quarks.plus(quarkGain());
+			if (player.old) giveAchievement("Old memories come true")
 		}
 		document.getElementById("quarks").innerHTML="You have <b class='QKAmount'>"+shortenDimensions(player.quantum.quarks)+"</b> quark"+(player.quantum.quarks.lt(2)?".":"s.")
 		document.getElementById("galaxyPoints2").innerHTML="You have <span class='GPAmount'>0</span> Galaxy points."
@@ -674,6 +682,7 @@ function quantum(auto,force,challid) {
 				tachyonParticles: new Decimal(0),
 				dilatedTime: new Decimal(speedrunMilestonesReached>21 && isRewardEnabled(4)?1e100:0),
 				totalTachyonParticles: new Decimal(0),
+				bestTP: player.dilation.bestTP,
 				nextThreshold: new Decimal(1000),
 				freeGalaxies: 0,
 				upgrades: speedrunMilestonesReached > 5 && isRewardEnabled(4) ? [4,5,6,7,8,9,"ngpp1","ngpp2"] : [],
@@ -735,6 +744,7 @@ function quantum(auto,force,challid) {
 			autoEterOptions: player.autoEterOptions,
 			galaxyMaxBulk: player.galaxyMaxBulk,
 			quantum: player.quantum,
+			old: player.masterystudies ? inQC(0) : undefined,
 			aarexModifications: player.aarexModifications
 		};
 		if (player.challenges.includes("challenge1")) player.money = new Decimal(100)
@@ -748,6 +758,8 @@ function quantum(auto,force,challid) {
 		else if (isRewardEnabled(3)) for (ec=1;ec<15;ec++) player.eternityChalls['eterc'+ec] = 5
 		if (player.masterystudies) {
 			giveAchievement("Sub-atomic")
+			if (player.quantum.best<50) giveAchievement("Special Relativity")
+			if (!force&&!inQC(4)) if (player.meta.resets<99) giveAchievement("Infinity Morals")
 			var diffrg=player.quantum.usedQuarks.r.min(player.quantum.usedQuarks.g)
 			var diffgb=player.quantum.usedQuarks.g.min(player.quantum.usedQuarks.b)
 			var diffbr=player.quantum.usedQuarks.b.min(player.quantum.usedQuarks.r)
@@ -767,6 +779,7 @@ function quantum(auto,force,challid) {
 						player.quantum.challenges[qc2]=2
 						player.quantum.electrons.mult+=0.5
 						player.quantum.pairedChallenges.completed=player.quantum.pairedChallenges.current
+						if (player.quantum.pairedChallenges.current>3) giveAchievement("Twice in the row")
 					}
 				} else if (!player.quantum.challenges[qc1]&&intensity>0) {
 					player.quantum.challenges[qc1]=1

@@ -57,7 +57,10 @@ function getDimensionFinalMultiplier(tier) {
 
   if (player.timestudy.studies.includes(71) && tier !== 8) multiplier = multiplier.times(calcTotalSacrificeBoost().pow(0.25).min("1e210000"));
   if (player.timestudy.studies.includes(91)) multiplier = multiplier.times(Decimal.pow(10, Math.min(player.thisEternity, 18000)/60));
-  if (player.timestudy.studies.includes(101)) multiplier = multiplier.times(Decimal.max(player.replicanti.amount, 1))
+  let ndReplMult = 1
+  let useHigherNDReplMult = !player.dilation.active ? false : !player.masterystudies ? false : player.masterystudies.includes("t322")
+  if (player.timestudy.studies.includes(101)) ndReplMult = Decimal.max(player.replicanti.amount.pow(player.dilation.active?1:!player.masterystudies?1:player.masterystudies.includes("t321")?1200:1), 1)
+  if (!useHigherNDReplMult) multiplier = multiplier.times(ndReplMult)
   if (player.timestudy.studies.includes(161)) multiplier = multiplier.times(new Decimal("1e616"))
   if (player.timestudy.studies.includes(234) && tier == 1) multiplier = multiplier.times(calcTotalSacrificeBoost())
 
@@ -92,6 +95,7 @@ function getDimensionFinalMultiplier(tier) {
   }
 
   if (player.dilation.upgrades.includes(6)) multiplier = multiplier.times(player.dilation.dilatedTime.max(1).pow(308))
+  if (useHigherNDReplMult) multiplier = multiplier.times(ndReplMult)
   if (player.galacticSacrifice) {
       if (player.currentChallenge == "postc6" || inQC(6)) multiplier = multiplier.dividedBy(player.matter.max(1))
       if (player.currentChallenge == "postc8" || inQC(6)) multiplier = multiplier.times(player.postC8Mult)
@@ -192,7 +196,7 @@ function hasInfinityMult(tier) {
         if (player.achievements.includes("r58")) dimMult = player.galacticSacrifice?Math.pow(dimMult,1.0666):dimMult*1.01;
         dimMult += ECTimesCompleted("eterc3") * 0.8
         if (player.galacticSacrifice) if (player.galacticSacrifice.upgrades.includes(33)) dimMult *= galUpgrade33();
-        if (QCIntensity(5)) dimMult += Math.log10(1+player.resets)
+        if (QCIntensity(5)) dimMult += Math.log10(1+player.resets)*Math.pow(QCIntensity(5),0.4)
         if (player.masterystudies) dimMult = Decimal.pow(dimMult, getMPTPower())
         return dimMult;
     }
@@ -470,6 +474,7 @@ function hasInfinityMult(tier) {
     player.postC4Tier = tier;
     if (tier != 8) player.dimlife = false
     if (tier != 1) player.dead = false
+    if (player.masterystudies) if (tier > 4) player.old = false
 }
 
 

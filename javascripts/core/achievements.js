@@ -119,6 +119,14 @@ const allAchievements = {
   ng3p16 : "And the winner is...",
   ng3p17 : "Old age",
   ng3p18 : "I already got rid of you...",
+  ng3p21 : "Special Relativity",
+  ng3p22 : "We are not going squared.",
+  ng3p23 : "This achievement doesn't exist 3",
+  ng3p24 : "Old memories come true",
+  ng3p25 : "Twice in the row",
+  ng3p26 : "Infinity Morals",
+  ng3p27 : "Intergalactic",
+  ng3p28 : "Seriously, I already got rid of you.",
   s11 : "The first one's always free",
   s12 : "Just in case",
   s13 : "It pays to have respect",
@@ -229,12 +237,17 @@ function giveAchievement(name) {
         for (i=1;i<9;i++) document.getElementById("td"+i+'auto').style.visibility="visible"
     }
     if (name == "It will never be enough") document.getElementById('replicantibulkmodetoggle').style.display="inline-block"
+    if (name == "I already got rid of you...") {
+        player.dilation.bestTP=player.dilation.tachyonParticles
+        document.getElementById('bestTP').style.display=""
+        document.getElementById('bestTP').textContent="Your best ever Tachyon particles was "+shorten(player.dilation.bestTP)+"."
+    }
     updateAchievements();
 }
 
 function updateAchievements() {
 	var amount = 0
-	for (var i=1; i<16; i++) {
+	for (var i=1; i<17; i++) {
 		if (i>14) var shown=!(!player.masterystudies)
 		else if (i>13) var shown=!(!player.meta)
 		else if (i>10) var shown=!player.boughtDims

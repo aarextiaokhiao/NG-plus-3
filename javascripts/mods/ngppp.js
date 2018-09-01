@@ -1,12 +1,12 @@
-masterystudies={initialCosts:{time:{241: 1e71, 251: 2e71, 252: 2e71, 253: 2e71, 261: 5e71, 262: 5e71, 263: 5e71, 264: 5e71, 265: 5e71, 266: 5e71, 271: 2.7434842249657063e76, 272: 2.7434842249657063e76, 273: 2.7434842249657063e76, 281: 6.858710562414266e76, 282: 6.858710562414266e76, 291: 2.143347050754458e77, 292: 2.143347050754458e77, 301: 2.143347050754458e77},
+masterystudies={initialCosts:{time:{241: 1e71, 251: 2e71, 252: 2e71, 253: 2e71, 261: 5e71, 262: 5e71, 263: 5e71, 264: 5e71, 265: 5e71, 266: 5e71, 271: 2.7434842249657063e76, 272: 2.7434842249657063e76, 273: 2.7434842249657063e76, 281: 6.858710562414266e76, 282: 6.858710562414266e76, 291: 2.143347050754458e77, 292: 2.143347050754458e77, 301: 4.286694101508916e77, 302: 1/0, 303: 4.286694101508916e77, 311: 4.286694101508916e77, 312: 4.286694101508916e77, 321: 4.286694101508916e77, 322: 4.286694101508916e77},
 		ec:{13:1e72, 14:1e72}},
 	costs:{time:{},
 		ec:{},
 		dil:{7: 2e82, 8: 2e84, 9: 4e85},
 		mc:{}},
-	costmults:{241: 1, 251: 2.5, 252: 2.5, 253: 2.5, 261: 6, 262: 6, 263: 6, 264: 6, 265: 6, 266: 6, 271: 2, 272: 2, 273: 2, 281: 4, 282: 4, 291: 2, 292: 2, 301: 2},
+	costmults:{241: 1, 251: 2.5, 252: 2.5, 253: 2.5, 261: 6, 262: 6, 263: 6, 264: 6, 265: 6, 266: 6, 271: 2, 272: 2, 273: 2, 281: 4, 282: 4, 291: 2, 292: 2, 301: 2, 302: 2, 303: 2, 311: 2, 312: 2, 321: 1, 322: 1},
 	costmult:1,
-	allTimeStudies:[241, 251, 252, 253, 261, 262, 263, 264, 265, 266, 271, 272, 273, 281, 282, 291, 292, 301],
+	allTimeStudies:[241, 251, 252, 253, 261, 262, 263, 264, 265, 266, 271, 272, 273, 281, 282, 291, 292, 301, 302, 303, 311, 312, 321, 322],
 	initialReqs:{13:728e3,14:255e5},
 	incrementReqs:{13:6e3,14:9e5},
 	reqs:{}}
@@ -44,6 +44,7 @@ function updateMasteryStudyButtons() {
 		}
 		document.getElementById("ds8Req").textContent="Requirement: "+shorten(16900)+" electrons"
 		for (id=281;id<283;id++) document.getElementById("ts"+id+"Current").textContent="Currently: "+shorten(getMTSMult(id))+"x"
+		document.getElementById("ts303Current").textContent="Currently: "+shorten(getMTSMult(303))+"x"
 	}
 }
 
@@ -107,8 +108,13 @@ function canBuyMasteryStudy(type, id) {
 		var row=Math.floor(id/10)
 		for (check=1;check<10;check++) if (player.masterystudies.includes('t'+(row+1).toString()+check)) return false
 		var col=id%10
-		if (row>29) return player.masterystudies.includes('t291')
-		if (row>28) return player.masterystudies.includes('d9')
+		if (row>31) return player.masterystudies.includes('t31'+col)
+		if (row>30) return player.masterystudies.includes('t30'+(col*2-1))
+		if (row>29) {
+			if (col==2) return player.masterystudies.includes('d9')
+			return player.masterystudies.includes('t29'+((col+1)/2))
+		}
+		if (row>28) return player.masterystudies.includes('t272')&&player.masterystudies.includes('d9')
 		if (row>27) return player.masterystudies.includes('t27'+col)||player.masterystudies.includes('t27'+(col+1))
 		if (row>26) return player.masterystudies.includes('t252')&&player.masterystudies.includes('d7')
 		if (row>25) return player.masterystudies.includes('t25'+Math.ceil(col/2))
@@ -192,6 +198,8 @@ function drawMasteryTree() {
 		drawMasteryBranch("timestudy303", "timestudy312")
 		drawMasteryBranch("timestudy302", "dilstudy10")
 		drawMasteryBranch("dilstudy10", "dilstudy11")
+		drawMasteryBranch("timestudy311", "timestudy321")
+		drawMasteryBranch("timestudy312", "timestudy322")
 		drawMasteryBranch("dilstudy11", "dilstudy12")
 		drawMasteryBranch("dilstudy12", "dilstudy13")
 	} else document.getElementById("quantumstudies").style.display="none"
@@ -217,6 +225,7 @@ function getMTSMult(id) {
 	}
 	if (id==281) return Decimal.pow(10,Math.pow(replmult.max(1).log10(),0.25)/10)
 	if (id==282) return Decimal.pow(10,Math.pow(replmult.max(1).log10(),0.25)/15)
+	if (id==303) return Decimal.pow(3.5,Math.pow(Math.log10(Math.max(player.galaxies,1)),1.5))
 }
 
 //v1.3
@@ -257,6 +266,10 @@ function updateQuantumTabs() {
 		if (player.masterystudies.includes("d9")) {
 			document.getElementById("gbupg5current").textContent="Currently: "+(Math.sqrt(player.replicanti.galaxies)/5.5).toFixed(1)+"%"
 			document.getElementById("brupg5current").textContent="Currently: "+(Math.sqrt(player.dilation.tachyonParticles.max(1).log10())*1.3).toFixed(1)+"%"
+			document.getElementById("gbupg6current").textContent="Currently: "+(100-100/(1+Math.pow(player.infinityPower.log10(),0.25)/2500)).toFixed(1)+"%"
+			document.getElementById("brupg6current").textContent="Currently: "+(100-100/(1+player.meta.resets/300)).toFixed(1)+"%"
+			document.getElementById("gbupg7current").textContent="Currently: "+(100-100/(1+Math.log10(1+player.infinityPoints.max(1).log10())/90)).toFixed(1)+"%"
+			document.getElementById("brupg7current").textContent="Currently: "+(100-100/(1+Math.log10(1+player.eternityPoints.max(1).log10())/75)).toFixed(1)+"%"
 		}
 	}
 	if (document.getElementById("electrons").style.display=="block") {
@@ -317,7 +330,7 @@ function assignQuark(color) {
 }
 
 //v1.75
-GUCosts=[null, 1, 2, 4, 100, 7e15]
+GUCosts=[null, 1, 2, 4, 100, 7e15, 4e19, 15e27]
 
 function updateGluons() {
 	if (!player.masterystudies) return
@@ -335,11 +348,10 @@ function updateGluons() {
 	document.getElementById("gbgain").textContent=shortenDimensions(player.quantum.usedQuarks.g.min(player.quantum.usedQuarks.b))
 	document.getElementById("brgain").textContent=shortenDimensions(player.quantum.usedQuarks.b.min(player.quantum.usedQuarks.r))
 	var names=["rg","gb","br"]
-	for (u=1;u<7;u++) {
+	for (u=1;u<8;u++) {
 		var showRow=true
 		if (u>4) {
-			if (u>5) showRow=false
-			else showRow=player.masterystudies.includes("d9")
+			showRow=player.masterystudies.includes("d9")
 			document.getElementById("gupgrow"+u).style.display=showRow?"":"none"
 			if (showRow) for (c=0;c<3;c++) document.getElementById(names[c]+"upg"+u+"cost").textContent=shortenDimensions(GUCosts[u])
 		}
@@ -512,7 +524,7 @@ function buyQuarkMult() {
 
 var quantumChallenges={
 	costs:[0,16900,19100,21500,24200,25900,28900,32e3,33600],
-	goals:[0,1043e7,7982e7,4638e7,5394e7,1239e7,251e6,6305e7,3105e7]
+	goals:[0,715e7,7982e7,4638e7,5394e7,1239e7,251e6,6305e7,3105e7]
 }
 
 var assigned
@@ -582,7 +594,7 @@ function getQCGoal(num) {
 	}
 	if (!c1) return quantumChallenges.goals[0]
 	if (!c2) return quantumChallenges.goals[c1]
-	return quantumChallenges.goals[c1]*quantumChallenges.goals[c2]/1e11
+	return quantumChallenges.goals[c1]*quantumChallenges.goals[c2]/1e11*((c1==1||c2==1)?1.46:1)*Math.sqrt((c1==6||c2==6)?2:1)
 }
 
 function QCIntensity(num) {

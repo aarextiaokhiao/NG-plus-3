@@ -26,6 +26,7 @@ function softReset(bulk) {
   if (!player.break && player.money.gt(Number.MAX_VALUE)) return;
   var oldResets = player.resets
   player.resets+=bulk;
+  if (player.masterystudies) if (player.resets > 4) player.old = false
   if (player.resets >= 10) {
       giveAchievement("Boosting to the max");
   }
@@ -191,6 +192,7 @@ function softReset(bulk) {
       autoEterOptions: player.autoEterOptions,
       galaxyMaxBulk: player.galaxyMaxBulk,
       quantum: player.quantum,
+      old: player.old,
       aarexModifications: player.aarexModifications
   };
   if (player.currentChallenge == "challenge10" || player.currentChallenge == "postc1") {
@@ -274,16 +276,16 @@ function maxBuyDimBoosts(manual) {
 			var sr = getShiftRequirement((hasGDBUpg ? 5 : 3) - player.resets)
 			var ut = Math.min(bought, (player.galaxies >= player.overXGalaxies || manual) ? 1/0 : player.autobuyers[9].priority)
 			var ssstart = getSupersonicStart()
-			r = Math.floor((ut - sr.amount) / sr.mult + (hasGDBUpg ? 7 : 5))
+			r = (ut - sr.amount) / sr.mult + (hasGDBUpg ? 7 : 5)
 			if (r > ssstart) {
 				var a = getSupersonicMultIncrease() / 2
 				var b = a + sr.mult
 				var solution = (-b + Math.sqrt(b * b + (4 * a) * ((r - ssstart + 1) / 4e4) * sr.mult)) / (2 * a)
 				var setPoint = ssstart + 4e4 * Math.floor(solution)
 				sr = getShiftRequirement(setPoint - player.resets)
-				r = Math.floor((ut - sr.amount) / sr.mult + setPoint + 1)
+				r = (ut - sr.amount) / sr.mult + setPoint + 1
 			}
-			r -= player.resets
+			r = Math.floor(r) - player.resets
 		}
 
 		if (r > 749) giveAchievement("Costco sells dimboosts now")
