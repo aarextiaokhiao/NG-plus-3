@@ -248,7 +248,7 @@ function giveAchievement(name) {
 function updateAchievements() {
 	var amount = 0
 	for (var i=1; i<17; i++) {
-		if (i>16) var shown=false
+		if (i>15) var shown=false
 		else if (i>14) var shown=!(!player.masterystudies)
 		else if (i>13) var shown=!(!player.meta)
 		else if (i>10) var shown=!player.boughtDims
