@@ -213,7 +213,7 @@ function giveAchievement(name) {
 
     if (player.achievements.includes(allAchievementNums[name])) return false
 
-    if ((allAchievementNums[name].split("ngpp")[1]&&!player.meta)||(allAchievementNums[name].split("ng3p")[1]&&!player.masterystudies)) return false
+    if ((allAchievementNums[name].split("ngpp")[1]&&!player.meta)||(allAchievementNums[name].split("ng3p")[1]&&!player.masterystudies)||allAchievementNums[name].split("ng3p2")[1]) return false
 
     if (player.boughtDims) {
         var r=allAchievementNums[name].split("r")[1]
@@ -248,7 +248,8 @@ function giveAchievement(name) {
 function updateAchievements() {
 	var amount = 0
 	for (var i=1; i<17; i++) {
-		if (i>14) var shown=!(!player.masterystudies)
+		if (i>16) var shown=false
+		else if (i>14) var shown=!(!player.masterystudies)
 		else if (i>13) var shown=!(!player.meta)
 		else if (i>10) var shown=!player.boughtDims
 		else var shown=true
