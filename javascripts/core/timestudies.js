@@ -136,8 +136,9 @@ function buyTimeStudy(name, cost, check) {
 }
 
 function buyDilationStudy(name, cost) {
-    if (player.timestudy.theorem >= cost && !player.dilation.studies.includes(name) && player.dilation.studies.includes(name-1)) {
+    if (player.timestudy.theorem >= cost && !player.dilation.studies.includes(name) && (player.dilation.studies.includes(name-1)||name<2)) {
         if (name < 2) {
+            if (ECTimesCompleted("eterc11")+ECTimesCompleted("eterc12")<10||getTotalTT(player)<13000) return
             showEternityTab("dilation")
             document.getElementById("dilstudy1").innerHTML = "Unlock time dilation<span>Cost: 5000 Time Theorems"
             if (player.eternityUpgrades.length<1) giveAchievement("Work harder.")
@@ -232,11 +233,11 @@ function canBuyStudy(name) {
       break;
 
       case 22:
-      if (player.timestudy.studies.includes(210 + Math.round(col/2)) && ((name%2 == 0) ? !player.timestudy.studies.includes(name-1) : !player.timestudy.studies.includes(name+1))) return true; else return false
+      if (player.timestudy.studies.includes(210 + Math.round(col/2)) && (((name%2 == 0) ? !player.timestudy.studies.includes(name-1) : !player.timestudy.studies.includes(name+1)) || (player.masterystudies ? player.masterystudies.includes("t302") : false))) return true; else return false
       break;
 
       case 23:
-      if ( (player.timestudy.studies.includes(220 + Math.floor(col*2)) || player.timestudy.studies.includes(220 + Math.floor(col*2-1))) && !player.timestudy.studies.includes((name%2 == 0) ? name-1 : name+1)) return true; else return false;
+      if ( (player.timestudy.studies.includes(220 + Math.floor(col*2)) || player.timestudy.studies.includes(220 + Math.floor(col*2-1))) && (!player.timestudy.studies.includes((name%2 == 0) ? name-1 : name+1) || (player.masterystudies ? player.masterystudies.includes("t302") : false))) return true; else return false;
       break;
   }
 }
@@ -471,34 +472,35 @@ function exportStudyTree() {
 };
 
 function importStudyTree(input) {
-  onImport = true
-  if (typeof input !== 'string') var input = prompt()
-  onImport = false
-  if (sha512_256(input) == "08b819f253b684773e876df530f95dcb85d2fb052046fa16ec321c65f3330608") giveAchievement("You followed the instructions")
-  if (input === "") return false
-  var studiesToBuy = input.split("|")[0].split(",");
-  var secondSplitPick = 0
-  var laterSecondSplits = []
-  for (i=0; i<studiesToBuy.length; i++) {
-      var study=parseInt(studiesToBuy[i])
-      if (study<120||study>150||(secondSplitPick<1||study%10==secondSplitPick)) {
-          if (study>120&&study<150) secondSplitPick=study%10
-          if (study>240) buyMasteryStudy("t", study)
-          else document.getElementById(study).click();
-      } else laterSecondSplits.push(study)
-  }
-  for (i=0; i<laterSecondSplits.length; i++) {
-      var study=laterSecondSplits[i]
-      if (study>240) buyMasteryStudy("t", study)
-      else document.getElementById(study).click();
-  }
-  var ec=parseInt(input.split("|")[1])
-  if (ec > 0) {
-      justImported = true;
-      if (ec > 12) buyMasteryStudy("ec", ec)
-      else document.getElementById("ec"+parseInt(input.split("|")[1])+"unl").click();
-      setTimeout(function(){ justImported = false; }, 100);
-  }
+	onImport = true
+	if (typeof input !== 'string') var input = prompt()
+	onImport = false
+	if (sha512_256(input) == "08b819f253b684773e876df530f95dcb85d2fb052046fa16ec321c65f3330608") giveAchievement("You followed the instructions")
+	if (input === "") return false
+	var studiesToBuy = input.split("|")[0].split(",");
+	var secondSplitPick = 0
+	var laterSecondSplits = []
+	var earlyDLStudies = []
+	var laterDLStudies = []
+	for (i=0; i<studiesToBuy.length; i++) {
+		var study=parseInt(studiesToBuy[i])
+		if ((study<120||study>150||(secondSplitPick<1||study%10==secondSplitPick))&&(study<220||study>240||earlyDLStudies.includes(study+(study%2>0?-1:1)))) {
+			if (study>120&&study<150) secondSplitPick=study%10
+			else if (study>220&&study<240) earlyDLStudies.push(study)
+			if (study>240) buyMasteryStudy("t", study)
+			else document.getElementById(study).click();
+		} else if (study<150) laterSecondSplits.push(study)
+		else laterDLStudies.push(study)
+	}
+	for (i=0; i<laterSecondSplits.length; i++) document.getElementById(laterSecondSplits[i]).click()
+	for (i=0; i<laterDLStudies.length; i++) document.getElementById(laterDLStudies[i]).click()
+	var ec=parseInt(input.split("|")[1])
+	if (ec > 0) {
+		justImported = true;
+		if (ec > 12) buyMasteryStudy("ec", ec)
+		else document.getElementById("ec"+parseInt(input.split("|")[1])+"unl").click();
+		setTimeout(function(){ justImported = false; }, 100);
+	}
 };
 
 function new_preset(importing) {

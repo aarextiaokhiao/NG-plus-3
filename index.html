@@ -8,7 +8,7 @@
     <meta name="Antimatter Dimensions" content="A game about huge numbers and watching them go up." charset="utf-8"/>
     <script type="text/javascript" src="javascripts/jquery-3.2.1.min.js"></script>
     <script type="text/javascript" src="javascripts/notify.js"></script>
-    <link rel="stylesheet" type="text/css" href="stylesheets/styles.css?3">
+    <link rel="stylesheet" type="text/css" href="stylesheets/styles.css?4">
     <link href="https://fonts.googleapis.com/css?family=Inconsolata" rel="stylesheet">
     <script>
         (function(i, s, o, g, r, a, m) {
@@ -302,7 +302,7 @@
                 </table>
                 <table class="table" id="studytable">
                     <tr>
-                        <td><button class="timestudylocked" id="dilstudy1" onclick="unlockDilation()">Unlock time dilation<span>Requirement: 5 Eternity Challenge 11 and 12 completions<span>Cost: 5000 Time Theorems</button></td>
+                        <td><button class="timestudylocked" id="dilstudy1" onclick="buyDilationStudy(1, 5e3)">Unlock time dilation<span>Requirement: 5 Eternity Challenge 11 and 12 completions<span>Cost: 5000 Time Theorems</button></td>
                     </tr>
                 </table>
                 <table class="table" id="studytable">
@@ -1389,6 +1389,11 @@
                     <td><div><button id="decimalMode" onclick="switchDecimalMode()" class="storebtn" style="color:black; width: 200px; height: 55px"></button></div></td>
                     <td><div><button id="importallbtn" class="storebtn" onclick='import_save_all()' style="color:black; width: 200px; height: 55px; font-size: 20px">Import all</button></div></td>
                 </tr>
+                <tr>
+                    <td></td>
+                    <td><div><button id="progressBarBtn" onclick="toggleProgressBar()" class="storebtn" style="color:black; width: 200px; height: 55px"></button></div></td>
+                    <td></td>
+                </tr>
             </table>
             <div style="display:none;position:fixed;left:0;top:0"><textarea id="exportOutput" style="color:black; width: 200px; height: 55px;"></textarea></div>
             <p>Hotkeys: 1-8 for buy 10 dimension, shift+1-8 for buy 1 dimension, T to buy max tickspeed, shift+T to buy one tickspeed, M for max all<br>S for sacrifice, D for dimension boost, G for galaxy, C for crunch, A for toggle autobuyers, R for replicanti galaxies, E for eternity.<br>You can hold shift while buying time studies to buy all up until that point, see each study's number, and save study trees.<br>Hotkeys do not work while holding control.</p>
@@ -1939,28 +1944,28 @@
                         </tr>
                         <tr id="achRow16">
                             <td>
-                                <div id="Special Relativity" class="achievement achievementlocked" style="background-image: url(images/113.png)" ach-tooltip="Quantum in under 5 seconds."><br></div>
+                                <div id="Special Relativity" class="achievement achievementlocked" style="background-image: url(images/113.png)" ach-tooltip="Quantum in under 5 seconds. Reward: You can buy max meta-boosts and rebuyable dilation upgrade can buy max all upgrades."><br></div>
                             </td>
                             <td>
-                                <div id="We are not going squared." class="achievement achievementlocked" style="background-image: url(images/114.png)" ach-tooltip="Reach e??? MA with exactly 8 meta-dimension boosts."><br></div>
+                                <div id="We are not going squared." class="achievement achievementlocked" style="background-image: url(images/114.png)"><br></div>
                             </td>
                             <td>
-                                <div id="This achievement doesn't exist 3" class="achievement achievementlocked" style="background-image: url(images/115.png)" ach-tooltip="Reach 9e99,999,999 EP."><br></div>
+                                <div id="This achievement doesn't exist 3" class="achievement achievementlocked" style="background-image: url(images/115.png)" ach-tooltip="Reach 9e99,999,999 EP. Reward: Gain more EP based on amount of IP you had when eternitying."><br></div>
                             </td>
                             <td>
-                                <div id="Old memories come true" class="achievement achievementlocked" style="background-image: url(images/116.png)" ach-tooltip="Quantum while not having over 4 dimension boosts and fifth dimensions."><br></div>
+                                <div id="Old memories come true" class="achievement achievementlocked" style="background-image: url(images/116.png)"><br></div>
                             </td>
                             <td>
                                 <div id="Twice in the row" class="achievement achievementlocked" style="background-image: url(images/117.png)" ach-tooltip="Complete Paired Challenge 4."><br></div>
                             </td>
                             <td>
-                                <div id="Infinity Morals" class="achievement achievementlocked" style="background-image: url(images/118.png)" ach-tooltip="Quantum with at most ??? meta-dimension boosts."><br></div>
+                                <div id="Infinity Morals" class="achievement achievementlocked" style="background-image: url(images/118.png)" ach-tooltip="Quantum without having meta-dimension boosts."><br></div>
                             </td>
                             <td>
-                                <div id="Intergalactic" class="achievement achievementlocked" style="background-image: url(images/119.png)" ach-tooltip="Reach ??? 8th Dimensions while having no replicated/free galaxies."><br></div>
+                                <div id="Intergalactic" class="achievement achievementlocked" style="background-image: url(images/119.png)" ach-tooltip="Reach 4,000,000 Eighth Dimensions while having no replicated/free galaxies. Reward: Eighth Dimensions are stronger based on your normal galaxies."><br></div>
                             </td>
                             <td>
-                                <div id="Seriously, I already got rid of you." class="achievement achievementlocked" style="background-image: url(images/120.png)" ach-tooltip="Reach e??? IP without having time studies and electrons and while dilated and in QC6."><br></div>
+                                <div id="Seriously, I already got rid of you." class="achievement achievementlocked" style="background-image: url(images/120.png)"><br></div>
                             </td>
                         </tr>
                 </table>
@@ -3494,6 +3499,7 @@
 				</tr>
 			</table>
 			<div class='quantumtab' id='uquarks'>
+                <canvas id="quarkCanvas"></canvas>
 				<table class='qtable'><tr>
 					<td>
 						<p>You have <span class="red" id="redQuarks" style="font-size:35px">0</span> red quarks.</p>
@@ -3508,7 +3514,7 @@
 						<button class='storebtn' id='blueAssign' onclick='assignQuark("b")'>Assign</button>
 					</td>
 				</tr></table>
-				<p>You are increasing <span id='powerRate' style="font-size:35px">0</span> per second at <span id='colorCharge'></span> charge.</p>
+				<p>You are getting <span id='powerRate' style="font-size:35px">0</span> <span id='colorCharge'></span> charge per second.</p>
 				<table class='qtable'><tr>
 					<td>
 						<p>You have <span class="red" id="redPower" style="font-size:35px">0.0</span> red power.<br>
@@ -3525,40 +3531,37 @@
 				</tr></table>
 			</div>
 			<div class='quantumtab' id='gluons'>
-				<table class='qtable'><tr>
-					<td><p>You have <span id="rg" style="font-size:35px">0</span> red-green gluons.<br>+<span id='rggain'>0</span> on next quantum from red quarks.</p></td>
-					<td><p>You have <span id="gb" style="font-size:35px">0</span> green-blue gluons.<br>+<span id='gbgain'>0</span> on next quantum from green quarks.</p></td>
-					<td><p>You have <span id="br" style="font-size:35px">0</span> blue-red gluons.<br>+<span id='brgain'>0</span> on next quantum from blue quarks.</p></td>
+				<table id='gluonupgrades'><tr>
+					<td colspan=2><p>You have <span id="rg" style="font-size:35px">0</span> red-green gluons.<br>+<span id='rggain'>0</span> on next quantum from red quarks.</p></td>
+					<td colspan=2><p>You have <span id="gb" style="font-size:35px">0</span> green-blue gluons.<br>+<span id='gbgain'>0</span> on next quantum from green quarks.</p></td>
+					<td colspan=2><p>You have <span id="br" style="font-size:35px">0</span> blue-red gluons.<br>+<span id='brgain'>0</span> on next quantum from blue quarks.</p></td>
 				</tr><tr>
 					<td><button id='rgupg1' onclick='buyGluonUpg("rg",1)'>Remote galaxy cost scaling is reduced.<br>Cost: 1 RG gluons</button></td>
-					<td><button id='gbupg1' onclick='buyGluonUpg("gb",1)'>You gain more replicanti based on your tickspeed reduction multiplier.<br>Cost: 1 GB gluons</button></td>
-					<td><button id='brupg1' onclick='buyGluonUpg("br",1)'>You gain more tachyon particles based on your dilated time.<br><span id='brupg1current'></span><br>Cost: 1 BR gluons</button></td>
-				</tr><tr>
 					<td><button id='rgupg2' onclick='buyGluonUpg("rg",2)'>Galaxies are more effective based on your free galaxies.<br>Cost: 2 RG gluons</button></td>
+					<td><button id='gbupg1' onclick='buyGluonUpg("gb",1)'>You gain more replicanti based on your tickspeed reduction multiplier.<br>Cost: 1 GB gluons</button></td>
 					<td><button id='gbupg2' onclick='buyGluonUpg("gb",2)'>Replicanti interval increases 2x slower.<br>Cost: 2 GB gluons</button></td>
+					<td><button id='brupg1' onclick='buyGluonUpg("br",1)'>You gain more tachyon particles based on your dilated time.<br><span id='brupg1current'></span><br>Cost: 1 BR gluons</button></td>
 					<td><button id='brupg2' onclick='buyGluonUpg("br",2)'>Sacrifice affects dilated time production.<br><span id='brupg2current'></span><br><span id='brupg1current'></span>Cost: 2 BR gluons</button></td>
 				</tr><tr>
 					<td><button id='rgupg3' onclick='buyGluonUpg("rg",3)'>First Meta Dimension is boosted by dimension boosts.<br>Cost: 4 RG gluons</button></td>
-					<td><button id='gbupg3' onclick='buyGluonUpg("gb",3)'>You gain 2.3x more IP by buying IP mult.<br>Cost: 4 GB gluons</button></td>
-					<td><button id='brupg3' onclick='buyGluonUpg("br",3)'>Tachyon particles are little bit stronger.<br>Cost: 4 BR gluons</button></td>
-				</tr><tr>
 					<td><button id='rgupg4' onclick='buyGluonUpg("rg",4)'>Galaxies are 50% stronger, but electrons are 30% weaker and normal galaxies are 60% weaker.<br>Cost: 100 RG gluons</button></td>
+					<td><button id='gbupg3' onclick='buyGluonUpg("gb",3)'>You gain 2.3x more IP by buying IP mult.<br>Cost: 4 GB gluons</button></td>
 					<td><button id='gbupg4' onclick='buyGluonUpg("gb",4)'>Massively decrease the tickspeed cost multiplier increase to 1.25x.<br>Cost: 100 GB gluons</button></td>
+					<td><button id='brupg3' onclick='buyGluonUpg("br",3)'>Tachyon particles are little bit stronger.<br>Cost: 4 BR gluons</button></td>
 					<td><button id='brupg4' onclick='buyGluonUpg("br",4)'>Multiplier per ten dimensions boosts Meta Dimensions.<br><span id='brupg4current'></span><br>Cost: 100 BR gluons</button></td>
-				</tr><tr id='gupgrow5'>
+				</tr><tr id='gupgrow3'>
 					<td><button id='rgupg5' onclick='buyGluonUpg("rg",5)'>Slow down Dark Matter Galaxies effect by 13%.<br>Cost: <span id='rgupg5cost'></span> RG gluons</button></td>
-					<td><button id='gbupg5' onclick='buyGluonUpg("gb",5)'>Replicated galaxies slow down Dark Matter Galaxies effect.<br><span id='gbupg5current'></span><br>Cost: <span id='gbupg5cost'></span> GB gluons</button></td>
-					<td><button id='brupg5' onclick='buyGluonUpg("br",5)'>Tachyon particles slow down Dark Matter Galaxies effect.<br><span id='brupg5current'></span><br>Cost: <span id='brupg5cost'></span> BR gluons</button></td>
-				</tr><tr id='gupgrow6'>
 					<td><button id='rgupg6' onclick='buyGluonUpg("rg",6)'>Slow down Distant Antimatter Galaxies effect by 15%.<br>Cost: <span id='rgupg6cost'></span> RG gluons</button></td>
+					<td><button id='gbupg5' onclick='buyGluonUpg("gb",5)'>Replicated galaxies slow down Dark Matter Galaxies effect.<br><span id='gbupg5current'></span><br>Cost: <span id='gbupg5cost'></span> GB gluons</button></td>
 					<td><button id='gbupg6' onclick='buyGluonUpg("gb",6)'>Infinity power slow down Distant Antimatter Galaxies effect.<br><span id='gbupg6current'></span><br>Cost: <span id='gbupg6cost'></span> GB gluons</button></td>
-					<td><button id='brupg6' onclick='buyGluonUpg("br",6)' style='font-size:10px'>Meta-dimension boosts slow down Distant Antimatter Galaxies effect.<br><span id='brupg6current'></span><br>Cost: <span id='brupg6cost'></span> BR gluons</button></td>
-				</tr><tr id='gupgrow7'>
-					<td><button id='rgupg7' onclick='buyGluonUpg("rg",7)'>Slow down Remote Antimatter Galaxies effect by 11%.<br>Cost: <span id='rgupg7cost'></span> RG gluons</button></td>
-					<td><button id='gbupg7' onclick='buyGluonUpg("gb",7)'>Infinity Points slow down Remote Antimatter Galaxies effect.<br><span id='gbupg7current'></span><br>Cost: <span id='gbupg7cost'></span> GB gluons</button></td>
-					<td><button id='brupg7' onclick='buyGluonUpg("br",7)'>Eternity Points slow down Remote Antimatter Galaxies effect.<br><span id='brupg7current'></span><br>Cost: <span id='brupg7cost'></span> BR gluons</button></td>
-				</tr>
-				<tr><td></td><td><button id='qkmult' onclick='buyQuarkMult()'>You gain 2x more quarks.<br><span id='qkmultcurrent'></span><br><span id='qkmultcost'></span></button></td><td></td></tr></table>
+					<td><button id='brupg5' onclick='buyGluonUpg("br",5)'>Tachyon particles slow down Dark Matter Galaxies effect.<br><span id='brupg5current'></span><br>Cost: <span id='brupg5cost'></span> BR gluons</button></td>
+					<td><button id='brupg6' onclick='buyGluonUpg("br",6)' style='font-size:7.5px'>Meta-dimension boosts slow down Distant Antimatter Galaxies effect.<br><span id='brupg6current'></span><br>Cost: <span id='brupg6cost'></span> BR gluons</button></td>
+				</tr><tr id='gupgrow4'>
+					<td colspan=2><button id='rgupg7' onclick='buyGluonUpg("rg",7)'>Slow down Remote Antimatter Galaxies effect by 10%.<br>Cost: <span id='rgupg7cost'></span> RG gluons</button></td>
+					<td colspan=2><button id='gbupg7' onclick='buyGluonUpg("gb",7)'>Infinity Points slow down Remote Antimatter Galaxies effect.<br><span id='gbupg7current'></span><br>Cost: <span id='gbupg7cost'></span> GB gluons</button></td>
+					<td colspan=2><button id='brupg7' onclick='buyGluonUpg("br",7)'>Eternity Points slow down Remote Antimatter Galaxies effect.<br><span id='brupg7current'></span><br>Cost: <span id='brupg7cost'></span> BR gluons</button></td>
+				</tr></table>
+				<button id='qkmult' onclick='buyQuarkMult()'>You gain 2x more quarks.<br><span id='qkmultcurrent'></span><br><span id='qkmultcost'></span></button>
 			</div>
 			<div class='quantumtab' id='electrons'>
 				You have <span id="electronsAmount" style="font-size:35px">0</span> electrons.<br>
@@ -3643,6 +3646,7 @@
 		<button id="floatingTextAnimBtn" class="storebtn" onclick="animationOnOff('floatingText')" style="width: 200px; height: 55px; font-size: 15px" style="display: inline">ON</button>
         <button id="bigCrunchAnimBtn" class="storebtn" onclick="animationOnOff('bigCrunch')" style="width: 200px; height: 55px; font-size: 15px" style="display: inline">ON</button>
         <button id="tachyonParticleAnimBtn" class="storebtn" onclick="animationOnOff('tachyonParticles')" style="width: 200px; height: 55px; font-size: 15px" style="display: inline">ON</button>
+        <button id="quarksAnimBtn" class="storebtn" onclick="animationOnOff('quarks')" style="width: 200px; height: 55px; font-size: 15px" style="display: inline">ON</button>
 	</div>
     <div class="popup optionmenu" id="confirmationoptions">
         <button class="closebtn storebtn" onclick="closeToolTip()">&times;</button>
@@ -3672,24 +3676,24 @@
 <script type="text/javascript" src="javascripts/lz-string.js"></script>
 <script type="text/javascript" src="javascripts/core/polyfill.js"></script>
 <script type="text/javascript" src="javascripts/core/format.js?11"></script>
-<script type="text/javascript" src="javascripts/core/achievements.js?8"></script>
+<script type="text/javascript" src="javascripts/core/achievements.js?9"></script>
 <script type="text/javascript" src="javascripts/core/chart.js"></script>
 <script type="text/javascript" src="javascripts/core/tickspeed.js?19"></script>
-<script type="text/javascript" src="javascripts/core/normal_dimension.js?23"></script>
+<script type="text/javascript" src="javascripts/core/normal_dimension.js?24"></script>
 <script type="text/javascript" src="javascripts/core/infinity_dimension.js?13"></script>
 <script type="text/javascript" src="javascripts/core/time_dimension.js?16"></script>
-<script type="text/javascript" src="javascripts/core/dimboost.js?27"></script>
-<script type="text/javascript" src="javascripts/core/timestudies.js?24"></script>
-<script type="text/javascript" src="javascripts/core/canvases.js?5"></script>
+<script type="text/javascript" src="javascripts/core/dimboost.js?28"></script>
+<script type="text/javascript" src="javascripts/core/timestudies.js?25"></script>
+<script type="text/javascript" src="javascripts/core/canvases.js?6"></script>
 <script type="text/javascript" src="javascripts/core/devtools.js"></script>
-<script type="text/javascript" src="javascripts/core/load_functions.js?48"></script>
+<script type="text/javascript" src="javascripts/core/load_functions.js?49"></script>
 <script type="text/javascript" src="javascripts/core/newsticker.js?4"></script>
 <script type="text/javascript" src="javascripts/mods/ngmm.js?18"></script>
 <script type="text/javascript" src="javascripts/mods/ers.js"></script>
-<script type="text/javascript" src="javascripts/mods/ngpp.js?31"></script>
+<script type="text/javascript" src="javascripts/mods/ngpp.js?32"></script>
 <script type="text/javascript" src="javascripts/mods/ngppp.js?33"></script>
 <script type="text/javascript" src="javascripts/mods/ngmmm.js?2"></script>
-<script type="text/javascript" src="javascripts/game.js?54"></script>
+<script type="text/javascript" src="javascripts/game.js?55"></script>
 <script type="text/javascript" src="javascripts/sha512.js"></script>
 </body>
 </html>

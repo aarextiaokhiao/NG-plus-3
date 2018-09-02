@@ -1206,7 +1206,7 @@ button {
     border-top-right-radius: 7px;
 }
 
-#studyTreeCanvas, #studyTreeCanvas2, #dilationCanvas {
+#studyTreeCanvas, #studyTreeCanvas2, #dilationCanvas, #quarkCanvas {
     top: 0;
     left: 0;
     position: absolute;
@@ -1787,7 +1787,7 @@ br {
     position: relative;
 }
 
-.qtable {
+.qtable, #gluonupgrades {
 	width:100%
 }
 
@@ -1795,6 +1795,13 @@ br {
 	min-width:33%;
 	width:33%;
 	max-width:33%;
+	text-align:center
+}
+
+#gluonupgrades td {
+	min-width:16.7%;
+	width:16.7%;
+	max-width:16.7%;
 	text-align:center
 }
 
@@ -1816,6 +1823,12 @@ br {
     font-family: Typewriter;
     vertical-align: top;
     margin:7px;
+}
+
+.small {
+    width: 142.5px;
+    height: 67.5px;
+    font-size: 9px;
 }
 
 .gluonupgrade.rg { animation: rgupg 5s infinite }

@@ -379,6 +379,9 @@ if (player.version < 5) {
   if (player.aarexModifications.offlineProgress === undefined) {
       player.aarexModifications.offlineProgress = true
   }
+  if (player.aarexModifications.progressBar === undefined) {
+      player.aarexModifications.progressBar = true
+  }
   transformSaveToDecimal();
   updateCosts();
   updateTickSpeed();
@@ -616,10 +619,11 @@ if (player.version < 5) {
           }
           player.aarexModifications.newGamePlusVersion = 1
           if (confirm("Do you want to migrate your NG++ save into new NG+++ mode?")) {
-              player.aarexModifications.newGame3PlusVersion = 1.9979
+              player.aarexModifications.newGame3PlusVersion = 1.99795
               player.dbPower = 1
               player.peakSpent = 0
               player.masterystudies = []
+              player.options.animations.quarks = true
               player.quantum.usedQuarks = {
                   r: 0,
                   g: 0,
@@ -816,7 +820,10 @@ if (player.version < 5) {
   if (player.aarexModifications.newGame3PlusVersion < 1.9979) {
       player.dilation.bestTP=player.achievements.includes("ng3p18")?player.dilation.tachyonParticles:new Decimal(0)
       player.old=false
-      player.aarexModifications.newGame3PlusVersion=1.9979
+  }
+  if (player.aarexModifications.newGame3PlusVersion < 1.99795) {
+      player.options.animations.quarks = true
+      player.aarexModifications.newGame3PlusVersion=1.99795
   }
   if (player.aarexModifications.newGame3PlusVersion==undefined) {
       colorBoosts={
@@ -1007,6 +1014,8 @@ if (player.version < 5) {
   document.getElementById("dilationConfirmBtn").textContent = "Dilation confirmation: O" + (player.aarexModifications.dilationConf ? "N" : "FF")
   document.getElementById("quantumConfirmBtn").textContent = "Quantum confirmation: O" + (player.aarexModifications.quantumConf ? "N" : "FF")
 
+  document.getElementById("progressBarBtn").textContent = (player.aarexModifications.progressBar?"Hide":"Show")+" progress bar"
+
   document.getElementById("quantumtabbtn").style.display = quantumed ? "" : "none"
 
   document.getElementById("chartDurationInput").value = player.options.chart.duration;
@@ -1109,6 +1118,9 @@ if (player.version < 5) {
       if (document.getElementById("timestudies").style.display=="block") showEternityTab("ers_timestudies",true)
       updateGalaxyControl()
   } else if (document.getElementById("ers_timestudies").style.display=="block") showEternityTab("timestudies",true)
+  document.getElementById("quantumstudies").style.display=quantumed&&player.masterystudies?"":"none"
+  document.getElementById("quarksAnimBtn").style.display=quantumed&&player.masterystudies?"inline-block":"none"
+  document.getElementById("quarksAnimBtn").textContent="Quarks: O"+(player.options.animations.quarks?"N":"FF")
   document.getElementById('dilationmode').style.display=speedrunMilestonesReached>4?"":"none"
   document.getElementById('rebuyupgauto').style.display=speedrunMilestonesReached>6?"":"none"
   document.getElementById('toggleallmetadims').style.display=speedrunMilestonesReached>7?"":"none"
@@ -1123,7 +1135,7 @@ if (player.version < 5) {
       player.totalmoney=new Decimal("1e9e15")
       softReset(0)
       delete player.aarexModifications.switch
-  } else if (player.aarexModifications.offlineProgress) {
+  } else if (false&&player.aarexModifications.offlineProgress) {
       let diff = new Date().getTime() - player.lastUpdate
       if (diff > 1000*1000) {
           simulateTime(diff/1000)
@@ -1234,6 +1246,7 @@ function rename_save(id) {
 		if (!temp_save.aarexModifications) temp_save.aarexModifications={
             dilationConf: false,
             offlineProgress: true,
+			progressBar: true,
             breakInfinity: false
         }
 		temp_save.aarexModifications.save_name = save_name
@@ -1315,6 +1328,7 @@ function new_game(id) {
 	showStatsTab('stats')
 	showChallengesTab('challenges')
 	showEternityTab('timestudies', true)
+	showQuantumTab('uquarks')
 }
 
 function transformSaveToDecimal() {

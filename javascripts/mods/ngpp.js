@@ -70,17 +70,34 @@ function getMetaShiftRequirement () {
 }
 
 function metaBoost() {
-    let req = getMetaShiftRequirement();
-    if (player.meta[req.tier].bought<req.amount) {
-        return false;
-    }
-    player.meta.resets++;
-    if (player.meta.resets>9) giveAchievement("Meta-boosting to the max")
-    player.meta.antimatter = new Decimal(speedrunMilestonesReached>18?1e25:player.achievements.includes("ngpp12")?100:10);
-    clearMetaDimensions();
-    for (let i = 2; i <= 8; i++) if (!canBuyMetaDimension(i)) document.getElementById(i + "MetaRow").style.display = "none"
-    document.getElementById("quantumbtn").style.display="none"
-    return true;
+	let req = getMetaShiftRequirement();
+	if (player.meta[req.tier].bought<req.amount) {
+		return false;
+	}
+	if (player.achievements.includes("ng3p21") && req.tier>7) {
+		let costStart=15
+		let mult=15
+		if (inQC(4)) {
+			costStart=55
+			mult=5.5
+		}
+		if (player.masterystudies) if (player.masterystudies.includes("t312")) mult--
+		if (player.meta.resets<costStart) {
+			player.meta.resets=Math.min(player.meta.resets+Math.floor((player.meta[8].bought-req.amount)/mult)+1,costStart)
+			if (player.meta.resets==costStart) req = getMetaShiftRequirement()
+		}
+		if (player.meta.resets>=costStart) {
+			mult=20
+			if (player.masterystudies) if (player.masterystudies.includes("t312")) mult--
+			player.meta.resets+=Math.floor((player.meta[8].bought-req.amount)/mult)+1
+		}
+	} else player.meta.resets++
+	if (player.meta.resets>9) giveAchievement("Meta-boosting to the max")
+	player.meta.antimatter = new Decimal(speedrunMilestonesReached>18?1e25:player.achievements.includes("ngpp12")?100:10);
+	clearMetaDimensions();
+	for (let i = 2; i <= 8; i++) if (!canBuyMetaDimension(i)) document.getElementById(i + "MetaRow").style.display = "none"
+	document.getElementById("quantumbtn").style.display="none"
+	return true;
 }
 
 
@@ -147,18 +164,23 @@ function buyMaxMetaDimension(tier) {
 		b=costMults[tier].log10()+0.5
 		bought=Math.sqrt(b*b+2*(bought-scalingStart)*costMults[tier].log10())-b+scalingStart
 	}
-	bought=Math.max(Math.floor(bought)-currentBought,1)
+	bought=Math.floor(bought)-currentBought
 	var num=bought
 	var tempMA=player.meta.antimatter
-	while (num>0) {
-		var temp=tempMA
-		var cost=getMetaCost(tier,currentBought+num-1).times(num>1?10:10-dimMetaBought(tier))
-		if (cost.gt(tempMA)) {
-			tempMA=player.meta.antimatter.sub(cost)
-			bought--
-		} else tempMA=tempMA.sub(cost)
-		if (temp.eq(tempMA)||currentBought+num>9007199254740991) break
-		num--
+	if (num>1) {
+		while (num>0) {
+			var temp=tempMA
+			var cost=getMetaCost(tier,currentBought+num-1).times(num>1?10:10-dimMetaBought(tier))
+			if (cost.gt(tempMA)) {
+				tempMA=player.meta.antimatter.sub(cost)
+				bought--
+			} else tempMA=tempMA.sub(cost)
+			if (temp.eq(tempMA)||currentBought+num>9007199254740991) break
+			num--
+		}
+	} else {
+		tempMA=tempMA.sub(getMetaCost(tier,currentBought).times(10-dimMetaBought(tier)))
+		bought=1
 	}
 	player.meta.antimatter=tempMA
 	player.meta[tier].amount=player.meta[tier].amount.add(bought*10-dimMetaBought(tier))
@@ -395,6 +417,10 @@ function quantum(auto,force,challid) {
 			document.getElementById("quarks").style.display=""
 			document.getElementById("galaxyPoints2").className = "GP"
 			document.getElementById("sacpos").className = "sacpos"
+			if (player.masterystudies) {
+				document.getElementById("quantumstudies").style.display=""
+				document.getElementById("quarksAnimBtn").style.display="inline-block"
+			}
 		}
 		document.getElementById("quantumbtn").style.display="none"
 		if (!force) {
@@ -402,17 +428,15 @@ function quantum(auto,force,challid) {
 				player.quantum.last10[i] = player.quantum.last10[i-1]
 			}
 			player.quantum.last10[0] = [player.quantum.time, quarkGain()]
-		}
-		player.quantum.best=Math.min(player.quantum.best, player.quantum.time)
-		updateSpeedruns()
-		if (speedrunMilestonesReached > 23) giveAchievement("And the winner is...")
-		var oheHeadstart = speedrunMilestonesReached > 0
-		player.quantum.time=0
-		if (!force) {
+			player.quantum.best=Math.min(player.quantum.best, player.quantum.time)
+			updateSpeedruns()
+			if (speedrunMilestonesReached > 23) giveAchievement("And the winner is...")
 			player.quantum.times++
 			player.quantum.quarks = player.quantum.quarks.plus(quarkGain());
-			if (player.old) giveAchievement("Old memories come true")
+			if (!inQC(4)) if (player.meta.resets<1) giveAchievement("Infinity Morals")
 		}
+		var oheHeadstart = speedrunMilestonesReached > 0
+		player.quantum.time=0
 		document.getElementById("quarks").innerHTML="You have <b class='QKAmount'>"+shortenDimensions(player.quantum.quarks)+"</b> quark"+(player.quantum.quarks.lt(2)?".":"s.")
 		document.getElementById("galaxyPoints2").innerHTML="You have <span class='GPAmount'>0</span> Galaxy points."
 		if (player.masterystudies) {
@@ -759,7 +783,6 @@ function quantum(auto,force,challid) {
 		if (player.masterystudies) {
 			giveAchievement("Sub-atomic")
 			if (player.quantum.best<50) giveAchievement("Special Relativity")
-			if (!force&&!inQC(4)) if (player.meta.resets<99) giveAchievement("Infinity Morals")
 			var diffrg=player.quantum.usedQuarks.r.min(player.quantum.usedQuarks.g)
 			var diffgb=player.quantum.usedQuarks.g.min(player.quantum.usedQuarks.b)
 			var diffbr=player.quantum.usedQuarks.b.min(player.quantum.usedQuarks.r)
