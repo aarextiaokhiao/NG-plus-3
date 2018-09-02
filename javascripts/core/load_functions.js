@@ -1135,7 +1135,7 @@ if (player.version < 5) {
       player.totalmoney=new Decimal("1e9e15")
       softReset(0)
       delete player.aarexModifications.switch
-  } else if (false&&player.aarexModifications.offlineProgress) {
+  } else if (player.aarexModifications.offlineProgress) {
       let diff = new Date().getTime() - player.lastUpdate
       if (diff > 1000*1000) {
           simulateTime(diff/1000)
