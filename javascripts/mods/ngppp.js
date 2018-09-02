@@ -1,10 +1,10 @@
-masterystudies={initialCosts:{time:{241: 1e71, 251: 2e71, 252: 2e71, 253: 2e71, 261: 5e71, 262: 5e71, 263: 5e71, 264: 5e71, 265: 5e71, 266: 5e71, 271: 2.7434842249657063e76, 272: 2.7434842249657063e76, 273: 2.7434842249657063e76, 281: 6.858710562414266e76, 282: 6.858710562414266e76, 291: 2.143347050754458e77, 292: 2.143347050754458e77, 301: 4.286694101508916e77, 302: 1/0, 303: 4.286694101508916e77, 311: 4.286694101508916e77, 312: 4.286694101508916e77, 321: 4.286694101508916e77, 322: 4.286694101508916e77},
+masterystudies={initialCosts:{time:{241: 1e71, 251: 2e71, 252: 2e71, 253: 2e71, 261: 5e71, 262: 5e71, 263: 5e71, 264: 5e71, 265: 5e71, 266: 5e71, 271: 2.7434842249657063e76, 272: 2.7434842249657063e76, 273: 2.7434842249657063e76, 281: 6.858710562414266e76, 282: 6.858710562414266e76, 291: 2.143347050754458e77, 292: 2.143347050754458e77, 301: 4.286694101508916e77, 302: 2.6791838134430725e78, 303: 4.286694101508916e77, 311: 4.286694101508916e77, 312: 4.286694101508916e77, 321: 4.286694101508916e77, 322: 4.286694101508916e77},
 		ec:{13:1e72, 14:1e72}},
 	costs:{time:{},
 		ec:{},
 		dil:{7: 2e82, 8: 2e84, 9: 4e85},
 		mc:{}},
-	costmults:{241: 1, 251: 2.5, 252: 2.5, 253: 2.5, 261: 6, 262: 6, 263: 6, 264: 6, 265: 6, 266: 6, 271: 2, 272: 2, 273: 2, 281: 4, 282: 4, 291: 2, 292: 2, 301: 2, 302: 2, 303: 2, 311: 2, 312: 2, 321: 1, 322: 1},
+	costmults:{241: 1, 251: 2.5, 252: 2.5, 253: 2.5, 261: 6, 262: 6, 263: 6, 264: 6, 265: 6, 266: 6, 271: 2, 272: 2, 273: 2, 281: 4, 282: 4, 291: 2, 292: 2, 301: 2, 302: 2, 303: 2, 311: 2, 312: 2, 321: 2, 322: 2},
 	costmult:1,
 	allTimeStudies:[241, 251, 252, 253, 261, 262, 263, 264, 265, 266, 271, 272, 273, 281, 282, 291, 292, 301, 302, 303, 311, 312, 321, 322],
 	initialReqs:{13:728e3,14:255e5},
@@ -16,11 +16,9 @@ function portal() {
 }
 	
 function updateMasteryStudyButtons() {
-	document.getElementById("costmult").textContent=shorten(masterystudies.costmult)
 	for (id=0;id<(quantumed?masterystudies.allTimeStudies.length:10);id++) {
 		var name=masterystudies.allTimeStudies[id]
 		var div=document.getElementById("timestudy"+name)
-		document.getElementById("ts"+name+"Cost").textContent="Cost: "+shorten(masterystudies.costs.time[name])+" Time Theorems"
 		if (player.masterystudies.includes("t"+name)) div.className="timestudybought"
 		else if (canBuyMasteryStudy('t', name)) div.className="timestudy"
 		else div.className="timestudylocked"
@@ -30,7 +28,6 @@ function updateMasteryStudyButtons() {
 		if (player.eternityChallUnlocked==id) element.className="eternitychallengestudybought"
 		else if (canBuyMasteryStudy('ec', id)) element.className="eternitychallengestudy"
 		else element.className="timestudylocked"
-		document.getElementById("ec"+id+"Cost").textContent="Cost: "+shorten(masterystudies.costs.ec[id])+" Time Theorems"
 		document.getElementById("ec"+id+"Req").textContent=getFullExpansion(masterystudies.reqs[id])
 	}
 	for (id=262;id<265;id++) document.getElementById("ts"+id+"Current").textContent="Currently: "+shorten(getMTSMult(id))+"x"
@@ -40,11 +37,7 @@ function updateMasteryStudyButtons() {
 			if (player.masterystudies.includes("d"+id)) div.className="dilationupgbought"
 			else if (canBuyMasteryStudy('d', id)) div.className="dilationupg"
 			else div.className="timestudylocked"
-			document.getElementById("ds"+id+"Cost").textContent="Cost: "+shorten(masterystudies.costs.dil[id])+" Time Theorems"
 		}
-		document.getElementById("ds8Req").textContent="Requirement: "+shorten(16900)+" electrons"
-		for (id=281;id<283;id++) document.getElementById("ts"+id+"Current").textContent="Currently: "+shorten(getMTSMult(id))+"x"
-		document.getElementById("ts303Current").textContent="Currently: "+shorten(getMTSMult(303))+"x"
 	}
 }
 
@@ -66,6 +59,7 @@ function updateMasteryStudyCosts() {
 		masterystudies.reqs[id]=masterystudies.initialReqs[id]+masterystudies.incrementReqs[id]*ECTimesCompleted("eterc"+id)
 		masterystudies.costs.ec[name]=masterystudies.initialCosts.ec[name]*masterystudies.costmult
 	}
+	updateMasteryStudyTextDisplay()
 }
 
 var types = {t:"time",ec:"ec",d:"dil"}
@@ -111,7 +105,7 @@ function canBuyMasteryStudy(type, id) {
 		if (row>31) return player.masterystudies.includes('t31'+col)
 		if (row>30) return player.masterystudies.includes('t30'+(col*2-1))
 		if (row>29) {
-			if (col==2) return player.masterystudies.includes('d9')
+			if (col==2) return player.masterystudies.includes('t272')
 			return player.masterystudies.includes('t29'+((col+1)/2))
 		}
 		if (row>28) return player.masterystudies.includes('t272')&&player.masterystudies.includes('d9')
@@ -133,7 +127,6 @@ function canBuyMasteryStudy(type, id) {
 }
 
 function drawMasteryBranch(num1, num2) {
-	if (document.getElementById("eternitystore").style.display === "none" || document.getElementById("masterystudies").style.display === "none" || player.masterystudies === undefined) return
 	var type=num2.split("ec")[1]?"ec":num2.split("di")[1]?"d":"t"
 	var start=document.getElementById(num1).getBoundingClientRect();
 	var end=document.getElementById(num2).getBoundingClientRect();
@@ -161,6 +154,8 @@ function drawMasteryBranch(num1, num2) {
 
 function drawMasteryTree() {
 	msctx.clearRect(0, 0, msc.width, msc.height);
+	if (player === undefined) return
+	if (document.getElementById("eternitystore").style.display === "none" || document.getElementById("masterystudies").style.display === "none" || player.masterystudies === undefined) return
 	drawMasteryBranch("back", "timestudy241")
 	drawMasteryBranch("timestudy241", "timestudy251")
 	drawMasteryBranch("timestudy241", "timestudy252")
@@ -178,7 +173,6 @@ function drawMasteryTree() {
 	drawMasteryBranch("timestudy265", "ec14unl")
 	drawMasteryBranch("timestudy266", "ec14unl")
 	if (quantumed) {
-		document.getElementById("quantumstudies").style.display=""
 		drawMasteryBranch("timestudy252", "dilstudy7")
 		drawMasteryBranch("dilstudy7", "timestudy271")
 		drawMasteryBranch("dilstudy7", "timestudy272")
@@ -202,7 +196,7 @@ function drawMasteryTree() {
 		drawMasteryBranch("timestudy312", "timestudy322")
 		drawMasteryBranch("dilstudy11", "dilstudy12")
 		drawMasteryBranch("dilstudy12", "dilstudy13")
-	} else document.getElementById("quantumstudies").style.display="none"
+	}
 }
 
 function setupText() {
@@ -246,7 +240,10 @@ function showQuantumTab(tabName) {
 			tab.style.display = 'none';
 		}
 	}
-	resizeCanvas()
+	if (tabName == "uquarks" && document.getElementById("quantumtab").style.display !== "none") {
+		resizeCanvas()
+		requestAnimationFrame(drawQuarkAnimation)
+	}
 	closeToolTip()
 }
 
@@ -268,8 +265,8 @@ function updateQuantumTabs() {
 			document.getElementById("brupg5current").textContent="Currently: "+(Math.sqrt(player.dilation.tachyonParticles.max(1).log10())*1.3).toFixed(1)+"%"
 			document.getElementById("gbupg6current").textContent="Currently: "+(100-100/(1+Math.pow(player.infinityPower.log10(),0.25)/2500)).toFixed(1)+"%"
 			document.getElementById("brupg6current").textContent="Currently: "+(100-100/(1+player.meta.resets/300)).toFixed(1)+"%"
-			document.getElementById("gbupg7current").textContent="Currently: "+(100-100/(1+Math.log10(1+player.infinityPoints.max(1).log10())/90)).toFixed(1)+"%"
-			document.getElementById("brupg7current").textContent="Currently: "+(100-100/(1+Math.log10(1+player.eternityPoints.max(1).log10())/75)).toFixed(1)+"%"
+			document.getElementById("gbupg7current").textContent="Currently: "+(100-100/(1+Math.log10(1+player.infinityPoints.max(1).log10())/100)).toFixed(1)+"%"
+			document.getElementById("brupg7current").textContent="Currently: "+(100-100/(1+Math.log10(1+player.eternityPoints.max(1).log10())/80)).toFixed(1)+"%"
 		}
 	}
 	if (document.getElementById("electrons").style.display=="block") {
@@ -348,19 +345,31 @@ function updateGluons() {
 	document.getElementById("gbgain").textContent=shortenDimensions(player.quantum.usedQuarks.g.min(player.quantum.usedQuarks.b))
 	document.getElementById("brgain").textContent=shortenDimensions(player.quantum.usedQuarks.b.min(player.quantum.usedQuarks.r))
 	var names=["rg","gb","br"]
-	for (u=1;u<8;u++) {
+	for (u=1;u<5;u++) {
 		var showRow=true
-		if (u>4) {
+		if (u>2) {
 			showRow=player.masterystudies.includes("d9")
 			document.getElementById("gupgrow"+u).style.display=showRow?"":"none"
-			if (showRow) for (c=0;c<3;c++) document.getElementById(names[c]+"upg"+u+"cost").textContent=shortenDimensions(GUCosts[u])
+			if (showRow) for (c=0;c<3;c++) {
+				document.getElementById(names[c]+"upg"+(u*2-1)+"cost").textContent=shortenDimensions(GUCosts[u*2-1])
+				if (u<4) document.getElementById(names[c]+"upg"+(u*2)+"cost").textContent=shortenDimensions(GUCosts[u*2])
+			}
 		}
 		if (showRow) {
 			for (c=0;c<3;c++) {
-				var div=document.getElementById(names[c]+"upg"+u)
-				if (GUBought(names[c]+u)) div.className="gluonupgradebought "+names[c]
-				else if (player.quantum.gluons[names[c]].lt(GUCosts[u])) div.className="gluonupgrade unavailablebtn"
-				else div.className="gluonupgrade "+names[c]
+				var un=u*2-1
+				var div=document.getElementById(names[c]+"upg"+un)
+				if (GUBought(names[c]+un)) div.className="gluonupgradebought small "+names[c]
+				else if (player.quantum.gluons[names[c]].lt(GUCosts[un])) div.className="gluonupgrade small unavailablebtn"
+				else div.className="gluonupgrade small "+names[c]
+
+				if (u<4) {
+					var un=u*2
+					var div=document.getElementById(names[c]+"upg"+un)
+					if (GUBought(names[c]+un)) div.className="gluonupgradebought small "+names[c]
+					else if (player.quantum.gluons[names[c]].lt(GUCosts[un])) div.className="gluonupgrade small unavailablebtn"
+					else div.className="gluonupgrade small "+names[c]
+				}
 			}
 		}
 	}
@@ -413,10 +422,22 @@ function toggleAutoTT() {
 function doAutoMetaTick() {
 	if (!player.masterystudies) return
 	if (player.autoEterOptions.rebuyupg) {
-		buyDilationUpgrade(11)
-		buyDilationUpgrade(3)
-		buyDilationUpgrade(1)
-		buyDilationUpgrade(2)
+		if (player.achievements.includes("ng3p21")) {
+			while (buyDilationUpgrade(11,true)) {}
+			while (buyDilationUpgrade(3,true)) {}
+			while (buyDilationUpgrade(1,true)) {}
+			while (buyDilationUpgrade(2,true)) {}
+			updateDilationUpgradeCosts()
+			updateDilationUpgradeButtons()
+			updateTimeStudyButtons()
+		} else {
+			for (i=0;i<1;i++) {
+				buyDilationUpgrade(11)
+				buyDilationUpgrade(3)
+				buyDilationUpgrade(1)
+				buyDilationUpgrade(2)
+			}
+		}
 	}
 	for (dim=8;dim>0;dim--) if (player.autoEterOptions["md"+dim]) buyMaxMetaDimension(dim)
 	if (player.autoEterOptions.metaboost) metaBoost()
@@ -620,4 +641,73 @@ function canBuyElectronUpg(id) {
 	if (id>2) return player.meta.antimatter.gte(getElectronUpgCost(3))
 	if (id>1) return player.dilation.dilatedTime.gte(getElectronUpgCost(2))
 	return player.timestudy.theorem>=getElectronUpgCost(1)
+}
+
+//v1.99795
+function updateMasteryStudyTextDisplay() {
+	document.getElementById("costmult").textContent=shorten(masterystudies.costmult)
+	for (id=0;id<(quantumed?masterystudies.allTimeStudies.length:10);id++) {
+		var name=masterystudies.allTimeStudies[id]
+		document.getElementById("ts"+name+"Cost").textContent="Cost: "+shorten(masterystudies.costs.time[name])+" Time Theorems"
+	}
+	for (id=13;id<15;id++) {
+		document.getElementById("ec"+id+"Cost").textContent="Cost: "+shorten(masterystudies.costs.ec[id])+" Time Theorems"
+		document.getElementById("ec"+id+"Req").textContent=getFullExpansion(masterystudies.reqs[id])
+	}
+	if (quantumed) {
+		for (id=7;id<10;id++) document.getElementById("ds"+id+"Cost").textContent="Cost: "+shorten(masterystudies.costs.dil[id])+" Time Theorems"
+		document.getElementById("ds8Req").textContent="Requirement: "+shorten(16900)+" electrons"
+		for (id=281;id<283;id++) document.getElementById("ts"+id+"Current").textContent="Currently: "+shorten(getMTSMult(id))+"x"
+		document.getElementById("ts303Current").textContent="Currently: "+shorten(getMTSMult(303))+"x"
+	}
+}
+
+var quarks={}
+var centerX
+var centerY
+var maxDistance
+var code
+
+function drawQuarkAnimation(ts){
+	centerX=canvas.width/2
+	centerY=canvas.height/2
+	maxDistance=Math.sqrt(Math.pow(centerX,2)+Math.pow(centerY,2))
+	code=player.options.theme=="Aarex's Modifications"?"e5":"99"
+	if (document.getElementById("quantumtab").style.display !== "none" && document.getElementById("uquarks").style.display !== "none" && player.options.animations.quarks) {
+		qkctx.clearRect(0, 0, canvas.width, canvas.height);
+		quarks.sum=player.quantum.colorPowers.r.max(1).log10()+player.quantum.colorPowers.g.max(1).log10()+player.quantum.colorPowers.b.max(1).log10()
+		quarks.amount=Math.ceil(Math.min(quarks.sum,200))
+		for (p=0;p<quarks.amount;p++) {
+			var particle=quarks['p'+p]
+			if (particle==undefined) {
+				particle={}
+				var random=Math.random()
+				if (random<=player.quantum.colorPowers.r.max(1).log10()/quarks.sum) particle.type='r'
+				else if (random>=1-player.quantum.colorPowers.b.max(1).log10()/quarks.sum) particle.type='b'
+				else particle.type='g'
+				particle.motion=Math.random()>0.5?'in':'out'
+				particle.direction=Math.random()*Math.PI*2
+				particle.distance=Math.random()
+				quarks['p'+p]=particle
+			} else {
+				particle.distance+=0.01
+				if (particle.distance>=1) {
+					var random=Math.random()
+					if (random<=player.quantum.colorPowers.r.max(1).log10()/quarks.sum) particle.type='r'
+					else if (random>=1-player.quantum.colorPowers.b.max(1).log10()/quarks.sum) particle.type='b'
+					else particle.type='g'
+					particle.motion=Math.random()>0.5?'in':'out'
+					particle.direction=Math.random()*Math.PI*2
+					particle.distance=0
+				}
+				var actualDistance=particle.distance*maxDistance
+				if (particle.motion=="in") actualDistance=maxDistance-actualDistance
+				qkctx.fillStyle=particle.type=="r"?"#"+code+"0000":particle.type=="g"?"#00"+code+"00":"#0000"+code
+				point(centerX+Math.sin(particle.direction)*actualDistance, centerY+Math.cos(particle.direction)*actualDistance, qkctx)
+			}
+		}
+		delta = (ts - lastTs) / 1000;
+		lastTs = ts;
+		requestAnimationFrame(drawQuarkAnimation);
+	}
 }

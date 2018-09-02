@@ -206,7 +206,7 @@ function softReset(bulk) {
   reduceDimCosts()
   if (player.currentChallenge == "postc1") player.costMultipliers = [new Decimal(1e3),new Decimal(5e3),new Decimal(1e4),new Decimal(1.2e4),new Decimal(1.8e4),new Decimal(2.6e4),new Decimal(3.2e4),new Decimal(4.2e4)];
   if (player.currentChallenge == "") {
-      for (s=1;s<4;s++) if (player.infinityUpgrades.includes("skipReset1")&&player.resets<s) player.resets=s
+      for (s=1;s<4;s++) if (player.infinityUpgrades.includes("skipReset"+s)&&player.resets<s) player.resets=s
       if (player.infinityUpgrades.includes("skipResetGalaxy")) {
           if (player.resets<4) player.resets=4
           if (player.galaxies == 0) player.galaxies = 1

@@ -321,6 +321,7 @@ function updateNewPlayer(reseted) {
         aarexModifications: {
             dilationConf: false,
             offlineProgress: true,
+            progressBar: true,
             breakInfinity: false
         }
     }
@@ -381,10 +382,11 @@ function updateNewPlayer(reseted) {
         player.options.gSacrificeConfirmation = true
     }
     if (modesChosen.ngpp > 1) {
-        player.aarexModifications.newGame3PlusVersion = 1.9979
+        player.aarexModifications.newGame3PlusVersion = 1.99795
         player.dbPower = 1
         player.peakSpent = 0
         player.masterystudies = []
+        player.options.animations.quarks = true
         player.quantum.usedQuarks = {
             r: 0,
             g: 0,
@@ -794,9 +796,16 @@ function showTab(tabName) {
     }
     if ((document.getElementById("timestudies").style.display != "none" || document.getElementById("ers_timestudies").style.display != "none" || document.getElementById("masterystudies").style.display != "none") && document.getElementById("eternitystore").style.display != "none") document.getElementById("TTbuttons").style.display = "block";
     else document.getElementById("TTbuttons").style.display = "none"
-    if ((document.getElementById("antimatterdimensions").style.display != "none" || document.getElementById("metadimensions").style.display != "none") && document.getElementById("dimensions").style.display != "none") document.getElementById("progress").style.display = "block";
+    if ((document.getElementById("antimatterdimensions").style.display != "none" || document.getElementById("metadimensions").style.display != "none") && player.aarexModifications.progressBar && document.getElementById("dimensions").style.display != "none") document.getElementById("progress").style.display = "block";
     else document.getElementById("progress").style.display = "none"
-    resizeCanvas();
+    if (tabName=="eternitystore") {
+        if (document.getElementById('timestudies') !== "none" || document.getElementById('masterystudies') !== "none" || document.getElementById('dilation') !== "none") resizeCanvas()
+        if (document.getElementById("dilation") !== "none") requestAnimationFrame(drawAnimations)
+    }
+    if (tabName=="quantumtab") {
+        if (document.getElementById('uquarks') !== "none") resizeCanvas()
+        if (document.getElementById("uquarks") !== "none") requestAnimationFrame(drawQuarkAnimation)
+    }
     closeToolTip();
 }
 
@@ -876,9 +885,9 @@ function getGalaxyRequirement(offset=0) {
     let remoteGalaxyScalingStart = getRemoteGalaxyScalingStart()
     if (galaxies >= remoteGalaxyScalingStart) {
         let speed2 = 1
-        if (GUBought("rg7")) speed2 = 0.89
-        if (GUBought("gb7")) speed2 /= 1+Math.log10(1+player.infinityPoints.max(1).log10())/90
-        if (GUBought("br7")) speed2 /= 1+Math.log10(1+player.eternityPoints.max(1).log10())/75
+        if (GUBought("rg7")) speed2 = 0.9
+        if (GUBought("gb7")) speed2 /= 1+Math.log10(1+player.infinityPoints.max(1).log10())/100
+        if (GUBought("br7")) speed2 /= 1+Math.log10(1+player.eternityPoints.max(1).log10())/80
         amount = amount * Math.pow(GUBought("rg1") ? 1.001 : 1.002, (galaxies-remoteGalaxyScalingStart-1) * speed2)
     }
     amount = Math.floor(amount)
@@ -2042,8 +2051,9 @@ function toggleCommas() {
     updateGluons()
     updateElectrons()
     updateQuantumChallenges()
+    updateMasteryStudyTextDisplay()
     document.getElementById("epmult").innerHTML = "You gain 5 times more EP<p>Currently: "+shortenDimensions(player.epmult)+"x<p>Cost: "+shortenDimensions(player.epmultCost)+" EP"
-    document.getElementById('bestTP').textContent="Your best ever Tachyon particles was "+shorten(player.dilation.bestTP)+"."
+    if (player.achievements.includes("ng3p18")) document.getElementById('bestTP').textContent="Your best ever Tachyon particles was "+shorten(player.dilation.bestTP)+"."
 }
 
 
@@ -2834,7 +2844,7 @@ function getIPMult() {
 }
 
 function gainedEternityPoints() {
-    var ret = Decimal.pow(5, player.infinityPoints.plus(gainedInfinityPoints()).e/308 -0.7).times(player.epmult).times(kongEPMult)
+    var ret = Decimal.pow(5, player.infinityPoints.plus(gainedInfinityPoints()).e/(player.achievements.includes("ng3p23")?307.8:308) -0.7).times(player.epmult).times(kongEPMult)
     if (player.timestudy.studies.includes(61)) ret = ret.times(10)
     if (player.timestudy.studies.includes(121)) ret = ret.times(((253 - averageEp.dividedBy(player.epmult).dividedBy(10).min(248).max(3))/5)) //x300 if tryhard, ~x60 if not
     else if (player.timestudy.studies.includes(122)) ret = ret.times(35)
@@ -2905,6 +2915,9 @@ function setAchieveTooltip() {
     let tfms = document.getElementById("speedrunMilestone18")
     let tms = document.getElementById("speedrunMilestone19")
     let tfms2 = document.getElementById("speedrunMilestone22")
+    let memories = document.getElementById("Old memories come true")
+    let squared = document.getElementById("We are not going squared.")
+    let seriously = document.getElementById("Seriously, I already got rid of you.")
 
     apocAchieve.setAttribute('ach-tooltip', "Get over " + formatValue(player.options.notation, 1e80, 0, 0) + " antimatter.");
     claustrophobic.setAttribute('ach-tooltip', "Go Infinite with just 1 Antimatter Galaxy. Reward: Reduces starting tick interval by 2%"+(player.galacticSacrifice?" and keep galaxy upgrades on infinity.":"."));
@@ -2966,6 +2979,9 @@ function setAchieveTooltip() {
     tfms.setAttribute('ach-tooltip', "Reward: Start with "+shortenCosts(1e13)+" eternities.")
     tms.setAttribute('ach-tooltip', "Reward: Start with "+shortenCosts(1e25)+" meta-antimatter on reset.")
     tfms2.setAttribute('ach-tooltip', "Reward: Start with "+shortenCosts(1e100)+" dilated time and dilated time does not reset until quantum.")
+    memories.setAttribute('ach-tooltip', "Reach "+shortenCosts(new Decimal("1e1700"))+" MA while not having over 4 dimension boosts and fifth dimensions.")
+    squared.setAttribute('ach-tooltip', "Reach "+shortenCosts(new Decimal("1e1500"))+" MA with exactly 8 meta-dimension boosts.")
+    seriously.setAttribute('ach-tooltip', "Reach "+shortenCosts(new Decimal("1e354000"))+" IP without having time studies while dilated and running QC2.")
 }
 
 document.getElementById("notation").onclick = function () {
@@ -3016,6 +3032,7 @@ document.getElementById("notation").onclick = function () {
     updateGluons()
     updateElectrons()
     updateQuantumChallenges()
+    updateMasteryStudyTextDisplay()
     document.getElementById("epmult").innerHTML = "You gain 5 times more EP<p>Currently: "+shortenDimensions(player.epmult)+"x<p>Cost: "+shortenDimensions(player.epmultCost)+" EP"
     if (player.achievements.includes("ng3p18")) document.getElementById('bestTP').textContent="Your best ever Tachyon particles was "+shorten(player.dilation.bestTP)+"."
 };
@@ -5340,21 +5357,6 @@ function startDilatedEternity(auto) {
     startInterval()
 }
 
-function unlockDilation() {
-    if (player.dilation.studies.includes(1)) return
-    if (player.timestudy.theorem < 5000) return
-    if (ECTimesCompleted("eterc12") !== 5) return
-    if (ECTimesCompleted("eterc11") !== 5) return
-    if (getTotalTT(player) < 13000) return
-    player.timestudy.theorem -= 5000
-    player.dilation.studies.push(1)
-    showEternityTab("dilation")
-    document.getElementById("dilstudy1").className = "dilationupgbought"
-    document.getElementById("dilstudy1").innerHTML = "Unlock time dilation<span>Cost: 5000 Time Theorems"
-    document.getElementById("dilationConfirmBtn").style.display = "inline-block"
-    updateTimeStudyButtons()
-}
-
 
 /**
  *
@@ -5376,7 +5378,7 @@ function unlockDilation() {
                               1e50,    1e60,    1e80,   1e100]
 
 
-function buyDilationUpgrade(id, costInc) {
+function buyDilationUpgrade(id, max) {
     if (id > 3 && id != 11) { // Not rebuyable
         if (player.dilation.dilatedTime < DIL_UPG_COSTS[id]) return // Not enough dilated time
         if (player.dilation.upgrades.includes(id)) return // Has the upgrade
@@ -5390,7 +5392,7 @@ function buyDilationUpgrade(id, costInc) {
         if (id == 17 && player.masterystudies) document.getElementById("masterystudyunlock").style.display=""
     } else { // Is rebuyable
         let realCost = getRebuyableDilUpgCost(id > 3 ? 4 : id)
-        if (player.dilation.dilatedTime.lt(realCost)) return
+        if (player.dilation.dilatedTime.lt(realCost)) return false
 
         player.dilation.dilatedTime = player.dilation.dilatedTime.minus(realCost)
         player.dilation.rebuyables[id > 3 ? 4 : id] += 1
@@ -5400,6 +5402,7 @@ function buyDilationUpgrade(id, costInc) {
         }
     }
 
+    if (max) return true
     updateDilationUpgradeCosts()
     updateDilationUpgradeButtons()
     updateTimeStudyButtons()
@@ -5825,9 +5828,17 @@ setInterval(function() {
     var bankedInfGain=gainBankedInf()
     document.getElementById("bankedInfGain").style.display = bankedInfGain>0 ? "block" : "none"
     document.getElementById("bankedInfGain").textContent = "You will gain " + getFullExpansion(bankedInfGain) + " banked infinities on next Eternity."
-	
+
+    let checkEmpty = player.timestudy.studies.length < 1
+    if (player.boughtDims) checkEmpty = checkEmpty && player.timestudy.theorem == getTotalTT(player)
+    if (player.masterystudies) for (id=0;id<player.masterystudies.length;id++) {
+        if (player.masterystudies[id].split("t")[1]) checkEmpty = false
+    }
+
+    let ableToGetRid2 = checkEmpty && player.dilation.active
+
     if (infchallengeTimes < 7.5) giveAchievement("Never again")
-    if (player.infinityPoints.gte(new Decimal("1e22000")) && player.timestudy.studies.length == 0) giveAchievement("What do I have to do to get rid of you")
+    if (player.infinityPoints.gte(new Decimal("1e22000")) && checkEmpty) giveAchievement("What do I have to do to get rid of you")
     if (player.replicanti.galaxies >= 180*player.galaxies && player.galaxies > 0) giveAchievement("Popular music")
     if (player.eternities >= 1e12) giveAchievement("The cap is a million, not a trillion")
     if (player.eternityPoints.gte(Number.MAX_VALUE)) giveAchievement("But I wanted another prestige layer...")
@@ -5873,20 +5884,24 @@ setInterval(function() {
     if (player.replicanti.amount.gt(new Decimal("1e100000"))) giveAchievement("It will never be enough")
     if (player.boughtDims && player.replicanti.amount.gt("1e1000000")) giveAchievement("Do you really need a guide for this?");
     if (player.tickspeed.e < -8296262) giveAchievement("Faster than a potato^286078")
-    if (player.timestudy.studies.length == 0 && player.dilation.active && player.infinityPoints.e >= 20000) giveAchievement("This is what I have to do to get rid of you.")
+    if (ableToGetRid2 && player.infinityPoints.e >= 20000) giveAchievement("This is what I have to do to get rid of you.")
     if (player.why >= 1e6) giveAchievement("Should we tell them about buy max...")
     giveAchievement("Universal harmony")
     if (player.masterystudies) {
+        let ableToGetRid3 = ableToGetRid2 && player.quantum.electrons.amount.eq(0)
+        let ableToGetRid4 = ableToGetRid2 && inQC(2)
+
         if (player.meta.antimatter.gte(Number.MAX_VALUE)) giveAchievement("I don't have enough fuel!")
         if (player.galaxies>899&&!player.dilation.studies.includes(1)) giveAchievement("No more tax fraud!")
         if (player.money.gte(Decimal.pow(10,3*86400*365.2425*2019))) giveAchievement("Old age")
-        if (player.infinityPoints.gte("1e500000")&&player.dilation.active&&player.timestudy.studies.length<1&&player.quantum.electrons.amount.eq(0)) giveAchievement("I already got rid of you...")
-        if (player.meta.resets == 8) if (player.meta.antimatter.gt(1e1000)) giveAchievement("We are not going squared.")
-        if (player.eightBought>1e10&&player.replicanti.galaxies+extraReplGalaxies+player.dilation.freeGalaxies<1) giveAchievement("Intergalactic")
-        if (player.infinityPoints.gte("1e10000000")&&player.dilation.active&&player.timestudy.studies.length<1&&player.quantum.electrons.amount.eq(0)&&inQC(6)) giveAchievement("Seriously, I already got rid of you.")
+        if (player.infinityPoints.e>=5e5&&ableToGetRid3) giveAchievement("I already got rid of you...")
+        if (player.meta.resets == 8) if (player.meta.antimatter.e>1499) giveAchievement("We are not going squared.")
+        if (player.eightBought>=4e6&&player.replicanti.galaxies+extraReplGalaxies+player.dilation.freeGalaxies<1) giveAchievement("Intergalactic")
+        if (player.old&&player.meta.antimatter.e>1699) giveAchievement("Old memories come true")
+        if (player.infinityPoints.e>353999&&ableToGetRid4) giveAchievement("Seriously, I already got rid of you.")
     }
     if (speedrunMilestonesReached>notifyId) {
-        $.notify("You unlocked "+timeDisplayShort(speedrunMilestones[notifyId]*36e3)+" speedrun milestone! "+(["You now start with 20,000 eternities when going quantum","You unlocked time theorem autobuyer","You now start with all Eternity Challenges completed and\neternity upgrades bought","You now start with dilation unlocked","You unlocked a new option for eternity autobuyer","You now start with all dilation studies and\nnon-rebuyable dilation upgrades before Meta Dimensions unlocked except passive TT gen upgrade","You unlocked first meta dimension autobuyer","You unlocked second meta dimension autobuyer","You unlocked third meta dimension autobuyer","You unlocked fourth meta dimension autobuyer","You unlocked fifth meta dimension autobuyer and you now keep time studies and passive TT gen upgrade","You unlocked sixth meta dimension autobuyer","You unlocked seventh meta dimension autobuyer","You unlocked eighth meta dimension autobuyer and\nall non-rebuyable dilation upgrades","You unlocked meta-dimension boost autobuyer","You now keep all time studies in mastery studies","You now can buy all Meta Dimensions if it is affordable in your current meta boost.","You now start with "+shortenCosts(1e13)+" eternities","You now start with "+shortenCosts(1e25)+" meta-antimatter on reset","You can now turn on automatic replicated galaxies anytime","You made rebuyable dilation upgrade and Meta Dimension autobuyers 3x faster","You now start with "+shortenCosts(1e100)+" dilated time on quantum and dilated time does not reset until quantum","You unlocked quantum autobuyer","You now keep replicanti on eternity"])[notifyId]+".","success")
+        $.notify("You unlocked "+timeDisplayShort(speedrunMilestones[notifyId]*36e3)+" speedrun milestone! "+(["You now start with 20,000 eternities when going quantum","You unlocked time theorem autobuyer","You now start with all Eternity Challenges completed and\neternity upgrades bought","You now start with dilation unlocked","You unlocked a new option for eternity autobuyer","You now start with all dilation studies and\nnon-rebuyable dilation upgrades before Meta Dimensions unlocked except passive TT gen upgrade","You unlocked first meta dimension autobuyer","You unlocked second meta dimension autobuyer","You unlocked third meta dimension autobuyer","You unlocked fourth meta dimension autobuyer","You unlocked fifth meta dimension autobuyer and you now keep time studies and passive TT gen upgrade","You unlocked sixth meta dimension autobuyer","You unlocked seventh meta dimension autobuyer","You unlocked eighth meta dimension autobuyer and\nall non-rebuyable dilation upgrades","You unlocked meta-dimension boost autobuyer","You now keep all time studies in mastery studies","You now can buy all Meta Dimensions if it is affordable in your current meta boost.","You now start with "+shortenCosts(1e13)+" eternities","You now start with "+shortenCosts(1e25)+" meta-antimatter on reset","You can now turn on automatic replicated galaxies anytime","You made rebuyable dilation upgrade and Meta Dimension autobuyers 3x faster","You now start with "+shortenCosts(1e100)+" dilated time on quantum and dilated time does not reset until quantum","You unlocked quantum autobuyer","You now keep replicanti on eternity."])[notifyId]+".","success")
         notifyId++
     }
 }, 1000)
@@ -6109,7 +6124,7 @@ function gameLoop(diff) {
         player.tickspeed = player.tickspeed.times(Decimal.pow(getTickSpeedMultiplier(), player.totalTickGained - oldT))
     } else if (player.timeShards.gt(player.tickThreshold)) {
         let thresholdMult=player.timestudy.studies.includes(171)?1.25:1.33
-        if (QCIntensity(7)) thresholdMult *= 0.975
+        if (QCIntensity(7)) thresholdMult *= Math.pow(0.975, QCIntensity(7))
         gain = Math.ceil(new Decimal(player.timeShards).dividedBy(player.tickThreshold).log10() / Math.log10(thresholdMult))
         player.totalTickGained += gain
         player.tickspeed = player.tickspeed.times(Decimal.pow(getTickSpeedMultiplier(), gain))
@@ -6207,8 +6222,18 @@ function gameLoop(diff) {
 
     }
     if (player.replicanti.amount !== 0) replicantiTicks += player.options.updateRate
-    extraReplGalaxies = Math.floor(player.timestudy.studies.includes(225) ? player.replicanti.amount.e / 1e3 : player.timestudy.studies.includes(226) ? player.replicanti.gal / 15 : 0)
-    if (extraReplGalaxies > 99) extraReplGalaxies = Math.floor(Math.sqrt(0.25 + 2 * (extraReplGalaxies - 99) * (QCIntensity(8) ? 3 : 1)) + 98.5)
+    let ts225Eff = 0
+    let ts226Eff = 0
+    if (player.timestudy.studies.includes(225)) {
+        ts225Eff = Math.floor(player.replicanti.amount.e / 1e3)
+        if (ts225Eff > 99) ts225Eff = Math.floor(Math.sqrt(0.25 + 2 * (ts225Eff - 99) * (QCIntensity(8) > 1 ? 4 : QCIntensity(8) ? 3 : 1)) + 98.5)
+    }
+    if (player.timestudy.studies.includes(226)) {
+        ts226Eff = Math.floor(player.replicanti.gal / 15)
+        if (ts226Eff > 99) ts226Eff = Math.floor(Math.sqrt(0.25 + 2 * (ts226Eff - 99) * (QCIntensity(8) > 1 ? 4 : QCIntensity(8) ? 3 : 1)) + 98.5)
+    }
+    extraReplGalaxies = ts225Eff + ts226Eff
+    if (extraReplGalaxies > 325) extraReplGalaxies = (Math.sqrt(0.8836+0.24*(extraReplGalaxies-324))-0.94)/0.12+324
     extraReplGalaxies = Math.floor(extraReplGalaxies * colorBoosts.g)
 
     if (current == Decimal.ln(Number.MAX_VALUE) && player.thisInfinityTime < 600*30) giveAchievement("Is this safe?");
@@ -6240,7 +6265,7 @@ function gameLoop(diff) {
     document.getElementById("replicantiapprox").textContent = "Approximately "+ timeDisplay(estimate*10) + " Until Infinite Replicanti"
 
     document.getElementById("replicantiamount").textContent = shortenDimensions(player.replicanti.amount)
-    document.getElementById("replicantimult").textContent = shorten(getReplMult())
+    document.getElementById("replicantimult").textContent = shorten(getIDReplMult())
 
     var currentQKmin = new Decimal(0)
     if (quantumed&&isQuantumReached()) {
@@ -6266,7 +6291,8 @@ function gameLoop(diff) {
     var showQuarkGain = quantumed&&(inQC(0)||player.options.theme=="Aarex's Modifications")
     document.getElementById("quantumbtnQKGain").textContent = showQuarkGain ? "Gain "+shortenDimensions(quarkGain())+" quark"+(quarkGain().eq(1)?".":"s.") : ""
     document.getElementById("quantumbtnRate").textContent = showQuarkGain ? shortenMoney(currentQKmin)+" QK/min" : ""
-    document.getElementById("quantumbtnPeak").textContent = showQuarkGain ? shortenMoney(QKminpeak)+" QK/min at " + shortenDimensions(QKminpeakValue) + " QK" : ""
+    var showQKPeakValue = QKminpeakValue.lt(1e30)||player.options.theme=="Aarex's Modifications"
+    document.getElementById("quantumbtnPeak").textContent = showQuarkGain ? (showQKPeakValue ? "" : "Peaked at ") + shortenMoney(QKminpeak)+" QK/min" + (showQKPeakValue ? " at " + shortenDimensions(QKminpeakValue) + " QK" : "") : ""
     updateMoney();
     updateCoinPerSec();
     updateDimensions()
@@ -6528,70 +6554,72 @@ function gameLoop(diff) {
     if (player.infinityUpgrades.includes("bulkBoost")) document.getElementById("postinfi23").className = "infinistorebtnbought"
     if (player.infinityUpgrades.includes("autoBuyerUpgrade")) document.getElementById("postinfi33").className = "infinistorebtnbought"
 
-    document.getElementById("progressbar").className=""
-    if (document.getElementById("metadimensions").style.display == "block") doQuantumProgress() 
-    else if (player.currentChallenge !== "") {
-        var percentage = Math.min((Decimal.log10(player.money.plus(1)) / Decimal.log10(player.challengeTarget) * 100), 100).toFixed(2) + "%"
-        document.getElementById("progressbar").style.width = percentage
-        document.getElementById("progresspercent").textContent = percentage
-        document.getElementById("progresspercent").setAttribute('ach-tooltip',"Percentage to challenge goal")
-    } else if (!player.break) {
-        var percentage = Math.min((Decimal.log10(player.money.plus(1)) / Decimal.log10(Number.MAX_VALUE) * 100), 100).toFixed(2) + "%"
-        document.getElementById("progressbar").style.width = percentage
-        document.getElementById("progresspercent").textContent = percentage
-        document.getElementById("progresspercent").setAttribute('ach-tooltip',"Percentage to Infinity")
-    } else if (player.infDimensionsUnlocked.includes(false)) {
-        var percentage = Math.min(player.money.e / getNewInfReq().e * 100, 100).toFixed(2) + "%"
-        document.getElementById("progressbar").style.width = percentage
-        document.getElementById("progresspercent").textContent = percentage
-        document.getElementById("progresspercent").setAttribute('ach-tooltip',"Percentage to next dimension unlock")
-    } else if (player.currentEternityChall !== '' && player.infinityPoints.lt(player.eternityChallGoal.pow(2))) {
-        var percentage = Math.min(Decimal.log10(player.infinityPoints.plus(1)) / player.eternityChallGoal.log10() * 100, 100).toFixed(2) + "%"
-        document.getElementById("progressbar").style.width = percentage
-        document.getElementById("progresspercent").textContent = percentage
-        document.getElementById("progresspercent").setAttribute('ach-tooltip',"Percentage to Eternity Challenge goal")
-    } else if (player.infinityPoints.lt(Number.MAX_VALUE) || player.eternities == 0) {
-        var percentage = Math.min(Decimal.log10(player.infinityPoints.plus(1)) / Decimal.log10(Number.MAX_VALUE)  * 100, 100).toFixed(2) + "%"
-        document.getElementById("progressbar").style.width = percentage
-        document.getElementById("progresspercent").textContent = percentage
-        document.getElementById("progresspercent").setAttribute('ach-tooltip',"Percentage to Eternity")
-    } else if (player.achievements.includes('r127') && !player.achievements.includes('r128') && player.timestudy.studies.length == 0) {
-        var percentage = (Decimal.log10(player.infinityPoints.plus(1)) / 220).toFixed(2) + "%"
-        document.getElementById("progressbar").style.width = percentage
-        document.getElementById("progresspercent").textContent = percentage
-        document.getElementById("progresspercent").setAttribute('ach-tooltip','Percentage to "What do I have to do to get rid of you"')
-    } else if (player.dilation.studies.includes(5) && player.dilation.active && !player.achievements.includes('r138') && player.timestudy.studies.length == 0) {
-        var percentage = Math.min(Decimal.log10(player.infinityPoints.plus(1)) / 200, 100).toFixed(2) + "%"
-        document.getElementById("progressbar").style.width = percentage
-        document.getElementById("progresspercent").textContent = percentage
-        document.getElementById("progresspercent").setAttribute('ach-tooltip','Percentage to "That is what I have to do to get rid of you."')
-    } else if (player.dilation.active && getDilGain() <= player.dilation.totalTachyonParticles) {
+    if (player.aarexModifications.progressBar) {
+        document.getElementById("progressbar").className=""
+        if (document.getElementById("metadimensions").style.display == "block") doQuantumProgress() 
+        else if (player.currentChallenge !== "") {
+            var percentage = Math.min((Decimal.log10(player.money.plus(1)) / Decimal.log10(player.challengeTarget) * 100), 100).toFixed(2) + "%"
+            document.getElementById("progressbar").style.width = percentage
+            document.getElementById("progresspercent").textContent = percentage
+            document.getElementById("progresspercent").setAttribute('ach-tooltip',"Percentage to challenge goal")
+        } else if (!player.break) {
+            var percentage = Math.min((Decimal.log10(player.money.plus(1)) / Decimal.log10(Number.MAX_VALUE) * 100), 100).toFixed(2) + "%"
+            document.getElementById("progressbar").style.width = percentage
+            document.getElementById("progresspercent").textContent = percentage
+            document.getElementById("progresspercent").setAttribute('ach-tooltip',"Percentage to Infinity")
+        } else if (player.infDimensionsUnlocked.includes(false)) {
+            var percentage = Math.min(player.money.e / getNewInfReq().e * 100, 100).toFixed(2) + "%"
+            document.getElementById("progressbar").style.width = percentage
+            document.getElementById("progresspercent").textContent = percentage
+            document.getElementById("progresspercent").setAttribute('ach-tooltip',"Percentage to next dimension unlock")
+        } else if (player.currentEternityChall !== '' && player.infinityPoints.lt(player.eternityChallGoal.pow(2))) {
+            var percentage = Math.min(Decimal.log10(player.infinityPoints.plus(1)) / player.eternityChallGoal.log10() * 100, 100).toFixed(2) + "%"
+            document.getElementById("progressbar").style.width = percentage
+            document.getElementById("progresspercent").textContent = percentage
+            document.getElementById("progresspercent").setAttribute('ach-tooltip',"Percentage to Eternity Challenge goal")
+        } else if (player.infinityPoints.lt(Number.MAX_VALUE) || player.eternities == 0) {
+            var percentage = Math.min(Decimal.log10(player.infinityPoints.plus(1)) / Decimal.log10(Number.MAX_VALUE)  * 100, 100).toFixed(2) + "%"
+            document.getElementById("progressbar").style.width = percentage
+            document.getElementById("progresspercent").textContent = percentage
+            document.getElementById("progresspercent").setAttribute('ach-tooltip',"Percentage to Eternity")
+        } else if (player.achievements.includes('r127') && !player.achievements.includes('r128') && player.timestudy.studies.length == 0) {
+            var percentage = (Decimal.log10(player.infinityPoints.plus(1)) / 220).toFixed(2) + "%"
+            document.getElementById("progressbar").style.width = percentage
+            document.getElementById("progresspercent").textContent = percentage
+            document.getElementById("progresspercent").setAttribute('ach-tooltip','Percentage to "What do I have to do to get rid of you"')
+        } else if (player.dilation.studies.includes(5) && player.dilation.active && !player.achievements.includes('r138') && player.timestudy.studies.length == 0) {
+            var percentage = Math.min(Decimal.log10(player.infinityPoints.plus(1)) / 200, 100).toFixed(2) + "%"
+            document.getElementById("progressbar").style.width = percentage
+            document.getElementById("progresspercent").textContent = percentage
+            document.getElementById("progresspercent").setAttribute('ach-tooltip','Percentage to "That is what I have to do to get rid of you."')
+        } else if (player.dilation.active && getDilGain() <= player.dilation.totalTachyonParticles) {
         var percentage = (Math.log10(getDilGain()) / Math.log10(player.dilation.totalTachyonParticles)).toFixed(2) + "%"
         document.getElementById("progressbar").style.width = percentage
         document.getElementById("progresspercent").textContent = percentage
         document.getElementById("progresspercent").setAttribute('ach-tooltip','Percentage to the requirement for tachyon particle gain')
-    } else if (gainedEternityPoints().lt(Decimal.pow(2,1048576)) && inQC(0)) {
-        var gepLog = gainedEternityPoints().log2()
-        var goal = Math.pow(2,Math.ceil(Math.log10(gepLog) / Math.log10(2)))
-        if (goal > 131072 && !player.achievements.includes('ngpp13')) {
-			goal = Decimal.sub("1e40000", player.eternityPoints).log2()
-			var percentage = Math.min(gepLog / goal * 100, 100).toFixed(2) + "%"
-			document.getElementById("progressbar").style.width = percentage
-			document.getElementById("progresspercent").textContent = percentage
-			document.getElementById("progresspercent").setAttribute('ach-tooltip','Percentage to "In the grim darkness of the far endgame"')
-        } else if (goal > 512 && !player.achievements.includes('r127')) {
-			goal = Decimal.sub(Number.MAX_VALUE, player.eternityPoints).log2()
-			var percentage = Math.min(gepLog / goal * 100, 100).toFixed(2) + "%"
-			document.getElementById("progressbar").style.width = percentage
-			document.getElementById("progresspercent").textContent = percentage
-			document.getElementById("progresspercent").setAttribute('ach-tooltip','Percentage to "But I wanted another prestige layer..."')
-        } else {
-			var percentage = Math.min(gepLog / goal * 100, 100).toFixed(2) + "%"
-			document.getElementById("progressbar").style.width = percentage
-			document.getElementById("progresspercent").textContent = percentage
-			document.getElementById("progresspercent").setAttribute('ach-tooltip',"Percentage to "+shortenDimensions(Decimal.pow(2,goal))+" EP gain")
-        }
-    } else doQuantumProgress()
+        } else if (gainedEternityPoints().lt(Decimal.pow(2,1048576)) && inQC(0)) {
+            var gepLog = gainedEternityPoints().log2()
+            var goal = Math.pow(2,Math.ceil(Math.log10(gepLog) / Math.log10(2)))
+            if (goal > 131072 && !player.achievements.includes('ngpp13')) {
+	    		goal = Decimal.sub("1e40000", player.eternityPoints).log2()
+    			var percentage = Math.min(gepLog / goal * 100, 100).toFixed(2) + "%"
+    			document.getElementById("progressbar").style.width = percentage
+    			document.getElementById("progresspercent").textContent = percentage
+    			document.getElementById("progresspercent").setAttribute('ach-tooltip','Percentage to "In the grim darkness of the far endgame"')
+            } else if (goal > 512 && !player.achievements.includes('r127')) {
+    			goal = Decimal.sub(Number.MAX_VALUE, player.eternityPoints).log2()
+    			var percentage = Math.min(gepLog / goal * 100, 100).toFixed(2) + "%"
+    			document.getElementById("progressbar").style.width = percentage
+    			document.getElementById("progresspercent").textContent = percentage
+    			document.getElementById("progresspercent").setAttribute('ach-tooltip','Percentage to "But I wanted another prestige layer..."')
+            } else {
+	    		var percentage = Math.min(gepLog / goal * 100, 100).toFixed(2) + "%"
+    			document.getElementById("progressbar").style.width = percentage
+	    		document.getElementById("progresspercent").textContent = percentage
+	    		document.getElementById("progresspercent").setAttribute('ach-tooltip',"Percentage to "+shortenDimensions(Decimal.pow(2,goal))+" EP gain")
+            }
+        } else doQuantumProgress()
+    }
 
     document.getElementById("ec1reward").textContent = "Reward: "+shortenMoney(Math.pow(Math.max(player.thisEternity*10, 1), 0.3+(ECTimesCompleted("eterc1")*0.05)))+"x on all Time Dimensions (based on time spent this Eternity)"
     document.getElementById("ec2reward").textContent = "Reward: Infinity power affects 1st Infinity Dimension with reduced effect, Currently: "+shortenMoney(player.infinityPower.pow(1.5/(700 - ECTimesCompleted("eterc2")*100)).min(new Decimal("1e100")).max(1))+"x"
@@ -7176,8 +7204,13 @@ function showDimTab(tabName) {
             tab.style.display = 'none';
         }
     }
-    if (tabName === 'antimatterdimensions' || tabName === 'metadimensions') document.getElementById("progress").style.display = "block"
+    if (document.getElementById("dimensions").style.display !== "none" && player.aarexModifications.progressBar && (tabName === 'antimatterdimensions' || tabName === 'metadimensions')) document.getElementById("progress").style.display = "block"
     else document.getElementById("progress").style.display = "none"
+}
+
+function toggleProgressBar() {
+	player.aarexModifications.progressBar=!player.aarexModifications.progressBar
+	document.getElementById("progressBarBtn").textContent = (player.aarexModifications.progressBar?"Hide":"Show")+" progress bar"	
 }
 
 function showChallengesTab(tabName) {
@@ -7199,8 +7232,10 @@ function showEternityTab(tabName, init) {
     //iterate over all elements in div_tab class. Hide everything that's not tabName and show tabName
     var tabs = document.getElementsByClassName('eternitytab');
     var tab;
+    var oldTab
     for (var i = 0; i < tabs.length; i++) {
         tab = tabs.item(i);
+        if (tab.style.display == 'block') oldTab = tab.id
         if (tab.id === tabName) {
             tab.style.display = 'block';
         } else {
@@ -7209,7 +7244,10 @@ function showEternityTab(tabName, init) {
     }
     if ((tabName === 'timestudies' || tabName === 'ers_timestudies' || tabName === 'masterystudies') && !init) document.getElementById("TTbuttons").style.display = "block"
     else document.getElementById("TTbuttons").style.display = "none"
-    resizeCanvas()
+    if (tabName != oldTab) {
+        if (tabName === 'timestudies' || tabName === 'masterystudies' || tabName === 'dilation') resizeCanvas()
+        if (tabName === "dilation") requestAnimationFrame(drawAnimations)
+    }
 	closeToolTip()
 }
 
@@ -7273,6 +7311,8 @@ function initGame() {
     migrateOldSaves()
     localStorage.setItem('AD_aarexModifications', btoa(JSON.stringify(metaSave)))
     load_game();
+    if (player.aarexModifications.progressBar) document.getElementById("progress").style.display = "block"
+    else document.getElementById("progress").style.display = "none"
     updateTickSpeed();
     updateAutobuyers();
     updateChallengeTimes()

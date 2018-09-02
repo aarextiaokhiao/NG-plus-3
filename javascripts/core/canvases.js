@@ -12,6 +12,8 @@ var canvas3 = document.getElementById("dilationCanvas");
 var ctx3 = canvas3.getContext("2d");
 var msc = document.getElementById("studyTreeCanvas2");
 var msctx = msc.getContext("2d");
+var qkc = document.getElementById("quarkCanvas");
+var qkctx = qkc.getContext("2d");
 
 window.addEventListener("resize", resizeCanvas);
 
@@ -28,8 +30,10 @@ function resizeCanvas() {
     canvas3.height = document.body.scrollHeight;
     msc.width = document.body.scrollWidth;
     msc.height = document.body.scrollHeight;
+    qkc.width = document.body.scrollWidth;
+    qkc.height = document.body.scrollHeight;
     drawStudyTree();
-    if (player) drawMasteryTree();
+    drawMasteryTree();
 }
 
 function point(x, y, ctz){
@@ -44,13 +48,14 @@ function animationOnOff(name) {
     if (name == "floatingText") document.getElementById("floatingTextAnimBtn").textContent = "Floating text: " + ((player.options.animations.floatingText) ? "ON" : "OFF")
     else if (name == "bigCrunch") document.getElementById("bigCrunchAnimBtn").textContent = "Big crunch: " + ((player.options.animations.bigCrunch) ? "ON" : "OFF")
     else if (name == "tachyonParticles") document.getElementById("tachyonParticleAnimBtn").textContent = "Tachyon particles: " + ((player.options.animations.tachyonParticles) ? "ON" : "OFF")
-    if (player.options.animations[name]) requestAnimationFrame(drawAnimations);
+    else if (name == "quarks") document.getElementById("quarksAnimBtn").textContent="Quarks: O"+(player.options.animations[name]?"N":"FF")
 }
 
 function drawAnimations(ts){
     if (player.dilation.tachyonParticles.gte(1) && document.getElementById("eternitystore").style.display !== "none" && document.getElementById("dilation").style.display !== "none" && player.options.animations.tachyonParticles) {
         ctx3.clearRect(0, 0, canvas.width, canvas.height);
-        if (player.options.theme == "Dark" || player.options.theme == "Dark Metro") ctx3.fillStyle="#FFF";
+        if (player.options.theme == "Aarex's Modifications") ctx3.fillStyle="#e5e5e5";
+        else if (player.options.theme == "Dark" || player.options.theme == "Dark Metro") ctx3.fillStyle="#FFF";
         else ctx3.fillStyle="#000";
         for (i=0; i<player.dilation.tachyonParticles.exponent+1; i++) {
             if (typeof particles["particle"+i] == "undefined") {
@@ -82,10 +87,10 @@ function drawAnimations(ts){
             particles["particle"+i].goalX += particles["particle"+i].velocityX
             particles["particle"+i].goalY += particles["particle"+i].velocityY
         }
+        delta = (ts - lastTs) / 1000;
+        lastTs = ts;
+        requestAnimationFrame(drawAnimations);
     }
-    delta = (ts - lastTs) / 1000;
-    lastTs = ts;
-    if (player.options.animations.tachyonParticles) requestAnimationFrame(drawAnimations);
 }
 
 function drawTreeBranch(num1, num2) {
