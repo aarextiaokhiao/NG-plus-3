@@ -7351,6 +7351,7 @@ window.addEventListener('keydown', function(event) {
     if (event.keyCode == 16) {
         shiftDown = true;
         drawStudyTree()
+        drawMasteryTree()
     }
     if ((controlDown && shiftDown && (event.keyCode == 67 || event.keyCode == 73 || event.keyCode == 74)) || event.keyCode == 123) {
         giveAchievement("Stop right there criminal scum!")
@@ -7362,6 +7363,7 @@ window.addEventListener('keyup', function(event) {
     if (event.keyCode == 16) {
         shiftDown = false;
         drawStudyTree()
+        drawMasteryTree()
     }
 }, false);
 

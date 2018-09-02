@@ -197,6 +197,21 @@ function drawMasteryTree() {
 		drawMasteryBranch("dilstudy11", "dilstudy12")
 		drawMasteryBranch("dilstudy12", "dilstudy13")
 	}
+    if (shiftDown && document.getElementById("eternitystore").style.display !== "none" && document.getElementById("masterystudies").style.display !== "none") {
+        var all = masterystudies.allTimeStudies.slice();
+    	for (i=0; i<all.length; i++) {
+            all[i] = "timestudy" + all[i];
+            var start = document.getElementById(all[i]).getBoundingClientRect();
+            var x1 = start.left + (start.width / 2) + (document.documentElement.scrollLeft || document.body.scrollLeft);
+            var y1 = start.top + (start.height / 2) + (document.documentElement.scrollTop || document.body.scrollTop);
+            msctx.fillStyle = 'white';
+            msctx.strokeStyle = 'black';
+            msctx.lineWidth = 3;
+            msctx.font = "15px Typewriter";
+            msctx.strokeText(all[i].slice(-3), x1 - start.width / 2, y1 - start.height / 2 - 1);
+            msctx.fillText(all[i].slice(-3), x1 - start.width / 2, y1 - start.height / 2 - 1);
+        }
+    }
 }
 
 function setupText() {
