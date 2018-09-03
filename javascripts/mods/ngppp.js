@@ -31,9 +31,9 @@ function updateMasteryStudyButtons() {
 		document.getElementById("ec"+id+"Req").textContent=getFullExpansion(masterystudies.reqs[id])
 	}
 	for (id=262;id<265;id++) document.getElementById("ts"+id+"Current").textContent="Currently: "+shorten(getMTSMult(id))+"x"
-    for (id=281;id<283;id++) document.getElementById("ts"+id+"Current").textContent="Currently: "+shorten(getMTSMult(id))+"x"
 	if (quantumed) {
 		for (id=7;id<10;id++) {
+		for (id=281;id<283;id++) document.getElementById("ts"+id+"Current").textContent="Currently: "+shorten(getMTSMult(id))+"x"
 			var div=document.getElementById("dilstudy"+id)
 			if (player.masterystudies.includes("d"+id)) div.className="dilationupgbought"
 			else if (canBuyMasteryStudy('d', id)) div.className="dilationupg"
@@ -198,7 +198,7 @@ function drawMasteryTree() {
 		drawMasteryBranch("dilstudy11", "dilstudy12")
 		drawMasteryBranch("dilstudy12", "dilstudy13")
 	}
-    if (shiftDown && document.getElementById("eternitystore").style.display !== "none" && document.getElementById("masterystudies").style.display !== "none") {
+    if (shiftDown) {
         var all = masterystudies.allTimeStudies.slice();
     	for (i=0; i<all.length; i++) {
             all[i] = "timestudy" + all[i];

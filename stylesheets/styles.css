@@ -926,23 +926,6 @@ button {
     animation: eternityChallengeGlowIn 7s infinite;
 }
 
-.metachallengestudy {
-    color: #009999;
-    background: white;
-    border: 1px solid #009999;
-    font-weight: bold;
-    font-family: Typewriter;
-    width: 170px;
-    height: 80px;
-    transition-duration: 0.2s;
-    cursor: pointer;
-    border-radius: 4px;
-    font-size: 0.65rem;
-    vertical-align: top;
-    margin:7px;
-    animation: metaChallengeBtnGlow 10s infinite;
-}
-
 .timestudy {
     color: #b341e0;
     background: black;
@@ -1798,13 +1781,6 @@ br {
 	text-align:center
 }
 
-#gluonupgrades td {
-	min-width:16.7%;
-	width:16.7%;
-	max-width:16.7%;
-	text-align:center
-}
-
 .red { color: #bf0000 }
 .green { color: #00bf00 }
 .blue { color: #0000bf }
@@ -1812,6 +1788,13 @@ br {
 #rg { animation: rg 5s infinite }
 #gb { animation: gb 5s infinite }
 #br { animation: br 5s infinite }
+
+#gluonupgrades td {
+	min-width:16.7%;
+	width:16.7%;
+	max-width:16.7%;
+	text-align:center
+}
 
 .gluonupgrade, .gluonupgradebought {
     font-weight: bold;
@@ -1852,17 +1835,30 @@ br {
 .gluonupgradebought.gb { animation: gbupgbought 5s infinite }
 .gluonupgradebought.br { animation: brupgbought 5s infinite }
 
-.gluonupgrade.storebtn {
+#electrons .gluonupgrade.storebtn {
 	background: black;
 	border-color: #8e991e;
 	color: #8e991e;
 	animation: electronupg 5s infinite
 }
 
-.gluonupgrade.storebtn:hover {
+#electrons .gluonupgrade.storebtn:hover {
 	background: #8e991e;
 	color: #ffffff;
 	animation: electronupg 5s infinite
+}
+
+#replicants .qtable td { vertical-align:0 }
+
+.upgbought {
+	color: black;
+	background: #5AC467;
+	border: 1px solid #ED85DF;
+	transition-duration: 0.2s;
+	border-radius: 4px;
+	font-weight: bold;
+	font-family: Typewriter;
+	font-size: 13px
 }
 
 @media print,

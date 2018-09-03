@@ -449,6 +449,7 @@ if (player.version < 5) {
       replicantiGalaxyAutoToggle()
   }
 
+  if (player.eternityChallUnlocked === null) player.eternityChallUnlocked = 0
   if (player.eternityChallUnlocked !== 0) document.getElementById("eterc"+player.eternityChallUnlocked+"div").style.display = "inline-block"
 
 
@@ -831,6 +832,13 @@ if (player.version < 5) {
           g:1,
           b:1
       }
+  } else {
+      colorBoosts.r=Math.pow(player.quantum.colorPowers.r.add(1).log10(),player.dilation.active?2/3:0.5)/10+1
+      colorBoosts.g=Math.sqrt(player.quantum.colorPowers.g.add(1).log10()*2+1)
+      colorBoosts.b=Decimal.pow(10,Math.sqrt(player.quantum.colorPowers.b.add(1).log10()))
+      if (colorBoosts.r>1.3) colorBoosts.r=Math.sqrt(colorBoosts.r*1.3)
+      if (colorBoosts.g>4.5) colorBoosts.g=Math.sqrt(colorBoosts.g*4.5)
+      if (colorBoosts.b.gt(1300)) colorBoosts.b=Decimal.pow(10,Math.pow(colorBoosts.b.log10()*Math.log10(1300),0.5))
   }
   if (player.aarexModifications.newGameMinusMinusVersion === undefined && !player.meta) {
       if (player.galacticSacrifice) {
@@ -1107,6 +1115,7 @@ if (player.version < 5) {
   resizeCanvas();
   checkForEndMe();
   updateEternityChallenges();
+  updateExtraReplGalaxies()
   updateDilationUpgradeCosts()
   updateLastTenQuantums()
   updateColorCharge()
@@ -1164,7 +1173,6 @@ if (player.version < 5) {
       closeToolTip()
       showNextModeMessage()
   }
-
   document.getElementById("game").style.display=player.options.newsHidden?"none":"block"
   if (!player.options.newsHidden) scrollNextMessage()
 }

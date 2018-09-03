@@ -1893,7 +1893,21 @@ function replicantiGalaxy() {
 	galaxyReset()
 }
 
-
+function updateExtraReplGalaxies() {
+	let ts225Eff = 0
+    let ts226Eff = 0
+    if (player.timestudy.studies.includes(225)) {
+        ts225Eff = Math.floor(player.replicanti.amount.e / 1e3)
+        if (ts225Eff > 99) ts225Eff = Math.floor(Math.sqrt(0.25 + 2 * (ts225Eff - 99) * (QCIntensity(8) > 1 ? 4 : QCIntensity(8) ? 3 : 1)) + 98.5)
+    }
+    if (player.timestudy.studies.includes(226)) {
+        ts226Eff = Math.floor(player.replicanti.gal / 15)
+        if (ts226Eff > 99) ts226Eff = Math.floor(Math.sqrt(0.25 + 2 * (ts226Eff - 99) * (QCIntensity(8) > 1 ? 4 : QCIntensity(8) ? 3 : 1)) + 98.5)
+    }
+    extraReplGalaxies = ts225Eff + ts226Eff
+    if (extraReplGalaxies > 325) extraReplGalaxies = (Math.sqrt(0.8836+0.24*(extraReplGalaxies-324))-0.94)/0.12+324
+    extraReplGalaxies = Math.floor(extraReplGalaxies * colorBoosts.g)
+}
 
 function updateMilestones() {
     var moreUnlocked = player.masterystudies && player.dilation.upgrades.includes("ngpp2")
@@ -2210,6 +2224,7 @@ function galaxyReset() {
     if (autoS) auto = false;
     autoS = true;
     if (player.sacrificed == 0) giveAchievement("I don't believe in Gods");
+    if (player.tickspeedBoosts !== undefined) player.tickspeedBoosts = 0
     player = {
         money: player.achievements.includes("r111") ? player.money : new Decimal(10),
         tickSpeedCost: new Decimal(1000),
@@ -2262,7 +2277,7 @@ function galaxyReset() {
         thisInfinityTime: player.thisInfinityTime,
         resets: 0,
         dbPower: player.dbPower ? new Decimal(1) : undefined,
-        tickspeedBoosts: resetTickspeedBoosts(),
+        tickspeedBoosts: player.tickspeedBoosts,
         galaxies: player.galaxies + 1,
         galacticSacrifice: player.galacticSacrifice,
         totalmoney: player.totalmoney,
@@ -3811,6 +3826,7 @@ document.getElementById("bigcrunch").onclick = function () {
         }
         auto = autoS; //only allow autoing if prev crunch was autoed
         autoS = true;
+        if (player.tickspeedBoosts !== undefined) player.tickspeedBoosts = 0
         player = {
             money: new Decimal(10),
             tickSpeedCost: new Decimal(1000),
@@ -3863,7 +3879,7 @@ document.getElementById("bigcrunch").onclick = function () {
             thisInfinityTime: 0,
             resets: 0,
             dbPower: player.dbPower ? new Decimal(1) : undefined,
-            tickspeedBoosts: resetTickspeedBoosts(),
+            tickspeedBoosts: player.tickspeedBoosts,
             galaxies: 0,
             galacticSacrifice: newGalacticDataOnInfinity(),
             tickDecrease: 0.9,
@@ -4151,6 +4167,7 @@ function eternity(force, auto) {
             }
         }
         player.eternities += gainEternitiedStat()
+        if (player.tickspeedBoosts !== undefined) player.tickspeedBoosts = 0
         player = {
             money: new Decimal(10),
             tickSpeedCost: new Decimal(1000),
@@ -4203,7 +4220,7 @@ function eternity(force, auto) {
             thisInfinityTime: 0,
             resets: (player.eternities > 3) ? 4 : 0,
             dbPower: player.dbPower ? new Decimal(1) : undefined,
-            tickspeedBoosts: resetTickspeedBoosts(),
+            tickspeedBoosts: player.tickspeedBoosts,
             galaxies: (player.eternities > 3) ? 1 : 0,
             galacticSacrifice: resetGalacticSacrifice(),
             tickDecrease: 0.9,
@@ -4519,6 +4536,7 @@ function startChallenge(name, target) {
     }
     if (player.options.challConf && name != "") if (!confirm("You will start over with just your infinity upgrades, and achievements. You need to reach " + (name.includes("post") ? "a set goal" : "infinity") + " with special conditions. NOTE: The rightmost infinity upgrade column doesn't work on challenges.")) return
     if (player.currentChallenge != "") document.getElementById(player.currentChallenge).textContent = "Start"
+    if (player.tickspeedBoosts !== undefined) player.tickspeedBoosts = 0
     player = {
         money: new Decimal(10),
         tickSpeedCost: new Decimal(1000),
@@ -4571,7 +4589,7 @@ function startChallenge(name, target) {
       thisInfinityTime: 0,
       resets: 0,
       dbPower: player.dbPower ? new Decimal(1) : undefined,
-      tickspeedBoosts: resetTickspeedBoosts(),
+      tickspeedBoosts: player.tickspeedBoosts,
       galaxies: 0,
       galacticSacrifice: newGalacticDataOnInfinity(),
       tickDecrease: 0.9,
@@ -5032,6 +5050,7 @@ function startEternityChallenge(name, startgoal, goalIncrease) {
     if (player.currentEternityChall == name || parseInt(name.split("eterc")[1]) != player.eternityChallUnlocked) return
     if (player.options.challConf) if (!confirm("You will start over with just your time studies, eternity upgrades and achievements. You need to reach a set IP with special conditions.")) return
     player.eternities += gainEternitiedStat()
+    if (player.tickspeedBoosts !== undefined) player.tickspeedBoosts = 0
     player = {
         money: new Decimal(10),
         tickSpeedCost: new Decimal(1000),
@@ -5084,7 +5103,7 @@ function startEternityChallenge(name, startgoal, goalIncrease) {
         thisInfinityTime: 0,
         resets: (player.eternities > 3) ? 4 : 0,
         dbPower: player.dbPower ? new Decimal(1) : undefined,
-        tickspeedBoosts: resetTickspeedBoosts(),
+        tickspeedBoosts: player.tickspeedBoosts,
         galaxies: (player.eternities > 3) ? 1 : 0,
         galacticSacrifice: resetGalacticSacrifice(),
         tickDecrease: 0.9,
@@ -6065,6 +6084,10 @@ function gameLoop(diff) {
         if (colorBoosts.r>1.3) colorBoosts.r=Math.sqrt(colorBoosts.r*1.3)
         if (colorBoosts.g>4.5) colorBoosts.g=Math.sqrt(colorBoosts.g*4.5)
         if (colorBoosts.b.gt(1300)) colorBoosts.b=Decimal.pow(10,Math.pow(colorBoosts.b.log10()*Math.log10(1300),0.5))
+
+        var rate = getGatherRate().total
+        if (rate.gt(0)) player.quantum.replicants.quarks = player.quantum.replicants.quarks.add(rate.times(diff/10))
+        gatheredQuarksBoost = Math.pow(player.quantum.replicants.quarks.add(1).log10(),0.25)/1.5
     }
     if (speedrunMilestonesReached>5) {
         player.quantum.metaAutobuyerWait+=diff
@@ -6184,7 +6207,10 @@ function gameLoop(diff) {
     if (GUBought("gb1")) interval /= 1-Math.min(Decimal.log10(getTickSpeedMultiplier()),0)
     if (player.replicanti.amount.lt(Number.MAX_VALUE) && player.achievements.includes("r134")) interval /= 2
     if (player.replicanti.amount.gt(Number.MAX_VALUE)) interval = player.boughtDims ? Math.pow(player.achievements.includes("r107")?Math.max(player.replicanti.amount.log(2)/1024,1):1, -.25) : Decimal.pow(getReplSpeed(), Math.max(player.replicanti.amount.log10() - 308, 0)/308).times(interval)
-    if (player.masterystudies) if (player.masterystudies.includes("t273")) chance = Decimal.pow(chance,Math.pow(Math.log10(chance+1),5))
+    if (player.masterystudies) {
+        if (player.masterystudies.includes("t273")) chance = Decimal.pow(chance,Math.pow(Math.log10(chance+1),5))
+	    interval *= Math.pow(2,(player.quantum.replicants.requirement.log10()-3e6)/5e4)
+    }
     var est = Decimal.add(chance,1).log10() * 1000 / interval
 
     var current = player.replicanti.amount.ln()
@@ -6222,19 +6248,7 @@ function gameLoop(diff) {
 
     }
     if (player.replicanti.amount !== 0) replicantiTicks += player.options.updateRate
-    let ts225Eff = 0
-    let ts226Eff = 0
-    if (player.timestudy.studies.includes(225)) {
-        ts225Eff = Math.floor(player.replicanti.amount.e / 1e3)
-        if (ts225Eff > 99) ts225Eff = Math.floor(Math.sqrt(0.25 + 2 * (ts225Eff - 99) * (QCIntensity(8) > 1 ? 4 : QCIntensity(8) ? 3 : 1)) + 98.5)
-    }
-    if (player.timestudy.studies.includes(226)) {
-        ts226Eff = Math.floor(player.replicanti.gal / 15)
-        if (ts226Eff > 99) ts226Eff = Math.floor(Math.sqrt(0.25 + 2 * (ts226Eff - 99) * (QCIntensity(8) > 1 ? 4 : QCIntensity(8) ? 3 : 1)) + 98.5)
-    }
-    extraReplGalaxies = ts225Eff + ts226Eff
-    if (extraReplGalaxies > 325) extraReplGalaxies = (Math.sqrt(0.8836+0.24*(extraReplGalaxies-324))-0.94)/0.12+324
-    extraReplGalaxies = Math.floor(extraReplGalaxies * colorBoosts.g)
+    updateExtraReplGalaxies()
 
     if (current == Decimal.ln(Number.MAX_VALUE) && player.thisInfinityTime < 600*30) giveAchievement("Is this safe?");
     if (player.replicanti.galaxies >= 10 && player.thisInfinityTime < 150) giveAchievement("The swarm");
@@ -7371,6 +7385,7 @@ window.onfocus = function() {
     controlDown = false;
     shiftDown = false;
     drawStudyTree()
+    drawMasteryTree()
 }
 
 window.addEventListener('keydown', function(event) {

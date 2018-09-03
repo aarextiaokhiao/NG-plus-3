@@ -12,7 +12,7 @@ function getDimensionBoostPower(next) {
   if (player.infinityUpgrades.includes("resetMult")&&player.galacticSacrifice) ret *= 1.2 + 0.05 * player.infinityPoints.max(1).log(10)
   if (player.achievements.includes("r101")) ret = ret*1.01
   if (player.timestudy.studies.includes(83)) ret = Decimal.pow(1.0004, player.totalTickGained).times(ret);
-  if (player.timestudy.studies.includes(231)) ret = Decimal.pow(player.resets+1, 0.3).times(ret)
+  if (player.timestudy.studies.includes(231)) ret = Decimal.pow(Math.max(player.resets, 0), 0.3).times(ret)
   if (player.galacticSacrifice) {
       if (player.currentChallenge == "postc7" || inQC(6) || player.timestudy.studies.includes(81)) ret = Math.pow(ret,3)
       else if (player.challenges.includes("postc7")) ret = Math.pow(ret,2)

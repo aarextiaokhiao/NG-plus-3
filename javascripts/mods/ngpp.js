@@ -186,6 +186,7 @@ function buyMaxMetaDimension(tier) {
 	player.meta[tier].amount=player.meta[tier].amount.add(bought*10-dimMetaBought(tier))
 	player.meta[tier].bought+=bought*10-dimMetaBought(tier)
 	player.meta[tier].cost=getMetaCost(tier,currentBought+bought)
+	if (tier>7) giveAchievement("And still no ninth dimension...")
 }
 
 function canAffordMetaDimension(cost) {
@@ -448,6 +449,7 @@ function quantum(auto,force,challid) {
 				}
 			}
 		} else player.quantum.gluons = 0;
+		if (player.tickspeedBoosts !== undefined) player.tickspeedBoosts = 0
 		player = {
 			money: new Decimal(10),
 			tickSpeedCost: new Decimal(1000),
@@ -499,7 +501,7 @@ function quantum(auto,force,challid) {
 			thisInfinityTime: 0,
 			resets: oheHeadstart ? 4 : 0,
 			dbPower: player.dbPower ? new Decimal(1) : undefined,
-			tickspeedBoosts: resetTickspeedBoosts(),
+			tickspeedBoosts: player.tickspeedBoosts,
 			galaxies: oheHeadstart ? 1 : 0,
 			galacticSacrifice: resetGalacticSacrifice(),
 			tickDecrease: 0.9,
@@ -948,6 +950,7 @@ function quantum(auto,force,challid) {
 		if (speedrunMilestonesReached < 14 || !isRewardEnabled(4)) {
 			document.getElementById("masterystudyunlock").style.display = "none";
 			if (document.getElementById("electronstabbtn").style.display == "block") showQuantumTab("uquarks")
+			if (document.getElementById("quantumchallenges").style.display == "block") showChallengesTab("challenges")
 		}
 		drawMasteryTree()
 		Marathon2 = 0;
