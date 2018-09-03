@@ -6203,10 +6203,7 @@ function gameLoop(diff) {
     if (GUBought("gb1")) interval /= 1-Math.min(Decimal.log10(getTickSpeedMultiplier()),0)
     if (player.replicanti.amount.lt(Number.MAX_VALUE) && player.achievements.includes("r134")) interval /= 2
     if (player.replicanti.amount.gt(Number.MAX_VALUE)) interval = player.boughtDims ? Math.pow(player.achievements.includes("r107")?Math.max(player.replicanti.amount.log(2)/1024,1):1, -.25) : Decimal.pow(getReplSpeed(), Math.max(player.replicanti.amount.log10() - 308, 0)/308).times(interval)
-    if (player.masterystudies) {
-        if (player.masterystudies.includes("t273")) chance = Decimal.pow(chance,Math.pow(Math.log10(chance+1),5))
-	    interval *= Math.pow(2,(player.quantum.replicants.requirement.log10()-3e6)/5e4)
-    }
+    if (player.masterystudies) if (player.masterystudies.includes("t273")) chance = Decimal.pow(chance,Math.pow(Math.log10(chance+1),5))
     var est = Decimal.add(chance,1).log10() * 1000 / interval
 
     var current = player.replicanti.amount.ln()
