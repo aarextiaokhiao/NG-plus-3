@@ -6084,10 +6084,6 @@ function gameLoop(diff) {
         if (colorBoosts.r>1.3) colorBoosts.r=Math.sqrt(colorBoosts.r*1.3)
         if (colorBoosts.g>4.5) colorBoosts.g=Math.sqrt(colorBoosts.g*4.5)
         if (colorBoosts.b.gt(1300)) colorBoosts.b=Decimal.pow(10,Math.pow(colorBoosts.b.log10()*Math.log10(1300),0.5))
-
-        var rate = getGatherRate().total
-        if (rate.gt(0)) player.quantum.replicants.quarks = player.quantum.replicants.quarks.add(rate.times(diff/10))
-        gatheredQuarksBoost = Math.pow(player.quantum.replicants.quarks.add(1).log10(),0.25)/1.5
     }
     if (speedrunMilestonesReached>5) {
         player.quantum.metaAutobuyerWait+=diff
