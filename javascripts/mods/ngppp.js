@@ -32,8 +32,8 @@ function updateMasteryStudyButtons() {
 	}
 	for (id=262;id<265;id++) document.getElementById("ts"+id+"Current").textContent="Currently: "+shorten(getMTSMult(id))+"x"
 	if (quantumed) {
-		for (id=7;id<10;id++) {
 		for (id=281;id<283;id++) document.getElementById("ts"+id+"Current").textContent="Currently: "+shorten(getMTSMult(id))+"x"
+		for (id=7;id<10;id++) {
 			var div=document.getElementById("dilstudy"+id)
 			if (player.masterystudies.includes("d"+id)) div.className="dilationupgbought"
 			else if (canBuyMasteryStudy('d', id)) div.className="dilationupg"
