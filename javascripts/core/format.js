@@ -106,6 +106,38 @@ function formatValue(notation, value, places, placesUnder1000) {
                 return mantissa + "e" + result;
             }
         }
+        if (notation === "AF5LN") {
+            value = new Decimal(value)
+            var progress = Math.round(Math.log10(value.add(1).log10()+1)/Math.log10(Number.MAX_VALUE)*11881375)
+            var uppercased = "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
+            var result = ""
+            for (l=0;l<5;l++) {
+                var pos = Math.floor(progress/Math.pow(26,l))%26
+                result = uppercased.slice(pos, pos+1) + result
+            }
+            return result
+        }
+        if (notation === "Hyperscientific") {
+            value = new Decimal(value)
+            var e
+            var f
+            if (value.gt("1e10000000000")) {
+                e = Math.log10(Math.log10(value.log10()))
+                f = 3
+            } else if (value.gt(1e10)) {
+                e = Math.log10(value.log10())
+                f = 2
+            } else {
+                e = value.log10()
+                f = 1
+            }
+            e = e.toFixed(2+f)
+            if (e == 10) {
+                e = (1).toFixed(3+f)
+                f++
+            }
+            return e+"F"+f
+        }
         if (value instanceof Decimal) {
            var power = value.e
            var matissa = value.mantissa
@@ -128,7 +160,6 @@ function formatValue(notation, value, places, placesUnder1000) {
         }
         if (notation === "Psi") {
             var mantissa=matissa
-            //console.log(mantissa,power)
             if(mantissa==10){
                 mantissa=1
                 power++
@@ -143,15 +174,10 @@ function formatValue(notation, value, places, placesUnder1000) {
             }else{
                 ret="F3-"+Math.floor(Math.log10(Math.log10(power))).toFixed(0)+"-"+(10**(Math.log10(Math.log10(power))%1)).toFixed(10).replace(".","")+"-"+(10**(Math.log10(power)%1)).toFixed(10).replace(".","")+"-"+mantissa.toFixed(10).replace(".","")
             }
-            //console.log(ret)
             ret=ret.replace(/$/g,"-")
-            //console.log(ret)
             ret=ret.replace(/0+-/g,"-")
-            //console.log(ret)
             ret=ret.replace(/-$/,"")
-            //console.log(ret)
             ret=ret.replace(/(?:-1)+$/g,"")
-            //console.log(ret)
             return ret.slice(0,15)
         }
         if (notation === "Greek" || notation === "Morse code") {
@@ -359,6 +385,7 @@ function timeDisplayShort(time, rep) {
 	}
 	time = time / 10
 	if (rep && time < 1) {
+		if (time < 1e-24) return "1/"+shorten(1/time)+"s"
 		if (time < 0.01) {
 			var log = Math.floor(Math.log10(time))
 			return (time * Math.pow(1e3, Math.ceil(-log/3))).toFixed((-log-1)%3+1) + " "+small[Math.ceil(-log/3)]+"s"

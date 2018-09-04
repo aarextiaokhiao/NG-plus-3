@@ -382,7 +382,7 @@ function updateNewPlayer(reseted) {
         player.options.gSacrificeConfirmation = true
     }
     if (modesChosen.ngpp > 1) {
-        player.aarexModifications.newGame3PlusVersion = 1.99795
+        player.aarexModifications.newGame3PlusVersion = 1.99797
         player.dbPower = 1
         player.peakSpent = 0
         player.masterystudies = []
@@ -786,8 +786,10 @@ function showTab(tabName) {
     //iterate over all elements in div_tab class. Hide everything that's not tabName and show tabName
     var tabs = document.getElementsByClassName('tab');
     var tab;
+    var oldTab
     for (var i = 0; i < tabs.length; i++) {
         tab = tabs.item(i);
+        if (tab.style.display == 'block') oldTab = tab.id
         if (tab.id === tabName) {
             tab.style.display = 'block';
         } else {
@@ -798,13 +800,15 @@ function showTab(tabName) {
     else document.getElementById("TTbuttons").style.display = "none"
     if ((document.getElementById("antimatterdimensions").style.display != "none" || document.getElementById("metadimensions").style.display != "none") && player.aarexModifications.progressBar && document.getElementById("dimensions").style.display != "none") document.getElementById("progress").style.display = "block";
     else document.getElementById("progress").style.display = "none"
-    if (tabName=="eternitystore") {
-        if (document.getElementById('timestudies') !== "none" || document.getElementById('masterystudies') !== "none" || document.getElementById('dilation') !== "none") resizeCanvas()
-        if (document.getElementById("dilation") !== "none") requestAnimationFrame(drawAnimations)
-    }
-    if (tabName=="quantumtab") {
-        if (document.getElementById('uquarks') !== "none") resizeCanvas()
-        if (document.getElementById("uquarks") !== "none") requestAnimationFrame(drawQuarkAnimation)
+    if (oldTab !== tabName) {
+        if (tabName=="eternitystore") {
+            if (document.getElementById('timestudies') !== "none" || document.getElementById('masterystudies') !== "none" || document.getElementById('dilation') !== "none") resizeCanvas()
+            if (document.getElementById("dilation") !== "none") requestAnimationFrame(drawAnimations)
+        }
+        if (tabName=="quantumtab") {
+            if (document.getElementById('uquarks') !== "none") resizeCanvas()
+            if (document.getElementById("uquarks") !== "none") requestAnimationFrame(drawQuarkAnimation)
+        }
     }
     closeToolTip();
 }
@@ -2015,64 +2019,6 @@ function toggleReplAuto(i) {
 
 
 
-function toggleCommas() {
-    if (player.options.commas === "Morse code") {
-        player.options.commas = "Commas";
-	} else if (player.options.commas === "Commas") {
-        player.options.commas = "Same notation";
-	} else if (player.options.commas === "Same notation") {
-        player.options.commas = "Scientific";
-    } else if (player.options.commas === "Scientific") {
-        player.options.commas = "Engineering";
-    } else if (player.options.commas === "Engineering") {
-        player.options.commas = "Letters";
-    } else if (player.options.commas === "Letters") {
-        player.options.commas = "Standard";
-    } else if (player.options.commas === "Standard") {
-        player.options.commas = "Emojis";
-    } else if (player.options.commas === "Emojis") {
-        player.options.commas = "Mixed scientific";
-    } else if (player.options.commas === "Mixed scientific") {
-        player.options.commas = "Mixed engineering";
-    } else if (player.options.commas === "Mixed engineering") {
-        player.options.commas = "Logarithm";
-    } else if (player.options.commas === "Logarithm") {
-        player.options.commas = "Brackets";
-    } else if (player.options.commas === "Brackets") {
-        player.options.commas = "Infinity";
-    } else if (player.options.commas === "Infinity") {
-        player.options.commas = "Greek";
-    } else if (player.options.commas === "Greek") {
-        player.options.commas = "Game percentages";
-    } else if (player.options.commas === "Game percentages") {
-        player.options.commas = "Hexadecimal";
-    } else if (player.options.commas === "Hexadecimal") {
-        player.options.commas = "Tetration";
-    } else if (player.options.commas === "Tetration") {
-        player.options.commas = "Morse code";
-    }
-    document.getElementById("commas").textContent = (player.options.commas === "Mixed Scientific"?"M. Scientific":player.options.commas === "Mixed Engineering"?"M. Engineering":player.options.commas === "Emojis"?"Cancer":player.options.commas) + " on exponents"
-
-    updateLastTenRuns();
-    updateLastTenEternities();
-    updateLastTenQuantums()
-    updateTickSpeed();
-    setAchieveTooltip();
-    updateCosts();
-    updateDilationUpgradeCosts()
-    updateMilestones()
-    updateColorCharge()
-    updateGluons()
-    updateElectrons()
-    updateQuantumChallenges()
-    updateMasteryStudyTextDisplay()
-    document.getElementById("epmult").innerHTML = "You gain 5 times more EP<p>Currently: "+shortenDimensions(player.epmult)+"x<p>Cost: "+shortenDimensions(player.epmultCost)+" EP"
-    if (player.achievements.includes("ng3p18")) document.getElementById('bestTP').textContent="Your best ever Tachyon particles was "+shorten(player.dilation.bestTP)+"."
-}
-
-
-
-
 
 
 buyAutobuyer = function(id) {
@@ -2990,7 +2936,7 @@ function setAchieveTooltip() {
     neverenough.setAttribute('ach-tooltip', "Reach "+shortenCosts( new Decimal("1e100000"))+" replicanti. Reward: You can buy max replicanti galaxies.")
     notenough.setAttribute('ach-tooltip', "Reach "+shorten(Number.MAX_VALUE)+" meta-antimatter.")
     old.setAttribute('ach-tooltip', "Reach "+shortenCosts(Decimal.pow(10,3*86400*365.2425*2019))+" antimatter.")
-    rid.setAttribute('ach-tooltip', "Reach "+shortenCosts(new Decimal("1e500000"))+" IP while dilated without having time studies and electrons. Reward: Generate time theorems based on your best-ever tachyon particles.")
+    rid.setAttribute('ach-tooltip', "Reach "+shortenCosts(new Decimal("1e400000"))+" IP while dilated without having time studies and electrons. Reward: Generate time theorems based on your best-ever tachyon particles.")
     tfms.setAttribute('ach-tooltip', "Reward: Start with "+shortenCosts(1e13)+" eternities.")
     tms.setAttribute('ach-tooltip', "Reward: Start with "+shortenCosts(1e25)+" meta-antimatter on reset.")
     tfms2.setAttribute('ach-tooltip', "Reward: Start with "+shortenCosts(1e100)+" dilated time and dilated time does not reset until quantum.")
@@ -2999,57 +2945,80 @@ function setAchieveTooltip() {
     seriously.setAttribute('ach-tooltip', "Reach "+shortenCosts(new Decimal("1e354000"))+" IP without having time studies while dilated and running QC2.")
 }
 
-document.getElementById("notation").onclick = function () {
-    player.options.scientific = !player.options.scientific;
-    if (player.options.notation === "Morse code") {
-        player.options.notation = "Scientific";
-    } else if (player.options.notation === "Scientific") {
-        player.options.notation = "Engineering";
-    } else if (player.options.notation === "Engineering") {
-        player.options.notation = "Letters";
-    } else if (player.options.notation === "Letters") {
-        player.options.notation = "Standard";
-    } else if (player.options.notation === "Standard") {
-        player.options.notation = "Emojis";
-    } else if (player.options.notation === "Emojis") {
-        player.options.notation = "Mixed scientific";
-    } else if (player.options.notation === "Mixed scientific") {
-        player.options.notation = "Mixed engineering";
-    } else if (player.options.notation === "Mixed engineering") {
-        player.options.notation = "Logarithm";
-    } else if (player.options.notation === "Logarithm") {
-        player.options.notation = "Brackets";
-    } else if (player.options.notation === "Brackets") {
-        player.options.notation = "Infinity";
-    } else if (player.options.notation === "Infinity") {
-        player.options.notation = "Greek";
-    } else if (player.options.notation === "Greek") {
-        player.options.notation = "Game percentages";
-    } else if (player.options.notation === "Game percentages") {
-        player.options.notation = "Hexadecimal";
-    } else if (player.options.notation === "Hexadecimal") {
-        player.options.notation = "Tetration";
-    } else if (player.options.notation === "Tetration") {
-        player.options.notation = "Morse code";
-    }
-    document.getElementsByClassName("hideInMorse").display = player.options.notation == "Morse code" ? "none" : ""
-    document.getElementById("notation").innerHTML = "Notation: "+(player.options.notation=="Emojis"?"Cancer":player.options.notation)
 
-    updateLastTenRuns();
-    updateLastTenEternities();
-    updateLastTenQuantums();
-    updateTickSpeed();
-    setAchieveTooltip();
-    updateCosts();
-    updateDilationUpgradeCosts()
-    updateMilestones()
-    updateColorCharge()
-    updateGluons()
-    updateElectrons()
-    updateQuantumChallenges()
-    updateMasteryStudyTextDisplay()
-    document.getElementById("epmult").innerHTML = "You gain 5 times more EP<p>Currently: "+shortenDimensions(player.epmult)+"x<p>Cost: "+shortenDimensions(player.epmultCost)+" EP"
-    if (player.achievements.includes("ng3p18")) document.getElementById('bestTP').textContent="Your best ever Tachyon particles was "+shorten(player.dilation.bestTP)+"."
+//notation stuff
+var notationArray = ["Scientific","Engineering","Letters","Standard","Emojis","Mixed scientific","Mixed engineering","Logarithm","Brackets","Infinity","Greek","Game percentages","Hexadecimal","Tetration","Hyperscientific","Psi","Morse code","AF5LN"]
+
+function updateNotationOption() {
+	var notationMsg="Notation: "+(player.options.notation=="Emojis"?"Cancer":player.options.notation)
+	var commasMsg=(player.options.commas=="Emojis"?"Cancer":player.options.commas) + " on exponents"
+	document.getElementById("notation").innerHTML = "<p style='font-size:15px'>Notations</p>"+notationMsg+"<br>"+commasMsg
+	document.getElementById("chosenNotation").textContent = player.options.notation=="AF5LN"?"Notation: Aarex's Funny 5-letter Notation":notationMsg
+	document.getElementById("chosenCommas").textContent = player.options.commas=="AF5LN"?"Aarex's Funny 5-letter Notation on exponents":commasMsg
+	
+	let tooltip=""
+	if (player.options.notation=="AF5LN") tooltip="Notation: Aarex's Funny 5-letter Notation"
+	if (player.options.commas=="AF5LN") tooltip+=(tooltip==""?"":"\n")+"Aarex's Funny 5-letter Notation on exponents"
+	if (tooltip=="") document.getElementById("notation").removeAttribute('ach-tooltip')
+	else document.getElementById("notation").setAttribute('ach-tooltip', tooltip)
+}
+
+function onNotationChange(id) {
+    document.getElementsByClassName("hideInMorse").display = player.options.notation == "Morse code" ? "none" : ""
+	updateNotationOption()
+	updateLastTenRuns();
+	updateLastTenEternities();
+	updateLastTenQuantums();
+	updateTickSpeed();
+	setAchieveTooltip();
+	updateCosts();
+	updateDilationUpgradeCosts()
+	updateMilestones()
+	updateColorCharge()
+	updateGluons()
+	updateElectrons()
+	updateQuantumChallenges()
+	updateMasteryStudyTextDisplay()
+	document.getElementById("epmult").innerHTML = "You gain 5 times more EP<p>Currently: "+shortenDimensions(player.epmult)+"x<p>Cost: "+shortenDimensions(player.epmultCost)+" EP"
+	if (player.achievements.includes("ng3p18")) document.getElementById('bestTP').textContent="Your best ever Tachyon particles was "+shorten(player.dilation.bestTP)+"."
+}
+
+function switchNotation(id) {
+	player.options.notation=notationArray[id]
+	onNotationChange()
+}
+
+function switchCommas(id) {
+	if (id>1) player.options.commas=notationArray[id-2]
+	else if (id>0) player.options.commas="Same notation"
+	else player.options.commas="Commas"
+	onNotationChange()
+}
+
+var notationMenuDone = false
+document.getElementById("notation").onclick = function () {
+	closeToolTip()
+	if (!notationMenuDone) {
+		notationMenuDone=true
+		let notationsTable=document.getElementById("notationOptions")
+		let commasTable=document.getElementById("commasOptions")
+		
+		var row=commasTable.insertRow(0)
+		row.innerHTML="<button class='storebtn' style='width:160px; height: 40px' onclick='switchCommas(0)'>Commas on exponents</button>"
+		row=commasTable.insertRow(1)
+		row.innerHTML="<button class='storebtn' style='width:160px; height: 40px' onclick='switchCommas(1)'>Same notation on exponents</button>"
+		
+		for (n=0;n<notationArray.length;n++) {
+			var name=notationArray[n]=="Emojis"?"Cancer":notationArray[n]
+			row=notationsTable.insertRow(n)
+			row.innerHTML="<button class='storebtn' id='select"+name+"' style='width:160px; height: 40px' onclick='switchNotation("+n+")'>Select "+name+"</button>"
+			row=commasTable.insertRow(n+2)
+			row.innerHTML="<button class='storebtn' id='selectCommas"+name+"' style='width:160px; height: 40px' onclick='switchCommas("+(n+2)+")'>"+name+" on exponents</button>"
+		}
+		document.getElementById("selectAF5LN").setAttribute("ach-tooltip","Select Aarex's Funny 5-letter Notation")
+		document.getElementById("selectCommasAF5LN").setAttribute("ach-tooltip","Aarex's Funny 5-letter Notation on exponents")
+	}
+	document.getElementById("notationmenu").style.display="block"
 };
 
 
@@ -5913,7 +5882,7 @@ setInterval(function() {
         if (player.meta.antimatter.gte(Number.MAX_VALUE)) giveAchievement("I don't have enough fuel!")
         if (player.galaxies>899&&!player.dilation.studies.includes(1)) giveAchievement("No more tax fraud!")
         if (player.money.gte(Decimal.pow(10,3*86400*365.2425*2019))) giveAchievement("Old age")
-        if (player.infinityPoints.e>=5e5&&ableToGetRid3) giveAchievement("I already got rid of you...")
+        if (player.infinityPoints.e>=4e5&&ableToGetRid3) giveAchievement("I already got rid of you...")
         if (player.meta.resets == 8) if (player.meta.antimatter.e>1499) giveAchievement("We are not going squared.")
         if (player.eightBought>=4e6&&player.replicanti.galaxies+extraReplGalaxies+player.dilation.freeGalaxies<1) giveAchievement("Intergalactic")
         if (player.old&&player.meta.antimatter.e>1699) giveAchievement("Old memories come true")

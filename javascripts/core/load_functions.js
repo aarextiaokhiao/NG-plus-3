@@ -396,7 +396,6 @@ if (player.version < 5) {
   respecToggle()
 
   document.getElementById("offlineProgress").textContent = "Offline progress: O"+(player.aarexModifications.offlineProgress?"N":"FF")
-  document.getElementById("commas").textContent = (player.options.commas === "Mixed Scientific"?"M. Scientific":player.options.commas === "Mixed Engineering"?"M. Engineering":player.options.commas === "Emojis"?"Cancer":player.options.commas) + " on exponents"
 
   if (!player.replicanti.auto[0]) document.getElementById("replauto1").textContent = "Auto: OFF"
   if (!player.replicanti.auto[1]) document.getElementById("replauto2").textContent = "Auto: OFF"
@@ -429,7 +428,7 @@ if (player.version < 5) {
   document.getElementById("break").textContent = (player.break ? "FIX" : "BREAK") + " INFINITY"
   if (player.eternities < 2) document.getElementById("abletobreak").style.display = "block"
 
-  document.getElementById("notation").textContent = "Notation: "+(player.options.notation=="Emojis"?"Cancer":player.options.notation)
+  updateNotationOption()
 
   document.getElementById("floatingTextAnimBtn").textContent = "Floating text: " + ((player.options.animations.floatingText) ? "ON" : "OFF")
   document.getElementById("bigCrunchAnimBtn").textContent = "Big crunch: " + ((player.options.animations.bigCrunch) ? "ON" : "OFF")
@@ -620,7 +619,7 @@ if (player.version < 5) {
           }
           player.aarexModifications.newGamePlusVersion = 1
           if (confirm("Do you want to migrate your NG++ save into new NG+++ mode?")) {
-              player.aarexModifications.newGame3PlusVersion = 1.99795
+              player.aarexModifications.newGame3PlusVersion = 1.99797
               player.dbPower = 1
               player.peakSpent = 0
               player.masterystudies = []
@@ -822,9 +821,8 @@ if (player.version < 5) {
       player.dilation.bestTP=player.achievements.includes("ng3p18")?player.dilation.tachyonParticles:new Decimal(0)
       player.old=false
   }
-  if (player.aarexModifications.newGame3PlusVersion < 1.99795) {
-      player.options.animations.quarks = true
-      player.aarexModifications.newGame3PlusVersion=1.99795
+  if (player.aarexModifications.newGame3PlusVersion < 1.99795) player.options.animations.quarks = true
+  if (player.aarexModifications.newGame3PlusVersion < 1.99797) player.aarexModifications.newGame3PlusVersion=1.99797
   }
   if (player.aarexModifications.newGame3PlusVersion==undefined) {
       colorBoosts={
