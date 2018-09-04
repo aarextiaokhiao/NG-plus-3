@@ -823,7 +823,6 @@ if (player.version < 5) {
   }
   if (player.aarexModifications.newGame3PlusVersion < 1.99795) player.options.animations.quarks = true
   if (player.aarexModifications.newGame3PlusVersion < 1.99797) player.aarexModifications.newGame3PlusVersion=1.99797
-  }
   if (player.aarexModifications.newGame3PlusVersion==undefined) {
       colorBoosts={
           r:1,
