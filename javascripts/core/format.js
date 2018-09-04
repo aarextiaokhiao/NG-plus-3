@@ -126,6 +126,34 @@ function formatValue(notation, value, places, placesUnder1000) {
             }
             return matissa + "e" + power;
         }
+        if (notation === "Psi") {
+            var mantissa=matissa
+            //console.log(mantissa,power)
+            if(mantissa==10){
+                mantissa=1
+                power++
+            }
+            var ret="You have failed"
+            if(power==0){
+                ret=mantissa.toFixed(0)
+            }else if(power<10){
+                ret="E"+power.toFixed(0)+"-"+mantissa.toFixed(Math.floor(power)).replace(".","")
+            }else if(power<1e10){
+                ret="F2-"+Math.floor(Math.log10(power)).toFixed(0)+"-"+(10**(Math.log10(power)%1)).toFixed(10).replace(".","")+"-"+mantissa.toFixed(10).replace(".","")
+            }else{
+                ret="F3-"+Math.floor(Math.log10(Math.log10(power))).toFixed(0)+"-"+(10**(Math.log10(Math.log10(power))%1)).toFixed(10).replace(".","")+"-"+(10**(Math.log10(power)%1)).toFixed(10).replace(".","")+"-"+mantissa.toFixed(10).replace(".","")
+            }
+            //console.log(ret)
+            ret=ret.replace(/$/g,"-")
+            //console.log(ret)
+            ret=ret.replace(/0+-/g,"-")
+            //console.log(ret)
+            ret=ret.replace(/-$/,"")
+            //console.log(ret)
+            ret=ret.replace(/(?:-1)+$/g,"")
+            //console.log(ret)
+            return ret.slice(0,15)
+        }
         if (notation === "Greek" || notation === "Morse code") {
             if (matissa>=10-Math.pow(10,-places)/2) {
                 matissa=Math.pow(10,places)
