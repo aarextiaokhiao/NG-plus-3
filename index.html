@@ -8,7 +8,7 @@
     <meta name="Antimatter Dimensions" content="A game about huge numbers and watching them go up." charset="utf-8"/>
     <script type="text/javascript" src="javascripts/jquery-3.2.1.min.js"></script>
     <script type="text/javascript" src="javascripts/notify.js"></script>
-    <link rel="stylesheet" type="text/css" href="stylesheets/styles.css?5">
+    <link rel="stylesheet" type="text/css" href="stylesheets/styles.css?6">
     <link href="https://fonts.googleapis.com/css?family=Inconsolata" rel="stylesheet">
     <script>
         (function(i, s, o, g, r, a, m) {
@@ -3657,19 +3657,15 @@
         <button id="quantumConfirmBtn" class="storebtn" onclick="toggleQuantumConf()" style="width: 200px; height: 45px; font-size: 12px" style="display: inline"></button>
 	</div>
 	<div class="popup optionmenu" id="notationmenu" style="overflow-y:hidden; width: 450px">
-		<table id='notationtable'><tr><td colspan=2 class="notationcell" id='chosenNotations'>
-			<button class="closebtn storebtn" onclick="closeToolTip()">&times;</button>
-			<p id='chosenNotation'></p>
-			<p id='chosenCommas'></p>
-		</td></tr><tr id='notationTables'><td class="notationcell">
-			<div style="height:100%;overflow-y:auto">
-				<table id='notationOptions'></table>
-			</div>
-		</td><td class="notationcell">
-			<div style="height:100%;overflow-y:auto">
-				<table id='commasOptions'></table>
-			</div>
-		</td></tr></table>
+		<button class="closebtn storebtn" onclick="closeToolTip()">&times;</button>
+		<p id='chosenNotation'></p>
+		<p id='chosenCommas'></p>
+		<div class='notationOptions' style="left: 0px">
+			<table id='notationOptions'></table>
+		</div>
+		<div class='notationOptions' style="right: 0px">
+			<table id='commasOptions'></table>
+		</div>
 	</div>
     <div id="TTbuttons" style="display:none;">
         <button class="timetheorembtn" onclick="toggleAutoTT()" id="theoremmax" style="margin-left:-276px; width:130px; height: 30px; font-size: 0.75rem; bottom: 77px;">Buy max Theorems</button>

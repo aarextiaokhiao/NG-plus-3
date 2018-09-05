@@ -68,7 +68,7 @@ function maxTheorems() {
 }
 
 function updateTheoremButtons() {
-	if (getPassiveTTGen().gt(0)) {
+	if (player.dilation.upgrades.includes(10)) {
 		document.getElementById("theoremmax").style.display="none"
 		document.getElementById("theoremam").style.display="none"
 		document.getElementById("theoremip").style.display="none"

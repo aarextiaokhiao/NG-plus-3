@@ -137,7 +137,7 @@ function buyTimeDimension(tier) {
   dim.amount = dim.amount.plus(1);
   dim.bought += 1
   dim.cost = timeDimCost(tier, dim.bought)
-  dim.power = dim.power.times(2)
+  dim.power = dim.power.times(player.boughtDims?3:2)
   if (inQC(6)) player.postC8Mult = new Decimal(1)
   updateEternityUpgrades()
   return true
@@ -180,7 +180,7 @@ function buyMaxTimeDimension(tier) {
 	dim.amount=dim.amount.plus(toBuy);
 	dim.bought+=toBuy
 	dim.cost=timeDimCost(tier, dim.bought)
-	dim.power=dim.power.times(Decimal.pow(2, toBuy))
+	dim.power=dim.power.times(Decimal.pow(player.boughtDims?3:2, toBuy))
 	if (inQC(6)) player.postC8Mult = new Decimal(1)
 	updateEternityUpgrades()
 }
