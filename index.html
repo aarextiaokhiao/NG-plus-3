@@ -343,12 +343,16 @@
                 </div>
             </div>
             <div class="eternitytab" id="ers_timestudies" style="font-size: 15px">
-                <td><button class="storebtn" onclick="respecToggle()" id="respec2" style="width:150px; height: 40px; font-size: 10px; margin: auto">Respec time studies on next Eternity</button><td>
+                <tr>
+                    <td><button class="storebtn" onclick="exportStudyTree()" style="width:150px; height: 40px; font-size: 10px; margin: auto">Export spec</button><td>
+                    <td><button class="storebtn" onclick="respecToggle()" id="respec2" style="width:150px; height: 40px; font-size: 10px; margin: auto">Respec time studies on next Eternity</button><td>
+                    <td><button class="storebtn" onclick="importStudyTree()" style="width:150px; height: 40px; font-size: 10px; margin: auto">Import spec</button><td>
+                </tr>
                 <p id="nextstudy" style="margin: 0 auto;"></p>
                 <table class="table" style="margin: 0 auto;">
                     <tr id="tsrow1">
                         <td>
-                            <button id="ts1" class="eternityttbtn" onclick="buyTimeStudy(1)">Sacrifice is stronger (10% first time, total effect logarithmic in times bought)<br>Bought: <span id="ts1bought">x</span><br>Cost: <span id="ts1cost">x</span> TT<br>Total sacrifice multiplier<br><span id='ts1desc'></span></button>
+                            <button id="ts1" class="eternityttbtn" onclick="buyTimeStudy(1)">Sacrifice is stronger (roughly 15% first time, total effect double-logarithmic in times bought)<br>Bought: <span id="ts1bought">x</span><br>Cost: <span id="ts1cost">x</span> TT<br>Total sacrifice multiplier<br><span id='ts1desc'></span></button>
                         </td>
                         <td>
                             <button id="ts2" class="eternityttbtn" onclick="buyTimeStudy(2)">You get 10% more tickspeed upgrades from time dimensions (not considering multiplier increase)<br>Bought: <span id="ts2bought">x</span><br>Cost: <span id="ts2cost">x</span> TT<br>Current tickspeed upgrades<br><span id='ts2desc'></span></button>
@@ -3691,19 +3695,19 @@
 <script type="text/javascript" src="javascripts/core/tickspeed.js?19"></script>
 <script type="text/javascript" src="javascripts/core/normal_dimension.js?24"></script>
 <script type="text/javascript" src="javascripts/core/infinity_dimension.js?13"></script>
-<script type="text/javascript" src="javascripts/core/time_dimension.js?16"></script>
+<script type="text/javascript" src="javascripts/core/time_dimension.js?17"></script>
 <script type="text/javascript" src="javascripts/core/dimboost.js?29"></script>
-<script type="text/javascript" src="javascripts/core/timestudies.js?25"></script>
+<script type="text/javascript" src="javascripts/core/timestudies.js?26"></script>
 <script type="text/javascript" src="javascripts/core/canvases.js?6"></script>
 <script type="text/javascript" src="javascripts/core/devtools.js"></script>
-<script type="text/javascript" src="javascripts/core/load_functions.js?51"></script>
-<script type="text/javascript" src="javascripts/core/newsticker.js?4"></script>
+<script type="text/javascript" src="javascripts/core/load_functions.js?52"></script>
+<script type="text/javascript" src="javascripts/core/newsticker.js?5"></script>
 <script type="text/javascript" src="javascripts/mods/ngmm.js?18"></script>
-<script type="text/javascript" src="javascripts/mods/ers.js"></script>
+<script type="text/javascript" src="javascripts/mods/ers.js?1"></script>
 <script type="text/javascript" src="javascripts/mods/ngpp.js?33"></script>
 <script type="text/javascript" src="javascripts/mods/ngppp.js?35"></script>
 <script type="text/javascript" src="javascripts/mods/ngmmm.js?2"></script>
-<script type="text/javascript" src="javascripts/game.js?57"></script>
+<script type="text/javascript" src="javascripts/game.js?58"></script>
 <script type="text/javascript" src="javascripts/sha512.js"></script>
 </body>
 </html>

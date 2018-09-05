@@ -3,7 +3,7 @@
 function getTimeDimensionPower(tier) {
   if (player.currentEternityChall == "eterc11") return new Decimal(1)
   var dim = player["timeDimension"+tier]
-  var ret = dim.power.pow(2)
+  var ret = dim.power.pow(player.boughtDims?1:2)
   ret = ret.times(kongAllDimMult)
 
   if (player.timestudy.studies.includes(11) && tier == 1) ret = ret.dividedBy(player.tickspeed.dividedBy(1000).pow(0.005).times(0.95).plus(player.tickspeed.dividedBy(1000).pow(0.0003).times(0.05)).max(Decimal.fromMantissaExponent(1, -2500)))
@@ -12,7 +12,13 @@ function getTimeDimensionPower(tier) {
       if (mult.gt("1e120000")) mult = Decimal.pow(10, Math.pow(mult.log10()/12e4,0.5)*12e4)
       ret = ret.times(mult)
   }
-  if (player.achievements.includes("r117")&&player.boughtDims) ret = ret.times(player.eightAmount.max(1).pow(1/8))
+  if (player.boughtDims) {
+      if (player.achievements.includes('r117')) {
+        ret = ret.times(1 + Math.pow(Math.log(player.eternities), 1.5) / Math.log(100));
+      } else if (player.achievements.includes('r102')) {
+        ret = ret.times(1 + Math.log(player.eternities) / Math.log(100));
+      }
+  }
 
   ret = ret.times(kongAllDimMult)
 

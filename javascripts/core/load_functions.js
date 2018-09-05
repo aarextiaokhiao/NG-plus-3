@@ -467,7 +467,7 @@ if (player.version < 5) {
   document.getElementById("epmult").innerHTML = "You gain 5 times more EP<p>Currently: "+shortenDimensions(player.epmult)+"x<p>Cost: "+shortenDimensions(player.epmultCost)+" EP"
 
   for (var i=0; i<player.timestudy.studies.length; i++) {
-      if (player.boughtDims) break
+      if (player.timestudy.studies.length>0&&typeof(player.timestudy.studies[0])!=="number") break
       if (player.timestudy.studies[i] == 71 || player.timestudy.studies[i] == 81 || player.timestudy.studies[i] == 91 || player.timestudy.studies[i] == 101) {
           document.getElementById(""+player.timestudy.studies[i]).className = "timestudybought normaldimstudy"
       } else if (player.timestudy.studies[i] == 72 || player.timestudy.studies[i] == 82 || player.timestudy.studies[i] == 92 || player.timestudy.studies[i] == 102) {
@@ -528,7 +528,7 @@ if (player.version < 5) {
       }
   }
 
-  if (player.aarexModifications.newGameMinusVersion === undefined) {
+  if (player.aarexModifications.newGameMinusVersion === undefined && !player.boughtDims) {
       if (checkNGM() > 0) {
           player.aarexModifications.newGameMinusVersion = (player.aarexModifications.newGameMinusUpdate !== undefined ? player.aarexModifications.newGameMinusUpdate : player.newGameMinusUpdate === undefined ? checkNGM() : 1.1)
           delete player.aarexModifications.newGameMinusUpdate
@@ -922,7 +922,7 @@ if (player.version < 5) {
       player.dimPowerIncreaseCost = 1e3
       player.aarexModifications.newGameMinusMinusVersion = 1.4
   }
-  if (player.aarexModifications.ersVersion === undefined && player.boughtDims) {
+  if (player.aarexModifications.ersVersion === undefined && player.timestudy.studies.length>0 && typeof(player.timestudy.studies[0])!=="number") {
       newAchievements=[]
       for (id=0;id<player.achievements.length;id++) {
           var r=player.achievements[id].split("r")[1]
@@ -931,17 +931,25 @@ if (player.version < 5) {
       player.achievements=newAchievements
       player.dimlife=true
       player.dead=true
-      for (d=1;d<9;d++) if (player.boughtDims.includes(d)) {
-          if (d>1) player.dead=false
-          if (d<8) player.dimlife=false
+      for (d=1;d<9;d++) {
+          var name = TIER_NAMES[d]
+          if (costMults[d].gt(player.costMultipliers[d-1])) player[name+"Bought"] += Math.round(Decimal.div(player.costMultipliers[d-1],costMults[d]).log(player.dimensionMultDecrease))*10
+          else player[name+"Bought"] += Decimal.div(player[name+"Cost"],initCost[d]).log(costMults[d])*10
+          if (player[name+"Bought"]>0) {
+              if (d>1) player.dead=false
+              if (d<8) player.dimlife=false
+          }
       }
-      player.timestudy.ers_studies=[]
-      for (s=0;s<7;s++) player.timestudy.ers_studies[s]=player.timestudy.studies[s]
+      player.boughtDims=[]
+      player.timestudy.ers_studies=[null]
+      for (s=1;s<7;s++) player.timestudy.ers_studies[s]=player.timestudy.studies[s]?player.timestudy.studies[s]:0
       player.timestudy.studies=[]
-      player.currentEternityChall=player.eternityChallenges.current?"eterc"+player.eternityChallenges.current:""
-      player.eternityChallUnlocked=player.eternityChallenges.unlocked
-      player.eternityChalls={}
-      for (c in player.eternityChallenges.done) player.eternityChalls["eterc"+c]=player.eternityChallenges.done[parseInt(c)]
+      if (player.eternityChallenges) {
+          player.currentEternityChall=player.eternityChallenges.current?"eterc"+player.eternityChallenges.current:""
+          player.eternityChallUnlocked=player.eternityChallenges.unlocked?"eterc"+player.eternityChallenges.unlocked:0
+          player.eternityChalls={}
+          for (c in player.eternityChallenges.done) player.eternityChalls["eterc"+c]=player.eternityChallenges.done[parseInt(c)]
+      }
       player.tickspeed=player.tickspeed.div(Decimal.pow(getTickSpeedMultiplier(),player.totalTickGained))
       player.totalTickGained=0
       player.tickThreshold=new Decimal(1)
@@ -952,6 +960,7 @@ if (player.version < 5) {
       player.aarexModifications.ersVersion=1
       delete player.eternityChallenges
   }
+  if (player.aarexModifications.ersVersion<1.01) player.aarexModifications.ersVersion=1.01
   ipMultPower=2
   if (player.masterystudies) if (player.masterystudies.includes("t241")) ipMultPower=2.2
   if (GUBought("gb3")) ipMultPower=2.3
@@ -1124,6 +1133,7 @@ if (player.version < 5) {
       if (document.getElementById("timestudies").style.display=="block") showEternityTab("ers_timestudies",true)
       updateGalaxyControl()
   } else if (document.getElementById("ers_timestudies").style.display=="block") showEternityTab("timestudies",true)
+  poData=metaSave["presetsOrder"+(player.boughtDims?"_ers":"")]
   document.getElementById("quantumstudies").style.display=quantumed&&player.masterystudies?"":"none"
   document.getElementById("quarksAnimBtn").style.display=quantumed&&player.masterystudies?"inline-block":"none"
   document.getElementById("quarksAnimBtn").textContent="Quarks: O"+(player.options.animations.quarks?"N":"FF")
@@ -1604,5 +1614,8 @@ function migrateOldSaves() {
 			}
 		}
 	}
-	metaSave.version=2
+	if (metaSave.version < 2.01) {
+		metaSave.presetsOrder_ers=[]
+	}
+	metaSave.version=2.01
 }

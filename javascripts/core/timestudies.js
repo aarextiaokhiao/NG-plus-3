@@ -92,7 +92,6 @@ function updateTheoremButtons() {
 		document.getElementById("theoremam").innerHTML = "Buy Time Theorems <br>Cost: "+shortenCosts(player.timestudy.amcost)
 		document.getElementById("theoremmax").innerHTML = (speedrunMilestonesReached > 2 && player.masterystudies) ? ("Auto max: O"+(player.autoEterOptions.tt?"N":"FF")) : "Buy max Theorems"
 	}
-	document.getElementById("presetsbtn").style.display=player.boughtDims?"none":""
 	document.getElementById("timetheorems").innerHTML = "You have <span style='display:inline' class=\"TheoremAmount\">"+(player.timestudy.theorem>99999?shortenMoney(player.timestudy.theorem):getFullExpansion(Math.floor(player.timestudy.theorem)))+"</span> Time Theorem"+ (player.timestudy.theorem == 1 ? "." : "s.")
 }
 
@@ -440,19 +439,50 @@ function getTotalTT(tree) {
 	}
 }
 
+function exportSpec() {
+  let l = [];
+  for (let i = 1; i <= numTimeStudies; i++) {
+    if (studyHasBeenUnlocked(i)) {
+      l.push(player.timestudy.studies[i]);
+    }
+  }
+  let s = l.join('/');
+  copyToClipboard(s);
+}
+
+function importSpec () {
+  let s = prompt('Enter your spec');
+  let l = s.split('/');
+  for (let i = 1; i <= l.length; i++) {
+    for (let j = 0; j < +l[i - 1]; j++) {
+      if (!buyTimeStudy(i)) break;
+    }
+  }
+}
+
 function exportStudyTree() {
   let output = document.getElementById('treeExportOutput');
   let parent = output.parentElement;
 
   parent.style.display = "";
-  var mtsstudies=[]
-  if (player.masterystudies) {
-      for (id=0;id<player.masterystudies.length;id++) {
-          var t = player.masterystudies[id].split("t")[1]
-          if (t) mtsstudies.push(t)
+  if (player.boughtDims) {
+      let l = [];
+      for (let i = 1; i < 7; i++) {
+          if (i<5||getTotalTT(player)>59) {
+              l.push(player.timestudy.ers_studies[i]);
+          }
       }
+      output.value = l.join('/');
+  } else {
+      var mtsstudies=[]
+      if (player.masterystudies) {
+          for (id=0;id<player.masterystudies.length;id++) {
+              var t = player.masterystudies[id].split("t")[1]
+              if (t) mtsstudies.push(t)
+          }
+      }
+      output.value = player.timestudy.studies + (mtsstudies.length > 0 ? "," + mtsstudies + "|" : "|") + player.eternityChallUnlocked;
   }
-  output.value = player.timestudy.studies + (mtsstudies.length > 0 ? "," + mtsstudies + "|" : "|") + player.eternityChallUnlocked;
 
   output.onblur = function() {
       parent.style.display = "none";
@@ -477,29 +507,38 @@ function importStudyTree(input) {
 	onImport = false
 	if (sha512_256(input) == "08b819f253b684773e876df530f95dcb85d2fb052046fa16ec321c65f3330608") giveAchievement("You followed the instructions")
 	if (input === "") return false
-	var studiesToBuy = input.split("|")[0].split(",");
-	var secondSplitPick = 0
-	var laterSecondSplits = []
-	var earlyDLStudies = []
-	var laterDLStudies = []
-	for (i=0; i<studiesToBuy.length; i++) {
-		var study=parseInt(studiesToBuy[i])
-		if ((study<120||study>150||(secondSplitPick<1||study%10==secondSplitPick))&&(study<220||study>240||earlyDLStudies.includes(study+(study%2>0?-1:1)))) {
-			if (study>120&&study<150) secondSplitPick=study%10
-			else if (study>220&&study<240) earlyDLStudies.push(study)
-			if (study>240) buyMasteryStudy("t", study)
-			else document.getElementById(study).click();
-		} else if (study<150) laterSecondSplits.push(study)
-		else laterDLStudies.push(study)
-	}
-	for (i=0; i<laterSecondSplits.length; i++) document.getElementById(laterSecondSplits[i]).click()
-	for (i=0; i<laterDLStudies.length; i++) document.getElementById(laterDLStudies[i]).click()
-	var ec=parseInt(input.split("|")[1])
-	if (ec > 0) {
-		justImported = true;
-		if (ec > 12) buyMasteryStudy("ec", ec)
-		else document.getElementById("ec"+parseInt(input.split("|")[1])+"unl").click();
-		setTimeout(function(){ justImported = false; }, 100);
+	if (player.boughtDims) {
+		let l = input.split('/');
+		for (let i = 1; i <= l.length; i++) {
+			for (let j = 0; j < +l[i - 1]; j++) {
+				if (!buyTimeStudy(i)) break;
+			}
+		}
+	} else {
+		var studiesToBuy = input.split("|")[0].split(",");
+		var secondSplitPick = 0
+		var laterSecondSplits = []
+		var earlyDLStudies = []
+		var laterDLStudies = []
+		for (i=0; i<studiesToBuy.length; i++) {
+			var study=parseInt(studiesToBuy[i])
+			if ((study<120||study>150||(secondSplitPick<1||study%10==secondSplitPick))&&(study<220||study>240||earlyDLStudies.includes(study+(study%2>0?-1:1)))) {
+				if (study>120&&study<150) secondSplitPick=study%10
+				else if (study>220&&study<240) earlyDLStudies.push(study)
+				if (study>240) buyMasteryStudy("t", study)
+				else document.getElementById(study).click();
+			} else if (study<150) laterSecondSplits.push(study)
+			else laterDLStudies.push(study)
+		}
+		for (i=0; i<laterSecondSplits.length; i++) document.getElementById(laterSecondSplits[i]).click()
+		for (i=0; i<laterDLStudies.length; i++) document.getElementById(laterDLStudies[i]).click()
+		var ec=parseInt(input.split("|")[1])
+		if (ec > 0) {
+			justImported = true;
+			if (ec > 12) buyMasteryStudy("ec", ec)
+			else document.getElementById("ec"+parseInt(input.split("|")[1])+"unl").click();
+			setTimeout(function(){ justImported = false; }, 100);
+		}
 	}
 };
 
@@ -508,6 +547,14 @@ function new_preset(importing) {
 	if (importing) {
 		var input=prompt()
 		if (input === null) return
+	} else if (player.boughtDims) {
+		let l = [];
+		for (let i = 1; i < 7; i++) {
+			if (i<5||getTotalTT(player)>59) {
+				l.push(player.timestudy.ers_studies[i]);
+			}
+		}
+		var input=l.join('/');
 	} else {
 		var mtsstudies=[]
 		if (player.masterystudies) {
@@ -520,10 +567,10 @@ function new_preset(importing) {
 	}
 	onImport = false
 	var placement=1
-	while (metaSave.presetsOrder.includes(placement)) placement++
+	while (poData.includes(placement)) placement++
 	presets[placement]={preset:input}
-	localStorage.setItem(btoa("dsAM_ST_"+placement),btoa(JSON.stringify(presets[placement])))
-	metaSave.presetsOrder.push(placement)
+	localStorage.setItem(btoa(prefix+placement),btoa(JSON.stringify(presets[placement])))
+	poData.push(placement)
 	latestRow=document.getElementById("presets").insertRow(loadedPresets)
 	latestRow.innerHTML=getPresetLayout(placement)
 	loadedPresets++
@@ -532,16 +579,31 @@ function new_preset(importing) {
 	$.notify("Preset created", "info")
 }
 
+//Smart presets
+var onERS = false
+var prefix = "dsAM_ST_"
+var poData
+
 function save_preset(id) {
-	var mtsstudies=[]
-	if (player.masterystudies) {
-		for (mid=0;mid<player.masterystudies.length;mid++) {
-			var t = player.masterystudies[mid].split("t")[1]
-			if (t) mtsstudies.push(t)
+	if (player.boughtDims) {
+		let l = [];
+		for (let i = 1; i < 7; i++) {
+			if (i<5||getTotalTT(player)>59) {
+				l.push(player.timestudy.ers_studies[i]);
+			}
 		}
+		presets[id].preset=l.join('/');
+	} else {
+		var mtsstudies=[]
+		if (player.masterystudies) {
+			for (mid=0;mid<player.masterystudies.length;mid++) {
+				var t = player.masterystudies[mid].split("t")[1]
+				if (t) mtsstudies.push(t)
+			}
+		}
+		presets[id].preset=player.timestudy.studies+(mtsstudies.length>0?","+mtsstudies:"")+"|"+player.eternityChallUnlocked
 	}
-	presets[id].preset=player.timestudy.studies+(mtsstudies.length>0?","+mtsstudies:"")+"|"+player.eternityChallUnlocked
-	localStorage.setItem(btoa("dsAM_ST_"+id),btoa(JSON.stringify(presets[id])))
+	localStorage.setItem(btoa(prefix+id),btoa(JSON.stringify(presets[id])))
 	$.notify("Preset saved", "info")
 }
 
@@ -555,58 +617,67 @@ function delete_preset(presetId) {
 	if (!confirm("Do you really want to erase this preset? You will lose access if you do that!")) return
 	var alreadyDeleted=false
 	var newPresetsOrder=[]
-	for (id=0;id<metaSave.presetsOrder.length;id++) {
+	for (id=0;id<poData.length;id++) {
 		if (alreadyDeleted) {
-			newPresetsOrder.push(metaSave.presetsOrder[id])
-			changePresetTitle(metaSave.presetsOrder[id], id)
-		} else if (metaSave.presetsOrder[id]==presetId) {
+			newPresetsOrder.push(poData[id])
+			changePresetTitle(poData[id], id)
+		} else if (poData[id]==presetId) {
 			delete presets[presetId]
-			localStorage.removeItem(btoa("dsAM_ST_"+presetId))
+			localStorage.removeItem(btoa(prefix+presetId))
 			alreadyDeleted=true
 			document.getElementById("presets").deleteRow(id)
 			loadedPresets--
-		} else newPresetsOrder.push(metaSave.presetsOrder[id])
+		} else newPresetsOrder.push(poData[id])
 	}
-	metaSave.presetsOrder=newPresetsOrder
+	poData=newPresetsOrder
 	localStorage.setItem("AD_aarexModifications",btoa(JSON.stringify(metaSave)))
 	$.notify("Preset deleted", "info")
 }
 
 function rename_preset(id) {
 	presets[id].title=prompt("Input a new name of this preset. It is necessary to rename it into related names!")
-	localStorage.setItem(btoa("dsAM_ST_"+id),btoa(JSON.stringify(presets[id])))
+	localStorage.setItem(btoa(prefix+id),btoa(JSON.stringify(presets[id])))
 	placement=1
-	while (metaSave.presetsOrder[placement-1]!=id) placement++
+	while (poData[placement-1]!=id) placement++
 	changePresetTitle(id, placement)
 	$.notify("Preset renamed", "info")
 }
 
 function move_preset(id,offset) {
 	placement=0
-	while (metaSave.presetsOrder[placement]!=id) placement++
+	while (poData[placement]!=id) placement++
 	if (offset<0) {
 		if (placement<-offset) return
-	} else if (placement>metaSave.presetsOrder.length-offset-1) return
-	var temp=metaSave.presetsOrder[placement]
-	metaSave.presetsOrder[placement]=metaSave.presetsOrder[placement+offset]
-	metaSave.presetsOrder[placement+offset]=temp
-	document.getElementById("presets").rows[placement].innerHTML=getPresetLayout(metaSave.presetsOrder[placement])
+	} else if (placement>poData.length-offset-1) return
+	var temp=poData[placement]
+	poData[placement]=poData[placement+offset]
+	poData[placement+offset]=temp
+	document.getElementById("presets").rows[placement].innerHTML=getPresetLayout(poData[placement])
 	document.getElementById("presets").rows[placement+offset].innerHTML=getPresetLayout(id)
-	changePresetTitle(metaSave.presetsOrder[placement],placement)
-	changePresetTitle(metaSave.presetsOrder[placement+offset],placement+offset)
+	changePresetTitle(poData[placement],placement)
+	changePresetTitle(poData[placement+offset],placement+offset)
 	localStorage.setItem("AD_aarexModifications",btoa(JSON.stringify(metaSave)))
 }
 
 var loadedPresets=0
 function openStudyPresets() {
 	closeToolTip()
+	let saveOnERS = !(!player.boughtDims)
+	if (saveOnERS != onERS) {
+		document.getElementById("presets").innerHTML=""
+		presets = {}
+		onERS = saveOnERS
+		if (onERS) prefix = "dsERS_ST_"
+		else prefix = "dsAM_ST_"
+		loadedPresets = 0
+	}
 	document.getElementById("presetsmenu").style.display = "block";
 	clearInterval(loadSavesIntervalId)
 	occupied=false
 	loadSavesIntervalId=setInterval(function(){
 		if (occupied) return
 		else occupied=true
-		if (loadedPresets==metaSave.presetsOrder.length) {
+		if (loadedPresets==poData.length) {
 			clearInterval(loadSavesIntervalId)
 			return
 		} else if (!onLoading) {
@@ -614,7 +685,7 @@ function openStudyPresets() {
 			onLoading=true
 		}
 		try {
-			var id=metaSave.presetsOrder[loadedPresets]
+			var id=poData[loadedPresets]
 			latestRow.innerHTML=getPresetLayout(id)
 			changePresetTitle(id, loadedPresets+1)
 			loadedPresets++
@@ -629,6 +700,6 @@ function getPresetLayout(id) {
 }
 
 function changePresetTitle(id, placement) {
-	if (presets[id]===undefined) presets[id]=JSON.parse(atob(localStorage.getItem(btoa('dsAM_ST_'+id))))
+	if (presets[id]===undefined) presets[id]=JSON.parse(atob(localStorage.getItem(btoa(prefix+id))))
 	document.getElementById("preset_"+id+"_title").textContent=presets[id].title?presets[id].title:"Preset #"+placement
 }

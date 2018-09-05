@@ -431,7 +431,7 @@ function updateNewPlayer(reseted) {
         player.old = true
     }
     if (modesChosen.ers) {
-        player.aarexModifications.ersVersion = 1
+        player.aarexModifications.ersVersion = 1.01
         player.boughtDims = []
         player.replicanti.limit = Number.MAX_VALUE
         player.replicanti.newLimit = Number.MAX_VALUE
@@ -3048,20 +3048,24 @@ function resetDimensions() {
 }
 
 function calcSacrificeBoost() {
-    if (player.firstAmount == 0) return new Decimal(1);
-    if (player.challenges.includes("postc2")) {
-        if (player.timestudy.studies.includes(228)) return player.firstAmount.dividedBy(player.sacrificed.max(1)).pow(0.013).max(1)
-        if (player.achievements.includes("r88")) return player.firstAmount.dividedBy(player.sacrificed.max(1)).pow(0.011).max(1)
-        return player.firstAmount.dividedBy(player.sacrificed.max(1)).pow(0.01).max(1)
-    }
-    if (player.currentChallenge != "challenge11") {
-        var sacrificePow=2;
-        if (player.achievements.includes("r32")) sacrificePow += 0.2;
-        if (player.achievements.includes("r57")) sacrificePow += 0.2; //this upgrade was too OP lol
-        return Decimal.pow((player.firstAmount.e/10.0), sacrificePow).dividedBy(((Decimal.max(player.sacrificed.e, 1)).dividedBy(10.0)).pow(sacrificePow).max(1)).max(1);
-    } else {
-        return player.firstAmount.pow(0.05).dividedBy(player.sacrificed.pow(0.04).max(1)).max(1);
-    }
+	let ret
+	if (player.firstAmount == 0) return new Decimal(1);
+	if (player.challenges.includes("postc2")) {
+		if (player.timestudy.studies.includes(228)) ret = player.firstAmount.dividedBy(player.sacrificed.max(1)).pow(0.013).max(1)
+		else if (player.achievements.includes("r97") && player.boughtDims) ret = player.firstAmount.dividedBy(player.sacrificed.max(1)).pow(0.012).max(1)
+		else if (player.achievements.includes("r88")) ret = player.firstAmount.dividedBy(player.sacrificed.max(1)).pow(0.011).max(1)
+		else ret = player.firstAmount.dividedBy(player.sacrificed.max(1)).pow(0.01).max(1)
+	}
+	if (player.currentChallenge != "challenge11") {
+		var sacrificePow=2;
+		if (player.achievements.includes("r32")) sacrificePow += player.tickspeedBoosts != undefined ? 2 : 0.2;
+		if (player.achievements.includes("r57")) sacrificePow += player.boughtDims ? 0.3 : 0.2; //this upgrade was too OP lol
+		ret = Decimal.pow((player.firstAmount.e/10.0), sacrificePow).dividedBy(((Decimal.max(player.sacrificed.e, 1)).dividedBy(10.0)).pow(sacrificePow).max(1)).max(1);
+	} else {
+		ret = player.firstAmount.pow(0.05).dividedBy(player.sacrificed.pow(0.04).max(1)).max(1);
+	}
+	if (player.boughtDims) ret = ret.pow(1 + Math.log(1 + Math.log(1 + player.timestudy.ers_studies[2] / 5)))
+	return ret
 }
 
 function calcTotalSacrificeBoost(next) {
@@ -3075,12 +3079,12 @@ function calcTotalSacrificeBoost(next) {
 	} else if (player.currentChallenge != "challenge11") {
 		var sacrificePow=2;
 		if (player.achievements.includes("r32")) sacrificePow += player.tickspeedBoosts != undefined ? 2 : 0.2;
-		if (player.achievements.includes("r57")) sacrificePow += 0.2;
+		if (player.achievements.includes("r57")) sacrificePow += player.boughtDims ? 0.3 : 0.2;
 		ret = Decimal.pow((player.sacrificed.e/10.0), sacrificePow);
 	} else {
 		ret = player.sacrificed.pow(0.05) //this is actually off but like im not sure how youd make it good. not that it matters.
 	}
-	if (player.boughtDims) ret = ret.pow(1 + Math.log(1 + (player.timestudy.ers_studies[1] + (next ? 1 : 0)) / 10))
+	if (player.boughtDims) ret = ret.pow(1 + Math.log(1 + Math.log(1 + (player.timestudy.ers_studies[2] + (next ? 1 : 0))/ 5)))
 	return ret
 }
 
@@ -6225,7 +6229,7 @@ function gameLoop(diff) {
     document.getElementById("replicantiinterval").innerHTML = "Interval: "+timeDisplayShort(Decimal.div(interval, 100), true) + (isIntervalAffordable() ? "<br>-> "+timeDisplayShort(Decimal.times(interval, 9e-3), true)+" Cost: "+shortenCosts(player.replicanti.intervalCost)+" IP" : "")
 
 
-    if (player.infMultBuyer) {
+    if (player.infMultBuyer && (!player.boughtDims || player.infinityUpgrades.includes("resetBoost"))) {
         var dif = player.infinityPoints.e - player.infMultCost.e +1
         if (dif > 0) {
             player.infMult = player.infMult.times(Decimal.pow(ipMultPower, dif))
@@ -6635,9 +6639,36 @@ function gameLoop(diff) {
         var years = player.money.log10() / 3 / 86400 / 365.2425
         if (years>2019) {
             eventBC = years - 2018
-            if (eventBC > 45e3) {
+            if (eventBC > 315e3) {
                 since = "???"
                 eventBC = 1/0 - eventBC
+            } else if (eventBC > 25e4) {
+                since = "Homo sapiens"
+                eventBC = 315e3 - eventBC
+            } else if (eventBC > 195e3) {
+                since = "Homo neanderthalensis"
+                eventBC = 25e4 - eventBC
+            } else if (eventBC > 16e4) {
+                since = "emergence of anatomically modern humans"
+                eventBC = 195e3 - eventBC
+            } else if (eventBC > 125e3) {
+                since = "Homo sapiens idaltu"
+                eventBC = 16e4 - eventBC
+            } else if (eventBC > 7e4) {
+                since = "peak of Eemian interglacial period"
+                eventBC = 125e3 - eventBC
+            } else if (eventBC > 67e3) {
+                since = "earliest abstract/symbolic art"
+                eventBC = 7e4 - eventBC
+            } else if (eventBC > 5e4) {
+                since = "Upper Paleolithic"
+                eventBC = 67e3 - eventBC
+            } else if (eventBC > 45e3) {
+                since = "Late Stone Age"
+                eventBC = 5e4 - eventBC
+            } else if (eventBC > 4e4) {
+                since = "European early modern humans"
+                eventBC = 45e3 - eventBC
             } else if (eventBC > 4e4) {
                 since = "European early modern humans"
                 eventBC = 45e3 - eventBC
