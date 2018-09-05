@@ -7439,6 +7439,10 @@ window.addEventListener('keydown', function(event) {
         case 69: // E, also, nice.
         document.getElementById("eternitybtn").onclick();
         break;
+	
+	case 81: // Q, for quantum.
+	quantum(false,false,0)
+	break;
 
     }
   }, false);
