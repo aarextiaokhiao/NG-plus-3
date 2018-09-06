@@ -396,7 +396,6 @@ if (player.version < 5) {
   respecToggle()
 
   document.getElementById("offlineProgress").textContent = "Offline progress: O"+(player.aarexModifications.offlineProgress?"N":"FF")
-  document.getElementById("commas").textContent = (player.options.commas === "Mixed Scientific"?"M. Scientific":player.options.commas === "Mixed Engineering"?"M. Engineering":player.options.commas === "Emojis"?"Cancer":player.options.commas) + " on exponents"
 
   if (!player.replicanti.auto[0]) document.getElementById("replauto1").textContent = "Auto: OFF"
   if (!player.replicanti.auto[1]) document.getElementById("replauto2").textContent = "Auto: OFF"
@@ -429,7 +428,7 @@ if (player.version < 5) {
   document.getElementById("break").textContent = (player.break ? "FIX" : "BREAK") + " INFINITY"
   if (player.eternities < 2) document.getElementById("abletobreak").style.display = "block"
 
-  document.getElementById("notation").textContent = "Notation: "+(player.options.notation=="Emojis"?"Cancer":player.options.notation)
+  updateNotationOption()
 
   document.getElementById("floatingTextAnimBtn").textContent = "Floating text: " + ((player.options.animations.floatingText) ? "ON" : "OFF")
   document.getElementById("bigCrunchAnimBtn").textContent = "Big crunch: " + ((player.options.animations.bigCrunch) ? "ON" : "OFF")
@@ -468,7 +467,7 @@ if (player.version < 5) {
   document.getElementById("epmult").innerHTML = "You gain 5 times more EP<p>Currently: "+shortenDimensions(player.epmult)+"x<p>Cost: "+shortenDimensions(player.epmultCost)+" EP"
 
   for (var i=0; i<player.timestudy.studies.length; i++) {
-      if (player.boughtDims) break
+      if (player.timestudy.studies.length>0&&typeof(player.timestudy.studies[0])!=="number") break
       if (player.timestudy.studies[i] == 71 || player.timestudy.studies[i] == 81 || player.timestudy.studies[i] == 91 || player.timestudy.studies[i] == 101) {
           document.getElementById(""+player.timestudy.studies[i]).className = "timestudybought normaldimstudy"
       } else if (player.timestudy.studies[i] == 72 || player.timestudy.studies[i] == 82 || player.timestudy.studies[i] == 92 || player.timestudy.studies[i] == 102) {
@@ -529,7 +528,7 @@ if (player.version < 5) {
       }
   }
 
-  if (player.aarexModifications.newGameMinusVersion === undefined) {
+  if (player.aarexModifications.newGameMinusVersion === undefined && !player.boughtDims) {
       if (checkNGM() > 0) {
           player.aarexModifications.newGameMinusVersion = (player.aarexModifications.newGameMinusUpdate !== undefined ? player.aarexModifications.newGameMinusUpdate : player.newGameMinusUpdate === undefined ? checkNGM() : 1.1)
           delete player.aarexModifications.newGameMinusUpdate
@@ -620,7 +619,7 @@ if (player.version < 5) {
           }
           player.aarexModifications.newGamePlusVersion = 1
           if (confirm("Do you want to migrate your NG++ save into new NG+++ mode?")) {
-              player.aarexModifications.newGame3PlusVersion = 1.99795
+              player.aarexModifications.newGame3PlusVersion = 1.99797
               player.dbPower = 1
               player.peakSpent = 0
               player.masterystudies = []
@@ -822,10 +821,8 @@ if (player.version < 5) {
       player.dilation.bestTP=player.achievements.includes("ng3p18")?player.dilation.tachyonParticles:new Decimal(0)
       player.old=false
   }
-  if (player.aarexModifications.newGame3PlusVersion < 1.99795) {
-      player.options.animations.quarks = true
-      player.aarexModifications.newGame3PlusVersion=1.99795
-  }
+  if (player.aarexModifications.newGame3PlusVersion < 1.99795) player.options.animations.quarks = true
+  if (player.aarexModifications.newGame3PlusVersion < 1.99797) player.aarexModifications.newGame3PlusVersion=1.99797
   if (player.aarexModifications.newGame3PlusVersion==undefined) {
       colorBoosts={
           r:1,
@@ -925,7 +922,7 @@ if (player.version < 5) {
       player.dimPowerIncreaseCost = 1e3
       player.aarexModifications.newGameMinusMinusVersion = 1.4
   }
-  if (player.aarexModifications.ersVersion === undefined && player.boughtDims) {
+  if (player.aarexModifications.ersVersion === undefined && player.timestudy.studies.length>0 && typeof(player.timestudy.studies[0])!=="number") {
       newAchievements=[]
       for (id=0;id<player.achievements.length;id++) {
           var r=player.achievements[id].split("r")[1]
@@ -934,17 +931,25 @@ if (player.version < 5) {
       player.achievements=newAchievements
       player.dimlife=true
       player.dead=true
-      for (d=1;d<9;d++) if (player.boughtDims.includes(d)) {
-          if (d>1) player.dead=false
-          if (d<8) player.dimlife=false
+      for (d=1;d<9;d++) {
+          var name = TIER_NAMES[d]
+          if (costMults[d].gt(player.costMultipliers[d-1])) player[name+"Bought"] += Math.round(Decimal.div(player.costMultipliers[d-1],costMults[d]).log(player.dimensionMultDecrease))*10
+          else player[name+"Bought"] += Decimal.div(player[name+"Cost"],initCost[d]).log(costMults[d])*10
+          if (player[name+"Bought"]>0) {
+              if (d>1) player.dead=false
+              if (d<8) player.dimlife=false
+          }
       }
-      player.timestudy.ers_studies=[]
-      for (s=0;s<7;s++) player.timestudy.ers_studies[s]=player.timestudy.studies[s]
+      player.boughtDims=[]
+      player.timestudy.ers_studies=[null]
+      for (s=1;s<7;s++) player.timestudy.ers_studies[s]=player.timestudy.studies[s]?player.timestudy.studies[s]:0
       player.timestudy.studies=[]
-      player.currentEternityChall=player.eternityChallenges.current?"eterc"+player.eternityChallenges.current:""
-      player.eternityChallUnlocked=player.eternityChallenges.unlocked
-      player.eternityChalls={}
-      for (c in player.eternityChallenges.done) player.eternityChalls["eterc"+c]=player.eternityChallenges.done[parseInt(c)]
+      if (player.eternityChallenges) {
+          player.currentEternityChall=player.eternityChallenges.current?"eterc"+player.eternityChallenges.current:""
+          player.eternityChallUnlocked=player.eternityChallenges.unlocked?"eterc"+player.eternityChallenges.unlocked:0
+          player.eternityChalls={}
+          for (c in player.eternityChallenges.done) player.eternityChalls["eterc"+c]=player.eternityChallenges.done[parseInt(c)]
+      }
       player.tickspeed=player.tickspeed.div(Decimal.pow(getTickSpeedMultiplier(),player.totalTickGained))
       player.totalTickGained=0
       player.tickThreshold=new Decimal(1)
@@ -955,9 +960,13 @@ if (player.version < 5) {
       player.aarexModifications.ersVersion=1
       delete player.eternityChallenges
   }
+  if (player.aarexModifications.ersVersion<1.01) player.aarexModifications.ersVersion=1.01
+  if (player.aarexModifications.newGameExpVersion === undefined && !player.masterystudies && Decimal.gt(player.infMultCost,10) && Math.round(Decimal.div(player.infMultCost,10).log(4)*1e3)%1e3<1) player.aarexModifications.newGameExpVersion=1
   ipMultPower=2
   if (player.masterystudies) if (player.masterystudies.includes("t241")) ipMultPower=2.2
   if (GUBought("gb3")) ipMultPower=2.3
+  if (player.aarexModifications.newGameExpVersion !== undefined) ipMultCostIncrease=4
+  else ipMultCostIncrease=10
   document.getElementById("infiMult").innerHTML = "Multiply infinity points from all sources by "+ipMultPower+"<br>currently: "+shortenDimensions(player.infMult.times(kongIPMult)) +"x<br>Cost: "+shortenCosts(player.infMultCost)+" IP"
 
   //updates TD costs to harsher scaling
@@ -1062,13 +1071,15 @@ if (player.version < 5) {
   document.getElementById("decimalMode").innerHTML = "Decimal mode: "+(break_infinity_js?"Slow but accurate":"Fast but inaccurate")
   document.getElementById("decimalMode").style.display = Decimal.gt(player.totalmoney,"1e9000000000000000") ? "none" : ""
 
+  document.getElementById("hotkeysDesc").innerHTML = "Hotkeys: 1-8 for buy 10 dimension, shift+1-8 for buy 1 dimension, T to buy max tickspeed, shift+T to buy one tickspeed, M for max all<br>S for sacrifice, D for dimension boost, G for galaxy, C for crunch, A for toggle autobuyers, R for replicanti galaxies, E for eternity"+(player.meta?", Q for quantum":"")+".<br>You can hold shift while buying time studies to buy all up until that point, see each study's number, and save study trees.<br>Hotkeys do not work while holding control."
+
   document.getElementById("secretstudy").style.opacity = 0
   document.getElementById("secretstudy").style.cursor = "pointer"
 
   document.getElementById("masterystudyunlock").style.display = player.dilation.upgrades.includes("ngpp6") && player.masterystudies ? "" : "none"
 
   if (!player.galacticSacrifice) {
-      document.getElementById("infi21").innerHTML = "Increase the multiplier for buying 10 Dimensions <br>2x -> 2.2x<br>Cost: 1 IP"
+      document.getElementById("infi21").innerHTML = "Increase the multiplier for buying 10 Dimensions <br>"+(player.aarexModifications.newGameExpVersion?"20x -> 24x":"2x -> 2.2x")+"<br>Cost: 1 IP"
       document.getElementById("infi33").innerHTML = "Increase Dimension Boost multiplier <br>2x -> 2.5x<br>Cost: 7 IP"
   }
   var showMoreBreak = player.galacticSacrifice ? "" : "none"
@@ -1078,6 +1089,10 @@ if (player.version < 5) {
   document.getElementById("ngmmchalls").style.display=player.galacticSacrifice?"":"none"
   document.getElementById("ic7desc").textContent="You can't get Antimatter Galaxies, but dimensional boost multiplier "+(player.galacticSacrifice?"is cubed":"2.5x -> 10x")
   document.getElementById("ic7reward").textContent="Reward: Dimensional boost multiplier "+(player.galacticSacrifice?"is squared":"2.5x -> 4x")
+  document.getElementById("41").innerHTML="Each galaxy gives a 1."+(player.aarexModifications.newGameExpVersion?5:2)+"x multiplier on IP gained. <span>Cost: 4 Time Theorems"
+  document.getElementById("42").innerHTML="Galaxy requirement goes up "+(player.aarexModifications.newGameExpVersion?48:52)+" 8ths instead of 60.<span>Cost: 6 Time Theorems"
+  document.getElementById("61").innerHTML="You gain 10"+(player.aarexModifications.newGameExpVersion?0:"")+"x more EP<span>Cost: 3 Time Theorems"
+  document.getElementById("62").innerHTML="You gain replicanti "+(player.aarexModifications.newGameExpVersion?4:3)+" times faster<span>Cost: 3 Time Theorems"
   document.getElementById("81").innerHTML="Dimensional boost power "+(player.galacticSacrifice?"is cubed":"becomes 10x")+"<span>Cost: 4 Time Theorems"
 
   updateAutobuyers();
@@ -1127,6 +1142,7 @@ if (player.version < 5) {
       if (document.getElementById("timestudies").style.display=="block") showEternityTab("ers_timestudies",true)
       updateGalaxyControl()
   } else if (document.getElementById("ers_timestudies").style.display=="block") showEternityTab("timestudies",true)
+  poData=metaSave["presetsOrder"+(player.boughtDims?"_ers":"")]
   document.getElementById("quantumstudies").style.display=quantumed&&player.masterystudies?"":"none"
   document.getElementById("quarksAnimBtn").style.display=quantumed&&player.masterystudies?"inline-block":"none"
   document.getElementById("quarksAnimBtn").textContent="Quarks: O"+(player.options.animations.quarks?"N":"FF")
@@ -1152,6 +1168,7 @@ if (player.version < 5) {
   } else player.lastUpdate = new Date().getTime()
   if (detectNGPStart || player.totalTimePlayed < 1 || inflationCheck) {
       ngModeMessages=[]
+      if (player.aarexModifications.newGameExpVersion) ngModeMessages.push("Welcome to NG^ mode, made by Naruyoko! This mode adds way many buffs that this mode may be broken!")
       if (player.meta) {
           if (!player.aarexModifications.newGamePlusVersion) ngModeMessages.push("WARNING! You are disabling NG+ features on NG++! Standard NG++ have all of NG++ features and I recommend you to create a new save with NG+ and NG++ modes on.")
           if (player.masterystudies) ngModeMessages.push("Welcome to NG+++ mode, the extension of dan-simon's NG++ mode! In this mode, more time & dilation studies, more eternity milestones, and dilated challenges were added.")
@@ -1607,5 +1624,8 @@ function migrateOldSaves() {
 			}
 		}
 	}
-	metaSave.version=2
+	if (metaSave.version < 2.01) {
+		metaSave.presetsOrder_ers=[]
+	}
+	metaSave.version=2.01
 }

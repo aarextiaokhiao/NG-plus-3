@@ -61,7 +61,7 @@ function getDimensionFinalMultiplier(tier) {
   let useHigherNDReplMult = !player.dilation.active ? false : !player.masterystudies ? false : player.masterystudies.includes("t322")
   if (player.timestudy.studies.includes(101)) ndReplMult = Decimal.max(player.replicanti.amount.pow(player.dilation.active?1:!player.masterystudies?1:player.masterystudies.includes("t321")?1200:1), 1)
   if (!useHigherNDReplMult) multiplier = multiplier.times(ndReplMult)
-  if (player.timestudy.studies.includes(161)) multiplier = multiplier.times(new Decimal("1e616"))
+  if (player.timestudy.studies.includes(161)) multiplier = multiplier.times(new Decimal(player.aarexModifications.newGameExpVersion?"1e3080":"1e616"))
   if (player.timestudy.studies.includes(234) && tier == 1) multiplier = multiplier.times(calcTotalSacrificeBoost())
 
   multiplier = multiplier.times(player.postC3Reward)
@@ -189,9 +189,10 @@ function hasInfinityMult(tier) {
     
     function getDimensionPowerMultiplier(nonrandom) {
         if (inQC(5)||inQC(7)||player.currentChallenge=="challenge13") return 1
-        let dimMult = 2;
+        let dimMult = 2
 
-        if (player.infinityUpgrades.includes('dimMult')) dimMult = player.galacticSacrifice?infUpg12Pow():2.2
+        if (player.infinityUpgrades.includes('dimMult')) dimMult = player.galacticSacrifice?infUpg12Pow():player.aarexModifications.newGameExpVersion?2.4:2.2
+        if (player.aarexModifications.newGameExpVersion) dimMult *= 10
         if ((player.currentChallenge == "challenge9" || player.currentChallenge == "postc1")&&!nonrandom) dimMult = Math.pow(10/0.30,Math.random())*0.30
     
         if (player.achievements.includes("r58")) dimMult = player.galacticSacrifice?Math.pow(dimMult,1.0666):dimMult*1.01;

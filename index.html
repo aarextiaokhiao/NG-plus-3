@@ -8,7 +8,7 @@
     <meta name="Antimatter Dimensions" content="A game about huge numbers and watching them go up." charset="utf-8"/>
     <script type="text/javascript" src="javascripts/jquery-3.2.1.min.js"></script>
     <script type="text/javascript" src="javascripts/notify.js"></script>
-    <link rel="stylesheet" type="text/css" href="stylesheets/styles.css?4">
+    <link rel="stylesheet" type="text/css" href="stylesheets/styles.css?6">
     <link href="https://fonts.googleapis.com/css?family=Inconsolata" rel="stylesheet">
     <script>
         (function(i, s, o, g, r, a, m) {
@@ -144,8 +144,8 @@
                 </table>
                 <table class="table" id="studytable">
                     <tr>
-                        <td><button class="timestudy" id="41" onclick="buyTimeStudy(41, 4)">Each galaxy gives a 1.2x multiplier on IP gained. <span>Cost: 4 Time Theorems</button></td>
-                        <td><button class="timestudy" id="42" onclick="buyTimeStudy(42, 6)">Galaxy requirement goes up 52 8ths instead of 60.<span>Cost: 6 Time Theorems</button></td>
+                        <td><button class="timestudy" id="41" onclick="buyTimeStudy(41, 4)"></button></td>
+                        <td><button class="timestudy" id="42" onclick="buyTimeStudy(42, 6)"></button></td>
                     </tr>
                 </table>
                 <br>
@@ -159,8 +159,8 @@
                 <table class="table" id="studytable">
                     <tr>
                         <td style="opacity: 0;"><button class="timestudylocked"></button></td>
-                        <td><button class="timestudy" id="61" onclick="buyTimeStudy(61, 3)">You gain 10x more EP<span>Cost: 3 Time Theorems</button></td>
-                        <td><button class="timestudy" id="62" onclick="buyTimeStudy(62, 3)">You gain replicanti 3 times faster<span>Cost: 3 Time Theorems</button></td>
+                        <td><button class="timestudy" id="61" onclick="buyTimeStudy(61, 3)"></button></td>
+                        <td><button class="timestudy" id="62" onclick="buyTimeStudy(62, 3)"></button></td>
                     </tr>
                 </table>
                 <br>
@@ -343,12 +343,16 @@
                 </div>
             </div>
             <div class="eternitytab" id="ers_timestudies" style="font-size: 15px">
-                <td><button class="storebtn" onclick="respecToggle()" id="respec2" style="width:150px; height: 40px; font-size: 10px; margin: auto">Respec time studies on next Eternity</button><td>
+                <tr>
+                    <td><button class="storebtn" onclick="exportStudyTree()" style="width:150px; height: 40px; font-size: 10px; margin: auto">Export spec</button><td>
+                    <td><button class="storebtn" onclick="respecToggle()" id="respec2" style="width:150px; height: 40px; font-size: 10px; margin: auto">Respec time studies on next Eternity</button><td>
+                    <td><button class="storebtn" onclick="importStudyTree()" style="width:150px; height: 40px; font-size: 10px; margin: auto">Import spec</button><td>
+                </tr>
                 <p id="nextstudy" style="margin: 0 auto;"></p>
                 <table class="table" style="margin: 0 auto;">
                     <tr id="tsrow1">
                         <td>
-                            <button id="ts1" class="eternityttbtn" onclick="buyTimeStudy(1)">Sacrifice is stronger (10% first time, total effect logarithmic in times bought)<br>Bought: <span id="ts1bought">x</span><br>Cost: <span id="ts1cost">x</span> TT<br>Total sacrifice multiplier<br><span id='ts1desc'></span></button>
+                            <button id="ts1" class="eternityttbtn" onclick="buyTimeStudy(1)">Sacrifice is stronger (roughly 15% first time, total effect double-logarithmic in times bought)<br>Bought: <span id="ts1bought">x</span><br>Cost: <span id="ts1cost">x</span> TT<br>Total sacrifice multiplier<br><span id='ts1desc'></span></button>
                         </td>
                         <td>
                             <button id="ts2" class="eternityttbtn" onclick="buyTimeStudy(2)">You get 10% more tickspeed upgrades from time dimensions (not considering multiplier increase)<br>Bought: <span id="ts2bought">x</span><br>Cost: <span id="ts2cost">x</span> TT<br>Current tickspeed upgrades<br><span id='ts2desc'></span></button>
@@ -659,7 +663,7 @@
                         <td class="milestoneText" id='milestone25'></td>
                     </tr>
                     <tr>
-                        <td><button class="milestonerewardlocked" id="reward24">Everything does not reset until you do a galaxy reset</button></td>
+                        <td><button class="milestonerewardlocked" id="reward24">When you dimension boost, you keep your antimatter and dimensions</button></td>
                         <td><button class="milestonerewardlocked" id="reward25">You permanently keep replicate chance & replicanti interval</button></td>
                     </tr>
                     <tr>
@@ -1376,8 +1380,8 @@
                 </tr>
                 <tr>
                     <td><div><button id="hotkeys" onclick="toggleHotkeys()" class="storebtn" style="color:black; width: 200px; height: 55px; font-size:120%">Disable hotkeys</button></div></td>
-                    <td><div><button id="notation" class="storebtn" style="color:black; width: 200px; height: 55px; font-size:120%">Notation: Standard</button></div></td>
-                    <td><div><button id="commas" onclick="toggleCommas()" class="storebtn" style="color:black; width: 200px; height: 55px; font-size:120%">Commas on large exponents ON</button></div></td>
+                    <td><div><button id="notation" class="storebtn" style="color:black; width: 200px; height: 55px; font-size:10px"></button></div></td>
+                    <td><div><button id="progressBarBtn" onclick="toggleProgressBar()" class="storebtn" style="color:black; width: 200px; height: 55px"></button></div></td>
                 </tr>
                 <tr>
                     <td><div><button id="newsbtn" class="storebtn" style="color:black; width: 200px; height: 55px; font-size:120%">Hide/show the news</button></div></td>
@@ -1389,14 +1393,9 @@
                     <td><div><button id="decimalMode" onclick="switchDecimalMode()" class="storebtn" style="color:black; width: 200px; height: 55px"></button></div></td>
                     <td><div><button id="importallbtn" class="storebtn" onclick='import_save_all()' style="color:black; width: 200px; height: 55px; font-size: 20px">Import all</button></div></td>
                 </tr>
-                <tr>
-                    <td></td>
-                    <td><div><button id="progressBarBtn" onclick="toggleProgressBar()" class="storebtn" style="color:black; width: 200px; height: 55px"></button></div></td>
-                    <td></td>
-                </tr>
             </table>
             <div style="display:none;position:fixed;left:0;top:0"><textarea id="exportOutput" style="color:black; width: 200px; height: 55px;"></textarea></div>
-            <p>Hotkeys: 1-8 for buy 10 dimension, shift+1-8 for buy 1 dimension, T to buy max tickspeed, shift+T to buy one tickspeed, M for max all<br>S for sacrifice, D for dimension boost, G for galaxy, C for crunch, A for toggle autobuyers, R for replicanti galaxies, E for eternity.<br>You can hold shift while buying time studies to buy all up until that point, see each study's number, and save study trees.<br>Hotkeys do not work while holding control.</p>
+            <p id='hotkeysDesc'></p>
             <div id="footercontainer">
                 <table id="footer">
                     <tr>
@@ -1791,7 +1790,7 @@
                                 <div id="Costco sells dimboosts now" class="achievement achievementlocked" style="background-image: url(images/65.png)" ach-tooltip="Bulk buy 750 dimension boosts at once. Reward: Dimension boosts are 1% more powerful (to normal dims)."><br></div>
                             </td>
                             <td>
-                                <div id="This mile took an Eternity" class="achievement achievementlocked" style="background-image: url(images/66.png)" ach-tooltip="Get all eternity milestones."><br></div>
+                                <div id="This mile took an Eternity" class="achievement achievementlocked" style="background-image: url(images/66.png)"><br></div>
                             </td>
                             <td>
                                 <div id="This achievement doesn't exist II" class="achievement achievementlocked" style="background-image: url(images/67.png)" ach-tooltip="Reach 9.99999e999 IP. Reward: Gain more IP based on amount of antimatter you had when crunching."><br></div>
@@ -3657,6 +3656,17 @@
         <button id="dilationConfirmBtn" class="storebtn" onclick="toggleDilaConf()" style="width: 200px; height: 45px; font-size: 12px" style="display: inline"></button>
         <button id="quantumConfirmBtn" class="storebtn" onclick="toggleQuantumConf()" style="width: 200px; height: 45px; font-size: 12px" style="display: inline"></button>
 	</div>
+	<div class="popup optionmenu" id="notationmenu" style="overflow-y:hidden; width: 450px">
+		<button class="closebtn storebtn" onclick="closeToolTip()">&times;</button>
+		<p id='chosenNotation'></p>
+		<p id='chosenCommas'></p>
+		<div class='notationOptions' style="left: 0px">
+			<table id='notationOptions'></table>
+		</div>
+		<div class='notationOptions' style="right: 0px">
+			<table id='commasOptions'></table>
+		</div>
+	</div>
     <div id="TTbuttons" style="display:none;">
         <button class="timetheorembtn" onclick="toggleAutoTT()" id="theoremmax" style="margin-left:-276px; width:130px; height: 30px; font-size: 0.75rem; bottom: 77px;">Buy max Theorems</button>
         <button class="timetheorembtn" onclick="openStudyPresets()" id="presetsbtn" style="margin-left:146px; width:130px; height: 30px; font-size: 0.75rem; bottom: 77px;">Presets</button>
@@ -3675,25 +3685,25 @@
 <script type="text/javascript" src="javascripts/chart.js"></script>
 <script type="text/javascript" src="javascripts/lz-string.js"></script>
 <script type="text/javascript" src="javascripts/core/polyfill.js"></script>
-<script type="text/javascript" src="javascripts/core/format.js?11"></script>
+<script type="text/javascript" src="javascripts/core/format.js?12"></script>
 <script type="text/javascript" src="javascripts/core/achievements.js?9"></script>
 <script type="text/javascript" src="javascripts/core/chart.js"></script>
 <script type="text/javascript" src="javascripts/core/tickspeed.js?19"></script>
-<script type="text/javascript" src="javascripts/core/normal_dimension.js?24"></script>
-<script type="text/javascript" src="javascripts/core/infinity_dimension.js?13"></script>
-<script type="text/javascript" src="javascripts/core/time_dimension.js?16"></script>
-<script type="text/javascript" src="javascripts/core/dimboost.js?29"></script>
-<script type="text/javascript" src="javascripts/core/timestudies.js?25"></script>
+<script type="text/javascript" src="javascripts/core/normal_dimension.js?25"></script>
+<script type="text/javascript" src="javascripts/core/infinity_dimension.js?14"></script>
+<script type="text/javascript" src="javascripts/core/time_dimension.js?19"></script>
+<script type="text/javascript" src="javascripts/core/dimboost.js?30"></script>
+<script type="text/javascript" src="javascripts/core/timestudies.js?27"></script>
 <script type="text/javascript" src="javascripts/core/canvases.js?6"></script>
 <script type="text/javascript" src="javascripts/core/devtools.js"></script>
-<script type="text/javascript" src="javascripts/core/load_functions.js?50"></script>
-<script type="text/javascript" src="javascripts/core/newsticker.js?4"></script>
+<script type="text/javascript" src="javascripts/core/load_functions.js?53"></script>
+<script type="text/javascript" src="javascripts/core/newsticker.js?5"></script>
 <script type="text/javascript" src="javascripts/mods/ngmm.js?18"></script>
-<script type="text/javascript" src="javascripts/mods/ers.js"></script>
-<script type="text/javascript" src="javascripts/mods/ngpp.js?33"></script>
-<script type="text/javascript" src="javascripts/mods/ngppp.js?34"></script>
+<script type="text/javascript" src="javascripts/mods/ers.js?1"></script>
+<script type="text/javascript" src="javascripts/mods/ngpp.js?34"></script>
+<script type="text/javascript" src="javascripts/mods/ngppp.js?35"></script>
 <script type="text/javascript" src="javascripts/mods/ngmmm.js?2"></script>
-<script type="text/javascript" src="javascripts/game.js?56"></script>
+<script type="text/javascript" src="javascripts/game.js?60"></script>
 <script type="text/javascript" src="javascripts/sha512.js"></script>
 </body>
 </html>

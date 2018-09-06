@@ -106,7 +106,7 @@ function canBuyMasteryStudy(type, id) {
 		if (row>31) return player.masterystudies.includes('t31'+col)
 		if (row>30) return player.masterystudies.includes('t30'+(col*2-1))
 		if (row>29) {
-			if (col==2) return player.masterystudies.includes('t272')
+			if (col==2) return player.masterystudies.includes('t272')&&player.masterystudies.includes('d9')
 			return player.masterystudies.includes('t29'+((col+1)/2))
 		}
 		if (row>28) return player.masterystudies.includes('t272')&&player.masterystudies.includes('d9')

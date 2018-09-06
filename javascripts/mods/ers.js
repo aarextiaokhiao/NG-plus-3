@@ -8,7 +8,7 @@ function updateERSTTDesc() {
 }
 
 function get_c(next) {
-	return Math.pow(4 / 3, 1 / (1 + (player.timestudy.ers_studies[6] + (next ? 1 : 0)) / 10))
+	return Math.pow(4 / 3, 1 / (1 + (player.timestudy.ers_studies[2] + (next ? 1 : 0)) / 10))
 }
 
 function getTickThreshold(timeshards, num) {
