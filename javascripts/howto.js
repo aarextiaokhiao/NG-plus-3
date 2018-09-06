@@ -55,7 +55,8 @@ function showspoilers() {
 
 function updateSpoilers() {
 	var displayed = spoilers;
-	for (i=21; i>0; i--) {
+	document.getElementById("ng3pguide").style.display=player.masterystudies||spoilers?"":"none"
+	for (i=25; i>0; i--) {
 		if (i != 7) {
 			if (!displayed) {
 				if (i < 5) displayed = 1
@@ -70,9 +71,24 @@ function updateSpoilers() {
 					if (i == 18 && (player.eternityChallUnlocked > 0 || player.eternityChalls.eterc1)) displayed = 1
 					if (i == 19 && player.dilation.studies.includes(1)) displayed = 1
 					if (i == 20 && player.dilation.studies.includes(6)) displayed = 1
-					if (i == 21 && player.masterystudies && player.dilation.upgrades.includes("ngpp4")) displayed = 1
+					if (i == 22 && player.quantum) if (player.quantum.times>0) displayed = 1
+					if (player.masterystudies) {
+						if (i == 21 && player.dilation.upgrades.includes("ngpp4")) displayed = 1
+						if (i == 23 && player.quantum) if (player.quantum.times>0) displayed = 1
+						if (i == 24 && player.masterystudies.includes("d8")) displayed = 1
+						if (i == 25 && player.masterystudies.includes("d9")) displayed = 1
+					}
 				}
 			}
+			if (displayed) {
+				if (i == 22) {
+					var msg = "When you reach "
+					if (player.masterystudies) msg += "9.32e446 meta-antimatter and completed EC14 for the first time"
+					else msg += "infinity meta-antimatter"
+					msg += ", you will able to go quantum. Quantum will reset everything eternity resets, and also time studies, eternity challenges, dilation, "+(player.masterystudies?"meta dimensions, and mastery studies":"and meta dimensions (except your best meta-antimatter)")+". You will gain a quark and unlock various upgrades."
+					document.getElementById("div22").innerHTML = msg
+				}
+			} else document.getElementById("div"+i).className = "hidden";
 			document.getElementById("div"+i+"btn").style.display = displayed ? "block" : "none";
 			document.getElementById("div"+i+"hr").style.display = displayed ? "block" : "none";
 		}

@@ -45,7 +45,7 @@ function softReset(bulk) {
   player = {
       money: player.achievements.includes("r111") ? player.money : new Decimal(10),
       tickSpeedCost: new Decimal(1000),
-      tickspeed: new Decimal(1000),
+      tickspeed: new Decimal(player.aarexModifications.newGameExpVersion?500:1000),
       tickBoughtThisInf: player.tickBoughtThisInf,
       firstCost: new Decimal(10),
       secondCost: new Decimal(100),

@@ -144,8 +144,8 @@
                 </table>
                 <table class="table" id="studytable">
                     <tr>
-                        <td><button class="timestudy" id="41" onclick="buyTimeStudy(41, 4)">Each galaxy gives a 1.2x multiplier on IP gained. <span>Cost: 4 Time Theorems</button></td>
-                        <td><button class="timestudy" id="42" onclick="buyTimeStudy(42, 6)">Galaxy requirement goes up 52 8ths instead of 60.<span>Cost: 6 Time Theorems</button></td>
+                        <td><button class="timestudy" id="41" onclick="buyTimeStudy(41, 4)"></button></td>
+                        <td><button class="timestudy" id="42" onclick="buyTimeStudy(42, 6)"></button></td>
                     </tr>
                 </table>
                 <br>
@@ -159,8 +159,8 @@
                 <table class="table" id="studytable">
                     <tr>
                         <td style="opacity: 0;"><button class="timestudylocked"></button></td>
-                        <td><button class="timestudy" id="61" onclick="buyTimeStudy(61, 3)">You gain 10x more EP<span>Cost: 3 Time Theorems</button></td>
-                        <td><button class="timestudy" id="62" onclick="buyTimeStudy(62, 3)">You gain replicanti 3 times faster<span>Cost: 3 Time Theorems</button></td>
+                        <td><button class="timestudy" id="61" onclick="buyTimeStudy(61, 3)"></button></td>
+                        <td><button class="timestudy" id="62" onclick="buyTimeStudy(62, 3)"></button></td>
                     </tr>
                 </table>
                 <br>
@@ -1395,7 +1395,7 @@
                 </tr>
             </table>
             <div style="display:none;position:fixed;left:0;top:0"><textarea id="exportOutput" style="color:black; width: 200px; height: 55px;"></textarea></div>
-            <p>Hotkeys: 1-8 for buy 10 dimension, shift+1-8 for buy 1 dimension, T to buy max tickspeed, shift+T to buy one tickspeed, M for max all<br>S for sacrifice, D for dimension boost, G for galaxy, C for crunch, A for toggle autobuyers, R for replicanti galaxies, E for eternity.<br>You can hold shift while buying time studies to buy all up until that point, see each study's number, and save study trees.<br>Hotkeys do not work while holding control.</p>
+            <p id='hotkeysDesc'></p>
             <div id="footercontainer">
                 <table id="footer">
                     <tr>
@@ -1790,7 +1790,7 @@
                                 <div id="Costco sells dimboosts now" class="achievement achievementlocked" style="background-image: url(images/65.png)" ach-tooltip="Bulk buy 750 dimension boosts at once. Reward: Dimension boosts are 1% more powerful (to normal dims)."><br></div>
                             </td>
                             <td>
-                                <div id="This mile took an Eternity" class="achievement achievementlocked" style="background-image: url(images/66.png)" ach-tooltip="Get all eternity milestones."><br></div>
+                                <div id="This mile took an Eternity" class="achievement achievementlocked" style="background-image: url(images/66.png)"><br></div>
                             </td>
                             <td>
                                 <div id="This achievement doesn't exist II" class="achievement achievementlocked" style="background-image: url(images/67.png)" ach-tooltip="Reach 9.99999e999 IP. Reward: Gain more IP based on amount of antimatter you had when crunching."><br></div>
@@ -3689,21 +3689,21 @@
 <script type="text/javascript" src="javascripts/core/achievements.js?9"></script>
 <script type="text/javascript" src="javascripts/core/chart.js"></script>
 <script type="text/javascript" src="javascripts/core/tickspeed.js?19"></script>
-<script type="text/javascript" src="javascripts/core/normal_dimension.js?24"></script>
-<script type="text/javascript" src="javascripts/core/infinity_dimension.js?13"></script>
-<script type="text/javascript" src="javascripts/core/time_dimension.js?17"></script>
-<script type="text/javascript" src="javascripts/core/dimboost.js?29"></script>
-<script type="text/javascript" src="javascripts/core/timestudies.js?26"></script>
+<script type="text/javascript" src="javascripts/core/normal_dimension.js?25"></script>
+<script type="text/javascript" src="javascripts/core/infinity_dimension.js?14"></script>
+<script type="text/javascript" src="javascripts/core/time_dimension.js?19"></script>
+<script type="text/javascript" src="javascripts/core/dimboost.js?30"></script>
+<script type="text/javascript" src="javascripts/core/timestudies.js?27"></script>
 <script type="text/javascript" src="javascripts/core/canvases.js?6"></script>
 <script type="text/javascript" src="javascripts/core/devtools.js"></script>
-<script type="text/javascript" src="javascripts/core/load_functions.js?52"></script>
+<script type="text/javascript" src="javascripts/core/load_functions.js?53"></script>
 <script type="text/javascript" src="javascripts/core/newsticker.js?5"></script>
 <script type="text/javascript" src="javascripts/mods/ngmm.js?18"></script>
 <script type="text/javascript" src="javascripts/mods/ers.js?1"></script>
-<script type="text/javascript" src="javascripts/mods/ngpp.js?33"></script>
+<script type="text/javascript" src="javascripts/mods/ngpp.js?34"></script>
 <script type="text/javascript" src="javascripts/mods/ngppp.js?35"></script>
 <script type="text/javascript" src="javascripts/mods/ngmmm.js?2"></script>
-<script type="text/javascript" src="javascripts/game.js?58"></script>
+<script type="text/javascript" src="javascripts/game.js?60"></script>
 <script type="text/javascript" src="javascripts/sha512.js"></script>
 </body>
 </html>
