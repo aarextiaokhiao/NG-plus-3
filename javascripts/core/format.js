@@ -285,7 +285,7 @@ function formatPsi(mantissa,power){
 		power=Math.floor(Math.log10(mantissa))
 	}
 	function log(x,y,z,w){
-		if(psidebug){
+		if(window.psidebug){
 			console.log(x,y,z,w)
 		}
 	}
