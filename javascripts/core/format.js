@@ -279,12 +279,13 @@ function formatPsi(mantissa,power){
 		player.options.psi.forceNumbers=false
 		player.options.psi.args=Infinity
 		player.options.psi.side="r"
+		player.options.psi.maxletters=1
 	}
 	if(arguments.length<2){
 		power=Math.floor(Math.log10(mantissa))
 	}
 	function log(x,y,z,w){
-		if(false){
+		if(psidebug){
 			console.log(x,y,z,w)
 		}
 	}
@@ -316,7 +317,7 @@ function formatPsi(mantissa,power){
 	}
 	function lettersDone(ls){
 		if(player.options.psi.letter.length==0){
-			return ls.length<=1
+			return ls.length<=player.options.psi.maxletters
 		}else{
 			return ls.length==1&&equal(ls[0],player.options.psi.letter)
 		}
