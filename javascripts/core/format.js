@@ -159,26 +159,7 @@ function formatValue(notation, value, places, placesUnder1000) {
             return matissa + "e" + power;
         }
         if (notation === "Psi") {
-            var mantissa=matissa
-            if(mantissa==10){
-                mantissa=1
-                power++
-            }
-            var ret="You have failed"
-            if(power==0){
-                ret=mantissa.toFixed(0)
-            }else if(power<10){
-                ret="E"+power.toFixed(0)+"-"+mantissa.toFixed(Math.floor(power)).replace(".","")
-            }else if(power<1e10){
-                ret="F2-"+Math.floor(Math.log10(power)).toFixed(0)+"-"+(10**(Math.log10(power)%1)).toFixed(10).replace(".","")+"-"+mantissa.toFixed(10).replace(".","")
-            }else{
-                ret="F3-"+Math.floor(Math.log10(Math.log10(power))).toFixed(0)+"-"+(10**(Math.log10(Math.log10(power))%1)).toFixed(10).replace(".","")+"-"+(10**(Math.log10(power)%1)).toFixed(10).replace(".","")+"-"+mantissa.toFixed(10).replace(".","")
-            }
-            ret=ret.replace(/$/g,"-")
-            ret=ret.replace(/0+-/g,"-")
-            ret=ret.replace(/-$/,"")
-            ret=ret.replace(/(?:-1)+$/g,"")
-            return ret.slice(0,15)
+            return formatPsi(matissa,power)
         }
         if (notation === "Greek" || notation === "Morse code") {
             if (matissa>=10-Math.pow(10,-places)/2) {
@@ -275,7 +256,7 @@ function formatValue(notation, value, places, placesUnder1000) {
         } else if (notation === "Letters") {
             return matissa + letter(power,'abcdefghijklmnopqrstuvwxyz');
         } else if (notation === "Emojis") {
-            return matissa + letter(power,['😠', '🎂', '🎄', '💀', '🍆', '👪', '🌈', '💯', '🍦', '🎃', '💋', '😂', '🌙', '⛔', '🐙', '💩', '❓', '☢', '🙈', '👍', '☂', '✌', '⚠', '❌', '😋', '⚡'])
+            return matissa + letter(power,['😠', '🎂', '🎄', '💀', '🍆', '🐱', '🌈', '💯', '🍦', '🎃', '💋', '😂', '🌙', '⛔', '🐙', '💩', '❓', '☢', '🙈', '👍', '☂', '✌', '⚠', '❌', '😋', '⚡'])
         }
 
         else {
@@ -287,6 +268,131 @@ function formatValue(notation, value, places, placesUnder1000) {
     } else {
         return "Infinite";
     }
+}
+
+function formatPsi(mantissa,power){
+	if(!player.options.psi){
+		player.options.psi={}
+		player.options.psi.chars=17
+		player.options.psi.precision=12
+		player.options.psi.letter=[]
+		player.options.psi.forceNumbers=false
+		player.options.psi.args=Infinity
+		player.options.psi.side="r"
+	}
+	if(arguments.length<2){
+		power=Math.floor(Math.log10(mantissa))
+	}
+	function log(x,y,z,w){
+		if(false){
+			console.log(x,y,z,w)
+		}
+	}
+	function equal(l1,l2){
+		if(l1.length!=l2.length){
+			return false
+		}
+		for(var i=0;i<l1.length;i++){
+			if(l1[i]!=l2[i]){
+				return false
+			}
+		}
+		return true
+	}
+	function letter(l){
+		var letters={"1":"E","2":"F","3":"G","4":"H","0,1":"J"}
+		if(letters[l]){
+			return letters[l]
+		}else{
+			return "("+l+")|"
+		}
+	}
+	function numbersDone(ns,ls){
+		if(player.options.psi.letter.length==0){
+			return ns[0]<10
+		}else{
+			return ns[0]<10||lettersDone(ls)
+		}
+	}
+	function lettersDone(ls){
+		if(player.options.psi.letter.length==0){
+			return ls.length<=1
+		}else{
+			return ls.length==1&&equal(ls[0],player.options.psi.letter)
+		}
+	}
+    log(mantissa,power)
+    var precision=player.options.psi.precision
+    if(power==0&&player.options.psi.letter.length==0){
+	    var letters=[]
+	    var numbers=[mantissa]
+	}else{
+	    var letters=[[1]]
+	    var numbers=[power,"-",mantissa]
+
+	}
+    while(!lettersDone(letters)||!numbersDone(numbers,letters)){
+    	//reduce numbers[0]
+    	while(!numbersDone(numbers,letters)){
+	    	log(letters.map(letter),numbers,"reduce")
+    		var n=numbers.shift()
+    		numbers.unshift(Math.floor(Math.log10(n)),"-",n)
+    		letters.push([1])
+    	}
+    	//simplify letters
+    	if(!lettersDone(letters)){
+	    	log(letters.map(letter),numbers,"simplify")
+    		var lastletter=letters.pop()
+    		var count=1
+    		while(letters.length>0&&equal(letters[letters.length-1],lastletter)){
+    			letters.pop()
+    			count++
+    		}
+    		numbers.unshift(count,"-")
+    		lastletter[0]++
+    		letters.push(lastletter)
+    	}
+    }
+	//remove extra terms
+	//((numbers[numbers.length-2]=="-"&&Math.log(numbers[numbers.length-1])%1==0)||(numbers[numbers.length-2]=="$"&&(Math.log(numbers[numbers.length-1])/2)%1==0))
+	while(numbers.length>2&&Math.log10(numbers[numbers.length-1])%1==0){
+    	log(letters.map(letter),numbers,"remove")
+		numbers.pop()
+		numbers.pop()
+	}
+    log(letters.map(letter),numbers,"predone")
+    while(numbers.length>=2*player.options.psi.args+1){
+    	var arg2=numbers.pop()
+    	var op=numbers.pop()
+    	var arg1=numbers.pop()
+    	if(op=="-"){
+    		numbers.push(arg1+Math.log10(arg2)%1)
+    	}
+    }
+    log(letters.map(letter),numbers,"done")
+    for(var i=0;i<numbers.length;i++){
+    	if(typeof numbers[i]=="number"){
+    		numbers[i]=numbers[i].toPrecision(12)
+    		if(i<2*player.options.psi.args-2){
+    			if(i==0&&player.options.psi.side=="l"){
+    				numbers[i]=numbers[i].replace(/\.0+$/,"")
+    			}else{
+    				numbers[i]=numbers[i].replace(".","").replace(/e[+-]\d+/,"").replace(/(?!^)0+$/,"")
+ 				}
+    		}
+    	}
+    }
+    log(numbers,"numbers")
+    if(player.options.psi.args==0){
+    	return letters.map(letter).join("")
+    }
+    if(player.options.psi.side=="l"){
+    	return numbers.slice(2).join("").slice(0,player.options.psi.chars).replace(/[-$]$/,"")+letters.map(letter).join("")+numbers[0]
+    }
+    if(numbers.length==1&&numbers[0]=="1"&&!player.options.psi.forceNumbers){
+    	return letters.map(letter).join("")
+    }
+    return letters.map(letter).join("")+numbers.join("").slice(0,player.options.psi.chars).replace(/[-$]$/,"")
 }
 
 function convTo(notation, num) {
