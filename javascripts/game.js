@@ -6255,8 +6255,10 @@ function gameLoop(diff) {
     document.getElementById("replicantiinterval").innerHTML = "Interval: "+timeDisplayShort(Decimal.div(interval, 100), true) + (isIntervalAffordable() ? "<br>-> "+timeDisplayShort(Decimal.times(interval, 9e-3), true)+" Cost: "+shortenCosts(player.replicanti.intervalCost)+" IP" : "")
 
 
-    if (player.infMultBuyer && (!player.boughtDims || player.infinityUpgrades.includes("resetBoost"))) {
-        var dif = player.infinityPoints.e - player.infMultCost.e +1
+    if (player.infMultBuyer && (!player.boughtDims || (player.infinityUpgrades.includes("skipResetBoost")))) {
+        var dif
+        if (player.aarexModifications.newGameExpVersion) dif = Math.floor(player.infMultCost.div(player.infinityPoints).log(4)) + 1
+        else dif = player.infinityPoints.e - player.infMultCost.e +1
         if (dif > 0) {
             player.infMult = player.infMult.times(Decimal.pow(ipMultPower, dif))
             player.infMultCost = player.infMultCost.times(Decimal.pow(ipMultCostIncrease, dif))
@@ -6354,7 +6356,7 @@ function gameLoop(diff) {
         else document.getElementById("timeMax"+tier).className = "unavailablebtn"
     }
 
-    if (player.dilation.studies.includes(1)) player.dilation.dilatedTime = player.dilation.dilatedTime.plus(getDilTimeGainPerSecond()*diff/10)
+    if (player.dilation.studies.includes(1)) player.dilation.dilatedTime = player.dilation.dilatedTime.plus(getDilTimeGainPerSecond().times(diff/10))
     gainDilationGalaxies()
 
     if (canAfford(player.tickSpeedCost)) {
@@ -6599,14 +6601,15 @@ function gameLoop(diff) {
             document.getElementById("progresspercent").textContent = percentage
             document.getElementById("progresspercent").setAttribute('ach-tooltip','Percentage to "That is what I have to do to get rid of you."')
         } else if (player.dilation.active && getDilGain() <= player.dilation.totalTachyonParticles) {
-        var percentage = (Math.log10(getDilGain()) / Math.log10(player.dilation.totalTachyonParticles)).toFixed(2) + "%"
-        document.getElementById("progressbar").style.width = percentage
-        document.getElementById("progresspercent").textContent = percentage
-        document.getElementById("progresspercent").setAttribute('ach-tooltip','Percentage to the requirement for tachyon particle gain')
-        } else if (gainedEternityPoints().lt(Decimal.pow(2,1048576)) && inQC(0)) {
+            var percentage = (Math.log10(getDilGain()) / Math.log10(player.dilation.totalTachyonParticles)).toFixed(2) + "%"
+            document.getElementById("progressbar").style.width = percentage
+            document.getElementById("progresspercent").textContent = percentage
+            document.getElementById("progresspercent").setAttribute('ach-tooltip','Percentage to the requirement for tachyon particle gain')
+        } else if ((!inQC(0) || gainedEternityPoints().gte(Decimal.pow(2,1048576))) && player.meta) doQuantumProgress()
+        else {
             var gepLog = gainedEternityPoints().log2()
             var goal = Math.pow(2,Math.ceil(Math.log10(gepLog) / Math.log10(2)))
-            if (goal > 131072 && !player.achievements.includes('ngpp13')) {
+            if (goal > 131072 && player.meta && !player.achievements.includes('ngpp13')) {
 	    		goal = Decimal.sub("1e40000", player.eternityPoints).log2()
     			var percentage = Math.min(gepLog / goal * 100, 100).toFixed(2) + "%"
     			document.getElementById("progressbar").style.width = percentage
@@ -6624,7 +6627,7 @@ function gameLoop(diff) {
 	    		document.getElementById("progresspercent").textContent = percentage
 	    		document.getElementById("progresspercent").setAttribute('ach-tooltip',"Percentage to "+shortenDimensions(Decimal.pow(2,goal))+" EP gain")
             }
-        } else doQuantumProgress()
+        }
     }
 
     document.getElementById("ec1reward").textContent = "Reward: "+shortenMoney(Math.pow(Math.max(player.thisEternity*10, 1), 0.3+(ECTimesCompleted("eterc1")*0.05)))+"x on all Time Dimensions (based on time spent this Eternity)"
