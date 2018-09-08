@@ -3035,6 +3035,38 @@ document.getElementById("notation").onclick = function () {
 	document.getElementById("notationmenu").style.display="block"
 };
 
+function openPsiOptions() {
+	if (document.getElementById("mainnotationoptions1").style.display=="") {
+		formatPsi(1,1)
+		document.getElementById("openpsioptions").textContent="Go back"
+		document.getElementById("mainnotationoptions1").style.display="none"
+		document.getElementById("mainnotationoptions2").style.display="none"
+		document.getElementById("psioptions").style.display=""
+		
+		document.getElementById("maxLength").value=player.options.psi.chars
+		document.getElementById("maxArguments").value=Math.min(player.options.psi.args,4)
+	} else {
+		document.getElementById("openpsioptions").textContent="Psi notation options"
+		document.getElementById("mainnotationoptions1").style.display=""
+		document.getElementById("mainnotationoptions2").style.display=""
+		document.getElementById("psioptions").style.display="none"
+	}
+}
+
+function switchPsiOption(id) {
+	var value=parseFloat(document.getElementById(id).value)
+	if (isNaN(value)) return
+	if (value%1!=0) return
+	if (id=="maxLength") {
+		if (value<2||value>20) return
+		player.options.psi.chars=value
+	}
+	if (id=="maxArguments") {
+		if (value<1||value>4) return
+		player.options.psi.args=value
+	}
+	onNotationChange()
+}
 
 document.getElementById("newsbtn").onclick = function() {
 	player.options.newsHidden=!player.options.newsHidden
@@ -3069,8 +3101,7 @@ function calcSacrificeBoost() {
 		else if (player.achievements.includes("r97") && player.boughtDims) ret = player.firstAmount.dividedBy(player.sacrificed.max(1)).pow(0.012).max(1)
 		else if (player.achievements.includes("r88")) ret = player.firstAmount.dividedBy(player.sacrificed.max(1)).pow(0.011).max(1)
 		else ret = player.firstAmount.dividedBy(player.sacrificed.max(1)).pow(0.01).max(1)
-	}
-	if (player.currentChallenge != "challenge11") {
+	} else if (player.currentChallenge != "challenge11") {
 		var sacrificePow=2;
 		if (player.achievements.includes("r32")) sacrificePow += player.tickspeedBoosts != undefined ? 2 : 0.2;
 		if (player.achievements.includes("r57")) sacrificePow += player.boughtDims ? 0.3 : 0.2; //this upgrade was too OP lol

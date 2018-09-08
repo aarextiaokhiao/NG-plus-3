@@ -826,9 +826,9 @@ button {
 
 .notationOptions {
 	position: absolute;
-	min-height: calc(280px - 2rem);
-	height: calc(280px - 2rem);
-	max-height: calc(280px - 2rem);
+	min-height: calc(280px - 4rem);
+	height: calc(280px - 4rem);
+	max-height: calc(280px - 4rem);
 	width: 200px;
 	bottom: 0px;
 	overflow-x: hidden;

@@ -3660,11 +3660,16 @@
 		<button class="closebtn storebtn" onclick="closeToolTip()">&times;</button>
 		<p id='chosenNotation'></p>
 		<p id='chosenCommas'></p>
-		<div class='notationOptions' style="left: 0px">
+		<button id='openpsioptions' class='storebtn' style='width:180px' onclick='openPsiOptions()'>Psi notation options</button>
+		<div id='mainnotationoptions1' class='notationOptions' style="left: 0px">
 			<table id='notationOptions'></table>
 		</div>
-		<div class='notationOptions' style="right: 0px">
+		<div id='mainnotationoptions2' class='notationOptions' style="right: 0px">
 			<table id='commasOptions'></table>
+		</div>
+		<div id='psioptions' class='notationOptions' style="display: none; width: 450px; overflow-y: hidden">
+			Max characters (min: 2, max: 20): <input id="maxLength" style="width: 170px" type="number" min=2 max=20 onchange="switchPsiOption('maxLength')"></input><br>
+			Max arguments (min: 1, max: 4): <input id="maxArguments" style="width: 170px" type="number" min=1 max=4 onchange="switchPsiOption('maxArguments')"></input>
 		</div>
 	</div>
     <div id="TTbuttons" style="display:none;">
