@@ -727,3 +727,23 @@ function drawQuarkAnimation(ts){
 		requestAnimationFrame(drawQuarkAnimation);
 	}
 }
+
+//v1.99798
+function maxQuarkMult() {
+	var initialCost=Decimal.pow(100, Math.floor(player.quantum.multPower/3)).times(500)
+	var skipPack=Math.floor(player.quantum.gluons.rg.min(player.quantum.gluons.gb).min(player.quantum.gluons.br).div(initialCost).times(99).plus(1).log(100))
+	var colorBought=player.quantum.multPower%3
+	if (skipPack>1) {
+		var toBuy=3*skipPack-colorBought
+		player.quantum.gluons.rg=player.quantum.gluons.rg.sub(Decimal.pow(100,Math.floor(toBuy)/3).sub(1).div(99).times(initialCost))
+		player.quantum.gluons.gb=player.quantum.gluons.gb.sub(Decimal.pow(100,Math.floor(toBuy+1)/3).sub(1).div(99).times(initialCost))
+		player.quantum.gluons.br=player.quantum.gluons.br.sub(Decimal.pow(100,Math.floor(toBuy+2)/3).sub(1).div(99).times(initialCost))
+		player.quantum.multPower+=toBuy
+		for (u=1;u<3;u++) buyQuarkMult(true)
+	} else {
+		buyQuarkMult(true)
+		if (colorBought<1) buyQuarkMult(true)
+		if (colorBought<2) buyQuarkMult(true)
+	}
+	updateGluons()
+}

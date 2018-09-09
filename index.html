@@ -8,7 +8,7 @@
     <meta name="Antimatter Dimensions" content="A game about huge numbers and watching them go up." charset="utf-8"/>
     <script type="text/javascript" src="javascripts/jquery-3.2.1.min.js"></script>
     <script type="text/javascript" src="javascripts/notify.js"></script>
-    <link rel="stylesheet" type="text/css" href="stylesheets/styles.css?6">
+    <link rel="stylesheet" type="text/css" href="stylesheets/styles.css?7">
     <link href="https://fonts.googleapis.com/css?family=Inconsolata" rel="stylesheet">
     <script>
         (function(i, s, o, g, r, a, m) {
@@ -46,7 +46,6 @@
             <button id="eternitybtn" class="eternitybtn" onclick="eternity()">
                 <div style="font-weight:bold" id="eternitybtnFlavor" class="hideEmpty">Other times await.. I need to become Eternal</div>
                 <div id="eternitybtnEPGain" class="hideEmpty"></div>
-                <div id="eternitybtnTPGain" class="hideEmpty"></div>
                 <div id="eternitybtnRate" class="hideEmpty"></div>
                 <div id="eternitybtnPeak" class="hideEmpty hideInMorse"></div>
             </button>
@@ -1361,39 +1360,56 @@
             </div>
         </div>
         <div id="options" class="tab" align="center">
-            <br>
-            <table>
+            <table class="table" align="center" style="margin: auto" id="achTabButtons">
                 <tr>
-					<td><div><button id="save" class="storebtn" style="color:black; width: 200px; height: 55px; font-size: 20px">Save</button></div></td>
-					<td><div><button id="load" class="storebtn" style="color:black; width: 200px; height: 55px; font-size: 20px">Load</button></div></td>
-					<td><div><button id="reset" class="storebtn" style="color:black; width: 200px; height: 55px; font-size: 20px">RESET THE GAME</button></div></td>
-                </tr>
-                <tr>
-                    <td><div><button id="exportbtn" class="storebtn" style="color:black; width: 200px; height: 55px; font-size: 20px">Export</button></div></td>
-                    <td><div><button id="importbtn" class="storebtn" onclick='import_save()' style="color:black; width: 200px; height: 55px; font-size: 20px">Import</button></div></td>
-                    <td><div><button id="offlineProgress" onclick='toggleOfflineProgress()' class="storebtn" style="color:black; width: 200px; height: 55px; font-size: 15px"></button></div></td>
-                </tr>
-                <tr>
-                    <td><div><button id="theme" class="storebtn" style="color:black; width: 200px; height: 55px; font-size: 20px">Current theme: Normal</button></div></td>
-                    <td><div><button id="animationoptionsbtn" class="storebtn" style="color:black; width: 200px; height: 55px; font-size:160%;">Animations</button></div></td>
-                    <td><div class="storebtn" style="color:black; width: 198px; height: 55px; font-size:130%; text-align: center;"><b id="updaterate">Update Rate: 50ms</b><input id="updaterateslider" style="width: 170px;" type="range" min="33" max="200" value="50" class="slider" ></div></td>
-                </tr>
-                <tr>
-                    <td><div><button id="hotkeys" onclick="toggleHotkeys()" class="storebtn" style="color:black; width: 200px; height: 55px; font-size:120%">Disable hotkeys</button></div></td>
-                    <td><div><button id="notation" class="storebtn" style="color:black; width: 200px; height: 55px; font-size:10px"></button></div></td>
-                    <td><div><button id="progressBarBtn" onclick="toggleProgressBar()" class="storebtn" style="color:black; width: 200px; height: 55px"></button></div></td>
-                </tr>
-                <tr>
-                    <td><div><button id="newsbtn" class="storebtn" style="color:black; width: 200px; height: 55px; font-size:120%">Hide/show the news</button></div></td>
-                    <td><div><button id="confirmations" onclick="showConfirmations()" class="storebtn" style="color:black; width: 200px; height: 55px; font-size: 15px">Confirmations</button></div></td>
-					<td><div><button id="retry" onclick="toggleChallengeRetry()" class="storebtn" style="color:black; width: 200px; height: 55px; font-size:120%">Automatically retry challenges</button></div></td>
-                </tr>
-                <tr>
-                    <td><div><button id="exportallbtn" class="storebtn" style="color:black; width: 200px; height: 55px; font-size: 20px">Export all</button></div></td>
-                    <td><div><button id="decimalMode" onclick="switchDecimalMode()" class="storebtn" style="color:black; width: 200px; height: 55px"></button></div></td>
-                    <td><div><button id="importallbtn" class="storebtn" onclick='import_save_all()' style="color:black; width: 200px; height: 55px; font-size: 20px">Import all</button></div></td>
+                    <td><button class="secondarytabbtn" onclick="showOptionTab('saving')">Saving</button></td>
+                    <td><button class="secondarytabbtn" onclick="showOptionTab('otheroptions')">Options</button></td>
                 </tr>
             </table>
+            <div class='optionstab' id='saving'>
+                <table>
+                    <tr>
+		    			<td><div><button id="save" class="storebtn" style="color:black; width: 200px; height: 55px; font-size: 20px">Save</button></div></td>
+		    			<td><div><button id="load" class="storebtn" style="color:black; width: 200px; height: 55px; font-size: 20px">Load</button></div></td>
+                    </tr>
+                    <tr>
+                        <td><div><button id="exportbtn" class="storebtn" style="color:black; width: 200px; height: 55px; font-size: 20px">Export</button></div></td>
+                        <td><div><button id="importbtn" class="storebtn" onclick='import_save()' style="color:black; width: 200px; height: 55px; font-size: 20px">Import</button></div></td>
+                    </tr>
+                    <tr>
+                        <td><div><button id="exportallbtn" class="storebtn" style="color:black; width: 200px; height: 55px; font-size: 20px">Export all</button></div></td>
+                        <td><div><button id="importallbtn" class="storebtn" onclick='import_save_all()' style="color:black; width: 200px; height: 55px; font-size: 20px">Import all</button></div></td>
+                    </tr>
+                    <tr>
+		    			<td><div><button id="reset" class="storebtn" style="color:black; width: 200px; height: 55px; font-size: 20px">RESET THE GAME</button></div></td>
+                        <td><div><button id="offlineProgress" onclick='toggleOfflineProgress()' class="storebtn" style="color:black; width: 200px; height: 55px; font-size: 15px"></button></div></td>
+                    </tr>
+                </table>
+            </div>
+            <div class='optionstab' id='otheroptions' style='display:none'>
+                <table>
+                    <tr>
+                        <td><div><button id="theme" class="storebtn" style="color:black; width: 200px; height: 55px; font-size: 12px"></button></div></td>
+                        <td><div><button id="animationoptionsbtn" class="storebtn" style="color:black; width: 200px; height: 55px; font-size:160%;">Animations</button></div></td>
+                        <td><div class="storebtn" style="color:black; width: 198px; height: 55px; font-size:130%; text-align: center;"><b id="updaterate">Update Rate: 50ms</b><input id="updaterateslider" style="width: 170px;" type="range" min="33" max="200" value="50" class="slider" ></div></td>
+                    </tr>
+                    <tr>
+                        <td><div><button id="hotkeys" onclick="toggleHotkeys()" class="storebtn" style="color:black; width: 200px; height: 55px; font-size:120%">Disable hotkeys</button></div></td>
+                        <td><div><button id="notation" class="storebtn" style="color:black; width: 200px; height: 55px; font-size:10px"></button></div></td>
+                        <td><div><button id="progressBarBtn" onclick="toggleProgressBar()" class="storebtn" style="color:black; width: 200px; height: 55px"></button></div></td>
+                    </tr>
+                    <tr>
+                        <td><div><button id="newsbtn" class="storebtn" style="color:black; width: 200px; height: 55px; font-size:120%">Hide/show the news</button></div></td>
+                        <td><div><button id="confirmations" onclick="showConfirmations()" class="storebtn" style="color:black; width: 200px; height: 55px; font-size: 15px">Confirmations</button></div></td>
+		    			<td><div><button id="retry" onclick="toggleChallengeRetry()" class="storebtn" style="color:black; width: 200px; height: 55px; font-size:120%">Automatically retry challenges</button></div></td>
+                    </tr>
+                    <tr>
+                        <td></td>
+                        <td><div><button id="decimalMode" onclick="switchDecimalMode()" class="storebtn" style="color:black; width: 200px; height: 55px"></button></div></td>
+                        <td></td>
+                    </tr>
+                </table>
+            </div>
             <div style="display:none;position:fixed;left:0;top:0"><textarea id="exportOutput" style="color:black; width: 200px; height: 55px;"></textarea></div>
             <p id='hotkeysDesc'></p>
             <div id="footercontainer">
@@ -3560,7 +3576,8 @@
 					<td colspan=2><button id='gbupg7' onclick='buyGluonUpg("gb",7)'>Infinity Points slow down Remote Antimatter Galaxies effect.<br><span id='gbupg7current'></span><br>Cost: <span id='gbupg7cost'></span> GB gluons</button></td>
 					<td colspan=2><button id='brupg7' onclick='buyGluonUpg("br",7)'>Eternity Points slow down Remote Antimatter Galaxies effect.<br><span id='brupg7current'></span><br>Cost: <span id='brupg7cost'></span> BR gluons</button></td>
 				</tr></table>
-				<button id='qkmult' onclick='buyQuarkMult()'>You gain 2x more quarks.<br><span id='qkmultcurrent'></span><br><span id='qkmultcost'></span></button>
+				<button id='qkmult' onclick='buyQuarkMult()'>You gain 2x more quarks.<br><span id='qkmultcurrent'></span><br><span id='qkmultcost'></span></button><br>
+				<button class="storebtn" onclick='maxQuarkMult()' style='width:190px'>Max QK mult</button>
 			</div>
 			<div class='quantumtab' id='electrons'>
 				You have <span id="electronsAmount" style="font-size:35px">0</span> electrons.<br>
@@ -3660,17 +3677,36 @@
 		<button class="closebtn storebtn" onclick="closeToolTip()">&times;</button>
 		<p id='chosenNotation'></p>
 		<p id='chosenCommas'></p>
-		<button id='openpsioptions' class='storebtn' style='width:180px' onclick='openPsiOptions()'>Psi notation options</button>
+		<button id='openpsioptions' class='storebtn' style='width:150px' onclick='openNotationOptions()'>Notation options</button>
 		<div id='mainnotationoptions1' class='notationOptions' style="left: 0px">
 			<table id='notationOptions'></table>
 		</div>
 		<div id='mainnotationoptions2' class='notationOptions' style="right: 0px">
 			<table id='commasOptions'></table>
 		</div>
-		<div id='psioptions' class='notationOptions' style="display: none; width: 450px; overflow-y: hidden">
-			Max characters (min: 2, max: 20): <input id="maxLength" style="width: 170px" type="number" min=2 max=20 onchange="switchPsiOption('maxLength')"></input><br>
-			Max arguments (min: 1, max: 4): <input id="maxArguments" style="width: 170px" type="number" min=1 max=4 onchange="switchPsiOption('maxArguments')"></input>
+		<div id='notationoptions' class='notationOptions' style="display: none; width: 450px; overflow-y: scroll">
+			<b>Scientific notation</b>
+			Significant digits (max: 1, max: 10, leave 0 for variable): <input id="significantDigits" style="width: 170px" type="number" min=0 max=10 onchange="switchOption('scientific','significantDigits')"></input><br>
+			<b>Psi notation</b>
+			Max characters (min: 2, max: 20): <input id="maxLength" style="width: 170px" type="number" min=2 max=20 onchange="switchOption('psi','maxLength')"></input><br>
+			Max arguments (min: 1, max: 4): <input id="maxArguments" style="width: 170px" type="number" min=1 max=4 onchange="switchOption('psi','maxArguments')"></input><br>
+			<b>Spazzy notation</b>
+			<p id='chosenSubNotation'></p>
+			<table id='subNotationOptions'></table>
 		</div>
+	</div>
+	<div class="popup optionmenu" id="thememenu" style="overflow-y:hidden">
+		<button class="closebtn storebtn" onclick="closeToolTip()">&times;</button>
+		<p style='display:inline'>
+			<p id='chosenTheme'></p>
+			<button class='storebtn' onclick="setTheme()" style='width: 240px'>Select Normal</button>
+			<button class='storebtn' onclick="setTheme('Metro')" style='width: 240px'>Select Metro</button>
+			<button class='storebtn' onclick="setTheme('Dark')" style='width: 240px'>Select Dark</button>
+			<button class='storebtn' onclick="setTheme('Dark Metro')" style='width: 240px'>Select Dark Metro</button>
+			<button class='storebtn' onclick="setTheme('Inverted')" style='width: 240px'>Select Inverted</button>
+			<button class='storebtn' onclick="setTheme('Inverted Metro')" style='width: 240px'>Select Inverted Metro</button>
+			<button class='storebtn' onclick="setTheme('Aarex\'s Modifications')" style='width: 240px'>Select Aarex's Modifications</button>
+		</p>
 	</div>
     <div id="TTbuttons" style="display:none;">
         <button class="timetheorembtn" onclick="toggleAutoTT()" id="theoremmax" style="margin-left:-276px; width:130px; height: 30px; font-size: 0.75rem; bottom: 77px;">Buy max Theorems</button>
@@ -3690,7 +3726,7 @@
 <script type="text/javascript" src="javascripts/chart.js"></script>
 <script type="text/javascript" src="javascripts/lz-string.js"></script>
 <script type="text/javascript" src="javascripts/core/polyfill.js"></script>
-<script type="text/javascript" src="javascripts/core/format.js?13"></script>
+<script type="text/javascript" src="javascripts/core/format.js?14"></script>
 <script type="text/javascript" src="javascripts/core/achievements.js?9"></script>
 <script type="text/javascript" src="javascripts/core/chart.js"></script>
 <script type="text/javascript" src="javascripts/core/tickspeed.js?19"></script>
@@ -3701,14 +3737,14 @@
 <script type="text/javascript" src="javascripts/core/timestudies.js?27"></script>
 <script type="text/javascript" src="javascripts/core/canvases.js?6"></script>
 <script type="text/javascript" src="javascripts/core/devtools.js"></script>
-<script type="text/javascript" src="javascripts/core/load_functions.js?53"></script>
+<script type="text/javascript" src="javascripts/core/load_functions.js?54"></script>
 <script type="text/javascript" src="javascripts/core/newsticker.js?5"></script>
 <script type="text/javascript" src="javascripts/mods/ngmm.js?18"></script>
 <script type="text/javascript" src="javascripts/mods/ers.js?1"></script>
-<script type="text/javascript" src="javascripts/mods/ngpp.js?34"></script>
+<script type="text/javascript" src="javascripts/mods/ngpp.js?35"></script>
 <script type="text/javascript" src="javascripts/mods/ngppp.js?35"></script>
 <script type="text/javascript" src="javascripts/mods/ngmmm.js?2"></script>
-<script type="text/javascript" src="javascripts/game.js?61"></script>
+<script type="text/javascript" src="javascripts/game.js?63"></script>
 <script type="text/javascript" src="javascripts/sha512.js"></script>
 </body>
 </html>

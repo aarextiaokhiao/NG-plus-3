@@ -106,6 +106,18 @@ function formatValue(notation, value, places, placesUnder1000) {
                 return mantissa + "e" + result;
             }
         }
+        if (notation === "Spazzy") {
+            value = new Decimal(value)
+            var log = value.log10()
+            var sin = Math.sin(log)
+            var cos = Math.cos(log)
+            var result
+            if (sin<0) result="|-"+formatValue(player.options.spazzy.subNotation,value.times(-sin),2,2)
+            else result="|"+formatValue(player.options.spazzy.subNotation,value.times(sin),2,2)
+            if (cos<0) result+="-"+formatValue(player.options.spazzy.subNotation,value.times(-cos),2,2)+"i|"
+            else result+="+"+formatValue(player.options.spazzy.subNotation,value.times(cos),2,2)+"i|"
+            return result
+        }
         if (notation === "AF5LN") {
             value = new Decimal(value)
             var progress = Math.round(Math.log10(value.add(1).log10()+1)/Math.log10(Number.MAX_VALUE)*11881375)
@@ -146,6 +158,7 @@ function formatValue(notation, value, places, placesUnder1000) {
             var power = Math.floor(Math.log10(value));
         }
         if ((notation === "Mixed scientific" && power >= 33) || notation === "Scientific") {
+            if (player.options.scientific !== undefined && player.options.scientific.significantDigits !== undefined) places=player.options.scientific.significantDigits-1
             matissa = matissa.toFixed(places)
             if (matissa >= 10) {
                 matissa = (1).toFixed(places);

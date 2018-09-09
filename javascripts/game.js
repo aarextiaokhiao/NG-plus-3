@@ -382,7 +382,7 @@ function updateNewPlayer(reseted) {
         player.options.gSacrificeConfirmation = true
     }
     if (modesChosen.ngpp > 1) {
-        player.aarexModifications.newGame3PlusVersion = 1.99797
+        player.aarexModifications.newGame3PlusVersion = 1.99798
         player.dbPower = 1
         player.peakSpent = 0
         player.masterystudies = []
@@ -691,45 +691,47 @@ function updateChartValues() {
 }
 
 
-
+//Theme stuff
 function setTheme(name) {
     document.querySelectorAll("link").forEach( function(e) {
         if (e.href.includes("theme")) e.remove();
     });
 
+    player.options.theme=name
     if(name !== undefined && name.length < 3) giveAchievement("Shhh... It's a secret")
+    var themeName=player.options.secretThemeKey
     if(name === undefined) {
-        document.getElementById("theme").textContent = "Current theme: Normal"
+        themeName="Normal"
     } else if(name === "S1") {
-        document.getElementById("theme").textContent="Current theme: " + player.options.secretThemeKey;
         Chart.defaults.global.defaultFontColor = 'black';
         normalDimChart.data.datasets[0].borderColor = '#000'
     } else if(name === "S2") {
-        document.getElementById("theme").textContent="Current theme: " + player.options.secretThemeKey;
         Chart.defaults.global.defaultFontColor = 'black';
         normalDimChart.data.datasets[0].borderColor = '#000'
     } else if(name === "S3") {
-        document.getElementById("theme").textContent="Current theme: " + player.options.secretThemeKey;
         Chart.defaults.global.defaultFontColor = 'black';
         normalDimChart.data.datasets[0].borderColor = '#000'
     } else if(name === "S4") {
-        document.getElementById("theme").textContent="Current theme: " + player.options.secretThemeKey;
         Chart.defaults.global.defaultFontColor = 'black';
         normalDimChart.data.datasets[0].borderColor = '#000'
     }  else if(name === "S5") {
-        document.getElementById("theme").textContent="Current theme: " + player.options.secretThemeKey;
         Chart.defaults.global.defaultFontColor = 'black';
         normalDimChart.data.datasets[0].borderColor = '#000'
     } else {
-        document.getElementById("theme").textContent="Current theme: " + name;
+        themeName=name;
     }
+    if (theme=="Dark"||theme=="Dark Metro") {
+        Chart.defaults.global.defaultFontColor = '#888';
+        normalDimChart.data.datasets[0].borderColor = '#888'
+    } else {
+        Chart.defaults.global.defaultFontColor = 'black';
+        normalDimChart.data.datasets[0].borderColor = '#000'
+    }
+    document.getElementById("theme").innerHTML="<p style='font-size:15px'>Themes</p>Current theme: " + themeName;
+    document.getElementById("chosenTheme").textContent="Current theme: " + themeName;
 
-    if (name === undefined) {
-		document.getElementById("theme").style['font-size'] = '20px'
-		return;
-    }
+    if (name === undefined) return;
     if (name === "Aarex's Modifications") {
-		document.getElementById("theme").style['font-size'] = '16px'
 		name = "Aarexs Modifications"
     }
 
@@ -744,30 +746,8 @@ function setTheme(name) {
 }
 
 document.getElementById("theme").onclick = function () {
-    if (player.options.theme === undefined) {
-        player.options.theme = "Metro";
-    } else if (player.options.theme === "Metro") {
-        player.options.theme = "Dark";
-        Chart.defaults.global.defaultFontColor = '#888';
-        normalDimChart.data.datasets[0].borderColor = '#888'
-    } else if (player.options.theme === "Dark") {
-        player.options.theme = "Dark Metro";
-    } else if (player.options.theme === "Dark Metro") {
-        player.options.theme = "Inverted";
-        Chart.defaults.global.defaultFontColor = 'black';
-        normalDimChart.data.datasets[0].borderColor = '#000'
-    } else if (player.options.theme === "Inverted") {
-        player.options.theme = "Inverted Metro";
-    } else if (player.options.theme === "Inverted Metro") {
-        player.options.theme = "Aarex's Modifications";
-    } else {
-        player.options.theme = undefined;
-        Chart.defaults.global.defaultFontColor = 'black';
-        normalDimChart.data.datasets[0].borderColor = '#000'
-    }
-
-    setTheme(player.options.theme);
-
+	closeToolTip()
+	document.getElementById('thememenu').style.display="flex"
 }
 
 
@@ -1127,8 +1107,9 @@ function updateDimensions() {
             document.getElementById("postinfi13").innerHTML = "You passively generate Infinitied stat based on your fastest infinity.<br>1 Infinity every "+timeDisplay(player.bestInfinityTime*5)+ " <br>Cost: "+shortenCosts(20e6)+" IP"
             document.getElementById("postinfi23").innerHTML = "Option to bulk buy Dimension Boosts <br>Cost: "+shortenCosts(player.galacticSacrifice?5e6:5e9)+" IP"
             document.getElementById("postinfi33").innerHTML = "Autobuyers work twice as fast <br>Cost:"+shortenCosts(1e15)+" IP"
-            if (player.dimensionMultDecrease > 3) document.getElementById("postinfi42").innerHTML = "Dimension cost multiplier increase<br>"+player.dimensionMultDecrease+"x -> "+(player.dimensionMultDecrease-1)+"x<br>Cost: "+shortenCosts(player.dimensionMultDecreaseCost) +" IP"
-            else document.getElementById("postinfi42").innerHTML = "Dimension cost multiplier increase<br>"+player.dimensionMultDecrease.toFixed(ECTimesCompleted("eterc6")%5>0?1:0)+"x"
+            var precision=ECTimesCompleted("eterc6")%5>0?1:0
+            if (player.dimensionMultDecrease > 3-ECTimesCompleted("eterc6")*0.2) document.getElementById("postinfi42").innerHTML = "Dimension cost multiplier increase<br>"+player.dimensionMultDecrease.toFixed(precision)+"x -> "+(player.dimensionMultDecrease-1).toFixed(precision)+"x<br>Cost: "+shortenCosts(player.dimensionMultDecreaseCost) +" IP"
+            else document.getElementById("postinfi42").innerHTML = "Dimension cost multiplier increase<br>"+player.dimensionMultDecrease.toFixed(precision)+"x"
 
             document.getElementById("offlineProd").innerHTML = "Generates "+player.offlineProd+"% > "+Math.max(Math.max(5, player.offlineProd + 5), Math.min(50, player.offlineProd + 5))+"% of your best IP/min from last 10 infinities, works offline<br>Currently: "+shortenMoney(bestRunIppm.times(player.offlineProd/100)) +"IP/min<br> Cost: "+shortenCosts(player.offlineProdCost)+" IP"
             if (player.offlineProd == 50) document.getElementById("offlineProd").innerHTML = "Generates "+player.offlineProd+"% of your best IP/min from last 10 infinities, works offline<br>Currently: "+shortenMoney(bestRunIppm.times(player.offlineProd/100)) +" IP/min"
@@ -1683,14 +1664,15 @@ document.getElementById("postinfi32").onclick = function() {
 }
 
 document.getElementById("postinfi42").onclick = function() {
-    if (player.infinityPoints.gte(player.dimensionMultDecreaseCost) && player.dimensionMultDecrease > 3) {
+    var min=3-ECTimesCompleted("eterc6")*0.2
+    if (player.infinityPoints.gte(player.dimensionMultDecreaseCost) && player.dimensionMultDecrease > min) {
         player.infinityPoints = player.infinityPoints.minus(player.dimensionMultDecreaseCost)
         player.dimensionMultDecreaseCost *= 5000
         player.dimensionMultDecrease--;
-        if (player.dimensionMultDecrease > 3) document.getElementById("postinfi42").innerHTML = "Dimension cost multiplier increase <br>"+player.dimensionMultDecrease+"x -> "+(player.dimensionMultDecrease-1)+"x<br>Cost: "+shortenCosts(player.dimensionMultDecreaseCost) +" IP"
+        if (player.dimensionMultDecrease > min) document.getElementById("postinfi42").innerHTML = "Dimension cost multiplier increase <br>"+player.dimensionMultDecrease+"x -> "+(player.dimensionMultDecrease-1)+"x<br>Cost: "+shortenCosts(player.dimensionMultDecreaseCost) +" IP"
         else {
             if (player.aarexModifications.newGamePlusVersion) {
-                for (c=1;c<6;c++) player.dimensionMultDecrease-=0.2
+                for (c=ECTimesCompleted("eterc6");c<5;c++) player.dimensionMultDecrease-=0.2
                 if (!player.aarexModifications.newGamePlusPlusVersion) {
                     for (c=1;c<6;c++) player.tickSpeedMultDecrease-=0.07
                     $.notify("Your tickspeed cost multiplier increase has been decreased to 1.65x too.")
@@ -1698,7 +1680,7 @@ document.getElementById("postinfi42").onclick = function() {
                 }
                 $.notify("Your dimension cost multiplier increase has been decreased to 2x because you are playing NG+ mode.")
             }
-            document.getElementById("postinfi42").innerHTML = "Dimension cost multiplier increase<br>"+player.dimensionMultDecrease.toFixed(0)+"x"
+            document.getElementById("postinfi42").innerHTML = "Dimension cost multiplier increase<br>"+player.dimensionMultDecrease.toFixed(ECTimesCompleted("eterc6")%5>0?1:0)+"x"
         }
     }
 }
@@ -2961,7 +2943,7 @@ function setAchieveTooltip() {
 
 
 //notation stuff
-var notationArray = ["Scientific","Engineering","Letters","Standard","Emojis","Mixed scientific","Mixed engineering","Logarithm","Brackets","Infinity","Greek","Game percentages","Hexadecimal","Tetration","Hyperscientific","Psi","Morse code","AF5LN"]
+var notationArray = ["Scientific","Engineering","Letters","Standard","Emojis","Mixed scientific","Mixed engineering","Logarithm","Brackets","Infinity","Greek","Game percentages","Hexadecimal","Tetration","Hyperscientific","Psi","Morse code","Spazzy","AF5LN"]
 
 function updateNotationOption() {
 	var notationMsg="Notation: "+(player.options.notation=="Emojis"?"Cancer":player.options.notation)
@@ -2978,7 +2960,7 @@ function updateNotationOption() {
 }
 
 function onNotationChange(id) {
-    document.getElementsByClassName("hideInMorse").display = player.options.notation == "Morse code" ? "none" : ""
+    document.getElementsByClassName("hideInMorse").display = player.options.notation == "Morse code" || player.options.notation == 'Spazzy' ? "none" : ""
 	updateNotationOption()
 	updateLastTenRuns();
 	updateLastTenEternities();
@@ -3016,6 +2998,8 @@ document.getElementById("notation").onclick = function () {
 		notationMenuDone=true
 		let notationsTable=document.getElementById("notationOptions")
 		let commasTable=document.getElementById("commasOptions")
+		let subTable=document.getElementById("subNotationOptions")
+		let selectList=""
 		
 		var row=commasTable.insertRow(0)
 		row.innerHTML="<button class='storebtn' style='width:160px; height: 40px' onclick='switchCommas(0)'>Commas on exponents</button>"
@@ -3028,6 +3012,13 @@ document.getElementById("notation").onclick = function () {
 			row.innerHTML="<button class='storebtn' id='select"+name+"' style='width:160px; height: 40px' onclick='switchNotation("+n+")'>Select "+name+"</button>"
 			row=commasTable.insertRow(n+2)
 			row.innerHTML="<button class='storebtn' id='selectCommas"+name+"' style='width:160px; height: 40px' onclick='switchCommas("+(n+2)+")'>"+name+" on exponents</button>"
+			if (n>17) {
+				row=subTable.insertRow(n-1)
+				row.innerHTML="<button class='storebtn' id='selectSub"+name+"' style='width:160px; height: 40px' onclick='switchSubNotation("+n+")'>Select "+name+"</button>"
+			} else if (n<17) {
+				row=subTable.insertRow(n)
+				row.innerHTML="<button class='storebtn' style='width:160px; height: 40px' onclick='switchSubNotation("+n+")'>Select "+name+"</button>"	
+			}
 		}
 		document.getElementById("selectAF5LN").setAttribute("ach-tooltip","Select Aarex's Funny 5-letter Notation")
 		document.getElementById("selectCommasAF5LN").setAttribute("ach-tooltip","Aarex's Funny 5-letter Notation on exponents")
@@ -3035,36 +3026,55 @@ document.getElementById("notation").onclick = function () {
 	document.getElementById("notationmenu").style.display="block"
 };
 
-function openPsiOptions() {
+function openNotationOptions() {
 	if (document.getElementById("mainnotationoptions1").style.display=="") {
 		formatPsi(1,1)
 		document.getElementById("openpsioptions").textContent="Go back"
 		document.getElementById("mainnotationoptions1").style.display="none"
 		document.getElementById("mainnotationoptions2").style.display="none"
-		document.getElementById("psioptions").style.display=""
+		document.getElementById("notationoptions").style.display=""
 		
+		document.getElementById("significantDigits").value=player.options.scientific.significantDigits?player.options.scientific.significantDigits:0
 		document.getElementById("maxLength").value=player.options.psi.chars
 		document.getElementById("maxArguments").value=Math.min(player.options.psi.args,4)
+		document.getElementById("chosenSubNotation").textContent="Sub-notation: "+(player.options.spazzy.subNotation=="Emojis"?"Cancer":player.options.spazzy.subNotation)
 	} else {
-		document.getElementById("openpsioptions").textContent="Psi notation options"
+		document.getElementById("openpsioptions").textContent="Notation options"
 		document.getElementById("mainnotationoptions1").style.display=""
 		document.getElementById("mainnotationoptions2").style.display=""
-		document.getElementById("psioptions").style.display="none"
+		document.getElementById("notationoptions").style.display="none"
 	}
 }
 
-function switchPsiOption(id) {
-	var value=parseFloat(document.getElementById(id).value)
-	if (isNaN(value)) return
-	if (value%1!=0) return
-	if (id=="maxLength") {
-		if (value<2||value>20) return
-		player.options.psi.chars=value
+function switchOption(notation,id) {
+	if (notation=="scientific") {
+		var value=parseFloat(document.getElementById(id).value)
+		if (isNaN(value)) return
+		if (value%1!=0) return
+		if (id=="significantDigits") {
+			if (value<0||value>10) return
+			if (value==0) player.options.scientific.significantDigits=undefined
+			else player.options.scientific.significantDigits=value
+		}
+	} else if (notation=="psi") {
+		var value=parseFloat(document.getElementById(id).value)
+		if (isNaN(value)) return
+		if (value%1!=0) return
+		if (id=="maxLength") {
+			if (value<2||value>20) return
+			player.options.psi.chars=value
+		}
+		if (id=="maxArguments") {
+			if (value<1||value>4) return
+			player.options.psi.args=value
+		}
 	}
-	if (id=="maxArguments") {
-		if (value<1||value>4) return
-		player.options.psi.args=value
-	}
+	onNotationChange()
+}
+
+function switchSubNotation(id) {
+	player.options.spazzy.subNotation=notationArray[id]
+	document.getElementById("chosenSubNotation").textContent="Sub-notation: "+(player.options.spazzy.subNotation=="Emojis"?"Cancer":player.options.spazzy.subNotation)
 	onNotationChange()
 }
 
@@ -6214,7 +6224,7 @@ function gameLoop(diff) {
 
     var currentIPmin = gainedInfinityPoints().dividedBy(player.thisInfinityTime/600)
     if (currentIPmin.gt(IPminpeak)) IPminpeak = currentIPmin
-    document.getElementById("postInfinityButton").innerHTML = "<b>"+(IPminpeak.gt("1e30000003") && (player.options.theme != "Aarex's Modifications" || player.options.notation=="Morse code") ? "Gain " : "Big Crunch for ")+shortenDimensions(gainedInfinityPoints())+" Infinity points.</b>" + (IPminpeak.gt("1e100000") && (player.options.theme != "Aarex's Modifications" || player.options.notation=="Morse code") ? "" : "<br>"+shortenDimensions(currentIPmin) + " IP/min"+"<br>Peaked at "+shortenDimensions(IPminpeak)+" IP/min")
+    document.getElementById("postInfinityButton").innerHTML = "<b>"+(IPminpeak.gt("1e30000003") && (player.options.theme != "Aarex's Modifications" || player.options.notation=="Morse code" || player.options.notation=='Spazzy') ? "Gain " : "Big Crunch for ")+shortenDimensions(gainedInfinityPoints())+" Infinity points.</b>" + (IPminpeak.gt("1e100000") && (player.options.theme != "Aarex's Modifications" || player.options.notation=="Morse code" || player.options.notation=='Spazzy') ? "" : "<br>"+shortenDimensions(currentIPmin) + " IP/min"+"<br>Peaked at "+shortenDimensions(IPminpeak)+" IP/min")
 
     if (nextAt[player.postChallUnlocked] === undefined) document.getElementById("nextchall").textContent = " "
     else if (!player.achievements.includes("r133")) {
@@ -6288,7 +6298,7 @@ function gameLoop(diff) {
 
     if (player.infMultBuyer && (!player.boughtDims || (player.infinityUpgrades.includes("skipResetBoost")))) {
         var dif
-        if (player.aarexModifications.newGameExpVersion) dif = Math.floor(player.infMultCost.div(player.infinityPoints).log(4)) + 1
+        if (player.aarexModifications.newGameExpVersion) dif = Math.floor(player.infinityPoints.div(player.infMultCost).log(4)) + 1
         else dif = player.infinityPoints.e - player.infMultCost.e +1
         if (dif > 0) {
             player.infMult = player.infMult.times(Decimal.pow(ipMultPower, dif))
@@ -6317,14 +6327,14 @@ function gameLoop(diff) {
     var currentEPmin = updateEPminpeak(diff);
     EPminpeakUnits = player.dilation.active && isSmartPeakActivated ? 'TP' : 'EP'
     EPminpeakUnits = (EPminpeakType == 'logarithm' ? ' log(' + EPminpeakUnits + ')' : ' ' + EPminpeakUnits) + '/min'
-    document.getElementById("eternitybtnFlavor").textContent = ((player.dilation.active||gainedEternityPoints().lt(1e6)||player.currentEternityChall!==""||(player.options.theme=="Aarex's Modifications"&&player.options.notation!="Morse code"))
+    document.getElementById("eternitybtnFlavor").textContent = (((!player.dilation.active&&gainedEternityPoints().lt(1e6))||player.currentEternityChall!==""||(player.options.theme=="Aarex's Modifications"&&player.options.notation!="Morse code"))
         ? ((player.currentEternityChall!=="" ? "Other challenges await..." : player.eternities>0 ? "" : "Other times await...") + " I need to become Eternal.") : "")
     document.getElementById("eternitybtnEPGain").innerHTML = ((player.eternities > 0 && (player.currentEternityChall==""||player.options.theme=="Aarex's Modifications"))
-        ? "Gain <b>"+shortenDimensions(gainedEternityPoints())+"</b> Eternity points." : "")
-    document.getElementById("eternitybtnTPGain").textContent = player.dilation.active ? '+' + shortenMoney(Math.max(getDilGain() - player.dilation.totalTachyonParticles, 0)) +" Tachyon particles." : ""
-    document.getElementById("eternitybtnRate").textContent = ((!player.dilation.active&&EPminpeak.lt("1e30003")) || (player.options.theme=="Aarex's Modifications"&&player.options.notation!='Morse code')
+        ? "Gain <b>"+(player.dilation.active?shortenMoney(Math.max(getDilGain() - player.dilation.totalTachyonParticles, 0)):shortenDimensions(gainedEternityPoints()))+"</b> "+(player.dilation.active?"Tachyon particles.":"Eternity points.") : "")
+    var showEPmin=(player.currentEternityChall===""||player.options.theme=="Aarex's Modifications")&&EPminpeak>0&&player.eternities>0&&player.options.notation!='Morse code'&&player.options.notation!='Spazzy'
+    document.getElementById("eternitybtnRate").textContent = (showEPmin&&(EPminpeak.lt("1e30003")||player.options.theme=="Aarex's Modifications")
         ? (EPminpeakType == "normal" ? shortenDimensions(currentEPmin) : shorten(currentEPmin))+EPminpeakUnits : "")
-    document.getElementById("eternitybtnPeak").textContent = ((!player.dilation.active||player.options.theme=="Aarex's Modifications")&&player.options.notation!='Morse code'&&EPminpeak > 0
+    document.getElementById("eternitybtnPeak").textContent = (showEPmin
         ? "Peaked at "+(EPminpeakType == "normal" ? shortenDimensions(EPminpeak) : shorten(EPminpeak))+EPminpeakUnits : "")
     document.getElementById("quantumbtnFlavor").textContent = (!quantumed||!inQC(0)?(inQC(0)?"My computer is":player.quantum.challenge.length>1?"Paired challenge is":"My challenging skills are")+" not powerful enough... ":"") + "I need to go quantum."
     var showQuarkGain = quantumed&&(inQC(0)||player.options.theme=="Aarex's Modifications")
@@ -6579,7 +6589,7 @@ function gameLoop(diff) {
     if (player.infinityUpgrades.includes("infinitiedMult")) document.getElementById("postinfi12").className = "infinistorebtnbought"
     if (player.infinityUpgrades.includes("postGalaxy")) document.getElementById("postinfi41").className = "infinistorebtnbought"
     if (player.infinityUpgrades.includes("challengeMult")) document.getElementById("postinfi32").className = "infinistorebtnbought"
-    if (player.dimensionMultDecrease <= 3) document.getElementById("postinfi42").className = "infinistorebtnbought"
+    if (player.dimensionMultDecrease <= 3-ECTimesCompleted("eterc6")*0.2) document.getElementById("postinfi42").className = "infinistorebtnbought"
     if (player.offlineProd == 50) document.getElementById("offlineProd").className = "infinistorebtnbought"
     if (player.galacticSacrifice) {
         if (player.infinityUpgrades.includes("galPointMult")) document.getElementById("postinfi01").className = "infinistorebtnbought"
@@ -6906,7 +6916,7 @@ function gameLoop(diff) {
             document.getElementById("sacrificebtn").style.display = ""
             var currentGPmin = getGSAmount().dividedBy(player.galacticSacrifice.time/600)
             if (currentGPmin.gt(GPminpeak)) GPminpeak = currentGPmin
-            document.getElementById("sacrificebtn").innerHTML = ((GPminpeak.gt("1e300000")&&player.options.theme!="Aarex's Modifications")||player.options.notation=="Morse code"?"Gain ":"Galactic Sacrifice for ")+shortenDimensions(getGSAmount())+" Galaxy points."+((GPminpeak.gt("1e3000")&&player.options.theme!="Aarex's Modifications")||player.options.notation=="Morse code"?"":"<br>"+shortenMoney(currentGPmin)+" GP/min"+"<br>Peaked at "+shortenMoney(GPminpeak)+" GP/min")
+            document.getElementById("sacrificebtn").innerHTML = ((GPminpeak.gt("1e300000")&&player.options.theme!="Aarex's Modifications")||player.options.notation=="Morse code"||player.options.notation=='Spazzy'?"Gain ":"Galactic Sacrifice for ")+shortenDimensions(getGSAmount())+" Galaxy points."+((GPminpeak.gt("1e3000")&&player.options.theme!="Aarex's Modifications")||player.options.notation=="Morse code"||player.options.notation=='Spazzy'?"":"<br>"+shortenMoney(currentGPmin)+" GP/min"+"<br>Peaked at "+shortenMoney(GPminpeak)+" GP/min")
         } else document.getElementById("gSacrifice").className = "unavailablebtn"
     }
 
@@ -7330,6 +7340,21 @@ function showAchTab(tabName) {
             tab.style.display = 'none';
         }
     }
+}
+
+function showOptionTab(tabName) {
+    //iterate over all elements in div_tab class. Hide everything that's not tabName and show tabName
+    var tabs = document.getElementsByClassName('optionstab');
+    var tab;
+    for (var i = 0; i < tabs.length; i++) {
+        tab = tabs.item(i);
+        if (tab.id === tabName) {
+            tab.style.display = 'block';
+        } else {
+            tab.style.display = 'none';
+        }
+    }
+    closeToolTip()
 }
 
 function closeToolTip() {
