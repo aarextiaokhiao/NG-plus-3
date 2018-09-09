@@ -548,14 +548,14 @@ function buyElectronUpg(u) {
 }
 
 //v1.9
-function buyQuarkMult() {
+function buyQuarkMult(quick=false) {
 	var c=Decimal.pow(100, Math.floor(player.quantum.multPower/3)).times(500)
 	var color=(["rg","gb","br"])[player.quantum.multPower%3]
 	var t=player.quantum.gluons[color]
 	if (t.gte(c)) {
 		player.quantum.gluons[color]=t.sub(c)
 		player.quantum.multPower++
-		updateGluons()
+		if (!quick) updateGluons()
 	}
 }
 
