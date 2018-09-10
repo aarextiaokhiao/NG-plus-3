@@ -393,8 +393,6 @@ if (player.version < 5) {
   toggleChallengeRetry()
   toggleBulk()
   toggleBulk()
-  respecToggle()
-  respecToggle()
 
   document.getElementById("offlineProgress").textContent = "Offline progress: O"+(player.aarexModifications.offlineProgress?"N":"FF")
 
@@ -620,7 +618,8 @@ if (player.version < 5) {
           }
           player.aarexModifications.newGamePlusVersion = 1
           if (confirm("Do you want to migrate your NG++ save into new NG+++ mode?")) {
-              player.aarexModifications.newGame3PlusVersion = 1.99798
+              player.aarexModifications.newGame3PlusVersion = 1.99799
+              player.respecOptions={time:player.respec,mastery:player.respec}
               player.dbPower = 1
               player.peakSpent = 0
               player.masterystudies = []
@@ -823,7 +822,10 @@ if (player.version < 5) {
       player.old=false
   }
   if (player.aarexModifications.newGame3PlusVersion < 1.99795) player.options.animations.quarks = true
-  if (player.aarexModifications.newGame3PlusVersion < 1.99798) player.aarexModifications.newGame3PlusVersion=1.99798
+  if (player.aarexModifications.newGame3PlusVersion < 1.99799) {
+      player.respecOptions={time:player.respec,mastery:player.respec}
+      player.aarexModifications.newGame3PlusVersion=1.99799
+  }
   if (player.aarexModifications.newGame3PlusVersion==undefined) {
       colorBoosts={
           r:1,
@@ -1078,6 +1080,8 @@ if (player.version < 5) {
   document.getElementById("secretstudy").style.cursor = "pointer"
 
   document.getElementById("masterystudyunlock").style.display = player.dilation.upgrades.includes("ngpp6") && player.masterystudies ? "" : "none"
+  document.getElementById("respecOptions").style.display = player.dilation.upgrades.includes("ngpp6") && player.masterystudies ? "block" : "none"
+  document.getElementById("respecOptions2").style.display = player.dilation.upgrades.includes("ngpp6") && player.masterystudies ? "block" : "none"
 
   if (!player.galacticSacrifice) {
       document.getElementById("infi21").innerHTML = "Increase the multiplier for buying 10 Dimensions <br>"+(player.aarexModifications.newGameExpVersion?"20x -> 24x":"2x -> 2.2x")+"<br>Cost: 1 IP"
@@ -1130,6 +1134,7 @@ if (player.version < 5) {
   loadInfAutoBuyers();
   resizeCanvas();
   checkForEndMe();
+  updateRespecButtons()
   updateEternityChallenges();
   updateExtraReplGalaxies()
   updateDilationUpgradeCosts()

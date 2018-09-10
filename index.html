@@ -119,6 +119,7 @@
                     <td><button class="storebtn" onclick="respecToggle()" id="respec" style="width:150px; height: 40px; font-size: 10px; margin: auto">Respec time studies on next Eternity</button><td>
                     <td><button class="storebtn" onclick="importStudyTree()" style="width:150px; height: 40px; font-size: 10px; margin: auto">Import tree</button><td>
                 </tr>
+                <button class="storebtn" onclick="respecOptions()" id="respecOptions" style="width:150px; height: 20px; font-size: 10px; margin: auto; display: block">Respec options</button>
                 <table class="table" id="studytable">
                     <tr>
                         <td style="opacity: 0;"><button class="timestudylocked"></button></td>
@@ -401,6 +402,7 @@
                     <td><button class="storebtn" onclick="respecToggle()" id="respec3" style="width:150px; height: 40px; font-size: 10px; margin: auto">Respec time studies on next Eternity</button><td>
                     <td><button class="storebtn" onclick="importStudyTree()" style="width:150px; height: 40px; font-size: 10px; margin: auto">Import tree</button><td>
                 </tr>
+                <button class="storebtn" onclick="respecOptions()" id="respecOptions2" style="width:150px; height: 20px; font-size: 10px; margin: auto; display: block">Respec options</button>
                 <table class="table" id="studytable">
                     <tr>
                         <td><button class="dilationupg" id="back" onclick="showEternityTab('timestudies')">Lead back to time studies.</button></td>
@@ -3686,7 +3688,7 @@
 		</div>
 		<div id='notationoptions' class='notationOptions' style="display: none; width: 450px; overflow-y: scroll">
 			<b>Scientific notation</b>
-			Significant digits (max: 1, max: 10, leave 0 for variable): <input id="significantDigits" style="width: 170px" type="number" min=0 max=10 onchange="switchOption('scientific','significantDigits')"></input><br>
+			Significant digits (min: 1, max: 10, leave 0 for variable): <input id="significantDigits" style="width: 170px" type="number" min=0 max=10 onchange="switchOption('scientific','significantDigits')"></input><br>
 			<b>Psi notation</b>
 			Max characters (min: 2, max: 20): <input id="maxLength" style="width: 170px" type="number" min=2 max=20 onchange="switchOption('psi','maxLength')"></input><br>
 			Max arguments (min: 1, max: 4): <input id="maxArguments" style="width: 170px" type="number" min=1 max=4 onchange="switchOption('psi','maxArguments')"></input><br>
@@ -3717,6 +3719,11 @@
         <div id="theorembuybackground"></div>
         <p id="timetheorems" style="position: fixed;">You have 0 Time Theorems.</p>
     </div>
+    <div class="popup optionmenu" id="respecoptions">
+        <button class="closebtn storebtn" onclick="closeToolTip()">&times;</button>
+		<button id="respecTime" class="storebtn" onclick="respecToggle('time')" style="width: 200px; height: 55px; font-size: 15px" style="display: inline"></button>
+        <button id="respecMastery" class="storebtn" onclick="respecToggle('mastery')" style="width: 200px; height: 55px; font-size: 15px" style="display: inline"></button>
+	</div>
     <div id="progress" style="display:none">
         <div id="progressbar"><span id="progresspercent" ach-tooltip="Percentage until Infinity">0%</span></div>
     </div>
@@ -3733,18 +3740,18 @@
 <script type="text/javascript" src="javascripts/core/normal_dimension.js?25"></script>
 <script type="text/javascript" src="javascripts/core/infinity_dimension.js?14"></script>
 <script type="text/javascript" src="javascripts/core/time_dimension.js?19"></script>
-<script type="text/javascript" src="javascripts/core/dimboost.js?30"></script>
-<script type="text/javascript" src="javascripts/core/timestudies.js?27"></script>
+<script type="text/javascript" src="javascripts/core/dimboost.js?31"></script>
+<script type="text/javascript" src="javascripts/core/timestudies.js?28"></script>
 <script type="text/javascript" src="javascripts/core/canvases.js?6"></script>
 <script type="text/javascript" src="javascripts/core/devtools.js"></script>
-<script type="text/javascript" src="javascripts/core/load_functions.js?54"></script>
+<script type="text/javascript" src="javascripts/core/load_functions.js?55"></script>
 <script type="text/javascript" src="javascripts/core/newsticker.js?5"></script>
 <script type="text/javascript" src="javascripts/mods/ngmm.js?18"></script>
 <script type="text/javascript" src="javascripts/mods/ers.js?1"></script>
-<script type="text/javascript" src="javascripts/mods/ngpp.js?35"></script>
-<script type="text/javascript" src="javascripts/mods/ngppp.js?35"></script>
+<script type="text/javascript" src="javascripts/mods/ngpp.js?36"></script>
+<script type="text/javascript" src="javascripts/mods/ngppp.js?36"></script>
 <script type="text/javascript" src="javascripts/mods/ngmmm.js?2"></script>
-<script type="text/javascript" src="javascripts/game.js?63"></script>
+<script type="text/javascript" src="javascripts/game.js?62"></script>
 <script type="text/javascript" src="javascripts/sha512.js"></script>
 </body>
 </html>

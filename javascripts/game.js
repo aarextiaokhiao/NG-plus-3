@@ -382,7 +382,8 @@ function updateNewPlayer(reseted) {
         player.options.gSacrificeConfirmation = true
     }
     if (modesChosen.ngpp > 1) {
-        player.aarexModifications.newGame3PlusVersion = 1.99798
+        player.aarexModifications.newGame3PlusVersion = 1.99799
+        player.respecOptions={time:false,mastery:false}
         player.dbPower = 1
         player.peakSpent = 0
         player.masterystudies = []
@@ -2299,6 +2300,7 @@ function galaxyReset() {
         autoEterMode: player.autoEterMode,
         peakSpent: player.peakSpent,
         respec: player.respec,
+        respecOptions: player.respecOptions,
         eternityBuyer: player.eternityBuyer,
         eterc8ids: player.eterc8ids,
         eterc8repl: player.eterc8repl,
@@ -4003,6 +4005,7 @@ document.getElementById("bigcrunch").onclick = function () {
             autoEterMode: player.autoEterMode,
             peakSpent: player.peakSpent,
             respec: player.respec,
+            respecOptions: player.respecOptions,
             eternityBuyer: player.eternityBuyer,
             eterc8ids: player.eterc8ids,
             eterc8repl: player.eterc8repl,
@@ -4128,18 +4131,30 @@ document.getElementById("bigcrunch").onclick = function () {
 }
 
 
-function respecToggle() {
-    if (player.respec) {
-        player.respec = false
-        document.getElementById("respec").className = "storebtn"
-        document.getElementById("respec2").className = "storebtn"
-        document.getElementById("respec3").className = "storebtn"
-    } else {
-        player.respec = true
-        document.getElementById("respec").className = "timestudybought"
-        document.getElementById("respec2").className = "timestudybought"
-        document.getElementById("respec3").className = "timestudybought"
-    }
+function respecToggle(id) {
+	if (id==undefined) {
+		player.respec=!player.respec
+		if (player.masterystudies) {
+			player.respecOptions.time=player.respec
+			player.respecOptions.mastery=player.respec
+		}
+	} else {
+		if (id==="time") player.respecOptions.time=!player.respecOptions.time
+		if (id==="mastery") player.respecOptions.mastery=!player.respecOptions.mastery
+		player.respec=player.respecOptions.time||player.respecOptions.mastery
+	}
+	updateRespecButtons()
+}
+
+function updateRespecButtons() {
+	var className=player.respec?"timestudybought":"storebtn"
+	document.getElementById("respec").className=className
+	document.getElementById("respec2").className=className
+	document.getElementById("respec3").className=className
+	if (player.masterystudies) {
+		document.getElementById("respecTime").textContent="Respec time studies: O"+(player.respecOptions.time?"N":"FF")
+		document.getElementById("respecMastery").textContent="Respec mastery studies: O"+(player.respecOptions.mastery?"N":"FF")
+	}
 }
 
 function eternity(force, auto) {
@@ -4405,6 +4420,7 @@ function eternity(force, auto) {
             autoEterMode: player.autoEterMode,
             peakSpent: player.masterystudies ? 0 : undefined,
             respec: player.respec,
+            respecOptions: player.respecOptions,
             eternityBuyer: player.eternityBuyer,
             eterc8ids: 50,
             eterc8repl: 40,
@@ -4422,8 +4438,10 @@ function eternity(force, auto) {
             aarexModifications: player.aarexModifications
         };
         if (player.galacticSacrifice && player.eternities < 2) player.autobuyers[12]=13
-        if (player.respec) respecTimeStudies()
-        player.respec = false
+        if (player.respec) {
+            respecTimeStudies()
+            respecToggle()
+        }
         if (player.dilation.active) {
             player.dilation.active = false
             if (player.masterystudies && quantumed) updateColorCharge()
@@ -4435,9 +4453,6 @@ function eternity(force, auto) {
         extraReplGalaxies = 0
         player.replicanti.chanceCost = Decimal.pow(1e15, player.replicanti.chance * 100 + 9)
         player.replicanti.intervalCost = Decimal.pow(1e10, Math.round(Math.log10(1000/player.replicanti.interval)/-Math.log10(0.9))+14)
-        document.getElementById("respec").className = "storebtn"
-        document.getElementById("respec2").className = "storebtn"
-        document.getElementById("respec3").className = "storebtn"
         if (player.achievements.includes("r36")) player.tickspeed = player.tickspeed.times(0.98);
         if (player.achievements.includes("r45")) player.tickspeed = player.tickspeed.times(0.98);
 
@@ -4713,6 +4728,7 @@ function startChallenge(name, target) {
       autoEterMode: player.autoEterMode,
       peakSpent: player.peakSpent,
       respec: player.respec,
+      respecOptions: player.respecOptions,
       eternityBuyer: player.eternityBuyer,
       eterc8ids: player.eterc8ids,
       eterc8repl: player.eterc8repl,
@@ -5289,6 +5305,7 @@ function startEternityChallenge(name, startgoal, goalIncrease) {
         autoEterMode: player.autoEterMode,
         peakSpent: player.masterystudies ? 0 : undefined,
         respec: player.respec,
+        respecOptions: player.respecOptions,
         eternityBuyer: player.eternityBuyer,
         eterc8ids: 50,
         eterc8repl: 40,
@@ -5448,7 +5465,11 @@ function buyDilationUpgrade(id, max) {
             updateMilestones()
             if (player.masterystudies&&player.eternities>=1e9) player.dbPower=new Decimal(getDimensionBoostPower())
         }
-        if (id == 17 && player.masterystudies) document.getElementById("masterystudyunlock").style.display=""
+        if (id == 17 && player.masterystudies) {
+            document.getElementById("masterystudyunlock").style.display=""
+            document.getElementById("respecOptions").style.display = "block"
+            document.getElementById("respecOptions2").style.display = "block"
+        }
     } else { // Is rebuyable
         let realCost = getRebuyableDilUpgCost(id > 3 ? 4 : id)
         if (player.dilation.dilatedTime.lt(realCost)) return false
@@ -5468,12 +5489,12 @@ function buyDilationUpgrade(id, max) {
 }
 
 function getPassiveTTGen() {
-	var log=player.dilation.tachyonParticles.log10()
+	var log=player.dilation.tachyonParticles.max(1).log10()
 	if (log>80) log=75+Math.sqrt(log*5-375)
 	let normal=Decimal.pow(10,log).div(20000)
 	if (!player.achievements.includes("ng3p18")) return normal
 
-	log=player.dilation.bestTP.log10()
+	log=player.dilation.bestTP.max(1).log10()
 	if (log>80) log=75+Math.sqrt(log*5-375)
 	return Decimal.pow(10,log).div(1e5).add(normal)
 }

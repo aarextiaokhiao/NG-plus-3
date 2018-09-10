@@ -694,6 +694,7 @@ function quantum(auto,force,challid) {
 			autoEterMode: oheHeadstart ? player.autoEterMode : "amount",
 			peakSpent: player.masterystudies ? 0 : undefined,
 			respec: false,
+			respecOptions: player.masterystudies ? {time:false,mastery:false} : undefined,
 			eternityBuyer: oheHeadstart ? player.eternityBuyer : {
 				limit: new Decimal(0),
 				isOn: false
@@ -874,9 +875,7 @@ function quantum(auto,force,challid) {
 		if (oheHeadstart) player.replicanti.amount = new Decimal(1)
 		player.replicanti.galaxies = 0
 		ipMultPower=GUBought("gb3")?2.3:2
-		document.getElementById("respec").className = "storebtn"
-		document.getElementById("respec2").className = "storebtn"
-		document.getElementById("respec3").className = "storebtn"
+		updateRespecButtons()
 		if (player.achievements.includes("r36")) player.tickspeed = player.tickspeed.times(0.98);
 		if (player.achievements.includes("r45")) player.tickspeed = player.tickspeed.times(0.98);
 		if (inQC(6)) document.getElementById("matter").style.display = "block";
@@ -948,8 +947,9 @@ function quantum(auto,force,challid) {
 		updateTimeStudyButtons()
 		drawStudyTree()
 		if (speedrunMilestonesReached < 14 || !isRewardEnabled(4)) {
-			document.getElementById("masterystudyunlock").style.display = "none";
-			if (document.getElementById("electronstabbtn").style.display == "block") showQuantumTab("uquarks")
+			document.getElementById("masterystudyunlock").style.display = "none"
+			document.getElementById("respecOptions").style.display = "none"
+			document.getElementById("respecOptions2").style.display = "none"
 			if (document.getElementById("quantumchallenges").style.display == "block") showChallengesTab("challenges")
 		}
 		drawMasteryTree()

@@ -336,12 +336,19 @@ function studiesUntil(id) {
 
 function respecTimeStudies() {
   var gotAch=true
+  var respecTime=false
+  var respecMastery=false
+  if (player.masterystudies) {
+       respecTime=player.respecOptions.time
+       respecMastery=player.respecOptions.mastery
+       gotAch=(respecTime||player.timestudy.studies.length<1)&&(respecMastery||player.masterystudies.length<1)
+  } else respecTime=true
   if (player.boughtDims) {
       var temp=player.timestudy.theorem
       for (id=1;id<7;id++) player.timestudy.theorem+=player.timestudy.ers_studies[id]*(player.timestudy.ers_studies[id]+1)/2
       if (temp>player.timestudy.theorem) gotAch=false
       player.timestudy.ers_studies=[null,0,0,0,0,0,0]
-  } else {
+  } else if (respecTime) {
       for (var i=0; i<all.length; i++) {
           if (player.timestudy.studies.includes(all[i])) {
               player.timestudy.theorem += studyCosts[i]
@@ -349,6 +356,21 @@ function respecTimeStudies() {
           }
       }
       player.timestudy.studies = []
+  } else if (respecMastery) {
+      var respecedTS=[]
+      var secondSplitPick=0
+      var earlyDLStudies=[]
+      for (t=0;t<all.length;t++) {
+          var id=all[t]
+          if (player.timestudy.studies.includes(id)) {
+              if ((id<120||id>150||secondSplitPick<1||secondSplitPick==id%10)&&(id<220||!earlyDLStudies.includes(id%2>0?id+1:id-1))) {
+                  respecedTS.push(id)
+                  if (id>120&&id<130) secondSplitPick=id%10
+                  if (id>220) earlyDLStudies.push(id)
+              } else player.timestudy.theorem+=studyCosts[t]
+          }
+      }
+      player.timestudy.studies=respecedTS
   }
   switch(player.eternityChallUnlocked) {
       case 1:
@@ -407,7 +429,7 @@ function respecTimeStudies() {
   updateTimeStudyButtons()
   updateTheoremButtons()
   drawStudyTree()
-  if (player.masterystudies) {
+  if (respecMastery) {
       var respecedMS=[]
       for (id=0;id<player.masterystudies.length;id++) {
           var t = player.masterystudies[id].split("t")[1]

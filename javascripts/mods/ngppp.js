@@ -747,3 +747,9 @@ function maxQuarkMult() {
 	}
 	updateGluons()
 }
+
+//v1.99799
+function respecOptions() {
+	closeToolTip()
+	document.getElementById("respecoptions").style.display="flex"
+}

@@ -179,6 +179,7 @@ function softReset(bulk) {
       autoEterMode: player.autoEterMode,
       peakSpent: player.peakSpent,
       respec: player.respec,
+      respecOptions: player.respecOptions,
       eternityBuyer: player.eternityBuyer,
       eterc8ids: player.eterc8ids,
       eterc8repl: player.eterc8repl,
