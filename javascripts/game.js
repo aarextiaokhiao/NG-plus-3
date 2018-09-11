@@ -6951,6 +6951,7 @@ function gameLoop(diff) {
         if (player.dilation.active) if (player.masterystudies.includes("t292")) {
             player.dilation.tachyonParticles = player.dilation.tachyonParticles.max(getDilGain())
             player.dilation.bestTP = player.dilation.bestTP.max(player.dilation.tachyonParticles)
+            setAndMaybeShow('bestTP',player.achievements.includes("ng3p18"),'"Your best ever Tachyon particles was "+shorten(player.dilation.bestTP)+"."')
         }
     }
     if (player.dilation.upgrades.includes(10)) {
@@ -7083,7 +7084,7 @@ function maxBuyGalaxies(manual) {
 			increment/=2
 		}
 		player.galaxies+=toSkip
-		player.spreadingCancer+=toSkip+1
+		if (player.options.notation=="Emojis") player.spreadingCancer+=toSkip+1
 		galaxyReset()
 	}
 }
