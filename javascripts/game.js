@@ -1109,7 +1109,7 @@ function updateDimensions() {
             document.getElementById("postinfi23").innerHTML = "Option to bulk buy Dimension Boosts <br>Cost: "+shortenCosts(player.galacticSacrifice?5e6:5e9)+" IP"
             document.getElementById("postinfi33").innerHTML = "Autobuyers work twice as fast <br>Cost:"+shortenCosts(1e15)+" IP"
             var precision=ECTimesCompleted("eterc6")%5>0?1:0
-            if (player.dimensionMultDecrease > 3-ECTimesCompleted("eterc6")*0.2) document.getElementById("postinfi42").innerHTML = "Dimension cost multiplier increase<br>"+player.dimensionMultDecrease.toFixed(precision)+"x -> "+(player.dimensionMultDecrease-1).toFixed(precision)+"x<br>Cost: "+shortenCosts(player.dimensionMultDecreaseCost) +" IP"
+            if (Math.round(player.dimensionMultDecrease+ECTimesCompleted("eterc6")*0.2) > 3) document.getElementById("postinfi42").innerHTML = "Dimension cost multiplier increase<br>"+player.dimensionMultDecrease.toFixed(precision)+"x -> "+(player.dimensionMultDecrease-1).toFixed(precision)+"x<br>Cost: "+shortenCosts(player.dimensionMultDecreaseCost) +" IP"
             else document.getElementById("postinfi42").innerHTML = "Dimension cost multiplier increase<br>"+player.dimensionMultDecrease.toFixed(precision)+"x"
 
             document.getElementById("offlineProd").innerHTML = "Generates "+player.offlineProd+"% > "+Math.max(Math.max(5, player.offlineProd + 5), Math.min(50, player.offlineProd + 5))+"% of your best IP/min from last 10 infinities, works offline<br>Currently: "+shortenMoney(bestRunIppm.times(player.offlineProd/100)) +"IP/min<br> Cost: "+shortenCosts(player.offlineProdCost)+" IP"
@@ -1665,12 +1665,11 @@ document.getElementById("postinfi32").onclick = function() {
 }
 
 document.getElementById("postinfi42").onclick = function() {
-    var min=3-ECTimesCompleted("eterc6")*0.2
-    if (player.infinityPoints.gte(player.dimensionMultDecreaseCost) && player.dimensionMultDecrease > min) {
+    if (player.infinityPoints.gte(player.dimensionMultDecreaseCost) && Math.round(player.dimensionMultDecrease+ECTimesCompleted("eterc6")*0.2) > 3) {
         player.infinityPoints = player.infinityPoints.minus(player.dimensionMultDecreaseCost)
         player.dimensionMultDecreaseCost *= 5000
         player.dimensionMultDecrease--;
-        if (player.dimensionMultDecrease > min) document.getElementById("postinfi42").innerHTML = "Dimension cost multiplier increase <br>"+player.dimensionMultDecrease+"x -> "+(player.dimensionMultDecrease-1)+"x<br>Cost: "+shortenCosts(player.dimensionMultDecreaseCost) +" IP"
+        if (Math.round(player.dimensionMultDecrease+ECTimesCompleted("eterc6")*0.2) > 3) document.getElementById("postinfi42").innerHTML = "Dimension cost multiplier increase <br>"+player.dimensionMultDecrease+"x -> "+(player.dimensionMultDecrease-1)+"x<br>Cost: "+shortenCosts(player.dimensionMultDecreaseCost) +" IP"
         else {
             if (player.aarexModifications.newGamePlusVersion) {
                 for (c=ECTimesCompleted("eterc6");c<5;c++) player.dimensionMultDecrease-=0.2
@@ -1824,7 +1823,7 @@ function upgradeReplicantiChance() {
     if (player.infinityPoints.gte(player.replicanti.chanceCost) && isChanceAffordable() && player.eterc8repl !== 0) {
         player.infinityPoints = player.infinityPoints.minus(player.replicanti.chanceCost)
         player.replicanti.chanceCost = player.replicanti.chanceCost.times(1e15)
-        player.replicanti.chance += 0.01
+        player.replicanti.chance = Math.round(player.replicanti.chance*100+1)/100
         if (player.currentEternityChall == "eterc8") player.eterc8repl-=1
         document.getElementById("eterc8repl").textContent = "You have "+player.eterc8repl+" purchases left."
     }
@@ -4108,7 +4107,7 @@ document.getElementById("bigcrunch").onclick = function () {
         if (player.eternities >= 40 && player.replicanti.auto[0] && player.currentEternityChall !== "eterc8" && isChanceAffordable()) {
             var maxCost = (player.masterystudies ? player.masterystudies.includes("t265") : false) ? 1/0 : "1e1620"
             var bought = Math.max(Math.floor(player.infinityPoints.min(maxCost).div(player.replicanti.chanceCost).log(1e15) + 1), 0)
-            player.replicanti.chance += bought * 0.01
+            player.replicanti.chance = Math.round(player.replicanti.chance*100+bought)/100
             player.replicanti.chanceCost = player.replicanti.chanceCost.times(Decimal.pow(1e15, bought))
         }
 
@@ -5827,7 +5826,7 @@ setInterval(function() {
     if (player.eternities >= 40 && player.replicanti.auto[0] && player.currentEternityChall !== "eterc8" && isChanceAffordable()) {
         var maxCost = (player.masterystudies ? player.masterystudies.includes("t265") : false) ? 1/0 : new Decimal("1e1620")
         var bought = Math.max(Math.floor(player.infinityPoints.min(maxCost).div(player.replicanti.chanceCost).log(1e15) + 1), 0)
-        player.replicanti.chance += bought * 0.01
+        player.replicanti.chance = Math.round(player.replicanti.chance*100+bought)/100
         player.replicanti.chanceCost = player.replicanti.chanceCost.times(Decimal.pow(1e15, bought))
     }
 
@@ -6610,7 +6609,7 @@ function gameLoop(diff) {
     if (player.infinityUpgrades.includes("infinitiedMult")) document.getElementById("postinfi12").className = "infinistorebtnbought"
     if (player.infinityUpgrades.includes("postGalaxy")) document.getElementById("postinfi41").className = "infinistorebtnbought"
     if (player.infinityUpgrades.includes("challengeMult")) document.getElementById("postinfi32").className = "infinistorebtnbought"
-    if (player.dimensionMultDecrease <= 3-ECTimesCompleted("eterc6")*0.2) document.getElementById("postinfi42").className = "infinistorebtnbought"
+    if (Math.round(player.dimensionMultDecrease+ECTimesCompleted("eterc6")*0.2) <= 3) document.getElementById("postinfi42").className = "infinistorebtnbought"
     if (player.offlineProd == 50) document.getElementById("offlineProd").className = "infinistorebtnbought"
     if (player.galacticSacrifice) {
         if (player.infinityUpgrades.includes("galPointMult")) document.getElementById("postinfi01").className = "infinistorebtnbought"
