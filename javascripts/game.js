@@ -3066,7 +3066,7 @@ function switchOption(notation,id) {
 			player.options.psi.chars=value
 		}
 		if (id=="maxArguments") {
-			if (value<1||value>4) return
+			if (value<1||value>5) return
 			player.options.psi.args=value
 		}
 	}
