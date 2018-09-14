@@ -1405,10 +1405,11 @@
                         <td><div><button id="confirmations" onclick="showConfirmations()" class="storebtn" style="color:black; width: 200px; height: 55px; font-size: 15px">Confirmations</button></div></td>
 		    			<td><div><button id="retry" onclick="toggleChallengeRetry()" class="storebtn" style="color:black; width: 200px; height: 55px; font-size:120%">Automatically retry challenges</button></div></td>
                     </tr>
+                </table>
+                <table>
                     <tr>
-                        <td></td>
+                        <td><div><button id="toggleLogRateChange" onclick="toggleLogRateChange()" class="storebtn" style="color:black; width: 200px; height: 55px"></button></div></td>
                         <td><div><button id="decimalMode" onclick="switchDecimalMode()" class="storebtn" style="color:black; width: 200px; height: 55px"></button></div></td>
-                        <td></td>
                     </tr>
                 </table>
             </div>
@@ -3689,6 +3690,10 @@
 		<div id='notationoptions' class='notationOptions' style="display: none; width: 450px; overflow-y: scroll">
 			<b>Scientific notation</b>
 			Significant digits (min: 1, max: 10, leave 0 for variable): <input id="significantDigits" style="width: 170px" type="number" min=0 max=10 onchange="switchOption('scientific','significantDigits')"></input><br>
+			<b>Logarithm notation</b>
+			Base (min: > 1, max: 1.79e308): <input id="logBase" style="width: 170px" onchange="switchOption('logarithm','base')"></input><br>
+			<b>Tetration notation</b>
+			Base (min: 2, max: 1.79e308): <input id="tetrationBase" style="width: 170px" onchange="switchOption('tetration','base')"></input><br>
 			<b>Psi notation</b>
 			Max characters (min: 2, max: 20): <input id="maxLength" style="width: 170px" type="number" min=2 max=20 onchange="switchOption('psi','maxLength')"></input><br>
 			Max arguments (min: 1, max: 5): <input id="maxArguments" style="width: 170px" type="number" min=1 max=5 onchange="switchOption('psi','maxArguments')"></input><br>
@@ -3733,25 +3738,25 @@
 <script type="text/javascript" src="javascripts/chart.js"></script>
 <script type="text/javascript" src="javascripts/lz-string.js"></script>
 <script type="text/javascript" src="javascripts/core/polyfill.js"></script>
-<script type="text/javascript" src="javascripts/core/format.js?14"></script>
+<script type="text/javascript" src="javascripts/core/format.js?15"></script>
 <script type="text/javascript" src="javascripts/core/achievements.js?9"></script>
 <script type="text/javascript" src="javascripts/core/chart.js"></script>
 <script type="text/javascript" src="javascripts/core/tickspeed.js?19"></script>
-<script type="text/javascript" src="javascripts/core/normal_dimension.js?25"></script>
-<script type="text/javascript" src="javascripts/core/infinity_dimension.js?14"></script>
-<script type="text/javascript" src="javascripts/core/time_dimension.js?19"></script>
+<script type="text/javascript" src="javascripts/core/normal_dimension.js?26"></script>
+<script type="text/javascript" src="javascripts/core/infinity_dimension.js?15"></script>
+<script type="text/javascript" src="javascripts/core/time_dimension.js?20"></script>
 <script type="text/javascript" src="javascripts/core/dimboost.js?31"></script>
 <script type="text/javascript" src="javascripts/core/timestudies.js?28"></script>
 <script type="text/javascript" src="javascripts/core/canvases.js?6"></script>
 <script type="text/javascript" src="javascripts/core/devtools.js"></script>
-<script type="text/javascript" src="javascripts/core/load_functions.js?55"></script>
+<script type="text/javascript" src="javascripts/core/load_functions.js?56"></script>
 <script type="text/javascript" src="javascripts/core/newsticker.js?5"></script>
 <script type="text/javascript" src="javascripts/mods/ngmm.js?18"></script>
 <script type="text/javascript" src="javascripts/mods/ers.js?1"></script>
-<script type="text/javascript" src="javascripts/mods/ngpp.js?36"></script>
+<script type="text/javascript" src="javascripts/mods/ngpp.js?37"></script>
 <script type="text/javascript" src="javascripts/mods/ngppp.js?36"></script>
 <script type="text/javascript" src="javascripts/mods/ngmmm.js?2"></script>
-<script type="text/javascript" src="javascripts/game.js?62"></script>
+<script type="text/javascript" src="javascripts/game.js?64"></script>
 <script type="text/javascript" src="javascripts/sha512.js"></script>
 </body>
 </html>

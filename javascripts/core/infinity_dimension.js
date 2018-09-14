@@ -3,14 +3,17 @@
 
 function DimensionDescription(tier) {
   if (tier > (inQC(4) ? 6 : 7) && (ECTimesCompleted("eterc7") === 0 || player.timeDimension1.amount.eq(0) || tier == 7) && player.currentEternityChall != "eterc7") return getFullExpansion(Math.round(player["infinityDimension"+tier].amount.toNumber()));
-  else return shortenDimensions(player['infinityDimension'+tier].amount)+' (+' + formatValue(player.options.notation, DimensionRateOfChange(tier), 2, 2) + '%/s)';
+  else return shortenDimensions(player['infinityDimension'+tier].amount)+' (+' + formatValue(player.options.notation, DimensionRateOfChange(tier), 2, 2) + dimDescEnd;
 }
 
 
 function DimensionRateOfChange(tier) {
   var toGain = DimensionProduction(tier+(inQC(4)&&tier<8?2:1))
   var current = Decimal.max(player["infinityDimension"+tier].amount, 1);
-  var change  = toGain.times(10).dividedBy(current);
+  if (player.aarexModifications.logRateChange) {
+      var change = current.add(toGain.div(10)).log10()-current.log10()
+      if (change<0||isNaN(change)) change = 0
+  } else var change  = toGain.times(10).dividedBy(current);
   return change;
 }
 

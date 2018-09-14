@@ -107,7 +107,7 @@ function getDimensionFinalMultiplier(tier) {
 function getDimensionDescription(tier) {
   var name = TIER_NAMES[tier];
   if (tier > Math.min((inQC(1) ? 1 : player.currentEternityChall == "eterc3" ? 3 : (player.currentChallenge == "challenge4" || player.currentChallenge == "postc1") ? 5 : 7), player.resets + 3) - (player.currentChallenge == "challenge7" || inQC(4) ? 1 : 0)) return getFullExpansion(tier > 7 && player.currentChallenge == "challenge11" ? Math.round(player[name + "Amount"].toNumber()) : player[name + 'Bought']) + ' (' + dimBought(tier) + ')';
-  else return shortenDimensions(player[name + 'Amount']) + ' (' + dimBought(tier) + ')  (+' + formatValue(player.options.notation, getDimensionRateOfChange(tier), 2, 2) + '%/s)';
+  else return shortenDimensions(player[name + 'Amount']) + ' (' + dimBought(tier) + ')  (+' + formatValue(player.options.notation, getDimensionRateOfChange(tier), 2, 2) + dimDescEnd;
 }
 
 function getDimensionRateOfChange(tier) {
@@ -124,7 +124,10 @@ function getDimensionRateOfChange(tier) {
       else toGain = getDimensionProductionPerSecond(tier + 2);
   }
   var current = player[name + 'Amount'].max(1);
-  var change  = toGain.times(10).dividedBy(current);
+  if (player.aarexModifications.logRateChange) {
+      var change = current.add(toGain.div(10)).log10()-current.log10()
+      if (change<0||isNaN(change)) change = 0
+  } else var change  = toGain.times(10).dividedBy(current);
 
   return change;
 }
@@ -586,7 +589,7 @@ function infUpg13Pow() {
 }
 
 function dimMults() {
-    return Math.pow(1+getInfinitied()*0.2,(player.galacticSacrifice?2:1)*(player.timestudy.studies.includes(31)?4:1))
+	return Decimal.pow(1+getInfinitied()*0.2,(player.galacticSacrifice?2:1)*(player.timestudy.studies.includes(31)?4:1))
 }
 
 function getInfinitiedMult() {

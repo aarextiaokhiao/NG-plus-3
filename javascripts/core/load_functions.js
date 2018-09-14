@@ -12,6 +12,8 @@ function onLoad() {
   if (player.options.notation === undefined) player.options.notation = "Standard"
   if (player.options.challConf === undefined) player.options.challConf = false
   if (player.options.scientific === undefined || typeof(player.options.scientific) == "boolean") player.options.scientific={significantDigits:undefined}
+  if (player.options.logarithm === undefined) player.options.logarithm={base:10}
+  if (player.options.tetration === undefined) player.options.tetration={base:2}
   if (player.options.spazzy === undefined) player.options.spazzy={subNotation:"Scientific"}
   if (player.options.newsHidden === undefined) player.options.newsHidden = false;
   if (player.options.sacrificeConfirmation === undefined) player.options.sacrificeConfirmation = true;
@@ -382,6 +384,9 @@ if (player.version < 5) {
   }
   if (player.aarexModifications.progressBar === undefined) {
       player.aarexModifications.progressBar = true
+  }
+  if (player.aarexModifications.logRateChange === undefined) {
+      player.aarexModifications.logRateChange = false
   }
   transformSaveToDecimal();
   updateCosts();
@@ -1035,6 +1040,8 @@ if (player.version < 5) {
   document.getElementById("quantumConfirmBtn").textContent = "Quantum confirmation: O" + (player.aarexModifications.quantumConf ? "N" : "FF")
 
   document.getElementById("progressBarBtn").textContent = (player.aarexModifications.progressBar?"Hide":"Show")+" progress bar"
+  document.getElementById("toggleLogRateChange").textContent = "Logarithm rate: O"+(player.aarexModifications.logRateChange?"N":"FF")
+  dimDescEnd = (player.aarexModifications.logRateChange?" OoM":"%")+"/s)"
 
   document.getElementById("quantumtabbtn").style.display = quantumed ? "" : "none"
 
@@ -1278,6 +1285,7 @@ function rename_save(id) {
             dilationConf: false,
             offlineProgress: true,
 			progressBar: true,
+			logRateChange: false,
             breakInfinity: false
         }
 		temp_save.aarexModifications.save_name = save_name

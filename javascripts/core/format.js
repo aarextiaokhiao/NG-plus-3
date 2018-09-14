@@ -213,13 +213,28 @@ function formatValue(notation, value, places, placesUnder1000) {
         }
 
         if (notation === "Logarithm") {
-            if (power > 100000) {
-                if (player.options.commas === "Logarithm") return "ee"+Math.log10(Decimal.log10(value)).toFixed(3)
-                else if (player.options.commas !== "Commas") return "e"+formatValue(player.options.commas, power, 3, 3)
-                else if (power >= 1e12) return "e"+formatValue("Standard", power, 3, 3)
-                else return "e"+Decimal.log10(value).toFixed(places).replace(/\B(?=(\d{3})+(?!\d))/g, ",")
+            var base=player.options.logarithm.base
+            var prefix
+            if (base==10) {
+                power=Decimal.log10(value)
+                prefix="e"
+            } else {
+                power=new Decimal(value).log(base)
+                if (base >= 1e15) var prefix = formatValue("Scientific", base, 2, 0)
+                else if (base >= 1e3) var prefix = formatValue("Standard", base, 2, 0)
+                else prefix=base
+                prefix+="^"
             }
-            return "e"+Decimal.log10(value).toFixed(places)
+            if (power > 100000) {
+                if (player.options.commas === "Logarithm") {
+                    if (base==10) return "ee"+Math.log10(power).toFixed(3)
+                    return prefix+prefix+(Math.log10(power)/Math.log(base)).toFixed(3)
+                }
+                else if (player.options.commas !== "Commas") return prefix+formatValue(player.options.commas, power, 3, 3)
+                else if (power >= 1e12) return prefix+formatValue("Standard", power, 3, 3)
+                else return prefix+power.toFixed(places).replace(/\B(?=(\d{3})+(?!\d))/g, ",")
+            }
+            return prefix+power.toFixed(places)
         }
 
         if (notation === "Brackets") {
@@ -243,12 +258,16 @@ function formatValue(notation, value, places, placesUnder1000) {
           return string;
         }
         if (notation == "Tetration") {
+          var base = player.options.tetration.base
           var count = -1;
+          if (base >= 1e15) var prefix = formatValue("Scientific", base, 2, 0)
+          else if (base >= 1e3) var prefix = formatValue("Standard", base, 2, 0)
+          else var prefix = base
           while (value > 1) {
-            value = Decimal.log2(value);
+            value = new Decimal(value).log(base)
             count++;
           }
-          return "2⇈" + (value + count).toFixed(Math.max(places, 0, Math.min(count-1, 4)));
+          return prefix + "⇈" + (value + count).toFixed(Math.max(places, 0, Math.min(count-1, 4)));
         }
 
         matissa = (matissa * Decimal.pow(10, power % 3)).toFixed(places)

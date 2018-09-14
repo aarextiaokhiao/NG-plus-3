@@ -322,6 +322,7 @@ function updateNewPlayer(reseted) {
             dilationConf: false,
             offlineProgress: true,
             progressBar: true,
+            logRateChange: false,
             breakInfinity: false
         }
     }
@@ -1141,6 +1142,12 @@ function updateDimensions() {
         }
         else document.getElementById("enabledilation").textContent = "Dilate time."+((player.eternityBuyer.isOn&&player.eternityBuyer.dilationMode?!isNaN(player.eternityBuyer.statBeforeDilation):false) ? " " + (player.eternityBuyer.dilationPerAmount - player.eternityBuyer.statBeforeDilation) + " left before dilation." : "")
     }
+}
+
+function toggleLogRateChange() {
+	player.aarexModifications.logRateChange=!player.aarexModifications.logRateChange
+	document.getElementById("toggleLogRateChange").textContent = "Logarithm rate: O"+(player.aarexModifications.logRateChange?"N":"FF")
+	dimDescEnd = (player.aarexModifications.logRateChange?" OoM":"%")+"/s)"
 }
 
 function updateCosts() {
@@ -3036,6 +3043,8 @@ function openNotationOptions() {
 		document.getElementById("notationoptions").style.display=""
 		
 		document.getElementById("significantDigits").value=player.options.scientific.significantDigits?player.options.scientific.significantDigits:0
+		document.getElementById("logBase").value=player.options.logarithm.base
+		document.getElementById("tetrationBase").value=player.options.tetration.base
 		document.getElementById("maxLength").value=player.options.psi.chars
 		document.getElementById("maxArguments").value=Math.min(player.options.psi.args,4)
 		document.getElementById("chosenSubNotation").textContent="Sub-notation: "+(player.options.spazzy.subNotation=="Emojis"?"Cancer":player.options.spazzy.subNotation)
@@ -3056,6 +3065,24 @@ function switchOption(notation,id) {
 			if (value<0||value>10) return
 			if (value==0) player.options.scientific.significantDigits=undefined
 			else player.options.scientific.significantDigits=value
+		}
+	} else if (notation=="logarithm") {
+		if (id=="base") {
+			var value=parseFloat(document.getElementById("logBase").value)
+		}
+		if (isNaN(value)) return
+		if (id=="base") {
+			if (value<=1||value>Number.MAX_VALUE) return
+			else player.options.logarithm.base=value
+		}
+	} else if (notation=="tetration") {
+		if (id=="base") {
+			var value=parseFloat(document.getElementById("tetrationBase").value)
+		}
+		if (isNaN(value)) return
+		if (id=="base") {
+			if (value<2||value>Number.MAX_VALUE) return
+			else player.options.tetration.base=value
 		}
 	} else if (notation=="psi") {
 		var value=parseFloat(document.getElementById(id).value)

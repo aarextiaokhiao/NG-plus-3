@@ -78,13 +78,16 @@ function getTimeDimensionProduction(tier) {
 function getTimeDimensionRateOfChange(tier) {
   let toGain = getTimeDimensionProduction(tier+(inQC(4)?2:1))
   var current = Decimal.max(player["timeDimension"+tier].amount, 1);
-  var change  = toGain.times(10).dividedBy(current);
+  if (player.aarexModifications.logRateChange) {
+      var change = current.add(toGain.div(10)).log10()-current.log10()
+      if (change<0||isNaN(change)) change = 0
+  } else var change  = toGain.times(10).dividedBy(current);
   return change;
 }
 
 function getTimeDimensionDescription(tier) {
   if (tier > (inQC(4) ? 6 : 7) || (tier > 3 && !player.dilation.studies.includes(tier - 2))) return getFullExpansion(player['timeDimension' + tier].bought)
-  else return shortenDimensions(player['timeDimension' + tier].amount) + ' (+' + formatValue(player.options.notation, getTimeDimensionRateOfChange(tier), 2, 2) + '%/s)';
+  else return shortenDimensions(player['timeDimension' + tier].amount) + ' (+' + formatValue(player.options.notation, getTimeDimensionRateOfChange(tier), 2, 2) + dimDescEnd;
 }
 
 function updateTimeDimensions() {

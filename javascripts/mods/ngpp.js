@@ -36,14 +36,17 @@ function getMetaDimensionMultiplier (tier) {
 
 function getMetaDimensionDescription(tier) {
   if (tier > Math.min(7, player.meta.resets + 3) - (inQC(4) ? 1 : 0)) return getFullExpansion(player.meta[tier].bought) + ' (' + dimMetaBought(tier) + ')';
-  else return shortenDimensions(player.meta[tier].amount) + ' (' + dimMetaBought(tier) + ')  (+' + formatValue(player.options.notation, getMetaDimensionRateOfChange(tier), 2, 2) + '%/s)';
+  else return shortenDimensions(player.meta[tier].amount) + ' (' + dimMetaBought(tier) + ')  (+' + formatValue(player.options.notation, getMetaDimensionRateOfChange(tier), 2, 2) + dimDescEnd;
 }
 
 function getMetaDimensionRateOfChange(tier) {
   let toGain = getMetaDimensionProduction(tier + (inQC(4)?2:1));
 
   var current = player.meta[tier].amount.max(1);
-  var change  = toGain.times(10).dividedBy(current);
+  if (player.aarexModifications.logRateChange) {
+      var change = current.add(toGain.div(10)).log10()-current.log10()
+      if (change<0||isNaN(change)) change = 0
+  } else var change  = toGain.times(10).dividedBy(current);
 
   return change;
 }
