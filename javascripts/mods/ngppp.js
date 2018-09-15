@@ -1,12 +1,12 @@
-masterystudies={initialCosts:{time:{241: 1e71, 251: 2e71, 252: 2e71, 253: 2e71, 261: 5e71, 262: 5e71, 263: 5e71, 264: 5e71, 265: 5e71, 266: 5e71, 271: 2.7434842249657063e76, 272: 2.7434842249657063e76, 273: 2.7434842249657063e76, 281: 6.858710562414266e76, 282: 6.858710562414266e76, 291: 2.143347050754458e77, 292: 2.143347050754458e77, 301: 4.286694101508916e77, 302: 2.6791838134430725e78, 303: 4.286694101508916e77, 311: 4.286694101508916e77, 312: 4.286694101508916e77, 321: 4.286694101508916e77, 322: 4.286694101508916e77},
+masterystudies={initialCosts:{time:{241: 1e71, 251: 2e71, 252: 2e71, 253: 2e71, 261: 5e71, 262: 5e71, 263: 5e71, 264: 5e71, 265: 5e71, 266: 5e71, 271: 2.7434842249657063e76, 272: 2.7434842249657063e76, 273: 2.7434842249657063e76, 281: 6.858710562414266e76, 282: 6.858710562414266e76, 291: 2.143347050754458e77, 292: 2.143347050754458e77, 301: 4.286694101508916e77, 302: 2.6791838134430725e78, 303: 4.286694101508916e77, 311: 4.286694101508916e77, 312: 4.286694101508916e77, 321: 4.286694101508916e77, 322: 1.808449074074074e78, 323: 4.286694101508916e77, 331: 3.472222222222222e81, 332: 9.04224537037037e78, 341: 1.9290123456790122e81, 342: 2.8935185185185184e81, 343: 7.535204475308642e78, 344: 5.023469650205761e78, 351: 1.2056327160493827e80},
 		ec:{13:1e72, 14:1e72}},
 	costs:{time:{},
 		ec:{},
-		dil:{7: 2e82, 8: 2e84, 9: 4e85},
+		dil:{7: 2e82, 8: 2e84, 9: 4e85, 10: 6e87},
 		mc:{}},
-	costmults:{241: 1, 251: 2.5, 252: 2.5, 253: 2.5, 261: 6, 262: 6, 263: 6, 264: 6, 265: 6, 266: 6, 271: 2, 272: 2, 273: 2, 281: 4, 282: 4, 291: 2, 292: 2, 301: 2, 302: 2, 303: 2, 311: 2, 312: 2, 321: 2, 322: 2},
+	costmults:{241: 1, 251: 2.5, 252: 2.5, 253: 2.5, 261: 6, 262: 6, 263: 6, 264: 6, 265: 6, 266: 6, 271: 2, 272: 2, 273: 2, 281: 4, 282: 4, 291: 2, 292: 2, 301: 2, 302: 2, 303: 2, 311: 2, 312: 2, 321: 2, 322: 2, 323: 2, 331: 3, 332: 3, 341: 2, 342: 2, 343: 2, 344: 2, 351: 4},
 	costmult:1,
-	allTimeStudies:[241, 251, 252, 253, 261, 262, 263, 264, 265, 266, 271, 272, 273, 281, 282, 291, 292, 301, 302, 303, 311, 312, 321, 322],
+	allTimeStudies:[241, 251, 252, 253, 261, 262, 263, 264, 265, 266, 271, 272, 273, 281, 282, 291, 292, 301, 302, 303, 311, 312, 321, 322, 323, 331, 332, 341, 342, 343, 344, 351],
 	initialReqs:{13:728e3,14:255e5},
 	incrementReqs:{13:6e3,14:9e5},
 	reqs:{}}
@@ -16,6 +16,7 @@ function portal() {
 }
 	
 function updateMasteryStudyButtons() {
+	if (!player.masterystudies) return
 	for (id=0;id<(quantumed?masterystudies.allTimeStudies.length:10);id++) {
 		var name=masterystudies.allTimeStudies[id]
 		var div=document.getElementById("timestudy"+name)
@@ -28,21 +29,28 @@ function updateMasteryStudyButtons() {
 		if (player.eternityChallUnlocked==id) element.className="eternitychallengestudybought"
 		else if (canBuyMasteryStudy('ec', id)) element.className="eternitychallengestudy"
 		else element.className="timestudylocked"
-		document.getElementById("ec"+id+"Req").textContent=getFullExpansion(masterystudies.reqs[id])
 	}
 	for (id=262;id<265;id++) document.getElementById("ts"+id+"Current").textContent="Currently: "+shorten(getMTSMult(id))+"x"
 	if (quantumed) {
 		for (id=281;id<283;id++) document.getElementById("ts"+id+"Current").textContent="Currently: "+shorten(getMTSMult(id))+"x"
-		for (id=7;id<10;id++) {
+		document.getElementById("ts303Current").textContent="Currently: "+shorten(getMTSMult(303))+"x"
+		document.getElementById("ts322Current").textContent="Currently: "+shorten(getMTSMult(322))+"x"
+		for (id=7;id<11;id++) {
 			var div=document.getElementById("dilstudy"+id)
 			if (player.masterystudies.includes("d"+id)) div.className="dilationupgbought"
 			else if (canBuyMasteryStudy('d', id)) div.className="dilationupg"
 			else div.className="timestudylocked"
 		}
 	}
+	if (player.masterystudies.includes("d10")) {
+		document.getElementById("ts341Current").textContent="Currently: "+shorten(getMTSMult(341))+"x"
+		for (id=342;id<344;id++) document.getElementById("ts"+id+"Current").textContent="Currently: "+(getMTSMult(id)*100).toFixed(2)+"%"
+		document.getElementById("ts344Current").textContent="Currently: "+(getMTSMult(344)*100-100).toFixed(2)+"%"
+		document.getElementById("ts351Current").textContent="Currently: "+shorten(getMTSMult(351))+"x"
+	}
 }
 
-function updateMasteryStudyCosts() {
+function updateMasteryStudyCosts(quick=false) {
 	masterystudies.costmult=1
 	for (id=0;id<player.masterystudies.length;id++) {
 		var t=player.masterystudies[id].split("t")[1]
@@ -60,24 +68,28 @@ function updateMasteryStudyCosts() {
 		masterystudies.reqs[id]=masterystudies.initialReqs[id]+masterystudies.incrementReqs[id]*ECTimesCompleted("eterc"+id)
 		masterystudies.costs.ec[name]=masterystudies.initialCosts.ec[name]*masterystudies.costmult
 	}
-	updateMasteryStudyTextDisplay()
+	if (!quick) updateMasteryStudyTextDisplay()
 }
 
 var types = {t:"time",ec:"ec",d:"dil"}
-function buyMasteryStudy(type, id) {
+function buyMasteryStudy(type, id, quick=false) {
 	if (canBuyMasteryStudy(type, id)) {
 		player.timestudy.theorem-=masterystudies.costs[types[type]][id]
 		if (type=='ec') {
 			player.eternityChallUnlocked=id
-			showTab("challenges")
-			showChallengesTab("eternitychallenges")
+			player.etercreq=id
 			updateEternityChallenges()
 		} else {
 			player.masterystudies.push(type+id)
 		}
-		updateMasteryStudyCosts()
-		updateMasteryStudyButtons()
-		drawMasteryTree()
+		updateMasteryStudyCosts(quick)
+		if (!quick) {
+			if (type=='ec') {
+				showTab("challenges")
+				showChallengesTab("eternitychallenges")
+			} else drawMasteryTree()
+			updateMasteryStudyButtons()
+		}
 		
 		if (id==241&&!GUBought("gb3")) {
 			ipMultPower=2.2
@@ -94,6 +106,12 @@ function buyMasteryStudy(type, id) {
 			updateQuantumChallenges()
 			if (id>8) updateGluons()
 		}
+		if (id==10) {
+			showTab("quantumtab")
+			showQuantumTab("replicants")
+			document.getElementById("emperorstudies").style.display=""
+			updateReplicants()
+		}
 	}
 }
 
@@ -103,7 +121,17 @@ function canBuyMasteryStudy(type, id) {
 		var row=Math.floor(id/10)
 		for (check=1;check<10;check++) if (player.masterystudies.includes('t'+(row+1).toString()+check)) return false
 		var col=id%10
-		if (row>31) return player.masterystudies.includes('t31'+col)
+		if (row>34) return player.masterystudies.includes('t344')
+		if (row>33) {
+			if (col>3) return player.masterystudies.includes('t343')
+			if (col>1) return player.masterystudies.includes('t33'+(col-1))
+			return player.masterystudies.includes('t342')
+		}
+		if (row>32) return player.masterystudies.includes('t322')
+		if (row>31) {
+			if (col==2) return player.masterystudies.includes('t302')&&player.masterystudies.includes('d10')
+			return player.masterystudies.includes('t31'+((col+1)/2))
+		}
 		if (row>30) return player.masterystudies.includes('t30'+(col*2-1))
 		if (row>29) {
 			if (col==2) return player.masterystudies.includes('t272')&&player.masterystudies.includes('d9')
@@ -116,13 +144,17 @@ function canBuyMasteryStudy(type, id) {
 		if (row>24) return player.masterystudies.includes('t241')
 	} else if (type=='d') {
 		if (player.timestudy.theorem<masterystudies.costs.dil[id]||player.masterystudies.includes('d'+id)) return false
+		if (id>9) return player.masterystudies.includes("t302")&&player.quantum.pairedChallenges.completed>3
 		if (id>8) return player.masterystudies.includes("d8")&&QCIntensity(8)
 		if (id>7) return player.masterystudies.includes("t272")&&player.quantum.electrons.amount.gte(16900)
 		if (id>6) return player.masterystudies.includes("t252")
 	} else {
 		if (player.timestudy.theorem<masterystudies.costs.ec[id]||player.eternityChallUnlocked) return false
-		if (id==14) if (Math.round(player.replicanti.chance*100)<masterystudies.reqs[14]||!(player.masterystudies.includes('t264')||player.masterystudies.includes('t265')||player.masterystudies.includes('t266'))) return false
-		if (id==13) if (player.resets<masterystudies.reqs[13]||!(player.masterystudies.includes('t261')||player.masterystudies.includes('t262')||player.masterystudies.includes('t263'))) return false
+		if (id==13&&!(player.masterystudies.includes('t261')||player.masterystudies.includes('t262')||player.masterystudies.includes('t263'))) return false
+		if (id==14&&!(player.masterystudies.includes('t264')||player.masterystudies.includes('t265')||player.masterystudies.includes('t266'))) return false
+		if (player.etercreq==id) return true
+		if (id==13) return player.resets>=masterystudies.reqs[13]
+		return Math.round(player.replicanti.chance*100)>=masterystudies.reqs[14]
 	}
 	return true
 }
@@ -137,7 +169,11 @@ function drawMasteryBranch(num1, num2) {
 	var y2=end.top + (end.height / 2) + (document.documentElement.scrollTop || document.body.scrollTop);
 	msctx.lineWidth=15;
 	msctx.beginPath();
-	if (type=="ec"?player.eternityChallUnlocked==num2.slice(2,4):player.masterystudies.includes(type+num2.split("study")[1])) {
+	var drawBoughtLine=false
+	if (type=="ec") {
+		if (player.eternityChallUnlocked==num2.slice(2,4)) drawBoughtLine=player.masterystudies.includes('t'+num1.split("study")[1])
+	} else drawBoughtLine=player.masterystudies.includes(type+num2.split("study")[1])
+	if (drawBoughtLine) {
 		if (type=="d" && player.options.theme == "Aarex's Modifications") {
 			msctx.strokeStyle=parseInt(num2.split("study")[1])<8?"#D2E500":parseInt(num2.split("study")[1])>9?"#333333":"#009900";
 		} else if (type=="ec") {
@@ -192,9 +228,19 @@ function drawMasteryTree() {
 		drawMasteryBranch("timestudy301", "timestudy311")
 		drawMasteryBranch("timestudy303", "timestudy312")
 		drawMasteryBranch("timestudy302", "dilstudy10")
-		drawMasteryBranch("dilstudy10", "dilstudy11")
 		drawMasteryBranch("timestudy311", "timestudy321")
-		drawMasteryBranch("timestudy312", "timestudy322")
+		drawMasteryBranch("dilstudy10", "timestudy322")
+		drawMasteryBranch("timestudy312", "timestudy323")
+		drawMasteryBranch("timestudy322", "timestudy331")
+		drawMasteryBranch("timestudy322", "timestudy332")
+	}
+	if (player.masterystudies.includes("d10")) {
+		drawMasteryBranch("timestudy331", "timestudy342")
+		drawMasteryBranch("timestudy332", "timestudy343")
+		drawMasteryBranch("timestudy342", "timestudy341")
+		drawMasteryBranch("timestudy343", "timestudy344")
+		drawMasteryBranch("timestudy344", "timestudy351")
+		drawMasteryBranch("timestudy351", "dilstudy11")
 		drawMasteryBranch("dilstudy11", "dilstudy12")
 		drawMasteryBranch("dilstudy12", "dilstudy13")
 	}
@@ -236,6 +282,17 @@ function getMTSMult(id) {
 	if (id==281) return Decimal.pow(10,Math.pow(replmult.max(1).log10(),0.25)/10)
 	if (id==282) return Decimal.pow(10,Math.pow(replmult.max(1).log10(),0.25)/15)
 	if (id==303) return Decimal.pow(3.5,Math.pow(Math.log10(Math.max(player.galaxies,1)),1.5))
+	if (id==322) return Decimal.pow(10,Math.sqrt(-player.tickspeed.div(1000).log10())/22500)
+	if (id==341) return player.galaxies+1
+	if (id==342) {
+		let mult = player.quantum.replicants.quarks.max(1).log10()/15
+		if (mult > 0.4) mult = Math.sqrt(mult*0.4)
+		if (mult > 1) return 1
+		return mult
+	}
+	if (id==343) return Math.min(player.dilation.dilatedTime.max(1).log10()/765,1)
+	if (id==344) return Math.log10(player.quantum.replicants.amount.add(1).log(10)+1)*0.52+1
+	if (id==351) return player.timeShards.add(1).pow(1e-6)
 }
 
 //v1.3
@@ -288,6 +345,27 @@ function updateQuantumTabs() {
 	if (document.getElementById("electrons").style.display=="block") {
 		for (i=1;i<7;i++) document.getElementById("sacrifice"+i).className=(Math.pow(10,i>4?0:i-1)>player.galaxies-player.quantum.electrons.sacGals||!inQC(0))?"unavailablebtn":"storebtn"
 		for (u=1;u<5;u++) document.getElementById("electronupg"+u).className="gluonupgrade "+(canBuyElectronUpg(u)?"stor":"unavailabl")+"ebtn"
+	}
+	if (document.getElementById("replicants").style.display=="block") {
+		document.getElementById("replicantiAmount2").textContent=shortenDimensions(player.replicanti.amount)
+		document.getElementById("replicantReset").className=player.replicanti.amount.lt(player.quantum.replicants.requirement)?"unavailablebtn":"storebtn"
+		document.getElementById("replicantAmount").textContent=shortenDimensions(player.quantum.replicants.amount)
+		document.getElementById("workerReplAmount").textContent=shortenDimensions(player.quantum.replicants.workers)
+		document.getElementById("babyReplAmount").textContent=shortenDimensions(player.quantum.replicants.babies)
+
+		var gatherRateData=getGatherRate()
+		document.getElementById("normalReplGatherRate").textContent=shortenDimensions(gatherRateData.normal)
+		document.getElementById("workerReplGatherRate").textContent=shortenDimensions(gatherRateData.workers)
+		document.getElementById("babyReplGatherRate").textContent=shortenDimensions(gatherRateData.babies)
+		document.getElementById("gatherRate").textContent='+'+shortenDimensions(gatherRateData.total)+'/s'
+
+		document.getElementById("gatheredQuarks").textContent=shortenDimensions(player.quantum.replicants.quarks.floor())
+		document.getElementById("quarkTranslation").textContent=shortenDimensions(gatheredQuarksBoost*100)+'%'
+
+		document.getElementById("eggonAmount").textContent=shortenDimensions(player.quantum.replicants.eggons)
+		document.getElementById("hatchProgress").textContent=Math.round(player.quantum.replicants.babyProgress.toNumber()*100)+"%"
+		document.getElementById("growupProgress").textContent=Math.round(player.quantum.replicants.ageProgress.toNumber()*100)+"%"
+		document.getElementById("feedBaby").className=((player.quantum.replicants.quantumFood<1||player.quantum.replicants.babies.lt(1))?"unavailabl":"stor")+"ebtn"
 	}
 }
 
@@ -360,6 +438,11 @@ function updateGluons() {
 	document.getElementById("rggain").textContent=shortenDimensions(player.quantum.usedQuarks.r.min(player.quantum.usedQuarks.g))
 	document.getElementById("gbgain").textContent=shortenDimensions(player.quantum.usedQuarks.g.min(player.quantum.usedQuarks.b))
 	document.getElementById("brgain").textContent=shortenDimensions(player.quantum.usedQuarks.b.min(player.quantum.usedQuarks.r))
+	if (player.masterystudies.includes("d10")) {
+		document.getElementById("rgRepl").textContent=shortenDimensions(player.quantum.gluons.rg)
+		document.getElementById("gbRepl").textContent=shortenDimensions(player.quantum.gluons.gb)
+		document.getElementById("brRepl").textContent=shortenDimensions(player.quantum.gluons.br)
+	}
 	var names=["rg","gb","br"]
 	for (u=1;u<5;u++) {
 		var showRow=true
@@ -661,6 +744,7 @@ function canBuyElectronUpg(id) {
 
 //v1.99795
 function updateMasteryStudyTextDisplay() {
+	if (!player.masterystudies) return
 	document.getElementById("costmult").textContent=shorten(masterystudies.costmult)
 	for (id=0;id<(quantumed?masterystudies.allTimeStudies.length:10);id++) {
 		var name=masterystudies.allTimeStudies[id]
@@ -668,13 +752,16 @@ function updateMasteryStudyTextDisplay() {
 	}
 	for (id=13;id<15;id++) {
 		document.getElementById("ec"+id+"Cost").textContent="Cost: "+shorten(masterystudies.costs.ec[id])+" Time Theorems"
-		document.getElementById("ec"+id+"Req").textContent=getFullExpansion(masterystudies.reqs[id])
+		document.getElementById("ec"+id+"Req").style.display=player.etercreq==id?"none":"block"
 	}
+	document.getElementById("ec13Req").textContent="Requirement: "+getFullExpansion(masterystudies.reqs[13])+" dimension boosts"
+	document.getElementById("ec14Req").textContent="Requirement: "+getFullExpansion(masterystudies.reqs[14])+"% replicate chance"
 	if (quantumed) {
-		for (id=7;id<10;id++) document.getElementById("ds"+id+"Cost").textContent="Cost: "+shorten(masterystudies.costs.dil[id])+" Time Theorems"
+		for (id=7;id<11;id++) document.getElementById("ds"+id+"Cost").textContent="Cost: "+shorten(masterystudies.costs.dil[id])+" Time Theorems"
 		document.getElementById("ds8Req").textContent="Requirement: "+shorten(16900)+" electrons"
-		for (id=281;id<283;id++) document.getElementById("ts"+id+"Current").textContent="Currently: "+shorten(getMTSMult(id))+"x"
-		document.getElementById("ts303Current").textContent="Currently: "+shorten(getMTSMult(303))+"x"
+	}
+	if (player.masterystudies.includes("d10")) {
+		for (id=341;id<345;id++) document.getElementById("ts"+id+"Cost").textContent="Cost: "+shorten(masterystudies.costs.time[id])+" Time Theorems"
 	}
 }
 
@@ -752,4 +839,111 @@ function maxQuarkMult() {
 function respecOptions() {
 	closeToolTip()
 	document.getElementById("respecoptions").style.display="flex"
+}
+
+//v1.998
+function toggleAutoQuantumContent(id) {
+	player.quantum.autoOptions[id]=!player.quantum.autoOptions[id]
+	if (id=='sacrifice') {
+		document.getElementById('sacrificeAuto').textContent="Auto: O"+(player.quantum.autoOptions.sacrifice?"N":"FF")
+		if (player.quantum.autoOptions.sacrifice) sacrificeGalaxy(6)
+	}
+}
+
+function updateReplicants() {
+	if (player.masterystudies ? !player.masterystudies.includes("d10") : true) {
+		document.getElementById("replicantstabbtn").style.display="none"
+		return
+	} else document.getElementById("replicantstabbtn").style.display=""
+	document.getElementById("replicantReset").innerHTML="Reset replicanti amount to gain a replicant, but the replicate interval will slow down.<br>(requires "+shortenCosts(player.quantum.replicants.requirement)+" replicanti)"
+	document.getElementById("replicantAmount").textContent=shortenDimensions(player.quantum.replicants.amount)
+	document.getElementById("quantumFoodAmount").textContent=getFullExpansion(player.quantum.replicants.quantumFood)
+	document.getElementById("buyQuantumFood").innerHTML="Buy 1 quantum food<br><br><br>Cost: "+shortenDimensions(player.quantum.replicants.quantumFoodCost)+" for all 3 gluons"
+	document.getElementById("buyQuantumFood").className="gluonupgrade "+(player.quantum.gluons.rg.min(player.quantum.gluons.gb).min(player.quantum.gluons.br).lt(player.quantum.replicants.quantumFoodCost)?"unavailabl":"stor")+"ebtn"
+	document.getElementById("feedNormal").className=((player.quantum.replicants.quantumFood<1||player.quantum.replicants.amount.lt(1)||Math.round(player.quantum.replicants.workers.toNumber())>=player.quantum.replicants.limit)?"unavailabl":"stor")+"ebtn"
+	document.getElementById("eggonRate").textContent=shortenDimensions(player.quantum.replicants.workers.times(3))
+	document.getElementById("workerProgress").textContent=Math.round(player.quantum.replicants.workerProgress.toNumber()*100)+"%"
+	document.getElementById("breakLimit").innerHTML="Limit of workers: "+player.quantum.replicants.limit+(player.quantum.replicants.limit>19?"":" -> "+(player.quantum.replicants.limit+1)+"<br>Cost: "+shortenDimensions(player.quantum.replicants.limitCost)+" for all 3 gluons")
+	document.getElementById("breakLimit").className=(player.quantum.gluons.rg.min(player.quantum.gluons.gb).min(player.quantum.gluons.br).lt(player.quantum.replicants.limitCost)||player.quantum.replicants.limit>19?"unavailabl":"stor")+"ebtn"
+	document.getElementById("reduceHatchSpeed").innerHTML="Hatch speed: "+player.quantum.replicants.hatchSpeed.toFixed(1)+"s"+(player.quantum.replicants.hatchSpeed>1?" -> "+(player.quantum.replicants.hatchSpeed/1.1).toFixed(1)+"s<br>Cost: "+shortenDimensions(player.quantum.replicants.hatchSpeedCost)+" for all 3 gluons":"")
+	document.getElementById("reduceHatchSpeed").className=(player.quantum.gluons.rg.min(player.quantum.gluons.gb).min(player.quantum.gluons.br).lt(player.quantum.replicants.hatchSpeedCost)||player.quantum.replicants.hatchSpeed==1?"unavailabl":"stor")+"ebtn"
+}
+
+function replicantReset() {
+	if (player.replicanti.amount.lt(player.quantum.replicants.requirement)) return
+	player.replicanti.amount=new Decimal(1)
+	player.quantum.replicants.amount=player.quantum.replicants.amount.add(1)
+	player.quantum.replicants.requirement=player.quantum.replicants.requirement.times("1e50000")
+	updateReplicants()
+}
+
+function getGatherRate() {
+	var mult = new Decimal(1)
+	if (player.masterystudies.includes("t341")) mult = mult.times(getMTSMult(341))
+	var data = {normal: player.quantum.replicants.amount.times(mult), workers: player.quantum.replicants.workers.times(20).times(mult), babies: player.quantum.replicants.babies.div(20).times(mult)}
+	data.total = data.normal.add(data.workers).add(data.babies)
+	return data
+}
+
+function buyQuantumFood() {
+	if (player.quantum.gluons.rg.min(player.quantum.gluons.gb).min(player.quantum.gluons.br).gte(player.quantum.replicants.quantumFoodCost)) {
+		player.quantum.gluons.rg=player.quantum.gluons.rg.sub(player.quantum.replicants.quantumFoodCost)
+		player.quantum.gluons.gb=player.quantum.gluons.gb.sub(player.quantum.replicants.quantumFoodCost)
+		player.quantum.gluons.br=player.quantum.gluons.br.sub(player.quantum.replicants.quantumFoodCost)
+		player.quantum.replicants.quantumFood++
+		player.quantum.replicants.quantumFoodCost=player.quantum.replicants.quantumFoodCost.times(5)
+		updateGluons()
+		updateReplicants()
+	}
+}
+
+function feedReplicant(type) {
+	if (player.quantum.replicants.quantumFood<1) return
+	if (type=="normal") {
+		if (player.quantum.replicants.amount.lt(1)||Math.round(player.quantum.replicants.workers.toNumber())>=player.quantum.replicants.limit) return
+		player.quantum.replicants.workerProgress=player.quantum.replicants.workerProgress.times(3).add(1).round().div(3)
+		if (player.quantum.replicants.workerProgress.gte(1)) {
+			var toAdd=player.quantum.replicants.workerProgress.floor()
+			player.quantum.replicants.amount=player.quantum.replicants.amount.sub(toAdd)
+			player.quantum.replicants.workerProgress=player.quantum.replicants.workerProgress.sub(toAdd)
+			player.quantum.replicants.workers=player.quantum.replicants.workers.add(toAdd).round()
+		}
+	} else if (type=="baby") {
+		if (player.quantum.replicants.babies.lt(1)) return
+		player.quantum.replicants.quantumFoodCost=player.quantum.replicants.quantumFoodCost.div(5)
+		player.quantum.replicants.ageProgress=player.quantum.replicants.ageProgress.add(0.5)
+		if (player.quantum.replicants.amount.lt(1)) player.quantum.replicants.ageProgress=player.quantum.replicants.ageProgress.times(2).round().div(2)
+		if (player.quantum.replicants.ageProgress.gte(1)) {
+			var toAdd=player.quantum.replicants.ageProgress.floor()
+			player.quantum.replicants.babies=player.quantum.replicants.babies.sub(toAdd).round()
+			player.quantum.replicants.ageProgress=player.quantum.replicants.ageProgress.sub(toAdd)
+			player.quantum.replicants.amount=player.quantum.replicants.amount.add(toAdd)
+		}
+	}
+	player.quantum.replicants.quantumFood--
+	updateReplicants()
+}
+
+function reduceHatchSpeed() {
+	if (player.quantum.gluons.rg.min(player.quantum.gluons.gb).min(player.quantum.gluons.br).gte(player.quantum.replicants.hatchSpeedCost)) {
+		player.quantum.gluons.rg=player.quantum.gluons.rg.sub(player.quantum.replicants.hatchSpeedCost)
+		player.quantum.gluons.gb=player.quantum.gluons.gb.sub(player.quantum.replicants.hatchSpeedCost)
+		player.quantum.gluons.br=player.quantum.gluons.br.sub(player.quantum.replicants.hatchSpeedCost)
+		player.quantum.replicants.hatchSpeed=Math.max(player.quantum.replicants.hatchSpeed/1.1,1)
+		player.quantum.replicants.hatchSpeedCost=player.quantum.replicants.hatchSpeedCost.times(10)
+		updateGluons()
+		updateReplicants()
+	}
+}
+
+function breakLimit() {
+	if (player.quantum.gluons.rg.min(player.quantum.gluons.gb).min(player.quantum.gluons.br).gte(player.quantum.replicants.limitCost)) {
+		player.quantum.gluons.rg=player.quantum.gluons.rg.sub(player.quantum.replicants.limitCost)
+		player.quantum.gluons.gb=player.quantum.gluons.gb.sub(player.quantum.replicants.limitCost)
+		player.quantum.gluons.br=player.quantum.gluons.br.sub(player.quantum.replicants.limitCost)
+		player.quantum.replicants.limit++
+		player.quantum.replicants.limitCost=player.quantum.replicants.limitCost.times(200)
+		updateGluons()
+		updateReplicants()
+	}
 }

@@ -623,7 +623,7 @@ if (player.version < 5) {
           }
           player.aarexModifications.newGamePlusVersion = 1
           if (confirm("Do you want to migrate your NG++ save into new NG+++ mode?")) {
-              player.aarexModifications.newGame3PlusVersion = 1.99799
+              player.aarexModifications.newGame3PlusVersion = 1.998
               player.respecOptions={time:player.respec,mastery:player.respec}
               player.dbPower = 1
               player.peakSpent = 0
@@ -671,6 +671,25 @@ if (player.version < 5) {
               }
               player.dilation.bestTP = 0
               player.old = false
+              player.quantum.autoOptions = {}
+              player.quantum.replicants = {
+                  amount: 0,
+                  requirement: "1e3000000",
+                  quarks: 0,
+                  quantumFood: 0,
+                  quantumFoodCost: 1e46,
+                  workerProgress: 0,
+                  workers: 0,
+                  limit: 1,
+                  limitCost: 1e49,
+                  eggonProgress: 0,
+                  eggons: 0,
+                  hatchSpeed: 20,
+                  hatchSpeedCost: 1e49,
+                  babyProgress: 0,
+                  babies: 0,
+                  ageProgress: 0
+              }
           }
           player.dilation.upgrades=migratedUpgrades
           resetDilationGalaxies()
@@ -827,16 +846,43 @@ if (player.version < 5) {
       player.old=false
   }
   if (player.aarexModifications.newGame3PlusVersion < 1.99795) player.options.animations.quarks = true
-  if (player.aarexModifications.newGame3PlusVersion < 1.99799) {
-      player.respecOptions={time:player.respec,mastery:player.respec}
-      player.aarexModifications.newGame3PlusVersion=1.99799
+  if (player.aarexModifications.newGame3PlusVersion < 1.99799) player.respecOptions={time:player.respec,mastery:player.respec}
+  if (player.aarexModifications.newGame3PlusVersion < 1.998) {
+      var respecedMS=[]
+      for (id=0;id<player.masterystudies.length;id++) {
+          if (player.masterystudies[id]=="t322") respecedMS.push("t323")
+          else respecedMS.push(player.masterystudies[id])
+      }
+      player.masterystudies=respecedMS
+      player.quantum.autoOptions = {}
+      player.quantum.replicants = {
+          amount: 0,
+          requirement: "1e3000000",
+          quarks: 0,
+          quantumFood: 0,
+          quantumFoodCost: 1e46,
+          workerProgress: 0,
+          workers: 0,
+          limit: 1,
+          limitCost: 1e49,
+          eggonProgress: 0,
+          eggons: 0,
+          hatchSpeed: 20,
+          hatchSpeedCost: 1e49,
+          babyProgress: 0,
+          babies: 0,
+          ageProgress: 0
+      }
+      player.aarexModifications.newGame3PlusVersion=1.998
   }
+  if (player.masterystudies) if (player.quantum.autoOptions === undefined) player.quantum.autoOptions = {} //temp
   if (player.aarexModifications.newGame3PlusVersion==undefined) {
       colorBoosts={
           r:1,
           g:1,
           b:1
       }
+      gatheredQuarksBoost = 0
   } else {
       colorBoosts.r=Math.pow(player.quantum.colorPowers.r.add(1).log10(),player.dilation.active?2/3:0.5)/10+1
       colorBoosts.g=Math.sqrt(player.quantum.colorPowers.g.add(1).log10()*2+1)
@@ -844,6 +890,7 @@ if (player.version < 5) {
       if (colorBoosts.r>1.3) colorBoosts.r=Math.sqrt(colorBoosts.r*1.3)
       if (colorBoosts.g>4.5) colorBoosts.g=Math.sqrt(colorBoosts.g*4.5)
       if (colorBoosts.b.gt(1300)) colorBoosts.b=Decimal.pow(10,Math.pow(colorBoosts.b.log10()*Math.log10(1300),0.5))
+      gatheredQuarksBoost = Math.pow(Decimal.add(player.quantum.replicants.quarks, 1).log10(),0.25)*0.7
   }
   if (player.aarexModifications.newGameMinusMinusVersion === undefined && !player.meta) {
       if (player.galacticSacrifice) {
@@ -1122,6 +1169,7 @@ if (player.version < 5) {
       document.getElementById('epmultauto').textContent="Auto: O"+(player.autoEterOptions.epmult?"N":"FF")
       for (i=1;i<9;i++) document.getElementById("td"+i+'auto').textContent="Auto: O"+(player.autoEterOptions["td"+i]?"N":"FF")
   }
+  document.getElementById('sacrificeAuto').style.display=player.achievements.includes("ng3p25")?"":"none"
   if (player.masterystudies) {
       updateMasteryStudyCosts()
       updateMasteryStudyButtons()
@@ -1133,6 +1181,7 @@ if (player.version < 5) {
       document.getElementById('prioritydil').value=player.eternityBuyer.dilationPerAmount
       document.getElementById('priorityquantum').value=formatValue("Scientific", new Decimal(player.quantum.autobuyer.limit), 2, 0)
       document.getElementById("respecPC").className=player.quantum.pairedChallenges.respec?"quantumbtn":"storebtn"
+      document.getElementById('sacrificeAuto').textContent="Auto: O"+(player.quantum.autoOptions.sacrifice?"N":"FF")
   }
   transformSaveToDecimal();
   updateChallengeTimes();
@@ -1151,12 +1200,14 @@ if (player.version < 5) {
   updateSpeedruns()
   updateElectrons()
   updateQuantumChallenges()
+  updateReplicants()
   if (player.boughtDims) {
       if (document.getElementById("timestudies").style.display=="block") showEternityTab("ers_timestudies",true)
       updateGalaxyControl()
   } else if (document.getElementById("ers_timestudies").style.display=="block") showEternityTab("timestudies",true)
   poData=metaSave["presetsOrder"+(player.boughtDims?"_ers":"")]
   document.getElementById("quantumstudies").style.display=quantumed&&player.masterystudies?"":"none"
+  document.getElementById("emperorstudies").style.display=!player.masterystudies?"none":player.masterystudies.includes("d10")?"":"none"
   document.getElementById("quarksAnimBtn").style.display=quantumed&&player.masterystudies?"inline-block":"none"
   document.getElementById("quarksAnimBtn").textContent="Quarks: O"+(player.options.animations.quarks?"N":"FF")
   document.getElementById('dilationmode').style.display=speedrunMilestonesReached>4?"":"none"
@@ -1173,7 +1224,7 @@ if (player.version < 5) {
       player.totalmoney=new Decimal("1e9e15")
       softReset(0)
       delete player.aarexModifications.switch
-  } else if (player.aarexModifications.offlineProgress) {
+  } else if (false&&player.aarexModifications.offlineProgress) {
       let diff = new Date().getTime() - player.lastUpdate
       if (diff > 1000*1000) {
           simulateTime(diff/1000)
@@ -1525,6 +1576,21 @@ function transformSaveToDecimal() {
       if (player.quantum ? player.quantum.autobuyer : false) player.quantum.autobuyer.limit = new Decimal(player.quantum.autobuyer.limit)
       if (player.quantum ? player.quantum.electrons : false) player.quantum.electrons.amount = new Decimal(player.quantum.electrons.amount)
       if (player.dilation.bestTP) player.dilation.bestTP = new Decimal(player.dilation.bestTP)
+      if (player.quantum.replicants) {
+          player.quantum.replicants.amount = new Decimal(player.quantum.replicants.amount)
+          player.quantum.replicants.requirement = new Decimal(player.quantum.replicants.requirement)
+          player.quantum.replicants.quarks = new Decimal(player.quantum.replicants.quarks)
+          player.quantum.replicants.quantumFoodCost = new Decimal(player.quantum.replicants.quantumFoodCost)
+          player.quantum.replicants.workerProgress = new Decimal(player.quantum.replicants.workerProgress)
+          player.quantum.replicants.workers = new Decimal(player.quantum.replicants.workers)
+          player.quantum.replicants.limitCost = new Decimal(player.quantum.replicants.limitCost)
+          player.quantum.replicants.eggonProgress = new Decimal(player.quantum.replicants.eggonProgress)
+          player.quantum.replicants.eggons = new Decimal(player.quantum.replicants.eggons)
+          player.quantum.replicants.hatchSpeedCost = new Decimal(player.quantum.replicants.hatchSpeedCost)
+          player.quantum.replicants.babyProgress = new Decimal(player.quantum.replicants.babyProgress)
+          player.quantum.replicants.babies = new Decimal(player.quantum.replicants.babies)
+          player.quantum.replicants.ageProgress = new Decimal(player.quantum.replicants.ageProgress)
+      }
   }
 }
 

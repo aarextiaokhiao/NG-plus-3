@@ -383,7 +383,7 @@ function updateNewPlayer(reseted) {
         player.options.gSacrificeConfirmation = true
     }
     if (modesChosen.ngpp > 1) {
-        player.aarexModifications.newGame3PlusVersion = 1.99799
+        player.aarexModifications.newGame3PlusVersion = 1.998
         player.respecOptions={time:false,mastery:false}
         player.dbPower = 1
         player.peakSpent = 0
@@ -431,6 +431,25 @@ function updateNewPlayer(reseted) {
         }
         player.dilation.bestTP = 0
         player.old = true
+        player.quantum.autoOptions = {}
+        player.quantum.replicants = {
+            amount: 0,
+            requirement: "1e3000000",
+            quarks: 0,
+            quantumFood: 0,
+            quantumFoodCost: 1e46,
+            workerProgress: 0,
+            workers: 0,
+            limit: 1,
+            limitCost: 1e49,
+            eggonProgress: 0,
+            eggons: 0,
+            hatchSpeed: 20,
+            hatchSpeedCost: 1e49,
+            babyProgress: 0,
+            babies: 0,
+            ageProgress: 0
+        }
     }
     if (modesChosen.ers) {
         player.aarexModifications.ersVersion = 1.01
@@ -936,6 +955,7 @@ function getDilPower() {
 	if (player.masterystudies) {
 		if (player.masterystudies.includes("t264")) ret *= getMTSMult(264)
 		if (GUBought("br1")) ret *= player.dilation.dilatedTime.add(1).log10()+1
+		if (player.masterystudies.includes("t344")) ret *= getMTSMult(344)
 	}
 	return ret
 }
@@ -956,6 +976,7 @@ function getDilTimeGainPerSecond() {
 		if (player.masterystudies.includes("t263")) gain = gain.times(getMTSMult(263))
 		if (player.masterystudies.includes("t281")) gain = gain.times(getMTSMult(281))
 		if (QCIntensity(1)) gain = gain.times(Decimal.pow(10, Math.pow(getDimensionFinalMultiplier(1).times(getDimensionFinalMultiplier(2)).log10(),QCIntensity(1)>1?0.275:0.25)/200))
+		if (player.masterystudies.includes("t322")) gain = gain.times(getMTSMult(322))
 	}
 	if (player.dilation.upgrades.includes('ngpp6')) gain = gain.times(getDil17Bonus())
 	if (GUBought("br2")) gain = gain.times(Decimal.pow(2.2, Math.pow(calcTotalSacrificeBoost().max(1).log10()/1e6, 0.25)))
@@ -1908,7 +1929,7 @@ function updateExtraReplGalaxies() {
     }
     extraReplGalaxies = ts225Eff + ts226Eff
     if (extraReplGalaxies > 325) extraReplGalaxies = (Math.sqrt(0.8836+0.24*(extraReplGalaxies-324))-0.94)/0.12+324
-    extraReplGalaxies = Math.floor(extraReplGalaxies * colorBoosts.g)
+    extraReplGalaxies = Math.floor(extraReplGalaxies * (colorBoosts.g + gatheredQuarksBoost))
 }
 
 function updateMilestones() {
@@ -2392,6 +2413,7 @@ function galaxyReset() {
     if (player.achievements.includes("r66")) player.tickspeed = player.tickspeed.times(0.98);
     if (player.galaxies >= 540 && player.replicanti.galaxies == 0) giveAchievement("Unique snowflakes")
     giveAchievement("Universal harmony")
+    if (player.masterystudies) if (player.quantum.autoOptions.sacrifice) sacrificeGalaxy(6)
     updateTickSpeed();
 };
 
@@ -2951,7 +2973,7 @@ function setAchieveTooltip() {
 
 
 //notation stuff
-var notationArray = ["Scientific","Engineering","Letters","Standard","Emojis","Mixed scientific","Mixed engineering","Logarithm","Brackets","Infinity","Greek","Game percentages","Hexadecimal","Tetration","Hyperscientific","Psi","Morse code","Spazzy","AF5LN"]
+var notationArray = ["Scientific","Engineering","Letters","Standard","Emojis","Mixed scientific","Mixed engineering","Logarithm","Brackets","Infinity","Greek","Game percentages","Hexadecimal","Tetration","Hyperscientific","Psi","Morse code","Spazzy","Country Codes","AF5LN"]
 
 function updateNotationOption() {
 	var notationMsg="Notation: "+(player.options.notation=="Emojis"?"Cancer":player.options.notation)
@@ -2983,6 +3005,7 @@ function onNotationChange(id) {
 	updateElectrons()
 	updateQuantumChallenges()
 	updateMasteryStudyTextDisplay()
+	updateReplicants()
 	document.getElementById("epmult").innerHTML = "You gain 5 times more EP<p>Currently: "+shortenDimensions(player.epmult)+"x<p>Cost: "+shortenDimensions(player.epmultCost)+" EP"
 	if (player.achievements.includes("ng3p18")) document.getElementById('bestTP').textContent="Your best ever Tachyon particles was "+shorten(player.dilation.bestTP)+"."
 }
@@ -3081,7 +3104,7 @@ function switchOption(notation,id) {
 		}
 		if (isNaN(value)) return
 		if (id=="base") {
-			if (value<2||value>Number.MAX_VALUE) return
+			if (value<1.6||value>Number.MAX_VALUE) return
 			else player.options.tetration.base=value
 		}
 	} else if (notation=="psi") {
@@ -6171,6 +6194,39 @@ function gameLoop(diff) {
         if (colorBoosts.r>1.3) colorBoosts.r=Math.sqrt(colorBoosts.r*1.3)
         if (colorBoosts.g>4.5) colorBoosts.g=Math.sqrt(colorBoosts.g*4.5)
         if (colorBoosts.b.gt(1300)) colorBoosts.b=Decimal.pow(10,Math.pow(colorBoosts.b.log10()*Math.log10(1300),0.5))
+
+        var rate = getGatherRate().total
+        if (rate.gt(0)) player.quantum.replicants.quarks = player.quantum.replicants.quarks.add(rate.times(diff/10))
+        gatheredQuarksBoost = Math.pow(player.quantum.replicants.quarks.add(1).log10(),0.25)*0.7
+
+        player.quantum.replicants.eggonProgress = player.quantum.replicants.eggonProgress.add(player.quantum.replicants.workers.times(diff/200))
+        var toAdd = player.quantum.replicants.eggonProgress.floor()
+        if (toAdd.gt(0)) {
+            player.quantum.replicants.eggonProgress = player.quantum.replicants.eggonProgress.sub(toAdd)
+            player.quantum.replicants.eggons = player.quantum.replicants.eggons.add(toAdd).round()
+        }
+
+        if (player.quantum.replicants.eggons.gt(0)) {
+            player.quantum.replicants.babyProgress = player.quantum.replicants.babyProgress.add(diff/player.quantum.replicants.hatchSpeed/10)
+            var toAdd = player.quantum.replicants.babyProgress.floor().min(player.quantum.replicants.eggons)
+            if (toAdd.gt(0)) {
+                player.quantum.replicants.eggons = player.quantum.replicants.eggons.sub(toAdd).round()
+                player.quantum.replicants.babyProgress = player.quantum.replicants.babyProgress.sub(toAdd)
+                player.quantum.replicants.babies = player.quantum.replicants.babies.add(toAdd).round()
+            }
+        }
+        if (player.quantum.replicants.eggons.lt(1)) player.quantum.replicants.babyProgress = new Decimal(0)
+
+        if (player.quantum.replicants.babies.gt(0)&&player.quantum.replicants.amount.gt(0)) {
+            player.quantum.replicants.ageProgress = player.quantum.replicants.ageProgress.add(player.quantum.replicants.amount.times(diff/4e3)).min(player.quantum.replicants.babies)
+            var toAdd = player.quantum.replicants.ageProgress.floor()
+            if (toAdd.gt(0)) {
+                player.quantum.replicants.babies = player.quantum.replicants.babies.sub(toAdd).round()
+                player.quantum.replicants.ageProgress = player.quantum.replicants.ageProgress.sub(toAdd)
+                player.quantum.replicants.amount = player.quantum.replicants.amount.add(toAdd)
+            }
+        }
+        if (player.quantum.replicants.babies.lt(1)) player.quantum.replicants.ageProgress = new Decimal(0)
     }
     if (speedrunMilestonesReached>5) {
         player.quantum.metaAutobuyerWait+=diff
@@ -6290,7 +6346,11 @@ function gameLoop(diff) {
     if (GUBought("gb1")) interval /= 1-Math.min(Decimal.log10(getTickSpeedMultiplier()),0)
     if (player.replicanti.amount.lt(Number.MAX_VALUE) && player.achievements.includes("r134")) interval /= 2
     if (player.replicanti.amount.gt(Number.MAX_VALUE)) interval = player.boughtDims ? Math.pow(player.achievements.includes("r107")?Math.max(player.replicanti.amount.log(2)/1024,1):1, -.25) : Decimal.pow(getReplSpeed(), Math.max(player.replicanti.amount.log10() - 308, 0)/308).times(interval)
-    if (player.masterystudies) if (player.masterystudies.includes("t273")) chance = Decimal.pow(chance,Math.pow(Math.log10(chance+1),5))
+    if (player.masterystudies) {
+        if (player.masterystudies.includes("t273")) chance = Decimal.pow(chance,Math.pow(Math.log10(chance+1),5))
+	    interval = Decimal.pow(2,(player.quantum.replicants.requirement.log10()-3e6)/5e4).times(interval)
+	    if (player.masterystudies.includes("t332")) interval = interval.div(player.galaxies)
+    }
     var est = Decimal.add(chance,1).log10() * 1000 / interval
 
     var current = player.replicanti.amount.ln()

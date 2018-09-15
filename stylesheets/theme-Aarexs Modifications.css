@@ -388,11 +388,13 @@ strong { color: #0072e5 }
 }
 #dilstudy10.dilationupg, #replicantstabbtn button, #replicantReset.storebtn { border: 2px solid #333333 !important }
 #dilstudy10.dilationupg:hover, #dilstudy10.dilationupgbought, #replicantstabbtn button:hover, #replicantReset.storebtn:hover { background-color: #333333 !important }
-#replicantAmount, #workerReplAmount, #babyReplAmount, #workerProgress, #hatchRate, #hatchProgress, #growupProgress { color: #333333 !important }
+#replicantAmount, #workerReplAmount, #babyReplAmount, #workerProgress, #hatchProgress, #growupProgress { color: #333333 !important }
 #quantumFoodAmount { color: #b7e5b7 !important }
 #buyQuantumFood.storebtn, #feedNormal.storebtn, #feedBaby.storebtn, #breakLimit.storebtn { border: 2px solid #b7e5b7 !important }
 #buyQuantumFood.storebtn:hover, #feedNormal.storebtn:hover, #feedBaby.storebtn:hover, #breakLimit.storebtn:hover { background-color: #b7e5b7 !important }
 #eggonAmount, #eggonRate { color: #e5dab7 !important }
+#reduceHatchSpeed.storebtn { border: 2px solid #e5dab7 !important }
+#reduceHatchSpeed.storebtn:hover { background-color: #e5dab7 !important }
 .notifyjs-bootstrap-info {
     background-color: #0072e5;
     font-family:'Inconsolata', monospace;

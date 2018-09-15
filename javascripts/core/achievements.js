@@ -242,6 +242,7 @@ function giveAchievement(name) {
         document.getElementById('bestTP').style.display=""
         document.getElementById('bestTP').textContent="Your best ever Tachyon particles was "+shorten(player.dilation.bestTP)+"."
     }
+    if (name == "Twice in the row") document.getElementById('sacrificeAuto').style.display=""
     updateAchievements();
 }
 

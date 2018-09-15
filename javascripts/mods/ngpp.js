@@ -17,6 +17,7 @@ function getMetaDimensionMultiplier (tier) {
       if (player.masterystudies.includes("t282")) multiplier = multiplier.times(getMTSMult(282))
       if (player.masterystudies.includes("t303")) multiplier = multiplier.times(getMTSMult(303))
       if (QCIntensity(3)) multiplier = multiplier.times(Decimal.pow(10,Math.sqrt(Math.max(player.infinityPower.log10(),0)/(QCIntensity(3)>1?2e8:1e9))))
+      if (player.masterystudies.includes("t351")) multiplier = multiplier.times(getMTSMult(351))
   }
   if (GUBought("rg3")&&tier<2) multiplier = multiplier.times(player.resets)
   if (GUBought("br4")) multiplier = multiplier.times(Decimal.pow(getDimensionPowerMultiplier(), 0.0003))
@@ -838,10 +839,21 @@ function quantum(auto,force,challid) {
 				player.quantum.pairedChallenges.current=0
 				player.quantum.challenge=[]
 			}
+			player.quantum.replicants.amount = new Decimal(0)
+			player.quantum.replicants.requirement = new Decimal("1e3000000")
+			player.quantum.replicants.quarks = new Decimal(0)
+			player.quantum.replicants.quantumFood += Math.round(player.quantum.replicants.workerProgress.toNumber()*3)
+			player.quantum.replicants.workerProgress = new Decimal(0)
+			player.quantum.replicants.eggonProgress = new Decimal(0)
+			player.quantum.replicants.eggons = new Decimal(0)
+			player.quantum.replicants.babyProgress = new Decimal(0)
+			player.quantum.replicants.babies = new Decimal(0)
+			player.quantum.replicants.growupProgress = new Decimal(0)
 			updateColorCharge()
 			updateGluons()
 			updateElectrons()
 			updateQuantumChallenges()
+			updateReplicants()
 			if (!oheHeadstart) {
 				player.eternityBuyer.dilationMode = false
 				player.eternityBuyer.dilationPerAmount = 10
@@ -953,7 +965,9 @@ function quantum(auto,force,challid) {
 			document.getElementById("masterystudyunlock").style.display = "none"
 			document.getElementById("respecOptions").style.display = "none"
 			document.getElementById("respecOptions2").style.display = "none"
+			document.getElementById("emperorstudies").style.display = "none"
 			if (document.getElementById("quantumchallenges").style.display == "block") showChallengesTab("challenges")
+			if (document.getElementById("electronstabbtn").style.display == "block"||document.getElementById("replicantstabbtn").style.display == "block") showQuantumTab("uquarks")
 		}
 		drawMasteryTree()
 		Marathon2 = 0;

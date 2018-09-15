@@ -542,13 +542,16 @@ function importStudyTree(input) {
 		var laterSecondSplits = []
 		var earlyDLStudies = []
 		var laterDLStudies = []
+		var changeMS = false
 		for (i=0; i<studiesToBuy.length; i++) {
 			var study=parseInt(studiesToBuy[i])
 			if ((study<120||study>150||(secondSplitPick<1||study%10==secondSplitPick))&&(study<220||study>240||earlyDLStudies.includes(study+(study%2>0?-1:1)))) {
 				if (study>120&&study<150) secondSplitPick=study%10
 				else if (study>220&&study<240) earlyDLStudies.push(study)
-				if (study>240) buyMasteryStudy("t", study)
-				else document.getElementById(study).click();
+				if (study>240) {
+					buyMasteryStudy("t", study, true)
+					changeMS=true
+				} else document.getElementById(study).click();
 			} else if (study<150) laterSecondSplits.push(study)
 			else laterDLStudies.push(study)
 		}
@@ -557,9 +560,15 @@ function importStudyTree(input) {
 		var ec=parseInt(input.split("|")[1])
 		if (ec > 0) {
 			justImported = true;
-			if (ec > 12) buyMasteryStudy("ec", ec)
-			else document.getElementById("ec"+parseInt(input.split("|")[1])+"unl").click();
+			if (ec > 12) {
+				buyMasteryStudy("ec", ec, true)
+				changeMS=true
+			} else document.getElementById("ec"+parseInt(input.split("|")[1])+"unl").click();
 			setTimeout(function(){ justImported = false; }, 100);
+		}
+		if (changeMS) {
+			updateMasteryStudyButtons()
+			drawMasteryTree()
 		}
 	}
 };
