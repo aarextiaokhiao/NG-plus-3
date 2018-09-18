@@ -859,7 +859,7 @@ function getGalaxyCostScalingStart(galaxies) {
 		let push = 5
 		if (GUBought("rg5")) push *= 1.13
 		if (GUBought("gb5")) push *= 1+Math.sqrt(player.replicanti.galaxies)/550
-		if (GUBought("br5")) push *= 1+Math.sqrt(player.dilation.tachyonParticles.max(1).log10())*0.013
+		if (GUBought("br5")) push *= 1+Math.min(Math.sqrt(player.dilation.tachyonParticles.max(1).log10())*0.013,0.14)
 		n -= Math.ceil((galaxies-1399)/push)
 	}
 

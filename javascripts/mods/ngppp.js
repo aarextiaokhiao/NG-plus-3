@@ -335,7 +335,7 @@ function updateQuantumTabs() {
 		document.getElementById("brupg4current").textContent="Currently: "+shortenMoney(Decimal.pow(getDimensionPowerMultiplier(), 0.0003))+"x"
 		if (player.masterystudies.includes("d9")) {
 			document.getElementById("gbupg5current").textContent="Currently: "+(Math.sqrt(player.replicanti.galaxies)/5.5).toFixed(1)+"%"
-			document.getElementById("brupg5current").textContent="Currently: "+(Math.sqrt(player.dilation.tachyonParticles.max(1).log10())*1.3).toFixed(1)+"%"
+			document.getElementById("brupg5current").textContent="Currently: "+(Math.min(Math.sqrt(player.dilation.tachyonParticles.max(1).log10())*1.3,14)).toFixed(1)+"%"
 			document.getElementById("gbupg6current").textContent="Currently: "+(100-100/(1+Math.pow(player.infinityPower.log10(),0.25)/2500)).toFixed(1)+"%"
 			document.getElementById("brupg6current").textContent="Currently: "+(100-100/(1+player.meta.resets/300)).toFixed(1)+"%"
 			document.getElementById("gbupg7current").textContent="Currently: "+(100-100/(1+Math.log10(1+player.infinityPoints.max(1).log10())/100)).toFixed(1)+"%"
@@ -488,7 +488,6 @@ function buyGluonUpg(color, id) {
 	player.quantum.gluons[color]=player.quantum.gluons[color].sub(GUCosts[id])
 	updateGluons()
 	if (name=="gb4") player.tickSpeedMultDecrease=1.25
-	if (name=="br5") resetDilationGalaxies()
 }
 
 function GUBought(id) {
