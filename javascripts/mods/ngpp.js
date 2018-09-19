@@ -437,7 +437,7 @@ function quantum(auto,force,challid) {
 			updateSpeedruns()
 			if (speedrunMilestonesReached > 23) giveAchievement("And the winner is...")
 			player.quantum.times++
-			player.quantum.quarks = player.quantum.quarks.plus(quarkGain());
+			if (!inQC(6)) player.quantum.quarks = player.quantum.quarks.plus(quarkGain());
 			if (!inQC(4)) if (player.meta.resets<1) giveAchievement("Infinity Morals")
 		}
 		var oheHeadstart = speedrunMilestonesReached > 0
