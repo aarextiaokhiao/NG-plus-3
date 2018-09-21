@@ -685,7 +685,7 @@ function updateQuantumChallenges() {
 		document.getElementById(property+"cost").textContent="Cost: "+shortenDimensions(quantumChallenges.costs[qc])+" electrons"
 		document.getElementById(property+"goal").textContent="Goal: "+shortenCosts(Decimal.pow(10,getQCGoal(qc)))+" antimatter"
 	}
-	document.getElementById("qc7desc").textContent="Dimension & tickspeed cost multiplier increases are "+shorten(Number.MAX_VALUE)+"x. Multiplier per ten dimensions and meta-antimatter effect are disabled."
+	document.getElementById("qc7desc").textContent="Dimension & tickspeed cost multiplier increases are "+shorten(Number.MAX_VALUE)+"x. Multiplier per ten dimensions and meta-antimatter's effect on dimension boosts are disabled. "
 }
 
 function inQC(num) {
@@ -854,8 +854,8 @@ function updateReplicants() {
 		document.getElementById("replicantstabbtn").style.display="none"
 		return
 	} else document.getElementById("replicantstabbtn").style.display=""
-	document.getElementById("replicantReset").innerHTML="Reset replicanti amount to gain a replicant, but the replicate interval will slow down.<br>(requires "+shortenCosts(player.quantum.replicants.requirement)+" replicanti)"
 	document.getElementById("replicantAmount").textContent=shortenDimensions(player.quantum.replicants.amount)
+	document.getElementById("replicantReset").innerHTML="Reset replicanti amount to gain a replicant, but you gain replicanti slower.<br>(requires "+shortenCosts(player.quantum.replicants.requirement)+" replicanti)"
 	document.getElementById("quantumFoodAmount").textContent=getFullExpansion(player.quantum.replicants.quantumFood)
 	document.getElementById("buyQuantumFood").innerHTML="Buy 1 quantum food<br><br><br>Cost: "+shortenDimensions(player.quantum.replicants.quantumFoodCost)+" for all 3 gluons"
 	document.getElementById("buyQuantumFood").className="gluonupgrade "+(player.quantum.gluons.rg.min(player.quantum.gluons.gb).min(player.quantum.gluons.br).lt(player.quantum.replicants.quantumFoodCost)?"unavailabl":"stor")+"ebtn"

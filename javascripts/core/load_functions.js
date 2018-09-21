@@ -623,7 +623,7 @@ if (player.version < 5) {
           }
           player.aarexModifications.newGamePlusVersion = 1
           if (confirm("Do you want to migrate your NG++ save into new NG+++ mode?")) {
-              player.aarexModifications.newGame3PlusVersion = 1.9981
+              player.aarexModifications.newGame3PlusVersion = 1.9982
               player.respecOptions={time:player.respec,mastery:player.respec}
               player.dbPower = 1
               player.peakSpent = 0
@@ -874,7 +874,7 @@ if (player.version < 5) {
           ageProgress: 0
       }
   }
-  if (player.aarexModifications.newGame3PlusVersion < 1.9981) player.aarexModifications.newGame3PlusVersion=1.9981
+  if (player.aarexModifications.newGame3PlusVersion < 1.9982) player.aarexModifications.newGame3PlusVersion=1.9982
   if (player.masterystudies) if (player.quantum.autoOptions === undefined) player.quantum.autoOptions = {} //temp
   if (player.aarexModifications.newGame3PlusVersion==undefined) {
       colorBoosts={

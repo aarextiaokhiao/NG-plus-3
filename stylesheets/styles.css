@@ -146,7 +146,7 @@ button {
 	display:table;
 	text-align:center;
 	width: 350px;
-	height: 105px;
+	height: 140px;
 	color: #32c832;
 	background: #0a640a;
 	font-weight: bold;
@@ -159,6 +159,8 @@ button {
 	margin: 3px 8px;
 	position: relative;
 }
+
+#pairedchallenges .quantumchallengediv { height: 90px }
 
 .completedchallengesbtn {
   width:150px;

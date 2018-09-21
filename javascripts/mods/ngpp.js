@@ -287,6 +287,7 @@ function updateMetaDimensions () {
 
 // v2.2
 function updateAutoEterMode() {
+	document.getElementById("priority13").disabled=false
 	if (player.autoEterMode == "time") {
 		document.getElementById("toggleautoetermode").textContent = "Auto eternity mode: time"
 		document.getElementById("eterlimittext").textContent = "Seconds between eternities:"
@@ -302,6 +303,10 @@ function updateAutoEterMode() {
 	} else if (player.autoEterMode == "peak") {
 		document.getElementById("toggleautoetermode").textContent = "Auto eternity mode: peak"
 		document.getElementById("eterlimittext").textContent = "Seconds to wait after latest peak gain:"
+	} else if (player.autoEterMode == "manual") {
+		document.getElementById("toggleautoetermode").textContent = "Auto eternity mode: manual"
+		document.getElementById("eterlimittext").textContent = "Wait until next eternity"
+		document.getElementById("priority13").disabled=true
 	} else {
 		document.getElementById("toggleautoetermode").textContent = "Auto eternity mode: amount"
 		document.getElementById("eterlimittext").textContent = "Amount of EP to wait until reset:"
@@ -314,6 +319,7 @@ function toggleAutoEterMode() {
 	else if (player.autoEterMode == "relative") player.autoEterMode = "relativebest"
 	else if (player.autoEterMode == "relativebest" && player.dilation.upgrades.includes("ngpp3") && player.eternities >= 4e11 && player.aarexModifications.newGame3PlusVersion) player.autoEterMode = "replicanti"
 	else if (player.autoEterMode == "replicanti" && player.eternities >= 1e13) player.autoEterMode = "peak"
+	else if (player.autoEterMode == "peak" && player.achievements.includes("ng3p21")) player.autoEterMode = "manual"
 	else if (player.autoEterMode) player.autoEterMode = "amount"
 	updateAutoEterMode()
 }
@@ -432,12 +438,13 @@ function quantum(auto,force,challid) {
 			for (var i=player.quantum.last10.length-1; i>0; i--) {
 				player.quantum.last10[i] = player.quantum.last10[i-1]
 			}
-			player.quantum.last10[0] = [player.quantum.time, quarkGain()]
+			var qkGain=quarkGain()
+			player.quantum.last10[0] = [player.quantum.time,qkGain]
 			player.quantum.best=Math.min(player.quantum.best, player.quantum.time)
 			updateSpeedruns()
 			if (speedrunMilestonesReached > 23) giveAchievement("And the winner is...")
 			player.quantum.times++
-			if (!inQC(6)) player.quantum.quarks = player.quantum.quarks.plus(quarkGain());
+			if (!inQC(6)) player.quantum.quarks = player.quantum.quarks.plus(qkGain);
 			if (!inQC(4)) if (player.meta.resets<1) giveAchievement("Infinity Morals")
 		}
 		var oheHeadstart = speedrunMilestonesReached > 0
@@ -961,11 +968,14 @@ function quantum(auto,force,challid) {
 		updateTheoremButtons()
 		updateTimeStudyButtons()
 		drawStudyTree()
+		if (!isRewardEnabled(4)) if (document.getElementById("dilation").style.display=="block") showEternityTab("timestudies", document.getElementById("eternitystore").style.display=="block")
 		if (speedrunMilestonesReached < 14 || !isRewardEnabled(4)) {
 			document.getElementById("masterystudyunlock").style.display = "none"
 			document.getElementById("respecOptions").style.display = "none"
 			document.getElementById("respecOptions2").style.display = "none"
 			document.getElementById("emperorstudies").style.display = "none"
+			if (document.getElementById("metadimensions").style.display == "block") showDimTab("antimatterdimensions")
+			if (document.getElementById("masterystudies").style.display=="block") showEternityTab("timestudies", document.getElementById("eternitystore").style.display=="block")
 			if (document.getElementById("quantumchallenges").style.display == "block") showChallengesTab("challenges")
 			if (document.getElementById("electronstabbtn").style.display == "block"||document.getElementById("replicantstabbtn").style.display == "block") showQuantumTab("uquarks")
 		}

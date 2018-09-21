@@ -383,7 +383,7 @@ function updateNewPlayer(reseted) {
         player.options.gSacrificeConfirmation = true
     }
     if (modesChosen.ngpp > 1) {
-        player.aarexModifications.newGame3PlusVersion = 1.9981
+        player.aarexModifications.newGame3PlusVersion = 1.9982
         player.respecOptions={time:false,mastery:false}
         player.dbPower = 1
         player.peakSpent = 0
@@ -7192,7 +7192,9 @@ function autoBuyerTick() {
             if (gainedEternityPoints().gte(bestEp.times(player.eternityBuyer.limit))) eternity(false, true)
         } else if (player.autoEterMode == "replicanti") {
             if (player.replicanti.amount.gte(player.eternityBuyer.limit)) eternity(false, true)
-        } else if (player.peakSpent >= new Decimal(player.eternityBuyer.limit).toNumber()*10 && EPminpeak.gt(0)) eternity(false, true)
+        } else if (player.autoEterMode == "peak") {
+            if (player.peakSpent >= new Decimal(player.eternityBuyer.limit).toNumber()*10 && EPminpeak.gt(0)) eternity(false, true)
+        }
     }
 
     if (player.autobuyers[11]%1 !== 0) {
