@@ -419,8 +419,6 @@ function quantum(auto,force,challid) {
 			showInfTab("preinf")
 			showEternityTab("timestudies", true)
 			if (document.getElementById("quantumtab").style.display=="none") showTab("dimensions")
-		} else if ((document.getElementById("dilation").style.display=="block"&&!isRewardEnabled(4))||(document.getElementById("masterystudies").style.display=="block"&&(speedrunMilestonesReached<6||!isRewardEnabled(4)))) {
-			showEternityTab("timestudies", document.getElementById("eternitystore").style.display=="block")
 		}
 		if (!quantumed) {
 			quantumed=true
