@@ -422,7 +422,9 @@ function formatPsi(mantissa,power){
     	return letters.map(letter).join("")
     }
     if(player.options.psi.side=="l"){
-    	return numbers.slice(2).join("").slice(0,player.options.psi.chars).replace(/[-$]$/,"")+letters.map(letter).join("")+numbers[0]
+		var formattedValue=numbers[0]
+		if (player.options.psi.letter[0]==1) if (numbers[0]>=1e12) formattedValue=formatValue("Standard",numbers[0],2,2)
+    	return numbers.slice(2).join("").slice(0,player.options.psi.chars).replace(/[-$]$/,"")+letters.map(letter).join("")+formattedValue
     }
     if(numbers.length==1&&numbers[0]=="1"&&!player.options.psi.forceNumbers){
     	return letters.map(letter).join("")

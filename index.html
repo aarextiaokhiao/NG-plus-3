@@ -3754,8 +3754,30 @@
 			<b>Tetration notation</b>
 			Base (min: 1.6, max: 1.79e308): <input id="tetrationBase" style="width: 170px" onchange="switchOption('tetration','base')"></input><br>
 			<b>Psi notation</b>
-			Max characters (min: 2, max: 20): <input id="maxLength" style="width: 170px" type="number" min=2 max=20 onchange="switchOption('psi','maxLength')"></input><br>
-			Max arguments (min: 1, max: 5): <input id="maxArguments" style="width: 170px" type="number" min=1 max=5 onchange="switchOption('psi','maxArguments')"></input><br>
+			Max characters (min: 2, max: 30): <input id="maxLength" style="width: 170px" type="number" min=2 max=30 onchange="switchOption('psi','maxLength')"></input><br>
+			Max arguments (min: 1, max: 6): <input id="maxArguments" style="width: 170px" type="number" min=1 max=6 onchange="switchOption('psi','maxArguments')"></input><br>
+			Max letters (min: 1, max: 4): <input id="maxLetters" style="width: 170px" type="number" min=1 max=4 onchange="switchOption('psi','maxLetters')"></input><br>
+			<p id='psiSide'></p>
+			<table id="psiSideOptions">
+				<tr>
+					<td><button id="psiSidel" class="storebtn" style="width:160px; height: 40px" onclick="switchOption('psi','psiSidel')">Numbers on left side</button></td>
+					<td><button id="psiSider" class="storebtn" style="width:160px; height: 40px" onclick="switchOption('psi','psiSider')">Numbers on right side</button></td>
+				</tr>
+			</table>
+			<p id='psiLetter'></p>
+			<table id='psiLetterOptions'>
+				<tr>
+					<td colspan=2 style='text-align:center'><button class="storebtn" style="width:160px; height: 40px" onclick="switchOption('psi','psiLetterNone')">Automatically choose letter</button></td>
+				</tr>
+				<tr>
+					<td><button class="storebtn" style="width:160px; height: 40px" onclick="switchOption('psi','psiLetterE')">Force E</button></td>
+					<td><button class="storebtn" style="width:160px; height: 40px" onclick="switchOption('psi','psiLetterF')">Force F</button></td>
+				</tr>
+				<tr>
+					<td><button class="storebtn" style="width:160px; height: 40px" onclick="switchOption('psi','psiLetterG')">Force G</button></td>
+					<td><button class="storebtn" style="width:160px; height: 40px" onclick="switchOption('psi','psiLetterH')">Force H</button></td>
+				</tr>
+			</table>
 			<b>Spazzy notation</b>
 			<p id='chosenSubNotation'></p>
 			<table id='subNotationOptions'></table>

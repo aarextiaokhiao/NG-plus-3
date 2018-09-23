@@ -3070,6 +3070,10 @@ function openNotationOptions() {
 		document.getElementById("tetrationBase").value=player.options.tetration.base
 		document.getElementById("maxLength").value=player.options.psi.chars
 		document.getElementById("maxArguments").value=Math.min(player.options.psi.args,4)
+		document.getElementById("maxLetters").value=player.options.psi.maxletters
+		document.getElementById("psiSide").textContent="Non-first arguments on "+(player.options.psi.side=="r"?"right":"left")+" side"
+		var letters=[null,'E','F','G','H']
+		document.getElementById("psiLetter").textContent=(player.options.psi.letter[0]?"Force "+letters[player.options.psi.letter[0]]:"Automatically choose letter")
 		document.getElementById("chosenSubNotation").textContent="Sub-notation: "+(player.options.spazzy.subNotation=="Emojis"?"Cancer":player.options.spazzy.subNotation)
 	} else {
 		document.getElementById("openpsioptions").textContent="Notation options"
@@ -3108,16 +3112,31 @@ function switchOption(notation,id) {
 			else player.options.tetration.base=value
 		}
 	} else if (notation=="psi") {
+		if (id.slice(0,7)=="psiSide") {
+			player.options.psi.side=id.slice(7,8)
+			document.getElementById("psiSide").textContent="Non-first arguments on "+(player.options.psi.side=="r"?"right":"left")+" side"
+			return
+		}
+		if (id.slice(0,9)=="psiLetter") {
+			var letters={None:[],E:[1],F:[2],G:[3],H:[4]}
+			player.options.psi.letter=letters[id.slice(9,id.length)]
+			document.getElementById("psiLetter").textContent=(player.options.psi.letter[0]?"Force "+id.slice(9,id.length):"Automatically choose letter")
+			return
+		}
 		var value=parseFloat(document.getElementById(id).value)
 		if (isNaN(value)) return
 		if (value%1!=0) return
 		if (id=="maxLength") {
-			if (value<2||value>20) return
+			if (value<2||value>30) return
 			player.options.psi.chars=value
 		}
 		if (id=="maxArguments") {
-			if (value<1||value>5) return
+			if (value<1||value>6) return
 			player.options.psi.args=value
+		}
+		if (id=="maxLetters") {
+			if (value<1||value>4) return
+			player.options.psi.maxletters=value
 		}
 	}
 	onNotationChange()
