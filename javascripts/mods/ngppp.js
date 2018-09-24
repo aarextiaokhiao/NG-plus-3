@@ -305,17 +305,21 @@ function showQuantumTab(tabName) {
 	//iterate over all elements in div_tab class. Hide everything that's not tabName and show tabName
 	var tabs = document.getElementsByClassName('quantumtab');
 	var tab;
+	var oldTab
 	for (var i = 0; i < tabs.length; i++) {
 		tab = tabs.item(i);
+		if (tab.style.display == 'block') oldTab = tab.id
 		if (tab.id === tabName) {
 			tab.style.display = 'block';
 		} else {
 			tab.style.display = 'none';
 		}
 	}
-	if (tabName == "uquarks" && document.getElementById("quantumtab").style.display !== "none") {
-		resizeCanvas()
-		requestAnimationFrame(drawQuarkAnimation)
+	if (oldTab != tabName) {
+		if (tabName == "uquarks" && document.getElementById("quantumtab").style.display !== "none") {
+			resizeCanvas()
+			requestAnimationFrame(drawQuarkAnimation)
+		}
 	}
 	closeToolTip()
 }
@@ -326,7 +330,7 @@ function updateQuantumTabs() {
 		document.getElementById("greenPower").textContent=shortenMoney(player.quantum.colorPowers.g)
 		document.getElementById("bluePower").textContent=shortenMoney(player.quantum.colorPowers.b)
 		document.getElementById("redTranslation").textContent=((colorBoosts.r-1)*100).toFixed(1)
-		document.getElementById("greenTranslation").textContent=shortenDimensions((colorBoosts.g-1)*100)
+		document.getElementById("greenTranslation").textContent=getFullExpansion(Math.round((colorBoosts.g-1)*100))
 		document.getElementById("blueTranslation").textContent=shortenMoney(colorBoosts.b)
 	}
 	if (document.getElementById("gluons").style.display=="block") {
@@ -395,12 +399,18 @@ function updateColorCharge() {
 	}
 	document.getElementById("powerRate").textContent=shortenDimensions(colorCharge.charge)
 	if (colorCharge.charge.eq(0)) {
+		document.getElementById("colorChargeAmount").style.display='none'
+		document.getElementById("colorCharge").textContent='neutral'
 		document.getElementById("powerRate").className=''
-		document.getElementById("colorCharge").textContent='any'
+		document.getElementById("colorPower").textContent=''
 	} else {
 		var color=colorShorthands[colorCharge.color]
+		document.getElementById("colorChargeAmount").style.display=''
+		document.getElementById("colorChargeAmount").className=color
+		document.getElementById("colorChargeAmount").textContent=shortenDimensions(colorCharge.charge)
+		document.getElementById("colorCharge").textContent=' '+color
 		document.getElementById("powerRate").className=color
-		document.getElementById("colorCharge").textContent=color
+		document.getElementById("colorPower").textContent=color+' power'
 	}
 	document.getElementById("redQuarks").textContent=shortenDimensions(player.quantum.usedQuarks.r)
 	document.getElementById("greenQuarks").textContent=shortenDimensions(player.quantum.usedQuarks.g)
@@ -438,11 +448,6 @@ function updateGluons() {
 	document.getElementById("rggain").textContent=shortenDimensions(player.quantum.usedQuarks.r.min(player.quantum.usedQuarks.g))
 	document.getElementById("gbgain").textContent=shortenDimensions(player.quantum.usedQuarks.g.min(player.quantum.usedQuarks.b))
 	document.getElementById("brgain").textContent=shortenDimensions(player.quantum.usedQuarks.b.min(player.quantum.usedQuarks.r))
-	if (player.masterystudies.includes("d10")) {
-		document.getElementById("rgRepl").textContent=shortenDimensions(player.quantum.gluons.rg)
-		document.getElementById("gbRepl").textContent=shortenDimensions(player.quantum.gluons.gb)
-		document.getElementById("brRepl").textContent=shortenDimensions(player.quantum.gluons.br)
-	}
 	var names=["rg","gb","br"]
 	for (u=1;u<5;u++) {
 		var showRow=true
@@ -854,7 +859,10 @@ function updateReplicants() {
 		document.getElementById("replicantstabbtn").style.display="none"
 		return
 	} else document.getElementById("replicantstabbtn").style.display=""
-	document.getElementById("replicantAmount").textContent=shortenDimensions(player.quantum.replicants.amount)
+	document.getElementById("rgRepl").textContent=shortenDimensions(player.quantum.gluons.rg)
+	document.getElementById("gbRepl").textContent=shortenDimensions(player.quantum.gluons.gb)
+	document.getElementById("brRepl").textContent=shortenDimensions(player.quantum.gluons.br)
+
 	document.getElementById("replicantReset").innerHTML="Reset replicanti amount to gain a replicant, but you gain replicanti slower.<br>(requires "+shortenCosts(player.quantum.replicants.requirement)+" replicanti)"
 	document.getElementById("quantumFoodAmount").textContent=getFullExpansion(player.quantum.replicants.quantumFood)
 	document.getElementById("buyQuantumFood").innerHTML="Buy 1 quantum food<br><br><br>Cost: "+shortenDimensions(player.quantum.replicants.quantumFoodCost)+" for all 3 gluons"

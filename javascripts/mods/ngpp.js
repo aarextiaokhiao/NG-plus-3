@@ -965,6 +965,7 @@ function quantum(auto,force,challid) {
 		updateEternityChallenges()
 		updateTheoremButtons()
 		updateTimeStudyButtons()
+		updateDilationUpgradeCosts()
 		drawStudyTree()
 		if (!isRewardEnabled(4)) if (document.getElementById("dilation").style.display=="block") showEternityTab("timestudies", document.getElementById("eternitystore").style.display=="block")
 		if (speedrunMilestonesReached < 14 || !isRewardEnabled(4)) {
