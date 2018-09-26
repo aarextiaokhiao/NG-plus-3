@@ -173,7 +173,8 @@ newsArray = [//always true
 ["Whale complained that Infinity Challenge 5 is not the hardest.", "player.achievements.includes('r22') && player.masterystudies", "am19"],
 ["You are now a pre-historic ghost!", "player.achievements.includes('r22') && player.money.gte(Decimal.pow(10, 191140458264))", "am20"],
 ["You are devolving into Homo genuses!", "player.achievements.includes('r22') && player.money.gte(Decimal.pow(10, 29821319640000))", "am21"],
-["Really?! You reached e100 T antimatter. That is impossible!", "player.achievements.includes('r22') && player.totalMoney.gt(Decimal.pow(10, 1e14))", "am22"]];}
+["Really?! You reached e100 T antimatter. That is impossible!", "player.achievements.includes('r22') && player.totalMoney.gt(Decimal.pow(10, 1e14))", "am22"],
+["There is a lot of bugfixes coming, but I am too busy that I can't develop my modification a lot.", "player.achievements.includes('r22')", "am23"]];}
 
 document.addEventListener("visibilitychange", function() {if (!document.hidden) {scrollNextMessage();}}, false);
 var scrollTimeouts = [];
