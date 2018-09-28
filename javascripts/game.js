@@ -1205,46 +1205,48 @@ function isNormalChall(elem) {
 }
 
 function updateChallenges() {
-    try {
-        var buttons = Array.from(document.getElementsByClassName('onchallengebtn')).filter(isNormalChall)
-        for (var i=0; i < buttons.length; i++) {
-            buttons[i].className = "challengesbtn";
-            buttons[i].textContent = "Start"
-        }
+	try {
+		var buttons = Array.from(document.getElementsByClassName('onchallengebtn')).filter(isNormalChall)
+		for (var i=0; i < buttons.length; i++) {
+			buttons[i].className = "challengesbtn";
+			buttons[i].textContent = "Start"
+		}
 
-        var buttonss = Array.from(document.getElementsByClassName('completedchallengesbtn')).filter(isNormalChall)
-        for (var i=0; i < buttonss.length; i++) {
-            buttonss[i].className = "challengesbtn";
-            buttonss[i].textContent = "Start"
-        }
+		for (var i=0; i < player.challenges.length; i++) {
+			document.getElementById(player.challenges[i]).className = "completedchallengesbtn";
+			document.getElementById(player.challenges[i]).textContent = "Completed"
+		}
+		
+		var challengeRunning
+		if (player.currentChallenge === "") {
+			if (!player.challenges.includes("challenge1")) challengeRunning="challenge1"
+		} else challengeRunning=player.currentChallenge
+		if (challengeRunning!==undefined) {
+			document.getElementById(challengeRunning).className = "onchallengebtn";
+			document.getElementById(challengeRunning).textContent = "Running"
+		}
 
-        for (var i=0; i < player.challenges.length; i++) {
-            document.getElementById(player.challenges[i]).className = "completedchallengesbtn";
-            document.getElementById(player.challenges[i]).textContent = "Completed"
-        }
+		if (inQC(4)) {
+			document.getElementById("challenge7").className = "onchallengebtn";
+			document.getElementById("challenge7").textContent = "Trapped in"
+		}
 
-        if (inQC(4)) {
-            document.getElementById("challenge7").className = "onchallengebtn";
-            document.getElementById("challenge7").textContent = "Trapped in"
-        }
+		if (inQC(6)) for (i=2;i<9;i++) if (i<3||i>5) {
+			document.getElementById("postc"+i).className = "onchallengebtn";
+			document.getElementById("postc"+i).textContent = "Trapped in"
+		}
 
-        if (inQC(6)) for (i=2;i<9;i++) if (i<3||i>5) {
-            document.getElementById("postc"+i).className = "onchallengebtn";
-            document.getElementById("postc"+i).textContent = "Trapped in"
-        }
+		if (isIC3Trapped()) {
+			document.getElementById("postc3").className = "onchallengebtn";
+			document.getElementById("postc3").textContent = "Trapped in"
+		}
 
-        if (isIC3Trapped()) {
-            document.getElementById("postc3").className = "onchallengebtn";
-            document.getElementById("postc3").textContent = "Trapped in"
-        }
-
-
-        if (player.money.gte(new Decimal("1e2000")) || Object.keys(player.eternityChalls).length > 0 || player.eternityChallUnlocked !== 0) document.getElementById("challTabButtons").style.display = "table"
-        for (var i=1; i<9; i++) document.getElementById("postc"+i+"div").style.display = (player.postChallUnlocked >= i || (i == 3 && player.galacticSacrifice)) ? "inline-block" : "none"
-    } catch (err) {
-        console.log(err)
-        updateChallenges()
-    }
+		if (player.money.gte(new Decimal("1e2000")) || Object.keys(player.eternityChalls).length > 0 || player.eternityChallUnlocked !== 0) document.getElementById("challTabButtons").style.display = "table"
+		for (var i=1; i<9; i++) document.getElementById("postc"+i+"div").style.display = (player.postChallUnlocked >= i || (i == 3 && player.galacticSacrifice)) ? "inline-block" : "none"
+	} catch (err) {
+		console.log(err)
+		updateChallenges()
+	}
 }
 
 function updateEternityChallenges() {
