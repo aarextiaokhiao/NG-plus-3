@@ -306,6 +306,7 @@ function updateNewPlayer(reseted) {
             eternityconfirm: true,
             commas: "Commas",
             updateRate: 50,
+	    productionTab: 0,
             chart: {
                 updateRate: 1000,
                 duration: 10,
@@ -1824,6 +1825,19 @@ function getPostC3RewardStart() {
 	let power = player.totalTickGained*getEC14Power()
 	if (player.tickspeedBoosts !== undefined) power += player.tickspeedBoosts*10
 	return Decimal.pow(getPostC3RewardMult(),power)
+}
+
+function toggleProductionTab() {
+	// 0 == visible, 1 == not visible
+	if(!player.options.productionTab){
+		document.getElementById("productionTab").style.display = "none"
+		document.getElementById("hideProductionTab").textContent = "Show Production Tab"
+		player.options.productionTab = 1;
+	} else if(player.options.productionTab){
+		document.getElementById("productionTab").style.display = "inline-block"
+		document.getElementById("hideProductionTab").textContent = "Hide Production Tab"
+		player.options.productionTab = 0;
+	}
 }
 
 // Replicanti stuff
