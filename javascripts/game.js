@@ -882,7 +882,7 @@ function getGalaxyRequirement(offset=0) {
     let mult = getGalaxyCostIncrease(galaxies)
     let amount = 80 + galaxies * mult
     if (player.currentChallenge == "challenge4") amount += 19
-    else if (player.galacticSacrifice) amount -= (player.galacticSacrifice.upgrades.includes(22) && galaxies > 0) ? 50 : 60
+    else if (player.galacticSacrifice) amount -= (player.galacticSacrifice.upgrades.includes(22) && galaxies > 0) ? 80 : 60
 
     let galaxyCostScalingStart = getGalaxyCostScalingStart(galaxies)
     if (galaxies >= galaxyCostScalingStart) {
@@ -1241,7 +1241,7 @@ function updateChallenges() {
 			document.getElementById("postc3").textContent = "Trapped in"
 		}
 
-		if (player.money.gte(new Decimal("1e2000")) || Object.keys(player.eternityChalls).length > 0 || player.eternityChallUnlocked !== 0) document.getElementById("challTabButtons").style.display = "table"
+		if (player.postChallUnlocked > 0 || Object.keys(player.eternityChalls).length > 0 || player.eternityChallUnlocked !== 0) document.getElementById("challTabButtons").style.display = "table"
 		for (var i=1; i<9; i++) document.getElementById("postc"+i+"div").style.display = (player.postChallUnlocked >= i || (i == 3 && player.galacticSacrifice)) ? "inline-block" : "none"
 	} catch (err) {
 		console.log(err)
@@ -2573,13 +2573,17 @@ function changeSaveDesc(saveId, placement) {
 			else {
 				message+="Quarks: "+shortenDimensions(Decimal.add(temp.quantum.quarks,temp.quantum.usedQuarks.r).add(temp.quantum.usedQuarks.g).add(temp.quantum.usedQuarks.b))
 				if (temp.quantum.gluons.rg) message+=", Gluons: "+shortenDimensions(Decimal.add(temp.quantum.gluons.rg,temp.quantum.gluons.gb).add(temp.quantum.gluons.br))
-				if (temp.masterystudies.includes('d9')) message+=", Paired challenges: "+temp.quantum.pairedChallenges.completed
+				if (temp.masterystudies.includes('d10')) message+=", Replicants: "+shortenDimensions(new Decimal(temp.quantum.replicants.amount))+", Worker replicants: "+shortenDimensions(new Decimal(temp.quantum.replicants.workers))
+				else if (temp.masterystudies.includes('d9')) message+=", Paired challenges: "+temp.quantum.pairedChallenges.completed
 				else if (temp.masterystudies.includes('d8')) {
 					var completions=0
 					if (typeof(temp.quantum.challenges)=="number") completions=temp.quantum.challenges
 					else for (c=1;c<9;c++) if (temp.quantum.challenges[c]) completions++
 					message+=", Challenge completions: "+completions
-				} else if (temp.masterystudies.includes('d7')) message+=", Electrons: "+shortenDimensions(temp.quantum.electrons.amount)
+				} else {
+					message+=", Best quantum: "+timeDisplayShort(temp.quantum.best)
+					if (temp.masterystudies.includes('d7')) message+=", Electrons: "+shortenDimensions(temp.quantum.electrons.amount)
+				}
 			}
 		} else if (temp.dilation?temp.dilation.studies.includes(1):false) {
 			var temp2="Tachyon particles: "+shortenMoney(new Decimal(temp.dilation.totalTachyonParticles))+", Dilated time: "+shortenMoney(new Decimal(temp.dilation.dilatedTime))
@@ -3243,6 +3247,7 @@ function sacrifice(auto = false) {
 
 
 document.getElementById("sacrifice").onclick = function () {
+    if (player.eightAmount.eq(0)) return false
     if (!document.getElementById("confirmation").checked) {
         if (!confirm("Dimensional Sacrifice will remove all of your first to seventh dimensions (with the cost and multiplier unchanged) for a boost to Eighth Dimension. It will take time to regain production.")) {
             return false;
@@ -4655,10 +4660,7 @@ function startChallenge(name, target) {
     if (name == "postc3" && isIC3Trapped()) return
     if (name == "challenge7" && inQC(4)) return
     if ((name == "postc2" || name == "postc6" || name == "postc7" || name == "postc8") && inQC(6)) return
-    if (name.includes("post")) {
-        if (player.autobuyers[11]%1===0) return
-        if (player.autobuyers[11].interval>100) return
-    }
+    if (name.includes("post")) if (player.postChallUnlocked < parseInt(name.split("post")[1])) return
     if (player.options.challConf && name != "") if (!confirm("You will start over with just your infinity upgrades, and achievements. You need to reach " + (name.includes("post") ? "a set goal" : "infinity") + " with special conditions. NOTE: The rightmost infinity upgrade column doesn't work on challenges.")) return
     if (player.currentChallenge != "") document.getElementById(player.currentChallenge).textContent = "Start"
     if (player.tickspeedBoosts !== undefined) player.tickspeedBoosts = 0
@@ -7014,7 +7016,7 @@ function gameLoop(diff) {
     document.getElementById("chall3Pow").textContent = shorten(player.chall3Pow*100) + "%"
 
 
-    if (player.infDimensionsUnlocked[7] == false && player.break && player.eternities <= 24) {
+    if (player.infDimensionsUnlocked[7] == false && player.break && player.currentChallenge === "" && player.eternities <= 24) {
         document.getElementById("newDimensionButton").style.display = "inline-block"
     } else document.getElementById("newDimensionButton").style.display = "none"
 
