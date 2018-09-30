@@ -97,6 +97,7 @@ strong { color: #0072e5 }
 .GPAmount {
     color: #2d5be5 !important
 }
+#vanillaGalaxyPoints { display: none }
 .challengediv {
     background-color: #191919 !important;
     font-family:'Inconsolata', monospace !important;
@@ -117,6 +118,7 @@ strong { color: #0072e5 }
 #infinityPoints1 {
     color: #e5e5e5 !important
 }
+#vanillaInfinityPoints { display: none }
 #bigcrunch, #infinitybtn, #postInfinityButton, #idtabbtn button, .newdim, #infinitydimensions td:nth-child(4) .storebtn, #replicantichance.storebtn, #replicantiinterval.storebtn, #replicantimax.storebtn, #challTabButtons td:nth-child(2) button, #infchallengesbtn {
     border-color: #e2bd00 !important
 }

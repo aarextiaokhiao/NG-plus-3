@@ -388,6 +388,9 @@ if (player.version < 5) {
   if (player.aarexModifications.logRateChange === undefined) {
       player.aarexModifications.logRateChange = false
   }
+  if (player.aarexModifications.hideProductionTab === undefined) {
+      player.aarexModifications.hideProductionTab = !(!player.boughtDims) && player.aarexModifications.ersVersion === undefined
+  }
   transformSaveToDecimal();
   updateCosts();
   updateTickSpeed();
@@ -1125,8 +1128,9 @@ if (player.version < 5) {
 
   document.getElementsByClassName("hideInMorse").display = player.options.notation == "Morse code" ? "none" : ""
 
-  document.getElementById("decimalMode").innerHTML = "Decimal mode: "+(break_infinity_js?"Slow but accurate":"Fast but inaccurate")
+  document.getElementById("decimalMode").textContent = "Decimal mode: "+(break_infinity_js?"Slow but accurate":"Fast but inaccurate")
   document.getElementById("decimalMode").style.display = Decimal.gt(player.totalmoney,"1e9000000000000000") ? "none" : ""
+  document.getElementById("hideProductionTab").textContent = (player.aarexModifications.hideProductionTab?"Show":"Hide")+" production tab"
 
   document.getElementById("hotkeysDesc").innerHTML = "Hotkeys: 1-8 for buy 10 dimension, shift+1-8 for buy 1 dimension, T to buy max tickspeed, shift+T to buy one tickspeed, M for max all<br>S for sacrifice, D for dimension boost, G for galaxy, C for crunch, A for toggle autobuyers, R for replicanti galaxies, E for eternity"+(player.meta?", Q for quantum":"")+".<br>You can hold shift while buying time studies to buy all up until that point, see each study's number, and save study trees.<br>Hotkeys do not work while holding control."
 
@@ -1137,9 +1141,11 @@ if (player.version < 5) {
   document.getElementById("respecOptions").style.display = player.dilation.upgrades.includes("ngpp6") && player.masterystudies ? "block" : "none"
   document.getElementById("respecOptions2").style.display = player.dilation.upgrades.includes("ngpp6") && player.masterystudies ? "block" : "none"
 
-  if (!player.galacticSacrifice) {
-      document.getElementById("infi21").innerHTML = "Increase the multiplier for buying 10 Dimensions <br>"+(player.aarexModifications.newGameExpVersion?"20x -> 24x":"2x -> 2.2x")+"<br>Cost: 1 IP"
-      document.getElementById("infi33").innerHTML = "Increase Dimension Boost multiplier <br>2x -> 2.5x<br>Cost: 7 IP"
+  if (player.galacticSacrifice) {
+      document.getElementById("galaxy11").innerHTML = "Normal dimensions are "+(player.infinitied>0||player.eternities!==0||quantumed?"cheaper based on your infinitied stat.<br>Currently: <span id='galspan11'>"+shortenDimensions(galUpgrade11())+"</span>x":"99% cheaper.")+"<br>Cost: 1 GP"
+  } else {
+      document.getElementById("infi21").innerHTML = "Increase the multiplier for buying 10 Dimensions<br>"+(player.aarexModifications.newGameExpVersion?"20x -> 24x":"2x -> 2.2x")+"<br>Cost: 1 IP"
+      document.getElementById("infi33").innerHTML = "Increase Dimension Boost multiplier<br>2x -> 2.5x<br>Cost: 7 IP"
   }
   var showMoreBreak = player.galacticSacrifice ? "" : "none"
   for (i=1;i<5;i++) document.getElementById("postinfi0"+i).parentElement.style.display=showMoreBreak
@@ -1337,6 +1343,7 @@ function rename_save(id) {
             offlineProgress: true,
 			progressBar: true,
 			logRateChange: false,
+			hideProductionTab: true,
             breakInfinity: false
         }
 		temp_save.aarexModifications.save_name = save_name

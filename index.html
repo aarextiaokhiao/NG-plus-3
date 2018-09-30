@@ -811,11 +811,12 @@
         <div id="dimensions" class="tab">
             <table class="table" align="center" style="margin: auto" id="dimTabButtons">
                 <tr>
-                    <td id="dtabbtn"><button class="secondarytabbtn" onclick="showDimTab('antimatterdimensions')">Dimensions</button></td>
+                    <td><button class="secondarytabbtn" onclick="showDimTab('antimatterdimensions')">Dimensions</button></td>
                     <td id="idtabbtn"><button class="secondarytabbtn" onclick="showDimTab('infinitydimensions')">Infinity Dimensions</button></td>
                     <td id="tdtabbtn"><button class="secondarytabbtn" onclick="showDimTab('timedimensions')">Time Dimensions</button></td>
                     <td id="mdtabbtn"><button class="secondarytabbtn" onclick="showDimTab('metadimensions')">Meta Dimensions</button></td>
-                    <td id="prodtabbtn"><button class="secondarytabbtn" id="productionTab" onclick="showDimTab('production')">Production</button></td>
+                    <td id="edtabbtn"><button class="secondarytabbtn" onclick="showDimTab('emperordimensions')">Emperor Dimensions</button></td>
+                    <td id="prodtabbtn"><button class="secondarytabbtn" onclick="showDimTab('production')">Production</button></td>
                 </tr>
             </table>
             <div id="antimatterdimensions" class="dimtab">
@@ -1433,12 +1434,10 @@
                         <td><div><button id="confirmations" onclick="showConfirmations()" class="storebtn" style="color:black; width: 200px; height: 55px; font-size: 15px">Confirmations</button></div></td>
 		    			<td><div><button id="retry" onclick="toggleChallengeRetry()" class="storebtn" style="color:black; width: 200px; height: 55px; font-size:120%">Automatically retry challenges</button></div></td>
                     </tr>
-                </table>
-                <table>
                     <tr>
                         <td><div><button id="toggleLogRateChange" onclick="toggleLogRateChange()" class="storebtn" style="color:black; width: 200px; height: 55px"></button></div></td>
                         <td><div><button id="decimalMode" onclick="switchDecimalMode()" class="storebtn" style="color:black; width: 200px; height: 55px"></button></div></td>
-			<td><div><button id="hideProductionTab" onclick="toggleProductionTab()" class="storebtn" stlye="color:black; width: 200px; height: 55px"></button</div></td>
+                        <td><div><button id="hideProductionTab" onclick="toggleProductionTab()" class="storebtn" style="color:black; width: 200px; height: 55px"></button></div></td>
                     </tr>
                 </table>
             </div>
@@ -1459,17 +1458,17 @@
             </div>
         </div>
         <div id="statistics" class="tab" align="center" style="color: black; font-size: 12px; font-family: Typewriter; margin: 0 auto">
-            <br>
-            <tr>
+            <div id='statstabs'>
+                <br>
                 <td><button class="secondarytabbtn" onclick="showStatsTab('stats')">Statistics</button><td>
                 <td><button class="secondarytabbtn" onclick="showStatsTab('challengetimes')" id="challengetimesbtn" style="display:none" >Challenge records</button><td>
                 <td><button class="secondarytabbtn" onclick="showStatsTab('infchallengetimes')" id="infchallengesbtn" style="display:none">InfChallenge records</button><td>
                 <td><button class="secondarytabbtn" onclick="showStatsTab('lasttenruns')" id="pastinfs" style="display:none">Past Infinities</button><td>
                 <td><button class="secondarytabbtn" onclick="showStatsTab('lastteneternities')" id="pasteternities" >Past Eternities</button><td>
                 <td><button class="secondarytabbtn" onclick="showStatsTab('lasttenquantums')" id="pastquantums" >Past Quantums</button><td>
-            </tr>
+            </div>
             <div id="stats" class="statstab">
-                <br>
+                <div id='brfilter'><br></div>
                 <div id="totalmoney">You have made x antimatter.</div>
                 <div id="totalresets">You have made x dimensional boosts/shifts.</div>
                 <div id="boosts"></div>
@@ -1482,16 +1481,20 @@
                     <div id="thisQuantum"></div>
                     <br>
                 </div>
-                <div id="eternitied">You have eternitied x times.</div>
-                <div id="thiseternity">You have spent x in this eternity</div>
-                <div id="besteternity">Your fastest eternity is in x.</div>
-                <br>
-                <div id="infinitied">You have infinitied x times.</div>
-                <div id="infinitiedBank">You have infinitied x times.</div>
-                <div id="bestInfinity">Your fastest infinity is in x.</div>
-                <div id="thisInfinity">You have spent x in this Infinity.</div>
-                <div id="bankedInfGain">You will gain x banked infinities on next Eternity.</div>
-                <br>
+                <div id="eternityStatistics">
+                    <div id="eternitied">You have eternitied x times.</div>
+                    <div id="thiseternity">You have spent x in this eternity</div>
+                    <div id="besteternity">Your fastest eternity is in x.</div>
+                    <br>
+                </div>
+                <div id="infinityStatistics">
+                    <div id="infinitied">You have infinitied x times.</div>
+                    <div id="infinitiedBank">You have infinitied x times.</div>
+                    <div id="bestInfinity">Your fastest infinity is in x.</div>
+                    <div id="thisInfinity">You have spent x in this Infinity.</div>
+                    <div id="bankedInfGain">You will gain x banked infinities on next Eternity.</div>
+                    <br>
+                </div>
                 <div id="gsStatistics">
                     <div id="sacrificed"></div>
                     <div id="thisSacrifice"></div>
@@ -1656,7 +1659,7 @@
                             <div id="I forgot to nerf that" class="achievement achievementlocked" style="background-image: url(images/17.png)" ach-tooltip="Get any dimension multiplier over 10 No (10e30). Reward: First Dimensions are 5% stronger."><br></div>
                         </td>
                         <td>
-                            <div id="The Gods are pleased" class="achievement achievementlocked" style="background-image: url(images/18.png)" ach-tooltip="Get over 600x from Dimension Sacrifice in total."><br></div>
+                            <div id="The Gods are pleased" class="achievement achievementlocked" style="background-image: url(images/18.png)" ach-tooltip="Get over 600x from Dimension Sacrifice in total. Reward: Sacrifice is slightly stronger."><br></div>
                         </td>
                         <td>
                             <div id="That's a lot of infinites" class="achievement achievementlocked" style="background-image: url(images/19.png)" ach-tooltip="Reach Infinity 10 times."><br></div>
@@ -2916,12 +2919,15 @@
             </table>
         </div>
         <div id="galaxy" class="tab" align="center" style="display: none">
-            <div id="galaxyPoints" style="color: #4169E1; font-size: 15px; width: 40%; margin: 0 auto">You have x galaxy points.</div>
-	        <br>
+            <div id="vanillaGalaxyPoints">
+	            <br>
+                <div id="galaxyPoints" style="color: #4169E1; font-size: 15px; width: 40%; margin: 0 auto">You have x galaxy points.</div>
+	            <br>
+            </div>
 			<table class="table" style="margin: 0 auto">
 				<tr>
 				    <td>
-                <button id="galaxy11" class="infinistorebtn1" onclick="buyGalaxyUpgrade(11)">Normal dimensions are cheaper based on your infinitied stat.<br>Currently: <span id='galspan11'></span>x<br>Cost: 1 GP</button>
+                <button id="galaxy11" class="infinistorebtn1" onclick="buyGalaxyUpgrade(11)"></button>
             </td>
             <td>
                 <button id="galaxy12" class="infinistorebtn2" onclick="buyGalaxyUpgrade(12)">Normal dimensions gain a multiplier based on time since last galactic sacrifice.<br>Currently: <span id='galspan12'>x</span>x<br>Cost: 3 GP</button>
@@ -2968,8 +2974,10 @@
         </div>
         <div id="infinity" class="tab" align="center" style="display: none">
             <br>
-            <div id="infinityPoints1" style="color: black; font-size: 15px; width: 40%; margin: 0 auto">You have made x Infinity points.</div>
-            <br>
+            <div id='vanillaInfinityPoints'>
+                <div id="infinityPoints1" style="color: black; font-size: 15px; width: 40%; margin: 0 auto">You have made x Infinity points.</div>
+                <br>
+            </div>
             <tr>
                 <td><button class="secondarytabbtn" onclick="showInfTab('preinf')">Upgrades</button><td>
                 <td><button class="secondarytabbtn" onclick="showInfTab('autobuyers')">Autobuyers</button><td>
@@ -3820,7 +3828,7 @@
 <script type="text/javascript" src="javascripts/chart.js"></script>
 <script type="text/javascript" src="javascripts/lz-string.js"></script>
 <script type="text/javascript" src="javascripts/core/polyfill.js"></script>
-<script type="text/javascript" src="javascripts/core/format.js?16"></script>
+<script type="text/javascript" src="javascripts/core/format.js?17"></script>
 <script type="text/javascript" src="javascripts/core/achievements.js?10"></script>
 <script type="text/javascript" src="javascripts/core/chart.js"></script>
 <script type="text/javascript" src="javascripts/core/tickspeed.js?20"></script>
@@ -3831,14 +3839,14 @@
 <script type="text/javascript" src="javascripts/core/timestudies.js?29"></script>
 <script type="text/javascript" src="javascripts/core/canvases.js?6"></script>
 <script type="text/javascript" src="javascripts/core/devtools.js"></script>
-<script type="text/javascript" src="javascripts/core/load_functions.js?60"></script>
+<script type="text/javascript" src="javascripts/core/load_functions.js?61"></script>
 <script type="text/javascript" src="javascripts/core/newsticker.js?6"></script>
-<script type="text/javascript" src="javascripts/mods/ngmm.js?18"></script>
+<script type="text/javascript" src="javascripts/mods/ngmm.js?19"></script>
 <script type="text/javascript" src="javascripts/mods/ers.js?1"></script>
 <script type="text/javascript" src="javascripts/mods/ngpp.js?40"></script>
 <script type="text/javascript" src="javascripts/mods/ngppp.js?39"></script>
 <script type="text/javascript" src="javascripts/mods/ngmmm.js?2"></script>
-<script type="text/javascript" src="javascripts/game.js?69"></script>
+<script type="text/javascript" src="javascripts/game.js?70"></script>
 <script type="text/javascript" src="javascripts/sha512.js"></script>
 </body>
 </html>

@@ -481,6 +481,7 @@ shortenCosts = function (money) {
 };
 
 shortenPreInfCosts = function (money) {
+    if (money.exponent<0) return Math.round(money.mantissa) + " / " + formatValue(player.options.notation, Decimal.pow(10, -money.exponent), 0, 0)
 	return formatValue(player.options.notation, money, (money.mantissa>1&&money.exponent>308)?2:0, 0);
 };
 

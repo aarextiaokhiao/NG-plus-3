@@ -135,7 +135,7 @@ let galUpgrade33 = function () {
 }
 
 function galacticUpgradeSpanDisplay () {
-	document.getElementById('galspan11').innerHTML = shortenDimensions(galUpgrade11())
+	if (player.infinitied>0||player.eternities!==0||quantumed) document.getElementById('galspan11').innerHTML = shortenDimensions(galUpgrade11())
 	document.getElementById('galspan12').innerHTML = shorten(galUpgrade12())
 	document.getElementById('galspan13').innerHTML = shorten(galUpgrade13())
 	document.getElementById('galspan23').innerHTML = shorten(getDimensionBoostPower().times(player.galacticSacrifice.upgrades.includes(23)?1:galUpgrade23()))
