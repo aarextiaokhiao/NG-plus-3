@@ -8,13 +8,13 @@ function getGSAmount() {
 		if (y>100) y = Math.pow(316.22*y,1/3)
 		else if (y>10) y = Math.pow(10*y , .5)
 	}
-	let ret = new Decimal(Math.pow(Math.max(galaxies, 0), y) * Math.max(player.resets - (player.currentChallenge=="challenge4"?2:4), 0));
+	let ret = Decimal.pow(galaxies, y).times(Math.max(0,(player.resets-(player.currentChallenge=="challenge4"?2:4)))).max(0)
 	ret = ret.times(player.eightAmount/50+1)
 	if (player.galacticSacrifice.upgrades.includes(32)) ret = ret.times(galUpgrade32())
 	if (player.infinityUpgrades.includes("galPointMult")) ret = ret.times(getPost01Mult())
 	if (player.achievements.includes('r37')) {
-		if (player.bestInfinityTime <= 18000) ret = ret.times(180000 / player.bestInfinityTime)
-		else ret = ret.times(10 * (1 + Math.pow(Math.log10(18000 / player.bestInfinityTime), 2)))
+		if (player.bestInfinityTime<18e3) ret = ret.times(10+Math.pow(Math.log10(18000/player.bestInfinityTime),2)*10)
+		else ret = ret.times(Math.max(18e4/player.bestInfinityTime,1))
 	}
 	if (player.achievements.includes("r62")) ret = ret.times(Math.max(1, player.infinityPoints.log10()))
 	return ret.floor()
