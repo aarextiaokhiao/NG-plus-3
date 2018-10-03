@@ -827,8 +827,8 @@ function updateMoney() {
     var element = document.getElementById("coinAmount");
     element.textContent = formatValue(player.options.notation, player.money, 2, 1);
     var element2 = document.getElementById("matter");
-    if (player.currentChallenge == "challenge12" || player.currentChallenge == "postc1") element2.textContent = "There is " + formatValue(player.options.notation, player.matter, 2, 1) + " matter."
     if (player.currentChallenge == "postc6" || inQC(6)) element2.textContent = "There is " + formatValue(player.options.notation, Decimal.pow(player.matter,20), 2, 1) + " matter."; //TODO
+    else if (player.currentChallenge == "challenge12" || player.currentChallenge == "postc1") element2.textContent = "There is " + formatValue(player.options.notation, player.matter, 2, 1) + " matter."
     var element3 = document.getElementById("chall13Mult");
     if (player.currentChallenge === "challenge13" || (player.currentChallenge == "postc1" && player.galacticSacrifice)) element3.innerHTML = formatValue(player.options.notation, productAllTotalBought(), 2, 1) + 'x multiplier on all dimensions (product of bought).'
 }
@@ -1046,15 +1046,6 @@ function updateDimensions() {
     if (document.getElementById("dimensions").style.display == "block" && document.getElementById("metadimensions").style.display == "block") updateMetaDimensions()
     if (document.getElementById("quantumtab").style.display == "block") updateQuantumTabs()
 
-    if (player.bestInfinityTime == 9999999999) {
-        document.getElementById("infinityStatistics").style.display = "none"
-    } else {
-        document.getElementById("infinityStatistics").style.display = ""
-        document.getElementById("bestInfinity").textContent = "Your fastest Infinity is in " + timeDisplay(player.bestInfinityTime) + "."
-        document.getElementById("thisInfinity").textContent = "You have spent " + timeDisplay(player.thisInfinityTime) + " in this Infinity."
-        document.getElementById("infinitied").textContent = "You have infinitied " + getFullExpansion(player.infinitied) + " time" + (player.infinitied > 1 ? "s" : "") + (player.infinitiedBank>0 ? " this eternity." : ".")
-    }
-
     if (document.getElementById("stats").style.display == "block" && document.getElementById("statistics").style.display == "block") {
         document.getElementById("totalmoney").textContent = 'You have made a total of ' + shortenMoney(player.totalmoney) + ' antimatter.'
         document.getElementById("totalresets").textContent = 'You have done ' + getFullExpansion(player.resets) + ' dimension boosts/shifts.'
@@ -1074,11 +1065,24 @@ function updateDimensions() {
             document.getElementById("thisSacrifice").textContent = "You have spent "+timeDisplay(player.galacticSacrifice.time)+" in this galactic sacrifice."
         }
 
+        document.getElementById("infinityStatistics").style.display = "none"
+        if (player.bestInfinityTime==9999999999) {
+            document.getElementById("bestInfinity").textContent = ""
+            document.getElementById("thisInfinity").textContent = ""
+            document.getElementById("infinitied").textContent = ""
+        } else {
+            document.getElementById("infinityStatistics").style.display = ""
+            document.getElementById("bestInfinity").textContent = "Your fastest Infinity is in " + timeDisplay(player.bestInfinityTime) + "."
+            document.getElementById("thisInfinity").textContent = "You have spent " + timeDisplay(player.thisInfinityTime) + " in this Infinity."
+            document.getElementById("infinitied").textContent = "You have infinitied " + getFullExpansion(player.infinitied) + " time" + (player.infinitied == 1 ? "" : "s") + (player.eternities!==0 ? " this eternity." : ".")
+        }
+        if (player.infinitiedBank>0) document.getElementById("infinityStatistics").style.display = ""
+
         if (player.eternities == 0) {
             document.getElementById("eternityStatistics").style.display = "none"
         } else {
             document.getElementById("eternityStatistics").style.display = ""
-            document.getElementById("eternitied").textContent = "You have Eternitied " + getFullExpansion(player.eternities) + " times."
+            document.getElementById("eternitied").textContent = "You have Eternitied " + getFullExpansion(player.eternities) + " time" + (player.eternities == 1 ? "" : "s") + (quantumed ? " this quantum." : ".")
             document.getElementById("besteternity").textContent = "You have spent "+timeDisplay(player.thisEternity)+" in this Eternity."
             document.getElementById("thiseternity").textContent = "Your fastest Eternity is in "+timeDisplay(player.bestEternity)+"."
         }
@@ -1087,8 +1091,171 @@ function updateDimensions() {
         else {
             document.getElementById("quantumStatistics").style.display = ""
             document.getElementById("quantumed").textContent = "You have gone quantum "+getFullExpansion(player.quantum.times)+" times."
-            document.getElementById("thisQuantum").textContent = "You have spent "+timeDisplay(player.quantum.time)+" in quantum."
+            document.getElementById("thisQuantum").textContent = "You have spent "+timeDisplay(player.quantum.time)+" in this quantum."
             document.getElementById("bestQuantum").textContent = "Your fastest quantum is in "+timeDisplay(player.quantum.best)+"."
+        }
+
+        if (player.money.gt(Decimal.pow(10, 3 * 86400 * 365.2425 * 79.3 / 10))) {
+            var years = player.money.log10() / 3 / 86400 / 365.2425
+            if (years>2019) {
+                eventBC = years - 2018
+                if (eventBC > 315e3) {
+                    since = "???"
+                    eventBC = 1/0 - eventBC
+                } else if (eventBC > 25e4) {
+                    since = "Homo sapiens"
+                    eventBC = 315e3 - eventBC
+                } else if (eventBC > 195e3) {
+                    since = "Homo neanderthalensis"
+                    eventBC = 25e4 - eventBC
+                } else if (eventBC > 16e4) {
+                    since = "emergence of anatomically modern humans"
+                    eventBC = 195e3 - eventBC
+                } else if (eventBC > 125e3) {
+                    since = "Homo sapiens idaltu"
+                    eventBC = 16e4 - eventBC
+                } else if (eventBC > 7e4) {
+                    since = "peak of Eemian interglacial period"
+                    eventBC = 125e3 - eventBC
+                } else if (eventBC > 67e3) {
+                    since = "earliest abstract/symbolic art"
+                    eventBC = 7e4 - eventBC
+                } else if (eventBC > 5e4) {
+                    since = "Upper Paleolithic"
+                    eventBC = 67e3 - eventBC
+                } else if (eventBC > 45e3) {
+                    since = "Late Stone Age"
+                    eventBC = 5e4 - eventBC
+                } else if (eventBC > 4e4) {
+                    since = "European early modern humans"
+                    eventBC = 45e3 - eventBC
+                } else if (eventBC > 4e4) {
+                    since = "European early modern humans"
+                    eventBC = 45e3 - eventBC
+                } else if (eventBC > 35e3) {
+                    since = "first human settlement"
+                    eventBC = 4e4 - eventBC
+                } else if (eventBC > 33e3) {
+                    since = "oldest known figurative art"
+                    eventBC = 35e3 - eventBC
+                } else if (eventBC > 31e3) {
+                    since = "oldest known domesticated dog"
+                    eventBC = 33e3 - eventBC
+                } else if (eventBC > 29e3) {
+                    since = "Last Glacial Maximum"
+                    eventBC = 31e3 - eventBC
+                } else if (eventBC > 28e3) {
+                    since = "oldest ovens"
+                    eventBC = 29e3 - eventBC
+                } else if (eventBC > 25e3) {
+                    since = "oldest known twisted rope"
+                    eventBC = 28e3 - eventBC
+                } else if (eventBC > 2e4) {
+                    since = "oldest human permanent settlement (hamlet considering built of rocks and of mammoth bones)"
+                    eventBC = 25e3 - eventBC
+                } else if (eventBC > 16e3) {
+                    since = "rise of Kerberan culture"
+                    eventBC = 2e4 - eventBC
+                } else if (eventBC > 15e3) {
+                    since = "colonization of North America"
+                    eventBC = 16e3 - eventBC
+                } else if (eventBC > 14e3) {
+                    since = "domestication of the pig"
+                    eventBC = 15e3 - eventBC
+                } else if (eventBC > 11600) {
+                    since = "prehistoric warfare"
+                    eventBC = 14e3 - eventBC
+                } else if (eventBC > 1e4) {
+                    since = "Holocene"
+                    eventBC = 11600 - eventBC
+                } else if (eventBC > 8e3) {
+                    since = "death of other human breeds"
+                    eventBC = 1e4 - eventBC
+                } else if (eventBC > 6e3) {
+                    since = "agricultural revolution"
+                    eventBC = 8e3 - eventBC
+                } else if (eventBC > 5e3) {
+                    since = "farmers arrived in Europe"
+                    eventBC = 6e3 - eventBC
+                } else if (eventBC > 4e3) {
+                    since = "first metal tools"
+                    eventBC = 5e3 - eventBC
+                } else if (eventBC > 3200) {
+                    since = "first horse"
+                    eventBC = 4e3 - eventBC
+                } else if (eventBC > 3e3) {
+                    since = "Sumerian cuneiform writing system"
+                    eventBC = 3200 - eventBC
+                } else if (eventBC > 2600) {
+                    since = "union of Egypt"
+                    eventBC = 3e3 - eventBC
+                } else if (eventBC > 2500) {
+                    since = "rise of Maya"
+                    eventBC = 2600 - eventBC
+                } else if (eventBC > 2300) {
+                    since = "extinct of mammoths"
+                    eventBC = 2500 - eventBC
+                } else if (eventBC > 1800) {
+                    since = "rise of Akkadian Empire"
+                    eventBC = 2300 - eventBC
+                } else if (eventBC > 1175) {
+                    since = "first alphabetic writing"
+                    eventBC = 1800 - eventBC
+                } else if (eventBC > 1400) {
+                    since = "rise of Olmec civilization"
+                    eventBC = 1400 - eventBC
+                } else if (eventBC > 800) {
+                    since = "end of bronze age"
+                    eventBC = 1175 - eventBC
+                } else if (eventBC > 753) {
+                    since = "rise of Greek city-states"
+                    eventBC = 800 - eventBC
+                } else if (eventBC > 653) {
+                    since = "rise of Rome"
+                    eventBC = 753 - eventBC
+                } else if (eventBC > 539) {
+                    since = "rise of Persian Empire"
+                    eventBC = 653 - eventBC
+                } else if (eventBC > 356) {
+                    since = "fall of Babylonian Empire"
+                    eventBC = 539 - eventBC
+                } else if (eventBC > 200) {
+                    since = "birth of Alexander the Great"
+                    eventBC = 356 - eventBC
+                } else if (eventBC > 4) {
+                    since = "the first paper"
+                    eventBC = 200 - eventBC
+                } else {
+                    since = "birth of Jesus Christ"
+                    eventBC = 4 - eventBC
+                }
+                var message = "<br>If you end the non-stop writing of your full antimatter amount with 3 digits per second, you would start it in "+getFullExpansion(Math.floor(years - 2018))+" BC."+(since=="???"?"":"<br>(around "+getFullExpansion(Math.ceil(eventBC))+" years since the "+since+")")
+            } else {
+                var message = "<br>If you start writing 3 digits of your full antimatter amount a second down when you were an American baby,<br> you would "
+                if (years>79.3) message+="become a ghost for "+((years-79.3) / years * 100).toFixed(3)+"% of this session."
+                else message+="waste "+(years / 0.793).toFixed(3)+"% of your average life."
+            }
+            document.getElementById("infoScale").innerHTML = message
+        } else if (player.money.gt(new Decimal("1e100000"))) document.getElementById("infoScale").innerHTML = "<br>If you wrote 3 numbers a second, it would take you <br>" + timeDisplay(player.money.log10()*10/3) + "<br> to write down your antimatter amount."
+        else {
+            var scale1 = [2.82e-45,1e-42,7.23e-30,5e-21,9e-17,6.2e-11,5e-8,3.555e-6,7.5e-4,1,2.5e3,2.6006e6,3.3e8,5e12,4.5e17,1.08e21,1.53e24,1.41e27,5e32,8e36,1.7e45,1.7e48,3.3e55,3.3e61,5e68,1e73,3.4e80,1e113,Number.MAX_VALUE,new Decimal("1e65000")];
+            var scale2 = [" protons."," nucleui."," Hydrogen atoms."," viruses."," red blood cells."," grains of sand."," grains of rice."," teaspoons."," wine bottles."," fridge-freezers."," Olympic-sized swimming pools."," Great Pyramids of Giza."," Great Walls of China."," large asteroids.",
+                        " dwarf planets."," Earths."," Jupiters."," Suns."," red giants."," hypergiant stars."," nebulas."," Oort clouds."," Local Bubbles."," galaxies."," Local Groups."," Sculptor Voids."," observable universes."," Dimensions.", " Infinity Dimensions.", " Time Dimensions."];
+            var id = 0;
+            if (player.money.times(4.22419e-105).gt(2.82e-45)) {
+                if (player.money.times(4.22419e-105).gt(scale1[scale1.length - 1])) id = scale1.length - 1;
+                else {
+                    while (player.money.times(4.22419e-105).gt(scale1[id])) id++;
+                    if (id > 0) id--;
+                }
+                if (id >= 7 && id < 11) document.getElementById("infoScale").textContent = "If every antimatter were a planck volume, you would have enough to fill " + formatValue(player.options.notation, player.money * 4.22419e-105 / scale1[id], 2, 1) + scale2[id];
+                else document.getElementById("infoScale").textContent = "If every antimatter were a planck volume, you would have enough to make " + formatValue(player.options.notation, player.money.times(4.22419e-105).dividedBy(scale1[id]), 2, 1) + scale2[id];
+            } else { //does this part work correctly? i doubt it does
+                if (player.money.times(1e-54) < 2.82e-45) document.getElementById("infoScale").textContent = "If every antimatter were " + formatValue(player.options.notation,2.82e-45 / 1e-54 / player.money, 2, 1) + " attometers cubed, you would have enough to make a proton."
+                else if (player.money * 1e-63 < 2.82e-45) document.getElementById("infoScale").textContent = "If every antimatter were " + formatValue(player.options.notation,2.82e-45 / 1e-63 / player.money, 2, 1) + " zeptometers cubed, you would have enough to make a proton."
+                else if (player.money * 1e-72 < 2.82e-45) document.getElementById("infoScale").textContent = "If every antimatter were " + formatValue(player.options.notation,2.82e-45 / 1e-72 / player.money, 2, 1) + " yoctometers cubed, you would have enough to make a proton."
+                else document.getElementById("infoScale").textContent = "If every antimatter were " + formatValue(player.options.notation,2.82e-45 / 4.22419e-105 / player.money, 2, 1) + " planck volumes, you would have enough to make a proton."
+            }
         }
     }
 
@@ -1107,7 +1274,7 @@ function updateDimensions() {
                 document.getElementById("infi33").innerHTML = "Dimension boosts are stronger based on infinity points<br>Currently: " + (1.2 + 0.05 * player.infinityPoints.max(1).log(10)).toFixed(2) + "x<br>Cost: 7 IP"
             }
             document.getElementById("infi34").innerHTML = "Infinity Point generation based on fastest infinity <br>Currently: "+shortenDimensions(getIPMult())+" every " + timeDisplay(player.bestInfinityTime*10) + "<br>Cost: 10 IP"
-        } else if (document.getElementById("postinf").style.display == "block") {
+        } else if (document.getElementById("postinf").style.display == "block" && document.getElementById("breaktable").style.display == "inline-block") {
             document.getElementById("postinfi11").innerHTML = "Power up all dimensions based on total antimatter produced<br>Currently: "+shorten(Math.pow(player.totalmoney.e+1, player.galacticSacrifice?2:0.5))+"x<br>Cost: "+shortenCosts(1e4)+" IP"
             document.getElementById("postinfi21").innerHTML = "Power up all dimensions based on current antimatter<br>Currently: "+shorten(Math.pow(player.money.e+1, player.galacticSacrifice?2:0.5))+"x<br>Cost: "+shortenCosts(5e4)+" IP"
             if (player.tickSpeedMultDecrease > 2) document.getElementById("postinfi31").innerHTML = "Tickspeed cost multiplier increase <br>"+player.tickSpeedMultDecrease+"x -> "+(player.tickSpeedMultDecrease-1)+"x<br>Cost: "+shortenDimensions(player.tickSpeedMultDecreaseCost) +" IP"
@@ -1136,23 +1303,24 @@ function updateDimensions() {
             }
         }
     }
-    if (document.getElementById("eternityupgrades").style.display == "block" && document.getElementById("eternitystore").style.display == "block") {
-        document.getElementById("eter1").innerHTML = "Infinity Dimensions multiplier based on unspent EP (x+1)<br>Currently: "+shortenMoney(player.eternityPoints.plus(1))+"x<br>Cost: 5 EP"
-        document.getElementById("eter2").innerHTML = "Infinity Dimension multiplier based on eternities ("+(player.boughtDims?"x^log4(2x)":player.achievements.includes("ngpp15")?"x^log10(x)^3.75":"(x/200)^log4(2x)")+")<br>Currently: "+shortenMoney(getEU2Mult())+"x<br>Cost: 10 EP"
-        document.getElementById("eter3").innerHTML = "Infinity Dimensions multiplier based on "+(player.boughtDims?"time shards (x^log4(2x))":"sum of Infinity Challenge times")+"<br>Currently: "+shortenMoney(getEU3Mult())+"x<br>Cost: "+shortenCosts(50e3)+" EP"
-        document.getElementById("eter4").innerHTML = "Your achievement bonus affects Time Dimensions"+"<br>Cost: "+shortenCosts(1e16)+" EP"
-        document.getElementById("eter5").innerHTML = "Time Dimensions are multiplied by your unspent time theorems"+"<br>Cost: "+shortenCosts(1e40)+" EP"
-        document.getElementById("eter6").innerHTML = "Time Dimensions are multiplied by days played"+"<br>Cost: "+shortenCosts(1e50)+" EP"
-    }
-
-    if (document.getElementById("dilation").style.display == "block") {
-        if (player.dilation.active) {
-            let gain = getDilGain()
-            let req = Decimal.pow(10, Math.pow(player.dilation.totalTachyonParticles / getDilPower(), 1 / getDilExp()) * 400);
-            if (player.dilation.totalTachyonParticles - gain > 0) document.getElementById("enabledilation").innerHTML = "Disable dilation.<br>Reach " + shortenMoney(req) + " antimatter to gain more Tachyon Particles."
-            else document.getElementById("enabledilation").textContent = "Disable dilation."
+    if (document.getElementById("eternitystore").style.display == "block") {
+        if (document.getElementById("eternityupgrades").style.display == "block") {
+            document.getElementById("eter1").innerHTML = "Infinity Dimensions multiplier based on unspent EP (x+1)<br>Currently: "+shortenMoney(player.eternityPoints.plus(1))+"x<br>Cost: 5 EP"
+            document.getElementById("eter2").innerHTML = "Infinity Dimension multiplier based on eternities ("+(player.boughtDims?"x^log4(2x)":player.achievements.includes("ngpp15")?"x^log10(x)^3.75":"(x/200)^log4(2x)")+")<br>Currently: "+shortenMoney(getEU2Mult())+"x<br>Cost: 10 EP"
+            document.getElementById("eter3").innerHTML = "Infinity Dimensions multiplier based on "+(player.boughtDims?"time shards (x^log4(2x))":"sum of Infinity Challenge times")+"<br>Currently: "+shortenMoney(getEU3Mult())+"x<br>Cost: "+shortenCosts(50e3)+" EP"
+            document.getElementById("eter4").innerHTML = "Your achievement bonus affects Time Dimensions"+"<br>Cost: "+shortenCosts(1e16)+" EP"
+            document.getElementById("eter5").innerHTML = "Time Dimensions are multiplied by your unspent time theorems"+"<br>Cost: "+shortenCosts(1e40)+" EP"
+            document.getElementById("eter6").innerHTML = "Time Dimensions are multiplied by days played"+"<br>Cost: "+shortenCosts(1e50)+" EP"
         }
-        else document.getElementById("enabledilation").textContent = "Dilate time."+((player.eternityBuyer.isOn&&player.eternityBuyer.dilationMode?!isNaN(player.eternityBuyer.statBeforeDilation):false) ? " " + (player.eternityBuyer.dilationPerAmount - player.eternityBuyer.statBeforeDilation) + " left before dilation." : "")
+        if (document.getElementById("dilation").style.display == "block") {
+            if (player.dilation.active) {
+                let gain = getDilGain()
+                let req = Decimal.pow(10, Math.pow(player.dilation.totalTachyonParticles / getDilPower(), 1 / getDilExp()) * 400);
+                if (player.dilation.totalTachyonParticles - gain > 0) document.getElementById("enabledilation").innerHTML = "Disable dilation.<br>Reach " + shortenMoney(req) + " antimatter to gain more Tachyon Particles."
+                else document.getElementById("enabledilation").textContent = "Disable dilation."
+            }
+            else document.getElementById("enabledilation").textContent = "Dilate time."+((player.eternityBuyer.isOn&&player.eternityBuyer.dilationMode?!isNaN(player.eternityBuyer.statBeforeDilation):false) ? " " + (player.eternityBuyer.dilationPerAmount - player.eternityBuyer.statBeforeDilation) + " left before dilation." : "")
+        }
     }
 }
 
@@ -6472,8 +6640,11 @@ function gameLoop(diff) {
     EPminpeakUnits = (EPminpeakType == 'logarithm' ? ' log(' + EPminpeakUnits + ')' : ' ' + EPminpeakUnits) + '/min'
     document.getElementById("eternitybtnFlavor").textContent = (((!player.dilation.active&&gainedEternityPoints().lt(1e6))||player.currentEternityChall!==""||(player.options.theme=="Aarex's Modifications"&&player.options.notation!="Morse code"))
         ? ((player.currentEternityChall!=="" ? "Other challenges await..." : player.eternities>0 ? "" : "Other times await...") + " I need to become Eternal.") : "")
-    document.getElementById("eternitybtnEPGain").innerHTML = ((player.eternities > 0 && (player.currentEternityChall==""||player.options.theme=="Aarex's Modifications"))
-        ? "Gain <b>"+(player.dilation.active?shortenMoney(Math.max(getDilGain() - player.dilation.totalTachyonParticles, 0)):shortenDimensions(gainedEternityPoints()))+"</b> "+(player.dilation.active?"Tachyon particles.":"Eternity points.") : "")
+    if (player.dilation.tachyonParticles >= getDilGain() && player.dilation.active) document.getElementById("eternitybtnEPGain").innerHTML = "Reach " + shortenMoney(Decimal.pow(10, Math.pow(player.dilation.totalTachyonParticles / getDilPower(), 1 / getDilExp()) * 400)) + " antimatter to gain more Tachyon Particles."
+    else {
+        document.getElementById("eternitybtnEPGain").innerHTML = ((player.eternities > 0 && (player.currentEternityChall==""||player.options.theme=="Aarex's Modifications"))
+            ? "Gain <b>"+(player.dilation.active?shortenMoney(Math.max(getDilGain() - player.dilation.totalTachyonParticles, 0)):shortenDimensions(gainedEternityPoints()))+"</b> "+(player.dilation.active?"Tachyon particles.":"Eternity points.") : "")
+    }
     var showEPmin=(player.currentEternityChall===""||player.options.theme=="Aarex's Modifications")&&EPminpeak>0&&player.eternities>0&&player.options.notation!='Morse code'&&player.options.notation!='Spazzy'
     document.getElementById("eternitybtnRate").textContent = (showEPmin&&(EPminpeak.lt("1e30003")||player.options.theme=="Aarex's Modifications")
         ? (EPminpeakType == "normal" ? shortenDimensions(currentEPmin) : shorten(currentEPmin))+EPminpeakUnits : "")
@@ -6703,6 +6874,7 @@ function gameLoop(diff) {
         document.getElementById("achievementsbtn").style.display = "inline-block";
     }
 
+    if (player.masterystudies) if (player.masterystudies.includes('t291')) updateEternityUpgrades()
     document.getElementById("epmult").className = player.eternityPoints.gte(player.epmultCost) ? "eternityupbtn" : "eternityupbtnlocked"
 
     if (player.infinityUpgrades.includes("bulkBoost")) document.getElementById("bulkdimboost").style.display = "inline"
@@ -6830,166 +7002,6 @@ function gameLoop(diff) {
     document.getElementById("ec14reward").textContent = "Reward: Free tickspeed upgrades increases IC3 reward "+(ECTimesCompleted("eterc14")*2)+" times."
 
     document.getElementById("ec10span").textContent = shortenMoney(ec10bonus) + "x"
-    var scale1 = [2.82e-45,1e-42,7.23e-30,5e-21,9e-17,6.2e-11,5e-8,3.555e-6,7.5e-4,1,2.5e3,2.6006e6,3.3e8,5e12,4.5e17,1.08e21,1.53e24,1.41e27,5e32,8e36,1.7e45,1.7e48,3.3e55,3.3e61,5e68,1e73,3.4e80,1e113,Number.MAX_VALUE,new Decimal("1e65000")];
-    var scale2 = [" protons."," nucleui."," Hydrogen atoms."," viruses."," red blood cells."," grains of sand."," grains of rice."," teaspoons."," wine bottles."," fridge-freezers."," Olympic-sized swimming pools."," Great Pyramids of Giza."," Great Walls of China."," large asteroids.",
-                " dwarf planets."," Earths."," Jupiters."," Suns."," red giants."," hypergiant stars."," nebulas."," Oort clouds."," Local Bubbles."," galaxies."," Local Groups."," Sculptor Voids."," observable universes."," Dimensions.", " Infinity Dimensions.", " Time Dimensions."];
-    var id = 0;
-    if (player.money.times(4.22419e-105).gt(2.82e-45)) {
-        if (player.money.times(4.22419e-105).gt(scale1[scale1.length - 1])) id = scale1.length - 1;
-        else {
-            while (player.money.times(4.22419e-105).gt(scale1[id])) id++;
-            if (id > 0) id--;
-        }
-        if (id >= 7 && id < 11) document.getElementById("infoScale").textContent = "If every antimatter were a planck volume, you would have enough to fill " + formatValue(player.options.notation, player.money * 4.22419e-105 / scale1[id], 2, 1) + scale2[id];
-        else document.getElementById("infoScale").textContent = "If every antimatter were a planck volume, you would have enough to make " + formatValue(player.options.notation, player.money.times(4.22419e-105).dividedBy(scale1[id]), 2, 1) + scale2[id];
-    } else { //does this part work correctly? i doubt it does
-        if (player.money.times(1e-54) < 2.82e-45) document.getElementById("infoScale").textContent = "If every antimatter were " + formatValue(player.options.notation,2.82e-45 / 1e-54 / player.money, 2, 1) + " attometers cubed, you would have enough to make a proton."
-        else if (player.money * 1e-63 < 2.82e-45) document.getElementById("infoScale").textContent = "If every antimatter were " + formatValue(player.options.notation,2.82e-45 / 1e-63 / player.money, 2, 1) + " zeptometers cubed, you would have enough to make a proton."
-        else if (player.money * 1e-72 < 2.82e-45) document.getElementById("infoScale").textContent = "If every antimatter were " + formatValue(player.options.notation,2.82e-45 / 1e-72 / player.money, 2, 1) + " yoctometers cubed, you would have enough to make a proton."
-        else document.getElementById("infoScale").textContent = "If every antimatter were " + formatValue(player.options.notation,2.82e-45 / 4.22419e-105 / player.money, 2, 1) + " planck volumes, you would have enough to make a proton."
-    }
-    if (player.money.gt(Decimal.pow(10, 3 * 86400 * 365.2425 * 79.3 / 10))) {
-        var years = player.money.log10() / 3 / 86400 / 365.2425
-        if (years>2019) {
-            eventBC = years - 2018
-            if (eventBC > 315e3) {
-                since = "???"
-                eventBC = 1/0 - eventBC
-            } else if (eventBC > 25e4) {
-                since = "Homo sapiens"
-                eventBC = 315e3 - eventBC
-            } else if (eventBC > 195e3) {
-                since = "Homo neanderthalensis"
-                eventBC = 25e4 - eventBC
-            } else if (eventBC > 16e4) {
-                since = "emergence of anatomically modern humans"
-                eventBC = 195e3 - eventBC
-            } else if (eventBC > 125e3) {
-                since = "Homo sapiens idaltu"
-                eventBC = 16e4 - eventBC
-            } else if (eventBC > 7e4) {
-                since = "peak of Eemian interglacial period"
-                eventBC = 125e3 - eventBC
-            } else if (eventBC > 67e3) {
-                since = "earliest abstract/symbolic art"
-                eventBC = 7e4 - eventBC
-            } else if (eventBC > 5e4) {
-                since = "Upper Paleolithic"
-                eventBC = 67e3 - eventBC
-            } else if (eventBC > 45e3) {
-                since = "Late Stone Age"
-                eventBC = 5e4 - eventBC
-            } else if (eventBC > 4e4) {
-                since = "European early modern humans"
-                eventBC = 45e3 - eventBC
-            } else if (eventBC > 4e4) {
-                since = "European early modern humans"
-                eventBC = 45e3 - eventBC
-            } else if (eventBC > 35e3) {
-                since = "first human settlement"
-                eventBC = 4e4 - eventBC
-            } else if (eventBC > 33e3) {
-                since = "oldest known figurative art"
-                eventBC = 35e3 - eventBC
-            } else if (eventBC > 31e3) {
-                since = "oldest known domesticated dog"
-                eventBC = 33e3 - eventBC
-            } else if (eventBC > 29e3) {
-                since = "Last Glacial Maximum"
-                eventBC = 31e3 - eventBC
-            } else if (eventBC > 28e3) {
-                since = "oldest ovens"
-                eventBC = 29e3 - eventBC
-            } else if (eventBC > 25e3) {
-                since = "oldest known twisted rope"
-                eventBC = 28e3 - eventBC
-            } else if (eventBC > 2e4) {
-                since = "oldest human permanent settlement (hamlet considering built of rocks and of mammoth bones)"
-                eventBC = 25e3 - eventBC
-            } else if (eventBC > 16e3) {
-                since = "rise of Kerberan culture"
-                eventBC = 2e4 - eventBC
-            } else if (eventBC > 15e3) {
-                since = "colonization of North America"
-                eventBC = 16e3 - eventBC
-            } else if (eventBC > 14e3) {
-                since = "domestication of the pig"
-                eventBC = 15e3 - eventBC
-            } else if (eventBC > 11600) {
-                since = "prehistoric warfare"
-                eventBC = 14e3 - eventBC
-            } else if (eventBC > 1e4) {
-                since = "Holocene"
-                eventBC = 11600 - eventBC
-            } else if (eventBC > 8e3) {
-                since = "death of other human breeds"
-                eventBC = 1e4 - eventBC
-            } else if (eventBC > 6e3) {
-                since = "agricultural revolution"
-                eventBC = 8e3 - eventBC
-            } else if (eventBC > 5e3) {
-                since = "farmers arrived in Europe"
-                eventBC = 6e3 - eventBC
-            } else if (eventBC > 4e3) {
-                since = "first metal tools"
-                eventBC = 5e3 - eventBC
-            } else if (eventBC > 3200) {
-                since = "first horse"
-                eventBC = 4e3 - eventBC
-            } else if (eventBC > 3e3) {
-                since = "Sumerian cuneiform writing system"
-                eventBC = 3200 - eventBC
-            } else if (eventBC > 2600) {
-                since = "union of Egypt"
-                eventBC = 3e3 - eventBC
-            } else if (eventBC > 2500) {
-                since = "rise of Maya"
-                eventBC = 2600 - eventBC
-            } else if (eventBC > 2300) {
-                since = "extinct of mammoths"
-                eventBC = 2500 - eventBC
-            } else if (eventBC > 1800) {
-                since = "rise of Akkadian Empire"
-                eventBC = 2300 - eventBC
-            } else if (eventBC > 1175) {
-                since = "first alphabetic writing"
-                eventBC = 1800 - eventBC
-            } else if (eventBC > 1400) {
-                since = "rise of Olmec civilization"
-                eventBC = 1400 - eventBC
-            } else if (eventBC > 800) {
-                since = "end of bronze age"
-                eventBC = 1175 - eventBC
-            } else if (eventBC > 753) {
-                since = "rise of Greek city-states"
-                eventBC = 800 - eventBC
-            } else if (eventBC > 653) {
-                since = "rise of Rome"
-                eventBC = 753 - eventBC
-            } else if (eventBC > 539) {
-                since = "rise of Persian Empire"
-                eventBC = 653 - eventBC
-            } else if (eventBC > 356) {
-                since = "fall of Babylonian Empire"
-                eventBC = 539 - eventBC
-            } else if (eventBC > 200) {
-                since = "birth of Alexander the Great"
-                eventBC = 356 - eventBC
-            } else if (eventBC > 4) {
-                since = "the first paper"
-                eventBC = 200 - eventBC
-            } else {
-                since = "birth of Jesus Christ"
-                eventBC = 4 - eventBC
-            }
-            var message = "<br>If you end the non-stop writing of your full antimatter amount with 3 digits per second, you would start it in "+getFullExpansion(Math.floor(years - 2018))+" BC."+(since=="???"?"":"<br>(around "+getFullExpansion(Math.ceil(eventBC))+" years since the "+since+")")
-        } else {
-            var message = "<br>If you start writing 3 digits of your full antimatter amount a second down when you were an American baby,<br> you would "
-            if (years>79.3) message+="become a ghost for "+((years-79.3) / years * 100).toFixed(3)+"% of this session."
-            else message+="waste "+(years / 0.793).toFixed(3)+"% of your average life."
-        }
-        document.getElementById("infoScale").innerHTML = message
-    } else if (player.money.gt(new Decimal("1e100000"))) document.getElementById("infoScale").innerHTML = "<br>If you wrote 3 numbers a second, it would take you <br>" + timeDisplay(player.money.log10()*10/3) + "<br> to write down your antimatter amount."
 
     var shiftRequirement = getShiftRequirement(0);
 
@@ -7624,6 +7636,10 @@ window.addEventListener('keydown', function(event) {
     switch (event.keyCode) {
         case 65: // A
             toggleAutoBuyers();
+        break;
+
+        case 66: // B
+            if (player.tickspeedBoosts != undefined) tickspeedBoost()
         break;
 
         case 68: // D
