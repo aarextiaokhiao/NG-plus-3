@@ -556,6 +556,7 @@ function toggleAllMetaDims() {
 		id++
 	}
 	for (id=1;id<stop;id++) player.autoEterOptions["md"+id]=turnOn
+	document.getElementById("metaMaxAll").style.display=turnOn&&stop>7?"none":""
 }
 
 function sacrificeGalaxy(id) {

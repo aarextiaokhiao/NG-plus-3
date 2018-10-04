@@ -1132,7 +1132,7 @@ if (player.version < 5) {
   document.getElementById("decimalMode").style.display = Decimal.gt(player.totalmoney,"1e9000000000000000") ? "none" : ""
   document.getElementById("hideProductionTab").textContent = (player.aarexModifications.hideProductionTab?"Show":"Hide")+" production tab"
 
-  document.getElementById("hotkeysDesc").innerHTML = "Hotkeys: 1-8 for buy 10 dimension, shift+1-8 for buy 1 dimension, T to buy max tickspeed, shift+T to buy one tickspeed, M for max all<br>S for sacrifice, "+(player.tickspeedBoosts==undefined?"":"B for tickspeed boost, ")+"D for dimension boost, G for galaxy, C for crunch, A for toggle autobuyers, R for replicanti galaxies, E for eternity"+(player.meta?", Q for quantum":"")+(player.boughtDims?".":".<br>You can hold shift while buying time studies to buy all up until that point, see each study's number, and save study trees.<br>Hotkeys do not work while holding control.")
+  document.getElementById("hotkeysDesc").innerHTML = "Hotkeys: 1-8 for buy 10 dimension, shift+1-8 for buy 1 dimension, T to buy max tickspeed, shift+T to buy one tickspeed, M for max all<br>S for sacrifice, D for dimension boost,"+(player.tickspeedBoosts==undefined?"":"B for tickspeed boost, ")+" G for galaxy, C for crunch, A for toggle autobuyers, R for replicanti galaxies, E for eternity"+(player.meta?", Q for quantum":"")+(player.boughtDims?".":".<br>You can hold shift while buying time studies to buy all up until that point, see each study's number, and save study trees.<br>Hotkeys do not work while holding control.")
 
   document.getElementById("secretstudy").style.opacity = 0
   document.getElementById("secretstudy").style.cursor = "pointer"
@@ -1204,6 +1204,15 @@ if (player.version < 5) {
   updateColorCharge()
   updateGluons()
   updateSpeedruns()
+  var removeMaxAll=false
+  if (speedrunMilestonesReached > 13) {
+      for (d=1;d<9;d++) {
+          if (player.autoEterOptions["md"+d]) {
+              if (d>7) removeMaxAll=true
+          } else break
+      }
+  }
+  document.getElementById("metaMaxAll").style.display=removeMaxAll?"none":""
   updateElectrons()
   updateQuantumChallenges()
   updateReplicants()

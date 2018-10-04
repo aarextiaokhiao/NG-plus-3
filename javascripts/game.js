@@ -3428,6 +3428,7 @@ document.getElementById("sacrifice").onclick = function () {
     return sacrifice();
 }
 
+var ndAutobuyersUsed = 0
 function updateAutobuyers() {
     var autoBuyerDim1 = new Autobuyer (1)
     var autoBuyerDim2 = new Autobuyer (2)
@@ -3587,7 +3588,7 @@ function updateAutobuyers() {
     var maxedAutobuy = 0;
     var e100autobuy = 0;
     for (let tier = 1; tier <= 8; ++tier) {
-    document.getElementById("toggleBtn" + tier).style.display = "inline-block";
+        document.getElementById("toggleBtn" + tier).style.display = "inline-block";
         if (player.autobuyers[tier-1].bulk >= 1e100) {
         player.autobuyers[tier-1].bulk = 1e100;
         document.getElementById("buyerBtn" + tier).textContent = shortenDimensions(player.autobuyers[tier-1].bulk)+"x bulk purchase";
@@ -3612,6 +3613,7 @@ function updateAutobuyers() {
         document.getElementById("toggleBtnTickSpeed").style.display = "inline-block"
         maxedAutobuy++;
     }
+
     if (player.autobuyers[9].interval <= 100) {
         document.getElementById("buyerBtnDimBoost").style.display = "none"
         maxedAutobuy++;
@@ -3674,6 +3676,9 @@ function updateAutobuyers() {
         if (player.quantum) if (player.quantum.autobuyer) player.quantum.autobuyer.enabled = document.getElementById("quantumison").checked
     }
     priorityOrder()
+    ndAutobuyersUsed=0
+    for (i=0;i<9;i++) if (player.autobuyers[i].isOn) ndAutobuyersUsed++
+    document.getElementById("maxall").style.display=ndAutobuyersUsed>8&&player.challenges.includes("postc8")?"none":""
 }
 
 
@@ -3702,7 +3707,6 @@ function autoBuyerArray() {
     }
     return tempArray;
 }
-
 
 var priority = []
 
@@ -6640,7 +6644,7 @@ function gameLoop(diff) {
     EPminpeakUnits = (EPminpeakType == 'logarithm' ? ' log(' + EPminpeakUnits + ')' : ' ' + EPminpeakUnits) + '/min'
     document.getElementById("eternitybtnFlavor").textContent = (((!player.dilation.active&&gainedEternityPoints().lt(1e6))||player.currentEternityChall!==""||(player.options.theme=="Aarex's Modifications"&&player.options.notation!="Morse code"))
         ? ((player.currentEternityChall!=="" ? "Other challenges await..." : player.eternities>0 ? "" : "Other times await...") + " I need to become Eternal.") : "")
-    if (player.dilation.tachyonParticles >= getDilGain() && player.dilation.active) document.getElementById("eternitybtnEPGain").innerHTML = "Reach " + shortenMoney(Decimal.pow(10, Math.pow(player.dilation.totalTachyonParticles / getDilPower(), 1 / getDilExp()) * 400)) + " antimatter to gain more Tachyon Particles."
+    if (player.dilation.totalTachyonParticles >= getDilGain() && player.dilation.active) document.getElementById("eternitybtnEPGain").innerHTML = "Reach " + shortenMoney(Decimal.pow(10, Math.pow(player.dilation.totalTachyonParticles / getDilPower(), 1 / getDilExp()) * 400)) + " antimatter to gain more Tachyon Particles."
     else {
         document.getElementById("eternitybtnEPGain").innerHTML = ((player.eternities > 0 && (player.currentEternityChall==""||player.options.theme=="Aarex's Modifications"))
             ? "Gain <b>"+(player.dilation.active?shortenMoney(Math.max(getDilGain() - player.dilation.totalTachyonParticles, 0)):shortenDimensions(gainedEternityPoints()))+"</b> "+(player.dilation.active?"Tachyon particles.":"Eternity points.") : "")
@@ -7622,52 +7626,61 @@ window.onfocus = function() {
 }
 
 window.addEventListener('keydown', function(event) {
-    if (!player.options.hotkeys || controlDown === true || document.activeElement.type === "text" || onImport) return false
-    const tmp = event.keyCode;
-    if (tmp >= 49 && tmp <= 56) {
-        if (shiftDown) buyOneDimension(tmp-48)
-        else buyManyDimension(tmp-48)
-        return false;
-    } else if (tmp >= 97 && tmp <= 104) {
-        if (shiftDown) buyOneDimension(tmp-96)
-        else buyManyDimension(tmp-96)
-        return false;
-    }
-    switch (event.keyCode) {
-        case 65: // A
-            toggleAutoBuyers();
-        break;
+	if (!player.options.hotkeys || controlDown === true || document.activeElement.type === "text" || onImport) return false
+	const tmp = event.keyCode;
+	if (tmp >= 49 && tmp <= 56) {
+		if (shiftDown) buyOneDimension(tmp-48)
+		else buyManyDimension(tmp-48)
+		return false;
+	} else if (tmp >= 97 && tmp <= 104) {
+		if (shiftDown) buyOneDimension(tmp-96)
+		else buyManyDimension(tmp-96)
+		return false;
+	}
+	switch (event.keyCode) {
+		case 65: // A
+			toggleAutoBuyers();
+		break;
 
-        case 66: // B
-            if (player.tickspeedBoosts != undefined) tickspeedBoost()
-        break;
+		case 66: // B
+			if (player.tickspeedBoosts != undefined) tickspeedBoost()
+		break;
 
-        case 68: // D
-            document.getElementById("softReset").onclick()
-        break;
+		case 68: // D
+			document.getElementById("softReset").onclick()
+		break;
 
-        case 71: // G
-            document.getElementById("secondSoftReset").onclick()
-        break;
+		case 71: // G
+			document.getElementById("secondSoftReset").onclick()
+		break;
 
-        case 77: // M
-            document.getElementById("maxall").onclick()
-        break;
+		case 77: // M
+			if (ndAutobuyersUsed<9||!player.challenges.includes("postc8")) document.getElementById("maxall").onclick()
+			if (player.dilation.studies.includes(6)) {
+				var maxmeta=true
+				for (d=1;d<9;d++) {
+					if (player.autoEterOptions["meta"+d]) {
+						if (d>7) maxmeta=false
+					} else break
+				}
+				if (maxmeta) document.getElementById("metaMaxAll").onclick()
+			}
+		break;
 
-        case 83: // S
-            document.getElementById("sacrifice").onclick()
-        break;
+		case 83: // S
+			document.getElementById("sacrifice").onclick()
+		break;
 
-        case 84: // T
-            if (shiftDown) buyTickSpeed()
-            else buyMaxTickSpeed()
-        break;
+		case 84: // T
+			if (shiftDown) buyTickSpeed()
+			else buyMaxTickSpeed()
+		break;
 
-        case 82: //R
-            replicantiGalaxy()
-        break;
-    }
-  }, false);
+		case 82: //R
+			replicantiGalaxy()
+		break;
+	}
+}, false);
 
   window.addEventListener('keyup', function(event) {
     if (event.keyCode === 70) {

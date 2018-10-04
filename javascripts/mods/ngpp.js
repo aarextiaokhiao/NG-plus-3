@@ -201,6 +201,15 @@ for (let i = 1; i <= 8; i++) {
 	document.getElementById("meta" + i).onclick = function () {
 		if (speedrunMilestonesReached > i+5) player.autoEterOptions["md"+i] = !player.autoEterOptions["md"+i]
 		else metaBuyOneDimension(i);
+		if (speedrunMilestonesReached > 13) {
+			var removeMaxAll=false
+			for (d=1;d<9;d++) {
+				if (player.autoEterOptions["md"+d]) {
+					if (d>7) removeMaxAll=true
+				} else break
+			}
+			document.getElementById("metaMaxAll").style.display=removeMaxAll?"none":""
+		}
 	}
 	document.getElementById("metaMax" + i).onclick = function () {
 		if (shiftDown && speedrunMilestonesReached > i+5) metaBuyOneDimension(i)
