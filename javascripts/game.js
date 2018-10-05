@@ -301,8 +301,8 @@ function updateNewPlayer(reseted) {
             bulkOn: true,
             cloud: true,
             hotkeys: true,
-            theme: undefined,
-            secretThemeKey: 0,
+            theme: /*undefined*/"S6",
+            secretThemeKey: /*0*/"Halloween",
             eternityconfirm: true,
             commas: "Commas",
             updateRate: 50,
@@ -324,6 +324,8 @@ function updateNewPlayer(reseted) {
             offlineProgress: true,
             progressBar: true,
             logRateChange: false,
+            hideProductionTab: false,
+            popUpId: 0,
             breakInfinity: false
         }
     }
@@ -2816,12 +2818,20 @@ document.getElementById("confirmations").onclick = function () {
     document.getElementById("confirmationoptions").style.display = "flex";
 };
 
+var happyHalloween=false
 function showNextModeMessage() {
 	if (ngModeMessages.length>0) {
 		document.getElementById("welcome").style.display = "flex"
 		document.getElementById("welcomeMessage").innerHTML = ngModeMessages[ngModeMessages.length-1]
 		ngModeMessages.pop()
-	} else document.getElementById("welcome").style.display = "none"
+	} else if (player.aarexModifications.popUpId!=1&&!happyHalloween) {
+		document.getElementById("welcome").style.display = "flex"
+		document.getElementById("welcomeMessage").innerHTML = "Welcome to Spooktober 2018 and Happy Halloween!"+(player.options.theme=="S6"?"":" Import \"Halloween\" from import button to get the Halloween theme!")
+		happyHalloween=true
+	} else {
+		document.getElementById("welcome").style.display = "none"
+		player.aarexModifications.popUpId=1
+	}
 }
 
 function verify_save(obj) {
@@ -3326,6 +3336,7 @@ function switchSubNotation(id) {
 
 document.getElementById("newsbtn").onclick = function() {
 	player.options.newsHidden=!player.options.newsHidden
+	document.getElementById("newsbtn").textContent=(player.options.newsHidden?"Show":"Hide")+" news ticker"
 	document.getElementById("game").style.display=player.options.newsHidden?"none":"block"
 	if (!player.options.newsHidden) scrollNextMessage()
 }

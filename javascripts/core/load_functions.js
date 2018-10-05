@@ -1,6 +1,7 @@
 var inflationCheck = false
 var notifyId = 0
 function onLoad() {
+  happyHalloween=false
   if (player.totalmoney === undefined || isNaN(player.totalmoney)) player.totalmoney = player.money;
   if (player.options === undefined) {
       player.options = {
@@ -390,6 +391,9 @@ if (player.version < 5) {
   }
   if (player.aarexModifications.hideProductionTab === undefined) {
       player.aarexModifications.hideProductionTab = !(!player.boughtDims) && player.aarexModifications.ersVersion === undefined
+  }
+  if (player.aarexModifications.popUpId === undefined) {
+      player.aarexModifications.popUpId = 0
   }
   transformSaveToDecimal();
   updateCosts();
@@ -1060,11 +1064,6 @@ if (player.version < 5) {
   for (s=0;s<(player.boughtDims?4:3);s++) toggleCrunchMode(true)
   updateAutoEterMode()
 
-
-  if (player.options.newsHidden) {
-      document.getElementById("game").style.display = "none";
-  }
-
   quantumed = false
   if (player.meta !== undefined) quantumed = player.quantum.times > 0
   document.getElementById("confirmations").style.display = (player.resets > 4 || player.galaxies > 0 || (player.galacticSacrifice ? player.galacticSacrifice.times > 0 : false) || player.infinitied !== 0 || player.eternities !== 0 || quantumed) ? "inline-block" : "none"
@@ -1204,15 +1203,24 @@ if (player.version < 5) {
   updateColorCharge()
   updateGluons()
   updateSpeedruns()
-  var removeMaxAll=false
-  if (speedrunMilestonesReached > 13) {
+  var removeMaxTD=false
+  var removeMaxMD=false
+  if (player.achievements.includes("ngpp17")) {
       for (d=1;d<9;d++) {
-          if (player.autoEterOptions["md"+d]) {
-              if (d>7) removeMaxAll=true
+          if (player.autoEterOptions["td"+d]) {
+              if (d>7) removeMaxTD=true
           } else break
       }
   }
-  document.getElementById("metaMaxAll").style.display=removeMaxAll?"none":""
+  if (speedrunMilestonesReached>20) {
+      for (d=1;d<9;d++) {
+          if (player.autoEterOptions["md"+d]) {
+              if (d>7) removeMaxMD=true
+          } else break
+      }
+  }
+  document.getElementById("maxTimeDimensions").style.display=removeMaxTD?"none":""
+  document.getElementById("metaMaxAllDiv").style.display=removeMaxMD?"none":""
   updateElectrons()
   updateQuantumChallenges()
   updateReplicants()
@@ -1268,7 +1276,8 @@ if (player.version < 5) {
       inflationCheck = false
       closeToolTip()
       showNextModeMessage()
-  }
+  } else if (player.aarexModifications.popUpId!=1) showNextModeMessage()
+  document.getElementById("newsbtn").textContent=(player.options.newsHidden?"Show":"Hide")+" news ticker"
   document.getElementById("game").style.display=player.options.newsHidden?"none":"block"
   if (!player.options.newsHidden) scrollNextMessage()
 }
@@ -1348,12 +1357,13 @@ function rename_save(id) {
 	else {
 		var temp_save = get_save(id)
 		if (!temp_save.aarexModifications) temp_save.aarexModifications={
-            dilationConf: false,
-            offlineProgress: true,
+			dilationConf: false,
+			offlineProgress: true,
 			progressBar: true,
 			logRateChange: false,
 			hideProductionTab: true,
-            breakInfinity: false
+			popUpId: 0,
+			breakInfinity: false
         }
 		temp_save.aarexModifications.save_name = save_name
 	}

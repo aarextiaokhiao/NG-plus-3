@@ -201,14 +201,14 @@ for (let i = 1; i <= 8; i++) {
 	document.getElementById("meta" + i).onclick = function () {
 		if (speedrunMilestonesReached > i+5) player.autoEterOptions["md"+i] = !player.autoEterOptions["md"+i]
 		else metaBuyOneDimension(i);
-		if (speedrunMilestonesReached > 13) {
+		if (speedrunMilestonesReached > 20) {
 			var removeMaxAll=false
 			for (d=1;d<9;d++) {
 				if (player.autoEterOptions["md"+d]) {
 					if (d>7) removeMaxAll=true
 				} else break
 			}
-			document.getElementById("metaMaxAll").style.display=removeMaxAll?"none":""
+			document.getElementById("metaMaxAllDiv").style.display=removeMaxAll?"none":""
 		}
 	}
 	document.getElementById("metaMax" + i).onclick = function () {
@@ -217,7 +217,7 @@ for (let i = 1; i <= 8; i++) {
 	}
 }
 
-document.getElementById("metaMaxAll").onclick = function () {
+document.getElementById("metaMaxAllDiv").onclick = function () {
     for (let i = 1; i <= 8; i++) buyMaxMetaDimension(i)
 }
 
@@ -351,11 +351,21 @@ function toggleAllTimeDims() {
 		player.autoEterOptions["td"+id]=turnOn
 		document.getElementById("td"+id+'auto').textContent="Auto: O"+(turnOn?"N":"FF")
 	}
+	document.getElementById("maxTimeDimensions").style.display=turnOn?"none":""
 }
 
 function toggleAutoEter(id) {
 	player.autoEterOptions[id]=!player.autoEterOptions[id]
 	document.getElementById(id+'auto').textContent=(id=="rebuyupg"?"Rebuyable upgrade a":id=="metaboost"?"Meta-boost a":"A")+"uto: O"+(player.autoEterOptions[id]?"N":"FF")
+	if (id.slice(0,2)=="td") {
+		var removeMaxAll=false
+		for (d=1;d<9;d++) {
+			if (player.autoEterOptions["td"+d]) {
+				if (d>7) removeMaxAll=true
+			} else break
+		}
+		document.getElementById("maxTimeDimensions").style.display=removeMaxAll?"none":""
+	}
 }
 
 function doAutoEterTick() {
