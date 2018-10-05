@@ -217,7 +217,7 @@ for (let i = 1; i <= 8; i++) {
 	}
 }
 
-document.getElementById("metaMaxAllDiv").onclick = function () {
+document.getElementById("metaMaxAll").onclick = function () {
     for (let i = 1; i <= 8; i++) buyMaxMetaDimension(i)
 }
 
