@@ -229,6 +229,7 @@ function switchAutoInf(tier) {
       player.infDimBuyers[tier-1] = true
       document.getElementById("infauto"+tier).textContent = "Auto: ON"
   }
+  hideMaxIDButton()
 }
 
 function toggleAllInfDims() {
@@ -245,6 +246,7 @@ function toggleAllInfDims() {
           }
       }
   }
+  hideMaxIDButton()
 }
 
 function loadInfAutoBuyers() {
@@ -252,6 +254,22 @@ function loadInfAutoBuyers() {
       if (player.infDimBuyers[i-1]) document.getElementById("infauto"+i).textContent = "Auto: ON"
       else document.getElementById("infauto"+i).textContent = "Auto: OFF"
   }
+  hideMaxIDButton()
+}
+
+function hideMaxIDButton() {
+	var hide=true
+	if (player.masterystudies) {
+		hide=false
+		if (player.eternities>17) {
+			for (d=0;d<8;d++) {
+				if (player.infDimBuyers[d]) {
+					if (d>6) hide=true
+				} else break
+			}
+		}
+	}
+	document.getElementById("maxAllID").style.display=hide?"none":""
 }
 
 var infDimPow = 1

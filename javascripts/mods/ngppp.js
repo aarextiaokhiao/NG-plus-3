@@ -955,3 +955,8 @@ function breakLimit() {
 		updateReplicants()
 	}
 }
+
+//v1.9984 pre-alpha
+function maxAllID() {
+	alert("I'm really sorry! This button supposed to max your IP mult, but it did not work until 10:00 PM EST at tomorrow! :'(")
+}

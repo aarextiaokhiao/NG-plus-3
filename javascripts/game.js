@@ -2130,13 +2130,15 @@ function replicantiGalaxyAutoToggle() {
 }
 
 function infMultAutoToggle() {
-    if (player.infMultBuyer) {
-        player.infMultBuyer = false
-        document.getElementById("infmultbuyer").textContent = "Autobuy IP mult OFF"
-    } else {
-        player.infMultBuyer = true
-        document.getElementById("infmultbuyer").textContent = "Autobuy IP mult ON"
-    }
+	if (player.eternities<1) {
+		if (player.masterystudies) {
+			//INSERT MAX IP MULT CODE HERE
+			alert("I'm really sorry! This button supposed to max your IP mult, but it did not work until 10:00 PM EST at tomorrow! :'(")
+		}
+	} else {
+		player.infMultBuyer=!player.infMultBuyer
+		document.getElementById("infmultbuyer").textContent = "Autobuy IP mult O"+(player.infMultBuyer?"N":"FF")
+	}
 }
 
 
@@ -2816,6 +2818,11 @@ document.getElementById("animationoptionsbtn").onclick = function () {
 document.getElementById("confirmations").onclick = function () {
     closeToolTip();
     document.getElementById("confirmationoptions").style.display = "flex";
+};
+
+function showVisibilityMenu() {
+    closeToolTip();
+    document.getElementById("visibilityoptions").style.display = "flex";
 };
 
 var happyHalloween=false
@@ -4484,6 +4491,7 @@ function eternity(force, auto) {
                 return
             }
         }
+        var oldStat = player.eternities
         player.eternities += gainEternitiedStat()
         if (player.tickspeedBoosts !== undefined) player.tickspeedBoosts = 0
         player = {
@@ -4783,10 +4791,15 @@ function eternity(force, auto) {
         if (player.eternities > 2 && player.replicanti.galaxybuyer === undefined) player.replicanti.galaxybuyer = false
         document.getElementById("infinityPoints1").innerHTML = "You have <span class=\"IPAmount1\">"+shortenDimensions(player.infinityPoints)+"</span> Infinity points."
         document.getElementById("infinityPoints2").innerHTML = "You have <span class=\"IPAmount2\">"+shortenDimensions(player.infinityPoints)+"</span> Infinity points."
+        if (player.eternities > 0 && oldStat < 1) {
+            document.getElementById("infmultbuyer").style.display = "inline-block"
+            document.getElementById("infmultbuyer").textContent = "Autobuy IP mult O"+(player.infMultBuyer?"N":"FF")
+        }
         if (player.eternities < 2) {
             document.getElementById("break").textContent = "BREAK INFINITY"
             document.getElementById("abletobreak").style.display = "block"
         }
+        hideMaxIDButton()
         document.getElementById("replicantireset").innerHTML = "Reset replicanti amount, but get a free galaxy<br>0 replicated galaxies created."
         document.getElementById("eternitybtn").style.display = player.infinityPoints.gte(player.eternityChallGoal) ? "inline-block" : "none"
         document.getElementById("eternityPoints2").style.display = "inline-block"
@@ -5366,6 +5379,7 @@ document.getElementById("ec12unl").onclick = function() {
 function startEternityChallenge(name, startgoal, goalIncrease) {
     if (player.currentEternityChall == name || parseInt(name.split("eterc")[1]) != player.eternityChallUnlocked) return
     if (player.options.challConf) if (!confirm("You will start over with just your time studies, eternity upgrades and achievements. You need to reach a set IP with special conditions.")) return
+    var oldStat = player.eternities
     player.eternities += gainEternitiedStat()
     if (player.tickspeedBoosts !== undefined) player.tickspeedBoosts = 0
     player = {
@@ -5653,10 +5667,15 @@ function startEternityChallenge(name, startgoal, goalIncrease) {
     if (player.eternities > 2 && player.replicanti.galaxybuyer === undefined) player.replicanti.galaxybuyer = false
     document.getElementById("infinityPoints1").innerHTML = "You have <span class=\"IPAmount1\">"+shortenDimensions(player.infinityPoints)+"</span> Infinity points."
     document.getElementById("infinityPoints2").innerHTML = "You have <span class=\"IPAmount2\">"+shortenDimensions(player.infinityPoints)+"</span> Infinity points."
+    if (player.eternities > 0 && oldStat < 1) {
+        document.getElementById("infmultbuyer").style.display = "inline-block"
+        document.getElementById("infmultbuyer").textContent = "Autobuy IP mult O"+(player.infMultBuyer?"N":"FF")
+    }
     if (player.eternities < 2) {
         document.getElementById("break").textContent = "BREAK INFINITY"
          document.getElementById("abletobreak").style.display = "block"
     }
+    hideMaxIDButton()
     document.getElementById("replicantireset").innerHTML = "Reset replicanti amount, but get a free galaxy<br>0 replicated galaxies created."
     document.getElementById("eternitybtn").style.display = player.infinityPoints.gte(player.eternityChallGoal) ? "inline-block" : "none"
     document.getElementById("eternityPoints2").style.display = "inline-block"
@@ -6019,8 +6038,6 @@ setInterval(function() {
     if (player.replicanti.galaxybuyer !== undefined) document.getElementById("replicantiresettoggle").style.display = "inline-block"
     else document.getElementById("replicantiresettoggle").style.display = "none"
 
-    if (player.eternities > 0) document.getElementById("infmultbuyer").style.display = "inline-block"
-    else document.getElementById("infmultbuyer").style.display = "none"
     if (player.eternities > 4) document.getElementById("togglecrunchmode").style.display = "inline-block"
     else document.getElementById("togglecrunchmode").style.display = "none"
     if (player.eternities > 8) document.getElementById("galaxybulk").style.display = "inline-block"

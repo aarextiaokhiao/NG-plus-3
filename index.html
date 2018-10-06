@@ -976,6 +976,7 @@
                     <p>You have <span id="infPowAmount" style="font-size:35px; color: black">0</span> infinity power. Translated to <span id="infDimMultAmount" style="font-size:35px; color: black">0</span>x multiplier on all dimensions</p>
                 </div>
                 <div id="infPowPerSec">You are getting 0 antimatter per second.</div>
+                <button id="maxAllID" class="storebtn" style="font-size: 12px" onclick="maxAllID()">Max all</Button>
                 <table class="table" >
                     <tr style="font-size: 16px" id="infRow1">
                         <td id="infD1" width="41%">
@@ -1427,17 +1428,17 @@
                     <tr>
                         <td><div><button id="hotkeys" onclick="toggleHotkeys()" class="storebtn" style="color:black; width: 200px; height: 55px; font-size:120%">Disable hotkeys</button></div></td>
                         <td><div><button id="notation" class="storebtn" style="color:black; width: 200px; height: 55px; font-size:10px"></button></div></td>
-                        <td><div><button id="progressBarBtn" onclick="toggleProgressBar()" class="storebtn" style="color:black; width: 200px; height: 55px"></button></div></td>
-                    </tr>
-                    <tr>
-                        <td><div><button id="newsbtn" class="storebtn" style="color:black; width: 200px; height: 55px; font-size:120%">Hide/show the news</button></div></td>
                         <td><div><button id="confirmations" onclick="showConfirmations()" class="storebtn" style="color:black; width: 200px; height: 55px; font-size: 15px">Confirmations</button></div></td>
-		    			<td><div><button id="retry" onclick="toggleChallengeRetry()" class="storebtn" style="color:black; width: 200px; height: 55px; font-size:120%">Automatically retry challenges</button></div></td>
                     </tr>
                     <tr>
+                        <td><div><button onclick="showVisibilityMenu()" class="storebtn" style="color:black; width: 200px; height: 55px; font-size: 15px">Show/hide stuff</button></div></td>
+		    			<td><div><button id="retry" onclick="toggleChallengeRetry()" class="storebtn" style="color:black; width: 200px; height: 55px; font-size:120%">Automatically retry challenges</button></div></td>
                         <td><div><button id="toggleLogRateChange" onclick="toggleLogRateChange()" class="storebtn" style="color:black; width: 200px; height: 55px"></button></div></td>
+                    </tr>
+                    <tr>
+                        <td></td>
                         <td><div><button id="decimalMode" onclick="switchDecimalMode()" class="storebtn" style="color:black; width: 200px; height: 55px"></button></div></td>
-                        <td><div><button id="hideProductionTab" onclick="toggleProductionTab()" class="storebtn" style="color:black; width: 200px; height: 55px"></button></div></td>
+                        <td></td>
                     </tr>
                 </table>
             </div>
@@ -3735,6 +3736,12 @@
         <button id="tachyonParticleAnimBtn" class="storebtn" onclick="animationOnOff('tachyonParticles')" style="width: 200px; height: 55px; font-size: 15px" style="display: inline">ON</button>
         <button id="quarksAnimBtn" class="storebtn" onclick="animationOnOff('quarks')" style="width: 200px; height: 55px; font-size: 15px" style="display: inline">ON</button>
 	</div>
+    <div class="popup optionmenu" id="visibilityoptions">
+        <button class="closebtn storebtn" onclick="closeToolTip()">&times;</button>
+        <button id="newsbtn" class="storebtn" style="color:black; width: 200px; height: 55px; font-size:120%"></button>
+        <button id="progressBarBtn" onclick="toggleProgressBar()" class="storebtn" style="color:black; width: 200px; height: 55px; font-size:120%"></button>
+        <button id="hideProductionTab" onclick="toggleProductionTab()" class="storebtn" style="color:black; width: 200px; height: 55px; font-size:120%"></button>
+	</div>
     <div class="popup optionmenu" id="confirmationoptions">
         <button class="closebtn storebtn" onclick="closeToolTip()">&times;</button>
         <button id="sacConfirmBtn" onclick='sacrificeConf()' class="storebtn" style="width: 200px; height: 45px; font-size: 12px" style="display: inline"></button>
@@ -3833,20 +3840,20 @@
 <script type="text/javascript" src="javascripts/core/chart.js"></script>
 <script type="text/javascript" src="javascripts/core/tickspeed.js?20"></script>
 <script type="text/javascript" src="javascripts/core/normal_dimension.js?27"></script>
-<script type="text/javascript" src="javascripts/core/infinity_dimension.js?15"></script>
+<script type="text/javascript" src="javascripts/core/infinity_dimension.js?16"></script>
 <script type="text/javascript" src="javascripts/core/time_dimension.js?20"></script>
 <script type="text/javascript" src="javascripts/core/dimboost.js?32"></script>
 <script type="text/javascript" src="javascripts/core/timestudies.js?29"></script>
 <script type="text/javascript" src="javascripts/core/canvases.js?6"></script>
 <script type="text/javascript" src="javascripts/core/devtools.js"></script>
-<script type="text/javascript" src="javascripts/core/load_functions.js?62"></script>
+<script type="text/javascript" src="javascripts/core/load_functions.js?63"></script>
 <script type="text/javascript" src="javascripts/core/newsticker.js?6"></script>
 <script type="text/javascript" src="javascripts/mods/ngmm.js?19"></script>
 <script type="text/javascript" src="javascripts/mods/ers.js?1"></script>
-<script type="text/javascript" src="javascripts/mods/ngpp.js?41"></script>
-<script type="text/javascript" src="javascripts/mods/ngppp.js?40"></script>
+<script type="text/javascript" src="javascripts/mods/ngpp.js?42"></script>
+<script type="text/javascript" src="javascripts/mods/ngppp.js?41"></script>
 <script type="text/javascript" src="javascripts/mods/ngmmm.js?2"></script>
-<script type="text/javascript" src="javascripts/game.js?71"></script>
+<script type="text/javascript" src="javascripts/game.js?73"></script>
 <script type="text/javascript" src="javascripts/sha512.js"></script>
 </body>
 </html>

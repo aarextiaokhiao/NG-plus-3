@@ -201,7 +201,7 @@ for (let i = 1; i <= 8; i++) {
 	document.getElementById("meta" + i).onclick = function () {
 		if (speedrunMilestonesReached > i+5) player.autoEterOptions["md"+i] = !player.autoEterOptions["md"+i]
 		else metaBuyOneDimension(i);
-		if (speedrunMilestonesReached > 20) {
+		if (speedrunMilestonesReached > 23 && player.achievements.includes("ng3p21")) {
 			var removeMaxAll=false
 			for (d=1;d<9;d++) {
 				if (player.autoEterOptions["md"+d]) {
@@ -457,9 +457,20 @@ function quantum(auto,force,challid) {
 			}
 			var qkGain=quarkGain()
 			player.quantum.last10[0] = [player.quantum.time,qkGain]
-			player.quantum.best=Math.min(player.quantum.best, player.quantum.time)
-			updateSpeedruns()
-			if (speedrunMilestonesReached > 23) giveAchievement("And the winner is...")
+			if (player.quantum.best>player.quantum.time) {
+				player.quantum.best=player.quantum.time
+				updateSpeedruns()
+				if (speedrunMilestonesReached>23) giveAchievement("And the winner is...")
+				var removeMaxAll=false
+				if (speedrunMilestonesReached>23&&player.achievements.includes("ng3p21")) {
+					for (d=1;d<9;d++) {
+						if (player.autoEterOptions["md"+d]) {
+							if (d>7) removeMaxAll=true
+						} else break
+					}
+				}
+				document.getElementById("metaMaxAllDiv").style.display=removeMaxAll?"none":""
+			}
 			player.quantum.times++
 			if (!inQC(6)) player.quantum.quarks = player.quantum.quarks.plus(qkGain);
 			if (!inQC(4)) if (player.meta.resets<1) giveAchievement("Infinity Morals")
@@ -962,8 +973,11 @@ function quantum(auto,force,challid) {
 			document.getElementById("sixthRow").style.display = "none";
 			document.getElementById("seventhRow").style.display = "none";
 			document.getElementById("eightRow").style.display = "none";
+			if (player.masterystudies) document.getElementById("infmultbuyer").textContent="Max buy IP mult"
+			else document.getElementById("infmultbuyer").style.display = "none"
 			document.getElementById("break").textContent = "BREAK INFINITY"
 			document.getElementById("abletobreak").style.display = "block"
+			hideMaxIDButton()
 			document.getElementById("replicantidiv").style.display="none"
 			document.getElementById("replicantiunlock").style.display="inline-block"
 			document.getElementById("replicantiresettoggle").style.display = "none"

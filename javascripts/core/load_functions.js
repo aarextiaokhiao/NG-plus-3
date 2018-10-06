@@ -462,11 +462,8 @@ if (player.version < 5) {
   if (player.eternityChallUnlocked === null) player.eternityChallUnlocked = 0
   if (player.eternityChallUnlocked !== 0) document.getElementById("eterc"+player.eternityChallUnlocked+"div").style.display = "inline-block"
 
-
-  if (player.infMultBuyer !== undefined) {
-      infMultAutoToggle()
-      infMultAutoToggle()
-  }
+  if (player.eternities<1) document.getElementById("infmultbuyer").textContent="Max buy IP mult"
+  else document.getElementById("infmultbuyer").textContent="Autobuy IP mult O"+(player.infMultBuyer?"N":"FF")
 
   if (player.epmult === undefined || player.epmult == 0) {
       player.epmult = new Decimal(1)
@@ -630,7 +627,7 @@ if (player.version < 5) {
           }
           player.aarexModifications.newGamePlusVersion = 1
           if (confirm("Do you want to migrate your NG++ save into new NG+++ mode?")) {
-              player.aarexModifications.newGame3PlusVersion = 1.9983
+              player.aarexModifications.newGame3PlusVersion = 1.9984 //pre-alpha
               player.respecOptions={time:player.respec,mastery:player.respec}
               player.dbPower = 1
               player.peakSpent = 0
@@ -881,7 +878,7 @@ if (player.version < 5) {
           ageProgress: 0
       }
   }
-  if (player.aarexModifications.newGame3PlusVersion < 1.9983) player.aarexModifications.newGame3PlusVersion=1.9983
+  if (player.aarexModifications.newGame3PlusVersion < 1.9984) player.aarexModifications.newGame3PlusVersion=1.9984 //pre-alpha
   if (player.masterystudies) if (player.quantum.autoOptions === undefined) player.quantum.autoOptions = {} //temp
   if (player.aarexModifications.newGame3PlusVersion==undefined) {
       colorBoosts={
@@ -1109,6 +1106,7 @@ if (player.version < 5) {
     normalDimChart.data.datasets[0].borderColor = '#000'
   }
 
+  document.getElementById("infmultbuyer").style.display = player.eternities>0||player.masterystudies?"inline-block":"none"
   if (player.eternities < 30) {
     document.getElementById("secondRow").style.display = "none";
     document.getElementById("thirdRow").style.display = "none";
@@ -1203,6 +1201,7 @@ if (player.version < 5) {
   updateColorCharge()
   updateGluons()
   updateSpeedruns()
+  hideMaxIDButton()
   var removeMaxTD=false
   var removeMaxMD=false
   if (player.achievements.includes("ngpp17")) {
@@ -1212,7 +1211,7 @@ if (player.version < 5) {
           } else break
       }
   }
-  if (speedrunMilestonesReached>20) {
+  if (speedrunMilestonesReached > 23 && player.achievements.includes("ng3p21")) {
       for (d=1;d<9;d++) {
           if (player.autoEterOptions["md"+d]) {
               if (d>7) removeMaxMD=true
