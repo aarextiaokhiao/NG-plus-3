@@ -956,7 +956,37 @@ function breakLimit() {
 	}
 }
 
-//v1.9984 pre-alpha
+//v1.9984
 function maxAllID() {
-	alert("I'm really sorry! This button supposed to max your IP mult, but it did not work until 10:00 PM EST at tomorrow! :'(")
+	for (t=1;t<9;t++) {
+		var dim=player["infinityDimension"+t]
+		if (player.infDimensionsUnlocked[t-1]&&player.infinityPoints.gte(dim.cost)) {
+			var costMult=infCostMults[t]
+			if (ECTimesCompleted("eterc12")) costMult=Math.pow(costMult,1-ECTimesCompleted("eterc12")*0.008)
+			var toBuy=Math.max(Math.floor(player.infinityPoints.div(9-t).div(dim.cost).times(costMult-1).plus(1).log(costMult)),1)
+			var toSpend=Decimal.pow(costMult,toBuy).sub(1).div(costMult-1).times(dim.cost).round()
+			if (toSpend.gt(player.infinityPoints)) player.infinityPoints=new Decimal(0)
+			else player.infinityPoints=player.infinityPoints.sub(toSpend)
+			dim.amount=dim.amount.add(toBuy*10)
+			dim.baseAmount+=toBuy*10
+			dim.power=dim.power.times(Decimal.pow(infPowerMults[t],toBuy))
+			dim.cost=dim.cost.times(Decimal.pow(costMult,toBuy))
+		}
+	}
+}
+
+function hideMaxIDButton(onLoad=false) {
+	if (!onLoad) if (!player.masterystudies) return
+	var hide=true
+	if (player.masterystudies) {
+		hide=false
+		if (player.eternities>17&&player.currentEterChall!="eterc8") {
+			for (d=0;d<8;d++) {
+				if (player.infDimBuyers[d]) {
+					if (d>6) hide=true
+				} else break
+			}
+		}
+	}
+	document.getElementById("maxAllID").style.display=hide?"none":""
 }
