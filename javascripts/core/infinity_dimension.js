@@ -68,7 +68,7 @@ function DimensionPower(tier) {
 
   mult = mult.times(kongAllDimMult)
   if (player.achievements.includes("r94") && tier == 1) mult = mult.times(2);
-  if (player.achievements.includes("r75")) mult = mult.times(player.achPow);
+  if (player.achievements.includes("r75") && !player.boughtDims) mult = mult.times(player.achPow);
   if (player.replicanti.unl && player.replicanti.amount.gt(1)) mult = mult.times(getIDReplMult())
 
   if (player.timestudy.studies.includes(72) && tier == 4) {
@@ -254,22 +254,7 @@ function loadInfAutoBuyers() {
       if (player.infDimBuyers[i-1]) document.getElementById("infauto"+i).textContent = "Auto: ON"
       else document.getElementById("infauto"+i).textContent = "Auto: OFF"
   }
-  hideMaxIDButton()
-}
-
-function hideMaxIDButton() {
-	var hide=true
-	if (player.masterystudies) {
-		hide=false
-		if (player.eternities>17) {
-			for (d=0;d<8;d++) {
-				if (player.infDimBuyers[d]) {
-					if (d>6) hide=true
-				} else break
-			}
-		}
-	}
-	document.getElementById("maxAllID").style.display=hide?"none":""
+  hideMaxIDButton(true)
 }
 
 var infDimPow = 1

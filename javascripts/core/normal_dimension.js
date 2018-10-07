@@ -51,6 +51,7 @@ function getDimensionFinalMultiplier(tier) {
       if (player.achievements.includes("r91") && player.thisInfinityTime < 50) multiplier = multiplier.times(Math.max(301-player.thisInfinityTime*6, 1))
       if (player.achievements.includes("r92") && player.thisInfinityTime < 600) multiplier = multiplier.times(Math.max(101-player.thisInfinityTime/6, 1));
   }
+  if (player.boughtDims&&player.achievements.includes("r98")) multiplier = multiplier.times(player.infinityDimension8.amount.max(1))
   if (player.achievements.includes("r84")) multiplier = multiplier.times(player.money.pow(player.galacticSacrifice?0.00002:0.00004).plus(1));
   else if (player.achievements.includes("r73")) multiplier = multiplier.times(player.money.pow(player.galacticSacrifice?0.00001:0.00002).plus(1));
 

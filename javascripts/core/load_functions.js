@@ -452,9 +452,8 @@ if (player.version < 5) {
   if (player.currentChallenge == "challenge13" || (player.currentChallenge == "postc1" && player.galacticSacrifice)) document.getElementById("chall13Mult").style.display = "inline-block";
   else document.getElementById("chall13Mult").style.display = "none";
 
-
-
-  if (player.replicanti.galaxybuyer !== undefined) {
+  var inERS=!(!player.boughtDims)
+  if (player.replicanti.galaxybuyer !== undefined && !inERS) {
       replicantiGalaxyAutoToggle()
       replicantiGalaxyAutoToggle()
   }
@@ -497,7 +496,10 @@ if (player.version < 5) {
       }
   }
 
-  if (player.version < 9 ) {
+  if (player.version > 7 && inERS && !player.aarexModifications.ersVersion) {
+	  player.version = 7
+  }
+  if (player.version < 9) {
       player.version = 9
       let achs = []
       if (player.achievements.includes("r22")) {
@@ -519,8 +521,13 @@ if (player.version < 5) {
 
       for (var i=0; i<achs.length;i++) player.achievements.push(achs[i])
       updateAchievements()
-      player.replicanti.intervalCost = player.replicanti.intervalCost.dividedBy(1e20)
+      if (!inERS) player.replicanti.intervalCost = player.replicanti.intervalCost.dividedBy(1e20)
   }
+  document.getElementById(inERS?"r22":"r35").appendChild(document.getElementById("Don't you dare to sleep"))
+  document.getElementById(inERS?"r35":"r76").appendChild(document.getElementById("One for each dimension"))
+  document.getElementById(inERS?"r41":"r22").appendChild(document.getElementById("Fake News"))
+  document.getElementById(inERS?"r76":"r41").appendChild(document.getElementById("Spreading Cancer"))
+  document.getElementById("Infinite time").style["background-image"]="url(images/"+(inERS?79:69)+".png)"
 
   if (player.version < 9.5) {
       player.version = 9.5
@@ -627,7 +634,7 @@ if (player.version < 5) {
           }
           player.aarexModifications.newGamePlusVersion = 1
           if (confirm("Do you want to migrate your NG++ save into new NG+++ mode?")) {
-              player.aarexModifications.newGame3PlusVersion = 1.9984 //pre-alpha
+              player.aarexModifications.newGame3PlusVersion = 1.9984
               player.respecOptions={time:player.respec,mastery:player.respec}
               player.dbPower = 1
               player.peakSpent = 0
@@ -878,7 +885,7 @@ if (player.version < 5) {
           ageProgress: 0
       }
   }
-  if (player.aarexModifications.newGame3PlusVersion < 1.9984) player.aarexModifications.newGame3PlusVersion=1.9984 //pre-alpha
+  if (player.aarexModifications.newGame3PlusVersion < 1.9984) player.aarexModifications.newGame3PlusVersion=1.9984
   if (player.masterystudies) if (player.quantum.autoOptions === undefined) player.quantum.autoOptions = {} //temp
   if (player.aarexModifications.newGame3PlusVersion==undefined) {
       colorBoosts={
@@ -992,7 +999,7 @@ if (player.version < 5) {
       player.dead=true
       for (d=1;d<9;d++) {
           var name = TIER_NAMES[d]
-          if (costMults[d].gt(player.costMultipliers[d-1])) player[name+"Bought"] += Math.round(Decimal.div(player.costMultipliers[d-1],costMults[d]).log(player.dimensionMultDecrease))*10
+          if (costMults[d].lt(player.costMultipliers[d-1])) player[name+"Bought"] += (Math.round(Decimal.div(player.costMultipliers[d-1],costMults[d]).log(player.dimensionMultDecrease))+Math.ceil(Decimal.div(Number.MAX_VALUE,initCost[d]).log(costMults[d]))-1)*10
           else player[name+"Bought"] += Decimal.div(player[name+"Cost"],initCost[d]).log(costMults[d])*10
           if (player[name+"Bought"]>0) {
               if (d>1) player.dead=false
@@ -1019,14 +1026,18 @@ if (player.version < 5) {
       player.aarexModifications.ersVersion=1
       delete player.eternityChallenges
   }
-  if (player.aarexModifications.ersVersion<1.01) player.aarexModifications.ersVersion=1.01
+  if (player.aarexModifications.ersVersion<1.02) {
+      if (player.achievements.includes("r85")) player.infMult=player.infMult.times(4)
+      if (player.achievements.includes("r93")) player.infMult=player.infMult.times(4)
+      player.aarexModifications.ersVersion=1.02
+  }
   if (player.aarexModifications.newGameExpVersion === undefined && !player.masterystudies && Decimal.gt(player.infMultCost,10) && Math.round(Decimal.div(player.infMultCost,10).log(4)*1e3)%1e3<1) player.aarexModifications.newGameExpVersion=1
   ipMultPower=2
   if (player.masterystudies) if (player.masterystudies.includes("t241")) ipMultPower=2.2
   if (GUBought("gb3")) ipMultPower=2.3
   if (player.aarexModifications.newGameExpVersion !== undefined) ipMultCostIncrease=4
   else ipMultCostIncrease=10
-  document.getElementById("infiMult").innerHTML = "Multiply infinity points from all sources by "+ipMultPower+"<br>currently: "+shortenDimensions(player.infMult.times(kongIPMult)) +"x<br>Cost: "+shortenCosts(player.infMultCost)+" IP"
+  document.getElementById("infiMult").innerHTML = "Multiply infinity points from all sources by "+ipMultPower+"<br>currently: "+shortenDimensions(getIPMult()) +"x<br>Cost: "+shortenCosts(player.infMultCost)+" IP"
 
   //updates TD costs to harsher scaling
   if (player.version < 12) {
@@ -1201,7 +1212,6 @@ if (player.version < 5) {
   updateColorCharge()
   updateGluons()
   updateSpeedruns()
-  hideMaxIDButton()
   var removeMaxTD=false
   var removeMaxMD=false
   if (player.achievements.includes("ngpp17")) {

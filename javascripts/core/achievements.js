@@ -259,8 +259,17 @@ function updateAchievements() {
 			var achNum = i * 10
 			for (var l=0; l<8; l++) {
 				achNum += 1;
-				var achId=achNum>150?"ng3p"+(achNum-140):achNum>140?"ngpp"+(achNum-130):"r"+((achNum==105&&player.boughtDims)?117:achNum)
-				var name=allAchievements[(achNum==105&&player.boughtDims)?"r105":achId]
+				var realAchNum=achNum
+				if (player.boughtDims) {
+					if (realAchNum==35) realAchNum=22
+					else if (realAchNum==76) realAchNum=35
+					else if (realAchNum==22) realAchNum=41
+					else if (realAchNum==41) realAchNum=76
+				}
+				if (player.masterystudies&&achNum>150) var achId="ng3p"+(achNum-140)
+				else if (player.meta&&achNum>140) var achId="ngpp"+(achNum-130)
+				else var achId="r"+achNum
+				var name=allAchievements[achId]
 				if (player.achievements.includes(achId)) {
 					n++
 					document.getElementById(name).className = "achievementunlocked"
@@ -276,7 +285,6 @@ function updateAchievements() {
 			}
 		}
 	}
-	document.getElementById("Infinite time").style["background-image"]="url(images/"+(player.boughtDims?79:69)+".png)"
 	for (var i=1; i<document.getElementById("secretachievementtable").children[0].children.length+1; i++) {
 		var n = 0
 		var achNum = i * 10

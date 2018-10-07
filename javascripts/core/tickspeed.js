@@ -51,30 +51,49 @@ function getGalaxyPowerEff(ng, bi) {
 }
 
 function getTickSpeedMultiplier() {
-  if (player.currentChallenge == "postc3" || isIC3Trapped()) return 1;
-  if (inQC(2)) return 0.89
-  var realnormalgalaxies = player.galaxies
-  if (player.masterystudies) realnormalgalaxies = Math.max(player.galaxies-player.quantum.electrons.sacGals,0)
-  if (player.galacticSacrifice) {
-      if (GUBought("rg4")) realnormalgalaxies *= 0.4
-      return Decimal.pow(0.998, getGalaxyPower(realnormalgalaxies) * getGalaxyPowerEff())
-  } else if (realnormalgalaxies + player.replicanti.galaxies + player.dilation.freeGalaxies < 3) {
-      if (GUBought("rg4")) realnormalgalaxies *= 0.4
-      let baseMultiplier = 0.9;
-      if (realnormalgalaxies == 0) baseMultiplier = 0.89
-      if (player.currentChallenge == "challenge6" || player.currentChallenge == "postc1") baseMultiplier = 0.93;
-      let perGalaxy = 0.02;
-      perGalaxy *= getGalaxyPowerEff()
-
-      return Math.max(baseMultiplier-(realnormalgalaxies*perGalaxy),0.83);
-  } else {
-      if (GUBought("rg4")) realnormalgalaxies *= 0.4
-      let baseMultiplier = 0.8
-      if (player.currentChallenge == "challenge6" || player.currentChallenge == "postc1") baseMultiplier = 0.83
-      let perGalaxy = 0.965
-      let galaxies = getGalaxyPower(realnormalgalaxies) * getGalaxyPowerEff(realnormalgalaxies, true)
-      return Decimal.pow(perGalaxy, galaxies - 2).times(baseMultiplier)
-  }
+	if (player.currentChallenge == "postc3" || isIC3Trapped()) return 1;
+	if (inQC(2)) return 0.89
+	let realnormalgalaxies = player.galaxies
+	if (player.masterystudies) realnormalgalaxies = Math.max(player.galaxies-player.quantum.electrons.sacGals,0)
+	if (player.galacticSacrifice) {
+		if (GUBought("rg4")) realnormalgalaxies *= 0.4
+		return Decimal.pow(0.998, getGalaxyPower(realnormalgalaxies) * getGalaxyPowerEff())
+	}
+	let inERS = !(!player.boughtDims)
+	let galaxies
+	let baseMultiplier
+	let useLinear
+	let linearGalaxies
+	if (inERS) {
+		if (GUBought("rg4")) realnormalgalaxies *= 0.4
+		galaxies = getGalaxyPower(realnormalgalaxies) * getGalaxyPowerEff(realnormalgalaxies, true)
+		linearGalaxies = Math.min(galaxies,5)
+		useLinear = true
+	} else {
+		linearGalaxies = 2
+		useLinear = realnormalgalaxies + player.replicanti.galaxies + player.dilation.freeGalaxies < 3
+	}
+	if (useLinear) {
+		if (GUBought("rg4")) realnormalgalaxies *= 0.4
+		baseMultiplier = 0.9;
+		if (inERS && galaxies == 0) baseMultiplier = 0.89
+		else if (realnormalgalaxies == 0) baseMultiplier = 0.89
+		if (player.currentChallenge == "challenge6" || player.currentChallenge == "postc1") baseMultiplier = 0.93;
+		if (inERS) {
+			baseMultiplier -= linearGalaxies*0.02
+		} else {
+			let perGalaxy = 0.02 * getGalaxyPowerEff()
+			return Math.max(baseMultiplier-realnormalgalaxies*perGalaxy,0.83);
+		}
+	}
+	if (!inERS) {
+		baseMultiplier = 0.8
+		if (player.currentChallenge == "challenge6" || player.currentChallenge == "postc1") baseMultiplier = 0.83
+		if (GUBought("rg4")) realnormalgalaxies *= 0.4
+		galaxies = getGalaxyPower(realnormalgalaxies) * getGalaxyPowerEff(realnormalgalaxies, true)
+	}
+	let perGalaxy = 0.965
+	return Decimal.pow(perGalaxy, galaxies-linearGalaxies).times(baseMultiplier)
 }
 
 function buyTickSpeed() {

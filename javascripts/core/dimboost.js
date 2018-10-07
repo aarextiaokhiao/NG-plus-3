@@ -10,7 +10,7 @@ function getDimensionBoostPower(next) {
   if (player.boughtDims) ret += player.timestudy.ers_studies[4] + (next ? 1 : 0)
   if (player.galacticSacrifice ? player.galacticSacrifice.upgrades.includes(23) : false) ret *= galUpgrade23()
   if (player.infinityUpgrades.includes("resetMult")&&player.galacticSacrifice) ret *= 1.2 + 0.05 * player.infinityPoints.max(1).log(10)
-  if (player.achievements.includes("r101")) ret = ret*1.01
+  if (!player.boughtDims&&player.achievements.includes("r101")) ret = ret*1.01
   if (player.timestudy.studies.includes(83)) ret = Decimal.pow(1.0004, player.totalTickGained).times(ret);
   if (player.timestudy.studies.includes(231)) ret = Decimal.pow(Math.max(player.resets, 0), 0.3).times(ret)
   if (player.galacticSacrifice) {
@@ -206,13 +206,7 @@ function softReset(bulk) {
   }
   reduceDimCosts()
   if (player.currentChallenge == "postc1") player.costMultipliers = [new Decimal(1e3),new Decimal(5e3),new Decimal(1e4),new Decimal(1.2e4),new Decimal(1.8e4),new Decimal(2.6e4),new Decimal(3.2e4),new Decimal(4.2e4)];
-  if (player.currentChallenge == "") {
-      for (s=1;s<4;s++) if (player.infinityUpgrades.includes("skipReset"+s)&&player.resets<s) player.resets=s
-      if (player.infinityUpgrades.includes("skipResetGalaxy")) {
-          if (player.resets<4) player.resets=4
-          if (player.galaxies == 0) player.galaxies = 1
-      }
-  }
+  skipResets()
   if (player.currentChallenge == "postc2") {
       player.eightAmount = new Decimal(1);
       player.eightBought = 1;
@@ -330,6 +324,7 @@ function getDimboostCostIncrease () {
 		if (player.timestudy.studies.includes(222)) ret -= 2
 		if (player.masterystudies) if (player.masterystudies.includes("t261")) ret -= 1
 		if (player.currentChallenge == "challenge4") ret += 5
+		if (player.boughtDims&&player.achievements.includes('r101')) ret -= Math.min(8, Math.pow(player.eternityPoints.max(1).log(10), .25))
 	}
 	return ret;
 }
@@ -359,3 +354,13 @@ document.getElementById("softReset").onclick = function () {
   var dimensionBoostPower = getDimensionBoostPower()
   for (var tier = 1; tier < 9; tier++) if (player.resets >= tier) floatText(TIER_NAMES[tier] + "D", "x" + shortenDimensions(dimensionBoostPower.pow(player.resets + 1 - tier)))
 };
+
+function skipResets() {
+	if (player.currentChallenge == "") {
+		for (s=1;s<4;s++) if (player.infinityUpgrades.includes("skipReset"+s)&&player.resets<s) player.resets=s
+		if (player.infinityUpgrades.includes("skipResetGalaxy")) {
+			if (player.resets<4) player.resets=4
+			if (player.galaxies == 0) player.galaxies = 1
+		}
+	}
+}

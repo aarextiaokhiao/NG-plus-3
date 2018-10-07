@@ -961,7 +961,10 @@ function quantum(auto,force,challid) {
 		updateAutobuyers()
 		updateMilestones()
 		resetTimeDimensions()
-		if (!oheHeadstart) {
+		if (oheHeadstart) {
+			document.getElementById("replicantiresettoggle").style.display = "inline-block"
+			skipResets()
+		} else {
 			document.getElementById("secondRow").style.display = "none";
 			document.getElementById("thirdRow").style.display = "none";
 			document.getElementById("tickSpeed").style.visibility = "hidden";
@@ -982,7 +985,7 @@ function quantum(auto,force,challid) {
 			document.getElementById("replicantiunlock").style.display="inline-block"
 			document.getElementById("replicantiresettoggle").style.display = "none"
 			delete player.replicanti.galaxybuyer
-		} else document.getElementById("replicantiresettoggle").style.display = "inline-block"
+		}
 		document.getElementById("infinityPoints1").innerHTML = "You have <span class=\"IPAmount1\">"+shortenDimensions(player.infinityPoints)+"</span> Infinity points."
 		document.getElementById("infinityPoints2").innerHTML = "You have <span class=\"IPAmount2\">"+shortenDimensions(player.infinityPoints)+"</span> Infinity points."
 		document.getElementById("replicantireset").innerHTML = "Reset replicanti amount, but get a free galaxy<br>"+player.replicanti.galaxies + " replicated galaxies created."
