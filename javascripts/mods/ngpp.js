@@ -489,6 +489,8 @@ function quantum(auto,force,challid) {
 			}
 		} else player.quantum.gluons = 0;
 		if (player.tickspeedBoosts !== undefined) player.tickspeedBoosts = 0
+		if (player.achievements.includes("r104")) player.infinityPoints = new Decimal(2e25);
+		else player.infinityPoints = new Decimal(0);
 		player = {
 			money: new Decimal(10),
 			tickSpeedCost: new Decimal(1000),
@@ -532,7 +534,7 @@ function quantum(auto,force,challid) {
 			challenges: [],
 			currentChallenge: "",
 			infinityUpgrades: oheHeadstart ? player.infinityUpgrades : [],
-			infinityPoints: new Decimal(player.achievements.includes("r104") ? 1e25 : 0),
+			infinityPoints: player.infinityPoints,
 			infinitied: 0,
 			infinitiedBank: headstart ? player.infinitiedBank : 0,
 			totalTimePlayed: player.totalTimePlayed,
@@ -1011,7 +1013,7 @@ function quantum(auto,force,challid) {
 			document.getElementById("emperorstudies").style.display = "none"
 			if (document.getElementById("metadimensions").style.display == "block") showDimTab("antimatterdimensions")
 			if (document.getElementById("masterystudies").style.display=="block") showEternityTab("timestudies", document.getElementById("eternitystore").style.display=="block")
-			if (document.getElementById("quantumchallenges").style.display == "block") showChallengesTab("challenges")
+			if (document.getElementById("quantumchallenges").style.display == "block") showChallengesTab("normalchallenges")
 			if (document.getElementById("electronstabbtn").style.display == "block"||document.getElementById("replicantstabbtn").style.display == "block") showQuantumTab("uquarks")
 		}
 		drawMasteryTree()

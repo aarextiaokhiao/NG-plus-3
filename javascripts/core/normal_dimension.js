@@ -99,8 +99,14 @@ function getDimensionFinalMultiplier(tier) {
   if (player.dilation.upgrades.includes(6)) multiplier = multiplier.times(player.dilation.dilatedTime.max(1).pow(308))
   if (useHigherNDReplMult) multiplier = multiplier.times(ndReplMult)
   if (player.galacticSacrifice) {
+      if (player.achievements.includes("r56") && player.thisInfinityTime < 1800) multiplier = multiplier.times(3600/(player.thisInfinityTime+1800));
+      if (player.achievements.includes("r78") && player.thisInfinityTime < 3) multiplier = multiplier.times(3.3/(player.thisInfinityTime+0.3));
+      if (player.achievements.includes("r65") && player.currentChallenge != "" && player.thisInfinityTime < 1800) multiplier = multiplier.times(Math.max(2400/(player.thisInfinityTime+600), 1))
+      if (player.achievements.includes("r91") && player.thisInfinityTime < 50) multiplier = multiplier.times(Math.max(301-player.thisInfinityTime*6, 1))
+      if (player.achievements.includes("r92") && player.thisInfinityTime < 600) multiplier = multiplier.times(Math.max(101-player.thisInfinityTime/6, 1));
       if (player.currentChallenge == "postc6" || inQC(6)) multiplier = multiplier.dividedBy(player.matter.max(1))
       if (player.currentChallenge == "postc8" || inQC(6)) multiplier = multiplier.times(player.postC8Mult)
+      if (multiplier.lt(1)) multiplier = new Decimal(1)
   }
   return multiplier;
 }
@@ -253,6 +259,11 @@ function hasInfinityMult(tier) {
     
     }
     
+	function getAmount(tier) {
+		let ret = player[TIER_NAMES[tier]+"Amount"].toNumber()
+		if (!break_infinity_js) ret = Math.round(ret)
+		return ret
+	}
     function dimBought(tier) {
         return player[TIER_NAMES[tier]+"Bought"] % 10;
     }
@@ -599,7 +610,7 @@ function getInfinitiedMult() {
 
 function getDimensionProductionPerSecond(tier) {
 	let ret = player[TIER_NAMES[tier] + 'Amount'].floor()
-	if (player.currentChallenge == "challenge7" || inQC(4)) {
+	if ((player.currentChallenge == "challenge7" || inQC(4)) && !player.galacticSacrifice) {
 		if (tier == 4) ret = ret.pow(1.3)
 		else if (tier == 2) ret = ret.pow(1.5)
 	}

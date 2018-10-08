@@ -261,11 +261,11 @@ function setInitialDimensionPower () {
 function maxBuyDimBoosts(manual) {
 	if (inQC(6)) return
 	if (player.autobuyers[9].priority >= player.eightBought || player.galaxies >= player.overXGalaxies || getShiftRequirement(0).tier < 8 || manual) {
-		var bought = player[TIER_NAMES[getShiftRequirement(0).tier] + "Bought"]
+		var bought = getAmount(getShiftRequirement(0).tier)
 		var r
 		if (player.currentEternityChall == "eterc5") {
 			r = 1
-			while (bought >= getShiftRequirement(r).amount && (player.autobuyers[9].priority >= player.eightBought || player.galaxies >= player.overXGalaxies || getShiftRequirement(0).tier < 8 || manual)) r++
+			while (bought >= getShiftRequirement(r).amount && (player.autobuyers[9].priority >= getAmount(8) || player.galaxies >= player.overXGalaxies || getShiftRequirement(0).tier < 8 || manual)) r++
 		} else {
 			var hasGDBUpg = player.galacticSacrifice ? player.galacticSacrifice.upgrades.includes(21) : false
 			var sr = getShiftRequirement((hasGDBUpg ? 5 : 3) - player.resets)
@@ -343,8 +343,8 @@ function getSupersonicMultIncrease() {
 
 document.getElementById("softReset").onclick = function () {
   if (inQC(6)) return
-  var name = TIER_NAMES[getShiftRequirement(0).tier]
-  if ((!player.break && player.money.gt(Number.MAX_VALUE)) || player[name + "Bought"] < getShiftRequirement(0).amount) return;
+  var req = getShiftRequirement(0)
+  if ((!player.break && player.money.gt(Number.MAX_VALUE)) || getAmount(req.tier) < req.amount) return;
   auto = false;
   var pastResets = player.resets
   if (player.infinityUpgrades.includes("bulkBoost")) maxBuyDimBoosts(true);

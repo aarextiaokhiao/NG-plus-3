@@ -904,6 +904,7 @@ if (player.version < 5) {
       gatheredQuarksBoost = Math.pow(Decimal.add(player.quantum.replicants.quarks, 1).log10(),0.25)*0.7
   }
   if (player.aarexModifications.newGameMinusMinusVersion === undefined && !player.meta) {
+      if (player.version == 13) player.version = 12
       if (player.galacticSacrifice) {
           player.galacticSacrifice.time = (player.lastUpdate - player.galacticSacrifice.last) / 100
           player.aarexModifications.newGameMinusMinusVersion = 1.29
@@ -920,13 +921,28 @@ if (player.version < 5) {
           player.aarexModifications.newGameMinusMinusVersion = 1.295
       }
       if (player.tickBoughtThisInf) {
-          player.autoSacrifice = player.autobuyers[12] % 1 !== 0 ? player.autobuyers[12] : 1
+          var haveAutoSacrifice = player.autobuyers[12] % 1 !== 0
+          player.autoSacrifice = haveAutoSacrifice ? player.autobuyers[12] : 1
+          if (haveAutoSacrifice) {
+              player.autoSacrifice.priority = new Decimal(player.autoSacrifice.priority)
+              document.getElementById("prioritySac").value = player.autoSacrifice.priority
+              document.getElementById("13ison").checked = player.autoSacrifice.isOn
+          }
           var popThis = player.autobuyers.pop()
-          player.autobuyers[12] = popThis % 1 === 0 ? 13 : popThis
+          var haveAutoGalSacrifice = popThis % 1 !== 0
+          player.autobuyers[12] = haveAutoGalSacrifice ? popThis : 13
+          if (haveAutoGalSacrifice) {
+              player.autobuyers[12].priority = new Decimal(player.autobuyers[12].priority)
+              document.getElementById("priority14").value = player.autobuyers[12].priority
+              document.getElementById("14ison").checked = player.autobuyers[12].isOn
+          }
           player.aarexModifications.newGameMinusMinusVersion = 1.301
           updateAutobuyers()
       }
-      if (player.dimPowerIncreaseCost) player.aarexModifications.newGameMinusMinusVersion = 1.4
+      if (player.dimPowerIncreaseCost) {
+          if (player.challengeTimes[12]) player.aarexModifications.newGameMinusMinusVersion = 1.41
+          else player.aarexModifications.newGameMinusMinusVersion = 1.4
+      }
       if (player.aarexModifications.newGameMinusMinusVersion) updateAchievements()
   }
   if (player.aarexModifications.newGameMinusMinusVersion < 1.1) player.galaxyPoints = 0
@@ -973,20 +989,44 @@ if (player.version < 5) {
       player.autobuyers.push(13)
       updateAutobuyers()
   }
+  if (player.aarexModifications.newGameMinusMinusVersion < 1.3005) {
+      // fixing autobuyers
+      if (player.autobuyers[10].interval) {
+        player.autobuyers[10].interval = Math.max(player.autobuyers[10].interval / 2.5, 100);
+      }
+      if (player.autobuyers[11].interval) {
+        player.autobuyers[11].interval = Math.max(player.autobuyers[11].interval / 5, 100);
+      }
+  }
   if (player.aarexModifications.newGameMinusMinusVersion < 1.301) {
       if (player.currentChallenge=="challenge14") if (player.tickBoughtThisInf.pastResets.length<1) player.tickBoughtThisInf.pastResets.push({resets:player.resets,bought:player.tickBoughtThisInf.current-new Decimal(player.tickSpeedCost).e+3})
   }
   if (player.aarexModifications.newGameMinusMinusVersion < 1.4) {
       if (player.autobuyers.length>14) {
-          player.autoSacrifice = player.autobuyers[12] % 1 !== 0 ? player.autobuyers[12] : 1
+          var haveAutoSacrifice = player.autobuyers[12] % 1 !== 0
+          player.autoSacrifice = haveAutoSacrifice ? player.autobuyers[12] : 1
+          if (haveAutoSacrifice) {
+              player.autoSacrifice.priority = new Decimal(player.autoSacrifice.priority)
+              document.getElementById("prioritySac").value = player.autoSacrifice.priority
+              document.getElementById("13ison").checked = player.autoSacrifice.isOn
+          }
           var popThis = player.autobuyers.pop()
-          player.autobuyers[12] = popThis % 1 === 0 ? 13 : popThis
-          player.autobuyers.pop()
-          updateAutobuyers()
+          var haveAutoGalSacrifice = popThis % 1 !== 0
+          player.autobuyers[12] = haveAutoGalSacrifice ? popThis : 13
+          if (haveAutoGalSacrifice) {
+              player.autobuyers[12].priority = new Decimal(player.autobuyers[12].priority)
+              document.getElementById("priority14").value = player.autobuyers[12].priority
+              document.getElementById("14ison").checked = player.autobuyers[12].isOn
+          }
       } else if (player.autoSacrifice === 0) player.autoSacrifice = 1
       player.extraDimPowerIncrease = 0
       player.dimPowerIncreaseCost = 1e3
-      player.aarexModifications.newGameMinusMinusVersion = 1.4
+  }
+  if (player.aarexModifications.newGameMinusMinusVersion < 1.41) {
+      if (player.version == 13) player.version = 12
+      player.challengeTimes.push(600*60*24*31)
+      player.challengeTimes.push(600*60*24*31)
+      player.aarexModifications.newGameMinusMinusVersion = 1.41
   }
   if (player.aarexModifications.ersVersion === undefined && player.timestudy.studies.length>0 && typeof(player.timestudy.studies[0])!=="number") {
       newAchievements=[]
@@ -1288,6 +1328,13 @@ if (player.version < 5) {
   } else if (player.aarexModifications.popUpId!=1) showNextModeMessage()
   document.getElementById("newsbtn").textContent=(player.options.newsHidden?"Show":"Hide")+" news ticker"
   document.getElementById("game").style.display=player.options.newsHidden?"none":"block"
+  showDimTab('antimatterdimensions')
+  showStatsTab('stats')
+  showAchTab('normalachievements')
+  showChallengesTab('normalchallenges')
+  showInfTab('preinf')
+  showEternityTab('timestudies', true)
+  showQuantumTab('uquarks')
   if (!player.options.newsHidden) scrollNextMessage()
 }
 
@@ -1353,11 +1400,6 @@ function change_save(id) {
 
   $.notify("Save #"+savePlacement+" loaded", "info")
   localStorage.setItem("AD_aarexModifications",btoa(JSON.stringify(metaSave)))
-  showDimTab('antimatterdimensions')
-  showStatsTab('stats')
-  showChallengesTab('challenges')
-  showEternityTab('timestudies', true)
-  showQuantumTab('uquarks')
 }
 
 function rename_save(id) {

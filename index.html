@@ -1463,7 +1463,7 @@
                 <br>
                 <td><button class="secondarytabbtn" onclick="showStatsTab('stats')">Statistics</button><td>
                 <td><button class="secondarytabbtn" onclick="showStatsTab('challengetimes')" id="challengetimesbtn" style="display:none" >Challenge records</button><td>
-                <td><button class="secondarytabbtn" onclick="showStatsTab('infchallengetimes')" id="infchallengesbtn" style="display:none">InfChallenge records</button><td>
+                <td><button class="secondarytabbtn" onclick="showStatsTab('infchallengetimes')" id="infchallengesbtn" style="display:none"><span style='font-size:10px'>Infinity Challenge records</span></button><td>
                 <td><button class="secondarytabbtn" onclick="showStatsTab('lasttenruns')" id="pastinfs" style="display:none">Past Infinities</button><td>
                 <td><button class="secondarytabbtn" onclick="showStatsTab('lastteneternities')" id="pasteternities" >Past Eternities</button><td>
                 <td><button class="secondarytabbtn" onclick="showStatsTab('lasttenquantums')" id="pastquantums" >Past Quantums</button><td>
@@ -1517,6 +1517,8 @@
                 <div id="challengetime10"></div>
                 <div id="challengetime11"></div>
                 <div id="challengetime12"></div>
+                <div id="challengetime13"></div>
+                <div id="challengetime14"></div>
                 <br>
                 <div id="challengetimesum"></div>
             </div>
@@ -2162,14 +2164,14 @@
             <button class="storebtn" style="font-size: 100%; width:200px" onclick="exitChallenge()">Exit Challenge</button><br><br>
             <table class="table" align="center" style="margin: auto; display: none" id="challTabButtons">
                 <tr>
-                    <td><button class="secondarytabbtn" onclick="showChallengesTab('challenges')">Challenges</button></td>
+                    <td><button class="secondarytabbtn" onclick="showChallengesTab('normalchallenges')">Challenges</button></td>
                     <td><button class="secondarytabbtn" onclick="showChallengesTab('breakchallenges')">Infinity Challenges</button></td>
                     <td><button id="eterctabbtn" class="secondarytabbtn" onclick="showChallengesTab('eternitychallenges')">Eternity Challenges</button></td>
                     <td><button id="qctabbtn" class="secondarytabbtn" onclick="showChallengesTab('quantumchallenges')">Quantum Challenges</button></td>
                 </tr>
             </table>
             <div id="nextchall"></div>
-            <div id="challenges" class="challengeTab">
+            <div id="normalchallenges" class="challengeTab">
                 <table class="table" style="margin: 0 auto">
                     <tr>
                         <td>
@@ -3839,21 +3841,21 @@
 <script type="text/javascript" src="javascripts/core/achievements.js?11"></script>
 <script type="text/javascript" src="javascripts/core/chart.js"></script>
 <script type="text/javascript" src="javascripts/core/tickspeed.js?21"></script>
-<script type="text/javascript" src="javascripts/core/normal_dimension.js?28"></script>
+<script type="text/javascript" src="javascripts/core/normal_dimension.js?29"></script>
 <script type="text/javascript" src="javascripts/core/infinity_dimension.js?17"></script>
 <script type="text/javascript" src="javascripts/core/time_dimension.js?20"></script>
-<script type="text/javascript" src="javascripts/core/dimboost.js?33"></script>
+<script type="text/javascript" src="javascripts/core/dimboost.js?34"></script>
 <script type="text/javascript" src="javascripts/core/timestudies.js?29"></script>
 <script type="text/javascript" src="javascripts/core/canvases.js?6"></script>
 <script type="text/javascript" src="javascripts/core/devtools.js"></script>
-<script type="text/javascript" src="javascripts/core/load_functions.js?64"></script>
+<script type="text/javascript" src="javascripts/core/load_functions.js?65"></script>
 <script type="text/javascript" src="javascripts/core/newsticker.js?6"></script>
-<script type="text/javascript" src="javascripts/mods/ngmm.js?19"></script>
+<script type="text/javascript" src="javascripts/mods/ngmm.js?20"></script>
 <script type="text/javascript" src="javascripts/mods/ers.js?1"></script>
-<script type="text/javascript" src="javascripts/mods/ngpp.js?43"></script>
-<script type="text/javascript" src="javascripts/mods/ngppp.js?42"></script>
+<script type="text/javascript" src="javascripts/mods/ngpp.js?44"></script>
+<script type="text/javascript" src="javascripts/mods/ngppp.js?43"></script>
 <script type="text/javascript" src="javascripts/mods/ngmmm.js?2"></script>
-<script type="text/javascript" src="javascripts/game.js?74"></script>
+<script type="text/javascript" src="javascripts/game.js?75"></script>
 <script type="text/javascript" src="javascripts/sha512.js"></script>
 </body>
 </html>

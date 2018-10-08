@@ -21,7 +21,6 @@ function getGSAmount() {
 }
 
 function galacticSacrifice(auto) {
-	if (!player.break && player.money.gt(Number.MAX_VALUE)) return;
 	if (getGSAmount().eq(0)) return
 	if (player.options.gSacrificeConfirmation&&!auto) if (!confirm("Galactic Sacrifice will do a galaxy reset, and then remove all of your galaxies, in exchange of galaxy points which can be use to buy many overpowered upgrades, but it will take a lot of time to recover, are you sure you wanna do this?")) return
 	player.galacticSacrifice.galaxyPoints = player.galacticSacrifice.galaxyPoints.plus(getGSAmount())
@@ -34,7 +33,7 @@ function galacticSacrifice(auto) {
 
 function resetGalacticSacrifice() {
 	return player.galacticSacrifice ? {
-		galaxyPoints: new Decimal(0),
+		galaxyPoints: player.achievements.includes("r33")?player.infinityPoints.div(10).pow(2):new Decimal(0),
 		time: 0,
 		times: 0,
 		upgrades: []
@@ -248,4 +247,12 @@ document.getElementById("postinfi04").onclick = function() {
 		document.getElementById("postinfi04").innerHTML = "Dimension multipliers are further increased by g31 <br>x^" + galUpgrade31().toFixed(2) + ' -> ' + (galUpgrade31() + .02).toFixed(2) + '</br> Cost: ' + formatValue(player.options.notation, player.dimPowerIncreaseCost, 2, 2) + ' IP';
 		if (player.extraDimPowerIncrease >= 25) document.getElementById("postinfi04").innerHTML = "Dimension multipliers are further increased by g31 <br>x^" + galUpgrade31().toFixed(2);
 	}
+}
+
+//v1.41
+function galIP(){
+    let gal = player.galaxies
+    if (gal<5) return gal
+    if (gal<50) return 2 + Math.pow(5+gal, 0.6)
+    return Math.pow(gal,.4)+7
 }
