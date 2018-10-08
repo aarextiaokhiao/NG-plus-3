@@ -3945,7 +3945,7 @@ function updateChallengeTimes() {
 		setAndMaybeShow("infchallengetime"+(i+1),player.infchallengeTimes[i]<600*60*24*31,'"Infinity Challenge '+(i+1)+' time record: "+timeDisplayShort(player.infchallengeTimes['+i+'])')
 		if (player.infchallengeTimes[i]<600*60*24*31) {
 			temp+=player.infchallengeTimes[i]
-			tempCounter++
+			tempcounter++
 		}
 	}
 	setAndMaybeShow("infchallengetimesum",tempcounter>2,'"Sum of completed infinity challenge time records is "+timeDisplayShort('+temp+')')
