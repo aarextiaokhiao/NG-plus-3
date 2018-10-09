@@ -2,7 +2,7 @@ function getGSAmount() {
 	if (isEmptiness) return new Decimal(0)
 	let galaxies = player.galaxies + player.replicanti.galaxies + player.dilation.freeGalaxies;
 	let y = 1.5 
-	if (false) {
+	if (player.challenges.includes("postcngmm_1")) {
 		y += Math.max(0, 0.05*(galaxies - 10)) + 0.005 * Math.pow(Math.max(0, galaxies-30) , 2) + 0.0005 * Math.pow(Math.max(0, galaxies-50) , 3)
 		y *= .08*player.challenges.length
 		if (y>100) y = Math.pow(316.22*y,1/3)
@@ -239,13 +239,12 @@ document.getElementById("postinfi03").onclick = function() {
 }
 
 document.getElementById("postinfi04").onclick = function() {
-	if (player.infinityPoints.gte(player.dimPowerIncreaseCost) && player.extraDimPowerIncrease < 25) {
+	if (player.infinityPoints.gte(player.dimPowerIncreaseCost) && player.extraDimPowerIncrease < 40) {
 		player.infinityPoints = player.infinityPoints.minus(player.dimPowerIncreaseCost)
-		player.dimPowerIncreaseCost = 1e3*Math.pow(4,player.extraDimPowerIncrease+1);
+		player.dimPowerIncreaseCost = new Decimal(1e3).times(Decimal.pow(4,Math.min(player.extraDimPowerIncrease,15)+1));
 		player.extraDimPowerIncrease += 1;
-		if (player.extraDimPowerIncrease > 15) player.dimPowerIncreaseCost = player.dimPowerIncreaseCost*Math.pow(125,player.extraDimPowerIncrease-5)
-		document.getElementById("postinfi04").innerHTML = "Dimension multipliers are further increased by g31 <br>x^" + galUpgrade31().toFixed(2) + ' -> ' + (galUpgrade31() + .02).toFixed(2) + '</br> Cost: ' + formatValue(player.options.notation, player.dimPowerIncreaseCost, 2, 2) + ' IP';
-		if (player.extraDimPowerIncrease >= 25) document.getElementById("postinfi04").innerHTML = "Dimension multipliers are further increased by g31 <br>x^" + galUpgrade31().toFixed(2);
+		if (player.extraDimPowerIncrease > 15) player.dimPowerIncreaseCost = player.dimPowerIncreaseCost.times(Decimal.pow(Decimal.pow(4,5),player.extraDimPowerIncrease-15))
+		document.getElementById("postinfi04").innerHTML = "Increase dimension multipliers further<br>x^"+galUpgrade31().toFixed(2)+(player.extraDimPowerIncrease<40?" -> x^"+((galUpgrade31()+0.02).toFixed(2))+"<br>Cost: "+shorten(player.dimPowerIncreaseCost)+" IP":"")
 	}
 }
 
@@ -255,4 +254,11 @@ function galIP(){
     if (gal<5) return gal
     if (gal<50) return 2 + Math.pow(5+gal, 0.6)
     return Math.pow(gal,.4)+7
+}
+
+//v1.5
+function renameIC(id) {
+	let split=id.split("postc")
+	if (split[1]) id=order[parseInt(split[1])-1]
+	return id
 }

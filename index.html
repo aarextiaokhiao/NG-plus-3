@@ -1532,6 +1532,8 @@
                 <div id="infchallengetime6"></div>
                 <div id="infchallengetime7"></div>
                 <div id="infchallengetime8"></div>
+                <div id="infchallengetime9"></div>
+                <div id="infchallengetime10"></div>
                 <br>
                 <div id="infchallengetimesum"></div>
             </div>
@@ -2385,43 +2387,85 @@
             </div>
             <div id="breakchallenges" class="challengeTab">
                 <table  class="table" style="margin: 0 auto">
-                    <tr>
+                    <tr id='icngmm_row' style='display:none'>
                         <td>
-                            <div class="infchallengediv" id="postc1div" style="height: 140px; display: none">
-                                <span>All previous challenges (except tickspeed challenge and automatic big crunch challenge) at once.</span>
+                            <div class="infchallengediv" id="postcngmm_1div" style="height: 140px; display: none">
+                                <span>No reductions on galaxy and dimboost cost increases, but infinity upgrades based on time or infinities are applied post-dilation.</span>
                                 <br>
                                 <br>
                                 <div class="outer">
-                                    <button id="postc1" class="challengesbtn" onclick="startChallenge('postc1', new Decimal('1e850'))">Start</button>
+                                    <button id="postcngmm_1" class="challengesbtn" onclick="startChallenge('postcngmm_1')">Start</button>
+                                    <br>
+                                    <span id="postcngmm_1goal" >Goal: 1e550</span><br>
+                                    <span>Reward: Infinity upgrades based on time or infinities are applied post-dilation. Also make the GP formula better based on galaxies.</span>
+                                </div>
+                            </div>
+                        </td>
+                        <td>
+                            <div class="infchallengediv" id="postcngmm_2div" style="height: 140px; display: none">
+                                <span>Dimension and tickspeed cost multiplier increases start immediately, but are square-rooted.</span>
+                                <br>
+                                <br>
+                                <div class="outer">
+                                    <button id="postcngmm_2" class="challengesbtn" onclick="startChallenge('postcngmm_2')">Start</button>
+                                    <br>
+                                    <span id="postcngmm_2goal" >Goal: 1e950</span><br>
+                                    <span>Reward: Cost multiplier increases are x^.9, and tickspeed cost multiplier increase is further lowered based on galaxies.</span>
+                                </div>
+                            </div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td id='icngmm_3div' style='display:none'>
+                            <div class="infchallengediv" id="postcngmm_3div" style="height: 140px; display: none">
+                                <span>Tickspeed multiplier to dimensions is always at 1x, but every tickspeed purchase decreases tickspeed based on galaxies.</span>
+                                <br>
+                                <br>
+                                <div class="outer">
+                                    <button id="postcngmm_3" class="challengesbtn" onclick="startChallenge('postcngmm_3')">Start</button>
+                                    <br>
+                                    <span id="postcngmm_3goal" >Goal: 1e1200</span><br>
+                                    <span>Reward: Every tickspeed purchase decreases tickspeed based on galaxies</span>
+                                </div>
+                            </div>
+                        </td>
+                        <td>
+                            <div class="infchallengediv" id="postc1div" style="height: 140px; display: none">
+                                <span id='ic1desc'></span>
+                                <br>
+                                <br>
+                                <div class="outer">
+                                    <button id="postc1" class="challengesbtn" onclick="startChallenge('postc1')">Start</button>
                                     <br>
                                     <span id="postc1goal" >Goal: 1e850</span><br>
                                     <span>Reward: 1.3x on all Infinity Dimensions for each Infinity Challenge completed</span>
                                 </div>
                             </div>
                         </td>
-                        <td>
+                        <td id='ic2div'>
                             <div class="infchallengediv" id="postc2div" style="height: 140px; display: none">
                                 <span>Automatically sacrifice every 8 ticks once you have 8th Dimension.</span>
                                 <br>
                                 <br>
                                 <div class="outer">
-                                    <button id="postc2" class="challengesbtn" onclick="startChallenge('postc2', new Decimal('1e10500'))">Start</button>
+                                    <button id="postc2" class="challengesbtn" onclick="startChallenge('postc2')">Start</button>
                                     <br>
                                     <span id="postc2goal" >Goal: 1e10500</span><br>
                                     <span>Reward: Sacrifice autobuyer and more powerful sacrifice</span>
                                 </div>
                             </div>
                         </td>
-
                     </tr>
                     <tr>
-                        <td>
+                        <td id='icngmm_4div' style='display:none'>
+                        </td>
+                        <td id='ic3div'>
                             <div class="infchallengediv" id="postc3div" style="height: 140px; display: none">
                                 <span>Tickspeed interval decrease is always at 0%, but every tickspeed purchase you get a static multiplier on all dimensions (increases with galaxies).</span>
                                 <br>
                                 <br>
                                 <div class="outer">
-                                    <button id="postc3" class="challengesbtn" onclick="startChallenge('postc3', new Decimal('1e5000'))">Start</button>
+                                    <button id="postc3" class="challengesbtn" onclick="startChallenge('postc3')">Start</button>
                                     <br>
                                     <span id="postc3goal" >Goal: 1e5000</span><br>
                                     <span>Reward: Static multiplier on each tickspeed purchase</span>
@@ -2434,7 +2478,7 @@
                                 <br>
                                 <br>
                                 <div class="outer">
-                                    <button id="postc4" class="challengesbtn" onclick="startChallenge('postc4', new Decimal('1e13000'))">Start</button>
+                                    <button id="postc4" class="challengesbtn" onclick="startChallenge('postc4')">Start</button>
                                     <br>
                                     <span id="postc4goal" >Goal: 1e13000</span><br>
                                     <span>Reward: All normal dimension multipliers become multiplier^1.05</span>
@@ -2449,7 +2493,7 @@
                                 <br>
                                 <br>
                                 <div class="outer">
-                                    <button id="postc5" class="challengesbtn" onclick="startChallenge('postc5', new Decimal('1e11111'))">Start</button>
+                                    <button id="postc5" class="challengesbtn" onclick="startChallenge('postc5')">Start</button>
                                     <br>
                                     <span id="postc5goal" >Goal: 1e11111</span><br>
                                     <span>Reward: Galaxies are 10% more powerful and reduce the requirements for them and dimensional boosts by 1</span>
@@ -2462,7 +2506,7 @@
                                 <br>
                                 <br>
                                 <div class="outer">
-                                    <button id="postc6" class="challengesbtn" onclick="startChallenge('postc6', new Decimal('2e22222'))">Start</button>
+                                    <button id="postc6" class="challengesbtn" onclick="startChallenge('postc6')">Start</button>
                                     <br>
                                     <span id="postc6goal" >Goal: 2e22222</span><br>
                                     <span>Reward: Tickspeed affects Infinity Dimensions with reduced effect</span>
@@ -2477,7 +2521,7 @@
                                     <br>
                                     <br>
                                     <div class="outer">
-                                        <button id="postc7" class="challengesbtn" onclick="startChallenge('postc7', new Decimal('1e10000'))">Start</button>
+                                        <button id="postc7" class="challengesbtn" onclick="startChallenge('postc7')">Start</button>
                                         <br>
                                         <span id="postc7goal" >Goal: 1e10000</span><br>
                                         <span id='ic7reward'></span>
@@ -2490,7 +2534,7 @@
                                     <br>
                                     <br>
                                     <div class="outer">
-                                        <button id="postc8" class="challengesbtn" onclick="startChallenge('postc8', new Decimal('1e27000'))">Start</button>
+                                        <button id="postc8" class="challengesbtn" onclick="startChallenge('postc8')">Start</button>
                                         <br>
                                         <span id="postc8goal" >Goal: 1e27000</span><br>
                                         <span>Reward: You get a multiplier to dimensions 2-7 based on 1st and 8th dimension multipliers.</span>
@@ -3840,22 +3884,22 @@
 <script type="text/javascript" src="javascripts/core/format.js?17"></script>
 <script type="text/javascript" src="javascripts/core/achievements.js?11"></script>
 <script type="text/javascript" src="javascripts/core/chart.js"></script>
-<script type="text/javascript" src="javascripts/core/tickspeed.js?21"></script>
-<script type="text/javascript" src="javascripts/core/normal_dimension.js?29"></script>
+<script type="text/javascript" src="javascripts/core/tickspeed.js?22"></script>
+<script type="text/javascript" src="javascripts/core/normal_dimension.js?30"></script>
 <script type="text/javascript" src="javascripts/core/infinity_dimension.js?17"></script>
 <script type="text/javascript" src="javascripts/core/time_dimension.js?20"></script>
-<script type="text/javascript" src="javascripts/core/dimboost.js?34"></script>
+<script type="text/javascript" src="javascripts/core/dimboost.js?35"></script>
 <script type="text/javascript" src="javascripts/core/timestudies.js?29"></script>
 <script type="text/javascript" src="javascripts/core/canvases.js?6"></script>
 <script type="text/javascript" src="javascripts/core/devtools.js"></script>
-<script type="text/javascript" src="javascripts/core/load_functions.js?65"></script>
+<script type="text/javascript" src="javascripts/core/load_functions.js?66"></script>
 <script type="text/javascript" src="javascripts/core/newsticker.js?6"></script>
-<script type="text/javascript" src="javascripts/mods/ngmm.js?20"></script>
+<script type="text/javascript" src="javascripts/mods/ngmm.js?21"></script>
 <script type="text/javascript" src="javascripts/mods/ers.js?1"></script>
 <script type="text/javascript" src="javascripts/mods/ngpp.js?44"></script>
 <script type="text/javascript" src="javascripts/mods/ngppp.js?43"></script>
 <script type="text/javascript" src="javascripts/mods/ngmmm.js?2"></script>
-<script type="text/javascript" src="javascripts/game.js?75"></script>
+<script type="text/javascript" src="javascripts/game.js?76"></script>
 <script type="text/javascript" src="javascripts/sha512.js"></script>
 </body>
 </html>

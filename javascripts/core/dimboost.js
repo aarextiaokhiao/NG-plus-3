@@ -315,6 +315,7 @@ function getShiftRequirement(bulk) {
 function getDimboostCostIncrease () {
 	if (false) return 15;
 	let ret = 15
+	if (player.currentChallenge=="postcngmm_1") return ret
 	if (player.galacticSacrifice) {
 		if (player.galacticSacrifice.upgrades.includes(21)) ret -= 10
 		if (player.infinityUpgrades.includes('dimboostCost')) ret -= 1

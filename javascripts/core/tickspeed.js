@@ -51,14 +51,16 @@ function getGalaxyPowerEff(ng, bi) {
 }
 
 function getTickSpeedMultiplier() {
-	if (player.currentChallenge == "postc3" || isIC3Trapped()) return 1;
-	if (inQC(2)) return 0.89
 	let realnormalgalaxies = player.galaxies
 	if (player.masterystudies) realnormalgalaxies = Math.max(player.galaxies-player.quantum.electrons.sacGals,0)
-	if (player.galacticSacrifice) {
-		if (GUBought("rg4")) realnormalgalaxies *= 0.4
-		return Decimal.pow(0.998, getGalaxyPower(realnormalgalaxies) * getGalaxyPowerEff())
+	if (player.currentChallenge == "postc3" || isIC3Trapped()) {
+		if (player.currentChallenge=="postcngmm_3" || player.challenges.includes("postcngmm_3")) {
+			if (GUBought("rg4")) realnormalgalaxies *= 0.4
+			return Decimal.pow(0.998, getGalaxyPower(realnormalgalaxies) * getGalaxyPowerEff(realnormalgalaxies, true))
+		}
+		return 1;
 	}
+	if (inQC(2)) return 0.89
 	let inERS = !(!player.boughtDims)
 	let galaxies
 	let baseMultiplier
@@ -108,7 +110,7 @@ function buyTickSpeed() {
   player.money = player.money.minus(player.tickSpeedCost);
   if (player.currentChallenge != "challenge5" && player.currentChallenge != "postc5") player.tickSpeedCost = player.tickSpeedCost.times(player.tickspeedMultiplier);
   else multiplySameCosts(player.tickSpeedCost)
-  if (player.tickSpeedCost.gte(Number.MAX_VALUE)) player.tickspeedMultiplier = player.tickspeedMultiplier.times(inQC(7)?Number.MAX_VALUE:player.tickSpeedMultDecrease);
+  if (costIncreaseActive(player.tickSpeedCost)) player.tickspeedMultiplier = player.tickspeedMultiplier.times(getTickSpeedCostMultiplierIncrease());
   if (player.currentChallenge == "challenge2" || player.currentChallenge == "postc1") player.chall2Pow = 0
   player.tickspeed = player.tickspeed.times(getTickSpeedMultiplier());
   if (player.challenges.includes("postc3") || player.currentChallenge == "postc3" || isIC3Trapped()) player.postC3Reward = player.postC3Reward.times(getPostC3RewardMult())
@@ -124,8 +126,20 @@ document.getElementById("tickSpeed").onclick = function () {
   updateTickSpeed();
 };
 
+function getTickSpeedCostMultiplierIncrease() {
+  if (inQC(7)) return Number.MAX_VALUE
+  let ret = player.tickSpeedMultDecrease;
+  if (player.currentChallenge === 'postcngmm_2') {
+    ret = Math.pow(ret, .5);
+  } else if (player.challenges.includes('postcngmm_2')) {
+    ret = Math.pow(ret, .9);
+    ret = Math.pow(ret, 1 / (1 + Math.pow(player.galaxies, 0.7) / 10));
+  }
+  return ret;
+}
+
 function buyMaxPostInfTickSpeed (mult) {
-	var mi = inQC(7)?Number.MAX_VALUE:player.tickSpeedMultDecrease
+	var mi = getTickSpeedCostMultiplierIncrease()
 	var a = Math.log10(Math.sqrt(mi))
 	var b = player.tickspeedMultiplier.dividedBy(Math.sqrt(mi)).log10()
 	var c = player.tickSpeedCost.dividedBy(player.money).log10()
@@ -144,7 +158,7 @@ function buyMaxPostInfTickSpeed (mult) {
 }
 
 function cannotUsePostInfTickSpeed () {
-	return player.currentChallenge == "challenge5" || player.currentChallenge == "postc5" || player.tickSpeedCost.lt(Number.MAX_VALUE) || player.tickSpeedMultDecrease > 2;
+	return player.currentChallenge == "challenge5" || player.currentChallenge == "postc5" || !costIncreaseActive(player.tickSpeedCost) || player.tickSpeedMultDecrease > 2;
 }
 
 function buyMaxTickSpeed() {
@@ -157,7 +171,7 @@ function buyMaxTickSpeed() {
 			player.money = player.money.minus(player.tickSpeedCost);
 			if (player.currentChallenge != "challenge5" && player.currentChallenge != "postc5") player.tickSpeedCost = player.tickSpeedCost.times(player.tickspeedMultiplier);
 			else multiplySameCosts(player.tickSpeedCost)
-			if (player.tickSpeedCost.gte(Number.MAX_VALUE)) player.tickspeedMultiplier = player.tickspeedMultiplier.times(inQC(7)?Number.MAX_VALUE:player.tickSpeedMultDecrease);
+			if (costIncreaseActive(player.tickSpeedCost)) player.tickspeedMultiplier = player.tickspeedMultiplier.times(getTickSpeedCostMultiplierIncrease());
 			player.tickspeed = player.tickspeed.times(mult);
 			if (player.challenges.includes("postc3") || player.currentChallenge == "postc3" || isIC3Trapped()) player.postC3Reward = player.postC3Reward.times(getPostC3RewardMult())
 			player.postC8Mult = new Decimal(1)

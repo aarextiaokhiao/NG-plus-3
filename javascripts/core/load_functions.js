@@ -399,7 +399,6 @@ if (player.version < 5) {
   updateCosts();
   updateTickSpeed();
   updateAchievements();
-  updateChallenges();
   updateCheckBoxes();
   toggleChallengeRetry()
   toggleChallengeRetry()
@@ -447,9 +446,10 @@ if (player.version < 5) {
 
   if (player.infinitied == 0 && player.eternities == 0) document.getElementById("infinityPoints2").style.display = "none"
 
-  if (player.currentChallenge == "challenge12" || player.currentChallenge == "postc1" || player.currentChallenge == "postc6" || inQC(6)) document.getElementById("matter").style.display = "inline-block";
+  var isInIC1=player.galacticSacrifice&&!player.aarexModifications.newGameMinusMinusVersion?player.currentChallenge=="postc4":player.currentChallenge=="postc1"
+  if (player.currentChallenge == "challenge12" || isInIC1 || player.currentChallenge == "postc6" || inQC(6)) document.getElementById("matter").style.display = "block";
   else document.getElementById("matter").style.display = "none";
-  if (player.currentChallenge == "challenge13" || (player.currentChallenge == "postc1" && player.galacticSacrifice)) document.getElementById("chall13Mult").style.display = "inline-block";
+  if (player.currentChallenge == "challenge13" || (isInIC1 && player.galacticSacrifice)) document.getElementById("chall13Mult").style.display = "block";
   else document.getElementById("chall13Mult").style.display = "none";
 
   var inERS=!(!player.boughtDims)
@@ -943,6 +943,14 @@ if (player.version < 5) {
           if (player.challengeTimes[12]) player.aarexModifications.newGameMinusMinusVersion = 1.41
           else player.aarexModifications.newGameMinusMinusVersion = 1.4
       }
+      if (player.infchallengeTimes[8]) {
+          player.currentChallenge=renameIC(player.currentChallenge)
+          for (c=0;c<player.challenges.length;c++) player.challenges[c]=renameIC(player.challenges[c])
+          player.postC4Tier=player.postC6Tier
+          delete player.postC6Tier
+          player.aarexModifications.newGameMinusMinusVersion = 1.5
+          updateChallenges()
+      }
       if (player.aarexModifications.newGameMinusMinusVersion) updateAchievements()
   }
   if (player.aarexModifications.newGameMinusMinusVersion < 1.1) player.galaxyPoints = 0
@@ -1027,6 +1035,11 @@ if (player.version < 5) {
       player.challengeTimes.push(600*60*24*31)
       player.challengeTimes.push(600*60*24*31)
       player.aarexModifications.newGameMinusMinusVersion = 1.41
+  }
+  if (player.aarexModifications.newGameMinusMinusVersion < 1.5) {
+      player.infchallengeTimes.push(600*60*24*31)
+      player.infchallengeTimes.push(600*60*24*31)
+      player.aarexModifications.newGameMinusMinusVersion = 1.5
   }
   if (player.aarexModifications.ersVersion === undefined && player.timestudy.studies.length>0 && typeof(player.timestudy.studies[0])!=="number") {
       newAchievements=[]
@@ -1200,6 +1213,25 @@ if (player.version < 5) {
   document.getElementById("d5AutoChallengeDesc").textContent=player.galacticSacrifice?"Tickspeed upgrades start out useless, but galaxies make them stronger.":"Tickspeed starts at 7%."
   document.getElementById("autoCrunchChallengeDesc").textContent="Each dimension produces the dimension 2 below it; first dimensions produce reduced antimatter. "+(player.galacticSacrifice?"Galaxies are far more powerful.":"")
   document.getElementById("ngmmchalls").style.display=player.galacticSacrifice?"":"none"
+  if (player.galacticSacrifice) {
+      order=['postcngmm_1','postcngmm_2','postcngmm_3','postc1','postc2','postc4','postc5','postc6','postc7','postc8']
+      document.getElementById("icngmm_row").style.display=""
+      document.getElementById("icngmm_3div").style.display=""
+      document.getElementById("ic2div").style.display="none"
+      document.getElementById("icngmm_4div").style.display=""
+      document.getElementById("ic3div").style.display="none"
+      document.getElementById("icngmm_4div").appendChild(document.getElementById("postc2").parentElement.parentElement)
+  } else {
+      order=['postc1','postc2','postc3','postc4','postc5','postc6','postc7','postc8']
+      document.getElementById("icngmm_row").style.display="none"
+      document.getElementById("icngmm_3div").style.display="none"
+      document.getElementById("ic2div").style.display=""
+      document.getElementById("icngmm_4div").style.display="none"
+      document.getElementById("ic3div").style.display=""
+      document.getElementById("ic2div").appendChild(document.getElementById("postc2").parentElement.parentElement)
+  }
+  updateChallenges()
+  document.getElementById("ic1desc").textContent="All previous challenges (except tickspeed challenge"+(player.galacticSacrifice?',':" and")+" automatic big crunch challenge"+(player.galacticSacrifice?", and automatic galactic sacrifice challenge":"")+") at once."
   document.getElementById("ic7desc").textContent="You can't get Antimatter Galaxies, but dimensional boost multiplier "+(player.galacticSacrifice?"is cubed":"2.5x -> 10x")
   document.getElementById("ic7reward").textContent="Reward: Dimensional boost multiplier "+(player.galacticSacrifice?"is squared":"2.5x -> 4x")
   document.getElementById("41").innerHTML="Each galaxy gives a 1."+(player.aarexModifications.newGameExpVersion?5:2)+"x multiplier on IP gained. <span>Cost: 4 Time Theorems"
@@ -1361,8 +1393,8 @@ function load_game() {
 		if (break_infinity_js) Decimal = Decimal_BI
 		initCost = [null, new Decimal(10), new Decimal(1e2), new Decimal(1e4), new Decimal(1e6), new Decimal(1e9), new Decimal(1e13), new Decimal(1e18), new Decimal(1e24)]
 		costMults = [null, new Decimal(1e3), new Decimal(1e4), new Decimal(1e5), new Decimal(1e6), new Decimal(1e8), new Decimal(1e10), new Decimal(1e12), new Decimal(1e15)]
-		nextAt = [new Decimal("1e2000"), new Decimal("1e5000"), new Decimal("1e12000"), new Decimal("1e14000"), new Decimal("1e18000"), new Decimal("1e20000"), new Decimal("1e23000"), new Decimal("1e28000")]
-		goals = [new Decimal("1e850"), new Decimal("1e10500"), new Decimal("1e5000"), new Decimal("1e13000"), new Decimal("1e11111"), new Decimal("2e22222"), new Decimal("1e10000"), new Decimal("1e27000")]
+		nextAt = {postc1:new Decimal("1e2000"),postc2:new Decimal("1e5000"),postc3:new Decimal("1e12000"),postc4:new Decimal("1e14000"),postc5:new Decimal("1e18000"),postc6:new Decimal("1e20000"),postc7:new Decimal("1e23000"),postc8:new Decimal("1e28000"),postcngmm_1:new Decimal("1e750"),postcngmm_2:new Decimal("1e1350"),postcngmm_3:new Decimal("1e2000")}
+		goals = {postc1:new Decimal("1e850"),postc1_ngmm:new Decimal("1e650"),postc2:new Decimal("1e10500"),postc3:new Decimal("1e5000"),postc4:new Decimal("1e13000"),postc5:new Decimal("1e11111"),postc6:new Decimal("2e22222"),postc7:new Decimal("1e10000"),postc7_ngmm:new Decimal("1e15000"),postc8:new Decimal("1e27000"),postcngmm_1:new Decimal("1e550"),postcngmm_2:new Decimal("1e950"),postcngmm_3:new Decimal("1e1200")}
 	}
 	onLoad()
 	startInterval()
@@ -1534,7 +1566,10 @@ function transformSaveToDecimal() {
   player.totalmoney = new Decimal(player.totalmoney)
   player.chall3Pow = new Decimal(player.chall3Pow)
   player.chall11Pow = new Decimal(player.chall11Pow)
-  if (player.galacticSacrifice !== undefined) player.galacticSacrifice.galaxyPoints = new Decimal(player.galacticSacrifice.galaxyPoints)
+  if (player.galacticSacrifice !== undefined) {
+      player.galacticSacrifice.galaxyPoints = new Decimal(player.galacticSacrifice.galaxyPoints)
+      if (player.dimPowerIncreaseCost !== undefined) player.dimPowerIncreaseCost = new Decimal(player.dimPowerIncreaseCost)
+  }
   player.costMultipliers = [new Decimal(player.costMultipliers[0]), new Decimal(player.costMultipliers[1]), new Decimal(player.costMultipliers[2]), new Decimal(player.costMultipliers[3]), new Decimal(player.costMultipliers[4]), new Decimal(player.costMultipliers[5]), new Decimal(player.costMultipliers[6]), new Decimal(player.costMultipliers[7])]
   player.tickspeedMultiplier = new Decimal(player.tickspeedMultiplier)
   player.matter = new Decimal(player.matter)
