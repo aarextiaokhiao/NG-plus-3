@@ -932,7 +932,8 @@ function quantum(auto,force,challid) {
 		if (player.achievements.includes("r45")) player.tickspeed = player.tickspeed.times(0.98);
 		if (inQC(6)) document.getElementById("matter").style.display = "block";
 		else document.getElementById("matter").style.display = "none";
-		document.getElementById("chall13Mult").style.display = "none";
+        if (isADSCRunning()) document.getElementById("chall13Mult").style.display = "block";
+        else document.getElementById("chall13Mult").style.display = "none";
 		document.getElementById("quickReset").style.display = "none";
 		if (player.infinitied >= 1 && !player.challenges.includes("challenge1")) player.challenges.push("challenge1");
 		updateAutobuyers();

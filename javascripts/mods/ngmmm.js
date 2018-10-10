@@ -1,6 +1,5 @@
 function getTickspeedBoostRequirement() {
-	let tier = Math.min(Math.floor(player.tickspeedBoosts/2)+5,8)
-	return {tier: tier, amount: (player.tickspeedBoosts-tier*2+11)*10}
+	return {tier: 8, amount: player.tickspeedBoosts*5+35}
 }
 
 function tickspeedBoost() {

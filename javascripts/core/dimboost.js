@@ -228,6 +228,10 @@ function softReset(bulk) {
       document.getElementById("sacrifice").style.display = "inline-block";
       document.getElementById("confirmations").style.display = "inline-block";
       document.getElementById("sacConfirmBtn").style.display = "inline-block";
+      if (player.galacticSacrifice && player.galaxies > 0) {
+          document.getElementById("gSacrifice").style.display = "inline-block"
+          document.getElementById("gConfirmation").style.display = "inline-block"
+      }
   }
   if (player.eternities < 30) {
       document.getElementById("secondRow").style.display = "none";
@@ -289,7 +293,7 @@ function maxBuyDimBoosts(manual) {
 }
 
 function getShiftRequirement(bulk) {
-  let amount = 20;
+  let amount = player.tickspeedBoosts==undefined?20:30;
   let mult = getDimboostCostIncrease()
   var resetNum = player.resets + bulk
   var maxTier = player.currentChallenge == "challenge4" ? 6 : 8

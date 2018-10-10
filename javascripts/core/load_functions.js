@@ -449,7 +449,7 @@ if (player.version < 5) {
   var isInIC1=player.galacticSacrifice&&!player.aarexModifications.newGameMinusMinusVersion?player.currentChallenge=="postc4":player.currentChallenge=="postc1"
   if (player.currentChallenge == "challenge12" || isInIC1 || player.currentChallenge == "postc6" || inQC(6)) document.getElementById("matter").style.display = "block";
   else document.getElementById("matter").style.display = "none";
-  if (player.currentChallenge == "challenge13" || (isInIC1 && player.galacticSacrifice)) document.getElementById("chall13Mult").style.display = "block";
+  if (isADSCRunning() || (isInIC1 && player.galacticSacrifice)) document.getElementById("chall13Mult").style.display = "block";
   else document.getElementById("chall13Mult").style.display = "none";
 
   var inERS=!(!player.boughtDims)
@@ -1041,6 +1041,7 @@ if (player.version < 5) {
       player.infchallengeTimes.push(600*60*24*31)
       player.aarexModifications.newGameMinusMinusVersion = 1.5
   }
+  if (player.aarexModifications.newGame3MinusVersion < 2) player.aarexModifications.newGame3MinusVersion = 2
   if (player.aarexModifications.ersVersion === undefined && player.timestudy.studies.length>0 && typeof(player.timestudy.studies[0])!=="number") {
       newAchievements=[]
       for (id=0;id<player.achievements.length;id++) {
@@ -1211,6 +1212,7 @@ if (player.version < 5) {
   var showMoreBreak = player.galacticSacrifice ? "" : "none"
   for (i=1;i<5;i++) document.getElementById("postinfi0"+i).parentElement.style.display=showMoreBreak
   document.getElementById("d5AutoChallengeDesc").textContent=player.galacticSacrifice?"Tickspeed upgrades start out useless, but galaxies make them stronger.":"Tickspeed starts at 7%."
+  document.getElementById("d8AutoChallengeDesc").textContent=(player.tickspeedBoosts==undefined?"":"Product of bought, ")+"Dimension Boosts"+(player.tickspeedBoosts==undefined?"":",")+" and galaxies are useless, sacrifice resets everything but is immensely more powerful"
   document.getElementById("autoCrunchChallengeDesc").textContent="Each dimension produces the dimension 2 below it; first dimensions produce reduced antimatter. "+(player.galacticSacrifice?"Galaxies are far more powerful.":"")
   document.getElementById("ngmmchalls").style.display=player.galacticSacrifice?"":"none"
   if (player.galacticSacrifice) {
@@ -1230,6 +1232,20 @@ if (player.version < 5) {
       document.getElementById("ic3div").style.display=""
       document.getElementById("ic2div").appendChild(document.getElementById("postc2").parentElement.parentElement)
   }
+  if (player.tickspeedBoosts == undefined) {
+	  galUpgradeCosts[32]=8
+	  galUpgradeCosts[13]=20
+	  galUpgradeCosts[23]=100
+  } else {
+	  galUpgradeCosts[32]=50
+	  galUpgradeCosts[13]=200
+	  galUpgradeCosts[23]=500
+  }
+  document.getElementById("galcost32").textContent=galUpgradeCosts[32]
+  document.getElementById("galcost13").textContent=galUpgradeCosts[13]
+  document.getElementById("galcost23").textContent=galUpgradeCosts[23]
+  var showMoreGal = player.tickspeedBoosts!=undefined ? "" : "none"
+  for (i=1;i<4;i++) document.getElementById("galaxy"+i+"4div").style.display=showMoreGal
   updateChallenges()
   document.getElementById("ic1desc").textContent="All previous challenges (except tickspeed challenge"+(player.galacticSacrifice?',':" and")+" automatic big crunch challenge"+(player.galacticSacrifice?", and automatic galactic sacrifice challenge":"")+") at once."
   document.getElementById("ic7desc").textContent="You can't get Antimatter Galaxies, but dimensional boost multiplier "+(player.galacticSacrifice?"is cubed":"2.5x -> 10x")

@@ -69,7 +69,7 @@ function getDimensionFinalMultiplier(tier) {
   multiplier = multiplier.times(player.postC3Reward)
   if (player.challenges.includes("postc8") && tier < 8 && tier > 1) multiplier = multiplier.times(mult18);
 
-  if (player.currentChallenge === 'challenge13' || (player.galacticSacrifice && player.currentChallenge === "postc1")) multiplier = multiplier.times(productAllTotalBought());
+  if (isADSCRunning() || (player.galacticSacrifice && player.currentChallenge === "postc1")) multiplier = multiplier.times(productAllTotalBought());
   else {
       if (player.currentChallenge == "postc6" || inQC(6)) multiplier = multiplier.dividedBy(player.matter.max(1))
       if (player.currentChallenge == "postc8" || inQC(6)) multiplier = multiplier.times(player.postC8Mult)
@@ -200,7 +200,7 @@ function hasInfinityMult(tier) {
     }
     
     function getDimensionPowerMultiplier(nonrandom) {
-        if (inQC(5)||inQC(7)||player.currentChallenge=="challenge13") return 1
+        if (inQC(5)||inQC(7)||isADSCRunning()) return 1
         let dimMult = 2
 
         if (player.infinityUpgrades.includes('dimMult')) dimMult = player.galacticSacrifice?infUpg12Pow():player.aarexModifications.newGameExpVersion?2.4:2.2
