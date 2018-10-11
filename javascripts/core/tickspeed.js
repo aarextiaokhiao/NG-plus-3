@@ -31,7 +31,10 @@ function getGalaxyPower(ng, bi) {
 
 function getGalaxyPowerEff(ng, bi) {
 	let eff = 1
-	if (player.galacticSacrifice) if (player.galacticSacrifice.upgrades.includes(22)) eff *= 5;
+	if (player.galacticSacrifice) {
+		if (player.galacticSacrifice.upgrades.includes(22)) eff *= 5;
+		if (player.galacticSacrifice.upgrades.includes(34)) eff *= 1.5;
+	}
 	if (player.infinityUpgrades.includes("galaxyBoost")) eff *= 2;
 	if (player.infinityUpgrades.includes("postGalaxy")) eff *= player.galacticSacrifice ? 1.7 : 1.5;
 	if (player.challenges.includes("postc5")) eff *= player.galacticSacrifice ? 1.3 : 1.1;

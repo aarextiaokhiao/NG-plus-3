@@ -578,6 +578,7 @@ function quantum(auto,force,challid) {
 			postC3Reward: new Decimal(1),
 			postC8Mult: new Decimal(1),
 			overXGalaxies: oheHeadstart ? player.overXGalaxies : 0,
+			overXGalaxiesTickspeedBoost: oheHeadstart ? player.overXGalaxiesTickspeedBoost : 0,
 			spreadingCancer: player.spreadingCancer,
 			postChallUnlocked: (player.achievements.includes("r133")) ? 8 : 0,
 			postC4Tier: 0,

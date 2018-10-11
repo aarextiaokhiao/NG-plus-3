@@ -1041,7 +1041,12 @@ if (player.version < 5) {
       player.infchallengeTimes.push(600*60*24*31)
       player.aarexModifications.newGameMinusMinusVersion = 1.5
   }
-  if (player.aarexModifications.newGame3MinusVersion < 2) player.aarexModifications.newGame3MinusVersion = 2
+  if (player.aarexModifications.newGame3MinusVersion < 2.1) {
+      player.autobuyers[13]=14
+      player.overXGalaxiesTickspeedBoost=1
+      player.challengeTimes.push(600*60*24*31)
+      player.aarexModifications.newGame3MinusVersion = 2.1
+  }
   if (player.aarexModifications.ersVersion === undefined && player.timestudy.studies.length>0 && typeof(player.timestudy.studies[0])!=="number") {
       newAchievements=[]
       for (id=0;id<player.achievements.length;id++) {
@@ -1213,8 +1218,11 @@ if (player.version < 5) {
   for (i=1;i<5;i++) document.getElementById("postinfi0"+i).parentElement.style.display=showMoreBreak
   document.getElementById("d5AutoChallengeDesc").textContent=player.galacticSacrifice?"Tickspeed upgrades start out useless, but galaxies make them stronger.":"Tickspeed starts at 7%."
   document.getElementById("d8AutoChallengeDesc").textContent=(player.tickspeedBoosts==undefined?"":"Product of bought, ")+"Dimension Boosts"+(player.tickspeedBoosts==undefined?"":",")+" and galaxies are useless, sacrifice resets everything but is immensely more powerful"
+  document.getElementById("autoDBChallengeDesc").textContent="There are only 6 dimensions, with dimension boost"+(player.tickspeedBoosts==undefined?"":", tickspeed boost,")+" and antimatter galaxy costs modified."
   document.getElementById("autoCrunchChallengeDesc").textContent="Each dimension produces the dimension 2 below it; first dimensions produce reduced antimatter. "+(player.galacticSacrifice?"Galaxies are far more powerful.":"")
+  document.getElementById("autoDSChallengeDesc").textContent=player.tickspeedBoosts==undefined?"Per-ten multiplier is always 1x, but product of dimensions bought multiplies all dimensions.":"There is the product of amount instead of the product of bought."
   document.getElementById("ngmmchalls").style.display=player.galacticSacrifice?"":"none"
+  document.getElementById("ngmmmchalls").style.display=player.tickspeedBoosts==undefined?"none":""
   if (player.galacticSacrifice) {
       order=['postcngmm_1','postcngmm_2','postcngmm_3','postc1','postc2','postc4','postc5','postc6','postc7','postc8']
       document.getElementById("icngmm_row").style.display=""
@@ -1236,10 +1244,12 @@ if (player.version < 5) {
 	  galUpgradeCosts[32]=8
 	  galUpgradeCosts[13]=20
 	  galUpgradeCosts[23]=100
+	  galUpgradeCosts[33]=1e3
   } else {
 	  galUpgradeCosts[32]=50
 	  galUpgradeCosts[13]=200
 	  galUpgradeCosts[23]=500
+	  galUpgradeCosts[33]=1/0
   }
   document.getElementById("galcost32").textContent=galUpgradeCosts[32]
   document.getElementById("galcost13").textContent=galUpgradeCosts[13]
@@ -1741,6 +1751,10 @@ function loadAutoBuyerSettings() {
   document.getElementById("bulkgalaxy").value = player.autobuyers[10].bulk
   document.getElementById("priority13").value = formatValue("Scientific", player.eternityBuyer.limit, 2, 0)
   if (player.autobuyers[12] !== undefined) document.getElementById("priority14").value = formatValue("Scientific", new Decimal(player.autobuyers[12].priority), 2, 0)
+  if (player.autobuyers[13] !== undefined) {
+      document.getElementById("priority15").value = player.autobuyers[11].priority
+      document.getElementById("overGalaxiesTickspeedBoost").value = player.overXGalaxiesTickspeedBoost
+  }
   if (player.boughtDims) {
       document.getElementById("maxReplicantiCrunchSwitch").checked = player.autobuyers[11].requireMaxReplicanti;
       document.getElementById("requireIPPeak").checked = player.autobuyers[11].requireIPPeak;

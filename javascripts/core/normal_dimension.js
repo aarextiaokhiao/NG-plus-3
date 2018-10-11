@@ -84,7 +84,7 @@ function getDimensionFinalMultiplier(tier) {
 	  
   if (player.galacticSacrifice) {
       if (player.galacticSacrifice.upgrades.includes(12)) multiplier = multiplier.times(galUpgrade12())
-      if (player.galacticSacrifice.upgrades.includes(13)) multiplier = multiplier.times(galUpgrade13())
+      if (player.galacticSacrifice.upgrades.includes(13) && player.currentChallenge != "challenge15" && player.currentChallenge != "postc1") multiplier = multiplier.times(galUpgrade13())
       if (player.challenges.includes("postc4")) multiplier = multiplier.pow(1.05);
       if (player.galacticSacrifice.upgrades.includes(31)) multiplier = multiplier.pow(galUpgrade31());
   }
@@ -199,24 +199,26 @@ function hasInfinityMult(tier) {
         return true;
     }
     
-    function getDimensionPowerMultiplier(nonrandom) {
-        if (inQC(5)||inQC(7)||isADSCRunning()) return 1
-        let dimMult = 2
-
-        if (player.infinityUpgrades.includes('dimMult')) dimMult = player.galacticSacrifice?infUpg12Pow():player.aarexModifications.newGameExpVersion?2.4:2.2
+    function getDimensionPowerMultiplier(nonrandom, focusOn) {
+        if (inQC(5)||inQC(7)||(player.currentChallenge=="challenge13"&&player.tickspeedBoosts==undefined)) return 1
+        let dimMult = player.tickspeedBoosts==undefined?2:1
         if (player.aarexModifications.newGameExpVersion) dimMult *= 10
+
+        if (player.infinityUpgrades.includes('dimMult')) dimMult *= infUpg12Pow()
         if ((player.currentChallenge == "challenge9" || player.currentChallenge == "postc1")&&!nonrandom) dimMult = Math.pow(10/0.30,Math.random())*0.30
     
         if (player.achievements.includes("r58")) dimMult = player.galacticSacrifice?Math.pow(dimMult,1.0666):dimMult*1.01;
         dimMult += ECTimesCompleted("eterc3") * 0.8
-        if (player.galacticSacrifice) if (player.galacticSacrifice.upgrades.includes(33)) dimMult *= galUpgrade33();
+        if (player.galacticSacrifice) if ((player.galacticSacrifice.upgrades.includes(33) && player.currentChallenge != "challenge15" && player.currentChallenge != "postc1") || focusOn == "g33") dimMult *= galUpgrade33();
         if (QCIntensity(5)) dimMult += Math.log10(1+player.resets)*Math.pow(QCIntensity(5),0.4)
         if (player.masterystudies) dimMult = Decimal.pow(dimMult, getMPTPower())
         return dimMult;
     }
 
     function infUpg12Pow() {
-        return 2.1 + .005 * Math.min(Math.max(player.infinitied, 0), 60)
+        if (player.galacticSacrifice) return 1.05 + .0025 * Math.min(Math.max(player.infinitied, 0), 60)
+        if (player.aarexModifications.newGameExpVersion) return 1.2
+        return 1.1
     }
     
     function clearDimensions(amount) {

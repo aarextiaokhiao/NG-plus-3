@@ -64,10 +64,9 @@ let galUpgradeCosts = {
 	21: 1,
 	22: 5,
 	31: 2,
-    33: 1e3,
-	14: 5e3,
-	24: 1e4,
-	34: 2e4
+	14: 3e3,
+	24: 6e3,
+	34: 2e5
 }
 
 function buyGalaxyUpgrade(i) {
@@ -130,22 +129,22 @@ let galUpgrade32 = function () {
 	return x.pow(0.003).add(1);
 }
 let galUpgrade33 = function () {
-	return player.galacticSacrifice.galaxyPoints.max(1).log10()/4+1
+	return player.galacticSacrifice.galaxyPoints.div(player.tickspeedBoosts==undefined?1:1/0).max(1).log10()/4+1
 }
 
 function galacticUpgradeSpanDisplay () {
 	if (player.infinitied>0||player.eternities!==0||quantumed) document.getElementById('galspan11').innerHTML = shortenDimensions(galUpgrade11())
 	document.getElementById('galspan12').innerHTML = shorten(galUpgrade12())
 	document.getElementById('galspan13').innerHTML = shorten(galUpgrade13())
-	document.getElementById('galspan23').innerHTML = shorten(getDimensionBoostPower().times(player.galacticSacrifice.upgrades.includes(23)?1:galUpgrade23()))
+	document.getElementById('galspan23').innerHTML = shorten(getDimensionBoostPower(false, "g23"))
 	document.getElementById('galspan31').innerHTML = galUpgrade31().toFixed(2)
 	document.getElementById('galspan32').innerHTML = shorten(galUpgrade32())
-	document.getElementById('galspan33').innerHTML = shorten(getDimensionPowerMultiplier(true)*(player.galacticSacrifice.upgrades.includes(33)?1:galUpgrade33()))
-	document.getElementById('galcost33').innerHTML = shortenCosts(1e3)
+	document.getElementById('galspan33').innerHTML = shorten(getDimensionPowerMultiplier(true, "g33"))
+	document.getElementById('galcost33').innerHTML = shortenCosts(galUpgradeCosts[33])
 	if (player.tickspeedBoosts!=undefined) {
-		document.getElementById('galcost14').innerHTML = shortenCosts(5e3)
-		document.getElementById('galcost24').innerHTML = shortenCosts(1e4)
-		document.getElementById('galcost34').innerHTML = shortenCosts(2e4)
+		document.getElementById('galcost14').innerHTML = shortenCosts(3e3)
+		document.getElementById('galcost24').innerHTML = shortenCosts(6e3)
+		document.getElementById('galcost34').innerHTML = shortenCosts(2e5)
 	}
 }
 
@@ -170,11 +169,13 @@ function resetTotalBought() {
 }
 
 function productAllTotalBought () {
+	if (player.tickspeedBoosts!=undefined&&(player.currentChallenge=="challenge11"||player.currentChallenge=="postc1")) return 1
 	var ret = 1;
+	var mult = getProductBoughtMult()
 	for (i = 1; i <= 8; i++) {
-		if (player.totalBoughtDims[TIER_NAMES[i]]) ret *= Math.max(player.totalBoughtDims[TIER_NAMES[i]] ? player.totalBoughtDims[TIER_NAMES[i]] : 1, 1);
+		if ((player.currentChallenge=="challenge13"||player.currentChallenge=="postc1")&&player.tickspeedBoosts!=undefined) ret *= Math.max(1+player[TIER_NAMES[i]+"Amount"].log10()*mult, 1);
+		else if (player.totalBoughtDims[TIER_NAMES[i]]) ret *= Math.max(player.totalBoughtDims[TIER_NAMES[i]] ? player.totalBoughtDims[TIER_NAMES[i]]*mult : 1, 1);
 	}
-	if (player.galacticSacrifice.upgrades.includes(24)) return Math.pow(ret, 1.15)
 	return ret;
 }
 
@@ -250,7 +251,7 @@ document.getElementById("postinfi04").onclick = function() {
 		player.dimPowerIncreaseCost = new Decimal(1e3).times(Decimal.pow(4,Math.min(player.extraDimPowerIncrease,15)+1));
 		player.extraDimPowerIncrease += 1;
 		if (player.extraDimPowerIncrease > 15) player.dimPowerIncreaseCost = player.dimPowerIncreaseCost.times(Decimal.pow(Decimal.pow(4,5),player.extraDimPowerIncrease-15))
-		document.getElementById("postinfi04").innerHTML = "Increase dimension multipliers further<br>x^"+galUpgrade31().toFixed(2)+(player.extraDimPowerIncrease<40?" -> x^"+((galUpgrade31()+0.02).toFixed(2))+"<br>Cost: "+shorten(player.dimPowerIncreaseCost)+" IP":"")
+		document.getElementById("postinfi04").innerHTML = "Further increase all dimension multipliers<br>x^"+galUpgrade31().toFixed(2)+(player.extraDimPowerIncrease<40?" -> x^"+((galUpgrade31()+0.02).toFixed(2))+"<br>Cost: "+shorten(player.dimPowerIncreaseCost)+" IP":"")
 	}
 }
 
