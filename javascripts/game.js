@@ -3712,7 +3712,7 @@ function updateAutobuyers() {
         maxedAutobuy++;
     }
     if (player.tickspeedBoosts!=undefined) if (player.autobuyers[13].interval <= 100) {
-        document.getElementById("buyerBtnGalSac").style.display = "none"
+        document.getElementById("buyerBtnTickspeedBoost").style.display = "none"
         maxedAutobuy++;
     }
 
