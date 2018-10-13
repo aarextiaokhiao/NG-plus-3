@@ -32,6 +32,7 @@ function softReset(bulk) {
   }
   if (player.currentChallenge=="challenge14") player.tickBoughtThisInf.pastResets.push({resets:player.resets,bought:player.tickBoughtThisInf.current})
   if (player.dilation.upgrades.includes("ngpp3") && player.eternities >= 1e9 && player.masterystudies && player.aarexModifications.switch === undefined) {
+      skipResets()
       player.matter = new Decimal(0)
       player.postC8Mult = new Decimal(1)
       if (player.currentEternityChall=='eterc13') return
@@ -133,7 +134,6 @@ function softReset(bulk) {
       spreadingCancer: player.spreadingCancer,
       postChallUnlocked: player.postChallUnlocked,
       postC4Tier: 1,
-      postC3Reward: getPostC3RewardStart(),
       postC8Mult: new Decimal(1),
       infinityDimension1: player.infinityDimension1,
       infinityDimension2: player.infinityDimension2,
@@ -261,6 +261,14 @@ function softReset(bulk) {
 function setInitialDimensionPower () {
 	var dimensionBoostPower = getDimensionBoostPower()
 	for (tier = 1; tier < 9; tier++) player[TIER_NAMES[tier] + 'Pow'] = player.currentEternityChall=='eterc13' ? new Decimal(1) : dimensionBoostPower.pow(player.resets + 1 - tier).max(1)
+	
+	var ic3Power=player.totalTickGained*getEC14Power()
+	if (player.tickspeedBoosts!=undefined) {
+		var ic3PowerTB=player.tickspeedBoosts*(player.currentChallenge=="challenge15"||player.currentChallenge=="postc1"?15:player.galacticSacrifice.upgrades.includes(14)?32:30)
+		if (ic3PowerTB>1024) ic3PowerTB=Math.floor(Math.sqrt((ic3PowerTB/4+768)*1024))
+		ic3Power+=ic3PowerTB
+	}
+	player.postC3Reward=Decimal.pow(getPostC3RewardMult(),ic3Power)
 }
 
 function maxBuyDimBoosts(manual) {
@@ -363,10 +371,13 @@ document.getElementById("softReset").onclick = function () {
 
 function skipResets() {
 	if (player.currentChallenge == "") {
-		for (s=1;s<4;s++) if (player.infinityUpgrades.includes("skipReset"+s)&&player.resets<s) player.resets=s
+		var upToWhat = 0
+		for (s=1;s<4;s++) if (player.infinityUpgrades.includes("skipReset"+s)) upToWhat=s
 		if (player.infinityUpgrades.includes("skipResetGalaxy")) {
-			if (player.resets<4) player.resets=4
-			if (player.galaxies == 0) player.galaxies = 1
+			upToWhat=4
+			if (player.galaxies<1) player.galaxies=1
 		}
+		if (player.resets<upToWhat) player.resets=upToWhat
+		if (player.tickspeedBoosts<upToWhat*4) player.tickspeedBoosts=upToWhat*4
 	}
 }

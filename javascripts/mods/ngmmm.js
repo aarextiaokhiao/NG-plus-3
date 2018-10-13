@@ -6,7 +6,7 @@ function tickspeedBoost() {
 	if (!player.break && player.money.gt(Number.MAX_VALUE)) return;
 	if (!isTickspeedBoostPossible()) return
 	var req=getTickspeedBoostRequirement()
-	if (Math.round(player[TIER_NAMES[req.tier]+"Amount"])<req.amount) return
+	if (getAmount(req.tier)<req.amount) return
 	player.tickspeedBoosts++
 	softReset(player.achievements.includes("r36")?0:-player.resets, true)
 	player.tickBoughtThisInf = updateTBTIonGalaxy()

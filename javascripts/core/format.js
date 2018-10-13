@@ -80,6 +80,7 @@ function getShortAbbreviation(e) {
 const inflog = Math.log10(Number.MAX_VALUE)
 function formatValue(notation, value, places, placesUnder1000) {
     if (notation === "Same notation") notation = player.options.notation
+    if (notation === 'Iroha') return iroha(value, 5)
     if (Decimal.eq(value, 1/0)) return "Infinite"
     if ((Decimal.lte(value,Number.MAX_VALUE) || (player.break && (player.currentChallenge == "" || !new Decimal(Number.MAX_VALUE).equals(player.challengeTarget)) )) && (Decimal.gte(value,1000))) {
         if (notation === "Hexadecimal") {
@@ -462,6 +463,62 @@ function convTo(notation, num) {
 		}
 	}
 	return result+rest
+}
+
+//Iroha code
+function bin_log (n) {
+  if (n.lt(1)) {
+    return bin_log(bin_inv(n)).negate();
+  }
+  let r = Math.floor(n.log(2));
+  let x = Decimal_BI.pow(2, r);
+  return Decimal_BI.plus(r, n.div(x).sub(1));
+}
+
+function bin_inv (n) {
+  let x = Decimal_BI.pow(2, Math.ceil(n.log(2)));
+  let diff = x.sub(n);
+  return Decimal_BI.div(1, x).plus(diff.div(x.pow(2)).times(2));
+}
+
+let iroha_zero = '日';
+
+let iroha_one = '山';
+
+let iroha_negate = function (x) {return '見' + x}
+
+let iroha_invert = function (x) {return '世' + x}
+
+let iroha_special = 'いろはにほへとちりぬるをわかよたれそつねならむうゐのおくやまけふこえてあさきゆめみしゑひもせアイウエオカキクケコ';
+
+function iroha (n, depth) {
+  if (!break_infinity_js) if (n instanceof Decimal) n = n.toString()
+  n = new Decimal_BI(n);
+  if (isNaN(n.e)) {
+    return '今';
+  }
+  if (depth === 0) {
+    return '';
+  }
+  if (n.eq(0)) {
+    return iroha_zero;
+  }
+  if (n.eq(1)) {
+    return iroha_one;
+  }
+  if (n.lt(0)) {
+    return iroha_negate(iroha(n.negate(), depth));
+  }
+  if (n.lt(1)) {
+    return iroha_invert(iroha(bin_inv(n), depth));
+  }
+  let log = bin_log(bin_log(n));
+  let prefix = (log.lt(0)) ? ((x) => x + 27) : ((x) => x);
+  log = log.abs();
+  let num = Math.round(log.floor().toNumber());
+  let rem = log.sub(num);
+  let rec = bin_inv(Decimal_BI.sub(1, rem));
+  return iroha_special[prefix(num)] + (rec.eq(1) ? '' : iroha(rec, depth - 1));
 }
 
 function getFullExpansion(num) {

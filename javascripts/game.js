@@ -467,7 +467,7 @@ function updateNewPlayer(reseted) {
         player.timestudy.studyGroupsUnlocked = 0
     }
     if (modesChosen.ngmm>1) {
-        player.aarexModifications.newGame3MinusVersion = 2.1
+        player.aarexModifications.newGame3MinusVersion = 2.11
         player.tickspeedBoosts = 0
         player.autobuyers[13]=14
         player.challengeTimes.push(600*60*24*31)
@@ -1412,10 +1412,18 @@ function updateChallenges() {
 }
 
 function getNextAt(chall) {
+	if (player.galacticSacrifice) {
+		var num=parseInt(chall.split("postc")[1])
+		if (num) chall="postc"+(num+1)
+	}
 	var ret = nextAt[chall]
 	if (player.galacticSacrifice) {
 		var retNGMM = nextAt[chall+"_ngmm"]
 		if (retNGMM) ret = retNGMM
+	}
+	if (player.tickspeedBoosts!=undefined) {
+		var retNGM3 = nextAt[chall+"_ngm3"]
+		if (retNGM3) ret = retNGM3
 	}
 	return ret
 }
@@ -1425,6 +1433,10 @@ function getGoal(chall) {
 	if (player.galacticSacrifice) {
 		var retNGMM = goals[chall+"_ngmm"]
 		if (retNGMM) ret = retNGMM
+	}
+	if (player.tickspeedBoosts!=undefined) {
+		var retNGM3 = goals[chall+"_ngm3"]
+		if (retNGM3) ret = retNGM3
 	}
 	return ret
 }
@@ -2021,11 +2033,6 @@ function getPostC3RewardMult() {
 	return ret
 }
 
-function getPostC3RewardStart() {
-	let power = player.totalTickGained*getEC14Power()
-	if (player.tickspeedBoosts !== undefined) power += player.tickspeedBoosts*(player.currentChallenge=="challenge15"||player.currentChallenge=="postc1"?15:player.galacticSacrifice.upgrades.includes(14)?32:30)
-	return Decimal.pow(getPostC3RewardMult(),power)
-}
 
 function toggleProductionTab() {
 	// 0 == visible, 1 == not visible
@@ -2497,7 +2504,6 @@ function galaxyReset() {
         infinityPower: player.infinityPower,
         postChallUnlocked: player.postChallUnlocked,
         postC4Tier: 1,
-        postC3Reward: getPostC3RewardStart(),
         postC8Mult: new Decimal(1),
         infinityDimension1: player.infinityDimension1,
         infinityDimension2: player.infinityDimension2,
@@ -3210,7 +3216,7 @@ function setAchieveTooltip() {
 
 
 //notation stuff
-var notationArray = ["Scientific","Engineering","Letters","Standard","Emojis","Mixed scientific","Mixed engineering","Logarithm","Brackets","Infinity","Greek","Game percentages","Hexadecimal","Tetration","Hyperscientific","Psi","Morse code","Spazzy","Country Codes","AF5LN"]
+var notationArray = ["Scientific","Engineering","Letters","Standard","Emojis","Mixed scientific","Mixed engineering","Logarithm","Brackets","Infinity","Greek","Game percentages","Hexadecimal","Tetration","Hyperscientific","Psi","Morse code","Spazzy","Country Codes","Iroha","AF5LN"]
 
 function updateNotationOption() {
 	var notationMsg="Notation: "+(player.options.notation=="Emojis"?"Cancer":player.options.notation)
@@ -4295,7 +4301,6 @@ document.getElementById("bigcrunch").onclick = function () {
             version: player.version,
             postChallUnlocked: player.postChallUnlocked,
             postC4Tier: 1,
-            postC3Reward: getPostC3RewardStart(),
             postC8Mult: new Decimal(1),
             overXGalaxies: player.overXGalaxies,
             overXGalaxiesTickspeedBoost: player.overXGalaxiesTickspeedBoost,
@@ -4647,7 +4652,6 @@ function eternity(force, auto) {
             version: player.version,
             postChallUnlocked: (player.achievements.includes("r133")) ? 8 : 0,
             postC4Tier: 1,
-            postC3Reward: new Decimal(1),
             postC8Mult: new Decimal(1),
             overXGalaxies: player.overXGalaxies,
             overXGalaxiesTickspeedBoost: player.overXGalaxiesTickspeedBoost,
@@ -5022,7 +5026,6 @@ function startChallenge(name) {
       version: player.version,
       postChallUnlocked: player.postChallUnlocked,
       postC4Tier: 1,
-      postC3Reward: getPostC3RewardStart(),
       postC8Mult: new Decimal(1),
       overXGalaxies: player.overXGalaxies,
       overXGalaxiesTickspeedBoost: player.overXGalaxiesTickspeedBoost,
@@ -5534,7 +5537,6 @@ function startEternityChallenge(name, startgoal, goalIncrease) {
         version: player.version,
         postChallUnlocked: (player.achievements.includes("r133")) ? 8 : 0,
         postC4Tier: 1,
-        postC3Reward: new Decimal(1),
         postC8Mult: new Decimal(1),
         overXGalaxies: player.overXGalaxies,
         overXGalaxiesTickspeedBoost: player.overXGalaxiesTickspeedBoost,
