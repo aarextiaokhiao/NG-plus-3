@@ -1531,6 +1531,10 @@ function delete_save(saveId) {
 
 var ngModeMessages=[]
 function new_game(id) {
+	if (modesChosen.ngpp>2) {
+		alert("Coming soon!")
+		return
+	}
 	save_game(true)
 	clearInterval(gameLoopIntervalId)
 	updateNewPlayer()
