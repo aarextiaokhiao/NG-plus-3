@@ -1532,7 +1532,7 @@ function delete_save(saveId) {
 var ngModeMessages=[]
 function new_game(id) {
 	if (modes.ngpp>2) {
-		alert("Coming soon!")
+		alert("NG Update will be released in October 15, 2018 due to meta dimension bugs.")
 		return
 	}
 	save_game(true)
