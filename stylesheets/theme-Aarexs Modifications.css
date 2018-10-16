@@ -312,7 +312,7 @@ strong { color: #0072e5 }
     color: #191919 !important;
     border-color: #191919 !important
 }
-#tachyonParticleAmount, #dilatedTimeAmount, #dilatedTimePerSecond {
+#tachyonParticleAmount, #dilatedTimeAmount, #dilatedTimePerSecond, #exDilationBenefit {
     color: #72e572 !important
 }
 #galaxyThreshold, #dilatedGalaxies {
@@ -334,6 +334,12 @@ strong { color: #0072e5 }
     color: #191919 !important;
     border-color: #191919 !important
 }
+#blackHoleTabbtn button, #blackholeunlock.storebtn, #blackholediv .eternityupbtn, #blackholediv table .storebtn, #dilstudy10.dilationupg, #replicantstabbtn button, #replicantReset.storebtn { border: 2px solid #333333 !important }
+#blackHoleTabbtn button:hover, #blackholeunlock.storebtn:hover, #blackholediv .eternityupbtn:hover, #blackholediv table .storebtn:hover, #dilstudy10.dilationupg:hover, #dilstudy10.dilationupgbought, #replicantstabbtn button:hover, #replicantReset.storebtn:hover { background-color: #333333 !important }
+#blackholePowAmount, #DilMultAmount, #InfAndReplMultAmount, #replicantAmount, #workerReplAmount, #babyReplAmount, #workerProgress, #hatchProgress, #growupProgress { color: #333333 !important }
+#reversedilation.dilationupg, #xdrow .dilationupgrebuyable { border-color: #16e528 !important }
+#reversedilation.dilationupg:hover, #xdrow .dilationupgrebuyable:hover  { background-color: #16e528 !important }
+#exDilationAmount { color:  #16e528 !important }
 #dilstudy6.dilationupg, #mdtabbtn .secondarytabbtn, #metadimensions .storebtn, #dil14.dilationupg, #dil15.dilationupg, #dil16.dilationupg, #dil17.dilationupg, #masteryportal.dilationupg, #masterystudyunlock button, #masterystudies .dilationupg {
     border-color: #00e5e5 !important;
     animation: none
@@ -388,9 +394,6 @@ strong { color: #0072e5 }
     border-color: #009900 !important;
     border-radius: 0px !important
 }
-#dilstudy10.dilationupg, #replicantstabbtn button, #replicantReset.storebtn { border: 2px solid #333333 !important }
-#dilstudy10.dilationupg:hover, #dilstudy10.dilationupgbought, #replicantstabbtn button:hover, #replicantReset.storebtn:hover { background-color: #333333 !important }
-#replicantAmount, #workerReplAmount, #babyReplAmount, #workerProgress, #hatchProgress, #growupProgress { color: #333333 !important }
 #quantumFoodAmount { color: #b7e5b7 !important }
 #buyQuantumFood.storebtn, #feedNormal.storebtn, #feedBaby.storebtn, #breakLimit.storebtn { border: 2px solid #b7e5b7 !important }
 #buyQuantumFood.storebtn:hover, #feedNormal.storebtn:hover, #feedBaby.storebtn:hover, #breakLimit.storebtn:hover { background-color: #b7e5b7 !important }

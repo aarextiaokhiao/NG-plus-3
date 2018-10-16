@@ -783,7 +783,7 @@ if (player.version < 5) {
       for (dim=1;dim<9;dim++) player.autoEterOptions["td"+dim] = false
   }
   if (player.aarexModifications.newGamePlusPlusVersion < 2.9013) if (player.aarexModifications.quantumConf===undefined||player.quantum.times<1) player.aarexModifications.quantumConf=true
-  if (player.aarexModifications.newGamePlusPlusVersion < 2.9014) player.aarexModifications.newGamePlusPlusVersion = 2.9014
+  if (player.aarexModifications.newGamePlusPlusVersion < 2.90141) player.aarexModifications.newGamePlusPlusVersion = 2.90141
   if (player.aarexModifications.newGame3PlusVersion < 1.01) player.aarexModifications.dbPower = new Decimal(getDimensionBoostPower())
   if ((player.aarexModifications.newGame3PlusVersion && !player.masterystudies) || player.aarexModifications.newGame3PlusVersion < 1.02) player.masterystudies = []
   if (player.aarexModifications.newGame3PlusVersion < 1.21) player.replicanti.chanceCost = Decimal.pow(1e15, player.replicanti.chance * 100 + 9)
@@ -1091,6 +1091,20 @@ if (player.version < 5) {
       player.aarexModifications.ersVersion=1.02
   }
   if (player.aarexModifications.newGameExpVersion === undefined && !player.masterystudies && Decimal.gt(player.infMultCost,10) && Math.round(Decimal.div(player.infMultCost,10).log(4)*1e3)%1e3<1) player.aarexModifications.newGameExpVersion=1
+  if (player.aarexModifications.newGameUpdateVersion === undefined && player.exdilation != undefined) {
+      player.aarexModifications.newGameUpdateVersion=1
+      player.options.animations.blackHole=true
+      player.aarexModifications.dilationConf=player.options.dilationconfirm
+      var newAchievements=[]
+      for (id=0;id<player.achievements.length;id++) {
+            r=player.achievements[id].split("r")[1]
+            newAchievements.push(r==148?"ngpp13":r==146?"ngpp18":r>140?"ngud"+(r-130):player.achievements[id])
+            if (r>138) v2_3check=true
+      }
+      player.achievements=newAchievements
+      delete player.options.dilationconfirm
+      updateAchievements()
+  }
   ipMultPower=2
   if (player.masterystudies) if (player.masterystudies.includes("t241")) ipMultPower=2.2
   if (GUBought("gb3")) ipMultPower=2.3
@@ -1153,6 +1167,7 @@ if (player.version < 5) {
   document.getElementById("challengeconfirmation").textContent = "Challenge confirmation: O" + (player.options.challConf ? "N" : "FF")
   document.getElementById("eternityconf").textContent = "Eternity confirmation: O" + (player.options.eternityconfirm ? "N" : "FF")
   document.getElementById("dilationConfirmBtn").textContent = "Dilation confirmation: O" + (player.aarexModifications.dilationConf ? "N" : "FF")
+  document.getElementById("exdilationConfirmBtn").textContent = "Reverse dilation confirmation: O" + (player.options.exdilationConfirm ? "N" : "FF")
   document.getElementById("quantumConfirmBtn").textContent = "Quantum confirmation: O" + (player.aarexModifications.quantumConf ? "N" : "FF")
 
   document.getElementById("progressBarBtn").textContent = (player.aarexModifications.progressBar?"Hide":"Show")+" progress bar"
@@ -1276,6 +1291,27 @@ if (player.version < 5) {
   updateTimeStudyButtons();
   document.getElementById('replicantigalaxypowerdiv').style.display=player.achievements.includes("r106")&&player.boughtDims?"":"none"
   document.getElementById('epmultauto').style.display=player.achievements.includes("ngpp17")?"":"none"
+  document.getElementById("dilationeterupgrow").style.display="none"
+  document.getElementById("blackHoleAnimBtn").style.display="none"
+  if (player.exdilation != undefined) {
+      if (player.dilation.studies.includes(1)) document.getElementById("dilationeterupgrow").style.display="table-row"
+      document.getElementById("blackHoleAnimBtn").textContent = "Black hole: " + ((player.options.animations.blackHole) ? "ON" : "OFF")
+      if (player.blackhole.unl == true) {
+          document.getElementById("blackholediv").style.display="inline-block"
+          document.getElementById("blackholeunlock").style.display="none"
+          document.getElementById("blackHoleAnimBtn").style.display="inline-block"
+      } else {
+          document.getElementById("blackholediv").style.display="none"
+          document.getElementById("blackholeunlock").style.display="inline-block"
+      }
+  }
+  var suffix="NG"+(player.meta!=undefined?"pp":"ud")
+  document.getElementById("uhDiv"+suffix).appendChild(document.getElementById("Universal harmony"))
+  document.getElementById("feDiv"+suffix).appendChild(document.getElementById("In the grim darkness of the far endgame"))
+  document.getElementById("achRowngud1").style.display=player.exdilation==undefined?"none":""
+  document.getElementById("achRowngpp1").style.display=player.meta==undefined?"none":""
+  document.getElementById("achRowng3p1").style.display=player.masterystudies==undefined?"none":""
+  document.getElementById("achRowng3p2").style.display=player.masterystudies==undefined?"none":""
   for (i=1;i<9;i++) document.getElementById("td"+i+'auto').style.visibility=player.achievements.includes("ngpp17")?"visible":"hidden"
   document.getElementById('togglealltimedims').style.visibility=player.achievements.includes("ngpp17")?"visible":"hidden"
   document.getElementById('replicantibulkmodetoggle').style.display=player.achievements.includes("ngpp16")?"inline-block":"none"
@@ -1309,6 +1345,7 @@ if (player.version < 5) {
   updateEternityChallenges();
   updateExtraReplGalaxies()
   updateDilationUpgradeCosts()
+  updateExdilation()
   updateLastTenQuantums()
   updateColorCharge()
   updateGluons()
@@ -1531,10 +1568,6 @@ function delete_save(saveId) {
 
 var ngModeMessages=[]
 function new_game(id) {
-	if (modes.ngpp>2) {
-		alert("NG Update will be released in October 15, 2018 due to meta dimension bugs.")
-		return
-	}
 	save_game(true)
 	clearInterval(gameLoopIntervalId)
 	updateNewPlayer()

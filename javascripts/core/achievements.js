@@ -103,6 +103,12 @@ const allAchievements = {
   r136 : "I told you already, time is relative",
   r137 : "Now you're thinking with dilation!",
   r138 : "This is what I have to do to get rid of you.",
+  ngud11 : "A newer beginning.",
+  ngud12 : "1 million is still a lot",
+  ngud13 : "Time is absolute",
+  ngud14 : "Finally I'm out of that channel",
+  ngud16 : "We couldn't afford 5",
+  ngud18 : "I already got rid of you.",
   ngpp11 : "I'm so meta",
   ngpp12 : "And still no ninth dimension...",
   ngpp13 : "In the grim darkness of the far endgame",
@@ -213,7 +219,16 @@ function giveAchievement(name) {
 
     if (player.achievements.includes(allAchievementNums[name])) return false
 
-    if ((allAchievementNums[name].split("ngpp")[1]&&!player.meta)||(allAchievementNums[name].split("ng3p")[1]&&!player.masterystudies)) return false
+    var ngudAchId=allAchievementNums[name].split("ngud")[1]
+    if (ngudAchId!=undefined) if (player.exdilation==undefined) return
+
+    var ngppAchId=allAchievementNums[name].split("ngpp")[1]
+    if (ngppAchId!=undefined) {
+        ngppAchId=parseInt(ngppAchId)
+        if (player.meta==undefined&&(player.exdilation==undefined||(ngppAchId!=13&&ngppAchId!=18))) return
+    }
+
+    if (allAchievementNums[name].split("ng3p")[1]&&!player.masterystudies) return false
 
     if (player.boughtDims) {
         var r=allAchievementNums[name].split("r")[1]
@@ -222,7 +237,6 @@ function giveAchievement(name) {
         if (r==105||(r!=117&&r>110)) return false
     }
 
-    if (name=="Universal harmony"&&(player.galaxies<700||player.replicanti.galaxies+extraReplGalaxies<700||player.dilation.freeGalaxies<700)) return
     else $.notify(name, "success");
     player.achievements.push(allAchievementNums[name]);
     document.getElementById(name).className = "achievementunlocked"
@@ -249,11 +263,19 @@ function giveAchievement(name) {
 function updateAchievements() {
 	var amount = 0
 	for (var i=1; i<17; i++) {
-		if (i>14) var shown=!(!player.masterystudies)
-		else if (i>13) var shown=!(!player.meta)
-		else if (i>10) var shown=!player.boughtDims
+		var shown=false
+		var rowid=i
+		if (i>14) {
+			var shown=!(!player.masterystudies)
+			rowid="ng3p"+(i-14)
+		} else if (i>13) {
+			var shown=player.meta!=undefined||player.exdilation!=undefined
+			if (player.meta==undefined) rowid="ngud1"
+			else rowid="ngpp1"
+		} else if (i>10) var shown=!player.boughtDims
 		else var shown=true
-		document.getElementById("achRow"+i).style.display=shown?"":"none"
+		rowid="achRow"+rowid
+		document.getElementById(rowid).style.display=shown?"":"none"
 		if (shown) {
 			var n = 0
 			var achNum = i * 10
@@ -267,7 +289,11 @@ function updateAchievements() {
 					else if (realAchNum==41) realAchNum=76
 				}
 				if (player.masterystudies&&achNum>150) var achId="ng3p"+(achNum-140)
-				else if (player.meta&&achNum>140) var achId="ngpp"+(achNum-130)
+				else if (player.exdilation&&achNum>140) {
+					if (achNum==145) var achId="ngpp13"
+					else if (achNum==147) var achId="ngpp18"
+					else var achId="ngud"+(achNum-130)
+				} else if (player.meta&&achNum>140) var achId="ngpp"+(achNum-130)
 				else var achId="r"+achNum
 				var name=allAchievements[achId]
 				if (player.achievements.includes(achId)) {
@@ -279,9 +305,9 @@ function updateAchievements() {
 			}
 			if (n == 8) {
 				amount++
-				document.getElementById("achRow"+i).className = "completedrow"
+				document.getElementById(rowid).className = "completedrow"
 			} else {
-				document.getElementById("achRow"+i).className = ""
+				document.getElementById(rowid).className = ""
 			}
 		}
 	}

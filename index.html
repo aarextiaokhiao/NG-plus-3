@@ -109,6 +109,7 @@
                     <td><button class="secondarytabbtn" onclick="showEternityTab('eternityupgrades')">Eternity upgrades</button></td>
                     <td><button class="secondarytabbtn" onclick="showEternityTab('milestones')">Eternity milestones</button></td>
                     <td id="dilationTabbtn"><button class="secondarytabbtn" onclick="showEternityTab('dilation')">Time dilation</button></td>
+                    <td id="blackHoleTabbtn"><button class="secondarytabbtn" onclick="showEternityTab('blackhole')">Black hole</button></td>
                 </tr>
             </table>
             <div style="display: none;"><textarea id="treeExportOutput" style="color:black; width: 200px; height: 55px;"></textarea></div>
@@ -559,6 +560,17 @@
                             <button id="eter6" class="eternityupbtn" onclick="buyEternityUpgrade(6, 1e50)">Time Dimensions are multiplied by days played<br>Cost: 1e50 EP</button>
                         </td>
                     </tr>
+                    <tr id="dilationeterupgrow">
+                        <td>
+                            <button id="eter7" class="eternityupbtn" onclick="buyEternityUpgrade(7, new Decimal('1e1500'))">Dilated time gain is boosted by antimatter<br>Currently: Xx<br>Cost: 1e1500 EP</button>
+                        </td>
+                        <td>
+                            <button id="eter8" class="eternityupbtn" onclick="buyEternityUpgrade(8, new Decimal('1e2000'))">Dilated time gain is boosted by infinity points<br>Currently: Xx<br>Cost: 1e2000 EP</button>
+                        </td>
+                        <td>
+                            <button id="eter9" class="eternityupbtn" onclick="buyEternityUpgrade(9, new Decimal('1e3000'))">Dilated time gain is boosted by eternity points<br>Currently: Xx<br>Cost: 1e3000 EP</button>
+                        </td>
+                    </tr>
                     <tr>
                         <td>
                             <div class="eternityupbtnbought" style="opacity: 0"></div>
@@ -722,9 +734,19 @@
                 <canvas id="dilationCanvas"></canvas>
                 <div>
                     <p>You have <span id="tachyonParticleAmount" style="font-size:35px; color: black">0</span> tachyon particles.</p>
+                    <p id="xdp">You have <span id="exDilationAmount" style="font-size:35px; color: black">0</span> ex-dilation, making dilation <span id="exDilationBenefit" style="font-size:25px; color: black">0</span>% less severe.</p>
                 </div>
                 <p id='bestTP'></p>
-                <button id="enabledilation" class="dilationbtn" onclick="startDilatedEternity()">Dilate time.</button>
+                <table>
+                    <tr>
+                        <td>
+                          <button id="enabledilation" class="dilationbtn" onclick="startDilatedEternity()">Dilate time.</button>
+                        </td>
+                        <td id="reversedilationdiv" style='display:none'>
+                          <button id="reversedilation" class="dilationbtn" style='font-size: 0.7rem' onclick="reverseDilation()"></button>
+                        </td>
+                    </tr>
+                </table>
                 <p>You have <span id="dilatedTimeAmount" style="font-size:35px; color: black">0</span> dilated time <span id="dilatedTimePerSecond" style="font-size:25px; color: black">0</span></p>
                 <p>Next free galaxy at <span id="galaxyThreshold" style="font-size:25px; color: black">1000</span> dilated time, gained total of <span id="dilatedGalaxies" style="font-size:25px; color: black">0</span></p>
                 <button id="rebuyupgauto" style="width:250px; height: 30px; font-size: 12px" onclick="toggleAutoEter('rebuyupg')" class="storebtn"></button>
@@ -741,6 +763,17 @@
                         </td>
                         <td id="n1">
                             <button class="timestudy" id="dil11" onclick="buyDilationUpgrade(11)">Tachyon particle formula is better.<br><span id="dil11cost">Cost: 1e8 dilated time</span></button>
+                        </td>
+                    </tr>
+                    <tr id="xdrow">
+                        <td>
+                            <button class="timestudy" id="xd1" style="height: 50px;" onclick="boostDilationUpgrade(1)">Boost the upgrade above with ex-dilation<br><span id="xd1span">1x -> 1.5x</span></button>
+                        </td>
+                        <td>
+                            <button class="timestudy" id="xd2" style="height: 50px;" onclick="boostDilationUpgrade(2)">Boost the upgrade above with ex-dilation<br><span id="xd2span">1x -> 1.5x</span></button>
+                        </td>
+                        <td>
+                            <button class="timestudy" id="xd3" style="height: 50px;" onclick="boostDilationUpgrade(3)">Boost the upgrade above with ex-dilation<br><span id="xd3span">1x -> 1.5x</span></button>
                         </td>
                     </tr>
                     <tr>
@@ -794,6 +827,91 @@
                     </tr>
                 </table>
                 <div>
+                    <table id="footer">
+                        <tr>
+                            <td>
+                                <div style="text-align:center">
+                                    <a href="howto.html" target="_newtab">How to play  </a> |
+                                    <a href="about.html" onclick="giveAchievement('A sound financial decision')" target="_newtab">About   </a> |
+                                    <a href="changelog/" target="_newtab">Changelog   </a>
+                                </div>
+                            </td>
+                        </tr>
+                    </table>
+                </div>
+            </div>
+            <div class="eternitytab" id="blackhole" style="font-size: 11px">
+                <br>
+                <button class="storebtn" id="blackholeunlock" onclick="unlockBlackhole()" style="width:200px; height: 80px">Unlock the black hole<br>Cost: 1e4000 EP</button>
+                <div id="blackholediv">
+                    <div>
+                        <p>You have <span id="blackholePowAmount" style="font-size:35px; color: black">0</span> black hole power. translated to <span id="DilMultAmount" style="font-size:35px; color: black">0</span>x multiplier on dilated time gain and <span id="InfAndReplMultAmount" style="font-size:35px; color: black">0</span>x multiplier on banked infinity gain and replicanti speed</p>
+                    </div>
+                    <div id="blackholePowPerSec">You are getting 0 black hole power per second.</div>
+                    <br/>
+                    <table class="table" style="margin: 0 auto">
+                          <tr>
+                              <td>
+                                  <button id="blackholeDil" class="eternityupbtn" onclick="feedBlackHole(1)">Feed the black hole with dilated time<br>Cost: xx dilated time</button>
+                              </td>
+                              <td>
+                                  <button id="blackholeInf" class="eternityupbtn" onclick="feedBlackHole(2)">Feed the black hole with banked infinities<br>Cost: xx banked infinities</button>
+                              </td>
+                              <td>
+                                  <button id="blackholeRepl" class="eternityupbtn" onclick="feedBlackHole(3)">Feed the black hole with replicanti<br>Cost: xx replicanti</button>
+                              </td>
+                          </tr>
+                    </table>
+                    <button id="maxBlackholeDimensions" class="storebtn" style="font-size: 12px; width: 230px;" onclick="buyMaxBlackholeDimensions()">Max all black hole dimensions</Button>
+                    <table class="table">
+                        <tr style="font-size: 17px" id="blackholeRow1">
+                            <td id="blackholeD1" width="43%">
+                                First Black Hole Dimension x1
+                            </td>
+                            <td>
+                                <div id="blackholeAmount1">0 (0)</div>
+                            </td>
+                            <td align="right" width="10%">
+                                <button id="blackholeMax1" style="color:black; width:195px; height:30px" class="storebtn" align="right" onclick="buyBlackholeDimension(1)">Cost: 1e4000 EP</button>
+                            </td>
+                        </tr>
+                        <tr id="blackholeRow2" style="font-size: 17px">
+                            <td id="blackholeD2">
+                                Second Black Hole Dimension x1
+                            </td>
+                            <td>
+                                <div id="blackholeAmount2" align="left">0 (0)</div>
+                            <td>
+                                <button id="blackholeMax2" style="color:black; width:195px; height:30px" class="storebtn" onclick="buyBlackholeDimension(2)">Cost: 1e8000 EP</button>
+                            </td>
+                        </tr>
+                        <tr id="blackholeRow3" style="font-size: 17px">
+                            <td id="blackholeD3">
+                                Third Black Hole Dimension x1
+                            </td>
+                            <td>
+                                <div id="blackholeAmount3" align="left">0 (0)</div>
+                            </td>
+                            <td>
+                                <button id="blackholeMax3" style="color:black; width:195px; height:30px" class="storebtn" onclick="buyBlackholeDimension(3)">Cost: 1e12000 EP</button>
+                            </td>
+                        </tr>
+                        <tr id="blackholeRow4" style="font-size: 17px">
+                            <td id="blackholeD4">
+                                Fourth Black Hole Dimension x1
+                            </td>
+                            <td>
+                                <div id="blackholeAmount4" align="left">0 (0)</div>
+                            </td>
+                            <td>
+                                <button id="blackholeMax4" style="color:black; width:195px; height:30px" class="storebtn" onclick="buyBlackholeDimension(4)">Cost: 1e20000 EP</button>
+                            </td>
+                        </tr>
+                      </table>
+                      <br/>
+                      <canvas id="blackHoleCanvas" width="400" height="400" style="user-select: none;"></canvas>
+                </div>
+                <div id="footercontainer">
                     <table id="footer">
                         <tr>
                             <td>
@@ -1486,6 +1604,7 @@
                     <div id="eternitied">You have eternitied x times.</div>
                     <div id="thiseternity">You have spent x in this eternity</div>
                     <div id="besteternity">Your fastest eternity is in x.</div>
+                    <div id="exdilated"></div>
                     <br>
                 </div>
                 <div id="infinityStatistics">
@@ -1946,15 +2065,40 @@
                                 <div id="This is what I have to do to get rid of you." class="achievement achievementlocked" style="background-image: url(images/96.png)" ach-tooltip="Reach 1e20000 IP without any time studies while dilated."><br></div>
                             </td>
                         </tr>
-                        <tr id="achRow14">
+                        <tr id="achRowngud1">
+                            <td>
+                                <div id="A newer beginning." class="achievement achievementlocked" style="background-image: url(images/121.png)" ach-tooltip="Begin generation of blac khole power."><br></div>
+                            </td>
+                            <td>
+                                <div id="1 million is still a lot" class="achievement achievementlocked" style="background-image: url(images/122.png)"><br></div>
+                            </td>
+                            <td>
+                                <div id="Time is absolute" class="achievement achievementlocked" style="background-image: url(images/123.png)" ach-tooltip="Reverse dilation."><br></div>
+                            </td>
+                            <td>
+                                <div id="Finally I'm out of that channel" class="achievement achievementlocked" style="background-image: url(images/124.png)"><br></div>
+                            </td>
+                            <td id="uhDivNGud">
+                                <div id="Universal harmony" class="achievement achievementlocked" style="background-image: url(images/104.png)"><br></div>
+                            </td>
+                            <td>
+                                <div id="We couldn't afford 5" class="achievement achievementlocked" style="background-image: url(images/125.png)" ach-tooltip="Buy the fourth blackhole dimension."><br></div>
+                            </td>
+                            <td id="feDivNGud">
+                                <div id="In the grim darkness of the far endgame" class="achievement achievementlocked" style="background-image: url(images/99.png)"><br></div>
+                            </td>
+                            <td>
+                                <div id="I already got rid of you." class="achievement achievementlocked" style="background-image: url(images/126.png)"><br></div>
+                            </td>
+                        </tr>
+                        <tr id="achRowngpp1">
                             <td>
                                 <div id="I'm so meta" class="achievement achievementlocked" style="background-image: url(images/97.png)" ach-tooltip="Unlock meta dimensions."><br></div>
                             </td>
                             <td>
                                 <div id="And still no ninth dimension..." class="achievement achievementlocked" style="background-image: url(images/98.png)" ach-tooltip="Get the eighth meta-dimension. Reward: All meta-dimensions are 10% stronger and you start with 100 meta-antimatter on reset."><br></div>
                             </td>
-                            <td>
-                                <div id="In the grim darkness of the far endgame" class="achievement achievementlocked" style="background-image: url(images/99.png)" ach-tooltip="Get 1e40,000 EP."><br></div>
+                            <td id="feDivNGpp">
                             </td>
                             <td>
                                 <div id="Meta-boosting to the max" class="achievement achievementlocked" style="background-image: url(images/100.png)" ach-tooltip="Get 10 meta-dimension boosts. Reward: Meta-dimension boosts are each 1.01x stronger."><br></div>
@@ -1968,11 +2112,10 @@
                             <td>
                                 <div id="GAS GAS GAS" class="achievement achievementlocked" style="background-image: url(images/103.png)" ach-tooltip="Get 1,000,000 tickspeed upgrades from time dimensions. Reward: Autobuyers for max TD and x5 EP."><br></div>
                             </td>
-                            <td>
-                                <div id="Universal harmony" class="achievement achievementlocked" style="background-image: url(images/104.png)" ach-tooltip="Have at least 700 normal, replicanti, and free dilated galaxies. Reward: Galaxies are 0.1% stronger."><br></div>
+                            <td id="uhDivNGpp">
                             </td>
                         </tr>
-                        <tr id="achRow15">
+                        <tr id="achRowng3p1">
                             <td>
                                 <div id="I don't have enough fuel!" class="achievement achievementlocked" style="background-image: url(images/105.png)"><br></div>
                             </td>
@@ -1986,7 +2129,7 @@
                                 <div id="Work harder." class="achievement achievementlocked" style="background-image: url(images/108.png)" ach-tooltip="Unlock dilation without buying eternity upgrades."><br></div>
                             </td>
                             <td>
-                                <div id="No more tax fraud!" class="achievement achievementlocked" style="background-image: url(images/109.png)" ach-tooltip="Have 900 galaxies without unlocking dilation."><br></div>
+                                <div id="No more tax fraud!" class="achievement achievementlocked" style="background-image: url(images/109.png)" ach-tooltip="Have 900 galaxies without unlocking dilation. Reward: You permanently keep your banked infinities and 5% of your eternitied stat on quantum."><br></div>
                             </td>
                             <td>
                                 <div id="And the winner is..." class="achievement achievementlocked" style="background-image: url(images/110.png)" ach-tooltip="Complete quantum speedruns."><br></div>
@@ -1998,7 +2141,7 @@
                                 <div id="I already got rid of you..." class="achievement achievementlocked" style="background-image: url(images/112.png)"><br></div>
                             </td>
                         </tr>
-                        <tr id="achRow16">
+                        <tr id="achRowng3p2">
                             <td>
                                 <div id="Special Relativity" class="achievement achievementlocked" style="background-image: url(images/113.png)" ach-tooltip="Quantum in under 5 seconds. Reward: Unlock manual mode for eternity autobuyer, you can buy max meta-boosts, and rebuyable dilation upgrade can buy max all upgrades."><br></div>
                             </td>
@@ -3821,6 +3964,7 @@
 		<button id="floatingTextAnimBtn" class="storebtn" onclick="animationOnOff('floatingText')" style="width: 200px; height: 55px; font-size: 15px" style="display: inline">ON</button>
         <button id="bigCrunchAnimBtn" class="storebtn" onclick="animationOnOff('bigCrunch')" style="width: 200px; height: 55px; font-size: 15px" style="display: inline">ON</button>
         <button id="tachyonParticleAnimBtn" class="storebtn" onclick="animationOnOff('tachyonParticles')" style="width: 200px; height: 55px; font-size: 15px" style="display: inline">ON</button>
+        <button id="blackHoleAnimBtn" class="storebtn" onclick="animationOnOff('blackHole')" style="width: 200px; height: 55px; font-size: 15px" style="display: inline">ON</button>
         <button id="quarksAnimBtn" class="storebtn" onclick="animationOnOff('quarks')" style="width: 200px; height: 55px; font-size: 15px" style="display: inline">ON</button>
 	</div>
     <div class="popup optionmenu" id="visibilityoptions">
@@ -3836,6 +3980,7 @@
         <button id="challengeconfirmation" class="storebtn" style="width: 200px; height: 45px; font-size: 12px" style="display: inline"></button>
         <button id="eternityconf" onclick='toggleEternityConf()' class="storebtn" style="width: 200px; height: 45px; font-size: 12px" style="display: inline"></button>
         <button id="dilationConfirmBtn" class="storebtn" onclick="toggleDilaConf()" style="width: 200px; height: 45px; font-size: 12px" style="display: inline"></button>
+        <button id="exdilationConfirmBtn" class="storebtn" onclick="toggleExdilaConf()" style="width: 200px; height: 45px; font-size: 12px" style="display: inline"></button>
         <button id="quantumConfirmBtn" class="storebtn" onclick="toggleQuantumConf()" style="width: 200px; height: 45px; font-size: 12px" style="display: inline"></button>
 	</div>
 	<div class="popup optionmenu" id="notationmenu" style="overflow-y:hidden; width: 450px">
@@ -3923,15 +4068,14 @@
 <script type="text/javascript" src="javascripts/lz-string.js"></script>
 <script type="text/javascript" src="javascripts/core/polyfill.js"></script>
 <script type="text/javascript" src="javascripts/core/format.js?18"></script>
-<script type="text/javascript" src="javascripts/core/achievements.js?11"></script>
+<script type="text/javascript" src="javascripts/core/achievements.js?12"></script>
 <script type="text/javascript" src="javascripts/core/chart.js"></script>
 <script type="text/javascript" src="javascripts/core/tickspeed.js?23"></script>
 <script type="text/javascript" src="javascripts/core/normal_dimension.js?32"></script>
 <script type="text/javascript" src="javascripts/core/infinity_dimension.js?17"></script>
 <script type="text/javascript" src="javascripts/core/time_dimension.js?20"></script>
 <script type="text/javascript" src="javascripts/core/dimboost.js?38"></script>
-<script type="text/javascript" src="javascripts/core/timestudies.js?29"></script>
-<script type="text/javascript" src="javascripts/core/canvases.js?6"></script>
+<script type="text/javascript" src="javascripts/core/tickspeed.js?24"></script>
 <script type="text/javascript" src="javascripts/core/devtools.js"></script>
 <script type="text/javascript" src="javascripts/core/load_functions.js?69"></script>
 <script type="text/javascript" src="javascripts/core/newsticker.js?6"></script>

@@ -46,7 +46,7 @@ function DimensionProduction(tier) {
   if (player.challenges.includes("postc6")&&!inQC(3)) {
       let tick = new Decimal(player.tickspeed)
       if (player.dilation.active || player.galacticSacrifice) {
-        tick = Decimal.pow(10, Math.pow(Math.abs(tick.log10()), 0.75))
+        tick = Decimal.pow(10, Math.pow(Math.abs(tick.log10()), dilationPowerStrength()))
         if (player.dilation.upgrades.includes(9)) {
           tick = Decimal.pow(10, Math.pow(Math.abs(tick.log10()), 1.05))
         }
@@ -76,7 +76,7 @@ function DimensionPower(tier) {
   }
 
   if (player.timestudy.studies.includes(82)) {
-      mult = mult.times(Decimal.pow(1.0000109,Math.pow(player.resets,2)).min('1e80000'))
+      mult = mult.times(Decimal.pow(1.0000109,Math.pow(player.resets,2)).min(player.meta==undefined?1/0:'1e80000'))
   }
 
   if (player.eternityUpgrades.includes(1)) {
@@ -101,7 +101,7 @@ function DimensionPower(tier) {
   if (mult.lt(0)) mult = new Decimal(0)
 
   if (player.dilation.active || player.galacticSacrifice) {
-    mult = Decimal.pow(10, Math.pow(mult.max(1).log10(), 0.75))
+    mult = Decimal.pow(10, Math.pow(mult.max(1).log10(), dilationPowerStrength()))
     if (player.dilation.upgrades.includes(9)) {
       mult = Decimal.pow(10, Math.pow(mult.log10(), 1.05))
     }

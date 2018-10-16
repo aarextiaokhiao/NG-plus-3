@@ -10,6 +10,8 @@ var canvas = document.getElementById("studyTreeCanvas");
 var ctx = canvas.getContext("2d");
 var canvas3 = document.getElementById("dilationCanvas");
 var ctx3 = canvas3.getContext("2d");
+var bhc = document.getElementById("blackHoleCanvas");
+var bhctx = bhc.getContext("2d");
 var msc = document.getElementById("studyTreeCanvas2");
 var msctx = msc.getContext("2d");
 var qkc = document.getElementById("quarkCanvas");
@@ -18,22 +20,24 @@ var qkctx = qkc.getContext("2d");
 window.addEventListener("resize", resizeCanvas);
 
 function resizeCanvas() {
-    canvas.width = 0;
-    canvas.height = 0;
-    canvas3.width = 0;
-    canvas3.height = 0;
-    msc.width = 0;
-    msc.height = 0;
-    canvas.width = document.body.scrollWidth;
-    canvas.height = document.body.scrollHeight;
-    canvas3.width = document.body.scrollWidth;
-    canvas3.height = document.body.scrollHeight;
-    msc.width = document.body.scrollWidth;
-    msc.height = document.body.scrollHeight;
-    qkc.width = document.body.scrollWidth;
-    qkc.height = document.body.scrollHeight;
-    drawStudyTree();
-    drawMasteryTree();
+	canvas.width = 0;
+	canvas.height = 0;
+	canvas3.width = 0;
+	canvas3.height = 0;
+	msc.width = 0;
+	msc.height = 0;
+	canvas.width = document.body.scrollWidth;
+	canvas.height = document.body.scrollHeight;
+	canvas3.width = document.body.scrollWidth;
+	canvas3.height = document.body.scrollHeight;
+	bhc.width = document.body.scrollWidth;
+	bhc.height = document.body.scrollHeight;
+	msc.width = document.body.scrollWidth;
+	msc.height = document.body.scrollHeight;
+	qkc.width = document.body.scrollWidth;
+	qkc.height = document.body.scrollHeight;
+	drawStudyTree();
+	drawMasteryTree();
 }
 
 function point(x, y, ctz){
@@ -48,6 +52,7 @@ function animationOnOff(name) {
     if (name == "floatingText") document.getElementById("floatingTextAnimBtn").textContent = "Floating text: " + ((player.options.animations.floatingText) ? "ON" : "OFF")
     else if (name == "bigCrunch") document.getElementById("bigCrunchAnimBtn").textContent = "Big crunch: " + ((player.options.animations.bigCrunch) ? "ON" : "OFF")
     else if (name == "tachyonParticles") document.getElementById("tachyonParticleAnimBtn").textContent = "Tachyon particles: " + ((player.options.animations.tachyonParticles) ? "ON" : "OFF")
+    else if (name == "blackHole") document.getElementById("blackHoleAnimBtn").textContent = "Black hole: " + ((player.options.animations.blackHole) ? "ON" : "OFF")
     else if (name == "quarks") document.getElementById("quarksAnimBtn").textContent="Quarks: O"+(player.options.animations[name]?"N":"FF")
 }
 

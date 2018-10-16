@@ -43,7 +43,7 @@ function getGalaxyPowerEff(ng, bi) {
 		if (player.achievements.includes("r83")) eff *= 1.05
 		if (player.achievements.includes("r45")) eff *= 1.02
 	}
-	if (player.achievements.includes("ngpp8")) eff *= 1.001;
+	if (player.achievements.includes("ngpp8") && player.meta != undefined) eff *= 1.001;
 	if (player.timestudy.studies.includes(212)) eff *= Math.min(Math.pow(player.timeShards.max(2).log2(), 0.005), 1.1)
 	if (player.timestudy.studies.includes(232)&&bi) eff *= Math.pow(1+ng/1000, 0.2)
 	eff *= colorBoosts.r

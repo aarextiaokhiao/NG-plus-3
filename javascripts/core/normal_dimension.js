@@ -91,7 +91,7 @@ function getDimensionFinalMultiplier(tier) {
 
   if (multiplier.lt(1)) multiplier = new Decimal(1)
   if (player.dilation.active || player.galacticSacrifice) {
-    multiplier = Decimal.pow(10, Math.pow(multiplier.log10(), 0.75))
+    multiplier = Decimal.pow(10, Math.pow(multiplier.log10(), dilationPowerStrength()))
     if (player.dilation.upgrades.includes(9)) {
       multiplier = Decimal.pow(10, Math.pow(multiplier.log10(), 1.05))
     }
@@ -638,7 +638,7 @@ function getDimensionProductionPerSecond(tier) {
 	let tick = new Decimal(player.tickspeed)
 	if (player.dilation.active || player.galacticSacrifice) {
 		var maximum = player.galacticSacrifice ? 3 : 0
-		tick = Decimal.pow(10, Math.pow(Math.abs(maximum-tick.log10()), 0.75))
+		tick = Decimal.pow(10, Math.pow(Math.abs(maximum-tick.log10()), dilationPowerStrength()))
 		if (player.dilation.upgrades.includes(9)) tick = Decimal.pow(10, Math.pow(Math.abs(maximum-tick.log10()), 1.05))
 		return ret.times(Decimal.pow(10,(player.aarexModifications.newGame3MinusVersion?2:3)-maximum)).times(tick);
 	}

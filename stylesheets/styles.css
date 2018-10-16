@@ -1202,7 +1202,7 @@ button {
     border-top-right-radius: 7px;
 }
 
-#studyTreeCanvas, #studyTreeCanvas2, #dilationCanvas, #quarkCanvas {
+#studyTreeCanvas, #studyTreeCanvas2, #dilationCanvas, #blackHoleCanvas, #quarkCanvas {
     top: 0;
     left: 0;
     position: absolute;

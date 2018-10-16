@@ -1103,3 +1103,14 @@ function doQuantumProgress() {
 		document.getElementById("progresspercent").setAttribute('ach-tooltip',"Percentage to "+shortenDimensions(Decimal.pow(2,goal))+" QK gain")
 	}
 }
+
+//v2.90141
+function checkUniversalHarmony() {
+	if (player.achievements.includes("ngpp18")) return
+	if (player.meta!=undefined) {
+		if (player.galaxies<700||player.replicanti.galaxies+extraReplGalaxies<700||player.dilation.freeGalaxies<700) return
+	} else if (player.exdilation!=undefined) {
+		if (player.galaxies!=player.replicanti.galaxies||player.galaxies!=player.dilation.freeGalaxies||player.galaxies<300) return
+	} else return
+	giveAchievement("Universal harmony")
+}

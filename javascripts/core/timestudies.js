@@ -141,6 +141,7 @@ function buyDilationStudy(name, cost) {
             showEternityTab("dilation")
             document.getElementById("dilstudy1").innerHTML = "Unlock time dilation<span>Cost: 5000 Time Theorems"
             if (player.eternityUpgrades.length<1) giveAchievement("Work harder.")
+			if (player.blackhole != undefined) updateEternityUpgrades()
         } else if (name > 5) {
             giveAchievement("I'm so meta")
             showTab("dimensions")
