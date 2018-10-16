@@ -1678,6 +1678,28 @@ function transformSaveToDecimal() {
   player.timeDimension7.power = new Decimal(player.timeDimension7.power)
   player.timeDimension8.power = new Decimal(player.timeDimension8.power)
 
+  if (player.exdilation !== undefined) {
+      player.blackhole.power = new Decimal(player.blackhole.power)
+
+      player.blackholeDimension1.amount = new Decimal(player.blackholeDimension1.amount)
+      player.blackholeDimension2.amount = new Decimal(player.blackholeDimension2.amount)
+      player.blackholeDimension3.amount = new Decimal(player.blackholeDimension3.amount)
+      player.blackholeDimension4.amount = new Decimal(player.blackholeDimension4.amount)
+      player.blackholeDimension1.cost = new Decimal(player.blackholeDimension1.cost)
+      player.blackholeDimension2.cost = new Decimal(player.blackholeDimension2.cost)
+      player.blackholeDimension3.cost = new Decimal(player.blackholeDimension3.cost)
+      player.blackholeDimension4.cost = new Decimal(player.blackholeDimension4.cost)
+      player.blackholeDimension1.power = new Decimal(player.blackholeDimension1.power)
+      player.blackholeDimension2.power = new Decimal(player.blackholeDimension2.power)
+      player.blackholeDimension3.power = new Decimal(player.blackholeDimension3.power)
+      player.blackholeDimension4.power = new Decimal(player.blackholeDimension4.power)
+
+      player.exdilation.unspent = new Decimal(player.exdilation.unspent)
+      player.exdilation.spent[1] = new Decimal(player.exdilation.spent[1])
+      player.exdilation.spent[2] = new Decimal(player.exdilation.spent[2])
+      player.exdilation.spent[3] = new Decimal(player.exdilation.spent[3])
+  }
+
   if (player.meta !== undefined) {
       player.meta.antimatter = new Decimal(player.meta.antimatter);
       player.meta.bestAntimatter = new Decimal(player.meta.bestAntimatter);
