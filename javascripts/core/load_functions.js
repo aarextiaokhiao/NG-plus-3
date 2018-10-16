@@ -395,6 +395,10 @@ if (player.version < 5) {
   if (player.aarexModifications.popUpId === undefined) {
       player.aarexModifications.popUpId = 0
   }
+  if (player.aarexModifications.newGamePlusPlusVersion == undefined && player.aarexModifications.newGame3PlusVersion != undefined) {
+      delete player.masterystudies
+      delete player.aarexModifications.newGame3PlusVersion
+  }
   transformSaveToDecimal();
   updateCosts();
   updateTickSpeed();

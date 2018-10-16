@@ -339,7 +339,7 @@ function updateNewPlayer(reseted) {
         for (ec = 1; ec < 13; ec++) player.eternityChalls['eterc' + ec] = 5
         player.aarexModifications.newGamePlusVersion = 1
     }
-    if (modesChosen.ngpp > 0 && modesChosen.ngpp < 3) {
+    if (modesChosen.ngpp && modesChosen.ngpp < 3) {
         player.aarexModifications.newGamePlusPlusVersion = 2.90141
         player.autoEterMode = "amount"
         player.dilation.rebuyables[4] = 0
@@ -389,8 +389,8 @@ function updateNewPlayer(reseted) {
         player.infchallengeTimes.push(600*60*24*31)
         player.options.gSacrificeConfirmation = true
     }
+    if (modesChosen.ngpp === 2) {
         player.aarexModifications.newGame3PlusVersion = 1.9984
-    if (modesChosen.ngpp == 2) {
         player.respecOptions={time:false,mastery:false}
         player.dbPower = 1
         player.peakSpent = 0
