@@ -1035,7 +1035,7 @@ function getDilTimeGainPerSecond() {
 		if (player.eternityUpgrades.includes(8)) gain = gain.times(1 + Math.log10(Math.max(1, player.infinityPoints.log(10))) / 20)
 		if (player.eternityUpgrades.includes(9)) gain = gain.times(1 + Math.log10(Math.max(1, player.eternityPoints.log(10))) / 10)
 	}
-	if (player.dilation.upgrades.includes('ngpp2')) gain = gain.times(Math.pow(Math.max(getEternitied(), 1), .1))
+	if (player.dilation.upgrades.includes('ngpp2')) gain = gain.times(Math.pow(Math.max(player.eternities, 1), .1))
 	if (player.masterystudies) {
 		if (player.masterystudies.includes("t263")) gain = gain.times(getMTSMult(263))
 		if (player.masterystudies.includes("t281")) gain = gain.times(getMTSMult(281))
