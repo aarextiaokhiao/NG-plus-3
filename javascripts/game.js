@@ -1407,7 +1407,7 @@ function updateDimensions() {
         if (document.getElementById("blackhole").style.display == "block") {
             if (document.getElementById("blackholediv").style.display == "inline-block") updateBlackhole()
             if (document.getElementById("blackholeunlock").style.display == "inline-block") {
-                document.getElementById("blackholeunlock").innerHTML = "Unlock the blackhole<br>Cost: "+shortenCosts(new Decimal('1e4000'))+" EP"
+                document.getElementById("blackholeunlock").innerHTML = "Unlock the black hole<br>Cost: "+shortenCosts(new Decimal('1e4000'))+" EP"
                 document.getElementById("blackholeunlock").className = (player.eternityPoints.gte("1e4000")) ? "storebtn" : "unavailablebtn"
             }
         }
@@ -4916,6 +4916,7 @@ function eternity(force, auto) {
         extraReplGalaxies = 0
         player.replicanti.chanceCost = Decimal.pow(1e15, player.replicanti.chance * 100 + 9)
         player.replicanti.intervalCost = Decimal.pow(1e10, Math.round(Math.log10(1000/player.replicanti.interval)/-Math.log10(0.9))+(player.boughtDims?15:14))
+        setInitialDimensionPower()
         if (player.achievements.includes("r36")) player.tickspeed = player.tickspeed.times(0.98);
         if (player.achievements.includes("r45")) player.tickspeed = player.tickspeed.times(0.98);
 
@@ -5809,6 +5810,7 @@ function startEternityChallenge(name, startgoal, goalIncrease) {
     extraReplGalaxies = 0
     player.replicanti.chanceCost = Decimal.pow(1e15, player.replicanti.chance * 100 + 9)
     player.replicanti.intervalCost = Decimal.pow(1e10, Math.round(Math.log10(1000/player.replicanti.interval)/-Math.log10(0.9))+(player.boughtDims?15:14))
+    setInitialDimensionPower()
     if (player.achievements.includes("r36")) player.tickspeed = player.tickspeed.times(0.98);
     if (player.achievements.includes("r45")) player.tickspeed = player.tickspeed.times(0.98);
     if (player.eternities < 30) {
@@ -6905,7 +6907,7 @@ function gameLoop(diff) {
         document.getElementById("eternitybtnEPGain").innerHTML = ((player.eternities > 0 && (player.currentEternityChall==""||player.options.theme=="Aarex's Modifications"))
             ? "Gain <b>"+(player.dilation.active?shortenMoney(Math.max(getDilGain() - player.dilation.totalTachyonParticles, 0)):shortenDimensions(gainedEternityPoints()))+"</b> "+(player.dilation.active?"Tachyon particles.":"Eternity points.") : "")
     }
-    var showEPmin=(player.currentEternityChall===""||player.options.theme=="Aarex's Modifications")&&EPminpeak>0&&player.eternities>0&&player.options.notation!='Morse code'&&player.options.notation!='Spazzy'
+    var showEPmin=(player.currentEternityChall===""||player.options.theme=="Aarex's Modifications")&&EPminpeak>0&&player.eternities>0&&player.options.notation!='Morse code'&&player.options.notation!='Spazzy'&&(!player.dilation.active||isSmartPeakActivated)
     document.getElementById("eternitybtnRate").textContent = (showEPmin&&(EPminpeak.lt("1e30003")||player.options.theme=="Aarex's Modifications")
         ? (EPminpeakType == "normal" ? shortenDimensions(currentEPmin) : shorten(currentEPmin))+EPminpeakUnits : "")
     document.getElementById("eternitybtnPeak").textContent = (showEPmin

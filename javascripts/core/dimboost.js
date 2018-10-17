@@ -264,7 +264,7 @@ function softReset(bulk) {
   if (player.achievements.includes("r78")) player.money = new Decimal(1e25).max(player.money);
 }
 
-function setInitialDimensionPower () {
+function setInitialDimensionPower() {
 	var dimensionBoostPower = getDimensionBoostPower()
 	for (tier = 1; tier < 9; tier++) player[TIER_NAMES[tier] + 'Pow'] = player.currentEternityChall=='eterc13' ? new Decimal(1) : dimensionBoostPower.pow(player.resets + 1 - tier).max(1)
 	
