@@ -56,7 +56,7 @@ function showspoilers() {
 function updateSpoilers() {
 	var displayed = spoilers;
 	document.getElementById("ng3pguide").style.display=player.masterystudies||spoilers?"":"none"
-	for (i=25; i>0; i--) {
+	for (i=27; i>0; i--) {
 		if (i != 7) {
 			if (!displayed) {
 				if (i < 5) displayed = 1
@@ -75,8 +75,10 @@ function updateSpoilers() {
 					if (player.masterystudies) {
 						if (i == 21 && player.dilation.upgrades.includes("ngpp4")) displayed = 1
 						if (i == 23 && player.quantum) if (player.quantum.times>0) displayed = 1
-						if (i == 24 && player.masterystudies.includes("d8")) displayed = 1
+						/*if (i == 24 && player.masterystudies.includes("d8")) displayed = 1
 						if (i == 25 && player.masterystudies.includes("d9")) displayed = 1
+						if (i == 26 && player.masterystudies.includes("d10")) displayed = 1
+						if (i == 27 && player.masterystudies.includes("d11")) displayed = 1*/
 					}
 				}
 			}
@@ -86,6 +88,7 @@ function updateSpoilers() {
 					if (player.masterystudies) msg += "9.32e446 meta-antimatter and completed EC14 for the first time"
 					else msg += "infinity meta-antimatter"
 					msg += ", you will able to go quantum. Quantum will reset everything eternity resets, and also time studies, eternity challenges, dilation, "+(player.masterystudies?"meta dimensions, and mastery studies":"and meta dimensions (except your best meta-antimatter)")+". You will gain a quark and unlock various upgrades."
+					if (player.masterystudies) msg += "<br><br>You will also unlock speedrun milestones where you must do fast quantums to get your QoL content rewards on eternity, and even quantum autobuyer."
 					document.getElementById("div22").innerHTML = msg
 				}
 			} else document.getElementById("div"+i).className = "hidden";
