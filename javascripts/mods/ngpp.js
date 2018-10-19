@@ -988,7 +988,6 @@ function quantumReset(force, auto, challid, implode=false) {
 		updateColorCharge()
 		updateGluons()
 		updateElectrons()
-		updateBankedEter()
 		updateQuantumChallenges()
 		updateReplicants()
 		if (!oheHeadstart) {
