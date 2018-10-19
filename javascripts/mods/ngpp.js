@@ -427,12 +427,12 @@ function quantum(auto,force,challid) {
 		implosionCheck=1
 		dev.implode()
 		setTimeout(function(){
-			quantumReset(force, auto, true)
+			quantumReset(force, auto, challid, true)
 		},1000)
 		setTimeout(function(){
 			implosionCheck=0
 		},2000)
-	} else quantumReset(force, auto)
+	} else quantumReset(force, auto, challid)
 }
 
 function isQuantumReached() {
@@ -528,7 +528,7 @@ function checkUniversalHarmony() {
 }
 
 //v2.90142
-function quantumReset(force, auto, implode=false) {
+function quantumReset(force, auto, challid, implode=false) {
 	var headstart = player.aarexModifications.newGamePlusVersion > 0 && !player.masterystudies
 	if (implode) {
 		showDimTab("antimatterdimensions")
