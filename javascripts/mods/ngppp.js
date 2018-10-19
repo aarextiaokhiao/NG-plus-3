@@ -449,41 +449,24 @@ function updateGluons() {
 	document.getElementById("gbgain").textContent=shortenDimensions(player.quantum.usedQuarks.g.min(player.quantum.usedQuarks.b))
 	document.getElementById("brgain").textContent=shortenDimensions(player.quantum.usedQuarks.b.min(player.quantum.usedQuarks.r))
 	var names=["rg","gb","br"]
-	for (u=1;u<5;u++) {
-		var showRow=true
-		if (u>2) {
-			showRow=player.masterystudies.includes("d9")
-			document.getElementById("gupgrow"+u).style.display=showRow?"":"none"
-			if (showRow) for (c=0;c<3;c++) {
-				document.getElementById(names[c]+"upg"+(u*2-1)+"cost").textContent=shortenDimensions(GUCosts[u*2-1])
-				if (u<4) document.getElementById(names[c]+"upg"+(u*2)+"cost").textContent=shortenDimensions(GUCosts[u*2])
-			}
+	var sevenUpgrades=player.masterystudies.includes("d9")
+	for (r=3;r<5;r++) document.getElementById("gupgrow"+r).style.display=sevenUpgrades?"":"none"
+	for (c=0;c<3;c++) {
+		var name=names[c]
+		for (u=1;u<=(sevenUpgrades?7:4);u++) {
+			var upg=name+"upg"+u
+			if (u>4) document.getElementById(upg+"cost").textContent=shortenMoney(GUCosts[u])
+			if (player.quantum.upgrades.includes(name+u)) document.getElementById(upg).className="gluonupgradebought small "+name
+			else if (player.quantum.gluons[name].lt(GUCosts[u-1])) document.getElementById(upg).className="gluonupgrade small unavailablebtn"
+			else document.getElementById(upg).className="gluonupgrade small "+name
 		}
-		if (showRow) {
-			for (c=0;c<3;c++) {
-				var un=u*2-1
-				var div=document.getElementById(names[c]+"upg"+un)
-				if (GUBought(names[c]+un)) div.className="gluonupgradebought small "+names[c]
-				else if (player.quantum.gluons[names[c]].lt(GUCosts[un])) div.className="gluonupgrade small unavailablebtn"
-				else div.className="gluonupgrade small "+names[c]
-
-				if (u<4) {
-					var un=u*2
-					var div=document.getElementById(names[c]+"upg"+un)
-					if (GUBought(names[c]+un)) div.className="gluonupgradebought small "+names[c]
-					else if (player.quantum.gluons[names[c]].lt(GUCosts[un])) div.className="gluonupgrade small unavailablebtn"
-					else div.className="gluonupgrade small "+names[c]
-				}
-			}
-		}
+		var upg=name+"qk"
+		var cost=Decimal.pow(100,player.quantum.multPower[name]).times(500)
+		document.getElementById(upg+"cost").textContent=shortenDimensions(cost)
+		if (player.quantum.gluons[name].lt(cost)) document.getElementById(upg+"btn").className="gluonupgrade unavailablebtn"
+		else document.getElementById(upg+"btn").className="gluonupgrade "+name
 	}
-	var c=Decimal.pow(100, Math.floor(player.quantum.multPower/3)).times(500)
-	var t=player.quantum.multPower%3
-	var div=document.getElementById("qkmult")
-	document.getElementById("qkmultcurrent").textContent="Currently: "+shortenDimensions(Decimal.pow(2, player.quantum.multPower))+"x"
-	document.getElementById("qkmultcost").textContent="Cost: "+shortenDimensions(c)+" "+names[t].toUpperCase()+" gluons"
-	if (player.quantum.gluons[names[t]].lt(c)) div.className="gluonupgrade unavailablebtn"
-	else div.className="gluonupgrade "+names[t]
+	document.getElementById("qkmultcurrent").textContent=shortenDimensions(Decimal.pow(2, player.quantum.multPower.total))
 }
 
 function buyGluonUpg(color, id) {
@@ -502,16 +485,17 @@ function GUBought(id) {
 
 //v1.79
 var speedrunMilestonesReached
-var speedrunMilestones = [12,9,6,4.5,3,2,1,8/9,7/9,6/9,5/9,4/9,3/9,2/9,1/9,1/12,1/15,7/120,1/20,1/24,1/30,1/40,1/60,1/120]
+var speedrunMilestones = [12,9,6,4.5,3,2,1,8/9,7/9,6/9,5/9,4/9,3/9,2/9,1/9,1/12,1/15,7/120,1/20,1/24,1/30,1/40,1/60,1/120,1/180,1/240,1/360,1/720]
 function updateSpeedruns() {
 	speedrunMilestonesReached = 0
 	if (player.masterystudies) {
-		for (i=0;i<24;i++) {
+		for (i=0;i<28;i++) {
 			if (player.quantum.best>speedrunMilestones[i]*36e3) break
 			speedrunMilestonesReached++
 		}
-		for (i=1;i<25;i++) document.getElementById("speedrunMilestone"+i).className="achievement achievement"+(speedrunMilestonesReached>=i?"un":"")+"locked"
-		for (i=1;i<4;i++) document.getElementById("speedrunRow"+i).className=speedrunMilestonesReached>=i*8?"completedrow":""
+		document.getElementById('sacrificeAuto').style.display=speedrunMilestonesReached>24?"":"none"
+		for (i=1;i<29;i++) document.getElementById("speedrunMilestone"+i).className="achievement achievement"+(speedrunMilestonesReached>=i?"un":"")+"locked"
+		for (i=1;i<5;i++) document.getElementById("speedrunRow"+i).className=speedrunMilestonesReached<(i>3?28:i*8)?"":"completedrow"
 	}
 }
 
@@ -525,7 +509,7 @@ function toggleAutoTT() {
 function doAutoMetaTick() {
 	if (!player.masterystudies) return
 	if (player.autoEterOptions.rebuyupg) {
-		if (player.achievements.includes("ng3p21")) {
+		if (speedrunMilestonesReached > 25) {
 			while (buyDilationUpgrade(11,true)) {}
 			while (buyDilationUpgrade(3,true)) {}
 			while (buyDilationUpgrade(1,true)) {}
@@ -559,7 +543,7 @@ function toggleAllMetaDims() {
 	document.getElementById("metaMaxAllDiv").style.display=turnOn&&stop>7&&speedrunMilestonesReached>23&&player.achievements.include("ng3p21")?"none":""
 }
 
-function sacrificeGalaxy(id) {
+function sacrificeGalaxy(id, auto=false) {
 	if (player.galaxies-player.quantum.electrons.sacGals<1||!inQC(0)) return
 	var amount=1
 	if (id>5) amount=player.galaxies-player.quantum.electrons.sacGals
@@ -568,7 +552,7 @@ function sacrificeGalaxy(id) {
 	else if (id>2) amount=100
 	else if (id>1) amount=10
 	if (amount>player.galaxies-player.quantum.electrons.sacGals) return
-	if (player.options.sacrificeConfirmation) if (!confirm("Sacrificing your galaxies reduces your tickspeed and so your tick interval. You will gain a boost for multiplier per ten dimensions. Are you sure you want to do that?")) return
+	if (player.options.sacrificeConfirmation && !auto) if (!confirm("Sacrificing your galaxies reduces your tickspeed and so your tick interval. You will gain a boost for multiplier per ten dimensions. Are you sure you want to do that?")) return
 	var old=new Decimal(getTickSpeedMultiplier()).log10()
 	player.quantum.electrons.sacGals+=amount
 	player.quantum.electrons.amount=player.quantum.electrons.amount.add(player.quantum.electrons.mult*amount)
@@ -636,15 +620,13 @@ function buyElectronUpg(u) {
 }
 
 //v1.9
-function buyQuarkMult(quick=false) {
-	var c=Decimal.pow(100, Math.floor(player.quantum.multPower/3)).times(500)
-	var color=(["rg","gb","br"])[player.quantum.multPower%3]
-	var t=player.quantum.gluons[color]
-	if (t.gte(c)) {
-		player.quantum.gluons[color]=t.sub(c)
-		player.quantum.multPower++
-		if (!quick) updateGluons()
-	}
+function buyQuarkMult(name) {
+	var cost=Decimal.pow(100,player.quantum.multPower[name]).times(500)
+	if (player.quantum.gluons[name].lt(cost)) return
+	player.quantum.gluons[name]=player.quantum.gluons[name].sub(cost).round()
+	player.quantum.multPower[name]++
+	player.quantum.multPower.total++
+	updateGluons()
 }
 
 var quantumChallenges={
@@ -822,20 +804,17 @@ function drawQuarkAnimation(ts){
 
 //v1.99798
 function maxQuarkMult() {
-	var initialCost=Decimal.pow(100, Math.floor(player.quantum.multPower/3)).times(500)
-	var skipPack=Math.floor(player.quantum.gluons.rg.min(player.quantum.gluons.gb).min(player.quantum.gluons.br).div(initialCost).times(99).plus(1).log(100))
-	var colorBought=player.quantum.multPower%3
-	if (skipPack>1) {
-		var toBuy=3*skipPack-colorBought
-		player.quantum.gluons.rg=player.quantum.gluons.rg.sub(Decimal.pow(100,Math.floor(toBuy)/3).sub(1).div(99).times(initialCost))
-		player.quantum.gluons.gb=player.quantum.gluons.gb.sub(Decimal.pow(100,Math.floor(toBuy+1)/3).sub(1).div(99).times(initialCost))
-		player.quantum.gluons.br=player.quantum.gluons.br.sub(Decimal.pow(100,Math.floor(toBuy+2)/3).sub(1).div(99).times(initialCost))
-		player.quantum.multPower+=toBuy
-		for (u=1;u<3;u++) buyQuarkMult(true)
-	} else {
-		buyQuarkMult(true)
-		if (colorBought<1) buyQuarkMult(true)
-		if (colorBought<2) buyQuarkMult(true)
+	var names=["rg","gb","br"]
+	for (c=0;c<3;c++) {
+		var name=names[c]
+		var cost=Decimal.pow(100,player.quantum.multPower[name]).times(500)
+		if (player.quantum.gluons[name].lt(cost)) continue
+		var toBuy=Math.floor(player.quantum.gluons[name].div(cost).times(99).plus(1).log(100))
+		var toSpend=Decimal.pow(100,toBuy).sub(1).div(99).times(cost)
+		if (toSpend.gt(player.quantum.gluons[name])) player.quantum.gluons[name]=new Decimal(0)
+		else player.quantum.gluons[name]=player.quantum.gluons[name].sub(toSpend).round()
+		player.quantum.multPower[name]+=toBuy
+		player.quantum.multPower.total+=toBuy
 	}
 	updateGluons()
 }

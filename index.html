@@ -2132,7 +2132,7 @@
                                 <div id="No more tax fraud!" class="achievement achievementlocked" style="background-image: url(images/109.png)" ach-tooltip="Have 900 galaxies without unlocking dilation."><br></div>
                             </td>
                             <td>
-                                <div id="And the winner is..." class="achievement achievementlocked" style="background-image: url(images/110.png)" ach-tooltip="Complete quantum speedruns."><br></div>
+                                <div id="And the winner is..." class="achievement achievementlocked" style="background-image: url(images/110.png)" ach-tooltip="Quantum in under 30 seconds."><br></div>
                             </td>
                             <td>
                                 <div id="Old age" class="achievement achievementlocked" style="background-image: url(images/111.png)"><br></div>
@@ -2143,7 +2143,7 @@
                         </tr>
                         <tr id="achRowng3p2">
                             <td>
-                                <div id="Special Relativity" class="achievement achievementlocked" style="background-image: url(images/113.png)" ach-tooltip="Quantum in under 5 seconds. Reward: Unlock manual mode for eternity autobuyer, you can buy max meta-boosts, and rebuyable dilation upgrade can buy max all upgrades."><br></div>
+                                <div id="Special Relativity" class="achievement achievementlocked" style="background-image: url(images/113.png)" ach-tooltip="Quantum in under 5 seconds."><br></div>
                             </td>
                             <td>
                                 <div id="We are not going squared." class="achievement achievementlocked" style="background-image: url(images/114.png)"><br></div>
@@ -2155,7 +2155,7 @@
                                 <div id="Old memories come true" class="achievement achievementlocked" style="background-image: url(images/116.png)"><br></div>
                             </td>
                             <td>
-                                <div id="Twice in the row" class="achievement achievementlocked" style="background-image: url(images/117.png)" ach-tooltip="Complete Paired Challenge 4. Reward: Unlock sacrifice galaxy autobuyer."><br></div>
+                                <div id="Twice in the row" class="achievement achievementlocked" style="background-image: url(images/117.png)" ach-tooltip="Complete Paired Challenge 4."><br></div>
                             </td>
                             <td>
                                 <div id="Infinity Morals" class="achievement achievementlocked" style="background-image: url(images/118.png)" ach-tooltip="Quantum without having meta-dimension boosts."><br></div>
@@ -2285,6 +2285,14 @@
                         <td><div id="speedrunMilestone22">1.5 minutes</div></td>
                         <td><div id="speedrunMilestone23" ach-tooltip="Reward: Unlock quantum autobuyer.">1 minute</div></td>
                         <td><div id="speedrunMilestone24" ach-tooltip="Reward: Replicanti does not reset on Eternity.">30 seconds</div></td>
+                    </tr>
+                    <tr id="speedrunRow4">
+                        <td colspan=2></td>
+                        <td><div id="speedrunMilestone25" ach-tooltip="Reward: Unlock manual mode for eternity autobuyer and sacrifice galaxy autobuyer.">20 seconds</div></td>
+                        <td><div id="speedrunMilestone26" ach-tooltip="Reward: Rebuyable dilation upgrade autobuyer can buy max all upgrades.">15 seconds</div></td>
+                        <td><div id="speedrunMilestone27" ach-tooltip="Reward: You can buy max meta-dimension boosts and start with 4 meta-dimension boosts.">10 seconds</div></td>
+                        <td><div id="speedrunMilestone28" ach-tooltip="Reward: Big crunching does not lose all your galaxies.">5 seconds</div></td>
+                        <td colspan=2></td>
                     </tr>
                 </table>
             </div>
@@ -3847,9 +3855,16 @@
 					<td colspan=2><button id='rgupg7' onclick='buyGluonUpg("rg",7)'>Slow down Remote Antimatter Galaxies effect by 10%.<br>Cost: <span id='rgupg7cost'></span> RG gluons</button></td>
 					<td colspan=2><button id='gbupg7' onclick='buyGluonUpg("gb",7)'>Infinity Points slow down Remote Antimatter Galaxies effect.<br><span id='gbupg7current'></span><br>Cost: <span id='gbupg7cost'></span> GB gluons</button></td>
 					<td colspan=2><button id='brupg7' onclick='buyGluonUpg("br",7)'>Eternity Points slow down Remote Antimatter Galaxies effect.<br><span id='brupg7current'></span><br>Cost: <span id='brupg7cost'></span> BR gluons</button></td>
+				</tr><tr><td colspan=6>
+					Current QK gain multiplier: <span id='qkmultcurrent'></span>x
+				</td></tr><tr style='vertical-align:0'>
+					<td colspan=2><button id='rgqkbtn' onclick='buyQuarkMult("rg")'>You gain 2x more quarks.<br>Cost: <span id='rgqkcost'></span> RG gluons</button></td>
+					<td colspan=2>
+						<button id='gbqkbtn' onclick='buyQuarkMult("gb")'>You gain 2x more quarks.<br>Cost: <span id='gbqkcost'></span> GB gluons</button><br>
+						<button class="storebtn" onclick='maxQuarkMult()' style='width:190px'>Max QK mult</button>
+					</td>
+					<td colspan=2><button id='brqkbtn' onclick='buyQuarkMult("br")'>You gain 2x more quarks.<br>Cost: <span id='brqkcost'></span> BR gluons</button></td>
 				</tr></table>
-				<button id='qkmult' onclick='buyQuarkMult()'>You gain 2x more quarks.<br><span id='qkmultcurrent'></span><br><span id='qkmultcost'></span></button><br>
-				<button class="storebtn" onclick='maxQuarkMult()' style='width:190px'>Max QK mult</button>
 			</div>
 			<div class='quantumtab' id='electrons'>
 				You have <span id="electronsAmount" style="font-size:35px">0</span> electrons.<br>
@@ -4068,7 +4083,7 @@
 <script type="text/javascript" src="javascripts/lz-string.js"></script>
 <script type="text/javascript" src="javascripts/core/polyfill.js"></script>
 <script type="text/javascript" src="javascripts/core/format.js?18"></script>
-<script type="text/javascript" src="javascripts/core/achievements.js?12"></script>
+<script type="text/javascript" src="javascripts/core/achievements.js?13"></script>
 <script type="text/javascript" src="javascripts/core/chart.js"></script>
 <script type="text/javascript" src="javascripts/core/tickspeed.js?24"></script>
 <script type="text/javascript" src="javascripts/core/normal_dimension.js?33"></script>
@@ -4078,15 +4093,15 @@
 <script type="text/javascript" src="javascripts/core/timestudies.js?30"></script>
 <script type="text/javascript" src="javascripts/core/canvases.js?7"></script>
 <script type="text/javascript" src="javascripts/core/devtools.js"></script>
-<script type="text/javascript" src="javascripts/core/load_functions.js?71"></script>
+<script type="text/javascript" src="javascripts/core/load_functions.js?72"></script>
 <script type="text/javascript" src="javascripts/core/newsticker.js?6"></script>
 <script type="text/javascript" src="javascripts/mods/ngmm.js?23"></script>
 <script type="text/javascript" src="javascripts/mods/ers.js?1"></script>
-<script type="text/javascript" src="javascripts/mods/ngpp.js?48"></script>
-<script type="text/javascript" src="javascripts/mods/ngppp.js?43"></script>
+<script type="text/javascript" src="javascripts/mods/ngpp.js?49"></script>
+<script type="text/javascript" src="javascripts/mods/ngppp.js?44"></script>
 <script type="text/javascript" src="javascripts/mods/ngmmm.js?5"></script>
 <script type="text/javascript" src="javascripts/mods/ngud.js"></script>
-<script type="text/javascript" src="javascripts/game.js?80"></script>
+<script type="text/javascript" src="javascripts/game.js?81"></script>
 <script type="text/javascript" src="javascripts/sha512.js"></script>
 </body>
 </html>

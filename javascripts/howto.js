@@ -75,8 +75,8 @@ function updateSpoilers() {
 					if (player.masterystudies) {
 						if (i == 21 && player.dilation.upgrades.includes("ngpp4")) displayed = 1
 						if (i == 23 && player.quantum) if (player.quantum.times>0) displayed = 1
-						/*if (i == 24 && player.masterystudies.includes("d8")) displayed = 1
-						if (i == 25 && player.masterystudies.includes("d9")) displayed = 1
+						if (i == 24 && player.masterystudies.includes("d8")) displayed = 1
+						/*if (i == 25 && player.masterystudies.includes("d9")) displayed = 1
 						if (i == 26 && player.masterystudies.includes("d10")) displayed = 1
 						if (i == 27 && player.masterystudies.includes("d11")) displayed = 1*/
 					}

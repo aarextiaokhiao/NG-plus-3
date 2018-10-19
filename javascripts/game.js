@@ -340,7 +340,7 @@ function updateNewPlayer(reseted) {
         player.aarexModifications.newGamePlusVersion = 1
     }
     if (modesChosen.ngpp && modesChosen.ngpp < 3) {
-        player.aarexModifications.newGamePlusPlusVersion = 2.90141
+        player.aarexModifications.newGamePlusPlusVersion = 2.90142
         player.autoEterMode = "amount"
         player.dilation.rebuyables[4] = 0
         player.meta = {resets: 0, antimatter: 10, bestAntimatter: 10}
@@ -390,7 +390,7 @@ function updateNewPlayer(reseted) {
         player.options.gSacrificeConfirmation = true
     }
     if (modesChosen.ngpp === 2) {
-        player.aarexModifications.newGame3PlusVersion = 1.9984
+        player.aarexModifications.newGame3PlusVersion = 1.9985
         player.respecOptions={time:false,mastery:false}
         player.dbPower = 1
         player.peakSpent = 0
@@ -427,7 +427,7 @@ function updateNewPlayer(reseted) {
         }
         player.quantum.disabledRewards = {}
         player.quantum.metaAutobuyerWait = 0
-        player.quantum.multPower = 0
+        player.quantum.multPower = {rg:0,gb:0,br:0,total:0}
         player.quantum.challenge = []
         player.quantum.challenges = {}
         player.quantum.pairedChallenges = {
@@ -2720,7 +2720,7 @@ function galaxyReset() {
     if (player.achievements.includes("r66")) player.tickspeed = player.tickspeed.times(0.98);
     if (player.galaxies >= 540 && player.replicanti.galaxies == 0) giveAchievement("Unique snowflakes")
     checkUniversalHarmony()
-    if (player.masterystudies) if (player.quantum.autoOptions.sacrifice) sacrificeGalaxy(6)
+    if (player.masterystudies) if (player.quantum.autoOptions.sacrifice) sacrificeGalaxy(6, true)
     updateTickSpeed();
 };
 
@@ -4375,7 +4375,7 @@ document.getElementById("bigcrunch").onclick = function () {
             resets: 0,
             dbPower: player.dbPower ? new Decimal(1) : undefined,
             tickspeedBoosts: player.tickspeedBoosts,
-            galaxies: 0,
+            galaxies: speedrunMilestonesReached>27 ? player.galaxies : 0,
             galacticSacrifice: newGalacticDataOnInfinity(),
             tickDecrease: 0.9,
             totalmoney: player.totalmoney,
@@ -4491,7 +4491,7 @@ document.getElementById("bigcrunch").onclick = function () {
 
         if (player.replicanti.unl && !player.achievements.includes("r95")) player.replicanti.amount = new Decimal(1)
 
-        player.replicanti.galaxies = (player.timestudy.studies.includes(33)) ? Math.floor(player.replicanti.galaxies/2) :0
+        if (speedrunMilestonesReached < 28) player.replicanti.galaxies = (player.timestudy.studies.includes(33)) ? Math.floor(player.replicanti.galaxies/2) :0
 
         setInitialDimensionPower();
 
@@ -6492,7 +6492,7 @@ setInterval(function() {
         if (player.infinityPoints.e>353999&&ableToGetRid4) giveAchievement("Seriously, I already got rid of you.")
     }
     if (speedrunMilestonesReached>notifyId) {
-        $.notify("You unlocked "+timeDisplayShort(speedrunMilestones[notifyId]*36e3)+" speedrun milestone! "+(["You now start with 20,000 eternities when going quantum","You unlocked time theorem autobuyer","You now start with all Eternity Challenges completed and\neternity upgrades bought","You now start with dilation unlocked","You unlocked a new option for eternity autobuyer","You now start with all dilation studies and\nnon-rebuyable dilation upgrades before Meta Dimensions unlocked except passive TT gen upgrade","You unlocked first meta dimension autobuyer","You unlocked second meta dimension autobuyer","You unlocked third meta dimension autobuyer","You unlocked fourth meta dimension autobuyer","You unlocked fifth meta dimension autobuyer and you now keep time studies and passive TT gen upgrade","You unlocked sixth meta dimension autobuyer","You unlocked seventh meta dimension autobuyer","You unlocked eighth meta dimension autobuyer and\nall non-rebuyable dilation upgrades","You unlocked meta-dimension boost autobuyer","You now keep all time studies in mastery studies","You now can buy all Meta Dimensions if it is affordable in your current meta boost.","You now start with "+shortenCosts(1e13)+" eternities","You now start with "+shortenCosts(1e25)+" meta-antimatter on reset","You can now turn on automatic replicated galaxies anytime","You made rebuyable dilation upgrade and Meta Dimension autobuyers 3x faster","You now start with "+shortenCosts(1e100)+" dilated time on quantum and dilated time does not reset until quantum","You unlocked quantum autobuyer","You now keep replicanti on eternity."])[notifyId]+".","success")
+        $.notify("You unlocked "+timeDisplayShort(speedrunMilestones[notifyId]*36e3)+" speedrun milestone! "+(["You now start with 20,000 eternities when going quantum","You unlocked time theorem autobuyer","You now start with all Eternity Challenges completed and\neternity upgrades bought","You now start with dilation unlocked","You unlocked a new option for eternity autobuyer","You now start with all dilation studies and\nnon-rebuyable dilation upgrades before Meta Dimensions unlocked except passive TT gen upgrade","You unlocked first meta dimension autobuyer","You unlocked second meta dimension autobuyer","You unlocked third meta dimension autobuyer","You unlocked fourth meta dimension autobuyer","You unlocked fifth meta dimension autobuyer and you now keep time studies and passive TT gen upgrade","You unlocked sixth meta dimension autobuyer","You unlocked seventh meta dimension autobuyer","You unlocked eighth meta dimension autobuyer and\nall non-rebuyable dilation upgrades","You unlocked meta-dimension boost autobuyer","You now keep all time studies in mastery studies","You now can buy all Meta Dimensions if it is affordable in your current meta boost.","You now start with "+shortenCosts(1e13)+" eternities","You now start with "+shortenCosts(1e25)+" meta-antimatter on reset","You can now turn on automatic replicated galaxies anytime","You made rebuyable dilation upgrade and Meta Dimension autobuyers 3x faster","You now start with "+shortenCosts(1e100)+" dilated time on quantum and dilated time does not reset until quantum","You unlocked quantum autobuyer","You now keep replicanti on eternity.","You unlocked manual mode for eternity autobuyer and sacrifice galaxy autobuyer","Your rebuyable dilation upgrade autobuyer now can buy max all upgrades","You now can buy max meta-dimension boosts and start with 4 meta-dimension boosts","Now big crunching does not lose all your galaxies"])[notifyId]+".","success")
         notifyId++
     }
 }, 1000)

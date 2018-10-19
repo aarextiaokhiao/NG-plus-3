@@ -675,7 +675,7 @@ if (player.version < 5) {
               }
               player.quantum.disabledRewards = {}
               player.quantum.metaAutobuyerWait = 0
-              player.quantum.multPower = 0
+              player.quantum.multPower = {rg:0,gb:0,br:0,total:0}
               player.quantum.challenge = []
               player.quantum.challenges = {}
               player.quantum.pairedChallenges = {
@@ -787,7 +787,7 @@ if (player.version < 5) {
       for (dim=1;dim<9;dim++) player.autoEterOptions["td"+dim] = false
   }
   if (player.aarexModifications.newGamePlusPlusVersion < 2.9013) if (player.aarexModifications.quantumConf===undefined||player.quantum.times<1) player.aarexModifications.quantumConf=true
-  if (player.aarexModifications.newGamePlusPlusVersion < 2.90141) player.aarexModifications.newGamePlusPlusVersion = 2.90141
+  if (player.aarexModifications.newGamePlusPlusVersion < 2.90142) player.aarexModifications.newGamePlusPlusVersion = 2.90142
   if (player.aarexModifications.newGame3PlusVersion < 1.01) player.aarexModifications.dbPower = new Decimal(getDimensionBoostPower())
   if ((player.aarexModifications.newGame3PlusVersion && !player.masterystudies) || player.aarexModifications.newGame3PlusVersion < 1.02) player.masterystudies = []
   if (player.aarexModifications.newGame3PlusVersion < 1.21) player.replicanti.chanceCost = Decimal.pow(1e15, player.replicanti.chance * 100 + 9)
@@ -889,7 +889,10 @@ if (player.version < 5) {
           ageProgress: 0
       }
   }
-  if (player.aarexModifications.newGame3PlusVersion < 1.9984) player.aarexModifications.newGame3PlusVersion=1.9984
+  if (player.aarexModifications.newGame3PlusVersion < 1.9985) {
+      player.aarexModifications.newGame3PlusVersion=1.9985
+      player.quantum.multPower = {rg:Math.ceil(player.quantum.multPower/3),gb:Math.ceil((player.quantum.multPower-1)/3),br:Math.floor(player.quantum.multPower/3),total:player.quantum.multPower}
+  }
   if (player.masterystudies) if (player.quantum.autoOptions === undefined) player.quantum.autoOptions = {} //temp
   if (player.aarexModifications.newGame3PlusVersion==undefined) {
       colorBoosts={
@@ -1324,7 +1327,7 @@ if (player.version < 5) {
       document.getElementById('epmultauto').textContent="Auto: O"+(player.autoEterOptions.epmult?"N":"FF")
       for (i=1;i<9;i++) document.getElementById("td"+i+'auto').textContent="Auto: O"+(player.autoEterOptions["td"+i]?"N":"FF")
   }
-  document.getElementById('sacrificeAuto').style.display=player.achievements.includes("ng3p25")?"":"none"
+  document.getElementById('sacrificeAuto').style.display=speedrunMilestonesReached>24?"":"none"
   if (player.masterystudies) {
       updateMasteryStudyCosts()
       updateMasteryStudyButtons()
