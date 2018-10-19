@@ -427,12 +427,12 @@ function quantum(auto,force,challid) {
 		implosionCheck=1
 		dev.implode()
 		setTimeout(function(){
-			quantumReset(true)
+			quantumReset(force, auto, true)
 		},1000)
 		setTimeout(function(){
 			implosionCheck=0
 		},2000)
-	} else quantumReset()
+	} else quantumReset(force, auto)
 }
 
 function isQuantumReached() {
@@ -528,7 +528,7 @@ function checkUniversalHarmony() {
 }
 
 //v2.90142
-function quantumReset(implode) {
+function quantumReset(force, auto, implode=false) {
 	if (implode) {
 		showDimTab("antimatterdimensions")
 		showChallengesTab("challenges")
