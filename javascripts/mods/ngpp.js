@@ -530,6 +530,7 @@ function checkUniversalHarmony() {
 //v2.90142
 function quantumReset(force, auto, challid, implode=false) {
 	var headstart = player.aarexModifications.newGamePlusVersion > 0 && !player.masterystudies
+	var pc=challid-8
 	if (implode) {
 		showDimTab("antimatterdimensions")
 		showChallengesTab("challenges")
