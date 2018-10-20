@@ -390,8 +390,8 @@ function updateNewPlayer(reseted) {
         player.options.gSacrificeConfirmation = true
     }
     if (modesChosen.ngpp === 2) {
-        player.aarexModifications.newGame3PlusVersion = 1.9985
-        player.respecOptions={time:false,mastery:false}
+        player.aarexModifications.newGame3PlusVersion = 1.9986
+        player.respecMastery=false
         player.dbPower = 1
         player.peakSpent = 0
         player.masterystudies = []
@@ -2636,7 +2636,7 @@ function galaxyReset() {
         autoEterMode: player.autoEterMode,
         peakSpent: player.peakSpent,
         respec: player.respec,
-        respecOptions: player.respecOptions,
+        respecMastery: player.respecMastery,
         eternityBuyer: player.eternityBuyer,
         eterc8ids: player.eterc8ids,
         eterc8repl: player.eterc8repl,
@@ -4459,7 +4459,7 @@ document.getElementById("bigcrunch").onclick = function () {
             autoEterMode: player.autoEterMode,
             peakSpent: player.peakSpent,
             respec: player.respec,
-            respecOptions: player.respecOptions,
+            respecMastery: player.respecMastery,
             eternityBuyer: player.eternityBuyer,
             eterc8ids: player.eterc8ids,
             eterc8repl: player.eterc8repl,
@@ -4585,18 +4585,8 @@ document.getElementById("bigcrunch").onclick = function () {
 }
 
 
-function respecToggle(id) {
-	if (id==undefined) {
-		player.respec=!player.respec
-		if (player.masterystudies) {
-			player.respecOptions.time=player.respec
-			player.respecOptions.mastery=player.respec
-		}
-	} else {
-		if (id==="time") player.respecOptions.time=!player.respecOptions.time
-		if (id==="mastery") player.respecOptions.mastery=!player.respecOptions.mastery
-		player.respec=player.respecOptions.time||player.respecOptions.mastery
-	}
+function respecToggle() {
+	player.respec=!player.respec
 	updateRespecButtons()
 }
 
@@ -4605,10 +4595,10 @@ function updateRespecButtons() {
 	document.getElementById("respec").className=className
 	document.getElementById("respec2").className=className
 	document.getElementById("respec3").className=className
-	if (player.masterystudies) {
-		document.getElementById("respecTime").textContent="Respec time studies: O"+(player.respecOptions.time?"N":"FF")
-		document.getElementById("respecMastery").textContent="Respec mastery studies: O"+(player.respecOptions.mastery?"N":"FF")
-	}
+
+	className=player.respecMastery?"timestudybought":"storebtn"
+	document.getElementById("respecMastery").className=className
+	document.getElementById("respecMastery2").className=className
 }
 
 function eternity(force, auto) {
@@ -4877,7 +4867,7 @@ function eternity(force, auto) {
             autoEterMode: player.autoEterMode,
             peakSpent: player.masterystudies ? 0 : undefined,
             respec: player.respec,
-            respecOptions: player.respecOptions,
+            respecMastery: player.respecMastery,
             eternityBuyer: player.eternityBuyer,
             eterc8ids: 50,
             eterc8repl: 40,
@@ -4901,10 +4891,9 @@ function eternity(force, auto) {
             aarexModifications: player.aarexModifications
         };
         if (player.galacticSacrifice && player.eternities < 2) player.autobuyers[12]=13
-        if (player.respec) {
-            respecTimeStudies()
-            respecToggle()
-        }
+        if (player.respec || player.respecMastery) respecTimeStudies()
+        if (player.respec) respecToggle()
+        if (player.respecMastery) respecMasteryToggle()
         if (player.dilation.active) {
             player.dilation.active = false
             if (player.masterystudies && quantumed) updateColorCharge()
@@ -5199,7 +5188,7 @@ function startChallenge(name) {
       autoEterMode: player.autoEterMode,
       peakSpent: player.peakSpent,
       respec: player.respec,
-      respecOptions: player.respecOptions,
+      respecMastery: player.respecMastery,
       eternityBuyer: player.eternityBuyer,
       eterc8ids: player.eterc8ids,
       eterc8repl: player.eterc8repl,
@@ -5777,7 +5766,7 @@ function startEternityChallenge(name, startgoal, goalIncrease) {
         autoEterMode: player.autoEterMode,
         peakSpent: player.masterystudies ? 0 : undefined,
         respec: player.respec,
-        respecOptions: player.respecOptions,
+        respecMastery: player.respecMastery,
         eternityBuyer: player.eternityBuyer,
         eterc8ids: 50,
         eterc8repl: 40,
@@ -5958,8 +5947,8 @@ function buyDilationUpgrade(id, max) {
         }
         if (id == 17 && player.masterystudies) {
             document.getElementById("masterystudyunlock").style.display=""
-            document.getElementById("respecOptions").style.display = "block"
-            document.getElementById("respecOptions2").style.display = "block"
+            document.getElementById("respecMastery").style.display = "block"
+            document.getElementById("respecMastery2").style.display = "block"
         }
     } else { // Is rebuyable
         let realCost = getRebuyableDilUpgCost(id > 3 ? 4 : id)

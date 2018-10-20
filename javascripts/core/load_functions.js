@@ -638,8 +638,8 @@ if (player.version < 5) {
           }
           player.aarexModifications.newGamePlusVersion = 1
           if (confirm("Do you want to migrate your NG++ save into new NG+++ mode?")) {
-              player.aarexModifications.newGame3PlusVersion = 1.9984
-              player.respecOptions={time:player.respec,mastery:player.respec}
+              player.aarexModifications.newGame3PlusVersion = 1.9986
+              player.respecMastery=false
               player.dbPower = 1
               player.peakSpent = 0
               player.masterystudies = []
@@ -892,6 +892,13 @@ if (player.version < 5) {
   if (player.aarexModifications.newGame3PlusVersion < 1.9985) {
       player.aarexModifications.newGame3PlusVersion=1.9985
       player.quantum.multPower = {rg:Math.ceil(player.quantum.multPower/3),gb:Math.ceil((player.quantum.multPower-1)/3),br:Math.floor(player.quantum.multPower/3),total:player.quantum.multPower}
+  }
+  if (player.aarexModifications.newGame3PlusVersion < 1.9986) {
+      player.aarexModifications.newGame3PlusVersion=1.9986
+      player.respec=player.respecOptions.time
+      player.respecMastery=player.respecOptions.mastery
+      updateRespecButtons()
+      delete player.respecOptions
   }
   if (player.masterystudies) if (player.quantum.autoOptions === undefined) player.quantum.autoOptions = {} //temp
   if (player.aarexModifications.newGame3PlusVersion==undefined) {
@@ -1227,8 +1234,8 @@ if (player.version < 5) {
   document.getElementById("secretstudy").style.cursor = "pointer"
 
   document.getElementById("masterystudyunlock").style.display = player.dilation.upgrades.includes("ngpp6") && player.masterystudies ? "" : "none"
-  document.getElementById("respecOptions").style.display = player.dilation.upgrades.includes("ngpp6") && player.masterystudies ? "block" : "none"
-  document.getElementById("respecOptions2").style.display = player.dilation.upgrades.includes("ngpp6") && player.masterystudies ? "block" : "none"
+  document.getElementById("respecMastery").style.display = player.dilation.upgrades.includes("ngpp6") && player.masterystudies ? "block" : "none"
+  document.getElementById("respecMastery2").style.display = player.dilation.upgrades.includes("ngpp6") && player.masterystudies ? "block" : "none"
 
   if (player.galacticSacrifice) {
       document.getElementById("galaxy11").innerHTML = "Normal dimensions are "+(player.infinitied>0||player.eternities!==0||quantumed?"cheaper based on your infinitied stat.<br>Currently: <span id='galspan11'>"+shortenDimensions(galUpgrade11())+"</span>x":"99% cheaper.")+"<br>Cost: 1 GP"
@@ -1366,7 +1373,7 @@ if (player.version < 5) {
           } else break
       }
   }
-  if (speedrunMilestonesReached > 23 && player.achievements.includes("ng3p21")) {
+  if (speedrunMilestonesReached > 27) {
       for (d=1;d<9;d++) {
           if (player.autoEterOptions["md"+d]) {
               if (d>7) removeMaxMD=true

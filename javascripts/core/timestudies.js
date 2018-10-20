@@ -340,23 +340,74 @@ function respecTimeStudies() {
   var respecTime=false
   var respecMastery=false
   if (player.masterystudies) {
-       respecTime=player.respecOptions.time
-       respecMastery=player.respecOptions.mastery
+       respecTime=player.respec
+       respecMastery=player.respecMastery
        gotAch=(respecTime||player.timestudy.studies.length<1)&&(respecMastery||player.masterystudies.length<1)
-  } else respecTime=true
-  if (player.boughtDims) {
-      var temp=player.timestudy.theorem
-      for (id=1;id<7;id++) player.timestudy.theorem+=player.timestudy.ers_studies[id]*(player.timestudy.ers_studies[id]+1)/2
-      if (temp>player.timestudy.theorem) gotAch=false
-      player.timestudy.ers_studies=[null,0,0,0,0,0,0]
-  } else if (respecTime) {
-      for (var i=0; i<all.length; i++) {
-          if (player.timestudy.studies.includes(all[i])) {
-              player.timestudy.theorem += studyCosts[i]
-              gotAch=false
+  } else respecTime=player.respec
+  if (respecTime) {
+       if (player.boughtDims) {
+          var temp=player.timestudy.theorem
+          for (id=1;id<7;id++) player.timestudy.theorem+=player.timestudy.ers_studies[id]*(player.timestudy.ers_studies[id]+1)/2
+          if (temp>player.timestudy.theorem) gotAch=false
+          player.timestudy.ers_studies=[null,0,0,0,0,0,0]
+       } else {
+          for (var i=0; i<all.length; i++) {
+              if (player.timestudy.studies.includes(all[i])) {
+                  player.timestudy.theorem += studyCosts[i]
+                  gotAch=false
+              }
           }
-      }
-      player.timestudy.studies = []
+          player.timestudy.studies = []
+          switch(player.eternityChallUnlocked) {
+              case 1:
+              player.timestudy.theorem += 30
+              break;
+
+              case 2:
+              player.timestudy.theorem += 35
+              break;
+
+              case 3:
+              player.timestudy.theorem += 40
+              break;
+
+              case 4:
+              player.timestudy.theorem += 70
+              break;
+
+              case 5:
+              player.timestudy.theorem += 130
+              break;
+
+              case 6:
+              player.timestudy.theorem += 85
+              break;
+
+              case 7:
+              player.timestudy.theorem += 115
+              break;
+
+              case 8:
+              player.timestudy.theorem += 115
+              break;
+
+              case 9:
+              player.timestudy.theorem += 415
+              break;
+
+              case 10:
+              player.timestudy.theorem += 550
+              break;
+
+              case 11:
+              player.timestudy.theorem += 1
+              break;
+
+              case 12:
+              player.timestudy.theorem += 1
+              break;
+          }
+       }
   } else if (respecMastery) {
       var respecedTS=[]
       var secondSplitPick=0
@@ -373,64 +424,9 @@ function respecTimeStudies() {
       }
       player.timestudy.studies=respecedTS
   }
-  switch(player.eternityChallUnlocked) {
-      case 1:
-      player.timestudy.theorem += 30
-      break;
-
-      case 2:
-      player.timestudy.theorem += 35
-      break;
-
-      case 3:
-      player.timestudy.theorem += 40
-      break;
-
-      case 4:
-      player.timestudy.theorem += 70
-      break;
-
-      case 5:
-      player.timestudy.theorem += 130
-      break;
-
-      case 6:
-      player.timestudy.theorem += 85
-      break;
-
-      case 7:
-      player.timestudy.theorem += 115
-      break;
-
-      case 8:
-      player.timestudy.theorem += 115
-      break;
-
-      case 9:
-      player.timestudy.theorem += 415
-      break;
-
-      case 10:
-      player.timestudy.theorem += 550
-      break;
-
-      case 11:
-      player.timestudy.theorem += 1
-      break;
-
-      case 12:
-      player.timestudy.theorem += 1
-      break;
-
-      case 13:
-      case 14:
-      player.timestudy.theorem += masterystudies.costs.ec[player.eternityChallUnlocked]
-  }
-  player.eternityChallUnlocked = 0
-  updateTimeStudyButtons()
-  updateTheoremButtons()
-  drawStudyTree()
   if (respecMastery) {
+      if (player.eternityChallUnlocked > 12) player.timestudy.theorem += masterystudies.costs.ec[player.eternityChallUnlocked]
+
       var respecedMS=[]
       for (id=0;id<player.masterystudies.length;id++) {
           var t = player.masterystudies[id].split("t")[1]
@@ -444,6 +440,10 @@ function respecTimeStudies() {
       updateMasteryStudyCosts()
       updateMasteryStudyButtons()
   }
+  player.eternityChallUnlocked = 0
+  updateTimeStudyButtons()
+  updateTheoremButtons()
+  drawStudyTree()
   if (gotAch) giveAchievement("You do know how these work, right?")
   if (!GUBought("gb3")) ipMultPower=2
   if (player.replicanti.galaxybuyer) document.getElementById("replicantiresettoggle").textContent = "Auto galaxy ON"

@@ -120,7 +120,7 @@
                     <td><button class="storebtn" onclick="respecToggle()" id="respec" style="width:150px; height: 40px; font-size: 10px; margin: auto">Respec time studies on next Eternity</button><td>
                     <td><button class="storebtn" onclick="importStudyTree()" style="width:150px; height: 40px; font-size: 10px; margin: auto">Import tree</button><td>
                 </tr>
-                <button class="storebtn" onclick="respecOptions()" id="respecOptions" style="width:150px; height: 20px; font-size: 10px; margin: auto; display: block">Respec options</button>
+                <button class="storebtn" onclick="respecMasteryToggle()" id="respecMastery" style="width:150px; height: 40px; font-size: 10px; margin: auto">Respec mastery studies on next Eternity</button>
                 <table class="table" id="studytable">
                     <tr>
                         <td style="opacity: 0;"><button class="timestudylocked"></button></td>
@@ -401,7 +401,7 @@
                     <td><button class="storebtn" onclick="respecToggle()" id="respec3" style="width:150px; height: 40px; font-size: 10px; margin: auto">Respec time studies on next Eternity</button><td>
                     <td><button class="storebtn" onclick="importStudyTree()" style="width:150px; height: 40px; font-size: 10px; margin: auto">Import tree</button><td>
                 </tr>
-                <button class="storebtn" onclick="respecOptions()" id="respecOptions2" style="width:150px; height: 20px; font-size: 10px; margin: auto; display: block">Respec options</button>
+                <button class="storebtn" onclick="respecMasteryToggle()" id="respecMastery2" style="width:150px; height: 40px; font-size: 10px; margin: auto">Respec mastery studies on next Eternity</button>
                 <table class="table" id="studytable">
                     <tr>
                         <td><button class="dilationupg" id="back" onclick="showEternityTab('timestudies')">Lead back to time studies.</button></td>
@@ -4068,11 +4068,6 @@
         <div id="theorembuybackground"></div>
         <p id="timetheorems" style="position: fixed;">You have 0 Time Theorems.</p>
     </div>
-    <div class="popup optionmenu" id="respecoptions">
-        <button class="closebtn storebtn" onclick="closeToolTip()">&times;</button>
-		<button id="respecTime" class="storebtn" onclick="respecToggle('time')" style="width: 200px; height: 55px; font-size: 15px" style="display: inline"></button>
-        <button id="respecMastery" class="storebtn" onclick="respecToggle('mastery')" style="width: 200px; height: 55px; font-size: 15px" style="display: inline"></button>
-	</div>
     <div id="progress" style="display:none">
         <div id="progressbar"><span id="progresspercent" ach-tooltip="Percentage until Infinity">0%</span></div>
     </div>

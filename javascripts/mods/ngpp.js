@@ -200,7 +200,7 @@ for (let i = 1; i <= 8; i++) {
 	document.getElementById("meta" + i).onclick = function () {
 		if (speedrunMilestonesReached > i+5) player.autoEterOptions["md"+i] = !player.autoEterOptions["md"+i]
 		else metaBuyOneDimension(i);
-		if (speedrunMilestonesReached > 23 && player.achievements.includes("ng3p21")) {
+		if (speedrunMilestonesReached > 27) {
 			var removeMaxAll=false
 			for (d=1;d<9;d++) {
 				if (player.autoEterOptions["md"+d]) {
@@ -399,7 +399,7 @@ function quantum(auto,force,challid) {
 			if (abletostart) {
 				if (pc>0) if (player.quantum.pairedChallenges.completed+1<pc) return
 				if (player.quantum.electrons.amount.lt(getQCCost(challid))||!inQC(0)) return
-				if (player.options.challConf) if (!confirm("You will do a quantum reset but you will not gain quarks, and keep your electrons & sacrificed galaxies, and you can't buy electron upgrades. You have to reach the set goal of meta-antimatter to complete this challenge. NOTE: Electrons does nothing in quantum challenges and your electrons and sacrificed galaxies does not reset until you end the challenge.")) return
+				if (player.options.challConf || QCIntensity(1) == 0) if (!confirm("You will do a quantum reset but you will not gain quarks, and keep your electrons & sacrificed galaxies, and you can't buy electron upgrades. You have to reach the set goal of antimatter to complete this challenge. NOTE: Electrons do nothing in quantum challenges and your electrons and sacrificed galaxies do not reset until you end the challenge.")) return
 				player.quantum.electrons.amount=player.quantum.electrons.amount.sub(getQCCost(challid))
 			} else if (pcFocus&&pc<1) {
 				if (!assigned.includes(challid)) {
@@ -835,7 +835,7 @@ function quantumReset(force, auto, challid, implode=false) {
 		autoEterMode: oheHeadstart ? player.autoEterMode : "amount",
 		peakSpent: player.masterystudies ? 0 : undefined,
 		respec: false,
-		respecOptions: player.masterystudies ? {time:false,mastery:false} : undefined,
+		respecMastery: player.masterystudies ? false : undefined,
 		eternityBuyer: oheHeadstart ? player.eternityBuyer : {
 			limit: new Decimal(0),
 			isOn: false
@@ -926,6 +926,7 @@ function quantumReset(force, auto, challid, implode=false) {
 	else if (isRewardEnabled(3)) for (ec=1;ec<15;ec++) player.eternityChalls['eterc'+ec] = 5
 	if (player.masterystudies) {
 		giveAchievement("Sub-atomic")
+		ipMultPower=GUBought("gb3")?2.3:player.masterystudies.includes("t241")?2.2:2
 		var diffrg=player.quantum.usedQuarks.r.min(player.quantum.usedQuarks.g)
 		var diffgb=player.quantum.usedQuarks.g.min(player.quantum.usedQuarks.b)
 		var diffbr=player.quantum.usedQuarks.b.min(player.quantum.usedQuarks.r)
@@ -1025,7 +1026,6 @@ function quantumReset(force, auto, challid, implode=false) {
 	updatePowers()
 	if (oheHeadstart) player.replicanti.amount = new Decimal(1)
 	player.replicanti.galaxies = 0
-	ipMultPower=GUBought("gb3")?2.3:2
 	updateRespecButtons()
 	if (player.achievements.includes("r36")) player.tickspeed = player.tickspeed.times(0.98);
 	if (player.achievements.includes("r45")) player.tickspeed = player.tickspeed.times(0.98);
@@ -1108,9 +1108,9 @@ function quantumReset(force, auto, challid, implode=false) {
 	if (!isRewardEnabled(4)) if (document.getElementById("dilation").style.display=="block") showEternityTab("timestudies", document.getElementById("eternitystore").style.display=="block")
 	if (speedrunMilestonesReached < 14 || !isRewardEnabled(4)) {
 		document.getElementById("masterystudyunlock").style.display = "none"
-		document.getElementById("respecOptions").style.display = "none"
-		document.getElementById("respecOptions2").style.display = "none"
 		document.getElementById("emperorstudies").style.display = "none"
+		document.getElementById("respecMastery").style.display = "none"
+		document.getElementById("respecMastery2").style.display = "none"
 		if (document.getElementById("metadimensions").style.display == "block") showDimTab("antimatterdimensions")
 		if (document.getElementById("masterystudies").style.display=="block") showEternityTab("timestudies", document.getElementById("eternitystore").style.display=="block")
 		if (document.getElementById("quantumchallenges").style.display == "block") showChallengesTab("normalchallenges")

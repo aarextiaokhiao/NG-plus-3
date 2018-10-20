@@ -540,7 +540,7 @@ function toggleAllMetaDims() {
 		id++
 	}
 	for (id=1;id<stop;id++) player.autoEterOptions["md"+id]=turnOn
-	document.getElementById("metaMaxAllDiv").style.display=turnOn&&stop>7&&speedrunMilestonesReached>23&&player.achievements.include("ng3p21")?"none":""
+	document.getElementById("metaMaxAllDiv").style.display=turnOn&&stop>7&&speedrunMilestonesReached>27?"none":""
 }
 
 function sacrificeGalaxy(id, auto=false) {
@@ -968,4 +968,10 @@ function hideMaxIDButton(onLoad=false) {
 		}
 	}
 	document.getElementById("maxAllID").style.display=hide?"none":""
+}
+
+//v1.9986
+function respecMasteryToggle() {
+	player.respecMastery=!player.respecMastery
+	updateRespecButtons()
 }
