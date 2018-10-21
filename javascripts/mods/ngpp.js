@@ -641,7 +641,7 @@ function quantumReset(force, auto, challid, implode=false) {
 		bestInfinityTime: 9999999999,
 		thisInfinityTime: 0,
 		resets: oheHeadstart ? 4 : 0,
-		dbPower: player.dbPower ? new Decimal(1) : undefined,
+		dbPower: player.dbPower,
 		tickspeedBoosts: player.tickspeedBoosts,
 		galaxies: oheHeadstart ? 1 : 0,
 		galacticSacrifice: resetGalacticSacrifice(),
@@ -946,7 +946,7 @@ function quantumReset(force, auto, challid, implode=false) {
 					player.quantum.challenges[qc2]=2
 					player.quantum.electrons.mult+=0.5
 					player.quantum.pairedChallenges.completed=player.quantum.pairedChallenges.current
-					if (player.quantum.pairedChallenges.current>3) giveAchievement("Twice in the row")
+					if (player.quantum.pairedChallenges.current==4) giveAchievement("Twice in the row")
 				}
 			} else if (!player.quantum.challenges[qc1]&&intensity>0) {
 				player.quantum.challenges[qc1]=1
@@ -986,6 +986,7 @@ function quantumReset(force, auto, challid, implode=false) {
 		player.quantum.replicants.babyProgress = new Decimal(0)
 		player.quantum.replicants.babies = new Decimal(0)
 		player.quantum.replicants.growupProgress = new Decimal(0)
+		document.getElementById("metaAntimatterEffectType").textContent=inQC(3)?"multiplier on all Infinity Dimensions":"extra multiplier per dimension boost"
 		updateColorCharge()
 		updateGluons()
 		updateElectrons()

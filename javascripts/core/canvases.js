@@ -17,8 +17,6 @@ var msctx = msc.getContext("2d");
 var qkc = document.getElementById("quarkCanvas");
 var qkctx = qkc.getContext("2d");
 
-window.addEventListener("resize", resizeCanvas);
-
 function resizeCanvas() {
 	canvas.width = 0;
 	canvas.height = 0;

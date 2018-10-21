@@ -638,7 +638,7 @@ if (player.version < 5) {
           }
           player.aarexModifications.newGamePlusVersion = 1
           if (confirm("Do you want to migrate your NG++ save into new NG+++ mode?")) {
-              player.aarexModifications.newGame3PlusVersion = 1.9986
+              player.aarexModifications.newGame3PlusVersion = 1.99861
               player.respecMastery=false
               player.dbPower = 1
               player.peakSpent = 0
@@ -900,6 +900,7 @@ if (player.version < 5) {
       updateRespecButtons()
       delete player.respecOptions
   }
+  if (player.aarexModifications.newGame3PlusVersion < 1.99861) player.aarexModifications.newGame3PlusVersion=1.99861
   if (player.masterystudies) if (player.quantum.autoOptions === undefined) player.quantum.autoOptions = {} //temp
   if (player.aarexModifications.newGame3PlusVersion==undefined) {
       colorBoosts={
@@ -1228,7 +1229,7 @@ if (player.version < 5) {
   document.getElementById("decimalMode").style.display = Decimal.gt(player.totalmoney,"1e9000000000000000") ? "none" : ""
   document.getElementById("hideProductionTab").textContent = (player.aarexModifications.hideProductionTab?"Show":"Hide")+" production tab"
 
-  document.getElementById("hotkeysDesc").innerHTML = "Hotkeys: 1-8 for buy 10 dimension, shift+1-8 for buy 1 dimension, T to buy max tickspeed, shift+T to buy one tickspeed, M for max all<br>S for sacrifice, D for dimension boost,"+(player.tickspeedBoosts==undefined?"":"B for tickspeed boost, ")+" G for galaxy, C for crunch, A for toggle autobuyers, R for replicanti galaxies, E for eternity"+(player.meta?", Q for quantum":"")+(player.boughtDims?".":".<br>You can hold shift while buying time studies to buy all up until that point, see each study's number, and save study trees.<br>Hotkeys do not work while holding control.")
+  document.getElementById("hotkeysDesc").innerHTML = "Hotkeys: 1-8 for buy 10 dimension, shift+1-8 for buy 1 dimension, T to buy max tickspeed, shift+T to buy one tickspeed, M for max all<br>S for sacrifice, D for dimension boost,"+(player.tickspeedBoosts==undefined?"":" B for tickspeed boost,")+" G for galaxy, C for crunch, A for toggle autobuyers, R for replicanti galaxies, E for eternity"+(player.meta?", Q for quantum":"")+(player.boughtDims?".":".<br>You can hold shift while buying time studies to buy all up until that point, see each study's number, and save study trees.<br>Hotkeys do not work while holding control.")
 
   document.getElementById("secretstudy").style.opacity = 0
   document.getElementById("secretstudy").style.cursor = "pointer"
@@ -1326,6 +1327,7 @@ if (player.version < 5) {
   document.getElementById("achRowngpp1").style.display=player.meta==undefined?"none":""
   document.getElementById("achRowng3p1").style.display=player.masterystudies==undefined?"none":""
   document.getElementById("achRowng3p2").style.display=player.masterystudies==undefined?"none":""
+  document.getElementById("metaAntimatterEffectType").textContent=inQC(3)?"multiplier on all Infinity Dimensions":"extra multiplier per dimension boost"
   for (i=1;i<9;i++) document.getElementById("td"+i+'auto').style.visibility=player.achievements.includes("ngpp17")?"visible":"hidden"
   document.getElementById('togglealltimedims').style.visibility=player.achievements.includes("ngpp17")?"visible":"hidden"
   document.getElementById('replicantibulkmodetoggle').style.display=player.achievements.includes("ngpp16")?"inline-block":"none"

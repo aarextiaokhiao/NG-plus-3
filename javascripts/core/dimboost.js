@@ -94,7 +94,7 @@ function softReset(bulk) {
       seventhPow: player.seventhPow,
       eightPow: player.eighthPow,
       resets: player.resets,
-      dbPower: player.dbPower ? getDimensionBoostPower() : undefined,
+      dbPower: player.dbPower,
       tickspeedBoosts: player.tickspeedBoosts,
       galaxies: player.galaxies,
       galacticSacrifice: player.galacticSacrifice,
@@ -266,6 +266,8 @@ function softReset(bulk) {
 
 function setInitialDimensionPower() {
 	var dimensionBoostPower = getDimensionBoostPower()
+	if (player.eternities>=1e9&&player.dilation.upgrades.includes("ngpp6")&&player.masterystudies!=undefined) player.dbPower=dimensionBoostPower
+
 	for (tier = 1; tier < 9; tier++) player[TIER_NAMES[tier] + 'Pow'] = player.currentEternityChall=='eterc13' ? new Decimal(1) : dimensionBoostPower.pow(player.resets + 1 - tier).max(1)
 	
 	var ic3Power=player.totalTickGained*getEC14Power()

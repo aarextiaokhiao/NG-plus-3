@@ -677,30 +677,28 @@ function updateQuantumChallenges() {
 }
 
 function inQC(num) {
-	try {
-		if (num<1) return player.quantum.challenge.length<1
-		return player.quantum.challenge.includes(num)
-	} catch (_) {
-		return num<1
-	}
+	var data=getCurrentQCData()
+	if (num>0) return data.includes(num)
+	return data.length<1
 }
 
 //v1.95?
 function getQCGoal(num) {
-	if (!player.masterystudies) return 0
-	var c1
-	var c2
-	if (!num) {
-		c1=player.quantum.challenge[0]
-		c2=player.quantum.challenge[1]
+	if (player.masterystudies==undefined) return 0
+	var c1=0
+	var c2=0
+	if (num==undefined) {
+		var data=getCurrentQCData()
+		if (data[0]) c1=data[0]
+		if (data[1]) c2=data[1]
 	} else if (num<9) {
 		c1=num
 	} else if (player.quantum.pairedChallenges.order[num-8]) {
 		c1=player.quantum.pairedChallenges.order[num-8][0]
 		c2=player.quantum.pairedChallenges.order[num-8][1]
 	}
-	if (!c1) return quantumChallenges.goals[0]
-	if (!c2) return quantumChallenges.goals[c1]
+	if (c1==0) return quantumChallenges.goals[0]
+	if (c2==0) return quantumChallenges.goals[c1]
 	return quantumChallenges.goals[c1]*quantumChallenges.goals[c2]/1e11*((c1==1||c2==1)?1.46:1)*Math.sqrt((c1==6||c2==6)?2:1)
 }
 

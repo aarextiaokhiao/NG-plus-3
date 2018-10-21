@@ -390,7 +390,7 @@ function updateNewPlayer(reseted) {
         player.options.gSacrificeConfirmation = true
     }
     if (modesChosen.ngpp === 2) {
-        player.aarexModifications.newGame3PlusVersion = 1.9986
+        player.aarexModifications.newGame3PlusVersion = 1.99861
         player.respecMastery=false
         player.dbPower = 1
         player.peakSpent = 0
@@ -2550,7 +2550,7 @@ function galaxyReset() {
         bestInfinityTime: player.bestInfinityTime,
         thisInfinityTime: player.thisInfinityTime,
         resets: 0,
-        dbPower: player.dbPower ? new Decimal(1) : undefined,
+        dbPower: player.dbPower,
         tickspeedBoosts: player.tickspeedBoosts,
         galaxies: player.galaxies + 1,
         galacticSacrifice: player.galacticSacrifice,
@@ -4373,7 +4373,7 @@ document.getElementById("bigcrunch").onclick = function () {
             bestInfinityTime: (player.currentEternityChall !== "eterc12") ? Math.min(player.bestInfinityTime, player.thisInfinityTime) : player.bestInfinityTime,
             thisInfinityTime: 0,
             resets: 0,
-            dbPower: player.dbPower ? new Decimal(1) : undefined,
+            dbPower: player.dbPower,
             tickspeedBoosts: player.tickspeedBoosts,
             galaxies: speedrunMilestonesReached>27 ? player.galaxies : 0,
             galacticSacrifice: newGalacticDataOnInfinity(),
@@ -4669,6 +4669,7 @@ function eternity(force, auto) {
         if (player.tickspeedBoosts !== undefined) player.tickspeedBoosts = 0
         if (player.achievements.includes("r104")) player.infinityPoints = new Decimal(2e25);
         else player.infinityPoints = new Decimal(0);
+        var forceRespec = player.currentEternityChall != ""
         player = {
             money: new Decimal(10),
             tickSpeedCost: new Decimal(1000),
@@ -4720,7 +4721,7 @@ function eternity(force, auto) {
             bestInfinityTime: 9999999999,
             thisInfinityTime: 0,
             resets: (player.eternities > 3) ? 4 : 0,
-            dbPower: player.dbPower ? new Decimal(1) : undefined,
+            dbPower: player.dbPower,
             tickspeedBoosts: player.tickspeedBoosts,
             galaxies: (player.eternities > 3) ? 1 : 0,
             galacticSacrifice: resetGalacticSacrifice(),
@@ -4891,7 +4892,7 @@ function eternity(force, auto) {
             aarexModifications: player.aarexModifications
         };
         if (player.galacticSacrifice && player.eternities < 2) player.autobuyers[12]=13
-        if (player.respec || player.respecMastery) respecTimeStudies()
+        if (player.respec || player.respecMastery || forceRespec) respecTimeStudies(forceRespec)
         if (player.respec) respecToggle()
         if (player.respecMastery) respecMasteryToggle()
         if (player.dilation.active) {
@@ -5102,7 +5103,7 @@ function startChallenge(name) {
       bestInfinityTime: player.bestInfinityTime,
       thisInfinityTime: 0,
       resets: 0,
-      dbPower: player.dbPower ? new Decimal(1) : undefined,
+      dbPower: player.dbPower,
       tickspeedBoosts: player.tickspeedBoosts,
       galaxies: 0,
       galacticSacrifice: newGalacticDataOnInfinity(),
@@ -5619,7 +5620,7 @@ function startEternityChallenge(name, startgoal, goalIncrease) {
         bestInfinityTime: 9999999999,
         thisInfinityTime: 0,
         resets: (player.eternities > 3) ? 4 : 0,
-        dbPower: player.dbPower ? new Decimal(1) : undefined,
+        dbPower: player.dbPower,
         tickspeedBoosts: player.tickspeedBoosts,
         galaxies: (player.eternities > 3) ? 1 : 0,
         galacticSacrifice: resetGalacticSacrifice(),
@@ -7819,6 +7820,7 @@ function initGame() {
     updateTickSpeed();
     updateAutobuyers();
     updateChallengeTimes()
+    window.addEventListener("resize", resizeCanvas);
     clearInterval(stuckTimeout)
     setTimeout(function(){
         document.getElementById("container").style.display = "block"

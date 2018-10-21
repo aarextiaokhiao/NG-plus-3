@@ -335,11 +335,15 @@ function studiesUntil(id) {
   buyTimeStudy(id, studyCosts[all.indexOf(id)], 0);
 }
 
-function respecTimeStudies() {
+function respecTimeStudies(force) {
   var gotAch=true
   var respecTime=false
   var respecMastery=false
-  if (player.masterystudies) {
+  if (force) {
+       respecTime=true
+       respecMastery=true
+       gotAch=player.timestudy.studies.length<1&&player.masterystudies.length<1
+  } else if (player.masterystudies) {
        respecTime=player.respec
        respecMastery=player.respecMastery
        gotAch=(respecTime||player.timestudy.studies.length<1)&&(respecMastery||player.masterystudies.length<1)
