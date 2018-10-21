@@ -973,3 +973,12 @@ function respecMasteryToggle() {
 	player.respecMastery=!player.respecMastery
 	updateRespecButtons()
 }
+
+//v1.99861
+function getCurrentQCData() {
+	if (player.masterystudies==undefined) return []
+	if (player.quantum==undefined) return []
+	if (player.quantum.challenge==undefined) return []
+	if (typeof(player.quantum.challenge)=="number") return [player.quantum.challenge]
+	return player.quantum.challenge
+}
