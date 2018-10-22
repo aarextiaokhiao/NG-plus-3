@@ -946,7 +946,7 @@ function quantumReset(force, auto, challid, implode=false) {
 					player.quantum.challenges[qc2]=2
 					player.quantum.electrons.mult+=0.5
 					player.quantum.pairedChallenges.completed=player.quantum.pairedChallenges.current
-					if (player.quantum.pairedChallenges.current==4) giveAchievement("Twice in the row")
+					if (player.quantum.pairedChallenges.current==4) giveAchievement("Twice in a row")
 				}
 			} else if (!player.quantum.challenges[qc1]&&intensity>0) {
 				player.quantum.challenges[qc1]=1

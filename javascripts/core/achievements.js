@@ -129,7 +129,7 @@ const allAchievements = {
   ng3p22 : "We are not going squared.",
   ng3p23 : "This achievement doesn't exist 3",
   ng3p24 : "Old memories come true",
-  ng3p25 : "Twice in the row",
+  ng3p25 : "Twice in a row",
   ng3p26 : "Infinity Morals",
   ng3p27 : "Intergalactic",
   ng3p28 : "Seriously, I already got rid of you.",
