@@ -940,7 +940,7 @@ function quantumReset(force, auto, challid, implode=false) {
 			var intensity=player.quantum.challenge.length
 			var qc1=player.quantum.challenge[0]
 			var qc2=player.quantum.challenge[1]
-			if (player.quantum.pairedChallenges.current>0) {
+			if (getCurrentQCData().length>1) {
 				if (player.quantum.pairedChallenges.current>player.quantum.pairedChallenges.completed) {
 					player.quantum.challenges[qc1]=2
 					player.quantum.challenges[qc2]=2
@@ -964,17 +964,15 @@ function quantumReset(force, auto, challid, implode=false) {
 				document.getElementById("respecPC").className="storebtn"
 			}
 		}
-		if (pc>0) {
-			player.quantum.pairedChallenges.current=pc
-			player.quantum.challenge=player.quantum.pairedChallenges.order[pc]
-		} else if (challid>0) {
-			player.quantum.pairedChallenges.current=0
-			player.quantum.challenge=[challid]
-		} else {
+		player.quantum.pairedChallenges.current=0
+		if (challid==0) {
 			player.quantum.electrons.amount=new Decimal(0)
 			player.quantum.electrons.sacGals=0
-			player.quantum.pairedChallenges.current=0
 			player.quantum.challenge=[]
+		} else if (pc<1) player.quantum.challenge=[challid]
+		else {
+			player.quantum.challenge=player.quantum.pairedChallenges.order[pc]
+			player.quantum.pairedChallenges.current=pc
 		}
 		player.quantum.replicants.amount = new Decimal(0)
 		player.quantum.replicants.requirement = new Decimal("1e3000000")
