@@ -2976,10 +2976,10 @@ function showNextModeMessage() {
 		document.getElementById("welcome").style.display = "flex"
 		document.getElementById("welcomeMessage").innerHTML = "Welcome to Spooktober 2018 and Happy Halloween!"+(player.options.theme=="S6"?"":" Import \"Halloween\" from import button to get the Halloween theme!")
 		happyHalloween=true
-	} else if (!player.aarexModifications.nextUpdateNotice && player.masterystudies) {
+	} else if (!player.aarexModifications.nextUpdateNotice!==2 && player.masterystudies) {
 		document.getElementById("welcome").style.display = "flex"
-		document.getElementById("welcomeMessage").innerHTML = "I am sorry for terrible balancing on quantum challenges. The update that fixes that will be released soon! :)"
-		player.aarexModifications.nextUpdateNotice=true
+		document.getElementById("welcomeMessage").innerHTML = "I am sorry for terrible balancing on quantum challenges. And also, one of my friends, Username5243, unlocked quantum challenges... Therefore, the update that fixes that will be released soon! :)"
+		player.aarexModifications.nextUpdateNotice=2
 	} else {
 		document.getElementById("welcome").style.display = "none"
 		player.aarexModifications.popUpId=1
