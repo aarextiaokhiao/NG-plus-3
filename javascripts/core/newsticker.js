@@ -167,14 +167,16 @@ newsArray = [//always true
 ["You are challenging in a challenge in a challenge. Challenge-ception.", "player.achievements.includes('r22') && player.currentChallenge != '' && player.currentEternityChall != '' && !inQC(0)", "am13"],
 ["New updates are coming in a day, not 5 hours. Sorry, jokers!", "player.achievements.includes('r22')", "am14"],
 ["Whale complained that matter and antimatter are balanced and the universe would not be existed.", "player.achievements.includes('r22')", "am15"],
-["Congratulations for beating NG+++! (for now...) The next update will include Emperor Dimensions! Here is the information: - The first dimension contains all of your replicant workers and already unlocked. - All dimensions does not generate, but starting at second dimension, workers could make eggons hatch faster and feed replicants until they are previous-dimensional workers. Higher-dimensional workers make eggons hatch even faster. - To get your higher-dimensional workers, you have to feed workers with higher amount than the lower-dimensional queen to promote. - Baby workers and queen eggons does not exist.", "player.achievements.includes('r22') && player.totalMoney.gt(Decimal.pow(10, 53e12))", "am16"],
+["Congratulations for beating NG+++! (for now...) The next update will include Emperor Dimensions! Here is the information: - The first dimension contains all of your replicant workers and already unlocked. - All dimensions does not generate, but starting at second dimension, workers could make eggons hatch faster and feed replicants until they are previous-dimensional workers. Higher-dimensional workers make eggons hatch even faster. - To get your higher-dimensional workers, you have to feed workers with higher amount than the lower-dimensional queen to promote. - Baby workers and queen eggons does not exist.", "player.achievements.includes('r22') && player.totalMoney.gt(Decimal.pow(10, 1e14))", "am16"],
 ["NEWS: THIS NEWS CHANNEL WAS SHUT DOWN FOR BEING DESTROYED.", "player.achievements.includes('r21') && player.achievements.includes('r22')", "am17"],
 ["hackers are coming", "player.achievements.includes('r22') && player.newsArray.length >= 210", "am18"],
 ["Whale complained that Infinity Challenge 5 is not the hardest.", "player.achievements.includes('r22') && player.masterystudies", "am19"],
 ["You are now a pre-historic ghost!", "player.achievements.includes('r22') && player.money.gte(Decimal.pow(10, 191140458264))", "am20"],
 ["You are devolving into Homo genuses!", "player.achievements.includes('r22') && player.money.gte(Decimal.pow(10, 29821319640000))", "am21"],
-["Really?! You reached e100 T antimatter. That is impossible!", "player.achievements.includes('r22') && player.totalMoney.gt(Decimal.pow(10, 1e14))", "am22"],
-["There is a lot of bugfixes coming, but I am too busy that I can't develop my modification a lot.", "player.achievements.includes('r22')", "am23"]];}
+["You should take a break.", "player.achievements.includes('r22') && player.totalMoney.gt(Decimal.pow(10, 1e14))", "am22"],
+["There is a lot of bugfixes coming, but I am too busy that I can't develop my modification a lot.", "player.achievements.includes('r22')", "am23"],
+["Did you know that NG-3 nerfs NG-- to make short runs longer?", "player.achievements.includes('r22') && player.tickspeedBoosts != undefined", "am24"],
+["I guess NG-4 would be coming if NG-3 is too easy.", "player.achievements.includes('r22') && player.tickspeedBoosts != undefined", "am25"]];}
 
 document.addEventListener("visibilitychange", function() {if (!document.hidden) {scrollNextMessage();}}, false);
 var scrollTimeouts = [];
