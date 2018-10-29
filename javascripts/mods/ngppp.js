@@ -922,7 +922,7 @@ function reduceHatchSpeed() {
 }
 
 function breakLimit() {
-	if (player.quantum.gluons.rg.min(player.quantum.gluons.gb).min(player.quantum.gluons.br).gte(player.quantum.replicants.limitCost)) {
+	if (player.quantum.gluons.rg.min(player.quantum.gluons.gb).min(player.quantum.gluons.br).gte(player.quantum.replicants.limitCost)&&player.quantum.replicants.limit<20) {
 		player.quantum.gluons.rg=player.quantum.gluons.rg.sub(player.quantum.replicants.limitCost)
 		player.quantum.gluons.gb=player.quantum.gluons.gb.sub(player.quantum.replicants.limitCost)
 		player.quantum.gluons.br=player.quantum.gluons.br.sub(player.quantum.replicants.limitCost)

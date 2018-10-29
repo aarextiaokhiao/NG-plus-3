@@ -445,6 +445,7 @@ function respecTimeStudies(force) {
       updateMasteryStudyButtons()
   }
   player.eternityChallUnlocked = 0
+  updateEternityChallenges()
   updateTimeStudyButtons()
   updateTheoremButtons()
   drawStudyTree()
