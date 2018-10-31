@@ -1995,7 +1995,7 @@ document.getElementById("postinfi42").onclick = function() {
         player.infinityPoints = player.infinityPoints.minus(player.dimensionMultDecreaseCost)
         player.dimensionMultDecreaseCost *= 5000
         player.dimensionMultDecrease--;
-        if (Math.round(player.dimensionMultDecrease+ECTimesCompleted("eterc6")*0.2) > 3) document.getElementById("postinfi42").innerHTML = "Dimension cost multiplier increase <br>"+player.dimensionMultDecrease+"x -> "+(player.dimensionMultDecrease-1)+"x<br>Cost: "+shortenCosts(player.dimensionMultDecreaseCost) +" IP"
+        if (player.dimensionMultDecrease > 3) document.getElementById("postinfi42").innerHTML = "Dimension cost multiplier increase <br>"+player.dimensionMultDecrease+"x -> "+(player.dimensionMultDecrease-1)+"x<br>Cost: "+shortenCosts(player.dimensionMultDecreaseCost) +" IP"
         else {
             if (player.aarexModifications.newGamePlusVersion) {
                 for (c=ECTimesCompleted("eterc6");c<5;c++) player.dimensionMultDecrease-=0.2
