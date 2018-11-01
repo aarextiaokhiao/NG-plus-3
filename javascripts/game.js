@@ -301,8 +301,8 @@ function updateNewPlayer(reseted) {
             bulkOn: true,
             cloud: true,
             hotkeys: true,
-            theme: /*undefined*/"S6",
-            secretThemeKey: /*0*/"Halloween",
+            theme: undefined,
+            secretThemeKey: 0,
             eternityconfirm: true,
             commas: "Commas",
             updateRate: 50,
@@ -1354,9 +1354,8 @@ function updateDimensions() {
             document.getElementById("postinfi13").innerHTML = "You passively generate Infinitied stat based on your fastest infinity.<br>1 Infinity every "+timeDisplay(player.bestInfinityTime*5)+ " <br>Cost: "+shortenCosts(20e6)+" IP"
             document.getElementById("postinfi23").innerHTML = "Option to bulk buy Dimension Boosts <br>Cost: "+shortenCosts(player.galacticSacrifice?5e6:5e9)+" IP"
             document.getElementById("postinfi33").innerHTML = "Autobuyers work twice as fast <br>Cost:"+shortenCosts(1e15)+" IP"
-            var precision=ECTimesCompleted("eterc6")%5>0?1:0
-            if (Math.round(player.dimensionMultDecrease+ECTimesCompleted("eterc6")*0.2) > 3) document.getElementById("postinfi42").innerHTML = "Dimension cost multiplier increase<br>"+player.dimensionMultDecrease.toFixed(precision)+"x -> "+(player.dimensionMultDecrease-1).toFixed(precision)+"x<br>Cost: "+shortenCosts(player.dimensionMultDecreaseCost) +" IP"
-            else document.getElementById("postinfi42").innerHTML = "Dimension cost multiplier increase<br>"+player.dimensionMultDecrease.toFixed(precision)+"x"
+            if (player.dimensionMultDecrease > 3) document.getElementById("postinfi42").innerHTML = "Dimension cost multiplier increase<br>"+player.dimensionMultDecrease+"x -> "+(player.dimensionMultDecrease-1)+"x<br>Cost: "+shortenCosts(player.dimensionMultDecreaseCost) +" IP"
+            else document.getElementById("postinfi42").innerHTML = "Dimension cost multiplier increase<br>"+player.dimensionMultDecrease.toFixed(ECTimesCompleted("eterc6")%5>0?1:0)+"x"
 
             document.getElementById("offlineProd").innerHTML = "Generates "+player.offlineProd+"% > "+Math.max(Math.max(5, player.offlineProd + 5), Math.min(50, player.offlineProd + 5))+"% of your best IP/min from last 10 infinities, works offline<br>Currently: "+shortenMoney(bestRunIppm.times(player.offlineProd/100)) +"IP/min<br> Cost: "+shortenCosts(player.offlineProdCost)+" IP"
             if (player.offlineProd == 50) document.getElementById("offlineProd").innerHTML = "Generates "+player.offlineProd+"% of your best IP/min from last 10 infinities, works offline<br>Currently: "+shortenMoney(bestRunIppm.times(player.offlineProd/100)) +" IP/min"
@@ -1674,7 +1673,7 @@ document.getElementById("maxall").onclick = function () {
                         player[name + "Amount"] = Decimal.round(player[name + "Amount"].plus(10))
                         recordBought(name,10)
                         player[name + "Pow"] = player[name + "Pow"].times(getDimensionPowerMultiplier(tier))
-                        if (costIncreaseActive(player[name + 'Cost'])) player.costMultipliers[tier-1] = player.costMultipliers[tier-1].times(inQC(7)?1e100:player.dimensionMultDecrease)
+                        if (costIncreaseActive(player[name + 'Cost'])) player.costMultipliers[tier-1] = player.costMultipliers[tier-1].times(getDimensionCostMultiplierIncrease())
                     }
 
 
@@ -1700,7 +1699,7 @@ document.getElementById("maxall").onclick = function () {
                         player[name + "Amount"] = Decimal.round(player[name + "Amount"].plus(10))
                         recordBought(name,10)
                         player[name + "Pow"] = player[name + "Pow"].times(getDimensionPowerMultiplier(tier))
-                        if (costIncreaseActive(player[name + 'Cost'])) player.costMultipliers[tier-1] = player.costMultipliers[tier-1].times(inQC(7)?1e100:player.dimensionMultDecrease)
+                        if (costIncreaseActive(player[name + 'Cost'])) player.costMultipliers[tier-1] = player.costMultipliers[tier-1].times(getDimensionCostMultiplierIncrease())
                         if (player.currentChallenge == "challenge8") clearDimensions(tier-1)
                 }
             } else {
@@ -1713,7 +1712,7 @@ document.getElementById("maxall").onclick = function () {
                         player[name + "Amount"] = Decimal.round(player[name + "Amount"].plus(10))
                         recordBought(name,10)
                         player[name + "Pow"] = player[name + "Pow"].times(getDimensionPowerMultiplier(tier))
-                        if (costIncreaseActive(player[name + 'Cost'])) player.costMultipliers[tier-1] = player.costMultipliers[tier-1].times(inQC(7)?1e100:player.dimensionMultDecrease)
+                        if (costIncreaseActive(player[name + 'Cost'])) player.costMultipliers[tier-1] = player.costMultipliers[tier-1].times(getDimensionCostMultiplierIncrease())
                         if (player.currentChallenge == "challenge8") clearDimensions(tier-1)
                 }
                 }
@@ -1991,20 +1990,20 @@ document.getElementById("postinfi32").onclick = function() {
 }
 
 document.getElementById("postinfi42").onclick = function() {
-    if (player.infinityPoints.gte(player.dimensionMultDecreaseCost) && Math.round(player.dimensionMultDecrease+ECTimesCompleted("eterc6")*0.2) > 3) {
+    if (player.infinityPoints.gte(player.dimensionMultDecreaseCost) && player.dimensionMultDecrease > 3) {
         player.infinityPoints = player.infinityPoints.minus(player.dimensionMultDecreaseCost)
         player.dimensionMultDecreaseCost *= 5000
         player.dimensionMultDecrease--;
         if (player.dimensionMultDecrease > 3) document.getElementById("postinfi42").innerHTML = "Dimension cost multiplier increase <br>"+player.dimensionMultDecrease+"x -> "+(player.dimensionMultDecrease-1)+"x<br>Cost: "+shortenCosts(player.dimensionMultDecreaseCost) +" IP"
         else {
             if (player.aarexModifications.newGamePlusVersion) {
-                for (c=ECTimesCompleted("eterc6");c<5;c++) player.dimensionMultDecrease-=0.2
-                if (!player.aarexModifications.newGamePlusPlusVersion) {
-                    for (c=1;c<6;c++) player.tickSpeedMultDecrease-=0.07
-                    $.notify("Your tickspeed cost multiplier increase has been decreased to 1.65x too.")
+                for (c=0;c<ECTimesCompleted("eterc6");c++) player.dimensionMultDecrease-=0.2
+                if (!player.meta) {
+                    for (c=0;c<ECTimesCompleted("eterc11");c++) player.tickSpeedMultDecrease-=0.07
+                    $.notify("Your tickspeed cost multiplier increase has been decreased to "+player.tickSpeedMultDecrease.toFixed(2)+"x too.")
                     document.getElementById("postinfi31").innerHTML = "Tickspeed cost multiplier increase<br>"+player.tickSpeedMultDecrease.toFixed(2)+"x"
                 }
-                $.notify("Your dimension cost multiplier increase has been decreased to 2x because you are playing NG+ mode.")
+                $.notify("Your dimension cost multiplier increase has been decreased to "+player.dimensionMultDecrease.toFixed(ECTimesCompleted("eterc6")%5>0?1:0)+"x because you are playing NG+ mode.")
             }
             document.getElementById("postinfi42").innerHTML = "Dimension cost multiplier increase<br>"+player.dimensionMultDecrease.toFixed(ECTimesCompleted("eterc6")%5>0?1:0)+"x"
         }
@@ -2966,16 +2965,11 @@ function showVisibilityMenu() {
     document.getElementById("visibilityoptions").style.display = "flex";
 };
 
-var happyHalloween=false
 function showNextModeMessage() {
 	if (ngModeMessages.length>0) {
 		document.getElementById("welcome").style.display = "flex"
 		document.getElementById("welcomeMessage").innerHTML = ngModeMessages[ngModeMessages.length-1]
 		ngModeMessages.pop()
-	} else if (player.aarexModifications.popUpId!=1&&!happyHalloween) {
-		document.getElementById("welcome").style.display = "flex"
-		document.getElementById("welcomeMessage").innerHTML = "Welcome to Spooktober 2018 and Happy Halloween!"+(player.options.theme=="S6"?"":" Import \"Halloween\" from import button to get the Halloween theme!")
-		happyHalloween=true
 	} else if (player.aarexModifications.nextUpdateNotice!==3 && player.masterystudies) {
 		document.getElementById("welcome").style.display = "flex"
 		document.getElementById("welcomeMessage").innerHTML = "I am sorry for terrible balancing on quantum challenges. And also, one of my friends, Username5243, completed Quantum Challenge 1... Therefore, the update that fixes that will be released soon! :)"
@@ -4615,7 +4609,7 @@ function eternity(force, auto) {
             if (player.bestEternity <= 0.01) giveAchievement("Less than or equal to 0.001");
         }
         if (player.thisEternity < 2) giveAchievement("Eternities are the new infinity")
-        if (player.currentEternityChall == "eterc6" && ECTimesCompleted("eterc6") < 5) player.dimensionMultDecrease = Math.max(parseFloat((player.dimensionMultDecrease - 0.2).toFixed(1)),2)
+        if (player.currentEternityChall == "eterc6" && ECTimesCompleted("eterc6") < 5 && player.dimensionMultDecrease < 4) player.dimensionMultDecrease = Math.max(parseFloat((player.dimensionMultDecrease - 0.2).toFixed(1)),2)
         if (!GUBought("gb4")) if (player.currentEternityChall == "eterc11" && ECTimesCompleted("eterc11") < 5) player.tickSpeedMultDecrease = Math.max(parseFloat((player.tickSpeedMultDecrease - 0.07).toFixed(2)),1.65)
         if (player.infinitied < 10 && !force && !player.boughtDims) giveAchievement("Do you really need a guide for this?");
         if (Decimal.round(player.replicanti.amount) == 9) giveAchievement("We could afford 9");
@@ -7161,7 +7155,7 @@ function gameLoop(diff) {
     if (player.infinityUpgrades.includes("infinitiedMult")) document.getElementById("postinfi12").className = "infinistorebtnbought"
     if (player.infinityUpgrades.includes("postGalaxy")) document.getElementById("postinfi41").className = "infinistorebtnbought"
     if (player.infinityUpgrades.includes("challengeMult")) document.getElementById("postinfi32").className = "infinistorebtnbought"
-    if (Math.round(player.dimensionMultDecrease+ECTimesCompleted("eterc6")*0.2) <= 3) document.getElementById("postinfi42").className = "infinistorebtnbought"
+    if (player.dimensionMultDecrease <= 3) document.getElementById("postinfi42").className = "infinistorebtnbought"
     if (player.offlineProd == 50) document.getElementById("offlineProd").className = "infinistorebtnbought"
     if (player.galacticSacrifice) {
         if (player.infinityUpgrades.includes("galPointMult")) document.getElementById("postinfi01").className = "infinistorebtnbought"
