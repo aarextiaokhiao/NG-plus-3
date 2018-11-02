@@ -643,6 +643,7 @@ function updateQuantumChallenges() {
 	} else document.getElementById("qctabbtn").style.display=""
 	assigned=[]
 	var assignedNums={}
+	document.getElementById("pcNotice").style.display = player.masterystudies.includes("d9") ? "" : "none"
 	document.getElementById("pairedchallenges").style.display = player.masterystudies.includes("d9") ? "" : "none"
 	document.getElementById("respecPC").style.display = player.masterystudies.includes("d9") ? "" : "none"
 	for (pc=1;pc<5;pc++) {
