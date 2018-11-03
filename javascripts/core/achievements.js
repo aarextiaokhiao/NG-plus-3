@@ -237,6 +237,7 @@ function giveAchievement(name) {
         if (r==105||(r!=117&&r>110)) return false
     }
 
+    if (name == "A sound financial decision") localStorage.setItem(btoa("dsAM_asfd"),"")
     else $.notify(name, "success");
     player.achievements.push(allAchievementNums[name]);
     document.getElementById(name).className = "achievementunlocked"

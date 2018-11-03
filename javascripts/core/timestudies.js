@@ -336,18 +336,13 @@ function studiesUntil(id) {
 }
 
 function respecTimeStudies(force) {
-  var gotAch=true
-  var respecTime=false
+  var respecTime=player.respec||force
   var respecMastery=false
-  if (force) {
-       respecTime=true
-       respecMastery=true
-       gotAch=player.timestudy.studies.length<1&&player.masterystudies.length<1
-  } else if (player.masterystudies) {
-       respecTime=player.respec
-       respecMastery=player.respecMastery
-       gotAch=(respecTime||player.timestudy.studies.length<1)&&(respecMastery||player.masterystudies.length<1)
-  } else respecTime=player.respec
+  var gotAch=respecTime||player.timestudy.studies.length<1
+  if (player.masterystudies) {
+      respecMastery=player.respecMastery||force
+      gotAch=gotAch&&(respecMastery||player.masterystudies.length<1)
+  }
   if (respecTime) {
        if (player.boughtDims) {
           var temp=player.timestudy.theorem
