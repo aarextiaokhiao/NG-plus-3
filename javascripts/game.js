@@ -4625,12 +4625,13 @@ function eternity(force, auto) {
         temp = []
         player.eternityPoints = player.eternityPoints.plus(gainedEternityPoints())
         addEternityTime(player.thisEternity, gainedEternityPoints())
+        var forceRespec = false
         if (player.currentEternityChall !== "") {
             if (player.eternityChalls[player.currentEternityChall] === undefined) {
                 player.eternityChalls[player.currentEternityChall] = 1
             } else if (player.eternityChalls[player.currentEternityChall] < 5) player.eternityChalls[player.currentEternityChall] += 1
             player.etercreq = 0
-            respecTimeStudies()
+            forceRespec = true
             if (Object.keys(player.eternityChalls).length >= 10) {
                 var eterchallscompletedtotal = 0;
                 for (i=1; i<Object.keys(player.eternityChalls).length+1; i++) {
@@ -4667,7 +4668,6 @@ function eternity(force, auto) {
         if (player.tickspeedBoosts !== undefined) player.tickspeedBoosts = 0
         if (player.achievements.includes("r104")) player.infinityPoints = new Decimal(2e25);
         else player.infinityPoints = new Decimal(0);
-        var forceRespec = player.currentEternityChall != ""
         player = {
             money: new Decimal(10),
             tickSpeedCost: new Decimal(1000),
