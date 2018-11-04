@@ -9,7 +9,8 @@ masterystudies={initialCosts:{time:{241: 1e71, 251: 2e71, 252: 2e71, 253: 2e71, 
 	allTimeStudies:[241, 251, 252, 253, 261, 262, 263, 264, 265, 266, 271, 272, 273, 281, 282, 291, 292, 301, 302, 303, 311, 312, 321, 322, 323, 331, 332, 341, 342, 343, 344, 351],
 	initialReqs:{13:728e3,14:255e5},
 	incrementReqs:{13:6e3,14:9e5},
-	reqs:{}}
+	reqs:{},
+	latestBoughtRow:0}
 
 function portal() {
 	if (player.dilation.upgrades.includes("ngpp6")) showEternityTab("masterystudies")
@@ -51,6 +52,7 @@ function updateMasteryStudyButtons() {
 }
 
 function updateMasteryStudyCosts(quick=false) {
+	masterystudies.latestBoughtRow=0
 	masterystudies.costmult=1
 	for (id=0;id<player.masterystudies.length;id++) {
 		var t=player.masterystudies[id].split("t")[1]
@@ -61,7 +63,10 @@ function updateMasteryStudyCosts(quick=false) {
 	}
 	for (id=0;id<masterystudies.allTimeStudies.length;id++) {
 		var name=masterystudies.allTimeStudies[id]
-		if (!player.masterystudies.includes("t"+name)) masterystudies.costs.time[name]=masterystudies.initialCosts.time[name]*masterystudies.costmult
+		if (!player.masterystudies.includes("t"+name)) {
+			masterystudies.latestBoughtRow=Math.max(masterystudies.latestBoughtRow,Math.floor(name/10))
+			masterystudies.costs.time[name]=masterystudies.initialCosts.time[name]*masterystudies.costmult
+		}
 	}
 	for (id=13;id<15;id++) {
 		masterystudies.costs.ec[id]=masterystudies.initialCosts.ec[id]*masterystudies.costmult
@@ -119,7 +124,7 @@ function canBuyMasteryStudy(type, id) {
 	if (type=='t') {
 		if (player.timestudy.theorem<masterystudies.costs.time[id]||player.masterystudies.includes('t'+id)||player.eternityChallUnlocked>12) return false
 		var row=Math.floor(id/10)
-		for (check=1;check<10;check++) if (player.masterystudies.includes('t'+(row+1).toString()+check)) return false
+		if (masterystudies.latestBoughtRow>row) return false
 		var col=id%10
 		if (row>34) return player.masterystudies.includes('t344')
 		if (row>33) {

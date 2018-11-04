@@ -645,7 +645,6 @@ function quantumReset(force, auto, challid, implode=false) {
 		tickspeedBoosts: player.tickspeedBoosts,
 		galaxies: oheHeadstart ? 1 : 0,
 		galacticSacrifice: resetGalacticSacrifice(),
-		tickDecrease: 0.9,
 		totalmoney: player.totalmoney,
 		interval: null,
 		lastUpdate: player.lastUpdate,

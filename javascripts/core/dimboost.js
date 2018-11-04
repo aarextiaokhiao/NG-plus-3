@@ -98,7 +98,6 @@ function softReset(bulk) {
       tickspeedBoosts: player.tickspeedBoosts,
       galaxies: player.galaxies,
       galacticSacrifice: player.galacticSacrifice,
-      tickDecrease: player.tickDecrease,
       totalmoney: player.totalmoney,
       interval: null,
       lastUpdate: player.lastUpdate,

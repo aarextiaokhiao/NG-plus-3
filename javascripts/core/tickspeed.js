@@ -106,7 +106,7 @@ function buyTickSpeed() {
       return false;
   }
 
-  if (!canAfford(player.tickSpeedCost)) {
+  if (player.tickSpeedCost.gt(player.money)) {
       return false;
   }
 
@@ -194,7 +194,7 @@ function updateTickSpeed() {
 	if (showTickspeed) {
 		var exp = player.tickspeed.e;
 		if (exp > 1) label = 'Tickspeed: ' + player.tickspeed.toFixed(0)
-		else label = 'Tickspeed: ' + Math.min(player.tickspeed.m * 100, 999).toFixed(0) + ' / ' + shorten(Decimal.pow(10,2 - exp))
+		else label = 'Tickspeed: ' + Math.min(player.tickspeed.m * 100, 999).toFixed(0) + ' / ' + shortenCosts(Decimal.pow(10,2 - exp))
 	}
 	if (player.galacticSacrifice || player.currentChallenge == "postc3" || isIC3Trapped()) label = (showTickspeed ? label + ", Tickspeed m" : "M") + "ultiplier: " + formatValue(player.options.notation, player.postC3Reward, 2, 3)
 	if (player.galacticSacrifice && player.currentChallenge == "challenge14") {
