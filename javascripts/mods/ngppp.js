@@ -59,14 +59,12 @@ function updateMasteryStudyCosts(quick=false) {
 		if (t) {
 			masterystudies.costs.time[t]=masterystudies.initialCosts.time[t]*masterystudies.costmult
 			masterystudies.costmult*=masterystudies.costmults[t]
+			masterystudies.latestBoughtRow=Math.max(masterystudies.latestBoughtRow,Math.floor(t/10))
 		}
 	}
 	for (id=0;id<masterystudies.allTimeStudies.length;id++) {
 		var name=masterystudies.allTimeStudies[id]
-		if (!player.masterystudies.includes("t"+name)) {
-			masterystudies.latestBoughtRow=Math.max(masterystudies.latestBoughtRow,Math.floor(name/10))
-			masterystudies.costs.time[name]=masterystudies.initialCosts.time[name]*masterystudies.costmult
-		}
+		if (!player.masterystudies.includes("t"+name)) masterystudies.costs.time[name]=masterystudies.initialCosts.time[name]*masterystudies.costmult
 	}
 	for (id=13;id<15;id++) {
 		masterystudies.costs.ec[id]=masterystudies.initialCosts.ec[id]*masterystudies.costmult
