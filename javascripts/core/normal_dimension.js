@@ -337,7 +337,7 @@ function buyManyDimension(tier, quick) {
 var initCost
 var costMults
 function buyBulkDimension(tier, bulk, auto) {
-	if (!canBuyDimension(tier)) return false
+	if (!canBuyDimension(tier)) return
 	let bought = 0
 	if (dimBought(tier) > 0) {
 		if (!buyManyDimension(tier, true)) return
@@ -346,6 +346,7 @@ function buyBulkDimension(tier, bulk, auto) {
 	let name = TIER_NAMES[tier]
 	let cost = player[name + 'Cost'].times(10)
 	let resource = getOrSubResource(tier)
+	if (resource.lt(cost)) return
 	if (player.currentChallenge != "postc5" && player.currentChallenge != "challenge5" && !costIncreaseActive(player[name + "Cost"])) {
 		let mult = getDimensionCostMultiplier(tier)
 		let max = Number.POSITIVE_INFINITY
