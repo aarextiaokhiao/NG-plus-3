@@ -638,7 +638,7 @@ if (player.version < 5) {
           }
           player.aarexModifications.newGamePlusVersion = 1
           if (confirm("Do you want to migrate your NG++ save into new NG+++ mode?")) {
-              player.aarexModifications.newGame3PlusVersion = 1.998621
+              player.aarexModifications.newGame3PlusVersion = 1.998622
               player.respecMastery=false
               player.dbPower = 1
               player.peakSpent = 0
@@ -901,10 +901,10 @@ if (player.version < 5) {
       delete player.respecOptions
   }
   if (player.aarexModifications.newGame3PlusVersion < 1.998621) {
-      player.aarexModifications.newGame3PlusVersion=1.998621
       if (getCurrentQCData().length<2) player.quantum.pairedChallenges.current=0
       if (player.quantum.pairedChallenges.completed>4) player.quantum.pairedChallenges.completed=0
   }
+  if (player.aarexModifications.newGame3PlusVersion < 1.998622) player.aarexModifications.newGame3PlusVersion=1.998622
   if (player.masterystudies) if (player.quantum.autoOptions === undefined) player.quantum.autoOptions = {} //temp
   if (player.aarexModifications.newGame3PlusVersion==undefined) {
       colorBoosts={
@@ -1347,6 +1347,7 @@ if (player.version < 5) {
       if (quantumed) giveAchievement("Sub-atomic")
       document.getElementById('reward3disable').textContent="6 hours reward: O"+(player.quantum.disabledRewards[3]?"FF":"N")
       document.getElementById('reward4disable').textContent="4.5 hours reward: O"+(player.quantum.disabledRewards[4]?"FF":"N")
+      document.getElementById('reward27disable').textContent="10 seconds reward: O"+(player.quantum.disabledRewards[27]?"FF":"N")
       document.getElementById('rebuyupgauto').textContent="Rebuyable upgrade auto: O"+(player.autoEterOptions.rebuyupg?"N":"FF")
       document.getElementById('metaboostauto').textContent="Meta-boost auto: O"+(player.autoEterOptions.metaboost?"N":"FF")
       document.getElementById('prioritydil').value=player.eternityBuyer.dilationPerAmount

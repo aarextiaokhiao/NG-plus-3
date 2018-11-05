@@ -389,7 +389,7 @@ function updateNewPlayer(reseted) {
         player.options.gSacrificeConfirmation = true
     }
     if (modesChosen.ngpp === 2) {
-        player.aarexModifications.newGame3PlusVersion = 1.998621
+        player.aarexModifications.newGame3PlusVersion = 1.998622
         player.respecMastery=false
         player.dbPower = 1
         player.peakSpent = 0
@@ -3201,7 +3201,7 @@ function setAchieveTooltip() {
 
 
 //notation stuff
-var notationArray = ["Scientific","Engineering","Letters","Standard","Emojis","Mixed scientific","Mixed engineering","Logarithm","Brackets","Infinity","Greek","Game percentages","Hexadecimal","Tetration","Hyperscientific","Psi","Morse code","Spazzy","Country Codes","Iroha","AF5LN"]
+var notationArray = ["Scientific","Engineering","Letters","Standard","Emojis","Mixed scientific","Mixed engineering","Logarithm","Brackets","Infinity","Greek","Game percentages","Hexadecimal","Tetration","Hyperscientific","Psi","Morse code","Spazzy","Country Codes","Iroha","Symbols","AF5LN"]
 
 function updateNotationOption() {
 	var notationMsg="Notation: "+(player.options.notation=="Emojis"?"Cancer":player.options.notation)
@@ -6345,7 +6345,7 @@ setInterval(function() {
         if (player.infinityPoints.e>353999&&ableToGetRid4) giveAchievement("Seriously, I already got rid of you.")
     }
     if (speedrunMilestonesReached>notifyId) {
-        $.notify("You unlocked "+timeDisplayShort(speedrunMilestones[notifyId]*36e3)+" speedrun milestone! "+(["You now start with 20,000 eternities when going quantum","You unlocked time theorem autobuyer","You now start with all Eternity Challenges completed and\neternity upgrades bought","You now start with dilation unlocked","You unlocked a new option for eternity autobuyer","You now start with all dilation studies and\nnon-rebuyable dilation upgrades before Meta Dimensions unlocked except passive TT gen upgrade","You unlocked first meta dimension autobuyer","You unlocked second meta dimension autobuyer","You unlocked third meta dimension autobuyer","You unlocked fourth meta dimension autobuyer","You unlocked fifth meta dimension autobuyer and you now keep time studies and passive TT gen upgrade","You unlocked sixth meta dimension autobuyer","You unlocked seventh meta dimension autobuyer","You unlocked eighth meta dimension autobuyer and\nall non-rebuyable dilation upgrades","You unlocked meta-dimension boost autobuyer","You now keep all time studies in mastery studies","You now can buy all Meta Dimensions if it is affordable in your current meta boost.","You now start with "+shortenCosts(1e13)+" eternities","You now start with "+shortenCosts(1e25)+" meta-antimatter on reset","You can now turn on automatic replicated galaxies anytime","You made rebuyable dilation upgrade and Meta Dimension autobuyers 3x faster","You now start with "+shortenCosts(1e100)+" dilated time on quantum and dilated time does not reset until quantum","You unlocked quantum autobuyer","You now keep replicanti on eternity.","You unlocked manual mode for eternity autobuyer and sacrifice galaxy autobuyer","Your rebuyable dilation upgrade autobuyer now can buy max all upgrades","You now can buy max meta-dimension boosts and start with 4 meta-dimension boosts","Now big crunching does not lose all your galaxies"])[notifyId]+".","success")
+        $.notify("You unlocked "+timeDisplayShort(speedrunMilestones[notifyId]*36e3)+" speedrun milestone! "+(["You now start with 20,000 eternities when going quantum","You unlocked time theorem autobuyer","You now start with all Eternity Challenges completed and\neternity upgrades bought","You now start with dilation unlocked","You unlocked a new option for eternity autobuyer","You now start with all dilation studies and\nnon-rebuyable dilation upgrades before Meta Dimensions unlocked except passive TT gen upgrade","You unlocked first meta dimension autobuyer","You unlocked second meta dimension autobuyer","You unlocked third meta dimension autobuyer","You unlocked fourth meta dimension autobuyer","You unlocked fifth meta dimension autobuyer and you now keep time studies and passive TT gen upgrade","You unlocked sixth meta dimension autobuyer","You unlocked seventh meta dimension autobuyer","You unlocked eighth meta dimension autobuyer and\nall non-rebuyable dilation upgrades","You unlocked meta-dimension boost autobuyer","You now keep all time studies in mastery studies","You now can buy all Meta Dimensions if it is affordable in your current meta boost.","You now start with "+shortenCosts(1e13)+" eternities","You now start with "+shortenCosts(1e25)+" meta-antimatter on reset","You can now turn on automatic replicated galaxies anytime","You made rebuyable dilation upgrade and Meta Dimension autobuyers 3x faster","You now start with "+shortenCosts(1e100)+" dilated time on quantum and dilated time does not reset until quantum","You unlocked quantum autobuyer","You now keep replicanti on eternity.","You unlocked manual mode for eternity autobuyer and sacrifice galaxy autobuyer","Your rebuyable dilation upgrade autobuyer now can buy max all upgrades","You now can buy max meta-dimension boosts and start with 4 meta-dimension boosts","For now on, galaxies do not reset on big crunch"])[notifyId]+".","success")
         notifyId++
     }
 }, 1000)
@@ -7200,7 +7200,7 @@ function gameLoop(diff) {
         }
     }
 
-    setAndMaybeShow("quantumClock", player.masterystudies ? (quantumed && player.quantum.times > 1 && speedrunMilestonesReached < 24) : false, '"Quantum time: <b class=\'QKAmount\'>"+timeDisplayShort(player.quantum.time)+"</b>"')
+    setAndMaybeShow("quantumClock", player.masterystudies ? (quantumed && player.quantum.times > 1 && speedrunMilestonesReached < 28) : false, '"Quantum time: <b class=\'QKAmount\'>"+timeDisplayShort(player.quantum.time)+"</b>"')
 
     document.getElementById("infinityPoints1").innerHTML = "You have <span class=\"IPAmount1\">"+shortenDimensions(player.infinityPoints)+"</span> Infinity points."
     document.getElementById("infinityPoints2").innerHTML = "You have <span class=\"IPAmount2\">"+shortenDimensions(player.infinityPoints)+"</span> Infinity points."

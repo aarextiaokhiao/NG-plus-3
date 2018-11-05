@@ -175,7 +175,7 @@ function formatValue(notation, value, places, placesUnder1000) {
         if (notation === "Psi") {
             return formatPsi(matissa,power)
         }
-        if (notation === "Greek" || notation === "Morse code") {
+        if (notation === "Greek" || notation === "Morse code" || notation === "Symbols") {
             if (matissa>=10-Math.pow(10,-places)/2) {
                 matissa=Math.pow(10,places)
                 power-=places+1
@@ -185,7 +185,7 @@ function formatValue(notation, value, places, placesUnder1000) {
             }
             if (power > 1e5 && player.options.commas !== "Commas") power = formatValue(player.options.commas, power, 3, 3)
             else power = convTo(notation, power)
-            return convTo(notation, matissa)+'e'+power
+            return convTo(notation, matissa)+(notation=="Symbols"?'-':"e")+power
         }
         if (notation === "Infinity") {
             const inflog = Math.log10(Number.MAX_VALUE)
@@ -455,10 +455,16 @@ function convTo(notation, num) {
 			num=Math.floor(num/1000)
 			needMark=true
 		}
-	} else {
+	} else if (notation=='Morse code') {
 		while (num>0) {
 			var mod=num%10
 			result=(mod>0&&mod<6?"·":'-')+(mod>1&&mod<7?"·":'-')+(mod>2&&mod<8?"·":'-')+(mod>3&&mod<9?"·":'-')+(mod>4?"·":'-')+(result==""?"":" "+result)
+			num=Math.floor(num/10)
+		}
+	} else if (notation=='Symbols') {
+		const syms=[")","!","@","#","$","%","^","&","*","("]
+		while (num>0) {
+			result=syms[num%10]+result
 			num=Math.floor(num/10)
 		}
 	}

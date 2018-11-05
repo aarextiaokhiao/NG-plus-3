@@ -95,7 +95,7 @@ function updateTheoremButtons() {
 	document.getElementById("timetheorems").innerHTML = "You have <span style='display:inline' class=\"TheoremAmount\">"+(player.timestudy.theorem>99999?shortenMoney(player.timestudy.theorem):getFullExpansion(Math.floor(player.timestudy.theorem)))+"</span> Time Theorem"+ (player.timestudy.theorem == 1 ? "." : "s.")
 }
 
-function buyTimeStudy(name, cost, check) {
+function buyTimeStudy(name, cost, check, quickBuy) {
   if (player.boughtDims) {
       if (player.timestudy.theorem<player.timestudy.ers_studies[name]+1) return
       player.timestudy.theorem-=player.timestudy.ers_studies[name]+1
@@ -125,9 +125,10 @@ function buyTimeStudy(name, cost, check) {
           document.getElementById(""+name).className = "timestudybought"
       }
       if (name == 131 && speedrunMilestonesReached < 20) {
-        if (player.replicanti.galaxybuyer) document.getElementById("replicantiresettoggle").textContent = "Auto galaxy ON (disabled)"
-        else document.getElementById("replicantiresettoggle").textContent = "Auto galaxy OFF (disabled)"
+          if (player.replicanti.galaxybuyer) document.getElementById("replicantiresettoggle").textContent = "Auto galaxy ON (disabled)"
+          else document.getElementById("replicantiresettoggle").textContent = "Auto galaxy OFF (disabled)"
       }
+      if (quickBuy) return
       updateTheoremButtons()
       updateTimeStudyButtons()
       drawStudyTree()
@@ -328,11 +329,11 @@ function studiesUntil(id) {
   for (var i = 1; i < row; i++) {
       var chosenPath = path[i > 11 ? 1 : 0];
       if (row > 6 && row < 11) var secondPath = col;
-      if ((i > 6 && i < 11) || (i > 11 && i < 15)) buyTimeStudy(i * 10 + (chosenPath === 0 ? col : chosenPath), studyCosts[all.indexOf(i * 10 + (chosenPath === 0 ? col : chosenPath))], 0);
-      if ((i > 6 && i < 11) && player.timestudy.studies.includes(201)) buyTimeStudy(i * 10 + secondPath, studyCosts[all.indexOf(i * 10 + secondPath)], 0);
-      else for (var j = 1; all.includes(i * 10 + j) ; j++) buyTimeStudy(i * 10 + j, studyCosts[all.indexOf(i * 10 + j)], 0);
+      if ((i > 6 && i < 11) || (i > 11 && i < 15)) buyTimeStudy(i * 10 + (chosenPath === 0 ? col : chosenPath), studyCosts[all.indexOf(i * 10 + (chosenPath === 0 ? col : chosenPath))], 0, true);
+      if ((i > 6 && i < 11) && player.timestudy.studies.includes(201)) buyTimeStudy(i * 10 + secondPath, studyCosts[all.indexOf(i * 10 + secondPath)], 0, true);
+      else for (var j = 1; all.includes(i * 10 + j) ; j++) buyTimeStudy(i * 10 + j, studyCosts[all.indexOf(i * 10 + j)], 0, true);
   }
-  buyTimeStudy(id, studyCosts[all.indexOf(id)], 0);
+  buyTimeStudy(id, studyCosts[all.indexOf(id)], 0, true);
 }
 
 function respecTimeStudies(force) {
@@ -569,6 +570,7 @@ function importStudyTree(input) {
 		}
 		if (changeMS) {
 			updateMasteryStudyButtons()
+			updateMasteryStudyTextDisplay()
 			drawMasteryTree()
 		}
 	}

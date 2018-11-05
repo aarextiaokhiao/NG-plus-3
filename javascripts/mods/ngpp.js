@@ -865,7 +865,7 @@ function quantumReset(force, auto, challid, implode=false) {
 		meta: {
 			antimatter: new Decimal(speedrunMilestonesReached > 18 ? 1e25 : 100),
 			bestAntimatter: headstart ? player.meta.bestAntimatter : new Decimal(speedrunMilestonesReached > 18 ? 1e25 : 100),
-			resets: speedrunMilestonesReached>26 ? 4 : 0,
+			resets: isRewardEnabled(27) ? 4 : 0,
 			'1': {
 				amount: new Decimal(0),
 				bought: 0,

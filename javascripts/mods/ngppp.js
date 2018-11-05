@@ -460,7 +460,7 @@ function updateGluons() {
 			var upg=name+"upg"+u
 			if (u>4) document.getElementById(upg+"cost").textContent=shortenMoney(GUCosts[u])
 			if (player.quantum.upgrades.includes(name+u)) document.getElementById(upg).className="gluonupgradebought small "+name
-			else if (player.quantum.gluons[name].lt(GUCosts[u-1])) document.getElementById(upg).className="gluonupgrade small unavailablebtn"
+			else if (player.quantum.gluons[name].lt(GUCosts[u])) document.getElementById(upg).className="gluonupgrade small unavailablebtn"
 			else document.getElementById(upg).className="gluonupgrade small "+name
 		}
 		var upg=name+"qk"
@@ -578,7 +578,7 @@ function isRewardEnabled(id) {
 
 function disableReward(id) {
 	player.quantum.disabledRewards[id]=!player.quantum.disabledRewards[id]
-	document.getElementById("reward"+id+"disable").textContent=(id>3?4.5:6)+" hours reward: O"+(player.quantum.disabledRewards[id]?"FF":"N")
+	document.getElementById("reward"+id+"disable").textContent=(id>4?"10 seconds":(id>3?4.5:6)+" hours")+" reward: O"+(player.quantum.disabledRewards[id]?"FF":"N")
 }
 
 function updateElectrons() {
