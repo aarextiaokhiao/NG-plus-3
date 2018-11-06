@@ -7,7 +7,7 @@ function getMetaDimensionMultiplier (tier) {
     return new Decimal(1);
   }
   let power = player.dilation.upgrades.includes("ngpp4") ? getDil15Bonus() : 2
-  let multiplier = Decimal.pow(power*(inQC(6)?1.01:1), Math.floor(player.meta[tier].bought / 10)).times(Decimal.pow(inQC(8)?1:power*(player.achievements.includes("ngpp14")?1.01:1), Math.max(0, player.meta.resets - tier + 1)*(!player.masterystudies?1:player.masterystudies.includes('t312')?1.02:1))).times(getDilationMetaDimensionMultiplier());
+  let multiplier = Decimal.pow(power, Math.floor(player.meta[tier].bought / 10)).times(Decimal.pow(inQC(8)?1:power*(player.achievements.includes("ngpp14")?1.01:1), Math.max(0, player.meta.resets - tier + 1)*(!player.masterystudies?1:player.masterystudies.includes('t312')?1.045:1))).times(getDilationMetaDimensionMultiplier());
   if (player.dilation.upgrades.includes("ngpp3")) {
     multiplier = multiplier.times(getDil14Bonus());
   }
@@ -399,7 +399,7 @@ function quantum(auto,force,challid) {
 			if (abletostart) {
 				if (pc>0) if (player.quantum.pairedChallenges.completed+1<pc) return
 				if (player.quantum.electrons.amount.lt(getQCCost(challid))||!inQC(0)) return
-				if (player.options.challConf || QCIntensity(1) == 0) if (!confirm("You will do a quantum reset but you will not gain quarks, and keep your electrons & sacrificed galaxies, and you can't buy electron upgrades. You have to reach the set goal of antimatter to complete this challenge. NOTE: Electrons do nothing in quantum challenges and your electrons and sacrificed galaxies do not reset until you end the challenge.")) return
+				if (player.options.challConf || QCIntensity(1) == 0) if (!confirm("You will do a quantum reset but you will not gain quarks, and keep your electrons & sacrificed galaxies, and you can't buy electron upgrades. You have to reach the set goal of antimatter to complete this challenge. NOTE: Electrons and banked eternities do nothing in quantum challenges and your electrons and sacrificed galaxies do not reset until you end the challenge.")) return
 				player.quantum.electrons.amount=player.quantum.electrons.amount.sub(getQCCost(challid))
 			} else if (pcFocus&&pc<1) {
 				if (!assigned.includes(challid)) {
@@ -550,7 +550,8 @@ function quantumReset(force, auto, challid, implode=false) {
 		}
 	}
 	document.getElementById("quantumbtn").style.display="none"
-	if (!force) {
+	if (force) bankedEterGain=0
+	else {
 		for (var i=player.quantum.last10.length-1; i>0; i--) {
 			player.quantum.last10[i] = player.quantum.last10[i-1]
 		}
@@ -683,6 +684,7 @@ function quantumReset(force, auto, challid, implode=false) {
 		postC3Reward: new Decimal(1),
 		eternityPoints: new Decimal(0),
 		eternities: headstart ? player.eternities : speedrunMilestonesReached > 17 ? 1e13 : oheHeadstart ? 2e4 : 0,
+		eternitiesBank: player.masterystudies ? player.eternitiesBank + bankedEterGain : undefined,
 		thisEternity: 0,
 		bestEternity: headstart ? player.bestEternity : 9999999999,
 		eternityUpgrades: isRewardEnabled(3) ? [1,2,3,4,5,6] : [],
@@ -987,6 +989,7 @@ function quantumReset(force, auto, challid, implode=false) {
 		updateColorCharge()
 		updateGluons()
 		updateElectrons()
+		updateBankedEter()
 		updateQuantumChallenges()
 		updateReplicants()
 		if (!oheHeadstart) {

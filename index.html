@@ -468,16 +468,16 @@
                 </table>
                 <table class="table" id="studytable">
                     <tr>
-                        <td><button class="timestudylocked" id="timestudy301" style='font-size:10px' onclick='buyMasteryStudy("t", 301)'>Remote cost scaling starts 1 galaxy later per 4.45 extra replicated galaxies.</span></button></td>
+                        <td><button class="timestudylocked" id="timestudy301" style='font-size:10px' onclick='buyMasteryStudy("t", 301)'>Remote cost scaling starts 1 galaxy later per 4.15 extra replicated galaxies.</span></button></td>
                         <td><button class="timestudylocked" id="timestudy302" onclick='buyMasteryStudy("t", 302)'>Pick all time studies before mastery studies.</button></td>
                         <td><button class="timestudylocked" id="timestudy303" style='font-size:10px' onclick='buyMasteryStudy("t", 303)'>Meta Dimensions are stronger based on your galaxies.<br><span id="ts303Current"></span></button></td>
                     </tr>
                 </table>
                 <table class="table" id="studytable">
                     <tr>
-                        <td><button class="timestudylocked" id="timestudy311" onclick='buyMasteryStudy("t", 311)'>Replicanti multiplier to Infinity Dimensions is 16.5x stronger.</span></button></td>
+                        <td><button class="timestudylocked" id="timestudy311" onclick='buyMasteryStudy("t", 311)'>Replicanti multiplier to Infinity Dimensions is 17.3x stronger.</span></button></td>
                         <td><button class="timestudylocked" id="dilstudy10" onclick='buyMasteryStudy("d", 10)'>Unlock Replicants<br><span id="ds10Cost"></span><br>Requirement: Complete Paired Challenge 4</button></td>
-                        <td><button class="timestudylocked" id="timestudy312" onclick='buyMasteryStudy("t", 312)'>Meta-dimension boosts are 2% stronger and costs scale by 1 less.</button></td>
+                        <td><button class="timestudylocked" id="timestudy312" onclick='buyMasteryStudy("t", 312)'>Meta-dimension boosts are 4.5% stronger and cost scale by 1 less.</button></td>
                     </tr>
                 </table>
                 <table class="table" id="studytable">
@@ -1602,8 +1602,10 @@
                 </div>
                 <div id="eternityStatistics">
                     <div id="eternitied">You have eternitied x times.</div>
+                    <div id="eternitiedBank"></div>
                     <div id="thiseternity">You have spent x in this eternity</div>
                     <div id="besteternity">Your fastest eternity is in x.</div>
+                    <div id="bankedEterGain"></div>
                     <div id="exdilated"></div>
                     <br>
                 </div>
@@ -2129,7 +2131,7 @@
                                 <div id="Work harder." class="achievement achievementlocked" style="background-image: url(images/108.png)" ach-tooltip="Unlock dilation without buying eternity upgrades."><br></div>
                             </td>
                             <td>
-                                <div id="No more tax fraud!" class="achievement achievementlocked" style="background-image: url(images/109.png)" ach-tooltip="Have 900 galaxies without unlocking dilation."><br></div>
+                                <div id="No more tax fraud!" class="achievement achievementlocked" style="background-image: url(images/109.png)" ach-tooltip="Have 900 galaxies without unlocking dilation. Reward: You permanently keep your banked infinities and 5% of your eternitied stat on quantum."><br></div>
                             </td>
                             <td>
                                 <div id="And the winner is..." class="achievement achievementlocked" style="background-image: url(images/110.png)" ach-tooltip="Quantum in under 30 seconds."><br></div>
@@ -2292,7 +2294,7 @@
                         <td><div id="speedrunMilestone25" style="background-image: url(images/quantum_speedruns/25.png)" ach-tooltip="Reward: Unlock manual mode for eternity autobuyer and sacrifice galaxy autobuyer."></div></td>
                         <td><div id="speedrunMilestone26" style="background-image: url(images/quantum_speedruns/26.png)" ach-tooltip="Reward: Rebuyable dilation upgrade autobuyer can buy max all upgrades."></div></td>
                         <td><div id="speedrunMilestone27" style="background-image: url(images/quantum_speedruns/27.png)" ach-tooltip="Reward: You can buy max meta-dimension boosts and start with 4 meta-dimension boosts."></div></td>
-                        <td><div id="speedrunMilestone28" style="background-image: url(images/quantum_speedruns/28.png)" ach-tooltip="Reward: Galaxies do not reset on infinity."></div></td>
+                        <td><div id="speedrunMilestone28" style="background-image: url(images/quantum_speedruns/28.png)" ach-tooltip="Reward: Galaxies do not reset on infinity and you gain banked infinities based on your post-crunch infinitied stat."></div></td>
                         <td colspan=2></td>
                     </tr>
                 </table>
@@ -3014,7 +3016,7 @@
                         </td>
                         <td>
                             <div class="quantumchallengediv" id="qc6div">
-                                <span>All Infinity Challenges except IC1, IC4, and IC5 are applied to all dimensions except Meta Dimensions. You can't gain and lose dimension boosts or else you will fail. Multiplier per ten meta dimensions is little bit stronger. Infinitied stat gain is nullified.</span>
+                                <span>All Infinity Challenges except IC1, IC4, and IC5 are applied to all dimensions except Meta Dimensions. You can't gain and lose dimension boosts or else you will fail. Multiplier per ten meta dimensions is little bit stronger.</span>
                                 <br>
                                 <br>
                                 <div class="outer">
@@ -3848,7 +3850,7 @@
 					<td><button id='brupg4' onclick='buyGluonUpg("br",4)'>Multiplier per ten dimensions boosts Meta Dimensions.<br><span id='brupg4current'></span><br>Cost: 100 BR gluons</button></td>
 				</tr><tr id='gupgrow3'>
 					<td><button id='rgupg5' onclick='buyGluonUpg("rg",5)'>Slow down Dark Matter Galaxies effect by 13%.<br>Cost: <span id='rgupg5cost'></span> RG gluons</button></td>
-					<td><button id='rgupg6' onclick='buyGluonUpg("rg",6)'>Slow down Distant Antimatter Galaxies effect by 15%.<br>Cost: <span id='rgupg6cost'></span> RG gluons</button></td>
+					<td><button id='rgupg6' onclick='buyGluonUpg("rg",6)'>Slow down Distant Antimatter Galaxies effect by 13.2%.<br>Cost: <span id='rgupg6cost'></span> RG gluons</button></td>
 					<td><button id='gbupg5' onclick='buyGluonUpg("gb",5)'>Replicated galaxies slow down Dark Matter Galaxies effect.<br><span id='gbupg5current'></span><br>Cost: <span id='gbupg5cost'></span> GB gluons</button></td>
 					<td><button id='gbupg6' onclick='buyGluonUpg("gb",6)'>Infinity power slow down Distant Antimatter Galaxies effect.<br><span id='gbupg6current'></span><br>Cost: <span id='gbupg6cost'></span> GB gluons</button></td>
 					<td><button id='brupg5' onclick='buyGluonUpg("br",5)'>Tachyon particles slow down Dark Matter Galaxies effect.<br><span id='brupg5current'></span><br>Cost: <span id='brupg5cost'></span> BR gluons</button></td>

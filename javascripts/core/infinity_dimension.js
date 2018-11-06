@@ -240,7 +240,7 @@ function toggleAllInfDims() {
       }
   } else {
       for (var i=1; i<9; i++) {
-          if (player.eternities - 10>=i) {
+          if (getEternitied() - 10>=i) {
               player.infDimBuyers[i-1] = true
               document.getElementById("infauto"+i).textContent = "Auto: ON"
           }
@@ -260,15 +260,15 @@ function loadInfAutoBuyers() {
 var infDimPow = 1
 
 function getIDReplMult() {
-	if (player.masterystudies) if (player.masterystudies.includes('t311')) return getReplMult().pow(16.5)
+	if (player.masterystudies) if (player.masterystudies.includes('t311')) return getReplMult().pow(17.3)
 	return getReplMult()
 }
 
 function getEU2Mult() {
-	if (player.boughtDims) return Decimal.pow(player.eternities, Math.log(player.eternities*2+1)/Math.log(4))
-	var cap = Math.min(player.eternities, 100000)
-	var soft = player.eternities - cap
-	return Decimal.pow(cap/200 + 1, Math.log(cap*2+1)/Math.log(4)).times(new Decimal(soft/200 + 1).times(Math.log(soft*2+1)/Math.log(4)).max(1)).max(player.achievements.includes("ngpp15")?Decimal.pow(10, Math.pow(Math.log10(player.eternities), 4.75)):1)
+	if (player.boughtDims) return Decimal.pow(getEternitied(), Math.log(getEternitied()*2+1)/Math.log(4))
+	var cap = Math.min(getEternitied(), 100000)
+	var soft = getEternitied() - cap
+	return Decimal.pow(cap/200 + 1, Math.log(cap*2+1)/Math.log(4)).times(new Decimal(soft/200 + 1).times(Math.log(soft*2+1)/Math.log(4)).max(1)).max(player.achievements.includes("ngpp15")?Decimal.pow(10, Math.pow(Math.log10(getEternitied()), 4.75)):1)
 }
 
 function getEU3Mult() {

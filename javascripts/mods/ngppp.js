@@ -149,7 +149,7 @@ function canBuyMasteryStudy(type, id) {
 		if (player.timestudy.theorem<masterystudies.costs.dil[id]||player.masterystudies.includes('d'+id)) return false
 		if (id>9) return player.masterystudies.includes("t302")&&player.quantum.pairedChallenges.completed>3
 		if (id>8) return player.masterystudies.includes("d8")&&QCIntensity(8)
-		if (id>7) return player.masterystudies.includes("t272")&&player.quantum.electrons.amount.gte(16900)
+		if (id>7) return player.masterystudies.includes("t272")&&player.quantum.electrons.amount.gte(16750)
 		if (id>6) return player.masterystudies.includes("t252")
 	} else {
 		if (player.timestudy.theorem<masterystudies.costs.ec[id]||player.eternityChallUnlocked) return false
@@ -284,7 +284,7 @@ function getMTSMult(id) {
 	}
 	if (id==281) return Decimal.pow(10,Math.pow(replmult.max(1).log10(),0.25)/10)
 	if (id==282) return Decimal.pow(10,Math.pow(replmult.max(1).log10(),0.25)/15)
-	if (id==303) return Decimal.pow(3.5,Math.pow(Math.log10(Math.max(player.galaxies,1)),1.5))
+	if (id==303) return Decimal.pow(4.7,Math.pow(Math.log10(Math.max(player.galaxies,1)),1.5))
 	if (id==322) return Decimal.pow(10,Math.sqrt(-player.tickspeed.div(1000).log10())/22500)
 	if (id==341) return player.galaxies+1
 	if (id==342) {
@@ -343,8 +343,8 @@ function updateQuantumTabs() {
 		if (player.masterystudies.includes("d9")) {
 			document.getElementById("gbupg5current").textContent="Currently: "+(Math.sqrt(player.replicanti.galaxies)/5.5).toFixed(1)+"%"
 			document.getElementById("brupg5current").textContent="Currently: "+Math.min(Math.sqrt(player.dilation.tachyonParticles.max(1).log10())*1.3,14).toFixed(1)+"%"
-			document.getElementById("gbupg6current").textContent="Currently: "+(100-100/(1+Math.pow(player.infinityPower.log10(),0.25)/2500)).toFixed(1)+"%"
-			document.getElementById("brupg6current").textContent="Currently: "+(100-100/(1+player.meta.resets/300)).toFixed(1)+"%"
+			document.getElementById("gbupg6current").textContent="Currently: "+(100-100/(1+Math.pow(player.infinityPower.log10(),0.25)/2810)).toFixed(1)+"%"
+			document.getElementById("brupg6current").textContent="Currently: "+(100-100/(1+player.meta.resets/340)).toFixed(1)+"%"
 			document.getElementById("gbupg7current").textContent="Currently: "+(100-100/(1+Math.log10(1+player.infinityPoints.max(1).log10())/100)).toFixed(1)+"%"
 			document.getElementById("brupg7current").textContent="Currently: "+(100-100/(1+Math.log10(1+player.eternityPoints.max(1).log10())/80)).toFixed(1)+"%"
 		}
@@ -633,8 +633,8 @@ function buyQuarkMult(name) {
 }
 
 var quantumChallenges={
-	costs:[0,16900,19100,21500,24200,25900,28900,32e3,33600],
-	goals:[0,715e7,7982e7,4638e7,5394e7,1239e7,251e6,6305e7,3105e7]
+	costs:[0,16750,19100,21500,24050,25900,28900,31900,33600],
+	goals:[0,665e7,768e8,4525e7,5325e7,1344e7,561e6,6254e7,2925e7]
 }
 
 var assigned
@@ -703,7 +703,7 @@ function getQCGoal(num) {
 	}
 	if (c1==0) return quantumChallenges.goals[0]
 	if (c2==0) return quantumChallenges.goals[c1]
-	return quantumChallenges.goals[c1]*quantumChallenges.goals[c2]/1e11*((c1==1||c2==1)?1.46:1)*Math.sqrt((c1==6||c2==6)?2:1)
+	return quantumChallenges.goals[c1]*quantumChallenges.goals[c2]/1e11*((c1==1||c2==1)?1.6:1)
 }
 
 function QCIntensity(num) {
@@ -746,8 +746,8 @@ function updateMasteryStudyTextDisplay() {
 	document.getElementById("ec13Req").textContent="Requirement: "+getFullExpansion(masterystudies.reqs[13])+" dimension boosts"
 	document.getElementById("ec14Req").textContent="Requirement: "+getFullExpansion(masterystudies.reqs[14])+"% replicate chance"
 	if (quantumed) {
-		for (id=7;id<11;id++) document.getElementById("ds"+id+"Cost").textContent="Cost: "+shorten(masterystudies.costs.dil[id])+" Time Theorems"
-		document.getElementById("ds8Req").textContent="Requirement: "+shorten(16900)+" electrons"
+		for (id=7;id<12;id++) document.getElementById("ds"+id+"Cost").textContent="Cost: "+shorten(masterystudies.costs.dil[id])+" Time Theorems"
+		document.getElementById("ds8Req").textContent="Requirement: "+shorten(16750)+" electrons"
 	}
 	if (player.masterystudies.includes("d10")) {
 		for (id=341;id<345;id++) document.getElementById("ts"+id+"Cost").textContent="Cost: "+shorten(masterystudies.costs.time[id])+" Time Theorems"
@@ -985,4 +985,16 @@ function getCurrentQCData() {
 	if (player.quantum.challenge==undefined) return []
 	if (typeof(player.quantum.challenge)=="number") return [player.quantum.challenge]
 	return player.quantum.challenge
+}
+
+//v1.9987
+var bankedEterGain
+function updateBankedEter(updateHtml=true) {
+	bankedEterGain=0
+	if (player.achievements.includes("ng3p15")) bankedEterGain=player.eternities/5
+	bankedEterGain=Math.floor(bankedEterGain)
+	if (updateHtml) {
+		setAndMaybeShow("bankedEterGain",bankedEterGain>0,'"You will gain "+getFullExpansion(bankedEterGain)+" banked eternities on next quantum."')
+		setAndMaybeShow("eternitiedBank",player.eternitiesBank,'"You have "+getFullExpansion(player.eternitiesBank)+" banked eternities."')
+	}
 }

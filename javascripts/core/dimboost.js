@@ -155,6 +155,7 @@ function softReset(bulk) {
       timeDimension8: player.timeDimension8,
       eternityPoints: player.eternityPoints,
       eternities: player.eternities,
+      eternitiesBank: player.eternitiesBank,
       thisEternity: player.thisEternity,
       bestEternity: player.bestEternity,
       eternityUpgrades: player.eternityUpgrades,
