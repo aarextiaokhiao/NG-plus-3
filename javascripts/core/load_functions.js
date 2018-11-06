@@ -1655,7 +1655,7 @@ function transformSaveToDecimal() {
   player.chall3Pow = new Decimal(player.chall3Pow)
   player.chall11Pow = new Decimal(player.chall11Pow)
   if (player.galacticSacrifice !== undefined) {
-      player.galacticSacrifice.galaxyPoints = new Decimal(player.galacticSacrifice.galaxyPoints)
+      player.galacticSacrifice.galaxyPoints = Decimal.round(player.galacticSacrifice.galaxyPoints)
       if (player.dimPowerIncreaseCost !== undefined) player.dimPowerIncreaseCost = new Decimal(player.dimPowerIncreaseCost)
   }
   player.costMultipliers = [new Decimal(player.costMultipliers[0]), new Decimal(player.costMultipliers[1]), new Decimal(player.costMultipliers[2]), new Decimal(player.costMultipliers[3]), new Decimal(player.costMultipliers[4]), new Decimal(player.costMultipliers[5]), new Decimal(player.costMultipliers[6]), new Decimal(player.costMultipliers[7])]
