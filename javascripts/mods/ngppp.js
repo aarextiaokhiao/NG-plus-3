@@ -434,7 +434,7 @@ function assignQuark(color) {
 }
 
 //v1.75
-GUCosts=[null, 1, 2, 4, 100, 7e15, 4e19, 15e27]
+GUCosts=[null, 1, 2, 4, 100, 7e15, 4e19, 3e28]
 
 function updateGluons() {
 	if (!player.masterystudies) return
@@ -646,7 +646,6 @@ function updateQuantumChallenges() {
 	} else document.getElementById("qctabbtn").style.display=""
 	assigned=[]
 	var assignedNums={}
-	document.getElementById("pcNotice").style.display = player.masterystudies.includes("d9") ? "" : "none"
 	document.getElementById("pairedchallenges").style.display = player.masterystudies.includes("d9") ? "" : "none"
 	document.getElementById("respecPC").style.display = player.masterystudies.includes("d9") ? "" : "none"
 	for (pc=1;pc<5;pc++) {
