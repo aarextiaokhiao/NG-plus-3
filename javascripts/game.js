@@ -4258,7 +4258,7 @@ document.getElementById("bigcrunch").onclick = function () {
             resets: 0,
             dbPower: player.dbPower,
             tickspeedBoosts: player.tickspeedBoosts,
-            galaxies: speedrunMilestonesReached>27 ? player.galaxies : 0,
+            galaxies: 0,
             galacticSacrifice: newGalacticDataOnInfinity(),
             totalmoney: player.totalmoney,
             interval: null,
