@@ -347,7 +347,7 @@ function buyBulkDimension(tier, bulk, auto) {
 	let cost = player[name + 'Cost'].times(10)
 	let resource = getOrSubResource(tier)
 	if (resource.lt(cost)) return
-	if (player.currentChallenge != "postc5" && player.currentChallenge != "challenge5" && !costIncreaseActive(player[name + "Cost"])) {
+	if (player.currentChallenge != "postc5" && player.currentChallenge != "challenge5" && player.currentChallenge != "challenge9" && !costIncreaseActive(player[name + "Cost"])) {
 		let mult = getDimensionCostMultiplier(tier)
 		let max = Number.POSITIVE_INFINITY
 		if (player.currentChallenge != "challenge10" && player.currentChallenge != "postc1") max = Math.ceil(Decimal.div(Number.MAX_VALUE, cost).log(mult))
@@ -397,7 +397,7 @@ function buyBulkDimension(tier, bulk, auto) {
 }
 
 function canQuickBuyDim(tier) {
-	if (player.currentChallenge == "postc5" || player.currentChallenge == "challenge5") return false
+	if (player.currentChallenge == "postc5" || player.currentChallenge == "challenge5" || player.currentChallenge == "challenge9") return false
 	return player.dimensionMultDecrease <= 3 || player.costMultipliers[tier-1].gt(Number.MAX_SAFE_INTEGER)
 }
 
