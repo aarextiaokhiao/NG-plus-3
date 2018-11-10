@@ -702,7 +702,12 @@ function getQCGoal(num) {
 	}
 	if (c1==0) return quantumChallenges.goals[0]
 	if (c2==0) return quantumChallenges.goals[c1]
-	return quantumChallenges.goals[c1]*quantumChallenges.goals[c2]/1e11*((c1==1||c2==1)?1.6:1)
+	var mult=1
+	if (c1==1||c2==1) {
+		mult=1
+		if (c1==3||c2==3) mult=1.6
+	}
+	return quantumChallenges.goals[c1]*quantumChallenges.goals[c2]/1e11*mult
 }
 
 function QCIntensity(num) {
