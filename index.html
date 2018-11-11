@@ -3938,8 +3938,9 @@
         <button class="storebtn" style="font-size: 15px" onclick="closeToolTip()" style="display: inline">Okay</button>
     </div>
     <div class="popup" id="stuck">
-        <div>If you stuck at the loading screen, please click "Okay" to load the game!</div><br><br>
-        <button class="storebtn" style="font-size: 15px" onclick="initGame()" style="display: inline">Okay</button>
+        <div>If you are stuck on the loading screen, please click "Init" to force init or "Reload" to reload.</div><br><br>
+        <button class="storebtn" style="font-size: 15px" onclick="initGame()" style="display: inline">Init</button>
+        <button class="storebtn" style="font-size: 15px" onclick="document.location.reload(true)" style="display: inline">Reload</button>
     </div>
 	<div class="popup optionmenu" id="welcome">
         <div><text id="welcomeMessage"></text></div>

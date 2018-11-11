@@ -176,8 +176,10 @@ newsArray = [//always true
 ["You should take a break.", "player.achievements.includes('r22') && player.totalMoney.gt(Decimal.pow(10, 1e14))", "am22"],
 ["There is a lot of bugfixes coming, but I am too busy that I can't develop my modification a lot.", "player.achievements.includes('r22')", "am23"],
 ["Did you know that NG-3 nerfs NG-- to make short runs longer?", "player.achievements.includes('r22') && player.tickspeedBoosts != undefined", "am24"],
-["I guess NG-4 would be coming if NG-3 is too easy.", "player.achievements.includes('r22') && player.tickspeedBoosts != undefined", "am25"]
-/*NEXT ID: am27*/];}
+["I guess NG-4 would be coming if NG-3 is too easy.", "player.achievements.includes('r22') && player.tickspeedBoosts != undefined", "am25"],
+["I don't really think I am an A.I.", "player.achievements.includes('r22')", "am27"],
+["Somebody think you get your first galactic sacrifice faster than NG--. An update will be coming soon!", "player.achievements.includes('r22') && player.tickspeedBoosts != undefined", "am28"]
+/*NEXT ID: am29*/];}
 
 document.addEventListener("visibilitychange", function() {if (!document.hidden) {scrollNextMessage();}}, false);
 var scrollTimeouts = [];
