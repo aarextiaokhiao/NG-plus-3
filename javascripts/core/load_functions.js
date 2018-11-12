@@ -909,11 +909,6 @@ if (player.version < 5) {
       player.aarexModifications.newGame3PlusVersion=1.9987
       player.eternitiesBank=0
   }
-  /*if (player.aarexModifications.newGame3PlusVersion < 1.999) {
-      player.quantum.emperorDimensions = {limitTier: 1}
-      for (d=2;d<9;d++) player.quantum.emperorDimensions[d] = {workers: 0, workerProgress: 0}
-      player.aarexModifications.newGame3PlusVersion=1.999
-  }*/
   if (player.masterystudies) if (player.quantum.autoOptions === undefined) player.quantum.autoOptions = {} //temp
   if (player.aarexModifications.newGame3PlusVersion==undefined) {
       colorBoosts={
