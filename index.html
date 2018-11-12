@@ -482,7 +482,7 @@
                 </table>
                 <table class="table" id="studytable">
                     <tr>
-                        <td><button class="timestudylocked" id="timestudy321" onclick='buyMasteryStudy("t", 321)' style='font-size:10px'>???</span></button></td>
+                        <td><button class="timestudylocked" id="timestudy321" onclick='buyMasteryStudy("t", 321)' style='font-size:10px'>If the multiplier per ten dimensions does nothing, it actually multiplies dimensions by <span id='321effect'></span>x.</span></button></td>
                         <td style='width:368px; text-align: center'><button class="timestudylocked" id="timestudy322" style='font-size:10px' onclick='buyMasteryStudy("t", 322)'>Tickspeed boosts DT production at greatly reduced rate.<br><span id="ts322Current"></span></button></td>
                         <td><button class="timestudylocked" id="timestudy323" style='font-size:10px' onclick='buyMasteryStudy("t", 323)'>Cancel dilation penalty for Normal Dimensions boost from replicanti.</span></button></td>
                     </tr>
@@ -1521,18 +1521,17 @@
                     <tr>
 		    			<td><div><button id="save" class="storebtn" style="color:black; width: 200px; height: 55px; font-size: 20px">Save</button></div></td>
 		    			<td><div><button id="load" class="storebtn" style="color:black; width: 200px; height: 55px; font-size: 20px">Load</button></div></td>
+                        <td><div><button id="offlineProgress" onclick='toggleOfflineProgress()' class="storebtn" style="color:black; width: 200px; height: 55px; font-size: 15px"></button></div></td>
                     </tr>
                     <tr>
+                        <td><div><button class="storebtn" onclick='rename_save()' style="color:black; width: 200px; height: 55px; font-size: 20px">Rename</button></div></td>
                         <td><div><button id="exportbtn" class="storebtn" style="color:black; width: 200px; height: 55px; font-size: 20px">Export</button></div></td>
                         <td><div><button id="importbtn" class="storebtn" onclick='import_save()' style="color:black; width: 200px; height: 55px; font-size: 20px">Import</button></div></td>
                     </tr>
                     <tr>
                         <td><div><button id="exportallbtn" class="storebtn" style="color:black; width: 200px; height: 55px; font-size: 20px">Export all</button></div></td>
                         <td><div><button id="importallbtn" class="storebtn" onclick='import_save_all()' style="color:black; width: 200px; height: 55px; font-size: 20px">Import all</button></div></td>
-                    </tr>
-                    <tr>
 		    			<td><div><button id="reset" class="storebtn" style="color:black; width: 200px; height: 55px; font-size: 20px">RESET THE GAME</button></div></td>
-                        <td><div><button id="offlineProgress" onclick='toggleOfflineProgress()' class="storebtn" style="color:black; width: 200px; height: 55px; font-size: 15px"></button></div></td>
                     </tr>
                 </table>
             </div>

@@ -2133,7 +2133,7 @@ function updateExtraReplGalaxies() {
         if (ts226Eff > 99) ts226Eff = Math.floor(Math.sqrt(0.25 + 2 * (ts226Eff - 99) * (QCIntensity(8) > 1 ? 4 : QCIntensity(8) ? 3 : 1)) + 98.5)
     }
     extraReplGalaxies = ts225Eff + ts226Eff
-    if (extraReplGalaxies > 325) extraReplGalaxies = (Math.sqrt(0.8836+0.24*(extraReplGalaxies-324))-0.94)/0.12+324
+    if (extraReplGalaxies > 325) extraReplGalaxies = (Math.sqrt(0.9216+0.16*(extraReplGalaxies-324))-0.96)/0.08+324
     extraReplGalaxies = Math.floor(extraReplGalaxies * (colorBoosts.g + gatheredQuarksBoost))
 }
 
@@ -7139,7 +7139,7 @@ function gameLoop(diff) {
     document.getElementById("ec11reward").textContent = "Reward: Further reduce the tickspeed cost multiplier increase, Currently: "+player.tickSpeedMultDecrease.toFixed(2)+"x "
     document.getElementById("ec12reward").textContent = "Reward: Infinity Dimension cost multipliers are reduced. (x^"+(1-ECTimesCompleted("eterc12")*0.008)+")"
     document.getElementById("ec13reward").textContent = "Reward: Increase the power of meta-antimatter. ("+(9+ECTimesCompleted("eterc13")*0.2)+"x)"
-    document.getElementById("ec14reward").textContent = "Reward: Free tickspeed upgrades increases IC3 reward "+(ECTimesCompleted("eterc14")*2)+" times."
+    document.getElementById("ec14reward").textContent = "Reward: Free tickspeed upgrades increase IC3 reward "+(ECTimesCompleted("eterc14")*2)+" times."
 
     document.getElementById("ec10span").textContent = shortenMoney(ec10bonus) + "x"
 

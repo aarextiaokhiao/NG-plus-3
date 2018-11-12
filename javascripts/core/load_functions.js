@@ -1533,8 +1533,9 @@ function change_save(id) {
 }
 
 function rename_save(id) {
-	var save_name = prompt("Input a new name of this save. It is necessary to rename it into related names!")
-	if (metaSave.current == id) player.aarexModifications.save_name = save_name
+	var save_name = prompt("Input a new name of this save. It is necessary to rename it into related names! Leave blank to reset the save's name.")
+	if (save_name === null) return
+	if (metaSave.current == id || id === undefined) player.aarexModifications.save_name = save_name
 	else {
 		var temp_save = get_save(id)
 		if (!temp_save.aarexModifications) temp_save.aarexModifications={
