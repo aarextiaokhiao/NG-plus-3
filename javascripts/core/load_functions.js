@@ -912,7 +912,7 @@ if (player.version < 5) {
   }
   if (player.masterystudies ? player.aarexModifications.newGame3PlusVersion < 1.999 || (player.quantum.emperorDimensions ? player.quantum.emperorDimensions[1] : false) : false) { //temp
       player.quantum.replicants.limit=Math.min(player.quantum.replicants.limit,10)
-      player.quantum.replicants.limitDim=10
+      player.quantum.replicants.limitDim=1
       player.quantum.replicants.limitCost=Math.pow(200,player.quantum.replicants.limit-1)*1e49
       player.quantum.emperorDimensions = {}
       player.quantum.emperorDimensions[1] = {workers: player.quantum.replicants.workers, progress: player.quantum.replicants.workerProgress}
