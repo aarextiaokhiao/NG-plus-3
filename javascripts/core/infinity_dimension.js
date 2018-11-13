@@ -36,7 +36,7 @@ function updateInfinityDimensions() {
 
 function DimensionProduction(tier) {
   if (inQC(8)) return new Decimal(0)
-  if (tier == 9) return getTimeDimensionProduction(1).pow(player.currentEternityChall == "eterc7" ? 1 : ECTimesCompleted("eterc7")*0.2).max(1).minus(1).times(10)
+  if (tier == 9) return getTimeDimensionProduction(1).max(1).pow(player.currentEternityChall == "eterc7" ? 1 : ECTimesCompleted("eterc7")*0.2).minus(1).times(10)
   var dim = player["infinityDimension"+tier]
   var ret = dim.amount
   if (inQC(4) && tier == 1) ret = ret.plus(player.infinityDimension2.amount.floor())

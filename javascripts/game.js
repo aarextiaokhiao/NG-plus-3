@@ -2873,10 +2873,10 @@ function showNextModeMessage() {
 		document.getElementById("welcome").style.display = "flex"
 		document.getElementById("welcomeMessage").innerHTML = ngModeMessages[ngModeMessages.length-1]
 		ngModeMessages.pop()
-	} else if (player.aarexModifications.nextUpdateNotice!==3 && player.masterystudies) {
+	} else if (player.aarexModifications.nextUpdateNotice!==4 && player.masterystudies) {
 		document.getElementById("welcome").style.display = "flex"
-		document.getElementById("welcomeMessage").innerHTML = "I am sorry for terrible balancing on quantum challenges. And also, one of my friends, Username5243, completed Quantum Challenge 1... Therefore, the update that fixes that will be released soon! :)"
-		player.aarexModifications.nextUpdateNotice=3
+		document.getElementById("welcomeMessage").innerHTML = "When the next update, all replicants-era studies will be nerfed and the end-game will be reduced to "+shortenCosts(Decimal.pow(10,5e13))+"! There will probably be emperor dimensions."
+		player.aarexModifications.nextUpdateNotice=4
 	} else {
 		document.getElementById("welcome").style.display = "none"
 		player.aarexModifications.popUpId=1

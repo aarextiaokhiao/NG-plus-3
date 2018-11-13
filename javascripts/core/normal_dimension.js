@@ -196,7 +196,7 @@ function hasInfinityMult(tier) {
     
     function getDimensionPowerMultiplier(nonrandom, focusOn) {
         if (inQC(5)||inQC(7)||(player.currentChallenge=="challenge13"&&player.tickspeedBoosts==undefined)) {
-            if (player.masterystudies.includes("t321")) return "1e430"
+            if (player.masterystudies) if (player.masterystudies.includes("t321")) return "1e430"
             return 1
         }
         let dimMult = player.tickspeedBoosts==undefined?2:1
