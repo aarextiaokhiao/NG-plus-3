@@ -2,7 +2,7 @@ masterystudies={initialCosts:{time:{241: 1e71, 251: 2e71, 252: 2e71, 253: 2e71, 
 		ec:{13:1e72, 14:1e72}},
 	costs:{time:{},
 		ec:{},
-		dil:{7: 2e82, 8: 2e84, 9: 4e85, 10: 6e87},
+		dil:{7: 2e82, 8: 2e84, 9: 4e85, 10: 6e87, 11: 2e90},
 		mc:{}},
 	costmults:{241: 1, 251: 2.5, 252: 2.5, 253: 2.5, 261: 6, 262: 6, 263: 6, 264: 6, 265: 6, 266: 6, 271: 2, 272: 2, 273: 2, 281: 4, 282: 4, 291: 1, 292: 1, 301: 2, 302: 2, 303: 2, 311: 64, 312: 64, 321: 2, 322: 2, 323: 2, 331: 3, 332: 3, 341: 2, 342: 2, 343: 2, 344: 2, 351: 4},
 	costmult:1,
@@ -36,7 +36,7 @@ function updateMasteryStudyButtons() {
 		for (id=281;id<283;id++) document.getElementById("ts"+id+"Current").textContent="Currently: "+shorten(getMTSMult(id))+"x"
 		document.getElementById("ts303Current").textContent="Currently: "+shorten(getMTSMult(303))+"x"
 		document.getElementById("ts322Current").textContent="Currently: "+shorten(getMTSMult(322))+"x"
-		for (id=7;id<11;id++) {
+		for (id=7;id<12;id++) {
 			var div=document.getElementById("dilstudy"+id)
 			if (player.masterystudies.includes("d"+id)) div.className="dilationupgbought"
 			else if (canBuyMasteryStudy('d', id)) div.className="dilationupg"
@@ -112,7 +112,13 @@ function buyMasteryStudy(type, id, quick=false) {
 		if (id==10) {
 			showTab("quantumtab")
 			showQuantumTab("replicants")
-			document.getElementById("emperorstudies").style.display=""
+			document.getElementById("replicantsstudies").style.display=""
+			updateReplicants()
+		}
+		if (id==11) {
+			showTab("dimensions")
+			showDimTab("emperordimensions")
+			document.getElementById("edtabbtn").style.display=""
 			updateReplicants()
 		}
 	}
@@ -147,6 +153,7 @@ function canBuyMasteryStudy(type, id) {
 		if (row>24) return player.masterystudies.includes('t241')
 	} else if (type=='d') {
 		if (player.timestudy.theorem<masterystudies.costs.dil[id]||player.masterystudies.includes('d'+id)) return false
+		if (id>10) return player.masterystudies.includes("t351")&&eds[1].workers.gt(9.9)
 		if (id>9) return player.masterystudies.includes("t302")&&player.quantum.pairedChallenges.completed>3
 		if (id>8) return player.masterystudies.includes("d8")&&QCIntensity(8)
 		if (id>7) return player.masterystudies.includes("t272")&&player.quantum.electrons.amount.gte(16750)
@@ -357,7 +364,7 @@ function updateQuantumTabs() {
 		document.getElementById("replicantiAmount2").textContent=shortenDimensions(player.replicanti.amount)
 		document.getElementById("replicantReset").className=player.replicanti.amount.lt(player.quantum.replicants.requirement)?"unavailablebtn":"storebtn"
 		document.getElementById("replicantAmount").textContent=shortenDimensions(player.quantum.replicants.amount)
-		document.getElementById("workerReplAmount").textContent=shortenDimensions(player.quantum.replicants.workers)
+		document.getElementById("workerReplAmount").textContent=shortenDimensions(eds[1].workers)
 		document.getElementById("babyReplAmount").textContent=shortenDimensions(player.quantum.replicants.babies)
 
 		var gatherRateData=getGatherRate()
@@ -750,7 +757,7 @@ function updateMasteryStudyTextDisplay() {
 	document.getElementById("ec13Req").textContent="Requirement: "+getFullExpansion(masterystudies.reqs[13])+" dimension boosts"
 	document.getElementById("ec14Req").textContent="Requirement: "+getFullExpansion(masterystudies.reqs[14])+"% replicate chance"
 	if (quantumed) {
-		for (id=7;id<11;id++) document.getElementById("ds"+id+"Cost").textContent="Cost: "+shorten(masterystudies.costs.dil[id])+" Time Theorems"
+		for (id=7;id<12;id++) document.getElementById("ds"+id+"Cost").textContent="Cost: "+shorten(masterystudies.costs.dil[id])+" Time Theorems"
 		document.getElementById("ds8Req").textContent="Requirement: "+shorten(16750)+" electrons"
 		document.getElementById("321effect").textContent=shortenCosts(new Decimal("1e430"))
 	}
@@ -854,13 +861,22 @@ function updateReplicants() {
 	document.getElementById("quantumFoodAmount").textContent=getFullExpansion(player.quantum.replicants.quantumFood)
 	document.getElementById("buyQuantumFood").innerHTML="Buy 1 quantum food<br><br><br>Cost: "+shortenDimensions(player.quantum.replicants.quantumFoodCost)+" for all 3 gluons"
 	document.getElementById("buyQuantumFood").className="gluonupgrade "+(player.quantum.gluons.rg.min(player.quantum.gluons.gb).min(player.quantum.gluons.br).lt(player.quantum.replicants.quantumFoodCost)?"unavailabl":"stor")+"ebtn"
-	document.getElementById("feedNormal").className=((player.quantum.replicants.quantumFood<1||player.quantum.replicants.amount.lt(1)||Math.round(player.quantum.replicants.workers.toNumber())>=player.quantum.replicants.limit)?"unavailabl":"stor")+"ebtn"
-	document.getElementById("eggonRate").textContent=shortenDimensions(player.quantum.replicants.workers.times(3))
-	document.getElementById("workerProgress").textContent=Math.round(player.quantum.replicants.workerProgress.toNumber()*100)+"%"
-	document.getElementById("breakLimit").innerHTML="Limit of workers: "+player.quantum.replicants.limit+(player.quantum.replicants.limit>19?"":" -> "+(player.quantum.replicants.limit+1)+"<br>Cost: "+shortenDimensions(player.quantum.replicants.limitCost)+" for all 3 gluons")
-	document.getElementById("breakLimit").className=(player.quantum.gluons.rg.min(player.quantum.gluons.gb).min(player.quantum.gluons.br).lt(player.quantum.replicants.limitCost)||player.quantum.replicants.limit>19?"unavailabl":"stor")+"ebtn"
-	document.getElementById("reduceHatchSpeed").innerHTML="Hatch speed: "+player.quantum.replicants.hatchSpeed.toFixed(1)+"s"+(player.quantum.replicants.hatchSpeed>1?" -> "+(player.quantum.replicants.hatchSpeed/1.1).toFixed(1)+"s<br>Cost: "+shortenDimensions(player.quantum.replicants.hatchSpeedCost)+" for all 3 gluons":"")
-	document.getElementById("reduceHatchSpeed").className=(player.quantum.gluons.rg.min(player.quantum.gluons.gb).min(player.quantum.gluons.br).lt(player.quantum.replicants.hatchSpeedCost)||player.quantum.replicants.hatchSpeed==1?"unavailabl":"stor")+"ebtn"
+	document.getElementById("feedNormal").className=((player.quantum.replicants.quantumFood<1||player.quantum.replicants.amount.lt(1)||Math.round(eds[1].workers.toNumber())>=player.quantum.replicants.limit)?"unavailabl":"stor")+"ebtn"
+	document.getElementById("eggonRate").textContent=shortenDimensions(eds[1].workers.times(3))
+	document.getElementById("workerProgress").textContent=Math.round(eds[1].progress.toNumber()*100)+"%"
+	document.getElementById("breakLimit").innerHTML="Limit of workers: "+player.quantum.replicants.limit+(player.quantum.replicants.limit>9?"":" -> "+(player.quantum.replicants.limit+1)+"<br>Cost: "+shortenDimensions(player.quantum.replicants.limitCost)+" for all 3 gluons")
+	document.getElementById("breakLimit").className=(player.quantum.gluons.rg.min(player.quantum.gluons.gb).min(player.quantum.gluons.br).lt(player.quantum.replicants.limitCost)||player.quantum.replicants.limit>9?"unavailabl":"stor")+"ebtn"
+	document.getElementById("reduceHatchSpeed").innerHTML="Hatch speed: "+player.quantum.replicants.hatchSpeed.toFixed(1)+"s -> "+(player.quantum.replicants.hatchSpeed/1.1).toFixed(1)+"s<br>Cost: "+shortenDimensions(player.quantum.replicants.hatchSpeedCost)+" for all 3 gluons"
+	document.getElementById("reduceHatchSpeed").className=(player.quantum.gluons.rg.min(player.quantum.gluons.gb).min(player.quantum.gluons.br).lt(player.quantum.replicants.hatchSpeedCost)?"unavailabl":"stor")+"ebtn"
+	if (player.masterystudies.includes('d11')) {
+		document.getElementById("quantumFoodAmountED").textContent=getFullExpansion(player.quantum.replicants.quantumFood)
+		document.getElementById("buyQuantumFoodED").innerHTML="Buy 1 quantum food<br><br><br>Cost: "+shortenDimensions(player.quantum.replicants.quantumFoodCost)+" for all 3 gluons"
+		document.getElementById("buyQuantumFoodED").className="gluonupgrade "+(player.quantum.gluons.rg.min(player.quantum.gluons.gb).min(player.quantum.gluons.br).lt(player.quantum.replicants.quantumFoodCost)?"unavailabl":"stor")+"ebtn"
+		document.getElementById("empFeed1").className=((player.quantum.replicants.quantumFood<1||player.quantum.replicants.amount.lt(1)||Math.round(eds[1].workers.toNumber())>=player.quantum.replicants.limit)?"unavailabl":"stor")+"ebtn"
+		document.getElementById("empFeed1").textContent="Feed ("+Math.round(eds[1].progress.toNumber()*100)+"%)"
+		document.getElementById("breakLimitED").innerHTML="Limit of workers: "+player.quantum.replicants.limit+(player.quantum.replicants.limit>9?"":" -> "+(player.quantum.replicants.limit+1)+"<br>Cost: "+shortenDimensions(player.quantum.replicants.limitCost)+" for all 3 gluons")
+		document.getElementById("breakLimitED").className=(player.quantum.gluons.rg.min(player.quantum.gluons.gb).min(player.quantum.gluons.br).lt(player.quantum.replicants.limitCost)||player.quantum.replicants.limit>9?"unavailabl":"stor")+"ebtn"
+	}
 }
 
 function replicantReset() {
@@ -874,7 +890,7 @@ function replicantReset() {
 function getGatherRate() {
 	var mult = new Decimal(1)
 	if (player.masterystudies.includes("t341")) mult = mult.times(getMTSMult(341))
-	var data = {normal: player.quantum.replicants.amount.times(mult), workers: player.quantum.replicants.workers.times(20).times(mult), babies: player.quantum.replicants.babies.div(20).times(mult)}
+	var data = {normal: player.quantum.replicants.amount.times(mult), workers: eds[1].workers.times(20).times(mult), babies: player.quantum.replicants.babies.div(20).times(mult)}
 	data.total = data.normal.add(data.workers).add(data.babies)
 	return data
 }
@@ -894,13 +910,13 @@ function buyQuantumFood() {
 function feedReplicant(type) {
 	if (player.quantum.replicants.quantumFood<1) return
 	if (type=="normal") {
-		if (player.quantum.replicants.amount.lt(1)||Math.round(player.quantum.replicants.workers.toNumber())>=player.quantum.replicants.limit) return
-		player.quantum.replicants.workerProgress=player.quantum.replicants.workerProgress.times(3).add(1).round().div(3)
-		if (player.quantum.replicants.workerProgress.gte(1)) {
-			var toAdd=player.quantum.replicants.workerProgress.floor()
+		if (player.quantum.replicants.amount.lt(1)||Math.round(eds[1].workers.toNumber())>=player.quantum.replicants.limit) return
+		eds[1].progress=eds[1].progress.times(3).add(1).round().div(3)
+		if (eds[1].progress.gte(1)) {
+			var toAdd=eds[1].progress.floor()
 			player.quantum.replicants.amount=player.quantum.replicants.amount.sub(toAdd)
-			player.quantum.replicants.workerProgress=player.quantum.replicants.workerProgress.sub(toAdd)
-			player.quantum.replicants.workers=player.quantum.replicants.workers.add(toAdd).round()
+			eds[1].progress=eds[1].progress.sub(toAdd)
+			eds[1].workers=eds[1].workers.add(toAdd).round()
 		}
 	} else if (type=="baby") {
 		if (player.quantum.replicants.babies.lt(1)) return
@@ -923,7 +939,7 @@ function reduceHatchSpeed() {
 		player.quantum.gluons.rg=player.quantum.gluons.rg.sub(player.quantum.replicants.hatchSpeedCost)
 		player.quantum.gluons.gb=player.quantum.gluons.gb.sub(player.quantum.replicants.hatchSpeedCost)
 		player.quantum.gluons.br=player.quantum.gluons.br.sub(player.quantum.replicants.hatchSpeedCost)
-		player.quantum.replicants.hatchSpeed=Math.max(player.quantum.replicants.hatchSpeed/1.1,1)
+		player.quantum.replicants.hatchSpeed=player.quantum.replicants.hatchSpeed/1.1
 		player.quantum.replicants.hatchSpeedCost=player.quantum.replicants.hatchSpeedCost.times(10)
 		updateGluons()
 		updateReplicants()
@@ -931,7 +947,7 @@ function reduceHatchSpeed() {
 }
 
 function breakLimit() {
-	if (player.quantum.gluons.rg.min(player.quantum.gluons.gb).min(player.quantum.gluons.br).gte(player.quantum.replicants.limitCost)&&player.quantum.replicants.limit<20) {
+	if (player.quantum.gluons.rg.min(player.quantum.gluons.gb).min(player.quantum.gluons.br).gte(player.quantum.replicants.limitCost)&&player.quantum.replicants.limit<10) {
 		player.quantum.gluons.rg=player.quantum.gluons.rg.sub(player.quantum.replicants.limitCost)
 		player.quantum.gluons.gb=player.quantum.gluons.gb.sub(player.quantum.replicants.limitCost)
 		player.quantum.gluons.br=player.quantum.gluons.br.sub(player.quantum.replicants.limitCost)
@@ -1002,4 +1018,11 @@ function updateBankedEter(updateHtml=true) {
 		setAndMaybeShow("bankedEterGain",bankedEterGain>0,'"You will gain "+getFullExpansion(bankedEterGain)+" banked eternities on next quantum."')
 		setAndMaybeShow("eternitiedBank",player.eternitiesBank,'"You have "+getFullExpansion(player.eternitiesBank)+" banked eternities."')
 	}
+}
+
+//v1.999
+var eds
+function updateEmperorDimensions() {
+	document.getElementById("replicantAmountED").textContent=shortenDimensions(player.quantum.replicants.amount)
+	document.getElementById("empAmount1").textContent=shortenDimensions(eds[1].workers)+" (+0"+dimDescEnd
 }

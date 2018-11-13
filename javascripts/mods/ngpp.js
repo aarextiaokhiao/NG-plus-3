@@ -1109,11 +1109,13 @@ function quantumReset(force, auto, challid, implode=false) {
 	if (!isRewardEnabled(4)) if (document.getElementById("dilation").style.display=="block") showEternityTab("timestudies", document.getElementById("eternitystore").style.display=="block")
 	if (speedrunMilestonesReached < 14 || !isRewardEnabled(4)) {
 		document.getElementById("masterystudyunlock").style.display = "none"
-		document.getElementById("emperorstudies").style.display = "none"
 		document.getElementById("respecMastery").style.display = "none"
 		document.getElementById("respecMastery2").style.display = "none"
+		document.getElementById("replicantsstudies").style.display = "none"
+		document.getElementById("edtabbtn").style.display = "none"
 		if (document.getElementById("metadimensions").style.display == "block") showDimTab("antimatterdimensions")
 		if (document.getElementById("masterystudies").style.display=="block") showEternityTab("timestudies", document.getElementById("eternitystore").style.display=="block")
+		if (document.getElementById("emperordimensions").style.display == "block") showDimTab("antimatterdimensions")
 		if (document.getElementById("quantumchallenges").style.display == "block") showChallengesTab("normalchallenges")
 		if (document.getElementById("electronstabbtn").style.display == "block"||document.getElementById("replicantstabbtn").style.display == "block") showQuantumTab("uquarks")
 	}

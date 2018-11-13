@@ -494,7 +494,7 @@
                     </tr>
                 </table>
                 </div>
-                <div id='emperorstudies'>
+                <div id='replicantsstudies'>
                 <table class="table" id="studytable">
                     <tr>
                         <td><button class="timestudylocked" id="timestudy341" style='font-size:10px' onclick='buyMasteryStudy("t", 341)'>Replicants gather quarks faster based on your galaxies.<br><span id="ts341Current"></span></button></td>
@@ -510,7 +510,7 @@
                 </table>
                 <table class="table" id="studytable">
                     <tr>
-                        <td><button class="timestudylocked" id="dilstudy11">Unlock Emperor Dimensions<br>(Coming soon!)</button></td>
+                        <td><button class="timestudylocked" id="dilstudy11" onclick='buyMasteryStudy("d", 11)'>Unlock Emperor Dimensions<br><span id="ds11Cost"></span><br>Requirement: 10 worker replicants</button></td>
                     </tr>
                 </table>
                 <table class="table" id="studytable">
@@ -933,6 +933,7 @@
                     <td id="idtabbtn"><button class="secondarytabbtn" onclick="showDimTab('infinitydimensions')">Infinity Dimensions</button></td>
                     <td id="tdtabbtn"><button class="secondarytabbtn" onclick="showDimTab('timedimensions')">Time Dimensions</button></td>
                     <td id="mdtabbtn"><button class="secondarytabbtn" onclick="showDimTab('metadimensions')">Meta Dimensions</button></td>
+                    <td id="edtabbtn"><button class="secondarytabbtn" onclick="showDimTab('emperordimensions')">Emperor Dimensions</button></td>
                     <td id="prodtabbtn"><button class="secondarytabbtn" onclick="showDimTab('production')">Production</button></td>
                 </tr>
             </table>
@@ -1481,6 +1482,104 @@
                 </table>
                 <button id="metaboostauto" style="width:160px; height: 30px; font-size: 12px" onclick="toggleAutoEter('metaboost')" class="storebtn">Toggle all ON/OFF</button>
                 <button id="toggleallmetadims" style="width:300px; height: 30px; font-size: 12px" onclick="toggleAllMetaDims()" class="storebtn">Toggle all meta-dims autobuyer ON/OFF</button>
+            </div>
+            <div id="emperordimensions" class="dimtab">
+                <div>
+                    <p>You have <span id="replicantAmountED" style="font-size:35px; color: black">0</span> replicants.</p>
+                </div>
+                <p>You have <span id="quantumFoodAmountED">0</span> quantum food.</p>
+                <button class='gluonupgrade storebtn' id='buyQuantumFoodED' onclick='buyQuantumFood()'></button>
+                <table class="table" >
+                    <tr style="font-size: 16px" id="empRow1">
+                        <td id="empD1" width="41%">
+                            First Emperor Dimension x1
+                        </td>
+                        <td>
+                            <div id="empAmount1">0 (+0.00%/s)</div>
+                        </td>
+                        <td align="right" width="10%">
+                            <button id="empFeed1" style="color:black; width:195px; height:30px" class="storebtn" align="right" onclick="feedReplicant('normal')">Feed (0%)</button>
+                        </td>
+                    </tr>
+                    <tr id="empRow2" style="font-size: 16px">
+                        <td id="empD2">
+                            Second Emperor Dimension x1
+                        </td>
+                        <td>
+                            <div id="empAmount2" align="left">0 (+0.00%/s)</div>
+                        </td>
+                        <td>
+                            <button id="empFeed2" style="color:black; width:195px; height:30px" class="storebtn" onclick="feedReplicant('ed', 2)">Feed (0%)</button>
+                        </td>
+                    </tr>
+                    <tr id="empRow3" style="font-size: 16px">
+                        <td id="empD3">
+                            Third Emperor Dimension x1
+                        </td>
+                        <td>
+                            <div id="empAmount3" align="left">0 (+0.00%/s)</div>
+                        </td>
+                        <td>
+                            <button id="empFeed3" style="color:black; width:195px; height:30px" class="storebtn" onclick="feedReplicant('ed', 3)">Feed (0%)</button>
+                        </td>
+                    </tr>
+                    <tr id="empRow4" style="font-size: 16px">
+                        <td id="empD4">
+                            Fourth Emperor Dimension x1
+                        </td>
+                        <td>
+                            <div id="empAmount4" align="left">0 (+0.00%/s)</div>
+                        </td>
+                        <td>
+                            <button id="empFeed4" style="color:black; width:195px; height:30px" class="storebtn" onclick="feedReplicant('ed', 4)">Feed (0%)</button>
+                        </td>
+                    </tr>
+                    <tr id="empRow5" style="font-size: 16px">
+                        <td id="empD5">
+                            Fifth Emperor Dimension x1
+                        </td>
+                        <td>
+                            <div id="empAmount5" align="left">0 (+0.00%/s)</div>
+                        </td>
+                        <td>
+                            <button id="empFeed5" style="color:black; width:195px; height:30px" class="storebtn" onclick="feedReplicant('ed', 5)">Feed (0%)</button>
+                        </td>
+                    </tr>
+                    <tr id="empRow6" style="font-size: 16px">
+                        <td id="empD6">
+                            Sixth Emperor Dimension x1
+                        </td>
+                        <td>
+                            <div id="empAmount6" align="left">0 (+0.00%/s)</div>
+                        </td>
+                        <td>
+                            <button id="empFeed6" style="color:black; width:195px; height:30px" class="storebtn" onclick="feedReplicant('ed', 6)">Feed (0%)</button>
+                        </td>
+                    </tr>
+                    <tr id="empRow7" style="font-size: 16px">
+                            <td id="empD7">
+                                Seventh Emperor Dimension x1
+                            </td>
+                            <td>
+                                <div id="empAmount7" align="left">0 (+0.00%/s)</div>
+                            </td>
+                            <td>
+                                <button id="empFeed7" style="color:black; width:195px; height:30px" class="storebtn" onclick="feedReplicant('ed', 7)">Feed (0%)</button>
+                            </td>
+                        </tr>
+                        <tr id="empRow8" style="font-size: 16px">
+                                <td id="empD8">
+                                    Eighth Emperor Dimension x1
+                                </td>
+                                <td>
+                                    <div id="empAmount8" align="left">0 (+0.00%/s)</div>
+                                </td>
+                                <td>
+                                    <button id="empFeed8" style="color:black; width:195px; height:30px" class="storebtn" onclick="feedReplicant('ed', 8)">Feed (0%)</button>
+                                </td>
+                            </tr>
+                </table>
+                <button id='breakLimitED' class='storebtn' style='width: 240px; height: 60px' onclick='breakLimit()'></button>
             </div>
             <div id="production" class="dimtab">
                 <b>seconds of history:</b>

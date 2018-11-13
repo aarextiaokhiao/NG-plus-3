@@ -389,7 +389,7 @@ function updateNewPlayer(reseted) {
         player.options.gSacrificeConfirmation = true
     }
     if (modesChosen.ngpp === 2) {
-        player.aarexModifications.newGame3PlusVersion = 1.9987
+        player.aarexModifications.newGame3PlusVersion = 1.999
         player.respecMastery=false
         player.dbPower = 1
         player.peakSpent = 0
@@ -445,9 +445,8 @@ function updateNewPlayer(reseted) {
             quarks: 0,
             quantumFood: 0,
             quantumFoodCost: 1e46,
-            workerProgress: 0,
-            workers: 0,
             limit: 1,
+            limitDim: 1,
             limitCost: 1e49,
             eggonProgress: 0,
             eggons: 0,
@@ -457,6 +456,8 @@ function updateNewPlayer(reseted) {
             babies: 0,
             ageProgress: 0
         }
+        player.quantum.emperorDimensions = {}
+        for (d=1;d<9;d++) player.quantum.emperorDimensions[d] = {workers: 0, progress: 0}
     }
     if (modesChosen.ers) {
         player.aarexModifications.ersVersion = 1.02
@@ -1121,6 +1122,7 @@ function updateDimensions() {
     }
 
     if (document.getElementById("dimensions").style.display == "block" && document.getElementById("metadimensions").style.display == "block") updateMetaDimensions()
+    if (document.getElementById("dimensions").style.display == "block" && document.getElementById("emperordimensions").style.display == "block") updateEmperorDimensions()
     if (document.getElementById("quantumtab").style.display == "block") updateQuantumTabs()
 
     if (document.getElementById("stats").style.display == "block" && document.getElementById("statistics").style.display == "block") {
@@ -6539,7 +6541,7 @@ function gameLoop(diff) {
         if (rate.gt(0)) player.quantum.replicants.quarks = player.quantum.replicants.quarks.add(rate.times(diff/10))
         gatheredQuarksBoost = Math.pow(player.quantum.replicants.quarks.add(1).log10(),0.25)*0.7
 
-        player.quantum.replicants.eggonProgress = player.quantum.replicants.eggonProgress.add(player.quantum.replicants.workers.times(diff/200))
+        player.quantum.replicants.eggonProgress = player.quantum.replicants.eggonProgress.add(eds[1].workers.times(diff/200))
         var toAdd = player.quantum.replicants.eggonProgress.floor()
         if (toAdd.gt(0)) {
             player.quantum.replicants.eggonProgress = player.quantum.replicants.eggonProgress.sub(toAdd)
