@@ -13,7 +13,7 @@ function DimensionRateOfChange(tier) {
   if (player.aarexModifications.logRateChange) {
       var change = current.add(toGain.div(10)).log10()-current.log10()
       if (change<0||isNaN(change)) change = 0
-  } else var change  = toGain.times(10).dividedBy(current);
+  } else var change  = toGain.times(tier>7?1:10).dividedBy(current);
   return change;
 }
 
@@ -36,7 +36,7 @@ function updateInfinityDimensions() {
 
 function DimensionProduction(tier) {
   if (inQC(8)) return new Decimal(0)
-  if (tier == 9) return getTimeDimensionProduction(1).max(1).pow(player.currentEternityChall == "eterc7" ? 1 : ECTimesCompleted("eterc7")*0.2).minus(1).times(10)
+  if (tier == 9) return getTimeDimensionProduction(1).pow(ECTimesCompleted("eterc7")*0.2).max(1).minus(1)
   var dim = player["infinityDimension"+tier]
   var ret = dim.amount
   if (inQC(4) && tier == 1) ret = ret.plus(player.infinityDimension2.amount.floor())
