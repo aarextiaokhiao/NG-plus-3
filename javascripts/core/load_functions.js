@@ -909,13 +909,13 @@ if (player.version < 5) {
   if (player.aarexModifications.newGame3PlusVersion < 1.99871) {
       player.quantum.replicants.limit=Math.min(player.quantum.replicants.limit,10)
       player.quantum.replicants.limitCost=Math.pow(200,player.quantum.replicants.limit-1)*1e49
-      player.quantum.replicants.workers=player.quantum.replicants.workers.min(10)
+      player.quantum.replicants.workers=Decimal.min(player.quantum.replicants.workers,10)
       if (player.quantum.replicants.workers.eq(10)) player.quantum.replicants.workerProgress=0
   }
   if (player.aarexModifications.newGame3PlusVersion < 1.998711) {
       //I don't want to refund your quantum food because it's too late.
       player.quantum.quantumFood=0
-      player.quantum.quantumFoodCost=1e46*Math.pow(5,Math.round(player.quantum.replicants.workers.toNumber()*3+new Decimal(player.quantum.replicants.workerProgress).toNumber()))
+      player.quantum.quantumFoodCost=1e46*Math.pow(5,Math.round(new Decimal(player.quantum.replicants.workers).toNumber()*3+new Decimal(player.quantum.replicants.workerProgress).toNumber()))
       player.aarexModifications.newGame3PlusVersion = 1.998711
   }
   if (player.masterystudies ? player.aarexModifications.newGame3PlusVersion < 1.999 || (player.quantum.emperorDimensions ? player.quantum.emperorDimensions[1] == undefined : false) : false) { //temp
