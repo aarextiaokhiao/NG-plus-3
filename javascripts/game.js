@@ -321,6 +321,7 @@ function updateNewPlayer(reseted) {
         aarexModifications: {
             dilationConf: false,
             offlineProgress: true,
+            autoSave: true,
             progressBar: true,
             logRateChange: false,
             hideProductionTab: false,
@@ -389,7 +390,7 @@ function updateNewPlayer(reseted) {
         player.options.gSacrificeConfirmation = true
     }
     if (modesChosen.ngpp === 2) {
-        player.aarexModifications.newGame3PlusVersion = 1.9987
+        player.aarexModifications.newGame3PlusVersion = 1.99871
         player.respecMastery=false
         player.dbPower = 1
         player.peakSpent = 0
@@ -2642,7 +2643,7 @@ document.getElementById("exportbtn").onclick = function () {
 
     try {
         if (document.execCommand('copy')) {
-            $.notify("Exported save #"+metaSave.current+" to clipboard", "info");
+            $.notify("Exported save #"+savePlacement+" to clipboard", "info");
             output.blur();
         }
     } catch(ex) {
@@ -2745,7 +2746,7 @@ document.getElementById("load").onclick = function () {
 };
 
 function getSaveLayout(id) {
-	return "<b id='save_"+id+"_title'>Save #"+(loadedSaves+1)+"</b><div id='save_"+id+"_desc'></div><button class='storebtn' onclick='overwrite_save("+id+")'>Save</button><button class='storebtn' onclick='change_save("+id+")'>Load</button><button class='storebtn' onclick='rename_save("+id+")'>Rename</button><button class='storebtn' onclick='move("+id+",-1)'>Move up</button><button class='storebtn' onclick='move("+id+",1)'>Move down</button><button class='storebtn' onclick='delete_save("+id+")'>Delete</button>"
+	return "<b id='save_"+id+"_title'>Save #"+(loadedSaves+1)+"</b><div id='save_"+id+"_desc'></div><button class='storebtn' onclick='overwrite_save("+id+")'>Save</button><button class='storebtn' onclick='change_save("+id+")'>Load</button><button class='storebtn' onclick='rename_save("+id+")'>Rename</button><button class='storebtn' onclick='export_save("+id+")'>Export</button><button class='storebtn' onclick='import_save("+id+")'>Import</button><button class='storebtn' onclick='move("+id+",-1)'>Move up</button><button class='storebtn' onclick='move("+id+",1)'>Move down</button><button class='storebtn' onclick='delete_save("+id+")'>Delete</button>"
 }
 
 function changeSaveDesc(saveId, placement) {
@@ -2848,9 +2849,14 @@ function toggle_mode(id) {
 	}
 }
 
-document.getElementById("offlineProgress").onclick = function () {
+function toggleOfflineProgress() {
 	player.aarexModifications.offlineProgress = !player.aarexModifications.offlineProgress
 	document.getElementById("offlineProgress").textContent = "Offline progress: O"+(player.aarexModifications.offlineProgress?"N":"FF")
+};
+
+function toggleAutoSave() {
+	player.aarexModifications.autoSave = !player.aarexModifications.autoSave
+	document.getElementById("autoSave").textContent = "Auto save: O"+(player.aarexModifications.autoSave?"N":"FF")
 };
 
 document.getElementById("animationoptionsbtn").onclick = function () {
@@ -2891,15 +2897,16 @@ function verify_save(obj) {
 }
 
 var onImport = false
-function import_save(new_save,in_save,no_ask) {
-    if (!no_ask) {
-        onImport = true
-        var save_data = prompt("Input your save. "+(new_save?"":"(your current save file will be overwritten!)"));
-        onImport = false
-        if (save_data.constructor !== String) save_data = "";
-    } else {
-        save_data = in_save
+function import_save(type) {
+    if (type=="current") type=metaSave.current
+    else if (type!="new") {
+        var placement=1
+        while (metaSave.saveOrder[placement-1]!=type) placement++
     }
+    onImport = true
+    var save_data = prompt("Input your save. "+(type=="new"?"":"("+(type==metaSave.current?"your current save file":"save #"+placement)+" will be overwritten!)"));
+    onImport = false
+    if (save_data.constructor !== String) save_data = "";
     if (sha512_256(save_data.replace(/\s/g, '').toUpperCase()) === "80b7fdc794f5dfc944da6a445a3f21a2d0f7c974d044f2ea25713037e96af9e3") {
         document.getElementById("body").style.animation = "barrelRoll 5s 1";
         giveAchievement("Do a barrel roll!")
@@ -2941,7 +2948,12 @@ function import_save(new_save,in_save,no_ask) {
             alert('could not load the save..')
             return
         }
-        if (new_save) {
+        if (type==metaSave.current) {
+            clearInterval(gameLoopIntervalId)
+            player = decoded_save_data;
+            onLoad()
+            startInterval()
+        } else if (type=="new") {
 			var newSaveId=1
 			while (metaSave.saveOrder.includes(newSaveId)) newSaveId++
 			metaSave.saveOrder.push(newSaveId)
@@ -2951,12 +2963,11 @@ function import_save(new_save,in_save,no_ask) {
 			loadedSaves++
 			changeSaveDesc(newSaveId, loadedSaves)
 			localStorage.setItem("AD_aarexModifications",btoa(JSON.stringify(metaSave)))
-			return
+        } else {
+            set_save(type, decoded_save_data)
+            changeSaveDesc(type, placement)
+            $.notify("Save renamed", "info")
         }
-        clearInterval(gameLoopIntervalId)
-        player = decoded_save_data;
-        onLoad()
-        startInterval()
     }
 };
 
@@ -4115,9 +4126,6 @@ function addEternityTime(time, ep) {
     player.lastTenEternities[0] = [time, ep]
 }
 
-
-document.getElementById("postInfinityButton").onclick = function() {document.getElementById("bigcrunch").click()}
-
 function addTime(time, ip) {
     for (var i=player.lastTenRuns.length-1; i>0; i--) {
         player.lastTenRuns[i] = player.lastTenRuns[i-1]
@@ -4147,18 +4155,18 @@ function reachedInfinity() {
 }
 
 var isEmptiness=false
-document.getElementById("bigcrunch").onclick = function () {
+function bigCrunch(autoed) {
     var challNumber
     var split=player.currentChallenge.split("challenge")
     if (split[1]!=undefined) challNumber=parseInt(split[1])
     var icID=checkICID(player.currentChallenge)
     if (icID) challNumber=icID
     if ((player.money.gte(Number.MAX_VALUE) && !player.currentChallenge.includes("post")) || (player.currentChallenge !== "" && player.money.gte(player.challengeTarget))) {
-        if ((player.bestInfinityTime > 600 && !player.break) && player.eternities === 0 && implosionCheck === 0 && player.options.animations.bigCrunch) {
+        if ((!player.achievements.includes("r55") || (player.options.animations.bigCrunch === "always" && !autoed)) && isEmptiness && implosionCheck === 0 && player.options.animations.bigCrunch) {
             implosionCheck = 1;
             document.getElementById("body").style.animation = "implode 2s 1";
             setTimeout(function(){ document.getElementById("body").style.animation = ""; }, 2000)
-            setTimeout(function(){ document.getElementById("bigcrunch").onclick(); }, 1000)
+            setTimeout(function(){ bigCrunch(); }, 1000)
             return
         }
         implosionCheck = 0;
@@ -7254,7 +7262,6 @@ function simulateTime(seconds, real) {
     for (ticksDone=0; ticksDone<ticks; ticksDone++) {
         gameLoop(50+bonusDiff)
         autoBuyerTick();
-        if (real) console.log(ticksDone)
     }
     closeToolTip()
     document.getElementById("offlineprogress").style.display = "block"
@@ -7385,22 +7392,22 @@ function autoBuyerTick() {
                 if (player.autoCrunchMode == "amount") {
                     if (!player.break || player.currentChallenge != "" || gainedInfinityPoints().gte(player.autobuyers[11].priority)) {
                         autoS = false;
-                        document.getElementById("bigcrunch").click()
+                        bigCrunch(true)
                     }
                 } else if (player.autoCrunchMode == "time"){
                     if (!player.break || player.currentChallenge != "" || player.thisInfinityTime / 10 >= new Decimal(player.autobuyers[11].priority).toNumber()) {
                         autoS = false;
-                        document.getElementById("bigcrunch").click()
+                        bigCrunch(true)
                     }
                 } else if (player.autoCrunchMode == "replicanti"){
                     if (!player.break || player.currentChallenge != "" || (player.replicanti.galaxies >= (player.autobuyers[11].priority.toString().toLowerCase()=="max"?player.replicanti.gals:Math.round(new Decimal(player.autobuyers[11].priority).toNumber())) && (!player.autobuyers[11].requireMaxReplicanti || player.replicanti.amount.gte(getReplicantiLimit())))) {
                         autoS = false;
-                        document.getElementById("bigcrunch").click()
+                        bigCrunch(true)
                     }
                 } else {
                     if (!player.break || player.currentChallenge != "" || gainedInfinityPoints().gte(player.lastTenRuns[0][1].times(player.autobuyers[11].priority))) {
                         autoS = false;
-                       document.getElementById("bigcrunch").click()
+                       bigCrunch(true)
                    }
                 }
             }
@@ -7663,7 +7670,7 @@ function closeToolTip() {
 }
 
 setInterval(function () {
-    save_game()
+    if (player.aarexModifications.autoSave) save_game()
 }, 30000);
 
 
@@ -7826,7 +7833,7 @@ window.addEventListener('keydown', function(event) {
     if (!player.options.hotkeys || controlDown === true || document.activeElement.type === "text") return false
     switch (event.keyCode) {
         case 67: // C
-            document.getElementById("bigcrunch").onclick()
+            bigCrunch()
         break;
 
         case 69: // E, also, nice.

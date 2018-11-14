@@ -45,10 +45,11 @@ function point(x, y, ctz){
   }
 
 function animationOnOff(name) {
-    if (player.options.animations[name]) player.options.animations[name] = false;
+    if (name == "bigCrunch" && shiftDown && player.options.animations[name] !== "always") player.options.animations[name] = "always"
+    else if (player.options.animations[name]) player.options.animations[name] = false;
     else player.options.animations[name] = true;
     if (name == "floatingText") document.getElementById("floatingTextAnimBtn").textContent = "Floating text: " + ((player.options.animations.floatingText) ? "ON" : "OFF")
-    else if (name == "bigCrunch") document.getElementById("bigCrunchAnimBtn").textContent = "Big crunch: " + ((player.options.animations.bigCrunch) ? "ON" : "OFF")
+    else if (name == "bigCrunch") document.getElementById("bigCrunchAnimBtn").textContent = "Big crunch: " + (player.options.animations.bigCrunch === "always" ? "ALWAYS" : player.options.animations.bigCrunch ? "ON" : "OFF")
     else if (name == "tachyonParticles") document.getElementById("tachyonParticleAnimBtn").textContent = "Tachyon particles: " + ((player.options.animations.tachyonParticles) ? "ON" : "OFF")
     else if (name == "blackHole") document.getElementById("blackHoleAnimBtn").textContent = "Black hole: " + ((player.options.animations.blackHole) ? "ON" : "OFF")
     else if (name == "quarks") document.getElementById("quarksAnimBtn").textContent="Quarks: O"+(player.options.animations[name]?"N":"FF")

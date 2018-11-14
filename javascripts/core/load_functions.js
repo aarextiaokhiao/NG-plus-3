@@ -1,6 +1,6 @@
 var inflationCheck = false
 var notifyId = 0
-function onLoad() {
+function onLoad(noOffline) {
   happyHalloween=false
   if (player.totalmoney === undefined || isNaN(player.totalmoney)) player.totalmoney = player.money;
   if (player.options === undefined) {
@@ -383,6 +383,9 @@ if (player.version < 5) {
   if (player.aarexModifications.offlineProgress === undefined) {
       player.aarexModifications.offlineProgress = true
   }
+  if (player.aarexModifications.autoSave === undefined) {
+      player.aarexModifications.autoSave = true
+  }
   if (player.aarexModifications.progressBar === undefined) {
       player.aarexModifications.progressBar = true
   }
@@ -410,6 +413,7 @@ if (player.version < 5) {
   toggleBulk()
 
   document.getElementById("offlineProgress").textContent = "Offline progress: O"+(player.aarexModifications.offlineProgress?"N":"FF")
+  document.getElementById("autoSave").textContent = "Auto save: O"+(player.aarexModifications.autoSave?"N":"FF")
 
   if (!player.replicanti.auto[0]) document.getElementById("replauto1").textContent = "Auto: OFF"
   if (!player.replicanti.auto[1]) document.getElementById("replauto2").textContent = "Auto: OFF"
@@ -445,7 +449,7 @@ if (player.version < 5) {
   updateNotationOption()
 
   document.getElementById("floatingTextAnimBtn").textContent = "Floating text: " + ((player.options.animations.floatingText) ? "ON" : "OFF")
-  document.getElementById("bigCrunchAnimBtn").textContent = "Big crunch: " + ((player.options.animations.bigCrunch) ? "ON" : "OFF")
+  document.getElementById("bigCrunchAnimBtn").textContent = "Big crunch: " + (player.options.animations.bigCrunch === "always" ? "ALWAYS" : player.options.animations.bigCrunch ? "ON" : "OFF")
   document.getElementById("tachyonParticleAnimBtn").textContent = "Tachyon particles: " + ((player.options.animations.tachyonParticles) ? "ON" : "OFF")
 
   if (player.infinitied == 0 && getEternitied() == 0) document.getElementById("infinityPoints2").style.display = "none"
@@ -638,7 +642,7 @@ if (player.version < 5) {
           }
           player.aarexModifications.newGamePlusVersion = 1
           if (confirm("Do you want to migrate your NG++ save into new NG+++ mode?")) {
-              player.aarexModifications.newGame3PlusVersion = 1.9987
+              player.aarexModifications.newGame3PlusVersion = 1.99871
               player.respecMastery=false
               player.dbPower = 1
               player.peakSpent = 0
@@ -889,26 +893,19 @@ if (player.version < 5) {
           ageProgress: 0
       }
   }
-  if (player.aarexModifications.newGame3PlusVersion < 1.9985) {
-      player.aarexModifications.newGame3PlusVersion=1.9985
-      player.quantum.multPower = {rg:Math.ceil(player.quantum.multPower/3),gb:Math.ceil((player.quantum.multPower-1)/3),br:Math.floor(player.quantum.multPower/3),total:player.quantum.multPower}
-  }
+  if (player.aarexModifications.newGame3PlusVersion < 1.9985)  player.quantum.multPower = {rg:Math.ceil(player.quantum.multPower/3),gb:Math.ceil((player.quantum.multPower-1)/3),br:Math.floor(player.quantum.multPower/3),total:player.quantum.multPower}
   if (player.aarexModifications.newGame3PlusVersion < 1.9986) {
-      player.aarexModifications.newGame3PlusVersion=1.9986
       player.respec=player.respecOptions.time
       player.respecMastery=player.respecOptions.mastery
       updateRespecButtons()
       delete player.respecOptions
   }
   if (player.aarexModifications.newGame3PlusVersion < 1.998621) {
-      player.aarexModifications.newGame3PlusVersion=1.998621
       if (getCurrentQCData().length<2) player.quantum.pairedChallenges.current=0
       if (player.quantum.pairedChallenges.completed>4) player.quantum.pairedChallenges.completed=0
   }
-  if (player.aarexModifications.newGame3PlusVersion < 1.9987) {
-      player.aarexModifications.newGame3PlusVersion=1.9987
-      player.eternitiesBank=0
-  }
+  if (player.aarexModifications.newGame3PlusVersion < 1.9987) player.eternitiesBank=0
+  if (player.aarexModifications.newGame3PlusVersion < 1.99871) player.aarexModifications.newGame3PlusVersion = 1.99871
   if (player.masterystudies) if (player.quantum.autoOptions === undefined) player.quantum.autoOptions = {} //temp
   if (player.aarexModifications.newGame3PlusVersion==undefined) {
       colorBoosts={
@@ -1414,13 +1411,23 @@ if (player.version < 5) {
   setAndMaybeShow('bestTP',player.achievements.includes("ng3p18"),'"Your best ever Tachyon particles was "+shorten(player.dilation.bestTP)+"."')
   notifyId=speedrunMilestonesReached
   updatePowers()
+  document.getElementById("newsbtn").textContent=(player.options.newsHidden?"Show":"Hide")+" news ticker"
+  document.getElementById("game").style.display=player.options.newsHidden?"none":"block"
+  showDimTab('antimatterdimensions')
+  showStatsTab('stats')
+  showAchTab('normalachievements')
+  showChallengesTab('normalchallenges')
+  showInfTab('preinf')
+  showEternityTab('timestudies', true)
+  showQuantumTab('uquarks')
+  if (!player.options.newsHidden) scrollNextMessage()
   var detectNGPStart = player.lastUpdate == 1531944153054
   if (player.aarexModifications.switch) {
       player.money=new Decimal("1e9e15")
       player.totalmoney=new Decimal("1e9e15")
       softReset(0)
       delete player.aarexModifications.switch
-  } else if (player.aarexModifications.offlineProgress) {
+  } else if (player.aarexModifications.offlineProgress && !noOffline) {
       let diff = new Date().getTime() - player.lastUpdate
       if (diff > 1000*1000) {
           simulateTime(diff/1000)
@@ -1451,16 +1458,6 @@ if (player.version < 5) {
       closeToolTip()
       showNextModeMessage()
   } else if (player.aarexModifications.popUpId!=1) showNextModeMessage()
-  document.getElementById("newsbtn").textContent=(player.options.newsHidden?"Show":"Hide")+" news ticker"
-  document.getElementById("game").style.display=player.options.newsHidden?"none":"block"
-  showDimTab('antimatterdimensions')
-  showStatsTab('stats')
-  showAchTab('normalachievements')
-  showChallengesTab('normalchallenges')
-  showInfTab('preinf')
-  showEternityTab('timestudies', true)
-  showQuantumTab('uquarks')
-  if (!player.options.newsHidden) scrollNextMessage()
 }
 
 function checkNGM(imported) {
@@ -1475,7 +1472,7 @@ function checkNGM(imported) {
 }
 
 var savePlacement
-function load_game() {
+function load_game(noOffline) {
 	if (!metaSave.saveOrder.includes(metaSave.current)) metaSave.current=metaSave.saveOrder[0]
 	var dimensionSave=get_save(metaSave.current)
 	if (dimensionSave!=null) player=dimensionSave
@@ -1489,8 +1486,15 @@ function load_game() {
 		nextAt = {postc1:new Decimal("1e2000"),postc2:new Decimal("1e5000"),postc3:new Decimal("1e12000"),postc4:new Decimal("1e14000"),postc5:new Decimal("1e18000"),postc6:new Decimal("1e20000"),postc7:new Decimal("1e23000"),postc8:new Decimal("1e28000"),postcngmm_1:new Decimal("1e750"),postcngmm_1_ngm3:new Decimal("1e1100"),postcngmm_2:new Decimal("1e1350"),postcngmm_3:new Decimal("1e2000")}
 		goals = {postc1:new Decimal("1e850"),postc1_ngmm:new Decimal("1e650"),postc2:new Decimal("1e10500"),postc3:new Decimal("1e5000"),postc4:new Decimal("1e13000"),postc5:new Decimal("1e11111"),postc6:new Decimal("2e22222"),postc7:new Decimal("1e10000"),postc7_ngmm:new Decimal("1e15000"),postc8:new Decimal("1e27000"),postcngmm_1:new Decimal("1e550"),postcngmm_2:new Decimal("1e950"),postcngmm_3:new Decimal("1e1200")}
 	}
-	onLoad()
+	onLoad(noOffline)
 	startInterval()
+}
+
+function reload() {
+	clearInterval(gameLoopIntervalId)
+	updateNewPlayer()
+	closeToolTip()
+	load_game(true)
 }
 
 var noSave=false
@@ -1505,7 +1509,9 @@ function overwrite_save(id) {
 		save_game()
 		return
 	}
-	if (!confirm("Are you really sure you want to overwrite the save? You might lose your progress!")) return
+	var placement=1
+	while (metaSave.saveOrder[placement-1]!=id) placement++
+	if (!confirm("Are you really sure you want to overwrite save #"+placement+"? You might lose your progress!")) return
 	set_save(id, player)
 	$.notify("Save overwritten", "info")
 }
@@ -1518,7 +1524,7 @@ function change_save(id) {
   changeSaveDesc(oldId, savePlacement)
   updateNewPlayer()
   closeToolTip()
-  load_game()
+  load_game(shiftDown)
   savePlacement=1
   while (metaSave.saveOrder[savePlacement-1]!=id) savePlacement++
   changeSaveDesc(metaSave.current, savePlacement)
@@ -1528,7 +1534,11 @@ function change_save(id) {
 }
 
 function rename_save(id) {
-	var save_name = prompt("Input a new name of this save. It is necessary to rename it into related names! Leave blank to reset the save's name.")
+	if (metaSave.current != id && id !== undefined) {
+		var placement=1
+		while (metaSave.saveOrder[placement-1]!=id) placement++
+	}
+	var save_name = prompt("Input a new name of "+((metaSave.current == id || id === undefined) ? "your current save" : "save #" + placement)+". It is necessary to rename it into related names! Leave blank to reset the save's name.")
 	if (save_name === null) return
 	if (metaSave.current == id || id === undefined) player.aarexModifications.save_name = save_name
 	else {
@@ -1536,6 +1546,7 @@ function rename_save(id) {
 		if (!temp_save.aarexModifications) temp_save.aarexModifications={
 			dilationConf: false,
 			offlineProgress: true,
+			autoSave: true,
 			progressBar: true,
 			logRateChange: false,
 			hideProductionTab: true,
@@ -1548,7 +1559,33 @@ function rename_save(id) {
 	placement=1
 	while (metaSave.saveOrder[placement-1]!=id) placement++
 	changeSaveDesc(id, placement)
-	$.notify("Save renamed", "info")
+	$.notify("Save #"+placement+" renamed", "info")
+}
+
+function export_save(id) {
+    var placement=1
+    while (metaSave.saveOrder[placement-1]!=id) placement++
+	let output = document.getElementById('exportOutput')
+	let parent = output.parentElement
+
+	parent.style.display = ""
+	output.value = localStorage.getItem(btoa("dsAM_"+id))
+
+	output.onblur = function() {
+		parent.style.display = "none"
+	}
+
+	output.focus()
+	output.select()
+
+	try {
+		if (document.execCommand('copy')) {
+			$.notify("Exported save #"+placement+" to clipboard", "info")
+			output.blur()
+		}
+	} catch(ex) {
+		// well, we tried.
+	}
 }
 
 function move(id,offset) {

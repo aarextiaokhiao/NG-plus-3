@@ -95,7 +95,8 @@ function updateTheoremButtons() {
 	document.getElementById("timetheorems").innerHTML = "You have <span style='display:inline' class=\"TheoremAmount\">"+(player.timestudy.theorem>99999?shortenMoney(player.timestudy.theorem):getFullExpansion(Math.floor(player.timestudy.theorem)))+"</span> Time Theorem"+ (player.timestudy.theorem == 1 ? "." : "s.")
 }
 
-function buyTimeStudy(name, cost, check, quickBuy) {
+function buyTimeStudy(name, check, quickBuy) {
+  var cost = studyCosts[all.indexOf(name)]
   if (player.boughtDims) {
       if (player.timestudy.theorem<player.timestudy.ers_studies[name]+1) return
       player.timestudy.theorem-=player.timestudy.ers_studies[name]+1
@@ -327,9 +328,9 @@ function studiesUntil(id) {
   for (var i = 1; i < row; i++) {
       var chosenPath = path[i > 11 ? 1 : 0];
       if (row > 6 && row < 11) var secondPath = col;
-      if ((i > 6 && i < 11) || (i > 11 && i < 15)) buyTimeStudy(i * 10 + (chosenPath === 0 ? col : chosenPath), studyCosts[all.indexOf(i * 10 + (chosenPath === 0 ? col : chosenPath))], 0, true);
-      if ((i > 6 && i < 11) && player.timestudy.studies.includes(201)) buyTimeStudy(i * 10 + secondPath, studyCosts[all.indexOf(i * 10 + secondPath)], 0, true);
-      else for (var j = 1; all.includes(i * 10 + j) ; j++) buyTimeStudy(i * 10 + j, studyCosts[all.indexOf(i * 10 + j)], 0, true);
+      if ((i > 6 && i < 11) || (i > 11 && i < 15)) buyTimeStudy(i * 10 + (chosenPath === 0 ? col : chosenPath), 0, true);
+      if ((i > 6 && i < 11) && player.timestudy.studies.includes(201)) buyTimeStudy(i * 10 + secondPath, 0, true);
+      else for (var j = 1; all.includes(i * 10 + j) ; j++) buyTimeStudy(i * 10 + j, 0, true);
   }
   buyTimeStudy(id, studyCosts[all.indexOf(id)], 0, true);
 }
@@ -542,21 +543,20 @@ function importStudyTree(input) {
 		var laterSecondSplits = []
 		var earlyDLStudies = []
 		var laterDLStudies = []
-		var changeMS = false
+		var oldLength = player.timestudy.length
+		if (player.masterystudies) var oldLengthMS = player.masterystudies.length
 		for (i=0; i<studiesToBuy.length; i++) {
 			var study=parseInt(studiesToBuy[i])
 			if ((study<120||study>150||(secondSplitPick<1||study%10==secondSplitPick))&&(study<220||study>240||earlyDLStudies.includes(study+(study%2>0?-1:1)))) {
 				if (study>120&&study<150) secondSplitPick=study%10
 				else if (study>220&&study<240) earlyDLStudies.push(study)
-				if (study>240) {
-					buyMasteryStudy("t", study, true)
-					changeMS=true
-				} else document.getElementById(study).click();
+				if (study>240) buyMasteryStudy("t", study, true)
+				else buyTimeStudy(study, 0, true);
 			} else if (study<150) laterSecondSplits.push(study)
 			else laterDLStudies.push(study)
 		}
-		for (i=0; i<laterSecondSplits.length; i++) document.getElementById(laterSecondSplits[i]).click()
-		for (i=0; i<laterDLStudies.length; i++) document.getElementById(laterDLStudies[i]).click()
+		for (i=0; i<laterSecondSplits.length; i++) buyTimeStudy(laterSecondSplits[i], 0, true)
+		for (i=0; i<laterDLStudies.length; i++) buyTimeStudy(laterDLStudies[i], 0, true)
 		var ec=parseInt(input.split("|")[1])
 		if (ec > 0) {
 			justImported = true;
@@ -566,10 +566,15 @@ function importStudyTree(input) {
 			} else document.getElementById("ec"+parseInt(input.split("|")[1])+"unl").click();
 			setTimeout(function(){ justImported = false; }, 100);
 		}
-		if (changeMS) {
+		if (player.masterystudies.length > oldLengthMS) {
 			updateMasteryStudyButtons()
 			updateMasteryStudyTextDisplay()
 			drawMasteryTree()
+		}
+		if (player.timestudy.length > oldLength) {
+			updateTheoremButtons()
+			updateTimeStudyButtons()
+			drawStudyTree()
 		}
 	}
 };
