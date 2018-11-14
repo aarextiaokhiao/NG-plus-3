@@ -914,7 +914,7 @@ if (player.version < 5) {
   if (player.aarexModifications.newGame3PlusVersion < 1.998711) {
       //I don't want to refund your quantum food because it's too late.
       player.quantum.quantumFood=0
-      player.quantum.quantumFoodCost=1e46
+      player.quantum.quantumFoodCost=1e46*Math.pow(5,Math.round(player.quantum.replicants.workers.toNumber()*3+player.quantum.replicants.workerProgress.toNumber()))
       player.aarexModifications.newGame3PlusVersion = 1.998711
   }
   if (player.masterystudies) if (player.quantum.autoOptions === undefined) player.quantum.autoOptions = {} //temp
