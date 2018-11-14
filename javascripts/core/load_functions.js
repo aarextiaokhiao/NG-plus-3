@@ -905,7 +905,13 @@ if (player.version < 5) {
       if (player.quantum.pairedChallenges.completed>4) player.quantum.pairedChallenges.completed=0
   }
   if (player.aarexModifications.newGame3PlusVersion < 1.9987) player.eternitiesBank=0
-  if (player.aarexModifications.newGame3PlusVersion < 1.99871) player.aarexModifications.newGame3PlusVersion = 1.99871
+  if (player.aarexModifications.newGame3PlusVersion < 1.99871) {
+      player.quantum.replicants.limit=Math.min(player.quantum.replicants.limit,10)
+      player.quantum.replicants.limitCost=Math.pow(200,player.quantum.replicants.limit-1)*1e49
+      player.quantum.replicants.workers=player.quantum.replicants.workers.min(10)
+      if (player.quantum.replicants.workers.eq(10)) player.quantum.replicants.workerProgress=0
+      player.aarexModifications.newGame3PlusVersion = 1.99871
+  }
   if (player.masterystudies) if (player.quantum.autoOptions === undefined) player.quantum.autoOptions = {} //temp
   if (player.aarexModifications.newGame3PlusVersion==undefined) {
       colorBoosts={
