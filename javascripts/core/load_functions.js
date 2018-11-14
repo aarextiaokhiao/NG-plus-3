@@ -642,7 +642,7 @@ if (player.version < 5) {
           }
           player.aarexModifications.newGamePlusVersion = 1
           if (confirm("Do you want to migrate your NG++ save into new NG+++ mode?")) {
-              player.aarexModifications.newGame3PlusVersion = 1.99871
+              player.aarexModifications.newGame3PlusVersion = 1.998711
               player.respecMastery=false
               player.dbPower = 1
               player.peakSpent = 0
@@ -910,7 +910,12 @@ if (player.version < 5) {
       player.quantum.replicants.limitCost=Math.pow(200,player.quantum.replicants.limit-1)*1e49
       player.quantum.replicants.workers=player.quantum.replicants.workers.min(10)
       if (player.quantum.replicants.workers.eq(10)) player.quantum.replicants.workerProgress=0
-      player.aarexModifications.newGame3PlusVersion = 1.99871
+  }
+  if (player.aarexModifications.newGame3PlusVersion < 1.998711) {
+      //I don't want to refund your quantum food because it's too late.
+      player.quantum.quantumFood=0
+      player.quantum.quantumFoodCost=1e46
+      player.aarexModifications.newGame3PlusVersion = 1.998711
   }
   if (player.masterystudies) if (player.quantum.autoOptions === undefined) player.quantum.autoOptions = {} //temp
   if (player.aarexModifications.newGame3PlusVersion==undefined) {
