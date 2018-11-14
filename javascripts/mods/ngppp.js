@@ -255,18 +255,18 @@ function drawMasteryTree() {
 		drawMasteryBranch("dilstudy12", "dilstudy13")
 	}
     if (shiftDown) {
-        var all = masterystudies.allTimeStudies.slice();
+        var all = masterystudies.allTimeStudies
     	for (i=0; i<all.length; i++) {
-            all[i] = "timestudy" + all[i];
-            var start = document.getElementById(all[i]).getBoundingClientRect();
+            var start = document.getElementById("timestudy" + all[i]).getBoundingClientRect();
             var x1 = start.left + (start.width / 2) + (document.documentElement.scrollLeft || document.body.scrollLeft);
             var y1 = start.top + (start.height / 2) + (document.documentElement.scrollTop || document.body.scrollTop);
+            var msg = all[i] + " (" + masterystudies.costmults[all[i]] + "x)"
             msctx.fillStyle = 'white';
             msctx.strokeStyle = 'black';
             msctx.lineWidth = 3;
             msctx.font = "15px Typewriter";
-            msctx.strokeText(all[i].slice(-3), x1 - start.width / 2, y1 - start.height / 2 - 1);
-            msctx.fillText(all[i].slice(-3), x1 - start.width / 2, y1 - start.height / 2 - 1);
+            msctx.strokeText(msg, x1 - start.width / 2, y1 - start.height / 2 - 1);
+            msctx.fillText(msg, x1 - start.width / 2, y1 - start.height / 2 - 1);
         }
     }
 }
@@ -744,6 +744,8 @@ function canBuyElectronUpg(id) {
 
 //v1.99795
 function updateMasteryStudyTextDisplay() {
+	document.getElementById("fillAll").style.display = "none"
+	document.getElementById("fillAll2").style.display = "none"
 	if (!player.masterystudies) return
 	document.getElementById("costmult").textContent=shorten(masterystudies.costmult)
 	for (id=0;id<(quantumed?masterystudies.allTimeStudies.length:10);id++) {
@@ -760,6 +762,10 @@ function updateMasteryStudyTextDisplay() {
 		for (id=7;id<12;id++) document.getElementById("ds"+id+"Cost").textContent="Cost: "+shorten(masterystudies.costs.dil[id])+" Time Theorems"
 		document.getElementById("ds8Req").textContent="Requirement: "+shorten(16750)+" electrons"
 		document.getElementById("321effect").textContent=shortenCosts(new Decimal("1e430"))
+		if (player.masterystudies.includes("t302")) {
+			document.getElementById("fillAll").style.display = "block"
+			document.getElementById("fillAll2").style.display = "block"
+		}
 	}
 	if (player.masterystudies.includes("d10")) {
 		for (id=341;id<345;id++) document.getElementById("ts"+id+"Cost").textContent="Cost: "+shorten(masterystudies.costs.time[id])+" Time Theorems"
@@ -866,7 +872,7 @@ function updateReplicants() {
 	document.getElementById("workerProgress").textContent=Math.round(eds[1].progress.toNumber()*100)+"%"
 	document.getElementById("breakLimit").innerHTML="Limit of workers: "+player.quantum.replicants.limit+(player.quantum.replicants.limit>9?"":" -> "+(player.quantum.replicants.limit+1)+"<br>Cost: "+shortenDimensions(player.quantum.replicants.limitCost)+" for all 3 gluons")
 	document.getElementById("breakLimit").className=(player.quantum.gluons.rg.min(player.quantum.gluons.gb).min(player.quantum.gluons.br).lt(player.quantum.replicants.limitCost)||player.quantum.replicants.limit>9?"unavailabl":"stor")+"ebtn"
-	document.getElementById("reduceHatchSpeed").innerHTML="Hatch speed: "+player.quantum.replicants.hatchSpeed.toFixed(1)+"s -> "+(player.quantum.replicants.hatchSpeed/1.1).toFixed(1)+"s<br>Cost: "+shortenDimensions(player.quantum.replicants.hatchSpeedCost)+" for all 3 gluons"
+	document.getElementById("reduceHatchSpeed").innerHTML="Hatch speed: "+hatchSpeedDisplay()+"s -> "+hatchSpeedDisplay(true)+"s<br>Cost: "+shortenDimensions(player.quantum.replicants.hatchSpeedCost)+" for all 3 gluons"
 	document.getElementById("reduceHatchSpeed").className=(player.quantum.gluons.rg.min(player.quantum.gluons.gb).min(player.quantum.gluons.br).lt(player.quantum.replicants.hatchSpeedCost)?"unavailabl":"stor")+"ebtn"
 	if (player.masterystudies.includes('d11')) {
 		document.getElementById("quantumFoodAmountED").textContent=getFullExpansion(player.quantum.replicants.quantumFood)
@@ -1017,6 +1023,24 @@ function updateBankedEter(updateHtml=true) {
 	if (updateHtml) {
 		setAndMaybeShow("bankedEterGain",bankedEterGain>0,'"You will gain "+getFullExpansion(bankedEterGain)+" banked eternities on next quantum."')
 		setAndMaybeShow("eternitiedBank",player.eternitiesBank,'"You have "+getFullExpansion(player.eternitiesBank)+" banked eternities."')
+	}
+}
+
+//v1.99871
+function hatchSpeedDisplay(next) {
+	var speed=player.quantum.replicants.hatchSpeed
+	if (next) speed=Math.max(speed/1.1,1)
+	if (speed>9.95) return speed.toFixed(0)+"s"
+	return speed.toFixed(1)+"s"
+}
+
+function fillAll() {
+	var oldLength = player.timestudy.length
+	for (t=0;t<all.length;t++) buyTimeStudy(all[t], 0, true)
+	if (player.timestudy.length > oldLength) {
+		updateTheoremButtons()
+		updateTimeStudyButtons()
+		drawStudyTree()
 	}
 }
 
