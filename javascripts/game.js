@@ -4023,7 +4023,7 @@ function toggleHotkeys() {
 var challNames = [null, null, "Second Dimension Autobuyer Challenge", "Third Dimension Autobuyer Challenge", "Fourth Dimension Autobuyer Challenge", "Fifth Dimension Autobuyer Challenge", "Sixth Dimension Autobuyer Challenge", "Seventh Dimension Autobuyer Challenge", "Eighth Dimension Autobuyer Challenge", "Tickspeed Autobuyer Challenge", "Automated Dimension Boosts Challenge", "Automated Galaxies Challenge", "Automated Big Crunches Challenge", "Automated Dimensional Sacrifice Challenge", "Automated Galactic Sacrifice Challenge", "Automated Tickspeed Boosts Challenge"]
 var challOrder = [null, 1, 2, 3, 8, 6, 10, 9, 11, 5, 4, 12, 7, 13, 14, 15]
 function updateChallengeTimes() {
-    for (c=2;c<16;c++) setAndMaybeShow("challengetime"+c,player.challengeTimes[challOrder[c]-2]<600*60*24*31,'"'+challNames[c]+' time record: "+timeDisplayShort(player.challengeTimes['+(challOrder[c]-2)+'])')
+	for (c=2;c<16;c++) setAndMaybeShow("challengetime"+c,player.challengeTimes[challOrder[c]-2]<600*60*24*31,'"'+challNames[c]+' time record: "+timeDisplayShort(player.challengeTimes['+(challOrder[c]-2)+'])')
 	var temp=0
 	var tempcounter=0
 	for (var i=0;i<player.challengeTimes.length;i++) {
@@ -4215,12 +4215,10 @@ function bigCrunch(autoed) {
         }
         if (player.currentChallenge.includes("post")) giveAchievement("Infinitely Challenging");
         if (player.currentChallenge == "postc8") giveAchievement("Anti-antichallenged");
-        var add
-        if (player.break && player.currentChallenge == "") {
-            add = new Decimal(getIPMult())
-            if (player.timestudy.studies.includes(51)) add = add.times(1e15)
-            addTime(player.thisInfinityTime, add)
-        } else add = gainedInfinityPoints()
+        add = getIPMult()
+        if (player.break && player.currentChallenge == "") add = gainedInfinityPoints()
+        else if (player.timestudy.studies.includes(51)) add = add.times(1e15)
+        addTime(player.thisInfinityTime, add)
         player.infinityPoints = player.infinityPoints.plus(add)
         var array = [player.thisInfinityTime, gainedInfinityPoints()]
         if (player.currentChallenge != "") array.push(player.currentChallenge)

@@ -421,10 +421,13 @@ if (player.version < 5) {
   if (!player.replicanti.auto[2]) document.getElementById("replauto3").textContent = "Auto: OFF"
 
   loadAutoBuyerSettings();
+  var updatedLTR = []
   for (lastRun=0; lastRun<10 ; lastRun++) {
-      if (player.lastTenRuns[lastRun][0] == 26784000 && player.lastTenRuns[lastRun][1].eq(1)) player.lastTenRuns[lastRun] = [26784000, new Decimal(0)]
+      if (typeof(player.lastTenRuns[lastRun]) !== "number") if (player.lastTenRuns[lastRun][0] != 26784000 || player.lastTenRuns[lastRun][1].neq(1)) updatedLTR.push(player.lastTenRuns[lastRun])
       if (player.lastTenEternities[lastRun][0] == 26784000 && player.lastTenEternities[lastRun][1].eq(1)) player.lastTenEternities[lastRun] = [26784000, new Decimal(0)]
   }
+  for (a=updatedLTR.length;a<10;a++) updatedLTR.push([26784000, new Decimal(0)])
+  player.lastTenRuns = updatedLTR
   updateLastTenRuns()
   updateLastTenEternities()
 
