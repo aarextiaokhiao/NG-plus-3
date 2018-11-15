@@ -1410,8 +1410,8 @@ function updateDimensions() {
                 let msg = "Disable dilation"
                 if (player.infinityPoints.lt(Number.MAX_VALUE)) {}
                 else if (player.dilation.totalTachyonParticles - gain > 0) msg += ".<br>Reach " + shortenMoney(Decimal.pow(10, Math.pow(player.dilation.totalTachyonParticles / getDilPower(), 1 / getDilExp()) * 400)) + " antimatter to gain more Tachyon Particles"
-                else msg += " for " + shortenMoney(player.dilation.totalTachyonParticles - gain) + " Tachyon particles"
-                document.getElementById("enabledilation").textContent = msg + "."
+                else msg += " for " + shortenMoney(gain - player.dilation.totalTachyonParticles) + " Tachyon particles"
+                document.getElementById("enabledilation").innerHTML = msg + "."
             }
             else document.getElementById("enabledilation").textContent = "Dilate time."+((player.eternityBuyer.isOn&&player.eternityBuyer.dilationMode?!isNaN(player.eternityBuyer.statBeforeDilation):false) ? " " + (player.eternityBuyer.dilationPerAmount - player.eternityBuyer.statBeforeDilation) + " left before dilation." : "")
             if (player.exdilation==undefined?false:player.blackhole.unl) {
