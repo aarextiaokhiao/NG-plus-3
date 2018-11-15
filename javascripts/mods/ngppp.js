@@ -512,15 +512,8 @@ function toggleAutoTT() {
 function doAutoMetaTick() {
 	if (!player.masterystudies) return
 	if (player.autoEterOptions.rebuyupg) {
-		if (speedrunMilestonesReached > 25) {
-			while (buyDilationUpgrade(11,true)) {}
-			while (buyDilationUpgrade(3,true)) {}
-			while (buyDilationUpgrade(1,true)) {}
-			while (buyDilationUpgrade(2,true)) {}
-			updateDilationUpgradeCosts()
-			updateDilationUpgradeButtons()
-			updateTimeStudyButtons()
-		} else {
+		if (speedrunMilestonesReached > 25) maxAllDilUpgs()
+		else {
 			for (i=0;i<1;i++) {
 				buyDilationUpgrade(11)
 				buyDilationUpgrade(3)
@@ -856,7 +849,7 @@ function updateReplicants() {
 	document.getElementById("gbRepl").textContent=shortenDimensions(player.quantum.gluons.gb)
 	document.getElementById("brRepl").textContent=shortenDimensions(player.quantum.gluons.br)
 
-	document.getElementById("replicantReset").innerHTML="Reset replicanti amount to gain a replicant, but you gain replicanti slower.<br>(requires "+shortenCosts(player.quantum.replicants.requirement)+" replicanti)"
+	document.getElementById("replicantReset").innerHTML="Reset replicanti amount for a replicant, but you gain replicanti 2x slower.<br>(requires "+shortenCosts(player.quantum.replicants.requirement)+" replicanti)"
 	document.getElementById("quantumFoodAmount").textContent=getFullExpansion(player.quantum.replicants.quantumFood)
 	document.getElementById("buyQuantumFood").innerHTML="Buy 1 quantum food<br><br><br>Cost: "+shortenDimensions(player.quantum.replicants.quantumFoodCost)+" for all 3 gluons"
 	document.getElementById("buyQuantumFood").className="gluonupgrade "+(player.quantum.gluons.rg.min(player.quantum.gluons.gb).min(player.quantum.gluons.br).lt(player.quantum.replicants.quantumFoodCost)?"unavailabl":"stor")+"ebtn"
@@ -1026,4 +1019,31 @@ function fillAll() {
 		updateTimeStudyButtons()
 		drawStudyTree()
 	}
+}
+
+//v1.99872
+function maxAllDilUpgs() {
+	while (buyDilationUpgrade(11,true)) {}
+	while (buyDilationUpgrade(3,true)) {}
+	while (buyDilationUpgrade(1,true)) {}
+	while (buyDilationUpgrade(2,true)) {}
+	updateDilationUpgradeCosts()
+	updateDilationUpgradeButtons()
+	updateTimeStudyButtons()
+}
+
+function updateQCTimes() {
+	document.getElementById("qcsbtn").style.display = "none"
+	if (!player.masterystudies) return
+	var temp=0
+	var tempcounter=0
+	for (var i=1;i<9;i++) {
+		setAndMaybeShow("qctime"+i,player.quantum.challengeRecords[i],'"Quantum Challenge '+i+' time record: "+timeDisplayShort(player.quantum.challengeRecords['+i+'])')
+		if (player.quantum.challengeRecords[i]) {
+			temp+=player.quantum.challengeRecords[i]
+			tempcounter++
+		}
+	}
+	if (tempcounter>0) document.getElementById("qcsbtn").style.display = "inline-block"
+	setAndMaybeShow("qctimesum",tempcounter>1,'"Sum of completed quantum challenge time records is "+timeDisplayShort('+temp+')')
 }

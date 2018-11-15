@@ -474,7 +474,13 @@ function updateLastTenQuantums() {
             var qkpm = player.quantum.last10[i][1].dividedBy(player.quantum.last10[i][0]/600)
             var tempstring = shorten(qkpm) + " QK/min"
             if (qkpm<1) tempstring = shorten(qkpm*60) + " QK/hour"
-            document.getElementById("quantumrun"+(i+1)).textContent = "The quantum " + (i == 0 ? '1 quantum' : (i+1) + ' quantums') + " ago took " + timeDisplayShort(player.quantum.last10[i][0]) + " and gave " + shortenDimensions(player.quantum.last10[i][1]) +" QK. "+ tempstring
+            var msg = "The quantum " + (i == 0 ? '1 quantum' : (i+1) + ' quantums') + " ago took " + timeDisplayShort(player.quantum.last10[i][0])
+            if (player.quantum.last10[i][2]) {
+                if (typeof(player.quantum.last10[i][2])=="number") " in Quantum Challenge " + player.quantum.last10[i][2]
+                else msg += " in Paired Challenge " + player.quantum.last10[i][2][0] + " (QC" + player.quantum.last10[i][2][1][0] + "+" + player.quantum.last10[i][2][1][1] + ")"
+            }
+            msg += " and gave " + shortenDimensions(player.quantum.last10[i][1]) +" QK. "+ tempstring
+            document.getElementById("quantumrun"+(i+1)).textContent = msg
             tempTime = tempTime.plus(player.quantum.last10[i][0])
             tempQK = tempQK.plus(player.quantum.last10[i][1])
             bestQk = player.quantum.last10[i][1].max(bestQk)
@@ -531,12 +537,12 @@ function checkUniversalHarmony() {
 function quantumReset(force, auto, challid, implode=false) {
 	var headstart = player.aarexModifications.newGamePlusVersion > 0 && !player.masterystudies
 	var pc=challid-8
-	if (implode) {
+	if (implode && speedrunMilestonesReached < 1) {
+		showTab("dimensions")
 		showDimTab("antimatterdimensions")
 		showChallengesTab("challenges")
 		showInfTab("preinf")
 		showEternityTab("timestudies", true)
-		if (document.getElementById("quantumtab").style.display=="none") showTab("dimensions")
 	}
 	if (!quantumed) {
 		quantumed=true
@@ -556,11 +562,20 @@ function quantumReset(force, auto, challid, implode=false) {
 			player.quantum.last10[i] = player.quantum.last10[i-1]
 		}
 		var qkGain=quarkGain()
-		player.quantum.last10[0] = [player.quantum.time,qkGain]
+		var array=[player.quantum.time, qkGain]
+		if (!inQC(0)) {
+			if (player.quantum.pairedChallenges.current > 0) {
+				array.push([player.quantum.pairedChallenges.current, player.quantum.challenge])
+			} else {
+				array.push(player.quantum.challenge[0])
+			}
+		}
+		player.quantum.last10[0] = array
 		if (player.quantum.best>player.quantum.time) {
 			player.quantum.best=player.quantum.time
 			updateSpeedruns()
 			if (speedrunMilestonesReached>23) giveAchievement("And the winner is...")
+			if (speedrunMilestonesReached>25) document.getElementById('rebuyupgmax').style.display="none"
 			if (speedrunMilestonesReached>27) {
 				giveAchievement("Special Relativity")
 				var removeMaxAll=false
@@ -577,6 +592,7 @@ function quantumReset(force, auto, challid, implode=false) {
 		if (!inQC(4)) if (player.meta.resets<1) giveAchievement("Infinity Morals")
 	}
 	var oheHeadstart = speedrunMilestonesReached > 0
+	var oldTime = player.quantum.time
 	player.quantum.time=0
 	document.getElementById("quarks").innerHTML="You have <b class='QKAmount'>"+shortenDimensions(player.quantum.quarks)+"</b> quark"+(player.quantum.quarks.lt(2)?".":"s.")
 	document.getElementById("galaxyPoints2").innerHTML="You have <span class='GPAmount'>0</span> Galaxy points."
@@ -949,9 +965,12 @@ function quantumReset(force, auto, challid, implode=false) {
 					player.quantum.pairedChallenges.completed=player.quantum.pairedChallenges.current
 					if (player.quantum.pairedChallenges.current==4) giveAchievement("Twice in a row")
 				}
-			} else if (!player.quantum.challenges[qc1]&&intensity>0) {
-				player.quantum.challenges[qc1]=1
-				player.quantum.electrons.mult+=0.25
+			} else if (intensity>0) {
+				if (!player.quantum.challenges[qc1]) {
+					player.quantum.challenges[qc1]=1
+					player.quantum.electrons.mult+=0.25
+				}
+				player.quantum.challengeRecords[qc1]=oldTime
 			}
 			if (player.quantum.pairedChallenges.respec) {
 				player.quantum.electrons.mult-=player.quantum.pairedChallenges.completed*0.5
@@ -991,6 +1010,7 @@ function quantumReset(force, auto, challid, implode=false) {
 		updateElectrons()
 		updateBankedEter()
 		updateQuantumChallenges()
+		updateQCTimes()
 		updateReplicants()
 		if (!oheHeadstart) {
 			player.eternityBuyer.dilationMode = false

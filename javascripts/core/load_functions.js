@@ -395,6 +395,7 @@ if (player.version < 5) {
   if (player.aarexModifications.hideProductionTab === undefined) {
       player.aarexModifications.hideProductionTab = !(!player.boughtDims) && player.aarexModifications.ersVersion === undefined
   }
+  if (player.aarexModifications.eternityChallRecords === undefined) player.aarexModifications.eternityChallRecords = {}
   if (player.aarexModifications.popUpId === undefined) {
       player.aarexModifications.popUpId = 0
   }
@@ -642,7 +643,7 @@ if (player.version < 5) {
           }
           player.aarexModifications.newGamePlusVersion = 1
           if (confirm("Do you want to migrate your NG++ save into new NG+++ mode?")) {
-              player.aarexModifications.newGame3PlusVersion = 1.998711
+              player.aarexModifications.newGame3PlusVersion = 1.99872
               player.respecMastery=false
               player.dbPower = 1
               player.peakSpent = 0
@@ -682,6 +683,7 @@ if (player.version < 5) {
               player.quantum.multPower = {rg:0,gb:0,br:0,total:0}
               player.quantum.challenge = []
               player.quantum.challenges = {}
+              player.quantum.challengeRecords = {}
               player.quantum.pairedChallenges = {
                   order: {},
                   current: 0,
@@ -912,10 +914,12 @@ if (player.version < 5) {
       if (player.quantum.replicants.workers.eq(10)) player.quantum.replicants.workerProgress=0
   }
   if (player.aarexModifications.newGame3PlusVersion < 1.998711) {
-      //I don't want to refund your quantum food because it's too late.
       player.quantum.quantumFood=0
       player.quantum.quantumFoodCost=1e46*Math.pow(5,Math.round(player.quantum.replicants.workers.toNumber()*3+new Decimal(player.quantum.replicants.workerProgress).toNumber()))
-      player.aarexModifications.newGame3PlusVersion = 1.998711
+  }
+  if (player.aarexModifications.newGame3PlusVersion < 1.99872) {
+      player.quantum.challengeRecords = {}
+      player.aarexModifications.newGame3PlusVersion = 1.99872
   }
   if (player.masterystudies) if (player.quantum.autoOptions === undefined) player.quantum.autoOptions = {} //temp
   if (player.aarexModifications.newGame3PlusVersion==undefined) {
@@ -1376,6 +1380,7 @@ if (player.version < 5) {
   checkForEndMe();
   updateRespecButtons()
   updateEternityChallenges();
+  updateEterChallengeTimes()
   updateExtraReplGalaxies()
   updateDilationUpgradeCosts()
   updateExdilation()
@@ -1404,6 +1409,7 @@ if (player.version < 5) {
   updateElectrons()
   updateBankedEter()
   updateQuantumChallenges()
+  updateQCTimes()
   updateReplicants()
   if (player.boughtDims) {
       if (document.getElementById("timestudies").style.display=="block") showEternityTab("ers_timestudies",true)
@@ -1415,6 +1421,7 @@ if (player.version < 5) {
   document.getElementById("quarksAnimBtn").style.display=quantumed&&player.masterystudies?"inline-block":"none"
   document.getElementById("quarksAnimBtn").textContent="Quarks: O"+(player.options.animations.quarks?"N":"FF")
   document.getElementById('dilationmode').style.display=speedrunMilestonesReached>4?"":"none"
+  document.getElementById('rebuyupgmax').style.display=speedrunMilestonesReached<26&&player.masterystudies?"":"none"
   document.getElementById('rebuyupgauto').style.display=speedrunMilestonesReached>6?"":"none"
   document.getElementById('toggleallmetadims').style.display=speedrunMilestonesReached>7?"":"none"
   document.getElementById('metaboostauto').style.display=speedrunMilestonesReached>14?"":"none"
@@ -1561,6 +1568,7 @@ function rename_save(id) {
 			progressBar: true,
 			logRateChange: false,
 			hideProductionTab: true,
+			eternityChallRecords: {},
 			popUpId: 0,
 			breakInfinity: false
         }
@@ -1795,10 +1803,10 @@ function transformSaveToDecimal() {
   player.postC8Mult = new Decimal(player.postC8Mult)
 
   for (var i=0; i<10; i++) {
+      player.lastTenRuns[i][0] = parseFloat(player.lastTenRuns[i][0])
       player.lastTenRuns[i][1] = new Decimal(player.lastTenRuns[i][1])
       player.lastTenEternities[i][1] = new Decimal(player.lastTenEternities[i][1])
   }
-  player.lastTenRuns = [[parseFloat(player.lastTenRuns[0][0]), player.lastTenRuns[0][1]], [parseFloat(player.lastTenRuns[1][0]), player.lastTenRuns[1][1]], [parseFloat(player.lastTenRuns[2][0]), player.lastTenRuns[2][1]], [parseFloat(player.lastTenRuns[3][0]), player.lastTenRuns[3][1]], [parseFloat(player.lastTenRuns[4][0]), player.lastTenRuns[4][1]], [parseFloat(player.lastTenRuns[5][0]), player.lastTenRuns[5][1]], [parseFloat(player.lastTenRuns[6][0]), player.lastTenRuns[6][1]], [parseFloat(player.lastTenRuns[7][0]), player.lastTenRuns[7][1]], [parseFloat(player.lastTenRuns[8][0]), player.lastTenRuns[8][1]], [parseFloat(player.lastTenRuns[9][0]), player.lastTenRuns[9][1]]]
   player.replicanti.chanceCost = new Decimal(player.replicanti.chanceCost)
   player.replicanti.intervalCost = new Decimal(player.replicanti.intervalCost)
   player.replicanti.galCost = new Decimal(player.replicanti.galCost)
