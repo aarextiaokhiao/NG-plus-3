@@ -965,6 +965,10 @@ function quantumReset(force, auto, challid, implode=false) {
 					player.quantum.pairedChallenges.completed=player.quantum.pairedChallenges.current
 					if (player.quantum.pairedChallenges.current==4) giveAchievement("Twice in a row")
 				}
+				var qc1st=Math.min(qc1,qc2)
+				var qc2st=Math.max(qc1,qc2)
+				if (player.quantum.pairedChallenges.completions[qc1st*10+qc2st] === undefined) player.quantum.pairedChallenges.completions[qc1st*10+qc2st]=player.quantum.pairedChallenges.current
+				else player.quantum.pairedChallenges.completions[qc1st*10+qc2st]=Math.min(player.quantum.pairedChallenges.current,player.quantum.pairedChallenges.completions[qc1st*10+qc2st])
 			} else if (intensity>0) {
 				if (!player.quantum.challenges[qc1]) {
 					player.quantum.challenges[qc1]=1
@@ -1011,6 +1015,7 @@ function quantumReset(force, auto, challid, implode=false) {
 		updateBankedEter()
 		updateQuantumChallenges()
 		updateQCTimes()
+		updatePCCompletions()
 		updateReplicants()
 		if (!oheHeadstart) {
 			player.eternityBuyer.dilationMode = false

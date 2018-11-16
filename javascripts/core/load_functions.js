@@ -413,6 +413,7 @@ if (player.version < 5) {
   toggleBulk()
   toggleBulk()
 
+  document.getElementById("rename").innerHTML = "<p style='font-size:15px'>Rename</p>Name: "+(player.aarexModifications.name?player.aarexModifications.name:"Save #" + savePlacement)
   document.getElementById("offlineProgress").textContent = "Offline progress: O"+(player.aarexModifications.offlineProgress?"N":"FF")
   document.getElementById("autoSave").textContent = "Auto save: O"+(player.aarexModifications.autoSave?"N":"FF")
 
@@ -646,7 +647,7 @@ if (player.version < 5) {
           }
           player.aarexModifications.newGamePlusVersion = 1
           if (confirm("Do you want to migrate your NG++ save into new NG+++ mode?")) {
-              player.aarexModifications.newGame3PlusVersion = 1.99872
+              player.aarexModifications.newGame3PlusVersion = 1.99873
               player.respecMastery=false
               player.dbPower = 1
               player.peakSpent = 0
@@ -691,8 +692,10 @@ if (player.version < 5) {
                   order: {},
                   current: 0,
                   completed: 0,
+                  completions: {},
                   respec: false
               }
+              player.quantum.pairedChallenges.completions = {}
               player.dilation.bestTP = 0
               player.old = false
               player.quantum.autoOptions = {}
@@ -920,9 +923,15 @@ if (player.version < 5) {
       player.quantum.quantumFood=0
       player.quantum.quantumFoodCost=1e46*Math.pow(5,Math.round(player.quantum.replicants.workers.toNumber()*3+new Decimal(player.quantum.replicants.workerProgress).toNumber()))
   }
-  if (player.aarexModifications.newGame3PlusVersion < 1.99872) {
-      player.quantum.challengeRecords = {}
-      player.aarexModifications.newGame3PlusVersion = 1.99872
+  if (player.aarexModifications.newGame3PlusVersion < 1.99872) player.quantum.challengeRecords = {}
+  if (player.aarexModifications.newGame3PlusVersion < 1.99873) {
+      player.quantum.pairedChallenges.completions = {}
+      for (c=1;c<=player.quantum.pairedChallenges.completed;c++) {
+          var c1 = player.quantum.pairedChallenges.order[c][0]
+          var c2 = player.quantum.pairedChallenges.order[c][1]
+          player.quantum.pairedChallenges.completions[Math.min(c1, c2) * 10 + Math.max(c1, c2)] = c
+      }
+      player.aarexModifications.newGame3PlusVersion = 1.99873
   }
   if (player.masterystudies) if (player.quantum.autoOptions === undefined) player.quantum.autoOptions = {} //temp
   if (player.aarexModifications.newGame3PlusVersion==undefined) {
@@ -1413,6 +1422,7 @@ if (player.version < 5) {
   updateBankedEter()
   updateQuantumChallenges()
   updateQCTimes()
+  updatePCCompletions()
   updateReplicants()
   if (player.boughtDims) {
       if (document.getElementById("timestudies").style.display=="block") showEternityTab("ers_timestudies",true)
@@ -1561,8 +1571,10 @@ function rename_save(id) {
 	}
 	var save_name = prompt("Input a new name of "+((metaSave.current == id || id === undefined) ? "your current save" : "save #" + placement)+". It is necessary to rename it into related names! Leave blank to reset the save's name.")
 	if (save_name === null) return
-	if (metaSave.current == id || id === undefined) player.aarexModifications.save_name = save_name
-	else {
+	if (metaSave.current == id || id === undefined) {
+		player.aarexModifications.save_name = save_name
+		document.getElementById("rename").innerHTML = "<p style='font-size:15px'>Rename</p>Name: "+(player.aarexModifications.name?player.aarexModifications.name:"Save #" + savePlacement)
+	} else {
 		var temp_save = get_save(id)
 		if (!temp_save.aarexModifications) temp_save.aarexModifications={
 			dilationConf: false,

@@ -1874,6 +1874,46 @@ br {
 	font-size: 13px
 }
 
+#pccompletionstable td {
+	min-height: 24px;
+	height: 24px;
+	max-height: 24px;
+	min-width: 24px;
+	width: 24px;
+	max-width: 24px;
+	text-align: center;
+	vertical-align: 50%
+}
+
+.pc1completed {
+	color: #FFF;
+	background: #5AC467;
+	border: 2px solid #127A20;
+	border-radius: 10px;
+}
+
+.pc2completed {
+	color: #FFF;
+	background: #1F1F1F;
+	border: 2px solid #B67F33;
+	border-radius: 10px;
+}
+
+.pc3completed {
+    color: #b341e0;
+    background: black;
+    border: 2px solid #b341e0;
+	border-radius: 10px;
+}
+
+.pc4completed {
+    color: #32c832;
+    background: #0a640a;
+    border: 2px solid #32c832;
+	border-radius: 10px;
+    font-weight: bold;
+}
+
 @media print,
 screen and (max-width: 960px) {
     div.wrapper {

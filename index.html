@@ -8,7 +8,7 @@
     <meta name="Antimatter Dimensions" content="A game about huge numbers and watching them go up." charset="utf-8"/>
     <script type="text/javascript" src="javascripts/jquery-3.2.1.min.js"></script>
     <script type="text/javascript" src="javascripts/notify.js"></script>
-    <link rel="stylesheet" type="text/css" href="stylesheets/styles.css?9">
+    <link rel="stylesheet" type="text/css" href="stylesheets/styles.css?10">
     <link href="https://fonts.googleapis.com/css?family=Inconsolata" rel="stylesheet">
     <script>
         (function(i, s, o, g, r, a, m) {
@@ -1524,7 +1524,7 @@
                     <tr>
 		    			<td><div><button id="save" class="storebtn" style="color:black; width: 200px; height: 55px; font-size: 20px">Save</button></div></td>
 		    			<td><div><button id="load" class="storebtn" style="color:black; width: 200px; height: 55px; font-size: 20px">Load</button></div></td>
-                        <td><div><button class="storebtn" onclick='rename_save()' style="color:black; width: 200px; height: 55px; font-size: 20px">Rename</button></div></td>
+                        <td><div><button id="rename" class="storebtn" onclick='rename_save()' style="color:black; width: 200px; height: 55px"></button></div></td>
                     </tr>
                     <tr>
                         <td><div><button id="exportbtn" class="storebtn" style="color:black; width: 200px; height: 55px; font-size: 20px">Export</button></div></td>
@@ -1592,6 +1592,7 @@
                 <td><button class="secondarytabbtn" onclick="showStatsTab('infchallengetimes')" id="infchallengesbtn" style="display:none"><span style='font-size:10px'>Infinity Challenge records</span></button><td>
                 <td><button class="secondarytabbtn" onclick="showStatsTab('eterchallengetimes')" id="eterchallengesbtn" style="display:none"><span style='font-size:10px'>Eternity Challenge records</span></button><td>
                 <td><button class="secondarytabbtn" onclick="showStatsTab('qctimes')" id="qcsbtn" style="display:none"><span style='font-size:10px'>Quantum Challenge records</span></button><td>
+                <td><button class="secondarytabbtn" onclick="showStatsTab('pccompletions')" id="pccompletionsbtn" style="display:none"><span style='font-size:9px'>Paired Challenge completions</span></button><td>
                 <td><button class="secondarytabbtn" onclick="showStatsTab('lasttenruns')" id="pastinfs" style="display:none">Past Infinities</button><td>
                 <td><button class="secondarytabbtn" onclick="showStatsTab('lastteneternities')" id="pasteternities" >Past Eternities</button><td>
                 <td><button class="secondarytabbtn" onclick="showStatsTab('lasttenquantums')" id="pastquantums" >Past Quantums</button><td>
@@ -1700,6 +1701,11 @@
                 <div id="qctime8"></div>
                 <br>
                 <div id="qctimesum"></div>
+            </div>
+            <div id="pccompletions" class="statstab" >
+                <br>
+                Lowest PC # done w/ every combination of PCs:
+                <table id="pccompletionstable"></table>
             </div>
             <div id="lasttenruns" class="statstab">
                 <div id="run1"></div>
@@ -4135,15 +4141,15 @@
 <script type="text/javascript" src="javascripts/core/timestudies.js?4"></script>
 <script type="text/javascript" src="javascripts/core/canvases.js?9"></script>
 <script type="text/javascript" src="javascripts/core/devtools.js"></script>
-<script type="text/javascript" src="javascripts/core/load_functions.js?5"></script>
+<script type="text/javascript" src="javascripts/core/load_functions.js?6"></script>
 <script type="text/javascript" src="javascripts/core/newsticker.js?7"></script>
 <script type="text/javascript" src="javascripts/mods/ngmm.js?23"></script>
 <script type="text/javascript" src="javascripts/mods/ers.js?1"></script>
-<script type="text/javascript" src="javascripts/mods/ngpp.js?4"></script>
-<script type="text/javascript" src="javascripts/mods/ngppp.js?5"></script>
+<script type="text/javascript" src="javascripts/mods/ngpp.js?5"></script>
+<script type="text/javascript" src="javascripts/mods/ngppp.js?6"></script>
 <script type="text/javascript" src="javascripts/mods/ngmmm.js?5"></script>
 <script type="text/javascript" src="javascripts/mods/ngud.js"></script>
-<script type="text/javascript" src="javascripts/game.js?5"></script>
+<script type="text/javascript" src="javascripts/game.js?6"></script>
 <script type="text/javascript" src="javascripts/sha512.js"></script>
 </body>
 </html>

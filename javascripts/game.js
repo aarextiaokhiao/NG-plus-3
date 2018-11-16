@@ -391,7 +391,7 @@ function updateNewPlayer(reseted) {
         player.options.gSacrificeConfirmation = true
     }
     if (modesChosen.ngpp === 2) {
-        player.aarexModifications.newGame3PlusVersion = 1.99872
+        player.aarexModifications.newGame3PlusVersion = 1.99873
         player.respecMastery=false
         player.dbPower = 1
         player.peakSpent = 0
@@ -437,6 +437,7 @@ function updateNewPlayer(reseted) {
             order: {},
             current: 0,
             completed: 0,
+            completions: {},
             respec: false
         }
         player.dilation.bestTP = 0
@@ -4218,9 +4219,8 @@ function bigCrunch(autoed) {
         add = getIPMult()
         if (player.break && player.currentChallenge == "") add = gainedInfinityPoints()
         else if (player.timestudy.studies.includes(51)) add = add.times(1e15)
-        addTime(player.thisInfinityTime, add)
         player.infinityPoints = player.infinityPoints.plus(add)
-        var array = [player.thisInfinityTime, gainedInfinityPoints()]
+        var array = [player.thisInfinityTime, add]
         if (player.currentChallenge != "") array.push(player.currentChallenge)
         addTime(array)
         if (gainedInfinityPoints().gte(1e150)) giveAchievement("All your IP are belong to us")

@@ -270,6 +270,23 @@ function setupText() {
 		var div=document.getElementById("timestudy"+name)
 		div.innerHTML=div.innerHTML+"<br><span id='ts"+name+"Cost'></span>"
 	}
+	var pcct = document.getElementById("pccompletionstable")
+	var row = pcct.insertRow(0)
+	for (c=0;c<9;c++) {
+		var col = row.insertCell(c)
+		if (c>0) col.textContent = "#" + c
+	}
+	for (r=1;r<9;r++) {
+		row = pcct.insertRow(r)
+		for (c=0;c<9;c++) {
+			var col = row.insertCell(c)
+			if (c<1) col.textContent = "#" + r
+			else if (c==r) {
+				col.textContent = "QC" + r
+				col.className = "pc4completed"
+			} else col.id = "pc" + r + c
+		}
+	}
 }
 
 //v1.1
@@ -1046,4 +1063,26 @@ function updateQCTimes() {
 	}
 	if (tempcounter>0) document.getElementById("qcsbtn").style.display = "inline-block"
 	setAndMaybeShow("qctimesum",tempcounter>1,'"Sum of completed quantum challenge time records is "+timeDisplayShort('+temp+')')
+}
+
+//v1.99873
+function updatePCCompletions() {
+	document.getElementById("pccompletionsbtn").style.display = "none"
+	if (!player.masterystudies) return
+	var tempcounter=0
+	for (var c1=2;c1<9;c1++) for (var c2=1;c2<c1;c2++) if (player.quantum.pairedChallenges.completions[c2*10+c1]) tempcounter++
+	if (tempcounter>0) document.getElementById("pccompletionsbtn").style.display = "inline-block"
+	for (r=1;r<9;r++) for (c=1;c<9;c++) if (r!=c) {
+		var divid = "pc" + (r*10+c)
+		var pcid = r*10+c
+		if (r>c) pcid = c*10+r
+		var comp = player.quantum.pairedChallenges.completions[pcid]
+		if (comp !== undefined) {
+			document.getElementById(divid).textContent = "PC" + comp
+			document.getElementById(divid).className = "pc" + comp + "completed"
+		} else {
+			document.getElementById(divid).textContent = ""
+			document.getElementById(divid).className = ""
+		}
+	}
 }
