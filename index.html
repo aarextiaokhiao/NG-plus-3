@@ -8,7 +8,7 @@
     <meta name="Antimatter Dimensions" content="A game about huge numbers and watching them go up." charset="utf-8"/>
     <script type="text/javascript" src="javascripts/jquery-3.2.1.min.js"></script>
     <script type="text/javascript" src="javascripts/notify.js"></script>
-    <link rel="stylesheet" type="text/css" href="stylesheets/styles.css?9">
+    <link rel="stylesheet" type="text/css" href="stylesheets/styles.css?11">
     <link href="https://fonts.googleapis.com/css?family=Inconsolata" rel="stylesheet">
     <script>
         (function(i, s, o, g, r, a, m) {
@@ -751,6 +751,7 @@
                 </table>
                 <p>You have <span id="dilatedTimeAmount" style="font-size:35px; color: black">0</span> dilated time <span id="dilatedTimePerSecond" style="font-size:25px; color: black">0</span></p>
                 <p>Next free galaxy at <span id="galaxyThreshold" style="font-size:25px; color: black">1000</span> dilated time, gained total of <span id="dilatedGalaxies" style="font-size:25px; color: black">0</span></p>
+                <button id="rebuyupgmax" style="width:210px; height: 30px; font-size: 12px" onclick="maxAllDilUpgs()" class="storebtn">Max all dilation upgrades</button>
                 <button id="rebuyupgauto" style="width:250px; height: 30px; font-size: 12px" onclick="toggleAutoEter('rebuyupg')" class="storebtn"></button>
                 <table>
                     <tr>
@@ -1622,7 +1623,7 @@
                     <tr>
 		    			<td><div><button id="save" class="storebtn" style="color:black; width: 200px; height: 55px; font-size: 20px">Save</button></div></td>
 		    			<td><div><button id="load" class="storebtn" style="color:black; width: 200px; height: 55px; font-size: 20px">Load</button></div></td>
-                        <td><div><button class="storebtn" onclick='rename_save()' style="color:black; width: 200px; height: 55px; font-size: 20px">Rename</button></div></td>
+                        <td><div><button id="rename" class="storebtn" onclick='rename_save()' style="color:black; width: 200px; height: 55px"></button></div></td>
                     </tr>
                     <tr>
                         <td><div><button id="exportbtn" class="storebtn" style="color:black; width: 200px; height: 55px; font-size: 20px">Export</button></div></td>
@@ -1688,6 +1689,9 @@
                 <td><button class="secondarytabbtn" onclick="showStatsTab('stats')">Statistics</button><td>
                 <td><button class="secondarytabbtn" onclick="showStatsTab('challengetimes')" id="challengetimesbtn" style="display:none" >Challenge records</button><td>
                 <td><button class="secondarytabbtn" onclick="showStatsTab('infchallengetimes')" id="infchallengesbtn" style="display:none"><span style='font-size:10px'>Infinity Challenge records</span></button><td>
+                <td><button class="secondarytabbtn" onclick="showStatsTab('eterchallengetimes')" id="eterchallengesbtn" style="display:none"><span style='font-size:10px'>Eternity Challenge records</span></button><td>
+                <td><button class="secondarytabbtn" onclick="showStatsTab('qctimes')" id="qcsbtn" style="display:none"><span style='font-size:10px'>Quantum Challenge records</span></button><td>
+                <td><button class="secondarytabbtn" onclick="showStatsTab('pccompletions')" id="pccompletionsbtn" style="display:none"><span style='font-size:9px'>Paired Challenge completions</span></button><td>
                 <td><button class="secondarytabbtn" onclick="showStatsTab('lasttenruns')" id="pastinfs" style="display:none">Past Infinities</button><td>
                 <td><button class="secondarytabbtn" onclick="showStatsTab('lastteneternities')" id="pasteternities" >Past Eternities</button><td>
                 <td><button class="secondarytabbtn" onclick="showStatsTab('lasttenquantums')" id="pastquantums" >Past Quantums</button><td>
@@ -1764,6 +1768,43 @@
                 <div id="infchallengetime10"></div>
                 <br>
                 <div id="infchallengetimesum"></div>
+            </div>
+            <div id="eterchallengetimes" class="statstab" >
+                <br>
+                <div id="eterchallengetime1"></div>
+                <div id="eterchallengetime2"></div>
+                <div id="eterchallengetime3"></div>
+                <div id="eterchallengetime4"></div>
+                <div id="eterchallengetime5"></div>
+                <div id="eterchallengetime6"></div>
+                <div id="eterchallengetime7"></div>
+                <div id="eterchallengetime8"></div>
+                <div id="eterchallengetime9"></div>
+                <div id="eterchallengetime10"></div>
+                <div id="eterchallengetime11"></div>
+                <div id="eterchallengetime12"></div>
+                <div id="eterchallengetime13"></div>
+                <div id="eterchallengetime14"></div>
+                <br>
+                <div id="eterchallengetimesum"></div>
+            </div>
+            <div id="qctimes" class="statstab" >
+                <br>
+                <div id="qctime1"></div>
+                <div id="qctime2"></div>
+                <div id="qctime3"></div>
+                <div id="qctime4"></div>
+                <div id="qctime5"></div>
+                <div id="qctime6"></div>
+                <div id="qctime7"></div>
+                <div id="qctime8"></div>
+                <br>
+                <div id="qctimesum"></div>
+            </div>
+            <div id="pccompletions" class="statstab" >
+                <br>
+                Lowest PC # done w/ every combination of PCs:
+                <table id="pccompletionstable"></table>
             </div>
             <div id="lasttenruns" class="statstab">
                 <div id="run1"></div>
@@ -4199,15 +4240,15 @@
 <script type="text/javascript" src="javascripts/core/timestudies.js?4"></script>
 <script type="text/javascript" src="javascripts/core/canvases.js?9"></script>
 <script type="text/javascript" src="javascripts/core/devtools.js"></script>
-<script type="text/javascript" src="javascripts/core/load_functions.js?4"></script>
+<script type="text/javascript" src="javascripts/core/load_functions.js?7"></script>
 <script type="text/javascript" src="javascripts/core/newsticker.js?7"></script>
 <script type="text/javascript" src="javascripts/mods/ngmm.js?23"></script>
 <script type="text/javascript" src="javascripts/mods/ers.js?1"></script>
-<script type="text/javascript" src="javascripts/mods/ngpp.js?3"></script>
-<script type="text/javascript" src="javascripts/mods/ngppp.js?4"></script>
+<script type="text/javascript" src="javascripts/mods/ngpp.js?5"></script>
+<script type="text/javascript" src="javascripts/mods/ngppp.js?7"></script>
 <script type="text/javascript" src="javascripts/mods/ngmmm.js?5"></script>
 <script type="text/javascript" src="javascripts/mods/ngud.js"></script>
-<script type="text/javascript" src="javascripts/game.js?4"></script>
+<script type="text/javascript" src="javascripts/game.js?7"></script>
 <script type="text/javascript" src="javascripts/sha512.js"></script>
 </body>
 </html>

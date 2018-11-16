@@ -277,6 +277,23 @@ function setupText() {
 		var div=document.getElementById("timestudy"+name)
 		div.innerHTML=div.innerHTML+"<br><span id='ts"+name+"Cost'></span>"
 	}
+	var pcct = document.getElementById("pccompletionstable")
+	var row = pcct.insertRow(0)
+	for (c=0;c<9;c++) {
+		var col = row.insertCell(c)
+		if (c>0) col.textContent = "#" + c
+	}
+	for (r=1;r<9;r++) {
+		row = pcct.insertRow(r)
+		for (c=0;c<9;c++) {
+			var col = row.insertCell(c)
+			if (c<1) col.textContent = "#" + r
+			else if (c==r) {
+				col.textContent = "QC" + r
+				col.className = "pc1completed"
+			} else col.id = "pc" + r + c
+		}
+	}
 }
 
 //v1.1
@@ -519,15 +536,8 @@ function toggleAutoTT() {
 function doAutoMetaTick() {
 	if (!player.masterystudies) return
 	if (player.autoEterOptions.rebuyupg) {
-		if (speedrunMilestonesReached > 25) {
-			while (buyDilationUpgrade(11,true)) {}
-			while (buyDilationUpgrade(3,true)) {}
-			while (buyDilationUpgrade(1,true)) {}
-			while (buyDilationUpgrade(2,true)) {}
-			updateDilationUpgradeCosts()
-			updateDilationUpgradeButtons()
-			updateTimeStudyButtons()
-		} else {
+		if (speedrunMilestonesReached > 25) maxAllDilUpgs()
+		else {
 			for (i=0;i<1;i++) {
 				buyDilationUpgrade(11)
 				buyDilationUpgrade(3)
@@ -863,7 +873,7 @@ function updateReplicants() {
 	document.getElementById("gbRepl").textContent=shortenDimensions(player.quantum.gluons.gb)
 	document.getElementById("brRepl").textContent=shortenDimensions(player.quantum.gluons.br)
 
-	document.getElementById("replicantReset").innerHTML="Reset replicanti amount to gain a replicant, but you gain replicanti slower.<br>(requires "+shortenCosts(player.quantum.replicants.requirement)+" replicanti)"
+	document.getElementById("replicantReset").innerHTML="Reset replicanti amount for a replicant, but you gain replicanti 2x slower.<br>(requires "+shortenCosts(player.quantum.replicants.requirement)+" replicanti)"
 	document.getElementById("quantumFoodAmount").textContent=getFullExpansion(player.quantum.replicants.quantumFood)
 	document.getElementById("buyQuantumFood").innerHTML="Buy 1 quantum food<br><br><br>Cost: "+shortenDimensions(player.quantum.replicants.quantumFoodCost)+" for all 3 gluons"
 	document.getElementById("buyQuantumFood").className="gluonupgrade "+(player.quantum.gluons.rg.min(player.quantum.gluons.gb).min(player.quantum.gluons.br).lt(player.quantum.replicants.quantumFoodCost)?"unavailabl":"stor")+"ebtn"
@@ -1041,6 +1051,55 @@ function fillAll() {
 		updateTheoremButtons()
 		updateTimeStudyButtons()
 		drawStudyTree()
+	}
+}
+
+//v1.99872
+function maxAllDilUpgs() {
+	while (buyDilationUpgrade(11,true)) {}
+	while (buyDilationUpgrade(3,true)) {}
+	while (buyDilationUpgrade(1,true)) {}
+	while (buyDilationUpgrade(2,true)) {}
+	updateDilationUpgradeCosts()
+	updateDilationUpgradeButtons()
+	updateTimeStudyButtons()
+}
+
+function updateQCTimes() {
+	document.getElementById("qcsbtn").style.display = "none"
+	if (!player.masterystudies) return
+	var temp=0
+	var tempcounter=0
+	for (var i=1;i<9;i++) {
+		setAndMaybeShow("qctime"+i,player.quantum.challengeRecords[i],'"Quantum Challenge '+i+' time record: "+timeDisplayShort(player.quantum.challengeRecords['+i+'])')
+		if (player.quantum.challengeRecords[i]) {
+			temp+=player.quantum.challengeRecords[i]
+			tempcounter++
+		}
+	}
+	if (tempcounter>0) document.getElementById("qcsbtn").style.display = "inline-block"
+	setAndMaybeShow("qctimesum",tempcounter>1,'"Sum of completed quantum challenge time records is "+timeDisplayShort('+temp+')')
+}
+
+//v1.99873
+function updatePCCompletions() {
+	document.getElementById("pccompletionsbtn").style.display = "none"
+	if (!player.masterystudies) return
+	var tempcounter=0
+	for (var c1=2;c1<9;c1++) for (var c2=1;c2<c1;c2++) if (player.quantum.pairedChallenges.completions[c2*10+c1]) tempcounter++
+	if (tempcounter>0) document.getElementById("pccompletionsbtn").style.display = "inline-block"
+	for (r=1;r<9;r++) for (c=1;c<9;c++) if (r!=c) {
+		var divid = "pc" + (r*10+c)
+		var pcid = r*10+c
+		if (r>c) pcid = c*10+r
+		var comp = player.quantum.pairedChallenges.completions[pcid]
+		if (comp !== undefined) {
+			document.getElementById(divid).textContent = "PC" + comp
+			document.getElementById(divid).className = "pc" + comp + "completed"
+		} else {
+			document.getElementById(divid).textContent = ""
+			document.getElementById(divid).className = ""
+		}
 	}
 }
 

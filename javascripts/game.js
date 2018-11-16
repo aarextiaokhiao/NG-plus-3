@@ -325,6 +325,7 @@ function updateNewPlayer(reseted) {
             progressBar: true,
             logRateChange: false,
             hideProductionTab: false,
+            eternityChallRecords: {},
             popUpId: 0,
             breakInfinity: false
         }
@@ -431,10 +432,12 @@ function updateNewPlayer(reseted) {
         player.eternitiesBank = 0
         player.quantum.challenge = []
         player.quantum.challenges = {}
+        player.quantum.challengeRecords = {}
         player.quantum.pairedChallenges = {
             order: {},
             current: 0,
             completed: 0,
+            completions: {},
             respec: false
         }
         player.dilation.bestTP = 0
@@ -1407,9 +1410,11 @@ function updateDimensions() {
         if (document.getElementById("dilation").style.display == "block") {
             if (player.dilation.active) {
                 let gain = getDilGain()
-                let req = Decimal.pow(10, Math.pow(player.dilation.totalTachyonParticles / getDilPower(), 1 / getDilExp()) * 400);
-                if (player.dilation.totalTachyonParticles - gain > 0) document.getElementById("enabledilation").innerHTML = "Disable dilation.<br>Reach " + shortenMoney(req) + " antimatter to gain more Tachyon Particles."
-                else document.getElementById("enabledilation").textContent = "Disable dilation."
+                let msg = "Disable dilation"
+                if (player.infinityPoints.lt(Number.MAX_VALUE)) {}
+                else if (player.dilation.totalTachyonParticles - gain > 0) msg += ".<br>Reach " + shortenMoney(Decimal.pow(10, Math.pow(player.dilation.totalTachyonParticles / getDilPower(), 1 / getDilExp()) * 400)) + " antimatter to gain more Tachyon Particles"
+                else msg += " for " + shortenMoney(gain - player.dilation.totalTachyonParticles) + " Tachyon particles"
+                document.getElementById("enabledilation").innerHTML = msg + "."
             }
             else document.getElementById("enabledilation").textContent = "Dilate time."+((player.eternityBuyer.isOn&&player.eternityBuyer.dilationMode?!isNaN(player.eternityBuyer.statBeforeDilation):false) ? " " + (player.eternityBuyer.dilationPerAmount - player.eternityBuyer.statBeforeDilation) + " left before dilation." : "")
             if (player.exdilation==undefined?false:player.blackhole.unl) {
@@ -4018,22 +4023,10 @@ function toggleHotkeys() {
 
 
 
-
+var challNames = [null, null, "Second Dimension Autobuyer Challenge", "Third Dimension Autobuyer Challenge", "Fourth Dimension Autobuyer Challenge", "Fifth Dimension Autobuyer Challenge", "Sixth Dimension Autobuyer Challenge", "Seventh Dimension Autobuyer Challenge", "Eighth Dimension Autobuyer Challenge", "Tickspeed Autobuyer Challenge", "Automated Dimension Boosts Challenge", "Automated Galaxies Challenge", "Automated Big Crunches Challenge", "Automated Dimensional Sacrifice Challenge", "Automated Galactic Sacrifice Challenge", "Automated Tickspeed Boosts Challenge"]
+var challOrder = [null, 1, 2, 3, 8, 6, 10, 9, 11, 5, 4, 12, 7, 13, 14, 15]
 function updateChallengeTimes() {
-	setAndMaybeShow("challengetime2",player.challengeTimes[0]<600*60*24*31,'"Second Dimension Autobuyer Challenge time record: "+timeDisplayShort(player.challengeTimes[0])')
-	setAndMaybeShow("challengetime3",player.challengeTimes[1]<600*60*24*31,'"Third Dimension Autobuyer Challenge time record: "+timeDisplayShort(player.challengeTimes[1])')
-	setAndMaybeShow("challengetime4",player.challengeTimes[6]<600*60*24*31,'"Fourth Dimension Autobuyer Challenge time record: "+timeDisplayShort(player.challengeTimes[6])')
-	setAndMaybeShow("challengetime5",player.challengeTimes[4]<600*60*24*31,'"Fifth Dimension Autobuyer Challenge time record: "+timeDisplayShort(player.challengeTimes[4])')
-	setAndMaybeShow("challengetime6",player.challengeTimes[8]<600*60*24*31,'"Sixth Dimension Autobuyer Challenge time record: "+timeDisplayShort(player.challengeTimes[8])')
-	setAndMaybeShow("challengetime7",player.challengeTimes[7]<600*60*24*31,'"Seventh Dimension Autobuyer Challenge time record: "+timeDisplayShort(player.challengeTimes[7])')
-	setAndMaybeShow("challengetime8",player.challengeTimes[9]<600*60*24*31,'"Eighth Dimension Autobuyer Challenge time record: "+timeDisplayShort(player.challengeTimes[9])')
-	setAndMaybeShow("challengetime9",player.challengeTimes[3]<600*60*24*31,'"Tickspeed Autobuyer Challenge time record: "+timeDisplayShort(player.challengeTimes[3])')
-	setAndMaybeShow("challengetime10",player.challengeTimes[2]<600*60*24*31,'"Automated Dimension Boosts Challenge time record: "+timeDisplayShort(player.challengeTimes[2])')
-	setAndMaybeShow("challengetime11",player.challengeTimes[10]<600*60*24*31,'"Automated Galaxies Challenge time record: "+timeDisplayShort(player.challengeTimes[10])')
-	setAndMaybeShow("challengetime12",player.challengeTimes[5]<600*60*24*31,'"Automated Big Crunches Challenge time record: "+timeDisplayShort(player.challengeTimes[5])')
-	setAndMaybeShow("challengetime13",player.challengeTimes[11]<600*60*24*31,'"Automated Dimensional Sacrifice Challenge time record: "+timeDisplayShort(player.challengeTimes[11])')
-	setAndMaybeShow("challengetime14",player.challengeTimes[12]<600*60*24*31,'"Automated Galactic Sacrifice Challenge time record: "+timeDisplayShort(player.challengeTimes[12])')
-	setAndMaybeShow("challengetime15",player.challengeTimes[13]<600*60*24*31,'"Automated Tickspeed Boosts Challenge time record: "+timeDisplayShort(player.challengeTimes[13])')
+	for (c=2;c<16;c++) setAndMaybeShow("challengetime"+c,player.challengeTimes[challOrder[c]-2]<600*60*24*31,'"'+challNames[c]+' time record: "+timeDisplayShort(player.challengeTimes['+(challOrder[c]-2)+'])')
 	var temp=0
 	var tempcounter=0
 	for (var i=0;i<player.challengeTimes.length;i++) {
@@ -4042,7 +4035,7 @@ function updateChallengeTimes() {
 			tempcounter++
 		}
 	}
-	setAndMaybeShow("challengetimesum",tempcounter>2,'"Sum of completed challenge time records is "+timeDisplayShort('+temp+')')
+	setAndMaybeShow("challengetimesum",tempcounter>1,'"Sum of completed challenge time records is "+timeDisplayShort('+temp+')')
 
 	var temp=0
 	var tempcounter=0
@@ -4053,7 +4046,7 @@ function updateChallengeTimes() {
 			tempcounter++
 		}
 	}
-	setAndMaybeShow("infchallengetimesum",tempcounter>2,'"Sum of completed infinity challenge time records is "+timeDisplayShort('+temp+')')
+	setAndMaybeShow("infchallengetimesum",tempcounter>1,'"Sum of completed infinity challenge time records is "+timeDisplayShort('+temp+')')
 	updateWorstChallengeBonus();
 }
 
@@ -4070,7 +4063,14 @@ function updateLastTenRuns() {
             if (ippm.gt(tempBest)) tempBest = ippm
             var tempstring = shorten(ippm) + " IP/min"
             if (ippm<1) tempstring = shorten(ippm*60) + " IP/hour"
-            document.getElementById("run"+(i+1)).textContent = "The infinity " + (i == 0 ? '1 infinity' : (i+1) + ' infinities') + " ago took " + timeDisplayShort(player.lastTenRuns[i][0]) + " and gave " + shortenDimensions(player.lastTenRuns[i][1]) +" IP. "+ tempstring
+            var msg = "The infinity " + (i == 0 ? '1 infinity' : (i+1) + ' infinities') + " ago took " + timeDisplayShort(player.lastTenRuns[i][0])
+            if (player.lastTenRuns[i][2]) {
+                var split=player.lastTenRuns[i][2].split("challenge")
+                if (split[1]==undefined) msg += " in Infinity Challenge " + checkICID(player.lastTenRuns[i][2])
+                else msg += " in " + challNames[parseInt(split[1])]
+            }
+            msg += " and gave " + shortenDimensions(player.lastTenRuns[i][1]) +" IP. "+ tempstring
+            document.getElementById("run"+(i+1)).textContent = msg
             tempTime = tempTime.plus(player.lastTenRuns[i][0])
             tempIP = tempIP.plus(player.lastTenRuns[i][1])
             listed++
@@ -4092,6 +4092,20 @@ function updateLastTenRuns() {
     } else document.getElementById("averagerun").innerHTML = ""
 }
 
+function updateEterChallengeTimes() {
+	var temp=0
+	var tempcounter=0
+	for (var i=1;i<15;i++) {
+		setAndMaybeShow("eterchallengetime"+i,player.aarexModifications.eternityChallRecords[i],'"Eternity Challenge '+i+' time record: "+timeDisplayShort(player.aarexModifications.eternityChallRecords['+i+'])')
+		if (player.aarexModifications.eternityChallRecords[i]) {
+			temp+=player.aarexModifications.eternityChallRecords[i]
+			tempcounter++
+		}
+	}
+	document.getElementById("eterchallengesbtn").style.display = tempcounter > 0 ? "inline-block" : "none"
+	setAndMaybeShow("eterchallengetimesum",tempcounter>1,'"Sum of completed eternity challenge time records is "+timeDisplayShort('+temp+')')
+}
+
 var averageEp = new Decimal(0)
 var bestEp
 function updateLastTenEternities() {
@@ -4103,7 +4117,13 @@ function updateLastTenEternities() {
             var eppm = player.lastTenEternities[i][1].dividedBy(player.lastTenEternities[i][0]/600)
             var tempstring = shorten(eppm) + " EP/min"
             if (eppm<1) tempstring = shorten(eppm*60) + " EP/hour"
-            document.getElementById("eternityrun"+(i+1)).textContent = "The Eternity " + (i == 0 ? '1 eternity' : (i+1) + ' eternities') + " ago took " + timeDisplayShort(player.lastTenEternities[i][0]) + " and gave " + shortenDimensions(player.lastTenEternities[i][1]) +" EP. "+ tempstring
+            msg = "The Eternity " + (i == 0 ? '1 eternity' : (i+1) + ' eternities') + " ago took " + timeDisplayShort(player.lastTenEternities[i][0])
+            if (player.lastTenEternities[i][2]) {
+                if (player.lastTenEternities[i][2] == "d") msg += " while dilated"
+                else msg += " in Eternity Challenge " + player.lastTenEternities[i][2]
+            }
+            msg += " and gave " + shortenDimensions(player.lastTenEternities[i][1]) +" EP. "+ tempstring
+            document.getElementById("eternityrun"+(i+1)).textContent = msg
             tempTime = tempTime.plus(player.lastTenEternities[i][0])
             tempEP = tempEP.plus(player.lastTenEternities[i][1])
             bestEp = player.lastTenEternities[i][1].max(bestEp)
@@ -4121,18 +4141,18 @@ function updateLastTenEternities() {
     } else document.getElementById("averageEternityRun").textContent = ""
 }
 
-function addEternityTime(time, ep) {
+function addEternityTime(array) {
     for (var i=player.lastTenEternities.length-1; i>0; i--) {
         player.lastTenEternities[i] = player.lastTenEternities[i-1]
     }
-    player.lastTenEternities[0] = [time, ep]
+    player.lastTenEternities[0] = array
 }
 
-function addTime(time, ip) {
+function addTime(array) {
     for (var i=player.lastTenRuns.length-1; i>0; i--) {
         player.lastTenRuns[i] = player.lastTenRuns[i-1]
     }
-    player.lastTenRuns[0] = [time, ip]
+    player.lastTenRuns[0] = array
 }
 
 var infchallengeTimes = 999999999
@@ -4198,19 +4218,16 @@ function bigCrunch(autoed) {
         }
         if (player.currentChallenge.includes("post")) giveAchievement("Infinitely Challenging");
         if (player.currentChallenge == "postc8") giveAchievement("Anti-antichallenged");
-        if (!player.break || player.currentChallenge != "") {
-            var add = new Decimal(getIPMult())
-            if (player.timestudy.studies.includes(51)) add = add.times(1e15)
-            player.infinityPoints = player.infinityPoints.plus(add);
-            addTime(player.thisInfinityTime, add)
-        }
-        else {
-            player.infinityPoints = player.infinityPoints.plus(gainedInfinityPoints())
-            addTime(player.thisInfinityTime, gainedInfinityPoints())
-            if (gainedInfinityPoints().gte(1e150)) giveAchievement("All your IP are belong to us")
-            if (gainedInfinityPoints().gte(1e200) && player.thisInfinityTime <= 20) giveAchievement("Ludicrous Speed")
-            if (gainedInfinityPoints().gte(1e250) && player.thisInfinityTime <= 200) giveAchievement("I brake for nobody")
-        }
+        add = getIPMult()
+        if (player.break && player.currentChallenge == "") add = gainedInfinityPoints()
+        else if (player.timestudy.studies.includes(51)) add = add.times(1e15)
+        player.infinityPoints = player.infinityPoints.plus(add)
+        var array = [player.thisInfinityTime, add]
+        if (player.currentChallenge != "") array.push(player.currentChallenge)
+        addTime(array)
+        if (gainedInfinityPoints().gte(1e150)) giveAchievement("All your IP are belong to us")
+        if (gainedInfinityPoints().gte(1e200) && player.thisInfinityTime <= 20) giveAchievement("Ludicrous Speed")
+        if (gainedInfinityPoints().gte(1e250) && player.thisInfinityTime <= 200) giveAchievement("I brake for nobody")
         if (!player.achievements.includes("r111") && player.lastTenRuns[9][1].neq(0)) {
             var n = 0;
             for (i=0; i<9; i++) {
@@ -4541,12 +4558,17 @@ function eternity(force, auto) {
         }
         temp = []
         player.eternityPoints = player.eternityPoints.plus(gainedEternityPoints())
-        addEternityTime(player.thisEternity, gainedEternityPoints())
+        var array = [player.thisEternity, gainedEternityPoints()]
+        if (player.dilation.active) array.push("d")
+        else if (player.currentEternityChall != "") array.push(player.eternityChallUnlocked)
+        addEternityTime(array)
         var forceRespec = false
         if (player.currentEternityChall !== "") {
             if (player.eternityChalls[player.currentEternityChall] === undefined) {
                 player.eternityChalls[player.currentEternityChall] = 1
             } else if (player.eternityChalls[player.currentEternityChall] < 5) player.eternityChalls[player.currentEternityChall] += 1
+            else if (player.aarexModifications.eternityChallRecords[player.eternityChallUnlocked] === undefined) player.aarexModifications.eternityChallRecords[player.eternityChallUnlocked] = player.thisEternity
+            else player.aarexModifications.eternityChallRecords[player.eternityChallUnlocked] = Math.max(player.thisEternity, player.aarexModifications.eternityChallRecords[player.eternityChallUnlocked])
             player.etercreq = 0
             forceRespec = true
             if (Object.keys(player.eternityChalls).length >= 10) {
@@ -4862,7 +4884,7 @@ function eternity(force, auto) {
         if (player.achievements.includes("r93")) player.infMult = player.infMult.times(4);
         resetInfDimensions();
         updateChallenges();
-        updateChallengeTimes()
+        updateEterChallengeTimes()
         updateLastTenRuns()
         updateLastTenEternities()
         if (!player.achievements.includes("r133")) {
@@ -5758,7 +5780,6 @@ function startEternityChallenge(name, startgoal, goalIncrease) {
     if (player.achievements.includes("r104")) player.infinityPoints = new Decimal(2e25);
     resetInfDimensions();
     updateChallenges();
-    updateChallengeTimes()
     updateLastTenRuns()
     updateLastTenEternities()
     if (!player.achievements.includes("r133")) {
@@ -6596,7 +6617,6 @@ function gameLoop(diff) {
     }
     var step = inQC(4) ? 2 : 1
     for (let tier=1;tier<9;tier++) {
-        if (tier != 8 && (player.infDimensionsUnlocked[tier-1] || ECTimesCompleted("eterc7") > 0) && (!inQC(4) || tier != 7)) player["infinityDimension"+tier].amount = player["infinityDimension"+tier].amount.plus(DimensionProduction(tier+step).times(diff/100))
         if (player.infDimensionsUnlocked[tier-1]) {
             document.getElementById("infRow"+tier).style.display = "inline-block"
         } else {
@@ -6604,6 +6624,7 @@ function gameLoop(diff) {
         }
 
         if (tier < 9 - step){
+            player["infinityDimension"+tier].amount = player["infinityDimension"+tier].amount.plus(DimensionProduction(tier+step).times(diff/100))
             player["timeDimension"+tier].amount = player["timeDimension"+tier].amount.plus(getTimeDimensionProduction(tier+step).times(diff/100))
             if (player.meta) player.meta[tier].amount = player.meta[tier].amount.plus(getMetaDimensionProduction(tier+step).times(diff/100))
         }
@@ -6627,11 +6648,12 @@ function gameLoop(diff) {
 
 
     if (player.currentEternityChall == "eterc7") player.infinityDimension8.amount = player.infinityDimension8.amount.plus(getTimeDimensionProduction(1).times(diff/10))
-    else player.timeShards = player.timeShards.plus(getTimeDimensionProduction(1).times(diff/10))
+    else {
+        if (ECTimesCompleted("eterc7") > 0) player.infinityDimension8.amount = player.infinityDimension8.amount.plus(DimensionProduction(9).times(diff/10))
+        player.timeShards = player.timeShards.plus(getTimeDimensionProduction(1).times(diff/10))
+    }
 
     if (player.exdilation != undefined) player.blackhole.power = player.blackhole.power.plus(getBlackholeDimensionProduction(1).times(diff/10))
-
-    if (getTimeDimensionProduction(1).gt(0) && ECTimesCompleted("eterc7") > 0) player.infinityDimension8.amount = player.infinityDimension8.amount.plus(getTimeDimensionProduction(1).pow(ECTimesCompleted("eterc7")*0.2).minus(1).times(diff/10))
 
     let gain;
     if (player.boughtDims) {
@@ -7142,7 +7164,7 @@ function gameLoop(diff) {
     document.getElementById("ec4reward").textContent = "Reward: Infinity Dimension multiplier from unspent IP, Currently: "+shortenMoney(player.infinityPoints.pow(0.003 + ECTimesCompleted("eterc4")*0.002).min(new Decimal("1e200")))+"x"
     document.getElementById("ec5reward").textContent = "Reward: Galaxy cost scaling starts "+((ECTimesCompleted("eterc5")*5))+" galaxies later."
     document.getElementById("ec6reward").textContent = "Reward: Further reduce the dimension cost multiplier increase, Currently: "+player.dimensionMultDecrease.toFixed(1)+"x "
-    document.getElementById("ec7reward").textContent = "Reward: First Time dimension produces Eighth Infinity Dimensions, Currently: "+shortenMoney(getTimeDimensionProduction(1).pow(ECTimesCompleted("eterc7")*0.2).minus(1).max(0))+" per second. "
+    document.getElementById("ec7reward").textContent = "Reward: First Time dimension produces Eighth Infinity Dimensions, Currently: "+shortenMoney(DimensionProduction(9))+" per second. "
     document.getElementById("ec8reward").textContent = "Reward: Infinity power powers up replicanti galaxies, Currently: " + (Math.max(Math.pow(Math.log10(player.infinityPower.plus(1).log10()+1), 0.03 * ECTimesCompleted("eterc8"))-1, 0) * 100).toFixed(2) + "%"
     document.getElementById("ec9reward").textContent = "Reward: Infinity Dimension multiplier based on time shards, Currently: "+shortenMoney(player.timeShards.pow(ECTimesCompleted("eterc9")*0.1).min(new Decimal("1e400")))+"x "
     document.getElementById("ec10reward").textContent = "Reward: Time dimensions gain a multiplier from infinitied stat, Currently: "+shortenMoney(new Decimal(Math.max(Math.pow(getInfinitied(), 0.9) * ECTimesCompleted("eterc10") * 0.000002+1, 1)).pow((player.timestudy.studies.includes(31)) ? 4 : 1))+"x "

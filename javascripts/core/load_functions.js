@@ -395,6 +395,7 @@ if (player.version < 5) {
   if (player.aarexModifications.hideProductionTab === undefined) {
       player.aarexModifications.hideProductionTab = !(!player.boughtDims) && player.aarexModifications.ersVersion === undefined
   }
+  if (player.aarexModifications.eternityChallRecords === undefined) player.aarexModifications.eternityChallRecords = {}
   if (player.aarexModifications.popUpId === undefined) {
       player.aarexModifications.popUpId = 0
   }
@@ -412,6 +413,7 @@ if (player.version < 5) {
   toggleBulk()
   toggleBulk()
 
+  document.getElementById("rename").innerHTML = "<p style='font-size:15px'>Rename</p>Name: "+(player.aarexModifications.name?player.aarexModifications.name:"Save #" + savePlacement)
   document.getElementById("offlineProgress").textContent = "Offline progress: O"+(player.aarexModifications.offlineProgress?"N":"FF")
   document.getElementById("autoSave").textContent = "Auto save: O"+(player.aarexModifications.autoSave?"N":"FF")
 
@@ -420,10 +422,13 @@ if (player.version < 5) {
   if (!player.replicanti.auto[2]) document.getElementById("replauto3").textContent = "Auto: OFF"
 
   loadAutoBuyerSettings();
+  var updatedLTR = []
   for (lastRun=0; lastRun<10 ; lastRun++) {
-      if (player.lastTenRuns[lastRun][0] == 26784000 && player.lastTenRuns[lastRun][1].eq(1)) player.lastTenRuns[lastRun] = [26784000, new Decimal(0)]
+      if (typeof(player.lastTenRuns[lastRun]) !== "number") if (player.lastTenRuns[lastRun][0] != 26784000 || player.lastTenRuns[lastRun][1].neq(1)) updatedLTR.push(player.lastTenRuns[lastRun])
       if (player.lastTenEternities[lastRun][0] == 26784000 && player.lastTenEternities[lastRun][1].eq(1)) player.lastTenEternities[lastRun] = [26784000, new Decimal(0)]
   }
+  for (a=updatedLTR.length;a<10;a++) updatedLTR.push([26784000, new Decimal(0)])
+  player.lastTenRuns = updatedLTR
   updateLastTenRuns()
   updateLastTenEternities()
 
@@ -682,12 +687,15 @@ if (player.version < 5) {
               player.quantum.multPower = {rg:0,gb:0,br:0,total:0}
               player.quantum.challenge = []
               player.quantum.challenges = {}
+              player.quantum.challengeRecords = {}
               player.quantum.pairedChallenges = {
                   order: {},
                   current: 0,
                   completed: 0,
+                  completions: {},
                   respec: false
               }
+              player.quantum.pairedChallenges.completions = {}
               player.dilation.bestTP = 0
               player.old = false
               player.quantum.autoOptions = {}
@@ -913,10 +921,20 @@ if (player.version < 5) {
       if (player.quantum.replicants.workers.eq(10)) player.quantum.replicants.workerProgress=0
   }
   if (player.aarexModifications.newGame3PlusVersion < 1.998711) {
-      //I don't want to refund your quantum food because it's too late.
       player.quantum.quantumFood=0
       player.quantum.quantumFoodCost=1e46*Math.pow(5,Math.round(new Decimal(player.quantum.replicants.workers).toNumber()*3+new Decimal(player.quantum.replicants.workerProgress).toNumber()))
-      player.aarexModifications.newGame3PlusVersion = 1.998711
+  }
+  if (player.aarexModifications.newGame3PlusVersion < 1.99873) {
+      player.quantum.pairedChallenges.completions = {}
+      for (c=1;c<=player.quantum.pairedChallenges.completed;c++) {
+          var c1 = player.quantum.pairedChallenges.order[c][0]
+          var c2 = player.quantum.pairedChallenges.order[c][1]
+          player.quantum.pairedChallenges.completions[Math.min(c1, c2) * 10 + Math.max(c1, c2)] = c
+      }
+  }
+  if (player.aarexModifications.newGame3PlusVersion < 1.998731) {
+      if (player.quantum.challengeRecords === undefined) player.quantum.challengeRecords = {}
+      player.aarexModifications.newGame3PlusVersion = 1.998731
   }
   if (player.masterystudies ? player.aarexModifications.newGame3PlusVersion < 1.999 || (player.quantum.emperorDimensions ? player.quantum.emperorDimensions[1] == undefined : false) : false) { //temp
       player.quantum.replicants.limitDim=1
@@ -1387,6 +1405,7 @@ if (player.version < 5) {
   checkForEndMe();
   updateRespecButtons()
   updateEternityChallenges();
+  updateEterChallengeTimes()
   updateExtraReplGalaxies()
   updateDilationUpgradeCosts()
   updateExdilation()
@@ -1415,6 +1434,8 @@ if (player.version < 5) {
   updateElectrons()
   updateBankedEter()
   updateQuantumChallenges()
+  updateQCTimes()
+  updatePCCompletions()
   updateReplicants()
   if (player.boughtDims) {
       if (document.getElementById("timestudies").style.display=="block") showEternityTab("ers_timestudies",true)
@@ -1426,6 +1447,7 @@ if (player.version < 5) {
   document.getElementById("quarksAnimBtn").style.display=quantumed&&player.masterystudies?"inline-block":"none"
   document.getElementById("quarksAnimBtn").textContent="Quarks: O"+(player.options.animations.quarks?"N":"FF")
   document.getElementById('dilationmode').style.display=speedrunMilestonesReached>4?"":"none"
+  document.getElementById('rebuyupgmax').style.display=speedrunMilestonesReached<26&&player.masterystudies?"":"none"
   document.getElementById('rebuyupgauto').style.display=speedrunMilestonesReached>6?"":"none"
   document.getElementById('toggleallmetadims').style.display=speedrunMilestonesReached>7?"":"none"
   document.getElementById('metaboostauto').style.display=speedrunMilestonesReached>14?"":"none"
@@ -1563,8 +1585,10 @@ function rename_save(id) {
 	}
 	var save_name = prompt("Input a new name of "+((metaSave.current == id || id === undefined) ? "your current save" : "save #" + placement)+". It is necessary to rename it into related names! Leave blank to reset the save's name.")
 	if (save_name === null) return
-	if (metaSave.current == id || id === undefined) player.aarexModifications.save_name = save_name
-	else {
+	if (metaSave.current == id || id === undefined) {
+		player.aarexModifications.save_name = save_name
+		document.getElementById("rename").innerHTML = "<p style='font-size:15px'>Rename</p>Name: "+(player.aarexModifications.name?player.aarexModifications.name:"Save #" + savePlacement)
+	} else {
 		var temp_save = get_save(id)
 		if (!temp_save.aarexModifications) temp_save.aarexModifications={
 			dilationConf: false,
@@ -1573,6 +1597,7 @@ function rename_save(id) {
 			progressBar: true,
 			logRateChange: false,
 			hideProductionTab: true,
+			eternityChallRecords: {},
 			popUpId: 0,
 			breakInfinity: false
         }
@@ -1807,10 +1832,10 @@ function transformSaveToDecimal() {
   player.postC8Mult = new Decimal(player.postC8Mult)
 
   for (var i=0; i<10; i++) {
+      player.lastTenRuns[i][0] = parseFloat(player.lastTenRuns[i][0])
       player.lastTenRuns[i][1] = new Decimal(player.lastTenRuns[i][1])
       player.lastTenEternities[i][1] = new Decimal(player.lastTenEternities[i][1])
   }
-  player.lastTenRuns = [[parseFloat(player.lastTenRuns[0][0]), player.lastTenRuns[0][1]], [parseFloat(player.lastTenRuns[1][0]), player.lastTenRuns[1][1]], [parseFloat(player.lastTenRuns[2][0]), player.lastTenRuns[2][1]], [parseFloat(player.lastTenRuns[3][0]), player.lastTenRuns[3][1]], [parseFloat(player.lastTenRuns[4][0]), player.lastTenRuns[4][1]], [parseFloat(player.lastTenRuns[5][0]), player.lastTenRuns[5][1]], [parseFloat(player.lastTenRuns[6][0]), player.lastTenRuns[6][1]], [parseFloat(player.lastTenRuns[7][0]), player.lastTenRuns[7][1]], [parseFloat(player.lastTenRuns[8][0]), player.lastTenRuns[8][1]], [parseFloat(player.lastTenRuns[9][0]), player.lastTenRuns[9][1]]]
   player.replicanti.chanceCost = new Decimal(player.replicanti.chanceCost)
   player.replicanti.intervalCost = new Decimal(player.replicanti.intervalCost)
   player.replicanti.galCost = new Decimal(player.replicanti.galCost)
