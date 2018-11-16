@@ -283,7 +283,7 @@ function setupText() {
 			if (c<1) col.textContent = "#" + r
 			else if (c==r) {
 				col.textContent = "QC" + r
-				col.className = "pc4completed"
+				col.className = "pc1completed"
 			} else col.id = "pc" + r + c
 		}
 	}

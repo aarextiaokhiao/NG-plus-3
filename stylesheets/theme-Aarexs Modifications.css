@@ -56,7 +56,7 @@ body {
 #coinAmount {
     color: #0072e5 !important
 }
-.storebtn, .completedchallengesbtn, .pc1completed {
+.storebtn, .completedchallengesbtn, .pc4completed {
     border-color: #00e500 !important;
     background-color: #191919 !important;
     color: #e5e5e5 !important;
@@ -394,21 +394,21 @@ strong { color: #0072e5 }
     border-color: #009900 !important;
     border-radius: 0px !important
 }
-.pc2completed {
+.pc1completed {
     background-color: #191919 !important;
-    border-color: #e2bd00 !important;
+    border-color: #009900 !important;
     color: #e5e5e5 !important;
     border-radius: 0px !important
 }
-.pc3completed {
+.pc2completed {
     background-color: #191919 !important;
     border-color: #7100e2 !important;
     color: #e5e5e5 !important;
     border-radius: 0px !important
 }
-.pc4completed {
+.pc3completed {
     background-color: #191919 !important;
-    border-color: #009900 !important;
+    border-color: #e2bd00 !important;
     color: #e5e5e5 !important;
     border-radius: 0px !important
 }
