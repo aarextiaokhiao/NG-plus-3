@@ -1575,7 +1575,7 @@ function change_save(id) {
   changeSaveDesc(metaSave.current, savePlacement)
 
   $.notify("Save #"+savePlacement+" loaded", "info")
-  localStorage.setItem("AD_aarexModifications",btoa(JSON.stringify(metaSave)))
+  localStorage.setItem("AD_AM_ED",btoa(JSON.stringify(metaSave)))
 }
 
 function rename_save(id) {
@@ -1651,7 +1651,7 @@ function move(id,offset) {
 	document.getElementById("saves").rows[placement+offset].innerHTML=getSaveLayout(id)
 	changeSaveDesc(metaSave.saveOrder[placement], placement+1)
 	changeSaveDesc(id, placement+offset+1)
-	localStorage.setItem("AD_aarexModifications",btoa(JSON.stringify(metaSave)))
+	localStorage.setItem("AD_AM_ED",btoa(JSON.stringify(metaSave)))
 }
 
 function delete_save(saveId) {
@@ -1675,7 +1675,7 @@ function delete_save(saveId) {
 	if (metaSave.current==saveId) {
 		change_save(metaSave.saveOrder[0])
 		document.getElementById("loadmenu").style.display="block"
-	} else localStorage.setItem("AD_aarexModifications",btoa(JSON.stringify(metaSave)))
+	} else localStorage.setItem("AD_AM_ED",btoa(JSON.stringify(metaSave)))
 	$.notify("Save deleted", "info")
 }
 
@@ -1688,7 +1688,7 @@ function new_game(id) {
 	metaSave.current=1
 	while (metaSave.saveOrder.includes(metaSave.current)) metaSave.current++
 	metaSave.saveOrder.push(metaSave.current)
-	localStorage.setItem("AD_aarexModifications",btoa(JSON.stringify(metaSave)))
+	localStorage.setItem("AD_AM_ED",btoa(JSON.stringify(metaSave)))
 	changeSaveDesc(oldId, savePlacement)
 	latestRow=document.getElementById("saves").insertRow(loadedSaves)
 	latestRow.innerHTML=getSaveLayout(metaSave.current)
@@ -1700,7 +1700,7 @@ function new_game(id) {
 	startInterval()
 	
 	$.notify("Save created", "info")
-	localStorage.setItem("AD_aarexModifications",btoa(JSON.stringify(metaSave)))
+	localStorage.setItem("AD_AM_ED",btoa(JSON.stringify(metaSave)))
 	closeToolTip()
 	showDimTab('antimatterdimensions')
 	showStatsTab('stats')
@@ -1958,7 +1958,7 @@ function get_save(id) {
 }
 
 function initiateMetaSave() {
-	metaSave = localStorage.getItem('AD_aarexModifications')
+	metaSave = localStorage.getItem('AD_AM_ED')
 	if (metaSave == null) metaSave = {presetsOrder:[], version:2}
 	else metaSave = JSON.parse(atob(metaSave))
 	if (metaSave.current == undefined) {

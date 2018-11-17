@@ -612,7 +612,7 @@ function new_preset(importing) {
 	latestRow.innerHTML=getPresetLayout(placement)
 	loadedPresets++
 	changePresetTitle(placement, loadedPresets)
-	localStorage.setItem("AD_aarexModifications",btoa(JSON.stringify(metaSave)))
+	localStorage.setItem("AD_AM_ED",btoa(JSON.stringify(metaSave)))
 	$.notify("Preset created", "info")
 }
 
@@ -667,7 +667,7 @@ function delete_preset(presetId) {
 		} else newPresetsOrder.push(poData[id])
 	}
 	poData=newPresetsOrder
-	localStorage.setItem("AD_aarexModifications",btoa(JSON.stringify(metaSave)))
+	localStorage.setItem("AD_AM_ED",btoa(JSON.stringify(metaSave)))
 	$.notify("Preset deleted", "info")
 }
 
@@ -693,7 +693,7 @@ function move_preset(id,offset) {
 	document.getElementById("presets").rows[placement+offset].innerHTML=getPresetLayout(id)
 	changePresetTitle(poData[placement],placement)
 	changePresetTitle(poData[placement+offset],placement+offset)
-	localStorage.setItem("AD_aarexModifications",btoa(JSON.stringify(metaSave)))
+	localStorage.setItem("AD_AM_ED",btoa(JSON.stringify(metaSave)))
 }
 
 var loadedPresets=0
