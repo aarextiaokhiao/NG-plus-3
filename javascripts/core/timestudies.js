@@ -618,7 +618,7 @@ function new_preset(importing) {
 
 //Smart presets
 var onERS = false
-var prefix = "dsAM_ST_"
+var prefix = "dsAM_ED_ST_"
 var poData
 
 function save_preset(id) {
@@ -704,8 +704,8 @@ function openStudyPresets() {
 		document.getElementById("presets").innerHTML=""
 		presets = {}
 		onERS = saveOnERS
-		if (onERS) prefix = "dsERS_ST_"
-		else prefix = "dsAM_ST_"
+		if (onERS) prefix = "dsERS_ED_ST_"
+		else prefix = "dsAM_ED_ST_"
 		loadedPresets = 0
 	}
 	document.getElementById("presetsmenu").style.display = "block";

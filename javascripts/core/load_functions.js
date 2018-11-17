@@ -939,8 +939,8 @@ if (player.version < 5) {
   if (player.masterystudies ? player.aarexModifications.newGame3PlusVersion < 1.999 || (player.quantum.emperorDimensions ? player.quantum.emperorDimensions[1] == undefined : false) : false) { //temp
       player.quantum.replicants.limitDim=1
       player.quantum.emperorDimensions = {}
-      player.quantum.emperorDimensions[1] = {workers: player.quantum.replicants.workers, progress: player.quantum.replicants.workerProgress}
-      for (d=2;d<9;d++) player.quantum.emperorDimensions[d] = {workers: 0, progress: 0}
+      player.quantum.emperorDimensions[1] = {workers: player.quantum.replicants.workers, progress: player.quantum.replicants.workerProgress, perm: Math.round(parseFloat(player.quantum.replicants.workers))}
+      for (d=2;d<9;d++) player.quantum.emperorDimensions[d] = {workers: 0, progress: 0, perm: 0}
       player.aarexModifications.newGame3PlusVersion=1.999
       delete player.quantum.replicants.workers
       delete player.quantum.replicants.workerProgress
@@ -1617,7 +1617,7 @@ function export_save(id) {
 	let parent = output.parentElement
 
 	parent.style.display = ""
-	output.value = localStorage.getItem(btoa("dsAM_"+id))
+	output.value = localStorage.getItem(btoa("dsAM_ED_"+id))
 
 	output.onblur = function() {
 		parent.style.display = "none"
@@ -1664,7 +1664,7 @@ function delete_save(saveId) {
 	for (orderId=0;orderId<metaSave.saveOrder.length;orderId++) {
 		if (alreadyDeleted) changeSaveDesc(metaSave.saveOrder[orderId], orderId)
 		if (metaSave.saveOrder[orderId]==saveId) {
-			localStorage.removeItem(btoa("dsAM_"+saveId))
+			localStorage.removeItem(btoa("dsAM_ED_"+saveId))
 			alreadyDeleted=true
 			document.getElementById("saves").deleteRow(orderId)
 			if (savePlacement>orderId+1) savePlacement--
@@ -1946,12 +1946,12 @@ function loadAutoBuyerSettings() {
 }
 
 function set_save(id, value) {
-	localStorage.setItem(btoa('dsAM_'+id), btoa(JSON.stringify(value, function(k, v) { return (v === Infinity) ? "Infinity" : v; })));
+	localStorage.setItem(btoa('dsAM_ED_'+id), btoa(JSON.stringify(value, function(k, v) { return (v === Infinity) ? "Infinity" : v; })));
 }
 
 function get_save(id) {
     try {
-        var dimensionSave = localStorage.getItem(btoa('dsAM_'+id))
+        var dimensionSave = localStorage.getItem(btoa('dsAM_ED_'+id))
         if (dimensionSave !== null) dimensionSave = JSON.parse(atob(dimensionSave, function(k, v) { return (v === Infinity) ? "Infinity" : v; }))
         return dimensionSave
     } catch(e) { console.log("Fuck IE"); }
@@ -1981,14 +1981,14 @@ function migrateOldSaves() {
 				for (id=0;id<3;id++) {
 					if (ngSave.saves[id] != null) {
 						metaSave.saveOrder.push(1+id)
-						localStorage.setItem(btoa('dsAM_'+(1+id)), btoa(JSON.stringify(ngSave.saves[id], function(k, v) { return (v === Infinity) ? "Infinity" : v; })));
+						localStorage.setItem(btoa('dsAM_ED_'+(1+id)), btoa(JSON.stringify(ngSave.saves[id], function(k, v) { return (v === Infinity) ? "Infinity" : v; })));
 					}
 				}
 				if (!metaSave.newGameMinus) metaSave.current=1+ngSave.currentSave
 			} else {
 				if (!metaSave.newGameMinus) metaSave.current=1
 				metaSave.saveOrder.push(1)
-				localStorage.setItem(btoa('dsAM_1'), btoa(JSON.stringify(ngSave, function(k, v) { return (v === Infinity) ? "Infinity" : v; })));
+				localStorage.setItem(btoa('dsAM_ED_1'), btoa(JSON.stringify(ngSave, function(k, v) { return (v === Infinity) ? "Infinity" : v; })));
 			}
 		}
 		localStorage.removeItem('dimensionSave_aarexModifications')
@@ -1999,14 +1999,14 @@ function migrateOldSaves() {
 				for (id=0;id<3;id++) {
 					if (ngmSave.saves[id] != null) {
 						metaSave.saveOrder.push(4+id)
-						localStorage.setItem(btoa('dsAM_'+(4+id)), btoa(JSON.stringify(ngmSave.saves[id], function(k, v) { return (v === Infinity) ? "Infinity" : v; })));
+						localStorage.setItem(btoa('dsAM_ED_'+(4+id)), btoa(JSON.stringify(ngmSave.saves[id], function(k, v) { return (v === Infinity) ? "Infinity" : v; })));
 					}
 				}
 				if (metaSave.newGameMinus) metaSave.current=4+ngmSave.currentSave
 			} else {
 				if (metaSave.newGameMinus) metaSave.current=4
 				metaSave.saveOrder.push(4)
-				localStorage.setItem(btoa('dsAM_4'), btoa(JSON.stringify(ngmSave, function(k, v) { return (v === Infinity) ? "Infinity" : v; })));
+				localStorage.setItem(btoa('dsAM_ED_4'), btoa(JSON.stringify(ngmSave, function(k, v) { return (v === Infinity) ? "Infinity" : v; })));
 			}
 		}
 		localStorage.removeItem('dimensionSave_NGM')
@@ -2018,7 +2018,7 @@ function migrateOldSaves() {
 			var studyTreePreset=localStorage.getItem("studyTree"+id)
 			if (studyTreePreset !== null) {
 				metaSave.presetsOrder.push(id)
-				localStorage.setItem(btoa("dsAM_ST_"+id),btoa(JSON.stringify({preset:studyTreePreset})))
+				localStorage.setItem(btoa("dsAM_ED_ST_"+id),btoa(JSON.stringify({preset:studyTreePreset})))
 				localStorage.removeItem("studyTree"+id)
 			}
 		}

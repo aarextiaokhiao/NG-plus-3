@@ -461,7 +461,7 @@ function updateNewPlayer(reseted) {
             ageProgress: 0
         }
         player.quantum.emperorDimensions = {}
-        for (d=1;d<9;d++) player.quantum.emperorDimensions[d] = {workers: 0, progress: 0}
+        for (d=1;d<9;d++) player.quantum.emperorDimensions[d] = {workers: 0, progress: 0, perm: 0, manualProgress: 0}
     }
     if (modesChosen.ers) {
         player.aarexModifications.ersVersion = 1.02
@@ -2966,7 +2966,7 @@ function import_save(type) {
 			metaSave.saveOrder.push(newSaveId)
 			latestRow=document.getElementById("saves").insertRow(loadedSaves)
 			latestRow.innerHTML = getSaveLayout(newSaveId)
-			localStorage.setItem(btoa("dsAM_"+newSaveId),save_data)
+			localStorage.setItem(btoa("dsAM_ED_"+newSaveId),save_data)
 			loadedSaves++
 			changeSaveDesc(newSaveId, loadedSaves)
 			localStorage.setItem("AD_aarexModifications",btoa(JSON.stringify(metaSave)))

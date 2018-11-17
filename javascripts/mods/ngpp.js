@@ -1001,13 +1001,16 @@ function quantumReset(force, auto, challid, implode=false) {
 		player.quantum.replicants.amount = new Decimal(0)
 		player.quantum.replicants.requirement = new Decimal("1e3000000")
 		player.quantum.replicants.quarks = new Decimal(0)
-		player.quantum.replicants.quantumFood += Math.round(player.quantum.replicants.workerProgress.toNumber()*3)
-		player.quantum.replicants.workerProgress = new Decimal(0)
 		player.quantum.replicants.eggonProgress = new Decimal(0)
 		player.quantum.replicants.eggons = new Decimal(0)
 		player.quantum.replicants.babyProgress = new Decimal(0)
 		player.quantum.replicants.babies = new Decimal(0)
 		player.quantum.replicants.growupProgress = new Decimal(0)
+		for (d=1;d<9;d++) {
+			if (d>7||eds[d].perm<10) player.quantum.replicants.quantumFood+=Math.round(eds[tier].progress.toNumber()*3)%3
+			eds[tier].amount=new Decimal(eds[tier].perm)
+			eds[tier].progress=new Decimal(0)
+		}
 		document.getElementById("metaAntimatterEffectType").textContent=inQC(3)?"multiplier on all Infinity Dimensions":"extra multiplier per dimension boost"
 		updateColorCharge()
 		updateGluons()

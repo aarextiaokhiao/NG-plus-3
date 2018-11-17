@@ -294,6 +294,16 @@ function setupText() {
 			} else col.id = "pc" + r + c
 		}
 	}
+	var edsDiv = document.getElementById("empDimTable")
+	for (d=1;d<9;d++) {
+		var row=edsDiv.insertRow(d-1)
+		row.id="empRow"+d
+		row.style["font-size"]="16px"
+		var html='<td id="empD'+d+'" width="41%">'+DISPLAY_NAMES[d]+' Emperor Dimension x1</td>'
+		html+='<td><div id="empAmount'+d+'">0'+(d>7?'':' (+0.00%/s)')+'</div></td>'
+		html+='<td align="right" width="10%"><button id="empFeed'+d+'" style="color:black; width:195px; height:30px" class="storebtn" align="right" onclick="feedReplicant('+d+')">Feed (0%)</button></td>'
+		row.innerHTML=html
+	}
 }
 
 //v1.1
@@ -392,6 +402,9 @@ function updateQuantumTabs() {
 
 		document.getElementById("gatheredQuarks").textContent=shortenDimensions(player.quantum.replicants.quarks.floor())
 		document.getElementById("quarkTranslation").textContent=shortenDimensions(gatheredQuarksBoost*100)+'%'
+
+		document.getElementById("feedNormal").className=(canFeedReplicant(1)?"stor":"unavailabl")+"ebtn"
+		document.getElementById("workerProgress").textContent=Math.round(eds[1].progress.toNumber()*100)+"%"
 
 		document.getElementById("eggonAmount").textContent=shortenDimensions(player.quantum.replicants.eggons)
 		document.getElementById("hatchProgress").textContent=Math.round(player.quantum.replicants.babyProgress.toNumber()*100)+"%"
@@ -877,19 +890,15 @@ function updateReplicants() {
 	document.getElementById("quantumFoodAmount").textContent=getFullExpansion(player.quantum.replicants.quantumFood)
 	document.getElementById("buyQuantumFood").innerHTML="Buy 1 quantum food<br><br><br>Cost: "+shortenDimensions(player.quantum.replicants.quantumFoodCost)+" for all 3 gluons"
 	document.getElementById("buyQuantumFood").className="gluonupgrade "+(player.quantum.gluons.rg.min(player.quantum.gluons.gb).min(player.quantum.gluons.br).lt(player.quantum.replicants.quantumFoodCost)?"unavailabl":"stor")+"ebtn"
-	document.getElementById("feedNormal").className=((player.quantum.replicants.quantumFood<1||player.quantum.replicants.amount.lt(1)||Math.round(eds[1].workers.toNumber())>=player.quantum.replicants.limit)?"unavailabl":"stor")+"ebtn"
 	document.getElementById("eggonRate").textContent=shortenDimensions(eds[1].workers.times(3))
-	document.getElementById("workerProgress").textContent=Math.round(eds[1].progress.toNumber()*100)+"%"
 	document.getElementById("breakLimit").innerHTML="Limit of workers: "+getLimitMsg()+(isLimitUpgAffordable()?" -> "+getNextLimitMsg()+"<br>Cost: "+shortenDimensions(player.quantum.replicants.limitCost)+" for all 3 gluons":"")
 	document.getElementById("breakLimit").className=(player.quantum.gluons.rg.min(player.quantum.gluons.gb).min(player.quantum.gluons.br).lt(player.quantum.replicants.limitCost)||!isLimitUpgAffordable()?"unavailabl":"stor")+"ebtn"
-	document.getElementById("reduceHatchSpeed").innerHTML="Hatch speed: "+hatchSpeedDisplay()+"s -> "+hatchSpeedDisplay(true)+"<br>Cost: "+shortenDimensions(player.quantum.replicants.hatchSpeedCost)+" for all 3 gluons"
+	document.getElementById("reduceHatchSpeed").innerHTML="Hatch speed: "+hatchSpeedDisplay()+" -> "+hatchSpeedDisplay(true)+"<br>Cost: "+shortenDimensions(player.quantum.replicants.hatchSpeedCost)+" for all 3 gluons"
 	document.getElementById("reduceHatchSpeed").className=(player.quantum.gluons.rg.min(player.quantum.gluons.gb).min(player.quantum.gluons.br).lt(player.quantum.replicants.hatchSpeedCost)?"unavailabl":"stor")+"ebtn"
 	if (player.masterystudies.includes('d11')) {
 		document.getElementById("quantumFoodAmountED").textContent=getFullExpansion(player.quantum.replicants.quantumFood)
 		document.getElementById("buyQuantumFoodED").innerHTML="Buy 1 quantum food<br><br><br>Cost: "+shortenDimensions(player.quantum.replicants.quantumFoodCost)+" for all 3 gluons"
 		document.getElementById("buyQuantumFoodED").className="gluonupgrade "+(player.quantum.gluons.rg.min(player.quantum.gluons.gb).min(player.quantum.gluons.br).lt(player.quantum.replicants.quantumFoodCost)?"unavailabl":"stor")+"ebtn"
-		document.getElementById("empFeed1").className=((player.quantum.replicants.quantumFood<1||player.quantum.replicants.amount.lt(1)||Math.round(eds[1].workers.toNumber())>=player.quantum.replicants.limit)?"unavailabl":"stor")+"ebtn"
-		document.getElementById("empFeed1").textContent="Feed ("+Math.round(eds[1].progress.toNumber()*100)+"%)"
 		document.getElementById("breakLimitED").innerHTML="Limit of workers: "+getLimitMsg()+(isLimitUpgAffordable()?" -> "+getNextLimitMsg()+"<br>Cost: "+shortenDimensions(player.quantum.replicants.limitCost)+" for all 3 gluons":"")
 		document.getElementById("breakLimitED").className=(player.quantum.gluons.rg.min(player.quantum.gluons.gb).min(player.quantum.gluons.br).lt(player.quantum.replicants.limitCost)||!isLimitUpgAffordable()?"unavailabl":"stor")+"ebtn"
 	}
@@ -923,30 +932,18 @@ function buyQuantumFood() {
 	}
 }
 
-function feedReplicant(type) {
-	if (player.quantum.replicants.quantumFood<1) return
-	if (type=="normal") {
-		if (player.quantum.replicants.amount.lt(1)||Math.round(eds[1].workers.toNumber())>=player.quantum.replicants.limit) return
-		eds[1].progress=eds[1].progress.times(3).add(1).round().div(3)
-		if (eds[1].progress.gte(1)) {
-			var toAdd=eds[1].progress.floor()
-			player.quantum.replicants.amount=player.quantum.replicants.amount.sub(toAdd)
-			eds[1].progress=eds[1].progress.sub(toAdd)
-			eds[1].workers=eds[1].workers.add(toAdd).round()
-		}
-	} else if (type=="baby") {
-		if (player.quantum.replicants.babies.lt(1)) return
-		player.quantum.replicants.quantumFoodCost=player.quantum.replicants.quantumFoodCost.div(5)
-		player.quantum.replicants.ageProgress=player.quantum.replicants.ageProgress.add(0.5)
-		if (player.quantum.replicants.amount.lt(1)) player.quantum.replicants.ageProgress=player.quantum.replicants.ageProgress.times(2).round().div(2)
-		if (player.quantum.replicants.ageProgress.gte(1)) {
-			var toAdd=player.quantum.replicants.ageProgress.floor()
-			player.quantum.replicants.babies=player.quantum.replicants.babies.sub(toAdd).round()
-			player.quantum.replicants.ageProgress=player.quantum.replicants.ageProgress.sub(toAdd)
-			player.quantum.replicants.amount=player.quantum.replicants.amount.add(toAdd)
-		}
-	}
+function feedBabyReplicant() {
+	if (player.quantum.replicants.quantumFood<1||player.quantum.replicants.babies.lt(1)) return
 	player.quantum.replicants.quantumFood--
+	player.quantum.replicants.quantumFoodCost=player.quantum.replicants.quantumFoodCost.div(5)
+	player.quantum.replicants.ageProgress=player.quantum.replicants.ageProgress.add(0.5)
+	if (player.quantum.replicants.amount.lt(1)) player.quantum.replicants.ageProgress=player.quantum.replicants.ageProgress.times(2).round().div(2)
+	if (player.quantum.replicants.ageProgress.gte(1)) {
+		var toAdd=player.quantum.replicants.ageProgress.floor()
+		player.quantum.replicants.babies=player.quantum.replicants.babies.sub(toAdd).round()
+		player.quantum.replicants.ageProgress=player.quantum.replicants.ageProgress.sub(toAdd)
+		player.quantum.replicants.amount=player.quantum.replicants.amount.add(toAdd)
+	}
 	updateReplicants()
 }
 
@@ -1043,7 +1040,7 @@ function updateBankedEter(updateHtml=true) {
 //v1.99871
 function hatchSpeedDisplay(next) {
 	var speed=player.quantum.replicants.hatchSpeed
-	if (next) speed=Math.max(speed/1.1,1)
+	if (next) speed=speed/1.1
 	if (speed>9.95) return speed.toFixed(0)+"s"
 	return speed.toFixed(1)+"s"
 }
@@ -1108,6 +1105,37 @@ function updatePCCompletions() {
 }
 
 //v1.999
+function feedReplicant(tier) {
+	if (!canFeedReplicant(tier)) return
+	if (tier<8&&eds[tier].perm>9) player.quantum.replicants.quantumFoodCost=player.quantum.replicants.quantumFoodCost.div(5)
+	eds[tier].progress=eds[tier].progress.add(1/3)
+	if (tier<8||getWorkerAmount(tier+1).eq(0)) eds[tier].progress=eds[tier].progress.times(3).round().div(3)
+	if (eds[tier].progress.gte(1)) {
+		var toAdd=eds[tier].progress.floor()
+		if (tier>1) eds[tier-1].workers=eds[tier-1].workers.sub(toAdd)
+		else player.quantum.replicants.amount=player.quantum.replicants.amount.sub(toAdd)
+		eds[tier].progress=eds[tier].progress.sub(toAdd)
+		eds[tier].workers=eds[tier].workers.add(toAdd).round()
+		if (tier>7||eds[tier].perm<10) eds[tier].perm++
+	}
+	player.quantum.replicants.quantumFood--
+	updateReplicants()
+}
+
+function getWorkerAmount(tier) {
+	if (tier<1) return player.quantum.replicants.amount
+	if (tier>8) return new Decimal(0)
+	return eds[tier].workers
+}
+
+function canFeedReplicant(tier) {
+	if (player.quantum.replicants.quantumFood<1) return false
+	if (getWorkerAmount(tier-1).lt(tier>1?10:1)) return false
+	if (tier>player.quantum.replicants.limitDim) return false
+	if (tier==player.quantum.replicants.limitDim) return getWorkerAmount(tier).lt(player.quantum.replicants.limit)
+	return true
+}
+
 function isLimitUpgAffordable() {
 	if (!player.masterystudies.includes("d11")) return player.quantum.replicants.limit < 10
 	return true
@@ -1124,6 +1152,7 @@ function getNextLimitMsg() {
 	return (player.quantum.replicants.limit+1)+" D"+player.quantum.replicants.limitDim+"s"
 }
 
+
 var eds
 function updateEmperorDimensions() {
 	document.getElementById("replicantAmountED").textContent=shortenDimensions(player.quantum.replicants.amount)
@@ -1131,5 +1160,7 @@ function updateEmperorDimensions() {
 		var desc = shortenDimensions(eds[d].workers)
 		if (d<8) desc += " (+0"+dimDescEnd
 		document.getElementById("empAmount"+d).textContent = desc
+		document.getElementById("empFeed"+d).className=(canFeedReplicant(d)?"stor":"unavailabl")+"ebtn"
+		document.getElementById("empFeed"+d).textContent="Feed ("+Math.round(eds[d].progress.toNumber()*100)+"%, "+Math.floor(eds[d].perm)+" kept)"
 	}
 }
