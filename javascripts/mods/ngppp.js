@@ -1112,8 +1112,8 @@ function feedReplicant(tier) {
 	if (tier<8||getWorkerAmount(tier+1).eq(0)) eds[tier].progress=eds[tier].progress.times(3).round().div(3)
 	if (eds[tier].progress.gte(1)) {
 		var toAdd=eds[tier].progress.floor()
-		if (tier>1) eds[tier-1].workers=eds[tier-1].workers.sub(toAdd)
-		else player.quantum.replicants.amount=player.quantum.replicants.amount.sub(toAdd)
+		if (tier>1) eds[tier-1].workers=eds[tier-1].workers.sub(toAdd).round()
+		else player.quantum.replicants.amount=player.quantum.replicants.amount.sub(toAdd).round()
 		eds[tier].progress=eds[tier].progress.sub(toAdd)
 		eds[tier].workers=eds[tier].workers.add(toAdd).round()
 		if (tier>7||eds[tier].perm<10) eds[tier].perm++

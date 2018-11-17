@@ -1903,8 +1903,8 @@ function transformSaveToDecimal() {
           player.quantum.replicants.ageProgress = new Decimal(player.quantum.replicants.ageProgress)
       }
       if (player.quantum ? (player.quantum.emperorDimensions ? player.quantum.emperorDimensions[1] : false) : false) for (d=1;d<9;d++) {
-          player.quantum.emperorDimensions[d].workers = new Decimal(player.quantum.emperorDimensions[d].workers)
-          player.quantum.emperorDimensions[d].progress = new Decimal(player.quantum.emperorDimensions[d].progress)
+          player.quantum.emperorDimensions[d].workers = Decimal.round(player.quantum.emperorDimensions[d].workers)
+          player.quantum.emperorDimensions[d].progress = Decimal.round(player.quantum.emperorDimensions[d].progress)
       }
   }
 }
