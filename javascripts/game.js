@@ -6570,6 +6570,18 @@ function gameLoop(diff) {
         if (rate.gt(0)) player.quantum.replicants.quarks = player.quantum.replicants.quarks.add(rate.times(diff/10))
         gatheredQuarksBoost = Math.pow(player.quantum.replicants.quarks.add(1).log10(),0.25)*0.7
 
+        if(player.quantum.replicants.amount.gt(0)) {
+            eds[1].workers = eds[1].workers.add(eds[2].workers.dividedBy(10))
+            player.quantum.replicants.amount = player.quantum.replicants.amount.sub(eds[2].workers.dividedBy(10).min(player.quantum.replicants.amount))
+        }
+        for (var d=2; d<8; d++) {
+            if(eds[d-1].workers.gt(0)) {
+                eds[d].workers = eds[d].workers.add(eds[d+1].workers.dividedBy(10))
+                eds[d-1].workers = eds[d-1].workers.sub(eds[d+1].workers.dividedBy(10).min(eds[d-1].workers))
+            }
+        }
+        updateReplicants()
+
         player.quantum.replicants.eggonProgress = player.quantum.replicants.eggonProgress.add(eds[1].workers.times(diff/200))
         var toAdd = player.quantum.replicants.eggonProgress.floor()
         if (toAdd.gt(0)) {
@@ -6588,8 +6600,9 @@ function gameLoop(diff) {
         }
         if (player.quantum.replicants.eggons.lt(1)) player.quantum.replicants.babyProgress = new Decimal(0)
 
-        if (player.quantum.replicants.babies.gt(0)&&player.quantum.replicants.amount.gt(0)) {
-            player.quantum.replicants.ageProgress = player.quantum.replicants.ageProgress.add(player.quantum.replicants.amount.times(diff/4e3)).min(player.quantum.replicants.babies)
+        var totalReplicants = getTotalReplicants()
+        if (player.quantum.replicants.babies.gt(0)&&totalReplicants.gt(0)) {
+            player.quantum.replicants.ageProgress = player.quantum.replicants.ageProgress.add(totalReplicants.times(diff/4e3)).min(player.quantum.replicants.babies)
             var toAdd = player.quantum.replicants.ageProgress.floor()
             if (toAdd.gt(0)) {
                 player.quantum.replicants.babies = player.quantum.replicants.babies.sub(toAdd).round()

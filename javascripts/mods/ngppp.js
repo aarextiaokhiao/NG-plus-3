@@ -396,7 +396,7 @@ function updateQuantumTabs() {
 
 		var gatherRateData=getGatherRate()
 		document.getElementById("normalReplGatherRate").textContent=shortenDimensions(gatherRateData.normal)
-		document.getElementById("workerReplGatherRate").textContent=shortenDimensions(gatherRateData.workers)
+		document.getElementById("workerReplGatherRate").textContent=shortenDimensions(gatherRateData.workers[1])
 		document.getElementById("babyReplGatherRate").textContent=shortenDimensions(gatherRateData.babies)
 		document.getElementById("gatherRate").textContent='+'+shortenDimensions(gatherRateData.total)+'/s'
 
@@ -915,8 +915,24 @@ function replicantReset() {
 function getGatherRate() {
 	var mult = new Decimal(1)
 	if (player.masterystudies.includes("t341")) mult = mult.times(getMTSMult(341))
-	var data = {normal: player.quantum.replicants.amount.times(mult), workers: eds[1].workers.times(20).times(mult), babies: player.quantum.replicants.babies.div(20).times(mult)}
-	data.total = data.normal.add(data.workers).add(data.babies)
+	var data = {
+		normal: player.quantum.replicants.amount.times(mult),
+		babies: player.quantum.replicants.babies.div(20).times(mult),
+		workers : {
+			'1': eds[1].workers.times(20).times(mult),
+			'2': eds[2].workers.times(400).times(mult),
+			'3': eds[3].workers.times(8000).times(mult),
+			'4': eds[4].workers.times(160000).times(mult),
+			'5': eds[5].workers.times(3200000).times(mult),
+			'6': eds[6].workers.times(64000000).times(mult),
+			'7': eds[7].workers.times(1280000000).times(mult),
+			'8': eds[8].workers.times(25600000000).times(mult),
+		}
+	}
+	data.total = data.normal.add(data.babies)
+	for (var d=1; d<9; d++) {
+		data.total = data.total.add(data.workers[d])
+	}
 	return data
 }
 
@@ -1150,6 +1166,14 @@ function getNextLimitMsg() {
 	if (!player.masterystudies.includes("d11")) return player.quantum.replicants.limit+1
 	if (player.quantum.replicants.limit > 9 && player.quantum.replicants.limitDim < 8) return "1 D"+(player.quantum.replicants.limitDim+1)+"s"
 	return (player.quantum.replicants.limit+1)+" D"+player.quantum.replicants.limitDim+"s"
+}
+
+function getTotalReplicants() {
+	var total = player.quantum.replicants.amount
+	for (var d=1; d<9; d++) {
+		total = total.add(eds[d].workers)
+	}
+	return total
 }
 
 
