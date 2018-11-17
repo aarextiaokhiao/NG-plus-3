@@ -413,7 +413,7 @@ if (player.version < 5) {
   toggleBulk()
   toggleBulk()
 
-  document.getElementById("rename").innerHTML = "<p style='font-size:15px'>Rename</p>Name: "+(player.aarexModifications.name?player.aarexModifications.name:"Save #" + savePlacement)
+  document.getElementById("rename").innerHTML = "<p style='font-size:15px'>Rename</p>Name: "+(player.aarexModifications.save_name?player.aarexModifications.save_name:"Save #" + savePlacement)
   document.getElementById("offlineProgress").textContent = "Offline progress: O"+(player.aarexModifications.offlineProgress?"N":"FF")
   document.getElementById("autoSave").textContent = "Auto save: O"+(player.aarexModifications.autoSave?"N":"FF")
 
@@ -1575,7 +1575,7 @@ function rename_save(id) {
 	if (save_name === null) return
 	if (metaSave.current == id || id === undefined) {
 		player.aarexModifications.save_name = save_name
-		document.getElementById("rename").innerHTML = "<p style='font-size:15px'>Rename</p>Name: "+(player.aarexModifications.name?player.aarexModifications.name:"Save #" + savePlacement)
+		document.getElementById("rename").innerHTML = "<p style='font-size:15px'>Rename</p>Name: "+(player.aarexModifications.save_name?player.aarexModifications.save_name:"Save #" + savePlacement)
 	} else {
 		var temp_save = get_save(id)
 		if (!temp_save.aarexModifications) temp_save.aarexModifications={
