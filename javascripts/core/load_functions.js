@@ -931,11 +931,12 @@ if (player.version < 5) {
           player.quantum.pairedChallenges.completions[Math.min(c1, c2) * 10 + Math.max(c1, c2)] = c
       }
   }
-  if (player.aarexModifications.newGame3PlusVersion < 1.998731) {
+  if (player.aarexModifications.newGame3PlusVersion < 1.998731) player.aarexModifications.newGame3PlusVersion = 1.998731
+  if (player.masterystudies) {
+      if (player.quantum.autoOptions === undefined) player.quantum.autoOptions = {} //temp
       if (player.quantum.challengeRecords === undefined) player.quantum.challengeRecords = {}
-      player.aarexModifications.newGame3PlusVersion = 1.998731
+      if (player.quantum.pairedChallenges.completions === undefined) player.quantum.pairedChallenges.completions = {}
   }
-  if (player.masterystudies) if (player.quantum.autoOptions === undefined) player.quantum.autoOptions = {} //temp
   if (player.aarexModifications.newGame3PlusVersion==undefined) {
       colorBoosts={
           r:1,
