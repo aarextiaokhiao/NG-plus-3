@@ -932,7 +932,6 @@ if (player.version < 5) {
           player.quantum.pairedChallenges.completions[Math.min(c1, c2) * 10 + Math.max(c1, c2)] = c
       }
   }
-  if (player.aarexModifications.newGame3PlusVersion < 1.998731) player.aarexModifications.newGame3PlusVersion = 1.998731
   if (player.masterystudies ? player.aarexModifications.newGame3PlusVersion < 1.999 || (player.quantum.emperorDimensions ? player.quantum.emperorDimensions[1] == undefined : false) : false) { //temp
       player.quantum.replicants.limitDim=1
       player.quantum.emperorDimensions = {}
@@ -1437,6 +1436,7 @@ if (player.version < 5) {
   updateQuantumChallenges()
   updateQCTimes()
   updatePCCompletions()
+  maybeShowFillAll()
   updateReplicants()
   if (player.boughtDims) {
       if (document.getElementById("timestudies").style.display=="block") showEternityTab("ers_timestudies",true)
