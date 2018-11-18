@@ -301,6 +301,7 @@ function setupText() {
 		row.style["font-size"]="16px"
 		var html='<td id="empD'+d+'" width="41%">'+DISPLAY_NAMES[d]+' Emperor Dimension x1</td>'
 		html+='<td><div id="empAmount'+d+'">0'+(d>7?'':' (+0.00%/s)')+'</div></td>'
+		html+='<td><span id="empQuarks'+d+'">0</span> Quarks/s</td>'
 		html+='<td align="right" width="10%"><button id="empFeed'+d+'" style="color:black; width:195px; height:30px" class="storebtn" align="right" onclick="feedReplicant('+d+')">Feed (0%)</button></td>'
 		row.innerHTML=html
 	}
@@ -328,7 +329,10 @@ function getMTSMult(id) {
 		return mult
 	}
 	if (id==343) return Math.min(player.dilation.dilatedTime.max(1).log10()/765,1)
-	if (id==344) return Math.log10(player.quantum.replicants.amount.add(1).log(10)+1)*0.52+1
+	if (id==344) {
+		totalReplicants = getTotalReplicants()
+		return Math.log10(totalReplicants.add(1).log(10)+1)*0.52+1
+	}
 	if (id==351) return player.timeShards.add(1).pow(1e-6)
 }
 
@@ -391,12 +395,13 @@ function updateQuantumTabs() {
 		document.getElementById("replicantiAmount2").textContent=shortenDimensions(player.replicanti.amount)
 		document.getElementById("replicantReset").className=player.replicanti.amount.lt(player.quantum.replicants.requirement)?"unavailablebtn":"storebtn"
 		document.getElementById("replicantAmount").textContent=shortenDimensions(player.quantum.replicants.amount)
-		document.getElementById("workerReplAmount").textContent=shortenDimensions(eds[1].workers)
+		var totalReplicants = getTotalReplicants()
+		document.getElementById("workerReplAmount").textContent=shortenDimensions(totalReplicants)
 		document.getElementById("babyReplAmount").textContent=shortenDimensions(player.quantum.replicants.babies)
 
 		var gatherRateData=getGatherRate()
 		document.getElementById("normalReplGatherRate").textContent=shortenDimensions(gatherRateData.normal)
-		document.getElementById("workerReplGatherRate").textContent=shortenDimensions(gatherRateData.workers[1])
+		document.getElementById("workerReplGatherRate").textContent=shortenDimensions(gatherRateData.total)
 		document.getElementById("babyReplGatherRate").textContent=shortenDimensions(gatherRateData.babies)
 		document.getElementById("gatherRate").textContent='+'+shortenDimensions(gatherRateData.total)+'/s'
 
@@ -886,11 +891,13 @@ function updateReplicants() {
 	document.getElementById("gbRepl").textContent=shortenDimensions(player.quantum.gluons.gb)
 	document.getElementById("brRepl").textContent=shortenDimensions(player.quantum.gluons.br)
 
+	var totalReplicants = getTotalReplicants()
+
 	document.getElementById("replicantReset").innerHTML="Reset replicanti amount for a replicant, but you gain replicanti 2x slower.<br>(requires "+shortenCosts(player.quantum.replicants.requirement)+" replicanti)"
 	document.getElementById("quantumFoodAmount").textContent=getFullExpansion(player.quantum.replicants.quantumFood)
 	document.getElementById("buyQuantumFood").innerHTML="Buy 1 quantum food<br><br><br>Cost: "+shortenDimensions(player.quantum.replicants.quantumFoodCost)+" for all 3 gluons"
 	document.getElementById("buyQuantumFood").className="gluonupgrade "+(player.quantum.gluons.rg.min(player.quantum.gluons.gb).min(player.quantum.gluons.br).lt(player.quantum.replicants.quantumFoodCost)?"unavailabl":"stor")+"ebtn"
-	document.getElementById("eggonRate").textContent=shortenDimensions(eds[1].workers.times(3))
+	document.getElementById("eggonRate").textContent=shortenDimensions(totalReplicants.times(3))
 	document.getElementById("breakLimit").innerHTML="Limit of workers: "+getLimitMsg()+(isLimitUpgAffordable()?" -> "+getNextLimitMsg()+"<br>Cost: "+shortenDimensions(player.quantum.replicants.limitCost)+" for all 3 gluons":"")
 	document.getElementById("breakLimit").className=(player.quantum.gluons.rg.min(player.quantum.gluons.gb).min(player.quantum.gluons.br).lt(player.quantum.replicants.limitCost)||!isLimitUpgAffordable()?"unavailabl":"stor")+"ebtn"
 	document.getElementById("reduceHatchSpeed").innerHTML="Hatch speed: "+hatchSpeedDisplay()+" -> "+hatchSpeedDisplay(true)+"<br>Cost: "+shortenDimensions(player.quantum.replicants.hatchSpeedCost)+" for all 3 gluons"
@@ -1186,5 +1193,9 @@ function updateEmperorDimensions() {
 		document.getElementById("empAmount"+d).textContent = desc
 		document.getElementById("empFeed"+d).className=(canFeedReplicant(d)?"stor":"unavailabl")+"ebtn"
 		document.getElementById("empFeed"+d).textContent="Feed ("+Math.round(eds[d].progress.toNumber()*100)+"%, "+Math.floor(eds[d].perm)+" kept)"
+
+		var mult = new Decimal(1)
+		if (player.masterystudies.includes("t341")) mult = mult.times(getMTSMult(341))
+		document.getElementById("empQuarks"+d).textContent = formatValue(player.options.notation, eds[d].workers.multiply(new Decimal(20).power(d).multiply(mult)), 1, 1)
 	}
 }
