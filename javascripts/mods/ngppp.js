@@ -1041,8 +1041,7 @@ function updateBankedEter(updateHtml=true) {
 function hatchSpeedDisplay(next) {
 	var speed=player.quantum.replicants.hatchSpeed
 	if (next) speed=speed/1.1
-	if (speed>9.95) return speed.toFixed(0)+"s"
-	return speed.toFixed(1)+"s"
+	return timeDisplayShort(speed*10, true, 1)
 }
 
 function fillAll() {
@@ -1130,7 +1129,7 @@ function getWorkerAmount(tier) {
 
 function canFeedReplicant(tier) {
 	if (player.quantum.replicants.quantumFood<1) return false
-	if (getWorkerAmount(tier-1).lt(tier>1?10:1)) return false
+	if (getWorkerAmount(tier-1).lte(tier>1?10:0)) return false
 	if (tier>player.quantum.replicants.limitDim) return false
 	if (tier==player.quantum.replicants.limitDim) return getWorkerAmount(tier).lt(player.quantum.replicants.limit)
 	return true
