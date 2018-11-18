@@ -16,13 +16,13 @@ function getMetaDimensionMultiplier (tier) {
       if (player.masterystudies.includes("t262")) multiplier = multiplier.times(getMTSMult(262))
       if (player.masterystudies.includes("t282")) multiplier = multiplier.times(getMTSMult(282))
       if (player.masterystudies.includes("t303")) multiplier = multiplier.times(getMTSMult(303))
-      if (QCIntensity(3)) multiplier = multiplier.times(Decimal.pow(10,Math.sqrt(Math.max(player.infinityPower.log10(),0)/(QCIntensity(3)>1?2e8:1e9))))
+      multiplier = multiplier.times(getQCReward(3))
       if (player.masterystudies.includes("t351")) multiplier = multiplier.times(getMTSMult(351))
   }
   if (GUBought("rg3")&&tier<2) multiplier = multiplier.times(player.resets)
   if (GUBought("br4")) multiplier = multiplier.times(Decimal.pow(getDimensionPowerMultiplier(), 0.0003))
   if (tier%2>0) multiplier = multiplier.times(QC4Reward)
-  if (QCIntensity(6)) multiplier = multiplier.times(player.achPow.pow(QCIntensity(6)>1?3:1))
+  multiplier = multiplier.times(getQCReward(6))
   
   if (multiplier.lt(1)) multiplier = new Decimal(1)
   if (player.dilation.active || player.galacticSacrifice) {
@@ -974,7 +974,8 @@ function quantumReset(force, auto, challid, implode=false) {
 					player.quantum.challenges[qc1]=1
 					player.quantum.electrons.mult+=0.25
 				}
-				player.quantum.challengeRecords[qc1]=oldTime
+				if (player.quantum.challengeRecords[qc1] == undefined) player.quantum.challengeRecords[qc1]=oldTime
+				else player.quantum.challengeRecords[qc1]=Math.min(player.quantum.challengeRecords[qc1],oldTime)
 			}
 			if (player.quantum.pairedChallenges.respec) {
 				player.quantum.electrons.mult-=player.quantum.pairedChallenges.completed*0.5

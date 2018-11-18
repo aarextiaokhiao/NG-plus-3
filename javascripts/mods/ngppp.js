@@ -86,14 +86,15 @@ function buyMasteryStudy(type, id, quick=false) {
 			player.masterystudies.push(type+id)
 		}
 		updateMasteryStudyCosts(quick)
+		if (id==302) maybeShowFillAll()
 		if (!quick) {
+			if (id==302) fillAll()
 			if (type=='ec') {
 				showTab("challenges")
 				showChallengesTab("eternitychallenges")
 			} else drawMasteryTree()
 			updateMasteryStudyButtons()
 		}
-		
 		if (id==241&&!GUBought("gb3")) {
 			ipMultPower=2.2
 			document.getElementById("infiMult").innerHTML = "Multiply infinity points from all sources by "+ipMultPower+"<br>currently: "+shorten(getIPMult()) +"x<br>Cost: "+shortenCosts(player.infMultCost)+" IP"
@@ -369,6 +370,7 @@ function updateQuantumTabs() {
 	if (document.getElementById("electrons").style.display=="block") {
 		for (i=1;i<7;i++) document.getElementById("sacrifice"+i).className=(Math.pow(10,i>4?0:i-1)>player.galaxies-player.quantum.electrons.sacGals||!inQC(0))?"unavailablebtn":"storebtn"
 		for (u=1;u<5;u++) document.getElementById("electronupg"+u).className="gluonupgrade "+(canBuyElectronUpg(u)?"stor":"unavailabl")+"ebtn"
+		document.getElementById("electronsEffect").textContent = shorten(getDimensionPowerMultiplier(true))
 	}
 	if (document.getElementById("replicants").style.display=="block") {
 		document.getElementById("replicantiAmount2").textContent=shortenDimensions(player.replicanti.amount)
@@ -384,7 +386,7 @@ function updateQuantumTabs() {
 		document.getElementById("gatherRate").textContent='+'+shortenDimensions(gatherRateData.total)+'/s'
 
 		document.getElementById("gatheredQuarks").textContent=shortenDimensions(player.quantum.replicants.quarks.floor())
-		document.getElementById("quarkTranslation").textContent=shortenDimensions(gatheredQuarksBoost*100)+'%'
+		document.getElementById("quarkTranslation").textContent=shortenDimensions(gatheredQuarksBoost*100)
 
 		document.getElementById("eggonAmount").textContent=shortenDimensions(player.quantum.replicants.eggons)
 		document.getElementById("hatchProgress").textContent=Math.round(player.quantum.replicants.babyProgress.toNumber()*100)+"%"
@@ -686,7 +688,10 @@ function updateQuantumChallenges() {
 		document.getElementById(property+"cost").textContent="Cost: "+shortenDimensions(quantumChallenges.costs[qc])+" electrons"
 		document.getElementById(property+"goal").textContent="Goal: "+shortenCosts(Decimal.pow(10,getQCGoal(qc)))+" antimatter"
 	}
+	document.getElementById("qc2reward").textContent = Math.round(getQCReward(2)*100-100)
 	document.getElementById("qc7desc").textContent="Dimension & tickspeed cost multiplier increases are "+shorten(Number.MAX_VALUE)+"x. Multiplier per ten dimensions and meta-antimatter's effect on dimension boosts are disabled. "
+	document.getElementById("qc7reward").textContent = (100-getQCReward(7)*100).toFixed(2)
+	document.getElementById("qc8reward").textContent = getQCReward(8)
 }
 
 function inQC(num) {
@@ -721,7 +726,7 @@ function getQCGoal(num) {
 }
 
 function QCIntensity(num) {
-	if (player.masterystudies) if (player.quantum.challenges[num]) return player.quantum.challenges[num]
+	if (player.masterystudies != undefined) if (player.quantum != undefined) if (player.quantum.challenges != undefined) if (player.quantum.challenges[num] != undefined) return player.quantum.challenges[num]
 	return 0
 }
 
@@ -747,8 +752,6 @@ function canBuyElectronUpg(id) {
 
 //v1.99795
 function updateMasteryStudyTextDisplay() {
-	document.getElementById("fillAll").style.display = "none"
-	document.getElementById("fillAll2").style.display = "none"
 	if (!player.masterystudies) return
 	document.getElementById("costmult").textContent=shorten(masterystudies.costmult)
 	for (id=0;id<(quantumed?masterystudies.allTimeStudies.length:10);id++) {
@@ -765,10 +768,6 @@ function updateMasteryStudyTextDisplay() {
 		for (id=7;id<11;id++) document.getElementById("ds"+id+"Cost").textContent="Cost: "+shorten(masterystudies.costs.dil[id])+" Time Theorems"
 		document.getElementById("ds8Req").textContent="Requirement: "+shorten(16750)+" electrons"
 		document.getElementById("321effect").textContent=shortenCosts(new Decimal("1e430"))
-		if (player.masterystudies.includes("t302")) {
-			document.getElementById("fillAll").style.display = "block"
-			document.getElementById("fillAll2").style.display = "block"
-		}
 	}
 	if (player.masterystudies.includes("d10")) {
 		for (id=341;id<345;id++) document.getElementById("ts"+id+"Cost").textContent="Cost: "+shorten(masterystudies.costs.time[id])+" Time Theorems"
@@ -1029,12 +1028,13 @@ function hatchSpeedDisplay(next) {
 }
 
 function fillAll() {
-	var oldLength = player.timestudy.length
+	var oldLength = player.timestudy.studies.length
 	for (t=0;t<all.length;t++) buyTimeStudy(all[t], 0, true)
-	if (player.timestudy.length > oldLength) {
+	if (player.timestudy.studies.length > oldLength) {
 		updateTheoremButtons()
 		updateTimeStudyButtons()
 		drawStudyTree()
+		if (player.timestudy.studies.length > 56) $.notify("All studies in time study tab are now filled.")
 	}
 }
 
@@ -1085,4 +1085,28 @@ function updatePCCompletions() {
 			document.getElementById(divid).className = ""
 		}
 	}
+}
+
+//v1.99874
+function getQCReward(num) {
+	if (QCIntensity(num) < 1) return 1
+	if (num == 1) return Decimal.pow(10, Math.pow(getDimensionFinalMultiplier(1).times(getDimensionFinalMultiplier(2)).log10(), QCIntensity(1)>1?0.275:0.25)/200)
+	if (num == 2) return 1.2 + QCIntensity(2) * 0.2
+	if (num == 3) return Decimal.pow(10, Math.sqrt(Math.max(player.infinityPower.log10(), 0)/(QCIntensity(3)>1?2e8:1e9)))
+	if (num == 4) {
+		let mult = player.meta[2].amount.times(player.meta[4].amount).times(player.meta[6].amount).times(player.meta[8].amount).max(1)
+		if (QCIntensity(4) > 1) return mult.pow(1/75)
+		return Decimal.pow(10, Math.sqrt(mult.log10())/10)
+	}
+	if (num == 5) return Math.log10(1 + player.resets) * Math.pow(QCIntensity(5), 0.4)
+	if (num == 6) return player.achPow.pow(QCIntensity(6)>1?3:1)
+	if (num == 7) return Math.pow(0.975, QCIntensity(7))
+	if (num == 8) return QCIntensity(8)>1?4:3
+}
+
+function maybeShowFillAll() {
+	var display = "none"
+	if (player.masterystudies) if (player.masterystudies.includes("t302")) display = "block"
+	document.getElementById("fillAll").style.display = display
+	document.getElementById("fillAll2").style.display = display
 }

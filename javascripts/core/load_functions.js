@@ -647,7 +647,7 @@ if (player.version < 5) {
           }
           player.aarexModifications.newGamePlusVersion = 1
           if (confirm("Do you want to migrate your NG++ save into new NG+++ mode?")) {
-              player.aarexModifications.newGame3PlusVersion = 1.998731
+              player.aarexModifications.newGame3PlusVersion = 1.99874
               player.respecMastery=false
               player.dbPower = 1
               player.peakSpent = 0
@@ -931,7 +931,7 @@ if (player.version < 5) {
           player.quantum.pairedChallenges.completions[Math.min(c1, c2) * 10 + Math.max(c1, c2)] = c
       }
   }
-  if (player.aarexModifications.newGame3PlusVersion < 1.998731) player.aarexModifications.newGame3PlusVersion = 1.998731
+  if (player.aarexModifications.newGame3PlusVersion < 1.99874) player.aarexModifications.newGame3PlusVersion=1.99874
   if (player.masterystudies) {
       if (player.quantum.autoOptions === undefined) player.quantum.autoOptions = {} //temp
       if (player.quantum.challengeRecords === undefined) player.quantum.challengeRecords = {}
@@ -1426,6 +1426,7 @@ if (player.version < 5) {
   updateQuantumChallenges()
   updateQCTimes()
   updatePCCompletions()
+  maybeShowFillAll()
   updateReplicants()
   if (player.boughtDims) {
       if (document.getElementById("timestudies").style.display=="block") showEternityTab("ers_timestudies",true)
@@ -1878,7 +1879,7 @@ function transformSaveToDecimal() {
       if (player.quantum ? player.quantum.autobuyer : false) player.quantum.autobuyer.limit = new Decimal(player.quantum.autobuyer.limit)
       if (player.quantum ? player.quantum.electrons : false) player.quantum.electrons.amount = new Decimal(player.quantum.electrons.amount)
       if (player.dilation.bestTP) player.dilation.bestTP = new Decimal(player.dilation.bestTP)
-      if (player.quantum.replicants) {
+      if (player.quantum ? player.quantum.replicants : false) {
           player.quantum.replicants.amount = new Decimal(player.quantum.replicants.amount)
           player.quantum.replicants.requirement = new Decimal(player.quantum.replicants.requirement)
           player.quantum.replicants.quarks = new Decimal(player.quantum.replicants.quarks)
