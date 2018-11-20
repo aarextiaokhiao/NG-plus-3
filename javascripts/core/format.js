@@ -76,6 +76,38 @@ function getShortAbbreviation(e) {
 	return result
 }
 
+function getAASAbbreviation(x) {
+	if (x == 0) return "k"
+	if (x == 1) return "M"
+	if (x == 2) return "B"
+	if (x < 0) return "?"
+	const units = ["", "U", "D", "T", "Qa", "Qi", "Sx", "Sp", "Oc", "N"]
+	const tens = ["", player.options.aas.useDe ? "De" : "D", "Vg", "Tg", "Qg", "Qq", "Sg", "Su", "Og", "Ng"]
+	const hundreds = ["", "Ce", "Dc", "Tc", "Qe", "Qu", "Se", "St", "Oe", "Ne"]
+	const special = ["", "Mi", "Mc", "Na", "Pi", "Fe", "At", "Ze", "Yo"]
+	const log = Math.floor(Math.log10(x))
+	let result = ""
+	if (log > 8) {
+		var step = Math.floor(log/3-3)
+		x = Math.floor(x/Math.pow(10,step*3+log%3))*Math.pow(10,log%3)
+	} else var step = 0
+	while (x > 0) {
+		var subResult = ""
+		var y = x%1e3
+		if (y > 0) { 
+			if (y > 1 || step == 0) {
+				if (y % 100 == 2 && !player.options.aas.useDe) subResult = "Du" + hundreds[Math.floor(y/100)%10]
+				else subResult = units[y%10] + tens[Math.floor(y/10)%10] + hundreds[Math.floor(y/100)%10]
+			}
+			if (result != "" && player.options.aas.useHyphens) result = subResult + special[step] + "-" + result
+			else result = subResult + special[step] + result
+		}
+		x = Math.floor(x/1e3)
+		step++
+	}
+	if (log > 8) result += "s"
+	return result
+}
 
 const inflog = Math.log10(Number.MAX_VALUE)
 function formatValue(notation, value, places, placesUnder1000) {
@@ -175,7 +207,7 @@ function formatValue(notation, value, places, placesUnder1000) {
         if (notation === "Psi") {
             return formatPsi(matissa,power)
         }
-        if (notation === "Greek" || notation === "Morse code" || notation === "Symbols") {
+        if (notation === "Greek" || notation === "Morse code" || notation === "Symbols" || notation === "Lines") {
             if (matissa>=10-Math.pow(10,-places)/2) {
                 matissa=Math.pow(10,places)
                 power-=places+1
@@ -271,6 +303,15 @@ function formatValue(notation, value, places, placesUnder1000) {
           return prefix + "⇈" + (value + count).toFixed(Math.max(places, 0, Math.min(count-1, 4)));
         }
 
+        if (notation === "AAS") {
+            if (power>=3e9+3) return getAASAbbreviation(power/3-1)
+            matissa = (matissa*Math.pow(10,power%3)).toFixed(Math.max(places-power%3,0))
+            if (parseFloat(matissa)==1e3) {
+                matissa = (1).toFixed(places)
+                power+=3
+            }
+            return matissa+getAASAbbreviation(Math.floor(power/3)-1)
+        }
         matissa = (matissa * Decimal.pow(10, power % 3)).toFixed(places)
         if (matissa >= 1000) {
             matissa /= 1000;
@@ -467,6 +508,12 @@ function convTo(notation, num) {
 			result=syms[num%10]+result
 			num=Math.floor(num/10)
 		}
+	} else if (notation=='Lines') {
+		const syms=["\\","_","–","‾","-","—","=","／","⧸","/"]
+		while (num>0) {
+			result=syms[num%10]+result
+			num=Math.floor(num/10)
+		}
 	}
 	return result+rest
 }
@@ -585,21 +632,21 @@ function preformat(int) {
 }
 
 let small = ['','m','μ','n','p','f','a','z','y']
-function timeDisplayShort(time, rep) {
+function timeDisplayShort(time, rep, places) {
 	if (time == 1/0) {
 		if (Decimal.eq(time, 1/0)) return 'eternity'
 		return shorten(Decimal.div(time, 31536e4)) + 'y'
 	}
 	time = time / 10
 	if (rep && time < 1) {
-		if (time < 1e-24) return "1/"+shorten(1/time)+"s"
+		if (time < 1e-24) return "1/"+formatValue(player.options.notation, 1/time, places, 0)+"s"
 		if (time < 0.01) {
-			var log = Math.floor(Math.log10(time))
-			return (time * Math.pow(1e3, Math.ceil(-log/3))).toFixed((-log-1)%3+1) + " "+small[Math.ceil(-log/3)]+"s"
+			var log = Math.ceil(-Math.log10(time))
+			return (time * Math.pow(1e3, Math.ceil(log/3))).toFixed(Math.max(places+(log-1)%3-2, 0)) + " "+small[Math.ceil(log/3)]+"s"
 		}
-		return (time * 100).toFixed(time < 0.1 ? 3 : 2) + " cs"
+		return (time * 100).toFixed(time < 0.1 ? places : places-1) + " cs"
 	}
-	if (time < 60) return time.toFixed(time < 10 ? 3 : 2) + " s" + (rep ? "" : "econds")
+	if (time < 60) return time.toFixed(time < 10 ? places : places-1) + " s" + (rep ? "" : "econds")
 	if (time < 3600) return Math.floor(time/60) + ":" + preformat(Math.floor(time%60))
 	if (time < 86400) return Math.floor(time/3600) + ":" + preformat(Math.floor((time/60)%60)) + ":" + preformat(Math.floor(time%60))
 	if (time < 31536e3) return Math.floor(time/86400) + 'd, ' + Math.floor((time/3600)%24) + ":" + preformat(Math.floor((time/60)%60)) + ":" + preformat(Math.floor(time%60))

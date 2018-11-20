@@ -208,8 +208,9 @@ function hasInfinityMult(tier) {
         if (player.achievements.includes("r58")) dimMult = player.galacticSacrifice?Math.pow(dimMult,1.0666):dimMult*1.01;
         dimMult += ECTimesCompleted("eterc3") * 0.8
         if (player.galacticSacrifice) if ((player.galacticSacrifice.upgrades.includes(33) && player.currentChallenge != "challenge15" && player.currentChallenge != "postc1") || focusOn == "g33") dimMult *= galUpgrade33();
-        if (QCIntensity(5)) dimMult += Math.log10(1+player.resets)*Math.pow(QCIntensity(5),0.4)
-        if (player.masterystudies) dimMult = Decimal.pow(dimMult, getMPTPower())
+        if (focusOn == "no-QC5") return dimMult
+        if (QCIntensity(5)) dimMult += getQCReward(5)
+        if (player.masterystudies && focusOn != "linear") dimMult = Decimal.pow(dimMult, getMPTPower())
         return dimMult;
     }
 

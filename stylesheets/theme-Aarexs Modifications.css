@@ -390,6 +390,7 @@ strong { color: #0072e5 }
 }
 #dilstudy7.dilationupg:hover, #electronstabbtn button:hover, #dilstudy7.dilationupgbought, #electrons .storebtn:hover { background-color: #d2e500 !important }
 #electronsAmount, #electronsTranslation { color: #d2e500 !important }
+#electronsEffect { color: #00e500 !important }
 .quantumchallengediv {
     background-color: #191919 !important;
     font-family:'Inconsolata', monospace !important;

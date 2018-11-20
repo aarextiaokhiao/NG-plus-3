@@ -281,27 +281,27 @@ function setInitialDimensionPower() {
 
 function maxBuyDimBoosts(manual) {
 	if (inQC(6)) return
-	if (player.autobuyers[9].priority >= player.eightBought || player.galaxies >= player.overXGalaxies || getShiftRequirement(0).tier < 8 || manual) {
-		var bought = getAmount(getShiftRequirement(0).tier)
+	if (player.autobuyers[9].priority >= getAmount(8) || player.galaxies >= player.overXGalaxies || getShiftRequirement(0).tier < 8 || manual) {
+		var bought = Math.min(getAmount(getShiftRequirement(0).tier), (player.galaxies >= player.overXGalaxies || manual) ? 1/0 : player.autobuyers[9].priority)
 		var r
 		if (player.currentEternityChall == "eterc5") {
 			r = 1
-			while (bought >= getShiftRequirement(r).amount && (player.autobuyers[9].priority >= getAmount(8) || player.galaxies >= player.overXGalaxies || getShiftRequirement(0).tier < 8 || manual)) r++
+			while (bought >= getShiftRequirement(r).amount) r++
 		} else {
-			var hasGDBUpg = player.galacticSacrifice ? player.galacticSacrifice.upgrades.includes(21) : false
-			var sr = getShiftRequirement((hasGDBUpg ? 5 : 3) - player.resets)
-			var ut = Math.min(bought, (player.galaxies >= player.overXGalaxies || manual) ? 1/0 : player.autobuyers[9].priority)
-			var ssstart = getSupersonicStart()
-			r = (ut - sr.amount) / sr.mult + (hasGDBUpg ? 7 : 5)
-			if (r > ssstart) {
+			var scaling = 4
+			if (player.galacticSacrifice) if (player.galacticSacrifice.upgrades.includes(21)) scaling = 6
+			var firstReq = getShiftRequirement(scaling - player.resets)
+			var supersonicStart = getSupersonicStart()
+			r = (bought - firstReq.amount) / firstReq.mult + scaling + 1
+			if (r > supersonicStart - 1) {
 				var a = getSupersonicMultIncrease() / 2
-				var b = a + sr.mult
-				var solution = (-b + Math.sqrt(b * b + (4 * a) * ((r - ssstart + 1) / 4e4) * sr.mult)) / (2 * a)
-				var setPoint = ssstart + 4e4 * Math.floor(solution)
-				sr = getShiftRequirement(setPoint - player.resets)
-				r = (ut - sr.amount) / sr.mult + setPoint + 1
+				var b = firstReq.mult + a
+				var skips = (Math.sqrt(b * b + 4 * a * (bought - getShiftRequirement(supersonicStart - player.resets - 1).amount) / 4e4) - b) / (2 * a)
+				var setPoint = supersonicStart + Math.floor(skips) * 4e4
+				var pointReq = getShiftRequirement(setPoint - player.resets)
+				r = (bought - pointReq.amount) / pointReq.mult + setPoint + 1
 			}
-			r = Math.floor(r) - player.resets
+			r = Math.floor(r - player.resets) 
 		}
 
 		if (r > 749) giveAchievement("Costco sells dimboosts now")
@@ -310,27 +310,27 @@ function maxBuyDimBoosts(manual) {
 }
 
 function getShiftRequirement(bulk) {
-  let amount = player.tickspeedBoosts==undefined?20:30;
-  let mult = getDimboostCostIncrease()
-  var resetNum = player.resets + bulk
-  var maxTier = player.currentChallenge == "challenge4" ? 6 : 8
-  tier = Math.min(resetNum + 4, maxTier)
-  if (tier == maxTier) amount += Math.max(resetNum + (player.galacticSacrifice ? (player.galacticSacrifice.upgrades.includes(21) ? 2 : 4) : 4) - maxTier, 0) * mult
-  var costStart = getSupersonicStart()
-  if (player.currentEternityChall == "eterc5") {
-      amount += Math.pow(resetNum, 3) + resetNum
-  } else if (resetNum >= costStart) {
-      var displacement = Math.ceil((resetNum - costStart + 1) / 4e4)
-      var offset = resetNum % 4e4 + 1
-      var inc = getSupersonicMultIncrease()
-      amount += displacement * (displacement - 1) * 2e4 * inc + offset * displacement * inc
-      mult += displacement * inc
-  }
+	let amount = player.tickspeedBoosts==undefined?20:30;
+	let mult = getDimboostCostIncrease()
+	var resetNum = player.resets + bulk
+	var maxTier = player.currentChallenge == "challenge4" ? 6 : 8
+	tier = Math.min(resetNum + 4, maxTier)
+	if (tier == maxTier) amount += Math.max(resetNum + (player.galacticSacrifice ? (player.galacticSacrifice.upgrades.includes(21) ? 2 : 4) : 4) - maxTier, 0) * mult
+	var costStart = getSupersonicStart()
+	if (player.currentEternityChall == "eterc5") {
+		amount += Math.pow(resetNum, 3) + resetNum
+	} else if (resetNum >= costStart) {
+		var multInc = getSupersonicMultIncrease()
+		var increased = Math.ceil((resetNum - costStart + 1) / 4e4)
+		var offset = (resetNum - costStart) % 4e4 + 1
+		amount += (increased * (increased * 2e4 - 2e4 + offset)) * multInc
+		mult += multInc * increased
+	}
 
-  if (player.infinityUpgrades.includes("resetBoost")) amount -= 9;
-  if (player.challenges.includes("postc5")) amount -= 1
+	if (player.infinityUpgrades.includes("resetBoost")) amount -= 9;
+	if (player.challenges.includes("postc5")) amount -= 1
 
-  return { tier: tier, amount: amount, mult: mult };
+	return { tier: tier, amount: amount, mult: mult };
 }
 
 function getDimboostCostIncrease () {

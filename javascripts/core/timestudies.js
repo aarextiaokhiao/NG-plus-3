@@ -435,6 +435,7 @@ function respecTimeStudies(force) {
           } else respecedMS.push(player.masterystudies[id])
       }
       player.masterystudies=respecedMS
+      maybeShowFillAll()
       drawMasteryTree()
       updateMasteryStudyCosts()
       updateMasteryStudyButtons()

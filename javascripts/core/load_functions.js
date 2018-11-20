@@ -16,6 +16,7 @@ function onLoad(noOffline) {
   if (player.options.logarithm === undefined) player.options.logarithm={base:10}
   if (player.options.tetration === undefined) player.options.tetration={base:2}
   if (player.options.spazzy === undefined) player.options.spazzy={subNotation:"Scientific"}
+  if (player.options.aas === undefined) player.options.aas={useHyphen: false, useDe: false}
   if (player.options.newsHidden === undefined) player.options.newsHidden = false;
   if (player.options.sacrificeConfirmation === undefined) player.options.sacrificeConfirmation = true;
   if (player.options.retryChallenge === undefined) player.options.retryChallenge = false;
@@ -932,10 +933,6 @@ if (player.version < 5) {
           player.quantum.pairedChallenges.completions[Math.min(c1, c2) * 10 + Math.max(c1, c2)] = c
       }
   }
-  if (player.aarexModifications.newGame3PlusVersion < 1.998731) {
-      if (player.quantum.challengeRecords === undefined) player.quantum.challengeRecords = {}
-      player.aarexModifications.newGame3PlusVersion = 1.998731
-  }
   if (player.masterystudies ? player.aarexModifications.newGame3PlusVersion < 1.999 || (player.quantum.emperorDimensions ? player.quantum.emperorDimensions[1] == undefined : false) : false) { //temp
       player.quantum.replicants.limitDim=1
       player.quantum.emperorDimensions = {}
@@ -945,7 +942,11 @@ if (player.version < 5) {
       delete player.quantum.replicants.workers
       delete player.quantum.replicants.workerProgress
   }
-  if (player.masterystudies) if (player.quantum.autoOptions === undefined) player.quantum.autoOptions = {} //temp
+  if (player.masterystudies) {
+      if (player.quantum.autoOptions === undefined) player.quantum.autoOptions = {} //temp
+      if (player.quantum.challengeRecords === undefined) player.quantum.challengeRecords = {}
+      if (player.quantum.pairedChallenges.completions === undefined) player.quantum.pairedChallenges.completions = {}
+  }
   if (player.aarexModifications.newGame3PlusVersion==undefined) {
       colorBoosts={
           r:1,
@@ -1436,6 +1437,7 @@ if (player.version < 5) {
   updateQuantumChallenges()
   updateQCTimes()
   updatePCCompletions()
+  maybeShowFillAll()
   updateReplicants()
   if (player.boughtDims) {
       if (document.getElementById("timestudies").style.display=="block") showEternityTab("ers_timestudies",true)
