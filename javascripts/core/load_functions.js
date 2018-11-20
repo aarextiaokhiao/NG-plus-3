@@ -16,6 +16,7 @@ function onLoad(noOffline) {
   if (player.options.logarithm === undefined) player.options.logarithm={base:10}
   if (player.options.tetration === undefined) player.options.tetration={base:2}
   if (player.options.spazzy === undefined) player.options.spazzy={subNotation:"Scientific"}
+  if (player.options.aas === undefined) player.options.aas={useHyphen: false, useDe: false}
   if (player.options.newsHidden === undefined) player.options.newsHidden = false;
   if (player.options.sacrificeConfirmation === undefined) player.options.sacrificeConfirmation = true;
   if (player.options.retryChallenge === undefined) player.options.retryChallenge = false;
