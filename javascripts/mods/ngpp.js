@@ -262,7 +262,7 @@ function updateMetaDimensions () {
 		if (!canBuyMetaDimension(tier) && document.getElementById(tier + "MetaRow").style.display !== "table-row") {
 			break;
 		}
-		document.getElementById(tier + "MetaD").childNodes[0].nodeValue = DISPLAY_NAMES[tier] + " Meta Dimension x" + formatValue(player.options.notation, getMetaDimensionMultiplier(tier), 1, 1);
+		document.getElementById(tier + "MetaD").childNodes[0].nodeValue = DISPLAY_NAMES[tier] + " Meta Dimension x" + formatValue(player.options.notation, getMetaDimensionMultiplier(tier), 2, 1);
 		document.getElementById("meta" + tier + "Amount").textContent = getMetaDimensionDescription(tier);
 	}
 	for (let tier = 1; tier <= 8; ++tier) {

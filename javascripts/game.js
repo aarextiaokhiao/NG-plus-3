@@ -1075,7 +1075,7 @@ function updateDimensions() {
             if (!canBuyDimension(tier) && document.getElementById(name + "Row").style.display !== "table-row") {
                 break;
             }
-            document.getElementById(name + "D").childNodes[0].nodeValue = DISPLAY_NAMES[tier] + " Dimension x" + formatValue(player.options.notation, getDimensionFinalMultiplier(tier), 1, 1);
+            document.getElementById(name + "D").childNodes[0].nodeValue = DISPLAY_NAMES[tier] + " Dimension x" + formatValue(player.options.notation, getDimensionFinalMultiplier(tier), 2, 1);
             document.getElementById(name + "Amount").textContent = getDimensionDescription(tier);
         }
 
@@ -1941,14 +1941,14 @@ function updateInfCosts() {
     if (document.getElementById("replicantis").style.display == "block" && document.getElementById("infinity").style.display == "block") {
         let replGalOver = 0
         if (player.timestudy.studies.includes(131)) replGalOver += Math.floor(player.replicanti.gal / 2)
-        document.getElementById("replicantimax").innerHTML = (player.replicanti.gal<3e3?"Max Replicanti galaxies":"Distant Replicated Galaxies")+": "+getFullExpansion(player.replicanti.gal)+(player.timestudy.studies.includes(131) && player.replicanti.gal > 1 ? "+" + getFullExpansion(Math.floor(player.replicanti.gal / 2)) : "")+"<br>+1 Cost: "+shortenCosts(player.replicanti.galCost.div(player.timestudy.studies.includes(233)?player.replicanti.amount.pow(0.3):1))+" IP"
+        document.getElementById("replicantimax").innerHTML = (player.replicanti.gal<3e3?"Max Replicanti galaxies":"Distant Replicated Galaxies")+": "+getFullExpansion(player.replicanti.gal)+(replGalOver > 1 ? "+" + getFullExpansion(replGalOver) : "")+"<br>+1 Cost: "+shortenCosts(player.replicanti.galCost.div(player.timestudy.studies.includes(233)?player.replicanti.amount.pow(0.3):1))+" IP"
         document.getElementById("replicantiunlock").innerHTML = "Unlock Replicantis<br>Cost: "+shortenCosts(1e140)+" IP"
         document.getElementById("replicantireset").innerHTML = "Reset replicanti amount, but get a free galaxy<br>" + getFullExpansion(player.replicanti.galaxies) + (extraReplGalaxies ? "+" + getFullExpansion(extraReplGalaxies) : "") + " replicated galax" + ((player.replicanti.galaxies + extraReplGalaxies) == 1 ? "y" : "ies") + " created."
 
         document.getElementById("replicantichance").className = (player.infinityPoints.gte(player.replicanti.chanceCost) && isChanceAffordable()) ? "storebtn" : "unavailablebtn"
         document.getElementById("replicantiinterval").className = (player.infinityPoints.gte(player.replicanti.intervalCost) && ((player.replicanti.interval !== 50) || player.timestudy.studies.includes(22)) && (player.replicanti.interval !== 1)) ? "storebtn" : "unavailablebtn"
         document.getElementById("replicantimax").className = (player.infinityPoints.gte(player.replicanti.galCost)) ? "storebtn" : "unavailablebtn"
-        document.getElementById("replicantireset").className = ((player.replicanti.galaxies < player.replicanti.gal && player.replicanti.amount.gte(getReplicantiLimit())) || (player.replicanti.galaxies < Math.floor(player.replicanti.gal * 1.5) && player.replicanti.amount.gte(Number.MAX_VALUE) && player.timestudy.studies.includes(131))) ? "storebtn" : "unavailablebtn"
+        document.getElementById("replicantireset").className = (player.replicanti.galaxies < Math.floor(player.replicanti.gal * (player.timestudy.studies.includes(131) ? 1.5 : 1)) && player.replicanti.amount.gte(getReplicantiLimit())) ? "storebtn" : "unavailablebtn"
         document.getElementById("replicantiunlock").className = (player.infinityPoints.gte(1e140)) ? "storebtn" : "unavailablebtn"
     }
 
@@ -3244,7 +3244,7 @@ function setAchieveTooltip() {
 
 
 //notation stuff
-var notationArray = ["Scientific","Engineering","Letters","Standard","Emojis","Mixed scientific","Mixed engineering","Logarithm","Brackets","Infinity","Greek","Game percentages","Hexadecimal","Tetration","Hyperscientific","Psi","Morse code","Spazzy","Country Codes","Iroha","Symbols","AF5LN"]
+var notationArray = ["Scientific","Engineering","Letters","Standard","Emojis","Mixed scientific","Mixed engineering","Logarithm","Brackets","Infinity","Greek","Game percentages","Hexadecimal","Tetration","Hyperscientific","Psi","Morse code","Spazzy","Country Codes","Iroha","Symbols","Lines","AAS","AF5LN"]
 
 function updateNotationOption() {
 	var notationMsg="Notation: "+(player.options.notation=="Emojis"?"Cancer":player.options.notation)
@@ -3254,6 +3254,8 @@ function updateNotationOption() {
 	document.getElementById("chosenCommas").textContent = player.options.commas=="AF5LN"?"Aarex's Funny 5-letter Notation on exponents":commasMsg
 	
 	let tooltip=""
+	if (player.options.notation=="AAS") tooltip="Notation: Aarex's Abbreviation System"
+	if (player.options.commas=="AAS") tooltip+=(tooltip==""?"":"\n")+"Aarex's Abbreviation System"
 	if (player.options.notation=="AF5LN") tooltip="Notation: Aarex's Funny 5-letter Notation"
 	if (player.options.commas=="AF5LN") tooltip+=(tooltip==""?"":"\n")+"Aarex's Funny 5-letter Notation on exponents"
 	if (tooltip=="") document.getElementById("notation").removeAttribute('ach-tooltip')
@@ -3324,6 +3326,8 @@ document.getElementById("notation").onclick = function () {
 				row.innerHTML="<button class='storebtn' style='width:160px; height: 40px' onclick='switchSubNotation("+n+")'>Select "+name+"</button>"	
 			}
 		}
+		document.getElementById("selectAAS").setAttribute("ach-tooltip","Select Aarex's Abbreviation System")
+		document.getElementById("selectCommasAAS").setAttribute("ach-tooltip","Aarex's Abbreviation System on exponents")
 		document.getElementById("selectAF5LN").setAttribute("ach-tooltip","Select Aarex's Funny 5-letter Notation")
 		document.getElementById("selectCommasAF5LN").setAttribute("ach-tooltip","Aarex's Funny 5-letter Notation on exponents")
 	}
@@ -3348,6 +3352,8 @@ function openNotationOptions() {
 		var letters=[null,'E','F','G','H']
 		document.getElementById("psiLetter").textContent=(player.options.psi.letter[0]?"Force "+letters[player.options.psi.letter[0]]:"Automatically choose letter")
 		document.getElementById("chosenSubNotation").textContent="Sub-notation: "+(player.options.spazzy.subNotation=="Emojis"?"Cancer":player.options.spazzy.subNotation)
+		document.getElementById("useHyphens").checked=player.options.aas.useHyphens
+		document.getElementById("useDe").checked=player.options.aas.useDe
 	} else {
 		document.getElementById("openpsioptions").textContent="Notation options"
 		document.getElementById("mainnotationoptions1").style.display=""
@@ -3411,7 +3417,7 @@ function switchOption(notation,id) {
 			if (value<1||value>4) return
 			player.options.psi.maxletters=value
 		}
-	}
+	} else if (notation=="aas") player.options.aas[id]=document.getElementById(id).checked
 	onNotationChange()
 }
 
@@ -6593,7 +6599,7 @@ function gameLoop(diff) {
             if (toAdd.gt(0)) {
                 player.quantum.replicants.babies = player.quantum.replicants.babies.sub(toAdd).round()
                 player.quantum.replicants.ageProgress = player.quantum.replicants.ageProgress.sub(toAdd)
-                player.quantum.replicants.amount = player.quantum.replicants.amount.add(toAdd)
+                player.quantum.replicants.amount = player.quantum.replicants.amount.add(toAdd).round()
             }
         }
         if (player.quantum.replicants.babies.lt(1)) player.quantum.replicants.ageProgress = new Decimal(0)
@@ -6773,7 +6779,7 @@ function gameLoop(diff) {
     if (current == Decimal.ln(Number.MAX_VALUE) && player.thisInfinityTime < 600*30) giveAchievement("Is this safe?");
     if (player.replicanti.galaxies >= 10 && player.thisInfinityTime < 150) giveAchievement("The swarm");
 
-    if (player.replicanti.galaxybuyer === true && player.replicanti.amount.gte(Number.MAX_VALUE) && !(player.timestudy.studies.includes(131)&&speedrunMilestonesReached<20)) {
+    if (player.replicanti.galaxybuyer === true && player.replicanti.amount.gte(getReplicantiLimit()) && !(player.timestudy.studies.includes(131)&&speedrunMilestonesReached<20)) {
         document.getElementById("replicantireset").click()
     }
     if (player.masterystudies ? player.masterystudies.includes("t273") : false) {
