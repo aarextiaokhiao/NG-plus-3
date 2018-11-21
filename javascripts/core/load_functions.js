@@ -705,7 +705,7 @@ if (player.version < 5) {
                   requirement: "1e3000000",
                   quarks: 0,
                   quantumFood: 0,
-                  quantumFoodCost: 1e46,
+                  quantumFoodCost: 2e46,
                   limit: 1,
                   limitDim: 1,
                   limitCost: 1e49,
@@ -934,6 +934,17 @@ if (player.version < 5) {
       }
   }
   if (player.masterystudies ? player.aarexModifications.newGame3PlusVersion < 1.999 || (player.quantum.emperorDimensions ? player.quantum.emperorDimensions[1] == undefined : false) : false) { //temp
+      var newMS=[]
+      for (var m=0;m<player.masterystudies.length;m++) {
+          var t=player.masterystudies[m].split("t")
+          if (t[1]==undefined) newMS.push(player.masterystudies[m])
+          else {
+              t=parseInt(t[1])
+              if (t!=322&&t<330) newMS.push(player.masterystudies[m])
+          }
+      }
+      player.masterystudies=newMS
+      player.quantum.replicants.quantumFoodCost = Decimal.times(player.quantum.replicants.quantumFoodCost, 2)
       player.quantum.replicants.limitDim=1
       player.quantum.emperorDimensions = {}
       player.quantum.emperorDimensions[1] = {workers: player.quantum.replicants.workers, progress: player.quantum.replicants.workerProgress, perm: Math.round(parseFloat(player.quantum.replicants.workers))}
@@ -961,7 +972,7 @@ if (player.version < 5) {
       if (colorBoosts.r>1.3) colorBoosts.r=Math.sqrt(colorBoosts.r*1.3)
       if (colorBoosts.g>4.5) colorBoosts.g=Math.sqrt(colorBoosts.g*4.5)
       if (colorBoosts.b.gt(1300)) colorBoosts.b=Decimal.pow(10,Math.pow(colorBoosts.b.log10()*Math.log10(1300),0.5))
-      gatheredQuarksBoost = Math.pow(Decimal.add(player.quantum.replicants.quarks, 1).log10(),0.25)*0.7
+      gatheredQuarksBoost = Math.pow(Decimal.add(player.quantum.replicants.quarks, 1).log10(),0.25)*0.67
       eds=player.quantum.emperorDimensions
   }
   if (player.aarexModifications.newGameMinusMinusVersion === undefined && !player.meta) {
@@ -1956,7 +1967,7 @@ function get_save(id) {
         var dimensionSave = localStorage.getItem(btoa('dsAM_ED_'+id))
         if (dimensionSave !== null) dimensionSave = JSON.parse(atob(dimensionSave, function(k, v) { return (v === Infinity) ? "Infinity" : v; }))
         return dimensionSave
-    } catch(e) { console.log("Fuck IE"); }
+    } catch(e) { }
 }
 
 function initiateMetaSave() {

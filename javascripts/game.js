@@ -448,7 +448,7 @@ function updateNewPlayer(reseted) {
             requirement: "1e3000000",
             quarks: 0,
             quantumFood: 0,
-            quantumFoodCost: 1e46,
+            quantumFoodCost: 2e46,
             limit: 1,
             limitDim: 1,
             limitCost: 1e49,
@@ -1032,7 +1032,7 @@ function getDilPower() {
 	if (player.masterystudies) {
 		if (player.masterystudies.includes("t264")) ret *= getMTSMult(264)
 		if (GUBought("br1")) ret *= player.dilation.dilatedTime.add(1).log10()+1
-		if (player.masterystudies.includes("t344")) ret *= getMTSMult(344)
+		if (player.masterystudies.includes("t341")) ret *= getMTSMult(341)
 	}
 	return ret
 }
@@ -1060,6 +1060,7 @@ function getDilTimeGainPerSecond() {
 		if (player.masterystudies.includes("t281")) gain = gain.times(getMTSMult(281))
 		gain = gain.times(getQCReward(1))
 		if (player.masterystudies.includes("t322")) gain = gain.times(getMTSMult(322))
+		if (player.masterystudies.includes("t341")) gain = gain.times(getMTSMult(341))
 	}
 	if (player.dilation.upgrades.includes('ngpp6')) gain = gain.times(getDil17Bonus())
 	if (GUBought("br2")) gain = gain.times(Decimal.pow(2.2, Math.pow(calcTotalSacrificeBoost().max(1).log10()/1e6, 0.25)))
@@ -6573,7 +6574,7 @@ function gameLoop(diff) {
 
         var rate = getGatherRate().total
         if (rate.gt(0)) player.quantum.replicants.quarks = player.quantum.replicants.quarks.add(rate.times(diff/10))
-        gatheredQuarksBoost = Math.pow(player.quantum.replicants.quarks.add(1).log10(),0.25)*0.7
+        gatheredQuarksBoost = Math.pow(player.quantum.replicants.quarks.add(1).log10(),0.25)*0.67
 
         player.quantum.replicants.eggonProgress = player.quantum.replicants.eggonProgress.add(eds[1].workers.times(diff/200))
         var toAdd = player.quantum.replicants.eggonProgress.floor()
@@ -6734,7 +6735,6 @@ function gameLoop(diff) {
     if (player.replicanti.amount.gt(Number.MAX_VALUE)) interval = player.boughtDims ? Math.pow(player.achievements.includes("r107")?Math.max(player.replicanti.amount.log(2)/1024,1):1, -.25) : Decimal.pow(getReplSpeed(), Math.max(player.replicanti.amount.log10() - 308, 0)/308).times(interval)
     if (player.masterystudies) {
         if (player.masterystudies.includes("t273")) chance = Decimal.pow(chance,Math.pow(Math.log10(chance+1),5))
-	    interval = Decimal.pow(2,(player.quantum.replicants.requirement.log10()-3e6)/5e4).times(interval)
 	    if (player.masterystudies.includes("t332")) interval = Decimal.div(interval, player.galaxies)
     }
     var est = Decimal.add(chance,1).log10() * 1000 / interval

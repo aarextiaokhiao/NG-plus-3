@@ -5,22 +5,19 @@ function canBuyTickSpeed() {
 }
 
 function getGalaxyPower(ng, bi) {
-	let replGalEff = 0
+	let replGalEff = 1
 	if (player.boughtDims) replGalEff = Math.log10(player.replicanti.limit.log(2))/Math.log10(2)/10
-	else replGalEff = Math.max(Math.pow(Math.log10(player.infinityPower.plus(1).log10()+1), 0.03 * ECTimesCompleted("eterc8")), 1)
+	else if (ECTimesCompleted("eterc8") > 0) replGalEff = Math.max(Math.pow(Math.log10(player.infinityPower.plus(1).log10()+1), 0.03 * ECTimesCompleted("eterc8")), 1)
+	if (player.masterystudies) if (player.masterystudies.includes("t344")) replGalEff *= getMTSMult(344)
 	let extraReplGalPower = 0
 	if (player.timestudy.studies.includes(133)) extraReplGalPower += player.replicanti.galaxies/2
 	if (player.timestudy.studies.includes(132)) extraReplGalPower += player.replicanti.galaxies*0.4
 	extraReplGalPower += extraReplGalaxies
 	
-	let ergRGstrength = 0
-	if (player.masterystudies) if (player.masterystudies.includes("t342")) ergRGstrength = getMTSMult(342)
-	let fgRGstrength = 0
-	if (player.masterystudies) if (player.masterystudies.includes("t343")) fgRGstrength = getMTSMult(343)
 	let otherGalPower = player.replicanti.galaxies
-	otherGalPower += Math.min(player.replicanti.galaxies, player.replicanti.gal) * (replGalEff - 1)
-	otherGalPower += extraReplGalPower * (ergRGstrength * replGalEff + 1 - ergRGstrength)
-	otherGalPower += Math.floor(player.dilation.freeGalaxies) * (fgRGstrength * replGalEff + 1 - fgRGstrength)
+	if (player.masterystudies ? player.masterystudies.includes("t342") : false) otherGalPower = (otherGalPower + extraReplGalPower) * replGalEff
+	else otherGalPower += Math.min(player.replicanti.galaxies, player.replicanti.gal) * (replGalEff - 1) + extraReplGalPower
+	otherGalPower += Math.floor(player.dilation.freeGalaxies) * ((player.masterystudies ? player.masterystudies.includes("t343") : false) ? replGalEff : 1)
 
 	let galaxyPower = Math.max(ng-(bi?2:0),0)+otherGalPower
 	if ((player.currentChallenge=="challenge7"||inQC(4))&&player.galacticSacrifice) galaxyPower *= galaxyPower
@@ -47,7 +44,6 @@ function getGalaxyPowerEff(ng, bi) {
 	eff *= colorBoosts.r
 	if (GUBought("rg2")) eff *= Math.pow(player.dilation.freeGalaxies/5e3+1,0.25)
 	if (GUBought("rg4")) eff *= 1.5
-	if (player.masterystudies) if (player.masterystudies.includes("t344")) eff *= getMTSMult(344)
 	return eff
 }
 

@@ -353,7 +353,7 @@ function getDimboostCostIncrease () {
 
 function getSupersonicStart() {
 	if (inQC(5)) return 0
-	if (player.masterystudies) if (player.masterystudies.includes("t331")) return 72e4
+	if (player.masterystudies) if (player.masterystudies.includes("t331")) return 8e5
 	return 56e4
 }
 
