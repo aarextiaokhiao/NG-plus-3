@@ -403,7 +403,7 @@ function updateQuantumTabs() {
 
 		var gatherRateData=getGatherRate()
 		document.getElementById("normalReplGatherRate").textContent=shortenDimensions(gatherRateData.normal)
-		document.getElementById("workerReplGatherRate").textContent=shortenDimensions(gatherRateData.total)
+		document.getElementById("workerReplGatherRate").textContent=shortenDimensions(gatherRateData.totalworkers)
 		document.getElementById("babyReplGatherRate").textContent=shortenDimensions(gatherRateData.babies)
 		document.getElementById("gatherRate").textContent='+'+shortenDimensions(gatherRateData.total)+'/s'
 
@@ -896,7 +896,7 @@ function updateReplicants() {
 	document.getElementById("quantumFoodAmount").textContent=getFullExpansion(player.quantum.replicants.quantumFood)
 	document.getElementById("buyQuantumFood").innerHTML="Buy 1 quantum food<br><br><br>Cost: "+shortenDimensions(player.quantum.replicants.quantumFoodCost)+" for all 3 gluons"
 	document.getElementById("buyQuantumFood").className="gluonupgrade "+(player.quantum.gluons.rg.min(player.quantum.gluons.gb).min(player.quantum.gluons.br).lt(player.quantum.replicants.quantumFoodCost)?"unavailabl":"stor")+"ebtn"
-	document.getElementById("eggonRate").textContent=shortenDimensions(totalReplicants.times(3))
+	document.getElementById("eggonRate").textContent=shortenDimensions(totalReplicants.minus(player.quantum.replicants.amount).times(3))
 	document.getElementById("breakLimit").innerHTML="Limit of workers: "+getLimitMsg()+(isLimitUpgAffordable()?" -> "+getNextLimitMsg()+"<br>Cost: "+shortenDimensions(player.quantum.replicants.limitCost)+" for all 3 gluons":"")
 	document.getElementById("breakLimit").className=(player.quantum.gluons.rg.min(player.quantum.gluons.gb).min(player.quantum.gluons.br).lt(player.quantum.replicants.limitCost)||!isLimitUpgAffordable()?"unavailabl":"stor")+"ebtn"
 	document.getElementById("reduceHatchSpeed").innerHTML="Hatch speed: "+hatchSpeedDisplay()+" -> "+hatchSpeedDisplay(true)+"<br>Cost: "+shortenDimensions(player.quantum.replicants.hatchSpeedCost)+" for all 3 gluons"
@@ -936,7 +936,9 @@ function getGatherRate() {
 		}
 	}
 	data.total = data.normal.add(data.babies)
+	data.totalworkers = new Decimal(0)
 	for (var d=1; d<9; d++) {
+		data.totalworkers = data.totalworkers.add(data.workers[d])
 		data.total = data.total.add(data.workers[d])
 	}
 	return data

@@ -6577,7 +6577,7 @@ function gameLoop(diff) {
 
         if(player.quantum.replicants.amount.gt(0)) {
             eds[1].workers = eds[1].workers.add(eds[2].workers.times(diff/100).min(player.quantum.replicants.amount.round()))
-            player.quantum.replicants.amount = player.quantum.replicants.amount.sub(eds[2].workers.times(diff/10).min(player.quantum.replicants.amount))
+            player.quantum.replicants.amount = player.quantum.replicants.amount.sub(eds[2].workers.times(diff/100).min(player.quantum.replicants.amount))
         }
         for (var d=2; d<8; d++) {
             if(eds[d-1].workers.round().gt(eds[d-1].perm) && eds[d-1].workers.round().gt(eds[d].workers.round())) {
@@ -6589,7 +6589,7 @@ function gameLoop(diff) {
         updateReplicants()
         var totalReplicants = getTotalReplicants()
 
-        player.quantum.replicants.eggonProgress = player.quantum.replicants.eggonProgress.add(totalReplicants.times(diff/200))
+        player.quantum.replicants.eggonProgress = player.quantum.replicants.eggonProgress.add(totalReplicants.minus(player.quantum.replicants.amount).times(diff/200))
         var toAdd = player.quantum.replicants.eggonProgress.floor()
         if (toAdd.gt(0)) {
             player.quantum.replicants.eggonProgress = player.quantum.replicants.eggonProgress.sub(toAdd)
