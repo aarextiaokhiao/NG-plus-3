@@ -6574,6 +6574,7 @@ function gameLoop(diff) {
         var rate = getGatherRate().total
         if (rate.gt(0)) player.quantum.replicants.quarks = player.quantum.replicants.quarks.add(rate.times(diff/10))
         gatheredQuarksBoost = Math.pow(player.quantum.replicants.quarks.add(1).log10(),0.25)*0.7
+        if(player.masterystudies.includes("t362")) gatheredQuarksBoost = Math.pow(player.quantum.replicants.quarks.add(1).log10(),0.35)*0.7
 
         if(player.quantum.replicants.amount.gt(0)) {
             eds[1].workers = eds[1].workers.add(eds[2].workers.times(diff/100).min(player.quantum.replicants.amount.round()))
@@ -6597,7 +6598,11 @@ function gameLoop(diff) {
         }
 
         if (player.quantum.replicants.eggons.gt(0)) {
-            player.quantum.replicants.babyProgress = player.quantum.replicants.babyProgress.add(diff/player.quantum.replicants.hatchSpeed/10)
+            if(player.masterystudies.includes("t361")) {
+                player.quantum.replicants.babyProgress = player.quantum.replicants.babyProgress.add(diff/player.quantum.replicants.hatchSpeed/10/getMTSMult(361))
+            } else {
+                player.quantum.replicants.babyProgress = player.quantum.replicants.babyProgress.add(diff/player.quantum.replicants.hatchSpeed/10)
+            }
             var toAdd = player.quantum.replicants.babyProgress.floor().min(player.quantum.replicants.eggons)
             if (toAdd.gt(0)) {
                 player.quantum.replicants.eggons = player.quantum.replicants.eggons.sub(toAdd).round()

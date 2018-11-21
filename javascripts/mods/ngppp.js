@@ -1,12 +1,17 @@
-masterystudies={initialCosts:{time:{241: 1e71, 251: 2e71, 252: 2e71, 253: 2e71, 261: 5e71, 262: 5e71, 263: 5e71, 264: 5e71, 265: 5e71, 266: 5e71, 271: 2.7434842249657063e76, 272: 2.7434842249657063e76, 273: 2.7434842249657063e76, 281: 6.858710562414266e76, 282: 6.858710562414266e76, 291: 2.143347050754458e77, 292: 2.143347050754458e77, 301: 8.573388203017832e77, 302: 2.6791838134430725e78, 303: 8.573388203017832e77, 311: 8.573388203017832e77, 312: 8.573388203017832e77, 321: 2.6791838134430727e76, 322: 1.808449074074074e78, 323: 2.6791838134430727e76, 331: 3.472222222222222e81, 332: 9.04224537037037e78, 341: 1.9290123456790122e81, 342: 2.8935185185185184e81, 343: 7.535204475308642e78, 344: 5.023469650205761e78, 351: 1.2056327160493827e80},
+masterystudies={initialCosts:{time:{241: 1e71, 251: 2e71, 252: 2e71, 253: 2e71, 261: 5e71, 262: 5e71, 263: 5e71, 264: 5e71, 265: 5e71, 266: 5e71, 271: 2.7434842249657063e76, 
+	272: 2.7434842249657063e76, 273: 2.7434842249657063e76, 281: 6.858710562414266e76, 282: 6.858710562414266e76, 291: 2.143347050754458e77, 292: 2.143347050754458e77, 301: 8.573388203017832e77, 
+	302: 2.6791838134430725e78, 303: 8.573388203017832e77, 311: 8.573388203017832e77, 312: 8.573388203017832e77, 321: 2.6791838134430727e76, 322: 1.808449074074074e78, 323: 2.6791838134430727e76, 
+	331: 3.472222222222222e81, 332: 9.04224537037037e78, 341: 1.9290123456790122e81, 342: 2.8935185185185184e81, 343: 7.535204475308642e78, 344: 5.023469650205761e78, 351: 1.2056327160493827e80,
+	361: 1e75, 362: 2e78},
 		ec:{13:1e72, 14:1e72}},
 	costs:{time:{},
 		ec:{},
 		dil:{7: 2e82, 8: 2e84, 9: 4e85, 10: 6e87, 11: 2e90},
 		mc:{}},
-	costmults:{241: 1, 251: 2.5, 252: 2.5, 253: 2.5, 261: 6, 262: 6, 263: 6, 264: 6, 265: 6, 266: 6, 271: 2, 272: 2, 273: 2, 281: 4, 282: 4, 291: 1, 292: 1, 301: 2, 302: 2, 303: 2, 311: 64, 312: 64, 321: 2, 322: 2, 323: 2, 331: 3, 332: 3, 341: 2, 342: 2, 343: 2, 344: 2, 351: 4},
+	costmults:{241: 1, 251: 2.5, 252: 2.5, 253: 2.5, 261: 6, 262: 6, 263: 6, 264: 6, 265: 6, 266: 6, 271: 2, 272: 2, 273: 2, 281: 4, 282: 4, 291: 1, 292: 1, 301: 2, 302: 2, 303: 2, 311: 64, 
+		312: 64, 321: 2, 322: 2, 323: 2, 331: 3, 332: 3, 341: 2, 342: 2, 343: 2, 344: 2, 351: 4, 361: 1, 362: 1},
 	costmult:1,
-	allTimeStudies:[241, 251, 252, 253, 261, 262, 263, 264, 265, 266, 271, 272, 273, 281, 282, 291, 292, 301, 302, 303, 311, 312, 321, 322, 323, 331, 332, 341, 342, 343, 344, 351],
+	allTimeStudies:[241, 251, 252, 253, 261, 262, 263, 264, 265, 266, 271, 272, 273, 281, 282, 291, 292, 301, 302, 303, 311, 312, 321, 322, 323, 331, 332, 341, 342, 343, 344, 351, 361, 362],
 	initialReqs:{13:728e3,14:255e5},
 	incrementReqs:{13:6e3,14:9e5},
 	reqs:{},
@@ -48,6 +53,9 @@ function updateMasteryStudyButtons() {
 		for (id=342;id<344;id++) document.getElementById("ts"+id+"Current").textContent="Currently: "+(getMTSMult(id)*100).toFixed(2)+"%"
 		document.getElementById("ts344Current").textContent="Currently: "+(getMTSMult(344)*100-100).toFixed(2)+"%"
 		document.getElementById("ts351Current").textContent="Currently: "+shorten(getMTSMult(351))+"x"
+	}
+	if (player.masterystudies.includes("d11")) {
+		document.getElementById("ts361Current").textContent="Currently: 1/"+shorten(1/getMTSMult(361))+"x"
 	}
 }
 
@@ -131,6 +139,7 @@ function canBuyMasteryStudy(type, id) {
 		var row=Math.floor(id/10)
 		if (masterystudies.latestBoughtRow>row) return false
 		var col=id%10
+		if (row>35) return player.masterystudies.includes('d11')
 		if (row>34) return player.masterystudies.includes('t344')
 		if (row>33) {
 			if (col>3) return player.masterystudies.includes('t343')
@@ -255,6 +264,10 @@ function drawMasteryTree() {
 		drawMasteryBranch("dilstudy11", "dilstudy12")
 		drawMasteryBranch("dilstudy12", "dilstudy13")
 	}
+	if(player.masterystudies.includes("d11")) {
+		drawMasteryBranch("dilstudy11", "timestudy361")
+		drawMasteryBranch("dilstudy11", "timestudy362")
+	}
     if (shiftDown) {
         var all = masterystudies.allTimeStudies
     	for (i=0; i<all.length; i++) {
@@ -335,6 +348,7 @@ function getMTSMult(id) {
 		return Math.log10(totalReplicants.add(1).log(10)+1)*0.52+1
 	}
 	if (id==351) return player.timeShards.add(1).pow(1e-6)
+	if (id==361) return Decimal.pow(0.95,player.dilation.tachyonParticles.add(1).log10())
 }
 
 //v1.3
@@ -1064,6 +1078,7 @@ function updateBankedEter(updateHtml=true) {
 //v1.99871
 function hatchSpeedDisplay(next) {
 	var speed=player.quantum.replicants.hatchSpeed
+	if(player.masterystudies.includes("t361")) speed = speed*getMTSMult(361)
 	if (next) speed=speed/1.1
 	return timeDisplayShort(speed*10, true, 1)
 }
