@@ -1198,7 +1198,7 @@ function getNextLimitMsg() {
 	return (player.quantum.replicants.limit+1)+" D"+player.quantum.replicants.limitDim+"s"
 }
 
-v1.999-Emperor-Dimensions
+//v1.999-Emperor-Dimensions
 function getTotalReplicants() {
 	var total = player.quantum.replicants.amount
 	for (var d=1; d<9; d++) {
