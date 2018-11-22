@@ -1099,6 +1099,7 @@ function updatePCCompletions() {
 	var tempcounter=0
 	for (var c1=2;c1<9;c1++) for (var c2=1;c2<c1;c2++) if (player.quantum.pairedChallenges.completions[c2*10+c1]) tempcounter++
 	if (tempcounter>0) document.getElementById("pccompletionsbtn").style.display = "inline-block"
+	if (tempcounter>24) giveAchievement("The Challenging Day")
 	for (r=1;r<9;r++) for (c=1;c<9;c++) if (r!=c) {
 		var divid = "pc" + (r*10+c)
 		var pcid = r*10+c
@@ -1155,6 +1156,7 @@ function feedReplicant(tier) {
 		eds[tier].progress=eds[tier].progress.sub(toAdd)
 		eds[tier].workers=eds[tier].workers.add(toAdd).round()
 		if (tier>7||eds[tier].perm<10) eds[tier].perm++
+		if (tier==2) giveAchievement("An ant office?")
 	}
 	player.quantum.replicants.quantumFood--
 	updateReplicants()

@@ -667,6 +667,12 @@ button {
 
 #galaxyPoints { color: #4169E1 !important; }
 
+.achievement {
+	font-size: 10px !important;
+	color: #ffffff !important;
+	text-shadow: 0px 0px 1px #000000, 0px 0px 1px #000000, 0px 0px 1px #000000
+}
+
 .achievementhidden {
     background-image: url("../images/achhidden.png") !important;
     background-color: #555;
@@ -709,10 +715,6 @@ button {
     color: black;
     font-size: 70%;
     user-select: none;
-}
-
-#speedruns .achievement {
-	font-size: 12px
 }
 
 .autoBuyerDiv {
