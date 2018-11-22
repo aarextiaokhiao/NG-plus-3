@@ -1141,6 +1141,10 @@ function quantumReset(force, auto, challid, implode=false) {
 		document.getElementById("respecMastery").style.display = "none"
 		document.getElementById("respecMastery2").style.display = "none"
 		document.getElementById("replicantsstudies").style.display = "none"
+		document.getElementById("timestudy322").style.display="none"
+		document.getElementById("empstudies").style.display = "none"
+		document.getElementById("timestudy361").style.display = "none"
+		document.getElementById("timestudy362").style.display = "none"
 		document.getElementById("edtabbtn").style.display = "none"
 		if (document.getElementById("metadimensions").style.display == "block") showDimTab("antimatterdimensions")
 		if (document.getElementById("masterystudies").style.display=="block") showEternityTab("timestudies", document.getElementById("eternitystore").style.display=="block")

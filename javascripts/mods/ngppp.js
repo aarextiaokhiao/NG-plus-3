@@ -2,7 +2,7 @@ masterystudies={initialCosts:{time:{241: 1e71, 251: 2e71, 252: 2e71, 253: 2e71, 
 		ec:{13:1e72, 14:1e72}},
 	costs:{time:{},
 		ec:{},
-		dil:{7: 2e82, 8: 2e84, 9: 4e85, 10: 4e87, 11: 2e90},
+		dil:{7: 2e82, 8: 2e84, 9: 4e85, 10: 4e87, 11: 3e90},
 		mc:{}},
 	costmults:{241: 1, 251: 2.5, 252: 2.5, 253: 2.5, 261: 6, 262: 6, 263: 6, 264: 6, 265: 6, 266: 6, 271: 2, 272: 2, 273: 2, 281: 4, 282: 4, 291: 1, 292: 1, 301: 2, 302: 131072, 303: 2, 311: 64, 312: 64, 321: 2, 322: 2, 323: 2, 331: 2, 332: 2, 341: 1, 342: 1, 343: 1, 344: 1, 351: 4, 361: 1, 362: 1},
 	costmult:1,
@@ -116,11 +116,15 @@ function buyMasteryStudy(type, id, quick=false) {
 			showTab("quantumtab")
 			showQuantumTab("replicants")
 			document.getElementById("replicantsstudies").style.display=""
+			document.getElementById("timestudy322").style.display=""
 			updateReplicants()
 		}
 		if (id==11) {
 			showTab("dimensions")
 			showDimTab("emperordimensions")
+			document.getElementById("empstudies").style.display=""
+			document.getElementById("timestudy361").style.display=""
+			document.getElementById("timestudy362").style.display=""
 			document.getElementById("edtabbtn").style.display=""
 			updateReplicants()
 		}
@@ -244,23 +248,23 @@ function drawMasteryTree() {
 		drawMasteryBranch("timestudy302", "dilstudy10")
 		drawMasteryBranch("timestudy311", "timestudy321")
 		drawMasteryBranch("dilstudy10", "timestudy322")
+	}
+	if (player.masterystudies.includes("d10")) {
 		drawMasteryBranch("timestudy312", "timestudy323")
 		drawMasteryBranch("timestudy322", "timestudy331")
 		drawMasteryBranch("timestudy322", "timestudy332")
-	}
-	if (player.masterystudies.includes("d10")) {
 		drawMasteryBranch("timestudy331", "timestudy342")
 		drawMasteryBranch("timestudy332", "timestudy343")
 		drawMasteryBranch("timestudy342", "timestudy341")
 		drawMasteryBranch("timestudy343", "timestudy344")
 		drawMasteryBranch("timestudy344", "timestudy351")
 		drawMasteryBranch("timestudy351", "dilstudy11")
-		drawMasteryBranch("dilstudy11", "dilstudy12")
-		drawMasteryBranch("dilstudy12", "dilstudy13")
 	}
 	if(player.masterystudies.includes("d11")) {
 		drawMasteryBranch("dilstudy11", "timestudy361")
 		drawMasteryBranch("dilstudy11", "timestudy362")
+		drawMasteryBranch("dilstudy11", "dilstudy12")
+		drawMasteryBranch("dilstudy12", "dilstudy13")
 	}
     if (shiftDown) {
         var all = masterystudies.allTimeStudies
@@ -309,7 +313,7 @@ function setupText() {
 		row.style["font-size"]="16px"
 		var html='<td id="empD'+d+'" width="41%">'+DISPLAY_NAMES[d]+' Emperor Dimension x1</td>'
 		html+='<td><div id="empAmount'+d+'">0'+(d>7?'':' (+0.00%/s)')+'</div></td>'
-		html+='<td><span id="empQuarks'+d+'">0</span> Quarks/s</td>'
+		html+='<td><span id="empQuarks'+d+'">0</span> quarks/s</td>'
 		html+='<td align="right" width="10%"><button id="empFeed'+d+'" style="color:black; width:195px; height:30px" class="storebtn" align="right" onclick="feedReplicant('+d+')">Feed (0%)</button></td>'
 		row.innerHTML=html
 	}
@@ -395,8 +399,7 @@ function updateQuantumTabs() {
 		document.getElementById("replicantiAmount2").textContent=shortenDimensions(player.replicanti.amount)
 		document.getElementById("replicantReset").className=player.replicanti.amount.lt(player.quantum.replicants.requirement)?"unavailablebtn":"storebtn"
 		document.getElementById("replicantAmount").textContent=shortenDimensions(player.quantum.replicants.amount)
-		var totalReplicants = getTotalReplicants()
-		document.getElementById("workerReplAmount").textContent=shortenDimensions(totalReplicants)
+		document.getElementById("workerReplAmount").textContent=shortenDimensions(getTotalWorkers())
 		document.getElementById("babyReplAmount").textContent=shortenDimensions(player.quantum.replicants.babies)
 
 		var gatherRateData=getGatherRate()
@@ -414,7 +417,6 @@ function updateQuantumTabs() {
 		document.getElementById("eggonAmount").textContent=shortenDimensions(player.quantum.replicants.eggons)
 		document.getElementById("hatchProgress").textContent=Math.round(player.quantum.replicants.babyProgress.toNumber()*100)+"%"
 		document.getElementById("growupProgress").textContent=Math.round(player.quantum.replicants.ageProgress.toNumber()*100)+"%"
-		document.getElementById("feedBaby").className=((player.quantum.replicants.quantumFood<1||player.quantum.replicants.babies.lt(1))?"unavailabl":"stor")+"ebtn"
 	}
 }
 
@@ -954,21 +956,6 @@ function buyQuantumFood() {
 	}
 }
 
-function feedBabyReplicant() {
-	if (player.quantum.replicants.quantumFood<1||player.quantum.replicants.babies.lt(1)) return
-	player.quantum.replicants.quantumFood--
-	player.quantum.replicants.quantumFoodCost=player.quantum.replicants.quantumFoodCost.div(5)
-	player.quantum.replicants.ageProgress=player.quantum.replicants.ageProgress.add(0.5)
-	if (player.quantum.replicants.amount.lt(1)) player.quantum.replicants.ageProgress=player.quantum.replicants.ageProgress.times(2).round().div(2)
-	if (player.quantum.replicants.ageProgress.gte(1)) {
-		var toAdd=player.quantum.replicants.ageProgress.floor()
-		player.quantum.replicants.babies=player.quantum.replicants.babies.sub(toAdd).round()
-		player.quantum.replicants.ageProgress=player.quantum.replicants.ageProgress.sub(toAdd)
-		player.quantum.replicants.amount=player.quantum.replicants.amount.add(toAdd)
-	}
-	updateReplicants()
-}
-
 function reduceHatchSpeed() {
 	if (player.quantum.gluons.rg.min(player.quantum.gluons.gb).min(player.quantum.gluons.br).gte(player.quantum.replicants.hatchSpeedCost)) {
 		player.quantum.gluons.rg=player.quantum.gluons.rg.sub(player.quantum.replicants.hatchSpeedCost)
@@ -991,7 +978,7 @@ function breakLimit() {
 			player.quantum.replicants.limit=1
 			player.quantum.replicants.limitDim++
 		}
-		player.quantum.replicants.limitCost=player.quantum.replicants.limitCost.times(200)
+		if (player.quantum.replicants.limit%10>0) player.quantum.replicants.limitCost=player.quantum.replicants.limitCost.times(200)
 		updateGluons()
 		updateReplicants()
 	}
@@ -1152,6 +1139,10 @@ function maybeShowFillAll() {
 }
 
 //v1.999
+function getTotalReplicants() {
+	return getTotalWorkers().add(player.quantum.replicants.amount).round()
+}
+
 function feedReplicant(tier) {
 	if (!canFeedReplicant(tier)) return
 	if (tier<8&&eds[tier].perm>9) player.quantum.replicants.quantumFoodCost=player.quantum.replicants.quantumFoodCost.div(5)
@@ -1175,9 +1166,21 @@ function getWorkerAmount(tier) {
 	return eds[tier].workers
 }
 
-function canFeedReplicant(tier) {
-	if (player.quantum.replicants.quantumFood<1) return false
-	if (getWorkerAmount(tier-1).lte(tier>1?10:0)) return false
+function getTotalWorkers() {
+	var total = new Decimal(0)
+	for (var d=1; d<9; d++) total = total.add(eds[d].workers)
+	return total.round()
+}
+
+function canFeedReplicant(tier, auto) {
+	if (player.quantum.replicants.quantumFood<1 && !auto) return false
+	if (tier>1) {
+		if (eds[tier].workers.gte(eds[tier-1].workers)) return false
+		if (eds[tier-1].workers.lte(10)) return false
+	} else {
+		if (eds[1].workers.gte(player.quantum.replicants.amount)) return false
+		if (player.quantum.replicants.amount.eq(0)) return false
+	}
 	if (tier>player.quantum.replicants.limitDim) return false
 	if (tier==player.quantum.replicants.limitDim) return getWorkerAmount(tier).lt(player.quantum.replicants.limit)
 	return true
@@ -1199,19 +1202,12 @@ function getNextLimitMsg() {
 	return (player.quantum.replicants.limit+1)+" D"+player.quantum.replicants.limitDim+"s"
 }
 
-//v1.999-Emperor-Dimensions
-function getTotalReplicants() {
-	var total = player.quantum.replicants.amount
-	for (var d=1; d<9; d++) {
-		total = total.add(eds[d].workers)
-	}
-	return total
-}
-
 var eds
 function updateEmperorDimensions() {
 	document.getElementById("replicantAmountED").textContent=shortenDimensions(player.quantum.replicants.amount)
 	for (d=1;d<9;d++) {
+		document.getElementById("empD"+d).textContent = DISPLAY_NAMES[d] + " Emperor Dimension x" + formatValue(player.options.notation, 1, 2, 1)
+		
 		var desc = shortenDimensions(eds[d].workers)
 		if (d<8) desc += " (+0"+dimDescEnd
 		document.getElementById("empAmount"+d).textContent = desc
@@ -1220,6 +1216,6 @@ function updateEmperorDimensions() {
 
 		var mult = new Decimal(1)
 		if (player.masterystudies.includes("t341")) mult = mult.times(getMTSMult(341))
-		document.getElementById("empQuarks"+d).textContent = formatValue(player.options.notation, eds[d].workers.multiply(new Decimal(20).power(d).multiply(mult)), 1, 1)
+		document.getElementById("empQuarks"+d).textContent = shorten(eds[d].workers.multiply(Decimal.pow(20, d).multiply(mult)))
 	}
 }

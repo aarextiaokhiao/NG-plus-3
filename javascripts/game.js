@@ -6575,23 +6575,25 @@ function gameLoop(diff) {
         var rate = getGatherRate().total
         if (rate.gt(0)) player.quantum.replicants.quarks = player.quantum.replicants.quarks.add(rate.times(diff/10))
         gatheredQuarksBoost = Math.pow(player.quantum.replicants.quarks.add(1).log10(),0.25)*0.67
-        if(player.masterystudies.includes("t362")) gatheredQuarksBoost = Math.pow(player.quantum.replicants.quarks.add(1).log10(),0.35)*0.67
+        if (player.masterystudies.includes("t362")) gatheredQuarksBoost = Math.pow(player.quantum.replicants.quarks.add(1).log10(),0.35)*0.67
 
-        if(player.quantum.replicants.amount.gt(0)) {
-            eds[1].workers = eds[1].workers.add(eds[2].workers.times(diff/100).min(player.quantum.replicants.amount.round()))
-            player.quantum.replicants.amount = player.quantum.replicants.amount.sub(eds[2].workers.times(diff/100).min(player.quantum.replicants.amount))
-        }
-        for (var d=2; d<8; d++) {
-            if(eds[d-1].workers.round().gt(eds[d-1].perm) && eds[d-1].workers.round().gt(eds[d].workers.round())) {
-                var change = eds[d+1].workers.times(diff/100).min(eds[d-1].workers.sub(eds[d-1].perm)).min(eds[d-1].workers.sub(eds[d].workers).dividedBy(2).round())
-                eds[d].workers = eds[d].workers.add(change)
-                eds[d-1].workers = eds[d-1].workers.sub(change)
+        for (dim=8;dim>1;dim--) {
+            var promote = getWorkerAmount(dim-2)
+            if (canFeedReplicant(dim-1,true)) {
+               eds[dim-1].progress = eds[dim-1].progress.add(eds[dim].workers.times(diff/200))
+               var toAdd = eds[dim-1].progress.floor().min(eds[dim-1].workers.sub(promote).round())
+               if (dim>2) toAdd = toAdd.min(eds[dim-1].workers.sub(10).round())
+               if (toAdd.gt(0)) {
+                   if (dim>2) eds[dim-2].workers = eds[dim-2].workers.sub(toAdd).round()
+                   else player.quantum.replicants.amount = player.quantum.replicants.amount.sub(toAdd).round()
+                   eds[dim-1].progress = eds[dim-1].progress.sub(toAdd)
+                   eds[dim-1].workers = eds[dim-1].workers.add(toAdd).round()
+               }
             }
+            if (!canFeedReplicant(dim-1,true)) eds[dim-1].progress = new Decimal(0)
         }
-        updateReplicants()
-        var totalReplicants = getTotalReplicants()
 
-        player.quantum.replicants.eggonProgress = player.quantum.replicants.eggonProgress.add(totalReplicants.minus(player.quantum.replicants.amount).times(diff/200))
+        player.quantum.replicants.eggonProgress = player.quantum.replicants.eggonProgress.add(getTotalWorkers().times(diff/200))
         var toAdd = player.quantum.replicants.eggonProgress.floor()
         if (toAdd.gt(0)) {
             player.quantum.replicants.eggonProgress = player.quantum.replicants.eggonProgress.sub(toAdd)
@@ -6613,8 +6615,8 @@ function gameLoop(diff) {
         }
         if (player.quantum.replicants.eggons.lt(1)) player.quantum.replicants.babyProgress = new Decimal(0)
 
-        if (player.quantum.replicants.babies.gt(0)&&totalReplicants.gt(0)) {
-            player.quantum.replicants.ageProgress = player.quantum.replicants.ageProgress.add(totalReplicants.times(diff/4e3)).min(player.quantum.replicants.babies)
+        if (player.quantum.replicants.babies.gt(0)&&getTotalReplicants().gt(0)) {
+            player.quantum.replicants.ageProgress = player.quantum.replicants.ageProgress.add(getTotalReplicants().times(diff/4e3)).min(player.quantum.replicants.babies)
             var toAdd = player.quantum.replicants.ageProgress.floor()
             if (toAdd.gt(0)) {
                 player.quantum.replicants.babies = player.quantum.replicants.babies.sub(toAdd).round()
