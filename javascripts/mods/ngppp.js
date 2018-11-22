@@ -1,12 +1,12 @@
-masterystudies={initialCosts:{time:{241: 1e71, 251: 2e71, 252: 2e71, 253: 2e71, 261: 5e71, 262: 5e71, 263: 5e71, 264: 5e71, 265: 5e71, 266: 5e71, 271: 2.7434842249657063e76, 272: 2.7434842249657063e76, 273: 2.7434842249657063e76, 281: 6.858710562414266e76, 282: 6.858710562414266e76, 291: 2.143347050754458e77, 292: 2.143347050754458e77, 301: 8.573388203017832e77, 302: 2.6791838134430725e78, 303: 8.573388203017832e77, 311: 8.573388203017832e77, 312: 8.573388203017832e77, 321: 2.6791838134430727e76, 322: 9.324815538194444e77, 323: 2.6791838134430727e76, 331: 1.0172526041666666e79, 332: 1.0172526041666666e79, 341: 9.5367431640625e78, 342: 1.0172526041666666e79, 343: 1.0172526041666666e79, 344: 9.5367431640625e78, 351: 2.1192762586805557e79},
+masterystudies={initialCosts:{time:{241: 1e71, 251: 2e71, 252: 2e71, 253: 2e71, 261: 5e71, 262: 5e71, 263: 5e71, 264: 5e71, 265: 5e71, 266: 5e71, 271: 2.7434842249657063e76, 272: 2.7434842249657063e76, 273: 2.7434842249657063e76, 281: 6.858710562414266e76, 282: 6.858710562414266e76, 291: 2.143347050754458e77, 292: 2.143347050754458e77, 301: 8.573388203017832e77, 302: 2.6791838134430725e78, 303: 8.573388203017832e77, 311: 8.573388203017832e77, 312: 8.573388203017832e77, 321: 2.6791838134430727e76, 322: 9.324815538194444e77, 323: 2.6791838134430727e76, 331: 1.0172526041666666e79, 332: 1.0172526041666666e79, 341: 9.5367431640625e78, 342: 1.0172526041666666e79, 343: 1.0172526041666666e79, 344: 9.5367431640625e78, 351: 2.1192762586805557e79, 361: 1e75, 362: 2e78},
 		ec:{13:1e72, 14:1e72}},
 	costs:{time:{},
 		ec:{},
 		dil:{7: 2e82, 8: 2e84, 9: 4e85, 10: 4e87, 11: 2e90},
 		mc:{}},
-	costmults:{241: 1, 251: 2.5, 252: 2.5, 253: 2.5, 261: 6, 262: 6, 263: 6, 264: 6, 265: 6, 266: 6, 271: 2, 272: 2, 273: 2, 281: 4, 282: 4, 291: 1, 292: 1, 301: 2, 302: 131072, 303: 2, 311: 64, 312: 64, 321: 2, 322: 2, 323: 2, 331: 2, 332: 2, 341: 1, 342: 1, 343: 1, 344: 1, 351: 4},
+	costmults:{241: 1, 251: 2.5, 252: 2.5, 253: 2.5, 261: 6, 262: 6, 263: 6, 264: 6, 265: 6, 266: 6, 271: 2, 272: 2, 273: 2, 281: 4, 282: 4, 291: 1, 292: 1, 301: 2, 302: 131072, 303: 2, 311: 64, 312: 64, 321: 2, 322: 2, 323: 2, 331: 2, 332: 2, 341: 1, 342: 1, 343: 1, 344: 1, 351: 4, 361: 1, 362: 1},
 	costmult:1,
-	allTimeStudies:[241, 251, 252, 253, 261, 262, 263, 264, 265, 266, 271, 272, 273, 281, 282, 291, 292, 301, 302, 303, 311, 312, 321, 322, 323, 331, 332, 341, 342, 343, 344, 351],
+	allTimeStudies:[241, 251, 252, 253, 261, 262, 263, 264, 265, 266, 271, 272, 273, 281, 282, 291, 292, 301, 302, 303, 311, 312, 321, 322, 323, 331, 332, 341, 342, 343, 344, 351, 361, 362],
 	initialReqs:{13:728e3,14:255e5},
 	incrementReqs:{13:6e3,14:9e5},
 	reqs:{},
@@ -47,6 +47,9 @@ function updateMasteryStudyButtons() {
 		document.getElementById("ts341Current").textContent="Currently: "+shorten(getMTSMult(341))+"x"
 		document.getElementById("ts344Current").textContent="Currently: "+(getMTSMult(344)*100-100).toFixed(2)+"%"
 		document.getElementById("ts351Current").textContent="Currently: "+shorten(getMTSMult(351))+"x"
+	}
+	if (player.masterystudies.includes("d11")) {
+		document.getElementById("ts361Current").textContent="Currently: 1/"+shorten(1/getMTSMult(361))+"x"
 	}
 }
 
@@ -130,6 +133,7 @@ function canBuyMasteryStudy(type, id) {
 		var row=Math.floor(id/10)
 		if (masterystudies.latestBoughtRow>row) return false
 		var col=id%10
+		if (row>35) return player.masterystudies.includes('d11')
 		if (row>34) return player.masterystudies.includes('t344')
 		if (row>33) {
 			if (col>3) return player.masterystudies.includes('t343')
@@ -254,6 +258,10 @@ function drawMasteryTree() {
 		drawMasteryBranch("dilstudy11", "dilstudy12")
 		drawMasteryBranch("dilstudy12", "dilstudy13")
 	}
+	if(player.masterystudies.includes("d11")) {
+		drawMasteryBranch("dilstudy11", "timestudy361")
+		drawMasteryBranch("dilstudy11", "timestudy362")
+	}
     if (shiftDown) {
         var all = masterystudies.allTimeStudies
     	for (i=0; i<all.length; i++) {
@@ -301,6 +309,7 @@ function setupText() {
 		row.style["font-size"]="16px"
 		var html='<td id="empD'+d+'" width="41%">'+DISPLAY_NAMES[d]+' Emperor Dimension x1</td>'
 		html+='<td><div id="empAmount'+d+'">0'+(d>7?'':' (+0.00%/s)')+'</div></td>'
+		html+='<td><span id="empQuarks'+d+'">0</span> Quarks/s</td>'
 		html+='<td align="right" width="10%"><button id="empFeed'+d+'" style="color:black; width:195px; height:30px" class="storebtn" align="right" onclick="feedReplicant('+d+')">Feed (0%)</button></td>'
 		row.innerHTML=html
 	}
@@ -323,6 +332,7 @@ function getMTSMult(id) {
 	if (id==341) return Decimal.pow(2,Math.sqrt(player.quantum.replicants.quarks.add(1).log10()))
 	if (id==344) return Math.pow(player.quantum.replicants.quarks.div(1e7).add(1).log10(),0.25)*0.17+1
 	if (id==351) return player.timeShards.add(1).pow(14e-7)
+	if (id==361) return Decimal.pow(0.95,player.dilation.tachyonParticles.add(1).log10())
 }
 
 //v1.3
@@ -385,12 +395,13 @@ function updateQuantumTabs() {
 		document.getElementById("replicantiAmount2").textContent=shortenDimensions(player.replicanti.amount)
 		document.getElementById("replicantReset").className=player.replicanti.amount.lt(player.quantum.replicants.requirement)?"unavailablebtn":"storebtn"
 		document.getElementById("replicantAmount").textContent=shortenDimensions(player.quantum.replicants.amount)
-		document.getElementById("workerReplAmount").textContent=shortenDimensions(eds[1].workers)
+		var totalReplicants = getTotalReplicants()
+		document.getElementById("workerReplAmount").textContent=shortenDimensions(totalReplicants)
 		document.getElementById("babyReplAmount").textContent=shortenDimensions(player.quantum.replicants.babies)
 
 		var gatherRateData=getGatherRate()
 		document.getElementById("normalReplGatherRate").textContent=shortenDimensions(gatherRateData.normal)
-		document.getElementById("workerReplGatherRate").textContent=shortenDimensions(gatherRateData.workers)
+		document.getElementById("workerReplGatherRate").textContent=shortenDimensions(gatherRateData.totalworkers)
 		document.getElementById("babyReplGatherRate").textContent=shortenDimensions(gatherRateData.babies)
 		document.getElementById("gatherRate").textContent='+'+shortenDimensions(gatherRateData.total)+'/s'
 
@@ -877,11 +888,13 @@ function updateReplicants() {
 	document.getElementById("gbRepl").textContent=shortenDimensions(player.quantum.gluons.gb)
 	document.getElementById("brRepl").textContent=shortenDimensions(player.quantum.gluons.br)
 
+	var totalReplicants = getTotalReplicants()
+
 	document.getElementById("replicantReset").innerHTML="Reset replicanti amount for a replicant.<br>(requires "+shortenCosts(player.quantum.replicants.requirement)+" replicanti)"
 	document.getElementById("quantumFoodAmount").textContent=getFullExpansion(player.quantum.replicants.quantumFood)
 	document.getElementById("buyQuantumFood").innerHTML="Buy 1 quantum food<br><br><br>Cost: "+shortenDimensions(player.quantum.replicants.quantumFoodCost)+" for all 3 gluons"
 	document.getElementById("buyQuantumFood").className="gluonupgrade "+(player.quantum.gluons.rg.min(player.quantum.gluons.gb).min(player.quantum.gluons.br).lt(player.quantum.replicants.quantumFoodCost)?"unavailabl":"stor")+"ebtn"
-	document.getElementById("eggonRate").textContent=shortenDimensions(eds[1].workers.times(3))
+	document.getElementById("eggonRate").textContent=shortenDimensions(totalReplicants.minus(player.quantum.replicants.amount).times(3))
 	document.getElementById("breakLimit").innerHTML="Limit of workers: "+getLimitMsg()+(isLimitUpgAffordable()?" -> "+getNextLimitMsg()+"<br>Cost: "+shortenDimensions(player.quantum.replicants.limitCost)+" for all 3 gluons":"")
 	document.getElementById("breakLimit").className=(player.quantum.gluons.rg.min(player.quantum.gluons.gb).min(player.quantum.gluons.br).lt(player.quantum.replicants.limitCost)||!isLimitUpgAffordable()?"unavailabl":"stor")+"ebtn"
 	document.getElementById("reduceHatchSpeed").innerHTML="Hatch speed: "+hatchSpeedDisplay()+" -> "+hatchSpeedDisplay(true)+"<br>Cost: "+shortenDimensions(player.quantum.replicants.hatchSpeedCost)+" for all 3 gluons"
@@ -904,8 +917,28 @@ function replicantReset() {
 }
 
 function getGatherRate() {
-	var data = {normal: player.quantum.replicants.amount, workers: eds[1].workers.times(20), babies: player.quantum.replicants.babies.div(20)}
-	data.total = data.normal.add(data.workers).add(data.babies)
+	var mult = new Decimal(1)
+	if (player.masterystudies.includes("t341")) mult = mult.times(getMTSMult(341))
+	var data = {
+		normal: player.quantum.replicants.amount.times(mult),
+		babies: player.quantum.replicants.babies.div(20).times(mult),
+		workers : {
+			'1': eds[1].workers.times(20).times(mult),
+			'2': eds[2].workers.times(400).times(mult),
+			'3': eds[3].workers.times(8000).times(mult),
+			'4': eds[4].workers.times(160000).times(mult),
+			'5': eds[5].workers.times(3200000).times(mult),
+			'6': eds[6].workers.times(64000000).times(mult),
+			'7': eds[7].workers.times(1280000000).times(mult),
+			'8': eds[8].workers.times(25600000000).times(mult),
+		}
+	}
+	data.total = data.normal.add(data.babies)
+	data.totalworkers = new Decimal(0)
+	for (var d=1; d<9; d++) {
+		data.totalworkers = data.totalworkers.add(data.workers[d])
+		data.total = data.total.add(data.workers[d])
+	}
 	return data
 }
 
@@ -1029,6 +1062,7 @@ function updateBankedEter(updateHtml=true) {
 //v1.99871
 function hatchSpeedDisplay(next) {
 	var speed=player.quantum.replicants.hatchSpeed
+	if(player.masterystudies.includes("t361")) speed = speed*getMTSMult(361)
 	if (next) speed=speed/1.1
 	return timeDisplayShort(speed*10, true, 1)
 }
@@ -1165,6 +1199,15 @@ function getNextLimitMsg() {
 	return (player.quantum.replicants.limit+1)+" D"+player.quantum.replicants.limitDim+"s"
 }
 
+//v1.999-Emperor-Dimensions
+function getTotalReplicants() {
+	var total = player.quantum.replicants.amount
+	for (var d=1; d<9; d++) {
+		total = total.add(eds[d].workers)
+	}
+	return total
+}
+
 var eds
 function updateEmperorDimensions() {
 	document.getElementById("replicantAmountED").textContent=shortenDimensions(player.quantum.replicants.amount)
@@ -1174,5 +1217,9 @@ function updateEmperorDimensions() {
 		document.getElementById("empAmount"+d).textContent = desc
 		document.getElementById("empFeed"+d).className=(canFeedReplicant(d)?"stor":"unavailabl")+"ebtn"
 		document.getElementById("empFeed"+d).textContent="Feed ("+Math.round(eds[d].progress.toNumber()*100)+"%, "+Math.floor(eds[d].perm)+" kept)"
+
+		var mult = new Decimal(1)
+		if (player.masterystudies.includes("t341")) mult = mult.times(getMTSMult(341))
+		document.getElementById("empQuarks"+d).textContent = formatValue(player.options.notation, eds[d].workers.multiply(new Decimal(20).power(d).multiply(mult)), 1, 1)
 	}
 }

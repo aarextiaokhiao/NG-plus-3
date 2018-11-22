@@ -1009,8 +1009,8 @@ function quantumReset(force, auto, challid, implode=false) {
 		player.quantum.replicants.growupProgress = new Decimal(0)
 		for (d=1;d<9;d++) {
 			if (d>7||eds[d].perm<10) player.quantum.replicants.quantumFood+=Math.round(eds[tier].progress.toNumber()*3)%3
-			eds[tier].amount=new Decimal(eds[tier].perm)
-			eds[tier].progress=new Decimal(0)
+			eds[d].workers=new Decimal(eds[d].perm)
+			eds[d].progress=new Decimal(0)
 		}
 		document.getElementById("metaAntimatterEffectType").textContent=inQC(3)?"multiplier on all Infinity Dimensions":"extra multiplier per dimension boost"
 		updateColorCharge()
