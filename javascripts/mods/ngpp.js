@@ -240,7 +240,6 @@ function getExtraDimensionBoostPower() {
 		let power=8
 		if (player.dilation.upgrades.includes("ngpp5")) power++
 		power+=ECTimesCompleted("eterc13")*0.2
-		if (player.masterystudies) if (player.masterystudies.includes('t313')) power++
 		return player.meta.bestAntimatter.pow(power).plus(1)
 	}
 }

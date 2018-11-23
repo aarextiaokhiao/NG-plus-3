@@ -365,9 +365,7 @@ strong { color: #0072e5 }
 #progressbar.quantumProgress {
 	background-color: #009900 !important
 }
-.QKAmount, #gatheredQuarks, #normalReplGatherRate, #workerReplGatherRate, #babyReplGatherRate, #gatherRate,
-#empQuarks1, #empQuarks2, #empQuarks3, #empQuarks4, #empQuarks5, #empQuarks6, #empQuarks7, #empQuarks8
- { color: #009900 !important }
+.QKAmount, #gatheredQuarks, #normalReplGatherRate, #workerReplGatherRate, #babyReplGatherRate, #gatherRate, .empQuarks { color: #009900 !important }
 .red { color: #e50000 }
 .green, #quarkTranslation { color: #00e500 }
 .blue { color: #0000e5 }

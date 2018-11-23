@@ -512,7 +512,7 @@
                 </table>
                 <table class="table" id="studytable">
                     <tr>
-                        <td><button class="timestudylocked" id="timestudy361" onclick='buyMasteryStudy("t", 361)'>Hatch speed is reduced based on tachyon particles.<br><span id="ts361Current"></span></button></td>
+                        <td><button class="timestudylocked" id="timestudy361" style='font-size:10px' onclick='buyMasteryStudy("t", 361)'>Hatch speed is faster based on your tachyon particles.<br><span id="ts361Current"></span></button></td>
                         <td><button class="timestudylocked" id="dilstudy11" onclick='buyMasteryStudy("d", 11)'>Unlock Emperor Dimensions<br><span id="ds11Cost"></span><br>Requirement: 10 worker replicants</button></td>
                         <td><button class="timestudylocked" id="timestudy362" onclick='buyMasteryStudy("t", 362)'>Reduce the softcap for replicant quark boost.</button></td>
                     </tr>
@@ -521,7 +521,27 @@
                 <div id='empstudies'>
                 <table class="table" id="studytable">
                     <tr>
+                        <td><button class="timestudylocked" id="timestudy371" style='font-size:10px' onclick='buyMasteryStudy("t", 371)'>Hatch speed is faster based on your extra replicated galaxies.<br><span id="ts371Current"></span></button></td>
+                        <td><button class="timestudylocked" id="timestudy372" onclick='buyMasteryStudy("t", 372)'>???</button></td>
+                        <td><button class="timestudylocked" id="timestudy373" style='font-size:10px' onclick='buyMasteryStudy("t", 373)'>Replicants gather more quarks based on your galaxies.<br><span id="ts373Current"></span></button></button></td>
+                    </tr>
+                </table>
+                <table class="table" id="studytable">
+                    <tr>
+                        <td><button class="timestudylocked" id="timestudy381" onclick='buyMasteryStudy("t", 381)'>???</button></td>
+                        <td><button class="timestudylocked" id="timestudy382" onclick='buyMasteryStudy("t", 382)'>???</button></td>
+                        <td><button class="timestudylocked" id="timestudy383" onclick='buyMasteryStudy("t", 383)'>???</button></td>
+                    </tr>
+                </table>
+                <table class="table" id="studytable">
+                    <tr>
+                        <td><button class="timestudylocked" id="timestudy391" onclick='buyMasteryStudy("t", 391)'>???</button></td>
                         <td><button class="timestudylocked" id="dilstudy12">Unlock Nanofield<br>(Coming soon!)</button></td>
+                        <td><button class="timestudylocked" id="timestudy392" onclick='buyMasteryStudy("t", 392)'>???</button></td>
+                    </tr>
+                </table>
+                <table class="table" id="studytable">
+                    <tr>
                         <td><button class="timestudylocked" id="dilstudy13">Unlock Tree of Decay<br>(Coming soon!)</button></td>
                     </tr>
                 </table>
@@ -1492,11 +1512,19 @@
             </div>
             <div id="emperordimensions" class="dimtab">
                 <div>
-                    <p>You have <span id="replicantAmountED" style="font-size:35px; color: black">0</span> replicants.</p>
+                    <p>You have <span id="replicantAmountED" style="font-size:35px; color: black">0</span> normal replicants.</p>
                 </div>
                 <p>You have <span id="quantumFoodAmountED">0</span> quantum food.</p>
                 <button class='gluonupgrade storebtn' id='buyQuantumFoodED' onclick='buyQuantumFood()'></button>
-                <table class="table" id="empDimTable"></table>
+                <table class="table" id="empDimTable">
+                    <tr style="font-size: 16px">
+                        <td>Total: </td>
+                        <td id="totalWorkers"></td>
+                        <td>
+                            <span class="empQuarks" id="totalQuarkProduction"></span> quarks/s
+						</td>
+                    </tr>
+                </table>
                 <button id='breakLimitED' class='storebtn' style='width: 280px; height: 40px' onclick='breakLimit()'></button>
             </div>
             <div id="production" class="dimtab">
@@ -2233,19 +2261,19 @@
                         </tr>
                         <tr id="achRowng3p3">
                             <td>
-                                <div id="ERROR 500: INTERNAL DIMENSION ERROR" class="achievement achievementlocked" style="background-image: url(images/127.png)" ach-tooltip="Reach ??? MA without having second meta dimensions and meta dimension boosts.">ERROR 500: INTERNAL DIMENSION ERROR</div>
+                                <div id="ERROR 500: INTERNAL DIMENSION ERROR" class="achievement achievementlocked" style="background-image: url(images/127.png)" ach-tooltip="Reach ??? MA without having second meta dimensions and meta dimension boosts."></div>
                             </td>
                             <td>
-                                <div id="The truth of anti-challenged" class="achievement achievementlocked" style="background-image: url(images/128.png)" ach-tooltip="Reach ??? without having paired challenge completions.">The truth of anti-challenged</div>
+                                <div id="The truth of anti-challenged" class="achievement achievementlocked" style="background-image: url(images/128.png)" ach-tooltip="Reach ??? without having paired challenge completions."></div>
                             </td>
                             <td>
-                                <div id="Never make paradoxes!" class="achievement achievementlocked" style="background-image: url(images/129.png)" ach-tooltip="Quantum without having dilation upgrades except e100 DT upgrade.">Never make paradoxes!</div>
+                                <div id="Never make paradoxes!" class="achievement achievementlocked" style="background-image: url(images/129.png)" ach-tooltip="Quantum without having dilation upgrades except e100 DT upgrade."></div>
                             </td>
                             <td>
-                                <div id="The Challenging Day" class="achievement achievementlocked" style="background-image: url(images/130.png)" ach-tooltip="Complete 24 unique paired challenge combinations.">The Challenging Day</div>
+                                <div id="The Challenging Day" class="achievement achievementlocked" style="background-image: url(images/130.png)" ach-tooltip="Complete 24 unique paired challenge combinations."></div>
                             </td>
                             <td>
-                                <div id="An ant office?" class="achievement achievementlocked" style="background-image: url(images/131.png)" ach-tooltip="Promote a worker into the second dimension.">An ant office?</div>
+                                <div id="An ant office?" class="achievement achievementlocked" style="background-image: url(images/131.png)" ach-tooltip="Promote a worker into the second dimension."></div>
                             </td>
                             <td>
                                 <div id="r176" class="achievement achievementlocked" style="background-image: url(images/achhidden.png)" ach-tooltip="Will be determined."><br></div>
@@ -2254,7 +2282,7 @@
                                 <div id="r177" class="achievement achievementlocked" style="background-image: url(images/achhidden.png)" ach-tooltip="Will be determined."><br></div>
                             </td>
                             <td>
-                                <div id="I don't want you to live anymore." class="achievement achievementlocked" style="background-image: url(images/132.png)" ach-tooltip="Reach ??? IP without having time studies, electrons, and while dilated, in QC2, and having less than ??? normal replicants.">I don't want you to live anymore.</div>
+                                <div id="I don't want you to live anymore." class="achievement achievementlocked" style="background-image: url(images/134.png)" ach-tooltip="Reach ??? IP without having time studies, electrons, and while dilated, in QC2, and having less than ??? normal replicants."></div>
                             </td>
                         </tr>
                 </table>

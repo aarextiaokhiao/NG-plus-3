@@ -1,12 +1,12 @@
-masterystudies={initialCosts:{time:{241: 1e71, 251: 2e71, 252: 2e71, 253: 2e71, 261: 5e71, 262: 5e71, 263: 5e71, 264: 5e71, 265: 5e71, 266: 5e71, 271: 2.7434842249657063e76, 272: 2.7434842249657063e76, 273: 2.7434842249657063e76, 281: 6.858710562414266e76, 282: 6.858710562414266e76, 291: 2.143347050754458e77, 292: 2.143347050754458e77, 301: 8.573388203017832e77, 302: 2.6791838134430725e78, 303: 8.573388203017832e77, 311: 8.573388203017832e77, 312: 8.573388203017832e77, 321: 2.6791838134430727e76, 322: 9.324815538194444e77, 323: 2.6791838134430727e76, 331: 1.0172526041666666e79, 332: 1.0172526041666666e79, 341: 9.5367431640625e78, 342: 1.0172526041666666e79, 343: 1.0172526041666666e79, 344: 9.5367431640625e78, 351: 2.1192762586805557e79, 361: 1e75, 362: 2e78},
+masterystudies={initialCosts:{time:{241: 1e71, 251: 2e71, 252: 2e71, 253: 2e71, 261: 5e71, 262: 5e71, 263: 5e71, 264: 5e71, 265: 5e71, 266: 5e71, 271: 2.7434842249657063e76, 272: 2.7434842249657063e76, 273: 2.7434842249657063e76, 281: 6.858710562414266e76, 282: 6.858710562414266e76, 291: 2.143347050754458e77, 292: 2.143347050754458e77, 301: 8.573388203017832e77, 302: 2.6791838134430725e78, 303: 8.573388203017832e77, 311: 8.573388203017832e77, 312: 8.573388203017832e77, 321: 2.6791838134430727e76, 322: 9.324815538194444e77, 323: 2.6791838134430727e76, 331: 1.0172526041666666e79, 332: 1.0172526041666666e79, 341: 9.5367431640625e78, 342: 1.0172526041666666e79, 343: 1.0172526041666666e79, 344: 9.5367431640625e78, 351: 2.1192762586805557e79, 361: 1.5894571940104167e79, 362: 1.5894571940104167e79, 371: 2.1192762586805557e79, 372: 1/0, 373: 2.1192762586805557e79, 381: 1/0, 382: 1/0, 383: 1/0, 391: 1/0, 392: 1/0},
 		ec:{13:1e72, 14:1e72}},
 	costs:{time:{},
 		ec:{},
 		dil:{7: 2e82, 8: 2e84, 9: 4e85, 10: 4e87, 11: 3e90},
 		mc:{}},
-	costmults:{241: 1, 251: 2.5, 252: 2.5, 253: 2.5, 261: 6, 262: 6, 263: 6, 264: 6, 265: 6, 266: 6, 271: 2, 272: 2, 273: 2, 281: 4, 282: 4, 291: 1, 292: 1, 301: 2, 302: 131072, 303: 2, 311: 64, 312: 64, 321: 2, 322: 2, 323: 2, 331: 2, 332: 2, 341: 1, 342: 1, 343: 1, 344: 1, 351: 4, 361: 1, 362: 1},
+	costmults:{241: 1, 251: 2.5, 252: 2.5, 253: 2.5, 261: 6, 262: 6, 263: 6, 264: 6, 265: 6, 266: 6, 271: 2, 272: 2, 273: 2, 281: 4, 282: 4, 291: 1, 292: 1, 301: 2, 302: 131072, 303: 2, 311: 64, 312: 64, 321: 2, 322: 2, 323: 2, 331: 2, 332: 2, 341: 1, 342: 1, 343: 1, 344: 1, 351: 4, 361: 1, 362: 1, 371: 2, 372: 1, 373: 2, 381: 1, 382: 1, 383: 1, 391: 1, 392: 1},
 	costmult:1,
-	allTimeStudies:[241, 251, 252, 253, 261, 262, 263, 264, 265, 266, 271, 272, 273, 281, 282, 291, 292, 301, 302, 303, 311, 312, 321, 322, 323, 331, 332, 341, 342, 343, 344, 351, 361, 362],
+	allTimeStudies:[241, 251, 252, 253, 261, 262, 263, 264, 265, 266, 271, 272, 273, 281, 282, 291, 292, 301, 302, 303, 311, 312, 321, 322, 323, 331, 332, 341, 342, 343, 344, 351, 361, 362, 371, 372, 373, 381, 382, 383, 391, 392],
 	initialReqs:{13:728e3,14:255e5},
 	incrementReqs:{13:6e3,14:9e5},
 	reqs:{},
@@ -49,7 +49,9 @@ function updateMasteryStudyButtons() {
 		document.getElementById("ts351Current").textContent="Currently: "+shorten(getMTSMult(351))+"x"
 	}
 	if (player.masterystudies.includes("d11")) {
-		document.getElementById("ts361Current").textContent="Currently: 1/"+shorten(1/getMTSMult(361))+"x"
+		document.getElementById("ts361Current").textContent="Currently: "+shorten(getMTSMult(361))+"x"
+		document.getElementById("ts371Current").textContent="Currently: "+shorten(getMTSMult(371))+"x"
+		document.getElementById("ts373Current").textContent="Currently: "+shorten(getMTSMult(373))+"x"
 	}
 }
 
@@ -137,7 +139,21 @@ function canBuyMasteryStudy(type, id) {
 		var row=Math.floor(id/10)
 		if (masterystudies.latestBoughtRow>row) return false
 		var col=id%10
-		if (row>35) return player.masterystudies.includes('d11')
+		if (row>38) {
+			if (col>1) return player.masterystudies.includes('t381')
+			return player.masterystudies.includes('t382')
+		}
+		if (row>37) {
+			if (col>2) return player.masterystudies.includes('t373')
+			if (col>1) return player.masterystudies.includes('t383')
+			return player.masterystudies.includes('t372')
+		}
+		if (row>36) {
+			if (col>2) return player.masterystudies.includes('t362')
+			if (col>1) return player.masterystudies.includes('t371')
+			return player.masterystudies.includes('t361')
+		}
+		if (row>35) return player.masterystudies.includes('d11')&&player.masterystudies.includes('t351')
 		if (row>34) return player.masterystudies.includes('t344')
 		if (row>33) {
 			if (col>3) return player.masterystudies.includes('t343')
@@ -263,7 +279,17 @@ function drawMasteryTree() {
 	if(player.masterystudies.includes("d11")) {
 		drawMasteryBranch("dilstudy11", "timestudy361")
 		drawMasteryBranch("dilstudy11", "timestudy362")
-		drawMasteryBranch("dilstudy11", "dilstudy12")
+		drawMasteryBranch("timestudy361", "timestudy371")
+		drawMasteryBranch("timestudy371", "timestudy372")
+		drawMasteryBranch("timestudy362", "timestudy373")
+		drawMasteryBranch("timestudy372", "timestudy381")
+		drawMasteryBranch("timestudy383", "timestudy382")
+		drawMasteryBranch("timestudy373", "timestudy383")
+		drawMasteryBranch("timestudy373", "timestudy383")
+		drawMasteryBranch("timestudy381", "timestudy391")
+		drawMasteryBranch("timestudy382", "timestudy392")
+		drawMasteryBranch("timestudy391", "dilstudy12")
+		drawMasteryBranch("timestudy392", "dilstudy12")
 		drawMasteryBranch("dilstudy12", "dilstudy13")
 	}
     if (shiftDown) {
@@ -313,7 +339,7 @@ function setupText() {
 		row.style["font-size"]="16px"
 		var html='<td id="empD'+d+'" width="41%">'+DISPLAY_NAMES[d]+' Emperor Dimension x1</td>'
 		html+='<td><div id="empAmount'+d+'">0'+(d>7?'':' (+0.00%/s)')+'</div></td>'
-		html+='<td><span id="empQuarks'+d+'">0</span> quarks/s</td>'
+		html+='<td><span class="empQuarks" id="empQuarks'+d+'">0</span> quarks/s</td>'
 		html+='<td align="right" width="10%"><button id="empFeed'+d+'" style="color:black; width:195px; height:30px" class="storebtn" align="right" onclick="feedReplicant('+d+')">Feed (0%)</button></td>'
 		row.innerHTML=html
 	}
@@ -336,7 +362,9 @@ function getMTSMult(id) {
 	if (id==341) return Decimal.pow(2,Math.sqrt(player.quantum.replicants.quarks.add(1).log10()))
 	if (id==344) return Math.pow(player.quantum.replicants.quarks.div(1e7).add(1).log10(),0.25)*0.17+1
 	if (id==351) return player.timeShards.add(1).pow(14e-7)
-	if (id==361) return Decimal.pow(0.95,player.dilation.tachyonParticles.add(1).log10())
+	if (id==361) return player.dilation.tachyonParticles.add(1).pow(0.01824033924212366)
+	if (id==371) return Math.pow(extraReplGalaxies+1,0.3)
+	if (id==373) return Math.pow(player.galaxies+1,0.55)
 }
 
 //v1.3
@@ -404,7 +432,7 @@ function updateQuantumTabs() {
 
 		var gatherRateData=getGatherRate()
 		document.getElementById("normalReplGatherRate").textContent=shortenDimensions(gatherRateData.normal)
-		document.getElementById("workerReplGatherRate").textContent=shortenDimensions(gatherRateData.totalworkers)
+		document.getElementById("workerReplGatherRate").textContent=shortenDimensions(gatherRateData.workersTotal)
 		document.getElementById("babyReplGatherRate").textContent=shortenDimensions(gatherRateData.babies)
 		document.getElementById("gatherRate").textContent='+'+shortenDimensions(gatherRateData.total)+'/s'
 
@@ -417,6 +445,8 @@ function updateQuantumTabs() {
 		document.getElementById("eggonAmount").textContent=shortenDimensions(player.quantum.replicants.eggons)
 		document.getElementById("hatchProgress").textContent=Math.round(player.quantum.replicants.babyProgress.toNumber()*100)+"%"
 		document.getElementById("growupProgress").textContent=Math.round(player.quantum.replicants.ageProgress.toNumber()*100)+"%"
+
+		document.getElementById("reduceHatchSpeed").innerHTML="Hatch speed: "+hatchSpeedDisplay()+" -> "+hatchSpeedDisplay(true)+"<br>Cost: "+shortenDimensions(player.quantum.replicants.hatchSpeedCost)+" for all 3 gluons"
 	}
 }
 
@@ -899,7 +929,6 @@ function updateReplicants() {
 	document.getElementById("eggonRate").textContent=shortenDimensions(totalReplicants.minus(player.quantum.replicants.amount).times(3))
 	document.getElementById("breakLimit").innerHTML="Limit of workers: "+getLimitMsg()+(isLimitUpgAffordable()?" -> "+getNextLimitMsg()+"<br>Cost: "+shortenDimensions(player.quantum.replicants.limitCost)+" for all 3 gluons":"")
 	document.getElementById("breakLimit").className=(player.quantum.gluons.rg.min(player.quantum.gluons.gb).min(player.quantum.gluons.br).lt(player.quantum.replicants.limitCost)||!isLimitUpgAffordable()?"unavailabl":"stor")+"ebtn"
-	document.getElementById("reduceHatchSpeed").innerHTML="Hatch speed: "+hatchSpeedDisplay()+" -> "+hatchSpeedDisplay(true)+"<br>Cost: "+shortenDimensions(player.quantum.replicants.hatchSpeedCost)+" for all 3 gluons"
 	document.getElementById("reduceHatchSpeed").className=(player.quantum.gluons.rg.min(player.quantum.gluons.gb).min(player.quantum.gluons.br).lt(player.quantum.replicants.hatchSpeedCost)?"unavailabl":"stor")+"ebtn"
 	if (player.masterystudies.includes('d11')) {
 		document.getElementById("quantumFoodAmountED").textContent=getFullExpansion(player.quantum.replicants.quantumFood)
@@ -920,27 +949,19 @@ function replicantReset() {
 
 function getGatherRate() {
 	var mult = new Decimal(1)
-	if (player.masterystudies.includes("t341")) mult = mult.times(getMTSMult(341))
+	if (player.masterystudies.includes("t373")) mult = getMTSMult(373)
 	var data = {
 		normal: player.quantum.replicants.amount.times(mult),
-		babies: player.quantum.replicants.babies.div(20).times(mult),
-		workers : {
-			'1': eds[1].workers.times(20).times(mult),
-			'2': eds[2].workers.times(400).times(mult),
-			'3': eds[3].workers.times(8000).times(mult),
-			'4': eds[4].workers.times(160000).times(mult),
-			'5': eds[5].workers.times(3200000).times(mult),
-			'6': eds[6].workers.times(64000000).times(mult),
-			'7': eds[7].workers.times(1280000000).times(mult),
-			'8': eds[8].workers.times(25600000000).times(mult),
-		}
+		babies: player.quantum.replicants.babies.times(mult).div(20),
+		workers : { }
 	}
 	data.total = data.normal.add(data.babies)
-	data.totalworkers = new Decimal(0)
+	data.workersTotal = new Decimal(0)
 	for (var d=1; d<9; d++) {
-		data.totalworkers = data.totalworkers.add(data.workers[d])
-		data.total = data.total.add(data.workers[d])
+		data.workers[d] = eds[d].workers.times(mult).times(Decimal.pow(20, d))
+		data.workersTotal = data.workersTotal.add(data.workers[d])
 	}
+	data.total = data.total.add(data.workersTotal)
 	return data
 }
 
@@ -1048,9 +1069,8 @@ function updateBankedEter(updateHtml=true) {
 
 //v1.99871
 function hatchSpeedDisplay(next) {
-	var speed=player.quantum.replicants.hatchSpeed
-	if(player.masterystudies.includes("t361")) speed = speed*getMTSMult(361)
-	if (next) speed=speed/1.1
+	var speed = getHatchSpeed()
+	if (next) speed /= 1.1
 	return timeDisplayShort(speed*10, true, 1)
 }
 
@@ -1204,20 +1224,52 @@ function getNextLimitMsg() {
 	return (player.quantum.replicants.limit+1)+" D"+player.quantum.replicants.limitDim+"s"
 }
 
+function getHatchSpeed() {
+	var speed = player.quantum.replicants.hatchSpeed
+	if (player.masterystudies.includes("t361")) speed /= getMTSMult(361)
+	if (player.masterystudies.includes("t371")) speed /= getMTSMult(371)
+	return speed
+}
+
 var eds
 function updateEmperorDimensions() {
+	let production = getGatherRate()
 	document.getElementById("replicantAmountED").textContent=shortenDimensions(player.quantum.replicants.amount)
 	for (d=1;d<9;d++) {
-		document.getElementById("empD"+d).textContent = DISPLAY_NAMES[d] + " Emperor Dimension x" + formatValue(player.options.notation, 1, 2, 1)
+		document.getElementById("empD"+d).textContent = DISPLAY_NAMES[d] + " Emperor Dimension x" + formatValue(player.options.notation, getEDMultiplier(d), 2, 1)
 		
 		var desc = shortenDimensions(eds[d].workers)
-		if (d<8) desc += " (+0"+dimDescEnd
+		if (d<8) desc += " (+" + shorten(getEDRateOfChange(d)) + dimDescEnd
 		document.getElementById("empAmount"+d).textContent = desc
 		document.getElementById("empFeed"+d).className=(canFeedReplicant(d)?"stor":"unavailabl")+"ebtn"
 		document.getElementById("empFeed"+d).textContent="Feed ("+Math.round(eds[d].progress.toNumber()*100)+"%, "+Math.floor(eds[d].perm)+" kept)"
 
-		var mult = new Decimal(1)
-		if (player.masterystudies.includes("t341")) mult = mult.times(getMTSMult(341))
-		document.getElementById("empQuarks"+d).textContent = shorten(eds[d].workers.multiply(Decimal.pow(20, d).multiply(mult)))
+		document.getElementById("empQuarks"+d).textContent = shorten(production.workers[d])
 	}
+	document.getElementById("totalWorkers").textContent = shortenDimensions(getTotalWorkers())
+	document.getElementById("totalQuarkProduction").textContent = shorten(production.workersTotal)
+}
+
+function getEDMultiplier(dim) {
+	let mult = new Decimal(1)
+	if (player.dilation.active || player.galacticSacrifice) {
+		mult = Decimal.pow(10, Math.pow(mult.log10(), 0.75))
+		if (player.dilation.upgrades.includes(11)) {
+			mult = Decimal.pow(10, Math.pow(mult.log10(), 1.05))
+		}
+	}
+	return mult
+}
+
+function getEDRateOfChange(dim) {
+	if (!canFeedReplicant(dim+1, true)) return 0
+	let toGain = getEDMultiplier(dim+1).times(eds[dim+1].workers)
+
+	var current = eds[dim].workers.max(1)
+	if (player.aarexModifications.logRateChange) {
+		var change = current.add(toGain.div(10)).log10()-current.log10()
+		if (change<0||isNaN(change)) change = 0
+	} else var change = toGain.times(10).dividedBy(current)
+
+	return change
 }

@@ -6577,13 +6577,12 @@ function gameLoop(diff) {
 
         var rate = getGatherRate().total
         if (rate.gt(0)) player.quantum.replicants.quarks = player.quantum.replicants.quarks.add(rate.times(diff/10))
-        gatheredQuarksBoost = Math.pow(player.quantum.replicants.quarks.add(1).log10(),0.25)*0.67
-        if (player.masterystudies.includes("t362")) gatheredQuarksBoost = Math.pow(player.quantum.replicants.quarks.add(1).log10(),0.35)*0.67
+        gatheredQuarksBoost = Math.pow(player.quantum.replicants.quarks.add(1).log10(),player.masterystudies.includes("t362")?0.35:0.25)*0.67
 
         for (dim=8;dim>1;dim--) {
             var promote = getWorkerAmount(dim-2)
             if (canFeedReplicant(dim-1,true)) {
-               eds[dim-1].progress = eds[dim-1].progress.add(eds[dim].workers.times(diff/200))
+               eds[dim-1].progress = eds[dim-1].progress.add(eds[dim].workers.times(getEDMultiplier(dim)).times(diff/200))
                var toAdd = eds[dim-1].progress.floor().min(eds[dim-1].workers.sub(promote).round())
                if (dim>2) toAdd = toAdd.min(eds[dim-1].workers.sub(10).round())
                if (toAdd.gt(0)) {
@@ -6596,7 +6595,7 @@ function gameLoop(diff) {
             if (!canFeedReplicant(dim-1,true)) eds[dim-1].progress = new Decimal(0)
         }
 
-        player.quantum.replicants.eggonProgress = player.quantum.replicants.eggonProgress.add(getTotalWorkers().times(diff/200))
+        player.quantum.replicants.eggonProgress = player.quantum.replicants.eggonProgress.add(getTotalWorkers().times(getEDMultiplier(1)).times(diff/200))
         var toAdd = player.quantum.replicants.eggonProgress.floor()
         if (toAdd.gt(0)) {
             player.quantum.replicants.eggonProgress = player.quantum.replicants.eggonProgress.sub(toAdd)
@@ -6604,11 +6603,7 @@ function gameLoop(diff) {
         }
 
         if (player.quantum.replicants.eggons.gt(0)) {
-            if(player.masterystudies.includes("t361")) {
-                player.quantum.replicants.babyProgress = player.quantum.replicants.babyProgress.add(diff/player.quantum.replicants.hatchSpeed/10/getMTSMult(361))
-            } else {
-                player.quantum.replicants.babyProgress = player.quantum.replicants.babyProgress.add(diff/player.quantum.replicants.hatchSpeed/10)
-            }
+            player.quantum.replicants.babyProgress = player.quantum.replicants.babyProgress.add(diff/getHatchSpeed()/10)
             var toAdd = player.quantum.replicants.babyProgress.floor().min(player.quantum.replicants.eggons)
             if (toAdd.gt(0)) {
                 player.quantum.replicants.eggons = player.quantum.replicants.eggons.sub(toAdd).round()
