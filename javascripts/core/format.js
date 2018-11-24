@@ -207,7 +207,7 @@ function formatValue(notation, value, places, placesUnder1000) {
         if (notation === "Psi") {
             return formatPsi(matissa,power)
         }
-        if (notation === "Greek" || notation === "Morse code" || notation === "Symbols" || notation === "Lines") {
+        if (notation === "Greek" || notation === "Morse code" || notation === "Symbols" || notation === "Lines" || notation === "Simplified Written") {
             if (matissa>=10-Math.pow(10,-places)/2) {
                 matissa=Math.pow(10,places)
                 power-=places+1
@@ -217,6 +217,7 @@ function formatValue(notation, value, places, placesUnder1000) {
             }
             if (power > 1e5 && player.options.commas !== "Commas") power = formatValue(player.options.commas, power, 3, 3)
             else power = convTo(notation, power)
+            if (notation == "Simplified Written") return "("+power+") "+convTo(notation, matissa)
             return convTo(notation, matissa)+(notation=="Symbols"?'-':"e")+power
         }
         if (notation === "Infinity") {
@@ -514,6 +515,12 @@ function convTo(notation, num) {
 			result=syms[num%10]+result
 			num=Math.floor(num/10)
 		}
+	} else if (notation=='Simplified Written') {
+		const parts=["Ze","On","Tw","Th","Fo","Fi","Si","Se","Ei","Ni"]
+		while (num>0) {
+			result=parts[num%10]+result
+			num=Math.floor(num/10)
+		}
 	}
 	return result+rest
 }
@@ -577,8 +584,10 @@ function iroha (n, depth) {
 function getFullExpansion(num) {
 	if (typeof(num)=="number"&&isNaN(num)) return "NaN"
 	else if (typeof(num)!="number"&&isNaN(break_infinity_js?num:num.logarithm)) return "NaN"
-	else if (num < 1e12) return num.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")
-	else if (Decimal.lt(num, 1/0)) return shorten(num)
+	else if (num < 1e12) {
+		if (player.options.notation === "Greek" || player.options.notation === "Morse code" || player.options.notation === "Symbols" || player.options.notation === "Lines" || player.options.notation === "Simplified Written") return convTo(player.options.notation, num)
+		return num.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")
+	} else if (Decimal.lt(num, 1/0)) return shorten(num)
 	else return "Infinite"
 }
 

@@ -2147,7 +2147,7 @@ function updateExtraReplGalaxies() {
 }
 
 function updateMilestones() {
-    var moreUnlocked = player.masterystudies && player.dilation.upgrades.includes("ngpp2")
+    var moreUnlocked = player.masterystudies && player.dilation.upgrades.includes("ngpp3")
     var milestoneRequirements = [1, 2, 3, 4, 5, 7, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 20, 25, 30, 40, 50, 60, 80, 100, 1e9, 2e10, 4e11, 1e13]
     for (i=0; i<(moreUnlocked?28:24); i++) {
         var name = "reward" + i;
@@ -2158,7 +2158,10 @@ function updateMilestones() {
             document.getElementById(name).className = "milestonerewardlocked"
         }
     }
-    document.getElementById("mdmilestones").style.display = moreUnlocked ? "" : "none"
+    document.getElementById("mdmilestonesrow1a").style.display = moreUnlocked ? "" : "none"
+    document.getElementById("mdmilestonesrow1b").style.display = moreUnlocked ? "" : "none"
+    document.getElementById("mdmilestonesrow2a").style.display = moreUnlocked ? "" : "none"
+    document.getElementById("mdmilestonesrow2b").style.display = moreUnlocked ? "" : "none"
 }
 
 function replicantiGalaxyAutoToggle() {
@@ -2887,10 +2890,6 @@ function showNextModeMessage() {
 		document.getElementById("welcome").style.display = "flex"
 		document.getElementById("welcomeMessage").innerHTML = ngModeMessages[ngModeMessages.length-1]
 		ngModeMessages.pop()
-	} else if (player.aarexModifications.nextUpdateNotice!==4 && player.masterystudies) {
-		document.getElementById("welcome").style.display = "flex"
-		document.getElementById("welcomeMessage").innerHTML = "When the next update, all replicants-era studies will be nerfed and the end-game will be reduced to "+shortenCosts(Decimal.pow(10,5e13))+"! There will probably be emperor dimensions."
-		player.aarexModifications.nextUpdateNotice=4
 	} else {
 		document.getElementById("welcome").style.display = "none"
 		player.aarexModifications.popUpId=1
@@ -3245,7 +3244,7 @@ function setAchieveTooltip() {
 
 
 //notation stuff
-var notationArray = ["Scientific","Engineering","Letters","Standard","Emojis","Mixed scientific","Mixed engineering","Logarithm","Brackets","Infinity","Greek","Game percentages","Hexadecimal","Tetration","Hyperscientific","Psi","Morse code","Spazzy","Country Codes","Iroha","Symbols","Lines","AAS","AF5LN"]
+var notationArray = ["Scientific","Engineering","Letters","Standard","Emojis","Mixed scientific","Mixed engineering","Logarithm","Brackets","Infinity","Greek","Game percentages","Hexadecimal","Tetration","Hyperscientific","Psi","Morse code","Spazzy","Country Codes","Iroha","Symbols","Lines","Simplified Written","AAS","AF5LN"]
 
 function updateNotationOption() {
 	var notationMsg="Notation: "+(player.options.notation=="Emojis"?"Cancer":player.options.notation)
@@ -6434,7 +6433,7 @@ var replicantiTicks = 0
 var isSmartPeakActivated = false
 
 function updateEPminpeak(diff) {
-    isSmartPeakActivated = player.masterystudies && player.dilation.upgrades.includes("ngpp3") && getEternitied() >= 1e13
+    isSmartPeakActivated = player.masterystudies && player.dilation.upgrades.includes("ngpp6") && getEternitied() >= 1e13
 	if (player.dilation.active && isSmartPeakActivated) {
 		var gainedPoints = new Decimal(Math.max(getDilGain() - player.dilation.totalTachyonParticles, 0))
 		var oldPoints = new Decimal(player.dilation.totalTachyonParticles)
@@ -6599,7 +6598,8 @@ function gameLoop(diff) {
         player.quantum.replicants.eggonProgress = player.quantum.replicants.eggonProgress.add(getTotalWorkers().times(getEDMultiplier(1)).times(diff/200))
         var toAdd = player.quantum.replicants.eggonProgress.floor()
         if (toAdd.gt(0)) {
-            player.quantum.replicants.eggonProgress = player.quantum.replicants.eggonProgress.sub(toAdd)
+            if (toAdd.gt(player.quantum.replicants.eggonProgress)) player.quantum.replicants.eggonProgress = new Decimal(0)
+            else player.quantum.replicants.eggonProgress = player.quantum.replicants.eggonProgress.sub(toAdd)
             player.quantum.replicants.eggons = player.quantum.replicants.eggons.add(toAdd).round()
         }
 
@@ -6608,7 +6608,8 @@ function gameLoop(diff) {
             var toAdd = player.quantum.replicants.babyProgress.floor().min(player.quantum.replicants.eggons)
             if (toAdd.gt(0)) {
                 player.quantum.replicants.eggons = player.quantum.replicants.eggons.sub(toAdd).round()
-                player.quantum.replicants.babyProgress = player.quantum.replicants.babyProgress.sub(toAdd)
+                if (toAdd.gt(player.quantum.replicants.babyProgress)) player.quantum.replicants.babyProgress = new Decimal(0)
+                else player.quantum.replicants.babyProgress = player.quantum.replicants.babyProgress.sub(toAdd)
                 player.quantum.replicants.babies = player.quantum.replicants.babies.add(toAdd).round()
             }
         }
@@ -6619,7 +6620,8 @@ function gameLoop(diff) {
             var toAdd = player.quantum.replicants.ageProgress.floor()
             if (toAdd.gt(0)) {
                 player.quantum.replicants.babies = player.quantum.replicants.babies.sub(toAdd).round()
-                player.quantum.replicants.ageProgress = player.quantum.replicants.ageProgress.sub(toAdd)
+                if (toAdd.gt(player.quantum.replicants.ageProgress)) player.quantum.replicants.ageProgress = new Decimal(0)
+                else player.quantum.replicants.ageProgress = player.quantum.replicants.ageProgress.sub(toAdd)
                 player.quantum.replicants.amount = player.quantum.replicants.amount.add(toAdd).round()
             }
         }

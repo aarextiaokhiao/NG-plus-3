@@ -260,10 +260,10 @@ function drawMasteryTree() {
 		drawMasteryBranch("timestudy303", "timestudy312")
 		drawMasteryBranch("timestudy302", "dilstudy10")
 		drawMasteryBranch("timestudy311", "timestudy321")
-		drawMasteryBranch("dilstudy10", "timestudy322")
+		drawMasteryBranch("timestudy312", "timestudy323")
 	}
 	if (player.masterystudies.includes("d10")) {
-		drawMasteryBranch("timestudy312", "timestudy323")
+		drawMasteryBranch("dilstudy10", "timestudy322")
 		drawMasteryBranch("timestudy322", "timestudy331")
 		drawMasteryBranch("timestudy322", "timestudy332")
 		drawMasteryBranch("timestudy331", "timestudy342")
@@ -356,9 +356,9 @@ function getMTSMult(id) {
 	if (id==282) return Decimal.pow(10,Math.pow(replmult.max(1).log10(),0.25)/15)
 	if (id==303) return Decimal.pow(4.7,Math.pow(Math.log10(Math.max(player.galaxies,1)),1.5))
 	if (id==322) {
-		let ret = Decimal.pow(10,Math.sqrt(-player.tickspeed.div(1000).log10())/20000)
-		if (ret.gt(1e110)) ret = Decimal.pow(10, Math.sqrt(ret.log10()*110))
-		return ret
+		let log = Math.sqrt(-player.tickspeed.div(1000).log10())/20000
+		if (log>110) log = Math.sqrt(log * 27.5) + 55
+		return Decimal.pow(10, log)
 	}
 	if (id==341) return Decimal.pow(2,Math.sqrt(player.quantum.replicants.quarks.add(1).log10()))
 	if (id==344) return Math.pow(player.quantum.replicants.quarks.div(1e7).add(1).log10(),0.25)*0.17+1
