@@ -416,8 +416,8 @@ strong { color: #0072e5 }
 #dilstudy10.dilationupg, #dilstudy11.dilationupg { border: 2px solid #333333 !important }
 #dilstudy10.dilationupg:hover, #dilstudy10.dilationupgbought, #dilstudy11.dilationupg:hover, #dilstudy11.dilationupgbought { background-color: #333333 !important }
 #quantumFoodAmount, #quantumFoodAmountED { color: #b7e5b7 !important }
-#buyQuantumFood.storebtn, #feedNormal.storebtn, #feedBaby.storebtn, #breakLimit.storebtn, #emperordimensions .storebtn { border: 2px solid #b7e5b7 !important }
-#buyQuantumFood.storebtn:hover, #feedNormal.storebtn:hover, #feedBaby.storebtn:hover, #breakLimit.storebtn:hover, #emperordimensions .storebtn:hover { background-color: #b7e5b7 !important }
+#buyQuantumFood.storebtn, #buyMaxQuantumFood.storebtn, #feedNormal.storebtn, #feedBaby.storebtn, #breakLimit.storebtn, #emperordimensions .storebtn, #buyQuantumFoodED .storebtn, #buyMaxQuantumFoodED .storebtn { border: 2px solid #b7e5b7 !important }
+#buyQuantumFood.storebtn:hover, #buyMaxQuantumFood.storebtn:hover, #feedNormal.storebtn:hover, #feedBaby.storebtn:hover, #breakLimit.storebtn:hover, #emperordimensions .storebtn:hover, #buyQuantumFoodED .storebtn:hover, #buyMaxQuantumFoodED .storebtn:hover { background-color: #b7e5b7 !important }
 #eggonAmount, #eggonRate { color: #e5dab7 !important }
 #reduceHatchSpeed.storebtn { border: 2px solid #e5dab7 !important }
 #reduceHatchSpeed.storebtn:hover { background-color: #e5dab7 !important }

@@ -1,10 +1,10 @@
-masterystudies={initialCosts:{time:{241: 1e71, 251: 2e71, 252: 2e71, 253: 2e71, 261: 5e71, 262: 5e71, 263: 5e71, 264: 5e71, 265: 5e71, 266: 5e71, 271: 2.7434842249657063e76, 272: 2.7434842249657063e76, 273: 2.7434842249657063e76, 281: 6.858710562414266e76, 282: 6.858710562414266e76, 291: 2.143347050754458e77, 292: 2.143347050754458e77, 301: 8.573388203017832e77, 302: 2.6791838134430725e78, 303: 8.573388203017832e77, 311: 8.573388203017832e77, 312: 8.573388203017832e77, 321: 2.6791838134430727e76, 322: 9.324815538194444e77, 323: 2.6791838134430727e76, 331: 1.0172526041666666e79, 332: 1.0172526041666666e79, 341: 9.5367431640625e78, 342: 1.0172526041666666e79, 343: 1.0172526041666666e79, 344: 9.5367431640625e78, 351: 2.1192762586805557e79, 361: 1.5894571940104167e79, 362: 1.5894571940104167e79, 371: 2.1192762586805557e79, 372: 1/0, 373: 2.1192762586805557e79, 381: 1/0, 382: 1/0, 383: 1/0, 391: 1/0, 392: 1/0},
+masterystudies={initialCosts:{time:{241: 1e71, 251: 2e71, 252: 2e71, 253: 2e71, 261: 5e71, 262: 5e71, 263: 5e71, 264: 5e71, 265: 5e71, 266: 5e71, 271: 2.7434842249657063e76, 272: 2.7434842249657063e76, 273: 2.7434842249657063e76, 281: 6.858710562414266e76, 282: 6.858710562414266e76, 291: 2.143347050754458e77, 292: 2.143347050754458e77, 301: 8.573388203017832e77, 302: 2.6791838134430725e78, 303: 8.573388203017832e77, 311: 8.573388203017832e77, 312: 8.573388203017832e77, 321: 2.6791838134430727e76, 322: 9.324815538194444e77, 323: 2.6791838134430727e76, 331: 1.0172526041666666e79, 332: 1.0172526041666666e79, 341: 9.5367431640625e78, 342: 1.0172526041666666e79, 343: 1.0172526041666666e79, 344: 9.5367431640625e78, 351: 2.1192762586805557e79, 361: 1.5894571940104167e79, 362: 1.5894571940104167e79, 371: 2.1192762586805557e79, 372: 6.622738308376736e79, 373: 2.1192762586805557e79, 381: 6.622738308376736e79, 382: 6.622738308376736e79, 383: 6.622738308376736e79, 391: 1/0, 392: 1/0},
 		ec:{13:1e72, 14:1e72}},
 	costs:{time:{},
 		ec:{},
 		dil:{7: 2e82, 8: 2e84, 9: 4e85, 10: 4e87, 11: 3e90},
 		mc:{}},
-	costmults:{241: 1, 251: 2.5, 252: 2.5, 253: 2.5, 261: 6, 262: 6, 263: 6, 264: 6, 265: 6, 266: 6, 271: 2, 272: 2, 273: 2, 281: 4, 282: 4, 291: 1, 292: 1, 301: 2, 302: 131072, 303: 2, 311: 64, 312: 64, 321: 2, 322: 2, 323: 2, 331: 2, 332: 2, 341: 1, 342: 1, 343: 1, 344: 1, 351: 4, 361: 1, 362: 1, 371: 2, 372: 1, 373: 2, 381: 1, 382: 1, 383: 1, 391: 1, 392: 1},
+	costmults:{241: 1, 251: 2.5, 252: 2.5, 253: 2.5, 261: 6, 262: 6, 263: 6, 264: 6, 265: 6, 266: 6, 271: 2, 272: 2, 273: 2, 281: 4, 282: 4, 291: 1, 292: 1, 301: 2, 302: 131072, 303: 2, 311: 64, 312: 64, 321: 2, 322: 2, 323: 2, 331: 2, 332: 2, 341: 1, 342: 1, 343: 1, 344: 1, 351: 4, 361: 1, 362: 1, 371: 2, 372: 2, 373: 2, 381: 1, 382: 1, 383: 2, 391: 1, 392: 1},
 	costmult:1,
 	allTimeStudies:[241, 251, 252, 253, 261, 262, 263, 264, 265, 266, 271, 272, 273, 281, 282, 291, 292, 301, 302, 303, 311, 312, 321, 322, 323, 331, 332, 341, 342, 343, 344, 351, 361, 362, 371, 372, 373, 381, 382, 383, 391, 392],
 	initialReqs:{13:728e3,14:255e5},
@@ -50,8 +50,7 @@ function updateMasteryStudyButtons() {
 	}
 	if (player.masterystudies.includes("d11")) {
 		document.getElementById("ts361Current").textContent="Currently: "+shorten(getMTSMult(361))+"x"
-		document.getElementById("ts371Current").textContent="Currently: "+shorten(getMTSMult(371))+"x"
-		document.getElementById("ts373Current").textContent="Currently: "+shorten(getMTSMult(373))+"x"
+		for (r=37;r<40;r++) for (c=1;c<(r<39?4:3);c++) document.getElementById("ts"+(r*10+c)+"Current").textContent="Currently: "+shorten(getMTSMult(r*10+c))+"x"
 	}
 }
 
@@ -103,6 +102,7 @@ function buyMasteryStudy(type, id, quick=false) {
 			ipMultPower=2.2
 			document.getElementById("infiMult").innerHTML = "Multiply infinity points from all sources by "+ipMultPower+"<br>currently: "+shorten(getIPMult()) +"x<br>Cost: "+shortenCosts(player.infMultCost)+" IP"
 		}
+		if (id==383) updateColorCharge()
 		if (id==7) {
 			showTab("quantumtab")
 			showQuantumTab("electrons")
@@ -139,10 +139,7 @@ function canBuyMasteryStudy(type, id) {
 		var row=Math.floor(id/10)
 		if (masterystudies.latestBoughtRow>row) return false
 		var col=id%10
-		if (row>38) {
-			if (col>1) return player.masterystudies.includes('t381')
-			return player.masterystudies.includes('t382')
-		}
+		if (row>38) return player.masterystudies.includes('t38'+col)
 		if (row>37) {
 			if (col>2) return player.masterystudies.includes('t373')
 			if (col>1) return player.masterystudies.includes('t383')
@@ -358,13 +355,23 @@ function getMTSMult(id) {
 	if (id==281) return Decimal.pow(10,Math.pow(replmult.max(1).log10(),0.25)/10)
 	if (id==282) return Decimal.pow(10,Math.pow(replmult.max(1).log10(),0.25)/15)
 	if (id==303) return Decimal.pow(4.7,Math.pow(Math.log10(Math.max(player.galaxies,1)),1.5))
-	if (id==322) return Decimal.pow(10,Math.sqrt(-player.tickspeed.div(1000).log10())/20000)
+	if (id==322) {
+		let ret = Decimal.pow(10,Math.sqrt(-player.tickspeed.div(1000).log10())/20000)
+		if (ret.gt(1e110)) ret = Decimal.pow(10, Math.sqrt(ret.log10()*110))
+		return ret
+	}
 	if (id==341) return Decimal.pow(2,Math.sqrt(player.quantum.replicants.quarks.add(1).log10()))
 	if (id==344) return Math.pow(player.quantum.replicants.quarks.div(1e7).add(1).log10(),0.25)*0.17+1
 	if (id==351) return player.timeShards.add(1).pow(14e-7)
 	if (id==361) return player.dilation.tachyonParticles.add(1).pow(0.01824033924212366)
 	if (id==371) return Math.pow(extraReplGalaxies+1,0.3)
+	if (id==372) return Math.sqrt(player.timeShards.log10())/20
 	if (id==373) return Math.pow(player.galaxies+1,0.55)
+	if (id==381) return 1
+	if (id==382) return 1
+	if (id==383) return Decimal.pow(3200,Math.pow(player.quantum.colorPowers.b.log10(),0.25))
+	if (id==391) return 1
+	if (id==392) return 1
 }
 
 //v1.3
@@ -404,6 +411,7 @@ function updateQuantumTabs() {
 		document.getElementById("redTranslation").textContent=((colorBoosts.r-1)*100).toFixed(1)
 		document.getElementById("greenTranslation").textContent=getFullExpansion(Math.round((colorBoosts.g-1)*100))
 		document.getElementById("blueTranslation").textContent=shortenMoney(colorBoosts.b)
+		if (player.masterystudies.includes("t383")) document.getElementById("blueTranslationMD").textContent=shorten(getMTSMult(383))
 	}
 	if (document.getElementById("gluons").style.display=="block") {
 		document.getElementById("brupg1current").textContent="Currently: "+shortenMoney(player.dilation.dilatedTime.add(1).log10()+1)+"x"
@@ -445,6 +453,7 @@ function updateQuantumTabs() {
 		document.getElementById("eggonAmount").textContent=shortenDimensions(player.quantum.replicants.eggons)
 		document.getElementById("hatchProgress").textContent=Math.round(player.quantum.replicants.babyProgress.toNumber()*100)+"%"
 		document.getElementById("growupProgress").textContent=Math.round(player.quantum.replicants.ageProgress.toNumber()*100)+"%"
+		document.getElementById("feedBaby").className=((player.quantum.replicants.quantumFood<1||player.quantum.replicants.babies.lt(1))?"unavailabl":"stor")+"ebtn"
 
 		document.getElementById("reduceHatchSpeed").innerHTML="Hatch speed: "+hatchSpeedDisplay()+" -> "+hatchSpeedDisplay(true)+"<br>Cost: "+shortenDimensions(player.quantum.replicants.hatchSpeedCost)+" for all 3 gluons"
 	}
@@ -497,6 +506,7 @@ function updateColorCharge() {
 	document.getElementById("redAssign").className=canAssign?"storebtn":"unavailablebtn"
 	document.getElementById("greenAssign").className=canAssign?"storebtn":"unavailablebtn"
 	document.getElementById("blueAssign").className=canAssign?"storebtn":"unavailablebtn"
+	document.getElementById("bluePowerMDEffect").style.display=player.masterystudies.includes("t383")?"":"none"
 }
 
 function assignQuark(color) {
@@ -977,6 +987,21 @@ function buyQuantumFood() {
 	}
 }
 
+function feedBabyReplicant() {
+	if (player.quantum.replicants.quantumFood<1||player.quantum.replicants.babies.lt(1)) return
+	player.quantum.replicants.quantumFood--
+	player.quantum.replicants.quantumFoodCost=player.quantum.replicants.quantumFoodCost.div(5)
+	player.quantum.replicants.ageProgress=player.quantum.replicants.ageProgress.add(0.5)
+	if (player.quantum.replicants.amount.lt(1)) player.quantum.replicants.ageProgress=player.quantum.replicants.ageProgress.times(2).round().div(2)
+	if (player.quantum.replicants.ageProgress.gte(1)) {
+		var toAdd=player.quantum.replicants.ageProgress.floor()
+		player.quantum.replicants.babies=player.quantum.replicants.babies.sub(toAdd).round()
+		player.quantum.replicants.ageProgress=player.quantum.replicants.ageProgress.sub(toAdd)
+		player.quantum.replicants.amount=player.quantum.replicants.amount.add(toAdd)
+	}
+	updateReplicants()
+}
+
 function reduceHatchSpeed() {
 	if (player.quantum.gluons.rg.min(player.quantum.gluons.gb).min(player.quantum.gluons.br).gte(player.quantum.replicants.hatchSpeedCost)) {
 		player.quantum.gluons.rg=player.quantum.gluons.rg.sub(player.quantum.replicants.hatchSpeedCost)
@@ -1164,6 +1189,10 @@ function getTotalReplicants() {
 	return getTotalWorkers().add(player.quantum.replicants.amount).round()
 }
 
+function buyMaxQuantumFood() {
+	
+}
+
 function feedReplicant(tier) {
 	if (!canFeedReplicant(tier)) return
 	if (tier<8&&eds[tier].perm>9) player.quantum.replicants.quantumFoodCost=player.quantum.replicants.quantumFoodCost.div(5)
@@ -1228,6 +1257,9 @@ function getHatchSpeed() {
 	var speed = player.quantum.replicants.hatchSpeed
 	if (player.masterystudies.includes("t361")) speed /= getMTSMult(361)
 	if (player.masterystudies.includes("t371")) speed /= getMTSMult(371)
+	if (player.masterystudies.includes("t372")) speed /= getMTSMult(372)
+	if (player.masterystudies.includes("t381")) speed /= getMTSMult(381)
+	if (player.masterystudies.includes("t391")) speed /= getMTSMult(391)
 	return speed
 }
 
@@ -1262,14 +1294,31 @@ function getEDMultiplier(dim) {
 }
 
 function getEDRateOfChange(dim) {
-	if (!canFeedReplicant(dim+1, true)) return 0
-	let toGain = getEDMultiplier(dim+1).times(eds[dim+1].workers)
+	if (!canFeedReplicant(dim, true)) return 0
+	let toGain = getEDMultiplier(dim+1).times(eds[dim+1].workers).div(20)
 
-	var current = eds[dim].workers.max(1)
+	var current = eds[dim].workers.add(eds[dim].progress).max(1)
 	if (player.aarexModifications.logRateChange) {
-		var change = current.add(toGain.div(10)).log10()-current.log10()
+		var change = current.add(toGain).log10()-current.log10()
 		if (change<0||isNaN(change)) change = 0
 	} else var change = toGain.times(10).dividedBy(current)
 
 	return change
+}
+
+function buyMaxQuantumFood() {
+	let minGluons = player.quantum.gluons.rg.min(player.quantum.gluons.gb).min(player.quantum.gluons.br)
+	let toBuy = Math.floor(minGluons.div(player.quantum.replicants.quantumFoodCost).times(4).plus(1).log(5))
+	if (toBuy < 1) return
+	let toSpend = Decimal.pow(5, toBuy).minus(1).div(4).times(player.quantum.replicants.quantumFoodCost)
+	if (toSpend.gt(player.quantum.gluons.rg)) player.quantum.gluons.rg = new Decimal(0)
+	else player.quantum.gluons.rg = player.quantum.gluons.rg.sub(toSpend)
+	if (toSpend.gt(player.quantum.gluons.gb)) player.quantum.gluons.gb = new Decimal(0)
+	else player.quantum.gluons.gb = player.quantum.gluons.gb.sub(toSpend)
+	if (toSpend.gt(player.quantum.gluons.br)) player.quantum.gluons.br = new Decimal(0)
+	else player.quantum.gluons.br = player.quantum.gluons.br.sub(toSpend)
+	player.quantum.replicants.quantumFood += toBuy
+	player.quantum.replicants.quantumFoodCost = player.quantum.replicants.quantumFoodCost.times(Decimal.pow(5, toBuy))
+	updateGluons()
+	updateReplicants()
 }

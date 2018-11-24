@@ -18,6 +18,10 @@ function getMetaDimensionMultiplier (tier) {
       if (player.masterystudies.includes("t303")) multiplier = multiplier.times(getMTSMult(303))
       multiplier = multiplier.times(getQCReward(3))
       if (player.masterystudies.includes("t351")) multiplier = multiplier.times(getMTSMult(351))
+      if (player.masterystudies.includes("t373")) multiplier = multiplier.times(getMTSMult(373))
+      if (player.masterystudies.includes("t382")) multiplier = multiplier.times(getMTSMult(382))
+      if (player.masterystudies.includes("t383")) multiplier = multiplier.times(getMTSMult(383))
+      if (player.masterystudies.includes("t392")) multiplier = multiplier.times(getMTSMult(392))
   }
   if (GUBought("rg3")&&tier<2) multiplier = multiplier.times(player.resets)
   if (GUBought("br4")) multiplier = multiplier.times(Decimal.pow(getDimensionPowerMultiplier(), 0.0003))

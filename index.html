@@ -522,22 +522,22 @@
                 <table class="table" id="studytable">
                     <tr>
                         <td><button class="timestudylocked" id="timestudy371" style='font-size:10px' onclick='buyMasteryStudy("t", 371)'>Hatch speed is faster based on your extra replicated galaxies.<br><span id="ts371Current"></span></button></td>
-                        <td><button class="timestudylocked" id="timestudy372" onclick='buyMasteryStudy("t", 372)'>???</button></td>
+                        <td><button class="timestudylocked" id="timestudy372" style='font-size:10px' onclick='buyMasteryStudy("t", 372)'>Hatch speed is faster based on your time shards.<br><span id="ts372Current"></span></button></td>
                         <td><button class="timestudylocked" id="timestudy373" style='font-size:10px' onclick='buyMasteryStudy("t", 373)'>Replicants gather more quarks based on your galaxies.<br><span id="ts373Current"></span></button></button></td>
                     </tr>
                 </table>
                 <table class="table" id="studytable">
                     <tr>
-                        <td><button class="timestudylocked" id="timestudy381" onclick='buyMasteryStudy("t", 381)'>???</button></td>
-                        <td><button class="timestudylocked" id="timestudy382" onclick='buyMasteryStudy("t", 382)'>???</button></td>
-                        <td><button class="timestudylocked" id="timestudy383" onclick='buyMasteryStudy("t", 383)'>???</button></td>
+                        <td><button class="timestudylocked" id="timestudy381" style='font-size:10px' onclick='buyMasteryStudy("t", 381)'>Hatch speed is faster based on your tickspeed reduction multiplier.<br><span id="ts381Current"></span></button></td>
+                        <td><button class="timestudylocked" id="timestudy382" onclick='buyMasteryStudy("t", 382)'>Eighth Dimensions boost Meta Dimensions.<br><span id="ts382Current"></span></button></td>
+                        <td><button class="timestudylocked" id="timestudy383" onclick='buyMasteryStudy("t", 383)'>Blue power boosts Meta Dimensions.<br><span id="ts383Current"></span></button></td>
                     </tr>
                 </table>
                 <table class="table" id="studytable">
                     <tr>
-                        <td><button class="timestudylocked" id="timestudy391" onclick='buyMasteryStudy("t", 391)'>???</button></td>
+                        <td><button class="timestudylocked" id="timestudy391" style='font-size:10px' onclick='buyMasteryStudy("t", 391)'>Hatch speed is faster based on your meta-antimatter.<br><span id="ts391Current"></span></button></td>
                         <td><button class="timestudylocked" id="dilstudy12">Unlock Nanofield<br>(Coming soon!)</button></td>
-                        <td><button class="timestudylocked" id="timestudy392" onclick='buyMasteryStudy("t", 392)'>???</button></td>
+                        <td><button class="timestudylocked" id="timestudy392" onclick='buyMasteryStudy("t", 392)'>Workers boost Meta Dimensions.<br><span id="ts392Current"></span></button></td>
                     </tr>
                 </table>
                 <table class="table" id="studytable">
@@ -1515,7 +1515,8 @@
                     <p>You have <span id="replicantAmountED" style="font-size:35px; color: black">0</span> normal replicants.</p>
                 </div>
                 <p>You have <span id="quantumFoodAmountED">0</span> quantum food.</p>
-                <button class='gluonupgrade storebtn' id='buyQuantumFoodED' onclick='buyQuantumFood()'></button>
+                <button class='gluonupgrade storebtn' id='buyQuantumFoodED' onclick='buyQuantumFood()'></button><br>
+                <button class='storebtn' id='buyMaxQuantumFoodED' onclick='buyMaxQuantumFood()' style="width: 190px">Max buy quantum food</button>
                 <table class="table" id="empDimTable">
                     <tr style="font-size: 16px">
                         <td>Total: </td>
@@ -2273,7 +2274,7 @@
                                 <div id="The Challenging Day" class="achievement achievementlocked" style="background-image: url(images/130.png)" ach-tooltip="Complete 24 unique paired challenge combinations."></div>
                             </td>
                             <td>
-                                <div id="An ant office?" class="achievement achievementlocked" style="background-image: url(images/131.png)" ach-tooltip="Promote a worker into the second dimension."></div>
+                                <div id="An ant office?" class="achievement achievementlocked" style="background-image: url(images/131.png)" ach-tooltip="Promote a worker into the second dimension. Reward: Replicants feed babies 10x faster."></div>
                             </td>
                             <td>
                                 <div id="r176" class="achievement achievementlocked" style="background-image: url(images/achhidden.png)" ach-tooltip="Will be determined."><br></div>
@@ -3940,7 +3941,7 @@
 					</td>
 					<td>
 						<p>You have <span class="blue" id="bluePower" style="font-size:35px">0.0</span> blue power.<br>
-						Translated to <span class="blue" id="blueTranslation" style="font-size:35px">1.0</span>x more dilated time production.</p>
+						Translated to <span class="blue" id="blueTranslation" style="font-size:35px">1.0</span>x dilated time production<span id="bluePowerMDEffect"> and <span class="blue" id="blueTranslationMD" style="font-size:35px">1.0</span>x production from all Meta Dimensions</span>.</span>
 					</td>
 				</tr></table>
 			</div>
@@ -4021,13 +4022,15 @@
 				</td><td>
 					You have <span id="babyReplAmount" style="font-size:35px">0</span> baby replicants.<br>
 					They are gathering <span id="babyReplGatherRate" style="font-size:25px">0</span> quarks per second.<br>
-					<span id="growupProgress" style="font-size:15px">0.0%</span> for your next normal replicant.
+					Grow up your baby replicant. <span id="growupProgress" style="font-size:15px">0.0%</span><br>
+					<button class='storebtn' id='feedBaby' style='width: 240px' onclick="feedBabyReplicant()">Feed one with quantum food</button>
 				</td></tr><tr><td>
 					All of your replicants gathered <span id="gatheredQuarks" style="font-size:35px">0</span> quarks. <span id="gatherRate" style="font-size:25px">+0/s</span><br>
 					Translated to +<span id="quarkTranslation" style="font-size:35px">0</span>% to more extra replicated galaxies.</p>
 				</td><td>
 					You have <span id="quantumFoodAmount" style="font-size:35px">0</span> quantum food.<br>
-					<button class='gluonupgrade storebtn' id='buyQuantumFood' onclick='buyQuantumFood()'></button>
+					<button class='gluonupgrade storebtn' id='buyQuantumFood' onclick='buyQuantumFood()'></button><br>
+					<button class='storebtn' id='buyMaxQuantumFood' onclick='buyMaxQuantumFood()' style="width: 190px">Max buy quantum food</button>
 				</td><td>
 					You have <span id="eggonAmount" style="font-size:35px">0</span> eggons. <span id="hatchProgress" style="font-size:15px">0.0%</span><br>
 					<button class='storebtn' id='reduceHatchSpeed' style='width: 240px; height: 60px' onclick='reduceHatchSpeed()'></button>

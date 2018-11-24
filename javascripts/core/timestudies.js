@@ -430,6 +430,7 @@ function respecTimeStudies(force) {
       for (id=0;id<player.masterystudies.length;id++) {
           var t = player.masterystudies[id].split("t")[1]
           if (t) {
+			  if (t==373) updateColorCharge()
               player.timestudy.theorem+=masterystudies.costs.time[t]
               gotAch=false
           } else respecedMS.push(player.masterystudies[id])
