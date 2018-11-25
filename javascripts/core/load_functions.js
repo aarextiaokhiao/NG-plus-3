@@ -946,7 +946,7 @@ if (player.version < 5) {
           }
       }
       player.masterystudies=newMS
-      if (newMS.length>oldLength) forceToQuantumAndRemove=true
+      if (oldLength > newMS.length) forceToQuantumAndRemove=true
       player.quantum.replicants.quantumFoodCost = Decimal.times(player.quantum.replicants.quantumFoodCost, 2)
       player.quantum.replicants.limitDim=1
       player.quantum.emperorDimensions = {}
