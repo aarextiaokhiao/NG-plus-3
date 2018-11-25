@@ -1524,7 +1524,7 @@ if (player.version < 5) {
           quantum(false, true, 0)
           ngModeMessages = ["Due to balancing changes, you are forced to quantum but you will now lose all your time theorems and best TP too."]
           player.timestudy.theorem = 0
-          player.dilation.bestTP = 0
+          player.dilation.bestTP = new Decimal(0)
           document.getElementById('bestTP').textContent = "Your best ever Tachyon particles was 0."
       }
       inflationCheck = false
