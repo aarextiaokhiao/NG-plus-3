@@ -2724,7 +2724,7 @@ function load_saves() {
 	closeToolTip();
 	if (metaSave.alert) {
 		metaSave.alert=false
-		localStorage.setItem("AD_AM_ED",btoa(JSON.stringify(metaSave)))
+		localStorage.setItem("AD_aarexModifications",btoa(JSON.stringify(metaSave)))
 	}
 	document.getElementById("loadmenu").style.display = "block";
 	changeSaveDesc(metaSave.current, savePlacement)
@@ -2968,10 +2968,10 @@ function import_save(type) {
 			metaSave.saveOrder.push(newSaveId)
 			latestRow=document.getElementById("saves").insertRow(loadedSaves)
 			latestRow.innerHTML = getSaveLayout(newSaveId)
-			localStorage.setItem(btoa("dsAM_ED_"+newSaveId),save_data)
+			localStorage.setItem(btoa("dsAM_"+newSaveId),save_data)
 			loadedSaves++
 			changeSaveDesc(newSaveId, loadedSaves)
-			localStorage.setItem("AD_AM_ED",btoa(JSON.stringify(metaSave)))
+			localStorage.setItem("AD_aarexModifications",btoa(JSON.stringify(metaSave)))
         } else {
             set_save(type, decoded_save_data)
             changeSaveDesc(type, placement)
@@ -3008,7 +3008,7 @@ function import_save_all() {
 				occupiedIA=false
 				return
 			}
-			localStorage.setItem("AD_AM_ED",btoa(JSON.stringify(importAllData.metaSave)))
+			localStorage.setItem("AD_aarexModifications",btoa(JSON.stringify(importAllData.metaSave)))
 			clearInterval(importAllLoopId)
 			document.location.reload(true)
 		} catch(_) {
@@ -7785,7 +7785,7 @@ function initGame() {
     setupText()
     initiateMetaSave()
     migrateOldSaves()
-    localStorage.setItem('AD_AM_ED', btoa(JSON.stringify(metaSave)))
+    localStorage.setItem('AD_aarexModifications', btoa(JSON.stringify(metaSave)))
     load_game();
     if (player.aarexModifications.progressBar) document.getElementById("progress").style.display = "block"
     else document.getElementById("progress").style.display = "none"
