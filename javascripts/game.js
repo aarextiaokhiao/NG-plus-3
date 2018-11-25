@@ -462,6 +462,7 @@ function updateNewPlayer(reseted) {
         }
         player.quantum.emperorDimensions = {}
         for (d=1;d<9;d++) player.quantum.emperorDimensions[d] = {workers: 0, progress: 0, perm: 0, manualProgress: 0}
+        player.dontWant = false
     }
     if (modesChosen.ers) {
         player.aarexModifications.ersVersion = 1.02
@@ -2571,6 +2572,7 @@ function galaxyReset() {
         galaxyMaxBulk: player.galaxyMaxBulk,
         quantum: player.quantum,
         old: player.old,
+        dontWant: player.dontWant,
         aarexModifications: player.aarexModifications
     };
 
@@ -3169,6 +3171,10 @@ function setAchieveTooltip() {
     let squared = document.getElementById("We are not going squared.")
     let seriously = document.getElementById("Seriously, I already got rid of you.")
     let internal = document.getElementById("ERROR 500: INTERNAL DIMENSION ERROR")
+    let truth = document.getElementById("The truth of anti-challenged")
+    let cantGet = document.getElementById("I can’t get my multipliers higher!")
+    let noDil = document.getElementById("No dilation means no production.")
+    let dontWant = document.getElementById("I don't want you to live anymore.")
 
     apocAchieve.setAttribute('ach-tooltip', "Get over " + formatValue(player.options.notation, 1e80, 0, 0) + " antimatter.");
     claustrophobic.setAttribute('ach-tooltip', "Go Infinite with just 1 Antimatter Galaxy. Reward: Reduces starting tick interval by 2%"+(player.galacticSacrifice?(player.tickspeedBoosts==undefined?"":", keep dimension boosts on tickspeed boost,")+" and keep galaxy upgrades on infinity.":"."));
@@ -3242,6 +3248,10 @@ function setAchieveTooltip() {
     squared.setAttribute('ach-tooltip', "Reach "+shortenCosts(new Decimal("1e1500"))+" MA with exactly 8 meta-dimension boosts.")
     seriously.setAttribute('ach-tooltip', "Reach "+shortenCosts(new Decimal("1e354000"))+" IP without having time studies while dilated and running QC2.")
     internal.setAttribute('ach-tooltip', "Reach "+shortenCosts(new Decimal("1e333"))+" MA without having second meta dimensions and meta dimension boosts.")
+    truth.setAttribute('ach-tooltip', "Reach "+shortenCosts(Decimal.pow(10,788e11))+" without having completed paired challenges.")
+    cantGet.setAttribute('ach-tooltip', "Reach "+shortenCosts(Decimal.pow(10,62e10))+" in Eternity Challenge 11.")
+    noDil.setAttribute('ach-tooltip', "Reach "+shortenCosts(Decimal.pow(10,2e6))+" replicanti without having Tachyon particles. Reward: Start quantums with the same amount of Tachyon particles as square root of your best TP.")
+    dontWant.setAttribute('ach-tooltip', "Reach "+shorten(Decimal.pow(Number.MAX_VALUE,1000))+" IP while dilated, in QC2, and without having time studies and First Dimensions during your current Eternity.")
 }
 
 
@@ -3284,7 +3294,7 @@ function onNotationChange(id) {
 	updateMasteryStudyTextDisplay()
 	updateReplicants()
 	document.getElementById("epmult").innerHTML = "You gain 5 times more EP<p>Currently: "+shortenDimensions(player.epmult)+"x<p>Cost: "+shortenDimensions(player.epmultCost)+" EP"
-	if (player.achievements.includes("ng3p18")) document.getElementById('bestTP').textContent="Your best ever Tachyon particles was "+shorten(player.dilation.bestTP)+"."
+	if (player.achievements.includes("ng3p18") || player.achievements.includes("ng3p37")) document.getElementById('bestTP').textContent="Your best ever Tachyon particles was "+shorten(player.dilation.bestTP)+"."
 }
 
 function switchNotation(id) {
@@ -4420,6 +4430,7 @@ function bigCrunch(autoed) {
             galaxyMaxBulk: player.galaxyMaxBulk,
             quantum: player.quantum,
             old: player.old,
+            dontWant: player.dontWant,
             aarexModifications: player.aarexModifications
         };
         if (player.bestInfinityTime <= 0.01) giveAchievement("Less than or equal to 0.001");
@@ -4597,7 +4608,7 @@ function eternity(force, auto) {
         if (player.dilation.active && (!force || player.infinityPoints.gte(Number.MAX_VALUE))) {
             player.dilation.tachyonParticles = player.dilation.tachyonParticles.max(getDilGain())
             player.dilation.totalTachyonParticles = player.dilation.totalTachyonParticles.max(player.dilation.tachyonParticles)
-            if (player.achievements.includes("ng3p18")) {
+            if (player.achievements.includes("ng3p18") || player.achievements.includes("ng3p37")) {
                 player.dilation.bestTP = player.dilation.bestTP.max(player.dilation.tachyonParticles)
                 document.getElementById('bestTP').textContent="Your best ever Tachyon particles was "+shorten(player.dilation.bestTP)+"."
             }
@@ -4835,6 +4846,7 @@ function eternity(force, auto) {
             galaxyMaxBulk: player.galaxyMaxBulk,
             quantum: player.quantum,
             old: player.old,
+            dontWant: player.masterystudies ? true : undefined,
             aarexModifications: player.aarexModifications
         };
         if (player.galacticSacrifice && getEternitied() < 2) player.autobuyers[12]=13
@@ -5157,6 +5169,7 @@ function startChallenge(name) {
       galaxyMaxBulk: player.galaxyMaxBulk,
       quantum: player.quantum,
       old: player.old,
+      dontWant: player.dontWant,
       aarexModifications: player.aarexModifications
     };
 	if (player.currentChallenge == "challenge10" || player.currentChallenge == "postc1") {
@@ -5736,6 +5749,7 @@ function startEternityChallenge(name, startgoal, goalIncrease) {
         galaxyMaxBulk: player.galaxyMaxBulk,
         quantum: player.quantum,
         old: player.old,
+        dontWant: player.masterystudies ? true : undefined,
         aarexModifications: player.aarexModifications
     };
     if (player.galacticSacrifice && getEternitied() < 2) player.autobuyers[12]=13
@@ -6402,7 +6416,7 @@ setInterval(function() {
     if (player.masterystudies) {
         let ableToGetRid3 = ableToGetRid2 && player.quantum.electrons.amount.eq(0)
         let ableToGetRid4 = ableToGetRid2 && inQC(2)
-        let ableToGetRid5 = ableToGetRid4 && player.quantum.replicants.amount.lt(0)
+        let ableToGetRid5 = ableToGetRid4 && player.dontWant
 
         if (player.meta.antimatter.gte(Number.MAX_VALUE)) giveAchievement("I don't have enough fuel!")
         if (player.galaxies>899&&!player.dilation.studies.includes(1)) giveAchievement("No more tax fraud!")
@@ -6413,10 +6427,10 @@ setInterval(function() {
         if (player.old&&player.meta.antimatter.e>1699) giveAchievement("Old memories come true")
         if (player.infinityPoints.e>=354e3&&ableToGetRid4) giveAchievement("Seriously, I already got rid of you.")
         if (player.meta.antimatter.e>332&&player.meta[2].amount.eq(0)&&player.meta.resets<1) giveAchievement("ERROR 500: INTERNAL DIMENSION ERROR")
-        if (player.money.e>1/0&&player.quantum.pairedChallenges.completed<1) giveAchievement("The truth of anti-challenged")
-        if (player.money.e>1/0&&player.currentEternityChall=="eterc11") giveAchievement("I can’t get my multipliers higher!")
-        if (player.replicanti.amount.e>1/0&&player.dilation.tachyonParticles.eq(0)) giveAchievement("No dilation means no production.")
-        if (player.infinityPoints.e>1/0&&ableToGetRid5) giveAchievement("I don't want you to live anymore.")
+        if (player.money.e>=788e11&&player.quantum.pairedChallenges.completed<1) giveAchievement("The truth of anti-challenged")
+        if (player.money.e>=62e10&&player.currentEternityChall=="eterc11") giveAchievement("I can’t get my multipliers higher!")
+        if (player.replicanti.amount.e>=2e6&&player.dilation.tachyonParticles.eq(0)) giveAchievement("No dilation means no production.")
+        if (player.infinityPoints.gte(Decimal.pow(Number.MAX_VALUE, 1000))&&ableToGetRid5) giveAchievement("I don't want you to live anymore.")
     }
     if (speedrunMilestonesReached>notifyId) {
         $.notify("You unlocked "+timeDisplayShort(speedrunMilestones[notifyId]*36e3)+" speedrun milestone! "+(["You now start with 20,000 eternities when going quantum","You unlocked time theorem autobuyer","You now start with all Eternity Challenges completed and\neternity upgrades bought","You now start with dilation unlocked","You unlocked a new option for eternity autobuyer","You now start with all dilation studies and\nnon-rebuyable dilation upgrades before Meta Dimensions unlocked except passive TT gen upgrade","You unlocked first meta dimension autobuyer","You unlocked second meta dimension autobuyer","You unlocked third meta dimension autobuyer","You unlocked fourth meta dimension autobuyer","You unlocked fifth meta dimension autobuyer and you now keep time studies and passive TT gen upgrade","You unlocked sixth meta dimension autobuyer","You unlocked seventh meta dimension autobuyer","You unlocked eighth meta dimension autobuyer and\nall non-rebuyable dilation upgrades","You unlocked meta-dimension boost autobuyer","You now keep all time studies in mastery studies","You now can buy all Meta Dimensions if it is affordable in your current meta boost","You now start with "+shortenCosts(1e13)+" eternities","You now start with "+shortenCosts(1e25)+" meta-antimatter on reset","You can now turn on automatic replicated galaxies anytime","You made rebuyable dilation upgrade and Meta Dimension autobuyers 3x faster","You now start with "+shortenCosts(1e100)+" dilated time on quantum and dilated time does not reset until quantum","You unlocked quantum autobuyer","You now keep replicanti on eternity","You unlocked manual mode for eternity autobuyer and sacrifice galaxy autobuyer","Your rebuyable dilation upgrade autobuyer now can buy max all upgrades","You now can buy max meta-dimension boosts and start with 4 meta-dimension boosts","For now on, you can gain banked infinities based on your post-crunch infinitied stat"])[notifyId]+".","success")
@@ -6529,6 +6543,7 @@ function gameLoop(diff) {
             var name = TIER_NAMES[tier];
             player[name + 'Amount'] = player[name + 'Amount'].plus(getDimensionProductionPerSecond(tier + (player.currentChallenge == "challenge7" || inQC(4) ? 2 : 1)).times(diff / 100));
         }
+        if (player.masterystudies != undefined) if (player.firstAmount.gt(0)) player.dontWant = false
 
         if (player.currentChallenge == "challenge3" || player.currentChallenge == "postc1") {
             player.money = player.money.plus(getDimensionProductionPerSecond(1).times(diff/10).times(player.chall3Pow));
@@ -6817,7 +6832,7 @@ function gameLoop(diff) {
         chance = chance.times(100)
         document.getElementById("replicantichance").innerHTML = "Replicate chance: "+getFullExpansion(chance.gt(1e12)?chance:Math.round(chance.toNumber()))+"%" + (isChanceAffordable() ? "<br>+1% Cost: "+shortenCosts(player.replicanti.chanceCost)+" IP" : "")
     } else document.getElementById("replicantichance").innerHTML = "Replicate chance: "+getFullExpansion(Math.round(player.replicanti.chance*100))+"%" + (isChanceAffordable() ? "<br>+1% Cost: "+shortenCosts(player.replicanti.chanceCost)+" IP" : "")
-    document.getElementById("replicantiinterval").innerHTML = "Interval: "+timeDisplayShort(Decimal.div(interval, 100), true) + (isIntervalAffordable() ? "<br>-> "+timeDisplayShort(Decimal.times(interval, 9e-3), true)+" Cost: "+shortenCosts(player.replicanti.intervalCost)+" IP" : "")
+    document.getElementById("replicantiinterval").innerHTML = "Interval: "+timeDisplayShort(Decimal.div(interval, 100), true, 3) + (isIntervalAffordable() ? "<br>-> "+timeDisplayShort(Decimal.times(interval, 9e-3), true, 3)+" Cost: "+shortenCosts(player.replicanti.intervalCost)+" IP" : "")
 
 
     if (player.infMultBuyer && (!player.boughtDims || canBuyIPMult())) {
@@ -7293,7 +7308,7 @@ function gameLoop(diff) {
         if (player.dilation.active) if (player.masterystudies.includes("t292")) {
             player.dilation.tachyonParticles = player.dilation.tachyonParticles.max(getDilGain())
             player.dilation.bestTP = player.dilation.bestTP.max(player.dilation.tachyonParticles)
-            setAndMaybeShow('bestTP',player.achievements.includes("ng3p18"),'"Your best ever Tachyon particles was "+shorten(player.dilation.bestTP)+"."')
+            setAndMaybeShow('bestTP',player.achievements.includes("ng3p18") || player.achievements.includes("ng3p37"),'"Your best ever Tachyon particles was "+shorten(player.dilation.bestTP)+"."')
         }
     }
     if (player.dilation.upgrades.includes(10)) {

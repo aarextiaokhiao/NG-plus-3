@@ -545,7 +545,7 @@ function quantumReset(force, auto, challid, implode=false) {
 		showDimTab("antimatterdimensions")
 		showChallengesTab("challenges")
 		showInfTab("preinf")
-		showEternityTab("timestudies", true)
+		showEternityTab("timestudies", document.getElementById("eternitystore").style.display != "block" && document.getElementById("timestudies").style.display != "block")
 	}
 	if (!quantumed) {
 		quantumed=true
@@ -593,7 +593,7 @@ function quantumReset(force, auto, challid, implode=false) {
 		player.quantum.times++
 		if (!inQC(6)) player.quantum.quarks = player.quantum.quarks.plus(qkGain);
 		if (!inQC(4)) if (player.meta.resets<1) giveAchievement("Infinity Morals")
-		if (player.dilation.rebuyables[0] + player.dilation.rebuyables[1] + player.dilation.rebuyables[2] + player.dilation.rebuyables[3] < 1 && player.dilation.upgrades.length < 2 && player.dilation.upgrades.includes("ngpp6")) giveAchievement("Never make paradoxes!")
+		if (player.dilation.rebuyables[0] + player.dilation.rebuyables[1] + player.dilation.rebuyables[2] + player.dilation.rebuyables[3] < 1 && player.dilation.upgrades.length < 1) giveAchievement("Never make paradoxes!")
 	}
 	var oheHeadstart = speedrunMilestonesReached > 0
 	var oldTime = player.quantum.time
@@ -868,7 +868,7 @@ function quantumReset(force, auto, challid, implode=false) {
 		dilation: {
 			studies: isRewardEnabled(4) ? (speedrunMilestonesReached > 5 ? [1,2,3,4,5,6] : [1]) : [],
 			active: false,
-			tachyonParticles: new Decimal(0),
+			tachyonParticles: player.achievements.includes("ng3p37") ? player.dilation.bestTP.sqrt() : new Decimal(0),
 			dilatedTime: new Decimal(speedrunMilestonesReached>21 && isRewardEnabled(4)?1e100:0),
 			totalTachyonParticles: new Decimal(0),
 			bestTP: player.dilation.bestTP,
@@ -934,6 +934,7 @@ function quantumReset(force, auto, challid, implode=false) {
 		galaxyMaxBulk: player.galaxyMaxBulk,
 		quantum: player.quantum,
 		old: player.masterystudies ? inQC(0) : undefined,
+		dontWant: player.masterystudies ? true : undefined,
 		aarexModifications: player.aarexModifications
 	};
 	if (player.challenges.includes("challenge1")) player.money = new Decimal(100)
@@ -987,6 +988,7 @@ function quantumReset(force, auto, challid, implode=false) {
 					order: {},
 					current: 0,
 					completed: 0,
+					completions: player.quantum.pairedChallenges.completions,
 					respec: false
 				}
 				for (qc=1;qc<9;qc++) player.quantum.challenges[qc]=1
@@ -1012,7 +1014,7 @@ function quantumReset(force, auto, challid, implode=false) {
 		player.quantum.replicants.babies = new Decimal(0)
 		player.quantum.replicants.growupProgress = new Decimal(0)
 		for (d=1;d<9;d++) {
-			if (d>7||eds[d].perm<10) player.quantum.replicants.quantumFood+=Math.round(eds[tier].progress.toNumber()*3)%3
+			if (d>7||eds[d].perm<10) player.quantum.replicants.quantumFood+=Math.round(eds[d].progress.toNumber()*3)%3
 			eds[d].workers=new Decimal(eds[d].perm)
 			eds[d].progress=new Decimal(0)
 		}

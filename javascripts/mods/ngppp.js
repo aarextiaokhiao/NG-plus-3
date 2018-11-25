@@ -139,9 +139,9 @@ function canBuyMasteryStudy(type, id) {
 		var row=Math.floor(id/10)
 		if (masterystudies.latestBoughtRow>row) return false
 		var col=id%10
-		if (row>36) {
-			if (col>1) return player.masterystudies.includes('t382')
-			if (col>2) return player.masterystudies.includes('t391')||player.masterystudies.includes('t393')
+		if (row>38) {
+			if (col>2) return player.masterystudies.includes('t382')
+			if (col>1) return player.masterystudies.includes('t391')||player.masterystudies.includes('t393')
 			return player.masterystudies.includes('t381')
 		}
 		if (row>37) {
@@ -367,17 +367,17 @@ function getMTSMult(id) {
 	}
 	if (id==341) return Decimal.pow(2,Math.sqrt(player.quantum.replicants.quarks.add(1).log10()))
 	if (id==344) return Math.pow(player.quantum.replicants.quarks.div(1e7).add(1).log10(),0.25)*0.17+1
-	if (id==351) return player.timeShards.add(1).pow(14e-7)
-	if (id==361) return player.dilation.tachyonParticles.add(1).pow(0.01824033924212366)
+	if (id==351) return player.timeShards.max(1).pow(14e-7)
+	if (id==361) return player.dilation.tachyonParticles.max(1).pow(0.01824033924212366)
 	if (id==371) return Math.pow(extraReplGalaxies+1,0.3)
 	if (id==372) return Math.sqrt(player.timeShards.add(1).log10())/20+1
 	if (id==373) return Math.pow(player.galaxies+1,0.55)
-	if (id==381) return Decimal.log10(getTickSpeedMultiplier())/-135
-	if (id==382) return Math.pow(getAmount(8),Math.PI)
-	if (id==383) return Decimal.pow(3200,Math.pow(player.quantum.colorPowers.b.log10(),0.25))
-	if (id==391) return player.meta.antimatter.pow(8e-4)
-	if (id==392) return Decimal.pow(1.15,Math.sqrt(player.quantum.replicants.quarks.log10()))
-	if (id==393) return Decimal.pow(4e5,Math.sqrt(getTotalWorkers().log10()))
+	if (id==381) return Decimal.log10(getTickSpeedMultiplier())/-135+1
+	if (id==382) return player.eightAmount.max(1).pow(Math.PI)
+	if (id==383) return Decimal.pow(3200,Math.pow(player.quantum.colorPowers.b.add(1).log10(),0.25))
+	if (id==391) return player.meta.antimatter.max(1).pow(8e-4)
+	if (id==392) return Decimal.pow(1.6,Math.sqrt(player.quantum.replicants.quarks.add(1).log10()))
+	if (id==393) return Decimal.pow(4e5,Math.sqrt(getTotalWorkers().add(1).log10()))
 }
 
 //v1.3

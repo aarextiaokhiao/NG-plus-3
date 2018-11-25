@@ -260,8 +260,8 @@ function giveAchievement(name) {
         for (i=1;i<9;i++) document.getElementById("td"+i+'auto').style.visibility="visible"
     }
     if (name == "It will never be enough") document.getElementById('replicantibulkmodetoggle').style.display="inline-block"
-    if (name == "I already got rid of you...") {
-        player.dilation.bestTP=player.dilation.tachyonParticles
+    if (name == "I already got rid of you..." || name == "No dilation means no production.") {
+        if (player.dilation.bestTP == undefined) player.dilation.bestTP=player.dilation.tachyonParticles
         document.getElementById('bestTP').style.display=""
         document.getElementById('bestTP').textContent="Your best ever Tachyon particles was "+shorten(player.dilation.bestTP)+"."
     }
@@ -270,7 +270,7 @@ function giveAchievement(name) {
 
 function updateAchievements() {
 	var amount = 0
-	for (var i=1; i<17; i++) {
+	for (var i=1; i<18; i++) {
 		var shown=false
 		var rowid=i
 		if (i>14) {

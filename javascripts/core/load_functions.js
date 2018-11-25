@@ -933,7 +933,9 @@ if (player.version < 5) {
           player.quantum.pairedChallenges.completions[Math.min(c1, c2) * 10 + Math.max(c1, c2)] = c
       }
   }
+  var forceToQuantumAndRemove=false
   if (player.masterystudies ? player.aarexModifications.newGame3PlusVersion < 1.999 || (player.quantum.emperorDimensions ? player.quantum.emperorDimensions[1] == undefined : false) : false) { //temp
+      var oldLength=player.masterystudies.length
       var newMS=[]
       for (var m=0;m<player.masterystudies.length;m++) {
           var t=player.masterystudies[m].split("t")
@@ -944,11 +946,13 @@ if (player.version < 5) {
           }
       }
       player.masterystudies=newMS
+      if (newMS.length>oldLength) forceToQuantumAndRemove=true
       player.quantum.replicants.quantumFoodCost = Decimal.times(player.quantum.replicants.quantumFoodCost, 2)
       player.quantum.replicants.limitDim=1
       player.quantum.emperorDimensions = {}
       player.quantum.emperorDimensions[1] = {workers: player.quantum.replicants.workers, progress: player.quantum.replicants.workerProgress, perm: Math.round(parseFloat(player.quantum.replicants.workers))}
       for (d=2;d<9;d++) player.quantum.emperorDimensions[d] = {workers: 0, progress: 0, perm: 0}
+      player.dontWant = false
       player.aarexModifications.newGame3PlusVersion=1.999
       delete player.quantum.replicants.workers
       delete player.quantum.replicants.workerProgress
@@ -1470,7 +1474,7 @@ if (player.version < 5) {
   document.getElementById('metaboostauto').style.display=speedrunMilestonesReached>14?"":"none"
   document.getElementById("autoBuyerQuantum").style.display=speedrunMilestonesReached>22?"":"none"
   document.getElementById("edtabbtn").style.display=!player.masterystudies?"none":player.masterystudies.includes("d11")?"":"none"
-  setAndMaybeShow('bestTP',player.achievements.includes("ng3p18"),'"Your best ever Tachyon particles was "+shorten(player.dilation.bestTP)+"."')
+  setAndMaybeShow('bestTP',player.achievements.includes("ng3p18") || player.achievements.includes("ng3p37"),'"Your best ever Tachyon particles was "+shorten(player.dilation.bestTP)+"."')
   notifyId=speedrunMilestonesReached
   updatePowers()
   document.getElementById("newsbtn").textContent=(player.options.newsHidden?"Show":"Hide")+" news ticker"
@@ -1495,7 +1499,7 @@ if (player.version < 5) {
           simulateTime(diff/1000)
       }
   } else player.lastUpdate = new Date().getTime()
-  if (detectNGPStart || player.totalTimePlayed < 1 || inflationCheck) {
+  if (detectNGPStart || player.totalTimePlayed < 1 || inflationCheck || forceToQuantumAndRemove) {
       ngModeMessages=[]
       if (player.aarexModifications.newGameExpVersion) ngModeMessages.push("Welcome to NG^ mode, made by Naruyoko! This mode adds way many buffs that this mode may be broken!")
       if (player.exdilation!=undefined) ngModeMessages.push("Welcome to NG Update mode, an another dan-simon's end-game mod! In this mode, there are black hole and ex-dilation.")
@@ -1516,6 +1520,13 @@ if (player.version < 5) {
           ngModeMessages.push("Welcome to NG+-+-+ mode, created by earthernsence! This mode combines NG--, NG-, and NG+++ features. Good luck!")
       }
       if (inflationCheck) ngModeMessages = ["I'm terribly sorry. But your save was appeared that there is an inflation, which it defeats the rule of incremental games. Your save was forced to reset everything."]
+      if (forceToQuantumAndRemove) {
+          quantum(false, true, 0)
+          ngModeMessages = ["Due to balancing changes, you are forced to quantum but you will now lose all your time theorems and best TP too."]
+          player.timestudy.theorem = 0
+          player.dilation.bestTP = 0
+          document.getElementById('bestTP').textContent = "Your best ever Tachyon particles was 0."
+      }
       inflationCheck = false
       closeToolTip()
       showNextModeMessage()

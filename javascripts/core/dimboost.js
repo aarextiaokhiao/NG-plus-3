@@ -201,6 +201,7 @@ function softReset(bulk) {
       galaxyMaxBulk: player.galaxyMaxBulk,
       quantum: player.quantum,
       old: player.old,
+      dontWant: player.dontWant,
       aarexModifications: player.aarexModifications
   };
   if (player.currentChallenge == "challenge10" || player.currentChallenge == "postc1") {
