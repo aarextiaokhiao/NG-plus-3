@@ -450,7 +450,6 @@ if (player.version < 5) {
 
 
   document.getElementById("break").textContent = (player.break ? "FIX" : "BREAK") + " INFINITY"
-  if (getEternitied() < 2) document.getElementById("abletobreak").style.display = "block"
 
   updateNotationOption()
 
@@ -463,7 +462,7 @@ if (player.version < 5) {
   var isInIC1=player.galacticSacrifice&&!player.aarexModifications.newGameMinusMinusVersion?player.currentChallenge=="postc4":player.currentChallenge=="postc1"
   if (player.currentChallenge == "challenge12" || isInIC1 || player.currentChallenge == "postc6" || inQC(6)) document.getElementById("matter").style.display = "block";
   else document.getElementById("matter").style.display = "none";
-  if (isADSCRunning() || (isInIC1 && player.galacticSacrifice)) document.getElementById("chall13Mult").style.display = "block";
+  if (player.currentChallenge == "challenge13" || player.tickspeedBoosts != undefined || (isInIC1 && player.galacticSacrifice)) document.getElementById("chall13Mult").style.display = "block";
   else document.getElementById("chall13Mult").style.display = "none";
 
   var inERS=!(!player.boughtDims)

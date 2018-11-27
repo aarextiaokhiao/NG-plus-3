@@ -1116,8 +1116,6 @@ function quantumReset(force, auto, challid, implode=false) {
 		document.getElementById("eightRow").style.display = "none";
 		if (player.masterystudies) document.getElementById("infmultbuyer").textContent="Max buy IP mult"
 		else document.getElementById("infmultbuyer").style.display = "none"
-		document.getElementById("break").textContent = "BREAK INFINITY"
-		document.getElementById("abletobreak").style.display = "block"
 		hideMaxIDButton()
 		document.getElementById("replicantidiv").style.display="none"
 		document.getElementById("replicantiunlock").style.display="inline-block"

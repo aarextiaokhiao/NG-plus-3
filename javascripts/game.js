@@ -888,7 +888,7 @@ function updateMoney() {
 	if (player.currentChallenge == "postc6" || inQC(6)) element2.textContent = "There is " + formatValue(player.options.notation, Decimal.pow(player.matter,20), 2, 1) + " matter."; //TODO
 	else if (player.currentChallenge == "challenge12" || player.currentChallenge == "postc1") element2.textContent = "There is " + formatValue(player.options.notation, player.matter, 2, 1) + " matter."
 	var element3 = document.getElementById("chall13Mult");
-	if (isADSCRunning() || (player.currentChallenge == "postc1" && player.galacticSacrifice)) {
+	if (isADSCRunning()) {
 		var mult = getProductBoughtMult()
 		element3.innerHTML = formatValue(player.options.notation, productAllTotalBought(), 2, 1) + 'x multiplier on all dimensions (product of '+(player.tickspeedBoosts!=undefined&&(player.currentChallenge=="challenge13"||player.currentChallenge=="postc1")?"1+log10(amount)":"bought")+(mult==1?"":"*"+shortenMoney(mult))+').'
 	}
@@ -3755,8 +3755,19 @@ function updateAutobuyers() {
     }
     if (player.autobuyers[11].interval <= 100) {
         document.getElementById("buyerBtnInf").style.display = "none"
+        document.getElementById("postinftable").style.display = "inline-block"
+        document.getElementById("breaktable").style.display = "inline-block"
+        document.getElementById("abletobreak").style.display = "none"
+		document.getElementById("break").style.display = "inline-block"
         maxedAutobuy++;
+    } else {
+        document.getElementById("postinftable").style.display = "none"
+        document.getElementById("breaktable").style.display = "none"
+		document.getElementById("abletobreak").style.display = "block"
+		document.getElementById("break").style.display = "none"
+		document.getElementById("break").textContent = "BREAK INFINITY"
     }
+
     if (player.autoSacrifice.interval <= 100) {
         document.getElementById("buyerBtnSac").style.display = "none"
         if (player.galacticSacrifice) maxedAutobuy++;
@@ -4450,7 +4461,7 @@ function bigCrunch(autoed) {
         if (player.currentChallenge == "challenge12" || player.currentChallenge == "postc1" || player.currentChallenge == "postc6" || inQC(6)) document.getElementById("matter").style.display = "block";
         else document.getElementById("matter").style.display = "none";
 
-        if (isADSCRunning() || (player.currentChallenge == "postc1" && player.galacticSacrifice)) document.getElementById("chall13Mult").style.display = "block";
+        if (isADSCRunning()) document.getElementById("chall13Mult").style.display = "block";
         else document.getElementById("chall13Mult").style.display = "none";
 
         document.getElementById("replicantireset").innerHTML = "Reset replicanti amount, but get a free galaxy<br>" + player.replicanti.galaxies + (extraReplGalaxies ? "+" + extraReplGalaxies : "") + " replicated galax" + ((player.replicanti.galaxies + extraReplGalaxies) == 1 ? "y" : "ies") + " created."
@@ -4472,7 +4483,6 @@ function bigCrunch(autoed) {
             document.getElementById("seventhRow").style.display = "none";
             document.getElementById("eightRow").style.display = "none";
         }
-        document.getElementById("chall13Mult").style.display = "none";
         document.getElementById("quickReset").style.display = "none";
 
         checkForEndMe()
@@ -4882,7 +4892,7 @@ function eternity(force, auto) {
         }
         if (inQC(6)) document.getElementById("matter").style.display = "block";
         else document.getElementById("matter").style.display = "none";
-        if (isADSCRunning() || (player.currentChallenge == "postc1" && player.galacticSacrifice)) document.getElementById("chall13Mult").style.display = "block";
+        if (isADSCRunning()) document.getElementById("chall13Mult").style.display = "block";
         else document.getElementById("chall13Mult").style.display = "none";
         document.getElementById("quickReset").style.display = "none";
         if (player.infinitied >= 1 && !player.challenges.includes("challenge1")) player.challenges.push("challenge1");
@@ -4933,10 +4943,6 @@ function eternity(force, auto) {
         if (getEternitied() > 0 && oldStat < 1) {
             document.getElementById("infmultbuyer").style.display = "inline-block"
             document.getElementById("infmultbuyer").textContent = "Autobuy IP mult O"+(player.infMultBuyer?"N":"FF")
-        }
-        if (getEternitied() < 2) {
-            document.getElementById("break").textContent = "BREAK INFINITY"
-            document.getElementById("abletobreak").style.display = "block"
         }
         hideMaxIDButton()
         document.getElementById("replicantireset").innerHTML = "Reset replicanti amount, but get a free galaxy<br>0 replicated galaxies created."
@@ -5221,7 +5227,7 @@ function startChallenge(name) {
     document.getElementById("eightRow").style.display= "none";
     if (name == "challenge12" || player.currentChallenge == "postc1" || player.currentChallenge == "postc6" || inQC(6)) document.getElementById("matter").style.display = "block";
     else document.getElementById("matter").style.display = "none";
-    if (isADSCRunning() || (player.currentChallenge == "postc1" && player.galacticSacrifice)) document.getElementById("chall13Mult").style.display = "block";
+    if (isADSCRunning()) document.getElementById("chall13Mult").style.display = "block";
     else document.getElementById("chall13Mult").style.display = "none";
     if (player.currentChallenge == "challenge12" || player.currentChallenge == "challenge9" || player.currentChallenge == "challenge5" || player.currentChallenge == "challenge14" ||
         player.currentChallenge == "postc1" || player.currentChallenge == "postc4" || player.currentChallenge == "postc5" || player.currentChallenge == "postc6" || player.currentChallenge == "postc8") document.getElementById("quickReset").style.display = "inline-block";
@@ -5780,7 +5786,7 @@ function startEternityChallenge(name, startgoal, goalIncrease) {
     document.getElementById("eightRow").style.display = "none";
     if (inQC(6)) document.getElementById("matter").style.display = "block";
     else document.getElementById("matter").style.display = "none";
-    if (isADSCRunning() || (player.currentChallenge == "postc1" && player.galacticSacrifice)) document.getElementById("chall13Mult").style.display = "block";
+    if (isADSCRunning()) document.getElementById("chall13Mult").style.display = "block";
     else document.getElementById("chall13Mult").style.display = "none";
     document.getElementById("quickReset").style.display = "none";
     var autobuyers = document.getElementsByClassName('autoBuyerDiv')
@@ -5826,10 +5832,6 @@ function startEternityChallenge(name, startgoal, goalIncrease) {
     if (getEternitied() > 0 && oldStat < 1) {
         document.getElementById("infmultbuyer").style.display = "inline-block"
         document.getElementById("infmultbuyer").textContent = "Autobuy IP mult O"+(player.infMultBuyer?"N":"FF")
-    }
-    if (getEternitied() < 2) {
-        document.getElementById("break").textContent = "BREAK INFINITY"
-         document.getElementById("abletobreak").style.display = "block"
     }
     hideMaxIDButton()
     document.getElementById("replicantireset").innerHTML = "Reset replicanti amount, but get a free galaxy<br>0 replicated galaxies created."
@@ -7062,21 +7064,8 @@ function gameLoop(diff) {
         document.getElementById("infiMult").className = "infinistorebtnlocked"
     }
 
-    if (player.autobuyers[11]%1 === 0 || player.autobuyers[11].interval>100) document.getElementById("break").className = "infinistorebtnlocked"
-    else document.getElementById("break").className = "infinistorebtn2"
-
     if (player.eightBought > 0 && player.resets > 4 && player.currentEternityChall !== "eterc3") document.getElementById("sacrifice").className = "storebtn"
     else document.getElementById("sacrifice").className = "unavailablebtn"
-
-    if (player.autobuyers[11]%1 !== 0 && player.autobuyers[11].interval == 100) {
-        document.getElementById("postinftable").style.display = "inline-block"
-        document.getElementById("breaktable").style.display = "inline-block"
-    } else {
-        document.getElementById("postinftable").style.display = "none"
-        document.getElementById("breaktable").style.display = "none"
-    }
-
-    if (player.autobuyers[11].interval == 100) document.getElementById("abletobreak").style.display = "none"
 
     if (isEmptiness) {
         document.getElementById("dimensionsbtn").style.display = "none";

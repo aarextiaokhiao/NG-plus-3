@@ -453,6 +453,7 @@ function updateQuantumTabs() {
 		document.getElementById("gatheredQuarks").textContent=shortenDimensions(player.quantum.replicants.quarks.floor())
 		document.getElementById("quarkTranslation").textContent=shortenDimensions(gatheredQuarksBoost*100)
 
+		document.getElementById("eggonRate").textContent=shortenDimensions(getTotalWorkers().times(3))
 		document.getElementById("feedNormal").className=(canFeedReplicant(1)?"stor":"unavailabl")+"ebtn"
 		document.getElementById("workerProgress").textContent=Math.round(eds[1].progress.toNumber()*100)+"%"
 
@@ -942,7 +943,6 @@ function updateReplicants() {
 	document.getElementById("quantumFoodAmount").textContent=getFullExpansion(player.quantum.replicants.quantumFood)
 	document.getElementById("buyQuantumFood").innerHTML="Buy 1 quantum food<br><br><br>Cost: "+shortenDimensions(player.quantum.replicants.quantumFoodCost)+" for all 3 gluons"
 	document.getElementById("buyQuantumFood").className="gluonupgrade "+(player.quantum.gluons.rg.min(player.quantum.gluons.gb).min(player.quantum.gluons.br).lt(player.quantum.replicants.quantumFoodCost)?"unavailabl":"stor")+"ebtn"
-	document.getElementById("eggonRate").textContent=shortenDimensions(totalReplicants.minus(player.quantum.replicants.amount).times(3))
 	document.getElementById("breakLimit").innerHTML="Limit of workers: "+getLimitMsg()+(isLimitUpgAffordable()?" -> "+getNextLimitMsg()+"<br>Cost: "+shortenDimensions(player.quantum.replicants.limitCost)+" for all 3 gluons":"")
 	document.getElementById("breakLimit").className=(player.quantum.gluons.rg.min(player.quantum.gluons.gb).min(player.quantum.gluons.br).lt(player.quantum.replicants.limitCost)||!isLimitUpgAffordable()?"unavailabl":"stor")+"ebtn"
 	document.getElementById("reduceHatchSpeed").className=(player.quantum.gluons.rg.min(player.quantum.gluons.gb).min(player.quantum.gluons.br).lt(player.quantum.replicants.hatchSpeedCost)?"unavailabl":"stor")+"ebtn"
