@@ -221,6 +221,10 @@ function buyMaxInfDims(tier) {
   buyManyInfinityDimension(tier)
 }
 
+function getInfinityPowerEffectPower() {
+	return Math.max(player.galacticSacrifice ? Math.pow(player.galaxies, 0.7) : 0, 7)
+}
+
 function switchAutoInf(tier) {
   if (player.infDimBuyers[tier-1]) {
       player.infDimBuyers[tier-1] = false

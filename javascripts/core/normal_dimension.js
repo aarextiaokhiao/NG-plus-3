@@ -14,9 +14,7 @@ function getDimensionFinalMultiplier(tier) {
   multiplier = multiplier.times(kongDimMult)
   multiplier = multiplier.times(kongAllDimMult)
 
-  let y = Math.max(7, player.galacticSacrifice?Math.pow(player.galaxies, .7):0);
-  if (player.currentEternityChall == "eterc9") multiplier = multiplier;
-  else multiplier = multiplier.times(player.infinityPower.pow(y).max(1))
+  if (player.currentEternityChall != "eterc9") multiplier = multiplier.times(player.infinityPower.pow(getInfinityPowerEffectPower()).max(1))
 
   if (player.infinityUpgrades.includes("totalMult")) multiplier = multiplier.times(totalMult)
   if (player.infinityUpgrades.includes("currentMult")) multiplier = multiplier.times(currentMult)
