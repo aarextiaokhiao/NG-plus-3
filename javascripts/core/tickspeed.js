@@ -34,7 +34,7 @@ function getGalaxyPowerEff(ng, bi) {
 	if (player.infinityUpgrades.includes("postGalaxy")) eff *= player.galacticSacrifice ? 1.7 : 1.5;
 	if (player.challenges.includes("postc5")) eff *= player.galacticSacrifice ? 1.3 : 1.1;
 	if (player.achievements.includes("r86")) eff *= player.galacticSacrifice ? 1.05 : 1.01
-	if (player.challenges.length > 14) galaxies *= .07*player.challenges.length
+	if (player.challenges.length > 14 && player.galacticSacrifice) eff *= .07*player.challenges.length
 	if (player.galacticSacrifice) {
 		if (player.achievements.includes("r83")) eff *= 1.05
 		if (player.achievements.includes("r45")) eff *= 1.02
