@@ -6188,8 +6188,8 @@ setInterval(function() {
     document.getElementById("quantumbtn").style.display = "none"
     if (player.meta !== undefined) if (isQuantumReached()) document.getElementById("quantumbtn").style.display = ""
 
-    for (var i=1; i <=8; i++) {
-        document.getElementById("postc"+i+"goal").textContent = "Goal: "+shortenCosts(getGoal("postc"+i))
+    for (var i=0; i<order.length; i++) {
+        document.getElementById(order[i]+"goal").textContent = "Goal: "+shortenCosts(getGoal(order[i]))
     }
 
     if (player.replicanti.galaxybuyer === undefined || player.boughtDims) document.getElementById("replicantiresettoggle").style.display = "none"
