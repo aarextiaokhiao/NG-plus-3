@@ -4,7 +4,8 @@ function getDimensionFinalMultiplier(tier) {
 
   let multiplier = new Decimal(player[name + 'Pow']);
 
-  if (player.currentEternityChall == "eterc11") return player.infinityPower.pow(7).max(1).times(Decimal.pow(getDimensionBoostPower(), player.resets - tier + 1).max(1))
+  if (player.currentChallenge == "postcngm3_2") return player.infinityPower.pow(getInfinityPowerEffectPower()).max(1)
+  if (player.currentEternityChall == "eterc11") return player.infinityPower.pow(getInfinityPowerEffectPower()).max(1).times(Decimal.pow(getDimensionBoostPower(), player.resets - tier + 1).max(1))
   if (player.currentChallenge == "challenge7" && !player.galacticSacrifice) {
       if (tier == 4) multiplier = multiplier.pow(1.4)
       if (tier == 2) multiplier = multiplier.pow(1.7)
@@ -59,7 +60,7 @@ function getDimensionFinalMultiplier(tier) {
   if (player.timestudy.studies.includes(91)) multiplier = multiplier.times(Decimal.pow(10, Math.min(player.thisEternity, 18000)/60));
   let ndReplMult = 1
   let useHigherNDReplMult = !player.dilation.active ? false : !player.masterystudies ? false : player.masterystudies.includes("t323")
-  if (player.timestudy.studies.includes(101)) ndReplMult = player.replicanti.amount
+  if (player.timestudy.studies.includes(101)) ndReplMult = player.replicanti.amount.max(1)
   if (!useHigherNDReplMult) multiplier = multiplier.times(ndReplMult)
   if (player.timestudy.studies.includes(161)) multiplier = multiplier.times(new Decimal(player.aarexModifications.newGameExpVersion?"1e3080":"1e616"))
   if (player.timestudy.studies.includes(234) && tier == 1) multiplier = multiplier.times(calcTotalSacrificeBoost())
@@ -193,7 +194,7 @@ function hasInfinityMult(tier) {
     }
     
     function getDimensionPowerMultiplier(nonrandom, focusOn) {
-        if (inQC(5)||inQC(7)||(player.currentChallenge=="challenge13"&&player.tickspeedBoosts==undefined)) {
+        if (inQC(5)||inQC(7)||(((player.currentChallenge=="challenge13"&&player.tickspeedBoosts==undefined)||player.currentChallenge=="postc1"||player.currentChallenge=="postcngm3_1")&&player.galacticSacrifice!=undefined)) {
             if (player.masterystudies) if (player.masterystudies.includes("t321")) return "1e430"
             return 1
         }

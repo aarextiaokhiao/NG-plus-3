@@ -26,18 +26,15 @@ function getGalaxyPower(ng, bi) {
 
 function getGalaxyPowerEff(ng, bi) {
 	let eff = 1
-	if (player.galacticSacrifice) {
-		if (player.galacticSacrifice.upgrades.includes(22)) eff *= 5;
-		if (player.galacticSacrifice.upgrades.includes(34)) eff *= 1.5;
-	}
+	if (player.galacticSacrifice) if (player.galacticSacrifice.upgrades.includes(22)) eff *= 5;
 	if (player.infinityUpgrades.includes("galaxyBoost")) eff *= 2;
 	if (player.infinityUpgrades.includes("postGalaxy")) eff *= player.galacticSacrifice ? 1.7 : 1.5;
 	if (player.challenges.includes("postc5")) eff *= player.galacticSacrifice ? 1.3 : 1.1;
 	if (player.achievements.includes("r86")) eff *= player.galacticSacrifice ? 1.05 : 1.01
-	if (player.challenges.length > 14 && player.galacticSacrifice) eff *= .07*player.challenges.length
 	if (player.galacticSacrifice) {
 		if (player.achievements.includes("r83")) eff *= 1.05
 		if (player.achievements.includes("r45")) eff *= 1.02
+		if (player.challenges.length > 14 && player.achievements.includes("r67")) eff *= .07*player.challenges.length
 	}
 	if (player.achievements.includes("ngpp8") && player.meta != undefined) eff *= 1.001;
 	if (player.timestudy.studies.includes(212)) eff *= Math.min(Math.pow(player.timeShards.max(2).log2(), 0.005), 1.1)
@@ -51,6 +48,7 @@ function getGalaxyPowerEff(ng, bi) {
 function getTickSpeedMultiplier() {
 	let realnormalgalaxies = player.galaxies
 	if (player.masterystudies) realnormalgalaxies = Math.max(player.galaxies-player.quantum.electrons.sacGals,0)
+	if (player.tickspeedBoosts != undefined) if (player.galacticSacrifice.upgrades.includes(34)) realnormalgalaxies += 4
 	if (player.currentChallenge == "postc3" || isIC3Trapped()) {
 		if (player.currentChallenge=="postcngmm_3" || player.challenges.includes("postcngmm_3")) {
 			if (GUBought("rg4")) realnormalgalaxies *= 0.4

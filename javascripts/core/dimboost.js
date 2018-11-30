@@ -1,5 +1,5 @@
 function getDimensionBoostPower(next, focusOn) {
-  if (player.currentChallenge == "challenge11" || player.currentChallenge == "postc1") return Decimal.fromNumber(1);
+  if (player.currentChallenge == "challenge11" || player.currentChallenge == "postc1" || player.currentChallenge == "postcngm3_1") return Decimal.fromNumber(1);
 
   var ret = 2
   if (!player.galacticSacrifice) {
@@ -273,10 +273,18 @@ function setInitialDimensionPower() {
 	
 	var ic3Power=player.totalTickGained*getEC14Power()
 	if (player.tickspeedBoosts!=undefined) {
-		var ic3PowerTB=player.tickspeedBoosts*(player.currentChallenge=="challenge15"||player.currentChallenge=="postc1"?15:player.galacticSacrifice.upgrades.includes(14)?32:30)
-		if (ic3PowerTB>1024) ic3PowerTB=Math.floor(Math.sqrt((ic3PowerTB/4+768)*1024))
-		ic3Power+=ic3PowerTB
+		let mult = 30
+		if (player.currentChallenge == "challenge15" || player.currentChallenge == "postc1") mult = 15
+		else if (player.galacticSacrifice.upgrades.includes(14)) mult = 32
+		let ic3PowerTB = player.tickspeedBoosts * mult
+		let softCapStart = 1024
+		let frac = 8
+		if (player.currentChallenge == "postcngm3_1") softCapStart = 0
+		else if (player.challenges.includes("postcngm3_1")) frac = 6
+		if (ic3PowerTB > softCapStart) ic3PowerTB = Math.sqrt((ic3PowerTB - softCapStart) / frac + 1024) * 32 + softCapStart - 1024
+		ic3Power += ic3PowerTB
 	}
+
 	player.postC3Reward=Decimal.pow(getPostC3RewardMult(),ic3Power)
 }
 

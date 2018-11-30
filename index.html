@@ -1102,7 +1102,7 @@
                             Tickspeed Boost (0): requires 10 Fifth Dimensions
                         </td>
                         <td>
-                            <button id="tickResetBtn" style="color:black; width: 200px; height: 35px; font-size: 9px" class="storebtn" onclick="tickspeedBoost()">Lose dimension boosts for better tickspeed multiplier</button>
+                            <button id="tickResetBtn" style="color:black; width: 200px; height: 35px; font-size: 9px" class="storebtn" onclick="manualTickspeedBoost()">Lose dimension boosts for better tickspeed multiplier</button>
                         </td>
                     </tr>
                     <tr style="font-size: 15px">
@@ -1709,6 +1709,8 @@
                 <div id="infchallengetime8"></div>
                 <div id="infchallengetime9"></div>
                 <div id="infchallengetime10"></div>
+                <div id="infchallengetime11"></div>
+                <div id="infchallengetime12"></div>
                 <br>
                 <div id="infchallengetimesum"></div>
             </div>
@@ -2674,7 +2676,7 @@
             </div>
             <div id="breakchallenges" class="challengeTab">
                 <table  class="table" style="margin: 0 auto">
-                    <tr id='icngmm_row' style='display:none'>
+                    <tr id='icngmm_row'>
                         <td>
                             <div class="infchallengediv" id="postcngmm_1div" style="height: 140px; display: none">
                                 <span>No reductions on galaxy and dimboost cost increases, but infinity upgrades based on time or infinities are applied post-dilation.</span>
@@ -2698,6 +2700,34 @@
                                     <br>
                                     <span id="postcngmm_2goal" >Goal: 1e950</span><br>
                                     <span>Reward: Cost multiplier increases are x^.9, and tickspeed cost multiplier increase is further lowered based on galaxies.</span>
+                                </div>
+                            </div>
+                        </td>
+                    </tr>
+                    <tr id='icngm3_row'>
+                        <td>
+                            <div class="infchallengediv" id="postcngm3_1div" style="height: 140px; display: none">
+                                <span>Multiplier per ten dimensions and dimension boost power are always 1x and tickspeed boost effect softcap starts immediately.</span>
+                                <br>
+                                <br>
+                                <div class="outer">
+                                    <button id="postcngm3_1" class="challengesbtn" onclick="startChallenge('postcngm3_1')">Start</button>
+                                    <br>
+                                    <span id="postcngm3_1goal" ></span><br>
+                                    <span>Reward: Tickspeed boost effect softcap is softer.</span>
+                                </div>
+                            </div>
+                        </td>
+                        <td>
+                            <div class="infchallengediv" id="postcngm3_2div" style="height: 140px; display: none">
+                                <span>All normal dimension multipliers are disabled except infinity power, but galaxy boost on infinity power is stronger.</span>
+                                <br>
+                                <br>
+                                <div class="outer">
+                                    <button id="postcngm3_2" class="challengesbtn" onclick="startChallenge('postcngm3_2')">Start</button>
+                                    <br>
+                                    <span id="postcngm3_2goal" ></span><br>
+                                    <span>Reward: Dimension & tickspeed boosts also boost infinity power.</span>
                                 </div>
                             </div>
                         </td>
@@ -3284,7 +3314,7 @@
                 <button id="galaxy23" class="infinistorebtn3" onclick="buyGalaxyUpgrade(23)">Dimension boosts are stronger based on your galaxy points.<br>Currently: <span id='galspan23'>x</span>x<br>Cost: <span id='galcost23'></span> GP</button>
             </td>
             <td id='galaxy24div' style='display:none'>
-                <button id="galaxy24" class="infinistorebtn4" onclick="buyGalaxyUpgrade(24)">Remove the penalty of the product of bought.<br>Cost: <span id='galcost24'></span> GP</button>
+                <button id="galaxy24" class="infinistorebtn4" onclick="buyGalaxyUpgrade(24)">Increase the multiplier of the product of bought based on your galaxy points.<br>Currently: <span id='galspan24'>x</span>x<br>Cost: <span id='galcost24'></span> GP</button>
             </td>
 				</tr>
         <tr>
@@ -3298,7 +3328,7 @@
                 <button id="galaxy33" class="infinistorebtn3" onclick="buyGalaxyUpgrade(33)">Multiplier per ten dimensions is stronger based on your galaxy points.<br>Currently: <span id='galspan33'>x</span>x<br>Cost: <span id='galcost33'></span> GP</button></td>
             </td>
             <td id='galaxy34div' style='display:none'>
-                <button id="galaxy34" class="infinistorebtn4" onclick="buyGalaxyUpgrade(34)">Galaxies are 50% stronger.<br>Cost: <span id='galcost34'></span> GP</button>
+                <button id="galaxy34" class="infinistorebtn4" onclick="buyGalaxyUpgrade(34)">You get 4 free normal galaxies.<br>Cost: <span id='galcost34'></span> GP</button>
             </td>
 				</tr>
 			</table>
@@ -3728,6 +3758,11 @@
                             <span style="font-size: 80%">Galaxies required to always tickspeed boost:</span>
                             <input type="text" onchange="updatePriorities()" id="overGalaxiesTickspeedBoost"></input>
                             <br>
+                            <div id="bulkTickBoostDiv">
+                                <span style="font-size: 80%">Bulk Tickspeed Boost amount:</span>
+                                <input type="text" onchange="updatePriorities()" id="bulkTickBoost"></input>
+                                <br>
+                            </div>
                             <span style="font-size: 80%">Is active</span>
                             <input type="checkbox" onchange="updateAutobuyers()"   id="15ison"></input>
                         </div>
@@ -4207,23 +4242,23 @@
 <script type="text/javascript" src="javascripts/core/format.js?4"></script>
 <script type="text/javascript" src="javascripts/core/achievements.js?14"></script>
 <script type="text/javascript" src="javascripts/core/chart.js"></script>
-<script type="text/javascript" src="javascripts/core/tickspeed.js?26"></script>
-<script type="text/javascript" src="javascripts/core/normal_dimension.js?3"></script>
-<script type="text/javascript" src="javascripts/core/infinity_dimension.js?19"></script>
+<script type="text/javascript" src="javascripts/core/tickspeed.js?27"></script>
+<script type="text/javascript" src="javascripts/core/normal_dimension.js?4"></script>
+<script type="text/javascript" src="javascripts/core/infinity_dimension.js?20"></script>
 <script type="text/javascript" src="javascripts/core/time_dimension.js?21"></script>
-<script type="text/javascript" src="javascripts/core/dimboost.js?4"></script>
+<script type="text/javascript" src="javascripts/core/dimboost.js?5"></script>
 <script type="text/javascript" src="javascripts/core/timestudies.js?6"></script>
 <script type="text/javascript" src="javascripts/core/canvases.js?9"></script>
 <script type="text/javascript" src="javascripts/core/devtools.js"></script>
-<script type="text/javascript" src="javascripts/core/load_functions.js?10"></script>
+<script type="text/javascript" src="javascripts/core/load_functions.js?11"></script>
 <script type="text/javascript" src="javascripts/core/newsticker.js?8"></script>
-<script type="text/javascript" src="javascripts/mods/ngmm.js?23"></script>
+<script type="text/javascript" src="javascripts/mods/ngmm.js?1"></script>
 <script type="text/javascript" src="javascripts/mods/ers.js?1"></script>
 <script type="text/javascript" src="javascripts/mods/ngpp.js?8"></script>
 <script type="text/javascript" src="javascripts/mods/ngppp.js?9"></script>
-<script type="text/javascript" src="javascripts/mods/ngmmm.js?5"></script>
+<script type="text/javascript" src="javascripts/mods/ngmmm.js?1"></script>
 <script type="text/javascript" src="javascripts/mods/ngud.js"></script>
-<script type="text/javascript" src="javascripts/game.js?10"></script>
+<script type="text/javascript" src="javascripts/game.js?11"></script>
 <script type="text/javascript" src="javascripts/sha512.js"></script>
 </body>
 </html>

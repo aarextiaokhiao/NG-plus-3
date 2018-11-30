@@ -125,7 +125,7 @@ strong { color: #0072e5 }
 #bigcrunch:hover, #infinitybtn:hover, #postInfinityButton:hover, #idtabbtn button:hover, .newdim:hover, #infinitydimensions td:nth-child(4) .storebtn:hover, #replicantichance.storebtn:hover, #replicantiinterval.storebtn:hover, #replicantimax.storebtn:hover, #challTabButtons td:nth-child(2) button:hover, #infchallengesbtn:hover {
     background-color: #e2bd00 !important
 }
-.IPAmount1, .IPAmount2, #infPowAmount, #infDimMultAmount, #replicantiamount, #replicantimult {
+.IPAmount1, .IPAmount2, #infPowAmount, #infDimMultAmount, #infDimEffectPower, #replicantiamount, #replicantimult {
     color: #e2bd00 !important
 }
 .infinistorebtn1, .infinistorebtn3 {
