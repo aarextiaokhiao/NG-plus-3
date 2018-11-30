@@ -582,13 +582,11 @@ function iroha (n, depth) {
 }
 
 function getFullExpansion(num) {
-	if (typeof(num)=="number"&&isNaN(num)) return "NaN"
-	else if (typeof(num)!="number"&&isNaN(break_infinity_js?num:num.logarithm)) return "NaN"
-	else if (num < 1e12) {
-		if (player.options.notation === "Greek" || player.options.notation === "Morse code" || player.options.notation === "Symbols" || player.options.notation === "Lines" || player.options.notation === "Simplified Written") return convTo(player.options.notation, num)
-		return num.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")
-	} else if (Decimal.lt(num, 1/0)) return shorten(num)
-	else return "Infinite"
+	if (isNaN(num)) return "NaN"
+	if (!break_infinity_js && typeof(num) != "number") if (isNaN(num.logarithm)) return "NaN"
+	if (num > 1e12) return shorten(num)
+	if (player.options.notation === "Greek" || player.options.notation === "Morse code" || player.options.notation === "Symbols" || player.options.notation === "Lines" || player.options.notation === "Simplified Written") return convTo(player.options.notation, num)
+	return num.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")
 }
 
 shorten = function (money) {
