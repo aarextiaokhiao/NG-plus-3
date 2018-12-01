@@ -4691,6 +4691,7 @@ function eternity(force, auto) {
         player = {
             money: new Decimal(10),
             tickSpeedCost: new Decimal(1000),
+            tickspeed: new Decimal(player.aarexModifications.newGameExpVersion?500:1000),
             tickBoughtThisInf: resetTickBoughtThisInf(),
             firstCost: new Decimal(10),
             secondCost: new Decimal(100),
@@ -5591,6 +5592,7 @@ function startEternityChallenge(name, startgoal, goalIncrease) {
     player = {
         money: new Decimal(10),
         tickSpeedCost: new Decimal(1000),
+        tickspeed: new Decimal(player.aarexModifications.newGameExpVersion?500:1000),
         tickBoughtThisInf: resetTickBoughtThisInf(),
         firstCost: new Decimal(10),
         secondCost: new Decimal(100),
