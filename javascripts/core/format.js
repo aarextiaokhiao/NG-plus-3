@@ -110,11 +110,11 @@ function getAASAbbreviation(x) {
 }
 
 const inflog = Math.log10(Number.MAX_VALUE)
-function formatValue(notation, value, places, placesUnder1000) {
+function formatValue(notation, value, places, placesUnder1000, noInf) {
     if (notation === "Same notation") notation = player.options.notation
     if (notation === 'Iroha' && (onPostBreak() || Decimal.lt(value, Number.MAX_VALUE))) return iroha(value, 5)
     if (Decimal.eq(value, 1/0)) return "Infinite"
-    if ((onPostBreak() || Decimal.lt(value, Number.MAX_VALUE)) && (Decimal.gte(value,1000))) {
+    if ((onPostBreak() || Decimal.lt(value, getLimit()) || noInf) && (Decimal.gte(value,1000))) {
         if (notation === "Hexadecimal") {
             value = Decimal.pow(value, 1/Math.log10(16))
             var mantissa = Math.pow(value.m, Math.log10(16))
@@ -582,6 +582,7 @@ function iroha (n, depth) {
 }
 
 function getFullExpansion(num) {
+	if (num === null) return "NaN"
 	if (isNaN(num)) return "NaN"
 	if (!break_infinity_js && typeof(num) != "number") if (isNaN(num.logarithm)) return "NaN"
 	if (num > 1e12) return shorten(num)

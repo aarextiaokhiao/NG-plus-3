@@ -23,7 +23,7 @@ function getDimensionBoostPower(next, focusOn) {
 
 function softReset(bulk) {
   //if (bulk < 1) bulk = 1 (fixing issue 184)
-  if (!player.break && player.money.gt(Number.MAX_VALUE)) return;
+  if (reachedInfinity()) return;
   var oldResets = player.resets
   player.resets+=bulk;
   if (player.masterystudies) if (player.resets > 4) player.old = false
@@ -46,7 +46,6 @@ function softReset(bulk) {
   player = {
       money: player.achievements.includes("r111") ? player.money : new Decimal(10),
       tickSpeedCost: new Decimal(1000),
-      tickspeed: new Decimal(player.aarexModifications.newGameExpVersion?500:1000),
       tickBoughtThisInf: player.tickBoughtThisInf,
       firstCost: new Decimal(10),
       secondCost: new Decimal(100),
@@ -79,6 +78,8 @@ function softReset(bulk) {
       challenges: player.challenges,
       currentChallenge: player.currentChallenge,
       infinityUpgrades: player.infinityUpgrades,
+      infinityUpgradesRespecced: player.infinityUpgradesRespecced,
+      setsUnlocked: player.setsUnlocked,
       infinityPoints: player.infinityPoints,
       infinitied: player.infinitied,
       infinitiedBank: player.infinitiedBank,
@@ -255,8 +256,6 @@ function softReset(bulk) {
       document.getElementById("eightRow").style.display = "none";
   }
 
-
-  player.tickspeed = player.tickspeed.times(Decimal.pow(getTickSpeedMultiplier(), player.totalTickGained))
   updateTickSpeed()
   if (player.challenges.includes("challenge1")) player.money = new Decimal(100).max(player.money)
   if (player.achievements.includes("r37")) player.money = new Decimal(1000).max(player.money);
@@ -270,6 +269,10 @@ function setInitialDimensionPower() {
 	if (player.eternities>=1e9&&player.dilation.upgrades.includes("ngpp6")&&player.masterystudies!=undefined) player.dbPower=dimensionBoostPower
 
 	for (tier = 1; tier < 9; tier++) player[TIER_NAMES[tier] + 'Pow'] = player.currentEternityChall=='eterc13' ? new Decimal(1) : dimensionBoostPower.pow(player.resets + 1 - tier).max(1)
+
+	var tickspeedPower=player.totalTickGained
+	if (player.infinityUpgradesRespecced!=undefined) tickspeedPower+=player.infinityUpgradesRespecced[1]*10
+	player.tickspeed=Decimal.pow(getTickSpeedMultiplier(), tickspeedPower).times(player.aarexModifications.newGameExpVersion?500:1e3)
 	
 	var ic3Power=player.totalTickGained*getEC14Power()
 	if (player.tickspeedBoosts!=undefined) {
@@ -284,7 +287,6 @@ function setInitialDimensionPower() {
 		if (ic3PowerTB > softCapStart) ic3PowerTB = Math.sqrt((ic3PowerTB - softCapStart) / frac + 1024) * 32 + softCapStart - 1024
 		ic3Power += ic3PowerTB
 	}
-
 	player.postC3Reward=Decimal.pow(getPostC3RewardMult(),ic3Power)
 }
 
@@ -338,6 +340,7 @@ function getShiftRequirement(bulk) {
 
 	if (player.infinityUpgrades.includes("resetBoost")) amount -= 9;
 	if (player.challenges.includes("postc5")) amount -= 1
+	if (player.infinityUpgradesRespecced != undefined) amount -= getInfUpgPow(4)
 
 	return { tier: tier, amount: amount, mult: mult };
 }
@@ -375,7 +378,7 @@ function getSupersonicMultIncrease() {
 document.getElementById("softReset").onclick = function () {
   if (inQC(6)) return
   var req = getShiftRequirement(0)
-  if ((!player.break && player.money.gt(Number.MAX_VALUE)) || getAmount(req.tier) < req.amount) return;
+  if (reachedInfinity() || getAmount(req.tier) < req.amount) return;
   auto = false;
   var pastResets = player.resets
   if (player.infinityUpgrades.includes("bulkBoost")) maxBuyDimBoosts(true);

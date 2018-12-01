@@ -57,7 +57,7 @@ function getTickSpeedMultiplier() {
 		return 1;
 	}
 	if (inQC(2)) return 0.89
-	let inERS = !(!player.boughtDims)
+	let inERS = player.boughtDims != undefined || player.infinityUpgradesRespecced != undefined
 	let galaxies
 	let baseMultiplier
 	let useLinear
@@ -90,7 +90,7 @@ function getTickSpeedMultiplier() {
 		if (GUBought("rg4")) realnormalgalaxies *= 0.4
 		galaxies = getGalaxyPower(realnormalgalaxies) * getGalaxyPowerEff(realnormalgalaxies, true)
 	}
-	let perGalaxy = 0.965
+	let perGalaxy = player.infinityUpgradesRespecced != undefined ? 0.98 : 0.965
 	return Decimal.pow(perGalaxy, galaxies-linearGalaxies).times(baseMultiplier)
 }
 
@@ -180,14 +180,22 @@ function buyMaxTickSpeed() {
 	updateTickSpeed()
 }
 
+function getTickspeed() {
+	if (player.infinityUpgradesRespecced != undefined) {
+		var log = 3 - player.tickspeed.log10()
+		if (log > 25) return Decimal.pow(10, 3 - Math.sqrt(log) * 5)
+	}
+	return player.tickspeed
+}
 
 function updateTickSpeed() {
 	var showTickspeed = Decimal.lt(player.tickspeed, 1e3) || (player.currentChallenge != "postc3" && !isIC3Trapped())
 	var label = ""
 	if (showTickspeed) {
-		var exp = player.tickspeed.e;
-		if (exp > 1) label = 'Tickspeed: ' + player.tickspeed.toFixed(0)
-		else label = 'Tickspeed: ' + Math.min(player.tickspeed.m * 100, 999).toFixed(0) + ' / ' + shortenCosts(Decimal.pow(10,2 - exp))
+		var tickspeed = getTickspeed()
+		var exp = tickspeed.e;
+		if (exp > 1) label = 'Tickspeed: ' + tickspeed.toFixed(0)
+		else label = 'Tickspeed: ' + Math.min(tickspeed.m * 100, 999).toFixed(0) + ' / ' + shortenCosts(Decimal.pow(10,2 - exp))
 	}
 	if (player.galacticSacrifice || player.currentChallenge == "postc3" || isIC3Trapped()) label = (showTickspeed ? label + ", Tickspeed m" : "M") + "ultiplier: " + formatValue(player.options.notation, player.postC3Reward, 2, 3)
 	if (player.galacticSacrifice && player.currentChallenge == "challenge14") {

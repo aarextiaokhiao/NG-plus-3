@@ -3360,7 +3360,7 @@
             </tr>
             <div id="preinf" class="inftab">
             <br>
-            <table class="table" style="margin: 0 auto">
+            <table id="preinfupgrades" class="table" style="margin: 0 auto">
                 <tr>
                     <td>
                         <button id="infi11" class="infinistorebtn1">Production increase over time <br>currently:</button>
@@ -3418,8 +3418,32 @@
                     </td>
                 </tr>
             </table>
+            <div id='nextset'></div>
             <br>
-            <div><button id="infiMult" class="infinimultbtn">Multiply infinity points from all sources by 2 <br>currently: <br>Cost: 100 IP</button></div>
+            <table id="preinfupgrades" class="table" style="margin: 0 auto">
+                <tr>
+                    <td id="infi1div">
+                        <button id="infi1" class="infinimultbtn" onclick="buyRepeatableInfinityUpgrade(1)">You get 10 free tickspeed upgrades each.<br>Currently: <span id="infi1pow"></span>x<br>Cost: <span id="infi1cost"></span> IP</button>
+                    </td>
+                    <td>
+                        <button id="infiMult" class="infinimultbtn">Multiply infinity points from all sources by 2 <br>currently: <br>Cost: 100 IP</button>
+                    </td>
+                    <td id="infi3div">
+                        <button id="infi3" class="infinimultbtn" onclick="buyRepeatableInfinityUpgrade(3)">Increase the limit of Infinity.<br>Currently: <span id="infi3pow"></span><br>Cost: <span id="infi3cost"></span> IP</button>
+                    </td>
+                </tr>
+                <tr id="lockedset1">
+                    <td>
+                        <button id="infi4" class="infinimultbtn" onclick="buyRepeatableInfinityUpgrade(4)">All dimension boost costs are decreased by 30 each.<br>Currently: <span id="infi4pow"></span>x<br>Cost: <span id="infi4cost"></span> IP</button>
+                    </td>
+                    <td>
+                        <button id="infi5" class="infinimultbtn" onclick="buyRepeatableInfinityUpgrade(5)">Sacrifice is stronger.<br>Currently: ^<span id="infi5pow"></span><br>Cost: <span id="infi5cost"></span> IP</button>
+                    </td>
+                    <td>
+                        <button id="infi6" class="infinimultbtn" onclick="buyRepeatableInfinityUpgrade(6)">All galaxy costs are decreased by 20 each.<br>Currently: <span id="infi6pow"></span>x<br>Cost: <span id="infi6cost"></span> IP</button>
+                    </td>
+                </tr>
+            </table>
             <div><button id="infmultbuyer" class="storebtn" onclick="infMultAutoToggle()" style="display:none; height: 25px; width: 190px; font-size:10px; margin-top: 3px;"></button></div>
             <div>
                 <table id="footer">
@@ -4115,7 +4139,7 @@
 		<button class="storebtn" style="font-size: 15px" onclick="import_save('new')" style="display: inline">Import</button>
 		<button class="storebtn" id='ngmBtn' style="font-size: 15px" onclick="toggle_mode('ngm')" style="display: inline">NG-: OFF</button>
 		<button class="storebtn" id='ngmmBtn' style="font-size: 15px" onclick="toggle_mode('ngmm')" style="display: inline">NG--: OFF</button><br>
-		<button class="storebtn" id='ersBtn' style="font-size: 15px; width:255px" onclick="toggle_mode('ers')" style="display: inline">Eternity Respecced: OFF</button>
+		<button class="storebtn" id='rsBtn' style="font-size: 15px; width:255px" onclick="toggle_mode('rs')" style="display: inline">Respecced: OFF</button>
 		<button class="storebtn" id='ngpBtn' style="font-size: 15px" onclick="toggle_mode('ngp')" style="display: inline">NG+: OFF</button>
 		<button class="storebtn" id='ngppBtn' style="font-size: 15px" onclick="toggle_mode('ngpp')" style="display: inline">NG++: OFF</button><br>
 		Click "Load" while holding shift to load a save without offline progress.
@@ -4242,23 +4266,24 @@
 <script type="text/javascript" src="javascripts/core/format.js?4"></script>
 <script type="text/javascript" src="javascripts/core/achievements.js?14"></script>
 <script type="text/javascript" src="javascripts/core/chart.js"></script>
-<script type="text/javascript" src="javascripts/core/tickspeed.js?27"></script>
-<script type="text/javascript" src="javascripts/core/normal_dimension.js?4"></script>
+<script type="text/javascript" src="javascripts/core/tickspeed.js?28"></script>
+<script type="text/javascript" src="javascripts/core/normal_dimension.js?5"></script>
 <script type="text/javascript" src="javascripts/core/infinity_dimension.js?20"></script>
 <script type="text/javascript" src="javascripts/core/time_dimension.js?21"></script>
-<script type="text/javascript" src="javascripts/core/dimboost.js?5"></script>
+<script type="text/javascript" src="javascripts/core/dimboost.js?6"></script>
 <script type="text/javascript" src="javascripts/core/timestudies.js?6"></script>
 <script type="text/javascript" src="javascripts/core/canvases.js?9"></script>
 <script type="text/javascript" src="javascripts/core/devtools.js"></script>
-<script type="text/javascript" src="javascripts/core/load_functions.js?11"></script>
+<script type="text/javascript" src="javascripts/core/load_functions.js?12"></script>
 <script type="text/javascript" src="javascripts/core/newsticker.js?8"></script>
 <script type="text/javascript" src="javascripts/mods/ngmm.js?1"></script>
 <script type="text/javascript" src="javascripts/mods/ers.js?1"></script>
-<script type="text/javascript" src="javascripts/mods/ngpp.js?8"></script>
+<script type="text/javascript" src="javascripts/mods/ngpp.js?9"></script>
 <script type="text/javascript" src="javascripts/mods/ngppp.js?9"></script>
 <script type="text/javascript" src="javascripts/mods/ngmmm.js?1"></script>
 <script type="text/javascript" src="javascripts/mods/ngud.js"></script>
-<script type="text/javascript" src="javascripts/game.js?11"></script>
+<script type="text/javascript" src="javascripts/mods/irs.js?"></script>
+<script type="text/javascript" src="javascripts/game.js?12"></script>
 <script type="text/javascript" src="javascripts/sha512.js"></script>
 </body>
 </html>
