@@ -2,7 +2,7 @@ var setUnlocks
 var powAdds = [null, 0, null, 0, 4, 4, 4]
 function buyRepeatableInfinityUpgrade(id) {
 	if (player.infinityPoints.lt(Decimal.pow(10, player.infinityUpgradesRespecced[id] + powAdds[id]))) return
-	player.infinityPoints=player.infinityPoints.sub(Decimal.pow(10, player.infinityUpgradesRespecced[id]))
+	player.infinityPoints=player.infinityPoints.sub(Decimal.pow(10, player.infinityUpgradesRespecced[id] + powAdds[id]))
 	player.infinityUpgradesRespecced[id]++
 	if (id==1) {
 		player.tickspeed=player.tickspeed.times(Decimal.pow(getTickSpeedMultiplier(), 10))
