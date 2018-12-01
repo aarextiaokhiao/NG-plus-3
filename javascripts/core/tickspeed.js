@@ -182,8 +182,10 @@ function buyMaxTickSpeed() {
 
 function getTickspeed() {
 	if (player.infinityUpgradesRespecced != undefined) {
-		var log = 3 - player.tickspeed.log10()
-		if (log > 25) return Decimal.pow(10, 3 - Math.sqrt(log) * 5)
+		var ret = Decimal.div(1000, player.tickspeed)
+		if (ret.gt(1e25)) ret = Decimal.pow(10, Math.sqrt(ret.log10()) * 5)
+		if (player.singularity != undefined) ret = ret.times(getDarkMatterMult())
+		return Decimal.div(1000, ret)
 	}
 	return player.tickspeed
 }

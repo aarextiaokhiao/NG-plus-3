@@ -3357,6 +3357,7 @@
                 <td><button class="secondarytabbtn" onclick="showInfTab('autobuyers')">Autobuyers</button><td>
                 <td><button id="postinfbtn" class="secondarytabbtn" onclick="showInfTab('postinf')" >Break Infinity</button><td>
                 <td><button id="replicantitabbtn" class="secondarytabbtn" onclick="showInfTab('replicantis')">Replicantis</button><td>
+                <td><button id="singularitytabbtn" class="secondarytabbtn" onclick="showInfTab('singularity')">Singularity</button><td>
             </tr>
             <div id="preinf" class="inftab">
             <br>
@@ -3960,7 +3961,32 @@
                     </table>
                 </div>
         </div>
-
+        <div id="singularity" class="inftab">
+            <br>
+            <button class="storebtn" id="singularityunlock" onclick="unlockSingularity()" style="width:200px; height: 80px">Unlock Singularity<br>Cost: <span id="singularityunlcost"></span> IP</button>
+            <div id="singularitydiv" style="display: none;">
+                You have sacrificed <span id="sacrificedIP"></span> Infinity points.
+                <p>You have <span id="singularityPower" style="font-size:35px; color: black">0</span> singularity power.</p>
+                <button class="storebtn" id="sacrificeIP" onclick="sacrificeIP()" style="width: 200px; height: 70px; font-size: 12px">Sacrifice all of your infinity points, but gain <span id='singularityPowerGain'></span> singularity power.</button>
+                <p>You have <span id="darkMatter" style="font-size:35px; color: black">0.0</span> dark matter. Translated to <span id="darkMatterMult" style="font-size:35px; color: black">1.0</span>x faster tickspeed.</p>
+                You are getting <span id="darkMatterPerSecond" style="font-size:35px; color: black">0</span> dark matter per second.<br>
+                Next 2x dark matter production unlocks at <span id="nextUpgrade"></span> sacrificed IP.
+            </div>
+            <div id="footercontainer">
+                    <table id="footer">
+                        <tr>
+                            <td>
+                                <div style="text-align:center">
+                                    <a href="howto.html" target="_newtab">How to play  </a> |
+                                    <a href="about.html" onclick="giveAchievement('A sound financial decision')" target="_newtab">About   </a> |
+                                    <a href="changelog/" target="_newtab">Changelog   </a>
+                
+                                </div>
+                            </td>
+                        </tr>
+                    </table>
+                </div>
+        </div>
         </div>
 		<div class='tab' id='quantumtab'>
 			<table class="table" align="center" style="margin: auto">
@@ -4266,24 +4292,24 @@
 <script type="text/javascript" src="javascripts/core/format.js?4"></script>
 <script type="text/javascript" src="javascripts/core/achievements.js?14"></script>
 <script type="text/javascript" src="javascripts/core/chart.js"></script>
-<script type="text/javascript" src="javascripts/core/tickspeed.js?28"></script>
+<script type="text/javascript" src="javascripts/core/tickspeed.js?29"></script>
 <script type="text/javascript" src="javascripts/core/normal_dimension.js?5"></script>
 <script type="text/javascript" src="javascripts/core/infinity_dimension.js?20"></script>
 <script type="text/javascript" src="javascripts/core/time_dimension.js?21"></script>
-<script type="text/javascript" src="javascripts/core/dimboost.js?6"></script>
+<script type="text/javascript" src="javascripts/core/dimboost.js?7"></script>
 <script type="text/javascript" src="javascripts/core/timestudies.js?6"></script>
 <script type="text/javascript" src="javascripts/core/canvases.js?9"></script>
 <script type="text/javascript" src="javascripts/core/devtools.js"></script>
-<script type="text/javascript" src="javascripts/core/load_functions.js?12"></script>
+<script type="text/javascript" src="javascripts/core/load_functions.js?13"></script>
 <script type="text/javascript" src="javascripts/core/newsticker.js?8"></script>
 <script type="text/javascript" src="javascripts/mods/ngmm.js?1"></script>
 <script type="text/javascript" src="javascripts/mods/ers.js?1"></script>
-<script type="text/javascript" src="javascripts/mods/ngpp.js?9"></script>
+<script type="text/javascript" src="javascripts/mods/ngpp.js?10"></script>
 <script type="text/javascript" src="javascripts/mods/ngppp.js?9"></script>
 <script type="text/javascript" src="javascripts/mods/ngmmm.js?1"></script>
 <script type="text/javascript" src="javascripts/mods/ngud.js"></script>
-<script type="text/javascript" src="javascripts/mods/irs.js?"></script>
-<script type="text/javascript" src="javascripts/game.js?12"></script>
+<script type="text/javascript" src="javascripts/mods/irs.js??1"></script>
+<script type="text/javascript" src="javascripts/game.js?13"></script>
 <script type="text/javascript" src="javascripts/sha512.js"></script>
 </body>
 </html>

@@ -529,8 +529,15 @@ function updateNewPlayer(reseted) {
         player.options.animations.blackHole = true
     }
     if (modesChosen.rs===2) {
-        player.aarexModifications.irsVersion = 1
+        player.aarexModifications.irsVersion = 1.1
         player.infinityUpgradesRespecced = {1: 0, 3: 0, 4: 0, 5: 0, 6: 0}
+        player.singularity = {
+            unlocked: false,
+            upgraded: 0,
+            sacrificed: 0,
+            singularityPower: 0,
+            darkMatter: 0
+        }
         player.setsUnlocked = 0
         player.infMultCost = 1
     }
@@ -1421,6 +1428,9 @@ function updateDimensions() {
                 document.getElementById("postinfi03").innerHTML = "Galaxy cost increases by 5 less<br>Currently: "+getGalaxyCostIncrease()+(player.infinityUpgrades.includes("galCost")?"":" -> "+(getGalaxyCostIncrease()-5))+"<br>Cost: "+shortenCosts(5e5)+" IP"
                 document.getElementById("postinfi04").innerHTML = "Further increase all dimension multipliers<br>x^"+galUpgrade31().toFixed(2)+(player.extraDimPowerIncrease<40?" -> x^"+((galUpgrade31()+0.02).toFixed(2))+"<br>Cost: "+shorten(player.dimPowerIncreaseCost)+" IP":"")
             }
+        } else if (document.getElementById("singularity").style.display == "block" && document.getElementById("singularitydiv").style.display == "") {
+            document.getElementById("darkMatter").textContent = shortenMoney(player.singularity.darkMatter)
+            document.getElementById("darkMatterMult").textContent = shortenMoney(getDarkMatterMult())
         }
     }
     if (document.getElementById("eternitystore").style.display == "block") {
@@ -1822,11 +1832,7 @@ function buyMaxEPMult() {
 
 
 function playerInfinityUpgradesOnEternity() {
-	if (player.infinityUpgradesRespecced) {
-		if (getEternitied() > 3) return
-		player.infinityUpgradesRespecced = {1: 0, 3: 0, 4: 0, 5: 0, 6: 0}
-		player.setsUnlocked = 0
-	} else if (getEternitied() < 4) player.infinityUpgrades = []
+	if (getEternitied() < 4) player.infinityUpgrades = []
 	else if (getEternitied() < 20) {
 		var filter = ["timeMult", "dimMult", "timeMult2", "skipReset1", "skipReset2", "unspentBonus", "27Mult", "18Mult", "36Mult", "resetMult", "skipReset3", "passiveGen", "45Mult", "resetBoost", "galaxyBoost", "skipResetGalaxy"]
 		var newUpgrades = []
@@ -2539,6 +2545,7 @@ function galaxyReset() {
         version: player.version,
         overXGalaxies: player.overXGalaxies,
         overXGalaxiesTickspeedBoost: player.overXGalaxiesTickspeedBoost,
+        singularity: player.singularity,
         spreadingCancer: player.spreadingCancer,
         infDimensionsUnlocked: player.infDimensionsUnlocked,
         infinityPower: player.infinityPower,
@@ -3323,6 +3330,7 @@ function onNotationChange(id) {
 	updateTickSpeed();
 	setAchieveTooltip();
 	updateCosts();
+	updateSingularity()
 	updateDilationUpgradeCosts()
 	updateExdilation()
 	updateMilestones()
@@ -4423,6 +4431,7 @@ function bigCrunch(autoed) {
             postC8Mult: new Decimal(1),
             overXGalaxies: player.overXGalaxies,
             overXGalaxiesTickspeedBoost: player.overXGalaxiesTickspeedBoost,
+            singularity: player.singularity,
             spreadingCancer: player.spreadingCancer,
             infDimensionsUnlocked: player.infDimensionsUnlocked,
             infinityPower: player.infinityPower,
@@ -4502,6 +4511,9 @@ function bigCrunch(autoed) {
         if (!player.options.retryChallenge) player.currentChallenge = ""
 
         skipResets()
+
+        if (player.infinityUpgradesRespecced != undefined) player.singularity.darkMatter = new Decimal(0)
+        updateSingularity()
 
         if (player.replicanti.unl && !player.achievements.includes("r95")) player.replicanti.amount = new Decimal(1)
 
@@ -4732,7 +4744,6 @@ function eternity(force, auto) {
             challenges: challengesCompletedOnEternity(),
             currentChallenge: "",
             infinityUpgrades: player.infinityUpgrades,
-            infinityUpgradesRespecced: player.infinityUpgradesRespecced,
             setsUnlocked: player.setsUnlocked,
             infinityPoints: player.infinityPoints,
             infinitied: 0,
@@ -5248,6 +5259,9 @@ function startChallenge(name) {
         player.resets = 4;
     }
 
+    if (player.infinityUpgradesRespecced != undefined) player.singularity.darkMatter = new Decimal(0)
+    updateSingularity()
+	
     if (player.replicanti.unl) player.replicanti.amount = new Decimal(1)
     player.replicanti.galaxies = 0
 
@@ -5633,7 +5647,6 @@ function startEternityChallenge(name, startgoal, goalIncrease) {
         challenges: challengesCompletedOnEternity(),
         currentChallenge: "",
         infinityUpgrades: player.infinityUpgrades,
-        infinityUpgradesRespecced: player.infinityUpgradesRespecced,
         setsUnlocked: player.setsUnlocked,
         infinityPoints: player.infinityPoints,
         infinitied: 0,
@@ -5679,6 +5692,7 @@ function startEternityChallenge(name, startgoal, goalIncrease) {
         postC8Mult: new Decimal(1),
         overXGalaxies: player.overXGalaxies,
         overXGalaxiesTickspeedBoost: player.overXGalaxiesTickspeedBoost,
+        singularity: player.singularity,
         spreadingCancer: player.spreadingCancer,
         infDimensionsUnlocked: [false, false, false, false, false, false, false, false],
         infinityPower: new Decimal(1),
@@ -6584,6 +6598,11 @@ function gameLoop(diff) {
     player.infinityPoints = player.infinityPoints.plus(bestRunIppm.times(player.offlineProd/100).times(diff/600))
 
     if (!reachedInfinity()) {
+        if (player.infinityUpgradesRespecced != undefined) {
+            var prod = getDarkMatterPerSecond()
+            player.singularity.darkMatter = player.singularity.darkMatter.add(getDarkMatterPerSecond().times(diff/10))
+            if (prod.gt(0)) updateTickSpeed()
+        }
         for (let tier = (inQC(1) ? 1 : player.currentEternityChall == "eterc3" ? 3 : (player.currentChallenge == "challenge4" || player.currentChallenge == "postc1") ? 5 : 7) - (player.currentChallenge == "challenge7" || inQC(4) ? 1 : 0); tier >= 1; --tier) {
             var name = TIER_NAMES[tier];
             player[name + 'Amount'] = player[name + 'Amount'].plus(getDimensionProductionPerSecond(tier + (player.currentChallenge == "challenge7" || inQC(4) ? 2 : 1)).times(diff / 100));

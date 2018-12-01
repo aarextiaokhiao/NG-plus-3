@@ -1189,6 +1189,16 @@ if (player.version < 5) {
       delete player.options.dilationconfirm
       updateAchievements()
   }
+  if (player.aarexModifications.irsVersion < 1.1) {
+      player.singularity = {
+          unlocked: false,
+          sacrificed: 0,
+          upgraded: 0,
+          singularityPower: 0,
+          darkMatter: 0
+      }
+      player.aarexModifications.irsVersion = 1.1
+  }
   ipMultPower=2
   if (player.masterystudies) if (player.masterystudies.includes("t241")) ipMultPower=2.2
   if (GUBought("gb3")) ipMultPower=2.3
@@ -1367,6 +1377,7 @@ if (player.version < 5) {
   document.getElementById("infi3div").style.display=player.infinityUpgradesRespecced==undefined?"none":""
   updateChallenges()
   document.getElementById("postinfbtn").style.display=player.infinityUpgradesRespecced?"none":""
+  updateSingularity()
   if (player.infinityUpgradesRespecced != undefined) order = []
   document.getElementById("ic1desc").textContent="All previous challenges (except tickspeed challenge"+(player.galacticSacrifice?',':" and")+" automatic big crunch challenge"+(player.galacticSacrifice?", and automatic galactic sacrifice challenge":"")+") at once."
   document.getElementById("ic7desc").textContent="You can't get Antimatter Galaxies, but dimensional boost multiplier "+(player.galacticSacrifice?"is cubed":"2.5x -> 10x")
@@ -1800,6 +1811,12 @@ function transformSaveToDecimal() {
   player.costMultipliers = [new Decimal(player.costMultipliers[0]), new Decimal(player.costMultipliers[1]), new Decimal(player.costMultipliers[2]), new Decimal(player.costMultipliers[3]), new Decimal(player.costMultipliers[4]), new Decimal(player.costMultipliers[5]), new Decimal(player.costMultipliers[6]), new Decimal(player.costMultipliers[7])]
   player.tickspeedMultiplier = new Decimal(player.tickspeedMultiplier)
   player.matter = new Decimal(player.matter)
+ 
+  if (player.singularity != undefined) {
+      player.singularity.sacrificed = new Decimal(player.singularity.sacrificed)
+      player.singularity.singularityPower = new Decimal(player.singularity.singularityPower)
+      player.singularity.darkMatter = new Decimal(player.singularity.darkMatter)
+  }
   player.infinityPower = new Decimal(player.infinityPower)
   player.infinityDimension1.amount = new Decimal(player.infinityDimension1.amount)
   player.infinityDimension2.amount = new Decimal(player.infinityDimension2.amount)

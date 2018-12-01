@@ -129,6 +129,7 @@ function softReset(bulk) {
       version: player.version,
       overXGalaxies: player.overXGalaxies,
       overXGalaxiesTickspeedBoost: player.overXGalaxiesTickspeedBoost,
+      singularity: player.singularity,
       infDimensionsUnlocked: player.infDimensionsUnlocked,
       infinityPower: player.infinityPower,
       spreadingCancer: player.spreadingCancer,

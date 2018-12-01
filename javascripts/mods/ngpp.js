@@ -655,7 +655,6 @@ function quantumReset(force, auto, challid, implode=false) {
 		challenges: [],
 		currentChallenge: "",
 		infinityUpgrades: oheHeadstart ? player.infinityUpgrades : [],
-		infinityUpgradesRespecced: oheHeadstart ? player.infinityUpgradesRespecced : {1: 0, 3: 0, 4: 0, 5: 0, 6: 0},
 		setsUnlocked: oheHeadstart ? player.setsUnlocked : 0,
 		infinityPoints: player.infinityPoints,
 		infinitied: 0,
