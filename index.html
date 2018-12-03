@@ -8,7 +8,7 @@
     <meta name="Antimatter Dimensions" content="A game about huge numbers and watching them go up." charset="utf-8"/>
     <script type="text/javascript" src="javascripts/jquery-3.2.1.min.js"></script>
     <script type="text/javascript" src="javascripts/notify.js"></script>
-    <link rel="stylesheet" type="text/css" href="stylesheets/styles.css?11">
+    <link rel="stylesheet" type="text/css" href="stylesheets/styles.css?12">
     <link href="https://fonts.googleapis.com/css?family=Inconsolata" rel="stylesheet">
     <script>
         (function(i, s, o, g, r, a, m) {
@@ -2672,6 +2672,22 @@
                             </div>
                         </td>
                     </tr>
+                    <tr id="irschalls">
+                        <td>
+                            <div class= "challengediv">
+                                <span style="font-size: 110%">Dimension boosts are disabled.</span>
+                                <br>
+                                <br>
+
+                                <div class="outer">
+
+                                    <button id="challenge16" class="challengesbtn">Start</button>
+                                    <br>
+                                    <span>Reward: Automated Dimensional Sacrifice</span>
+                                </div>
+                            </div>
+                        </td>
+                    </tr>
                 </table>
             </div>
             <div id="breakchallenges" class="challengeTab">
@@ -3358,6 +3374,7 @@
                 <td><button id="postinfbtn" class="secondarytabbtn" onclick="showInfTab('postinf')" >Break Infinity</button><td>
                 <td><button id="replicantitabbtn" class="secondarytabbtn" onclick="showInfTab('replicantis')">Replicantis</button><td>
                 <td><button id="singularitytabbtn" class="secondarytabbtn" onclick="showInfTab('singularity')">Singularity</button><td>
+                <td><button id="dimtechstabbtn" class="secondarytabbtn" onclick="showInfTab('dimtechs')">Dim-techs</button><td>
             </tr>
             <div id="preinf" class="inftab">
             <br>
@@ -3433,7 +3450,7 @@
                         <button id="infi3" class="infinimultbtn" onclick="buyRepeatableInfinityUpgrade(3)">Increase the limit of Infinity.<br>Currently: <span id="infi3pow"></span><br>Cost: <span id="infi3cost"></span> IP</button>
                     </td>
                 </tr>
-                <tr id="lockedset1">
+                <tr id="lockedset1" style='display:none'>
                     <td>
                         <button id="infi4" class="infinimultbtn" onclick="buyRepeatableInfinityUpgrade(4)">All dimension boost costs are decreased by 30 each.<br>Currently: <span id="infi4pow"></span>x<br>Cost: <span id="infi4cost"></span> IP</button>
                     </td>
@@ -3987,6 +4004,82 @@
                     </table>
                 </div>
         </div>
+        <div id="dimtechs" class="inftab">
+            <br>
+            <button class="storebtn" id="dimtechsunlock" onclick="unlockDimTechs()" style="width:200px; height: 80px">Unlock Dim-techs<br>Cost: <span id="dimtechsunlcost"></span> IP</button>
+            <div id="dimtechsdiv" style="display: none;">
+                <p>You have <span id="darkMatterDT" style="font-size:35px; color: black">0.0</span> dark matter. Next discounts at <span id="nextDiscounts" style="font-size:35px; color: black">0.0</span>.</p>
+                <p id="discounts">All of your dim-techs gave 0 discounts.</p>
+                <button class="storebtn" id="respecDimTechs" style="width: 180px; height: 36px" onclick="respecDimTechs()">Respec dim techs on next crunch</button>
+                <table align=center>
+                    <tr>
+                        <td class="dimtechdiv">
+                            <p style="font-size: 16px">First Dimension Dim-tech</p>
+                            First Dimension discount: <span id="dim1discount">1</span>x<br>
+                            <button class="storebtn" id="dim1techbtn" onclick="buyDimTech(1)">Level 0<br>1x per discount upgrade<br><br>Cost: 1e95 IP</button>
+                        </td>
+                        <td class="dimtechdiv">
+                            <p style="font-size: 16px">Second Dimension Dim-tech</p>
+                            Second Dimension discount: <span id="dim2discount">1</span>x<br>
+                            <button class="storebtn" id="dim2techbtn" onclick="buyDimTech(2)">Level 0<br>1x per discount upgrade<br><br>Cost: 1e95 IP</button>
+                        </td>
+                        <td class="dimtechdiv">
+                            <p style="font-size: 16px">Third Dimension Dim-tech</p>
+                            Third Dimension discount: <span id="dim3discount">1</span>x<br>
+                            <button class="storebtn" id="dim3techbtn" onclick="buyDimTech(3)">Level 0<br>1x per discount upgrade<br><br>Cost: 1e95 IP</button>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="dimtechdiv">
+                            <p style="font-size: 16px">Fourth Dimension Dim-tech</p>
+                            Fourth Dimension discount: <span id="dim4discount">1</span>x<br>
+                            <button class="storebtn" id="dim4techbtn" onclick="buyDimTech(4)">Level 0<br>1x per discount upgrade<br><br>Cost: 1e95 IP</button>
+                        </td>
+                        <td class="dimtechdiv">
+                            <p style="font-size: 16px">Fifth Dimension Dim-tech</p>
+                            Fifth Dimension discount: <span id="dim5discount">1</span>x<br>
+                            <button class="storebtn" id="dim5techbtn" onclick="buyDimTech(5)">Level 0<br>1x per discount upgrade<br><br>Cost: 1e95 IP</button>
+                        </td>
+                        <td class="dimtechdiv">
+                            <p style="font-size: 16px">Sixth Dimension Dim-tech</p>
+                            Sixth Dimension discount: <span id="dim6discount">1</span>x<br>
+                            <button class="storebtn" id="dim6techbtn" onclick="buyDimTech(6)">Level 0<br>1x per discount upgrade<br><br>Cost: 1e95 IP</button>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="dimtechdiv">
+                            <p style="font-size: 16px">Seventh Dimension Dim-tech</p>
+                            Seventh Dimension discount: <span id="dim7discount">1</span>x<br>
+                            <button class="storebtn" id="dim7techbtn" onclick="buyDimTech(7)">Level 0<br>1x per discount upgrade<br><br>Cost: 1e95 IP</button>
+                        </td>
+                        <td class="dimtechdiv">
+                            <p style="font-size: 16px">Tickspeed Dim-tech</p>
+                            Tickspeed discount: <span id="tickdiscount">1</span>x<br>
+                            <button class="storebtn" id="ticktechbtn" onclick="buyDimTech(0, true)">Level 0<br>1x per discount upgrade<br><br>Cost: 1e95 IP</button>
+                        </td>
+                        <td class="dimtechdiv">
+                            <p style="font-size: 16px">Eighth Dimension Dim-tech</p>
+                            Eighth Dimension discount: <span id="dim8discount">1</span>x<br>
+                            <button class="storebtn" id="dim8techbtn" onclick="buyDimTech(8)">Level 0<br>1x per discount upgrade<br><br>Cost: 1e95 IP</button>
+                        </td>
+                    </tr>
+                </table>
+            </div>
+            <div id="footercontainer">
+                    <table id="footer">
+                        <tr>
+                            <td>
+                                <div style="text-align:center">
+                                    <a href="howto.html" target="_newtab">How to play  </a> |
+                                    <a href="about.html" onclick="giveAchievement('A sound financial decision')" target="_newtab">About   </a> |
+                                    <a href="changelog/" target="_newtab">Changelog   </a>
+                
+                                </div>
+                            </td>
+                        </tr>
+                    </table>
+                </div>
+        </div>
         </div>
 		<div class='tab' id='quantumtab'>
 			<table class="table" align="center" style="margin: auto">
@@ -4290,26 +4383,26 @@
 <script type="text/javascript" src="javascripts/lz-string.js"></script>
 <script type="text/javascript" src="javascripts/core/polyfill.js"></script>
 <script type="text/javascript" src="javascripts/core/format.js?4"></script>
-<script type="text/javascript" src="javascripts/core/achievements.js?14"></script>
+<script type="text/javascript" src="javascripts/core/achievements.js?15"></script>
 <script type="text/javascript" src="javascripts/core/chart.js"></script>
 <script type="text/javascript" src="javascripts/core/tickspeed.js?29"></script>
 <script type="text/javascript" src="javascripts/core/normal_dimension.js?5"></script>
 <script type="text/javascript" src="javascripts/core/infinity_dimension.js?20"></script>
 <script type="text/javascript" src="javascripts/core/time_dimension.js?21"></script>
-<script type="text/javascript" src="javascripts/core/dimboost.js?7"></script>
+<script type="text/javascript" src="javascripts/core/dimboost.js?8"></script>
 <script type="text/javascript" src="javascripts/core/timestudies.js?6"></script>
 <script type="text/javascript" src="javascripts/core/canvases.js?9"></script>
 <script type="text/javascript" src="javascripts/core/devtools.js"></script>
-<script type="text/javascript" src="javascripts/core/load_functions.js?13"></script>
+<script type="text/javascript" src="javascripts/core/load_functions.js?14"></script>
 <script type="text/javascript" src="javascripts/core/newsticker.js?8"></script>
-<script type="text/javascript" src="javascripts/mods/ngmm.js?1"></script>
+<script type="text/javascript" src="javascripts/mods/ngmm.js?2"></script>
 <script type="text/javascript" src="javascripts/mods/ers.js?1"></script>
 <script type="text/javascript" src="javascripts/mods/ngpp.js?10"></script>
-<script type="text/javascript" src="javascripts/mods/ngppp.js?9"></script>
+<script type="text/javascript" src="javascripts/mods/ngppp.js?10"></script>
 <script type="text/javascript" src="javascripts/mods/ngmmm.js?1"></script>
 <script type="text/javascript" src="javascripts/mods/ngud.js"></script>
-<script type="text/javascript" src="javascripts/mods/irs.js??1"></script>
-<script type="text/javascript" src="javascripts/game.js?13"></script>
+<script type="text/javascript" src="javascripts/mods/irs.js??2"></script>
+<script type="text/javascript" src="javascripts/game.js?14"></script>
 <script type="text/javascript" src="javascripts/sha512.js"></script>
 </body>
 </html>

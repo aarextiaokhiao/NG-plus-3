@@ -45,6 +45,7 @@ function unlockSingularity() {
 	player.infinityPoints = player.infinityPoints.sub(1e30)
 	player.singularity.unlocked = true
 	updateSingularity()
+	updateDimTechs()
 }
 
 function gainedSingularityPower() {
@@ -66,4 +67,75 @@ function getDarkMatterPerSecond() {
 
 function getDarkMatterMult() {
 	return player.singularity.darkMatter.add(1).pow(4)
+}
+
+//v1.2
+document.getElementById("challenge16").onclick = function () {
+	startChallenge("challenge16", Number.MAX_VALUE);
+}
+
+function updateDimTechs() {
+	var shown = false
+	if (player.infinityUpgradesRespecced != undefined) shown = player.singularity.unlocked
+	if (!shown) {
+		document.getElementById("dimtechstabbtn").style.display = "none"
+		return
+	} else document.getElementById("dimtechstabbtn").style.display = ""
+	if (player.dimtechs.unlocked) {
+		document.getElementById("dimtechsunlock").style.display = "none"
+		document.getElementById("dimtechsdiv").style.display = ""
+		var cost = getDimTechUpgradeCost()
+		var canBuy = player.infinityPoints.gte(cost)
+		for (dim=1;dim<9;dim++) {
+			document.getElementById("dim" + dim + "techbtn").innerHTML = "Level " + getFullExpansion(player.dimtechs["dim" + dim + "Upgrades"]) + "<br>" + shortenDimensions(getDiscountMultiplier("dim" + dim)) + "x per discount upgrade" + "<br><br>Cost: " + shortenCosts(cost) + " IP"
+			document.getElementById("dim" + dim + "techbtn").className = canBuy ? "storebtn" : "unavailablebtn"
+		}
+		document.getElementById("ticktechbtn").innerHTML = "Level " + getFullExpansion(player.dimtechs.tickUpgrades) + "<br>" + shortenDimensions(getDiscountMultiplier("tick")) + "x per discount upgrade" + "<br><br>Cost: " + shortenCosts(cost) + " IP"
+		document.getElementById("ticktechbtn").className = canBuy ? "storebtn" : "unavailablebtn"
+		document.getElementById("respecDimTechs").className = player.dimtechs.respec ? "respecbtn" : "storebtn"
+	} else {
+		document.getElementById("dimtechsunlock").style.display = ""
+		document.getElementById("dimtechsdiv").style.display = "none"
+		document.getElementById("dimtechsunlcost").textContent = shortenCosts(1e95)
+		document.getElementById("dimtechsunlock").className = player.infinityPoints.lt(1e95) ? "unavailablebtn" : "storebtn"
+	}
+}
+
+function unlockDimTechs() {
+	if (player.infinityPoints.lt(1e95) || player.dimtechs.unlocked) return
+	player.infinityPoints = player.infinityPoints.sub(1e95)
+	player.dimtechs.unlocked = true
+	updateDimTechs()
+}
+
+function getNextDiscounts() {
+	return Decimal.pow(2, player.dimtechs.discounts*(player.dimtechs.discounts+1)/4).times(1e22)
+}
+
+function getDimTechUpgradeCost() {
+	var total = 0
+	for (dim=1;dim<9;dim++) total += player.dimtechs["dim" + dim + "Upgrades"]
+	total += player.dimtechs.tickUpgrades
+	return Decimal.pow(5, total).times(1e95)
+}
+
+function buyDimTech(dim, tick) {
+	if (tick) var name = "tick"
+	else var name = "dim" + dim
+	if (player.infinityPoints.lt(getDimTechUpgradeCost())) return
+	player.infinityPoints = player.infinityPoints.sub(getDimTechUpgradeCost())
+	var oldMultiplier = getDiscountMultiplier(name)
+	player.dimtechs[name + "Upgrades"]++
+	if (tick) player.tickSpeedCost = player.tickSpeedCost.div(Decimal.pow(getDiscountMultiplier(name).div(oldMultiplier), player.dimtechs.discounts))
+	else player[TIER_NAMES[dim] + "Cost"] = player[TIER_NAMES[dim] + "Cost"].div(Decimal.pow(getDiscountMultiplier(name).div(oldMultiplier), player.dimtechs.discounts))
+	updateDimTechs()
+}
+
+function getDiscountMultiplier(id) {
+	return Decimal.pow(1e38, Math.sqrt(player.dimtechs[id + "Upgrades"]))
+}
+
+function respecDimTechs() {
+	player.dimtechs.respec = !player.dimtechs.respec
+	document.getElementById("respecDimTechs").className = player.dimtechs.respec ? "respecbtn" : "storebtn"
 }

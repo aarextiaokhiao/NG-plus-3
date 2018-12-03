@@ -3,6 +3,7 @@ var notifyId = 0
 function onLoad(noOffline) {
   happyHalloween=false
   if (player.totalmoney === undefined || isNaN(player.totalmoney)) player.totalmoney = player.money;
+  if (player.tickspeed === undefined) player.tickspeed = new Decimal(1000)
   if (player.options === undefined) {
       player.options = {
           scientific: false,
@@ -1197,7 +1198,16 @@ if (player.version < 5) {
           singularityPower: 0,
           darkMatter: 0
       }
-      player.aarexModifications.irsVersion = 1.1
+  }
+  if (player.aarexModifications.irsVersion < 1.2) {
+      player.dimtechs = {
+          unlocked: false,
+          discounts: 0,
+          tickUpgrades: 0,
+          respec: false
+      }
+      for (dim=1;dim<9;dim++) player.dimtechs["dim"+dim+"Upgrades"] = 0
+      player.aarexModifications.irsVersion = 1.2
   }
   ipMultPower=2
   if (player.masterystudies) if (player.masterystudies.includes("t241")) ipMultPower=2.2
@@ -1336,6 +1346,7 @@ if (player.version < 5) {
   document.getElementById("infPowEffectPowerDiv").innerHTML=player.galacticSacrifice?"Raised to the power of <span id='infPowEffectPower' style='font-size:35px; color: black'></span>, t":"T"
   document.getElementById("ngmmchalls").style.display=player.galacticSacrifice?"":"none"
   document.getElementById("ngmmmchalls").style.display=player.tickspeedBoosts==undefined?"none":""
+  document.getElementById("irschalls").style.display=player.infinityUpgradesRespecced==undefined?"none":""
   if (player.galacticSacrifice) {
       order=['postcngmm_1','postcngmm_2','postcngmm_3','postc1','postc2','postc4','postc5','postc6','postc7','postc8']
       document.getElementById("icngmm_row").style.display=""
@@ -1378,6 +1389,7 @@ if (player.version < 5) {
   updateChallenges()
   document.getElementById("postinfbtn").style.display=player.infinityUpgradesRespecced?"none":""
   updateSingularity()
+  updateDimTechs()
   if (player.infinityUpgradesRespecced != undefined) order = []
   document.getElementById("ic1desc").textContent="All previous challenges (except tickspeed challenge"+(player.galacticSacrifice?',':" and")+" automatic big crunch challenge"+(player.galacticSacrifice?", and automatic galactic sacrifice challenge":"")+") at once."
   document.getElementById("ic7desc").textContent="You can't get Antimatter Galaxies, but dimensional boost multiplier "+(player.galacticSacrifice?"is cubed":"2.5x -> 10x")
@@ -1771,7 +1783,7 @@ function new_game(id) {
 function transformSaveToDecimal() {
 
   player.infinityPoints = new Decimal(player.infinityPoints)
-  document.getElementById("eternitybtn").style.display = (player.infinityPoints.gte(Number.MAX_VALUE) || getEternitied() > 0) ? "inline-block" : "none"
+  document.getElementById("eternitybtn").style.display = ((player.infinityPoints.gte(Number.MAX_VALUE) && player.infDimensionsUnlocked[7]) || getEternitied() > 0) ? "inline-block" : "none"
 
   player.money = new Decimal(player.money)
   player.tickSpeedCost = new Decimal(player.tickSpeedCost)

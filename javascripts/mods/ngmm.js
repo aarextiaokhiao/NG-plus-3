@@ -97,6 +97,13 @@ function reduceDimCosts() {
 		}
 		if (player.achievements.includes('r48')) player.tickSpeedCost = player.tickSpeedCost.div(div)
 	}
+	if (player.infinityUpgradesRespecced != undefined) {
+		for (d=1;d<9;d++) {
+			var name = TIER_NAMES[d]
+			player[name+"Cost"] = player[name+"Cost"].div(Decimal.pow(getDiscountMultiplier("dim" + d), player.dimtechs.discounts))
+		}
+		player.tickSpeedCost = player.tickSpeedCost.div(Decimal.pow(getDiscountMultiplier("tick"), player.dimtechs.discounts))
+	}
 }
 
 let galUpgrade11 = function () {

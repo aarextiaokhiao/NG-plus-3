@@ -1133,14 +1133,14 @@ function updateQCTimes() {
 	var temp=0
 	var tempcounter=0
 	for (var i=1;i<9;i++) {
-		setAndMaybeShow("qctime"+i,player.quantum.challengeRecords[i],'"Quantum Challenge '+i+' time record: "+timeDisplayShort(player.quantum.challengeRecords['+i+'])')
+		setAndMaybeShow("qctime"+i,player.quantum.challengeRecords[i],'"Quantum Challenge '+i+' time record: "+timeDisplayShort(player.quantum.challengeRecords['+i+'], false, 3)')
 		if (player.quantum.challengeRecords[i]) {
 			temp+=player.quantum.challengeRecords[i]
 			tempcounter++
 		}
 	}
 	if (tempcounter>0) document.getElementById("qcsbtn").style.display = "inline-block"
-	setAndMaybeShow("qctimesum",tempcounter>1,'"Sum of completed quantum challenge time records is "+timeDisplayShort('+temp+')')
+	setAndMaybeShow("qctimesum",tempcounter>1,'"Sum of completed quantum challenge time records is "+timeDisplayShort('+temp+', false, 3)')
 }
 
 //v1.99873

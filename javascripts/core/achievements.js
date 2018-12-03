@@ -252,7 +252,7 @@ function giveAchievement(name) {
     if (name == "All your IP are belong to us" || name == "MAXIMUM OVERDRIVE") {
         player.infMult = player.infMult.times(4);
         player.autoIP = player.autoIP.times(4);
-        if (player.autoCrunchMode == "amount" && player.autobuyers[11].priority != undefined) player.autobuyers[11].priority = player.autobuyers[11].priority.times(4);
+        if (player.autoCrunchMode == "amount" && player.autobuyers[11].priority != undefined) player.autobuyers[11].priority = Decimal.times(player.autobuyers[11].priority, 4);
     }
     if (name == "The swarm" && player.boughtDims) document.getElementById('replicantigalaxypowerdiv').style.display=""
     if (name == "GAS GAS GAS") {

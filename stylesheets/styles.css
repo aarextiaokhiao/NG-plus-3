@@ -527,6 +527,28 @@ button {
     font-size: 11px
 }
 
+.dimtechdiv {
+	text-align: center;
+	width: 280px;
+	height: 150px
+}
+
+.dimtechdiv button {
+	width: 190px;
+	height: 100px
+}
+
+.respecbtn {
+    color: black;
+    background: #5AC467;
+    font-weight: bold;
+    font-size: 13px;
+    border: 1px solid #ED85DF;
+    transition-duration: 0.2s;
+    border-radius: 4px;
+    font-family: Typewriter;
+}
+
 .newdim {
     font-weight: bold;
     border-radius: 4px;

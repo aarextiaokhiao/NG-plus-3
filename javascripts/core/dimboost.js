@@ -1,5 +1,5 @@
 function getDimensionBoostPower(next, focusOn) {
-  if (player.currentChallenge == "challenge11" || player.currentChallenge == "postc1" || player.currentChallenge == "postcngm3_1") return Decimal.fromNumber(1);
+  if (player.currentChallenge == "challenge11" || player.currentChallenge == "challenge16" || player.currentChallenge == "postc1" || player.currentChallenge == "postcngm3_1") return Decimal.fromNumber(1);
 
   var ret = 2
   if (!player.galacticSacrifice) {
@@ -130,6 +130,7 @@ function softReset(bulk) {
       overXGalaxies: player.overXGalaxies,
       overXGalaxiesTickspeedBoost: player.overXGalaxiesTickspeedBoost,
       singularity: player.singularity,
+      dimtechs: player.dimtechs,
       infDimensionsUnlocked: player.infDimensionsUnlocked,
       infinityPower: player.infinityPower,
       spreadingCancer: player.spreadingCancer,
@@ -382,7 +383,7 @@ document.getElementById("softReset").onclick = function () {
   if (reachedInfinity() || getAmount(req.tier) < req.amount) return;
   auto = false;
   var pastResets = player.resets
-  if (player.infinityUpgrades.includes("bulkBoost")) maxBuyDimBoosts(true);
+  if (player.infinityUpgrades.includes("bulkBoost") || player.autobuyers[9].bulkBought) maxBuyDimBoosts(true);
   else softReset(1)
   if (player.resets <= pastResets) return
   if (player.currentEternityChall=='eterc13') return
