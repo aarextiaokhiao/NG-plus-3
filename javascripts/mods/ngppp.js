@@ -453,7 +453,14 @@ function updateQuantumTabs() {
 		document.getElementById("gatheredQuarks").textContent=shortenDimensions(player.quantum.replicants.quarks.floor())
 		document.getElementById("quarkTranslation").textContent=shortenDimensions(gatheredQuarksBoost*100)
 
-		document.getElementById("eggonRate").textContent=shortenDimensions(getTotalWorkers().times(3))
+		var eggonRate = getTotalWorkers().times(3)
+		if (eggonRate.lt(30)) {
+			document.getElementById("eggonRate").textContent=shortenDimensions(eggonRate)
+			document.getElementById("eggonRateTimeframe").textContent="minute"
+		} else {
+			document.getElementById("eggonRate").textContent=shortenMoney(eggonRate.div(60))
+			document.getElementById("eggonRateTimeframe").textContent="second"
+		}
 		document.getElementById("feedNormal").className=(canFeedReplicant(1)?"stor":"unavailabl")+"ebtn"
 		document.getElementById("workerProgress").textContent=Math.round(eds[1].progress.toNumber()*100)+"%"
 
