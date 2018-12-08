@@ -56,7 +56,7 @@ function showspoilers() {
 function updateSpoilers() {
 	var displayed = spoilers;
 	document.getElementById("ng3pguide").style.display=player.masterystudies||spoilers?"":"none"
-	for (i=27; i>0; i--) {
+	for (i=28; i>0; i--) {
 		if (i != 7) {
 			if (!displayed) {
 				if (i < 5) displayed = 1
@@ -74,7 +74,7 @@ function updateSpoilers() {
 					if (i == 22 && player.quantum) if (player.quantum.times>0) displayed = 1
 					if (player.masterystudies) {
 						if (i == 21 && player.dilation.upgrades.includes("ngpp4")) displayed = 1
-						if (i == 22 && player.quantum) if (player.quantum.times>0) displayed = 1
+						if (i == 23 && player.quantum) if (player.quantum.times>0) displayed = 1
 						if (i == 24 && player.masterystudies.includes("d7")) displayed = 1
 						if (i == 25 && player.masterystudies.includes("d8")) displayed = 1
 						if (i == 26 && player.masterystudies.includes("d9")) displayed = 1

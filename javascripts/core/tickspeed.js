@@ -38,7 +38,11 @@ function getGalaxyPowerEff(ng, bi) {
 	}
 	if (player.achievements.includes("ngpp8") && player.meta != undefined) eff *= 1.001;
 	if (player.timestudy.studies.includes(212)) eff *= Math.min(Math.pow(player.timeShards.max(2).log2(), 0.005), 1.1)
-	if (player.timestudy.studies.includes(232)&&bi) eff *= Math.pow(1+ng/1000, 0.2)
+	if (player.timestudy.studies.includes(232)&&bi) {
+		let exp = 0.2
+		if (player.masterystudies != undefined) if (player.galaxies >= 1e4) exp *= 6 - player.galaxies / 2e3
+		eff *= Math.pow(1+ng/1000, exp)
+	}
 	eff *= colorBoosts.r
 	if (GUBought("rg2")) eff *= Math.pow(player.dilation.freeGalaxies/5e3+1,0.25)
 	if (GUBought("rg4")) eff *= 1.5
