@@ -2103,7 +2103,6 @@ function migrateOldSaves() {
 		}
 	}
 	if (metaSave.version < 2.01) {
-	if (metaSave.version < 2.01) {
 		metaSave.presetsOrder_ers=[]
 	}
 	metaSave.version=2.01
