@@ -542,7 +542,7 @@
                 </table>
                 <table class="table" id="studytable">
                     <tr>
-                        <td><button class="timestudylocked" id="dilstudy12">Unlock Nanofield<br>(Coming soon!)</button></td>
+                        <td><button class="timestudylocked" id="dilstudy12" onclick='buyMasteryStudy("d", 12)'>Unlock Nanofield<br><span id="ds12Cost"></span><br>Requirement: 10 8th Emperor Dimensions</button></td>
                         <td><button class="timestudylocked" id="dilstudy13">Unlock Tree of Decay<br>(Coming soon!)</button></td>
                     </tr>
                 </table>
@@ -4088,6 +4088,7 @@
 					<td><button class="secondarytabbtn" onclick="showQuantumTab('gluons')">Gluons</button></td>
 					<td id='electronstabbtn'><button class="secondarytabbtn" onclick="showQuantumTab('electrons')">Electrons</button></td>
 					<td id='replicantstabbtn'><button class="secondarytabbtn" onclick="showQuantumTab('replicants')">Replicants</button></td>
+					<td id='nanofieldtabbtn'><button class="secondarytabbtn" onclick="showQuantumTab('nanofield')">Nanofield</button></td>
 				</tr>
 			</table>
 			<div class='quantumtab' id='uquarks'>
@@ -4212,6 +4213,9 @@
 					You have <span id="eggonAmount" style="font-size:35px">0</span> eggons. <span id="hatchProgress" style="font-size:15px">0.0%</span><br>
 					<button class='storebtn' id='reduceHatchSpeed' style='width: 240px; height: 60px' onclick='reduceHatchSpeed()'></button>
 				</td></tr></table>
+			</div>
+			<div class='quantumtab' id='nanofield'>
+				I have a question for you. Do you want me to insert a non-battle version or not?
 			</div>
 			<div id="footercontainer">
 				<table id="footer">

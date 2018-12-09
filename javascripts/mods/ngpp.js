@@ -1032,6 +1032,7 @@ function quantumReset(force, auto, challid, implode=false) {
 			player.eternityBuyer.dilationMode = false
 			player.eternityBuyer.dilationPerAmount = 10
 		}
+		updateNanofield()
 		player.eternityBuyer.statBeforeDilation = 0
 		if ((player.autoEterMode=="replicanti"||player.autoEterMode=="peak")&&(speedrunMilestonesReached<18||!isRewardEnabled(4))) {
 			player.autoEterMode="amount"
@@ -1151,11 +1152,10 @@ function quantumReset(force, auto, challid, implode=false) {
 		document.getElementById("timestudy361").style.display = "none"
 		document.getElementById("timestudy362").style.display = "none"
 		document.getElementById("edtabbtn").style.display = "none"
-		if (document.getElementById("metadimensions").style.display == "block") showDimTab("antimatterdimensions")
+		if (document.getElementById("metadimensions").style.display == "block"||document.getElementById("emperordimensions").style.display == "block") showDimTab("antimatterdimensions")
 		if (document.getElementById("masterystudies").style.display=="block") showEternityTab("timestudies", document.getElementById("eternitystore").style.display=="block")
-		if (document.getElementById("emperordimensions").style.display == "block") showDimTab("antimatterdimensions")
 		if (document.getElementById("quantumchallenges").style.display == "block") showChallengesTab("normalchallenges")
-		if (document.getElementById("electronstabbtn").style.display == "block"||document.getElementById("replicantstabbtn").style.display == "block") showQuantumTab("uquarks")
+		if (document.getElementById("electrons").style.display == "block"||document.getElementById("replicants").style.display == "block"||document.getElementById("nanofield").style.display == "block") showQuantumTab("uquarks")
 	}
 	drawMasteryTree()
 	Marathon2 = 0;

@@ -423,6 +423,8 @@ strong { color: #0072e5 }
 #eggonAmount, #eggonRate { color: #e5dab7 !important }
 #reduceHatchSpeed.storebtn { border: 2px solid #e5dab7 !important }
 #reduceHatchSpeed.storebtn:hover { background-color: #e5dab7 !important }
+#dilstudy12.dilationupg, #nanofieldtabbtn button { border: 2px solid #999999 !important }
+#dilstudy12.dilationupg:hover, #dilstudy12.dilationupgbought, #nanofieldtabbtn button:hover { background-color: #999999 !important }
 .notifyjs-bootstrap-info {
     background-color: #0072e5;
     font-family:'Inconsolata', monospace;
