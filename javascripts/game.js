@@ -391,7 +391,7 @@ function updateNewPlayer(reseted) {
         player.options.gSacrificeConfirmation = true
     }
     if (modesChosen.ngpp === 2) {
-        player.aarexModifications.newGame3PlusVersion = 1.99911
+        player.aarexModifications.newGame3PlusVersion = 1.9995
         player.respecMastery=false
         player.dbPower = 1
         player.peakSpent = 0
@@ -463,6 +463,13 @@ function updateNewPlayer(reseted) {
         player.quantum.emperorDimensions = {}
         for (d=1;d<9;d++) player.quantum.emperorDimensions[d] = {workers: 0, progress: 0, perm: 0, manualProgress: 0}
         player.dontWant = false
+        player.quantum.nanofield = {
+            charge: 0,
+            energy: 0,
+            antienergy: 0,
+            power: 0,
+            rewards: 0
+        }
     }
     if (modesChosen.rs===true) {
         player.aarexModifications.ersVersion = 1.02

@@ -719,6 +719,13 @@ if (player.version < 5) {
               }
               player.quantum.emperorDimensions = {}
               for (d=1;d<9;d++) player.quantum.emperorDimensions[d] = {workers: 0, progress: 0}
+              player.quantum.nanofield = {
+                 charge: 0,
+                 energy: 0,
+                 antienergy: 0,
+                 power: 0,
+                 rewards: 0
+             }
           }
           player.dilation.upgrades=migratedUpgrades
           resetDilationGalaxies()
@@ -956,7 +963,16 @@ if (player.version < 5) {
       delete player.quantum.replicants.workers
       delete player.quantum.replicants.workerProgress
   }
-  if (player.aarexModifications.newGame3PlusVersion < 1.99911) player.aarexModifications.newGame3PlusVersion=1.99911
+  if (player.aarexModifications.newGame3PlusVersion < 1.9995) {
+      player.quantum.nanofield = {
+          charge: 0,
+          energy: 0,
+          antienergy: 0,
+          power: 0,
+          rewards: 0
+      }
+      player.aarexModifications.newGame3PlusVersion=1.9995
+  }
   if (player.masterystudies) {
       if (player.quantum.autoOptions === undefined) player.quantum.autoOptions = {} //temp
       if (player.quantum.challengeRecords === undefined) player.quantum.challengeRecords = {}
@@ -1983,6 +1999,11 @@ function transformSaveToDecimal() {
       if (player.quantum ? (player.quantum.emperorDimensions ? player.quantum.emperorDimensions[1] : false) : false) for (d=1;d<9;d++) {
           player.quantum.emperorDimensions[d].workers = Decimal.round(player.quantum.emperorDimensions[d].workers)
           player.quantum.emperorDimensions[d].progress = Decimal.round(player.quantum.emperorDimensions[d].progress)
+      }
+      if (player.quantum ? player.quantum.nanofield : false) {
+          player.quantum.nanofield.charge = new Decimal(player.quantum.nanofield.charge)
+          player.quantum.nanofield.energy = new Decimal(player.quantum.nanofield.energy)
+          player.quantum.nanofield.antienergy = new Decimal(player.quantum.nanofield.antienergy)
       }
   }
 }
