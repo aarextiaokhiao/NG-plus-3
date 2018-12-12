@@ -143,7 +143,7 @@ function buyMasteryStudy(type, id, quick=false) {
 		if (id==12) {
 			showTab("quantumtab")
 			showQuantumTab("nanofield")
-			document.getElementById("nanofieldtabbtn").style.display=""
+			updateNanofield()
 		}
 	}
 }
@@ -486,6 +486,19 @@ function updateQuantumTabs() {
 		document.getElementById("feedBaby").className=((player.quantum.replicants.quantumFood<1||player.quantum.replicants.babies.lt(1))?"unavailabl":"stor")+"ebtn"
 
 		document.getElementById("reduceHatchSpeed").innerHTML="Hatch speed: "+hatchSpeedDisplay()+" -> "+hatchSpeedDisplay(true)+"<br>Cost: "+shortenDimensions(player.quantum.replicants.hatchSpeedCost)+" for all 3 gluons"
+	}
+	if (document.getElementById("nanofield").style.display == "block") {
+		document.getElementById("normalReplicantsNanofield").textContent=shortenDimensions(player.quantum.replicants.amount)
+		document.getElementById("quarksNanofield").textContent=shortenDimensions(player.quantum.replicants.quarks)
+		document.getElementById("quarkCharge").textContent=shortenMoney(player.quantum.nanofield.charge)
+		document.getElementById("quarkChargeRate").textContent=shortenDimensions(getQuarkChargeProduction())
+		document.getElementById("quarkLoss").textContent=shortenDimensions(getQuarkChargeProduction().times(getQuarkLossMult()))
+		document.getElementById("quarkEnergy").textContent=shortenMoney(player.quantum.nanofield.energy)
+		document.getElementById("quarkPower").textContent=getFullExpansion(player.quantum.nanofield.power)
+		document.getElementById("quarkPowerThreshold").textContent=shortenMoney(player.quantum.nanofield.powerThreshold)
+		document.getElementById("quarkAntienergy").textContent=shortenMoney(player.quantum.nanofield.antienergy)
+		document.getElementById("quarkAntienergyEffect").textContent=shortenMoney(getQuarkAntienergyEffect())
+		document.getElementById("rewards").textContent=getFullExpansion(player.quantum.nanofield.rewards)
 	}
 }
 
@@ -1353,8 +1366,22 @@ function getEDRateOfChange(dim) {
 
 //v1.9995
 function updateNanofield() {
-	if (player.masterystudies ? !player.masterystudies.includes("d14") : true) {
+	if (player.masterystudies ? !player.masterystudies.includes("d12") : true) {
 		document.getElementById("nanofieldtabbtn").style.display="none"
 		return
 	} else document.getElementById("nanofieldtabbtn").style.display=""
+}
+
+function getQuarkChargeProduction() {
+	let ret = new Decimal(1)
+	ret = ret.div(getQuarkAntienergyEffect())
+	return ret
+}
+
+function getQuarkLossMult() {
+	return new Decimal(1)
+}
+
+function getQuarkAntienergyEffect() {
+	return player.quantum.nanofield.antienergy.add(1).pow(0)
 }

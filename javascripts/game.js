@@ -397,6 +397,7 @@ function updateNewPlayer(reseted) {
         player.peakSpent = 0
         player.masterystudies = []
         player.options.animations.quarks = true
+        player.meta.bestOverQuantums = 0
         player.quantum.usedQuarks = {
             r: 0,
             g: 0,
@@ -468,7 +469,9 @@ function updateNewPlayer(reseted) {
             energy: 0,
             antienergy: 0,
             power: 0,
-            rewards: 0
+            powerThreshold: 1,
+            rewards: 0,
+            producingCharge: false
         }
     }
     if (modesChosen.rs===true) {
@@ -6786,6 +6789,7 @@ function gameLoop(diff) {
         player.meta.antimatter = player.meta.antimatter.plus(getMetaDimensionProduction(1).times(diff/10))
         if (inQC(4)) player.meta.antimatter = player.meta.antimatter.plus(getMetaDimensionProduction(1).times(diff/10))
         player.meta.bestAntimatter = player.meta.bestAntimatter.max(player.meta.antimatter)
+        if (player.masterystudies) player.meta.bestOverQuantums = player.meta.bestOverQuantums.max(player.meta.antimatter)
     }
     var step = inQC(4) ? 2 : 1
     for (let tier=1;tier<9;tier++) {

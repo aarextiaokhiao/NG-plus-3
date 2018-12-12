@@ -964,12 +964,15 @@ if (player.version < 5) {
       delete player.quantum.replicants.workerProgress
   }
   if (player.aarexModifications.newGame3PlusVersion < 1.9995) {
+      player.meta.bestOverQuantums = player.meta.bestAntimatter
       player.quantum.nanofield = {
           charge: 0,
           energy: 0,
           antienergy: 0,
           power: 0,
-          rewards: 0
+          powerThreshold: 1,
+          rewards: 0,
+          producingCharge: false
       }
       player.aarexModifications.newGame3PlusVersion=1.9995
   }
@@ -977,6 +980,10 @@ if (player.version < 5) {
       if (player.quantum.autoOptions === undefined) player.quantum.autoOptions = {} //temp
       if (player.quantum.challengeRecords === undefined) player.quantum.challengeRecords = {}
       if (player.quantum.pairedChallenges.completions === undefined) player.quantum.pairedChallenges.completions = {}
+      //Testing-exclusive
+      if (player.meta.bestOverQuantums === undefined) player.meta.bestOverQuantums = player.meta.bestAntimatter
+      if (player.quantum.nanofield.powerThreshold === undefined) player.quantum.nanofield.powerThreshold = 1
+      if (player.quantum.nanofield.producingCharge === undefined) player.quantum.nanofield.producingCharge = false
   }
   if (player.aarexModifications.newGame3PlusVersion==undefined) {
       colorBoosts={
@@ -1338,6 +1345,8 @@ if (player.version < 5) {
 
   document.getElementById("secretstudy").style.opacity = 0
   document.getElementById("secretstudy").style.cursor = "pointer"
+  
+  document.getElementById("bestAntimatterType").textContent = player.masterystudies && quantumed ? "Your best meta-antimatter for this quantum" : "Your best-ever meta-antimatter"
 
   document.getElementById("masterystudyunlock").style.display = player.dilation.upgrades.includes("ngpp6") && player.masterystudies ? "" : "none"
   document.getElementById("respecMastery").style.display = player.dilation.upgrades.includes("ngpp6") && player.masterystudies ? "block" : "none"
@@ -1967,6 +1976,7 @@ function transformSaveToDecimal() {
 
   if (player.masterystudies) {
       player.dbPower = new Decimal(player.dbPower)
+      if (player.meta.bestOverQuantums) player.meta.bestOverQuantums = new Decimal(player.meta.bestOverQuantums)
       if (player.quantum ? player.quantum.usedQuarks : false) {
           player.quantum.usedQuarks.r = new Decimal(player.quantum.usedQuarks.r)
           player.quantum.usedQuarks.g = new Decimal(player.quantum.usedQuarks.g)
@@ -2004,6 +2014,7 @@ function transformSaveToDecimal() {
           player.quantum.nanofield.charge = new Decimal(player.quantum.nanofield.charge)
           player.quantum.nanofield.energy = new Decimal(player.quantum.nanofield.energy)
           player.quantum.nanofield.antienergy = new Decimal(player.quantum.nanofield.antienergy)
+          if (player.quantum.nanofield.powerThreshold !== undefined) player.quantum.nanofield.powerThreshold = new Decimal(player.quantum.nanofield.powerThreshold)
       }
   }
 }

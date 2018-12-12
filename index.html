@@ -1366,7 +1366,8 @@
             <div id="metadimensions" class="dimtab">
                   <div>
                       <p>You have <span id="metaAntimatterAmount" style="font-size:35px; color: black">0</span> meta-antimatter.<p>
-                      <p>Your best ever meta-antimatter was <span id="metaAntimatterBest" style="font-size:35px; color: black">0</span>. Translated to <span id="metaAntimatterEffect" style="font-size:35px; color: black">0</span>x <span id="metaAntimatterEffectType"></span>.</p>
+                      <p><span id="bestAntimatterType"></span> was <span id="metaAntimatterBest" style="font-size:35px; color: black">0</span>. Translated to <span id="metaAntimatterEffect" style="font-size:35px; color: black">0</span>x <span id="metaAntimatterEffectType"></span>.</p>
+                      <p id="bestAntimatterQuantum"></p>
                   </div>
                   <div id="metaAntimatterPerSec">You are getting 0 meta-antimatter per second.</div>
                   <div id="metaMaxAllDiv">
@@ -4215,7 +4216,19 @@
 				</td></tr></table>
 			</div>
 			<div class='quantumtab' id='nanofield'>
-				This mechanic will be added soon! :D
+				You have <span id="normalReplicantsNanofield"></span> normal replicants.<br>
+				All of your replicants gathered <span id="quarksNanofield"></span> quarks.<br>
+				<table class="qtable"><tr><td>
+					You have <span id="quarkEnergy" style="font-size:35px"></span> quark energy.<br>
+					You have <span id="quarkPower" style="font-size:35px"></span> quark power. Next at <span id="quarkPowerThreshold" style="font-size:35px"></span> quark energy.<br>
+				</td><td>
+					You have <span id="quarkCharge" style="font-size:35px"></span> quark charge.<br>
+					<button class="storebtn" id="produceQuarkEnergy"  style="width: 120px; height: 60px; font-size: 11px">Start produce quark charge.</button><br>
+					You are getting <span id="quarkChargeRate"></span> quark charge per second but losing <span id="quarkLoss"></span> quarks per second.
+				</td><td>
+					You have <span id="quarkAntienergy" style="font-size:35px"></span> quark anti-energy, reducing the quark charge production by <span id="quarkAntienergyEffect" style="font-size:35px"></span> x.
+				</td></tr></table>
+				You have gotten <span id="rewards" style="font-size:35px"></span> rewards.
 			</div>
 			<div id="footercontainer">
 				<table id="footer">

@@ -149,7 +149,7 @@ strong { color: #0072e5 }
 }
 #singularitytabbtn, #singularityunlock.storebtn, #sacrificeIP.storebtn, #blackHoleTabbtn button, #blackholeunlock.storebtn, #blackholediv table .storebtn, #replicantstabbtn button, #replicantReset.storebtn, #edtabbtn button { border: 2px solid #333333 !important }
 #singularitytabbtn:hover, #singularityunlock.storebtn:hover, #sacrificeIP.storebtn:hover, #blackHoleTabbtn button:hover, #blackholeunlock.storebtn:hover, #blackholediv table .storebtn:hover, #replicantstabbtn button:hover, #replicantReset.storebtn:hover, #edtabbtn button:hover { background-color: #333333 !important }
-#singularityPower, #darkMatter, #darkMatterPerSecond, #darkMatterDT, #nextDiscounts, #darkMatterMult, #blackholePowAmount, #DilMultAmount, #InfAndReplMultAmount, #replicantAmount, #workerReplAmount, #babyReplAmount, #workerProgress, #hatchProgress, #growupProgress, #replicantAmountED { color: #333333 !important }
+#singularityPower, #darkMatter, #darkMatterPerSecond, #darkMatterDT, #nextDiscounts, #darkMatterMult, #blackholePowAmount, #DilMultAmount, #InfAndReplMultAmount, #replicantAmount, #workerReplAmount, #babyReplAmount, #workerProgress, #hatchProgress, #growupProgress, #replicantAmountED, #normalReplicantsNanofield { color: #333333 !important }
 .infchallengediv {
     background-color: #191919 !important;
     font-family:'Inconsolata', monospace !important;
@@ -367,9 +367,9 @@ strong { color: #0072e5 }
 #progressbar.quantumProgress {
 	background-color: #009900 !important
 }
-.QKAmount, #gatheredQuarks, #normalReplGatherRate, #workerReplGatherRate, #babyReplGatherRate, #gatherRate, .empQuarks { color: #009900 !important }
+.QKAmount, #gatheredQuarks, #normalReplGatherRate, #workerReplGatherRate, #babyReplGatherRate, #gatherRate, .empQuarks, #quarksNanofield, #quarkLoss { color: #009900 !important }
 .red { color: #e50000 }
-.green, #quarkTranslation { color: #00e500 }
+.green, #quarkTranslation, #quarkCharge, #quarkChargeRate { color: #00e500 }
 .blue { color: #0000e5 }
 .gluonupgrade.rg, .gluonupgrade.gb, .gluonupgrade.br {
 	background-color: #191919 !important;

@@ -259,6 +259,7 @@ function getDil17Bonus () {
 function updateMetaDimensions () {
 	document.getElementById("metaAntimatterAmount").textContent = shortenMoney(player.meta.antimatter);
 	document.getElementById("metaAntimatterBest").textContent = shortenMoney(player.meta.bestAntimatter);
+	document.getElementById("bestAntimatterQuantum").textContent = player.masterystudies && quantumed ? "Your best-ever meta-antimatter was " + shortenMoney(player.meta.bestOverQuantums) + "." : ""
 	document.getElementById("metaAntimatterEffect").textContent = shortenMoney(getExtraDimensionBoostPower())
 	document.getElementById("metaAntimatterPerSec").textContent = 'You are getting ' + shortenDimensions(getMetaDimensionProduction(1)) + ' meta-antimatter per second.';
 	for (let tier = 1; tier <= 8; ++tier) {
@@ -554,8 +555,9 @@ function quantumReset(force, auto, challid, implode=false) {
 		document.getElementById("galaxyPoints2").className = "GP"
 		document.getElementById("sacpos").className = "sacpos"
 		if (player.masterystudies) {
-			document.getElementById("quantumstudies").style.display=""
+			document.getElementById("bestAntimatterType").textContent = "Your best meta-antimatter for this quantum"
 			document.getElementById("quarksAnimBtn").style.display="inline-block"
+			document.getElementById("quantumstudies").style.display=""
 		}
 	}
 	document.getElementById("quantumbtn").style.display="none"
@@ -888,6 +890,7 @@ function quantumReset(force, auto, challid, implode=false) {
 		meta: {
 			antimatter: new Decimal(speedrunMilestonesReached > 18 ? 1e25 : 100),
 			bestAntimatter: headstart ? player.meta.bestAntimatter : new Decimal(speedrunMilestonesReached > 18 ? 1e25 : 100),
+			bestAntimatterOverQuantums: player.bestAntimatterOverQuantums,
 			resets: isRewardEnabled(27) ? 4 : 0,
 			'1': {
 				amount: new Decimal(0),
