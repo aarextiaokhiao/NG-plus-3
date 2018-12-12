@@ -593,7 +593,7 @@ function quantumReset(force, auto, challid, implode=false) {
 		player.quantum.times++
 		if (!inQC(6)) player.quantum.quarks = player.quantum.quarks.plus(qkGain);
 		if (!inQC(4)) if (player.meta.resets<1) giveAchievement("Infinity Morals")
-		if (player.dilation.rebuyables[0] + player.dilation.rebuyables[1] + player.dilation.rebuyables[2] + player.dilation.rebuyables[3] < 1 && player.dilation.upgrades.length < 1) giveAchievement("Never make paradoxes!")
+		if (player.dilation.rebuyables[1] + player.dilation.rebuyables[2] + player.dilation.rebuyables[3] + player.dilation.rebuyables[4] < 1 && player.dilation.upgrades.length < 1) giveAchievement("Never make paradoxes!")
 	}
 	var oheHeadstart = speedrunMilestonesReached > 0
 	var oldTime = player.quantum.time
