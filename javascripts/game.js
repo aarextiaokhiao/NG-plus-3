@@ -6719,8 +6719,22 @@ function gameLoop(diff) {
         if (colorBoosts.g>4.5) colorBoosts.g=Math.sqrt(colorBoosts.g*4.5)
         if (colorBoosts.b.gt(1300)) colorBoosts.b=Decimal.pow(10,Math.pow(colorBoosts.b.log10()*Math.log10(1300),0.5))
 
-        var rate = getGatherRate().total
-        if (rate.gt(0)) player.quantum.replicants.quarks = player.quantum.replicants.quarks.add(rate.times(diff/10))
+        if (player.quantum.nanofield.producingCharge) {
+            var rate = getQuarkChargeProduction()
+            var lossMult = getQuarkLossMult()
+            var toSub = rate.times(lossMult).times(diff/10).min(player.quantum.replicants.quarks)
+            if (toSub.eq(0)) {
+                player.quantum.nanofield.producingCharge = false
+                document.getElementById("produceQuarkCharge").innerHTML="Start produce quark charge.<br>(All of your replicants don't gather quarks while producing quark charge.)"
+            } else {
+                player.quantum.replicants.quarks = player.quantum.replicants.quarks.sub(toSub)
+                player.quantum.nanofield.charge = player.quantum.nanofield.charge.add(toSub.div(lossMult))
+            }
+        }
+        if (!player.quantum.nanofield.producingCharge) {
+            var rate = getGatherRate().total
+            if (rate.gt(0)) player.quantum.replicants.quarks = player.quantum.replicants.quarks.add(rate.times(diff/10))
+        }
         gatheredQuarksBoost = Math.pow(player.quantum.replicants.quarks.add(1).log10(),player.masterystudies.includes("t362")?0.35:0.25)*0.67
 
         for (dim=8;dim>1;dim--) {

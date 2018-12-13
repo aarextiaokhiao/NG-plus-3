@@ -1477,6 +1477,7 @@ if (player.version < 5) {
       document.getElementById('priorityquantum').value=formatValue("Scientific", new Decimal(player.quantum.autobuyer.limit), 2, 0)
       document.getElementById("respecPC").className=player.quantum.pairedChallenges.respec?"quantumbtn":"storebtn"
       document.getElementById('sacrificeAuto').textContent="Auto: O"+(player.quantum.autoOptions.sacrifice?"N":"FF")
+      document.getElementById("produceQuarkCharge").innerHTML="S" + (player.quantum.nanofield.producingCharge ? "top producing" : "tart produce") + " quark charge." + (player.quantum.nanofield.producingCharge ? "" : "<br>(All of your replicants don't gather quarks while producing quark charge.)")
   }
   transformSaveToDecimal();
   updateChallengeTimes();
@@ -1520,7 +1521,6 @@ if (player.version < 5) {
   updatePCCompletions()
   maybeShowFillAll()
   updateReplicants()
-  updateNanofield()
   if (player.boughtDims) {
       if (document.getElementById("timestudies").style.display=="block") showEternityTab("ers_timestudies",true)
       updateGalaxyControl()
@@ -1541,6 +1541,7 @@ if (player.version < 5) {
   document.getElementById('metaboostauto').style.display=speedrunMilestonesReached>14?"":"none"
   document.getElementById("autoBuyerQuantum").style.display=speedrunMilestonesReached>22?"":"none"
   document.getElementById("edtabbtn").style.display=!player.masterystudies?"none":player.masterystudies.includes("d11")?"":"none"
+  document.getElementById("nanofieldtabbtn").style.display=!player.masterystudies?"none":player.masterystudies.includes("d12")?"":"none"
   setAndMaybeShow('bestTP',player.achievements.includes("ng3p18") || player.achievements.includes("ng3p37"),'"Your best ever Tachyon particles was "+shorten(player.dilation.bestTP)+"."')
   notifyId=speedrunMilestonesReached
   updatePowers()

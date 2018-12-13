@@ -4216,14 +4216,13 @@
 				</td></tr></table>
 			</div>
 			<div class='quantumtab' id='nanofield'>
-				You have <span id="normalReplicantsNanofield"></span> normal replicants.<br>
-				All of your replicants gathered <span id="quarksNanofield"></span> quarks.<br>
+				You have <span id="quarksNanofield"></span> gathered quarks.<br>
 				<table class="qtable"><tr><td>
 					You have <span id="quarkEnergy" style="font-size:35px"></span> quark energy.<br>
 					You have <span id="quarkPower" style="font-size:35px"></span> quark power. Next at <span id="quarkPowerThreshold" style="font-size:35px"></span> quark energy.<br>
 				</td><td>
 					You have <span id="quarkCharge" style="font-size:35px"></span> quark charge.<br>
-					<button class="storebtn" id="produceQuarkEnergy"  style="width: 120px; height: 60px; font-size: 11px">Start produce quark charge.</button><br>
+					<button class="storebtn" id="produceQuarkCharge" onclick="startProduceQuarkCharge()"></button><br>
 					You are getting <span id="quarkChargeRate"></span> quark charge per second but losing <span id="quarkLoss"></span> quarks per second.
 				</td><td>
 					You have <span id="quarkAntienergy" style="font-size:35px"></span> quark anti-energy, reducing the quark charge production by <span id="quarkAntienergyEffect" style="font-size:35px"></span> x.

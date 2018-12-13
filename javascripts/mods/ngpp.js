@@ -1035,7 +1035,6 @@ function quantumReset(force, auto, challid, implode=false) {
 			player.eternityBuyer.dilationMode = false
 			player.eternityBuyer.dilationPerAmount = 10
 		}
-		updateNanofield()
 		player.eternityBuyer.statBeforeDilation = 0
 		if ((player.autoEterMode=="replicanti"||player.autoEterMode=="peak")&&(speedrunMilestonesReached<18||!isRewardEnabled(4))) {
 			player.autoEterMode="amount"
@@ -1155,6 +1154,7 @@ function quantumReset(force, auto, challid, implode=false) {
 		document.getElementById("timestudy361").style.display = "none"
 		document.getElementById("timestudy362").style.display = "none"
 		document.getElementById("edtabbtn").style.display = "none"
+		document.getElementById("nanofieldtabbtn").style.display = "none"
 		if (document.getElementById("metadimensions").style.display == "block"||document.getElementById("emperordimensions").style.display == "block") showDimTab("antimatterdimensions")
 		if (document.getElementById("masterystudies").style.display=="block") showEternityTab("timestudies", document.getElementById("eternitystore").style.display=="block")
 		if (document.getElementById("quantumchallenges").style.display == "block") showChallengesTab("normalchallenges")

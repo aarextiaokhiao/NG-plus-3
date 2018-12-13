@@ -143,7 +143,7 @@ function buyMasteryStudy(type, id, quick=false) {
 		if (id==12) {
 			showTab("quantumtab")
 			showQuantumTab("nanofield")
-			updateNanofield()
+			document.getElementById("nanofieldtabbtn").style.display = ""
 		}
 	}
 }
@@ -488,7 +488,6 @@ function updateQuantumTabs() {
 		document.getElementById("reduceHatchSpeed").innerHTML="Hatch speed: "+hatchSpeedDisplay()+" -> "+hatchSpeedDisplay(true)+"<br>Cost: "+shortenDimensions(player.quantum.replicants.hatchSpeedCost)+" for all 3 gluons"
 	}
 	if (document.getElementById("nanofield").style.display == "block") {
-		document.getElementById("normalReplicantsNanofield").textContent=shortenDimensions(player.quantum.replicants.amount)
 		document.getElementById("quarksNanofield").textContent=shortenDimensions(player.quantum.replicants.quarks)
 		document.getElementById("quarkCharge").textContent=shortenMoney(player.quantum.nanofield.charge)
 		document.getElementById("quarkChargeRate").textContent=shortenDimensions(getQuarkChargeProduction())
@@ -1365,21 +1364,19 @@ function getEDRateOfChange(dim) {
 }
 
 //v1.9995
-function updateNanofield() {
-	if (player.masterystudies ? !player.masterystudies.includes("d12") : true) {
-		document.getElementById("nanofieldtabbtn").style.display="none"
-		return
-	} else document.getElementById("nanofieldtabbtn").style.display=""
-}
-
 function getQuarkChargeProduction() {
 	let ret = new Decimal(1)
 	ret = ret.div(getQuarkAntienergyEffect())
 	return ret
 }
 
+function startProduceQuarkCharge() {
+	player.quantum.nanofield.producingCharge = !player.quantum.nanofield.producingCharge
+	document.getElementById("produceQuarkCharge").innerHTML="S" + (player.quantum.nanofield.producingCharge ? "top producing" : "tart produce") + " quark charge." + (player.quantum.nanofield.producingCharge ? "" : "<br>(All of your replicants don't gather quarks while producing quark charge.)")
+}
+
 function getQuarkLossMult() {
-	return new Decimal(1)
+	return new Decimal(1e26)
 }
 
 function getQuarkAntienergyEffect() {
