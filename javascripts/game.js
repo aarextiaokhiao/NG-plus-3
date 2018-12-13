@@ -469,7 +469,7 @@ function updateNewPlayer(reseted) {
             energy: 0,
             antienergy: 0,
             power: 0,
-            powerThreshold: 1,
+            powerThreshold: 100,
             rewards: 0,
             producingCharge: false
         }
@@ -6721,16 +6721,29 @@ function gameLoop(diff) {
 
         if (player.quantum.nanofield.producingCharge) {
             var rate = getQuarkChargeProduction()
-            var lossMult = getQuarkLossMult()
-            var toSub = rate.times(lossMult).times(diff/10).min(player.quantum.replicants.quarks)
+            var loss = getQuarkLossProduction()
+            var toSub = loss.times(diff/10).min(player.quantum.replicants.quarks)
             if (toSub.eq(0)) {
                 player.quantum.nanofield.producingCharge = false
                 document.getElementById("produceQuarkCharge").innerHTML="Start produce quark charge.<br>(All of your replicants don't gather quarks while producing quark charge.)"
             } else {
                 player.quantum.replicants.quarks = player.quantum.replicants.quarks.sub(toSub)
-                player.quantum.nanofield.charge = player.quantum.nanofield.charge.add(toSub.div(lossMult))
+                player.quantum.nanofield.charge = player.quantum.nanofield.charge.add(toSub.div(loss).times(rate))
             }
         }
+        var AErate = getQuarkAntienergyProduction()
+        var toAddAE = AErate.times(diff/10).min(getQuarkChargeProductionCap().sub(player.quantum.nanofield.antienergy))
+        if (toAddAE.gt(0)) {
+            player.quantum.nanofield.antienergy = player.quantum.nanofield.antienergy.add(toAddAE).min(getQuarkChargeProductionCap())
+            player.quantum.nanofield.energy = player.quantum.nanofield.energy.add(toAddAE.div(AErate).times(getQuarkEnergyProduction()))
+            if (player.quantum.nanofield.energy.gte(player.quantum.nanofield.powerThreshold)) {
+                var toAdd = Math.floor(player.quantum.nanofield.energy.div(player.quantum.nanofield.powerThreshold).log(2) + 1)
+                player.quantum.nanofield.power += toAdd
+                player.quantum.nanofield.powerThreshold = player.quantum.nanofield.powerThreshold.times(Decimal.pow(2, toAdd))
+                player.quantum.nanofield.rewards = Math.max(player.quantum.nanofield.rewards, player.quantum.nanofield.power)
+            }
+        }
+
         if (!player.quantum.nanofield.producingCharge) {
             var rate = getGatherRate().total
             if (rate.gt(0)) player.quantum.replicants.quarks = player.quantum.replicants.quarks.add(rate.times(diff/10))

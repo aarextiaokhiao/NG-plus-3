@@ -491,12 +491,14 @@ function updateQuantumTabs() {
 		document.getElementById("quarksNanofield").textContent=shortenDimensions(player.quantum.replicants.quarks)
 		document.getElementById("quarkCharge").textContent=shortenMoney(player.quantum.nanofield.charge)
 		document.getElementById("quarkChargeRate").textContent=shortenDimensions(getQuarkChargeProduction())
-		document.getElementById("quarkLoss").textContent=shortenDimensions(getQuarkChargeProduction().times(getQuarkLossMult()))
+		document.getElementById("quarkLoss").textContent=shortenDimensions(getQuarkLossProduction())
 		document.getElementById("quarkEnergy").textContent=shortenMoney(player.quantum.nanofield.energy)
+		document.getElementById("quarkEnergyRate").textContent=shortenMoney(getQuarkEnergyProduction())
 		document.getElementById("quarkPower").textContent=getFullExpansion(player.quantum.nanofield.power)
 		document.getElementById("quarkPowerThreshold").textContent=shortenMoney(player.quantum.nanofield.powerThreshold)
 		document.getElementById("quarkAntienergy").textContent=shortenMoney(player.quantum.nanofield.antienergy)
-		document.getElementById("quarkAntienergyEffect").textContent=shortenMoney(getQuarkAntienergyEffect())
+		document.getElementById("quarkAntienergyRate").textContent=shortenMoney(getQuarkAntienergyProduction())
+		document.getElementById("quarkChargeProductionCap").textContent=shortenMoney(getQuarkChargeProductionCap())
 		document.getElementById("rewards").textContent=getFullExpansion(player.quantum.nanofield.rewards)
 	}
 }
@@ -1365,9 +1367,7 @@ function getEDRateOfChange(dim) {
 
 //v1.9995
 function getQuarkChargeProduction() {
-	let ret = new Decimal(1)
-	ret = ret.div(getQuarkAntienergyEffect())
-	return ret
+	return new Decimal(1)
 }
 
 function startProduceQuarkCharge() {
@@ -1375,10 +1375,18 @@ function startProduceQuarkCharge() {
 	document.getElementById("produceQuarkCharge").innerHTML="S" + (player.quantum.nanofield.producingCharge ? "top producing" : "tart produce") + " quark charge." + (player.quantum.nanofield.producingCharge ? "" : "<br>(All of your replicants don't gather quarks while producing quark charge.)")
 }
 
-function getQuarkLossMult() {
-	return new Decimal(1e26)
+function getQuarkLossProduction() {
+	return getQuarkChargeProduction().pow(1).times(4e25)
 }
 
-function getQuarkAntienergyEffect() {
-	return player.quantum.nanofield.antienergy.add(1).pow(0)
+function getQuarkEnergyProduction() {
+	return new Decimal(1).times(player.quantum.nanofield.charge)
+}
+
+function getQuarkAntienergyProduction() {
+	return new Decimal(1).times(player.quantum.nanofield.charge)
+}
+
+function getQuarkChargeProductionCap() {
+	return player.quantum.nanofield.charge.pow(2)
 }

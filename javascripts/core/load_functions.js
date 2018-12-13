@@ -970,7 +970,7 @@ if (player.version < 5) {
           energy: 0,
           antienergy: 0,
           power: 0,
-          powerThreshold: 1,
+          powerThreshold: 100,
           rewards: 0,
           producingCharge: false
       }
@@ -2015,7 +2015,7 @@ function transformSaveToDecimal() {
           player.quantum.nanofield.charge = new Decimal(player.quantum.nanofield.charge)
           player.quantum.nanofield.energy = new Decimal(player.quantum.nanofield.energy)
           player.quantum.nanofield.antienergy = new Decimal(player.quantum.nanofield.antienergy)
-          if (player.quantum.nanofield.powerThreshold !== undefined) player.quantum.nanofield.powerThreshold = new Decimal(player.quantum.nanofield.powerThreshold)
+          if (player.quantum.nanofield.powerThreshold !== undefined) player.quantum.nanofield.powerThreshold = new Decimal(player.quantum.nanofield.powerThreshold).max(100)
       }
   }
 }

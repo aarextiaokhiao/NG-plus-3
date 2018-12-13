@@ -1022,6 +1022,11 @@ function quantumReset(force, auto, challid, implode=false) {
 			eds[d].workers=new Decimal(eds[d].perm)
 			eds[d].progress=new Decimal(0)
 		}
+		player.quantum.nanofield.charge = new Decimal(0)
+		player.quantum.nanofield.energy = new Decimal(0)
+		player.quantum.nanofield.antienergy = new Decimal(0)
+		player.quantum.nanofield.power = 0
+		player.quantum.nanofield.powerThreshold = new Decimal(100)
 		document.getElementById("metaAntimatterEffectType").textContent=inQC(3)?"multiplier on all Infinity Dimensions":"extra multiplier per dimension boost"
 		updateColorCharge()
 		updateGluons()
