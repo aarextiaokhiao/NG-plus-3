@@ -1189,7 +1189,7 @@ function updatePCCompletions() {
 	var tempcounter=0
 	for (var c1=2;c1<9;c1++) for (var c2=1;c2<c1;c2++) if (player.quantum.pairedChallenges.completions[c2*10+c1]) tempcounter++
 	if (tempcounter>0) document.getElementById("pccompletionsbtn").style.display = "inline-block"
-	if (tempcounter>24) giveAchievement("The Challenging Day")
+	if (tempcounter>23) giveAchievement("The Challenging Day")
 	for (r=1;r<9;r++) for (c=1;c<9;c++) if (r!=c) {
 		var divid = "pc" + (r*10+c)
 		var pcid = r*10+c

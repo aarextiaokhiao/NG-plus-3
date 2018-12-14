@@ -4151,6 +4151,7 @@ function updateChallengeTimes() {
 		}
 	}
 	setAndMaybeShow("challengetimesum",tempcounter>1,'"Sum of completed challenge time records is "+timeDisplayShort('+temp+', false, 3)')
+	document.getElementById("challengetimesbtn").style.display = tempcounter>0 ? "inline-block" : "none"
 
 	var temp=0
 	var tempcounter=0
@@ -4179,7 +4180,7 @@ function updateLastTenRuns() {
             if (ippm.gt(tempBest)) tempBest = ippm
             var tempstring = shorten(ippm) + " IP/min"
             if (ippm<1) tempstring = shorten(ippm*60) + " IP/hour"
-            var msg = "The infinity " + (i == 0 ? '1 infinity' : (i+1) + ' infinities') + " ago took " + timeDisplayShort(player.lastTenRuns[i][0])
+            var msg = "The infinity " + (i == 0 ? '1 infinity' : (i+1) + ' infinities') + " ago took " + timeDisplayShort(player.lastTenRuns[i][0], false, 3)
             if (player.lastTenRuns[i][2]) {
                 var split=player.lastTenRuns[i][2].split("challenge")
                 if (split[1]==undefined) msg += " in Infinity Challenge " + checkICID(player.lastTenRuns[i][2])
@@ -4199,7 +4200,7 @@ function updateLastTenRuns() {
         var tempstring = shorten(ippm) + " IP/min"
         averageIP = tempIP
         if (ippm<1) tempstring = shorten(ippm*60) + " IP/hour"
-        document.getElementById("averagerun").textContent = "Last " + listed + " infinities average time: "+ timeDisplayShort(tempTime)+" Average IP gain: "+shortenDimensions(tempIP)+" IP. "+tempstring
+        document.getElementById("averagerun").textContent = "Last " + listed + " infinities average time: "+ timeDisplayShort(tempTime, false, 3)+" Average IP gain: "+shortenDimensions(tempIP)+" IP. "+tempstring
 
         if (tempBest.gte(1e8)) giveAchievement("Oh hey, you're still here");
         if (tempBest.gte(1e300)) giveAchievement("MAXIMUM OVERDRIVE");
@@ -4233,7 +4234,7 @@ function updateLastTenEternities() {
             var eppm = player.lastTenEternities[i][1].dividedBy(player.lastTenEternities[i][0]/600)
             var tempstring = shorten(eppm) + " EP/min"
             if (eppm<1) tempstring = shorten(eppm*60) + " EP/hour"
-            msg = "The Eternity " + (i == 0 ? '1 eternity' : (i+1) + ' eternities') + " ago took " + timeDisplayShort(player.lastTenEternities[i][0])
+            msg = "The Eternity " + (i == 0 ? '1 eternity' : (i+1) + ' eternities') + " ago took " + timeDisplayShort(player.lastTenEternities[i][0], false, 3)
             if (player.lastTenEternities[i][2]) {
                 if (player.lastTenEternities[i][2] == "d") msg += " while dilated"
                 else msg += " in Eternity Challenge " + player.lastTenEternities[i][2]
@@ -4253,7 +4254,7 @@ function updateLastTenEternities() {
         var tempstring = shorten(eppm) + " EP/min"
         averageEp = tempEP
         if (eppm<1) tempstring = shorten(eppm*60) + " EP/hour"
-        document.getElementById("averageEternityRun").textContent = "Last " + listed + " eternities average time: "+ timeDisplayShort(tempTime)+" Average EP gain: "+shortenDimensions(tempEP)+" EP. "+tempstring
+        document.getElementById("averageEternityRun").textContent = "Last " + listed + " eternities average time: "+ timeDisplayShort(tempTime, false, 3)+" Average EP gain: "+shortenDimensions(tempEP)+" EP. "+tempstring
     } else document.getElementById("averageEternityRun").textContent = ""
 }
 
@@ -6346,8 +6347,6 @@ setInterval(function() {
     else document.getElementById("pasteternities").style.display = "inline-block"
     if (quantumed) document.getElementById("pastquantums").style.display = "inline-block"
     else document.getElementById("pastquantums").style.display = "none"
-    if (player.challenges.length > 1 || getEternitied() > 0 || quantumed) document.getElementById("challengetimesbtn").style.display = "inline-block"
-    else document.getElementById("challengetimesbtn").style.display = "none"
     if (player.infinitied > 0 || getEternitied() > 0 || quantumed) {
         document.getElementById("pastinfs").style.display = "inline-block"
         document.getElementById("statstabs").style.display = "inline-block"

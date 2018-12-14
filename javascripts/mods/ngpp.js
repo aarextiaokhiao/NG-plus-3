@@ -478,7 +478,7 @@ function updateLastTenQuantums() {
             var qkpm = player.quantum.last10[i][1].dividedBy(player.quantum.last10[i][0]/600)
             var tempstring = shorten(qkpm) + " QK/min"
             if (qkpm<1) tempstring = shorten(qkpm*60) + " QK/hour"
-            var msg = "The quantum " + (i == 0 ? '1 quantum' : (i+1) + ' quantums') + " ago took " + timeDisplayShort(player.quantum.last10[i][0])
+            var msg = "The quantum " + (i == 0 ? '1 quantum' : (i+1) + ' quantums') + " ago took " + timeDisplayShort(player.quantum.last10[i][0], false, 3)
             if (player.quantum.last10[i][2]) {
                 if (typeof(player.quantum.last10[i][2])=="number") " in Quantum Challenge " + player.quantum.last10[i][2]
                 else msg += " in Paired Challenge " + player.quantum.last10[i][2][0] + " (QC" + player.quantum.last10[i][2][1][0] + "+" + player.quantum.last10[i][2][1][1] + ")"
@@ -498,7 +498,7 @@ function updateLastTenQuantums() {
         var tempstring = shorten(qkpm) + " QK/min"
         averageQk = tempQK
         if (qkpm<1) tempstring = shorten(qkpm*60) + " QK/hour"
-        document.getElementById("averageQuantumRun").textContent = "Last " + listed + " quantums average time: "+ timeDisplayShort(tempTime)+" Average QK gain: "+shortenDimensions(tempQK)+" QK. "+tempstring
+        document.getElementById("averageQuantumRun").textContent = "Last " + listed + " quantums average time: "+ timeDisplayShort(tempTime, false, 3)+" Average QK gain: "+shortenDimensions(tempQK)+" QK. "+tempstring
     } else document.getElementById("averageQuantumRun").textContent = ""
 }
 
