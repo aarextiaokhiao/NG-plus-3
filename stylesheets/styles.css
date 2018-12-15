@@ -1939,9 +1939,45 @@ br {
 }
 
 #produceQuarkCharge {
-	width: 240px;
-	height: 120px;
-	font-size: 12px
+	background: black !important;
+	border: 2px solid #4c4c4c;
+	width: 210px;
+	height: 90px;
+	color: #4c4c4c;
+	font-size: 12px;
+	animation: nanofieldanimation 5s infinite
+}
+
+#produceQuarkCharge:hover {
+	color: #727272;
+	text-shadow: 0px 0px 1px #4c4c4c, 0px 0px 2px #4c4c4c, 0px 0px 3px #4c4c4c;
+}
+
+.nanofieldreward {
+	background: black !important;
+	border: 1px solid #4c4c4c;
+	border-radius: 4px;
+    width: 250px;
+    height: 60px;
+	color: #4c4c4c;
+	font-size: 12px;
+    font-weight: bold;
+    font-family: Typewriter;
+	animation: nanofieldanimation 5s infinite;
+	transition-duration: 0.2s
+}
+
+.nanofieldrewardlocked {
+    background: #A3A3A3;
+    border: 1px solid #B84B5F;
+	border-radius: 4px;
+    width: 250px;
+    height: 60px;
+    color: #000000;
+	font-size: 12px;
+    font-weight: bold;
+    font-family: Typewriter;
+	transition-duration: 0.2s
 }
 
 @media print,
@@ -2215,4 +2251,9 @@ screen and (max-width: 480px) {
     0%  {box-shadow: inset 0px 0px 20px 0px #8e991e;}
     50% {box-shadow: inset 0px 0px 40px 0px #8e991e;}
     100% {box-shadow: inset 0px 0px 20px 0px #8e991e;}
+}
+@keyframes nanofieldanimation {
+    0%  {box-shadow: inset 0px 0px 90px 0px #4c4c4c;}
+    50% {box-shadow: inset 0px 0px 120px 0px #4c4c4c;}
+    100% {box-shadow: inset 0px 0px 90px 0px #4c4c4c;}
 }

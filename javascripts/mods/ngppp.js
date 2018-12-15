@@ -398,7 +398,11 @@ function getMTSMult(id) {
 
 //v1.3
 function getEC14Power() {
-	return player.currentEterChall=='eterc14'?5:ECTimesCompleted("eterc14")*2
+	if (player.masterystudies == undefined) return 0
+	if (player.currentEterChall=='eterc14') return 5
+	let ret = ECTimesCompleted("eterc14") * 2
+	if (player.masterystudies.includes("d12")) ret += getNanofieldRewardEffect(3)
+	return ret
 }
 
 //v1.5
@@ -500,6 +504,13 @@ function updateQuantumTabs() {
 		document.getElementById("quarkAntienergyRate").textContent=shortenMoney(getQuarkAntienergyProduction())
 		document.getElementById("quarkChargeProductionCap").textContent=shortenMoney(getQuarkChargeProductionCap())
 		document.getElementById("rewards").textContent=getFullExpansion(player.quantum.nanofield.rewards)
+
+		for (var reward=1; reward<9; reward++) document.getElementById("nanofieldreward" + reward).className = reward > player.quantum.nanofield.rewards ? "nanofieldrewardlocked" : "nanofieldreward"
+		document.getElementById("nanofieldreward1").textContent = "Hatch speed is decreased by " + shortenDimensions(getNanofieldRewardEffect(1)) + "x."
+		document.getElementById("nanofieldreward2").textContent = "All Emperor Dimensions are boosted by " + shortenDimensions(getNanofieldRewardEffect(2)) + "x."
+		document.getElementById("nanofieldreward3").textContent = "EC14 reward power is increased by " + getFullExpansion(getNanofieldRewardEffect(3)) + "x."
+		document.getElementById("nanofieldreward4").textContent = "Meta-antimatter effect power is increased by " + getFullExpansion(getNanofieldRewardEffect(4)) + "x."
+		document.getElementById("nanofieldreward8").textContent = "Production cap is increased by " + shortenDimensions(getNanofieldRewardEffect(8)) + "x."
 	}
 }
 
@@ -1318,6 +1329,7 @@ function getHatchSpeed() {
 	if (player.masterystudies.includes("t372")) speed /= getMTSMult(372)
 	if (player.masterystudies.includes("t381")) speed /= getMTSMult(381)
 	if (player.masterystudies.includes("t391")) speed /= getMTSMult(391)
+	if (player.masterystudies.includes("d12")) speed /= getNanofieldRewardEffect(1)
 	return speed
 }
 
@@ -1343,6 +1355,7 @@ function updateEmperorDimensions() {
 function getEDMultiplier(dim) {
 	let mult = new Decimal(1)
 	if (player.masterystudies.includes("t392")) mult = getMTSMult(392)
+	if (player.masterystudies.includes("d12")) mult = mult.times(getNanofieldRewardEffect(2))
 	if (player.dilation.active || player.galacticSacrifice) {
 		mult = Decimal.pow(10, Math.pow(mult.log10(), 0.75))
 		if (player.dilation.upgrades.includes(11)) {
@@ -1388,5 +1401,14 @@ function getQuarkAntienergyProduction() {
 }
 
 function getQuarkChargeProductionCap() {
-	return player.quantum.nanofield.charge.pow(2)
+	return player.quantum.nanofield.charge.pow(2).times(getNanofieldRewardEffect(8))
+}
+
+function getNanofieldRewardEffect(id) {
+	var stacks = Math.ceil((player.quantum.nanofield.rewards - id + 1) / 8)
+	if (id == 1) return Decimal.pow(1, stacks)
+	if (id == 2) return Decimal.pow(1, stacks)
+	if (id == 3) return stacks * 0
+	if (id == 4) return stacks * 0
+	if (id == 8) return Decimal.pow(2, stacks)
 }

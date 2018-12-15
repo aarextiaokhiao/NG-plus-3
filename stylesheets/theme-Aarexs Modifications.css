@@ -66,11 +66,11 @@ body {
     background-color: #00e500 !important;
     color: #191919 !important
 }
-.unavailablebtn, .infinistorebtnlocked, .newdimlocked, .milestonerewardlocked, .eternityupbtnlocked, .eternityttbtnlocked, .lockedchallengesbtn, .dilationupglocked, .dilationupgrebuyablelocked {
+.unavailablebtn, .infinistorebtnlocked, .newdimlocked, .milestonerewardlocked, .eternityupbtnlocked, .eternityttbtnlocked, .lockedchallengesbtn, .dilationupglocked, .dilationupgrebuyablelocked, .nanofieldrewardlocked {
     border-color: #e50000 !important;
     color: #e5e5e5 !important
 }
-.unavailablebtn:hover, .infinistorebtnlocked:hover, .newdimlocked:hover, .infinistorebtnbought:hover, .onchallengebtn:hover, .completedchallengesbtn:hover, .milestonerewardlocked:hover, .milestonereward:hover, .timestudylocked:hover, .eternityupbtnlocked:hover, .eternityttbtnlocked:hover, .eternitychallengestudylocked:hover, .lockedchallengesbtn:hover, .dilationupglocked:hover, .dilationupgbought:hover, .dilationupgrebuyablelocked:hover, .dilationupgrebuyablebought:hover, .upgbought:hover {
+.unavailablebtn:hover, .infinistorebtnlocked:hover, .newdimlocked:hover, .infinistorebtnbought:hover, .onchallengebtn:hover, .completedchallengesbtn:hover, .milestonerewardlocked:hover, .milestonereward:hover, .timestudylocked:hover, .eternityupbtnlocked:hover, .eternityttbtnlocked:hover, .eternitychallengestudylocked:hover, .lockedchallengesbtn:hover, .dilationupglocked:hover, .dilationupgbought:hover, .dilationupgrebuyablelocked:hover, .dilationupgrebuyablebought:hover, .upgbought:hover, .nanofieldrewardlocked:hover {
     background-color: #191919 !important;
     color: #e5e5e5 !important
 }
@@ -424,7 +424,19 @@ strong { color: #0072e5 }
 #reduceHatchSpeed.storebtn { border: 2px solid #e5dab7 !important }
 #reduceHatchSpeed.storebtn:hover { background-color: #e5dab7 !important }
 #dilstudy12.dilationupg, #nanofieldtabbtn button { border: 2px solid #999999 !important }
-#dilstudy12.dilationupg:hover, #dilstudy12.dilationupgbought, #nanofieldtabbtn button:hover { background-color: #999999 !important }
+#produceQuarkCharge, .nanofieldreward { 
+	background-color: #191919 !important;
+	border: 1px solid #999999 !important;
+	animation: none
+}
+#dilstudy12.dilationupg:hover, #dilstudy12.dilationupgbought, #nanofieldtabbtn button:hover, #produceQuarkCharge:hover {
+	background-color: #999999 !important;
+	color: #ffffff;
+	text-shadow: none
+}
+#quarkEnergy, #quarkEnergyRate, #quarkPowerThreshold { color: #72e500 !important }
+#quarkPower { color: #ace572 !important }
+#quarkAntienergy, #quarkAntienergyRate, #quarkChargeProductionCap { color: #390072 !important }
 .notifyjs-bootstrap-info {
     background-color: #0072e5;
     font-family:'Inconsolata', monospace;

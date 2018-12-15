@@ -241,9 +241,10 @@ function getExtraDimensionBoostPower() {
 	if (player.currentEternityChall=="eterc14"||inQC(7)) return new Decimal(1)
 	if (inQC(3)) return player.meta.bestAntimatter.pow(Math.pow(player.meta.bestAntimatter.max(1e8).log10()/8,2))
 	else {
-		let power=8
+		let power = 8
 		if (player.dilation.upgrades.includes("ngpp5")) power++
-		power+=ECTimesCompleted("eterc13")*0.2
+		power += ECTimesCompleted("eterc13")*0.2
+		if (player.masterystudies != undefined) if (player.masterystudies.includes("d12")) power += getNanofieldRewardEffect(4)
 		return player.meta.bestAntimatter.pow(power).plus(1)
 	}
 }
