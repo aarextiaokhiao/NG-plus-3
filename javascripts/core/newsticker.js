@@ -167,7 +167,7 @@ newsArray = [//always true
 ["You are challenging in a challenge in a challenge. Challenge-ception.", "player.achievements.includes('r22') && player.currentChallenge != '' && player.currentEternityChall != '' && !inQC(0)", "am13"],
 ["New updates are coming in a day, not 5 hours. Sorry, jokers!", "player.achievements.includes('r22')", "am14"],
 ["Whale complained that matter and antimatter are balanced and the universe would not be existed.", "player.achievements.includes('r22')", "am15"],
-["Congratulations for beating NG+++! (for now...) The next update will add a new mechanic called Nanofield. It may either have a battle system or not.", "player.achievements.includes('r22') && player.totalMoney.gt(Decimal.pow(10, 2e14))", "am16"],
+["Congratulations for beating NG+++! (for now...) The next update will add a new mechanic called Nanofield. It may either have a battle system or not.", "player.achievements.includes('r22') && player.totalMoney.gte(Decimal.pow(10, 2e14))", "am16"],
 ["NEWS: THIS NEWS CHANNEL WAS SHUT DOWN FOR BEING DESTROYED.", "player.achievements.includes('r21') && player.achievements.includes('r22')", "am17"],
 ["hackers are coming", "player.achievements.includes('r22') && player.newsArray.length >= 210", "am18"],
 ["Whale complained that Infinity Challenge 5 is not the hardest.", "player.achievements.includes('r22') && player.masterystudies", "am19"],

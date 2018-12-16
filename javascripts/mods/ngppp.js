@@ -642,7 +642,7 @@ function updateSpeedruns() {
 }
 
 function toggleAutoTT() {
-	if (speedrunMilestonesReached<1) maxTheorems()
+	if (speedrunMilestonesReached < 2) maxTheorems()
 	else player.autoEterOptions.tt = !player.autoEterOptions.tt
 	document.getElementById("theoremmax").innerHTML = speedrunMilestonesReached > 2 ? ("Auto max: O"+(player.autoEterOptions.tt?"N":"FF")) : "Buy max Theorems"
 }
