@@ -617,6 +617,7 @@ function buyGluonUpg(color, id) {
 	player.quantum.upgrades.push(name)
 	player.quantum.gluons[color]=player.quantum.gluons[color].sub(GUCosts[id])
 	updateGluons()
+	if (name=="gb3") ipMultPower=2.3
 	if (name=="gb4") player.tickSpeedMultDecrease=1.25
 }
 
