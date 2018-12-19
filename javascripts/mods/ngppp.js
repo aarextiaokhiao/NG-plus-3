@@ -510,6 +510,7 @@ function updateQuantumTabs() {
 		document.getElementById("nanofieldreward2").textContent = "All Emperor Dimensions are boosted by " + shortenDimensions(getNanofieldRewardEffect(2)) + "x."
 		document.getElementById("nanofieldreward3").textContent = "EC14 reward power is increased by " + getFullExpansion(getNanofieldRewardEffect(3)) + "x."
 		document.getElementById("nanofieldreward4").textContent = "Meta-antimatter effect power is increased by " + getFullExpansion(getNanofieldRewardEffect(4)) + "x."
+		document.getElementById("nanofieldreward7").textContent = "Quark charge production is increased by " + shortenDimensions(getNanofieldRewardEffect(8)) + "x."
 		document.getElementById("nanofieldreward8").textContent = "Production cap is increased by " + shortenDimensions(getNanofieldRewardEffect(8)) + "x."
 	}
 }
@@ -1381,7 +1382,7 @@ function getEDRateOfChange(dim) {
 
 //v1.9995
 function getQuarkChargeProduction() {
-	return new Decimal(1)
+	return getNanofieldRewardEffect(7)
 }
 
 function startProduceQuarkCharge() {
@@ -1411,5 +1412,6 @@ function getNanofieldRewardEffect(id) {
 	if (id == 2) return Decimal.pow(1, stacks)
 	if (id == 3) return stacks * 0
 	if (id == 4) return stacks * 0
+	if (id == 7) return Decimal.pow(16, stacks)
 	if (id == 8) return Decimal.pow(2, stacks)
 }
