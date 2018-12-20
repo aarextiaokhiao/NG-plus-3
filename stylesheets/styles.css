@@ -1959,7 +1959,8 @@ br {
 	border-radius: 4px;
     width: 250px;
     height: 60px;
-	color: #4c4c4c;
+	color: #727272;
+	text-shadow: 0px 0px 1px #4c4c4c, 0px 0px 2px #4c4c4c, 0px 0px 3px #4c4c4c;
 	font-size: 12px;
     font-weight: bold;
     font-family: Typewriter;

@@ -510,6 +510,8 @@ function updateQuantumTabs() {
 		document.getElementById("nanofieldreward2").textContent = "All Emperor Dimensions are boosted by " + shortenDimensions(getNanofieldRewardEffect(2)) + "x."
 		document.getElementById("nanofieldreward3").textContent = "EC14 reward power is increased by " + getFullExpansion(getNanofieldRewardEffect(3)) + "x."
 		document.getElementById("nanofieldreward4").textContent = "Meta-antimatter effect power is increased by " + getFullExpansion(getNanofieldRewardEffect(4)) + "x."
+		document.getElementById("nanofieldreward5").textContent = "While dilated, Infinity power effect power is " + getFullExpansion(getNanofieldRewardEffect(5)) + "x."
+		document.getElementById("nanofieldreward6").textContent = "While dilated, replicated galaxies are " + getFullExpansion(Math.round(getNanofieldRewardEffect(6) * 100 - 100)) + "% stronger."
 		document.getElementById("nanofieldreward7").textContent = "Quark charge production is increased by " + shortenDimensions(getNanofieldRewardEffect(8)) + "x."
 		document.getElementById("nanofieldreward8").textContent = "Production cap is increased by " + shortenDimensions(getNanofieldRewardEffect(8)) + "x."
 	}
@@ -1412,6 +1414,8 @@ function getNanofieldRewardEffect(id) {
 	if (id == 2) return Decimal.pow(1, stacks)
 	if (id == 3) return stacks * 0
 	if (id == 4) return stacks * 0
+	if (id == 5) return 7 + stacks * 0
+	if (id == 6) return 1 + stacks * 0
 	if (id == 7) return Decimal.pow(16, stacks)
 	if (id == 8) return Decimal.pow(2, stacks)
 }
