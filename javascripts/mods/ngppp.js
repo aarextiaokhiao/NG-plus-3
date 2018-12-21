@@ -506,7 +506,7 @@ function updateQuantumTabs() {
 		document.getElementById("rewards").textContent=getFullExpansion(player.quantum.nanofield.rewards)
 
 		for (var reward=1; reward<9; reward++) document.getElementById("nanofieldreward" + reward).className = reward > player.quantum.nanofield.rewards ? "nanofieldrewardlocked" : "nanofieldreward"
-		document.getElementById("nanofieldreward1").textContent = "Hatch speed is decreased by " + shortenDimensions(getNanofieldRewardEffect(1)) + "x."
+		document.getElementById("nanofieldreward1").textContent = "Hatch speed is " + shortenDimensions(getNanofieldRewardEffect(1)) + "x faster."
 		document.getElementById("nanofieldreward2").textContent = "All Emperor Dimensions are boosted by " + shortenDimensions(getNanofieldRewardEffect(2)) + "x."
 		document.getElementById("nanofieldreward3").textContent = "EC14 reward power is increased by " + getFullExpansion(getNanofieldRewardEffect(3)) + "x."
 		document.getElementById("nanofieldreward4").textContent = "Meta-antimatter effect power is increased by " + getFullExpansion(getNanofieldRewardEffect(4)) + "x."
