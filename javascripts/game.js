@@ -469,7 +469,7 @@ function updateNewPlayer(reseted) {
             energy: 0,
             antienergy: 0,
             power: 0,
-            powerThreshold: 100,
+            powerThreshold: 50,
             rewards: 0,
             producingCharge: false
         }
@@ -6736,9 +6736,9 @@ function gameLoop(diff) {
             player.quantum.nanofield.antienergy = player.quantum.nanofield.antienergy.add(toAddAE).min(getQuarkChargeProductionCap())
             player.quantum.nanofield.energy = player.quantum.nanofield.energy.add(toAddAE.div(AErate).times(getQuarkEnergyProduction()))
             if (player.quantum.nanofield.energy.gte(player.quantum.nanofield.powerThreshold)) {
-                var toAdd = Math.floor(player.quantum.nanofield.energy.div(player.quantum.nanofield.powerThreshold).log(2) + 1)
+                var toAdd = Math.floor(player.quantum.nanofield.energy.div(player.quantum.nanofield.powerThreshold).log(4) + 1)
                 player.quantum.nanofield.power += toAdd
-                player.quantum.nanofield.powerThreshold = player.quantum.nanofield.powerThreshold.times(Decimal.pow(2, toAdd))
+                player.quantum.nanofield.powerThreshold = player.quantum.nanofield.powerThreshold.times(Decimal.pow(4, toAdd))
                 player.quantum.nanofield.rewards = Math.max(player.quantum.nanofield.rewards, player.quantum.nanofield.power)
             }
         }

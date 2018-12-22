@@ -512,7 +512,7 @@ function updateQuantumTabs() {
 		document.getElementById("nanofieldreward4").textContent = "Meta-antimatter effect power is increased by " + getFullExpansion(getNanofieldRewardEffect(4)) + "x."
 		document.getElementById("nanofieldreward5").textContent = "While dilated, Infinity power effect power is " + getFullExpansion(getNanofieldRewardEffect(5)) + "x."
 		document.getElementById("nanofieldreward6").textContent = "While dilated, replicated galaxies are " + getFullExpansion(Math.round(getNanofieldRewardEffect(6) * 100 - 100)) + "% stronger."
-		document.getElementById("nanofieldreward7").textContent = "Quark charge production is increased by " + shortenDimensions(getNanofieldRewardEffect(8)) + "x."
+		document.getElementById("nanofieldreward7").textContent = "Quark charge, energy, and anti-energy productions are increased by " + shortenDimensions(getNanofieldRewardEffect(8)) + "x."
 		document.getElementById("nanofieldreward8").textContent = "Production cap is increased by " + shortenDimensions(getNanofieldRewardEffect(8)) + "x."
 	}
 }
@@ -1393,15 +1393,15 @@ function startProduceQuarkCharge() {
 }
 
 function getQuarkLossProduction() {
-	return getQuarkChargeProduction().pow(1).times(4e25)
+	return getQuarkChargeProduction().times(4e25)
 }
 
 function getQuarkEnergyProduction() {
-	return new Decimal(1).times(player.quantum.nanofield.charge)
+	return player.quantum.nanofield.charge.times(getNanofieldRewardEffect(7))
 }
 
 function getQuarkAntienergyProduction() {
-	return new Decimal(1).times(player.quantum.nanofield.charge)
+	return player.quantum.nanofield.charge.times(getNanofieldRewardEffect(7))
 }
 
 function getQuarkChargeProductionCap() {
@@ -1410,8 +1410,8 @@ function getQuarkChargeProductionCap() {
 
 function getNanofieldRewardEffect(id) {
 	var stacks = Math.ceil((player.quantum.nanofield.rewards - id + 1) / 8)
-	if (id == 1) return Decimal.pow(1, stacks)
-	if (id == 2) return Decimal.pow(1, stacks)
+	if (id == 1) return Decimal.pow(256, stacks)
+	if (id == 2) return Decimal.pow(4, stacks)
 	if (id == 3) return stacks * 0
 	if (id == 4) return stacks * 0
 	if (id == 5) return 7 + stacks * 0
