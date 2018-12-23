@@ -1159,6 +1159,7 @@ function quantumReset(force, auto, challid, implode=false) {
 		document.getElementById("empstudies").style.display = "none"
 		document.getElementById("timestudy361").style.display = "none"
 		document.getElementById("timestudy362").style.display = "none"
+		document.getElementById("nfstudies").style.display=""
 		document.getElementById("edtabbtn").style.display = "none"
 		document.getElementById("nanofieldtabbtn").style.display = "none"
 		if (document.getElementById("metadimensions").style.display == "block"||document.getElementById("emperordimensions").style.display == "block") showDimTab("antimatterdimensions")
