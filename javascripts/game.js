@@ -4236,10 +4236,10 @@ function updateLastTenEternities() {
             if (eppm<1) tempstring = shorten(eppm*60) + " EP/hour"
             msg = "The Eternity " + (i == 0 ? '1 eternity' : (i+1) + ' eternities') + " ago took " + timeDisplayShort(player.lastTenEternities[i][0], false, 3)
             if (player.lastTenEternities[i][2]) {
-                if (player.lastTenEternities[i][2] == "d") msg += " while dilated"
+                if (player.lastTenEternities[i][2].toString().slice(0,1) == "d") msg += " while dilated"
                 else msg += " in Eternity Challenge " + player.lastTenEternities[i][2]
             }
-            msg += " and gave " + shortenDimensions(player.lastTenEternities[i][1]) +" EP. "+ tempstring
+            msg += " and gave " + shortenDimensions(player.lastTenEternities[i][1]) + ((player.lastTenEternities[i][2] ? player.lastTenEternities[i][2] == "d2" : false) ? " TP. " : " EP. ") + tempstring
             document.getElementById("eternityrun"+(i+1)).textContent = msg
             tempTime = tempTime.plus(player.lastTenEternities[i][0])
             tempEP = tempEP.plus(player.lastTenEternities[i][1])
@@ -4700,7 +4700,7 @@ function eternity(force, auto) {
         temp = []
         player.eternityPoints = player.eternityPoints.plus(gainedEternityPoints())
         var array = [player.thisEternity, gainedEternityPoints()]
-        if (player.dilation.active) array.push("d")
+        if (player.dilation.active) array = [player.thisEternity, Decimal.max(getDilGain() - player.dilation.totalTachyonParticles, 0), "d2"]
         else if (player.currentEternityChall != "") array.push(player.eternityChallUnlocked)
         addEternityTime(array)
         var forceRespec = false
