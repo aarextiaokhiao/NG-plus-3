@@ -1404,7 +1404,7 @@ function startProduceQuarkCharge() {
 }
 
 function getQuarkLossProduction() {
-	return getQuarkChargeProduction().times(4e25)
+	return getQuarkChargeProduction().pow(4).times(4e25)
 }
 
 function getQuarkEnergyProduction() {
@@ -1416,7 +1416,7 @@ function getQuarkAntienergyProduction() {
 }
 
 function getQuarkChargeProductionCap() {
-	return player.quantum.nanofield.charge.pow(2).times(getNanofieldRewardEffect(8))
+	return player.quantum.nanofield.charge.times(5).times(getNanofieldRewardEffect(8))
 }
 
 function getNanofieldRewardEffect(id) {
