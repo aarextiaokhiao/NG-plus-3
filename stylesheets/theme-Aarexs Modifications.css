@@ -427,16 +427,21 @@ strong { color: #0072e5 }
 #produceQuarkCharge, .nanofieldreward { 
 	background-color: #191919 !important;
 	border: 1px solid #999999 !important;
+	text-shadow: none;
 	animation: none
 }
 #dilstudy12.dilationupg:hover, #dilstudy12.dilationupgbought, #nanofieldtabbtn button:hover, #produceQuarkCharge:hover {
 	background-color: #999999 !important;
-	color: #ffffff;
+	color: #e5e5e5;
 	text-shadow: none
 }
 #quarkEnergy, #quarkEnergyRate, #quarkPowerThreshold { color: #72e500 !important }
 #quarkPower { color: #ace572 !important }
 #quarkAntienergy, #quarkAntienergyRate, #quarkChargeProductionCap { color: #390072 !important }
+.nanofieldreward:hover { 
+	color: #e5e5e5 !important;
+	text-shadow: none
+}
 .notifyjs-bootstrap-info {
     background-color: #0072e5;
     font-family:'Inconsolata', monospace;
