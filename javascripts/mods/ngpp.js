@@ -244,7 +244,7 @@ function getExtraDimensionBoostPower() {
 		let power = 8
 		if (player.dilation.upgrades.includes("ngpp5")) power++
 		power += ECTimesCompleted("eterc13")*0.2
-		if (player.masterystudies != undefined) if (player.masterystudies.includes("d12")) power += getNanofieldRewardEffect(4)
+		if (player.masterystudies != undefined) if (player.masterystudies.includes("d12")) power *= getNanofieldRewardEffect(2)
 		return player.meta.bestAntimatter.pow(power).plus(1)
 	}
 }

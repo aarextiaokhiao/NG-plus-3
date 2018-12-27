@@ -2210,7 +2210,7 @@ function updateExtraReplGalaxies() {
     }
     extraReplGalaxies = ts225Eff + ts226Eff
     if (extraReplGalaxies > 325) extraReplGalaxies = (Math.sqrt(0.9216+0.16*(extraReplGalaxies-324))-0.96)/0.08+324
-    extraReplGalaxies = Math.floor(extraReplGalaxies * (colorBoosts.g + gatheredQuarksBoost))
+    extraReplGalaxies = Math.floor(extraReplGalaxies * (colorBoosts.g + colorBoosts.mg))
 }
 
 function updateMilestones() {
@@ -6748,6 +6748,7 @@ function gameLoop(diff) {
             if (rate.gt(0)) player.quantum.replicants.quarks = player.quantum.replicants.quarks.add(rate.times(diff/10))
         }
         gatheredQuarksBoost = Math.pow(player.quantum.replicants.quarks.add(1).log10(),player.masterystudies.includes("t362")?0.35:0.25)*0.67
+		if (player.masterystudies.includes("d12")) colorBoosts.mg = gatheredQuarksBoost + getNanofieldRewardEffect(3)
 
         for (dim=8;dim>1;dim--) {
             var promote = getWorkerAmount(dim-2)
