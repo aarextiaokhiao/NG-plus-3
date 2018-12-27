@@ -261,7 +261,7 @@ function giveAchievement(name) {
     }
     if (name == "It will never be enough") document.getElementById('replicantibulkmodetoggle').style.display="inline-block"
     if (name == "I already got rid of you..." || name == "No dilation means no production.") {
-        if (player.dilation.bestTP == undefined) player.dilation.bestTP = new Decimal(player.dilation.tachyonParticles)
+        player.dilation.bestTP = new Decimal(player.dilation.tachyonParticles)
         document.getElementById('bestTP').style.display=""
         document.getElementById('bestTP').textContent="Your best ever Tachyon particles was "+shorten(player.dilation.bestTP)+"."
     }

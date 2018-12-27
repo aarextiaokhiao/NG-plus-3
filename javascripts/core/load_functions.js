@@ -1996,7 +1996,8 @@ function transformSaveToDecimal() {
       }
       if (player.quantum ? player.quantum.autobuyer : false) player.quantum.autobuyer.limit = new Decimal(player.quantum.autobuyer.limit)
       if (player.quantum ? player.quantum.electrons : false) player.quantum.electrons.amount = new Decimal(player.quantum.electrons.amount)
-      if (player.dilation.bestTP) player.dilation.bestTP = new Decimal(player.dilation.bestTP)
+      if (player.dilation.bestTP == undefined) player.dilation.bestTP = player.achievements.includes("ng3p18") || player.achievements.includes("ng3p37") ? player.dilation.tachyonParticles : 0
+      player.dilation.bestTP = new Decimal(player.dilation.bestTP)
       if (player.quantum ? player.quantum.replicants : false) {
           player.quantum.replicants.amount = new Decimal(player.quantum.replicants.amount)
           player.quantum.replicants.requirement = new Decimal(player.quantum.replicants.requirement)
