@@ -1980,7 +1980,7 @@ function transformSaveToDecimal() {
 
   if (player.masterystudies) {
       player.dbPower = new Decimal(player.dbPower)
-      if (player.meta.bestOverQuantums) player.meta.bestOverQuantums = new Decimal(player.meta.bestOverQuantums)
+      if (player.meta.bestOverQuantums != undefined) player.meta.bestOverQuantums = new Decimal(player.meta.bestOverQuantums)
       if (player.quantum ? player.quantum.usedQuarks : false) {
           player.quantum.usedQuarks.r = new Decimal(player.quantum.usedQuarks.r)
           player.quantum.usedQuarks.g = new Decimal(player.quantum.usedQuarks.g)
