@@ -1,5 +1,7 @@
 function getDilationMetaDimensionMultiplier () {
-  return player.dilation.dilatedTime.div(1e40).pow(.1).plus(1);
+	let pow = 0.1
+	if (player.masterystudies != undefined) if (player.masterystudies.includes("d12")) pow = getNanofieldRewardEffect(4)
+	return player.dilation.dilatedTime.div(1e40).pow(pow).plus(1);
 }
 
 function getMetaDimensionMultiplier (tier) {
@@ -244,7 +246,7 @@ function getExtraDimensionBoostPower() {
 		let power = 8
 		if (player.dilation.upgrades.includes("ngpp5")) power++
 		power += ECTimesCompleted("eterc13")*0.2
-		if (player.masterystudies != undefined) if (player.masterystudies.includes("d12")) power *= getNanofieldRewardEffect(2)
+		if (player.masterystudies != undefined) if (player.masterystudies.includes("d12")) power += getNanofieldRewardEffect(2)
 		return player.meta.bestAntimatter.pow(power).plus(1)
 	}
 }
