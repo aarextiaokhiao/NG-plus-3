@@ -109,6 +109,7 @@ function getDimensionFinalMultiplier(tier) {
       if (player.currentChallenge == "postc8" || inQC(6)) multiplier = multiplier.times(player.postC8Mult)
       if (multiplier.lt(1)) multiplier = new Decimal(1)
   }
+  if (player.masterystudies != undefined) if (player.dilation.active) multiplier = multiplier.pow(getNanofieldRewardEffect(5))
   return multiplier;
 }
 
@@ -209,7 +210,10 @@ function hasInfinityMult(tier) {
         if (player.galacticSacrifice) if ((player.galacticSacrifice.upgrades.includes(33) && player.currentChallenge != "challenge15" && player.currentChallenge != "postc1") || focusOn == "g33") dimMult *= galUpgrade33();
         if (focusOn == "no-QC5") return dimMult
         if (QCIntensity(5)) dimMult += getQCReward(5)
-        if (player.masterystudies && focusOn != "linear") dimMult = Decimal.pow(dimMult, getMPTPower())
+        if (player.masterystudies) {
+			if (player.masterystudies.includes("d12")) dimMult += getNanofieldRewardEffect(8)
+			if (focusOn != "linear") dimMult = Decimal.pow(dimMult, getMPTPower())
+		}
         return dimMult;
     }
 
@@ -522,6 +526,7 @@ function getDimensionProductionPerSecond(tier) {
 		var maximum = player.galacticSacrifice ? 3 : 0
 		tick = Decimal.pow(10, Math.pow(Math.abs(maximum-tick.log10()), dilationPowerStrength()))
 		if (player.dilation.upgrades.includes(9)) tick = Decimal.pow(10, Math.pow(Math.abs(maximum-tick.log10()), 1.05))
+		if (player.masterystudies != undefined) tick = tick.pow(getNanofieldRewardEffect(5))
 		return ret.times(Decimal.pow(10,(player.aarexModifications.newGame3MinusVersion?2:3)-maximum)).times(tick);
 	}
 	return ret.div(tick.div(1e3));

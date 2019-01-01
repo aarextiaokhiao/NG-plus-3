@@ -8,10 +8,7 @@ function getGalaxyPower(ng, bi) {
 	let replGalEff = 1
 	if (player.boughtDims) replGalEff = Math.log10(player.replicanti.limit.log(2))/Math.log10(2)/10
 	else if (ECTimesCompleted("eterc8") > 0) replGalEff = Math.max(Math.pow(Math.log10(player.infinityPower.plus(1).log10()+1), 0.03 * ECTimesCompleted("eterc8")), 1)
-	if (player.masterystudies) {
-		if (player.masterystudies.includes("t344")) replGalEff *= getMTSMult(344)
-		if (player.dilation.active) replGalEff *= getNanofieldRewardEffect(6)
-	}
+	if (player.masterystudies) if (player.masterystudies.includes("t344")) replGalEff *= getMTSMult(344)
 	let extraReplGalPower = 0
 	if (player.timestudy.studies.includes(133)) extraReplGalPower += player.replicanti.galaxies/2
 	if (player.timestudy.studies.includes(132)) extraReplGalPower += player.replicanti.galaxies*0.4
