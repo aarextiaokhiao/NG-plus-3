@@ -1095,6 +1095,7 @@ function getDilTimeGainPerSecond() {
 		gain = gain.times(getQCReward(1))
 		if (player.masterystudies.includes("t322")) gain = gain.times(getMTSMult(322))
 		if (player.masterystudies.includes("t341")) gain = gain.times(getMTSMult(341))
+		if (player.masterystudies.includes("t412")) gain = gain.times(getMTSMult(412))
 	}
 	if (player.dilation.upgrades.includes('ngpp6')) gain = gain.times(getDil17Bonus())
 	if (GUBought("br2")) gain = gain.times(Decimal.pow(2.2, Math.pow(calcTotalSacrificeBoost().max(1).log10()/1e6, 0.25)))

@@ -1,12 +1,12 @@
-masterystudies={initialCosts:{time:{241: 1e71, 251: 2e71, 252: 2e71, 253: 2e71, 261: 5e71, 262: 5e71, 263: 5e71, 264: 5e71, 265: 5e71, 266: 5e71, 271: 2.7434842249657063e76, 272: 2.7434842249657063e76, 273: 2.7434842249657063e76, 281: 6.858710562414266e76, 282: 6.858710562414266e76, 291: 2.143347050754458e77, 292: 2.143347050754458e77, 301: 8.573388203017832e77, 302: 2.6791838134430725e78, 303: 8.573388203017832e77, 311: 8.573388203017832e77, 312: 8.573388203017832e77, 321: 2.6791838134430727e76, 322: 9.324815538194444e77, 323: 2.6791838134430727e76, 331: 1.0172526041666666e79, 332: 1.0172526041666666e79, 341: 9.5367431640625e78, 342: 1.0172526041666666e79, 343: 1.0172526041666666e79, 344: 9.5367431640625e78, 351: 2.1192762586805557e79, 361: 1.5894571940104167e79, 362: 1.5894571940104167e79, 371: 2.1192762586805557e79, 372: 6.622738308376736e79, 373: 2.1192762586805557e79, 381: 6.622738308376736e79, 382: 6.622738308376736e79, 383: 6.622738308376736e79, 391: 8.27842288547092e79, 392: 8.27842288547092e79, 393: 8.27842288547092e79, 401: 4.967053731282552e80, 411: 1.986821492513021e81},
+masterystudies={initialCosts:{time:{241: 1e71, 251: 2e71, 252: 2e71, 253: 2e71, 261: 5e71, 262: 5e71, 263: 5e71, 264: 5e71, 265: 5e71, 266: 5e71, 271: 2.7434842249657063e76, 272: 2.7434842249657063e76, 273: 2.7434842249657063e76, 281: 6.858710562414266e76, 282: 6.858710562414266e76, 291: 2.143347050754458e77, 292: 2.143347050754458e77, 301: 8.573388203017832e77, 302: 2.6791838134430725e78, 303: 8.573388203017832e77, 311: 8.573388203017832e77, 312: 8.573388203017832e77, 321: 2.6791838134430727e76, 322: 9.324815538194444e77, 323: 2.6791838134430727e76, 331: 1.0172526041666666e79, 332: 1.0172526041666666e79, 341: 9.5367431640625e78, 342: 1.0172526041666666e79, 343: 1.0172526041666666e79, 344: 9.5367431640625e78, 351: 2.1192762586805557e79, 361: 1.5894571940104167e79, 362: 1.5894571940104167e79, 371: 2.1192762586805557e79, 372: 6.622738308376736e79, 373: 2.1192762586805557e79, 381: 6.622738308376736e79, 382: 6.622738308376736e79, 383: 6.622738308376736e79, 391: 8.27842288547092e79, 392: 8.27842288547092e79, 393: 8.27842288547092e79, 401: 4.967053731282552e80, 411: 1.986821492513021e81, 412: 1.655684577094184e82},
 		ec:{13:1e72, 14:1e72}},
 	costs:{time:{},
 		ec:{},
 		dil:{7: 2e82, 8: 2e84, 9: 4e85, 10: 4e87, 11: 3e90, 12: 3e92},
 		mc:{}},
-	costmults:{241: 1, 251: 2.5, 252: 2.5, 253: 2.5, 261: 6, 262: 6, 263: 6, 264: 6, 265: 6, 266: 6, 271: 2, 272: 2, 273: 2, 281: 4, 282: 4, 291: 1, 292: 1, 301: 2, 302: 131072, 303: 2, 311: 64, 312: 64, 321: 2, 322: 2, 323: 2, 331: 2, 332: 2, 341: 1, 342: 1, 343: 1, 344: 1, 351: 4, 361: 1, 362: 1, 371: 2, 372: 2, 373: 2, 381: 1, 382: 1, 383: 2, 391: 1, 392: 1, 393: 1, 401: 1, 411: 1},
+	costmults:{241: 1, 251: 2.5, 252: 2.5, 253: 2.5, 261: 6, 262: 6, 263: 6, 264: 6, 265: 6, 266: 6, 271: 2, 272: 2, 273: 2, 281: 4, 282: 4, 291: 1, 292: 1, 301: 2, 302: 131072, 303: 2, 311: 64, 312: 64, 321: 2, 322: 2, 323: 2, 331: 2, 332: 2, 341: 1, 342: 1, 343: 1, 344: 1, 351: 4, 361: 1, 362: 1, 371: 2, 372: 2, 373: 2, 381: 1, 382: 1, 383: 2, 391: 1, 392: 1, 393: 1, 401: 1, 411: 1, 412: 1},
 	costmult:1,
-	allTimeStudies:[241, 251, 252, 253, 261, 262, 263, 264, 265, 266, 271, 272, 273, 281, 282, 291, 292, 301, 302, 303, 311, 312, 321, 322, 323, 331, 332, 341, 342, 343, 344, 351, 361, 362, 371, 372, 373, 381, 382, 383, 391, 392, 393, 401, 411],
+	allTimeStudies:[241, 251, 252, 253, 261, 262, 263, 264, 265, 266, 271, 272, 273, 281, 282, 291, 292, 301, 302, 303, 311, 312, 321, 322, 323, 331, 332, 341, 342, 343, 344, 351, 361, 362, 371, 372, 373, 381, 382, 383, 391, 392, 393, 401, 411, 412],
 	initialReqs:{13:728e3,14:255e5},
 	incrementReqs:{13:6e3,14:9e5},
 	reqs:{},
@@ -65,6 +65,7 @@ function updateMasteryStudyButtons() {
 	if (player.masterystudies.includes("d12")) {
 		document.getElementById("ts401Current").textContent="Currently: "+shorten(getMTSMult(401))+"x"
 		document.getElementById("ts411Current").textContent="Currently: "+shorten(getMTSMult(411))+"x"
+		document.getElementById("ts412Current").textContent="Currently: "+shorten(getMTSMult(412))+"x"
 	}
 }
 
@@ -321,7 +322,8 @@ function drawMasteryTree() {
 	if (player.masterystudies.includes("d12")) {
 		drawMasteryBranch("dilstudy12", "timestudy401")
 		drawMasteryBranch("timestudy401", "timestudy411")
-		drawMasteryBranch("timestudy411", "dilstudy13")
+		drawMasteryBranch("timestudy411", "timestudy412")
+		drawMasteryBranch("timestudy412", "dilstudy13")
 	}
     if (shiftDown) {
         var all = masterystudies.allTimeStudies
@@ -409,6 +411,7 @@ function getMTSMult(id) {
 	if (id==393) return Decimal.pow(4e5,Math.sqrt(getTotalWorkers().add(1).log10()))
 	if (id==401) return player.quantum.replicants.quarks.div(2e28).add(1).pow(0.2)
 	if (id==411) return getTotalReplicants().div(4e24).add(1).pow(0.2)
+	if (id==412) return Math.pow(getInfinitied() / 1e117 + 1, 0.25)
 }
 
 //v1.3
@@ -527,7 +530,7 @@ function updateQuantumTabs() {
 		document.getElementById("nanofieldreward4").textContent = "Dilated time multiplier power on Meta Dimensions is " + getNanofieldRewardEffect(4).toFixed(3) + "x."
 		document.getElementById("nanofieldreward5").textContent = "While dilated, Normal Dimension multipliers and tickspeed are raised to the power of " + getNanofieldRewardEffect(5).toFixed(1) + "."
 		document.getElementById("nanofieldreward6").textContent = "Meta-dimension boost power is " + getNanofieldRewardEffect(6).toFixed(1) + "x."
-		document.getElementById("nanofieldreward7").textContent = "All Emperor Dimensions are boosted by " + shortenDimensions(getNanofieldRewardEffect(7)) + "x and hatch speed is boosted by " + shortenDimensions(getNanofieldRewardEffect(7).pow(4)) + "x."
+		document.getElementById("nanofieldreward7").textContent = "All Emperor Dimensions are boosted by " + shortenDimensions(getNanofieldRewardEffect(7)) + "x and hatch speed is boosted by " + shortenDimensions(getNanofieldRewardEffect("7h")) + "x."
 		document.getElementById("nanofieldreward8").textContent = "Add " + getNanofieldRewardEffect(8).toFixed(2) + "x to multiplier per ten dimensions before getting affected by electrons."
 	}
 }
@@ -1357,7 +1360,7 @@ function getHatchSpeed() {
 	if (player.masterystudies.includes("t391")) speed /= getMTSMult(391)
 	if (player.masterystudies.includes("d12")) {
 		speed /= getNanofieldRewardEffect(1)
-		speed /= getNanofieldRewardEffect(7).pow(4)
+		speed /= getNanofieldRewardEffect("7h")
 	}
 	return speed
 }
@@ -1408,6 +1411,23 @@ function getEDRateOfChange(dim) {
 }
 
 //v1.9995
+function maxReduceHatchSpeed() {
+	let minGluons = player.quantum.gluons.rg.min(player.quantum.gluons.gb).min(player.quantum.gluons.br)
+	let toBuy = Math.floor(minGluons.div(player.quantum.replicants.hatchSpeedCost).times(9).add(1).log10())
+	if (toBuy < 1) return
+	let toSpend = Decimal.pow(10, toBuy).minus(1).div(9).times(player.quantum.replicants.hatchSpeedCost)
+	if (toSpend.gt(player.quantum.gluons.rg)) player.quantum.gluons.rg = new Decimal(0)
+	else player.quantum.gluons.rg = player.quantum.gluons.rg.sub(toSpend)
+	if (toSpend.gt(player.quantum.gluons.gb)) player.quantum.gluons.gb = new Decimal(0)
+	else player.quantum.gluons.gb = player.quantum.gluons.gb.sub(toSpend)
+	if (toSpend.gt(player.quantum.gluons.br)) player.quantum.gluons.br = new Decimal(0)
+	else player.quantum.gluons.br = player.quantum.gluons.br.sub(toSpend)
+	player.quantum.replicants.hatchSpeed /= Math.pow(1.1, toBuy)
+	player.quantum.replicants.hatchSpeedCost = player.quantum.replicants.hatchSpeedCost.times(Decimal.pow(10, toBuy))
+	updateGluons()
+	updateReplicants()
+}
+
 function getQuarkChargeProduction() {
 	return getNanofieldRewardEffect(7)
 }
@@ -1446,5 +1466,6 @@ function getNanofieldRewardEffect(id) {
 	if (id == 5) return 1 + stacks * 1.5
 	if (id == 6) return 3 + stacks * 0.4
 	if (id == 7) return Decimal.pow(3, stacks)
+	if (id == "7h") return Decimal.pow(81, Math.sqrt(Math.ceil((player.quantum.nanofield.rewards - 6) / 8)))
 	if (id == 8) return stacks * 0.63
 }
