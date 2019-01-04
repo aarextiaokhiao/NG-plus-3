@@ -49,8 +49,8 @@ function autoTickspeedBoostBoolean() {
 	var req=getTickspeedBoostRequirement(player.autobuyers[13].bulk - 1)
 	if (req.tier<8) return false
 	if (player.overXGalaxiesTickspeedBoost <= player.galaxies) return true
-	if (getAmount(8)>req.amount) return false
-	return true
+	if (getAmount(8)>req.amount) return true
+	return false
 }
 
 //v2.2
