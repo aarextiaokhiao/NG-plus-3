@@ -533,7 +533,7 @@ function updateQuantumTabs() {
 		document.getElementById("nanofieldreward4").textContent = "Dilated time multiplier power on Meta Dimensions is " + getNanofieldRewardEffect(4).toFixed(3) + "x."
 		document.getElementById("nanofieldreward5").textContent = "While dilated, Normal Dimension multipliers and tickspeed are raised to the power of " + getNanofieldRewardEffect(5).toFixed(1) + "."
 		document.getElementById("nanofieldreward6").textContent = "Meta-dimension boost power is " + getNanofieldRewardEffect(6).toFixed(1) + "x."
-		document.getElementById("nanofieldreward7").textContent = "All Emperor Dimensions are boosted by " + shortenDimensions(getNanofieldRewardEffect(7)) + "x and hatch speed is boosted by " + shortenDimensions(getNanofieldRewardEffect("7h")) + "x."
+		document.getElementById("nanofieldreward7").textContent = "All Emperor Dimensions are boosted by " + shortenDimensions(getNanofieldRewardEffect(7)) + "x and hatch speed is " + shortenDimensions(getNanofieldRewardEffect("7h")) + "x faster."
 		document.getElementById("nanofieldreward8").textContent = "Add " + getNanofieldRewardEffect(8).toFixed(2) + "x to multiplier per ten dimensions before getting affected by electrons."
 	}
 }
