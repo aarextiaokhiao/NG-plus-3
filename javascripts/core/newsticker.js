@@ -178,8 +178,12 @@ newsArray = [//always true
 ["Did you know that NG-3 nerfs NG-- to make short runs longer?", "player.achievements.includes('r22') && player.tickspeedBoosts != undefined", "am24"],
 ["I guess NG-4 would be coming if NG-3 is too easy.", "player.achievements.includes('r22') && player.tickspeedBoosts != undefined", "am25"],
 ["I don't really think I am an A.I.", "player.achievements.includes('r22')", "am27"],
-["Somebody think you get your first galactic sacrifice faster than NG--. An update will be coming soon!", "player.achievements.includes('r22') && player.tickspeedBoosts != undefined", "am28"]
-/*NEXT ID: am29*/];}
+["Somebody think you get your first galactic sacrifice faster than NG--. An update will be coming soon!", "player.achievements.includes('r22') && player.tickspeedBoosts != undefined", "am28"],
+["The news ticker is already dead despite taking up a two dimensional area", "player.achievements.includes('r22')", "am29"],
+["All notations are good notations. Maybe except Psi.", "player.achievements.includes('r22')", "am30"],
+["Why even bother using the news ticker? Sure, there are a few funny ones, but even they get old after a while and most of them are just long strings of nonsensical text that repeat over and over until you get sick of seeing them. You've probably seen this one at least nine times already, and you're going to keep seeing it and seeing it until you finally decide to turn off the news.", "player.achievements.includes('r22')", "am31"],
+["News ticker declared dead! Provides no purpose.", "player.achievements.includes('r22')", "am32"]
+/*NEXT ID: am33*/];}
 
 document.addEventListener("visibilitychange", function() {if (!document.hidden) {scrollNextMessage();}}, false);
 var scrollTimeouts = [];
