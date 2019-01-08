@@ -432,7 +432,7 @@ strong { color: #0072e5 }
 }
 #dilstudy12.dilationupg:hover, #dilstudy12.dilationupgbought, #nanofieldtabbtn button:hover, #produceQuarkCharge:hover {
 	background-color: #999999 !important;
-	color: #e5e5e5;
+	color: #191919;
 	text-shadow: none
 }
 #quarkEnergy, #quarkEnergyRate, #quarkPowerThreshold { color: #72e500 !important }
