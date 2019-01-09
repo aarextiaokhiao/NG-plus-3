@@ -4233,14 +4233,15 @@ function updateLastTenEternities() {
     for (var i=0; i<10; i++) {
         if (player.lastTenEternities[i][1].gt(0)) {
             var eppm = player.lastTenEternities[i][1].dividedBy(player.lastTenEternities[i][0]/600)
-            var tempstring = shorten(eppm) + " EP/min"
-            if (eppm<1) tempstring = shorten(eppm*60) + " EP/hour"
+			var unit = (player.lastTenEternities[i][2] ? player.lastTenEternities[i][2] == "d2" : false) ? "TP" : "EP"
+            var tempstring = shorten(eppm) + " " + unit + "/min"
+            if (eppm<1) tempstring = shorten(eppm*60) + " " + unit + "/hour"
             msg = "The Eternity " + (i == 0 ? '1 eternity' : (i+1) + ' eternities') + " ago took " + timeDisplayShort(player.lastTenEternities[i][0], false, 3)
             if (player.lastTenEternities[i][2]) {
                 if (player.lastTenEternities[i][2].toString().slice(0,1) == "d") msg += " while dilated"
                 else msg += " in Eternity Challenge " + player.lastTenEternities[i][2]
             }
-            msg += " and gave " + shortenDimensions(player.lastTenEternities[i][1]) + ((player.lastTenEternities[i][2] ? player.lastTenEternities[i][2] == "d2" : false) ? " TP. " : " EP. ") + tempstring
+            msg += " and gave " + shortenDimensions(player.lastTenEternities[i][1]) + " " + unit + ". " + tempstring
             document.getElementById("eternityrun"+(i+1)).textContent = msg
             tempTime = tempTime.plus(player.lastTenEternities[i][0])
             tempEP = tempEP.plus(player.lastTenEternities[i][1])
