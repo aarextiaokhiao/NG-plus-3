@@ -965,6 +965,7 @@ if (player.version < 5) {
   }
   if (player.aarexModifications.newGame3PlusVersion < 1.9995) {
       player.meta.bestOverQuantums = player.meta.bestAntimatter
+      player.quantum.autobuyer.mode = "amount"
       player.quantum.nanofield = {
           charge: 0,
           energy: 0,
@@ -974,6 +975,12 @@ if (player.version < 5) {
           rewards: 0,
           producingCharge: false
       }
+      player.quantum.reachedInfQK = false
+      player.quantum.assignAllRatios = {
+          r: 1,
+          g: 1,
+          b: 1
+      }
       player.aarexModifications.newGame3PlusVersion=1.9995
   }
   if (player.masterystudies) {
@@ -981,9 +988,16 @@ if (player.version < 5) {
       if (player.quantum.challengeRecords === undefined) player.quantum.challengeRecords = {}
       if (player.quantum.pairedChallenges.completions === undefined) player.quantum.pairedChallenges.completions = {}
       //Testing-exclusive
+      if (player.quantum.autobuyer.mode === undefined) player.quantum.autobuyer.mode = "amount"
       if (player.meta.bestOverQuantums === undefined) player.meta.bestOverQuantums = player.meta.bestAntimatter
       if (player.quantum.nanofield.powerThreshold === undefined) player.quantum.nanofield.powerThreshold = 1
       if (player.quantum.nanofield.producingCharge === undefined) player.quantum.nanofield.producingCharge = false
+      if (player.quantum.reachedInfQK === undefined) player.quantum.reachedInfQK = false
+      if (player.quantum.assignAllRatios === undefined) player.quantum.assignAllRatios = {
+          r: 1,
+          g: 1,
+          b: 1
+      }
   }
   if (player.aarexModifications.newGame3PlusVersion==undefined) {
       colorBoosts={
@@ -1466,6 +1480,7 @@ if (player.version < 5) {
       for (i=1;i<9;i++) document.getElementById("td"+i+'auto').textContent="Auto: O"+(player.autoEterOptions["td"+i]?"N":"FF")
   }
   document.getElementById('sacrificeAuto').style.display=speedrunMilestonesReached>24?"":"none"
+  document.getElementById('toggleautoquantummode').style.display=(player.masterystudies?player.quantum.reachedInfQK:false)?"":"none"
   if (player.masterystudies) {
       updateMasteryStudyCosts()
       updateMasteryStudyButtons()

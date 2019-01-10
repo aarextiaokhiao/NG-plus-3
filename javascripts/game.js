@@ -462,7 +462,7 @@ function updateNewPlayer(reseted) {
             ageProgress: 0
         }
         player.quantum.emperorDimensions = {}
-        for (d=1;d<9;d++) player.quantum.emperorDimensions[d] = {workers: 0, progress: 0, perm: 0, manualProgress: 0}
+        for (d=1;d<9;d++) player.quantum.emperorDimensions[d] = {workers: 0, progress: 0, perm: 0}
         player.dontWant = false
         player.quantum.nanofield = {
             charge: 0,
@@ -473,6 +473,12 @@ function updateNewPlayer(reseted) {
             rewards: 0,
             producingCharge: false
         }
+        player.quantum.assignAllRatios = {
+            r: 1,
+            g: 1,
+            b: 1
+        }
+        player.quantum.reachedInfQK = false
     }
     if (modesChosen.rs===true) {
         player.aarexModifications.ersVersion = 1.02

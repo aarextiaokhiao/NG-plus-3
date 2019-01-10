@@ -598,7 +598,15 @@ function quantumReset(force, auto, challid, implode=false) {
 			}
 		}
 		player.quantum.times++
-		if (!inQC(6)) player.quantum.quarks = player.quantum.quarks.plus(qkGain);
+		if (!inQC(6)) {
+			player.quantum.quarks = player.quantum.quarks.plus(qkGain)
+			if (player.masterystudies != undefined && player.quantum.quarks.gte(Number.MAX_VALUE) && !player.quantum.reachedInfQK) {
+				document.getElementById("welcome").style.display = "flex"
+				document.getElementById("welcomeMessage").innerHTML = "Congratulations for getting " + shorten(Number.MAX_VALUE) + " quarks! You have unlocked new QoL features, like quantum autobuyer modes, assign all, and auto-assignation!"
+				player.quantum.reachedInfQK = true
+				document.getElementById('toggleautoquantummode').style.display=""
+			}
+		}
 		if (!inQC(4)) if (player.meta.resets<1) giveAchievement("Infinity Morals")
 		if (player.dilation.rebuyables[1] + player.dilation.rebuyables[2] + player.dilation.rebuyables[3] + player.dilation.rebuyables[4] < 1 && player.dilation.upgrades.length < 1) giveAchievement("Never make paradoxes!")
 	}
