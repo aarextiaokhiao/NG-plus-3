@@ -321,8 +321,8 @@ function updateAutoEterMode() {
 		document.getElementById("toggleautoetermode").textContent = "Auto eternity mode: peak"
 		document.getElementById("eterlimittext").textContent = "Seconds to wait after latest peak gain:"
 	} else if (player.autoEterMode == "manual") {
-		document.getElementById("toggleautoetermode").textContent = "Auto eternity mode: manual"
-		document.getElementById("eterlimittext").textContent = "Wait until next eternity"
+		document.getElementById("toggleautoetermode").textContent = "Auto eternity mode: dilate only"
+		document.getElementById("eterlimittext").textContent = "Does nothing to eternity"
 		document.getElementById("priority13").disabled=true
 	} else {
 		document.getElementById("toggleautoetermode").textContent = "Auto eternity mode: amount"
@@ -903,7 +903,7 @@ function quantumReset(force, auto, challid, implode=false) {
 		meta: {
 			antimatter: new Decimal(speedrunMilestonesReached > 18 ? 1e25 : 100),
 			bestAntimatter: headstart ? player.meta.bestAntimatter : new Decimal(speedrunMilestonesReached > 18 ? 1e25 : 100),
-			bestOverQuantums: player.bestOverQuantums,
+			bestOverQuantums: player.meta.bestOverQuantums,
 			resets: isRewardEnabled(27) ? 4 : 0,
 			'1': {
 				amount: new Decimal(0),

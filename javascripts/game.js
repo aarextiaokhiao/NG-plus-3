@@ -419,7 +419,8 @@ function updateNewPlayer(reseted) {
         player.quantum.autobuyer = {
             enabled: false,
             limit: 1,
-            mode: "amount"
+            mode: "amount",
+            peakTime: 0
         }
         player.quantum.electrons = {
             amount: 0,
@@ -7024,7 +7025,8 @@ function gameLoop(diff) {
         if (currentQKmin.gt(QKminpeak) && player.meta.antimatter.gte(Decimal.pow(Number.MAX_VALUE,player.masterystudies?1.2:1))) {
             QKminpeak = currentQKmin
             QKminpeakValue = quarkGain()
-        }
+            player.quantum.autobuyer.peakTime = 0
+        } else player.quantum.autobuyer.peakTime += player.quantum.time / 10
     }
     var currentEPmin = updateEPminpeak(diff);
     EPminpeakUnits = player.dilation.active && isSmartPeakActivated ? 'TP' : 'EP'
@@ -7603,7 +7605,17 @@ function maxBuyGalaxies(manual) {
 var timer = 0
 function autoBuyerTick() {
 
-    if (player.masterystudies) if (speedrunMilestonesReached>22&&player.quantum.autobuyer.enabled) if (quarkGain().gte(Decimal.round(player.quantum.autobuyer.limit))) quantum(true, false, 0)
+    if (player.masterystudies) if (speedrunMilestonesReached>22&&player.quantum.autobuyer.enabled) {
+        if (player.quantum.autobuyer.mode == "amount") {
+            if (quarkGain().gte(Decimal.round(player.quantum.autobuyer.limit))) quantum(true, false, 0)
+        } else if (player.quantum.autobuyer.mode == "relative") {
+            if (quarkGain().gte(Decimal.round(player.quantum.autobuyer.limit).times(player.quantum.last10[0][1]))) quantum(true, false, 0)
+        } else if (player.quantum.autobuyer.mode == "time") {
+            if (player.quantum.time / 10 >= new Decimal(player.quantum.autobuyer.limit).toNumber()) quantum(true, false, 0)
+        } else if (player.quantum.autobuyer.mode == "peak") {
+            if (player.quantum.autobuyer.peakTime >= new Decimal(player.quantum.autobuyer.limit).toNumber()) quantum(true, false, 0)
+        }
+    }
 
     if (getEternitied() >= 100 && player.eternityBuyer.isOn) {
         if (player.autoEterMode === undefined || player.autoEterMode == "amount") {

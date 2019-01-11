@@ -3512,7 +3512,7 @@
                 <button class="storebtn" id="togglebulk" style="font-size: 100%; width: 150px; height: 40px;margin: 3px" onclick="toggleBulk()">Disable bulk buy</button>
                 <button class="storebtn" id="togglecrunchmode" style="font-size: 100%; width: 150px; height: 40px;margin: 3px; display: none" onclick="toggleCrunchMode()">Auto crunch mode: amount</button>
                 <button class="storebtn" id="toggleautoetermode" style="font-size: 100%; width: 150px; height: 40px;margin: 3px; display: none" onclick="toggleAutoEterMode()">Auto eternity mode: amount</button>
-                <button class="storebtn" id="toggleautoquantummode" style="font-size: 100%; width: 150px; height: 40px;margin: 3px; display: none" onclick="toggleAutoQuantumMode()">Auto quantum mode: amount</button>
+                <button class="storebtn" id="toggleautoquantummode" style="font-size: 100%; width: 150px; height: 40px;margin: 3px; display: none" onclick="toggleAutoQuantumMode()"></button>
                 <br>
                 <tr>
                 <td></td>
@@ -3532,7 +3532,7 @@
                 </div></td>
                 <td id="autoBuyerQuantum"><div class="autoBuyerDiv" style="display:block">
                     <div>Automatic Quantum</div>
-                    <div>Amount of QK to wait until reset:
+                    <div><span id='autoquantumtext'></span>
                     <input type="text" onchange="updatePriorities()" id="priorityquantum"></input></div>
                     <br>
                     <span style="font-size: 80%">Is active</span>

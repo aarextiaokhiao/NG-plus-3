@@ -1472,3 +1472,27 @@ function getNanofieldRewardEffect(id) {
 	if (id == "7h") return Decimal.pow(81, Math.sqrt(Math.ceil((player.quantum.nanofield.rewards - 6) / 8)))
 	if (id == 8) return stacks * 0.63
 }
+
+function updateAutoQuantumMode() {
+	if (player.quantum.autobuyer.mode == "amount") {
+		document.getElementById("toggleautoquantummode").textContent = "Auto quantum mode: amount"
+		document.getElementById("autoquantumtext").textContent = "Amount of QK to wait until reset:"
+	} else if (player.quantum.autobuyer.mode == "relative") {
+		document.getElementById("toggleautoquantummode").textContent = "Auto quantum mode: X times last quantum"
+		document.getElementById("autoquantumtext").textContent = "X times last quantum:"
+	} else if (player.quantum.autobuyer.mode == "time") {
+		document.getElementById("toggleautoquantummode").textContent = "Auto quantum mode: time"
+		document.getElementById("autoquantumtext").textContent = "Wait until next quantum:"
+	} else if (player.quantum.autobuyer.mode == "peak") {
+		document.getElementById("toggleautoquantummode").textContent = "Auto quantum mode: peak"
+		document.getElementById("autoquantumtext").textContent = "Seconds to wait after latest peak gain:"
+	}
+}
+
+function toggleAutoQuantumMode() {
+	if (player.quantum.autobuyer.mode == "amount") player.quantum.autobuyer.mode = "relative"
+	else if (player.quantum.autobuyer.mode == "relative") player.quantum.autobuyer.mode = "time"
+	else if (player.quantum.autobuyer.mode == "time") player.quantum.autobuyer.mode = "peak"
+	else player.quantum.autobuyer.mode = "amount"
+	updateAutoQuantumMode()
+}

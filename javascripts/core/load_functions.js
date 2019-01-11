@@ -675,7 +675,8 @@ if (player.version < 5) {
               player.quantum.autobuyer = {
                   enabled: false,
                   limit: 1,
-                  mode: "amount"
+                  mode: "amount",
+                  peakTime: 0
               }
               player.quantum.electrons = {
                   amount: 0,
@@ -718,14 +719,20 @@ if (player.version < 5) {
                   ageProgress: 0
               }
               player.quantum.emperorDimensions = {}
-              for (d=1;d<9;d++) player.quantum.emperorDimensions[d] = {workers: 0, progress: 0}
+              for (d=1;d<9;d++) player.quantum.emperorDimensions[d] = {workers: 0, progress: 0, perm: 0}
               player.quantum.nanofield = {
                  charge: 0,
                  energy: 0,
                  antienergy: 0,
                  power: 0,
                  rewards: 0
-             }
+              }
+              player.quantum.reachedInfQK = false
+              player.quantum.assignAllRatios = {
+                  r: 1,
+                  g: 1,
+                  b: 1
+              }
           }
           player.dilation.upgrades=migratedUpgrades
           resetDilationGalaxies()
@@ -964,8 +971,13 @@ if (player.version < 5) {
       delete player.quantum.replicants.workerProgress
   }
   if (player.aarexModifications.newGame3PlusVersion < 1.9995) {
+      if (player.quantum.emperorDimensions[1].perm === undefined) {
+          player.quantum.replicants.quantumFood = 0
+          player.quantum.replicants.quantumFoodCost = 1e46
+          for (d=1;d<9;d++) player.quantum.emperorDimensions[d] = {workers: 0, progress: 0, perm: 0}
+      }
       player.meta.bestOverQuantums = player.meta.bestAntimatter
-      player.quantum.autobuyer.mode = "amount"
+      player.quantum.autobuyer.peakTime = 0
       player.quantum.nanofield = {
           charge: 0,
           energy: 0,
@@ -988,7 +1000,7 @@ if (player.version < 5) {
       if (player.quantum.challengeRecords === undefined) player.quantum.challengeRecords = {}
       if (player.quantum.pairedChallenges.completions === undefined) player.quantum.pairedChallenges.completions = {}
       //Testing-exclusive
-      if (player.quantum.autobuyer.mode === undefined) player.quantum.autobuyer.mode = "amount"
+      if (player.quantum.autobuyer.peakTime === undefined) player.quantum.autobuyer.peakTime = 0
       if (player.meta.bestOverQuantums === undefined) player.meta.bestOverQuantums = player.meta.bestAntimatter
       if (player.quantum.nanofield.powerThreshold === undefined) player.quantum.nanofield.powerThreshold = 1
       if (player.quantum.nanofield.producingCharge === undefined) player.quantum.nanofield.producingCharge = false
@@ -1495,6 +1507,7 @@ if (player.version < 5) {
       document.getElementById("respecPC").className=player.quantum.pairedChallenges.respec?"quantumbtn":"storebtn"
       document.getElementById('sacrificeAuto').textContent="Auto: O"+(player.quantum.autoOptions.sacrifice?"N":"FF")
       document.getElementById("produceQuarkCharge").innerHTML="S" + (player.quantum.nanofield.producingCharge ? "top producing" : "tart produce") + " quark charge." + (player.quantum.nanofield.producingCharge ? "" : "<br>(All of your replicants don't gather quarks while producing quark charge.)")
+      updateAutoQuantumMode()
   }
   transformSaveToDecimal();
   updateChallengeTimes();
@@ -2071,7 +2084,7 @@ function loadAutoBuyerSettings() {
       document.getElementById("prioritydil").value = player.eternityBuyer.dilationPerAmount
       if (player.quantum) if (player.quantum.autobuyer) {
           if (isNaN(break_infinity_js ? player.quantum.autobuyer.limit : player.quantum.autobuyer.limit.logarithm)) player.quantum.autobuyer.limit = new Decimal(1)
-          document.getElementById("priorityquantum").value = formatValue("Scientific", player.quantum.autobuyer.limit, 2, 0)
+          document.getElementById("priorityquantum").value = player.quantum.autobuyer.mode == "amount" || player.quantum.autobuyer.mode == "relative" ? formatValue("Scientific", player.quantum.autobuyer.limit, 2, 0) : player.quantum.autobuyer.limit
       }
   }
 }
