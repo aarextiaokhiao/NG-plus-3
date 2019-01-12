@@ -1011,6 +1011,7 @@ function quantumReset(force, auto, challid, implode=false) {
 				for (qc=1;qc<9;qc++) player.quantum.challenges[qc]=1
 				document.getElementById("respecPC").className="storebtn"
 			}
+			if (player.quantum.autoOptions.assignQK) assignAll(true)
 		}
 		player.quantum.pairedChallenges.current=0
 		if (challid==0) {

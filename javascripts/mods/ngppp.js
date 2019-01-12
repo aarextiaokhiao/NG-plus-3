@@ -1496,3 +1496,39 @@ function toggleAutoQuantumMode() {
 	else player.quantum.autobuyer.mode = "amount"
 	updateAutoQuantumMode()
 }
+
+function assignAll(quantumed=false) {
+	var ratios =  player.quantum.assignAllRatios
+	var sum = ratios.r+ratios.g+ratios.b
+	var oldQuarks = player.quantum.quarks
+	var colors = ['r','g','b']
+	for (c=0;c<3;c++) {
+		var toAssign = oldQuarks.times(ratios[colors[c]]/sum).round()
+		player.quantum.usedQuarks[colors[c]] = player.quantum.usedQuarks[colors[c]].add(toAssign).round()
+		if (toAssign.gt(player.quantum.quarks)) player.quantum.quarks = new Decimal(0)
+		else player.quantum.quarks = player.quantum.quarks.sub(toAssign).round()
+	}
+	if (!quantumed) updateColorCharge()
+}
+
+function changeRatio(color) {
+	var value = parseFloat(document.getElementById("ratio_" + color).value)
+	if (value < 0 || isNaN(value)) {
+		document.getElementById("ratio_" + color).value = player.quantum.assignAllRatios[color]
+		return
+	}
+	var sum = 0
+	var colors = ['r','g','b']
+	for (c=0;c<3;c++) sum += colors[c] == color ? value : player.quantum.assignAllRatios[colors[c]]
+	if (sum == 0 || sum == 1/0) {
+		document.getElementById("ratio_" + color).value = player.quantum.assignAllRatios[color]
+		return
+	}
+	player.quantum.assignAllRatios[color] = value
+}
+
+function toggleAutoAssign() {
+	player.quantum.autoOptions.assignQK = !player.quantum.autoOptions.assignQK
+	document.getElementById('autoAssign').textContent="Auto: O"+(player.quantum.autoOptions.assignQK?"N":"FF")
+	if (player.quantum.autoOptions.assignQK) assignAll()
+}

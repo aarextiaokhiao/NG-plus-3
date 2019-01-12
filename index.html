@@ -4135,6 +4135,14 @@
 						<button class='storebtn' id='blueAssign' onclick='assignQuark("b")'>Assign</button>
 					</td>
 				</tr></table>
+				<div id="assignAll">
+					<button class='storebtn' onclick='assignAll()'>Assign all</button>
+					<button class='storebtn' id="autoAssign" onclick='toggleAutoAssign()'>Auto: OFF</button><br>
+					Ratios:<br>
+					R: <input id="ratio_r" type="number" min=0 onchange="changeRatio('r')"></input>
+					G: <input id="ratio_g" type="number" min=0 onchange="changeRatio('g')"></input>
+					B: <input id="ratio_b" type="number" min=0 onchange="changeRatio('b')"></input>
+				</div>
 				<p>They have a <span id='colorChargeAmount' style="font-size:35px">0</span><span id='colorCharge'></span> charge, which produces <span id='powerRate' style="font-size:35px">0</span> <span id='colorPower'></span> per second.</p>
 				<table class='qtable'><tr>
 					<td>

@@ -474,6 +474,7 @@ function updateNewPlayer(reseted) {
             rewards: 0,
             producingCharge: false
         }
+        player.quantum.autoAssign = false
         player.quantum.assignAllRatios = {
             r: 1,
             g: 1,
@@ -7026,7 +7027,7 @@ function gameLoop(diff) {
             QKminpeak = currentQKmin
             QKminpeakValue = quarkGain()
             player.quantum.autobuyer.peakTime = 0
-        } else player.quantum.autobuyer.peakTime += player.quantum.time / 10
+        } else player.quantum.autobuyer.peakTime += diff / 10
     }
     var currentEPmin = updateEPminpeak(diff);
     EPminpeakUnits = player.dilation.active && isSmartPeakActivated ? 'TP' : 'EP'

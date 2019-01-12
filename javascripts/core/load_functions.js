@@ -1493,6 +1493,7 @@ if (player.version < 5) {
   }
   document.getElementById('sacrificeAuto').style.display=speedrunMilestonesReached>24?"":"none"
   document.getElementById('toggleautoquantummode').style.display=(player.masterystudies?player.quantum.reachedInfQK:false)?"":"none"
+  document.getElementById('assignAll').style.display=(player.masterystudies?player.quantum.reachedInfQK:false)?"":"none"
   if (player.masterystudies) {
       updateMasteryStudyCosts()
       updateMasteryStudyButtons()
@@ -1507,6 +1508,10 @@ if (player.version < 5) {
       document.getElementById("respecPC").className=player.quantum.pairedChallenges.respec?"quantumbtn":"storebtn"
       document.getElementById('sacrificeAuto').textContent="Auto: O"+(player.quantum.autoOptions.sacrifice?"N":"FF")
       document.getElementById("produceQuarkCharge").innerHTML="S" + (player.quantum.nanofield.producingCharge ? "top producing" : "tart produce") + " quark charge." + (player.quantum.nanofield.producingCharge ? "" : "<br>(All of your replicants don't gather quarks while producing quark charge.)")
+      document.getElementById("ratio_r").value = player.quantum.assignAllRatios.r
+      document.getElementById("ratio_g").value = player.quantum.assignAllRatios.g
+      document.getElementById("ratio_b").value = player.quantum.assignAllRatios.b
+      document.getElementById('autoAssign').textContent="Auto: O"+(player.quantum.autoOptions.assignQK?"N":"FF")
       updateAutoQuantumMode()
   }
   transformSaveToDecimal();
