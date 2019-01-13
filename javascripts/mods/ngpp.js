@@ -11,7 +11,7 @@ function getMetaDimensionMultiplier (tier) {
   let power = player.dilation.upgrades.includes("ngpp4") ? getDil15Bonus() : 2
   let boostpower = power
   if (player.masterystudies != undefined) if (player.masterystudies.includes("d12")) boostpower = getNanofieldRewardEffect(6)
-  let multiplier = Decimal.pow(power, Math.floor(player.meta[tier].bought / 10)).times(Decimal.pow(inQC(8)?1:boostpower*(player.achievements.includes("ngpp14")?1.01:1), Math.max(0, player.meta.resets - tier + 1)*(!player.masterystudies?1:player.masterystudies.includes('t312')?1.045:1))).times(getDilationMetaDimensionMultiplier());
+  let multiplier = Decimal.pow(power, Math.floor(player.meta[tier].bought / 10)).times(Decimal.pow(inQC(8)?1:boostpower*(player.achievements.includes("ngpp14")?1.01:1), Math.max(0, player.meta.resets - tier + 1)*(!player.masterystudies?1:player.masterystudies.includes('t312')&&player.quantum.nanofield.rewards<1?1.045:1))).times(getDilationMetaDimensionMultiplier());
   if (player.dilation.upgrades.includes("ngpp3")) {
     multiplier = multiplier.times(getDil14Bonus());
   }
@@ -76,7 +76,7 @@ function clearMetaDimensions () {
 function getMetaShiftRequirement () {
   return {
     tier: Math.min(8, player.meta.resets + 4),
-    amount: Math.floor(Math.max(((inQC(4) ? 5.5 : 15) - (!player.masterystudies ? 0 : player.masterystudies.includes("t312") ? 1 : 0)) * (player.meta.resets - 4),0) + Math.max((inQC(4) ? 14.5 : 5) * (player.meta.resets - (inQC(4) ? 55 : 15)), 0)) + 20
+    amount: Math.floor(Math.max(((inQC(4) ? 5.5 : 15) - (!player.masterystudies ? 0 : player.masterystudies.includes("t312")&&player.quantum.nanofield.rewards<1 ? 1 : 0)) * (player.meta.resets - 4),0) + Math.max((inQC(4) ? 14.5 : 5) * (player.meta.resets - (inQC(4) ? 55 : 15)), 0)) + 20
   }
 }
 
@@ -92,14 +92,14 @@ function metaBoost() {
 			costStart=55
 			mult=5.5
 		}
-		if (player.masterystudies) if (player.masterystudies.includes("t312")) mult--
+		if (player.masterystudies) if (player.masterystudies.includes("t312")&&player.quantum.nanofield.rewards<1) mult--
 		if (player.meta.resets<costStart) {
 			player.meta.resets=Math.min(player.meta.resets+Math.floor((player.meta[8].bought-req.amount)/mult)+1,costStart)
 			if (player.meta.resets==costStart) req = getMetaShiftRequirement()
 		}
 		if (player.meta.resets>=costStart) {
 			mult=20
-			if (player.masterystudies) if (player.masterystudies.includes("t312")) mult--
+			if (player.masterystudies) if (player.masterystudies.includes("t312")&&player.quantum.nanofield.rewards<1) mult--
 			player.meta.resets+=Math.floor((player.meta[8].bought-req.amount)/mult)+1
 		}
 	} else player.meta.resets++
