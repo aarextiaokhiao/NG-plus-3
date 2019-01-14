@@ -6046,6 +6046,7 @@ function buyDilationUpgrade(id, max) {
             document.getElementById("masterystudyunlock").style.display=""
             document.getElementById("respecMastery").style.display = "block"
             document.getElementById("respecMastery2").style.display = "block"
+            if (!quantumed) $.notify("Congratulations for unlocking mastery studies! You can either click 'mastery studies' button\nor 'continue to mastery studies' button in time studies.")
         }
     } else { // Is rebuyable
         let realCost = getRebuyableDilUpgCost(id > 3 ? 4 : id)

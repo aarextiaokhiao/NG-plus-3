@@ -529,7 +529,7 @@ function updateQuantumTabs() {
 		for (var reward=1; reward<9; reward++) document.getElementById("nanofieldreward" + reward).className = reward > player.quantum.nanofield.rewards ? "nanofieldrewardlocked" : "nanofieldreward"
 		document.getElementById("nanofieldreward1").textContent = "Hatch speed is " + shortenDimensions(getNanofieldRewardEffect(1)) + "x faster, but makes time study 312 useless."
 		document.getElementById("nanofieldreward2").textContent = "Meta-antimatter effect power is increased by " + getFullExpansion(getNanofieldRewardEffect(2)) + "x."
-		document.getElementById("nanofieldreward3").textContent = "You get +" + getFullExpansion(Math.round(getNanofieldRewardEffect(3) * 100)) + "% to green power."
+		document.getElementById("nanofieldreward3").textContent = "You have added +" + getFullExpansion(Math.round(getNanofieldRewardEffect(3) * 100)) + "% to green power."
 		document.getElementById("nanofieldreward4").textContent = "Dilated time multiplier power on Meta Dimensions is " + getNanofieldRewardEffect(4).toFixed(3) + "x."
 		document.getElementById("nanofieldreward5").textContent = "While dilated, Normal Dimension multipliers and tickspeed are raised to the power of " + getNanofieldRewardEffect(5).toFixed(1) + "."
 		document.getElementById("nanofieldreward6").textContent = "Meta-dimension boost power is increased to " + getNanofieldRewardEffect(6).toFixed(1) + "x."
@@ -1482,7 +1482,7 @@ function updateAutoQuantumMode() {
 		document.getElementById("autoquantumtext").textContent = "X times last quantum:"
 	} else if (player.quantum.autobuyer.mode == "time") {
 		document.getElementById("toggleautoquantummode").textContent = "Auto quantum mode: time"
-		document.getElementById("autoquantumtext").textContent = "Wait until next quantum:"
+		document.getElementById("autoquantumtext").textContent = "Seconds between quantums:"
 	} else if (player.quantum.autobuyer.mode == "peak") {
 		document.getElementById("toggleautoquantummode").textContent = "Auto quantum mode: peak"
 		document.getElementById("autoquantumtext").textContent = "Seconds to wait after latest peak gain:"

@@ -436,8 +436,8 @@ strong { color: #0072e5 }
 	text-shadow: none
 }
 #quarkEnergy, #quarkEnergyRate, #quarkPowerThreshold { color: #72e500 !important }
-#quarkPower { color: #ace572 !important }
-#quarkAntienergy, #quarkAntienergyRate, #quarkChargeProductionCap { color: #390072 !important }
+#quarkPower, #rewards { color: #ace572 !important }
+#quarkAntienergy, #quarkAntienergyRate, #quarkChargeProductionCap { color: #4c0099 !important }
 .nanofieldreward:hover { 
 	color: #e5e5e5 !important;
 	text-shadow: none
