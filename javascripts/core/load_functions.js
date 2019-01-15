@@ -1507,7 +1507,7 @@ if (player.version < 5) {
       document.getElementById('priorityquantum').value=formatValue("Scientific", new Decimal(player.quantum.autobuyer.limit), 2, 0)
       document.getElementById("respecPC").className=player.quantum.pairedChallenges.respec?"quantumbtn":"storebtn"
       document.getElementById('sacrificeAuto').textContent="Auto: O"+(player.quantum.autoOptions.sacrifice?"N":"FF")
-      document.getElementById("produceQuarkCharge").innerHTML="S" + (player.quantum.nanofield.producingCharge ? "top producing" : "tart produce") + " quark charge." + (player.quantum.nanofield.producingCharge ? "" : "<br>(All of your replicants don't gather quarks while producing quark charge.)")
+      document.getElementById("produceQuarkCharge").innerHTML="S" + (player.quantum.nanofield.producingCharge ? "top" : "tart") + " production of quark charge." + (player.quantum.nanofield.producingCharge ? "" : "<br>(All of your replicants don't gather quarks while producing quark charge.)")
       document.getElementById("ratio_r").value = player.quantum.assignAllRatios.r
       document.getElementById("ratio_g").value = player.quantum.assignAllRatios.g
       document.getElementById("ratio_b").value = player.quantum.assignAllRatios.b

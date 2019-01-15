@@ -1437,7 +1437,7 @@ function getQuarkChargeProduction() {
 
 function startProduceQuarkCharge() {
 	player.quantum.nanofield.producingCharge = !player.quantum.nanofield.producingCharge
-	document.getElementById("produceQuarkCharge").innerHTML="S" + (player.quantum.nanofield.producingCharge ? "top producing" : "tart produce") + " quark charge." + (player.quantum.nanofield.producingCharge ? "" : "<br>(All of your replicants don't gather quarks while producing quark charge.)")
+	document.getElementById("produceQuarkCharge").innerHTML="S" + (player.quantum.nanofield.producingCharge ? "top" : "tart") + " production of quark charge." + (player.quantum.nanofield.producingCharge ? "" : "<br>(All of your replicants don't gather quarks while producing quark charge.)")
 }
 
 function getQuarkLossProduction() {
