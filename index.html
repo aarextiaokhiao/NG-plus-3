@@ -411,7 +411,7 @@
                 </table>
                 <table class="table" id="studytable">
                     <tr>
-                        <td><button class="timestudylocked" id="timestudy241" onclick='buyMasteryStudy("t", 241)'>You gain 2.2x (from 2x) more IP by buying IP mult.</button></td>
+                        <td><button class="timestudylocked" id="timestudy241" onclick='buyMasteryStudy("t", 241)'>You get 2.2x more IP per mult upgrade.</button></td>
                     </tr>
                 </table>
                 <table class="table" id="studytable">
@@ -4136,7 +4136,7 @@
 					</td>
 				</tr></table>
 				<div id="assignAll">
-					<button class='storebtn' onclick='assignAll()'>Assign all</button>
+					<button class='storebtn' id="assignAllButton" onclick='assignAll()'>Assign all</button>
 					<button class='storebtn' id="autoAssign" onclick='toggleAutoAssign()'>Auto: OFF</button><br>
 					Ratios:<br>
 					R: <input id="ratio_r" type="number" min=0 onchange="changeRatio('r')"></input>
@@ -4174,9 +4174,9 @@
 				</tr><tr>
 					<td><button id='rgupg3' onclick='buyGluonUpg("rg",3)'>First Meta Dimension is boosted by dimension boosts.<br>Cost: 4 RG gluons</button></td>
 					<td><button id='rgupg4' onclick='buyGluonUpg("rg",4)'>Galaxies are 50% stronger, but electrons are 30% weaker and normal galaxies are 60% weaker.<br>Cost: 100 RG gluons</button></td>
-					<td><button id='gbupg3' onclick='buyGluonUpg("gb",3)'>You gain 2.3x IP by buying IP mult.<br>Cost: 4 GB gluons</button></td>
+					<td><button id='gbupg3' onclick='buyGluonUpg("gb",3)'>You get 2.3x more IP per mult upgrade.<br>Cost: 4 GB gluons</button></td>
 					<td><button id='gbupg4' onclick='buyGluonUpg("gb",4)'>Massively decrease the tickspeed cost multiplier increase to 1.25x.<br>Cost: 100 GB gluons</button></td>
-					<td><button id='brupg3' onclick='buyGluonUpg("br",3)'>Tachyon particles are slightly stronger.<br>Cost: 4 BR gluons</button></td>
+					<td><button id='brupg3' onclick='buyGluonUpg("br",3)'>Tachyon particles boost the dilated time production more by a little bit.<br>Cost: 4 BR gluons</button></td>
 					<td><button id='brupg4' onclick='buyGluonUpg("br",4)'>Multiplier per ten dimensions boosts Meta Dimensions.<br><span id='brupg4current'></span><br>Cost: 100 BR gluons</button></td>
 				</tr><tr id='gupgrow3'>
 					<td><button id='rgupg5' onclick='buyGluonUpg("rg",5)'>Slow down Dark Matter Galaxies effect by 13%.<br>Cost: <span id='rgupg5cost'></span> RG gluons</button></td>
@@ -4212,7 +4212,7 @@
 				<button class='storebtn' id='sacrifice6' onclick='sacrificeGalaxy(6)' style='width:250px'>Sacrifice all</button><br>
 				<button class='storebtn' id='sacrificeAuto' onclick='toggleAutoQuantumContent("sacrifice")' style='width:250px'></button>
 				<br><br>
-				You will gain <span id='electronsGainMult'>2</span> electrons per 1 sacrificed galaxy.<br>
+				You will gain <span id='electronsGainMult'>2</span> electrons per galaxy when you sacrifice.<br>
 				<table class="table" align="center" style="margin: auto"><tr>
 					<td><button class='gluonupgrade storebtn' id='electronupg1' onclick='buyElectronUpg(1)'></button></td>
 					<td><button class='gluonupgrade storebtn' id='electronupg2' onclick='buyElectronUpg(2)'></button></td>
