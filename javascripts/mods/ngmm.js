@@ -183,12 +183,12 @@ function resetTotalBought() {
 }
 
 function productAllTotalBought () {
-	if (player.tickspeedBoosts!=undefined&&(player.currentChallenge=="challenge11"||player.currentChallenge=="postc1")) return 1
+	if ((player.currentChallenge == "challenge11" || player.currentChallenge == "postc1") && player.tickspeedBoosts != undefined) return 1
 	var ret = 1;
 	var mult = getProductBoughtMult()
 	for (i = 1; i <= 8; i++) {
-		if ((player.currentChallenge=="challenge13"||player.currentChallenge=="postc1")&&player.tickspeedBoosts!=undefined) ret *= Math.max(1+player[TIER_NAMES[i]+"Amount"].log10()*mult, 1);
-		else if (player.totalBoughtDims[TIER_NAMES[i]]) ret *= Math.max(player.totalBoughtDims[TIER_NAMES[i]] ? player.totalBoughtDims[TIER_NAMES[i]]*mult : 1, 1);
+		if (player.currentChallenge == "challenge13" && player.tickspeedBoosts != undefined) ret *= Math.max(1+player[TIER_NAMES[i]+"Amount"].log10()*mult, 1);
+		else if (player.totalBoughtDims[TIER_NAMES[i]]) ret = Decimal.times(ret, Math.max(player.totalBoughtDims[TIER_NAMES[i]] ? player.totalBoughtDims[TIER_NAMES[i]] * mult : 1, 1));
 	}
 	return ret;
 }

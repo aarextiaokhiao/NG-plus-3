@@ -54,7 +54,7 @@ function getTickSpeedMultiplier() {
 	if (player.masterystudies) realnormalgalaxies = Math.max(player.galaxies-player.quantum.electrons.sacGals,0)
 	if (player.tickspeedBoosts != undefined) if (player.galacticSacrifice.upgrades.includes(34)) realnormalgalaxies += 4
 	if (player.currentChallenge == "postc3" || isIC3Trapped()) {
-		if (player.currentChallenge=="postcngmm_3" || player.challenges.includes("postcngmm_3")) {
+		if (player.currentChallenge=="postcngmm_3" || (player.challenges.includes("postcngmm_3") && player.tickspeedBoosts === undefined)) {
 			if (GUBought("rg4")) realnormalgalaxies *= 0.4
 			return Decimal.pow(0.998, getGalaxyPower(realnormalgalaxies) * getGalaxyPowerEff(realnormalgalaxies, true))
 		}
