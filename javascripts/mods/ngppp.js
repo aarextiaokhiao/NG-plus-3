@@ -1498,7 +1498,7 @@ function toggleAutoQuantumMode() {
 	updateAutoQuantumMode()
 }
 
-function assignAll(quantumed=false) {
+function assignAll() {
 	var ratios =  player.quantum.assignAllRatios
 	var sum = ratios.r+ratios.g+ratios.b
 	var oldQuarks = player.quantum.quarks
@@ -1509,7 +1509,7 @@ function assignAll(quantumed=false) {
 		if (toAssign.gt(player.quantum.quarks)) player.quantum.quarks = new Decimal(0)
 		else player.quantum.quarks = player.quantum.quarks.sub(toAssign).round()
 	}
-	if (!quantumed) updateColorCharge()
+	updateColorCharge()
 }
 
 function changeRatio(color) {
