@@ -527,7 +527,7 @@ function updateQuantumTabs() {
 		document.getElementById("rewards").textContent=getFullExpansion(player.quantum.nanofield.rewards)
 
 		for (var reward=1; reward<9; reward++) document.getElementById("nanofieldreward" + reward).className = reward > player.quantum.nanofield.rewards ? "nanofieldrewardlocked" : "nanofieldreward"
-		document.getElementById("nanofieldreward1").textContent = "Hatch speed is " + shortenDimensions(getNanofieldRewardEffect(1)) + "x faster, but makes time study 312 useless."
+		document.getElementById("nanofieldreward1").textContent = "Hatch speed is " + shortenDimensions(getNanofieldRewardEffect(1)) + "x faster, but time study 312 is useless."
 		document.getElementById("nanofieldreward2").textContent = "Meta-antimatter effect power is increased by " + getFullExpansion(getNanofieldRewardEffect(2)) + "x."
 		document.getElementById("nanofieldreward3").textContent = "You have added +" + getFullExpansion(Math.round(getNanofieldRewardEffect(3) * 100)) + "% to green power."
 		document.getElementById("nanofieldreward4").textContent = "Dilated time multiplier power on Meta Dimensions is " + getNanofieldRewardEffect(4).toFixed(3) + "x."
