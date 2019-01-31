@@ -1500,6 +1500,8 @@ function updateDimensions() {
                 document.getElementById("reversedilationdiv").style.display = "none"
             }
         }
+        var fgm=(player.dilation.upgrades.includes(4)?2:1)*getQCReward(2)
+        document.getElementById('freeGalaxyMult').textContent=fgm==1?"free galaxy":Math.round(fgm*10)/10+" free galaxies"
         if (document.getElementById("blackhole").style.display == "block") {
             if (document.getElementById("blackholediv").style.display == "inline-block") updateBlackhole()
             if (document.getElementById("blackholeunlock").style.display == "inline-block") {
