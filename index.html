@@ -555,7 +555,7 @@
                 <table class="table" id="studytable">
                     <tr>
                         <td><button class="timestudylocked" id="timestudy411" style='font-size:10px' onclick='buyMasteryStudy("t", 411)'>The production of quark charge is faster based on replicants.<br><span id="ts411Current"></span></button></td>
-                        <td><button class="timestudylocked" id="timestudy412" style='font-size:10px' onclick='buyMasteryStudy("t", 412)'>Infinitied stat boosts dilated time production.<br><span id="ts412Current"></span></button></td>
+                        <td><button class="timestudylocked" id="timestudy412" onclick='buyMasteryStudy("t", 412)'>Reduce the softcap for green power.</button></td>
                     </tr>
                 </table>
                 <table class="table" id="studytable">
@@ -1550,7 +1550,7 @@
 						</td>
                     </tr>
                 </table>
-                <button id='breakLimitED' class='storebtn' style='width: 280px; height: 40px' onclick='breakLimit()'></button>
+                <button id='breakLimitED' class='storebtn' style='width: 280px; height: 40px' onclick='breakLimit()'></button><br><br><br>
             </div>
             <div id="production" class="dimtab">
                 <b>seconds of history:</b>
@@ -4199,6 +4199,7 @@
 					</td>
 					<td colspan=2><button id='brqkbtn' onclick='buyQuarkMult("br")'>You gain 2x more quarks.<br>Cost: <span id='brqkcost'></span> BR gluons</button></td>
 				</tr></table>
+                <br><br>
 			</div>
 			<div class='quantumtab' id='electrons'>
 				You have <span id="electronsAmount" style="font-size:35px">0</span> electrons.<br>
@@ -4296,10 +4297,11 @@
 						<td class="milestoneText">Eighth reward:</td>
 					</tr>
 					<tr>
-						<td><button class="nanofieldrewardlocked" id="nanofieldreward7">All Emperor Dimensions are boosted by 1x and hatch speed is 1x faster.</button></td>
-						<td><button class="nanofieldrewardlocked" id="nanofieldreward8">Add 0.0x to multiplier per ten dimensions before getting affected by electrons.</button></td>
+						<td><button class="nanofieldrewardlocked" id="nanofieldreward7" style="font-size:10px">Remote galaxy cost scaling starts 0 later and the production of quark charge is 1x faster.</button></td>
+						<td><button class="nanofieldrewardlocked" id="nanofieldreward8" style="font-size:10px">Add 0.00x to multiplier per ten dimensions before getting affected by electrons.</button></td>
 					</tr>
 				</table>
+				<br><br>
 			</div>
 			<div id="footercontainer">
 				<table id="footer">
