@@ -525,9 +525,9 @@ function updateQuantumTabs() {
 		document.getElementById("rewards").textContent=getFullExpansion(player.quantum.nanofield.rewards)
 
 		for (var reward=1; reward<9; reward++) document.getElementById("nanofieldreward" + reward).className = reward > player.quantum.nanofield.rewards ? "nanofieldrewardlocked" : "nanofieldreward"
-		document.getElementById("nanofieldreward1").textContent = "Hatch speed is " + shortenDimensions(getNanofieldRewardEffect(1)) + "x faster, but time study 312 is useless."
+		document.getElementById("nanofieldreward1").textContent = "Hatch speed is " + shortenDimensions(getNanofieldRewardEffect(1)) + "x faster."
 		document.getElementById("nanofieldreward2").textContent = "Meta-antimatter effect power is increased by " + getFullExpansion(getNanofieldRewardEffect(2)) + "x."
-		document.getElementById("nanofieldreward3").textContent = "You have added +" + getFullExpansion(Math.round(getNanofieldRewardEffect(3) * 100)) + "% to green power."
+		document.getElementById("nanofieldreward3").textContent = "All Meta Dimensions is boosted by " + shortenDimensions(getNanofieldRewardEffect(3)) + "x."
 		document.getElementById("nanofieldreward4").textContent = "Dilated time multiplier power on Meta Dimensions is " + getNanofieldRewardEffect(4).toFixed(3) + "x."
 		document.getElementById("nanofieldreward5").textContent = "While dilated, Normal Dimension multipliers and tickspeed are raised to the power of " + getNanofieldRewardEffect(5).toFixed(1) + "."
 		document.getElementById("nanofieldreward6").textContent = "Meta-dimension boost power is increased to " + getNanofieldRewardEffect(6).toFixed(1) + "x."
@@ -722,7 +722,7 @@ function sacrificeGalaxy(id, auto=false) {
 function getMPTPower() {
 	if (!inQC(0)) return 1
 	var a = player.quantum.electrons.amount
-	if (a.gt(208125)) a = a.minus(187312.5).times(20812.5).sqrt().add(187312.5)
+	if (a.gt(187300)) a = a.minus(149840).times(37460).sqrt().add(149840)
 	if (GUBought("rg4")) a = a.times(0.7)
 	return a.toNumber()+1
 }
@@ -1459,9 +1459,9 @@ function getQuarkChargeProductionCap() {
 
 function getNanofieldRewardEffect(id) {
 	var stacks = Math.ceil((player.quantum.nanofield.rewards - id + 1) / 8)
-	if (id == 1) return Decimal.pow(256, stacks)
-	if (id == 2) return stacks * 8
-	if (id == 3) return stacks * 0.15
+	if (id == 1) return Decimal.pow(100, stacks)
+	if (id == 2) return stacks * 7
+	if (id == 3) return Decimal.pow(1, stacks)
 	if (id == 4) return 0.1 + Math.sqrt(stacks) * 0.015
 	if (id == 5) return 1 + stacks * 1.5
 	if (id == 6) return 3 + stacks * 0.4

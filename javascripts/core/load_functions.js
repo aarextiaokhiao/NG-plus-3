@@ -1018,7 +1018,6 @@ if (player.version < 5) {
           b:1
       }
       gatheredQuarksBoost = 0
-      colorBoosts.mg = 0
   } else {
       colorBoosts.r=Math.pow(player.quantum.colorPowers.r.add(1).log10(),player.dilation.active?2/3:0.5)/10+1
       colorBoosts.g=Math.sqrt(player.quantum.colorPowers.g.add(1).log10()*2+1)
@@ -1027,7 +1026,6 @@ if (player.version < 5) {
       if (colorBoosts.g>4.5) colorBoosts.g=Math.sqrt(colorBoosts.g*4.5)
       if (colorBoosts.b.gt(1300)) colorBoosts.b=Decimal.pow(10,Math.pow(colorBoosts.b.log10()*Math.log10(1300),0.5))
       gatheredQuarksBoost = Math.pow(Decimal.add(player.quantum.replicants.quarks, 1).log10(),player.masterystudies.includes("t362")?0.35:0.25)*0.67
-      colorBoosts.mg = gatheredQuarksBoost + getNanofieldRewardEffect(3)
       eds=player.quantum.emperorDimensions
   }
   if (player.aarexModifications.newGameMinusMinusVersion === undefined && !player.meta) {

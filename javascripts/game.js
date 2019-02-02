@@ -1500,7 +1500,7 @@ function updateDimensions() {
                 document.getElementById("reversedilationdiv").style.display = "none"
             }
         }
-        var fgm=(player.dilation.upgrades.includes(4)?2:1)*getQCReward(2)
+        var fgm=getFreeGalaxyGainMult()
         document.getElementById('freeGalaxyMult').textContent=fgm==1?"free galaxy":Math.round(fgm*10)/10+" free galaxies"
         if (document.getElementById("blackhole").style.display == "block") {
             if (document.getElementById("blackholediv").style.display == "inline-block") updateBlackhole()
@@ -2221,7 +2221,7 @@ function updateExtraReplGalaxies() {
     }
     extraReplGalaxies = ts225Eff + ts226Eff
     if (extraReplGalaxies > 325) extraReplGalaxies = (Math.sqrt(0.9216+0.16*(extraReplGalaxies-324))-0.96)/0.08+324
-    extraReplGalaxies = Math.floor(extraReplGalaxies * (colorBoosts.g + colorBoosts.mg))
+    extraReplGalaxies = Math.floor(extraReplGalaxies * (colorBoosts.g + gatheredQuarksBoost))
 }
 
 function updateMilestones() {
@@ -6140,7 +6140,7 @@ function gainDilationGalaxies() {
 	if (player.dilation.nextThreshold.lte(player.dilation.dilatedTime)) {
 		let thresholdMult = inQC(5) ? Math.pow(10, 2.8) : 1.35 + 3.65 * Math.pow(0.8, player.dilation.rebuyables[2] * exDilationUpgradeStrength(2))
 		if (player.exdilation != undefined) thresholdMult -= .1 * exDilationUpgradeStrength(2)
-		let galaxyMult = player.dilation.upgrades.includes(4) ? 2 : 1
+		let galaxyMult = getFreeGalaxyGainMult()
 		galaxyMult *= getQCReward(2)
 		let thresholdGalaxies = player.dilation.freeGalaxies / galaxyMult
 		let timesGained = Math.floor(player.dilation.dilatedTime.div(player.dilation.nextThreshold).log(thresholdMult) + 1 + thresholdGalaxies)
@@ -6148,6 +6148,13 @@ function gainDilationGalaxies() {
 		player.dilation.nextThreshold = Decimal.pow(thresholdMult, timesGained - thresholdGalaxies).times(player.dilation.nextThreshold)
 		checkUniversalHarmony()
 	}
+}
+
+function getFreeGalaxyGainMult() {
+	let galaxyMult = player.dilation.upgrades.includes(4) ? 2 : 1
+	galaxyMult *= getQCReward(2)
+	if (player.masterystudies) if (player.masterystudies.includes("d12")) galaxyMult *= getNanofieldRewardEffect(3)
+	return galaxyMult
 }
 
 function resetDilationGalaxies() {
@@ -6761,7 +6768,6 @@ function gameLoop(diff) {
             if (rate.gt(0)) player.quantum.replicants.quarks = player.quantum.replicants.quarks.add(rate.times(diff/10))
         }
         gatheredQuarksBoost = Math.pow(player.quantum.replicants.quarks.add(1).log10(),player.masterystudies.includes("t362")?0.35:0.25)*0.67
-		if (player.masterystudies.includes("d12")) colorBoosts.mg = gatheredQuarksBoost + getNanofieldRewardEffect(3)
 
         for (dim=8;dim>1;dim--) {
             var promote = getWorkerAmount(dim-2)
