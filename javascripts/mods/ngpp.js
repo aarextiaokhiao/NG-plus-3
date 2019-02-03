@@ -31,7 +31,6 @@ function getMetaDimensionMultiplier (tier) {
   if (GUBought("br4")) multiplier = multiplier.times(Decimal.pow(getDimensionPowerMultiplier(), 0.0003))
   if (tier%2>0) multiplier = multiplier.times(QC4Reward)
   multiplier = multiplier.times(getQCReward(6))
-  if (player.masterystudies) if (player.masterystudies.includes("d12")) multiplier = multiplier.times(getNanofieldRewardEffect(3))
   
   if (multiplier.lt(1)) multiplier = new Decimal(1)
   if (player.dilation.active || player.galacticSacrifice) {

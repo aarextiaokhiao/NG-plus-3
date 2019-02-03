@@ -527,7 +527,7 @@ function updateQuantumTabs() {
 		for (var reward=1; reward<9; reward++) document.getElementById("nanofieldreward" + reward).className = reward > player.quantum.nanofield.rewards ? "nanofieldrewardlocked" : "nanofieldreward"
 		document.getElementById("nanofieldreward1").textContent = "Hatch speed is " + shortenDimensions(getNanofieldRewardEffect(1)) + "x faster."
 		document.getElementById("nanofieldreward2").textContent = "Meta-antimatter effect power is increased by " + getFullExpansion(getNanofieldRewardEffect(2)) + "x."
-		document.getElementById("nanofieldreward3").textContent = "All Meta Dimensions is boosted by " + shortenDimensions(getNanofieldRewardEffect(3)) + "x."
+		document.getElementById("nanofieldreward3").textContent = "Free galaxy gain is increased by " + (getNanofieldRewardEffect(3)*100-100).toFixed(1) + "%."
 		document.getElementById("nanofieldreward4").textContent = "Dilated time multiplier power on Meta Dimensions is " + getNanofieldRewardEffect(4).toFixed(3) + "x."
 		document.getElementById("nanofieldreward5").textContent = "While dilated, Normal Dimension multipliers and tickspeed are raised to the power of " + getNanofieldRewardEffect(5).toFixed(1) + "."
 		document.getElementById("nanofieldreward6").textContent = "Meta-dimension boost power is increased to " + getNanofieldRewardEffect(6).toFixed(1) + "x."
@@ -1461,9 +1461,9 @@ function getNanofieldRewardEffect(id) {
 	var stacks = Math.ceil((player.quantum.nanofield.rewards - id + 1) / 8)
 	if (id == 1) return Decimal.pow(100, stacks)
 	if (id == 2) return stacks * 7
-	if (id == 3) return Decimal.pow(1, stacks)
-	if (id == 4) return 0.1 + Math.sqrt(stacks) * 0.015
-	if (id == 5) return 1 + stacks * 1.5
+	if (id == 3) return 1 + stacks * 0.036
+	if (id == 4) return 0.1 + Math.sqrt(stacks) * 0.021
+	if (id == 5) return 1 + stacks * 1.9
 	if (id == 6) return 3 + stacks * 0.4
 	if (id == 7) return stacks * 2100
 	if (id == "7g") return Decimal.pow(5,Math.ceil((player.quantum.nanofield.rewards-6)/8))

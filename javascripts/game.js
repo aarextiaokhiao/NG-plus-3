@@ -6141,7 +6141,6 @@ function gainDilationGalaxies() {
 		let thresholdMult = inQC(5) ? Math.pow(10, 2.8) : 1.35 + 3.65 * Math.pow(0.8, player.dilation.rebuyables[2] * exDilationUpgradeStrength(2))
 		if (player.exdilation != undefined) thresholdMult -= .1 * exDilationUpgradeStrength(2)
 		let galaxyMult = getFreeGalaxyGainMult()
-		galaxyMult *= getQCReward(2)
 		let thresholdGalaxies = player.dilation.freeGalaxies / galaxyMult
 		let timesGained = Math.floor(player.dilation.dilatedTime.div(player.dilation.nextThreshold).log(thresholdMult) + 1 + thresholdGalaxies)
 		player.dilation.freeGalaxies = timesGained * galaxyMult
