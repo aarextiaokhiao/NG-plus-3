@@ -1273,8 +1273,10 @@ function maybeShowFillAll() {
 }
 
 //v1.999
-function getTotalReplicants() {
-	return getTotalWorkers().add(player.quantum.replicants.amount).round()
+function getTotalReplicants(data) {
+	let ret = getTotalWorkers(data)
+	if (data == undefined) data = player
+	return ret.add(data.quantum.replicants.amount).round()
 }
 
 function feedReplicant(tier) {
@@ -1301,9 +1303,13 @@ function getWorkerAmount(tier) {
 	return eds[tier].workers
 }
 
-function getTotalWorkers() {
+function getTotalWorkers(data) {
+	if (data) {
+		if (data.quantum.emperorDimensions == undefined) return new Decimal(data.quantum.replicants.workers)
+		data = data.quantum.emperorDimensions
+	} else data = eds
 	var total = new Decimal(0)
-	for (var d=1; d<9; d++) total = total.add(eds[d].workers)
+	for (var d=1; d<9; d++) total = total.add(data[d].workers)
 	return total.round()
 }
 
@@ -1463,7 +1469,7 @@ function getNanofieldRewardEffect(id) {
 	if (id == 2) return stacks * 7
 	if (id == 3) return 1 + stacks * 0.036
 	if (id == 4) return 0.1 + Math.sqrt(stacks) * 0.021
-	if (id == 5) return 1 + stacks * 1.9
+	if (id == 5) return 1 + stacks * 1.5
 	if (id == 6) return 3 + stacks * 0.4
 	if (id == 7) return stacks * 2100
 	if (id == "7g") return Decimal.pow(5,Math.ceil((player.quantum.nanofield.rewards-6)/8))

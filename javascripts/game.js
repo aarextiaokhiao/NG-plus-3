@@ -2881,7 +2881,8 @@ function changeSaveDesc(saveId, placement) {
 			else {
 				message+="Quarks: "+shortenDimensions(Decimal.add(temp.quantum.quarks,temp.quantum.usedQuarks.r).add(temp.quantum.usedQuarks.g).add(temp.quantum.usedQuarks.b))
 				if (temp.quantum.gluons.rg) message+=", Gluons: "+shortenDimensions(Decimal.add(temp.quantum.gluons.rg,temp.quantum.gluons.gb).add(temp.quantum.gluons.br))
-				if (temp.masterystudies.includes('d10')) message+=", Replicants: "+shortenDimensions(new Decimal(temp.quantum.replicants.amount))+", Worker replicants: "+shortenDimensions(new Decimal(temp.quantum.replicants.workers))
+				if (temp.masterystudies.includes('d12')) message+=", Quark charge: "+shortenDimensions(new Decimal(temp.quantum.nanofield.charge))+", Quark energy: "+shortenDimensions(new Decimal(temp.quantum.nanofield.energy))+", Quark anti-energy: "+shortenDimensions(new Decimal(temp.quantum.nanofield.antienergy))+", Quark power: "+getFullExpansion(temp.quantum.nanofield.power)+", Rewards: "+getFullExpansion(temp.quantum.nanofield.rewards)
+				else if (temp.masterystudies.includes('d10')) message+=", Replicants: "+shortenDimensions(getTotalReplicants(temp))+", Worker replicants: "+shortenDimensions(getTotalWorkers(temp))
 				else if (temp.masterystudies.includes('d9')) message+=", Paired challenges: "+temp.quantum.pairedChallenges.completed
 				else if (temp.masterystudies.includes('d8')) {
 					var completions=0
