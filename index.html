@@ -499,10 +499,10 @@
                 </table>
                 <table class="table" id="studytable">
                     <tr>
-                        <td><button class="timestudylocked" id="timestudy341" style='font-size:10px' onclick='buyMasteryStudy("t", 341)'>Gathered quarks boost DT production at reduced rate.<br><span id="ts341Current"></span></button></td>
+                        <td><button class="timestudylocked" id="timestudy341" style='font-size:10px' onclick='buyMasteryStudy("t", 341)'>Preons boost DT production at reduced rate.<br><span id="ts341Current"></span></button></td>
                         <td><button class="timestudylocked" id="timestudy342" onclick='buyMasteryStudy("t", 342)'>All replicated galaxies are stronger and use the same formula.</button></td>
                         <td><button class="timestudylocked" id="timestudy343" onclick='buyMasteryStudy("t", 343)'>Free galaxies are as strong as a normal replicated galaxy.</button></td>
-                        <td><button class="timestudylocked" id="timestudy344" style='font-size:10px' onclick='buyMasteryStudy("t", 344)'>Replicated galaxies are more effective based on your gathered quarks.<br><span id="ts344Current"></span></button></td>
+                        <td><button class="timestudylocked" id="timestudy344" style='font-size:10px' onclick='buyMasteryStudy("t", 344)'>Replicated galaxies are more effective based on your preons.<br><span id="ts344Current"></span></button></td>
                     </tr>
                 </table>
                 <table class="table" id="studytable">
@@ -514,7 +514,7 @@
                     <tr>
                         <td><button class="timestudylocked" id="timestudy361" style='font-size:10px' onclick='buyMasteryStudy("t", 361)'>Hatch speed is faster based on your tachyon particles.<br><span id="ts361Current"></span></button></td>
                         <td><button class="timestudylocked" id="dilstudy11" onclick='buyMasteryStudy("d", 11)'>Unlock Emperor Dimensions<br><span id="ds11Cost"></span><br>Requirement: 10 worker replicants</button></td>
-                        <td><button class="timestudylocked" id="timestudy362" onclick='buyMasteryStudy("t", 362)'>Reduce the softcap for replicant quark boost.</button></td>
+                        <td><button class="timestudylocked" id="timestudy362" onclick='buyMasteryStudy("t", 362)'>Reduce the softcap for preon boost.</button></td>
                     </tr>
                 </table>
                 </div>
@@ -523,7 +523,7 @@
                     <tr>
                         <td><button class="timestudylocked" id="timestudy371" style='font-size:10px' onclick='buyMasteryStudy("t", 371)'>Hatch speed is faster based on your extra replicated galaxies.<br><span id="ts371Current"></span></button></td>
                         <td><button class="timestudylocked" id="timestudy372" style='font-size:10px' onclick='buyMasteryStudy("t", 372)'>Hatch speed is faster based on your time shards.<br><span id="ts372Current"></span></button></td>
-                        <td><button class="timestudylocked" id="timestudy373" style='font-size:10px' onclick='buyMasteryStudy("t", 373)'>Replicants gather more quarks based on your galaxies.<br><span id="ts373Current"></span></button></button></td>
+                        <td><button class="timestudylocked" id="timestudy373" style='font-size:10px' onclick='buyMasteryStudy("t", 373)'>You get more preons based on your galaxies.<br><span id="ts373Current"></span></button></button></td>
                     </tr>
                 </table>
                 <table class="table" id="studytable">
@@ -536,7 +536,7 @@
                 <table class="table" id="studytable">
                     <tr>
                         <td><button class="timestudylocked" id="timestudy391" style='font-size:10px' onclick='buyMasteryStudy("t", 391)'>Hatch speed is faster based on your meta-antimatter.<br><span id="ts391Current"></span></button></td>
-                        <td><button class="timestudylocked" id="timestudy392" onclick='buyMasteryStudy("t", 392)'>Gathered quarks boost all Emperor Dimensions.<br><span id="ts392Current"></span></button></td>
+                        <td><button class="timestudylocked" id="timestudy392" onclick='buyMasteryStudy("t", 392)'>Preons boost all Emperor Dimensions.<br><span id="ts392Current"></span></button></td>
                         <td><button class="timestudylocked" id="timestudy393" onclick='buyMasteryStudy("t", 393)'>Workers boost Meta Dimensions.<br><span id="ts393Current"></span></button></td>
                     </tr>
                 </table>
@@ -549,12 +549,12 @@
                 <div id="nfstudies">
                 <table class="table" id="studytable">
                     <tr>
-                        <td><button class="timestudylocked" id="timestudy401" style='font-size:10px' onclick='buyMasteryStudy("t", 401)'>The production of quark anti-energy is slower based on gathered quarks.<br><span id="ts401Current"></span></button></td>
+                        <td><button class="timestudylocked" id="timestudy401" style='font-size:10px' onclick='buyMasteryStudy("t", 401)'>The production of preon anti-energy is slower based on your preons.<br><span id="ts401Current"></span></button></td>
                     </tr>
                 </table>
                 <table class="table" id="studytable">
                     <tr>
-                        <td><button class="timestudylocked" id="timestudy411" style='font-size:10px' onclick='buyMasteryStudy("t", 411)'>The production of quark charge is faster based on replicants.<br><span id="ts411Current"></span></button></td>
+                        <td><button class="timestudylocked" id="timestudy411" style='font-size:10px' onclick='buyMasteryStudy("t", 411)'>The production of preon charge is faster based on your replicants.<br><span id="ts411Current"></span></button></td>
                         <td><button class="timestudylocked" id="timestudy412" onclick='buyMasteryStudy("t", 412)'>Reduce the softcap for green power.</button></td>
                     </tr>
                 </table>
@@ -1546,7 +1546,7 @@
                         <td>Total: </td>
                         <td id="totalWorkers"></td>
                         <td>
-                            <span class="empQuarks" id="totalQuarkProduction"></span> quarks/s
+                            <span class="empQuarks" id="totalQuarkProduction"></span> preons/s
 						</td>
                     </tr>
                 </table>
@@ -4224,24 +4224,23 @@
 			<div class='quantumtab' id='replicants'>
 				You have <span id="replicantiAmount2">1</span> replicanti.<br>
 				You have <span id="rgRepl">1</span> red-green, <span id="gbRepl">1</span> green-blue, and <span id="brRepl">1</span> blue-red gluons.<br>
-				NOTE: Because of a poll, I will rename gathered quarks to preons soon!<br>
 				<table class='qtable'><tr><td>
 					You have <span id="replicantAmount" style="font-size:35px">0</span> normal replicants.<br>
-					They are gathering <span id="normalReplGatherRate" style="font-size:25px">0</span> quarks per second.<br>
+					They are gathering <span id="normalReplGatherRate" style="font-size:25px">0</span> preons per second.<br>
 					<button class="storebtn" id="replicantReset" style="width: 220px; height: 60px; font-size: 11px" onclick='replicantReset()'></button>
 				</td><td>
 					You have <span id="workerReplAmount" style="font-size:35px">0</span> total worker replicants.<br>
-					They are gathering <span id="workerReplGatherRate" style="font-size:25px">0</span> quarks per second and producing <span id="eggonRate" style="font-size:25px">0</span> eggons per <span id="eggonRateTimeframe">minute</span>.<br>
+					They are gathering <span id="workerReplGatherRate" style="font-size:25px">0</span> preons per second and producing <span id="eggonRate" style="font-size:25px">0</span> eggons per <span id="eggonRateTimeframe">minute</span>.<br>
 					Feed your normal replicant to become a worker. <span id="workerProgress" style="font-size:15px">0.0%</span><br>
 					<button class='storebtn' id='feedNormal' style='width: 280px' onclick="feedReplicant(1)">Feed one with quantum food</button><br>
 					<button id='breakLimit' class='storebtn' style='width: 280px; height: 40px' onclick='breakLimit()'></button>
 				</td><td>
 					You have <span id="babyReplAmount" style="font-size:35px">0</span> baby replicants.<br>
-					They are gathering <span id="babyReplGatherRate" style="font-size:25px">0</span> quarks per second.<br>
+					They are gathering <span id="babyReplGatherRate" style="font-size:25px">0</span> preons per second.<br>
 					Grow up your baby replicant. <span id="growupProgress" style="font-size:15px">0.0%</span><br>
 					<button class='storebtn' id='feedBaby' style='width: 240px' onclick="feedBabyReplicant()">Feed one with quantum food</button>
 				</td></tr><tr><td>
-					Replicants have gathered <span id="gatheredQuarks" style="font-size:35px">0</span> quarks. <span id="gatherRate" style="font-size:25px">+0/s</span><br>
+					You have <span id="gatheredQuarks" style="font-size:35px">0</span> preons. <span id="gatherRate" style="font-size:25px">+0/s</span><br>
 					Translated to +<span id="quarkTranslation" style="font-size:35px">0</span>% added green power.</p>
 				</td><td>
 					You have <span id="quantumFoodAmount" style="font-size:35px">0</span> quantum food.<br>
@@ -4254,18 +4253,18 @@
 				</td></tr></table>
 			</div>
 			<div class='quantumtab' id='nanofield'>
-				Replicants have gathered <span id="quarksNanofield"></span> quarks.<br>
+				You have <span id="quarksNanofield"></span> preons.<br>
 				<table class="qtable"><tr><td>
-					You have <span id="quarkEnergy" style="font-size:35px"></span> quark energy.<br>
-					You have <span id="quarkPower" style="font-size:35px"></span> quark power. Next at <span id="quarkPowerThreshold" style="font-size:35px"></span> quark energy.<br>
-					You are getting <span id="quarkEnergyRate"></span> quark energy per second.
+					You have <span id="quarkEnergy" style="font-size:35px"></span> preon energy.<br>
+					You have <span id="quarkPower" style="font-size:35px"></span> preon power. Next at <span id="quarkPowerThreshold" style="font-size:35px"></span> preon energy.<br>
+					You are getting <span id="quarkEnergyRate"></span> preon energy per second.
 				</td><td>
-					You have <span id="quarkCharge" style="font-size:35px"></span> quark charge.<br>
+					You have <span id="quarkCharge" style="font-size:35px"></span> preon charge.<br>
 					<button class="storebtn" id="produceQuarkCharge" onclick="startProduceQuarkCharge()"></button><br>
-					You are getting <span id="quarkChargeRate"></span> quark charge per second but losing <span id="quarkLoss"></span> quarks per second.
+					You are getting <span id="quarkChargeRate"></span> preon charge per second but losing <span id="quarkLoss"></span> preons per second.
 				</td><td>
-					You have <span id="quarkAntienergy" style="font-size:35px"></span> quark anti-energy. Your quark charge will stop producing at <span id="quarkChargeProductionCap" style="font-size:35px"></span>.<br>
-					You are getting <span id="quarkAntienergyRate"></span> quark anti-energy per second.
+					You have <span id="quarkAntienergy" style="font-size:35px"></span> preon anti-energy. Your preon charge will stop producing at <span id="quarkChargeProductionCap" style="font-size:35px"></span>.<br>
+					You are getting <span id="quarkAntienergyRate"></span> preon anti-energy per second.
 				</td></tr></table>
 				You have gotten <span id="rewards" style="font-size:35px"></span> rewards.
 				<table class="table" align=center style="margin: auto" id="milestones">
@@ -4298,8 +4297,8 @@
 						<td class="milestoneText">Eighth reward:</td>
 					</tr>
 					<tr>
-						<td><button class="nanofieldrewardlocked" id="nanofieldreward7" style="font-size:10px">Remote galaxy cost scaling starts 0 later and the production of quark charge is 1x faster.</button></td>
-						<td><button class="nanofieldrewardlocked" id="nanofieldreward8" style="font-size:10px">Add 0.00x to multiplier per ten dimensions before getting affected by electrons.</button></td>
+						<td><button class="nanofieldrewardlocked" id="nanofieldreward7">Remote galaxy cost scaling starts 0 later and the production of preon charge is 1x faster.</button></td>
+						<td><button class="nanofieldrewardlocked" id="nanofieldreward8" style="font-size:10px">Add 0.00x to multiplier per ten dimensions before getting affected by electrons and the production of preon energy is 1.0x faster.</button></td>
 					</tr>
 				</table>
 				<br><br>

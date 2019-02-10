@@ -374,7 +374,7 @@ function setupText() {
 		row.style["font-size"]="16px"
 		var html='<td id="empD'+d+'" width="41%">'+DISPLAY_NAMES[d]+' Emperor Dimension x1</td>'
 		html+='<td><div id="empAmount'+d+'">0'+(d>7?'':' (+0.00%/s)')+'</div></td>'
-		html+='<td><span class="empQuarks" id="empQuarks'+d+'">0</span> quarks/s</td>'
+		html+='<td><span class="empQuarks" id="empQuarks'+d+'">0</span> preons/s</td>'
 		html+='<td align="right" width="10%"><button id="empFeed'+d+'" style="color:black; width:195px; height:30px" class="storebtn" align="right" onclick="feedReplicant('+d+')">Feed (0%)</button></td>'
 		row.innerHTML=html
 	}
@@ -531,8 +531,8 @@ function updateQuantumTabs() {
 		document.getElementById("nanofieldreward4").textContent = "Dilated time multiplier power on Meta Dimensions is " + getNanofieldRewardEffect(4).toFixed(3) + "x."
 		document.getElementById("nanofieldreward5").textContent = "While dilated, Normal Dimension multipliers and tickspeed are raised to the power of " + getNanofieldRewardEffect(5).toFixed(1) + "."
 		document.getElementById("nanofieldreward6").textContent = "Meta-dimension boost power is increased to " + getNanofieldRewardEffect(6).toFixed(1) + "x."
-		document.getElementById("nanofieldreward7").textContent = "Remote galaxy cost scaling starts " + getFullExpansion(getNanofieldRewardEffect(7)) + " later and the production of quark charge is " + shortenDimensions(getNanofieldRewardEffect("7g")) + "x faster."
-		document.getElementById("nanofieldreward8").textContent = "Add " + getNanofieldRewardEffect(8).toFixed(2) + "x to multiplier per ten dimensions before getting affected by electrons and the production of quark energy is " + shortenMoney(getNanofieldRewardEffect("8c")) + "x faster."
+		document.getElementById("nanofieldreward7").textContent = "Remote galaxy cost scaling starts " + getFullExpansion(getNanofieldRewardEffect(7)) + " later and the production of preon charge is " + shortenMoney(getNanofieldRewardEffect("7g")) + "x faster."
+		document.getElementById("nanofieldreward8").textContent = "Add " + getNanofieldRewardEffect(8).toFixed(2) + "x to multiplier per ten dimensions before getting affected by electrons and the production of preon energy is " + shortenMoney(getNanofieldRewardEffect("8c")) + "x faster."
 	}
 }
 
@@ -1439,7 +1439,7 @@ function getQuarkChargeProduction() {
 
 function startProduceQuarkCharge() {
 	player.quantum.nanofield.producingCharge = !player.quantum.nanofield.producingCharge
-	document.getElementById("produceQuarkCharge").innerHTML="S" + (player.quantum.nanofield.producingCharge ? "top" : "tart") + " production of quark charge." + (player.quantum.nanofield.producingCharge ? "" : "<br>(All of your replicants don't gather quarks while producing quark charge.)")
+	document.getElementById("produceQuarkCharge").innerHTML="S" + (player.quantum.nanofield.producingCharge ? "top" : "tart") + " production of preon charge." + (player.quantum.nanofield.producingCharge ? "" : "<br>(You will not get preons when you do this.)")
 }
 
 function getQuarkLossProduction() {
@@ -1470,9 +1470,9 @@ function getNanofieldRewardEffect(id) {
 	if (id == 3) return 1 + stacks * 0.036
 	if (id == 4) return 0.1 + Math.sqrt(stacks) * 0.021
 	if (id == 5) return 1 + stacks * 0.4
-	if (id == 6) return 3 + stacks * 0.4
+	if (id == 6) return 3 + stacks * 1.5
 	if (id == 7) return stacks * 2100
-	if (id == "7g") return Decimal.pow(5,Math.ceil((player.quantum.nanofield.rewards-6)/8))
+	if (id == "7g") return Decimal.pow(2.5,Math.ceil((player.quantum.nanofield.rewards-6)/8))
 	if (id == 8) return stacks * 0.75
 	if (id == "8c") return Decimal.pow(2.5,Math.ceil((player.quantum.nanofield.rewards-7)/8))
 }

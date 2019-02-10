@@ -6744,7 +6744,7 @@ function gameLoop(diff) {
             var toSub = loss.times(diff/10).min(player.quantum.replicants.quarks)
             if (toSub.eq(0)) {
                 player.quantum.nanofield.producingCharge = false
-                document.getElementById("produceQuarkCharge").innerHTML="Start produce quark charge.<br>(All of your replicants don't gather quarks while producing quark charge.)"
+                document.getElementById("produceQuarkCharge").innerHTML="Start production of preon charge.<br>(You will not get preons when you do this.)"
             } else {
                 player.quantum.replicants.quarks = player.quantum.replicants.quarks.sub(toSub)
                 player.quantum.nanofield.charge = player.quantum.nanofield.charge.add(toSub.div(loss).times(rate))
