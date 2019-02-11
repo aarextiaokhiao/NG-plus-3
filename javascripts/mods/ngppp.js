@@ -1,12 +1,12 @@
-masterystudies={initialCosts:{time:{241: 1e71, 251: 2e71, 252: 2e71, 253: 2e71, 261: 5e71, 262: 5e71, 263: 5e71, 264: 5e71, 265: 5e71, 266: 5e71, 271: 2.7434842249657063e76, 272: 2.7434842249657063e76, 273: 2.7434842249657063e76, 281: 6.858710562414266e76, 282: 6.858710562414266e76, 291: 2.143347050754458e77, 292: 2.143347050754458e77, 301: 8.573388203017832e77, 302: 2.6791838134430725e78, 303: 8.573388203017832e77, 311: 8.573388203017832e77, 312: 8.573388203017832e77, 321: 2.6791838134430727e76, 322: 9.324815538194444e77, 323: 2.6791838134430727e76, 331: 1.0172526041666666e79, 332: 1.0172526041666666e79, 341: 9.5367431640625e78, 342: 1.0172526041666666e79, 343: 1.0172526041666666e79, 344: 9.5367431640625e78, 351: 2.1192762586805557e79, 361: 1.5894571940104167e79, 362: 1.5894571940104167e79, 371: 2.1192762586805557e79, 372: 6.622738308376736e79, 373: 2.1192762586805557e79, 381: 6.622738308376736e79, 382: 6.622738308376736e79, 383: 6.622738308376736e79, 391: 8.27842288547092e79, 392: 8.27842288547092e79, 393: 8.27842288547092e79, 401: 4.967053731282552e80, 411: 1.3245476616753473e81, 412: 6.622738308376737e81, 421: 1.655684577094184e82, 422: 1.655684577094184e82, 423: 1.655684577094184e82},
+masterystudies={initialCosts:{time:{241: 1e71, 251: 2e71, 252: 2e71, 253: 2e71, 261: 5e71, 262: 5e71, 263: 5e71, 264: 5e71, 265: 5e71, 266: 5e71, 271: 2.7434842249657063e76, 272: 2.7434842249657063e76, 273: 2.7434842249657063e76, 281: 6.858710562414266e76, 282: 6.858710562414266e76, 291: 2.143347050754458e77, 292: 2.143347050754458e77, 301: 8.573388203017832e77, 302: 2.6791838134430725e78, 303: 8.573388203017832e77, 311: 8.573388203017832e77, 312: 8.573388203017832e77, 321: 2.6791838134430727e76, 322: 9.324815538194444e77, 323: 2.6791838134430727e76, 331: 1.0172526041666666e79, 332: 1.0172526041666666e79, 341: 9.5367431640625e78, 342: 1.0172526041666666e79, 343: 1.0172526041666666e79, 344: 9.5367431640625e78, 351: 2.1192762586805557e79, 361: 1.5894571940104167e79, 362: 1.5894571940104167e79, 371: 2.1192762586805557e79, 372: 6.622738308376736e79, 373: 2.1192762586805557e79, 381: 6.622738308376736e79, 382: 6.622738308376736e79, 383: 6.622738308376736e79, 391: 8.27842288547092e79, 392: 8.27842288547092e79, 393: 8.27842288547092e79, 401: 4.967053731282552e80, 402: 1.6556845770941842e81, 411: 1.3245476616753473e77, 412: 6.622738308376737e77, 421: 1.655684577094184e82, 422: 1.655684577094184e82, 423: 1.655684577094184e82},
 		ec:{13:1e72, 14:1e72}},
 	costs:{time:{},
 		ec:{},
 		dil:{7: 2e82, 8: 2e84, 9: 4e85, 10: 4e87, 11: 3e90, 12: 3e92},
 		mc:{}},
-	costmults:{241: 1, 251: 2.5, 252: 2.5, 253: 2.5, 261: 6, 262: 6, 263: 6, 264: 6, 265: 6, 266: 6, 271: 2, 272: 2, 273: 2, 281: 4, 282: 4, 291: 1, 292: 1, 301: 2, 302: 131072, 303: 2, 311: 64, 312: 64, 321: 2, 322: 2, 323: 2, 331: 2, 332: 2, 341: 1, 342: 1, 343: 1, 344: 1, 351: 4, 361: 1, 362: 1, 371: 2, 372: 2, 373: 2, 381: 1, 382: 1, 383: 2, 391: 1, 392: 1, 393: 1, 401: 1, 411: 1, 412: 1, 421: 1, 422: 1, 423: 1},
+	costmults:{241: 1, 251: 2.5, 252: 2.5, 253: 2.5, 261: 6, 262: 6, 263: 6, 264: 6, 265: 6, 266: 6, 271: 2, 272: 2, 273: 2, 281: 4, 282: 4, 291: 1, 292: 1, 301: 2, 302: 131072, 303: 2, 311: 64, 312: 64, 321: 2, 322: 2, 323: 2, 331: 2, 332: 2, 341: 1, 342: 1, 343: 1, 344: 1, 351: 4, 361: 1, 362: 1, 371: 2, 372: 2, 373: 2, 381: 1, 382: 1, 383: 2, 391: 1, 392: 1, 393: 1, 401: 1e4, 402: 1e4, 411: 1, 412: 1, 421: 1, 422: 1, 423: 1},
 	costmult:1,
-	allTimeStudies:[241, 251, 252, 253, 261, 262, 263, 264, 265, 266, 271, 272, 273, 281, 282, 291, 292, 301, 302, 303, 311, 312, 321, 322, 323, 331, 332, 341, 342, 343, 344, 351, 361, 362, 371, 372, 373, 381, 382, 383, 391, 392, 393, 401, 411, 412, 421, 422, 423],
+	allTimeStudies:[241, 251, 252, 253, 261, 262, 263, 264, 265, 266, 271, 272, 273, 281, 282, 291, 292, 301, 302, 303, 311, 312, 321, 322, 323, 331, 332, 341, 342, 343, 344, 351, 361, 362, 371, 372, 373, 381, 382, 383, 391, 392, 393, 401, 402, 411, 412, 421, 422, 423],
 	initialReqs:{13:728e3,14:255e5},
 	incrementReqs:{13:6e3,14:9e5},
 	reqs:{},
@@ -160,9 +160,10 @@ function canBuyMasteryStudy(type, id) {
 		if (masterystudies.latestBoughtRow>row) return false
 		var col=id%10
 		if (row>40) {
-			if (col>1) return player.masterystudies.includes('t' + (row * 10 + col - 1))
-			return player.masterystudies.includes('t' + (row * 11 - 50))
+			if (col>2) return player.masterystudies.includes('t422')
+			return player.masterystudies.includes('t'+(id-10))
 		}
+		if (row>39) return player.masterystudies.includes('d12')&&player.masterystudies.includes('t392')
 		if (row>38) {
 			if (col>2) return player.masterystudies.includes('t382')
 			if (col>1) return player.masterystudies.includes('t391')||player.masterystudies.includes('t393')
@@ -320,10 +321,11 @@ function drawMasteryTree() {
 	}
 	if (player.masterystudies.includes("d12")) {
 		drawMasteryBranch("dilstudy12", "timestudy401")
+		drawMasteryBranch("dilstudy12", "timestudy402")
 		drawMasteryBranch("timestudy401", "timestudy411")
-		drawMasteryBranch("timestudy411", "timestudy412")
-		drawMasteryBranch("timestudy412", "timestudy421")
-		drawMasteryBranch("timestudy421", "timestudy422")
+		drawMasteryBranch("timestudy402", "timestudy412")
+		drawMasteryBranch("timestudy411", "timestudy421")
+		drawMasteryBranch("timestudy412", "timestudy422")
 		drawMasteryBranch("timestudy422", "timestudy423")
 		drawMasteryBranch("timestudy423", "dilstudy13")
 	}
@@ -333,7 +335,8 @@ function drawMasteryTree() {
             var start = document.getElementById("timestudy" + all[i]).getBoundingClientRect();
             var x1 = start.left + (start.width / 2) + (document.documentElement.scrollLeft || document.body.scrollLeft);
             var y1 = start.top + (start.height / 2) + (document.documentElement.scrollTop || document.body.scrollTop);
-            var msg = all[i] + " (" + masterystudies.costmults[all[i]] + "x)"
+			var mult = masterystudies.costmults[all[i]]
+            var msg = all[i] + " (" + (mult>1e3?shorten(mult):mult) + "x)"
             msctx.fillStyle = 'white';
             msctx.strokeStyle = 'black';
             msctx.lineWidth = 3;
@@ -1262,7 +1265,7 @@ function getQCReward(num) {
 	if (num == 5) return Math.log10(1 + player.resets) * Math.pow(QCIntensity(5), 0.4)
 	if (num == 6) return player.achPow.pow(QCIntensity(6)>1?3:1)
 	if (num == 7) return Math.pow(0.975, QCIntensity(7))
-	if (num == 8) return QCIntensity(8)>1?4:3
+	if (num == 8) return QCIntensity(8)+2
 }
 
 function maybeShowFillAll() {
@@ -1368,6 +1371,7 @@ function getHatchSpeed() {
 	if (player.masterystudies.includes("t381")) speed /= getMTSMult(381)
 	if (player.masterystudies.includes("t391")) speed /= getMTSMult(391)
 	if (player.masterystudies.includes("d12")) speed /= getNanofieldRewardEffect(1)
+	if (player.masterystudies.includes("t402")) speed /= 11
 	return speed
 }
 
@@ -1393,6 +1397,7 @@ function updateEmperorDimensions() {
 function getEDMultiplier(dim) {
 	let mult = new Decimal(1)
 	if (player.masterystudies.includes("t392")) mult = getMTSMult(392)
+	if (player.masterystudies.includes("t402")) mult = mult.times(11)
 	if (player.dilation.active || player.galacticSacrifice) {
 		mult = Decimal.pow(10, Math.pow(mult.log10(), 0.75))
 		if (player.dilation.upgrades.includes(11)) {
@@ -1473,7 +1478,7 @@ function getNanofieldRewardEffect(id) {
 	if (id == 6) return 3 + stacks * 1.5
 	if (id == 7) return stacks * 2100
 	if (id == "7g") return Decimal.pow(2.5,Math.ceil((player.quantum.nanofield.rewards-6)/8))
-	if (id == 8) return stacks * 0.75
+	if (id == 8) return stacks * 0.72
 	if (id == "8c") return Decimal.pow(2.5,Math.ceil((player.quantum.nanofield.rewards-7)/8))
 }
 

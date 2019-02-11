@@ -853,6 +853,9 @@ function setTheme(name) {
     if (name === "Aarex's Modifications") {
 		name = "Aarexs Modifications"
     }
+    if (name === "Aarex's Mods II") {
+		name = "Aarexs Mods II"
+    }
 
     var head = document.head;
     var link = document.createElement('link');
@@ -6773,7 +6776,7 @@ function gameLoop(diff) {
             var promote = getWorkerAmount(dim-2)
             if (canFeedReplicant(dim-1,true)) {
                eds[dim-1].progress = eds[dim-1].progress.add(eds[dim].workers.times(getEDMultiplier(dim)).times(diff/200))
-               var toAdd = eds[dim-1].progress.floor().min(eds[dim-1].workers.sub(promote).round())
+               var toAdd = eds[dim-1].progress.floor().min(promote)
                if (dim>2) toAdd = toAdd.min(eds[dim-2].workers.sub(10).round())
                if (toAdd.gt(0)) {
                    if (dim>2 && toAdd.gt(getWorkerAmount(dim-2))) eds[dim-2].workers = new Decimal(0)

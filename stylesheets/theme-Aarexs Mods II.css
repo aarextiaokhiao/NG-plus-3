@@ -1,0 +1,56 @@
+body {
+	background-color: #191919
+}
+
+.container {
+	font-family: "Roboto" !important
+}
+
+#container div {
+	color: #e5e5e5
+}
+
+button {
+	border: none !important;
+	border-radius: 0px !important;
+	font-family: "Roboto" !important;
+	box-shadow: 1px 2px rgba(229,229,229,0.4)
+}
+
+.storebtn, .tabbtn, .secondarytabbtn {
+	background-color: #e5e5e5 !important;
+	color: #191919 !important
+}
+
+.storebtn:hover, .tabbtn:hover, .secondarytabbtn:hover {
+	background-color: #f2f2f2 !important
+}
+
+#footer {
+    display: none
+}
+
+#progress {
+    bottom: 5px !important;
+    background-color: #191919 !important;
+    border-radius: 0px !important
+}
+
+#progressbar {
+    background-color: #00e500 !important;
+    border-radius: 0px !important
+}
+
+#progresspercent {
+	font-family: "Roboto" !important;
+    color: #191919 !important;
+    border-radius: 0px !important
+}
+
+#coinAmount {
+	color: #0072e5 !important
+}
+
+.unavailablebtn {
+	background-color: #999999 !important
+}
