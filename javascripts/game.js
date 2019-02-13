@@ -6770,7 +6770,7 @@ function gameLoop(diff) {
             var rate = getGatherRate().total
             if (rate.gt(0)) player.quantum.replicants.quarks = player.quantum.replicants.quarks.add(rate.times(diff/10))
         }
-        gatheredQuarksBoost = Math.pow(player.quantum.replicants.quarks.add(1).log10(),player.masterystudies.includes("t362")?0.35:0.25)*0.67
+        gatheredQuarksBoost = Math.pow(player.quantum.replicants.quarks.add(1).log10(),player.masterystudies.includes("t362")?0.35:0.25)*0.67*(player.masterystudies.includes("t412")?1.27:1)
 
         for (dim=8;dim>1;dim--) {
             var promote = getWorkerAmount(dim-2)
