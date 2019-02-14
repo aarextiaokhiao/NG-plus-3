@@ -18,6 +18,7 @@ function getDimensionBoostPower(next, focusOn) {
       else if (player.challenges.includes("postc7")) ret = Math.pow(ret,2)
   }
   if (player.dilation.studies.includes(6)&&player.currentEternityChall!="eterc14"&&!inQC(3)&&!inQC(7)) ret = getExtraDimensionBoostPower().times(ret)
+  if (player.masterystudies) if (player.masterystudies.includes("t413")) ret = getMTSMult(413).times(ret)
   return new Decimal(ret)
 }
 
