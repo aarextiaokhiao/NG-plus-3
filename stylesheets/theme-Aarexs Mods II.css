@@ -2,7 +2,7 @@ body {
 	background-color: #191919
 }
 
-.container {
+.container, #statistics {
 	font-family: "Roboto" !important
 }
 
@@ -10,20 +10,29 @@ body {
 	color: #e5e5e5
 }
 
-button {
+button, div.storebtn {
 	border: none !important;
 	border-radius: 0px !important;
 	font-family: "Roboto" !important;
 	box-shadow: 1px 2px rgba(229,229,229,0.4)
 }
 
-.storebtn, .tabbtn, .secondarytabbtn {
+.storebtn, .tabbtn, .secondarytabbtn, .challengesbtn, .autobuyerbtn {
 	background-color: #e5e5e5 !important;
 	color: #191919 !important
 }
 
-.storebtn:hover, .tabbtn:hover, .secondarytabbtn:hover {
+.storebtn:hover, .tabbtn:hover, .secondarytabbtn:hover, .challengesbtn:hover, .autobuyerbtn:hover {
 	background-color: #f2f2f2 !important
+}
+
+.popup, #theorembuybackground {
+	font-family: "Roboto" !important;
+	background-color: #999999;
+	color: #191919;
+	border: none !important;
+	border-radius: 0px;
+	box-shadow: 1px 2px rgba(229,229,229,0.4)
 }
 
 #footer {
@@ -47,10 +56,219 @@ button {
     border-radius: 0px !important
 }
 
-#coinAmount {
+#coinAmount, #dilatedGalaxies {
 	color: #0072e5 !important
 }
 
-.unavailablebtn {
+.unavailablebtn, .infinistorebtnlocked, .lockedchallengesbtn, .newdimlocked, .timestudylocked, .milestonerewardlocked, .dilationupglocked, .dilationupgrebuyablelocked {
 	background-color: #999999 !important
+}
+
+#gSacrifice.storebtn, #sacrificebtn, #galaxybtn, #galaxy .infinistorebtn1, #galaxy .infinistorebtn2, #galaxy .infinistorebtn3, #galaxy .infinistorebtn4 {
+	background-color: #004ce5 !important;
+	color: #191919 !important
+}
+
+#gSacrifice.storebtn:hover, #sacrificebtn:hover, #galaxybtn:hover, #galaxy .infinistorebtn1:hover, #galaxy .infinistorebtn2:hover, #galaxy .infinistorebtn3:hover, #galaxy .infinistorebtn4:hover {
+	background-color: #3972e5 !important
+}
+
+.GPAmount {
+	color: #004ce5 !important;
+}
+
+#vanillaGalaxyPoints {
+	display: none
+}
+
+#bigcrunch, #infinitybtn, #pastinfs, .infinistorebtn1, .infinistorebtn2, .infinistorebtn3, .infinistorebtn4, .infinimultbtn, #challengetimesbtn, #postInfinityButton, .newdim, #idtabbtn button, #infinitydimensions td:nth-child(4) .storebtn, #challTabButtons td:nth-child(2) button, #infchallengesbtn, #replicantiunlock.storebtn, #replicantichance.storebtn, #replicantiinterval.storebtn, #replicantimax.storebtn {
+	background-color: #e59900 !important;
+	color: #191919 !important
+}
+
+#bigcrunch:hover, #infinitybtn:hover, #pastinfs:hover, .infinistorebtn1:hover, .infinistorebtn2:hover, .infinistorebtn3:hover, .infinistorebtn4:hover, .infinimultbtn:hover, #challengetimesbtn:hover, #postInfinityButton:hover, .newdim:hover, #idtabbtn button:hover, #infinitydimensions td:nth-child(4) .storebtn:hover, #challTabButtons td:nth-child(2) button:hover, #infchallengesbtn:hover, #replicantiunlock.storebtn:hover, #replicantichance.storebtn:hover, #replicantiinterval.storebtn:hover, #replicantimax.storebtn:hover {
+	background-color: #e5ac39 !important
+}
+
+#vanillaInfinityPoints {
+	display: none
+}
+
+.IPAmount2, #sacrificedIP, #infPowAmount, #infPowEffectPower, #infDimMultAmount, #replicantiamount, #replicantimult, #replicantiAmount2, #InfAndReplMultAmount {
+	color: #e59900 !important;
+}
+
+.infinistorebtnbought, .completedchallengesbtn {
+	background-color: #00e500 !important;
+	color: #191919 !important
+}
+
+.onchallengebtn {
+	background-color: #191919 !important
+}
+
+.challengediv {
+	background-color: #999999 !important;
+	border: none !important;
+	border-radius: 0px !important;
+	font-family: "Roboto" !important;
+    color: #191919 !important;
+	box-shadow: 1px 2px rgba(229,229,229,0.4)
+}
+
+.outer {
+    color: #191919 !important
+}
+
+#singularitytabbtn, #singularityunlock.storebtn, #sacrificeIP.storebtn, #blackHoleTabbtn button, #blackholeunlock.storebtn, #blackhole .eternityupbtn,  #blackhole td:nth-child(3) .storebtn {
+    background-color: #0c0c0c !important;
+    color: #e5e5e5 !important
+}
+
+#singularitytabbtn:hover, #singularityunlock.storebtn:hover, #sacrificeIP.storebtn:hover, #blackHoleTabbtn button:hover, #blackholeunlock.storebtn:hover, #blackhole .eternityupbtn:hover,  #blackhole td:nth-child(3) .storebtn:hover {
+    color: #f2f2f2 !important
+}
+
+#singularityPower, #darkMatterAmount, #darkMatterPerSecond, #nextUpgrade, #darkMatterDT, #nextDiscounts, #blackholePowAmount {
+	color: #0c0c0c !important
+}
+
+.infchallengediv {
+	background-color: #e59900 !important;
+	border: none !important;
+	border-radius: 0px !important;
+	font-family: "Roboto" !important;
+    color: #191919 !important;
+	box-shadow: 1px 2px rgba(229,229,229,0.4)
+}
+
+#eternitybtn, #eternitystorebtn, #pasteternities, #tdtabbtn button, #timedimensions td:nth-child(4) .storebtn, .timetheorembtn, .timestudybought, .eternityupbtnbought, .milestonereward, #eterctabbtn, #eterchallengesbtn {
+	background-color: #7200e5 !important;
+	color: #191919 !important
+}
+
+#eternitybtn div {
+	color: #191919 !important
+}
+
+#eternitybtn:hover, #eternitystorebtn:hover, #pasteternities:hover, #tdtabbtn button:hover, #timedimensions td:nth-child(4) .storebtn:hover, .timetheorembtn:hover, .timestudy, .timestudy.timedimstudy, .timestudy.passivestudy, .timestudybought.lightstudy, .eternityupbtn, #eterctabbtn:hover, #eterchallengesbtn:hover {
+	background-color: #8f39e5 !important;
+	color: #191919 !important;
+	animation: none !important
+}
+
+.EPAmount2, #timeShardAmount, #tickThreshold {
+	color: #7200e5 !important
+}
+
+#timetheorems {
+	font-family: "Roboto" !important;
+	color: #191919 !important
+}
+
+.timestudy:hover, .eternityupbtn:hover, .timestudy.timedimstudy,:hover .timestudy.passivestudy:hover, .timestudy.lightstudy {
+	background-color: #9e57e5 !important
+}
+
+.timestudy.normaldimstudy, .timestudy.idlestudy {
+	background-color: #398fe5 !important;
+	color: #191919 !important
+}
+
+.timestudy.normaldimstudy:hover, .timestudy.idlestudy:hover {
+	background-color: #579ee5 !important;
+	color: #191919 !important
+}
+
+.timestudybought.normaldimstudy, .timestudybought.idlestudy {
+	background-color: #0072e5 !important
+}
+
+.timestudy.infdimstudy {
+	background-color: #e5ac39 !important;
+	color: #191919 !important
+}
+
+.timestudy.infdimstudy:hover {
+	background-color: #e5b657 !important;
+	color: #191919 !important
+}
+
+.timestudybought.infdimstudy {
+	background-color: #e59900 !important
+}
+
+.timestudy.activestudy {
+	background-color: #e53939 !important;
+	color: #191919 !important
+}
+
+.timestudy.activestudy:hover {
+	background-color: #e55757 !important;
+	color: #191919 !important
+}
+
+.timestudybought.activestudy {
+	background-color: #e50000 !important
+}
+
+.eternitychallengestudy {
+	background-color: #e5e5e5 !important;
+	color: #7200e5 !important;
+	animation: none
+}
+
+.eternitychallengestudy:hover {
+	color: #8f39e5 !important
+}
+
+.eternitychallengestudybought, .timestudybought.darkstudy {
+	background-color: #4c0099 !important;
+    color: #191919 !important
+}
+
+.timestudy.darkstudy {
+	background-color: #5f2699 !important;
+	color: #191919 !important
+}
+
+.timestudy.darkstudy:hover {
+	background-color: #693a99 !important;
+	color: #191919 !important
+}
+
+.timestudy.lightstudy:hover {
+	background-color: #ac72e5 !important;
+	color: #191919 !important
+}
+
+.eterchallengediv {
+	background-color: #7200e5 !important;
+	border: none !important;
+	border-radius: 0px !important;
+	font-family: "Roboto" !important;
+    color: #191919 !important;
+	box-shadow: 1px 2px rgba(229,229,229,0.4)
+}
+
+.dilationupgbought, .dilationbtn, .dilationupgrebuyable {
+	background-color: #00e500 !important;
+	color: #191919 !important;
+	animation: none;
+	box-shadow: 1px 2px rgba(229,229,229,0.4)
+}
+
+.dilationupg, .dilationbtn:hover, .dilationupgrebuyable:hover {
+	background-color: #39e539 !important;
+	color: #191919 !important;
+	animation: none;
+	box-shadow: 1px 2px rgba(229,229,229,0.4)
+}
+
+.dilationupg:hover {
+	background-color: #57e557 !important
+}
+
+#tachyonParticleAmount, #dilatedTimeAmount, #dilatedTimePerSecond, #galaxyThreshold, #DilMultAmount, #exDilationAmount, #exDilationBenefit {
+	color: #00e500 !important
 }
