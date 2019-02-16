@@ -420,8 +420,8 @@ function getMTSMult(id) {
 	if (id==391) return player.meta.antimatter.max(1).pow(8e-4)
 	if (id==392) return Decimal.pow(1.6,Math.sqrt(player.quantum.replicants.quarks.add(1).log10()))
 	if (id==393) return Decimal.pow(4e5,Math.sqrt(getTotalWorkers().add(1).log10()))
-	if (id==401) return player.quantum.replicants.quarks.div(2e28).add(1).pow(0.2)
-	if (id==411) return getTotalReplicants().div(4e24).add(1).pow(0.2)
+	if (id==401) return player.quantum.replicants.quarks.div(2e26).add(1).pow(0.2)
+	if (id==411) return getTotalReplicants().div(4e26).add(1).pow(0.2)
 	if (id==413) {
 		if (!inQC(0)) return 1
 		var a = player.quantum.electrons.amount
@@ -541,7 +541,7 @@ function updateQuantumTabs() {
 
 		for (var reward=1; reward<9; reward++) document.getElementById("nanofieldreward" + reward).className = reward > player.quantum.nanofield.rewards ? "nanofieldrewardlocked" : "nanofieldreward"
 		document.getElementById("nanofieldreward1").textContent = "Hatch speed is " + shortenDimensions(getNanofieldRewardEffect(1)) + "x faster."
-		document.getElementById("nanofieldreward2").textContent = "Meta-antimatter effect power is increased by " + getFullExpansion(getNanofieldRewardEffect(2)) + "x."
+		document.getElementById("nanofieldreward2").textContent = "Meta-antimatter effect power is increased by " + getNanofieldRewardEffect(2).toFixed(1) + "x."
 		document.getElementById("nanofieldreward3").textContent = "Free galaxy gain is increased by " + (getNanofieldRewardEffect(3)*100-100).toFixed(1) + "%."
 		document.getElementById("nanofieldreward4").textContent = "Dilated time multiplier power on Meta Dimensions is " + getNanofieldRewardEffect(4).toFixed(3) + "x."
 		document.getElementById("nanofieldreward5").textContent = "While dilated, Normal Dimension multipliers and tickspeed are raised to the power of " + getNanofieldRewardEffect(5).toFixed(1) + "."
@@ -1482,12 +1482,12 @@ function getQuarkChargeProductionCap() {
 
 function getNanofieldRewardEffect(id) {
 	var stacks = Math.ceil((player.quantum.nanofield.rewards - id + 1) / 8)
-	if (id == 1) return Decimal.pow(100, stacks)
-	if (id == 2) return stacks * 7
-	if (id == 3) return 1 + Math.pow(stacks, 0.87) * 0.036
+	if (id == 1) return Decimal.pow(70, stacks)
+	if (id == 2) return stacks * 6.8
+	if (id == 3) return 1 + Math.pow(stacks, 0.87) * 0.037
 	if (id == 4) return 0.1 + Math.sqrt(stacks) * 0.021
 	if (id == 5) return 1 + stacks * 0.4
-	if (id == 6) return 3 + Math.pow(stacks, 0.82) * 1.5
+	if (id == 6) return 3 + Math.pow(stacks, 0.82) * 1.4
 	if (id == 7) return stacks * 2100
 	if (id == "7g") return Decimal.pow(2.5,Math.ceil((player.quantum.nanofield.rewards-6)/8))
 	if (id == 8) return stacks * 0.72

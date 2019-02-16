@@ -812,9 +812,6 @@ function updateChartValues() {
 
 //Theme stuff
 function setTheme(name) {
-	if (player.options.theme!="Aarex's Mods II"&&name=="Aarex's Mods II") {
-		if (!confirm("This theme is work in progress! Are you sure you want to test my new theme?")) return
-	}
     document.querySelectorAll("link").forEach( function(e) {
         if (e.href.includes("theme")) e.remove();
     });
@@ -1014,7 +1011,7 @@ function getGalaxyRequirement(offset=0) {
 			if (GUBought("rg6")) speed = 0.867
 			if (GUBought("gb6")) speed /= 1+Math.pow(player.infinityPower.log10(),0.25)/2810
 			if (GUBought("br6")) speed /= 1+player.meta.resets/340
-			speed /= 4
+			if (player.masterystudies) if (player.masterystudies.includes("t422")) speed /= 4
 			amount += (galaxies-galaxyCostScalingStart+2)*(galaxies-galaxyCostScalingStart+1)*speed
 		}
 		let remoteGalaxyScalingStart = getRemoteGalaxyScalingStart()
