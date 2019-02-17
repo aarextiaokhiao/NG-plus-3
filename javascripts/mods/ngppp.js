@@ -1,4 +1,4 @@
-masterystudies={initialCosts:{time:{241: 1e71, 251: 2e71, 252: 2e71, 253: 2e71, 261: 5e71, 262: 5e71, 263: 5e71, 264: 5e71, 265: 5e71, 266: 5e71, 271: 2.7434842249657063e76, 272: 2.7434842249657063e76, 273: 2.7434842249657063e76, 281: 6.858710562414266e76, 282: 6.858710562414266e76, 291: 2.143347050754458e77, 292: 2.143347050754458e77, 301: 8.573388203017832e77, 302: 2.6791838134430725e78, 303: 8.573388203017832e77, 311: 8.573388203017832e77, 312: 8.573388203017832e77, 321: 2.6791838134430727e76, 322: 9.324815538194444e77, 323: 2.6791838134430727e76, 331: 1.0172526041666666e79, 332: 1.0172526041666666e79, 341: 9.5367431640625e78, 342: 1.0172526041666666e79, 343: 1.0172526041666666e79, 344: 9.5367431640625e78, 351: 2.1192762586805557e79, 361: 1.5894571940104167e79, 362: 1.5894571940104167e79, 371: 2.1192762586805557e79, 372: 6.622738308376736e79, 373: 2.1192762586805557e79, 381: 6.622738308376736e79, 382: 6.622738308376736e79, 383: 6.622738308376736e79, 391: 8.27842288547092e79, 392: 8.27842288547092e79, 393: 8.27842288547092e79, 401: 4.967053731282552e80, 402: 1.6556845770941842e81, 411: 1.3245476616753473e71, 412: 3.311369154188368e71, 413: 8.27842288547092e71, 421: 1.655684577094184e72, 422: 1.655684577094184e72},
+masterystudies={initialCosts:{time:{241: 1e71, 251: 2e71, 252: 2e71, 253: 2e71, 261: 5e71, 262: 5e71, 263: 5e71, 264: 5e71, 265: 5e71, 266: 5e71, 271: 2.7434842249657063e76, 272: 2.7434842249657063e76, 273: 2.7434842249657063e76, 281: 6.858710562414266e76, 282: 6.858710562414266e76, 291: 2.143347050754458e77, 292: 2.143347050754458e77, 301: 8.573388203017832e77, 302: 2.6791838134430725e78, 303: 8.573388203017832e77, 311: 8.573388203017832e77, 312: 8.573388203017832e77, 321: 2.6791838134430727e76, 322: 9.324815538194444e77, 323: 2.6791838134430727e76, 331: 1.0172526041666666e79, 332: 1.0172526041666666e79, 341: 9.5367431640625e78, 342: 1.0172526041666666e79, 343: 1.0172526041666666e79, 344: 9.5367431640625e78, 351: 2.1192762586805557e79, 361: 1.5894571940104167e79, 362: 1.5894571940104167e79, 371: 2.1192762586805557e79, 372: 6.622738308376736e79, 373: 2.1192762586805557e79, 381: 6.622738308376736e79, 382: 6.622738308376736e79, 383: 6.622738308376736e79, 391: 8.27842288547092e79, 392: 8.27842288547092e79, 393: 8.27842288547092e79, 401: 4.967053731282552e80, 402: 8.278422885470921e80, 411: 1.3245476616753473e71, 412: 1.655684577094184e71, 413: 3.311369154188368e71, 421: 8.27842288547092e71, 422: 1.655684577094184e72},
 		ec:{13:1e72, 14:1e72}},
 	costs:{time:{},
 		ec:{},
@@ -426,7 +426,7 @@ function getMTSMult(id) {
 		if (!inQC(0)) return 1
 		var a = player.quantum.electrons.amount
 		if (a.gt(187300)) a = a.minus(149840).times(37460).sqrt().add(149840)
-		return Decimal.pow(1.45, a.toNumber())
+		return Decimal.pow(1.47, a.toNumber())
 	}
 }
 
@@ -539,7 +539,11 @@ function updateQuantumTabs() {
 		document.getElementById("quarkChargeProductionCap").textContent=shortenMoney(getQuarkChargeProductionCap())
 		document.getElementById("rewards").textContent=getFullExpansion(player.quantum.nanofield.rewards)
 
-		for (var reward=1; reward<9; reward++) document.getElementById("nanofieldreward" + reward).className = reward > player.quantum.nanofield.rewards ? "nanofieldrewardlocked" : "nanofieldreward"
+		for (var reward=1; reward<9; reward++) {
+			document.getElementById("nanofieldreward" + reward).className = reward > player.quantum.nanofield.rewards ?
+			"nanofieldrewardlocked" : "nanofieldreward"
+			document.getElementById("reward" + reward + "tier").textContent = getFullExpansion(Math.ceil((player.quantum.nanofield.rewards +1 - reward)/8))
+		}
 		document.getElementById("nanofieldreward1").textContent = "Hatch speed is " + shortenDimensions(getNanofieldRewardEffect(1)) + "x faster."
 		document.getElementById("nanofieldreward2").textContent = "Meta-antimatter effect power is increased by " + getNanofieldRewardEffect(2).toFixed(1) + "x."
 		document.getElementById("nanofieldreward3").textContent = "Free galaxy gain is increased by " + (getNanofieldRewardEffect(3)*100-100).toFixed(1) + "%."
@@ -1383,7 +1387,7 @@ function getHatchSpeed() {
 	if (player.masterystudies.includes("t381")) speed /= getMTSMult(381)
 	if (player.masterystudies.includes("t391")) speed /= getMTSMult(391)
 	if (player.masterystudies.includes("d12")) speed /= getNanofieldRewardEffect(1)
-	if (player.masterystudies.includes("t402")) speed /= 11
+	if (player.masterystudies.includes("t402")) speed /= 25
 	return speed
 }
 
@@ -1409,7 +1413,7 @@ function updateEmperorDimensions() {
 function getEDMultiplier(dim) {
 	let mult = new Decimal(1)
 	if (player.masterystudies.includes("t392")) mult = getMTSMult(392)
-	if (player.masterystudies.includes("t402")) mult = mult.times(11)
+	if (player.masterystudies.includes("t402")) mult = mult.times(25)
 	if (player.dilation.active || player.galacticSacrifice) {
 		mult = Decimal.pow(10, Math.pow(mult.log10(), 0.75))
 		if (player.dilation.upgrades.includes(11)) {
@@ -1484,13 +1488,13 @@ function getNanofieldRewardEffect(id) {
 	var stacks = Math.ceil((player.quantum.nanofield.rewards - id + 1) / 8)
 	if (id == 1) return Decimal.pow(70, stacks)
 	if (id == 2) return stacks * 6.8
-	if (id == 3) return 1 + Math.pow(stacks, 0.87) * 0.037
+	if (id == 3) return 1 + Math.pow(stacks, 0.9) * 0.037
 	if (id == 4) return 0.1 + Math.sqrt(stacks) * 0.021
 	if (id == 5) return 1 + stacks * 0.4
 	if (id == 6) return 3 + Math.pow(stacks, 0.82) * 1.4
 	if (id == 7) return stacks * 2100
-	if (id == "7g") return Decimal.pow(2.5,Math.ceil((player.quantum.nanofield.rewards-6)/8))
-	if (id == 8) return stacks * 0.72
+	if (id == "7g") return Decimal.pow(3.2,Math.ceil((player.quantum.nanofield.rewards-6)/8))
+	if (id == 8) return stacks * 0.76
 	if (id == "8c") return Decimal.pow(2.5,Math.ceil((player.quantum.nanofield.rewards-7)/8))
 }
 

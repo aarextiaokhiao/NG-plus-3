@@ -284,7 +284,7 @@ button, div.storebtn {
 	box-shadow: 1px 2px rgba(229,229,229,0.4)
 }
 
-.dilationupg, .dilationbtn:hover, .dilationupgrebuyable:hover, #dilationeterupgrow .eternityupbtn, #buyQuantumFood.storebtn:hover, #buyMaxQuantumFood.storebtn:hover, #feedNormal.storebtn:hover, #feedBaby.storebtn:hover, #buyQuantumFoodED.storebtn:hover, #buyMaxQuantumFoodED.storebtn:hover, #emperordimensions table .storebtn {
+.dilationupg, .dilationbtn:hover, .dilationupgrebuyable:hover, #dilationeterupgrow .eternityupbtn, #buyQuantumFood.storebtn:hover, #buyMaxQuantumFood.storebtn:hover, #feedNormal.storebtn:hover, #feedBaby.storebtn:hover, #buyQuantumFoodED.storebtn:hover, #buyMaxQuantumFoodED.storebtn:hover, #emperordimensions table .storebtn:hover {
 	background-color: #39e539 !important;
 	color: #191919 !important;
 	animation: none;
