@@ -2051,7 +2051,8 @@ function transformSaveToDecimal() {
           player.quantum.nanofield.charge = new Decimal(player.quantum.nanofield.charge)
           player.quantum.nanofield.energy = new Decimal(player.quantum.nanofield.energy)
           player.quantum.nanofield.antienergy = new Decimal(player.quantum.nanofield.antienergy)
-          if (player.quantum.nanofield.powerThreshold !== undefined) player.quantum.nanofield.powerThreshold = Decimal.pow(4, player.quantum.nanofield.power).times(50)
+          var power = player.quantum.nanofield.power
+          if (player.quantum.nanofield.powerThreshold !== undefined) player.quantum.nanofield.powerThreshold = Decimal.pow(4, power + Math.min(power - 15, 0) * (power - 14) / 2).times(50)
       }
   }
 }

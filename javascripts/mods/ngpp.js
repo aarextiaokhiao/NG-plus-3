@@ -11,13 +11,10 @@ function getMetaDimensionMultiplier (tier) {
   let power = player.dilation.upgrades.includes("ngpp4") ? getDil15Bonus() : 2
   let multiplierpower = Math.floor(player.meta[tier].bought / 10)
   let boostpower = power
-  if (player.masterystudies != undefined) {
-	  if (player.masterystudies.includes("d12")) boostpower = getNanofieldRewardEffect(6)
-	  if (player.masterystudies.includes("t421")) multiplierpower *= 1.01
-  }
+  if (player.masterystudies != undefined) if (player.masterystudies.includes("d12")) boostpower = getNanofieldRewardEffect(6)
   if (player.achievements.includes("ngpp14")) boostpower *= 1.01
   if (inQC(8)) boostpower = 1
-  let multiplier = Decimal.pow(power, multiplierpower).times(Decimal.pow(boostpower, Math.max(0, player.meta.resets - tier + 1)*(!player.masterystudies?1:player.masterystudies.includes('t312')?1.045:1))).times(getDilationMetaDimensionMultiplier());
+  let multiplier = Decimal.pow(power, Math.floor(player.meta[tier].bought / 10)).times(Decimal.pow(boostpower, Math.max(0, player.meta.resets - tier + 1)*(!player.masterystudies?1:player.masterystudies.includes('t312')?1.045:1))).times(getDilationMetaDimensionMultiplier());
   if (player.dilation.upgrades.includes("ngpp3")) {
     multiplier = multiplier.times(getDil14Bonus());
   }

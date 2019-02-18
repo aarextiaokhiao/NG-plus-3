@@ -1011,7 +1011,6 @@ function getGalaxyRequirement(offset=0) {
 			if (GUBought("rg6")) speed = 0.867
 			if (GUBought("gb6")) speed /= 1+Math.pow(player.infinityPower.log10(),0.25)/2810
 			if (GUBought("br6")) speed /= 1+player.meta.resets/340
-			if (player.masterystudies) if (player.masterystudies.includes("t422")) speed /= 4
 			amount += (galaxies-galaxyCostScalingStart+2)*(galaxies-galaxyCostScalingStart+1)*speed
 		}
 		let remoteGalaxyScalingStart = getRemoteGalaxyScalingStart()
@@ -3871,10 +3870,6 @@ function updateAutobuyers() {
         maxedAutobuy++;
     }
 
-    if (maxedAutobuy >= 9) giveAchievement("Age of Automation");
-    if (maxedAutobuy >= (player.tickspeedBoosts!=undefined ? 15 : player.galacticSacrifice ? 14 : 12)) giveAchievement("Definitely not worth it");
-    if (e100autobuy >= 8) giveAchievement("Professional bodybuilder");
-
     document.getElementById("buyerBtnTickSpeed").innerHTML = "40% smaller interval <br>Cost: " + player.autobuyers[8].cost + " IP"
     document.getElementById("buyerBtnDimBoost").innerHTML = "40% smaller interval <br>Cost: " + player.autobuyers[9].cost + " IP"
     document.getElementById("buyerBtnGalaxies").innerHTML = "40% smaller interval <br>Cost: " + player.autobuyers[10].cost + " IP"
@@ -3892,6 +3887,10 @@ function updateAutobuyers() {
     }
     if (player.galacticSacrifice) document.getElementById("buyerBtnGalSac").innerHTML = "40% smaller interval <br>Cost: " + player.autobuyers[12].cost + " IP"
 	if (player.tickspeedBoosts != undefined) document.getElementById("buyerBtnTickspeedBoost").innerHTML = "40% smaller interval <br>Cost: " + player.autobuyers[13].cost + " IP"
+
+    if (maxedAutobuy >= 9) giveAchievement("Age of Automation");
+    if (maxedAutobuy >= (player.tickspeedBoosts!=undefined ? 15 : player.galacticSacrifice ? 14 : 12)) giveAchievement("Definitely not worth it");
+    if (e100autobuy >= 8) giveAchievement("Professional bodybuilder");
 
 
     for (var i=0; i<8; i++) {
@@ -6759,10 +6758,17 @@ function gameLoop(diff) {
         if (toAddAE.gt(0)) {
             player.quantum.nanofield.antienergy = player.quantum.nanofield.antienergy.add(toAddAE).min(getQuarkChargeProductionCap())
             player.quantum.nanofield.energy = player.quantum.nanofield.energy.add(toAddAE.div(AErate).times(getQuarkEnergyProduction()))
-            if (player.quantum.nanofield.energy.gte(player.quantum.nanofield.powerThreshold)) {
-                var toAdd = Math.floor(player.quantum.nanofield.energy.div(player.quantum.nanofield.powerThreshold).log(4) + 1)
+            if (player.quantum.nanofield.energy.gte(player.quantum.nanofield.powerThreshold) && player.quantum.nanofield.power < 15) {
+                var toAdd = Math.min(Math.floor(player.quantum.nanofield.energy.div(player.quantum.nanofield.powerThreshold).log(4) + 1), 15 - player.quantum.nanofield.power)
                 player.quantum.nanofield.power += toAdd
                 player.quantum.nanofield.powerThreshold = player.quantum.nanofield.powerThreshold.times(Decimal.pow(4, toAdd))
+                player.quantum.nanofield.rewards = Math.max(player.quantum.nanofield.rewards, player.quantum.nanofield.power)
+            }
+            if (player.quantum.nanofield.energy.gte(player.quantum.nanofield.powerThreshold) && player.quantum.nanofield.power > 14) {
+                var b = player.quantum.nanofield.power - 13.5
+                var toAdd = Math.floor(Math.sqrt(b * b + 2 * player.quantum.nanofield.energy.div(player.quantum.nanofield.powerThreshold).log(4)) - b + 1)
+                player.quantum.nanofield.powerThreshold = player.quantum.nanofield.powerThreshold.times(Decimal.pow(4, 0.5 * toAdd * toAdd + b * toAdd))
+                player.quantum.nanofield.power += toAdd
                 player.quantum.nanofield.rewards = Math.max(player.quantum.nanofield.rewards, player.quantum.nanofield.power)
             }
         }
