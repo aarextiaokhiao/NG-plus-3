@@ -733,6 +733,8 @@ if (player.version < 5) {
                   g: 1,
                   b: 1
               }
+              player.quantum.notrelative = false
+              player.quantum.wasted = false
           }
           player.dilation.upgrades=migratedUpgrades
           resetDilationGalaxies()
@@ -993,6 +995,8 @@ if (player.version < 5) {
           g: 1,
           b: 1
       }
+      player.quantum.notrelative = false
+      player.quantum.wasted = false
       player.aarexModifications.newGame3PlusVersion=1.9995
   }
   if (player.masterystudies) {
@@ -1025,7 +1029,7 @@ if (player.version < 5) {
       if (colorBoosts.r>1.3) colorBoosts.r=Math.sqrt(colorBoosts.r*1.3)
       if (colorBoosts.g>4.5) colorBoosts.g=Math.sqrt(colorBoosts.g*4.5)
       if (colorBoosts.b.gt(1300)) colorBoosts.b=Decimal.pow(10,Math.pow(colorBoosts.b.log10()*Math.log10(1300),0.5))
-      gatheredQuarksBoost = Math.pow(Decimal.add(player.quantum.replicants.quarks, 1).log10(),player.masterystudies.includes("t362")?0.35:0.25)*0.67*(player.masterystudies.includes("t412")?1.21:1)
+      gatheredQuarksBoost = Math.pow(Decimal.add(player.quantum.replicants.quarks, 1).log10(),player.masterystudies.includes("t362")?0.35:0.25)*0.67*(player.masterystudies.includes("t412")?1:1)
       eds=player.quantum.emperorDimensions
   }
   if (player.aarexModifications.newGameMinusMinusVersion === undefined && !player.meta) {
@@ -1366,6 +1370,7 @@ if (player.version < 5) {
   document.getElementById("decimalMode").textContent = "Decimal mode: "+(break_infinity_js?"Slow but accurate":"Fast but inaccurate")
   document.getElementById("decimalMode").style.display = Decimal.gt(player.totalmoney,"1e9000000000000000") ? "none" : ""
   document.getElementById("hideProductionTab").textContent = (player.aarexModifications.hideProductionTab?"Show":"Hide")+" production tab"
+  document.getElementById("hideRepresentation").textContent=(player.aarexModifications.hideRepresentation?"Show":"Hide")+" antimatter representation"
 
   document.getElementById("hotkeysDesc").innerHTML = "Hotkeys: 1-8 for buy 10 dimension, shift+1-8 for buy 1 dimension, T to buy max tickspeed, shift+T to buy one tickspeed, M for max all<br>S for sacrifice, D for dimension boost,"+(player.tickspeedBoosts==undefined?"":" B for tickspeed boost,")+" G for galaxy, C for crunch, A for toggle autobuyers, R for replicanti galaxies, E for eternity"+(player.meta?", Q for quantum":"")+(player.boughtDims?".":".<br>You can hold shift while buying time studies to buy all up until that point, see each study's number, and save study trees.<br>Hotkeys do not work while holding control.")
 
@@ -1499,6 +1504,7 @@ if (player.version < 5) {
       if (quantumed) giveAchievement("Sub-atomic")
       document.getElementById('reward3disable').textContent="6 hours reward: O"+(player.quantum.disabledRewards[3]?"FF":"N")
       document.getElementById('reward4disable').textContent="4.5 hours reward: O"+(player.quantum.disabledRewards[4]?"FF":"N")
+      document.getElementById('reward11disable').textContent="33.3 mins reward: O"+(player.quantum.disabledRewards[11]?"FF":"N")
       document.getElementById('reward27disable').textContent="10 seconds reward: O"+(player.quantum.disabledRewards[27]?"FF":"N")
       document.getElementById('rebuyupgauto').textContent="Rebuyable upgrade auto: O"+(player.autoEterOptions.rebuyupg?"N":"FF")
       document.getElementById('metaboostauto').textContent="Meta-boost auto: O"+(player.autoEterOptions.metaboost?"N":"FF")
@@ -2052,7 +2058,7 @@ function transformSaveToDecimal() {
           player.quantum.nanofield.energy = new Decimal(player.quantum.nanofield.energy)
           player.quantum.nanofield.antienergy = new Decimal(player.quantum.nanofield.antienergy)
           var power = player.quantum.nanofield.power
-          if (player.quantum.nanofield.powerThreshold !== undefined) player.quantum.nanofield.powerThreshold = Decimal.pow(4, power + Math.min(power - 15, 0) * (power - 14) / 2).times(50)
+          if (player.quantum.nanofield.powerThreshold !== undefined) player.quantum.nanofield.powerThreshold = Decimal.pow(4, power + Math.max(power - 15, 0) * (power - 14) / 2).times(50)
       }
   }
 }

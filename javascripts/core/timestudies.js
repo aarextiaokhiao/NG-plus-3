@@ -356,6 +356,7 @@ function respecTimeStudies(force) {
                   gotAch=false
               }
           }
+          if (player.masterystudies) if (player.timestudy.studies.length>1) player.quantum.wasted = false
           player.timestudy.studies = []
           switch(player.eternityChallUnlocked) {
               case 1:
@@ -435,6 +436,7 @@ function respecTimeStudies(force) {
               gotAch=false
           } else respecedMS.push(player.masterystudies[id])
       }
+      if (player.masterystudies.length>respecedMS.length) player.quantum.wasted = false
       player.masterystudies=respecedMS
       maybeShowFillAll()
       drawMasteryTree()

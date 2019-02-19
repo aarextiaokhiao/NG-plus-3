@@ -142,7 +142,7 @@ const allAchievements = {
   ng3p37 : "No dilation means no production.",
   ng3p38 : "I don't want you to live anymore.",
   ng3p41 : "Time is not relative",
-  ng3p42 : "ERROR 500: DIMENSIONS NOT FOUND",
+  ng3p42 : "ERROR 404: DIMENSIONS NOT FOUND",
   ng3p43 : "Impossible expectations",
   ng3p44 : "Studies are wasted",
   s11 : "The first one's always free",

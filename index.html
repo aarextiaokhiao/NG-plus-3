@@ -551,19 +551,17 @@
                 <table class="table" id="studytable">
                     <tr>
                         <td><button class="timestudylocked" id="timestudy401" style='font-size:10px' onclick='buyMasteryStudy("t", 401)'>The production of preon anti-energy is slower based on your preons.<br><span id="ts401Current"></span></button></td>
-                        <td><button class="timestudylocked" id="timestudy402" onclick='buyMasteryStudy("t", 402)'>Emperor Dimensions and hatch speed are faster by 11x.</button></td>
+                        <td><button class="timestudylocked" id="timestudy402" onclick='buyMasteryStudy("t", 402)'>Emperor Dimensions and hatch speed are faster by 25x.</button></td>
                     </tr>
                 </table>
                 <table class="table" id="studytable">
                     <tr>
                         <td><button class="timestudylocked" id="timestudy411" style='font-size:10px' onclick='buyMasteryStudy("t", 411)'>The production of preon energy is faster based on your replicants.<br><span id="ts411Current"></span></button></td>
-                        <td><button class="timestudylocked" id="timestudy412" onclick='buyMasteryStudy("t", 412)'>Preon effect is 21% stronger.</button></td>
-                        <td><button class="timestudylocked" id="timestudy413" style='font-size:9px' onclick='buyMasteryStudy("t", 413)'>Each electron increases dimension boost power by 47%, but the softcap is applied.<br><span id="ts413Current"></span></button></td>
+                        <td><button class="timestudylocked" id="timestudy412" onclick='buyMasteryStudy("t", 412)'>Preon effect is 25% stronger.</button></td>
                     </tr>
                 </table>
                 <table class="table" id="studytable">
                     <tr>
-                        <td><button class="timestudylocked" id="timestudy421" onclick='buyMasteryStudy("t", 421)'>The production of quark charge is faster based on your green power.<br><span id="ts421Current"></span></button></td>
                         <td><button class="timestudylocked" id="dilstudy13">Unlock Tree of Decay<br>(Coming soon!)</button></td>
                     </tr>
                 </table>
@@ -1698,7 +1696,7 @@
                     <br>
                 </div>
                 <div id="totalTime">You have played for </div>
-                <div id="infoScale">If every antimatter were a planck volume, you would have enough to </div>
+                <div id="infoScale"></div>
             </div>
             <div id="challengetimes" class="statstab" >
                 <br>
@@ -2313,16 +2311,16 @@
                         </tr>
                         <tr id="achRowng3p4">
                             <td>
-                                <div id="Time is not relative" class="achievement achievementlocked" style="background-image: url(images/135.png)" ach-tooltip="Get X dilated time without gaining tachyon particles."></div>
+                                <div id="Time is not relative" class="achievement achievementlocked" style="background-image: url(images/135.png)"></div>
                             </td>
                             <td>
-                                <div id="ERROR 500: DIMENSIONS NOT FOUND" class="achievement achievementlocked" style="background-image: url(images/136.png)" ach-tooltip="Get X antimatter without having any type of non-First Dimensions."></div>
+                                <div id="ERROR 404: DIMENSIONS NOT FOUND" class="achievement achievementlocked" style="background-image: url(images/136.png)" ach-tooltip="Get X antimatter without having any type of non-First Dimensions."></div>
                             </td>
                             <td>
-                                <div id="Impossible expectations" class="achievement achievementlocked" style="background-image: url(images/137.png)" ach-tooltip="Complete either PC3/8 or PC6/8."></div>
+                                <div id="Impossible expectations" class="achievement achievementlocked" style="background-image: url(images/137.png)"></div>
                             </td>
                             <td>
-                                <div id="Studies are wasted" class="achievement achievementlocked" style="background-image: url(images/138.png)" ach-tooltip="Unlock the eighth time dimension without having generated TTs."></div>
+                                <div id="Studies are wasted" class="achievement achievementlocked" style="background-image: url(images/138.png)"></div>
                             </td>
                             <td>
                                 <div class="achievement achievementlocked" style="background-image: url(images/achhidden.png)"></div>
@@ -2425,6 +2423,7 @@
                 <div>Get your best quantum to reach below the requirement for a reward!</div>
                 <button class='storebtn' id='reward3disable' onclick='disableReward(3)' style='width:180px'>6 hours reward: ON</button>
                 <button class='storebtn' id='reward4disable' onclick='disableReward(4)' style='width:180px'>4.5 hours reward: ON</button>
+                <button class='storebtn' id='reward11disable' onclick='disableReward(11)' style='width:180px'>33.3 mins reward: ON</button>
                 <button class='storebtn' id='reward27disable' onclick='disableReward(27)' style='width:190px'>10 seconds reward: ON</button>
                 <table id="secretachievementtable" style="margin: auto">
                     <tr id="speedrunRow1">
@@ -4401,6 +4400,7 @@
         <button class="closebtn storebtn" onclick="closeToolTip()">&times;</button>
         <button id="newsbtn" class="storebtn" style="color:black; width: 200px; height: 55px; font-size:120%"></button>
         <button id="progressBarBtn" onclick="toggleProgressBar()" class="storebtn" style="color:black; width: 200px; height: 55px; font-size:120%"></button>
+        <button id="hideRepresentation" onclick="toggleRepresentation()" class="storebtn" style="color:black; width: 200px; height: 55px; font-size:120%"></button>
         <button id="hideProductionTab" onclick="toggleProductionTab()" class="storebtn" style="color:black; width: 200px; height: 55px; font-size:120%"></button>
 	</div>
     <div class="popup optionmenu" id="confirmationoptions">

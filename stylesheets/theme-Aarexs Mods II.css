@@ -526,3 +526,7 @@ button, div.storebtn {
 	75% {background-color: #e500e5}
 	100% {background-color: #0000e5}
 }
+
+[ach-tooltip] {
+	font-family: 'Roboto'
+}

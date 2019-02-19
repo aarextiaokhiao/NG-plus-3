@@ -859,7 +859,7 @@ function quantumReset(force, auto, challid, implode=false) {
 			galaxybuyer: oheHeadstart ? player.replicanti.galaxybuyer : undefined,
 			auto: oheHeadstart ? player.replicanti.auto : [false, false, false]
 		},
-		timestudy: speedrunMilestonesReached > 10 ? player.timestudy : {
+		timestudy: isRewardEnabled(11) ? player.timestudy : {
 			theorem: 0,
 			amcost: new Decimal("1e20000"),
 			ipcost: new Decimal(1),
@@ -1074,8 +1074,10 @@ function quantumReset(force, auto, challid, implode=false) {
 			document.getElementById("qctabbtn").style.display="none"
 			document.getElementById("electronstabbtn").style.display="none"
 		}
-		if (speedrunMilestonesReached>10&&isRewardEnabled(4)) player.dilation.upgrades.push(10)
+		if (isRewardEnabled(11)&&isRewardEnabled(4)) player.dilation.upgrades.push(10)
+		else player.quantum.wasted = true
 		if (speedrunMilestonesReached>13&&isRewardEnabled(4)) for (i=3;i<7;i++) player.dilation.upgrades.push("ngpp"+i)
+		player.quantum.notrelative = true
 		updateMasteryStudyCosts()
 		updateMasteryStudyButtons()
 	}
