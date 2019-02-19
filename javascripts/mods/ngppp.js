@@ -75,7 +75,7 @@ function updateMasteryStudyCosts(quick=false) {
 		var t=player.masterystudies[id].split("t")[1]
 		if (t) {
 			masterystudies.costs.time[t]=masterystudies.initialCosts.time[t]*masterystudies.costmult
-			if (masterystudies.allTimeStudies.includes(t)) masterystudies.costmult*=masterystudies.costmults[t]
+			if (masterystudies.allTimeStudies.includes(parseInt(t))) masterystudies.costmult*=masterystudies.costmults[t]
 			masterystudies.latestBoughtRow=Math.max(masterystudies.latestBoughtRow,Math.floor(t/10))
 		}
 	}
