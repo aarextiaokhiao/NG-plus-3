@@ -1046,7 +1046,7 @@ function quantumReset(force, auto, challid, implode=false) {
 		player.quantum.nanofield.energy = new Decimal(0)
 		player.quantum.nanofield.antienergy = new Decimal(0)
 		player.quantum.nanofield.power = 0
-		player.quantum.nanofield.powerThreshold = new Decimal(100)
+		player.quantum.nanofield.powerThreshold = new Decimal(50)
 		document.getElementById("metaAntimatterEffectType").textContent=inQC(3)?"multiplier on all Infinity Dimensions":"extra multiplier per dimension boost"
 		updateColorCharge()
 		updateGluons()
