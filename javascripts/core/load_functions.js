@@ -1005,15 +1005,6 @@ if (player.version < 5) {
       if (player.quantum.pairedChallenges.completions === undefined) player.quantum.pairedChallenges.completions = {}
       //Testing-exclusive
       if (player.quantum.autobuyer.peakTime === undefined) player.quantum.autobuyer.peakTime = 0
-      if (player.meta.bestOverQuantums === undefined) player.meta.bestOverQuantums = player.meta.bestAntimatter
-      if (player.quantum.nanofield.powerThreshold === undefined) player.quantum.nanofield.powerThreshold = 1
-      if (player.quantum.nanofield.producingCharge === undefined) player.quantum.nanofield.producingCharge = false
-      if (player.quantum.reachedInfQK === undefined) player.quantum.reachedInfQK = false
-      if (player.quantum.assignAllRatios === undefined) player.quantum.assignAllRatios = {
-          r: 1,
-          g: 1,
-          b: 1
-      }
   }
   if (player.aarexModifications.newGame3PlusVersion==undefined) {
       colorBoosts={
@@ -2057,8 +2048,6 @@ function transformSaveToDecimal() {
           player.quantum.nanofield.charge = new Decimal(player.quantum.nanofield.charge)
           player.quantum.nanofield.energy = new Decimal(player.quantum.nanofield.energy)
           player.quantum.nanofield.antienergy = new Decimal(player.quantum.nanofield.antienergy)
-          var power = player.quantum.nanofield.power
-          if (player.quantum.nanofield.powerThreshold !== undefined) player.quantum.nanofield.powerThreshold = Decimal.pow(4, power + Math.max(power - 15, 0) * (power - 14) / 2).times(50)
       }
   }
 }
