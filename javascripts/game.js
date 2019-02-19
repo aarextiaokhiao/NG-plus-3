@@ -2834,7 +2834,7 @@ function load_saves() {
 	closeToolTip();
 	if (metaSave.alert) {
 		metaSave.alert=false
-		localStorage.setItem("AD_aarexModifications_NF",btoa(JSON.stringify(metaSave)))
+		localStorage.setItem("AD_aarexModifications",btoa(JSON.stringify(metaSave)))
 	}
 	document.getElementById("loadmenu").style.display = "block";
 	changeSaveDesc(metaSave.current, savePlacement)
@@ -3079,10 +3079,10 @@ function import_save(type) {
 			metaSave.saveOrder.push(newSaveId)
 			latestRow=document.getElementById("saves").insertRow(loadedSaves)
 			latestRow.innerHTML = getSaveLayout(newSaveId)
-			localStorage.setItem(btoa("dsAM_NF_"+newSaveId),save_data)
+			localStorage.setItem(btoa("dsAM_"+newSaveId),save_data)
 			loadedSaves++
 			changeSaveDesc(newSaveId, loadedSaves)
-			localStorage.setItem("AD_aarexModifications_NF",btoa(JSON.stringify(metaSave)))
+			localStorage.setItem("AD_aarexModifications",btoa(JSON.stringify(metaSave)))
         } else {
             set_save(type, decoded_save_data)
             changeSaveDesc(type, placement)
@@ -3119,7 +3119,7 @@ function import_save_all() {
 				occupiedIA=false
 				return
 			}
-			localStorage.setItem("AD_aarexModifications_NF",btoa(JSON.stringify(importAllData.metaSave)))
+			localStorage.setItem("AD_aarexModifications",btoa(JSON.stringify(importAllData.metaSave)))
 			clearInterval(importAllLoopId)
 			document.location.reload(true)
 		} catch(_) {
@@ -3288,6 +3288,7 @@ function setAchieveTooltip() {
     let noDil = document.getElementById("No dilation means no production.")
     let dontWant = document.getElementById("I don't want you to live anymore.")
     let notrelative = document.getElementById("Time is not relative")
+    let error404 = document.getElementById("ERROR 404: DIMENSIONS NOT FOUND")
     let ie = document.getElementById("Impossible expectations")
     let wasted = document.getElementById("Studies are wasted")
 
@@ -3368,6 +3369,7 @@ function setAchieveTooltip() {
     noDil.setAttribute('ach-tooltip', "Reach "+shortenCosts(Decimal.pow(10,2e6))+" replicanti without having Tachyon particles. Reward: Start quantums with the same amount of Tachyon particles as square root of your best TP.")
     dontWant.setAttribute('ach-tooltip', "Reach "+shorten(Decimal.pow(Number.MAX_VALUE,1000))+" IP while dilated, in QC2, and without having time studies and First Dimensions during your current Eternity.")
     notrelative.setAttribute('ach-tooltip', "Get "+shorten(Decimal.pow(10,411))+" dilated time without gaining tachyon particles.")
+    error404.setAttribute('ach-tooltip', "Get "+shorten(Decimal.pow(10,16e11))+" antimatter without having all types of non-First Dimensions and at least 2 normal galaxies.")
     ie.setAttribute('ach-tooltip', "Get "+shorten(Decimal.pow(10,8e6))+" antimatter in a PC with QC6 & QC8 combination.")
     wasted.setAttribute('ach-tooltip', "Get "+shorten(11e6)+" TT without having generated TTs and respeccing time studies.")
 }
@@ -6597,11 +6599,17 @@ setInterval(function() {
         if (player.replicanti.amount.e>=2e6&&player.dilation.tachyonParticles.eq(0)) giveAchievement("No dilation means no production.")
         if (player.infinityPoints.gte(Decimal.pow(Number.MAX_VALUE, 1000))&&ableToGetRid5) giveAchievement("I don't want you to live anymore.")
         if (player.dilation.dilatedTime.e>410&&player.quantum.notrelative) giveAchievement("Time is not relative")
+        if (!player.achievements.includes("ng3p42")) {
+            for (d=2;d<9;d++) {
+                if (player[TIER_NAMES[d]+"Amount"].gt(0) || player["infinityDimension"+d].amount.gt(0) || player["timeDimension"+d].amount.gt(0) || player.meta[d].amount.gt(0)) break
+                else if (player.money.e>16e11&&d>7) giveAchievement("ERROR 404: DIMENSIONS NOT FOUND")
+            }
+        }
         if (player.money.e>=8e6&&inQC(6)&&inQC(8)) giveAchievement("Impossible expectations")
         if (player.timestudy.theorem>11e6&&player.quantum.wasted) giveAchievement("Studies are wasted")
     }
     if (speedrunMilestonesReached>notifyId) {
-        $.notify("You unlocked "+timeDisplayShort(speedrunMilestones[notifyId]*36e3)+" speedrun milestone! "+(["You now start with 20,000 eternities when going quantum","You unlocked time theorem autobuyer","You now start with all Eternity Challenges completed and\neternity upgrades bought","You now start with dilation unlocked","You unlocked a new option for eternity autobuyer","You now start with all dilation studies and\nnon-rebuyable dilation upgrades before Meta Dimensions unlocked except passive TT gen upgrade","You unlocked first meta dimension autobuyer","You unlocked second meta dimension autobuyer","You unlocked third meta dimension autobuyer","You unlocked fourth meta dimension autobuyer","You unlocked fifth meta dimension autobuyer and you now keep time studies and passive TT gen upgrade","You unlocked sixth meta dimension autobuyer","You unlocked seventh meta dimension autobuyer","You unlocked eighth meta dimension autobuyer and\nall non-rebuyable dilation upgrades","You unlocked meta-dimension boost autobuyer","You now keep all time studies in mastery studies","You now can buy all Meta Dimensions if it is affordable in your current meta boost","You now start with "+shortenCosts(1e13)+" eternities","You now start with "+shortenCosts(1e25)+" meta-antimatter on reset","You can now turn on automatic replicated galaxies anytime","You made rebuyable dilation upgrade and Meta Dimension autobuyers 3x faster","You now start with "+shortenCosts(1e100)+" dilated time on quantum and dilated time does not reset until quantum","You unlocked quantum autobuyer","You now keep replicanti on eternity","You unlocked manual mode for eternity autobuyer and sacrifice galaxy autobuyer","Your rebuyable dilation upgrade autobuyer now can buy max all upgrades","You now can buy max meta-dimension boosts and start with 4 meta-dimension boosts","For now on, you can gain banked infinities based on your post-crunch infinitied stat"])[notifyId]+".","success")
+        $.notify("You have unlocked "+timeDisplayShort(speedrunMilestones[notifyId]*36e3)+" speedrun milestone! "+(["You now start with 20,000 eternities when going quantum","You unlocked time theorem autobuyer","You now start with all Eternity Challenges completed and\neternity upgrades bought","You now start with dilation unlocked","You unlocked a new option for eternity autobuyer","You now start with all dilation studies and\nnon-rebuyable dilation upgrades before Meta Dimensions unlocked except passive TT gen upgrade","You unlocked first meta dimension autobuyer","You unlocked second meta dimension autobuyer","You unlocked third meta dimension autobuyer","You unlocked fourth meta dimension autobuyer","You unlocked fifth meta dimension autobuyer and you now keep time studies and passive TT gen upgrade","You unlocked sixth meta dimension autobuyer","You unlocked seventh meta dimension autobuyer","You unlocked eighth meta dimension autobuyer and\nall non-rebuyable dilation upgrades","You unlocked meta-dimension boost autobuyer","You now keep all time studies in mastery studies","You now can buy all Meta Dimensions if it is affordable in your current meta boost","You now start with "+shortenCosts(1e13)+" eternities","You now start with "+shortenCosts(1e25)+" meta-antimatter on reset","You can now turn on automatic replicated galaxies anytime","You made rebuyable dilation upgrade and Meta Dimension autobuyers 3x faster","You now start with "+shortenCosts(1e100)+" dilated time on quantum and dilated time does not reset until quantum","You unlocked quantum autobuyer","You now keep replicanti on eternity","You unlocked manual mode for eternity autobuyer and sacrifice galaxy autobuyer","Your rebuyable dilation upgrade autobuyer now can buy max all upgrades","You now can buy max meta-dimension boosts and start with 4 meta-dimension boosts","For now on, you can gain banked infinities based on your post-crunch infinitied stat"])[notifyId]+".","success")
         notifyId++
     }
 }, 1000)
@@ -8007,7 +8015,7 @@ function initGame() {
     setupText()
     initiateMetaSave()
     migrateOldSaves()
-    localStorage.setItem('AD_aarexModifications_NF', btoa(JSON.stringify(metaSave)))
+    localStorage.setItem('AD_aarexModifications', btoa(JSON.stringify(metaSave)))
     load_game();
     if (player.aarexModifications.progressBar) document.getElementById("progress").style.display = "block"
     else document.getElementById("progress").style.display = "none"
