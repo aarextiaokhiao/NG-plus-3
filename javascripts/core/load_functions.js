@@ -2048,6 +2048,7 @@ function transformSaveToDecimal() {
           player.quantum.nanofield.charge = new Decimal(player.quantum.nanofield.charge)
           player.quantum.nanofield.energy = new Decimal(player.quantum.nanofield.energy)
           player.quantum.nanofield.antienergy = new Decimal(player.quantum.nanofield.antienergy)
+          player.quantum.nanofield.powerThreshold = new Decimal(player.quantum.nanofield.powerThreshold)
       }
   }
 }
