@@ -1183,6 +1183,7 @@ function quantumReset(force, auto, challid, implode=false) {
 		document.getElementById("nfstudies").style.display=""
 		document.getElementById("edtabbtn").style.display = "none"
 		document.getElementById("nanofieldtabbtn").style.display = "none"
+		document.getElementById("todtabbtn").style.display = "none"
 		if (document.getElementById("metadimensions").style.display == "block"||document.getElementById("emperordimensions").style.display == "block") showDimTab("antimatterdimensions")
 		if (document.getElementById("masterystudies").style.display=="block") showEternityTab("timestudies", document.getElementById("eternitystore").style.display=="block")
 		if (document.getElementById("quantumchallenges").style.display == "block") showChallengesTab("normalchallenges")

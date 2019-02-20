@@ -391,7 +391,7 @@ function updateNewPlayer(reseted) {
         player.options.gSacrificeConfirmation = true
     }
     if (modesChosen.ngpp === 2) {
-        player.aarexModifications.newGame3PlusVersion = 1.9995
+        player.aarexModifications.newGame3PlusVersion = 1.9997
         player.respecMastery=false
         player.dbPower = 1
         player.peakSpent = 0
@@ -483,6 +483,27 @@ function updateNewPlayer(reseted) {
         }
         player.quantum.notrelative = false
         player.quantum.wasted = false
+        player.quantum.tod = {
+            r: {
+                quarks: 0,
+                spin: 0,
+                upgrades: {},
+                abilities: {}
+            },
+            g: {
+                quarks: 0,
+                spin: 0,
+                upgrades: {},
+                abilities: {}
+            },
+            b: {
+                quarks: 0,
+                spin: 0,
+                upgrades: {},
+                abilities: {}
+            },
+            upgrades: {}
+        }
     }
     if (modesChosen.rs===true) {
         player.aarexModifications.ersVersion = 1.02
@@ -2834,7 +2855,7 @@ function load_saves() {
 	closeToolTip();
 	if (metaSave.alert) {
 		metaSave.alert=false
-		localStorage.setItem("AD_aarexModifications",btoa(JSON.stringify(metaSave)))
+		localStorage.setItem("AD_aarexModifications_ToD",btoa(JSON.stringify(metaSave)))
 	}
 	document.getElementById("loadmenu").style.display = "block";
 	changeSaveDesc(metaSave.current, savePlacement)
@@ -3079,10 +3100,10 @@ function import_save(type) {
 			metaSave.saveOrder.push(newSaveId)
 			latestRow=document.getElementById("saves").insertRow(loadedSaves)
 			latestRow.innerHTML = getSaveLayout(newSaveId)
-			localStorage.setItem(btoa("dsAM_"+newSaveId),save_data)
+			localStorage.setItem(btoa("dsAM_ToD_"+newSaveId),save_data)
 			loadedSaves++
 			changeSaveDesc(newSaveId, loadedSaves)
-			localStorage.setItem("AD_aarexModifications",btoa(JSON.stringify(metaSave)))
+			localStorage.setItem("AD_aarexModifications_ToD",btoa(JSON.stringify(metaSave)))
         } else {
             set_save(type, decoded_save_data)
             changeSaveDesc(type, placement)
@@ -3119,7 +3140,7 @@ function import_save_all() {
 				occupiedIA=false
 				return
 			}
-			localStorage.setItem("AD_aarexModifications",btoa(JSON.stringify(importAllData.metaSave)))
+			localStorage.setItem("AD_aarexModifications_ToD",btoa(JSON.stringify(importAllData.metaSave)))
 			clearInterval(importAllLoopId)
 			document.location.reload(true)
 		} catch(_) {
@@ -8015,7 +8036,7 @@ function initGame() {
     setupText()
     initiateMetaSave()
     migrateOldSaves()
-    localStorage.setItem('AD_aarexModifications', btoa(JSON.stringify(metaSave)))
+    localStorage.setItem('AD_aarexModifications_ToD', btoa(JSON.stringify(metaSave)))
     load_game();
     if (player.aarexModifications.progressBar) document.getElementById("progress").style.display = "block"
     else document.getElementById("progress").style.display = "none"

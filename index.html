@@ -562,7 +562,7 @@
                 </table>
                 <table class="table" id="studytable">
                     <tr>
-                        <td><button class="timestudylocked" id="dilstudy13">Unlock Tree of Decay<br>(Coming soon!)</button></td>
+                        <td><button class="timestudylocked" id="dilstudy13" onclick='buyMasteryStudy("d", 13)'>Unlock Tree of Decay<br><span id="ds13Cost"></span><br>Requirement: 16 rewards</button></td>
                     </tr>
                 </table>
                 </div>
@@ -4139,6 +4139,7 @@
 					<td id='electronstabbtn'><button class="secondarytabbtn" onclick="showQuantumTab('electrons')">Electrons</button></td>
 					<td id='replicantstabbtn'><button class="secondarytabbtn" onclick="showQuantumTab('replicants')">Replicants</button></td>
 					<td id='nanofieldtabbtn'><button class="secondarytabbtn" onclick="showQuantumTab('nanofield')">Nanofield</button></td>
+					<td id='todtabbtn'><button class="secondarytabbtn" onclick="showQuantumTab('tod')">Tree of Decay</button></td>
 				</tr>
 			</table>
 			<div class='quantumtab' id='uquarks'>
@@ -4324,6 +4325,21 @@
 					</tr>
 				</table>
 				<br><br>
+			</div>
+			<div class='quantumtab' id='tod'>
+				<table id='todtable' class="qtable">
+					<tr>
+						<td colspan=3>
+							<b style="font-size: 35px">Tree Upgrades</b><br>
+							<table class="table" align="center" style="margin: auto"><tr>
+								<td><button class='gluonupgrade unavailablebtn' id='treeupg1' onclick='buyTreeUpg(1)'>???<br>Cost: ? red quark spin</button></td>
+								<td><button class='gluonupgrade unavailablebtn' id='treeupg2' onclick='buyTreeUpg(2)'>???<br>Cost: ? red quark spin</button></td>
+								<td><button class='gluonupgrade unavailablebtn' id='treeupg3' onclick='buyTreeUpg(3)'>???<br>Cost: ? red quark spin</button></td>
+								<td><button class='gluonupgrade unavailablebtn' id='treeupg4' onclick='buyTreeUpg(4)'>???<br>Cost: ? red quark spin</button></td>
+							</tr></table>
+						</td>
+					</tr>
+				</table>
 			</div>
 			<div id="footercontainer">
 				<table id="footer">

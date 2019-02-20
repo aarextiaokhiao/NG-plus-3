@@ -2,7 +2,7 @@ masterystudies={initialCosts:{time:{241: 1e71, 251: 2e71, 252: 2e71, 253: 2e71, 
 		ec:{13:1e72, 14:1e72}},
 	costs:{time:{},
 		ec:{},
-		dil:{7: 2e82, 8: 2e84, 9: 4e85, 10: 4e87, 11: 3e90, 12: 3e92},
+		dil:{7: 2e82, 8: 2e84, 9: 4e85, 10: 4e87, 11: 3e90, 12: 3e92, 13: 1e95},
 		mc:{}},
 	costmults:{241: 1, 251: 2.5, 252: 2.5, 253: 2.5, 261: 6, 262: 6, 263: 6, 264: 6, 265: 6, 266: 6, 271: 2, 272: 2, 273: 2, 281: 4, 282: 4, 291: 1, 292: 1, 301: 2, 302: 131072, 303: 2, 311: 64, 312: 64, 321: 2, 322: 2, 323: 2, 331: 2, 332: 2, 341: 1, 342: 1, 343: 1, 344: 1, 351: 4, 361: 1, 362: 1, 371: 2, 372: 2, 373: 2, 381: 1, 382: 1, 383: 2, 391: 1, 392: 1, 393: 1, 401: 1e20, 402: 1e20, 411: 1, 412: 1},
 	costmult:1,
@@ -65,6 +65,11 @@ function updateMasteryStudyButtons() {
 	if (player.masterystudies.includes("d12")) {
 		document.getElementById("ts401Current").textContent="Currently: "+shorten(getMTSMult(401))+"x"
 		document.getElementById("ts411Current").textContent="Currently: "+shorten(getMTSMult(411))+"x"
+		
+		var div=document.getElementById("dilstudy13")
+		if (player.masterystudies.includes("d13")) div.className="dilationupgbought"
+		else if (canBuyMasteryStudy('d', 13)) div.className="dilationupg"
+		else div.className="timestudylocked"
 	}
 }
 
@@ -150,6 +155,11 @@ function buyMasteryStudy(type, id, quick=false) {
 			document.getElementById("nfstudies").style.display=""
 			document.getElementById("nanofieldtabbtn").style.display = ""
 		}
+		if (id==13) {
+			showTab("quantumtab")
+			showQuantumTab("tod")
+			document.getElementById("todtabbtn").style.display = ""
+		}
 	}
 }
 
@@ -200,6 +210,7 @@ function canBuyMasteryStudy(type, id) {
 		if (row>24) return player.masterystudies.includes('t241')
 	} else if (type=='d') {
 		if (player.timestudy.theorem<masterystudies.costs.dil[id]||player.masterystudies.includes('d'+id)) return false
+		if (id>12) return player.masterystudies.includes("t412")&&player.quantum.nanofield.rewards>15
 		if (id>11) return player.masterystudies.includes("t392")&&eds[8].workers.gt(9.9)
 		if (id>10) return player.masterystudies.includes("t351")&&eds[1].workers.gt(9.9)
 		if (id>9) return player.masterystudies.includes("t302")&&player.quantum.pairedChallenges.completed>3
@@ -374,6 +385,27 @@ function setupText() {
 		html+='<td><span class="empQuarks" id="empQuarks'+d+'">0</span> preons/s</td>'
 		html+='<td align="right" width="10%"><button id="empFeed'+d+'" style="color:black; width:195px; height:30px" class="storebtn" align="right" onclick="feedReplicant('+d+')">Feed (0%)</button></td>'
 		row.innerHTML=html
+	}
+	for (var c=0;c<3;c++) {
+		var color=(["red","green","blue"])[c]
+		var shorthand=(["r","g","b"])[c]
+		var cased=(["Red","Green","Blue"])[c]
+		
+		document.getElementById("todtable").insertRow(c*2).innerHTML='<td>You have <span class="'+color+'" id="'+color+'QuarkSpin" style="font-size: 35px">0.0</span> '+color+' quark spin.</td><td></td><td><button class="storebtn" style="width: 200px" onclick="unstableQuarks(\''+shorthand+'\')">Unstable quarks to '+color+'</button></td>'
+		
+		var html="<td colspan=3>"
+		html+="You have <span class='"+color+"' id='"+color+"UnstableQuarks' style='font-size: 35px'>0</span> unstable "+color+" quarks.<br>"
+		html+="They are decaying by 50% per <span id='"+color+"QuarksDecayRate'>1 second</span>. You are getting <span class='"+color+"' id='"+color+"QuarkSpinProduction' style='font-size: 35px'>0</span> "+color+" quark spin per second.<br>"
+		html+="<b style='font-size: 24px'>"+cased+" Upgrades</b><br>"
+		html+="<table class='table' align='center' style='margin: auto'><tr>"
+		for (var u=1;u<5;u++) html+="<td><button class='gluonupgrade unavailablebtn' id='"+color+"upg"+u+"' onclick='buyBranchUpg(\""+shorthand+"\", "+u+")'>???<br>Cost: ? "+color+" quark spin</button></td>"
+		html+="</tr></table>"
+		html+="<b style='font-size: 24px'>"+cased+" Abilities</b><br>"
+		html+="<table class='table' align='center' style='margin: auto'><tr>"
+		for (var a=1;a<5;a++) html+="<td><button class='gluonupgrade unavailablebtn' id='"+color+"ability"+a+"' onclick='buyBranchAbility(\""+shorthand+"\", "+a+")'>???<br>Cost: ? "+color+" quark spin</button></td>"
+		html+="</tr></table>"
+		html+="</td>"
+		document.getElementById("todtable").insertRow(c*2+1).innerHTML=html
 	}
 }
 
@@ -920,6 +952,7 @@ function updateMasteryStudyTextDisplay() {
 		document.getElementById("ds11Cost").textContent="Cost: "+shorten(3e90)+" Time Theorems"
 	}
 	if (player.masterystudies.includes("d11")) document.getElementById("ds12Cost").textContent="Cost: "+shorten(3e92)+" Time Theorems"
+	if (player.masterystudies.includes("d12")) document.getElementById("ds13Cost").textContent="Cost: "+shorten(1e95)+" Time Theorems"
 }
 
 var quarks={}

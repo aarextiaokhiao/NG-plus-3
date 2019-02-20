@@ -430,6 +430,20 @@ button, div.storebtn {
 #quarkAntienergy, #quarkAntienergyRate, #quarkChargeProductionCap {
 	color: #e539e5 !important
 }
+
+#dilstudy13.dilationupgbought, #todtabbtn button {
+	background-color: #993f00 !important;
+	color: #191919 !important
+}
+
+#dilstudy13.dilationupg, #todtabbtn button:hover {
+	background-color: #995626 !important;
+	color: #191919 !important
+}
+
+#dilstudy13.dilationupg:hover {
+	background-color: #99613a !important
+}
 				
 @keyframes rg {
 	0% {color: #e50000}

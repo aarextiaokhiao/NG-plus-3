@@ -442,6 +442,12 @@ strong { color: #0072e5 }
 	color: #e5e5e5 !important;
 	text-shadow: none
 }
+#dilstudy13.dilationupg, #todtabbtn button { border: 2px solid #993f00 !important }
+#dilstudy13.dilationupg:hover, #dilstudy13.dilationupgbought, #todtabbtn button:hover {
+	background-color: #993f00 !important;
+	color: #191919;
+	text-shadow: none
+}
 .notifyjs-bootstrap-info {
     background-color: #0072e5;
     font-family:'Inconsolata', monospace;
