@@ -56,7 +56,7 @@ function showspoilers() {
 function updateSpoilers() {
 	var displayed = spoilers;
 	document.getElementById("ng3pguide").style.display=player.masterystudies||spoilers?"":"none"
-	for (i=29; i>0; i--) {
+	for (i=30; i>0; i--) {
 		if (i != 7) {
 			if (!displayed) {
 				if (i < 5) displayed = 1
@@ -81,6 +81,7 @@ function updateSpoilers() {
 						if (i == 27 && player.masterystudies.includes("d10")) displayed = 1
 						if (i == 28 && player.masterystudies.includes("d11")) displayed = 1
 						if (i == 29 && player.masterystudies.includes("d12")) displayed = 1
+						if (i == 30 && player.masterystudies.includes("d13")) displayed = 1
 					}
 				}
 			}

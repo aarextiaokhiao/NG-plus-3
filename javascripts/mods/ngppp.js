@@ -75,7 +75,7 @@ function updateMasteryStudyButtons() {
 
 function updateMasteryStudyCosts(quick=false) {
 	masterystudies.latestBoughtRow=0
-	masterystudies.costmult=1
+	masterystudies.costmult=0
 	for (id=0;id<player.masterystudies.length;id++) {
 		var t=player.masterystudies[id].split("t")[1]
 		if (t) {
@@ -158,6 +158,7 @@ function buyMasteryStudy(type, id, quick=false) {
 		if (id==13) {
 			showTab("quantumtab")
 			showQuantumTab("tod")
+			updateColorCharge()
 			document.getElementById("todtabbtn").style.display = ""
 		}
 	}
@@ -386,26 +387,31 @@ function setupText() {
 		html+='<td align="right" width="10%"><button id="empFeed'+d+'" style="color:black; width:195px; height:30px" class="storebtn" align="right" onclick="feedReplicant('+d+')">Feed (0%)</button></td>'
 		row.innerHTML=html
 	}
+	var branchUpgrades=["Get 2x more quark spin.","You gain squared amount of unstable quarks as before.","","All abilities are 2x more efficient."]
+	var abilities=["Get 2x more quark spin, but decays 2x faster.","Quarks decay 2x slower.","Square your unstable quarks. (including hardcap)","You only gain quark spin."]
 	for (var c=0;c<3;c++) {
 		var color=(["red","green","blue"])[c]
 		var shorthand=(["r","g","b"])[c]
-		var cased=(["Red","Green","Blue"])[c]
+		branchUpgrades[2]="In "+(["red","green","blue"])[(c+1)%3]+" branch, get 4x more quark spin but decays 2x faster."
 		
-		document.getElementById("todtable").insertRow(c*2).innerHTML='<td>You have <span class="'+color+'" id="'+color+'QuarkSpin" style="font-size: 35px">0.0</span> '+color+' quark spin.</td><td></td><td><button class="storebtn" style="width: 200px" onclick="unstableQuarks(\''+shorthand+'\')">Unstable quarks to '+color+'</button></td>'
-		
-		var html="<td colspan=3>"
+		var html='<table class="qtable"><tr><td>You have <span class="'+color+'" id="'+color+'QuarksToD" style="font-size: 35px">0</span> '+color+' quarks.</td><td><button class="storebtn" id="'+color+'UnstableGain" style="width: 210px; height: 70px" onclick="unstableQuarks(\''+shorthand+'\')">Unstable quarks for 0.0 unstable quarks.</button></td><td>You have <span class="'+color+'" id="'+color+'QuarkSpin" style="font-size: 35px">0.0</span> '+color+' quark spin.</td></tr></table>'
+		html+="<td colspan=3>"
 		html+="You have <span class='"+color+"' id='"+color+"UnstableQuarks' style='font-size: 35px'>0</span> unstable "+color+" quarks.<br>"
 		html+="They are decaying by 50% per <span id='"+color+"QuarksDecayRate'>1 second</span>. You are getting <span class='"+color+"' id='"+color+"QuarkSpinProduction' style='font-size: 35px'>0</span> "+color+" quark spin per second.<br>"
-		html+="<b style='font-size: 24px'>"+cased+" Upgrades</b><br>"
+		html+="<b style='font-size: 24px'>Upgrades</b><br>"
 		html+="<table class='table' align='center' style='margin: auto'><tr>"
-		for (var u=1;u<5;u++) html+="<td><button class='gluonupgrade unavailablebtn' id='"+color+"upg"+u+"' onclick='buyBranchUpg(\""+shorthand+"\", "+u+")'>???<br>Cost: ? "+color+" quark spin</button></td>"
+		for (var u=1;u<5;u++) html+="<td><button class='gluonupgrade unavailablebtn' id='"+color+"upg"+u+"' onclick='buyBranchUpg(\""+shorthand+"\", "+u+")'>"+branchUpgrades[u-1]+"<br>Currently: <span id='"+color+"upg"+u+"current'>1</span>x"+(u==3?" more spin":"")+"<br>Cost: ? "+color+" quark spin</button></td>"
 		html+="</tr></table>"
-		html+="<b style='font-size: 24px'>"+cased+" Abilities</b><br>"
+		html+="<b style='font-size: 24px'>Abilities</b><br>"
 		html+="<table class='table' align='center' style='margin: auto'><tr>"
-		for (var a=1;a<5;a++) html+="<td><button class='gluonupgrade unavailablebtn' id='"+color+"ability"+a+"' onclick='buyBranchAbility(\""+shorthand+"\", "+a+")'>???<br>Cost: ? "+color+" quark spin</button></td>"
+		for (var a=1;a<5;a++) html+="<td><button class='gluonupgrade unavailablebtn' id='"+color+"ability"+a+"' onclick='buyAbility(\""+shorthand+"\", "+a+")'>"+abilities[a-1]+"<br>Cost: ? "+color+" quark spin</button></td>"
+		html+="</tr></table>"
+		html+="<b style='font-size: 24px'>Replicabots</b><br>"
+		html+="<table class='table' align='center' style='margin: auto'><tr>"
+		for (var r=1;r<5;r++) html+="<td><button class='gluonupgrade unavailablebtn' id='"+color+"replicabot"+r+"' onclick='buyReplicabot(\""+shorthand+"\", "+r+")'>Buy a Replicabot for "+color+" ability "+r+"<br>Cost: ? "+color+" quark spin</button></td>"
 		html+="</tr></table>"
 		html+="</td>"
-		document.getElementById("todtable").insertRow(c*2+1).innerHTML=html
+		document.getElementById(color+"Branch").innerHTML=html
 	}
 }
 
@@ -567,6 +573,28 @@ function updateQuantumTabs() {
 		document.getElementById("nanofieldreward7").textContent = "Remote galaxy cost scaling starts " + getFullExpansion(getNanofieldRewardEffect(7)) + " later and the production of preon charge is " + shortenMoney(getNanofieldRewardEffect("7g")) + "x faster."
 		document.getElementById("nanofieldreward8").textContent = "Add " + getNanofieldRewardEffect(8).toFixed(2) + "x to multiplier per ten dimensions before getting affected by electrons and the production of preon energy is " + shortenMoney(getNanofieldRewardEffect("8c")) + "x faster."
 	}
+	if (document.getElementById("tod").style.display == "block") {
+		var branchNum
+		var colors=["red","green","blue"]
+		var shorthands=["r","g","b"]
+		if (document.getElementById("redBranch").style.display == "block") branchNum=1
+		if (document.getElementById("greenBranch").style.display == "block") branchNum=2
+		if (document.getElementById("blueBranch").style.display == "block") branchNum=3
+		if (branchNum) {
+			var color=colors[branchNum-1]
+			var shorthand=shorthands[branchNum-1]
+			var branch=player.quantum.tod[shorthand]
+			var prevBranchShorthand=shorthands[(branchNum+1)%3]
+			document.getElementById(color+"UnstableGain").textContent="Unstable quarks for "+shortenMoney(getUnstableGain(shorthand))+" unstable quarks."
+			document.getElementById(color+"QuarkSpin").textContent=shortenMoney(branch.spin)
+			document.getElementById(color+"UnstableQuarks").textContent=shortenMoney(branch.quarks)
+			document.getElementById(color+"QuarksDecayRate").textContent=timeDisplayShort(10/getDecayRate(prevBranchShorthand),true,2)
+			document.getElementById(color+"QuarkSpinProduction").textContent=shortenMoney(getQuarkSpinProduction(shorthand,prevBranchShorthand))
+			for (var u=1;u<5;u++) document.getElementById(color+"upg"+u+"current").textContent=shortenDimensions(Decimal.pow(u==3?4:2,getBranchUpgradeLevel(shorthand,u)))
+		} else {
+			for (c=0;c<3;c++) document.getElementById(colors[c]+"QuarkSpinUpgs").textContent=shortenMoney(player.quantum.tod[shorthands[c]].spin)
+		}
+	}
 }
 
 colorCharge={}
@@ -618,6 +646,14 @@ function updateColorCharge() {
 	document.getElementById("blueAssign").className=canAssign?"storebtn":"unavailablebtn"
 	document.getElementById("assignAllButton").className=canAssign?"storebtn":"unavailablebtn"
 	document.getElementById("bluePowerMDEffect").style.display=player.masterystudies.includes("t383")?"":"none"
+	if (player.masterystudies.includes("d13")) {
+		document.getElementById("redQuarksToD").textContent=shortenDimensions(player.quantum.usedQuarks.r)
+		document.getElementById("greenQuarksToD").textContent=shortenDimensions(player.quantum.usedQuarks.g)
+		document.getElementById("blueQuarksToD").textContent=shortenDimensions(player.quantum.usedQuarks.b)	
+		document.getElementById("redUnstableGain").className=player.quantum.usedQuarks.r.gt(0)?"storebtn":"unavailablebtn"
+		document.getElementById("greenUnstableGain").className=player.quantum.usedQuarks.g.gt(0)?"storebtn":"unavailablebtn"
+		document.getElementById("blueUnstableGain").className=player.quantum.usedQuarks.b.gt(0)?"storebtn":"unavailablebtn"
+	}
 }
 
 function assignQuark(color) {
@@ -1571,4 +1607,47 @@ function toggleAutoAssign() {
 	player.quantum.autoOptions.assignQK = !player.quantum.autoOptions.assignQK
 	document.getElementById('autoAssign').textContent="Auto: O"+(player.quantum.autoOptions.assignQK?"N":"FF")
 	if (player.quantum.autoOptions.assignQK) assignAll()
+}
+
+//v1.9997
+function showBranchTab(tabName) {
+	//iterate over all elements in div_tab class. Hide everything that's not tabName and show tabName
+	var tabs = document.getElementsByClassName('branchtab');
+	var tab;
+	var oldTab
+	for (var i = 0; i < tabs.length; i++) {
+		tab = tabs.item(i);
+		if (tab.style.display == 'block') oldTab = tab.id
+		if (tab.id === tabName + "Branch") {
+			tab.style.display = 'block';
+		} else {
+			tab.style.display = 'none';
+		}
+	}
+	closeToolTip()
+}
+
+function getUnstableGain(branch) {
+	return player.quantum.usedQuarks[branch].div("3.125e533").times(Decimal.pow(2,getBranchUpgradeLevel(branch,2)))
+}
+
+function unstableQuarks(branch) {
+	if (player.quantum.usedQuarks[branch].eq(0)) return
+	player.quantum.tod[branch].quarks=player.quantum.tod[branch].quarks.add(getUnstableGain(branch))
+	player.quantum.usedQuarks[branch]=new Decimal(0)
+	updateColorCharge()
+}
+
+function getDecayRate(prevBranch) {
+	return Math.pow(2,getBranchUpgradeLevel(prevBranch,3))
+}
+
+function getQuarkSpinProduction(branch,prevBranch) {
+	return Decimal.pow(2,getBranchUpgradeLevel(branch,1)+getBranchUpgradeLevel(prevBranch,3)*2)
+}
+
+function getBranchUpgradeLevel(branch,upg) {
+	upg=player.quantum.tod[branch].upgrades[upg]
+	if (upg) return upg
+	else return 0
 }

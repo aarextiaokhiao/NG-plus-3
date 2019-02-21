@@ -4286,7 +4286,7 @@
 					<button class="storebtn" id="produceQuarkCharge" onclick="startProduceQuarkCharge()"></button><br>
 					You are getting <span id="quarkChargeRate"></span> preon charge per second but losing <span id="quarkLoss"></span> preons per second.
 				</td><td>
-					You have <span id="quarkAntienergy" style="font-size:35px"></span> preon anti-energy. Your preon charge will stop producing at <span id="quarkChargeProductionCap" style="font-size:35px"></span>.<br>
+					You have <span id="quarkAntienergy" style="font-size:35px"></span> preon anti-energy. At <span id="quarkChargeProductionCap" style="font-size:35px"></span>, your preon charge will stop producing energy and anti-energy.<br>
 					You are getting <span id="quarkAntienergyRate"></span> preon anti-energy per second.
 				</td></tr></table>
 				You have gotten <span id="rewards" style="font-size:35px"></span> rewards.
@@ -4327,19 +4327,35 @@
 				<br><br>
 			</div>
 			<div class='quantumtab' id='tod'>
-				<table id='todtable' class="qtable">
+				<table class="table" align="center" style="margin: auto">
 					<tr>
-						<td colspan=3>
-							<b style="font-size: 35px">Tree Upgrades</b><br>
-							<table class="table" align="center" style="margin: auto"><tr>
-								<td><button class='gluonupgrade unavailablebtn' id='treeupg1' onclick='buyTreeUpg(1)'>???<br>Cost: ? red quark spin</button></td>
-								<td><button class='gluonupgrade unavailablebtn' id='treeupg2' onclick='buyTreeUpg(2)'>???<br>Cost: ? red quark spin</button></td>
-								<td><button class='gluonupgrade unavailablebtn' id='treeupg3' onclick='buyTreeUpg(3)'>???<br>Cost: ? red quark spin</button></td>
-								<td><button class='gluonupgrade unavailablebtn' id='treeupg4' onclick='buyTreeUpg(4)'>???<br>Cost: ? red quark spin</button></td>
-							</tr></table>
-						</td>
+						<td><button id="redBtn" class="secondarytabbtn" onclick="showBranchTab('red')">Red Branch</button></td>
+						<td><button id="greenBtn" class="secondarytabbtn" onclick="showBranchTab('green')">Green Branch</button></td>
+						<td><button id="blueBtn" class="secondarytabbtn" onclick="showBranchTab('blue')">Blue Branch</button></td>
+						<td><button class="secondarytabbtn" onclick="showBranchTab('upgrades')">Tree Upgrades</button></td>
 					</tr>
 				</table>
+				<div class="branchtab" id="redBranch"></div>
+				<div class="branchtab" id="greenBranch"></div>
+				<div class="branchtab" id="blueBranch"></div>
+				<div class="branchtab" id="upgradesBranch">
+					<table class="qtable"><tr>
+						<td>You have <span class="red" id="redQuarkSpinUpgs" style="font-size:35px">0.0</span> red quark spin.</td>
+						<td>You have <span class="green" id="greenQuarkSpinUpgs" style="font-size:35px">0.0</span> green quark spin.</td>
+						<td>You have <span class="blue" id="blueQuarkSpinUpgs" style="font-size:35px">0.0</span> blue quark spin.</td>
+					</tr></table>
+					<table class="table" align="center" style="margin: auto"><tr>
+						<td><button class='gluonupgrade unavailablebtn' id='treeupg1' onclick='buyTreeUpg(1)'>Meta Dimension Boosts are cheaper.<br>Currently: <span id='treeupg1current'>?</span><br>Cost: ? red quark spin</button></td>
+						<td><button class='gluonupgrade unavailablebtn' id='treeupg2' onclick='buyTreeUpg(2)'>???<br>Currently: <span id='treeupg2current'>?</span>x<br>Cost: ? red quark spin</button></td>
+						<td><button class='gluonupgrade unavailablebtn' id='treeupg3' onclick='buyTreeUpg(3)'>???<br>Currently: <span id='treeupg3current'>?</span>x<br>Cost: ? red quark spin</button></td>
+						<td><button class='gluonupgrade unavailablebtn' id='treeupg4' onclick='buyTreeUpg(4)'>???<br>Currently: <span id='treeupg4current'>?</span>x<br>Cost: ? red quark spin</button></td>
+					</tr><tr>
+						<td><button class='gluonupgrade unavailablebtn' id='treeupg5' onclick='buyTreeUpg(5)'>???<br>Currently: <span id='treeupg5current'>?</span>x<br>Cost: ? red quark spin</button></td>
+						<td><button class='gluonupgrade unavailablebtn' id='treeupg6' onclick='buyTreeUpg(6)'>???<br>Currently: <span id='treeupg6current'>?</span>x<br>Cost: ? red quark spin</button></td>
+						<td><button class='gluonupgrade unavailablebtn' id='treeupg7' onclick='buyTreeUpg(7)'>???<br>Currently: <span id='treeupg7current'>?</span>x<br>Cost: ? red quark spin</button></td>
+						<td><button class='gluonupgrade unavailablebtn' id='treeupg8' onclick='buyTreeUpg(8)'>???<br>Currently: <span id='treeupg8current'>?</span>x<br>Cost: ? red quark spin</button></td>
+					</tr></table>
+				</div>
 			</div>
 			<div id="footercontainer">
 				<table id="footer">

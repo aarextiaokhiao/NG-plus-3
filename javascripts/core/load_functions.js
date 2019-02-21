@@ -740,19 +740,22 @@ if (player.version < 5) {
                       quarks: 0,
                       spin: 0,
                       upgrades: {},
-                      abilities: {}
+                      abilities: {},
+                      replicabots: {}
                   },
                   g: {
                       quarks: 0,
                       spin: 0,
                       upgrades: {},
-                      abilities: {}
+                      abilities: {},
+                      replicabots: {}
                   },
                   b: {
                       quarks: 0,
                       spin: 0,
                       upgrades: {},
-                      abilities: {}
+                      abilities: {},
+                      replicabots: {}
                   },
                   upgrades: {}
               }
@@ -1025,21 +1028,28 @@ if (player.version < 5) {
               quarks: 0,
               spin: 0,
               upgrades: {},
-              abilities: {}
+              abilities: {},
+              replicabots: {}
           },
           g: {
               quarks: 0,
               spin: 0,
               upgrades: {},
-              abilities: {}
+              abilities: {},
+              replicabots: {}
           },
           b: {
               quarks: 0,
               spin: 0,
               upgrades: {},
-              abilities: {}
+              abilities: {},
+              replicabots: {}
           },
           upgrades: {}
+      }
+      if (player.quantum.nanofield.rewards>16) {
+          player.quantum.nanofield.rewards=16
+          quantum(false, true)
       }
       player.aarexModifications.newGame3PlusVersion=1.9997
   }
@@ -1047,8 +1057,17 @@ if (player.version < 5) {
       if (player.quantum.autoOptions === undefined) player.quantum.autoOptions = {} //temp
       if (player.quantum.challengeRecords === undefined) player.quantum.challengeRecords = {}
       if (player.quantum.pairedChallenges.completions === undefined) player.quantum.pairedChallenges.completions = {}
-      //Testing-exclusive
       if (player.quantum.autobuyer.peakTime === undefined) player.quantum.autobuyer.peakTime = 0
+      //Testing-exclusive
+      if (player.quantum.tod.r.replicabots === undefined) {
+          player.quantum.tod.r.replicabots={}
+          player.quantum.tod.g.replicabots={}
+          player.quantum.tod.b.replicabots={}
+          if (player.quantum.nanofield.rewards>16) {
+              player.quantum.nanofield.rewards=16
+              quantum(false, true)
+          }
+      }
   }
   if (player.aarexModifications.newGame3PlusVersion==undefined) {
       colorBoosts={
@@ -1631,6 +1650,7 @@ if (player.version < 5) {
   showInfTab('preinf')
   showEternityTab('timestudies', true)
   showQuantumTab('uquarks')
+  showBranchTab('red')
   if (!player.options.newsHidden) scrollNextMessage()
   var detectNGPStart = player.lastUpdate == 1531944153054
   if (player.aarexModifications.switch) {
@@ -1882,6 +1902,7 @@ function new_game(id) {
 	showChallengesTab('challenges')
 	showEternityTab('timestudies', true)
 	showQuantumTab('uquarks')
+	showBranchTab('red')
 }
 
 function transformSaveToDecimal() {

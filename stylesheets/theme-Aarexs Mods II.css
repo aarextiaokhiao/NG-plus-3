@@ -277,14 +277,14 @@ button, div.storebtn {
 	box-shadow: 1px 2px rgba(229,229,229,0.4)
 }
 
-.dilationupgbought, .dilationbtn, .dilationupgrebuyable, #dilationeterupgrow .eternityupbtnbought, #buyQuantumFood.storebtn, #buyMaxQuantumFood.storebtn, #feedNormal.storebtn, #feedBaby.storebtn, #buyQuantumFoodED.storebtn, #buyMaxQuantumFoodED.storebtn, #emperordimensions table .storebtn {
+.dilationupgbought, .dilationbtn, .dilationupgrebuyable, #dilationeterupgrow .eternityupbtnbought, #buyQuantumFood.storebtn, #buyMaxQuantumFood.storebtn, #feedNormal.storebtn, #feedBaby.storebtn, #buyQuantumFoodED.storebtn, #buyMaxQuantumFoodED.storebtn, #emperordimensions table .storebtn, #greenBtn {
 	background-color: #00e500 !important;
 	color: #191919 !important;
 	animation: none;
 	box-shadow: 1px 2px rgba(229,229,229,0.4)
 }
 
-.dilationupg, .dilationbtn:hover, .dilationupgrebuyable:hover, #dilationeterupgrow .eternityupbtn, #buyQuantumFood.storebtn:hover, #buyMaxQuantumFood.storebtn:hover, #feedNormal.storebtn:hover, #feedBaby.storebtn:hover, #buyQuantumFoodED.storebtn:hover, #buyMaxQuantumFoodED.storebtn:hover, #emperordimensions table .storebtn:hover {
+.dilationupg, .dilationbtn:hover, .dilationupgrebuyable:hover, #dilationeterupgrow .eternityupbtn, #buyQuantumFood.storebtn:hover, #buyMaxQuantumFood.storebtn:hover, #feedNormal.storebtn:hover, #feedBaby.storebtn:hover, #buyQuantumFoodED.storebtn:hover, #buyMaxQuantumFoodED.storebtn:hover, #emperordimensions table .storebtn:hover, #greenBtn:hover {
 	background-color: #39e539 !important;
 	color: #191919 !important;
 	animation: none;
@@ -443,6 +443,22 @@ button, div.storebtn {
 
 #dilstudy13.dilationupg:hover {
 	background-color: #99613a !important
+}
+
+#redBtn {
+	background-color: #e50000 !important
+}
+
+#redBtn:hover {
+	background-color: #e53939 !important
+}
+
+#blueBtn {
+	background-color: #0000e5 !important
+}
+
+#blueBtn:hover {
+	background-color: #3939e5 !important
 }
 				
 @keyframes rg {

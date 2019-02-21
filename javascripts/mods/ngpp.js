@@ -611,6 +611,7 @@ function quantumReset(force, auto, challid, implode=false) {
 				document.getElementById("welcomeMessage").innerHTML = "Congratulations for getting " + shorten(Number.MAX_VALUE) + " quarks! You have unlocked new QoL features, like quantum autobuyer modes, assign all, and auto-assignation!"
 				player.quantum.reachedInfQK = true
 				document.getElementById('toggleautoquantummode').style.display=""
+				document.getElementById('assignAll').style.display=""
 			}
 		}
 		if (!inQC(4)) if (player.meta.resets<1) giveAchievement("Infinity Morals")
