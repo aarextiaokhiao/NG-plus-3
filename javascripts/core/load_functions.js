@@ -1022,6 +1022,7 @@ if (player.version < 5) {
       player.quantum.notrelative = false
       player.quantum.wasted = false
   }
+  var setTTAfterQuantum=0
   if (player.aarexModifications.newGame3PlusVersion < 1.9997) {
       player.quantum.tod = {
           r: {
@@ -1048,8 +1049,17 @@ if (player.version < 5) {
           upgrades: {}
       }
       if (player.quantum.nanofield.rewards>16) {
+          var newMS=[]
+          for (var m=0;m<player.masterystudies.length;m++) {
+              var d=player.masterystudies[m].split("d")
+              if (d[1]!==undefined) {
+                  newMS.push(player.masterystudies[m])
+              }
+          }
+          player.masterystudies=newMS
           player.quantum.nanofield.rewards=16
-          quantum(false, true)
+          forceToQuantumAndRemove=true
+          setTTAfterQuantum=2e94
       }
       player.aarexModifications.newGame3PlusVersion=1.9997
   }
@@ -1058,15 +1068,24 @@ if (player.version < 5) {
       if (player.quantum.challengeRecords === undefined) player.quantum.challengeRecords = {}
       if (player.quantum.pairedChallenges.completions === undefined) player.quantum.pairedChallenges.completions = {}
       if (player.quantum.autobuyer.peakTime === undefined) player.quantum.autobuyer.peakTime = 0
+      if (player.quantum.nanofield.rewards>17&&player.quantum.tod.upgrades[1]==undefined) {
+          var newMS=[]
+          for (var m=0;m<player.masterystudies.length;m++) {
+              var d=player.masterystudies[m].split("d")
+              if (d[1]!==undefined) {
+                  newMS.push(player.masterystudies[m])
+             }
+          }
+          player.masterystudies=newMS
+          player.quantum.nanofield.rewards=16
+          forceToQuantumAndRemove=true
+          setTTAfterQuantum=2e94
+      }
       //Testing-exclusive
       if (player.quantum.tod.r.replicabots === undefined) {
           player.quantum.tod.r.replicabots={}
           player.quantum.tod.g.replicabots={}
           player.quantum.tod.b.replicabots={}
-          if (player.quantum.nanofield.rewards>16) {
-              player.quantum.nanofield.rewards=16
-              quantum(false, true)
-          }
       }
   }
   if (player.aarexModifications.newGame3PlusVersion==undefined) {
@@ -1615,6 +1634,7 @@ if (player.version < 5) {
   updatePCCompletions()
   maybeShowFillAll()
   updateReplicants()
+  updateTODStuff()
   if (player.boughtDims) {
       if (document.getElementById("timestudies").style.display=="block") showEternityTab("ers_timestudies",true)
       updateGalaxyControl()
@@ -1637,7 +1657,6 @@ if (player.version < 5) {
   document.getElementById("autoBuyerQuantum").style.display=speedrunMilestonesReached>22?"":"none"
   document.getElementById("edtabbtn").style.display=!player.masterystudies?"none":player.masterystudies.includes("d11")?"":"none"
   document.getElementById("nanofieldtabbtn").style.display=!player.masterystudies?"none":player.masterystudies.includes("d12")?"":"none"
-  document.getElementById("todtabbtn").style.display=!player.masterystudies?"none":player.masterystudies.includes("d13")?"":"none"
   setAndMaybeShow('bestTP',player.achievements.includes("ng3p18") || player.achievements.includes("ng3p37"),'"Your best ever Tachyon particles was "+shorten(player.dilation.bestTP)+"."')
   notifyId=speedrunMilestonesReached
   updatePowers()
@@ -1688,8 +1707,8 @@ if (player.version < 5) {
       if (inflationCheck) ngModeMessages = ["I'm terribly sorry. But your save was appeared that there is an inflation, which it defeats the rule of incremental games. Your save was forced to reset everything."]
       if (forceToQuantumAndRemove) {
           quantum(false, true, 0)
-          ngModeMessages = ["Due to balancing changes, you are forced to quantum but you will now lose all your time theorems and best TP too."]
-          player.timestudy.theorem = 0
+          ngModeMessages = ["Due to balancing changes, you are forced to quantum, lose your TT, and lose your best TP, but you now have "+shorten(setTTAfterQuantum)+" TT for free."]
+          player.timestudy.theorem = setTTAfterQuantum
           player.dilation.bestTP = new Decimal(0)
           document.getElementById('bestTP').textContent = "Your best ever Tachyon particles was 0."
       }

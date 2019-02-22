@@ -1100,11 +1100,11 @@ function sacrificeConf() {
 }
 
 function getDilPower() {
-	var ret = Math.pow(3, player.dilation.rebuyables[3] * exDilationUpgradeStrength(3))
+	var ret = Decimal.pow(3, player.dilation.rebuyables[3] * exDilationUpgradeStrength(3))
 	if (player.masterystudies) {
-		if (player.masterystudies.includes("t264")) ret *= getMTSMult(264)
-		if (GUBought("br1")) ret *= player.dilation.dilatedTime.add(1).log10()+1
-		if (player.masterystudies.includes("t341")) ret *= getMTSMult(341)
+		if (player.masterystudies.includes("t264")) ret = ret.times(getMTSMult(264))
+		if (GUBought("br1")) ret = ret.times(player.dilation.dilatedTime.add(1).log10()+1)
+		if (player.masterystudies.includes("t341")) ret = ret.times(getMTSMult(341))
 	}
 	return ret
 }
@@ -1115,7 +1115,7 @@ function getDilExp() {
 }
 
 function getDilGain() {
-    return Math.pow(Decimal.log10(player.money) / 400, getDilExp()) * getDilPower();
+    return Decimal.pow(Decimal.log10(player.money) / 400, getDilExp()).times(getDilPower());
 }
 
 function getDilTimeGainPerSecond() {
@@ -1524,8 +1524,8 @@ function updateDimensions() {
                 let gain = getDilGain()
                 let msg = "Disable dilation"
                 if (player.infinityPoints.lt(Number.MAX_VALUE)) {}
-                else if (player.dilation.totalTachyonParticles - gain > 0) msg += ".<br>Reach " + shortenMoney(Decimal.pow(10, Math.pow(player.dilation.totalTachyonParticles / getDilPower(), 1 / getDilExp()) * 400)) + " antimatter to gain more Tachyon Particles"
-                else msg += " for " + shortenMoney(gain - player.dilation.totalTachyonParticles) + " Tachyon particles"
+                else if (player.dilation.totalTachyonParticles.gt(gain)) msg += ".<br>Reach " + shortenMoney(Decimal.pow(10, player.dilation.totalTachyonParticles.div(getDilPower()).pow(1/getDilExp()).toNumber() * 400)) + " antimatter to gain more Tachyon particles"
+                else msg += " for " + shortenMoney(gain.sub(player.dilation.totalTachyonParticles)) + " Tachyon particles"
                 document.getElementById("enabledilation").innerHTML = msg + "."
             }
             else document.getElementById("enabledilation").textContent = "Dilate time."+((player.eternityBuyer.isOn&&player.eternityBuyer.dilationMode?!isNaN(player.eternityBuyer.statBeforeDilation):false) ? " " + (player.eternityBuyer.dilationPerAmount - player.eternityBuyer.statBeforeDilation) + " left before dilation." : "")
@@ -2220,23 +2220,35 @@ function isIntervalAffordable() {
 	return player.replicanti.interval > (player.timestudy.studies.includes(22) || player.boughtDims ? 1 : 50)
 }
 
+function increaseRGCost(bulk) {
+	if (inQC(5)) {
+		player.replicanti.galCost = Decimal.pow(1e170, Math.pow(1.2, player.replicanti.gal + bulk))
+		return
+	}
+	var increase
+	if (player.currentEternityChall == "eterc6") increase = bulk * bulk + (player.replicanti.gal * 2 + 1) * bulk
+	else increase = 2.5 * bulk * bulk + 2.5 * (player.replicanti.gal * 2 + 9) * bulk
+	if (player.replicanti.gal > 99) increase += 25 * bulk * bulk + 25 * (player.replicanti.gal * 2 - 191) * bulk
+	if (player.replicanti.gal > 399) {
+		if (player.exdilation != undefined) for (var g=0; g<bulk; g++) increase += Math.pow(player.replicanti.gal - 390 + g, 2)
+		if (player.meta != undefined) {
+			var isReduced = false
+			if (player.masterystudies != undefined) if (player.masterystudies.includes("t266")) isReduced = true
+			if (isReduced) {
+				increase += 1500 * bulk * bulk + 1500 * (player.replicanti.gal * 2 - 791) * bulk
+				if (player.replicanti.gal > 2998) increase += 5e3 * bulk * bulk + 5e3 * (player.replicanti.gal * 2 - 5989) * bulk
+			} else for (var g=0; g<bulk; g++) increase += 5 * Math.floor(Math.pow(1.2, player.replicanti.gal - 395 + g))
+		}
+	}
+	player.replicanti.galCost = player.replicanti.galCost.times(Decimal.pow(10, increase))
+}
+
 function upgradeReplicantiGalaxy() {
     let cost = player.replicanti.galCost
     if (player.timestudy.studies.includes(233)) cost = cost.dividedBy(player.replicanti.amount.pow(0.3))
     if (player.infinityPoints.gte(cost) && player.eterc8repl !== 0) {
         player.infinityPoints = player.infinityPoints.minus(cost)
-        if (player.currentEternityChall == "eterc6") player.replicanti.galCost = player.replicanti.galCost.times(Decimal.pow(1e2, player.replicanti.gal+1))
-        else player.replicanti.galCost = player.replicanti.galCost.times(Decimal.pow(1e5, player.replicanti.gal + 5))
-        if (player.replicanti.gal >= 100) player.replicanti.galCost = player.replicanti.galCost.times(Decimal.pow(1e50, player.replicanti.gal - 95))
-        if (player.replicanti.gal >= 400) {
-            if (player.exdilation!=undefined) player.replicanti.galCost = player.replicanti.galCost.times(Decimal.pow(10, Math.pow(player.replicanti.gal - 390, 2)))
-            if (player.meta!=undefined) {
-                var isReduced = player.masterystudies ? player.masterystudies.includes("t266") : false
-                if (isReduced) player.replicanti.galCost = player.replicanti.galCost = player.replicanti.galCost.times(Decimal.pow("1e3000", player.replicanti.gal - 395))
-                else player.replicanti.galCost = player.replicanti.galCost.times(Decimal.pow(1e5, Math.floor(Math.pow(1.2, player.replicanti.gal - 395))))
-                if (player.replicanti.gal > 2998) player.replicanti.galCost = player.replicanti.galCost.times(Decimal.pow("1e10000", player.replicanti.gal - 2994))
-            }
-        }
+        increaseRGCost(1)
         player.replicanti.gal += 1
         if (inQC(5)) player.replicanti.galCost = Decimal.pow(1e170, Math.pow(1.2, player.replicanti.gal))
         if (player.currentEternityChall == "eterc8") player.eterc8repl-=1
@@ -3439,6 +3451,7 @@ function onNotationChange(id) {
 	updateQuantumChallenges()
 	updateMasteryStudyTextDisplay()
 	updateReplicants()
+	updateTODStuff()
 	document.getElementById("epmult").innerHTML = "You gain 5 times more EP<p>Currently: "+shortenDimensions(player.epmult)+"x<p>Cost: "+shortenDimensions(player.epmultCost)+" EP"
 	if (player.achievements.includes("ng3p18") || player.achievements.includes("ng3p37")) document.getElementById('bestTP').textContent="Your best ever Tachyon particles was "+shorten(player.dilation.bestTP)+"."
 }
@@ -4769,7 +4782,7 @@ function eternity(force, auto) {
         temp = []
         player.eternityPoints = player.eternityPoints.plus(gainedEternityPoints())
         var array = [player.thisEternity, gainedEternityPoints()]
-        if (player.dilation.active) array = [player.thisEternity, Decimal.max(getDilGain() - player.dilation.totalTachyonParticles, 0), "d2"]
+        if (player.dilation.active) array = [player.thisEternity, getDilGain().sub(player.dilation.totalTachyonParticles).max(0), "d2"]
         else if (player.currentEternityChall != "") array.push(player.eternityChallUnlocked)
         addEternityTime(array)
         var forceRespec = false
@@ -4798,7 +4811,7 @@ function eternity(force, auto) {
         if (player.infinitiedBank > 5000000000) giveAchievement("No ethical consumption");
         if (player.dilation.active && (!force || player.infinityPoints.gte(Number.MAX_VALUE))) {
             if (player.dilation.tachyonParticles.lt(getDilGain())) {
-                player.dilation.tachyonParticles = new Decimal(getDilGain())
+                player.dilation.tachyonParticles = getDilGain()
                 if (player.masterystudies) player.quantum.notrelative = false
             }
             player.dilation.totalTachyonParticles = player.dilation.tachyonParticles
@@ -6654,8 +6667,8 @@ var isSmartPeakActivated = false
 function updateEPminpeak(diff) {
     isSmartPeakActivated = player.masterystudies && player.dilation.upgrades.includes("ngpp6") && getEternitied() >= 1e13
 	if (player.dilation.active && isSmartPeakActivated) {
-		var gainedPoints = new Decimal(Math.max(getDilGain() - player.dilation.totalTachyonParticles, 0))
-		var oldPoints = new Decimal(player.dilation.totalTachyonParticles)
+		var gainedPoints = getDilGain().sub(player.dilation.totalTachyonParticles).max(0)
+		var oldPoints = player.dilation.totalTachyonParticles
 	} else {
 		var gainedPoints = gainedEternityPoints()
 		var oldPoints = player.eternityPoints
@@ -7138,10 +7151,10 @@ function gameLoop(diff) {
     EPminpeakUnits = (EPminpeakType == 'logarithm' ? ' log(' + EPminpeakUnits + ')' : ' ' + EPminpeakUnits) + '/min'
     document.getElementById("eternitybtnFlavor").textContent = (((!player.dilation.active&&gainedEternityPoints().lt(1e6))||player.currentEternityChall!==""||(player.options.theme=="Aarex's Modifications"&&player.options.notation!="Morse code"))
         ? ((player.currentEternityChall!=="" ? "Other challenges await..." : player.eternities>0 ? "" : "Other times await...") + " I need to become Eternal.") : "")
-    if (player.dilation.totalTachyonParticles >= getDilGain() && player.dilation.active) document.getElementById("eternitybtnEPGain").innerHTML = "Reach " + shortenMoney(Decimal.pow(10, Math.pow(player.dilation.totalTachyonParticles / getDilPower(), 1 / getDilExp()) * 400)) + " antimatter to gain more Tachyon Particles."
+    if (player.dilation.totalTachyonParticles.gte(getDilGain()) && player.dilation.active) document.getElementById("eternitybtnEPGain").innerHTML = "Reach " + shortenMoney(Decimal.pow(10, player.dilation.totalTachyonParticles.div(getDilPower()).pow(1/getDilExp()).toNumber() * 400)) + " antimatter to gain more Tachyon Particles."
     else {
         document.getElementById("eternitybtnEPGain").innerHTML = ((player.eternities > 0 && (player.currentEternityChall==""||player.options.theme=="Aarex's Modifications"))
-            ? "Gain <b>"+(player.dilation.active?shortenMoney(Math.max(getDilGain() - player.dilation.totalTachyonParticles, 0)):shortenDimensions(gainedEternityPoints()))+"</b> "+(player.dilation.active?"Tachyon particles.":"Eternity points.") : "")
+            ? "Gain <b>"+(player.dilation.active?shortenMoney(getDilGain().sub(player.dilation.totalTachyonParticles)):shortenDimensions(gainedEternityPoints()))+"</b> "+(player.dilation.active?"Tachyon particles.":"Eternity points.") : "")
     }
     var showEPmin=(player.currentEternityChall===""||player.options.theme=="Aarex's Modifications")&&EPminpeak>0&&player.eternities>0&&player.options.notation!='Morse code'&&player.options.notation!='Spazzy'&&(!player.dilation.active||isSmartPeakActivated)
     document.getElementById("eternitybtnRate").textContent = (showEPmin&&(EPminpeak.lt("1e30003")||player.options.theme=="Aarex's Modifications")
@@ -7437,8 +7450,8 @@ function gameLoop(diff) {
             document.getElementById("progressbar").style.width = percentage
             document.getElementById("progresspercent").textContent = percentage
             document.getElementById("progresspercent").setAttribute('ach-tooltip','Percentage to "That is what I have to do to get rid of you."')
-        } else if (player.dilation.active && getDilGain() <= player.dilation.totalTachyonParticles) {
-            var percentage = (Math.log10(getDilGain()) / Math.log10(player.dilation.totalTachyonParticles)).toFixed(2) + "%"
+        } else if (player.dilation.active && player.dilation.totalTachyonParticles.gte(getDilGain())) {
+            var percentage = (getDilGain().log10() / player.dilation.totalTachyonParticles.log10()).toFixed(2) + "%"
             document.getElementById("progressbar").style.width = percentage
             document.getElementById("progresspercent").textContent = percentage
             document.getElementById("progresspercent").setAttribute('ach-tooltip','Percentage to the requirement for tachyon particle gain')
@@ -7566,7 +7579,7 @@ function gameLoop(diff) {
             document.getElementById("eternityPoints2").innerHTML = "You have <span class=\"EPAmount2\">"+shortenDimensions(player.eternityPoints)+"</span> Eternity points."
         }
         if (player.dilation.active) if (player.masterystudies.includes("t292") && player.dilation.tachyonParticles.lt(getDilGain())) {
-            player.dilation.tachyonParticles = new Decimal(getDilGain())
+            player.dilation.tachyonParticles = getDilGain()
             player.dilation.bestTP = player.dilation.bestTP.max(player.dilation.tachyonParticles)
             setAndMaybeShow('bestTP',player.achievements.includes("ng3p18") || player.achievements.includes("ng3p37"),'"Your best ever Tachyon particles was "+shorten(player.dilation.bestTP)+"."')
             player.quantum.notrelative = false
@@ -8125,7 +8138,7 @@ window.onfocus = function() {
 }
 
 window.addEventListener('keydown', function(event) {
-	if (!player.options.hotkeys || controlDown === true || document.activeElement.type === "text" || onImport) return false
+	if (!player.options.hotkeys || controlDown === true || document.activeElement.type === "text" || document.activeElement.type === "number" || onImport) return false
 	const tmp = event.keyCode;
 	if (tmp >= 49 && tmp <= 56) {
 		if (shiftDown) buyOneDimension(tmp-48)

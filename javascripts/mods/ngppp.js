@@ -75,7 +75,7 @@ function updateMasteryStudyButtons() {
 
 function updateMasteryStudyCosts(quick=false) {
 	masterystudies.latestBoughtRow=0
-	masterystudies.costmult=0
+	masterystudies.costmult=1
 	for (id=0;id<player.masterystudies.length;id++) {
 		var t=player.masterystudies[id].split("t")[1]
 		if (t) {
@@ -159,7 +159,7 @@ function buyMasteryStudy(type, id, quick=false) {
 			showTab("quantumtab")
 			showQuantumTab("tod")
 			updateColorCharge()
-			document.getElementById("todtabbtn").style.display = ""
+			updateTODStuff()
 		}
 	}
 }
@@ -388,7 +388,7 @@ function setupText() {
 		row.innerHTML=html
 	}
 	var branchUpgrades=["Get 2x more quark spin.","You gain squared amount of unstable quarks as before.","","All abilities are 2x more efficient."]
-	var abilities=["Get 2x more quark spin, but decays 2x faster.","Quarks decay 2x slower.","Square your unstable quarks. (including hardcap)","You only gain quark spin."]
+	var abilities=["Get 2x more quark spin, but decays 2x faster.","Quarks decay 2x slower.","Multiply your unstable quarks by ???x.","You only gain quark spin."]
 	for (var c=0;c<3;c++) {
 		var color=(["red","green","blue"])[c]
 		var shorthand=(["r","g","b"])[c]
@@ -592,7 +592,8 @@ function updateQuantumTabs() {
 			document.getElementById(color+"QuarkSpinProduction").textContent=shortenMoney(getQuarkSpinProduction(shorthand,prevBranchShorthand))
 			for (var u=1;u<5;u++) document.getElementById(color+"upg"+u+"current").textContent=shortenDimensions(Decimal.pow(u==3?4:2,getBranchUpgradeLevel(shorthand,u)))
 		} else {
-			for (c=0;c<3;c++) document.getElementById(colors[c]+"QuarkSpinUpgs").textContent=shortenMoney(player.quantum.tod[shorthands[c]].spin)
+			for (var c=0;c<3;c++) document.getElementById(colors[c]+"QuarkSpinUpgs").textContent=shortenMoney(player.quantum.tod[shorthands[c]].spin)
+			for (var u=1;u<9;u++) document.getElementById("treeupg"+u).className="gluonupgrade "+(canBuyTreeUpg(u)?shorthands[getTreeUpgradeLevel(u)%3]:"unavailablebtn")
 		}
 	}
 }
@@ -1610,6 +1611,18 @@ function toggleAutoAssign() {
 }
 
 //v1.9997
+function updateTODStuff() {
+	if (player.masterystudies ? !player.masterystudies.includes("d13") : true) {
+		document.getElementById("replicantstabbtn").style.display="none"
+		return
+	} else document.getElementById("replicantstabbtn").style.display=""
+	var colors=["red","green","blue"]
+	for (var t=1;t<9;t++) {
+		document.getElementById("treeupg"+t+"cost").textContent=shortenMoney(getTreeUpgradeCost(t))+" "+colors[getTreeUpgradeLevel(t)%3]
+		document.getElementById("treeupg"+t+"current").textContent=t==1?getFullExpansion(getTreeUpgradeEffect(t)):shortenMoney(getTreeUpgradeEffect(t))
+	}
+}
+
 function showBranchTab(tabName) {
 	//iterate over all elements in div_tab class. Hide everything that's not tabName and show tabName
 	var tabs = document.getElementsByClassName('branchtab');
@@ -1628,7 +1641,7 @@ function showBranchTab(tabName) {
 }
 
 function getUnstableGain(branch) {
-	return player.quantum.usedQuarks[branch].div("3.125e533").times(Decimal.pow(2,getBranchUpgradeLevel(branch,2)))
+	return player.quantum.usedQuarks[branch].div("3e531").times(Decimal.pow(2,getBranchUpgradeLevel(branch,2)))
 }
 
 function unstableQuarks(branch) {
@@ -1650,4 +1663,37 @@ function getBranchUpgradeLevel(branch,upg) {
 	upg=player.quantum.tod[branch].upgrades[upg]
 	if (upg) return upg
 	else return 0
+}
+
+function getTreeUpgradeCost(upg) {
+	if (upg==1) return Decimal.pow(4, getTreeUpgradeLevel(1)).times(50)
+	return new Decimal(1/0)
+}
+
+function canBuyTreeUpg(upg) {
+	var shorthands=["r","g","b"]
+	return getTreeUpgradeCost(upg).lte(player.quantum.tod[shorthands[getTreeUpgradeLevel(upg)%3]].spin)
+}
+
+function buyTreeUpg(upg) {
+	if (!canBuyTreeUpg(upg)) return
+	var colors=["red","green","blue"]
+	var shorthands=["r","g","b"]
+	var branch=player.quantum.tod[shorthands[getTreeUpgradeLevel(upg)%3]]
+	branch.spin=branch.spin.sub(getTreeUpgradeCost(upg))
+	if (!player.quantum.tod.upgrades[upg]) player.quantum.tod.upgrades[upg]=0
+	player.quantum.tod.upgrades[upg]++
+	document.getElementById("treeupg"+upg+"cost").textContent=shortenMoney(getTreeUpgradeCost(upg))+" "+colors[player.quantum.tod.upgrades[upg]%3]
+	document.getElementById("treeupg"+upg+"current").textContent=upg==1?getFullExpansion(getTreeUpgradeEffect(upg)):shortenMoney(getTreeUpgradeEffect(upg))
+}
+
+function getTreeUpgradeLevel(upg) {
+	upg=player.quantum.tod.upgrades[upg]
+	if (upg) return upg
+	else return 0
+}
+
+function getTreeUpgradeEffect(upg) {
+	if (upg==1) return getTreeUpgradeLevel(1) * 40
+	return 1
 }

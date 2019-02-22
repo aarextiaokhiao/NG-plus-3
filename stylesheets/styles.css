@@ -1981,6 +1981,47 @@ br {
 	transition-duration: 0.2s
 }
 
+.gluonupgrade.r {
+	background-color: #1f0000;
+	border: 1px solid #3f0000;
+	box-shadow: inset 0px 0px 5px 0px #7f0000;
+	color: #7f0000
+}
+.gluonupgrade.g {
+	background-color: #001f00;
+	border: 1px solid #003f00;
+	box-shadow: inset 0px 0px 5px 0px #007f00;
+	color: #007f00
+}
+.gluonupgrade.b {
+	background-color: #00001f;
+	border: 1px solid #00003f;
+	box-shadow: inset 0px 0px 5px 0px #00007f;
+	color: #00007f
+}
+
+.gluonupgrade.r:hover {
+	background-color: #7f0000;
+	border: 1px solid #3f0000;
+	box-shadow: inset 0px 0px 5px 0px #bf0000;
+	color: #1f0000;
+	cursor: pointer
+}
+.gluonupgrade.g:hover {
+	background-color: #007f00;
+	border: 1px solid #003f00;
+	box-shadow: inset 0px 0px 5px 0px #00bf00;
+	color: #001f00;
+	cursor: pointer
+}
+.gluonupgrade.b:hover {
+	background-color: #00007f;
+	border: 1px solid #00003f;
+	box-shadow: inset 0px 0px 5px 0px #0000bf;
+	color: #00001f;
+	cursor: pointer
+}
+
 @media print,
 screen and (max-width: 960px) {
     div.wrapper {

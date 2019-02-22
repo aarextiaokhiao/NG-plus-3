@@ -448,6 +448,36 @@ strong { color: #0072e5 }
 	color: #191919;
 	text-shadow: none
 }
+.gluonupgrade.r {
+	background-color: #191919 !important;
+    border-color: #e50000 !important;
+	box-shadow: none !important;
+	color: #e5e5e5 !important
+}
+.gluonupgrade.g {
+	background-color: #191919 !important;
+    border-color: #00e500 !important;
+	box-shadow: none !important;
+	color: #e5e5e5 !important
+}
+.gluonupgrade.b {
+	background-color: #191919 !important;
+    border-color: #0000e5 !important;
+	box-shadow: none !important;
+	color: #e5e5e5 !important
+}
+.gluonupgrade.r:hover {
+	background-color: #e50000 !important;
+	color: #191919 !important
+}
+.gluonupgrade.g:hover {
+	background-color: #00e500 !important;
+	color: #191919 !important
+}
+.gluonupgrade.b:hover {
+	background-color: #0000e5 !important;
+	color: #191919 !important
+}
 .notifyjs-bootstrap-info {
     background-color: #0072e5;
     font-family:'Inconsolata', monospace;
