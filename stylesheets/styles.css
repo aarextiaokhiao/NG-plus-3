@@ -1981,6 +1981,10 @@ br {
 	transition-duration: 0.2s
 }
 
+#upgradesBranch .gluonupgrade {
+	font-size: 10px
+}
+
 .gluonupgrade.r {
 	background-color: #1f0000;
 	border: 1px solid #3f0000;

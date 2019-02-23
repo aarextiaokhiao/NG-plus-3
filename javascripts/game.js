@@ -487,6 +487,7 @@ function updateNewPlayer(reseted) {
             r: {
                 quarks: 0,
                 spin: 0,
+                gainDiv: 0,
                 upgrades: {},
                 abilities: {},
                 replicabots: {}
@@ -494,6 +495,7 @@ function updateNewPlayer(reseted) {
             g: {
                 quarks: 0,
                 spin: 0,
+                gainDiv: 0,
                 upgrades: {},
                 abilities: {},
                 replicabots: {}
@@ -501,6 +503,7 @@ function updateNewPlayer(reseted) {
             b: {
                 quarks: 0,
                 spin: 0,
+                gainDiv: 0,
                 upgrades: {},
                 abilities: {},
                 replicabots: {}
@@ -1109,9 +1112,11 @@ function getDilPower() {
 	return ret
 }
 
-function getDilExp() {
-    if (player.dilation.rebuyables[4]) return 1.5 + player.dilation.rebuyables[4] * .25
-    else return 1.5
+function getDilExp(exclude) {
+	let ret = 1.5
+	if (player.dilation.rebuyables[4]) ret += player.dilation.rebuyables[4] / 4
+	if (player.masterystudies) ret += getTreeUpgradeEffect(2)
+	return ret
 }
 
 function getDilGain() {
@@ -6855,20 +6860,16 @@ function gameLoop(diff) {
         for (var c=0;c<3;c++) {
             var shorthand=colorShorthands[c]
             var branch=player.quantum.tod[shorthand]
-            var prevBranchShorthand=colorShorthands[(c+2)%3]
-            var decayRate=getDecayRate(prevBranchShorthand)
-            var tickTaken=diff/10*decayRate
-            if (branch.quarks.gt(1)) {
-                var tickTakenExp=Math.min(tickTaken,branch.quarks.log(2))
-                branch.quarks=branch.quarks.div(Decimal.pow(2,tickTakenExp)).max(1)
-                branch.spin=branch.spin.add(getQuarkSpinProduction(shorthand,prevBranchShorthand).times(tickTakenExp/decayRate))
-                tickTaken-=tickTakenExp
-            }
-            if (branch.quarks.gt(0)&&branch.quarks.lte(1)) {
-                tickTaken=branch.quarks.min(tickTaken)
-                branch.quarks=branch.quarks.sub(tickTaken)
-                branch.spin=branch.spin.add(getQuarkSpinProduction(shorthand,prevBranchShorthand).times(tickTaken/decayRate))
-            }
+            var decayRate=getDecayRate(shorthand)
+
+            branch.gainDiv=branch.gainDiv.div(Decimal.pow(1.1,diff/10)).max("1e530")
+
+            var power=(branch.quarks.gt(1)?branch.quarks.log(2)+1:branch.quarks.toNumber())/decayRate
+            var tickTaken=Math.min(diff/10,power)
+
+            power=(power-tickTaken)*decayRate
+            branch.quarks=power>1?Decimal.pow(2,power-1):new Decimal(power)
+            branch.spin=branch.spin.add(getQuarkSpinProduction(shorthand).times(tickTaken))
         }
 
         if (!player.quantum.nanofield.producingCharge) {

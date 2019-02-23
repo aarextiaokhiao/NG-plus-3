@@ -739,6 +739,7 @@ if (player.version < 5) {
                   r: {
                       quarks: 0,
                       spin: 0,
+                      gainDiv: 0,
                       upgrades: {},
                       abilities: {},
                       replicabots: {}
@@ -746,6 +747,7 @@ if (player.version < 5) {
                   g: {
                       quarks: 0,
                       spin: 0,
+                      gainDiv: 0,
                       upgrades: {},
                       abilities: {},
                       replicabots: {}
@@ -753,6 +755,7 @@ if (player.version < 5) {
                   b: {
                       quarks: 0,
                       spin: 0,
+                      gainDiv: 0,
                       upgrades: {},
                       abilities: {},
                       replicabots: {}
@@ -1028,6 +1031,7 @@ if (player.version < 5) {
           r: {
               quarks: 0,
               spin: 0,
+              gainDiv: 0,
               upgrades: {},
               abilities: {},
               replicabots: {}
@@ -1035,6 +1039,7 @@ if (player.version < 5) {
           g: {
               quarks: 0,
               spin: 0,
+              gainDiv: 0,
               upgrades: {},
               abilities: {},
               replicabots: {}
@@ -1042,6 +1047,7 @@ if (player.version < 5) {
           b: {
               quarks: 0,
               spin: 0,
+              gainDiv: 0,
               upgrades: {},
               abilities: {},
               replicabots: {}
@@ -1086,6 +1092,11 @@ if (player.version < 5) {
           player.quantum.tod.r.replicabots={}
           player.quantum.tod.g.replicabots={}
           player.quantum.tod.b.replicabots={}
+      }
+      if (player.quantum.tod.r.gainDiv === undefined) {
+          player.quantum.tod.r.gainDiv = 0
+          player.quantum.tod.g.gainDiv = 0
+          player.quantum.tod.b.gainDiv = 0
       }
   }
   if (player.aarexModifications.newGame3PlusVersion==undefined) {
@@ -2142,6 +2153,11 @@ function transformSaveToDecimal() {
           player.quantum.tod.g.spin = new Decimal(player.quantum.tod.g.spin)
           player.quantum.tod.b.quarks = new Decimal(player.quantum.tod.b.quarks)
           player.quantum.tod.b.spin = new Decimal(player.quantum.tod.b.spin)
+          if (player.quantum.tod.r.gainDiv) {
+              player.quantum.tod.r.gainDiv = new Decimal(player.quantum.tod.r.gainDiv)
+              player.quantum.tod.g.gainDiv = new Decimal(player.quantum.tod.g.gainDiv)
+              player.quantum.tod.b.gainDiv = new Decimal(player.quantum.tod.b.gainDiv)
+          }
       }
   }
 }

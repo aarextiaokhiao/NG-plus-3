@@ -387,20 +387,19 @@ function setupText() {
 		html+='<td align="right" width="10%"><button id="empFeed'+d+'" style="color:black; width:195px; height:30px" class="storebtn" align="right" onclick="feedReplicant('+d+')">Feed (0%)</button></td>'
 		row.innerHTML=html
 	}
-	var branchUpgrades=["Get 2x more quark spin.","You gain squared amount of unstable quarks as before.","","All abilities are 2x more efficient."]
-	var abilities=["Get 2x more quark spin, but decays 2x faster.","Quarks decay 2x slower.","Multiply your unstable quarks by ???x.","You only gain quark spin."]
+	var branchUpgrades=["Gain 2x quark spins, but quarks decay 2x faster.","The gain of unstable quarks is squared.","Quarks decay 2x slower.","The third ability factor is squared."]
+	var abilities=["Gain 2x quark spins.","You only gain quark spins.","Multiply your unstable quarks by ???x.","Reverse the decay."]
 	for (var c=0;c<3;c++) {
 		var color=(["red","green","blue"])[c]
 		var shorthand=(["r","g","b"])[c]
-		branchUpgrades[2]="In "+(["red","green","blue"])[(c+1)%3]+" branch, get 4x more quark spin but decays 2x faster."
 		
-		var html='<table class="qtable"><tr><td>You have <span class="'+color+'" id="'+color+'QuarksToD" style="font-size: 35px">0</span> '+color+' quarks.</td><td><button class="storebtn" id="'+color+'UnstableGain" style="width: 210px; height: 70px" onclick="unstableQuarks(\''+shorthand+'\')">Unstable quarks for 0.0 unstable quarks.</button></td><td>You have <span class="'+color+'" id="'+color+'QuarkSpin" style="font-size: 35px">0.0</span> '+color+' quark spin.</td></tr></table>'
+		var html='<table class="qtable"><tr><td>You have <span class="'+color+'" id="'+color+'QuarksToD" style="font-size: 35px">0</span> '+color+' quarks.</td><td><button class="storebtn" id="'+color+'UnstableGain" style="width: 210px; height: 70px" onclick="unstableQuarks(\''+shorthand+'\')">Unstablize quarks for 0.0 unstable quarks.</button><br><span id="'+color+'Conversion">9.90e531 '+color+' quarks => 1 unstable '+color+' quarks</span></td><td>You have <span class="'+color+'" id="'+color+'QuarkSpin" style="font-size: 35px">0.0</span> '+color+' quark spin.</td></tr></table>'
 		html+="<td colspan=3>"
 		html+="You have <span class='"+color+"' id='"+color+"UnstableQuarks' style='font-size: 35px'>0</span> unstable "+color+" quarks.<br>"
 		html+="They are decaying by 50% per <span id='"+color+"QuarksDecayRate'>1 second</span>. You are getting <span class='"+color+"' id='"+color+"QuarkSpinProduction' style='font-size: 35px'>0</span> "+color+" quark spin per second.<br>"
 		html+="<b style='font-size: 24px'>Upgrades</b><br>"
 		html+="<table class='table' align='center' style='margin: auto'><tr>"
-		for (var u=1;u<5;u++) html+="<td><button class='gluonupgrade unavailablebtn' id='"+color+"upg"+u+"' onclick='buyBranchUpg(\""+shorthand+"\", "+u+")'>"+branchUpgrades[u-1]+"<br>Currently: <span id='"+color+"upg"+u+"current'>1</span>x"+(u==3?" more spin":"")+"<br>Cost: ? "+color+" quark spin</button></td>"
+		for (var u=1;u<5;u++) html+="<td><button class='gluonupgrade unavailablebtn' id='"+color+"upg"+u+"' onclick='buyBranchUpg(\""+shorthand+"\", "+u+")'>"+branchUpgrades[u-1]+"<br>Currently: <span id='"+color+"upg"+u+"current'>1</span>x<br>Cost: ? "+color+" quark spin</button></td>"
 		html+="</tr></table>"
 		html+="<b style='font-size: 24px'>Abilities</b><br>"
 		html+="<table class='table' align='center' style='margin: auto'><tr>"
@@ -584,16 +583,19 @@ function updateQuantumTabs() {
 			var color=colors[branchNum-1]
 			var shorthand=shorthands[branchNum-1]
 			var branch=player.quantum.tod[shorthand]
-			var prevBranchShorthand=shorthands[(branchNum+1)%3]
-			document.getElementById(color+"UnstableGain").textContent="Unstable quarks for "+shortenMoney(getUnstableGain(shorthand))+" unstable quarks."
+			document.getElementById(color+"UnstableGain").textContent="Unstablize quarks for "+shortenMoney(getUnstableGain(shorthand))+" unstable quarks."
+			document.getElementById(color+"Conversion").textContent=shorten(player.quantum.tod[shorthand].gainDiv.times(99)) + " " + color + " quarks => 1.0 unstable " + color + " quarks"
 			document.getElementById(color+"QuarkSpin").textContent=shortenMoney(branch.spin)
 			document.getElementById(color+"UnstableQuarks").textContent=shortenMoney(branch.quarks)
-			document.getElementById(color+"QuarksDecayRate").textContent=timeDisplayShort(10/getDecayRate(prevBranchShorthand),true,2)
-			document.getElementById(color+"QuarkSpinProduction").textContent=shortenMoney(getQuarkSpinProduction(shorthand,prevBranchShorthand))
-			for (var u=1;u<5;u++) document.getElementById(color+"upg"+u+"current").textContent=shortenDimensions(Decimal.pow(u==3?4:2,getBranchUpgradeLevel(shorthand,u)))
+			document.getElementById(color+"QuarksDecayRate").textContent=timeDisplayShort(10/getDecayRate(shorthand),true,2)
+			document.getElementById(color+"QuarkSpinProduction").textContent=shortenMoney(getQuarkSpinProduction(shorthand))
+			for (var u=1;u<5;u++) document.getElementById(color+"upg"+u+"current").textContent=shortenDimensions(Decimal.pow(2,getBranchUpgradeLevel(shorthand,u)))
 		} else {
 			for (var c=0;c<3;c++) document.getElementById(colors[c]+"QuarkSpinUpgs").textContent=shortenMoney(player.quantum.tod[shorthands[c]].spin)
-			for (var u=1;u<9;u++) document.getElementById("treeupg"+u).className="gluonupgrade "+(canBuyTreeUpg(u)?shorthands[getTreeUpgradeLevel(u)%3]:"unavailablebtn")
+			for (var u=1;u<9;u++) {
+				document.getElementById("treeupg"+u).className="gluonupgrade "+(canBuyTreeUpg(u)?shorthands[getTreeUpgradeLevel(u)%3]:"unavailablebtn")
+				document.getElementById("treeupg"+u+"current").textContent=getTreeUpgradeEffectDesc(u)
+			}
 		}
 	}
 }
@@ -789,11 +791,12 @@ function sacrificeGalaxy(id, auto=false) {
 	updateElectrons()
 }
 
-function getMPTPower() {
+function getMPTPower(noBoost) {
 	if (!inQC(0)) return 1
 	var a = player.quantum.electrons.amount
 	if (a.gt(187300)) a = a.minus(149840).times(37460).sqrt().add(149840)
 	if (GUBought("rg4")) a = a.times(0.7)
+	if (!noBoost) a = a.times(Math.sqrt(getTreeUpgradeEffect(3)))
 	return a.toNumber()+1
 }
 
@@ -1613,14 +1616,11 @@ function toggleAutoAssign() {
 //v1.9997
 function updateTODStuff() {
 	if (player.masterystudies ? !player.masterystudies.includes("d13") : true) {
-		document.getElementById("replicantstabbtn").style.display="none"
+		document.getElementById("todtabbtn").style.display="none"
 		return
-	} else document.getElementById("replicantstabbtn").style.display=""
+	} else document.getElementById("todtabbtn").style.display=""
 	var colors=["red","green","blue"]
-	for (var t=1;t<9;t++) {
-		document.getElementById("treeupg"+t+"cost").textContent=shortenMoney(getTreeUpgradeCost(t))+" "+colors[getTreeUpgradeLevel(t)%3]
-		document.getElementById("treeupg"+t+"current").textContent=t==1?getFullExpansion(getTreeUpgradeEffect(t)):shortenMoney(getTreeUpgradeEffect(t))
-	}
+	for (var t=1;t<9;t++) document.getElementById("treeupg"+t+"cost").textContent=shortenMoney(getTreeUpgradeCost(t))+" "+colors[getTreeUpgradeLevel(t)%3]
 }
 
 function showBranchTab(tabName) {
@@ -1641,22 +1641,25 @@ function showBranchTab(tabName) {
 }
 
 function getUnstableGain(branch) {
-	return player.quantum.usedQuarks[branch].div("3e531").times(Decimal.pow(2,getBranchUpgradeLevel(branch,2)))
+	let ret = Decimal.times(player.quantum.usedQuarks[branch].div(player.quantum.tod[branch].gainDiv).add(1).log10(), 0.5)
+	if (ret.gt(1)) ret = Decimal.pow(ret, Math.pow(2,getBranchUpgradeLevel(branch,2))*3)
+	return ret
 }
 
 function unstableQuarks(branch) {
 	if (player.quantum.usedQuarks[branch].eq(0)) return
-	player.quantum.tod[branch].quarks=player.quantum.tod[branch].quarks.add(getUnstableGain(branch))
+	player.quantum.tod[branch].quarks=player.quantum.tod[branch].quarks.max(getUnstableGain(branch))
+	player.quantum.tod[branch].gainDiv=player.quantum.usedQuarks[branch].max(player.quantum.tod[branch].gainDiv)
 	player.quantum.usedQuarks[branch]=new Decimal(0)
 	updateColorCharge()
 }
 
-function getDecayRate(prevBranch) {
-	return Math.pow(2,getBranchUpgradeLevel(prevBranch,3))
+function getDecayRate(branch) {
+	return Math.pow(2,getBranchUpgradeLevel(branch,1)+getTreeUpgradeEffect(4)-getBranchUpgradeLevel(branch,3)-2)
 }
 
-function getQuarkSpinProduction(branch,prevBranch) {
-	return Decimal.pow(2,getBranchUpgradeLevel(branch,1)+getBranchUpgradeLevel(prevBranch,3)*2)
+function getQuarkSpinProduction(branch) {
+	return Decimal.pow(2,getBranchUpgradeLevel(branch,1)*2+getTreeUpgradeEffect(4))
 }
 
 function getBranchUpgradeLevel(branch,upg) {
@@ -1667,6 +1670,7 @@ function getBranchUpgradeLevel(branch,upg) {
 
 function getTreeUpgradeCost(upg) {
 	if (upg==1) return Decimal.pow(4, getTreeUpgradeLevel(1)).times(50)
+	if (upg==2) return Decimal.pow(2, getTreeUpgradeLevel(2)).times(600)
 	return new Decimal(1/0)
 }
 
@@ -1684,7 +1688,7 @@ function buyTreeUpg(upg) {
 	if (!player.quantum.tod.upgrades[upg]) player.quantum.tod.upgrades[upg]=0
 	player.quantum.tod.upgrades[upg]++
 	document.getElementById("treeupg"+upg+"cost").textContent=shortenMoney(getTreeUpgradeCost(upg))+" "+colors[player.quantum.tod.upgrades[upg]%3]
-	document.getElementById("treeupg"+upg+"current").textContent=upg==1?getFullExpansion(getTreeUpgradeEffect(upg)):shortenMoney(getTreeUpgradeEffect(upg))
+	document.getElementById("treeupg"+upg+"current").textContent=getTreeUpgradeEffectDesc(upg)
 }
 
 function getTreeUpgradeLevel(upg) {
@@ -1694,6 +1698,17 @@ function getTreeUpgradeLevel(upg) {
 }
 
 function getTreeUpgradeEffect(upg) {
-	if (upg==1) return getTreeUpgradeLevel(1) * 40
+	if (upg==1) return getTreeUpgradeLevel(1) * 30
+	if (upg==2) return getTreeUpgradeLevel(2) * 0
+	if (upg==3) return 1 + getTreeUpgradeLevel(3) * 0
+	if (upg==4) return getTreeUpgradeLevel(4)
 	return 1
+}
+
+function getTreeUpgradeEffectDesc(upg) {
+	if (upg==1) return getFullExpansion(getTreeUpgradeEffect(upg))
+	if (upg==2) return (1.5 + player.dilation.rebuyables[4] / 4).toFixed(2) + " -> " + getDilExp().toFixed(2)
+	if (upg==3) return "^" + shorten(getMPTPower(true)) + " -> ^" + shorten(getMPTPower())
+	if (upg==4) return shortenDimensions(Decimal.pow(2,getTreeUpgradeEffect(4)))
+	return shortenMoney(getTreeUpgradeEffect(upg))
 }
