@@ -6862,7 +6862,7 @@ function gameLoop(diff) {
             var branch=player.quantum.tod[shorthand]
             var decayRate=getDecayRate(shorthand)
 
-            branch.gainDiv=branch.gainDiv.div(Decimal.pow(1.1,diff/10)).max("1e530")
+            branch.gainDiv=Decimal.div(branch.gainDiv, Decimal.pow(1.1,diff/10)).max("1e530")
 
             var power=(branch.quarks.gt(1)?branch.quarks.log(2)+1:branch.quarks.toNumber())/decayRate
             var tickTaken=Math.min(diff/10,power)
