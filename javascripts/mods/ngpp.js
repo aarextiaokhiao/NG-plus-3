@@ -458,7 +458,7 @@ function isQuantumReached() {
 
 let quarkGain = function () {
 	if (player.masterystudies) {
-		if (!quantumed) return new Decimal(1)
+		if (player.quantum.times<1) return new Decimal(1)
 		var log = player.meta.antimatter.log10() / 280 - 1.355
 		if (log > 1.2) log = log*log/1.2
 		return Decimal.pow(10, log).times(Decimal.pow(2, player.quantum.multPower.total)).floor();

@@ -387,7 +387,7 @@ function setupText() {
 		html+='<td align="right" width="10%"><button id="empFeed'+d+'" style="color:black; width:195px; height:30px" class="storebtn" align="right" onclick="feedReplicant('+d+')">Feed (0%)</button></td>'
 		row.innerHTML=html
 	}
-	var branchUpgrades=["Gain 2x quark spins, but quarks decay 2x faster.","The gain of unstable quarks is doubled and squared.","Quarks decay 2x slower.","The third ability factor is squared."]
+	var branchUpgrades=["Gain 2x quark spins, but quarks decay 2x faster.","The gain of unstable quarks is doubled and squared.","Quarks decay 4x slower.","The third ability factor is squared."]
 	var abilities=["Gain 2x quark spins.","You only gain quark spins.","Multiply your unstable quarks by ???x.","Reverse the decay."]
 	for (var c=0;c<3;c++) {
 		var color=(["red","green","blue"])[c]
@@ -504,6 +504,11 @@ function updateQuantumTabs() {
 			document.getElementById("gbupg7current").textContent="Currently: "+(100-100/(1+Math.log10(1+player.infinityPoints.max(1).log10())/100)).toFixed(1)+"%"
 			document.getElementById("brupg7current").textContent="Currently: "+(100-100/(1+Math.log10(1+player.eternityPoints.max(1).log10())/80)).toFixed(1)+"%"
 		}
+		if (player.masterystudies.includes("d13")) {
+			document.getElementById("rgupg8current").textContent="Currently: "+shorten(getGU8Effect("rg"))+"x"
+			document.getElementById("gbupg8current").textContent="Currently: "+shorten(getGU8Effect("gb"))+"x"
+			document.getElementById("brupg8current").textContent="Currently: "+shorten(getGU8Effect("br"))+"x"
+		}
 	}
 	if (document.getElementById("electrons").style.display=="block") {
 		for (i=1;i<7;i++) document.getElementById("sacrifice"+i).className=(Math.pow(10,i>4?0:i-1)>player.galaxies-player.quantum.electrons.sacGals||!inQC(0))?"unavailablebtn":"storebtn"
@@ -592,7 +597,7 @@ function updateQuantumTabs() {
 			for (var u=1;u<5;u++) document.getElementById(color+"upg"+u).className="gluonupgrade "+(branch.spin.lt(getBranchUpgCost(shorthand,u))?"unavailablebtn":shorthand)
 		} else {
 			for (var c=0;c<3;c++) document.getElementById(colors[c]+"QuarkSpinUpgs").textContent=shortenMoney(player.quantum.tod[shorthands[c]].spin)
-			for (var u=1;u<13;u++) {
+			for (var u=1;u<11;u++) {
 				document.getElementById("treeupg"+u).className="gluonupgrade "+(canBuyTreeUpg(u)?shorthands[getTreeUpgradeLevel(u)%3]:"unavailablebtn")
 				document.getElementById("treeupg"+u+"current").textContent=getTreeUpgradeEffectDesc(u)
 			}
@@ -668,7 +673,7 @@ function assignQuark(color) {
 }
 
 //v1.75
-GUCosts=[null, 1, 2, 4, 100, 7e15, 4e19, 3e28]
+GUCosts=[null, 1, 2, 4, 100, 7e15, 4e19, 3e28, "1e620"]
 
 function updateGluons() {
 	if (!player.masterystudies) return
@@ -687,12 +692,15 @@ function updateGluons() {
 	document.getElementById("brgain").textContent=shortenDimensions(player.quantum.usedQuarks.b.min(player.quantum.usedQuarks.r))
 	var names=["rg","gb","br"]
 	var sevenUpgrades=player.masterystudies.includes("d9")
+	var eightUpgrades=player.masterystudies.includes("d13")
 	for (r=3;r<5;r++) document.getElementById("gupgrow"+r).style.display=sevenUpgrades?"":"none"
 	for (c=0;c<3;c++) {
+		document.getElementById(names[c]+"upg7col").setAttribute("colspan",eightUpgrades?1:2)
+		document.getElementById(names[c]+"upg8col").style.display=eightUpgrades?"":"none"
 		var name=names[c]
-		for (u=1;u<=(sevenUpgrades?7:4);u++) {
+		for (u=1;u<=(eightUpgrades?8:sevenUpgrades?7:4);u++) {
 			var upg=name+"upg"+u
-			if (u>4) document.getElementById(upg+"cost").textContent=shortenMoney(GUCosts[u])
+			if (u>4) document.getElementById(upg+"cost").textContent=shortenMoney(new Decimal(GUCosts[u]))
 			if (player.quantum.upgrades.includes(name+u)) document.getElementById(upg).className="gluonupgradebought small "+name
 			else if (player.quantum.gluons[name].lt(GUCosts[u])) document.getElementById(upg).className="gluonupgrade small unavailablebtn"
 			else document.getElementById(upg).className="gluonupgrade small "+name
@@ -1625,11 +1633,11 @@ function updateTODStuff() {
 		var color=colors[c]
 		var shorthand=shorthands[c]
 		for (var b=1;b<5;b++) {
-			document.getElementById(color+"upg"+b+"current").textContent=shortenDimensions(Decimal.pow(2,getBranchUpgLevel(shorthand,b)))
+			document.getElementById(color+"upg"+b+"current").textContent=shortenDimensions(Decimal.pow(b==3?4:2,getBranchUpgLevel(shorthand,b)))
 			document.getElementById(color+"upg"+b+"cost").textContent=shortenMoney(getBranchUpgCost(shorthand,b))
 		}
 	}
-	for (var t=1;t<13;t++) document.getElementById("treeupg"+t+"cost").textContent=shortenMoney(getTreeUpgradeCost(t))+" "+colors[getTreeUpgradeLevel(t)%3]
+	for (var t=1;t<11;t++) document.getElementById("treeupg"+t+"cost").textContent=shortenMoney(getTreeUpgradeCost(t))+" "+colors[getTreeUpgradeLevel(t)%3]
 }
 
 function showBranchTab(tabName) {
@@ -1664,11 +1672,21 @@ function unstableQuarks(branch) {
 }
 
 function getDecayRate(branch) {
-	return Math.pow(2,getBranchUpgLevel(branch,1)+getTreeUpgradeEffect(4)-getBranchUpgLevel(branch,3)-2)
+	let ret = Math.pow(2,getBranchUpgLevel(branch,1)-getBranchUpgLevel(branch,3)*2-2)
+	if (branch=="r") {
+		if (GUBought("rg8")) ret /= getGU8Effect("rg")
+	}
+	if (branch=="g") {
+		if (GUBought("gb8")) ret /= getGU8Effect("gb")
+	}
+	if (branch=="b") {
+		if (GUBought("br8")) ret /= getGU8Effect("br")
+	}
+	return ret
 }
 
 function getQuarkSpinProduction(branch) {
-	return Decimal.pow(2,getBranchUpgLevel(branch,1)+getTreeUpgradeEffect(4))
+	return Decimal.pow(2,getBranchUpgLevel(branch,1))
 }
 
 function getTreeUpgradeCost(upg) {
@@ -1677,7 +1695,7 @@ function getTreeUpgradeCost(upg) {
 		var lvl=getTreeUpgradeLevel(2)
 		return Decimal.pow(4, lvl*(lvl+3)/2).times(600)
 	}
-	if (upg==3) return Decimal.pow(4, getTreeUpgradeLevel(3)).times(1200)
+	if (upg==3) return Decimal.pow(1e100, getTreeUpgradeLevel(3)).times(1e7)
 	return new Decimal(1/0)
 }
 
@@ -1707,7 +1725,7 @@ function getTreeUpgradeEffect(upg) {
 	if (upg==1) return getTreeUpgradeLevel(1) * 30
 	if (upg==2) return getTreeUpgradeLevel(2) * 0.25
 	if (upg==3) return 1 + getTreeUpgradeLevel(3) * 0
-	if (upg==4) return getTreeUpgradeLevel(4)
+	if (upg==4) return Decimal.pow(player.replicanti.amount.log10()*0+1, 0*getTreeUpgradeLevel(4))
 	return 1
 }
 
@@ -1720,8 +1738,9 @@ function getTreeUpgradeEffectDesc(upg) {
 }
 
 function getBranchUpgCost(branch, upg) {
-	if (upg==1) return Decimal.pow(2, getBranchUpgLevel(branch, 1)).times(300)
+	if (upg==1) return Decimal.pow(2, getBranchUpgLevel(branch, 1) + Math.max(getBranchUpgLevel(branch, 1) - 15, 0)).times(300)
 	if (upg==2) return Decimal.pow(4, getBranchUpgLevel(branch, 2)).times(600)
+	if (upg==3) return Decimal.pow(4, getBranchUpgLevel(branch, 3)).times(2e7)
 	return new Decimal(1/0)
 }
 
@@ -1738,4 +1757,8 @@ function getBranchUpgLevel(branch,upg) {
 	upg=player.quantum.tod[branch].upgrades[upg]
 	if (upg) return upg
 	else return 0
+}
+
+function getGU8Effect(type) {
+	return Math.pow(player.quantum.gluons[type].div("1e615").add(1).log10()*0.55+1, 1.5)
 }
