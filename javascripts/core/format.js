@@ -1,21 +1,18 @@
 var FormatList = ['', 'K', 'M', 'B', 'T', 'Qa', 'Qt', 'Sx', 'Sp', 'Oc', 'No', 'Dc', 'UDc', 'DDc', 'TDc', 'QaDc', 'QtDc', 'SxDc', 'SpDc', 'ODc', 'NDc', 'Vg', 'UVg', 'DVg', 'TVg', 'QaVg', 'QtVg', 'SxVg', 'SpVg', 'OVg', 'NVg', 'Tg', 'UTg', 'DTg', 'TTg', 'QaTg', 'QtTg', 'SxTg', 'SpTg', 'OTg', 'NTg', 'Qd', 'UQd', 'DQd', 'TQd', 'QaQd', 'QtQd', 'SxQd', 'SpQd', 'OQd', 'NQd', 'Qi', 'UQi', 'DQi', 'TQi', 'QaQi', 'QtQi', 'SxQi', 'SpQi', 'OQi', 'NQi', 'Se', 'USe', 'DSe', 'TSe', 'QaSe', 'QtSe', 'SxSe', 'SpSe', 'OSe', 'NSe', 'St', 'USt', 'DSt', 'TSt', 'QaSt', 'QtSt', 'SxSt', 'SpSt', 'OSt', 'NSt', 'Og', 'UOg', 'DOg', 'TOg', 'QaOg', 'QtOg', 'SxOg', 'SpOg', 'OOg', 'NOg', 'Nn', 'UNn', 'DNn', 'TNn', 'QaNn', 'QtNn', 'SxNn', 'SpNn', 'ONn', 'NNn', 'Ce',];
 
-function letter(power,str) {
-    const len = str.length;
-    function lN(n) {
-        let result = 1;
-        for (var j = 0; j < n; ++j) result = len*result+1;
-        return result;
-    }
-    if (power <= 5) return str[0];
-    power = Math.floor(power / 3);
-    let i=0;
-    while (power >= lN(++i));
-    if (i==1) return str[power-1];
-    power -= lN(i-1);
-    let ret = '';
-    while (i>0) ret += str[Math.floor(power/Math.pow(len,--i))%len]
-    return ret;
+function letter(power, str) {
+	const len = str.length;
+    let ret = ''
+	power = Math.floor(power / 3)
+	let skipped = Math.floor(Math.log10(power*(len-1)+1)/Math.log10(len))-7
+	if (skipped < 4) skipped = 0
+	else power = Math.floor((power-(Math.pow(len,skipped)-1)/(len-1)*len)/Math.pow(len,skipped))
+	while (power > 0) {
+		ret = str[(power - 1) % len] + ret
+		power = Math.ceil(power / len) - 1
+	}
+	if (skipped) ret += "[" + skipped + "]"
+	return ret
 }
 
 function getAbbreviation(e) {
@@ -82,13 +79,16 @@ function getAASAbbreviation(x) {
 	if (x == 2) return "B"
 	if (x < 0) return "?"
 	const units = ["", "U", "D", "T", "Qa", "Qi", "Sx", "Sp", "Oc", "N"]
-	const tens = ["", player.options.aas.useDe ? "De" : "D", "Vg", "Tg", "Qg", "Qq", "Sg", "Su", "Og", "Ng"]
-	const hundreds = ["", "Ce", "Dc", "Tc", "Qe", "Qu", "Se", "St", "Oe", "Ne"]
-	const special = ["", "Mi", "Mc", "Na", "Pi", "Fe", "At", "Ze", "Yo"]
+	const tens = ["", player.options.aas.useDe ? "De" : "D", "Vg", "Tg", "Qg", "Qq", "Sg", "St", "Og", "Ng"]
+	const hundreds = ["", "Ce", "Dc", "Tc", "Qe", "Qu", "Se", "Su", "Oe", "Ne"]
+	const special = ["", "Mi", "Mc", "Na", "Pi", "Fe", "At", "Ze", "Yo", "Xn"]
+	const specialUnits = ["", "Me", player.options.aas.useDe ? "Du" : "De", "Te", "Tr", "Pe", "He", "Hp", "Ot", "En"]
+	const specialTens = ["", "Vc", "Ic", "Ti", "Tn", "Pc", "Hc", "Ht", "On", "Ec", "Ht"]
 	const log = Math.floor(Math.log10(x))
 	let result = ""
 	if (log > 8) {
 		var step = Math.floor(log/3-3)
+		if (log > 29) step = Math.floor(log/3-2)
 		x = Math.floor(x/Math.pow(10,step*3+log%3))*Math.pow(10,log%3)
 	} else var step = 0
 	while (x > 0) {
@@ -99,8 +99,11 @@ function getAASAbbreviation(x) {
 				if (y % 100 == 2 && !player.options.aas.useDe) subResult = "Du" + hundreds[Math.floor(y/100)%10]
 				else subResult = units[y%10] + tens[Math.floor(y/10)%10] + hundreds[Math.floor(y/100)%10]
 			}
-			if (result != "" && player.options.aas.useHyphens) result = subResult + special[step] + "-" + result
-			else result = subResult + special[step] + result
+			var tier2 = special[step]
+			if (step > 9) tier2 = specialUnits[step%10] + specialTens[Math.floor(step/10)]
+			if (step > 10 && step < 20) tier2 = specialUnits[step%10]
+			if (result != "" && player.options.aas.useHyphens) result = subResult + tier2 + "-" + result
+			else result = subResult + tier2 + result
 		}
 		x = Math.floor(x/1e3)
 		step++
@@ -316,11 +319,20 @@ function formatValue(notation, value, places, placesUnder1000, noInf) {
             }
             return matissa+getAASAbbreviation(Math.floor(power/3)-1)
         }
-        matissa = (matissa * Decimal.pow(10, power % 3)).toFixed(places)
         if (matissa >= 1000) {
             matissa /= 1000;
             power++;
         }
+        places=Math.min(places,14-Math.floor(Math.log10(power)))
+        if (places >= 0) {
+            matissa = (matissa * Decimal.pow(10, power % 3)).toFixed(places)
+            if (matissa >= 1e3) {
+                power += 3
+                places = Math.min(places,14-Math.floor(Math.log10(power)))
+                matissa = (1).toFixed(places)
+            }
+        }
+        if (places<0) matissa = ""
 
         if (notation === "Standard" || notation === "Mixed scientific") {
             if (power <= 303) return matissa + " " + FormatList[(power - (power % 3)) / 3];

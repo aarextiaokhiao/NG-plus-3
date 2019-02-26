@@ -399,7 +399,7 @@ function setupText() {
 		html+="They are decaying by 50% per <span id='"+color+"QuarksDecayRate'>1 second</span>. You are getting <span class='"+color+"' id='"+color+"QuarkSpinProduction' style='font-size: 35px'>0</span> "+color+" quark spin per second.<br>"
 		html+="<b style='font-size: 24px'>Upgrades</b><br>"
 		html+="<table class='table' align='center' style='margin: auto'><tr>"
-		for (var u=1;u<5;u++) html+="<td><button class='gluonupgrade unavailablebtn' id='"+color+"upg"+u+"' onclick='buyBranchUpg(\""+shorthand+"\", "+u+")'>"+branchUpgrades[u-1]+"<br>Currently: <span id='"+color+"upg"+u+"current'>1</span>x<br>Cost: <span id='"+color+"upg"+u+"cost'>?</span> "+color+" quark spin</button></td>"
+		for (var u=1;u<5;u++) html+="<td><button class='gluonupgrade unavailablebtn' id='"+color+"upg"+u+"' onclick='buyBranchUpg(\""+shorthand+"\", "+u+")'"+(u==2?" style='font-size:10px'":"")+">"+branchUpgrades[u-1]+"<br>Currently: <span id='"+color+"upg"+u+"current'>1</span>x<br>Cost: <span id='"+color+"upg"+u+"cost'>?</span> "+color+" quark spin</button></td>"
 		html+="</tr></table>"
 		html+="<b style='font-size: 24px'>Abilities</b><br>"
 		html+="<table class='table' align='center' style='margin: auto'><tr>"
@@ -597,7 +597,7 @@ function updateQuantumTabs() {
 			for (var u=1;u<5;u++) document.getElementById(color+"upg"+u).className="gluonupgrade "+(branch.spin.lt(getBranchUpgCost(shorthand,u))?"unavailablebtn":shorthand)
 		} else {
 			for (var c=0;c<3;c++) document.getElementById(colors[c]+"QuarkSpinUpgs").textContent=shortenMoney(player.quantum.tod[shorthands[c]].spin)
-			for (var u=1;u<11;u++) {
+			for (var u=1;u<10;u++) {
 				document.getElementById("treeupg"+u).className="gluonupgrade "+(canBuyTreeUpg(u)?shorthands[getTreeUpgradeLevel(u)%3]:"unavailablebtn")
 				document.getElementById("treeupg"+u+"current").textContent=getTreeUpgradeEffectDesc(u)
 			}
@@ -665,6 +665,7 @@ function updateColorCharge() {
 }
 
 function assignQuark(color) {
+	if (color!="r"&&player.quantum.times<2) if (!confirm("It is recommended to assign your first quarks to red. Are you sure you want to do that?")) return
 	player.quantum.usedQuarks[color]=player.quantum.usedQuarks[color].add(player.quantum.quarks)
 	player.quantum.quarks=new Decimal(0)
 	document.getElementById("quarks").innerHTML="You have <b class='QKAmount'>0</b> quarks."
@@ -804,7 +805,7 @@ function getMPTPower(noBoost) {
 	var a = player.quantum.electrons.amount
 	if (a.gt(187300)) a = a.minus(149840).times(37460).sqrt().add(149840)
 	if (GUBought("rg4")) a = a.times(0.7)
-	if (!noBoost) a = a.times(Math.sqrt(getTreeUpgradeEffect(3)))
+	if (!noBoost) a = a.times(Math.sqrt(getTreeUpgradeEffect(4)))
 	return a.toNumber()+1
 }
 
@@ -1637,7 +1638,7 @@ function updateTODStuff() {
 			document.getElementById(color+"upg"+b+"cost").textContent=shortenMoney(getBranchUpgCost(shorthand,b))
 		}
 	}
-	for (var t=1;t<11;t++) document.getElementById("treeupg"+t+"cost").textContent=shortenMoney(getTreeUpgradeCost(t))+" "+colors[getTreeUpgradeLevel(t)%3]
+	for (var t=1;t<10;t++) document.getElementById("treeupg"+t+"cost").textContent=shortenMoney(getTreeUpgradeCost(t))+" "+colors[getTreeUpgradeLevel(t)%3]
 }
 
 function showBranchTab(tabName) {
@@ -1682,11 +1683,12 @@ function getDecayRate(branch) {
 	if (branch=="b") {
 		if (GUBought("br8")) ret /= getGU8Effect("br")
 	}
+	ret *= getTreeUpgradeEffect(3)
 	return ret
 }
 
 function getQuarkSpinProduction(branch) {
-	return Decimal.pow(2,getBranchUpgLevel(branch,1))
+	return Decimal.pow(2,getBranchUpgLevel(branch,1)).times(getTreeUpgradeEffect(3))
 }
 
 function getTreeUpgradeCost(upg) {
@@ -1695,7 +1697,7 @@ function getTreeUpgradeCost(upg) {
 		var lvl=getTreeUpgradeLevel(2)
 		return Decimal.pow(4, lvl*(lvl+3)/2).times(600)
 	}
-	if (upg==3) return Decimal.pow(1e100, getTreeUpgradeLevel(3)).times(1e7)
+	if (upg==3) return Decimal.pow(32, getTreeUpgradeLevel(3)).times(3e9)
 	return new Decimal(1/0)
 }
 
@@ -1724,23 +1726,29 @@ function getTreeUpgradeLevel(upg) {
 function getTreeUpgradeEffect(upg) {
 	if (upg==1) return getTreeUpgradeLevel(1) * 30
 	if (upg==2) return getTreeUpgradeLevel(2) * 0.25
-	if (upg==3) return 1 + getTreeUpgradeLevel(3) * 0
-	if (upg==4) return Decimal.pow(player.replicanti.amount.log10()*0+1, 0*getTreeUpgradeLevel(4))
+	if (upg==3) {
+		let level=getTreeUpgradeLevel(3)
+		if (level<1) return 1
+		let power=0
+		for (var upg=1;upg<10;upg++) if (player.quantum.tod.upgrades[upg]) power+=player.quantum.tod.upgrades[upg]
+		return Decimal.pow(2,Math.sqrt(level*power))
+	}
+	if (upg==4) return 1 + getTreeUpgradeLevel(4) * 0
+	if (upg==5) return Decimal.pow(player.replicanti.amount.log10()*0+1, 0*getTreeUpgradeLevel(5))
 	return 1
 }
 
 function getTreeUpgradeEffectDesc(upg) {
 	if (upg==1) return getFullExpansion(getTreeUpgradeEffect(upg))
 	if (upg==2) return (1.5 + player.dilation.rebuyables[4] / 4).toFixed(2) + " -> " + getDilExp().toFixed(2)
-	if (upg==3) return "^" + shorten(getMPTPower(true)) + " -> ^" + shorten(getMPTPower())
-	if (upg==4) return shortenDimensions(Decimal.pow(2,getTreeUpgradeEffect(4)))
+	if (upg==4) return "^" + shorten(getMPTPower(true)) + " -> ^" + shorten(getMPTPower())
 	return shortenMoney(getTreeUpgradeEffect(upg))
 }
 
 function getBranchUpgCost(branch, upg) {
-	if (upg==1) return Decimal.pow(2, getBranchUpgLevel(branch, 1) + Math.max(getBranchUpgLevel(branch, 1) - 15, 0)).times(300)
-	if (upg==2) return Decimal.pow(4, getBranchUpgLevel(branch, 2)).times(600)
-	if (upg==3) return Decimal.pow(4, getBranchUpgLevel(branch, 3)).times(2e7)
+	if (upg==1) return Decimal.pow(2, getBranchUpgLevel(branch, 1) + Math.max(getBranchUpgLevel(branch, 1) - 15, 0) * 2).times(300)
+	if (upg==2) return Decimal.pow(2, getBranchUpgLevel(branch, 2) * 2  + Math.max(getBranchUpgLevel(branch, 2) - 11, 0)).times(600)
+	if (upg==3) return Decimal.pow(16, getBranchUpgLevel(branch, 3)).times(1e7)
 	return new Decimal(1/0)
 }
 
