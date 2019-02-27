@@ -1138,6 +1138,7 @@ function getDilTimeGainPerSecond() {
 		gain = gain.times(getQCReward(1))
 		if (player.masterystudies.includes("t322")) gain = gain.times(getMTSMult(322))
 		if (player.masterystudies.includes("t341")) gain = gain.times(getMTSMult(341))
+		gain = gain.times(getTreeUpgradeEffect(5))
 	}
 	if (player.dilation.upgrades.includes('ngpp6')) gain = gain.times(getDil17Bonus())
 	if (GUBought("br2")) gain = gain.times(Decimal.pow(2.2, Math.pow(calcTotalSacrificeBoost().max(1).log10()/1e6, 0.25)))
@@ -2946,7 +2947,8 @@ function changeSaveDesc(saveId, placement) {
 			else {
 				message+="Quarks: "+shortenDimensions(Decimal.add(temp.quantum.quarks,temp.quantum.usedQuarks.r).add(temp.quantum.usedQuarks.g).add(temp.quantum.usedQuarks.b))
 				if (temp.quantum.gluons.rg) message+=", Gluons: "+shortenDimensions(Decimal.add(temp.quantum.gluons.rg,temp.quantum.gluons.gb).add(temp.quantum.gluons.br))
-				if (temp.masterystudies.includes('d12')) message+=", Quark charge: "+shortenDimensions(new Decimal(temp.quantum.nanofield.charge))+", Quark energy: "+shortenDimensions(new Decimal(temp.quantum.nanofield.energy))+", Quark anti-energy: "+shortenDimensions(new Decimal(temp.quantum.nanofield.antienergy))+", Quark power: "+getFullExpansion(temp.quantum.nanofield.power)+", Rewards: "+getFullExpansion(temp.quantum.nanofield.rewards)
+				if (temp.masterystudies.includes('d13')) message+=", Red quark spin: "+shortenDimensions(new Decimal(temp.quantum.tod.r.spin))+", Green quark spin: "+shortenDimensions(new Decimal(temp.quantum.tod.g.spin))+", Blue quark spin: "+shortenDimensions(new Decimal(temp.quantum.tod.b.spin))
+				else if (temp.masterystudies.includes('d12')) message+=", Quark charge: "+shortenDimensions(new Decimal(temp.quantum.nanofield.charge))+", Quark energy: "+shortenDimensions(new Decimal(temp.quantum.nanofield.energy))+", Quark anti-energy: "+shortenDimensions(new Decimal(temp.quantum.nanofield.antienergy))+", Quark power: "+getFullExpansion(temp.quantum.nanofield.power)+", Rewards: "+getFullExpansion(temp.quantum.nanofield.rewards)
 				else if (temp.masterystudies.includes('d10')) message+=", Replicants: "+shortenDimensions(getTotalReplicants(temp))+", Worker replicants: "+shortenDimensions(getTotalWorkers(temp))
 				else if (temp.masterystudies.includes('d9')) message+=", Paired challenges: "+temp.quantum.pairedChallenges.completed
 				else if (temp.masterystudies.includes('d8')) {
@@ -6823,7 +6825,7 @@ function gameLoop(diff) {
         colorBoosts.b=Decimal.pow(10,Math.sqrt(player.quantum.colorPowers.b.add(1).log10()))
         if (colorBoosts.r>1.3) colorBoosts.r=Math.sqrt(colorBoosts.r*1.3)
         if (colorBoosts.g>4.5) colorBoosts.g=Math.sqrt(colorBoosts.g*4.5)
-        if (colorBoosts.b.gt(1300)) colorBoosts.b=Decimal.pow(10,Math.pow(colorBoosts.b.log10()*Math.log10(1300),0.5))
+        if (colorBoosts.b.gt(1300)) colorBoosts.b=Decimal.pow(10,Math.sqrt(colorBoosts.b.log10()*Math.log10(1300)))
 
         if (player.quantum.nanofield.producingCharge) {
             var rate = getQuarkChargeProduction()
@@ -6862,14 +6864,31 @@ function gameLoop(diff) {
             var branch=player.quantum.tod[shorthand]
             var decayRate=getDecayRate(shorthand)
 
-            branch.gainDiv=Decimal.div(branch.gainDiv, Decimal.pow(1.1,diff/10)).max("1e530")
+            branch.gainDiv=Decimal.div(branch.gainDiv, Decimal.pow(1.1, diff/10)).max("1e530")
 
             var power=(branch.quarks.gt(1)?branch.quarks.log(2)+1:branch.quarks.toNumber())/decayRate
             var tickTaken=Math.min(diff/10,power)
+            var addedWOMult=tickTaken
+            var decayedWOMult=tickTaken
+            for (var a=1;a<4;a++) {
+                var ability=branch.abilities[a]
+                if (ability) {
+                    if (ability.used) {
+                        if (a==1) addedWOMult-=Math.min(tickTaken,ability.time)
+                        if (a==2) decayedWOMult=Math.max(tickTaken-ability.time,0)
+                        ability.time-=tickTaken
+                        if (ability.time<=0) {
+                            ability.used=false
+                            ability.time+=abilities[a].cooldown
+                        }
+                    }
+                    if (!ability.used) ability.time=Math.max(ability.time-tickTaken,0)
+                }
+            }
 
-            power=(power-tickTaken)*decayRate
+            power=(power-decayedWOMult)*decayRate
             branch.quarks=power>1?Decimal.pow(2,power-1):new Decimal(power)
-            branch.spin=branch.spin.add(getQuarkSpinProduction(shorthand).times(tickTaken))
+            branch.spin=branch.spin.add(getQuarkSpinProduction(shorthand).times(addedWOMult))
         }
 
         if (!player.quantum.nanofield.producingCharge) {
