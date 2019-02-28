@@ -388,7 +388,7 @@ function setupText() {
 		row.innerHTML=html
 	}
 	var branchUpgrades=["Gain 2x quark spins, but quarks decay 2x faster.","The gain of unstable quarks is doubled and squared.","Quarks decay 4x slower.","The third ability factor is squared."]
-	var abilities=["Gain 2x quark spins.","You only gain quark spins.","Multiply your unstable quarks by ???x.","Reverse the decay."]
+	var abilities=["Gain 2x quark spins.","You only gain quark spins."]
 	for (var c=0;c<3;c++) {
 		var color=(["red","green","blue"])[c]
 		var shorthand=(["r","g","b"])[c]
@@ -403,11 +403,7 @@ function setupText() {
 		html+="</tr></table>"
 		html+="<b style='font-size: 24px'>Abilities</b><br>"
 		html+="<table class='table' align='center' style='margin: auto'><tr>"
-		for (var a=1;a<5;a++) html+="<td><button class='gluonupgrade unavailablebtn' id='"+color+"ability"+a+"' onclick='buyAbility(\""+shorthand+"\", "+a+")'>"+abilities[a-1]+"<br><span id='"+color+"ability"+a+"cost'>Cost: ? "+color+" quark spin</span></button></td>"
-		html+="</tr></table>"
-		html+="<b style='font-size: 24px'>Replicabots</b><br>"
-		html+="<table class='table' align='center' style='margin: auto'><tr>"
-		for (var r=1;r<5;r++) html+="<td><button class='gluonupgrade unavailablebtn' id='"+color+"replicabot"+r+"' onclick='buyReplicabot(\""+shorthand+"\", "+r+")'>Buy a Replicabot for "+color+" ability "+r+"<br>Cost: ? "+color+" quark spin</button></td>"
+		for (var a=1;a<4;a++) html+="<td><button class='gluonupgrade unavailablebtn' id='"+color+"ability"+a+"' onclick='buyAbility(\""+shorthand+"\", "+a+")'>"+(a>2?"<span id='"+color+"ability3current'></span>":abilities[a-1])+"<br><span id='"+color+"ability"+a+"cost'>Cost: ? "+color+" quark spin</span></button></td>"
 		html+="</tr></table>"
 		html+="</td>"
 		document.getElementById(color+"Branch").innerHTML=html
@@ -597,7 +593,7 @@ function updateQuantumTabs() {
 			if (branch.abilities[1]) if (branch.abilities[1].used) ret=ret.times(2)
 			document.getElementById(color+"QuarkSpinProduction").textContent=shortenMoney(ret)
 			for (var u=1;u<5;u++) document.getElementById(color+"upg"+u).className="gluonupgrade "+(branch.spin.lt(getBranchUpgCost(shorthand,u))?"unavailablebtn":shorthand)
-			for (var a=1;a<5;a++) {
+			for (var a=1;a<4;a++) {
 				if (branch.abilities[a]) {
 					document.getElementById(color+"ability"+a).className="gluonupgrade "+(branch.abilities[a].used||branch.abilities[a].time>0?"unavailablebtn":shorthand)
 					if (branch.abilities[a].used) document.getElementById(color+"ability"+a+"cost").textContent="Time left: "+timeDisplayShort(branch.abilities[a].time*10,false,2)
@@ -720,7 +716,7 @@ function updateGluons() {
 			else document.getElementById(upg).className="gluonupgrade small "+name
 		}
 		var upg=name+"qk"
-		var cost=Decimal.pow(100,player.quantum.multPower[name]).times(500)
+		var cost=Decimal.pow(10,player.quantum.multPower[name]*2+Math.max(player.quantum.multPower[name]-464,0)).times(500)
 		document.getElementById(upg+"cost").textContent=shortenDimensions(cost)
 		if (player.quantum.gluons[name].lt(cost)) document.getElementById(upg+"btn").className="gluonupgrade unavailablebtn"
 		else document.getElementById(upg+"btn").className="gluonupgrade "+name
@@ -1072,14 +1068,26 @@ function maxQuarkMult() {
 	var names=["rg","gb","br"]
 	for (c=0;c<3;c++) {
 		var name=names[c]
-		var cost=Decimal.pow(100,player.quantum.multPower[name]).times(500)
-		if (player.quantum.gluons[name].lt(cost)) continue
-		var toBuy=Math.floor(player.quantum.gluons[name].div(cost).times(99).add(1).log(100))
-		var toSpend=Decimal.pow(100,toBuy).sub(1).div(99).times(cost)
-		if (toSpend.gt(player.quantum.gluons[name])) player.quantum.gluons[name]=new Decimal(0)
-		else player.quantum.gluons[name]=player.quantum.gluons[name].sub(toSpend).round()
-		player.quantum.multPower[name]+=toBuy
-		player.quantum.multPower.total+=toBuy
+		var buying=true
+		while (buying) {
+			var cost=Decimal.pow(10,player.quantum.multPower[name]*2+Math.max(player.quantum.multPower[name]-464,0)).times(500)
+			if (player.quantum.gluons[name].lt(cost)) buying=false
+			else if (player.quantum.multPower[name]<465) {
+				var toBuy=Math.min(Math.floor(player.quantum.gluons[name].div(cost).times(99).add(1).log(100)),465-player.quantum.multPower[name])
+				var toSpend=Decimal.pow(100,toBuy).sub(1).div(99).times(cost)
+				if (toSpend.gt(player.quantum.gluons[name])) player.quantum.gluons[name]=new Decimal(0)
+				else player.quantum.gluons[name]=player.quantum.gluons[name].sub(toSpend).round()
+				player.quantum.multPower[name]+=toBuy
+				player.quantum.multPower.total+=toBuy
+			} else {
+				var toBuy=Math.floor(player.quantum.gluons[name].div(cost).times(999).add(1).log(1e3))
+				var toSpend=Decimal.pow(1e3,toBuy).sub(1).div(999).times(cost)
+				if (toSpend.gt(player.quantum.gluons[name])) player.quantum.gluons[name]=new Decimal(0)
+				else player.quantum.gluons[name]=player.quantum.gluons[name].sub(toSpend).round()
+				player.quantum.multPower[name]+=toBuy
+				player.quantum.multPower.total+=toBuy
+			}
+		}
 	}
 	updateGluons()
 }
@@ -1588,13 +1596,17 @@ function updateAutoQuantumMode() {
 	} else if (player.quantum.autobuyer.mode == "peak") {
 		document.getElementById("toggleautoquantummode").textContent = "Auto quantum mode: peak"
 		document.getElementById("autoquantumtext").textContent = "Seconds to wait after latest peak gain:"
+	} else if (player.quantum.autobuyer.mode == "dilation") {
+		document.getElementById("toggleautoquantummode").textContent = "Auto quantum mode: # of dilated"
+		document.getElementById("autoquantumtext").textContent = "Wait until # of dilated stat:"
 	}
 }
 
 function toggleAutoQuantumMode() {
-	if (player.quantum.autobuyer.mode == "amount") player.quantum.autobuyer.mode = "relative"
+	if (player.quantum.reachedInfQK && player.quantum.autobuyer.mode == "amount") player.quantum.autobuyer.mode = "relative"
 	else if (player.quantum.autobuyer.mode == "relative") player.quantum.autobuyer.mode = "time"
 	else if (player.quantum.autobuyer.mode == "time") player.quantum.autobuyer.mode = "peak"
+	else if (player.achievements.includes("ng3p25") && player.quantum.autobuyer.mode != "dilation") player.quantum.autobuyer.mode = "dilation"
 	else player.quantum.autobuyer.mode = "amount"
 	updateAutoQuantumMode()
 }
@@ -1650,6 +1662,7 @@ function updateTODStuff() {
 			document.getElementById(color+"upg"+b+"current").textContent=shortenDimensions(Decimal.pow(b==3?4:2,getBranchUpgLevel(shorthand,b)))
 			document.getElementById(color+"upg"+b+"cost").textContent=shortenMoney(getBranchUpgCost(shorthand,b))
 		}
+		document.getElementById(color+"ability3current").textContent="Multiply the unstable quarks by "+shorten(getA3Factor(shorthand))+"x."
 	}
 	for (var t=1;t<10;t++) document.getElementById("treeupg"+t+"cost").textContent=shortenMoney(getTreeUpgradeCost(t))+" "+colors[getTreeUpgradeLevel(t)%3]
 }
@@ -1751,7 +1764,7 @@ function getTreeUpgradeEffect(upg) {
 		for (var upg=1;upg<10;upg++) if (player.quantum.tod.upgrades[upg]) power+=player.quantum.tod.upgrades[upg]
 		return Decimal.pow(2, Math.sqrt(Math.sqrt(Math.max(level * 3 - 2, 0)) * (power - 10)))
 	}
-	if (upg==4) return 1 + Math.log10(getTreeUpgradeLevel(4) * 0.5 + 1) * 0.17
+	if (upg==4) return 1 + Math.log10(getTreeUpgradeLevel(4) * 0.5 + 1) * 0.1
 	if (upg==5) return Decimal.pow(player.replicanti.amount.log10()+1, 0.25*getTreeUpgradeLevel(5))
 	return 1
 }
@@ -1765,8 +1778,9 @@ function getTreeUpgradeEffectDesc(upg) {
 
 function getBranchUpgCost(branch, upg) {
 	if (upg==1) return Decimal.pow(2, getBranchUpgLevel(branch, 1) + Math.max(getBranchUpgLevel(branch, 1) - 15, 0) * 2).times(300)
-	if (upg==2) return Decimal.pow(2, getBranchUpgLevel(branch, 2) * 2  + Math.max(getBranchUpgLevel(branch, 2) - 11, 0)).times(600)
+	if (upg==2) return Decimal.pow(2, getBranchUpgLevel(branch, 2) * 2 + Math.max(getBranchUpgLevel(branch, 2) - 11, 0)).times(600)
 	if (upg==3) return Decimal.pow(8, getBranchUpgLevel(branch, 3)).times(1e7)
+	if (upg==4) return Decimal.pow(8, getBranchUpgLevel(branch, 4)).times(2e9)
 	return new Decimal(1/0)
 }
 
@@ -1789,17 +1803,21 @@ function getGU8Effect(type) {
 	return Math.pow(player.quantum.gluons[type].div("1e615").add(1).log10()*0.55+1, 1.5)
 }
 
-var abilities={1:{cost:1e5,time:12,cooldown:48},2:{cost:1e6,time:30,cooldown:90},3:{cost:1/0,time:12,cooldown:48},4:{cost:1/0,time:12,cooldown:48}}
-var replicabotCosts=[0,1/0,1/0,1/0,1/0]
+var abilities={1:{cost:1e5,time:12,cooldown:48},2:{cost:1e6,time:30,cooldown:90},3:{cost:1e9,time:0,cooldown:240}}
 function buyAbility(branch,ability) {
-	branch=player.quantum.tod[branch]
-	if (branch.abilities[ability]) {
-		if (branch.abilities[ability].used||branch.abilities[ability].time>0) return
-		branch.abilities[ability].used=true
-		branch.abilities[ability].time=abilities[ability].time
+	var bData=player.quantum.tod[branch]
+	if (bData.abilities[ability]) {
+		if (bData.abilities[ability].used||bData.abilities[ability].time>0) return
+		bData.abilities[ability].used=true
+		bData.abilities[ability].time=abilities[ability].time
+		if (ability==3) bData.quarks=bData.quarks.times(getA3Factor(branch))
 	} else {
-		if (branch.spin.lt(abilities[ability].cost)) return
-		branch.spin=branch.spin.sub(abilities[ability].cost)
-		branch.abilities[ability]={used:false,time:0}
+		if (bData.spin.lt(abilities[ability].cost)) return
+		bData.spin=bData.spin.sub(abilities[ability].cost)
+		bData.abilities[ability]={used:false,time:0}
 	}
+}
+
+function getA3Factor(branch) {
+	return Decimal.pow("1e10000", Math.pow(2, getBranchUpgLevel(branch, 4)))
 }

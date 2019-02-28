@@ -394,6 +394,7 @@ function updateNewPlayer(reseted) {
         player.aarexModifications.newGame3PlusVersion = 1.9997
         player.respecMastery=false
         player.dbPower = 1
+        player.dilation.times = 0
         player.peakSpent = 0
         player.masterystudies = []
         player.options.animations.quarks = true
@@ -489,24 +490,21 @@ function updateNewPlayer(reseted) {
                 spin: 0,
                 gainDiv: 0,
                 upgrades: {},
-                abilities: {},
-                replicabots: {}
+                abilities: {}
             },
             g: {
                 quarks: 0,
                 spin: 0,
                 gainDiv: 0,
                 upgrades: {},
-                abilities: {},
-                replicabots: {}
+                abilities: {}
             },
             b: {
                 quarks: 0,
                 spin: 0,
                 gainDiv: 0,
                 upgrades: {},
-                abilities: {},
-                replicabots: {}
+                abilities: {}
             },
             upgrades: {}
         }
@@ -1252,6 +1250,9 @@ function updateDimensions() {
             document.getElementById("thiseternity").textContent = "Your fastest Eternity is in "+timeDisplay(player.bestEternity)+"."
         }
         if (player.eternitiesBank>0) document.getElementById("eternityStatistics").style.display = ""
+
+        if (player.dilation.times) document.getElementById("dilated").textContent = "You have succesfully dilated "+getFullExpansion(player.dilation.times)+" times."
+        else document.getElementById("dilated").textContent = ""
 
         if (player.exdilation == undefined ? false : player.exdilation.times > 1) document.getElementById("exdilated").textContent = "You have reversed dilation "+getFullExpansion(player.exdilation.times)+" times."
         else document.getElementById("exdilated").textContent = ""
@@ -4817,11 +4818,13 @@ function eternity(force, auto) {
         player.infinitiedBank += gainBankedInf()
         if (player.infinitiedBank > 5000000000) giveAchievement("No ethical consumption");
         if (player.dilation.active && (!force || player.infinityPoints.gte(Number.MAX_VALUE))) {
-            if (player.dilation.tachyonParticles.lt(getDilGain())) {
-                player.dilation.tachyonParticles = getDilGain()
-                if (player.masterystudies) player.quantum.notrelative = false
+            if (player.dilation.totalTachyonParticles.lt(player.dilation.tachyonParticles)) {
+                player.dilation.totalTachyonParticles=player.dilation.tachyonParticles
+                if (player.masterystudies) {
+                    player.dilation.times++
+                    player.quantum.notrelative = false
+                }
             }
-            player.dilation.totalTachyonParticles = player.dilation.tachyonParticles
             if (player.achievements.includes("ng3p18") || player.achievements.includes("ng3p37")) {
                 player.dilation.bestTP = player.dilation.bestTP.max(player.dilation.tachyonParticles)
                 document.getElementById('bestTP').textContent="Your best ever Tachyon particles was "+shorten(player.dilation.bestTP)+"."
@@ -6130,6 +6133,10 @@ function buyDilationUpgrade(id, max) {
             document.getElementById("respecMastery").style.display = "block"
             document.getElementById("respecMastery2").style.display = "block"
             if (!quantumed) $.notify("Congratulations for unlocking mastery studies! You can either click 'mastery studies' button\nor 'continue to mastery studies' button in time studies.")
+            if (!quantumed) {
+                document.getElementById("welcome").style.display = "flex"
+                document.getElementById("welcomeMessage").innerHTML = "Congratulations for reaching the end of NG++! As of a reward, you have unlocked mastery studies. You can either click 'mastery studies' button or 'continue to mastery studies' button in time studies."
+            }
         }
     } else { // Is rebuyable
         let realCost = getRebuyableDilUpgCost(id > 3 ? 4 : id)
@@ -7753,6 +7760,8 @@ function autoBuyerTick() {
             if (player.quantum.time / 10 >= new Decimal(player.quantum.autobuyer.limit).toNumber()) quantum(true, false, 0)
         } else if (player.quantum.autobuyer.mode == "peak") {
             if (player.quantum.autobuyer.peakTime >= new Decimal(player.quantum.autobuyer.limit).toNumber()) quantum(true, false, 0)
+        } else if (player.quantum.autobuyer.mode == "dilation") {
+            if (player.dilation.times >= Math.round(new Decimal(player.quantum.autobuyer.limit).toNumber())) quantum(true, false, 0)
         }
     }
 

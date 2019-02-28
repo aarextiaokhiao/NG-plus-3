@@ -651,6 +651,7 @@ if (player.version < 5) {
               player.aarexModifications.newGame3PlusVersion = 1.9997
               player.respecMastery=false
               player.dbPower = 1
+              player.dilation.times = 0
               player.peakSpent = 0
               player.masterystudies = []
               player.options.animations.quarks = true
@@ -741,24 +742,21 @@ if (player.version < 5) {
                       spin: 0,
                       gainDiv: 0,
                       upgrades: {},
-                      abilities: {},
-                      replicabots: {}
+                      abilities: {}
                   },
                   g: {
                       quarks: 0,
                       spin: 0,
                       gainDiv: 0,
                       upgrades: {},
-                      abilities: {},
-                      replicabots: {}
+                      abilities: {}
                   },
                   b: {
                       quarks: 0,
                       spin: 0,
                       gainDiv: 0,
                       upgrades: {},
-                      abilities: {},
-                      replicabots: {}
+                      abilities: {}
                   },
                   upgrades: {}
               }
@@ -1027,30 +1025,28 @@ if (player.version < 5) {
   }
   var setTTAfterQuantum=0
   if (player.aarexModifications.newGame3PlusVersion < 1.9997) {
+      player.dilation.times = 0
       player.quantum.tod = {
           r: {
               quarks: 0,
               spin: 0,
               gainDiv: 0,
               upgrades: {},
-              abilities: {},
-              replicabots: {}
+              abilities: {}
           },
           g: {
               quarks: 0,
               spin: 0,
               gainDiv: 0,
               upgrades: {},
-              abilities: {},
-              replicabots: {}
+              abilities: {}
           },
           b: {
               quarks: 0,
               spin: 0,
               gainDiv: 0,
               upgrades: {},
-              abilities: {},
-              replicabots: {}
+              abilities: {}
           },
           upgrades: {}
       }
@@ -1088,11 +1084,7 @@ if (player.version < 5) {
           setTTAfterQuantum=2e94
       }
       //Testing-exclusive
-      if (player.quantum.tod.r.replicabots === undefined) {
-          player.quantum.tod.r.replicabots={}
-          player.quantum.tod.g.replicabots={}
-          player.quantum.tod.b.replicabots={}
-      }
+      if (player.dilation.times === undefined) player.dilation.times = 0
       if (player.quantum.tod.r.gainDiv === undefined) {
           player.quantum.tod.r.gainDiv = 0
           player.quantum.tod.g.gainDiv = 0
@@ -1580,7 +1572,7 @@ if (player.version < 5) {
       for (i=1;i<9;i++) document.getElementById("td"+i+'auto').textContent="Auto: O"+(player.autoEterOptions["td"+i]?"N":"FF")
   }
   document.getElementById('sacrificeAuto').style.display=speedrunMilestonesReached>24?"":"none"
-  document.getElementById('toggleautoquantummode').style.display=(player.masterystudies?player.quantum.reachedInfQK:false)?"":"none"
+  document.getElementById('toggleautoquantummode').style.display=(player.masterystudies?player.quantum.reachedInfQK||player.achievements.includes("ng3p25"):false)?"":"none"
   document.getElementById('assignAll').style.display=(player.masterystudies?player.quantum.reachedInfQK:false)?"":"none"
   if (player.masterystudies) {
       updateMasteryStudyCosts()

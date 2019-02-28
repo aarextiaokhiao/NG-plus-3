@@ -975,6 +975,7 @@ function quantumReset(force, auto, challid, implode=false) {
 	if (player.masterystudies) {
 		giveAchievement("Sub-atomic")
 		ipMultPower=GUBought("gb3")?2.3:player.masterystudies.includes("t241")?2.2:2
+		player.dilation.times=0
 		var diffrg=player.quantum.usedQuarks.r.min(player.quantum.usedQuarks.g)
 		var diffgb=player.quantum.usedQuarks.g.min(player.quantum.usedQuarks.b)
 		var diffbr=player.quantum.usedQuarks.b.min(player.quantum.usedQuarks.r)
