@@ -490,21 +490,24 @@ function updateNewPlayer(reseted) {
                 spin: 0,
                 gainDiv: 0,
                 upgrades: {},
-                abilities: {}
+                abilities: {},
+                abilityPower: 0
             },
             g: {
                 quarks: 0,
                 spin: 0,
                 gainDiv: 0,
                 upgrades: {},
-                abilities: {}
+                abilities: {},
+                abilityPower: 0
             },
             b: {
                 quarks: 0,
                 spin: 0,
                 gainDiv: 0,
                 upgrades: {},
-                abilities: {}
+                abilities: {},
+                abilityPower: 0
             },
             upgrades: {}
         }
@@ -6875,27 +6878,15 @@ function gameLoop(diff) {
 
             var power=(branch.quarks.gt(1)?branch.quarks.log(2)+1:branch.quarks.toNumber())/decayRate
             var tickTaken=Math.min(diff/10,power)
-            var addedWOMult=tickTaken
-            var decayedWOMult=tickTaken
-            for (var a=1;a<4;a++) {
-                var ability=branch.abilities[a]
-                if (ability) {
-                    if (ability.used) {
-                        if (a==1) addedWOMult-=Math.min(tickTaken,ability.time)
-                        if (a==2) decayedWOMult=Math.max(tickTaken-ability.time,0)
-                        ability.time-=tickTaken
-                        if (ability.time<=0) {
-                            ability.used=false
-                            ability.time+=abilities[a].cooldown
-                        }
-                    }
-                    if (!ability.used) ability.time=Math.max(ability.time-tickTaken,0)
-                }
-            }
 
-            power=(power-decayedWOMult)*decayRate
+            power=(power-tickTaken)*decayRate
             branch.quarks=power>1?Decimal.pow(2,power-1):new Decimal(power)
-            branch.spin=branch.spin.add(getQuarkSpinProduction(shorthand).times(addedWOMult))
+
+            var sProd=getQuarkSpinProduction(shorthand)
+            var aProd=Math.pow(sProd.div(1e8).add(1).log10()*3, 0.5)-getAbilityPowerLoss(shorthand)
+            branch.spin=branch.spin.add(sProd.times(tickTaken))
+            if (aProd>0) branch.abilityPower+=aProd*tickTaken
+            else branch.abilityPower=Math.max(branch.abilityPower+aProd*tickTaken,0)
         }
 
         if (!player.quantum.nanofield.producingCharge) {

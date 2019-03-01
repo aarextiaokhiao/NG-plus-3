@@ -742,21 +742,24 @@ if (player.version < 5) {
                       spin: 0,
                       gainDiv: 0,
                       upgrades: {},
-                      abilities: {}
+                      abilities: {},
+                      abilityPower: 0
                   },
                   g: {
                       quarks: 0,
                       spin: 0,
                       gainDiv: 0,
                       upgrades: {},
-                      abilities: {}
+                      abilities: {},
+                      abilityPower: 0
                   },
                   b: {
                       quarks: 0,
                       spin: 0,
                       gainDiv: 0,
                       upgrades: {},
-                      abilities: {}
+                      abilities: {},
+                      abilityPower: 0
                   },
                   upgrades: {}
               }
@@ -1032,21 +1035,24 @@ if (player.version < 5) {
               spin: 0,
               gainDiv: 0,
               upgrades: {},
-              abilities: {}
+              abilities: {},
+              abilityPower: 0
           },
           g: {
               quarks: 0,
               spin: 0,
               gainDiv: 0,
               upgrades: {},
-              abilities: {}
+              abilities: {},
+              abilityPower: 0
           },
           b: {
               quarks: 0,
               spin: 0,
               gainDiv: 0,
               upgrades: {},
-              abilities: {}
+              abilities: {},
+              abilityPower: 0
           },
           upgrades: {}
       }
@@ -1085,6 +1091,23 @@ if (player.version < 5) {
       }
       //Testing-exclusive
       if (player.dilation.times === undefined) player.dilation.times = 0
+      if (player.quantum.tod.r.abilityPower === undefined) {
+          player.quantum.tod.r.abilities = {}
+          player.quantum.tod.r.abilityPower = 0
+          player.quantum.tod.r.abilities = {}
+          player.quantum.tod.g.abilityPower = 0
+          player.quantum.tod.r.abilities = {}
+          player.quantum.tod.b.abilityPower = 0
+          delete player.quantum.tod.r.upgrades[4]
+          delete player.quantum.tod.g.upgrades[4]
+          delete player.quantum.tod.b.upgrades[4]
+
+          //Adjust the tree upgrades so they can't reach e3.2Qa without the fifth upgrade.
+          if (player.quantum.tod.upgrades[1]) player.quantum.tod.upgrades[1]=Math.min(player.quantum.tod.upgrades[1],18)
+          if (player.quantum.tod.upgrades[2]) player.quantum.tod.upgrades[2]=Math.min(player.quantum.tod.upgrades[2],5)
+          if (player.quantum.tod.upgrades[3]) player.quantum.tod.upgrades[3]=Math.min(player.quantum.tod.upgrades[3],2)
+          if (player.quantum.tod.upgrades[4]) player.quantum.tod.upgrades[4]=Math.min(player.quantum.tod.upgrades[4],2)
+      }
       if (player.quantum.tod.r.gainDiv === undefined) {
           player.quantum.tod.r.gainDiv = 0
           player.quantum.tod.g.gainDiv = 0
