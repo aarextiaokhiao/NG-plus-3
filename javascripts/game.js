@@ -6834,6 +6834,7 @@ function gameLoop(diff) {
         colorBoosts.g=Math.sqrt(player.quantum.colorPowers.g.add(1).log10()*2+1)
         colorBoosts.b=Decimal.pow(10,Math.sqrt(player.quantum.colorPowers.b.add(1).log10()))
         if (colorBoosts.r>1.3) colorBoosts.r=Math.sqrt(colorBoosts.r*1.3)
+        if (colorBoosts.r>2.3) colorBoosts.r=Math.sqrt(colorBoosts.r*2.3)
         if (colorBoosts.g>4.5) colorBoosts.g=Math.sqrt(colorBoosts.g*4.5)
         if (colorBoosts.b.gt(1300)) colorBoosts.b=Decimal.pow(10,Math.sqrt(colorBoosts.b.log10()*Math.log10(1300)))
 
@@ -6877,16 +6878,27 @@ function gameLoop(diff) {
             branch.gainDiv=Decimal.div(branch.gainDiv, Decimal.pow(1.1, diff/10)).max("1e530")
 
             var power=(branch.quarks.gt(1)?branch.quarks.log(2)+1:branch.quarks.toNumber())/decayRate
-            var tickTaken=Math.min(diff/10,power)
+            var decayed=Math.min(diff/10,power)
+            var added=Math.min(diff/10,power-decayed)
+			
+            var aLoss=getAbilityPowerLoss(shorthand)
+            if (aLoss>0) {
+                var tickLength=Math.min(diff/10,branch.abilityPower/aLoss)
+                branch.abilityPower=Math.max(branch.abilityPower-tickLength*aLoss,0)
+                if (branch.abilities[2]) {
+                    if (branch.abilities[2].used) {
+                        decayed=Math.min(diff/10-tickLength,power)
+                        added=Math.min(diff/10,power-decayed)
+                    }
+                }
+                if (branch.abilities[1].used) added=Math.min(diff/10+tickLength,power-decayed)
+            } else if (branch.quarks.gt(0)&&branch.abilities[1]) branch.abilityPower=Math.min(branch.abilityPower+getAbilityPowerProduction(shorthand)*decayed,1e4*(getBranchUpgLevel(shorthand,b)+1))
 
-            power=(power-tickTaken)*decayRate
+            power=(power-decayed)*decayRate
             branch.quarks=power>1?Decimal.pow(2,power-1):new Decimal(power)
 
             var sProd=getQuarkSpinProduction(shorthand)
-            var aProd=Math.pow(sProd.div(1e8).add(1).log10()*3, 0.5)-getAbilityPowerLoss(shorthand)
-            branch.spin=branch.spin.add(sProd.times(tickTaken))
-            if (aProd>0) branch.abilityPower+=aProd*tickTaken
-            else branch.abilityPower=Math.max(branch.abilityPower+aProd*tickTaken,0)
+            branch.spin=branch.spin.add(sProd.times(added))
         }
 
         if (!player.quantum.nanofield.producingCharge) {
