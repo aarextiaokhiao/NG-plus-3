@@ -2315,7 +2315,7 @@
                                 <div id="Time is not relative" class="achievement achievementlocked" style="background-image: url(images/135.png)"></div>
                             </td>
                             <td>
-                                <div id="ERROR 404: DIMENSIONS NOT FOUND" class="achievement achievementlocked" style="background-image: url(images/136.png)" ach-tooltip="Get X antimatter without having all types of non-First Dimensions and at least 2 normal galaxies."></div>
+                                <div id="ERROR 404: DIMENSIONS NOT FOUND" class="achievement achievementlocked" style="background-image: url(images/136.png)"></div>
                             </td>
                             <td>
                                 <div id="Impossible expectations" class="achievement achievementlocked" style="background-image: url(images/137.png)"></div>
@@ -2324,16 +2324,16 @@
                                 <div id="Studies are wasted" class="achievement achievementlocked" style="background-image: url(images/138.png)"></div>
                             </td>
                             <td>
-                                <div class="achievement achievementlocked" style="background-image: url(images/achhidden.png)"></div>
+                                <div id="Do protons decay?" class="achievement achievementlocked" style="background-image: url(images/139.png)" ach-tooltip="Unlock Tree of Decay."></div>
                             </td>
                             <td>
-                                <div class="achievement achievementlocked" style="background-image: url(images/achhidden.png)"></div>
+                                <div id="Hardly marked" class="achievement achievementlocked" style="background-image: url(images/140.png)" ach-tooltip="Complete PC3+8."></div>
                             </td>
                             <td>
-                                <div class="achievement achievementlocked" style="background-image: url(images/achhidden.png)"></div>
+                                <div id="Stop blocking me!" class="achievement achievementlocked" style="background-image: url(images/141.png)"></div>
                             </td>
                             <td>
-                                <div class="achievement achievementlocked" style="background-image: url(images/achhidden.png)"></div>
+                                <div id="Are you currently dying?" class="achievement achievementlocked" style="background-image: url(images/142.png)"></div>
                             </td>
                         </tr>
                 </table>
@@ -4232,9 +4232,9 @@
 				You have <span id="electronsAmount" style="font-size:35px">0</span> electrons.<br>
 				Raised to the power of <span id="electronsTranslation" style="font-size:35px">1.00</span>, multiplier per ten dimensions is currently <span id="electronsEffect" style="font-size:35px">2.00</span>x.<br>
 				You sacrificed <span id='sacrificedGals'>0</span> galaxies.<br>
-				<button class='storebtn' id='sacrifice1' onclick='sacrificeGalaxy(1)' style='width:250px'>Sacrifice 1 normal galaxy</button><br>
+				<button class='storebtn' id='sacrifice1' onclick='sacrificeGalaxy(1)' style='width:250px'>Sacrifice 1 normal galaxy</button>
 				<button class='storebtn' id='sacrifice2' onclick='sacrificeGalaxy(2)' style='width:250px'>Sacrifice 10 normal galaxies</button><br>
-				<button class='storebtn' id='sacrifice3' onclick='sacrificeGalaxy(3)' style='width:250px'>Sacrifice 100 normal galaxies</button><br>
+				<button class='storebtn' id='sacrifice3' onclick='sacrificeGalaxy(3)' style='width:250px'>Sacrifice 100 normal galaxies</button>
 				<button class='storebtn' id='sacrifice4' onclick='sacrificeGalaxy(4)' style='width:250px'>Sacrifice 1,000 normal galaxies</button><br>
 				<button class='storebtn' id='sacrifice5' onclick='sacrificeGalaxy(5)' style='width:250px'>Sacrifice 50%</button>
 				<button class='storebtn' id='sacrifice6' onclick='sacrificeGalaxy(6)' style='width:250px'>Sacrifice all</button><br>
@@ -4254,7 +4254,7 @@
 				<table class='qtable'><tr><td>
 					You have <span id="replicantAmount" style="font-size:35px">0</span> normal replicants.<br>
 					They are gathering <span id="normalReplGatherRate" style="font-size:25px">0</span> preons per second.<br>
-					<button class="storebtn" id="replicantReset" style="width: 220px; height: 60px; font-size: 11px" onclick='replicantReset()'></button>
+					<button class="storebtn" id="replicantReset" style="width: 220px; height: 60px; font-size: 11px" onclick='replicantReset()'></button><br><button class="storebtn" id="autoReset" style="width: 220px" onclick='toggleAutoReset()'></button>
 				</td><td>
 					You have <span id="workerReplAmount" style="font-size:35px">0</span> total worker replicants.<br>
 					They are gathering <span id="workerReplGatherRate" style="font-size:25px">0</span> preons per second and producing <span id="eggonRate" style="font-size:25px">0</span> eggons per <span id="eggonRateTimeframe">minute</span>.<br>
@@ -4355,7 +4355,7 @@
 						<td><button class='gluonupgrade unavailablebtn' id='treeupg4' onclick='buyTreeUpg(4)'>Per-10 boost from electrons is increased.<br>Currently: <span id='treeupg4current'>?</span><br>Cost: <span id="treeupg4cost"></span> quark spin</button></td>
 					</tr><tr>
 						<td><button class='gluonupgrade unavailablebtn' id='treeupg5' onclick='buyTreeUpg(5)'>All branches are faster based on your best-ever meta-antimatter.<br>Currently: <span id='treeupg5current'>?</span>x<br>Cost: <span id="treeupg5cost"></span> quark spin</button></td>
-						<td><button class='gluonupgrade unavailablebtn' id='treeupg6' onclick='buyTreeUpg(6)'>Hatch speed is faster and all Emperor Dimensions are faster too.<br>Currently: <span id='treeupg6current'>?</span>x<br>Cost: <span id="treeupg6cost"></span> quark spin</button></td>
+						<td><button class='gluonupgrade unavailablebtn' id='treeupg6' onclick='buyTreeUpg(6)'>Emperor Dimensions are faster.<br>Currently: <span id='treeupg6current'>?</span>x<br>Cost: <span id="treeupg6cost"></span> quark spin</button></td>
 						<td><button class='gluonupgrade unavailablebtn' id='treeupg7' onclick='buyTreeUpg(7)'>Replicanti boosts dilated time production.<br>Currently: <span id='treeupg7current'>?</span>x<br>Cost: <span id="treeupg7cost"></span> quark spin</button></td>
 						<td><button class='gluonupgrade unavailablebtn' id='treeupg8' onclick='buyTreeUpg(8)'>Your best meta-antimatter for this quantum makes the meta-antimatter effect stronger.<br>Currently: <span id='treeupg8current'>?</span>x<br>Cost: <span id="treeupg8cost"></span> quark spin</button></td>
 					</tr></table>

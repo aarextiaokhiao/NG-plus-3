@@ -1598,6 +1598,7 @@ if (player.version < 5) {
   document.getElementById('sacrificeAuto').style.display=speedrunMilestonesReached>24?"":"none"
   document.getElementById('toggleautoquantummode').style.display=(player.masterystudies?player.quantum.reachedInfQK||player.achievements.includes("ng3p25"):false)?"":"none"
   document.getElementById('assignAll').style.display=(player.masterystudies?player.quantum.reachedInfQK:false)?"":"none"
+  document.getElementById('autoReset').style.display=player.achievements.includes("ng3p47")?"":"none"
   if (player.masterystudies) {
       updateMasteryStudyCosts()
       updateMasteryStudyButtons()
@@ -1617,6 +1618,7 @@ if (player.version < 5) {
       document.getElementById("ratio_g").value = player.quantum.assignAllRatios.g
       document.getElementById("ratio_b").value = player.quantum.assignAllRatios.b
       document.getElementById('autoAssign').textContent="Auto: O"+(player.quantum.autoOptions.assignQK?"N":"FF")
+      document.getElementById('autoReset').textContent="Auto: O"+(player.quantum.autoOptions.replicantiReset?"N":"FF")
       updateAutoQuantumMode()
   }
   transformSaveToDecimal();

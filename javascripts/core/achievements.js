@@ -145,6 +145,10 @@ const allAchievements = {
   ng3p42 : "ERROR 404: DIMENSIONS NOT FOUND",
   ng3p43 : "Impossible expectations",
   ng3p44 : "Studies are wasted",
+  ng3p45 : "Do protons decay?",
+  ng3p46 : "Hardly marked",
+  ng3p47 : "Stop blocking me!",
+  ng3p48 : "Are you currently dying?",
   s11 : "The first one's always free",
   s12 : "Just in case",
   s13 : "It pays to have respect",
@@ -270,6 +274,7 @@ function giveAchievement(name) {
         document.getElementById('bestTP').textContent="Your best ever Tachyon particles was "+shorten(player.dilation.bestTP)+"."
     }
     if (name == "Twice in the row") document.getElementById('toggleautoquantummode').style.display=""
+	if (name == "Stop blocking me!") document.getElementById('autoReset').style.display=""
     updateAchievements();
 }
 
@@ -293,7 +298,6 @@ function updateAchievements() {
 			var n = 0
 			var achNum = i * 10
 			for (var l=0; l<8; l++) {
-				if (achNum > 183) break
 				achNum += 1;
 				var realAchNum=achNum
 				if (player.boughtDims) {

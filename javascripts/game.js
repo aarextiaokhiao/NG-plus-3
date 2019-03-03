@@ -1113,10 +1113,10 @@ function getDilPower() {
 	return ret
 }
 
-function getDilExp(exclude) {
+function getDilExp(on) {
 	let ret = 1.5
 	if (player.dilation.rebuyables[4]) ret += player.dilation.rebuyables[4] / 4
-	if (player.masterystudies) ret += getTreeUpgradeEffect(2)
+	if (player.masterystudies != undefined) if (on == undefined ? player.masterystudies.includes("d13") : on) ret += getTreeUpgradeEffect(2)
 	return ret
 }
 
@@ -1139,7 +1139,7 @@ function getDilTimeGainPerSecond() {
 		gain = gain.times(getQCReward(1))
 		if (player.masterystudies.includes("t322")) gain = gain.times(getMTSMult(322))
 		if (player.masterystudies.includes("t341")) gain = gain.times(getMTSMult(341))
-		gain = gain.times(getTreeUpgradeEffect(5))
+		gain = gain.times(getTreeUpgradeEffect(7))
 	}
 	if (player.dilation.upgrades.includes('ngpp6')) gain = gain.times(getDil17Bonus())
 	if (GUBought("br2")) gain = gain.times(Decimal.pow(2.2, Math.pow(calcTotalSacrificeBoost().max(1).log10()/1e6, 0.25)))
@@ -3338,6 +3338,8 @@ function setAchieveTooltip() {
     let error404 = document.getElementById("ERROR 404: DIMENSIONS NOT FOUND")
     let ie = document.getElementById("Impossible expectations")
     let wasted = document.getElementById("Studies are wasted")
+    let stop = document.getElementById("Stop blocking me!")
+    let dying = document.getElementById("Are you currently dying?")
 
     apocAchieve.setAttribute('ach-tooltip', "Get over " + formatValue(player.options.notation, 1e80, 0, 0) + " antimatter.");
     claustrophobic.setAttribute('ach-tooltip', "Go Infinite with just 1 Antimatter Galaxy. Reward: Reduces starting tick interval by 2%"+(player.galacticSacrifice?(player.tickspeedBoosts==undefined?"":", keep dimension boosts on tickspeed boost,")+" and keep galaxy upgrades on infinity.":"."));
@@ -3419,6 +3421,8 @@ function setAchieveTooltip() {
     error404.setAttribute('ach-tooltip', "Get "+shorten(Decimal.pow(10,16e11))+" antimatter without having all types of non-First Dimensions and at least 2 normal galaxies.")
     ie.setAttribute('ach-tooltip', "Get "+shorten(Decimal.pow(10,8e6))+" antimatter in a PC with QC6 & QC8 combination.")
     wasted.setAttribute('ach-tooltip', "Get "+shorten(11e6)+" TT without having generated TTs and respeccing time studies.")
+    stop.setAttribute('ach-tooltip', "Get the replicanti reset requirement to "+shorten(Decimal.pow(10,14e6))+". Reward: Getting a normal replicant manually doesn't reset your replicanti and can be autoed.")
+    dying.setAttribute('ach-tooltip', "Reach "+shorten(Decimal.pow(10,1/0))+" IP while dilated, in PC6+8, and without having time studies and First Dimensions during your current Eternity.")
 }
 
 
@@ -6638,6 +6642,7 @@ setInterval(function() {
         let ableToGetRid3 = ableToGetRid2 && player.quantum.electrons.amount.eq(0)
         let ableToGetRid4 = ableToGetRid2 && inQC(2)
         let ableToGetRid5 = ableToGetRid4 && player.dontWant
+        let ableToGetRid6 = ableToGetRid2 && inQC(6) && inQC(8) && player.dontWant
 
         if (player.meta.antimatter.gte(Number.MAX_VALUE)) giveAchievement("I don't have enough fuel!")
         if (player.galaxies>899&&!player.dilation.studies.includes(1)) giveAchievement("No more tax fraud!")
@@ -6661,6 +6666,7 @@ setInterval(function() {
         }
         if (player.money.e>=8e6&&inQC(6)&&inQC(8)) giveAchievement("Impossible expectations")
         if (player.timestudy.theorem>11e6&&player.quantum.wasted) giveAchievement("Studies are wasted")
+        if (player.infinityPoints.gte(Decimal.pow(10, 1/0))&&ableToGetRid6) giveAchievement("Are you currently dying?")
     }
     if (speedrunMilestonesReached>notifyId) {
         $.notify("You have unlocked "+timeDisplayShort(speedrunMilestones[notifyId]*36e3)+" speedrun milestone! "+(["You now start with 20,000 eternities when going quantum","You unlocked time theorem autobuyer","You now start with all Eternity Challenges completed and\neternity upgrades bought","You now start with dilation unlocked","You unlocked a new option for eternity autobuyer","You now start with all dilation studies and\nnon-rebuyable dilation upgrades before Meta Dimensions unlocked except passive TT gen upgrade","You unlocked first meta dimension autobuyer","You unlocked second meta dimension autobuyer","You unlocked third meta dimension autobuyer","You unlocked fourth meta dimension autobuyer","You unlocked fifth meta dimension autobuyer and you now keep time studies and passive TT gen upgrade","You unlocked sixth meta dimension autobuyer","You unlocked seventh meta dimension autobuyer","You unlocked eighth meta dimension autobuyer and\nall non-rebuyable dilation upgrades","You unlocked meta-dimension boost autobuyer","You now keep all time studies in mastery studies","You now can buy all Meta Dimensions if it is affordable in your current meta boost","You now start with "+shortenCosts(1e13)+" eternities","You now start with "+shortenCosts(1e25)+" meta-antimatter on reset","You can now turn on automatic replicated galaxies anytime","You made rebuyable dilation upgrade and Meta Dimension autobuyers 3x faster","You now start with "+shortenCosts(1e100)+" dilated time on quantum and dilated time does not reset until quantum","You unlocked quantum autobuyer","You now keep replicanti on eternity","You unlocked manual mode for eternity autobuyer and sacrifice galaxy autobuyer","Your rebuyable dilation upgrade autobuyer now can buy max all upgrades","You now can buy max meta-dimension boosts and start with 4 meta-dimension boosts","For now on, you can gain banked infinities based on your post-crunch infinitied stat"])[notifyId]+".","success")
@@ -7132,6 +7138,7 @@ function gameLoop(diff) {
 
     }
     if (player.replicanti.amount.gt(0)) replicantiTicks += player.options.updateRate
+    if (player.masterystudies) if (player.masterystudies.includes("d10") && player.quantum.autoOptions.replicantiReset && player.replicanti.amount.gt(player.quantum.replicants.requirement)) replicantReset()
     updateExtraReplGalaxies()
 
     if (current == Decimal.ln(Number.MAX_VALUE) && player.thisInfinityTime < 600*30) giveAchievement("Is this safe?");

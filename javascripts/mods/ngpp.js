@@ -77,11 +77,14 @@ function clearMetaDimensions () {
 }
 
 function getMetaShiftRequirement () {
+	var inQC4 = inQC4
+	var mult = inQC4 ? 5.5 : 15
+	if (player.masterystudies != undefined) if (player.masterystudies.includes("t312")) mult -= 1
 	var data = {
 		tier: Math.min(8, player.meta.resets + 4),
-		amount: Math.floor(Math.max(((inQC(4) ? 5.5 : 15) - (!player.masterystudies ? 0 : player.masterystudies.includes("t312") ? 1 : 0)) * (player.meta.resets - 4),0) + Math.max((inQC(4) ? 14.5 : 5) * (player.meta.resets - (inQC(4) ? 55 : 15)), 0)) + 20
+		amount: Math.floor(Math.max(mult * (player.meta.resets - 4),0) + Math.max((inQC4 ? 14.5 : 5) * (player.meta.resets - (inQC4 ? 55 : 15)), 0)) + 20
 	}
-	if (player.masterystudies) data.amount -= getTreeUpgradeEffect(1)
+	if (player.masterystudies != undefined) if (player.masterystudies.includes("d13")) data.amount -= getTreeUpgradeEffect(1)
 	return data
 }
 
