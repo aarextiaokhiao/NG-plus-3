@@ -1723,20 +1723,15 @@ function getQuarkSpinProduction(branch) {
 }
 
 function getTreeUpgradeCost(upg) {
-	if (upg==1) {
-		var lvl=getTreeUpgradeLevel(1)
-		return Decimal.pow(2, lvl*2+Math.max(lvl-35,0)*(lvl-34)/2).times(50)
-	}
-	if (upg==2) {
-		var lvl=getTreeUpgradeLevel(2)
-		return Decimal.pow(4, lvl*(lvl+3)/2).times(600)
-	}
-	if (upg==3) return Decimal.pow(32, getTreeUpgradeLevel(3)).times(3e9)
-	if (upg==4) return Decimal.pow(2, getTreeUpgradeLevel(4)).times(1e12)
-	if (upg==5) return Decimal.pow(2, getTreeUpgradeLevel(5)).times(4e12)
-	if (upg==6) return Decimal.pow(2, getTreeUpgradeLevel(6)).times(6e22)
-	if (upg==7) return Decimal.pow(4, getTreeUpgradeLevel(7)).times(1/0)
-	return new Decimal(1/0)
+	var lvl=getTreeUpgradeLevel(upg)
+	if (upg==1) return Decimal.pow(2, lvl*2+Math.max(lvl-35,0)*(lvl-34)/2).times(50)
+	if (upg==2) return Decimal.pow(4, lvl*(lvl+3)/2).times(600)
+	if (upg==3) return Decimal.pow(32, lvl).times(3e9)
+	if (upg==4) return Decimal.pow(2, lvl+Math.max(lvl-37,0)*(lvl-36)/2).times(1e12)
+	if (upg==5) return Decimal.pow(2, lvl+Math.max(lvl-35,0)*(lvl-34)/2).times(4e12)
+	if (upg==6) return Decimal.pow(4, lvl*(lvl+3)/2).times(6e22)
+	if (upg==7) return Decimal.pow(16, lvl).times(8e22)
+	return Decimal.pow(2, lvl).times(/*12e23*/1/0)
 }
 
 function canBuyTreeUpg(upg) {
@@ -1775,13 +1770,14 @@ function getTreeUpgradeEffect(upg) {
 	if (upg==5) return Math.pow(Math.log10(player.meta.bestOverQuantums.add(1).log10()+1)/5+1,Math.sqrt(getTreeUpgradeLevel(5)))
 	if (upg==6) return Decimal.pow(2, getTreeUpgradeLevel(6))
 	if (upg==7) return Decimal.pow(player.replicanti.amount.log10()+1, 0.25*getTreeUpgradeLevel(7))
-	return 1
+	return 0
 }
 
 function getTreeUpgradeEffectDesc(upg) {
 	if (upg==1) return getFullExpansion(getTreeUpgradeEffect(upg))
 	if (upg==2) return getDilExp(false).toFixed(2) + " -> " + getDilExp(true).toFixed(2)
 	if (upg==4) return "^" + shorten(getMPTPower(false)) + " -> ^" + shorten(getMPTPower(true))
+	if (upg==8) return "+" + getTreeUpgradeEffect(8).toFixed(2)
 	return shortenMoney(getTreeUpgradeEffect(upg))
 }
 
@@ -1817,7 +1813,7 @@ function getGU8Effect(type) {
 	return Math.pow(player.quantum.gluons[type].div("1e615").add(1).log10()*0.55+1, 1.5)
 }
 
-var abilities={1:{cost:2e12,consume:4},2:{cost:3e22,consume:4},3:{cost:1/0,consume:0}}
+var abilities={1:{cost:2e12,consume:4},2:{cost:3e22,consume:4},3:{cost:12e23,consume:0.5}}
 function buyAbility(branch,ability) {
 	var colors={r:"red",g:"green",b:"blue"}
 	var bData=player.quantum.tod[branch]
