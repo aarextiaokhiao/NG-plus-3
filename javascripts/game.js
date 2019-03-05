@@ -599,16 +599,6 @@ function updateNewPlayer(reseted) {
 }
 updateNewPlayer()
 
-var firstButton = document.getElementById("first");
-var secondButton = document.getElementById("second");
-var thirdButton = document.getElementById("third");
-var fourthButton = document.getElementById("fourth");
-var fifthButton = document.getElementById("fifth");
-var sixthButton = document.getElementById("sixth");
-var seventhButton = document.getElementById("seventh");
-var eightButton = document.getElementById("eight");
-var tickSpeedButton = document.getElementById("tickSpeed");
-
 if (!String.prototype.includes) {
     String.prototype.includes = function(search, start) {
       'use strict';
@@ -1189,7 +1179,8 @@ function updateDimensions() {
             tickmult = new Decimal(tickmult).toNumber()
             var places = 0
             if (tickmult < 0.2) places = Math.floor(Math.log10(Math.round(1/tickmult)))
-            ticklabel = 'Reduce the tick interval by ' + ((1 - tickmult) * 100).toFixed(places) + '%';
+            if (isNaN(tickmult)) ticklabel = 'Break the tick interval by Infinite';
+            else ticklabel = 'Reduce the tick interval by ' + ((1 - tickmult) * 100).toFixed(places) + '%';
         }
         if (player.galacticSacrifice || player.currentChallenge == "postc3" || isIC3Trapped()) document.getElementById("tickLabel").innerHTML = (isIC3Trapped() || player.currentChallenge == "postc3" ? "M" : ticklabel + '<br>and m') + 'ultiply all dimensions by ' + getPostC3RewardMult().toPrecision(4) + '.'
         else document.getElementById("tickLabel").textContent = ticklabel + '.'
@@ -3421,8 +3412,8 @@ function setAchieveTooltip() {
     error404.setAttribute('ach-tooltip', "Get "+shorten(Decimal.pow(10,16e11))+" antimatter without having all types of non-First Dimensions and at least 2 normal galaxies.")
     ie.setAttribute('ach-tooltip', "Get "+shorten(Decimal.pow(10,8e6))+" antimatter in a PC with QC6 & QC8 combination.")
     wasted.setAttribute('ach-tooltip', "Get "+shorten(11e6)+" TT without having generated TTs and respeccing time studies.")
-    stop.setAttribute('ach-tooltip', "Get the replicanti reset requirement to "+shorten(Decimal.pow(10,14e6))+". Reward: Getting a normal replicant manually doesn't reset your replicanti and can be autoed.")
-    dying.setAttribute('ach-tooltip', "Reach "+shorten(Decimal.pow(10,1/0))+" IP while dilated, in PC6+8, and without having time studies and First Dimensions during your current Eternity.")
+    stop.setAttribute('ach-tooltip', "Get the replicanti reset requirement to "+shorten(Decimal.pow(10,145e5))+". Reward: Getting a normal replicant manually doesn't reset your replicanti and can be autoed.")
+    dying.setAttribute('ach-tooltip', "Reach "+shorten(Decimal.pow(10, 275e3))+" IP while dilated, in PC6+8, and without having time studies.")
 }
 
 
@@ -3468,6 +3459,7 @@ function onNotationChange(id) {
 	updateReplicants()
 	updateTODStuff()
 	document.getElementById("epmult").innerHTML = "You gain 5 times more EP<p>Currently: "+shortenDimensions(player.epmult)+"x<p>Cost: "+shortenDimensions(player.epmultCost)+" EP"
+	document.getElementById("achmultlabel").textContent = "Current achievement multiplier on each Dimension: " + shortenMoney(player.achPow) + "x"
 	if (player.achievements.includes("ng3p18") || player.achievements.includes("ng3p37")) document.getElementById('bestTP').textContent="Your best ever Tachyon particles was "+shorten(player.dilation.bestTP)+"."
 }
 
@@ -6147,7 +6139,7 @@ function buyDilationUpgrade(id, max) {
         }
     } else { // Is rebuyable
         let realCost = getRebuyableDilUpgCost(id > 3 ? 4 : id)
-        if (player.dilation.dilatedTime.lt(realCost)) return false
+        if (!player.dilation.dilatedTime.gte(realCost)) return false
 
         player.dilation.dilatedTime = player.dilation.dilatedTime.minus(realCost)
         player.dilation.rebuyables[id > 3 ? 4 : id] += 1
@@ -6642,7 +6634,7 @@ setInterval(function() {
         let ableToGetRid3 = ableToGetRid2 && player.quantum.electrons.amount.eq(0)
         let ableToGetRid4 = ableToGetRid2 && inQC(2)
         let ableToGetRid5 = ableToGetRid4 && player.dontWant
-        let ableToGetRid6 = ableToGetRid2 && inQC(6) && inQC(8) && player.dontWant
+        let ableToGetRid6 = ableToGetRid2 && inQC(6) && inQC(8)
 
         if (player.meta.antimatter.gte(Number.MAX_VALUE)) giveAchievement("I don't have enough fuel!")
         if (player.galaxies>899&&!player.dilation.studies.includes(1)) giveAchievement("No more tax fraud!")
@@ -6666,7 +6658,8 @@ setInterval(function() {
         }
         if (player.money.e>=8e6&&inQC(6)&&inQC(8)) giveAchievement("Impossible expectations")
         if (player.timestudy.theorem>11e6&&player.quantum.wasted) giveAchievement("Studies are wasted")
-        if (player.infinityPoints.gte(Decimal.pow(10, 1/0))&&ableToGetRid6) giveAchievement("Are you currently dying?")
+        if (player.quantum.replicants.requirement.gte("1e14500000")) giveAchievement("Stop blocking me!")
+        if (player.infinityPoints.gte(Decimal.pow(10, 275e3))&&ableToGetRid6) giveAchievement("Are you currently dying?")
     }
     if (speedrunMilestonesReached>notifyId) {
         $.notify("You have unlocked "+timeDisplayShort(speedrunMilestones[notifyId]*36e3)+" speedrun milestone! "+(["You now start with 20,000 eternities when going quantum","You unlocked time theorem autobuyer","You now start with all Eternity Challenges completed and\neternity upgrades bought","You now start with dilation unlocked","You unlocked a new option for eternity autobuyer","You now start with all dilation studies and\nnon-rebuyable dilation upgrades before Meta Dimensions unlocked except passive TT gen upgrade","You unlocked first meta dimension autobuyer","You unlocked second meta dimension autobuyer","You unlocked third meta dimension autobuyer","You unlocked fourth meta dimension autobuyer","You unlocked fifth meta dimension autobuyer and you now keep time studies and passive TT gen upgrade","You unlocked sixth meta dimension autobuyer","You unlocked seventh meta dimension autobuyer","You unlocked eighth meta dimension autobuyer and\nall non-rebuyable dilation upgrades","You unlocked meta-dimension boost autobuyer","You now keep all time studies in mastery studies","You now can buy all Meta Dimensions if it is affordable in your current meta boost","You now start with "+shortenCosts(1e13)+" eternities","You now start with "+shortenCosts(1e25)+" meta-antimatter on reset","You can now turn on automatic replicated galaxies anytime","You made rebuyable dilation upgrade and Meta Dimension autobuyers 3x faster","You now start with "+shortenCosts(1e100)+" dilated time on quantum and dilated time does not reset until quantum","You unlocked quantum autobuyer","You now keep replicanti on eternity","You unlocked manual mode for eternity autobuyer and sacrifice galaxy autobuyer","Your rebuyable dilation upgrade autobuyer now can buy max all upgrades","You now can buy max meta-dimension boosts and start with 4 meta-dimension boosts","For now on, you can gain banked infinities based on your post-crunch infinitied stat"])[notifyId]+".","success")
@@ -7236,8 +7229,8 @@ function gameLoop(diff) {
         var name = TIER_NAMES[tier]
         var cost = player[name + "Cost"]
         var resource = getOrSubResource(tier)
-        document.getElementById(name).className = cost.gt(resource) ? 'unavailablebtn' : 'storebtn';
-        document.getElementById(name + 'Max').className = cost.times(10 - dimBought(tier)).gt(resource) ? 'unavailablebtn' : 'storebtn';
+        document.getElementById(name).className = cost.lte(resource) ? 'storebtn' : 'unavailablebtn';
+        document.getElementById(name + 'Max').className = cost.times(10 - dimBought(tier)).lte(resource) ? 'storebtn' : 'unavailablebtn';
     }
     if (player.firstAmount.lt(1)) document.getElementById("first").className = 'storebtn';
 

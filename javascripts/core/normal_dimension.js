@@ -302,7 +302,7 @@ function buyOneDimension(tier) {
 	let name = TIER_NAMES[tier]
 	let cost = player[name + 'Cost']
 	let resource = getOrSubResource(tier)
-	if (cost.gt(resource)) return false
+	if (!cost.lte(resource)) return false
 	getOrSubResource(tier, cost)
 	player[name + "Amount"] = player[name + "Amount"].add(1)
 	recordBought(name, 1)
@@ -325,7 +325,7 @@ function buyManyDimension(tier, quick) {
 	let toBuy = 10 - dimBought(tier)
 	let cost = player[name + 'Cost'].times(toBuy)
 	let resource = getOrSubResource(tier)
-	if (cost.gt(resource)) return false
+	if (!cost.lte(resource)) return false
 	getOrSubResource(tier, cost)
 	player[name + "Amount"] = player[name + "Amount"].add(toBuy)
 	recordBought(name, toBuy)
@@ -353,7 +353,7 @@ function buyBulkDimension(tier, bulk, auto) {
 	let name = TIER_NAMES[tier]
 	let cost = player[name + 'Cost'].times(10)
 	let resource = getOrSubResource(tier)
-	if (resource.lt(cost)) return
+	if (!cost.lte(resource)) return
 	if (player.currentChallenge != "postc5" && player.currentChallenge != "challenge5" && player.currentChallenge != "challenge9" && !costIncreaseActive(player[name + "Cost"])) {
 		let mult = getDimensionCostMultiplier(tier)
 		let max = Number.POSITIVE_INFINITY
@@ -390,8 +390,10 @@ function buyBulkDimension(tier, bulk, auto) {
 		if (toBuy < 1) break
 		let newCost = player[name + "Cost"].times(Decimal.pow(player.costMultipliers[tier-1],toBuy-1).times(Decimal.pow(mi,(toBuy-1)*(toBuy-2)/2)))
 		let newMult = player.costMultipliers[tier-1].times(Decimal.pow(mi,toBuy-1))
-		if (player.money.gte(newCost)) player.money = player.money.sub(newCost)
-		else if (player.dimensionMultDecrease > 3) player.money = new Decimal(0)
+		if (!inQC(1)) {
+			if (player.money.gte(newCost)) player.money = player.money.sub(newCost)
+			else if (player.dimensionMultDecrease > 3) player.money = new Decimal(0)
+		}
 		player[name + "Amount"] = player[name + "Amount"].add(toBuy*10)
 		recordBought(name, toBuy*10)
 		player[name + "Pow"] = player[name + "Pow"].times(Decimal.pow(getDimensionPowerMultiplier(tier), toBuy))
@@ -409,7 +411,7 @@ function canQuickBuyDim(tier) {
 }
 
 function getOrSubResource(tier, sub) {
-	if (sub == undefined) {
+	if (sub == undefined || inQC(1)) {
 		if (tier > 2 && (player.currentChallenge == "challenge10" || player.currentChallenge == "postc1")) return player[TIER_NAMES[tier-2] + "Amount"]
 		return player.money
 	} else {

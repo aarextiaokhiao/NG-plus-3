@@ -467,7 +467,8 @@ let quarkGain = function () {
 		if (player.quantum.times<1) return new Decimal(1)
 		var log = player.meta.antimatter.log10() / 280 - 1.355
 		if (log > 1.2) log = log*log/1.2
-		return Decimal.pow(10, log).times(Decimal.pow(2, player.quantum.multPower.total)).floor();
+		if (log > 738) log = Math.sqrt(log * 738)
+		return Decimal.pow(10, log).times(Decimal.pow(2, player.quantum.multPower.total)).floor()
 	}
 	return Decimal.pow(10, player.meta.antimatter.log(10) / Math.log10(Number.MAX_VALUE) - 1).times(quarkMult()).floor();
 }
@@ -1190,7 +1191,7 @@ function quantumReset(force, auto, challid, implode=false) {
 		document.getElementById("empstudies").style.display = "none"
 		document.getElementById("timestudy361").style.display = "none"
 		document.getElementById("timestudy362").style.display = "none"
-		document.getElementById("nfstudies").style.display=""
+		document.getElementById("nfstudies").style.display="none"
 		document.getElementById("edtabbtn").style.display = "none"
 		document.getElementById("nanofieldtabbtn").style.display = "none"
 		document.getElementById("todtabbtn").style.display = "none"

@@ -200,7 +200,8 @@ function updateTickSpeed() {
 	if (showTickspeed) {
 		var tickspeed = getTickspeed()
 		var exp = tickspeed.e;
-		if (exp > 1) label = 'Tickspeed: ' + tickspeed.toFixed(0)
+		if (isNaN(exp)) label = 'Tickspeed: Infinite'
+		else if (exp > 1) label = 'Tickspeed: ' + tickspeed.toFixed(0)
 		else {
 			var expExp = Math.max(Math.min(Math.ceil(15 - Math.log10(2 - exp)), 3), 0)
 			if (expExp == 0) label = 'Tick: ' + shortenCosts(Decimal.div(1000, tickspeed)) + "/s"

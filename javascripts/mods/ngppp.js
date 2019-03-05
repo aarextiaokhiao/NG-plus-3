@@ -160,7 +160,6 @@ function buyMasteryStudy(type, id, quick=false) {
 			showQuantumTab("tod")
 			updateColorCharge()
 			updateTODStuff()
-			giveAchievement("Do protons decay?")
 		}
 	}
 }
@@ -1135,7 +1134,6 @@ function replicantReset() {
 	if (!player.achievements.includes("ng3p47")) player.replicanti.amount=new Decimal(1)
 	player.quantum.replicants.amount=player.quantum.replicants.amount.add(1)
 	player.quantum.replicants.requirement=player.quantum.replicants.requirement.times("1e100000")
-	if (player.quantum.replicants.requirement.gte("1e14000000")) giveAchievement("Stop blocking me!")
 }
 
 function getGatherRate() {
@@ -1649,7 +1647,10 @@ function updateTODStuff() {
 	if (player.masterystudies ? !player.masterystudies.includes("d13") : true) {
 		document.getElementById("todtabbtn").style.display="none"
 		return
-	} else document.getElementById("todtabbtn").style.display=""
+	} else {
+		document.getElementById("todtabbtn").style.display=""
+		giveAchievement("Do protons decay?")
+	}
 	var colors=["red","green","blue"]
 	var shorthands=["r","g","b"]
 	for (var c=0;c<3;c++) {
@@ -1730,8 +1731,9 @@ function getTreeUpgradeCost(upg) {
 	if (upg==4) return Decimal.pow(2, lvl+Math.max(lvl-37,0)*(lvl-36)/2).times(1e12)
 	if (upg==5) return Decimal.pow(2, lvl+Math.max(lvl-35,0)*(lvl-34)/2).times(4e12)
 	if (upg==6) return Decimal.pow(4, lvl*(lvl+3)/2).times(6e22)
-	if (upg==7) return Decimal.pow(16, lvl).times(8e22)
-	return Decimal.pow(2, lvl).times(/*12e23*/1/0)
+	if (upg==7) return Decimal.pow(16, lvl*lvl).times(4e22)
+	if (upg==8) return Decimal.pow(2, lvl).times(3e23)
+	return 0
 }
 
 function canBuyTreeUpg(upg) {
@@ -1757,19 +1759,20 @@ function getTreeUpgradeLevel(upg) {
 }
 
 function getTreeUpgradeEffect(upg) {
-	if (upg==1) return getTreeUpgradeLevel(1) * 30
-	if (upg==2) return getTreeUpgradeLevel(2) * 0.25
+	let lvl=getTreeUpgradeLevel(upg)
+	if (upg==1) return lvl * 30
+	if (upg==2) return lvl * 0.25
 	if (upg==3) {
-		let level=getTreeUpgradeLevel(3)
-		if (level<1) return 1
+		if (lvl<1) return 1
 		let power=0
 		for (var upg=1;upg<9;upg++) if (player.quantum.tod.upgrades[upg]) power+=player.quantum.tod.upgrades[upg]
-		return Decimal.pow(2, Math.sqrt(Math.sqrt(Math.max(level * 3 - 2, 0)) * (power - 10)))
+		return Decimal.pow(2, Math.sqrt(Math.sqrt(Math.max(lvl * 3 - 2, 0)) * (power - 10)))
 	}
-	if (upg==4) return 1 + Math.log10(getTreeUpgradeLevel(4) * 0.5 + 1) * 0.1
-	if (upg==5) return Math.pow(Math.log10(player.meta.bestOverQuantums.add(1).log10()+1)/5+1,Math.sqrt(getTreeUpgradeLevel(5)))
-	if (upg==6) return Decimal.pow(2, getTreeUpgradeLevel(6))
-	if (upg==7) return Decimal.pow(player.replicanti.amount.log10()+1, 0.25*getTreeUpgradeLevel(7))
+	if (upg==4) return 1 + Math.log10(lvl * 0.5 + 1) * 0.1
+	if (upg==5) return Math.pow(Math.log10(player.meta.bestOverQuantums.add(1).log10()+1)/5+1,Math.sqrt(lvl))
+	if (upg==6) return Decimal.pow(2, lvl)
+	if (upg==7) return Decimal.pow(player.replicanti.amount.log10()+1, 0.25*lvl)
+	if (upg==8) return Math.log10(player.meta.bestAntimatter.add(1).log10()+1)/4*Math.sqrt(lvl)
 	return 0
 }
 
