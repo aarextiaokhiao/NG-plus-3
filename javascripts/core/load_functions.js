@@ -648,7 +648,7 @@ if (player.version < 5) {
           }
           player.aarexModifications.newGamePlusVersion = 1
           if (confirm("Do you want to migrate your NG++ save into new NG+++ mode?")) {
-              player.aarexModifications.newGame3PlusVersion = 1.9997
+              player.aarexModifications.newGame3PlusVersion = 1.99971
               player.respecMastery=false
               player.dbPower = 1
               player.dilation.times = 0
@@ -1057,7 +1057,12 @@ if (player.version < 5) {
           forceToQuantumAndRemove=true
           setTTAfterQuantum=2e94
       }
-      player.aarexModifications.newGame3PlusVersion=1.9997
+  }
+  if (player.aarexModifications.newGame3PlusVersion < 1.99971) {
+      player.quantum.tod.r.gainDiv = Decimal.div(player.quantum.tod.r.gainDiv, 1e30)
+      player.quantum.tod.g.gainDiv = Decimal.div(player.quantum.tod.g.gainDiv, 1e30)
+      player.quantum.tod.b.gainDiv = Decimal.div(player.quantum.tod.b.gainDiv, 1e30)
+      player.aarexModifications.newGame3PlusVersion = 1.99971
   }
   if (player.masterystudies) {
       if (player.quantum.autoOptions === undefined) player.quantum.autoOptions = {} //temp

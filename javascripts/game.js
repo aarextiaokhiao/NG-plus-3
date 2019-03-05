@@ -391,7 +391,7 @@ function updateNewPlayer(reseted) {
         player.options.gSacrificeConfirmation = true
     }
     if (modesChosen.ngpp === 2) {
-        player.aarexModifications.newGame3PlusVersion = 1.9997
+        player.aarexModifications.newGame3PlusVersion = 1.99971
         player.respecMastery=false
         player.dbPower = 1
         player.dilation.times = 0
@@ -6398,9 +6398,7 @@ setInterval(function() {
     document.getElementById("quantumbtn").style.display = "none"
     if (player.meta !== undefined) if (isQuantumReached()) document.getElementById("quantumbtn").style.display = ""
 
-    for (var i=0; i<order.length; i++) {
-        document.getElementById(order[i]+"goal").textContent = "Goal: "+shortenCosts(getGoal(order[i]))
-    }
+    if (order) for (var i=0; i<order.length; i++) document.getElementById(order[i]+"goal").textContent = "Goal: "+shortenCosts(getGoal(order[i]))
 
     if (player.replicanti.galaxybuyer === undefined || player.boughtDims) document.getElementById("replicantiresettoggle").style.display = "none"
     else document.getElementById("replicantiresettoggle").style.display = "inline-block"
@@ -6657,7 +6655,7 @@ setInterval(function() {
         if (player.infinityPoints.gte(Decimal.pow(10, 275e3))&&ableToGetRid6) giveAchievement("Are you currently dying?")
     }
     if (speedrunMilestonesReached>notifyId) {
-        $.notify("You have unlocked "+timeDisplayShort(speedrunMilestones[notifyId]*36e3)+" speedrun milestone! "+(["You now start with 20,000 eternities when going quantum","You unlocked time theorem autobuyer","You now start with all Eternity Challenges completed and\neternity upgrades bought","You now start with dilation unlocked","You unlocked a new option for eternity autobuyer","You now start with all dilation studies and\nnon-rebuyable dilation upgrades before Meta Dimensions unlocked except passive TT gen upgrade","You unlocked first meta dimension autobuyer","You unlocked second meta dimension autobuyer","You unlocked third meta dimension autobuyer","You unlocked fourth meta dimension autobuyer","You unlocked fifth meta dimension autobuyer and you now keep time studies and passive TT gen upgrade","You unlocked sixth meta dimension autobuyer","You unlocked seventh meta dimension autobuyer","You unlocked eighth meta dimension autobuyer and\nall non-rebuyable dilation upgrades","You unlocked meta-dimension boost autobuyer","You now keep all time studies in mastery studies","You now can buy all Meta Dimensions if it is affordable in your current meta boost","You now start with "+shortenCosts(1e13)+" eternities","You now start with "+shortenCosts(1e25)+" meta-antimatter on reset","You can now turn on automatic replicated galaxies anytime","You made rebuyable dilation upgrade and Meta Dimension autobuyers 3x faster","You now start with "+shortenCosts(1e100)+" dilated time on quantum and dilated time does not reset until quantum","You unlocked quantum autobuyer","You now keep replicanti on eternity","You unlocked manual mode for eternity autobuyer and sacrifice galaxy autobuyer","Your rebuyable dilation upgrade autobuyer now can buy max all upgrades","You now can buy max meta-dimension boosts and start with 4 meta-dimension boosts","For now on, you can gain banked infinities based on your post-crunch infinitied stat"])[notifyId]+".","success")
+        $.notify("You have unlocked "+timeDisplayShort(speedrunMilestones[notifyId]*36e3)+" speedrun milestone! "+(["You now start with 20,000 eternities when going quantum","You unlocked time theorem autobuyer","You now start with all Eternity Challenges completed and\neternity upgrades bought","You now start with dilation unlocked","You unlocked a new option for eternity autobuyer","You now start with all dilation studies and\nnon-rebuyable dilation upgrades before Meta Dimensions unlocked except passive TT gen upgrade","You unlocked first meta dimension autobuyer","You unlocked second meta dimension autobuyer","You unlocked third meta dimension autobuyer","You unlocked fourth meta dimension autobuyer","You unlocked fifth meta dimension autobuyer and you now keep time studies and passive TT gen upgrade","You unlocked sixth meta dimension autobuyer","You unlocked seventh meta dimension autobuyer","You unlocked eighth meta dimension autobuyer and\nall non-rebuyable dilation upgrades","You unlocked meta-dimension boost autobuyer","You now keep all time studies in mastery studies","You can now buy Meta Dimensions without buying the previous dimension","You now start with "+shortenCosts(1e13)+" eternities","You now start with "+shortenCosts(1e25)+" meta-antimatter on reset","You can now turn on automatic replicated galaxies anytime","You made rebuyable dilation upgrade and Meta Dimension autobuyers 3x faster","You now start with "+shortenCosts(1e100)+" dilated time on quantum and dilated time does not reset until quantum","You unlocked quantum autobuyer","You now keep replicanti on eternity","You unlocked manual mode for eternity autobuyer and sacrifice galaxy autobuyer","Your rebuyable dilation upgrade autobuyer now can buy max all upgrades","You now can buy max meta-dimension boosts and start with 4 meta-dimension boosts","For now on, you can gain banked infinities based on your post-crunch infinitied stat"])[notifyId]+".","success")
         notifyId++
     }
 }, 1000)
@@ -6828,7 +6826,7 @@ function gameLoop(diff) {
         colorBoosts.g=Math.sqrt(player.quantum.colorPowers.g.add(1).log10()*2+1)
         colorBoosts.b=Decimal.pow(10,Math.sqrt(player.quantum.colorPowers.b.add(1).log10()))
         if (colorBoosts.r>1.3) colorBoosts.r=Math.sqrt(colorBoosts.r*1.3)
-        if (colorBoosts.r>2.3) colorBoosts.r=Math.sqrt(colorBoosts.r*2.3)
+        if (colorBoosts.r>2.3&&(!player.dilation.active||getTreeUpgradeLevel(2)>7)) colorBoosts.r=Math.sqrt(colorBoosts.r*2.3)
         if (colorBoosts.g>4.5) colorBoosts.g=Math.sqrt(colorBoosts.g*4.5)
         if (colorBoosts.b.gt(1300)) colorBoosts.b=Decimal.pow(10,Math.sqrt(colorBoosts.b.log10()*Math.log10(1300)))
 
@@ -6869,7 +6867,7 @@ function gameLoop(diff) {
             var branch=player.quantum.tod[shorthand]
             var decayRate=getDecayRate(shorthand)
 
-            branch.gainDiv=Decimal.div(branch.gainDiv, Decimal.pow(1.1, diff/10)).max("1e530")
+            branch.gainDiv=Decimal.div(branch.gainDiv, Decimal.pow(1.1, diff/10)).max("1e500")
 
             var power=(branch.quarks.gt(1)?branch.quarks.log(2)+1:branch.quarks.toNumber())/decayRate
             var decayed=Math.min(diff/10,power)
@@ -8186,7 +8184,7 @@ window.addEventListener('keydown', function(event) {
 				var maxmeta=true
 				for (d=1;d<9;d++) {
 					if (player.autoEterOptions["meta"+d]) {
-						if (d>7) maxmeta=false
+						if (d>7&&speedrunMilestonesReached<28) maxmeta=false
 					} else break
 				}
 				if (maxmeta) document.getElementById("metaMaxAll").onclick()

@@ -581,7 +581,7 @@ function updateQuantumTabs() {
 			var branch=player.quantum.tod[shorthand]
 			var usedAbilities=0
 			document.getElementById(color+"UnstableGain").textContent="Unstablize quarks for "+shortenMoney(getUnstableGain(shorthand))+" unstable quarks."
-			document.getElementById(color+"Conversion").textContent=shorten(player.quantum.tod[shorthand].gainDiv.times(99)) + " " + color + " quarks => " + shortenMoney(Decimal.pow(2,getBranchUpgLevel(shorthand,2)*Math.pow(2,getBranchUpgLevel(shorthand,2))*3)) + " unstable " + color + " quarks"
+			document.getElementById(color+"Conversion").textContent=shorten(player.quantum.tod[shorthand].gainDiv.times(99e30)) + " " + color + " quarks => " + shortenMoney(Decimal.pow(2,getBranchUpgLevel(shorthand,2)*Math.pow(2,getBranchUpgLevel(shorthand,2))*3)) + " unstable " + color + " quarks"
 			document.getElementById(color+"QuarkSpin").textContent=shortenMoney(branch.spin)
 			document.getElementById(color+"UnstableQuarks").textContent=shortenMoney(branch.quarks)
 			document.getElementById(color+"QuarksDecayRate").textContent=timeDisplayShort(10/getDecayRate(shorthand),true,2)
@@ -1669,7 +1669,9 @@ function showBranchTab(tabName) {
 }
 
 function getUnstableGain(branch) {
-	let ret = Decimal.pow(2,getBranchUpgLevel(branch,2)-1).times(player.quantum.usedQuarks[branch].div(player.quantum.tod[branch].gainDiv).add(1).log10())
+	let ret = player.quantum.usedQuarks[branch].div(1e30).div(player.quantum.tod[branch].gainDiv).add(1).log10()
+	if (ret<2) ret = Math.max(player.quantum.usedQuarks[branch].times(1e210/99).div(player.quantum.tod[branch].gainDiv).log10()/120,0)
+	ret = Decimal.pow(2,getBranchUpgLevel(branch,2)-1).times(ret)
 	if (ret.gt(1)) ret = Decimal.pow(ret, Math.pow(2,getBranchUpgLevel(branch,2))*3)
 	return ret
 }
