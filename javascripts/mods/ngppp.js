@@ -387,8 +387,7 @@ function setupText() {
 		html+='<td align="right" width="10%"><button id="empFeed'+d+'" style="color:black; width:195px; height:30px" class="storebtn" align="right" onclick="feedReplicant('+d+')">Feed (0%)</button></td>'
 		row.innerHTML=html
 	}
-	var branchUpgrades=["Gain 2x quark spins, but quarks decay 2x faster.","The gain of unstable quarks is doubled and squared.","Quarks decay 4x slower.","The cap of ability power is increased.","The third ability effect is squared."]
-	var abilityNames=["Gain 2x quark spins.","You only gain quark spins."]
+	var branchUpgrades=["Gain 2x quark spins, but quarks decay 2x faster.","The gain of unstable quarks is doubled and squared.","Quarks decay 4x slower."]
 	for (var c=0;c<3;c++) {
 		var color=(["red","green","blue"])[c]
 		var shorthand=(["r","g","b"])[c]
@@ -398,12 +397,7 @@ function setupText() {
 		html+="You have <span class='"+color+"' id='"+color+"UnstableQuarks' style='font-size: 35px'>0</span> unstable "+color+" quarks.<br>"
 		html+="They are decaying by 50% per <span id='"+color+"QuarksDecayRate'>1 second</span>. You are getting <span class='"+color+"' id='"+color+"QuarkSpinProduction' style='font-size: 35px'>0</span> "+color+" quark spin per second.<br>"
 		html+="<table class='table' align='center' style='margin: auto'><tr>"
-		for (var u=1;u<6;u++) html+="<td><button class='gluonupgrade unavailablebtn' id='"+color+"upg"+u+"' onclick='buyBranchUpg(\""+shorthand+"\", "+u+")'"+(u==2?" style='font-size:10px'":"")+">"+branchUpgrades[u-1]+"<br>Currently: <span id='"+color+"upg"+u+"current'>1</span>x<br>Cost: <span id='"+color+"upg"+u+"cost'>?</span> "+color+" quark spin</button></td>"
-		html+="</tr></table>"
-		html+='You have <span class='+color+' id="'+color+'AbilityPower" style="font-size: 35px">0.0</span> '+color+' ability power. The cap of '+color+' ability power is currently <span class='+color+' id="'+color+'AbilityPowerCap" style="font-size: 35px">1.00e4</span>.<br>'
-		html+='You are <span id="'+color+'AbilityPowerVerb">producing</span> <span class='+color+' id="'+color+'AbilityPowerProduction" style="font-size: 35px">0.0</span> '+color+' ability power per second.'
-		html+="<table class='table' align='center' style='margin: auto'><tr>"
-		for (var a=1;a<4;a++) html+="<td><button class='gluonupgrade unavailablebtn' id='"+color+"ability"+a+"' onclick='buyAbility(\""+shorthand+"\", "+a+")'>"+(a>2?"<span id='"+color+"ability3current'></span>":abilityNames[a-1])+"<br>Loss: -<span id='"+color+"ability"+a+"loss'></span>/s<br><span id='"+color+"ability"+a+"cost'>Cost: ? "+color+" quark spin</span></button></td>"
+		for (var u=1;u<4;u++) html+="<td><button class='gluonupgrade unavailablebtn' id='"+color+"upg"+u+"' onclick='buyBranchUpg(\""+shorthand+"\", "+u+")'"+(u==2?" style='font-size:10px'":"")+">"+branchUpgrades[u-1]+"<br>Currently: <span id='"+color+"upg"+u+"current'>1</span>x<br>Cost: <span id='"+color+"upg"+u+"cost'>?</span> "+color+" quark spin</button></td>"
 		html+="</tr></table>"
 		html+="</td>"
 		document.getElementById(color+"Branch").innerHTML=html
@@ -592,16 +586,8 @@ function updateQuantumTabs() {
 			document.getElementById(color+"UnstableQuarks").textContent=shortenMoney(branch.quarks)
 			document.getElementById(color+"QuarksDecayRate").textContent=timeDisplayShort(10/getDecayRate(shorthand),true,2)
 			let ret=getQuarkSpinProduction(shorthand)
-			if (branch.abilityPower>0&&branch.abilities[1]) if (branch.abilities[1].used) ret=ret.times(2)
 			document.getElementById(color+"QuarkSpinProduction").textContent=shortenMoney(ret)
-			for (var u=1;u<6;u++) document.getElementById(color+"upg"+u).className="gluonupgrade "+(branch.spin.lt(getBranchUpgCost(shorthand,u))?"unavailablebtn":shorthand)
-			for (var a=1;a<4;a++) {
-				if (branch.abilities[a]) if (branch.abilities[a].used) usedAbilities++
-				document.getElementById(color+"ability"+a).className="gluonupgrade "+(branch.spin.lt(abilities[a].cost)&&!branch.abilities[a]?"unavailablebtn":shorthand)
-			}
-			document.getElementById(color+"AbilityPower").textContent=shortenMoney(branch.abilityPower)
-			document.getElementById(color+"AbilityPowerVerb").textContent=usedAbilities?"losing":"producing"
-			document.getElementById(color+"AbilityPowerProduction").textContent=shortenMoney(usedAbilities?getAbilityPowerLoss(shorthand):getAbilityPowerProduction(shorthand))
+			for (var u=1;u<4;u++) document.getElementById(color+"upg"+u).className="gluonupgrade "+(branch.spin.lt(getBranchUpgCost(shorthand,u))?"unavailablebtn":shorthand)
 		} else {
 			for (var c=0;c<3;c++) document.getElementById(colors[c]+"QuarkSpinUpgs").textContent=shortenMoney(player.quantum.tod[shorthands[c]].spin)
 			for (var u=1;u<9;u++) {
@@ -1657,17 +1643,10 @@ function updateTODStuff() {
 		var color=colors[c]
 		var shorthand=shorthands[c]
 		var branch=player.quantum.tod[shorthand]
-		for (var b=1;b<6;b++) {
-			document.getElementById(color+"upg"+b+"current").textContent=shortenDimensions(b==4?getBranchUpgLevel(shorthand,b)+1:Decimal.pow(b==3?4:2,getBranchUpgLevel(shorthand,b)))
+		for (var b=1;b<4;b++) {
+			document.getElementById(color+"upg"+b+"current").textContent=shortenDimensions(Decimal.pow(b==3?4:2,getBranchUpgLevel(shorthand,b)))
 			document.getElementById(color+"upg"+b+"cost").textContent=shortenMoney(getBranchUpgCost(shorthand,b))
 		}
-		document.getElementById(color+"AbilityPowerCap").textContent=shorten(1e4*(getBranchUpgLevel(shorthand,b)+1))
-		for (var a=1;a<4;a++) {
-			if (branch.abilities[a]) document.getElementById(color+"ability"+a+"cost").textContent="Turn this ability o"+(branch.abilities[a].used?"ff.":"n.")
-			else document.getElementById(color+"ability"+a+"cost").textContent="Cost: "+shorten(abilities[a].cost)+" "+color+" quark spin"
-			document.getElementById(color+"ability"+a+"loss").textContent=shorten(abilities[a].consume)
-		}
-		document.getElementById(color+"ability3current").textContent="If you have no unstable quarks, set it to "+shorten(getA3Factor(shorthand))+"x."
 	}
 	for (var t=1;t<9;t++) document.getElementById("treeupg"+t+"cost").textContent=shortenMoney(getTreeUpgradeCost(t))+" "+colors[getTreeUpgradeLevel(t)%3]
 }
@@ -1800,10 +1779,8 @@ function buyBranchUpg(branch,upg) {
 	bData.spin=bData.spin.sub(getBranchUpgCost(branch,upg))
 	if (bData.upgrades[upg]==undefined) bData.upgrades[upg]=0
 	bData.upgrades[upg]++
-	document.getElementById(colors[branch]+"upg"+upg+"current").textContent=shortenDimensions(upg==4?bData.upgrades[upg]+1:Decimal.pow(upg==3?4:2, bData.upgrades[upg]))
+	document.getElementById(colors[branch]+"upg"+upg+"current").textContent=shortenDimensions(Decimal.pow(upg==3?4:2, bData.upgrades[upg]))
 	document.getElementById(colors[branch]+"upg"+upg+"cost").textContent=shortenMoney(getBranchUpgCost(branch, upg))
-	if (upg==4) document.getElementById(colors[branch]+"AbilityPowerCap").textContent=shorten(1e4*(bData.upgrades[upg]+1))
-	if (upg==5) document.getElementById(colors[branch]+"ability3current").textContent="If you have no unstable quarks, set it to "+shorten(getA3Factor(branch))+"x."
 }
 
 function getBranchUpgLevel(branch,upg) {
@@ -1816,35 +1793,6 @@ function getGU8Effect(type) {
 	return Math.pow(player.quantum.gluons[type].div("1e615").add(1).log10()*0.55+1, 1.5)
 }
 
-var abilities={1:{cost:2e12,consume:4},2:{cost:3e22,consume:4},3:{cost:12e23,consume:0.5}}
-function buyAbility(branch,ability) {
-	var colors={r:"red",g:"green",b:"blue"}
-	var bData=player.quantum.tod[branch]
-	if (bData.abilities[ability]) {
-		bData.abilities[ability].used=!bData.abilities[ability].used
-		document.getElementById(colors[branch]+"ability"+ability+"cost").textContent="Turn this ability o"+(bData.abilities[ability].used?"ff.":"n.")
-	} else {
-		if (bData.spin.lt(abilities[ability].cost)) return
-		bData.spin=bData.spin.sub(abilities[ability].cost)
-		bData.abilities[ability]={used:false}
-		document.getElementById(colors[branch]+"ability"+ability+"cost").textContent="Turn this ability on."
-	}
-}
-
-function getAbilityPowerProduction(branch) {
-	return player.quantum.tod[branch].abilities[1]?Math.max(Math.log10(Math.max(getQuarkSpinProduction(branch).add(1).log10()+2,1)),1):0
-}
-
-function getAbilityPowerLoss(branch) {
-	let ret=0
-	branch=player.quantum.tod[branch]
-	for (a=1;a<4;a++) if (branch.abilities[a]) if (branch.abilities[a].used) ret+=abilities[a].consume
-	return ret
-}
-
-function getA3Factor(branch) {
-	return Decimal.pow(10, Math.pow(2, getBranchUpgLevel(branch, 4)) * 1e9)
-}
 
 function toggleAutoReset() {
 	player.quantum.autoOptions.replicantiReset = !player.quantum.autoOptions.replicantiReset

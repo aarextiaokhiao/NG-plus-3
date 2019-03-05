@@ -489,25 +489,19 @@ function updateNewPlayer(reseted) {
                 quarks: 0,
                 spin: 0,
                 gainDiv: 0,
-                upgrades: {},
-                abilities: {},
-                abilityPower: 0
+                upgrades: {}
             },
             g: {
                 quarks: 0,
                 spin: 0,
                 gainDiv: 0,
-                upgrades: {},
-                abilities: {},
-                abilityPower: 0
+                upgrades: {}
             },
             b: {
                 quarks: 0,
                 spin: 0,
                 gainDiv: 0,
-                upgrades: {},
-                abilities: {},
-                abilityPower: 0
+                upgrades: {}
             },
             upgrades: {}
         }
@@ -2871,7 +2865,7 @@ function load_saves() {
 	closeToolTip();
 	if (metaSave.alert) {
 		metaSave.alert=false
-		localStorage.setItem("AD_aarexModifications_ToD",btoa(JSON.stringify(metaSave)))
+		localStorage.setItem("AD_aarexModifications",btoa(JSON.stringify(metaSave)))
 	}
 	document.getElementById("loadmenu").style.display = "block";
 	changeSaveDesc(metaSave.current, savePlacement)
@@ -3117,10 +3111,10 @@ function import_save(type) {
 			metaSave.saveOrder.push(newSaveId)
 			latestRow=document.getElementById("saves").insertRow(loadedSaves)
 			latestRow.innerHTML = getSaveLayout(newSaveId)
-			localStorage.setItem(btoa("dsAM_ToD_"+newSaveId),save_data)
+			localStorage.setItem(btoa("dsAM_"+newSaveId),save_data)
 			loadedSaves++
 			changeSaveDesc(newSaveId, loadedSaves)
-			localStorage.setItem("AD_aarexModifications_ToD",btoa(JSON.stringify(metaSave)))
+			localStorage.setItem("AD_aarexModifications",btoa(JSON.stringify(metaSave)))
         } else {
             set_save(type, decoded_save_data)
             changeSaveDesc(type, placement)
@@ -3157,7 +3151,7 @@ function import_save_all() {
 				occupiedIA=false
 				return
 			}
-			localStorage.setItem("AD_aarexModifications_ToD",btoa(JSON.stringify(importAllData.metaSave)))
+			localStorage.setItem("AD_aarexModifications",btoa(JSON.stringify(importAllData.metaSave)))
 			clearInterval(importAllLoopId)
 			document.location.reload(true)
 		} catch(_) {
@@ -6879,19 +6873,6 @@ function gameLoop(diff) {
             var power=(branch.quarks.gt(1)?branch.quarks.log(2)+1:branch.quarks.toNumber())/decayRate
             var decayed=Math.min(diff/10,power)
             var added=Math.min(diff/10,power-decayed)
-			
-            var aLoss=getAbilityPowerLoss(shorthand)
-            if (aLoss>0) {
-                var tickLength=Math.min(diff/10,branch.abilityPower/aLoss)
-                branch.abilityPower=Math.max(branch.abilityPower-tickLength*aLoss,0)
-                if (branch.abilities[2]) {
-                    if (branch.abilities[2].used) {
-                        decayed=Math.min(diff/10-tickLength,power)
-                        added=Math.min(diff/10,power-decayed)
-                    }
-                }
-                if (branch.abilities[1].used) added=Math.min(diff/10+tickLength,power-decayed)
-            } else if (branch.quarks.gt(0)&&branch.abilities[1]) branch.abilityPower=Math.min(branch.abilityPower+getAbilityPowerProduction(shorthand)*decayed,1e4*(getBranchUpgLevel(shorthand,b)+1))
 
             power=(power-decayed)*decayRate
             branch.quarks=power>1?Decimal.pow(2,power-1):new Decimal(power)
@@ -8103,7 +8084,7 @@ function initGame() {
     setupText()
     initiateMetaSave()
     migrateOldSaves()
-    localStorage.setItem('AD_aarexModifications_ToD', btoa(JSON.stringify(metaSave)))
+    localStorage.setItem('AD_aarexModifications', btoa(JSON.stringify(metaSave)))
     load_game();
     if (player.aarexModifications.progressBar) document.getElementById("progress").style.display = "block"
     else document.getElementById("progress").style.display = "none"

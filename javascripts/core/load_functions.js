@@ -741,25 +741,19 @@ if (player.version < 5) {
                       quarks: 0,
                       spin: 0,
                       gainDiv: 0,
-                      upgrades: {},
-                      abilities: {},
-                      abilityPower: 0
+                      upgrades: {}
                   },
                   g: {
                       quarks: 0,
                       spin: 0,
                       gainDiv: 0,
-                      upgrades: {},
-                      abilities: {},
-                      abilityPower: 0
+                      upgrades: {}
                   },
                   b: {
                       quarks: 0,
                       spin: 0,
                       gainDiv: 0,
-                      upgrades: {},
-                      abilities: {},
-                      abilityPower: 0
+                      upgrades: {}
                   },
                   upgrades: {}
               }
@@ -1034,25 +1028,19 @@ if (player.version < 5) {
               quarks: 0,
               spin: 0,
               gainDiv: 0,
-              upgrades: {},
-              abilities: {},
-              abilityPower: 0
+              upgrades: {}
           },
           g: {
               quarks: 0,
               spin: 0,
               gainDiv: 0,
-              upgrades: {},
-              abilities: {},
-              abilityPower: 0
+              upgrades: {}
           },
           b: {
               quarks: 0,
               spin: 0,
               gainDiv: 0,
-              upgrades: {},
-              abilities: {},
-              abilityPower: 0
+              upgrades: {}
           },
           upgrades: {}
       }
@@ -1088,30 +1076,6 @@ if (player.version < 5) {
           player.quantum.nanofield.rewards=16
           forceToQuantumAndRemove=true
           setTTAfterQuantum=2e94
-      }
-      //Testing-exclusive
-      if (player.dilation.times === undefined) player.dilation.times = 0
-      if (player.quantum.tod.r.abilityPower === undefined) {
-          player.quantum.tod.r.abilities = {}
-          player.quantum.tod.r.abilityPower = 0
-          player.quantum.tod.r.abilities = {}
-          player.quantum.tod.g.abilityPower = 0
-          player.quantum.tod.r.abilities = {}
-          player.quantum.tod.b.abilityPower = 0
-          delete player.quantum.tod.r.upgrades[4]
-          delete player.quantum.tod.g.upgrades[4]
-          delete player.quantum.tod.b.upgrades[4]
-
-          //Adjust the tree upgrades so they can't reach e3.2Qa without the fifth upgrade.
-          if (player.quantum.tod.upgrades[1]) player.quantum.tod.upgrades[1]=Math.min(player.quantum.tod.upgrades[1],18)
-          if (player.quantum.tod.upgrades[2]) player.quantum.tod.upgrades[2]=Math.min(player.quantum.tod.upgrades[2],5)
-          if (player.quantum.tod.upgrades[3]) player.quantum.tod.upgrades[3]=Math.min(player.quantum.tod.upgrades[3],2)
-          if (player.quantum.tod.upgrades[4]) player.quantum.tod.upgrades[4]=Math.min(player.quantum.tod.upgrades[4],2)
-      }
-      if (player.quantum.tod.r.gainDiv === undefined) {
-          player.quantum.tod.r.gainDiv = 0
-          player.quantum.tod.g.gainDiv = 0
-          player.quantum.tod.b.gainDiv = 0
       }
   }
   if (player.aarexModifications.newGame3PlusVersion==undefined) {
@@ -1818,7 +1782,7 @@ function change_save(id) {
   changeSaveDesc(metaSave.current, savePlacement)
 
   $.notify("Save #"+savePlacement+" loaded", "info")
-  localStorage.setItem("AD_aarexModifications_ToD",btoa(JSON.stringify(metaSave)))
+  localStorage.setItem("AD_aarexModifications",btoa(JSON.stringify(metaSave)))
 }
 
 function rename_save(id) {
@@ -1860,7 +1824,7 @@ function export_save(id) {
 	let parent = output.parentElement
 
 	parent.style.display = ""
-	output.value = localStorage.getItem(btoa("dsAM_ToD_"+id))
+	output.value = localStorage.getItem(btoa("dsAM_"+id))
 
 	output.onblur = function() {
 		parent.style.display = "none"
@@ -1894,7 +1858,7 @@ function move(id,offset) {
 	document.getElementById("saves").rows[placement+offset].innerHTML=getSaveLayout(id)
 	changeSaveDesc(metaSave.saveOrder[placement], placement+1)
 	changeSaveDesc(id, placement+offset+1)
-	localStorage.setItem("AD_aarexModifications_ToD",btoa(JSON.stringify(metaSave)))
+	localStorage.setItem("AD_aarexModifications",btoa(JSON.stringify(metaSave)))
 }
 
 function delete_save(saveId) {
@@ -1907,7 +1871,7 @@ function delete_save(saveId) {
 	for (orderId=0;orderId<metaSave.saveOrder.length;orderId++) {
 		if (alreadyDeleted) changeSaveDesc(metaSave.saveOrder[orderId], orderId)
 		if (metaSave.saveOrder[orderId]==saveId) {
-			localStorage.removeItem(btoa("dsAM_ToD_"+saveId))
+			localStorage.removeItem(btoa("dsAM_"+saveId))
 			alreadyDeleted=true
 			document.getElementById("saves").deleteRow(orderId)
 			if (savePlacement>orderId+1) savePlacement--
@@ -1918,7 +1882,7 @@ function delete_save(saveId) {
 	if (metaSave.current==saveId) {
 		change_save(metaSave.saveOrder[0])
 		document.getElementById("loadmenu").style.display="block"
-	} else localStorage.setItem("AD_aarexModifications_ToD",btoa(JSON.stringify(metaSave)))
+	} else localStorage.setItem("AD_aarexModifications",btoa(JSON.stringify(metaSave)))
 	$.notify("Save deleted", "info")
 }
 
@@ -1931,7 +1895,7 @@ function new_game(id) {
 	metaSave.current=1
 	while (metaSave.saveOrder.includes(metaSave.current)) metaSave.current++
 	metaSave.saveOrder.push(metaSave.current)
-	localStorage.setItem("AD_aarexModifications_ToD",btoa(JSON.stringify(metaSave)))
+	localStorage.setItem("AD_aarexModifications",btoa(JSON.stringify(metaSave)))
 	changeSaveDesc(oldId, savePlacement)
 	latestRow=document.getElementById("saves").insertRow(loadedSaves)
 	latestRow.innerHTML=getSaveLayout(metaSave.current)
@@ -1943,7 +1907,7 @@ function new_game(id) {
 	startInterval()
 	
 	$.notify("Save created", "info")
-	localStorage.setItem("AD_aarexModifications_ToD",btoa(JSON.stringify(metaSave)))
+	localStorage.setItem("AD_aarexModifications",btoa(JSON.stringify(metaSave)))
 	closeToolTip()
 	showDimTab('antimatterdimensions')
 	showStatsTab('stats')
@@ -2218,19 +2182,19 @@ function loadAutoBuyerSettings() {
 }
 
 function set_save(id, value) {
-	localStorage.setItem(btoa('dsAM_ToD_'+id), btoa(JSON.stringify(value, function(k, v) { return (v === Infinity) ? "Infinity" : v; })));
+	localStorage.setItem(btoa('dsAM_'+id), btoa(JSON.stringify(value, function(k, v) { return (v === Infinity) ? "Infinity" : v; })));
 }
 
 function get_save(id) {
     try {
-        var dimensionSave = localStorage.getItem(btoa('dsAM_ToD_'+id))
+        var dimensionSave = localStorage.getItem(btoa('dsAM_'+id))
         if (dimensionSave !== null) dimensionSave = JSON.parse(atob(dimensionSave, function(k, v) { return (v === Infinity) ? "Infinity" : v; }))
         return dimensionSave
     } catch(e) { }
 }
 
 function initiateMetaSave() {
-	metaSave = localStorage.getItem('AD_aarexModifications_ToD')
+	metaSave = localStorage.getItem('AD_aarexModifications')
 	if (metaSave == null) metaSave = {presetsOrder:[], version:2}
 	else metaSave = JSON.parse(atob(metaSave))
 	if (metaSave.current == undefined) {
@@ -2246,24 +2210,24 @@ function initiateMetaSave() {
 function migrateOldSaves() {
 	if (metaSave.newGameMinus!=undefined) {
 		metaSave.saveOrder = []
-		var ngSave = localStorage.getItem('dimensionSave_aarexModifications_ToD')
+		var ngSave = localStorage.getItem('dimensionSave_aarexModifications')
 		if (ngSave != null) {
 			ngSave = JSON.parse(atob(ngSave, function(k, v) { return (v === Infinity) ? "Infinity" : v; }))
 			if (ngSave.saves != null) {
 				for (id=0;id<3;id++) {
 					if (ngSave.saves[id] != null) {
 						metaSave.saveOrder.push(1+id)
-						localStorage.setItem(btoa('dsAM_ToD_'+(1+id)), btoa(JSON.stringify(ngSave.saves[id], function(k, v) { return (v === Infinity) ? "Infinity" : v; })));
+						localStorage.setItem(btoa('dsAM_'+(1+id)), btoa(JSON.stringify(ngSave.saves[id], function(k, v) { return (v === Infinity) ? "Infinity" : v; })));
 					}
 				}
 				if (!metaSave.newGameMinus) metaSave.current=1+ngSave.currentSave
 			} else {
 				if (!metaSave.newGameMinus) metaSave.current=1
 				metaSave.saveOrder.push(1)
-				localStorage.setItem(btoa('dsAM_ToD_1'), btoa(JSON.stringify(ngSave, function(k, v) { return (v === Infinity) ? "Infinity" : v; })));
+				localStorage.setItem(btoa('dsAM_1'), btoa(JSON.stringify(ngSave, function(k, v) { return (v === Infinity) ? "Infinity" : v; })));
 			}
 		}
-		localStorage.removeItem('dimensionSave_aarexModifications_ToD')
+		localStorage.removeItem('dimensionSave_aarexModifications')
 		var ngmSave = localStorage.getItem('dimensionSave_NGM')
 		if (ngmSave != null) {
 			ngmSave = JSON.parse(atob(ngmSave, function(k, v) { return (v === Infinity) ? "Infinity" : v; }))
@@ -2271,14 +2235,14 @@ function migrateOldSaves() {
 				for (id=0;id<3;id++) {
 					if (ngmSave.saves[id] != null) {
 						metaSave.saveOrder.push(4+id)
-						localStorage.setItem(btoa('dsAM_ToD_'+(4+id)), btoa(JSON.stringify(ngmSave.saves[id], function(k, v) { return (v === Infinity) ? "Infinity" : v; })));
+						localStorage.setItem(btoa('dsAM_'+(4+id)), btoa(JSON.stringify(ngmSave.saves[id], function(k, v) { return (v === Infinity) ? "Infinity" : v; })));
 					}
 				}
 				if (metaSave.newGameMinus) metaSave.current=4+ngmSave.currentSave
 			} else {
 				if (metaSave.newGameMinus) metaSave.current=4
 				metaSave.saveOrder.push(4)
-				localStorage.setItem(btoa('dsAM_ToD_4'), btoa(JSON.stringify(ngmSave, function(k, v) { return (v === Infinity) ? "Infinity" : v; })));
+				localStorage.setItem(btoa('dsAM_4'), btoa(JSON.stringify(ngmSave, function(k, v) { return (v === Infinity) ? "Infinity" : v; })));
 			}
 		}
 		localStorage.removeItem('dimensionSave_NGM')
@@ -2290,7 +2254,7 @@ function migrateOldSaves() {
 			var studyTreePreset=localStorage.getItem("studyTree"+id)
 			if (studyTreePreset !== null) {
 				metaSave.presetsOrder.push(id)
-				localStorage.setItem(btoa("dsAM_ToD_ST_"+id),btoa(JSON.stringify({preset:studyTreePreset})))
+				localStorage.setItem(btoa("dsAM_ST_"+id),btoa(JSON.stringify({preset:studyTreePreset})))
 				localStorage.removeItem("studyTree"+id)
 			}
 		}
