@@ -155,7 +155,7 @@ function buyMasteryStudy(type, id, quick=false) {
 			document.getElementById("nfstudies").style.display=""
 			document.getElementById("nanofieldtabbtn").style.display = ""
 		}
-		if (id==13) {
+		if (type=="d"&id==13) {
 			showTab("quantumtab")
 			showQuantumTab("tod")
 			updateColorCharge()
