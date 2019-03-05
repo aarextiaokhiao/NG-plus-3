@@ -4811,8 +4811,8 @@ function eternity(force, auto) {
         player.infinitiedBank += gainBankedInf()
         if (player.infinitiedBank > 5000000000) giveAchievement("No ethical consumption");
         if (player.dilation.active && (!force || player.infinityPoints.gte(Number.MAX_VALUE))) {
-            if (player.dilation.totalTachyonParticles.lt(player.dilation.tachyonParticles)) {
-                player.dilation.totalTachyonParticles=player.dilation.tachyonParticles
+            if (player.dilation.totalTachyonParticles.lt(getDilGain())) {
+                player.dilation.tachyonParticles=player.dilation.totalTachyonParticles
                 if (player.masterystudies) {
                     player.dilation.times++
                     player.quantum.notrelative = false
