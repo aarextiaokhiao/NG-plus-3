@@ -655,24 +655,25 @@ function load_preset(id) {
 }
 
 function delete_preset(presetId) {
-	if (!confirm("Do you really want to erase this preset? You will lose access if you do that!")) return
-	var alreadyDeleted=false
-	var newPresetsOrder=[]
-	for (id=0;id<poData.length;id++) {
-		if (alreadyDeleted) {
-			newPresetsOrder.push(poData[id])
-			changePresetTitle(poData[id], id)
-		} else if (poData[id]==presetId) {
-			delete presets[presetId]
-			localStorage.removeItem(btoa(prefix+presetId))
-			alreadyDeleted=true
-			document.getElementById("presets").deleteRow(id)
-			loadedPresets--
-		} else newPresetsOrder.push(poData[id])
-	}
-	poData=newPresetsOrder
-	localStorage.setItem("AD_aarexModifications",btoa(JSON.stringify(metaSave)))
-	$.notify("Preset deleted", "info")
+    if (!confirm("Do you really want to erase this preset? You will lose access if you do that!")) return
+    var alreadyDeleted=false
+    var newPresetsOrder=[]
+    for (id=0;id<poData.length;id++) {
+        if (alreadyDeleted) {
+            newPresetsOrder.push(poData[id])
+            changePresetTitle(poData[id], id)
+        } else if (poData[id]==presetId) {
+            delete presets[presetId]
+            localStorage.removeItem(btoa(prefix+presetId))
+            alreadyDeleted=true
+            document.getElementById("presets").deleteRow(id)
+            loadedPresets--
+        } else newPresetsOrder.push(poData[id])
+    }
+    metaSave["presetsOrder"+(player.boughtDims?"_ers":"")]=newPresetsOrder
+    poData=newPresetsOrder
+    localStorage.setItem("AD_aarexModifications",btoa(JSON.stringify(metaSave)))
+    $.notify("Preset deleted", "info")
 }
 
 function rename_preset(id) {
@@ -741,6 +742,12 @@ function getPresetLayout(id) {
 }
 
 function changePresetTitle(id, placement) {
-	if (presets[id]===undefined) presets[id]=JSON.parse(atob(localStorage.getItem(btoa(prefix+id))))
+	if (presets[id]===undefined) {
+		var preset=localStorage.getItem(btoa(prefix+id))
+		if (preset===null) {
+			presets[id]={preset:"|0",title:"Deleted preset #"+placement}
+			localStorage.setItem(btoa(prefix+id),btoa(JSON.stringify(presets[id])))
+		} else presets[id]=JSON.parse(atob(preset))
+	}
 	document.getElementById("preset_"+id+"_title").textContent=presets[id].title?presets[id].title:"Preset #"+placement
 }

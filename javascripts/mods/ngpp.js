@@ -76,47 +76,39 @@ function clearMetaDimensions () {
     }
 }
 
-function getMetaShiftRequirement () {
-	var inQC4 = inQC4
-	var mult = inQC4 ? 5.5 : 15
-	if (player.masterystudies != undefined) if (player.masterystudies.includes("t312")) mult -= 1
-	var data = {
-		tier: Math.min(8, player.meta.resets + 4),
-		amount: Math.floor(Math.max(mult * (player.meta.resets - 4),0) + Math.max((inQC4 ? 14.5 : 5) * (player.meta.resets - (inQC4 ? 55 : 15)), 0)) + 20
-	}
+function getMetaShiftRequirement() {
+	var data = {tier: Math.min(8, player.meta.resets + 4), amount: 20}
+	var inQC4 = inQC(4)
+	data.mult = inQC4 ? 5.5 : 15
+	if (player.masterystudies != undefined) if (player.masterystudies.includes("t312")) data.mult -= 1
+	data.amount += data.mult * Math.max(player.meta.resets - 4, 0)
 	if (player.masterystudies != undefined) if (player.masterystudies.includes("d13")) data.amount -= getTreeUpgradeEffect(1)
+
+	data.scalingStart = inQC4 ? 55 : 15
+	if (player.meta.resets >= data.scalingStart) {
+		var multAdded = inQC4 ? 14.5 : 5
+		data.amount += multAdded * (player.meta.resets - data.scalingStart)
+		data.mult += multAdded
+	}
 	return data
 }
 
 function metaBoost() {
-	let req = getMetaShiftRequirement();
-	if (player.meta[req.tier].bought<req.amount) {
-		return false;
-	}
+	let req = getMetaShiftRequirement()
+	if (player.meta[req.tier].bought<Math.floor(req.amount)) return
 	if (speedrunMilestonesReached>26 && req.tier>7) {
-		let costStart=15
-		let mult=15
-		if (inQC(4)) {
-			costStart=55
-			mult=5.5
+		if (player.meta.resets<=req.scalingStart) {
+			player.meta.resets=Math.min(player.meta.resets+Math.floor((player.meta[8].bought-req.amount)/req.mult)+1,req.scalingStart)
+			if (player.meta.resets==req.scalingStart) req = getMetaShiftRequirement()
 		}
-		if (player.masterystudies) if (player.masterystudies.includes("t312")) mult--
-		if (player.meta.resets<costStart) {
-			player.meta.resets=Math.min(player.meta.resets+Math.floor((player.meta[8].bought-req.amount)/mult)+1,costStart)
-			if (player.meta.resets==costStart) req = getMetaShiftRequirement()
-		}
-		if (player.meta.resets>=costStart) {
-			mult=20
-			if (player.masterystudies) if (player.masterystudies.includes("t312")&&player.quantum.nanofield.rewards<1) mult--
-			player.meta.resets+=Math.floor((player.meta[8].bought-req.amount)/mult)+1
-		}
+		if (player.meta.resets>=req.scalingStart) player.meta.resets+=Math.floor((player.meta[8].bought-req.amount)/req.mult)+1
+		if (inQC(4) && player.meta.resets > 55) if (player.meta[8].bought>=Math.floor(getMetaShiftRequirement())) player.meta.resets++
 	} else player.meta.resets++
 	if (player.meta.resets>9) giveAchievement("Meta-boosting to the max")
 	player.meta.antimatter = new Decimal(speedrunMilestonesReached>18?1e25:player.achievements.includes("ngpp12")?100:10);
 	clearMetaDimensions();
 	for (let i = 2; i <= 8; i++) if (!canBuyMetaDimension(i)) document.getElementById(i + "MetaRow").style.display = "none"
 	document.getElementById("quantumbtn").style.display="none"
-	return true;
 }
 
 
@@ -301,7 +293,7 @@ function updateMetaDimensions () {
 	}
 	var isMetaShift = player.meta.resets < 4
 	var metaShiftRequirement = getMetaShiftRequirement()
-        document.getElementById("metaResetLabel").textContent = 'Meta-Dimension ' + (isMetaShift ? "Shift" : "Boost") + ' ('+ getFullExpansion(player.meta.resets) +'): requires ' + getFullExpansion(metaShiftRequirement.amount) + " " + DISPLAY_NAMES[metaShiftRequirement.tier] + " Meta Dimensions"
+        document.getElementById("metaResetLabel").textContent = 'Meta-Dimension ' + (isMetaShift ? "Shift" : "Boost") + ' ('+ getFullExpansion(player.meta.resets) +'): requires ' + getFullExpansion(Math.floor(metaShiftRequirement.amount)) + " " + DISPLAY_NAMES[metaShiftRequirement.tier] + " Meta Dimensions"
         document.getElementById("metaSoftReset").textContent = "Reset meta-dimensions for a " + (isMetaShift ? "new dimension" : "boost")
 	if (player.meta[metaShiftRequirement.tier].bought >= metaShiftRequirement.amount) {
 		document.getElementById("metaSoftReset").className = 'storebtn';
@@ -526,12 +518,19 @@ function updateLastTenQuantums() {
 function doQuantumProgress() {
 	document.getElementById("progressbar").className="quantumProgress"
 	var gqk = quarkGain()
-	if (!quantumed || player.meta.antimatter.lt(Decimal.pow(Number.MAX_VALUE, 1.45)) || !player.masterystudies || gqk.lt(2)) {
-		var percentage = Math.min(player.meta.antimatter.max(1).log10() / Decimal.log10(Number.MAX_VALUE) / (player.masterystudies ? 1.45 : 1) * 100, 100).toFixed(2) + "%"
+	var power = player.masterystudies != undefined ? 1.45 : 1
+	var id = 1
+	if (quantumed && power > 1) {
+		if (inQC(0)) {
+			if (player.meta.antimatter.gte(Decimal.pow(Number.MAX_VALUE, power)) && Decimal.gt(gqk, 1)) id = 3
+		} else if (player.money.lt(getQCGoal()) || player.meta.antimatter.gte(Decimal.pow(Number.MAX_VALUE, power))) id = 2
+	}
+	if (id == 1) {
+		var percentage = Math.min(player.meta.antimatter.max(1).log10() / Decimal.log10(Number.MAX_VALUE) / power * 100, 100).toFixed(2) + "%"
 		document.getElementById("progressbar").style.width = percentage
 		document.getElementById("progresspercent").textContent = percentage
 		document.getElementById("progresspercent").setAttribute('ach-tooltip',(player.masterystudies?"Meta-antimatter p":"P")+'ercentage to quantum')
-	} else if (!inQC(0)) {
+	} else if (id == 2) {
 		var percentage = Math.min(player.money.max(1).log10() / getQCGoal() * 100, 100).toFixed(2) + "%"
 		document.getElementById("progressbar").style.width = percentage
 		document.getElementById("progresspercent").textContent = percentage
