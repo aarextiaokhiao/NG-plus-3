@@ -7700,14 +7700,14 @@ slider.oninput = function() {
 }
 
 function dimBoolean() {
-    var name = TIER_NAMES[getShiftRequirement(0).tier]
+    var req = getShiftRequirement(0)
+    var amount = getAmount(req.tier)
     if (!player.autobuyers[9].isOn) return false
     if (player.autobuyers[9].ticks*100 < player.autobuyers[9].interval) return false
-    if (player[name + "Bought"] < getShiftRequirement(0).amount) return false
-    if (getEternitied() < 10 && !player.autobuyers[9].bulkBought && player[name + "Bought"] < getShiftRequirement(player.autobuyers[9].bulk-1).amount) return false
+    if (amount < req.amount) return false
+    if (getEternitied() < 10 && !player.autobuyers[9].bulkBought && amount < getShiftRequirement(player.autobuyers[9].bulk-1).amount) return false
     if (player.overXGalaxies <= player.galaxies) return true
-    if ((player.currentChallenge =="challenge4" || player.currentChallenge == "postc1") && player.autobuyers[9].priority < getShiftRequirement(0).amount && getShiftRequirement(0).tier == 6) return false
-    if (player.autobuyers[9].priority < getShiftRequirement(0).amount && getShiftRequirement(0).tier == 8) return false
+    if (player.autobuyers[9].priority < req.amount && req.tier == ((player.currentChallenge == "challenge4"|| player.currentChallenge == "postc1") ? 6 : 8)) return false
     return true
 }
 

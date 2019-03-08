@@ -1085,7 +1085,7 @@ function quantumReset(force, auto, challid, implode=false) {
 			document.getElementById("electronstabbtn").style.display="none"
 		}
 		if (isRewardEnabled(11)&&isRewardEnabled(4)) player.dilation.upgrades.push(10)
-		else player.quantum.wasted = true
+		else player.quantum.wasted = !isRewardEnabled(11)
 		if (speedrunMilestonesReached>13&&isRewardEnabled(4)) for (i=3;i<7;i++) player.dilation.upgrades.push("ngpp"+i)
 		player.quantum.notrelative = true
 		updateMasteryStudyCosts()

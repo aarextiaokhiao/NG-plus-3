@@ -195,8 +195,8 @@ function hasInfinityMult(tier) {
     }
     
     function getDimensionPowerMultiplier(nonrandom, focusOn) {
-        if (inQC(5)||inQC(7)||(((player.currentChallenge=="challenge13"&&player.tickspeedBoosts==undefined)||player.currentChallenge=="postc1"||player.currentChallenge=="postcngm3_1")&&player.galacticSacrifice!=undefined)) {
-            if (player.masterystudies) if (player.masterystudies.includes("t321")) return "1e430"
+        if (((inQC(5)||inQC(7))&&focusOn!="linear")||(((player.currentChallenge=="challenge13"&&player.tickspeedBoosts==undefined)||player.currentChallenge=="postc1"||player.currentChallenge=="postcngm3_1")&&player.galacticSacrifice!=undefined)) {
+            if (player.masterystudies) if (player.masterystudies.includes("t321")) return new Decimal("1e430")
             return 1
         }
         let dimMult = player.tickspeedBoosts==undefined?2:1
