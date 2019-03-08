@@ -55,7 +55,7 @@ function manualTickspeedBoost() {
 	if (!isTickspeedBoostPossible()) return
 	let req=getTickspeedBoostRequirement()
 	let amount=getAmount(req.tier)
-	if (!amount>=req.amount) return
+	if (!(amount>=req.amount)) return
 	if (player.infinityUpgrades.includes("bulkBoost")) tickspeedBoost(Math.floor((amount-req.amount)/5+1))
 	else tickspeedBoost(1)
 }
