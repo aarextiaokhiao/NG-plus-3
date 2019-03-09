@@ -524,7 +524,29 @@ button {
 	top: 40px;
 	width: 210px;
 	height: 70px;
-    font-size: 11px
+	font-size: 11px
+}
+
+.GHP {
+	position:absolute;
+	left: 75%;
+	top: 120px;
+	width:210px;
+	font-size:12px;
+}
+
+#ghostifybtn {
+	cursor: pointer;
+	position: absolute;
+	left: 75%;
+	top: 160px;
+	width: 210px;
+	height: 70px;
+	font-size: 11px
+}
+
+.GHPAmount {
+	font-weight: bold;
 }
 
 .dimtechdiv {
@@ -685,6 +707,22 @@ button {
 .quantumbtn:hover {
     background: #32c832;
     color: #0a640a;
+}
+
+.ghostifybtn {
+	background: linear-gradient(#0c001e, #3a003f);
+	border: 2px solid transparent;
+	font-family: Typewriter;
+	font-weight: bold;
+	border-radius: 4px;
+	transition-duration: 0.2s;
+	animation: ghostifytext 4s linear infinite
+}
+
+.ghostifybtn:hover {
+	border-color: rgba(255,255,255,0.5);
+	box-shadow: inset 0px 0px 12px 0px #ffffff;
+	cursor: pointer
 }
 
 #galaxyPoints { color: #4169E1 !important; }
@@ -2025,6 +2063,43 @@ br {
 	color: #00001f;
 	cursor: pointer
 }
+.bigripbtn {
+	width:150px;
+	height: 30px;
+	color: black;
+	background: #2d7233;
+	font-weight: bold;
+	font-family: Typewriter;
+	border: 3px solid #5be567;
+	cursor: pointer;
+	border-radius: 10px;
+	color: #5be567;
+	font-size: 140%;
+	transition-duration: 0.2s;
+	margin: auto;
+	box-shadow: inset 0px 0px 10px 0px #5be567, inset 0px 0px 20px 0px #5be567, inset 0px 0px 30px 0px #5be567
+}
+.bigripbtn:hover {
+	background: #a0e5a6;
+	color: #6b996e
+}
+.gluonupgrade.bigrip {
+	background: #2d7233;
+	border: 3px solid #5be567;
+	color: #5be567;
+	box-shadow: inset 0px 0px 10px 0px #5be567, inset 0px 0px 20px 0px #5be567, inset 0px 0px 30px 0px #5be567
+}
+.gluonupgrade.bigrip:hover {
+	background: #a0e5a6;
+	color: #6b996e;
+	cursor: pointer
+}
+.gluonupgradebought.bigrip {
+	background: #a0e5a6;
+	border: 3px solid #6b996e;
+	color: #1f1f1f;
+	box-shadow: inset 0px 0px 10px 0px #6b996e, inset 0px 0px 20px 0px #6b996e, inset 0px 0px 30px 0px #6b996e
+}
 
 @media print,
 screen and (max-width: 960px) {
@@ -2302,4 +2377,19 @@ screen and (max-width: 480px) {
     0%  {box-shadow: inset 0px 0px 90px 0px #4c4c4c;}
     50% {box-shadow: inset 0px 0px 120px 0px #4c4c4c;}
     100% {box-shadow: inset 0px 0px 90px 0px #4c4c4c;}
+}
+
+@keyframes ghostifytext { 
+	0%{
+		color: #e900ff;
+		text-shadow: 0px 0px 3px #e900ff, 0px 0px 6px #ffffff;
+	}
+	50% {
+		color: #6a00ff;
+		text-shadow: 0px 0px 6px #6a00ff, 0px 0px 6px #ffffff;
+	}
+	100%{
+		color: #e900ff;
+		text-shadow: 0px 0px 3px #e900ff, 0px 0px 6px #ffffff;
+	}
 }

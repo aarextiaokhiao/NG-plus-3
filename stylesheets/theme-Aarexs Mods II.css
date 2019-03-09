@@ -468,6 +468,40 @@ button, div.storebtn {
 	color: #191919 !important;
 	box-shadow: 1px 2px rgba(229,229,229,0.4)
 }
+
+#dilstudy14.dilationupgbought, .bigripbtn, .gluonupgradebought.bigrip {
+	background-color: #5be567 !important;
+	color: #191919 !important;
+	box-shadow: 1px 2px rgba(229,229,229,0.4)
+}
+
+#dilstudy14.dilationupg, .bigripbtn:hover, .gluonupgrade.bigrip {
+	background-color: #7ee586 !important;
+	color: #191919 !important;
+	box-shadow: 1px 2px rgba(229,229,229,0.4)
+}
+
+#dilstudy14.dilationupg:hover, .gluonupgrade.bigrip:hover {
+	background-color: #a0e5a6 !important
+}
+
+#spaceShards {
+	color: #5be567 !important
+}
+
+.ghostifybtn {
+	border-color: transparent !important;
+	box-shadow: inset 0px 0px 12px 0px none, 1px 2px rgba(229,229,229,0.4)
+}
+
+.ghostifybtn:hover {
+	border-color: rgba(255,255,255,0.5) !important;
+	box-shadow: inset 0px 0px 12px 0px #ffffff, 1px 2px rgba(229,229,229,0.4)
+}
+
+.GHPAmount {
+	animation: ghostifytext 4s linear infinite
+}
 				
 @keyframes rg {
 	0% {color: #e50000}

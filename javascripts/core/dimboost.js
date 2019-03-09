@@ -205,6 +205,7 @@ function softReset(bulk) {
       quantum: player.quantum,
       old: player.old,
       dontWant: player.dontWant,
+      ghostify: player.ghostify,
       aarexModifications: player.aarexModifications
   };
   if (player.currentChallenge == "challenge10" || player.currentChallenge == "postc1") {

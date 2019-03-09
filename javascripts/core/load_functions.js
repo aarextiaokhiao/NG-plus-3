@@ -697,6 +697,8 @@ if (player.version < 5) {
                   current: 0,
                   completed: 0,
                   completions: {},
+                  fastest: {},
+                  pc68best: 0,
                   respec: false
               }
               player.quantum.pairedChallenges.completions = {}
@@ -757,6 +759,40 @@ if (player.version < 5) {
                       upgrades: {}
                   },
                   upgrades: {}
+              }
+              player.quantum.bigRip = {
+                  active: false,
+                  conf: true,
+                  times: 0,
+                  bestThisRun: 0,
+                  bestAntimatter: 0,
+                  spaceShards: 0,
+                  upgrades: []
+              }
+              player.quantum.breakEternity = {
+                  unlocked: false,
+                  break: false,
+                  eternalMatter: 0,
+                  upgrades: [],
+                  epMultPower: 0
+              }
+              player.ghostify = {
+                  times: 0,
+                  time: 0,
+                  best: 9999999999,
+                  last10: [[600*60*24*31, 0], [600*60*24*31, 0], [600*60*24*31, 0], [600*60*24*31, 0], [600*60*24*31, 0], [600*60*24*31, 0], [600*60*24*31, 0], [600*60*24*31, 0], [600*60*24*31, 0], [600*60*24*31, 0]],
+                  milestones: 0,
+                  disabledRewards: {},
+                  ghostParticles: 0,
+                  multPower: 1,
+                  neutrinos: {
+                      electron: 0,
+                      mu: 0,
+                      tau: 0,
+                      generationGain: 1,
+                      multPower: 1,
+                      upgrades: []
+                  }
               }
           }
           player.dilation.upgrades=migratedUpgrades
@@ -1064,7 +1100,46 @@ if (player.version < 5) {
       player.quantum.tod.g.gainDiv = Decimal.div(player.quantum.tod.g.gainDiv, 1e30)
       player.quantum.tod.b.gainDiv = Decimal.div(player.quantum.tod.b.gainDiv, 1e30)
   }
-  if (player.aarexModifications.newGame3PlusVersion < 1.99972) player.aarexModifications.newGame3PlusVersion = 1.99972
+  if (player.aarexModifications.newGame3PlusVersion < 2) {
+      player.quantum.pairedChallenges.fastest = {}
+      player.quantum.pairedChallenges.pc68best = 0
+      player.quantum.bigRip = {
+          active: false,
+          conf: true,
+          times: 0,
+          bestThisRun: 0,
+          bestAntimatter: 0,
+          totalAntimatter: 0,
+          spaceShards: 0,
+          upgrades: []
+      }
+      player.quantum.breakEternity = {
+          unlocked: false,
+          break: false,
+          eternalMatter: 0,
+          upgrades: [],
+          epMultPower: 0
+      }
+      player.ghostify = {
+          times: 0,
+          time: 0,
+          best: 9999999999,
+          last10: [[600*60*24*31, 0], [600*60*24*31, 0], [600*60*24*31, 0], [600*60*24*31, 0], [600*60*24*31, 0], [600*60*24*31, 0], [600*60*24*31, 0], [600*60*24*31, 0], [600*60*24*31, 0], [600*60*24*31, 0]],
+          milestones: 0,
+          disabledRewards: {},
+          ghostParticles: 0,
+          multPower: 1,
+          neutrinos: {
+              electron: 0,
+              mu: 0,
+              tau: 0,
+              generationGain: 1,
+              multPower: 1,
+              upgrades: []
+          }
+      }
+      player.aarexModifications.newGame3PlusVersion = 2
+  }
   if (player.masterystudies) {
       if (player.meta.bestOverQuantums === undefined) player.meta.bestOverQuantums = player.meta.bestAntimatter
       if (player.quantum.autoOptions === undefined) player.quantum.autoOptions = {} //temp
@@ -1387,6 +1462,7 @@ if (player.version < 5) {
   document.getElementById("eternityconf").style.display = (player.eternities !== 0 || quantumed) ? "inline-block" : "none"
   document.getElementById("dilationConfirmBtn").style.display = (player.dilation.studies.includes(1) || quantumed) ? "inline-block" : "none"
   document.getElementById("quantumConfirmBtn").style.display = quantumed ? "inline-block" : "none"
+  document.getElementById("bigRipConfirmBtn").style.display = (player.masterystudies === undefined ? false : player.quantum.bigRip.times) ? "inline-block" : "none"
 
   document.getElementById("confirmation").checked = !player.options.sacrificeConfirmation
   document.getElementById("sacConfirmBtn").textContent = "Sacrifice confirmation: O" + (player.options.sacrificeConfirmation ? "N" : "FF")
@@ -1397,6 +1473,7 @@ if (player.version < 5) {
   document.getElementById("dilationConfirmBtn").textContent = "Dilation confirmation: O" + (player.aarexModifications.dilationConf ? "N" : "FF")
   document.getElementById("exdilationConfirmBtn").textContent = "Reverse dilation confirmation: O" + (player.options.exdilationConfirm ? "N" : "FF")
   document.getElementById("quantumConfirmBtn").textContent = "Quantum confirmation: O" + (player.aarexModifications.quantumConf ? "N" : "FF")
+  document.getElementById("bigRipConfirmBtn").textContent = "Big Rip confirmation: O" + ((player.masterystudies === undefined ? false : player.quantum.bigRip.conf) ? "N" : "FF")
 
   document.getElementById("progressBarBtn").textContent = (player.aarexModifications.progressBar?"Hide":"Show")+" progress bar"
   document.getElementById("toggleLogRateChange").textContent = "Logarithm rate: O"+(player.aarexModifications.logRateChange?"N":"FF")
@@ -1632,6 +1709,7 @@ if (player.version < 5) {
   updateQuantumChallenges()
   updateQCTimes()
   updatePCCompletions()
+  if (player.masterystudies !== undefined) document.getElementById("bpc68").textContent = shortenMoney(player.quantum.pairedChallenges.pc68best)
   maybeShowFillAll()
   updateReplicants()
   updateTODStuff()
@@ -1789,7 +1867,7 @@ function change_save(id) {
   changeSaveDesc(metaSave.current, savePlacement)
 
   $.notify("Save #"+savePlacement+" loaded", "info")
-  localStorage.setItem("AD_aarexModifications",btoa(JSON.stringify(metaSave)))
+  localStorage.setItem("AD_aarexModifications_ghostify",btoa(JSON.stringify(metaSave)))
 }
 
 function rename_save(id) {
@@ -1831,7 +1909,7 @@ function export_save(id) {
 	let parent = output.parentElement
 
 	parent.style.display = ""
-	output.value = localStorage.getItem(btoa("dsAM_"+id))
+	output.value = localStorage.getItem(btoa("dsAM_ghostify_"+id))
 
 	output.onblur = function() {
 		parent.style.display = "none"
@@ -1865,7 +1943,7 @@ function move(id,offset) {
 	document.getElementById("saves").rows[placement+offset].innerHTML=getSaveLayout(id)
 	changeSaveDesc(metaSave.saveOrder[placement], placement+1)
 	changeSaveDesc(id, placement+offset+1)
-	localStorage.setItem("AD_aarexModifications",btoa(JSON.stringify(metaSave)))
+	localStorage.setItem("AD_aarexModifications_ghostify",btoa(JSON.stringify(metaSave)))
 }
 
 function delete_save(saveId) {
@@ -1878,7 +1956,7 @@ function delete_save(saveId) {
 	for (orderId=0;orderId<metaSave.saveOrder.length;orderId++) {
 		if (alreadyDeleted) changeSaveDesc(metaSave.saveOrder[orderId], orderId)
 		if (metaSave.saveOrder[orderId]==saveId) {
-			localStorage.removeItem(btoa("dsAM_"+saveId))
+			localStorage.removeItem(btoa("dsAM_ghostify_"+saveId))
 			alreadyDeleted=true
 			document.getElementById("saves").deleteRow(orderId)
 			if (savePlacement>orderId+1) savePlacement--
@@ -1889,7 +1967,7 @@ function delete_save(saveId) {
 	if (metaSave.current==saveId) {
 		change_save(metaSave.saveOrder[0])
 		document.getElementById("loadmenu").style.display="block"
-	} else localStorage.setItem("AD_aarexModifications",btoa(JSON.stringify(metaSave)))
+	} else localStorage.setItem("AD_aarexModifications_ghostify",btoa(JSON.stringify(metaSave)))
 	$.notify("Save deleted", "info")
 }
 
@@ -1902,7 +1980,7 @@ function new_game(id) {
 	metaSave.current=1
 	while (metaSave.saveOrder.includes(metaSave.current)) metaSave.current++
 	metaSave.saveOrder.push(metaSave.current)
-	localStorage.setItem("AD_aarexModifications",btoa(JSON.stringify(metaSave)))
+	localStorage.setItem("AD_aarexModifications_ghostify",btoa(JSON.stringify(metaSave)))
 	changeSaveDesc(oldId, savePlacement)
 	latestRow=document.getElementById("saves").insertRow(loadedSaves)
 	latestRow.innerHTML=getSaveLayout(metaSave.current)
@@ -1914,7 +1992,7 @@ function new_game(id) {
 	startInterval()
 	
 	$.notify("Save created", "info")
-	localStorage.setItem("AD_aarexModifications",btoa(JSON.stringify(metaSave)))
+	localStorage.setItem("AD_aarexModifications_ghostify",btoa(JSON.stringify(metaSave)))
 	closeToolTip()
 	showDimTab('antimatterdimensions')
 	showStatsTab('stats')
@@ -2149,6 +2227,18 @@ function transformSaveToDecimal() {
           }
       }
   }
+  if (player.ghostify) {
+      player.quantum.pairedChallenges.pc68best = new Decimal(player.quantum.pairedChallenges.pc68best)
+      player.quantum.bigRip.bestThisRun = new Decimal(player.quantum.bigRip.bestThisRun)
+      player.quantum.bigRip.bestAntimatter = new Decimal(player.quantum.bigRip.bestAntimatter)
+      player.quantum.bigRip.totalAntimatter = new Decimal(player.quantum.bigRip.totalAntimatter)
+      player.quantum.bigRip.spaceShards = new Decimal(player.quantum.bigRip.spaceShards)
+      player.quantum.breakEternity.eternalMatter = new Decimal(player.quantum.breakEternity.eternalMatter)
+      player.ghostify.ghostParticles = new Decimal(player.ghostify.ghostParticles)
+      player.ghostify.neutrinos.electron = new Decimal(player.ghostify.neutrinos.electron)
+      player.ghostify.neutrinos.mu = new Decimal(player.ghostify.neutrinos.mu)
+      player.ghostify.neutrinos.tau = new Decimal(player.ghostify.neutrinos.tau)
+  }
 }
 
 
@@ -2189,19 +2279,19 @@ function loadAutoBuyerSettings() {
 }
 
 function set_save(id, value) {
-	localStorage.setItem(btoa('dsAM_'+id), btoa(JSON.stringify(value, function(k, v) { return (v === Infinity) ? "Infinity" : v; })));
+	localStorage.setItem(btoa('dsAM_ghostify_'+id), btoa(JSON.stringify(value, function(k, v) { return (v === Infinity) ? "Infinity" : v; })));
 }
 
 function get_save(id) {
     try {
-        var dimensionSave = localStorage.getItem(btoa('dsAM_'+id))
+        var dimensionSave = localStorage.getItem(btoa('dsAM_ghostify_'+id))
         if (dimensionSave !== null) dimensionSave = JSON.parse(atob(dimensionSave, function(k, v) { return (v === Infinity) ? "Infinity" : v; }))
         return dimensionSave
     } catch(e) { }
 }
 
 function initiateMetaSave() {
-	metaSave = localStorage.getItem('AD_aarexModifications')
+	metaSave = localStorage.getItem('AD_aarexModifications_ghostify')
 	if (metaSave == null) metaSave = {presetsOrder:[], version:2}
 	else metaSave = JSON.parse(atob(metaSave))
 	if (metaSave.current == undefined) {
@@ -2224,14 +2314,14 @@ function migrateOldSaves() {
 				for (id=0;id<3;id++) {
 					if (ngSave.saves[id] != null) {
 						metaSave.saveOrder.push(1+id)
-						localStorage.setItem(btoa('dsAM_'+(1+id)), btoa(JSON.stringify(ngSave.saves[id], function(k, v) { return (v === Infinity) ? "Infinity" : v; })));
+						localStorage.setItem(btoa('dsAM_ghostify_'+(1+id)), btoa(JSON.stringify(ngSave.saves[id], function(k, v) { return (v === Infinity) ? "Infinity" : v; })));
 					}
 				}
 				if (!metaSave.newGameMinus) metaSave.current=1+ngSave.currentSave
 			} else {
 				if (!metaSave.newGameMinus) metaSave.current=1
 				metaSave.saveOrder.push(1)
-				localStorage.setItem(btoa('dsAM_1'), btoa(JSON.stringify(ngSave, function(k, v) { return (v === Infinity) ? "Infinity" : v; })));
+				localStorage.setItem(btoa('dsAM_ghostify_1'), btoa(JSON.stringify(ngSave, function(k, v) { return (v === Infinity) ? "Infinity" : v; })));
 			}
 		}
 		localStorage.removeItem('dimensionSave_aarexModifications')
@@ -2242,14 +2332,14 @@ function migrateOldSaves() {
 				for (id=0;id<3;id++) {
 					if (ngmSave.saves[id] != null) {
 						metaSave.saveOrder.push(4+id)
-						localStorage.setItem(btoa('dsAM_'+(4+id)), btoa(JSON.stringify(ngmSave.saves[id], function(k, v) { return (v === Infinity) ? "Infinity" : v; })));
+						localStorage.setItem(btoa('dsAM_ghostify_'+(4+id)), btoa(JSON.stringify(ngmSave.saves[id], function(k, v) { return (v === Infinity) ? "Infinity" : v; })));
 					}
 				}
 				if (metaSave.newGameMinus) metaSave.current=4+ngmSave.currentSave
 			} else {
 				if (metaSave.newGameMinus) metaSave.current=4
 				metaSave.saveOrder.push(4)
-				localStorage.setItem(btoa('dsAM_4'), btoa(JSON.stringify(ngmSave, function(k, v) { return (v === Infinity) ? "Infinity" : v; })));
+				localStorage.setItem(btoa('dsAM_ghostify_4'), btoa(JSON.stringify(ngmSave, function(k, v) { return (v === Infinity) ? "Infinity" : v; })));
 			}
 		}
 		localStorage.removeItem('dimensionSave_NGM')
@@ -2261,7 +2351,7 @@ function migrateOldSaves() {
 			var studyTreePreset=localStorage.getItem("studyTree"+id)
 			if (studyTreePreset !== null) {
 				metaSave.presetsOrder.push(id)
-				localStorage.setItem(btoa("dsAM_ST_"+id),btoa(JSON.stringify({preset:studyTreePreset})))
+				localStorage.setItem(btoa("dsAM_ghostify_ST_"+id),btoa(JSON.stringify({preset:studyTreePreset})))
 				localStorage.removeItem("studyTree"+id)
 			}
 		}

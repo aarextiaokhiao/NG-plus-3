@@ -67,6 +67,10 @@
                 <div id="quantumbtnPeak" class="hideEmpty"></div>
             </button>
         </div>
+        <!--<div style="position: relative">
+            <div class="GHP" id="ghostparticles">You have <span class='GHPAmount'>0</span> Ghost Particles.</div>
+            <button id="ghostifybtn" class="ghostifybtn">My life is not over... I need to become a ghost.</button>
+        </div>-->
         <div id='quantumBlock' style='height:120px'></div>
         <div id="matter"></div>
         <div id="chall13Mult"></div>
@@ -96,6 +100,7 @@
             <button id="infinitybtn" style="font-family: Typewriter; font-size: 20px; display: none" class="infinitybtn">Infinity</button>
             <button id="eternitystorebtn" style="font-family: Typewriter; font-size: 20px; display: none" class="eternitytabbtn">Eternity</button>
             <button id="quantumtabbtn" style="font-family: Typewriter; font-size: 20px; display: none" class="quantumbtn" onclick='showTab("quantumtab")'>Quantum</button>
+            <!--<button id="ghostifytabbtn" style="font-family: Typewriter; font-size: 20px" class="ghostifybtn" onclick='showTab("ghostify")'>Ghostify</button>-->
         </div>
         <div id="emptiness" class="tab" style="font-size: 150%">
             <br>
@@ -563,6 +568,7 @@
                 <table class="table" id="studytable">
                     <tr>
                         <td><button class="timestudylocked" id="dilstudy13" onclick='buyMasteryStudy("d", 13)'>Unlock Tree of Decay<br><span id="ds13Cost"></span><br>Requirement: 16 rewards</button></td>
+                        <td><button class="timestudylocked" id="dilstudy14" onclick='buyMasteryStudy("d", 14)'>Unlock Big Rip<br><span id="ds14Cost"></span></button></td>
                     </tr>
                 </table>
                 </div>
@@ -1662,6 +1668,9 @@
             <div id="stats" class="statstab">
                 <div id='brfilter'><br></div>
                 <div id="totalmoney">You have made x antimatter.</div>
+                <div id="bestmoneythisrip"></div>
+                <div id="bestmoneybigrip"></div>
+                <div id="totalmoneybigrip"></div>
                 <div id="totalresets">You have made x dimensional boosts/shifts.</div>
                 <div id="boosts"></div>
                 <div id="galaxies">You have made x Antimatter galaxies.</div>
@@ -1669,6 +1678,7 @@
                 <br>
                 <div id="quantumStatistics">
                     <div id="quantumed"></div>
+                    <div id="bigRipped"></div>
                     <div id="bestQuantum"></div>
                     <div id="thisQuantum"></div>
                     <br>
@@ -1771,6 +1781,7 @@
                 <br>
                 Lowest PC # done w/ every combination of PCs:
                 <table id="pccompletionstable"></table>
+				Best PC w/ QC6 & 8: <span id="bpc68"></span><br>
 				Unique PC completions: <span id="upcc"></span> / 28<br>
 				Ranking: <span id="pccranking"></span> / 100
             </div>
@@ -3282,6 +3293,7 @@
                                 <br>
                                 <div class="outer">
                                     <button id="pc1" class="challengesbtn" onclick="quantum(false, true, 9)">Assign</button>
+                                    <button id="pc1br" class="challengesbtn" onclick="quantum(false, true, 9, true)">Big Rip</button>
                                     <br>
                                     <span id="pc1cost"></span><br>
                                     <span id="pc1goal"></span><br>
@@ -3296,6 +3308,7 @@
                                 <br>
                                 <div class="outer">
                                     <button id="pc2" class="challengesbtn" onclick="quantum(false, true, 10)">Assign</button>
+                                    <button id="pc2br" class="challengesbtn" onclick="quantum(false, true, 10, true)">Big Rip</button>
                                     <br>
                                     <span id="pc2cost"></span><br>
                                     <span id="pc2goal"></span><br>
@@ -3312,6 +3325,7 @@
                                 <br>
                                 <div class="outer">
                                     <button id="pc3" class="challengesbtn" onclick="quantum(false, true, 11)">Assign</button>
+                                    <button id="pc3br" class="challengesbtn" onclick="quantum(false, true, 11, true)">Big Rip</button>
                                     <br>
                                     <span id="pc3cost"></span><br>
                                     <span id="pc3goal"></span><br>
@@ -3326,6 +3340,7 @@
                                 <br>
                                 <div class="outer">
                                     <button id="pc4" class="challengesbtn" onclick="quantum(false, true, 12)">Assign</button>
+                                    <button id="pc4br" class="challengesbtn" onclick="quantum(false, true, 12, true)">Big Rip</button>
                                     <br>
                                     <span id="pc4cost"></span><br>
                                     <span id="pc4goal"></span><br>
@@ -3335,6 +3350,30 @@
                         </td>
                     </tr>
                 </table>
+                <div id="bigrip">
+                    To big rip the universe, you have to assign a PC with QC6 & 8 first.<br>
+                    You have <span id="spaceShards" style="font-size:35px">0</span> Space Shards.
+                    <table class="table" align="center" style="margin: auto">
+                        <tr>
+                            <td><button class='gluonupgrade unavailablebtn' id="bigripupg1" style='font-size: 10px' onclick='buyBigRipUpg(1)'>Infinity Points boost Normal Dimensions if you have less than 100,000 eternities.<br>Cost: <span id="bigripupg1cost">???</span> Space Shards</button></td>
+                            <td><button class='gluonupgrade unavailablebtn' id="bigripupg2" onclick='buyBigRipUpg(2)'>???<br>Cost: <span id="bigripupg2cost">???</span> Space Shards</button></td>
+                            <td><button class='gluonupgrade unavailablebtn' id="bigripupg3" onclick='buyBigRipUpg(3)'>???<br>Cost: <span id="bigripupg3cost">???</span> Space Shards</button></td>
+                            <td><button class='gluonupgrade unavailablebtn' id="bigripupg4" onclick='buyBigRipUpg(4)'>???<br>Cost: <span id="bigripupg4cost">???</span> Space Shards</button></td>
+                        </tr>
+                        <tr>
+                            <td><button class='gluonupgrade unavailablebtn' id="bigripupg5" onclick='buyBigRipUpg(5)'>???<br>Cost: <span id="bigripupg5cost">???</span> Space Shards</button></td>
+                            <td><button class='gluonupgrade unavailablebtn' id="bigripupg6" onclick='buyBigRipUpg(6)'>???<br>Cost: <span id="bigripupg6cost">???</span> Space Shards</button></td>
+                            <td><button class='gluonupgrade unavailablebtn' id="bigripupg7" onclick='buyBigRipUpg(7)'>???<br>Cost: <span id="bigripupg7cost">???</span> Space Shards</button></td>
+                            <td><button class='gluonupgrade unavailablebtn' id="bigripupg8" onclick='buyBigRipUpg(8)'>???<br>Cost: <span id="bigripupg8cost">???</span> Space Shards</button></td>
+                        </tr>
+                        <tr>
+                            <td><button class='gluonupgrade unavailablebtn' id="bigripupg9" onclick='buyBigRipUpg(9)'>???<br>Cost: <span id="bigripupg9cost">???</span> Space Shards</button></td>
+                            <td><button class='gluonupgrade unavailablebtn' id="bigripupg10" onclick='buyBigRipUpg(10)'>???<br>Cost: <span id="bigripupg10cost">???</span> Space Shards</button></td>
+                            <td><button class='gluonupgrade unavailablebtn' id="bigripupg11" onclick='buyBigRipUpg(11)'>???<br>Cost: <span id="bigripupg11cost">???</span> Space Shards</button></td>
+                            <td><button class='gluonupgrade unavailablebtn' id="bigripupg12" onclick='buyBigRipUpg(12)'>???<br>Cost: <span id="bigripupg12cost">???</span> Space Shards</button></td>
+                        </tr>
+                    </table>
+                </div>
             </div>
             <table id="footer">
                 <tr>
@@ -4375,6 +4414,26 @@
 				</table>
 			</div>
 		</div>
+		<!--<div class='tab' id='ghostify'>
+			<table class="table" align="center" style="margin: auto">
+				<tr>
+					<td><button class="secondarytabbtn">Neutrinos</button></td>
+				</tr>
+			</table>
+			<div id="footercontainer">
+				<table id="footer">
+					<tr>
+						<td>
+							<div style="text-align:center">
+								<a href="howto.html" target="_newtab">How to play  </a> |
+								<a href="about.html" onclick="giveAchievement('A sound financial decision')" target="_newtab">About   </a> |
+								<a href="changelog/" target="_newtab">Changelog   </a>
+							</div>
+						</td>
+					</tr>
+				</table>
+			</div>
+		</div>-->
     </div>
     <div class="popup" id="challfail">
         <div id="failPopup">You failed the challenge, you will now exit it.</div>
@@ -4448,6 +4507,7 @@
         <button id="dilationConfirmBtn" class="storebtn" onclick="toggleDilaConf()" style="width: 200px; height: 45px; font-size: 12px" style="display: inline"></button>
         <button id="exdilationConfirmBtn" class="storebtn" onclick="toggleExdilaConf()" style="width: 200px; height: 45px; font-size: 12px" style="display: inline"></button>
         <button id="quantumConfirmBtn" class="storebtn" onclick="toggleQuantumConf()" style="width: 200px; height: 45px; font-size: 12px" style="display: inline"></button>
+        <button id="bigRipConfirmBtn" class="storebtn" onclick="toggleBigRipConf()" style="width: 200px; height: 45px; font-size: 12px" style="display: inline"></button>
 	</div>
 	<div class="popup optionmenu" id="notationmenu" style="overflow-y:hidden; width: 450px">
 		<button class="closebtn storebtn" onclick="closeToolTip()">&times;</button>

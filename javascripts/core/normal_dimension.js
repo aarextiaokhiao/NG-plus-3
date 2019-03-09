@@ -110,6 +110,7 @@ function getDimensionFinalMultiplier(tier) {
       if (multiplier.lt(1)) multiplier = new Decimal(1)
   }
   if (player.masterystudies != undefined) if (player.dilation.active) multiplier = multiplier.pow(getNanofieldRewardEffect(5))
+  if (isBigRipUpgradeActive(1)) multiplier = multiplier.times(player.infinityPoints.max(1))
   return multiplier;
 }
 

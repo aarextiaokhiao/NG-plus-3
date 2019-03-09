@@ -478,6 +478,36 @@ strong { color: #0072e5 }
 	background-color: #0000e5 !important;
 	color: #191919 !important
 }
+#dilstudy14.dilationupg, .gluonupgrade.bigrip {
+	border: 1px solid #5be567 !important;
+	color: #e5e5e5 !important;
+	box-shadow: none !important
+}
+.bigripbtn {
+	border: 3px solid #5be567 !important;
+	color: #e5e5e5 !important;
+	box-shadow: none !important
+}
+#dilstudy14.dilationupg:hover, #dilstudy14.dilationupgbought, .bigripbtn:hover:hover, .gluonupgrade.bigrip:hover, .gluonupgradebought.bigrip {
+	background-color: #5be567 !important;
+	color: #191919 !important;
+	box-shadow: none !important
+}
+#dilstudy14.dilationupgbought, .gluonupgradebought.bigrip {
+	border: 1px solid #191919 !important
+}
+#spaceShards {
+	color: #5be567 !important
+}
+.ghostifybtn {
+	border-color: transparent !important
+}
+.ghostifybtn:hover {
+	border-color: rgba(255,255,255,0.5) !important
+}
+.GHPAmount {
+	animation: ghostifytext 4s linear infinite
+}
 .notifyjs-bootstrap-info {
     background-color: #0072e5;
     font-family:'Inconsolata', monospace;

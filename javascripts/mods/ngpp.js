@@ -399,7 +399,8 @@ function replicantiGalaxyBulkModeToggle() {
 
 // v2.9
 quantumed = false
-function quantum(auto,force,challid) {
+function quantum(auto, force, challid, bigRip) {
+    if (player.masterystudies !== undefined) if (!auto && !force && player.quantum.bigRip.active) force = true
 	if (!(isQuantumReached()||force)||implosionCheck) return
 	var headstart = player.aarexModifications.newGamePlusVersion > 0 && !player.masterystudies
 	if (player.aarexModifications.quantumConf&&!(auto||force)) if (!confirm(player.masterystudies?"Quantum will reset everything eternity resets, and "+(headstart?"also some other things like dilation":"also time studies, eternity challenges, dilation, "+(player.masterystudies?"meta dimensions, and mastery studies":"and meta dimensions"))+". You will gain a quark and unlock various upgrades.":"But wait! Quantum will erases almost everything that you have and rewards nothing! However, this is not a win. You need to reach real Infinite antimatter to win! (it's impossible)")) return
@@ -414,6 +415,14 @@ function quantum(auto,force,challid) {
 			if (abletostart) {
 				if (pc>0) if (player.quantum.pairedChallenges.completed+1<pc) return
 				if (player.quantum.electrons.amount.lt(getQCCost(challid))||!inQC(0)) return
+				if (bigRip) {
+					var qc1 = player.quantum.pairedChallenges.order[pc][0]
+					var qc2 = player.quantum.pairedChallenges.order[pc][1]
+					var qc1st = Math.min(qc1, qc2)
+					var qc2st = Math.max(qc1, qc2)
+					if (qc1st != 6 || qc2st != 8) return
+					if (!confirm("Big ripping the universe starts PC6+8 with only quantum stuff. NOTE: If you can beat PC6+8, you will earn a grand reward.")) return
+				}
 				if (player.options.challConf || QCIntensity(1) == 0) if (!confirm("You will do a quantum reset but you will not gain quarks, and keep your electrons & sacrificed galaxies, and you can't buy electron upgrades. You have to reach the set goal of antimatter to complete this challenge. NOTE: Electrons and banked eternities do nothing in quantum challenges and your electrons and sacrificed galaxies do not reset until you end the challenge.")) return
 				player.quantum.electrons.amount=player.quantum.electrons.amount.sub(getQCCost(challid))
 			} else if (pcFocus&&pc<1) {
@@ -442,12 +451,12 @@ function quantum(auto,force,challid) {
 		implosionCheck=1
 		dev.implode()
 		setTimeout(function(){
-			quantumReset(force, auto, challid, true)
+			quantumReset(force, auto, challid, bigRip, true)
 		},1000)
 		setTimeout(function(){
 			implosionCheck=0
 		},2000)
-	} else quantumReset(force, auto, challid)
+	} else quantumReset(force, auto, challid, bigRip)
 }
 
 function isQuantumReached() {
@@ -557,7 +566,7 @@ function checkUniversalHarmony() {
 }
 
 //v2.90142
-function quantumReset(force, auto, challid, implode=false) {
+function quantumReset(force, auto, challid, bigRip, implode=false) {
 	var headstart = player.aarexModifications.newGamePlusVersion > 0 && !player.masterystudies
 	var pc=challid-8
 	if (implode && speedrunMilestonesReached < 1) {
@@ -625,7 +634,7 @@ function quantumReset(force, auto, challid, implode=false) {
 		if (!inQC(4)) if (player.meta.resets<1) giveAchievement("Infinity Morals")
 		if (player.dilation.rebuyables[1] + player.dilation.rebuyables[2] + player.dilation.rebuyables[3] + player.dilation.rebuyables[4] < 1 && player.dilation.upgrades.length < 1) giveAchievement("Never make paradoxes!")
 	}
-	var oheHeadstart = speedrunMilestonesReached > 0
+	var oheHeadstart = speedrunMilestonesReached > 0 && !bigRip
 	var oldTime = player.quantum.time
 	player.quantum.time=0
 	document.getElementById("quarks").innerHTML="You have <b class='QKAmount'>"+shortenDimensions(player.quantum.quarks)+"</b> quark"+(player.quantum.quarks.lt(2)?".":"s.")
@@ -642,6 +651,13 @@ function quantumReset(force, auto, challid, implode=false) {
 	if (player.tickspeedBoosts !== undefined) player.tickspeedBoosts = 0
 	if (player.achievements.includes("r104")) player.infinityPoints = new Decimal(2e25);
 	else player.infinityPoints = new Decimal(0);
+	if (player.masterystudies !== undefined) {
+		if (player.quantum.bigRip.active && force) player.quantum.bigRip.spaceShards = player.quantum.bigRip.spaceShards.add(getSpaceShardsGain()).round()
+		else if (inQC(6) && inQC(8) && player.money.gt(player.quantum.pairedChallenges.pc68best)) {
+			player.quantum.pairedChallenges.pc68best = player.money
+			document.getElementById("bpc68").textContent = shortenMoney(player.money)
+		}
+	}
 	player = {
 		money: new Decimal(10),
 		tickSpeedCost: new Decimal(1000),
@@ -734,11 +750,11 @@ function quantumReset(force, auto, challid, implode=false) {
 		postC4Tier: 0,
 		postC3Reward: new Decimal(1),
 		eternityPoints: new Decimal(0),
-		eternities: headstart ? player.eternities : speedrunMilestonesReached > 17 ? 1e13 : oheHeadstart ? 2e4 : 0,
+		eternities: headstart ? player.eternities : speedrunMilestonesReached > 17 && !bigRip ? 1e13 : oheHeadstart ? 2e4 : 0,
 		eternitiesBank: player.masterystudies ? player.eternitiesBank + bankedEterGain : undefined,
 		thisEternity: 0,
 		bestEternity: headstart ? player.bestEternity : 9999999999,
-		eternityUpgrades: isRewardEnabled(3) ? [1,2,3,4,5,6] : [],
+		eternityUpgrades: isRewardEnabled(3) && !bigRip ? [1,2,3,4,5,6] : [],
 		epmult: new Decimal(1),
 		epmultCost: new Decimal(500),
 		infDimensionsUnlocked: [false, false, false, false, false, false, false, false],
@@ -868,7 +884,7 @@ function quantumReset(force, auto, challid, implode=false) {
 			galaxybuyer: oheHeadstart ? player.replicanti.galaxybuyer : undefined,
 			auto: oheHeadstart ? player.replicanti.auto : [false, false, false]
 		},
-		timestudy: isRewardEnabled(11) ? player.timestudy : {
+		timestudy: isRewardEnabled(11) && !bigRip ? player.timestudy : {
 			theorem: 0,
 			amcost: new Decimal("1e20000"),
 			ipcost: new Decimal(1),
@@ -897,15 +913,15 @@ function quantumReset(force, auto, challid, implode=false) {
 		dimlife: true,
 		dead: true,
 		dilation: {
-			studies: isRewardEnabled(4) ? (speedrunMilestonesReached > 5 ? [1,2,3,4,5,6] : [1]) : [],
+			studies: isRewardEnabled(4) && !bigRip ? (speedrunMilestonesReached > 5 ? [1,2,3,4,5,6] : [1]) : [],
 			active: false,
 			tachyonParticles: player.achievements.includes("ng3p37") ? player.dilation.bestTP.sqrt() : new Decimal(0),
-			dilatedTime: new Decimal(speedrunMilestonesReached>21 && isRewardEnabled(4)?1e100:0),
+			dilatedTime: new Decimal(speedrunMilestonesReached>21 && isRewardEnabled(4) && !bigRip?1e100:0),
 			totalTachyonParticles: new Decimal(0),
 			bestTP: player.dilation.bestTP,
 			nextThreshold: new Decimal(1000),
 			freeGalaxies: 0,
-			upgrades: speedrunMilestonesReached > 5 && isRewardEnabled(4) ? [4,5,6,7,8,9,"ngpp1","ngpp2"] : [],
+			upgrades: speedrunMilestonesReached > 5 && isRewardEnabled(4) && !bigRip ? [4,5,6,7,8,9,"ngpp1","ngpp2"] : [],
 			rebuyables: {
 				1: 0,
 				2: 0,
@@ -916,8 +932,8 @@ function quantumReset(force, auto, challid, implode=false) {
 		why: player.why,
 		options: player.options,
 		meta: {
-			antimatter: new Decimal(speedrunMilestonesReached > 18 ? 1e25 : 100),
-			bestAntimatter: headstart ? player.meta.bestAntimatter : new Decimal(speedrunMilestonesReached > 18 ? 1e25 : 100),
+			antimatter: new Decimal(speedrunMilestonesReached > 18 && !bigRip ? 1e25 : 100),
+			bestAntimatter: headstart ? player.meta.bestAntimatter : new Decimal(speedrunMilestonesReached > 18 && !bigRip ? 1e25 : 100),
 			bestOverQuantums: player.meta.bestOverQuantums,
 			resets: isRewardEnabled(27) ? 4 : 0,
 			'1': {
@@ -961,12 +977,13 @@ function quantumReset(force, auto, challid, implode=false) {
 				cost: new Decimal(1e24)
 			}
 		},
-		masterystudies: player.masterystudies ? (speedrunMilestonesReached > 10 && isRewardEnabled(4) ? player.masterystudies : []) : undefined,
+		masterystudies: player.masterystudies ? (bigRip ? ["d7", "d8", "d9", "d10", "d11", "d12", "d13", "d14"] : speedrunMilestonesReached > 10 && isRewardEnabled(4) ? player.masterystudies : []) : undefined,
 		autoEterOptions: player.autoEterOptions,
 		galaxyMaxBulk: player.galaxyMaxBulk,
 		quantum: player.quantum,
 		old: player.masterystudies ? inQC(0) : undefined,
 		dontWant: player.masterystudies ? true : undefined,
+		ghostify: player.ghostify,
 		aarexModifications: player.aarexModifications
 	};
 	if (player.challenges.includes("challenge1")) player.money = new Decimal(100)
@@ -977,7 +994,7 @@ function quantumReset(force, auto, challid, implode=false) {
 	if (player.galacticSacrifice && !oheHeadstart) player.autobuyers[12]=13
 	player.challenges=challengesCompletedOnEternity()
 	if (headstart) for (ec=1;ec<13;ec++) player.eternityChalls['eterc'+ec]=5
-	else if (isRewardEnabled(3)) for (ec=1;ec<15;ec++) player.eternityChalls['eterc'+ec] = 5
+	else if (isRewardEnabled(3) && !bigRip) for (ec=1;ec<15;ec++) player.eternityChalls['eterc'+ec] = 5
 	if (player.masterystudies) {
 		giveAchievement("Sub-atomic")
 		ipMultPower=GUBought("gb3")?2.3:player.masterystudies.includes("t241")?2.2:2
@@ -1005,8 +1022,10 @@ function quantumReset(force, auto, challid, implode=false) {
 				}
 				var qc1st=Math.min(qc1,qc2)
 				var qc2st=Math.max(qc1,qc2)
-				if (player.quantum.pairedChallenges.completions[qc1st*10+qc2st] === undefined) player.quantum.pairedChallenges.completions[qc1st*10+qc2st]=player.quantum.pairedChallenges.current
-				else player.quantum.pairedChallenges.completions[qc1st*10+qc2st]=Math.min(player.quantum.pairedChallenges.current,player.quantum.pairedChallenges.completions[qc1st*10+qc2st])
+				if (player.quantum.pairedChallenges.completions[qc1st*10+qc2st] === undefined) player.quantum.pairedChallenges.completions[qc1st*10+qc2st] = player.quantum.pairedChallenges.current
+				else player.quantum.pairedChallenges.completions[qc1st*10+qc2st] = Math.min(player.quantum.pairedChallenges.current,player.quantum.pairedChallenges.completions[qc1st*10+qc2st])
+				if (player.quantum.pairedChallenges.fastest[qc1st*10+qc2st] === undefined) player.quantum.pairedChallenges.fastest[qc1st*10+qc2st] = oldTime
+				else player.quantum.pairedChallenges.fastest[qc1st*10+qc2st] = player.quantum.pairedChallenges.fastest[qc1st*10+qc2st] = Math.min(player.quantum.pairedChallenges.fastest[qc1st*10+qc2st], oldTime)
 			} else if (intensity>0) {
 				if (!player.quantum.challenges[qc1]) {
 					player.quantum.challenges[qc1]=1
@@ -1057,6 +1076,12 @@ function quantumReset(force, auto, challid, implode=false) {
 		player.quantum.nanofield.antienergy = new Decimal(0)
 		player.quantum.nanofield.power = 0
 		player.quantum.nanofield.powerThreshold = new Decimal(50)
+		player.quantum.bigRip.active = bigRip
+		if (bigRip) {
+			if (player.quantum.bigRip.times < 1) document.getElementById("bigRipConfirmBtn").style.display = "inline-block"
+			player.quantum.bigRip.times++
+			player.quantum.bigRip.bestThisRun = player.money
+		}
 		document.getElementById("metaAntimatterEffectType").textContent=inQC(3)?"multiplier on all Infinity Dimensions":"extra multiplier per dimension boost"
 		updateColorCharge()
 		updateGluons()
@@ -1084,14 +1109,14 @@ function quantumReset(force, auto, challid, implode=false) {
 			document.getElementById("qctabbtn").style.display="none"
 			document.getElementById("electronstabbtn").style.display="none"
 		}
-		if (isRewardEnabled(11)&&isRewardEnabled(4)) player.dilation.upgrades.push(10)
-		else player.quantum.wasted = !isRewardEnabled(11)
-		if (speedrunMilestonesReached>13&&isRewardEnabled(4)) for (i=3;i<7;i++) player.dilation.upgrades.push("ngpp"+i)
+		if (isRewardEnabled(11)&&isRewardEnabled(4)&&!bigRip) player.dilation.upgrades.push(10)
+		else player.quantum.wasted = !isRewardEnabled(11)||bigRip
+		if (speedrunMilestonesReached>13&&isRewardEnabled(4)&&!bigRip) for (i=3;i<7;i++) player.dilation.upgrades.push("ngpp"+i)
 		player.quantum.notrelative = true
 		updateMasteryStudyCosts()
 		updateMasteryStudyButtons()
 	}
-	if (speedrunMilestonesReached<1) {
+	if (speedrunMilestonesReached<1&&!bigRip) {
 		document.getElementById("infmultbuyer").textContent="Autobuy IP mult OFF"
 		document.getElementById("togglecrunchmode").textContent="Auto crunch mode: amount"
 		document.getElementById("limittext").textContent="Amount of IP to wait until reset:"
@@ -1180,9 +1205,9 @@ function quantumReset(force, auto, challid, implode=false) {
 	updateTimeStudyButtons()
 	updateDilationUpgradeCosts()
 	drawStudyTree()
-	if (!isRewardEnabled(4)) if (document.getElementById("dilation").style.display=="block") showEternityTab("timestudies", document.getElementById("eternitystore").style.display=="block")
+	if (!isRewardEnabled(4)||bigRip) if (document.getElementById("dilation").style.display=="block") showEternityTab("timestudies", document.getElementById("eternitystore").style.display=="block")
+	document.getElementById("masterystudyunlock").style.display = speedrunMilestonesReached < 14 || !isRewardEnabled(4) || bigRip ? "none" : ""
 	if (speedrunMilestonesReached < 14 || !isRewardEnabled(4)) {
-		document.getElementById("masterystudyunlock").style.display = "none"
 		document.getElementById("respecMastery").style.display = "none"
 		document.getElementById("respecMastery2").style.display = "none"
 		document.getElementById("replicantsstudies").style.display = "none"
