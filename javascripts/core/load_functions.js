@@ -240,6 +240,8 @@ function onLoad(noOffline) {
   EPminpeak = new Decimal(0)
   QKminpeak = new Decimal(0)
   QKminpeakValue = new Decimal(0)
+  GHPminpeak = new Decimal(0)
+  GHPminpeakValue = new Decimal(0)
   if (player.peakSpent) player.peakSpent = 0
 
   if (typeof player.autobuyers[9].bulk !== "number") {
@@ -778,7 +780,7 @@ if (player.version < 5) {
               }
               player.ghostify = {
                   times: 0,
-                  time: 0,
+                  time: player.totalTimePlayed,
                   best: 9999999999,
                   last10: [[600*60*24*31, 0], [600*60*24*31, 0], [600*60*24*31, 0], [600*60*24*31, 0], [600*60*24*31, 0], [600*60*24*31, 0], [600*60*24*31, 0], [600*60*24*31, 0], [600*60*24*31, 0], [600*60*24*31, 0]],
                   milestones: 0,
@@ -1122,7 +1124,7 @@ if (player.version < 5) {
       }
       player.ghostify = {
           times: 0,
-          time: 0,
+          time: player.totalTimePlayed,
           best: 9999999999,
           last10: [[600*60*24*31, 0], [600*60*24*31, 0], [600*60*24*31, 0], [600*60*24*31, 0], [600*60*24*31, 0], [600*60*24*31, 0], [600*60*24*31, 0], [600*60*24*31, 0], [600*60*24*31, 0], [600*60*24*31, 0]],
           milestones: 0,
@@ -1162,6 +1164,10 @@ if (player.version < 5) {
 
       //Testing-exclusive
       if (player.quantum.pairedChallenges.fastest === undefined) player.quantum.pairedChallenges.fastest = {}
+      if (player.ghostify.timeReset === undefined) {
+          player.ghostify.time = player.totalTimePlayed
+          player.ghostify.timeReset = true
+      }
   }
   if (player.aarexModifications.newGame3PlusVersion==undefined) {
       colorBoosts={
@@ -1451,8 +1457,10 @@ if (player.version < 5) {
   for (s=0;s<(player.boughtDims?4:3);s++) toggleCrunchMode(true)
   updateAutoEterMode()
 
-  quantumed = false
-  if (player.meta !== undefined) quantumed = player.quantum.times > 0
+  ghostified = false
+  if (player.masterystudies !== undefined) ghostified = player.ghostify.times > 0
+  quantumed = ghostified
+  if (player.meta !== undefined && !quantumed) quantumed = player.quantum.times > 0
   document.getElementById("confirmations").style.display = (player.resets > 4 || player.galaxies > 0 || (player.galacticSacrifice ? player.galacticSacrifice.times > 0 : false) || player.infinitied !== 0 || player.eternities !== 0 || quantumed) ? "inline-block" : "none"
   document.getElementById("confirmation").style.display = (player.resets > 4 || player.infinitied > 0 || player.eternities !== 0 || quantumed) ? "inline-block" : "none"
   document.getElementById("sacrifice").style.display = (player.resets > 4 || player.infinitied > 0 || player.eternities !== 0 || quantumed) ? "inline-block" : "none"
@@ -1483,6 +1491,7 @@ if (player.version < 5) {
   dimDescEnd = (player.aarexModifications.logRateChange?" OoM":"%")+"/s)"
 
   document.getElementById("quantumtabbtn").style.display = quantumed ? "" : "none"
+  document.getElementById("ghostifytabbtn").style.display = ghostified ? "" : "none"
 
   document.getElementById("chartDurationInput").value = player.options.chart.duration;
   document.getElementById("chartUpdateRateInput").value = player.options.chart.updateRate;
@@ -1689,6 +1698,7 @@ if (player.version < 5) {
   updateDilationUpgradeCosts()
   updateExdilation()
   updateLastTenQuantums()
+  updateLastTenGhostifies()
   updateColorCharge()
   updateGluons()
   updateSpeedruns()
@@ -2241,6 +2251,7 @@ function transformSaveToDecimal() {
       player.quantum.bigRip.spaceShards = new Decimal(player.quantum.bigRip.spaceShards)
       player.quantum.breakEternity.eternalMatter = new Decimal(player.quantum.breakEternity.eternalMatter)
       player.ghostify.ghostParticles = new Decimal(player.ghostify.ghostParticles)
+      for (var r=0;r<10;r++) player.ghostify.last10[r][1] = new Decimal(player.ghostify.last10[r][1])
       player.ghostify.neutrinos.electron = new Decimal(player.ghostify.neutrinos.electron)
       player.ghostify.neutrinos.mu = new Decimal(player.ghostify.neutrinos.mu)
       player.ghostify.neutrinos.tau = new Decimal(player.ghostify.neutrinos.tau)

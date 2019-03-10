@@ -1299,6 +1299,14 @@ function updateDimensions() {
             document.getElementById("bestQuantum").textContent = "Your fastest quantum is in "+timeDisplay(player.quantum.best)+"."
         }
 
+        if (player.masterystudies !== undefined ? player.ghostify.times < 1 : true) document.getElementById("ghostifyStatistics").style.display = "none"
+        else {
+            document.getElementById("ghostifyStatistics").style.display = ""
+            document.getElementById("ghostified").textContent = "You have became a ghost and passed big ripped universes "+getFullExpansion(player.ghostify.times)+" times."
+            document.getElementById("thisGhostify").textContent = "You have spent "+timeDisplay(player.ghostify.time)+" in this ghostify."
+            document.getElementById("bestGhostify").textContent = "Your fastest ghostify is in "+timeDisplay(player.ghostify.best)+"."
+        }
+
         if (player.aarexModifications.hideRepresentation) document.getElementById("infoScale").textContent=""
         else if (player.money.gt(Decimal.pow(10, 3 * 86400 * 365.2425 * 79.3 / 10))) {
             var years = player.money.log10() / 3 / 86400 / 365.2425
@@ -3489,6 +3497,7 @@ function onNotationChange(id) {
 	updateLastTenRuns();
 	updateLastTenEternities();
 	updateLastTenQuantums();
+	updateLastTenGhostifies()
 	updateTickSpeed();
 	setAchieveTooltip();
 	updateCosts();
@@ -6515,6 +6524,8 @@ setInterval(function() {
     else document.getElementById("pasteternities").style.display = "inline-block"
     if (quantumed) document.getElementById("pastquantums").style.display = "inline-block"
     else document.getElementById("pastquantums").style.display = "none"
+    if (ghostified) document.getElementById("pastghostifies").style.display = "inline-block"
+    else document.getElementById("pastghostifies").style.display = "none"
     if (player.infinitied > 0 || getEternitied() > 0 || quantumed) {
         document.getElementById("pastinfs").style.display = "inline-block"
         document.getElementById("statstabs").style.display = "inline-block"
@@ -6901,6 +6912,7 @@ function gameLoop(diff) {
     else player.totalTimePlayed += diff
     if (player.galacticSacrifice) player.galacticSacrifice.time += diff
     if (player.meta) player.quantum.time += diff*(player.currentEternityChall==="eterc12"?1e3:1)
+    if (player.masterystudies !== undefined) player.ghostify.time += diff*(player.currentEternityChall==="eterc12"?1e3:1)
     player.thisInfinityTime += diff
     player.thisEternity += diff
     failsafeDilateTime = false
@@ -7237,13 +7249,23 @@ function gameLoop(diff) {
     document.getElementById("replicantimult").textContent = shorten(getIDReplMult())
 
     var currentQKmin = new Decimal(0)
-    if (quantumed&&isQuantumReached()) {
-        currentQKmin = quarkGain().dividedBy(player.quantum.time/600)
-        if (currentQKmin.gt(QKminpeak) && player.meta.antimatter.gte(Decimal.pow(Number.MAX_VALUE,player.masterystudies?1.2:1))) {
-            QKminpeak = currentQKmin
-            QKminpeakValue = quarkGain()
-            player.quantum.autobuyer.peakTime = 0
-        } else player.quantum.autobuyer.peakTime += diff / 10
+    if (isQuantumReached()) {
+        var bigRipped = player.masterystudies === undefined ? false : player.quantum.bigRip.active
+        if (quantumed && !bigRipped) {
+            currentQKmin = quarkGain().dividedBy(player.quantum.time/600)
+            if (currentQKmin.gt(QKminpeak) && player.meta.antimatter.gte(Decimal.pow(Number.MAX_VALUE,player.masterystudies?1.2:1))) {
+                QKminpeak = currentQKmin
+                QKminpeakValue = quarkGain()
+                player.quantum.autobuyer.peakTime = 0
+            } else player.quantum.autobuyer.peakTime += diff / 10
+        }
+        if (ghostified && bigRipped) {
+            currentQKmin = getGHPGain().dividedBy(player.ghostify.time/600)
+            if (currentQKmin.gt(GHPminpeak)) {
+                GHPminpeak = currentQKmin
+                GHPminpeakValue = getGHPGain()
+            }
+        }
     }
     var currentEPmin = updateEPminpeak(diff);
     EPminpeakUnits = player.dilation.active && isSmartPeakActivated ? 'TP' : 'EP'

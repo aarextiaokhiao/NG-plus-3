@@ -1864,4 +1864,517 @@ function isBigRipUpgradeActive(id, bigRipped) {
 	return player.quantum.bigRip.upgrades.includes(id)
 }
 
+function getGHPGain() {
+	return new Decimal(1)
+}
+
 ghostified = false
+function ghostify() {
+	if ((!isQuantumReached()&&player.quantum.bigRip.active)||implosionCheck) return
+	if (!player.aarexModifications.ghostifyConf) if(!confirm("Ghostify will reset everything eternity resets, and also everything in big rip runs. You will gain a Ghost Particle and unlocks various mechanics.")) return
+	if (!ghostified) {
+		if (!confirm("Are you sure you want to do that? You will lose almost everything you have!")) return
+		if (!confirm("ARE YOU REALLY SURE YOU WANT TO DO THAT? YOU WON'T UNDO THIS IF YOU BECOME A GHOST AND PASS THE UNIVERSE EVEN IT IS BIG RIPPED! THIS IS YOUR LAST CHANCE!")) return
+	}
+	var implode = true
+	if (implode) {
+		implosionCheck=1
+		dev.implode()
+		setTimeout(function(){
+			ghostifyReset(true)
+		},1000)
+		setTimeout(function(){
+			implosionCheck=0
+		},2000)
+	} else ghostifyReset()
+}
+
+function ghostifyReset(implode) {
+	var ghpGain = getGHPGain()
+	player.ghostify.ghostParticles = player.ghostify.ghostParticles.add(ghpGain).round()
+	for (var i=player.ghostify.last10.length-1; i>0; i--) player.ghostify.last10[i] = player.ghostify.last10[i-1]
+	player.ghostify.last10[0] = [player.ghostify.time, ghpGain]
+	player.ghostify.times++
+	player.ghostify.best = Math.min(player.ghostify.best, player.ghostify.time)
+	player.ghostify.time = 0
+
+	player = {
+		money: new Decimal(10),
+		tickSpeedCost: new Decimal(1000),
+		tickspeed: new Decimal(player.aarexModifications.newGameExpVersion?500:1000),
+		tickBoughtThisInf: resetTickBoughtThisInf(),
+		firstCost: new Decimal(10),
+		secondCost: new Decimal(100),
+		thirdCost: new Decimal(10000),
+		fourthCost: new Decimal(1000000),
+		fifthCost: new Decimal(1e9),
+		sixthCost: new Decimal(1e13),
+		seventhCost: new Decimal(1e18),
+		eightCost: new Decimal(1e24),
+		firstAmount: new Decimal(0),
+		secondAmount: new Decimal(0),
+		thirdAmount: new Decimal(0),
+		fourthAmount: new Decimal(0),
+		firstBought: 0,
+		secondBought: 0,
+		thirdBought: 0,
+		fourthBought: 0,
+		fifthAmount: new Decimal(0),
+		sixthAmount: new Decimal(0),
+		seventhAmount: new Decimal(0),
+		eightAmount: new Decimal(0),
+		fifthBought: 0,
+		sixthBought: 0,
+		seventhBought: 0,
+		eightBought: 0,
+		totalBoughtDims: resetTotalBought(),
+		firstPow: new Decimal(1),
+		secondPow: new Decimal(1),
+		thirdPow: new Decimal(1),
+		fourthPow: new Decimal(1),
+		fifthPow: new Decimal(1),
+		sixthPow: new Decimal(1),
+		seventhPow: new Decimal(1),
+		eightPow: new Decimal(1),
+		sacrificed: new Decimal(0),
+		achievements: player.achievements,
+		challenges: [],
+		currentChallenge: "",
+		infinityUpgrades: [],
+		setsUnlocked: 0,
+		infinityPoints: player.infinityPoints,
+		infinitied: 0,
+		infinitiedBank: player.achievements.includes("ng3p15") ? player.infinitiedBank : 0,
+		totalTimePlayed: player.totalTimePlayed,
+		bestInfinityTime: 9999999999,
+		thisInfinityTime: 0,
+		resets: 0,
+		dbPower: player.dbPower,
+		tickspeedBoosts: player.tickspeedBoosts,
+		galaxies: 0,
+		galacticSacrifice: resetGalacticSacrifice(),
+		totalmoney: player.totalmoney,
+		interval: null,
+		lastUpdate: player.lastUpdate,
+		achPow: player.achPow,
+		autobuyers: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12],
+		partInfinityPoint: 0,
+		partInfinitied: 0,
+		break: false,
+		costMultipliers: [new Decimal(1e3), new Decimal(1e4), new Decimal(1e5), new Decimal(1e6), new Decimal(1e8), new Decimal(1e10), new Decimal(1e12), new Decimal(1e15)],
+		tickspeedMultiplier: new Decimal(10),
+		chall2Pow: 1,
+		chall3Pow: new Decimal(0.01),
+		newsArray: player.newsArray,
+		matter: new Decimal(0),
+		chall11Pow: new Decimal(1),
+		challengeTimes: player.challengeTimes,
+		infchallengeTimes: player.infchallengeTimes,
+		lastTenRuns: [[600*60*24*31, new Decimal(0)], [600*60*24*31, new Decimal(0)], [600*60*24*31, new Decimal(0)], [600*60*24*31, new Decimal(0)], [600*60*24*31, new Decimal(0)], [600*60*24*31, new Decimal(0)], [600*60*24*31, new Decimal(0)], [600*60*24*31, new Decimal(0)], [600*60*24*31, new Decimal(0)], [600*60*24*31, new Decimal(0)]],
+		lastTenEternities: [[600*60*24*31, new Decimal(0)], [600*60*24*31, new Decimal(0)], [600*60*24*31, new Decimal(0)], [600*60*24*31, new Decimal(0)], [600*60*24*31, new Decimal(0)], [600*60*24*31, new Decimal(0)], [600*60*24*31, new Decimal(0)], [600*60*24*31, new Decimal(0)], [600*60*24*31, new Decimal(0)], [600*60*24*31, new Decimal(0)]],
+		infMult: new Decimal(1),
+		infMultCost: new Decimal(10),
+		tickSpeedMultDecrease: GUBought("gb4") ? 1.25 : 10,
+		tickSpeedMultDecreaseCost: 3e6,
+		dimensionMultDecrease: 10,
+		dimensionMultDecreaseCost: 1e8,
+		extraDimPowerIncrease: 0,
+		dimPowerIncreaseCost: 1e3,
+		version: player.version,
+		postC4Tier: 1,
+		postC8Mult: new Decimal(1),
+		overXGalaxies: 0,
+		overXGalaxiesTickspeedBoost: player.tickspeedBoosts == undefined ? player.overXGalaxiesTickspeedBoost : 0,
+		spreadingCancer: player.spreadingCancer,
+		postChallUnlocked: (player.achievements.includes("r133")) ? 8 : 0,
+		postC4Tier: 0,
+		postC3Reward: new Decimal(1),
+		eternityPoints: new Decimal(0),
+		eternities: 0,
+		eternitiesBank: player.eternitiesBank,
+		thisEternity: 0,
+		bestEternity: 9999999999,
+		eternityUpgrades: [],
+		epmult: new Decimal(1),
+		epmultCost: new Decimal(500),
+		infDimensionsUnlocked: [false, false, false, false, false, false, false, false],
+		infinityPower: new Decimal(1),
+		infinityDimension1 : {
+			cost: new Decimal(1e8),
+			amount: new Decimal(0),
+			bought: 0,
+			power: new Decimal(1),
+			baseAmount: 0
+		},
+		infinityDimension2 : {
+			cost: new Decimal(1e9),
+			amount: new Decimal(0),
+			bought: 0,
+			power: new Decimal(1),
+			baseAmount: 0
+		},
+		infinityDimension3 : {
+			cost: new Decimal(1e10),
+			amount: new Decimal(0),
+			bought: 0,
+			power: new Decimal(1),
+			baseAmount: 0
+		},
+		infinityDimension4 : {
+			cost: new Decimal(1e20),
+			amount: new Decimal(0),
+			bought: 0,
+			power: new Decimal(1),
+			baseAmount: 0
+		},
+		infinityDimension5 : {
+			cost: new Decimal(1e140),
+			amount: new Decimal(0),
+			bought: 0,
+			power: new Decimal(1),
+			baseAmount: 0
+		},
+		infinityDimension6 : {
+			cost: new Decimal(1e200),
+			amount: new Decimal(0),
+			bought: 0,
+			power: new Decimal(1),
+			baseAmount: 0
+		},
+		infinityDimension7 : {
+			cost: new Decimal(1e250),
+			amount: new Decimal(0),
+			bought: 0,
+			power: new Decimal(1),
+			baseAmount: 0
+		},
+		infinityDimension8 : {
+			cost: new Decimal(1e280),
+			amount: new Decimal(0),
+			bought: 0,
+			power: new Decimal(1),
+			baseAmount: 0
+		},
+		infDimBuyers: [false, false, false, false, false, false, false, false],
+		timeShards: new Decimal(0),
+		tickThreshold: new Decimal(1),
+		totalTickGained: 0,
+		timeDimension1: {
+			cost: new Decimal(1),
+			amount: new Decimal(0),
+			power: new Decimal(1),
+			bought: 0
+		},
+		timeDimension2: {
+			cost: new Decimal(5),
+			amount: new Decimal(0),
+			power: new Decimal(1),
+			bought: 0
+		},
+		timeDimension3: {
+			cost: new Decimal(100),
+			amount: new Decimal(0),
+			power: new Decimal(1),
+			bought: 0
+		},
+		timeDimension4: {
+			cost: new Decimal(1000),
+			amount: new Decimal(0),
+			power: new Decimal(1),
+			bought: 0
+		},
+		timeDimension5: {
+			cost: new Decimal("1e2350"),
+			amount: new Decimal(0),
+			power: new Decimal(1),
+			bought: 0
+		},
+		timeDimension6: {
+			cost: new Decimal("1e2650"),
+			amount: new Decimal(0),
+			power: new Decimal(1),
+			bought: 0
+		},
+		timeDimension7: {
+			cost: new Decimal("1e3000"),
+			amount: new Decimal(0),
+			power: new Decimal(1),
+			bought: 0
+		},
+		timeDimension8: {
+			cost: new Decimal("1e3350"),
+			amount: new Decimal(0),
+			power: new Decimal(1),
+			bought: 0
+		},
+		offlineProd: 0,
+		offlineProdCost: 1e7,
+		challengeTarget: 0,
+		autoSacrifice: 1,
+		replicanti: {
+			amount: new Decimal(0),
+			unl: false,
+			chance: 0.01,
+			chanceCost: new Decimal(1e150),
+			interval: 1000,
+			intervalCost: new Decimal(1e140),
+			gal: 0,
+			galaxies: 0,
+			galCost: new Decimal(1e170),
+			galaxybuyer: undefined,
+			auto: [false, false, false]
+		},
+		timestudy: {
+			theorem: 0,
+			amcost: new Decimal("1e20000"),
+			ipcost: new Decimal(1),
+			epcost: new Decimal(1),
+			studies: [],
+		},
+		eternityChalls: {},
+		eternityChallGoal: new Decimal(Number.MAX_VALUE),
+		currentEternityChall: "",
+		eternityChallUnlocked: 0,
+		etercreq: 0,
+		autoIP: new Decimal(0),
+		autoTime: 1e300,
+		infMultBuyer: false,
+		autoCrunchMode: "amount",
+		autoEterMode: "amount",
+		peakSpent: 0,
+		respec: false,
+		respecMastery: false,
+		eternityBuyer: {
+			limit: new Decimal(0),
+			isOn: false,
+			dilationMode: false,
+			dilationPerAmount: 10
+		},
+		eterc8ids: 50,
+		eterc8repl: 40,
+		dimlife: true,
+		dead: true,
+		dilation: {
+			studies: [],
+			active: false,
+			tachyonParticles: player.achievements.includes("ng3p37") ? player.dilation.bestTP.sqrt() : new Decimal(0),
+			dilatedTime: new Decimal(0),
+			totalTachyonParticles: new Decimal(0),
+			bestTP: player.dilation.bestTP,
+			nextThreshold: new Decimal(1000),
+			freeGalaxies: 0,
+			upgrades: [],
+			rebuyables: {
+				1: 0,
+				2: 0,
+				3: 0,
+				4: 0,
+			}
+		},
+		why: player.why,
+		options: player.options,
+		meta: {
+			antimatter: new Decimal(100),
+			bestAntimatter: new Decimal(100),
+			bestOverQuantums: player.meta.bestOverQuantums,
+			resets: 0,
+			'1': {
+				amount: new Decimal(0),
+				bought: 0,
+				cost: new Decimal(10)
+			},
+			'2': {
+				amount: new Decimal(0),
+				bought: 0,
+				cost: new Decimal(100)
+			},
+			'3': {
+				amount: new Decimal(0),
+				bought: 0,
+				cost: new Decimal(1e4)
+			},
+			'4': {
+				amount: new Decimal(0),
+				bought: 0,
+				cost: new Decimal(1e6)
+			},
+			'5': {
+				amount: new Decimal(0),
+				bought: 0,
+				cost: new Decimal(1e9)
+			},
+			'6': {
+				amount: new Decimal(0),
+				bought: 0,
+				cost: new Decimal(1e13)
+			},
+			'7': {
+				amount: new Decimal(0),
+				bought: 0,
+				cost: new Decimal(1e18)
+			},
+			'8': {
+				amount: new Decimal(0),
+				bought: 0,
+				cost: new Decimal(1e24)
+			}
+		},
+		masterystudies: ["d7", "d8", "d9", "d10", "d11", "d12", "d13", "d14"],
+		autoEterOptions: player.autoEterOptions,
+		galaxyMaxBulk: player.galaxyMaxBulk,
+		quantum: player.quantum,
+		old: false,
+		dontWant: true,
+		ghostify: player.ghostify,
+		aarexModifications: player.aarexModifications
+	}
+	//Pre-infinity
+	if (player.challenges.includes("challenge1")) player.money = new Decimal(100)
+	if (player.achievements.includes("r37")) player.money = new Decimal(1000)
+	if (player.achievements.includes("r54")) player.money = new Decimal(2e5)
+	if (player.achievements.includes("r55")) player.money = new Decimal(1e10)
+	if (player.achievements.includes("r78")) player.money = new Decimal(1e25)
+	setInitialDimensionPower()
+	updatePowers()
+	GPminpeak = new Decimal(0)
+	if (implode) showTab("dimensions")
+	document.getElementById("secondRow").style.display = "none"
+	document.getElementById("thirdRow").style.display = "none"
+	document.getElementById("tickSpeed").style.visibility = "hidden"
+	document.getElementById("tickSpeedMax").style.visibility = "hidden"
+	document.getElementById("tickLabel").style.visibility = "hidden"
+	document.getElementById("tickSpeedAmount").style.visibility = "hidden"
+	document.getElementById("fourthRow").style.display = "none"
+	document.getElementById("fifthRow").style.display = "none"
+	document.getElementById("sixthRow").style.display = "none"
+	document.getElementById("seventhRow").style.display = "none"
+	document.getElementById("eightRow").style.display = "none"
+	updateTickSpeed()
+
+	//Infinity
+	if (player.achievements.includes("r85")) player.infMult = player.infMult.times(4)
+	if (player.achievements.includes("r93")) player.infMult = player.infMult.times(4)
+	if (player.achievements.includes("r104")) player.infinityPoints = new Decimal(2e25)
+	delete player.replicanti.galaxybuyer
+	IPminpeak = new Decimal(0)
+	document.getElementById("infinityPoints1").innerHTML = "You have <span class=\"IPAmount1\">"+shortenDimensions(player.infinityPoints)+"</span> Infinity points."
+	document.getElementById("infinityPoints2").innerHTML = "You have <span class=\"IPAmount2\">"+shortenDimensions(player.infinityPoints)+"</span> Infinity points."
+	document.getElementById("infiMult").innerHTML = "Multiply infinity points from all sources by 2 <br>currently: "+shorten(getIPMult()) +"x<br>Cost: "+shortenCosts(player.infMultCost)+" IP"
+	document.getElementById("infmultbuyer").textContent="Max buy IP mult"
+	if (implode) showChallengesTab("normalchallenges")
+	updateChallenges()
+	updateAutobuyers()
+	hideMaxIDButton()
+	document.getElementById("replicantidiv").style.display="none"
+	document.getElementById("replicantiunlock").style.display="inline-block"
+	document.getElementById("replicantiresettoggle").style.display = "none"
+	updateLastTenRuns()
+	if (document.getElementById("metadimensions").style.display == "block" || implode) showDimTab("antimatterdimensions")
+	resetInfDimensions()
+	if (player.galacticSacrifice) player.autobuyers[12]=13
+	if (player.tickspeedBoosts !== undefined) player.autobuyers[13]=14
+
+	//Eternity
+	EPminpeakType = 'normal'
+	EPminpeak = new Decimal(0)
+	document.getElementById("eternitybtn").style.display = "none"
+	document.getElementById("eternityPoints2").innerHTML = "You have <span class=\"EPAmount2\">"+shortenDimensions(player.eternityPoints)+"</span> Eternity point"+((player.eternityPoints.eq(1)) ? "." : "s.")
+	if (document.getElementById("masterystudies").style.display == "block" || implode) showEternityTab("timestudies", document.getElementById("eternitystore").style.display == "none")
+	updateLastTenEternities()
+	resetTimeDimensions()
+	updateRespecButtons()
+	updateMilestones()
+	updateEternityUpgrades()
+	updateTheoremButtons()
+	updateTimeStudyButtons()
+	if (player.autoEterMode=="replicanti"||player.autoEterMode=="peak") {
+		player.autoEterMode="amount"
+		updateAutoEterMode()
+	}
+	updateEternityChallenges()
+	updateDilationUpgradeCosts()
+	document.getElementById("masterystudyunlock").style.display = "none"
+	updateMasteryStudyCosts()
+	updateMasteryStudyButtons()
+
+	//Quantum
+	player.quantum.replicants.amount = new Decimal(0)
+	player.quantum.replicants.requirement = new Decimal("1e3000000")
+	player.quantum.replicants.quarks = new Decimal(0)
+	player.quantum.replicants.eggonProgress = new Decimal(0)
+	player.quantum.replicants.eggons = new Decimal(0)
+	player.quantum.replicants.babyProgress = new Decimal(0)
+	player.quantum.replicants.babies = new Decimal(0)
+	player.quantum.replicants.growupProgress = new Decimal(0)
+	for (d=1;d<9;d++) {
+		if (d>7||eds[d].perm<10) player.quantum.replicants.quantumFood+=Math.round(eds[d].progress.toNumber()*3)%3
+		eds[d].workers=new Decimal(eds[d].perm)
+		eds[d].progress=new Decimal(0)
+	}
+	player.quantum.nanofield.charge = new Decimal(0)
+	player.quantum.nanofield.energy = new Decimal(0)
+	player.quantum.nanofield.antienergy = new Decimal(0)
+	player.quantum.nanofield.power = 0
+	player.quantum.nanofield.powerThreshold = new Decimal(50)
+	player.quantum.notrelative = true
+	QKminpeak = new Decimal(0)
+	QKminpeakValue = new Decimal(0)
+	if (implode) showQuantumTab("uquarks")
+	updateLastTenQuantums()
+	updateReplicants()
+
+	//Big rip
+	player.quantum.bigRip.times = 0
+	player.quantum.bigRip.bestThisRun = new Decimal(0)
+	player.quantum.bigRip.spaceShards = new Decimal(0)
+	player.quantum.bigRip.upgrades = []
+	player.quantum.breakEternity.unlocked = false
+	player.quantum.breakEternity.break = false
+	player.quantum.breakEternity.eternalMatter = new Decimal(0)
+	player.quantum.breakEternity.upgrades = []
+	player.quantum.breakEternity.epMultPower = []
+	updateQuantumChallenges()
+	
+	//Ghostify
+	GHPminpeak = new Decimal(0)
+	GHPminpeakValue = new Decimal(0)
+	document.getElementById("ghostifybtn").style.display = "none"
+	if (!ghostified) {
+		ghostified = true
+		document.getElementById("ghostifytabbtn").style.display = "inline-block"
+		document.getElementById("ghostparticles").style.display = ""
+	}
+	document.getElementById("GHPAmount").textContent = shortenDimensions(player.ghostify.ghostParticles)
+	updateLastTenGhostifies()
+}
+
+var averageGHP = new Decimal(0)
+var bestGHP
+function updateLastTenGhostifies() {
+	if (player.masterystudies === undefined) return
+    var listed = 0
+    var tempTime = new Decimal(0)
+    var tempGHP = new Decimal(0)
+    for (var i=0; i<10; i++) {
+        if (player.ghostify.last10[i][1].gt(0)) {
+            var qkpm = player.ghostify.last10[i][1].dividedBy(player.ghostify.last10[i][0]/600)
+            var tempstring = shorten(qkpm) + " GHP/min"
+            if (qkpm<1) tempstring = shorten(qkpm*60) + " GHP/hour"
+            var msg = "The Ghostify " + (i == 0 ? '1 Ghostify' : (i+1) + ' Ghostifies') + " ago took " + timeDisplayShort(player.ghostify.last10[i][0], false, 3) + " and gave " + shortenDimensions(player.ghostify.last10[i][1]) +" GHP. "+ tempstring
+            document.getElementById("ghostifyrun"+(i+1)).textContent = msg
+            tempTime = tempTime.plus(player.ghostify.last10[i][0])
+            tempGHP = tempGHP.plus(player.ghostify.last10[i][1])
+            bestGHP = player.ghostify.last10[i][1].max(bestGHP)
+            listed++
+        } else document.getElementById("ghostifyrun"+(i+1)).textContent = ""
+    }
+    if (listed > 1) {
+        tempTime = tempTime.dividedBy(listed)
+        tempGHP = tempGHP.dividedBy(listed)
+        var qkpm = tempGHP.dividedBy(tempTime/600)
+        var tempstring = shorten(qkpm) + " GHP/min"
+        averageGHP = tempGHP
+        if (qkpm<1) tempstring = shorten(qkpm*60) + " GHP/hour"
+        document.getElementById("averageGhostifyRun").textContent = "Last " + listed + " Ghostifys average time: "+ timeDisplayShort(tempTime, false, 3)+" Average GHP gain: "+shortenDimensions(tempGHP)+" GHP. "+tempstring
+    } else document.getElementById("averageGhostifyRun").textContent = ""
+}

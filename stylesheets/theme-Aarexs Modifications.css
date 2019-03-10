@@ -508,6 +508,20 @@ strong { color: #0072e5 }
 #GHPAmount {
 	animation: ghostifytext 4s linear infinite
 }
+.aarexmodsghostifybtn {
+	background: linear-gradient(#0c001e, #3a003f) !important;
+	border-color: transparent !important;
+	font-family: Typewriter;
+	font-weight: bold;
+	border-radius: 4px;
+	transition-duration: 0.2s;
+	animation: ghostifytext 4s linear infinite
+}
+.aarexmodsghostifybtn:hover {
+	border-color: rgba(255,255,255,0.5) !important;
+	box-shadow: inset 0px 0px 12px 0px #ffffff;
+	cursor: pointer
+}
 .notifyjs-bootstrap-info {
     background-color: #0072e5;
     font-family:'Inconsolata', monospace;

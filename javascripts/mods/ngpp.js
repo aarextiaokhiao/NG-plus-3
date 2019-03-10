@@ -404,7 +404,7 @@ function quantum(auto, force, challid, bigRip) {
 	if (!(isQuantumReached()||force)||implosionCheck) return
 	var headstart = player.aarexModifications.newGamePlusVersion > 0 && !player.masterystudies
 	if (player.aarexModifications.quantumConf&&!(auto||force)) if (!confirm(player.masterystudies?"Quantum will reset everything eternity resets, and "+(headstart?"also some other things like dilation":"also time studies, eternity challenges, dilation, "+(player.masterystudies?"meta dimensions, and mastery studies":"and meta dimensions"))+". You will gain a quark and unlock various upgrades.":"But wait! Quantum will erases almost everything that you have and rewards nothing! However, this is not a win. You need to reach real Infinite antimatter to win! (it's impossible)")) return
-	if (player.quantum.times<1) if (!confirm("Are you sure you want to do that? You will lose everything you have!")) return
+	if (!quantumed) if (!confirm("Are you sure you want to do that? You will lose everything you have!")) return
 	var pc=challid-8
 	if (player.masterystudies) {
 		if (challid>0) {
@@ -460,6 +460,7 @@ function quantum(auto, force, challid, bigRip) {
 }
 
 function isQuantumReached() {
+	if (player.masterystudies !== undefined) if (player.quantum.bigRip.active) return true
 	return player.money.log10()>=getQCGoal()&&player.meta.antimatter.gte(Decimal.pow(Number.MAX_VALUE,player.masterystudies?1.45:1))&&(!player.masterystudies||ECTimesCompleted("eterc14"))
 }
 
@@ -589,6 +590,7 @@ function quantumReset(force, auto, challid, bigRip, implode=false) {
 		}
 	}
 	document.getElementById("quantumbtn").style.display="none"
+	document.getElementById("ghostifybtn").style.display="none"
 	if (force) bankedEterGain=0
 	else {
 		for (var i=player.quantum.last10.length-1; i>0; i--) {
@@ -992,6 +994,7 @@ function quantumReset(force, auto, challid, bigRip, implode=false) {
 	if (player.achievements.includes("r55")) player.money = new Decimal(1e10)
 	if (player.achievements.includes("r78")) player.money = new Decimal(1e25)
 	if (player.galacticSacrifice && !oheHeadstart) player.autobuyers[12]=13
+	if (player.tickspeedBoosts !== undefined && !oheHeadstart) player.autobuyers[13]=14
 	player.challenges=challengesCompletedOnEternity()
 	if (headstart) for (ec=1;ec<13;ec++) player.eternityChalls['eterc'+ec]=5
 	else if (isRewardEnabled(3) && !bigRip) for (ec=1;ec<15;ec++) player.eternityChalls['eterc'+ec] = 5
@@ -1195,7 +1198,7 @@ function quantumReset(force, auto, challid, bigRip, implode=false) {
 	document.getElementById("eternitybtn").style.display = player.infinityPoints.gte(player.eternityChallGoal) ? "inline-block" : "none"
 	document.getElementById("eternityPoints2").style.display = "inline-block"
 	document.getElementById("eternitystorebtn").style.display = "inline-block"
-	document.getElementById("infiMult").innerHTML = "Multiply infinity points from all sources by 2 <br>currently: "+shorten(player.infMult.times(kongIPMult)) +"x<br>Cost: "+shortenCosts(player.infMultCost)+" IP"
+	document.getElementById("infiMult").innerHTML = "Multiply infinity points from all sources by 2 <br>currently: "+shorten(getIPMult()) +"x<br>Cost: "+shortenCosts(player.infMultCost)+" IP"
 	updateEternityUpgrades()
 	document.getElementById("totaltickgained").textContent = "You've gained "+player.totalTickGained.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")+" tickspeed upgrades."
 	updateTickSpeed();

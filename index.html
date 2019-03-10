@@ -100,7 +100,7 @@
             <button id="infinitybtn" style="font-family: Typewriter; font-size: 20px; display: none" class="infinitybtn">Infinity</button>
             <button id="eternitystorebtn" style="font-family: Typewriter; font-size: 20px; display: none" class="eternitytabbtn">Eternity</button>
             <button id="quantumtabbtn" style="font-family: Typewriter; font-size: 20px; display: none" class="quantumbtn" onclick='showTab("quantumtab")'>Quantum</button>
-            <!--<button id="ghostifytabbtn" style="font-family: Typewriter; font-size: 20px" class="ghostifybtn" onclick='showTab("ghostify")'>Ghostify</button>-->
+            <button id="ghostifytabbtn" style="font-family: Typewriter; font-size: 20px" class="ghostifybtn" onclick='showTab("ghostify")'>Ghostify</button>
         </div>
         <div id="emptiness" class="tab" style="font-size: 150%">
             <br>
@@ -1664,6 +1664,7 @@
                 <td><button class="secondarytabbtn" onclick="showStatsTab('lasttenruns')" id="pastinfs" style="display:none">Past Infinities</button><td>
                 <td><button class="secondarytabbtn" onclick="showStatsTab('lastteneternities')" id="pasteternities" >Past Eternities</button><td>
                 <td><button class="secondarytabbtn" onclick="showStatsTab('lasttenquantums')" id="pastquantums" >Past Quantums</button><td>
+                <td><button class="secondarytabbtn aarexmodsghostifybtn" onclick="showStatsTab('lasttenghostifies')" id="pastghostifies" >Past Ghostifies</button><td>
             </div>
             <div id="stats" class="statstab">
                 <div id='brfilter'><br></div>
@@ -1676,6 +1677,12 @@
                 <div id="galaxies">You have made x Antimatter galaxies.</div>
                 <div id="spreadingCancer"></div>
                 <br>
+                <div id="ghostifyStatistics">
+                    <div id="ghostified"></div>
+                    <div id="bestGhostify"></div>
+                    <div id="thisGhostify"></div>
+                    <br>
+                </div>
                 <div id="quantumStatistics">
                     <div id="quantumed"></div>
                     <div id="bigRipped"></div>
@@ -1828,6 +1835,21 @@
                 <div id="quantumrun10"></div>
                 <br>
                 <div id="averageQuantumRun"></div>
+                <br>
+            </div>
+            <div id="lasttenghostifies" class="statstab">
+                <div id="ghostifyrun1"></div>
+                <div id="ghostifyrun2"></div>
+                <div id="ghostifyrun3"></div>
+                <div id="ghostifyrun4"></div>
+                <div id="ghostifyrun5"></div>
+                <div id="ghostifyrun6"></div>
+                <div id="ghostifyrun7"></div>
+                <div id="ghostifyrun8"></div>
+                <div id="ghostifyrun9"></div>
+                <div id="ghostifyrun10"></div>
+                <br>
+                <div id="averageGhostifyRun"></div>
                 <br>
             </div>
             <div id="footercontainer">
@@ -4414,7 +4436,7 @@
 				</table>
 			</div>
 		</div>
-		<!--<div class='tab' id='ghostify'>
+		<div class='tab' id='ghostify'>
 			<table class="table" align="center" style="margin: auto">
 				<tr>
 					<td><button class="secondarytabbtn">Neutrinos</button></td>
@@ -4433,7 +4455,7 @@
 					</tr>
 				</table>
 			</div>
-		</div>-->
+		</div>
     </div>
     <div class="popup" id="challfail">
         <div id="failPopup">You failed the challenge, you will now exit it.</div>

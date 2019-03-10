@@ -499,6 +499,20 @@ button, div.storebtn {
 	box-shadow: inset 0px 0px 12px 0px #ffffff, 1px 2px rgba(229,229,229,0.4)
 }
 
+.aarexmodsghostifybtn {
+	background: linear-gradient(#0c001e, #3a003f) !important;
+	font-family: Typewriter;
+	font-weight: bold;
+	border-radius: 4px;
+	box-shadow: inset 0px 0px 12px 0px none, 1px 2px rgba(229,229,229,0.4);
+	transition-duration: 0.2s;
+	animation: ghostifytext 4s linear infinite
+}
+
+.aarexmodsghostifybtn:hover {
+	box-shadow: inset 0px 0px 12px 0px #ffffff, 1px 2px rgba(229,229,229,0.4)
+}
+
 #GHPAmount {
 	animation: ghostifytext 4s linear infinite
 }
