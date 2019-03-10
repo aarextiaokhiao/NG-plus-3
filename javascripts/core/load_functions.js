@@ -1159,6 +1159,9 @@ if (player.version < 5) {
           forceToQuantumAndRemove=true
           setTTAfterQuantum=2e94
       }
+
+      //Testing-exclusive
+      if (player.quantum.pairedChallenges.fastest === undefined) player.quantum.pairedChallenges.fastest = {}
   }
   if (player.aarexModifications.newGame3PlusVersion==undefined) {
       colorBoosts={
@@ -1495,6 +1498,9 @@ if (player.version < 5) {
     Chart.defaults.global.defaultFontColor = 'black';
     normalDimChart.data.datasets[0].borderColor = '#000'
   }
+  document.getElementById("simpleSPbg").style.display = player.aarexModifications.simpleSPbg === undefined ? "none" : ""
+  document.getElementById("simpleSPbg").textContent = "St. Patrick background type: " + (player.aarexModifications.simpleSPbg ? "Simple (faster)" : "Gradient (slower)")
+  document.body.style.background = player.options.theme === "S7" && player.aarexModifications.simpleSPbg ? "#00bf00" : ""
 
   document.getElementById("infmultbuyer").style.display = getEternitied()>0||player.masterystudies?"inline-block":"none"
   if (getEternitied() < 30) {
@@ -1793,7 +1799,7 @@ if (player.version < 5) {
       inflationCheck = false
       closeToolTip()
       showNextModeMessage()
-  } else if (player.aarexModifications.popUpId!=1) showNextModeMessage()
+  } else if (player.aarexModifications.popUpId!="STD") showNextModeMessage()
 }
 
 function checkNGM(imported) {

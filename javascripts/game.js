@@ -300,8 +300,8 @@ function updateNewPlayer(reseted) {
             bulkOn: true,
             cloud: true,
             hotkeys: true,
-            theme: undefined,
-            secretThemeKey: 0,
+            theme: "S7" /*undefined*/,
+            secretThemeKey: "St. Patrick" /*0*/,
             eternityconfirm: true,
             commas: "Commas",
             updateRate: 50,
@@ -883,10 +883,10 @@ function setTheme(name) {
     } else if(name === "S4") {
         Chart.defaults.global.defaultFontColor = 'black';
         normalDimChart.data.datasets[0].borderColor = '#000'
-    }  else if(name === "S5") {
+    } else if(name === "S5") {
         Chart.defaults.global.defaultFontColor = 'black';
         normalDimChart.data.datasets[0].borderColor = '#000'
-    } else if (name !== "S6") {
+    } else if (name !== "S6" && name !== "S7") {
         themeName=name;
     }
     if (theme=="Dark"||theme=="Dark Metro"||name === "S6") {
@@ -900,12 +900,13 @@ function setTheme(name) {
     document.getElementById("chosenTheme").textContent="Current theme: " + themeName;
 
     if (name === undefined) return;
-    if (name === "Aarex's Modifications") {
-		name = "Aarexs Modifications"
+    if (name === "Aarex's Modifications") name = "Aarexs Modifications"
+    if (name === "Aarex's Mods II") name = "Aarexs Mods II"
+    if (player.options.theme === "S7" && player.aarexModifications.simpleSPbg === undefined) {
+        document.getElementById("simpleSPbg").style.display = ""
+        player.aarexModifications.simpleSPbg = false
     }
-    if (name === "Aarex's Mods II") {
-		name = "Aarexs Mods II"
-    }
+    document.body.style.background = player.options.theme === "S7" && player.aarexModifications.simpleSPbg ? "#00bf00" : ""
 
     var head = document.head;
     var link = document.createElement('link');
@@ -922,6 +923,11 @@ document.getElementById("theme").onclick = function () {
 	document.getElementById('thememenu').style.display="flex"
 }
 
+function toggleSPbg() {
+	player.aarexModifications.simpleSPbg = !player.aarexModifications.simpleSPbg
+	document.getElementById("simpleSPbg").textContent = "St. Patrick background type: " + (player.aarexModifications.simpleSPbg ? "Simple (faster)" : "Gradient (slower)")
+	if (player.options.theme === "S7") document.body.style.background = player.aarexModifications.simpleSPbg ? "#00bf00" : ""
+}
 
 let kongIPMult = 1
 let kongDimMult = 1
@@ -3076,10 +3082,11 @@ function showNextModeMessage() {
 		document.getElementById("welcome").style.display = "flex"
 		document.getElementById("welcomeMessage").innerHTML = ngModeMessages[ngModeMessages.length-1]
 		ngModeMessages.pop()
-	} else {
-		document.getElementById("welcome").style.display = "none"
-		player.aarexModifications.popUpId=1
-	}
+	} else if (player.aarexModifications.popUpId!="STD") {
+		document.getElementById("welcome").style.display = "flex"
+		document.getElementById("welcomeMessage").textContent = "Happy St. Patrick Day from Aarex! I hope you have clovers for great luck." + (player.options.theme == "S7" ? "" : " Import 'St. Patrick' for a special theme!")
+		player.aarexModifications.popUpId="STD"
+	} else document.getElementById("welcome").style.display = "none"
 }
 
 function verify_save(obj) {
@@ -3122,12 +3129,16 @@ function import_save(type) {
         player.options.theme = "S4";
         player.options.secretThemeKey = save_data;
         setTheme(player.options.theme);
-    }  else if (sha512_256(save_data) === "7a668b64cdfe1bcdf7a38d3858429ee21290268de66b9784afba27dc5225ce28") {
+    } else if (sha512_256(save_data) === "7a668b64cdfe1bcdf7a38d3858429ee21290268de66b9784afba27dc5225ce28") {
         player.options.theme = "S5";
         player.options.secretThemeKey = save_data;
         setTheme(player.options.theme);
-    }  else if (sha512_256(save_data) === "4f82333af895f5c89e6b2082a7dab5a35b964614e74908961fe915cefca1c6d0") {
+    } else if (sha512_256(save_data) === "4f82333af895f5c89e6b2082a7dab5a35b964614e74908961fe915cefca1c6d0") {
         player.options.theme = "S6";
+        player.options.secretThemeKey = save_data;
+        setTheme(player.options.theme);
+    } else if (sha512_256(save_data) === "667697112b694abde5288793a87e04a69bedf0bc141e04ad0aa6f729f78ca1cc") {
+        player.options.theme = "S7";
         player.options.secretThemeKey = save_data;
         setTheme(player.options.theme);
     } else {
@@ -3252,6 +3263,7 @@ function gainedInfinityPoints(next) {
         ret = ret.times(Decimal.pow(Math.max(1e4/player.thisInfinityTime),player.timestudy.ers_studies[5]+(next==5?1:0)))
         ret = ret.times(Decimal.pow(player.thisInfinityTime/10,player.timestudy.ers_studies[6]+(next==6?1:0)))
     }
+	if (isBigRipUpgradeActive(4)) ret = ret.times(player.replicanti.amount.pow(0.34).max(1))
     return ret.floor()
 }
 
@@ -4801,7 +4813,9 @@ function updateRespecButtons() {
 }
 
 function eternity(force, auto) {
-    if ((player.infinityPoints.gte(Number.MAX_VALUE) && player.infDimensionsUnlocked[7] && (!player.options.eternityconfirm || auto || confirm("Eternity will reset everything except achievements and challenge records. You will also gain an Eternity point and unlock various upgrades."))) || force === true) {
+    var id7unlocked = player.infDimensionsUnlocked[7]
+    if (player.masterystudies !== undefined) if (player.quantum.bigRip.active) id7unlocked = true
+    if ((player.infinityPoints.gte(Number.MAX_VALUE) && id7unlocked && (!player.options.eternityconfirm || auto || confirm("Eternity will reset everything except achievements and challenge records. You will also gain an Eternity point and unlock various upgrades."))) || force === true) {
         if (force) player.currentEternityChall = "";
         if (player.currentEternityChall !== "" && player.infinityPoints.lt(player.eternityChallGoal)) return false
         if (player.thisEternity<player.bestEternity && !force) {
@@ -6443,9 +6457,15 @@ setInterval(function() {
     document.getElementById("quantumBlock").style.display = haveBlock ? "" : "none"
 
     var showQuantumBtn = false
+    var bigRipped = false
     if (player.meta !== undefined) if (isQuantumReached()) showQuantumBtn = true
-    if (player.masterystudies !== undefined) if (player.quantum.bigRip.active) showQuantumBtn = true
-    document.getElementById("quantumbtn").style.display = showQuantumBtn ? "" : "none"
+    if (player.masterystudies !== undefined) if (player.quantum.bigRip.active) bigRipped = true
+    document.getElementById("quantumbtn").style.display = showQuantumBtn || bigRipped ? "" : "none"
+
+    document.getElementById("ghostparticles").style.display = ghostified ? "" : "none"
+    if (ghostified) document.getElementById("GHPAmount").textContent = shortenDimensions(player.ghostify.ghostParticles)
+    document.getElementById("ghostifybtn").style.display = showQuantumBtn && bigRipped ? "" : "none"
+
 
     if (order) for (var i=0; i<order.length; i++) document.getElementById(order[i]+"goal").textContent = "Goal: "+shortenCosts(getGoal(order[i]))
 
@@ -6842,6 +6862,11 @@ function gameLoop(diff) {
             var temptm = player.totalmoney
             player.money = player.money.plus(getDimensionProductionPerSecond(1).times(diff/10));
             player.totalmoney = player.totalmoney.plus(getDimensionProductionPerSecond(1).times(diff/10))
+            if (player.masterystudies !== undefined) {
+                if (player.quantum.bigRip.active) {
+                    player.quantum.bigRip.totalAntimatter = player.quantum.bigRip.totalAntimatter.add(getDimensionProductionPerSecond(1).times(diff/10))
+                }
+            }
             if (player.totalmoney.gt("1e9000000000000000")) {
                   document.getElementById("decimalMode").style.display = "none"
                   if (break_infinity_js) {
@@ -7132,6 +7157,7 @@ function gameLoop(diff) {
     if (GUBought("gb1")) interval /= 1-Math.min(Decimal.log10(getTickSpeedMultiplier()),0)
     if (player.replicanti.amount.lt(Number.MAX_VALUE) && player.achievements.includes("r134")) interval /= 2
     if (player.exdilation != undefined) interval /= Math.cbrt(getBlackholePowerEffect())
+    if (isBigRipUpgradeActive(4)) interval /= 10
     if (player.replicanti.amount.gt(Number.MAX_VALUE)) interval = player.boughtDims ? Math.pow(player.achievements.includes("r107")?Math.max(player.replicanti.amount.log(2)/1024,1):1, -.25) : Decimal.pow(getReplSpeed(), Math.max(player.replicanti.amount.log10() - 308, 0)/308).times(interval)
     if (player.masterystudies) {
         if (player.masterystudies.includes("t273")) chance = Decimal.pow(chance,Math.pow(Math.log10(chance+1),5))
@@ -7235,12 +7261,13 @@ function gameLoop(diff) {
     document.getElementById("eternitybtnPeak").textContent = (showEPmin
         ? "Peaked at "+(EPminpeakType == "normal" ? shortenDimensions(EPminpeak) : shorten(EPminpeak))+EPminpeakUnits : "")
     document.getElementById("quantumbtnFlavor").textContent = (!quantumed||!inQC(0)?((player.masterystudies !== undefined ? player.quantum.bigRip.active : false)?"I am":inQC(0)?"My computer is":player.quantum.challenge.length>1?"Paired challenge is":"My challenging skills are")+" not powerful enough... ":"") + "I need to go quantum."
-    var showQuarkGain = quantumed&&(inQC(0)||player.options.theme=="Aarex's Modifications")
-    document.getElementById("quantumbtnQKGain").textContent = showQuarkGain ? "Gain "+shortenDimensions(quarkGain())+" quark"+(quarkGain().eq(1)?".":"s.") : ""
-    if (player.masterystudies !== undefined) if (player.quantum.bigRip.active) document.getElementById("quantumbtnQKGain").textContent = "Gain " + shortenDimensions(getSpaceShardsGain()) + " Space Shards."
-    document.getElementById("quantumbtnRate").textContent = showQuarkGain ? shortenMoney(currentQKmin)+" QK/min" : ""
+    var showGain = quantumed && (inQC(0)||player.options.theme=="Aarex's Modifications") ? "QK" : ""
+    if (player.masterystudies !== undefined) if (player.quantum.bigRip.active) showGain = "SS"
+    document.getElementById("quantumbtnQKGain").textContent = showGain == "QK" ? "Gain "+shortenDimensions(quarkGain())+" quark"+(quarkGain().eq(1)?".":"s.") : ""
+    if (showGain == "SS") document.getElementById("quantumbtnQKGain").textContent = "Gain " + shortenDimensions(getSpaceShardsGain()) + " Space Shards."
+    document.getElementById("quantumbtnRate").textContent = showGain == "QK" ? shortenMoney(currentQKmin)+" QK/min" : ""
     var showQKPeakValue = QKminpeakValue.lt(1e30)||player.options.theme=="Aarex's Modifications"
-    document.getElementById("quantumbtnPeak").textContent = showQuarkGain ? (showQKPeakValue ? "" : "Peaked at ") + shortenMoney(QKminpeak)+" QK/min" + (showQKPeakValue ? " at " + shortenDimensions(QKminpeakValue) + " QK" : "") : ""
+    document.getElementById("quantumbtnPeak").textContent = showGain == "QK" ? (showQKPeakValue ? "" : "Peaked at ") + shortenMoney(QKminpeak)+" QK/min" + (showQKPeakValue ? " at " + shortenDimensions(QKminpeakValue) + " QK" : "") : ""
     updateMoney();
     updateCoinPerSec();
     updateDimensions()

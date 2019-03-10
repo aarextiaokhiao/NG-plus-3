@@ -67,10 +67,10 @@
                 <div id="quantumbtnPeak" class="hideEmpty"></div>
             </button>
         </div>
-        <!--<div style="position: relative">
-            <div class="GHP" id="ghostparticles">You have <span class='GHPAmount'>0</span> Ghost Particles.</div>
-            <button id="ghostifybtn" class="ghostifybtn">My life is not over... I need to become a ghost.</button>
-        </div>-->
+        <div style="position: relative">
+            <div class="GHP" id="ghostparticles">You have <span id='GHPAmount'>0</span> Ghost Particles.</div>
+            <button id="ghostifybtn" class="ghostifybtn" onclick="ghostify()">My life in this universe is almost done... I want to become a ghost.</button>
+        </div>
         <div id='quantumBlock' style='height:120px'></div>
         <div id="matter"></div>
         <div id="chall13Mult"></div>
@@ -1630,7 +1630,7 @@
                         <td><div><button id="toggleLogRateChange" onclick="toggleLogRateChange()" class="storebtn" style="color:black; width: 200px; height: 55px"></button></div></td>
                     </tr>
                     <tr>
-                        <td></td>
+                        <td><div><button id="simpleSPbg" onclick="toggleSPbg()" class="storebtn" style="color:black; width: 200px; height: 55px"></button></div></td>
                         <td><div><button id="decimalMode" onclick="switchDecimalMode()" class="storebtn" style="color:black; width: 200px; height: 55px"></button></div></td>
                         <td></td>
                     </tr>
@@ -3355,14 +3355,14 @@
                     You have <span id="spaceShards" style="font-size:35px">0</span> Space Shards.
                     <table class="table" align="center" style="margin: auto">
                         <tr>
-                            <td><button class='gluonupgrade unavailablebtn' id="bigripupg1" style='font-size: 10px' onclick='buyBigRipUpg(1)'>Infinity Points boost Normal Dimensions if you have less than 100,000 eternities.<br>Cost: <span id="bigripupg1cost">???</span> Space Shards</button></td>
-                            <td><button class='gluonupgrade unavailablebtn' id="bigripupg2" onclick='buyBigRipUpg(2)'>???<br>Cost: <span id="bigripupg2cost">???</span> Space Shards</button></td>
-                            <td><button class='gluonupgrade unavailablebtn' id="bigripupg3" onclick='buyBigRipUpg(3)'>???<br>Cost: <span id="bigripupg3cost">???</span> Space Shards</button></td>
-                            <td><button class='gluonupgrade unavailablebtn' id="bigripupg4" onclick='buyBigRipUpg(4)'>???<br>Cost: <span id="bigripupg4cost">???</span> Space Shards</button></td>
+                            <td><button class='gluonupgrade unavailablebtn' id="bigripupg1" onclick='buyBigRipUpg(1)'>Infinity Points boost Normal Dimensions.<br>Cost: <span id="bigripupg1cost">???</span> Space Shards</button></td>
+                            <td><button class='gluonupgrade unavailablebtn' id="bigripupg2" onclick='buyBigRipUpg(2)'>Start with EC3 fully completed and 100,000 eternities.<br>Cost: <span id="bigripupg2cost">???</span> Space Shards</button></td>
+                            <td><button class='gluonupgrade unavailablebtn' id="bigripupg3" onclick='buyBigRipUpg(3)'>Gain 5 Time Theorems, but repeal the first upgrade.<br>Cost: <span id="bigripupg3cost">???</span> Space Shards</button></td>
+                            <td><button class='gluonupgrade unavailablebtn' id="bigripupg4" style='font-size: 10px' onclick='buyBigRipUpg(4)'>Replicantis multiply the gain of Infinity Points (at reduced rate) and replicate speed is 10x faster.<br>Cost: <span id="bigripupg4cost">???</span> Space Shards</button></td>
                         </tr>
                         <tr>
-                            <td><button class='gluonupgrade unavailablebtn' id="bigripupg5" onclick='buyBigRipUpg(5)'>???<br>Cost: <span id="bigripupg5cost">???</span> Space Shards</button></td>
-                            <td><button class='gluonupgrade unavailablebtn' id="bigripupg6" onclick='buyBigRipUpg(6)'>???<br>Cost: <span id="bigripupg6cost">???</span> Space Shards</button></td>
+                            <td><button class='gluonupgrade unavailablebtn' id="bigripupg5" onclick='buyBigRipUpg(5)'>Gain 20 Time Theorems.<br>Cost: <span id="bigripupg5cost">???</span> Space Shards</button></td>
+                            <td><button class='gluonupgrade unavailablebtn' id="bigripupg6" onclick='buyBigRipUpg(6)'>Eternity Points boost the gain of Space Shards at reduced rate.<br>Cost: <span id="bigripupg6cost">???</span> Space Shards</button></td>
                             <td><button class='gluonupgrade unavailablebtn' id="bigripupg7" onclick='buyBigRipUpg(7)'>???<br>Cost: <span id="bigripupg7cost">???</span> Space Shards</button></td>
                             <td><button class='gluonupgrade unavailablebtn' id="bigripupg8" onclick='buyBigRipUpg(8)'>???<br>Cost: <span id="bigripupg8cost">???</span> Space Shards</button></td>
                         </tr>

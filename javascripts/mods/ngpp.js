@@ -108,7 +108,7 @@ function metaBoost() {
 	player.meta.antimatter = new Decimal(speedrunMilestonesReached>18?1e25:player.achievements.includes("ngpp12")?100:10);
 	clearMetaDimensions();
 	for (let i = 2; i <= 8; i++) if (!canBuyMetaDimension(i)) document.getElementById(i + "MetaRow").style.display = "none"
-	document.getElementById("quantumbtn").style.display="none"
+	if (player.masterystudies === undefined ? true : player.quantum.bigRip.active) document.getElementById("quantumbtn").style.display="none"
 }
 
 
@@ -634,7 +634,7 @@ function quantumReset(force, auto, challid, bigRip, implode=false) {
 		if (!inQC(4)) if (player.meta.resets<1) giveAchievement("Infinity Morals")
 		if (player.dilation.rebuyables[1] + player.dilation.rebuyables[2] + player.dilation.rebuyables[3] + player.dilation.rebuyables[4] < 1 && player.dilation.upgrades.length < 1) giveAchievement("Never make paradoxes!")
 	}
-	var oheHeadstart = speedrunMilestonesReached > 0 && !bigRip
+	var oheHeadstart = (speedrunMilestonesReached > 0 && !bigRip) || (bigRip && player.quantum.bigRip.upgrades.includes(2))
 	var oldTime = player.quantum.time
 	player.quantum.time=0
 	document.getElementById("quarks").innerHTML="You have <b class='QKAmount'>"+shortenDimensions(player.quantum.quarks)+"</b> quark"+(player.quantum.quarks.lt(2)?".":"s.")
@@ -1078,6 +1078,7 @@ function quantumReset(force, auto, challid, bigRip, implode=false) {
 		player.quantum.nanofield.powerThreshold = new Decimal(50)
 		player.quantum.bigRip.active = bigRip
 		if (bigRip) {
+			tweakBigRip()
 			if (player.quantum.bigRip.times < 1) document.getElementById("bigRipConfirmBtn").style.display = "inline-block"
 			player.quantum.bigRip.times++
 			player.quantum.bigRip.bestThisRun = player.money

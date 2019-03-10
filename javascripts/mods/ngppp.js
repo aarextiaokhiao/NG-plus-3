@@ -1831,25 +1831,37 @@ function toggleBigRipConf() {
 }
 
 function getSpaceShardsGain() {
-	return Decimal.pow(player.quantum.bigRip.bestThisRun.log10()/2900, 3).floor()
+	let ret = Decimal.pow(player.quantum.bigRip.bestThisRun.log10()/2000, 1.5)
+	if (player.quantum.bigRip.upgrades.includes(6)) ret = ret.times(Math.max(player.eternityPoints.add(1).log(2)*2,1))
+	return ret.floor()
 }
 
-let bigRipUpgCosts = [0, 2, 3, 1/0, 1/0, 1/0, 1/0, 1/0, 1/0, 1/0, 1/0, 1/0, 1/0]
+let bigRipUpgCosts = [0, 2, 3, 5, 20, 30, 60, 1/0, 1/0, 1/0, 1/0, 1/0, 1/0]
 function buyBigRipUpg(id) {
 	if (player.quantum.bigRip.spaceShards.lt(bigRipUpgCosts[id])||player.quantum.bigRip.upgrades.includes(id)) return
-	player.quantum.bigRip.spaceShards=player.quantum.bigRip.spaceShards.sub(bigRipUpgCosts[id])
+	player.quantum.bigRip.spaceShards=player.quantum.bigRip.spaceShards.sub(bigRipUpgCosts[id]).round()
 	player.quantum.bigRip.upgrades.push(id)
 	document.getElementById("spaceShards").textContent = shortenDimensions(player.quantum.bigRip.spaceShards)
 	document.getElementById("bigripupg"+id).className="gluonupgradebought bigrip"
+	if (player.quantum.bigRip.active) tweakBigRip(id)
+}
+
+function tweakBigRip(id) {
+	if (id !== undefined) if (!player.quantum.bigRip.upgrades.includes(id)) return
+	if (id == 2 || id === undefined) {
+		player.eternityChalls.eterc3 = 5
+		player.eternities = 1e5
+		if (id == 2) updateEternityChallenges()
+	}
+	if (id == 3 || id === undefined) player.timestudy.theorem += 5
+	if (id == 5 || id === undefined) player.timestudy.theorem += 20
 }
 
 function isBigRipUpgradeActive(id, bigRipped) {
 	if (player.masterystudies == undefined) return false
 	if (bigRipped === undefined ? !player.quantum.bigRip.active : !bigRipped) return false
-	if (id == 1) if (player.eternities >= 1e5) return false
+	if (id == 1) if (player.quantum.bigRip.upgrades.includes(3)) return false
 	return player.quantum.bigRip.upgrades.includes(id)
 }
 
-function getBigRipUpgMult(id) {
-	if (id==1) return player.infinityPoints.max(1)
-}
+ghostified = false
