@@ -460,7 +460,7 @@ function quantum(auto, force, challid, bigRip) {
 }
 
 function isQuantumReached() {
-	if (player.masterystudies !== undefined) if (player.quantum.bigRip.active) return true
+	if (player.masterystudies) if (player.quantum.bigRip.active) return true
 	return player.money.log10()>=getQCGoal()&&player.meta.antimatter.gte(Decimal.pow(Number.MAX_VALUE,player.masterystudies?1.45:1))&&(!player.masterystudies||ECTimesCompleted("eterc14"))
 }
 
@@ -1085,6 +1085,7 @@ function quantumReset(force, auto, challid, bigRip, implode=false) {
 			if (player.quantum.bigRip.times < 1) document.getElementById("bigRipConfirmBtn").style.display = "inline-block"
 			player.quantum.bigRip.times++
 			player.quantum.bigRip.bestThisRun = player.money
+			giveAchievement("To the new dimension!")
 		}
 		document.getElementById("metaAntimatterEffectType").textContent=inQC(3)?"multiplier on all Infinity Dimensions":"extra multiplier per dimension boost"
 		updateColorCharge()
@@ -1095,6 +1096,7 @@ function quantumReset(force, auto, challid, bigRip, implode=false) {
 		updateQCTimes()
 		updatePCCompletions()
 		updateReplicants()
+		updateBreakEternity()
 		if (!oheHeadstart) {
 			player.eternityBuyer.dilationMode = false
 			player.eternityBuyer.dilationPerAmount = 10
@@ -1228,6 +1230,8 @@ function quantumReset(force, auto, challid, bigRip, implode=false) {
 		if (document.getElementById("quantumchallenges").style.display == "block") showChallengesTab("normalchallenges")
 		if (document.getElementById("electrons").style.display == "block"||document.getElementById("replicants").style.display == "block"||document.getElementById("nanofield").style.display == "block") showQuantumTab("uquarks")
 	}
+	document.getElementById("breakEternityTabbtn").style.display = bigRip || player.quantum.breakEternity.unlocked ? "" : "none"
+	if (!bigRip && !player.quantum.breakEternity.unlocked) if (document.getElementById("breakEternity").style.display == "block") showEternityTab("timestudies", document.getElementById("eternitystore").style.display=="block")
 	drawMasteryTree()
 	Marathon2 = 0;
 	document.getElementById("quantumConfirmBtn").style.display = "inline-block"

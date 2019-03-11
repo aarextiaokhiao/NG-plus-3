@@ -115,6 +115,7 @@
                     <td><button class="secondarytabbtn" onclick="showEternityTab('eternityupgrades')">Eternity upgrades</button></td>
                     <td><button class="secondarytabbtn" onclick="showEternityTab('milestones')">Eternity milestones</button></td>
                     <td id="dilationTabbtn"><button class="secondarytabbtn" onclick="showEternityTab('dilation')">Time dilation</button></td>
+                    <td id="breakEternityTabbtn"><button class="secondarytabbtn" onclick="showEternityTab('breakEternity')">Break Eternity</button></td>
                     <td id="blackHoleTabbtn"><button class="secondarytabbtn" onclick="showEternityTab('blackhole')">Black hole</button></td>
                 </tr>
             </table>
@@ -877,6 +878,64 @@
                         </td>
                     </tr>
                 </table>
+                <div>
+                    <table id="footer">
+                        <tr>
+                            <td>
+                                <div style="text-align:center">
+                                    <a href="howto.html" target="_newtab">How to play  </a> |
+                                    <a href="about.html" onclick="giveAchievement('A sound financial decision')" target="_newtab">About   </a> |
+                                    <a href="changelog/" target="_newtab">Changelog   </a>
+                                </div>
+                            </td>
+                        </tr>
+                    </table>
+                </div>
+            </div>
+            <div class="eternitytab" id="breakEternity" style="font-size: 11px">
+                <div id="breakEternityReq"></div>
+                <div id="breakEternityNoBigRip">Break Eternity only works if you big rip the universe again.</div>
+                <div id="breakEternityShop">
+                    You have <span id="eternalMatter" style="font-size:35px"></span> Eternal Matter.<br>
+                    <table class="table" style="margin: 0 auto">
+                        <tr>
+                            <td></td>
+                            <td>
+                                <button id="breakEternityBtn" class="eternityupbtn" onclick="breakEternity(1)" ach-tooltip="Remove the disabilities of normal galaxies and Time Dimensions, but all TD boosts do not work except TS11 and TS181, the only way to reduce tickspeed is to get more free tickspeed upgrades, and normal galaxies don’t get cancelled by sacrficied galaxies, but its costs are way higher.">BREAK ETERNITY</button>
+                            </td>
+                            <td></td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <button id="breakUpg1" class="eternityupbtnlocked" onclick="buyBreakUpg(1)">???<br>Cost: <span id="breakUpg1Cost">???</span> Eternal Matter</button>
+                            </td>
+                            <td>
+                                <button id="breakUpg2" class="eternityupbtnlocked" onclick="buyBreakUpg(2)">???<br>Cost: <span id="breakUpg2Cost">???</span> Eternal Matter</button>
+                            </td>
+                            <td>
+                                <button id="breakUpg3" class="eternityupbtnlocked" onclick="buyBreakUpg(3)">???<br>Cost: <span id="breakUpg3Cost">???</span> Eternal Matter</button>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <button id="breakUpg4" class="eternityupbtnlocked" onclick="buyBreakUpg(4)">???<br>Cost: <span id="breakUpg4Cost">???</span> Eternal Matter</button>
+                            </td>
+                            <td>
+                                <button id="breakUpg5" class="eternityupbtnlocked" onclick="buyBreakUpg(5)">???<br>Cost: <span id="breakUpg5Cost">???</span> Eternal Matter</button>
+                            </td>
+                            <td>
+                                <button id="breakUpg6" class="eternityupbtnlocked" onclick="buyBreakUpg(6)">???<br>Cost: <span id="breakUpg6Cost">???</span> Eternal Matter</button>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td></td>
+                            <td>
+                                <button id="breakUpg7" class="eternityupbtnlocked" onclick="buyBreakUpg(7)">???<br>Cost: <span id="breakUpg7Cost">???</span> Eternal Matter</button>
+                            </td>
+                            <td></td>
+                        </tr>
+                    </table>
+                </div>
                 <div>
                     <table id="footer">
                         <tr>
@@ -2369,6 +2428,58 @@
                                 <div id="Are you currently dying?" class="achievement achievementlocked" style="background-image: url(images/142.png)"></div>
                             </td>
                         </tr>
+                        <tr id="achRowng3p5">
+                            <td>
+                                <div id="To the new dimension!" class="achievement achievementlocked" style="background-image: url(images/143.png)" ach-tooltip="Big Rip the universe."></div>
+                            </td>
+                            <td>
+                                <div class="achievement achievementlocked" style="background-image: url(images/achhidden.png)"></div>
+                            </td>
+                            <td>
+                                <div class="achievement achievementlocked" style="background-image: url(images/achhidden.png)"></div>
+                            </td>
+                            <td>
+                                <div class="achievement achievementlocked" style="background-image: url(images/achhidden.png)"></div>
+                            </td>
+                            <td>
+                                <div id="Time Breaker" class="achievement achievementlocked" style="background-image: url(images/147.png)" ach-tooltip="Break Eternity."></div>
+                            </td>
+                            <td>
+                                <div class="achievement achievementlocked" style="background-image: url(images/achhidden.png)"></div>
+                            </td>
+                            <td>
+                                <div class="achievement achievementlocked" style="background-image: url(images/achhidden.png)"></div>
+                            </td>
+                            <td>
+                                <div id="And so your life?" class="achievement achievementlocked" style="background-image: url(images/150.png)" ach-tooltip="Reach ??? IP while dilated, big ripped, and without having time studies and EP mult upgrades."></div>
+                            </td>
+                        </tr>
+                        <tr id="achRowng3p6">
+                            <td>
+                                <div id="Kee-hee-hee!" class="achievement achievementlocked" style="background-image: url(images/151.png)" ach-tooltip="Become a ghost."></div>
+                            </td>
+                            <td>
+                                <div class="achievement achievementlocked" style="background-image: url(images/achhidden.png)"></div>
+                            </td>
+                            <td>
+                                <div id="This achievement doesn't exist 4" class="achievement achievementlocked" style="background-image: url(images/153.png)" ach-tooltip="Reach 9.999999e99 EM."></div>
+                            </td>
+                            <td>
+                                <div class="achievement achievementlocked" style="background-image: url(images/achhidden.png)"></div>
+                            </td>
+                            <td>
+                                <div class="achievement achievementlocked" style="background-image: url(images/achhidden.png)"></div>
+                            </td>
+                            <td>
+                                <div id="I rather oppose the theory of everything" class="achievement achievementlocked" style="background-image: url(images/156.png)" ach-tooltip="Complete Brave Milestones."></div>
+                            </td>
+                            <td>
+                                <div class="achievement achievementlocked" style="background-image: url(images/achhidden.png)"></div>
+                            </td>
+                            <td>
+                                <div id="Please answer me why you are dying." class="achievement achievementlocked" style="background-image: url(images/158.png)" ach-tooltip="Reach ??? IP while dilated, big ripped, and without having time studies, EP mult upgrades, and neutrinos."></div>
+                            </td>
+                        </tr>
                 </table>
             </div>
             <div id="secretachievements" class="achtab" style="display:none;">
@@ -3378,21 +3489,27 @@
                     <table class="table" align="center" style="margin: auto">
                         <tr>
                             <td><button class='gluonupgrade unavailablebtn' id="bigripupg1" onclick='buyBigRipUpg(1)'>Infinity Points boost Normal Dimensions.<br>Cost: <span id="bigripupg1cost">???</span> Space Shards</button></td>
-                            <td><button class='gluonupgrade unavailablebtn' id="bigripupg2" onclick='buyBigRipUpg(2)'>Start with EC3 fully completed and 100,000 eternities.<br>Cost: <span id="bigripupg2cost">???</span> Space Shards</button></td>
+                            <td><button class='gluonupgrade unavailablebtn' id="bigripupg2" onclick='buyBigRipUpg(2)'>Start with all ECs completed and 100,000 eternities.<br>Cost: <span id="bigripupg2cost">???</span> Space Shards</button></td>
                             <td><button class='gluonupgrade unavailablebtn' id="bigripupg3" onclick='buyBigRipUpg(3)'>Gain 5 Time Theorems, but repeal the first upgrade.<br>Cost: <span id="bigripupg3cost">???</span> Space Shards</button></td>
                             <td><button class='gluonupgrade unavailablebtn' id="bigripupg4" style='font-size: 10px' onclick='buyBigRipUpg(4)'>Replicantis multiply the gain of Infinity Points (at reduced rate) and replicate speed is 10x faster.<br>Cost: <span id="bigripupg4cost">???</span> Space Shards</button></td>
                         </tr>
                         <tr>
                             <td><button class='gluonupgrade unavailablebtn' id="bigripupg5" onclick='buyBigRipUpg(5)'>Gain 20 Time Theorems.<br>Cost: <span id="bigripupg5cost">???</span> Space Shards</button></td>
-                            <td><button class='gluonupgrade unavailablebtn' id="bigripupg6" onclick='buyBigRipUpg(6)'>Eternity Points boost the gain of Space Shards at reduced rate.<br>Cost: <span id="bigripupg6cost">???</span> Space Shards</button></td>
-                            <td><button class='gluonupgrade unavailablebtn' id="bigripupg7" onclick='buyBigRipUpg(7)'>???<br>Cost: <span id="bigripupg7cost">???</span> Space Shards</button></td>
-                            <td><button class='gluonupgrade unavailablebtn' id="bigripupg8" onclick='buyBigRipUpg(8)'>???<br>Cost: <span id="bigripupg8cost">???</span> Space Shards</button></td>
+                            <td><button class='gluonupgrade unavailablebtn' id="bigripupg6" onclick='buyBigRipUpg(6)'>Space Shards boost Eternity Points gain.<br>Cost: <span id="bigripupg6cost">???</span> Space Shards</button></td>
+                            <td><button class='gluonupgrade unavailablebtn' id="bigripupg7" onclick='buyBigRipUpg(7)'>Time Study 192 is permanently bought.<br>Cost: <span id="bigripupg7cost">???</span> Space Shards</button></td>
+                            <td><button class='gluonupgrade unavailablebtn' id="bigripupg8" onclick='buyBigRipUpg(8)'>Replicated galaxies boost Eternity Points gain.<br>Cost: <span id="bigripupg8cost">???</span> Space Shards</button></td>
                         </tr>
                         <tr>
-                            <td><button class='gluonupgrade unavailablebtn' id="bigripupg9" onclick='buyBigRipUpg(9)'>???<br>Cost: <span id="bigripupg9cost">???</span> Space Shards</button></td>
+                            <td><button class='gluonupgrade unavailablebtn' id="bigripupg9" onclick='buyBigRipUpg(9)' style='font-size: 10px'>Gain 1,350 Time Theorems but reset the study tree and repeal upgrades 3 & 5 - 8.<br>Cost: <span id="bigripupg9cost">???</span> Space Shards</button></td>
                             <td><button class='gluonupgrade unavailablebtn' id="bigripupg10" onclick='buyBigRipUpg(10)'>???<br>Cost: <span id="bigripupg10cost">???</span> Space Shards</button></td>
                             <td><button class='gluonupgrade unavailablebtn' id="bigripupg11" onclick='buyBigRipUpg(11)'>???<br>Cost: <span id="bigripupg11cost">???</span> Space Shards</button></td>
                             <td><button class='gluonupgrade unavailablebtn' id="bigripupg12" onclick='buyBigRipUpg(12)'>???<br>Cost: <span id="bigripupg12cost">???</span> Space Shards</button></td>
+                        </tr>
+                        <tr>
+                            <td><button class='gluonupgrade unavailablebtn' id="bigripupg13" onclick='buyBigRipUpg(13)'>???<br>Cost: <span id="bigripupg13cost">???</span> Space Shards</button></td>
+                            <td><button class='gluonupgrade unavailablebtn' id="bigripupg14" onclick='buyBigRipUpg(14)'>???<br>Cost: <span id="bigripupg14cost">???</span> Space Shards</button></td>
+                            <td><button class='gluonupgrade unavailablebtn' id="bigripupg15" onclick='buyBigRipUpg(15)'>???<br>Cost: <span id="bigripupg15cost">???</span> Space Shards</button></td>
+                            <td><button class='gluonupgrade unavailablebtn' id="bigripupg16" onclick='buyBigRipUpg(16)'>???<br>Cost: <span id="bigripupg16cost">???</span> Space Shards</button></td>
                         </tr>
                     </table>
                 </div>

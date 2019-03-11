@@ -1666,6 +1666,7 @@ if (player.version < 5) {
       updateMasteryStudyCosts()
       updateMasteryStudyButtons()
       if (quantumed) giveAchievement("Sub-atomic")
+      if (ghostified) giveAchievement("Kee-hee-hee!")
       document.getElementById('reward3disable').textContent="6 hours reward: O"+(player.quantum.disabledRewards[3]?"FF":"N")
       document.getElementById('reward4disable').textContent="4.5 hours reward: O"+(player.quantum.disabledRewards[4]?"FF":"N")
       document.getElementById('reward11disable').textContent="33.3 mins reward: O"+(player.quantum.disabledRewards[11]?"FF":"N")
@@ -1729,6 +1730,7 @@ if (player.version < 5) {
   maybeShowFillAll()
   updateReplicants()
   updateTODStuff()
+  updateBreakEternity()
   if (player.boughtDims) {
       if (document.getElementById("timestudies").style.display=="block") showEternityTab("ers_timestudies",true)
       updateGalaxyControl()

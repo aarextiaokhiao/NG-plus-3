@@ -350,8 +350,9 @@ function respecTimeStudies(force) {
           if (temp>player.timestudy.theorem) gotAch=false
           player.timestudy.ers_studies=[null,0,0,0,0,0,0]
        } else {
+          var bru7activated = isBigRipUpgradeActive(7)
           for (var i=0; i<all.length; i++) {
-              if (player.timestudy.studies.includes(all[i])) {
+              if (player.timestudy.studies.includes(all[i]) && (!bru7activated || all[i] !== 192)) {
                   player.timestudy.theorem += studyCosts[i]
                   gotAch=false
               }

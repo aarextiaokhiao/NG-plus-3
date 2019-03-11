@@ -149,6 +149,13 @@ const allAchievements = {
   ng3p46 : "Hardly marked",
   ng3p47 : "Stop blocking me!",
   ng3p48 : "Are you currently dying?",
+  ng3p51 : "To the new dimension!",
+  ng3p55 : "Time Breaker",
+  ng3p58 : "And so your life?",
+  ng3p61 : "Kee-hee-hee!",
+  ng3p63 : "This achievement doesn't exist 4",
+  ng3p66 : "I rather oppose the theory of everything",
+  ng3p68 : "Please answer me why you are dying.",
   s11 : "The first one's always free",
   s12 : "Just in case",
   s13 : "It pays to have respect",
@@ -280,7 +287,7 @@ function giveAchievement(name) {
 
 function updateAchievements() {
 	var amount = 0
-	for (var i=1; i<19; i++) {
+	for (var i=1; i<21; i++) {
 		var shown=false
 		var rowid=i
 		if (i>14) {
@@ -314,11 +321,13 @@ function updateAchievements() {
 				} else if (player.meta&&achNum>140) var achId="ngpp"+(achNum-130)
 				else var achId="r"+achNum
 				var name=allAchievements[achId]
-				if (player.achievements.includes(achId)) {
-					n++
-					document.getElementById(name).className = "achievementunlocked"
-				} else {
-					document.getElementById(name).className = "achievementlocked"
+				if (name) {
+					if (player.achievements.includes(achId)) {
+						n++
+						document.getElementById(name).className = "achievementunlocked"
+					} else {
+						document.getElementById(name).className = "achievementlocked"
+					}
 				}
 			}
 			if (n == 8) {

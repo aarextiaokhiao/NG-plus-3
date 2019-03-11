@@ -915,7 +915,7 @@ function updateQuantumChallenges() {
 	}
 	if (player.masterystudies.includes("d14")) {
 		document.getElementById("spaceShards").textContent = shortenDimensions(player.quantum.bigRip.spaceShards)
-		for (var u=1;u<13;u++) {
+		for (var u=1;u<17;u++) {
 			document.getElementById("bigripupg"+u).className = player.quantum.bigRip.upgrades.includes(u) ? "gluonupgradebought bigrip" : player.quantum.bigRip.spaceShards.lt(bigRipUpgCosts[u]) ? "gluonupgrade unavailablebtn" : "gluonupgrade bigrip"
 			document.getElementById("bigripupg"+u+"cost").textContent = shortenDimensions(new Decimal(bigRipUpgCosts[u]))
 		}
@@ -1832,11 +1832,10 @@ function toggleBigRipConf() {
 
 function getSpaceShardsGain() {
 	let ret = Decimal.pow(player.quantum.bigRip.bestThisRun.log10()/2000, 1.5)
-	if (player.quantum.bigRip.upgrades.includes(6)) ret = ret.times(Math.max(player.eternityPoints.add(1).log(2)*2,1))
 	return ret.floor()
 }
 
-let bigRipUpgCosts = [0, 2, 3, 5, 20, 30, 60, 1/0, 1/0, 1/0, 1/0, 1/0, 1/0]
+let bigRipUpgCosts = [0, 2, 3, 5, 20, 30, 45, 60, 100, 150, 1200, 1/0, 1/0, 1/0, 1/0, 1/0, 1/0]
 function buyBigRipUpg(id) {
 	if (player.quantum.bigRip.spaceShards.lt(bigRipUpgCosts[id])||player.quantum.bigRip.upgrades.includes(id)) return
 	player.quantum.bigRip.spaceShards=player.quantum.bigRip.spaceShards.sub(bigRipUpgCosts[id]).round()
@@ -1847,21 +1846,66 @@ function buyBigRipUpg(id) {
 }
 
 function tweakBigRip(id) {
-	if (id !== undefined) if (!player.quantum.bigRip.upgrades.includes(id)) return
+	if (id !== undefined) if (!isBigRipUpgradeActive(id)) return
 	if (id == 2 || id === undefined) {
-		player.eternityChalls.eterc3 = 5
+		for (var ec=1;ec<15;ec++) player.eternityChalls["eterc"+ec] = 5
 		player.eternities = 1e5
 		if (id == 2) updateEternityChallenges()
 	}
-	if (id == 3 || id === undefined) player.timestudy.theorem += 5
-	if (id == 5 || id === undefined) player.timestudy.theorem += 20
+	if (id == 3 || id === undefined) if (!player.quantum.bigRip.upgrades.includes(9)) player.timestudy.theorem += 5
+	if (id == 5 || id === undefined) if (!player.quantum.bigRip.upgrades.includes(9)) player.timestudy.theorem += 20
+	if (id == 7 || id === undefined) if (!player.timestudy.studies.includes(192) && !player.quantum.bigRip.upgrades.includes(9)) player.timestudy.studies.push(192)
+	if (id == 9 || id === undefined) {
+		if (id == 9) player.timestudy = {
+			theorem: 0,
+			amcost: new Decimal("1e20000"),
+			ipcost: new Decimal(1),
+			epcost: new Decimal(1),
+			studies: []
+		}
+		player.timestudy.theorem += 1350
+	}
 }
 
 function isBigRipUpgradeActive(id, bigRipped) {
 	if (player.masterystudies == undefined) return false
 	if (bigRipped === undefined ? !player.quantum.bigRip.active : !bigRipped) return false
 	if (id == 1) if (player.quantum.bigRip.upgrades.includes(3)) return false
+	if (id > 2 && id != 4 && id < 9) if (player.quantum.bigRip.upgrades.includes(9)) return false
 	return player.quantum.bigRip.upgrades.includes(id)
+}
+
+function updateBreakEternity() {
+	if (player.masterystudies === undefined) {
+		document.getElementById("breakEternityTabbtn").style.display = "none"
+		return
+	}
+	document.getElementById("breakEternityTabbtn").style.display = player.quantum.bigRip.active || player.quantum.breakEternity.unlocked ? "" : "none"
+	if (player.quantum.breakEternity.unlocked) {
+		document.getElementById("breakEternityReq").style.display = "none"
+		document.getElementById("breakEternityShop").style.display = ""
+		document.getElementById("breakEternityNoBigRip").style.display = player.quantum.bigRip.active ? "none" : ""
+		document.getElementById("eternalMatter").textContent = shortenDimensions(player.quantum.breakEternity.eternalMatter)
+	} else {
+		document.getElementById("breakEternityReq").style.display = ""
+		document.getElementById("breakEternityReq").textContent = "You need to get " + shorten(1e50) + " EP before you will able to Break Eternity."
+		document.getElementById("breakEternityShop").style.display = "none"
+	}
+}
+
+function breakEternity() {
+	player.quantum.breakEternity.break = !player.quantum.breakEternity.break
+	document.getElementById("breakEternityBtn").textContent = (player.quantum.breakEternity.break ? "FIX" : "BREAK") + " ETERNITY"
+	giveAchievement("Time Breaker")
+}
+
+function isEternityBroke() {
+	if (player.masterystudies == undefined) return false
+	return player.quantum.bigRip.active && player.quantum.breakEternity.break
+}
+
+function getEMGain() {
+	return new Decimal(1)
 }
 
 function getGHPGain() {
@@ -2321,6 +2365,7 @@ function ghostifyReset(implode) {
 	QKminpeakValue = new Decimal(0)
 	if (implode) showQuantumTab("uquarks")
 	updateLastTenQuantums()
+	updateQuantumChallenges()
 	updateReplicants()
 
 	//Big rip
@@ -2333,7 +2378,7 @@ function ghostifyReset(implode) {
 	player.quantum.breakEternity.eternalMatter = new Decimal(0)
 	player.quantum.breakEternity.upgrades = []
 	player.quantum.breakEternity.epMultPower = []
-	updateQuantumChallenges()
+	updateBreakEternity()
 	
 	//Ghostify
 	GHPminpeak = new Decimal(0)
@@ -2343,6 +2388,7 @@ function ghostifyReset(implode) {
 		ghostified = true
 		document.getElementById("ghostifytabbtn").style.display = "inline-block"
 		document.getElementById("ghostparticles").style.display = ""
+		giveAchievement("Kee-hee-hee!")
 	}
 	document.getElementById("GHPAmount").textContent = shortenDimensions(player.ghostify.ghostParticles)
 	updateLastTenGhostifies()
