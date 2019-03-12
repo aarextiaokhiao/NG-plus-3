@@ -460,7 +460,6 @@ function quantum(auto, force, challid, bigRip) {
 }
 
 function isQuantumReached() {
-	if (player.masterystudies) if (player.quantum.bigRip.active) return true
 	return player.money.log10()>=getQCGoal()&&player.meta.antimatter.gte(Decimal.pow(Number.MAX_VALUE,player.masterystudies?1.45:1))&&(!player.masterystudies||ECTimesCompleted("eterc14"))
 }
 
@@ -636,7 +635,7 @@ function quantumReset(force, auto, challid, bigRip, implode=false) {
 		if (!inQC(4)) if (player.meta.resets<1) giveAchievement("Infinity Morals")
 		if (player.dilation.rebuyables[1] + player.dilation.rebuyables[2] + player.dilation.rebuyables[3] + player.dilation.rebuyables[4] < 1 && player.dilation.upgrades.length < 1) giveAchievement("Never make paradoxes!")
 	}
-	var oheHeadstart = (speedrunMilestonesReached > 0 && !bigRip) || (bigRip && player.quantum.bigRip.upgrades.includes(2))
+	var oheHeadstart = (speedrunMilestonesReached > 0 && !bigRip) || (bigRip && isBigRipUpgradeActive(2))
 	var oldTime = player.quantum.time
 	player.quantum.time=0
 	document.getElementById("quarks").innerHTML="You have <b class='QKAmount'>"+shortenDimensions(player.quantum.quarks)+"</b> quark"+(player.quantum.quarks.lt(2)?".":"s.")
@@ -1086,6 +1085,11 @@ function quantumReset(force, auto, challid, bigRip, implode=false) {
 			player.quantum.bigRip.times++
 			player.quantum.bigRip.bestThisRun = player.money
 			giveAchievement("To the new dimension!")
+			if (!player.quantum.bigRip.upgrades.includes(2)) {
+				document.getElementById("bigRipConfirmBtn").style.display = "inline-block"
+				showTab("infinity")
+				showInfTab("preinf")
+			}
 		}
 		document.getElementById("metaAntimatterEffectType").textContent=inQC(3)?"multiplier on all Infinity Dimensions":"extra multiplier per dimension boost"
 		updateColorCharge()

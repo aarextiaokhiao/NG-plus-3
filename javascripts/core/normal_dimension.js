@@ -300,6 +300,10 @@ function hasInfinityMult(tier) {
 
 function buyOneDimension(tier) {
 	if (!canBuyDimension(tier)) return false
+	if (player.masterystudies !== undefined) if (player.quantum.bigRip.active && !canBuyIPMult()) {
+		alert("You need to buy all pre-infinity upgrades before you will able to buy Normal Dimensions.")
+		return
+	}
 	let name = TIER_NAMES[tier]
 	let cost = player[name + 'Cost']
 	let resource = getOrSubResource(tier)
@@ -322,6 +326,10 @@ function buyOneDimension(tier) {
 
 function buyManyDimension(tier, quick) {
 	if (!canBuyDimension(tier)) return false
+	if (!quick && player.masterystudies !== undefined) if (player.quantum.bigRip.active && !canBuyIPMult()) {
+		alert("You need to buy all pre-infinity upgrades before you will able to buy Normal Dimensions.")
+		return
+	}
 	let name = TIER_NAMES[tier]
 	let toBuy = 10 - dimBought(tier)
 	let cost = player[name + 'Cost'].times(toBuy)

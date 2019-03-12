@@ -6809,7 +6809,8 @@ function gameLoop(diff) {
     player.matter = player.matter.times(Decimal.pow((1.03 + player.resets/200 + player.galaxies/100), diff));
     if (player.matter.gt(player.money) && (player.currentChallenge == "challenge12" || player.currentChallenge == "postc1")) quickReset()
     else if (player.matter.pow(20).gt(player.money) && (player.currentChallenge == "postc7" || inQC(6))) {
-        if (inQC(6)) {
+        if (player.masterystudies !== undefined ? player.quantum.bigRip.active && reachedInfinity() : false) {}
+        else if (inQC(6)) {
             document.getElementById("challfail").style.display = "block"
             quantum(false, true, 0)
             giveAchievement("You're a mistake")

@@ -1870,7 +1870,7 @@ function tweakBigRip(id) {
 function isBigRipUpgradeActive(id, bigRipped) {
 	if (player.masterystudies == undefined) return false
 	if (bigRipped === undefined ? !player.quantum.bigRip.active : !bigRipped) return false
-	if (id == 1) if (player.quantum.bigRip.upgrades.includes(3)) return false
+	if (id == 1) for (var u=3;u<17;u++) if (player.quantum.bigRip.upgrades.includes(u)) return false
 	if (id > 2 && id != 4 && id < 9) if (player.quantum.bigRip.upgrades.includes(9)) return false
 	return player.quantum.bigRip.upgrades.includes(id)
 }
