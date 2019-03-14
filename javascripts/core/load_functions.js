@@ -1660,7 +1660,7 @@ if (player.version < 5) {
   }
   document.getElementById('sacrificeAuto').style.display=speedrunMilestonesReached>24?"":"none"
   document.getElementById('toggleautoquantummode').style.display=(player.masterystudies?player.quantum.reachedInfQK||player.achievements.includes("ng3p25"):false)?"":"none"
-  document.getElementById('assignAll').style.display=(player.masterystudies?player.quantum.reachedInfQK:false)?"":"none"
+  document.getElementById('assignAll').style.display=(player.masterystudies?player.quantum.reachedInfQK||ghostified:false)?"":"none"
   document.getElementById('autoReset').style.display=player.achievements.includes("ng3p47")?"":"none"
   if (player.masterystudies) {
       updateMasteryStudyCosts()
@@ -1753,7 +1753,8 @@ if (player.version < 5) {
   document.getElementById("autoBuyerQuantum").style.display=speedrunMilestonesReached>22?"":"none"
   document.getElementById("edtabbtn").style.display=!player.masterystudies?"none":player.masterystudies.includes("d11")?"":"none"
   document.getElementById("nanofieldtabbtn").style.display=!player.masterystudies?"none":player.masterystudies.includes("d12")?"":"none"
-  setAndMaybeShow('bestTP',player.achievements.includes("ng3p18") || player.achievements.includes("ng3p37"),'"Your best ever Tachyon particles was "+shorten(player.dilation.bestTP)+"."')
+  setAndMaybeShow('bestTP',player.achievements.includes("ng3p18") || player.achievements.includes("ng3p37"),'"Your best"+(ghostified ? "" : " ever")+" Tachyon particles"+(ghostified ? " in this Ghostify" : "")+" was "+shorten(player.dilation.bestTP)+"."')
+  setAndMaybeShow('bestTPOverGhostifies',(player.achievements.includes("ng3p18") || player.achievements.includes("ng3p37")) && ghostified,'"Your best-ever Tachyon particles was "+shorten(player.dilation.bestTPOverGhostifies)+"."')
   notifyId=speedrunMilestonesReached
   updatePowers()
   document.getElementById("newsbtn").textContent=(player.options.newsHidden?"Show":"Hide")+" news ticker"
@@ -2246,6 +2247,8 @@ function transformSaveToDecimal() {
       }
   }
   if (player.ghostify) {
+      player.dilation.bestTPOverGhostifies = Decimal.max(player.dilation.bestTPOverGhostifies, player.dilation.bestTP)
+      player.meta.bestOverGhostifies = Decimal.max(player.meta.bestOverGhostifies, player.meta.bestOverQuantums)
       player.quantum.pairedChallenges.pc68best = new Decimal(player.quantum.pairedChallenges.pc68best)
       player.quantum.bigRip.bestThisRun = new Decimal(player.quantum.bigRip.bestThisRun)
       player.quantum.bigRip.bestAntimatter = new Decimal(player.quantum.bigRip.bestAntimatter)

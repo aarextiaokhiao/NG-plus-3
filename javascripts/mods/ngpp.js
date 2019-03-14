@@ -269,8 +269,9 @@ function getDil17Bonus () {
 function updateMetaDimensions () {
 	document.getElementById("metaAntimatterAmount").textContent = shortenMoney(player.meta.antimatter);
 	document.getElementById("metaAntimatterBest").textContent = shortenMoney(player.meta.bestAntimatter);
-	document.getElementById("bestAntimatterQuantum").textContent = player.masterystudies && quantumed ? "Your best-ever meta-antimatter was " + shortenMoney(player.meta.bestOverQuantums) + "." : ""
+	document.getElementById("bestAntimatterQuantum").textContent = player.masterystudies && quantumed ? "Your best" + (ghostified ? "" : "-ever") + " meta-antimatter" + (ghostified ? " in this Ghostify" : "") + " was " + shortenMoney(player.meta.bestOverQuantums) + "." : ""
 	document.getElementById("bestAntimatterTranslation").innerHTML = (player.masterystudies ? player.quantum.nanofield.rewards > 1 && player.currentEternityChall != "eterc14" && !inQC(3) && !inQC(4) : false) ? 'Raised to the power of <span id="metaAntimatterPower" style="font-size:35px; color: black">'+Math.round(getExtraDimensionBoostPowerExponent()*10)/10+'</span>, t' : "T"
+	document.getElementById("bestMAOverGhostifies").textContent = ghostified ? "Your best-ever meta-antimatter was " + shortenMoney(player.meta.bestOverGhostifies) + "." : ""
 	document.getElementById("metaAntimatterEffect").textContent = shortenMoney(getExtraDimensionBoostPower())
 	document.getElementById("metaAntimatterPerSec").textContent = 'You are getting ' + shortenDimensions(getMetaDimensionProduction(1)) + ' meta-antimatter per second.';
 	for (let tier = 1; tier <= 8; ++tier) {
@@ -388,7 +389,7 @@ function doAutoEterTick() {
 		for (d=1;d<9;d++) if (player.autoEterOptions["td"+d]) buyMaxTimeDimension(d)
 		if (player.autoEterOptions.epmult) buyMaxEPMult()
 	}
-	if (player.autoEterOptions.tt && !player.dilation.upgrades.includes(10)) maxTheorems()
+	if (player.autoEterOptions.tt && !player.dilation.upgrades.includes(10) && speedrunMilestonesReached > 1) maxTheorems()
 }
 
 // v2.301
@@ -625,11 +626,13 @@ function quantumReset(force, auto, challid, bigRip, implode=false) {
 		if (!inQC(6)) {
 			player.quantum.quarks = player.quantum.quarks.plus(qkGain)
 			if (player.masterystudies != undefined && player.quantum.quarks.gte(Number.MAX_VALUE) && !player.quantum.reachedInfQK) {
-				document.getElementById("welcome").style.display = "flex"
-				document.getElementById("welcomeMessage").innerHTML = "Congratulations for getting " + shorten(Number.MAX_VALUE) + " quarks! You have unlocked new QoL features, like quantum autobuyer modes, assign all, and auto-assignation!"
+				if (!ghostified) {
+					document.getElementById("welcome").style.display = "flex"
+					document.getElementById("welcomeMessage").innerHTML = "Congratulations for getting " + shorten(Number.MAX_VALUE) + " quarks! You have unlocked new QoL features, like quantum autobuyer modes, assign all, and auto-assignation!"
+					document.getElementById('assignAll').style.display=""
+				}
 				player.quantum.reachedInfQK = true
 				document.getElementById('toggleautoquantummode').style.display=""
-				document.getElementById('assignAll').style.display=""
 			}
 		}
 		if (!inQC(4)) if (player.meta.resets<1) giveAchievement("Infinity Morals")
@@ -914,12 +917,13 @@ function quantumReset(force, auto, challid, bigRip, implode=false) {
 		dimlife: true,
 		dead: true,
 		dilation: {
-			studies: isRewardEnabled(4) && !bigRip ? (speedrunMilestonesReached > 5 ? [1,2,3,4,5,6] : [1]) : [],
+			studies: bigRip ? (player.quantum.bigRip.upgrades.includes(10) ? [1] : []) : isRewardEnabled(4) ? (speedrunMilestonesReached > 5 ? [1,2,3,4,5,6] : [1]) : [],
 			active: false,
-			tachyonParticles: player.achievements.includes("ng3p37") ? player.dilation.bestTP.sqrt() : new Decimal(0),
+			tachyonParticles: player.achievements.includes("ng3p37") && !bigRip ? player.dilation.bestTP.sqrt() : new Decimal(0),
 			dilatedTime: new Decimal(speedrunMilestonesReached>21 && isRewardEnabled(4) && !bigRip?1e100:0),
-			totalTachyonParticles: new Decimal(0),
+			totalTachyonParticles: player.achievements.includes("ng3p37") && !bigRip ? player.dilation.bestTP.sqrt() : new Decimal(0),
 			bestTP: player.dilation.bestTP,
+			bestTPOverGhostifies: player.dilation.bestTPOverGhostifies,
 			nextThreshold: new Decimal(1000),
 			freeGalaxies: 0,
 			upgrades: speedrunMilestonesReached > 5 && isRewardEnabled(4) && !bigRip ? [4,5,6,7,8,9,"ngpp1","ngpp2"] : [],
@@ -936,6 +940,7 @@ function quantumReset(force, auto, challid, bigRip, implode=false) {
 			antimatter: new Decimal(speedrunMilestonesReached > 18 && !bigRip ? 1e25 : 100),
 			bestAntimatter: headstart ? player.meta.bestAntimatter : new Decimal(speedrunMilestonesReached > 18 && !bigRip ? 1e25 : 100),
 			bestOverQuantums: player.meta.bestOverQuantums,
+			bestOverGhostifies: player.meta.bestOverGhostifies,
 			resets: isRewardEnabled(27) ? 4 : 0,
 			'1': {
 				amount: new Decimal(0),
@@ -1043,6 +1048,7 @@ function quantumReset(force, auto, challid, bigRip, implode=false) {
 					current: 0,
 					completed: 0,
 					completions: player.quantum.pairedChallenges.completions,
+					fastest: player.quantum.pairedChallenges.fastest,
 					respec: false
 				}
 				for (qc=1;qc<9;qc++) player.quantum.challenges[qc]=1

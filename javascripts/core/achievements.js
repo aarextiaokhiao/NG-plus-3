@@ -282,6 +282,7 @@ function giveAchievement(name) {
     }
     if (name == "Twice in the row") document.getElementById('toggleautoquantummode').style.display=""
 	if (name == "Stop blocking me!") document.getElementById('autoReset').style.display=""
+	if (name == "Kee-hee-hee!" && (player.achievements.includes("ng3p18") || player.achievements.includes("ng3p37"))) setAndMaybeShow('bestTPOverGhostifies',true,'"Your best-ever Tachyon particles was "+shorten(player.dilation.bestTPOverGhostifies)+"."')
     updateAchievements();
 }
 

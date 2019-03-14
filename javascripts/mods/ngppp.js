@@ -1832,10 +1832,11 @@ function toggleBigRipConf() {
 
 function getSpaceShardsGain() {
 	let ret = Decimal.pow(player.quantum.bigRip.bestThisRun.log10()/2000, 1.5)
+	ret = ret.times(Decimal.pow(player.dilation.dilatedTime.add(1).log10()/10 + 1, 2))
 	return ret.floor()
 }
 
-let bigRipUpgCosts = [0, 2, 3, 5, 20, 30, 45, 60, 100, 150, 1200, 1/0, 1/0, 1/0, 1/0, 1/0, 1/0]
+let bigRipUpgCosts = [0, 2, 3, 5, 20, 30, 45, 60, 100, 150, 1200, 1e7, 1/0, 1/0, 1/0, 1/0, 1/0]
 function buyBigRipUpg(id) {
 	if (player.quantum.bigRip.spaceShards.lt(bigRipUpgCosts[id])||player.quantum.bigRip.upgrades.includes(id)) return
 	player.quantum.bigRip.spaceShards=player.quantum.bigRip.spaceShards.sub(bigRipUpgCosts[id]).round()
@@ -1863,7 +1864,23 @@ function tweakBigRip(id) {
 			epcost: new Decimal(1),
 			studies: []
 		}
-		player.timestudy.theorem += 1350
+		if (!player.quantum.bigRip.upgrades.includes(12)) player.timestudy.theorem += 1350
+	}
+	if (id == 10) {
+		player.dilation.studies.push(1)
+		showTab("eternitystore")
+		showEternityTab("dilation")
+	}
+	if (id == 11) {
+		player.timestudy = {
+			theorem: 0,
+			amcost: new Decimal("1e20000"),
+			ipcost: new Decimal(1),
+			epcost: new Decimal(1),
+			studies: []
+		}
+		player.dilation.tachyonParticles = player.dilation.bestTP.sqrt()
+		player.dilation.totalTachyonParticles = player.dilation.bestTP.sqrt()
 	}
 }
 
@@ -1872,6 +1889,7 @@ function isBigRipUpgradeActive(id, bigRipped) {
 	if (bigRipped === undefined ? !player.quantum.bigRip.active : !bigRipped) return false
 	if (id == 1) for (var u=3;u<17;u++) if (player.quantum.bigRip.upgrades.includes(u)) return false
 	if (id > 2 && id != 4 && id < 9) if (player.quantum.bigRip.upgrades.includes(9)) return false
+	if (id == 4) if (player.quantum.bigRip.upgrades.includes(11)) return false
 	return player.quantum.bigRip.upgrades.includes(id)
 }
 
@@ -1915,9 +1933,9 @@ function getGHPGain() {
 ghostified = false
 function ghostify() {
 	if ((!isQuantumReached()&&player.quantum.bigRip.active)||implosionCheck) return
-	if (!player.aarexModifications.ghostifyConf) if(!confirm("Ghostify will reset everything eternity resets, and also everything in big rip runs. You will gain a Ghost Particle and unlocks various mechanics.")) return
+	if (!player.aarexModifications.ghostifyConf) if(!confirm("Ghostifying completes the big rip challenge, but it also resets quarks, gluons, electrons, Quantum Challenges, replicants, Nanofield, Tree of Decay, Big Rip, and your best TP & MA to gain a Ghost Particle. Are you ready for this?")) return
 	if (!ghostified) {
-		if (!confirm("Are you sure you want to do that? You will lose almost everything you have!")) return
+		if (!confirm("Are you sure you want to do that? You will lose everything you have!")) return
 		if (!confirm("ARE YOU REALLY SURE YOU WANT TO DO THAT? YOU WON'T UNDO THIS IF YOU BECOME A GHOST AND PASS THE UNIVERSE EVEN IT IS BIG RIPPED! THIS IS YOUR LAST CHANCE!")) return
 	}
 	var implode = true
@@ -2018,7 +2036,7 @@ function ghostifyReset(implode) {
 		lastTenEternities: [[600*60*24*31, new Decimal(0)], [600*60*24*31, new Decimal(0)], [600*60*24*31, new Decimal(0)], [600*60*24*31, new Decimal(0)], [600*60*24*31, new Decimal(0)], [600*60*24*31, new Decimal(0)], [600*60*24*31, new Decimal(0)], [600*60*24*31, new Decimal(0)], [600*60*24*31, new Decimal(0)], [600*60*24*31, new Decimal(0)]],
 		infMult: new Decimal(1),
 		infMultCost: new Decimal(10),
-		tickSpeedMultDecrease: GUBought("gb4") ? 1.25 : 10,
+		tickSpeedMultDecrease: 10,
 		tickSpeedMultDecreaseCost: 3e6,
 		dimensionMultDecrease: 10,
 		dimensionMultDecreaseCost: 1e8,
@@ -2035,7 +2053,7 @@ function ghostifyReset(implode) {
 		postC3Reward: new Decimal(1),
 		eternityPoints: new Decimal(0),
 		eternities: 0,
-		eternitiesBank: player.eternitiesBank,
+		eternitiesBank: 0,
 		thisEternity: 0,
 		bestEternity: 9999999999,
 		eternityUpgrades: [],
@@ -2201,10 +2219,12 @@ function ghostifyReset(implode) {
 		dilation: {
 			studies: [],
 			active: false,
-			tachyonParticles: player.achievements.includes("ng3p37") ? player.dilation.bestTP.sqrt() : new Decimal(0),
+			times: 0,
+			tachyonParticles: new Decimal(0),
 			dilatedTime: new Decimal(0),
 			totalTachyonParticles: new Decimal(0),
-			bestTP: player.dilation.bestTP,
+			bestTP: new Decimal(0),
+			bestTPOverGhostifies: player.dilation.bestTPOverGhostifies,
 			nextThreshold: new Decimal(1000),
 			freeGalaxies: 0,
 			upgrades: [],
@@ -2220,7 +2240,8 @@ function ghostifyReset(implode) {
 		meta: {
 			antimatter: new Decimal(100),
 			bestAntimatter: new Decimal(100),
-			bestOverQuantums: player.meta.bestOverQuantums,
+			bestOverQuantums: new Decimal(100),
+			bestOverGhostifies: player.meta.bestOverGhostifies,
 			resets: 0,
 			'1': {
 				amount: new Decimal(0),
@@ -2263,10 +2284,196 @@ function ghostifyReset(implode) {
 				cost: new Decimal(1e24)
 			}
 		},
-		masterystudies: ["d7", "d8", "d9", "d10", "d11", "d12", "d13", "d14"],
+		masterystudies: [],
 		autoEterOptions: player.autoEterOptions,
 		galaxyMaxBulk: player.galaxyMaxBulk,
-		quantum: player.quantum,
+		quantum: {
+			times: 0,
+			time: 0,
+			best: 9999999999,
+			last10: [[600*60*24*31, new Decimal(0)], [600*60*24*31, new Decimal(0)], [600*60*24*31, new Decimal(0)], [600*60*24*31, new Decimal(0)], [600*60*24*31, new Decimal(0)], [600*60*24*31, new Decimal(0)], [600*60*24*31, new Decimal(0)], [600*60*24*31, new Decimal(0)], [600*60*24*31, new Decimal(0)], [600*60*24*31, new Decimal(0)]],
+			disabledRewards: player.quantum.disabledRewards,
+			metaAutobuyerWait: 0,
+			autobuyer: {
+				enabled: false,
+				limit: new Decimal(0),
+				mode: "amount",
+				peakTime: 0
+			},
+			autoOptions: {},
+			autoAssign: false,
+			assignAllRatios: {
+				r: 1,
+				g: 1,
+				b: 1
+			},
+			quarks: new Decimal(0),
+			usedQuarks: {
+				r: new Decimal(0),
+				g: new Decimal(0),
+				b: new Decimal(0)
+			},
+			colorPowers: {
+				r: new Decimal(0),
+				g: new Decimal(0),
+				b: new Decimal(0)
+			},
+			gluons: {
+				rg: new Decimal(0),
+				gb: new Decimal(0),
+				br: new Decimal(0)
+			},
+			multPower: {
+				rg: 0,
+				gb: 0,
+				br: 0,
+				total: 0
+			},
+			electrons: {
+				amount: new Decimal(0),
+				sacGals: new Decimal(0),
+				mult: 2,
+				rebuyables: [0,0,0,0]
+			},
+			challenge: [],
+			challenges: {},
+			challengeRecords: {},
+			pairedChallenges: {
+				order: {},
+				current: 0,
+				completed: 0,
+				completions: player.quantum.pairedChallenges.completions,
+				fastest: player.quantum.pairedChallenges.fastest,
+				pc68best: player.quantum.pairedChallenges.pc68best,
+				respec: false
+			},
+			replicants: {
+				amount: new Decimal(0),
+				requirement: new Decimal("1e3000000"),
+				quarks: new Decimal(0),
+				quantumFood: 0,
+				quantumFoodCost: new Decimal(2e46),
+				limit: 1,
+				limitDim: 1,
+				limitCost: new Decimal(1e49),
+				eggonProgress: new Decimal(0),
+				eggons: new Decimal(0),
+				hatchSpeed: 20,
+				hatchSpeedCost: new Decimal(1e49),
+				babyProgress: new Decimal(0),
+				babies: new Decimal(0),
+				ageProgress: new Decimal(0)
+			},
+			emperorDimensions: {
+				1: {
+					workers: new Decimal(0),
+					progress: new Decimal(0),
+					perm: new Decimal(0)
+				},
+				2: {
+					workers: new Decimal(0),
+					progress: new Decimal(0),
+					perm: new Decimal(0)
+				},
+				3: {
+					workers: new Decimal(0),
+					progress: new Decimal(0),
+					perm: new Decimal(0)
+				},
+				4: {
+					workers: new Decimal(0),
+					progress: new Decimal(0),
+					perm: new Decimal(0)
+				},
+				5: {
+					workers: new Decimal(0),
+					progress: new Decimal(0),
+					perm: new Decimal(0)
+				},
+				6: {
+					workers: new Decimal(0),
+					progress: new Decimal(0),
+					perm: new Decimal(0)
+				},
+				7: {
+					workers: new Decimal(0),
+					progress: new Decimal(0),
+					perm: new Decimal(0)
+				},
+				8: {
+					workers: new Decimal(0),
+					progress: new Decimal(0),
+					perm: new Decimal(0)
+				}
+			},
+			nanofield: {
+				charge: new Decimal(0),
+				energy: new Decimal(0),
+				antienergy: new Decimal(0),
+				power: new Decimal(0),
+				powerThreshold: new Decimal(50),
+				rewards: new Decimal(0),
+				producingCharge: false
+			},
+			reachedInfQK: false,
+			tod: {
+				r: {
+					quarks: new Decimal(0),
+					spin: new Decimal(0),
+					gainDiv: new Decimal(0),
+					upgrades: {}
+				},
+				g: {
+					quarks: new Decimal(0),
+					spin: new Decimal(0),
+					gainDiv: new Decimal(0),
+					upgrades: {}
+				},
+				b: {
+					quarks: new Decimal(0),
+					spin: new Decimal(0),
+					gainDiv: new Decimal(0),
+					upgrades: {}
+				},
+				upgrades: {}
+			},
+			bigRip: {
+				active: false,
+				conf: true,
+				times: 0,
+				bestThisRun: new Decimal(0),
+				bestAntimatter: new Decimal(0),
+				totalAntimatter: new Decimal(0),
+				spaceShards: new Decimal(0),
+				upgrades: []
+			},
+			breakEternity: {
+				unlocked: false,
+				break: false,
+				eternalMatter: new Decimal(0),
+				upgrades: [],
+				epMultPower: 0
+			},
+			notrelative: true,
+			wasted: true,
+			producedGluons: 0,
+			realGluons: 0,
+			bosons: {
+				'w+': 0,
+				'w-': 0,
+				'z0': 0
+			},
+			neutronstar: {
+				quarks: 0,
+				metaAntimatter: 0,
+				dilatedTime: 0
+			},
+			rebuyables: {
+				1: 0,
+				2: 0
+			},
+			upgrades: []
+		},
 		old: false,
 		dontWant: true,
 		ghostify: player.ghostify,
@@ -2299,6 +2506,9 @@ function ghostifyReset(implode) {
 	if (player.achievements.includes("r85")) player.infMult = player.infMult.times(4)
 	if (player.achievements.includes("r93")) player.infMult = player.infMult.times(4)
 	if (player.achievements.includes("r104")) player.infinityPoints = new Decimal(2e25)
+	if (player.galacticSacrifice && !oheHeadstart) player.autobuyers[12]=13
+	if (player.tickspeedBoosts !== undefined && !oheHeadstart) player.autobuyers[13]=14
+	player.challenges=challengesCompletedOnEternity()
 	delete player.replicanti.galaxybuyer
 	IPminpeak = new Decimal(0)
 	document.getElementById("infinityPoints1").innerHTML = "You have <span class=\"IPAmount1\">"+shortenDimensions(player.infinityPoints)+"</span> Infinity points."
@@ -2307,6 +2517,7 @@ function ghostifyReset(implode) {
 	document.getElementById("infmultbuyer").textContent="Max buy IP mult"
 	if (implode) showChallengesTab("normalchallenges")
 	updateChallenges()
+	document.getElementById("matter").style.display = "none"
 	updateAutobuyers()
 	hideMaxIDButton()
 	document.getElementById("replicantidiv").style.display="none"
@@ -2350,34 +2561,27 @@ function ghostifyReset(implode) {
 	player.quantum.replicants.babyProgress = new Decimal(0)
 	player.quantum.replicants.babies = new Decimal(0)
 	player.quantum.replicants.growupProgress = new Decimal(0)
-	for (d=1;d<9;d++) {
-		if (d>7||eds[d].perm<10) player.quantum.replicants.quantumFood+=Math.round(eds[d].progress.toNumber()*3)%3
-		eds[d].workers=new Decimal(eds[d].perm)
-		eds[d].progress=new Decimal(0)
-	}
-	player.quantum.nanofield.charge = new Decimal(0)
-	player.quantum.nanofield.energy = new Decimal(0)
-	player.quantum.nanofield.antienergy = new Decimal(0)
-	player.quantum.nanofield.power = 0
-	player.quantum.nanofield.powerThreshold = new Decimal(50)
-	player.quantum.notrelative = true
+	eds = player.quantum.emperorDimensions
 	QKminpeak = new Decimal(0)
 	QKminpeakValue = new Decimal(0)
 	if (implode) showQuantumTab("uquarks")
 	updateLastTenQuantums()
+	updateSpeedruns()
+	document.getElementById('rebuyupgauto').style.display="none"
+	document.getElementById('toggleallmetadims').style.display="none"
+	document.getElementById('metaboostauto').style.display="none"
+	document.getElementById("autoBuyerQuantum").style.display="none"
+	updateColorCharge()
+	updateGluons()
+	document.getElementById("electronstabbtn").style.display = "none"
 	updateQuantumChallenges()
 	updateReplicants()
-
-	//Big rip
-	player.quantum.bigRip.times = 0
-	player.quantum.bigRip.bestThisRun = new Decimal(0)
-	player.quantum.bigRip.spaceShards = new Decimal(0)
-	player.quantum.bigRip.upgrades = []
-	player.quantum.breakEternity.unlocked = false
-	player.quantum.breakEternity.break = false
-	player.quantum.breakEternity.eternalMatter = new Decimal(0)
-	player.quantum.breakEternity.upgrades = []
-	player.quantum.breakEternity.epMultPower = []
+	document.getElementById("nanofieldtabbtn").style.display = "none"
+	document.getElementById('toggleautoquantummode').style.display="none"
+	document.getElementById('assignAll').style.display="none"
+	document.getElementById("edtabbtn").style.display = "none"
+	updateEmperorDimensions()
+	updateTODStuff()
 	updateBreakEternity()
 	
 	//Ghostify

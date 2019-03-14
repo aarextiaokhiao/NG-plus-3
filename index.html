@@ -788,6 +788,7 @@
                     <p id="xdp">You have <span id="exDilationAmount" style="font-size:35px; color: black">0</span> ex-dilation, making dilation <span id="exDilationBenefit" style="font-size:25px; color: black">0</span>% less severe.</p>
                 </div>
                 <p id='bestTP'></p>
+                <p id='bestTPOverGhostifies'></p>
                 <table>
                     <tr>
                         <td>
@@ -1452,6 +1453,7 @@
                       <p>You have <span id="metaAntimatterAmount" style="font-size:35px; color: black">0</span> meta-antimatter.<p>
                       <p><span id="bestAntimatterType"></span> was <span id="metaAntimatterBest" style="font-size:35px; color: black">0</span>. <span id="bestAntimatterTranslation"></span>ranslated to <span id="metaAntimatterEffect" style="font-size:35px; color: black">0</span>x <span id="metaAntimatterEffectType"></span>.</p>
                       <p id="bestAntimatterQuantum"></p>
+                      <p id="bestMAOverGhostifies"></p>
                   </div>
                   <div id="metaAntimatterPerSec">You are getting 0 meta-antimatter per second.</div>
                   <div id="metaMaxAllDiv">
@@ -1931,6 +1933,7 @@
                     <td><button class="secondarytabbtn" onclick="showAchTab('normalachievements')">Achievements</button></td>
                     <td><button class="secondarytabbtn" onclick="showAchTab('secretachievements')">Secret Achievements</button></td>
                     <td id='speedrunsbtn'><button class="secondarytabbtn" onclick="showAchTab('speedruns')">Quantum Speedruns</button></td>
+                    <td id='bravemilestonesbtn'><button class="secondarytabbtn aarexmodsghostifybtn" onclick="showAchTab('bravemilestones')">Brave Milestones</button></td>
                 </tr>
             </table>
             <div id="normalachievements" class="achtab">
@@ -2456,7 +2459,7 @@
                         </tr>
                         <tr id="achRowng3p6">
                             <td>
-                                <div id="Kee-hee-hee!" class="achievement achievementlocked" style="background-image: url(images/151.png)" ach-tooltip="Become a ghost."></div>
+                                <div id="Kee-hee-hee!" class="achievement achievementlocked" style="background-image: url(images/151.png)" ach-tooltip="Become a ghost. Reward: Gain 100x eternitied stat as before (weakens as you have more), gain 1 EC11 completion when you complete EC12, and assignation options are kept permanently."></div>
                             </td>
                             <td>
                                 <div class="achievement achievementlocked" style="background-image: url(images/achhidden.png)"></div>
@@ -2570,7 +2573,7 @@
                 <button class='storebtn' id='reward4disable' onclick='disableReward(4)' style='width:180px'>4.5 hours reward: ON</button>
                 <button class='storebtn' id='reward11disable' onclick='disableReward(11)' style='width:180px'>33.3 mins reward: ON</button>
                 <button class='storebtn' id='reward27disable' onclick='disableReward(27)' style='width:190px'>10 seconds reward: ON</button>
-                <table id="secretachievementtable" style="margin: auto">
+                <table style="margin: auto">
                     <tr id="speedrunRow1">
                         <td><div id="speedrunMilestone1" style="background-image: url(images/quantum_speedruns/1.png)" ach-tooltip="Reward: Start with 20,000 eternities."></div></td>
                         <td><div id="speedrunMilestone2" style="background-image: url(images/quantum_speedruns/2.png)" ach-tooltip="Reward: Unlock time theorem autobuyer."></div></td>
@@ -2608,6 +2611,21 @@
                         <td><div id="speedrunMilestone27" style="background-image: url(images/quantum_speedruns/27.png)" ach-tooltip="Reward: You can buy max meta-dimension boosts and start with 4 meta-dimension boosts."></div></td>
                         <td><div id="speedrunMilestone28" style="background-image: url(images/quantum_speedruns/28.png)" ach-tooltip="Reward: You gain banked infinities based on your post-crunch infinitied stat."></div></td>
                         <td colspan=2></td>
+                    </tr>
+                </table>
+            </div>
+            <div id="bravemilestones" class="achtab" style="display:none;">
+                <div>Get # of quantumed stat below the requirement and then become a ghost for a reward!</div>
+                <table style="margin: auto">
+                    <tr id="braceRow1">
+                        <td><div id="braveMilestone1" class="achievement achievementlocked" ach-tooltip="Reward: Start with quantum speedruns unlocked up to your best Ghostify.">???x quantumed</div></td>
+                        <td><div id="braveMilestone2" class="achievement achievementlocked" ach-tooltip="Reward: ???">???x quantumed</div></td>
+                        <td><div id="braveMilestone3" class="achievement achievementlocked" ach-tooltip="Reward: ???">???x quantumed</div></td>
+                        <td><div id="braveMilestone4" class="achievement achievementlocked" ach-tooltip="Reward: ???">???x quantumed</div></td>
+                        <td><div id="braveMilestone5" class="achievement achievementlocked" ach-tooltip="Reward: ???">???x quantumed</div></td>
+                        <td><div id="braveMilestone6" class="achievement achievementlocked" ach-tooltip="Reward: ???">???x quantumed</div></td>
+                        <td><div id="braveMilestone7" class="achievement achievementlocked" ach-tooltip="Reward: ???">???x quantumed</div></td>
+                        <td><div id="braveMilestone8" class="achievement achievementlocked" ach-tooltip="Reward: ???">???x quantumed</div></td>
                     </tr>
                 </table>
             </div>
@@ -3501,8 +3519,8 @@
                         </tr>
                         <tr>
                             <td><button class='gluonupgrade unavailablebtn' id="bigripupg9" onclick='buyBigRipUpg(9)' style='font-size: 10px'>Gain 1,350 Time Theorems but reset the study tree and repeal upgrades 3 & 5 - 8.<br>Cost: <span id="bigripupg9cost">???</span> Space Shards</button></td>
-                            <td><button class='gluonupgrade unavailablebtn' id="bigripupg10" onclick='buyBigRipUpg(10)'>???<br>Cost: <span id="bigripupg10cost">???</span> Space Shards</button></td>
-                            <td><button class='gluonupgrade unavailablebtn' id="bigripupg11" onclick='buyBigRipUpg(11)'>???<br>Cost: <span id="bigripupg11cost">???</span> Space Shards</button></td>
+                            <td><button class='gluonupgrade unavailablebtn' id="bigripupg10" style='font-size: 10px' onclick='buyBigRipUpg(10)'>Start with dilation unlocked, but only dilation upgrades boost dilation except upgrades that multiply TP gain.<br>Cost: <span id="bigripupg10cost">???</span> Space Shards</button></td>
+                            <td><button class='gluonupgrade unavailablebtn' id="bigripupg11" style='font-size: 10px' onclick='buyBigRipUpg(11)'>Start with Tachyon particles but reset the study tree, all upgrades can boost dilation except your best TP, and repeal all others.<br>Cost: <span id="bigripupg11cost">???</span> Space Shards</button></td>
                             <td><button class='gluonupgrade unavailablebtn' id="bigripupg12" onclick='buyBigRipUpg(12)'>???<br>Cost: <span id="bigripupg12cost">???</span> Space Shards</button></td>
                         </tr>
                         <tr>

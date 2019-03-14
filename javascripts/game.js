@@ -523,6 +523,8 @@ function updateNewPlayer(reseted) {
             upgrades: [],
             epMultPower: 0
         }
+        player.dilation.bestTPOverGhostifies = 0
+        player.meta.bestOverGhostifies = 0
         player.ghostify = {
             times: 0,
             time: 0,
@@ -1131,7 +1133,7 @@ function sacrificeConf() {
 
 function getDilPower() {
 	var ret = Decimal.pow(3, player.dilation.rebuyables[3] * exDilationUpgradeStrength(3))
-	if (player.masterystudies) {
+	if (player.masterystudies !== undefined) {
 		if (player.masterystudies.includes("t264")) ret = ret.times(getMTSMult(264))
 		if (GUBought("br1")) ret = ret.times(player.dilation.dilatedTime.add(1).log10()+1)
 		if (player.masterystudies.includes("t341")) ret = ret.times(getMTSMult(341))
@@ -1142,7 +1144,7 @@ function getDilPower() {
 function getDilExp(on) {
 	let ret = 1.5
 	if (player.dilation.rebuyables[4]) ret += player.dilation.rebuyables[4] / 4
-	if (player.masterystudies != undefined) if (on == undefined ? player.masterystudies.includes("d13") : on) ret += getTreeUpgradeEffect(2)
+	if (player.masterystudies !== undefined ? !player.quantum.bigRip.active || player.quantum.bigRip.upgrades.includes(11) : false) if (on == undefined ? player.masterystudies.includes("d13") : on) ret += getTreeUpgradeEffect(2)
 	return ret
 }
 
@@ -1159,17 +1161,17 @@ function getDilTimeGainPerSecond() {
 		if (player.eternityUpgrades.includes(9)) gain = gain.times(1 + Math.log10(Math.max(1, player.eternityPoints.log(10))) / 10)
 	}
 	if (player.dilation.upgrades.includes('ngpp2')) gain = gain.times(Math.pow(Math.max(player.eternities, 1), .1))
-	if (player.masterystudies) {
+	if (player.dilation.upgrades.includes('ngpp6')) gain = gain.times(getDil17Bonus())
+	if (player.masterystudies !== undefined ? !player.quantum.bigRip.active || player.quantum.bigRip.upgrades.includes(11) : false) {
 		if (player.masterystudies.includes("t263")) gain = gain.times(getMTSMult(263))
 		if (player.masterystudies.includes("t281")) gain = gain.times(getMTSMult(281))
 		gain = gain.times(getQCReward(1))
 		if (player.masterystudies.includes("t322")) gain = gain.times(getMTSMult(322))
 		if (player.masterystudies.includes("t341")) gain = gain.times(getMTSMult(341))
 		gain = gain.times(getTreeUpgradeEffect(7))
+		gain = gain.times(colorBoosts.b)
+		if (GUBought("br2")) gain = gain.times(Decimal.pow(2.2, Math.pow(calcTotalSacrificeBoost().max(1).log10()/1e6, 0.25)))
 	}
-	if (player.dilation.upgrades.includes('ngpp6')) gain = gain.times(getDil17Bonus())
-	if (GUBought("br2")) gain = gain.times(Decimal.pow(2.2, Math.pow(calcTotalSacrificeBoost().max(1).log10()/1e6, 0.25)))
-	gain = gain.times(colorBoosts.b)
 	return gain;
 }
 
@@ -1303,8 +1305,8 @@ function updateDimensions() {
         else {
             document.getElementById("ghostifyStatistics").style.display = ""
             document.getElementById("ghostified").textContent = "You have became a ghost and passed big ripped universes "+getFullExpansion(player.ghostify.times)+" times."
-            document.getElementById("thisGhostify").textContent = "You have spent "+timeDisplay(player.ghostify.time)+" in this ghostify."
-            document.getElementById("bestGhostify").textContent = "Your fastest ghostify is in "+timeDisplay(player.ghostify.best)+"."
+            document.getElementById("thisGhostify").textContent = "You have spent "+timeDisplay(player.ghostify.time)+" in this Ghostify."
+            document.getElementById("bestGhostify").textContent = "Your fastest Ghostify is in "+timeDisplay(player.ghostify.best)+"."
         }
 
         if (player.aarexModifications.hideRepresentation) document.getElementById("infoScale").textContent=""
@@ -2988,6 +2990,7 @@ function changeSaveDesc(saveId, placement) {
 		var isSaveQuantumed=temp.quantum?temp.quantum.times>0:false
 		if (isSaveQuantumed) {
 			if (!temp.masterystudies) message+="End-game of NG++"
+			else if (temp.masterystudies.includes('d14')) message+="Best antimatter in big rips: "+shortenDimensions(new Decimal(temp.quantum.bigRip.bestAntimatter))+", Space Shards: "+shortenDimensions(new Decimal(temp.quantum.bigRip.spaceShards))+", Eternal Matter: "+shortenDimensions(new Decimal(temp.quantum.breakEternity.eternalMatter))
 			else {
 				message+="Quarks: "+shortenDimensions(Decimal.add(temp.quantum.quarks,temp.quantum.usedQuarks.r).add(temp.quantum.usedQuarks.g).add(temp.quantum.usedQuarks.b))
 				if (temp.quantum.gluons.rg) message+=", Gluons: "+shortenDimensions(Decimal.add(temp.quantum.gluons.rg,temp.quantum.gluons.gb).add(temp.quantum.gluons.br))
@@ -3519,7 +3522,10 @@ function onNotationChange(id) {
 	updateTODStuff()
 	document.getElementById("epmult").innerHTML = "You gain 5 times more EP<p>Currently: "+shortenDimensions(player.epmult)+"x<p>Cost: "+shortenDimensions(player.epmultCost)+" EP"
 	document.getElementById("achmultlabel").textContent = "Current achievement multiplier on each Dimension: " + shortenMoney(player.achPow) + "x"
-	if (player.achievements.includes("ng3p18") || player.achievements.includes("ng3p37")) document.getElementById('bestTP').textContent="Your best ever Tachyon particles was "+shorten(player.dilation.bestTP)+"."
+	if (player.achievements.includes("ng3p18") || player.achievements.includes("ng3p37")) {
+		document.getElementById('bestTP').textContent="Your best"+(ghostified ? "" : " ever")+" Tachyon particles"+(ghostified ? " in this Ghostify" : "")+" was "+shorten(player.dilation.bestTP)+"."
+		setAndMaybeShow('bestTPOverGhostifies',ghostified,'"Your best-ever Tachyon particles was "+shorten(player.dilation.bestTPOverGhostifies)+"."')
+	}
 }
 
 function switchNotation(id) {
@@ -4483,6 +4489,7 @@ function bigCrunch(autoed) {
             isEmptiness = false
             if (player.eternities > 0 || quantumed) document.getElementById("eternitystorebtn").style.display = "inline-block"
             if (quantumed) document.getElementById("quantumtabbtn").style.display = "inline-block"
+            if (ghostified) document.getElementById("ghostifytabbtn").style.display = "inline-block"
         }
         if (player.currentChallenge != "" && !player.challenges.includes(player.currentChallenge)) {
             player.challenges.push(player.currentChallenge);
@@ -4837,7 +4844,7 @@ function eternity(force, auto) {
         }
         if (player.thisEternity < 2) giveAchievement("Eternities are the new infinity")
         if (player.currentEternityChall == "eterc6" && ECTimesCompleted("eterc6") < 5 && player.dimensionMultDecrease < 4) player.dimensionMultDecrease = Math.max(parseFloat((player.dimensionMultDecrease - 0.2).toFixed(1)),2)
-        if (!GUBought("gb4")) if (player.currentEternityChall == "eterc11" && ECTimesCompleted("eterc11") < 5) player.tickSpeedMultDecrease = Math.max(parseFloat((player.tickSpeedMultDecrease - 0.07).toFixed(2)),1.65)
+        if (!GUBought("gb4")) if ((player.currentEternityChall == "eterc11" || (player.currentEternityChall == "eterc12" && ghostified)) && ECTimesCompleted("eterc11") < 5) player.tickSpeedMultDecrease = Math.max(parseFloat((player.tickSpeedMultDecrease - 0.07).toFixed(2)),1.65)
         if (player.infinitied < 10 && !force && !player.boughtDims) giveAchievement("Do you really need a guide for this?");
         if (Decimal.round(player.replicanti.amount) == 9) giveAchievement("We could afford 9");
         if (player.dimlife && !force) giveAchievement("8 nobody got time for that")
@@ -4848,6 +4855,7 @@ function eternity(force, auto) {
             showTab("dimensions")
             isEmptiness = false
             if (quantumed) document.getElementById("quantumtabbtn").style.display = "inline-block"
+            if (ghostified) document.getElementById("ghostifytabbtn").style.display = "inline-block"
         }
         temp = []
         player.eternityPoints = player.eternityPoints.plus(gainedEternityPoints())
@@ -4868,6 +4876,10 @@ function eternity(force, auto) {
             } else if (player.eternityChalls[player.currentEternityChall] < 5) player.eternityChalls[player.currentEternityChall] += 1
             else if (player.aarexModifications.eternityChallRecords[player.eternityChallUnlocked] === undefined) player.aarexModifications.eternityChallRecords[player.eternityChallUnlocked] = player.thisEternity
             else player.aarexModifications.eternityChallRecords[player.eternityChallUnlocked] = Math.min(player.thisEternity, player.aarexModifications.eternityChallRecords[player.eternityChallUnlocked])
+            if (player.currentEternityChall === "eterc12" && ghostified) {
+                if (player.eternityChalls.eterc11 === undefined) player.eternityChalls.eterc11 = 1
+                else if (player.eternityChalls.eterc11 < 5) player.eternityChalls.eterc11++
+            }
             player.etercreq = 0
             forceRespec = true
             if (Object.keys(player.eternityChalls).length >= 10) {
@@ -4896,7 +4908,9 @@ function eternity(force, auto) {
             }
             if (player.achievements.includes("ng3p18") || player.achievements.includes("ng3p37")) {
                 player.dilation.bestTP = player.dilation.bestTP.max(player.dilation.tachyonParticles)
-                document.getElementById('bestTP').textContent="Your best ever Tachyon particles was "+shorten(player.dilation.bestTP)+"."
+                player.dilation.bestTPOverGhostifies = player.dilation.bestTPOverGhostifies.max(player.dilation.bestTP)
+                document.getElementById('bestTP').textContent="Your best"+(ghostified ? "" : " ever")+" Tachyon particles"+(ghostified ? " in this Ghostify" : "")+" was "+shorten(player.dilation.bestTP)+"."
+                setAndMaybeShow('bestTPOverGhostifies',ghostified,'"Your best-ever Tachyon particles was "+shorten(player.dilation.bestTPOverGhostifies)+"."')
             }
         }
         player.challenges = temp
@@ -5254,8 +5268,10 @@ function challengesCompletedOnEternity() {
 }
 
 function gainEternitiedStat() {
-	if (getEternitied() < 1 && player.achievements.includes("ng3p12")) return 20
-	return player.dilation.upgrades.includes('ngpp2') ? Math.floor(Decimal.pow(player.dilation.dilatedTime, .1).toNumber()) : 1
+	let ret = 1
+	if (player.dilation.upgrades.includes('ngpp2')) ret = Decimal.pow(player.dilation.dilatedTime, .1).toNumber()
+	if (ghostified) ret *= Math.pow(10, 2 / (Math.log10(getEternitied() + 1) / 10 + 1))
+	return Math.max(Math.floor(ret), (player.eternities < 1 && quantumed) ? 20 : 1)
 }
 
 function gainBankedInf() {
@@ -6234,6 +6250,7 @@ function getPassiveTTGen() {
 	if (log>80) log=75+Math.sqrt(log*5-375)
 	let normal=Decimal.pow(10,log).div(20000)
 	if (!player.achievements.includes("ng3p18")) return normal
+	if (player.masterystudies !== undefined) if (player.quantum.bigRip.active) return normal
 
 	log=player.dilation.bestTP.max(1).log10()
 	if (log>80) log=75+Math.sqrt(log*5-375)
@@ -6546,6 +6563,7 @@ setInterval(function() {
         document.getElementById("brfilter").style.display = "none"
     }
     document.getElementById("speedrunsbtn").style.display = (player.masterystudies && quantumed) ? "" : "none"
+    document.getElementById("bravemilestonesbtn").style.display = ghostified ? "" : "none"
 
     if (player.infinitied !== 0 || getEternitied() !== 0 || quantumed) document.getElementById("bigCrunchAnimBtn").style.display = "inline-block"
     else document.getElementById("bigCrunchAnimBtn").style.display = "none"
@@ -7500,6 +7518,7 @@ function gameLoop(diff) {
         document.getElementById("tickLabel").style.visibility = "hidden";
         document.getElementById("tickSpeedAmount").style.visibility = "hidden";
         document.getElementById("quantumtabbtn").style.display = "none"
+        document.getElementById("ghostifytabbtn").style.display = "none"
     } else {
         document.getElementById("dimensionsbtn").style.display = "inline-block";
         document.getElementById("optionsbtn").style.display = "inline-block";
@@ -7721,7 +7740,9 @@ function gameLoop(diff) {
         if (player.dilation.active) if (player.masterystudies.includes("t292") && player.dilation.tachyonParticles.lt(getDilGain())) {
             player.dilation.tachyonParticles = getDilGain()
             player.dilation.bestTP = player.dilation.bestTP.max(player.dilation.tachyonParticles)
-            setAndMaybeShow('bestTP',player.achievements.includes("ng3p18") || player.achievements.includes("ng3p37"),'"Your best ever Tachyon particles was "+shorten(player.dilation.bestTP)+"."')
+            player.dilation.bestTPOverGhostifies = player.dilation.bestTPOverGhostifies.max(player.dilation.bestTP)
+            document.getElementById('bestTP').textContent="Your best"+(ghostified ? "" : " ever")+" Tachyon particles"+(ghostified ? " in this Ghostify" : "")+" was "+shorten(player.dilation.bestTP)+"."
+            setAndMaybeShow('bestTPOverGhostifies',ghostified,'"Your best-ever Tachyon particles was "+shorten(player.dilation.bestTPOverGhostifies)+"."')
             player.quantum.notrelative = false
         }
     }
@@ -7770,8 +7791,8 @@ function simulateTime(seconds, real) {
     if (player.meta) if (player.meta.antimatter.gt(playerStart.meta.antimatter)) popupString+= ",<br> meta-antimatter increased "+shortenMoney(player.meta.antimatter.log10() - (Decimal.max(playerStart.meta.antimatter, 1)).log10())+" orders of magnitude"
     if (player.infinitied > playerStart.infinitied || player.eternities > playerStart.eternities) popupString+= ","
     else popupString+= "."
-    if (player.infinitied > playerStart.infinitied) popupString+= "<br>you infinitied "+(player.infinitied-playerStart.infinitied)+" times."
-    if (player.eternities > playerStart.eternities) popupString+= " <br>you eternitied "+(player.eternities-playerStart.eternities)+" times."
+    if (player.infinitied > playerStart.infinitied) popupString+= "<br>you infinitied "+getFullExpansion(player.infinitied-playerStart.infinitied)+" times."
+    if (player.eternities > playerStart.eternities) popupString+= " <br>you eternitied "+getFullExpansion(player.eternities-playerStart.eternities)+" times."
     if (popupString.length == 20) {
         popupString = popupString.slice(0, -1);
         popupString+= "... Nothing happened."
