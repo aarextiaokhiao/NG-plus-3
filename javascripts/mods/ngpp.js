@@ -301,12 +301,14 @@ function updateMetaDimensions () {
 	} else {
 		document.getElementById("metaSoftReset").className = 'unavailablebtn';
 	}
+	var bigRipped = player.masterystudies !== undefined ? player.quantum.bigRip.active : false
     var QS = quarkGain()
     var req = Decimal.pow(Number.MAX_VALUE,player.masterystudies?1.45:1)
     var reqGotten = isQuantumReached()
-    document.getElementById("quantumResetLabel").textContent = 'Quantum: requires '+shorten(req)+' meta-antimatter '+(!inQC(0)? "and "+shortenCosts(Decimal.pow(10,getQCGoal()))+" antimatter":player.masterystudies?"and an EC14 completion":"")
-    document.getElementById("quantum").textContent = 'Lose all your previous progress, but '+(player.quantum.times>0&&reqGotten?'gain '+shortenDimensions(QS)+' quark'+(QS.lt(2)?'':'s')+' for boosts':'get a boost')
-    document.getElementById("quantum").className = reqGotten?'storebtn':'unavailablebtn'
+	var newClassName = reqGotten?(bigRipped?"aarexmodsghostifybtn":"storebtn"):'unavailablebtn'
+    document.getElementById("quantumResetLabel").textContent = (bigRipped?'Ghostify':'Quantum')+': requires '+shorten(req)+' meta-antimatter '+(!inQC(0)? "and "+shortenCosts(Decimal.pow(10,getQCGoal()))+" antimatter":player.masterystudies?"and an EC14 completion":"")
+    document.getElementById("quantum").textContent = 'Lose all your previous progress, but '+(player.quantum.times>0&&reqGotten&&!bigRipped?'gain '+shortenDimensions(QS)+' quark'+(QS.lt(2)?'':'s')+' for boosts':'get a boost')
+    if (document.getElementById("quantum").className !== newClassName) document.getElementById("quantum").className = newClassName
 }
 
 // v2.2
@@ -621,6 +623,7 @@ function quantumReset(force, auto, challid, bigRip, implode=false) {
 				}
 				document.getElementById("metaMaxAllDiv").style.display=removeMaxAll?"none":""
 			}
+			if (player.quantum.best<=0.2) giveAchievement("Quantum doesn't take so long")
 		}
 		player.quantum.times++
 		if (!inQC(6)) {
@@ -649,6 +652,177 @@ function quantumReset(force, auto, challid, bigRip, implode=false) {
 				rg: new Decimal(0),
 				gb: new Decimal(0),
 				br: new Decimal(0)
+			}
+		}
+		if (bigRip != player.quantum.bigRip.active) {
+			player.quantum.bigRip["savedAutobuyers" + (bigRip ? "No" : "") + "BR"] = {}
+			var data = player.quantum.bigRip["savedAutobuyers" + (bigRip ? "No" : "") + "BR"]
+			for (d=1;d<9;d++) if (player.autobuyers[d-1] % 1 !== 0) data["d"+d] = {
+				time: player.autobuyers[d-1].interval,
+				cost: player.autobuyers[d-1].cost,
+				priority: player.autobuyers[d-1].priority,
+				bulk: player.autobuyers[d-1].bulk,
+				perTen: player.autobuyers[d-1].target > 10,
+				on: player.autobuyers[d-1].isOn,
+			}
+			if (player.autobuyers[8] % 1 !== 0) data.tickspeed = {
+				time: player.autobuyers[8].interval,
+				cost: player.autobuyers[8].cost,
+				priority: player.autobuyers[8].priority,
+				max: player.autobuyers[8].target == 10,
+				on: player.autobuyers[8].isOn
+			}
+			if (player.autoSacrifice % 1 !== 0) data.sacrifice = {
+				time: player.autoSacrifice.interval,
+				cost: player.autoSacrifice.cost,
+				amount: player.autoSacrifice.priority,
+				on: player.autoSacrifice.isOn
+			}
+			if (player.autobuyers[9] % 1 !== 0) data.dimBoosts = {
+				time: player.autobuyers[9].interval,
+				cost: player.autobuyers[9].cost,
+				maxDims: player.autobuyers[9].priority,
+				always: player.overXGalaxies,
+				bulk: player.autobuyers[9].bulk,
+				on: player.autobuyers[9].isOn
+			}
+			if (player.tickspeedBoosts !== undefined) if (player.autobuyers[13] % 1 !== 0) data.tickBoosts = {
+				time: player.autobuyers[13].interval,
+				cost: player.autobuyers[13].cost,
+				maxDims: player.autobuyers[13].priority,
+				always: player.overXGalaxiesTickspeedBoost,
+				bulk: player.autobuyers[13].bulk,
+				on: player.autobuyers[13].isOn
+			}
+			if (player.autobuyers[10] % 1 !== 0) data.galaxies = {
+				time: player.autobuyers[10].interval,
+				cost: player.autobuyers[10].cost,
+				maxGalaxies: player.autobuyers[10].priority,
+				bulkTime: player.autobuyers[10].bulk,
+				on: player.autobuyers[10].isOn
+			}
+			if (player.galacticSacrifice !== undefined) if (player.autobuyers[12] % 1 !== 0) data.galSacrifice = {
+				time: player.autobuyers[12].interval,
+				cost: player.autobuyers[12].cost,
+				amount: player.autobuyers[12].priority,
+				on: player.autobuyers[12].isOn
+			}
+			if (player.autobuyers[11] % 1 !== 0) data.crunch = {
+				time: player.autobuyers[11].interval,
+				cost: player.autobuyers[11].cost,
+				mode: player.autoCrunchMode,
+				amount: player.autobuyers[11].priority,
+				on: player.autobuyers[11].isOn
+			}
+			data.eternity = {
+				mode: player.autoEterMode,
+				amount: player.eternityBuyer.limit,
+				dilation: player.eternityBuyer.dilationMode,
+				dilationPerStat: player.eternityBuyer.dilationPerAmount,
+				on: player.eternityBuyer.isOn
+			}
+			if (!bigRip || player.quantum.bigRip.upgrades.includes(2)) {
+				var data = player.quantum.bigRip["savedAutobuyers" + (bigRip ? "" : "No") + "BR"]
+				for (d=1;d<9;d++) if (data["d"+d]) player.autobuyers[d-1] = {
+					interval: data["d"+d].time,
+					cost: data["d"+d].cost,
+					bulk: data["d"+d].bulk,
+					priority: data["d"+d].priority,
+					tier: d,
+					target: d + (data["d"+d].perTen ? 10 : 0),
+					ticks: 0,
+					isOn: data["d"+d].on
+				}
+				if (data.tickspeed) player.autobuyers[8] = {
+					interval: data.tickspeed.time,
+					cost: data.tickspeed.cost,
+					bulk: 1,
+					priority: data.tickspeed.priority,
+					tier: 1,
+					target: (data.tickspeed.max ? 10 : 1),
+					ticks: 0,
+					isOn: data.tickspeed.on
+				}
+				if (data.sacrifice) player.autoSacrifice = {
+					interval: data.sacrifice.time,
+					cost: data.sacrifice.cost,
+					bulk: 1,
+					priority: data.sacrifice.priority,
+					tier: 1,
+					target: 13,
+					ticks: 0,
+					isOn: data.sacrifice.on
+				}
+				if (data.dimBoosts) {
+					player.autobuyers[9] = {
+						interval: data.dimBoosts.time,
+						cost: data.dimBoosts.cost,
+						bulk: data.dimBoosts.bulk,
+						priority: data.dimBoosts.maxDims,
+						tier: 1,
+						target: 11,
+						ticks: 0,
+						isOn: data.dimBoosts.on
+					}
+					player.overXGalaxies = data.dimBoosts.always
+				}
+				if (data.tickBoosts) {
+					player.autobuyers[13] = {
+						interval: data.tickBoosts.time,
+						cost: data.tickBoosts.cost,
+						bulk: data.tickBoosts.bulk,
+						priority: data.tickBoosts.maxDims,
+						tier: 1,
+						target: 14,
+						ticks: 0,
+						isOn: data.tickBoosts.on
+					}
+					player.overXGalaxiesTickspeedBoost = data.tickBoosts.always
+				}
+				if (data.galaxies) player.autobuyers[10] = {
+					interval: data.galaxies.interval,
+					cost: data.galaxies.cost,
+					bulk: data.galaxies.bulkTime,
+					priority: data.galaxies.maxGalaxies,
+					tier: 1,
+					target: 11,
+					ticks: 0,
+					isOn: data.galaxies.on
+				}
+				if (data.galacticSacrifice) player.autobuyers[12] = {
+					interval: data.galacticSacrifice.interval,
+					cost: data.galacticSacrifice.cost,
+					bulk: 1,
+					priority: data.galacticSacrifice.amount,
+					tier: 1,
+					target: 13,
+					ticks: 0,
+					isOn: data.galacticSacrifice.on
+				}
+				if (data.crunch) {
+					player.autobuyers[11] = {
+						interval: data.crunch.interval,
+						cost: data.crunch.cost,
+						bulk: 1,
+						priority: data.crunch.amount,
+						tier: 1,
+						target: 12,
+						ticks: 0,
+						isOn: data.crunch.on
+					}
+					player.autoCrunchMode = data.crunch.mode
+				}
+				if (data.eternity) {
+					player.eternityBuyer = {
+						limit: data.eternity.limit,
+						dilationMode: data.eternity.dilation,
+						dilationPerAmount: data.eternity.dilationPerStat,
+						statBeforeDilation: data.eternity.dilationPerStat,
+						isOn: data.eternity.on
+					}
+					player.autoEterMode = data.limit.mode
+					updateAutoEterMode()
+				}
 			}
 		}
 	} else player.quantum.gluons = 0;
@@ -888,7 +1062,7 @@ function quantumReset(force, auto, challid, bigRip, implode=false) {
 			galaxybuyer: oheHeadstart ? player.replicanti.galaxybuyer : undefined,
 			auto: oheHeadstart ? player.replicanti.auto : [false, false, false]
 		},
-		timestudy: isRewardEnabled(11) && !bigRip ? player.timestudy : {
+		timestudy: isRewardEnabled(11) && (bigRip ? player.quantum.bigRip.upgrades.includes(12) : true) ? player.timestudy : {
 			theorem: 0,
 			amcost: new Decimal("1e20000"),
 			ipcost: new Decimal(1),
@@ -983,7 +1157,7 @@ function quantumReset(force, auto, challid, bigRip, implode=false) {
 				cost: new Decimal(1e24)
 			}
 		},
-		masterystudies: player.masterystudies ? (bigRip ? ["d7", "d8", "d9", "d10", "d11", "d12", "d13", "d14"] : speedrunMilestonesReached > 10 && isRewardEnabled(4) ? player.masterystudies : []) : undefined,
+		masterystudies: player.masterystudies ? (!(bigRip ? player.quantum.bigRip.upgrades.includes(12) : true) ? ["d7", "d8", "d9", "d10", "d11", "d12", "d13", "d14"] : speedrunMilestonesReached > 10 && isRewardEnabled(4) ? player.masterystudies : []) : undefined,
 		autoEterOptions: player.autoEterOptions,
 		galaxyMaxBulk: player.galaxyMaxBulk,
 		quantum: player.quantum,
@@ -1245,4 +1419,9 @@ function quantumReset(force, auto, challid, bigRip, implode=false) {
 	drawMasteryTree()
 	Marathon2 = 0;
 	document.getElementById("quantumConfirmBtn").style.display = "inline-block"
+}
+
+function metaReset2() {
+	if (player.masterystudies !== undefined ? player.quantum.bigRip.active : false) ghostify()
+	else quantum(false, false, 0)
 }

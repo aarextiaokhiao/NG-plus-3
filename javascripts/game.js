@@ -513,6 +513,8 @@ function updateNewPlayer(reseted) {
             bestThisRun: 0,
             bestAntimatter: 0,
             totalAntimatter: 0,
+            savedAutobuyersNoBR: {},
+            savedAutobuyersBR: {},
             spaceShards: 0,
             upgrades: []
         }
@@ -1062,7 +1064,8 @@ function getGalaxyRequirement(offset=0) {
     else if (player.galacticSacrifice) amount -= (player.galacticSacrifice.upgrades.includes(22) && galaxies > 0) ? 80 : 60
     if (player.tickspeedBoosts != undefined) amount += 10
 
-	if (!player.galacticSacrifice&&!player.boughtDims) {
+    if (isEternityBroke()) amount *= 1/0
+	else if (!player.galacticSacrifice&&!player.boughtDims) {
 		let galaxyCostScalingStart = getGalaxyCostScalingStart(galaxies)
 		if (galaxies >= galaxyCostScalingStart) {
 			let speed = 1
@@ -1085,7 +1088,6 @@ function getGalaxyRequirement(offset=0) {
     if (player.infinityUpgrades.includes("resetBoost")) amount -= 9;
     if (player.challenges.includes("postc5")) amount -= 1;
     if (player.infinityUpgradesRespecced != undefined) amount -= getInfUpgPow(6)
-    if (isEternityBroke()) amount *= 1/0
     return amount;
 }
 
@@ -1206,7 +1208,7 @@ function updateDimensions() {
         document.getElementById("resetLabel").textContent = 'Dimension ' + (isShift ? "Shift" : player.resets < getSupersonicStart() ? "Boost" : "Supersonic") + ' ('+ getFullExpansion(player.resets) +'): requires ' + getFullExpansion(shiftRequirement.amount) + " " + DISPLAY_NAMES[shiftRequirement.tier] + " Dimensions"
         document.getElementById("softReset").textContent = "Reset the game for a " + (isShift ? "new dimension" : "boost")
         var totalReplGalaxies = player.replicanti.galaxies + extraReplGalaxies
-        document.getElementById("secondResetLabel").textContent = ((player.galacticSacrifice || player.boughtDims) ? 'Antimatter ' : player.galaxies < 1400 ? (player.galaxies < getGalaxyCostScalingStart() ? '' : player.galaxies < getRemoteGalaxyScalingStart() ? 'Distant ' : 'Remote ') + 'Antimatter' : 'Dark Matter') + ' Galaxies ('+ getFullExpansion(player.galaxies) + ((totalReplGalaxies + player.dilation.freeGalaxies) > 0 ? ' + ' + getFullExpansion(totalReplGalaxies)  + (player.dilation.freeGalaxies > 0 ? ' + ' + getFullExpansion(Math.floor(player.dilation.freeGalaxies)) : '') : '') +'): requires ' + getFullExpansion(getGalaxyRequirement()) + ' '+DISPLAY_NAMES[player.currentChallenge === 'challenge4' ? 6 : 8]+' Dimensions';
+        document.getElementById("secondResetLabel").textContent = ((player.galacticSacrifice || player.boughtDims || isEternityBroke()) ? 'Antimatter ' : player.galaxies < 1400 ? (player.galaxies < getGalaxyCostScalingStart() ? '' : player.galaxies < getRemoteGalaxyScalingStart() ? 'Distant ' : 'Remote ') + 'Antimatter' : 'Dark Matter') + ' Galaxies ('+ getFullExpansion(player.galaxies) + ((totalReplGalaxies + player.dilation.freeGalaxies) > 0 ? ' + ' + getFullExpansion(totalReplGalaxies)  + (player.dilation.freeGalaxies > 0 ? ' + ' + getFullExpansion(Math.floor(player.dilation.freeGalaxies)) : '') : '') +'): requires ' + getFullExpansion(getGalaxyRequirement()) + ' '+DISPLAY_NAMES[player.currentChallenge === 'challenge4' ? 6 : 8]+' Dimensions';
     }
 
     if (canBuyDimension(3) || player.currentEternityChall == "eterc9") {
@@ -2594,8 +2596,7 @@ document.getElementById("toggleBtnTickSpeed").onclick = function () {
 
 
 document.getElementById("secondSoftReset").onclick = function() {
-    if ((player.currentEternityChall == "eterc6" || inQC(6)) && !isEternityBroke()) return
-    var bool = player.currentChallenge != "challenge11" && player.currentChallenge != "postc1" && player.currentChallenge != "postc7" && !inQC(6) && !reachedInfinity()
+    var bool = player.currentChallenge != "challenge11" && player.currentChallenge != "postc1" && player.currentChallenge != "postc7" && !((player.currentEternityChall == "eterc6"|| inQC(6)) && !isEternityBroke()) && !reachedInfinity()
     if (getAmount(player.currentChallenge=="challenge4"?6:8) >= getGalaxyRequirement() && bool) {
         if ((getEternitied() >= 7 || player.autobuyers[10].bulkBought) && !shiftDown) maxBuyGalaxies(true);
         else galaxyReset();
@@ -3391,6 +3392,7 @@ function setAchieveTooltip() {
     let wasted = document.getElementById("Studies are wasted")
     let stop = document.getElementById("Stop blocking me!")
     let dying = document.getElementById("Are you currently dying?")
+    let gofast = document.getElementById("Gonna go fast")
 
     apocAchieve.setAttribute('ach-tooltip', "Get over " + formatValue(player.options.notation, 1e80, 0, 0) + " antimatter.");
     claustrophobic.setAttribute('ach-tooltip', "Go Infinite with just 1 Antimatter Galaxy. Reward: Reduces starting tick interval by 2%"+(player.galacticSacrifice?(player.tickspeedBoosts==undefined?"":", keep dimension boosts on tickspeed boost,")+" and keep galaxy upgrades on infinity.":"."));
@@ -3474,6 +3476,7 @@ function setAchieveTooltip() {
     wasted.setAttribute('ach-tooltip', "Get "+shorten(11e6)+" TT without having generated TTs and respeccing time studies.")
     stop.setAttribute('ach-tooltip', "Get the replicanti reset requirement to "+shorten(Decimal.pow(10,145e5))+". Reward: Getting a normal replicant manually doesn't reset your replicanti and can be autoed.")
     dying.setAttribute('ach-tooltip', "Reach "+shorten(Decimal.pow(10, 275e3))+" IP while dilated, in PC6+8, and without having time studies.")
+    gofast.setAttribute('ach-tooltip', "Get "+shorten(Decimal.pow(10, 1100))+" EP first and then double that by disabling dilation while big ripped.")
 }
 
 
@@ -4858,6 +4861,7 @@ function eternity(force, auto) {
             if (ghostified) document.getElementById("ghostifytabbtn").style.display = "inline-block"
         }
         temp = []
+        if (gainedEternityPoints().gte(player.eternityPoints) && player.eternityPoints.gte("1e1100") && (player.masterystudies !== undefined ? player.dilation.active && player.quantum.bigRip.active : false)) giveAchievement("Gonna go fast")
         player.eternityPoints = player.eternityPoints.plus(gainedEternityPoints())
         var array = [player.thisEternity, gainedEternityPoints()]
         if (player.dilation.active) array = [player.thisEternity, getDilGain().sub(player.dilation.totalTachyonParticles).max(0), "d2"]
@@ -6766,7 +6770,7 @@ setInterval(function() {
         $.notify("You have unlocked "+timeDisplayShort(speedrunMilestones[notifyId]*36e3)+" speedrun milestone! "+(["You now start with 20,000 eternities when going quantum","You unlocked time theorem autobuyer","You now start with all Eternity Challenges completed and\neternity upgrades bought","You now start with dilation unlocked","You unlocked a new option for eternity autobuyer","You now start with all dilation studies and\nnon-rebuyable dilation upgrades before Meta Dimensions unlocked except passive TT gen upgrade","You unlocked first meta dimension autobuyer","You unlocked second meta dimension autobuyer","You unlocked third meta dimension autobuyer","You unlocked fourth meta dimension autobuyer","You unlocked fifth meta dimension autobuyer and you now keep time studies and passive TT gen upgrade","You unlocked sixth meta dimension autobuyer","You unlocked seventh meta dimension autobuyer","You unlocked eighth meta dimension autobuyer and\nall non-rebuyable dilation upgrades","You unlocked meta-dimension boost autobuyer","You now keep all time studies in mastery studies","You can now buy Meta Dimensions without buying the previous dimension","You now start with "+shortenCosts(1e13)+" eternities","You now start with "+shortenCosts(1e25)+" meta-antimatter on reset","You can now turn on automatic replicated galaxies anytime","You made rebuyable dilation upgrade and Meta Dimension autobuyers 3x faster","You now start with "+shortenCosts(1e100)+" dilated time on quantum and dilated time does not reset until quantum","You unlocked quantum autobuyer","You now keep replicanti on eternity","You unlocked manual mode for eternity autobuyer and sacrifice galaxy autobuyer","Your rebuyable dilation upgrade autobuyer now can buy max all upgrades","You now can buy max meta-dimension boosts and start with 4 meta-dimension boosts","For now on, you can gain banked infinities based on your post-crunch infinitied stat"])[notifyId]+".","success")
         notifyId++
     }
-    if (player.masterystudies !== undefined) if (player.eternityPoints.gte(1e50) && player.quantum.bigRip.active && !player.quantum.breakEternity.unlocked) {
+    if (player.masterystudies !== undefined) if (player.eternityPoints.gte("1e1170") && player.quantum.bigRip.active && !player.quantum.breakEternity.unlocked) {
         player.quantum.breakEternity.unlocked = true
         $.notify("Congratulations! You have unlocked Break Eternity!", "success")
         updateBreakEternity()

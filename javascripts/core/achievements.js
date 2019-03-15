@@ -150,6 +150,8 @@ const allAchievements = {
   ng3p47 : "Stop blocking me!",
   ng3p48 : "Are you currently dying?",
   ng3p51 : "To the new dimension!",
+  ng3p52 : "Quantum doesn't take so long",
+  ng3p53 : "Gonna go fast",
   ng3p55 : "Time Breaker",
   ng3p58 : "And so your life?",
   ng3p61 : "Kee-hee-hee!",

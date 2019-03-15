@@ -650,7 +650,7 @@ if (player.version < 5) {
           }
           player.aarexModifications.newGamePlusVersion = 1
           if (confirm("Do you want to migrate your NG++ save into new NG+++ mode?")) {
-              player.aarexModifications.newGame3PlusVersion = 1.99972
+              player.aarexModifications.newGame3PlusVersion = 2
               player.respecMastery=false
               player.dbPower = 1
               player.dilation.times = 0
@@ -768,6 +768,9 @@ if (player.version < 5) {
                   times: 0,
                   bestThisRun: 0,
                   bestAntimatter: 0,
+                  totalAntimatter: 0,
+                  savedAutobuyersNoBR: {},
+                  savedAutobuyersBR: {},
                   spaceShards: 0,
                   upgrades: []
               }
@@ -1112,6 +1115,8 @@ if (player.version < 5) {
           bestThisRun: 0,
           bestAntimatter: 0,
           totalAntimatter: 0,
+          savedAutobuyersNoBR: {},
+          savedAutobuyersBR: {},
           spaceShards: 0,
           upgrades: []
       }
@@ -1163,6 +1168,8 @@ if (player.version < 5) {
       }
 
       //Testing-exclusive
+      if (player.quantum.bigRip.savedAutobuyersNoBR === undefined) player.quantum.bigRip.savedAutobuyersNoBR = {}
+      if (player.quantum.bigRip.savedAutobuyersBR === undefined) player.quantum.bigRip.savedAutobuyersBR = {}
       if (player.quantum.pairedChallenges.fastest === undefined) player.quantum.pairedChallenges.fastest = {}
       if (player.ghostify.timeReset === undefined) {
           player.ghostify.time = player.totalTimePlayed
@@ -1666,6 +1673,7 @@ if (player.version < 5) {
       updateMasteryStudyCosts()
       updateMasteryStudyButtons()
       if (quantumed) giveAchievement("Sub-atomic")
+      if (player.quantum.best<=0.2) giveAchievement("Quantum doesn't take so long")
       if (ghostified) giveAchievement("Kee-hee-hee!")
       document.getElementById('reward3disable').textContent="6 hours reward: O"+(player.quantum.disabledRewards[3]?"FF":"N")
       document.getElementById('reward4disable').textContent="4.5 hours reward: O"+(player.quantum.disabledRewards[4]?"FF":"N")

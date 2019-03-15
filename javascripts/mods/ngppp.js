@@ -1831,12 +1831,11 @@ function toggleBigRipConf() {
 }
 
 function getSpaceShardsGain() {
-	let ret = Decimal.pow(player.quantum.bigRip.bestThisRun.log10()/2000, 1.5)
-	ret = ret.times(Decimal.pow(player.dilation.dilatedTime.add(1).log10()/10 + 1, 2))
+	let ret = Decimal.pow(player.quantum.bigRip.bestThisRun.log10()/2000, 1.5).times(player.dilation.dilatedTime.add(1).pow(0.05))
 	return ret.floor()
 }
 
-let bigRipUpgCosts = [0, 2, 3, 5, 20, 30, 45, 60, 100, 150, 1200, 1e7, 1/0, 1/0, 1/0, 1/0, 1/0]
+let bigRipUpgCosts = [0, 2, 3, 5, 20, 30, 45, 60, 100, 150, 1200, 1e10, 3e14, 1/0, 1/0, 1/0, 1/0]
 function buyBigRipUpg(id) {
 	if (player.quantum.bigRip.spaceShards.lt(bigRipUpgCosts[id])||player.quantum.bigRip.upgrades.includes(id)) return
 	player.quantum.bigRip.spaceShards=player.quantum.bigRip.spaceShards.sub(bigRipUpgCosts[id]).round()
@@ -1906,7 +1905,7 @@ function updateBreakEternity() {
 		document.getElementById("eternalMatter").textContent = shortenDimensions(player.quantum.breakEternity.eternalMatter)
 	} else {
 		document.getElementById("breakEternityReq").style.display = ""
-		document.getElementById("breakEternityReq").textContent = "You need to get " + shorten(1e50) + " EP before you will able to Break Eternity."
+		document.getElementById("breakEternityReq").textContent = "You need to get " + shorten(new Decimal("1e1170")) + " EP before you will able to Break Eternity."
 		document.getElementById("breakEternityShop").style.display = "none"
 	}
 }
@@ -1923,7 +1922,7 @@ function isEternityBroke() {
 }
 
 function getEMGain() {
-	return new Decimal(1)
+	return new Decimal(0)
 }
 
 function getGHPGain() {
@@ -2444,6 +2443,8 @@ function ghostifyReset(implode) {
 				bestThisRun: new Decimal(0),
 				bestAntimatter: new Decimal(0),
 				totalAntimatter: new Decimal(0),
+				savedAutobuyersNoBR: {},
+				savedAutobuyersBR: {},
 				spaceShards: new Decimal(0),
 				upgrades: []
 			},
