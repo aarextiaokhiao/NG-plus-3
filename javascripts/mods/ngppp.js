@@ -1776,7 +1776,7 @@ function getTreeUpgradeEffect(upg) {
 	if (upg==4) return 1 + Math.log10(lvl * 0.5 + 1) * 0.1
 	if (upg==5) return Math.pow(Math.log10(player.meta.bestOverQuantums.add(1).log10()+1)/5+1,Math.sqrt(lvl))
 	if (upg==6) return Decimal.pow(2, lvl)
-	if (upg==7) return Decimal.pow(player.replicanti.amount.log10()+1, 0.25*lvl)
+	if (upg==7) return Decimal.pow(player.replicanti.amount.max(1).log10()+1, 0.25*lvl)
 	if (upg==8) return Math.log10(player.meta.bestAntimatter.add(1).log10()+1)/4*Math.sqrt(lvl)
 	return 0
 }
@@ -1832,6 +1832,7 @@ function toggleBigRipConf() {
 
 function getSpaceShardsGain() {
 	let ret = Decimal.pow(player.quantum.bigRip.bestThisRun.log10()/2000, 1.5).times(player.dilation.dilatedTime.add(1).pow(0.05))
+	if (player.quantum.breakEternity.break) if (player.quantum.breakEternity.upgrades.includes(3)) ret = ret.times(getBreakUpgMult(3))
 	return ret.floor()
 }
 
@@ -1841,7 +1842,7 @@ function buyBigRipUpg(id) {
 	player.quantum.bigRip.spaceShards=player.quantum.bigRip.spaceShards.sub(bigRipUpgCosts[id]).round()
 	player.quantum.bigRip.upgrades.push(id)
 	document.getElementById("spaceShards").textContent = shortenDimensions(player.quantum.bigRip.spaceShards)
-	document.getElementById("bigripupg"+id).className="gluonupgradebought bigrip"
+	for (var u=1;u<17;u++) document.getElementById("bigripupg"+u).className = player.quantum.bigRip.upgrades.includes(u) ? "gluonupgradebought bigrip" : player.quantum.bigRip.spaceShards.lt(bigRipUpgCosts[u]) ? "gluonupgrade unavailablebtn" : "gluonupgrade bigrip"
 	if (player.quantum.bigRip.active) tweakBigRip(id)
 }
 
@@ -1902,7 +1903,14 @@ function updateBreakEternity() {
 		document.getElementById("breakEternityReq").style.display = "none"
 		document.getElementById("breakEternityShop").style.display = ""
 		document.getElementById("breakEternityNoBigRip").style.display = player.quantum.bigRip.active ? "none" : ""
+		document.getElementById("breakEternityBtn").textContent = (player.quantum.breakEternity.break ? "FIX" : "BREAK") + " ETERNITY"
 		document.getElementById("eternalMatter").textContent = shortenDimensions(player.quantum.breakEternity.eternalMatter)
+		for (var u=1;u<8;u++) {
+			document.getElementById("breakUpg" + u).className = player.quantum.breakEternity.upgrades.includes(u) ? "eternityupbtnbought" : player.quantum.breakEternity.eternalMatter.gte(getBreakUpgCost(u)) ? "eternityupbtn" : "eternityupbtnlocked"
+			document.getElementById("breakUpg" + u + "Cost").textContent = shortenDimensions(getBreakUpgCost(u))
+		}
+		document.getElementById("breakUpg7MultIncrease").textContent = shortenDimensions(1e10)
+		document.getElementById("breakUpg7Mult").textContent = shortenDimensions(getBreakUpgMult(7))
 	} else {
 		document.getElementById("breakEternityReq").style.display = ""
 		document.getElementById("breakEternityReq").textContent = "You need to get " + shorten(new Decimal("1e1170")) + " EP before you will able to Break Eternity."
@@ -1922,7 +1930,62 @@ function isEternityBroke() {
 }
 
 function getEMGain() {
-	return new Decimal(0)
+	return player.timeShards.div(1e15).pow(0.25).floor()
+}
+
+var breakUpgCosts = [1, 1e3, 1e6, 1/0, 1/0, 1/0]
+function getBreakUpgCost(id) {
+	if (id == 7) return Decimal.pow(2, player.quantum.breakEternity.epMultPower).times(1e6)
+	return breakUpgCosts[id-1]
+}
+
+function buyBreakUpg(id) {
+	if (!player.quantum.breakEternity.eternalMatter.gte(getBreakUpgCost(id)) || player.quantum.breakEternity.upgrades.includes(id)) return
+	player.quantum.breakEternity.eternalMatter = player.quantum.breakEternity.eternalMatter.sub(getBreakUpgCost(id))
+	if (id == 7) {
+		player.quantum.breakEternity.epMultPower++
+		document.getElementById("breakUpg7Mult").textContent = shortenDimensions(getBreakUpgMult(7))
+	} else player.quantum.breakEternity.upgrades.push(id)
+	document.getElementById("eternalMatter").textContent = shortenDimensions(player.quantum.breakEternity.eternalMatter)
+	for (var u=1;u<8;u++) document.getElementById("breakUpg" + u).className = player.quantum.breakEternity.upgrades.includes(u) ? "eternityupbtnbought" : player.quantum.breakEternity.eternalMatter.gte(getBreakUpgCost(u)) ? "eternityupbtn" : "eternityupbtnlocked"
+}
+
+function getBreakUpgMult(id) {
+	if (id == 1) {
+		var log1 = player.eternityPoints.div("1e1280").add(1).log10()
+		var log2 = player.quantum.breakEternity.eternalMatter.add(1).log10()
+		return Decimal.pow(10, Math.pow(log1, 1/3) * 0.5 + Math.pow(log2, 1/3)).max(1)
+	}
+	if (id == 2) {
+		var log = player.eternityPoints.div("1e1280").add(1).log10()
+		return Math.pow(Math.log10(log + 1) * 2.5 + 1, 2)
+	}
+	if (id == 3) {
+		var log = player.eternityPoints.div("1e1330").add(1).log10()
+		return Decimal.pow(10, Math.pow(log, 1/3) * 0).max(1)
+	}
+	if (id == 4) {
+		//WIP
+	}
+	if (id == 5) {
+		var log1 = player.eternityPoints.add(1).log10()
+		var log2 = player.timeShards.add(1).log10()
+		return Decimal.pow(10, (Math.pow(log1, 1/3) * 0 + Math.pow(log2, 1/3) * 0) - 0).max(1)
+	}
+	if (id == 6) {
+		var log1 = player.eternityPoints.add(1).log10()
+		var log2 = player.quantum.breakEternity.eternalMatter.add(1).log10()
+		return Decimal.pow(10, (Math.pow(log1, 1/3) * 0 + Math.pow(log2, 1/3) * 0) - 0).max(1)
+	}
+	if (id == 7) return Decimal.pow(1e10, player.quantum.breakEternity.epMultPower)
+}
+
+function getExtraTickReductionMult() {
+	if (player.masterystudies !== undefined ? player.quantum.bigRip.active && player.quantum.breakEternity.break : false) {
+		let ret = new Decimal(1)
+		if (player.quantum.breakEternity.upgrades.includes(5)) ret = ret.times(getBreakUpgMult(5))
+		return ret
+	} else return 1
 }
 
 function getGHPGain() {
@@ -2512,6 +2575,12 @@ function ghostifyReset(implode) {
 	player.challenges=challengesCompletedOnEternity()
 	delete player.replicanti.galaxybuyer
 	IPminpeak = new Decimal(0)
+	if (isEmptiness) {
+		showTab("dimensions")
+		isEmptiness = false
+		document.getElementById("quantumtabbtn").style.display = "inline-block"
+		document.getElementById("ghostifytabbtn").style.display = "inline-block"
+	}
 	document.getElementById("infinityPoints1").innerHTML = "You have <span class=\"IPAmount1\">"+shortenDimensions(player.infinityPoints)+"</span> Infinity points."
 	document.getElementById("infinityPoints2").innerHTML = "You have <span class=\"IPAmount2\">"+shortenDimensions(player.infinityPoints)+"</span> Infinity points."
 	document.getElementById("infiMult").innerHTML = "Multiply infinity points from all sources by 2 <br>currently: "+shorten(getIPMult()) +"x<br>Cost: "+shortenCosts(player.infMultCost)+" IP"

@@ -85,7 +85,7 @@ function getTickSpeedMultiplier() {
 			baseMultiplier -= linearGalaxies*0.02
 		} else {
 			let perGalaxy = 0.02 * getGalaxyPowerEff()
-			return Math.max(baseMultiplier-realnormalgalaxies*perGalaxy,0.83);
+			return Decimal.div(Math.max(baseMultiplier-realnormalgalaxies*perGalaxy,0.83), getExtraTickReductionMult());
 		}
 	}
 	if (!inERS) {
@@ -95,7 +95,7 @@ function getTickSpeedMultiplier() {
 		galaxies = getGalaxyPower(realnormalgalaxies) * getGalaxyPowerEff(realnormalgalaxies, true)
 	}
 	let perGalaxy = player.infinityUpgradesRespecced != undefined ? 0.98 : 0.965
-	return Decimal.pow(perGalaxy, galaxies-linearGalaxies).times(baseMultiplier)
+	return Decimal.pow(perGalaxy, galaxies-linearGalaxies).times(baseMultiplier).div(getExtraTickReductionMult())
 }
 
 function buyTickSpeed() {

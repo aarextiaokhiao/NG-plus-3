@@ -300,7 +300,7 @@ function hasInfinityMult(tier) {
 
 function buyOneDimension(tier) {
 	if (!canBuyDimension(tier)) return false
-	if (player.masterystudies !== undefined) if (player.quantum.bigRip.active && !canBuyIPMult()) {
+	if (player.masterystudies !== undefined) if (player.quantum.bigRip.active && !(player.infinityUpgrades.includes("resetBoost") && player.infinityUpgrades.includes("galaxyBoost") && player.infinityUpgrades.includes("passiveGen") && player.infinityUpgrades.includes("skipResetGalaxy"))) {
 		alert("You need to buy all pre-infinity upgrades before you will able to buy Normal Dimensions.")
 		return
 	}
@@ -326,7 +326,7 @@ function buyOneDimension(tier) {
 
 function buyManyDimension(tier, quick) {
 	if (!canBuyDimension(tier)) return false
-	if (!quick && player.masterystudies !== undefined) if (player.quantum.bigRip.active && !canBuyIPMult()) {
+	if (!quick && player.masterystudies !== undefined) if (player.quantum.bigRip.active && !(player.infinityUpgrades.includes("resetBoost") && player.infinityUpgrades.includes("galaxyBoost") && player.infinityUpgrades.includes("passiveGen") && player.infinityUpgrades.includes("skipResetGalaxy"))) {
 		alert("You need to buy all pre-infinity upgrades before you will able to buy Normal Dimensions.")
 		return
 	}

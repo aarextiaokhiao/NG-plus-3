@@ -1064,8 +1064,11 @@ function getGalaxyRequirement(offset=0) {
     else if (player.galacticSacrifice) amount -= (player.galacticSacrifice.upgrades.includes(22) && galaxies > 0) ? 80 : 60
     if (player.tickspeedBoosts != undefined) amount += 10
 
-    if (isEternityBroke()) amount *= 1/0
-	else if (!player.galacticSacrifice&&!player.boughtDims) {
+    if (isEternityBroke()) {
+		amount *= 50
+		if (player.quantum.breakEternity.upgrades.includes(2)) amount /= getBreakUpgMult(2)
+	}
+	if (!player.galacticSacrifice&&!player.boughtDims) {
 		let galaxyCostScalingStart = getGalaxyCostScalingStart(galaxies)
 		if (galaxies >= galaxyCostScalingStart) {
 			let speed = 1
@@ -1208,7 +1211,7 @@ function updateDimensions() {
         document.getElementById("resetLabel").textContent = 'Dimension ' + (isShift ? "Shift" : player.resets < getSupersonicStart() ? "Boost" : "Supersonic") + ' ('+ getFullExpansion(player.resets) +'): requires ' + getFullExpansion(shiftRequirement.amount) + " " + DISPLAY_NAMES[shiftRequirement.tier] + " Dimensions"
         document.getElementById("softReset").textContent = "Reset the game for a " + (isShift ? "new dimension" : "boost")
         var totalReplGalaxies = player.replicanti.galaxies + extraReplGalaxies
-        document.getElementById("secondResetLabel").textContent = ((player.galacticSacrifice || player.boughtDims || isEternityBroke()) ? 'Antimatter ' : player.galaxies < 1400 ? (player.galaxies < getGalaxyCostScalingStart() ? '' : player.galaxies < getRemoteGalaxyScalingStart() ? 'Distant ' : 'Remote ') + 'Antimatter' : 'Dark Matter') + ' Galaxies ('+ getFullExpansion(player.galaxies) + ((totalReplGalaxies + player.dilation.freeGalaxies) > 0 ? ' + ' + getFullExpansion(totalReplGalaxies)  + (player.dilation.freeGalaxies > 0 ? ' + ' + getFullExpansion(Math.floor(player.dilation.freeGalaxies)) : '') : '') +'): requires ' + getFullExpansion(getGalaxyRequirement()) + ' '+DISPLAY_NAMES[player.currentChallenge === 'challenge4' ? 6 : 8]+' Dimensions';
+        document.getElementById("secondResetLabel").textContent = ((player.galacticSacrifice || player.boughtDims) ? 'Antimatter ' : player.galaxies < 1400 ? (player.galaxies < getGalaxyCostScalingStart() ? '' : player.galaxies < getRemoteGalaxyScalingStart() ? 'Distant ' : 'Remote ') + 'Antimatter' : 'Dark Matter') + ' Galaxies ('+ getFullExpansion(player.galaxies) + ((totalReplGalaxies + player.dilation.freeGalaxies) > 0 ? ' + ' + getFullExpansion(totalReplGalaxies)  + (player.dilation.freeGalaxies > 0 ? ' + ' + getFullExpansion(Math.floor(player.dilation.freeGalaxies)) : '') : '') +'): requires ' + getFullExpansion(getGalaxyRequirement()) + ' '+DISPLAY_NAMES[player.currentChallenge === 'challenge4' ? 6 : 8]+' Dimensions';
     }
 
     if (canBuyDimension(3) || player.currentEternityChall == "eterc9") {
@@ -1594,9 +1597,9 @@ function updateDimensions() {
             } else {
                 document.getElementById("reversedilationdiv").style.display = "none"
             }
+            var fgm=getFreeGalaxyGainMult()
+            document.getElementById('freeGalaxyMult').textContent=fgm==1?"free galaxy":Math.round(fgm*10)/10+" free galaxies"
         }
-        var fgm=getFreeGalaxyGainMult()
-        document.getElementById('freeGalaxyMult').textContent=fgm==1?"free galaxy":Math.round(fgm*10)/10+" free galaxies"
         if (document.getElementById("blackhole").style.display == "block") {
             if (document.getElementById("blackholediv").style.display == "inline-block") updateBlackhole()
             if (document.getElementById("blackholeunlock").style.display == "inline-block") {
@@ -1604,6 +1607,7 @@ function updateDimensions() {
                 document.getElementById("blackholeunlock").className = (player.eternityPoints.gte("1e4000")) ? "storebtn" : "unavailablebtn"
             }
         }
+        if (document.getElementById("breakEternity").style.display == "block") for (var u=1;u<7;u++) document.getElementById("breakUpg" + u + "Mult").textContent = shortenMoney(getBreakUpgMult(u))
     }
 }
 
@@ -3302,9 +3306,13 @@ function gainedEternityPoints() {
     if (player.timestudy.studies.includes(121)) ret = ret.times(((253 - averageEp.dividedBy(player.epmult).dividedBy(10).min(248).max(3))/5)) //x300 if tryhard, ~x60 if not
     else if (player.timestudy.studies.includes(122)) ret = ret.times(35)
     else if (player.timestudy.studies.includes(123)) ret = ret.times(Math.sqrt(1.39*player.thisEternity/10))
-    if (isBigRipUpgradeActive(5)) ret = ret.times(player.quantum.bigRip.spaceShards.max(1))
-    if (isBigRipUpgradeActive(8)) ret = ret.times(Decimal.pow(2, player.replicanti.galaxies+extraReplGalaxies))
-
+	if (player.masterystudies) {
+		if (player.quantum.bigRip.active && !player.quantum.bigRip.upgrades.includes(9)) {
+			if (player.quantum.bigRip.upgrades.includes(5)) ret = ret.times(player.quantum.bigRip.spaceShards.max(1))
+			if (player.quantum.bigRip.upgrades.includes(8)) ret = ret.times(Decimal.pow(2, player.replicanti.galaxies+extraReplGalaxies))
+		}
+		if (player.quantum.breakEternity.break) ret = ret.times(getBreakUpgMult(7))
+	}
     return ret.floor()
 }
 
@@ -7314,7 +7322,7 @@ function gameLoop(diff) {
     if (player.dilation.totalTachyonParticles.gte(getDilGain()) && player.dilation.active) document.getElementById("eternitybtnEPGain").innerHTML = "Reach " + shortenMoney(Decimal.pow(10, player.dilation.totalTachyonParticles.div(getDilPower()).pow(1/getDilExp()).toNumber() * 400)) + " antimatter to gain more Tachyon Particles."
     else {
         document.getElementById("eternitybtnEPGain").innerHTML = ((player.eternities > 0 && (player.currentEternityChall==""||player.options.theme=="Aarex's Modifications"))
-            ? "Gain <b>"+(player.dilation.active?shortenMoney(getDilGain().sub(player.dilation.totalTachyonParticles)):shortenDimensions(gainedEternityPoints()))+"</b> "+(player.dilation.active?"Tachyon particles.":brokeEternity?"EP and <b>"+shortenDimensions(1)+"</b> Eternal Matter.":"Eternity points.") : "")
+            ? "Gain <b>"+(player.dilation.active?shortenMoney(getDilGain().sub(player.dilation.totalTachyonParticles)):shortenDimensions(gainedEternityPoints()))+"</b> "+(player.dilation.active?"Tachyon particles.":brokeEternity?"EP and <b>"+shortenDimensions(getEMGain())+"</b> Eternal Matter.":"Eternity points.") : "")
     }
     var showEPmin=(player.currentEternityChall===""||player.options.theme=="Aarex's Modifications")&&EPminpeak>0&&player.eternities>0&&player.options.notation!='Morse code'&&player.options.notation!='Spazzy'&&!brokeEternity&&(!player.dilation.active||isSmartPeakActivated)
     document.getElementById("eternitybtnRate").textContent = (showEPmin&&(EPminpeak.lt("1e30003")||player.options.theme=="Aarex's Modifications")
