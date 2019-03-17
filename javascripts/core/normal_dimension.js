@@ -60,7 +60,10 @@ function getDimensionFinalMultiplier(tier) {
   if (player.timestudy.studies.includes(91)) multiplier = multiplier.times(Decimal.pow(10, Math.min(player.thisEternity, 18000)/60));
   let ndReplMult = 1
   let useHigherNDReplMult = !player.dilation.active ? false : !player.masterystudies ? false : player.masterystudies.includes("t323")
-  if (player.timestudy.studies.includes(101)) ndReplMult = player.replicanti.amount.max(1)
+  if (player.timestudy.studies.includes(101)) {
+      ndReplMult = player.replicanti.amount.max(1)
+      if (player.masterystudies !== undefined) if (!player.dilation.active && player.quantum.bigRip.active && player.quantum.bigRip.upgrades.includes(14)) ndReplMult = ndReplMult.pow(Math.sqrt(player.quantum.bigRip.spaceShards.div(2e17).add(1).log10()/3+1,0.5))
+  }
   if (!useHigherNDReplMult) multiplier = multiplier.times(ndReplMult)
   if (player.timestudy.studies.includes(161)) multiplier = multiplier.times(new Decimal(player.aarexModifications.newGameExpVersion?"1e3080":"1e616"))
   if (player.timestudy.studies.includes(234) && tier == 1) multiplier = multiplier.times(calcTotalSacrificeBoost())

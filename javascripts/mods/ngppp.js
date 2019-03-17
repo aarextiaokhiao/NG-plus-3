@@ -919,6 +919,7 @@ function updateQuantumChallenges() {
 			document.getElementById("bigripupg"+u).className = player.quantum.bigRip.upgrades.includes(u) ? "gluonupgradebought bigrip" : player.quantum.bigRip.spaceShards.lt(bigRipUpgCosts[u]) ? "gluonupgrade unavailablebtn" : "gluonupgrade bigrip"
 			document.getElementById("bigripupg"+u+"cost").textContent = shortenDimensions(new Decimal(bigRipUpgCosts[u]))
 		}
+		document.getElementById("bigripupg14current").textContent=(Math.sqrt(player.quantum.bigRip.spaceShards.div(2e15).add(1).log10()/3+1,0.5)).toFixed(2)
 	}
 	for (qc=1;qc<9;qc++) {
 		var property="qc"+qc
@@ -1836,7 +1837,7 @@ function getSpaceShardsGain() {
 	return ret.floor()
 }
 
-let bigRipUpgCosts = [0, 2, 3, 5, 20, 30, 45, 60, 100, 150, 1200, 1e10, 3e14, 1/0, 1/0, 1/0, 1/0]
+let bigRipUpgCosts = [0, 2, 3, 5, 20, 30, 45, 60, 100, 150, 1200, 1e10, 3e14, 1e17, 2e18, 1e20, 1/0]
 function buyBigRipUpg(id) {
 	if (player.quantum.bigRip.spaceShards.lt(bigRipUpgCosts[id])||player.quantum.bigRip.upgrades.includes(id)) return
 	player.quantum.bigRip.spaceShards=player.quantum.bigRip.spaceShards.sub(bigRipUpgCosts[id]).round()
@@ -1930,10 +1931,12 @@ function isEternityBroke() {
 }
 
 function getEMGain() {
-	return player.timeShards.div(1e15).pow(0.25).floor()
+	let log = player.timeShards.div(1e15).log10()*0.25
+	if (log > 15) return Decimal.pow(10, Math.sqrt(log * 15)).floor()
+	return Decimal.pow(10, log).floor()
 }
 
-var breakUpgCosts = [1, 1e3, 1e6, 1/0, 1/0, 1/0]
+var breakUpgCosts = [1, 1e3, 1e6, 1e11, 1/0, 1/0]
 function getBreakUpgCost(id) {
 	if (id == 7) return Decimal.pow(2, player.quantum.breakEternity.epMultPower).times(1e6)
 	return breakUpgCosts[id-1]
@@ -1945,6 +1948,7 @@ function buyBreakUpg(id) {
 	if (id == 7) {
 		player.quantum.breakEternity.epMultPower++
 		document.getElementById("breakUpg7Mult").textContent = shortenDimensions(getBreakUpgMult(7))
+		document.getElementById("breakUpg7Cost").textContent = shortenDimensions(getBreakUpgCost(7))
 	} else player.quantum.breakEternity.upgrades.push(id)
 	document.getElementById("eternalMatter").textContent = shortenDimensions(player.quantum.breakEternity.eternalMatter)
 	for (var u=1;u<8;u++) document.getElementById("breakUpg" + u).className = player.quantum.breakEternity.upgrades.includes(u) ? "eternityupbtnbought" : player.quantum.breakEternity.eternalMatter.gte(getBreakUpgCost(u)) ? "eternityupbtn" : "eternityupbtnlocked"
@@ -1961,11 +1965,13 @@ function getBreakUpgMult(id) {
 		return Math.pow(Math.log10(log + 1) * 2.5 + 1, 2)
 	}
 	if (id == 3) {
-		var log = player.eternityPoints.div("1e1330").add(1).log10()
-		return Decimal.pow(10, Math.pow(log, 1/3) * 0).max(1)
+		var log = player.eternityPoints.div("1e1320").add(1).log10()
+		return Decimal.pow(10, Math.pow(log, 1/3) * 0.5).max(1)
 	}
 	if (id == 4) {
-		//WIP
+		var log1 = player.eternityPoints.div("1e1770").add(1).log10()
+		var log2 = player.quantum.bigRip.spaceShards.div("1e18").add(1).log10()
+		return Decimal.pow(10, Math.pow(log1, 1/3) + Math.pow(log2, 1/3) * 4)
 	}
 	if (id == 5) {
 		var log1 = player.eternityPoints.add(1).log10()

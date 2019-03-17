@@ -108,7 +108,7 @@ function metaBoost() {
 	player.meta.antimatter = new Decimal(speedrunMilestonesReached>18?1e25:player.achievements.includes("ngpp12")?100:10);
 	clearMetaDimensions();
 	for (let i = 2; i <= 8; i++) if (!canBuyMetaDimension(i)) document.getElementById(i + "MetaRow").style.display = "none"
-	if (player.masterystudies === undefined ? true : player.quantum.bigRip.active) document.getElementById("quantumbtn").style.display="none"
+	if (player.masterystudies === undefined ? true : !player.quantum.bigRip.active) document.getElementById("quantumbtn").style.display="none"
 }
 
 

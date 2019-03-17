@@ -30,7 +30,7 @@ function updateNewPlayer(reseted) {
         var modesChosen = {
             ngm: player.aarexModifications.newGameMinusVersion !== undefined,
             ngp: (player.aarexModifications.newGamePlusVersion !== undefined ? 1 : 0) + (player.aarexModifications.newGameExpVersion !== undefined ? 2 : 0),
-            ngpp: player.meta == undefined ? (player.blackhole == undefined ? false : 3) : player.masterystudies ? 2 : true,
+            ngpp: player.meta == undefined ? (player.blackhole == undefined ? false : 3) : player.masterystudies ? (player.exdilation !== undefined ? 4 : 2) : true,
             ngmm: player.tickspeedBoosts == undefined ? player.galacticSacrifice !== undefined : 2,
             rs: player.infinityUpgradesRespecced != undefined ? 2 : player.boughtDims !== undefined
         }
@@ -335,12 +335,12 @@ function updateNewPlayer(reseted) {
         player.achievements.push("r85")
         player.aarexModifications.newGameMinusVersion = 2.2
     }
-    if (modesChosen.ngp%2>0) {
+    if (modesChosen.ngp) {
         player.achievements.push("r123")
         for (ec = 1; ec < 13; ec++) player.eternityChalls['eterc' + ec] = 5
         player.aarexModifications.newGamePlusVersion = 1
     }
-    if (modesChosen.ngpp && modesChosen.ngpp < 3) {
+    if (modesChosen.ngpp && modesChosen.ngpp != 3) {
         player.aarexModifications.newGamePlusPlusVersion = 2.90142
         player.autoEterMode = "amount"
         player.dilation.rebuyables[4] = 0
@@ -390,7 +390,7 @@ function updateNewPlayer(reseted) {
         player.infchallengeTimes.push(600*60*24*31)
         player.options.gSacrificeConfirmation = true
     }
-    if (modesChosen.ngpp === 2) {
+    if (modesChosen.ngpp === 2 || modesChosen.ngpp === 4) {
         player.aarexModifications.newGame3PlusVersion = 2
         player.respecMastery=false
         player.dbPower = 1
@@ -563,7 +563,7 @@ function updateNewPlayer(reseted) {
         player.infchallengeTimes.push(600*60*24*31)
         player.overXGalaxiesTickspeedBoost=10
     }
-    if (modesChosen.ngp>1) {
+    if (modesChosen.arrows) {
         player.aarexModifications.newGameExpVersion = 1
         for (u=1;u<5;u++) player.infinityUpgrades.push("skipReset"+(u>3?"Galaxy":u))
         player.resets=4
@@ -1032,6 +1032,7 @@ function getGalaxyCostScalingStart(galaxies) {
     var n = 100+ECTimesCompleted("eterc5")*5
     if (player.timestudy.studies.includes(223)) n += 7
     if (player.timestudy.studies.includes(224)) n += Math.floor(player.resets/2000)
+    if (player.masterystudies !== undefined) if (player.quantum.bigRip.active && player.quantum.bigRip.upgrades.includes(15)) n += Math.sqrt(player.eternityPoints.add(1).log10()) * 4.46
 	
     if (galaxies > 1399) {
 		let push = 5
@@ -1073,7 +1074,7 @@ function getGalaxyRequirement(offset=0) {
 		if (galaxies >= galaxyCostScalingStart) {
 			let speed = 1
 			if (GUBought("rg6")) speed = 0.867
-			if (GUBought("gb6")) speed /= 1+Math.pow(player.infinityPower.log10(),0.25)/2810
+			if (GUBought("gb6")) speed /= 1+Math.pow(player.infinityPower.max(1).log10(),0.25)/2810
 			if (GUBought("br6")) speed /= 1+player.meta.resets/340
 			amount += (galaxies-galaxyCostScalingStart+2)*(galaxies-galaxyCostScalingStart+1)*speed
 		}
@@ -2979,9 +2980,12 @@ function changeSaveDesc(saveId, placement) {
 			if (temp.galacticSacrifice) message+="NG--"+(temp.tickspeedBoosts!=undefined?"-":"")+", "
 			if (temp.boughtDims) message+="Eternity Respecced, "
 			if (temp.aarexModifications.newGameExpVersion) message+="NG^, "
-			if (temp.exdilation!=undefined) message+="NG Update, "
-			if (temp.meta) message+="NG++"+(temp.masterystudies?"+":"")+", "+(temp.aarexModifications.newGamePlusVersion?"":"No NG+ features, ")
-			else if (temp.aarexModifications.newGamePlusVersion) message+="NG+, "
+			if (temp.exdilation!==undefined||temp.meta!==undefined) {
+				if (temp.exdilation!==undefined&&temp.meta!==undefined) message+="NG Update+, "
+				else if (temp.exdilation!==undefined) message+="NG Update, "
+				else if (temp.meta!==undefined) message+="NG++"+(temp.masterystudies!==undefined?"+":"")+", "
+				if (temp.aarexModifications.newGamePlusVersion===undefined) message+="No NG+ features, "
+			} else if (temp.aarexModifications.newGamePlusVersion) message+="NG+, "
 		}
 		message+=isSaveCurrent?"Selected<br>":"Played for "+timeDisplayShort(temp.totalTimePlayed)+"<br>"
 		var originalBreak=player.break
@@ -3053,10 +3057,10 @@ function changeSaveDesc(saveId, placement) {
 }
 
 function toggle_mode(id) {
-	if ((id=="ngp"||id=="ngpp")&&modes[id]===2) modes[id]=3
-	else if ((id=="ngp"||id=="ngpp"||id=="ngmm"||id=="rs")&&modes[id]===true) modes[id]=2
+	if (id=="ngpp"&&modes[id]<4) modes[id]++
+	else if ((id=="arrows"||id=="ngmm"||id=="rs")&&modes[id]===true) modes[id]=2
 	else modes[id]=!modes[id]
-	document.getElementById(id+"Btn").textContent=(id=="rs"?"Respecced":id=="ngpp"?"NG++":id=="ngp"?"NG+":id=="ngmm"?"NG--":"NG-")+": "+(id=="rs"?(modes.rs>1?"Infinity":modes.rs>0?"Eternity":"NONE"):modes[id]>1?"NG"+(id=="ngp"?"^"+(modes[id]>2?"+-":""):id=="ngpp"?(modes[id]>2?"Ud":"+++"):"---"):modes[id]?"ON":"OFF")
+	document.getElementById(id+"Btn").textContent=(id=="rs"?"Respecced":id=="arrows"?"NG↑":id=="ngpp"?"NG++":id=="ngp"?"NG+":id=="ngmm"?"NG--":"NG-")+": "+(id=="arrows"?(modes[id]>1?"Tetrational (↑↑)":modes[id]?"Exponential (↑)":"Linear (↑⁰)"):id=="rs"?(modes.rs>1?"Infinity":modes.rs>0?"Eternity":"NONE"):modes[id]>1?"NG"+(id=="arrows"?"^^":id=="ngpp"?(modes[id]>3?"Ud+":modes[id]>2?"Ud":"+++"):"---"):modes[id]?"ON":"OFF")
 	if (id=="ngpp"&&modes.ngpp) {
 		if (!modes.ngp) toggle_mode("ngp")
 		modes.rs=0
@@ -7110,7 +7114,7 @@ function gameLoop(diff) {
 
         if (tier < 9 - step){
             player["infinityDimension"+tier].amount = player["infinityDimension"+tier].amount.plus(DimensionProduction(tier+step).times(diff/100))
-            player["timeDimension"+tier].amount = player["timeDimension"+tier].amount.plus(getTimeDimensionProduction(tier+step).times(diff/100))
+            player["timeDimension"+tier].amount = player["timeDimension"+tier].amount.plus(getTimeDimensionProduction(tier+step).times(diff/100)).max(getTimeDimensionProduction(tier+step).times(1e3/(4-step)))
             if (player.meta) player.meta[tier].amount = player.meta[tier].amount.plus(getMetaDimensionProduction(tier+step).times(diff/100))
         }
         if (player.exdilation != undefined) if (tier < 5 - step) player["blackholeDimension"+tier].amount = player["blackholeDimension"+tier].amount.plus(getBlackholeDimensionProduction(tier+step).times(diff/100))
@@ -7135,7 +7139,7 @@ function gameLoop(diff) {
     if (player.currentEternityChall == "eterc7") player.infinityDimension8.amount = player.infinityDimension8.amount.plus(getTimeDimensionProduction(1).times(diff/10))
     else {
         if (ECTimesCompleted("eterc7") > 0) player.infinityDimension8.amount = player.infinityDimension8.amount.plus(DimensionProduction(9).times(diff/10))
-        player.timeShards = player.timeShards.plus(getTimeDimensionProduction(1).times(diff/10))
+        player.timeShards = player.timeShards.plus(getTimeDimensionProduction(1).times(diff/10)).max(getTimeDimensionProduction(1).times(1e4/4))
     }
 
     if (player.exdilation != undefined) player.blackhole.power = player.blackhole.power.plus(getBlackholeDimensionProduction(1).times(diff/10))
@@ -7675,6 +7679,7 @@ function gameLoop(diff) {
 				if (c==5) document.getElementById("qc5reward").textContent = getDimensionPowerMultiplier(true, "linear").toFixed(2)
 				else if (c!=2&&c!=7&&c!=8) document.getElementById("qc"+c+"reward").textContent = shorten(getQCReward(c))
 			}
+            if (player.masterystudies.includes("d14")) document.getElementById("bigripupg15current").textContent=(Math.sqrt(player.eternityPoints.add(1).log10()) * 4.46).toFixed(2)
 		}
 	}
 

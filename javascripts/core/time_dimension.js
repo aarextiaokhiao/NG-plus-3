@@ -7,7 +7,8 @@ function getTimeDimensionPower(tier) {
     if (mult.gt("1e120000")) mult = Decimal.pow(10, Math.pow(mult.log10()/12e4,0.5)*12e4)
     if (player.timestudy.studies.includes(11) && tier == 1) mult = mult.dividedBy(player.tickspeed.dividedBy(1000).pow(0.005).times(0.95).plus(player.tickspeed.dividedBy(1000).pow(0.0003).times(0.05)).max(Decimal.fromMantissaExponent(1, -2500)).pow(player.aarexModifications.newGameExpVersion?0.25:1))
     if (player.quantum.breakEternity.upgrades.includes(1) && tier < 5) mult = mult.times(getBreakUpgMult(1))
-    if (player.quantum.breakEternity.upgrades.includes(4) && tier > 4) mult = mult.times(getBreakUpgMult(4))
+    if (player.quantum.breakEternity.upgrades.includes(4) && tier > 3) mult = mult.times(getBreakUpgMult(4))
+    if (player.quantum.bigRip.upgrades.includes(13)) mult = mult.times(player.replicanti.amount.max(1).pow(1e-6))
     if (mult.lt(0)) mult = new Decimal(0)
     if (player.dilation.active || player.galacticSacrifice) {
       mult = Decimal.pow(10, Math.pow(mult.max(1).log10(), dilationPowerStrength()))
@@ -57,6 +58,7 @@ function getTimeDimensionPower(tier) {
   if (player.replicanti.unl && player.replicanti.amount.gt(1) && player.dilation.upgrades.includes(5)) ret = ret.times(getReplMult().pow(0.1))
 
   if (inQC(6)) ret = ret.times(player.postC8Mult).dividedBy(player.matter.max(1))
+  if (player.masterystudies !== undefined ? player.quantum.bigRip.upgrades.includes(13) : false) ret = ret.times(player.replicanti.amount.max(1).pow(1e-6))
   if (ret.lt(0)) {
     ret = new Decimal(0)
   }

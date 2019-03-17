@@ -919,7 +919,7 @@
                         </tr>
                         <tr>
                             <td>
-                                <button id="breakUpg4" class="eternityupbtnlocked" onclick="buyBreakUpg(4)">Boost TS11 multiplier based on your Eternity Points and Space Shards.<br>Currently: <span id="breakUpg4Mult">1.0</span>x<br>Cost: <span id="breakUpg4Cost">???</span> Eternal Matter</button>
+                                <button id="breakUpg4" class="eternityupbtnlocked" onclick="buyBreakUpg(4)">Boost last 5 Time Dimensions based on your Eternity Points and Space Shards.<br>Currently: <span id="breakUpg4Mult">1.0</span>x<br>Cost: <span id="breakUpg4Cost">???</span> Eternal Matter</button>
                             </td>
                             <td>
                                 <button id="breakUpg5" class="eternityupbtnlocked" onclick="buyBreakUpg(5)">Boost tickspeed reduction based on your Eternity Points and Time Shards.<br>Currently: <span id="breakUpg5Mult">1.0</span>x<br>Cost: <span id="breakUpg5Cost">???</span> Eternal Matter</button>
@@ -3524,10 +3524,10 @@
                             <td><button class='gluonupgrade unavailablebtn' id="bigripupg12" style='font-size: 10px' onclick='buyBigRipUpg(12)'>You keep your time studies, dilation upgrades, and mastery studies.<br>Cost: <span id="bigripupg12cost">???</span> Space Shards</button></td>
                         </tr>
                         <tr>
-                            <td><button class='gluonupgrade unavailablebtn' id="bigripupg13" onclick='buyBigRipUpg(13)'>???<br>Cost: <span id="bigripupg13cost">???</span> Space Shards</button></td>
-                            <td><button class='gluonupgrade unavailablebtn' id="bigripupg14" onclick='buyBigRipUpg(14)'>???<br>Cost: <span id="bigripupg14cost">???</span> Space Shards</button></td>
-                            <td><button class='gluonupgrade unavailablebtn' id="bigripupg15" onclick='buyBigRipUpg(15)'>???<br>Cost: <span id="bigripupg15cost">???</span> Space Shards</button></td>
-                            <td><button class='gluonupgrade unavailablebtn' id="bigripupg16" onclick='buyBigRipUpg(16)'>???<br>Cost: <span id="bigripupg16cost">???</span> Space Shards</button></td>
+                            <td><button class='gluonupgrade unavailablebtn' id="bigripupg13" onclick='buyBigRipUpg(13)'>Replicantis boost Time Dimensions at greatly reduced rate.<br>Cost: <span id="bigripupg13cost">???</span> Space Shards</button></td>
+                            <td><button class='gluonupgrade unavailablebtn' id="bigripupg14" style='font-size: 10px' onclick='buyBigRipUpg(14)'>TS101 is stronger based on your Space Shards but doesn't work on dilation.<br>Currently: ^<span id="bigripupg14current">1.00</span><br>Cost: <span id="bigripupg14cost">???</span> Space Shards</button></td>
+                            <td><button class='gluonupgrade unavailablebtn' id="bigripupg15" style='font-size: 10px' onclick='buyBigRipUpg(15)'>Eternity Points start Distant Antimatter Galaxies scaling later.<br>Currently: +<span id="bigripupg15current">0</span><br>Cost: <span id="bigripupg15cost">???</span> Space Shards</button></td>
+                            <td><button class='gluonupgrade unavailablebtn' id="bigripupg16" style='font-size: 10px' onclick='buyBigRipUpg(16)'>???<br>Currently: <span id="bigripupg16current">1.00</span>x<br>Cost: <span id="bigripupg16cost">???</span> Space Shards</button></td>
                         </tr>
                     </table>
                 </div>
@@ -4616,15 +4616,16 @@
         <div id="offlinePopup" style="height: 150px">You made X antimatter and stuff</div>
         <button class="storebtn" style="font-size: 15px" onclick="closeToolTip()" style="display: inline">Okay</button>
 	</div>
-	<div class="popup loadmenu" id="loadmenu" style="overflow-y:hidden; width:610px">
+	<div class="popup loadmenu" id="loadmenu" style="overflow-y:hidden; width:610px; height: 360px">
 		<button class="closebtn storebtn" onclick="closeToolTip()">&times;</button>
 		<button class="storebtn" style="font-size: 15px" onclick="new_game()" style="display: inline">New save</button>
 		<button class="storebtn" style="font-size: 15px" onclick="import_save('new')" style="display: inline">Import</button>
 		<button class="storebtn" id='ngmBtn' style="font-size: 15px" onclick="toggle_mode('ngm')" style="display: inline">NG-: OFF</button>
 		<button class="storebtn" id='ngmmBtn' style="font-size: 15px" onclick="toggle_mode('ngmm')" style="display: inline">NG--: OFF</button><br>
-		<button class="storebtn" id='rsBtn' style="font-size: 15px; width:255px" onclick="toggle_mode('rs')" style="display: inline">Respecced: OFF</button>
+		<button class="storebtn" id='rsBtn' style="font-size: 15px; width:255px" onclick="toggle_mode('rs')" style="display: inline">Respecced: NONE</button>
 		<button class="storebtn" id='ngpBtn' style="font-size: 15px" onclick="toggle_mode('ngp')" style="display: inline">NG+: OFF</button>
 		<button class="storebtn" id='ngppBtn' style="font-size: 15px" onclick="toggle_mode('ngpp')" style="display: inline">NG++: OFF</button><br>
+		<button class="storebtn" id='arrowsBtn' style="font-size: 15px; width:255px" onclick="toggle_mode('arrows')" style="display: inline">NG↑: Linear (↑⁰)</button><br>
 		Click "Load" while holding shift to load a save but w/o offline progress.
 		<div style="height:230px;overflow-y:auto">
 			<table id='saves'>
