@@ -915,7 +915,7 @@ function updateQuantumChallenges() {
 	}
 	if (player.masterystudies.includes("d14")) {
 		document.getElementById("spaceShards").textContent = shortenDimensions(player.quantum.bigRip.spaceShards)
-		for (var u=1;u<17;u++) {
+		for (var u=1;u<18;u++) {
 			document.getElementById("bigripupg"+u).className = player.quantum.bigRip.upgrades.includes(u) ? "gluonupgradebought bigrip" : player.quantum.bigRip.spaceShards.lt(bigRipUpgCosts[u]) ? "gluonupgrade unavailablebtn" : "gluonupgrade bigrip"
 			document.getElementById("bigripupg"+u+"cost").textContent = shortenDimensions(new Decimal(bigRipUpgCosts[u]))
 		}
@@ -1833,17 +1833,20 @@ function toggleBigRipConf() {
 
 function getSpaceShardsGain() {
 	let ret = Decimal.pow(player.quantum.bigRip.bestThisRun.log10()/2000, 1.5).times(player.dilation.dilatedTime.add(1).pow(0.05))
-	if (player.quantum.breakEternity.break) if (player.quantum.breakEternity.upgrades.includes(3)) ret = ret.times(getBreakUpgMult(3))
+	if (player.quantum.breakEternity.break) {
+		if (player.quantum.breakEternity.upgrades.includes(3)) ret = ret.times(getBreakUpgMult(3))
+		if (player.quantum.breakEternity.upgrades.includes(6)) ret = ret.times(getBreakUpgMult(6))
+	}
 	return ret.floor()
 }
 
-let bigRipUpgCosts = [0, 2, 3, 5, 20, 30, 45, 60, 100, 150, 1200, 1e10, 3e14, 1e17, 2e18, 1e20, 1/0]
+let bigRipUpgCosts = [0, 2, 3, 5, 20, 30, 45, 60, 100, 150, 1200, 1e10, 3e14, 1e17, 2e18, 1e20, 6e21, 1e40]
 function buyBigRipUpg(id) {
 	if (player.quantum.bigRip.spaceShards.lt(bigRipUpgCosts[id])||player.quantum.bigRip.upgrades.includes(id)) return
 	player.quantum.bigRip.spaceShards=player.quantum.bigRip.spaceShards.sub(bigRipUpgCosts[id]).round()
 	player.quantum.bigRip.upgrades.push(id)
 	document.getElementById("spaceShards").textContent = shortenDimensions(player.quantum.bigRip.spaceShards)
-	for (var u=1;u<17;u++) document.getElementById("bigripupg"+u).className = player.quantum.bigRip.upgrades.includes(u) ? "gluonupgradebought bigrip" : player.quantum.bigRip.spaceShards.lt(bigRipUpgCosts[u]) ? "gluonupgrade unavailablebtn" : "gluonupgrade bigrip"
+	for (var u=1;u<18;u++) document.getElementById("bigripupg"+u).className = player.quantum.bigRip.upgrades.includes(u) ? "gluonupgradebought bigrip" : player.quantum.bigRip.spaceShards.lt(bigRipUpgCosts[u]) ? "gluonupgrade unavailablebtn" : "gluonupgrade bigrip"
 	if (player.quantum.bigRip.active) tweakBigRip(id)
 }
 
@@ -1888,7 +1891,7 @@ function tweakBigRip(id) {
 function isBigRipUpgradeActive(id, bigRipped) {
 	if (player.masterystudies == undefined) return false
 	if (bigRipped === undefined ? !player.quantum.bigRip.active : !bigRipped) return false
-	if (id == 1) for (var u=3;u<17;u++) if (player.quantum.bigRip.upgrades.includes(u)) return false
+	if (id == 1) if (!player.quantum.bigRip.upgrades.includes(16)) for (var u=3;u<18;u++) if (player.quantum.bigRip.upgrades.includes(u)) return false
 	if (id > 2 && id != 4 && id < 9) if (player.quantum.bigRip.upgrades.includes(9)) return false
 	if (id == 4) if (player.quantum.bigRip.upgrades.includes(11)) return false
 	return player.quantum.bigRip.upgrades.includes(id)
@@ -1936,7 +1939,7 @@ function getEMGain() {
 	return Decimal.pow(10, log).floor()
 }
 
-var breakUpgCosts = [1, 1e3, 1e6, 1e11, 1/0, 1/0]
+var breakUpgCosts = [1, 1e3, 1e6, 1e11, 1e18, 1e36]
 function getBreakUpgCost(id) {
 	if (id == 7) return Decimal.pow(2, player.quantum.breakEternity.epMultPower).times(1e6)
 	return breakUpgCosts[id-1]
@@ -1974,14 +1977,14 @@ function getBreakUpgMult(id) {
 		return Decimal.pow(10, Math.pow(log1, 1/3) + Math.pow(log2, 1/3) * 4)
 	}
 	if (id == 5) {
-		var log1 = player.eternityPoints.add(1).log10()
-		var log2 = player.timeShards.add(1).log10()
-		return Decimal.pow(10, (Math.pow(log1, 1/3) * 0 + Math.pow(log2, 1/3) * 0) - 0).max(1)
+		var log1 = player.eternityPoints.div("1e2265").add(1).log10()
+		var log2 = player.timeShards.div(1e90).add(1).log10()
+		return Decimal.pow(10, (Math.pow(log1, 1/3) + Math.pow(log2, 1/3) * 4)).max(1)
 	}
 	if (id == 6) {
-		var log1 = player.eternityPoints.add(1).log10()
-		var log2 = player.quantum.breakEternity.eternalMatter.add(1).log10()
-		return Decimal.pow(10, (Math.pow(log1, 1/3) * 0 + Math.pow(log2, 1/3) * 0) - 0).max(1)
+		var log1 = player.eternityPoints.div("1e3445").add(1).log10()
+		var log2 = player.quantum.breakEternity.eternalMatter.div(1e40).add(1).log10()
+		return Decimal.pow(10, (Math.pow(log1, 1/3) * 1.25 + Math.pow(log2, 1/3) * 3.25)).max(1)
 	}
 	if (id == 7) return Decimal.pow(1e10, player.quantum.breakEternity.epMultPower)
 }
@@ -2006,24 +2009,28 @@ function ghostify() {
 		if (!confirm("Are you sure you want to do that? You will lose everything you have!")) return
 		if (!confirm("ARE YOU REALLY SURE YOU WANT TO DO THAT? YOU WON'T UNDO THIS IF YOU BECOME A GHOST AND PASS THE UNIVERSE EVEN IT IS BIG RIPPED! THIS IS YOUR LAST CHANCE!")) return
 	}
-	var implode = true
+	var implode = player.options.animations.ghostify
 	if (implode) {
+		var gain = getGHPGain()
+		var amount = player.ghostify.ghostParticles.add(gain).round()
 		implosionCheck=1
-		dev.implode()
+		dev.ghostify(gain, amount)
 		setTimeout(function(){
-			ghostifyReset(true)
-		},1000)
+			ghostifyReset(true, gain, amount)
+		},2000)
 		setTimeout(function(){
 			implosionCheck=0
-		},2000)
-	} else ghostifyReset()
+		},4000)
+	} else ghostifyReset(false)
 }
 
-function ghostifyReset(implode) {
-	var ghpGain = getGHPGain()
-	player.ghostify.ghostParticles = player.ghostify.ghostParticles.add(ghpGain).round()
+function ghostifyReset(implode, gain, amount) {
+	if (gain === undefined) {
+		var gain = getGHPGain()
+		player.ghostify.ghostParticles = player.ghostify.ghostParticles.add(gain).round()
+	} else player.ghostify.ghostParticles = amount
 	for (var i=player.ghostify.last10.length-1; i>0; i--) player.ghostify.last10[i] = player.ghostify.last10[i-1]
-	player.ghostify.last10[0] = [player.ghostify.time, ghpGain]
+	player.ghostify.last10[0] = [player.ghostify.time, gain]
 	player.ghostify.times++
 	player.ghostify.best = Math.min(player.ghostify.best, player.ghostify.time)
 	player.ghostify.time = 0
@@ -2668,6 +2675,7 @@ function ghostifyReset(implode) {
 		ghostified = true
 		document.getElementById("ghostifytabbtn").style.display = "inline-block"
 		document.getElementById("ghostparticles").style.display = ""
+		document.getElementById("ghostifyAnimBtn").style.display = "inline-block"
 		giveAchievement("Kee-hee-hee!")
 	}
 	document.getElementById("GHPAmount").textContent = shortenDimensions(player.ghostify.ghostParticles)

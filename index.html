@@ -1691,7 +1691,7 @@
                         <td><div><button id="toggleLogRateChange" onclick="toggleLogRateChange()" class="storebtn" style="color:black; width: 200px; height: 55px"></button></div></td>
                     </tr>
                     <tr>
-                        <td><div><button id="simpleSPbg" onclick="toggleSPbg()" class="storebtn" style="color:black; width: 200px; height: 55px"></button></div></td>
+                        <td></td>
                         <td><div><button id="decimalMode" onclick="switchDecimalMode()" class="storebtn" style="color:black; width: 200px; height: 55px"></button></div></td>
                         <td></td>
                     </tr>
@@ -3527,9 +3527,10 @@
                             <td><button class='gluonupgrade unavailablebtn' id="bigripupg13" onclick='buyBigRipUpg(13)'>Replicantis boost Time Dimensions at greatly reduced rate.<br>Cost: <span id="bigripupg13cost">???</span> Space Shards</button></td>
                             <td><button class='gluonupgrade unavailablebtn' id="bigripupg14" style='font-size: 10px' onclick='buyBigRipUpg(14)'>TS101 is stronger based on your Space Shards but doesn't work on dilation.<br>Currently: ^<span id="bigripupg14current">1.00</span><br>Cost: <span id="bigripupg14cost">???</span> Space Shards</button></td>
                             <td><button class='gluonupgrade unavailablebtn' id="bigripupg15" style='font-size: 10px' onclick='buyBigRipUpg(15)'>Eternity Points start Distant Antimatter Galaxies scaling later.<br>Currently: +<span id="bigripupg15current">0</span><br>Cost: <span id="bigripupg15cost">???</span> Space Shards</button></td>
-                            <td><button class='gluonupgrade unavailablebtn' id="bigripupg16" style='font-size: 10px' onclick='buyBigRipUpg(16)'>???<br>Currently: <span id="bigripupg16current">1.00</span>x<br>Cost: <span id="bigripupg16cost">???</span> Space Shards</button></td>
+                            <td><button class='gluonupgrade unavailablebtn' id="bigripupg16" onclick='buyBigRipUpg(16)'>Make the first upgrade active again but stronger.<br>Cost: <span id="bigripupg16cost">???</span> Space Shards</button></td>
                         </tr>
                     </table>
+                    <table class="table" align="center" style="margin: auto"><tr><td><button class='gluonupgrade unavailablebtn' id="bigripupg17" style='font-size: 10px' onclick='buyBigRipUpg(17)'>???<br>Cost: <span id="bigripupg17cost">???</span> Space Shards</button></td></tr></table>
                 </div>
             </div>
             <table id="footer">
@@ -4643,11 +4644,12 @@
 	</div>
     <div class="popup optionmenu" id="animationoptions">
         <button class="closebtn storebtn" onclick="closeToolTip()">&times;</button>
-		<button id="floatingTextAnimBtn" class="storebtn" onclick="animationOnOff('floatingText')" style="width: 200px; height: 55px; font-size: 15px" style="display: inline">ON</button>
-        <button id="bigCrunchAnimBtn" class="storebtn" onclick="animationOnOff('bigCrunch')" style="width: 200px; height: 55px; font-size: 15px" style="display: inline" ach-tooltip="Click here while holding shift to toggle this option to always! (except some conditions)">ON</button>
-        <button id="tachyonParticleAnimBtn" class="storebtn" onclick="animationOnOff('tachyonParticles')" style="width: 200px; height: 55px; font-size: 15px" style="display: inline">ON</button>
-        <button id="blackHoleAnimBtn" class="storebtn" onclick="animationOnOff('blackHole')" style="width: 200px; height: 55px; font-size: 15px" style="display: inline">ON</button>
-        <button id="quarksAnimBtn" class="storebtn" onclick="animationOnOff('quarks')" style="width: 200px; height: 55px; font-size: 15px" style="display: inline">ON</button>
+		<button id="floatingTextAnimBtn" class="storebtn" onclick="animationOnOff('floatingText')" style="width: 200px; height: 45px; font-size: 12px" style="display: inline"></button>
+        <button id="bigCrunchAnimBtn" class="storebtn" onclick="animationOnOff('bigCrunch')" style="width: 200px; height: 45px; font-size: 12px" style="display: inline" ach-tooltip="Click here while holding shift to toggle this option to always! (except some conditions)"></button>
+        <button id="tachyonParticleAnimBtn" class="storebtn" onclick="animationOnOff('tachyonParticles')" style="width: 200px; height: 45px; font-size: 12px" style="display: inline"></button>
+        <button id="blackHoleAnimBtn" class="storebtn" onclick="animationOnOff('blackHole')" style="width: 200px; height: 45px; font-size: 12px" style="display: inline"></button>
+        <button id="quarksAnimBtn" class="storebtn" onclick="animationOnOff('quarks')" style="width: 200px; height: 45px; font-size: 12px" style="display: inline"></button>
+        <button id="ghostifyAnimBtn" class="storebtn" onclick="animationOnOff('ghostify')" style="width: 200px; height: 45px; font-size: 12px" style="display: inline"></button>
 	</div>
     <div class="popup optionmenu" id="visibilityoptions">
         <button class="closebtn storebtn" onclick="closeToolTip()">&times;</button>
@@ -4744,6 +4746,10 @@
     </div>
     <div id="progress" style="display:none">
         <div id="progressbar"><span id="progresspercent" ach-tooltip="Percentage until Infinity">0%</span></div>
+    </div>
+    <div id="ghostifyani">
+        <div id="ghostifyanibg"></div>
+        <div id="ghostifyanitext" style="font-size:24px"><b style="font-size:48px">You have became a ghost!</b><br>You now have <span id="ghostifyaniamount"></span> Ghost Particles. (+<span id="ghostifyanigain"></span>)</div>
     </div>
 <script type="text/javascript" src="javascripts/autobuyer.js"></script>
 <script type="text/javascript" src="javascripts/break_infinity.min.js?1"></script>

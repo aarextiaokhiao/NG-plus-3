@@ -799,6 +799,7 @@ if (player.version < 5) {
                       upgrades: []
                   }
               }
+              player.options.animations.ghostify = true
           }
           player.dilation.upgrades=migratedUpgrades
           resetDilationGalaxies()
@@ -1145,6 +1146,7 @@ if (player.version < 5) {
               upgrades: []
           }
       }
+      player.options.animations.ghostify = true
       player.aarexModifications.newGame3PlusVersion = 2
   }
   if (player.masterystudies) {
@@ -1175,6 +1177,7 @@ if (player.version < 5) {
           player.ghostify.time = player.totalTimePlayed
           player.ghostify.timeReset = true
       }
+      if (player.options.animations.ghostify === undefined) player.options.animations.ghostify = true
   }
   if (player.aarexModifications.newGame3PlusVersion==undefined) {
       colorBoosts={
@@ -1514,9 +1517,6 @@ if (player.version < 5) {
     Chart.defaults.global.defaultFontColor = 'black';
     normalDimChart.data.datasets[0].borderColor = '#000'
   }
-  document.getElementById("simpleSPbg").style.display = player.aarexModifications.simpleSPbg === undefined ? "none" : ""
-  document.getElementById("simpleSPbg").textContent = "St. Patrick background type: " + (player.aarexModifications.simpleSPbg ? "Simple (faster)" : "Gradient (slower)")
-  document.body.style.background = player.options.theme === "S7" && player.aarexModifications.simpleSPbg ? "#00bf00" : ""
 
   document.getElementById("infmultbuyer").style.display = getEternitied()>0||player.masterystudies?"inline-block":"none"
   if (getEternitied() < 30) {
@@ -1761,6 +1761,8 @@ if (player.version < 5) {
   document.getElementById("autoBuyerQuantum").style.display=speedrunMilestonesReached>22?"":"none"
   document.getElementById("edtabbtn").style.display=!player.masterystudies?"none":player.masterystudies.includes("d11")?"":"none"
   document.getElementById("nanofieldtabbtn").style.display=!player.masterystudies?"none":player.masterystudies.includes("d12")?"":"none"
+  document.getElementById("ghostifyAnimBtn").style.display=ghostified?"inline-block":"none"
+  document.getElementById("ghostifyAnimBtn").textContent="Ghostify: O"+(player.options.animations.ghostify?"N":"FF")
   setAndMaybeShow('bestTP',player.achievements.includes("ng3p18") || player.achievements.includes("ng3p37"),'"Your best"+(ghostified ? "" : " ever")+" Tachyon particles"+(ghostified ? " in this Ghostify" : "")+" was "+shorten(player.dilation.bestTP)+"."')
   setAndMaybeShow('bestTPOverGhostifies',(player.achievements.includes("ng3p18") || player.achievements.includes("ng3p37")) && ghostified,'"Your best-ever Tachyon particles was "+shorten(player.dilation.bestTPOverGhostifies)+"."')
   notifyId=speedrunMilestonesReached

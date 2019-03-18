@@ -71,6 +71,46 @@ dev.implode = function() {
     setTimeout(function(){ document.getElementById("body").style.animation = ""; }, 2000)
 }
 
+dev.ghostify = function(gain, amount, seconds=4) {
+	document.getElementById("ghostifyani").style.display = ""
+	document.getElementById("ghostifyani").style.width = "100%"
+	document.getElementById("ghostifyani").style.height = "100%"
+	document.getElementById("ghostifyani").style.left = "0%"
+	document.getElementById("ghostifyani").style.top = "0%"
+	document.getElementById("ghostifyani").style.transform = "rotateZ(0deg)"
+	document.getElementById("ghostifyani").style["transition-duration"] = (seconds / 4) + "s"
+	document.getElementById("ghostifyanitext").style["transition-duration"] = (seconds / 8) + "s"
+	setTimeout(function() {
+		document.getElementById("ghostifyanigain").textContent = shortenDimensions(gain)
+		document.getElementById("ghostifyaniamount").textContent = shortenDimensions(amount)
+		document.getElementById("ghostifyanitext").style.left = "0%"
+		document.getElementById("ghostifyanitext").style.opacity = 1
+	}, seconds * 125)
+	setTimeout(function() {
+		document.getElementById("ghostifyanitext").style.left = "100%"
+		document.getElementById("ghostifyanitext").style.opacity = 0
+	}, seconds * 625)
+	setTimeout(function() {
+		document.getElementById("ghostifyani").style.width = "0%"
+		document.getElementById("ghostifyani").style.height = "0%"
+		document.getElementById("ghostifyani").style.left = "50%"
+		document.getElementById("ghostifyani").style.top = "50%"
+		document.getElementById("ghostifyani").style.transform = "rotateZ(45deg)"
+	}, seconds * 750)
+	setTimeout(dev.resetGhostify, seconds * 1000)
+}
+
+dev.resetGhostify = function() {
+	document.getElementById("ghostifyani").style.width = "0%"
+	document.getElementById("ghostifyani").style.height = "0%"
+	document.getElementById("ghostifyani").style.left = "50%"
+	document.getElementById("ghostifyani").style.top = "50%"
+	document.getElementById("ghostifyani").style.transform = "rotateZ(-45deg)"
+	document.getElementById("ghostifyani").style["transition-duration"] = "0s"
+	document.getElementById("ghostifyanitext").style.left = "-100%"
+	document.getElementById("ghostifyanitext").style["transition-duration"] = "0s"
+}
+
 dev.updateCosts = function() {
     for (var i=1; i<9; i++) {
         var dim = player["timeDimension"+i]

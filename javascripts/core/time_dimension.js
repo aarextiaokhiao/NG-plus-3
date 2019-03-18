@@ -7,7 +7,7 @@ function getTimeDimensionPower(tier) {
     if (mult.gt("1e120000")) mult = Decimal.pow(10, Math.pow(mult.log10()/12e4,0.5)*12e4)
     if (player.timestudy.studies.includes(11) && tier == 1) mult = mult.dividedBy(player.tickspeed.dividedBy(1000).pow(0.005).times(0.95).plus(player.tickspeed.dividedBy(1000).pow(0.0003).times(0.05)).max(Decimal.fromMantissaExponent(1, -2500)).pow(player.aarexModifications.newGameExpVersion?0.25:1))
     if (player.quantum.breakEternity.upgrades.includes(1) && tier < 5) mult = mult.times(getBreakUpgMult(1))
-    if (player.quantum.breakEternity.upgrades.includes(4) && tier > 3) mult = mult.times(getBreakUpgMult(4))
+    if (player.quantum.breakEternity.upgrades.includes(4) && tier > 3 && tier < 8) mult = mult.times(getBreakUpgMult(4))
     if (player.quantum.bigRip.upgrades.includes(13)) mult = mult.times(player.replicanti.amount.max(1).pow(1e-6))
     if (mult.lt(0)) mult = new Decimal(0)
     if (player.dilation.active || player.galacticSacrifice) {

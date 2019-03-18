@@ -300,8 +300,8 @@ function updateNewPlayer(reseted) {
             bulkOn: true,
             cloud: true,
             hotkeys: true,
-            theme: "S7" /*undefined*/,
-            secretThemeKey: "St. Patrick" /*0*/,
+            theme: undefined,
+            secretThemeKey: 0,
             eternityconfirm: true,
             commas: "Commas",
             updateRate: 50,
@@ -545,6 +545,7 @@ function updateNewPlayer(reseted) {
                 upgrades: []
             }
         }
+        player.options.animations.ghostify = true
     }
     if (modesChosen.rs===true) {
         player.aarexModifications.ersVersion = 1.02
@@ -890,7 +891,7 @@ function setTheme(name) {
     } else if(name === "S5") {
         Chart.defaults.global.defaultFontColor = 'black';
         normalDimChart.data.datasets[0].borderColor = '#000'
-    } else if (name !== "S6" && name !== "S7") {
+    } else if (name !== "S6") {
         themeName=name;
     }
     if (theme=="Dark"||theme=="Dark Metro"||name === "S6") {
@@ -906,11 +907,6 @@ function setTheme(name) {
     if (name === undefined) return;
     if (name === "Aarex's Modifications") name = "Aarexs Modifications"
     if (name === "Aarex's Mods II") name = "Aarexs Mods II"
-    if (player.options.theme === "S7" && player.aarexModifications.simpleSPbg === undefined) {
-        document.getElementById("simpleSPbg").style.display = ""
-        player.aarexModifications.simpleSPbg = false
-    }
-    document.body.style.background = player.options.theme === "S7" && player.aarexModifications.simpleSPbg ? "#00bf00" : ""
 
     var head = document.head;
     var link = document.createElement('link');
@@ -925,12 +921,6 @@ function setTheme(name) {
 document.getElementById("theme").onclick = function () {
 	closeToolTip()
 	document.getElementById('thememenu').style.display="flex"
-}
-
-function toggleSPbg() {
-	player.aarexModifications.simpleSPbg = !player.aarexModifications.simpleSPbg
-	document.getElementById("simpleSPbg").textContent = "St. Patrick background type: " + (player.aarexModifications.simpleSPbg ? "Simple (faster)" : "Gradient (slower)")
-	if (player.options.theme === "S7") document.body.style.background = player.aarexModifications.simpleSPbg ? "#00bf00" : ""
 }
 
 let kongIPMult = 1
@@ -3102,10 +3092,6 @@ function showNextModeMessage() {
 		document.getElementById("welcome").style.display = "flex"
 		document.getElementById("welcomeMessage").innerHTML = ngModeMessages[ngModeMessages.length-1]
 		ngModeMessages.pop()
-	} else if (player.aarexModifications.popUpId!="STD") {
-		document.getElementById("welcome").style.display = "flex"
-		document.getElementById("welcomeMessage").textContent = "Happy St. Patrick Day from Aarex! I hope you have clovers for great luck." + (player.options.theme == "S7" ? "" : " Import 'St. Patrick' for a special theme!")
-		player.aarexModifications.popUpId="STD"
 	} else document.getElementById("welcome").style.display = "none"
 }
 
@@ -3155,10 +3141,6 @@ function import_save(type) {
         setTheme(player.options.theme);
     } else if (sha512_256(save_data) === "4f82333af895f5c89e6b2082a7dab5a35b964614e74908961fe915cefca1c6d0") {
         player.options.theme = "S6";
-        player.options.secretThemeKey = save_data;
-        setTheme(player.options.theme);
-    } else if (sha512_256(save_data) === "667697112b694abde5288793a87e04a69bedf0bc141e04ad0aa6f729f78ca1cc") {
-        player.options.theme = "S7";
         player.options.secretThemeKey = save_data;
         setTheme(player.options.theme);
     } else {
@@ -7114,7 +7096,7 @@ function gameLoop(diff) {
 
         if (tier < 9 - step){
             player["infinityDimension"+tier].amount = player["infinityDimension"+tier].amount.plus(DimensionProduction(tier+step).times(diff/100))
-            player["timeDimension"+tier].amount = player["timeDimension"+tier].amount.plus(getTimeDimensionProduction(tier+step).times(diff/100)).max(getTimeDimensionProduction(tier+step).times(1e3/(4-step)))
+            player["timeDimension"+tier].amount = player["timeDimension"+tier].amount.plus(getTimeDimensionProduction(tier+step).times(diff/100)).max(getTimeDimensionProduction(tier+step).times(/*1e3/(8-step)*/0))
             if (player.meta) player.meta[tier].amount = player.meta[tier].amount.plus(getMetaDimensionProduction(tier+step).times(diff/100))
         }
         if (player.exdilation != undefined) if (tier < 5 - step) player["blackholeDimension"+tier].amount = player["blackholeDimension"+tier].amount.plus(getBlackholeDimensionProduction(tier+step).times(diff/100))
@@ -7139,7 +7121,7 @@ function gameLoop(diff) {
     if (player.currentEternityChall == "eterc7") player.infinityDimension8.amount = player.infinityDimension8.amount.plus(getTimeDimensionProduction(1).times(diff/10))
     else {
         if (ECTimesCompleted("eterc7") > 0) player.infinityDimension8.amount = player.infinityDimension8.amount.plus(DimensionProduction(9).times(diff/10))
-        player.timeShards = player.timeShards.plus(getTimeDimensionProduction(1).times(diff/10)).max(getTimeDimensionProduction(1).times(1e4/4))
+        player.timeShards = player.timeShards.plus(getTimeDimensionProduction(1).times(diff/10)).max(getTimeDimensionProduction(1).times(/*1e4/8*/0))
     }
 
     if (player.exdilation != undefined) player.blackhole.power = player.blackhole.power.plus(getBlackholeDimensionProduction(1).times(diff/10))
