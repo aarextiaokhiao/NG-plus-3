@@ -862,7 +862,7 @@
                             <button class="timestudy" id="dil14" onclick="buyDilationUpgrade(14)" style='font-size:10px'>Gain a multiplier to meta-dimensions based on tickspeed.<br>(1+log(1+log(x)))<br><span id="dil14desc"></span><br><span id="dil14cost"></span></button>
                         </td>
                         <td>
-                            <button class="timestudy" id="dil15" onclick="buyDilationUpgrade(15)" style='font-size:10px'>Meta-dimension shifts, boosts, and per-ten upgrades are boosted by dilated time.<br><span id="dil15desc"></span><br><span id="dil15cost"></span></button>
+                            <button class="timestudy" id="dil15" onclick="buyDilationUpgrade(15)" style='font-size:10px'>Meta-dimension shifts, boosts, and per-ten upgrades are boosted by dilated time.<span id="dil15formula"> (log(log(x))+1)</span><br><span id="dil15desc"></span><br><span id="dil15cost"></span></button>
                         </td>
                         <td>
                             <button class="timestudy" id="dil16" onclick="buyDilationUpgrade(16)">Meta-antimatter effect on dimension boosts is stronger.<br>(8x -> 9x)<br><span id="dil16cost"></span></button>
@@ -1931,7 +1931,7 @@
             <table class="table" align="center" style="margin: auto" id="achTabButtons">
                 <tr>
                     <td><button class="secondarytabbtn" onclick="showAchTab('normalachievements')">Achievements</button></td>
-                    <td><button class="secondarytabbtn" onclick="showAchTab('secretachievements')">Secret Achievements</button></td>
+                    <td id='secretachsbtn'><button class="secondarytabbtn" onclick="showAchTab('secretachievements')">Secret Achievements</button></td>
                     <td id='speedrunsbtn'><button class="secondarytabbtn" onclick="showAchTab('speedruns')">Quantum Speedruns</button></td>
                     <td id='bravemilestonesbtn'><button class="secondarytabbtn aarexmodsghostifybtn" onclick="showAchTab('bravemilestones')">Brave Milestones</button></td>
                 </tr>
@@ -2422,7 +2422,7 @@
                                 <div id="Do protons decay?" class="achievement achievementlocked" style="background-image: url(images/139.png)" ach-tooltip="Unlock Tree of Decay."></div>
                             </td>
                             <td>
-                                <div id="Hardly marked" class="achievement achievementlocked" style="background-image: url(images/140.png)" ach-tooltip="Complete PC3+8."></div>
+                                <div id="Hardly marked" class="achievement achievementlocked" style="background-image: url(images/140.png)" ach-tooltip="Complete a PC with QC3 & 8 combination."></div>
                             </td>
                             <td>
                                 <div id="Stop blocking me!" class="achievement achievementlocked" style="background-image: url(images/141.png)"></div>
@@ -2442,16 +2442,16 @@
                                 <div id="Gonna go fast" class="achievement achievementlocked" style="background-image: url(images/145.png)"></div>
                             </td>
                             <td>
-                                <div class="achievement achievementlocked" style="background-image: url(images/achhidden.png)"></div>
+                                <div id="We can really afford 9." class="achievement achievementlocked" style="background-image: url(images/146.png)" ach-tooltip="Undo the big rip with exactly 9 galaxies, 9 replicated galaxies, 9 Eighth Infinity Dimensions, and 9 Fourth Time Dimensions."></div>
                             </td>
                             <td>
                                 <div id="Time Breaker" class="achievement achievementlocked" style="background-image: url(images/147.png)" ach-tooltip="Break Eternity."></div>
                             </td>
                             <td>
-                                <div class="achievement achievementlocked" style="background-image: url(images/achhidden.png)"></div>
+                                <div id="Time Immunity" class="achievement achievementlocked" style="background-image: url(images/148.png)" ach-tooltip="Get ??? antimatter with at least 1 normal galaxies while in Eternity Challenge 7 and big ripped."></div>
                             </td>
                             <td>
-                                <div class="achievement achievementlocked" style="background-image: url(images/achhidden.png)"></div>
+                                <div id="You're not really smart." class="achievement achievementlocked" style="background-image: url(images/149.png)" ach-tooltip="Get ??? Time Shards without having time study 11 while big ripped."></div>
                             </td>
                             <td>
                                 <div id="And so your life?" class="achievement achievementlocked" style="background-image: url(images/150.png)" ach-tooltip="Reach ??? IP while dilated, big ripped, and without having time studies and EP mult upgrades."></div>
@@ -2462,28 +2462,29 @@
                                 <div id="Kee-hee-hee!" class="achievement achievementlocked" style="background-image: url(images/151.png)" ach-tooltip="Become a ghost. Reward: Gain 100x eternitied stat as before (weakens as you have more), gain 1 EC11 completion when you complete EC12, and assignation options are kept permanently."></div>
                             </td>
                             <td>
-                                <div class="achievement achievementlocked" style="background-image: url(images/achhidden.png)"></div>
+                                <div id="ng3p62" class="achievement achievementlocked" style="background-image: url(images/achhidden.png)"></div>
                             </td>
                             <td>
                                 <div id="This achievement doesn't exist 4" class="achievement achievementlocked" style="background-image: url(images/153.png)" ach-tooltip="Reach 9.999999e99 EM."></div>
                             </td>
                             <td>
-                                <div class="achievement achievementlocked" style="background-image: url(images/achhidden.png)"></div>
+                                <div id="ng3p64" class="achievement achievementlocked" style="background-image: url(images/achhidden.png)"></div>
                             </td>
                             <td>
-                                <div class="achievement achievementlocked" style="background-image: url(images/achhidden.png)"></div>
+                                <div id="ng3p65" class="achievement achievementlocked" style="background-image: url(images/achhidden.png)"></div>
                             </td>
                             <td>
                                 <div id="I rather oppose the theory of everything" class="achievement achievementlocked" style="background-image: url(images/156.png)" ach-tooltip="Complete Brave Milestones."></div>
                             </td>
                             <td>
-                                <div class="achievement achievementlocked" style="background-image: url(images/achhidden.png)"></div>
+                                <div id="ng3p67" class="achievement achievementlocked" style="background-image: url(images/achhidden.png)"></div>
                             </td>
                             <td>
                                 <div id="Please answer me why you are dying." class="achievement achievementlocked" style="background-image: url(images/158.png)" ach-tooltip="Reach ??? IP while dilated, big ripped, and without having time studies, EP mult upgrades, and neutrinos."></div>
                             </td>
                         </tr>
                 </table>
+                <div id="nothingness">You have completed all achievements! Congratulations!</div>
             </div>
             <div id="secretachievements" class="achtab" style="display:none;">
                 <table id="secretachievementtable" style="margin: auto">
@@ -4358,7 +4359,8 @@
 				</tr></table>
 				<div id="assignAll">
 					<button class='storebtn' id="assignAllButton" style="width:135px" onclick='assignAll()'>Distribute all</button>
-					<button class='storebtn' id="autoAssign" onclick='toggleAutoAssign()'>Auto: OFF</button><br>
+					<button class='storebtn' id="autoAssign" onclick='toggleAutoAssign()'>Auto: OFF</button>
+					<button class='storebtn' id="autoAssignRotate" style="width:150px" onclick='rotateAutoAssign()'>No rotate</button><br>
 					Ratios:<br>
 					R: <input id="ratio_r" type="number" min=0 onchange="changeRatio('r')"></input>
 					G: <input id="ratio_g" type="number" min=0 onchange="changeRatio('g')"></input>
@@ -4382,9 +4384,9 @@
 			</div>
 			<div class='quantumtab' id='gluons'>
 				<table id='gluonupgrades'><tr>
-					<td colspan=2><p>You have <span id="rg" style="font-size:35px">0</span> red-green gluons.<br>+<span id='rggain'>0</span> on next quantum from red quarks.</p></td>
-					<td colspan=2><p>You have <span id="gb" style="font-size:35px">0</span> green-blue gluons.<br>+<span id='gbgain'>0</span> on next quantum from green quarks.</p></td>
-					<td colspan=2><p>You have <span id="br" style="font-size:35px">0</span> blue-red gluons.<br>+<span id='brgain'>0</span> on next quantum from blue quarks.</p></td>
+					<td colspan=2><p>You have <span id="rg" style="font-size:35px">0</span> red-green gluons.<br>+<span id='rggain'>0</span> on next quantum from red quarks.<br><span id='rednext'>0</span> red quarks on next quantum.</p></td>
+					<td colspan=2><p>You have <span id="gb" style="font-size:35px">0</span> green-blue gluons.<br>+<span id='gbgain'>0</span> on next quantum from green quarks.<br><span id='greennext'>0</span> green quarks on next quantum.</p></td>
+					<td colspan=2><p>You have <span id="br" style="font-size:35px">0</span> blue-red gluons.<br>+<span id='brgain'>0</span> on next quantum from blue quarks.<br><span id='bluenext'>0</span> blue quarks on next quantum.</p></td>
 				</tr><tr>
 					<td><button id='rgupg1' onclick='buyGluonUpg("rg",1)'>Remote galaxy cost scaling is reduced.<br>Cost: 1 RG gluons</button></td>
 					<td><button id='rgupg2' onclick='buyGluonUpg("rg",2)'>Galaxies are more effective based on your free galaxies.<br>Cost: 2 RG gluons</button></td>
@@ -4653,10 +4655,13 @@
 	</div>
     <div class="popup optionmenu" id="visibilityoptions">
         <button class="closebtn storebtn" onclick="closeToolTip()">&times;</button>
-        <button id="newsbtn" class="storebtn" style="color:black; width: 200px; height: 55px; font-size:120%"></button>
-        <button id="progressBarBtn" onclick="toggleProgressBar()" class="storebtn" style="color:black; width: 200px; height: 55px; font-size:120%"></button>
-        <button id="hideRepresentation" onclick="toggleRepresentation()" class="storebtn" style="color:black; width: 200px; height: 55px; font-size:120%"></button>
-        <button id="hideProductionTab" onclick="toggleProductionTab()" class="storebtn" style="color:black; width: 200px; height: 55px; font-size:120%"></button>
+        <button id="newsbtn" class="storebtn" style="color:black; width: 200px; height: 40px; font-size: 12px"></button>
+        <button id="progressBarBtn" onclick="toggleProgressBar()" class="storebtn" style="color:black; width: 200px; height: 40px; font-size: 11px"></button>
+        <button id="hideRepresentation" onclick="toggleRepresentation()" class="storebtn" style="color:black; width: 200px; height: 40px; font-size: 11px"></button>
+        <button id="showAchRowNums" onclick="toggleAchRowNums()" class="storebtn" style="color:black; width: 200px; height: 40px; font-size: 11px"></button>
+        <button id="hideCompletedAchs" onclick="toggleCompletedAchs()" class="storebtn" style="color:black; width: 200px; height: 40px; font-size: 11px"></button>
+        <button id="hideSecretAchs" onclick="toggleSecretAchs()" class="storebtn" style="color:black; width: 200px; height: 40px; font-size: 11px"></button>
+        <button id="hideProductionTab" onclick="toggleProductionTab()" class="storebtn" style="color:black; width: 200px; height: 40px; font-size: 11px"></button>
 	</div>
     <div class="popup optionmenu" id="confirmationoptions">
         <button class="closebtn storebtn" onclick="closeToolTip()">&times;</button>
@@ -4749,7 +4754,7 @@
     </div>
     <div id="ghostifyani">
         <div id="ghostifyanibg"></div>
-        <div id="ghostifyanitext" style="font-size:24px"><b style="font-size:48px">You have became a ghost!</b><br>You now have <span id="ghostifyaniamount"></span> Ghost Particles. (+<span id="ghostifyanigain"></span>)</div>
+        <div id="ghostifyanitext" style="font-size:24px"><b style="font-size:48px">You have became a ghost!</b><br><span id="ghostifyanigained"></span></div>
     </div>
 <script type="text/javascript" src="javascripts/autobuyer.js"></script>
 <script type="text/javascript" src="javascripts/break_infinity.min.js?1"></script>

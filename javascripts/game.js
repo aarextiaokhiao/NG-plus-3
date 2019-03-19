@@ -6560,6 +6560,8 @@ setInterval(function() {
         document.getElementById("statstabs").style.display = "none"
         document.getElementById("brfilter").style.display = "none"
     }
+    document.getElementById("achTabButtons").style.display = player.aarexModifications.hideSecretAchs && !quantumed ? "none" : ""
+    document.getElementById("secretachsbtn").style.display = player.aarexModifications.hideSecretAchs ? "none" : ""
     document.getElementById("speedrunsbtn").style.display = (player.masterystudies && quantumed) ? "" : "none"
     document.getElementById("bravemilestonesbtn").style.display = ghostified ? "" : "none"
 
@@ -6759,6 +6761,12 @@ setInterval(function() {
         if (player.timestudy.theorem>11e6&&player.quantum.wasted) giveAchievement("Studies are wasted")
         if (player.quantum.replicants.requirement.gte("1e14500000")) giveAchievement("Stop blocking me!")
         if (player.infinityPoints.gte(Decimal.pow(10, 275e3))&&ableToGetRid6) giveAchievement("Are you currently dying?")
+        if (player.quantum.bigRip.active) {
+            let ableToGetRid7 = ableToGetRid2 && player.epmult.eq(1) && player.quantum.breakEternity.epMultPower < 1
+            if (player.currentEternityChall == "eterc7" && player.money.e >= 1/0) giveAchievement("Time Immunity")
+            if (!player.timestudy.studies.includes(11) && player.timeShards.e >= 1/0) giveAchievement("You're not really smart.")
+            if (ableToGetRid7 && player.infinityPoints.e >= 1/0) giveAchievement("Are you currently dying?")
+        }
     }
     if (speedrunMilestonesReached>notifyId) {
         $.notify("You have unlocked "+timeDisplayShort(speedrunMilestones[notifyId]*36e3)+" speedrun milestone! "+(["You now start with 20,000 eternities when going quantum","You unlocked time theorem autobuyer","You now start with all Eternity Challenges completed and\neternity upgrades bought","You now start with dilation unlocked","You unlocked a new option for eternity autobuyer","You now start with all dilation studies and\nnon-rebuyable dilation upgrades before Meta Dimensions unlocked except passive TT gen upgrade","You unlocked first meta dimension autobuyer","You unlocked second meta dimension autobuyer","You unlocked third meta dimension autobuyer","You unlocked fourth meta dimension autobuyer","You unlocked fifth meta dimension autobuyer and you now keep time studies and passive TT gen upgrade","You unlocked sixth meta dimension autobuyer","You unlocked seventh meta dimension autobuyer","You unlocked eighth meta dimension autobuyer and\nall non-rebuyable dilation upgrades","You unlocked meta-dimension boost autobuyer","You now keep all time studies in mastery studies","You can now buy Meta Dimensions without buying the previous dimension","You now start with "+shortenCosts(1e13)+" eternities","You now start with "+shortenCosts(1e25)+" meta-antimatter on reset","You can now turn on automatic replicated galaxies anytime","You made rebuyable dilation upgrade and Meta Dimension autobuyers 3x faster","You now start with "+shortenCosts(1e100)+" dilated time on quantum and dilated time does not reset until quantum","You unlocked quantum autobuyer","You now keep replicanti on eternity","You unlocked manual mode for eternity autobuyer and sacrifice galaxy autobuyer","Your rebuyable dilation upgrade autobuyer now can buy max all upgrades","You now can buy max meta-dimension boosts and start with 4 meta-dimension boosts","For now on, you can gain banked infinities based on your post-crunch infinitied stat"])[notifyId]+".","success")

@@ -152,11 +152,18 @@ const allAchievements = {
   ng3p51 : "To the new dimension!",
   ng3p52 : "Quantum doesn't take so long",
   ng3p53 : "Gonna go fast",
+  ng3p54 : "We can really afford 9.",
   ng3p55 : "Time Breaker",
+  ng3p56 : "Time Immunity",
+  ng3p57 : "You're not really smart.",
   ng3p58 : "And so your life?",
   ng3p61 : "Kee-hee-hee!",
+  ng3p62 : "ng3p62",
   ng3p63 : "This achievement doesn't exist 4",
+  ng3p64 : "ng3p64",
+  ng3p65 : "ng3p65",
   ng3p66 : "I rather oppose the theory of everything",
+  ng3p67 : "ng3p67",
   ng3p68 : "Please answer me why you are dying.",
   s11 : "The first one's always free",
   s12 : "Just in case",
@@ -290,6 +297,7 @@ function giveAchievement(name) {
 
 function updateAchievements() {
 	var amount = 0
+	var rowsShown = 0
 	for (var i=1; i<21; i++) {
 		var shown=false
 		var rowid=i
@@ -324,20 +332,31 @@ function updateAchievements() {
 				} else if (player.meta&&achNum>140) var achId="ngpp"+(achNum-130)
 				else var achId="r"+achNum
 				var name=allAchievements[achId]
-				if (name) {
-					if (player.achievements.includes(achId)) {
-						n++
-						document.getElementById(name).className = "achievementunlocked"
-					} else {
-						document.getElementById(name).className = "achievementlocked"
-					}
+				if (player.achievements.includes(achId)) {
+					n++
+					document.getElementById(name).className = "achievementunlocked"
+				} else {
+					document.getElementById(name).className = "achievementlocked"
 				}
 			}
 			if (n == 8) {
 				amount++
 				document.getElementById(rowid).className = "completedrow"
+				document.getElementById(rowid).style.display = player.aarexModifications.hideCompletedAchs ? "none" : ""
+				if (!player.aarexModifications.hideCompletedAchs) rowsShown++
 			} else {
 				document.getElementById(rowid).className = ""
+				document.getElementById(rowid).style.display = ""
+				rowsShown++
+			}
+			if (!player.aarexModifications.hideCompletedAchs || n < 8) {
+				var numberelement = document.getElementById(rowid + "number")
+				if (numberelement === null) {
+					numberelement = document.getElementById(rowid).insertCell(0)
+					numberelement.id = rowid + "number"
+				}
+				numberelement.style.display = player.aarexModifications.showAchRowNums ? "" : "none"
+				if (player.aarexModifications.showAchRowNums) numberelement.textContent = n + " / 8"
 			}
 		}
 	}
@@ -365,6 +384,7 @@ function updateAchievements() {
 
 	player.achPow = Decimal.pow(player.aarexModifications.newGameMinusMinusVersion ? 5 : 1.5, amount)
 	document.getElementById("achmultlabel").textContent = "Current achievement multiplier on each Dimension: " + shortenMoney(player.achPow) + "x"
+	document.getElementById("nothingness").style.display = rowsShown ? "none" : ""
 }
 
 function getSecretAchAmount() {
@@ -379,4 +399,25 @@ function getSecretAchAmount() {
         }
     }
     return n
+}
+
+function toggleAchRowNums() {
+	// 0 == not visible, 1 == visible
+	player.aarexModifications.showAchRowNums=!player.aarexModifications.showAchRowNums
+	updateAchievements()
+	document.getElementById("showAchRowNums").textContent=(player.aarexModifications.showAchRowNums?"Hide":"Show")+" achievement row numbers"
+}
+
+function toggleCompletedAchs() {
+	// 0 == visible, 1 == not visible
+	player.aarexModifications.hideCompletedAchs=!player.aarexModifications.hideCompletedAchs
+	updateAchievements()
+	document.getElementById("hideCompletedAchs").textContent=(player.aarexModifications.hideCompletedAchs?"Show":"Hide")+" completed achievement rows"
+}
+
+function toggleSecretAchs() {
+	// 0 == visible, 1 == not visible
+	player.aarexModifications.hideSecretAchs=!player.aarexModifications.hideSecretAchs
+	if (document.getElementById("secretachievements").style.display == "block") showAchTab("normalachievements")
+	document.getElementById("hideSecretAchs").textContent=(player.aarexModifications.hideSecretAchs?"Show":"Hide")+" secret achievements"
 }

@@ -1541,6 +1541,9 @@ if (player.version < 5) {
   document.getElementById("decimalMode").style.display = Decimal.gt(player.totalmoney,"1e9000000000000000") ? "none" : ""
   document.getElementById("hideProductionTab").textContent = (player.aarexModifications.hideProductionTab?"Show":"Hide")+" production tab"
   document.getElementById("hideRepresentation").textContent=(player.aarexModifications.hideRepresentation?"Show":"Hide")+" antimatter representation"
+  document.getElementById("showAchRowNums").textContent=(player.aarexModifications.showAchRowNums?"Hide":"Show")+" achievement row numbers"
+  document.getElementById("hideCompletedAchs").textContent=(player.aarexModifications.hideCompletedAchs?"Show":"Hide")+" completed achievement rows"
+  document.getElementById("hideSecretAchs").textContent=(player.aarexModifications.hideSecretAchs?"Show":"Hide")+" secret achievements"
 
   document.getElementById("hotkeysDesc").innerHTML = "Hotkeys: 1-8 for buy 10 dimension, shift+1-8 for buy 1 dimension, T to buy max tickspeed, shift+T to buy one tickspeed, M for max all<br>S for sacrifice, D for dimension boost,"+(player.tickspeedBoosts==undefined?"":" B for tickspeed boost,")+" G for galaxy, C for crunch, A for toggle autobuyers, R for replicanti galaxies, E for eternity"+(player.meta?", Q for quantum":"")+(player.boughtDims?".":".<br>You can hold shift while buying time studies to buy all up until that point, see each study's number, and save study trees.<br>Hotkeys do not work while holding control.")
 
@@ -1654,6 +1657,8 @@ if (player.version < 5) {
   document.getElementById("feDiv"+suffix).appendChild(document.getElementById("In the grim darkness of the far endgame"))
   document.getElementById("achRowngud1").style.display=player.exdilation==undefined?"none":""
   document.getElementById("achRowngpp1").style.display=player.meta==undefined?"none":""
+  document.getElementById("dil15").style["font-size"]=player.masterystudies==undefined?"10px":"9px"
+  document.getElementById("dil15formula").style.display=player.masterystudies==undefined?"none":""
   document.getElementById("achRowng3p1").style.display=player.masterystudies==undefined?"none":""
   document.getElementById("achRowng3p2").style.display=player.masterystudies==undefined?"none":""
   document.getElementById("metaAntimatterEffectType").textContent=inQC(3)?"multiplier on all Infinity Dimensions":"extra multiplier per dimension boost"
@@ -1690,6 +1695,7 @@ if (player.version < 5) {
       document.getElementById("ratio_g").value = player.quantum.assignAllRatios.g
       document.getElementById("ratio_b").value = player.quantum.assignAllRatios.b
       document.getElementById('autoAssign').textContent="Auto: O"+(player.quantum.autoOptions.assignQK?"N":"FF")
+      document.getElementById('autoAssignRotate').textContent=player.quantum.autoOptions.assignQKRotate?"C"+(player.quantum.autoOptions.assignQKRotate>1?"ounterc":"")+"lockwise":"No rotate"
       document.getElementById('autoReset').textContent="Auto: O"+(player.quantum.autoOptions.replicantiReset?"N":"FF")
       updateAutoQuantumMode()
   }

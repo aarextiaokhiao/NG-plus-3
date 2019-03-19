@@ -831,6 +831,7 @@ function quantumReset(force, auto, challid, bigRip, implode=false) {
 				}
 			}
 		}
+		if (!bigRip && player.quantum.bigRip.active) if (player.galaxies == 9 && player.replicanti.galaxies == 9 && player.infinityDimension8.amount.round().eq(9) && player.timeDimension4.amount.round().eq(9)) giveAchievement("We can really afford 9.")
 	} else player.quantum.gluons = 0;
 	if (player.tickspeedBoosts !== undefined) player.tickspeedBoosts = 0
 	if (player.achievements.includes("r104")) player.infinityPoints = new Decimal(2e25);
@@ -1234,7 +1235,7 @@ function quantumReset(force, auto, challid, bigRip, implode=false) {
 				for (qc=1;qc<9;qc++) player.quantum.challenges[qc]=1
 				document.getElementById("respecPC").className="storebtn"
 			}
-			if (player.quantum.autoOptions.assignQK) assignAll()
+			if (player.quantum.autoOptions.assignQK) assignAll(true)
 		}
 		player.quantum.pairedChallenges.current=0
 		if (challid==0) {
@@ -1272,7 +1273,6 @@ function quantumReset(force, auto, challid, bigRip, implode=false) {
 			player.quantum.bigRip.bestThisRun = player.money
 			giveAchievement("To the new dimension!")
 			if (!player.quantum.bigRip.upgrades.includes(2)) {
-				document.getElementById("bigRipConfirmBtn").style.display = "inline-block"
 				showTab("infinity")
 				showInfTab("preinf")
 			}

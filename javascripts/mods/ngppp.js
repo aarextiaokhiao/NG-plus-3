@@ -649,6 +649,12 @@ function updateColorCharge() {
 	document.getElementById("redAssign").className=canAssign?"storebtn":"unavailablebtn"
 	document.getElementById("greenAssign").className=canAssign?"storebtn":"unavailablebtn"
 	document.getElementById("blueAssign").className=canAssign?"storebtn":"unavailablebtn"
+	document.getElementById("rggain").textContent=shortenDimensions(player.quantum.usedQuarks.r.min(player.quantum.usedQuarks.g))
+	document.getElementById("gbgain").textContent=shortenDimensions(player.quantum.usedQuarks.g.min(player.quantum.usedQuarks.b))
+	document.getElementById("brgain").textContent=shortenDimensions(player.quantum.usedQuarks.b.min(player.quantum.usedQuarks.r))
+	document.getElementById("rednext").textContent=shortenDimensions(player.quantum.usedQuarks.r.sub(player.quantum.usedQuarks.r.min(player.quantum.usedQuarks.g)).round())
+	document.getElementById("greennext").textContent=shortenDimensions(player.quantum.usedQuarks.g.sub(player.quantum.usedQuarks.g.min(player.quantum.usedQuarks.b)).round())
+	document.getElementById("bluenext").textContent=shortenDimensions(player.quantum.usedQuarks.b.sub(player.quantum.usedQuarks.b.min(player.quantum.usedQuarks.r)).round())
 	document.getElementById("assignAllButton").className=canAssign?"storebtn":"unavailablebtn"
 	document.getElementById("bluePowerMDEffect").style.display=player.masterystudies.includes("t383")?"":"none"
 	if (player.masterystudies.includes("d13")) {
@@ -685,9 +691,6 @@ function updateGluons() {
 	document.getElementById("rg").textContent=shortenDimensions(player.quantum.gluons.rg)
 	document.getElementById("gb").textContent=shortenDimensions(player.quantum.gluons.gb)
 	document.getElementById("br").textContent=shortenDimensions(player.quantum.gluons.br)
-	document.getElementById("rggain").textContent=shortenDimensions(player.quantum.usedQuarks.r.min(player.quantum.usedQuarks.g))
-	document.getElementById("gbgain").textContent=shortenDimensions(player.quantum.usedQuarks.g.min(player.quantum.usedQuarks.b))
-	document.getElementById("brgain").textContent=shortenDimensions(player.quantum.usedQuarks.b.min(player.quantum.usedQuarks.r))
 	var names=["rg","gb","br"]
 	var sevenUpgrades=player.masterystudies.includes("d9")
 	var eightUpgrades=player.masterystudies.includes("d13")
@@ -1617,7 +1620,7 @@ function toggleAutoQuantumMode() {
 	updateAutoQuantumMode()
 }
 
-function assignAll() {
+function assignAll(auto) {
 	var ratios =  player.quantum.assignAllRatios
 	var sum = ratios.r+ratios.g+ratios.b
 	var oldQuarks = player.quantum.quarks
@@ -1627,6 +1630,21 @@ function assignAll() {
 		player.quantum.usedQuarks[colors[c]] = player.quantum.usedQuarks[colors[c]].add(toAssign).round()
 		if (toAssign.gt(player.quantum.quarks)) player.quantum.quarks = new Decimal(0)
 		else player.quantum.quarks = player.quantum.quarks.sub(toAssign).round()
+	}
+	if (auto && player.quantum.autoOptions.assignQKRotate) {
+		if (player.quantum.autoOptions.assignQKRotate > 1) {
+			player.quantum.assignAllRatios = {
+				r: player.quantum.assignAllRatios.g,
+				g: player.quantum.assignAllRatios.b,
+				b: player.quantum.assignAllRatios.r
+			}
+		} else player.quantum.assignAllRatios = {
+			r: player.quantum.assignAllRatios.b,
+			g: player.quantum.assignAllRatios.r,
+			b: player.quantum.assignAllRatios.g
+		}
+		var colors = ['r','g','b']
+		for (c=0;c<3;c++) document.getElementById("ratio_" + colors[c]).value = player.quantum.assignAllRatios[colors[c]]
 	}
 	updateColorCharge()
 }
@@ -1650,7 +1668,7 @@ function changeRatio(color) {
 function toggleAutoAssign() {
 	player.quantum.autoOptions.assignQK = !player.quantum.autoOptions.assignQK
 	document.getElementById('autoAssign').textContent="Auto: O"+(player.quantum.autoOptions.assignQK?"N":"FF")
-	if (player.quantum.autoOptions.assignQK) assignAll()
+	if (player.quantum.autoOptions.assignQK && player.quantum.quarks.gt(0)) assignAll(true)
 }
 
 //v1.9997
@@ -1826,6 +1844,11 @@ function toggleAutoReset() {
 }
 
 //v2
+function rotateAutoAssign() {
+	player.quantum.autoOptions.assignQKRotate=player.quantum.autoOptions.assignQKRotate?(player.quantum.autoOptions.assignQKRotate+1)%3:1
+	document.getElementById('autoAssignRotate').textContent=player.quantum.autoOptions.assignQKRotate?"C"+(player.quantum.autoOptions.assignQKRotate>1?"ounterc":"")+"lockwise":"No rotate"
+}
+
 function toggleBigRipConf() {
 	player.quantum.bigRip.conf = !player.quantum.bigRip.conf
 	document.getElementById("bigRipConfirmBtn").textContent = "Big Rip confirmation: O" + (player.quantum.bigRip.conf ? "N" : "FF")
@@ -1840,7 +1863,7 @@ function getSpaceShardsGain() {
 	return ret.floor()
 }
 
-let bigRipUpgCosts = [0, 2, 3, 5, 20, 30, 45, 60, 100, 150, 1200, 1e10, 3e14, 1e17, 2e18, 1e20, 6e21, 1e40]
+let bigRipUpgCosts = [0, 2, 3, 5, 20, 30, 45, 60, 100, 150, 1200, 1e10, 3e14, 1e17, 2e18, 1e20, 1e22, 5e41]
 function buyBigRipUpg(id) {
 	if (player.quantum.bigRip.spaceShards.lt(bigRipUpgCosts[id])||player.quantum.bigRip.upgrades.includes(id)) return
 	player.quantum.bigRip.spaceShards=player.quantum.bigRip.spaceShards.sub(bigRipUpgCosts[id]).round()
@@ -2013,14 +2036,19 @@ function ghostify() {
 	if (implode) {
 		var gain = getGHPGain()
 		var amount = player.ghostify.ghostParticles.add(gain).round()
+		var seconds = ghostified ? 4 : 10
 		implosionCheck=1
-		dev.ghostify(gain, amount)
+		dev.ghostify(gain, amount, seconds)
+		setTimeout(function(){
+			isEmptiness = true
+			showTab("")
+		}, seconds * 250)
 		setTimeout(function(){
 			ghostifyReset(true, gain, amount)
-		},2000)
+		}, seconds * 500)
 		setTimeout(function(){
 			implosionCheck=0
-		},4000)
+		}, seconds * 1000)
 	} else ghostifyReset(false)
 }
 
