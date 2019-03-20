@@ -102,7 +102,7 @@ function metaBoost() {
 			if (player.meta.resets==req.scalingStart) req = getMetaShiftRequirement()
 		}
 		if (player.meta.resets>=req.scalingStart) player.meta.resets+=Math.floor((player.meta[8].bought-req.amount)/req.mult)+1
-		if (inQC(4) && player.meta.resets > 55) if (player.meta[8].bought>=Math.floor(getMetaShiftRequirement())) player.meta.resets++
+		if (inQC(4) && player.meta.resets > 54) if (player.meta[8].bought>=Math.floor(getMetaShiftRequirement().amount)) player.meta.resets++
 	} else player.meta.resets++
 	if (player.meta.resets>9) giveAchievement("Meta-boosting to the max")
 	player.meta.antimatter = new Decimal(speedrunMilestonesReached>18?1e25:player.achievements.includes("ngpp12")?100:10);

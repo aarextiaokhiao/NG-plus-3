@@ -6,7 +6,7 @@ masterystudies={initialCosts:{time:{241: 1e71, 251: 2e71, 252: 2e71, 253: 2e71, 
 		mc:{}},
 	costmults:{241: 1, 251: 2.5, 252: 2.5, 253: 2.5, 261: 6, 262: 6, 263: 6, 264: 6, 265: 6, 266: 6, 271: 2, 272: 2, 273: 2, 281: 4, 282: 4, 291: 1, 292: 1, 301: 2, 302: 131072, 303: 2, 311: 64, 312: 64, 321: 2, 322: 2, 323: 2, 331: 2, 332: 2, 341: 1, 342: 1, 343: 1, 344: 1, 351: 4, 361: 1, 362: 1, 371: 2, 372: 2, 373: 2, 381: 1, 382: 1, 383: 2, 391: 1, 392: 1, 393: 1, 401: 1e20, 402: 1e20, 411: 1, 412: 1},
 	costmult:1,
-	allTimeStudies:[241, 251, 252, 253, 261, 262, 263, 264, 265, 266, 271, 272, 273, 281, 282, 291, 292, 301, 302, 303, 311, 312, 321, 322, 323, 331, 332, 341, 342, 343, 344, 351, 361, 362, 371, 372, 373, 381, 382, 383, 391, 392, 393, 401, 402, 411, 412],
+	allTimeStudies: [241, 251, 252, 253, 261, 262, 263, 264, 265, 266, 271, 272, 273, 281, 282, 291, 292, 301, 302, 303, 311, 312, 321, 322, 323, 331, 332, 341, 342, 343, 344, 351, 361, 362, 371, 372, 373, 381, 382, 383, 391, 392, 393, 401, 402, 411, 412],
 	initialReqs:{13:728e3,14:255e5},
 	incrementReqs:{13:6e3,14:9e5},
 	reqs:{},
@@ -260,6 +260,19 @@ function drawMasteryBranch(num1, num2) {
 	msctx.moveTo(x1, y1);
 	msctx.lineTo(x2, y2);
 	msctx.stroke();
+    if (shiftDown && type == "t") {
+		var start = document.getElementById(num2).getBoundingClientRect();
+		var x1 = start.left + (start.width / 2) + (document.documentElement.scrollLeft || document.body.scrollLeft);
+		var y1 = start.top + (start.height / 2) + (document.documentElement.scrollTop || document.body.scrollTop);
+		var mult = masterystudies.costmults[num2.split("study")[1]]
+		var msg = num2.split("study")[1] + " (" + (mult>1e3?shorten(mult):mult) + "x)"
+		msctx.fillStyle = 'white';
+		msctx.strokeStyle = 'black';
+		msctx.lineWidth = 3;
+		msctx.font = "15px Typewriter";
+		msctx.strokeText(msg, x1 - start.width / 2, y1 - start.height / 2 - 1);
+		msctx.fillText(msg, x1 - start.width / 2, y1 - start.height / 2 - 1);
+    }
 }
 
 function drawMasteryTree() {
@@ -339,22 +352,6 @@ function drawMasteryTree() {
 		drawMasteryBranch("timestudy412", "dilstudy13")
 		drawMasteryBranch("dilstudy13", "dilstudy14")
 	}
-    if (shiftDown) {
-        var all = masterystudies.allTimeStudies
-    	for (i=0; i<all.length; i++) {
-            var start = document.getElementById("timestudy" + all[i]).getBoundingClientRect();
-            var x1 = start.left + (start.width / 2) + (document.documentElement.scrollLeft || document.body.scrollLeft);
-            var y1 = start.top + (start.height / 2) + (document.documentElement.scrollTop || document.body.scrollTop);
-			var mult = masterystudies.costmults[all[i]]
-            var msg = all[i] + " (" + (mult>1e3?shorten(mult):mult) + "x)"
-            msctx.fillStyle = 'white';
-            msctx.strokeStyle = 'black';
-            msctx.lineWidth = 3;
-            msctx.font = "15px Typewriter";
-            msctx.strokeText(msg, x1 - start.width / 2, y1 - start.height / 2 - 1);
-            msctx.fillText(msg, x1 - start.width / 2, y1 - start.height / 2 - 1);
-        }
-    }
 }
 
 function setupText() {
@@ -922,7 +919,6 @@ function updateQuantumChallenges() {
 			document.getElementById("bigripupg"+u).className = player.quantum.bigRip.upgrades.includes(u) ? "gluonupgradebought bigrip" : player.quantum.bigRip.spaceShards.lt(bigRipUpgCosts[u]) ? "gluonupgrade unavailablebtn" : "gluonupgrade bigrip"
 			document.getElementById("bigripupg"+u+"cost").textContent = shortenDimensions(new Decimal(bigRipUpgCosts[u]))
 		}
-		document.getElementById("bigripupg14current").textContent=(Math.sqrt(player.quantum.bigRip.spaceShards.div(2e15).add(1).log10()/3+1,0.5)).toFixed(2)
 	}
 	for (qc=1;qc<9;qc++) {
 		var property="qc"+qc
@@ -1863,7 +1859,7 @@ function getSpaceShardsGain() {
 	return ret.floor()
 }
 
-let bigRipUpgCosts = [0, 2, 3, 5, 20, 30, 45, 60, 100, 150, 1200, 1e10, 3e14, 1e17, 2e18, 1e20, 1e22, 5e41]
+let bigRipUpgCosts = [0, 2, 3, 5, 20, 30, 45, 60, 100, 150, 1200, 1e10, 3e14, 1e17, 2e18, 1e20, 1e22, 1e42]
 function buyBigRipUpg(id) {
 	if (player.quantum.bigRip.spaceShards.lt(bigRipUpgCosts[id])||player.quantum.bigRip.upgrades.includes(id)) return
 	player.quantum.bigRip.spaceShards=player.quantum.bigRip.spaceShards.sub(bigRipUpgCosts[id]).round()
