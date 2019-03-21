@@ -1056,7 +1056,7 @@ function getGalaxyRequirement(offset=0) {
     if (player.tickspeedBoosts != undefined) amount += 10
 
     if (isEternityBroke()) {
-		amount *= 50
+		amount *= 100
 		if (player.quantum.breakEternity.upgrades.includes(2)) amount /= getBreakUpgMult(2)
 	}
 	if (!player.galacticSacrifice&&!player.boughtDims) {
@@ -3470,7 +3470,7 @@ function setAchieveTooltip() {
     wasted.setAttribute('ach-tooltip', "Get "+shorten(11e6)+" TT without having generated TTs and respeccing time studies.")
     stop.setAttribute('ach-tooltip', "Get the replicanti reset requirement to "+shorten(Decimal.pow(10,145e5))+". Reward: Getting a normal replicant manually doesn't reset your replicanti and can be autoed.")
     dying.setAttribute('ach-tooltip', "Reach "+shorten(Decimal.pow(10, 275e3))+" IP while dilated, in PC6+8, and without having time studies.")
-    gofast.setAttribute('ach-tooltip', "Get "+shorten(Decimal.pow(10, 1100))+" EP first and then double that by disabling dilation while big ripped.")
+    gofast.setAttribute('ach-tooltip', "Get "+shorten(Decimal.pow(10, 1150))+" EP first and then double that by disabling dilation while big ripped.")
 }
 
 
@@ -4855,7 +4855,7 @@ function eternity(force, auto) {
             if (ghostified) document.getElementById("ghostifytabbtn").style.display = "inline-block"
         }
         temp = []
-        if (gainedEternityPoints().gte(player.eternityPoints) && player.eternityPoints.gte("1e1100") && (player.masterystudies !== undefined ? player.dilation.active && player.quantum.bigRip.active : false)) giveAchievement("Gonna go fast")
+        if (gainedEternityPoints().gte(player.eternityPoints) && player.eternityPoints.gte("1e1150") && (player.masterystudies !== undefined ? player.dilation.active && player.quantum.bigRip.active : false)) giveAchievement("Gonna go fast")
         player.eternityPoints = player.eternityPoints.plus(gainedEternityPoints())
         var array = [player.thisEternity, gainedEternityPoints()]
         if (player.dilation.active) array = [player.thisEternity, getDilGain().sub(player.dilation.totalTachyonParticles).max(0), "d2"]

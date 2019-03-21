@@ -1937,6 +1937,7 @@ function updateBreakEternity() {
 	} else {
 		document.getElementById("breakEternityReq").style.display = ""
 		document.getElementById("breakEternityReq").textContent = "You need to get " + shorten(new Decimal("1e1170")) + " EP before you will able to Break Eternity."
+		document.getElementById("breakEternityNoBigRip").style.display = "none"
 		document.getElementById("breakEternityShop").style.display = "none"
 	}
 }
