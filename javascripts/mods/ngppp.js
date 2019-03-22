@@ -1460,13 +1460,13 @@ function isLimitUpgAffordable() {
 
 function getLimitMsg() {
 	if (!player.masterystudies.includes("d11")) return player.quantum.replicants.limit
-	return player.quantum.replicants.limit+" D"+player.quantum.replicants.limitDim+"s"
+	return player.quantum.replicants.limit+" ED"+player.quantum.replicants.limitDim+"s"
 }
 
 function getNextLimitMsg() {
 	if (!player.masterystudies.includes("d11")) return player.quantum.replicants.limit+1
-	if (player.quantum.replicants.limit > 9 && player.quantum.replicants.limitDim < 8) return "1 D"+(player.quantum.replicants.limitDim+1)+"s"
-	return (player.quantum.replicants.limit+1)+" D"+player.quantum.replicants.limitDim+"s"
+	if (player.quantum.replicants.limit > 9 && player.quantum.replicants.limitDim < 8) return "1 ED"+(player.quantum.replicants.limitDim+1)+"s"
+	return (player.quantum.replicants.limit+1)+" ED"+player.quantum.replicants.limitDim+"s"
 }
 
 function getHatchSpeed() {
