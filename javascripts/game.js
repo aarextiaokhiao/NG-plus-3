@@ -3470,7 +3470,7 @@ function setAchieveTooltip() {
     wasted.setAttribute('ach-tooltip', "Get "+shorten(11e6)+" TT without having generated TTs and respeccing time studies.")
     stop.setAttribute('ach-tooltip', "Get the replicanti reset requirement to "+shorten(Decimal.pow(10,145e5))+". Reward: Getting a normal replicant manually doesn't reset your replicanti and can be autoed.")
     dying.setAttribute('ach-tooltip', "Reach "+shorten(Decimal.pow(10, 275e3))+" IP while dilated, in PC6+8, and without having time studies.")
-    gofast.setAttribute('ach-tooltip', "Get "+shorten(Decimal.pow(10, 1150))+" EP first and then double that by disabling dilation while big ripped.")
+    gofast.setAttribute('ach-tooltip', "Get "+shorten(Decimal.pow(10, 1185))+" EP first and then double that by disabling dilation while big ripped.")
 }
 
 
@@ -4855,7 +4855,7 @@ function eternity(force, auto) {
             if (ghostified) document.getElementById("ghostifytabbtn").style.display = "inline-block"
         }
         temp = []
-        if (gainedEternityPoints().gte(player.eternityPoints) && player.eternityPoints.gte("1e1150") && (player.masterystudies !== undefined ? player.dilation.active && player.quantum.bigRip.active : false)) giveAchievement("Gonna go fast")
+        if (gainedEternityPoints().gte(player.eternityPoints) && player.eternityPoints.gte("1e1185") && (player.masterystudies !== undefined ? player.dilation.active && player.quantum.bigRip.active : false)) giveAchievement("Gonna go fast")
         player.eternityPoints = player.eternityPoints.plus(gainedEternityPoints())
         var array = [player.thisEternity, gainedEternityPoints()]
         if (player.dilation.active) array = [player.thisEternity, getDilGain().sub(player.dilation.totalTachyonParticles).max(0), "d2"]
@@ -6772,7 +6772,6 @@ setInterval(function() {
         $.notify("You have unlocked "+timeDisplayShort(speedrunMilestones[notifyId]*36e3)+" speedrun milestone! "+(["You now start with 20,000 eternities when going quantum","You unlocked time theorem autobuyer","You now start with all Eternity Challenges completed and\neternity upgrades bought","You now start with dilation unlocked","You unlocked a new option for eternity autobuyer","You now start with all dilation studies and\nnon-rebuyable dilation upgrades before Meta Dimensions unlocked except passive TT gen upgrade","You unlocked first meta dimension autobuyer","You unlocked second meta dimension autobuyer","You unlocked third meta dimension autobuyer","You unlocked fourth meta dimension autobuyer","You unlocked fifth meta dimension autobuyer and you now keep time studies and passive TT gen upgrade","You unlocked sixth meta dimension autobuyer","You unlocked seventh meta dimension autobuyer","You unlocked eighth meta dimension autobuyer and\nall non-rebuyable dilation upgrades","You unlocked meta-dimension boost autobuyer","You now keep all time studies in mastery studies","You can now buy Meta Dimensions without buying the previous dimension","You now start with "+shortenCosts(1e13)+" eternities","You now start with "+shortenCosts(1e25)+" meta-antimatter on reset","You can now turn on automatic replicated galaxies anytime","You made rebuyable dilation upgrade and Meta Dimension autobuyers 3x faster","You now start with "+shortenCosts(1e100)+" dilated time on quantum and dilated time does not reset until quantum","You unlocked quantum autobuyer","You now keep replicanti on eternity","You unlocked manual mode for eternity autobuyer and sacrifice galaxy autobuyer","Your rebuyable dilation upgrade autobuyer now can buy max all upgrades","You now can buy max meta-dimension boosts and start with 4 meta-dimension boosts","For now on, you can gain banked infinities based on your post-crunch infinitied stat"])[notifyId]+".","success")
         notifyId++
     }
-    if (player.masterystudies !== undefined) if (player.eternityPoints.gte("1e1170") && player.quantum.bigRip.active && !player.quantum.breakEternity.unlocked) {
         player.quantum.breakEternity.unlocked = true
         $.notify("Congratulations! You have unlocked Break Eternity!", "success")
         updateBreakEternity()
