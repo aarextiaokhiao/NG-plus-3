@@ -1056,7 +1056,7 @@ function getGalaxyRequirement(offset=0) {
     if (player.tickspeedBoosts != undefined) amount += 10
 
     if (isEternityBroke()) {
-		amount *= 100
+		amount *= 50
 		if (player.quantum.breakEternity.upgrades.includes(2)) amount /= getBreakUpgMult(2)
 	}
 	if (!player.galacticSacrifice&&!player.boughtDims) {
@@ -6772,6 +6772,7 @@ setInterval(function() {
         $.notify("You have unlocked "+timeDisplayShort(speedrunMilestones[notifyId]*36e3)+" speedrun milestone! "+(["You now start with 20,000 eternities when going quantum","You unlocked time theorem autobuyer","You now start with all Eternity Challenges completed and\neternity upgrades bought","You now start with dilation unlocked","You unlocked a new option for eternity autobuyer","You now start with all dilation studies and\nnon-rebuyable dilation upgrades before Meta Dimensions unlocked except passive TT gen upgrade","You unlocked first meta dimension autobuyer","You unlocked second meta dimension autobuyer","You unlocked third meta dimension autobuyer","You unlocked fourth meta dimension autobuyer","You unlocked fifth meta dimension autobuyer and you now keep time studies and passive TT gen upgrade","You unlocked sixth meta dimension autobuyer","You unlocked seventh meta dimension autobuyer","You unlocked eighth meta dimension autobuyer and\nall non-rebuyable dilation upgrades","You unlocked meta-dimension boost autobuyer","You now keep all time studies in mastery studies","You can now buy Meta Dimensions without buying the previous dimension","You now start with "+shortenCosts(1e13)+" eternities","You now start with "+shortenCosts(1e25)+" meta-antimatter on reset","You can now turn on automatic replicated galaxies anytime","You made rebuyable dilation upgrade and Meta Dimension autobuyers 3x faster","You now start with "+shortenCosts(1e100)+" dilated time on quantum and dilated time does not reset until quantum","You unlocked quantum autobuyer","You now keep replicanti on eternity","You unlocked manual mode for eternity autobuyer and sacrifice galaxy autobuyer","Your rebuyable dilation upgrade autobuyer now can buy max all upgrades","You now can buy max meta-dimension boosts and start with 4 meta-dimension boosts","For now on, you can gain banked infinities based on your post-crunch infinitied stat"])[notifyId]+".","success")
         notifyId++
     }
+    if (player.masterystudies !== undefined) if (player.eternityPoints.gte("1e1200") && player.quantum.bigRip.active && !player.quantum.breakEternity.unlocked) {
         player.quantum.breakEternity.unlocked = true
         $.notify("Congratulations! You have unlocked Break Eternity!", "success")
         updateBreakEternity()
@@ -7671,6 +7672,7 @@ function gameLoop(diff) {
             if (player.masterystudies.includes("d14")) {
                 document.getElementById("bigripupg14current").textContent=(Math.sqrt(player.quantum.bigRip.spaceShards.div(2e15).add(1).log10()/3+1,0.5)).toFixed(2)
                 document.getElementById("bigripupg15current").textContent=(Math.sqrt(player.eternityPoints.add(1).log10()) * 4.46).toFixed(2)
+                document.getElementById("bigripupg17current").textContent=shorten(player.dilation.dilatedTime.pow(0.5*Math.min(player.dilation.dilatedTime.div(4e195).add(1).log10(),1)))
 			}
 		}
 	}

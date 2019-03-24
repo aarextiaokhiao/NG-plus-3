@@ -1932,7 +1932,7 @@ function updateBreakEternity() {
 			document.getElementById("breakUpg" + u).className = player.quantum.breakEternity.upgrades.includes(u) ? "eternityupbtnbought" : player.quantum.breakEternity.eternalMatter.gte(getBreakUpgCost(u)) ? "eternityupbtn" : "eternityupbtnlocked"
 			document.getElementById("breakUpg" + u + "Cost").textContent = shortenDimensions(getBreakUpgCost(u))
 		}
-		document.getElementById("breakUpg7MultIncrease").textContent = shortenDimensions(1e10)
+		document.getElementById("breakUpg7MultIncrease").textContent = shortenDimensions(1e9)
 		document.getElementById("breakUpg7Mult").textContent = shortenDimensions(getBreakUpgMult(7))
 	} else {
 		document.getElementById("breakEternityReq").style.display = ""
@@ -1959,7 +1959,7 @@ function getEMGain() {
 	return Decimal.pow(10, log).floor()
 }
 
-var breakUpgCosts = [1, 1e3, 1e6, 1e11, 1e18, 1e36]
+var breakUpgCosts = [1, 1e3, 2e6, /*1e11*/1/0, /*1e18*/1/0, /*1e36*/1/0]
 function getBreakUpgCost(id) {
 	if (id == 7) return Decimal.pow(2, player.quantum.breakEternity.epMultPower).times(1e6)
 	return breakUpgCosts[id-1]
@@ -1984,11 +1984,11 @@ function getBreakUpgMult(id) {
 		return Decimal.pow(10, Math.pow(log1, 1/3) * 0.5 + Math.pow(log2, 1/3)).max(1)
 	}
 	if (id == 2) {
-		var log = player.eternityPoints.div("1e1280").add(1).log10()
-		return Math.pow(Math.log10(log + 1) * 2.5 + 1, 2)
+		var log = player.eternityPoints.div("1e1290").add(1).log10()
+		return Math.pow(Math.log10(log + 1) * 1.6 + 1, 2)
 	}
 	if (id == 3) {
-		var log = player.eternityPoints.div("1e1320").add(1).log10()
+		var log = player.eternityPoints.div("1e1390").add(1).log10()
 		return Decimal.pow(10, Math.pow(log, 1/3) * 0.5).max(1)
 	}
 	if (id == 4) {
@@ -2006,7 +2006,7 @@ function getBreakUpgMult(id) {
 		var log2 = player.quantum.breakEternity.eternalMatter.div(1e40).add(1).log10()
 		return Decimal.pow(10, (Math.pow(log1, 1/3) * 1.25 + Math.pow(log2, 1/3) * 3.25)).max(1)
 	}
-	if (id == 7) return Decimal.pow(1e10, player.quantum.breakEternity.epMultPower)
+	if (id == 7) return Decimal.pow(1e9, player.quantum.breakEternity.epMultPower)
 }
 
 function getExtraTickReductionMult() {

@@ -9,6 +9,7 @@ function getTimeDimensionPower(tier) {
     if (player.quantum.breakEternity.upgrades.includes(1) && tier < 5) mult = mult.times(getBreakUpgMult(1))
     if (player.quantum.breakEternity.upgrades.includes(4) && tier > 3 && tier < 8) mult = mult.times(getBreakUpgMult(4))
     if (player.quantum.bigRip.upgrades.includes(13)) mult = mult.times(player.replicanti.amount.max(1).pow(1e-6))
+    if (tier > 7 && player.quantum.bigRip.upgrades.includes(17)) mult = mult.times(player.dilation.dilatedTime.pow(0.5*Math.min(player.dilation.dilatedTime.div(4e195).add(1).log10(),1)))
     if (mult.lt(0)) mult = new Decimal(0)
     if (player.dilation.active || player.galacticSacrifice) {
       mult = Decimal.pow(10, Math.pow(mult.max(1).log10(), dilationPowerStrength()))
