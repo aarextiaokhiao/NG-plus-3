@@ -298,22 +298,22 @@ function giveAchievement(name) {
 function updateAchievements() {
 	var amount = 0
 	var rowsShown = 0
-	for (var i=1; i<21; i++) {
-		var shown=false
+	for (var i=1; i<22; i++) {
+		var shown=true
 		var rowid=i
-		if (i>14) {
-			var shown=!(!player.masterystudies)
-			rowid="ng3p"+(i-14)
+		if (i>15) {
+			shown=!(!player.masterystudies)
+			rowid="ng3p"+(i-15)
+		} else if (i>14) {
+			shown=player.meta!=undefined
+			rowid="ngpp1"
 		} else if (i>13) {
-			var shown=player.meta!=undefined||player.exdilation!=undefined
-			if (player.meta==undefined) rowid="ngud1"
-			else rowid="ngpp1"
-		} else if (i>10) var shown=!player.boughtDims
-		else var shown=true
-		rowid="achRow"+rowid
-		document.getElementById(rowid).style.display=shown?"":"none"
+			shown=player.exdilation!=undefined
+			rowid="ngud1"
+		} else if (i>10) shown=!player.boughtDims
+		rowid="achRow" + rowid
+		var n = 0
 		if (shown) {
-			var n = 0
 			var achNum = i * 10
 			for (var l=0; l<8; l++) {
 				achNum += 1;
@@ -324,13 +324,12 @@ function updateAchievements() {
 					else if (realAchNum==22) realAchNum=41
 					else if (realAchNum==41) realAchNum=76
 				}
-				if (player.masterystudies&&achNum>150) var achId="ng3p"+(achNum-140)
-				else if (player.exdilation&&achNum>140) {
-					if (achNum==145) var achId="ngpp13"
-					else if (achNum==147) var achId="ngpp18"
-					else var achId="ngud"+(achNum-130)
-				} else if (player.meta&&achNum>140) var achId="ngpp"+(achNum-130)
-				else var achId="r"+achNum
+				var achId="r"+achNum
+				if (achNum>160) achId="ng3p"+(achNum-150)
+				else if (achNum>150) achId="ngpp"+(achNum-140)
+				else if (achNum==145) achId="ngpp13"
+				else if (achNum==147) achId="ngpp18"
+				else if (achNum>140) achId="ngud"+(achNum-130)
 				var name=allAchievements[achId]
 				if (player.achievements.includes(achId)) {
 					n++
@@ -340,24 +339,21 @@ function updateAchievements() {
 				}
 			}
 			if (n == 8) {
-				amount++
 				document.getElementById(rowid).className = "completedrow"
-				document.getElementById(rowid).style.display = player.aarexModifications.hideCompletedAchs ? "none" : ""
-				if (!player.aarexModifications.hideCompletedAchs) rowsShown++
-			} else {
-				document.getElementById(rowid).className = ""
-				document.getElementById(rowid).style.display = ""
-				rowsShown++
+				if (player.aarexModifications.hideCompletedAchs) shown = false
+				amount++
+			} else document.getElementById(rowid).className = ""
+		}
+		document.getElementById(rowid).style.display = shown ? "" : "none"
+		if (shown) {
+			rowsShown++
+			var numberelement = document.getElementById(rowid + "number")
+			if (numberelement === null) {
+				numberelement = document.getElementById(rowid).insertCell(0)
+				numberelement.id = rowid + "number"
 			}
-			if (!player.aarexModifications.hideCompletedAchs || n < 8) {
-				var numberelement = document.getElementById(rowid + "number")
-				if (numberelement === null) {
-					numberelement = document.getElementById(rowid).insertCell(0)
-					numberelement.id = rowid + "number"
-				}
-				numberelement.style.display = player.aarexModifications.showAchRowNums ? "" : "none"
-				if (player.aarexModifications.showAchRowNums) numberelement.textContent = n + " / 8"
-			}
+			numberelement.style.display = player.aarexModifications.showAchRowNums ? "" : "none"
+			if (player.aarexModifications.showAchRowNums) numberelement.textContent = n + " / 8"
 		}
 	}
 	for (var i=1; i<document.getElementById("secretachievementtable").children[0].children.length+1; i++) {

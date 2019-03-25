@@ -62,7 +62,7 @@ function getDimensionFinalMultiplier(tier) {
   let useHigherNDReplMult = !player.dilation.active ? false : !player.masterystudies ? false : player.masterystudies.includes("t323")
   if (player.timestudy.studies.includes(101)) {
       ndReplMult = player.replicanti.amount.max(1)
-      if (player.masterystudies !== undefined) if (!player.dilation.active && player.quantum.bigRip.active && player.quantum.bigRip.upgrades.includes(14)) ndReplMult = ndReplMult.pow(Math.sqrt(player.quantum.bigRip.spaceShards.div(2e17).add(1).log10()/3+1,0.5))
+      if (player.masterystudies !== undefined) if (!player.dilation.active && player.quantum.bigRip.active && player.quantum.bigRip.upgrades.includes(14)) ndReplMult = ndReplMult.pow(getBRUpg14Mult())
   }
   if (!useHigherNDReplMult) multiplier = multiplier.times(ndReplMult)
   if (player.timestudy.studies.includes(161)) multiplier = multiplier.times(new Decimal(player.aarexModifications.newGameExpVersion?"1e3080":"1e616"))

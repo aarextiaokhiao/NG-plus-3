@@ -1176,6 +1176,7 @@ if (player.version < 5) {
           var newUpgrades = []
           for (var u=0;u<player.quantum.breakEternity.upgrades.length;u++) if (player.quantum.breakEternity.upgrades[u]<4) newUpgrades.push(player.quantum.breakEternity.upgrades[u])
           player.quantum.breakEternity.upgrades = newUpgrades
+          player.quantum.breakEternity.epMultPower = 0
           player.quantum.breakEternity.upgradesReset = true
       }
       if (player.quantum.pairedChallenges.fastest === undefined) player.quantum.pairedChallenges.fastest = {}
@@ -1661,12 +1662,8 @@ if (player.version < 5) {
   var suffix="NG"+(player.meta!=undefined?"pp":"ud")
   document.getElementById("uhDiv"+suffix).appendChild(document.getElementById("Universal harmony"))
   document.getElementById("feDiv"+suffix).appendChild(document.getElementById("In the grim darkness of the far endgame"))
-  document.getElementById("achRowngud1").style.display=player.exdilation==undefined?"none":""
-  document.getElementById("achRowngpp1").style.display=player.meta==undefined?"none":""
   document.getElementById("dil15").style["font-size"]=player.masterystudies==undefined?"10px":"9px"
   document.getElementById("dil15formula").style.display=player.masterystudies==undefined?"none":""
-  document.getElementById("achRowng3p1").style.display=player.masterystudies==undefined?"none":""
-  document.getElementById("achRowng3p2").style.display=player.masterystudies==undefined?"none":""
   document.getElementById("metaAntimatterEffectType").textContent=inQC(3)?"multiplier on all Infinity Dimensions":"extra multiplier per dimension boost"
   for (i=1;i<9;i++) document.getElementById("td"+i+'auto').style.visibility=player.achievements.includes("ngpp17")?"visible":"hidden"
   document.getElementById('togglealltimedims').style.visibility=player.achievements.includes("ngpp17")?"visible":"hidden"

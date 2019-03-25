@@ -1859,7 +1859,7 @@ function getSpaceShardsGain() {
 	return ret.floor()
 }
 
-let bigRipUpgCosts = [0, 2, 3, 5, 20, 30, 45, 60, 100, 150, 1200, 1e10, 3e14, 1e17, 2e18, 1e20, 1e22, 1e42]
+let bigRipUpgCosts = [0, 2, 3, 5, 20, 30, 45, 60, 100, 150, 1200, 1e10, 3e14, 1e17, 3e18, 1e20, 1e22, 1e42]
 function buyBigRipUpg(id) {
 	if (player.quantum.bigRip.spaceShards.lt(bigRipUpgCosts[id])||player.quantum.bigRip.upgrades.includes(id)) return
 	player.quantum.bigRip.spaceShards=player.quantum.bigRip.spaceShards.sub(bigRipUpgCosts[id]).round()
@@ -1870,7 +1870,7 @@ function buyBigRipUpg(id) {
 }
 
 function tweakBigRip(id) {
-	if (id !== undefined) if (!isBigRipUpgradeActive(id)) return
+	if (id === undefined) if (!isBigRipUpgradeActive(id)) return
 	if (id == 2 || id === undefined) {
 		for (var ec=1;ec<15;ec++) player.eternityChalls["eterc"+ec] = 5
 		player.eternities = 1e5
@@ -1916,6 +1916,11 @@ function isBigRipUpgradeActive(id, bigRipped) {
 	return player.quantum.bigRip.upgrades.includes(id)
 }
 
+function getBRUpg14Mult() {
+	let mult = Math.min(player.quantum.bigRip.spaceShards.div(3e18).add(1).log10() / 3, 0.4)
+	return Math.sqrt(player.quantum.bigRip.spaceShards.div(3e15).add(1).log10() * mult + 1)
+}
+
 function updateBreakEternity() {
 	if (player.masterystudies === undefined) {
 		document.getElementById("breakEternityTabbtn").style.display = "none"
@@ -1959,7 +1964,7 @@ function getEMGain() {
 	return Decimal.pow(10, log).floor()
 }
 
-var breakUpgCosts = [1, 1e3, 2e6, /*1e11*/1/0, /*1e18*/1/0, /*1e36*/1/0]
+var breakUpgCosts = [1, 1e3, 1e6, /*2e11*/1/0, /*1e18*/1/0, /*1e36*/1/0]
 function getBreakUpgCost(id) {
 	if (id == 7) return Decimal.pow(2, player.quantum.breakEternity.epMultPower).times(1e6)
 	return breakUpgCosts[id-1]
@@ -1988,7 +1993,7 @@ function getBreakUpgMult(id) {
 		return Math.pow(Math.log10(log + 1) * 1.6 + 1, 2)
 	}
 	if (id == 3) {
-		var log = player.eternityPoints.div("1e1390").add(1).log10()
+		var log = player.eternityPoints.div("1e1370").add(1).log10()
 		return Decimal.pow(10, Math.pow(log, 1/3) * 0.5).max(1)
 	}
 	if (id == 4) {

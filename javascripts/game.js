@@ -7670,7 +7670,7 @@ function gameLoop(diff) {
 				else if (c!=2&&c!=7&&c!=8) document.getElementById("qc"+c+"reward").textContent = shorten(getQCReward(c))
 			}
             if (player.masterystudies.includes("d14")) {
-                document.getElementById("bigripupg14current").textContent=(Math.sqrt(player.quantum.bigRip.spaceShards.div(2e15).add(1).log10()/3+1,0.5)).toFixed(2)
+                document.getElementById("bigripupg14current").textContent=getBRUpg14Mult().toFixed(2)
                 document.getElementById("bigripupg15current").textContent=(Math.sqrt(player.eternityPoints.add(1).log10()) * 4.46).toFixed(2)
                 document.getElementById("bigripupg17current").textContent=shorten(player.dilation.dilatedTime.pow(0.5*Math.min(player.dilation.dilatedTime.div(4e195).add(1).log10(),1)))
 			}
