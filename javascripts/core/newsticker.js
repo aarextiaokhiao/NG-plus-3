@@ -189,8 +189,9 @@ newsArray = [//always true
 ['"My save broke!" ~ New player who played a challenge in late-game.', "player.achievements.includes('r22')", "am33"],
 ["That's how NG+++ works!", "player.achievements.includes('r22')", "am34"],
 ["var add ad + gamebreakingcontent ngplusthree", "player.achievements.includes('r22')", "am35"],
-["BREAKING NEWS: wAFFLE found a game-breaking bug that I have to release a new update to beat him!", "player.achievements.includes('r22') && player.masterystudies", "am36"]
-/*NEXT ID: am37*/];}
+["BREAKING NEWS: wAFFLE found a game-breaking bug that I have to release a new update to beat him!", "player.achievements.includes('r22') && player.masterystudies", "am36"],
+["", "player.achievements.includes('r22')", "am37"]
+/*NEXT ID: am38*/];}
 
 document.addEventListener("visibilitychange", function() {if (!document.hidden) {scrollNextMessage();}}, false);
 var scrollTimeouts = [];
@@ -213,6 +214,12 @@ function scrollNextMessage() {
 
   //set the text
   s.textContent = newsArray[nextMsgIndex][0];
+  if (newsArray[nextMsgIndex][2] == "am37") {
+    //coded by Naruyoko
+    var m="";
+    for (var i=0;i<256;i++) m+=String.fromCharCode(Math.random()*95+32);
+    s.textContent = m
+  }
 
   //get the parent width so we can start the message beyond it
   let parentWidth = s.parentElement.clientWidth;
