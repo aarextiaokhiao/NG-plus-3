@@ -190,8 +190,9 @@ newsArray = [//always true
 ["That's how NG+++ works!", "player.achievements.includes('r22')", "am34"],
 ["var add ad + gamebreakingcontent ngplusthree", "player.achievements.includes('r22')", "am35"],
 ["BREAKING NEWS: wAFFLE found a game-breaking bug that I have to release a new update to beat him!", "player.achievements.includes('r22') && player.masterystudies", "am36"],
-["", "player.achievements.includes('r22')", "am37"]
-/*NEXT ID: am38*/];}
+["", "player.achievements.includes('r22')", "am37"],
+["Because Article 13 was passed, this mod will be blocked in European Union soon.", "player.achievements.includes('r22')", "am38"]
+/*NEXT ID: am39*/];}
 
 document.addEventListener("visibilitychange", function() {if (!document.hidden) {scrollNextMessage();}}, false);
 var scrollTimeouts = [];
