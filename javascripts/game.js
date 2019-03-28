@@ -6246,13 +6246,13 @@ function buyDilationUpgrade(id, max) {
 function getPassiveTTGen() {
 	var log=player.dilation.tachyonParticles.max(1).log10()
 	if (log>80) log=75+Math.sqrt(log*5-375)
-	let normal=Decimal.pow(10,log).div(20000)
+	let normal=Decimal.pow(10,log).div(ghostified?200:2e4)
 	if (!player.achievements.includes("ng3p18")) return normal
 	if (player.masterystudies !== undefined) if (player.quantum.bigRip.active) return normal
 
 	log=player.dilation.bestTP.max(1).log10()
 	if (log>80) log=75+Math.sqrt(log*5-375)
-	return Decimal.pow(10,log).div(1e5).add(normal)
+	return Decimal.pow(10,log).div(ghostified?1e3:1e5).add(normal)
 }
 
 function updateDilationUpgradeButtons() {

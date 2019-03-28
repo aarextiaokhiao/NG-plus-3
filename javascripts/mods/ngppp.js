@@ -1006,16 +1006,23 @@ function updateMasteryStudyTextDisplay() {
 	document.getElementById("ec14Req").textContent="Requirement: "+getFullExpansion(masterystudies.reqs[14])+"% replicate chance"
 	if (quantumed) {
 		for (id=7;id<11;id++) document.getElementById("ds"+id+"Cost").textContent="Cost: "+shorten(masterystudies.costs.dil[id])+" Time Theorems"
-		document.getElementById("ds8Req").textContent="Requirement: "+shorten(16750)+" electrons"
+		document.getElementById("ds8Req").innerHTML=ghostified?"":"<br>Requirement: "+shorten(16750)+" electrons"
+		document.getElementById("ds9Req").innerHTML=ghostified?"":"<br>Requirement: Complete Quantum Challenge 8"
+		document.getElementById("ds10Req").innerHTML=ghostified?"":"<br>Requirement: Complete Paired Challenge 8"
 		document.getElementById("321effect").textContent=shortenCosts(new Decimal("1e430"))
 	}
 	if (player.masterystudies.includes("d10")) {
 		for (id=341;id<345;id++) document.getElementById("ts"+id+"Cost").textContent="Cost: "+shorten(masterystudies.costs.time[id])+" Time Theorems"
 		document.getElementById("ds11Cost").textContent="Cost: "+shorten(3e90)+" Time Theorems"
+		document.getElementById("ds11Req").innerHTML=ghostified?"":"<br>Requirement: 10 worker replicants"
 	}
-	if (player.masterystudies.includes("d11")) document.getElementById("ds12Cost").textContent="Cost: "+shorten(3e92)+" Time Theorems"
+	if (player.masterystudies.includes("d11")) {
+		document.getElementById("ds12Cost").textContent="Cost: "+shorten(3e92)+" Time Theorems"
+		document.getElementById("ds12Req").innerHTML=ghostified?"":"<br>Requirement: 10 8th Emperor Dimensions"
+	}
 	if (player.masterystudies.includes("d12")) {
 		document.getElementById("ds13Cost").textContent="Cost: "+shorten(1e95)+" Time Theorems"
+		document.getElementById("ds13Req").innerHTML=ghostified?"":"<br>Requirement: 16 Nanofield rewards"
 		document.getElementById("ds14Cost").textContent="Cost: "+shorten(2e98)+" Time Theorems"
 	}
 }
@@ -2405,13 +2412,11 @@ function ghostifyReset(implode, gain, amount) {
 				mode: "amount",
 				peakTime: 0
 			},
-			autoOptions: {},
-			autoAssign: false,
-			assignAllRatios: {
-				r: 1,
-				g: 1,
-				b: 1
+			autoOptions: {
+				assignQK: player.quantum.autoOptions.assignQK,
+				assignQKRotate: player.quantum.assignQKRotate
 			},
+			assignAllRatios: player.quantum.assignAllRatios,
 			quarks: new Decimal(0),
 			usedQuarks: {
 				r: new Decimal(0),
@@ -2549,8 +2554,8 @@ function ghostifyReset(implode, gain, amount) {
 				bestThisRun: new Decimal(0),
 				bestAntimatter: new Decimal(0),
 				totalAntimatter: new Decimal(0),
-				savedAutobuyersNoBR: {},
-				savedAutobuyersBR: {},
+				savedAutobuyersNoBR: player.quantum.bigRip.savedAutobuyersNoBR,
+				savedAutobuyersBR: player.quantum.bigRip.savedAutobuyersBR,
 				spaceShards: new Decimal(0),
 				upgrades: []
 			},
@@ -2691,7 +2696,6 @@ function ghostifyReset(implode, gain, amount) {
 	updateReplicants()
 	document.getElementById("nanofieldtabbtn").style.display = "none"
 	document.getElementById('toggleautoquantummode').style.display="none"
-	document.getElementById('assignAll').style.display="none"
 	document.getElementById("edtabbtn").style.display = "none"
 	updateEmperorDimensions()
 	updateTODStuff()
