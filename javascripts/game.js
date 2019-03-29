@@ -1022,7 +1022,7 @@ function getGalaxyCostScalingStart(galaxies) {
     var n = 100+ECTimesCompleted("eterc5")*5
     if (player.timestudy.studies.includes(223)) n += 7
     if (player.timestudy.studies.includes(224)) n += Math.floor(player.resets/2000)
-    if (player.masterystudies !== undefined) if (player.quantum.bigRip.active && player.quantum.bigRip.upgrades.includes(15)) n += Math.sqrt(player.eternityPoints.add(1).log10()) * 4.46
+    if (player.masterystudies !== undefined) if (player.quantum.bigRip.active && player.quantum.bigRip.upgrades.includes(15)) n += Math.sqrt(player.eternityPoints.add(1).log10()) * 3.55
 	
     if (galaxies > 1399) {
 		let push = 5
@@ -7671,7 +7671,7 @@ function gameLoop(diff) {
 			}
             if (player.masterystudies.includes("d14")) {
                 document.getElementById("bigripupg14current").textContent=getBRUpg14Mult().toFixed(2)
-                document.getElementById("bigripupg15current").textContent=(Math.sqrt(player.eternityPoints.add(1).log10()) * 4.46).toFixed(2)
+                document.getElementById("bigripupg15current").textContent=(Math.sqrt(player.eternityPoints.add(1).log10()) * 3.55).toFixed(2)
                 document.getElementById("bigripupg17current").textContent=shorten(player.dilation.dilatedTime.pow(0.5*Math.min(player.dilation.dilatedTime.div(4e195).add(1).log10(),1)))
 			}
 		}

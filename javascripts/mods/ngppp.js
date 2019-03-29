@@ -1731,7 +1731,7 @@ function unstableQuarks(branch) {
 }
 
 function getDecayRate(branch) {
-	let ret = Math.pow(2,getBranchUpgLevel(branch,1)-getBranchUpgLevel(branch,3)*2-2)
+	let ret = Math.pow(2,getBranchUpgLevel(branch,1)-getBranchUpgLevel(branch,3)*2-4)
 	if (branch=="r") {
 		if (GUBought("rg8")) ret /= getGU8Effect("rg")
 	}
@@ -1812,11 +1812,12 @@ function getTreeUpgradeEffectDesc(upg) {
 }
 
 function getBranchUpgCost(branch, upg) {
-	if (upg==1) return Decimal.pow(2, getBranchUpgLevel(branch, 1) + Math.max(getBranchUpgLevel(branch, 1) - 15, 0) * 2).times(300)
-	if (upg==2) return Decimal.pow(2, getBranchUpgLevel(branch, 2) * 2 + Math.max(getBranchUpgLevel(branch, 2) - 11, 0)).times(600)
-	if (upg==3) return Decimal.pow(2, getBranchUpgLevel(branch, 3) * 3 + Math.max(getBranchUpgLevel(branch, 3) - 8, 0)).times(1e7)
-	if (upg==4) return Decimal.pow(8, getBranchUpgLevel(branch, 4)).times(3e22)
-	if (upg==5) return Decimal.pow(8, getBranchUpgLevel(branch, 5)).times(1e22)
+	var lvl = getBranchUpgLevel(branch, upg)
+	if (upg==1) return Decimal.pow(2, lvl + Math.max(lvl - 15, 0) * 2).times(300)
+	if (upg==2) return Decimal.pow(2, lvl * 2 + Math.max(lvl - 11, 0)).times(600)
+	if (upg==3) return Decimal.pow(2, lvl * 3 + Math.max(lvl - 7, 0)).times(8e7)
+	if (upg==4) return Decimal.pow(8, lvl).times(3e22)
+	if (upg==5) return Decimal.pow(8, lvl).times(1e22)
 	return new Decimal(1/0)
 }
 
@@ -1866,7 +1867,7 @@ function getSpaceShardsGain() {
 	return ret.floor()
 }
 
-let bigRipUpgCosts = [0, 2, 3, 5, 20, 30, 45, 60, 100, 150, 1200, 1e10, 3e14, 1e17, 3e18, 1e20, 1e22, 1e42]
+let bigRipUpgCosts = [0, 2, 3, 5, 20, 30, 45, 60, 100, 150, 1200, 1e10, 3e14, 1e17, 3e18, 3e20, 1e22, 1e42]
 function buyBigRipUpg(id) {
 	if (player.quantum.bigRip.spaceShards.lt(bigRipUpgCosts[id])||player.quantum.bigRip.upgrades.includes(id)) return
 	player.quantum.bigRip.spaceShards=player.quantum.bigRip.spaceShards.sub(bigRipUpgCosts[id]).round()
@@ -1971,7 +1972,7 @@ function getEMGain() {
 	return Decimal.pow(10, log).floor()
 }
 
-var breakUpgCosts = [1, 1e3, 1e6, /*2e11*/1/0, /*1e18*/1/0, /*1e36*/1/0]
+var breakUpgCosts = [1, 1e3, 1e6, 2e11, 8e17, /*1e36*/1/0]
 function getBreakUpgCost(id) {
 	if (id == 7) return Decimal.pow(2, player.quantum.breakEternity.epMultPower).times(1e6)
 	return breakUpgCosts[id-1]
@@ -2004,13 +2005,13 @@ function getBreakUpgMult(id) {
 		return Decimal.pow(10, Math.pow(log, 1/3) * 0.5).max(1)
 	}
 	if (id == 4) {
-		var log1 = player.eternityPoints.div("1e1770").add(1).log10()
-		var log2 = player.quantum.bigRip.spaceShards.div("1e18").add(1).log10()
-		return Decimal.pow(10, Math.pow(log1, 1/3) + Math.pow(log2, 1/3) * 4)
+		var log1 = player.eternityPoints.div("1e1860").add(1).log10()
+		var log2 = player.quantum.bigRip.spaceShards.div("7e19").add(1).log10()
+		return Decimal.pow(10, Math.pow(log1, 1/3) + Math.pow(log2, 1/3) * 8)
 	}
 	if (id == 5) {
-		var log1 = player.eternityPoints.div("1e2265").add(1).log10()
-		var log2 = player.timeShards.div(1e90).add(1).log10()
+		var log1 = player.eternityPoints.div(1/0).add(1).log10()
+		var log2 = player.timeShards.div(1e95).add(1).log10()
 		return Decimal.pow(10, (Math.pow(log1, 1/3) + Math.pow(log2, 1/3) * 4)).max(1)
 	}
 	if (id == 6) {
