@@ -1867,7 +1867,7 @@ function getSpaceShardsGain() {
 	return ret.floor()
 }
 
-let bigRipUpgCosts = [0, 2, 3, 5, 20, 30, 45, 60, 100, 150, 1200, 1e10, 3e14, 1e17, 3e18, 3e20, 1e22, 1e42]
+let bigRipUpgCosts = [0, 2, 3, 5, 20, 30, 45, 60, 100, 150, 1200, 1e10, 3e14, 1e17, 3e18, 3e20, 5e22, 1/0]
 function buyBigRipUpg(id) {
 	if (player.quantum.bigRip.spaceShards.lt(bigRipUpgCosts[id])||player.quantum.bigRip.upgrades.includes(id)) return
 	player.quantum.bigRip.spaceShards=player.quantum.bigRip.spaceShards.sub(bigRipUpgCosts[id]).round()
@@ -1918,7 +1918,7 @@ function tweakBigRip(id) {
 function isBigRipUpgradeActive(id, bigRipped) {
 	if (player.masterystudies == undefined) return false
 	if (bigRipped === undefined ? !player.quantum.bigRip.active : !bigRipped) return false
-	if (id == 1) if (!player.quantum.bigRip.upgrades.includes(16)) for (var u=3;u<18;u++) if (player.quantum.bigRip.upgrades.includes(u)) return false
+	if (id == 1) if (!player.quantum.bigRip.upgrades.includes(17)) for (var u=3;u<18;u++) if (player.quantum.bigRip.upgrades.includes(u)) return false
 	if (id > 2 && id != 4 && id < 9) if (player.quantum.bigRip.upgrades.includes(9)) return false
 	if (id == 4) if (player.quantum.bigRip.upgrades.includes(11)) return false
 	return player.quantum.bigRip.upgrades.includes(id)
@@ -2002,7 +2002,7 @@ function getBreakUpgMult(id) {
 	}
 	if (id == 3) {
 		var log = player.eternityPoints.div("1e1370").add(1).log10()
-		return Decimal.pow(10, Math.pow(log, 1/3) * 0.5).max(1)
+		return Decimal.pow(10, Math.pow(log, 1/3) * 0.5)
 	}
 	if (id == 4) {
 		var log1 = player.eternityPoints.div("1e1860").add(1).log10()
@@ -2010,9 +2010,10 @@ function getBreakUpgMult(id) {
 		return Decimal.pow(10, Math.pow(log1, 1/3) + Math.pow(log2, 1/3) * 8)
 	}
 	if (id == 5) {
-		var log1 = player.eternityPoints.div(1/0).add(1).log10()
-		var log2 = player.timeShards.div(1e95).add(1).log10()
-		return Decimal.pow(10, (Math.pow(log1, 1/3) + Math.pow(log2, 1/3) * 4)).max(1)
+		var log1 = player.eternityPoints.div("1e2230").add(1).log10()
+		var log2 = player.timeShards.div(1e90).add(1).log10()
+		var log = Math.pow(log1, 1/3) + Math.pow(log2, 1/3)
+		return Decimal.pow(1e4, log)
 	}
 	if (id == 6) {
 		var log1 = player.eternityPoints.div("1e3445").add(1).log10()

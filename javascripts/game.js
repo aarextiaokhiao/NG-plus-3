@@ -7672,7 +7672,7 @@ function gameLoop(diff) {
             if (player.masterystudies.includes("d14")) {
                 document.getElementById("bigripupg14current").textContent=getBRUpg14Mult().toFixed(2)
                 document.getElementById("bigripupg15current").textContent=(Math.sqrt(player.eternityPoints.add(1).log10()) * 3.55).toFixed(2)
-                document.getElementById("bigripupg17current").textContent=shorten(player.dilation.dilatedTime.pow(0.5*Math.min(player.dilation.dilatedTime.div(4e195).add(1).log10(),1)))
+                document.getElementById("bigripupg16current").textContent=shorten(player.dilation.dilatedTime.div(1e100).pow(0.155).max(1))
 			}
 		}
 	}
