@@ -170,7 +170,7 @@ newsArray = [//always true
 ["You are challenging in a challenge in a challenge. Challenge-ception.", "player.achievements.includes('r22') && player.currentChallenge != '' && player.currentEternityChall != '' && !inQC(0)", "am13"],
 ["New updates are coming in a day, not 5 hours. Sorry, jokers!", "player.achievements.includes('r22')", "am14"],
 ["Whale complained that matter and antimatter are balanced and the universe would not be existed.", "player.achievements.includes('r22')", "am15"],
-["Congratulations for beating NG+++! (for now...)", "player.achievements.includes('r22') && player.totalMoney.gte(Decimal.pow(10, 32e14))", "am16"],
+["Congratulations for beating Quantum! Now you need to big rip the universe to progress! >:)", "player.achievements.includes('r22') && player.totalMoney.gte(Decimal.pow(10, 32e14))", "am16"],
 ["NEWS: THIS NEWS CHANNEL WAS SHUT DOWN FOR BEING DESTROYED.", "player.achievements.includes('r21') && player.achievements.includes('r22')", "am17"],
 ["hackers are coming", "player.achievements.includes('r22') && player.newsArray.length >= 210", "am18"],
 ["Whale complained that Infinity Challenge 5 is not the hardest.", "player.achievements.includes('r22') && player.masterystudies", "am19"],
@@ -191,8 +191,12 @@ newsArray = [//always true
 ["var add ad + gamebreakingcontent ngplusthree", "player.achievements.includes('r22')", "am35"],
 ["BREAKING NEWS: wAFFLE found a game-breaking bug that I have to release a new update to beat him!", "player.achievements.includes('r22') && player.masterystudies", "am36"],
 ["", "player.achievements.includes('r22')", "am37"],
-["Because Article 13 was passed, this mod will be blocked in European Union soon.", "player.achievements.includes('r22')", "am38"]
-/*NEXT ID: am39*/];}
+["Because Article 13 was passed, this mod will be blocked in European Union soon.", "player.achievements.includes('r22')", "am38"],
+["Quantum is just Eternity but with quarks.", "player.achievements.includes('r22') && quantumed", "am39"],
+["Don't use antimatter anti-aging cream. You'll find yourself wondering how you got to be 873 eternities old.", "player.achievements.includes('r22') && (player.eternities > 872 || quantumed)", "am40"],
+["Defeat antimatter to gain quarks!", "player.achievements.includes('r22') && player.masterystudies !== undefined", "am41"],
+["Oh no! Someone beat my antimatter amount! I was going to develop a side project, but I must catch up!", "player.achievements.includes('r22') && player.masterystudies !== undefined", "am42"]
+/*NEXT ID: am43*/];}
 
 document.addEventListener("visibilitychange", function() {if (!document.hidden) {scrollNextMessage();}}, false);
 var scrollTimeouts = [];

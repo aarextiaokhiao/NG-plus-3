@@ -2122,7 +2122,7 @@ function updateInfCosts() {
     }
 
     if (document.getElementById("timestudies").style.display == "block" && document.getElementById("eternitystore").style.display == "block") {
-        document.getElementById("11desc").textContent = "Currently: "+shortenMoney(Decimal.dividedBy(1,player.tickspeed.dividedBy(1000).pow(0.005).times(0.95).plus(player.tickspeed.dividedBy(1000).pow(0.0003).times(0.05)).max(Decimal.fromMantissaExponent(1, -2500)).pow(player.aarexModifications.newGameExpVersion?0.25:1)))+"x"
+        document.getElementById("11desc").textContent = "Currently: "+shortenMoney(getTS11Mult())+"x"
         document.getElementById("32desc").textContent = "You gain "+getFullExpansion(player.resets, 1)+"x more infinitied stat (based on dimension boosts)"
         document.getElementById("51desc").textContent = "You gain "+shortenCosts(player.aarexModifications.newGameExpVersion?1e30:1e15)+"x more IP"
         document.getElementById("71desc").textContent = "Currently: "+shortenMoney(calcTotalSacrificeBoost().pow(0.25).max(1).min("1e210000"))+"x"
@@ -3387,6 +3387,9 @@ function setAchieveTooltip() {
     let stop = document.getElementById("Stop blocking me!")
     let dying = document.getElementById("Are you currently dying?")
     let gofast = document.getElementById("Gonna go fast")
+    let immunity = document.getElementById("Time Immunity")
+    let notSmart = document.getElementById("You're not really smart.")
+    let soLife = document.getElementById("And so your life?")
 
     apocAchieve.setAttribute('ach-tooltip', "Get over " + formatValue(player.options.notation, 1e80, 0, 0) + " antimatter.");
     claustrophobic.setAttribute('ach-tooltip', "Go Infinite with just 1 Antimatter Galaxy. Reward: Reduces starting tick interval by 2%"+(player.galacticSacrifice?(player.tickspeedBoosts==undefined?"":", keep dimension boosts on tickspeed boost,")+" and keep galaxy upgrades on infinity.":"."));
@@ -3471,6 +3474,9 @@ function setAchieveTooltip() {
     stop.setAttribute('ach-tooltip', "Get the replicanti reset requirement to "+shorten(Decimal.pow(10,145e5))+". Reward: Getting a normal replicant manually doesn't reset your replicanti and can be autoed.")
     dying.setAttribute('ach-tooltip', "Reach "+shorten(Decimal.pow(10, 275e3))+" IP while dilated, in PC6+8, and without having time studies.")
     gofast.setAttribute('ach-tooltip', "Get "+shorten(Decimal.pow(10, 1185))+" EP first and then double that by disabling dilation while big ripped.")
+	immunity.setAttribute('ach-tooltip', "Get "+shorten(Decimal.pow(10, 8e7))+" antimatter with at least 1 normal galaxies while in Eternity Challenge 7 and big ripped.")
+    notSmart.setAttribute('ach-tooltip', "Get "+shorten(1e215)+" Time Shards without having time study 11 while big ripped.")
+    soLife.setAttribute('ach-tooltip', "Reach "+shorten(Decimal.pow(10, 35e4))+" IP without time studies and normal EP multi upgrades but in dilated and big ripped.")
 }
 
 
@@ -6762,10 +6768,10 @@ setInterval(function() {
         if (player.quantum.replicants.requirement.gte("1e14500000")) giveAchievement("Stop blocking me!")
         if (player.infinityPoints.gte(Decimal.pow(10, 275e3))&&ableToGetRid6) giveAchievement("Are you currently dying?")
         if (player.quantum.bigRip.active) {
-            let ableToGetRid7 = ableToGetRid2 && player.epmult.eq(1) && player.quantum.breakEternity.epMultPower < 1
-            if (player.currentEternityChall == "eterc7" && player.money.e >= 1/0) giveAchievement("Time Immunity")
-            if (!player.timestudy.studies.includes(11) && player.timeShards.e >= 1/0) giveAchievement("You're not really smart.")
-            if (ableToGetRid7 && player.infinityPoints.e >= 1/0) giveAchievement("Are you currently dying?")
+            let ableToGetRid7 = ableToGetRid2 && player.epmult.eq(1)
+            if (player.currentEternityChall == "eterc7" && player.galaxies == 1 && player.money.e >= 8e7) giveAchievement("Time Immunity")
+            if (!player.timestudy.studies.includes(11) && player.timeShards.e > 214) giveAchievement("You're not really smart.")
+            if (ableToGetRid7 && player.infinityPoints.e >= 35e4) giveAchievement("And so your life?")
         }
     }
     if (speedrunMilestonesReached>notifyId) {

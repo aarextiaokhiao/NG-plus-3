@@ -1396,6 +1396,7 @@ function quantumReset(force, auto, challid, bigRip, implode=false) {
 	updateTickSpeed();
 	playerInfinityUpgradesOnEternity()
 	document.getElementById("eternityPoints2").innerHTML = "You have <span class=\"EPAmount2\">"+shortenDimensions(player.eternityPoints)+"</span> Eternity point"+((player.eternityPoints.eq(1)) ? "." : "s.")
+	document.getElementById("epmult").innerHTML = "You gain 5 times more EP<p>Currently: 1x<p>Cost: 500 EP"
 	updateEternityChallenges()
 	updateTheoremButtons()
 	updateTimeStudyButtons()

@@ -1867,7 +1867,7 @@ function getSpaceShardsGain() {
 	return ret.floor()
 }
 
-let bigRipUpgCosts = [0, 2, 3, 5, 20, 30, 45, 60, 100, 150, 1200, 1e10, 3e14, 1e17, 3e18, 3e20, 5e22, 1/0]
+let bigRipUpgCosts = [0, 2, 3, 5, 20, 30, 45, 60, 100, 150, 1200, 1e10, 3e14, 1e17, 3e18, 3e20, 5e22, 1e33]
 function buyBigRipUpg(id) {
 	if (player.quantum.bigRip.spaceShards.lt(bigRipUpgCosts[id])||player.quantum.bigRip.upgrades.includes(id)) return
 	player.quantum.bigRip.spaceShards=player.quantum.bigRip.spaceShards.sub(bigRipUpgCosts[id]).round()
@@ -1972,7 +1972,7 @@ function getEMGain() {
 	return Decimal.pow(10, log).floor()
 }
 
-var breakUpgCosts = [1, 1e3, 1e6, 2e11, 8e17, /*1e36*/1/0]
+var breakUpgCosts = [1, 1e3, 1e6, 2e11, 8e17, 1e48]
 function getBreakUpgCost(id) {
 	if (id == 7) return Decimal.pow(2, player.quantum.breakEternity.epMultPower).times(1e6)
 	return breakUpgCosts[id-1]
@@ -2016,9 +2016,9 @@ function getBreakUpgMult(id) {
 		return Decimal.pow(1e4, log)
 	}
 	if (id == 6) {
-		var log1 = player.eternityPoints.div("1e3445").add(1).log10()
-		var log2 = player.quantum.breakEternity.eternalMatter.div(1e40).add(1).log10()
-		return Decimal.pow(10, (Math.pow(log1, 1/3) * 1.25 + Math.pow(log2, 1/3) * 3.25)).max(1)
+		var log1 = player.eternityPoints.div("1e4900").add(1).log10()
+		var log2 = player.quantum.breakEternity.eternalMatter.div(1e45).add(1).log10()
+		return Decimal.pow(10, Math.pow(log1, 1/3) / 1.7 + Math.pow(log2, 1/3) * 2)
 	}
 	if (id == 7) return Decimal.pow(1e9, player.quantum.breakEternity.epMultPower)
 }
@@ -2654,6 +2654,7 @@ function ghostifyReset(implode, gain, amount) {
 	EPminpeak = new Decimal(0)
 	document.getElementById("eternitybtn").style.display = "none"
 	document.getElementById("eternityPoints2").innerHTML = "You have <span class=\"EPAmount2\">"+shortenDimensions(player.eternityPoints)+"</span> Eternity point"+((player.eternityPoints.eq(1)) ? "." : "s.")
+	document.getElementById("epmult").innerHTML = "You gain 5 times more EP<p>Currently: 1x<p>Cost: 500 EP"
 	if (document.getElementById("masterystudies").style.display == "block" || implode) showEternityTab("timestudies", document.getElementById("eternitystore").style.display == "none")
 	updateLastTenEternities()
 	resetTimeDimensions()

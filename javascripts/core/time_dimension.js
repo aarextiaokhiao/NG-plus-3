@@ -5,7 +5,7 @@ function getTimeDimensionPower(tier) {
   if (isEternityBroke()) {
     var mult = Decimal.div(1000,player.tickspeed).pow(0.000005)
     if (mult.gt("1e120000")) mult = Decimal.pow(10, Math.pow(mult.log10()/12e4,0.5)*12e4)
-    if (player.timestudy.studies.includes(11) && tier == 1) mult = mult.dividedBy(player.tickspeed.dividedBy(1000).pow(0.005).times(0.95).plus(player.tickspeed.dividedBy(1000).pow(0.0003).times(0.05)).max(Decimal.fromMantissaExponent(1, -2500)).pow(player.aarexModifications.newGameExpVersion?0.25:1))
+    if (player.timestudy.studies.includes(11) && tier == 1) mult = mult.times(getTS11Mult())
     if (player.quantum.breakEternity.upgrades.includes(1) && tier < 5) mult = mult.times(getBreakUpgMult(1))
     if (player.quantum.breakEternity.upgrades.includes(4) && tier > 3 && tier < 7) mult = mult.times(getBreakUpgMult(4))
     if (player.quantum.bigRip.upgrades.includes(13)) mult = mult.times(player.replicanti.amount.max(1).pow(1e-6))
@@ -207,4 +207,12 @@ function buyMaxTimeDimension(tier) {
 
 function buyMaxTimeDimensions() {
   for (i=1; i<9; i++) buyMaxTimeDimension(i)
+}
+
+function getTS11Mult() {
+	let bigRipped = player.masterystudies === undefined ? false : player.quantum.bigRip.active
+	let log = -player.tickspeed.div(1e3).pow(0.005).times(0.95).plus(player.tickspeed.div(1e3).pow(0.0003).times(0.95)).log10()
+	if (bigRipped) if (log > 900) log = Math.sqrt(log * 900)
+	else log = Math.min(log, 2500)
+	return Decimal.pow(10, log).pow(player.aarexModifications.newGameExpVersion?0.25:1)
 }
