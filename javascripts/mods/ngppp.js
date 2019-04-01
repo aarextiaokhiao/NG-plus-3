@@ -2,7 +2,7 @@ masterystudies={initialCosts:{time:{241: 1e71, 251: 2e71, 252: 2e71, 253: 2e71, 
 		ec:{13:1e72, 14:1e72}},
 	costs:{time:{},
 		ec:{},
-		dil:{7: 2e82, 8: 2e84, 9: 4e85, 10: 4e87, 11: 3e90, 12: 3e92, 13: 1e95},
+		dil:{7: 2e82, 8: 2e84, 9: 4e85, 10: 4e87, 11: 3e90, 12: 3e92, 13: 1e95, 42019: 2e82},
 		mc:{}},
 	costmults:{241: 1, 251: 2.5, 252: 2.5, 253: 2.5, 261: 6, 262: 6, 263: 6, 264: 6, 265: 6, 266: 6, 271: 2, 272: 2, 273: 2, 281: 4, 282: 4, 291: 1, 292: 1, 301: 2, 302: 131072, 303: 2, 311: 64, 312: 64, 321: 2, 322: 2, 323: 2, 331: 2, 332: 2, 341: 1, 342: 1, 343: 1, 344: 1, 351: 4, 361: 1, 362: 1, 371: 2, 372: 2, 373: 2, 381: 1, 382: 1, 383: 2, 391: 1, 392: 1, 393: 1, 401: 1e20, 402: 1e20, 411: 1, 412: 1},
 	costmult:1,
@@ -42,6 +42,10 @@ function updateMasteryStudyButtons() {
 			else if (canBuyMasteryStudy('d', id)) div.className="dilationupg"
 			else div.className="timestudylocked"
 		}
+		var div=document.getElementById("dilstudy42019")
+		if (player.masterystudies.includes("d42019")) div.className="dilationupgbought"
+		else if (canBuyMasteryStudy('d', 42019)) div.className="dilationupg"
+		else div.className="timestudylocked"
 	}
 	if (player.masterystudies.includes("d10")) {
 		document.getElementById("ts341Current").textContent="Currently: "+shorten(getMTSMult(341))+"x"
@@ -105,6 +109,7 @@ function buyMasteryStudy(type, id, quick=false) {
 			player.etercreq=id
 			updateEternityChallenges()
 		} else {
+			if (id == 42019) set_save(metaSave.current+"_af2019", player)
 			player.masterystudies.push(type+id)
 		}
 		updateMasteryStudyCosts(quick)
@@ -161,6 +166,11 @@ function buyMasteryStudy(type, id, quick=false) {
 			updateColorCharge()
 			updateTODStuff()
 		}
+		if (id==42019) {
+			showTab("quantumtab")
+			giveAchievement("Light speed")
+			updateTimeFlux()
+		}
 	}
 }
 
@@ -211,6 +221,7 @@ function canBuyMasteryStudy(type, id) {
 		if (row>24) return player.masterystudies.includes('t241')
 	} else if (type=='d') {
 		if (player.timestudy.theorem<masterystudies.costs.dil[id]||player.masterystudies.includes('d'+id)) return false
+		if (id>13) return player.masterystudies.includes("t252")
 		if (id>12) return player.masterystudies.includes("t412")&&player.quantum.nanofield.rewards>15
 		if (id>11) return player.masterystudies.includes("t392")&&eds[8].workers.gt(9.9)
 		if (id>10) return player.masterystudies.includes("t351")&&eds[1].workers.gt(9.9)
@@ -300,6 +311,7 @@ function drawMasteryTree() {
 		drawMasteryBranch("timestudy302", "dilstudy10")
 		drawMasteryBranch("timestudy311", "timestudy321")
 		drawMasteryBranch("timestudy312", "timestudy323")
+		drawMasteryBranch("timestudy252", "dilstudy42019")
 	}
 	if (player.masterystudies.includes("d10")) {
 		drawMasteryBranch("dilstudy10", "timestudy322")
@@ -500,6 +512,7 @@ function updateQuantumTabs() {
 			document.getElementById("brupg8current").textContent="Currently: "+shorten(getGU8Effect("br"))+"x"
 		}
 	}
+	if (document.getElementById("af2019").style.display=="block") document.getElementById("timeFluxSpeed").textContent = shorten(getTimeFluxSpeed())
 	if (document.getElementById("electrons").style.display=="block") {
 		for (i=1;i<7;i++) document.getElementById("sacrifice"+i).className=(Math.pow(10,i>4?0:i-1)>player.galaxies-player.quantum.electrons.sacGals||!inQC(0))?"unavailablebtn":"storebtn"
 		for (u=1;u<5;u++) document.getElementById("electronupg"+u).className="gluonupgrade "+(canBuyElectronUpg(u)?"stor":"unavailabl")+"ebtn"
@@ -986,6 +999,7 @@ function updateMasteryStudyTextDisplay() {
 	document.getElementById("ec14Req").textContent="Requirement: "+getFullExpansion(masterystudies.reqs[14])+"% replicate chance"
 	if (quantumed) {
 		for (id=7;id<11;id++) document.getElementById("ds"+id+"Cost").textContent="Cost: "+shorten(masterystudies.costs.dil[id])+" Time Theorems"
+		document.getElementById("ds42019Cost").textContent="Cost: "+shorten(2e82)+" Time Theorems"
 		document.getElementById("ds8Req").textContent="Requirement: "+shorten(16750)+" electrons"
 		document.getElementById("321effect").textContent=shortenCosts(new Decimal("1e430"))
 	}

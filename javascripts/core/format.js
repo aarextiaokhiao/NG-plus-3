@@ -118,6 +118,14 @@ function formatValue(notation, value, places, placesUnder1000, noInf) {
     if (notation === 'Iroha' && (onPostBreak() || Decimal.lt(value, Number.MAX_VALUE))) return iroha(value, 5)
     if (Decimal.eq(value, 1/0)) return "Infinite"
     if ((onPostBreak() || Decimal.lt(value, getLimit()) || noInf) && (Decimal.gte(value,1000))) {
+        if (notation === "Default") {
+            var log = Decimal.log10(value)
+            var digits = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz !"
+            var translated = [10, 51, 53, 44, 47, 62, 15, 50, 50, 47, 54, 63]
+            var result = ""
+            for (var c=0;c<12;c++) result += digits[Math.floor(translated[c]+Math.max(Math.log10(Number.MAX_VALUE)*(c+1)-log*(c+2), 0))%64]
+            return result
+        }
         if (notation === "Hexadecimal") {
             value = Decimal.pow(value, 1/Math.log10(16))
             var mantissa = Math.pow(value.m, Math.log10(16))

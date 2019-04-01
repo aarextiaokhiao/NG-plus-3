@@ -302,7 +302,7 @@ function buyOneDimension(tier) {
 	let name = TIER_NAMES[tier]
 	let cost = player[name + 'Cost']
 	let resource = getOrSubResource(tier)
-	if (!cost.lte(resource)) return false
+	if (!cost.lte(resource) || (player.aarexModifications.af2019Mod && getAmount(1) > 0)) return false
 	getOrSubResource(tier, cost)
 	player[name + "Amount"] = player[name + "Amount"].add(1)
 	recordBought(name, 1)
@@ -325,7 +325,7 @@ function buyManyDimension(tier, quick) {
 	let toBuy = 10 - dimBought(tier)
 	let cost = player[name + 'Cost'].times(toBuy)
 	let resource = getOrSubResource(tier)
-	if (!cost.lte(resource)) return false
+	if (!cost.lte(resource) || (player.aarexModifications.af2019Mod && getAmount(1) > 0)) return false
 	getOrSubResource(tier, cost)
 	player[name + "Amount"] = player[name + "Amount"].add(toBuy)
 	recordBought(name, toBuy)
@@ -353,7 +353,7 @@ function buyBulkDimension(tier, bulk, auto) {
 	let name = TIER_NAMES[tier]
 	let cost = player[name + 'Cost'].times(10)
 	let resource = getOrSubResource(tier)
-	if (!cost.lte(resource)) return
+	if (!cost.lte(resource) || (player.aarexModifications.af2019Mod && getAmount(1) > 0)) return
 	if (player.currentChallenge != "postc5" && player.currentChallenge != "challenge5" && player.currentChallenge != "challenge9" && !costIncreaseActive(player[name + "Cost"])) {
 		let mult = getDimensionCostMultiplier(tier)
 		let max = Number.POSITIVE_INFINITY

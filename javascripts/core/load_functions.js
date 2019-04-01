@@ -1365,7 +1365,7 @@ if (player.version < 5) {
   }
 
   // player.version is currently 12.1
-  if (player.options.notation == "Default") {
+  if (player.options.notation == "Default" && typeof(player.options.commas) == "boolean") {
       player.options.notation = "Brackets";
       document.getElementById("notation").textContent = ("Notation: Brackets")
   }
@@ -1399,6 +1399,7 @@ if (player.version < 5) {
   document.getElementById("quantumConfirmBtn").textContent = "Quantum confirmation: O" + (player.aarexModifications.quantumConf ? "N" : "FF")
 
   document.getElementById("progressBarBtn").textContent = (player.aarexModifications.progressBar?"Hide":"Show")+" progress bar"
+  document.getElementById("hideEverythingUseless").textContent = (player.aarexModifications.hideEverythingUseless ? "Show" : "Hide") + " everything useless"
   document.getElementById("toggleLogRateChange").textContent = "Logarithm rate: O"+(player.aarexModifications.logRateChange?"N":"FF")
   dimDescEnd = (player.aarexModifications.logRateChange?" OoM":"%")+"/s)"
 
@@ -1627,6 +1628,7 @@ if (player.version < 5) {
   }
   document.getElementById("maxTimeDimensions").style.display=removeMaxTD?"none":""
   document.getElementById("metaMaxAllDiv").style.display=removeMaxMD?"none":""
+  updateTimeFlux()
   updateElectrons()
   updateBankedEter()
   updateQuantumChallenges()
@@ -1704,6 +1706,7 @@ if (player.version < 5) {
           if (!player.aarexModifications.newGamePlusVersion) ngModeMessages.push("WARNING! You are disabling NG+ features on NG+-+-+! Standard NG+-+-+ have all of NG++ features and I recommend you to create a new save with NG-, NG--, NG+ and NG+++ modes on.")
           ngModeMessages.push("Welcome to NG+-+-+ mode, created by earthernsence! This mode combines NG--, NG-, and NG+++ features. Good luck!")
       }
+      if (player.aarexModifications.af2019Mod) ngModeMessages.push('Welcome to NG-4 mode, the heavily nerfed version of NG-4 mode! Good luck for beating this game.')
       if (inflationCheck) ngModeMessages = ["I'm terribly sorry. But your save was appeared that there is an inflation, which it defeats the rule of incremental games. Your save was forced to reset everything."]
       if (forceToQuantumAndRemove) {
           quantum(false, true, 0)
@@ -1747,6 +1750,7 @@ function load_game(noOffline) {
 	}
 	onLoad(noOffline)
 	startInterval()
+    document.getElementById("container").style.display = player.aarexModifications.hideEverythingUseless ? "none" : ""
 }
 
 function reload() {

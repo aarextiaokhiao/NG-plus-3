@@ -31,7 +31,7 @@ function updateNewPlayer(reseted) {
             ngm: player.aarexModifications.newGameMinusVersion !== undefined,
             ngp: (player.aarexModifications.newGamePlusVersion !== undefined ? 1 : 0) + (player.aarexModifications.newGameExpVersion !== undefined ? 2 : 0),
             ngpp: player.meta == undefined ? (player.blackhole == undefined ? false : 3) : player.masterystudies ? 2 : true,
-            ngmm: player.tickspeedBoosts == undefined ? player.galacticSacrifice !== undefined : 2,
+            ngmm: player.aarexModifications.af2019Mod !== undefined ? 3 : player.tickspeedBoosts == undefined ? player.galacticSacrifice !== undefined : 2,
             rs: player.infinityUpgradesRespecced != undefined ? 2 : player.boughtDims !== undefined
         }
     } else var modesChosen = modes
@@ -292,7 +292,7 @@ function updateNewPlayer(reseted) {
         why: 0,
         options: {
             newsHidden: true,
-            notation: "Scientific",
+            notation: "Default",
             scientific: false,
             challConf: true,
             sacrificeConfirmation: true,
@@ -375,7 +375,7 @@ function updateNewPlayer(reseted) {
 		}
         player.aarexModifications.quantumConf = true
     }
-    if (modesChosen.ngmm) {
+    if (modesChosen.ngmm && modesChosen.ngmm !== 3) {
         player.aarexModifications.newGameMinusMinusVersion = 1.41
         player.galacticSacrifice = {}
         player.galacticSacrifice = resetGalacticSacrifice()
@@ -514,7 +514,7 @@ function updateNewPlayer(reseted) {
         player.timestudy.ers_studies = [null, 0, 0, 0, 0, 0, 0]
         player.timestudy.studyGroupsUnlocked = 0
     }
-    if (modesChosen.ngmm>1) {
+    if (modesChosen.ngmm === 2) {
         player.aarexModifications.newGame3MinusVersion = 2.2
         player.tickspeedBoosts = 0
         player.autobuyers[13]=14
@@ -590,6 +590,7 @@ function updateNewPlayer(reseted) {
         player.setsUnlocked = 0
         player.infMultCost = 1
     }
+    if (modesChosen.ngmm === 3) player.aarexModifications.af2019Mod = true
 }
 updateNewPlayer()
 
@@ -919,7 +920,7 @@ function showTab(tabName) {
     }
     if ((document.getElementById("timestudies").style.display != "none" || document.getElementById("ers_timestudies").style.display != "none" || document.getElementById("masterystudies").style.display != "none") && document.getElementById("eternitystore").style.display != "none") document.getElementById("TTbuttons").style.display = "block";
     else document.getElementById("TTbuttons").style.display = "none"
-    if ((document.getElementById("antimatterdimensions").style.display != "none" || document.getElementById("metadimensions").style.display != "none") && player.aarexModifications.progressBar && document.getElementById("dimensions").style.display != "none") document.getElementById("progress").style.display = "block";
+    if ((document.getElementById("antimatterdimensions").style.display != "none" || document.getElementById("metadimensions").style.display != "none") && player.aarexModifications.progressBar && document.getElementById("dimensions").style.display != "none" && !player.aarexModifications.hideEverythingUseless) document.getElementById("progress").style.display = "block";
     else document.getElementById("progress").style.display = "none"
     if (oldTab !== tabName) {
         if (tabName=="eternitystore") {
@@ -940,7 +941,7 @@ function showTab(tabName) {
 
 function updateMoney() {
 	var element = document.getElementById("coinAmount");
-	element.textContent = formatValue(player.options.notation, player.money, 2, 1);
+	element.textContent = (player.aarexModifications.af2019Mod && getAmount(1) > 0 ? "-" : "") + formatValue(player.options.notation, player.money, 2, 1);
 	var element2 = document.getElementById("matter");
 	if (player.currentChallenge == "postc6" || inQC(6)) element2.textContent = "There is " + formatValue(player.options.notation, Decimal.pow(player.matter,20), 2, 1) + " matter."; //TODO
 	else if (player.currentChallenge == "challenge12" || player.currentChallenge == "postc1") element2.textContent = "There is " + formatValue(player.options.notation, player.matter, 2, 1) + " matter."
@@ -956,7 +957,7 @@ function updateCoinPerSec() {
 	var ret = getDimensionProductionPerSecond(1)
 	if (player.currentChallenge == "challenge7" || inQC(4)) ret = ret.plus(getDimensionProductionPerSecond(2))
 	if (player.currentChallenge == "challenge3" || player.currentChallenge == "postc1") ret = ret.times(player.chall3Pow)
-	element.textContent = 'You are getting ' + shortenDimensions(ret) + ' antimatter per second.'
+	element.textContent = 'You are getting ' + (player.aarexModifications.af2019Mod && getAmount(1) > 0 ? "-" : "") + shortenDimensions(ret) + ' antimatter per second.'
 }
 
 function getInfinitied() {return Math.max(player.infinitied + player.infinitiedBank, 0)}
@@ -1195,7 +1196,7 @@ function updateDimensions() {
     if (document.getElementById("quantumtab").style.display == "block") updateQuantumTabs()
 
     if (document.getElementById("stats").style.display == "block" && document.getElementById("statistics").style.display == "block") {
-        document.getElementById("totalmoney").textContent = 'You have made a total of ' + shortenMoney(player.totalmoney) + ' antimatter.'
+        document.getElementById("totalmoney").textContent = 'You have made a total of ' + (player.aarexModifications.af2019Mod && getAmount(1) > 0 ? "-" : "") + shortenMoney(player.totalmoney) + ' antimatter.'
         document.getElementById("totalresets").textContent = 'You have done ' + getFullExpansion(player.resets) + ' dimension boosts/shifts.'
         var showBoosts=isTickspeedBoostPossible()
         document.getElementById("boosts").style.display = showBoosts?'':'none'
@@ -2915,6 +2916,7 @@ function changeSaveDesc(saveId, placement) {
 		else {
 			if (temp.aarexModifications.newGameMinusVersion) message+="NG-, "
 			if (temp.galacticSacrifice) message+="NG--"+(temp.tickspeedBoosts!=undefined?"-":"")+", "
+			if (temp.aarexModifications.af2019Mod) message+="NG-4, "
 			if (temp.boughtDims) message+="Eternity Respecced, "
 			if (temp.aarexModifications.newGameExpVersion) message+="NG^, "
 			if (temp.exdilation!=undefined) message+="NG Update, "
@@ -2990,10 +2992,10 @@ function changeSaveDesc(saveId, placement) {
 }
 
 function toggle_mode(id) {
-	if ((id=="ngp"||id=="ngpp")&&modes[id]===2) modes[id]=3
+	if ((id=="ngp"||id=="ngpp"||id=="ngmm")&&modes[id]===2) modes[id]=3
 	else if ((id=="ngp"||id=="ngpp"||id=="ngmm"||id=="rs")&&modes[id]===true) modes[id]=2
 	else modes[id]=!modes[id]
-	document.getElementById(id+"Btn").textContent=(id=="rs"?"Respecced":id=="ngpp"?"NG++":id=="ngp"?"NG+":id=="ngmm"?"NG--":"NG-")+": "+(id=="rs"?(modes.rs>1?"Infinity":modes.rs>0?"Eternity":"NONE"):modes[id]>1?"NG"+(id=="ngp"?"^"+(modes[id]>2?"+-":""):id=="ngpp"?(modes[id]>2?"Ud":"+++"):"---"):modes[id]?"ON":"OFF")
+	document.getElementById(id+"Btn").textContent=(id=="rs"?"Respecced":id=="ngpp"?"NG++":id=="ngp"?"NG+":id=="ngmm"?"NG--":"NG-")+": "+(id=="rs"?(modes.rs>1?"Infinity":modes.rs>0?"Eternity":"NONE"):modes[id]>1?"NG"+(id=="ngp"?"^"+(modes[id]>2?"+-":""):id=="ngpp"?(modes[id]>2?"Ud":"+3"):"-"+(modes.ngmm+1)):modes[id]?"ON":"OFF")
 	if (id=="ngpp"&&modes.ngpp) {
 		if (!modes.ngp) toggle_mode("ngp")
 		modes.rs=0
@@ -3412,7 +3414,7 @@ function setAchieveTooltip() {
 
 
 //notation stuff
-var notationArray = ["Scientific","Engineering","Letters","Standard","Emojis","Mixed scientific","Mixed engineering","Logarithm","Brackets","Infinity","Greek","Game percentages","Hexadecimal","Tetration","Hyperscientific","Psi","Morse code","Spazzy","Country Codes","Iroha","Symbols","Lines","Simplified Written","AAS","AF5LN"]
+var notationArray = ["Default","Scientific","Engineering","Letters","Standard","Emojis","Mixed scientific","Mixed engineering","Logarithm","Brackets","Infinity","Greek","Game percentages","Hexadecimal","Tetration","Hyperscientific","Psi","Morse code","Spazzy","Country Codes","Iroha","Symbols","Lines","Simplified Written","AAS","AF5LN"]
 
 function updateNotationOption() {
 	var notationMsg="Notation: "+(player.options.notation=="Emojis"?"Cancer":player.options.notation)
@@ -3446,6 +3448,7 @@ function onNotationChange(id) {
 	updateMilestones()
 	updateColorCharge()
 	updateGluons()
+	updateTimeFlux()
 	updateElectrons()
 	updateBankedEter()
 	updateQuantumChallenges()
@@ -3490,10 +3493,10 @@ document.getElementById("notation").onclick = function () {
 			row.innerHTML="<button class='storebtn' id='select"+name+"' style='width:160px; height: 40px' onclick='switchNotation("+n+")'>Select "+name+"</button>"
 			row=commasTable.insertRow(n+2)
 			row.innerHTML="<button class='storebtn' id='selectCommas"+name+"' style='width:160px; height: 40px' onclick='switchCommas("+(n+2)+")'>"+name+" on exponents</button>"
-			if (n>17) {
+			if (n>18) {
 				row=subTable.insertRow(n-1)
 				row.innerHTML="<button class='storebtn' id='selectSub"+name+"' style='width:160px; height: 40px' onclick='switchSubNotation("+n+")'>Select "+name+"</button>"
-			} else if (n<17) {
+			} else if (n<18) {
 				row=subTable.insertRow(n)
 				row.innerHTML="<button class='storebtn' style='width:160px; height: 40px' onclick='switchSubNotation("+n+")'>Select "+name+"</button>"	
 			}
@@ -6702,12 +6705,19 @@ function updateEPminpeak(diff) {
 
 
 function gameLoop(diff) {
+    if ((isNaN(player.money.e) || isNaN(player.infinityPoints.e)) && (player.masterystudies !== undefined ? player.quantum.timeFluxPower : false)) revert()
+    if (player.money.e > 1 && player.aarexModifications.af2019Mod && !player.aarexModifications.af2019Done) {
+        player.aarexModifications.af2019Done = true
+        $.notify("April Fools!")
+    }
     var thisUpdate = new Date().getTime();
     if (thisUpdate - player.lastUpdate >= 21600000) giveAchievement("Don't you dare to sleep")
     if (typeof diff === 'undefined') var diff = Math.min(thisUpdate - player.lastUpdate, 21600000);
     diff = diff / 100;
     if (diff < 0) diff = 1;
     if (player.currentEternityChall === "eterc12") diff = diff / 1000;
+    var realDiff = diff;
+    diff = diff * getTimeFluxSpeed();
     if (player.thisInfinityTime < -10) player.thisInfinityTime = Infinity
     if (player.bestInfinityTime < -10) player.bestInfinityTime = Infinity
     if (diff > player.autoTime && !player.break) player.infinityPoints = player.infinityPoints.plus(player.autoIP.times(diff/player.autoTime))
@@ -6809,12 +6819,12 @@ function gameLoop(diff) {
         }
     }
 
-    if (player.currentEternityChall === "eterc12") player.totalTimePlayed += diff*1000
-    else player.totalTimePlayed += diff
-    if (player.galacticSacrifice) player.galacticSacrifice.time += diff
-    if (player.meta) player.quantum.time += diff*(player.currentEternityChall==="eterc12"?1e3:1)
-    player.thisInfinityTime += diff
-    player.thisEternity += diff
+    if (player.currentEternityChall === "eterc12") player.totalTimePlayed += realDiff*1000
+    else player.totalTimePlayed += realDiff
+    if (player.galacticSacrifice) player.galacticSacrifice.time += realDiff
+    if (player.meta) player.quantum.time += realDiff*(player.currentEternityChall==="eterc12"?1e3:1)
+    player.thisInfinityTime += realDiff
+    player.thisEternity += realDiff
     failsafeDilateTime = false
 
     if (player.eternities > 0 || quantumed) document.getElementById("tdtabbtn").style.display = ""
@@ -7209,8 +7219,8 @@ function gameLoop(diff) {
         var name = TIER_NAMES[tier]
         var cost = player[name + "Cost"]
         var resource = getOrSubResource(tier)
-        document.getElementById(name).className = cost.lte(resource) ? 'storebtn' : 'unavailablebtn';
-        document.getElementById(name + 'Max').className = cost.times(10 - dimBought(tier)).lte(resource) ? 'storebtn' : 'unavailablebtn';
+        document.getElementById(name).className = cost.lte(resource) && !(player.aarexModifications.af2019Mod && getAmount(1) > 0) ? 'storebtn' : 'unavailablebtn';
+        document.getElementById(name + 'Max').className = cost.times(10 - dimBought(tier)).lte(resource) && !(player.aarexModifications.af2019Mod && getAmount(1) > 0) ? 'storebtn' : 'unavailablebtn';
     }
     if (player.firstAmount.lt(1)) document.getElementById("first").className = 'storebtn';
 
@@ -8045,9 +8055,23 @@ function showOptionTab(tabName) {
     closeToolTip()
 }
 
+var animationPlayed = false
 function closeToolTip() {
     var elements = document.getElementsByClassName("popup")
     for (var i=0; i<elements.length; i++) if (elements[i].id!='welcome') elements[i].style.display = "none"
+	if (player.aarexModifications.hideEverythingUseless && !animationPlayed) {
+		animationPlayed = true
+		setTimeout(function(){$.notify("There is nothing, right?");}, 5000)
+		setTimeout(function(){$.notify("That is because...");}, 10000)
+		setTimeout(function(){$.notify("April Fools!");}, 15000)
+		setTimeout(function(){$.notify("'Hide everything useless' is actually a joke option. Do not toggle it again.");}, 20000)
+		setTimeout(function(){$.notify("Alright, time to disable this option.");}, 25000)
+		setTimeout(function(){
+			toggleEverythingUseless()
+			if ((document.getElementById("antimatterdimensions").style.display != "none" || document.getElementById("metadimensions").style.display != "none") && player.aarexModifications.progressBar && document.getElementById("dimensions").style.display != "none" && !player.aarexModifications.hideEverythingUseless) document.getElementById("progress").style.display = "block"
+			animationPlayed = false
+		}, 30000)
+	}
 }
 
 setInterval(function () {
@@ -8085,15 +8109,16 @@ function initGame() {
     migrateOldSaves()
     localStorage.setItem('AD_aarexModifications', btoa(JSON.stringify(metaSave)))
     load_game();
-    if (player.aarexModifications.progressBar) document.getElementById("progress").style.display = "block"
+    if (player.aarexModifications.progressBar && !player.aarexModifications.hideEverythingUseless) document.getElementById("progress").style.display = "block";
     else document.getElementById("progress").style.display = "none"
     updateTickSpeed();
     updateAutobuyers();
     updateChallengeTimes()
     window.addEventListener("resize", resizeCanvas);
     clearInterval(stuckTimeout)
+    document.getElementById("container").style.display = "none"
     setTimeout(function(){
-        document.getElementById("container").style.display = "block"
+        document.getElementById("container").style.display = player.aarexModifications.hideEverythingUseless ? "none" : ""
         document.getElementById("loading").style.display = "none"
     },1000)
 }

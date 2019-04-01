@@ -125,6 +125,14 @@ const allAchievements = {
   ng3p16 : "And the winner is...",
   ng3p17 : "Old age",
   ng3p18 : "I already got rid of you...",
+  af2019_1 : "Light speed",
+  af2019_2 : "af2019_2",
+  af2019_3 : "af2019_3",
+  af2019_4 : "af2019_4",
+  af2019_5 : "af2019_5",
+  af2019_6 : "af2019_6",
+  af2019_7 : "af2019_7",
+  af2019_8 : "af2019_8",
   ng3p21 : "Special Relativity",
   ng3p22 : "We are not going squared.",
   ng3p23 : "This achievement doesn't exist 3",
@@ -280,13 +288,15 @@ function giveAchievement(name) {
 
 function updateAchievements() {
 	var amount = 0
-	for (var i=1; i<19; i++) {
+	for (var i=1; i<20; i++) {
 		var shown=false
 		var rowid=i
 		if (i>14) {
 			var shown=!(!player.masterystudies)
-			rowid="ng3p"+(i-14)
-		} else if (i>13) {
+			if (i>16) rowid="ng3p"+(i-15)
+			else if (i>15) rowid="af2019"
+			else rowid="ng3p1"
+		} else  if (i>13) {
 			var shown=player.meta!=undefined||player.exdilation!=undefined
 			if (player.meta==undefined) rowid="ngud1"
 			else rowid="ngpp1"
@@ -306,7 +316,9 @@ function updateAchievements() {
 					else if (realAchNum==22) realAchNum=41
 					else if (realAchNum==41) realAchNum=76
 				}
-				if (player.masterystudies&&achNum>150) var achId="ng3p"+(achNum-140)
+				if (player.masterystudies&&achNum>170) var achId="ng3p"+(achNum-150)
+				else if (player.masterystudies&&achNum>160) var achId="af2019_"+(achNum-160)
+				else if (player.masterystudies&&achNum>150) var achId="ng3p"+(achNum-140)
 				else if (player.exdilation&&achNum>140) {
 					if (achNum==145) var achId="ngpp13"
 					else if (achNum==147) var achId="ngpp18"
