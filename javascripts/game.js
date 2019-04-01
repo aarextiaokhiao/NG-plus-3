@@ -290,6 +290,7 @@ function updateNewPlayer(reseted) {
             }
         },
         why: 0,
+        shameLevel: 0,
         options: {
             newsHidden: true,
             notation: "Default",
@@ -2708,6 +2709,7 @@ function galaxyReset() {
         blackholeDimension3: player.blackholeDimension3,
         blackholeDimension4: player.blackholeDimension4,
         why: player.why,
+        shameLevel: player.shameLevel,
         options: player.options,
         meta: player.meta,
         masterystudies: player.masterystudies,
@@ -3061,13 +3063,18 @@ function import_save(type) {
     var save_data = prompt("Input your save. "+(type=="new"?"":"("+(type==metaSave.current?"your current save file":"save #"+placement)+" will be overwritten!)"));
     onImport = false
     if (save_data.constructor !== String) save_data = "";
-    if (sha512_256(save_data.replace(/\s/g, '').toUpperCase()) === "80b7fdc794f5dfc944da6a445a3f21a2d0f7c974d044f2ea25713037e96af9e3") {
+    if (sha512_256(save_data.replace(/\s/g, '').toUpperCase()) === "3707d55a80956f97fdf236c932023277843ee1cc4fa2a364bc0858b8e81dcd9e") {
+        if (confirm('If you do this, you will be burdened with shame forever. You currently have ' + player.shameLevel + ' shame.',)) {
+          player.shameLevel++;
+        }
+    } else if (sha512_256(save_data.replace(/\s/g, '').toUpperCase()) === "290119c75da7596ec2db4fd6645e23673e9763c5afea83247ad0acbba224e50d") {
+      player.shameLevel--;
+    } else if (sha512_256(save_data.replace(/\s/g, '').toUpperCase()) === "80b7fdc794f5dfc944da6a445a3f21a2d0f7c974d044f2ea25713037e96af9e3") {
         document.getElementById("body").style.animation = "barrelRoll 5s 1";
         giveAchievement("Do a barrel roll!")
         setTimeout(function(){ document.getElementById("body").style.animation = ""; }, 5000)
-    }
-    if (sha512_256(save_data.replace(/\s/g, '').toUpperCase()) === "857876556a230da15fe1bb6f410ca8dbc9274de47c1a847c2281a7103dd2c274") giveAchievement("So do I");
-    if (sha512_256(save_data) === "de24687ee7ba1acd8f5dc8f71d41a3d4b7f14432fff53a4d4166e7eea48a88c0") {
+    } else if (sha512_256(save_data.replace(/\s/g, '').toUpperCase()) === "857876556a230da15fe1bb6f410ca8dbc9274de47c1a847c2281a7103dd2c274") giveAchievement("So do I");
+    else if (sha512_256(save_data) === "de24687ee7ba1acd8f5dc8f71d41a3d4b7f14432fff53a4d4166e7eea48a88c0") {
         player.options.theme = "S1";
         player.options.secretThemeKey = save_data;
         setTheme(player.options.theme);
@@ -4616,6 +4623,7 @@ function bigCrunch(autoed) {
             blackholeDimension3: player.blackholeDimension3,
             blackholeDimension4: player.blackholeDimension4,
             why: player.why,
+            shameLevel: player.shameLevel,
             options: player.options,
             meta: player.meta,
             masterystudies: player.masterystudies,
@@ -5054,6 +5062,7 @@ function eternity(force, auto) {
             blackholeDimension3: player.blackholeDimension3,
             blackholeDimension4: player.blackholeDimension4,
             why: player.why,
+            shameLevel: player.shameLevel,
             options: player.options,
             meta: player.meta,
             masterystudies: player.masterystudies,
@@ -5376,6 +5385,7 @@ function startChallenge(name) {
       blackholeDimension3: player.blackholeDimension3,
       blackholeDimension4: player.blackholeDimension4,
       why: player.why,
+      shameLevel: player.shameLevel,
       options: player.options,
       meta: player.meta,
       masterystudies: player.masterystudies,
@@ -5963,6 +5973,7 @@ function startEternityChallenge(name, startgoal, goalIncrease) {
         blackholeDimension3: player.blackholeDimension3,
         blackholeDimension4: player.blackholeDimension4,
         why: player.why,
+        shameLevel: player.shameLevel,
         options: player.options,
         meta: player.meta,
         masterystudies: player.masterystudies,
@@ -6593,6 +6604,7 @@ setInterval(function() {
     if (player.tickspeed.lt(1e-26)) giveAchievement("Faster than a potato");
     if (player.tickspeed.lt(1e-55)) giveAchievement("Faster than a squared potato");
     if (Math.random() < 0.00001) giveAchievement("Do you feel lucky? Well do ya punk?")
+    if (Math.random() < Math.pow(4, player.shameLevel - 4) - 1 / 256) $.notify('Shame' + Array(player.shameLevel).join('!'), 'error');
     if ((player.matter.gte(2.586e15) && player.currentChallenge == "postc6") || player.matter.gte(Number.MAX_VALUE)) giveAchievement("It's not called matter dimensions is it?")
 
     document.getElementById("dilationTabbtn").style.display = (player.dilation.studies.includes(1)) ? "table-cell" : "none"
@@ -6715,6 +6727,7 @@ function gameLoop(diff) {
     if (typeof diff === 'undefined') var diff = Math.min(thisUpdate - player.lastUpdate, 21600000);
     diff = diff / 100;
     if (diff < 0) diff = 1;
+    if (player.version === 12.2 && typeof player.shameLevel === 'number') diff *= Math.min(Math.pow(10, player.shameLevel - 1), 1);
     if (player.currentEternityChall === "eterc12") diff = diff / 1000;
     var realDiff = diff;
     diff = diff * getTimeFluxSpeed();

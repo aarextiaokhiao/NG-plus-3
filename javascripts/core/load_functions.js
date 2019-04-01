@@ -368,6 +368,7 @@ if (player.version < 5) {
       if (player.options.commas) player.options.commas = "Commas"
       else player.options.commas = player.options.notation
   }
+  if (player.shameLevel === undefined) player.shameLevel = 0;
     
   if (player.aarexModifications === undefined) {
       player.aarexModifications = {

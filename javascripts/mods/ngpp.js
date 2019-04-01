@@ -914,6 +914,7 @@ function quantumReset(force, auto, challid, implode=false) {
 			}
 		},
 		why: player.why,
+		shameLevel: player.shameLevel,
 		options: player.options,
 		meta: {
 			antimatter: new Decimal(speedrunMilestonesReached > 18 ? 1e25 : 100),
