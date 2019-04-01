@@ -727,8 +727,8 @@ function quantumReset(force, auto, challid, bigRip, implode=false) {
 				dilationPerStat: player.eternityBuyer.dilationPerAmount,
 				on: player.eternityBuyer.isOn
 			}
-			if (!bigRip || player.quantum.bigRip.upgrades.includes(2)) {
-				var data = player.quantum.bigRip["savedAutobuyers" + (bigRip ? "" : "No") + "BR"]
+			var data = player.quantum.bigRip["savedAutobuyers" + (bigRip ? "" : "No") + "BR"]
+			if ((!bigRip || player.quantum.bigRip.upgrades.includes(2)) && data !== undefined) {
 				for (d=1;d<9;d++) if (data["d"+d]) player.autobuyers[d-1] = {
 					interval: data["d"+d].time,
 					cost: data["d"+d].cost,
@@ -820,15 +820,26 @@ function quantumReset(force, auto, challid, bigRip, implode=false) {
 				}
 				if (data.eternity) {
 					player.eternityBuyer = {
-						limit: data.eternity.limit,
+						limit: data.eternity.amount,
 						dilationMode: data.eternity.dilation,
 						dilationPerAmount: data.eternity.dilationPerStat,
 						statBeforeDilation: data.eternity.dilationPerStat,
 						isOn: data.eternity.on
 					}
 					player.autoEterMode = data.eternity.mode
-					updateAutoEterMode()
 				}
+				loadAutoBuyerSettings()
+				if (data.crunch.mode == "amount") {
+					document.getElementById("togglecrunchmode").textContent = "Auto crunch mode: amount"
+					document.getElementById("limittext").textContent = "Amount of IP to wait until reset:"
+				} else if (data.crunch.mode == "time") {
+					document.getElementById("togglecrunchmode").textContent = "Auto crunch mode: time"
+					document.getElementById("limittext").textContent = "Seconds between crunches:"
+				} else {
+					document.getElementById("togglecrunchmode").textContent = "Auto crunch mode: X times last crunch"
+					document.getElementById("limittext").textContent = "X times last crunch:"
+				}
+				updateAutoEterMode()
 			}
 		}
 		if (!bigRip && player.quantum.bigRip.active) if (player.galaxies == 9 && player.replicanti.galaxies == 9 && player.infinityDimension8.amount.round().eq(9) && player.timeDimension4.amount.round().eq(9)) giveAchievement("We can really afford 9.")
@@ -1305,9 +1316,9 @@ function quantumReset(force, auto, challid, bigRip, implode=false) {
 			document.getElementById("qctabbtn").style.display="none"
 			document.getElementById("electronstabbtn").style.display="none"
 		}
-		if (isRewardEnabled(11)&&isRewardEnabled(4)&&(!bigRip||player.quantum.bigRip.upgrades.includes(12))) player.dilation.upgrades.push(10)
+		if (bigRip?player.quantum.bigRip.upgrades.includes(12):isRewardEnabled(11)&&isRewardEnabled(4)) player.dilation.upgrades.push(10)
 		else player.quantum.wasted = !isRewardEnabled(11)||bigRip
-		if (speedrunMilestonesReached>13&&isRewardEnabled(4)&&!bigRip) for (i=3;i<7;i++) player.dilation.upgrades.push("ngpp"+i)
+		if (bigRip?player.quantum.bigRip.upgrades.includes(12):speedrunMilestonesReached>13&&isRewardEnabled(4)) for (i=3;i<7;i++) player.dilation.upgrades.push("ngpp"+i)
 		player.quantum.notrelative = true
 		updateMasteryStudyCosts()
 		updateMasteryStudyButtons()
@@ -1403,7 +1414,7 @@ function quantumReset(force, auto, challid, bigRip, implode=false) {
 	updateDilationUpgradeCosts()
 	drawStudyTree()
 	if (!isRewardEnabled(4)||bigRip) if (document.getElementById("dilation").style.display=="block") showEternityTab("timestudies", document.getElementById("eternitystore").style.display=="block")
-	document.getElementById("masterystudyunlock").style.display = speedrunMilestonesReached < 14 || !isRewardEnabled(4) || bigRip ? "none" : ""
+	document.getElementById("masterystudyunlock").style.display = (bigRip ? !player.quantum.bigRip.upgrades.includes(12) : speedrunMilestonesReached < 14 || !isRewardEnabled(4)) ? "none" : ""
 	if (speedrunMilestonesReached < 14 || !isRewardEnabled(4)) {
 		document.getElementById("respecMastery").style.display = "none"
 		document.getElementById("respecMastery2").style.display = "none"

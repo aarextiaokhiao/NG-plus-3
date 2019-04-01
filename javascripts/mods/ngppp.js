@@ -430,7 +430,7 @@ function getMTSMult(id) {
 	if (id==371) return Math.pow(extraReplGalaxies+1,0.3)
 	if (id==372) return Math.sqrt(player.timeShards.add(1).log10())/20+1
 	if (id==373) return Math.pow(player.galaxies+1,0.55)
-	if (id==381) return Decimal.log10(getTickSpeedMultiplier())/-135+1
+	if (id==381) return 1 - Decimal.max(getTickSpeedMultiplier(), 1).log10() / 135
 	if (id==382) return player.eightAmount.max(1).pow(Math.PI)
 	if (id==383) return Decimal.pow(3200,Math.pow(player.quantum.colorPowers.b.add(1).log10(),0.25))
 	if (id==391) return player.meta.antimatter.max(1).pow(8e-4)
