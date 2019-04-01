@@ -6717,7 +6717,7 @@ function updateEPminpeak(diff) {
 
 
 function gameLoop(diff) {
-    if ((isNaN(player.money.e) || isNaN(player.infinityPoints.e)) && (player.masterystudies !== undefined ? player.quantum.timeFluxPower : false)) revert()
+    if ((isNaN(player.money.e) || isNaN(player.infinityPoints.e) || player.infinityPoints.e === 1/0) && (player.masterystudies !== undefined ? player.quantum.timeFluxPower : false)) revert()
     if (player.money.e > 1 && player.aarexModifications.af2019Mod && !player.aarexModifications.af2019Done) {
         player.aarexModifications.af2019Done = true
         $.notify("April Fools!")

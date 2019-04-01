@@ -33,7 +33,10 @@ function revert() {
 	if (oldSave !== null) {
 		localStorage.setItem(btoa("dsAM_"+metaSave.current), oldSave)
 		localStorage.removeItem(btoa("dsAM_"+metaSave.current+"_af2019"))
-	} else localStorage.removeItem(btoa("dsAM_"+metaSave.current))
+	} else {
+		localStorage.removeItem(btoa("dsAM_"+metaSave.current))
+		showTab("dimensions")
+	}
 	updateNewPlayer()
 	closeToolTip()
 	load_game()
