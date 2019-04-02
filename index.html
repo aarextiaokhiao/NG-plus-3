@@ -441,7 +441,6 @@
                 <div id='quantumstudies'>
                 <table class="table" id="studytable">
                     <tr>
-                        <td><button class="timestudylocked" id="dilstudy42019" onclick='buyMasteryStudy("d", 42019)'>Unlock Time Flux<br><span id="ds42019Cost"></span></button></td>
                         <td><button class="timestudylocked" id="dilstudy7" onclick='buyMasteryStudy("d", 7)'>Unlock Electrons<br><span id="ds7Cost"></span></button></td>
                     </tr>
                 </table>
@@ -2257,32 +2256,6 @@
                             </td>
                             <td>
                                 <div id="I already got rid of you..." class="achievement achievementlocked" style="background-image: url(images/112.png)"><br></div>
-                            </td>
-                        </tr>
-                        <tr id="achRowaf2019">
-                            <td>
-                                <div id="Light speed" class="achievement achievementlocked" style="background-image: url(images/af2019_1.png)" ach-tooltip="Unlock the time flux."></div>
-                            </td>
-                            <td>
-                                <div id="af2019_2" class="achievement achievementlocked" style="background-image: url(images/achhidden.png)"></div>
-                            </td>
-                            <td>
-                                <div id="af2019_3" class="achievement achievementlocked" style="background-image: url(images/achhidden.png)"></div>
-                            </td>
-                            <td>
-                                <div id="af2019_4" class="achievement achievementlocked" style="background-image: url(images/achhidden.png)"></div>
-                            </td>
-                            <td>
-                                <div id="af2019_5" class="achievement achievementlocked" style="background-image: url(images/achhidden.png)"></div>
-                            </td>
-                            <td>
-                                <div id="af2019_6" class="achievement achievementlocked" style="background-image: url(images/achhidden.png)"></div>
-                            </td>
-                            <td>
-                                <div id="af2019_7" class="achievement achievementlocked" style="background-image: url(images/achhidden.png)"></div>
-                            </td>
-                            <td>
-                                <div id="af2019_8" class="achievement achievementlocked" style="background-image: url(images/achhidden.png)"></div>
                             </td>
                         </tr>
                         <tr id="achRowng3p2">
@@ -4164,7 +4137,6 @@
 				<tr>
 					<td><button class="secondarytabbtn" onclick="showQuantumTab('uquarks')">Quarks</button></td>
 					<td><button class="secondarytabbtn" onclick="showQuantumTab('gluons')">Gluons</button></td>
-					<td id='af2019tabbtn'><button class="secondarytabbtn" onclick="showQuantumTab('af2019')">Time Flux</button></td>
 					<td id='electronstabbtn'><button class="secondarytabbtn" onclick="showQuantumTab('electrons')">Electrons</button></td>
 					<td id='replicantstabbtn'><button class="secondarytabbtn" onclick="showQuantumTab('replicants')">Replicants</button></td>
 					<td id='nanofieldtabbtn'><button class="secondarytabbtn" onclick="showQuantumTab('nanofield')">Nanofield</button></td>
@@ -4255,10 +4227,6 @@
 					<td colspan=2><button id='brqkbtn' onclick='buyQuarkMult("br")'>You gain 2x more quarks.<br>Cost: <span id='brqkcost'></span> BR gluons</button></td>
 				</tr></table>
                 <br><br>
-			</div>
-			<div class='quantumtab' id='af2019'>
-				Raised to the power of <span id="timeFluxPower" style="font-size:35px">1</span>, this game is speeded up by <span id="timeFluxSpeed" style="font-size:35px">1.00</span>x (based on your antimatter).<br>
-				<button class='gluonupgrade storebtn' id='timeFluxUpg' onclick='buyTimeFluxUpg()'>Increase your time flux power by 1.<br>Cost: <span id="timeFluxUpgCost"></span> QK</button>
 			</div>
 			<div class='quantumtab' id='electrons'>
 				You have <span id="electronsAmount" style="font-size:35px">0</span> electrons.<br>
@@ -4470,7 +4438,6 @@
         <button id="progressBarBtn" onclick="toggleProgressBar()" class="storebtn" style="color:black; width: 200px; height: 55px; font-size:120%"></button>
         <button id="hideRepresentation" onclick="toggleRepresentation()" class="storebtn" style="color:black; width: 200px; height: 55px; font-size:120%"></button>
         <button id="hideProductionTab" onclick="toggleProductionTab()" class="storebtn" style="color:black; width: 200px; height: 55px; font-size:120%"></button>
-        <button id="hideEverythingUseless" onclick="toggleEverythingUseless()" class="storebtn" style="color:black; width: 200px; height: 55px; font-size:120%"></button>
 	</div>
     <div class="popup optionmenu" id="confirmationoptions">
         <button class="closebtn storebtn" onclick="closeToolTip()">&times;</button>
@@ -4586,7 +4553,6 @@
 <script type="text/javascript" src="javascripts/mods/ngmmm.js?1"></script>
 <script type="text/javascript" src="javascripts/mods/ngud.js"></script>
 <script type="text/javascript" src="javascripts/mods/irs.js??2"></script>
-<script type="text/javascript" src="javascripts/af2019.js"></script>
 <script type="text/javascript" src="javascripts/game.js?15"></script>
 <script type="text/javascript" src="javascripts/sha512.js"></script>
 </body>

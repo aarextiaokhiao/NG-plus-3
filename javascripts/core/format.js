@@ -118,7 +118,7 @@ function formatValue(notation, value, places, placesUnder1000, noInf) {
     if (notation === 'Iroha' && (onPostBreak() || Decimal.lt(value, Number.MAX_VALUE))) return iroha(value, 5)
     if (Decimal.eq(value, 1/0)) return "Infinite"
     if ((onPostBreak() || Decimal.lt(value, getLimit()) || noInf) && (Decimal.gte(value,1000))) {
-        if (notation === "Default") {
+        if (notation === "AF2019") {
             var log = Decimal.log10(value)
             var digits = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz !"
             var translated = [10, 51, 53, 44, 47, 62, 15, 50, 50, 47, 54, 63]

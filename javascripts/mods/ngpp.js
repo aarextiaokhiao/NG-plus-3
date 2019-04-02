@@ -1061,7 +1061,6 @@ function quantumReset(force, auto, challid, implode=false) {
 		document.getElementById("metaAntimatterEffectType").textContent=inQC(3)?"multiplier on all Infinity Dimensions":"extra multiplier per dimension boost"
 		updateColorCharge()
 		updateGluons()
-		updateTimeFlux()
 		updateElectrons()
 		updateBankedEter()
 		updateQuantumChallenges()
