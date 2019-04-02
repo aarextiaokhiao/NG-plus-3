@@ -370,6 +370,7 @@ if (player.version < 5) {
       if (player.options.commas) player.options.commas = "Commas"
       else player.options.commas = player.options.notation
   }
+  if (player.shameLevel === undefined) player.shameLevel = 0;
     
   if (player.aarexModifications === undefined) {
       player.aarexModifications = {
@@ -1466,9 +1467,13 @@ if (player.version < 5) {
   }
 
   // player.version is currently 12.1
+  if (player.options.commas == "Default") {
+      player.options.commas == "AF2019";
+      updateNotationOption();
+  }
   if (player.options.notation == "Default") {
-      player.options.notation = "Brackets";
-      document.getElementById("notation").textContent = ("Notation: Brackets")
+      player.options.notation = typeof(player.options.commas) === "boolean" ? "AF2019" : "Brackets";
+      updateNotationOption();
   }
 
   for (s=0;s<(player.boughtDims?4:3);s++) toggleCrunchMode(true)
@@ -1850,7 +1855,10 @@ var savePlacement
 function load_game(noOffline) {
 	if (!metaSave.saveOrder.includes(metaSave.current)) metaSave.current=metaSave.saveOrder[0]
 	var dimensionSave=get_save(metaSave.current)
-	if (dimensionSave!=null) player=dimensionSave
+	if (dimensionSave!=null) {
+		if (dimensionSave.quantum !== undefined) if (dimensionSave.quantum.timeFluxPower !== undefined) dimensionSave = get_save(metaSave.current + "_af2019")
+		player=dimensionSave
+	}
 	savePlacement=1
 	while (metaSave.saveOrder[savePlacement-1]!=metaSave.current) savePlacement++
 	if (break_infinity_js==null) {

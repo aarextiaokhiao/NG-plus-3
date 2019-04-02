@@ -1127,6 +1127,7 @@ function quantumReset(force, auto, challid, bigRip, implode=false) {
 			}
 		},
 		why: player.why,
+		shameLevel: player.shameLevel,
 		options: player.options,
 		meta: {
 			antimatter: new Decimal(speedrunMilestonesReached > 18 && !bigRip ? 1e25 : 100),

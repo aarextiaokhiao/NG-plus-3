@@ -197,6 +197,7 @@ function softReset(bulk) {
       blackholeDimension3: player.blackholeDimension3,
       blackholeDimension4: player.blackholeDimension4,
       why: player.why,
+      shameLevel: player.shameLevel,
       options: player.options,
       meta: player.meta,
       masterystudies: player.masterystudies,

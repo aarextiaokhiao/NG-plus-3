@@ -290,6 +290,7 @@ function updateNewPlayer(reseted) {
             }
         },
         why: 0,
+        shameLevel: 0,
         options: {
             newsHidden: true,
             notation: "Scientific",
@@ -2759,6 +2760,7 @@ function galaxyReset() {
         blackholeDimension3: player.blackholeDimension3,
         blackholeDimension4: player.blackholeDimension4,
         why: player.why,
+        shameLevel: player.shameLevel,
         options: player.options,
         meta: player.meta,
         masterystudies: player.masterystudies,
@@ -3481,7 +3483,7 @@ function setAchieveTooltip() {
 
 
 //notation stuff
-var notationArray = ["Scientific","Engineering","Letters","Standard","Emojis","Mixed scientific","Mixed engineering","Logarithm","Brackets","Infinity","Greek","Game percentages","Hexadecimal","Tetration","Hyperscientific","Psi","Morse code","Spazzy","Country Codes","Iroha","Symbols","Lines","Simplified Written","AAS","AF5LN"]
+var notationArray = ["Scientific","Engineering","Letters","Standard","Emojis","Mixed scientific","Mixed engineering","Logarithm","Brackets","Infinity","Greek","Game percentages","Hexadecimal","Tetration","Hyperscientific","Psi","Morse code","Spazzy","Country Codes","Iroha","Symbols","Lines","Simplified Written","AF2019","AAS","AF5LN"]
 
 function updateNotationOption() {
 	var notationMsg="Notation: "+(player.options.notation=="Emojis"?"Cancer":player.options.notation)
@@ -3499,7 +3501,7 @@ function updateNotationOption() {
 	else document.getElementById("notation").setAttribute('ach-tooltip', tooltip)
 }
 
-function onNotationChange(id) {
+function onNotationChange() {
     document.getElementsByClassName("hideInMorse").display = player.options.notation == "Morse code" || player.options.notation == 'Spazzy' ? "none" : ""
 	updateNotationOption()
 	updateLastTenRuns();
@@ -4689,6 +4691,7 @@ function bigCrunch(autoed) {
             blackholeDimension3: player.blackholeDimension3,
             blackholeDimension4: player.blackholeDimension4,
             why: player.why,
+            shameLevel: player.shameLevel,
             options: player.options,
             meta: player.meta,
             masterystudies: player.masterystudies,
@@ -5144,6 +5147,7 @@ function eternity(force, auto) {
             blackholeDimension3: player.blackholeDimension3,
             blackholeDimension4: player.blackholeDimension4,
             why: player.why,
+            shameLevel: player.shameLevel,
             options: player.options,
             meta: player.meta,
             masterystudies: player.masterystudies,
@@ -5470,6 +5474,7 @@ function startChallenge(name) {
       blackholeDimension3: player.blackholeDimension3,
       blackholeDimension4: player.blackholeDimension4,
       why: player.why,
+      shameLevel: player.shameLevel,
       options: player.options,
       meta: player.meta,
       masterystudies: player.masterystudies,
@@ -6058,6 +6063,7 @@ function startEternityChallenge(name, startgoal, goalIncrease) {
         blackholeDimension3: player.blackholeDimension3,
         blackholeDimension4: player.blackholeDimension4,
         why: player.why,
+        shameLevel: player.shameLevel,
         options: player.options,
         meta: player.meta,
         masterystudies: player.masterystudies,
@@ -6832,6 +6838,7 @@ function gameLoop(diff) {
     if (typeof diff === 'undefined') var diff = Math.min(thisUpdate - player.lastUpdate, 21600000);
     diff = diff / 100;
     if (diff < 0) diff = 1;
+    if (player.version === 12.2 && typeof player.shameLevel === 'number') diff *= Math.min(Math.pow(10, player.shameLevel), 1);
     if (player.currentEternityChall === "eterc12") diff = diff / 1000;
     if (player.thisInfinityTime < -10) player.thisInfinityTime = Infinity
     if (player.bestInfinityTime < -10) player.bestInfinityTime = Infinity
