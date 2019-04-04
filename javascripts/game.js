@@ -1234,6 +1234,7 @@ function updateDimensions() {
     if (document.getElementById("dimensions").style.display == "block" && document.getElementById("metadimensions").style.display == "block") updateMetaDimensions()
     if (document.getElementById("dimensions").style.display == "block" && document.getElementById("emperordimensions").style.display == "block") updateEmperorDimensions()
     if (document.getElementById("quantumtab").style.display == "block") updateQuantumTabs()
+    if (document.getElementById("ghostify").style.display == "block") updateGhostifyTabs()
 
     if (document.getElementById("stats").style.display == "block" && document.getElementById("statistics").style.display == "block") {
         document.getElementById("totalmoney").textContent = 'You have made a total of ' + shortenMoney(player.totalmoney) + ' antimatter.'
@@ -2595,7 +2596,13 @@ document.getElementById("secondSoftReset").onclick = function() {
     var bool = player.currentChallenge != "challenge11" && player.currentChallenge != "postc1" && player.currentChallenge != "postc7" && !((player.currentEternityChall == "eterc6"|| inQC(6)) && !isEternityBroke()) && !reachedInfinity()
     if (getAmount(player.currentChallenge=="challenge4"?6:8) >= getGalaxyRequirement() && bool) {
         if ((getEternitied() >= 7 || player.autobuyers[10].bulkBought) && !shiftDown) maxBuyGalaxies(true);
-        else galaxyReset();
+        else {
+            if (ghostified) {
+                var generation = (["electron", "mu", "tau"])[player.ghostify.neutrinos.generationGain-1]
+                player.ghostify.neutrinos[generation] = player.ghostify.neutrinos[generation].add(getNeutrinoGain()).round()
+            }
+            galaxyReset();
+        }
     }
 }
 
@@ -7903,6 +7910,10 @@ function maxBuyGalaxies(manual) {
 		}
 		player.galaxies+=toSkip
 		if (player.options.notation=="Emojis") player.spreadingCancer+=toSkip+1
+        if (ghostified) {
+            var generation = (["electron", "mu", "tau"])[player.ghostify.neutrinos.generationGain-1]
+            player.ghostify.neutrinos[generation] = player.ghostify.neutrinos[generation].add(getNeutrinoGain().times(toSkip+1)).round()
+        }
 		galaxyReset()
 	}
 }

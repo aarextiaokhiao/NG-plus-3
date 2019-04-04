@@ -4577,9 +4577,25 @@
 		<div class='tab' id='ghostify'>
 			<table class="table" align="center" style="margin: auto">
 				<tr>
-					<td><button class="secondarytabbtn">Neutrinos</button></td>
+					<td><button class="secondarytabbtn" onclick="showGhostifyTab('neutrinos')">Neutrinos</button></td>
+					<td><button class="secondarytabbtn" onclick="showGhostifyTab('photons')">Photons</button></td>
 				</tr>
 			</table>
+			<div id="neutrinos" class="ghostifytab">
+				<div id="neutrinosGain">You will gain 1 electron neutrino per 1 normal galaxy.</div>
+				<table class='qtable'>
+					<tr>
+						<td>You have <span class="neutrinos" id="electronNeutrinos" style="font-size:35px">0</span> electron neutrinos.</td>
+						<td>You have <span class="neutrinos" id="muonNeutrinos" style="font-size:35px">0</span> Muon neutrinos.</td>
+						<td>You have <span class="neutrinos" id="tauNeutrinos" style="font-size:35px">0</span> Tau neutrinos.</td>
+					</tr>
+				</table>
+				<button class="gluonupgrade unavailablebtn">You gain 2x more neutrinos.<br>Cost: ??? GHP</button>
+				<button class="gluonupgrade unavailablebtn">You gain 2x more GHP.<br>Cost: ??? of any neutrino</button>
+			</div>
+			<div id="photons" class="ghostifytab">
+				<button class='gluonupgrade unavailablebtn'>Unlock Photons<br>Coming soon!</button>
+			</div>
 			<div id="footercontainer">
 				<table id="footer">
 					<tr>

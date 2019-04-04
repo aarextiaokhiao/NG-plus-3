@@ -2716,6 +2716,9 @@ function ghostifyReset(implode, gain, amount) {
 		giveAchievement("Kee-hee-hee!")
 	}
 	document.getElementById("GHPAmount").textContent = shortenDimensions(player.ghostify.ghostParticles)
+	player.ghostify.neutrinos.electron = new Decimal(0)
+	player.ghostify.neutrinos.mu = new Decimal(0)
+	player.ghostify.neutrinos.tau = new Decimal(0)
 	updateLastTenGhostifies()
 }
 
@@ -2748,4 +2751,36 @@ function updateLastTenGhostifies() {
         if (qkpm<1) tempstring = shorten(qkpm*60) + " GHP/hour"
         document.getElementById("averageGhostifyRun").textContent = "Last " + listed + " Ghostifys average time: "+ timeDisplayShort(tempTime, false, 3)+" Average GHP gain: "+shortenDimensions(tempGHP)+" GHP. "+tempstring
     } else document.getElementById("averageGhostifyRun").textContent = ""
+}
+
+function showGhostifyTab(tabName) {
+	//iterate over all elements in div_tab class. Hide everything that's not tabName and show tabName
+	var tabs = document.getElementsByClassName('ghostifytab');
+	var tab;
+	var oldTab
+	for (var i = 0; i < tabs.length; i++) {
+		tab = tabs.item(i);
+		if (tab.style.display == 'block') oldTab = tab.id
+		if (tab.id === tabName) {
+			tab.style.display = 'block';
+		} else {
+			tab.style.display = 'none';
+		}
+	}
+	closeToolTip()
+}
+
+function updateGhostifyTabs() {
+	if (document.getElementById("neutrinos").style.display=="block") {
+		var generations = ["electron", "Muon", "Tau"]
+		var neutrinoGain = getNeutrinoGain()
+		document.getElementById("neutrinosGain").textContent="You will gain " + shortenDimensions(neutrinoGain) + " " + generations[player.ghostify.neutrinos.generationGain - 1] + " neutrino" + (neutrinoGain.eq(1) ? "" : "s") + " per 1 normal galaxy."
+		document.getElementById("electronNeutrinos").textContent=shortenDimensions(player.ghostify.neutrinos.electron)
+		document.getElementById("muonNeutrinos").textContent=shortenDimensions(player.ghostify.neutrinos.mu)
+		document.getElementById("tauNeutrinos").textContent=shortenDimensions(player.ghostify.neutrinos.tau)
+	}
+}
+
+function getNeutrinoGain() {
+	return Decimal.pow(2, player.ghostify.neutrinos.multPower - 1)
 }

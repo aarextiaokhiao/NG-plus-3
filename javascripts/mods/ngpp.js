@@ -1248,6 +1248,7 @@ function quantumReset(force, auto, challid, bigRip, implode=false) {
 				document.getElementById("respecPC").className="storebtn"
 			}
 			if (player.quantum.autoOptions.assignQK) assignAll(true)
+			if (ghostified) player.ghostify.neutrinos.generationGain = player.ghostify.neutrinos.generationGain % 3 + 1
 		}
 		player.quantum.pairedChallenges.current=0
 		if (challid==0) {

@@ -1791,6 +1791,7 @@ if (player.version < 5) {
   showEternityTab('timestudies', true)
   showQuantumTab('uquarks')
   showBranchTab('red')
+  showGhostifyTab('neutrinos')
   if (!player.options.newsHidden) scrollNextMessage()
   var detectNGPStart = player.lastUpdate == 1531944153054
   if (player.aarexModifications.switch) {
