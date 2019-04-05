@@ -1718,7 +1718,7 @@ function getUnstableGain(branch) {
 	let ret = player.quantum.usedQuarks[branch].div(1e30).div(player.quantum.tod[branch].gainDiv).add(1).log10()
 	if (ret<2) ret = Math.max(player.quantum.usedQuarks[branch].times(1e210/99).div(player.quantum.tod[branch].gainDiv).log10()/120,0)
 	ret = Decimal.pow(2,getBranchUpgLevel(branch,2)-1).times(ret)
-	if (ret.gt(1)) ret = Decimal.pow(ret, Math.pow(2,getBranchUpgLevel(branch,2))*3)
+	if (ret.gt(1)) ret = Decimal.pow(ret, Math.pow(2,getBranchUpgLevel(branch,2))*6)
 	return ret
 }
 
@@ -1814,7 +1814,7 @@ function getTreeUpgradeEffectDesc(upg) {
 function getBranchUpgCost(branch, upg) {
 	var lvl = getBranchUpgLevel(branch, upg)
 	if (upg==1) return Decimal.pow(2, lvl + Math.max(lvl - 15, 0) * 2).times(300)
-	if (upg==2) return Decimal.pow(2, lvl * 2 + Math.max(lvl - 11, 0)).times(600)
+	if (upg==2) return Decimal.pow(2, lvl * 2 + Math.max(lvl - 10, 0)).times(2400)
 	if (upg==3) return Decimal.pow(2, lvl * 3 + Math.max(lvl - 7, 0)).times(8e7)
 	if (upg==4) return Decimal.pow(8, lvl).times(3e22)
 	if (upg==5) return Decimal.pow(8, lvl).times(1e22)
@@ -2038,7 +2038,7 @@ function getGHPGain() {
 ghostified = false
 function ghostify() {
 	if ((!isQuantumReached()&&player.quantum.bigRip.active)||implosionCheck) return
-	if (!player.aarexModifications.ghostifyConf) if(!confirm("Ghostifying completes the big rip challenge, but it also resets quarks, gluons, electrons, Quantum Challenges, replicants, Nanofield, Tree of Decay, Big Rip, and your best TP & MA to gain a Ghost Particle. Are you ready for this?")) return
+	if (!player.aarexModifications.ghostifyConf) if(!confirm("Ghostifying resets everything quantum resets, and also resets quarks, gluons, and your best TP & MA to gain a Ghost Particle. Are you ready for this?")) return
 	if (!ghostified) {
 		if (!confirm("Are you sure you want to do that? You will lose everything you have!")) return
 		if (!confirm("ARE YOU REALLY SURE YOU WANT TO DO THAT? YOU WON'T UNDO THIS IF YOU BECOME A GHOST AND PASS THE UNIVERSE EVEN IT IS BIG RIPPED! THIS IS YOUR LAST CHANCE!")) return
@@ -2073,7 +2073,6 @@ function ghostifyReset(implode, gain, amount) {
 	player.ghostify.times++
 	player.ghostify.best = Math.min(player.ghostify.best, player.ghostify.time)
 	player.ghostify.time = 0
-
 	player = {
 		money: new Decimal(10),
 		tickSpeedCost: new Decimal(1000),
