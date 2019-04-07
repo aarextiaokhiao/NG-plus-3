@@ -2038,7 +2038,7 @@ function getGHPGain() {
 ghostified = false
 function ghostify() {
 	if ((!isQuantumReached()&&player.quantum.bigRip.active)||implosionCheck) return
-	if (!player.aarexModifications.ghostifyConf) if(!confirm("Ghostifying resets everything quantum resets, and also resets quarks, gluons, and your best TP & MA to gain a Ghost Particle. Are you ready for this?")) return
+	if (!player.aarexModifications.ghostifyConf) if(!confirm("Ghostifying resets everything quantum resets, and also resets your best TP & MA, quarks, gluons, electrons, Quantum Challenges, Replicants, Nanofield, and Tree of Decay to gain a Ghost Particle. Are you ready for this?")) return
 	if (!ghostified) {
 		if (!confirm("Are you sure you want to do that? You will lose everything you have!")) return
 		if (!confirm("ARE YOU REALLY SURE YOU WANT TO DO THAT? YOU WON'T UNDO THIS IF YOU BECOME A GHOST AND PASS THE UNIVERSE EVEN IT IS BIG RIPPED! THIS IS YOUR LAST CHANCE!")) return
