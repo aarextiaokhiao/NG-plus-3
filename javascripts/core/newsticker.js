@@ -196,8 +196,9 @@ newsArray = [//always true
 ["Don't use antimatter anti-aging cream. You'll find yourself wondering how you got to be 873 eternities old.", "player.achievements.includes('r22') && (player.eternities > 872 || quantumed)", "am40"],
 ["Defeat antimatter to gain quarks!", "player.achievements.includes('r22') && player.masterystudies !== undefined", "am41"],
 ["Oh no! Someone beat my antimatter amount! I was going to develop a side project, but I must catch up!", "player.achievements.includes('r22') && player.masterystudies !== undefined", "am42"],
-["Ghostify means Ghostify. It's actually a prestige layer.", "player.achievements.includes('r22') && player.masterystudies !== undefined", "am43"]
-/*NEXT ID: am44*/];}
+["Ghostify means Ghostify. It's actually a prestige layer.", "player.achievements.includes('r22') && player.masterystudies !== undefined", "am43"],
+["Every ghostly antimatter is safe.", "player.achievements.includes('r22') && player.masterystudies !== undefined", "am44"]
+/*NEXT ID: am45*/];}
 
 document.addEventListener("visibilitychange", function() {if (!document.hidden) {scrollNextMessage();}}, false);
 var scrollTimeouts = [];
