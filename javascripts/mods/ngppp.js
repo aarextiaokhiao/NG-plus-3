@@ -1793,7 +1793,7 @@ function getTreeUpgradeEffect(upg) {
 		if (lvl<1) return 1
 		let power=0
 		for (var upg=1;upg<9;upg++) if (player.quantum.tod.upgrades[upg]) power+=player.quantum.tod.upgrades[upg]
-		return Decimal.pow(2, Math.sqrt(Math.sqrt(Math.max(lvl * 3 - 2, 0)) * (power - 10)))
+		return Decimal.pow(2, Math.sqrt(Math.sqrt(Math.max(lvl * 3 - 2, 0)) * Math.max(power - 10, 0)))
 	}
 	if (upg==4) return 1 + Math.log10(lvl * 0.5 + 1) * 0.1
 	if (upg==5) return Math.pow(Math.log10(player.meta.bestOverQuantums.add(1).log10()+1)/5+1,Math.sqrt(lvl))
