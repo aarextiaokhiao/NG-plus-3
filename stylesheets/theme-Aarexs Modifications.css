@@ -522,6 +522,9 @@ strong { color: #0072e5 }
 	box-shadow: inset 0px 0px 12px 0px #ffffff;
 	cursor: pointer
 }
+#tooMuchPowerConsumed {
+	color: #e50000
+}
 .notifyjs-bootstrap-info {
     background-color: #0072e5;
     font-family:'Inconsolata', monospace;

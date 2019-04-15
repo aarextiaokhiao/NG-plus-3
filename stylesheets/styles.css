@@ -2135,6 +2135,10 @@ br {
 	transition-duration: 0.5s
 }
 
+#tooMuchPowerConsumed {
+	color: #ff0000
+}
+
 @media print,
 screen and (max-width: 960px) {
     div.wrapper {

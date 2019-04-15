@@ -521,6 +521,10 @@ button, div.storebtn {
 #GHPAmount {
 	animation: ghostifytext 4s linear infinite
 }
+
+#tooMuchPowerConsumed {
+	color: #e50000
+}
 				
 @keyframes rg {
 	0% {color: #e50000}

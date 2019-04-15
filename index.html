@@ -4578,6 +4578,7 @@
 			<table class="table" align="center" style="margin: auto">
 				<tr>
 					<td><button class="secondarytabbtn" onclick="showGhostifyTab('neutrinos')">Neutrinos</button></td>
+					<td><button class="secondarytabbtn" onclick="showGhostifyTab('automaticghosts')">Automatic Ghosts</button></td>
 					<td><button class="secondarytabbtn" onclick="showGhostifyTab('photons')">Photons</button></td>
 				</tr>
 			</table>
@@ -4608,6 +4609,34 @@
 						<td><button class="gluonupgrade unavailablebtn">???<br>Cost: ??? of any neutrinos</button></td>
 						<td><button class="gluonupgrade unavailablebtn">???<br>Cost: ??? of any neutrinos</button></td>
 						<td><button class="gluonupgrade unavailablebtn">???<br>Cost: ??? of any neutrinos</button></td>
+					</tr>
+				</table>
+			</div>
+			<div id="automaticghosts" class="ghostifytab">
+				<table class='qtable'>
+					<tr>
+						<td>You have <span id="automaticGhostsAmount" style="font-size:35px">1</span> Automatic Ghosts.</td>
+						<td>You have <span id="automaticPower" style="font-size:35px">1.0</span> Automatic Power.<br>They are consuming <span class="neutrinos" id="consumedPower" style="font-size:35px">0.0</span> Automatic Power.<br><b id="tooMuchPowerConsumed">WARNING: TOO MUCH POWER CONSUMED!</b></td>
+						<td>Next Automatic Ghost at <span id="nextAutomaticGhost"style="font-size:35px">?.?</span>.</td>
+					</tr>
+				</table>
+				<table style="margin: 0 auto">
+					<tr>
+						<td><div class="autoBuyerDiv" style="display:block">
+							<b>First Auto-Unstablize Ghost</b><br>
+							Power consumption: 1<br>
+							Is active: <input type="checkbox"></input>
+						</div></td>
+						<td><div class="autoBuyerDiv" style="display:block">
+							<b>Second Auto-Unstablize Ghost</b><br>
+							Power consumption: 1<br>
+							Is active: <input type="checkbox"></input>
+						</div></td>
+						<td><div class="autoBuyerDiv" style="display:block">
+							<b>Third Auto-Unstablize Ghost</b><br>
+							Power consumption: 1<br>
+							Is active: <input type="checkbox"></input>
+						</div></td>
 					</tr>
 				</table>
 			</div>
