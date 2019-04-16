@@ -1138,10 +1138,14 @@ function getDilPower() {
 	return ret
 }
 
-function getDilExp(on) {
+function getDilExp(disable) {
 	let ret = 1.5
 	if (player.dilation.rebuyables[4]) ret += player.dilation.rebuyables[4] / 4
-	if (player.masterystudies !== undefined ? !player.quantum.bigRip.active || player.quantum.bigRip.upgrades.includes(11) : false) if (on == undefined ? player.masterystudies.includes("d13") : on) ret += getTreeUpgradeEffect(2)
+	if (player.masterystudies !== undefined) {
+		if ((!player.quantum.bigRip.active || player.quantum.bigRip.upgrades.includes(11)) && player.masterystudies.includes("d13") && disable != "TU3") ret += getTreeUpgradeEffect(2)
+		if (ghostified && disable != "neutrinos") ret += Math.log10(player.ghostify.neutrinos.electron.add(1).log10() + player.ghostify.neutrinos.mu.add(1).log10() + player.ghostify.neutrinos.tau.add(1).log10() + 1) * 0.75
+		ret = Math.min(ret, 11.25)
+	}
 	return ret
 }
 

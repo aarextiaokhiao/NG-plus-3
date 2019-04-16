@@ -56,7 +56,7 @@ function showspoilers() {
 function updateSpoilers() {
 	var displayed = spoilers;
 	document.getElementById("ng3pguide").style.display=player.masterystudies||spoilers?"":"none"
-	for (i=35; i>0; i--) {
+	for (i=36; i>0; i--) {
 		if (i != 7) {
 			if (!displayed) {
 				if (i < 5) displayed = 1
@@ -84,7 +84,7 @@ function updateSpoilers() {
 						if (i == 30 && player.masterystudies.includes("d13")) displayed = 1
 						if (i == 31 && player.masterystudies.includes("d14")) displayed = 1
 						if (i == 32 && player.quantum) if (player.quantum.breakEternity) if (player.quantum.breakEternity.unlocked) displayed = 1
-						if (i == 35 && player.ghostify) if (player.ghostify.times > 0) displayed = 1
+						if (i == 36 && player.ghostify) if (player.ghostify.times > 0) displayed = 1
 					}
 				}
 			}

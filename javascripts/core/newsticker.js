@@ -197,8 +197,9 @@ newsArray = [//always true
 ["Defeat antimatter to gain quarks!", "player.achievements.includes('r22') && player.masterystudies !== undefined", "am41"],
 ["Oh no! Someone beat my antimatter amount! I was going to develop a side project, but I must catch up!", "player.achievements.includes('r22') && player.masterystudies !== undefined", "am42"],
 ["Ghostify means Ghostify. It's actually a prestige layer.", "player.achievements.includes('r22') && player.masterystudies !== undefined", "am43"],
-["Every ghostly antimatter is safe.", "player.achievements.includes('r22') && player.masterystudies !== undefined", "am44"]
-/*NEXT ID: am45*/];}
+["Every ghostly antimatter is safe.", "player.achievements.includes('r22') && player.masterystudies !== undefined", "am44"],
+["A brave man said 'When will gamers reach the singularity of this game?' But the game said 'There is insufficient data for the answer'.", "player.achievements.includes('r22') && player.masterystudies !== undefined", "am45"]
+/*NEXT ID: am46*/];}
 
 document.addEventListener("visibilitychange", function() {if (!document.hidden) {scrollNextMessage();}}, false);
 var scrollTimeouts = [];

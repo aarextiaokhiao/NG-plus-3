@@ -1805,7 +1805,7 @@ function getTreeUpgradeEffect(upg) {
 
 function getTreeUpgradeEffectDesc(upg) {
 	if (upg==1) return getFullExpansion(getTreeUpgradeEffect(upg))
-	if (upg==2) return getDilExp(false).toFixed(2) + " -> " + getDilExp(true).toFixed(2)
+	if (upg==2) return getDilExp("TU3").toFixed(2) + " -> " + getDilExp().toFixed(2)
 	if (upg==4) return "^" + shorten(getMPTPower(false)) + " -> ^" + shorten(getMPTPower(true))
 	if (upg==8) return "+" + getTreeUpgradeEffect(8).toFixed(2)
 	return shortenMoney(getTreeUpgradeEffect(upg))
@@ -2777,6 +2777,8 @@ function updateGhostifyTabs() {
 		document.getElementById("electronNeutrinos").textContent=shortenDimensions(player.ghostify.neutrinos.electron)
 		document.getElementById("muonNeutrinos").textContent=shortenDimensions(player.ghostify.neutrinos.mu)
 		document.getElementById("tauNeutrinos").textContent=shortenDimensions(player.ghostify.neutrinos.tau)
+		document.getElementById("preNeutrinoBoost1").textContent=getDilExp("neutrinos").toFixed(2)
+		document.getElementById("neutrinoBoost1").textContent=getDilExp().toFixed(2)
 	}
 }
 
