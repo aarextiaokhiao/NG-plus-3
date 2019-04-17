@@ -2139,6 +2139,30 @@ br {
 	color: #ff0000
 }
 
+#ghostlyNewsTicker {
+	position: absolute;
+	top: 0;
+	left: 0;
+	width: 100%;
+	height: 0px;
+	animation: ghostifytext 4s linear infinite;
+	background: linear-gradient(#0c001e, #3a003f);
+	overflow: hidden;
+	transition-duration: 1s
+}
+
+#ghostlyNewsTickerText {
+	position: absolute;
+    font-family: Typewriter;
+	font-size: 16px;
+    white-space: nowrap
+}
+
+#ghostlyNewsTickerBlock {
+	height: 0px;
+	transition-duration: 1s
+}
+
 @media print,
 screen and (max-width: 960px) {
     div.wrapper {

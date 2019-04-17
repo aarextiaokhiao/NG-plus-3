@@ -170,13 +170,13 @@ newsArray = [//always true
 ["You are challenging in a challenge in a challenge. Challenge-ception.", "player.achievements.includes('r22') && player.currentChallenge != '' && player.currentEternityChall != '' && !inQC(0)", "am13"],
 ["New updates are coming in a day, not 5 hours. Sorry, jokers!", "player.achievements.includes('r22')", "am14"],
 ["Whale complained that matter and antimatter are balanced and the universe would not be existed.", "player.achievements.includes('r22')", "am15"],
-["Congratulations for beating Quantum! Now you need to big rip the universe to progress! >:)", "player.achievements.includes('r22') && player.totalMoney.gte(Decimal.pow(10, 32e14))", "am16"],
+["Congratulations for beating Quantum! Now you need to big rip the universe to progress! >:)", "player.achievements.includes('r22') && player.totalmoney.gte(Decimal.pow(10, 32e14))", "am16"],
 ["NEWS: THIS NEWS CHANNEL WAS SHUT DOWN FOR BEING DESTROYED.", "player.achievements.includes('r21') && player.achievements.includes('r22')", "am17"],
 ["hackers are coming", "player.achievements.includes('r22') && player.newsArray.length >= 210", "am18"],
 ["Whale complained that Infinity Challenge 5 is not the hardest.", "player.achievements.includes('r22') && player.masterystudies", "am19"],
 ["You are now a pre-historic ghost!", "player.achievements.includes('r22') && player.money.gte(Decimal.pow(10, 191140458264))", "am20"],
 ["You are devolving into Homo genuses!", "player.achievements.includes('r22') && player.money.gte(Decimal.pow(10, 29821319640000))", "am21"],
-["You should take a break.", "player.achievements.includes('r22') && player.totalMoney.gt(Decimal.pow(10, 1e14))", "am22"],
+["You should take a break.", "player.achievements.includes('r22') && player.totalmoney.gt(Decimal.pow(10, 1e14))", "am22"],
 ["There is a lot of bugfixes coming, but I am too busy that I can't develop my modification a lot.", "player.achievements.includes('r22')", "am23"],
 ["Did you know that NG-3 nerfs NG-- to make short runs longer?", "player.achievements.includes('r22') && player.tickspeedBoosts != undefined", "am24"],
 ["I guess NG-4 would be coming if NG-3 is too easy.", "player.achievements.includes('r22') && player.tickspeedBoosts != undefined", "am25"],
@@ -197,9 +197,18 @@ newsArray = [//always true
 ["Defeat antimatter to gain quarks!", "player.achievements.includes('r22') && player.masterystudies !== undefined", "am41"],
 ["Oh no! Someone beat my antimatter amount! I was going to develop a side project, but I must catch up!", "player.achievements.includes('r22') && player.masterystudies !== undefined", "am42"],
 ["Ghostify means Ghostify. It's actually a prestige layer.", "player.achievements.includes('r22') && player.masterystudies !== undefined", "am43"],
-["Every ghostly antimatter is safe.", "player.achievements.includes('r22') && player.masterystudies !== undefined", "am44"],
-["A brave man said 'When will gamers reach the singularity of this game?' But the game said 'There is insufficient data for the answer'.", "player.achievements.includes('r22') && player.masterystudies !== undefined", "am45"]
-/*NEXT ID: am46*/];}
+["A brave man said 'When will gamers reach the singularity of this game?' But the game said 'There is insufficient data for the answer'.", "player.achievements.includes('r22') && player.masterystudies !== undefined", "am45"],
+["If you want to time travel, you need to learn how to pass time first. To do that, you need to become a ghost too.", "player.achievements.includes('r22') && player.masterystudies !== undefined", "am46"],
+["If you are a ghost, try to click me!", "player.achievements.includes('r22') && player.masterystudies !== undefined", "am47"],
+["Soon(TM)", "player.achievements.includes('r22') && (player.masterystudies !== undefined ? player.quantum.bigRip.bestAntimatter.gte(Decimal.pow(10, 155887875)) : false)", "am48"],
+/*NEXT ID: am46*/
+
+//Ghostly news ticker messages
+["Every ghostly antimatter is safe.", true, "gn1"],
+["Are you a ghost and want to use computers? Get Ghostified Hands! This stuff makes your hands feel like a human again! To order, you need to pay Ghost Particles and pass through your universe.", true, "gn2"],
+["Ghosts can't actually pass through walls because they're stuck in space.", true, "gn3"],
+['"August is here already" - Aarex', true, "gn4"],
+["Ghostly news tickers are dead... they also serve no purpose... right..?", "player.newsArray.includes('am32')", "gn5"]];}
 
 document.addEventListener("visibilitychange", function() {if (!document.hidden) {scrollNextMessage();}}, false);
 var scrollTimeouts = [];
@@ -212,7 +221,7 @@ function scrollNextMessage() {
   //select a message at random
 
   try {
-    do {nextMsgIndex = Math.floor(Math.random() * newsArray.length)} while (!eval(newsArray[nextMsgIndex][1]))
+    do {nextMsgIndex = Math.floor(Math.random() * newsArray.length)} while (!eval(newsArray[nextMsgIndex][1]) || newsArray[nextMsgIndex][2].indexOf("gn") > -1)
   } catch(e) {
       console.log("Newsarray doesn't work at idx " + nextMsgIndex)
   }
@@ -262,3 +271,40 @@ function scrollNextMessage() {
   }, 100));
 }
 
+var ghostlyNewsTickerCache = false
+function nextGhostlyNewsTickerMsg() {
+	if (ghostlyNewsTickerCache) return
+	ghostlyNewsTickerCache = true
+	updateNewsArray()
+	try {
+		do {nextMsgIndex = Math.floor(Math.random() * newsArray.length)} while (!eval(newsArray[nextMsgIndex][1]) || newsArray[nextMsgIndex][2].indexOf("gn") < 0)
+	} catch(e) {
+		console.log("Newsarray doesn't work at idx " + nextMsgIndex)
+	}
+	var newsText = document.getElementById("ghostlyNewsTickerText")
+	newsText.textContent = newsArray[nextMsgIndex][0]
+	newsText.innerHTML = "<b>NEWS!</b> " + newsText.innerHTML
+	newsText.style.left = "100%"
+	newsText.style["transition-duration"] = "0s"
+	setTimeout(function() {
+		newsText.style.left = 0
+		newsText.style["transition-timing-function"] = ""
+		newsText.style["transition-duration"] = "1s"
+		setTimeout(function(){
+			var duration = newsText.offsetWidth
+			newsText.style.left = (-duration) + "px"
+			newsText.style["transition-timing-function"] = "linear"
+			newsText.style["transition-duration"] = (duration / 100) + "s"
+			setTimeout(function() {
+				ghostlyNewsTickerCache = false
+			}, duration * 10)
+		}, 2000)
+	}, 100)
+}
+
+function toggleGhostlyNews() {
+	player.options.secrets.ghostlyNews=!player.options.secrets.ghostlyNews
+	document.getElementById("ghostlyNewsTicker").style.height=(player.options.secrets.ghostlyNews?24:0)+"px"
+	document.getElementById("ghostlyNewsTickerBlock").style.height=(player.options.secrets.ghostlyNews?16:0)+"px"
+	document.getElementById("ghostlynewsbtn").textContent=(player.options.secrets.ghostlyNews?"Hide":"Show")+" ghostly news ticker"
+}

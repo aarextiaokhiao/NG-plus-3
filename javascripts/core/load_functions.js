@@ -1793,6 +1793,8 @@ if (player.version < 5) {
   showBranchTab('red')
   showGhostifyTab('neutrinos')
   if (!player.options.newsHidden) scrollNextMessage()
+  document.getElementById("secretoptionsbtn").style.display=player.options.secrets?"":"none"
+  document.getElementById("ghostlynewsbtn").textContent=((player.options.secrets!==undefined?player.options.secrets.ghostlyNews:false)?"Hide":"Show")+" ghostly news ticker"
   var detectNGPStart = player.lastUpdate == 1531944153054
   if (player.aarexModifications.switch) {
       player.money=new Decimal("1e9e15")
@@ -1805,6 +1807,8 @@ if (player.version < 5) {
           simulateTime(diff/1000)
       }
   } else player.lastUpdate = new Date().getTime()
+  document.getElementById("ghostlyNewsTicker").style.height=((player.options.secrets!==undefined?player.options.secrets.ghostlyNews:false)?24:0)+"px"
+  document.getElementById("ghostlyNewsTickerBlock").style.height=((player.options.secrets!==undefined?player.options.secrets.ghostlyNews:false)?16:0)+"px"
   if (detectNGPStart || player.totalTimePlayed < 1 || inflationCheck || forceToQuantumAndRemove) {
       ngModeMessages=[]
       if (player.aarexModifications.newGameExpVersion) ngModeMessages.push("Welcome to NG^ mode, made by Naruyoko! This mode adds way many buffs that this mode may be broken!")

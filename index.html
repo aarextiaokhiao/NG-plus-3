@@ -33,7 +33,9 @@
 <img id="loading" src="images/Loading.png">
 <div id="snow" style="display: none; "></div>
 <body id="body" style="height: 95vh; " onload="initGame()">
+    <div id='ghostlyNewsTicker'><span id='ghostlyNewsTickerText'><b>NEWS!</b> This is a test.</span></div>
     <div id="container" class="container" style="color:#4F5957; font-family: Typewriter; text-align:center; font-size: 11px; display:none">
+        <div id='ghostlyNewsTickerBlock'></div>
         <div id='game' style='display:none'>
             <div id='news'>.</div>
         </div>
@@ -1646,6 +1648,7 @@
                 <tr>
                     <td><button class="secondarytabbtn" onclick="showOptionTab('saving')">Saving</button></td>
                     <td><button class="secondarytabbtn" onclick="showOptionTab('otheroptions')">Options</button></td>
+                    <td id="secretoptionsbtn"><button class="secondarytabbtn" onclick="showOptionTab('secrets')">Secrets</button></td>
                 </tr>
             </table>
             <div class='optionstab' id='saving'>
@@ -1694,6 +1697,13 @@
                         <td></td>
                         <td><div><button id="decimalMode" onclick="switchDecimalMode()" class="storebtn" style="color:black; width: 200px; height: 55px"></button></div></td>
                         <td></td>
+                    </tr>
+                </table>
+            </div>
+            <div class='optionstab' id='secrets' style='display:none'>
+                <table>
+                    <tr>
+		    			<td><div><button id="ghostlynewsbtn" onclick="toggleGhostlyNews()" class="storebtn" style="color:black; width: 200px; height: 55px; font-size:120%">Show ghostly news ticker</button></div></td>
                     </tr>
                 </table>
             </div>
@@ -2618,15 +2628,25 @@
             <div id="bravemilestones" class="achtab" style="display:none;">
                 <div>Get # of quantumed stat below the requirement and then become a ghost for a reward!</div>
                 <table style="margin: auto">
-                    <tr id="braceRow1">
-                        <td><div id="braveMilestone1" class="achievement achievementlocked" ach-tooltip="Reward: Start with quantum speedruns unlocked up to your best Ghostify.">???x quantumed</div></td>
-                        <td><div id="braveMilestone2" class="achievement achievementlocked" ach-tooltip="Reward: ???">???x quantumed</div></td>
-                        <td><div id="braveMilestone3" class="achievement achievementlocked" ach-tooltip="Reward: ???">???x quantumed</div></td>
-                        <td><div id="braveMilestone4" class="achievement achievementlocked" ach-tooltip="Reward: ???">???x quantumed</div></td>
-                        <td><div id="braveMilestone5" class="achievement achievementlocked" ach-tooltip="Reward: ???">???x quantumed</div></td>
-                        <td><div id="braveMilestone6" class="achievement achievementlocked" ach-tooltip="Reward: ???">???x quantumed</div></td>
-                        <td><div id="braveMilestone7" class="achievement achievementlocked" ach-tooltip="Reward: ???">???x quantumed</div></td>
-                        <td><div id="braveMilestone8" class="achievement achievementlocked" ach-tooltip="Reward: ???">???x quantumed</div></td>
+                    <tr id="braveRow1">
+                        <td><div id="braveMilestone1" class="achievement achievementlocked" ach-tooltip="Reward: Start Ghostifies with all Speedrun Milestones unlocked.">???x quantumed</div></td>
+                        <td><div id="braveMilestone2" class="achievement achievementlocked" ach-tooltip="Reward: You keep your gluon upgrades.">???x quantumed</div></td>
+                        <td><div id="braveMilestone3" class="achievement achievementlocked" ach-tooltip="Reward: Start Ghostifies with electrons unlocked.">???x quantumed</div></td>
+                        <td><div id="braveMilestone4" class="achievement achievementlocked" ach-tooltip="Reward: Start Ghostifies with all Quantum Challenges unlocked and completed.">???x quantumed</div></td>
+                        <td><div id="braveMilestone5" class="achievement achievementlocked" ach-tooltip="Reward: You keep your Paired Challenges.">???x quantumed</div></td>
+                        <td><div id="braveMilestone6" class="achievement achievementlocked" ach-tooltip="Reward: Start Ghostifies with Replicants unlocked.">???x quantumed</div></td>
+                        <td><div id="braveMilestone7" class="achievement achievementlocked" ach-tooltip="Reward: You gain 1% of quarks you will gain per second.">???x quantumed</div></td>
+                        <td><div id="braveMilestone8" class="achievement achievementlocked" ach-tooltip="Reward: Quantum doesn’t lose 1% of your Replicants.">???x quantumed</div></td>
+                    </tr>
+                    <tr id="braveRow2">
+                        <td><div id="braveMilestone9" class="achievement achievementlocked" ach-tooltip="Reward: Start Ghostifies with Second Emperor Dimensions unlocked.">???x quantumed</div></td>
+                        <td><div id="braveMilestone10" class="achievement achievementlocked" ach-tooltip="Reward: Start Ghostifies with Fourth Emperor Dimensions unlocked.">???x quantumed</div></td>
+                        <td><div id="braveMilestone11" class="achievement achievementlocked" ach-tooltip="Reward: Start Ghostifies with Sixth Emperor Dimensions unlocked.">???x quantumed</div></td>
+                        <td><div id="braveMilestone12" class="achievement achievementlocked" ach-tooltip="Reward: Start Ghostifies with Eighth Emperor Dimensions unlocked.">???x quantumed</div></td>
+                        <td><div id="braveMilestone13" class="achievement achievementlocked" ach-tooltip="Reward: Start Ghostifies with Nanofield unlocked.">???x quantumed</div></td>
+                        <td><div id="braveMilestone14" class="achievement achievementlocked" ach-tooltip="Reward: Start Ghostifies with Tree of Decay unlocked.">???x quantumed</div></td>
+                        <td><div id="braveMilestone15" class="achievement achievementlocked" ach-tooltip="Reward: Start Ghostifies with Big Rip unlocked.">???x quantumed</div></td>
+                        <td><div id="braveMilestone16" class="achievement achievementlocked" ach-tooltip="Reward: Start Ghostifies with Break Eternity unlocked.">???x quantumed</div></td>
                     </tr>
                 </table>
             </div>
@@ -4638,6 +4658,91 @@
 							Is active: <input type="checkbox"></input>
 						</div></td>
 					</tr>
+					<tr>
+						<td><div class="autoBuyerDiv" style="display:block">
+							<b>Auto-Unstabilize Rotate Ghost</b><br>
+							Power consumption: 1<br>
+							Is active: <input type="checkbox"></input>
+						</div></td>
+						<td><div class="autoBuyerDiv" style="display:block">
+							<b>Auto-QK Multi Upgrade Ghost</b><br>
+							Power consumption: 1<br>
+							Is active: <input type="checkbox"></input>
+						</div></td>
+						<td><div class="autoBuyerDiv" style="display:block">
+							<b>Auto-Electron Upgrade Ghost</b><br>
+							Power consumption: 1<br>
+							Is active: <input type="checkbox"></input>
+						</div></td>
+					</tr>
+					<tr>
+						<td><div class="autoBuyerDiv" style="display:block">
+							<b>Auto-Food Buy Ghost</b><br>
+							Power consumption: 1<br>
+							Is active: <input type="checkbox"></input>
+						</div></td>
+						<td><div class="autoBuyerDiv" style="display:block">
+							<b>Auto-Replicant Ghost</b><br>
+							Power consumption: 1<br>
+							Is active: <input type="checkbox"></input>
+						</div></td>
+						<td><div class="autoBuyerDiv" style="display:block">
+							<b>Auto-Replicant Switch Ghost</b><br>
+							Power consumption: 1<br>
+							Is active: <input type="checkbox"></input>
+						</div></td>
+					</tr>
+					<tr>
+						<td><div class="autoBuyerDiv" style="display:block">
+							<b>Auto-Limit Upgrade Ghost</b><br>
+							Power consumption: 1<br>
+							Is active: <input type="checkbox"></input>
+						</div></td>
+						<td><div class="autoBuyerDiv" style="display:block">
+							<b>Auto-Preon Generate Ghost</b><br>
+							Power consumption: 1<br>
+							Is active: <input type="checkbox"></input>
+						</div></td>
+						<td><div class="autoBuyerDiv" style="display:block">
+							<b>Auto-Branch Upgrade Ghost</b><br>
+							Power consumption: 1<br>
+							Is active: <input type="checkbox"></input>
+						</div></td>
+					</tr>
+					<tr>
+						<td><div class="autoBuyerDiv" style="display:block">
+							<b>Auto-Tree Upgrade Ghost</b><br>
+							Power consumption: 1<br>
+							Is active: <input type="checkbox"></input>
+						</div></td>
+						<td><div class="autoBuyerDiv" style="display:block">
+							<b>Auto-Big Rip Ghost</b><br>
+							Power consumption: 1<br>
+							Is active: <input type="checkbox"></input>
+						</div></td>
+						<td><div class="autoBuyerDiv" style="display:block">
+							<b>Auto-Big Rip Modes Ghost</b><br>
+							Power consumption: 1<br>
+							Is active: <input type="checkbox"></input>
+						</div></td>
+					</tr>
+					<tr>
+						<td><div class="autoBuyerDiv" style="display:block">
+							<b>Auto-BE Multi Upgrade Ghost</b><br>
+							Power consumption: 1<br>
+							Is active: <input type="checkbox"></input>
+						</div></td>
+						<td><div class="autoBuyerDiv" style="display:block">
+							<b>Auto-Ghostify Ghost</b><br>
+							Power consumption: 1<br>
+							Is active: <input type="checkbox"></input>
+						</div></td>
+						<td><div class="autoBuyerDiv" style="display:block">
+							<b>Auto-Ghostify Modes Ghost</b><br>
+							Power consumption: 1<br>
+							Is active: <input type="checkbox"></input>
+						</div></td>
+					</tr>
 				</table>
 			</div>
 			<div id="photons" class="ghostifytab">
@@ -4718,7 +4823,7 @@
 	</div>
     <div class="popup optionmenu" id="visibilityoptions">
         <button class="closebtn storebtn" onclick="closeToolTip()">&times;</button>
-        <button id="newsbtn" class="storebtn" style="color:black; width: 200px; height: 40px; font-size: 12px"></button>
+        <button id="newsbtn" class="storebtn" style="color:black; width: 200px; height: 40px; font-size: 11px"></button>
         <button id="progressBarBtn" onclick="toggleProgressBar()" class="storebtn" style="color:black; width: 200px; height: 40px; font-size: 11px"></button>
         <button id="hideRepresentation" onclick="toggleRepresentation()" class="storebtn" style="color:black; width: 200px; height: 40px; font-size: 11px"></button>
         <button id="showAchRowNums" onclick="toggleAchRowNums()" class="storebtn" style="color:black; width: 200px; height: 40px; font-size: 11px"></button>

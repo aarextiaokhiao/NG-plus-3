@@ -1802,9 +1802,16 @@ function toggleChallengeRetry() {
 }
 
 document.getElementById("news").onclick = function () {
-    if (document.getElementById("news").textContent === "Click this to unlock a secret achievement.") {
-        giveAchievement("Real news")
-    }
+	if (document.getElementById("news").textContent === "Click this to unlock a secret achievement.") giveAchievement("Real news")
+	if (document.getElementById("news").textContent === "If you are a ghost, try to click me!" && ghostified && (player.options.secrets.ghostlyNews !== undefined ? player.options.secrets.ghostlyNews !== undefined : false)) {
+		if (player.options.secrets === undefined) {
+			player.options.secrets = {}
+			document.getElementById("secretoptionsbtn").style.display = ""
+		}
+		player.options.secrets.ghostlyNews = false
+		document.getElementById("ghostlynewsbtn").style.display = ""
+		$.notify("You unlocked ghostly news ticker option!", "success")
+	}
 };
 
 document.getElementById("secretstudy").onclick = function () {
@@ -6846,7 +6853,10 @@ function updateEPminpeak(diff) {
 function gameLoop(diff) {
     var thisUpdate = new Date().getTime();
     if (thisUpdate - player.lastUpdate >= 21600000) giveAchievement("Don't you dare to sleep")
-    if (typeof diff === 'undefined') var diff = Math.min(thisUpdate - player.lastUpdate, 21600000);
+    if (typeof diff === 'undefined') {
+        if (player.options.secrets ? player.options.secrets.ghostlyNews : false) nextGhostlyNewsTickerMsg()
+        var diff = Math.min(thisUpdate - player.lastUpdate, 21600000);
+    }
     diff = diff / 100;
     if (diff < 0) diff = 1;
     if (player.version === 12.2 && typeof player.shameLevel === 'number') diff *= Math.min(Math.pow(10, player.shameLevel), 1);

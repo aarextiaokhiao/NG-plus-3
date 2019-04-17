@@ -4,6 +4,9 @@ body {
 .container, .statstab, b, input {
     font-family:'Inconsolata', monospace !important
 }
+#ghostlyNewsTicker b {
+    font-family:'Typewriter' !important
+}
 #container div {
     color: #e5e5e5
 }

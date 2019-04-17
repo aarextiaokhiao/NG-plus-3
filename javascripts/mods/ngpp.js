@@ -829,10 +829,10 @@ function quantumReset(force, auto, challid, bigRip, implode=false) {
 					player.autoEterMode = data.eternity.mode
 				}
 				loadAutoBuyerSettings()
-				if (data.crunch.mode == "amount") {
+				if (player.autoCrunchMode == "amount") {
 					document.getElementById("togglecrunchmode").textContent = "Auto crunch mode: amount"
 					document.getElementById("limittext").textContent = "Amount of IP to wait until reset:"
-				} else if (data.crunch.mode == "time") {
+				} else if (player.autoCrunchMode == "time") {
 					document.getElementById("togglecrunchmode").textContent = "Auto crunch mode: time"
 					document.getElementById("limittext").textContent = "Seconds between crunches:"
 				} else {
