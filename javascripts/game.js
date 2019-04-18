@@ -544,7 +544,8 @@ function updateNewPlayer(reseted) {
                 generationGain: 1,
                 multPower: 1,
                 upgrades: []
-            }
+            },
+            automatorGhosts: setupAutomaticGhostsData()
         }
         player.options.animations.ghostify = true
     }

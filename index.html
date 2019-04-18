@@ -3803,7 +3803,7 @@
                         </td>
                         <td>
                             <div class="autoBuyerDiv" id="autoBuyerGalaxies">
-                                <div>Automatic Galaxies</div>
+                                <div>Automator Galaxies</div>
                                 <button class="autobuyerbtn" id="buyerBtnGalaxies">46% smaller interval<br>Cost: 2 points</button>
                                 <div style="font-size: 80%"id="intervalGalaxies">Current interval: 30 seconds</div>
                                 <span>Max Galaxies:</span>
@@ -4092,7 +4092,7 @@
                     </td>
                     <td>
                         <div class="autoBuyerDiv" id="autoBuyerGalSac">
-                            <div>Automatic Galactic Sacrifice</div>
+                            <div>Automator Galactic Sacrifice</div>
                             <button class="autobuyerbtn" id="buyerBtnGalSac"></button>
                             <div style="font-size: 80%"id="intervalGalSac"></div>
                             <div><span>Galactic sacrifice when GP gain is over:</span>
@@ -4598,7 +4598,7 @@
 			<table class="table" align="center" style="margin: auto">
 				<tr>
 					<td><button class="secondarytabbtn" onclick="showGhostifyTab('neutrinos')">Neutrinos</button></td>
-					<td><button class="secondarytabbtn" onclick="showGhostifyTab('automaticghosts')">Automatic Ghosts</button></td>
+					<td><button class="secondarytabbtn" onclick="showGhostifyTab('automaticghosts')">Automator Ghosts</button></td>
 					<td><button class="secondarytabbtn" onclick="showGhostifyTab('photons')">Photons</button></td>
 				</tr>
 			</table>
@@ -4635,9 +4635,9 @@
 			<div id="automaticghosts" class="ghostifytab">
 				<table class='qtable'>
 					<tr>
-						<td>You have <span id="automaticGhostsAmount" style="font-size:35px">1</span> Automatic Ghosts.</td>
-						<td>You have <span id="automaticPower" style="font-size:35px">1.0</span> Automatic Power.<br>They are consuming <span class="neutrinos" id="consumedPower" style="font-size:35px">0.0</span> Automatic Power.<br><b id="tooMuchPowerConsumed">WARNING: TOO MUCH POWER CONSUMED!</b></td>
-						<td>Next Automatic Ghost at <span id="nextAutomaticGhost"style="font-size:35px">?.?</span>.</td>
+						<td>You have <span id="automatorGhostsAmount" style="font-size:35px">1</span> Automator Ghosts.</td>
+						<td>You have <span id="automaticPower" style="font-size:35px">1.0</span> Automator Power.<br>They are consuming <span id="consumedPower" style="font-size:35px">0.0</span> Automator Power.<br><b id="tooMuchPowerConsumed">WARNING: TOO MANY POWER CONSUMED!</b></td>
+						<td>Next Automator Ghost at <span id="nextAutomatorGhost"style="font-size:35px">?.?</span>.</td>
 					</tr>
 				</table>
 				<table style="margin: 0 auto">
@@ -4645,102 +4645,102 @@
 						<td><div class="autoBuyerDiv" style="display:block">
 							<b>Auto-Red Unstabilize Ghost</b><br>
 							Power consumption: 1<br>
-							Is active: <input type="checkbox"></input>
+							Is active: <input id="isAutoGhostOn1" type="checkbox" onchange="toggleAutoGhost(1)"></input>
 						</div></td>
 						<td><div class="autoBuyerDiv" style="display:block">
 							<b>Auto-Green Unstabilize Ghost</b><br>
 							Power consumption: 1<br>
-							Is active: <input type="checkbox"></input>
+							Is active: <input id="isAutoGhostOn2" type="checkbox" onchange="toggleAutoGhost(2)"></input>
 						</div></td>
 						<td><div class="autoBuyerDiv" style="display:block">
 							<b>Auto-Blue Unstabilize Ghost</b><br>
 							Power consumption: 1<br>
-							Is active: <input type="checkbox"></input>
+							Is active: <input id="isAutoGhostOn3" type="checkbox" onchange="toggleAutoGhost(3)"></input>
 						</div></td>
 					</tr>
 					<tr>
 						<td><div class="autoBuyerDiv" style="display:block">
 							<b>Auto-Unstabilize Rotate Ghost</b><br>
 							Power consumption: 1<br>
-							Is active: <input type="checkbox"></input>
+							Is active: <input id="isAutoGhostOn4" type="checkbox" onchange="toggleAutoGhost(4)"></input>
 						</div></td>
 						<td><div class="autoBuyerDiv" style="display:block">
 							<b>Auto-QK Multi Upgrade Ghost</b><br>
 							Power consumption: 1<br>
-							Is active: <input type="checkbox"></input>
+							Is active: <input id="isAutoGhostOn5" type="checkbox" onchange="toggleAutoGhost(5)"></input>
 						</div></td>
 						<td><div class="autoBuyerDiv" style="display:block">
 							<b>Auto-Electron Upgrade Ghost</b><br>
 							Power consumption: 1<br>
-							Is active: <input type="checkbox"></input>
+							Is active: <input id="isAutoGhostOn6" type="checkbox" onchange="toggleAutoGhost(6)"></input>
 						</div></td>
 					</tr>
 					<tr>
 						<td><div class="autoBuyerDiv" style="display:block">
 							<b>Auto-Food Buy Ghost</b><br>
 							Power consumption: 1<br>
-							Is active: <input type="checkbox"></input>
+							Is active: <input id="isAutoGhostOn7" type="checkbox" onchange="toggleAutoGhost(7)"></input>
 						</div></td>
 						<td><div class="autoBuyerDiv" style="display:block">
 							<b>Auto-Replicant Ghost</b><br>
 							Power consumption: 1<br>
-							Is active: <input type="checkbox"></input>
+							Is active: <input id="isAutoGhostOn8" type="checkbox" onchange="toggleAutoGhost(8)"></input>
 						</div></td>
 						<td><div class="autoBuyerDiv" style="display:block">
 							<b>Auto-Replicant Switch Ghost</b><br>
 							Power consumption: 1<br>
-							Is active: <input type="checkbox"></input>
+							Is active: <input id="isAutoGhostOn9" type="checkbox" onchange="toggleAutoGhost(9)"></input>
 						</div></td>
 					</tr>
 					<tr>
 						<td><div class="autoBuyerDiv" style="display:block">
 							<b>Auto-Limit Upgrade Ghost</b><br>
 							Power consumption: 1<br>
-							Is active: <input type="checkbox"></input>
+							Is active: <input id="isAutoGhostOn10" type="checkbox" onchange="toggleAutoGhost(10)"></input>
 						</div></td>
 						<td><div class="autoBuyerDiv" style="display:block">
 							<b>Auto-Preon Generate Ghost</b><br>
 							Power consumption: 1<br>
-							Is active: <input type="checkbox"></input>
+							Is active: <input id="isAutoGhostOn11" type="checkbox" onchange="toggleAutoGhost(11)"></input>
 						</div></td>
 						<td><div class="autoBuyerDiv" style="display:block">
 							<b>Auto-Branch Upgrade Ghost</b><br>
 							Power consumption: 1<br>
-							Is active: <input type="checkbox"></input>
+							Is active: <input id="isAutoGhostOn12" type="checkbox" onchange="toggleAutoGhost(12)"></input>
 						</div></td>
 					</tr>
 					<tr>
 						<td><div class="autoBuyerDiv" style="display:block">
 							<b>Auto-Tree Upgrade Ghost</b><br>
 							Power consumption: 1<br>
-							Is active: <input type="checkbox"></input>
+							Is active: <input id="isAutoGhostOn13" type="checkbox" onchange="toggleAutoGhost(13)"></input>
 						</div></td>
 						<td><div class="autoBuyerDiv" style="display:block">
 							<b>Auto-Big Rip Ghost</b><br>
 							Power consumption: 1<br>
-							Is active: <input type="checkbox"></input>
+							Is active: <input id="isAutoGhostOn14" type="checkbox" onchange="toggleAutoGhost(14)"></input>
 						</div></td>
 						<td><div class="autoBuyerDiv" style="display:block">
 							<b>Auto-Big Rip Modes Ghost</b><br>
 							Power consumption: 1<br>
-							Is active: <input type="checkbox"></input>
+							Is active: <input id="isAutoGhostOn15" type="checkbox" onchange="toggleAutoGhost(15)"></input>
 						</div></td>
 					</tr>
 					<tr>
 						<td><div class="autoBuyerDiv" style="display:block">
 							<b>Auto-BE Multi Upgrade Ghost</b><br>
 							Power consumption: 1<br>
-							Is active: <input type="checkbox"></input>
+							Is active: <input id="isAutoGhostOn16" type="checkbox" onchange="toggleAutoGhost(16)"></input>
 						</div></td>
 						<td><div class="autoBuyerDiv" style="display:block">
 							<b>Auto-Ghostify Ghost</b><br>
 							Power consumption: 1<br>
-							Is active: <input type="checkbox"></input>
+							Is active: <input id="isAutoGhostOn17" type="checkbox" onchange="toggleAutoGhost(17)"></input>
 						</div></td>
 						<td><div class="autoBuyerDiv" style="display:block">
 							<b>Auto-Ghostify Modes Ghost</b><br>
 							Power consumption: 1<br>
-							Is active: <input type="checkbox"></input>
+							Is active: <input id="isAutoGhostOn18" type="checkbox" onchange="toggleAutoGhost(18)"></input>
 						</div></td>
 					</tr>
 				</table>

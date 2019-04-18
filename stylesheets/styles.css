@@ -2135,6 +2135,19 @@ br {
 	transition-duration: 0.5s
 }
 
+.brCompleted {
+	background: linear-gradient(#0c001e, #3a003f);
+	border: 2px solid transparent;
+	font-family: Typewriter;
+	border-radius: 10px;
+	transition-duration: 0.2s;
+	animation: ghostifytext 4s linear infinite
+}
+
+.brCompleted[ach-tooltip]:before {
+	text-shadow: none !important
+}
+
 #tooMuchPowerConsumed {
 	color: #ff0000
 }

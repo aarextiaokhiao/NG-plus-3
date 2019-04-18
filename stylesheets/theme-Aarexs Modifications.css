@@ -502,7 +502,8 @@ strong { color: #0072e5 }
 #spaceShards {
 	color: #5be567 !important
 }
-.ghostifybtn {
+.ghostifybtn, .brCompleted {
+	border-radius: 0px;
 	border-color: transparent !important
 }
 .ghostifybtn:hover {

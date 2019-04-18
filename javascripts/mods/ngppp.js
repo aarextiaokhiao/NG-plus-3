@@ -1339,12 +1339,17 @@ function updatePCCompletions() {
 	var tempcounter=0
 	var ranking=0
 	for (var c1=2;c1<9;c1++) for (var c2=1;c2<c1;c2++) if (player.quantum.pairedChallenges.completions[c2*10+c1]) {
+		if (c2*10+c1==68 && ghostified) {
+			tempcounter++
+			ranking+=2
+		}
 		tempcounter++
 		ranking+=Math.sqrt(5-player.quantum.pairedChallenges.completions[c2*10+c1])
 	}
 	ranking=ranking/56*100
 	if (tempcounter>0) document.getElementById("pccompletionsbtn").style.display = "inline-block"
 	if (tempcounter>23) giveAchievement("The Challenging Day")
+	document.getElementById("upcc").textContent = tempcounter
 	document.getElementById("pccranking").textContent = ranking > 99.9 ? 100 : ranking.toFixed(1)
 	for (r=1;r<9;r++) for (c=1;c<9;c++) if (r!=c) {
 		var divid = "pc" + (r*10+c)
@@ -1356,6 +1361,11 @@ function updatePCCompletions() {
 			document.getElementById(divid).className = "pc" + comp + "completed"
 			document.getElementById(divid).setAttribute('ach-tooltip', 'Fastest time: ' + (player.quantum.pairedChallenges.fastest[pcid] ? timeDisplayShort(player.quantum.pairedChallenges.fastest[pcid]) : "N/A"))
 			if (divid=="pc38") giveAchievement("Hardly marked")
+		} else if (pcid == 68 && ghostified) {
+			document.getElementById(divid).textContent = "BR"
+			document.getElementById(divid).className = "brCompleted"
+			document.getElementById(divid).removeAttribute('ach-tooltip')
+			document.getElementById(divid).setAttribute('ach-tooltip', 'Fastest time from start of Ghostify: ' + timeDisplayShort(player.ghostify.best))
 		} else {
 			document.getElementById(divid).textContent = ""
 			document.getElementById(divid).className = ""
@@ -2784,4 +2794,32 @@ function updateGhostifyTabs() {
 
 function getNeutrinoGain() {
 	return Decimal.pow(2, player.ghostify.neutrinos.multPower - 1)
+}
+
+function setupAutomaticGhostsData() {
+	var data = {power: 1, ghosts: 3}
+	for (var ghost=1; ghost<19; ghost++) data[ghost] = {on: false}
+	return data
+}
+
+var powerConsumed
+function updateAutoGhosts(load) {
+	document.getElementById("automatorGhostsAmount").textContent = player.ghostify.automatorGhosts.ghosts
+	powerConsumed = 0
+	for (var ghost=1; ghost<19; ghost++) {
+		if (load) document.getElementById("isAutoGhostOn" + ghost).checked = player.ghostify.automatorGhosts[ghost].on
+		if (player.ghostify.automatorGhosts[ghost].on) powerConsumed++
+	}
+	document.getElementById("consumedPower").textContent = powerConsumed.toFixed(1)
+	isAutoGhostsSafe = player.ghostify.automatorGhosts.power >= powerConsumed
+	document.getElementById("tooMuchPowerConsumed").style.display = isAutoGhostsSafe ? "none" : ""
+}
+
+function toggleAutoGhost(id) {
+	player.ghostify.automatorGhosts[id].on = document.getElementById("isAutoGhostOn" + id).checked
+	updateAutoGhosts()
+}
+
+function isAutoGhostActive(id) {
+	if (player.masterystudies !== undefined) return isAutoGhostsSafe && player.ghostify.automatorGhosts[id].active
 }

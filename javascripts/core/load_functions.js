@@ -798,7 +798,8 @@ if (player.version < 5) {
                       generationGain: 1,
                       multPower: 1,
                       upgrades: []
-                  }
+                  },
+                  automatorGhosts: setupAutomaticGhostsData()
               }
               player.options.animations.ghostify = true
           }
@@ -1145,7 +1146,8 @@ if (player.version < 5) {
               generationGain: 1,
               multPower: 1,
               upgrades: []
-          }
+          },
+          automatorGhosts: setupAutomaticGhostsData()
       }
       player.options.animations.ghostify = true
       player.aarexModifications.newGame3PlusVersion = 2
@@ -1185,7 +1187,10 @@ if (player.version < 5) {
           player.ghostify.time = player.totalTimePlayed
           player.ghostify.timeReset = true
       }
+      if (player.ghostify.automatorGhosts === undefined) player.ghostify.automatorGhosts = setupAutomaticGhostsData()
       if (player.options.animations.ghostify === undefined) player.options.animations.ghostify = true
+
+      updateAutoGhosts(true)
   }
   if (player.aarexModifications.newGame3PlusVersion==undefined) {
       colorBoosts={
