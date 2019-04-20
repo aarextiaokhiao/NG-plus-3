@@ -2452,7 +2452,7 @@ function ghostifyReset(implode, gain, amount) {
 			},
 			electrons: {
 				amount: new Decimal(0),
-				sacGals: new Decimal(0),
+				sacGals: 0,
 				mult: 2,
 				rebuyables: [0,0,0,0]
 			},
@@ -2531,9 +2531,9 @@ function ghostifyReset(implode, gain, amount) {
 				charge: new Decimal(0),
 				energy: new Decimal(0),
 				antienergy: new Decimal(0),
-				power: new Decimal(0),
+				power: 0,
 				powerThreshold: new Decimal(50),
-				rewards: new Decimal(0),
+				rewards: 0,
 				producingCharge: false
 			},
 			reachedInfQK: false,
