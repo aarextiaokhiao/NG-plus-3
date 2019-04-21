@@ -83,6 +83,7 @@ function getMetaShiftRequirement() {
 	if (player.masterystudies != undefined) if (player.masterystudies.includes("t312")) data.mult -= 1
 	data.amount += data.mult * Math.max(player.meta.resets - 4, 0)
 	if (player.masterystudies != undefined) if (player.masterystudies.includes("d13")) data.amount -= getTreeUpgradeEffect(1)
+	if (ghostified) if (player.ghostify.neutrinos.upgrades.includes(1)) data.amount -= getNU1Pow()
 
 	data.scalingStart = inQC4 ? 55 : 15
 	if (player.meta.resets >= data.scalingStart) {
@@ -95,13 +96,23 @@ function getMetaShiftRequirement() {
 
 function metaBoost() {
 	let req = getMetaShiftRequirement()
+	let isNU1ReductionActive = ghostified ? player.ghostify.neutrinos.upgrades.includes(1) && !player.quantum.bigRip.active : false
 	if (player.meta[req.tier].bought<Math.floor(req.amount)) return
 	if (speedrunMilestonesReached>26 && req.tier>7) {
-		if (player.meta.resets<=req.scalingStart) {
-			player.meta.resets=Math.min(player.meta.resets+Math.floor((player.meta[8].bought-req.amount)/req.mult)+1,req.scalingStart)
-			if (player.meta.resets==req.scalingStart) req = getMetaShiftRequirement()
+		if (isNU1ReductionActive) {
+			if (player.meta.resets<=req.scalingStart) {
+				player.meta.resets=Math.min(player.meta.resets+Math.floor((player.meta[8].bought-req.amount)/(req.mult+1))+1,req.scalingStart)
+				if (player.meta.resets==req.scalingStart) req = getMetaShiftRequirement()
+			}
+			if (player.meta.resets>=req.scalingStart&&player.meta.resets<100) player.meta.resets=Math.min(player.meta.resets+Math.floor((player.meta[8].bought-req.amount)/(req.mult+1))+1,100)
+			if (player.meta.resets>99) player.meta.resets+=Math.floor((player.meta[8].bought-req.amount)/req.mult)+1
+		} else {
+			if (player.meta.resets<=req.scalingStart) {
+				player.meta.resets=Math.min(player.meta.resets+Math.floor((player.meta[8].bought-req.amount)/req.mult)+1,req.scalingStart)
+				if (player.meta.resets==req.scalingStart) req = getMetaShiftRequirement()
+			}
+			if (player.meta.resets>=req.scalingStart) player.meta.resets+=Math.floor((player.meta[8].bought-req.amount)/req.mult)+1
 		}
-		if (player.meta.resets>=req.scalingStart) player.meta.resets+=Math.floor((player.meta[8].bought-req.amount)/req.mult)+1
 		if (inQC(4) && player.meta.resets > 54) if (player.meta[8].bought>=Math.floor(getMetaShiftRequirement().amount)) player.meta.resets++
 	} else player.meta.resets++
 	if (player.meta.resets>9) giveAchievement("Meta-boosting to the max")

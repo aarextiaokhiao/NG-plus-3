@@ -665,7 +665,7 @@ function updateColorCharge() {
 }
 
 function assignQuark(color) {
-	if (color!="r"&&player.quantum.times<2) if (!confirm("It is recommended to assign your first quarks to red. Are you sure you want to do that?")) return
+	if (color!="r"&&player.quantum.times<2&&!ghostified) if (!confirm("It is recommended to assign your first quarks to red. Are you sure you want to do that?")) return
 	player.quantum.usedQuarks[color]=player.quantum.usedQuarks[color].add(player.quantum.quarks)
 	player.quantum.quarks=new Decimal(0)
 	document.getElementById("quarks").innerHTML="You have <b class='QKAmount'>0</b> quarks."
@@ -752,7 +752,7 @@ function toggleAutoTT() {
 //v1.8
 function doAutoMetaTick() {
 	if (!player.masterystudies) return
-	if (player.autoEterOptions.rebuyupg) {
+	if (player.autoEterOptions.rebuyupg && speedrunMilestonesReached > 6) {
 		if (speedrunMilestonesReached > 25) maxAllDilUpgs()
 		else {
 			for (i=0;i<1;i++) {
@@ -763,7 +763,7 @@ function doAutoMetaTick() {
 			}
 		}
 	}
-	for (dim=8;dim>0;dim--) if (player.autoEterOptions["md"+dim]) buyMaxMetaDimension(dim)
+	for (dim=8;dim>0;dim--) if (player.autoEterOptions["md"+dim] && speedrunMilestonesReached > 5+dim) buyMaxMetaDimension(dim)
 	if (player.autoEterOptions.metaboost) metaBoost()
 }
 
@@ -860,7 +860,7 @@ function buyElectronUpg(u) {
 
 //v1.9
 function buyQuarkMult(name) {
-	var cost=Decimal.pow(100,player.quantum.multPower[name]).times(500)
+	var cost=Decimal.pow(100,player.quantum.multPower[name]+Math.max(player.quantum.multPower[name]-467,0)).times(500)
 	if (player.quantum.gluons[name].lt(cost)) return
 	player.quantum.gluons[name]=player.quantum.gluons[name].sub(cost).round()
 	player.quantum.multPower[name]++
@@ -2789,11 +2789,45 @@ function updateGhostifyTabs() {
 		document.getElementById("tauNeutrinos").textContent=shortenDimensions(player.ghostify.neutrinos.tau)
 		document.getElementById("preNeutrinoBoost1").textContent=getDilExp("neutrinos").toFixed(2)
 		document.getElementById("neutrinoBoost1").textContent=getDilExp().toFixed(2)
+		document.getElementById("neutrinoUpg1Pow").textContent=getNU1Pow()
+		for (var u=1; u<2; u++) {
+			if (player.ghostify.neutrinos.upgrades.includes(u)) document.getElementById("neutrinoUpg" + u).className = "gluonupgradebought neutrinoupg"
+			else if (player.ghostify.neutrinos.electron.add(player.ghostify.neutrinos.mu).round().add(player.ghostify.neutrinos.tau).round().gte(neutrinoUpgCosts[u])) document.getElementById("neutrinoUpg" + u).className = "gluonupgrade neutrinoupg"
+			else document.getElementById("neutrinoUpg" + u).className = "gluonupgrade unavailablebtn"
+		}
 	}
 }
 
 function getNeutrinoGain() {
 	return Decimal.pow(2, player.ghostify.neutrinos.multPower - 1)
+}
+
+function getNeutrinoRanks() {
+	return neutrinoRanks
+}
+
+var neutrinoUpgCosts = [null, 1e6]
+function buyNeutrinoUpg(id) {
+	if (!player.ghostify.neutrinos.electron.add(player.ghostify.neutrinos.mu).round().add(player.ghostify.neutrinos.tau).round().gte(neutrinoUpgCosts[id])) return
+	player.ghostify.neutrinos.upgrades.push(id)
+	var generations = ["electron", "mu", "tau"]
+	var neutrinoRanks = []
+	var left = new Decimal(neutrinoUpgCosts[id])
+	for (var r=1; r<4; r++) {
+		var generationChosen = ""
+		for (var g=0; g<3; g++) if (!neutrinoRanks.includes(generations[g]) && (generationChosen == "" ? true : player.ghostify.neutrinos[generations[g]].gt(player.ghostify.neutrinos[generationChosen]))) generationChosen = generations[g]
+		neutrinoRanks.push(generationChosen)
+		if (player.ghostify.neutrinos[generationChosen].gt(left)) {
+			player.ghostify.neutrinos[generationChosen] = player.ghostify.neutrinos[generationChosen].sub(left).round()
+			return
+		}
+		left = left.sub(player.ghostify.neutrinos[generationChosen]).round()
+		player.ghostify.neutrinos[generationChosen] = new Decimal(0)
+	}
+}
+
+function getNU1Pow() {
+	return Math.max(100 - (player.quantum.bigRip.active ? 0 : player.meta.resets), 1)
 }
 
 function setupAutomaticGhostsData() {
