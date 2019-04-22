@@ -201,14 +201,19 @@ newsArray = [//always true
 ["If you want to time travel, you need to learn how to pass time first. To do that, you need to become a ghost too.", "player.achievements.includes('r22') && player.masterystudies !== undefined", "am46"],
 ["If you are a ghost, try to click me!", "player.achievements.includes('r22') && player.masterystudies !== undefined", "am47"],
 ["Soon(TM)", "player.achievements.includes('r22') && (player.masterystudies !== undefined ? player.quantum.bigRip.bestAntimatter.gte(Decimal.pow(10, 155887875)) : false)", "am48"],
-/*NEXT ID: am46*/
+["Reality actually contains everything (including celestials).", "player.achievements.includes('r22') && player.masterystudies !== undefined", "am49"],
+/*NEXT ID: am50*/
 
 //Ghostly news ticker messages
 ["Every ghostly antimatter is safe.", true, "gn1"],
 ["Are you a ghost and want to use computers? Get Ghostified Hands! This stuff makes your hands feel like a human again! To order, you need to pay Ghost Particles and pass through your universe.", true, "gn2"],
 ["Ghosts can't actually pass through walls because they're stuck in space.", true, "gn3"],
 ['"August is here already" - Aarex', true, "gn4"],
-["Ghostly news tickers are dead... they also serve no purpose... right..?", "player.newsArray.includes('am32')", "gn5"]];}
+["Ghostly news tickers are dead... they also serve no purpose... right..?", "player.newsArray.includes('am32')", "gn5"],
+["Kee-hee-hee!", true, "gn6"],
+["Ghosts can't die. So why humans can't be immortal?", true, "gn6"],
+["Because neutrinos are ghostly particles, you are made of ghost particles and neutrinos.", true, "gn8"],
+["How do you play this after you became a real ghost?", true, "gn9"]];}
 
 document.addEventListener("visibilitychange", function() {if (!document.hidden) {scrollNextMessage();}}, false);
 var scrollTimeouts = [];
