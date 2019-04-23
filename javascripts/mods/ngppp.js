@@ -1888,7 +1888,7 @@ function buyBigRipUpg(id) {
 }
 
 function tweakBigRip(id) {
-	if (id === undefined) if (!isBigRipUpgradeActive(id)) return
+	if (id !== undefined) if (!isBigRipUpgradeActive(id)) return
 	if (id == 2 || id === undefined) {
 		for (var ec=1;ec<15;ec++) player.eternityChalls["eterc"+ec] = 5
 		player.eternities = 1e5
