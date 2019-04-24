@@ -1877,7 +1877,7 @@ function getSpaceShardsGain() {
 	return ret.floor()
 }
 
-let bigRipUpgCosts = [0, 2, 3, 5, 20, 30, 45, 60, 100, 150, 1200, 1e10, 3e14, 1e17, 3e18, 3e20, 5e22, 1e33]
+let bigRipUpgCosts = [0, 2, 3, 5, 20, 30, 45, 60, 150, 300, 2000, 1e10, 3e14, 1e17, 3e18, 3e20, 5e22, 1e33]
 function buyBigRipUpg(id) {
 	if (player.quantum.bigRip.spaceShards.lt(bigRipUpgCosts[id])||player.quantum.bigRip.upgrades.includes(id)) return
 	player.quantum.bigRip.spaceShards=player.quantum.bigRip.spaceShards.sub(bigRipUpgCosts[id]).round()
