@@ -71,7 +71,10 @@
         </div>
         <div style="position: relative">
             <div class="GHP" id="ghostparticles">You have <span id='GHPAmount'>0</span> Ghost Particles.</div>
-            <button id="ghostifybtn" class="ghostifybtn" onclick="ghostify()">My life in this universe is almost done... I want to become a ghost.</button>
+            <button id="ghostifybtn" class="ghostifybtn" onclick="ghostify()">
+                <div id="ghostifybtnFlavor" class="hideEmpty"></div>
+                <div id="GHPGain" class="hideEmpty"></div>
+            </button>
         </div>
         <div id='quantumBlock' style='height:120px'></div>
         <div id="matter"></div>

@@ -546,7 +546,7 @@ button {
 	font-size: 11px
 }
 
-.GHPAmount {
+#GHPAmount {
 	font-weight: bold;
 }
 
@@ -717,6 +717,10 @@ button {
 	font-weight: bold;
 	border-radius: 4px;
 	transition-duration: 0.2s;
+	animation: ghostifytext 4s linear infinite
+}
+
+.ghostifybtn div {
 	animation: ghostifytext 4s linear infinite
 }
 

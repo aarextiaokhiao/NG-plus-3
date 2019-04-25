@@ -7369,6 +7369,8 @@ function gameLoop(diff) {
     document.getElementById("quantumbtnRate").textContent = showGain == "QK" ? shortenMoney(currentQKmin)+" QK/min" : ""
     var showQKPeakValue = QKminpeakValue.lt(1e30)||player.options.theme=="Aarex's Modifications"
     document.getElementById("quantumbtnPeak").textContent = showGain == "QK" ? (showQKPeakValue ? "" : "Peaked at ") + shortenMoney(QKminpeak)+" QK/min" + (showQKPeakValue ? " at " + shortenDimensions(QKminpeakValue) + " QK" : "") : ""
+    document.getElementById("ghostifybtnFlavor").textContent = (ghostified ? "" : "This broken universe will be done... ") + "I need to become a ghost."
+    document.getElementById("GHPGain").textContent = ghostified ? "Gain " + shortenDimensions(getGHPGain()) + " Ghost Particles." : ""
     updateMoney();
     updateCoinPerSec();
     updateDimensions()
