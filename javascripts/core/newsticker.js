@@ -202,7 +202,14 @@ newsArray = [//always true
 ["If you are a ghost, try to click me!", "player.achievements.includes('r22') && player.masterystudies !== undefined", "am47"],
 ["Soon(TM)", "player.achievements.includes('r22') && (player.masterystudies !== undefined ? player.quantum.bigRip.bestAntimatter.gte(Decimal.pow(10, 155887875)) : false)", "am48"],
 ["Reality actually contains everything (including celestials).", "player.achievements.includes('r22') && player.masterystudies !== undefined", "am49"],
-/*NEXT ID: am50*/
+["New prestige layer coming soon, Police-ize! When you prestige, you unlock officer dimensions. They behave like all other dimensions except they produce anti-anti-antimatter. This anti-anti-antimatter can be used to purchase more officer dimensions. The anti-anti-antimatter also makes your galaxies feel more safer, providing a boost in galaxy efficiency, based on your highest reached AAAM.", "player.achievements.includes('r22') && player.masterystudies !== undefined", "am50"],
+['"THERE WILL BE NO NG+4. NG+3 ALWAYS HAVE UPDATES." - Aarex', "player.achievements.includes('r22') && ghostified", "am51"],
+["No. You are not really at current end-game.", "player.achievements.includes('r22') && (player.masterystudies !== undefined ? player.quantum.bigRip.bestAntimatter.gte(Decimal.pow(10, 1e9)) : false)", "am52"],
+["Congratulations for beating NG+3! (for now...) You already know what comes next after neutrinos.", "player.achievements.includes('r22') && (player.masterystudies !== undefined ? player.quantum.bigRip.bestAntimatter.gte(Decimal.pow(10, 137e7)) : false)", "am53"],
+["You're reading news too much.", "player.achievements.includes('r22') && player.newsArray.length >= 215", "am54"],
+["You're addicted to news.", "player.achievements.includes('r22') && player.newsArray.length >= 230", "am55"],
+["Okay. You can stop reading the news.", "player.achievements.includes('r22') && player.newsArray.length >= 245", "am56"],
+/*NEXT ID: am57*/
 
 //Ghostly news ticker messages
 ["Every ghostly antimatter is safe.", true, "gn1"],
@@ -213,7 +220,12 @@ newsArray = [//always true
 ["Kee-hee-hee!", true, "gn6"],
 ["Ghosts can't die. So why humans can't be immortal?", true, "gn6"],
 ["Because neutrinos are ghostly particles, you are made of ghost particles and neutrinos.", true, "gn8"],
-["How do you play this after you became a real ghost?", true, "gn9"]];}
+["How do you play this after you became a real ghost?", true, "gn9"],
+["R.I.P.  ------  You  ------  Died to Ghostify ------ xxxx-", true, "gn10"],
+["Spooky scary ghosts send neutrinos down your spine", true, "gn11"],
+["Ghostify has nothing to do with ghostping.", true, "gn12"],
+["Are your ghost particles ghostly? If not, talk to your ghostly boss.", true, "gn13"],
+["Kee-hee-hee!", true, "gn14"]];}
 
 document.addEventListener("visibilitychange", function() {if (!document.hidden) {scrollNextMessage();}}, false);
 var scrollTimeouts = [];

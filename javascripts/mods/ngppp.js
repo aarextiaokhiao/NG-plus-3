@@ -764,7 +764,7 @@ function doAutoMetaTick() {
 		}
 	}
 	for (dim=8;dim>0;dim--) if (player.autoEterOptions["md"+dim] && speedrunMilestonesReached > 5+dim) buyMaxMetaDimension(dim)
-	if (player.autoEterOptions.metaboost) metaBoost()
+	if (player.autoEterOptions.metaboost && speedrunMilestonesReached > 14) metaBoost()
 }
 
 function toggleAllMetaDims() {
