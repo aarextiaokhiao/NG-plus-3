@@ -2942,7 +2942,7 @@ function load_saves() {
 	closeToolTip();
 	if (metaSave.alert) {
 		metaSave.alert=false
-		localStorage.setItem("AD_aarexModifications",btoa(JSON.stringify(metaSave)))
+		localStorage.setItem("AD_aarexModifications_ghostify",btoa(JSON.stringify(metaSave)))
 	}
 	document.getElementById("loadmenu").style.display = "block";
 	changeSaveDesc(metaSave.current, savePlacement)
@@ -3192,7 +3192,7 @@ function import_save(type) {
 			localStorage.setItem(btoa("dsAM_ghostify_"+newSaveId),save_data)
 			loadedSaves++
 			changeSaveDesc(newSaveId, loadedSaves)
-			localStorage.setItem("AD_aarexModifications",btoa(JSON.stringify(metaSave)))
+			localStorage.setItem("AD_aarexModifications_ghostify",btoa(JSON.stringify(metaSave)))
         } else {
             set_save(type, decoded_save_data)
             changeSaveDesc(type, placement)
@@ -3736,7 +3736,7 @@ function calcSacrificeBoost() {
 		if (player.achievements.includes("r32")) sacrificePow += player.tickspeedBoosts != undefined ? 2 : 0.2;
 		if (player.achievements.includes("r57")) sacrificePow += player.boughtDims ? 0.3 : 0.2; //this upgrade was too OP lol
 		if (player.infinityUpgradesRespecced != undefined) sacrificePow *= getInfUpgPow(5)
-		ret = Decimal.pow((player.firstAmount.e/10.0), sacrificePow).dividedBy(((Decimal.max(player.sacrificed.e, 1)).dividedBy(10.0)).pow(sacrificePow).max(1)).max(1);
+		ret = Decimal.pow(Math.max(player.firstAmount.e/10.0, 1), sacrificePow).dividedBy(((Decimal.max(player.sacrificed.e, 1)).dividedBy(10.0)).pow(sacrificePow).max(1)).max(1);
 	} else {
 		ret = player.firstAmount.pow(0.05).dividedBy(player.sacrificed.pow(0.04).max(1)).max(1);
 	}
@@ -3746,7 +3746,6 @@ function calcSacrificeBoost() {
 
 function calcTotalSacrificeBoost(next) {
 	let ret
-	if (player.sacrificed == 0) ret = new Decimal(1);
 	if (player.challenges.includes("postc2")) {
 		if (player.timestudy.studies.includes(228)) ret = player.sacrificed.pow(0.013).max(1)
 		else if (player.achievements.includes("r97") && player.boughtDims) ret = player.sacrificed.pow(0.012).max(1)
@@ -3757,7 +3756,7 @@ function calcTotalSacrificeBoost(next) {
 		if (player.achievements.includes("r32")) sacrificePow += player.tickspeedBoosts != undefined ? 2 : 0.2;
 		if (player.achievements.includes("r57")) sacrificePow += player.boughtDims ? 0.3 : 0.2;
 		if (player.infinityUpgradesRespecced != undefined) sacrificePow *= getInfUpgPow(5)
-		ret = Decimal.pow((player.sacrificed.e/10.0), sacrificePow);
+		ret = Decimal.pow(Math.max(player.sacrificed.e/10.0, 1), sacrificePow);
 	} else {
 		ret = player.sacrificed.pow(0.05) //this is actually off but like im not sure how youd make it good. not that it matters.
 	}
@@ -6489,8 +6488,8 @@ setInterval(function() {
 
 
 
-    if (player.infinitied == 0 && player.infinityPoints.lt(new Decimal(1e50)) && player.infinityUpgrades.length < 1 && getEternitied() <= 0 && !quantumed) document.getElementById("infinityPoints2").style.display = "none"
-    else document.getElementById("infinityPoints2").style.display = "inline-block"
+    if (player.infinitied > 0 || player.infinityPoints.gt(0) || player.infinityUpgrades.length > 0 || getEternitied() > 0 || quantumed) document.getElementById("infinityPoints2").style.display = "inline-block"
+    else document.getElementById("infinityPoints2").style.display = "none"
 
     if (blink && !player.achievements.includes("r78")) {
         document.getElementById("Blink of an eye").style.display = "none"
@@ -8290,7 +8289,7 @@ function initGame() {
     setupText()
     initiateMetaSave()
     migrateOldSaves()
-    localStorage.setItem('AD_aarexModifications', btoa(JSON.stringify(metaSave)))
+    localStorage.setItem('AD_aarexModifications_ghostify', btoa(JSON.stringify(metaSave)))
     load_game();
     if (player.aarexModifications.progressBar) document.getElementById("progress").style.display = "block"
     else document.getElementById("progress").style.display = "none"
