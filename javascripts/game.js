@@ -3505,7 +3505,7 @@ function setAchieveTooltip() {
 
 
 //notation stuff
-var notationArray = ["Scientific","Engineering","Letters","Standard","Emojis","Mixed scientific","Mixed engineering","Logarithm","Brackets","Infinity","Greek","Game percentages","Hexadecimal","Tetration","Hyperscientific","Psi","Morse code","Spazzy","Country Codes","Iroha","Symbols","Lines","Simplified Written","AF2019","AAS","AF5LN"]
+var notationArray = ["Scientific","Engineering","Letters","Standard","Emojis","Mixed scientific","Mixed engineering","Logarithm","Brackets","Infinity","Greek","Game percentages","Hexadecimal","Tetration","Hyperscientific","Psi","Morse code","Spazzy","Country Codes","Iroha","Symbols","Lines","Simplified Written","Time","AF2019","AAS","AF5LN"]
 
 function updateNotationOption() {
 	var notationMsg="Notation: "+(player.options.notation=="Emojis"?"Cancer":player.options.notation)

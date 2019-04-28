@@ -112,6 +112,37 @@ function getAASAbbreviation(x) {
 	return result
 }
 
+var timeDivisions = ["minute", "hour", "day", "week", "month", "year"]
+var timeValues = {
+	year: 31556952,
+	month: 2629746,
+	week: 604800,
+	day: 86400,
+	hour: 3600,
+	minute: 60,
+	second: 1
+}
+function timePadEnd(value) {
+	return (value < 10 ? "0" : "") + value
+}
+function getTimeAbbreviation(seconds) {
+	var data = {second: seconds}
+	for (var d=5; d>-1; d--) {
+		var division = timeDivisions[d]
+		data[division] = Math.floor(data.second / timeValues[division])
+		data.second -= data[division] * timeValues[division]
+	}
+	if (data.year > 99) return getFullExpansion(data.year) + " years"
+	if (data.year > 9) return data.year + " years, " + data.month + "m"
+	if (data.year) return data.year + " year" + (data.year == 1 ? "" : "s") + ", " + data.month + "m & " + data.week + "w"
+	if (data.month) return data.month + " month" + (data.month == 1 ? "" : "s") + ", " + data.week + "w & " + data.day + "d"
+	if (data.week) return data.week + " week" + (data.week == 1 ? "" : "s") + ", " + data.day + " day" + (data.day == 1 ? "" : "s") + " & " + data.hour + "h"
+	if (data.day) return data.day + " day" + (data.day == 1 ? "" : "s") + " & " + data.hour + ":" + timePadEnd(data.minute)
+	if (data.hour) return data.hour + ":" + timePadEnd(data.minute) + ":" + timePadEnd(data.second)
+	if (data.minute) return data.minute + ":" + timePadEnd(data.second)
+	return data.second + " secs"
+}
+
 const inflog = Math.log10(Number.MAX_VALUE)
 function formatValue(notation, value, places, placesUnder1000, noInf) {
     if (notation === "Same notation") notation = player.options.notation
@@ -326,6 +357,15 @@ function formatValue(notation, value, places, placesUnder1000, noInf) {
                 power+=3
             }
             return matissa+getAASAbbreviation(Math.floor(power/3)-1)
+        }
+        if (notation === "Time") {
+            if (power>=3e9+3) return getTimeAbbreviation(power/3)
+            matissa = (matissa*Math.pow(10,power%3)).toFixed(Math.max(places-power%3,0))
+            if (parseFloat(matissa)==1e3) {
+                matissa = (1).toFixed(places)
+                power+=3
+            }
+            return matissa+" "+getTimeAbbreviation(Math.floor(power/3))
         }
         if (matissa >= 1000) {
             matissa /= 1000;

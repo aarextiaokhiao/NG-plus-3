@@ -213,13 +213,13 @@ function canBuyMasteryStudy(type, id) {
 		if (row>24) return player.masterystudies.includes('t241')
 	} else if (type=='d') {
 		if (player.timestudy.theorem<masterystudies.costs.dil[id]||player.masterystudies.includes('d'+id)) return false
-		if (id>13) return player.masterystudies.includes("t412")&&player.masterystudies.includes("d12")
-		if (id>12) return player.masterystudies.includes("t412")&&player.quantum.nanofield.rewards>15
-		if (id>11) return player.masterystudies.includes("t392")&&eds[8].workers.gt(9.9)
-		if (id>10) return player.masterystudies.includes("t351")&&eds[1].workers.gt(9.9)
-		if (id>9) return player.masterystudies.includes("t302")&&player.quantum.pairedChallenges.completed>3
-		if (id>8) return player.masterystudies.includes("d8")&&QCIntensity(8)
-		if (id>7) return player.masterystudies.includes("t272")&&player.quantum.electrons.amount.gte(16750)
+		if (id>13) return player.masterystudies.includes("t412")&&(ghostified||player.masterystudies.includes("d12"))
+		if (id>12) return player.masterystudies.includes("t412")&&(ghostified||player.quantum.nanofield.rewards>15)
+		if (id>11) return player.masterystudies.includes("t392")&&(ghostified||eds[8].workers.gt(9.9))
+		if (id>10) return player.masterystudies.includes("t351")&&(ghostified||eds[1].workers.gt(9.9))
+		if (id>9) return player.masterystudies.includes("t302")&&(ghostified||player.quantum.pairedChallenges.completed>3)
+		if (id>8) return player.masterystudies.includes("d8")&&(ghostified||QCIntensity(8))
+		if (id>7) return player.masterystudies.includes("t272")&&(ghostified||player.quantum.electrons.amount.gte(16750))
 		if (id>6) return player.masterystudies.includes("t252")
 	} else {
 		if (player.timestudy.theorem<masterystudies.costs.ec[id]||player.eternityChallUnlocked) return false
@@ -502,6 +502,7 @@ function updateQuantumTabs() {
 		}
 	}
 	if (document.getElementById("electrons").style.display=="block") {
+		document.getElementById("normalGalaxies").textContent=getFullExpansion(player.galaxies)
 		for (i=1;i<7;i++) document.getElementById("sacrifice"+i).className=(Math.pow(10,i>4?0:i-1)>player.galaxies-player.quantum.electrons.sacGals||!inQC(0))?"unavailablebtn":"storebtn"
 		for (u=1;u<5;u++) document.getElementById("electronupg"+u).className="gluonupgrade "+(canBuyElectronUpg(u)?"stor":"unavailabl")+"ebtn"
 		document.getElementById("electronsEffect").textContent = shorten(getDimensionPowerMultiplier(true))
@@ -829,7 +830,7 @@ function updateElectrons() {
 	document.getElementById("electronsGainMult").textContent=shorten(player.quantum.electrons.mult)
 	for (u=1;u<5;u++) {
 		var cost=getElectronUpgCost(u)
-		document.getElementById("electronupg"+u).innerHTML="Upgrade multiplier using "+([null,"time theorems","dilated time","meta-antimatter","meta-dimension boosts"])[u]+".<br>Cost: "+(u>3?getFullExpansion(getElectronUpgCost(u)):shortenCosts(getElectronUpgCost(u)))+([null," TT"," DT"," MA"," MDB"])[u]
+		document.getElementById("electronupg"+u).innerHTML="Upgrade multiplier with "+([null,"time theorems","dilated time","meta-antimatter","meta-dimension boosts"])[u]+".<br>Cost: "+(u>3?getFullExpansion(getElectronUpgCost(u)):shortenCosts(getElectronUpgCost(u)))+([null," TT"," DT"," MA"," MDB"])[u]
 	}
 }
 
