@@ -253,7 +253,9 @@ function formatValue(notation, value, places, placesUnder1000, noInf) {
             return formatPsi(matissa,power)
         }
         if (notation === "Greek" || notation === "Morse code" || notation === "Symbols" || notation === "Lines" || notation === "Simplified Written") {
-            if (matissa>=10-Math.pow(10,-places)/2) {
+            places=Math.min(places,14-Math.floor(Math.log10(power)))
+            if (places<1) matissa = 0
+            else if (matissa>=10-Math.pow(10,-places)/2) {
                 matissa=Math.pow(10,places)
                 power-=places+1
             } else {

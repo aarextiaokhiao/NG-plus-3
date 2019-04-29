@@ -542,6 +542,7 @@ function updateNewPlayer(reseted) {
                 mu: 0,
                 tau: 0,
                 generationGain: 1,
+                boosts: 1,
                 multPower: 1,
                 upgrades: []
             },
@@ -1148,7 +1149,7 @@ function getDilExp(disable) {
 	if (player.masterystudies !== undefined) {
 		if ((!player.quantum.bigRip.active || player.quantum.bigRip.upgrades.includes(11)) && player.masterystudies.includes("d13") && disable != "TU3") ret += getTreeUpgradeEffect(2)
 		if (ghostified && disable != "neutrinos") ret += Math.log10(player.ghostify.neutrinos.electron.add(1).log10() + player.ghostify.neutrinos.mu.add(1).log10() + player.ghostify.neutrinos.tau.add(1).log10() + 1) * 0.75
-		if (!player.quantum.bigRip.active) ret = Math.min(ret, 11.25)
+		if (!player.quantum.bigRip.active) ret = Math.min(ret, 15)
 	}
 	return ret
 }
@@ -1247,8 +1248,8 @@ function updateDimensions() {
     if (document.getElementById("stats").style.display == "block" && document.getElementById("statistics").style.display == "block") {
         document.getElementById("totalmoney").textContent = 'You have made a total of ' + shortenMoney(player.totalmoney) + ' antimatter.'
         document.getElementById("bestmoneythisrip").textContent = (player.masterystudies == undefined ? false : player.quantum.bigRip.active) ? 'Your best antimatter for this big rip is ' + shortenMoney(player.quantum.bigRip.bestThisRun) + "." : ""
-        document.getElementById("bestmoneybigrip").textContent = (player.masterystudies == undefined ? false : player.quantum.bigRip.times) ? 'Your best antimatter for all big rips is ' + shortenMoney(player.quantum.bigRip.bestAntimatter) + "." : ""
-        document.getElementById("totalmoneybigrip").textContent = (player.masterystudies == undefined ? false : player.quantum.bigRip.times) ? 'You have made a total of ' + shortenMoney(player.quantum.bigRip.totalAntimatter) + ' antimatter in all big rips.' : ""
+        document.getElementById("bestmoneybigrip").textContent = (player.masterystudies == undefined ? false : ghostified || player.quantum.bigRip.times) ? 'Your best antimatter for all big rips is ' + shortenMoney(player.quantum.bigRip.bestAntimatter) + "." : ""
+        document.getElementById("totalmoneybigrip").textContent = (player.masterystudies == undefined ? false : ghostified || player.quantum.bigRip.times) ? 'You have made a total of ' + shortenMoney(player.quantum.bigRip.totalAntimatter) + ' antimatter in all big rips.' : ""
         document.getElementById("totalresets").textContent = 'You have done ' + getFullExpansion(player.resets) + ' dimension boosts/shifts.'
         var showBoosts=isTickspeedBoostPossible()
         document.getElementById("boosts").style.display = showBoosts?'':'none'
@@ -3494,7 +3495,7 @@ function setAchieveTooltip() {
     notrelative.setAttribute('ach-tooltip', "Get "+shorten(Decimal.pow(10,411))+" dilated time without gaining tachyon particles.")
     error404.setAttribute('ach-tooltip', "Get "+shorten(Decimal.pow(10,16e11))+" antimatter without having all types of non-First Dimensions and at least 2 normal galaxies.")
     ie.setAttribute('ach-tooltip', "Get "+shorten(Decimal.pow(10,8e6))+" antimatter in a PC with QC6 & QC8 combination.")
-    wasted.setAttribute('ach-tooltip', "Get "+shorten(11e6)+" TT without having generated TTs and respeccing time studies.")
+    wasted.setAttribute('ach-tooltip', "Get "+shorten(11e6)+" TT without having generated TTs and respeccing time studies. Reward: Time Theorems production is 10x faster until your TT amount reached 1 hour worth of normal TT production.")
     stop.setAttribute('ach-tooltip', "Get the replicanti reset requirement to "+shorten(Decimal.pow(10,145e5))+". Reward: Getting a normal replicant manually doesn't reset your replicanti and can be autoed.")
     dying.setAttribute('ach-tooltip', "Reach "+shorten(Decimal.pow(10, 275e3))+" IP while dilated, in PC6+8, and without having time studies.")
     gofast.setAttribute('ach-tooltip', "Get "+shorten(Decimal.pow(10, 1185))+" EP first and then double that by disabling dilation while big ripped.")
@@ -3547,6 +3548,7 @@ function onNotationChange() {
 	updateMasteryStudyTextDisplay()
 	updateReplicants()
 	updateTODStuff()
+	onNotationChangeNeutrinos()
 	document.getElementById("epmult").innerHTML = "You gain 5 times more EP<p>Currently: "+shortenDimensions(player.epmult)+"x<p>Cost: "+shortenDimensions(player.epmultCost)+" EP"
 	document.getElementById("achmultlabel").textContent = "Current achievement multiplier on each Dimension: " + shortenMoney(player.achPow) + "x"
 	if (player.achievements.includes("ng3p18") || player.achievements.includes("ng3p37")) {
@@ -6303,8 +6305,9 @@ function updateDilationUpgradeButtons() {
             }
         }
     }
+    var genSpeed = getPassiveTTGen().toNumber()
     document.getElementById("dil7desc").textContent = "Currently: "+shortenMoney(player.dilation.dilatedTime.max(1).pow(1000).max(1))+"x"
-    document.getElementById("dil10desc").textContent = "Currently: "+shortenMoney(getPassiveTTGen())+"/s"
+    document.getElementById("dil10desc").textContent = "Currently: "+shortenMoney(player.achievements.includes("ng3p44") && player.timestudy.theorem / genSpeed < 3600 ? genSpeed * 10 : genSpeed)+"/s"
     if (player.dilation.studies.includes(6)) {
         document.getElementById("mddilupg").style.display = ""
         document.getElementById("dil14desc").textContent = "Currently: "+shortenMoney(getDil14Bonus()) + 'x';
@@ -7797,7 +7800,8 @@ function gameLoop(diff) {
         }
     }
     if (player.dilation.upgrades.includes(10)) {
-		player.timestudy.theorem += parseFloat(getPassiveTTGen().times(diff/10).toString())
+		var speed = getPassiveTTGen().toNumber()
+		player.timestudy.theorem += speed * (diff + Math.max(Math.min(player.achievements.includes("ng3p44") ? diff * 9 : 0, 3600 - player.timestudy.theorem / speed), 0)) / 10
         if ((document.getElementById("timestudies").style.display != "none" || document.getElementById("ers_timestudies").style.display != "none" || document.getElementById("masterystudies").style.display != "none") && document.getElementById("eternitystore").style.display != "none") {
             document.getElementById("timetheorems").innerHTML = "You have <span style='display:inline' class=\"TheoremAmount\">"+(player.timestudy.theorem>99999?shortenMoney(player.timestudy.theorem):getFullExpansion(Math.floor(player.timestudy.theorem)))+"</span> Time Theorem"+ (player.timestudy.theorem == 1 ? "." : "s.")
             if (document.getElementById("timestudies").style.display != "none") updateTimeStudyButtons()

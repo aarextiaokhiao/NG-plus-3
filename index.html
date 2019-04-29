@@ -2472,7 +2472,7 @@
                         </tr>
                         <tr id="achRowng3p6">
                             <td>
-                                <div id="Kee-hee-hee!" class="achievement achievementlocked" style="background-image: url(images/151.png)" ach-tooltip="Become a ghost. Reward: Gain 100x eternitied stat as before (weakens as you have more), the production of Time Theorems is 100x faster, gain 1 EC11 completion when you complete EC12, all quantum mechanic unlocks require only Time Theorems, and assignation options are kept permanently."></div>
+                                <div id="Kee-hee-hee!" class="achievement achievementlocked" style="background-image: url(images/151.png)" ach-tooltip="Become a ghost. Reward: Gain 100x eternitied stat as before (weakens as you have more), Time Theorems production is 100x faster, gain 1 EC11 completion when you complete EC12, all quantum mechanic unlocks require only Time Theorems, and assignation options are kept permanently."></div>
                             </td>
                             <td>
                                 <div id="ng3p62" class="achievement achievementlocked" style="background-image: url(images/achhidden.png)"></div>
@@ -4516,7 +4516,7 @@
 					You have <span id="quarkAntienergy" style="font-size:35px"></span> preon anti-energy. At <span id="quarkChargeProductionCap" style="font-size:35px"></span>, your preon charge will stop producing energy and anti-energy.<br>
 					You are getting <span id="quarkAntienergyRate"></span> preon anti-energy per second.
 				</td></tr></table>
-				You have gotten <span id="rewards" style="font-size:35px"></span> rewards.
+				You have gotten <span id="rewards" style="font-size:35px"></span><span id="rewardsCapped"> (cap: 18)</span> rewards.
 				<table class="table" align=center style="margin: auto" id="milestones">
 					<tr>
 						<td class="milestoneText">First reward (<span id="reward1tier">0</span>):</td>
@@ -4572,15 +4572,15 @@
 						<td>You have <span class="blue" id="blueQuarkSpinUpgs" style="font-size:35px">0.0</span> blue quark spin.</td>
 					</tr></table>
 					<table class="table" align="center" style="margin: auto"><tr>
-						<td><button class='gluonupgrade unavailablebtn' id='treeupg1' onclick='buyTreeUpg(1)'>Meta Dimension Boosts are cheaper.<br>Currently: -<span id='treeupg1current'>?</span><br>Cost: <span id="treeupg1cost"></span> quark spin</button></td>
-						<td><button class='gluonupgrade unavailablebtn' id='treeupg2' onclick='buyTreeUpg(2)'>TP gain formula exponent is increased.<br>Currently: <span id='treeupg2current'>?</span><br>Cost: <span id="treeupg2cost"></span> quark spin</button></td>
-						<td><button class='gluonupgrade unavailablebtn' id='treeupg3' onclick='buyTreeUpg(3)'>All branches are faster based on how many upgrades you bought.<br>Currently: <span id='treeupg3current'>?</span>x<br>Cost: <span id="treeupg3cost"></span> quark spin</button></td>
-						<td><button class='gluonupgrade unavailablebtn' id='treeupg4' onclick='buyTreeUpg(4)'>Per-10 boost from electrons is increased.<br>Currently: <span id='treeupg4current'>?</span><br>Cost: <span id="treeupg4cost"></span> quark spin</button></td>
+						<td><button class='gluonupgrade unavailablebtn' id='treeupg1' onclick='buyTreeUpg(1)'>Meta Dimension Boosts are cheaper.<br>Level: <span id='treeupg1lvl'>?</span><br>Currently: -<span id='treeupg1current'>?</span><br>Cost: <span id="treeupg1cost"></span> quark spin</button></td>
+						<td><button class='gluonupgrade unavailablebtn' id='treeupg2' onclick='buyTreeUpg(2)'>TP gain formula exponent is increased.<br>Level: <span id='treeupg2lvl'>?</span><br>Currently: <span id='treeupg2current'>?</span><br>Cost: <span id="treeupg2cost"></span> quark spin</button></td>
+						<td><button class='gluonupgrade unavailablebtn' id='treeupg3' onclick='buyTreeUpg(3)'>All branches are faster based on how many upgrades you bought.<br>Level: <span id='treeupg3lvl'>?</span><br>Currently: <span id='treeupg3current'>?</span>x<br>Cost: <span id="treeupg3cost"></span> quark spin</button></td>
+						<td><button class='gluonupgrade unavailablebtn' id='treeupg4' onclick='buyTreeUpg(4)'>Per-10 boost from electrons is increased.<br>Level: <span id='treeupg4lvl'>?</span><br>Currently: <span id='treeupg4current'>?</span><br>Cost: <span id="treeupg4cost"></span> quark spin</button></td>
 					</tr><tr>
-						<td><button class='gluonupgrade unavailablebtn' id='treeupg5' onclick='buyTreeUpg(5)'>All branches are faster based on your best-ever meta-antimatter.<br>Currently: <span id='treeupg5current'>?</span>x<br>Cost: <span id="treeupg5cost"></span> quark spin</button></td>
-						<td><button class='gluonupgrade unavailablebtn' id='treeupg6' onclick='buyTreeUpg(6)'>Emperor Dimensions are faster.<br>Currently: <span id='treeupg6current'>?</span>x<br>Cost: <span id="treeupg6cost"></span> quark spin</button></td>
-						<td><button class='gluonupgrade unavailablebtn' id='treeupg7' onclick='buyTreeUpg(7)'>Replicanti boosts dilated time production.<br>Currently: <span id='treeupg7current'>?</span>x<br>Cost: <span id="treeupg7cost"></span> quark spin</button></td>
-						<td><button class='gluonupgrade unavailablebtn' id='treeupg8' onclick='buyTreeUpg(8)'>Your best meta-antimatter for this quantum makes the meta-antimatter effect stronger.<br>Currently: <span id='treeupg8current'>?</span>x<br>Cost: <span id="treeupg8cost"></span> quark spin</button></td>
+						<td><button class='gluonupgrade unavailablebtn' id='treeupg5' onclick='buyTreeUpg(5)'>All branches are faster based on your best-ever meta-antimatter.<br>Level: <span id='treeupg5lvl'>?</span><br>Currently: <span id='treeupg5current'>?</span>x<br>Cost: <span id="treeupg5cost"></span> quark spin</button></td>
+						<td><button class='gluonupgrade unavailablebtn' id='treeupg6' onclick='buyTreeUpg(6)'>Emperor Dimensions are faster.<br>Level: <span id='treeupg6lvl'>?</span><br>Currently: <span id='treeupg6current'>?</span>x<br>Cost: <span id="treeupg6cost"></span> quark spin</button></td>
+						<td><button class='gluonupgrade unavailablebtn' id='treeupg7' onclick='buyTreeUpg(7)'>Replicanti boosts dilated time production.<br>Level: <span id='treeupg7lvl'>?</span><br>Currently: <span id='treeupg7current'>?</span>x<br>Cost: <span id="treeupg7cost"></span> quark spin</button></td>
+						<td><button class='gluonupgrade unavailablebtn' id='treeupg8' onclick='buyTreeUpg(8)'>Your best meta-antimatter for this quantum makes the meta-antimatter effect stronger.<br>Level: <span id='treeupg8lvl'>?</span><br>Currently: <span id='treeupg8current'>?</span>x<br>Cost: <span id="treeupg8cost"></span> quark spin</button></td>
 					</tr></table>
 				</div>
 			</div>
@@ -4620,9 +4620,9 @@
 						<td>They boost ??? by <span class="neutrinos" id="neutrinoBoost3" style="font-size:35px">1.0</span>x.</td>
 					</tr>
 					<tr>
-						<td><button class="gluonupgrade unavailablebtn">Unlock a new boost based on your neutrinos.<br>Cost: 2 GHP</button></td>
-						<td><button class="gluonupgrade unavailablebtn">You gain 2x more neutrinos.<br>Currently: 1x<br>Cost: ??? GHP</button></td>
-						<td><button class="gluonupgrade unavailablebtn">You gain 2x more GHP.<br>Currently: 1x<br>Cost: ??? of any neutrinos</button></td>
+						<td><button id="neutrinoUnlock" class="gluonupgrade unavailablebtn">Unlock a new boost based on your neutrinos.<br>Cost: <span id="neutrinoUnlockCost">2</span> GHP</button></td>
+						<td><button id="neutrinoMultUpg" class="gluonupgrade unavailablebtn">You gain 5x more neutrinos.<br>Currently: <span id="neutrinoMult">1</span>x<br>Cost: <span id="neutrinoMultUpgCost">3</span> GHP</button></td>
+						<td><button id="ghpMultUpg" class="gluonupgrade unavailablebtn">You gain 2x more GHP.<br>Currently: <span id="ghpMult"></span>x<br>Cost: <span id="ghpMultUpgCost">???</span> of any neutrinos</button></td>
 					</tr>
 					<tr>
 						<td><button class="gluonupgrade unavailablebtn" id="neutrinoUpg1" onclick="buyNeutrinoUpg(1)" style="font-size: 10px">Meta-Dimension Boosts cost 100 less.<br>(Reduces if not big ripped)<br>Cost: <span id="neutrinoUpg1Cost"></span> of any neutrinos<br>Currently: -<span id="neutrinoUpg1Pow"></span></button></td>
@@ -4646,20 +4646,26 @@
 				</table>
 				<table style="margin: 0 auto">
 					<tr>
-						<td><div class="autoBuyerDiv" style="display:block">
+						<td id="autoGhost1"><div class="autoBuyerDiv" style="display:block">
 							<b>Auto-Red Unstabilize Ghost</b><br>
 							Power consumption: 1<br>
-							Is active: <input id="isAutoGhostOn1" type="checkbox" onchange="toggleAutoGhost(1)"></input>
+							Is active: <input id="isAutoGhostOn1" type="checkbox" onchange="toggleAutoGhost(1)"></input><br>
+							<button class="storebtn" id="autoGhostMode1" style="font-size: 100%; width: 120px; height: 20px">Mode: amount</button><br>
+							<span id="autoGhostAmount1">Unstabilize when unstable quarks gain reach: <input type="text"id="autoGhostPriority1"></span>
 						</div></td>
-						<td><div class="autoBuyerDiv" style="display:block">
+						<td id="autoGhost2"><div class="autoBuyerDiv" style="display:block">
 							<b>Auto-Green Unstabilize Ghost</b><br>
 							Power consumption: 1<br>
-							Is active: <input id="isAutoGhostOn2" type="checkbox" onchange="toggleAutoGhost(2)"></input>
+							Is active: <input id="isAutoGhostOn2" type="checkbox" onchange="toggleAutoGhost(2)"></input><br>
+							<button class="storebtn" id="autoGhostMode2" style="font-size: 100%; width: 120px; height: 20px">Mode: amount</button><br>
+							<span id="autoGhostAmount2">Unstabilize when unstable quarks gain reach: <input type="text"id="autoGhostPriority2"></span>
 						</div></td>
-						<td><div class="autoBuyerDiv" style="display:block">
+						<td id="autoGhost3"><div class="autoBuyerDiv" style="display:block">
 							<b>Auto-Blue Unstabilize Ghost</b><br>
 							Power consumption: 1<br>
-							Is active: <input id="isAutoGhostOn3" type="checkbox" onchange="toggleAutoGhost(3)"></input>
+							Is active: <input id="isAutoGhostOn3" type="checkbox" onchange="toggleAutoGhost(3)"></input><br>
+							<button class="storebtn" id="autoGhostMode3" style="font-size: 100%; width: 120px; height: 20px">Mode: amount</button><br>
+							<span id="autoGhostAmount3">Unstabilize when unstable quarks gain reach: <input type="text"id="autoGhostPriority3"></span>
 						</div></td>
 					</tr>
 					<tr>

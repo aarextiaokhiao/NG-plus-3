@@ -543,6 +543,7 @@ function updateQuantumTabs() {
 		document.getElementById("reduceHatchSpeed").innerHTML="Hatch speed: "+hatchSpeedDisplay()+" -> "+hatchSpeedDisplay(true)+"<br>Cost: "+shortenDimensions(player.quantum.replicants.hatchSpeedCost)+" for all 3 gluons"
 	}
 	if (document.getElementById("nanofield").style.display == "block") {
+		var rewards = Math.min(player.quantum.nanofield.rewards, player.quantum.bigRip.active ? 1/0 : 18)
 		document.getElementById("quarksNanofield").textContent=shortenDimensions(player.quantum.replicants.quarks)
 		document.getElementById("quarkCharge").textContent=shortenMoney(player.quantum.nanofield.charge)
 		document.getElementById("quarkChargeRate").textContent=shortenDimensions(getQuarkChargeProduction())
@@ -555,11 +556,12 @@ function updateQuantumTabs() {
 		document.getElementById("quarkAntienergyRate").textContent=shortenMoney(getQuarkAntienergyProduction())
 		document.getElementById("quarkChargeProductionCap").textContent=shortenMoney(getQuarkChargeProductionCap())
 		document.getElementById("rewards").textContent=getFullExpansion(player.quantum.nanofield.rewards)
+		document.getElementById("rewardsCapped").style.display = player.quantum.bigRip.active || player.quantum.nanofield.rewards < 19 ? "none" : ""
 
 		for (var reward=1; reward<9; reward++) {
-			document.getElementById("nanofieldreward" + reward).className = reward > player.quantum.nanofield.rewards ?
+			document.getElementById("nanofieldreward" + reward).className = reward > rewards ?
 			"nanofieldrewardlocked" : "nanofieldreward"
-			document.getElementById("reward" + reward + "tier").textContent = getFullExpansion(Math.ceil((player.quantum.nanofield.rewards +1 - reward)/8))
+			document.getElementById("reward" + reward + "tier").textContent = getFullExpansion(Math.ceil((rewards + 1 - reward)/8))
 		}
 		document.getElementById("nanofieldreward1").textContent = "Hatch speed is " + shortenDimensions(getNanofieldRewardEffect(1)) + "x faster."
 		document.getElementById("nanofieldreward2").textContent = "Meta-antimatter effect power is increased by " + getNanofieldRewardEffect(2).toFixed(1) + "x."
@@ -867,6 +869,10 @@ function buyQuarkMult(name) {
 	player.quantum.multPower[name]++
 	player.quantum.multPower.total++
 	updateGluons()
+	if (player.quantum.autobuyer.mode === 'amount') {
+		player.quantum.autobuyer.limit = Decimal.times(player.quantum.autobuyer.limit, 2)
+		document.getElementById("priorityquantum").value = formatValue("Scientific", player.quantum.autobuyer.limit, 2, 0);
+	}
 }
 
 var quantumChallenges={
@@ -1081,6 +1087,7 @@ function drawQuarkAnimation(ts){
 //v1.99798
 function maxQuarkMult() {
 	var names=["rg","gb","br"]
+	var bought=0
 	for (c=0;c<3;c++) {
 		var name=names[c]
 		var buying=true
@@ -1093,16 +1100,21 @@ function maxQuarkMult() {
 				if (toSpend.gt(player.quantum.gluons[name])) player.quantum.gluons[name]=new Decimal(0)
 				else player.quantum.gluons[name]=player.quantum.gluons[name].sub(toSpend).round()
 				player.quantum.multPower[name]+=toBuy
-				player.quantum.multPower.total+=toBuy
+				bought+=toBuy
 			} else {
 				var toBuy=Math.floor(player.quantum.gluons[name].div(cost).times(9999).add(1).log(1e4))
 				var toSpend=Decimal.pow(1e4,toBuy).sub(1).div(9999).times(cost)
 				if (toSpend.gt(player.quantum.gluons[name])) player.quantum.gluons[name]=new Decimal(0)
 				else player.quantum.gluons[name]=player.quantum.gluons[name].sub(toSpend).round()
 				player.quantum.multPower[name]+=toBuy
-				player.quantum.multPower.total+=toBuy
+				bought+=toBuy
 			}
 		}
+	}
+	player.quantum.multPower.total+=bought
+	if (player.quantum.autobuyer.mode === 'amount') {
+		player.quantum.autobuyer.limit = Decimal.times(player.quantum.autobuyer.limit, Decimal.pow(2, bought))
+		document.getElementById("priorityquantum").value = formatValue("Scientific", player.quantum.autobuyer.limit, 2, 0)
 	}
 	updateGluons()
 }
@@ -1593,7 +1605,8 @@ function getQuarkChargeProductionCap() {
 }
 
 function getNanofieldRewardEffect(id) {
-	var stacks = Math.ceil((player.quantum.nanofield.rewards - id + 1) / 8)
+	var rewards = Math.min(player.quantum.nanofield.rewards, player.quantum.bigRip.active ? 1/0 : 18)
+	var stacks = Math.ceil((rewards - id + 1) / 8)
 	if (id == 1) return Decimal.pow(30, stacks)
 	if (id == 2) return stacks * 6.8
 	if (id == 3) return 1 + Math.pow(stacks, 0.83) * 0.039
@@ -1601,7 +1614,7 @@ function getNanofieldRewardEffect(id) {
 	if (id == 5) return 1 + stacks * 0.36
 	if (id == 6) return 3 + stacks * 1.34
 	if (id == 7) return stacks * 2150
-	if (id == "7g") return Decimal.pow(2.6,Math.ceil((player.quantum.nanofield.rewards-6)/8))
+	if (id == "7g") return Decimal.pow(2.6,Math.ceil((rewards - 6) / 8))
 	if (id == 8) return stacks * 0.76
 	if (id == "8c") return player.quantum.nanofield.rewards>7?2.5:1
 }
@@ -1705,7 +1718,10 @@ function updateTODStuff() {
 			document.getElementById(color+"upg"+b+"cost").textContent=shortenMoney(getBranchUpgCost(shorthand,b))
 		}
 	}
-	for (var t=1;t<9;t++) document.getElementById("treeupg"+t+"cost").textContent=shortenMoney(getTreeUpgradeCost(t))+" "+colors[getTreeUpgradeLevel(t)%3]
+	for (var t=1;t<9;t++) {
+		document.getElementById("treeupg"+t+"lvl").textContent=player.quantum.tod.upgrades[t] + (player.quantum.bigRip.active || player.quantum.tod.upgrades[t] <= maxLevels[t] ? "" : " (cap: " + maxLevels[t] + ")")
+		document.getElementById("treeupg"+t+"cost").textContent=shortenMoney(getTreeUpgradeCost(t))+" "+colors[getTreeUpgradeLevel(t)%3]
+	}
 }
 
 function showBranchTab(tabName) {
@@ -1787,6 +1803,7 @@ function buyTreeUpg(upg) {
 	branch.spin=branch.spin.sub(getTreeUpgradeCost(upg))
 	if (!player.quantum.tod.upgrades[upg]) player.quantum.tod.upgrades[upg]=0
 	player.quantum.tod.upgrades[upg]++
+	document.getElementById("treeupg"+upg+"lvl").textContent=player.quantum.tod.upgrades[upg] + (player.quantum.bigRip.active || player.quantum.tod.upgrades[upg] <= maxLevels[upg] ? "" : " (cap: " + maxLevels[upg] + ")")
 	document.getElementById("treeupg"+upg+"cost").textContent=shortenMoney(getTreeUpgradeCost(upg))+" "+colors[player.quantum.tod.upgrades[upg]%3]
 }
 
@@ -1797,7 +1814,7 @@ function getTreeUpgradeLevel(upg) {
 }
 
 function getTreeUpgradeEffect(upg) {
-	let lvl=getTreeUpgradeLevel(upg)
+	let lvl = Math.min(getTreeUpgradeLevel(upg), player.quantum.bigRip.active ? 1/0 : maxLevels[upg])
 	if (upg==1) return lvl * 30
 	if (upg==2) return lvl * 0.25
 	if (upg==3) {
@@ -1863,6 +1880,8 @@ function rotateAutoAssign() {
 	player.quantum.autoOptions.assignQKRotate=player.quantum.autoOptions.assignQKRotate?(player.quantum.autoOptions.assignQKRotate+1)%3:1
 	document.getElementById('autoAssignRotate').textContent=player.quantum.autoOptions.assignQKRotate?"C"+(player.quantum.autoOptions.assignQKRotate>1?"ounterc":"")+"lockwise":"No rotate"
 }
+
+var maxLevels = [null, 38, 8, 1/0, 40, 1/0, 2, 2, 5]
 
 function toggleBigRipConf() {
 	player.quantum.bigRip.conf = !player.quantum.bigRip.conf
@@ -2043,7 +2062,8 @@ function getExtraTickReductionMult() {
 }
 
 function getGHPGain() {
-	return new Decimal(1)
+	if (player.masterystudies == undefined) return new Decimal(0)
+	return player.quantum.bigRip.bestThisRun.div(1).pow(0).times(Decimal.pow(2, player.ghostify.multPower - 1)).floor()
 }
 
 ghostified = false
@@ -2564,8 +2584,8 @@ function ghostifyReset(implode, gain, amount) {
 				conf: true,
 				times: 0,
 				bestThisRun: new Decimal(0),
-				bestAntimatter: new Decimal(0),
-				totalAntimatter: new Decimal(0),
+				bestAntimatter: player.quantum.bigRip.bestAntimatter,
+				totalAntimatter: player.quantum.bigRip.totalAntimatter,
 				savedAutobuyersNoBR: player.quantum.bigRip.savedAutobuyersNoBR,
 				savedAutobuyersBR: player.quantum.bigRip.savedAutobuyersBR,
 				spaceShards: new Decimal(0),
@@ -2799,8 +2819,16 @@ function updateGhostifyTabs() {
 	}
 }
 
+function onNotationChangeNeutrinos() {
+	document.getElementById("neutrinoUnlockCost").textContent = shortenDimensions(2)
+	document.getElementById("neutrinoMult").textContent = shortenDimensions(Decimal.pow(5, player.ghostify.neutrinos.multPower - 1))
+	document.getElementById("neutrinoMultUpgCost").textContent = shortenDimensions(3)
+	document.getElementById("ghpMult").textContent = shortenDimensions(Decimal.pow(2, player.ghostify.multPower - 1))
+	document.getElementById("ghpMultUpgCost").textContent = "???"
+}
+
 function getNeutrinoGain() {
-	return Decimal.pow(2, player.ghostify.neutrinos.multPower - 1)
+	return Decimal.pow(5, player.ghostify.neutrinos.multPower - 1)
 }
 
 function getNeutrinoRanks() {

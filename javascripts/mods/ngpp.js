@@ -1205,7 +1205,7 @@ function quantumReset(force, auto, challid, bigRip, implode=false) {
 	if (player.tickspeedBoosts !== undefined && !oheHeadstart) player.autobuyers[13]=14
 	player.challenges=challengesCompletedOnEternity()
 	if (headstart) for (ec=1;ec<13;ec++) player.eternityChalls['eterc'+ec]=5
-	else if (isRewardEnabled(3) && !bigRip) for (ec=1;ec<15;ec++) player.eternityChalls['eterc'+ec] = 5
+	else if (isRewardEnabled(3) && !bigRip) for (ec=1;ec<15;ec++) if (ec != 7) player.eternityChalls['eterc'+ec] = 5
 	if (player.masterystudies) {
 		giveAchievement("Sub-atomic")
 		ipMultPower=GUBought("gb3")?2.3:player.masterystudies.includes("t241")?2.2:2
@@ -1289,6 +1289,7 @@ function quantumReset(force, auto, challid, bigRip, implode=false) {
 		player.quantum.nanofield.antienergy = new Decimal(0)
 		player.quantum.nanofield.power = 0
 		player.quantum.nanofield.powerThreshold = new Decimal(50)
+		if (player.quantum.bigRip.active != bigRip) for (var t=1;t<9;t++) document.getElementById("treeupg"+t+"lvl").textContent=player.quantum.tod.upgrades[t] + (player.quantum.bigRip.active || player.quantum.tod.upgrades[t] <= maxLevels[t] ? "" : " (cap: " + maxLevels[t] + ")")
 		player.quantum.bigRip.active = bigRip
 		if (bigRip) {
 			tweakBigRip()

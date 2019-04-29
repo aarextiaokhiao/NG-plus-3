@@ -1144,6 +1144,7 @@ if (player.version < 5) {
               mu: 0,
               tau: 0,
               generationGain: 1,
+              boosts: 1,
               multPower: 1,
               upgrades: []
           },
@@ -1187,6 +1188,7 @@ if (player.version < 5) {
           player.ghostify.time = player.totalTimePlayed
           player.ghostify.timeReset = true
       }
+      if (player.ghostify.neutrinos.boosts === undefined) player.ghostify.neutrinos.boosts = 1
       if (player.ghostify.automatorGhosts === undefined) player.ghostify.automatorGhosts = setupAutomaticGhostsData()
       if (player.options.animations.ghostify === undefined) player.options.animations.ghostify = true
 
@@ -1758,6 +1760,7 @@ if (player.version < 5) {
   updateReplicants()
   updateTODStuff()
   updateBreakEternity()
+  onNotationChangeNeutrinos()
   if (player.boughtDims) {
       if (document.getElementById("timestudies").style.display=="block") showEternityTab("ers_timestudies",true)
       updateGalaxyControl()
