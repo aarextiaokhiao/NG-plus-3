@@ -437,7 +437,9 @@ function quantum(auto, force, challid, bigRip) {
 					if (qc1st != 6 || qc2st != 8) return
 					if (!confirm("Big ripping the universe starts PC6+8 with only quantum stuff. However, only dilation upgrades boost dilation except upgrades that multiply TP gain until you buy the eleventh upgrade. NOTE: If you can beat PC6+8, you will earn a grand reward.")) return
 				}
-				if (player.options.challConf || QCIntensity(1) == 0) if (!confirm("You will do a quantum reset but you will not gain quarks, and keep your electrons & sacrificed galaxies, and you can't buy electron upgrades. You have to reach the set goal of antimatter to complete this challenge. NOTE: Electrons and banked eternities do nothing in quantum challenges and your electrons and sacrificed galaxies do not reset until you end the challenge.")) return
+				if (pc > 0) {
+					if (player.options.challConf || player.quantum.pairedChallenges.completions.length < 1) if (!confirm("You will start a Quantum Challenge, but you need to do 2 challenges at one. Completing it boosts the rewards of Quantum Challenges that you chose in this Paired Challenge.")) return
+				} else if (player.options.challConf || (QCIntensity(1) == 0 && !ghostified)) if (!confirm("You will do a quantum reset but you will not gain quarks, and keep your electrons & sacrificed galaxies, and you can't buy electron upgrades. You have to reach the set goal of antimatter to complete this challenge. NOTE: Electrons and banked eternities do nothing in quantum challenges and your electrons and sacrificed galaxies do not reset until you end the challenge.")) return
 				player.quantum.electrons.amount=player.quantum.electrons.amount.sub(getQCCost(challid))
 			} else if (pcFocus&&pc<1) {
 				if (!assigned.includes(challid)) {

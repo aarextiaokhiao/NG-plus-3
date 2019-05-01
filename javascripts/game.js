@@ -436,11 +436,13 @@ function updateNewPlayer(reseted) {
         player.eternitiesBank = 0
         player.quantum.challenge = []
         player.quantum.challenges = {}
+        player.quantum.nonMAGoalReached = {}
         player.quantum.challengeRecords = {}
         player.quantum.pairedChallenges = {
             order: {},
             current: 0,
             completed: 0,
+            completions: {},
             fastest: {},
             pc68best: 0,
             respec: false

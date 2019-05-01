@@ -694,6 +694,7 @@ if (player.version < 5) {
               player.quantum.multPower = {rg:0,gb:0,br:0,total:0}
               player.quantum.challenge = []
               player.quantum.challenges = {}
+              player.quantum.nonMAGoalReached = {}
               player.quantum.challengeRecords = {}
               player.quantum.pairedChallenges = {
                   order: {},
@@ -1109,6 +1110,7 @@ if (player.version < 5) {
       player.quantum.tod.b.gainDiv = Decimal.div(player.quantum.tod.b.gainDiv, 1e30)
   }
   if (player.aarexModifications.newGame3PlusVersion < 2) {
+      player.quantum.nonMAGoalReached = {}
       player.quantum.pairedChallenges.fastest = {}
       player.quantum.pairedChallenges.pc68best = 0
       player.quantum.bigRip = {
@@ -1174,6 +1176,7 @@ if (player.version < 5) {
       }
 
       //Testing-exclusive
+      if (player.quantum.nonMAGoalReached === undefined) player.quantum.nonMAGoalReached = {}
       if (player.quantum.bigRip.savedAutobuyersNoBR === undefined) player.quantum.bigRip.savedAutobuyersNoBR = {}
       if (player.quantum.bigRip.savedAutobuyersBR === undefined) player.quantum.bigRip.savedAutobuyersBR = {}
       if (player.quantum.breakEternity.upgradesReset === undefined && player.ghostify.times < 1) {
