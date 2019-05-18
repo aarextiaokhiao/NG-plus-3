@@ -51,7 +51,7 @@ function getGalaxyPowerEff(ng, bi) {
 
 function getTickSpeedMultiplier() {
 	let realnormalgalaxies = player.galaxies
-	if (player.masterystudies && !isEternityBroke()) realnormalgalaxies = Math.max((player.galaxies-player.quantum.electrons.sacGals)*Math.max(Math.min(10-player.quantum.electrons.amount.div(16857).toNumber(),1),0),0)
+	if (player.masterystudies && !isEternityBroke()) realnormalgalaxies = Math.max((player.galaxies-player.quantum.electrons.sacGals)*Math.max(Math.min(10-player.quantum.electrons.amount/16857,1),0),0)
 	if (player.tickspeedBoosts != undefined) if (player.galacticSacrifice.upgrades.includes(34)) realnormalgalaxies += 4
 	if ((player.currentChallenge == "postc3" || isIC3Trapped()) && !isEternityBroke()) {
 		if (player.currentChallenge=="postcngmm_3" || (player.challenges.includes("postcngmm_3") && player.tickspeedBoosts === undefined)) {

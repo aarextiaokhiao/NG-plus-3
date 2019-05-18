@@ -657,6 +657,7 @@ if (player.version < 5) {
               player.dilation.times = 0
               player.peakSpent = 0
               player.masterystudies = []
+              player.quantum.reached = false
               player.meta.bestOverQuantums = player.meta.bestAntimatter
               player.options.animations.quarks = true
               player.quantum.usedQuarks = {
@@ -784,6 +785,7 @@ if (player.version < 5) {
                   epMultPower: 0
               }
               player.ghostify = {
+                  reached: false,
                   times: 0,
                   time: player.totalTimePlayed,
                   best: 9999999999,
@@ -1110,6 +1112,7 @@ if (player.version < 5) {
       player.quantum.tod.b.gainDiv = Decimal.div(player.quantum.tod.b.gainDiv, 1e30)
   }
   if (player.aarexModifications.newGame3PlusVersion < 2) {
+      player.quantum.reached = player.quantum.times > 0
       player.quantum.nonMAGoalReached = {}
       player.quantum.pairedChallenges.fastest = {}
       player.quantum.pairedChallenges.pc68best = 0
@@ -1133,6 +1136,7 @@ if (player.version < 5) {
           epMultPower: 0
       }
       player.ghostify = {
+          reached: false,
           times: 0,
           time: player.totalTimePlayed,
           best: 9999999999,
@@ -1176,6 +1180,7 @@ if (player.version < 5) {
       }
 
       //Testing-exclusive
+      if (player.quantum.reached === undefined) player.quantum.reached = player.quantum.times > 0
       if (player.quantum.nonMAGoalReached === undefined) player.quantum.nonMAGoalReached = {}
       if (player.quantum.bigRip.savedAutobuyersNoBR === undefined) player.quantum.bigRip.savedAutobuyersNoBR = {}
       if (player.quantum.bigRip.savedAutobuyersBR === undefined) player.quantum.bigRip.savedAutobuyersBR = {}
@@ -1187,6 +1192,7 @@ if (player.version < 5) {
           player.quantum.breakEternity.upgradesReset = true
       }
       if (player.quantum.pairedChallenges.fastest === undefined) player.quantum.pairedChallenges.fastest = {}
+      if (player.ghostify.reached === undefined) player.ghostify.reached = player.ghostify.times > 0
       if (player.ghostify.timeReset === undefined) {
           player.ghostify.time = player.totalTimePlayed
           player.ghostify.timeReset = true
@@ -2254,7 +2260,7 @@ function transformSaveToDecimal() {
           player.quantum.gluons.br = new Decimal(player.quantum.gluons.br)
       }
       if (player.quantum ? player.quantum.autobuyer : false) player.quantum.autobuyer.limit = new Decimal(player.quantum.autobuyer.limit)
-      if (player.quantum ? player.quantum.electrons : false) player.quantum.electrons.amount = new Decimal(player.quantum.electrons.amount)
+      if (player.quantum ? player.quantum.electrons : false) if (typeof(player.quantum.electrons.amount)=="string") player.quantum.electrons.amount = Math.round(parseFloat(player.quantum.electrons.amount)*4)/4
       if (player.dilation.bestTP == undefined) player.dilation.bestTP = player.achievements.includes("ng3p18") || player.achievements.includes("ng3p37") ? player.dilation.tachyonParticles : 0
       player.dilation.bestTP = new Decimal(player.dilation.bestTP)
       if (player.quantum ? player.quantum.replicants : false) {

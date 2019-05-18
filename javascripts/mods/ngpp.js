@@ -1265,7 +1265,7 @@ function quantumReset(force, auto, challid, bigRip, implode=false) {
 		}
 		player.quantum.pairedChallenges.current=0
 		if (challid==0) {
-			player.quantum.electrons.amount=new Decimal(0)
+			player.quantum.electrons.amount=0
 			player.quantum.electrons.sacGals=0
 			player.quantum.challenge=[]
 		} else if (pc<1) player.quantum.challenge=[challid]

@@ -796,7 +796,7 @@ function sacrificeGalaxy(id, auto=false) {
 	if (player.options.sacrificeConfirmation && !auto) if (!confirm("Sacrificing your galaxies reduces your tickspeed and so your tick interval. You will gain a boost for multiplier per ten dimensions. Are you sure you want to do that?")) return
 	var old=new Decimal(getTickSpeedMultiplier()).log10()
 	player.quantum.electrons.sacGals+=amount
-	player.quantum.electrons.amount=player.quantum.electrons.amount.add(player.quantum.electrons.mult*amount)
+	player.quantum.electrons.amount+=player.quantum.electrons.mult*amount
 	player.tickspeed=player.tickspeed.pow(old/new Decimal(getTickSpeedMultiplier()).log10())
 	updateElectrons()
 }
@@ -804,10 +804,10 @@ function sacrificeGalaxy(id, auto=false) {
 function getMPTPower(on) {
 	if (!inQC(0)) return 1
 	var a = player.quantum.electrons.amount
-	if (a.gt(187300)) a = a.minus(149840).times(37460).sqrt().add(149840)
-	if (GUBought("rg4")) a = a.times(0.7)
-	if (player.masterystudies != undefined) if (on == undefined ? player.masterystudies.includes("d13") : on) a = a.times(Math.sqrt(getTreeUpgradeEffect(4)))
-	return a.toNumber()+1
+	if (a>187300) a = Math.sqrt((a-149840)*37460)+149840
+	if (GUBought("rg4")) a *= 0.7
+	if (player.masterystudies != undefined) if (on == undefined ? player.masterystudies.includes("d13") : on) a *= Math.sqrt(getTreeUpgradeEffect(4))
+	return a+1
 }
 
 //v1.8
@@ -826,9 +826,9 @@ function updateElectrons() {
 		document.getElementById("electronstabbtn").style.display="none"
 		return
 	} else document.getElementById("electronstabbtn").style.display=""
-	document.getElementById("electronsAmount").textContent=shortenDimensions(player.quantum.electrons.amount)
-	document.getElementById("electronsAmount2").textContent="You have "+shortenDimensions(player.quantum.electrons.amount)+" electrons."
-	document.getElementById("electronsTranslation").textContent=shortenDimensions(getMPTPower())
+	document.getElementById("electronsAmount").textContent=getFullExpansion(Math.round(player.quantum.electrons.amount))
+	document.getElementById("electronsAmount2").textContent="You have "+getFullExpansion(Math.round(player.quantum.electrons.amount))+" electrons."
+	document.getElementById("electronsTranslation").textContent=getFullExpansion(Math.round(getMPTPower()))
 	document.getElementById("sacrificedGals").textContent=getFullExpansion(player.quantum.electrons.sacGals)
 	document.getElementById("electronsGainMult").textContent=shorten(player.quantum.electrons.mult)
 	for (u=1;u<5;u++) {
@@ -907,7 +907,7 @@ function updateQuantumChallenges() {
 			var sc1=player.quantum.pairedChallenges.order[pc]?player.quantum.pairedChallenges.order[pc][0]:0
 			var sc2=(sc1?player.quantum.pairedChallenges.order[pc].length>1:false)?player.quantum.pairedChallenges.order[pc][1]:0
 			document.getElementById(property+"desc").textContent="Paired Challenge "+pc+": Both Quantum Challenge "+(sc1?sc1:"?")+" and "+(sc2?sc2:"?")+" are applied."
-			document.getElementById(property+"cost").textContent="Cost: "+(sc2?shorten(getQCCost(pc+8)):"???")+" electrons"
+			document.getElementById(property+"cost").textContent="Cost: "+(sc2?getFullExpansion(getQCCost(pc+8)):"???")+" electrons"
 			document.getElementById(property+"goal").textContent="Goal: "+(sc2?shortenCosts(Decimal.pow(10,getQCGoal(pc+8))):"???")+" antimatter"
 			document.getElementById(property).textContent=pcFocus==pc?"Cancel":(player.quantum.pairedChallenges.order[pc]?player.quantum.pairedChallenges.order[pc].length<2:true)?"Assign":player.quantum.pairedChallenges.completed>=pc?"Completed":player.quantum.pairedChallenges.completed+1<pc?"Locked":player.quantum.pairedChallenges.current==pc?"Running":"Start"
 			document.getElementById(property).className=pcFocus==pc||(player.quantum.pairedChallenges.order[pc]?player.quantum.pairedChallenges.order[pc].length<2:true)?"challengesbtn":player.quantum.pairedChallenges.completed>=pc?"completedchallengesbtn":player.quantum.pairedChallenges.completed+1<pc?"lockedchallengesbtn":player.quantum.pairedChallenges.current==pc?"onchallengebtn":"challengesbtn"
@@ -933,7 +933,7 @@ function updateQuantumChallenges() {
 		document.getElementById(property+"div").style.display=(qc<2||QCIntensity(qc-1))?"inline-block":"none"
 		document.getElementById(property).textContent=((!assigned.includes(qc)&&pcFocus)?"Choose":inQC(qc)?"Running":QCIntensity(qc)?(assigned.includes(qc)?"Assigned":"Completed"):"Start")+(assigned.includes(qc)?" (PC"+assignedNums[qc]+")":"")
 		document.getElementById(property).className=(!assigned.includes(qc)&&pcFocus)?"challengesbtn":inQC(qc)?"onchallengebtn":QCIntensity(qc)?"completedchallengesbtn":"challengesbtn"
-		document.getElementById(property+"cost").textContent="Cost: "+shortenDimensions(quantumChallenges.costs[qc])+" electrons"
+		document.getElementById(property+"cost").textContent="Cost: "+getFullExpansion(quantumChallenges.costs[qc])+" electrons"
 		document.getElementById(property+"goal").textContent="Goal: "+shortenCosts(Decimal.pow(10,getQCGoal(qc)))+" antimatter"
 	}
 	document.getElementById("qc2reward").textContent = Math.round(getQCReward(2)*100-100)
@@ -2473,7 +2473,7 @@ function ghostifyReset(implode, gain, amount) {
 				total: 0
 			},
 			electrons: {
-				amount: new Decimal(0),
+				amount: 0,
 				sacGals: 0,
 				mult: 2,
 				rebuyables: [0,0,0,0]
