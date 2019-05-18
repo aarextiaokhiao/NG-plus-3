@@ -409,7 +409,6 @@ if (player.version < 5) {
       delete player.aarexModifications.newGame3PlusVersion
   }
   transformSaveToDecimal();
-  updateCosts();
   updateTickSpeed();
   updateAchievements();
   updateCheckBoxes();
@@ -1658,6 +1657,12 @@ if (player.version < 5) {
   document.getElementById("61").innerHTML="You gain 10"+(player.aarexModifications.newGameExpVersion?0:"")+"x more EP<span>Cost: 3 Time Theorems"
   document.getElementById("62").innerHTML="You gain replicanti "+(player.aarexModifications.newGameExpVersion?4:3)+" times faster<span>Cost: 3 Time Theorems"
   document.getElementById("81").innerHTML="Dimensional boost power "+(player.galacticSacrifice?"is cubed":"becomes 10x")+"<span>Cost: 4 Time Theorems"
+  document.getElementById("221").style["font-size"] = player.masterystudies !== undefined ? "0.45rem" : "0.55rem"
+  document.getElementById("221desc").textContent = ""
+  document.getElementById("227desc").textContent = ""
+  document.getElementById("231").style["font-size"] = player.masterystudies !== undefined ? "0.55rem" : "0.65rem"
+  document.getElementById("231desc").textContent = ""
+  document.getElementById("232desc").textContent = ""
 
   updateAutobuyers();
   setAchieveTooltip();

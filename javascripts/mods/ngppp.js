@@ -381,11 +381,12 @@ function setupText() {
 	for (d=1;d<9;d++) {
 		var row=edsDiv.insertRow(d-1)
 		row.id="empRow"+d
-		row.style["font-size"]="16px"
+		row.style["font-size"]="15px"
 		var html='<td id="empD'+d+'" width="41%">'+DISPLAY_NAMES[d]+' Emperor Dimension x1</td>'
 		html+='<td><div id="empAmount'+d+'">0'+(d>7?'':' (+0.00%/s)')+'</div></td>'
 		html+='<td><span class="empQuarks" id="empQuarks'+d+'">0</span> preons/s</td>'
-		html+='<td align="right" width="10%"><button id="empFeed'+d+'" style="color:black; width:195px; height:30px" class="storebtn" align="right" onclick="feedReplicant('+d+')">Feed (0%)</button></td>'
+		html+='<td align="right" width="2.5%"><button id="empFeedMax'+d+'" style="color:black; width:70px; font-size:10px" class="storebtn" align="right" onclick="feedReplicant('+d+', true)">Max</button></td>'
+		html+='<td align="right" width="7.5%"><button id="empFeed'+d+'" style="color:black; width:195px; height:25px; font-size:10px" class="storebtn" align="right" onclick="feedReplicant('+d+')">Feed (0%)</button></td>'
 		row.innerHTML=html
 	}
 	for (var c=0;c<3;c++) {
@@ -509,7 +510,7 @@ function updateQuantumTabs() {
 		document.getElementById("normalGalaxies").textContent=getFullExpansion(player.galaxies)
 		for (i=1;i<7;i++) document.getElementById("sacrifice"+i).className=(Math.pow(10,i>4?0:i-1)>player.galaxies-player.quantum.electrons.sacGals||!inQC(0))?"unavailablebtn":"storebtn"
 		for (u=1;u<5;u++) document.getElementById("electronupg"+u).className="gluonupgrade "+(canBuyElectronUpg(u)?"stor":"unavailabl")+"ebtn"
-		document.getElementById("electronsEffect").textContent = shorten(getDimensionPowerMultiplier(true))
+		if (player.quantum.autoOptions.sacrifice) updateElectronsEffect()
 	}
 	if (document.getElementById("replicants").style.display=="block") {
 		document.getElementById("replicantiAmount2").textContent=shortenDimensions(player.replicanti.amount)
@@ -723,6 +724,7 @@ function buyGluonUpg(color, id) {
 	player.quantum.gluons[color]=player.quantum.gluons[color].sub(GUCosts[id])
 	updateGluons()
 	if (name=="gb3") ipMultPower=2.3
+	if (name=="rg4" && !player.quantum.autoOptions.sacrifice) updateElectronsEffect()
 	if (name=="gb4") player.tickSpeedMultDecrease=1.25
 }
 
@@ -798,7 +800,7 @@ function sacrificeGalaxy(id, auto=false) {
 	player.quantum.electrons.sacGals+=amount
 	player.quantum.electrons.amount+=player.quantum.electrons.mult*amount
 	player.tickspeed=player.tickspeed.pow(old/new Decimal(getTickSpeedMultiplier()).log10())
-	updateElectrons()
+	if (!player.quantum.autoOptions.sacrifice) updateElectronsEffect()
 }
 
 function getMPTPower(on) {
@@ -826,11 +828,8 @@ function updateElectrons() {
 		document.getElementById("electronstabbtn").style.display="none"
 		return
 	} else document.getElementById("electronstabbtn").style.display=""
-	document.getElementById("electronsAmount").textContent=getFullExpansion(Math.round(player.quantum.electrons.amount))
-	document.getElementById("electronsAmount2").textContent="You have "+getFullExpansion(Math.round(player.quantum.electrons.amount))+" electrons."
-	document.getElementById("electronsTranslation").textContent=getFullExpansion(Math.round(getMPTPower()))
-	document.getElementById("sacrificedGals").textContent=getFullExpansion(player.quantum.electrons.sacGals)
 	document.getElementById("electronsGainMult").textContent=shorten(player.quantum.electrons.mult)
+	if (!player.quantum.autoOptions.sacrifice) updateElectronsEffect()
 	for (u=1;u<5;u++) {
 		var cost=getElectronUpgCost(u)
 		document.getElementById("electronupg"+u).innerHTML="Upgrade multiplier with "+([null,"time theorems","dilated time","meta-antimatter","meta-dimension boosts"])[u]+".<br>Cost: "+(u>3?getFullExpansion(getElectronUpgCost(u)):shortenCosts(getElectronUpgCost(u)))+([null," TT"," DT"," MA"," MDB"])[u]
@@ -1016,7 +1015,7 @@ function updateMasteryStudyTextDisplay() {
 		for (id=7;id<11;id++) document.getElementById("ds"+id+"Cost").textContent="Cost: "+shorten(masterystudies.costs.dil[id])+" Time Theorems"
 		document.getElementById("ds8Req").innerHTML=ghostified?"":"<br>Requirement: "+shorten(16750)+" electrons"
 		document.getElementById("ds9Req").innerHTML=ghostified?"":"<br>Requirement: Complete Quantum Challenge 8"
-		document.getElementById("ds10Req").innerHTML=ghostified?"":"<br>Requirement: Complete Paired Challenge 8"
+		document.getElementById("ds10Req").innerHTML=ghostified?"":"<br>Requirement: Complete Paired Challenge 4"
 		document.getElementById("321effect").textContent=shortenCosts(new Decimal("1e430"))
 	}
 	if (player.masterystudies.includes("d10")) {
@@ -1419,10 +1418,15 @@ function getTotalReplicants(data) {
 	return ret.add(data.quantum.replicants.amount).round()
 }
 
-function feedReplicant(tier) {
+function feedReplicant(tier, max) {
 	if (!canFeedReplicant(tier)) return
-	if (tier<8&&eds[tier].perm>9) player.quantum.replicants.quantumFoodCost=player.quantum.replicants.quantumFoodCost.div(5)
-	eds[tier].progress=eds[tier].progress.add(1/3)
+	console.log(Math.round(getWorkerAmount(tier - 1).toNumber() * 3))
+	var toFeed = max ? Math.min(player.quantum.replicants.quantumFood, player.quantum.replicants.limitDim > tier ? Math.round(getWorkerAmount(tier - 1).toNumber() * 3) : Math.round((player.quantum.replicants.limit - eds[tier].perm - eds[tier].progress.toNumber()) * 3)) : 1
+	if (tier<8) {
+		var reduced = Math.max(toFeed - Math.round((10 - eds[tier].perm - eds[tier].progress.toNumber()) * 3), 0)
+		if (reduced > 0) player.quantum.replicants.quantumFoodCost=player.quantum.replicants.quantumFoodCost.div(Decimal.pow(5, reduced))
+	}
+	eds[tier].progress=eds[tier].progress.add(toFeed/3)
 	if (tier<8||getWorkerAmount(tier+1).eq(0)) eds[tier].progress=eds[tier].progress.times(3).round().div(3)
 	if (eds[tier].progress.gte(1)) {
 		var toAdd=eds[tier].progress.floor()
@@ -1430,10 +1434,10 @@ function feedReplicant(tier) {
 		else player.quantum.replicants.amount=player.quantum.replicants.amount.sub(toAdd).round()
 		eds[tier].progress=eds[tier].progress.sub(toAdd)
 		eds[tier].workers=eds[tier].workers.add(toAdd).round()
-		if (tier>7||eds[tier].perm<10) eds[tier].perm++
+		if (tier>7) eds[tier].perm = Math.min(eds[tier].perm + Math.round(toAdd.toNumber()), tier > 7 ? 1/0 : 10)
 		if (tier==2) giveAchievement("An ant office?")
 	}
-	player.quantum.replicants.quantumFood--
+	player.quantum.replicants.quantumFood -= toFeed
 	updateReplicants()
 }
 
@@ -1524,6 +1528,7 @@ function updateEmperorDimensions() {
 		document.getElementById("empAmount"+d).textContent = desc
 		document.getElementById("empFeed"+d).className=(canFeedReplicant(d)?"stor":"unavailabl")+"ebtn"
 		document.getElementById("empFeed"+d).textContent="Feed ("+Math.round(eds[d].progress.toNumber()*100)+"%, "+eds[d].perm+" kept)"
+		document.getElementById("empFeedMax"+d).className=(canFeedReplicant(d)?"stor":"unavailabl")+"ebtn"
 
 		document.getElementById("empQuarks"+d).textContent = shorten(production.workers[d])
 	}
@@ -1877,6 +1882,14 @@ function toggleAutoReset() {
 }
 
 //v2
+function updateElectronsEffect() {
+	document.getElementById("sacrificedGals").textContent=getFullExpansion(player.quantum.electrons.sacGals)
+	document.getElementById("electronsAmount").textContent=getFullExpansion(Math.round(player.quantum.electrons.amount))
+	if (!player.quantum.autoOptions.sacrifice) document.getElementById("electronsAmount2").textContent="You have " + getFullExpansion(Math.round(player.quantum.electrons.amount)) + " electrons."
+	document.getElementById("electronsTranslation").textContent=getFullExpansion(Math.round(getMPTPower()))
+	document.getElementById("electronsEffect").textContent = shorten(getDimensionPowerMultiplier(true))
+}
+
 function rotateAutoAssign() {
 	player.quantum.autoOptions.assignQKRotate=player.quantum.autoOptions.assignQKRotate?(player.quantum.autoOptions.assignQKRotate+1)%3:1
 	document.getElementById('autoAssignRotate').textContent=player.quantum.autoOptions.assignQKRotate?"C"+(player.quantum.autoOptions.assignQKRotate>1?"ounterc":"")+"lockwise":"No rotate"
@@ -1990,6 +2003,11 @@ function breakEternity() {
 	player.quantum.breakEternity.break = !player.quantum.breakEternity.break
 	document.getElementById("breakEternityBtn").textContent = (player.quantum.breakEternity.break ? "FIX" : "BREAK") + " ETERNITY"
 	giveAchievement("Time Breaker")
+	if (!player.dilation.active && isSmartPeakActivated) {
+		EPminpeakType = 'normal'
+		EPminpeak = new Decimal(0)
+		player.peakSpent = 0
+	}
 }
 
 function isEternityBroke() {

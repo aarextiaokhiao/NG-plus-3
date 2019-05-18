@@ -82,6 +82,9 @@ function updateBlackhole() {
     for (let tier = 1; tier <= 4; ++tier) {
       document.getElementById("blackholeD"+tier).textContent = DISPLAY_NAMES[tier] + " Black Hole Dimension x" + shortenMoney(getBlackholeDimensionPower(tier));
       document.getElementById("blackholeAmount"+tier).textContent = getBlackholeDimensionDescription(tier);
+      document.getElementById("blackholeMax"+i).textContent = "Cost: " + shortenCosts(player["blackholeDimension"+i].cost) + " EP";
+      if (player.eternityPoints.gte(player["blackholeDimension"+tier].cost)) document.getElementById("blackholeMax"+tier).className = "storebtn"
+      else document.getElementById("blackholeMax"+tier).className = "unavailablebtn"
     }
   }
 }

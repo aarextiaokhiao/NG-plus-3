@@ -321,6 +321,8 @@ button, div.storebtn {
 	color: #191919 !important
 }
 
+#progressbar.quantumProgress { background: #009900 !important }
+
 #quantumbtn div {
 	color: #191919 !important
 }

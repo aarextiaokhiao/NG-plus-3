@@ -953,8 +953,12 @@ button {
     pointer-events: all !important;
 }
 
-.quantumProgress { background-color: #0a640a !important }
+.quantumProgress { background: #0a640a !important }
 .quantumProgress #progresspercent { color: #32c832 }
+
+.ghostifyProgress { background: linear-gradient(#0c001e, #3a003f) !important }
+.ghostifyProgress #progresspercent { animation: ghostifytext 4s linear infinite }
+.ghostifyProgress #progresspercent::before { text-shadow: none }
 
 .greedbtn {
     height: 40px;

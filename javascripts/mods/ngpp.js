@@ -299,8 +299,11 @@ function updateMetaDimensions () {
 		document.getElementById(tier + "MetaRow").style.display = "table-row";
 		document.getElementById(tier + "MetaRow").style.visibility = "visible";
 	}
+	var useTwo = player.options.notation=="Logarithm" ? 2 : 0
 	for (let tier = 1; tier <= 8; ++tier) {
+		document.getElementById("meta"+tier).textContent = speedrunMilestonesReached > tier+5 ? "Auto: O"+(player.autoEterOptions["md"+tier] ? "N" : "FF") : "Cost: " + formatValue(player.options.notation, player.meta[tier].cost, useTwo, 0) + " MA"
 		document.getElementById('meta' + tier).className = speedrunMilestonesReached > tier+5 ? "storebtn" : canAffordMetaDimension(player.meta[tier].cost) ? 'storebtn' : 'unavailablebtn';
+		document.getElementById("metaMax"+tier).textContent = (speedrunMilestonesReached > tier+5 ? (shiftDown ? "Singles" : "Cost") : "Until 10") + ": " + formatValue(player.options.notation, ((shiftDown && speedrunMilestonesReached > tier+5) ? player.meta[tier].cost : getMetaMaxCost(tier)), useTwo, 0) + " MA"
 		document.getElementById('metaMax' + tier).className = canAffordMetaDimension((shiftDown && speedrunMilestonesReached > tier+5) ? player.meta[tier].cost : getMetaMaxCost(tier)) ? 'storebtn' : 'unavailablebtn';
 	}
 	var isMetaShift = player.meta.resets < 4
@@ -428,7 +431,7 @@ function quantum(auto, force, challid, bigRip) {
 			} else if (!pcFocus) abletostart=true
 			if (abletostart) {
 				if (pc>0) if (player.quantum.pairedChallenges.completed+1<pc) return
-				if (player.quantum.electrons.amount.lt(getQCCost(challid))||!inQC(0)) return
+				if (player.quantum.electrons.amount<getQCCost(challid)||!inQC(0)) return
 				if (bigRip) {
 					var qc1 = player.quantum.pairedChallenges.order[pc][0]
 					var qc2 = player.quantum.pairedChallenges.order[pc][1]
@@ -541,15 +544,20 @@ function updateLastTenQuantums() {
 
 //v2.9014
 function doQuantumProgress() {
-	document.getElementById("progressbar").className="quantumProgress"
-	var gqk = quarkGain()
 	var power = player.masterystudies != undefined ? 1.45 : 1
 	var id = 1
 	if (quantumed && power > 1) {
-		if (inQC(0)) {
+		if (player.quantum.bigRip.active) {
+			if (player.meta.antimatter.lt(Decimal.pow(Number.MAX_VALUE, power))) id = 1
+			else if (!player.quantum.breakEternity.unlocked) id = 4
+			else id = 5
+		} else if (inQC(0)) {
+			var gqk = quarkGain()
 			if (player.meta.antimatter.gte(Decimal.pow(Number.MAX_VALUE, power)) && Decimal.gt(gqk, 1)) id = 3
-		} else if (player.money.lt(getQCGoal()) || player.meta.antimatter.gte(Decimal.pow(Number.MAX_VALUE, power))) id = 2
+		} else if (player.money.lt(Decimal.pow(10, getQCGoal())) || player.meta.antimatter.gte(Decimal.pow(Number.MAX_VALUE, power))) id = 2
 	}
+	var className = id > 3 ? "ghostifyProgress" : "quantumProgress"
+	if (document.getElementById("progressbar").className != className) document.getElementById("progressbar").className = className
 	if (id == 1) {
 		var percentage = Math.min(player.meta.antimatter.max(1).log10() / Decimal.log10(Number.MAX_VALUE) / power * 100, 100).toFixed(2) + "%"
 		document.getElementById("progressbar").style.width = percentage
@@ -560,13 +568,23 @@ function doQuantumProgress() {
 		document.getElementById("progressbar").style.width = percentage
 		document.getElementById("progresspercent").textContent = percentage
 		document.getElementById("progresspercent").setAttribute('ach-tooltip','Percentage to Quantum Challenge goal')
-	} else {
+	} else if (id == 3) {
 		var gqkLog = gqk.log2()
 		var goal = Math.pow(2,Math.ceil(Math.log10(gqkLog) / Math.log10(2)))
 		var percentage = Math.min(gqkLog / goal * 100, 100).toFixed(2) + "%"
 		document.getElementById("progressbar").style.width = percentage
 		document.getElementById("progresspercent").textContent = percentage
 		document.getElementById("progresspercent").setAttribute('ach-tooltip',"Percentage to "+shortenDimensions(Decimal.pow(2,goal))+" QK gain")
+	} else if (id == 4) {
+		var percentage = Math.min(player.eternityPoints.max(1).log10() / 1200, 100).toFixed(2) + "%"
+		document.getElementById("progressbar").style.width = percentage
+		document.getElementById("progresspercent").textContent = percentage
+		document.getElementById("progresspercent").setAttribute('ach-tooltip','Eternity points percentage to Break Eternity')
+	} else if (id == 5) {
+		var percentage = Math.min(player.quantum.bigRip.bestThisRun.max(1).log10() / getQCGoal() * 100, 100).toFixed(2) + "%"
+		document.getElementById("progressbar").style.width = percentage
+		document.getElementById("progresspercent").textContent = percentage
+		document.getElementById("progresspercent").setAttribute('ach-tooltip','Percentage to Ghostify')
 	}
 }
 
