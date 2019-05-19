@@ -976,6 +976,8 @@ function showTab(tabName) {
         }
         if (tabName=="ghostify") {
             document.getElementById("neutrinoUpg1Cost").textContent = shortenDimensions(neutrinoUpgCosts[1])
+            document.getElementById("neutrinoUpg2Cost").textContent = shortenDimensions(neutrinoUpgCosts[2])
+            document.getElementById("neutrinoUpg3Cost").textContent = shortenDimensions(neutrinoUpgCosts[3])
         }
     }
     closeToolTip();
@@ -6557,7 +6559,12 @@ setInterval(function() {
     document.getElementById("quantumbtn").style.display = showQuantumBtn || bigRipped ? "" : "none"
 
     document.getElementById("ghostparticles").style.display = ghostified ? "" : "none"
-    if (ghostified) document.getElementById("GHPAmount").textContent = shortenDimensions(player.ghostify.ghostParticles)
+    if (ghostified) {
+        document.getElementById("GHPAmount").textContent = shortenDimensions(player.ghostify.ghostParticles)
+        var showQuantumed = player.ghostify.times > 0
+        document.getElementById("quantumedBM").style.display = showQuantumed ? "" : "none"
+        if (showQuantumed) document.getElementById("quantumedBMAmount").textContent = getFullExpansion(player.quantum.times)
+    }
     document.getElementById("ghostifybtn").style.display = showQuantumBtn && bigRipped ? "" : "none"
 
 
@@ -6572,6 +6579,8 @@ setInterval(function() {
     else document.getElementById("galaxybulk").style.display = "none"
     if (getEternitied() > 99 && player.meta) document.getElementById("toggleautoetermode").style.display = "inline-block"
     else document.getElementById("toggleautoetermode").style.display = "none"
+    if (getEternitied() > 99 && player.achievements.includes("ng3p52")) document.getElementById('aftereternity').style.display = "inline-block"
+    else document.getElementById('aftereternity').style.display = "none"
 
     document.getElementById("replicantichance").className = (player.infinityPoints.gte(player.replicanti.chanceCost) && player.replicanti.chance < 1) ? "storebtn" : "unavailablebtn"
     document.getElementById("replicantiinterval").className = (player.infinityPoints.gte(player.replicanti.intervalCost) && ((player.replicanti.interval !== 50) || player.timestudy.studies.includes(22)) && (player.replicanti.interval !== 1)) ? "storebtn" : "unavailablebtn"
@@ -7105,16 +7114,18 @@ function gameLoop(diff) {
         gatheredQuarksBoost = Math.pow(player.quantum.replicants.quarks.add(1).log10(),player.masterystudies.includes("t362")?0.35:0.25)*0.67*(player.masterystudies.includes("t412")?1.25:1)
 
         for (dim=8;dim>1;dim--) {
-            var promote = getWorkerAmount(dim-2)
+            var promote = player.ghostify.neutrinos.upgrades.includes(2) ? 1/0 : getWorkerAmount(dim-2)
             if (canFeedReplicant(dim-1,true)) {
                eds[dim-1].progress = eds[dim-1].progress.add(eds[dim].workers.times(getEDMultiplier(dim)).times(diff/200))
                var toAdd = eds[dim-1].progress.floor().min(promote)
                if (dim>2) toAdd = toAdd.min(eds[dim-2].workers.sub(10).round())
                if (toAdd.gt(0)) {
-                   if (dim>2 && toAdd.gt(getWorkerAmount(dim-2))) eds[dim-2].workers = new Decimal(0)
-                   else if (dim>2) eds[dim-2].workers = eds[dim-2].workers.sub(toAdd).round()
-                   else if (toAdd.gt(player.quantum.replicants.amount)) player.quantum.replicants.amount = new Decimal(0)
-                   else player.quantum.replicants.amount = player.quantum.replicants.amount.sub(toAdd).round()
+                   if (!player.ghostify.neutrinos.upgrades.includes(2)) {
+                       if (dim>2 && toAdd.gt(getWorkerAmount(dim-2))) eds[dim-2].workers = new Decimal(0)
+                       else if (dim>2) eds[dim-2].workers = eds[dim-2].workers.sub(toAdd).round()
+                       else if (toAdd.gt(player.quantum.replicants.amount)) player.quantum.replicants.amount = new Decimal(0)
+                       else player.quantum.replicants.amount = player.quantum.replicants.amount.sub(toAdd).round()
+                   }
                    if (toAdd.gt(eds[dim-1].progress)) eds[dim-1].progress = new Decimal(0)
                    else eds[dim-1].progress = eds[dim-1].progress.sub(toAdd)
                    eds[dim-1].workers = eds[dim-1].workers.add(toAdd).round()
@@ -7133,7 +7144,7 @@ function gameLoop(diff) {
 
         if (player.quantum.replicants.eggons.gt(0)) {
             player.quantum.replicants.babyProgress = player.quantum.replicants.babyProgress.add(diff/getHatchSpeed()/10)
-            var toAdd = player.quantum.replicants.babyProgress.floor().min(player.quantum.replicants.eggons)
+            var toAdd = player.ghostify.neutrinos.upgrades.includes(2) ? player.quantum.replicants.eggons : player.quantum.replicants.babyProgress.floor().min(player.quantum.replicants.eggons)
             if (toAdd.gt(0)) {
                 if (toAdd.gt(player.quantum.replicants.eggons)) player.quantum.replicants.eggons = new Decimal(0)
                 else player.quantum.replicants.eggons = player.quantum.replicants.eggons.sub(toAdd).round()

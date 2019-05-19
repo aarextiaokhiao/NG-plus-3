@@ -70,7 +70,10 @@
             </button>
         </div>
         <div style="position: relative">
-            <div class="GHP" id="ghostparticles">You have <span id='GHPAmount'>0</span> Ghost Particles.</div>
+            <div class="GHP" id="ghostparticles">
+                You have <span id='GHPAmount'>0</span> Ghost Particles.<br>
+                <div id="quantumedBM">Quantumed <span id='quantumedBMAmount'>0</span> times</div>
+            </div>
             <button id="ghostifybtn" class="ghostifybtn" onclick="ghostify()">
                 <div id="ghostifybtnFlavor" class="hideEmpty"></div>
                 <div id="GHPGain" class="hideEmpty"></div>
@@ -2449,7 +2452,7 @@
                                 <div id="To the new dimension!" class="achievement achievementlocked" style="background-image: url(images/143.png)" ach-tooltip="Big Rip the universe."></div>
                             </td>
                             <td>
-                                <div id="Quantum doesn't take so long" class="achievement achievementlocked" style="background-image: url(images/144.png)" ach-tooltip="Quantum in under 0.2 seconds."></div>
+                                <div id="Quantum doesn't take so long" class="achievement achievementlocked" style="background-image: url(images/144.png)" ach-tooltip="Quantum in under 0.2 seconds. Reward: Expand Automatic Eternity to contain new after-eternity features."></div>
                             </td>
                             <td>
                                 <div id="Gonna go fast" class="achievement achievementlocked" style="background-image: url(images/145.png)"></div>
@@ -3756,6 +3759,7 @@
                 <button class="storebtn" id="togglebulk" style="font-size: 100%; width: 150px; height: 40px;margin: 3px" onclick="toggleBulk()">Disable bulk buy</button>
                 <button class="storebtn" id="togglecrunchmode" style="font-size: 100%; width: 150px; height: 40px;margin: 3px; display: none" onclick="toggleCrunchMode()">Auto crunch mode: amount</button>
                 <button class="storebtn" id="toggleautoetermode" style="font-size: 100%; width: 150px; height: 40px;margin: 3px; display: none" onclick="toggleAutoEterMode()">Auto eternity mode: amount</button>
+                <button class="storebtn" id="aftereternity" style="font-size: 100%; width: 150px; height: 40px;margin: 3px; display: none" onclick="openAfterEternity()">Auto eternity after-reset features</button>
                 <button class="storebtn" id="toggleautoquantummode" style="font-size: 100%; width: 150px; height: 40px;margin: 3px; display: none" onclick="toggleAutoQuantumMode()"></button>
                 <br>
                 <tr>
@@ -4622,8 +4626,8 @@
 					</tr>
 					<tr>
 						<td><button class="gluonupgrade unavailablebtn" id="neutrinoUpg1" onclick="buyNeutrinoUpg(1)" style="font-size: 10px">Meta-Dimension Boosts cost 100 less.<br>(Reduces if not big ripped)<br>Cost: <span id="neutrinoUpg1Cost"></span> of any neutrinos<br>Currently: -<span id="neutrinoUpg1Pow"></span></button></td>
-						<td><button class="gluonupgrade unavailablebtn">???<br>Cost: ??? of any neutrinos</button></td>
-						<td><button class="gluonupgrade unavailablebtn">???<br>Cost: ??? of any neutrinos</button></td>
+						<td><button class="gluonupgrade unavailablebtn" id="neutrinoUpg2" onclick="buyNeutrinoUpg(2)">Eggons hatch instantly and workers do not consume others.<br>Cost: <span id="neutrinoUpg2Cost"></span> of any neutrinos</button></td>
+						<td><button class="gluonupgrade unavailablebtn" id="neutrinoUpg3" onclick="buyNeutrinoUpg(3)">Slow down preon loss per second by 10x.<br>Cost: <span id="neutrinoUpg3Cost"></span> of any neutrinos</button></td>
 					</tr>
 					<tr>
 						<td><button class="gluonupgrade unavailablebtn">???<br>Cost: ??? of any neutrinos</button></td>

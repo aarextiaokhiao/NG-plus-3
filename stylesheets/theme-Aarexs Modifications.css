@@ -509,7 +509,7 @@ strong { color: #0072e5 }
 .ghostifybtn:hover {
 	border-color: rgba(255,255,255,0.5) !important
 }
-#GHPAmount {
+#GHPAmount, #quantumedBMAmount {
 	animation: ghostifytext 4s linear infinite
 }
 .aarexmodsghostifybtn {

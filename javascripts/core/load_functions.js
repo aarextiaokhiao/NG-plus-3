@@ -543,6 +543,7 @@ if (player.version < 5) {
   document.getElementById(inERS?"r35":"r76").appendChild(document.getElementById("One for each dimension"))
   document.getElementById(inERS?"r41":"r22").appendChild(document.getElementById("Fake News"))
   document.getElementById(inERS?"r76":"r41").appendChild(document.getElementById("Spreading Cancer"))
+  document.getElementById("Universal harmony").style["background-image"]="url(images/"+(player.masterystudies==undefined?104:"104-ngp3")+".png)"
   document.getElementById("Infinite time").style["background-image"]="url(images/"+(inERS?79:69)+".png)"
 
   if (player.version < 9.5) {
@@ -1703,6 +1704,7 @@ if (player.version < 5) {
   document.getElementById('toggleautoquantummode').style.display=(player.masterystudies?player.quantum.reachedInfQK||player.achievements.includes("ng3p25"):false)?"":"none"
   document.getElementById('assignAll').style.display=(player.masterystudies?player.quantum.reachedInfQK||ghostified:false)?"":"none"
   document.getElementById('autoReset').style.display=player.achievements.includes("ng3p47")?"":"none"
+  document.getElementById('aftereternity').style.display=player.achievements.includes("ng3p52")?"":"none"
   if (player.masterystudies) {
       updateMasteryStudyCosts()
       updateMasteryStudyButtons()

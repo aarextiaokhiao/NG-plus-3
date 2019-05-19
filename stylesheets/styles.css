@@ -546,7 +546,7 @@ button {
 	font-size: 11px
 }
 
-#GHPAmount {
+#GHPAmount, #quantumedBMAmount {
 	font-weight: bold;
 }
 

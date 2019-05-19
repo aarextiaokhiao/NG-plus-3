@@ -529,7 +529,7 @@ function updateQuantumTabs() {
 		document.getElementById("gatheredQuarks").textContent=shortenDimensions(player.quantum.replicants.quarks.floor())
 		document.getElementById("quarkTranslation").textContent=shortenDimensions(gatheredQuarksBoost*100)
 
-		var eggonRate = getTotalWorkers().times(3)
+		var eggonRate = getTotalWorkers().times(getEDMultiplier(1)).times(3)
 		if (eggonRate.lt(30)) {
 			document.getElementById("eggonRate").textContent=shortenDimensions(eggonRate)
 			document.getElementById("eggonRateTimeframe").textContent="minute"
@@ -1434,7 +1434,7 @@ function feedReplicant(tier, max) {
 		else player.quantum.replicants.amount=player.quantum.replicants.amount.sub(toAdd).round()
 		eds[tier].progress=eds[tier].progress.sub(toAdd)
 		eds[tier].workers=eds[tier].workers.add(toAdd).round()
-		if (tier>7) eds[tier].perm = Math.min(eds[tier].perm + Math.round(toAdd.toNumber()), tier > 7 ? 1/0 : 10)
+		eds[tier].perm = Math.min(eds[tier].perm + Math.round(toAdd.toNumber()), tier > 7 ? 1/0 : 10)
 		if (tier==2) giveAchievement("An ant office?")
 	}
 	player.quantum.replicants.quantumFood -= toFeed
@@ -1477,10 +1477,10 @@ function buyMaxQuantumFood() {
 function canFeedReplicant(tier, auto) {
 	if (player.quantum.replicants.quantumFood<1 && !auto) return false
 	if (tier>1) {
-		if (eds[tier].workers.gte(eds[tier-1].workers)) return false
+		if (eds[tier].workers.gte(eds[tier-1].workers)) return auto && player.ghostify.neutrinos.upgrades.includes(2)
 		if (eds[tier-1].workers.lte(10)) return false
 	} else {
-		if (eds[1].workers.gte(player.quantum.replicants.amount)) return false
+		if (eds[1].workers.gte(player.quantum.replicants.amount)) return auto && player.ghostify.neutrinos.upgrades.includes(2)
 		if (player.quantum.replicants.amount.eq(0)) return false
 	}
 	if (tier>player.quantum.replicants.limitDim) return false
@@ -1590,7 +1590,9 @@ function startProduceQuarkCharge() {
 }
 
 function getQuarkLossProduction() {
-	return getQuarkChargeProduction().pow(4).times(4e25)
+	let ret = getQuarkChargeProduction().pow(4).times(4e25)
+	if (player.ghostify.neutrinos.upgrades.includes(3)) ret = ret.div(10)
+	return ret
 }
 
 function getQuarkEnergyProduction() {
@@ -2830,7 +2832,7 @@ function updateGhostifyTabs() {
 		document.getElementById("preNeutrinoBoost1").textContent=getDilExp("neutrinos").toFixed(2)
 		document.getElementById("neutrinoBoost1").textContent=getDilExp().toFixed(2)
 		document.getElementById("neutrinoUpg1Pow").textContent=getNU1Pow()
-		for (var u=1; u<2; u++) {
+		for (var u=1; u<3; u++) {
 			if (player.ghostify.neutrinos.upgrades.includes(u)) document.getElementById("neutrinoUpg" + u).className = "gluonupgradebought neutrinoupg"
 			else if (player.ghostify.neutrinos.electron.add(player.ghostify.neutrinos.mu).round().add(player.ghostify.neutrinos.tau).round().gte(neutrinoUpgCosts[u])) document.getElementById("neutrinoUpg" + u).className = "gluonupgrade neutrinoupg"
 			else document.getElementById("neutrinoUpg" + u).className = "gluonupgrade unavailablebtn"
@@ -2855,7 +2857,7 @@ function getNeutrinoRanks() {
 	return neutrinoRanks
 }
 
-var neutrinoUpgCosts = [null, 1e6]
+var neutrinoUpgCosts = [null, 1e6, 1e7, 1e8]
 function buyNeutrinoUpg(id) {
 	if (!player.ghostify.neutrinos.electron.add(player.ghostify.neutrinos.mu).round().add(player.ghostify.neutrinos.tau).round().gte(neutrinoUpgCosts[id])) return
 	player.ghostify.neutrinos.upgrades.push(id)
