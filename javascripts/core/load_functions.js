@@ -404,6 +404,7 @@ if (player.version < 5) {
   if (player.aarexModifications.popUpId === undefined) {
       player.aarexModifications.popUpId = 0
   }
+  if (player.aarexModifications.tabsSave === undefined) player.aarexModifications.tabsSave = {on: false}
   if (player.aarexModifications.newGamePlusPlusVersion == undefined && player.aarexModifications.newGame3PlusVersion != undefined) {
       delete player.masterystudies
       delete player.aarexModifications.newGame3PlusVersion
@@ -1526,6 +1527,7 @@ if (player.version < 5) {
 
   document.getElementById("progressBarBtn").textContent = (player.aarexModifications.progressBar?"Hide":"Show")+" progress bar"
   document.getElementById("toggleLogRateChange").textContent = "Logarithm rate: O"+(player.aarexModifications.logRateChange?"N":"FF")
+  document.getElementById("tabsSave").textContent = "Saved tabs: O"+(player.aarexModifications.tabsSave.on?"N":"FF")
   dimDescEnd = (player.aarexModifications.logRateChange?" OoM":"%")+"/s)"
 
   document.getElementById("quantumtabbtn").style.display = quantumed ? "" : "none"
@@ -1807,15 +1809,16 @@ if (player.version < 5) {
   updatePowers()
   document.getElementById("newsbtn").textContent=(player.options.newsHidden?"Show":"Hide")+" news ticker"
   document.getElementById("game").style.display=player.options.newsHidden?"none":"block"
-  showDimTab('antimatterdimensions')
-  showStatsTab('stats')
-  showAchTab('normalachievements')
-  showChallengesTab('normalchallenges')
-  showInfTab('preinf')
-  showEternityTab('timestudies', true)
-  showQuantumTab('uquarks')
-  showBranchTab('red')
-  showGhostifyTab('neutrinos')
+  var tabsSave = player.aarexModifications.tabsSave
+  showDimTab(tabsSave.on && tabsSave.tabDims !== undefined ? tabsSave.tabDims : 'antimatterdimensions')
+  showStatsTab(tabsSave.on && tabsSave.tabStats !== undefined ? tabsSave.tabStats : 'stats')
+  showAchTab(tabsSave.on && tabsSave.tabAchs !== undefined ? tabsSave.tabAchs : 'normalachievements')
+  showChallengesTab(tabsSave.on && tabsSave.tabChalls !== undefined ? tabsSave.tabChalls : 'normalchallenges')
+  showInfTab(tabsSave.on && tabsSave.tabInfinity !== undefined ? tabsSave.tabInfinity : 'preinf')
+  showEternityTab(tabsSave.on && tabsSave.tabEternity !== undefined ? tabsSave.tabEternity : 'timestudies', true)
+  showQuantumTab(tabsSave.on && tabsSave.tabQuantum !== undefined ? tabsSave.tabQuantum : 'uquarks')
+  showBranchTab(tabsSave.on && tabsSave.tabBranch !== undefined ? tabsSave.tabBranch : 'red')
+  showGhostifyTab(tabsSave.on && tabsSave.tabGhostify !== undefined ? tabsSave.tabGhostify : 'neutrinos')
   if (!player.options.newsHidden) scrollNextMessage()
   document.getElementById("secretoptionsbtn").style.display=player.options.secrets?"":"none"
   document.getElementById("ghostlynewsbtn").textContent=((player.options.secrets!==undefined?player.options.secrets.ghostlyNews:false)?"Hide":"Show")+" ghostly news ticker"
@@ -1967,6 +1970,7 @@ function rename_save(id) {
 			hideProductionTab: true,
 			eternityChallRecords: {},
 			popUpId: 0,
+			tabsSave: {on: false},
 			breakInfinity: false
         }
 		temp_save.aarexModifications.save_name = save_name
@@ -2076,10 +2080,13 @@ function new_game(id) {
 	closeToolTip()
 	showDimTab('antimatterdimensions')
 	showStatsTab('stats')
-	showChallengesTab('challenges')
+	showAchTab('normalachievements')
+	showChallengesTab('normalchallenges')
+	showInfTab('preinf')
 	showEternityTab('timestudies', true)
 	showQuantumTab('uquarks')
 	showBranchTab('red')
+	showGhostifyTab('neutrinos')
 }
 
 function transformSaveToDecimal() {

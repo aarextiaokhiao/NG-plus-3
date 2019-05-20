@@ -328,6 +328,7 @@ function updateNewPlayer(reseted) {
             hideProductionTab: false,
             eternityChallRecords: {},
             popUpId: 0,
+            tabsSave: {on: false},
             breakInfinity: false
         }
     }
@@ -942,7 +943,7 @@ let kongEPMult = 1
 
 
 
-function showTab(tabName) {
+function showTab(tabName, init) {
     if (tabName=='quantumtab' && !player.masterystudies) {
         alert("Wait! The owner of NG++, dan-simon, have abandoned the development! However, this is not a win. You need to reach real Infinite antimatter to win! (it's impossible)")
         return
@@ -965,6 +966,7 @@ function showTab(tabName) {
     if ((document.getElementById("antimatterdimensions").style.display != "none" || document.getElementById("metadimensions").style.display != "none") && player.aarexModifications.progressBar && document.getElementById("dimensions").style.display != "none") document.getElementById("progress").style.display = "block";
     else document.getElementById("progress").style.display = "none"
     if (oldTab !== tabName) {
+        player.aarexModifications.tabsSave.tabMain = tabName
         if (tabName=="eternitystore") {
             if (document.getElementById('timestudies') !== "none" || document.getElementById('masterystudies') !== "none" || document.getElementById('dilation') !== "none" || document.getElementById("blackhole") !== "none") resizeCanvas()
             if (document.getElementById("dilation") !== "none") requestAnimationFrame(drawAnimations)
@@ -980,7 +982,7 @@ function showTab(tabName) {
             document.getElementById("neutrinoUpg3Cost").textContent = shortenDimensions(neutrinoUpgCosts[3])
         }
     }
-    closeToolTip();
+    if (!init) closeToolTip();
 }
 
 
@@ -1622,6 +1624,12 @@ function updateDimensions() {
 function toggleLogRateChange() {
 	player.aarexModifications.logRateChange=!player.aarexModifications.logRateChange
 	document.getElementById("toggleLogRateChange").textContent = "Logarithm rate: O"+(player.aarexModifications.logRateChange?"N":"FF")
+	dimDescEnd = (player.aarexModifications.logRateChange?" OoM":"%")+"/s)"
+}
+
+function toggleTabsSave() {
+	player.aarexModifications.tabsSave.on=!player.aarexModifications.tabsSave.on
+	document.getElementById("tabsSave").textContent = "Saved tabs: O"+(player.aarexModifications.tabsSave.on?"N":"FF")
 	dimDescEnd = (player.aarexModifications.logRateChange?" OoM":"%")+"/s)"
 }
 
@@ -8183,6 +8191,7 @@ function showInfTab(tabName) {
             tab.style.display = 'none';
         }
     }
+    player.aarexModifications.tabsSave.tabInfinity = tabName
 }
 
 function showStatsTab(tabName) {
@@ -8197,6 +8206,7 @@ function showStatsTab(tabName) {
             tab.style.display = 'none';
         }
     }
+    player.aarexModifications.tabsSave.tabStats = tabName
 }
 
 function showDimTab(tabName) {
@@ -8211,6 +8221,7 @@ function showDimTab(tabName) {
             tab.style.display = 'none';
         }
     }
+    player.aarexModifications.tabsSave.tabDims = tabName
     if (document.getElementById("dimensions").style.display !== "none" && player.aarexModifications.progressBar && (tabName === 'antimatterdimensions' || tabName === 'metadimensions')) document.getElementById("progress").style.display = "block"
     else document.getElementById("progress").style.display = "none"
 }
@@ -8232,6 +8243,7 @@ function showChallengesTab(tabName) {
             tab.style.display = 'none';
         }
     }
+    player.aarexModifications.tabsSave.tabChalls = tabName
 }
 
 function showEternityTab(tabName, init) {
@@ -8252,6 +8264,7 @@ function showEternityTab(tabName, init) {
     if ((tabName === 'timestudies' || tabName === 'ers_timestudies' || tabName === 'masterystudies') && !init) document.getElementById("TTbuttons").style.display = "block"
     else document.getElementById("TTbuttons").style.display = "none"
     if (tabName != oldTab) {
+        player.aarexModifications.tabsSave.tabEternity = tabName
         if (tabName === 'timestudies' || tabName === 'masterystudies' || tabName === 'dilation' || tabName === 'blackhole') resizeCanvas()
         if (tabName === "dilation") requestAnimationFrame(drawAnimations)
         if (tabName === "blackhole") requestAnimationFrame(drawBlackhole)
@@ -8271,6 +8284,7 @@ function showAchTab(tabName) {
             tab.style.display = 'none';
         }
     }
+    player.aarexModifications.tabsSave.tabAchs = tabName
 }
 
 function showOptionTab(tabName) {
@@ -8285,6 +8299,7 @@ function showOptionTab(tabName) {
             tab.style.display = 'none';
         }
     }
+    player.aarexModifications.tabsSave.tabOptions = tabName
     closeToolTip()
 }
 
@@ -8322,13 +8337,16 @@ function initGame() {
         showTab('eternitystore')
     }
     //show one tab during init or they'll all start hidden
-    showTab('dimensions')
+    showTab('dimensions', true)
     setupText()
     initiateMetaSave()
     migrateOldSaves()
     localStorage.setItem('AD_aarexModifications_ghostify', btoa(JSON.stringify(metaSave)))
     load_game();
-    if (player.aarexModifications.progressBar) document.getElementById("progress").style.display = "block"
+    if (player.aarexModifications.tabsSave.on) {
+        showTab(player.aarexModifications.tabsSave.tabMain)
+        if (player.aarexModifications.tabsSave.tabOptions !== undefined) showOptionTab(player.aarexModifications.tabsSave.tabOptions)
+    } else if (player.aarexModifications.progressBar) document.getElementById("progress").style.display = "block"
     else document.getElementById("progress").style.display = "none"
     updateTickSpeed();
     updateAutobuyers();

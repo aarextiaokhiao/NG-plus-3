@@ -469,6 +469,7 @@ function showQuantumTab(tabName) {
 		}
 	}
 	if (oldTab != tabName) {
+		player.aarexModifications.tabsSave.tabQuantum = tabName
 		if (tabName == "uquarks" && document.getElementById("quantumtab").style.display !== "none") {
 			resizeCanvas()
 			requestAnimationFrame(drawQuarkAnimation)
@@ -1746,6 +1747,7 @@ function showBranchTab(tabName) {
 			tab.style.display = 'none';
 		}
 	}
+	if (oldTab !== tabName) player.aarexModifications.tabsSave.tabBranch = tabName
 	closeToolTip()
 }
 
@@ -2818,6 +2820,7 @@ function showGhostifyTab(tabName) {
 			tab.style.display = 'none';
 		}
 	}
+	if (oldTab !== tabName) player.aarexModifications.tabsSave.tabGhostify = tabName
 	closeToolTip()
 }
 
