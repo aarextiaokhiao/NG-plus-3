@@ -2087,7 +2087,7 @@ function getExtraTickReductionMult() {
 function getGHPGain() {
 	if (player.masterystudies == undefined) return new Decimal(0)
 	if (!player.quantum.bigRip.active) return new Decimal(0)
-	return player.quantum.bigRip.bestThisRun.div(Decimal.pow(10, getQCGoal())).pow(3e-8).times(Decimal.pow(2, player.ghostify.multPower - 1)).floor()
+	return player.quantum.bigRip.bestThisRun.div(Decimal.pow(10, getQCGoal())).pow(25e-9).times(Decimal.pow(2, player.ghostify.multPower - 1)).floor()
 }
 
 ghostified = false
