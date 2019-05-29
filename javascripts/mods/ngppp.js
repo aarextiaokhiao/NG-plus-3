@@ -1582,7 +1582,9 @@ function maxReduceHatchSpeed() {
 }
 
 function getQuarkChargeProduction() {
-	return getNanofieldRewardEffect("7g")
+	let ret = getNanofieldRewardEffect("7g")
+	if (player.ghostify.neutrinos.upgrades.includes(3)) ret = ret.times(getNU3Pow())
+	return ret
 }
 
 function startProduceQuarkCharge() {
@@ -1728,8 +1730,9 @@ function updateTODStuff() {
 		}
 	}
 	for (var t=1;t<9;t++) {
-		document.getElementById("treeupg"+t+"lvl").textContent=player.quantum.tod.upgrades[t] + (player.quantum.bigRip.active || player.quantum.tod.upgrades[t] <= maxLevels[t] ? "" : " (cap: " + maxLevels[t] + ")")
-		document.getElementById("treeupg"+t+"cost").textContent=shortenMoney(getTreeUpgradeCost(t))+" "+colors[getTreeUpgradeLevel(t)%3]
+		var lvl=getTreeUpgradeLevel(t)
+		document.getElementById("treeupg"+t+"lvl").textContent=lvl + (player.quantum.bigRip.active || lvl <= maxLevels[t] ? "" : " (cap: " + maxLevels[t] + ")")
+		document.getElementById("treeupg"+t+"cost").textContent=shortenMoney(getTreeUpgradeCost(t))+" "+colors[lvl%3]
 	}
 }
 
@@ -2836,6 +2839,7 @@ function updateGhostifyTabs() {
 		document.getElementById("preNeutrinoBoost1").textContent=getDilExp("neutrinos").toFixed(2)
 		document.getElementById("neutrinoBoost1").textContent=getDilExp().toFixed(2)
 		document.getElementById("neutrinoUpg1Pow").textContent=getNU1Pow()
+		document.getElementById("neutrinoUpg3Pow").textContent=shorten(getNU3Pow())
 		for (var u=1; u<3; u++) {
 			if (player.ghostify.neutrinos.upgrades.includes(u)) document.getElementById("neutrinoUpg" + u).className = "gluonupgradebought neutrinoupg"
 			else if (player.ghostify.neutrinos.electron.add(player.ghostify.neutrinos.mu).round().add(player.ghostify.neutrinos.tau).round().gte(neutrinoUpgCosts[u])) document.getElementById("neutrinoUpg" + u).className = "gluonupgrade neutrinoupg"
@@ -2883,6 +2887,10 @@ function buyNeutrinoUpg(id) {
 
 function getNU1Pow() {
 	return Math.max(100 - (player.quantum.bigRip.active ? 0 : player.meta.resets), 1)
+}
+
+function getNU3Pow() {
+	return Math.pow(Math.max(player.quantum.colorPowers.b.log10()/200 + 1, 1), 2)
 }
 
 function setupAutomaticGhostsData() {

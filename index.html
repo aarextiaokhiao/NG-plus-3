@@ -3760,7 +3760,7 @@
                 <button class="storebtn" id="togglebulk" style="font-size: 100%; width: 150px; height: 40px;margin: 3px" onclick="toggleBulk()">Disable bulk buy</button>
                 <button class="storebtn" id="togglecrunchmode" style="font-size: 100%; width: 150px; height: 40px;margin: 3px; display: none" onclick="toggleCrunchMode()">Auto crunch mode: amount</button>
                 <button class="storebtn" id="toggleautoetermode" style="font-size: 100%; width: 150px; height: 40px;margin: 3px; display: none" onclick="toggleAutoEterMode()">Auto eternity mode: amount</button>
-                <button class="storebtn" id="aftereternity" style="font-size: 100%; width: 150px; height: 40px;margin: 3px; display: none" onclick="openAfterEternity()">Auto eternity after-reset features</button>
+                <button class="storebtn" id="aftereternity" style="font-size: 100%; width: 150px; height: 40px;margin: 3px; display: none" onclick="openAfterEternity()">After-eternity automation</button>
                 <button class="storebtn" id="toggleautoquantummode" style="font-size: 100%; width: 150px; height: 40px;margin: 3px; display: none" onclick="toggleAutoQuantumMode()"></button>
                 <br>
                 <tr>
@@ -4628,7 +4628,7 @@
 					<tr>
 						<td><button class="gluonupgrade unavailablebtn" id="neutrinoUpg1" onclick="buyNeutrinoUpg(1)" style="font-size: 10px">Meta-Dimension Boosts cost 100 less.<br>(Reduces if not big ripped)<br>Cost: <span id="neutrinoUpg1Cost"></span> of any neutrinos<br>Currently: -<span id="neutrinoUpg1Pow"></span></button></td>
 						<td><button class="gluonupgrade unavailablebtn" id="neutrinoUpg2" onclick="buyNeutrinoUpg(2)">Eggons hatch instantly and workers do not consume others.<br>Cost: <span id="neutrinoUpg2Cost"></span> of any neutrinos</button></td>
-						<td><button class="gluonupgrade unavailablebtn" id="neutrinoUpg3" onclick="buyNeutrinoUpg(3)">Slow down preon loss per second by 10x.<br>Cost: <span id="neutrinoUpg3Cost"></span> of any neutrinos</button></td>
+						<td><button class="gluonupgrade unavailablebtn" id="neutrinoUpg3" onclick="buyNeutrinoUpg(3)">Blue power boosts preon charge production.<br>Cost: <span id="neutrinoUpg3Cost"></span> of any neutrinos<br>Currently: <span id="neutrinoUpg3Pow"></span>x</button></td>
 					</tr>
 					<tr>
 						<td><button class="gluonupgrade unavailablebtn">???<br>Cost: ??? of any neutrinos</button></td>
@@ -4649,30 +4649,28 @@
 					<tr>
 						<td id="autoGhost1"><div class="autoBuyerDiv" style="display:block">
 							<b>Auto-Red Unstabilize Ghost</b><br>
+							(unstabilizes if you have no red unstable quarks)<br>
 							Power consumption: 1<br>
-							Is active: <input id="isAutoGhostOn1" type="checkbox" onchange="toggleAutoGhost(1)"></input><br>
-							<button class="storebtn" id="autoGhostMode1" style="font-size: 100%; width: 120px; height: 20px">Mode: amount</button><br>
-							<span id="autoGhostAmount1">Unstabilize when unstable quarks gain reach: <input type="text"id="autoGhostPriority1"></span>
+							Is active: <input id="isAutoGhostOn1" type="checkbox" onchange="toggleAutoGhost(1)"></input>
 						</div></td>
 						<td id="autoGhost2"><div class="autoBuyerDiv" style="display:block">
 							<b>Auto-Green Unstabilize Ghost</b><br>
+							(unstabilizes if you have no green unstable quarks)<br>
 							Power consumption: 1<br>
-							Is active: <input id="isAutoGhostOn2" type="checkbox" onchange="toggleAutoGhost(2)"></input><br>
-							<button class="storebtn" id="autoGhostMode2" style="font-size: 100%; width: 120px; height: 20px">Mode: amount</button><br>
-							<span id="autoGhostAmount2">Unstabilize when unstable quarks gain reach: <input type="text"id="autoGhostPriority2"></span>
+							Is active: <input id="isAutoGhostOn2" type="checkbox" onchange="toggleAutoGhost(2)"></input>
 						</div></td>
 						<td id="autoGhost3"><div class="autoBuyerDiv" style="display:block">
 							<b>Auto-Blue Unstabilize Ghost</b><br>
+							(unstabilizes if you have no blue unstable quarks)<br>
 							Power consumption: 1<br>
-							Is active: <input id="isAutoGhostOn3" type="checkbox" onchange="toggleAutoGhost(3)"></input><br>
-							<button class="storebtn" id="autoGhostMode3" style="font-size: 100%; width: 120px; height: 20px">Mode: amount</button><br>
-							<span id="autoGhostAmount3">Unstabilize when unstable quarks gain reach: <input type="text"id="autoGhostPriority3"></span>
+							Is active: <input id="isAutoGhostOn3" type="checkbox" onchange="toggleAutoGhost(3)"></input>
 						</div></td>
 					</tr>
 					<tr>
 						<td><div class="autoBuyerDiv" style="display:block">
 							<b>Auto-Unstabilize Rotate Ghost</b><br>
-							Power consumption: 1<br>
+							(rotates after quantum)<br>
+							Power consumption: 2<br>
 							<button class="storebtn" id="autoGhostRotate4" style="font-size: 100%; width: 120px; height: 20px">Clockwise</button><br>
 							Is active: <input id="isAutoGhostOn4" type="checkbox" onchange="toggleAutoGhost(4)"></input>
 						</div></td>
