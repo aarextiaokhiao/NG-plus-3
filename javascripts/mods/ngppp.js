@@ -2890,7 +2890,7 @@ function getNU1Pow() {
 }
 
 function getNU3Pow() {
-	return Math.pow(Math.max(player.quantum.colorPowers.b.log10()/200 + 1, 1), 2)
+	return Math.pow(Math.max(player.quantum.colorPowers.b.log10()/250 + 1, 1), 2)
 }
 
 function setupAutomaticGhostsData() {
