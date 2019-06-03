@@ -4143,6 +4143,7 @@ function updatePriorities() {
         player.autobuyers[13].priority = parseInt(document.getElementById("priority15").value)
         player.overXGalaxiesTickspeedBoost = parseInt(document.getElementById("overGalaxiesTickspeedBoost").value)
         player.autobuyers[13].bulk = Math.floor(Math.max(parseFloat(document.getElementById("bulkTickBoost").value), 1))
+        player.autobuyers[13].bulk = (isNaN(player.autobuyers[13].bulk)) ? 1 : player.autobuyers[13].bulk
     }
     player.autobuyers[10].bulk = parseFloat(document.getElementById("bulkgalaxy").value)
     const eterValue = fromValue(document.getElementById("priority13").value)
@@ -7828,11 +7829,7 @@ function autoBuyerTick() {
 
     if (player.tickspeedBoosts!=undefined) if (player.autobuyers[13]%1 !== 0) {
         if (autoTickspeedBoostBoolean()) {
-            let req=getTickspeedBoostRequirement()
-	    let amount=getAmount(req.tier)
-	    if (!(amount>=req.amount)) return
-            if (player.infinityUpgrades.includes("bulkBoost")) tickspeedBoost(Math.floor((amount-req.amount)/5+1))
-            tickspeedBoost(1)
+            tickspeedBoost(player.autobuyers[13].bulk)
             player.autobuyers[13].ticks = 0
         }
         player.autobuyers[13].ticks += 1;
