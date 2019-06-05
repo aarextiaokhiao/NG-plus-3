@@ -2861,10 +2861,6 @@ function getNeutrinoGain() {
 	return Decimal.pow(5, player.ghostify.neutrinos.multPower - 1)
 }
 
-function getNeutrinoRanks() {
-	return neutrinoRanks
-}
-
 var neutrinoUpgCosts = [null, 1e6, 1e7, 1e8]
 function buyNeutrinoUpg(id) {
 	if (!player.ghostify.neutrinos.electron.add(player.ghostify.neutrinos.mu).round().add(player.ghostify.neutrinos.tau).round().gte(neutrinoUpgCosts[id])) return
