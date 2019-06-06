@@ -3552,8 +3552,8 @@ function updateNotationOption() {
 	
 	let tooltip=""
 	if (player.options.notation=="AAS") tooltip="Notation: Aarex's Abbreviation System"
-	if (player.options.commas=="AAS") tooltip+=(tooltip==""?"":"\n")+"Aarex's Abbreviation System"
 	if (player.options.notation=="AF5LN") tooltip="Notation: Aarex's Funny 5-letter Notation"
+	if (player.options.commas=="AAS") tooltip+=(tooltip==""?"":"\n")+"Aarex's Abbreviation System on exponents"
 	if (player.options.commas=="AF5LN") tooltip+=(tooltip==""?"":"\n")+"Aarex's Funny 5-letter Notation on exponents"
 	if (tooltip=="") document.getElementById("notation").removeAttribute('ach-tooltip')
 	else document.getElementById("notation").setAttribute('ach-tooltip', tooltip)
