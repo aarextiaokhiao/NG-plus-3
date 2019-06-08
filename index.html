@@ -4371,6 +4371,7 @@
 			</table>
 			<div class='quantumtab' id='uquarks'>
                 <canvas id="quarkCanvas"></canvas>
+				<div>Your quantum worth is currently <b class="QKAmount" id="quantumWorth1">0</b>.</div>
 				<table class='qtable'><tr>
 					<td>
 						<p>You have <span class="red" id="redQuarks" style="font-size:35px">0</span> red quarks.</p>
@@ -4411,6 +4412,7 @@
 				</tr></table>
 			</div>
 			<div class='quantumtab' id='gluons'>
+				<div>Your quantum worth is currently <b class="QKAmount" id="quantumWorth2">0</b>.</div>
 				<table id='gluonupgrades'><tr>
 					<td colspan=2><p>You have <span id="rg" style="font-size:35px">0</span> red-green gluons.<br>+<span id='rggain'>0</span> on next quantum from red quarks.<br><span id='rednext'>0</span> red quarks on next quantum.</p></td>
 					<td colspan=2><p>You have <span id="gb" style="font-size:35px">0</span> green-blue gluons.<br>+<span id='gbgain'>0</span> on next quantum from green quarks.<br><span id='greennext'>0</span> green quarks on next quantum.</p></td>
@@ -4485,7 +4487,7 @@
 					<button class="storebtn" id="replicantReset" style="width: 220px; height: 60px; font-size: 11px" onclick='replicantReset()'></button><br><button class="storebtn" id="autoReset" style="width: 220px" onclick='toggleAutoReset()'></button>
 				</td><td>
 					You have <span id="workerReplAmount" style="font-size:35px">0</span> total worker replicants.<br>
-					They are gathering <span id="workerReplGatherRate" style="font-size:25px">0</span> preons per second and producing <span id="eggonRate" style="font-size:25px">0</span> eggons per <span id="eggonRateTimeframe">minute</span>.<br>
+					They are gathering <span id="workerReplGatherRate" style="font-size:25px">0</span> preons per second and producing <span id="eggonRate" style="font-size:25px">0</span> <span id="workerReplWhat">eggons</span> per <span id="eggonRateTimeframe">minute</span>.<br>
 					Feed your normal replicant to become a worker. <span id="workerProgress" style="font-size:15px">0.0%</span><br>
 					<button class='storebtn' id='feedNormal' style='width: 280px' onclick="feedReplicant(1)">Feed one with quantum food</button><br>
 					<button id='breakLimit' class='storebtn' style='width: 280px; height: 60px' onclick='breakLimit()'></button>
@@ -4501,7 +4503,7 @@
 					You have <span id="quantumFoodAmount" style="font-size:35px">0</span> quantum food.<br>
 					<button class='gluonupgrade storebtn' id='buyQuantumFood' onclick='buyQuantumFood()'></button><br>
 					<button class='storebtn' id='buyMaxQuantumFood' onclick='buyMaxQuantumFood()' style="width: 190px">Max buy quantum food</button>
-				</td><td>
+				</td><td id="eggonsCell">
 					You have <span id="eggonAmount" style="font-size:35px">0</span> eggons. <span id="hatchProgress" style="font-size:15px">0.0%</span><br>
 					<button class='storebtn' id='reduceHatchSpeed' style='width: 240px; height: 80px' onclick='reduceHatchSpeed()'></button><br>
 					<button class='storebtn' id='maxReduceHatchSpeed' onclick='maxReduceHatchSpeed()' style="width: 240px">Max reduce hatch speed</button>
@@ -4638,11 +4640,12 @@
 				</table>
 			</div>
 			<div id="automaticghosts" class="ghostifytab">
+				<div>Your quantum worth is currently <b class="QKAmount" id="quantumWorth3">0</b>.</div>
 				<table class='qtable'>
 					<tr>
-						<td>You have <span id="automatorGhostsAmount" style="font-size:35px">1</span> Automator Ghosts.</td>
-						<td>You have <span id="automaticPower" style="font-size:35px">1.0</span> Automator Power.<br>They are using <span id="consumedPower" style="font-size:35px">0.0</span> Automator Power.<br><b id="tooMuchPowerConsumed">WARNING: TOO MANY POWER USED!</b></td>
-						<td>Next Automator Ghost at <span id="nextAutomatorGhost"style="font-size:35px">?.?</span>.</td>
+						<td>You have <span id="automatorGhostsAmount" style="font-size:35px">1</span> Automator Ghosts.<br>Next Automator Ghost at <span id="nextAutomatorGhost"style="font-size:35px">?.?</span>.</td>
+						<td>You have <span id="automaticCharge" style="font-size:35px">0.0</span> Automator Charge.</td>
+						<td>You have <span id="automaticPower" style="font-size:35px">0.0</span> Automator Power.<br>They are using <span id="consumedPower" style="font-size:35px">0.0</span> Automator Power.<br><b id="tooMuchPowerConsumed">WARNING: TOO MANY POWER USED!</b></td>
 					</tr>
 				</table>
 				<table style="margin: 0 auto">

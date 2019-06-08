@@ -3573,16 +3573,19 @@ function onNotationChange() {
 	updateDilationUpgradeCosts()
 	updateExdilation()
 	updateMilestones()
-	updateColorCharge()
-	updateGluons()
-	updateElectrons()
-	updateBankedEter()
-	updateQuantumChallenges()
-	document.getElementById("bpc68").textContent = shortenMoney(player.quantum.pairedChallenges.pc68best)
-	updateMasteryStudyTextDisplay()
-	updateReplicants()
-	updateTODStuff()
-	onNotationChangeNeutrinos()
+	if (player.masterystudies !== undefined) {
+		updateColorCharge()
+		updateGluons()
+		updateQuantumWorth(true)
+		updateElectrons()
+		updateBankedEter()
+		updateQuantumChallenges()
+		document.getElementById("bpc68").textContent = shortenMoney(player.quantum.pairedChallenges.pc68best)
+		updateMasteryStudyTextDisplay()
+		updateReplicants()
+		updateTODStuff()
+		onNotationChangeNeutrinos()
+	}
 	document.getElementById("epmult").innerHTML = "You gain 5 times more EP<p>Currently: "+shortenDimensions(player.epmult)+"x<p>Cost: "+shortenDimensions(player.epmultCost)+" EP"
 	document.getElementById("achmultlabel").textContent = "Current achievement multiplier on each Dimension: " + shortenMoney(player.achPow) + "x"
 	if (player.achievements.includes("ng3p18") || player.achievements.includes("ng3p37")) {
@@ -3592,14 +3595,17 @@ function onNotationChange() {
 }
 
 function switchNotation(id) {
-	player.options.notation=notationArray[id]
+	if (player.options.notation == notationArray[id]) return
+	player.options.notation = notationArray[id]
 	onNotationChange()
 }
 
 function switchCommas(id) {
-	if (id>1) player.options.commas=notationArray[id-2]
-	else if (id>0) player.options.commas="Same notation"
-	else player.options.commas="Commas"
+	if (id>1) id = notationArray[id-2]
+	else if (id>0) id = "Same notation"
+	else id = "Commas"
+	if (player.options.commas == id) return
+	player.options.commas = id
 	onNotationChange()
 }
 
@@ -3728,7 +3734,8 @@ function switchOption(notation,id) {
 }
 
 function switchSubNotation(id) {
-	player.options.spazzy.subNotation=notationArray[id]
+	if (player.options.spazzy.subNotation == notationArray[id]) return
+	player.options.spazzy.subNotation = notationArray[id]
 	document.getElementById("chosenSubNotation").textContent="Sub-notation: "+(player.options.spazzy.subNotation=="Emojis"?"Cancer":player.options.spazzy.subNotation)
 	onNotationChange()
 }
@@ -7056,6 +7063,13 @@ function gameLoop(diff) {
     if (player.eternities > 0 || quantumed) document.getElementById("tdtabbtn").style.display = ""
     document.getElementById("mdtabbtn").style.display = player.dilation.studies.includes(6) ? "" : "none"
 
+    if (ghostified && isAutoGhostsSafe) {
+        var colorShorthands=["r","g","b"]
+        for (var c=1;c<4;c++) if (isAutoGhostActive(c)) {
+            var shorthand=colorShorthands[c-1]
+            if (player.quantum.usedQuarks[shorthand].gt(0) && player.quantum.tod[shorthand].quarks.eq(0)) unstableQuarks(shorthand)
+        }
+    }
     if (player.masterystudies) {
         player.quantum.colorPowers[colorCharge.color]=player.quantum.colorPowers[colorCharge.color].add(colorCharge.charge.times(diff/10))
         colorBoosts.r=Math.pow(player.quantum.colorPowers.r.add(1).log10(),player.dilation.active?2/3:0.5)/10+1

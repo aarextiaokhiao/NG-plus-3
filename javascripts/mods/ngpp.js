@@ -691,6 +691,7 @@ function quantumReset(force, auto, challid, bigRip, implode=false) {
 				br: new Decimal(0)
 			}
 		}
+		updateQuantumWorth()
 		if (bigRip != player.quantum.bigRip.active) {
 			player.quantum.bigRip["savedAutobuyers" + (bigRip ? "No" : "") + "BR"] = {}
 			var data = player.quantum.bigRip["savedAutobuyers" + (bigRip ? "No" : "") + "BR"]

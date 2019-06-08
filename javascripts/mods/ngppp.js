@@ -541,8 +541,10 @@ function updateQuantumTabs() {
 		document.getElementById("feedNormal").className=(canFeedReplicant(1)?"stor":"unavailabl")+"ebtn"
 		document.getElementById("workerProgress").textContent=Math.round(eds[1].progress.toNumber()*100)+"%"
 
-		document.getElementById("eggonAmount").textContent=shortenDimensions(player.quantum.replicants.eggons)
-		document.getElementById("hatchProgress").textContent=Math.round(player.quantum.replicants.babyProgress.toNumber()*100)+"%"
+		if (!player.ghostify.neutrinos.upgrades.includes(2)) {
+			document.getElementById("eggonAmount").textContent=shortenDimensions(player.quantum.replicants.eggons)
+			document.getElementById("hatchProgress").textContent=Math.round(player.quantum.replicants.babyProgress.toNumber()*100)+"%"
+		}
 		document.getElementById("growupProgress").textContent=Math.round(player.quantum.replicants.ageProgress.toNumber()*100)+"%"
 		document.getElementById("feedBaby").className=((player.quantum.replicants.quantumFood<1||player.quantum.replicants.babies.lt(1))?"unavailabl":"stor")+"ebtn"
 
@@ -676,7 +678,6 @@ function assignQuark(color) {
 	player.quantum.quarks=new Decimal(0)
 	document.getElementById("quarks").innerHTML="You have <b class='QKAmount'>0</b> quarks."
 	updateColorCharge()
-	updateGluons()
 }
 
 //v1.75
@@ -727,6 +728,7 @@ function buyGluonUpg(color, id) {
 	if (name=="gb3") ipMultPower=2.3
 	if (name=="rg4" && !player.quantum.autoOptions.sacrifice) updateElectronsEffect()
 	if (name=="gb4") player.tickSpeedMultDecrease=1.25
+	updateQuantumWorth()
 }
 
 function GUBought(id) {
@@ -1305,6 +1307,7 @@ function updateBankedEter(updateHtml=true) {
 function hatchSpeedDisplay(next) {
 	var speed = getHatchSpeed()
 	if (next) speed /= 1.1
+	if (speed < 1e-24) return shorten(1/speed)+"/s"
 	return timeDisplayShort(speed*10, true, 1)
 }
 
@@ -1768,6 +1771,7 @@ function unstableQuarks(branch) {
 	player.quantum.tod[branch].gainDiv=player.quantum.usedQuarks[branch].max(player.quantum.tod[branch].gainDiv)
 	player.quantum.usedQuarks[branch]=new Decimal(0)
 	updateColorCharge()
+	updateQuantumWorth()
 }
 
 function getDecayRate(branch) {
@@ -1889,6 +1893,20 @@ function toggleAutoReset() {
 }
 
 //v2
+var quantumWorth
+function updateQuantumWorth(notationOnly) {
+	if (!notationOnly) {
+		quantumWorth = player.quantum.quarks.add(player.quantum.usedQuarks.r).add(player.quantum.usedQuarks.g).add(player.quantum.usedQuarks.b).add(player.quantum.gluons.rg).add(player.quantum.gluons.gb).add(player.quantum.gluons.br).round()
+		if (player.ghostify.times > 0) {
+			var automaticCharge = Math.max(Math.log10(quantumWorth.add(1).log10()/150)/Math.log10(2),0)
+			player.ghostify.automatorGhosts.power = Math.max(automaticCharge, player.ghostify.automatorGhosts.power)
+			document.getElementById("automaticCharge").textContent = automaticCharge.toFixed(1)
+			document.getElementById("automaticPower").textContent = player.ghostify.automatorGhosts.power.toFixed(1)
+		}
+	}
+	for (var e=1;e<4;e++) document.getElementById("quantumWorth"+e).textContent = shortenDimensions(quantumWorth)
+}
+
 function updateElectronsEffect() {
 	document.getElementById("sacrificedGals").textContent=getFullExpansion(player.quantum.electrons.sacGals)
 	document.getElementById("electronsAmount").textContent=getFullExpansion(Math.round(player.quantum.electrons.amount))
@@ -2879,6 +2897,10 @@ function buyNeutrinoUpg(id) {
 		left = left.sub(player.ghostify.neutrinos[generationChosen]).round()
 		player.ghostify.neutrinos[generationChosen] = new Decimal(0)
 	}
+	if (id == 2) {
+		document.getElementById("eggonsCell").style.display = "none"
+		document.getElementById("workerReplWhat").textContent = "babies"
+	}
 }
 
 function getNU1Pow() {
@@ -2890,7 +2912,7 @@ function getNU3Pow() {
 }
 
 function setupAutomaticGhostsData() {
-	var data = {power: 1, ghosts: 3}
+	var data = {power: 0, ghosts: 3}
 	for (var ghost=1; ghost<19; ghost++) data[ghost] = {on: false}
 	return data
 }
@@ -2914,5 +2936,5 @@ function toggleAutoGhost(id) {
 }
 
 function isAutoGhostActive(id) {
-	if (player.masterystudies !== undefined) return isAutoGhostsSafe && player.ghostify.automatorGhosts[id].active
+	return player.ghostify.automatorGhosts[id].on
 }
