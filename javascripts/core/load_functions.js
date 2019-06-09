@@ -2351,7 +2351,7 @@ function loadAutoBuyerSettings() {
   document.getElementById("bulkDimboost").value = player.autobuyers[9].bulk
   document.getElementById("prioritySac").value = player.autoSacrifice.priority
   document.getElementById("bulkgalaxy").value = player.autobuyers[10].bulk
-  document.getElementById("priority13").value = formatValue("Scientific", player.eternityBuyer.limit, 2, 0)
+  document.getElementById("priority13").value = formatValue("Scientific", new Decimal(player.eternityBuyer.limit), 2, 0)
   if (player.autobuyers[12] !== undefined) document.getElementById("priority14").value = formatValue("Scientific", new Decimal(player.autobuyers[12].priority), 2, 0)
   if (player.autobuyers[13] !== undefined) {
       document.getElementById("priority15").value = player.autobuyers[13].priority
