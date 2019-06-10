@@ -205,11 +205,24 @@ newsArray = [//always true
 ["New prestige layer coming soon, Police-ize! When you prestige, you unlock officer dimensions. They behave like all other dimensions except they produce anti-anti-antimatter. This anti-anti-antimatter can be used to purchase more officer dimensions. The anti-anti-antimatter also makes your galaxies feel more safer, providing a boost in galaxy efficiency, based on your highest reached AAAM.", "player.achievements.includes('r22') && player.masterystudies !== undefined", "am50"],
 ['"THERE WILL BE NO NG+4. NG+3 ALWAYS HAVE UPDATES." - Aarex', "player.achievements.includes('r22') && ghostified", "am51"],
 ["No. You are not really at current end-game.", "player.achievements.includes('r22') && (player.masterystudies !== undefined ? player.quantum.bigRip.bestAntimatter.gte(Decimal.pow(10, 1e9)) : false)", "am52"],
-["Congratulations for beating NG+3! (for now...) You already know what comes next after neutrinos.", "player.achievements.includes('r22') && (player.masterystudies !== undefined ? player.quantum.bigRip.bestAntimatter.gte(Decimal.pow(10, 137e7)) : false)", "am53"],
+["Congratulations for beating NG+3! (for now...) You already know what comes next after neutrinos.", "player.achievements.includes('r22') && player.totalmoney.gte(Decimal.pow(10, 12e15))", "am53"],
 ["You're reading news too much.", "player.achievements.includes('r22') && player.newsArray.length >= 215", "am54"],
 ["You're addicted to news.", "player.achievements.includes('r22') && player.newsArray.length >= 230", "am55"],
 ["Okay. You can stop reading the news.", "player.achievements.includes('r22') && player.newsArray.length >= 245", "am56"],
-/*NEXT ID: am57*/
+["You know, you should really turn off the news ticker.", "player.achievements.includes('r22') && player.newsArray.length >= 260", "am57"],
+["What's next? NG++++?", "player.achievements.includes('r22') && player.masterystudies !== undefined", "am58"],
+["People talk about this 9th dimension, but what about the 10th dimension?", "player.achievements.includes('r22') && (player.resets >= 5 || player.galaxies > 0)", "am59"],
+["When life gives you antimatter, you hold your finger down on the M key", "player.achievements.includes('r22') && (player.dilation.studies.includes(6) || quantumed)", "am60"],
+["Don't you hate when people say like if you agree? Like if you agree", "player.achievements.includes('r22')", "am61"],
+["When dilating time, shouldn't these messages go by slower?", "player.achievements.includes('r22') && player.dilation.active", "am62"],
+["Did you know that -1% of people believe the 9th Dimension exists?", "player.achievements.includes('r22') && (player.resets >= 5 || player.galaxies > 0)", "am63"],
+["Antimatter has been found on the Moon. And the moon also doesn't exist.", "player.achievements.includes('r22')", "am64"],
+["By breaking infinity, you break the universe", "player.achievements.includes('r22') && player.break", "am65"],
+["BREAKING NEWS: Suicide rates have dropped to 0% because suicidal people have touched antimatter by accident", "player.achievements.includes('r22') && player.totalmoney.gte(Number.MAX_VALUE)", "am66"],
+["BREAKING NEWS: In NG++++, there are over 69 rows of achievements", "player.achievements.includes('r22') && player.masterystudies !== undefined", "am67"],
+["I was making 'Big Rip' the first descension layer, but the community voted to allow us to get more antimatter. If Big Rip was a descension layer, then there would be no new upgrades that boost outside of Big Rips.", "player.achievements.includes('r22') && player.totalmoney.gte(Decimal.pow(10, 32e14))", "am68"],
+["How much replicanti would a replicanti replicate if a replicanti could replicate replicanti?", "player.achievements.includes('r22') && player.replicanti.unl", "am69"],
+/*NEXT ID: am69*/
 
 //Ghostly news ticker messages
 ["Every ghostly antimatter is safe.", true, "gn1"],
@@ -225,7 +238,10 @@ newsArray = [//always true
 ["Spooky scary ghosts send neutrinos down your spine", true, "gn11"],
 ["Ghostify has nothing to do with ghostping.", true, "gn12"],
 ["Are your ghost particles ghostly? If not, talk to your ghostly boss.", true, "gn13"],
-["Kee-hee-hee!", true, "gn14"]];}
+["What's a ghostify? -some new person that joined the discord server", true, "gn14"],
+["BREAKING NEWS: Because of antimatter, someone has been turned into a basketball. The news ticker writers are baffled.", true, "gn15"],
+["If you read 'Congratulations for beating NG+3' message, here is a spoiler: There will be Photons!", "player.newsArray.includes('am68') && player.totalmoney.gte(Decimal.pow(10, 12e15))", "gn16"],
+["Kee-hee-hee!", true, "gn17"]];}
 
 document.addEventListener("visibilitychange", function() {if (!document.hidden) {scrollNextMessage();}}, false);
 var scrollTimeouts = [];
