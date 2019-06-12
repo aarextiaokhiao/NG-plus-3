@@ -408,6 +408,7 @@ function setupText() {
 		html+="</tr></table>"
 		document.getElementById(color+"Branch").innerHTML=html
 	}
+	for (var m=1;m<17;m++) document.getElementById("braveMilestone"+m).textContent=getFullExpansion(braveMilestones[m-1])+"x quantumed"
 }
 
 //v1.1
@@ -1943,21 +1944,22 @@ function buyBigRipUpg(id) {
 	player.quantum.bigRip.upgrades.push(id)
 	document.getElementById("spaceShards").textContent = shortenDimensions(player.quantum.bigRip.spaceShards)
 	for (var u=1;u<18;u++) document.getElementById("bigripupg"+u).className = player.quantum.bigRip.upgrades.includes(u) ? "gluonupgradebought bigrip" : player.quantum.bigRip.spaceShards.lt(bigRipUpgCosts[u]) ? "gluonupgrade unavailablebtn" : "gluonupgrade bigrip"
-	if (player.quantum.bigRip.active) tweakBigRip(id)
+	if (player.quantum.bigRip.active) tweakBigRip(id, true)
 }
 
-function tweakBigRip(id) {
-	if (id !== undefined) if (!isBigRipUpgradeActive(id)) return
-	if (id == 2 || id === undefined) {
+function tweakBigRip(id, reset) {
+	if (id == 2) {
 		for (var ec=1;ec<15;ec++) player.eternityChalls["eterc"+ec] = 5
-		player.eternities = 1e5
-		if (id == 2) updateEternityChallenges()
+		player.eternities = Math.max(player.eternities, 1e5)
+		if (!reset) updateEternityChallenges()
 	}
-	if (id == 3 || id === undefined) if (!player.quantum.bigRip.upgrades.includes(9)) player.timestudy.theorem += 5
-	if (id == 5 || id === undefined) if (!player.quantum.bigRip.upgrades.includes(9)) player.timestudy.theorem += 20
-	if (id == 7 || id === undefined) if (!player.timestudy.studies.includes(192) && !player.quantum.bigRip.upgrades.includes(9)) player.timestudy.studies.push(192)
-	if (id == 9 || id === undefined) {
-		if (id == 9) player.timestudy = {
+	if (!player.quantum.bigRip.upgrades.includes(9)) {
+		if (id == 3) player.timestudy.theorem += 5
+		if (id == 5) player.timestudy.theorem += 20
+		if ((id == 7) && !player.timestudy.studies.includes(192)) player.timestudy.studies.push(192)
+	}
+	if (id == 9) {
+		if (reset) player.timestudy = {
 			theorem: 0,
 			amcost: new Decimal("1e20000"),
 			ipcost: new Decimal(1),
@@ -1967,12 +1969,12 @@ function tweakBigRip(id) {
 		if (!player.quantum.bigRip.upgrades.includes(12)) player.timestudy.theorem += 1350
 	}
 	if (id == 10) {
-		player.dilation.studies.push(1)
+		if (!player.dilation.studies.includes(1)) player.dilation.studies.push(1)
 		showTab("eternitystore")
 		showEternityTab("dilation")
 	}
 	if (id == 11) {
-		player.timestudy = {
+		if (reset) player.timestudy = {
 			theorem: 0,
 			amcost: new Decimal("1e20000"),
 			ipcost: new Decimal(1),
@@ -2744,6 +2746,7 @@ function ghostifyReset(implode, gain, amount) {
 	}
 	updateEternityChallenges()
 	updateDilationUpgradeCosts()
+	for (let i = 2; i <= 8; i++) if (!canBuyMetaDimension(i)) document.getElementById(i + "MetaRow").style.display = "none"
 	document.getElementById("masterystudyunlock").style.display = "none"
 	updateMasteryStudyCosts()
 	updateMasteryStudyButtons()
@@ -2826,6 +2829,14 @@ function updateLastTenGhostifies() {
         if (qkpm<1) tempstring = shorten(qkpm*60) + " GHP/hour"
         document.getElementById("averageGhostifyRun").textContent = "Last " + listed + " Ghostifys average time: "+ timeDisplayShort(tempTime, false, 3)+" Average GHP gain: "+shortenDimensions(tempGHP)+" GHP. "+tempstring
     } else document.getElementById("averageGhostifyRun").textContent = ""
+}
+
+var braveMilestones=[16,15,14,13,12,11,10,9,8,7,6,5,4,3,2,1]
+function updateBraveMilestones() {
+	if (ghostified) {
+		for (var m=1;m<17;m++) document.getElementById("braveMilestone"+m).className="achievement achievement"+(player.ghostify.milestones<m?"":"un")+"locked"
+		for (var r=1;r<3;r++) document.getElementById("braveRow"+r).className=player.ghostify.milestones<r*8?"":"completedrow"
+	}
 }
 
 function showGhostifyTab(tabName) {

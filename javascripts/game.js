@@ -438,7 +438,7 @@ function updateNewPlayer(reseted) {
         player.eternitiesBank = 0
         player.quantum.challenge = []
         player.quantum.challenges = {}
-        player.quantum.nonMAGoalReached = {}
+        player.quantum.nonMAGoalReached = []
         player.quantum.challengeRecords = {}
         player.quantum.pairedChallenges = {
             order: {},
@@ -1865,9 +1865,13 @@ function glowText(id) {
 
 
 document.getElementById("maxall").onclick = function () {
-    if (reachedInfinity()) return false;
-    if (player.currentChallenge !== 'challenge14') buyMaxTickSpeed();
-    for (var tier=1; tier<9;tier++) buyBulkDimension(tier, 1/0)
+	if (!player.masterystudies !== undefined) if (player.quantum.bigRip.active && !(player.infinityUpgrades.includes("resetBoost") && player.infinityUpgrades.includes("galaxyBoost") && player.infinityUpgrades.includes("passiveGen") && player.infinityUpgrades.includes("skipResetGalaxy"))) {
+		alert("To prevent you from failing easily, you need to buy all Infinity upgrades first.")
+		return
+	}
+	if (reachedInfinity()) return false
+	if (player.currentChallenge !== 'challenge14') buyMaxTickSpeed()
+	for (var tier=1; tier<9;tier++) buyBulkDimension(tier, 1/0)
 }
 
 
@@ -3046,8 +3050,11 @@ function changeSaveDesc(saveId, placement) {
 			player.options.notation=temp.options.notation
 			player.options.commas=temp.options.commas
 		}
+		var isSaveGhostified=temp.ghostify?temp.ghostify.times>0:false
 		var isSaveQuantumed=temp.quantum?temp.quantum.times>0:false
-		if (isSaveQuantumed) {
+		if (isSaveGhostified) {
+			message+="Ghost Particles: "+shortenDimensions(new Decimal(temp.ghostify.ghostParticles))+", Neutrinos: "+shortenDimensions(Decimal.add(temp.ghostify.neutrinos.electron, temp.ghostify.neutrinos.mu).add(temp.ghostify.neutrinos.tau).round())
+		} else if (isSaveQuantumed) {
 			if (!temp.masterystudies) message+="End-game of NG++"
 			else if (temp.masterystudies.includes('d14')) message+="Best antimatter in big rips: "+shortenDimensions(new Decimal(temp.quantum.bigRip.bestAntimatter))+", Space Shards: "+shortenDimensions(new Decimal(temp.quantum.bigRip.spaceShards))+", Eternal Matter: "+shortenDimensions(new Decimal(temp.quantum.breakEternity.eternalMatter))
 			else {
@@ -4902,7 +4909,7 @@ function updateRespecButtons() {
 	document.getElementById("respecMastery2").className=className
 }
 
-function eternity(force, auto) {
+function eternity(force, auto, presetLoad) {
     var id7unlocked = player.infDimensionsUnlocked[7]
     if (player.masterystudies !== undefined) if (player.quantum.bigRip.active) id7unlocked = true
     if ((player.infinityPoints.gte(Number.MAX_VALUE) && id7unlocked && (!player.options.eternityconfirm || auto || confirm("Eternity will reset everything except achievements and challenge records. You will also gain an Eternity point and unlock various upgrades."))) || force === true) {
@@ -5225,7 +5232,7 @@ function eternity(force, auto) {
             aarexModifications: player.aarexModifications
         };
         if (player.galacticSacrifice && getEternitied() < 2) player.autobuyers[12]=13
-        if (player.respec || player.respecMastery || forceRespec) respecTimeStudies(forceRespec)
+        if (player.respec || player.respecMastery || forceRespec) respecTimeStudies(forceRespec, presetLoad)
         if (player.respec) respecToggle()
         if (player.respecMastery) respecMasteryToggle()
         if (player.dilation.active) {
@@ -6817,7 +6824,7 @@ setInterval(function() {
         if (ableToGetRid2 && player.infinityPoints.e >= 20000) giveAchievement("I already got rid of you.")
     }
     if (player.masterystudies) {
-        let ableToGetRid3 = ableToGetRid2 && player.quantum.electrons.amount.eq(0)
+        let ableToGetRid3 = ableToGetRid2 && player.quantum.electrons.amount == 0
         let ableToGetRid4 = ableToGetRid2 && inQC(2)
         let ableToGetRid5 = ableToGetRid4 && player.dontWant
         let ableToGetRid6 = ableToGetRid2 && inQC(6) && inQC(8)
@@ -6863,6 +6870,15 @@ setInterval(function() {
             document.getElementById("welcome").style.display = "flex"
             document.getElementById("welcomeMessage").innerHTML = "Congratulations! You reached 9.32e446 MA and then completed EC14 for the first time! You unlocked the fifth layer called Quantum! It comes after Dimension Boost, Antimatter Galaxy, Big Church, and Eternity. This allows you to get gigantic numbers!"
         }
+        if (!inQC(0) && player.money.gt(Decimal.pow(10, getQCGoal())) && player.meta.antimatter.lt(Decimal.pow(Number.MAX_VALUE, 1.45))) {
+            var chall=getCurrentQCData()
+            if (chall.length<2) chall=chall[0]
+            else if (chall[0]>chall[1]) chall=chall[1]*10+chall[0]
+            else chall=chall[0]*10+chall[1]
+            document.getElementById("welcome").style.display="flex"
+            document.getElementById("welcomeMessage").innerHTML="You reached the antimatter goal ("+shorten(Decimal.pow(10, getQCGoal()))+"), but you didn't reach the meta-antimatter goal yet! Get "+shorten(Decimal.pow(Number.MAX_VALUE, 1.45))+" meta-antimatter and then go quantum to complete your challenge!"
+            player.quantum.nonMAGoalReached.push(chall)
+        }
         if (!player.ghostify.reached && player.quantum.bigRip.active) if (player.quantum.bigRip.bestThisRun.gte(Decimal.pow(10, getQCGoal()))) {
             player.ghostify.reached = true
             document.getElementById("welcome").style.display = "flex"
@@ -6872,6 +6888,10 @@ setInterval(function() {
             player.quantum.breakEternity.unlocked = true
             $.notify("Congratulations! You have unlocked Break Eternity!", "success")
             updateBreakEternity()
+        }
+        if (player.ghostify.milestones>notifyId2) {
+            $.notify("You became a ghost in at most "+getFullExpansion(braveMilestones[notifyId2])+" quantumed stat! "+(["You now start with all Speedrun Milestones unlocked and all Big Rip upgrades bought, but you still lose quantum mechanics when you become a ghost", "For now on, colored quarks do not cancel", "You now keep your gluon upgrades", "You now start with Electrons unlocked", "You now start with all Quantum Challenges unlocked and completed", "You now keep your Paired Challenges", "You now start with Replicants unlocked", "You can now gain 1% of quarks and ^0.75 amount of gluons you will gain per second", "You now start with Second Emperor Dimensions unlocked", "You now start with Fourth Emperor Dimensions unlocked", "You now start with Sixth Emperor Dimensions unlocked", "You now start with Eighth Emperor Dimensions unlocked", "You now start with Nanofield and 16 rewards unlocked", "You now start with Tree of Decay unlocked", "You now start with Big Rip and Break Eternity unlocked", "You now start with all Break Eternity upgrades unlocked"])[notifyId2]+".","success")
+            notifyId2++
         }
     }
 }, 1000)
@@ -7771,7 +7791,8 @@ function gameLoop(diff) {
 			}
             if (player.masterystudies.includes("d14")) {
                 document.getElementById("bigripupg14current").textContent=getBRUpg14Mult().toFixed(2)
-                document.getElementById("bigripupg15current").textContent=(Math.sqrt(player.eternityPoints.add(1).log10()) * 3.55).toFixed(2)
+                var bru15effect = Math.sqrt(player.eternityPoints.add(1).log10()) * 3.55
+                document.getElementById("bigripupg15current").textContent=bru15effect < 999.995 ? bru15effect.toFixed(2) : getFullExpansion(Math.round(bru15effect))
                 document.getElementById("bigripupg16current").textContent=shorten(player.dilation.dilatedTime.div(1e100).pow(0.155).max(1))
 			}
 		}
@@ -8029,6 +8050,9 @@ function autoBuyerTick() {
             if (player.replicanti.amount.gte(player.eternityBuyer.limit)) eternity(false, true)
         } else if (player.autoEterMode == "peak") {
             if (player.peakSpent >= new Decimal(player.eternityBuyer.limit).toNumber()*10 && EPminpeak.gt(0)) eternity(false, true)
+        } else if (player.autoEterMode == "eternitied") {
+            var eternitied = getEternitied()
+            if (eternitied + gainEternitiedStat() >= eternitied * new Decimal(player.eternityBuyer.limit).toNumber()) eternity(false, true)
         }
     }
 

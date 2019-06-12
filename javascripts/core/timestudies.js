@@ -335,7 +335,7 @@ function studiesUntil(id) {
   buyTimeStudy(id, studyCosts[all.indexOf(id)], 0, true);
 }
 
-function respecTimeStudies(force) {
+function respecTimeStudies(force, presetLoad) {
   var respecTime=player.respec||force
   var respecMastery=false
   var gotAch=respecTime||player.timestudy.studies.length<1
@@ -439,16 +439,20 @@ function respecTimeStudies(force) {
       }
       if (player.masterystudies.length>respecedMS.length) player.quantum.wasted = false
       player.masterystudies=respecedMS
-      maybeShowFillAll()
-      drawMasteryTree()
       updateMasteryStudyCosts()
-      updateMasteryStudyButtons()
+      if (!presetLoad) {
+          maybeShowFillAll()
+          drawMasteryTree()
+          updateMasteryStudyButtons()
+      }
   }
   player.eternityChallUnlocked = 0
   updateEternityChallenges()
-  updateTimeStudyButtons()
-  updateTheoremButtons()
-  drawStudyTree()
+  if (presetLoad) {
+      updateTimeStudyButtons()
+      updateTheoremButtons()
+      drawStudyTree()
+  }
   if (gotAch) giveAchievement("You do know how these work, right?")
   if (!GUBought("gb3")) ipMultPower=2
   if (player.replicanti.galaxybuyer) document.getElementById("replicantiresettoggle").textContent = "Auto galaxy ON"
@@ -649,7 +653,15 @@ function save_preset(id) {
 	$.notify("Preset saved", "info")
 }
 
-function load_preset(id) {
+function load_preset(id, reset) {
+	if (reset) {
+		var id7unlocked = player.infDimensionsUnlocked[7]
+		if (player.masterystudies !== undefined) if (player.quantum.bigRip.active) id7unlocked = true
+		if (player.infinityPoints.lt(player.eternityChallGoal) || !id7unlocked) return
+		player.respec = true
+		player.respecMastery = true
+		eternity(false, false, true)
+	}
 	importStudyTree(presets[id].preset)
 	closeToolTip()
 	$.notify("Preset loaded", "info")
@@ -739,7 +751,7 @@ function openStudyPresets() {
 }
 
 function getPresetLayout(id) {
-	return "<b id='preset_"+id+"_title'>Preset #"+(loadedPresets+1)+"</b><br><button class='storebtn' onclick='save_preset("+id+")'>Save</button><button class='storebtn' onclick='load_preset("+id+")'>Load</button><button class='storebtn' onclick='rename_preset("+id+")'>Rename</button><button class='storebtn' onclick='move_preset("+id+",-1)'>Move up</button><button class='storebtn' onclick='move_preset("+id+",1)'>Move down</button><button class='storebtn' onclick='delete_preset("+id+")'>Delete</button>"
+	return "<b id='preset_"+id+"_title'>Preset #"+(loadedPresets+1)+"</b><br><button class='storebtn' onclick='save_preset("+id+")'>Save</button><button class='storebtn' onclick='load_preset("+id+")'>Load</button><button class='storebtn' style='font-size: 10px' onclick='load_preset("+id+", true)'>Load and Eternity</button><button class='storebtn' onclick='rename_preset("+id+")'>Rename</button><button class='storebtn' onclick='move_preset("+id+",-1)'>Move up</button><button class='storebtn' onclick='move_preset("+id+",1)'>Move down</button><button class='storebtn' onclick='delete_preset("+id+")'>Delete</button>"
 }
 
 function changePresetTitle(id, placement) {

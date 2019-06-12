@@ -343,6 +343,9 @@ function updateAutoEterMode() {
 	} else if (player.autoEterMode == "peak") {
 		document.getElementById("toggleautoetermode").textContent = "Auto eternity mode: peak"
 		document.getElementById("eterlimittext").textContent = "Seconds to wait after latest peak gain:"
+	} else if (player.autoEterMode == "eternitied") {
+		document.getElementById("toggleautoetermode").textContent = "Auto eternity mode: X times eternitied"
+		document.getElementById("eterlimittext").textContent = "X times eternitied:"
 	} else if (player.autoEterMode == "manual") {
 		document.getElementById("toggleautoetermode").textContent = "Auto eternity mode: dilate only"
 		document.getElementById("eterlimittext").textContent = "Does nothing to eternity"
@@ -359,7 +362,8 @@ function toggleAutoEterMode() {
 	else if (player.autoEterMode == "relative") player.autoEterMode = "relativebest"
 	else if (player.autoEterMode == "relativebest" && player.dilation.upgrades.includes("ngpp3") && player.eternities >= 4e11 && player.aarexModifications.newGame3PlusVersion) player.autoEterMode = "replicanti"
 	else if (player.autoEterMode == "replicanti" && player.eternities >= 1e13) player.autoEterMode = "peak"
-	else if (player.autoEterMode == "peak" && speedrunMilestonesReached > 24) player.autoEterMode = "manual"
+	else if (player.autoEterMode == "peak" && player.achievements.includes("ng3p51")) player.autoEterMode = "eternitied"
+	else if ((player.autoEterMode == "peak" || player.autoEterMode == "eternitied") && speedrunMilestonesReached > 24) player.autoEterMode = "manual"
 	else if (player.autoEterMode) player.autoEterMode = "amount"
 	updateAutoEterMode()
 }
@@ -1313,7 +1317,7 @@ function quantumReset(force, auto, challid, bigRip, implode=false) {
 		if (player.quantum.bigRip.active != bigRip) for (var t=1;t<9;t++) document.getElementById("treeupg"+t+"lvl").textContent=player.quantum.tod.upgrades[t] + (player.quantum.bigRip.active || player.quantum.tod.upgrades[t] <= maxLevels[t] ? "" : " (cap: " + maxLevels[t] + ")")
 		player.quantum.bigRip.active = bigRip
 		if (bigRip) {
-			tweakBigRip()
+			for (var u=0;u<player.quantum.bigRip.upgrades.length;u++) tweakBigRip(player.quantum.bigRip.upgrades[u])
 			if (player.quantum.bigRip.times < 1) document.getElementById("bigRipConfirmBtn").style.display = "inline-block"
 			player.quantum.bigRip.times++
 			player.quantum.bigRip.bestThisRun = player.money

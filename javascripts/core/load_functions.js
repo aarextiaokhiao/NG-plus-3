@@ -1185,7 +1185,7 @@ if (player.version < 5) {
 
       //Testing-exclusive
       if (player.quantum.reached === undefined) player.quantum.reached = player.quantum.times > 0
-      if (player.quantum.nonMAGoalReached === undefined) player.quantum.nonMAGoalReached = {}
+      if (player.quantum.nonMAGoalReached === undefined ? true : player.quantum.nonMAGoalReached.length === undefined) player.quantum.nonMAGoalReached = []
       if (player.quantum.bigRip.savedAutobuyersNoBR === undefined) player.quantum.bigRip.savedAutobuyersNoBR = {}
       if (player.quantum.bigRip.savedAutobuyersBR === undefined) player.quantum.bigRip.savedAutobuyersBR = {}
       if (player.quantum.breakEternity.upgradesReset === undefined && player.ghostify.times < 1) {
@@ -1596,7 +1596,7 @@ if (player.version < 5) {
       document.getElementById("infi33").innerHTML = "Increase Dimension Boost multiplier<br>2x -> 2.5x<br>Cost: 7 IP"
   }
   var resetSkipCosts=[20,40,80]
-  for (u=1;u<4;u++) document.getElementById("infi4"+u).innerHTML="You start with the "+(u+4)+"th dimension unlocked"+(player.tickspeedBoosts==undefined?"":", and "+(u*4)+" tickspeed boosts")+"<br>Cost: "+resetSkipCosts[u-1]+" IP"
+  for (u=1;u<4;u++) document.getElementById("infi4"+u).innerHTML="You start with the "+(u+4)+"th dimension unlocked"+(player.tickspeedBoosts==undefined?"":" and "+(u*4)+" tickspeed boosts")+"<br>Cost: "+resetSkipCosts[u-1]+" IP"
   document.getElementById("infi44").innerHTML="You start with the 8th dimension unlocked"+(player.tickspeedBoosts==undefined?"":", 16 tickspeed boosts")+", and a Galaxy<br>Cost: 500 IP"
   var showMoreBreak = player.galacticSacrifice ? "" : "none"
   for (i=1;i<5;i++) document.getElementById("postinfi0"+i).parentElement.style.display=showMoreBreak
@@ -1750,6 +1750,7 @@ if (player.version < 5) {
   updateExdilation()
   updateLastTenQuantums()
   updateLastTenGhostifies()
+  updateBraveMilestones()
   updateColorCharge()
   updateGluons()
   updateSpeedruns()
@@ -1809,6 +1810,7 @@ if (player.version < 5) {
   setAndMaybeShow('bestTP',player.achievements.includes("ng3p18") || player.achievements.includes("ng3p37"),'"Your best"+(ghostified ? "" : " ever")+" Tachyon particles"+(ghostified ? " in this Ghostify" : "")+" was "+shorten(player.dilation.bestTP)+"."')
   setAndMaybeShow('bestTPOverGhostifies',(player.achievements.includes("ng3p18") || player.achievements.includes("ng3p37")) && ghostified,'"Your best-ever Tachyon particles was "+shorten(player.dilation.bestTPOverGhostifies)+"."')
   notifyId=speedrunMilestonesReached
+  notifyId2=player.ghostify.milestones
   updatePowers()
   document.getElementById("newsbtn").textContent=(player.options.newsHidden?"Show":"Hide")+" news ticker"
   document.getElementById("game").style.display=player.options.newsHidden?"none":"block"
