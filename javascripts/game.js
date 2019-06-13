@@ -944,12 +944,12 @@ let kongEPMult = 1
 
 
 function showTab(tabName, init) {
-    if (tabName=='quantumtab' && !player.masterystudies) {
+    if (tabName == 'quantumtab' && !player.masterystudies) {
         alert("Wait! The owner of NG++, dan-simon, have abandoned the development! However, this is not a win. You need to reach real Infinite antimatter to win! (it's impossible)")
         return
     }
     //iterate over all elements in div_tab class. Hide everything that's not tabName and show tabName
-    var tabs = document.getElementsByClassName('tab');
+    var tabs = document.getElementsByClassName("tab");
     var tab;
     var oldTab
     for (var i = 0; i < tabs.length; i++) {
@@ -961,12 +961,12 @@ function showTab(tabName, init) {
             tab.style.display = 'none';
         }
     }
-    if ((document.getElementById("timestudies").style.display != "none" || document.getElementById("ers_timestudies").style.display != "none" || document.getElementById("masterystudies").style.display != "none") && document.getElementById("eternitystore").style.display != "none") document.getElementById("TTbuttons").style.display = "block";
-    else document.getElementById("TTbuttons").style.display = "none"
-    if ((document.getElementById("antimatterdimensions").style.display != "none" || document.getElementById("metadimensions").style.display != "none") && player.aarexModifications.progressBar && document.getElementById("dimensions").style.display != "none") document.getElementById("progress").style.display = "block";
-    else document.getElementById("progress").style.display = "none"
     if (oldTab !== tabName) {
         player.aarexModifications.tabsSave.tabMain = tabName
+		if ((document.getElementById("antimatterdimensions").style.display != "none" || document.getElementById("metadimensions").style.display != "none") && player.aarexModifications.progressBar && tabName == "dimensions") document.getElementById("progress").style.display = "block";
+		else document.getElementById("progress").style.display = "none"
+		if ((document.getElementById("timestudies").style.display != "none" || document.getElementById("ers_timestudies").style.display != "none" || document.getElementById("masterystudies").style.display != "none") && tabName=="eternitystore") document.getElementById("TTbuttons").style.display = "block";
+		else document.getElementById("TTbuttons").style.display = "none"
         if (tabName=="eternitystore") {
             if (document.getElementById('timestudies') !== "none" || document.getElementById('masterystudies') !== "none" || document.getElementById('dilation') !== "none" || document.getElementById("blackhole") !== "none") resizeCanvas()
             if (document.getElementById("dilation") !== "none") requestAnimationFrame(drawAnimations)
@@ -3362,7 +3362,7 @@ function gainedEternityPoints() {
 	if (player.masterystudies) {
 		if (player.quantum.bigRip.active && !player.quantum.bigRip.upgrades.includes(9)) {
 			if (player.quantum.bigRip.upgrades.includes(5)) ret = ret.times(player.quantum.bigRip.spaceShards.max(1))
-			if (player.quantum.bigRip.upgrades.includes(8)) ret = ret.times(Decimal.pow(2, player.replicanti.galaxies+extraReplGalaxies))
+			if (player.quantum.bigRip.upgrades.includes(8)) ret = ret.times(Decimal.pow(2, player.replicanti.galaxies+extraReplGalaxies).min(Number.MAX_VALUE))
 		}
 		if (player.quantum.breakEternity.break) ret = ret.times(getBreakUpgMult(7))
 	}
@@ -6870,11 +6870,11 @@ setInterval(function() {
             document.getElementById("welcome").style.display = "flex"
             document.getElementById("welcomeMessage").innerHTML = "Congratulations! You reached 9.32e446 MA and then completed EC14 for the first time! You unlocked the fifth layer called Quantum! It comes after Dimension Boost, Antimatter Galaxy, Big Church, and Eternity. This allows you to get gigantic numbers!"
         }
-        if (!inQC(0) && player.money.gt(Decimal.pow(10, getQCGoal())) && player.meta.antimatter.lt(Decimal.pow(Number.MAX_VALUE, 1.45))) {
-            var chall=getCurrentQCData()
-            if (chall.length<2) chall=chall[0]
-            else if (chall[0]>chall[1]) chall=chall[1]*10+chall[0]
-            else chall=chall[0]*10+chall[1]
+        var chall=getCurrentQCData()
+        if (chall.length<2) chall=chall[0]
+        else if (chall[0]>chall[1]) chall=chall[1]*10+chall[0]
+        else chall=chall[0]*10+chall[1]
+        if (chall && player.money.gt(Decimal.pow(10, getQCGoal())) && player.meta.antimatter.lt(Decimal.pow(Number.MAX_VALUE, 1.45)) && !player.quantum.nonMAGoalReached.includes(chall)) {
             document.getElementById("welcome").style.display="flex"
             document.getElementById("welcomeMessage").innerHTML="You reached the antimatter goal ("+shorten(Decimal.pow(10, getQCGoal()))+"), but you didn't reach the meta-antimatter goal yet! Get "+shorten(Decimal.pow(Number.MAX_VALUE, 1.45))+" meta-antimatter and then go quantum to complete your challenge!"
             player.quantum.nonMAGoalReached.push(chall)

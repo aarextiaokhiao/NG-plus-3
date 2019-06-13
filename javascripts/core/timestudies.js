@@ -358,7 +358,7 @@ function respecTimeStudies(force, presetLoad) {
               }
           }
           if (player.masterystudies) if (player.timestudy.studies.length>1) player.quantum.wasted = false
-          player.timestudy.studies = []
+          player.timestudy.studies=bru7activated?[192]:[]
           switch(player.eternityChallUnlocked) {
               case 1:
               player.timestudy.theorem += 30
@@ -448,7 +448,7 @@ function respecTimeStudies(force, presetLoad) {
   }
   player.eternityChallUnlocked = 0
   updateEternityChallenges()
-  if (presetLoad) {
+  if (!presetLoad) {
       updateTimeStudyButtons()
       updateTheoremButtons()
       drawStudyTree()

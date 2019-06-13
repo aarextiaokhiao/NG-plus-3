@@ -3547,7 +3547,7 @@
                         </tr>
                         <tr>
                             <td><button class='gluonupgrade unavailablebtn' id="bigripupg9" onclick='buyBigRipUpg(9)' style='font-size: 10px'>Gain 1,350 Time Theorems but reset the study tree and repeal upgrades 3 & 5 - 8.<br>Cost: <span id="bigripupg9cost">???</span> Space Shards</button></td>
-                            <td><button class='gluonupgrade unavailablebtn' id="bigripupg10" onclick='buyBigRipUpg(10)'>Start with dilation unlocked.<br>Cost: <span id="bigripupg10cost">???</span> Space Shards</button></td>
+                            <td><button class='gluonupgrade unavailablebtn' id="bigripupg10" onclick='buyBigRipUpg(10)'>Start with dilation unlocked, but activates 9th upgrade.<br>Cost: <span id="bigripupg10cost">???</span> Space Shards</button></td>
                             <td><button class='gluonupgrade unavailablebtn' id="bigripupg11" style='font-size: 10px' onclick='buyBigRipUpg(11)'>Start with Tachyon particles but reset the study tree, all upgrades can boost dilation except your best TP, and repeal all others.<br>Cost: <span id="bigripupg11cost">???</span> Space Shards</button></td>
                             <td><button class='gluonupgrade unavailablebtn' id="bigripupg12" style='font-size: 10px' onclick='buyBigRipUpg(12)'>You keep your time studies, dilation upgrades, and mastery studies.<br>Cost: <span id="bigripupg12cost">???</span> Space Shards</button></td>
                         </tr>
@@ -4670,20 +4670,20 @@
 						</div></td>
 					</tr>
 					<tr>
-						<td><div class="autoBuyerDiv" style="display:block">
+						<td id="autoGhost4"><div class="autoBuyerDiv" style="display:block">
 							<b>Auto-Unstabilize Rotate Ghost</b><br>
 							(rotates after quantum)<br>
 							Power consumption: 2<br>
 							<button class="storebtn" id="autoGhostRotate4" style="font-size: 100%; width: 120px; height: 20px">Clockwise</button><br>
 							Is active: <input id="isAutoGhostOn4" type="checkbox" onchange="toggleAutoGhost(4)"></input>
 						</div></td>
-						<td><div class="autoBuyerDiv" style="display:block">
+						<td id="autoGhost5"><div class="autoBuyerDiv" style="display:block">
 							<b>Auto-Branch Upgrade Ghost</b><br>
 							(buys if possible)<br>
 							Power consumption: 1<br>
 							Is active: <input id="isAutoGhostOn5" type="checkbox" onchange="toggleAutoGhost(5)"></input>
 						</div></td>
-						<td><div class="autoBuyerDiv" style="display:block">
+						<td id="autoGhost6"><div class="autoBuyerDiv" style="display:block">
 							<b>Auto-Tree Upgrade Ghost</b><br>
 							(buys if possible)<br>
 							Power consumption: 1<br>
@@ -4691,19 +4691,19 @@
 						</div></td>
 					</tr>
 					<tr>
-						<td><div class="autoBuyerDiv" style="display:block">
+						<td id="autoGhost7"><div class="autoBuyerDiv" style="display:block">
 							<b>Auto-QK Multi Upgrade Ghost</b><br>
 							(buys if possible)<br>
 							Power consumption: 1<br>
 							Is active: <input id="isAutoGhostOn7" type="checkbox" onchange="toggleAutoGhost(7)"></input>
 						</div></td>
-						<td><div class="autoBuyerDiv" style="display:block">
+						<td id="autoGhost8"><div class="autoBuyerDiv" style="display:block">
 							<b>Auto-Electron Upgrade Ghost</b><br>
 							(buys if possible)<br>
 							Power consumption: 1<br>
 							Is active: <input id="isAutoGhostOn8" type="checkbox" onchange="toggleAutoGhost(8)"></input>
 						</div></td>
-						<td><div class="autoBuyerDiv" style="display:block">
+						<td id="autoGhost9"><div class="autoBuyerDiv" style="display:block">
 							<b>Auto-Food Ghost</b><br>
 							(buys if possible)<br>
 							Power consumption: 1<br>
@@ -4711,19 +4711,19 @@
 						</div></td>
 					</tr>
 					<tr>
-						<td><div class="autoBuyerDiv" style="display:block">
+						<td id="autoGhost10"><div class="autoBuyerDiv" style="display:block">
 							<b>Auto-Worker Replicant Ghost</b><br>
 							(feeds if possible)<br>
 							Power consumption: 1<br>
 							Is active: <input id="isAutoGhostOn10" type="checkbox" onchange="toggleAutoGhost(10)"></input>
 						</div></td>
-						<td><div class="autoBuyerDiv" style="display:block">
+						<td id="autoGhost11"><div class="autoBuyerDiv" style="display:block">
 							<b>Auto-Limit Increase Upgrade Ghost</b><br>
 							(buys if possible)<br>
 							Power consumption: 1<br>
 							Is active: <input id="isAutoGhostOn11" type="checkbox" onchange="toggleAutoGhost(11)"></input>
 						</div></td>
-						<td><div class="autoBuyerDiv" style="display:block">
+						<td id="autoGhost12"><div class="autoBuyerDiv" style="display:block">
 							<b>Auto-Limit Tier Upgrade Ghost</b><br>
 							(buys if possible)<br>
 							Power consumption: 1<br>
@@ -4731,34 +4731,34 @@
 						</div></td>
 					</tr>
 					<tr>
-						<td><div class="autoBuyerDiv" style="display:block">
+						<td id="autoGhost13"><div class="autoBuyerDiv" style="display:block">
 							<b>Auto-Preon Generate Ghost</b><br>
 							Power consumption: 1<br>
 							Is active: <input id="isAutoGhostOn13" type="checkbox" onchange="toggleAutoGhost(13)"></input>
 						</div></td>
-						<td><div class="autoBuyerDiv" style="display:block">
+						<td id="autoGhost14"><div class="autoBuyerDiv" style="display:block">
 							<b>Auto-Big Rip Ghost</b><br>
 							Power consumption: 1<br>
 							Is active: <input id="isAutoGhostOn14" type="checkbox" onchange="toggleAutoGhost(14)"></input>
 						</div></td>
-						<td><div class="autoBuyerDiv" style="display:block">
+						<td id="autoGhost15"><div class="autoBuyerDiv" style="display:block">
 							<b>Auto-Big Rip Modes Ghost</b><br>
 							Power consumption: 1<br>
 							Is active: <input id="isAutoGhostOn15" type="checkbox" onchange="toggleAutoGhost(15)"></input>
 						</div></td>
 					</tr>
 					<tr>
-						<td><div class="autoBuyerDiv" style="display:block">
+						<td id="autoGhost16"><div class="autoBuyerDiv" style="display:block">
 							<b>Auto-BE Multi Upgrade Ghost</b><br>
 							Power consumption: 1<br>
 							Is active: <input id="isAutoGhostOn16" type="checkbox" onchange="toggleAutoGhost(16)"></input>
 						</div></td>
-						<td><div class="autoBuyerDiv" style="display:block">
+						<td id="autoGhost17"><div class="autoBuyerDiv" style="display:block">
 							<b>Auto-Ghostify Ghost</b><br>
 							Power consumption: 1<br>
 							Is active: <input id="isAutoGhostOn17" type="checkbox" onchange="toggleAutoGhost(17)"></input>
 						</div></td>
-						<td><div class="autoBuyerDiv" style="display:block">
+						<td id="autoGhost18"><div class="autoBuyerDiv" style="display:block">
 							<b>Auto-Ghostify Modes Ghost</b><br>
 							Power consumption: 1<br>
 							Is active: <input id="isAutoGhostOn18" type="checkbox" onchange="toggleAutoGhost(18)"></input>
@@ -4831,6 +4831,22 @@
 		<div style="height:270px;overflow-y:auto">
 			<table id='presets'>
 			</table>
+		</div>
+	</div>
+	<div class="popup optionmenu" id="aftereternitymenu" style="overflow-y:hidden; width: 830px; height: 430px">
+		<button class="closebtn storebtn" onclick="closeToolTip()">&times;</button>
+		<b style="position: absolute; top: 16px; left: 10px">Preset automation</b>
+		<button class="storebtn" style="position: absolute; top: 10px; left: 280px; font-size: 15px" onclick="new_preset(true)">Enable</button>
+		<div style="position: absolute; top: 45px; left: 10px; height: 375px; width: 400px; overflow-y:auto">
+			<table id='aftereternity_presets'>
+			</table>
+		</div>
+		<b style="position: absolute; top: 16px; left: 420px">Automated dilation preset</b>
+		<div style="position: absolute; top: 45px; left: 420px; height: 155px; width: 400px; overflow-y:auto"></div>
+		<b style="position: absolute; top: 226px; left: 420px">Dilation options</b>
+		<div style="position: absolute; top: 255px; left: 420px; height: 155px; width: 400px; overflow-y:auto">
+			<button class="storebtn" id="autodilatemode" style="width:400px" onclick="changeAutoDilateMode()">Auto dilate mode: Amount of eternities</button>
+			<button class="storebtn" id="slowstop" style="width:400px; font-size: 11px" onclick="toggleSlowStop()">Stop auto-dilate if a little bit of TP is gained: OFF</button>
 		</div>
 	</div>
     <div class="popup optionmenu" id="animationoptions">

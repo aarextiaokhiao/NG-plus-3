@@ -1903,6 +1903,16 @@ function updateQuantumWorth(notationOnly) {
 			player.ghostify.automatorGhosts.power = Math.max(automaticCharge, player.ghostify.automatorGhosts.power)
 			document.getElementById("automaticCharge").textContent = automaticCharge.toFixed(1)
 			document.getElementById("automaticPower").textContent = player.ghostify.automatorGhosts.power.toFixed(1)
+			while (player.ghostify.automatorGhosts.power>=autoGhostRequirements[player.ghostify.automatorGhosts.ghosts-3]) {
+				player.ghostify.automatorGhosts.ghosts++
+				document.getElementById("autoGhost"+player.ghostify.automatorGhosts.ghosts).style.display=""
+				if (player.ghostify.automatorGhosts.ghosts>17) document.getElementById("nextAutomatorGhost").parentElement.style.display="none"
+				else {
+					document.getElementById("automatorGhostsAmount").textContent=player.ghostify.automatorGhosts.ghosts
+					document.getElementById("nextAutomatorGhost").parentElement.style.display=""
+					document.getElementById("nextAutomatorGhost").textContent=autoGhostRequirements[player.ghostify.automatorGhosts.ghosts-3].toFixed(1)
+				}
+			}
 		}
 	}
 	for (var e=1;e<4;e++) document.getElementById("quantumWorth"+e).textContent = shortenDimensions(quantumWorth)
@@ -1919,6 +1929,11 @@ function updateElectronsEffect() {
 function rotateAutoAssign() {
 	player.quantum.autoOptions.assignQKRotate=player.quantum.autoOptions.assignQKRotate?(player.quantum.autoOptions.assignQKRotate+1)%3:1
 	document.getElementById('autoAssignRotate').textContent=player.quantum.autoOptions.assignQKRotate?"C"+(player.quantum.autoOptions.assignQKRotate>1?"ounterc":"")+"lockwise":"No rotate"
+}
+
+function openAfterEternity() {
+	closeToolTip()
+	document.getElementById("aftereternitymenu").style.display = "block"
 }
 
 var maxLevels = [null, 38, 8, 1/0, 40, 1/0, 2, 2, 5]
@@ -1943,8 +1958,12 @@ function buyBigRipUpg(id) {
 	player.quantum.bigRip.spaceShards=player.quantum.bigRip.spaceShards.sub(bigRipUpgCosts[id]).round()
 	player.quantum.bigRip.upgrades.push(id)
 	document.getElementById("spaceShards").textContent = shortenDimensions(player.quantum.bigRip.spaceShards)
-	for (var u=1;u<18;u++) document.getElementById("bigripupg"+u).className = player.quantum.bigRip.upgrades.includes(u) ? "gluonupgradebought bigrip" : player.quantum.bigRip.spaceShards.lt(bigRipUpgCosts[u]) ? "gluonupgrade unavailablebtn" : "gluonupgrade bigrip"
 	if (player.quantum.bigRip.active) tweakBigRip(id, true)
+	if (id==10 && !player.quantum.bigRip.upgrades.includes(9)) {
+		player.quantum.bigRip.upgrades.push(9)
+		if (player.quantum.bigRip.active) tweakBigRip(9, true)
+	}
+	for (var u=1;u<18;u++) document.getElementById("bigripupg"+u).className = player.quantum.bigRip.upgrades.includes(u) ? "gluonupgradebought bigrip" : player.quantum.bigRip.spaceShards.lt(bigRipUpgCosts[u]) ? "gluonupgrade unavailablebtn" : "gluonupgrade bigrip"
 }
 
 function tweakBigRip(id, reset) {
@@ -2869,7 +2888,7 @@ function updateGhostifyTabs() {
 		document.getElementById("neutrinoBoost1").textContent=getDilExp().toFixed(2)
 		document.getElementById("neutrinoUpg1Pow").textContent=getNU1Pow()
 		document.getElementById("neutrinoUpg3Pow").textContent=shorten(getNU3Pow())
-		for (var u=1; u<3; u++) {
+		for (var u=1; u<4; u++) {
 			if (player.ghostify.neutrinos.upgrades.includes(u)) document.getElementById("neutrinoUpg" + u).className = "gluonupgradebought neutrinoupg"
 			else if (player.ghostify.neutrinos.electron.add(player.ghostify.neutrinos.mu).round().add(player.ghostify.neutrinos.tau).round().gte(neutrinoUpgCosts[u])) document.getElementById("neutrinoUpg" + u).className = "gluonupgrade neutrinoupg"
 			else document.getElementById("neutrinoUpg" + u).className = "gluonupgrade unavailablebtn"
@@ -2928,17 +2947,33 @@ function setupAutomaticGhostsData() {
 	return data
 }
 
+var autoGhostRequirements=[3,9,9,9,9,9,9,9,9,9,9,9,9,9,9,1/0]
 var powerConsumed
+var powerConsumptions=[0,1,1,1,2,1,1,1,1,1,1,1,1,1,1,1,1,1,1]
 function updateAutoGhosts(load) {
-	document.getElementById("automatorGhostsAmount").textContent = player.ghostify.automatorGhosts.ghosts
-	powerConsumed = 0
-	for (var ghost=1; ghost<19; ghost++) {
-		if (load) document.getElementById("isAutoGhostOn" + ghost).checked = player.ghostify.automatorGhosts[ghost].on
-		if (player.ghostify.automatorGhosts[ghost].on) powerConsumed++
+	if (load) {
+		if (player.ghostify.automatorGhosts.ghosts>17) document.getElementById("nextAutomatorGhost").parentElement.style.display="none"
+		else {
+			document.getElementById("automatorGhostsAmount").textContent=player.ghostify.automatorGhosts.ghosts
+			document.getElementById("nextAutomatorGhost").parentElement.style.display=""
+			document.getElementById("nextAutomatorGhost").textContent=autoGhostRequirements[player.ghostify.automatorGhosts.ghosts-3].toFixed(1)
+		}
 	}
-	document.getElementById("consumedPower").textContent = powerConsumed.toFixed(1)
-	isAutoGhostsSafe = player.ghostify.automatorGhosts.power >= powerConsumed
-	document.getElementById("tooMuchPowerConsumed").style.display = isAutoGhostsSafe ? "none" : ""
+	powerConsumed=0
+	for (var ghost=1;ghost<19;ghost++) {
+		if (ghost>player.ghostify.automatorGhosts.ghosts) {
+			if (load) document.getElementById("autoGhost"+ghost).style.display="none"
+		} else {
+			if (load) {
+				document.getElementById("autoGhost"+ghost).style.display=""
+				document.getElementById("isAutoGhostOn"+ghost).checked=player.ghostify.automatorGhosts[ghost].on
+			}
+			if (player.ghostify.automatorGhosts[ghost].on) powerConsumed+=powerConsumptions[ghost]
+		}
+	}
+	document.getElementById("consumedPower").textContent=powerConsumed.toFixed(1)
+	isAutoGhostsSafe=player.ghostify.automatorGhosts.power>=powerConsumed
+	document.getElementById("tooMuchPowerConsumed").style.display=isAutoGhostsSafe?"none":""
 }
 
 function toggleAutoGhost(id) {

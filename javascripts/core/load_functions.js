@@ -1188,6 +1188,10 @@ if (player.version < 5) {
       if (player.quantum.nonMAGoalReached === undefined ? true : player.quantum.nonMAGoalReached.length === undefined) player.quantum.nonMAGoalReached = []
       if (player.quantum.bigRip.savedAutobuyersNoBR === undefined) player.quantum.bigRip.savedAutobuyersNoBR = {}
       if (player.quantum.bigRip.savedAutobuyersBR === undefined) player.quantum.bigRip.savedAutobuyersBR = {}
+      if (player.quantum.bigRip.upgrades.includes(10) && !player.quantum.bigRip.upgrades.includes(9)) {
+          player.quantum.bigRip.upgrades.push(9)
+          if (player.quantum.bigRip.active) tweakBigRip(9, true)
+      }
       if (player.quantum.breakEternity.upgradesReset === undefined && player.ghostify.times < 1) {
           var newUpgrades = []
           for (var u=0;u<player.quantum.breakEternity.upgrades.length;u++) if (player.quantum.breakEternity.upgrades[u]<4) newUpgrades.push(player.quantum.breakEternity.upgrades[u])

@@ -1126,7 +1126,7 @@ function quantumReset(force, auto, challid, bigRip, implode=false) {
 		eternityChalls: {},
 		eternityChallGoal: new Decimal(Number.MAX_VALUE),
 		currentEternityChall: "",
-		eternityChallUnlocked: 0,
+		eternityChallUnlocked: isRewardEnabled(10)?player.eternityChallUnlocked:0,
 		etercreq: 0,
 		autoIP: new Decimal(0),
 		autoTime: 1e300,
@@ -1229,6 +1229,9 @@ function quantumReset(force, auto, challid, bigRip, implode=false) {
 	if (player.galacticSacrifice && !oheHeadstart) player.autobuyers[12]=13
 	if (player.tickspeedBoosts !== undefined && !oheHeadstart) player.autobuyers[13]=14
 	player.challenges=challengesCompletedOnEternity()
+	if (player.eternityChallUnlocked>12) player.timestudy.theorem+=masterystudies.costs.ec[player.eternityChallUnlocked]
+	else player.timestudy.theorem+=([0,30,35,40,70,130,85,115,115,415,550,1,1])[player.eternityChallUnlocked]
+	player.eternityChallUnlocked=0
 	if (headstart) for (ec=1;ec<13;ec++) player.eternityChalls['eterc'+ec]=5
 	else if (isRewardEnabled(3) && !bigRip) for (ec=1;ec<15;ec++) if (ec != 7) player.eternityChalls['eterc'+ec] = 5
 	if (player.masterystudies) {
