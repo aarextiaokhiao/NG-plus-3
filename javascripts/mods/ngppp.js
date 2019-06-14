@@ -1932,8 +1932,8 @@ function rotateAutoAssign() {
 }
 
 function openAfterEternity() {
-	closeToolTip()
-	document.getElementById("aftereternitymenu").style.display = "block"
+	showEternityTab("autoEternity")
+	showTab("eternitystore")
 }
 
 var maxLevels = [null, 38, 8, 1/0, 40, 1/0, 2, 2, 5]

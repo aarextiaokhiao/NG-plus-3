@@ -460,13 +460,14 @@ function respecTimeStudies(force, presetLoad) {
 }
 
 function getTotalTT(tree) {
-	var result=tree.timestudy.theorem
+	tree=tree.timestudy
+	var result=tree.theorem
 	if (tree.boughtDims) {
-		for (id=1;id<7;id++) result+=tree.timestudy.ers_studies[id]*(tree.timestudy.ers_studies[id]+1)/2
+		for (id=1;id<7;id++) result+=tree.ers_studies[id]*(tree.ers_studies[id]+1)/2
 		return result
 	} else {
 		var ecCosts=[0,30,35,40,70,130,85,115,115,415,550,1,1]
-		for (id=0;id<all.length;id++) if (tree.timestudy.studies.includes(all[id])) result+=studyCosts[id]
+		for (id=0;id<all.length;id++) if (tree.studies.includes(all[id])) result+=studyCosts[id]
 		return result+ecCosts[player.eternityChallUnlocked]
 	}
 }

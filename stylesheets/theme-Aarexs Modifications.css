@@ -159,11 +159,11 @@ strong { color: #0072e5 }
     border-color: #e2bd00 !important;
     border-radius: 0px !important
 }
-#eternitybtn, #eternitystorebtn, #pasteternities, #tdtabbtn button, #timedimensions td:nth-child(4) .storebtn, .eternityupbtn, .milestonereward, .timestudy, .eternityttbtn, #eterctabbtn, #breakEternityTabbtn button {
+#eternitybtn, #eternitystorebtn, #pasteternities, #tdtabbtn button, #timedimensions td:nth-child(4) .storebtn, .eternityupbtn, .milestonereward, .timestudy, .eternityttbtn, #eterctabbtn, #breakEternityTabbtn button, #autoEternityTabbtn button {
     border-color: #7100e2 !important;
     animation: none
 }
-#eternitybtn:hover, #eternitystorebtn:hover, #pasteternities:hover, #tdtabbtn button:hover, #timedimensions td:nth-child(4) .storebtn:hover, .timestudy:hover, .eternityttbtn:hover, #eterctabbtn:hover, #breakEternityTabbtn button:hover {
+#eternitybtn:hover, #eternitystorebtn:hover, #pasteternities:hover, #tdtabbtn button:hover, #timedimensions td:nth-child(4) .storebtn:hover, .timestudy:hover, .eternityttbtn:hover, #eterctabbtn:hover, #breakEternityTabbtn button:hover, #autoEternityTabbtn button:hover {
     background-color: #7100e2 !important
 }
 #TTbuttons {

@@ -123,8 +123,9 @@
                     <td><button class="secondarytabbtn" onclick="showEternityTab('eternityupgrades')">Eternity upgrades</button></td>
                     <td><button class="secondarytabbtn" onclick="showEternityTab('milestones')">Eternity milestones</button></td>
                     <td id="dilationTabbtn"><button class="secondarytabbtn" onclick="showEternityTab('dilation')">Time dilation</button></td>
-                    <td id="breakEternityTabbtn"><button class="secondarytabbtn" onclick="showEternityTab('breakEternity')">Break Eternity</button></td>
                     <td id="blackHoleTabbtn"><button class="secondarytabbtn" onclick="showEternityTab('blackhole')">Black hole</button></td>
+                    <td id="breakEternityTabbtn"><button class="secondarytabbtn" onclick="showEternityTab('breakEternity')">Break Eternity</button></td>
+                    <td id="autoEternityTabbtn"><button class="secondarytabbtn" onclick="showEternityTab('autoEternity')">Auto-Eternity</button></td>
                 </tr>
             </table>
             <div style="display: none;"><textarea id="treeExportOutput" style="color:black; width: 200px; height: 55px;"></textarea></div>
@@ -1030,6 +1031,118 @@
                       <br/>
                       <canvas id="blackHoleCanvas" width="400" height="400" style="user-select: none;"></canvas>
                 </div>
+                <div id="footercontainer">
+                    <table id="footer">
+                        <tr>
+                            <td>
+                                <div style="text-align:center">
+                                    <a href="howto.html" target="_newtab">How to play  </a> |
+                                    <a href="about.html" onclick="giveAchievement('A sound financial decision')" target="_newtab">About   </a> |
+                                    <a href="changelog/" target="_newtab">Changelog   </a>
+                                </div>
+                            </td>
+                        </tr>
+                    </table>
+                </div>
+            </div>
+            <div class="eternitytab" id="autoEternity">
+                <table id="autoEternityTable">
+                    <tr>
+                        <td>
+                            <b>Main options</b><br>
+                            <button class="storebtn" onclick="toggleAutoEter()">Enable</button><br>
+                            <button class="storebtn" id="autoEterMode" style="width:400px" onclick="toggleAutoEterMode()">Mode: amount</button>
+                            <span id='autoEterCond'>Amount of EP to wait until reset:</span><br>
+                            <input type="text" onchange="updatePriorities()" id="autoEterValue"></input>
+                        </td>
+                        <td>
+                            <div style="height:50px"><b>Preset automation</b><br><button class="storebtn" onclick="toggleDilPreset()">Enable</button></div>
+                            <div style="height:250px; overflow-y:auto">
+                                <table id='automatedPresets'>
+                                    <tr>
+                                        <td>></td>
+                                        <td>
+                                            <b>Test</b><br>
+                                            <button class="storebtn">Select next</button>
+                                            <button class="storebtn">Move up</button>
+                                            <button class="storebtn">Move down</button>
+                                            <button class="storebtn">Replace</button>
+                                            <button class="storebtn">Remove</button>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td></td>
+                                        <td>
+                                            <b>Test</b><br>
+                                            <button class="storebtn">Select next</button>
+                                            <button class="storebtn">Move up</button>
+                                            <button class="storebtn">Move down</button>
+                                            <button class="storebtn">Replace</button>
+                                            <button class="storebtn">Remove</button>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td></td>
+                                        <td>
+                                            <b>Test</b><br>
+                                            <button class="storebtn">Select next</button>
+                                            <button class="storebtn">Move up</button>
+                                            <button class="storebtn">Move down</button>
+                                            <button class="storebtn">Replace</button>
+                                            <button class="storebtn">Remove</button>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td></td>
+                                        <td>
+                                            <b>Test</b><br>
+                                            <button class="storebtn">Select next</button>
+                                            <button class="storebtn">Move up</button>
+                                            <button class="storebtn">Move down</button>
+                                            <button class="storebtn">Replace</button>
+                                            <button class="storebtn">Remove</button>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td></td>
+                                        <td>
+                                            <b>Test</b><br>
+                                            <button class="storebtn">Select next</button>
+                                            <button class="storebtn">Move up</button>
+                                            <button class="storebtn">Move down</button>
+                                            <button class="storebtn">Replace</button>
+                                            <button class="storebtn">Remove</button>
+                                        </td>
+                                    </tr>
+                                </table>
+                            </div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <b>Dilation options</b><br>
+                            <button class="storebtn" onclick="toggleAutoDil()">Enable</button><br>
+                            <button class="storebtn" id="autodilatemode" style="width:400px" onclick="changeAutoDilateMode()">Auto dilate mode: Amount of eternities</button>
+                            <button class="storebtn" id="slowstop" style="width:400px; font-size: 11px" onclick="toggleSlowStop()">Stop auto-dilate if a little bit of TP is gained: OFF</button>
+                            <span id="autoDilCond2">Amount of eternities to wait until dilate time:</span><br>
+                            <input type="text" onchange="updatePriorities()" id="autoDilValue"></input>
+                        </td>
+                        <td>
+                            <div style="height:50px"><b>Dilation preset automation</b><br><button class="storebtn" onclick="toggleAutoDilPreset()">Enable</button></div>
+                            <div>
+                                <table>
+                                    <tr>
+                                        <td></td>
+                                        <td id='autoDilPreset'>
+                                            <b>None</b><br>
+                                            <button class="storebtn">Add</button>
+                                        </td>
+                                    </tr>
+                                </table>
+                            </div>
+                        </td>
+                    </tr>
+                </table>
                 <div id="footercontainer">
                     <table id="footer">
                         <tr>
@@ -4831,22 +4944,6 @@
 		<div style="height:270px;overflow-y:auto">
 			<table id='presets'>
 			</table>
-		</div>
-	</div>
-	<div class="popup optionmenu" id="aftereternitymenu" style="overflow-y:hidden; width: 830px; height: 430px">
-		<button class="closebtn storebtn" onclick="closeToolTip()">&times;</button>
-		<b style="position: absolute; top: 16px; left: 10px">Preset automation</b>
-		<button class="storebtn" style="position: absolute; top: 10px; left: 280px; font-size: 15px" onclick="new_preset(true)">Enable</button>
-		<div style="position: absolute; top: 45px; left: 10px; height: 375px; width: 400px; overflow-y:auto">
-			<table id='aftereternity_presets'>
-			</table>
-		</div>
-		<b style="position: absolute; top: 16px; left: 420px">Automated dilation preset</b>
-		<div style="position: absolute; top: 45px; left: 420px; height: 155px; width: 400px; overflow-y:auto"></div>
-		<b style="position: absolute; top: 226px; left: 420px">Dilation options</b>
-		<div style="position: absolute; top: 255px; left: 420px; height: 155px; width: 400px; overflow-y:auto">
-			<button class="storebtn" id="autodilatemode" style="width:400px" onclick="changeAutoDilateMode()">Auto dilate mode: Amount of eternities</button>
-			<button class="storebtn" id="slowstop" style="width:400px; font-size: 11px" onclick="toggleSlowStop()">Stop auto-dilate if a little bit of TP is gained: OFF</button>
 		</div>
 	</div>
     <div class="popup optionmenu" id="animationoptions">
