@@ -327,32 +327,42 @@ function updateMetaDimensions () {
 
 // v2.2
 function updateAutoEterMode() {
-	document.getElementById("priority13").disabled=false
+	var modeText = ""
+	var modeCond = ""
+	document.getElementById("priority13").disabled = false
+	document.getElementById("autoEterValue").disabled = false
 	if (player.autoEterMode == "time") {
-		document.getElementById("toggleautoetermode").textContent = "Auto eternity mode: time"
-		document.getElementById("eterlimittext").textContent = "Seconds between eternities:"
+		modeText = "time"
+		modeCond = "Seconds between eternities:"
 	} else if (player.autoEterMode == "relative") {
-		document.getElementById("toggleautoetermode").textContent = "Auto eternity mode: X times last eternity"
-		document.getElementById("eterlimittext").textContent = "X times last eternity:"
+		modeText = "X times last eternity"
+		modeCond = modeText + ":"
 	} else if (player.autoEterMode == "relativebest") {
-		document.getElementById("toggleautoetermode").textContent = "Auto eternity mode: X times best of last 10"
-        document.getElementById("eterlimittext").textContent = "X times best of last 10 eternities:"
+		modeText = "X times best of last 10"
+        modeCond = modeText + " eternities:"
 	} else if (player.autoEterMode == "replicanti") {
-		document.getElementById("toggleautoetermode").textContent = "Auto eternity mode: replicanti"
-		document.getElementById("eterlimittext").textContent = "Amount of replicanti to wait until reset:"
+		modeText = "replicanti"
+		modeCond = "Amount of replicanti to wait until reset:"
 	} else if (player.autoEterMode == "peak") {
-		document.getElementById("toggleautoetermode").textContent = "Auto eternity mode: peak"
-		document.getElementById("eterlimittext").textContent = "Seconds to wait after latest peak gain:"
+		modeText = "peak"
+		modeCond = "Seconds to wait after latest peak gain:"
 	} else if (player.autoEterMode == "eternitied") {
-		document.getElementById("toggleautoetermode").textContent = "Auto eternity mode: X times eternitied"
-		document.getElementById("eterlimittext").textContent = "X times eternitied:"
+		modeText = "X times eternitied"
+		modeCond = modeText + ":"
 	} else if (player.autoEterMode == "manual") {
-		document.getElementById("toggleautoetermode").textContent = "Auto eternity mode: dilate only"
-		document.getElementById("eterlimittext").textContent = "Does nothing to eternity"
-		document.getElementById("priority13").disabled=true
+		modeText = "dilate only"
+		modeCond = "Does nothing to eternity"
+		document.getElementById("priority13").disabled = true
+		document.getElementById("autoEterValue").disabled = true
 	} else {
-		document.getElementById("toggleautoetermode").textContent = "Auto eternity mode: amount"
-		document.getElementById("eterlimittext").textContent = "Amount of EP to wait until reset:"
+		modeText = "amount"
+		modeCond = "Amount of EP to wait until reset:"
+	}
+	document.getElementById("toggleautoetermode").textContent = "Auto eternity mode: " + modeText
+	document.getElementById("eterlimittext").textContent = modeCond
+	if (player.achievements.includes("ng3p52")) {
+		document.getElementById("autoEterMode").textContent = "Mode: " + modeText
+		document.getElementById("autoEterCond").textContent = modeCond
 	}
 }
 
@@ -442,7 +452,7 @@ function quantum(auto, force, challid, bigRip) {
 					var qc1st = Math.min(qc1, qc2)
 					var qc2st = Math.max(qc1, qc2)
 					if (qc1st != 6 || qc2st != 8) return
-					if (!confirm("Big ripping the universe starts PC6+8 with only quantum stuff. However, only dilation upgrades boost dilation except upgrades that multiply TP gain until you buy the eleventh upgrade. NOTE: If you can beat PC6+8, you will earn a grand reward.")) return
+					if (player.quantum.bigRip.conf) if (!confirm("Big ripping the universe starts PC6+8 with only quantum stuff. However, only dilation upgrades boost dilation except upgrades that multiply TP gain until you buy the eleventh upgrade. NOTE: If you can beat PC6+8, you will earn a grand reward.")) return
 				}
 				if (pc > 0) {
 					if (player.options.challConf || (player.quantum.pairedChallenges.completions.length < 1 && !ghostified)) if (!confirm("You will start a Quantum Challenge, but you need to do 2 challenges at one. Completing it boosts the rewards of Quantum Challenges that you chose in this Paired Challenge.")) return
@@ -688,6 +698,13 @@ function quantumReset(force, auto, challid, bigRip, implode=false) {
 	document.getElementById("quarks").innerHTML="You have <b class='QKAmount'>"+shortenDimensions(player.quantum.quarks)+"</b> quark"+(player.quantum.quarks.lt(2)?".":"s.")
 	document.getElementById("galaxyPoints2").innerHTML="You have <span class='GPAmount'>0</span> Galaxy points."
 	if (player.masterystudies) {
+		var aea = {
+			dilMode: player.eternityBuyer.dilMode,
+			tpUpgraded: player.eternityBuyer.tpUpgraded,
+			slowStop: player.eternityBuyer.slowStop,
+			slowStopped: player.eternityBuyer.slowStopped,
+			presets: player.eternityBuyer.presets
+		}
 		if (!player.quantum.gluons.rg) {
 			player.quantum.gluons = {
 				rg: new Decimal(0),
@@ -761,6 +778,11 @@ function quantumReset(force, auto, challid, bigRip, implode=false) {
 				amount: player.eternityBuyer.limit,
 				dilation: player.eternityBuyer.dilationMode,
 				dilationPerStat: player.eternityBuyer.dilationPerAmount,
+				dilMode: player.eternityBuyer.dilMode,
+				tpUpgraded: player.eternityBuyer.tpUpgraded,
+				slowStop: player.eternityBuyer.slowStop,
+				slowStopped: player.eternityBuyer.slowStopped,
+				presets: player.eternityBuyer.presets,
 				on: player.eternityBuyer.isOn
 			}
 			var data = player.quantum.bigRip["savedAutobuyers" + (bigRip ? "" : "No") + "BR"]
@@ -860,6 +882,11 @@ function quantumReset(force, auto, challid, bigRip, implode=false) {
 						dilationMode: data.eternity.dilation,
 						dilationPerAmount: data.eternity.dilationPerStat,
 						statBeforeDilation: data.eternity.dilationPerStat,
+						dilMode: data.eternity.dilMode ? data.eternity.dilMode : "amount",
+						tpUpgraded: data.eternity.tpUpgraded ? data.eternity.tpUpgraded : false,
+						slowStop: data.eternity.slowStop ? data.eternity.slowStop : false,
+						slowStopped: data.eternity.slowStopped ? data.eternity.slowStopped : false,
+						presets: data.eternity.presets ? data.eternity.presets : {on: false, autoDil: false, selected: 1, order: []},
 						isOn: data.eternity.on
 					}
 					player.autoEterMode = data.eternity.mode
@@ -1145,7 +1172,7 @@ function quantumReset(force, auto, challid, bigRip, implode=false) {
 		dimlife: true,
 		dead: true,
 		dilation: {
-			studies: bigRip ? (player.quantum.bigRip.upgrades.includes(10) ? [1,2,3,4,5,6] : player.quantum.bigRip.upgrades.includes(10) ? [1] : []) : isRewardEnabled(4) ? (speedrunMilestonesReached > 5 ? [1,2,3,4,5,6] : [1]) : [],
+			studies: bigRip ? (player.quantum.bigRip.upgrades.includes(12) ? [1,2,3,4,5,6] : player.quantum.bigRip.upgrades.includes(10) ? [1] : []) : isRewardEnabled(4) ? (speedrunMilestonesReached > 5 ? [1,2,3,4,5,6] : [1]) : [],
 			active: false,
 			tachyonParticles: player.achievements.includes("ng3p37") && (bigRip ? player.quantum.bigRip.upgrades.includes(11) : true) ? player.dilation.bestTP.sqrt() : new Decimal(0),
 			dilatedTime: new Decimal(speedrunMilestonesReached>21 && isRewardEnabled(4) && !bigRip?1e100:0),
@@ -1233,7 +1260,7 @@ function quantumReset(force, auto, challid, bigRip, implode=false) {
 	else player.timestudy.theorem+=([0,30,35,40,70,130,85,115,115,415,550,1,1])[player.eternityChallUnlocked]
 	player.eternityChallUnlocked=0
 	if (headstart) for (ec=1;ec<13;ec++) player.eternityChalls['eterc'+ec]=5
-	else if (isRewardEnabled(3) && !bigRip) for (ec=1;ec<15;ec++) if (ec != 7) player.eternityChalls['eterc'+ec] = 5
+	else if (isRewardEnabled(3) && !bigRip) for (ec=1;ec<15;ec++) player.eternityChalls['eterc'+ec] = 5
 	if (player.masterystudies) {
 		giveAchievement("Sub-atomic")
 		ipMultPower=GUBought("gb3")?2.3:player.masterystudies.includes("t241")?2.2:2
@@ -1343,6 +1370,13 @@ function quantumReset(force, auto, challid, bigRip, implode=false) {
 		if (!oheHeadstart) {
 			player.eternityBuyer.dilationMode = false
 			player.eternityBuyer.dilationPerAmount = 10
+			if (player.masterystudies !== undefined) {
+				player.eternityBuyer.dilMode = aea.dilMode
+				player.eternityBuyer.tpUpgraded = aea.tpUpgraded
+				player.eternityBuyer.slowStop = aea.slowStop
+				player.eternityBuyer.slowStopped = aea.slowStopped
+				player.eternityBuyer.presets = aea.presets
+			}
 		}
 		player.eternityBuyer.statBeforeDilation = 0
 		if ((player.autoEterMode=="replicanti"||player.autoEterMode=="peak")&&(speedrunMilestonesReached<18||!isRewardEnabled(4))) {

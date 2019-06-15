@@ -1931,12 +1931,22 @@ function rotateAutoAssign() {
 	document.getElementById('autoAssignRotate').textContent=player.quantum.autoOptions.assignQKRotate?"C"+(player.quantum.autoOptions.assignQKRotate>1?"ounterc":"")+"lockwise":"No rotate"
 }
 
+var maxLevels = [null, 38, 8, 1/0, 40, 1/0, 2, 2, 5]
+
 function openAfterEternity() {
 	showEternityTab("autoEternity")
 	showTab("eternitystore")
 }
 
-var maxLevels = [null, 38, 8, 1/0, 40, 1/0, 2, 2, 5]
+function toggleAutoEter() {
+	document.getElementById("eternityison").checked=!player.eternityBuyer.isOn
+	updateAutobuyers()
+}
+
+function updateAutoEterValue() {
+	document.getElementById("priority13").value=document.getElementById("autoEterValue").value
+	updatePriorities()
+}
 
 function toggleBigRipConf() {
 	player.quantum.bigRip.conf = !player.quantum.bigRip.conf
@@ -2420,7 +2430,12 @@ function ghostifyReset(implode, gain, amount) {
 			limit: new Decimal(0),
 			isOn: false,
 			dilationMode: false,
-			dilationPerAmount: 10
+			dilationPerAmount: 10,
+			dilMode: player.eternityBuyer.dilMode,
+			tpUpgraded: player.eternityBuyer.tpUpgraded,
+			slowStop: player.eternityBuyer.slowStop,
+			slowStopped: player.eternityBuyer.slowStopped,
+			presets: player.eternityBuyer.presets
 		},
 		eterc8ids: 50,
 		eterc8repl: 40,
@@ -2791,6 +2806,7 @@ function ghostifyReset(implode, gain, amount) {
 	document.getElementById("autoBuyerQuantum").style.display="none"
 	updateColorCharge()
 	updateGluons()
+	updateQuantumWorth()
 	document.getElementById("electronstabbtn").style.display = "none"
 	updateQuantumChallenges()
 	updateReplicants()
@@ -2911,25 +2927,15 @@ function getNeutrinoGain() {
 
 var neutrinoUpgCosts = [null, 1e6, 1e7, 1e8]
 function buyNeutrinoUpg(id) {
-	if (!player.ghostify.neutrinos.electron.add(player.ghostify.neutrinos.mu).round().add(player.ghostify.neutrinos.tau).round().gte(neutrinoUpgCosts[id])) return
+	var sum=player.ghostify.neutrinos.electron.add(player.ghostify.neutrinos.mu).add(player.ghostify.neutrinos.tau).round()
+	var cost=new Decimal(neutrinoUpgCosts[id])
+	if (!sum.gte(cost)) return
 	player.ghostify.neutrinos.upgrades.push(id)
-	var generations = ["electron", "mu", "tau"]
-	var neutrinoRanks = []
-	var left = new Decimal(neutrinoUpgCosts[id])
-	for (var r=1; r<4; r++) {
-		var generationChosen = ""
-		for (var g=0; g<3; g++) if (!neutrinoRanks.includes(generations[g]) && (generationChosen == "" ? true : player.ghostify.neutrinos[generations[g]].gt(player.ghostify.neutrinos[generationChosen]))) generationChosen = generations[g]
-		neutrinoRanks.push(generationChosen)
-		if (player.ghostify.neutrinos[generationChosen].gt(left)) {
-			player.ghostify.neutrinos[generationChosen] = player.ghostify.neutrinos[generationChosen].sub(left).round()
-			return
-		}
-		left = left.sub(player.ghostify.neutrinos[generationChosen]).round()
-		player.ghostify.neutrinos[generationChosen] = new Decimal(0)
-	}
-	if (id == 2) {
-		document.getElementById("eggonsCell").style.display = "none"
-		document.getElementById("workerReplWhat").textContent = "babies"
+	var generations=["electron","mu","tau"]
+	for (g=0;g<3;g++) player.ghostify.neutrinos[generations[g]]=player.ghostify.neutrinos[generations[g]].sub(cost.times(player.ghostify.neutrinos[generations[g]]).div(sum)).round()
+	if (id==2) {
+		document.getElementById("eggonsCell").style.display="none"
+		document.getElementById("workerReplWhat").textContent="babies"
 	}
 }
 

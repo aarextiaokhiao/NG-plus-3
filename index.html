@@ -1050,10 +1050,10 @@
                     <tr>
                         <td>
                             <b>Main options</b><br>
-                            <button class="storebtn" onclick="toggleAutoEter()">Enable</button><br>
-                            <button class="storebtn" id="autoEterMode" style="width:400px" onclick="toggleAutoEterMode()">Mode: amount</button>
-                            <span id='autoEterCond'>Amount of EP to wait until reset:</span><br>
-                            <input type="text" onchange="updatePriorities()" id="autoEterValue"></input>
+                            <button class="storebtn" id="autoEterToggle" onclick="toggleAutoEter()">Enable</button><br>
+                            <button class="storebtn" id="autoEterMode" style="width:400px" onclick="toggleAutoEterMode()"></button>
+                            <span id='autoEterCond'></span><br>
+                            <input type="text" onchange="updateAutoEterValue()" id="autoEterValue"></input>
                         </td>
                         <td>
                             <div style="height:50px"><b>Preset automation</b><br><button class="storebtn" onclick="toggleDilPreset()">Enable</button></div>

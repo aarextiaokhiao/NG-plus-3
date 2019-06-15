@@ -420,6 +420,11 @@ function updateNewPlayer(reseted) {
         player.eternityBuyer.dilationMode = false
         player.eternityBuyer.statBeforeDilation = 0
         player.eternityBuyer.dilationPerAmount = 10
+        player.eternityBuyer.dilMode = "amount"
+        player.eternityBuyer.tpUpgraded = false
+        player.eternityBuyer.slowStop = false
+        player.eternityBuyer.slowStopped = false
+        player.eternityBuyer.presets = {on: false, autoDil: false, selected: 1, order: []}
         player.quantum.autobuyer = {
             enabled: false,
             limit: 1,
@@ -4131,6 +4136,7 @@ function updateAutobuyers() {
     }
     player.eternityBuyer.isOn = document.getElementById("eternityison").checked
     if (player.masterystudies) {
+	    if (player.achievements.includes("ng3p52")) document.getElementById("autoEterToggle").textContent=player.eternityBuyer.isOn?"Disable":"Enable"
 		player.eternityBuyer.dilationMode = document.getElementById("dilatedeternityison").checked
         player.eternityBuyer.dilationPerAmount = Math.max(parseInt(document.getElementById("prioritydil").value),2)
         if (player.eternityBuyer.isOn&&player.eternityBuyer.dilationMode&&player.eternityBuyer.statBeforeDilation>=player.eternityBuyer.dilationPerAmount) {
@@ -4292,7 +4298,10 @@ function updatePriorities() {
     }
     player.autobuyers[10].bulk = parseFloat(document.getElementById("bulkgalaxy").value)
     const eterValue = fromValue(document.getElementById("priority13").value)
-    if (!isNaN(break_infinity_js ? eterValue : eterValue.logarithm)) player.eternityBuyer.limit = eterValue
+    if (!isNaN(break_infinity_js ? eterValue : eterValue.logarithm)) {
+        player.eternityBuyer.limit = eterValue
+        if (player.achievements.includes("ng3p52")) document.getElementById("autoEterValue").value = document.getElementById("priority13").value
+    }
     if (player.masterystudies) {
         player.eternityBuyer.dilationPerAmount = Math.max(parseInt(document.getElementById("prioritydil").value),2)
         const quantumValue = fromValue(document.getElementById("priorityquantum").value)

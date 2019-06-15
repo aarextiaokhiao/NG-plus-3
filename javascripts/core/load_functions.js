@@ -679,6 +679,11 @@ if (player.version < 5) {
               player.eternityBuyer.dilationMode = false
               player.eternityBuyer.statBeforeDilation = 0
               player.eternityBuyer.dilationPerAmount = 10
+              player.eternityBuyer.dilMode = "amount"
+              player.eternityBuyer.tpUpgraded = false
+              player.eternityBuyer.slowStop = false
+              player.eternityBuyer.slowStopped = false
+              player.eternityBuyer.presets = {on: false, autoDil: false, selected: 1, order: []}
               player.quantum.autobuyer = {
                   enabled: false,
                   limit: 1,
@@ -1113,6 +1118,11 @@ if (player.version < 5) {
       player.quantum.tod.b.gainDiv = Decimal.div(player.quantum.tod.b.gainDiv, 1e30)
   }
   if (player.aarexModifications.newGame3PlusVersion < 2) {
+      player.eternityBuyer.dilMode = "amount"
+      player.eternityBuyer.tpUpgraded = false
+      player.eternityBuyer.slowStop = false
+      player.eternityBuyer.slowStopped = false
+      player.eternityBuyer.presets = {selected: 1, order: []}
       player.quantum.reached = player.quantum.times > 0
       player.quantum.nonMAGoalReached = {}
       player.quantum.pairedChallenges.fastest = {}
@@ -1184,6 +1194,13 @@ if (player.version < 5) {
       }
 
       //Testing-exclusive
+      if (player.eternityBuyer.dilMode === undefined) {
+          player.eternityBuyer.dilMode = "amount"
+          player.eternityBuyer.tpUpgraded = false
+          player.eternityBuyer.slowStop = false
+          player.eternityBuyer.slowStopped = false
+          player.eternityBuyer.presets = {on: false, autoDil: false, selected: 1, order: []}
+      }
       if (player.quantum.reached === undefined) player.quantum.reached = player.quantum.times > 0
       if (player.quantum.nonMAGoalReached === undefined ? true : player.quantum.nonMAGoalReached.length === undefined) player.quantum.nonMAGoalReached = []
       if (player.quantum.bigRip.savedAutobuyersNoBR === undefined) player.quantum.bigRip.savedAutobuyersNoBR = {}
@@ -2358,6 +2375,7 @@ function loadAutoBuyerSettings() {
   document.getElementById("prioritySac").value = player.autoSacrifice.priority
   document.getElementById("bulkgalaxy").value = player.autobuyers[10].bulk
   document.getElementById("priority13").value = formatValue("Scientific", new Decimal(player.eternityBuyer.limit), 2, 0)
+  if (player.achievements.includes("ng3p52")) document.getElementById("autoEterValue").value = formatValue("Scientific", new Decimal(player.eternityBuyer.limit), 2, 0)
   if (player.autobuyers[12] !== undefined) document.getElementById("priority14").value = formatValue("Scientific", new Decimal(player.autobuyers[12].priority), 2, 0)
   if (player.autobuyers[13] !== undefined) {
       document.getElementById("priority15").value = player.autobuyers[13].priority
