@@ -293,7 +293,8 @@ function giveAchievement(name) {
 	if (name == "Stop blocking me!") document.getElementById('autoReset').style.display=""
     if (name == "Quantum doesn't take so long") {
         updateAutobuyers()
-        if (player.achievements.includes("ng3p52")) document.getElementById("autoEterValue").value = formatValue("Scientific", new Decimal(player.eternityBuyer.limit), 2, 0)
+        document.getElementById("autoEterValue").value = formatValue("Scientific", new Decimal(player.eternityBuyer.limit), 2, 0)
+        document.getElementById("autoDilValue").value=player.eternityBuyer.dilationPerAmount
         updateAutoEterMode()
     }
 	if (name == "Kee-hee-hee!" && (player.achievements.includes("ng3p18") || player.achievements.includes("ng3p37"))) setAndMaybeShow('bestTPOverGhostifies',true,'"Your best-ever Tachyon particles was "+shorten(player.dilation.bestTPOverGhostifies)+"."')

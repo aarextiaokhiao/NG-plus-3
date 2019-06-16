@@ -1985,6 +1985,15 @@ br {
 	border-radius: 10px;
 }
 
+.ndcompleted {
+    color: #64DD17;
+    background: black;
+	border: 2px solid #64DD17;
+	border-radius: 10px;
+    font-weight: bold;
+    animation: dilationBtnGlow 10s infinite
+}
+
 #produceQuarkCharge {
 	background: black !important;
 	border: 2px solid #4c4c4c;

@@ -242,7 +242,8 @@ newsArray = [//always true
 ["We have reached Onion^^Onion, we have no idea how it happened, and all we know that it seems to be increasing at an ever-faster rate. It's Onion^^^Onion now and it's definitely larger than our antimatter amount. Oniologists have been studying these recent growth of onions and have yet to come to a conclusion on how these onions are growing so fast. Judging by the current rate of growth, it has been predicted by oniologists that the entire multiverse would be completely filled to the brim with onions by 2020.", "player.newsArray.includes('am86')", "am87"],
 ["Onionify: Coming in 2020 to NG+3. Make onions dominate antimatter with this prestige layer!", "player.newsArray.includes('am85')", "am88"],
 ["Big rip will RIP your TT", "player.achievements.includes('r22') && player.achievements.includes('ng3p51')", "am89"],
-/*NEXT ID: am90*/
+["You are a ghost now! (for real because you soft-resetted this game beyond Quantums.)", 'player.achievements.includes("r22") && ghostified', "am90"],
+/*NEXT ID: am91*/
 
 //Ghostly news ticker messages
 ["Kee-hee-hee!", true, "gn1"],

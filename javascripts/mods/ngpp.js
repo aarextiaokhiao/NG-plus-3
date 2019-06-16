@@ -713,6 +713,16 @@ function quantumReset(force, auto, challid, bigRip, implode=false) {
 			}
 		}
 		updateQuantumWorth()
+		if (bigRip && !player.quantum.bigRip.upgrades.includes(12)) {
+			player.quantum.bigRip.storedTS={
+				tt: player.timestudy.theorem,
+				studies: player.timestudy.studies,
+				boughtA: Decimal.div(player.timestudy.amcost, "1e20000").log("1e20000"),
+				boughtI: player.timestudy.ipcost.log("1e100"),
+				boughtE: Math.round(player.timestudy.epcost.log(2))
+			}
+			for (var s=0;s<player.masterystudies.length;s++) if (player.masterystudies[s].indexOf("t") == 0) player.quantum.bigRip.storedTS.studies.push(player.masterystudies[s].split("t")[1])
+		}
 		if (bigRip != player.quantum.bigRip.active) {
 			player.quantum.bigRip["savedAutobuyers" + (bigRip ? "No" : "") + "BR"] = {}
 			var data = player.quantum.bigRip["savedAutobuyers" + (bigRip ? "No" : "") + "BR"]
@@ -917,6 +927,7 @@ function quantumReset(force, auto, challid, bigRip, implode=false) {
 			document.getElementById("bpc68").textContent = shortenMoney(player.money)
 		}
 	}
+	var dilTimes = player.dilation.times
 	player = {
 		money: new Decimal(10),
 		tickSpeedCost: new Decimal(1000),
@@ -1153,7 +1164,7 @@ function quantumReset(force, auto, challid, bigRip, implode=false) {
 		eternityChalls: {},
 		eternityChallGoal: new Decimal(Number.MAX_VALUE),
 		currentEternityChall: "",
-		eternityChallUnlocked: isRewardEnabled(10)?player.eternityChallUnlocked:0,
+		eternityChallUnlocked: isRewardEnabled(11)?player.eternityChallUnlocked:0,
 		etercreq: 0,
 		autoIP: new Decimal(0),
 		autoTime: 1e300,
@@ -1288,10 +1299,15 @@ function quantumReset(force, auto, challid, bigRip, implode=false) {
 				}
 				var qc1st=Math.min(qc1,qc2)
 				var qc2st=Math.max(qc1,qc2)
-				if (player.quantum.pairedChallenges.completions[qc1st*10+qc2st] === undefined) player.quantum.pairedChallenges.completions[qc1st*10+qc2st] = player.quantum.pairedChallenges.current
-				else player.quantum.pairedChallenges.completions[qc1st*10+qc2st] = Math.min(player.quantum.pairedChallenges.current,player.quantum.pairedChallenges.completions[qc1st*10+qc2st])
-				if (player.quantum.pairedChallenges.fastest[qc1st*10+qc2st] === undefined) player.quantum.pairedChallenges.fastest[qc1st*10+qc2st] = oldTime
-				else player.quantum.pairedChallenges.fastest[qc1st*10+qc2st] = player.quantum.pairedChallenges.fastest[qc1st*10+qc2st] = Math.min(player.quantum.pairedChallenges.fastest[qc1st*10+qc2st], oldTime)
+				var pcid=qc1st*10+qc2st
+				if (player.quantum.pairedChallenges.completions[pcid] === undefined) player.quantum.pairedChallenges.completions[pcid] = player.quantum.pairedChallenges.current
+				else player.quantum.pairedChallenges.completions[pcid] = Math.min(player.quantum.pairedChallenges.current,player.quantum.pairedChallenges.completions[pcid])
+				if (dilTimes == 0) {
+					if (player.quantum.qcsNoDil["pc" + pcid] === undefined) player.quantum.qcsNoDil["pc" + pcid] = player.quantum.pairedChallenges.current
+					else player.quantum.qcsNoDil["pc" + pcid] = Math.min(player.quantum.pairedChallenges.current,player.quantum.qcsNoDil["pc" + pcid])
+				}
+				if (player.quantum.pairedChallenges.fastest[pcid] === undefined) player.quantum.pairedChallenges.fastest[pcid] = oldTime
+				else player.quantum.pairedChallenges.fastest[pcid] = player.quantum.pairedChallenges.fastest[pcid] = Math.min(player.quantum.pairedChallenges.fastest[pcid], oldTime)
 			} else if (intensity>0) {
 				if (!player.quantum.challenges[qc1]) {
 					player.quantum.challenges[qc1]=1
@@ -1299,6 +1315,7 @@ function quantumReset(force, auto, challid, bigRip, implode=false) {
 				}
 				if (player.quantum.challengeRecords[qc1] == undefined) player.quantum.challengeRecords[qc1]=oldTime
 				else player.quantum.challengeRecords[qc1]=Math.min(player.quantum.challengeRecords[qc1],oldTime)
+				if (dilTimes == 0) player.quantum.qcsNoDil["qc" + qc1] = 1
 			}
 			if (player.quantum.pairedChallenges.respec) {
 				player.quantum.electrons.mult-=player.quantum.pairedChallenges.completed*0.5
@@ -1344,7 +1361,8 @@ function quantumReset(force, auto, challid, bigRip, implode=false) {
 		player.quantum.nanofield.antienergy = new Decimal(0)
 		player.quantum.nanofield.power = 0
 		player.quantum.nanofield.powerThreshold = new Decimal(50)
-		if (player.quantum.bigRip.active != bigRip) for (var t=1;t<9;t++) document.getElementById("treeupg"+t+"lvl").textContent=player.quantum.tod.upgrades[t] + (player.quantum.bigRip.active || player.quantum.tod.upgrades[t] <= maxLevels[t] ? "" : " (cap: " + maxLevels[t] + ")")
+		player.eternityBuyer.tpUpgraded = false
+		player.eternityBuyer.slowStopped = false
 		player.quantum.bigRip.active = bigRip
 		if (bigRip) {
 			for (var u=0;u<player.quantum.bigRip.upgrades.length;u++) tweakBigRip(player.quantum.bigRip.upgrades[u])
@@ -1356,7 +1374,7 @@ function quantumReset(force, auto, challid, bigRip, implode=false) {
 				showTab("infinity")
 				showInfTab("preinf")
 			}
-		}
+		} else if (isRewardEnabled(11)) unstoreTT()
 		document.getElementById("metaAntimatterEffectType").textContent=inQC(3)?"multiplier on all Infinity Dimensions":"extra multiplier per dimension boost"
 		updateColorCharge()
 		updateGluons()

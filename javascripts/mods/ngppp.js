@@ -373,7 +373,7 @@ function setupText() {
 			if (c<1) col.textContent = "#" + r
 			else if (c==r) {
 				col.textContent = "QC" + r
-				col.className = "pc1completed"
+				col.id = "qcC" + r
 			} else col.id = "pc" + r + c
 		}
 	}
@@ -552,7 +552,7 @@ function updateQuantumTabs() {
 		document.getElementById("reduceHatchSpeed").innerHTML="Hatch speed: "+hatchSpeedDisplay()+" -> "+hatchSpeedDisplay(true)+"<br>Cost: "+shortenDimensions(player.quantum.replicants.hatchSpeedCost)+" for all 3 gluons"
 	}
 	if (document.getElementById("nanofield").style.display == "block") {
-		var rewards = Math.min(player.quantum.nanofield.rewards, player.quantum.bigRip.active ? 1/0 : 18)
+		var rewards = player.quantum.nanofield.rewards
 		document.getElementById("quarksNanofield").textContent=shortenDimensions(player.quantum.replicants.quarks)
 		document.getElementById("quarkCharge").textContent=shortenMoney(player.quantum.nanofield.charge)
 		document.getElementById("quarkChargeRate").textContent=shortenDimensions(getQuarkChargeProduction())
@@ -565,11 +565,9 @@ function updateQuantumTabs() {
 		document.getElementById("quarkAntienergyRate").textContent=shortenMoney(getQuarkAntienergyProduction())
 		document.getElementById("quarkChargeProductionCap").textContent=shortenMoney(getQuarkChargeProductionCap())
 		document.getElementById("rewards").textContent=getFullExpansion(player.quantum.nanofield.rewards)
-		document.getElementById("rewardsCapped").style.display = player.quantum.bigRip.active || player.quantum.nanofield.rewards < 19 ? "none" : ""
 
 		for (var reward=1; reward<9; reward++) {
-			document.getElementById("nanofieldreward" + reward).className = reward > rewards ?
-			"nanofieldrewardlocked" : "nanofieldreward"
+			document.getElementById("nanofieldreward" + reward).className = reward > rewards ? "nanofieldrewardlocked" : "nanofieldreward"
 			document.getElementById("reward" + reward + "tier").textContent = getFullExpansion(Math.ceil((rewards + 1 - reward)/8))
 		}
 		document.getElementById("nanofieldreward1").textContent = "Hatch speed is " + shortenDimensions(getNanofieldRewardEffect(1)) + "x faster."
@@ -1355,39 +1353,61 @@ function updatePCCompletions() {
 	document.getElementById("pccompletionsbtn").style.display = "none"
 	if (!player.masterystudies) return
 	var tempcounter=0
+	var tempcounter2=0
 	var ranking=0
-	for (var c1=2;c1<9;c1++) for (var c2=1;c2<c1;c2++) if (player.quantum.pairedChallenges.completions[c2*10+c1]) {
+	for (var c1=2;c1<9;c1++) for (var c2=1;c2<c1;c2++) {
+		var rankingPart=0
 		if (c2*10+c1==68 && ghostified) {
+			rankingPart=2
 			tempcounter++
-			ranking+=2
+		} else {
+			if (player.quantum.pairedChallenges.completions[c2*10+c1]) {
+				rankingPart=5-player.quantum.pairedChallenges.completions[c2*10+c1]
+				tempcounter++
+			}
+			if (player.quantum.qcsNoDil["pc"+(c2*10+c1)]) {
+				rankingPart+=5-player.quantum.qcsNoDil["pc"+(c2*10+c1)]
+				tempcounter2++
+				console.log(tempcounter2)
+			}
 		}
-		tempcounter++
-		ranking+=Math.sqrt(5-player.quantum.pairedChallenges.completions[c2*10+c1])
+		ranking+=Math.sqrt(rankingPart)
 	}
 	ranking=ranking/56*100
 	if (tempcounter>0) document.getElementById("pccompletionsbtn").style.display = "inline-block"
 	if (tempcounter>23) giveAchievement("The Challenging Day")
 	document.getElementById("upcc").textContent = tempcounter
-	document.getElementById("pccranking").textContent = ranking > 99.9 ? 100 : ranking.toFixed(1)
-	for (r=1;r<9;r++) for (c=1;c<9;c++) if (r!=c) {
-		var divid = "pc" + (r*10+c)
-		var pcid = r*10+c
-		if (r>c) pcid = c*10+r
-		var comp = player.quantum.pairedChallenges.completions[pcid]
-		if (comp !== undefined) {
-			document.getElementById(divid).textContent = "PC" + comp
-			document.getElementById(divid).className = "pc" + comp + "completed"
-			document.getElementById(divid).setAttribute('ach-tooltip', 'Fastest time: ' + (player.quantum.pairedChallenges.fastest[pcid] ? timeDisplayShort(player.quantum.pairedChallenges.fastest[pcid]) : "N/A"))
-			if (divid=="pc38") giveAchievement("Hardly marked")
-		} else if (pcid == 68 && ghostified) {
-			document.getElementById(divid).textContent = "BR"
-			document.getElementById(divid).className = "brCompleted"
-			document.getElementById(divid).removeAttribute('ach-tooltip')
-			document.getElementById(divid).setAttribute('ach-tooltip', 'Fastest time from start of Ghostify: ' + timeDisplayShort(player.ghostify.best))
+	document.getElementById("udcc").textContent = tempcounter2
+	document.getElementById("pccranking").textContent = ranking.toFixed(1)
+	for (r=1;r<9;r++) for (c=1;c<9;c++) {
+		if (r!=c) {
+			var divid = "pc" + (r*10+c)
+			var pcid = r*10+c
+			if (r>c) pcid = c*10+r
+			var comp = player.quantum.pairedChallenges.completions[pcid]
+			if (comp !== undefined) {
+				document.getElementById(divid).textContent = "PC" + comp
+				document.getElementById(divid).className = (player.quantum.qcsNoDil["pc" + pcid] ? "nd" : "pc" + comp) + "completed"
+				var achTooltip = 'Fastest time: ' + (player.quantum.pairedChallenges.fastest[pcid] ? timeDisplayShort(player.quantum.pairedChallenges.fastest[pcid]) : "N/A")
+				if (player.quantum.qcsNoDil["pc" + pcid]) achTooltip += ", No dilation: PC" + player.quantum.qcsNoDil["pc" + pcid]
+				document.getElementById(divid).setAttribute('ach-tooltip', achTooltip)
+				if (divid=="pc38") giveAchievement("Hardly marked")
+			} else if (pcid == 68 && ghostified) {
+				document.getElementById(divid).textContent = "BR"
+				document.getElementById(divid).className = "brCompleted"
+				document.getElementById(divid).removeAttribute('ach-tooltip')
+				document.getElementById(divid).setAttribute('ach-tooltip', 'Fastest time from start of Ghostify: ' + timeDisplayShort(player.ghostify.best))
+			} else {
+				document.getElementById(divid).textContent = ""
+				document.getElementById(divid).className = ""
+				document.getElementById(divid).removeAttribute('ach-tooltip')
+			}
+		} else if (player.quantum.qcsNoDil["qc"+r]) {
+			document.getElementById("qcC"+r).className = "ndcompleted"
+			document.getElementById("qcC"+r).setAttribute('ach-tooltip', 'No dilation achieved!')
 		} else {
-			document.getElementById(divid).textContent = ""
-			document.getElementById(divid).className = ""
-			document.getElementById(divid).removeAttribute('ach-tooltip')
+			document.getElementById("qcC"+r).className = "pc1completed"
+			document.getElementById("qcC"+r).removeAttribute('ach-tooltip')
 		}
 	}
 }
@@ -1620,7 +1640,7 @@ function getQuarkChargeProductionCap() {
 }
 
 function getNanofieldRewardEffect(id) {
-	var rewards = Math.min(player.quantum.nanofield.rewards, player.quantum.bigRip.active ? 1/0 : 18)
+	var rewards = player.quantum.nanofield.rewards
 	var stacks = Math.ceil((rewards - id + 1) / 8)
 	if (id == 1) return Decimal.pow(30, stacks)
 	if (id == 2) return stacks * 6.8
@@ -1735,7 +1755,7 @@ function updateTODStuff() {
 	}
 	for (var t=1;t<9;t++) {
 		var lvl=getTreeUpgradeLevel(t)
-		document.getElementById("treeupg"+t+"lvl").textContent=lvl + (player.quantum.bigRip.active || lvl <= maxLevels[t] ? "" : " (cap: " + maxLevels[t] + ")")
+		document.getElementById("treeupg"+t+"lvl").textContent=lvl
 		document.getElementById("treeupg"+t+"cost").textContent=shortenMoney(getTreeUpgradeCost(t))+" "+colors[lvl%3]
 	}
 }
@@ -1821,7 +1841,7 @@ function buyTreeUpg(upg) {
 	branch.spin=branch.spin.sub(getTreeUpgradeCost(upg))
 	if (!player.quantum.tod.upgrades[upg]) player.quantum.tod.upgrades[upg]=0
 	player.quantum.tod.upgrades[upg]++
-	document.getElementById("treeupg"+upg+"lvl").textContent=player.quantum.tod.upgrades[upg] + (player.quantum.bigRip.active || player.quantum.tod.upgrades[upg] <= maxLevels[upg] ? "" : " (cap: " + maxLevels[upg] + ")")
+	document.getElementById("treeupg"+upg+"lvl").textContent=player.quantum.tod.upgrades[upg]
 	document.getElementById("treeupg"+upg+"cost").textContent=shortenMoney(getTreeUpgradeCost(upg))+" "+colors[player.quantum.tod.upgrades[upg]%3]
 }
 
@@ -1832,7 +1852,7 @@ function getTreeUpgradeLevel(upg) {
 }
 
 function getTreeUpgradeEffect(upg) {
-	let lvl = Math.min(getTreeUpgradeLevel(upg), player.quantum.bigRip.active ? 1/0 : maxLevels[upg])
+	let lvl = getTreeUpgradeLevel(upg)
 	if (upg==1) return lvl * 30
 	if (upg==2) return lvl * 0.25
 	if (upg==3) {
@@ -1931,8 +1951,6 @@ function rotateAutoAssign() {
 	document.getElementById('autoAssignRotate').textContent=player.quantum.autoOptions.assignQKRotate?"C"+(player.quantum.autoOptions.assignQKRotate>1?"ounterc":"")+"lockwise":"No rotate"
 }
 
-var maxLevels = [null, 38, 8, 1/0, 40, 1/0, 2, 2, 5]
-
 function openAfterEternity() {
 	showEternityTab("autoEternity")
 	showTab("eternitystore")
@@ -1948,9 +1966,57 @@ function updateAutoEterValue() {
 	updatePriorities()
 }
 
+function toggleAutoDil() {
+	document.getElementById("dilatedeternityison").checked=!player.eternityBuyer.dilationMode	
+	updateAutobuyers()
+}
+
+function updateAutoDilValue() {
+	document.getElementById("prioritydil").value=document.getElementById("autoDilValue").value
+	updatePriorities()
+}
+
+function changeAutoDilateMode() {
+	if (player.eternityBuyer.dilMode == "amount") player.eternityBuyer.dilMode = "upgrades"
+	else player.eternityBuyer.dilMode = "amount"
+	document.getElementById("autodilatemode").textContent = "Mode: " + (player.eternityBuyer.dilMode == "amount" ? "Amount of eternities" : "Upgrades")
+}
+
+function toggleSlowStop() {
+	player.eternityBuyer.slowStop = !player.eternityBuyer.slowStop
+	if (player.eternityBuyer.slowStop) player.eternityBuyer.slowStopped = false
+	document.getElementById("slowstop").textContent = "Stop auto-dilate if a little bit of TP is gained: O" + (player.eternityBuyer.slowStop ? "N" : "FF")
+}
+
 function toggleBigRipConf() {
 	player.quantum.bigRip.conf = !player.quantum.bigRip.conf
 	document.getElementById("bigRipConfirmBtn").textContent = "Big Rip confirmation: O" + (player.quantum.bigRip.conf ? "N" : "FF")
+}
+
+function unstoreTT() {
+	return //Because this feature is buggy.
+	if (player.quantum.bigRip.storedTS===undefined) return
+	player.timestudy.theorem=player.quantum.bigRip.storedTS.tt
+	player.timestudy.amcost=Decimal.pow(10,2e4*(player.quantum.bigRip.storedTS.boughtA+1))
+	player.timestudy.ipcost=Decimal.pow(10,100*player.quantum.bigRip.storedTS.boughtI)
+	player.timestudy.epcost=Decimal.pow(2,player.quantum.bigRip.storedTS.boughtE)
+	var newTS=[]
+	var newMS=[]
+	var studies=player.quantum.bigRip.storedTS.studies
+	for (var s=0;s<studies.length;s++) {
+		/*if (studies[s]<240) newTS.push(studies[s])
+		else newMS.push("t"+studies[s])*/
+	}
+	for (var s=7;s<15;s++) if (player.masterystudies.includes("d"+s)) newMS.push("d"+s)
+	player.timestudy.studies=newTS
+	player.masterystudies=newMS
+	updateTimeStudyButtons()
+	updateTheoremButtons()
+	drawStudyTree()
+	maybeShowFillAll()
+	drawMasteryTree()
+	updateMasteryStudyButtons()
+	delete player.quantum.bigRip.storedTS
 }
 
 function getSpaceShardsGain() {
@@ -1999,8 +2065,10 @@ function tweakBigRip(id, reset) {
 	}
 	if (id == 10) {
 		if (!player.dilation.studies.includes(1)) player.dilation.studies.push(1)
-		showTab("eternitystore")
-		showEternityTab("dilation")
+		if (reset) {
+			showTab("eternitystore")
+			showEternityTab("dilation")
+		}
 	}
 	if (id == 11) {
 		if (reset) player.timestudy = {
@@ -2010,8 +2078,8 @@ function tweakBigRip(id, reset) {
 			epcost: new Decimal(1),
 			studies: []
 		}
-		player.dilation.tachyonParticles = player.dilation.bestTP.sqrt()
-		player.dilation.totalTachyonParticles = player.dilation.bestTP.sqrt()
+		player.dilation.tachyonParticles = player.dilation.tachyonParticles.max(player.dilation.bestTP.sqrt())
+		player.dilation.totalTachyonParticles = player.dilation.totalTachyonParticles.max(player.dilation.bestTP.sqrt())
 	}
 }
 

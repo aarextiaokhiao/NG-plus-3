@@ -712,7 +712,7 @@ if (player.version < 5) {
                   pc68best: 0,
                   respec: false
               }
-              player.quantum.pairedChallenges.completions = {}
+              player.quantum.qcsNoDil = {}
               player.dilation.bestTP = 0
               player.old = false
               player.quantum.autoOptions = {}
@@ -1126,6 +1126,7 @@ if (player.version < 5) {
       player.quantum.reached = player.quantum.times > 0
       player.quantum.nonMAGoalReached = {}
       player.quantum.pairedChallenges.fastest = {}
+      player.quantum.qcsNoDil = {}
       player.quantum.pairedChallenges.pc68best = 0
       player.quantum.bigRip = {
           active: false,
@@ -1172,6 +1173,8 @@ if (player.version < 5) {
   }
   if (player.masterystudies) {
       if (player.meta.bestOverQuantums === undefined) player.meta.bestOverQuantums = player.meta.bestAntimatter
+      document.getElementById('prioritydil').value=player.eternityBuyer.dilationPerAmount
+      if (player.achievements.includes("ng3p52")) document.getElementById("autoDilValue").value=player.eternityBuyer.dilationPerAmount
       document.getElementById("eggonsCell").style.display = player.ghostify.neutrinos.upgrades.includes(2) ? "none" : ""
       document.getElementById("workerReplWhat").textContent = player.ghostify.neutrinos.upgrades.includes(2) ? "babies" : "eggons"
       updateQuantumWorth()
@@ -1217,6 +1220,7 @@ if (player.version < 5) {
           player.quantum.breakEternity.upgradesReset = true
       }
       if (player.quantum.pairedChallenges.fastest === undefined) player.quantum.pairedChallenges.fastest = {}
+      if (player.quantum.qcsNoDil === undefined) player.quantum.qcsNoDil = {}
       if (player.ghostify.reached === undefined) player.ghostify.reached = player.ghostify.times > 0
       if (player.ghostify.timeReset === undefined) {
           player.ghostify.time = player.totalTimePlayed
@@ -1743,7 +1747,6 @@ if (player.version < 5) {
       document.getElementById('reward27disable').textContent="10 seconds reward: O"+(player.quantum.disabledRewards[27]?"FF":"N")
       document.getElementById('rebuyupgauto').textContent="Rebuyable upgrade auto: O"+(player.autoEterOptions.rebuyupg?"N":"FF")
       document.getElementById('metaboostauto').textContent="Meta-boost auto: O"+(player.autoEterOptions.metaboost?"N":"FF")
-      document.getElementById('prioritydil').value=player.eternityBuyer.dilationPerAmount
       document.getElementById('priorityquantum').value=formatValue("Scientific", new Decimal(player.quantum.autobuyer.limit), 2, 0)
       document.getElementById("respecPC").className=player.quantum.pairedChallenges.respec?"quantumbtn":"storebtn"
       document.getElementById('sacrificeAuto').textContent="Auto: O"+(player.quantum.autoOptions.sacrifice?"N":"FF")
@@ -2376,6 +2379,14 @@ function loadAutoBuyerSettings() {
   document.getElementById("bulkgalaxy").value = player.autobuyers[10].bulk
   document.getElementById("priority13").value = formatValue("Scientific", new Decimal(player.eternityBuyer.limit), 2, 0)
   if (player.achievements.includes("ng3p52")) document.getElementById("autoEterValue").value = formatValue("Scientific", new Decimal(player.eternityBuyer.limit), 2, 0)
+  if (player.eternityBuyer.dilationPerAmount !== undefined) {
+      document.getElementById('prioritydil').value=player.eternityBuyer.dilationPerAmount
+      if (player.achievements.includes("ng3p52")) {
+          document.getElementById("autoDilValue").value=player.eternityBuyer.dilationPerAmount
+          document.getElementById("autodilatemode").textContent = "Mode: " + (player.eternityBuyer.dilMode == "upgrades" ? "Upgrades" : "Amount of eternities")
+          document.getElementById("slowstop").textContent = "Stop auto-dilate if a little bit of TP is gained: O" + (player.eternityBuyer.slowStop ? "N" : "FF")
+      }
+  }
   if (player.autobuyers[12] !== undefined) document.getElementById("priority14").value = formatValue("Scientific", new Decimal(player.autobuyers[12].priority), 2, 0)
   if (player.autobuyers[13] !== undefined) {
       document.getElementById("priority15").value = player.autobuyers[13].priority

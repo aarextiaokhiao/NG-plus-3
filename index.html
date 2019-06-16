@@ -1121,11 +1121,11 @@
                     <tr>
                         <td>
                             <b>Dilation options</b><br>
-                            <button class="storebtn" onclick="toggleAutoDil()">Enable</button><br>
-                            <button class="storebtn" id="autodilatemode" style="width:400px" onclick="changeAutoDilateMode()">Auto dilate mode: Amount of eternities</button>
+                            <button class="storebtn" id="autoDilToggle" onclick="toggleAutoDil()">Enable</button><br>
+                            <button class="storebtn" id="autodilatemode" style="width:400px" onclick="changeAutoDilateMode()">Mode: Amount of eternities</button>
                             <button class="storebtn" id="slowstop" style="width:400px; font-size: 11px" onclick="toggleSlowStop()">Stop auto-dilate if a little bit of TP is gained: OFF</button>
-                            <span id="autoDilCond2">Amount of eternities to wait until dilate time:</span><br>
-                            <input type="text" onchange="updatePriorities()" id="autoDilValue"></input>
+                            Amount of eternities to wait until dilate time:<br>
+                            <input type="text" onchange="updateAutoDilValue()" id="autoDilValue"></input>
                         </td>
                         <td>
                             <div style="height:50px"><b>Dilation preset automation</b><br><button class="storebtn" onclick="toggleAutoDilPreset()">Enable</button></div>
@@ -1981,7 +1981,8 @@
                 <table id="pccompletionstable"></table>
 				Best PC w/ QC6 & 8: <span id="bpc68"></span><br>
 				Unique PC completions: <span id="upcc"></span> / 28<br>
-				Ranking: <span id="pccranking"></span> / 100
+				No dilation: <span id="udcc"></span> / 28<br>
+				Ranking: <span id="pccranking"></span> / 141.4
             </div>
             <div id="lasttenruns" class="statstab">
                 <div id="run1"></div>
@@ -4636,7 +4637,7 @@
 					You have <span id="quarkAntienergy" style="font-size:35px"></span> preon anti-energy. At <span id="quarkChargeProductionCap" style="font-size:35px"></span>, your preon charge will stop producing energy and anti-energy.<br>
 					You are getting <span id="quarkAntienergyRate"></span> preon anti-energy per second.
 				</td></tr></table>
-				You have gotten <span id="rewards" style="font-size:35px"></span><span id="rewardsCapped"> (cap: 18)</span> rewards.
+				You have gotten <span id="rewards" style="font-size:35px"></span> rewards.
 				<table class="table" align=center style="margin: auto" id="milestones">
 					<tr>
 						<td class="milestoneText">First reward (<span id="reward1tier">0</span>):</td>
