@@ -4992,7 +4992,7 @@ function eternity(force, auto, presetLoad) {
         if (player.dilation.active && (!force || player.infinityPoints.gte(Number.MAX_VALUE))) {
             var gain=getDilGain()
             if (player.dilation.totalTachyonParticles.lt(gain)) {
-                if (gain.times(2).gt(player.dilation.totalTachyonParticles)) player.eternityBuyer.slowStopped=true
+                if (gain.div(player.dilation.totalTachyonParticles).lt(2)) player.eternityBuyer.slowStopped=true
                 player.dilation.totalTachyonParticles=gain
                 player.dilation.tachyonParticles=player.dilation.totalTachyonParticles
                 if (player.masterystudies) {

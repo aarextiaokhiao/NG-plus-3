@@ -2638,6 +2638,7 @@ function ghostifyReset(implode, gain, amount) {
 				pc68best: player.quantum.pairedChallenges.pc68best,
 				respec: false
 			},
+			qcsNoDil: {},
 			replicants: {
 				amount: new Decimal(0),
 				requirement: new Decimal("1e3000000"),

@@ -243,7 +243,8 @@ newsArray = [//always true
 ["Onionify: Coming in 2020 to NG+3. Make onions dominate antimatter with this prestige layer!", "player.newsArray.includes('am85')", "am88"],
 ["Big rip will RIP your TT", "player.achievements.includes('r22') && player.achievements.includes('ng3p51')", "am89"],
 ["You are a ghost now! (for real because you soft-resetted this game beyond Quantums.)", 'player.achievements.includes("r22") && ghostified', "am90"],
-/*NEXT ID: am91*/
+["SEVERE WEATHER WARNING - We have been informed of a severe meteorogical event. Matter is raining down from the sky. The Rift of the Ninth Dimension has opened. Do not go outside. Don't look at the sun. DON'T LOOK AT THE S-**;;;;; SERVERE WEATHER NOTICE - You must go outside. Look up at the sun. The warning has been lifted. Goodbye humanity.",  'player.achievements.includes("r22")', "am91"],
+/*NEXT ID: am92*/
 
 //Ghostly news ticker messages
 ["Kee-hee-hee!", true, "gn1"],
