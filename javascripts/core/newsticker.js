@@ -243,8 +243,21 @@ newsArray = [//always true
 ["Onionify: Coming in 2020 to NG+3. Make onions dominate antimatter with this prestige layer!", "player.newsArray.includes('am85')", "am88"],
 ["Big rip will RIP your TT", "player.achievements.includes('r22') && player.achievements.includes('ng3p51')", "am89"],
 ["You are a ghost now! (for real because you soft-resetted this game beyond Quantums.)", 'player.achievements.includes("r22") && ghostified', "am90"],
-["SEVERE WEATHER WARNING - We have been informed of a severe meteorogical event. Matter is raining down from the sky. The Rift of the Ninth Dimension has opened. Do not go outside. Don't look at the sun. DON'T LOOK AT THE S-**;;;;; SERVERE WEATHER NOTICE - You must go outside. Look up at the sun. The warning has been lifted. Goodbye humanity.",  'player.achievements.includes("r22")', "am91"],
-/*NEXT ID: am92*/
+["SEVERE WEATHER WARNING - We have been informed of a severe meteorogical event. Matter is raining down from the sky. The Rift of the Ninth Dimension has opened. Do not go outside. Don't look at the sun. DON'T LOOK AT THE S-**;;;;; SERVERE WEATHER NOTICE - You must go outside. Look up at the sun. The warning has been lifted. Goodbye humanity.", 'player.achievements.includes("r22")', "am91"],
+["Can an antimatter can can a can of antimatter can all full of antimatter food that can destroy a can made out of antiantimatter?", 'player.achievements.includes("r22")', "am92"],
+["If Aarexese in Aarexese is English, then is English in Aarexese Aarexese?", 'player.achievements.includes("r22")', "am93"],
+["Aarexify is coming in an update after the next one.", 'player.achievements.includes("r22")', "am94"],
+["Wait, there's a co-developer?", 'player.achievements.includes("r22") && player.masterystudies !== undefined', "am95"],
+["Having fun waiting?", 'player.achievements.includes("r22") && (player.masterystudies !== undefined ? player.masterystudies.includes("d12") && player.quantum.nanofield.rewards < 16 : false)', "am96"],
+["Having fun destabilizing?", 'player.achievements.includes("r22") && (player.masterystudies !== undefined ? player.masterystudies.includes("d13") && !(GUBought("rg7") && GUBought("gb7") && GUBought("br7")) : false)', "am97"],
+["In the next update, dilation will delete all of your EP.", 'player.achievements.includes("r22") && player.masterystudies !== undefined', "am98"],
+["If you start a new game of NG+3, does that make it NGNG+3?", 'player.achievements.includes("r22") && player.masterystudies !== undefined', "am99"],
+["Why are we getting electrons when electrons are matter?", 'player.achievements.includes("r22") && (player.masterystudies !== undefined ? player.masterystudies.includes("d7") : false)', "am100"],
+["Study 999 allows you to get meta antimatter galaxies.", 'player.achievements.includes("r22") && player.masterystudies !== undefined', "am101"],
+["Onionify coming December 32nd.", "player.newsArray.includes('am85')", "am102"],
+["You shouldn't be able to see this one. If you are able to see this, then you should restart your game immediately because of reasons.", 'player.achievements.includes("r22") && isNaN(player.money.e)', "am103"],
+["I'm done writing news for today.", 'player.achievements.includes("r22")', "am104"],
+/*NEXT ID: am105*/
 
 //Ghostly news ticker messages
 ["Kee-hee-hee!", true, "gn1"],
@@ -322,7 +335,7 @@ function scrollNextMessage() {
     s.style.transform = 'translateX(-'+(textWidth+5)+'px)';
     //automatically start the next message scrolling after this one finishes
     //you could add more time to this timeout if you wanted to have some time between messages
-    scrollTimeouts.push(setTimeout(scrollNextMessage, Math.ceil(transformDuration * 1000)));
+    scrollTimeouts.push(setTimeout(scrollNextMessage, Math.ceil(transformDuration * 1000 + (newsArray[nextMsgIndex][2] == "am104" ? 6e4 : 0))));
   }, 100));
 }
 
