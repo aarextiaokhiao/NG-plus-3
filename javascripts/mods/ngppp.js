@@ -1956,7 +1956,7 @@ function openAfterEternity() {
 	showTab("eternitystore")
 }
 
-function toggleAutoEter() {
+function toggleABEter() {
 	document.getElementById("eternityison").checked=!player.eternityBuyer.isOn
 	updateAutobuyers()
 }

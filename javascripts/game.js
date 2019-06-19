@@ -1842,6 +1842,13 @@ document.getElementById("news").onclick = function () {
 		document.getElementById("ghostlynewsbtn").style.display = ""
 		$.notify("You unlocked ghostly news ticker option!", "success")
 	}
+	if (document.getElementById("news").textContent === "Don't click this news") {
+		alert("I told you so.")
+		clearInterval(gameLoopIntervalId)
+		simulateTime(0)
+		player.lastUpdate = new Date().getTime()
+		startInterval()
+	}
 };
 
 document.getElementById("secretstudy").onclick = function () {
@@ -4452,12 +4459,15 @@ function updateLastTenRuns() {
     } else document.getElementById("averagerun").innerHTML = ""
 }
 
+var bestECTime
 function updateEterChallengeTimes() {
+	bestECTime=0
 	var temp=0
 	var tempcounter=0
 	for (var i=1;i<15;i++) {
 		setAndMaybeShow("eterchallengetime"+i,player.aarexModifications.eternityChallRecords[i],'"Eternity Challenge '+i+' time record: "+timeDisplayShort(player.aarexModifications.eternityChallRecords['+i+'], false, 3)')
 		if (player.aarexModifications.eternityChallRecords[i]) {
+			bestECTime=Math.max(bestECTime, player.aarexModifications.eternityChallRecords[i])
 			temp+=player.aarexModifications.eternityChallRecords[i]
 			tempcounter++
 		}
