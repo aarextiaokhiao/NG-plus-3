@@ -293,9 +293,8 @@ function giveAchievement(name) {
 	if (name == "Stop blocking me!") document.getElementById('autoReset').style.display=""
     if (name == "Quantum doesn't take so long") {
         updateAutobuyers()
-        document.getElementById("autoEterValue").value = formatValue("Scientific", new Decimal(player.eternityBuyer.limit), 2, 0)
-        document.getElementById("autoDilValue").value=player.eternityBuyer.dilationPerAmount
         updateAutoEterMode()
+        loadAutoBuyerSettings()
     }
 	if (name == "Kee-hee-hee!" && (player.achievements.includes("ng3p18") || player.achievements.includes("ng3p37"))) setAndMaybeShow('bestTPOverGhostifies',true,'"Your best-ever Tachyon particles was "+shorten(player.dilation.bestTPOverGhostifies)+"."')
     updateAchievements();

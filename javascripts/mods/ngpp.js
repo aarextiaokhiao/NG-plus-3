@@ -703,6 +703,7 @@ function quantumReset(force, auto, challid, bigRip, implode=false) {
 			tpUpgraded: player.eternityBuyer.tpUpgraded,
 			slowStop: player.eternityBuyer.slowStop,
 			slowStopped: player.eternityBuyer.slowStopped,
+			ifAD: player.eternityBuyer.ifAD,
 			presets: player.eternityBuyer.presets
 		}
 		if (!player.quantum.gluons.rg) {
@@ -792,6 +793,7 @@ function quantumReset(force, auto, challid, bigRip, implode=false) {
 				tpUpgraded: player.eternityBuyer.tpUpgraded,
 				slowStop: player.eternityBuyer.slowStop,
 				slowStopped: player.eternityBuyer.slowStopped,
+				ifAD: player.eternityBuyer.ifAD,
 				presets: player.eternityBuyer.presets,
 				on: player.eternityBuyer.isOn
 			}
@@ -896,6 +898,7 @@ function quantumReset(force, auto, challid, bigRip, implode=false) {
 						tpUpgraded: data.eternity.tpUpgraded ? data.eternity.tpUpgraded : false,
 						slowStop: data.eternity.slowStop ? data.eternity.slowStop : false,
 						slowStopped: data.eternity.slowStopped ? data.eternity.slowStopped : false,
+						ifAD: data.eternity.ifAD ? data.eternity.ifAD : false,
 						presets: data.eternity.presets ? data.eternity.presets : {on: false, autoDil: false, selected: 1, order: []},
 						isOn: data.eternity.on
 					}

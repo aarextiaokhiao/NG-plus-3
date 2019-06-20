@@ -276,7 +276,8 @@ newsArray = [//always true
 ["no cheating", '(player.bestInfinityTime < 1 || player.bestEterTime < 1 || (player.masterystudies !== undefined ? player.quantum.best < 1 || player.ghostify.best < 1 : false))', "am121"],
 ["Don't click this news", true, "am122"],
 ["TIANAMEN SQUARE 6/4/1989 TIANAMEN SQUARE 6/4/1989 TIANAMEN SQUARE 6/4/1989", "new Date().getMonth() == 6 && new Date().getDate() == 4", "am123"],
-/*NEXT ID: am124*/
+["You chose poorly.", "quantumed && !ghostified ? player.quantum.times < 2 && player.quantum.usedQuarks.b.gt(0) : false", "am124"],
+/*NEXT ID: am125*/
 
 //Ghostly news ticker messages
 ["Kee-hee-hee!", true, "gn1"],

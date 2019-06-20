@@ -1052,6 +1052,7 @@
                             <b>Main options</b><br>
                             <button class="storebtn" id="autoEterToggle" onclick="toggleABEter()">Enable</button><br>
                             <button class="storebtn" id="autoEterMode" style="width:400px" onclick="toggleAutoEterMode()"></button>
+                            <button class="storebtn" id="autoEterIfAD" style="width:400px" onclick="toggleAutoEterIfAD()"></button>
                             <span id='autoEterCond'></span><br>
                             <input type="text" onchange="updateAutoEterValue()" id="autoEterValue"></input>
                         </td>
@@ -1733,7 +1734,8 @@
 						</td>
                     </tr>
                 </table>
-                <button id='breakLimitED' class='storebtn' style='width: 280px; height: 60px' onclick='breakLimit()'></button><br><br><br>
+                <button id='breakLimitED' class='storebtn' style='width: 280px; height: 60px' onclick='breakLimit()'></button><br>
+                <button class='storebtn' style='width: 280px' onclick='maxBuyLimit()'>Max limit upgrades</button><br><br><br>
             </div>
             <div id="production" class="dimtab">
                 <b>seconds of history:</b>
@@ -4604,7 +4606,8 @@
 					They are gathering <span id="workerReplGatherRate" style="font-size:25px">0</span> preons per second and producing <span id="eggonRate" style="font-size:25px">0</span> <span id="workerReplWhat">eggons</span> per <span id="eggonRateTimeframe">minute</span>.<br>
 					Feed your normal replicant to become a worker. <span id="workerProgress" style="font-size:15px">0.0%</span><br>
 					<button class='storebtn' id='feedNormal' style='width: 280px' onclick="feedReplicant(1)">Feed one with quantum food</button><br>
-					<button id='breakLimit' class='storebtn' style='width: 280px; height: 60px' onclick='breakLimit()'></button>
+					<button id='breakLimit' class='storebtn' style='width: 280px; height: 60px' onclick='breakLimit()'></button><br>
+					<button class='storebtn' style='width: 280px' onclick='maxBuyLimit()'>Max limit upgrades</button>
 				</td><td>
 					You have <span id="babyReplAmount" style="font-size:35px">0</span> baby replicants.<br>
 					They are gathering <span id="babyReplGatherRate" style="font-size:25px">0</span> preons per second.<br>

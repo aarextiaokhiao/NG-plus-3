@@ -424,6 +424,7 @@ function updateNewPlayer(reseted) {
         player.eternityBuyer.tpUpgraded = false
         player.eternityBuyer.slowStop = false
         player.eternityBuyer.slowStopped = false
+        player.eternityBuyer.ifAD = false
         player.eternityBuyer.presets = {on: false, autoDil: false, selected: 1, order: []}
         player.quantum.autobuyer = {
             enabled: false,
@@ -5026,7 +5027,10 @@ function eternity(force, auto, presetLoad) {
                     return
                 }
             }
-            if (player.eternityBuyer.dilMode=="upgrades"&&player.eternityBuyer.tpUpgraded) startDilatedEternity(true)
+            if (player.eternityBuyer.dilMode=="upgrades"&&player.eternityBuyer.tpUpgraded) {
+                startDilatedEternity(true)
+                return
+            }
         }
         var oldStat = getEternitied()
         player.eternities += gainEternitiedStat()
@@ -6280,6 +6284,7 @@ function startDilatedEternity(auto) {
     if (player.masterystudies) {
         if (onActive) player.eternityBuyer.statBeforeDilation++
         else player.eternityBuyer.statBeforeDilation = 0
+        player.eternityBuyer.tpUpgraded = false
     }
     eternity(true, true)
     if (!onActive) player.dilation.active = true;
@@ -8068,7 +8073,7 @@ function autoBuyerTick() {
         }
     }
 
-    if (getEternitied() >= 100 && player.eternityBuyer.isOn) {
+    if (getEternitied() >= 100 && isEterBuyerOn()) {
         if (player.autoEterMode === undefined || player.autoEterMode == "amount") {
             if (gainedEternityPoints().gte(player.eternityBuyer.limit)) eternity(false, true)
         } else if (player.autoEterMode == "time") {
@@ -8247,7 +8252,12 @@ document.getElementById("challenge12").onclick = function () {
   startChallenge("challenge12", Number.MAX_VALUE);
 }
 
-
+function isEterBuyerOn() {
+	if (!player.eternityBuyer.isOn) return
+	if (!player.eternityBuyer.ifAD || player.dilation.active) return true
+	if (!player.eternityBuyer.dilationMode) return false
+	return (player.eternityBuyer.dilMode != "upgrades" && !player.eternityBuyer.slowStopped) || (player.eternityBuyer.dilMode == "upgrades" && player.eternityBuyer.tpUpgraded)
+}
 
 function showInfTab(tabName) {
     //iterate over all elements in div_tab class. Hide everything that's not tabName and show tabName

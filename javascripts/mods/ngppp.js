@@ -416,7 +416,7 @@ function getMTSMult(id) {
 	if (id==262) return Math.max(player.resets/15e3-19,1)
 	if (id==263) return player.meta.resets+1
 	if (id==264) return Math.pow(player.galaxies+1,0.25)*2
-	if (id>280) {
+	if (id>280&&id<290) {
 		var replmult = Decimal.pow(Decimal.log2(Decimal.max(player.replicanti.amount, 1)), 2)
 		if (player.timestudy.studies.includes(21)) replmult = replmult.add(Decimal.pow(player.replicanti.amount, 0.032))
 		if (player.timestudy.studies.includes(102)) replmult = replmult.times(Decimal.pow(5, player.replicanti.galaxies, 150))
@@ -1877,14 +1877,11 @@ function getTreeUpgradeEffectDesc(upg) {
 	return shortenMoney(getTreeUpgradeEffect(upg))
 }
 
+var branchUpgCostScales = [[300, 15], [2400, 10], [8e7, 7]]
 function getBranchUpgCost(branch, upg) {
 	var lvl = getBranchUpgLevel(branch, upg)
-	if (upg==1) return Decimal.pow(2, lvl + Math.max(lvl - 15, 0) * 2).times(300)
-	if (upg==2) return Decimal.pow(2, lvl * 2 + Math.max(lvl - 10, 0)).times(2400)
-	if (upg==3) return Decimal.pow(2, lvl * 3 + Math.max(lvl - 7, 0)).times(8e7)
-	if (upg==4) return Decimal.pow(8, lvl).times(3e22)
-	if (upg==5) return Decimal.pow(8, lvl).times(1e22)
-	return new Decimal(1/0)
+	var scale = branchUpgCostScales[upg-1]
+	return Decimal.pow(2, lvl * upg + Math.max(lvl - scale[1], 0) * Math.max(3 - upg, 1)).times(scale[0])
 }
 
 function buyBranchUpg(branch,upg) {
@@ -1946,6 +1943,37 @@ function updateElectronsEffect() {
 	document.getElementById("electronsEffect").textContent = shorten(getDimensionPowerMultiplier(true))
 }
 
+function maxBuyLimit() {
+	var min=player.quantum.gluons.rg.min(player.quantum.gluons.gb).min(player.quantum.gluons.br)
+	if (!min.gte(player.quantum.replicants.limitCost)&&isLimitUpgAffordable()) return
+	for (var i=0;i<1;i++) {
+		if (i==1) {
+			/*var toAdd=Math.max(Math.min(Math.floor(min.div(player.quantum.replicants.limitCost).times(538947368420).add(1).log(538947368421))
+			var toSpend=Decimal.pow(538947368421,toAdd).sub(1).div(538947368420).round().times(player.quantum.replicants.limitCost)
+			player.quantum.gluons.rg=player.quantum.gluons.rg.sub(toSpend)
+			player.quantum.gluons.gb=player.quantum.gluons.gb.sub(toSpend)
+			player.quantum.gluons.br=player.quantum.gluons.br.sub(toSpend)
+			player.quantum.replicants.limitCost=player.quantum.replicants.limitCost.times(Decimal.pow(538947368421,toAdd))
+			var dimAdd=Math.min(toAdd,8-player.quantum.replicants.limitDim)
+			player.quantum.replicants.limit+=toAdd*10
+			if (dimAdd>0) {
+				player.quantum.replicants.limit-=dimAdd*10
+				player.quantum.replicants.limitDim+=dimAdd
+			} I will continue this later.*/
+		} else {
+			var toAdd=Math.max(Math.min(Math.floor(min.div(player.quantum.replicants.limitCost).times(19).add(1).log(20)),10-player.quantum.replicants.limit),0)
+			var toSpend=Decimal.pow(20,toAdd).sub(1).div(19).round().times(player.quantum.replicants.limitCost)
+			player.quantum.gluons.rg=player.quantum.gluons.rg.sub(toSpend)
+			player.quantum.gluons.gb=player.quantum.gluons.gb.sub(toSpend)
+			player.quantum.gluons.br=player.quantum.gluons.br.sub(toSpend)
+			player.quantum.replicants.limitCost=player.quantum.replicants.limitCost.times(Decimal.pow(20,Math.max(Math.min(toAdd,9-player.quantum.replicants.limit),0)))
+			player.quantum.replicants.limit+=toAdd
+		}
+	}
+	updateGluons()
+	updateReplicants()
+}
+
 function rotateAutoAssign() {
 	player.quantum.autoOptions.assignQKRotate=player.quantum.autoOptions.assignQKRotate?(player.quantum.autoOptions.assignQKRotate+1)%3:1
 	document.getElementById('autoAssignRotate').textContent=player.quantum.autoOptions.assignQKRotate?"C"+(player.quantum.autoOptions.assignQKRotate>1?"ounterc":"")+"lockwise":"No rotate"
@@ -1966,6 +1994,11 @@ function updateAutoEterValue() {
 	updatePriorities()
 }
 
+function toggleAutoEterIfAD() {
+	player.eternityBuyer.ifAD=!player.eternityBuyer.ifAD
+	document.getElementById("autoEterIfAD").textContent="Auto-eternity only if it able to auto-dilate: O" + (player.eternityBuyer.ifAD ? "N" : "FF")
+}
+
 function toggleAutoDil() {
 	document.getElementById("dilatedeternityison").checked=!player.eternityBuyer.dilationMode	
 	updateAutobuyers()
@@ -1984,7 +2017,7 @@ function changeAutoDilateMode() {
 
 function toggleSlowStop() {
 	player.eternityBuyer.slowStop = !player.eternityBuyer.slowStop
-	if (player.eternityBuyer.slowStop) player.eternityBuyer.slowStopped = false
+	player.eternityBuyer.slowStopped = false
 	document.getElementById("slowstop").textContent = "Stop auto-dilate if a little bit of TP is gained: O" + (player.eternityBuyer.slowStop ? "N" : "FF")
 }
 
@@ -1994,7 +2027,6 @@ function toggleBigRipConf() {
 }
 
 function unstoreTT() {
-	return //Because this feature is buggy.
 	if (player.quantum.bigRip.storedTS===undefined) return
 	player.timestudy.theorem=player.quantum.bigRip.storedTS.tt
 	player.timestudy.amcost=Decimal.pow(10,2e4*(player.quantum.bigRip.storedTS.boughtA+1))
@@ -2004,8 +2036,8 @@ function unstoreTT() {
 	var newMS=[]
 	var studies=player.quantum.bigRip.storedTS.studies
 	for (var s=0;s<studies.length;s++) {
-		/*if (studies[s]<240) newTS.push(studies[s])
-		else newMS.push("t"+studies[s])*/
+		if (studies[s]<240) newTS.push(studies[s])
+		else newMS.push("t"+studies[s])
 	}
 	for (var s=7;s<15;s++) if (player.masterystudies.includes("d"+s)) newMS.push("d"+s)
 	player.timestudy.studies=newTS
@@ -2503,6 +2535,7 @@ function ghostifyReset(implode, gain, amount) {
 			tpUpgraded: player.eternityBuyer.tpUpgraded,
 			slowStop: player.eternityBuyer.slowStop,
 			slowStopped: player.eternityBuyer.slowStopped,
+			ifAD: player.eternityBuyer.ifAD,
 			presets: player.eternityBuyer.presets
 		},
 		eterc8ids: 50,

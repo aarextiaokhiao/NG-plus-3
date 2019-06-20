@@ -683,6 +683,7 @@ if (player.version < 5) {
               player.eternityBuyer.tpUpgraded = false
               player.eternityBuyer.slowStop = false
               player.eternityBuyer.slowStopped = false
+              player.eternityBuyer.ifAD = false
               player.eternityBuyer.presets = {on: false, autoDil: false, selected: 1, order: []}
               player.quantum.autobuyer = {
                   enabled: false,
@@ -1122,6 +1123,7 @@ if (player.version < 5) {
       player.eternityBuyer.tpUpgraded = false
       player.eternityBuyer.slowStop = false
       player.eternityBuyer.slowStopped = false
+      player.eternityBuyer.ifAD = false
       player.eternityBuyer.presets = {selected: 1, order: []}
       player.quantum.reached = player.quantum.times > 0
       player.quantum.nonMAGoalReached = {}
@@ -1204,6 +1206,7 @@ if (player.version < 5) {
           player.eternityBuyer.slowStopped = false
           player.eternityBuyer.presets = {on: false, autoDil: false, selected: 1, order: []}
       }
+      if (player.eternityBuyer.ifAD === undefined) player.eternityBuyer.ifAD = false
       if (player.quantum.reached === undefined) player.quantum.reached = player.quantum.times > 0
       if (player.quantum.nonMAGoalReached === undefined ? true : player.quantum.nonMAGoalReached.length === undefined) player.quantum.nonMAGoalReached = []
       if (player.quantum.bigRip.savedAutobuyersNoBR === undefined) player.quantum.bigRip.savedAutobuyersNoBR = {}
@@ -2378,14 +2381,15 @@ function loadAutoBuyerSettings() {
   document.getElementById("prioritySac").value = player.autoSacrifice.priority
   document.getElementById("bulkgalaxy").value = player.autobuyers[10].bulk
   document.getElementById("priority13").value = formatValue("Scientific", new Decimal(player.eternityBuyer.limit), 2, 0)
-  if (player.achievements.includes("ng3p52")) document.getElementById("autoEterValue").value = formatValue("Scientific", new Decimal(player.eternityBuyer.limit), 2, 0)
+  if (player.achievements.includes("ng3p52")) {
+      document.getElementById("autoEterIfAD").textContent = "Auto-eternity only if it able to auto-dilate: O" + (player.eternityBuyer.ifAD ? "N" : "FF")
+      document.getElementById("autoEterValue").value = formatValue("Scientific", new Decimal(player.eternityBuyer.limit), 2, 0)
+      document.getElementById("autodilatemode").textContent = "Mode: " + (player.eternityBuyer.dilMode == "upgrades" ? "Upgrades" : "Amount of eternities")
+      document.getElementById("slowstop").textContent = "Stop auto-dilate if a little bit of TP is gained: O" + (player.eternityBuyer.slowStop ? "N" : "FF")
+  }
   if (player.eternityBuyer.dilationPerAmount !== undefined) {
       document.getElementById('prioritydil').value=player.eternityBuyer.dilationPerAmount
-      if (player.achievements.includes("ng3p52")) {
-          document.getElementById("autoDilValue").value=player.eternityBuyer.dilationPerAmount
-          document.getElementById("autodilatemode").textContent = "Mode: " + (player.eternityBuyer.dilMode == "upgrades" ? "Upgrades" : "Amount of eternities")
-          document.getElementById("slowstop").textContent = "Stop auto-dilate if a little bit of TP is gained: O" + (player.eternityBuyer.slowStop ? "N" : "FF")
-      }
+      if (player.achievements.includes("ng3p52")) document.getElementById("autoDilValue").value=player.eternityBuyer.dilationPerAmount
   }
   if (player.autobuyers[12] !== undefined) document.getElementById("priority14").value = formatValue("Scientific", new Decimal(player.autobuyers[12].priority), 2, 0)
   if (player.autobuyers[13] !== undefined) {
