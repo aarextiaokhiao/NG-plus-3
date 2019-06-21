@@ -416,13 +416,8 @@ function getMTSMult(id) {
 	if (id==262) return Math.max(player.resets/15e3-19,1)
 	if (id==263) return player.meta.resets+1
 	if (id==264) return Math.pow(player.galaxies+1,0.25)*2
-	if (id>280&&id<290) {
-		var replmult = Decimal.pow(Decimal.log2(Decimal.max(player.replicanti.amount, 1)), 2)
-		if (player.timestudy.studies.includes(21)) replmult = replmult.add(Decimal.pow(player.replicanti.amount, 0.032))
-		if (player.timestudy.studies.includes(102)) replmult = replmult.times(Decimal.pow(5, player.replicanti.galaxies, 150))
-	}
-	if (id==281) return Decimal.pow(10,Math.pow(replmult.max(1).log10(),0.25)/10)
-	if (id==282) return Decimal.pow(10,Math.pow(replmult.max(1).log10(),0.25)/15)
+	if (id==281) return Decimal.pow(10,Math.pow(getReplMult().max(1).log10(),0.25)/10)
+	if (id==282) return Decimal.pow(10,Math.pow(getReplMult().max(1).log10(),0.25)/15)
 	if (id==303) return Decimal.pow(4.7,Math.pow(Math.log10(Math.max(player.galaxies,1)),1.5))
 	if (id==322) {
 		let log = Math.sqrt(-player.tickspeed.div(1000).log10())/20000
@@ -1946,28 +1941,28 @@ function updateElectronsEffect() {
 function maxBuyLimit() {
 	var min=player.quantum.gluons.rg.min(player.quantum.gluons.gb).min(player.quantum.gluons.br)
 	if (!min.gte(player.quantum.replicants.limitCost)&&isLimitUpgAffordable()) return
-	for (var i=0;i<1;i++) {
+	for (var i=0;i<(player.masterystudies.includes("d11")?3:1);i++) {
 		if (i==1) {
-			/*var toAdd=Math.max(Math.min(Math.floor(min.div(player.quantum.replicants.limitCost).times(538947368420).add(1).log(538947368421))
-			var toSpend=Decimal.pow(538947368421,toAdd).sub(1).div(538947368420).round().times(player.quantum.replicants.limitCost)
+			var toAdd=Math.max(Math.floor(min.div(player.quantum.replicants.limitCost).log(200)/9),0)
+			var toSpend=Decimal.pow(200,toAdd*9).times(player.quantum.replicants.limitCost)
 			player.quantum.gluons.rg=player.quantum.gluons.rg.sub(toSpend)
 			player.quantum.gluons.gb=player.quantum.gluons.gb.sub(toSpend)
 			player.quantum.gluons.br=player.quantum.gluons.br.sub(toSpend)
-			player.quantum.replicants.limitCost=player.quantum.replicants.limitCost.times(Decimal.pow(538947368421,toAdd))
-			var dimAdd=Math.min(toAdd,8-player.quantum.replicants.limitDim)
+			player.quantum.replicants.limitCost=player.quantum.replicants.limitCost.times(Decimal.pow(200,toAdd*9))
 			player.quantum.replicants.limit+=toAdd*10
+		} else {
+			var toAdd=Math.max(Math.min(Math.floor(min.div(player.quantum.replicants.limitCost).times(199).add(1).log(200)),10-player.quantum.replicants.limit%10),0)
+			var toSpend=Decimal.pow(200,toAdd).sub(1).div(199).round().times(player.quantum.replicants.limitCost)
+			player.quantum.gluons.rg=player.quantum.gluons.rg.sub(toSpend)
+			player.quantum.gluons.gb=player.quantum.gluons.gb.sub(toSpend)
+			player.quantum.gluons.br=player.quantum.gluons.br.sub(toSpend)
+			player.quantum.replicants.limitCost=player.quantum.replicants.limitCost.times(Decimal.pow(200,Math.max(Math.min(toAdd,9-player.quantum.replicants.limit%10),0)))
+			player.quantum.replicants.limit+=toAdd
+			var dimAdd=Math.max(Math.min(Math.ceil(player.quantum.replicants.limit/10-1),8-player.quantum.replicants.limitDim),0)
 			if (dimAdd>0) {
 				player.quantum.replicants.limit-=dimAdd*10
 				player.quantum.replicants.limitDim+=dimAdd
-			} I will continue this later.*/
-		} else {
-			var toAdd=Math.max(Math.min(Math.floor(min.div(player.quantum.replicants.limitCost).times(19).add(1).log(20)),10-player.quantum.replicants.limit),0)
-			var toSpend=Decimal.pow(20,toAdd).sub(1).div(19).round().times(player.quantum.replicants.limitCost)
-			player.quantum.gluons.rg=player.quantum.gluons.rg.sub(toSpend)
-			player.quantum.gluons.gb=player.quantum.gluons.gb.sub(toSpend)
-			player.quantum.gluons.br=player.quantum.gluons.br.sub(toSpend)
-			player.quantum.replicants.limitCost=player.quantum.replicants.limitCost.times(Decimal.pow(20,Math.max(Math.min(toAdd,9-player.quantum.replicants.limit),0)))
-			player.quantum.replicants.limit+=toAdd
+			}
 		}
 	}
 	updateGluons()

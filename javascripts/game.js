@@ -6501,7 +6501,7 @@ function getReplSpeed () {
 	}
 	ret = ret + 1
 	if (GUBought("gb2")) ret = Math.sqrt(ret)
-	return ret;
+	return Math.max(ret, 1.001);
 }
 
 function updateTimeShards() {
@@ -7380,15 +7380,16 @@ function gameLoop(diff) {
     if (isBigRipUpgradeActive(4)) interval /= 10
     if (player.replicanti.amount.gt(Number.MAX_VALUE)) interval = player.boughtDims ? Math.pow(player.achievements.includes("r107")?Math.max(player.replicanti.amount.log(2)/1024,1):1, -.25) : Decimal.pow(getReplSpeed(), Math.max(player.replicanti.amount.log10() - 308, 0)/308).times(interval)
     if (player.masterystudies) {
-        if (player.masterystudies.includes("t273")) chance = Decimal.pow(chance,Math.pow(Math.log10(chance+1),5))
-	    if (player.masterystudies.includes("t332")) interval = Decimal.div(interval, player.galaxies)
+        if (player.masterystudies.includes("t273")) chance = Decimal.pow(chance, Math.pow(Math.log10(chance+1), 5))
+        if (player.masterystudies.includes("t332")) interval = Decimal.div(interval, player.galaxies)
     }
-    var est = Decimal.add(chance,1).log10() * 1000 / interval
+    var est = Decimal.div(Decimal.add(chance, 1).log(Math.E) * 1000, interval)
 
     var current = player.replicanti.amount.ln()
 
     if (player.replicanti.unl && (diff > 5 || interval < 50 || player.timestudy.studies.includes(192))) {
-        if (player.timestudy.studies.includes(192)) player.replicanti.amount = Decimal.pow(Math.E, current +Math.log((diff*est/10) * (Math.log10(getReplSpeed())/308)+1) / (Math.log10(getReplSpeed())/308))
+        if (player.timestudy.studies.includes(192) && est.toNumber() < 1/0) player.replicanti.amount = Decimal.pow(Math.E, current +Math.log((diff*est/10) * (Math.log10(getReplSpeed())/308)+1) / (Math.log10(getReplSpeed())/308))
+        else if (player.timestudy.studies.includes(192)) player.replicanti.amount = Decimal.pow(Math.E, current + est.times(diff * Math.log10(getReplSpeed()) / 3080).add(1).log(Math.E) / (Math.log10(getReplSpeed())/308))
         else player.replicanti.amount = Decimal.pow(Math.E, current +(diff*est/10)).min(getReplicantiLimit())
         replicantiTicks = 0
     } else {

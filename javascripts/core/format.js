@@ -710,6 +710,7 @@ function timeDisplayShort(time, rep, places) {
 		if (Decimal.eq(time, 1/0)) return 'eternity'
 		return shorten(Decimal.div(time, 31536e4)) + 'y'
 	}
+	if (time == 0) return "1/"+formatValue(player.options.notation, Decimal.div(10, time), places, 0)+"s"
 	time = time / 10
 	if (rep && time < 1) {
 		if (time < 1e-24) return "1/"+formatValue(player.options.notation, 1/time, places, 0)+"s"

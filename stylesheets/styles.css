@@ -2085,9 +2085,9 @@ br {
 	height: 300px
 }
 #autoEternityTable td {
-	min-width: 400px;
-	width: 400px;
-	max-width: 400px;
+	min-width: 450px;
+	width: 450px;
+	max-width: 450px;
 	text-align: center;
 	vertical-align: top
 }
