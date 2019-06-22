@@ -684,7 +684,7 @@ if (player.version < 5) {
               player.eternityBuyer.slowStop = false
               player.eternityBuyer.slowStopped = false
               player.eternityBuyer.ifAD = false
-              player.eternityBuyer.presets = {on: false, autoDil: false, selected: 1, order: []}
+              player.eternityBuyer.presets = {on: false, autoDil: false, selected: 1, left: 1, order: []}
               player.quantum.autobuyer = {
                   enabled: false,
                   limit: 1,
@@ -1124,7 +1124,7 @@ if (player.version < 5) {
       player.eternityBuyer.slowStop = false
       player.eternityBuyer.slowStopped = false
       player.eternityBuyer.ifAD = false
-      player.eternityBuyer.presets = {selected: 1, order: []}
+      player.eternityBuyer.presets = {on: false, autoDil: false, selected: 1, left: 1, order: []}
       player.quantum.reached = player.quantum.times > 0
       player.quantum.nonMAGoalReached = {}
       player.quantum.pairedChallenges.fastest = {}
@@ -1206,6 +1206,7 @@ if (player.version < 5) {
           player.eternityBuyer.slowStopped = false
           player.eternityBuyer.presets = {on: false, autoDil: false, selected: 1, order: []}
       }
+      if (player.eternityBuyer.presets.left === undefined) player.eternityBuyer.presets.left = 1
       if (player.eternityBuyer.ifAD === undefined) player.eternityBuyer.ifAD = false
       if (player.quantum.reached === undefined) player.quantum.reached = player.quantum.times > 0
       if (player.quantum.nonMAGoalReached === undefined ? true : player.quantum.nonMAGoalReached.length === undefined) player.quantum.nonMAGoalReached = []

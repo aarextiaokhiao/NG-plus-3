@@ -33,6 +33,7 @@ function updateMasteryStudyButtons() {
 	}
 	for (id=262;id<265;id++) document.getElementById("ts"+id+"Current").textContent="Currently: "+shorten(getMTSMult(id))+"x"
 	if (quantumed) {
+		document.getElementById("ts273Current").textContent="Currently: ^"+shorten(getMTSMult(273, "ms"))
 		for (id=281;id<283;id++) document.getElementById("ts"+id+"Current").textContent="Currently: "+shorten(getMTSMult(id))+"x"
 		document.getElementById("ts303Current").textContent="Currently: "+shorten(getMTSMult(303))+"x"
 		document.getElementById("ts322Current").textContent="Currently: "+shorten(getMTSMult(322))+"x"
@@ -405,6 +406,7 @@ function setupText() {
 		
 		html="<table class='table' align='center' style='margin: auto'><tr>"
 		for (var u=1;u<4;u++) html+="<td><button class='gluonupgrade unavailablebtn' id='"+color+"upg"+u+"' onclick='buyBranchUpg(\""+shorthand+"\", "+u+")'"+(u<3?" style='font-size:10px'":"")+">"+branchUpgrades[u-1]+"<br>Currently: <span id='"+color+"upg"+u+"current'>1</span>x<br>Cost: <span id='"+color+"upg"+u+"cost'>?</span> "+color+" quark spin</button></td>"
+		html+="</tr><tr><td colspan=3 style='text-align: center'><button class='storebtn' style='width: 190px' onclick='maxBranchUpg(\""+shorthand+"\")'>Max all upgrades</button></td>"
 		html+="</tr></table>"
 		document.getElementById(color+"Branch").innerHTML=html
 	}
@@ -412,10 +414,16 @@ function setupText() {
 }
 
 //v1.1
-function getMTSMult(id) {
+function getMTSMult(id, modifier) {
 	if (id==262) return Math.max(player.resets/15e3-19,1)
 	if (id==263) return player.meta.resets+1
 	if (id==264) return Math.pow(player.galaxies+1,0.25)*2
+	if (id==273) {
+		var intensity = 0
+		if (player.masterystudies ? player.masterystudies.includes("t273") || modifier == "ms" : false) intensity = 5
+		if (ghostified ? player.ghostify.neutrinos.boosts > 1 && modifier != "pn" : false) intensity += 0
+		return Decimal.pow(Math.log10(player.replicanti.chance+1), intensity)
+	}
 	if (id==281) return Decimal.pow(10,Math.pow(getReplMult().max(1).log10(),0.25)/10)
 	if (id==282) return Decimal.pow(10,Math.pow(getReplMult().max(1).log10(),0.25)/15)
 	if (id==303) return Decimal.pow(4.7,Math.pow(Math.log10(Math.max(player.galaxies,1)),1.5))
@@ -505,7 +513,8 @@ function updateQuantumTabs() {
 	}
 	if (document.getElementById("electrons").style.display=="block") {
 		document.getElementById("normalGalaxies").textContent=getFullExpansion(player.galaxies)
-		for (i=1;i<7;i++) document.getElementById("sacrifice"+i).className=(Math.pow(10,i>4?0:i-1)>player.galaxies-player.quantum.electrons.sacGals||!inQC(0))?"unavailablebtn":"storebtn"
+		document.getElementById("sacrificeGal").className="gluonupgrade "+((player.galaxies>player.quantum.electrons.sacGals&&inQC(0))?"stor":"unavailabl")+"ebtn"
+		document.getElementById("sacrificeGals").textContent=getFullExpansion(Math.max(player.galaxies-player.quantum.electrons.sacGals, 0))
 		for (u=1;u<5;u++) document.getElementById("electronupg"+u).className="gluonupgrade "+(canBuyElectronUpg(u)?"stor":"unavailabl")+"ebtn"
 		if (player.quantum.autoOptions.sacrifice) updateElectronsEffect()
 	}
@@ -783,16 +792,10 @@ function toggleAllMetaDims() {
 	document.getElementById("metaMaxAllDiv").style.display=turnOn&&stop>7&&speedrunMilestonesReached>27?"none":""
 }
 
-function sacrificeGalaxy(id, auto=false) {
-	if (player.galaxies-player.quantum.electrons.sacGals<1||!inQC(0)) return
-	var amount=1
-	if (id>5) amount=player.galaxies-player.quantum.electrons.sacGals
-	else if (id>4) amount=Math.ceil((player.galaxies-player.quantum.electrons.sacGals)/2)
-	else if (id>3) amount=1e3
-	else if (id>2) amount=100
-	else if (id>1) amount=10
-	if (amount>player.galaxies-player.quantum.electrons.sacGals) return
-	if (player.options.sacrificeConfirmation && !auto) if (!confirm("Sacrificing your galaxies reduces your tickspeed and so your tick interval. You will gain a boost for multiplier per ten dimensions. Are you sure you want to do that?")) return
+function sacrificeGalaxy(auto=false) {
+	var amount=player.galaxies-player.quantum.electrons.sacGals
+	if (amount<1) return
+	if (player.options.sacrificeConfirmation&&!auto) if (!confirm("Sacrificing your galaxies reduces your tickspeed and so your tick interval. You will gain a boost for multiplier per ten dimensions. Are you sure you want to do that?")) return
 	var old=new Decimal(getTickSpeedMultiplier()).log10()
 	player.quantum.electrons.sacGals+=amount
 	player.quantum.electrons.amount+=player.quantum.electrons.mult*amount
@@ -1141,14 +1144,14 @@ function updateReplicants() {
 	document.getElementById("brRepl").textContent=shortenDimensions(player.quantum.gluons.br)
 
 	document.getElementById("quantumFoodAmount").textContent=getFullExpansion(player.quantum.replicants.quantumFood)
-	document.getElementById("buyQuantumFood").innerHTML="Buy 1 quantum food<br><br><br>Cost: "+shortenDimensions(player.quantum.replicants.quantumFoodCost)+" for all 3 gluons"
+	document.getElementById("buyQuantumFood").innerHTML="Buy 1 quantum food<br>Cost: "+shortenDimensions(player.quantum.replicants.quantumFoodCost)+" for all 3 gluons"
 	document.getElementById("buyQuantumFood").className="gluonupgrade "+(player.quantum.gluons.rg.min(player.quantum.gluons.gb).min(player.quantum.gluons.br).lt(player.quantum.replicants.quantumFoodCost)?"unavailabl":"stor")+"ebtn"
 	document.getElementById("breakLimit").innerHTML="Limit of workers: "+getLimitMsg()+(isLimitUpgAffordable()?" -> "+getNextLimitMsg()+"<br>Cost: "+shortenDimensions(player.quantum.replicants.limitCost)+" for all 3 gluons":"")
 	document.getElementById("breakLimit").className=(player.quantum.gluons.rg.min(player.quantum.gluons.gb).min(player.quantum.gluons.br).lt(player.quantum.replicants.limitCost)||!isLimitUpgAffordable()?"unavailabl":"stor")+"ebtn"
 	document.getElementById("reduceHatchSpeed").className=(player.quantum.gluons.rg.min(player.quantum.gluons.gb).min(player.quantum.gluons.br).lt(player.quantum.replicants.hatchSpeedCost)?"unavailabl":"stor")+"ebtn"
 	if (player.masterystudies.includes('d11')) {
 		document.getElementById("quantumFoodAmountED").textContent=getFullExpansion(player.quantum.replicants.quantumFood)
-		document.getElementById("buyQuantumFoodED").innerHTML="Buy 1 quantum food<br><br><br>Cost: "+shortenDimensions(player.quantum.replicants.quantumFoodCost)+" for all 3 gluons"
+		document.getElementById("buyQuantumFoodED").innerHTML="Buy 1 quantum food<br>Cost: "+shortenDimensions(player.quantum.replicants.quantumFoodCost)+" for all 3 gluons"
 		document.getElementById("buyQuantumFoodED").className="gluonupgrade "+(player.quantum.gluons.rg.min(player.quantum.gluons.gb).min(player.quantum.gluons.br).lt(player.quantum.replicants.quantumFoodCost)?"unavailabl":"stor")+"ebtn"
 		document.getElementById("breakLimitED").innerHTML="Limit of workers: "+getLimitMsg()+(isLimitUpgAffordable()?" -> "+getNextLimitMsg()+"<br>Cost: "+shortenDimensions(player.quantum.replicants.limitCost)+" for all 3 gluons":"")
 		document.getElementById("breakLimitED").className=(player.quantum.gluons.rg.min(player.quantum.gluons.gb).min(player.quantum.gluons.br).lt(player.quantum.replicants.limitCost)||!isLimitUpgAffordable()?"unavailabl":"stor")+"ebtn"
@@ -1598,6 +1601,7 @@ function maxReduceHatchSpeed() {
 	player.quantum.replicants.hatchSpeed /= Math.pow(1.1, toBuy)
 	player.quantum.replicants.hatchSpeedCost = player.quantum.replicants.hatchSpeedCost.times(Decimal.pow(10, toBuy))
 	updateGluons()
+	updateReplicants()
 }
 
 function getQuarkChargeProduction() {
@@ -1886,7 +1890,7 @@ function buyBranchUpg(branch,upg) {
 	bData.spin=bData.spin.sub(getBranchUpgCost(branch,upg))
 	if (bData.upgrades[upg]==undefined) bData.upgrades[upg]=0
 	bData.upgrades[upg]++
-	document.getElementById(colors[branch]+"upg"+upg+"current").textContent=shortenDimensions(Decimal.pow(upg==3?4:2, bData.upgrades[upg]))
+	document.getElementById(colors[branch]+"upg"+upg+"current").textContent=shortenDimensions(Decimal.pow(upg>2?4:2, bData.upgrades[upg]))
 	document.getElementById(colors[branch]+"upg"+upg+"cost").textContent=shortenMoney(getBranchUpgCost(branch, upg))
 }
 
@@ -1972,6 +1976,35 @@ function maxBuyLimit() {
 function rotateAutoAssign() {
 	player.quantum.autoOptions.assignQKRotate=player.quantum.autoOptions.assignQKRotate?(player.quantum.autoOptions.assignQKRotate+1)%3:1
 	document.getElementById('autoAssignRotate').textContent=player.quantum.autoOptions.assignQKRotate?"C"+(player.quantum.autoOptions.assignQKRotate>1?"ounterc":"")+"lockwise":"No rotate"
+}
+
+function maxBranchUpg(branch) {
+	var colors = {r: "red", g: "green", b: "blue"}
+	var bData = player.quantum.tod[branch]
+	for (var u=1;u<4;u++) {
+		var oldLvl = getBranchUpgLevel(branch, u)
+		var scaleStart = branchUpgCostScales[u-1][1]
+		var cost = getBranchUpgCost(branch, u)
+		if (bData.spin.gte(cost) && oldLvl < scaleStart) {
+			var costMult = Math.pow(2, u)
+			var toAdd = Math.min(Math.floor(bData.spin.div(cost).times(costMult-1).add(1).log(costMult)), scaleStart - oldLvl)
+			bData.spin = bData.spin.sub(Decimal.pow(costMult, toAdd).sub(1).div(costMult).times(cost))
+			if (bData.upgrades[u] === undefined) bData.upgrades[u] = 0
+			bData.upgrades[u] += toAdd
+			cost = getBranchUpgCost(branch, u)
+		}
+		if (bData.spin.gte(cost) && bData.upgrades[u] >= scaleStart) {
+			var costMult = Math.pow(2, u + Math.max(3 - u, 1))
+			var toAdd = Math.floor(bData.spin.div(cost).times(costMult-1).add(1).log(costMult))
+			bData.spin = bData.spin.sub(Decimal.pow(costMult, toAdd).sub(1).div(costMult).times(cost))
+			if (bData.upgrades[u] === undefined) bData.upgrades[u] = 0
+			bData.upgrades[u] += toAdd
+		}
+		if (bData.upgrades[u] > oldLvl) {
+			document.getElementById(colors[branch]+"upg"+u+"current").textContent=shortenDimensions(Decimal.pow(u>2?4:2, bData.upgrades[u]))
+			document.getElementById(colors[branch]+"upg"+u+"cost").textContent=shortenMoney(getBranchUpgCost(branch, u))
+		}
+	}
 }
 
 function openAfterEternity() {
@@ -2999,6 +3032,10 @@ function updateGhostifyTabs() {
 		document.getElementById("tauNeutrinos").textContent=shortenDimensions(player.ghostify.neutrinos.tau)
 		document.getElementById("preNeutrinoBoost1").textContent=getDilExp("neutrinos").toFixed(2)
 		document.getElementById("neutrinoBoost1").textContent=getDilExp().toFixed(2)
+		if (player.ghostify.neutrinos.boosts > 1) {
+			document.getElementById("preNeutrinoBoost2").textContent=shorten(getMTSMult(273, "pn"))
+			document.getElementById("neutrinoBoost2").textContent="^"+shorten(getMTSMult(273))
+		}
 		document.getElementById("neutrinoUpg1Pow").textContent=getNU1Pow()
 		document.getElementById("neutrinoUpg3Pow").textContent=shorten(getNU3Pow())
 		for (var u=1; u<4; u++) {

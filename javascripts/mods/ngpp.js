@@ -452,7 +452,7 @@ function quantum(auto, force, challid, bigRip) {
 					var qc1st = Math.min(qc1, qc2)
 					var qc2st = Math.max(qc1, qc2)
 					if (qc1st != 6 || qc2st != 8) return
-					if (player.quantum.bigRip.conf) if (!confirm("Big ripping the universe starts PC6+8 with only quantum stuff. However, only dilation upgrades boost dilation except upgrades that multiply TP gain until you buy the eleventh upgrade. NOTE: If you can beat PC6+8, you will earn a grand reward.")) return
+					if (player.quantum.bigRip.conf) if (!confirm("Big ripping the universe starts PC6+8 with only quantum stuff. However, only dilation upgrades boost dilation except upgrades that multiply TP gain until you buy the eleventh upgrade. NOTE: If you can beat PC6+8, you will earn a grand reward. You can give your Time Theorems and Time Studies back by undoing Big Rip.")) return
 				}
 				if (pc > 0) {
 					if (player.options.challConf || (player.quantum.pairedChallenges.completions.length < 1 && !ghostified)) if (!confirm("You will start a Quantum Challenge, but you need to do 2 challenges at one. Completing it boosts the rewards of Quantum Challenges that you chose in this Paired Challenge.")) return
@@ -477,6 +477,16 @@ function quantum(auto, force, challid, bigRip) {
 				updateQuantumChallenges()
 				return
 			}
+		}
+		if (speedrunMilestonesReached > 3 && !isRewardEnabled(4) && player.masterystudies.length > 0) {
+			var checked = false
+			for (var s=0;s<player.masterystudies.length;s++) {
+				if (player.masterystudies[s].indexOf("t") >= 0) {
+					checked = true
+					break
+				}
+			}
+			if (checked) if (!confirm("I recommend you to respec all mastery studies before you go quantum. Are you sure you want to do that and lose some of your TT?")) return
 		}
 	}
 	var implode = !(auto||force)&&speedrunMilestonesReached<23
@@ -899,9 +909,10 @@ function quantumReset(force, auto, challid, bigRip, implode=false) {
 						slowStop: data.eternity.slowStop ? data.eternity.slowStop : false,
 						slowStopped: data.eternity.slowStopped ? data.eternity.slowStopped : false,
 						ifAD: data.eternity.ifAD ? data.eternity.ifAD : false,
-						presets: data.eternity.presets ? data.eternity.presets : {on: false, autoDil: false, selected: 1, order: []},
+						presets: data.eternity.presets ? data.eternity.presets : {on: false, autoDil: false, selected: 1, left: 1, order: []},
 						isOn: data.eternity.on
 					}
+					if (player.eternityBuyer.presets.left === undefined) player.eternityBuyer.presets.left = 1
 					player.autoEterMode = data.eternity.mode
 				}
 				loadAutoBuyerSettings()

@@ -79,7 +79,7 @@ button, div.storebtn {
     border-radius: 0px !important
 }
 
-#coinAmount, #dilatedGalaxies, #sacrificedGals {
+#coinAmount, #dilatedGalaxies, #normalGalaxies, #sacrificedGals {
 	color: #0072e5 !important
 }
 

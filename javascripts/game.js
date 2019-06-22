@@ -425,7 +425,7 @@ function updateNewPlayer(reseted) {
         player.eternityBuyer.slowStop = false
         player.eternityBuyer.slowStopped = false
         player.eternityBuyer.ifAD = false
-        player.eternityBuyer.presets = {on: false, autoDil: false, selected: 1, order: []}
+        player.eternityBuyer.presets = {on: false, autoDil: false, selected: 1, left: 1, order: []}
         player.quantum.autobuyer = {
             enabled: false,
             limit: 1,
@@ -4836,7 +4836,7 @@ function bigCrunch(autoed) {
         if (isADSCRunning()) document.getElementById("chall13Mult").style.display = "block";
         else document.getElementById("chall13Mult").style.display = "none";
 
-        document.getElementById("replicantireset").innerHTML = "Reset replicanti amount, but get a free galaxy<br>" + player.replicanti.galaxies + (extraReplGalaxies ? "+" + extraReplGalaxies : "") + " replicated galax" + ((player.replicanti.galaxies + extraReplGalaxies) == 1 ? "y" : "ies") + " created."
+        document.getElementById("replicantireset").innerHTML = "Reset replicanti amount, but get a free galaxy<br>" + getFullExpansion(player.replicanti.galaxies) + (extraReplGalaxies ? "+" + getFullExpansion(extraReplGalaxies) : "") + " replicated galax" + ((player.replicanti.galaxies + extraReplGalaxies) == 1 ? "y" : "ies") + " created."
 
         if (player.achievements.includes("r36")) player.tickspeed = player.tickspeed.times(0.98);
         if (player.achievements.includes("r45")) player.tickspeed = player.tickspeed.times(0.98);
@@ -7369,7 +7369,10 @@ function gameLoop(diff) {
             document.getElementById("maxall").style.display=ndAutobuyersUsed>8&&player.challenges.includes("postc8")?"none":""
         }
     }
-    let chance = player.replicanti.chance
+    let ts273Mult = getMTSMult(273)
+    let chance = Decimal.pow(player.replicanti.chance, ts273Mult.toNumber())
+    let frequency = 0
+    if (chance.gte("1e9999998")) frequency = getMTSMult(273).times(Math.log10(player.replicanti.chance)/Math.log10(2))
     let interval = player.replicanti.interval
     if (player.timestudy.studies.includes(62)) interval = interval/(player.aarexModifications.newGameExpVersion?4:3)
     if (player.replicanti.amount.gt(Number.MAX_VALUE)||player.timestudy.studies.includes(133)) interval *= 10
@@ -7379,11 +7382,8 @@ function gameLoop(diff) {
     if (player.exdilation != undefined) interval /= Math.cbrt(getBlackholePowerEffect())
     if (isBigRipUpgradeActive(4)) interval /= 10
     if (player.replicanti.amount.gt(Number.MAX_VALUE)) interval = player.boughtDims ? Math.pow(player.achievements.includes("r107")?Math.max(player.replicanti.amount.log(2)/1024,1):1, -.25) : Decimal.pow(getReplSpeed(), Math.max(player.replicanti.amount.log10() - 308, 0)/308).times(interval)
-    if (player.masterystudies) {
-        if (player.masterystudies.includes("t273")) chance = Decimal.pow(chance, Math.pow(Math.log10(chance+1), 5))
-        if (player.masterystudies.includes("t332")) interval = Decimal.div(interval, player.galaxies)
-    }
-    var est = Decimal.div(Decimal.add(chance, 1).log(Math.E) * 1000, interval)
+    if (player.masterystudies) if (player.masterystudies.includes("t332")) interval = Decimal.div(interval, player.galaxies)
+    var est = Decimal.div((frequency ? frequency.times(Math.log10(2)/Math.log10(Math.E) * 1e3) : Decimal.add(chance, 1).log(Math.E) * 1e3), interval)
 
     var current = player.replicanti.amount.ln()
 
@@ -7430,10 +7430,8 @@ function gameLoop(diff) {
     if (player.replicanti.galaxybuyer === true && player.replicanti.amount.gte(getReplicantiLimit()) && !(player.timestudy.studies.includes(131)&&speedrunMilestonesReached<20)) {
         document.getElementById("replicantireset").click()
     }
-    if (player.masterystudies ? player.masterystudies.includes("t273") : false) {
-        chance = chance.times(100)
-        document.getElementById("replicantichance").innerHTML = "Replicate chance: "+getFullExpansion(chance.gt(1e12)?chance:Math.round(chance.toNumber()))+"%" + (isChanceAffordable() ? "<br>+1% Cost: "+shortenCosts(player.replicanti.chanceCost)+" IP" : "")
-    } else document.getElementById("replicantichance").innerHTML = "Replicate chance: "+getFullExpansion(Math.round(player.replicanti.chance*100))+"%" + (isChanceAffordable() ? "<br>+1% Cost: "+shortenCosts(player.replicanti.chanceCost)+" IP" : "")
+    chance = chance.times(100)
+    document.getElementById("replicantichance").innerHTML = "Replicate "+(frequency?"frequency: "+shorten(frequency)+"x":"chance: "+getFullExpansion(chance.gt(1e12)?chance:Math.round(chance.toNumber()))+"%") + (isChanceAffordable() ? "<br>+1% Cost: "+shortenCosts(player.replicanti.chanceCost)+" IP" : "")
     document.getElementById("replicantiinterval").innerHTML = "Interval: "+timeDisplayShort(Decimal.div(interval, 100), true, 3) + (isIntervalAffordable() ? "<br>-> "+timeDisplayShort(Decimal.times(interval, 9e-3), true, 3)+" Cost: "+shortenCosts(player.replicanti.intervalCost)+" IP" : "")
 
 

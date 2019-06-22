@@ -463,7 +463,7 @@
                     <tr>
                         <td><button class="timestudylocked" id="timestudy271" style='font-size:10px' onclick='buyMasteryStudy("t", 271)'>You can buy beyond 1ms interval upgrades but the cost starts to increase faster.</button></td>
                         <td><button class="timestudylocked" id="timestudy272" onclick='buyMasteryStudy("t", 272)'>Pick all paths on all 3-way splits in time studies.</button></td>
-                        <td><button class="timestudylocked" id="timestudy273" onclick='buyMasteryStudy("t", 273)'>Replicate chance is massively increased.</button></td>
+                        <td><button class="timestudylocked" id="timestudy273" onclick='buyMasteryStudy("t", 273)'>Replicate chance boosts itself.<br><span id="ts273Current"></span></button></td>
                     </tr>
                 </table>
                 <table class="table" id="studytable">
@@ -3473,7 +3473,7 @@
                                     <br>
                                     <span id="qc1cost"></span><br>
                                     <span id="qc1goal"></span><br>
-                                    Reward: Add 0.25x to electron gain multiplier and First & Second Dimensions boosts dilated time production. Currently: <span id="qc1reward"></span>x
+                                    Reward: Add 0.25x to electron gain multiplier and First & Second Dimensions boost dilated time production. Currently: <span id="qc1reward"></span>x
                                 </div>
                             </div>
                         </td>
@@ -4580,18 +4580,11 @@
 			</div>
 			<div class='quantumtab' id='electrons'>
 				You have <span id="normalGalaxies">0</span> normal galaxies.<br>
+				You sacrificed <span id='sacrificedGals'>0</span> galaxies.<br>
+				<button class='gluonupgrade storebtn' id='sacrificeGal' onclick='sacrificeGalaxy()' style='width:210px; height:90px'>Sacrifice <span id='sacrificeGals'>0</span> galaxies.<br>You gain <span id='electronsGainMult'>2</span> electrons each galaxy you sacrifice.</button><br>
+				<button class='storebtn' id='sacrificeAuto' onclick='toggleAutoQuantumContent("sacrifice")' style='width:210px'></button><br>
 				You have <span id="electronsAmount" style="font-size:35px">0</span> electrons.<br>
 				Raised to the power of <span id="electronsTranslation" style="font-size:35px">1.00</span>, multiplier per ten dimensions is currently <span id="electronsEffect" style="font-size:35px">2.00</span>x.<br>
-				You sacrificed <span id='sacrificedGals'>0</span> galaxies.<br>
-				<button class='storebtn' id='sacrifice1' onclick='sacrificeGalaxy(1)' style='width:250px'>Sacrifice 1 normal galaxy</button>
-				<button class='storebtn' id='sacrifice2' onclick='sacrificeGalaxy(2)' style='width:250px'>Sacrifice 10 normal galaxies</button><br>
-				<button class='storebtn' id='sacrifice3' onclick='sacrificeGalaxy(3)' style='width:250px'>Sacrifice 100 normal galaxies</button>
-				<button class='storebtn' id='sacrifice4' onclick='sacrificeGalaxy(4)' style='width:250px'>Sacrifice 1,000 normal galaxies</button><br>
-				<button class='storebtn' id='sacrifice5' onclick='sacrificeGalaxy(5)' style='width:250px'>Sacrifice 50%</button>
-				<button class='storebtn' id='sacrifice6' onclick='sacrificeGalaxy(6)' style='width:250px'>Sacrifice all</button><br>
-				<button class='storebtn' id='sacrificeAuto' onclick='toggleAutoQuantumContent("sacrifice")' style='width:250px'></button>
-				<br><br>
-				You will gain <span id='electronsGainMult'>2</span> electrons per galaxy when you sacrifice.<br>
 				<table class="table" align="center" style="margin: auto"><tr>
 					<td><button class='gluonupgrade storebtn' id='electronupg1' onclick='buyElectronUpg(1)'></button></td>
 					<td><button class='gluonupgrade storebtn' id='electronupg2' onclick='buyElectronUpg(2)'></button></td>
@@ -4741,7 +4734,7 @@
 					</tr>
 					<tr>
 						<td>They increase TP gain formula exponent from <span id="preNeutrinoBoost1"></span> to <span class="neutrinos" id="neutrinoBoost1" style="font-size:35px">1.0</span>.</td>
-						<td id="neutrinoBoostCell2" style="display:none">They boost QK gain multiplier by <span class="neutrinos" id="neutrinoBoost2" style="font-size:35px">1.0</span>x.</td>
+						<td id="neutrinoBoostCell2" style="display:none">They make "replicate chance boosts itself" stronger from ^<span id="preNeutrinoBoost2"></span> to <span class="neutrinos" id="neutrinoBoost2" style="font-size:35px">1.0</span>.</td>
 						<td id="neutrinoBoostCell3" style="display:none">They boost ??? by <span class="neutrinos" id="neutrinoBoost3" style="font-size:35px">1.0</span>x.</td>
 					</tr>
 					<tr>
