@@ -182,7 +182,7 @@ function buyManyInfinityDimension(tier) {
   if (player.infinityPoints.lt(dim.cost)) return false
   if (!player.infDimensionsUnlocked[tier-1]) return false
   if (player.eterc8ids == 0) return false
-  player.infinityPoints = player.infinityPoints.minus(dim.cost)
+  if (player.infinityPoints.lt(Decimal.pow(10, 2e13))) player.infinityPoints = player.infinityPoints.minus(dim.cost)
   dim.amount = dim.amount.plus(10);
   if (ECTimesCompleted("eterc12")) {
       dim.cost = Decimal.round(dim.cost.times(Math.pow(infCostMults[tier], 1-ECTimesCompleted("eterc12")*0.008)))
@@ -213,7 +213,7 @@ function buyMaxInfDims(tier) {
 
   var toBuy = Math.floor((player.infinityPoints.e - dim.cost.e) / Math.log10(costMult))
   dim.cost = dim.cost.times(Decimal.pow(costMult, toBuy-1))
-  player.infinityPoints = player.infinityPoints.minus(dim.cost)
+  if (player.infinityPoints.lt(Decimal.pow(10, 2e13))) player.infinityPoints = player.infinityPoints.minus(dim.cost)
   dim.cost = dim.cost.times(costMult)
   dim.amount = dim.amount.plus(10*toBuy);
   dim.power = dim.power.times(Decimal.pow(infPowerMults[tier], toBuy))

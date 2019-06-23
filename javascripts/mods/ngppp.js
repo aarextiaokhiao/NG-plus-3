@@ -405,8 +405,7 @@ function setupText() {
 		document.getElementById("todRow").insertCell(c).innerHTML=html
 		
 		html="<table class='table' align='center' style='margin: auto'><tr>"
-		for (var u=1;u<4;u++) html+="<td><button class='gluonupgrade unavailablebtn' id='"+color+"upg"+u+"' onclick='buyBranchUpg(\""+shorthand+"\", "+u+")'"+(u<3?" style='font-size:10px'":"")+">"+branchUpgrades[u-1]+"<br>Currently: <span id='"+color+"upg"+u+"current'>1</span>x<br>Cost: <span id='"+color+"upg"+u+"cost'>?</span> "+color+" quark spin</button></td>"
-		html+="</tr><tr><td colspan=3 style='text-align: center'><button class='storebtn' style='width: 190px' onclick='maxBranchUpg(\""+shorthand+"\")'>Max all upgrades</button></td>"
+		for (var u=1;u<4;u++) html+="<td style='vertical-align: 0'><button class='gluonupgrade unavailablebtn' id='"+color+"upg"+u+"' onclick='buyBranchUpg(\""+shorthand+"\", "+u+")'"+(u<3?" style='font-size:10px'":"")+">"+branchUpgrades[u-1]+"<br>Currently: <span id='"+color+"upg"+u+"current'>1</span>x<br>Cost: <span id='"+color+"upg"+u+"cost'>?</span> "+color+" quark spin</button>"+(u==2?"<br><button class='storebtn' style='width: 190px' onclick='maxBranchUpg(\""+shorthand+"\")'>Max all upgrades</button>":"")+"</td>"
 		html+="</tr></table>"
 		document.getElementById(color+"Branch").innerHTML=html
 	}
@@ -1245,10 +1244,12 @@ function maxAllID() {
 		if (player.infDimensionsUnlocked[t-1]&&player.infinityPoints.gte(dim.cost)) {
 			var costMult=infCostMults[t]
 			if (ECTimesCompleted("eterc12")) costMult=Math.pow(costMult,1-ECTimesCompleted("eterc12")*0.008)
-			var toBuy=Math.max(Math.floor(player.infinityPoints.div(9-t).div(dim.cost).times(costMult-1).add(1).log(costMult)),1)
-			var toSpend=Decimal.pow(costMult,toBuy).sub(1).div(costMult-1).times(dim.cost).round()
-			if (toSpend.gt(player.infinityPoints)) player.infinityPoints=new Decimal(0)
-			else player.infinityPoints=player.infinityPoints.sub(toSpend)
+			if (player.infinityPoints.lt(Decimal.pow(10, 2e13))) {
+				var toBuy=Math.max(Math.floor(player.infinityPoints.div(9-t).div(dim.cost).times(costMult-1).add(1).log(costMult)),1)
+				var toSpend=Decimal.pow(costMult,toBuy).sub(1).div(costMult-1).times(dim.cost).round()
+				if (toSpend.gt(player.infinityPoints)) player.infinityPoints=new Decimal(0)
+				else player.infinityPoints=player.infinityPoints.sub(toSpend)
+			} else var toBuy = Math.floor(player.infinityPoints.div(dim.cost).log(costMult))
 			dim.amount=dim.amount.add(toBuy*10)
 			dim.baseAmount+=toBuy*10
 			dim.power=dim.power.times(Decimal.pow(infPowerMults[t],toBuy))

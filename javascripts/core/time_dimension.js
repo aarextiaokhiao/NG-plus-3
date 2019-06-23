@@ -4,7 +4,6 @@ function getTimeDimensionPower(tier) {
   if (player.currentEternityChall == "eterc11") return new Decimal(1)
   if (isEternityBroke()) {
     var mult = Decimal.div(1000,player.tickspeed).pow(0.000005)
-    if (mult.gt("1e120000")) mult = Decimal.pow(10, Math.pow(mult.log10()/12e4,0.5)*12e4)
     if (player.timestudy.studies.includes(11) && tier == 1) mult = mult.times(getTS11Mult())
     if (player.quantum.breakEternity.upgrades.includes(1) && tier < 5) mult = mult.times(getBreakUpgMult(1))
     if (player.quantum.breakEternity.upgrades.includes(4) && tier > 3 && tier < 7) mult = mult.times(getBreakUpgMult(4))
@@ -25,9 +24,10 @@ function getTimeDimensionPower(tier) {
 
   if (player.timestudy.studies.includes(11) && tier == 1) ret = ret.times(getTS11Mult())
   if (player.achievements.includes("r105")) {
-      var mult = Decimal.div(1000,player.tickspeed).pow(0.000005)
-      if (mult.gt("1e120000")) mult = Decimal.pow(10, Math.pow(mult.log10()/12e4,0.5)*12e4)
-      ret = ret.times(mult)
+      var multLog=(3-player.tickspeed.log10())*0.000005
+      if (multLog>=12e8) multLog = Math.pow(multLog*144e10,1/3)
+      else if (multLog>=12e4) multLog = Math.pow(multLog*12e4,0.5)
+      ret = ret.times(Decimal.pow(10,multLog))
   }
   if (player.boughtDims) {
       if (player.achievements.includes('r117')) {

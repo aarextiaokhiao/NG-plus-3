@@ -1037,7 +1037,7 @@ function getEternitied() {
 
 
 
-function getGalaxyCostScalingStart(galaxies) {
+function getGalaxyCostScalingStart(galaxies, scalingSpeed) {
     if (player.currentEternityChall == "eterc5") return 0
     var n = 100+ECTimesCompleted("eterc5")*5
     if (player.timestudy.studies.includes(223)) n += 7
@@ -1049,13 +1049,14 @@ function getGalaxyCostScalingStart(galaxies) {
 		if (GUBought("rg5")) push *= 1.13
 		if (GUBought("gb5")) push *= 1+Math.sqrt(player.replicanti.galaxies)/550
 		if (GUBought("br5")) push *= 1+Math.min(Math.sqrt(player.dilation.tachyonParticles.max(1).log10())*0.013,0.14)
+		push /= scalingSpeed
 		n -= Math.ceil((galaxies-1399)/push)
 	}
 
-    return Math.max(n,0)
+    return scalingSpeed > 1 ? n : Math.max(n,0)
 }
 
-function getRemoteGalaxyScalingStart() {
+function getRemoteGalaxyScalingStart(galaxies) {
 	var n = 800
 	if (player.masterystudies) {
 		if (player.masterystudies.includes("t251")) n += Math.floor(player.resets/3e3)
@@ -1063,46 +1064,57 @@ function getRemoteGalaxyScalingStart() {
 		if (player.masterystudies.includes("t253")) n += Math.floor(extraReplGalaxies/9)*20
 		if (player.masterystudies.includes("t301")) n += Math.floor(extraReplGalaxies/4.15)
 		if (player.masterystudies.includes("d12")) n += getNanofieldRewardEffect(7)
+		if (galaxies > 99998) n -= galaxies - 99998
 	}
 	return n
 }
 
-function getGalaxyRequirement(offset=0) {
-    let galaxies = player.galaxies+offset
-    let mult = getGalaxyCostIncrease(galaxies)
-    let amount = 80 + galaxies * mult
-    if (player.currentChallenge == "challenge4") amount += 19
-    else if (player.galacticSacrifice) amount -= (player.galacticSacrifice.upgrades.includes(22) && galaxies > 0) ? 80 : 60
-    if (player.tickspeedBoosts != undefined) amount += 10
+function getGalaxyRequirement(offset=0, display) {
+	let galaxies = player.galaxies+offset
+	let mult = getGalaxyCostIncrease(galaxies)
+	let amount = 80 + galaxies * mult
+	let scaling = 0
+	if (player.currentChallenge == "challenge4") amount += 19
+	else if (player.galacticSacrifice) amount -= (player.galacticSacrifice.upgrades.includes(22) && galaxies > 0) ? 80 : 60
+	if (player.tickspeedBoosts != undefined) amount += 10
 
-    if (isEternityBroke()) {
+	if (isEternityBroke()) {
 		amount *= 50
 		if (player.quantum.breakEternity.upgrades.includes(2)) amount /= getBreakUpgMult(2)
 	}
 	if (!player.galacticSacrifice&&!player.boughtDims) {
-		let galaxyCostScalingStart = getGalaxyCostScalingStart(galaxies)
+		let scalingSpeed = 1
+		if (galaxies > 99998) {
+			scalingSpeed = (player.galaxies - 99997) / 1
+			scaling = 4
+		}
+		let galaxyCostScalingStart = getGalaxyCostScalingStart(galaxies, scalingSpeed)
 		if (galaxies >= galaxyCostScalingStart) {
-			let speed = 1
-			if (GUBought("rg6")) speed = 0.867
+			let speed = scalingSpeed
+			if (GUBought("rg6")) speed *= 0.867
 			if (GUBought("gb6")) speed /= 1+Math.pow(player.infinityPower.max(1).log10(),0.25)/2810
 			if (GUBought("br6")) speed /= 1+player.meta.resets/340
 			amount += (galaxies-galaxyCostScalingStart+2)*(galaxies-galaxyCostScalingStart+1)*speed
+			scaling = Math.max(scaling, 1)
 		}
-		let remoteGalaxyScalingStart = getRemoteGalaxyScalingStart()
+		let remoteGalaxyScalingStart = getRemoteGalaxyScalingStart(galaxies)
 		if (galaxies >= remoteGalaxyScalingStart) {
-			let speed2 = 1
-			if (GUBought("rg7")) speed2 = 0.9
+			let speed2 = scalingSpeed
+			if (GUBought("rg7")) speed2 *= 0.9
 			if (GUBought("gb7")) speed2 /= 1+Math.log10(1+player.infinityPoints.max(1).log10())/100
 			if (GUBought("br7")) speed2 /= 1+Math.log10(1+player.eternityPoints.max(1).log10())/80
 			amount = amount * Math.pow(GUBought("rg1") ? 1.001 : 1.002, (galaxies-remoteGalaxyScalingStart-1) * speed2)
+			scaling = Math.max(scaling, 2)
 		}
+		if (galaxies > 1399) scaling = Math.max(scaling, 3)
 	}
 	amount = Math.floor(amount)
 
-    if (player.infinityUpgrades.includes("resetBoost")) amount -= 9;
-    if (player.challenges.includes("postc5")) amount -= 1;
-    if (player.infinityUpgradesRespecced != undefined) amount -= getInfUpgPow(6)
-    return amount;
+	if (player.infinityUpgrades.includes("resetBoost")) amount -= 9
+	if (player.challenges.includes("postc5")) amount -= 1
+	if (player.infinityUpgradesRespecced != undefined) amount -= getInfUpgPow(6)
+	if (display) return {amount: amount, scaling: scaling}
+	return amount
 }
 
 function getGalaxyCostIncrease() {
@@ -1225,7 +1237,8 @@ function updateDimensions() {
         document.getElementById("resetLabel").textContent = 'Dimension ' + (isShift ? "Shift" : player.resets < getSupersonicStart() ? "Boost" : "Supersonic") + ' ('+ getFullExpansion(player.resets) +'): requires ' + getFullExpansion(shiftRequirement.amount) + " " + DISPLAY_NAMES[shiftRequirement.tier] + " Dimensions"
         document.getElementById("softReset").textContent = "Reset the game for a " + (isShift ? "new dimension" : "boost")
         var totalReplGalaxies = player.replicanti.galaxies + extraReplGalaxies
-        document.getElementById("secondResetLabel").textContent = ((player.galacticSacrifice || player.boughtDims) ? 'Antimatter ' : player.galaxies < 1400 ? (player.galaxies < getGalaxyCostScalingStart() ? '' : player.galaxies < getRemoteGalaxyScalingStart() ? 'Distant ' : 'Remote ') + 'Antimatter' : 'Dark Matter') + ' Galaxies ('+ getFullExpansion(player.galaxies) + ((totalReplGalaxies + player.dilation.freeGalaxies) > 0 ? ' + ' + getFullExpansion(totalReplGalaxies)  + (player.dilation.freeGalaxies > 0 ? ' + ' + getFullExpansion(Math.floor(player.dilation.freeGalaxies)) : '') : '') +'): requires ' + getFullExpansion(getGalaxyRequirement()) + ' '+DISPLAY_NAMES[player.currentChallenge === 'challenge4' ? 6 : 8]+' Dimensions';
+        var nextGal = getGalaxyRequirement(0, true)
+        document.getElementById("secondResetLabel").textContent = (nextGal.scaling > 3 ? "Ghostly" : nextGal.scaling > 2 ? "Dark Matter" : (["", "Distant ", "Remote "])[nextGal.scaling] + "Antimatter") + ' Galaxies ('+ getFullExpansion(player.galaxies) + ((totalReplGalaxies + player.dilation.freeGalaxies) > 0 ? ' + ' + getFullExpansion(totalReplGalaxies)  + (player.dilation.freeGalaxies > 0 ? ' + ' + getFullExpansion(Math.floor(player.dilation.freeGalaxies)) : '') : '') +'): requires ' + getFullExpansion(nextGal.amount) + ' '+DISPLAY_NAMES[player.currentChallenge === 'challenge4' ? 6 : 8]+' Dimensions';
     }
 
     if (canBuyDimension(3) || player.currentEternityChall == "eterc9") {
@@ -2165,14 +2178,14 @@ function updateInfCosts() {
     if (document.getElementById("replicantis").style.display == "block" && document.getElementById("infinity").style.display == "block") {
         let replGalOver = 0
         if (player.timestudy.studies.includes(131)) replGalOver += Math.floor(player.replicanti.gal / 2)
-        document.getElementById("replicantimax").innerHTML = (player.replicanti.gal<3e3?"Max Replicanti galaxies":"Distant Replicated Galaxies")+": "+getFullExpansion(player.replicanti.gal)+(replGalOver > 1 ? "+" + getFullExpansion(replGalOver) : "")+"<br>+1 Cost: "+shortenCosts(player.replicanti.galCost.div(player.timestudy.studies.includes(233)?player.replicanti.amount.pow(0.3):1))+" IP"
+        document.getElementById("replicantimax").innerHTML = (player.replicanti.gal<3e3?"Max Replicanti galaxies":(player.replicanti.gal<6e4?"Distant":"Ghostly")+" Replicated Galaxies")+": "+getFullExpansion(player.replicanti.gal)+(replGalOver > 1 ? "+" + getFullExpansion(replGalOver) : "")+"<br>+1 Cost: "+shortenCosts(getRGCost())+" IP"
         document.getElementById("replicantiunlock").innerHTML = "Unlock Replicantis<br>Cost: "+shortenCosts(1e140)+" IP"
         document.getElementById("replicantireset").innerHTML = "Reset replicanti amount, but get a free galaxy<br>" + getFullExpansion(player.replicanti.galaxies) + (extraReplGalaxies ? "+" + getFullExpansion(extraReplGalaxies) : "") + " replicated galax" + ((player.replicanti.galaxies + extraReplGalaxies) == 1 ? "y" : "ies") + " created."
 
         document.getElementById("replicantichance").className = (player.infinityPoints.gte(player.replicanti.chanceCost) && isChanceAffordable()) ? "storebtn" : "unavailablebtn"
         document.getElementById("replicantiinterval").className = (player.infinityPoints.gte(player.replicanti.intervalCost) && ((player.replicanti.interval !== 50) || player.timestudy.studies.includes(22)) && (player.replicanti.interval !== 1)) ? "storebtn" : "unavailablebtn"
-        document.getElementById("replicantimax").className = (player.infinityPoints.gte(player.replicanti.galCost)) ? "storebtn" : "unavailablebtn"
-        document.getElementById("replicantireset").className = (player.replicanti.galaxies < Math.floor(player.replicanti.gal * (player.timestudy.studies.includes(131) ? 1.5 : 1)) && player.replicanti.amount.gte(getReplicantiLimit())) ? "storebtn" : "unavailablebtn"
+        document.getElementById("replicantimax").className = (player.infinityPoints.gte(getRGCost())) ? "storebtn" : "unavailablebtn"
+        document.getElementById("replicantireset").className = (player.replicanti.galaxies < getMaxRG() && player.replicanti.amount.gte(getReplicantiLimit())) ? "storebtn" : "unavailablebtn"
         document.getElementById("replicantiunlock").className = (player.infinityPoints.gte(1e140)) ? "storebtn" : "unavailablebtn"
     }
 
@@ -2337,37 +2350,40 @@ function isIntervalAffordable() {
 	return player.replicanti.interval > (player.timestudy.studies.includes(22) || player.boughtDims ? 1 : 50)
 }
 
-function increaseRGCost(bulk) {
-	if (inQC(5)) {
-		player.replicanti.galCost = player.replicanti.galCost.pow(Math.pow(1.2, bulk))
-		return
-	}
-	var increase = 0
-	var s = {q: 2.5, c: 22.5}
-	if (player.currentEternityChall == "eterc6") s = {q: 1, c: 1}
-	if (player.replicanti.gal > 99) s = {q: s.q + 25, c: s.c - 4775}
-	if (player.replicanti.gal > 399) {
-		if (player.exdilation != undefined) for (var g=0; g<bulk; g++) increase += Math.pow(player.replicanti.gal - 390 + g, 2)
-		if (player.meta != undefined) {
-			var isReduced = false
-			if (player.masterystudies != undefined) if (player.masterystudies.includes("t266")) isReduced = true
-			if (isReduced) {
-				s = {q: s.q + 1500, c: s.c - 1186500}
-				if (player.replicanti.gal > 2998) s = {q: s.q + 5e3, c: s.c - 29945e3}
-			} else for (var g=0; g<bulk; g++) increase += 5 * Math.floor(Math.pow(1.2, player.replicanti.gal - 395 + g))
+function getRGCost(offset=0) {
+	let ret = player.replicanti.galCost
+	if (offset > 0) {
+		if (inQC(5)) return player.replicanti.galCost.pow(Math.pow(1.2, offset))
+		else {
+			let increase = 0
+			if (player.currentEternityChall == "eterc6") increase = offset * (2.5 * (offset + player.replicanti.gal * 2) + 27.5)
+			else increase = offset * (2.5 * (offset + player.replicanti.gal * 2) + 27.5)
+			if (player.replicanti.gal + offset > 99) increase += (offset - Math.max(99 - player.replicanti.gal, 0)) * (25 * (offset - Math.max(99 - player.replicanti.gal, 0) + Math.max(player.replicanti.gal, 99) * 2) - 4725)
+			if (player.replicanti.gal + offset > 399) {
+				if (player.exdilation != undefined) for (var g=0; g<Math.max(399 - player.replicanti.gal, 0) + offset; g++) increase += Math.pow(player.replicanti.gal - 389 + g, 2)
+				if (player.meta != undefined) {
+					var isReduced = false
+					if (player.masterystudies != undefined) if (player.masterystudies.includes("t266")) isReduced = true
+					if (isReduced) {
+						increase += (offset - Math.max(399 - player.replicanti.gal, 0)) * (1500 * (offset - Math.max(399 - player.replicanti.gal, 0) + Math.max(player.replicanti.gal, 399) * 2) - 1183500)
+						if (player.replicanti.gal + offset > 2998) increase += (offset - Math.max(2998 - player.replicanti.gal, 0)) * (5e3 * (offset - Math.max(2998 - player.replicanti.gal, 0) + Math.max(player.replicanti.gal, 2998) * 2) - 29935e3)
+						if (player.replicanti.gal + offset > 6e4 - 2) increase += (offset - Math.max(6e4 - 1 - player.replicanti.gal, 0)) * (1e6 * (offset - Math.max(6e4 - 1 - player.replicanti.gal, 0) + Math.max(player.replicanti.gal, 6e4 - 1) * 2) - 6e10 + 1e6)
+					} else for (var g=0; g<Math.max(399 - player.replicanti.gal, 0) + offset; g++) increase += 5 * Math.floor(Math.pow(1.2, player.replicanti.gal - 394 + g))
+				}
+			}
+			ret = ret.times(Decimal.pow(10, increase))
 		}
 	}
-	increase += bulk * (s.q * (bulk + player.replicanti.gal * 2) + s.c)
-	player.replicanti.galCost = player.replicanti.galCost.times(Decimal.pow(10, increase))
+	if (player.timestudy.studies.includes(233)) ret = ret.dividedBy(player.replicanti.amount.pow(0.3))
+	return ret
 }
 
 function upgradeReplicantiGalaxy() {
-	let cost = player.replicanti.galCost
-	if (player.timestudy.studies.includes(233)) cost = cost.dividedBy(player.replicanti.amount.pow(0.3))
+	var cost = getRGCost()
 	if (player.infinityPoints.gte(cost) && player.eterc8repl !== 0) {
 		player.infinityPoints = player.infinityPoints.minus(cost)
+		player.replicanti.galCost = getRGCost(1)
 		player.replicanti.gal += 1
-		increaseRGCost(1)
 		if (player.currentEternityChall == "eterc8") player.eterc8repl -= 1
 		document.getElementById("eterc8repl").textContent = "You have "+player.eterc8repl+" purchases left."
 		return true
@@ -2377,12 +2393,43 @@ function upgradeReplicantiGalaxy() {
 
 var extraReplGalaxies = 0
 function replicantiGalaxy() {
-	var maxGal=Math.floor(player.replicanti.gal*(player.timestudy.studies.includes(131)?1.5:1))
+	var maxGal=getMaxRG()
 	if (player.replicanti.amount.lt(getReplicantiLimit())||player.replicanti.galaxies==maxGal) return
 	player.replicanti.galaxies=Math.min(player.galaxyMaxBulk?1/0:player.replicanti.galaxies+1,maxGal)
 	player.replicanti.amount=Decimal.div(player.achievements.includes("r126")?player.replicanti.amount:1,Number.MAX_VALUE).max(1)
 	player.galaxies-=1
 	galaxyReset()
+}
+
+function getMaxRG() {
+	let ret=player.replicanti.gal
+	if (player.timestudy.studies.includes(131)) ret+=Math.floor(ret*0.5)
+	return ret
+}
+
+function autoBuyRG() {
+	if (!player.infinityPoints.gte(getRGCost())) return
+	let increment = 1
+	while (player.infinityPoints.gte(getRGCost(increment - 1))) increment *= 2
+	let toBuy = 0
+	while (increment >= 1) {
+		if (player.infinityPoints.gte(getRGCost(toBuy + increment - 1))) toBuy += increment
+		increment /= 2
+	}
+	let newIP = player.infinityPoints
+	let cost = getRGCost(toBuy - 1)
+	let toBuy2 = toBuy
+	while (toBuy > 0 && newIP.div(cost).lt(1e16)) {
+		if (newIP.gte(cost)) newIP = newIP.sub(cost)
+		else {
+			newIP = player.infinityPoints.sub(cost)
+			toBuy2--
+		}
+		toBuy--
+	}
+	player.replicanti.infinityPoints = newIP
+	player.replicanti.galCost = getRGCost(toBuy2)
+	player.replicanti.gal += toBuy2
 }
 
 function updateExtraReplGalaxies() {
@@ -4902,9 +4949,7 @@ function bigCrunch(autoed) {
             while (player.infinityPoints.gte(player.replicanti.intervalCost) && player.currentEternityChall !== "eterc8" && isIntervalAffordable()) upgradeReplicantiInterval()
         }
 
-        if (getEternitied() >= 80 && player.replicanti.auto[2] && player.currentEternityChall !== "eterc8") {
-            while (player.infinityPoints.gte(player.replicanti.galCost)) upgradeReplicantiGalaxy()
-        }
+        if (getEternitied() >= 80 && player.replicanti.auto[2] && player.currentEternityChall !== "eterc8") autoBuyRG()
 
         Marathon2 = 0;
 
@@ -6719,9 +6764,7 @@ setInterval(function() {
         while (player.infinityPoints.gte(player.replicanti.intervalCost) && player.currentEternityChall !== "eterc8" && isIntervalAffordable()) upgradeReplicantiInterval()
     }
 
-    if (getEternitied() >= 80 && player.replicanti.auto[2] && player.currentEternityChall !== "eterc8") {
-        while (upgradeReplicantiGalaxy()) continue
-    }
+    if (getEternitied() >= 80 && player.replicanti.auto[2] && player.currentEternityChall !== "eterc8") autoBuyRG()
 
     document.getElementById("eterc1goal").textContent = "Goal: "+shortenCosts(new Decimal("1e1800").times(new Decimal("1e200").pow(ECTimesCompleted("eterc1"))).max(new Decimal("1e1800"))) + " IP"
     document.getElementById("eterc1completed").textContent = "Completed "+ECTimesCompleted("eterc1")+" times."
