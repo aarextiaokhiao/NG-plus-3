@@ -425,7 +425,7 @@ function updateNewPlayer(reseted) {
         player.eternityBuyer.slowStop = false
         player.eternityBuyer.slowStopped = false
         player.eternityBuyer.ifAD = false
-        player.eternityBuyer.presets = {on: false, autoDil: false, selected: 1, left: 1, order: []}
+        player.eternityBuyer.presets = {on: false, autoDil: false, selected: 0, left: 1, order: []}
         player.quantum.autobuyer = {
             enabled: false,
             limit: 1,
@@ -977,15 +977,11 @@ function showTab(tabName, init) {
             if (document.getElementById('timestudies') !== "none" || document.getElementById('masterystudies') !== "none" || document.getElementById('dilation') !== "none" || document.getElementById("blackhole") !== "none") resizeCanvas()
             if (document.getElementById("dilation") !== "none") requestAnimationFrame(drawAnimations)
             if (document.getElementById("blackhole") !== "none") requestAnimationFrame(drawBlackhole)
+            if (document.getElementById("autoEternity").style.display === "block") loadAP()
         }
         if (tabName=="quantumtab") {
             if (document.getElementById('uquarks') !== "none") resizeCanvas()
             if (document.getElementById("uquarks") !== "none") requestAnimationFrame(drawQuarkAnimation)
-        }
-        if (tabName=="ghostify") {
-            document.getElementById("neutrinoUpg1Cost").textContent = shortenDimensions(neutrinoUpgCosts[1])
-            document.getElementById("neutrinoUpg2Cost").textContent = shortenDimensions(neutrinoUpgCosts[2])
-            document.getElementById("neutrinoUpg3Cost").textContent = shortenDimensions(neutrinoUpgCosts[3])
         }
     }
     if (!init) closeToolTip();
@@ -1064,7 +1060,7 @@ function getRemoteGalaxyScalingStart(galaxies) {
 		if (player.masterystudies.includes("t253")) n += Math.floor(extraReplGalaxies/9)*20
 		if (player.masterystudies.includes("t301")) n += Math.floor(extraReplGalaxies/4.15)
 		if (player.masterystudies.includes("d12")) n += getNanofieldRewardEffect(7)
-		if (galaxies > 99998) n -= galaxies - 99998
+		if (galaxies > 1/0) n -= galaxies - 1/0
 	}
 	return n
 }
@@ -1084,8 +1080,8 @@ function getGalaxyRequirement(offset=0, display) {
 	}
 	if (!player.galacticSacrifice&&!player.boughtDims) {
 		let scalingSpeed = 1
-		if (galaxies > 99998) {
-			scalingSpeed = (player.galaxies - 99997) / 1
+		if (galaxies > 1/0) {
+			scalingSpeed = 1
 			scaling = 4
 		}
 		let galaxyCostScalingStart = getGalaxyCostScalingStart(galaxies, scalingSpeed)
@@ -3396,7 +3392,7 @@ function gainedInfinityPoints(next) {
 }
 
 function getIPMult() {
-	let mult = player.infMult.times(kongIPMult);
+	let mult = player.infMult
 	if (player.galacticSacrifice&&player.tickspeedBoosts==undefined) {
 		if (player.achievements.includes("r43")) mult = mult.times(1.25);
 		if (player.achievements.includes("r55")) mult = mult.times(Math.max(Math.log10(6000/player.bestInfinityTime), 1));
@@ -8390,6 +8386,7 @@ function showEternityTab(tabName, init) {
         if (tabName === 'timestudies' || tabName === 'masterystudies' || tabName === 'dilation' || tabName === 'blackhole') resizeCanvas()
         if (tabName === "dilation") requestAnimationFrame(drawAnimations)
         if (tabName === "blackhole") requestAnimationFrame(drawBlackhole)
+        if (tabName === "autoEternity" && document.getElementById("eternitystore").style.display === "block") loadAP()
     }
 	closeToolTip()
 }

@@ -1244,7 +1244,7 @@ function maxAllID() {
 		if (player.infDimensionsUnlocked[t-1]&&player.infinityPoints.gte(dim.cost)) {
 			var costMult=infCostMults[t]
 			if (ECTimesCompleted("eterc12")) costMult=Math.pow(costMult,1-ECTimesCompleted("eterc12")*0.008)
-			if (player.infinityPoints.lt(Decimal.pow(10, 2e13))) {
+			if (player.infinityPoints.lt(Decimal.pow(10, 1e10))) {
 				var toBuy=Math.max(Math.floor(player.infinityPoints.div(9-t).div(dim.cost).times(costMult-1).add(1).log(costMult)),1)
 				var toSpend=Decimal.pow(costMult,toBuy).sub(1).div(costMult-1).times(dim.cost).round()
 				if (toSpend.gt(player.infinityPoints)) player.infinityPoints=new Decimal(0)
@@ -2048,6 +2048,35 @@ function toggleSlowStop() {
 	player.eternityBuyer.slowStop = !player.eternityBuyer.slowStop
 	player.eternityBuyer.slowStopped = false
 	document.getElementById("slowstop").textContent = "Stop auto-dilate if a little bit of TP is gained: O" + (player.eternityBuyer.slowStop ? "N" : "FF")
+}
+
+var apLoaded = false
+var apInterval
+var loadedAPs = 0
+function loadAP() {
+	if (apLoaded) return
+	apLoaded = true
+	document.getElementById("automatedPresets").innerHTML = ""
+	occupied = false
+	apInterval = setInterval(function() {
+		if (occupied) return
+		occupied = true
+		if (loadedAPs == 100) {
+			clearInterval(apInterval)
+			return
+		} else if (!onLoading) {
+			latestRow = document.getElementById("automatedPresets").insertRow(loadedAPs)
+			onLoading = true
+		}
+		try {
+			latestRow.innerHTML = '<td id="apselected'+(loadedAPs+1)+'"></td><td><b id="apname'+(loadedAPs+1)+'">Test</b><br># of eternities: <input id="apeternities'+(loadedAPs+1)+'" type="text" onchange="changeAPEternities('+(loadedAPs+1)+')" value=2></input><button class="storebtn" onclick="selectNextAP('+(loadedAPs+1)+')">Select next</button> <button class="storebtn" onclick="moveAP('+(loadedAPs+1)+', -1)">Move up</button> <button class="storebtn" onclick="moveAP('+(loadedAPs+1)+', 1)">Move down</button> <button class="storebtn" onclick="replaceAP('+(loadedAPs+1)+')">Replace</button> <button class="storebtn"onclick="removeAP('+(loadedAPs+1)+')">Remove</button></td>'
+			if (loadedAPs < 1) document.getElementById("apselected1").textContent = ">"
+			document.getElementById("apname"+(loadedAPs+1)).textContent = "#" + (loadedAPs + 1)
+			loadedAPs++
+			onLoading = false
+		} catch (_) {}
+		occupied = false
+	}, 0)
 }
 
 function toggleBigRipConf() {
@@ -3039,7 +3068,7 @@ function updateGhostifyTabs() {
 		}
 		document.getElementById("neutrinoUpg1Pow").textContent=getNU1Pow()
 		document.getElementById("neutrinoUpg3Pow").textContent=shorten(getNU3Pow())
-		for (var u=1; u<4; u++) {
+		for (var u=1; u<10; u++) {
 			if (player.ghostify.neutrinos.upgrades.includes(u)) document.getElementById("neutrinoUpg" + u).className = "gluonupgradebought neutrinoupg"
 			else if (player.ghostify.neutrinos.electron.add(player.ghostify.neutrinos.mu).round().add(player.ghostify.neutrinos.tau).round().gte(neutrinoUpgCosts[u])) document.getElementById("neutrinoUpg" + u).className = "gluonupgrade neutrinoupg"
 			else document.getElementById("neutrinoUpg" + u).className = "gluonupgrade unavailablebtn"
@@ -3054,13 +3083,14 @@ function onNotationChangeNeutrinos() {
 	document.getElementById("neutrinoMultUpgCost").textContent = shortenDimensions(3)
 	document.getElementById("ghpMult").textContent = shortenDimensions(Decimal.pow(2, player.ghostify.multPower - 1))
 	document.getElementById("ghpMultUpgCost").textContent = "???"
+	for (var u=1; u<10; u++) document.getElementById("neutrinoUpg"+u+"Cost").textContent=shortenDimensions(neutrinoUpgCosts[u])
 }
 
 function getNeutrinoGain() {
 	return Decimal.pow(5, player.ghostify.neutrinos.multPower - 1)
 }
 
-var neutrinoUpgCosts = [null, 1e6, 1e7, 1e8]
+var neutrinoUpgCosts = [null, 1e6, 1e7, 1e8, 1e9, 1/0, 1/0, 1/0, 1/0, 1/0]
 function buyNeutrinoUpg(id) {
 	var sum=player.ghostify.neutrinos.electron.add(player.ghostify.neutrinos.mu).add(player.ghostify.neutrinos.tau).round()
 	var cost=new Decimal(neutrinoUpgCosts[id])

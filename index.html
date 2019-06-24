@@ -1060,66 +1060,6 @@
                             <div style="height:75px"><b>Preset automation</b><br><button class="storebtn" onclick="toggleDilPreset()">Enable</button><br>Eternities left to select the next preset: 2</div>
                             <div style="height:225px; overflow-y:auto">
                                 <table id='automatedPresets'>
-                                    <tr>
-                                        <td>></td>
-                                        <td>
-                                            <b>Test</b><br>
-                                            # of eternities: <input type="text" value=2></input>
-                                            <button class="storebtn">Select next</button>
-                                            <button class="storebtn">Move up</button>
-                                            <button class="storebtn">Move down</button>
-                                            <button class="storebtn">Replace</button>
-                                            <button class="storebtn">Remove</button>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td></td>
-                                        <td>
-                                            <b>Test</b><br>
-                                            # of eternities: <input type="text" value=2></input>
-                                            <button class="storebtn">Select next</button>
-                                            <button class="storebtn">Move up</button>
-                                            <button class="storebtn">Move down</button>
-                                            <button class="storebtn">Replace</button>
-                                            <button class="storebtn">Remove</button>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td></td>
-                                        <td>
-                                            <b>Test</b><br>
-                                            # of eternities: <input type="text" value=2></input>
-                                            <button class="storebtn">Select next</button>
-                                            <button class="storebtn">Move up</button>
-                                            <button class="storebtn">Move down</button>
-                                            <button class="storebtn">Replace</button>
-                                            <button class="storebtn">Remove</button>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td></td>
-                                        <td>
-                                            <b>Test</b><br>
-                                            # of eternities: <input type="text" value=2></input>
-                                            <button class="storebtn">Select next</button>
-                                            <button class="storebtn">Move up</button>
-                                            <button class="storebtn">Move down</button>
-                                            <button class="storebtn">Replace</button>
-                                            <button class="storebtn">Remove</button>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td></td>
-                                        <td>
-                                            <b>Test</b><br>
-                                            # of eternities: <input type="text" value=2></input>
-                                            <button class="storebtn">Select next</button>
-                                            <button class="storebtn">Move up</button>
-                                            <button class="storebtn">Move down</button>
-                                            <button class="storebtn">Replace</button>
-                                            <button class="storebtn">Remove</button>
-                                        </td>
-                                    </tr>
                                 </table>
                             </div>
                         </td>
@@ -4734,8 +4674,13 @@
 					</tr>
 					<tr>
 						<td>They increase TP gain formula exponent from <span id="preNeutrinoBoost1"></span> to <span class="neutrinos" id="neutrinoBoost1" style="font-size:35px">1.0</span>.</td>
-						<td id="neutrinoBoostCell2" style="display:none">They make "replicate chance boosts itself" stronger from ^<span id="preNeutrinoBoost2"></span> to <span class="neutrinos" id="neutrinoBoost2" style="font-size:35px">1.0</span>.</td>
-						<td id="neutrinoBoostCell3" style="display:none">They boost ??? by <span class="neutrinos" id="neutrinoBoost3" style="font-size:35px">1.0</span>x.</td>
+						<td id="neutrinoBoostCell2" style="display: none">They make "replicate chance boosts itself" stronger from ^<span id="preNeutrinoBoost2"></span> to <span class="neutrinos" id="neutrinoBoost2" style="font-size:35px">1.0</span>.</td>
+						<td id="neutrinoBoostCell3" style="display: none">They make Remote Antimatter Galaxies scaling starts <span class="neutrinos" id="neutrinoBoost3" style="font-size:35px">0</span> later.</td>
+					</tr>
+					<tr id="neutrinoBoostRow2" style="display: none">
+						<td>They boost Meta-Dimension Boosts from <span id="preNeutrinoBoost4">1.0</span>x to <span class="neutrinos" id="neutrinoBoost4" style="font-size:35px">1.0</span>x.</td>
+						<td id="neutrinoBoostCell5">They boost preon energy production by <span class="neutrinos" id="neutrinoBoost5" style="font-size:35px">1.0</span>x.</td>
+						<td id="neutrinoBoostCell6">In Big Rips, they divide replicate interval by <span class="neutrinos" id="neutrinoBoost6" style="font-size:35px">1.0</span>x.</td>
 					</tr>
 					<tr>
 						<td><button id="neutrinoUnlock" class="gluonupgrade unavailablebtn">Unlock a new boost based on your neutrinos.<br>Cost: <span id="neutrinoUnlockCost">2</span> GHP</button></td>
@@ -4743,14 +4688,19 @@
 						<td><button id="ghpMultUpg" class="gluonupgrade unavailablebtn">You gain 2x more GHP.<br>Currently: <span id="ghpMult"></span>x<br>Cost: <span id="ghpMultUpgCost">???</span> of any neutrinos</button></td>
 					</tr>
 					<tr>
-						<td><button class="gluonupgrade unavailablebtn" id="neutrinoUpg1" onclick="buyNeutrinoUpg(1)" style="font-size: 10px">Meta-Dimension Boosts cost less.<br>(Constant in Big Rip runs)<br>Cost: <span id="neutrinoUpg1Cost"></span> of any neutrinos<br>Currently: -<span id="neutrinoUpg1Pow"></span></button></td>
+						<td><button class="gluonupgrade unavailablebtn" id="neutrinoUpg1" onclick="buyNeutrinoUpg(1)" style="font-size: 10px">Meta-Dimension Boosts cost less.<br>Currently: -<span id="neutrinoUpg1Pow"></span><br>(Constant in Big Rip runs)<br>Cost: <span id="neutrinoUpg1Cost"></span> of any neutrinos</button></td>
 						<td><button class="gluonupgrade unavailablebtn" id="neutrinoUpg2" onclick="buyNeutrinoUpg(2)">Eggons hatch instantly and workers do not consume others.<br>Cost: <span id="neutrinoUpg2Cost"></span> of any neutrinos</button></td>
-						<td><button class="gluonupgrade unavailablebtn" id="neutrinoUpg3" onclick="buyNeutrinoUpg(3)">Blue power boosts preon charge production.<br>Cost: <span id="neutrinoUpg3Cost"></span> of any neutrinos<br>Currently: <span id="neutrinoUpg3Pow"></span>x</button></td>
+						<td><button class="gluonupgrade unavailablebtn" id="neutrinoUpg3" onclick="buyNeutrinoUpg(3)">Blue power boosts preon charge production.<br>Currently: <span id="neutrinoUpg3Pow"></span>x<br>Cost: <span id="neutrinoUpg3Cost"></span> of any neutrinos</button></td>
 					</tr>
 					<tr>
-						<td><button class="gluonupgrade unavailablebtn">???<br>Cost: ??? of any neutrinos</button></td>
-						<td><button class="gluonupgrade unavailablebtn">???<br>Cost: ??? of any neutrinos</button></td>
-						<td><button class="gluonupgrade unavailablebtn">???<br>Cost: ??? of any neutrinos</button></td>
+						<td><button class="gluonupgrade unavailablebtn" id="neutrinoUpg4" onclick="buyNeutrinoUpg(4)" style="font-size: 10px">You gain quark spins faster and unstable quarks decay slower based on your tickspeed.<br>Currently: <span id="neutrinoUpg4Pow">1.0</span>x<br>Cost: <span id="neutrinoUpg4Cost"></span> of any neutrinos</button></td>
+						<td><button class="gluonupgrade unavailablebtn" id="neutrinoUpg5" onclick="buyNeutrinoUpg(5)" style="font-size: 10px">You gain more Eternal Matter based on your Space Shards.<br>Currently: <span id="neutrinoUpg5Pow">1.0</span>x<br>Cost: <span id="neutrinoUpg5Cost"></span> of any neutrinos</button></td>
+						<td><button class="gluonupgrade unavailablebtn" id="neutrinoUpg6" onclick="buyNeutrinoUpg(6)" style="font-size: 10px">Electrons gain multiplier is increased by ??%.<br>Currently: <span id="neutrinoUpg6Pow">1.0</span>x<br>Cost: <span id="neutrinoUpg6Cost"></span> of any neutrinos</button></td>
+					</tr>
+					<tr>
+						<td><button class="gluonupgrade unavailablebtn" id="neutrinoUpg7" onclick="buyNeutrinoUpg(7)">8th Big Rip upgrade will never get repealed, but it is weakened.<br>Cost: <span id="neutrinoUpg7Cost"></span> of any neutrinos</button></td>
+						<td><button class="gluonupgrade unavailablebtn" id="neutrinoUpg8" onclick="buyNeutrinoUpg(8)">???<br>Cost: <span id="neutrinoUpg8Cost"></span> of any neutrinos</button></td>
+						<td><button class="gluonupgrade unavailablebtn" id="neutrinoUpg9" onclick="buyNeutrinoUpg(9)">???<br>Cost: <span id="neutrinoUpg9Cost"></span> of any neutrinos</button></td>
 					</tr>
 				</table>
 			</div>
