@@ -425,7 +425,7 @@ function updateNewPlayer(reseted) {
         player.eternityBuyer.slowStop = false
         player.eternityBuyer.slowStopped = false
         player.eternityBuyer.ifAD = false
-        player.eternityBuyer.presets = {on: false, autoDil: false, selected: 0, left: 1, order: []}
+        player.eternityBuyer.presets = {on: false, autoDil: false, selected: -1, selectNext: 0, left: 1, order: []}
         player.quantum.autobuyer = {
             enabled: false,
             limit: 1,
@@ -7212,7 +7212,7 @@ function gameLoop(diff) {
             var branch=player.quantum.tod[shorthand]
             var decayRate=getDecayRate(shorthand)
 
-            branch.gainDiv=Decimal.div(branch.gainDiv, Decimal.pow(1.1, diff/10)).max("1e500")
+            branch.gainDiv=Decimal.div(branch.gainDiv, Decimal.pow(1.1, diff/10)).max("1e425")
 
             var power=(branch.quarks.gt(1)?branch.quarks.log(2)+1:branch.quarks.toNumber())/decayRate
             var decayed=Math.min(diff/10,power)

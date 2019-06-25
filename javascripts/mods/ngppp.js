@@ -215,7 +215,7 @@ function canBuyMasteryStudy(type, id) {
 	} else if (type=='d') {
 		if (player.timestudy.theorem<masterystudies.costs.dil[id]||player.masterystudies.includes('d'+id)) return false
 		if (id>13) return player.masterystudies.includes("t412")&&(ghostified||player.masterystudies.includes("d12"))
-		if (id>12) return player.masterystudies.includes("t412")&&(ghostified||player.quantum.nanofield.rewards>15)
+		if (id>12) return player.masterystudies.includes("t412")&&(ghostified||player.quantum.nanofield.rewards>14)
 		if (id>11) return player.masterystudies.includes("t392")&&(ghostified||eds[8].workers.gt(9.9))
 		if (id>10) return player.masterystudies.includes("t351")&&(ghostified||eds[1].workers.gt(9.9))
 		if (id>9) return player.masterystudies.includes("t302")&&(ghostified||player.quantum.pairedChallenges.completed>3)
@@ -683,7 +683,7 @@ function assignQuark(color) {
 }
 
 //v1.75
-GUCosts=[null, 1, 2, 4, 100, 7e15, 4e19, 3e28, "1e620"]
+GUCosts=[null, 1, 2, 4, 100, 7e15, 4e19, 3e28, "1e570"]
 
 function updateGluons() {
 	if (!player.masterystudies) return
@@ -1028,7 +1028,7 @@ function updateMasteryStudyTextDisplay() {
 	}
 	if (player.masterystudies.includes("d12")) {
 		document.getElementById("ds13Cost").textContent="Cost: "+shorten(1e95)+" Time Theorems"
-		document.getElementById("ds13Req").innerHTML=ghostified?"":"<br>Requirement: 16 Nanofield rewards"
+		document.getElementById("ds13Req").innerHTML=ghostified?"":"<br>Requirement: 15 Nanofield rewards"
 		document.getElementById("ds14Cost").textContent="Cost: "+shorten(2e98)+" Time Theorems"
 	}
 }
@@ -1902,7 +1902,7 @@ function getBranchUpgLevel(branch,upg) {
 }
 
 function getGU8Effect(type) {
-	return Math.pow(player.quantum.gluons[type].div("1e615").add(1).log10()*0.55+1, 1.5)
+	return Math.pow(player.quantum.gluons[type].div("1e565").add(1).log10()*0.505+1, 1.5)
 }
 
 function toggleAutoReset() {
@@ -2056,6 +2056,7 @@ var loadedAPs = 0
 function loadAP() {
 	if (apLoaded) return
 	apLoaded = true
+	loadedAPs = 0
 	document.getElementById("automatedPresets").innerHTML = ""
 	occupied = false
 	apInterval = setInterval(function() {
@@ -2069,8 +2070,9 @@ function loadAP() {
 			onLoading = true
 		}
 		try {
-			latestRow.innerHTML = '<td id="apselected'+(loadedAPs+1)+'"></td><td><b id="apname'+(loadedAPs+1)+'">Test</b><br># of eternities: <input id="apeternities'+(loadedAPs+1)+'" type="text" onchange="changeAPEternities('+(loadedAPs+1)+')" value=2></input><button class="storebtn" onclick="selectNextAP('+(loadedAPs+1)+')">Select next</button> <button class="storebtn" onclick="moveAP('+(loadedAPs+1)+', -1)">Move up</button> <button class="storebtn" onclick="moveAP('+(loadedAPs+1)+', 1)">Move down</button> <button class="storebtn" onclick="replaceAP('+(loadedAPs+1)+')">Replace</button> <button class="storebtn"onclick="removeAP('+(loadedAPs+1)+')">Remove</button></td>'
-			if (loadedAPs < 1) document.getElementById("apselected1").textContent = ">"
+			latestRow.innerHTML = '<td id="apselected'+(loadedAPs+1)+'"></td><td><b id="apname'+(loadedAPs+1)+'">Test</b><br># of eternities: <input id="apeternities'+(loadedAPs+1)+'" type="text" onchange="changeAPEternities('+(loadedAPs+1)+')" value=2></input><button class="storebtn" onclick="selectNextAP('+(loadedAPs+1)+')">Select next</button> <button class="storebtn" onclick="moveAP('+(loadedAPs+1)+', -1)">Move up</button> <button class="storebtn" onclick="moveAP('+(loadedAPs+1)+', 1)">Move down</button> <button class="storebtn" onclick="replaceAP('+(loadedAPs+1)+')">Replace</button> <button class="storebtn" onclick="disableAP('+(loadedAPs+1)+')">Disable</button> <button class="storebtn"onclick="removeAP('+(loadedAPs+1)+')">Remove</button></td>'
+			if (loadedAPs == player.eternityBuyer.presets.selected) document.getElementById("apselected"+(loadedAPs+1)).textContent = ">>"
+			if (loadedAPs == player.eternityBuyer.presets.selectNext) document.getElementById("apselected"+(loadedAPs+1)).textContent = ">"
 			document.getElementById("apname"+(loadedAPs+1)).textContent = "#" + (loadedAPs + 1)
 			loadedAPs++
 			onLoading = false

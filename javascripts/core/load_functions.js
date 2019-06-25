@@ -684,7 +684,7 @@ if (player.version < 5) {
               player.eternityBuyer.slowStop = false
               player.eternityBuyer.slowStopped = false
               player.eternityBuyer.ifAD = false
-              player.eternityBuyer.presets = {on: false, autoDil: false, selected: 0, left: 1, order: []}
+              player.eternityBuyer.presets = {on: false, autoDil: false, selected: -1, left: 1, order: []}
               player.quantum.autobuyer = {
                   enabled: false,
                   limit: 1,
@@ -1124,7 +1124,7 @@ if (player.version < 5) {
       player.eternityBuyer.slowStop = false
       player.eternityBuyer.slowStopped = false
       player.eternityBuyer.ifAD = false
-      player.eternityBuyer.presets = {on: false, autoDil: false, selected: 0, left: 1, order: []}
+      player.eternityBuyer.presets = {on: false, autoDil: false, selected: -1, left: 1, order: []}
       player.quantum.reached = player.quantum.times > 0
       player.quantum.nonMAGoalReached = {}
       player.quantum.pairedChallenges.fastest = {}
@@ -1204,7 +1204,11 @@ if (player.version < 5) {
           player.eternityBuyer.tpUpgraded = false
           player.eternityBuyer.slowStop = false
           player.eternityBuyer.slowStopped = false
-          player.eternityBuyer.presets = {on: false, autoDil: false, selected: 0, order: []}
+          player.eternityBuyer.presets = {on: false, autoDil: false, selected: -1, selectNext: 0, left: 1, order: []}
+      }
+      if (player.eternityBuyer.presets.selectNext === undefined) {
+          player.eternityBuyer.presets.selected = -1
+          player.eternityBuyer.presets.selectNext = 0
       }
       if (player.eternityBuyer.presets.left === undefined) player.eternityBuyer.presets.left = 1
       if (player.eternityBuyer.ifAD === undefined) player.eternityBuyer.ifAD = false
@@ -1838,7 +1842,7 @@ if (player.version < 5) {
   setAndMaybeShow('bestTP',player.achievements.includes("ng3p18") || player.achievements.includes("ng3p37"),'"Your best"+(ghostified ? "" : " ever")+" Tachyon particles"+(ghostified ? " in this Ghostify" : "")+" was "+shorten(player.dilation.bestTP)+"."')
   setAndMaybeShow('bestTPOverGhostifies',(player.achievements.includes("ng3p18") || player.achievements.includes("ng3p37")) && ghostified,'"Your best-ever Tachyon particles was "+shorten(player.dilation.bestTPOverGhostifies)+"."')
   notifyId=speedrunMilestonesReached
-  notifyId2=player.ghostify.milestones
+  notifyId2=player.masterystudies===undefined?0:player.ghostify.milestones
   updatePowers()
   document.getElementById("newsbtn").textContent=(player.options.newsHidden?"Show":"Hide")+" news ticker"
   document.getElementById("game").style.display=player.options.newsHidden?"none":"block"

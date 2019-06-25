@@ -909,8 +909,12 @@ function quantumReset(force, auto, challid, bigRip, implode=false) {
 						slowStop: data.eternity.slowStop ? data.eternity.slowStop : false,
 						slowStopped: data.eternity.slowStopped ? data.eternity.slowStopped : false,
 						ifAD: data.eternity.ifAD ? data.eternity.ifAD : false,
-						presets: data.eternity.presets ? data.eternity.presets : {on: false, autoDil: false, selected: 0, left: 1, order: []},
+						presets: data.eternity.presets ? data.eternity.presets : {on: false, autoDil: false, selected: -1, selectNext: 0, left: 1, order: []},
 						isOn: data.eternity.on
+					}
+					if (player.eternityBuyer.presets.selectNext === undefined) {
+						player.eternityBuyer.presets.selected = -1
+						player.eternityBuyer.presets.selectNext = 0
 					}
 					if (player.eternityBuyer.presets.left === undefined) player.eternityBuyer.presets.left = 1
 					player.autoEterMode = data.eternity.mode
