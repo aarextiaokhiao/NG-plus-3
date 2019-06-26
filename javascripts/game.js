@@ -557,7 +557,8 @@ function updateNewPlayer(reseted) {
                 multPower: 1,
                 upgrades: []
             },
-            automatorGhosts: setupAutomaticGhostsData()
+            automatorGhosts: setupAutomaticGhostsData(),
+            noGrind: false
         }
         player.options.animations.ghostify = true
     }
@@ -3512,6 +3513,7 @@ function setAchieveTooltip() {
     let immunity = document.getElementById("Time Immunity")
     let notSmart = document.getElementById("You're not really smart.")
     let soLife = document.getElementById("And so your life?")
+    let willenough = document.getElementById("Will it be enough?")
 
     apocAchieve.setAttribute('ach-tooltip', "Get over " + formatValue(player.options.notation, 1e80, 0, 0) + " antimatter.");
     claustrophobic.setAttribute('ach-tooltip', "Go Infinite with just 1 Antimatter Galaxy. Reward: Reduces starting tick interval by 2%"+(player.galacticSacrifice?(player.tickspeedBoosts==undefined?"":", keep dimension boosts on tickspeed boost,")+" and keep galaxy upgrades on infinity.":"."));
@@ -3577,28 +3579,29 @@ function setAchieveTooltip() {
     harmony.setAttribute('ach-tooltip', player.meta?"Have at least 700 normal, replicanti, and free dilated galaxies. Reward: Galaxies are 0.1% stronger.":"Get the same number (at least 300) of normal, replicanti, and free galaxies.")
     notenough.setAttribute('ach-tooltip', "Reach "+shorten(Number.MAX_VALUE)+" meta-antimatter.")
     old.setAttribute('ach-tooltip', "Reach "+shortenCosts(Decimal.pow(10,3*86400*365.2425*2019))+" antimatter.")
-    rid.setAttribute('ach-tooltip', "Reach "+shortenCosts(new Decimal("1e400000"))+" IP while dilated without having time studies and electrons. Reward: Generate time theorems based on your best-ever tachyon particles.")
+    rid.setAttribute('ach-tooltip', "Reach "+shortenCosts(new Decimal("1e400000"))+" IP while dilated without having studies and electrons. Reward: Generate time theorems based on your best-ever tachyon particles.")
     tfms.setAttribute('ach-tooltip', "Reward: Start with "+shortenCosts(1e13)+" eternities.")
     tms.setAttribute('ach-tooltip', "Reward: Start with "+shortenCosts(1e25)+" meta-antimatter on reset.")
     tfms2.setAttribute('ach-tooltip', "Reward: Start with "+shortenCosts(1e100)+" dilated time and dilated time does not reset until quantum.")
-    memories.setAttribute('ach-tooltip', "Reach "+shortenCosts(new Decimal("1e1700"))+" MA while not having over 4 dimension boosts and fifth dimensions.")
+    memories.setAttribute('ach-tooltip', "Reach "+shortenCosts(new Decimal("1e1700"))+" MA while not having over 4 dimension boosts and fifth normal Dimensions.")
     squared.setAttribute('ach-tooltip', "Reach "+shortenCosts(new Decimal("1e1500"))+" MA with exactly 8 meta-dimension boosts.")
     seriously.setAttribute('ach-tooltip', "Reach "+shortenCosts(new Decimal("1e354000"))+" IP without having time studies while dilated and running QC2.")
     internal.setAttribute('ach-tooltip', "Reach "+shortenCosts(new Decimal("1e333"))+" MA without having second meta dimensions and meta dimension boosts.")
-    truth.setAttribute('ach-tooltip', "Reach "+shortenCosts(Decimal.pow(10,788e11))+" without having completed paired challenges.")
-    cantGet.setAttribute('ach-tooltip', "Reach "+shortenCosts(Decimal.pow(10,62e10))+" in Eternity Challenge 11.")
+    truth.setAttribute('ach-tooltip', "Reach "+shortenCosts(Decimal.pow(10,788e11))+" antimatter without having completed paired challenges.")
+    cantGet.setAttribute('ach-tooltip', "Reach "+shortenCosts(Decimal.pow(10,62e10))+" antimatter in Eternity Challenge 11.")
     noDil.setAttribute('ach-tooltip', "Reach "+shortenCosts(Decimal.pow(10,2e6))+" replicanti without having Tachyon particles. Reward: Start quantums with the same amount of Tachyon particles as square root of your best TP.")
-    dontWant.setAttribute('ach-tooltip', "Reach "+shorten(Decimal.pow(Number.MAX_VALUE,1000))+" IP while dilated, in QC2, and without having time studies and First Dimensions during your current Eternity.")
+    dontWant.setAttribute('ach-tooltip', "Reach "+shorten(Decimal.pow(Number.MAX_VALUE,1000))+" IP while dilated, in QC2, and without having studies and First Dimensions during your current Eternity.")
     notrelative.setAttribute('ach-tooltip', "Get "+shorten(Decimal.pow(10,411))+" dilated time without gaining tachyon particles.")
     error404.setAttribute('ach-tooltip', "Get "+shorten(Decimal.pow(10,16e11))+" antimatter without having all types of non-First Dimensions and at least 2 normal galaxies.")
     ie.setAttribute('ach-tooltip', "Get "+shorten(Decimal.pow(10,8e6))+" antimatter in a PC with QC6 & QC8 combination.")
-    wasted.setAttribute('ach-tooltip', "Get "+shorten(11e6)+" TT without having generated TTs and respeccing time studies. Reward: Time Theorems production is 10x faster until your TT amount reached 1 hour worth of normal TT production.")
+    wasted.setAttribute('ach-tooltip', "Get "+shorten(11e6)+" TT without having generated TTs and respeccing studies. Reward: Time Theorems production is 10x faster until your TT amount reached 1 hour worth of normal TT production.")
     stop.setAttribute('ach-tooltip', "Get the replicanti reset requirement to "+shorten(Decimal.pow(10,145e5))+". Reward: Getting a normal replicant manually doesn't reset your replicanti and can be autoed.")
-    dying.setAttribute('ach-tooltip', "Reach "+shorten(Decimal.pow(10, 275e3))+" IP while dilated, in PC6+8, and without having time studies.")
+    dying.setAttribute('ach-tooltip', "Reach "+shorten(Decimal.pow(10, 275e3))+" IP while dilated, in PC6+8, and without having studies.")
     gofast.setAttribute('ach-tooltip', "Get "+shorten(Decimal.pow(10, 1185))+" EP first and then double that by disabling dilation while big ripped.")
 	immunity.setAttribute('ach-tooltip', "Get "+shorten(Decimal.pow(10, 8e7))+" antimatter with at least 1 normal galaxies while in Eternity Challenge 7 and big ripped.")
     notSmart.setAttribute('ach-tooltip', "Get "+shorten(1e215)+" Time Shards without having time study 11 while big ripped.")
-    soLife.setAttribute('ach-tooltip', "Reach "+shorten(Decimal.pow(10, 35e4))+" IP without time studies and normal EP multi upgrades but in dilated and big ripped.")
+    soLife.setAttribute('ach-tooltip', "Reach "+shorten(Decimal.pow(10, 35e4))+" IP without studies and normal EP multi upgrades but in dilated and big ripped.")
+    willenough.setAttribute('ach-tooltip', "Reach "+shortenCosts( new Decimal("1e20000000"))+" replicanti.")
 }
 
 
@@ -6547,6 +6550,7 @@ function getReplSpeed () {
 
 function updateTimeShards() {
     if (document.getElementById("timedimensions").style.display == "block" && document.getElementById("dimensions").style.display == "block") {
+        document.getElementById("itmult").textContent=player.masterystudies!==undefined&&player.achievements.includes('r105')?'Your "Infinite Time" multiplier is currently '+shorten(getITReward())+'x.':''
         document.getElementById("timeShardAmount").textContent = shortenMoney(player.timeShards)
         document.getElementById("tickThreshold").textContent = shortenMoney(player.tickThreshold)
         if (player.currentEternityChall == "eterc7") document.getElementById("timeShardsPerSec").textContent = "You are getting "+shortenDimensions(getTimeDimensionProduction(1))+" Eighth Infinity Dimensions per second."
@@ -6928,11 +6932,16 @@ setInterval(function() {
         if (player.timestudy.theorem>11e6&&player.quantum.wasted) giveAchievement("Studies are wasted")
         if (player.quantum.replicants.requirement.gte("1e14500000")) giveAchievement("Stop blocking me!")
         if (player.infinityPoints.gte(Decimal.pow(10, 275e3))&&ableToGetRid6) giveAchievement("Are you currently dying?")
+        if (player.quantum.nanofield.rewards > 1/0 && player.ghostify.noGrind) giveAchievement("But I don't want to grind!")
+        if (player.replicanti.amount.e >= 1/0) giveAchievement("Will it be enough?")
         if (player.quantum.bigRip.active) {
             let ableToGetRid7 = ableToGetRid2 && player.epmult.eq(1)
+            let ableToGetRid8 = ableToGetRid7 && player.quantum.breakEternity.upgrades.length < 1 && player.quantum.breakEternity.upgrades.epMultPower < 1
             if (player.currentEternityChall == "eterc7" && player.galaxies == 1 && player.money.e >= 8e7) giveAchievement("Time Immunity")
             if (!player.timestudy.studies.includes(11) && player.timeShards.e > 214) giveAchievement("You're not really smart.")
             if (ableToGetRid7 && player.infinityPoints.e >= 35e4) giveAchievement("And so your life?")
+            if (player.timeDimension1.amount.eq(0)) giveAchievement("Finite Time")
+            if (ableToGetRid8 && player.infinityPoints.e >= 1/0) giveAchievement("Please answer me why you are dying.")
         }
     }
     if (speedrunMilestonesReached>notifyId) {
@@ -7038,6 +7047,7 @@ function gameLoop(diff) {
             giveAchievement("You're a mistake")
             failureCount++
             if (failureCount > 9) giveAchievement("You're a failure")
+            if (player.quantum.bigRip.times == 1 && player.ghostify.neutrinos.upgrades.length > 8) giveAchievement("Really?")
         } else quickReset()
     }
 

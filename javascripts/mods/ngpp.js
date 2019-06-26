@@ -478,15 +478,11 @@ function quantum(auto, force, challid, bigRip) {
 				return
 			}
 		}
-		if (speedrunMilestonesReached > 3 && !isRewardEnabled(4) && player.masterystudies.length > 0) {
-			var checked = false
+		if (speedrunMilestonesReached > 3 && !isRewardEnabled(4)) {
 			for (var s=0;s<player.masterystudies.length;s++) {
-				if (player.masterystudies[s].indexOf("t") >= 0) {
-					checked = true
-					break
-				}
+				if (player.masterystudies[s].indexOf("t") >= 0) player.timestudy.theorem += masterystudies.costs.time[player.masterystudies[s].split("t")[1]]
+				else player.timestudy.theorem += masterystudies.costs.dil[player.masterystudies[s].split("d")[1]]
 			}
-			if (checked) if (!confirm("I recommend you to respec all mastery studies before you go quantum. Are you sure you want to do that and lose some of your TT?")) return
 		}
 	}
 	var implode = !(auto||force)&&speedrunMilestonesReached<23

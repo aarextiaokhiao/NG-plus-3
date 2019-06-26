@@ -628,6 +628,7 @@ function new_preset(importing) {
 
 //Smart presets
 var onERS = false
+var onNGP3 = false
 var prefix = "dsAM_ghostify_ST_"
 var poData
 
@@ -719,6 +720,7 @@ var loadedPresets=0
 function openStudyPresets() {
 	closeToolTip()
 	let saveOnERS = !(!player.boughtDims)
+	let saveOnNGP3 = player.masterystudies !== undefined
 	if (saveOnERS != onERS) {
 		document.getElementById("presets").innerHTML=""
 		presets = {}
@@ -726,6 +728,12 @@ function openStudyPresets() {
 		if (onERS) prefix = "dsERS_ghostify_ST_"
 		else prefix = "dsAM_ghostify_ST_"
 		loadedPresets = 0
+	} else if (saveOnNGP3!=onNGP3) {
+		onNGP3=saveOnNGP3
+		for (var p=0;p<loadedPresets;p++) {
+			document.getElementById("presets").rows[p].innerHTML=getPresetLayout(poData[p])
+			changePresetTitle(poData[p],p+1)
+		}
 	}
 	document.getElementById("presetsmenu").style.display = "block";
 	clearInterval(loadSavesIntervalId)
@@ -752,7 +760,7 @@ function openStudyPresets() {
 }
 
 function getPresetLayout(id) {
-	return "<b id='preset_"+id+"_title'>Preset #"+(loadedPresets+1)+"</b><br><button class='storebtn' onclick='save_preset("+id+")'>Save</button><button class='storebtn' onclick='load_preset("+id+")'>Load</button><button class='storebtn' style='font-size: 10px' onclick='load_preset("+id+", true)'>Load and Eternity</button><button class='storebtn' onclick='rename_preset("+id+")'>Rename</button><button class='storebtn' onclick='move_preset("+id+",-1)'>Move up</button><button class='storebtn' onclick='move_preset("+id+",1)'>Move down</button><button class='storebtn' onclick='delete_preset("+id+")'>Delete</button>"
+	return "<b id='preset_"+id+"_title'>Preset #"+(loadedPresets+1)+"</b><br><button class='storebtn' onclick='save_preset("+id+")'>Save</button><button class='storebtn' onclick='load_preset("+id+")'>Load</button>"+(onNGP3?"<button class='storebtn' style='font-size: 10px' onclick='load_preset("+id+", true)'>Load and Eternity</button>":"")+"<button class='storebtn' onclick='rename_preset("+id+")'>Rename</button><button class='storebtn' onclick='move_preset("+id+",-1)'>Move up</button><button class='storebtn' onclick='move_preset("+id+",1)'>Move down</button><button class='storebtn' onclick='delete_preset("+id+")'>Delete</button>"
 }
 
 function changePresetTitle(id, placement) {

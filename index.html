@@ -1393,6 +1393,7 @@
             </div>
             <div id="timedimensions" class="dimtab">
                     <div>
+                        <p id="itmult"></p>
                         <p id="totaltickgained">You've gained 0 tickspeed upgrades.</p>
                             <p>You have <span id="timeShardAmount" style="font-size:35px; color: black">0</span> time shards. Next tickspeed upgrade at <span id="tickThreshold" style="font-size:35px; color: black">0</span></p>
                         </div>
@@ -2540,25 +2541,25 @@
                                 <div id="Kee-hee-hee!" class="achievement achievementlocked" style="background-image: url(images/151.png)" ach-tooltip="Become a ghost. Reward: Gain 100x eternitied stat as before (weakens as you have more), Time Theorems production is 100x faster, gain 1 EC11 completion when you complete EC12, all quantum mechanic unlocks only require Time Theorems, and assignation options are kept permanently."></div>
                             </td>
                             <td>
-                                <div id="ng3p62" class="achievement achievementlocked" style="background-image: url(images/achhidden.png)"></div>
+                                <div id="Finite Time" class="achievement achievementlocked" style="background-image: url(images/152.png)" ach-tooltip="Reach e??? ticks/s in Big Rips without Time Dimensions."></div>
                             </td>
                             <td>
-                                <div id="This achievement doesn't exist 4" class="achievement achievementlocked" style="background-image: url(images/153.png)" ach-tooltip="Reach 9.999999e99 EM."></div>
+                                <div id="This achievement doesn't exist 4" class="achievement achievementlocked" style="background-image: url(images/153.png)" ach-tooltip="Reach 9.999999e99 Eternal Matter."></div>
                             </td>
                             <td>
-                                <div id="ng3p64" class="achievement achievementlocked" style="background-image: url(images/achhidden.png)"></div>
+                                <div id="Really?" class="achievement achievementlocked" style="background-image: url(images/154.png)" ach-tooltip="Fail your first Big Rip run in this Ghostify with all Neutrino upgrades bought."></div>
                             </td>
                             <td>
-                                <div id="ng3p65" class="achievement achievementlocked" style="background-image: url(images/achhidden.png)"></div>
+                                <div id="But I don't want to grind!" class="achievement achievementlocked" style="background-image: url(images/155.png)" ach-tooltip="Get reward ??? without unlocking Tree of Decay."></div>
                             </td>
                             <td>
                                 <div id="I rather oppose the theory of everything" class="achievement achievementlocked" style="background-image: url(images/156.png)" ach-tooltip="Complete Brave Milestones."></div>
                             </td>
                             <td>
-                                <div id="ng3p67" class="achievement achievementlocked" style="background-image: url(images/achhidden.png)"></div>
+                                <div id="Will it be enough?" class="achievement achievementlocked" style="background-image: url(images/157.png)"></div>
                             </td>
                             <td>
-                                <div id="Please answer me why you are dying." class="achievement achievementlocked" style="background-image: url(images/158.png)" ach-tooltip="Reach ??? IP while dilated, big ripped, and without having time studies, EP mult upgrades, and neutrinos."></div>
+                                <div id="Please answer me why you are dying." class="achievement achievementlocked" style="background-image: url(images/158.png)" ach-tooltip="Reach ??? IP while dilated, big ripped, and without having time studies, EP mult upgrades, and Break Eternity upgrades."></div>
                             </td>
                         </tr>
                 </table>
@@ -4682,6 +4683,11 @@
 						<td id="neutrinoBoostCell5">They boost preon energy production by <span class="neutrinos" id="neutrinoBoost5" style="font-size:35px">1.0</span>x.</td>
 						<td id="neutrinoBoostCell6">In Big Rips, they divide replicate interval by <span class="neutrinos" id="neutrinoBoost6" style="font-size:35px">1.0</span>x.</td>
 					</tr>
+					<tr id="neutrinoBoostRow3" style="display: none">
+						<td>They make 1st Big Rip upgrade stronger by <span class="neutrinos" id="neutrinoBoost7" style="font-size:35px">1.0</span>x.</td>
+						<td id="neutrinoBoostCell8">In Big Rips, they make free galaxies more efficient to <span class="neutrinos" id="neutrinoBoost5" style="font-size:35px">0.0</span>% of a normal galaxy.</td>
+						<td></td>
+					</tr>
 					<tr>
 						<td><button id="neutrinoUnlock" class="gluonupgrade unavailablebtn">Unlock a new boost based on your neutrinos.<br>Cost: <span id="neutrinoUnlockCost">2</span> GHP</button></td>
 						<td><button id="neutrinoMultUpg" class="gluonupgrade unavailablebtn">You gain 5x more neutrinos.<br>Currently: <span id="neutrinoMult">1</span>x<br>Cost: <span id="neutrinoMultUpgCost">3</span> GHP</button></td>
@@ -4699,8 +4705,8 @@
 					</tr>
 					<tr>
 						<td><button class="gluonupgrade unavailablebtn" id="neutrinoUpg7" onclick="buyNeutrinoUpg(7)">8th Big Rip upgrade will never get repealed, but it is weakened.<br>Cost: <span id="neutrinoUpg7Cost"></span> of any neutrinos</button></td>
-						<td><button class="gluonupgrade unavailablebtn" id="neutrinoUpg8" onclick="buyNeutrinoUpg(8)">???<br>Cost: <span id="neutrinoUpg8Cost"></span> of any neutrinos</button></td>
-						<td><button class="gluonupgrade unavailablebtn" id="neutrinoUpg9" onclick="buyNeutrinoUpg(9)">???<br>Cost: <span id="neutrinoUpg9Cost"></span> of any neutrinos</button></td>
+						<td><button class="gluonupgrade unavailablebtn" id="neutrinoUpg8" onclick="buyNeutrinoUpg(8)">Preons slow down Remote Antimatter Galaxies scaling.<br>Currently: /<span id="neutrinoUpg8Pow">1.00</span><br>Cost: <span id="neutrinoUpg8Cost"></span> of any neutrinos</button></td>
+						<td><button class="gluonupgrade unavailablebtn" id="neutrinoUpg9" onclick="buyNeutrinoUpg(9)">Infinite time reward is ??% stronger.<br>Cost: <span id="neutrinoUpg9Cost"></span> of any neutrinos</button></td>
 					</tr>
 				</table>
 			</div>

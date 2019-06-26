@@ -161,6 +161,7 @@ function buyMasteryStudy(type, id, quick=false) {
 		if (type=="d"&&id==13) {
 			showTab("quantumtab")
 			showQuantumTab("tod")
+			player.ghostify.noGrind = false
 			updateColorCharge()
 			updateTODStuff()
 		}
@@ -2994,6 +2995,7 @@ function ghostifyReset(implode, gain, amount) {
 	player.ghostify.neutrinos.electron = new Decimal(0)
 	player.ghostify.neutrinos.mu = new Decimal(0)
 	player.ghostify.neutrinos.tau = new Decimal(0)
+	player.ghostify.noGrind = !player.masterystudies.includes("d13")
 	updateLastTenGhostifies()
 }
 

@@ -3,7 +3,7 @@
 function getTimeDimensionPower(tier) {
   if (player.currentEternityChall == "eterc11") return new Decimal(1)
   if (isEternityBroke()) {
-    var mult = Decimal.div(1000,player.tickspeed).pow(0.000005)
+    var mult = getITReward()
     if (player.timestudy.studies.includes(11) && tier == 1) mult = mult.times(getTS11Mult())
     if (player.quantum.breakEternity.upgrades.includes(1) && tier < 5) mult = mult.times(getBreakUpgMult(1))
     if (player.quantum.breakEternity.upgrades.includes(4) && tier > 3 && tier < 7) mult = mult.times(getBreakUpgMult(4))
@@ -23,12 +23,7 @@ function getTimeDimensionPower(tier) {
   ret = ret.times(kongAllDimMult)
 
   if (player.timestudy.studies.includes(11) && tier == 1) ret = ret.times(getTS11Mult())
-  if (player.achievements.includes("r105")) {
-      var multLog=(3-player.tickspeed.log10())*0.000005
-      if (multLog>=12e8) multLog = Math.pow(multLog*144e10,1/3)
-      else if (multLog>=12e4) multLog = Math.pow(multLog*12e4,0.5)
-      ret = ret.times(Decimal.pow(10,multLog))
-  }
+  if (player.achievements.includes("r105")) ret = ret.times(getITReward())
   if (player.boughtDims) {
       if (player.achievements.includes('r117')) {
         ret = ret.times(1 + Math.pow(Math.log(player.eternities), 1.5) / Math.log(100));
@@ -216,4 +211,11 @@ function getTS11Mult() {
 	else log = Math.min(log, 2500)
 	log /= player.aarexModifications.newGameExpVersion ? 4 : 1
 	return Decimal.pow(10, log)
+}
+
+function getITReward() {
+	let ret=(3-player.tickspeed.log10())*0.000005
+	if (ret>=12e8) ret=Math.pow(ret*144e10,1/3)
+	else if (ret>=12e4) ret=Math.pow(ret*12e4,0.5)
+	return Decimal.pow(10,ret)
 }
