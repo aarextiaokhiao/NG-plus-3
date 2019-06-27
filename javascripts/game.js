@@ -1061,6 +1061,7 @@ function getRemoteGalaxyScalingStart(galaxies) {
 		if (player.masterystudies.includes("t253")) n += Math.floor(extraReplGalaxies/9)*20
 		if (player.masterystudies.includes("t301")) n += Math.floor(extraReplGalaxies/4.15)
 		if (player.masterystudies.includes("d12")) n += getNanofieldRewardEffect(7)
+		if (ghostified && player.ghostify.neutrinos.boosts > 2) n += getNBBoost(3)
 		if (galaxies > 1/0) n -= galaxies - 1/0
 	}
 	return n
@@ -1100,6 +1101,7 @@ function getGalaxyRequirement(offset=0, display) {
 			if (GUBought("rg7")) speed2 *= 0.9
 			if (GUBought("gb7")) speed2 /= 1+Math.log10(1+player.infinityPoints.max(1).log10())/100
 			if (GUBought("br7")) speed2 /= 1+Math.log10(1+player.eternityPoints.max(1).log10())/80
+			if (hasNU(8)) speed2 /= getNUPow(8)
 			amount = amount * Math.pow(GUBought("rg1") ? 1.001 : 1.002, (galaxies-remoteGalaxyScalingStart-1) * speed2)
 			scaling = Math.max(scaling, 2)
 		}
@@ -3416,9 +3418,14 @@ function gainedEternityPoints() {
     else if (player.timestudy.studies.includes(122)) ret = ret.times(35)
     else if (player.timestudy.studies.includes(123)) ret = ret.times(Math.sqrt(1.39*player.thisEternity/10))
 	if (player.masterystudies) {
-		if (player.quantum.bigRip.active && !player.quantum.bigRip.upgrades.includes(9)) {
-			if (player.quantum.bigRip.upgrades.includes(5)) ret = ret.times(player.quantum.bigRip.spaceShards.max(1))
-			if (player.quantum.bigRip.upgrades.includes(8)) ret = ret.times(Decimal.pow(2, player.replicanti.galaxies+extraReplGalaxies).min(Number.MAX_VALUE))
+		if (player.quantum.bigRip.active) {
+			if (isBigRipUpgradeActive(5)) ret = ret.times(player.quantum.bigRip.spaceShards.max(1))
+			if (isBigRipUpgradeActive(8)) {
+				let mult = Decimal.pow(2, player.replicanti.galaxies+extraReplGalaxies)
+				if (hasNU(7)) if (mult.gt(Number.MAX_VALUE)) mult = mult.div(Number.MAX_VALUE).pow(0).times(Number.MAX_VALUE)
+				else mult = mult.min(Number.MAX_VALUE)
+				ret = ret.times(mult)
+			}
 		}
 		if (player.quantum.breakEternity.break) ret = ret.times(getBreakUpgMult(7))
 	}
@@ -7242,13 +7249,13 @@ function gameLoop(diff) {
         gatheredQuarksBoost = Math.pow(player.quantum.replicants.quarks.add(1).log10(),player.masterystudies.includes("t362")?0.35:0.25)*0.67*(player.masterystudies.includes("t412")?1.25:1)
 
         for (dim=8;dim>1;dim--) {
-            var promote = player.ghostify.neutrinos.upgrades.includes(2) ? 1/0 : getWorkerAmount(dim-2)
+            var promote = hasNU(2) ? 1/0 : getWorkerAmount(dim-2)
             if (canFeedReplicant(dim-1,true)) {
                eds[dim-1].progress = eds[dim-1].progress.add(eds[dim].workers.times(getEDMultiplier(dim)).times(diff/200))
                var toAdd = eds[dim-1].progress.floor().min(promote)
                if (dim>2) toAdd = toAdd.min(eds[dim-2].workers.sub(10).round())
                if (toAdd.gt(0)) {
-                   if (!player.ghostify.neutrinos.upgrades.includes(2)) {
+                   if (!hasNU(2)) {
                        if (dim>2 && toAdd.gt(getWorkerAmount(dim-2))) eds[dim-2].workers = new Decimal(0)
                        else if (dim>2) eds[dim-2].workers = eds[dim-2].workers.sub(toAdd).round()
                        else if (toAdd.gt(player.quantum.replicants.amount)) player.quantum.replicants.amount = new Decimal(0)
@@ -7272,7 +7279,7 @@ function gameLoop(diff) {
 
         if (player.quantum.replicants.eggons.gt(0)) {
             player.quantum.replicants.babyProgress = player.quantum.replicants.babyProgress.add(diff/getHatchSpeed()/10)
-            var toAdd = player.ghostify.neutrinos.upgrades.includes(2) ? player.quantum.replicants.eggons : player.quantum.replicants.babyProgress.floor().min(player.quantum.replicants.eggons)
+            var toAdd = hasNU(2) ? player.quantum.replicants.eggons : player.quantum.replicants.babyProgress.floor().min(player.quantum.replicants.eggons)
             if (toAdd.gt(0)) {
                 if (toAdd.gt(player.quantum.replicants.eggons)) player.quantum.replicants.eggons = new Decimal(0)
                 else player.quantum.replicants.eggons = player.quantum.replicants.eggons.sub(toAdd).round()
@@ -7309,7 +7316,10 @@ function gameLoop(diff) {
         player.meta.antimatter = player.meta.antimatter.plus(getMetaDimensionProduction(1).times(diff/10))
         if (inQC(4)) player.meta.antimatter = player.meta.antimatter.plus(getMetaDimensionProduction(1).times(diff/10))
         player.meta.bestAntimatter = player.meta.bestAntimatter.max(player.meta.antimatter)
-        if (player.masterystudies) player.meta.bestOverQuantums = player.meta.bestOverQuantums.max(player.meta.antimatter)
+        if (player.masterystudies) {
+            player.meta.bestOverQuantums = player.meta.bestOverQuantums.max(player.meta.antimatter)
+            player.meta.bestOverGhostifies = player.meta.bestOverGhostifies.max(player.meta.antimatter)
+        }
     }
     var step = inQC(4) ? 2 : 1
     for (let tier=1;tier<9;tier++) {
@@ -7431,7 +7441,10 @@ function gameLoop(diff) {
     if (player.exdilation != undefined) interval /= Math.cbrt(getBlackholePowerEffect())
     if (isBigRipUpgradeActive(4)) interval /= 10
     if (player.replicanti.amount.gt(Number.MAX_VALUE)) interval = player.boughtDims ? Math.pow(player.achievements.includes("r107")?Math.max(player.replicanti.amount.log(2)/1024,1):1, -.25) : Decimal.pow(getReplSpeed(), Math.max(player.replicanti.amount.log10() - 308, 0)/308).times(interval)
-    if (player.masterystudies) if (player.masterystudies.includes("t332")) interval = Decimal.div(interval, player.galaxies)
+    if (player.masterystudies) {
+        if (player.masterystudies.includes("t332")) interval = Decimal.div(interval, player.galaxies)
+	    if (ghostified && player.quantum.bigRip.active && player.ghostify.neutrinos.boosts > 5) interval = Decimal.div(interval, getNBBoost(6))
+    }
     var est = Decimal.div((frequency ? frequency.times(Math.log10(2)/Math.log10(Math.E) * 1e3) : Decimal.add(chance, 1).log(Math.E) * 1e3), interval)
 
     var current = player.replicanti.amount.ln()

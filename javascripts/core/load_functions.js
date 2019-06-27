@@ -1177,8 +1177,8 @@ if (player.version < 5) {
       if (player.meta.bestOverQuantums === undefined) player.meta.bestOverQuantums = player.meta.bestAntimatter
       document.getElementById('prioritydil').value=player.eternityBuyer.dilationPerAmount
       if (player.achievements.includes("ng3p52")) document.getElementById("autoDilValue").value=player.eternityBuyer.dilationPerAmount
-      document.getElementById("eggonsCell").style.display = player.ghostify.neutrinos.upgrades.includes(2) ? "none" : ""
-      document.getElementById("workerReplWhat").textContent = player.ghostify.neutrinos.upgrades.includes(2) ? "babies" : "eggons"
+      document.getElementById("eggonsCell").style.display = hasNU(2) ? "none" : ""
+      document.getElementById("workerReplWhat").textContent = hasNU(2) ? "babies" : "eggons"
       updateQuantumWorth()
       if (player.quantum.autoOptions === undefined) player.quantum.autoOptions = {}
       if (player.quantum.challengeRecords === undefined) player.quantum.challengeRecords = {}

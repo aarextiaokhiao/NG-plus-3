@@ -546,7 +546,7 @@ function updateQuantumTabs() {
 		document.getElementById("feedNormal").className=(canFeedReplicant(1)?"stor":"unavailabl")+"ebtn"
 		document.getElementById("workerProgress").textContent=Math.round(eds[1].progress.toNumber()*100)+"%"
 
-		if (!player.ghostify.neutrinos.upgrades.includes(2)) {
+		if (!hasNU(2)) {
 			document.getElementById("eggonAmount").textContent=shortenDimensions(player.quantum.replicants.eggons)
 			document.getElementById("hatchProgress").textContent=Math.round(player.quantum.replicants.babyProgress.toNumber()*100)+"%"
 		}
@@ -798,7 +798,7 @@ function sacrificeGalaxy(auto=false) {
 	if (player.options.sacrificeConfirmation&&!auto) if (!confirm("Sacrificing your galaxies reduces your tickspeed and so your tick interval. You will gain a boost for multiplier per ten dimensions. Are you sure you want to do that?")) return
 	var old=new Decimal(getTickSpeedMultiplier()).log10()
 	player.quantum.electrons.sacGals+=amount
-	player.quantum.electrons.amount+=player.quantum.electrons.mult*amount
+	player.quantum.electrons.amount+=getELCMult()*amount
 	player.tickspeed=player.tickspeed.pow(old/new Decimal(getTickSpeedMultiplier()).log10())
 	if (!player.quantum.autoOptions.sacrifice) updateElectronsEffect()
 }
@@ -828,7 +828,7 @@ function updateElectrons() {
 		document.getElementById("electronstabbtn").style.display="none"
 		return
 	} else document.getElementById("electronstabbtn").style.display=""
-	document.getElementById("electronsGainMult").textContent=shorten(player.quantum.electrons.mult)
+	document.getElementById("electronsGainMult").textContent=getELCMult().toFixed(2)
 	if (!player.quantum.autoOptions.sacrifice) updateElectronsEffect()
 	for (u=1;u<5;u++) {
 		var cost=getElectronUpgCost(u)
@@ -1502,10 +1502,10 @@ function buyMaxQuantumFood() {
 function canFeedReplicant(tier, auto) {
 	if (player.quantum.replicants.quantumFood<1 && !auto) return false
 	if (tier>1) {
-		if (eds[tier].workers.gte(eds[tier-1].workers)) return auto && player.ghostify.neutrinos.upgrades.includes(2)
+		if (eds[tier].workers.gte(eds[tier-1].workers)) return auto && hasNU(2)
 		if (eds[tier-1].workers.lte(10)) return false
 	} else {
-		if (eds[1].workers.gte(player.quantum.replicants.amount)) return auto && player.ghostify.neutrinos.upgrades.includes(2)
+		if (eds[1].workers.gte(player.quantum.replicants.amount)) return auto && hasNU(2)
 		if (player.quantum.replicants.amount.eq(0)) return false
 	}
 	if (tier>player.quantum.replicants.limitDim) return false
@@ -1608,7 +1608,7 @@ function maxReduceHatchSpeed() {
 
 function getQuarkChargeProduction() {
 	let ret = getNanofieldRewardEffect("7g")
-	if (player.ghostify.neutrinos.upgrades.includes(3)) ret = ret.times(getNU3Pow())
+	if (hasNU(3)) ret = ret.times(getNUPow(3))
 	return ret
 }
 
@@ -1619,7 +1619,7 @@ function startProduceQuarkCharge() {
 
 function getQuarkLossProduction() {
 	let ret = getQuarkChargeProduction().pow(4).times(4e25)
-	if (player.ghostify.neutrinos.upgrades.includes(3)) ret = ret.div(10)
+	if (hasNU(3)) ret = ret.div(10)
 	return ret
 }
 
@@ -1627,6 +1627,7 @@ function getQuarkEnergyProduction() {
 	let ret = player.quantum.nanofield.charge.sqrt()
 	if (player.masterystudies.includes("t411")) ret = ret.times(getMTSMult(411))
 	ret = ret.times(getNanofieldRewardEffect("8c"))
+	if (ghostified && player.ghostify.neutrinos.boosts > 4) ret = ret.times(getNBBoost(5))
 	return ret
 }
 
@@ -1809,11 +1810,14 @@ function getDecayRate(branch) {
 	}
 	ret *= getTreeUpgradeEffect(3)
 	ret *= getTreeUpgradeEffect(5)
+	ret /= getNUPow(4)
 	return ret
 }
 
 function getQuarkSpinProduction(branch) {
-	return Decimal.pow(2,getBranchUpgLevel(branch,1)).times(getTreeUpgradeEffect(3)).times(getTreeUpgradeEffect(5))
+	let ret = Decimal.pow(2,getBranchUpgLevel(branch,1)).times(getTreeUpgradeEffect(3)).times(getTreeUpgradeEffect(5))
+	if (hasNU(4)) ret = ret.times(getNUPow(4))
+	return ret
 }
 
 function getTreeUpgradeCost(upg) {
@@ -1934,6 +1938,12 @@ function updateQuantumWorth(notationOnly) {
 		}
 	}
 	for (var e=1;e<4;e++) document.getElementById("quantumWorth"+e).textContent = shortenDimensions(quantumWorth)
+}
+
+function getELCMult() {
+	let ret = player.quantum.electrons.mult
+	if (hasNU(6)) ret *= 1
+	return ret
 }
 
 function updateElectronsEffect() {
@@ -2063,7 +2073,7 @@ function loadAP() {
 	apInterval = setInterval(function() {
 		if (occupied) return
 		occupied = true
-		if (loadedAPs == 100) {
+		if (loadedAPs == player.eternityBuyer.presets.order.length) {
 			clearInterval(apInterval)
 			return
 		} else if (!onLoading) {
@@ -2071,15 +2081,59 @@ function loadAP() {
 			onLoading = true
 		}
 		try {
-			latestRow.innerHTML = '<td id="apselected'+(loadedAPs+1)+'"></td><td><b id="apname'+(loadedAPs+1)+'">Test</b><br># of eternities: <input id="apeternities'+(loadedAPs+1)+'" type="text" onchange="changeAPEternities('+(loadedAPs+1)+')" value=2></input><button class="storebtn" onclick="selectNextAP('+(loadedAPs+1)+')">Select next</button> <button class="storebtn" onclick="moveAP('+(loadedAPs+1)+', -1)">Move up</button> <button class="storebtn" onclick="moveAP('+(loadedAPs+1)+', 1)">Move down</button> <button class="storebtn" onclick="replaceAP('+(loadedAPs+1)+')">Replace</button> <button class="storebtn" onclick="disableAP('+(loadedAPs+1)+')">Disable</button> <button class="storebtn"onclick="removeAP('+(loadedAPs+1)+')">Remove</button></td>'
-			if (loadedAPs == player.eternityBuyer.presets.selected) document.getElementById("apselected"+(loadedAPs+1)).textContent = ">>"
-			if (loadedAPs == player.eternityBuyer.presets.selectNext) document.getElementById("apselected"+(loadedAPs+1)).textContent = ">"
-			document.getElementById("apname"+(loadedAPs+1)).textContent = "#" + (loadedAPs + 1)
+			latestRow.innerHTML = '<td id="apselected'+loadedAPs+'"></td><td><b id="apname'+loadedAPs+'">Test</b><br># of eternities: <input id="apeternities'+loadedAPs+'" type="text" onchange="changeAPEternities('+loadedAPs+')" value=2></input><button class="storebtn" onclick="selectNextAP('+loadedAPs+')">Select next</button> <button class="storebtn" onclick="moveAP('+loadedAPs+', -1)">Move up</button> <button class="storebtn" onclick="moveAP('+loadedAPs+', 1)">Move down</button> <button class="storebtn" onclick="replaceAP('+loadedAPs+')">Replace</button> <button class="storebtn" onclick="disableAP('+loadedAPs+')">Disable</button> <button class="storebtn"onclick="removeAP('+loadedAPs+')">Remove</button></td>'
+			if (loadedAPs == player.eternityBuyer.presets.selected) document.getElementById("apselected"+loadedAPs).textContent = ">>"
+			if (loadedAPs == player.eternityBuyer.presets.selectNext) document.getElementById("apselected"+loadedAPs).textContent = ">"
+			document.getElementById("apname"+(loadedAPs+1)).textContent = changeAPTitle(player.eternityBuyer.presets.order[loadedAPs],loadedAPs)
 			loadedAPs++
 			onLoading = false
 		} catch (_) {}
 		occupied = false
 	}, 0)
+}
+
+function changeAPTitle(id, placement) {
+	let name="#"+(placement+1)
+	if (player.eternityBuyer.presets[id].title!="") name=player.eternityBuyer.presets[id].title
+	document.getElementById("apname"+placement).textContent=name
+}
+
+function createAP() {
+	var id=1
+	var mtsstudies=[]
+	if (player.masterystudies) {
+		for (var id2=0;id2<player.masterystudies.length;id2++) {
+			var t = player.masterystudies[id2].split("t")[1]
+			if (t) mtsstudies.push(t)
+		}
+	}
+	while (player.eternityBuyer.presets.order.includes(id)) id++
+	player.eternityBuyer.presets.order.push(id)
+	player.eternityBuyer.presets[id]={title:"",preset:player.timestudy.studies+(mtsstudies.length>0?","+mtsstudies:"")+"|"+player.eternityChallUnlocked,length:1,on:true}
+	if (loadedAPs+1==player.eternityBuyer.presets.order.length) {
+		let latestRow=document.getElementById("automatedPresets").insertRow(loadedAPs)
+		latestRow.innerHTML='<td id="apselected'+loadedAPs+'"></td><td><b id="apname'+loadedAPs+'">Test</b><br># of eternities: <input id="apeternities'+loadedAPs+'" type="text" onchange="changeAPEternities('+loadedAPs+')" value=2></input><button class="storebtn" onclick="selectNextAP('+loadedAPs+')">Select next</button> <button class="storebtn" onclick="moveAP('+loadedAPs+', -1)">Move up</button> <button class="storebtn" onclick="moveAP('+loadedAPs+', 1)">Move down</button> <button class="storebtn" onclick="replaceAP('+loadedAPs+')">Replace</button> <button class="storebtn" onclick="disableAP('+loadedAPs+')">Disable</button> <button class="storebtn"onclick="removeAP('+loadedAPs+')">Remove</button></td>'
+		changeAPTitle(id,loadedAPs)
+		loadedAPs++
+		if (loadedAPs==player.eternityBuyer.presets.selectNext) document.getElementById("apselected"+loadedAPs).textContent = ">"
+	}
+}
+
+function removeAP(id) {
+	var newOrder=[]
+	for (var i=0;i<player.eternityBuyer.presets.order.length;i++) {
+		if (i==id) {
+            document.getElementById("automatedPresets").deleteRow(i)
+			loadedAPs--
+			delete player.eternityBuyer.presets[player.eternityBuyer.presets.order[i]]
+		} else newOrder.push(player.eternityBuyer.presets.order[i])
+		if (i>id) {
+			let row=document.getElementById("automatedPresets").rows[i-1]
+			row.innerHTML='<td id="apselected'+(i-1)+'"></td><td><b id="apname'+(i-1)+'">Test</b><br># of eternities: <input id="apeternities'+(i-1)+'" type="text" onchange="changeAPEternities('+(i-1)+')" value=2></input><button class="storebtn" onclick="selectNextAP('+(i-1)+')">Select next</button> <button class="storebtn" onclick="moveAP('+(i-1)+', -1)">Move up</button> <button class="storebtn" onclick="moveAP('+(i-1)+', 1)">Move down</button> <button class="storebtn" onclick="replaceAP('+(i-1)+')">Replace</button> <button class="storebtn" onclick="disableAP('+(i-1)+')">Disable</button> <button class="storebtn"onclick="removeAP('+(i-1)+')">Remove</button></td>'
+			changeAPTitle(player.eternityBuyer.presets.order[i],i-1)
+		}
+	}
+	player.eternityBuyer.presets.order=newOrder
 }
 
 function toggleBigRipConf() {
@@ -2180,7 +2234,7 @@ function isBigRipUpgradeActive(id, bigRipped) {
 	if (player.masterystudies == undefined) return false
 	if (bigRipped === undefined ? !player.quantum.bigRip.active : !bigRipped) return false
 	if (id == 1) if (!player.quantum.bigRip.upgrades.includes(17)) for (var u=3;u<18;u++) if (player.quantum.bigRip.upgrades.includes(u)) return false
-	if (id > 2 && id != 4 && id < 9) if (player.quantum.bigRip.upgrades.includes(9)) return false
+	if (id > 2 && id != 4 && id < 9) if (player.quantum.bigRip.upgrades.includes(9) && (id != 8 || !hasNU(9))) return false
 	if (id == 4) if (player.quantum.bigRip.upgrades.includes(11)) return false
 	return player.quantum.bigRip.upgrades.includes(id)
 }
@@ -2233,9 +2287,11 @@ function isEternityBroke() {
 }
 
 function getEMGain() {
+	let mult = 1
+	if (hasNU(5)) mult = getNUPow(5)
 	let log = player.timeShards.div(1e15).log10()*0.25
-	if (log > 15) return Decimal.pow(10, Math.sqrt(log * 15)).floor()
-	return Decimal.pow(10, log).floor()
+	if (log > 15) return Decimal.pow(10, Math.sqrt(log * 15)).times(mult).floor()
+	return Decimal.pow(10, log).times(mult).floor()
 }
 
 var breakUpgCosts = [1, 1e3, 1e6, 2e11, 8e17, 1e48]
@@ -2295,6 +2351,20 @@ function getExtraTickReductionMult() {
 		if (player.quantum.breakEternity.upgrades.includes(5)) ret = ret.times(getBreakUpgMult(5))
 		return ret
 	} else return 1
+}
+
+function maxBuyBEEPMult() {
+	let cost=getBreakUpgCost(7)
+	if (!player.quantum.breakEternity.eternalMatter.gte(cost)) return
+	let toBuy=Math.floor(player.quantum.breakEternity.eternalMatter.div(cost).add(1).log(2))
+	let toSpend=Decimal.pow(2,toBuy).sub(1).times(cost)
+	player.quantum.breakEternity.epMultPower+=toBuy
+	if (player.quantum.breakEternity.eternalMatter.lt(toSpend)) player.quantum.breakEternity.eternalMatter=new Decimal(0)
+	else player.quantum.breakEternity.eternalMatter=player.quantum.breakEternity.eternalMatter.sub(toSpend)
+	document.getElementById("eternalMatter").textContent = shortenDimensions(player.quantum.breakEternity.eternalMatter)
+	document.getElementById("breakUpg7Mult").textContent = shortenDimensions(getBreakUpgMult(7))
+	document.getElementById("breakUpg7Cost").textContent = shortenDimensions(getBreakUpgCost(7))
+	for (var u=1;u<8;u++) document.getElementById("breakUpg" + u).className = player.quantum.breakEternity.upgrades.includes(u) ? "eternityupbtnbought" : player.quantum.breakEternity.eternalMatter.gte(getBreakUpgCost(u)) ? "eternityupbtn" : "eternityupbtnlocked"
 }
 
 function getGHPGain() {
@@ -3066,14 +3136,20 @@ function updateGhostifyTabs() {
 		document.getElementById("tauNeutrinos").textContent=shortenDimensions(player.ghostify.neutrinos.tau)
 		document.getElementById("preNeutrinoBoost1").textContent=getDilExp("neutrinos").toFixed(2)
 		document.getElementById("neutrinoBoost1").textContent=getDilExp().toFixed(2)
-		if (player.ghostify.neutrinos.boosts > 1) {
+		if (player.ghostify.neutrinos.boosts>1) {
 			document.getElementById("preNeutrinoBoost2").textContent=shorten(getMTSMult(273, "pn"))
 			document.getElementById("neutrinoBoost2").textContent="^"+shorten(getMTSMult(273))
 		}
-		document.getElementById("neutrinoUpg1Pow").textContent=getNU1Pow()
-		document.getElementById("neutrinoUpg3Pow").textContent=shorten(getNU3Pow())
+		if (player.ghostify.neutrinos.boosts>2) document.getElementById("neutrinoBoost3").textContent=getFullExpansion(getNBBoost(3))
+		if (player.ghostify.neutrinos.boosts>3) document.getElementById("neutrinoBoost4").textContent=(getNBBoost(4)*100-100).toFixed(1)
+		if (player.ghostify.neutrinos.boosts>4) document.getElementById("neutrinoBoost5").textContent=shorten(getNBBoost(5))
+		if (player.ghostify.neutrinos.boosts>5) document.getElementById("neutrinoBoost6").textContent=shorten(getNBBoost(6))
+		if (player.ghostify.neutrinos.boosts>6) document.getElementById("neutrinoBoost7").textContent=(getNBBoost(7)*100-100).toFixed(1)
+		if (player.ghostify.neutrinos.boosts>7) document.getElementById("neutrinoBoost8").textContent=(getNBBoost(8)*100).toFixed(1)
+		document.getElementById("neutrinoUpg1Pow").textContent=getNUPow(1)
+		document.getElementById("neutrinoUpg3Pow").textContent=shorten(getNUPow(3))
 		for (var u=1; u<10; u++) {
-			if (player.ghostify.neutrinos.upgrades.includes(u)) document.getElementById("neutrinoUpg" + u).className = "gluonupgradebought neutrinoupg"
+			if (hasNU(u)) document.getElementById("neutrinoUpg" + u).className = "gluonupgradebought neutrinoupg"
 			else if (player.ghostify.neutrinos.electron.add(player.ghostify.neutrinos.mu).round().add(player.ghostify.neutrinos.tau).round().gte(neutrinoUpgCosts[u])) document.getElementById("neutrinoUpg" + u).className = "gluonupgrade neutrinoupg"
 			else document.getElementById("neutrinoUpg" + u).className = "gluonupgrade unavailablebtn"
 		}
@@ -3088,17 +3164,27 @@ function onNotationChangeNeutrinos() {
 	document.getElementById("ghpMult").textContent = shortenDimensions(Decimal.pow(2, player.ghostify.multPower - 1))
 	document.getElementById("ghpMultUpgCost").textContent = "???"
 	for (var u=1; u<10; u++) document.getElementById("neutrinoUpg"+u+"Cost").textContent=shortenDimensions(neutrinoUpgCosts[u])
+	document.getElementById("BU8Cap").textContent = shorten(Number.MAX_VALUE)
 }
 
 function getNeutrinoGain() {
 	return Decimal.pow(5, player.ghostify.neutrinos.multPower - 1)
 }
 
+function getNBBoost(id) {
+	if (id == 3) return 0
+	if (id == 4) return 1
+	if (id == 5) return 1
+	if (id == 6) return 1
+	if (id == 7) return 1
+	if (id == 8) return 0
+}
+
 var neutrinoUpgCosts = [null, 1e6, 1e7, 1e8, 1e9, 1/0, 1/0, 1/0, 1/0, 1/0]
 function buyNeutrinoUpg(id) {
 	var sum=player.ghostify.neutrinos.electron.add(player.ghostify.neutrinos.mu).add(player.ghostify.neutrinos.tau).round()
 	var cost=new Decimal(neutrinoUpgCosts[id])
-	if (!sum.gte(cost)) return
+	if (!sum.gte(cost)||player.ghostify.neutrinos.upgrades.includes()) return
 	player.ghostify.neutrinos.upgrades.push(id)
 	var generations=["electron","mu","tau"]
 	for (g=0;g<3;g++) player.ghostify.neutrinos[generations[g]]=player.ghostify.neutrinos[generations[g]].sub(cost.times(player.ghostify.neutrinos[generations[g]]).div(sum)).round()
@@ -3108,12 +3194,16 @@ function buyNeutrinoUpg(id) {
 	}
 }
 
-function getNU1Pow() {
-	return Math.max(100 - (player.quantum.bigRip.active ? 0 : player.meta.resets), 1)
+function hasNU(id) {
+	return ghostified ? player.ghostify.neutrinos.upgrades.includes(id) : false
 }
 
-function getNU3Pow() {
-	return Math.pow(Math.max(player.quantum.colorPowers.b.log10()/250 + 1, 1), 2)
+function getNUPow(upg) {
+	if (upg == 1) return Math.max(100 - (player.quantum.bigRip.active ? 0 : player.meta.resets), 0)
+    if (upg == 3) return Math.pow(Math.max(player.quantum.colorPowers.b.log10()/250 + 1, 1), 2)
+    if (upg == 4) return 1
+    if (upg == 5) return 1
+    if (upg == 8) return 1
 }
 
 function setupAutomaticGhostsData() {

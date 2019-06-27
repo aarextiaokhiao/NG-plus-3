@@ -19,7 +19,7 @@ function getGalaxyPower(ng, bi) {
 	else otherGalPower += Math.min(player.replicanti.galaxies, player.replicanti.gal) * (replGalEff - 1) + extraReplGalPower
 	otherGalPower += Math.floor(player.dilation.freeGalaxies) * ((player.masterystudies ? player.masterystudies.includes("t343") : false) ? replGalEff : 1)
 
-	let galaxyPower = Math.max(ng-(bi?2:0),0)+(isEternityBroke()?0:otherGalPower)
+	let galaxyPower = Math.max(ng-(bi?2:0),0)+(isEternityBroke()?(ghostified&&player.ghostify.neutrinos.boosts>7?player.dilation.freeGalaxies*getNBBoost(8):0):otherGalPower)
 	if ((player.currentChallenge=="challenge7"||inQC(4))&&player.galacticSacrifice) galaxyPower *= galaxyPower
 	return galaxyPower
 }
@@ -51,7 +51,7 @@ function getGalaxyPowerEff(ng, bi) {
 
 function getTickSpeedMultiplier() {
 	let realnormalgalaxies = player.galaxies
-	if (player.masterystudies && !isEternityBroke()) realnormalgalaxies = Math.max(player.galaxies-player.quantum.electrons.sacGals,0)*Math.max(Math.min(10-player.quantum.electrons.amount/16857,1),0)
+	if (player.masterystudies && !isEternityBroke()) realnormalgalaxies = Math.max(player.galaxies-player.quantum.electrons.sacGals,0)*Math.max(Math.min(10-(player.quantum.electrons.amount+Math.max(player.galaxies-player.quantum.electrons.sacGals,0)*player.quantum.electrons.mult)/16857,1),0)
 	if (player.tickspeedBoosts != undefined) if (player.galacticSacrifice.upgrades.includes(34)) realnormalgalaxies += 4
 	if ((player.currentChallenge == "postc3" || isIC3Trapped()) && !isEternityBroke()) {
 		if (player.currentChallenge=="postcngmm_3" || (player.challenges.includes("postcngmm_3") && player.tickspeedBoosts === undefined)) {

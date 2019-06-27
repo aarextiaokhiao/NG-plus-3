@@ -11,10 +11,15 @@ function getMetaDimensionMultiplier (tier) {
   let power = player.dilation.upgrades.includes("ngpp4") ? getDil15Bonus() : 2
   let multiplierpower = Math.floor(player.meta[tier].bought / 10)
   let boostpower = power
-  if (player.masterystudies != undefined) if (player.masterystudies.includes("d12")) boostpower = getNanofieldRewardEffect(6)
+  let strength = 1
+  if (player.masterystudies != undefined) {
+      if (player.masterystudies.includes("t312")) strength = 1.045
+      if (player.masterystudies.includes("d12")) boostpower = getNanofieldRewardEffect(6)
+      if (ghostified && player.ghostify.neutrinos.boosts > 3) strength *= getNBBoost(4)
+  }
   if (player.achievements.includes("ngpp14")) boostpower *= 1.01
   if (inQC(8)) boostpower = 1
-  let multiplier = Decimal.pow(power, Math.floor(player.meta[tier].bought / 10)).times(Decimal.pow(boostpower, Math.max(0, player.meta.resets - tier + 1)*(!player.masterystudies?1:player.masterystudies.includes('t312')?1.045:1))).times(getDilationMetaDimensionMultiplier());
+  let multiplier = Decimal.pow(power, Math.floor(player.meta[tier].bought / 10)).times(Decimal.pow(boostpower, Math.max(0, player.meta.resets - tier + 1)*strength)).times(getDilationMetaDimensionMultiplier());
   if (player.dilation.upgrades.includes("ngpp3")) {
     multiplier = multiplier.times(getDil14Bonus());
   }
@@ -83,7 +88,7 @@ function getMetaShiftRequirement() {
 	if (player.masterystudies != undefined) if (player.masterystudies.includes("t312")) data.mult -= 1
 	data.amount += data.mult * Math.max(player.meta.resets - 4, 0)
 	if (player.masterystudies != undefined) if (player.masterystudies.includes("d13")) data.amount -= getTreeUpgradeEffect(1)
-	if (ghostified) if (player.ghostify.neutrinos.upgrades.includes(1)) data.amount -= getNU1Pow()
+	if (ghostified) if (hasNU(1)) data.amount -= getNUPow(1)
 
 	data.scalingStart = inQC4 ? 55 : 15
 	if (player.meta.resets >= data.scalingStart) {
@@ -96,7 +101,7 @@ function getMetaShiftRequirement() {
 
 function metaBoost() {
 	let req = getMetaShiftRequirement()
-	let isNU1ReductionActive = ghostified ? player.ghostify.neutrinos.upgrades.includes(1) && !player.quantum.bigRip.active : false
+	let isNU1ReductionActive = hasNU(1) ? !player.quantum.bigRip.active : false
 	if (player.meta[req.tier].bought<Math.floor(req.amount)) return
 	if (speedrunMilestonesReached>26 && req.tier>7) {
 		if (isNU1ReductionActive) {
@@ -1536,12 +1541,12 @@ function quantumReset(force, auto, challid, bigRip, implode=false) {
 		document.getElementById("nanofieldtabbtn").style.display = "none"
 		document.getElementById("todtabbtn").style.display = "none"
 		if (document.getElementById("metadimensions").style.display == "block"||document.getElementById("emperordimensions").style.display == "block") showDimTab("antimatterdimensions")
-		if (document.getElementById("masterystudies").style.display=="block") showEternityTab("timestudies", document.getElementById("eternitystore").style.display=="block")
+		if (document.getElementById("masterystudies").style.display=="block") showEternityTab("timestudies", document.getElementById("eternitystore").style.display!="block")
 		if (document.getElementById("quantumchallenges").style.display == "block") showChallengesTab("normalchallenges")
 		if (document.getElementById("electrons").style.display == "block"||document.getElementById("replicants").style.display == "block"||document.getElementById("nanofield").style.display == "block") showQuantumTab("uquarks")
 	}
 	document.getElementById("breakEternityTabbtn").style.display = bigRip || player.quantum.breakEternity.unlocked ? "" : "none"
-	if (!bigRip && !player.quantum.breakEternity.unlocked) if (document.getElementById("breakEternity").style.display == "block") showEternityTab("timestudies", document.getElementById("eternitystore").style.display=="block")
+	if (!bigRip && !player.quantum.breakEternity.unlocked) if (document.getElementById("breakEternity").style.display == "block") showEternityTab("timestudies", document.getElementById("eternitystore").style.display!="block")
 	drawMasteryTree()
 	Marathon2 = 0;
 	document.getElementById("quantumConfirmBtn").style.display = "inline-block"
