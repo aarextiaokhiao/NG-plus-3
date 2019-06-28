@@ -394,19 +394,20 @@ function setupText() {
 	for (var c=0;c<3;c++) {
 		var color=(["red","green","blue"])[c]
 		var shorthand=(["r","g","b"])[c]
-		var branchUpgrades=["Gain 2x "+color+" quark spins, but "+color+" quarks decay 2x faster.","The gain of "+color+" unstable quarks is doubled and squared.",(["Red","Green","Blue"])[c]+" unstable quarks decay 4x slower."]
+		var branchUpgrades=["Gain <span id='"+color+"UpgPow1'></span>x "+color+" quark spins, but "+color+" quarks decay 2x faster.","The gain of "+color+" <span id='"+color+"UpgName2'></span> quarks is doubled and squared.",(["Red","Green","Blue"])[c]+" <span id='"+color+"UpgName3'></span> quarks decay 4x slower."]
 
 		var html='You have <span class="'+color+'" id="'+color+'QuarksToD" style="font-size: 35px">0</span> '+color+' quarks.<br>'
 		html+='<button class="storebtn" id="'+color+'UnstableGain" style="width: 210px; height: 70px" onclick="unstableQuarks(\''+shorthand+'\')">Unstablize quarks for 0.0 unstable quarks.</button><br>'
 		html+='<span id="'+color+'Conversion">9.90e531 '+color+' quarks => 1.0 unstable '+color+' quarks</span><br>'
 		html+='You have <span class="'+color+'" id="'+color+'QuarkSpin" style="font-size: 35px">0.0</span> '+color+' quark spin.'
 		html+='<span class="'+color+'" id="'+color+'QuarkSpinProduction" style="font-size: 25px">+0/s</span><br>'
-		html+="You have <span class='"+color+"' id='"+color+"UnstableQuarks' style='font-size: 35px'>0</span> unstable "+color+" quarks.<br>"
+		html+="You have <span class='"+color+"' id='"+color+"UnstableQuarks' style='font-size: 35px'>0</span> <span id='"+shorthand+"UQName'></span> "+color+" quarks.<br>"
 		html+="They are losing 50% per <span id='"+color+"QuarksDecayRate'>1 second</span>."
 		document.getElementById("todRow").insertCell(c).innerHTML=html
 		
 		html="<table class='table' align='center' style='margin: auto'><tr>"
-		for (var u=1;u<4;u++) html+="<td style='vertical-align: 0'><button class='gluonupgrade unavailablebtn' id='"+color+"upg"+u+"' onclick='buyBranchUpg(\""+shorthand+"\", "+u+")'"+(u<3?" style='font-size:10px'":"")+">"+branchUpgrades[u-1]+"<br>Currently: <span id='"+color+"upg"+u+"current'>1</span>x<br>Cost: <span id='"+color+"upg"+u+"cost'>?</span> "+color+" quark spin</button>"+(u==2?"<br><button class='storebtn' style='width: 190px' onclick='maxBranchUpg(\""+shorthand+"\")'>Max all upgrades</button>":"")+"</td>"
+		for (var u=1;u<4;u++) html+="<td style='vertical-align: 0'><button class='gluonupgrade unavailablebtn' id='"+color+"upg"+u+"' onclick='buyBranchUpg(\""+shorthand+"\", "+u+")'"+(u<3?" style='font-size:10px'":"")+">"+branchUpgrades[u-1]+"<br>Currently: <span id='"+color+"upg"+u+"current'>1</span>x<br>Cost: <span id='"+color+"upg"+u+"cost'>?</span> "+color+" quark spin</button>"+(u==2?"<br><button class='storebtn' style='width: 190px' onclick='maxBranchUpg(\""+shorthand+"\")'>Max all upgrades</button><br><button class='storebtn' style='width: 190px; font-size:10px' onclick='maxBranchUpg(\""+shorthand+"\", true)'>Max 2nd and 3rd upgrades</button>":"")+"</td>"
+		html+="</tr></tr><td></td><td><button class='gluonupgrade unavailablebtn' id='"+shorthand+"RadioactiveDecay' style='font-size:10px' onclick='radioactiveDecay(\""+shorthand+"\")'>Reset to make 1st upgrades stronger, but this branch will be nerfed.<br><span id='"+shorthand+"RDReq'></span><br>Radioactive Decays: <span id='"+shorthand+"RDLvl'></span></button></td><td></td>"
 		html+="</tr></table>"
 		document.getElementById(color+"Branch").innerHTML=html
 	}
@@ -594,14 +595,18 @@ function updateQuantumTabs() {
 			var color=colors[c]
 			var shorthand=shorthands[c]
 			var branch=player.quantum.tod[shorthand]
-			document.getElementById(color+"UnstableGain").textContent="Unstablize quarks for "+shortenMoney(getUnstableGain(shorthand))+" unstable quarks."
-			document.getElementById(color+"Conversion").textContent=shorten(player.quantum.tod[shorthand].gainDiv.times(99e30)) + " " + color + " quarks => " + shortenMoney(Decimal.pow(2,getBranchUpgLevel(shorthand,2)*Math.pow(2,getBranchUpgLevel(shorthand,2))*3)) + " unstable " + color + " quarks"
+			var name=getUQName(shorthand)+" "+color+" quarks"
+			document.getElementById(color+"UnstableGain").textContent="Unstablize quarks for "+shortenMoney(getUnstableGain(shorthand))+" "+name+"."
+			document.getElementById(color+"Conversion").textContent=shorten(player.quantum.tod[shorthand].gainDiv.times(99e30)) + " " + color + " quarks => " + shortenMoney(Decimal.pow(2,getBranchUpgLevel(shorthand,2)*Math.pow(2,getBranchUpgLevel(shorthand,2)-getRadioactiveDecays(shorthand)*10)*3)) + " " + name
 			document.getElementById(color+"QuarkSpin").textContent=shortenMoney(branch.spin)
 			document.getElementById(color+"UnstableQuarks").textContent=shortenMoney(branch.quarks)
 			document.getElementById(color+"QuarksDecayRate").textContent=timeDisplayShort(10/getDecayRate(shorthand),true,2)
 			let ret=getQuarkSpinProduction(shorthand)
 			document.getElementById(color+"QuarkSpinProduction").textContent="+"+shortenMoney(ret)+"/s"
-			if (branchNum==c+1) for (var u=1;u<4;u++) document.getElementById(color+"upg"+u).className="gluonupgrade "+(branch.spin.lt(getBranchUpgCost(shorthand,u))?"unavailablebtn":shorthand)
+			if (branchNum==c+1) {
+				for (var u=1;u<4;u++) document.getElementById(color+"upg"+u).className="gluonupgrade "+(branch.spin.lt(getBranchUpgCost(shorthand,u))?"unavailablebtn":shorthand)
+				if (ghostified) document.getElementById(shorthand+"RadioactiveDecay").className="gluonupgrade "+(branch.quarks.lt(Decimal.pow(10,Math.pow(2,50)))?"unavailablebtn":shorthand)
+			}
 		}
 		if (branchNum<1) for (var u=1;u<9;u++) {
 			document.getElementById("treeupg"+u).className="gluonupgrade "+(canBuyTreeUpg(u)?shorthands[getTreeUpgradeLevel(u)%3]:"unavailablebtn")
@@ -1750,10 +1755,20 @@ function updateTODStuff() {
 		var color=colors[c]
 		var shorthand=shorthands[c]
 		var branch=player.quantum.tod[shorthand]
+		var name=getUQName(shorthand)
+		var decays=getRadioactiveDecays(shorthand)
+		document.getElementById(shorthand+"UQName").textContent=name
+		document.getElementById(color+"UpgPow1").textContent=decays>0?Math.pow(2,1+decays*0.1).toFixed(2):2
 		for (var b=1;b<4;b++) {
-			document.getElementById(color+"upg"+b+"current").textContent=shortenDimensions(Decimal.pow(b==3?4:2,getBranchUpgLevel(shorthand,b)))
+			document.getElementById(color+"upg"+b+"current").textContent=shortenDimensions(Decimal.pow(b==3?4:2,getBranchUpgLevel(shorthand,b)*(b<2?1+decays*0.1:1)))
 			document.getElementById(color+"upg"+b+"cost").textContent=shortenMoney(getBranchUpgCost(shorthand,b))
+			if (b>1) document.getElementById(color+"UpgName"+b).textContent=name
 		}
+		if (ghostified) {
+			document.getElementById(shorthand+"RadioactiveDecay").parentElement.parentElement.style.display=""
+			document.getElementById(shorthand+"RDReq").textContent="(requires "+shorten(Decimal.pow(10,Math.pow(2,50)))+" of "+getUQName(shorthand)+" "+color+" quarks)"
+			document.getElementById(shorthand+"RDLvl").textContent=getFullExpansion(getRadioactiveDecays(shorthand))
+		} else document.getElementById(shorthand+"RadioactiveDecay").parentElement.parentElement.style.display="none"
 	}
 	for (var t=1;t<9;t++) {
 		var lvl=getTreeUpgradeLevel(t)
@@ -1784,7 +1799,7 @@ function getUnstableGain(branch) {
 	let ret = player.quantum.usedQuarks[branch].div(1e30).div(player.quantum.tod[branch].gainDiv).add(1).log10()
 	if (ret<2) ret = Math.max(player.quantum.usedQuarks[branch].times(1e210/99).div(player.quantum.tod[branch].gainDiv).log10()/120,0)
 	ret = Decimal.pow(2,getBranchUpgLevel(branch,2)-1).times(ret)
-	if (ret.gt(1)) ret = Decimal.pow(ret, Math.pow(2,getBranchUpgLevel(branch,2))*6)
+	if (ret.gt(1)) ret = Decimal.pow(ret, Math.pow(2,getBranchUpgLevel(branch,2)-getRadioactiveDecays(branch)*25)*6)
 	return ret
 }
 
@@ -1798,24 +1813,24 @@ function unstableQuarks(branch) {
 }
 
 function getDecayRate(branch) {
-	let ret = Math.pow(2,getBranchUpgLevel(branch,1)-getBranchUpgLevel(branch,3)*2-4)
+	let ret = Decimal.pow(2,getBranchUpgLevel(branch,1)-getBranchUpgLevel(branch,3)*2-getRadioactiveDecays(branch)*25-4)
 	if (branch=="r") {
-		if (GUBought("rg8")) ret /= getGU8Effect("rg")
+		if (GUBought("rg8")) ret = ret.div(getGU8Effect("rg"))
 	}
 	if (branch=="g") {
-		if (GUBought("gb8")) ret /= getGU8Effect("gb")
+		if (GUBought("gb8")) ret = ret.div(getGU8Effect("gb"))
 	}
 	if (branch=="b") {
-		if (GUBought("br8")) ret /= getGU8Effect("br")
+		if (GUBought("br8")) ret = ret.div(getGU8Effect("br"))
 	}
-	ret *= getTreeUpgradeEffect(3)
-	ret *= getTreeUpgradeEffect(5)
-	ret /= getNUPow(4)
+	ret = ret.times(getTreeUpgradeEffect(3))
+	ret = ret.times(getTreeUpgradeEffect(5))
+	ret = ret.div(getNUPow(4))
 	return ret
 }
 
 function getQuarkSpinProduction(branch) {
-	let ret = Decimal.pow(2,getBranchUpgLevel(branch,1)).times(getTreeUpgradeEffect(3)).times(getTreeUpgradeEffect(5))
+	let ret = Decimal.pow(2,getBranchUpgLevel(branch,1)*(1+getRadioactiveDecays(branch)/10)).times(getTreeUpgradeEffect(3)).times(getTreeUpgradeEffect(5))
 	if (hasNU(4)) ret = ret.times(getNUPow(4))
 	return ret
 }
@@ -1990,10 +2005,22 @@ function rotateAutoAssign() {
 	document.getElementById('autoAssignRotate').textContent=player.quantum.autoOptions.assignQKRotate?"C"+(player.quantum.autoOptions.assignQKRotate>1?"ounterc":"")+"lockwise":"No rotate"
 }
 
-function maxBranchUpg(branch) {
+function getUQName(shorthand) {
+	let ret=""
+	if (player.quantum.tod[shorthand].decays!==undefined) {
+		let mod8=player.quantum.tod[shorthand].decays%8
+		let div8=(player.quantum.tod[shorthand].decays-mod8)/8
+		if (div8>0) ret="ghostly"+(div8>1?"^"+getFullExpansion(div8):"")+" "+ret
+		if (mod8>1) ret=(["infinity ","eternity ","quantum "])[Math.floor(mod8/2)-1]+ret
+		if (mod8%2>0) ret="ratioactive "+ret
+	}
+	return ret+"unstable"
+}
+
+function maxBranchUpg(branch, weak) {
 	var colors = {r: "red", g: "green", b: "blue"}
 	var bData = player.quantum.tod[branch]
-	for (var u=1;u<4;u++) {
+	for (var u=(weak?2:1);u<4;u++) {
 		var oldLvl = getBranchUpgLevel(branch, u)
 		var scaleStart = branchUpgCostScales[u-1][1]
 		var cost = getBranchUpgCost(branch, u)
@@ -2017,6 +2044,22 @@ function maxBranchUpg(branch) {
 			document.getElementById(colors[branch]+"upg"+u+"cost").textContent=shortenMoney(getBranchUpgCost(branch, u))
 		}
 	}
+}
+
+function radioactiveDecay(shorthand) {
+	let data=player.quantum.tod[shorthand]
+	if (!data.quarks.gte(Decimal.pow(10,Math.pow(2,50)))) return
+	data.gainDiv=new Decimal("1e425")
+	data.quarks=new Decimal(0)
+	data.spin=new Decimal(0)
+	data.upgrades={}
+	data.decays=data.decays===undefined?1:data.decays+1
+	updateTODStuff()
+}
+
+function getRadioactiveDecays(shorthand) {
+	let data=player.quantum.tod[shorthand]
+	return data.decays===undefined?0:data.decays
 }
 
 function openAfterEternity() {
@@ -2061,6 +2104,11 @@ function toggleSlowStop() {
 	document.getElementById("slowstop").textContent = "Stop auto-dilate if a little bit of TP is gained: O" + (player.eternityBuyer.slowStop ? "N" : "FF")
 }
 
+function toggleAPs() {
+	player.eternityBuyer.presets.on = !player.eternityBuyer.presets.on
+	document.getElementById("toggleAP").textContent = player.eternityBuyer.presets.on ? "Disable" : "Enable"
+}
+
 var apLoaded = false
 var apInterval
 var loadedAPs = 0
@@ -2081,41 +2129,145 @@ function loadAP() {
 			onLoading = true
 		}
 		try {
-			latestRow.innerHTML = '<td id="apselected'+loadedAPs+'"></td><td><b id="apname'+loadedAPs+'">Test</b><br># of eternities: <input id="apeternities'+loadedAPs+'" type="text" onchange="changeAPEternities('+loadedAPs+')" value=2></input><button class="storebtn" onclick="selectNextAP('+loadedAPs+')">Select next</button> <button class="storebtn" onclick="moveAP('+loadedAPs+', -1)">Move up</button> <button class="storebtn" onclick="moveAP('+loadedAPs+', 1)">Move down</button> <button class="storebtn" onclick="replaceAP('+loadedAPs+')">Replace</button> <button class="storebtn" onclick="disableAP('+loadedAPs+')">Disable</button> <button class="storebtn"onclick="removeAP('+loadedAPs+')">Remove</button></td>'
-			if (loadedAPs == player.eternityBuyer.presets.selected) document.getElementById("apselected"+loadedAPs).textContent = ">>"
-			if (loadedAPs == player.eternityBuyer.presets.selectNext) document.getElementById("apselected"+loadedAPs).textContent = ">"
-			document.getElementById("apname"+(loadedAPs+1)).textContent = changeAPTitle(player.eternityBuyer.presets.order[loadedAPs],loadedAPs)
+			latestRow.innerHTML = '<td id="apselected'+loadedAPs+'"></td><td><b id="apname'+loadedAPs+'"></b><br># of eternities: <input id="apeternities'+loadedAPs+'" type="text" onchange="changeAPEternities('+loadedAPs+')" value=2></input><button class="storebtn" onclick="selectNextAP('+loadedAPs+')">Select next</button> <button class="storebtn" onclick="moveAP('+loadedAPs+', -1)">Move up</button> <button class="storebtn" onclick="moveAP('+loadedAPs+', 1)">Move down</button> <button class="storebtn" onclick="replaceAP('+loadedAPs+')">Replace</button> <button id="apdisable'+loadedAPs+'" class="storebtn" onclick="disableAP('+loadedAPs+')"></button> <button class="storebtn"onclick="removeAP('+loadedAPs+')">Remove</button></td>'
+			changeAPOptions(player.eternityBuyer.presets.order[loadedAPs],loadedAPs)
 			loadedAPs++
 			onLoading = false
 		} catch (_) {}
 		occupied = false
 	}, 0)
+	if (player.eternityBuyer.presets.dil === undefined) {
+		document.getElementById("apDilSelected").textContent = ""
+		document.getElementById("apDil").innerHTML = '<button class="storebtn" onclick="createAP(false, true)">Add preset</button> <button class="storebtn" onclick="createAP(true, true)">Import preset</button>'
+	} else {
+		document.getElementById("apDil").innerHTML = '<b id="apnamedil"></b><br><button class="storebtn" onclick="renameAP(\'dil\')">Rename</button> <button class="storebtn" onclick="replaceAP(\'dil\')">Replace</button> <button id="apdisabledil" class="storebtn" onclick="disableAP(\'dil\')"></button>'
+		changeAPOptions('dil')
+	}
 }
 
-function changeAPTitle(id, placement) {
-	let name="#"+(placement+1)
-	if (player.eternityBuyer.presets[id].title!="") name=player.eternityBuyer.presets[id].title
-	document.getElementById("apname"+placement).textContent=name
+function changeAPOptions(id, placement) {
+	if (id=="dil") {
+		let name="Dilation preset"
+		let apData=player.eternityBuyer.presets.dil
+		if (apData.title!="") name=apData.title
+		document.getElementById("apnamedil").textContent=name
+		document.getElementById("apdisabledil").textContent=apData.on?"Disable":"Enable"
+		document.getElementById("apDilSelected").textContent=player.eternityBuyer.presets.selected=="dil"?">>":""
+	} else {
+		let name="#"+(placement+1)
+		let pointer=""
+		let apData=player.eternityBuyer.presets[id]
+		if (apData.title!="") name=apData.title
+		document.getElementById("apname"+placement).textContent=name
+		document.getElementById("apeternities"+placement).value=apData.length
+		document.getElementById("apdisable"+placement).textContent=apData.on?"Disable":"Enable"
+		if (placement==player.eternityBuyer.presets.selected) pointer=">>"
+		else if (placement==player.eternityBuyer.presets.selectNext) pointer=">"
+		document.getElementById("apselected"+placement).textContent=pointer
+	}
 }
 
-function createAP() {
-	var id=1
-	var mtsstudies=[]
-	if (player.masterystudies) {
+function changeAPEternities(id) {
+	let value=parseInt(document.getElementById("apeternities"+id).value)
+	if (!isNaN(value)) if (value>0) player.eternityBuyer.presets[player.eternityBuyer.presets.order[id]].length=value
+}
+
+function createAP(importing, dil) {
+	if (importing) {
+		onImport=true
+		var input=prompt()
+		if (input===null) return
+		onImport=false
+	} else {
+		var mtsstudies=[]
 		for (var id2=0;id2<player.masterystudies.length;id2++) {
 			var t = player.masterystudies[id2].split("t")[1]
 			if (t) mtsstudies.push(t)
 		}
+		var input=player.timestudy.studies+(mtsstudies.length>0?","+mtsstudies:"")+"|"+player.eternityChallUnlocked
 	}
-	while (player.eternityBuyer.presets.order.includes(id)) id++
-	player.eternityBuyer.presets.order.push(id)
-	player.eternityBuyer.presets[id]={title:"",preset:player.timestudy.studies+(mtsstudies.length>0?","+mtsstudies:"")+"|"+player.eternityChallUnlocked,length:1,on:true}
-	if (loadedAPs+1==player.eternityBuyer.presets.order.length) {
-		let latestRow=document.getElementById("automatedPresets").insertRow(loadedAPs)
-		latestRow.innerHTML='<td id="apselected'+loadedAPs+'"></td><td><b id="apname'+loadedAPs+'">Test</b><br># of eternities: <input id="apeternities'+loadedAPs+'" type="text" onchange="changeAPEternities('+loadedAPs+')" value=2></input><button class="storebtn" onclick="selectNextAP('+loadedAPs+')">Select next</button> <button class="storebtn" onclick="moveAP('+loadedAPs+', -1)">Move up</button> <button class="storebtn" onclick="moveAP('+loadedAPs+', 1)">Move down</button> <button class="storebtn" onclick="replaceAP('+loadedAPs+')">Replace</button> <button class="storebtn" onclick="disableAP('+loadedAPs+')">Disable</button> <button class="storebtn"onclick="removeAP('+loadedAPs+')">Remove</button></td>'
-		changeAPTitle(id,loadedAPs)
-		loadedAPs++
-		if (loadedAPs==player.eternityBuyer.presets.selectNext) document.getElementById("apselected"+loadedAPs).textContent = ">"
+	var id=1
+	if (dil) id="dil"
+	else {
+		while (player.eternityBuyer.presets.order.includes(id)) id++
+		player.eternityBuyer.presets.order.push(id)
+	}
+	player.eternityBuyer.presets[id]={title:"",preset:input,length:1,on:true}
+	if (dil) {
+		document.getElementById("apDil").innerHTML = '<b id="apnamedil"></b><br><button class="storebtn" onclick="renameAP(\'dil\')">Rename</button> <button class="storebtn" onclick="replaceAP(\'dil\')">Replace</button> <button id="apdisabledil" class="storebtn" onclick="disableAP(\'dil\')"></button>'
+		changeAPOptions('dil')
+		$.notify("Dilation preset created", "info")
+	} else {
+		if (loadedAPs+1==player.eternityBuyer.presets.order.length) {
+			let latestRow=document.getElementById("automatedPresets").insertRow(loadedAPs)
+			latestRow.innerHTML='<td id="apselected'+loadedAPs+'"></td><td><b id="apname'+loadedAPs+'"></b><br># of eternities: <input id="apeternities'+loadedAPs+'" type="text" onchange="changeAPEternities('+loadedAPs+')" value=2></input><button class="storebtn" onclick="selectNextAP('+loadedAPs+')">Select next</button> <button class="storebtn" onclick="moveAP('+loadedAPs+', -1)">Move up</button> <button class="storebtn" onclick="moveAP('+loadedAPs+', 1)">Move down</button> <button class="storebtn" onclick="renameAP('+loadedAPs+')">Rename</button> <button class="storebtn" onclick="replaceAP('+loadedAPs+')">Replace</button> <button id="apdisable'+loadedAPs+'" class="storebtn" onclick="disableAP('+loadedAPs+')"></button> <button class="storebtn"onclick="removeAP('+loadedAPs+')">Remove</button></td>'
+			changeAPOptions(id,loadedAPs)
+			loadedAPs++
+		}
+		$.notify("Preset #"+player.eternityBuyer.presets.order.length+" created", "info")
+	}
+}
+
+function selectNextAP(id) {
+	if (player.eternityBuyer.presets.selected==id) return
+	if (player.eternityBuyer.presets.selectNext==id) return
+	document.getElementById("apselected"+player.eternityBuyer.presets.selectNext).textContent=""
+	document.getElementById("apselected"+id).textContent=">"
+	player.eternityBuyer.presets.selectNext=id
+}
+
+function moveAP(id, offset) {
+	var orderData=player.eternityBuyer.presets.order
+	if (offset>0) {
+		if (id+offset>=orderData.length) return
+	} else if (id+offset<0) return
+	var storedCell=orderData[id+offset]
+	orderData[id+offset]=orderData[id]
+	orderData[id]=storedCell
+	changeAPOptions(orderData[id],id)
+	changeAPOptions(orderData[id+offset],id+offset)
+	$.notify("Preset #"+(id+1)+" moved", "info")
+}
+
+function renameAP(id) {
+	onImport=true
+	var input=prompt()
+	if (input===null) return
+	onImport=false
+	if (id=="dil") {
+		player.eternityBuyer.presets.dil.title=input
+		changeAPOptions('dil')
+		$.notify("Dilation preset renamed", "info")
+	} else {
+		player.eternityBuyer.presets[player.eternityBuyer.presets.order[id]].title=input
+		changeAPOptions(player.eternityBuyer.presets.order[id],id)
+		$.notify("Preset #"+(id+1)+" renamed", "info")
+	}
+}
+
+function replaceAP(id) {
+	onImport=true
+	var input=prompt()
+	if (input===null) return
+	onImport=false
+	if (id=="dil") {
+		player.eternityBuyer.presets.dil.preset=input
+		$.notify("Dilation preset replaced", "info")
+	} else {
+		player.eternityBuyer.presets[player.eternityBuyer.presets.order[id]].preset=input
+		$.notify("Preset #"+(id+1)+" replaced", "info")
+	}
+}
+
+function disableAP(id) {
+	if (id=="dil") {
+		let apData=player.eternityBuyer.presets.dil
+		apData.on=!apData.on
+		document.getElementById("apdisabledil").textContent=apData.on?"Disable":"Enable"
+	} else {
+		let apData=player.eternityBuyer.presets[player.eternityBuyer.presets.order[id]]
+		apData.on=!apData.on
+		document.getElementById("apdisable"+id).textContent=apData.on?"Disable":"Enable"
 	}
 }
 
@@ -2129,11 +2281,13 @@ function removeAP(id) {
 		} else newOrder.push(player.eternityBuyer.presets.order[i])
 		if (i>id) {
 			let row=document.getElementById("automatedPresets").rows[i-1]
-			row.innerHTML='<td id="apselected'+(i-1)+'"></td><td><b id="apname'+(i-1)+'">Test</b><br># of eternities: <input id="apeternities'+(i-1)+'" type="text" onchange="changeAPEternities('+(i-1)+')" value=2></input><button class="storebtn" onclick="selectNextAP('+(i-1)+')">Select next</button> <button class="storebtn" onclick="moveAP('+(i-1)+', -1)">Move up</button> <button class="storebtn" onclick="moveAP('+(i-1)+', 1)">Move down</button> <button class="storebtn" onclick="replaceAP('+(i-1)+')">Replace</button> <button class="storebtn" onclick="disableAP('+(i-1)+')">Disable</button> <button class="storebtn"onclick="removeAP('+(i-1)+')">Remove</button></td>'
-			changeAPTitle(player.eternityBuyer.presets.order[i],i-1)
+			let j=i-1
+			row.innerHTML='<td id="apselected'+j+'"></td><td><b id="apname'+j+'"></b><br># of eternities: <input id="apeternities'+j+'" type="text" onchange="changeAPEternities('+j+')" value=2></input><button class="storebtn" onclick="selectNextAP('+j+')">Select next</button> <button class="storebtn" onclick="moveAP('+j+', -1)">Move up</button> <button class="storebtn" onclick="moveAP('+j+', 1)">Move down</button> <button class="storebtn" onclick="renameAP('+j+')">Rename</button> <button class="storebtn" onclick="replaceAP('+j+')">Replace</button> <button id="apdisable'+j+'" class="storebtn" onclick="disableAP('+j+')"></button> <button class="storebtn"onclick="removeAP('+j+')">Remove</button></td>'
+			changeAPOptions(player.eternityBuyer.presets.order[i],j)
 		}
 	}
 	player.eternityBuyer.presets.order=newOrder
+	$.notify("Preset #"+(id+1)+" removed", "info")
 }
 
 function toggleBigRipConf() {
@@ -3184,7 +3338,7 @@ var neutrinoUpgCosts = [null, 1e6, 1e7, 1e8, 1e9, 1/0, 1/0, 1/0, 1/0, 1/0]
 function buyNeutrinoUpg(id) {
 	var sum=player.ghostify.neutrinos.electron.add(player.ghostify.neutrinos.mu).add(player.ghostify.neutrinos.tau).round()
 	var cost=new Decimal(neutrinoUpgCosts[id])
-	if (!sum.gte(cost)||player.ghostify.neutrinos.upgrades.includes()) return
+	if (!sum.gte(cost)||player.ghostify.neutrinos.upgrades.includes(id)) return
 	player.ghostify.neutrinos.upgrades.push(id)
 	var generations=["electron","mu","tau"]
 	for (g=0;g<3;g++) player.ghostify.neutrinos[generations[g]]=player.ghostify.neutrinos[generations[g]].sub(cost.times(player.ghostify.neutrinos[generations[g]]).div(sum)).round()

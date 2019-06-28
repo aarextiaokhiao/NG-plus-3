@@ -1057,7 +1057,7 @@
                             <input type="text" onchange="updateAutoEterValue()" id="autoEterValue"></input>
                         </td>
                         <td>
-                            <div style="height:75px"><b>Preset automation</b><br><button class="storebtn" onclick="toggleDilPreset()">Enable</button> <button class="storebtn" onclick="createAP()">Add preset</button><br>Eternities left to select the next preset: 2</div>
+                            <div style="height:75px"><b>Preset automation</b><br><button id="toggleAP" class="storebtn" onclick="toggleAPs()">Enable</button> <button class="storebtn" onclick="createAP()">Add preset</button> <button class="storebtn" onclick="createAP(true)">Import preset</button><br>Eternities left to select the next preset: <span id="eternitiesLeft">2</span></div>
                             <div style="height:225px; overflow-y:auto">
                                 <table id='automatedPresets'>
                                 </table>
@@ -1067,22 +1067,19 @@
                     <tr>
                         <td>
                             <b>Dilation options</b><br>
-                            <button class="storebtn" id="autoDilToggle" onclick="toggleAutoDil()">Enable</button><br>
+                            <button class="storebtn" id="autoDilToggle" onclick="toggleAPDil()">Enable</button><br>
                             <button class="storebtn" id="autodilatemode" style="width:400px" onclick="changeAutoDilateMode()">Mode: Amount of eternities</button>
                             <button class="storebtn" id="slowstop" style="width:400px; font-size: 11px" onclick="toggleSlowStop()">Stop auto-dilate if a little bit of TP is gained: OFF</button>
                             Amount of eternities to wait until dilate time:<br>
                             <input type="text" onchange="updateAutoDilValue()" id="autoDilValue"></input>
                         </td>
                         <td>
-                            <div style="height:50px"><b>Dilation preset automation</b><br><button class="storebtn" onclick="toggleAutoDilPreset()">Enable</button></div>
+                            <div style="height:50px"><b>Dilation preset automation</b></div>
                             <div>
                                 <table>
                                     <tr>
-                                        <td></td>
-                                        <td id='autoDilPreset'>
-                                            <b>None</b><br>
-                                            <button class="storebtn">Add</button>
-                                        </td>
+                                        <td id='apDilSelected'></td>
+                                        <td id='apDil'></td>
                                     </tr>
                                 </table>
                             </div>

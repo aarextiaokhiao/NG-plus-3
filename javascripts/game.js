@@ -2307,7 +2307,7 @@ function getReplMult(next) {
 		exp += (player.timestudy.ers_studies[3] + (next ? 1 : 0)) / 2
 		if (player.achievements.includes('r108')) exp *= 1.09;
 	}
-	let replmult = Decimal.pow(Math.max(player.replicanti.amount.log(2), 1), exp)
+	let replmult = Decimal.max(player.replicanti.amount.log10(), 1).times(Math.log10(2)).pow(exp)
     if (player.timestudy.studies.includes(21)) replmult = replmult.plus(Decimal.pow(player.replicanti.amount, 0.032))
     if (player.timestudy.studies.includes(102)) replmult = replmult.times(Decimal.pow(5, player.replicanti.galaxies))
 	return replmult;
@@ -3427,7 +3427,7 @@ function gainedEternityPoints() {
 				ret = ret.times(mult)
 			}
 		}
-		if (player.quantum.breakEternity.break) ret = ret.times(getBreakUpgMult(7))
+		if (isEternityBroke()) ret = ret.times(getBreakUpgMult(7))
 	}
     return ret.floor()
 }
@@ -6967,7 +6967,7 @@ setInterval(function() {
         else chall=chall[0]*10+chall[1]
         if (chall && player.money.gt(Decimal.pow(10, getQCGoal())) && player.meta.bestAntimatter.lt(Decimal.pow(Number.MAX_VALUE, 1.45)) && !player.quantum.nonMAGoalReached.includes(chall)) {
             document.getElementById("welcome").style.display="flex"
-            document.getElementById("welcomeMessage").innerHTML="You reached the antimatter goal ("+shorten(Decimal.pow(10, getQCGoal()))+"), but you didn't reach the meta-antimatter goal yet! Get "+shorten(Decimal.pow(Number.MAX_VALUE, 1.45))+" meta-antimatter and then go quantum to complete your challenge!"
+            document.getElementById("welcomeMessage").innerHTML="You reached the antimatter goal ("+shorten(Decimal.pow(10, getQCGoal()))+"), but you didn't reach the meta-antimatter goal yet! Get "+shorten(Decimal.pow(Number.MAX_VALUE, 1.45))+" meta-antimatter"+(player.quantum.bigRip.active?" and then you can become a ghost!":" and then go quantum to complete your challenge!")
             player.quantum.nonMAGoalReached.push(chall)
         }
         if (!player.ghostify.reached && player.quantum.bigRip.active) if (player.quantum.bigRip.bestThisRun.gte(Decimal.pow(10, getQCGoal()))) {
@@ -7231,12 +7231,19 @@ function gameLoop(diff) {
 
             branch.gainDiv=Decimal.div(branch.gainDiv, Decimal.pow(1.1, diff/10)).max("1e425")
 
-            var power=(branch.quarks.gt(1)?branch.quarks.log(2)+1:branch.quarks.toNumber())/decayRate
-            var decayed=Math.min(diff/10,power)
-            var added=Math.min(diff/10,power-decayed)
+            var power=branch.quarks.gt(1)?branch.quarks.log(2)+1:branch.quarks.toNumber()
+            if (decayRate.toNumber()<1e-20) {
+                if (power>0) var added=diff/10
+            } else if (decayRate.toNumber()>1e20) {
+                var added=Decimal.div(power,decayRate)
+                branch.quarks=new Decimal(0)
+            } else {
+                var decayed=Math.min(diff/10*decayRate,power)
+                var added=decayed/decayRate
 
-            power=(power-decayed)*decayRate
-            branch.quarks=power>1?Decimal.pow(2,power-1):new Decimal(power)
+                power-=decayed
+                branch.quarks=power>1?Decimal.pow(2,power-1):new Decimal(power)
+            }
 
             var sProd=getQuarkSpinProduction(shorthand)
             branch.spin=branch.spin.add(sProd.times(added))
@@ -7430,8 +7437,9 @@ function gameLoop(diff) {
     }
     let ts273Mult = getMTSMult(273)
     let chance = Decimal.pow(player.replicanti.chance, ts273Mult.toNumber())
+    if (chance.lt(1)) chance = new Decimal(player.replicanti.chance)
     let frequency = 0
-    if (chance.gte("1e9999998")) frequency = getMTSMult(273).times(Math.log10(player.replicanti.chance)/Math.log10(2))
+    if (chance.gte("1e9999998")) frequency = ts273Mult.times(Math.log10(player.replicanti.chance)/Math.log10(2))
     let interval = player.replicanti.interval
     if (player.timestudy.studies.includes(62)) interval = interval/(player.aarexModifications.newGameExpVersion?4:3)
     if (player.replicanti.amount.gt(Number.MAX_VALUE)||player.timestudy.studies.includes(133)) interval *= 10
@@ -7450,7 +7458,7 @@ function gameLoop(diff) {
     var current = player.replicanti.amount.ln()
 
     if (player.replicanti.unl && (diff > 5 || interval < 50 || player.timestudy.studies.includes(192))) {
-        if (player.timestudy.studies.includes(192) && est.toNumber() < 1/0) player.replicanti.amount = Decimal.pow(Math.E, current +Math.log((diff*est/10) * (Math.log10(getReplSpeed())/308)+1) / (Math.log10(getReplSpeed())/308))
+        if (player.timestudy.studies.includes(192) && est.toNumber() > 0 && est.toNumber() < 1/0) player.replicanti.amount = Decimal.pow(Math.E, current +Math.log((diff*est/10) * (Math.log10(getReplSpeed())/308)+1) / (Math.log10(getReplSpeed())/308))
         else if (player.timestudy.studies.includes(192)) player.replicanti.amount = Decimal.pow(Math.E, current + est.times(diff * Math.log10(getReplSpeed()) / 3080).add(1).log(Math.E) / (Math.log10(getReplSpeed())/308))
         else player.replicanti.amount = Decimal.pow(Math.E, current +(diff*est/10)).min(getReplicantiLimit())
         replicantiTicks = 0
@@ -7459,14 +7467,14 @@ function gameLoop(diff) {
             if (player.replicanti.amount.lte(100)) {
                 var temp = player.replicanti.amount
                 for (var i=0; temp.gt(i); i++) {
-                    if (player.replicanti.chance > Math.random()) player.replicanti.amount = player.replicanti.amount.plus(1)
+                    if (chance > Math.random()) player.replicanti.amount = player.replicanti.amount.plus(1)
                 }
             } else {
                 var temp = Decimal.round(player.replicanti.amount.dividedBy(100))
-                if (Math.round(player.replicanti.chance) !== 1) {
+                if (Math.round(chance) !== 1) {
                     let counter = 0
                     for (var i=0; i<100; i++) {
-                        if (player.replicanti.chance > Math.random()) {
+                        if (chance > Math.random()) {
                             counter++;
                         }
                     }
@@ -7511,7 +7519,7 @@ function gameLoop(diff) {
         }
     }
 
-    var estimate = Math.max((Math.log(Number.MAX_VALUE) - current) / est, 0)
+    var estimate = Math.max((Math.log(Number.MAX_VALUE) - current) / est.toNumber(), 0)
     document.getElementById("replicantiapprox").textContent = "Approximately "+ timeDisplay(estimate*10) + " Until Infinite Replicanti"
 
     document.getElementById("replicantiamount").textContent = shortenDimensions(player.replicanti.amount)

@@ -1177,8 +1177,8 @@ if (player.version < 5) {
       if (player.meta.bestOverQuantums === undefined) player.meta.bestOverQuantums = player.meta.bestAntimatter
       document.getElementById('prioritydil').value=player.eternityBuyer.dilationPerAmount
       if (player.achievements.includes("ng3p52")) document.getElementById("autoDilValue").value=player.eternityBuyer.dilationPerAmount
-      document.getElementById("eggonsCell").style.display = hasNU(2) ? "none" : ""
-      document.getElementById("workerReplWhat").textContent = hasNU(2) ? "babies" : "eggons"
+      document.getElementById("eggonsCell").style.display = player.ghostify.neutrinos.upgrades.includes(2) ? "none" : ""
+      document.getElementById("workerReplWhat").textContent = player.ghostify.neutrinos.upgrades.includes(2) ? "babies" : "eggons"
       updateQuantumWorth()
       if (player.quantum.autoOptions === undefined) player.quantum.autoOptions = {}
       if (player.quantum.challengeRecords === undefined) player.quantum.challengeRecords = {}
@@ -2386,11 +2386,13 @@ function loadAutoBuyerSettings() {
   document.getElementById("prioritySac").value = player.autoSacrifice.priority
   document.getElementById("bulkgalaxy").value = player.autobuyers[10].bulk
   document.getElementById("priority13").value = formatValue("Scientific", new Decimal(player.eternityBuyer.limit), 2, 0)
-  if (player.achievements.includes("ng3p52")) {
+  if (player.achievements.includes("ng3p52") && player.eternityBuyer.presets !== undefined) {
       document.getElementById("autoEterIfAD").textContent = "Auto-eternity only if it able to auto-dilate: O" + (player.eternityBuyer.ifAD ? "N" : "FF")
       document.getElementById("autoEterValue").value = formatValue("Scientific", new Decimal(player.eternityBuyer.limit), 2, 0)
       document.getElementById("autodilatemode").textContent = "Mode: " + (player.eternityBuyer.dilMode == "upgrades" ? "Upgrades" : "Amount of eternities")
       document.getElementById("slowstop").textContent = "Stop auto-dilate if a little bit of TP is gained: O" + (player.eternityBuyer.slowStop ? "N" : "FF")
+      document.getElementById("toggleAP").textContent = player.eternityBuyer.presets.on ? "Disable" : "Enable"
+      document.getElementById("eternitiesLeft").textContent = getFullExpansion(player.eternityBuyer.presets.left)
       apLoaded = false
       clearInterval(apInterval)
   }
