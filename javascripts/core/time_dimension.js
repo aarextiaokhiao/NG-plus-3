@@ -215,8 +215,12 @@ function getTS11Mult() {
 
 function getITReward() {
 	let ret=(3-player.tickspeed.log10())*0.000005
-	if (ret>=12e8) ret=Math.pow(ret*144e10,1/3)
-	else if (ret>=12e4) ret=Math.pow(ret*12e4,0.5)
 	if (hasNU(9)) ret*=1
+	if (isEternityBroke()) {
+		if (ret>100) ret=Math.pow(ret*100,0.5)
+	} else {
+		if (ret>12e8) ret=Math.pow(ret*144e10,1/3)
+		else if (ret>12e4) ret=Math.pow(ret*12e4,0.5)
+	}
 	return Decimal.pow(10,ret)
 }

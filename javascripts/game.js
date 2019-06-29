@@ -561,6 +561,7 @@ function updateNewPlayer(reseted) {
             noGrind: false
         }
         player.options.animations.ghostify = true
+        player.aarexModifications.ghostifyConf = true
     }
     if (modesChosen.rs===true) {
         player.aarexModifications.ersVersion = 1.02
@@ -1041,7 +1042,7 @@ function getGalaxyCostScalingStart(galaxies, scalingSpeed) {
     if (player.timestudy.studies.includes(224)) n += Math.floor(player.resets/2000)
     if (player.masterystudies !== undefined) if (player.quantum.bigRip.active && player.quantum.bigRip.upgrades.includes(15)) n += Math.sqrt(player.eternityPoints.add(1).log10()) * 3.55
 	
-    if (galaxies > 1399) {
+    if (galaxies > 1399 && !isEternityBroke()) {
 		let push = 5
 		if (GUBought("rg5")) push *= 1.13
 		if (GUBought("gb5")) push *= 1+Math.sqrt(player.replicanti.galaxies)/550
@@ -1062,7 +1063,7 @@ function getRemoteGalaxyScalingStart(galaxies) {
 		if (player.masterystudies.includes("t301")) n += Math.floor(extraReplGalaxies/4.15)
 		if (player.masterystudies.includes("d12")) n += getNanofieldRewardEffect(7)
 		if (ghostified && player.ghostify.neutrinos.boosts > 2) n += getNBBoost(3)
-		if (galaxies > 1/0) n -= galaxies - 1/0
+		if (galaxies > 1/0 && !isEternityBroke()) n -= galaxies - 1/0
 	}
 	return n
 }
@@ -1096,7 +1097,7 @@ function getGalaxyRequirement(offset=0, display) {
 			scaling = Math.max(scaling, 1)
 		}
 		let remoteGalaxyScalingStart = getRemoteGalaxyScalingStart(galaxies)
-		if (galaxies >= remoteGalaxyScalingStart) {
+		if (galaxies >= remoteGalaxyScalingStart && !isEternityBroke()) {
 			let speed2 = scalingSpeed
 			if (GUBought("rg7")) speed2 *= 0.9
 			if (GUBought("gb7")) speed2 /= 1+Math.log10(1+player.infinityPoints.max(1).log10())/100
@@ -1105,7 +1106,7 @@ function getGalaxyRequirement(offset=0, display) {
 			amount = amount * Math.pow(GUBought("rg1") ? 1.001 : 1.002, (galaxies-remoteGalaxyScalingStart-1) * speed2)
 			scaling = Math.max(scaling, 2)
 		}
-		if (galaxies > 1399) scaling = Math.max(scaling, 3)
+		if (galaxies > 1399 && !isEternityBroke()) scaling = Math.max(scaling, 3)
 	}
 	amount = Math.floor(amount)
 
@@ -2349,7 +2350,7 @@ function isIntervalAffordable() {
 	return player.replicanti.interval > (player.timestudy.studies.includes(22) || player.boughtDims ? 1 : 50)
 }
 
-function getRGCost(offset=0) {
+function getRGCost(offset=0, costChange) {
 	let ret = player.replicanti.galCost
 	if (offset > 0) {
 		if (inQC(5)) return player.replicanti.galCost.pow(Math.pow(1.2, offset))
@@ -2373,7 +2374,7 @@ function getRGCost(offset=0) {
 			ret = ret.times(Decimal.pow(10, increase))
 		}
 	}
-	if (player.timestudy.studies.includes(233)) ret = ret.dividedBy(player.replicanti.amount.pow(0.3))
+	if (player.timestudy.studies.includes(233) && !costChange) ret = ret.dividedBy(player.replicanti.amount.pow(0.3))
 	return ret
 }
 
@@ -2425,9 +2426,10 @@ function autoBuyRG() {
 			toBuy2--
 		}
 		toBuy--
+		cost = getRGCost(toBuy - 1)
 	}
 	player.replicanti.infinityPoints = newIP
-	player.replicanti.galCost = getRGCost(toBuy2)
+	player.replicanti.galCost = getRGCost(toBuy2, true)
 	player.replicanti.gal += toBuy2
 }
 
@@ -3521,6 +3523,8 @@ function setAchieveTooltip() {
     let notSmart = document.getElementById("You're not really smart.")
     let soLife = document.getElementById("And so your life?")
     let willenough = document.getElementById("Will it be enough?")
+    let bm2 = document.getElementById("braveMilestone2")
+    let bm14 = document.getElementById("braveMilestone14")
 
     apocAchieve.setAttribute('ach-tooltip', "Get over " + formatValue(player.options.notation, 1e80, 0, 0) + " antimatter.");
     claustrophobic.setAttribute('ach-tooltip', "Go Infinite with just 1 Antimatter Galaxy. Reward: Reduces starting tick interval by 2%"+(player.galacticSacrifice?(player.tickspeedBoosts==undefined?"":", keep dimension boosts on tickspeed boost,")+" and keep galaxy upgrades on infinity.":"."));
@@ -3609,6 +3613,8 @@ function setAchieveTooltip() {
     notSmart.setAttribute('ach-tooltip', "Get "+shorten(1e215)+" Time Shards without having time study 11 while big ripped.")
     soLife.setAttribute('ach-tooltip', "Reach "+shorten(Decimal.pow(10, 35e4))+" IP without studies and normal EP multi upgrades but in dilated and big ripped.")
     willenough.setAttribute('ach-tooltip', "Reach "+shortenCosts( new Decimal("1e20000000"))+" replicanti.")
+    bm2.setAttribute('ach-tooltip', "Reward: Colored quarks do not cancel, you keep your gluon upgrades and all features of "+shorten(Number.MAX_VALUE)+" QK reward, and you can quick Big Rip.")
+    bm14.setAttribute('ach-tooltip', "Reward: Start Ghostifies with "+shortenCosts(1e25)+" Quark Spins.")
 }
 
 
@@ -3647,14 +3653,14 @@ function onNotationChange() {
 	updateMilestones()
 	if (player.masterystudies !== undefined) {
 		updateColorCharge()
-		updateGluons()
-		updateQuantumWorth(true)
+		updateGluons("notation")
+		updateQuantumWorth("notation")
 		updateElectrons()
 		updateBankedEter()
 		updateQuantumChallenges()
 		document.getElementById("bpc68").textContent = shortenMoney(player.quantum.pairedChallenges.pc68best)
 		updateMasteryStudyTextDisplay()
-		updateReplicants()
+		updateReplicants("notation")
 		updateTODStuff()
 		onNotationChangeNeutrinos()
 	}
@@ -6981,7 +6987,7 @@ setInterval(function() {
             updateBreakEternity()
         }
         if (player.ghostify.milestones>notifyId2) {
-            $.notify("You became a ghost in at most "+getFullExpansion(braveMilestones[notifyId2])+" quantumed stat! "+(["You now start with all Speedrun Milestones unlocked and all Big Rip upgrades bought, but you still lose quantum mechanics when you become a ghost", "For now on, colored quarks do not cancel", "You now keep your gluon upgrades", "You now start with Electrons unlocked", "You now start with all Quantum Challenges unlocked and completed", "You now keep your Paired Challenges", "You now start with Replicants unlocked", "You can now gain 1% of quarks and ^0.75 amount of gluons you will gain per second", "You now start with Second Emperor Dimensions unlocked", "You now start with Fourth Emperor Dimensions unlocked", "You now start with Sixth Emperor Dimensions unlocked", "You now start with Eighth Emperor Dimensions unlocked", "You now start with Nanofield and 16 rewards unlocked", "You now start with Tree of Decay unlocked", "You now start with Big Rip and Break Eternity unlocked", "You now start with all Break Eternity upgrades unlocked"])[notifyId2]+".","success")
+            $.notify("You became a ghost in at most "+getFullExpansion(braveMilestones[notifyId2])+" quantumed stat! "+(["You now start with with all Speedrun Milestones unlocked, all Paired Challenges completed, and all Big Rip upgrades bought", "For now on, colored quarks do not cancel and you keep your gluon upgrades", "You now keep your Electron upgrades", "For now on, Quantuming doesn't reset your Tachyon particles unless you are in a QC", "For now on, Quantuming doesn't reset your Meta-Dimension Boosts unless you are in a QC", "For now on, Quantuming doesn't reset your normal replicants unless you are in a QC", "You now start with 10 worker replicants.", "You can now gain 1% of quarks and ^0.75 amount of gluons you will gain per second", "You now start with 10 of Second Emperor Dimensions", "You now start with 10 of Fourth Emperor Dimensions", "You now start with 10 of Sixth Emperor Dimensions", "You now start with 10 of Eighth Emperor Dimensions", "You now start with first 16 Nanofield rewards", "You now start with "+shortenCosts(1e25)+" quark spins", "You now start with Break Eternity unlocked and all Break Eternity upgrades bought", "You unlocked 'I rather oppose the theory of everything' achievement"])[notifyId2]+".","success")
             notifyId2++
         }
     }
@@ -7228,22 +7234,17 @@ function gameLoop(diff) {
             var shorthand=colorShorthands[c]
             var branch=player.quantum.tod[shorthand]
             var decayRate=getDecayRate(shorthand)
+            var decayPower=getRadioactiveDecays(shorthand)*25
 
-            branch.gainDiv=Decimal.div(branch.gainDiv, Decimal.pow(1.1, diff/10)).max("1e425")
+            branch.gainDiv=Decimal.div(branch.gainDiv, Decimal.pow(1.1, diff/10)).max("1e405")
 
-            var power=branch.quarks.gt(1)?branch.quarks.log(2)+1:branch.quarks.toNumber()
-            if (decayRate.toNumber()<1e-20) {
-                if (power>0) var added=diff/10
-            } else if (decayRate.toNumber()>1e20) {
-                var added=Decimal.div(power,decayRate)
-                branch.quarks=new Decimal(0)
-            } else {
-                var decayed=Math.min(diff/10*decayRate,power)
-                var added=decayed/decayRate
+            var mult=Decimal.pow(2,decayPower)
+            var power=branch.quarks.gt(mult)?new Decimal(branch.quarks.log(2)-decayPower+1):branch.quarks.div(mult)
+            var decayed=power.min(decayRate.times(diff/10))
+            var added=decayed.div(decayRate)
 
-                power-=decayed
-                branch.quarks=power>1?Decimal.pow(2,power-1):new Decimal(power)
-            }
+            power=power.sub(decayed)
+            branch.quarks=power.gt(1)?Decimal.pow(2,power.toNumber()+decayPower-1):power.times(mult)
 
             var sProd=getQuarkSpinProduction(shorthand)
             branch.spin=branch.spin.add(sProd.times(added))
@@ -7563,7 +7564,7 @@ function gameLoop(diff) {
         document.getElementById("eternitybtnPeak").textContent = (showEPmin
         ? "Peaked at "+(EPminpeakType == "normal" ? shortenDimensions(EPminpeak) : shorten(EPminpeak))+EPminpeakUnits : "")
     }
-    document.getElementById("quantumbtnFlavor").textContent = (!quantumed||!inQC(0)?((player.masterystudies !== undefined ? player.quantum.bigRip.active : false)?"I am":inQC(0)?"My computer is":player.quantum.challenge.length>1?"Paired challenge is":"My challenging skills are")+" not powerful enough... ":"") + "I need to go quantum."
+    document.getElementById("quantumbtnFlavor").textContent = ((!player.quantum.times&&!player.ghostify.milestones)||!inQC(0)?((player.masterystudies !== undefined ? player.quantum.bigRip.active : false)?"I am":inQC(0)?"My computer is":player.quantum.challenge.length>1?"Paired challenge is":"My challenging skills are")+" not powerful enough... ":"") + "I need to go quantum."
     var showGain = quantumed && (inQC(0)||player.options.theme=="Aarex's Modifications") ? "QK" : ""
     if (player.masterystudies !== undefined) if (player.quantum.bigRip.active) showGain = "SS"
     document.getElementById("quantumbtnQKGain").textContent = showGain == "QK" ? "Gain "+shortenDimensions(quarkGain())+" quark"+(quarkGain().eq(1)?".":"s.") : ""
@@ -7981,6 +7982,21 @@ function gameLoop(diff) {
             document.getElementById('bestTP').textContent="Your best"+(ghostified ? "" : " ever")+" Tachyon particles"+(ghostified ? " in this Ghostify" : "")+" was "+shorten(player.dilation.bestTP)+"."
             setAndMaybeShow('bestTPOverGhostifies',ghostified,'"Your best-ever Tachyon particles was "+shorten(player.dilation.bestTPOverGhostifies)+"."')
             player.quantum.notrelative = false
+        }
+        if (player.ghostify.milestones>7||player.achievements.includes("ng3p57")) {
+            var percentage=0.01
+            if (player.ghostify.milestones>7&&player.achievements.includes("ng3p57")) percentage=0.02
+            player.quantum.quarks=player.quantum.quarks.add(quarkGain().times(diff*percentage/10))
+            player.quantum.gluons.rg=player.quantum.gluons.rg.add(player.quantum.usedQuarks.r.min(player.quantum.usedQuarks.g).pow(0.75).times(diff/10))
+            player.quantum.gluons.gb=player.quantum.gluons.gb.add(player.quantum.usedQuarks.g.min(player.quantum.usedQuarks.b).pow(0.75).times(diff/10))
+            player.quantum.gluons.br=player.quantum.gluons.br.add(player.quantum.usedQuarks.b.min(player.quantum.usedQuarks.r).pow(0.75).times(diff/10))
+            if (player.achievements.includes("ng3p57")) {
+                player.quantum.gluons.rg=player.quantum.gluons.rg.add(player.quantum.usedQuarks.r.min(player.quantum.usedQuarks.g).times(diff/10))
+                player.quantum.gluons.gb=player.quantum.gluons.gb.add(player.quantum.usedQuarks.g.min(player.quantum.usedQuarks.b).times(diff/10))
+                player.quantum.gluons.br=player.quantum.gluons.br.add(player.quantum.usedQuarks.b.min(player.quantum.usedQuarks.r).times(diff/10))
+            }
+            document.getElementById("quarks").innerHTML="You have <b class='QKAmount'>"+shortenDimensions(player.quantum.quarks)+"</b> quark"+(player.quantum.quarks.lt(2)?".":"s.")
+            updateQuantumWorth("quick")
         }
     }
     if (player.dilation.upgrades.includes(10)) {

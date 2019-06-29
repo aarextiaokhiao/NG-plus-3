@@ -812,6 +812,7 @@ if (player.version < 5) {
                   automatorGhosts: setupAutomaticGhostsData()
               }
               player.options.animations.ghostify = true
+              player.aarexModifications.ghostifyConf = true
           }
           player.dilation.upgrades=migratedUpgrades
           resetDilationGalaxies()
@@ -1171,6 +1172,7 @@ if (player.version < 5) {
           automatorGhosts: setupAutomaticGhostsData()
       }
       player.options.animations.ghostify = true
+      player.aarexModifications.ghostifyConf = true
       player.aarexModifications.newGame3PlusVersion = 2
   }
   if (player.masterystudies) {
@@ -1237,6 +1239,7 @@ if (player.version < 5) {
       if (player.ghostify.neutrinos.boosts === undefined) player.ghostify.neutrinos.boosts = 1
       if (player.ghostify.automatorGhosts === undefined) player.ghostify.automatorGhosts = setupAutomaticGhostsData()
       if (player.options.animations.ghostify === undefined) player.options.animations.ghostify = true
+      if (player.aarexModifications.ghostifyConf === undefined) player.aarexModifications.ghostifyConf = true
 
       updateAutoGhosts(true)
   }
@@ -1549,6 +1552,7 @@ if (player.version < 5) {
   document.getElementById("dilationConfirmBtn").style.display = (player.dilation.studies.includes(1) || quantumed) ? "inline-block" : "none"
   document.getElementById("quantumConfirmBtn").style.display = quantumed ? "inline-block" : "none"
   document.getElementById("bigRipConfirmBtn").style.display = (player.masterystudies === undefined ? false : player.quantum.bigRip.times) ? "inline-block" : "none"
+  document.getElementById("ghostifyConfirmBtn").style.display = ghostified ? "inline-block" : "none"
 
   document.getElementById("confirmation").checked = !player.options.sacrificeConfirmation
   document.getElementById("sacConfirmBtn").textContent = "Sacrifice confirmation: O" + (player.options.sacrificeConfirmation ? "N" : "FF")
@@ -1560,6 +1564,7 @@ if (player.version < 5) {
   document.getElementById("exdilationConfirmBtn").textContent = "Reverse dilation confirmation: O" + (player.options.exdilationConfirm ? "N" : "FF")
   document.getElementById("quantumConfirmBtn").textContent = "Quantum confirmation: O" + (player.aarexModifications.quantumConf ? "N" : "FF")
   document.getElementById("bigRipConfirmBtn").textContent = "Big Rip confirmation: O" + ((player.masterystudies === undefined ? false : player.quantum.bigRip.conf) ? "N" : "FF")
+  document.getElementById("ghostifyConfirmBtn").textContent = "Ghostify confirmation: O" + (player.aarexModifications.ghostifyConf ? "N" : "FF")
 
   document.getElementById("progressBarBtn").textContent = (player.aarexModifications.progressBar?"Hide":"Show")+" progress bar"
   document.getElementById("toggleLogRateChange").textContent = "Logarithm rate: O"+(player.aarexModifications.logRateChange?"N":"FF")
@@ -1747,7 +1752,7 @@ if (player.version < 5) {
       updateMasteryStudyCosts()
       updateMasteryStudyButtons()
       if (quantumed) giveAchievement("Sub-atomic")
-      if (player.quantum.best<=0.2) giveAchievement("Quantum doesn't take so long")
+      if (player.quantum.best<=1) giveAchievement("Quantum doesn't take so long")
       if (ghostified) giveAchievement("Kee-hee-hee!")
       document.getElementById('reward3disable').textContent="6 hours reward: O"+(player.quantum.disabledRewards[3]?"FF":"N")
       document.getElementById('reward4disable').textContent="4.5 hours reward: O"+(player.quantum.disabledRewards[4]?"FF":"N")

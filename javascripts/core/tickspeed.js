@@ -40,7 +40,7 @@ function getGalaxyPowerEff(ng, bi) {
 	if (player.timestudy.studies.includes(212)) eff *= Math.min(Math.pow(player.timeShards.max(2).log2(), 0.005), 1.1)
 	if (player.timestudy.studies.includes(232)&&bi) {
 		let exp = 0.2
-		if (player.masterystudies != undefined) if (player.galaxies >= 1e4) exp *= 6 - player.galaxies / 2e3
+		if (player.masterystudies != undefined) if (player.galaxies >= 1e4 && !isEternityBroke()) exp *= 6 - player.galaxies / 2e3
 		eff *= Math.pow(1+ng/1000, exp)
 	}
 	eff *= colorBoosts.r

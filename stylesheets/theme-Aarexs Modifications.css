@@ -4,7 +4,7 @@ body {
 .container, .statstab, b, input {
     font-family:'Inconsolata', monospace !important
 }
-#ghostlyNewsTicker b {
+#ghostlyNewsTicker b, #ghostifyanitext b {
     font-family:'Typewriter' !important
 }
 #container div {
@@ -521,7 +521,7 @@ strong { color: #0072e5 }
 }
 .aarexmodsghostifybtn {
 	background: linear-gradient(#0c001e, #3a003f) !important;
-	border-color: transparent !important;
+	border: transparent !important;
 	font-family: Typewriter;
 	font-weight: bold;
 	border-radius: 4px;
@@ -529,8 +529,8 @@ strong { color: #0072e5 }
 	animation: ghostifytext 4s linear infinite
 }
 .aarexmodsghostifybtn:hover {
-	border-color: rgba(255,255,255,0.5) !important;
-	box-shadow: inset 0px 0px 12px 0px #ffffff;
+	border: rgba(255,255,255,0.5) !important;
+	box-shadow: inset 0px 0px 12px 0px #ffffff !important;
 	cursor: pointer
 }
 #tooMuchPowerConsumed {
