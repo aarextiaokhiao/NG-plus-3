@@ -270,6 +270,7 @@ function getExtraDimensionBoostPowerExponent() {
 	if (player.masterystudies != undefined) {
 		if (player.masterystudies.includes("d12")) power += getNanofieldRewardEffect(2)
 		if (player.masterystudies.includes("d13")) power += getTreeUpgradeEffect(8)
+		if (ghostified) if (player.quantum.bigRip.active && player.ghostify.neutrinos.boosts > 5) power *= getNBBoost(6)
 	}
 	return power
 }
@@ -286,7 +287,7 @@ function updateMetaDimensions () {
     document.getElementById("metaAntimatterAmount").textContent = shortenMoney(player.meta.antimatter)
     document.getElementById("metaAntimatterBest").textContent = shortenMoney(player.meta.bestAntimatter)
     document.getElementById("bestAntimatterQuantum").textContent = player.masterystudies && quantumed ? "Your best" + (ghostified ? "" : "-ever") + " meta-antimatter" + (ghostified ? " in this Ghostify" : "") + " was " + shortenMoney(player.meta.bestOverQuantums) + "." : ""
-    document.getElementById("bestAntimatterTranslation").innerHTML = (player.masterystudies ? player.quantum.nanofield.rewards > 1 && player.currentEternityChall != "eterc14" && !inQC(3) && !inQC(4) : false) ? 'Raised to the power of <span id="metaAntimatterPower" style="font-size:35px; color: black">'+Math.round(getExtraDimensionBoostPowerExponent()*10)/10+'</span>, t' : "T"
+    document.getElementById("bestAntimatterTranslation").innerHTML = (player.masterystudies ? player.quantum.nanofield.rewards > 1 && player.currentEternityChall != "eterc14" && !inQC(3) && !inQC(4) : false) ? 'Raised to the power of <span id="metaAntimatterPower" style="font-size:35px; color: black">'+formatValue(player.options.notation, getExtraDimensionBoostPowerExponent(), 2, 1)+'</span>, t' : "T"
     document.getElementById("bestMAOverGhostifies").textContent = ghostified ? "Your best-ever meta-antimatter was " + shortenMoney(player.meta.bestOverGhostifies) + "." : ""
     document.getElementById("metaAntimatterEffect").textContent = shortenMoney(getExtraDimensionBoostPower())
     document.getElementById("metaAntimatterPerSec").textContent = 'You are getting ' + shortenDimensions(getMetaDimensionProduction(1)) + ' meta-antimatter per second.'
@@ -517,12 +518,12 @@ function isQuantumReached() {
 let quarkGain = function () {
 	if (player.masterystudies) {
 		if (!player.quantum.times&&!player.ghostify.milestones) return new Decimal(1)
-		var log = player.meta.antimatter.log10() / 280 - 1.355
+		var log = player.meta.antimatter.max(1).log10() / 280 - 1.355
 		if (log > 1.2) log = log*log/1.2
 		if (log > 738) log = Math.sqrt(log * 738)
 		return Decimal.pow(10, log).times(Decimal.pow(2, player.quantum.multPower.total)).floor()
 	}
-	return Decimal.pow(10, player.meta.antimatter.log(10) / Math.log10(Number.MAX_VALUE) - 1).times(quarkMult()).floor();
+	return Decimal.pow(10, player.meta.antimatter.max(1).log(10) / Math.log10(Number.MAX_VALUE) - 1).times(quarkMult()).floor();
 }
 
 let quarkMult = function () {
@@ -603,10 +604,13 @@ function doQuantumProgress() {
 	} else if (id == 3) {
 		var gqkLog = gqk.log2()
 		var goal = Math.pow(2,Math.ceil(Math.log10(gqkLog) / Math.log10(2)))
+		if (!player.quantum.reachedInfQK) goal = Math.min(goal, 1024)
 		var percentage = Math.min(gqkLog / goal * 100, 100).toFixed(2) + "%"
+		if (goal > 512 && !player.quantum.reachedInfQK) percentage = Math.min(player.quantum.quarks.add(gqk).log2() / goal * 100, 100).toFixed(2) + "%"
 		document.getElementById("progressbar").style.width = percentage
 		document.getElementById("progresspercent").textContent = percentage
-		document.getElementById("progresspercent").setAttribute('ach-tooltip',"Percentage to "+shortenDimensions(Decimal.pow(2,goal))+" QK gain")
+		if (goal > 512 && !player.quantum.reachedInfQK) document.getElementById("progresspercent").setAttribute('ach-tooltip',"Percentage to new QoL features ("+shorten(Number.MAX_VALUE)+" QK)")
+		else document.getElementById("progresspercent").setAttribute('ach-tooltip',"Percentage to "+shortenDimensions(Decimal.pow(2,goal))+" QK gain")
 	} else if (id == 4) {
 		var percentage = Math.min(player.eternityPoints.max(1).log10() / 1200, 100).toFixed(2) + "%"
 		document.getElementById("progressbar").style.width = percentage
@@ -661,6 +665,7 @@ function quantumReset(force, auto, challid, bigRip, implode=false) {
 		}
 	}
 	document.getElementById("quantumbtn").style.display="none"
+	document.getElementById("bigripbtn").style.display="none"
 	document.getElementById("ghostifybtn").style.display="none"
 	if (force) bankedEterGain=0
 	else {
@@ -1015,7 +1020,7 @@ function quantumReset(force, auto, challid, bigRip, implode=false) {
 			active: false,
 			tachyonParticles: player.achievements.includes("ng3p37") && (bigRip ? player.quantum.bigRip.upgrades.includes(11) : true) ? player.dilation.bestTP.pow(!challid && player.ghostify.milestones > 3 ? 1 : 0.5) : new Decimal(0),
 			dilatedTime: new Decimal(speedrunMilestonesReached>21 && isRewardEnabled(4) && !bigRip?1e100:0),
-			totalTachyonParticles: player.achievements.includes("ng3p37") && (bigRip ? player.quantum.bigRip.upgrades.includes(11) : true) ? player.dilation.bestTP.sqrt() : new Decimal(0),
+			totalTachyonParticles: player.achievements.includes("ng3p37") && (bigRip ? player.quantum.bigRip.upgrades.includes(11) : true) ? player.dilation.bestTP.pow(!challid && player.ghostify.milestones > 3 ? 1 : 0.5) : new Decimal(0),
 			bestTP: player.dilation.bestTP,
 			bestTPOverGhostifies: player.dilation.bestTPOverGhostifies,
 			nextThreshold: new Decimal(1000),

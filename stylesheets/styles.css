@@ -536,13 +536,14 @@ button {
 	font-size:12px;
 }
 
-#ghostifybtn {
+#bigripbtn, #ghostifybtn {
 	cursor: pointer;
 	position: absolute;
 	left: 75%;
 	top: 160px;
 	width: 210px;
 	height: 70px;
+	border-radius: 4px;
 	font-size: 11px
 }
 
@@ -2244,6 +2245,10 @@ br {
 	box-shadow: inset 0px 0px 20px 0px #bfbfbf;
 	color: white;
 	text-shadow: 0px 0px 3px black, 0px 0px 6px black
+}
+
+.neutrinoBoosts {
+	height: 90px
 }
 
 @media print,

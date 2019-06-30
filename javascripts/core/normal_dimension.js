@@ -522,11 +522,11 @@ function infUpg13Pow() {
 }
 
 function dimMults() {
-	return Decimal.pow(1+getInfinitied()*0.2,(player.galacticSacrifice?2:1)*(player.timestudy.studies.includes(31)?4:1))
+	return Decimal.pow(Decimal.times(getInfinitied(),0.2).add(1),(player.galacticSacrifice?2:1)*(player.timestudy.studies.includes(31)?4:1))
 }
 
 function getInfinitiedMult() {
-	return (player.galacticSacrifice?0:1)+Math.pow((player.galacticSacrifice?1:0)+Math.log10(getInfinitied()+1)*(player.galacticSacrifice?100:10),(player.galacticSacrifice?2:1)*(player.timestudy.studies.includes(31)?4:1))
+	return (player.galacticSacrifice?0:1)+Math.pow((player.galacticSacrifice?1:0)+Decimal.add(getInfinitied(), 1).log10()*(player.galacticSacrifice?100:10),(player.galacticSacrifice?2:1)*(player.timestudy.studies.includes(31)?4:1))
 }
 
 function getDimensionProductionPerSecond(tier) {

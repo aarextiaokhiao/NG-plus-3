@@ -1820,6 +1820,7 @@ if (player.version < 5) {
   updateTODStuff()
   updateBreakEternity()
   onNotationChangeNeutrinos()
+  updateNeutrinoBoosts()
   if (player.boughtDims) {
       if (document.getElementById("timestudies").style.display=="block") showEternityTab("ers_timestudies",true)
       updateGalaxyControl()
@@ -2165,6 +2166,8 @@ function transformSaveToDecimal() {
   player.eightPow = new Decimal(player.eightPow)
   player.sacrificed = new Decimal(player.sacrificed)
   player.totalmoney = new Decimal(player.totalmoney)
+  if (typeof(player.infinitied) == "string") player.infinitied = new Decimal(player.infinitied)
+  if (typeof(player.infinitiedBank) == "string") player.infinitiedBank = new Decimal(player.infinitiedBank)
   player.chall3Pow = new Decimal(player.chall3Pow)
   player.chall11Pow = new Decimal(player.chall11Pow)
   if (player.galacticSacrifice !== undefined) {

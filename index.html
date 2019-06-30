@@ -74,6 +74,7 @@
                 You have <span id='GHPAmount'>0</span> Ghost Particles.<br>
                 <div id="quantumedBM">Quantumed <span id='quantumedBMAmount'>0</span> times</div>
             </div>
+            <button id="bigripbtn" class="bigripbtn" onclick="bigRip()">I want the impossible challenge to be completed... I want to Big Rip the universe.</button>
             <button id="ghostifybtn" class="ghostifybtn" onclick="ghostify()">
                 <div id="ghostifybtnFlavor" class="hideEmpty"></div>
                 <div id="GHPGain" class="hideEmpty"></div>
@@ -2512,7 +2513,7 @@
                                 <div id="To the new dimension!" class="achievement achievementlocked" style="background-image: url(images/143.png)" ach-tooltip='Big Rip the universe. Reward: Unlock "X times eternitied" mode of Eternity autobuyer.'></div>
                             </td>
                             <td>
-                                <div id="Quantum doesn't take so long" class="achievement achievementlocked" style="background-image: url(images/144.png)" ach-tooltip="Quantum in under 1 second. Reward: Expand Automatic Eternity to contain new after-eternity features."></div>
+                                <div id="Quantum doesn't take so long" class="achievement achievementlocked" style="background-image: url(images/144.png)" ach-tooltip="Quantum in under 1 second. Reward: Expand Automatic Eternity to contain new after-eternity features and getting a Galaxy doesn't lose your Dimension Boosts."></div>
                             </td>
                             <td>
                                 <div id="Gonna go fast" class="achievement achievementlocked" style="background-image: url(images/145.png)"></div>
@@ -4670,23 +4671,23 @@
 						<td>You have <span class="neutrinos" id="muonNeutrinos" style="font-size:35px">0</span> Muon neutrinos.</td>
 						<td>You have <span class="neutrinos" id="tauNeutrinos" style="font-size:35px">0</span> Tau neutrinos.</td>
 					</tr>
-					<tr>
+					<tr class="neutrinoBoosts">
 						<td>They increase TP gain formula exponent from <span id="preNeutrinoBoost1"></span> to <span class="neutrinos" id="neutrinoBoost1" style="font-size:35px">1.0</span>.</td>
-						<td id="neutrinoBoostCell2" style="display:none">They make "replicate chance boosts itself" stronger from ^<span id="preNeutrinoBoost2"></span> to <span class="neutrinos" id="neutrinoBoost2" style="font-size:35px">1.0</span>.</td>
-						<td id="neutrinoBoostCell3" style="display:none">They make Remote Antimatter Galaxies scaling starts <span class="neutrinos" id="neutrinoBoost3" style="font-size:35px">0</span> later.</td>
+						<td id="neutrinoBoostCell2">They make "replicate chance boosts itself" stronger from ^<span id="preNeutrinoBoost2"></span> to <span class="neutrinos" id="neutrinoBoost2" style="font-size:35px">1.0</span>.</td>
+						<td id="neutrinoBoostCell3">They make Remote Antimatter Galaxies scaling starts <span class="neutrinos" id="neutrinoBoost3" style="font-size:35px">0</span> later.</td>
 					</tr>
-					<tr id="neutrinoBoostRow2" style="display:none">
+					<tr class="neutrinoBoosts" id="neutrinoBoostRow2">
 						<td>They make Meta-Dimension Boosts stronger by <span class="neutrinos" id="neutrinoBoost4" style="font-size:35px">0.0</span>%.</td>
 						<td id="neutrinoBoostCell5">They boost preon energy production by <span class="neutrinos" id="neutrinoBoost5" style="font-size:35px">1.0</span>x.</td>
-						<td id="neutrinoBoostCell6">In Big Rips, they divide replicate interval by <span class="neutrinos" id="neutrinoBoost6" style="font-size:35px">1.0</span>x.</td>
+						<td id="neutrinoBoostCell6">In Big Rips, they make Space Shards boost the meta-antimatter effect power by <span class="neutrinos" id="neutrinoBoost6" style="font-size:35px">1.00</span>x.</td>
 					</tr>
-					<tr id="neutrinoBoostRow3" style="display:none">
+					<tr class="neutrinoBoosts" id="neutrinoBoostRow3">
 						<td>They make 1st Big Rip upgrade stronger by <span class="neutrinos" id="neutrinoBoost7" style="font-size:35px">1.0</span>%.</td>
 						<td id="neutrinoBoostCell8">In Big Rips, they make free galaxies more efficient to <span class="neutrinos" id="neutrinoBoost8" style="font-size:35px">0.0</span>% of a normal galaxy.</td>
 						<td></td>
 					</tr>
 					<tr>
-						<td><button id="neutrinoUnlock" class="gluonupgrade unavailablebtn">Unlock a new boost based on your neutrinos.<br>Cost: <span id="neutrinoUnlockCost">2</span> GHP</button></td>
+						<td><button id="neutrinoUnlock" class="gluonupgrade unavailablebtn" onclick="unlockNeutrinoBoost()">Unlock a new boost based on your neutrinos.<br>Cost: <span id="neutrinoUnlockCost">2</span> GHP</button></td>
 						<td><button id="neutrinoMultUpg" class="gluonupgrade unavailablebtn">You gain 5x more neutrinos.<br>Currently: <span id="neutrinoMult">1</span>x<br>Cost: <span id="neutrinoMultUpgCost">3</span> GHP</button></td>
 						<td><button id="ghpMultUpg" class="gluonupgrade unavailablebtn">You gain 2x more GHP.<br>Currently: <span id="ghpMult"></span>x<br>Cost: <span id="ghpMultUpgCost">???</span> of any neutrinos</button></td>
 					</tr>
@@ -4696,7 +4697,7 @@
 						<td><button class="gluonupgrade unavailablebtn" id="neutrinoUpg3" onclick="buyNeutrinoUpg(3)">Blue power boosts preon charge production.<br>Currently: <span id="neutrinoUpg3Pow"></span>x<br>Cost: <span id="neutrinoUpg3Cost"></span> of any neutrinos</button></td>
 					</tr>
 					<tr>
-						<td><button class="gluonupgrade unavailablebtn" id="neutrinoUpg4" onclick="buyNeutrinoUpg(4)" style="font-size: 10px">You gain quark spins faster and unstable quarks decay slower based on your tickspeed.<br>Currently: <span id="neutrinoUpg4Pow">1.0</span>x<br>Cost: <span id="neutrinoUpg4Cost"></span> of any neutrinos</button></td>
+						<td><button class="gluonupgrade unavailablebtn" id="neutrinoUpg4" onclick="buyNeutrinoUpg(4)" style="font-size: 10px">You gain quark spins faster and all branches are faster based on your tickspeed.<br>Currently: <span id="neutrinoUpg4Pow">1.0</span>x<br>Cost: <span id="neutrinoUpg4Cost"></span> of any neutrinos</button></td>
 						<td><button class="gluonupgrade unavailablebtn" id="neutrinoUpg5" onclick="buyNeutrinoUpg(5)" style="font-size: 10px">You gain more Eternal Matter based on your Space Shards.<br>Currently: <span id="neutrinoUpg5Pow">1.0</span>x<br>Cost: <span id="neutrinoUpg5Cost"></span> of any neutrinos</button></td>
 						<td><button class="gluonupgrade unavailablebtn" id="neutrinoUpg6" onclick="buyNeutrinoUpg(6)" style="font-size: 10px">Electrons gain multiplier is increased by ??%.<br>Cost: <span id="neutrinoUpg6Cost"></span> of any neutrinos</button></td>
 					</tr>
@@ -4740,9 +4741,9 @@
 					<tr>
 						<td id="autoGhost4"><div class="autoBuyerDiv" style="display:block">
 							<b>Auto-Unstabilize Rotate Ghost</b><br>
-							(rotates after quantum)<br>
 							Power consumption: 2<br>
-							<button class="storebtn" id="autoGhostRotate4" style="font-size: 100%; width: 120px; height: 20px">Clockwise</button><br>
+							Auto-rotate: <button class="storebtn" id="autoGhostMod4" style="font-size: 100%; width: 120px; height: 20px">Every quantum</button><br>
+							Direction: <button class="storebtn" id="autoGhostRotate4" style="font-size: 100%; width: 120px; height: 20px">Clockwise</button><br>
 							Is active: <input id="isAutoGhostOn4" type="checkbox" onchange="toggleAutoGhost(4)"></input>
 						</div></td>
 						<td id="autoGhost5"><div class="autoBuyerDiv" style="display:block">

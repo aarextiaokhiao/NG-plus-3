@@ -121,8 +121,19 @@ function buyMasteryStudy(type, id, quick=false) {
 			updateMasteryStudyButtons()
 		}
 		if (id==241&&!GUBought("gb3")) {
+			var otherMults=1
 			ipMultPower=2.2
+			if (player.achievements.includes("r85")) otherMults*=4
+			if (player.achievements.includes("r93")) otherMults*=4
+			player.infMult=player.infMult.div(otherMults).pow(Math.log10(2.2)/Math.log10(2)).times(otherMults)
 			document.getElementById("infiMult").innerHTML = "Multiply infinity points from all sources by "+ipMultPower+"<br>currently: "+shorten(getIPMult()) +"x<br>Cost: "+shortenCosts(player.infMultCost)+" IP"
+		}
+		if (id==266&&player.replicanti.gal>399) {
+			var gal=player.replicanti.gal
+			player.replicanti.gal=0
+			player.replicanti.galCost=new Decimal(1e170)
+			player.replicanti.galCost=getRGCost(gal)
+			player.replicanti.gal=gal
 		}
 		if (id==383) updateColorCharge()
 		if (id==7) {
@@ -605,7 +616,7 @@ function updateQuantumTabs() {
 			var rate=getDecayRate(shorthand)
 			var linear=Decimal.pow(2,getRadioactiveDecays(shorthand)*25)
 			document.getElementById(color+"UnstableGain").textContent="Unstablize quarks for "+shortenMoney(getUnstableGain(shorthand))+" "+name+"."
-			document.getElementById(color+"Conversion").textContent=shorten(player.quantum.tod[shorthand].gainDiv.times(99e15)) + " " + color + " quarks => " + shortenMoney(getUnstableGain(shorthand, true)) + " " + name
+			document.getElementById(color+"Conversion").textContent=shorten(player.quantum.tod[shorthand].gainDiv.times(99e30)) + " " + color + " quarks => " + shortenMoney(getUnstableGain(shorthand, true)) + " " + name
 			document.getElementById(color+"QuarkSpin").textContent=shortenMoney(branch.spin)
 			document.getElementById(color+"UnstableQuarks").textContent=shortenMoney(branch.quarks)
 			document.getElementById(color+"QuarksDecayRate").textContent=branch.quarks.lt(linear)&&rate.lt(1)?"You are losing "+shorten(linear.times(rate))+" "+name+" per second":"They decay at 50% per "+timeDisplayShort(Decimal.div(10,rate),true,2)
@@ -749,7 +760,14 @@ function buyGluonUpg(color, id) {
 	player.quantum.upgrades.push(name)
 	player.quantum.gluons[color]=player.quantum.gluons[color].sub(GUCosts[id])
 	updateGluons("spend")
-	if (name=="gb3") ipMultPower=2.3
+	if (name=="gb3") {
+		var otherMults=1
+		if (player.achievements.includes("r85")) otherMults*=4
+		if (player.achievements.includes("r93")) otherMults*=4
+		player.infMult=player.infMult.div(otherMults).pow(Math.log10(2.3)/Math.log10(ipMultPower)).times(otherMults)
+		ipMultPower=2.3
+		document.getElementById("infiMult").innerHTML = "Multiply infinity points from all sources by "+ipMultPower+"<br>currently: "+shorten(getIPMult()) +"x<br>Cost: "+shortenCosts(player.infMultCost)+" IP"
+	}
 	if (name=="rg4" && !player.quantum.autoOptions.sacrifice) updateElectronsEffect()
 	if (name=="gb4") player.tickSpeedMultDecrease=1.25
 	updateQuantumWorth()
@@ -897,7 +915,7 @@ function buyQuarkMult(name) {
 }
 
 var quantumChallenges={
-	costs:[0,16750,19100,21500,24050,25900,28900,31900,33600],
+	costs:[0,16750,19100,21500,24050,25900,28900,31850,33600],
 	goals:[0,665e7,768e8,4525e7,5325e7,1344e7,561e6,6254e7,2925e7]
 }
 
@@ -1821,8 +1839,8 @@ function getUnstableGain(branch, fixed) {
 	let power=getBranchUpgLevel(branch,2)-getRadioactiveDecays(branch)*25
 	if (fixed) ret=new Decimal(2)
 	else {
-		ret=player.quantum.usedQuarks[branch].div(1e15).div(player.quantum.tod[branch].gainDiv).add(1).log10()
-		if (ret<2) ret=Math.max(player.quantum.usedQuarks[branch].times(1e45/99).div(player.quantum.tod[branch].gainDiv).log10()/30,0)
+		ret=player.quantum.usedQuarks[branch].div(1e30).div(player.quantum.tod[branch].gainDiv).add(1).log10()
+		if (ret<2) ret=Math.max(player.quantum.usedQuarks[branch].times(1e90/99).div(player.quantum.tod[branch].gainDiv).log10()/60,0)
 	}
 	ret=Decimal.pow(2,power).times(ret)
 	if (ret.gt(1)) ret=Decimal.pow(ret, Math.pow(2,power)*6)
@@ -1851,13 +1869,13 @@ function getDecayRate(branch) {
 	}
 	ret = ret.times(getTreeUpgradeEffect(3))
 	ret = ret.times(getTreeUpgradeEffect(5))
-	ret = ret.div(getNUPow(4))
+	ret = ret.times(getNUPow(4))
 	return ret.min(Math.pow(2,50))
 }
 
 function getQuarkSpinProduction(branch) {
 	let ret = Decimal.pow(2,getBranchUpgLevel(branch,1)*(1+getRadioactiveDecays(branch)/10)).times(getTreeUpgradeEffect(3)).times(getTreeUpgradeEffect(5))
-	if (hasNU(4)) ret = ret.times(getNUPow(4))
+	if (hasNU(4)) ret = ret.times(getNUPow(4).pow(2))
 	return ret
 }
 
@@ -2080,7 +2098,7 @@ function maxBranchUpg(branch, weak) {
 function radioactiveDecay(shorthand) {
 	let data=player.quantum.tod[shorthand]
 	if (!data.quarks.gte(Decimal.pow(10,Math.pow(2,50)))) return
-	data.gainDiv=new Decimal("1e405")
+	data.gainDiv=new Decimal("1e390")
 	data.quarks=new Decimal(0)
 	data.spin=new Decimal(0)
 	data.upgrades={}
@@ -2331,6 +2349,28 @@ function removeAP(id) {
 	}
 	player.eternityBuyer.presets.order=newOrder
 	$.notify("Preset #"+(id+1)+" removed", "info")
+}
+
+function bigRip() {
+	if (player.quantum.electrons.amount<62500||player.quantum.bigRip.active) return
+	if (player.ghostify.milestones>1) {
+		player.quantum.pairedChallenges.order={1:[1,2],2:[3,4],3:[5,7],4:[6,8]}
+		player.quantum.pairedChallenges.completed=3
+		for (var c=1;c<9;c++) player.quantum.challenges[c]=(c==6||c==8)?1:2
+		quantumReset(true,true,12,true)
+	} else {
+		for (var p=1;p<5;p++) {
+			var pcData=player.quantum.pairedChallenges.order[p]
+			if (pcData) {
+				var pc1=Math.min(pcData[0],pcData[1])
+				var pc2=Math.max(pcData[0],pcData[1])
+				if (pc1==6&&pc2==8) {
+					if (p-1>player.quantum.pairedChallenges.completed) return
+					quantum(false,true,p+8,true)
+				}
+			}
+		}
+	}
 }
 
 function toggleBigRipConf() {
@@ -2810,6 +2850,7 @@ function ghostifyReset(implode, gain, amount, force) {
 		player.ghostify.times++
 		player.ghostify.best = Math.min(player.ghostify.best, player.ghostify.time)
 		while (player.quantum.times<=braveMilestones[player.ghostify.milestones]) player.ghostify.milestones++
+		updateBraveMilestones()
 	}
 	if (player.quantum.bigRip.active) switchAB()
 	var bm = player.ghostify.milestones
@@ -3200,15 +3241,15 @@ function ghostifyReset(implode, gain, amount, force) {
 			challenges: {},
 			challengeRecords: {},
 			pairedChallenges: {
-				order: {},
+				order: bm ? player.quantum.pairedChallenges.order : {},
 				current: 0,
-				completed: 0,
+				completed: bm ? 4 : 0,
 				completions: player.quantum.pairedChallenges.completions,
 				fastest: player.quantum.pairedChallenges.fastest,
 				pc68best: player.quantum.pairedChallenges.pc68best,
 				respec: false
 			},
-			qcsNoDil: player.quantum.pairedChallenges.qcsNoDil,
+			qcsNoDil: player.quantum.qcsNoDil,
 			replicants: {
 				amount: new Decimal(0),
 				requirement: new Decimal("1e3000000"),
@@ -3539,6 +3580,9 @@ function updateGhostifyTabs() {
 		if (player.ghostify.neutrinos.boosts>7) document.getElementById("neutrinoBoost8").textContent=(getNBBoost(8)*100).toFixed(1)
 		document.getElementById("neutrinoUpg1Pow").textContent=getNUPow(1)
 		document.getElementById("neutrinoUpg3Pow").textContent=shorten(getNUPow(3))
+		document.getElementById("neutrinoUpg4Pow").textContent=shorten(getNUPow(4))
+		document.getElementById("neutrinoUpg5Pow").textContent=shorten(getNUPow(5))
+		document.getElementById("neutrinoUpg8Pow").textContent=getNUPow(8).toFixed(2)
 		for (var u=1; u<10; u++) {
 			if (hasNU(u)) document.getElementById("neutrinoUpg" + u).className = "gluonupgradebought neutrinoupg"
 			else if (player.ghostify.neutrinos.electron.add(player.ghostify.neutrinos.mu).round().add(player.ghostify.neutrinos.tau).round().gte(neutrinoUpgCosts[u])) document.getElementById("neutrinoUpg" + u).className = "gluonupgrade neutrinoupg"
@@ -3550,13 +3594,13 @@ function updateGhostifyTabs() {
 
 function onNotationChangeNeutrinos() {
 	if (player.masterystudies == undefined) return
-	document.getElementById("neutrinoUnlockCost").textContent = shortenDimensions(2)
-	document.getElementById("neutrinoMult").textContent = shortenDimensions(Decimal.pow(5, player.ghostify.neutrinos.multPower - 1))
-	document.getElementById("neutrinoMultUpgCost").textContent = shortenDimensions(3)
-	document.getElementById("ghpMult").textContent = shortenDimensions(Decimal.pow(2, player.ghostify.multPower - 1))
-	document.getElementById("ghpMultUpgCost").textContent = "???"
+	document.getElementById("neutrinoUnlockCost").textContent=shortenDimensions(neutrinoBoostCosts[player.ghostify.neutrinos.boosts])
+	document.getElementById("neutrinoMult").textContent=shortenDimensions(Decimal.pow(5,player.ghostify.neutrinos.multPower-1))
+	document.getElementById("neutrinoMultUpgCost").textContent=shortenDimensions(3)
+	document.getElementById("ghpMult").textContent=shortenDimensions(Decimal.pow(2,player.ghostify.multPower-1))
+	document.getElementById("ghpMultUpgCost").textContent="???"
 	for (var u=1; u<10; u++) document.getElementById("neutrinoUpg"+u+"Cost").textContent=shortenDimensions(neutrinoUpgCosts[u])
-	document.getElementById("BU8Cap").textContent = shorten(Number.MAX_VALUE)
+	document.getElementById("BU8Cap").textContent=shorten(Number.MAX_VALUE)
 }
 
 function getNeutrinoGain() {
@@ -3572,7 +3616,7 @@ function getNBBoost(id) {
 	if (id == 8) return 0
 }
 
-var neutrinoUpgCosts = [null, 1e6, 1e7, 1e8, 1e9, 1/0, 1/0, 1/0, 1/0, 1/0]
+var neutrinoUpgCosts=[null, 1e6, 1e7, 1e8, 2e9, 1/0, 1/0, 1/0, 1/0, 1/0]
 function buyNeutrinoUpg(id) {
 	var sum=player.ghostify.neutrinos.electron.add(player.ghostify.neutrinos.mu).add(player.ghostify.neutrinos.tau).round()
 	var cost=new Decimal(neutrinoUpgCosts[id])
@@ -3586,6 +3630,21 @@ function buyNeutrinoUpg(id) {
 	}
 }
 
+var neutrinoBoostCosts=[null,2,1/0,1/0,1/0,1/0,1/0,1/0,1/0]
+function updateNeutrinoBoosts() {
+	for (var b=2;b<9;b++) document.getElementById("neutrinoBoost"+(b%3==1?"Row"+(b+2)/3:"Cell"+b)).style.display=player.ghostify.neutrinos.boosts>=b?"":"none"
+	document.getElementById("neutrinoUnlock").style.display=player.ghostify.neutrinos.boosts>7?"none":""
+	document.getElementById("neutrinoUnlockCost").textContent=shortenDimensions(neutrinoBoostCosts[player.ghostify.neutrinos.boosts])
+}
+
+function unlockNeutrinoBoost() {
+	var cost=neutrinoBoostCosts[player.ghostify.neutrinos.boosts]
+	if (!player.ghostify.ghostParticles.lte(cost)||player.ghostify.ghostParticles>7) return
+	player.ghostify.ghostParticles=player.ghostify.ghostParticles.sub(cost).round()
+	player.ghostify.neutrinos.boosts++
+	updateNeutrinoBoosts()
+}
+
 function hasNU(id) {
 	return ghostified ? player.ghostify.neutrinos.upgrades.includes(id) : false
 }
@@ -3593,7 +3652,11 @@ function hasNU(id) {
 function getNUPow(upg) {
 	if (upg == 1) return Math.max(100 - (player.quantum.bigRip.active ? 0 : player.meta.resets), 0)
     if (upg == 3) return Math.pow(Math.max(player.quantum.colorPowers.b.log10()/250 + 1, 1), 2)
-    if (upg == 4) return 1
+    if (upg == 4) {
+		return 1 //temp
+		let ret=Math.max(-player.tickspeed.div(1e3).log10()/5e13-2.5,1)
+		return Decimal.pow(10,Math.pow(ret,1/3)-1)
+	}
     if (upg == 5) return 1
     if (upg == 8) return 1
 }
