@@ -2166,8 +2166,8 @@ function transformSaveToDecimal() {
   player.eightPow = new Decimal(player.eightPow)
   player.sacrificed = new Decimal(player.sacrificed)
   player.totalmoney = new Decimal(player.totalmoney)
-  if (typeof(player.infinitied) == "string") player.infinitied = new Decimal(player.infinitied)
-  if (typeof(player.infinitiedBank) == "string") player.infinitiedBank = new Decimal(player.infinitiedBank)
+  player.infinitied = nP(player.infinitied)
+  player.infinitiedBank = nP(player.infinitiedBank)
   player.chall3Pow = new Decimal(player.chall3Pow)
   player.chall11Pow = new Decimal(player.chall11Pow)
   if (player.galacticSacrifice !== undefined) {
@@ -2193,6 +2193,8 @@ function transformSaveToDecimal() {
   player.infinityDimension7.amount = new Decimal(player.infinityDimension7.amount)
   player.infinityDimension8.amount = new Decimal(player.infinityDimension8.amount)
 
+  player.eternities = nP(player.eternities)
+  if (player.eternitiesBank !== undefined) player.eternitiesBank = nP(player.eternitiesBank)
   player.timeDimension1.amount = new Decimal(player.timeDimension1.amount)
   player.timeDimension2.amount = new Decimal(player.timeDimension2.amount)
   player.timeDimension3.amount = new Decimal(player.timeDimension3.amount)

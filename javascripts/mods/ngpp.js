@@ -270,7 +270,7 @@ function getExtraDimensionBoostPowerExponent() {
 	if (player.masterystudies != undefined) {
 		if (player.masterystudies.includes("d12")) power += getNanofieldRewardEffect(2)
 		if (player.masterystudies.includes("d13")) power += getTreeUpgradeEffect(8)
-		if (ghostified) if (player.quantum.bigRip.active && player.ghostify.neutrinos.boosts > 5) power *= getNBBoost(6)
+		if (ghostified) if (player.quantum.bigRip.active && player.ghostify.neutrinos.boosts > 6) power *= getNBBoost(7)
 	}
 	return power
 }
@@ -854,7 +854,7 @@ function quantumReset(force, auto, challid, bigRip, implode=false) {
 		postC3Reward: new Decimal(1),
 		eternityPoints: new Decimal(0),
 		eternities: headstart ? player.eternities : bigRip ? (player.quantum.bigRip.upgrades.includes(2) ? 1e5 : 0) : speedrunMilestonesReached > 17 ? 1e13 : oheHeadstart ? 2e4 : 0,
-		eternitiesBank: player.masterystudies ? player.eternitiesBank + bankedEterGain : undefined,
+		eternitiesBank: player.masterystudies ? nA(player.eternitiesBank, bankedEterGain) : undefined,
 		thisEternity: 0,
 		bestEternity: headstart ? player.bestEternity : 9999999999,
 		eternityUpgrades: isRewardEnabled(3) && !bigRip ? [1,2,3,4,5,6] : [],

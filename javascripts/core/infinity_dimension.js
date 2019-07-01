@@ -274,10 +274,10 @@ function getIDReplMult() {
 }
 
 function getEU2Mult() {
-	if (player.boughtDims) return Decimal.pow(getEternitied(), Math.log(getEternitied()*2+1)/Math.log(4))
-	var cap = Math.min(getEternitied(), 100000)
-	var soft = getEternitied() - cap
-	return Decimal.pow(cap/200 + 1, Math.log(cap*2+1)/Math.log(4)).times(new Decimal(soft/200 + 1).times(Math.log(soft*2+1)/Math.log(4)).max(1)).max(player.achievements.includes("ngpp15")?Decimal.pow(10, Math.pow(Math.log10(getEternitied()), 4.75)):1)
+	if (player.boughtDims) return Decimal.pow(getEternitied(), Decimal.times(getEternitied(),2).add(1).log(Math.E)/Math.log(4))
+	var cap = nMn(getEternitied(), 100000)
+	var soft = nS(getEternitied(), cap)
+	return Decimal.pow(cap/200 + 1, Math.log(cap*2+1)/Math.log(4)).times(Decimal.div(soft,200).add(1).times(Decimal.times(soft,2).add(1).log(Math.E)/Math.log(4)).max(1)).max(player.achievements.includes("ngpp15")?Decimal.pow(10, Math.pow(Decimal.log10(getEternitied()), 4.75)):1)
 }
 
 function getEU3Mult() {

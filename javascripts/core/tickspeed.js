@@ -19,7 +19,7 @@ function getGalaxyPower(ng, bi) {
 	else otherGalPower += Math.min(player.replicanti.galaxies, player.replicanti.gal) * (replGalEff - 1) + extraReplGalPower
 	otherGalPower += Math.floor(player.dilation.freeGalaxies) * ((player.masterystudies ? player.masterystudies.includes("t343") : false) ? replGalEff : 1)
 
-	let galaxyPower = Math.max(ng-(bi?2:0),0)+(isEternityBroke()?(ghostified&&player.ghostify.neutrinos.boosts>7?player.dilation.freeGalaxies*getNBBoost(8):0):otherGalPower)
+	let galaxyPower = Math.max(ng-(bi?2:0),0)+(isEternityBroke()?(ghostified&&player.ghostify.neutrinos.boosts>8?player.dilation.freeGalaxies*getNBBoost(9):0):otherGalPower)
 	if ((player.currentChallenge=="challenge7"||inQC(4))&&player.galacticSacrifice) galaxyPower *= galaxyPower
 	return galaxyPower
 }

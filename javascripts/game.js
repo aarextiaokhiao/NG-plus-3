@@ -1014,18 +1014,14 @@ function updateCoinPerSec() {
 }
 
 function getInfinitied() {
-	if (typeof(player.infinitied) == "number" && typeof(player.infinitiedBank) == "number") if (player.infinitied + player.infinitiedBank < 1/0) return Math.max(player.infinitied + player.infinitiedBank, 0)
-	return Decimal.add(player.infinitied,player.infinitiedBank).max(0)
+	return nMx(nA(player.infinitied,player.infinitiedBank),0)
 }
 
 function getInfinitiedGain() {
 	let infGain = 1
 	if (player.thisInfinityTime > 50 && player.achievements.includes("r87")) infGain = 250;
 	if (player.timestudy.studies.includes(32)) infGain *= Math.max(player.resets,1);
-	if (player.achievements.includes("r133") && player.meta) {
-		infGain = player.dilation.dilatedTime.pow(.25).max(1).times(infGain)
-		if (infGain.lt(Number.MAX_VALUE)) infGain = Math.floor(infGain.toNumber())
-	}
+	if (player.achievements.includes("r133") && player.meta) infGain = nM(player.dilation.dilatedTime.pow(.25).max(1),infGain)
 	return infGain
 }
 
@@ -1063,9 +1059,7 @@ function getGalaxyCostScalingStart(galaxies, scalingSpeed) {
 function getRemoteGalaxyScalingStart(galaxies) {
 	var n = 800
 	if (player.masterystudies) {
-		if (player.masterystudies.includes("t251")) n += Math.floor(player.resets/3e3)
-		if (player.masterystudies.includes("t252")) n += Math.floor(player.dilation.freeGalaxies/7)
-		if (player.masterystudies.includes("t253")) n += Math.floor(extraReplGalaxies/9)*20
+		for (var t=251;t<254;t++) if (player.masterystudies.includes("t"+t)) n += getMTSMult(t)
 		if (player.masterystudies.includes("t301")) n += Math.floor(extraReplGalaxies/4.15)
 		if (player.masterystudies.includes("d12")) n += getNanofieldRewardEffect(7)
 		if (ghostified && player.ghostify.neutrinos.boosts > 2) n += getNBBoost(3)
@@ -1108,7 +1102,7 @@ function getGalaxyRequirement(offset=0, display) {
 			if (GUBought("rg7")) speed2 *= 0.9
 			if (GUBought("gb7")) speed2 /= 1+Math.log10(1+player.infinityPoints.max(1).log10())/100
 			if (GUBought("br7")) speed2 /= 1+Math.log10(1+player.eternityPoints.max(1).log10())/80
-			if (hasNU(8)) speed2 /= getNUPow(8)
+			if (hasNU(7)) speed2 /= getNUPow(7)
 			amount = amount * Math.pow(GUBought("rg1") ? 1.001 : 1.002, (galaxies-remoteGalaxyScalingStart-1) * speed2)
 			scaling = Math.max(scaling, 2)
 		}
@@ -1197,7 +1191,7 @@ function getDilTimeGainPerSecond() {
 		if (player.eternityUpgrades.includes(8)) gain = gain.times(1 + Math.log10(Math.max(1, player.infinityPoints.log(10))) / 20)
 		if (player.eternityUpgrades.includes(9)) gain = gain.times(1 + Math.log10(Math.max(1, player.eternityPoints.log(10))) / 10)
 	}
-	if (player.dilation.upgrades.includes('ngpp2')) gain = gain.times(Math.pow(Math.max(player.eternities, 1), .1))
+	if (player.dilation.upgrades.includes('ngpp2')) gain = gain.times(Decimal.pow(player.eternities, .1).max(1))
 	if (player.dilation.upgrades.includes('ngpp6')) gain = gain.times(getDil17Bonus())
 	if (player.masterystudies !== undefined ? !player.quantum.bigRip.active || player.quantum.bigRip.upgrades.includes(11) : false) {
 		if (player.masterystudies.includes("t263")) gain = gain.times(getMTSMult(263))
@@ -2959,7 +2953,7 @@ function galaxyReset() {
     if (player.achievements.includes("r78")) player.money = new Decimal(1e25).max(player.money);
     if (player.achievements.includes("r66")) player.tickspeed = player.tickspeed.times(0.98);
     if (player.galaxies >= 540 && player.replicanti.galaxies == 0) giveAchievement("Unique snowflakes")
-    checkUniversalHarmony()
+    if (!player.achievements.includes("ngpp18")) checkUniversalHarmony()
     if (player.masterystudies) if (player.quantum.autoOptions.sacrifice) sacrificeGalaxy(6, true)
     updateTickSpeed();
 };
@@ -3391,7 +3385,7 @@ function gainedInfinityPoints(next) {
     if (player.timestudy.studies.includes(141)) ret = ret.times(new Decimal(1e45).dividedBy(Decimal.pow(15, Math.log(player.thisInfinityTime+1)*Math.pow(player.thisInfinityTime+1, 0.125))).max(1))
     if (player.timestudy.studies.includes(142)) ret = ret.times(1e25)
     if (player.timestudy.studies.includes(143)) ret = ret.times(Decimal.pow(15, Math.log(player.thisInfinityTime+1)*Math.pow(player.thisInfinityTime+1, 0.125)))
-    if (player.achievements.includes("r116")) ret = ret.times(Decimal.pow(2, Decimal.add(getInfinitied(), 1).log10()))
+    if (player.achievements.includes("r116")) ret = ret.times(Decimal.add(getInfinitied(), 1).pow(Math.log10(2)))
     if (player.achievements.includes("r125")) ret = ret.times(Decimal.pow(2, Math.log(player.thisInfinityTime+1)*Math.pow(player.thisInfinityTime+1, 0.11)))
     if (player.dilation.upgrades.includes(7)) ret = ret.times(player.dilation.dilatedTime.max(1).pow(1000))
     if (player.boughtDims) {
@@ -3430,7 +3424,7 @@ function gainedEternityPoints() {
 			if (isBigRipUpgradeActive(5)) ret = ret.times(player.quantum.bigRip.spaceShards.max(1))
 			if (isBigRipUpgradeActive(8)) {
 				let mult = Decimal.pow(2, player.replicanti.galaxies+extraReplGalaxies)
-				if (hasNU(7)) if (mult.gt(Number.MAX_VALUE)) mult = mult.div(Number.MAX_VALUE).pow(0).times(Number.MAX_VALUE)
+				if (hasNU(8)) if (mult.gt(Number.MAX_VALUE)) mult = mult.div(Number.MAX_VALUE).pow(0).times(Number.MAX_VALUE)
 				else mult = mult.min(Number.MAX_VALUE)
 				ret = ret.times(mult)
 			}
@@ -5065,8 +5059,7 @@ function eternity(force, auto, presetLoad) {
         for (var i=0; i<player.challenges.length; i++) {
             if (!player.challenges[i].includes("post") && getEternitied() > 1) temp.push(player.challenges[i])
         }
-        var infGain = gainBankedInf()
-        player.infinitiedBank = typeof(infGain) == "number" && player.infinitiedBank + infGain < 1/0 ? player.infinitiedBank + infGain : Decimal.add(player.infinitiedBank, infGain)
+        player.infinitiedBank = nA(player.infinitiedBank, gainBankedInf())
         if (player.infinitiedBank > 5000000000) giveAchievement("No ethical consumption");
         if (player.dilation.active && (!force || player.infinityPoints.gte(Number.MAX_VALUE))) {
             var gain=getDilGain()
@@ -5101,7 +5094,7 @@ function eternity(force, auto, presetLoad) {
             }
         }
         var oldStat = getEternitied()
-        player.eternities += gainEternitiedStat()
+        player.eternities = nA(player.eternities, gainEternitiedStat())
         updateBankedEter()
         if (player.tickspeedBoosts !== undefined) player.tickspeedBoosts = 0
         if (player.achievements.includes("r104")) player.infinityPoints = new Decimal(2e25);
@@ -5449,27 +5442,19 @@ function challengesCompletedOnEternity() {
 
 function gainEternitiedStat() {
 	let ret = 1
-	if (player.dilation.upgrades.includes('ngpp2')) ret = Decimal.pow(player.dilation.dilatedTime, .1).toNumber()
-	if (ghostified) ret *= Math.pow(10, 2 / (Math.log10(getEternitied() + 1) / 10 + 1))
-	return Math.max(Math.floor(ret), (player.eternities < 1 && quantumed) ? 20 : 1)
+	if (ghostified) ret = Math.pow(10, 2 / (Math.log10(getEternitied() + 1) / 10 + 1))
+	if (player.dilation.upgrades.includes('ngpp2')) ret = nM(Decimal.pow(player.dilation.dilatedTime, .1), ret)
+	return nMx(ret, (player.eternities < 1 && quantumed) ? 20 : 1)
 }
 
 function gainBankedInf() {
 	let ret = 0 
 	let numerator = player.infinitied
-	if (speedrunMilestonesReached > 27) {
-		if (typeof(player.infinitied) == "number" && player.infinitied + getInfinitiedGain() < 1/0) numerator += getInfinitiedGain()
-		else numerator = Decimal.add(getInfinitiedGain(), player.infinitied)
-	}
+	if (speedrunMilestonesReached > 27) numerator = nA(getInfinitiedGain(), player.infinitied)
 	let frac = 0.05
 	if (player.exdilation != undefined) frac *= Math.cbrt(getBlackholePowerEffect())
-	if (typeof(numerator) == "number") {
-		if (player.timestudy.studies.includes(191)) ret += Math.floor(numerator*frac)
-		if (player.achievements.includes("r131")) ret += Math.floor(numerator*frac)
-	} else {
-		if (player.timestudy.studies.includes(191)) ret = numerator.times(frac)
-		if (player.achievements.includes("r131")) ret = numerator.times(frac).add(ret)
-	}
+	if (player.timestudy.studies.includes(191)) ret = nM(numerator, frac)
+	if (player.achievements.includes("r131")) ret = nA(nM(numerator, frac), ret)
 	return ret
 }
 
@@ -6025,7 +6010,7 @@ function startEternityChallenge(name, startgoal, goalIncrease) {
     if (player.currentEternityChall == name || parseInt(name.split("eterc")[1]) != player.eternityChallUnlocked) return
     if (player.options.challConf) if (!confirm("You will start over with just your time studies, eternity upgrades and achievements. You need to reach a set IP with special conditions.")) return
     var oldStat = getEternitied()
-    player.eternities += gainEternitiedStat()
+    player.eternities = nA(player.eternities, gainEternitiedStat())
     updateBankedEter()
     if (player.tickspeedBoosts !== undefined) player.tickspeedBoosts = 0
     if (player.achievements.includes("r104")) player.infinityPoints = new Decimal(2e25);
@@ -7491,7 +7476,7 @@ function gameLoop(diff) {
 
     var current = player.replicanti.amount.ln()
 
-    if (player.replicanti.unl && (diff > 5 || interval < 50 || player.timestudy.studies.includes(192))) {
+    if (player.replicanti.unl && (diff > 5 || chance.gt(1) || interval < 50 || est.gt(50) || player.timestudy.studies.includes(192))) {
         if (player.timestudy.studies.includes(192) && est.toNumber() > 0 && est.toNumber() < 1/0) player.replicanti.amount = Decimal.pow(Math.E, current +Math.log((diff*est/10) * (Math.log10(getReplSpeed())/308)+1) / (Math.log10(getReplSpeed())/308))
         else if (player.timestudy.studies.includes(192)) player.replicanti.amount = Decimal.pow(Math.E, current + est.times(diff * Math.log10(getReplSpeed()) / 3080).add(1).log(Math.E) / (Math.log10(getReplSpeed())/308))
         else player.replicanti.amount = Decimal.pow(Math.E, current +(diff*est/10)).min(getReplicantiLimit())
@@ -7503,7 +7488,7 @@ function gameLoop(diff) {
                 for (var i=0; temp.gt(i); i++) {
                     if (chance > Math.random()) player.replicanti.amount = player.replicanti.amount.plus(1)
                 }
-            } else {
+            } else if (player.replicanti.amount.eq(getReplicantiLimit())) {
                 var temp = Decimal.round(player.replicanti.amount.dividedBy(100))
                 if (Math.round(chance) !== 1) {
                     let counter = 0
@@ -8016,14 +8001,14 @@ function gameLoop(diff) {
             setAndMaybeShow('bestTPOverGhostifies',ghostified,'"Your best-ever Tachyon particles was "+shorten(player.dilation.bestTPOverGhostifies)+"."')
             player.quantum.notrelative = false
         }
-        if (player.ghostify.milestones>7||player.achievements.includes("ng3p57")) {
+        if (player.ghostify.milestones>7||player.achievements.includes("ng3p67")) {
             var percentage=0.01
-            if (player.ghostify.milestones>7&&player.achievements.includes("ng3p57")) percentage=0.02
+            if (player.ghostify.milestones>7&&player.achievements.includes("ng3p67")) percentage=0.02
             player.quantum.quarks=player.quantum.quarks.add(quarkGain().times(diff*percentage/10))
             player.quantum.gluons.rg=player.quantum.gluons.rg.add(player.quantum.usedQuarks.r.min(player.quantum.usedQuarks.g).pow(0.75).times(diff/10))
             player.quantum.gluons.gb=player.quantum.gluons.gb.add(player.quantum.usedQuarks.g.min(player.quantum.usedQuarks.b).pow(0.75).times(diff/10))
             player.quantum.gluons.br=player.quantum.gluons.br.add(player.quantum.usedQuarks.b.min(player.quantum.usedQuarks.r).pow(0.75).times(diff/10))
-            if (player.achievements.includes("ng3p57")) {
+            if (player.achievements.includes("ng3p67")) {
                 player.quantum.gluons.rg=player.quantum.gluons.rg.add(player.quantum.usedQuarks.r.min(player.quantum.usedQuarks.g).times(diff/10))
                 player.quantum.gluons.gb=player.quantum.gluons.gb.add(player.quantum.usedQuarks.g.min(player.quantum.usedQuarks.b).times(diff/10))
                 player.quantum.gluons.br=player.quantum.gluons.br.add(player.quantum.usedQuarks.b.min(player.quantum.usedQuarks.r).times(diff/10))
@@ -8206,7 +8191,7 @@ function autoBuyerTick() {
             if (player.peakSpent >= new Decimal(player.eternityBuyer.limit).toNumber()*10 && EPminpeak.gt(0)) eternity(false, true)
         } else if (player.autoEterMode == "eternitied") {
             var eternitied = getEternitied()
-            if (eternitied + gainEternitiedStat() >= eternitied * new Decimal(player.eternityBuyer.limit).toNumber()) eternity(false, true)
+            if (nG(nA(eternitied, gainEternitiedStat()), nM(eternitied, new Decimal(player.eternityBuyer.limit).toNumber()))) eternity(false, true)
         }
     }
 

@@ -433,9 +433,9 @@
                 </table>
                 <table class="table" id="studytable">
                     <tr>
-                        <td><button class="timestudylocked" id="timestudy251" onclick='buyMasteryStudy("t", 251)'>Remote cost scaling starts 1 galaxy later per 3,000 dimension boosts.</button></td>
-                        <td><button class="timestudylocked" id="timestudy252" onclick='buyMasteryStudy("t", 252)'>Remote cost scaling starts 1 galaxy later per 7 free galaxies.</button></td>
-                        <td><button class="timestudylocked" id="timestudy253" style='font-size:10px' onclick='buyMasteryStudy("t", 253)'>Remote cost scaling starts 20 galaxies later per 9 extra replicated galaxies.</button></td>
+                        <td><button class="timestudylocked" id="timestudy251" style='font-size:10px' onclick='buyMasteryStudy("t", 251)'>Remote cost scaling starts 1 galaxy later per 3,000 dimension boosts.<br><span id="ts251Current"></span></button></td>
+                        <td><button class="timestudylocked" id="timestudy252" style='font-size:10px' onclick='buyMasteryStudy("t", 252)'>Remote cost scaling starts 1 galaxy later per 7 free galaxies.<br><span id="ts252Current"></span></button></td>
+                        <td><button class="timestudylocked" id="timestudy253" style='font-size:10px' onclick='buyMasteryStudy("t", 253)'>Remote cost scaling starts 20 galaxies later per 9 extra replicated galaxies.<br><span id="ts253Current"></span></button></td>
                     </tr>
                 </table>
                 <table class="table" id="studytable">
@@ -4479,8 +4479,8 @@
 					<td colspan=2><p>You have <span id="br" style="font-size:35px">0</span> blue-red gluons.<br>+<span id='brgain'>0</span> on next quantum from blue quarks.<br><span id='bluenext'>0</span> blue quarks on next quantum.</p></td>
 				</tr><tr>
 					<td><button id='rgupg1' onclick='buyGluonUpg("rg",1)'>Remote galaxy cost scaling is reduced.<br>Cost: 1 RG gluons</button></td>
-					<td><button id='rgupg2' onclick='buyGluonUpg("rg",2)'>Galaxies are more effective based on your free galaxies.<br>Cost: 2 RG gluons</button></td>
-					<td><button id='gbupg1' onclick='buyGluonUpg("gb",1)'>You gain replicanti faster based on your tickspeed reduction multiplier.<br>Cost: 1 GB gluons</button></td>
+					<td><button id='rgupg2' onclick='buyGluonUpg("rg",2)'>Galaxies are more effective based on your free galaxies.<br><span id='rgupg2current'></span><br>Cost: 2 RG gluons</button></td>
+					<td><button id='gbupg1' onclick='buyGluonUpg("gb",1)' style='font-size:8.5px'>You gain replicanti faster based on your tickspeed reduction multiplier.<br><span id='gbupg1current'></span><br>Cost: 1 GB gluons</button></td>
 					<td><button id='gbupg2' onclick='buyGluonUpg("gb",2)'>Replicate interval scaling is 2x slower.<br>Cost: 2 GB gluons</button></td>
 					<td><button id='brupg1' onclick='buyGluonUpg("br",1)'>You gain more tachyon particles based on your dilated time.<br><span id='brupg1current'></span><br>Cost: 1 BR gluons</button></td>
 					<td><button id='brupg2' onclick='buyGluonUpg("br",2)'>Sacrifice affects dilated time production.<br><span id='brupg2current'></span><br><span id='brupg1current'></span>Cost: 2 BR gluons</button></td>
@@ -4679,11 +4679,12 @@
 					<tr class="neutrinoBoosts" id="neutrinoBoostRow2">
 						<td>They make Meta-Dimension Boosts stronger by <span class="neutrinos" id="neutrinoBoost4" style="font-size:35px">0.0</span>%.</td>
 						<td id="neutrinoBoostCell5">They boost preon energy production by <span class="neutrinos" id="neutrinoBoost5" style="font-size:35px">1.0</span>x.</td>
-						<td id="neutrinoBoostCell6">In Big Rips, they make Space Shards boost the meta-antimatter effect power by <span class="neutrinos" id="neutrinoBoost6" style="font-size:35px">1.00</span>x.</td>
+						<td id="neutrinoBoostCell6">They boost per-1 bought TD multiplier by <span class="neutrinos" id="neutrinoBoost6" style="font-size:35px">1.0</span>x.</td>
 					</tr>
 					<tr class="neutrinoBoosts" id="neutrinoBoostRow3">
-						<td>They make 1st Big Rip upgrade stronger by <span class="neutrinos" id="neutrinoBoost7" style="font-size:35px">1.0</span>%.</td>
-						<td id="neutrinoBoostCell8">In Big Rips, they make free galaxies more efficient to <span class="neutrinos" id="neutrinoBoost8" style="font-size:35px">0.0</span>% of a normal galaxy.</td>
+						<td>In Big Rips, they make Space Shards boost the meta-antimatter effect power by <span class="neutrinos" id="neutrinoBoost7" style="font-size:35px">1.00</span>x.</td>
+						<td id="neutrinoBoostCell8">They make 1st Big Rip upgrade stronger by <span class="neutrinos" id="neutrinoBoost8" style="font-size:35px">1.0</span>%.</td>
+						<td id="neutrinoBoostCell9">In Big Rips, they make free galaxies more efficient to <span class="neutrinos" id="neutrinoBoost9" style="font-size:35px">0.0</span>% of a normal galaxy.</td>
 						<td></td>
 					</tr>
 					<tr>
@@ -4698,13 +4699,13 @@
 					</tr>
 					<tr>
 						<td><button class="gluonupgrade unavailablebtn" id="neutrinoUpg4" onclick="buyNeutrinoUpg(4)" style="font-size: 10px">You gain quark spins faster and all branches are faster based on your tickspeed.<br>Currently: <span id="neutrinoUpg4Pow">1.0</span>x<br>Cost: <span id="neutrinoUpg4Cost"></span> of any neutrinos</button></td>
-						<td><button class="gluonupgrade unavailablebtn" id="neutrinoUpg5" onclick="buyNeutrinoUpg(5)" style="font-size: 10px">You gain more Eternal Matter based on your Space Shards.<br>Currently: <span id="neutrinoUpg5Pow">1.0</span>x<br>Cost: <span id="neutrinoUpg5Cost"></span> of any neutrinos</button></td>
-						<td><button class="gluonupgrade unavailablebtn" id="neutrinoUpg6" onclick="buyNeutrinoUpg(6)" style="font-size: 10px">Electrons gain multiplier is increased by ??%.<br>Cost: <span id="neutrinoUpg6Cost"></span> of any neutrinos</button></td>
+						<td><button class="gluonupgrade unavailablebtn" id="neutrinoUpg5" onclick="buyNeutrinoUpg(5)" style="font-size: 10px">Electrons gain multiplier is increased by ??%.<br>Cost: <span id="neutrinoUpg5Cost"></span> of any neutrinos</button></td>
+						<td><button class="gluonupgrade unavailablebtn" id="neutrinoUpg6" onclick="buyNeutrinoUpg(6)">Infinite time reward is ??% stronger.<br>Cost: <span id="neutrinoUpg6Cost"></span> of any neutrinos</button></td>
 					</tr>
 					<tr>
-						<td><button class="gluonupgrade unavailablebtn" id="neutrinoUpg7" onclick="buyNeutrinoUpg(7)" style="font-size: 10px">8th Big Rip upgrade will never get repealed and capped, but it will be weakened at <span id="BU8Cap"></span>.<br>Cost: <span id="neutrinoUpg7Cost"></span> of any neutrinos</button></td>
-						<td><button class="gluonupgrade unavailablebtn" id="neutrinoUpg8" onclick="buyNeutrinoUpg(8)" style="font-size: 10px">Preons slow down Remote Antimatter Galaxies scaling.<br>Currently: /<span id="neutrinoUpg8Pow">1.00</span><br>Cost: <span id="neutrinoUpg8Cost"></span> of any neutrinos</button></td>
-						<td><button class="gluonupgrade unavailablebtn" id="neutrinoUpg9" onclick="buyNeutrinoUpg(9)">Infinite time reward is ??% stronger.<br>Cost: <span id="neutrinoUpg9Cost"></span> of any neutrinos</button></td>
+						<td><button class="gluonupgrade unavailablebtn" id="neutrinoUpg7" onclick="buyNeutrinoUpg(7)" style="font-size: 10px">Preons slow down Remote Antimatter Galaxies scaling.<br>Currently: /<span id="neutrinoUpg7Pow">1.00</span><br>Cost: <span id="neutrinoUpg7Cost"></span> of any neutrinos</button></td>
+						<td><button class="gluonupgrade unavailablebtn" id="neutrinoUpg8" onclick="buyNeutrinoUpg(8)" style="font-size: 10px">8th Big Rip upgrade will never get repealed and capped, but it will be weakened at <span id="BU8Cap"></span>.<br>Cost: <span id="neutrinoUpg8Cost"></span> of any neutrinos</button></td>
+						<td><button class="gluonupgrade unavailablebtn" id="neutrinoUpg9" onclick="buyNeutrinoUpg(9)" style="font-size: 10px">You gain more Eternal Matter based on your Space Shards.<br>Currently: <span id="neutrinoUpg9Pow">1.0</span>x<br>Cost: <span id="neutrinoUpg9Cost"></span> of any neutrinos</button></td>
 					</tr>
 				</table>
 			</div>
@@ -4767,41 +4768,41 @@
 							Is active: <input id="isAutoGhostOn7" type="checkbox" onchange="toggleAutoGhost(7)"></input>
 						</div></td>
 						<td id="autoGhost8"><div class="autoBuyerDiv" style="display:block">
-							<b>Auto-Electron Upgrade Ghost</b><br>
+							<b>Auto-Food Ghost</b><br>
 							(buys if possible)<br>
 							Power consumption: 1<br>
 							Is active: <input id="isAutoGhostOn8" type="checkbox" onchange="toggleAutoGhost(8)"></input>
 						</div></td>
 						<td id="autoGhost9"><div class="autoBuyerDiv" style="display:block">
-							<b>Auto-Food Ghost</b><br>
-							(buys if possible)<br>
+							<b>Auto-Worker Replicant Ghost</b><br>
+							(feeds if possible)<br>
 							Power consumption: 1<br>
 							Is active: <input id="isAutoGhostOn9" type="checkbox" onchange="toggleAutoGhost(9)"></input>
 						</div></td>
 					</tr>
 					<tr>
 						<td id="autoGhost10"><div class="autoBuyerDiv" style="display:block">
-							<b>Auto-Worker Replicant Ghost</b><br>
-							(feeds if possible)<br>
+							<b>Auto-Limit Increase Upgrade Ghost</b><br>
+							(buys if possible)<br>
 							Power consumption: 1<br>
 							Is active: <input id="isAutoGhostOn10" type="checkbox" onchange="toggleAutoGhost(10)"></input>
 						</div></td>
 						<td id="autoGhost11"><div class="autoBuyerDiv" style="display:block">
-							<b>Auto-Limit Increase Upgrade Ghost</b><br>
+							<b>Auto-Limit Tier Upgrade Ghost</b><br>
 							(buys if possible)<br>
 							Power consumption: 1<br>
 							Is active: <input id="isAutoGhostOn11" type="checkbox" onchange="toggleAutoGhost(11)"></input>
 						</div></td>
 						<td id="autoGhost12"><div class="autoBuyerDiv" style="display:block">
-							<b>Auto-Limit Tier Upgrade Ghost</b><br>
-							(buys if possible)<br>
+							<b>Auto-Preon Generate Ghost</b><br>
 							Power consumption: 1<br>
 							Is active: <input id="isAutoGhostOn12" type="checkbox" onchange="toggleAutoGhost(12)"></input>
 						</div></td>
 					</tr>
 					<tr>
 						<td id="autoGhost13"><div class="autoBuyerDiv" style="display:block">
-							<b>Auto-Preon Generate Ghost</b><br>
+							<b>Auto-Radioactive Decay Ghost</b><br>
+							(buys if possible)<br>
 							Power consumption: 1<br>
 							Is active: <input id="isAutoGhostOn13" type="checkbox" onchange="toggleAutoGhost(13)"></input>
 						</div></td>
@@ -5018,6 +5019,7 @@
 <script type="text/javascript" src="javascripts/autobuyer.js"></script>
 <script type="text/javascript" src="javascripts/break_infinity.min.js?1"></script>
 <script type="text/javascript" src="javascripts/logarithmica_numerus_lite.js?3"></script>
+<script type="text/javascript" src="javascripts/num_and_decimal_math.js"></script>
 <script type="text/javascript" src="javascripts/chart.js"></script>
 <script type="text/javascript" src="javascripts/lz-string.js"></script>
 <script type="text/javascript" src="javascripts/core/polyfill.js"></script>

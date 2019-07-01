@@ -20,6 +20,7 @@ function getTimeDimensionPower(tier) {
   }
   var dim = player["timeDimension"+tier]
   var ret = dim.power.pow(player.boughtDims?1:2)
+  if (ghostified) if (player.ghostify.neutrinos.boosts > 5) ret = ret.pow(getNBBoost(6))
   ret = ret.times(kongAllDimMult)
 
   if (player.timestudy.studies.includes(11) && tier == 1) ret = ret.times(getTS11Mult())
@@ -54,7 +55,6 @@ function getTimeDimensionPower(tier) {
   if (player.replicanti.unl && player.replicanti.amount.gt(1) && player.dilation.upgrades.includes(5)) ret = ret.times(getReplMult().pow(0.1))
 
   if (inQC(6)) ret = ret.times(player.postC8Mult).dividedBy(player.matter.max(1))
-  if (player.masterystudies !== undefined ? player.quantum.bigRip.upgrades.includes(13) : false) ret = ret.times(player.replicanti.amount.max(1).pow(1e-6))
   if (ret.lt(0)) {
     ret = new Decimal(0)
   }
@@ -215,7 +215,7 @@ function getTS11Mult() {
 
 function getITReward() {
 	let ret=(3-player.tickspeed.log10())*0.000005
-	if (hasNU(9)) ret*=1
+	if (hasNU(6)) ret*=1
 	if (isEternityBroke()) {
 		if (ret>100) ret=Math.pow(ret*100,0.5)
 	} else {
