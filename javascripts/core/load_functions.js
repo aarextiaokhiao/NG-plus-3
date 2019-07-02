@@ -1814,13 +1814,15 @@ if (player.version < 5) {
   updateQuantumChallenges()
   updateQCTimes()
   updatePCCompletions()
-  if (player.masterystudies !== undefined) document.getElementById("bpc68").textContent = shortenMoney(player.quantum.pairedChallenges.pc68best)
+  if (player.masterystudies !== undefined) {
+      document.getElementById("bpc68").textContent = shortenMoney(player.quantum.pairedChallenges.pc68best)
+      updateNeutrinoBoosts()
+  }
   maybeShowFillAll()
   updateReplicants()
   updateTODStuff()
   updateBreakEternity()
   onNotationChangeNeutrinos()
-  updateNeutrinoBoosts()
   if (player.boughtDims) {
       if (document.getElementById("timestudies").style.display=="block") showEternityTab("ers_timestudies",true)
       updateGalaxyControl()

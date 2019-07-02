@@ -1,0 +1,93 @@
+body {
+	background: black
+}
+
+.popup {
+	background-color: #e57272;
+	border-color: #e56666
+}
+
+#container div {
+	color: #0000e5
+}
+
+#coinAmount {
+	color: #7272e5 !important;
+	text-shadow: 0px 0px 6px #7272e5
+}
+
+.tabbtn {
+	background-color: #0000e5;
+	border-color: #0000cc
+}
+
+.tabbtn:hover, .challengediv {
+	background-color: #7272e5 !important;
+	border-color: #6666e5 !important
+}
+
+.unavailablebtn, .infinistorebtnlocked, .newdimlocked {
+	background: black !important;
+	border-color: #4c4c4c !important;
+	color: white !important
+}
+
+.storebtn, .secondarytabbtn, .infinistorebtnbought {
+	background-color: #e50000;
+	border-color: #cc0000
+}
+
+.storebtn:hover, .secondarytabbtn:hover {
+	background-color: #e57272;
+	border-color: #e56666
+}
+
+#galaxybtn, #sacrificebtn, #galaxy .infinistorebtn1, #galaxy .infinistorebtn2, #galaxy .infinistorebtn3, #galaxy .infinistorebtn4 {
+	background-color: black;
+	border-color: #0066cc !important;
+	color: #0072e5
+}
+
+#galaxybtn:hover, #sacrificebtn:hover, #galaxy .infinistorebtn1:hover, #galaxy .infinistorebtn2:hover, #galaxy .infinistorebtn3:hover, #galaxy .infinistorebtn4:hover {
+	background-color: #0072e5;
+	color: white
+}
+
+#galaxy div, #galaxyPoints {
+	color: #0072e5 !important
+}
+
+.GPAmount {
+	color: #72ace5 !important;
+	text-shadow: 0px 0px 6px #72ace5
+}
+
+#galaxy .infinistorebtnbought {
+	background-color: #0072e5;
+	border-color: #0066cc !important;
+	color: black
+}
+
+#bigcrunch, #infinitybtn, #postInfinityButton, .infchallengediv, .infinistorebtn1, .infinistorebtn2, .infinistorebtn3, .infinistorebtn4, .infinimultbtn, .autoBuyerDiv, .autobuyerbtn, #pastinfs, .newdim, #idtabbtn button, #challTabButtons td:nth-child(2) button, #infchallengesbtn {
+	background-color: black;
+	border-color: #cc0000;
+	color: #e50000
+}
+
+#bigcrunch:hover, #infinitybtn:hover, #postInfinityButton:hover, .infinistorebtn1:hover, .infinistorebtn2:hover, .infinistorebtn3:hover, .infinistorebtn4:hover, .infinimultbtn:hover, .autobuyerbtn:hover, #pastinfs:hover, .newdim:hover, #idtabbtn button:hover, #challTabButtons td:nth-child(2) button:hover, #infchallengesbtn:hover {
+	background-color: #e50000;
+	color: white
+}
+
+#infinity div, #infinityPoints2, #infinitydimensions div, #infinitydimensions td {
+	color: #e50000 !important
+}
+
+.IPAmount1, .IPAmount2, #infPowAmount, #infDimMultAmount, #infDimEffectPower, #infPowEffectPower, #replicantiamount, #replicantimult {
+	color: #e57272 !important;
+	text-shadow: 0px 0px 6px #e57272
+}
+
+.infchallengediv span {
+	color: #e50000
+}

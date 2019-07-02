@@ -907,7 +907,7 @@ function setTheme(name) {
     } else if(name === "S5") {
         Chart.defaults.global.defaultFontColor = 'black';
         normalDimChart.data.datasets[0].borderColor = '#000'
-    } else if (name !== "S6") {
+    } else if (name !== "S6" && name !== "S7") {
         themeName=name;
     }
     if (theme=="Dark"||theme=="Dark Metro"||name === "S6") {
@@ -3268,6 +3268,10 @@ function import_save(type) {
         setTheme(player.options.theme);
     } else if (sha512_256(save_data) === "4f82333af895f5c89e6b2082a7dab5a35b964614e74908961fe915cefca1c6d0") {
         player.options.theme = "S6";
+        player.options.secretThemeKey = save_data;
+        setTheme(player.options.theme);
+    } else if (sha512_256(save_data) === "dc7ca80515529278fc56a6c6c4bd4261474bdbbe40a016230b2aab456225b640") {
+        player.options.theme = "S7";
         player.options.secretThemeKey = save_data;
         setTheme(player.options.theme);
     } else {
@@ -6383,10 +6387,11 @@ function dilationPowerStrength() {
 
 function buyDilationUpgrade(id, max) {
     if (id > 3 && id != 11) { // Not rebuyable
+        var uid = id > 11 ? "ngpp" + (id - 11) : id
         if (player.dilation.dilatedTime < DIL_UPG_COSTS[id]) return // Not enough dilated time
-        if (player.dilation.upgrades.includes(id)) return // Has the upgrade
+        if (player.dilation.upgrades.includes(uid)) return // Has the upgrade
         player.dilation.dilatedTime = player.dilation.dilatedTime.minus(DIL_UPG_COSTS[id])
-        player.dilation.upgrades.push(id > 11 ? "ngpp" + (id - 11) : id)
+        player.dilation.upgrades.push(uid)
         if (id == 4) player.dilation.freeGalaxies *= 2 // Double the current galaxies
         if (id == 10) player.quantum.wasted = false
         if (id == 14) {
@@ -7582,7 +7587,7 @@ function gameLoop(diff) {
         document.getElementById("eternitybtnPeak").textContent = (showEPmin
         ? "Peaked at "+(EPminpeakType == "normal" ? shortenDimensions(EPminpeak) : shorten(EPminpeak))+EPminpeakUnits : "")
     }
-    document.getElementById("quantumbtnFlavor").textContent = ((!player.quantum.times&&!player.ghostify.milestones)||!inQC(0)?((player.masterystudies !== undefined ? player.quantum.bigRip.active : false)?"I am":inQC(0)?"My computer is":player.quantum.challenge.length>1?"Paired challenge is":"My challenging skills are")+" not powerful enough... ":"") + "I need to go quantum."
+    document.getElementById("quantumbtnFlavor").textContent = ((player.quantum!==undefined?!player.quantum.times&&!player.ghostify.milestones:false)||!inQC(0)?((player.masterystudies !== undefined ? player.quantum.bigRip.active : false)?"I am":inQC(0)?"My computer is":player.quantum.challenge.length>1?"Paired challenge is":"My challenging skills are")+" not powerful enough... ":"") + "I need to go quantum."
     var showGain = quantumed && (inQC(0)||player.options.theme=="Aarex's Modifications") ? "QK" : ""
     if (player.masterystudies !== undefined) if (player.quantum.bigRip.active) showGain = "SS"
     document.getElementById("quantumbtnQKGain").textContent = showGain == "QK" ? "Gain "+shortenDimensions(quarkGain())+" quark"+(quarkGain().eq(1)?".":"s.") : ""
@@ -8001,14 +8006,14 @@ function gameLoop(diff) {
             setAndMaybeShow('bestTPOverGhostifies',ghostified,'"Your best-ever Tachyon particles was "+shorten(player.dilation.bestTPOverGhostifies)+"."')
             player.quantum.notrelative = false
         }
-        if (player.ghostify.milestones>7||player.achievements.includes("ng3p67")) {
+        if (player.ghostify.milestones>7||player.achievements.includes("ng3p66")) {
             var percentage=0.01
-            if (player.ghostify.milestones>7&&player.achievements.includes("ng3p67")) percentage=0.02
+            if (player.ghostify.milestones>7&&player.achievements.includes("ng3p66")) percentage=0.02
             player.quantum.quarks=player.quantum.quarks.add(quarkGain().times(diff*percentage/10))
             player.quantum.gluons.rg=player.quantum.gluons.rg.add(player.quantum.usedQuarks.r.min(player.quantum.usedQuarks.g).pow(0.75).times(diff/10))
             player.quantum.gluons.gb=player.quantum.gluons.gb.add(player.quantum.usedQuarks.g.min(player.quantum.usedQuarks.b).pow(0.75).times(diff/10))
             player.quantum.gluons.br=player.quantum.gluons.br.add(player.quantum.usedQuarks.b.min(player.quantum.usedQuarks.r).pow(0.75).times(diff/10))
-            if (player.achievements.includes("ng3p67")) {
+            if (player.achievements.includes("ng3p66")) {
                 player.quantum.gluons.rg=player.quantum.gluons.rg.add(player.quantum.usedQuarks.r.min(player.quantum.usedQuarks.g).times(diff/10))
                 player.quantum.gluons.gb=player.quantum.gluons.gb.add(player.quantum.usedQuarks.g.min(player.quantum.usedQuarks.b).times(diff/10))
                 player.quantum.gluons.br=player.quantum.gluons.br.add(player.quantum.usedQuarks.b.min(player.quantum.usedQuarks.r).times(diff/10))
