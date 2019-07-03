@@ -301,8 +301,8 @@ function updateNewPlayer(reseted) {
             bulkOn: true,
             cloud: true,
             hotkeys: true,
-            theme: undefined,
-            secretThemeKey: 0,
+            theme: "S7"/*undefined*/,
+            secretThemeKey: "4th of July"/*0*/,
             eternityconfirm: true,
             commas: "Commas",
             updateRate: 50,
@@ -626,6 +626,7 @@ function updateNewPlayer(reseted) {
             bought: 0
         }
         player.options.animations.blackHole = true
+        player.options.exdilationconfirm = true
     }
     if (modesChosen.rs===2) {
         player.aarexModifications.irsVersion = 1.1
@@ -1616,7 +1617,7 @@ function updateDimensions() {
             if (player.exdilation==undefined?false:player.blackhole.unl) {
                 document.getElementById("reversedilationdiv").style.display = ""
                 if (canReverseDilation()) {
-                    document.getElementById("reversedilation").className = "dilationupg"
+                    document.getElementById("reversedilation").className = "dilationbtn"
                     document.getElementById("reversedilation").innerHTML = "Reverse dilation."+(player.exdilation.times>0?"<br>Gain "+shortenDimensions(getExDilationGain())+" ex-dilation":"")
                 } else {
                     document.getElementById("reversedilation").className = "eternityupbtnlocked"
@@ -1890,7 +1891,7 @@ function glowText(id) {
 
 
 document.getElementById("maxall").onclick = function () {
-	if (!player.masterystudies !== undefined) if (player.quantum.bigRip.active && !(player.infinityUpgrades.includes("resetBoost") && player.infinityUpgrades.includes("galaxyBoost") && player.infinityUpgrades.includes("passiveGen") && player.infinityUpgrades.includes("skipResetGalaxy"))) {
+	if (player.masterystudies !== undefined) if (player.quantum.bigRip.active && !(player.infinityUpgrades.includes("resetBoost") && player.infinityUpgrades.includes("galaxyBoost") && player.infinityUpgrades.includes("passiveGen") && player.infinityUpgrades.includes("skipResetGalaxy"))) {
 		alert("To prevent you from failing easily, you need to buy all Infinity upgrades first.")
 		return
 	}
@@ -3219,6 +3220,10 @@ function showNextModeMessage() {
 		document.getElementById("welcome").style.display = "flex"
 		document.getElementById("welcomeMessage").innerHTML = ngModeMessages[ngModeMessages.length-1]
 		ngModeMessages.pop()
+	} else if (player.aarexModifications.popUpId !== "19jul4") {
+		player.aarexModifications.popUpId = "19jul4"
+		document.getElementById("welcome").style.display = "flex"
+		document.getElementById("welcomeMessage").innerHTML = "Happy 4th of July to all players!" + (player.options.theme == "S7" ? "" : " Import '4th of July' on your save to check a new theme out!")
 	} else document.getElementById("welcome").style.display = "none"
 }
 
@@ -6393,7 +6398,7 @@ function buyDilationUpgrade(id, max) {
         player.dilation.dilatedTime = player.dilation.dilatedTime.minus(DIL_UPG_COSTS[id])
         player.dilation.upgrades.push(uid)
         if (id == 4) player.dilation.freeGalaxies *= 2 // Double the current galaxies
-        if (id == 10) player.quantum.wasted = false
+        if (id == 10 && player.masterystudies !== undefined) player.quantum.wasted = false
         if (id == 14) {
             updateMilestones()
             if (player.masterystudies&&getEternitied()>=1e9) player.dbPower=new Decimal(getDimensionBoostPower())
@@ -6404,13 +6409,13 @@ function buyDilationUpgrade(id, max) {
             document.getElementById("respecMastery2").style.display = "block"
             if (!quantumed) $.notify("Congratulations for unlocking mastery studies! You can either click 'mastery studies' button\nor 'continue to mastery studies' button in time studies.")
             if (!quantumed) {
-                document.getElementById("welcome").style.display = "flex"
                 document.getElementById("welcomeMessage").innerHTML = "Congratulations for reaching the end of NG++! As of a reward, you have unlocked mastery studies. You can either click 'mastery studies' button or 'continue to mastery studies' button in time studies."
             }
         }
     } else { // Is rebuyable
         let realCost = getRebuyableDilUpgCost(id > 3 ? 4 : id)
         if (!player.dilation.dilatedTime.gte(realCost)) return false
+        if (realCost.gt("1e10000")) return
 
         player.dilation.dilatedTime = player.dilation.dilatedTime.minus(realCost)
         player.dilation.rebuyables[id > 3 ? 4 : id] += 1
@@ -6991,7 +6996,8 @@ setInterval(function() {
     if (player.masterystudies !== undefined) {
         if (!player.quantum.reached) if (ECTimesCompleted("eterc14") > 0 && player.meta.antimatter.gte(Decimal.pow(Number.MAX_VALUE, 1.45))) {
             player.quantum.reached = true
-            document.getElementById("welcome").style.display = "flex"
+            if (document.getElementById("welcome").style.display != "flex") document.getElementById("welcome").style.display = "flex"
+            else player.aarexModifications.popUpId = ""
             document.getElementById("welcomeMessage").innerHTML = "Congratulations! You reached 9.32e446 MA and then completed EC14 for the first time! You unlocked the fifth layer called Quantum! It comes after Dimension Boost, Antimatter Galaxy, Big Church, and Eternity. This allows you to get gigantic numbers!"
         }
         var chall=getCurrentQCData()
@@ -6999,13 +7005,15 @@ setInterval(function() {
         else if (chall[0]>chall[1]) chall=chall[1]*10+chall[0]
         else chall=chall[0]*10+chall[1]
         if (chall && player.money.gt(Decimal.pow(10, getQCGoal())) && player.meta.bestAntimatter.lt(Decimal.pow(Number.MAX_VALUE, 1.45)) && !player.quantum.nonMAGoalReached.includes(chall)) {
-            document.getElementById("welcome").style.display="flex"
+            if (document.getElementById("welcome").style.display != "flex") document.getElementById("welcome").style.display = "flex"
+            else player.aarexModifications.popUpId = ""
             document.getElementById("welcomeMessage").innerHTML="You reached the antimatter goal ("+shorten(Decimal.pow(10, getQCGoal()))+"), but you didn't reach the meta-antimatter goal yet! Get "+shorten(Decimal.pow(Number.MAX_VALUE, 1.45))+" meta-antimatter"+(player.quantum.bigRip.active?" and then you can become a ghost!":" and then go quantum to complete your challenge!")
             player.quantum.nonMAGoalReached.push(chall)
         }
         if (!player.ghostify.reached && player.quantum.bigRip.active) if (player.quantum.bigRip.bestThisRun.gte(Decimal.pow(10, getQCGoal()))) {
             player.ghostify.reached = true
-            document.getElementById("welcome").style.display = "flex"
+            if (document.getElementById("welcome").style.display != "flex") document.getElementById("welcome").style.display = "flex"
+            else player.aarexModifications.popUpId = ""
             document.getElementById("welcomeMessage").innerHTML = "You are almost there for a supreme completion! However, completing this turns you to a ghost instead. This allows you to pass big rip universes and unlock new stuff! However, you need to lose everything too. Therefore, this is the sixth layer of NG+3."
         }
         if (player.eternityPoints.gte("1e1200") && player.quantum.bigRip.active && !player.quantum.breakEternity.unlocked) {

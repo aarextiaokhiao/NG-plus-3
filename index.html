@@ -996,36 +996,37 @@
                                 <button id="blackholeMax1" style="color:black; width:195px; height:30px" class="storebtn" align="right" onclick="buyBlackholeDimension(1)">Cost: 1e4000 EP</button>
                             </td>
                         </tr>
-                        <tr id="blackholeRow2" style="font-size: 17px">
-                            <td id="blackholeD2">
+                        <tr style="font-size: 17px" id="blackholeRow2">
+                            <td id="blackholeD2" width="43%">
                                 Second Black Hole Dimension x1
                             </td>
                             <td>
-                                <div id="blackholeAmount2" align="left">0 (0)</div>
-                            <td>
-                                <button id="blackholeMax2" style="color:black; width:195px; height:30px" class="storebtn" onclick="buyBlackholeDimension(2)">Cost: 1e8000 EP</button>
+                                <div id="blackholeAmount2">0 (0)</div>
+                            </td>
+                            <td align="right" width="10%">
+                                <button id="blackholeMax2" style="color:black; width:195px; height:30px" class="storebtn" align="right" onclick="buyBlackholeDimension(2)">Cost: 1e8000 EP</button>
                             </td>
                         </tr>
-                        <tr id="blackholeRow3" style="font-size: 17px">
-                            <td id="blackholeD3">
+                        <tr style="font-size: 17px" id="blackholeRow3">
+                            <td id="blackholeD3" width="43%">
                                 Third Black Hole Dimension x1
                             </td>
                             <td>
-                                <div id="blackholeAmount3" align="left">0 (0)</div>
+                                <div id="blackholeAmount3">0 (0)</div>
                             </td>
-                            <td>
-                                <button id="blackholeMax3" style="color:black; width:195px; height:30px" class="storebtn" onclick="buyBlackholeDimension(3)">Cost: 1e12000 EP</button>
+                            <td align="right" width="10%">
+                                <button id="blackholeMax3" style="color:black; width:195px; height:30px" class="storebtn" align="right" onclick="buyBlackholeDimension(3)">Cost: 1e12000 EP</button>
                             </td>
                         </tr>
-                        <tr id="blackholeRow4" style="font-size: 17px">
-                            <td id="blackholeD4">
+                        <tr style="font-size: 17px" id="blackholeRow4">
+                            <td id="blackholeD4" width="43%">
                                 Fourth Black Hole Dimension x1
                             </td>
                             <td>
-                                <div id="blackholeAmount4" align="left">0 (0)</div>
+                                <div id="blackholeAmount4">0 (0)</div>
                             </td>
-                            <td>
-                                <button id="blackholeMax4" style="color:black; width:195px; height:30px" class="storebtn" onclick="buyBlackholeDimension(4)">Cost: 1e20000 EP</button>
+                            <td align="right" width="10%">
+                                <button id="blackholeMax4" style="color:black; width:195px; height:30px" class="storebtn" align="right" onclick="buyBlackholeDimension(4)">Cost: 1e20000 EP</button>
                             </td>
                         </tr>
                       </table>
@@ -4433,7 +4434,7 @@
                 <canvas id="quarkCanvas"></canvas>
 				<div>Your quantum worth is currently <b class="QKAmount" id="quantumWorth1">0</b>.</div>
 				<table class='qtable'><tr>
-					<td>
+					<td class="rqC">
 						<p>You have <span class="red" id="redQuarks" style="font-size:35px">0</span> red quarks.</p>
 						<button class='storebtn' id='redAssign' onclick='assignQuark("r")'>Assign all</button>
 					</td>
@@ -4441,7 +4442,7 @@
 						<p>You have <span class="green" id="greenQuarks" style="font-size:35px">0</span> green quarks.</p>
 						<button class='storebtn' id='greenAssign' onclick='assignQuark("g")'>Assign all</button>
 					</td>
-					<td>
+					<td class="bqC">
 						<p>You have <span class="blue" id="blueQuarks" style="font-size:35px">0</span> blue quarks.</p>
 						<button class='storebtn' id='blueAssign' onclick='assignQuark("b")'>Assign all</button>
 					</td>
@@ -4457,7 +4458,7 @@
 				</div>
 				<p>They have a <span id='colorChargeAmount' style="font-size:35px">0</span><span id='colorCharge'></span> charge, which produces <span id='powerRate' style="font-size:35px">0</span> <span id='colorPower'></span> per second.</p>
 				<table class='qtable'><tr>
-					<td>
+					<td class="rqC">
 						<p>You have <span class="red" id="redPower" style="font-size:35px">0.0</span> red power.<br>
 						Translated to <span id="boost">boosted </span><span class="red" id="redTranslation" style="font-size:35px">0.0</span>% increase in galaxy efficiency.</p>
 					</td>
@@ -4465,7 +4466,7 @@
 						<p>You have <span class="green" id="greenPower" style="font-size:35px">0.0</span> green power.<br>
 						Translated to <span class="green" id="greenTranslation" style="font-size:35px">0</span>% increase in extra replicated galaxies.</p>
 					</td>
-					<td>
+					<td class="bqC">
 						<p>You have <span class="blue" id="bluePower" style="font-size:35px">0.0</span> blue power.<br>
 						Translated to <span class="blue" id="blueTranslation" style="font-size:35px">1.0</span>x dilated time production<span id="bluePowerMDEffect"> and <span class="blue" id="blueTranslationMD" style="font-size:35px">1.0</span>x production from all Meta Dimensions</span>.</span>
 					</td>
@@ -4474,9 +4475,9 @@
 			<div class='quantumtab' id='gluons'>
 				<div>Your quantum worth is currently <b class="QKAmount" id="quantumWorth2">0</b>.</div>
 				<table id='gluonupgrades'><tr>
-					<td colspan=2><p>You have <span id="rg" style="font-size:35px">0</span> red-green gluons.<br>+<span id='rggain'>0</span> on next quantum from red quarks.<br><span id='rednext'>0</span> red quarks on next quantum.</p></td>
+					<td class="rqC" colspan=2><p>You have <span id="rg" style="font-size:35px">0</span> red-green gluons.<br>+<span id='rggain'>0</span> on next quantum from red quarks.<br><span id='rednext'>0</span> red quarks on next quantum.</p></td>
 					<td colspan=2><p>You have <span id="gb" style="font-size:35px">0</span> green-blue gluons.<br>+<span id='gbgain'>0</span> on next quantum from green quarks.<br><span id='greennext'>0</span> green quarks on next quantum.</p></td>
-					<td colspan=2><p>You have <span id="br" style="font-size:35px">0</span> blue-red gluons.<br>+<span id='brgain'>0</span> on next quantum from blue quarks.<br><span id='bluenext'>0</span> blue quarks on next quantum.</p></td>
+					<td class="bqC" colspan=2><p>You have <span id="br" style="font-size:35px">0</span> blue-red gluons.<br>+<span id='brgain'>0</span> on next quantum from blue quarks.<br><span id='bluenext'>0</span> blue quarks on next quantum.</p></td>
 				</tr><tr>
 					<td><button id='rgupg1' onclick='buyGluonUpg("rg",1)'>Remote galaxy cost scaling is reduced.<br>Cost: 1 RG gluons</button></td>
 					<td><button id='rgupg2' onclick='buyGluonUpg("rg",2)'>Galaxies are more effective based on your free galaxies.<br><span id='rgupg2current'></span><br>Cost: 2 RG gluons</button></td>
@@ -4533,7 +4534,7 @@
 			</div>
 			<div class='quantumtab' id='replicants'>
 				You have <span id="replicantiAmount2">1</span> replicantis.<br>
-				You have <span id="rgRepl">1</span> red-green, <span id="gbRepl">1</span> green-blue, and <span id="brRepl">1</span> blue-red gluons.<br>
+				You have <span class="rqC" id="rgRepl">1</span> red-green, <span class="QKAmount" id="gbRepl">1</span> green-blue, and <span class="bqC" id="brRepl">1</span> blue-red gluons.<br>
 				<table class='qtable'><tr><td>
 					You have <span id="replicantAmount" style="font-size:35px">0</span> normal replicants.<br>
 					They are gathering <span id="normalReplGatherRate" style="font-size:25px">0</span> preons per second.<br>

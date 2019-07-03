@@ -741,7 +741,9 @@ if (player.version < 5) {
                  energy: 0,
                  antienergy: 0,
                  power: 0,
-                 rewards: 0
+                 powerThreshold: 50,
+                 rewards: 0,
+                 producingCharge: false
               }
               player.quantum.reachedInfQK = false
               player.quantum.assignAllRatios = {
@@ -1185,6 +1187,14 @@ if (player.version < 5) {
       if (player.quantum.autoOptions === undefined) player.quantum.autoOptions = {}
       if (player.quantum.challengeRecords === undefined) player.quantum.challengeRecords = {}
       if (player.quantum.pairedChallenges.completions === undefined) player.quantum.pairedChallenges.completions = {}
+      if (player.quantum["10ofield"] !== undefined) {
+          player.quantum.nanofield = player.quantum["10ofield"]
+          delete player.quantum["10ofield"]
+      }
+      if (player.quantum.nanofield.powerThreshold === undefined) {
+          player.quantum.nanofield.powerThreshold = 50
+          player.quantum.nanofield.producingCharge = false
+      }
       if (player.quantum.autobuyer.peakTime === undefined) player.quantum.autobuyer.peakTime = 0
       if (player.quantum.nanofield.rewards>17&&player.quantum.tod.upgrades[1]==undefined) {
           var newMS=[]
@@ -1472,6 +1482,7 @@ if (player.version < 5) {
       delete player.options.dilationconfirm
       updateAchievements()
   }
+  if (player.exdilation !== undefined && player.options.exdilationconfirm === undefined) player.options.exdilationconfirm = true
   if (player.aarexModifications.irsVersion < 1.1) {
       player.singularity = {
           unlocked: false,

@@ -24,13 +24,13 @@ function nS(a,b) {
 function nM(a,b) {
 	if (typeof(a)=="number"&&typeof(b)=="number") {
 		let m=a*b
-		if (m<1/0) return m
+		if (m<1/0) return Math.floor(m)
 	}
 	return nN(Decimal.times(a,b))
 }
 
 function nD(a,b) {
-	if (typeof(a)=="number"&&typeof(b)=="number") return a/b
+	if (typeof(a)=="number"&&typeof(b)=="number") return Math.floor(a/b)
 	return nN(Decimal.div(a,b))
 }
 

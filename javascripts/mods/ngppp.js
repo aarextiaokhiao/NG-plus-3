@@ -416,6 +416,7 @@ function setupText() {
 		html+="You have <span class='"+color+"' id='"+color+"UnstableQuarks' style='font-size: 35px'>0</span> "+color+" <span id='"+shorthand+"UQName'></span> quarks.<br>"
 		html+="<span id='"+color+"QuarksDecayRate'></span>."
 		document.getElementById("todRow").insertCell(c).innerHTML=html
+		document.getElementById("todRow").cells[c].className=shorthand+"qC"
 		
 		html="<table class='table' align='center' style='margin: auto'><tr>"
 		for (var u=1;u<4;u++) html+="<td style='vertical-align: 0'><button class='gluonupgrade unavailablebtn' id='"+color+"upg"+u+"' onclick='buyBranchUpg(\""+shorthand+"\", "+u+")'"+(u<3?" style='font-size:10px'":"")+">"+branchUpgrades[u-1]+"<br>Currently: <span id='"+color+"upg"+u+"current'>1</span>x<br>Cost: <span id='"+color+"upg"+u+"cost'>?</span> "+color+" quark spin</button>"+(u==2?"<br><button class='storebtn' style='width: 190px' onclick='maxBranchUpg(\""+shorthand+"\")'>Max all upgrades</button><br><button class='storebtn' style='width: 190px; font-size:10px' onclick='maxBranchUpg(\""+shorthand+"\", true)'>Max 2nd and 3rd upgrades</button>":"")+"</td>"
@@ -670,6 +671,7 @@ function updateColorCharge() {
 		document.getElementById("colorCharge").textContent='neutral'
 		document.getElementById("powerRate").className=''
 		document.getElementById("colorPower").textContent=''
+		document.getElementById("powerRate").parentElement.className=""
 	} else {
 		var color=colorShorthands[colorCharge.color]
 		document.getElementById("colorChargeAmount").style.display=''
@@ -678,6 +680,7 @@ function updateColorCharge() {
 		document.getElementById("colorCharge").textContent=' '+color
 		document.getElementById("powerRate").className=color
 		document.getElementById("colorPower").textContent=color+' power'
+		document.getElementById("powerRate").parentElement.className=colorCharge.color+"qC"
 	}
 	document.getElementById("redQuarks").textContent=shortenDimensions(player.quantum.usedQuarks.r)
 	document.getElementById("greenQuarks").textContent=shortenDimensions(player.quantum.usedQuarks.g)
@@ -1890,7 +1893,7 @@ function getDecayRate(branch) {
 	ret = ret.times(getTreeUpgradeEffect(3))
 	ret = ret.times(getTreeUpgradeEffect(5))
 	ret = ret.times(getNUPow(4))
-	return ret.min(Math.pow(2,50))
+	return ret.min(Math.pow(2,40))
 }
 
 function getQuarkSpinProduction(branch) {
@@ -3491,6 +3494,7 @@ function ghostifyReset(implode, gain, amount, force) {
 	updateGluons("prestige")
 	updateQuantumWorth("quick")
 	updateQuantumChallenges()
+	updatePCCompletions()
 	updateReplicants("prestige")
 	updateEmperorDimensions()
 	updateTODStuff()
