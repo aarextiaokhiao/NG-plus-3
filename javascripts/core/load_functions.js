@@ -1178,38 +1178,6 @@ if (player.version < 5) {
       player.aarexModifications.newGame3PlusVersion = 2
   }
   if (player.masterystudies) {
-      if (player.meta.bestOverQuantums === undefined) player.meta.bestOverQuantums = player.meta.bestAntimatter
-      document.getElementById('prioritydil').value=player.eternityBuyer.dilationPerAmount
-      if (player.achievements.includes("ng3p52")) document.getElementById("autoDilValue").value=player.eternityBuyer.dilationPerAmount
-      document.getElementById("eggonsCell").style.display = player.ghostify.neutrinos.upgrades.includes(2) ? "none" : ""
-      document.getElementById("workerReplWhat").textContent = player.ghostify.neutrinos.upgrades.includes(2) ? "babies" : "eggons"
-      updateQuantumWorth()
-      if (player.quantum.autoOptions === undefined) player.quantum.autoOptions = {}
-      if (player.quantum.challengeRecords === undefined) player.quantum.challengeRecords = {}
-      if (player.quantum.pairedChallenges.completions === undefined) player.quantum.pairedChallenges.completions = {}
-      if (player.quantum["10ofield"] !== undefined) {
-          player.quantum.nanofield = player.quantum["10ofield"]
-          delete player.quantum["10ofield"]
-      }
-      if (player.quantum.nanofield.powerThreshold === undefined) {
-          player.quantum.nanofield.powerThreshold = 50
-          player.quantum.nanofield.producingCharge = false
-      }
-      if (player.quantum.autobuyer.peakTime === undefined) player.quantum.autobuyer.peakTime = 0
-      if (player.quantum.nanofield.rewards>17&&player.quantum.tod.upgrades[1]==undefined) {
-          var newMS=[]
-          for (var m=0;m<player.masterystudies.length;m++) {
-              var d=player.masterystudies[m].split("d")
-              if (d[1]!==undefined) {
-                  newMS.push(player.masterystudies[m])
-             }
-          }
-          player.masterystudies=newMS
-          player.quantum.nanofield.rewards=16
-          forceToQuantumAndRemove=true
-          setTTAfterQuantum=2e94
-      }
-
       //Testing-exclusive
       if (player.eternityBuyer.dilMode === undefined) {
           player.eternityBuyer.dilMode = "amount"
@@ -1251,6 +1219,37 @@ if (player.version < 5) {
       if (player.options.animations.ghostify === undefined) player.options.animations.ghostify = true
       if (player.aarexModifications.ghostifyConf === undefined) player.aarexModifications.ghostifyConf = true
 
+      if (player.meta.bestOverQuantums === undefined) player.meta.bestOverQuantums = player.meta.bestAntimatter
+      document.getElementById('prioritydil').value=player.eternityBuyer.dilationPerAmount
+      if (player.achievements.includes("ng3p52")) document.getElementById("autoDilValue").value=player.eternityBuyer.dilationPerAmount
+      document.getElementById("eggonsCell").style.display = player.ghostify.neutrinos.upgrades.includes(2) ? "none" : ""
+      document.getElementById("workerReplWhat").textContent = player.ghostify.neutrinos.upgrades.includes(2) ? "babies" : "eggons"
+      updateQuantumWorth()
+      if (player.quantum.autoOptions === undefined) player.quantum.autoOptions = {}
+      if (player.quantum.challengeRecords === undefined) player.quantum.challengeRecords = {}
+      if (player.quantum.pairedChallenges.completions === undefined) player.quantum.pairedChallenges.completions = {}
+      if (player.quantum["10ofield"] !== undefined) {
+          player.quantum.nanofield = player.quantum["10ofield"]
+          delete player.quantum["10ofield"]
+      }
+      if (player.quantum.nanofield.powerThreshold === undefined) {
+          player.quantum.nanofield.powerThreshold = 50
+          player.quantum.nanofield.producingCharge = false
+      }
+      if (player.quantum.autobuyer.peakTime === undefined) player.quantum.autobuyer.peakTime = 0
+      if (player.quantum.nanofield.rewards>17&&player.quantum.tod.upgrades[1]==undefined) {
+          var newMS=[]
+          for (var m=0;m<player.masterystudies.length;m++) {
+              var d=player.masterystudies[m].split("d")
+              if (d[1]!==undefined) {
+                  newMS.push(player.masterystudies[m])
+             }
+          }
+          player.masterystudies=newMS
+          player.quantum.nanofield.rewards=16
+          forceToQuantumAndRemove=true
+          setTTAfterQuantum=2e94
+      }
       updateAutoGhosts(true)
   }
   if (player.aarexModifications.newGame3PlusVersion==undefined) {
@@ -1912,7 +1911,8 @@ if (player.version < 5) {
       if (player.aarexModifications.newGameMinusVersion&&player.galacticSacrifice&&player.meta&&player.masterystudies){
           ngModeMessages = []
           if (!player.aarexModifications.newGamePlusVersion) ngModeMessages.push("WARNING! You are disabling NG+ features on NG+-+-+! Standard NG+-+-+ have all of NG++ features and I recommend you to create a new save with NG-, NG--, NG+ and NG+++ modes on.")
-          ngModeMessages.push("Welcome to NG+-+-+ mode, created by earthernsence! This mode combines NG--, NG-, and NG+++ features. Good luck!")
+          if (player.tickspeedBoosts !== undefined) ngModeMessages.push("Welcome to NG+-+-+- mode! This combines NG--, NG-, and NG+3 features. Good luck!")
+          else ngModeMessages.push("Welcome to NG+-+-+ mode, created by earthernsence! This mode combines NG--, NG-, and NG+++ features. Good luck!")
       }
       if (inflationCheck) ngModeMessages = ["I'm terribly sorry. But your save was appeared that there is an inflation, which it defeats the rule of incremental games. Your save was forced to reset everything."]
       if (forceToQuantumAndRemove) {

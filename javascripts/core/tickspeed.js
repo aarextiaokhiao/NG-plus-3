@@ -19,7 +19,7 @@ function getGalaxyPower(ng, bi) {
 	else otherGalPower += Math.min(player.replicanti.galaxies, player.replicanti.gal) * (replGalEff - 1) + extraReplGalPower
 	otherGalPower += Math.floor(player.dilation.freeGalaxies) * ((player.masterystudies ? player.masterystudies.includes("t343") : false) ? replGalEff : 1)
 
-	let galaxyPower = Math.max(ng-(bi?2:0),0)+(isEternityBroke()?(ghostified&&player.ghostify.neutrinos.boosts>8?player.dilation.freeGalaxies*getNBBoost(9):0):otherGalPower)
+	let galaxyPower = Math.max(ng-(bi?2:0),0)+(tmp.be?(ghostified&&player.ghostify.neutrinos.boosts>8?player.dilation.freeGalaxies*tmp.nb[8]:0):otherGalPower)
 	if ((player.currentChallenge=="challenge7"||inQC(4))&&player.galacticSacrifice) galaxyPower *= galaxyPower
 	return galaxyPower
 }
@@ -40,7 +40,7 @@ function getGalaxyPowerEff(ng, bi) {
 	if (player.timestudy.studies.includes(212)) eff *= Math.min(Math.pow(player.timeShards.max(2).log2(), 0.005), 1.1)
 	if (player.timestudy.studies.includes(232)&&bi) {
 		let exp = 0.2
-		if (player.masterystudies != undefined) if (player.galaxies >= 1e4 && !isEternityBroke()) exp *= 6 - player.galaxies / 2e3
+		if (player.masterystudies != undefined) if (player.galaxies >= 1e4 && !tmp.be) exp *= 6 - player.galaxies / 2e3
 		eff *= Math.pow(1+ng/1000, exp)
 	}
 	eff *= colorBoosts.r
@@ -51,9 +51,9 @@ function getGalaxyPowerEff(ng, bi) {
 
 function getTickSpeedMultiplier() {
 	let realnormalgalaxies = player.galaxies
-	if (player.masterystudies && !isEternityBroke()) realnormalgalaxies = Math.max(player.galaxies-player.quantum.electrons.sacGals,0)*Math.max(Math.min(10-(player.quantum.electrons.amount+Math.max(player.galaxies-player.quantum.electrons.sacGals,0)*player.quantum.electrons.mult)/16857,1),0)
+	if (player.masterystudies && !tmp.be) realnormalgalaxies = Math.max(player.galaxies-player.quantum.electrons.sacGals,0)*Math.max(Math.min(10-(player.quantum.electrons.amount+Math.max(player.galaxies-player.quantum.electrons.sacGals,0)*player.quantum.electrons.mult)/16857,1),0)
 	if (player.tickspeedBoosts != undefined) if (player.galacticSacrifice.upgrades.includes(34)) realnormalgalaxies += 4
-	if ((player.currentChallenge == "postc3" || isIC3Trapped()) && !isEternityBroke()) {
+	if ((player.currentChallenge == "postc3" || isIC3Trapped()) && !tmp.be) {
 		if (player.currentChallenge=="postcngmm_3" || (player.challenges.includes("postcngmm_3") && player.tickspeedBoosts === undefined)) {
 			if (GUBought("rg4")) realnormalgalaxies *= 0.4
 			return Decimal.pow(0.998, getGalaxyPower(realnormalgalaxies) * getGalaxyPowerEff(realnormalgalaxies, true))
@@ -112,7 +112,7 @@ function buyTickSpeed() {
   else multiplySameCosts(player.tickSpeedCost)
   if (costIncreaseActive(player.tickSpeedCost)) player.tickspeedMultiplier = player.tickspeedMultiplier.times(getTickSpeedCostMultiplierIncrease());
   if (player.currentChallenge == "challenge2" || player.currentChallenge == "postc1") player.chall2Pow = 0
-  if (!isEternityBroke()) player.tickspeed = player.tickspeed.times(getTickSpeedMultiplier());
+  if (!tmp.be) player.tickspeed = player.tickspeed.times(getTickSpeedMultiplier());
   if (player.challenges.includes("postc3") || player.currentChallenge == "postc3" || isIC3Trapped()) player.postC3Reward = player.postC3Reward.times(getPostC3RewardMult())
   player.postC8Mult = new Decimal(1)
   if (player.currentChallenge=="challenge14") player.tickBoughtThisInf.current++
@@ -147,7 +147,7 @@ function buyMaxPostInfTickSpeed (mult) {
 	if (discriminant < 0) return false
 	var buying = Math.floor((Math.sqrt(Math.pow(b, 2) - (c *a *4))-b)/(2 * a))+1
 	if (buying <= 0) return false
-	if (!isEternityBroke()) player.tickspeed = player.tickspeed.times(Decimal.pow(mult, buying));
+	if (!tmp.be) player.tickspeed = player.tickspeed.times(Decimal.pow(mult, buying));
 	if (player.challenges.includes("postc3") || player.currentChallenge == "postc3") player.postC3Reward = player.postC3Reward.times(Decimal.pow(getPostC3RewardMult(), buying))
 	player.tickSpeedCost = player.tickSpeedCost.times(player.tickspeedMultiplier.pow(buying-1)).times(Decimal.pow(mi, (buying-1)*(buying-2)/2))
 	player.tickspeedMultiplier = player.tickspeedMultiplier.times(Decimal.pow(mi, buying-1))
@@ -171,7 +171,7 @@ function buyMaxTickSpeed() {
 		if (player.currentChallenge != "challenge10" && player.currentChallenge != "postc1" && player.infinityUpgradesRespecced == undefined) max = Math.ceil(Decimal.div(Number.MAX_VALUE, cost).log(10))
 		var toBuy = Math.min(Math.floor(player.money.div(cost).times(9).add(1).log(10)), max)
 		getOrSubResource(1, Decimal.pow(10, toBuy).sub(1).div(9).times(cost))
-		if (!isEternityBroke()) player.tickspeed = Decimal.pow(getTickSpeedMultiplier(), toBuy).times(player.tickspeed)
+		if (!tmp.be) player.tickspeed = Decimal.pow(getTickSpeedMultiplier(), toBuy).times(player.tickspeed)
 		if (player.challenges.includes("postc3") || player.currentChallenge == "postc3") player.postC3Reward = player.postC3Reward.times(Decimal.pow(getPostC3RewardMult(), toBuy))
 		player.tickSpeedCost = player.tickSpeedCost.times(Decimal.pow(10, toBuy))
 		player.postC8Mult = new Decimal(1)
@@ -185,7 +185,7 @@ function buyMaxTickSpeed() {
 			if (player.currentChallenge != "challenge5" && player.currentChallenge != "postc5") player.tickSpeedCost = player.tickSpeedCost.times(player.tickspeedMultiplier);
 			else multiplySameCosts(player.tickSpeedCost)
 			if (costIncreaseActive(player.tickSpeedCost)) player.tickspeedMultiplier = player.tickspeedMultiplier.times(getTickSpeedCostMultiplierIncrease());
-			if (!isEternityBroke()) player.tickspeed = player.tickspeed.times(mult);
+			if (!tmp.be) player.tickspeed = player.tickspeed.times(mult);
 			if (player.challenges.includes("postc3") || player.currentChallenge == "postc3" || isIC3Trapped()) player.postC3Reward = player.postC3Reward.times(getPostC3RewardMult())
 			player.postC8Mult = new Decimal(1)
 			if (!cannotUsePostInfTickSpeed()) buyMaxPostInfTickSpeed(mult);

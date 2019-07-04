@@ -15,7 +15,7 @@ function getMetaDimensionMultiplier (tier) {
   if (player.masterystudies != undefined) {
       if (player.masterystudies.includes("t312")) strength = 1.045
       if (player.masterystudies.includes("d12")) boostpower = getNanofieldRewardEffect(6)
-      if (ghostified && player.ghostify.neutrinos.boosts > 3) strength *= getNBBoost(4)
+      if (ghostified && player.ghostify.neutrinos.boosts > 3) strength *= tmp.nb[3]
   }
   if (player.achievements.includes("ngpp14")) boostpower *= 1.01
   if (inQC(8)) boostpower = 1
@@ -41,12 +41,7 @@ function getMetaDimensionMultiplier (tier) {
   multiplier = multiplier.times(getQCReward(6))
   
   if (multiplier.lt(1)) multiplier = new Decimal(1)
-  if (player.dilation.active || player.galacticSacrifice) {
-    multiplier = Decimal.pow(10, Math.pow(multiplier.log10(), 0.75))
-    if (player.dilation.upgrades.includes(11)) {
-      multiplier = Decimal.pow(10, Math.pow(multiplier.log10(), 1.05))
-    }
-  }
+  if (player.dilation.active || player.galacticSacrifice) multiplier = Decimal.pow(10, Math.pow(multiplier.log10(), dilationPowerStrength()))
   return multiplier;
 }
 
@@ -88,7 +83,7 @@ function getMetaShiftRequirement() {
 	if (player.masterystudies != undefined) if (player.masterystudies.includes("t312")) data.mult -= 1
 	data.amount += data.mult * Math.max(player.meta.resets - 4, 0)
 	if (player.masterystudies != undefined) if (player.masterystudies.includes("d13")) data.amount -= getTreeUpgradeEffect(1)
-	if (ghostified) if (hasNU(1)) data.amount -= getNUPow(1)
+	if (ghostified) if (hasNU(1)) data.amount -= tmp.nu[0]
 
 	data.scalingStart = inQC4 ? 55 : 15
 	if (player.meta.resets >= data.scalingStart) {
@@ -270,7 +265,7 @@ function getExtraDimensionBoostPowerExponent() {
 	if (player.masterystudies != undefined) {
 		if (player.masterystudies.includes("d12")) power += getNanofieldRewardEffect(2)
 		if (player.masterystudies.includes("d13")) power += getTreeUpgradeEffect(8)
-		if (ghostified) if (player.quantum.bigRip.active && player.ghostify.neutrinos.boosts > 6) power *= getNBBoost(7)
+		if (ghostified) if (player.quantum.bigRip.active && player.ghostify.neutrinos.boosts > 6) power *= tmp.nb[6]
 	}
 	return power
 }

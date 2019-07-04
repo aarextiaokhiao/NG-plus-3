@@ -2,8 +2,8 @@
 
 function getTimeDimensionPower(tier) {
   if (player.currentEternityChall == "eterc11") return new Decimal(1)
-  if (isEternityBroke()) {
-    var mult = getITReward()
+  if (tmp.be) {
+    var mult = tmp.it
     if (player.timestudy.studies.includes(11) && tier == 1) mult = mult.times(getTS11Mult())
     if (player.quantum.breakEternity.upgrades.includes(1) && tier < 5) mult = mult.times(getBreakUpgMult(1))
     if (player.quantum.breakEternity.upgrades.includes(4) && tier > 3 && tier < 7) mult = mult.times(getBreakUpgMult(4))
@@ -20,11 +20,10 @@ function getTimeDimensionPower(tier) {
   }
   var dim = player["timeDimension"+tier]
   var ret = dim.power.pow(player.boughtDims?1:2)
-  if (ghostified) if (player.ghostify.neutrinos.boosts > 5) ret = ret.pow(getNBBoost(6))
-  ret = ret.times(kongAllDimMult)
+  if (ghostified) if (player.ghostify.neutrinos.boosts > 5) ret = ret.pow(tmp.nb[5])
 
   if (player.timestudy.studies.includes(11) && tier == 1) ret = ret.times(getTS11Mult())
-  if (player.achievements.includes("r105")) ret = ret.times(getITReward())
+  if (player.achievements.includes("r105")) ret = ret.times(tmp.it)
   if (player.boughtDims) {
       if (player.achievements.includes('r117')) {
         ret = ret.times(1 + Math.pow(Math.log(player.eternities), 1.5) / Math.log(100));
@@ -46,25 +45,15 @@ function getTimeDimensionPower(tier) {
   if (player.timestudy.studies.includes(227) && tier == 4) ret = ret.times(Math.pow(calcTotalSacrificeBoost().max(10).log10(), 10))
   if (player.currentEternityChall == "eterc9") ret = ret.times((Decimal.pow(Math.max(player.infinityPower.log2(), 1), 4)).max(1))
   if (ECTimesCompleted("eterc1") !== 0) ret = ret.times(Math.pow(Math.max(player.thisEternity*10, 0.9), 0.3+(ECTimesCompleted("eterc1")*0.05)))
-  let ec10bonus = new Decimal(1)
-  if (ECTimesCompleted("eterc10") !== 0) ec10bonus = Decimal.pow(getInfinitied(), 0.9).times(ECTimesCompleted("eterc10") * 0.000002+1).max(1).pow((player.timestudy.studies.includes(31)) ? 4 : 1)
-  if (player.timestudy.studies.includes(31)) ec10bonus = ec10bonus.pow(4)
-  ret = ret.times(ec10bonus)
+  if (ECTimesCompleted("eterc10") !== 0) ret = ret.times(Decimal.pow(getInfinitied(),0.9).times(ECTimesCompleted("eterc10")*0.000002).add(1).max(1).pow(player.timestudy.studies.includes(31)?4:1))
   if (player.achievements.includes("r128")) ret = ret.times(Math.max(player.timestudy.studies.length, 1))
 
   if (player.replicanti.unl && player.replicanti.amount.gt(1) && player.dilation.upgrades.includes(5)) ret = ret.times(getReplMult().pow(0.1))
 
   if (inQC(6)) ret = ret.times(player.postC8Mult).dividedBy(player.matter.max(1))
-  if (ret.lt(0)) {
-    ret = new Decimal(0)
-  }
+  if (ret.lt(0)) ret = new Decimal(0)
 
-  if (player.dilation.active || player.galacticSacrifice) {
-    ret = Decimal.pow(10, Math.pow(ret.max(1).log10(), dilationPowerStrength()))
-    if (player.dilation.upgrades.includes(9)) {
-      ret = Decimal.pow(10, Math.pow(ret.log10(), 1.05))
-    }
-  }
+  if (player.dilation.active || player.galacticSacrifice) ret = Decimal.pow(10, Math.pow(ret.max(1).log10(), dilationPowerStrength()))
 
 
   return ret
@@ -73,7 +62,7 @@ function getTimeDimensionPower(tier) {
 
 
 function getTimeDimensionProduction(tier) {
-  if (player.currentEternityChall == "eterc1" || player.currentEternityChall == "eterc10" || (!isEternityBroke() && inQC(8))) return new Decimal(0)
+  if (player.currentEternityChall == "eterc1" || player.currentEternityChall == "eterc10" || (!tmp.be && inQC(8))) return new Decimal(0)
   var dim = player["timeDimension"+tier]
   if (player.currentEternityChall == "eterc11") return dim.amount
   var ret = dim.amount
@@ -211,16 +200,4 @@ function getTS11Mult() {
 	else log = Math.min(log, 2500)
 	log /= player.aarexModifications.newGameExpVersion ? 4 : 1
 	return Decimal.pow(10, log)
-}
-
-function getITReward() {
-	let ret=(3-player.tickspeed.log10())*0.000005
-	if (hasNU(6)) ret*=1
-	if (isEternityBroke()) {
-		if (ret>100) ret=Math.pow(ret*100,0.5)
-	} else {
-		if (ret>12e8) ret=Math.pow(ret*144e10,1/3)
-		else if (ret>12e4) ret=Math.pow(ret*12e4,0.5)
-	}
-	return Decimal.pow(10,ret)
 }

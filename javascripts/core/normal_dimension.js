@@ -90,12 +90,7 @@ function getDimensionFinalMultiplier(tier) {
   }
 
   if (multiplier.lt(1)) multiplier = new Decimal(1)
-  if (player.dilation.active || player.galacticSacrifice) {
-    multiplier = Decimal.pow(10, Math.pow(multiplier.log10(), dilationPowerStrength()))
-    if (player.dilation.upgrades.includes(9)) {
-      multiplier = Decimal.pow(10, Math.pow(multiplier.log10(), 1.05))
-    }
-  }
+  if (player.dilation.active || player.galacticSacrifice) multiplier = Decimal.pow(10, Math.pow(multiplier.log10(), dilationPowerStrength()))
 
   if (player.dilation.upgrades.includes(6)) multiplier = multiplier.times(player.dilation.dilatedTime.max(1).pow(308))
   if (useHigherNDReplMult) multiplier = multiplier.times(ndReplMult)
@@ -113,7 +108,7 @@ function getDimensionFinalMultiplier(tier) {
   if (player.masterystudies != undefined) if (player.dilation.active) multiplier = multiplier.pow(getNanofieldRewardEffect(5))
   if (isBigRipUpgradeActive(1)) {
       let exp = player.quantum.bigRip.upgrades.includes(17) ? 2.9 : 1
-      if (ghostified && player.ghostify.neutrinos.boosts > 7) exp *= getNBBoost(8)
+      if (ghostified && player.ghostify.neutrinos.boosts > 7) exp *= tmp.nb[7]
       multiplier = multiplier.times(player.infinityPoints.pow(exp).max(1))
   }
   return multiplier;
@@ -541,7 +536,6 @@ function getDimensionProductionPerSecond(tier) {
 	if (player.dilation.active || player.galacticSacrifice) {
 		var maximum = player.galacticSacrifice ? 3 : 0
 		tick = Decimal.pow(10, Math.pow(Math.abs(maximum-tick.log10()), dilationPowerStrength()))
-		if (player.dilation.upgrades.includes(9)) tick = Decimal.pow(10, Math.pow(Math.abs(maximum-tick.log10()), 1.05))
 		if (player.masterystudies != undefined) tick = tick.pow(getNanofieldRewardEffect(5))
 		return ret.times(Decimal.pow(10,(player.aarexModifications.newGame3MinusVersion?2:3)-maximum)).times(tick);
 	}

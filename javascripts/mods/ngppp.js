@@ -424,7 +424,7 @@ function setupText() {
 		html+="</tr></table>"
 		document.getElementById(color+"Branch").innerHTML=html
 	}
-	for (var m=1;m<17;m++) document.getElementById("braveMilestone"+m).textContent=getFullExpansion(braveMilestones[m-1])+"x quantumed"
+	for (var m=1;m<17;m++) document.getElementById("braveMilestone"+m).textContent=getFullExpansion(tmp.bm[m-1])+"x quantumed"
 }
 
 //v1.1
@@ -438,7 +438,7 @@ function getMTSMult(id, modifier) {
 	if (id==273) {
 		var intensity = 0
 		if (player.masterystudies ? player.masterystudies.includes("t273") || modifier == "ms" : false) intensity = 5
-		if (ghostified ? player.ghostify.neutrinos.boosts > 1 && modifier != "pn" : false) intensity += Math.pow(Math.pow(player.ghostify.neutrinos.electron.add(1).log10(),2)+Math.pow(player.ghostify.neutrinos.mu.add(1).log10(),2)+Math.pow(player.ghostify.neutrinos.tau.add(1).log10(),2),0.25)*1.5
+		if (ghostified ? player.ghostify.neutrinos.boosts > 1 && modifier != "pn" : false) intensity += tmp.nb[1]
 		return Decimal.pow(Math.log10(player.replicanti.chance+1), intensity).max(1)
 	}
 	if (id==281) return Decimal.pow(10,Math.pow(getReplMult().max(1).log10(),0.25)/10)
@@ -1628,17 +1628,12 @@ function updateEmperorDimensions() {
 }
 
 function getEDMultiplier(dim) {
-	let mult = new Decimal(1)
-	if (player.masterystudies.includes("t392")) mult = getMTSMult(392)
-	if (player.masterystudies.includes("t402")) mult = mult.times(30)
-	if (player.masterystudies.includes("d13")) mult = mult.times(getTreeUpgradeEffect(6))
-	if (player.dilation.active || player.galacticSacrifice) {
-		mult = Decimal.pow(10, Math.pow(mult.log10(), 0.75))
-		if (player.dilation.upgrades.includes(11)) {
-			mult = Decimal.pow(10, Math.pow(mult.log10(), 1.05))
-		}
-	}
-	return mult
+	let ret = new Decimal(1)
+	if (player.masterystudies.includes("t392")) ret = getMTSMult(392)
+	if (player.masterystudies.includes("t402")) ret = ret.times(30)
+	if (player.masterystudies.includes("d13")) ret = ret.times(getTreeUpgradeEffect(6))
+	if (player.dilation.active || player.galacticSacrifice) ret = Decimal.pow(10, Math.pow(ret.log10(), dilationPowerStrength()))
+	return ret
 }
 
 function getEDRateOfChange(dim) {
@@ -1674,7 +1669,7 @@ function maxReduceHatchSpeed() {
 
 function getQuarkChargeProduction() {
 	let ret = getNanofieldRewardEffect("7g")
-	if (hasNU(3)) ret = ret.times(getNUPow(3))
+	if (hasNU(3)) ret = ret.times(tmp.nu[1])
 	return ret
 }
 
@@ -1693,7 +1688,7 @@ function getQuarkEnergyProduction() {
 	let ret = player.quantum.nanofield.charge.sqrt()
 	if (player.masterystudies.includes("t411")) ret = ret.times(getMTSMult(411))
 	ret = ret.times(getNanofieldRewardEffect("8c"))
-	if (ghostified && player.ghostify.neutrinos.boosts > 4) ret = ret.times(getNBBoost(5))
+	if (ghostified && player.ghostify.neutrinos.boosts > 4) ret = ret.times(tmp.nb[4])
 	return ret
 }
 
@@ -1892,13 +1887,13 @@ function getDecayRate(branch) {
 	}
 	ret = ret.times(getTreeUpgradeEffect(3))
 	ret = ret.times(getTreeUpgradeEffect(5))
-	ret = ret.times(getNUPow(4))
+	if (ghostified && player.ghostify.neutrinos.upgrades.includes(4)) ret = ret.times(tmp.nu[2])
 	return ret.min(Math.pow(2,40))
 }
 
 function getQuarkSpinProduction(branch) {
 	let ret = Decimal.pow(2,getBranchUpgLevel(branch,1)*(1+getRadioactiveDecays(branch)/10)).times(getTreeUpgradeEffect(3)).times(getTreeUpgradeEffect(5))
-	if (hasNU(4)) ret = ret.times(getNUPow(4).pow(2))
+	if (hasNU(4)) ret = ret.times(tmp.nu[2].pow(2))
 	return ret
 }
 
@@ -2725,7 +2720,7 @@ function updateBreakEternity() {
 		document.getElementById("breakUpg7Mult").textContent = shortenDimensions(getBreakUpgMult(7))
 	} else {
 		document.getElementById("breakEternityReq").style.display = ""
-		document.getElementById("breakEternityReq").textContent = "You need to get " + shorten(new Decimal("1e1200")) + " EP before you will able to Break Eternity."
+		document.getElementById("breakEternityReq").textContent = "You need to get " + shorten(new Decimal("1e1220")) + " EP before you will be able to Break Eternity."
 		document.getElementById("breakEternityNoBigRip").style.display = "none"
 		document.getElementById("breakEternityShop").style.display = "none"
 	}
@@ -2742,17 +2737,12 @@ function breakEternity() {
 	}
 }
 
-function isEternityBroke() {
-	if (player.masterystudies == undefined) return false
-	return player.quantum.bigRip.active && player.quantum.breakEternity.break
-}
-
 function getEMGain() {
-	let mult = 1
-	if (hasNU(9)) mult = getNUPow(9)
-	let log = player.timeShards.div(1e15).log10()*0.25
-	if (log > 15) return Decimal.pow(10, Math.sqrt(log * 15)).times(mult).floor()
-	return Decimal.pow(10, log).times(mult).floor()
+	let mult=1
+	if (hasNU(9)) mult=tmp.nu[4]
+	let log=player.timeShards.div(1e15).log10()*0.25
+	if (log>15) return Decimal.pow(10,Math.sqrt(log*15)).times(mult).floor()
+	return Decimal.pow(10,log).times(mult).floor()
 }
 
 var breakUpgCosts = [1, 1e3, 1e6, 2e11, 8e17, 1e48]
@@ -2872,7 +2862,7 @@ function ghostifyReset(implode, gain, amount, force) {
 		player.ghostify.last10[0] = [player.ghostify.time, gain]
 		player.ghostify.times++
 		player.ghostify.best = Math.min(player.ghostify.best, player.ghostify.time)
-		while (player.quantum.times<=braveMilestones[player.ghostify.milestones]) player.ghostify.milestones++
+		while (player.quantum.times<=tmp.bm[player.ghostify.milestones]) player.ghostify.milestones++
 		updateBraveMilestones()
 	}
 	if (player.quantum.bigRip.active) switchAB()
@@ -3556,7 +3546,6 @@ function updateLastTenGhostifies() {
     } else document.getElementById("averageGhostifyRun").textContent = ""
 }
 
-var braveMilestones=[1e3,750,500,375,250,125,100,75,50,40,30,25,20,15,10,1,-1]
 function updateBraveMilestones() {
 	if (ghostified) {
 		for (var m=1;m<17;m++) document.getElementById("braveMilestone"+m).className="achievement achievement"+(player.ghostify.milestones<m?"":"un")+"locked"
@@ -3596,21 +3585,21 @@ function updateGhostifyTabs() {
 			document.getElementById("preNeutrinoBoost2").textContent=shorten(getMTSMult(273, "pn"))
 			document.getElementById("neutrinoBoost2").textContent="^"+shorten(getMTSMult(273))
 		}
-		if (player.ghostify.neutrinos.boosts>2) document.getElementById("neutrinoBoost3").textContent=getFullExpansion(getNBBoost(3))
-		if (player.ghostify.neutrinos.boosts>3) document.getElementById("neutrinoBoost4").textContent=(getNBBoost(4)*100-100).toFixed(1)
-		if (player.ghostify.neutrinos.boosts>4) document.getElementById("neutrinoBoost5").textContent=shorten(getNBBoost(5))
-		if (player.ghostify.neutrinos.boosts>5) document.getElementById("neutrinoBoost6").textContent=shorten(getNBBoost(6))
-		if (player.ghostify.neutrinos.boosts>6) document.getElementById("neutrinoBoost6").textContent=shorten(getNBBoost(7))
-		if (player.ghostify.neutrinos.boosts>7) document.getElementById("neutrinoBoost7").textContent=(getNBBoost(8)*100-100).toFixed(1)
-		if (player.ghostify.neutrinos.boosts>8) document.getElementById("neutrinoBoost8").textContent=(getNBBoost(9)*100).toFixed(1)
-		document.getElementById("neutrinoUpg1Pow").textContent=getNUPow(1)
-		document.getElementById("neutrinoUpg3Pow").textContent=shorten(getNUPow(3))
-		document.getElementById("neutrinoUpg4Pow").textContent=shorten(getNUPow(4))
-		document.getElementById("neutrinoUpg7Pow").textContent=shorten(getNUPow(7))
-		document.getElementById("neutrinoUpg9Pow").textContent=shorten(getNUPow(9))
+		if (player.ghostify.neutrinos.boosts>2) document.getElementById("neutrinoBoost3").textContent=getFullExpansion(tmp.nb[2])
+		if (player.ghostify.neutrinos.boosts>3) document.getElementById("neutrinoBoost4").textContent=(tmp.nb[3]*100-100).toFixed(1)
+		if (player.ghostify.neutrinos.boosts>4) document.getElementById("neutrinoBoost5").textContent=shorten(tmp.nb[4])
+		if (player.ghostify.neutrinos.boosts>5) document.getElementById("neutrinoBoost6").textContent=shorten(tmp.nb[5])
+		if (player.ghostify.neutrinos.boosts>6) document.getElementById("neutrinoBoost6").textContent=shorten(tmp.nb[6])
+		if (player.ghostify.neutrinos.boosts>7) document.getElementById("neutrinoBoost7").textContent=(tmp.nb[7]*100-100).toFixed(1)
+		if (player.ghostify.neutrinos.boosts>8) document.getElementById("neutrinoBoost8").textContent=(tmp.nb[8]*100).toFixed(1)
+		document.getElementById("neutrinoUpg1Pow").textContent=tmp.nu[0]
+		document.getElementById("neutrinoUpg3Pow").textContent=shorten(tmp.nu[1])
+		document.getElementById("neutrinoUpg4Pow").textContent=shorten(tmp.nu[2])
+		document.getElementById("neutrinoUpg7Pow").textContent=shorten(tmp.nu[3])
+		document.getElementById("neutrinoUpg9Pow").textContent=shorten(tmp.nu[4])
 		for (var u=1; u<10; u++) {
 			if (hasNU(u)) document.getElementById("neutrinoUpg" + u).className = "gluonupgradebought neutrinoupg"
-			else if (player.ghostify.neutrinos.electron.add(player.ghostify.neutrinos.mu).round().add(player.ghostify.neutrinos.tau).round().gte(neutrinoUpgCosts[u])) document.getElementById("neutrinoUpg" + u).className = "gluonupgrade neutrinoupg"
+			else if (player.ghostify.neutrinos.electron.add(player.ghostify.neutrinos.mu).round().add(player.ghostify.neutrinos.tau).round().gte(tmp.nuc[u])) document.getElementById("neutrinoUpg" + u).className = "gluonupgrade neutrinoupg"
 			else document.getElementById("neutrinoUpg" + u).className = "gluonupgrade unavailablebtn"
 		}
 	}
@@ -3619,12 +3608,12 @@ function updateGhostifyTabs() {
 
 function onNotationChangeNeutrinos() {
 	if (player.masterystudies == undefined) return
-	document.getElementById("neutrinoUnlockCost").textContent=shortenDimensions(neutrinoBoostCosts[player.ghostify.neutrinos.boosts])
+	document.getElementById("neutrinoUnlockCost").textContent=shortenDimensions(tmp.nbc[player.ghostify.neutrinos.boosts])
 	document.getElementById("neutrinoMult").textContent=shortenDimensions(Decimal.pow(5,player.ghostify.neutrinos.multPower-1))
 	document.getElementById("neutrinoMultUpgCost").textContent=shortenDimensions(3)
 	document.getElementById("ghpMult").textContent=shortenDimensions(Decimal.pow(2,player.ghostify.multPower-1))
 	document.getElementById("ghpMultUpgCost").textContent="???"
-	for (var u=1; u<10; u++) document.getElementById("neutrinoUpg"+u+"Cost").textContent=shortenDimensions(neutrinoUpgCosts[u])
+	for (var u=1; u<10; u++) document.getElementById("neutrinoUpg"+u+"Cost").textContent=shortenDimensions(tmp.nuc[u])
 	document.getElementById("BU8Cap").textContent=shorten(Number.MAX_VALUE)
 }
 
@@ -3632,20 +3621,9 @@ function getNeutrinoGain() {
 	return Decimal.pow(5, player.ghostify.neutrinos.multPower - 1)
 }
 
-function getNBBoost(id) {
-	if (id == 3) return 0
-	if (id == 4) return 1
-	if (id == 5) return 1
-	if (id == 6) return 1
-	if (id == 7) return 1
-	if (id == 8) return 1
-	if (id == 9) return 0
-}
-
-var neutrinoUpgCosts=[null, 1e6, 1e7, 1e8, 2e9, 1/0, 1/0, 1/0, 1/0, 1/0]
 function buyNeutrinoUpg(id) {
 	var sum=player.ghostify.neutrinos.electron.add(player.ghostify.neutrinos.mu).add(player.ghostify.neutrinos.tau).round()
-	var cost=new Decimal(neutrinoUpgCosts[id])
+	var cost=new Decimal(tmp.nuc[id])
 	if (!sum.gte(cost)||player.ghostify.neutrinos.upgrades.includes(id)) return
 	player.ghostify.neutrinos.upgrades.push(id)
 	var generations=["electron","mu","tau"]
@@ -3656,15 +3634,14 @@ function buyNeutrinoUpg(id) {
 	}
 }
 
-var neutrinoBoostCosts=[null,2,1/0,1/0,1/0,1/0,1/0,1/0,1/0,1/0]
 function updateNeutrinoBoosts() {
 	for (var b=2;b<10;b++) document.getElementById("neutrinoBoost"+(b%3==1?"Row"+(b+2)/3:"Cell"+b)).style.display=player.ghostify.neutrinos.boosts>=b?"":"none"
 	document.getElementById("neutrinoUnlock").style.display=player.ghostify.neutrinos.boosts>8?"none":""
-	document.getElementById("neutrinoUnlockCost").textContent=shortenDimensions(neutrinoBoostCosts[player.ghostify.neutrinos.boosts])
+	document.getElementById("neutrinoUnlockCost").textContent=shortenDimensions(tmp.nbc[player.ghostify.neutrinos.boosts])
 }
 
 function unlockNeutrinoBoost() {
-	var cost=neutrinoBoostCosts[player.ghostify.neutrinos.boosts]
+	var cost=tmp.nbc[player.ghostify.neutrinos.boosts]
 	if (!player.ghostify.ghostParticles.lte(cost)||player.ghostify.neutrinos.boosts>8) return
 	player.ghostify.ghostParticles=player.ghostify.ghostParticles.sub(cost).round()
 	player.ghostify.neutrinos.boosts++
@@ -3673,17 +3650,6 @@ function unlockNeutrinoBoost() {
 
 function hasNU(id) {
 	return ghostified ? player.ghostify.neutrinos.upgrades.includes(id) : false
-}
-
-function getNUPow(upg) {
-	if (upg == 1) return Math.max(100 - (player.quantum.bigRip.active ? 0 : player.meta.resets), 0)
-    if (upg == 3) return Math.pow(Math.max(player.quantum.colorPowers.b.log10()/250 + 1, 1), 2)
-    if (upg == 4) {
-		let ret=Math.max(-player.tickspeed.div(1e3).log10()/4e13-4,0)
-		return Decimal.pow(10,Math.pow(ret,1/4))
-	}
-    if (upg == 7) return 1
-    if (upg == 9) return 1
 }
 
 function setupAutomaticGhostsData() {
