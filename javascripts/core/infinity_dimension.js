@@ -257,15 +257,16 @@ function loadInfAutoBuyers() {
 var infDimPow = 1
 
 function getIDReplMult() {
-	if (player.masterystudies) if (player.masterystudies.includes('t311')) return getReplMult().pow(17.3)
-	return getReplMult()
+	if (player.masterystudies) if (player.masterystudies.includes('t311')) return tmp.rm.pow(17.3)
+	return tmp.rm
 }
 
 function getEU2Mult() {
-	if (player.boughtDims) return Decimal.pow(getEternitied(), Decimal.times(getEternitied(),2).add(1).log(Math.E)/Math.log(4))
-	var cap = nMn(getEternitied(), 100000)
-	var soft = nS(getEternitied(), cap)
-	return Decimal.pow(cap/200 + 1, Math.log(cap*2+1)/Math.log(4)).times(Decimal.div(soft,200).add(1).times(Decimal.times(soft,2).add(1).log(Math.E)/Math.log(4)).max(1)).max(player.achievements.includes("ngpp15")?Decimal.pow(10, Math.pow(Decimal.log10(getEternitied()), 4.75)):1)
+	var e = getEternitied()
+	if (player.boughtDims) return Decimal.pow(e, Decimal.times(e,2).add(1).log(Math.E)/Math.log(4))
+	var cap = nMn(e, 100000)
+	var soft = nS(e, cap)
+	return Decimal.pow(cap/200 + 1, Math.log(cap*2+1)/Math.log(4)).times(Decimal.div(soft,200).add(1).times(Decimal.times(soft,2).add(1).log(Math.E)/Math.log(4)).max(1)).max(player.achievements.includes("ngpp15")?Decimal.pow(10, Math.pow(Decimal.log10(e), 4.75)):1)
 }
 
 function getEU3Mult() {

@@ -301,8 +301,8 @@ function updateNewPlayer(reseted) {
             bulkOn: true,
             cloud: true,
             hotkeys: true,
-            theme: "S7"/*undefined*/,
-            secretThemeKey: "4th of July"/*0*/,
+            theme: undefined,
+            secretThemeKey: 0,
             eternityconfirm: true,
             commas: "Commas",
             updateRate: 50,
@@ -908,7 +908,7 @@ function setTheme(name) {
     } else if(name === "S5") {
         Chart.defaults.global.defaultFontColor = 'black';
         normalDimChart.data.datasets[0].borderColor = '#000'
-    } else if (name !== "S6" && name !== "S7") {
+    } else if (name !== "S6") {
         themeName=name;
     }
     if (theme=="Dark"||theme=="Dark Metro"||name === "S6") {
@@ -945,7 +945,9 @@ let kongDimMult = 1
 let kongAllDimMult = 1
 let kongEPMult = 1
 let tmp = {
+	rm: new Decimal(1),
 	it: 1,
+	nrm: new Decimal(1),
 	bru: [],
 	be: false,
 	beu: [],
@@ -956,8 +958,14 @@ let tmp = {
 	nuc: [null,1e6,1e7,1e8,2e9,1/0,1/0,1/0,1/0,1/0]
 }
 function updateTemp() {
+	tmp.nrm=player.replicanti.amount.max(1)
 	if (player.masterystudies !== undefined) {
 		tmp.be=player.quantum.bigRip.active&&player.quantum.breakEternity.break
+		if (player.masterystudies.includes("d14")) {
+			var ret=Math.min(player.quantum.bigRip.spaceShards.div(3e18).add(1).log10()/3,0.4)
+			tmp.bru[0]=Math.sqrt(player.quantum.bigRip.spaceShards.div(3e15).add(1).log10()*ret+1) //BRU14
+		}
+		if (!player.dilation.active&&player.quantum.bigRip.active&&player.quantum.bigRip.upgrades.includes(14)) tmp.nrm=tmp.nrm.pow(tmp.bru[0])
 		if (ghostified) {
 			tmp.nb[0]=Math.log10(player.ghostify.neutrinos.electron.add(1).log10()+player.ghostify.neutrinos.mu.add(1).log10()+player.ghostify.neutrinos.tau.add(1).log10()+1)*0.75
 			if (player.ghostify.neutrinos.boosts>1) tmp.nb[1]=Math.pow(Math.pow(player.ghostify.neutrinos.electron.add(1).log10(),2)+Math.pow(player.ghostify.neutrinos.mu.add(1).log10(),2)+Math.pow(player.ghostify.neutrinos.tau.add(1).log10(),2),0.25)*1.5
@@ -968,12 +976,12 @@ function updateTemp() {
 			if (player.ghostify.neutrinos.boosts>6) tmp.nb[6]=1
 			if (player.ghostify.neutrinos.boosts>7) tmp.nb[7]=1
 			if (player.ghostify.neutrinos.boosts>8) tmp.nb[8]=0
-			tmp.nu[0]=Math.max(100-(player.quantum.bigRip.active?0:player.meta.resets),0)
-			tmp.nu[1]=Math.pow(Math.max(player.quantum.colorPowers.b.log10()/250+1,1),2)
+			tmp.nu[0]=Math.max(100-(player.quantum.bigRip.active?0:player.meta.resets),0) //NU1
+			tmp.nu[1]=Math.pow(Math.max(player.quantum.colorPowers.b.log10()/250+1,1),2) //NU3
 			var ret=Math.max(-player.tickspeed.div(1e3).log10()/4e13-4,0)
-			tmp.nu[2]=Decimal.pow(10,Math.pow(ret,1/4))
-			tmp.nu[3]=1
-			tmp.nu[4]=1
+			tmp.nu[2]=Decimal.pow(10,Math.pow(ret,1/4)) //NU4
+			tmp.nu[3]=1 //NU7
+			tmp.nu[4]=1 //NU9
 		}
 	} else tmp.be=false
 	var ret=(3-player.tickspeed.log10())*0.000005
@@ -985,6 +993,7 @@ function updateTemp() {
 		else if (ret>12e4) ret=Math.pow(ret*12e4,0.5)
 	}
 	tmp.it=Decimal.pow(10,ret)
+	tmp.rm=getReplMult()
 }
 
 function showTab(tabName, init) {
@@ -2815,7 +2824,7 @@ function galaxyReset() {
         totalTimePlayed: player.totalTimePlayed,
         bestInfinityTime: player.bestInfinityTime,
         thisInfinityTime: player.thisInfinityTime,
-        resets: player.achievements.includes("ng3p52") ? player.resets : 0,
+        resets: player.achievements.includes("ng3p55") ? player.resets : 0,
         dbPower: player.dbPower,
         tickspeedBoosts: player.tickspeedBoosts,
         galaxies: player.galaxies + 1,
@@ -3255,10 +3264,6 @@ function showNextModeMessage() {
 		document.getElementById("welcome").style.display = "flex"
 		document.getElementById("welcomeMessage").innerHTML = ngModeMessages[ngModeMessages.length-1]
 		ngModeMessages.pop()
-	} else if (player.aarexModifications.popUpId !== "19jul4") {
-		player.aarexModifications.popUpId = "19jul4"
-		document.getElementById("welcome").style.display = "flex"
-		document.getElementById("welcomeMessage").innerHTML = "Happy 4th of July to all players!" + (player.options.theme == "S7" ? "" : " Import '4th of July' on your save to check a new theme out!")
 	} else document.getElementById("welcome").style.display = "none"
 }
 
@@ -3308,10 +3313,6 @@ function import_save(type) {
         setTheme(player.options.theme);
     } else if (sha512_256(save_data) === "4f82333af895f5c89e6b2082a7dab5a35b964614e74908961fe915cefca1c6d0") {
         player.options.theme = "S6";
-        player.options.secretThemeKey = save_data;
-        setTheme(player.options.theme);
-    } else if (sha512_256(save_data) === "dc7ca80515529278fc56a6c6c4bd4261474bdbbe40a016230b2aab456225b640") {
-        player.options.theme = "S7";
         player.options.secretThemeKey = save_data;
         setTheme(player.options.theme);
     } else {
@@ -6723,8 +6724,8 @@ setInterval(function() {
     if (player.masterystudies !== undefined) if (player.quantum.bigRip.active) bigRipped = true
     document.getElementById("quantumbtn").style.display = showQuantumBtn || bigRipped ? "" : "none"
     var canBigRip = false
-    if (player.masterystudies !== undefined && !bigRipped) {
-        if (player.quantum.electrons.amount>=62500) {
+    if (player.masterystudies !== undefined && inQC(0)) {
+        if (player.masterystudies.includes("d14")&&player.quantum.electrons.amount>=62500) {
             if (player.ghostify.milestones>1) canBigRip = true
             else for (var p=1;p<5;p++) {
                 var pcData=player.quantum.pairedChallenges.order[p]
@@ -7963,7 +7964,7 @@ function gameLoop(diff) {
 				else if (c!=2&&c!=7&&c!=8) document.getElementById("qc"+c+"reward").textContent = shorten(getQCReward(c))
 			}
             if (player.masterystudies.includes("d14")) {
-                document.getElementById("bigripupg14current").textContent=getBRUpg14Mult().toFixed(2)
+                document.getElementById("bigripupg14current").textContent=tmp.bru[0].toFixed(2)
                 var bru15effect = Math.sqrt(player.eternityPoints.add(1).log10()) * 3.55
                 document.getElementById("bigripupg15current").textContent=bru15effect < 999.995 ? bru15effect.toFixed(2) : getFullExpansion(Math.round(bru15effect))
                 document.getElementById("bigripupg16current").textContent=shorten(player.dilation.dilatedTime.div(1e100).pow(0.155).max(1))

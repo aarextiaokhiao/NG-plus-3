@@ -56,13 +56,8 @@ function getDimensionFinalMultiplier(tier) {
 
   if (player.timestudy.studies.includes(71) && tier !== 8) multiplier = multiplier.times(calcTotalSacrificeBoost().pow(0.25).min("1e210000"));
   if (player.timestudy.studies.includes(91)) multiplier = multiplier.times(Decimal.pow(10, Math.min(player.thisEternity, 18000)/60));
-  let ndReplMult = 1
   let useHigherNDReplMult = !player.dilation.active ? false : !player.masterystudies ? false : player.masterystudies.includes("t323")
-  if (player.timestudy.studies.includes(101)) {
-      ndReplMult = player.replicanti.amount.max(1)
-      if (player.masterystudies !== undefined) if (!player.dilation.active && player.quantum.bigRip.active && player.quantum.bigRip.upgrades.includes(14)) ndReplMult = ndReplMult.pow(getBRUpg14Mult())
-  }
-  if (!useHigherNDReplMult) multiplier = multiplier.times(ndReplMult)
+  if (!useHigherNDReplMult) multiplier = multiplier.times(tmp.nrm)
   if (player.timestudy.studies.includes(161)) multiplier = multiplier.times(new Decimal(player.aarexModifications.newGameExpVersion?"1e3080":"1e616"))
   if (player.timestudy.studies.includes(234) && tier == 1) multiplier = multiplier.times(calcTotalSacrificeBoost())
 
@@ -93,7 +88,7 @@ function getDimensionFinalMultiplier(tier) {
   if (player.dilation.active || player.galacticSacrifice) multiplier = Decimal.pow(10, Math.pow(multiplier.log10(), dilationPowerStrength()))
 
   if (player.dilation.upgrades.includes(6)) multiplier = multiplier.times(player.dilation.dilatedTime.max(1).pow(308))
-  if (useHigherNDReplMult) multiplier = multiplier.times(ndReplMult)
+  if (useHigherNDReplMult) multiplier = multiplier.times(tmp.nrm)
   if (player.challenges.includes("postcngmm_1")||player.currentChallenge=="postcngmm_1") multiplier = multiplier.times(timeAndDimMult)
   if (player.galacticSacrifice) {
       if (player.achievements.includes("r56") && player.thisInfinityTime < 1800) multiplier = multiplier.times(3600/(player.thisInfinityTime+1800));

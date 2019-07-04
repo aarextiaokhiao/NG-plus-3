@@ -406,7 +406,7 @@ function setupText() {
 	for (var c=0;c<3;c++) {
 		var color=(["red","green","blue"])[c]
 		var shorthand=(["r","g","b"])[c]
-		var branchUpgrades=["Gain <span id='"+color+"UpgPow1'></span>x "+color+" quark spins, but "+color+" quarks decay 2x faster.","The gain of "+color+" <span id='"+color+"UpgName2'></span> quarks is doubled and squared.",(["Red","Green","Blue"])[c]+" <span id='"+color+"UpgName3'></span> quarks decay 4x slower."]
+		var branchUpgrades=["Gain <span id='"+color+"UpgPow1'></span>x "+color+" quark spins, but "+color+" quarks decay 2x faster.","The gain of "+color+" <span id='"+color+"UpgName2'></span> quarks is multiplied by x and then raised to the power of x.",(["Red","Green","Blue"])[c]+" <span id='"+color+"UpgName3'></span> quarks decay 4x slower."]
 
 		var html='You have <span class="'+color+'" id="'+color+'QuarksToD" style="font-size: 35px">0</span> '+color+' quarks.<br>'
 		html+='<button class="storebtn" id="'+color+'UnstableGain" style="width: 210px; height: 70px" onclick="unstableQuarks(\''+shorthand+'\')">Unstablize quarks for 0.0 unstable quarks.</button><br>'
@@ -441,8 +441,8 @@ function getMTSMult(id, modifier) {
 		if (ghostified ? player.ghostify.neutrinos.boosts > 1 && modifier != "pn" : false) intensity += tmp.nb[1]
 		return Decimal.pow(Math.log10(player.replicanti.chance+1), intensity).max(1)
 	}
-	if (id==281) return Decimal.pow(10,Math.pow(getReplMult().max(1).log10(),0.25)/10)
-	if (id==282) return Decimal.pow(10,Math.pow(getReplMult().max(1).log10(),0.25)/15)
+	if (id==281) return Decimal.pow(10,Math.pow(tmp.rm.max(1).log10(),0.25)/10)
+	if (id==282) return Decimal.pow(10,Math.pow(tmp.rm.max(1).log10(),0.25)/15)
 	if (id==303) return Decimal.pow(4.7,Math.pow(Math.log10(Math.max(player.galaxies,1)),1.5))
 	if (id==322) {
 		let log = Math.sqrt(-player.tickspeed.div(1000).log10())/20000
@@ -2370,7 +2370,7 @@ function removeAP(id) {
 }
 
 function bigRip() {
-	if (player.quantum.electrons.amount<62500||player.quantum.bigRip.active) return
+	if (!player.masterystudies.includes("d14")||player.quantum.electrons.amount<62500||!inQC(0)) return
 	if (player.ghostify.milestones>1) {
 		player.quantum.pairedChallenges.order={1:[1,2],2:[3,4],3:[5,7],4:[6,8]}
 		player.quantum.pairedChallenges.completed=3
@@ -2693,11 +2693,6 @@ function isBigRipUpgradeActive(id, bigRipped) {
 	if (id > 2 && id != 4 && id < 9) if (player.quantum.bigRip.upgrades.includes(9) && (id != 8 || !hasNU(9))) return false
 	if (id == 4) if (player.quantum.bigRip.upgrades.includes(11)) return false
 	return player.quantum.bigRip.upgrades.includes(id)
-}
-
-function getBRUpg14Mult() {
-	let mult = Math.min(player.quantum.bigRip.spaceShards.div(3e18).add(1).log10() / 3, 0.4)
-	return Math.sqrt(player.quantum.bigRip.spaceShards.div(3e15).add(1).log10() * mult + 1)
 }
 
 function updateBreakEternity() {

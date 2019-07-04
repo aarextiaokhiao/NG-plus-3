@@ -1259,6 +1259,7 @@ if (player.version < 5) {
           b:1
       }
       gatheredQuarksBoost = 0
+      tmp.be=false
   } else {
       colorBoosts.r=Math.pow(Decimal.add(player.quantum.colorPowers.r, 1).log10(),player.dilation.active?2/3:0.5)/10+1
       colorBoosts.g=Math.sqrt(Decimal.add(player.quantum.colorPowers.g, 1).log10()*2+1)
@@ -1269,6 +1270,7 @@ if (player.version < 5) {
       if (colorBoosts.b.gt(1300)) colorBoosts.b=Decimal.pow(10,Math.sqrt(colorBoosts.b.log10()*Math.log10(1300)))
       gatheredQuarksBoost = Math.pow(Decimal.add(player.quantum.replicants.quarks, 1).log10(),player.masterystudies.includes("t362")?0.35:0.25)*0.67*(player.masterystudies.includes("t412")?1.25:1)
       eds=player.quantum.emperorDimensions
+      tmp.be=player.quantum.bigRip.active&&player.quantum.breakEternity.break
   }
   if (player.aarexModifications.newGameMinusMinusVersion === undefined && !player.meta) {
       if (player.version == 13) player.version = 12
