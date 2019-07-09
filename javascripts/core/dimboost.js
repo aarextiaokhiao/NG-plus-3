@@ -325,7 +325,7 @@ function maxBuyDimBoosts(manual) {
 }
 
 function getShiftRequirement(bulk) {
-	let amount = player.tickspeedBoosts==undefined?20:30;
+	let amount = 20
 	let mult = getDimboostCostIncrease()
 	var resetNum = player.resets + bulk
 	var maxTier = player.currentChallenge == "challenge4" ? 6 : 8

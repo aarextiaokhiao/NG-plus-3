@@ -172,7 +172,7 @@ function buyMaxTickSpeed() {
 		var toBuy = Math.min(Math.floor(player.money.div(cost).times(9).add(1).log(10)), max)
 		getOrSubResource(1, Decimal.pow(10, toBuy).sub(1).div(9).times(cost))
 		if (!tmp.be) player.tickspeed = Decimal.pow(getTickSpeedMultiplier(), toBuy).times(player.tickspeed)
-		if (player.challenges.includes("postc3") || player.currentChallenge == "postc3") player.postC3Reward = player.postC3Reward.times(Decimal.pow(getPostC3RewardMult(), toBuy))
+		if (player.challenges.includes("postc3") || player.currentChallenge == "postc3" || isIC3Trapped()) player.postC3Reward = player.postC3Reward.times(Decimal.pow(getPostC3RewardMult(), toBuy))
 		player.tickSpeedCost = player.tickSpeedCost.times(Decimal.pow(10, toBuy))
 		player.postC8Mult = new Decimal(1)
 		if (costIncreaseActive(player.tickSpeedCost)) player.tickspeedMultiplier = player.tickspeedMultiplier.times(getTickSpeedCostMultiplierIncrease())

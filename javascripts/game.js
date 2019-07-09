@@ -1120,7 +1120,6 @@ function getGalaxyRequirement(offset=0, display) {
 	let scaling = 0
 	if (player.currentChallenge == "challenge4") amount += 19
 	else if (player.galacticSacrifice) amount -= (player.galacticSacrifice.upgrades.includes(22) && galaxies > 0) ? 80 : 60
-	if (player.tickspeedBoosts != undefined) amount += 10
 
 	if (tmp.be) {
 		amount *= 50
@@ -1704,7 +1703,7 @@ function updateCosts() {
 			var resource = getOrSubResource(i)
             document.getElementById(name).className = cost.lte(resource) ? 'storebtn' : 'unavailablebtn'
 			document.getElementById(name).textContent = 'Cost: ' + shortenPreInfCosts(cost)
-            document.getElementById(name + 'Max').className = cost.times(10 - dimBought(tier)).lte(resource) ? 'storebtn' : 'unavailablebtn'
+            document.getElementById(name + 'Max').className = cost.times(10 - dimBought(i)).lte(resource) ? 'storebtn' : 'unavailablebtn'
 			document.getElementById(name + "Max").textContent = 'Until 10, Cost: ' + shortenPreInfCosts(cost.times(10 - dimBought(i)));
 		}
 		if (document.getElementById("infinitydimensions").style.display == "block" && player.infDimensionsUnlocked[i-1]) {
@@ -3482,6 +3481,7 @@ function gainedEternityPoints() {
 
 function setAchieveTooltip() {
     var apocAchieve = document.getElementById("Antimatter Apocalypse");
+    var doubleGal = document.getElementById("Double Galaxy");
     var claustrophobic = document.getElementById("Claustrophobic");
     var noPointAchieve = document.getElementById("There's no point in doing that");
     var sanic = document.getElementById("Supersanic")
@@ -3572,7 +3572,8 @@ function setAchieveTooltip() {
     let bm14 = document.getElementById("braveMilestone14")
 
     apocAchieve.setAttribute('ach-tooltip', "Get over " + formatValue(player.options.notation, 1e80, 0, 0) + " antimatter.");
-    claustrophobic.setAttribute('ach-tooltip', "Go Infinite with just 1 Antimatter Galaxy. Reward: Reduces starting tick interval by 2%"+(player.galacticSacrifice?(player.tickspeedBoosts==undefined?"":", keep dimension boosts on tickspeed boost,")+" and keep galaxy upgrades on infinity.":"."));
+    doubleGal.setAttribute('ach-tooltip', 'Buy 2 Antimatter Galaxies. '+(player.tickspeedBoosts!==undefined?"Reward: Tickspeed Boosts don't reset Dimension Boosts.":''));
+    claustrophobic.setAttribute('ach-tooltip', "Go Infinite with just 1 Antimatter Galaxy. Reward: Reduces starting tick interval by 2%"+(player.galacticSacrifice?" and keep galaxy upgrades on infinity.":"."));
     noPointAchieve.setAttribute('ach-tooltip', "Buy a single First Dimension when you have over " + formatValue(player.options.notation, 1e150, 0, 0) + " of them. Reward: First Dimensions are 10% stronger.");
     forgotAchieve.setAttribute('ach-tooltip', "Get any Dimension multiplier over " + formatValue(player.options.notation, 1e31, 0, 0)) + ". Reward: First Dimensions are 5% stronger.";
     sanic.setAttribute('ach-tooltip', "Have antimatter/sec exceed your current antimatter above " + formatValue(player.options.notation, 1e63, 0, 0));

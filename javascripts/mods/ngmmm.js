@@ -5,7 +5,7 @@ function getTickspeedBoostRequirement(bulk=1) {
 
 function tickspeedBoost(bulk) {
 	player.tickspeedBoosts+=bulk
-	softReset(player.achievements.includes("r36")?0:-player.resets,true)
+	softReset(player.achievements.includes("r27")?0:-player.resets,true)
 	player.tickBoughtThisInf=updateTBTIonGalaxy()
 }
 
