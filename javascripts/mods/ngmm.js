@@ -187,14 +187,14 @@ function productAllTotalBought () {
 	var ret = 1;
 	var mult = getProductBoughtMult()
 	for (i = 1; i <= 8; i++) {
-		if (player.currentChallenge == "challenge13" && player.tickspeedBoosts != undefined) ret *= Math.max(1+player[TIER_NAMES[i]+"Amount"].log10()*mult, 1);
-		else if (player.totalBoughtDims[TIER_NAMES[i]]) ret = Decimal.times(ret, Math.max(player.totalBoughtDims[TIER_NAMES[i]] ? player.totalBoughtDims[TIER_NAMES[i]] * mult : 1, 1));
+		if (player.currentChallenge == "challenge13" && player.tickspeedBoosts != undefined) ret = Decimal.times(player[TIER_NAMES[i]+"Amount"].log10(),mult).add(1).times(ret);
+		else if (player.totalBoughtDims[TIER_NAMES[i]]) ret = Decimal.times(ret,player.totalBoughtDims[TIER_NAMES[i]]?Decimal.times(player.totalBoughtDims[TIER_NAMES[i]],mult).max(1):1);
 	}
 	return ret;
 }
 
 function productAllTotalBought1 () {
-	return Math.pow(Math.log10(Math.max(productAllTotalBought(), 10)), 2);
+	return Math.pow(Decimal.max(productAllTotalBought(),10).log10(),2);
 }
 
 function productAllDims1(){
