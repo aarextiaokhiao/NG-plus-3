@@ -296,7 +296,8 @@ newsArray = [//always true
 ["Are your ghost particles ghostly? If not, talk to your ghostly boss.", true, "gn14"],
 ["What's a ghostify? -some new person that joined the discord server", true, "gn15"],
 ["BREAKING NEWS: Because of antimatter, someone has been turned into a basketball. The news ticker writers are baffled.", true, "gn16"],
-["If you read 'Congratulations for beating NG+3' message, here is a spoiler: There will be Photons!", "player.newsArray.includes('am68') && player.totalmoney.gte(Decimal.pow(10, 12e15))", "gn17"]];}
+["If you read 'Congratulations for beating NG+3' message, here is a spoiler: There will be Photons!", "player.newsArray.includes('am68') && player.totalmoney.gte(Decimal.pow(10, 12e15))", "gn17"],
+["WARNING: Do not interact evil ghosts. They can scare you out.", true, "gn18"]];}
 
 document.addEventListener("visibilitychange", function() {if (!document.hidden) {scrollNextMessage();}}, false);
 var scrollTimeouts = [];
