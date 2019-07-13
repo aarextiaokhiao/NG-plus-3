@@ -295,10 +295,6 @@ function hasInfinityMult(tier) {
 
 function buyOneDimension(tier) {
 	if (!canBuyDimension(tier)) return false
-	if (player.masterystudies !== undefined) if (player.quantum.bigRip.active && !(player.infinityUpgrades.includes("resetBoost") && player.infinityUpgrades.includes("galaxyBoost") && player.infinityUpgrades.includes("passiveGen") && player.infinityUpgrades.includes("skipResetGalaxy"))) {
-		alert("To prevent you from failing easily, you need to buy all Infinity upgrades first.")
-		return
-	}
 	let name = TIER_NAMES[tier]
 	let cost = player[name + 'Cost']
 	let resource = getOrSubResource(tier)
@@ -321,10 +317,6 @@ function buyOneDimension(tier) {
 
 function buyManyDimension(tier, quick) {
 	if (!canBuyDimension(tier)) return false
-	if (!quick && player.masterystudies !== undefined) if (player.quantum.bigRip.active && !(player.infinityUpgrades.includes("resetBoost") && player.infinityUpgrades.includes("galaxyBoost") && player.infinityUpgrades.includes("passiveGen") && player.infinityUpgrades.includes("skipResetGalaxy"))) {
-		alert("To prevent you from failing easily, you need to buy all Infinity upgrades first.")
-		return
-	}
 	let name = TIER_NAMES[tier]
 	let toBuy = 10 - dimBought(tier)
 	let cost = player[name + 'Cost'].times(toBuy)

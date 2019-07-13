@@ -1934,10 +1934,6 @@ function glowText(id) {
 
 
 document.getElementById("maxall").onclick = function () {
-	if (player.masterystudies !== undefined) if (player.quantum.bigRip.active && !(player.infinityUpgrades.includes("resetBoost") && player.infinityUpgrades.includes("galaxyBoost") && player.infinityUpgrades.includes("passiveGen") && player.infinityUpgrades.includes("skipResetGalaxy"))) {
-		alert("To prevent you from failing easily, you need to buy all Infinity upgrades first.")
-		return
-	}
 	if (reachedInfinity()) return false
 	if (player.currentChallenge !== 'challenge14') buyMaxTickSpeed()
 	for (var tier=1; tier<9;tier++) buyBulkDimension(tier, 1/0)
@@ -2066,13 +2062,13 @@ function buyMaxEPMult() {
 
 
 function playerInfinityUpgradesOnEternity() {
-	if (getEternitied() < 4) player.infinityUpgrades = []
-	else if (getEternitied() < 20) {
+	if (getEternitied() > 19 || (player.masterystudies !== undefined ? player.quantum.bigRip.active : false)) player.infinityUpgrades = player.infinityUpgrades 
+	else if (getEternitied() < 4) {
 		var filter = ["timeMult", "dimMult", "timeMult2", "skipReset1", "skipReset2", "unspentBonus", "27Mult", "18Mult", "36Mult", "resetMult", "skipReset3", "passiveGen", "45Mult", "resetBoost", "galaxyBoost", "skipResetGalaxy"]
 		var newUpgrades = []
 		for (u=0;u<player.infinityUpgrades.length;u++) if (filter.includes(player.infinityUpgrades[u])) newUpgrades.push(player.infinityUpgrades[u])
 		player.infinityUpgrades = newUpgrades
-	} else player.infinityUpgrades = player.infinityUpgrades
+	} else player.infinityUpgrades = []
 }
 
 
@@ -2352,7 +2348,7 @@ function getReplMult(next) {
 		exp += (player.timestudy.ers_studies[3] + (next ? 1 : 0)) / 2
 		if (player.achievements.includes('r108')) exp *= 1.09;
 	}
-	let replmult = Decimal.max(player.replicanti.amount.log10(), 1).times(Math.log10(2)).pow(exp)
+	let replmult = Decimal.times(player.replicanti.amount.log10(), Math.log10(2)).max(1).pow(exp)
     if (player.timestudy.studies.includes(21)) replmult = replmult.plus(Decimal.pow(player.replicanti.amount, 0.032))
     if (player.timestudy.studies.includes(102)) replmult = replmult.times(Decimal.pow(5, player.replicanti.galaxies))
 	return replmult;
@@ -5479,9 +5475,9 @@ function eternity(force, auto, presetLoad) {
     }
 }
 
-function challengesCompletedOnEternity() {
+function challengesCompletedOnEternity(bigRip) {
 	var array = []
-	if (getEternitied()>1) for (i=1;i<(player.galacticSacrifice?15:13);i++) array.push("challenge"+i)
+	if (getEternitied()>1||(player.masterystudies!==undefined?player.quantum.bigRip.active:false)||bigRip) for (i=1;i<(player.galacticSacrifice?15:13);i++) array.push("challenge"+i)
 	if (player.achievements.includes("r133")) for (i=1;i<9;i++) array.push("postc"+i)
 	return array
 }
@@ -6386,7 +6382,6 @@ function startDilatedEternity(auto) {
 	failsafeDilateTime = true
     var onActive = player.dilation.active
     if (!onActive && player.aarexModifications.dilationConf && !auto) if (!confirm("Dilating time will start a new eternity, and all of your Dimension/Infinity Dimension/Time Dimension multiplier's exponents and tickspeed multiplier's exponent will be reduced to ^ 0.75. If you can eternity while dilated, you'll be rewarded with tachyon particles based on your antimatter and tachyon particles.")) return
-    clearInterval(gameLoopIntervalId);
     giveAchievement("I told you already, time is relative")
     if (player.masterystudies) {
         if (onActive) player.eternityBuyer.statBeforeDilation++
@@ -6395,9 +6390,8 @@ function startDilatedEternity(auto) {
     }
     eternity(true, true)
     if (!onActive) player.dilation.active = true;
-    updatePowers()
+    resetUP()
     if (player.masterystudies && quantumed) updateColorCharge()
-    startInterval()
 }
 
 function dilationPowerStrength() {
@@ -7060,7 +7054,7 @@ setInterval(function() {
             updateBreakEternity()
         }
         if (player.ghostify.milestones>notifyId2) {
-            $.notify("You became a ghost in at most "+getFullExpansion(braveMilestones[notifyId2])+" quantumed stat! "+(["You now start with with all Speedrun Milestones unlocked, all Paired Challenges completed, and all Big Rip upgrades bought", "For now on, colored quarks do not cancel and you keep your gluon upgrades", "You now keep your Electron upgrades", "For now on, Quantuming doesn't reset your Tachyon particles unless you are in a QC", "For now on, Quantuming doesn't reset your Meta-Dimension Boosts unless you are in a QC", "For now on, Quantuming doesn't reset your normal replicants unless you are in a QC", "You now start with 10 worker replicants.", "You can now gain 1% of quarks and ^0.75 amount of gluons you will gain per second", "You now start with 10 of Second Emperor Dimensions", "You now start with 10 of Fourth Emperor Dimensions", "You now start with 10 of Sixth Emperor Dimensions", "You now start with 10 of Eighth Emperor Dimensions", "You now start with first 16 Nanofield rewards", "You now start with "+shortenCosts(1e25)+" quark spins", "You now start with Break Eternity unlocked and all Break Eternity upgrades bought", "You unlocked 'I rather oppose the theory of everything' achievement"])[notifyId2]+".","success")
+            $.notify("You became a ghost in at most "+getFullExpansion(tmp.bm[notifyId2])+" quantumed stat! "+(["You now start with with all Speedrun Milestones unlocked, all Paired Challenges completed, and all Big Rip upgrades bought", "For now on, colored quarks do not cancel and you keep your gluon upgrades", "You now keep your Electron upgrades", "For now on, Quantuming doesn't reset your Tachyon particles unless you are in a QC", "For now on, Quantuming doesn't reset your Meta-Dimension Boosts unless you are in a QC", "For now on, Quantuming doesn't reset your normal replicants unless you are in a QC", "You now start with 10 worker replicants.", "You can now gain 1% of quarks and ^0.75 amount of gluons you will gain per second", "You now start with 10 of Second Emperor Dimensions", "You now start with 10 of Fourth Emperor Dimensions", "You now start with 10 of Sixth Emperor Dimensions", "You now start with 10 of Eighth Emperor Dimensions", "You now start with first 16 Nanofield rewards", "You now start with "+shortenCosts(1e25)+" quark spins", "You now start with Break Eternity unlocked and all Break Eternity upgrades bought", "You unlocked 'I rather oppose the theory of everything' achievement"])[notifyId2]+".","success")
             notifyId2++
         }
     }
@@ -8755,7 +8749,13 @@ function updatePowers() {
 		ec10bonus = new Decimal(1)
 	}
 }
-setInterval(updatePowers, 100)
+var updatePowerInt
+function resetUP() {
+	clearInterval(updatePowerInt)
+	updatePowers()
+	mult18 = 1
+	updatePowerInt = setInterval(updatePowers, 100)
+}
 
 function switchDecimalMode() {
 	if (confirm('This option switch the Decimal library to '+(player.aarexModifications.breakInfinity?'logarithmica_numerus_lite':'break_infinity.min')+'.js. Are you sure you want to do that?')) {

@@ -1863,7 +1863,7 @@ if (player.version < 5) {
   setAndMaybeShow('bestTPOverGhostifies',(player.achievements.includes("ng3p18") || player.achievements.includes("ng3p37")) && ghostified,'"Your best-ever Tachyon particles was "+shorten(player.dilation.bestTPOverGhostifies)+"."')
   notifyId=speedrunMilestonesReached
   notifyId2=player.masterystudies===undefined?0:player.ghostify.milestones
-  updatePowers()
+  resetUP()
   document.getElementById("newsbtn").textContent=(player.options.newsHidden?"Show":"Hide")+" news ticker"
   document.getElementById("game").style.display=player.options.newsHidden?"none":"block"
   var tabsSave = player.aarexModifications.tabsSave
@@ -2412,7 +2412,7 @@ function loadAutoBuyerSettings() {
   document.getElementById("bulkgalaxy").value = player.autobuyers[10].bulk
   document.getElementById("priority13").value = formatValue("Scientific", new Decimal(player.eternityBuyer.limit), 2, 0)
   if (player.achievements.includes("ng3p52") && player.eternityBuyer.presets !== undefined) {
-      document.getElementById("autoEterIfAD").textContent = "Auto-eternity only if it able to auto-dilate: O" + (player.eternityBuyer.ifAD ? "N" : "FF")
+      document.getElementById("autoEterIfAD").textContent = "Auto-eternity only if able to auto-dilate: O" + (player.eternityBuyer.ifAD ? "N" : "FF")
       document.getElementById("autoEterValue").value = formatValue("Scientific", new Decimal(player.eternityBuyer.limit), 2, 0)
       document.getElementById("autodilatemode").textContent = "Mode: " + (player.eternityBuyer.dilMode == "upgrades" ? "Upgrades" : "Amount of eternities")
       document.getElementById("slowstop").textContent = "Stop auto-dilate if a little bit of TP is gained: O" + (player.eternityBuyer.slowStop ? "N" : "FF")

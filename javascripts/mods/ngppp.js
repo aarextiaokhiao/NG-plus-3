@@ -2146,7 +2146,7 @@ function updateAutoEterValue() {
 
 function toggleAutoEterIfAD() {
 	player.eternityBuyer.ifAD=!player.eternityBuyer.ifAD
-	document.getElementById("autoEterIfAD").textContent="Auto-eternity only if it able to auto-dilate: O" + (player.eternityBuyer.ifAD ? "N" : "FF")
+	document.getElementById("autoEterIfAD").textContent="Auto-eternity only if able to auto-dilate: O" + (player.eternityBuyer.ifAD ? "N" : "FF")
 }
 
 function toggleAutoDil() {
@@ -2858,7 +2858,6 @@ function ghostifyReset(implode, gain, amount, force) {
 		player.ghostify.times++
 		player.ghostify.best = Math.min(player.ghostify.best, player.ghostify.time)
 		while (player.quantum.times<=tmp.bm[player.ghostify.milestones]) player.ghostify.milestones++
-		updateBraveMilestones()
 	}
 	if (player.quantum.bigRip.active) switchAB()
 	var bm = player.ghostify.milestones
@@ -2904,9 +2903,9 @@ function ghostifyReset(implode, gain, amount, force) {
 		eightPow: new Decimal(1),
 		sacrificed: new Decimal(0),
 		achievements: player.achievements,
-		challenges: bm ? player.challenges : [],
+		challenges: player.challenges,
 		currentChallenge: "",
-		infinityUpgrades: bm ? player.infinityUpgrades : [],
+		infinityUpgrades: player.infinityUpgrades,
 		setsUnlocked: 0,
 		infinityPoints: player.infinityPoints,
 		infinitied: 0,
@@ -2923,10 +2922,10 @@ function ghostifyReset(implode, gain, amount, force) {
 		interval: null,
 		lastUpdate: player.lastUpdate,
 		achPow: player.achPow,
-		autobuyers: bm ? player.autobuyers : [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12],
+		autobuyers: player.autobuyers,
 		partInfinityPoint: 0,
 		partInfinitied: 0,
-		break: bm ? player.break : false,
+		break: player.break,
 		costMultipliers: [new Decimal(1e3), new Decimal(1e4), new Decimal(1e5), new Decimal(1e6), new Decimal(1e8), new Decimal(1e10), new Decimal(1e12), new Decimal(1e15)],
 		tickspeedMultiplier: new Decimal(10),
 		chall2Pow: 1,
@@ -2940,19 +2939,19 @@ function ghostifyReset(implode, gain, amount, force) {
 		lastTenEternities: [[600*60*24*31, new Decimal(0)], [600*60*24*31, new Decimal(0)], [600*60*24*31, new Decimal(0)], [600*60*24*31, new Decimal(0)], [600*60*24*31, new Decimal(0)], [600*60*24*31, new Decimal(0)], [600*60*24*31, new Decimal(0)], [600*60*24*31, new Decimal(0)], [600*60*24*31, new Decimal(0)], [600*60*24*31, new Decimal(0)]],
 		infMult: new Decimal(1),
 		infMultCost: new Decimal(10),
-		tickSpeedMultDecrease: bm ? Math.max(player.tickSpeedMultDecrease, bm > 1 ? 1.25 : 2) : 10,
-		tickSpeedMultDecreaseCost: bm ? player.tickSpeedMultDecreaseCost : 3e6,
-		dimensionMultDecrease: bm ? player.dimensionMultDecrease : 10,
-		dimensionMultDecreaseCost: bm ? player.dimensionMultDecreaseCost : 1e8,
-		extraDimPowerIncrease: 0,
-		dimPowerIncreaseCost: 1e3,
+		tickSpeedMultDecrease: Math.max(player.tickSpeedMultDecrease, bm > 1 ? 1.25 : 2),
+		tickSpeedMultDecreaseCost: player.tickSpeedMultDecreaseCost,
+		dimensionMultDecrease: player.dimensionMultDecrease,
+		dimensionMultDecreaseCost: player.dimensionMultDecreaseCost,
+		extraDimPowerIncrease: player.extraDimPowerIncrease,
+		dimPowerIncreaseCost: player.dimPowerIncreaseCost,
 		version: player.version,
 		postC4Tier: 1,
 		postC8Mult: new Decimal(1),
-		overXGalaxies: bm ? player.overXGalaxies :0,
+		overXGalaxies: player.overXGalaxies,
 		overXGalaxiesTickspeedBoost: player.tickspeedBoosts == undefined ? player.overXGalaxiesTickspeedBoost : 0,
 		spreadingCancer: player.spreadingCancer,
-		postChallUnlocked: (player.achievements.includes("r133")) ? 8 : 0,
+		postChallUnlocked: 8,
 		postC4Tier: 0,
 		postC3Reward: new Decimal(1),
 		eternityPoints: new Decimal(0),
@@ -3073,10 +3072,10 @@ function ghostifyReset(implode, gain, amount, force) {
 			power: new Decimal(1),
 			bought: 0
 		},
-		offlineProd: bm ? player.offlineProd : 0,
-		offlineProdCost: bm ? player.offlineProdCost : 1e7,
+		offlineProd: player.offlineProd,
+		offlineProdCost: player.offlineProdCost,
 		challengeTarget: 0,
-		autoSacrifice: bm ? player.autoSacrifice : 1,
+		autoSacrifice: player.autoSacrifice,
 		replicanti: {
 			amount: new Decimal(bm ? 1 : 0),
 			unl: bm ? true : false,
@@ -3105,7 +3104,7 @@ function ghostifyReset(implode, gain, amount, force) {
 		autoIP: new Decimal(0),
 		autoTime: 1e300,
 		infMultBuyer: bm ? player.infMultBuyer : false,
-		autoCrunchMode: bm ? player.autoCrunchMode : "amount",
+		autoCrunchMode: player.autoCrunchMode,
 		autoEterMode: bm ? player.autoEterMode : "amount",
 		peakSpent: 0,
 		respec: false,
@@ -3359,6 +3358,7 @@ function ghostifyReset(implode, gain, amount, force) {
 	if (player.achievements.includes("r78")) player.money = new Decimal(1e25)
 	setInitialDimensionPower()
 	updatePowers()
+	mult18 = new Decimal(1)
 	GPminpeak = new Decimal(0)
 	if (implode) showTab("dimensions")
 	document.getElementById("secondRow").style.display = "none"
@@ -3378,8 +3378,6 @@ function ghostifyReset(implode, gain, amount, force) {
 	if (player.achievements.includes("r85")) player.infMult = player.infMult.times(4)
 	if (player.achievements.includes("r93")) player.infMult = player.infMult.times(4)
 	if (player.achievements.includes("r104")) player.infinityPoints = new Decimal(2e25)
-	if (player.galacticSacrifice && !oheHeadstart) player.autobuyers[12]=13
-	if (player.tickspeedBoosts !== undefined && !oheHeadstart) player.autobuyers[13]=14
 	player.challenges=challengesCompletedOnEternity()
 	IPminpeak = new Decimal(0)
 	if (isEmptiness) {
@@ -3392,7 +3390,7 @@ function ghostifyReset(implode, gain, amount, force) {
 	document.getElementById("infinityPoints2").innerHTML = "You have <span class=\"IPAmount2\">"+shortenDimensions(player.infinityPoints)+"</span> Infinity points."
 	document.getElementById("infiMult").innerHTML = "Multiply infinity points from all sources by 2 <br>currently: "+shorten(getIPMult()) +"x<br>Cost: "+shortenCosts(player.infMultCost)+" IP"
 	document.getElementById("infmultbuyer").textContent="Max buy IP mult"
-	if (!bm || implode) showChallengesTab("normalchallenges")
+	if (implode) showChallengesTab("normalchallenges")
 	updateChallenges()
 	document.getElementById("matter").style.display = "none"
 	updateAutobuyers()
@@ -3407,10 +3405,6 @@ function ghostifyReset(implode, gain, amount, force) {
 	updateLastTenRuns()
 	if ((document.getElementById("metadimensions").style.display == "block" && !bm) || implode) showDimTab("antimatterdimensions")
 	resetInfDimensions()
-	if (!bm) {
-		if (player.galacticSacrifice) player.autobuyers[12]=13
-		if (player.tickspeedBoosts !== undefined) player.autobuyers[13]=14
-	}
 
 	//Eternity
 	EPminpeakType = 'normal'
@@ -3491,6 +3485,7 @@ function ghostifyReset(implode, gain, amount, force) {
 	document.getElementById("ghostifybtn").style.display = "none"
 	if (!ghostified) {
 		ghostified = true
+		document.getElementById('bestTP').textContent="Your best Tachyon particles in this Ghostify was "+shorten(player.dilation.bestTP)+"."
 		document.getElementById("ghostifytabbtn").style.display = "inline-block"
 		document.getElementById("ghostparticles").style.display = ""
 		document.getElementById("ghostifyAnimBtn").style.display = "inline-block"
@@ -3503,6 +3498,7 @@ function ghostifyReset(implode, gain, amount, force) {
 	player.ghostify.neutrinos.tau = new Decimal(0)
 	player.ghostify.noGrind = !player.masterystudies.includes("d13")
 	updateLastTenGhostifies()
+	updateBraveMilestones()
 }
 
 function toggleGhostifyConf() {

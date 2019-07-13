@@ -796,29 +796,29 @@ function quantumReset(force, auto, challid, bigRip, implode=false) {
 		eightPow: new Decimal(1),
 		sacrificed: new Decimal(0),
 		achievements: player.achievements,
-		challenges: [],
+		challenges: bigRip ? player.challenges : [],
 		currentChallenge: "",
-		infinityUpgrades: oheHeadstart ? player.infinityUpgrades : [],
-		setsUnlocked: oheHeadstart ? player.setsUnlocked : 0,
+		infinityUpgrades: player.infinityUpgrades,
+		setsUnlocked: oheHeadstart || bigRip ? player.setsUnlocked : 0,
 		infinityPoints: player.infinityPoints,
 		infinitied: 0,
 		infinitiedBank: headstart || player.achievements.includes("ng3p15") ? player.infinitiedBank : 0,
 		totalTimePlayed: player.totalTimePlayed,
 		bestInfinityTime: 9999999999,
 		thisInfinityTime: 0,
-		resets: oheHeadstart ? 4 : 0,
+		resets: oheHeadstart || bigRip ? 4 : 0,
 		dbPower: player.dbPower,
 		tickspeedBoosts: player.tickspeedBoosts,
-		galaxies: oheHeadstart ? 1 : 0,
+		galaxies: oheHeadstart || bigRip ? 1 : 0,
 		galacticSacrifice: resetGalacticSacrifice(),
 		totalmoney: player.totalmoney,
 		interval: null,
 		lastUpdate: player.lastUpdate,
 		achPow: player.achPow,
-		autobuyers: oheHeadstart ? player.autobuyers : [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12],
+		autobuyers: oheHeadstart || bigRip ? player.autobuyers : [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12],
 		partInfinityPoint: 0,
 		partInfinitied: 0,
-		break: oheHeadstart ? player.break : false,
+		break: oheHeadstart || bigRip ? player.break : false,
 		costMultipliers: [new Decimal(1e3), new Decimal(1e4), new Decimal(1e5), new Decimal(1e6), new Decimal(1e8), new Decimal(1e10), new Decimal(1e12), new Decimal(1e15)],
 		tickspeedMultiplier: new Decimal(10),
 		chall2Pow: 1,
@@ -832,19 +832,19 @@ function quantumReset(force, auto, challid, bigRip, implode=false) {
 		lastTenEternities: [[600*60*24*31, new Decimal(0)], [600*60*24*31, new Decimal(0)], [600*60*24*31, new Decimal(0)], [600*60*24*31, new Decimal(0)], [600*60*24*31, new Decimal(0)], [600*60*24*31, new Decimal(0)], [600*60*24*31, new Decimal(0)], [600*60*24*31, new Decimal(0)], [600*60*24*31, new Decimal(0)], [600*60*24*31, new Decimal(0)]],
 		infMult: new Decimal(1),
 		infMultCost: new Decimal(10),
-		tickSpeedMultDecrease: oheHeadstart ? player.tickSpeedMultDecrease : GUBought("gb4") ? 1.25 : 10,
-		tickSpeedMultDecreaseCost: oheHeadstart ? player.tickSpeedMultDecreaseCost : 3e6,
-		dimensionMultDecrease: oheHeadstart ? player.dimensionMultDecrease : 10,
-		dimensionMultDecreaseCost: oheHeadstart ? player.dimensionMultDecreaseCost : 1e8,
-		extraDimPowerIncrease: oheHeadstart ? player.extraDimPowerIncrease : 0,
-		dimPowerIncreaseCost: oheHeadstart ? player.dimPowerIncreaseCost : 1e3,
+		tickSpeedMultDecrease: oheHeadstart || bigRip ? player.tickSpeedMultDecrease : GUBought("gb4") ? 1.25 : 10,
+		tickSpeedMultDecreaseCost: oheHeadstart || bigRip ? player.tickSpeedMultDecreaseCost : 3e6,
+		dimensionMultDecrease: oheHeadstart || bigRip ? player.dimensionMultDecrease : 10,
+		dimensionMultDecreaseCost: oheHeadstart || bigRip ? player.dimensionMultDecreaseCost : 1e8,
+		extraDimPowerIncrease: oheHeadstart || bigRip ? player.extraDimPowerIncrease : 0,
+		dimPowerIncreaseCost: oheHeadstart || bigRip ? player.dimPowerIncreaseCost : 1e3,
 		version: player.version,
 		postC4Tier: 1,
 		postC8Mult: new Decimal(1),
-		overXGalaxies: oheHeadstart ? player.overXGalaxies : 0,
-		overXGalaxiesTickspeedBoost: oheHeadstart || player.tickspeedBoosts == undefined ? player.overXGalaxiesTickspeedBoost : 0,
+		overXGalaxies: oheHeadstart || bigRip  ? player.overXGalaxies : 0,
+		overXGalaxiesTickspeedBoost: oheHeadstart || bigRip  || player.tickspeedBoosts == undefined ? player.overXGalaxiesTickspeedBoost : 0,
 		spreadingCancer: player.spreadingCancer,
-		postChallUnlocked: (player.achievements.includes("r133")) ? 8 : 0,
+		postChallUnlocked: player.achievements.includes("r133") || bigRip ? 8 : 0,
 		postC4Tier: 0,
 		postC3Reward: new Decimal(1),
 		eternityPoints: new Decimal(0),
@@ -965,10 +965,10 @@ function quantumReset(force, auto, challid, bigRip, implode=false) {
 			power: new Decimal(1),
 			bought: 0
 		},
-		offlineProd: oheHeadstart ? player.offlineProd : 0,
-		offlineProdCost: oheHeadstart ? player.offlineProdCost : 1e7,
+		offlineProd: oheHeadstart || bigRip ? player.offlineProd : 0,
+		offlineProdCost: oheHeadstart || bigRip ? player.offlineProdCost : 1e7,
 		challengeTarget: 0,
-		autoSacrifice: oheHeadstart ? player.autoSacrifice : 1,
+		autoSacrifice: oheHeadstart || bigRip || player.achievements.includes("r133") ? player.autoSacrifice : 1,
 		replicanti: {
 			amount: new Decimal(oheHeadstart ? 1 : 0),
 			unl: oheHeadstart,
@@ -997,7 +997,7 @@ function quantumReset(force, auto, challid, bigRip, implode=false) {
 		autoIP: new Decimal(0),
 		autoTime: 1e300,
 		infMultBuyer: oheHeadstart ? player.infMultBuyer : false,
-		autoCrunchMode: oheHeadstart ? player.autoCrunchMode : "amount",
+		autoCrunchMode: oheHeadstart || bigRip ? player.autoCrunchMode : "amount",
 		autoEterMode: oheHeadstart ? player.autoEterMode : "amount",
 		peakSpent: player.masterystudies ? 0 : undefined,
 		respec: false,
@@ -1092,9 +1092,9 @@ function quantumReset(force, auto, challid, bigRip, implode=false) {
 	if (player.achievements.includes("r54")) player.money = new Decimal(2e5)
 	if (player.achievements.includes("r55")) player.money = new Decimal(1e10)
 	if (player.achievements.includes("r78")) player.money = new Decimal(1e25)
-	if (player.galacticSacrifice && !oheHeadstart) player.autobuyers[12]=13
-	if (player.tickspeedBoosts !== undefined && !oheHeadstart) player.autobuyers[13]=14
-	player.challenges=challengesCompletedOnEternity()
+	if (player.galacticSacrifice && !oheHeadstart && !bigRip) player.autobuyers[12]=13
+	if (player.tickspeedBoosts !== undefined && !oheHeadstart && !bigRip) player.autobuyers[13]=14
+	player.challenges=challengesCompletedOnEternity(true)
 	if (player.eternityChallUnlocked>12) player.timestudy.theorem+=masterystudies.costs.ec[player.eternityChallUnlocked]
 	else player.timestudy.theorem+=([0,30,35,40,70,130,85,115,115,415,550,1,1])[player.eternityChallUnlocked]
 	player.eternityChallUnlocked=0
@@ -1254,7 +1254,7 @@ function quantumReset(force, auto, challid, bigRip, implode=false) {
 	for (let i = 2; i <= 8; i++) if (!canBuyMetaDimension(i)) document.getElementById(i + "MetaRow").style.display = "none"
 	
 	setInitialDimensionPower()
-	updatePowers()
+	resetUP()
 	if (oheHeadstart) player.replicanti.amount = new Decimal(1)
 	player.replicanti.galaxies = 0
 	updateRespecButtons()
@@ -1281,7 +1281,7 @@ function quantumReset(force, auto, challid, bigRip, implode=false) {
 	updateLastTenRuns()
 	updateLastTenEternities()
 	updateLastTenQuantums()
-	if (!player.achievements.includes("r133")) {
+	if (!player.achievements.includes("r133") && !bigRip) {
 		var infchalls = Array.from(document.getElementsByClassName('infchallengediv'))
 		for (var i = 0; i< infchalls.length; i++) infchalls[i].style.display = "none"
 	}
