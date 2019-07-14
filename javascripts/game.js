@@ -1072,7 +1072,7 @@ function getInfinitiedGain() {
 
 function getEternitied() {
 	let total = player.eternities
-	if (player.eternitiesBank && !inQC(0)) if (!player.quantum.bigRip.active) total = nA(total, player.eternitiesBank)
+	if (player.eternitiesBank && inQC(0)) total = nA(total, player.eternitiesBank)
 	return total
 }
 
@@ -5485,8 +5485,9 @@ function challengesCompletedOnEternity(bigRip) {
 function gainEternitiedStat() {
 	let ret = 1
 	if (ghostified) ret = Math.pow(10, 2 / (Math.log10(getEternitied() + 1) / 10 + 1))
+	if (quantumed && player.eternities < 1e5) ret = Math.max(ret, 20)
 	if (player.dilation.upgrades.includes('ngpp2')) ret = nM(Decimal.pow(player.dilation.dilatedTime, .1), ret)
-	return nMx(ret, (player.eternities < 1 && quantumed) ? 20 : 1)
+	return ret
 }
 
 function gainBankedInf() {
