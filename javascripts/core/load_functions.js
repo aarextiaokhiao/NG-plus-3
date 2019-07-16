@@ -1770,6 +1770,7 @@ if (player.version < 5) {
       document.getElementById('reward4disable').textContent="4.5 hours reward: O"+(player.quantum.disabledRewards[4]?"FF":"N")
       document.getElementById('reward11disable').textContent="33.3 mins reward: O"+(player.quantum.disabledRewards[11]?"FF":"N")
       document.getElementById('reward27disable').textContent="10 seconds reward: O"+(player.quantum.disabledRewards[27]?"FF":"N")
+      document.getElementById('coloredQuarksProduction').innerHTML=player.ghostify.milestones>1?"You are getting <span id='rPowerRate' style='font-size:35px' class='red'></span> red power, <span id='gPowerRate' style='font-size:35px' class='green'></span> green power, and <span id='bPowerRate' style='font-size:35px' class='blue'></span> blue power per second.":"They have a <span id='colorChargeAmount' style='font-size:35px'></span><span id='colorCharge'></span> charge, which produces <span id='powerRate' style='font-size:35px'></span> <span id='colorPower'></span> per second."
       document.getElementById('rebuyupgauto').textContent="Rebuyable upgrade auto: O"+(player.autoEterOptions.rebuyupg?"N":"FF")
       document.getElementById('metaboostauto').textContent="Meta-boost auto: O"+(player.autoEterOptions.metaboost?"N":"FF")
       document.getElementById('priorityquantum').value=formatValue("Scientific", new Decimal(player.quantum.autobuyer.limit), 2, 0)

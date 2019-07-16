@@ -951,7 +951,7 @@ let tmp = {
 	bru: [],
 	be: false,
 	beu: [],
-	bm: [1e3,750,500,375,250,125,100,75,50,40,30,25,20,15,10,1,-1],
+	bm: [500,375,250,125,100,75,60,50,40,30,25,20,15,10,5,1,-1],
 	nb: [],
 	nbc: [null,2,1/0,1/0,1/0,1/0,1/0,1/0,1/0,1/0],
 	nu: [],
@@ -7058,6 +7058,7 @@ setInterval(function() {
             $.notify("You became a ghost in at most "+getFullExpansion(tmp.bm[notifyId2])+" quantumed stat! "+(["You now start with with all Speedrun Milestones unlocked, all Paired Challenges completed, and all Big Rip upgrades bought", "For now on, colored quarks do not cancel and you keep your gluon upgrades", "You now keep your Electron upgrades", "For now on, Quantuming doesn't reset your Tachyon particles unless you are in a QC", "For now on, Quantuming doesn't reset your Meta-Dimension Boosts unless you are in a QC", "For now on, Quantuming doesn't reset your normal replicants unless you are in a QC", "You now start with 10 worker replicants.", "You can now gain 1% of quarks and ^0.75 amount of gluons you will gain per second", "You now start with 10 of Second Emperor Dimensions", "You now start with 10 of Fourth Emperor Dimensions", "You now start with 10 of Sixth Emperor Dimensions", "You now start with 10 of Eighth Emperor Dimensions", "You now start with first 16 Nanofield rewards", "You now start with "+shortenCosts(1e25)+" quark spins", "You now start with Break Eternity unlocked and all Break Eternity upgrades bought", "You unlocked 'I rather oppose the theory of everything' achievement"])[notifyId2]+".","success")
             notifyId2++
         }
+        if (player.quantum.autoOptions.assignQK && player.ghostify.milestones > 7) assignAll() 
     }
 }, 1000)
 
@@ -7259,7 +7260,9 @@ function gameLoop(diff) {
         }
     }
     if (player.masterystudies) {
-        player.quantum.colorPowers[colorCharge.color]=player.quantum.colorPowers[colorCharge.color].add(colorCharge.charge.times(diff/10))
+        var colorShorthands=["r","g","b"]
+        if (player.ghostify.milestones>1) for (var c=0;c<3;c++) player.quantum.colorPowers[colorShorthands[c]]=player.quantum.colorPowers[colorShorthands[c]].add(player.quantum.usedQuarks[colorShorthands[c]].times(diff/10))
+        else player.quantum.colorPowers[colorCharge.color]=player.quantum.colorPowers[colorCharge.color].add(colorCharge.charge.times(diff/10))
         colorBoosts.r=Math.pow(player.quantum.colorPowers.r.add(1).log10(),player.dilation.active?2/3:0.5)/10+1
         colorBoosts.g=Math.sqrt(player.quantum.colorPowers.g.add(1).log10()*2+1)
         colorBoosts.b=Decimal.pow(10,Math.sqrt(player.quantum.colorPowers.b.add(1).log10()))

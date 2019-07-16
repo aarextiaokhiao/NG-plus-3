@@ -509,7 +509,10 @@ function updateQuantumTabs() {
 		document.getElementById("greenTranslation").textContent=msg
 		document.getElementById("blueTranslation").textContent=shortenMoney(colorBoosts.b)
 		if (player.masterystudies.includes("t383")) document.getElementById("blueTranslationMD").textContent=shorten(getMTSMult(383))
-		if (player.ghostify.milestones>7||player.achievements.includes("ng3p66")) updateQuantumWorth("display")
+		if (player.ghostify.milestones>7||player.achievements.includes("ng3p66")) {
+			document.getElementById("assignAllButton").className=(player.quantum.quarks.lt(1)?"unavailabl":"stor")+"ebtn"
+			updateQuantumWorth("display")
+		}
 	}
 	if (document.getElementById("gluons").style.display=="block") {
 		document.getElementById("gbupg1current").textContent="Currently: "+shortenMoney(1-Math.min(Decimal.log10(getTickSpeedMultiplier()),0))+"x"
@@ -651,9 +654,9 @@ colorBoosts={
 	b:1
 }
 function updateColorCharge() {
+	var colors=['r','g','b']
 	if (player.masterystudies) {
 		var sorted=[]
-		var colors=['r','g','b']
 		for (s=1;s<4;s++) {
 			var search=''
 			for (i=0;i<3;i++) if (!sorted.includes(colors[i])&&(search==''||player.quantum.usedQuarks[colors[i]].gte(player.quantum.usedQuarks[search]))) search=colors[i]
@@ -665,23 +668,25 @@ function updateColorCharge() {
 		colorCharge={color:'r',charge:new Decimal(0)}
 		return
 	}
-	document.getElementById("powerRate").textContent=shortenDimensions(colorCharge.charge)
-	if (colorCharge.charge.eq(0)) {
-		document.getElementById("colorChargeAmount").style.display='none'
-		document.getElementById("colorCharge").textContent='neutral'
-		document.getElementById("powerRate").className=''
-		document.getElementById("colorPower").textContent=''
-		document.getElementById("powerRate").parentElement.className=""
-	} else {
-		var color=colorShorthands[colorCharge.color]
-		document.getElementById("colorChargeAmount").style.display=''
-		document.getElementById("colorChargeAmount").className=color
-		document.getElementById("colorChargeAmount").textContent=shortenDimensions(colorCharge.charge)
-		document.getElementById("colorCharge").textContent=' '+color
-		document.getElementById("powerRate").className=color
-		document.getElementById("colorPower").textContent=color+' power'
-		document.getElementById("powerRate").parentElement.className=colorCharge.color+"qC"
-	}
+	if (player.ghostify.milestones<2) {
+		document.getElementById("powerRate").textContent=shortenDimensions(colorCharge.charge)
+		if (colorCharge.charge.eq(0)) {
+			document.getElementById("colorChargeAmount").style.display='none'
+			document.getElementById("colorCharge").textContent='neutral'
+			document.getElementById("powerRate").className=''
+			document.getElementById("colorPower").textContent=''
+			document.getElementById("powerRate").parentElement.className=""
+		} else {
+			var color=colorShorthands[colorCharge.color]
+			document.getElementById("colorChargeAmount").style.display=''
+			document.getElementById("colorChargeAmount").className=color
+			document.getElementById("colorChargeAmount").textContent=shortenDimensions(colorCharge.charge)
+			document.getElementById("colorCharge").textContent=' '+color
+			document.getElementById("powerRate").className=color
+			document.getElementById("colorPower").textContent=color+' power'
+			document.getElementById("powerRate").parentElement.className=colorCharge.color+"qC"
+		}
+	} else for (c=0;c<3;c++) document.getElementById(colors[c]+"PowerRate").textContent=shortenDimensions(player.quantum.usedQuarks[colors[c]])
 	document.getElementById("redQuarks").textContent=shortenDimensions(player.quantum.usedQuarks.r)
 	document.getElementById("greenQuarks").textContent=shortenDimensions(player.quantum.usedQuarks.g)
 	document.getElementById("blueQuarks").textContent=shortenDimensions(player.quantum.usedQuarks.b)
@@ -1887,7 +1892,7 @@ function getDecayRate(branch) {
 	}
 	ret = ret.times(getTreeUpgradeEffect(3))
 	ret = ret.times(getTreeUpgradeEffect(5))
-	if (ghostified && player.ghostify.neutrinos.upgrades.includes(4)) ret = ret.times(tmp.nu[2])
+	if (hasNU(4)) ret = ret.times(tmp.nu[2])
 	return ret.min(Math.pow(2,40))
 }
 
@@ -2857,7 +2862,10 @@ function ghostifyReset(implode, gain, amount, force) {
 		player.ghostify.last10[0] = [player.ghostify.time, gain]
 		player.ghostify.times++
 		player.ghostify.best = Math.min(player.ghostify.best, player.ghostify.time)
-		while (player.quantum.times<=tmp.bm[player.ghostify.milestones]) player.ghostify.milestones++
+		while (player.quantum.times<=tmp.bm[player.ghostify.milestones]) {
+			player.ghostify.milestones++
+			if (player.ghostify.milestones==2) document.getElementById('coloredQuarksProduction').innerHTML="You are getting <span id='rPowerRate' style='font-size:35px' class='red'></span> red power, <span id='gPowerRate' style='font-size:35px' class='green'></span> green power, and <span id='bPowerRate' style='font-size:35px' class='blue'></span> blue power per second."
+		}
 	}
 	if (player.quantum.bigRip.active) switchAB()
 	var bm = player.ghostify.milestones
@@ -3637,6 +3645,7 @@ function unlockNeutrinoBoost() {
 	player.ghostify.ghostParticles=player.ghostify.ghostParticles.sub(cost).round()
 	player.ghostify.neutrinos.boosts++
 	updateNeutrinoBoosts()
+	if (player.ghostify.neutrinos.boosts==3) tmp.nb[2]=0
 }
 
 function hasNU(id) {

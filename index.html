@@ -1069,7 +1069,7 @@
                     <tr>
                         <td>
                             <b>Dilation options</b><br>
-                            <button class="storebtn" id="autoDilToggle" onclick="toggleAPDil()">Enable</button><br>
+                            <button class="storebtn" id="autoDilToggle" onclick="toggleAutoDil()">Enable</button><br>
                             <button class="storebtn" id="autodilatemode" style="width:400px" onclick="changeAutoDilateMode()">Mode: Amount of eternities</button>
                             <button class="storebtn" id="slowstop" style="width:400px; font-size: 11px" onclick="toggleSlowStop()">Stop auto-dilate if a little bit of TP is gained: OFF</button>
                             Amount of eternities to wait until dilate time:<br>
@@ -4456,7 +4456,7 @@
 					G: <input id="ratio_g" type="number" min=0 onchange="changeRatio('g')"></input>
 					B: <input id="ratio_b" type="number" min=0 onchange="changeRatio('b')"></input>
 				</div>
-				<p>They have a <span id='colorChargeAmount' style="font-size:35px">0</span><span id='colorCharge'></span> charge, which produces <span id='powerRate' style="font-size:35px">0</span> <span id='colorPower'></span> per second.</p>
+				<p id="coloredQuarksProduction"></p>
 				<table class='qtable'><tr>
 					<td class="rqC">
 						<p>You have <span class="red" id="redPower" style="font-size:35px">0.0</span> red power.<br>
