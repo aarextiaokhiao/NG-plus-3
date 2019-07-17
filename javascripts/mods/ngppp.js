@@ -656,14 +656,16 @@ colorBoosts={
 function updateColorCharge() {
 	var colors=['r','g','b']
 	if (player.masterystudies) {
-		var sorted=[]
-		for (s=1;s<4;s++) {
-			var search=''
-			for (i=0;i<3;i++) if (!sorted.includes(colors[i])&&(search==''||player.quantum.usedQuarks[colors[i]].gte(player.quantum.usedQuarks[search]))) search=colors[i]
-			sorted.push(search)
-		}
-		colorCharge={color:sorted[0],charge:Decimal.sub(player.quantum.usedQuarks[sorted[0]]).sub(player.quantum.usedQuarks[sorted[1]])}
-		if (player.quantum.usedQuarks[sorted[0]].gt(0)&&colorCharge.charge.eq(0)) giveAchievement("Hadronization")
+		if (player.ghostify.milestones<2) {
+			var sorted=[]
+			for (s=1;s<4;s++) {
+				var search=''
+				for (i=0;i<3;i++) if (!sorted.includes(colors[i])&&(search==''||player.quantum.usedQuarks[colors[i]].gte(player.quantum.usedQuarks[search]))) search=colors[i]
+				sorted.push(search)
+			}
+			colorCharge={color:sorted[0],charge:Decimal.sub(player.quantum.usedQuarks[sorted[0]]).sub(player.quantum.usedQuarks[sorted[1]])}
+			if (player.quantum.usedQuarks[sorted[0]].gt(0)&&colorCharge.charge.eq(0)) giveAchievement("Hadronization")
+		} else colorCharge={color:'r',charge:new Decimal(0)}
 	} else {
 		colorCharge={color:'r',charge:new Decimal(0)}
 		return
@@ -3617,7 +3619,7 @@ function onNotationChangeNeutrinos() {
 }
 
 function getNeutrinoGain() {
-	return Decimal.pow(5, player.ghostify.neutrinos.multPower - 1)
+	return new Decimal(0)
 }
 
 function buyNeutrinoUpg(id) {
