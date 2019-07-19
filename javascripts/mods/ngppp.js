@@ -1399,6 +1399,7 @@ function maxAllDilUpgs(quick) {
 			var toSpend=Decimal.pow(100,toBuy).sub(1).div(99).times(cost)
 			player.dilation.dilatedTime=player.dilation.dilatedTime.sub(player.dilation.dilatedTime.min(cost))
 			player.dilation.rebuyables[2]+=toBuy
+			resetDilationGalaxies()
 		}
 	} else buyDilationUpgrade(2,true)
 	updateDilationUpgradeCosts()
@@ -1869,7 +1870,7 @@ function getUnstableGain(branch, fixed) {
 	}
 	ret=Decimal.pow(2,power).times(ret)
 	if (ret.gt(1)) ret=Decimal.pow(ret, Math.pow(2,power)*6)
-	return ret.times(Decimal.pow(2,getRadioactiveDecays(branch)*25)).min(Decimal.pow(10,Math.pow(2,51)))
+	return ret.times(Decimal.pow(2,getRadioactiveDecays(branch)*25+1)).min(Decimal.pow(10,Math.pow(2,51)))
 }
 
 function unstableQuarks(branch) {
@@ -3619,7 +3620,7 @@ function onNotationChangeNeutrinos() {
 }
 
 function getNeutrinoGain() {
-	return new Decimal(0)
+	return Decimal.pow(5,player.ghostify.neutrinos.multPower-1)
 }
 
 function buyNeutrinoUpg(id) {
