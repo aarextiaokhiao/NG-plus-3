@@ -45,7 +45,7 @@ function updateMasteryStudyButtons() {
 			else div.className="timestudylocked"
 		}
 	}
-	if (player.masterystudies.includes("d10")) {
+	if (player.masterystudies.includes("d10")||ghostified) {
 		document.getElementById("ts341Current").textContent="Currently: "+shorten(getMTSMult(341))+"x"
 		document.getElementById("ts344Current").textContent="Currently: "+(getMTSMult(344)*100-100).toFixed(2)+"%"
 		document.getElementById("ts351Current").textContent="Currently: "+shorten(getMTSMult(351))+"x"
@@ -55,7 +55,7 @@ function updateMasteryStudyButtons() {
 		else if (canBuyMasteryStudy('d', 11)) div.className="dilationupg"
 		else div.className="timestudylocked"
 	}
-	if (player.masterystudies.includes("d11")) {
+	if (player.masterystudies.includes("d11")||ghostified) {
 		document.getElementById("ts361Current").textContent="Currently: "+shorten(getMTSMult(361))+"x"
 		for (r=37;r<40;r++) for (c=1;c<4;c++) document.getElementById("ts"+(r*10+c)+"Current").textContent="Currently: "+shorten(getMTSMult(r*10+c))+"x"
 		
@@ -64,7 +64,7 @@ function updateMasteryStudyButtons() {
 		else if (canBuyMasteryStudy('d', 12)) div.className="dilationupg"
 		else div.className="timestudylocked"
 	}
-	if (player.masterystudies.includes("d12")) {
+	if (player.masterystudies.includes("d12")||ghostified) {
 		document.getElementById("ts401Current").textContent="Currently: "+shorten(getMTSMult(401))+"x"
 		document.getElementById("ts411Current").textContent="Currently: "+shorten(getMTSMult(411))+"x"
 		
@@ -108,9 +108,8 @@ function buyMasteryStudy(type, id, quick=false) {
 			player.eternityChallUnlocked=id
 			player.etercreq=id
 			updateEternityChallenges()
-		} else {
-			player.masterystudies.push(type+id)
-		}
+			delete player.quantum.autoECN
+		} else player.masterystudies.push(type+id)
 		updateMasteryStudyCosts(quick)
 		if (id==302) maybeShowFillAll()
 		if (!quick) {
@@ -227,7 +226,7 @@ function canBuyMasteryStudy(type, id) {
 		if (row>24) return player.masterystudies.includes('t241')
 	} else if (type=='d') {
 		if (player.timestudy.theorem<masterystudies.costs.dil[id]||player.masterystudies.includes('d'+id)) return false
-		if (id>13) return player.masterystudies.includes("t412")&&(ghostified||player.masterystudies.includes("d12"))
+		if (id>13) return player.masterystudies.includes("t412")&&player.masterystudies.includes("d12")&&player.achievements.includes("ng3p34")
 		if (id>12) return player.masterystudies.includes("t412")&&(ghostified||player.quantum.nanofield.rewards>14)
 		if (id>11) return player.masterystudies.includes("t392")&&(ghostified||eds[8].workers.gt(9.9))
 		if (id>10) return player.masterystudies.includes("t351")&&(ghostified||eds[1].workers.gt(9.9))
@@ -331,7 +330,7 @@ function drawMasteryTree() {
 		drawMasteryBranch("timestudy311", "timestudy321")
 		drawMasteryBranch("timestudy312", "timestudy323")
 	}
-	if (player.masterystudies.includes("d10")) {
+	if (player.masterystudies.includes("d10")||ghostified) {
 		drawMasteryBranch("dilstudy10", "timestudy322")
 		drawMasteryBranch("timestudy322", "timestudy331")
 		drawMasteryBranch("timestudy322", "timestudy332")
@@ -342,7 +341,7 @@ function drawMasteryTree() {
 		drawMasteryBranch("timestudy344", "timestudy351")
 		drawMasteryBranch("timestudy351", "dilstudy11")
 	}
-	if (player.masterystudies.includes("d11")) {
+	if (player.masterystudies.includes("d11")||ghostified) {
 		drawMasteryBranch("dilstudy11", "timestudy361")
 		drawMasteryBranch("dilstudy11", "timestudy362")
 		drawMasteryBranch("timestudy361", "timestudy371")
@@ -358,7 +357,7 @@ function drawMasteryTree() {
 		drawMasteryBranch("timestudy382", "timestudy393")
 		drawMasteryBranch("timestudy392", "dilstudy12")
 	}
-	if (player.masterystudies.includes("d12")) {
+	if (player.masterystudies.includes("d12")||ghostified) {
 		drawMasteryBranch("dilstudy12", "timestudy401")
 		drawMasteryBranch("dilstudy12", "timestudy402")
 		drawMasteryBranch("timestudy401", "timestudy411")
@@ -577,8 +576,16 @@ function updateQuantumTabs() {
 			document.getElementById("eggonAmount").textContent=shortenDimensions(player.quantum.replicants.eggons)
 			document.getElementById("hatchProgress").textContent=Math.round(player.quantum.replicants.babyProgress.toNumber()*100)+"%"
 		}
+		var growupRate = getTotalReplicants().times(player.achievements.includes("ng3p35")?1.5:0.15)
+		if (player.quantum.replicants.babies.eq(0)) growupRate = growupRate.min(eggonRate)
+		if (growupRate.lt(30)) {
+			document.getElementById("growupRate").textContent=shortenDimensions(growupRate)
+			document.getElementById("growupRateUnit").textContent="minute"
+		} else {
+			document.getElementById("growupRate").textContent=shortenMoney(growupRate.div(60))
+			document.getElementById("growupRateUnit").textContent="second"
+		}
 		document.getElementById("growupProgress").textContent=Math.round(player.quantum.replicants.ageProgress.toNumber()*100)+"%"
-		document.getElementById("feedBaby").className=((player.quantum.replicants.quantumFood<1||player.quantum.replicants.babies.lt(1))?"unavailabl":"stor")+"ebtn"
 
 		document.getElementById("reduceHatchSpeed").innerHTML="Hatch speed: "+hatchSpeedDisplay()+" -> "+hatchSpeedDisplay(true)+"<br>Cost: "+shortenDimensions(player.quantum.replicants.hatchSpeedCost)+" for all 3 gluons"
 		if (player.ghostify.milestones>7||player.achievements.includes("ng3p66")) updateReplicants("display")
@@ -1087,6 +1094,7 @@ function updateMasteryStudyTextDisplay() {
 		document.getElementById("ds13Cost").textContent="Cost: "+shorten(1e95)+" Time Theorems"
 		document.getElementById("ds13Req").innerHTML=ghostified?"":"<br>Requirement: 15 Nanofield rewards"
 		document.getElementById("ds14Cost").textContent="Cost: "+shorten(2e98)+" Time Theorems"
+		document.getElementById("ds14Req").innerHTML=ghostified?"":"<br>Requirement: 'The Challenging Day' achievement"
 	}
 }
 
@@ -1254,21 +1262,6 @@ function buyQuantumFood() {
 		updateGluons("spend")
 		updateReplicants("spend")
 	}
-}
-
-function feedBabyReplicant() {
-	if (player.quantum.replicants.quantumFood<1||player.quantum.replicants.babies.lt(1)) return
-	player.quantum.replicants.quantumFood--
-	player.quantum.replicants.quantumFoodCost=player.quantum.replicants.quantumFoodCost.div(5)
-	player.quantum.replicants.ageProgress=player.quantum.replicants.ageProgress.add(0.5)
-	if (player.quantum.replicants.amount.lt(1)) player.quantum.replicants.ageProgress=player.quantum.replicants.ageProgress.times(2).round().div(2)
-	if (player.quantum.replicants.ageProgress.gte(1)) {
-		var toAdd=player.quantum.replicants.ageProgress.floor()
-		player.quantum.replicants.babies=player.quantum.replicants.babies.sub(toAdd).round()
-		player.quantum.replicants.ageProgress=player.quantum.replicants.ageProgress.sub(toAdd)
-		player.quantum.replicants.amount=player.quantum.replicants.amount.add(toAdd)
-	}
-	updateReplicants("spend")
 }
 
 function reduceHatchSpeed() {
@@ -1869,7 +1862,7 @@ function getUnstableGain(branch, fixed) {
 		if (ret<2) ret=Math.max(player.quantum.usedQuarks[branch].times(1e90/99).div(player.quantum.tod[branch].gainDiv).log10()/60,0)
 	}
 	ret=Decimal.pow(2,power).times(ret)
-	if (ret.gt(1)) ret=Decimal.pow(ret, Math.pow(2,power)*6)
+	if (ret.gt(1)) ret=Decimal.pow(ret, Math.pow(2,power+1))
 	return ret.times(Decimal.pow(2,getRadioactiveDecays(branch)*25+1)).min(Decimal.pow(10,Math.pow(2,51)))
 }
 
@@ -1967,7 +1960,7 @@ function getTreeUpgradeEffectDesc(upg) {
 	return shortenMoney(getTreeUpgradeEffect(upg))
 }
 
-var branchUpgCostScales = [[300, 15], [2400, 10], [8e7, 7]]
+var branchUpgCostScales = [[300, 15], [600, 10], [8e7, 7]]
 function getBranchUpgCost(branch, upg) {
 	var lvl = getBranchUpgLevel(branch, upg)
 	var scale = branchUpgCostScales[upg-1]
@@ -2001,6 +1994,11 @@ function toggleAutoReset() {
 }
 
 //v2
+function autoECToggle() {
+	player.quantum.autoEC=!player.quantum.autoEC
+	document.getElementById("autoEC").className=player.quantum.autoEC?"timestudybought":"storebtn"
+}
+
 var quantumWorth
 function updateQuantumWorth(mode) {
 	if (player.ghostify.milestones<8&&!player.achievements.includes("ng3p66")) {
@@ -3213,6 +3211,7 @@ function ghostifyReset(implode, gain, amount, force) {
 			time: 0,
 			best: 9999999999,
 			last10: [[600*60*24*31, new Decimal(0)], [600*60*24*31, new Decimal(0)], [600*60*24*31, new Decimal(0)], [600*60*24*31, new Decimal(0)], [600*60*24*31, new Decimal(0)], [600*60*24*31, new Decimal(0)], [600*60*24*31, new Decimal(0)], [600*60*24*31, new Decimal(0)], [600*60*24*31, new Decimal(0)], [600*60*24*31, new Decimal(0)]],
+			autoEC: player.quantum.autoEC,
 			disabledRewards: player.quantum.disabledRewards,
 			metaAutobuyerWait: 0,
 			autobuyer: {
@@ -3252,7 +3251,7 @@ function ghostifyReset(implode, gain, amount, force) {
 			electrons: {
 				amount: 0,
 				sacGals: 0,
-				mult: bm > 2 ? player.quantum.electrons.mult : 2,
+				mult: bm > 2 ? player.quantum.electrons.mult : bm ? 6 : 2,
 				rebuyables: bm > 2 ? player.quantum.electrons.rebuyables : [0,0,0,0]
 			},
 			challenge: [],
@@ -3295,7 +3294,7 @@ function ghostifyReset(implode, gain, amount, force) {
 				rewards: bm>12?15:0,
 				producingCharge: false
 			},
-			reachedInfQK: bm > 1,
+			reachedInfQK: bm,
 			tod: {
 				r: {
 					quarks: new Decimal(bm > 13 ? 1e25 : 0),

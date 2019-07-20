@@ -1244,6 +1244,7 @@ function quantumReset(force, auto, challid, bigRip, implode=false) {
 		player.quantum.notrelative = true
 		updateMasteryStudyCosts()
 		updateMasteryStudyButtons()
+		delete player.quantum.autoECN
 	}
 	if (speedrunMilestonesReached<1&&!bigRip) {
 		document.getElementById("infmultbuyer").textContent="Autobuy IP mult OFF"
@@ -1340,15 +1341,17 @@ function quantumReset(force, auto, challid, bigRip, implode=false) {
 	if (speedrunMilestonesReached < 14 || !isRewardEnabled(4)) {
 		document.getElementById("respecMastery").style.display = "none"
 		document.getElementById("respecMastery2").style.display = "none"
-		document.getElementById("replicantsstudies").style.display = "none"
 		document.getElementById("timestudy322").style.display="none"
-		document.getElementById("empstudies").style.display = "none"
 		document.getElementById("timestudy361").style.display = "none"
 		document.getElementById("timestudy362").style.display = "none"
-		document.getElementById("nfstudies").style.display="none"
 		document.getElementById("edtabbtn").style.display = "none"
 		document.getElementById("nanofieldtabbtn").style.display = "none"
 		document.getElementById("todtabbtn").style.display = "none"
+		if (!ghostified) {
+			document.getElementById("replicantsstudies").style.display="none"
+			document.getElementById("empstudies").style.display="none"
+			document.getElementById("nfstudies").style.display="none"
+		}
 		if (document.getElementById("metadimensions").style.display == "block"||document.getElementById("emperordimensions").style.display == "block") showDimTab("antimatterdimensions")
 		if (document.getElementById("masterystudies").style.display=="block") showEternityTab("timestudies", document.getElementById("eternitystore").style.display!="block")
 		if (document.getElementById("quantumchallenges").style.display == "block") showChallengesTab("normalchallenges")

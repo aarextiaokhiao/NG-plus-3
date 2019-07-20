@@ -1841,6 +1841,8 @@ function updateEternityChallenges() {
 		document.getElementById(property).className=onchallenge?"onchallengebtn":"challengesbtn"
 	}
 	document.getElementById("eterctabbtn").style.display = locked?"none":"inline-block"
+	document.getElementById("autoEC").style.display=quantumed&&player.masterystudies!=undefined?"inline-block":"none"
+	if (quantumed&&player.masterystudies!=undefined) document.getElementById("autoEC").className=player.quantum.autoEC?"timestudybought":"storebtn"
 }
 
 
@@ -3564,7 +3566,7 @@ function setAchieveTooltip() {
     let notSmart = document.getElementById("You're not really smart.")
     let soLife = document.getElementById("And so your life?")
     let willenough = document.getElementById("Will it be enough?")
-    let bm2 = document.getElementById("braveMilestone2")
+    let bm1 = document.getElementById("braveMilestone1")
     let bm14 = document.getElementById("braveMilestone14")
 
     apocAchieve.setAttribute('ach-tooltip', "Get over " + formatValue(player.options.notation, 1e80, 0, 0) + " antimatter.");
@@ -3655,7 +3657,7 @@ function setAchieveTooltip() {
     notSmart.setAttribute('ach-tooltip', "Get "+shorten(1e215)+" Time Shards without having time study 11 while big ripped.")
     soLife.setAttribute('ach-tooltip', "Reach "+shorten(Decimal.pow(10, 35e4))+" IP without studies and normal EP multi upgrades but in dilated and big ripped.")
     willenough.setAttribute('ach-tooltip', "Reach "+shortenCosts( new Decimal("1e20000000"))+" replicanti.")
-    bm2.setAttribute('ach-tooltip', "Reward: Colored quarks do not cancel, you keep your gluon upgrades and all features of "+shorten(Number.MAX_VALUE)+" QK reward, and you can quick Big Rip.")
+    bm1.setAttribute('ach-tooltip', "Reward: Start Ghostifies with all Speedrun Milestones and all "+shorten(Number.MAX_VALUE)+" QK features unlocked, all Paired Challenges completed, and all Big Rip upgrades bought.")
     bm14.setAttribute('ach-tooltip', "Reward: Start Ghostifies with "+shortenCosts(1e25)+" Quark Spins.")
 }
 
@@ -3704,6 +3706,7 @@ function onNotationChange() {
 		updateMasteryStudyTextDisplay()
 		updateReplicants("notation")
 		updateTODStuff()
+		updateBreakEternity()
 		onNotationChangeNeutrinos()
 	}
 	document.getElementById("epmult").innerHTML = "You gain 5 times more EP<p>Currently: "+shortenDimensions(player.epmult)+"x<p>Cost: "+shortenDimensions(player.epmultCost)+" EP"
@@ -5079,15 +5082,21 @@ function eternity(force, auto, presetLoad) {
         if (player.currentEternityChall !== "") {
             if (player.eternityChalls[player.currentEternityChall] === undefined) {
                 player.eternityChalls[player.currentEternityChall] = 1
-            } else if (player.eternityChalls[player.currentEternityChall] < 5) player.eternityChalls[player.currentEternityChall] += 1
+            } else if (player.eternityChalls[player.currentEternityChall] < 5) {
+                player.eternityChalls[player.currentEternityChall] += 1
+            }
             else if (player.aarexModifications.eternityChallRecords[player.eternityChallUnlocked] === undefined) player.aarexModifications.eternityChallRecords[player.eternityChallUnlocked] = player.thisEternity
             else player.aarexModifications.eternityChallRecords[player.eternityChallUnlocked] = Math.min(player.thisEternity, player.aarexModifications.eternityChallRecords[player.eternityChallUnlocked])
             if (player.currentEternityChall === "eterc12" && ghostified) {
                 if (player.eternityChalls.eterc11 === undefined) player.eternityChalls.eterc11 = 1
                 else if (player.eternityChalls.eterc11 < 5) player.eternityChalls.eterc11++
             }
-            player.etercreq = 0
-            forceRespec = true
+            if (player.masterystudies!==undefined?player.quantum.autoEC&&player.eternityChalls[player.currentEternityChall]<5:false) {
+                player.timestudy.theorem+=([0,30,35,40,70,130,85,115,115,415,550,1,1])[player.etercreq]
+                player.eternityChallUnlocked=0
+                player.quantum.autoECN=player.etercreq
+            } else forceRespec = true
+            player.etercreq=0
             if (Object.keys(player.eternityChalls).length >= 10) {
                 var eterchallscompletedtotal = 0;
                 for (i=1; i<Object.keys(player.eternityChalls).length+1; i++) {
@@ -5097,7 +5106,7 @@ function eternity(force, auto, presetLoad) {
                     giveAchievement("5 more eternities until the update");
                 }
             }
-        }
+        } else if (player.masterystudies!==undefined) delete player.quantum.autoECN
         for (var i=0; i<player.challenges.length; i++) {
             if (!player.challenges[i].includes("post") && getEternitied() > 1) temp.push(player.challenges[i])
         }
@@ -5783,7 +5792,8 @@ function unlockEChall(idx) {
         document.getElementById("eterc"+player.eternityChallUnlocked+"div").style.display = "inline-block"
         if (!justImported) showTab("challenges")
         if (!justImported) showChallengesTab("eternitychallenges")
-        if (idx !== 12 && idx !== 13) player.etercreq = idx
+        if (idx !== 13 && idx !== 14) player.etercreq = idx
+        if (player.masterystudies!==undefined) delete player.quantum.autoECN
     }
     updateEternityChallenges()
     updateTimeStudyButtons()
@@ -7032,6 +7042,12 @@ setInterval(function() {
             if (document.getElementById("welcome").style.display != "flex") document.getElementById("welcome").style.display = "flex"
             else player.aarexModifications.popUpId = ""
             document.getElementById("welcomeMessage").innerHTML = "Congratulations! You reached 9.32e446 MA and then completed EC14 for the first time! You unlocked the fifth layer called Quantum! It comes after Dimension Boost, Antimatter Galaxy, Big Church, and Eternity. This allows you to get gigantic numbers!"
+        }
+        if (player.quantum.autoECN!==undefined) {
+            justImported=true
+            if (player.quantum.autoECN>12) buyMasteryStudy("ec",player.quantum.autoECN,true)
+            else document.getElementById("ec"+player.quantum.autoECN+"unl").onclick()
+            justImported=false
         }
         var chall=getCurrentQCData()
         if (chall.length<2) chall=chall[0]

@@ -1842,12 +1842,12 @@ if (player.version < 5) {
   } else if (document.getElementById("ers_timestudies").style.display=="block") showEternityTab("timestudies",true)
   poData=metaSave["presetsOrder"+(player.boughtDims?"_ers":"")]
   document.getElementById("quantumstudies").style.display=quantumed&&player.masterystudies?"":"none"
-  document.getElementById("replicantsstudies").style.display=!player.masterystudies?"none":player.masterystudies.includes("d10")?"":"none"
-  document.getElementById("timestudy322").style.display=!player.masterystudies?"none":player.masterystudies.includes("d10")?"":"none"
-  document.getElementById("empstudies").style.display=!player.masterystudies?"none":player.masterystudies.includes("d11")?"":"none"
-  document.getElementById("timestudy361").style.display=!player.masterystudies?"none":player.masterystudies.includes("d11")?"":"none"
-  document.getElementById("timestudy362").style.display=!player.masterystudies?"none":player.masterystudies.includes("d11")?"":"none"
-  document.getElementById("nfstudies").style.display=!player.masterystudies?"none":player.masterystudies.includes("d12")?"":"none"
+  document.getElementById("replicantsstudies").style.display=!player.masterystudies?"none":player.masterystudies.includes("d10")||ghostified?"":"none"
+  document.getElementById("timestudy322").style.display=!player.masterystudies?"none":player.masterystudies.includes("d10")||ghostified?"":"none"
+  document.getElementById("empstudies").style.display=!player.masterystudies?"none":player.masterystudies.includes("d11")||ghostified?"":"none"
+  document.getElementById("timestudy361").style.display=!player.masterystudies?"none":player.masterystudies.includes("d11")||ghostified?"":"none"
+  document.getElementById("timestudy362").style.display=!player.masterystudies?"none":player.masterystudies.includes("d11")||ghostified?"":"none"
+  document.getElementById("nfstudies").style.display=!player.masterystudies?"none":player.masterystudies.includes("d12")||ghostified?"":"none"
   document.getElementById("quarksAnimBtn").style.display=quantumed&&player.masterystudies?"inline-block":"none"
   document.getElementById("quarksAnimBtn").textContent="Quarks: O"+(player.options.animations.quarks?"N":"FF")
   document.getElementById('dilationmode').style.display=speedrunMilestonesReached>4?"":"none"

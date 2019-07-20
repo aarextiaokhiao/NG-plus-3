@@ -501,7 +501,7 @@
                 </table>
                 <table class="table" id="studytable">
                     <tr>
-                        <td><button class="timestudylocked" id="timestudy321" onclick='buyMasteryStudy("t", 321)' style='font-size:10px'>If the multiplier per ten dimensions does nothing, it actually multiplies dimensions by <span id='321effect'></span>x.</span></button></td>
+                        <td><button class="timestudylocked" id="timestudy321" onclick='buyMasteryStudy("t", 321)'>If the multiplier per ten normal dimensions is 1x, then change it to <span id='321effect'></span>x.</span></button></td>
                         <td style='width:368px; text-align: center'><button class="timestudylocked" id="timestudy322" style='font-size:10px' onclick='buyMasteryStudy("t", 322)'>Tickspeed boosts DT production at greatly reduced rate.<br><span id="ts322Current"></span></button></td>
                         <td><button class="timestudylocked" id="timestudy323" style='font-size:10px' onclick='buyMasteryStudy("t", 323)'>Cancel dilation penalty for Normal Dimensions boost from replicanti.</span></button></td>
                     </tr>
@@ -579,7 +579,7 @@
                 <table class="table" id="studytable">
                     <tr>
                         <td><button class="timestudylocked" id="dilstudy13" onclick='buyMasteryStudy("d", 13)'>Unlock Tree of Decay<br><span id="ds13Cost"></span><span id="ds13Req"></span></button></td>
-                        <td><button class="timestudylocked" id="dilstudy14" onclick='buyMasteryStudy("d", 14)'>Unlock Big Rip<br><span id="ds14Cost"></span></button></td>
+                        <td><button class="timestudylocked" id="dilstudy14" onclick='buyMasteryStudy("d", 14)'>Unlock Big Rip<br><span id="ds14Cost"></span><span id="ds14Req"></span></button></td>
                     </tr>
                 </table>
                 </div>
@@ -2697,8 +2697,8 @@
                 <div>Get # of quantumed stat below the requirement and then become a ghost for a reward!</div>
                 <table style="margin: auto">
                     <tr id="braveRow1">
-                        <td><div id="braveMilestone1" class="achievement achievementlocked" ach-tooltip="Reward: Start Ghostifies with all Speedrun Milestones unlocked, all Paired Challenges completed, and all Big Rip upgrades bought."></div></td>
-                        <td><div id="braveMilestone2" class="achievement achievementlocked"></div></td>
+                        <td><div id="braveMilestone1" class="achievement achievementlocked"></div></td>
+                        <td><div id="braveMilestone2" class="achievement achievementlocked" ach-tooltip="Reward: Colored quarks do not cancel, you keep your gluon upgrades and you can quick Big Rip."></div></td>
                         <td><div id="braveMilestone3" class="achievement achievementlocked" ach-tooltip="Reward: You keep your Electron upgrades."></div></td>
                         <td><div id="braveMilestone4" class="achievement achievementlocked" ach-tooltip="Reward: Quantuming doesn't reset your Tachyon particles unless you are in a QC."></div></td>
                         <td><div id="braveMilestone5" class="achievement achievementlocked" ach-tooltip="Reward: Quantuming doesn't reset your Meta-Dimension Boosts unless you are in a QC."></div></td>
@@ -3181,6 +3181,7 @@
             </div>
             <div id="eternitychallenges" class="challengeTab">
                 <div>Complete Eternity Challenges again for a bigger reward, maximum of 5 times.</div>
+                <button class="storebtn" onclick="autoECToggle()" id="autoEC" style="width:150px; height: 40px; font-size: 10px; margin: auto">Don't auto-respec studies and auto-reunlock ECs</button>
                 <table  class="table" style="margin: 0 auto">
                     <tr>
                         <td>
@@ -4549,8 +4550,7 @@
 				</td><td>
 					You have <span id="babyReplAmount" style="font-size:35px">0</span> baby replicants.<br>
 					They are gathering <span id="babyReplGatherRate" style="font-size:25px">0</span> preons per second.<br>
-					Grow up your baby replicant. <span id="growupProgress" style="font-size:15px">0.0%</span><br>
-					<button class='storebtn' id='feedBaby' style='width: 240px' onclick="feedBabyReplicant()">Feed one with quantum food</button>
+					They will become normal replicants at <span id="growupRate" style="font-size:15px"></span> per <span id="growupRateUnit"></span>. <span id="growupProgress" style="font-size:15px">0.0%</span>.<br>
 				</td></tr><tr><td>
 					You have <span id="gatheredQuarks" style="font-size:35px">0</span> preons. <span id="gatherRate" style="font-size:25px">+0/s</span><br>
 					Translated to +<span id="quarkTranslation" style="font-size:35px">0</span>% added green power.</p>

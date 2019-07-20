@@ -342,6 +342,7 @@ function respecTimeStudies(force, presetLoad) {
   if (player.masterystudies) {
       respecMastery=player.respecMastery||force
       gotAch=gotAch&&(respecMastery||player.masterystudies.length<1)
+      delete player.quantum.autoECN
   }
   if (respecTime) {
        if (player.boughtDims) {
