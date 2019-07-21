@@ -408,7 +408,7 @@ function setupText() {
 		var branchUpgrades=["Gain <span id='"+color+"UpgPow1'></span>x "+color+" quark spins, but "+color+" quarks decay 2x faster.","The gain of "+color+" <span id='"+color+"UpgName2'></span> quarks is multiplied by x and then raised to the power of x.",(["Red","Green","Blue"])[c]+" <span id='"+color+"UpgName3'></span> quarks decay 4x slower."]
 
 		var html='You have <span class="'+color+'" id="'+color+'QuarksToD" style="font-size: 35px">0</span> '+color+' quarks.<br>'
-		html+='<button class="storebtn" id="'+color+'UnstableGain" style="width: 210px; height: 70px" onclick="unstableQuarks(\''+shorthand+'\')">Unstablize quarks for 0.0 unstable quarks.</button><br>'
+		html+='<button class="storebtn" id="'+color+'UnstableGain" style="width: 240px; height: 80px" onclick="unstableQuarks(\''+shorthand+'\')"></button><br>'
 		html+='<span id="'+color+'Conversion">9.90e531 '+color+' quarks => 1.0 unstable '+color+' quarks</span><br>'
 		html+='You have <span class="'+color+'" id="'+color+'QuarkSpin" style="font-size: 35px">0.0</span> '+color+' quark spin.'
 		html+='<span class="'+color+'" id="'+color+'QuarkSpinProduction" style="font-size: 25px">+0/s</span><br>'
@@ -559,7 +559,7 @@ function updateQuantumTabs() {
 		document.getElementById("gatherRate").textContent='+'+shortenDimensions(gatherRateData.total)+'/s'
 
 		document.getElementById("gatheredQuarks").textContent=shortenDimensions(player.quantum.replicants.quarks.floor())
-		document.getElementById("quarkTranslation").textContent=shortenDimensions(gatheredQuarksBoost*100)
+		document.getElementById("quarkTranslation").textContent=getFullExpansion(Math.round(gatheredQuarksBoost*100))
 
 		var eggonRate = getTotalWorkers().times(getEDMultiplier(1)).times(3)
 		if (eggonRate.lt(30)) {
@@ -632,11 +632,11 @@ function updateQuantumTabs() {
 			var name=color+" "+getUQName(shorthand)+" quarks"
 			var rate=getDecayRate(shorthand)
 			var linear=Decimal.pow(2,getRadioactiveDecays(shorthand)*25)
-			document.getElementById(color+"UnstableGain").textContent="Unstablize quarks for "+shortenMoney(getUnstableGain(shorthand))+" "+name+"."
+			document.getElementById(color+"UnstableGain").textContent="Gain "+shortenMoney(getUnstableGain(shorthand))+" "+name+", but lose all your "+color+" quarks."
 			document.getElementById(color+"Conversion").textContent=shorten(player.quantum.tod[shorthand].gainDiv.times(99e30)) + " " + color + " quarks => " + shortenMoney(getUnstableGain(shorthand, true)) + " " + name
 			document.getElementById(color+"QuarkSpin").textContent=shortenMoney(branch.spin)
 			document.getElementById(color+"UnstableQuarks").textContent=shortenMoney(branch.quarks)
-			document.getElementById(color+"QuarksDecayRate").textContent=branch.quarks.lt(linear)&&rate.lt(1)?"You are losing "+shorten(linear.times(rate))+" "+name+" per second":"They decay at 50% per "+timeDisplayShort(Decimal.div(10,rate),true,2)
+			document.getElementById(color+"QuarksDecayRate").textContent=branch.quarks.lt(linear)&&rate.lt(1)?"You are losing "+shorten(linear.times(rate))+" "+name+" per second":"Their half-life is "+timeDisplayShort(Decimal.div(10,rate),true,2)+(linear.eq(1)?"":" until their amount reaches "+shorten(linear))
 			let ret=getQuarkSpinProduction(shorthand)
 			document.getElementById(color+"QuarkSpinProduction").textContent="+"+shortenMoney(ret)+"/s"
 			if (branchNum==c+1) {
@@ -867,7 +867,7 @@ function sacrificeGalaxy(auto=false) {
 
 function getMPTPower(on) {
 	if (!inQC(0)) return 1
-	var a = player.quantum.electrons.amount
+	a = player.quantum.electrons.amount
 	if (a>187300) a = Math.sqrt((a-149840)*37460)+149840
 	if (GUBought("rg4")) a *= 0.7
 	if (player.masterystudies != undefined) if (on == undefined ? player.masterystudies.includes("d13") : on) a *= Math.sqrt(getTreeUpgradeEffect(4))
@@ -1630,6 +1630,7 @@ function updateEmperorDimensions() {
 
 function getEDMultiplier(dim) {
 	let ret = new Decimal(1)
+	if (player.currentEternityChall === "eterc11") return ret
 	if (player.masterystudies.includes("t392")) ret = getMTSMult(392)
 	if (player.masterystudies.includes("t402")) ret = ret.times(30)
 	if (player.masterystudies.includes("d13")) ret = ret.times(getTreeUpgradeEffect(6))
@@ -1830,7 +1831,7 @@ function updateTODStuff() {
 	}
 	for (var t=1;t<9;t++) {
 		var lvl=getTreeUpgradeLevel(t)
-		document.getElementById("treeupg"+t+"lvl").textContent=lvl
+		document.getElementById("treeupg"+t+"lvl").textContent=getFullExpansion(lvl)
 		document.getElementById("treeupg"+t+"cost").textContent=shortenMoney(getTreeUpgradeCost(t))+" "+colors[lvl%3]
 	}
 }
@@ -1898,16 +1899,17 @@ function getQuarkSpinProduction(branch) {
 	return ret
 }
 
-function getTreeUpgradeCost(upg) {
-	var lvl=getTreeUpgradeLevel(upg)
-	if (upg==1) return Decimal.pow(2, lvl*2+Math.max(lvl-35,0)*(lvl-34)/2).times(50)
-	if (upg==2) return Decimal.pow(4, lvl*(lvl+3)/2).times(600)
-	if (upg==3) return Decimal.pow(32, lvl).times(3e9)
-	if (upg==4) return Decimal.pow(2, lvl+Math.max(lvl-37,0)*(lvl-36)/2).times(1e12)
-	if (upg==5) return Decimal.pow(2, lvl+Math.max(lvl-35,0)*(lvl-34)/2).times(4e12)
-	if (upg==6) return Decimal.pow(4, lvl*(lvl+3)/2).times(6e22)
-	if (upg==7) return Decimal.pow(16, lvl*lvl).times(4e22)
-	if (upg==8) return Decimal.pow(2, lvl).times(3e23)
+function getTreeUpgradeCost(upg, add) {
+	lvl=getTreeUpgradeLevel(upg)
+	if (add!==undefined) lvl+=add
+	if (upg==1) return Decimal.pow(2,lvl*2+Math.max(lvl-35,0)*(lvl-34)/2).times(50)
+	if (upg==2) return Decimal.pow(4,lvl*(lvl+3)/2).times(600)
+	if (upg==3) return Decimal.pow(32,lvl).times(3e9)
+	if (upg==4) return Decimal.pow(2,lvl+Math.max(lvl-37,0)*(lvl-36)/2).times(1e12)
+	if (upg==5) return Decimal.pow(2,lvl+Math.max(lvl-35,0)*(lvl-34)/2).times(4e12)
+	if (upg==6) return Decimal.pow(4,lvl*(lvl+3)/2).times(6e22)
+	if (upg==7) return Decimal.pow(16,lvl*lvl).times(4e22)
+	if (upg==8) return Decimal.pow(2,lvl).times(3e23)
 	return 0
 }
 
@@ -2029,8 +2031,8 @@ function updateQuantumWorth(mode) {
 }
 
 function getELCMult() {
-	let ret = player.quantum.electrons.mult
-	if (hasNU(5)) ret *= 1
+	let ret=player.quantum.electrons.mult
+	if (hasNU(5)) ret*=3
 	return ret
 }
 
@@ -2078,8 +2080,22 @@ function rotateAutoAssign() {
 	document.getElementById('autoAssignRotate').textContent=player.quantum.autoOptions.assignQKRotate?"C"+(player.quantum.autoOptions.assignQKRotate>1?"ounterc":"")+"lockwise":"No rotate"
 }
 
+function unstableAll() {
+	var colors=["r","g","b"]
+	for (c=0;c<3;c++) {
+		var bData=player.quantum.tod[colors[c]]
+		if (player.quantum.usedQuarks[colors[c]].gt(0)) {
+			bData.quarks=bData.quarks.max(getUnstableGain(colors[c]))
+			bData.gainDiv=player.quantum.usedQuarks[colors[c]].max(bData.gainDiv)
+			player.quantum.usedQuarks[colors[c]]=new Decimal(0)
+		}
+	}
+	updateColorCharge()
+	updateQuantumWorth()
+}
+
 function getUQName(shorthand) {
-	let ret=""
+	let ret="unstable"
 	if (player.quantum.tod[shorthand].decays!==undefined) {
 		let mod8=player.quantum.tod[shorthand].decays%8
 		let div8=(player.quantum.tod[shorthand].decays-mod8)/8
@@ -2087,34 +2103,74 @@ function getUQName(shorthand) {
 		if (mod8>1) ret=(["infinity ","eternity ","quantum "])[Math.floor(mod8/2)-1]+ret
 		if (mod8%2>0) ret="ratioactive "+ret
 	}
-	return ret+"unstable"
+	return ret
+}
+
+function maxTreeUpg() {
+	var update=false
+	var colors=["r","g","b"]
+	var todData=player.quantum.tod
+	for (u=1;u<9;u++) {
+		var cost=getTreeUpgradeCost(u)
+		var newSpins=[]
+		var min
+		for (c=0;c<3;c++) {
+			min=todData[colors[c]].spin.min(c?min:1/0)
+			newSpins[c]=todData[colors[c]].spin
+		}
+		if (min.gte(cost)) {
+			var lvl=getTreeUpgradeLevel(u)
+			var increment=1
+			while (min.gte(getTreeUpgradeCost(u,increment-1))) increment*=2
+			var toBuy=0
+			while (increment>=1) {
+				if (min.gte(getTreeUpgradeCost(u,toBuy+increment-1))) toBuy+=increment
+				increment/=2
+			}
+			var cost=getTreeUpgradeCost(u,toBuy-1)
+			var toBuy2=toBuy
+			while (toBuy>0&&newSpins[(lvl+toBuy-1)%3].div(cost).lt(1e16)) {
+				if (newSpins[(lvl+toBuy-1)%3].gte(cost)) newSpins[(lvl+toBuy-1)%3]=newSpins[(lvl+toBuy-1)%3].sub(cost)
+				else {
+					newSpins[(lvl+toBuy-1)%3]=todData[colors[(lvl+toBuy-1)%3]].spin.sub(cost)
+					toBuy2--
+				}
+				toBuy--
+				cost=getTreeUpgradeCost(u,toBuy-1)
+			}
+			for (c=0;c<3;c++) todData[colors[c]].spin=newSpins[c]
+			todData.upgrades[u]=toBuy2+(todData.upgrades[u]===undefined?0:todData.upgrades[u])
+			update=true
+		}
+	}
+	if (update) updateTODStuff()
 }
 
 function maxBranchUpg(branch, weak) {
-	var colors = {r: "red", g: "green", b: "blue"}
-	var bData = player.quantum.tod[branch]
+	var colors={r:"red",g:"green",b:"blue"}
+	var bData=player.quantum.tod[branch]
 	for (var u=(weak?2:1);u<4;u++) {
-		var oldLvl = getBranchUpgLevel(branch, u)
-		var scaleStart = branchUpgCostScales[u-1][1]
-		var cost = getBranchUpgCost(branch, u)
-		if (bData.spin.gte(cost) && oldLvl < scaleStart) {
-			var costMult = Math.pow(2, u)
-			var toAdd = Math.min(Math.floor(bData.spin.div(cost).times(costMult-1).add(1).log(costMult)), scaleStart - oldLvl)
-			bData.spin = bData.spin.sub(Decimal.pow(costMult, toAdd).sub(1).div(costMult).times(cost))
-			if (bData.upgrades[u] === undefined) bData.upgrades[u] = 0
-			bData.upgrades[u] += toAdd
-			cost = getBranchUpgCost(branch, u)
+		var oldLvl=getBranchUpgLevel(branch,u)
+		var scaleStart=branchUpgCostScales[u-1][1]
+		var cost=getBranchUpgCost(branch,u)
+		if (bData.spin.gte(cost)&&oldLvl<scaleStart) {
+			var costMult=Math.pow(2,u)
+			var toAdd=Math.min(Math.floor(bData.spin.div(cost).times(costMult-1).add(1).log(costMult)),scaleStart-oldLvl)
+			bData.spin=bData.spin.sub(Decimal.pow(costMult,toAdd).sub(1).div(costMult).times(cost))
+			if (bData.upgrades[u]===undefined) bData.upgrades[u]=0
+			bData.upgrades[u]+=toAdd
+			cost=getBranchUpgCost(branch,u)
 		}
-		if (bData.spin.gte(cost) && bData.upgrades[u] >= scaleStart) {
-			var costMult = Math.pow(2, u + Math.max(3 - u, 1))
-			var toAdd = Math.floor(bData.spin.div(cost).times(costMult-1).add(1).log(costMult))
-			bData.spin = bData.spin.sub(Decimal.pow(costMult, toAdd).sub(1).div(costMult).times(cost))
-			if (bData.upgrades[u] === undefined) bData.upgrades[u] = 0
-			bData.upgrades[u] += toAdd
+		if (bData.spin.gte(cost)&&bData.upgrades[u]>=scaleStart) {
+			var costMult=Math.pow(2,u+Math.max(3-u,1))
+			var toAdd=Math.floor(bData.spin.div(cost).times(costMult-1).add(1).log(costMult))
+			bData.spin=bData.spin.sub(Decimal.pow(costMult,toAdd).sub(1).div(costMult).times(cost))
+			if (bData.upgrades[u]===undefined) bData.upgrades[u]=0
+			bData.upgrades[u]+=toAdd
 		}
-		if (bData.upgrades[u] > oldLvl) {
-			document.getElementById(colors[branch]+"upg"+u+"current").textContent=shortenDimensions(Decimal.pow(u>2?4:2, bData.upgrades[u]))
-			document.getElementById(colors[branch]+"upg"+u+"cost").textContent=shortenMoney(getBranchUpgCost(branch, u))
+		if (bData.upgrades[u]>oldLvl) {
+			document.getElementById(colors[branch]+"upg"+u+"current").textContent=shortenDimensions(Decimal.pow(u>2?4:2,bData.upgrades[u]))
+			document.getElementById(colors[branch]+"upg"+u+"cost").textContent=shortenMoney(getBranchUpgCost(branch,u))
 		}
 	}
 }
@@ -3633,6 +3689,7 @@ function buyNeutrinoUpg(id) {
 		document.getElementById("eggonsCell").style.display="none"
 		document.getElementById("workerReplWhat").textContent="babies"
 	}
+	if (id==5) player.quantum.electrons.amount*=3
 }
 
 function updateNeutrinoBoosts() {
@@ -3660,9 +3717,9 @@ function setupAutomaticGhostsData() {
 	return data
 }
 
-var autoGhostRequirements=[3,9,9,9,9,9,9,9,9,9,9,9,9,9,9,1/0]
+var autoGhostRequirements=[2,9,9,9,9,9,9,9,9,9,9,9,9,9,9,1/0]
 var powerConsumed
-var powerConsumptions=[0,1,1,1,2,1,1,1,1,1,1,1,1,1,1,1,1,1,1]
+var powerConsumptions=[0,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1]
 function updateAutoGhosts(load) {
 	if (load) {
 		if (player.ghostify.automatorGhosts.ghosts>17) document.getElementById("nextAutomatorGhost").parentElement.style.display="none"

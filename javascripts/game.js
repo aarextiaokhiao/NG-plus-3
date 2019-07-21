@@ -951,11 +951,11 @@ let tmp = {
 	bru: [],
 	be: false,
 	beu: [],
-	bm: [500,375,250,125,100,75,60,50,40,30,25,20,15,10,5,1,-1],
+	bm: [300,250,200,160,120,80,75,50,15,13,11,10,9,8,7,6,5],
 	nb: [],
 	nbc: [null,2,1/0,1/0,1/0,1/0,1/0,1/0,1/0,1/0],
 	nu: [],
-	nuc: [null,1e6,1e7,1e8,2e9,1/0,1/0,1/0,1/0,1/0]
+	nuc: [null,1e6,1e7,1e8,2e9,5e9,1/0,1/0,1/0,1/0]
 }
 function updateTemp() {
 	tmp.nrm=player.replicanti.amount.max(1)
@@ -979,7 +979,7 @@ function updateTemp() {
 			tmp.nu[0]=Math.max(100-(player.quantum.bigRip.active?0:player.meta.resets),0) //NU1
 			tmp.nu[1]=Math.pow(Math.max(player.quantum.colorPowers.b.log10()/250+1,1),2) //NU3
 			var ret=Math.max(-player.tickspeed.div(1e3).log10()/4e13-4,0)
-			tmp.nu[2]=Decimal.pow(10,Math.pow(ret,1/4)) //NU4
+			tmp.nu[2]=Decimal.pow(50,Math.pow(ret,1/4)) //NU4
 			tmp.nu[3]=1 //NU7
 			tmp.nu[4]=1 //NU9
 		}
@@ -2220,7 +2220,7 @@ function updateInfCosts() {
     if (document.getElementById("replicantis").style.display == "block" && document.getElementById("infinity").style.display == "block") {
         let replGalOver = 0
         if (player.timestudy.studies.includes(131)) replGalOver += Math.floor(player.replicanti.gal / 2)
-        document.getElementById("replicantimax").innerHTML = (player.replicanti.gal<3e3?"Max Replicanti galaxies":(player.replicanti.gal<6e4?"Distant":"Ghostly")+" Replicated Galaxies")+": "+getFullExpansion(player.replicanti.gal)+(replGalOver > 1 ? "+" + getFullExpansion(replGalOver) : "")+"<br>+1 Cost: "+shortenCosts(getRGCost())+" IP"
+        document.getElementById("replicantimax").innerHTML = (player.replicanti.gal<3e3?"Max Replicanti galaxies":(player.replicanti.gal<58200?"Distant":"Ghostly")+" Replicated Galaxies")+": "+getFullExpansion(player.replicanti.gal)+(replGalOver > 1 ? "+" + getFullExpansion(replGalOver) : "")+"<br>+1 Cost: "+shortenCosts(getRGCost())+" IP"
         document.getElementById("replicantiunlock").innerHTML = "Unlock Replicantis<br>Cost: "+shortenCosts(1e140)+" IP"
         document.getElementById("replicantireset").innerHTML = "Reset replicanti amount, but get a free galaxy<br>" + getFullExpansion(player.replicanti.galaxies) + (extraReplGalaxies ? "+" + getFullExpansion(extraReplGalaxies) : "") + " replicated galax" + ((player.replicanti.galaxies + extraReplGalaxies) == 1 ? "y" : "ies") + " created."
 
@@ -2409,7 +2409,7 @@ function getRGCost(offset=0, costChange) {
 					if (isReduced) {
 						increase += (offset - Math.max(399 - player.replicanti.gal, 0)) * (1500 * (offset - Math.max(399 - player.replicanti.gal, 0) + Math.max(player.replicanti.gal, 399) * 2) - 1183500)
 						if (player.replicanti.gal + offset > 2998) increase += (offset - Math.max(2998 - player.replicanti.gal, 0)) * (5e3 * (offset - Math.max(2998 - player.replicanti.gal, 0) + Math.max(player.replicanti.gal, 2998) * 2) - 29935e3)
-						if (player.replicanti.gal + offset > 6e4 - 2) increase += (offset - Math.max(6e4 - 1 - player.replicanti.gal, 0)) * (1e6 * (offset - Math.max(6e4 - 1 - player.replicanti.gal, 0) + Math.max(player.replicanti.gal, 6e4 - 1) * 2) - 6e10 + 1e6)
+						if (player.replicanti.gal + offset > 58198) increase += (offset - Math.max(58199 - player.replicanti.gal, 0)) * (1e6 * (offset - Math.max(58199 - player.replicanti.gal, 0) + Math.max(player.replicanti.gal, 58199) * 2) - 58199e6)
 					} else for (var g = Math.max(player.replicanti.gal, 399); g < player.replicanti.gal + offset; g++) increase += 5 * Math.floor(Math.pow(1.2, g - 394))
 				}
 			}

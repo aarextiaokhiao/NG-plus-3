@@ -4617,6 +4617,7 @@
 			</div>
 			<div class='quantumtab' id='tod'>
 				<table class="qtable"><tr id="todRow"></tr></table>
+				<button class="storebtn" onclick="unstableAll()" style="width: 210px">Gain all unstable quarks</button>
 				<table class="table" align="center" style="margin: auto">
 					<tr>
 						<td><button id="redBtn" class="secondarytabbtn" onclick="showBranchTab('red')">Red Branch Upgrades</button></td>
@@ -4640,6 +4641,7 @@
 						<td><button class='gluonupgrade unavailablebtn' id='treeupg7' onclick='buyTreeUpg(7)'>Replicantis boost dilated time production.<br>Level: <span id='treeupg7lvl'>?</span><br>Currently: <span id='treeupg7current'>?</span>x<br>Cost: <span id="treeupg7cost"></span> quark spin</button></td>
 						<td><button class='gluonupgrade unavailablebtn' id='treeupg8' onclick='buyTreeUpg(8)'>Your best-in-this-quantum meta-antimatter makes meta-antimatter effect stronger.<br>Level: <span id='treeupg8lvl'>?</span><br>Currently: <span id='treeupg8current'>?</span>x<br>Cost: <span id="treeupg8cost"></span> quark spin</button></td>
 					</tr></table>
+					<button class="storebtn" onclick="maxTreeUpg()" style="width: 190px">Max all upgrades</button>
 				</div>
 			</div>
 			<div id="footercontainer">
@@ -4699,7 +4701,7 @@
 					</tr>
 					<tr>
 						<td><button class="gluonupgrade unavailablebtn" id="neutrinoUpg4" onclick="buyNeutrinoUpg(4)" style="font-size: 10px">You gain quark spins faster and all branches are faster based on your tickspeed.<br>Currently: <span id="neutrinoUpg4Pow">1.0</span>x<br>Cost: <span id="neutrinoUpg4Cost"></span> of any neutrinos</button></td>
-						<td><button class="gluonupgrade unavailablebtn" id="neutrinoUpg5" onclick="buyNeutrinoUpg(5)" style="font-size: 10px">Electrons gain multiplier is increased by ??%.<br>Cost: <span id="neutrinoUpg5Cost"></span> of any neutrinos</button></td>
+						<td><button class="gluonupgrade unavailablebtn" id="neutrinoUpg5" onclick="buyNeutrinoUpg(5)">You gain 3x more electrons.<br>Cost: <span id="neutrinoUpg5Cost"></span> of any neutrinos</button></td>
 						<td><button class="gluonupgrade unavailablebtn" id="neutrinoUpg6" onclick="buyNeutrinoUpg(6)">Infinite time reward is ??% stronger.<br>Cost: <span id="neutrinoUpg6Cost"></span> of any neutrinos</button></td>
 					</tr>
 					<tr>
@@ -4743,7 +4745,7 @@
 					<tr>
 						<td id="autoGhost4"><div class="autoBuyerDiv" style="display:block">
 							<b>Auto-Unstabilize Rotate Ghost</b><br>
-							Power consumption: 2<br>
+							Power consumption: 1.5<br>
 							Auto-rotate: <button class="storebtn" id="autoGhostMod4" style="font-size: 100%; width: 120px; height: 20px">Every quantum</button><br>
 							Direction: <button class="storebtn" id="autoGhostRotate4" style="font-size: 100%; width: 120px; height: 20px">Clockwise</button><br>
 							Is active: <input id="isAutoGhostOn4" type="checkbox" onchange="toggleAutoGhost(4)"></input>
