@@ -979,7 +979,7 @@ function updateTemp() {
 			tmp.nu[0]=Math.max(100-(player.quantum.bigRip.active?0:player.meta.resets),0) //NU1
 			tmp.nu[1]=Math.pow(Math.max(player.quantum.colorPowers.b.log10()/250+1,1),2) //NU3
 			var ret=Math.max(-player.tickspeed.div(1e3).log10()/4e13-4,0)
-			tmp.nu[2]=Decimal.pow(50,Math.pow(ret,1/4)) //NU4
+			tmp.nu[2]=Decimal.pow(20,Math.pow(ret,1/4)) //NU4
 			tmp.nu[3]=1 //NU7
 			tmp.nu[4]=1 //NU9
 		}
@@ -3663,7 +3663,7 @@ function setAchieveTooltip() {
 
 
 //notation stuff
-var notationArray = ["Scientific","Engineering","Letters","Standard","Emojis","Mixed scientific","Mixed engineering","Logarithm","Brackets","Infinity","Greek","Game percentages","Hexadecimal","Tetration","Hyperscientific","Psi","Morse code","Spazzy","Country Codes","Iroha","Symbols","Lines","Simplified Written","Time","AF2019","AAS","AF5LN"]
+var notationArray = ["Scientific","Engineering","Logarithm","Mixed scientific","Mixed engineering","Mixed logarithm","Letters","Standard","Emojis","Brackets","Infinity","Greek","Game percentages","Hexadecimal","Tetration","Hyperscientific","Psi","Morse code","Spazzy","Country Codes","Iroha","Symbols","Lines","Simplified Written","Time","AF2019","AAS","AF5LN"]
 
 function updateNotationOption() {
 	var notationMsg="Notation: "+(player.options.notation=="Emojis"?"Cancer":player.options.notation)
@@ -3753,10 +3753,10 @@ document.getElementById("notation").onclick = function () {
 			row.innerHTML="<button class='storebtn' id='select"+name+"' style='width:160px; height: 40px' onclick='switchNotation("+n+")'>Select "+name+"</button>"
 			row=commasTable.insertRow(n+2)
 			row.innerHTML="<button class='storebtn' id='selectCommas"+name+"' style='width:160px; height: 40px' onclick='switchCommas("+(n+2)+")'>"+name+" on exponents</button>"
-			if (n>17) {
+			if (n>18) {
 				row=subTable.insertRow(n-1)
 				row.innerHTML="<button class='storebtn' id='selectSub"+name+"' style='width:160px; height: 40px' onclick='switchSubNotation("+n+")'>Select "+name+"</button>"
-			} else if (n<17) {
+			} else if (n<18) {
 				row=subTable.insertRow(n)
 				row.innerHTML="<button class='storebtn' style='width:160px; height: 40px' onclick='switchSubNotation("+n+")'>Select "+name+"</button>"	
 			}
@@ -7270,10 +7270,12 @@ function gameLoop(diff) {
 
     if (ghostified && isAutoGhostsSafe) {
         var colorShorthands=["r","g","b"]
-        for (var c=1;c<4;c++) if (isAutoGhostActive(c)) {
+        for (var c=1;c<4;c++) {
             var shorthand=colorShorthands[c-1]
-            if (player.quantum.usedQuarks[shorthand].gt(0) && player.quantum.tod[shorthand].quarks.eq(0)) unstableQuarks(shorthand)
+            if (isAutoGhostActive(c)) if (player.quantum.usedQuarks[shorthand].gt(0) && player.quantum.tod[shorthand].quarks.eq(0)) unstableQuarks(shorthand)
+            if (isAutoGhostActive(5)) maxBranchUpg(shorthand)
         }
+        if (isAutoGhostActive(6)) maxTreeUpg()
     }
     if (player.masterystudies) {
         var colorShorthands=["r","g","b"]
@@ -7611,6 +7613,7 @@ function gameLoop(diff) {
     document.getElementById("replicantimult").textContent = shorten(getIDReplMult())
 
     var currentQKmin = new Decimal(0)
+    var currentGHPmin = new Decimal(0)
     if (quantumed && isQuantumReached()) {
         var bigRipped = player.masterystudies === undefined ? false : player.quantum.bigRip.active
         if (!bigRipped) {
@@ -7622,9 +7625,9 @@ function gameLoop(diff) {
             } else player.quantum.autobuyer.peakTime += diff / 10
         }
         if (ghostified && bigRipped) {
-            currentQKmin = getGHPGain().dividedBy(player.ghostify.time/600)
-            if (currentQKmin.gt(GHPminpeak)) {
-                GHPminpeak = currentQKmin
+            currentGHPmin = getGHPGain().dividedBy(player.ghostify.time/600)
+            if (currentGHPmin.gt(GHPminpeak)) {
+                GHPminpeak = currentGHPmin
                 GHPminpeakValue = getGHPGain()
             }
         }
@@ -7657,6 +7660,9 @@ function gameLoop(diff) {
     document.getElementById("quantumbtnPeak").textContent = showGain == "QK" ? (showQKPeakValue ? "" : "Peaked at ") + shortenMoney(QKminpeak)+" QK/min" + (showQKPeakValue ? " at " + shortenDimensions(QKminpeakValue) + " QK" : "") : ""
     document.getElementById("ghostifybtnFlavor").textContent = (ghostified ? "" : "This broken universe will be done... ") + "I need to become a ghost."
     document.getElementById("GHPGain").textContent = ghostified ? "Gain " + shortenDimensions(getGHPGain()) + " Ghost Particles." : ""
+    document.getElementById("GHPRate").textContent = ghostified ? getGHPRate(currentGHPmin) : ""
+    var showGHPPeakValue = GHPminpeakValue.lt(1/0)||player.options.theme=="Aarex's Modifications"
+    document.getElementById("GHPPeak").textContent = ghostified ? (showGHPPeakValue?"":"Peaked at ")+getGHPRate(GHPminpeak)+(showGHPPeakValue?" at "+shortenDimensions(GHPminpeakValue)+" GHP":"") : ""
     updateMoney();
     updateCoinPerSec();
     updateDimensions()
@@ -8109,6 +8115,14 @@ function simulateTime(seconds, real) {
     var ticks = seconds * 20;
     var bonusDiff = 0;
     var playerStart = Object.assign({}, player);
+    var storage = {}
+    if (player.blackhole !== undefined) storage.bp = player.blackhole.power
+    if (player.meta !== undefined) storage.ma = player.meta.antimatter
+    if (player.masterystudies !== undefined) {
+        storage.dt = player.dilation.dilatedTime
+        storage.ec = player.quantum.electrons.amount
+        storage.nr = player.quantum.replicants.amount
+    }
     if (ticks > 1000 && !real) {
         bonusDiff = (ticks - 1000) / 20;
         ticks = 1000;
@@ -8122,10 +8136,15 @@ function simulateTime(seconds, real) {
     document.getElementById("offlineprogress").style.display = "block"
     var popupString = "While you were away"
     if (player.money.gt(playerStart.money)) popupString+= ",<br> your antimatter increased "+shortenMoney(player.money.log10() - (playerStart.money).log10())+" orders of magnitude"
-    if (player.infinityPower.gt(playerStart.infinityPower)) popupString+= ",<br> infinity power increased "+shortenMoney(player.infinityPower.log10() - (Decimal.max(playerStart.infinityPower, 1)).log10())+" orders of magnitude"
-    if (player.timeShards.gt(playerStart.timeShards)) popupString+= ",<br> time shards increased "+shortenMoney(player.timeShards.log10() - (Decimal.max(playerStart.timeShards, 1)).log10())+" orders of magnitude"
-    if (player.blackhole) if (player.blackhole.power.gt(playerStart.blackhole.power)) popupString+= ",<br> black hole power increased "+shortenMoney(player.blackhole.power.log10() - (Decimal.max(playerStart.blackhole.power, 1)).log10())+" orders of magnitude"
-    if (player.meta) if (player.meta.antimatter.gt(playerStart.meta.antimatter)) popupString+= ",<br> meta-antimatter increased "+shortenMoney(player.meta.antimatter.log10() - (Decimal.max(playerStart.meta.antimatter, 1)).log10())+" orders of magnitude"
+    if (player.infinityPower.gt(playerStart.infinityPower) && !quantumed) popupString+= ",<br> infinity power increased "+shortenMoney(player.infinityPower.log10() - (Decimal.max(playerStart.infinityPower, 1)).log10())+" orders of magnitude"
+    if (player.timeShards.gt(playerStart.timeShards) && !quantumed) popupString+= ",<br> time shards increased "+shortenMoney(player.timeShards.log10() - (Decimal.max(playerStart.timeShards, 1)).log10())+" orders of magnitude"
+    if (storage.dt) if (player.dilation.dilatedTime.gt(storage.dt)) popupString+= ",<br> dilated time increased "+shortenMoney(player.dilation.dilatedTime.log10() - (Decimal.max(storage.dt, 1)).log10())+" orders of magnitude"
+    if (storage.bp) if (player.blackhole.power.gt(storage.bp)) popupString+= ",<br> black hole power increased "+shortenMoney(player.blackhole.power.log10() - (Decimal.max(storage.bp, 1)).log10())+" orders of magnitude"
+    if (storage.ma) if (player.meta.antimatter.gt(storage.ma)) popupString+= ",<br> meta-antimatter increased "+shortenMoney(player.meta.antimatter.log10() - (Decimal.max(storage.ma, 1)).log10())+" orders of magnitude"
+    if (storage.dt) {
+        if (player.quantum.electrons.amount>storage.ec) popupString+= ",<br> electrons increased by "+getFullExpansion(Math.round(player.quantum.electrons.amount-storage.ec))
+        if (player.quantum.replicants.amount.gt(storage.nr)) popupString+= ",<br> normal replicants increased "+shortenMoney(player.quantum.replicants.amount.log10() - (Decimal.max(storage.nr, 1)).log10())+" orders of magnitude"
+    }
     if (player.infinitied > playerStart.infinitied || player.eternities > playerStart.eternities) popupString+= ","
     else popupString+= "."
     if (player.infinitied > playerStart.infinitied) popupString+= "<br>you infinitied "+getFullExpansion(player.infinitied-playerStart.infinitied)+" times."

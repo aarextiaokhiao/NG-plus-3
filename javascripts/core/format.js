@@ -293,7 +293,7 @@ function formatValue(notation, value, places, placesUnder1000, noInf) {
             else pow = getFullExpansion(pow);
         }
 
-        if (notation === "Logarithm") {
+        if (notation === "Logarithm" || (notation === "Mixed logarithm" && power > 32)) {
             var base=player.options.logarithm.base
             var prefix
             if (base==10) {
@@ -384,7 +384,7 @@ function formatValue(notation, value, places, placesUnder1000, noInf) {
         }
         if (places<0) matissa = ""
 
-        if (notation === "Standard" || notation === "Mixed scientific") {
+        if (notation === "Standard" || notation === "Mixed scientific" || notation === "Mixed logarithm") {
             if (power <= 303) return matissa + " " + FormatList[(power - (power % 3)) / 3];
             else if (power > 3e11+2) return getShortAbbreviation(power) + "s";
             else return matissa + " " + getAbbreviation(power);

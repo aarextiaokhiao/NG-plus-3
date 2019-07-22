@@ -2421,6 +2421,7 @@ function loadAutoBuyerSettings() {
       document.getElementById("eternitiesLeft").textContent = getFullExpansion(player.eternityBuyer.presets.left)
       apLoaded = false
       clearInterval(apInterval)
+      if (document.getElementById("eternitystore").style.display === "block" && document.getElementById("autoEternity").style.display === "block") loadAP()
   }
   if (player.eternityBuyer.dilationPerAmount !== undefined) {
       document.getElementById('prioritydil').value=player.eternityBuyer.dilationPerAmount

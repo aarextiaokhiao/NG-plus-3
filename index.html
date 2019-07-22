@@ -78,6 +78,8 @@
             <button id="ghostifybtn" class="ghostifybtn" onclick="ghostify()">
                 <div id="ghostifybtnFlavor" class="hideEmpty"></div>
                 <div id="GHPGain" class="hideEmpty"></div>
+                <div id="GHPRate" class="hideEmpty"></div>
+                <div id="GHPPeak" class="hideEmpty"></div>
             </button>
         </div>
         <div id='quantumBlock' style='height:120px'></div>
@@ -578,6 +580,7 @@
                 </table>
                 <table class="table" id="studytable">
                     <tr>
+                        <td><button class="timestudylocked" id="timestudy421" style='font-size:10px' onclick='buyMasteryStudy("t", 421)'>Tickspeed boosts preon energy production.<br><span id="ts421Current"></span></button></td>
                         <td><button class="timestudylocked" id="dilstudy13" onclick='buyMasteryStudy("d", 13)'>Unlock Tree of Decay<br><span id="ds13Cost"></span><span id="ds13Req"></span></button></td>
                         <td><button class="timestudylocked" id="dilstudy14" onclick='buyMasteryStudy("d", 14)'>Unlock Big Rip<br><span id="ds14Cost"></span><span id="ds14Req"></span></button></td>
                     </tr>
@@ -1076,12 +1079,16 @@
                             <input type="text" onchange="updateAutoDilValue()" id="autoDilValue"></input>
                         </td>
                         <td>
-                            <div style="height:50px"><b>Dilation preset automation</b></div>
+                            <div style="height:50px"><b>Special preset automation</b></div>
                             <div>
                                 <table>
                                     <tr>
                                         <td id='apDilSelected'></td>
                                         <td id='apDil'></td>
+                                    </tr>
+                                    <tr>
+                                        <td id='apGrindSelected'></td>
+                                        <td id='apGrind'></td>
                                     </tr>
                                 </table>
                             </div>
@@ -2410,7 +2417,7 @@
                                 <div id="I don't have enough fuel!" class="achievement achievementlocked" style="background-image: url(images/105.png)"><br></div>
                             </td>
                             <td>
-                                <div id="Sub-atomic" class="achievement achievementlocked" style="background-image: url(images/106.png)" ach-tooltip="Go quantum. Reward: You gain 20x more eternitied stat up to 100,000 eternitied."><br></div>
+                                <div id="Sub-atomic" class="achievement achievementlocked" style="background-image: url(images/106.png)" ach-tooltip="Go quantum. Reward: You gain 20x more eternitied stat up to 100,000 eternitied and unlock 'Don't respec studies and auto-reunlock ECs' option."><br></div>
                             </td>
                             <td>
                                 <div id="Hadronization" class="achievement achievementlocked" style="background-image: url(images/107.png)" ach-tooltip="Have colored quarks but no color charge."><br></div>
@@ -4691,8 +4698,8 @@
 					</tr>
 					<tr>
 						<td><button id="neutrinoUnlock" class="gluonupgrade unavailablebtn" onclick="unlockNeutrinoBoost()">Unlock a new boost based on your neutrinos.<br>Cost: <span id="neutrinoUnlockCost">2</span> GHP</button></td>
-						<td><button id="neutrinoMultUpg" class="gluonupgrade unavailablebtn">You gain 5x more neutrinos.<br>Currently: <span id="neutrinoMult">1</span>x<br>Cost: <span id="neutrinoMultUpgCost">3</span> GHP</button></td>
-						<td><button id="ghpMultUpg" class="gluonupgrade unavailablebtn">You gain 2x more GHP.<br>Currently: <span id="ghpMult"></span>x<br>Cost: <span id="ghpMultUpgCost">???</span> of any neutrinos</button></td>
+						<td><button id="neutrinoMultUpg" class="gluonupgrade unavailablebtn" onclick="buyNeutrinoMult()">You gain 5x more neutrinos.<br>Currently: <span id="neutrinoMult">1</span>x<br>Cost: <span id="neutrinoMultUpgCost">3</span> GHP</button></td>
+						<td><button id="ghpMultUpg" class="gluonupgrade unavailablebtn" onclick="buyGHPMult()">You gain 2x more GHP.<br>Currently: <span id="ghpMult"></span>x<br>Cost: <span id="ghpMultUpgCost">???</span> of any neutrinos</button></td>
 					</tr>
 					<tr>
 						<td><button class="gluonupgrade unavailablebtn" id="neutrinoUpg1" onclick="buyNeutrinoUpg(1)" style="font-size: 10px">Meta-Dimension Boosts cost less.<br>Currently: -<span id="neutrinoUpg1Pow"></span><br>(Constant in Big Rip runs)<br>Cost: <span id="neutrinoUpg1Cost"></span> of any neutrinos</button></td>
@@ -4701,7 +4708,7 @@
 					</tr>
 					<tr>
 						<td><button class="gluonupgrade unavailablebtn" id="neutrinoUpg4" onclick="buyNeutrinoUpg(4)" style="font-size: 10px">You gain quark spins faster and all branches are faster based on your tickspeed.<br>Currently: <span id="neutrinoUpg4Pow">1.0</span>x<br>Cost: <span id="neutrinoUpg4Cost"></span> of any neutrinos</button></td>
-						<td><button class="gluonupgrade unavailablebtn" id="neutrinoUpg5" onclick="buyNeutrinoUpg(5)">You gain 3x more electrons.<br>Cost: <span id="neutrinoUpg5Cost"></span> of any neutrinos</button></td>
+						<td><button class="gluonupgrade unavailablebtn" id="neutrinoUpg5" onclick="buyNeutrinoUpg(5)">You gain 3.5x more electrons.<br>Cost: <span id="neutrinoUpg5Cost"></span> of any neutrinos</button></td>
 						<td><button class="gluonupgrade unavailablebtn" id="neutrinoUpg6" onclick="buyNeutrinoUpg(6)">Infinite time reward is ??% stronger.<br>Cost: <span id="neutrinoUpg6Cost"></span> of any neutrinos</button></td>
 					</tr>
 					<tr>
@@ -4745,7 +4752,7 @@
 					<tr>
 						<td id="autoGhost4"><div class="autoBuyerDiv" style="display:block">
 							<b>Auto-Unstabilize Rotate Ghost</b><br>
-							Power consumption: 1.5<br>
+							Power consumption: 1<br>
 							Auto-rotate: <button class="storebtn" id="autoGhostMod4" style="font-size: 100%; width: 120px; height: 20px">Every quantum</button><br>
 							Direction: <button class="storebtn" id="autoGhostRotate4" style="font-size: 100%; width: 120px; height: 20px">Clockwise</button><br>
 							Is active: <input id="isAutoGhostOn4" type="checkbox" onchange="toggleAutoGhost(4)"></input>
@@ -4753,13 +4760,13 @@
 						<td id="autoGhost5"><div class="autoBuyerDiv" style="display:block">
 							<b>Auto-Branch Upgrade Ghost</b><br>
 							(buys if possible)<br>
-							Power consumption: 1<br>
+							Power consumption: 2<br>
 							Is active: <input id="isAutoGhostOn5" type="checkbox" onchange="toggleAutoGhost(5)"></input>
 						</div></td>
 						<td id="autoGhost6"><div class="autoBuyerDiv" style="display:block">
 							<b>Auto-Tree Upgrade Ghost</b><br>
 							(buys if possible)<br>
-							Power consumption: 1<br>
+							Power consumption: 2<br>
 							Is active: <input id="isAutoGhostOn6" type="checkbox" onchange="toggleAutoGhost(6)"></input>
 						</div></td>
 					</tr>
