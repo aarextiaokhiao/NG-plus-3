@@ -265,6 +265,7 @@ function getExtraDimensionBoostPowerExponent() {
 	if (player.masterystudies != undefined) {
 		if (player.masterystudies.includes("d12")) power += getNanofieldRewardEffect(2)
 		if (player.masterystudies.includes("d13")) power += getTreeUpgradeEffect(8)
+		if (hasNU(9)) ret*=tmp.nu[5]
 		if (ghostified) if (player.quantum.bigRip.active && player.ghostify.neutrinos.boosts > 6) power *= tmp.nb[6]
 	}
 	return power
@@ -388,7 +389,9 @@ function toggleAutoEterMode() {
 
 // v2.21
 function getDil15Bonus () {
-	return Math.log10(player.dilation.dilatedTime.max(1e10).min(1e100).log(10)) + 1;
+	let max=3
+	if (ghostified) if (player.ghostify.neutrinos.boosts>2) max=tmp.nb[2]
+	return Math.min(Math.log10(player.dilation.dilatedTime.max(1e10).log(10))+1,max)
 }
 
 // v2.3
@@ -749,7 +752,10 @@ function quantumReset(force, auto, challid, bigRip, implode=false) {
 	if (player.achievements.includes("r104")) player.infinityPoints = new Decimal(2e25);
 	else player.infinityPoints = new Decimal(0);
 	if (player.masterystudies !== undefined) {
-		if (!bigRip && player.quantum.bigRip.active && force) player.quantum.bigRip.spaceShards = player.quantum.bigRip.spaceShards.add(getSpaceShardsGain()).round()
+		if (!bigRip && player.quantum.bigRip.active && force) {
+			player.quantum.bigRip.spaceShards = player.quantum.bigRip.spaceShards.add(getSpaceShardsGain())
+			if (player.ghostify.milestones < 8) player.quantum.bigRip.spaceShards = player.quantum.bigRip.spaceShards.round()
+		}
 		else if (inQC(6) && inQC(8) && player.money.gt(player.quantum.pairedChallenges.pc68best)) {
 			player.quantum.pairedChallenges.pc68best = player.money
 			document.getElementById("bpc68").textContent = shortenMoney(player.money)
@@ -961,9 +967,9 @@ function quantumReset(force, auto, challid, bigRip, implode=false) {
 		},
 		timeDimension8: {
 			cost: new Decimal("1e3350"),
-			amount: new Decimal(0),
+			amount: new Decimal(ghostified&&bigRip?1:0),
 			power: new Decimal(1),
-			bought: 0
+			bought: ghostified&&bigRip?1:0
 		},
 		offlineProd: oheHeadstart || bigRip ? player.offlineProd : 0,
 		offlineProdCost: oheHeadstart || bigRip ? player.offlineProdCost : 1e7,

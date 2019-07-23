@@ -951,11 +951,11 @@ let tmp = {
 	bru: [],
 	be: false,
 	beu: [],
-	bm: [300,250,200,160,120,80,75,50,15,13,11,10,9,8,7,6,5],
+	bm: [180,120,90,60,40,20,15,10,8,7,6,5,4,3,2,1],
 	nb: [],
-	nbc: [null,2,1/0,1/0,1/0,1/0,1/0,1/0,1/0,1/0],
+	nbc: [null,2,4,8,1/0,1/0,1/0,1/0,1/0,1/0],
 	nu: [],
-	nuc: [null,1e6,1e7,1e8,2e9,5e9,1/0,1/0,1/0,1/0]
+	nuc: [null,1e6,1e7,1e8,2e9,5e9,2e10,3e10,1/0,1/0,1/0,1/0,1/0]
 }
 function updateTemp() {
 	tmp.nrm=player.replicanti.amount.max(1)
@@ -969,7 +969,7 @@ function updateTemp() {
 		if (ghostified) {
 			tmp.nb[0]=Math.log10(player.ghostify.neutrinos.electron.add(1).log10()+player.ghostify.neutrinos.mu.add(1).log10()+player.ghostify.neutrinos.tau.add(1).log10()+1)*0.75
 			if (player.ghostify.neutrinos.boosts>1) tmp.nb[1]=Math.pow(Math.pow(player.ghostify.neutrinos.electron.add(1).log10(),2)+Math.pow(player.ghostify.neutrinos.mu.add(1).log10(),2)+Math.pow(player.ghostify.neutrinos.tau.add(1).log10(),2),0.25)*1.5
-			if (player.ghostify.neutrinos.boosts>2) tmp.nb[2]=0
+			if (player.ghostify.neutrinos.boosts>2) tmp.nb[2]=Math.pow(Math.pow(Math.log10(Math.max(player.ghostify.neutrinos.electron.max(1).log10()-5,1))/Math.log10(5),4)+Math.pow(Math.log10(Math.max(player.ghostify.neutrinos.mu.max(1).log10()-5,1))/Math.log10(5),4)+Math.pow(Math.log10(Math.max(player.ghostify.neutrinos.tau.max(1).log10()-5,1))/Math.log10(5),4),0.25)/Math.pow(3,0.25)+3
 			if (player.ghostify.neutrinos.boosts>3) tmp.nb[3]=1
 			if (player.ghostify.neutrinos.boosts>4) tmp.nb[4]=1
 			if (player.ghostify.neutrinos.boosts>5) tmp.nb[5]=1
@@ -980,12 +980,14 @@ function updateTemp() {
 			tmp.nu[1]=Math.pow(Math.max(player.quantum.colorPowers.b.log10()/250+1,1),2) //NU3
 			var ret=Math.max(-player.tickspeed.div(1e3).log10()/4e13-4,0)
 			tmp.nu[2]=Decimal.pow(20,Math.pow(ret,1/4)) //NU4
-			tmp.nu[3]=1 //NU7
-			tmp.nu[4]=1 //NU9
+			tmp.nu[3]=player.quantum.colorPowers.g.add(1).pow(1/500) //NU7
+			tmp.nu[4]=1 //NU8
+			tmp.nu[5]=1 //NU9
+			tmp.nu[6]=1 //NU12
 		}
 	} else tmp.be=false
 	var ret=(3-player.tickspeed.log10())*0.000005
-	if (hasNU(6)) ret*=1
+	if (hasNU(8)) ret*=tmp.nu[4]
 	if (tmp.be) {
 		if (ret>100) ret=Math.pow(ret*100,0.5)
 	} else {
@@ -1105,9 +1107,8 @@ function getRemoteGalaxyScalingStart(galaxies) {
 	var n = 800
 	if (player.masterystudies) {
 		for (var t=251;t<254;t++) if (player.masterystudies.includes("t"+t)) n += getMTSMult(t)
-		if (player.masterystudies.includes("t301")) n += Math.floor(extraReplGalaxies/4.15)
+		if (player.masterystudies.includes("t301")) n += getMTSMult(301)
 		if (player.masterystudies.includes("d12")) n += getNanofieldRewardEffect(7)
-		if (ghostified && player.ghostify.neutrinos.boosts > 2) n += tmp.nb[2]
 		if (galaxies > 1/0 && !tmp.be) n -= galaxies - 1/0
 	}
 	return n
@@ -1141,12 +1142,11 @@ function getGalaxyRequirement(offset=0, display) {
 			scaling = Math.max(scaling, 1)
 		}
 		let remoteGalaxyScalingStart = getRemoteGalaxyScalingStart(galaxies)
-		if (galaxies >= remoteGalaxyScalingStart && !tmp.be) {
+		if (galaxies >= remoteGalaxyScalingStart && !tmp.be && !hasNU(6)) {
 			let speed2 = scalingSpeed
 			if (GUBought("rg7")) speed2 *= 0.9
 			if (GUBought("gb7")) speed2 /= 1+Math.log10(1+player.infinityPoints.max(1).log10())/100
 			if (GUBought("br7")) speed2 /= 1+Math.log10(1+player.eternityPoints.max(1).log10())/80
-			if (hasNU(7)) speed2 /= tmp.nu[3]
 			amount = amount * Math.pow(GUBought("rg1") ? 1.001 : 1.002, (galaxies-remoteGalaxyScalingStart-1) * speed2)
 			scaling = Math.max(scaling, 2)
 		}
@@ -1679,7 +1679,13 @@ function updateDimensions() {
                 document.getElementById("blackholeunlock").className = (player.eternityPoints.gte("1e4000")) ? "storebtn" : "unavailablebtn"
             }
         }
-        if (document.getElementById("breakEternity").style.display == "block") for (var u=1;u<7;u++) document.getElementById("breakUpg" + u + "Mult").textContent = shortenMoney(getBreakUpgMult(u))
+        if (document.getElementById("breakEternity").style.display == "block") {
+             document.getElementById("eternalMatter").textContent = shortenDimensions(player.quantum.breakEternity.eternalMatter)
+             for (var u=1;u<7;u++) {
+                 document.getElementById("breakUpg" + u).className = player.quantum.breakEternity.upgrades.includes(u) ? "eternityupbtnbought" : player.quantum.breakEternity.eternalMatter.gte(getBreakUpgCost(u)) ? "eternityupbtn" : "eternityupbtnlocked"
+                 document.getElementById("breakUpg" + u + "Mult").textContent = shortenMoney(getBreakUpgMult(u))
+             }
+        }
     }
 }
 
@@ -3466,7 +3472,7 @@ function gainedEternityPoints() {
 			if (isBigRipUpgradeActive(5)) ret = ret.times(player.quantum.bigRip.spaceShards.max(1))
 			if (isBigRipUpgradeActive(8)) {
 				let mult = Decimal.pow(2, player.replicanti.galaxies+extraReplGalaxies)
-				if (hasNU(8)) if (mult.gt(Number.MAX_VALUE)) mult = mult.div(Number.MAX_VALUE).pow(0).times(Number.MAX_VALUE)
+				if (hasNU(11)) if (mult.gt(Number.MAX_VALUE)) mult = mult.div(Number.MAX_VALUE).pow(0).times(Number.MAX_VALUE)
 				else mult = mult.min(Number.MAX_VALUE)
 				ret = ret.times(mult)
 			}
@@ -5072,7 +5078,8 @@ function eternity(force, auto, presetLoad) {
         if (player.dilation.active) array = [player.thisEternity, getDilGain().sub(player.dilation.totalTachyonParticles).max(0), "d2"]
         else if (player.currentEternityChall != "") array.push(player.eternityChallUnlocked)
         else if (tmp.be) {
-            player.quantum.breakEternity.eternalMatter = player.quantum.breakEternity.eternalMatter.add(getEMGain()).round()
+            player.quantum.breakEternity.eternalMatter = player.quantum.breakEternity.eternalMatter.add(getEMGain())
+            if (player.ghostify.milestones < 15) player.quantum.breakEternity.eternalMatter = player.quantum.breakEternity.eternalMatter.round()
             array = [player.thisEternity, getEMGain(), "b"]
             updateBreakEternity()
             if (player.quantum.breakEternity.eternalMatter.gte(9.999999e99)) giveAchievement("This achievement doesn't exist 4")
@@ -5493,7 +5500,10 @@ function challengesCompletedOnEternity(bigRip) {
 
 function gainEternitiedStat() {
 	let ret = 1
-	if (ghostified) ret = Math.pow(10, 2 / (Math.log10(getEternitied() + 1) / 10 + 1))
+	if (ghostified) {
+		ret = Math.pow(10, 2 / (Math.log10(getEternitied() + 1) / 10 + 1))
+		if (player.quantum.bigRip.active&&hasNU(10)) ret = nM(ret, player.quantum.bigRip.spaceShards.max(1).pow(0))
+	}
 	if (quantumed && player.eternities < 1e5) ret = Math.max(ret, 20)
 	if (player.dilation.upgrades.includes('ngpp2')) ret = nM(Decimal.pow(player.dilation.dilatedTime, .1), ret)
 	return ret
@@ -6478,13 +6488,13 @@ function buyDilationUpgrade(id, max) {
 function getPassiveTTGen() {
 	var log=player.dilation.tachyonParticles.max(1).log10()
 	if (log>80) log=75+Math.sqrt(log*5-375)
-	let normal=Decimal.pow(10,log).div(ghostified?200:2e4)
+	let normal=Math.pow(10,log)/(ghostified?200:2e4)
 	if (!player.achievements.includes("ng3p18")) return normal
 	if (player.masterystudies !== undefined) if (player.quantum.bigRip.active) return normal
 
 	log=player.dilation.bestTP.max(1).log10()
 	if (log>80) log=75+Math.sqrt(log*5-375)
-	return Decimal.pow(10,log).div(ghostified?1e3:1e5).add(normal)
+	return Math.pow(10,log)/(ghostified?1e3:1e5)+normal
 }
 
 function updateDilationUpgradeButtons() {
@@ -6502,7 +6512,7 @@ function updateDilationUpgradeButtons() {
             }
         }
     }
-    var genSpeed = getPassiveTTGen().toNumber()
+    var genSpeed = getPassiveTTGen()
     document.getElementById("dil7desc").textContent = "Currently: "+shortenMoney(player.dilation.dilatedTime.max(1).pow(1000).max(1))+"x"
     document.getElementById("dil10desc").textContent = "Currently: "+shortenMoney(player.achievements.includes("ng3p44") && player.timestudy.theorem / genSpeed < 3600 ? genSpeed * 10 : genSpeed)+"/s"
     if (player.dilation.studies.includes(6)) {
@@ -7281,11 +7291,11 @@ function gameLoop(diff) {
         var colorShorthands=["r","g","b"]
         if (player.ghostify.milestones>1) for (var c=0;c<3;c++) player.quantum.colorPowers[colorShorthands[c]]=player.quantum.colorPowers[colorShorthands[c]].add(player.quantum.usedQuarks[colorShorthands[c]].times(diff/10))
         else player.quantum.colorPowers[colorCharge.color]=player.quantum.colorPowers[colorCharge.color].add(colorCharge.charge.times(diff/10))
-        colorBoosts.r=Math.pow(player.quantum.colorPowers.r.add(1).log10(),player.dilation.active?2/3:0.5)/10+1
+        colorBoosts.r=Math.pow(player.quantum.colorPowers.r.add(1).log10(),player.dilation.active?2:0.5)/10+1
         colorBoosts.g=Math.sqrt(player.quantum.colorPowers.g.add(1).log10()*2+1)
         colorBoosts.b=Decimal.pow(10,Math.sqrt(player.quantum.colorPowers.b.add(1).log10()))
         if (colorBoosts.r>1.3) colorBoosts.r=Math.sqrt(colorBoosts.r*1.3)
-        if (colorBoosts.r>2.3&&(!player.dilation.active||getTreeUpgradeLevel(2)>7)) colorBoosts.r=Math.sqrt(colorBoosts.r*2.3)
+        if (colorBoosts.r>2.3&&(!player.dilation.active||getTreeUpgradeLevel(2)>7||ghostified)) colorBoosts.r=Math.sqrt(colorBoosts.r*2.3)
         if (colorBoosts.g>4.5) colorBoosts.g=Math.sqrt(colorBoosts.g*4.5)
         if (colorBoosts.b.gt(1300)) colorBoosts.b=Decimal.pow(10,Math.sqrt(colorBoosts.b.log10()*Math.log10(1300)))
 
@@ -8073,23 +8083,24 @@ function gameLoop(diff) {
             player.quantum.notrelative = false
         }
         if (player.ghostify.milestones>7||player.achievements.includes("ng3p66")) {
-            var percentage=0.01
-            if (player.ghostify.milestones>7&&player.achievements.includes("ng3p66")) percentage=0.02
-            player.quantum.quarks=player.quantum.quarks.add(quarkGain().times(diff*percentage/10))
-            player.quantum.gluons.rg=player.quantum.gluons.rg.add(player.quantum.usedQuarks.r.min(player.quantum.usedQuarks.g).pow(0.75).times(diff/10))
-            player.quantum.gluons.gb=player.quantum.gluons.gb.add(player.quantum.usedQuarks.g.min(player.quantum.usedQuarks.b).pow(0.75).times(diff/10))
-            player.quantum.gluons.br=player.quantum.gluons.br.add(player.quantum.usedQuarks.b.min(player.quantum.usedQuarks.r).pow(0.75).times(diff/10))
-            if (player.achievements.includes("ng3p66")) {
-                player.quantum.gluons.rg=player.quantum.gluons.rg.add(player.quantum.usedQuarks.r.min(player.quantum.usedQuarks.g).times(diff/10))
-                player.quantum.gluons.gb=player.quantum.gluons.gb.add(player.quantum.usedQuarks.g.min(player.quantum.usedQuarks.b).times(diff/10))
-                player.quantum.gluons.br=player.quantum.gluons.br.add(player.quantum.usedQuarks.b.min(player.quantum.usedQuarks.r).times(diff/10))
+            if (player.quantum.bigRip.active) {
+                player.quantum.bigRip.spaceShards=player.quantum.bigRip.spaceShards.add(getSpaceShardsGain().times(diff/1e3))
+                if (tmp.be&&player.ghostify.milestones>14) player.quantum.breakEternity.eternalMatter=player.quantum.breakEternity.eternalMatter.add(getEMGain().times(diff/1e3))
+            } else {
+                var percentage=0.01
+                if (player.ghostify.milestones>7&&player.achievements.includes("ng3p66")) percentage=0.02
+                player.quantum.quarks=player.quantum.quarks.add(quarkGain().sqrt().times(diff/10))
+                player.quantum.gluons.rg=player.quantum.gluons.rg.add(player.quantum.usedQuarks.r.min(player.quantum.usedQuarks.g).sqrt().times(diff/10))
+                player.quantum.gluons.gb=player.quantum.gluons.gb.add(player.quantum.usedQuarks.g.min(player.quantum.usedQuarks.b).sqrt().times(diff/10))
+                player.quantum.gluons.br=player.quantum.gluons.br.add(player.quantum.usedQuarks.b.min(player.quantum.usedQuarks.r).sqrt().times(diff/10))
+                if (player.achievements.includes("ng3p66")) player.quantum.quarks=player.quantum.quarks.add(quarkGain().times(diff/1e3))
+                document.getElementById("quarks").innerHTML="You have <b class='QKAmount'>"+shortenDimensions(player.quantum.quarks)+"</b> quark"+(player.quantum.quarks.lt(2)?".":"s.")
+                updateQuantumWorth("quick")
             }
-            document.getElementById("quarks").innerHTML="You have <b class='QKAmount'>"+shortenDimensions(player.quantum.quarks)+"</b> quark"+(player.quantum.quarks.lt(2)?".":"s.")
-            updateQuantumWorth("quick")
         }
     }
     if (player.dilation.upgrades.includes(10)) {
-		var speed = getPassiveTTGen().toNumber()
+		var speed = getPassiveTTGen()
 		player.timestudy.theorem += speed * (diff + Math.max(Math.min(player.achievements.includes("ng3p44") ? diff * 9 : 0, 3600 - player.timestudy.theorem / speed), 0)) / 10
         if ((document.getElementById("timestudies").style.display != "none" || document.getElementById("ers_timestudies").style.display != "none" || document.getElementById("masterystudies").style.display != "none") && document.getElementById("eternitystore").style.display != "none") {
             document.getElementById("timetheorems").innerHTML = "You have <span style='display:inline' class=\"TheoremAmount\">"+(player.timestudy.theorem>99999?shortenMoney(player.timestudy.theorem):getFullExpansion(Math.floor(player.timestudy.theorem)))+"</span> Time Theorem"+ (player.timestudy.theorem == 1 ? "." : "s.")

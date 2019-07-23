@@ -489,7 +489,7 @@
                 </table>
                 <table class="table" id="studytable">
                     <tr>
-                        <td><button class="timestudylocked" id="timestudy301" style='font-size:10px' onclick='buyMasteryStudy("t", 301)'>Remote cost scaling starts 1 galaxy later per 4.15 extra replicated galaxies.</span></button></td>
+                        <td><button class="timestudylocked" id="timestudy301" style='font-size:10px' onclick='buyMasteryStudy("t", 301)'>Remote cost scaling starts 1 galaxy later per 4.15 extra replicated galaxies.<br><span id="ts301Current"></span></button></td>
                         <td><button class="timestudylocked" id="timestudy302" onclick='buyMasteryStudy("t", 302)'>Pick all time studies before mastery studies.</button></td>
                         <td><button class="timestudylocked" id="timestudy303" style='font-size:10px' onclick='buyMasteryStudy("t", 303)'>Meta Dimensions are stronger based on your galaxies.<br><span id="ts303Current"></span></button></td>
                     </tr>
@@ -2518,7 +2518,7 @@
                         </tr>
                         <tr id="achRowng3p5">
                             <td>
-                                <div id="To the new dimension!" class="achievement achievementlocked" style="background-image: url(images/143.png)" ach-tooltip='Big Rip the universe. Reward: You keep your Infinity Upgrades, normal Challenges, and Infinity Challenges and you unlock "X times eternitied" mode of Eternity autobuyer.'></div>
+                                <div id="To the new dimension!" class="achievement achievementlocked" style="background-image: url(images/143.png)" ach-tooltip='Big Rip the universe. Reward: Keep your Infinity Upgrades and autobuyers, Time Theorems production is 100x faster, and unlock "X times eternitied" mode of Eternity autobuyer.'></div>
                             </td>
                             <td>
                                 <div id="Quantum doesn't take so long" class="achievement achievementlocked" style="background-image: url(images/144.png)" ach-tooltip="Quantum in under 1 second. Reward: Expand Automatic Eternity to contain new after-eternity features."></div>
@@ -2544,7 +2544,7 @@
                         </tr>
                         <tr id="achRowng3p6">
                             <td>
-                                <div id="Kee-hee-hee!" class="achievement achievementlocked" style="background-image: url(images/151.png)" ach-tooltip="Become a ghost. Reward: Gain 100x eternitied stat as before (weakens as you have more), Time Theorems production is 100x faster, gain 1 EC11 completion when you complete EC12, all quantum mechanic unlocks only require Time Theorems, and assignation options are kept permanently."></div>
+                                <div id="Kee-hee-hee!" class="achievement achievementlocked" style="background-image: url(images/151.png)" ach-tooltip="Become a ghost. Reward: Gain 100x eternitied stat as before (weakens as you have more), gain 1 EC11 completion when you complete EC12, all quantum mechanic unlocks only require Time Theorems, assignation options are kept permanently, and start with 1 Eighth Time Dimension in Big Rips."></div>
                             </td>
                             <td>
                                 <div id="Finite Time" class="achievement achievementlocked" style="background-image: url(images/152.png)" ach-tooltip="Reach e??? ticks/s in Big Rips without Time Dimensions."></div>
@@ -2559,7 +2559,7 @@
                                 <div id="But I don't want to grind!" class="achievement achievementlocked" style="background-image: url(images/155.png)" ach-tooltip="Get reward ??? without unlocking Tree of Decay."></div>
                             </td>
                             <td>
-                                <div id="I rather oppose the theory of everything" class="achievement achievementlocked" style="background-image: url(images/156.png)" ach-tooltip="Complete Brave Milestones. Reward: You gain 1% of quarks and gluons you will gain per second."></div>
+                                <div id="I rather oppose the theory of everything" class="achievement achievementlocked" style="background-image: url(images/156.png)" ach-tooltip="Complete Brave Milestones. Reward: You gain 1% of quarks you will gain per second."></div>
                             </td>
                             <td>
                                 <div id="Will it be enough?" class="achievement achievementlocked" style="background-image: url(images/157.png)"></div>
@@ -2711,7 +2711,7 @@
                         <td><div id="braveMilestone5" class="achievement achievementlocked" ach-tooltip="Reward: Quantuming doesn't reset your Meta-Dimension Boosts unless you are in a QC."></div></td>
                         <td><div id="braveMilestone6" class="achievement achievementlocked" ach-tooltip="Reward: Quantuming doesn't reset your normal replicants unless you are in a QC."></div></td>
                         <td><div id="braveMilestone7" class="achievement achievementlocked" ach-tooltip="Reward: Start Ghostifies with 10 worker replicants."></div></td>
-                        <td><div id="braveMilestone8" class="achievement achievementlocked" ach-tooltip="Reward: You gain 1% of quarks and ^0.75 amount of gluons you will gain per second."></div></td>
+                        <td><div id="braveMilestone8" class="achievement achievementlocked" ach-tooltip="Reward: You gain ^0.5 amount of quarks, ^0.5 amount of gluons, and 1% of Space Shards you will gain per second."></div></td>
                     </tr>
                     <tr id="braveRow2">
                         <td><div id="braveMilestone9" class="achievement achievementlocked" ach-tooltip="Reward: Start Ghostifies with 10 of Second Emperor Dimensions."></div></td>
@@ -2720,7 +2720,7 @@
                         <td><div id="braveMilestone12" class="achievement achievementlocked" ach-tooltip="Reward: Start Ghostifies with 10 of Eighth Emperor Dimensions."></div></td>
                         <td><div id="braveMilestone13" class="achievement achievementlocked" ach-tooltip="Reward: Start Ghostifies with first 16 Nanofield rewards."></div></td>
                         <td><div id="braveMilestone14" class="achievement achievementlocked"></div></td>
-                        <td><div id="braveMilestone15" class="achievement achievementlocked" ach-tooltip="Reward: Start Ghostifies with Break Eternity unlocked and all Break Eternity upgrades bought."></div></td>
+                        <td><div id="braveMilestone15" class="achievement achievementlocked" ach-tooltip="Reward: You start Ghostifies with Break Eternity unlocked, gain 1% of Eternal Matter you will gain per second, and keep your Break Eternity upgrades."></div></td>
                         <td><div id="braveMilestone16" class="achievement achievementlocked" ach-tooltip="Reward: 'I rather oppose the theory of everything' achievement."></div></td>
                     </tr>
                 </table>
@@ -4458,7 +4458,7 @@
 				<div id="assignAll">
 					<button class='storebtn' id="assignAllButton" style="width:135px" onclick='assignAll()'>Distribute all</button>
 					<button class='storebtn' id="autoAssign" onclick='toggleAutoAssign()'>Auto: OFF</button>
-					<button class='storebtn' id="autoAssignRotate" style="width:150px" onclick='rotateAutoAssign()'>No rotate</button><br>
+					<button class='storebtn' id="autoAssignRotate" style="width:135px" onclick='rotateAutoAssign()'>Rotation: None</button><br>
 					Ratios:<br>
 					R: <input id="ratio_r" type="number" min=0 onchange="changeRatio('r')"></input>
 					G: <input id="ratio_g" type="number" min=0 onchange="changeRatio('g')"></input>
@@ -4683,7 +4683,7 @@
 					<tr class="neutrinoBoosts">
 						<td>They increase TP gain formula exponent from <span id="preNeutrinoBoost1"></span> to <span class="neutrinos" id="neutrinoBoost1" style="font-size:35px">1.0</span>.</td>
 						<td id="neutrinoBoostCell2">They make "replicate chance boosts itself" stronger from ^<span id="preNeutrinoBoost2"></span> to <span class="neutrinos" id="neutrinoBoost2" style="font-size:35px">1.0</span>.</td>
-						<td id="neutrinoBoostCell3">They make Remote Antimatter Galaxies scaling starts <span class="neutrinos" id="neutrinoBoost3" style="font-size:35px">0</span> later.</td>
+						<td id="neutrinoBoostCell3">They boost the limit of 14th dilation upgrade from 3.00x to <span class="neutrinos" id="neutrinoBoost3" style="font-size:35px">3.00</span>x.</td>
 					</tr>
 					<tr class="neutrinoBoosts" id="neutrinoBoostRow2">
 						<td>They make Meta-Dimension Boosts stronger by <span class="neutrinos" id="neutrinoBoost4" style="font-size:35px">0.0</span>%.</td>
@@ -4708,13 +4708,18 @@
 					</tr>
 					<tr>
 						<td><button class="gluonupgrade unavailablebtn" id="neutrinoUpg4" onclick="buyNeutrinoUpg(4)" style="font-size: 10px">You gain quark spins faster and all branches are faster based on your tickspeed.<br>Currently: <span id="neutrinoUpg4Pow">1.0</span>x<br>Cost: <span id="neutrinoUpg4Cost"></span> of any neutrinos</button></td>
-						<td><button class="gluonupgrade unavailablebtn" id="neutrinoUpg5" onclick="buyNeutrinoUpg(5)">You gain 3.5x more electrons.<br>Cost: <span id="neutrinoUpg5Cost"></span> of any neutrinos</button></td>
-						<td><button class="gluonupgrade unavailablebtn" id="neutrinoUpg6" onclick="buyNeutrinoUpg(6)">Infinite time reward is ??% stronger.<br>Cost: <span id="neutrinoUpg6Cost"></span> of any neutrinos</button></td>
+						<td><button class="gluonupgrade unavailablebtn" id="neutrinoUpg5" onclick="buyNeutrinoUpg(5)">You gain 3x more electrons.<br>Cost: <span id="neutrinoUpg5Cost"></span> of any neutrinos</button></td>
+						<td><button class="gluonupgrade unavailablebtn" id="neutrinoUpg6" onclick="buyNeutrinoUpg(6)">Disable Remote Antimatter Galaxies scaling!<br>Cost: <span id="neutrinoUpg6Cost"></span> of any neutrinos</button></td>
 					</tr>
 					<tr>
-						<td><button class="gluonupgrade unavailablebtn" id="neutrinoUpg7" onclick="buyNeutrinoUpg(7)" style="font-size: 10px">Preons slow down Remote Antimatter Galaxies scaling.<br>Currently: /<span id="neutrinoUpg7Pow">1.00</span><br>Cost: <span id="neutrinoUpg7Cost"></span> of any neutrinos</button></td>
-						<td><button class="gluonupgrade unavailablebtn" id="neutrinoUpg8" onclick="buyNeutrinoUpg(8)" style="font-size: 10px">8th Big Rip upgrade will never get repealed and capped, but it will be weakened at <span id="BU8Cap"></span>.<br>Cost: <span id="neutrinoUpg8Cost"></span> of any neutrinos</button></td>
-						<td><button class="gluonupgrade unavailablebtn" id="neutrinoUpg9" onclick="buyNeutrinoUpg(9)" style="font-size: 10px">You gain more Eternal Matter based on your Space Shards.<br>Currently: <span id="neutrinoUpg9Pow">1.0</span>x<br>Cost: <span id="neutrinoUpg9Cost"></span> of any neutrinos</button></td>
+						<td><button class="gluonupgrade unavailablebtn" id="neutrinoUpg7" onclick="buyNeutrinoUpg(7)" style="font-size: 10px">Green power boosts odd Emperor Dimensions and preon charge production.<br>Currently: <span id="neutrinoUpg7Pow">1.00</span>x<br>Cost: <span id="neutrinoUpg7Cost"></span> of any neutrinos</button></td>
+						<td><button class="gluonupgrade unavailablebtn" id="neutrinoUpg8" onclick="buyNeutrinoUpg(8)">??? makes Infinite time reward stronger.<br>Currently: <span id="neutrinoUpg8Pow">0.0</span>%<br>Cost: <span id="neutrinoUpg8Cost"></span> of any neutrinos</button></td>
+						<td><button class="gluonupgrade unavailablebtn" id="neutrinoUpg9" onclick="buyNeutrinoUpg(9)">??? multiplies meta-antimatter effect power.<br>Currently: <span id="neutrinoUpg9Pow">1.00</span>x<br>Cost: <span id="neutrinoUpg9Cost"></span> of any neutrinos</button></td>
+					</tr>
+					<tr>
+						<td><button class="gluonupgrade unavailablebtn" id="neutrinoUpg10" onclick="buyNeutrinoUpg(10)">In Big Rips, Eternities and Space Shards boost each other.<br>Cost: <span id="neutrinoUpg10Cost"></span> of any neutrinos</button></td>
+						<td><button class="gluonupgrade unavailablebtn" id="neutrinoUpg11" onclick="buyNeutrinoUpg(11)" style="font-size: 10px">8th Big Rip upgrade will never get repealed and capped, but it will be weakened at <span id="BU8Cap"></span>.<br>Cost: <span id="neutrinoUpg11Cost"></span> of any neutrinos</button></td>
+						<td><button class="gluonupgrade unavailablebtn" id="neutrinoUpg12" onclick="buyNeutrinoUpg(12)" style="font-size: 10px">You gain more Eternal Matter based on your Space Shards.<br>Currently: <span id="neutrinoUpg12Pow">1.0</span>x<br>Cost: <span id="neutrinoUpg12Cost"></span> of any neutrinos</button></td>
 					</tr>
 				</table>
 			</div>
