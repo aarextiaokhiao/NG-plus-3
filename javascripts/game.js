@@ -7291,7 +7291,7 @@ function gameLoop(diff) {
         var colorShorthands=["r","g","b"]
         if (player.ghostify.milestones>1) for (var c=0;c<3;c++) player.quantum.colorPowers[colorShorthands[c]]=player.quantum.colorPowers[colorShorthands[c]].add(player.quantum.usedQuarks[colorShorthands[c]].times(diff/10))
         else player.quantum.colorPowers[colorCharge.color]=player.quantum.colorPowers[colorCharge.color].add(colorCharge.charge.times(diff/10))
-        colorBoosts.r=Math.pow(player.quantum.colorPowers.r.add(1).log10(),player.dilation.active?2:0.5)/10+1
+        colorBoosts.r=Math.pow(player.quantum.colorPowers.r.add(1).log10(),player.dilation.active?2/3:0.5)/10+1
         colorBoosts.g=Math.sqrt(player.quantum.colorPowers.g.add(1).log10()*2+1)
         colorBoosts.b=Decimal.pow(10,Math.sqrt(player.quantum.colorPowers.b.add(1).log10()))
         if (colorBoosts.r>1.3) colorBoosts.r=Math.sqrt(colorBoosts.r*1.3)
