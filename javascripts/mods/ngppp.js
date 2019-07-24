@@ -3691,7 +3691,6 @@ function updateGhostifyTabs() {
 		document.getElementById("neutrinoUpg3Pow").textContent=shorten(tmp.nu[1])
 		document.getElementById("neutrinoUpg4Pow").textContent=shorten(tmp.nu[2])
 		document.getElementById("neutrinoUpg7Pow").textContent=shorten(tmp.nu[3])
-		document.getElementById("neutrinoUpg9Pow").textContent=tmp.nu[4].toFixed(2)
 		document.getElementById("neutrinoUpg12Pow").textContent=shorten(tmp.nu[5])
 		for (var u=1; u<13; u++) {
 			if (hasNU(u)) document.getElementById("neutrinoUpg" + u).className = "gluonupgradebought neutrinoupg"
