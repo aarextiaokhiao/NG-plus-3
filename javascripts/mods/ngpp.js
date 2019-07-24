@@ -15,7 +15,6 @@ function getMetaDimensionMultiplier (tier) {
   if (player.masterystudies != undefined) {
       if (player.masterystudies.includes("t312")) strength = 1.045
       if (player.masterystudies.includes("d12")) boostpower = getNanofieldRewardEffect(6)
-      if (ghostified && player.ghostify.neutrinos.boosts > 3) strength *= tmp.nb[3]
   }
   if (player.achievements.includes("ngpp14")) boostpower *= 1.01
   if (inQC(8)) boostpower = 1
@@ -265,7 +264,6 @@ function getExtraDimensionBoostPowerExponent() {
 	if (player.masterystudies != undefined) {
 		if (player.masterystudies.includes("d12")) power += getNanofieldRewardEffect(2)
 		if (player.masterystudies.includes("d13")) power += getTreeUpgradeEffect(8)
-		if (hasNU(9)) ret*=tmp.nu[5]
 		if (ghostified) if (player.quantum.bigRip.active && player.ghostify.neutrinos.boosts > 6) power *= tmp.nb[6]
 	}
 	return power
@@ -518,7 +516,7 @@ let quarkGain = function () {
 		if (!player.quantum.times&&!player.ghostify.milestones) return new Decimal(1)
 		var log = player.meta.antimatter.max(1).log10() / 280 - 1.355
 		if (log > 1.2) log = log*log/1.2
-		if (log > 738) log = Math.sqrt(log * 738)
+		if (log > 738 && !hasNU(8)) log = Math.sqrt(log * 738)
 		return Decimal.pow(10, log).times(Decimal.pow(2, player.quantum.multPower.total)).floor()
 	}
 	return Decimal.pow(10, player.meta.antimatter.max(1).log(10) / Math.log10(Number.MAX_VALUE) - 1).times(quarkMult()).floor();
@@ -1166,6 +1164,7 @@ function quantumReset(force, auto, challid, bigRip, implode=false) {
 			}
 			if (player.quantum.autoOptions.assignQK) assignAll(true)
 			if (ghostified) player.ghostify.neutrinos.generationGain = player.ghostify.neutrinos.generationGain % 3 + 1
+			if (isAutoGhostActive(4)&&player.ghostify.automatorGhosts[4].mode!="t") rotateAutoUnstable()
 		}
 		player.quantum.pairedChallenges.current=0
 		if (challid==0) {

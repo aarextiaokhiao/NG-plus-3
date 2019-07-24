@@ -4686,7 +4686,7 @@
 						<td id="neutrinoBoostCell3">They boost the limit of 14th dilation upgrade from 3.00x to <span class="neutrinos" id="neutrinoBoost3" style="font-size:35px">3.00</span>x.</td>
 					</tr>
 					<tr class="neutrinoBoosts" id="neutrinoBoostRow2">
-						<td>They make Meta-Dimension Boosts stronger by <span class="neutrinos" id="neutrinoBoost4" style="font-size:35px">0.0</span>%.</td>
+						<td>They make Infinite time reward stronger by <span class="neutrinos" id="neutrinoBoost4" style="font-size:35px">0.0</span>%.</td>
 						<td id="neutrinoBoostCell5">They boost preon energy production by <span class="neutrinos" id="neutrinoBoost5" style="font-size:35px">1.0</span>x.</td>
 						<td id="neutrinoBoostCell6">They boost per-1 bought TD multiplier by <span class="neutrinos" id="neutrinoBoost6" style="font-size:35px">1.0</span>x.</td>
 					</tr>
@@ -4713,11 +4713,11 @@
 					</tr>
 					<tr>
 						<td><button class="gluonupgrade unavailablebtn" id="neutrinoUpg7" onclick="buyNeutrinoUpg(7)" style="font-size: 10px">Green power boosts odd Emperor Dimensions and preon charge production.<br>Currently: <span id="neutrinoUpg7Pow">1.00</span>x<br>Cost: <span id="neutrinoUpg7Cost"></span> of any neutrinos</button></td>
-						<td><button class="gluonupgrade unavailablebtn" id="neutrinoUpg8" onclick="buyNeutrinoUpg(8)">??? makes Infinite time reward stronger.<br>Currently: <span id="neutrinoUpg8Pow">0.0</span>%<br>Cost: <span id="neutrinoUpg8Cost"></span> of any neutrinos</button></td>
-						<td><button class="gluonupgrade unavailablebtn" id="neutrinoUpg9" onclick="buyNeutrinoUpg(9)">??? multiplies meta-antimatter effect power.<br>Currently: <span id="neutrinoUpg9Pow">1.00</span>x<br>Cost: <span id="neutrinoUpg9Cost"></span> of any neutrinos</button></td>
+						<td><button class="gluonupgrade unavailablebtn" id="neutrinoUpg8" onclick="buyNeutrinoUpg(8)">QK gain without its multiplier above <span id="QKNerfPoint"></span> is buffed.<br>Cost: <span id="neutrinoUpg8Cost"></span> of any neutrinos</button></td>
+						<td><button class="gluonupgrade unavailablebtn" id="neutrinoUpg9" onclick="buyNeutrinoUpg(9)">Eternities and Space Shards boost each other.<br>Cost: <span id="neutrinoUpg9Cost"></span> of any neutrinos</button></td>
 					</tr>
 					<tr>
-						<td><button class="gluonupgrade unavailablebtn" id="neutrinoUpg10" onclick="buyNeutrinoUpg(10)">In Big Rips, Eternities and Space Shards boost each other.<br>Cost: <span id="neutrinoUpg10Cost"></span> of any neutrinos</button></td>
+						<td><button class="gluonupgrade unavailablebtn" id="neutrinoUpg10" onclick="buyNeutrinoUpg(10)">???<br>Cost: <span id="neutrinoUpg10Cost"></span> of any neutrinos</button></td>
 						<td><button class="gluonupgrade unavailablebtn" id="neutrinoUpg11" onclick="buyNeutrinoUpg(11)" style="font-size: 10px">8th Big Rip upgrade will never get repealed and capped, but it will be weakened at <span id="BU8Cap"></span>.<br>Cost: <span id="neutrinoUpg11Cost"></span> of any neutrinos</button></td>
 						<td><button class="gluonupgrade unavailablebtn" id="neutrinoUpg12" onclick="buyNeutrinoUpg(12)" style="font-size: 10px">You gain more Eternal Matter based on your Space Shards.<br>Currently: <span id="neutrinoUpg12Pow">1.0</span>x<br>Cost: <span id="neutrinoUpg12Cost"></span> of any neutrinos</button></td>
 					</tr>
@@ -4758,8 +4758,8 @@
 						<td id="autoGhost4"><div class="autoBuyerDiv" style="display:block">
 							<b>Auto-Unstabilize Rotate Ghost</b><br>
 							Power consumption: 1<br>
-							Auto-rotate: <button class="storebtn" id="autoGhostMod4" style="font-size: 100%; width: 120px; height: 20px">Every quantum</button><br>
-							Direction: <button class="storebtn" id="autoGhostRotate4" style="font-size: 100%; width: 120px; height: 20px">Clockwise</button><br>
+							Auto-rotate: <button class="storebtn" id="autoGhostMod4" onclick="changeAutoGhost('4m')" style="font-size: 100%; width: 120px; height: 20px">Every quantum</button><br>
+							Direction: <button class="storebtn" id="autoGhostRotate4" onclick="changeAutoGhost('4r')" style="font-size: 100%; width: 120px; height: 20px">Right</button><br>
 							Is active: <input id="isAutoGhostOn4" type="checkbox" onchange="toggleAutoGhost(4)"></input>
 						</div></td>
 						<td id="autoGhost5"><div class="autoBuyerDiv" style="display:block">
@@ -4779,19 +4779,19 @@
 						<td id="autoGhost7"><div class="autoBuyerDiv" style="display:block">
 							<b>Auto-QK Multi Upgrade Ghost</b><br>
 							(buys if possible)<br>
-							Power consumption: 1<br>
+							Power consumption: 0.5<br>
 							Is active: <input id="isAutoGhostOn7" type="checkbox" onchange="toggleAutoGhost(7)"></input>
 						</div></td>
 						<td id="autoGhost8"><div class="autoBuyerDiv" style="display:block">
 							<b>Auto-Food Ghost</b><br>
 							(buys if possible)<br>
-							Power consumption: 1<br>
+							Power consumption: 0.5<br>
 							Is active: <input id="isAutoGhostOn8" type="checkbox" onchange="toggleAutoGhost(8)"></input>
 						</div></td>
 						<td id="autoGhost9"><div class="autoBuyerDiv" style="display:block">
 							<b>Auto-Worker Replicant Ghost</b><br>
 							(feeds if possible)<br>
-							Power consumption: 1<br>
+							Power consumption: 0.5<br>
 							Is active: <input id="isAutoGhostOn9" type="checkbox" onchange="toggleAutoGhost(9)"></input>
 						</div></td>
 					</tr>

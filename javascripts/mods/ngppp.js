@@ -2716,7 +2716,7 @@ function getSpaceShardsGain() {
 		if (player.quantum.breakEternity.upgrades.includes(3)) ret = ret.times(getBreakUpgMult(3))
 		if (player.quantum.breakEternity.upgrades.includes(6)) ret = ret.times(getBreakUpgMult(6))
 	}
-	if (hasNU(10)) ret = ret.times(player.eternities.max(1).pow(0))
+	if (hasNU(9)) ret = ret.times(player.eternities.max(1).pow(0))
 	return ret.floor()
 }
 
@@ -2820,7 +2820,7 @@ function breakEternity() {
 
 function getEMGain() {
 	let mult=1
-	if (hasNU(12)) mult=tmp.nu[6]
+	if (hasNU(12)) mult=tmp.nu[5]
 	let log=player.timeShards.div(1e15).max(1).log10()*0.25
 	if (log>15) return Decimal.pow(10,Math.sqrt(log*15)).times(mult).floor()
 	return Decimal.pow(10,log).times(mult).floor()
@@ -3691,9 +3691,8 @@ function updateGhostifyTabs() {
 		document.getElementById("neutrinoUpg3Pow").textContent=shorten(tmp.nu[1])
 		document.getElementById("neutrinoUpg4Pow").textContent=shorten(tmp.nu[2])
 		document.getElementById("neutrinoUpg7Pow").textContent=shorten(tmp.nu[3])
-		document.getElementById("neutrinoUpg8Pow").textContent=(tmp.nu[4]*100-100).toFixed(1)
-		document.getElementById("neutrinoUpg9Pow").textContent=tmp.nu[5].toFixed(2)
-		document.getElementById("neutrinoUpg12Pow").textContent=shorten(tmp.nu[3])
+		document.getElementById("neutrinoUpg9Pow").textContent=tmp.nu[4].toFixed(2)
+		document.getElementById("neutrinoUpg12Pow").textContent=shorten(tmp.nu[5])
 		for (var u=1; u<13; u++) {
 			if (hasNU(u)) document.getElementById("neutrinoUpg" + u).className = "gluonupgradebought neutrinoupg"
 			else if (sum.gte(tmp.nuc[u])) document.getElementById("neutrinoUpg" + u).className = "gluonupgrade neutrinoupg"
@@ -3717,6 +3716,7 @@ function onNotationChangeNeutrinos() {
 	document.getElementById("ghpMult").textContent=shortenDimensions(Decimal.pow(2,player.ghostify.multPower-1))
 	document.getElementById("ghpMultUpgCost").textContent=shortenDimensions(Decimal.pow(25,player.ghostify.multPower-1).times(1e10))
 	for (var u=1; u<13; u++) document.getElementById("neutrinoUpg"+u+"Cost").textContent=shortenDimensions(tmp.nuc[u])
+	document.getElementById("QKNerfPoint").textContent=shorten(new Decimal("1e738"))
 	document.getElementById("BU8Cap").textContent=shorten(Number.MAX_VALUE)
 }
 
@@ -3783,12 +3783,14 @@ function buyGHPMult() {
 function setupAutomaticGhostsData() {
 	var data = {power: 0, ghosts: 3}
 	for (var ghost=1; ghost<19; ghost++) data[ghost] = {on: false}
+	data[4].mode = "q"
+	data[4].rotate = "r"
 	return data
 }
 
-var autoGhostRequirements=[2,4,4,9,9,9,9,9,9,9,9,9,9,9,9,1/0]
+var autoGhostRequirements=[2,4,4,4.5,5,5,9,9,9,9,9,9,9,9,9,1/0]
 var powerConsumed
-var powerConsumptions=[0,1,1,1,1,2,2,1,1,1,1,1,1,1,1,1,1,1,1]
+var powerConsumptions=[0,1,1,1,1,2,2,0.5,0.5,0.5,1,1,1,1,1,1,1,1,1]
 function updateAutoGhosts(load) {
 	if (load) {
 		if (player.ghostify.automatorGhosts.ghosts>17) document.getElementById("nextAutomatorGhost").parentElement.style.display="none"
@@ -3810,6 +3812,10 @@ function updateAutoGhosts(load) {
 			if (player.ghostify.automatorGhosts[ghost].on) powerConsumed+=powerConsumptions[ghost]
 		}
 	}
+	if (load) {
+		document.getElementById("autoGhostMod4").textContent="Every "+(player.ghostify.automatorGhosts[4].mode=="t"?"second":"Quantum")
+		document.getElementById("autoGhostRotate4").textContent=player.ghostify.automatorGhosts[4].rotate=="l"?"Left":"Right"
+	}
 	document.getElementById("consumedPower").textContent=powerConsumed.toFixed(1)
 	isAutoGhostsSafe=player.ghostify.automatorGhosts.power>=powerConsumed
 	document.getElementById("tooMuchPowerConsumed").style.display=isAutoGhostsSafe?"none":""
@@ -3822,4 +3828,28 @@ function toggleAutoGhost(id) {
 
 function isAutoGhostActive(id) {
 	return player.ghostify.automatorGhosts[id].on
+}
+
+function changeAutoGhost(o) {
+	if (o=="4m") {
+		player.ghostify.automatorGhosts[4].mode=player.ghostify.automatorGhosts[4].mode=="t"?"q":"t"
+		document.getElementById("autoGhostMod4").textContent="Every "+(player.ghostify.automatorGhosts[4].mode=="t"?"second":"Quantum")
+	} else if (o=="4r") {
+		player.ghostify.automatorGhosts[4].rotate=player.ghostify.automatorGhosts[4].rotate=="l"?"r":"l"
+		document.getElementById("autoGhostRotate4").textContent=player.ghostify.automatorGhosts[4].rotate=="l"?"Left":"Right"
+	}
+}
+
+function rotateAutoUnstable() {
+	var tg=player.ghostify.automatorGhosts[3].on
+	if (player.ghostify.automatorGhosts[4].rotate=="l") {
+		player.ghostify.automatorGhosts[3].on=player.ghostify.automatorGhosts[1].on
+		player.ghostify.automatorGhosts[1].on=player.ghostify.automatorGhosts[2].on
+		player.ghostify.automatorGhosts[2].on=tg
+	} else {
+		player.ghostify.automatorGhosts[3].on=player.ghostify.automatorGhosts[2].on
+		player.ghostify.automatorGhosts[2].on=player.ghostify.automatorGhosts[1].on
+		player.ghostify.automatorGhosts[1].on=tg
+	}
+	for (var g=1;g<4;g++) document.getElementById("isAutoGhostOn"+g).checked=player.ghostify.automatorGhosts[g].on
 }

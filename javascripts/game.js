@@ -953,9 +953,9 @@ let tmp = {
 	beu: [],
 	bm: [180,120,90,60,40,20,15,10,8,7,6,5,4,3,2,1],
 	nb: [],
-	nbc: [null,2,4,8,1/0,1/0,1/0,1/0,1/0,1/0],
+	nbc: [null,2,4,6,1/0,1/0,1/0,1/0,1/0,1/0],
 	nu: [],
-	nuc: [null,1e6,1e7,1e8,2e9,5e9,2e10,3e10,1/0,1/0,1/0,1/0,1/0]
+	nuc: [null,1e6,1e7,1e8,2e9,5e9,2e10,3e10,5e10,1/0,1/0,1/0,1/0]
 }
 function updateTemp() {
 	tmp.nrm=player.replicanti.amount.max(1)
@@ -969,8 +969,8 @@ function updateTemp() {
 		if (ghostified) {
 			tmp.nb[0]=Math.log10(player.ghostify.neutrinos.electron.add(1).log10()+player.ghostify.neutrinos.mu.add(1).log10()+player.ghostify.neutrinos.tau.add(1).log10()+1)*0.75
 			if (player.ghostify.neutrinos.boosts>1) tmp.nb[1]=Math.pow(Math.pow(player.ghostify.neutrinos.electron.add(1).log10(),2)+Math.pow(player.ghostify.neutrinos.mu.add(1).log10(),2)+Math.pow(player.ghostify.neutrinos.tau.add(1).log10(),2),0.25)*1.5
-			if (player.ghostify.neutrinos.boosts>2) tmp.nb[2]=Math.pow(Math.pow(Math.log10(Math.max(player.ghostify.neutrinos.electron.max(1).log10()-5,1))/Math.log10(5),4)+Math.pow(Math.log10(Math.max(player.ghostify.neutrinos.mu.max(1).log10()-5,1))/Math.log10(5),4)+Math.pow(Math.log10(Math.max(player.ghostify.neutrinos.tau.max(1).log10()-5,1))/Math.log10(5),4),0.25)/Math.pow(3,0.25)+3
-			if (player.ghostify.neutrinos.boosts>3) tmp.nb[3]=1
+			if (player.ghostify.neutrinos.boosts>2) tmp.nb[2]=Math.pow(Math.pow(Math.log10(Math.max(player.ghostify.neutrinos.electron.max(1).log10()-5,1))/Math.log10(5),2)+Math.pow(Math.log10(Math.max(player.ghostify.neutrinos.mu.max(1).log10()-5,1))/Math.log10(5),2)+Math.pow(Math.log10(Math.max(player.ghostify.neutrinos.tau.max(1).log10()-5,1))/Math.log10(5),2),0.25)/Math.pow(3,0.25)+3
+			if (player.ghostify.neutrinos.boosts>3) tmp.nb[3]=Math.pow(Math.pow(player.ghostify.neutrinos.electron.add(1).log10(),2)+Math.pow(player.ghostify.neutrinos.mu.add(1).log10(),2)+Math.pow(player.ghostify.neutrinos.tau.add(1).log10(),2),0.25)*0.07+1
 			if (player.ghostify.neutrinos.boosts>4) tmp.nb[4]=1
 			if (player.ghostify.neutrinos.boosts>5) tmp.nb[5]=1
 			if (player.ghostify.neutrinos.boosts>6) tmp.nb[6]=1
@@ -980,14 +980,13 @@ function updateTemp() {
 			tmp.nu[1]=Math.pow(Math.max(player.quantum.colorPowers.b.log10()/250+1,1),2) //NU3
 			var ret=Math.max(-player.tickspeed.div(1e3).log10()/4e13-4,0)
 			tmp.nu[2]=Decimal.pow(20,Math.pow(ret,1/4)) //NU4
-			tmp.nu[3]=player.quantum.colorPowers.g.add(1).pow(1/500) //NU7
-			tmp.nu[4]=1 //NU8
-			tmp.nu[5]=1 //NU9
-			tmp.nu[6]=1 //NU12
+			tmp.nu[3]=player.quantum.colorPowers.g.add(1).pow(1/400) //NU7
+			tmp.nu[4]=1 //NU9
+			tmp.nu[5]=1 //NU12
 		}
 	} else tmp.be=false
 	var ret=(3-player.tickspeed.log10())*0.000005
-	if (hasNU(8)) ret*=tmp.nu[4]
+	if (ghostified&&player.ghostify.neutrinos.boosts>3) ret*=tmp.nb[3]
 	if (tmp.be) {
 		if (ret>100) ret=Math.pow(ret*100,0.5)
 	} else {
@@ -4789,7 +4788,7 @@ function bigCrunch(autoed) {
             infinityUpgradesRespecced: player.infinityUpgradesRespecced,
             setsUnlocked: player.setsUnlocked,
             infinityPoints: player.infinityPoints,
-            infinitied: player.infinitied,
+            infinitied: nA(player.infinitied, infGain),
             infinitiedBank: player.infinitiedBank,
             totalTimePlayed: player.totalTimePlayed,
             bestInfinityTime: (player.currentEternityChall !== "eterc12") ? Math.min(player.bestInfinityTime, player.thisInfinityTime) : player.bestInfinityTime,
@@ -5015,11 +5014,6 @@ function bigCrunch(autoed) {
         if (getEternitied() >= 80 && player.replicanti.auto[2] && player.currentEternityChall !== "eterc8") autoBuyRG()
 
         Marathon2 = 0;
-
-        var newInfs = player.infinitied
-        if (typeof(newInfs) == "number") newInfs += infGain
-        if (newInfs == 1/0) newInfs = Decimal.add(player.infinitied, infGain)
-        player.infinitied = newInfs
     }
   updateChallenges();
   updateChallengeTimes()
@@ -5502,7 +5496,7 @@ function gainEternitiedStat() {
 	let ret = 1
 	if (ghostified) {
 		ret = Math.pow(10, 2 / (Math.log10(getEternitied() + 1) / 10 + 1))
-		if (player.quantum.bigRip.active&&hasNU(10)) ret = nM(ret, player.quantum.bigRip.spaceShards.max(1).pow(0))
+		if (player.quantum.bigRip.active&&hasNU(9)) ret = nM(ret, player.quantum.bigRip.spaceShards.max(1).pow(0))
 	}
 	if (quantumed && player.eternities < 1e5) ret = Math.max(ret, 20)
 	if (player.dilation.upgrades.includes('ngpp2')) ret = nM(Decimal.pow(player.dilation.dilatedTime, .1), ret)
@@ -7059,6 +7053,15 @@ setInterval(function() {
             else document.getElementById("ec"+player.quantum.autoECN+"unl").onclick()
             justImported=false
         }
+        if (isAutoGhostActive(4)&&player.ghostify.automatorGhosts[4].mode=="t") rotateAutoUnstable()
+        if (isAutoGhostActive(9)&&player.quantum.replicants.quantumFood>0) {
+            for (var d=8;d>0;d--) if (canFeedReplicant(d)) {
+                feedReplicant(d, true)
+                break
+            }
+        }
+        if (isAutoGhostActive(8)) buyMaxQuantumFood()
+        if (isAutoGhostActive(7)) maxQuarkMult()
         var chall=getCurrentQCData()
         if (chall.length<2) chall=chall[0]
         else if (chall[0]>chall[1]) chall=chall[1]*10+chall[0]
@@ -8332,14 +8335,14 @@ function autoBuyerTick() {
     }
 
     if (player.autobuyers[10]%1 !== 0) {
-        if (player.autobuyers[10].ticks*100 >= player.autobuyers[10].interval && (player.currentChallenge == "challenge4" ? getAmount(6) >= getGalaxyRequirement() : getAmount(8) >= getGalaxyRequirement())) {
-            if ((getEternitied() < 9 && !player.autobuyers[10].bulkBought) || player.autobuyers[10].bulk == 0) {
+        if (player.autobuyers[10].ticks*100 >= player.autobuyers[10].interval && getAmount(player.currentChallenge=="challenge4"?6:8) >= getGalaxyRequirement()) {
+            if (getEternitied() < 9) {
                 if (player.autobuyers[10].isOn && player.autobuyers[10].priority > player.galaxies) {
                     autoS = false;
                     document.getElementById("secondSoftReset").click()
                     player.autobuyers[10].ticks = 1;
                 }
-            } else if (player.autobuyers[10].isOn && (Math.round(timer * 100))%(Math.round(player.autobuyers[10].bulk * 100)) == 0){
+            } else if (player.autobuyers[10].isOn && (player.autobuyers[10].bulk == 0 || (Math.round(timer * 100))%(Math.round(player.autobuyers[10].bulk * 100)) == 0)){
                 maxBuyGalaxies()
             }
         } else player.autobuyers[10].ticks += 1;
