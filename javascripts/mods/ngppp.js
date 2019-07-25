@@ -174,7 +174,6 @@ function buyMasteryStudy(type, id, quick=false) {
 		if (type=="d"&&id==13) {
 			showTab("quantumtab")
 			showQuantumTab("tod")
-			player.ghostify.noGrind = false
 			updateColorCharge()
 			updateTODStuff()
 		}
@@ -626,6 +625,8 @@ function updateQuantumTabs() {
 		document.getElementById("nanofieldreward6").textContent = "Meta-dimension boost power is increased to " + getNanofieldRewardEffect(6).toFixed(2) + "x."
 		document.getElementById("nanofieldreward7").textContent = "Remote galaxy cost scaling starts " + getFullExpansion(getNanofieldRewardEffect(7)) + " later and the production of preon charge is " + shortenMoney(getNanofieldRewardEffect("7g")) + "x faster."
 		document.getElementById("nanofieldreward8").textContent = "Add " + getNanofieldRewardEffect(8).toFixed(2) + "x to multiplier per ten dimensions before getting affected by electrons and the production of preon energy is " + shortenMoney(getNanofieldRewardEffect("8c")) + "x faster."
+
+		document.getElementById("ns").textContent = "Nanofield speed multiplier is currently "+shorten(tmp.ns)+"x."
 	}
 	if (document.getElementById("tod").style.display == "block") {
 		var branchNum=0
@@ -1679,10 +1680,11 @@ function maxReduceHatchSpeed() {
 	updateReplicants()
 }
 
-function getQuarkChargeProduction() {
+function getQuarkChargeProduction(noSpeed) {
 	let ret = getNanofieldRewardEffect("7g")
 	if (hasNU(3)) ret = ret.times(tmp.nu[1])
 	if (hasNU(7)) ret = ret.times(tmp.nu[3])
+	if (!noSpeed) ret = ret.times(tmp.ns)
 	return ret
 }
 
@@ -1692,8 +1694,9 @@ function startProduceQuarkCharge() {
 }
 
 function getQuarkLossProduction() {
-	let ret = getQuarkChargeProduction().pow(4).times(4e25)
+	let ret = getQuarkChargeProduction(true).pow(4).times(4e25)
 	if (hasNU(3)) ret = ret.div(10)
+	ret = ret.times(tmp.ns)
 	return ret
 }
 
@@ -1703,12 +1706,14 @@ function getQuarkEnergyProduction() {
 	if (player.masterystudies.includes("t421")) ret = ret.times(getMTSMult(421))
 	ret = ret.times(getNanofieldRewardEffect("8c"))
 	if (ghostified && player.ghostify.neutrinos.boosts > 4) ret = ret.times(tmp.nb[4])
+	ret = ret.times(tmp.ns)
 	return ret
 }
 
 function getQuarkAntienergyProduction() {
 	let ret = player.quantum.nanofield.charge.sqrt()
 	if (player.masterystudies.includes("t401")) ret = ret.div(getMTSMult(401))
+	ret = ret.times(tmp.ns)
 	return ret
 }
 
@@ -1902,12 +1907,14 @@ function getDecayRate(branch) {
 	ret = ret.times(getTreeUpgradeEffect(3))
 	ret = ret.times(getTreeUpgradeEffect(5))
 	if (hasNU(4)) ret = ret.times(tmp.nu[2])
+	ret = ret.times(todspeed)
 	return ret.min(Math.pow(2,40))
 }
 
 function getQuarkSpinProduction(branch) {
 	let ret = Decimal.pow(2,getBranchUpgLevel(branch,1)*(1+getRadioactiveDecays(branch)/10)).times(getTreeUpgradeEffect(3)).times(getTreeUpgradeEffect(5))
 	if (hasNU(4)) ret = ret.times(tmp.nu[2].pow(2))
+	ret = ret.times(todspeed)
 	return ret
 }
 
@@ -2092,6 +2099,7 @@ function rotateAutoAssign() {
 	document.getElementById('autoAssignRotate').textContent="Rotation: "+(player.quantum.autoOptions.assignQKRotate>1?"Left":player.quantum.autoOptions.assignQKRotate?"Right":"None")
 }
 
+var todspeed=1
 function unstableAll() {
 	var colors=["r","g","b"]
 	for (c=0;c<3;c++) {
@@ -2716,7 +2724,7 @@ function getSpaceShardsGain() {
 		if (player.quantum.breakEternity.upgrades.includes(3)) ret = ret.times(getBreakUpgMult(3))
 		if (player.quantum.breakEternity.upgrades.includes(6)) ret = ret.times(getBreakUpgMult(6))
 	}
-	if (hasNU(9)) ret = ret.times(player.eternities.max(1).pow(0))
+	if (hasNU(9)) ret = ret.times(Decimal.max(getEternitied(), 1).pow(0.1))
 	return ret.floor()
 }
 
@@ -2820,7 +2828,7 @@ function breakEternity() {
 
 function getEMGain() {
 	let mult=1
-	if (hasNU(12)) mult=tmp.nu[5]
+	if (hasNU(12)) mult=tmp.nu[4]
 	let log=player.timeShards.div(1e15).max(1).log10()*0.25
 	if (log>15) return Decimal.pow(10,Math.sqrt(log*15)).times(mult).floor()
 	return Decimal.pow(10,log).times(mult).floor()
@@ -3564,6 +3572,7 @@ function ghostifyReset(implode, gain, amount, force) {
 		document.getElementById('toggleautoquantummode').style.display="none"
 		document.getElementById("edtabbtn").style.display = "none"
 	}
+	document.getElementById('bestTP').textContent="Your best Tachyon particles in this Ghostify was "+shorten(player.dilation.bestTP)+"."
 	updateLastTenQuantums()
 	updateSpeedruns()
 	updateColorCharge()
@@ -3582,7 +3591,6 @@ function ghostifyReset(implode, gain, amount, force) {
 	document.getElementById("ghostifybtn").style.display = "none"
 	if (!ghostified) {
 		ghostified = true
-		document.getElementById('bestTP').textContent="Your best Tachyon particles in this Ghostify was "+shorten(player.dilation.bestTP)+"."
 		document.getElementById("ghostifytabbtn").style.display = "inline-block"
 		document.getElementById("ghostparticles").style.display = ""
 		document.getElementById("ghostifyAnimBtn").style.display = "inline-block"
@@ -3682,8 +3690,8 @@ function updateGhostifyTabs() {
 		}
 		if (player.ghostify.neutrinos.boosts>2) document.getElementById("neutrinoBoost3").textContent=tmp.nb[2].toFixed(2)
 		if (player.ghostify.neutrinos.boosts>3) document.getElementById("neutrinoBoost4").textContent=(tmp.nb[3]*100-100).toFixed(1)
-		if (player.ghostify.neutrinos.boosts>4) document.getElementById("neutrinoBoost5").textContent=shorten(tmp.nb[4])
-		if (player.ghostify.neutrinos.boosts>5) document.getElementById("neutrinoBoost6").textContent=shorten(tmp.nb[5])
+		if (player.ghostify.neutrinos.boosts>4) document.getElementById("neutrinoBoost5").textContent=(100-tmp.nb[4]*100).toFixed(1)
+		if (player.ghostify.neutrinos.boosts>5) document.getElementById("neutrinoBoost6").textContent=(tmp.nb[5]*100-100).toFixed(1)
 		if (player.ghostify.neutrinos.boosts>6) document.getElementById("neutrinoBoost6").textContent=shorten(tmp.nb[6])
 		if (player.ghostify.neutrinos.boosts>7) document.getElementById("neutrinoBoost7").textContent=(tmp.nb[7]*100-100).toFixed(1)
 		if (player.ghostify.neutrinos.boosts>8) document.getElementById("neutrinoBoost8").textContent=(tmp.nb[8]*100).toFixed(1)

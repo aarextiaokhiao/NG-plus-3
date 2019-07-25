@@ -20,7 +20,6 @@ function getTimeDimensionPower(tier) {
   }
   var dim = player["timeDimension"+tier]
   var ret = dim.power.pow(player.boughtDims?1:2)
-  if (ghostified) if (player.ghostify.neutrinos.boosts > 5) ret = ret.pow(tmp.nb[5])
 
   if (player.timestudy.studies.includes(11) && tier == 1) ret = ret.times(getTS11Mult())
   if (player.achievements.includes("r105")) ret = ret.times(tmp.it)

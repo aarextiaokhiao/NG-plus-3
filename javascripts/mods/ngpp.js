@@ -1341,7 +1341,7 @@ function quantumReset(force, auto, challid, bigRip, implode=false) {
 	updateTimeStudyButtons()
 	updateDilationUpgradeCosts()
 	drawStudyTree()
-	if (!isRewardEnabled(4)||bigRip) if (document.getElementById("dilation").style.display=="block") showEternityTab("timestudies", document.getElementById("eternitystore").style.display=="block")
+	if (!isRewardEnabled(4)||(bigRip?!player.quantum.bigRip.upgrades.includes(10):false)) if (document.getElementById("dilation").style.display=="block") showEternityTab("timestudies", document.getElementById("eternitystore").style.display=="block")
 	document.getElementById("masterystudyunlock").style.display = (bigRip ? !player.quantum.bigRip.upgrades.includes(12) : speedrunMilestonesReached < 14 || !isRewardEnabled(4)) ? "none" : ""
 	if (speedrunMilestonesReached < 14 || !isRewardEnabled(4)) {
 		document.getElementById("respecMastery").style.display = "none"

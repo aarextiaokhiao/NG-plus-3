@@ -557,8 +557,7 @@ function updateNewPlayer(reseted) {
                 multPower: 1,
                 upgrades: []
             },
-            automatorGhosts: setupAutomaticGhostsData(),
-            noGrind: false
+            automatorGhosts: setupAutomaticGhostsData()
         }
         player.options.animations.ghostify = true
         player.aarexModifications.ghostifyConf = true
@@ -948,14 +947,15 @@ let tmp = {
 	rm: new Decimal(1),
 	it: 1,
 	nrm: new Decimal(1),
+	ns: 1,
 	bru: [],
 	be: false,
 	beu: [],
 	bm: [180,120,90,60,40,20,15,10,8,7,6,5,4,3,2,1],
 	nb: [],
-	nbc: [null,2,4,6,1/0,1/0,1/0,1/0,1/0,1/0],
+	nbc: [null,2,4,6,20,60,1/0,1/0,1/0,1/0],
 	nu: [],
-	nuc: [null,1e6,1e7,1e8,2e9,5e9,2e10,3e10,5e10,1/0,1/0,1/0,1/0]
+	nuc: [null,1e6,1e7,1e8,2e9,5e9,2e10,3e10,4e10,5e10,1/0,1/0,1/0]
 }
 function updateTemp() {
 	tmp.nrm=player.replicanti.amount.max(1)
@@ -966,13 +966,15 @@ function updateTemp() {
 			tmp.bru[0]=Math.sqrt(player.quantum.bigRip.spaceShards.div(3e15).add(1).log10()*ret+1) //BRU14
 		}
 		if (!player.dilation.active&&player.quantum.bigRip.active&&player.quantum.bigRip.upgrades.includes(14)) tmp.nrm=tmp.nrm.pow(tmp.bru[0])
+		tmp.ns=1
 		if (ghostified) {
+			if (player.quantum.nanofield.rewards<16) tmp.ns=player.ghostify.milestones?6:3
 			tmp.nb[0]=Math.log10(player.ghostify.neutrinos.electron.add(1).log10()+player.ghostify.neutrinos.mu.add(1).log10()+player.ghostify.neutrinos.tau.add(1).log10()+1)*0.75
 			if (player.ghostify.neutrinos.boosts>1) tmp.nb[1]=Math.pow(Math.pow(player.ghostify.neutrinos.electron.add(1).log10(),2)+Math.pow(player.ghostify.neutrinos.mu.add(1).log10(),2)+Math.pow(player.ghostify.neutrinos.tau.add(1).log10(),2),0.25)*1.5
 			if (player.ghostify.neutrinos.boosts>2) tmp.nb[2]=Math.pow(Math.pow(Math.log10(Math.max(player.ghostify.neutrinos.electron.max(1).log10()-5,1))/Math.log10(5),2)+Math.pow(Math.log10(Math.max(player.ghostify.neutrinos.mu.max(1).log10()-5,1))/Math.log10(5),2)+Math.pow(Math.log10(Math.max(player.ghostify.neutrinos.tau.max(1).log10()-5,1))/Math.log10(5),2),0.25)/Math.pow(3,0.25)+3
 			if (player.ghostify.neutrinos.boosts>3) tmp.nb[3]=Math.pow(Math.pow(player.ghostify.neutrinos.electron.add(1).log10(),2)+Math.pow(player.ghostify.neutrinos.mu.add(1).log10(),2)+Math.pow(player.ghostify.neutrinos.tau.add(1).log10(),2),0.25)*0.07+1
-			if (player.ghostify.neutrinos.boosts>4) tmp.nb[4]=1
-			if (player.ghostify.neutrinos.boosts>5) tmp.nb[5]=1
+			if (player.ghostify.neutrinos.boosts>4) tmp.nb[4]=Math.min((player.ghostify.neutrinos.electron.max(1).log10()+player.ghostify.neutrinos.mu.max(1).log10()+player.ghostify.neutrinos.tau.max(1).log10())/33,1)
+			if (player.ghostify.neutrinos.boosts>5) tmp.nb[5]=Math.pow(Math.pow(Math.pow(player.ghostify.neutrinos.electron.add(1).log10(),2)+Math.pow(player.ghostify.neutrinos.mu.add(1).log10(),2)+Math.pow(player.ghostify.neutrinos.tau.add(1).log10(),2),0.25)*0.525+1,tmp.be?0.5:1)
 			if (player.ghostify.neutrinos.boosts>6) tmp.nb[6]=1
 			if (player.ghostify.neutrinos.boosts>7) tmp.nb[7]=1
 			if (player.ghostify.neutrinos.boosts>8) tmp.nb[8]=0
@@ -981,8 +983,7 @@ function updateTemp() {
 			var ret=Math.max(-player.tickspeed.div(1e3).log10()/4e13-4,0)
 			tmp.nu[2]=Decimal.pow(20,Math.pow(ret,1/4)) //NU4
 			tmp.nu[3]=player.quantum.colorPowers.g.add(1).pow(1/400) //NU7
-			tmp.nu[4]=1 //NU9
-			tmp.nu[5]=1 //NU12
+			tmp.nu[4]=1 //NU12
 		}
 	} else tmp.be=false
 	var ret=(3-player.tickspeed.log10())*0.000005
@@ -1084,7 +1085,6 @@ function getEternitied() {
 
 
 function getGalaxyCostScalingStart(galaxies, scalingSpeed) {
-    if (player.currentEternityChall == "eterc5") return 0
     var n = 100+ECTimesCompleted("eterc5")*5
     if (player.timestudy.studies.includes(223)) n += 7
     if (player.timestudy.studies.includes(224)) n += Math.floor(player.resets/2000)
@@ -1099,7 +1099,7 @@ function getGalaxyCostScalingStart(galaxies, scalingSpeed) {
 		n -= Math.ceil((galaxies-1399)/push)
 	}
 
-    return scalingSpeed > 1 ? n : Math.max(n,0)
+    return Math.min(scalingSpeed>1?n:Math.max(n,0),player.currentEternityChall=="eterc5"?0:1/0)
 }
 
 function getRemoteGalaxyScalingStart(galaxies) {
@@ -1137,6 +1137,7 @@ function getGalaxyRequirement(offset=0, display) {
 			if (GUBought("rg6")) speed *= 0.867
 			if (GUBought("gb6")) speed /= 1+Math.pow(player.infinityPower.max(1).log10(),0.25)/2810
 			if (GUBought("br6")) speed /= 1+player.meta.resets/340
+			if (ghostified) if (player.ghostify.neutrinos.boosts > 5) speed /= tmp.nb[5]
 			amount += (galaxies-galaxyCostScalingStart+2)*(galaxies-galaxyCostScalingStart+1)*speed
 			scaling = Math.max(scaling, 1)
 		}
@@ -3662,7 +3663,7 @@ function setAchieveTooltip() {
     notSmart.setAttribute('ach-tooltip', "Get "+shorten(1e215)+" Time Shards without having time study 11 while big ripped.")
     soLife.setAttribute('ach-tooltip', "Reach "+shorten(Decimal.pow(10, 35e4))+" IP without studies and normal EP multi upgrades but in dilated and big ripped.")
     willenough.setAttribute('ach-tooltip', "Reach "+shortenCosts( new Decimal("1e20000000"))+" replicanti.")
-    bm1.setAttribute('ach-tooltip', "Reward: Start Ghostifies with all Speedrun Milestones and all "+shorten(Number.MAX_VALUE)+" QK features unlocked, all Paired Challenges completed, and all Big Rip upgrades bought.")
+    bm1.setAttribute('ach-tooltip', "Reward: Start Ghostifies with all Speedrun Milestones and all "+shorten(Number.MAX_VALUE)+" QK features unlocked, all Paired Challenges completed, and all Big Rip upgrades bought and Nanofield is an additional 2x faster until you reach 16 rewards.")
     bm14.setAttribute('ach-tooltip', "Reward: Start Ghostifies with "+shortenCosts(1e25)+" Quark Spins.")
 }
 
@@ -5088,7 +5089,7 @@ function eternity(force, auto, presetLoad) {
             }
             else if (player.aarexModifications.eternityChallRecords[player.eternityChallUnlocked] === undefined) player.aarexModifications.eternityChallRecords[player.eternityChallUnlocked] = player.thisEternity
             else player.aarexModifications.eternityChallRecords[player.eternityChallUnlocked] = Math.min(player.thisEternity, player.aarexModifications.eternityChallRecords[player.eternityChallUnlocked])
-            if (player.currentEternityChall === "eterc12" && ghostified) {
+            if (player.currentEternityChall === "eterc12" && player.achievements.includes("ng3p51")) {
                 if (player.eternityChalls.eterc11 === undefined) player.eternityChalls.eterc11 = 1
                 else if (player.eternityChalls.eterc11 < 5) player.eternityChalls.eterc11++
             }
@@ -5496,7 +5497,7 @@ function gainEternitiedStat() {
 	let ret = 1
 	if (ghostified) {
 		ret = Math.pow(10, 2 / (Math.log10(getEternitied() + 1) / 10 + 1))
-		if (player.quantum.bigRip.active&&hasNU(9)) ret = nM(ret, player.quantum.bigRip.spaceShards.max(1).pow(0))
+		if (hasNU(9)) ret = nM(ret, player.quantum.bigRip.spaceShards.max(1).pow(0.1))
 	}
 	if (quantumed && player.eternities < 1e5) ret = Math.max(ret, 20)
 	if (player.dilation.upgrades.includes('ngpp2')) ret = nM(Decimal.pow(player.dilation.dilatedTime, .1), ret)
@@ -7024,7 +7025,12 @@ setInterval(function() {
         if (player.timestudy.theorem>11e6&&player.quantum.wasted) giveAchievement("Studies are wasted")
         if (player.quantum.replicants.requirement.gte("1e14500000")) giveAchievement("Stop blocking me!")
         if (player.infinityPoints.gte(Decimal.pow(10, 275e3))&&ableToGetRid6) giveAchievement("Are you currently dying?")
-        if (player.quantum.nanofield.rewards > 1/0 && player.ghostify.noGrind) giveAchievement("But I don't want to grind!")
+        if (!player.achievements.includes("ng3p65")) {
+            for (var u=1;u<9;u++) {
+                if (player.quantum.tod.upgrades[u]) break
+                else if (player.quantum.nanofield.rewards>1/0&&u>7) giveAchievement("But I don't want to grind!")
+            }
+        }
         if (player.replicanti.amount.e >= 1/0) giveAchievement("Will it be enough?")
         if (player.quantum.bigRip.active) {
             let ableToGetRid7 = ableToGetRid2 && player.epmult.eq(1)
@@ -7298,7 +7304,7 @@ function gameLoop(diff) {
         colorBoosts.g=Math.sqrt(player.quantum.colorPowers.g.add(1).log10()*2+1)
         colorBoosts.b=Decimal.pow(10,Math.sqrt(player.quantum.colorPowers.b.add(1).log10()))
         if (colorBoosts.r>1.3) colorBoosts.r=Math.sqrt(colorBoosts.r*1.3)
-        if (colorBoosts.r>2.3&&(!player.dilation.active||getTreeUpgradeLevel(2)>7||ghostified)) colorBoosts.r=Math.sqrt(colorBoosts.r*2.3)
+        if (colorBoosts.r>2.3&&(!player.dilation.active||getTreeUpgradeLevel(2)>7||ghostified)) colorBoosts.r=Math.pow(colorBoosts.r/2.3,0.5*(ghostified&&player.ghostify.neutrinos.boosts>4?1+tmp.nb[4]:1))*2.3
         if (colorBoosts.g>4.5) colorBoosts.g=Math.sqrt(colorBoosts.g*4.5)
         if (colorBoosts.b.gt(1300)) colorBoosts.b=Decimal.pow(10,Math.sqrt(colorBoosts.b.log10()*Math.log10(1300)))
 
@@ -7340,7 +7346,7 @@ function gameLoop(diff) {
             var decayRate=getDecayRate(shorthand)
             var decayPower=getRadioactiveDecays(shorthand)*25
 
-            branch.gainDiv=Decimal.div(branch.gainDiv, Decimal.pow(1.1, diff/10)).max("1e390")
+            branch.gainDiv=Decimal.div(branch.gainDiv, Decimal.pow(1.1, diff*todspeed/10)).max("1e390")
 
             var mult=Decimal.pow(2,decayPower)
             var power=Decimal.div(branch.quarks.gt(mult)?branch.quarks.div(mult).log(2)+1:branch.quarks.div(mult),decayRate)
@@ -8807,6 +8813,7 @@ function resetUP() {
 	clearInterval(updatePowerInt)
 	updatePowers()
 	mult18 = 1
+	tmp.nb[5] = 1
 	updatePowerInt = setInterval(updatePowers, 100)
 }
 

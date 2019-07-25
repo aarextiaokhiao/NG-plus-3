@@ -336,7 +336,7 @@ function studiesUntil(id) {
 }
 
 function respecTimeStudies(force, presetLoad) {
-  var respecTime=player.respec||force
+  var respecTime=player.respec||(force&&(presetLoad||player.eternityChallUnlocked<13))
   var respecMastery=false
   var gotAch=respecTime||player.timestudy.studies.length<1
   if (player.masterystudies) {
@@ -427,7 +427,7 @@ function respecTimeStudies(force, presetLoad) {
       player.timestudy.studies=respecedTS
   }
   if (respecMastery) {
-      if (player.eternityChallUnlocked > 12) player.timestudy.theorem += masterystudies.costs.ec[player.eternityChallUnlocked]
+      if (player.eternityChallUnlocked>12) player.timestudy.theorem += masterystudies.costs.ec[player.eternityChallUnlocked]
 
       var respecedMS=[]
       for (id=0;id<player.masterystudies.length;id++) {
