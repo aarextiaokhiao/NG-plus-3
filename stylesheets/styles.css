@@ -2251,6 +2251,10 @@ br {
 	height: 90px
 }
 
+#automaticghosts input[type=number] {
+	width: 50px
+}
+
 @media print,
 screen and (max-width: 960px) {
     div.wrapper {

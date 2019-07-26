@@ -723,7 +723,7 @@ function timeDisplayShort(time, rep, places) {
 	if (time < 60) return time.toFixed(time < 10 ? places : places-1) + " s" + (rep ? "" : "econds")
 	if (time < 3600) return Math.floor(time/60) + ":" + preformat(Math.floor(time%60))
 	if (time < 86400) return Math.floor(time/3600) + ":" + preformat(Math.floor((time/60)%60)) + ":" + preformat(Math.floor(time%60))
-	if (time < 31536e3) return Math.floor(time/86400) + 'd, ' + Math.floor((time/3600)%24) + ":" + preformat(Math.floor((time/60)%60)) + ":" + preformat(Math.floor(time%60))
-	if (time < 31536e4) return Math.floor(time/31536e3) + 'y, ' + Math.floor((time/86400)%365) + 'd, ' + Math.floor((time/3600)%24) + ":" + preformat(Math.floor((time/60)%60)) + ":" + preformat(Math.floor(time%60))
+	if (time < 31556952) return Math.floor(time/86400) + 'd & ' + ((time/3600)%24).toFixed(1) + "h"
+	if (time < 315569520) return Math.floor(time/31536e3) + 'y & ' + ((time/86400)%365.2425).toFixed(1) + 'd'
 	return shorten(time/31536e3) + 'y'
 }

@@ -1624,11 +1624,9 @@ function updateEmperorDimensions() {
 	for (d=1;d<9;d++) {
 		document.getElementById("empD"+d).textContent = DISPLAY_NAMES[d] + " Emperor Dimension x" + formatValue(player.options.notation, getEDMultiplier(d), 2, 1)
 		
-		var desc = shortenDimensions(eds[d].workers)
-		if (d<8) desc += " (+" + shorten(getEDRateOfChange(d)) + dimDescEnd
-		document.getElementById("empAmount"+d).textContent = desc
+		document.getElementById("empAmount"+d).textContent = d<8?shortenDimensions(eds[d].workers)+" (+"+shorten(getEDRateOfChange(d))+dimDescEnd:getFullExpansion(eds[8].perm)
 		document.getElementById("empFeed"+d).className=(canFeedReplicant(d)?"stor":"unavailabl")+"ebtn"
-		document.getElementById("empFeed"+d).textContent="Feed ("+Math.round(eds[d].progress.toNumber()*100)+"%, "+eds[d].perm+" kept)"
+		document.getElementById("empFeed"+d).textContent="Feed ("+Math.round(eds[d].progress.toNumber()*100)+"%, "+getFullExpansion(eds[d].perm)+" kept)"
 		document.getElementById("empFeedMax"+d).className=(canFeedReplicant(d)?"stor":"unavailabl")+"ebtn"
 
 		document.getElementById("empQuarks"+d).textContent = shorten(production.workers[d])
@@ -1957,7 +1955,8 @@ function getTreeUpgradeLevel(upg) {
 
 function getTreeUpgradeEffect(upg) {
 	let lvl = getTreeUpgradeLevel(upg)
-	if (upg==1) return lvl * 30
+	if (player.quantum.bigRip.active&&player.ghostify.neutrinos.boosts>6) lvl*=tmp.nb[6]
+	if (upg==1) return Math.floor(lvl * 30)
 	if (upg==2) return lvl * 0.25
 	if (upg==3) {
 		if (lvl<1) return 1
@@ -2037,7 +2036,7 @@ function updateQuantumWorth(mode) {
 			while (player.ghostify.automatorGhosts.power>=autoGhostRequirements[player.ghostify.automatorGhosts.ghosts-3]) {
 				player.ghostify.automatorGhosts.ghosts++
 				document.getElementById("autoGhost"+player.ghostify.automatorGhosts.ghosts).style.display=""
-				if (player.ghostify.automatorGhosts.ghosts>17) document.getElementById("nextAutomatorGhost").parentElement.style.display="none"
+				if (player.ghostify.automatorGhosts.ghosts>14) document.getElementById("nextAutomatorGhost").parentElement.style.display="none"
 				else {
 					document.getElementById("automatorGhostsAmount").textContent=player.ghostify.automatorGhosts.ghosts
 					document.getElementById("nextAutomatorGhost").parentElement.style.display=""
@@ -2149,7 +2148,7 @@ function maxTreeUpg() {
 			}
 			var cost=getTreeUpgradeCost(u,toBuy-1)
 			var toBuy2=toBuy
-			while (toBuy>0&&newSpins[(lvl+toBuy-1)%3].div(cost).lt(1e16)) {
+			while (toBuy>0&&newSpins[0].min(newSpins[1]).min(newSpins[2]).div(cost).lt(1e16)) {
 				if (newSpins[(lvl+toBuy-1)%3].gte(cost)) newSpins[(lvl+toBuy-1)%3]=newSpins[(lvl+toBuy-1)%3].sub(cost)
 				else {
 					newSpins[(lvl+toBuy-1)%3]=todData[colors[(lvl+toBuy-1)%3]].spin.sub(cost)
@@ -2294,9 +2293,9 @@ function loadAP() {
 	}
 	if (player.eternityBuyer.presets.grind === undefined) {
 		document.getElementById("apGrindSelected").textContent = ""
-		document.getElementById("apGrind").innerHTML = '<b>Empty grind preset</b><br>(Eternitying with <10,000 log(EP)/min selects this)<br><button class="storebtn" onclick="createAP(false, \'grind\')">Add preset</button> <button class="storebtn" onclick="createAP(true, \'dil\')">Import preset</button>'
+		document.getElementById("apGrind").innerHTML = '<b>Empty grind preset</b><br>(Eternitying with <10% of log(EP) of log(EP)/min peak selects this)<br><button class="storebtn" onclick="createAP(false, \'grind\')">Add preset</button> <button class="storebtn" onclick="createAP(true, \'dil\')">Import preset</button>'
 	} else {
-		document.getElementById("apGrind").innerHTML = '<b id="apnamegrind"></b><br>(Eternitying with <10,000 log(EP)/min selects this)<br><button class="storebtn" onclick="renameAP(\'grind\')">Rename</button> <button class="storebtn" onclick="replaceAP(\'grind\')">Replace</button> <button id="apdisablegrind" class="storebtn" onclick="disableAP(\'grind\')"></button>'
+		document.getElementById("apGrind").innerHTML = '<b id="apnamegrind"></b><br>(Eternitying with <10% of log(EP) of log(EP)/min peak selects this)<br><button class="storebtn" onclick="renameAP(\'grind\')">Rename</button> <button class="storebtn" onclick="replaceAP(\'grind\')">Replace</button> <button id="apdisablegrind" class="storebtn" onclick="disableAP(\'grind\')"></button>'
 		changeAPOptions('grind')
 	}
 }
@@ -2752,7 +2751,7 @@ function tweakBigRip(id, reset) {
 	if (!player.quantum.bigRip.upgrades.includes(9)) {
 		if (id == 3) player.timestudy.theorem += 5
 		if (id == 5) player.timestudy.theorem += 20
-		if ((id == 7) && !player.timestudy.studies.includes(192)) player.timestudy.studies.push(192)
+		if (id == 7 && !player.timestudy.studies.includes(192)) player.timestudy.studies.push(192)
 	}
 	if (id == 9) {
 		if (reset) player.timestudy = {
@@ -2920,7 +2919,7 @@ function getGHPGain() {
 ghostified = false
 function ghostify() {
 	if ((!isQuantumReached()&&player.quantum.bigRip.active)||implosionCheck) return
-	if (player.aarexModifications.ghostifyConf) if(!confirm("Ghostifying resets everything quantum resets, and also resets your best TP & MA, quarks, gluons, electrons, Quantum Challenges, Replicants, Nanofield, and Tree of Decay to gain a Ghost Particle. Are you ready for this?")) return
+	if (player.aarexModifications.ghostifyConf) if(!confirm("Becoming a ghost resets everything quantum resets, and also resets your banked stats, best TP & MA, quarks, gluons, electrons, Quantum Challenges, Replicants, Nanofield, and Tree of Decay to gain a Ghost Particle. Are you ready for this?")) return
 	if (!ghostified) {
 		if (!confirm("Are you sure you want to do that? You will lose everything you have!")) return
 		if (!confirm("ARE YOU REALLY SURE YOU WANT TO DO THAT? YOU CAN'T UNDO THIS AFTER YOU BECAME A GHOST AND PASS THE UNIVERSE EVEN IT IS BIG RIPPED! THIS IS YOUR LAST CHANCE!")) return
@@ -3010,7 +3009,7 @@ function ghostifyReset(implode, gain, amount, force) {
 		setsUnlocked: 0,
 		infinityPoints: player.infinityPoints,
 		infinitied: 0,
-		infinitiedBank: player.achievements.includes("ng3p15") ? player.infinitiedBank : 0,
+		infinitiedBank: 0,
 		totalTimePlayed: player.totalTimePlayed,
 		bestInfinityTime: 9999999999,
 		thisInfinityTime: 0,
@@ -3383,7 +3382,7 @@ function ghostifyReset(implode, gain, amount, force) {
 				antienergy: new Decimal(0),
 				power: 0,
 				powerThreshold: new Decimal(50),
-				rewards: bm>12?15:0,
+				rewards: bm>12?16:0,
 				producingCharge: false
 			},
 			reachedInfQK: bm,
@@ -3529,7 +3528,11 @@ function ghostifyReset(implode, gain, amount, force) {
 	updateEternityChallenges()
 	updateDilationUpgradeCosts()
 	for (let i = 2; i <= 8; i++) if (!canBuyMetaDimension(i)) document.getElementById(i + "MetaRow").style.display = "none"
-	if (!bm) document.getElementById("masterystudyunlock").style.display = "none"
+	if (!bm) {
+		document.getElementById("masterystudyunlock").style.display = "none"
+		document.getElementById('rebuyupgmax').style.display = ""
+		document.getElementById('rebuyupgauto').style.display = "none"
+	}
 	updateMasteryStudyCosts()
 	updateMasteryStudyButtons()
 
@@ -3578,6 +3581,7 @@ function ghostifyReset(implode, gain, amount, force) {
 	updateColorCharge()
 	updateGluons("prestige")
 	updateQuantumWorth("quick")
+	updateBankedEter()
 	updateQuantumChallenges()
 	updatePCCompletions()
 	updateReplicants("prestige")
@@ -3692,9 +3696,9 @@ function updateGhostifyTabs() {
 		if (player.ghostify.neutrinos.boosts>3) document.getElementById("neutrinoBoost4").textContent=(tmp.nb[3]*100-100).toFixed(1)
 		if (player.ghostify.neutrinos.boosts>4) document.getElementById("neutrinoBoost5").textContent=(100-tmp.nb[4]*100).toFixed(1)
 		if (player.ghostify.neutrinos.boosts>5) document.getElementById("neutrinoBoost6").textContent=(tmp.nb[5]*100-100).toFixed(1)
-		if (player.ghostify.neutrinos.boosts>6) document.getElementById("neutrinoBoost6").textContent=shorten(tmp.nb[6])
-		if (player.ghostify.neutrinos.boosts>7) document.getElementById("neutrinoBoost7").textContent=(tmp.nb[7]*100-100).toFixed(1)
-		if (player.ghostify.neutrinos.boosts>8) document.getElementById("neutrinoBoost8").textContent=(tmp.nb[8]*100).toFixed(1)
+		if (player.ghostify.neutrinos.boosts>6) document.getElementById("neutrinoBoost7").textContent=(tmp.nb[6]*100-100).toFixed(1)
+		if (player.ghostify.neutrinos.boosts>7) document.getElementById("neutrinoBoost8").textContent=(tmp.nb[7]*100-100).toFixed(1)
+		if (player.ghostify.neutrinos.boosts>8) document.getElementById("neutrinoBoost9").textContent=(tmp.nb[8]*100).toFixed(1)
 		document.getElementById("neutrinoUpg1Pow").textContent=tmp.nu[0]
 		document.getElementById("neutrinoUpg3Pow").textContent=shorten(tmp.nu[1])
 		document.getElementById("neutrinoUpg4Pow").textContent=shorten(tmp.nu[2])
@@ -3709,7 +3713,7 @@ function updateGhostifyTabs() {
 		else document.getElementById("neutrinoUnlock").className = "gluonupgrade unavailablebtn"
 		if (player.ghostify.ghostParticles.gte(Decimal.pow(4,player.ghostify.neutrinos.multPower-1).times(2))) document.getElementById("neutrinoMultUpg").className = "gluonupgrade neutrinoupg"
 		else document.getElementById("neutrinoMultUpg").className = "gluonupgrade unavailablebtn"
-		if (sum.gte(Decimal.pow(25,player.ghostify.multPower-1).times(1e10))) document.getElementById("ghpMultUpg").className = "gluonupgrade neutrinoupg"
+		if (sum.gte(Decimal.pow(25,player.ghostify.multPower-1).times(25e8))) document.getElementById("ghpMultUpg").className = "gluonupgrade neutrinoupg"
 		else document.getElementById("ghpMultUpg").className = "gluonupgrade unavailablebtn"
 	}
 	if (document.getElementById("automaticghosts").style.display=="block") if (player.ghostify.milestones>7||player.achievements.includes("ng3p66")) updateQuantumWorth("display")
@@ -3724,7 +3728,6 @@ function onNotationChangeNeutrinos() {
 	document.getElementById("ghpMultUpgCost").textContent=shortenDimensions(Decimal.pow(25,player.ghostify.multPower-1).times(1e10))
 	for (var u=1; u<13; u++) document.getElementById("neutrinoUpg"+u+"Cost").textContent=shortenDimensions(tmp.nuc[u])
 	document.getElementById("QKNerfPoint").textContent=shorten(new Decimal("1e738"))
-	document.getElementById("BU8Cap").textContent=shorten(Number.MAX_VALUE)
 }
 
 function getNeutrinoGain() {
@@ -3777,30 +3780,33 @@ function buyNeutrinoMult() {
 
 function buyGHPMult() {
 	let sum=player.ghostify.neutrinos.electron.add(player.ghostify.neutrinos.mu).add(player.ghostify.neutrinos.tau).round()
-	let cost=Decimal.pow(25,player.ghostify.multPower-1).times(1e10)
+	let cost=Decimal.pow(25,player.ghostify.multPower-1).times(25e8)
 	if (!sum.gte(cost)) return
 	player.ghostify.neutrinos.upgrades.push(id)
 	let generations=["electron","mu","tau"]
 	for (g=0;g<3;g++) player.ghostify.neutrinos[generations[g]]=player.ghostify.neutrinos[generations[g]].sub(cost.times(player.ghostify.neutrinos[generations[g]]).div(sum)).round()
 	player.ghostify.multPower++
 	document.getElementById("ghpMult").textContent=shortenDimensions(Decimal.pow(2,player.ghostify.multPower-1))
-	document.getElementById("ghpMultUpgCost").textContent=shortenDimensions(Decimal.pow(25,player.ghostify.multPower-1).times(1e10))
+	document.getElementById("ghpMultUpgCost").textContent=shortenDimensions(Decimal.pow(25,player.ghostify.multPower-1).times(25e8))
 }
 
 function setupAutomaticGhostsData() {
 	var data = {power: 0, ghosts: 3}
-	for (var ghost=1; ghost<19; ghost++) data[ghost] = {on: false}
+	for (var ghost=1; ghost<16; ghost++) data[ghost] = {on: false}
 	data[4].mode = "q"
 	data[4].rotate = "r"
+	data[11].pw = 1
+	data[11].lw = 1
+	data[11].cw = 1
 	return data
 }
 
-var autoGhostRequirements=[2,4,4,4.5,5,5,9,9,9,9,9,9,9,9,9,1/0]
+var autoGhostRequirements=[2,4,4,4.5,5,5,6,6.5,7,7,7.5,8,1/0]
 var powerConsumed
-var powerConsumptions=[0,1,1,1,1,2,2,0.5,0.5,0.5,1,1,1,1,1,1,1,1,1]
+var powerConsumptions=[0,1,1,1,1,2,2,0.5,0.5,0.5,1,0.5,1,1,1]
 function updateAutoGhosts(load) {
 	if (load) {
-		if (player.ghostify.automatorGhosts.ghosts>17) document.getElementById("nextAutomatorGhost").parentElement.style.display="none"
+		if (player.ghostify.automatorGhosts.ghosts>14) document.getElementById("nextAutomatorGhost").parentElement.style.display="none"
 		else {
 			document.getElementById("automatorGhostsAmount").textContent=player.ghostify.automatorGhosts.ghosts
 			document.getElementById("nextAutomatorGhost").parentElement.style.display=""
@@ -3808,7 +3814,7 @@ function updateAutoGhosts(load) {
 		}
 	}
 	powerConsumed=0
-	for (var ghost=1;ghost<19;ghost++) {
+	for (var ghost=1;ghost<16;ghost++) {
 		if (ghost>player.ghostify.automatorGhosts.ghosts) {
 			if (load) document.getElementById("autoGhost"+ghost).style.display="none"
 		} else {

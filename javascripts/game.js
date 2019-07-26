@@ -951,11 +951,11 @@ let tmp = {
 	bru: [],
 	be: false,
 	beu: [],
-	bm: [180,120,90,60,40,20,15,10,8,7,6,5,4,3,2,1],
+	bm: [250,200,150,100,75,50,25,20,15,12,10,8,6,4,2,1],
 	nb: [],
-	nbc: [null,2,4,6,20,60,1/0,1/0,1/0,1/0],
+	nbc: [null,3,4,6,15,50,1e3,1/0,1/0,1/0],
 	nu: [],
-	nuc: [null,1e6,1e7,1e8,2e9,5e9,2e10,3e10,4e10,5e10,1/0,1/0,1/0]
+	nuc: [null,1e6,1e7,1e8,2e8,5e8,2e9,5e9,75e8,1e10,7e12,1e18,1/0]
 }
 function updateTemp() {
 	tmp.nrm=player.replicanti.amount.max(1)
@@ -975,7 +975,7 @@ function updateTemp() {
 			if (player.ghostify.neutrinos.boosts>3) tmp.nb[3]=Math.pow(Math.pow(player.ghostify.neutrinos.electron.add(1).log10(),2)+Math.pow(player.ghostify.neutrinos.mu.add(1).log10(),2)+Math.pow(player.ghostify.neutrinos.tau.add(1).log10(),2),0.25)*0.07+1
 			if (player.ghostify.neutrinos.boosts>4) tmp.nb[4]=Math.min((player.ghostify.neutrinos.electron.max(1).log10()+player.ghostify.neutrinos.mu.max(1).log10()+player.ghostify.neutrinos.tau.max(1).log10())/33,1)
 			if (player.ghostify.neutrinos.boosts>5) tmp.nb[5]=Math.pow(Math.pow(Math.pow(player.ghostify.neutrinos.electron.add(1).log10(),2)+Math.pow(player.ghostify.neutrinos.mu.add(1).log10(),2)+Math.pow(player.ghostify.neutrinos.tau.add(1).log10(),2),0.25)*0.525+1,tmp.be?0.5:1)
-			if (player.ghostify.neutrinos.boosts>6) tmp.nb[6]=1
+			if (player.ghostify.neutrinos.boosts>6) tmp.nb[6]=Math.sqrt(Math.log10(player.ghostify.neutrinos.electron.add(1).log10()+player.ghostify.neutrinos.mu.add(1).log10()+player.ghostify.neutrinos.tau.add(1).log10()+1))*2.35+1
 			if (player.ghostify.neutrinos.boosts>7) tmp.nb[7]=1
 			if (player.ghostify.neutrinos.boosts>8) tmp.nb[8]=0
 			tmp.nu[0]=Math.max(100-(player.quantum.bigRip.active?0:player.meta.resets),0) //NU1
@@ -1074,7 +1074,7 @@ function getInfinitiedGain() {
 
 function getEternitied() {
 	let total = player.eternities
-	if (player.eternitiesBank && inQC(0)) total = nA(total, player.eternitiesBank)
+	if (player.eternitiesBank) if (player.quantum.bigRip.active?hasNU(10):inQC(0)) total = nA(total, player.eternitiesBank)
 	return total
 }
 
@@ -3470,12 +3470,7 @@ function gainedEternityPoints() {
 	if (player.masterystudies) {
 		if (player.quantum.bigRip.active) {
 			if (isBigRipUpgradeActive(5)) ret = ret.times(player.quantum.bigRip.spaceShards.max(1))
-			if (isBigRipUpgradeActive(8)) {
-				let mult = Decimal.pow(2, player.replicanti.galaxies+extraReplGalaxies)
-				if (hasNU(11)) if (mult.gt(Number.MAX_VALUE)) mult = mult.div(Number.MAX_VALUE).pow(0).times(Number.MAX_VALUE)
-				else mult = mult.min(Number.MAX_VALUE)
-				ret = ret.times(mult)
-			}
+			if (isBigRipUpgradeActive(8)) ret = ret.times(Decimal.pow(2, player.replicanti.galaxies+extraReplGalaxies).min(hasNU(11)?1/0:Number.MAX_VALUE))
 		}
 		if (tmp.be) ret = ret.times(getBreakUpgMult(7))
 	}
@@ -3663,7 +3658,7 @@ function setAchieveTooltip() {
     notSmart.setAttribute('ach-tooltip', "Get "+shorten(1e215)+" Time Shards without having time study 11 while big ripped.")
     soLife.setAttribute('ach-tooltip', "Reach "+shorten(Decimal.pow(10, 35e4))+" IP without studies and normal EP multi upgrades but in dilated and big ripped.")
     willenough.setAttribute('ach-tooltip', "Reach "+shortenCosts( new Decimal("1e20000000"))+" replicanti.")
-    bm1.setAttribute('ach-tooltip', "Reward: Start Ghostifies with all Speedrun Milestones and all "+shorten(Number.MAX_VALUE)+" QK features unlocked, all Paired Challenges completed, and all Big Rip upgrades bought and Nanofield is an additional 2x faster until you reach 16 rewards.")
+    bm1.setAttribute('ach-tooltip', "Reward: Start Ghostifies with all Speedrun Milestones and all "+shorten(Number.MAX_VALUE)+" QK features unlocked, all Paired Challenges completed, all Big Rip upgrades bought, and Nanofield is 2x faster until you reach 16 rewards.")
     bm14.setAttribute('ach-tooltip', "Reward: Start Ghostifies with "+shortenCosts(1e25)+" Quark Spins.")
 }
 
@@ -5501,6 +5496,7 @@ function gainEternitiedStat() {
 	}
 	if (quantumed && player.eternities < 1e5) ret = Math.max(ret, 20)
 	if (player.dilation.upgrades.includes('ngpp2')) ret = nM(Decimal.pow(player.dilation.dilatedTime, .1), ret)
+	if (typeof(ret) == "number") ret = Math.floor(ret)
 	return ret
 }
 
@@ -7060,6 +7056,7 @@ setInterval(function() {
             justImported=false
         }
         if (isAutoGhostActive(4)&&player.ghostify.automatorGhosts[4].mode=="t") rotateAutoUnstable()
+        if (isAutoGhostActive(10)) maxBuyLimit()
         if (isAutoGhostActive(9)&&player.quantum.replicants.quantumFood>0) {
             for (var d=8;d>0;d--) if (canFeedReplicant(d)) {
                 feedReplicant(d, true)
@@ -7090,7 +7087,7 @@ setInterval(function() {
             updateBreakEternity()
         }
         if (player.ghostify.milestones>notifyId2) {
-            $.notify("You became a ghost in at most "+getFullExpansion(tmp.bm[notifyId2])+" quantumed stat! "+(["You now start with with all Speedrun Milestones unlocked, all Paired Challenges completed, and all Big Rip upgrades bought", "For now on, colored quarks do not cancel and you keep your gluon upgrades", "You now keep your Electron upgrades", "For now on, Quantuming doesn't reset your Tachyon particles unless you are in a QC", "For now on, Quantuming doesn't reset your Meta-Dimension Boosts unless you are in a QC", "For now on, Quantuming doesn't reset your normal replicants unless you are in a QC", "You now start with 10 worker replicants.", "You can now gain 1% of quarks and ^0.75 amount of gluons you will gain per second", "You now start with 10 of Second Emperor Dimensions", "You now start with 10 of Fourth Emperor Dimensions", "You now start with 10 of Sixth Emperor Dimensions", "You now start with 10 of Eighth Emperor Dimensions", "You now start with first 16 Nanofield rewards", "You now start with "+shortenCosts(1e25)+" quark spins", "You now start with Break Eternity unlocked and all Break Eternity upgrades bought", "You unlocked 'I rather oppose the theory of everything' achievement"])[notifyId2]+".","success")
+            $.notify("You became a ghost in at most "+getFullExpansion(tmp.bm[notifyId2])+" quantumed stat! "+(["You now start with all Speedrun Milestones and all "+shorten(Number.MAX_VALUE)+" QK features unlocked, all Paired Challenges completed, all Big Rip upgrades bought, and Nanofield is 2x faster until you reach 16 rewards", "For now on, colored quarks do not cancel, you keep your gluon upgrades, and you can quick Big Rip", "You now keep your Electron upgrades", "For now on, Quantuming doesn't reset your Tachyon particles unless you are in a QC", "For now on, Quantuming doesn't reset your Meta-Dimension Boosts unless you are in a QC", "For now on, Quantuming doesn't reset your normal replicants unless you are in a QC", "You now start with 10 worker replicants.", "You are now gaining ^0.5 amount of quarks, ^0.5 amount of gluons, and 1% of Space Shards you will gain per second.", "You now start with 10 of Second Emperor Dimensions", "You now start with 10 of Fourth Emperor Dimensions", "You now start with 10 of Sixth Emperor Dimensions", "You now start with 10 of Eighth Emperor Dimensions", "You now start with first 16 Nanofield rewards", "You now start with "+shortenCosts(1e25)+" quark spins", "You now start with Break Eternity unlocked and all Break Eternity upgrades bought", "You unlocked 'I rather oppose the theory of everything' achievement"])[notifyId2]+".","success")
             notifyId2++
         }
         if (player.quantum.autoOptions.assignQK && player.ghostify.milestones > 7) assignAll() 
@@ -7246,12 +7243,12 @@ function gameLoop(diff) {
                 }
             }
             if (player.totalmoney.gt("1e9000000000000000")) {
-                  document.getElementById("decimalMode").style.display = "none"
+                  document.getElementById("decimalMode").style.visibility = "hidden"
                   if (break_infinity_js) {
                       player.money = tempm
                       player.totalmoney = temptm
                       clearInterval(gameLoopIntervalId)
-                      alert("You have reached the limit of break_infinity.js and you will be forced to switch to logarithmica_numerus.js and soft reset right now.")
+                      alert("You reached the limit of break_infinity.js. You need to switch to logarithmica_numerus.js now.")
                       player.aarexModifications.breakInfinity = !player.aarexModifications.breakInfinity
                       player.aarexModifications.switch = true
                       save_game(true)
@@ -7292,9 +7289,15 @@ function gameLoop(diff) {
         for (var c=1;c<4;c++) {
             var shorthand=colorShorthands[c-1]
             if (isAutoGhostActive(c)) if (player.quantum.usedQuarks[shorthand].gt(0) && player.quantum.tod[shorthand].quarks.eq(0)) unstableQuarks(shorthand)
+            if (isAutoGhostActive(13)) radioactiveDecay(shorthand)
             if (isAutoGhostActive(5)) maxBranchUpg(shorthand)
         }
         if (isAutoGhostActive(6)) maxTreeUpg()
+        if (isAutoGhostActive(11)) {
+            var ag=player.ghostify.automatorGhosts[11]
+            var preonGenerate=player.quantum.replicants.quarks.div(getGatherRate().total).gte(ag.pw)&&player.quantum.replicants.quarks.div(getQuarkLossProduction()).gte(ag.lw)&&player.quantum.nanofield.charge.div(ag.cw).lt(1)
+            if (player.quantum.nanofield.producingCharge!=preonGenerate) startProduceQuarkCharge()
+        }
     }
     if (player.masterystudies) {
         var colorShorthands=["r","g","b"]

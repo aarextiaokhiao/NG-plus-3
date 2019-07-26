@@ -40,7 +40,7 @@ function getMetaDimensionMultiplier (tier) {
   multiplier = multiplier.times(getQCReward(6))
   
   if (multiplier.lt(1)) multiplier = new Decimal(1)
-  if (player.dilation.active || player.galacticSacrifice) multiplier = Decimal.pow(10, Math.pow(multiplier.log10(), dilationPowerStrength()))
+  if ((player.dilation.active && !(inQC(0) && player.achievements.includes("ng3p63"))) || player.galacticSacrifice) multiplier = Decimal.pow(10, Math.pow(multiplier.log10(), dilationPowerStrength()))
   return multiplier;
 }
 
@@ -264,7 +264,6 @@ function getExtraDimensionBoostPowerExponent() {
 	if (player.masterystudies != undefined) {
 		if (player.masterystudies.includes("d12")) power += getNanofieldRewardEffect(2)
 		if (player.masterystudies.includes("d13")) power += getTreeUpgradeEffect(8)
-		if (ghostified) if (player.quantum.bigRip.active && player.ghostify.neutrinos.boosts > 6) power *= tmp.nb[6]
 	}
 	return power
 }
@@ -577,15 +576,17 @@ function doQuantumProgress() {
 	var id = 1
 	if (quantumed && power > 1) {
 		if (player.quantum.bigRip.active) {
+			var gg = getGHPGain()
 			if (player.meta.antimatter.lt(Decimal.pow(Number.MAX_VALUE, power))) id = 1
 			else if (!player.quantum.breakEternity.unlocked) id = 4
-			else id = 5
+			else if (!ghostified || player.money.lt(getQCGoal())) id = 5
+			else id = 6
 		} else if (inQC(0)) {
 			var gqk = quarkGain()
 			if (player.meta.antimatter.gte(Decimal.pow(Number.MAX_VALUE, power)) && Decimal.gt(gqk, 1)) id = 3
 		} else if (player.money.lt(Decimal.pow(10, getQCGoal())) || player.meta.antimatter.gte(Decimal.pow(Number.MAX_VALUE, power))) id = 2
 	}
-	var className = id > 3 ? "ghostifyProgress" : "quantumProgress"
+	var className = id > 4 ? "ghostifyProgress" : "quantumProgress"
 	if (document.getElementById("progressbar").className != className) document.getElementById("progressbar").className = className
 	if (id == 1) {
 		var percentage = Math.min(player.meta.antimatter.max(1).log10() / Decimal.log10(Number.MAX_VALUE) / power * 100, 100).toFixed(2) + "%"
@@ -617,6 +618,13 @@ function doQuantumProgress() {
 		document.getElementById("progressbar").style.width = percentage
 		document.getElementById("progresspercent").textContent = percentage
 		document.getElementById("progresspercent").setAttribute('ach-tooltip','Percentage to Ghostify')
+	} else if (id == 6) {
+		var ggLog = gg.log2()
+		var goal = Math.pow(2,Math.ceil(Math.log10(ggLog) / Math.log10(2)))
+		var percentage = Math.min(ggLog / goal * 100, 100).toFixed(2) + "%"
+		document.getElementById("progressbar").style.width = percentage
+		document.getElementById("progresspercent").textContent = percentage
+		document.getElementById("progresspercent").setAttribute('ach-tooltip',"Percentage to "+shortenDimensions(Decimal.pow(2,goal))+" GHP gain")
 	}
 }
 

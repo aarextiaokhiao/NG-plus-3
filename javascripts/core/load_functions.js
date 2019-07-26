@@ -1216,6 +1216,11 @@ if (player.version < 5) {
       }
       if (player.ghostify.neutrinos.boosts === undefined) player.ghostify.neutrinos.boosts = 1
       if (player.ghostify.automatorGhosts === undefined) player.ghostify.automatorGhosts = setupAutomaticGhostsData()
+      if (player.ghostify.automatorGhosts[11].pw === undefined) {
+          player.ghostify.automatorGhosts[11].pw = 1
+          player.ghostify.automatorGhosts[11].lw = 1
+          player.ghostify.automatorGhosts[11].cw = 1
+      }
       if (player.options.animations.ghostify === undefined) player.options.animations.ghostify = true
       if (player.aarexModifications.ghostifyConf === undefined) player.aarexModifications.ghostifyConf = true
 
@@ -1621,7 +1626,7 @@ if (player.version < 5) {
   document.getElementsByClassName("hideInMorse").display = player.options.notation == "Morse code" ? "none" : ""
 
   document.getElementById("decimalMode").textContent = "Decimal mode: "+(break_infinity_js?"Slow but accurate":"Fast but inaccurate")
-  document.getElementById("decimalMode").style.display = Decimal.gt(player.totalmoney,"1e9000000000000000") ? "none" : ""
+  document.getElementById("decimalMode").style.visbility = Decimal.gt(player.totalmoney,"1e9000000000000000") ? "hidden" : ""
   document.getElementById("hideProductionTab").textContent = (player.aarexModifications.hideProductionTab?"Show":"Hide")+" production tab"
   document.getElementById("hideRepresentation").textContent=(player.aarexModifications.hideRepresentation?"Show":"Hide")+" antimatter representation"
   document.getElementById("showAchRowNums").textContent=(player.aarexModifications.showAchRowNums?"Hide":"Show")+" achievement row numbers"
