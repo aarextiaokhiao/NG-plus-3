@@ -2120,7 +2120,7 @@ function getUQName(shorthand) {
 		let div8=(player.quantum.tod[shorthand].decays-mod8)/8
 		if (div8>0) ret="ghostly"+(div8>1?"^"+getFullExpansion(div8):"")+" "+ret
 		if (mod8>1) ret=(["infinity ","eternity ","quantum "])[Math.floor(mod8/2)-1]+ret
-		if (mod8%2>0) ret="ratioactive "+ret
+		if (mod8%2>0) ret="radioactive "+ret
 	}
 	return ret
 }
@@ -3600,6 +3600,10 @@ function ghostifyReset(implode, gain, amount, force) {
 		document.getElementById("ghostifyAnimBtn").style.display = "inline-block"
 		document.getElementById("ghostifyConfirmBtn").style.display = "inline-block"
 		giveAchievement("Kee-hee-hee!")
+	} else if (player.ghostify.times<11) {
+		$.notify("You unlocked "+(player.ghostify.times+2)+"th Neutrino upgrade!", "success")
+		if (player.ghostify.times%3>1) document.getElementById("neutrinoUpg"+(player.ghostify.times+2)).parentElement.parentElement.style.display=""
+		else document.getElementById("neutrinoUpg"+(player.ghostify.times+2)).style.display=""
 	}
 	document.getElementById("GHPAmount").textContent = shortenDimensions(player.ghostify.ghostParticles)
 	player.ghostify.neutrinos.electron = new Decimal(0)
@@ -3701,10 +3705,10 @@ function updateGhostifyTabs() {
 		if (player.ghostify.neutrinos.boosts>8) document.getElementById("neutrinoBoost9").textContent=(tmp.nb[8]*100).toFixed(1)
 		document.getElementById("neutrinoUpg1Pow").textContent=tmp.nu[0]
 		document.getElementById("neutrinoUpg3Pow").textContent=shorten(tmp.nu[1])
-		document.getElementById("neutrinoUpg4Pow").textContent=shorten(tmp.nu[2])
-		document.getElementById("neutrinoUpg7Pow").textContent=shorten(tmp.nu[3])
-		document.getElementById("neutrinoUpg12Pow").textContent=shorten(tmp.nu[5])
-		for (var u=1; u<13; u++) {
+		if (player.ghostify.times>1) document.getElementById("neutrinoUpg4Pow").textContent=shorten(tmp.nu[2])
+		if (player.ghostify.times>4) document.getElementById("neutrinoUpg7Pow").textContent=shorten(tmp.nu[3])
+		if (player.ghostify.times>9) document.getElementById("neutrinoUpg12Pow").textContent=shorten(tmp.nu[5])
+		for (var u=1; u<Math.min(player.ghostify.times+3,13); u++) {
 			if (hasNU(u)) document.getElementById("neutrinoUpg" + u).className = "gluonupgradebought neutrinoupg"
 			else if (sum.gte(tmp.nuc[u])) document.getElementById("neutrinoUpg" + u).className = "gluonupgrade neutrinoupg"
 			else document.getElementById("neutrinoUpg" + u).className = "gluonupgrade unavailablebtn"
@@ -3781,7 +3785,7 @@ function buyNeutrinoMult() {
 function buyGHPMult() {
 	let sum=player.ghostify.neutrinos.electron.add(player.ghostify.neutrinos.mu).add(player.ghostify.neutrinos.tau).round()
 	let cost=Decimal.pow(25,player.ghostify.multPower-1).times(25e8)
-	if (!sum.gte(cost)) return
+	if (!player.ghostify.neutrinos.electron.gte(cost)) return
 	player.ghostify.neutrinos.upgrades.push(id)
 	let generations=["electron","mu","tau"]
 	for (g=0;g<3;g++) player.ghostify.neutrinos[generations[g]]=player.ghostify.neutrinos[generations[g]].sub(cost.times(player.ghostify.neutrinos[generations[g]]).div(sum)).round()

@@ -1048,7 +1048,7 @@ function quantumReset(force, auto, challid, bigRip, implode=false) {
 			bestAntimatter: headstart ? player.meta.bestAntimatter : new Decimal(speedrunMilestonesReached > 18 && !bigRip ? 1e25 : 100),
 			bestOverQuantums: player.meta.bestOverQuantums,
 			bestOverGhostifies: player.meta.bestOverGhostifies,
-			resets: isRewardEnabled(27) ? (!challid && player.ghostify.milestones > 4 ? player.meta.resets : 4) : 0,
+			resets: isRewardEnabled(27) ? (!challid && player.ghostify.milestones > 4 && bigRip == player.quantum.bigRip.active ? player.meta.resets : 4) : 0,
 			'1': {
 				amount: new Decimal(0),
 				bought: 0,
@@ -1184,7 +1184,7 @@ function quantumReset(force, auto, challid, bigRip, implode=false) {
 			player.quantum.challenge=player.quantum.pairedChallenges.order[pc]
 			player.quantum.pairedChallenges.current=pc
 		}
-		player.quantum.replicants.amount = new Decimal(0)
+		if (!challid && player.ghostify.milestones > 5 && bigRip == player.quantum.bigRip.active) player.quantum.replicants.amount = new Decimal(0)
 		player.quantum.replicants.requirement = new Decimal("1e3000000")
 		player.quantum.replicants.quarks = new Decimal(0)
 		player.quantum.replicants.eggonProgress = new Decimal(0)

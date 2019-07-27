@@ -953,7 +953,7 @@ let tmp = {
 	beu: [],
 	bm: [250,200,150,100,75,50,25,20,15,12,10,8,6,4,2,1],
 	nb: [],
-	nbc: [null,3,4,6,15,50,1e3,1/0,1/0,1/0],
+	nbc: [null,3,4,6,15,50,1e3,1e14,1/0],
 	nu: [],
 	nuc: [null,1e6,1e7,1e8,2e8,5e8,2e9,5e9,75e8,1e10,7e12,1e18,1/0]
 }
@@ -976,7 +976,7 @@ function updateTemp() {
 			if (player.ghostify.neutrinos.boosts>4) tmp.nb[4]=Math.min((player.ghostify.neutrinos.electron.max(1).log10()+player.ghostify.neutrinos.mu.max(1).log10()+player.ghostify.neutrinos.tau.max(1).log10())/33,1)
 			if (player.ghostify.neutrinos.boosts>5) tmp.nb[5]=Math.pow(Math.pow(Math.pow(player.ghostify.neutrinos.electron.add(1).log10(),2)+Math.pow(player.ghostify.neutrinos.mu.add(1).log10(),2)+Math.pow(player.ghostify.neutrinos.tau.add(1).log10(),2),0.25)*0.525+1,tmp.be?0.5:1)
 			if (player.ghostify.neutrinos.boosts>6) tmp.nb[6]=Math.sqrt(Math.log10(player.ghostify.neutrinos.electron.add(1).log10()+player.ghostify.neutrinos.mu.add(1).log10()+player.ghostify.neutrinos.tau.add(1).log10()+1))*2.35+1
-			if (player.ghostify.neutrinos.boosts>7) tmp.nb[7]=1
+			if (player.ghostify.neutrinos.boosts>7) tmp.nb[7]=Math.pow(Math.pow(player.ghostify.neutrinos.electron.add(1).log10(),2)+Math.pow(player.ghostify.neutrinos.mu.add(1).log10(),2)+Math.pow(player.ghostify.neutrinos.tau.add(1).log10(),2),0.25)*0.01+1
 			if (player.ghostify.neutrinos.boosts>8) tmp.nb[8]=0
 			tmp.nu[0]=Math.max(100-(player.quantum.bigRip.active?0:player.meta.resets),0) //NU1
 			tmp.nu[1]=Math.pow(Math.max(player.quantum.colorPowers.b.log10()/250+1,1),2) //NU3
@@ -2484,13 +2484,15 @@ function autoBuyRG() {
 function updateExtraReplGalaxies() {
 	let ts225Eff = 0
     let ts226Eff = 0
+	let speed = 2 * getQCReward(8)
+	if (ghostified) if (player.ghostify.neutrinos.boosts > 7 && player.quantum.bigRip.active) speed *= tmp.nb[7]
     if (player.timestudy.studies.includes(225)) {
         ts225Eff = Math.floor(player.replicanti.amount.e / 1e3)
-        if (ts225Eff > 99) ts225Eff = Math.floor(Math.sqrt(0.25 + 2 * (ts225Eff - 99) * getQCReward(8)) + 98.5)
+        if (ts225Eff > 99) ts225Eff = Math.floor(Math.sqrt(0.25 + (ts225Eff - 99) * speed) + 98.5)
     }
     if (player.timestudy.studies.includes(226)) {
         ts226Eff = Math.floor(player.replicanti.gal / 15)
-        if (ts226Eff > 99) ts226Eff = Math.floor(Math.sqrt(0.25 + 2 * (ts226Eff - 99) * getQCReward(8)) + 98.5)
+        if (ts226Eff > 99) ts226Eff = Math.floor(Math.sqrt(0.25 + (ts226Eff - 99) * speed) + 98.5)
     }
     extraReplGalaxies = ts225Eff + ts226Eff
     if (extraReplGalaxies > 325) extraReplGalaxies = (Math.sqrt(0.9216+0.16*(extraReplGalaxies-324))-0.96)/0.08+324

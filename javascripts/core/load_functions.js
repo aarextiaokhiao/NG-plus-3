@@ -1789,6 +1789,10 @@ if (player.version < 5) {
       document.getElementById('autoAssignRotate').textContent="Rotation: "+(player.quantum.autoOptions.assignQKRotate>1?"Left":player.quantum.autoOptions.assignQKRotate?"Right":"None")
       document.getElementById('autoReset').textContent="Auto: O"+(player.quantum.autoOptions.replicantiReset?"N":"FF")
       updateAutoQuantumMode()
+      for (var u=4;u<13;u++) {
+          if (u%3==1) document.getElementById("neutrinoUpg"+u).parentElement.parentElement.style.display=u>player.ghostify.times+2?"none":""
+          else document.getElementById("neutrinoUpg"+u).style.display=u>player.ghostify.times+2?"none":""
+      }
   }
   transformSaveToDecimal();
   updateChallengeTimes();
