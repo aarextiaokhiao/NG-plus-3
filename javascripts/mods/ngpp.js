@@ -103,7 +103,10 @@ function metaBoost() {
 				player.meta.resets=Math.min(player.meta.resets+Math.floor((player.meta[8].bought-req.amount)/(req.mult+1))+1,req.scalingStart)
 				if (player.meta.resets==req.scalingStart) req = getMetaShiftRequirement()
 			}
-			if (player.meta.resets>=req.scalingStart&&player.meta.resets<100) player.meta.resets=Math.min(player.meta.resets+Math.floor((player.meta[8].bought-req.amount)/(req.mult+1))+1,100)
+			if (player.meta.resets>=req.scalingStart&&player.meta.resets<100) {
+				player.meta.resets=Math.min(player.meta.resets+Math.floor((player.meta[8].bought-req.amount)/(req.mult+1))+1,100)
+				if (player.meta.resets>99) req = getMetaShiftRequirement()
+			}
 			if (player.meta.resets>99) player.meta.resets+=Math.floor((player.meta[8].bought-req.amount)/req.mult)+1
 		} else {
 			if (player.meta.resets<=req.scalingStart) {
@@ -321,6 +324,17 @@ function updateMetaDimensions () {
 	var message = 'Lose all your previous progress, but '
     document.getElementById("quantumResetLabel").textContent = (bigRipped?'Ghostify':'Quantum')+': requires '+shorten(req)+' meta-antimatter '+(!inQC(0)? "and "+shortenCosts(Decimal.pow(10,getQCGoal()))+" antimatter":player.masterystudies?"and an EC14 completion":"")
 	if (reqGotten && bigRipped && ghostified) {
+Search
+
+
+
+
+7
+
+8
+
+
+
 		var GS = getGHPGain()
 		message += "gain " + shortenDimensions(GS) + " Ghost Particle" + (GS.lt(2) ? "" : "s")
 	} else if (reqGotten && !bigRipped && (player.quantum.times || player.ghostify.milestones)) {
@@ -1184,7 +1198,7 @@ function quantumReset(force, auto, challid, bigRip, implode=false) {
 			player.quantum.challenge=player.quantum.pairedChallenges.order[pc]
 			player.quantum.pairedChallenges.current=pc
 		}
-		if (!challid && player.ghostify.milestones > 5 && bigRip == player.quantum.bigRip.active) player.quantum.replicants.amount = new Decimal(0)
+		if (!(challid && bigRip == player.quantum.bigRip.active) && player.ghostify.milestones > 5) player.quantum.replicants.amount = new Decimal(0)
 		player.quantum.replicants.requirement = new Decimal("1e3000000")
 		player.quantum.replicants.quarks = new Decimal(0)
 		player.quantum.replicants.eggonProgress = new Decimal(0)

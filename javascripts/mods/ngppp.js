@@ -475,9 +475,10 @@ function getMTSMult(id, modifier) {
 
 //v1.3
 function getEC14Power() {
-	if (player.masterystudies == undefined) return 0
+	if (player.masterystudies===undefined) return 0
 	if (player.currentEterChall=='eterc14') return 5
-	let ret = ECTimesCompleted("eterc14") * 2
+	let ret=ECTimesCompleted("eterc14")*2
+	if (hasNU(12)) if (player.quantum.bigRip.active) ret*=(player.replicanti.galaxies+extraReplGalaxies)*0.001+1
 	return ret
 }
 
@@ -1011,7 +1012,6 @@ function updateQuantumChallenges() {
 	document.getElementById("qc2reward").textContent = Math.round(getQCReward(2)*100-100)
 	document.getElementById("qc7desc").textContent="Dimension & tickspeed cost multiplier increases are "+shorten(Number.MAX_VALUE)+"x. Multiplier per ten dimensions and meta-antimatter's effect on dimension boosts are disabled. "
 	document.getElementById("qc7reward").textContent = (100-getQCReward(7)*100).toFixed(2)
-	document.getElementById("qc8reward").textContent = getQCReward(8)
 }
 
 function inQC(num) {
@@ -1503,7 +1503,11 @@ function getQCReward(num) {
 	if (num == 5) return Math.log10(1 + player.resets) * Math.pow(QCIntensity(5), 0.4)
 	if (num == 6) return player.achPow.pow(QCIntensity(6)>1?3:1)
 	if (num == 7) return Math.pow(0.975, QCIntensity(7))
-	if (num == 8) return QCIntensity(8)+2
+	if (num == 8) {
+		let ret=QCIntensity(8)/2+1
+		if (ghostified) if (player.ghostify.neutrinos.boosts > 7 && player.quantum.bigRip.active && tmp.nb[7]) ret*=tmp.nb[7]
+		return ret
+	}
 }
 
 function maybeShowFillAll() {
@@ -1905,13 +1909,13 @@ function getDecayRate(branch) {
 	ret = ret.times(getTreeUpgradeEffect(3))
 	ret = ret.times(getTreeUpgradeEffect(5))
 	if (hasNU(4)) ret = ret.times(tmp.nu[2])
-	ret = ret.times(todspeed)
-	return ret.min(Math.pow(2,40))
+	return ret.min(Math.pow(2,40)).times(todspeed)
 }
 
 function getQuarkSpinProduction(branch) {
 	let ret = Decimal.pow(2,getBranchUpgLevel(branch,1)*(1+getRadioactiveDecays(branch)/10)).times(getTreeUpgradeEffect(3)).times(getTreeUpgradeEffect(5))
 	if (hasNU(4)) ret = ret.times(tmp.nu[2].pow(2))
+	if (player.quantum.bigRip.active) if (ghostified&&player.ghostify.neutrinos.boosts>8) ret=ret.times(tmp.nb[8])
 	ret = ret.times(todspeed)
 	return ret
 }
@@ -2148,7 +2152,7 @@ function maxTreeUpg() {
 			}
 			var cost=getTreeUpgradeCost(u,toBuy-1)
 			var toBuy2=toBuy
-			while (toBuy>0&&newSpins[0].min(newSpins[1]).min(newSpins[2]).div(cost).lt(1e16)) {
+			while (toBuy>0&&newSpins[(lvl+toBuy-1)%3].div(cost).lt(1e16)) {
 				if (newSpins[(lvl+toBuy-1)%3].gte(cost)) newSpins[(lvl+toBuy-1)%3]=newSpins[(lvl+toBuy-1)%3].sub(cost)
 				else {
 					newSpins[(lvl+toBuy-1)%3]=todData[colors[(lvl+toBuy-1)%3]].spin.sub(cost)
@@ -2157,9 +2161,11 @@ function maxTreeUpg() {
 				toBuy--
 				cost=getTreeUpgradeCost(u,toBuy-1)
 			}
-			for (c=0;c<3;c++) todData[colors[c]].spin=newSpins[c]
-			todData.upgrades[u]=toBuy2+(todData.upgrades[u]===undefined?0:todData.upgrades[u])
-			update=true
+			if (toBuy2) {
+				for (c=0;c<3;c++) todData[colors[c]].spin=newSpins[c]
+				todData.upgrades[u]=toBuy2+(todData.upgrades[u]===undefined?0:todData.upgrades[u])
+				update=true
+			}
 		}
 	}
 	if (update) updateTODStuff()
@@ -2827,7 +2833,6 @@ function breakEternity() {
 
 function getEMGain() {
 	let mult=1
-	if (hasNU(12)) mult=tmp.nu[4]
 	let log=player.timeShards.div(1e15).max(1).log10()*0.25
 	if (log>15) return Decimal.pow(10,Math.sqrt(log*15)).times(mult).floor()
 	return Decimal.pow(10,log).times(mult).floor()
@@ -3702,12 +3707,11 @@ function updateGhostifyTabs() {
 		if (player.ghostify.neutrinos.boosts>5) document.getElementById("neutrinoBoost6").textContent=(tmp.nb[5]*100-100).toFixed(1)
 		if (player.ghostify.neutrinos.boosts>6) document.getElementById("neutrinoBoost7").textContent=(tmp.nb[6]*100-100).toFixed(1)
 		if (player.ghostify.neutrinos.boosts>7) document.getElementById("neutrinoBoost8").textContent=(tmp.nb[7]*100-100).toFixed(1)
-		if (player.ghostify.neutrinos.boosts>8) document.getElementById("neutrinoBoost9").textContent=(tmp.nb[8]*100).toFixed(1)
+		if (player.ghostify.neutrinos.boosts>8) document.getElementById("neutrinoBoost9").textContent=shorten(tmp.nb[8])
 		document.getElementById("neutrinoUpg1Pow").textContent=tmp.nu[0]
 		document.getElementById("neutrinoUpg3Pow").textContent=shorten(tmp.nu[1])
 		if (player.ghostify.times>1) document.getElementById("neutrinoUpg4Pow").textContent=shorten(tmp.nu[2])
 		if (player.ghostify.times>4) document.getElementById("neutrinoUpg7Pow").textContent=shorten(tmp.nu[3])
-		if (player.ghostify.times>9) document.getElementById("neutrinoUpg12Pow").textContent=shorten(tmp.nu[5])
 		for (var u=1; u<Math.min(player.ghostify.times+3,13); u++) {
 			if (hasNU(u)) document.getElementById("neutrinoUpg" + u).className = "gluonupgradebought neutrinoupg"
 			else if (sum.gte(tmp.nuc[u])) document.getElementById("neutrinoUpg" + u).className = "gluonupgrade neutrinoupg"
@@ -3782,14 +3786,37 @@ function buyNeutrinoMult() {
 	document.getElementById("neutrinoMultUpgCost").textContent=shortenDimensions(Decimal.pow(4,player.ghostify.neutrinos.multPower-1).times(2))
 }
 
+function maxNeutrinoMult() {
+	let cost=Decimal.pow(4,player.ghostify.neutrinos.multPower-1).times(2)
+	if (!player.ghostify.ghostParticles.gte(cost)) return
+	let toBuy=Math.floor(player.ghostify.ghostParticles.div(cost).times(3).add(1).log(4))
+	let toSpend=Decimal.pow(4,toBuy).sub(1).div(3).times(cost)
+	player.ghostify.ghostParticles=player.ghostify.ghostParticles.sub(toSpend.min(player.ghostify.ghostParticles)).round()
+	player.ghostify.neutrinos.multPower+=toBuy
+	document.getElementById("neutrinoMult").textContent=shortenDimensions(Decimal.pow(5,player.ghostify.neutrinos.multPower-1))
+	document.getElementById("neutrinoMultUpgCost").textContent=shortenDimensions(Decimal.pow(4,player.ghostify.neutrinos.multPower-1).times(2))
+}
+
 function buyGHPMult() {
 	let sum=player.ghostify.neutrinos.electron.add(player.ghostify.neutrinos.mu).add(player.ghostify.neutrinos.tau).round()
 	let cost=Decimal.pow(25,player.ghostify.multPower-1).times(25e8)
-	if (!player.ghostify.neutrinos.electron.gte(cost)) return
-	player.ghostify.neutrinos.upgrades.push(id)
+	if (!sum.gte(cost)) return
 	let generations=["electron","mu","tau"]
 	for (g=0;g<3;g++) player.ghostify.neutrinos[generations[g]]=player.ghostify.neutrinos[generations[g]].sub(cost.times(player.ghostify.neutrinos[generations[g]]).div(sum)).round()
 	player.ghostify.multPower++
+	document.getElementById("ghpMult").textContent=shortenDimensions(Decimal.pow(2,player.ghostify.multPower-1))
+	document.getElementById("ghpMultUpgCost").textContent=shortenDimensions(Decimal.pow(25,player.ghostify.multPower-1).times(25e8))
+}
+
+function maxGHPMult() {
+	let sum=player.ghostify.neutrinos.electron.add(player.ghostify.neutrinos.mu).add(player.ghostify.neutrinos.tau).round()
+	let cost=Decimal.pow(25,player.ghostify.multPower-1).times(25e8)
+	if (!sum.gte(cost)) return
+	let toBuy=Math.floor(sum.div(cost).times(24).add(1).log(25))
+	let toSpend=Decimal.pow(25,toBuy).sub(1).div(24).times(cost)
+	let generations=["electron","mu","tau"]
+	for (g=0;g<3;g++) player.ghostify.neutrinos[generations[g]]=player.ghostify.neutrinos[generations[g]].sub(toSpend.times(player.ghostify.neutrinos[generations[g]]).div(sum).min(player.ghostify.neutrinos[generations[g]])).round()
+	player.ghostify.multPower+=toBuy
 	document.getElementById("ghpMult").textContent=shortenDimensions(Decimal.pow(2,player.ghostify.multPower-1))
 	document.getElementById("ghpMultUpgCost").textContent=shortenDimensions(Decimal.pow(25,player.ghostify.multPower-1).times(25e8))
 }

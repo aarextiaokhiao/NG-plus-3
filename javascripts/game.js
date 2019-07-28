@@ -953,7 +953,7 @@ let tmp = {
 	beu: [],
 	bm: [250,200,150,100,75,50,25,20,15,12,10,8,6,4,2,1],
 	nb: [],
-	nbc: [null,3,4,6,15,50,1e3,1e14,1/0],
+	nbc: [null,3,4,6,15,50,1e3,1e14,1e100],
 	nu: [],
 	nuc: [null,1e6,1e7,1e8,2e8,5e8,2e9,5e9,75e8,1e10,7e12,1e18,1/0]
 }
@@ -962,10 +962,13 @@ function updateTemp() {
 	if (player.masterystudies !== undefined) {
 		tmp.be=player.quantum.bigRip.active&&player.quantum.breakEternity.break
 		if (player.masterystudies.includes("d14")) {
+			tmp.bru[0]=Decimal.pow(2,player.replicanti.galaxies+extraReplGalaxies) //BRU8
+			if (!hasNU(11)) tmp.bru[0]=tmp.bru[0].min(Number.MAX_VALUE)
+			if (!player.quantum.bigRip.active) tmp.bru[0]=1
 			var ret=Math.min(player.quantum.bigRip.spaceShards.div(3e18).add(1).log10()/3,0.4)
-			tmp.bru[0]=Math.sqrt(player.quantum.bigRip.spaceShards.div(3e15).add(1).log10()*ret+1) //BRU14
+			tmp.bru[1]=Math.sqrt(player.quantum.bigRip.spaceShards.div(3e15).add(1).log10()*ret+1) //BRU14
 		}
-		if (!player.dilation.active&&player.quantum.bigRip.active&&player.quantum.bigRip.upgrades.includes(14)) tmp.nrm=tmp.nrm.pow(tmp.bru[0])
+		if (!player.dilation.active&&player.quantum.bigRip.active&&player.quantum.bigRip.upgrades.includes(14)) tmp.nrm=tmp.nrm.pow(tmp.bru[1])
 		tmp.ns=1
 		if (ghostified) {
 			if (player.quantum.nanofield.rewards<16) tmp.ns=player.ghostify.milestones?6:3
@@ -976,14 +979,13 @@ function updateTemp() {
 			if (player.ghostify.neutrinos.boosts>4) tmp.nb[4]=Math.min((player.ghostify.neutrinos.electron.max(1).log10()+player.ghostify.neutrinos.mu.max(1).log10()+player.ghostify.neutrinos.tau.max(1).log10())/33,1)
 			if (player.ghostify.neutrinos.boosts>5) tmp.nb[5]=Math.pow(Math.pow(Math.pow(player.ghostify.neutrinos.electron.add(1).log10(),2)+Math.pow(player.ghostify.neutrinos.mu.add(1).log10(),2)+Math.pow(player.ghostify.neutrinos.tau.add(1).log10(),2),0.25)*0.525+1,tmp.be?0.5:1)
 			if (player.ghostify.neutrinos.boosts>6) tmp.nb[6]=Math.sqrt(Math.log10(player.ghostify.neutrinos.electron.add(1).log10()+player.ghostify.neutrinos.mu.add(1).log10()+player.ghostify.neutrinos.tau.add(1).log10()+1))*2.35+1
-			if (player.ghostify.neutrinos.boosts>7) tmp.nb[7]=Math.pow(Math.pow(player.ghostify.neutrinos.electron.add(1).log10(),2)+Math.pow(player.ghostify.neutrinos.mu.add(1).log10(),2)+Math.pow(player.ghostify.neutrinos.tau.add(1).log10(),2),0.25)*0.01+1
-			if (player.ghostify.neutrinos.boosts>8) tmp.nb[8]=0
+			if (player.ghostify.neutrinos.boosts>7) tmp.nb[7]=2//Math.pow(Math.pow(player.ghostify.neutrinos.electron.add(1).log10(),2)+Math.pow(player.ghostify.neutrinos.mu.add(1).log10(),2)+Math.pow(player.ghostify.neutrinos.tau.add(1).log10(),2),0.25)*0.032+1
+			if (player.ghostify.neutrinos.boosts>8) tmp.nb[8]=1
 			tmp.nu[0]=Math.max(100-(player.quantum.bigRip.active?0:player.meta.resets),0) //NU1
 			tmp.nu[1]=Math.pow(Math.max(player.quantum.colorPowers.b.log10()/250+1,1),2) //NU3
 			var ret=Math.max(-player.tickspeed.div(1e3).log10()/4e13-4,0)
 			tmp.nu[2]=Decimal.pow(20,Math.pow(ret,1/4)) //NU4
 			tmp.nu[3]=player.quantum.colorPowers.g.add(1).pow(1/400) //NU7
-			tmp.nu[4]=1 //NU12
 		}
 	} else tmp.be=false
 	var ret=(3-player.tickspeed.log10())*0.000005
@@ -2313,6 +2315,7 @@ function getPostC3RewardMult() {
 	let perGalaxy = 0.005;
 	if (player.tickspeedBoosts != undefined) perGalaxy = 0.002
 	if (inQC(2)) perGalaxy = 0
+	if (hasNU(12)) if (player.quantum.bigRip.active) perGalaxy*=player.dilation.freeGalaxies*0.001+1
 	if (!player.galacticSacrifice) return player.galaxies*perGalaxy+1.05
 	if (player.challenges.length > 15 && player.achievements.includes("r67")) perGalaxy *= player.challenges.length/10-0.5
 	var realnormalgalaxies = player.galaxies
@@ -2484,8 +2487,7 @@ function autoBuyRG() {
 function updateExtraReplGalaxies() {
 	let ts225Eff = 0
     let ts226Eff = 0
-	let speed = 2 * getQCReward(8)
-	if (ghostified) if (player.ghostify.neutrinos.boosts > 7 && player.quantum.bigRip.active) speed *= tmp.nb[7]
+	let speed = 4*getQCReward(8)
     if (player.timestudy.studies.includes(225)) {
         ts225Eff = Math.floor(player.replicanti.amount.e / 1e3)
         if (ts225Eff > 99) ts225Eff = Math.floor(Math.sqrt(0.25 + (ts225Eff - 99) * speed) + 98.5)
@@ -3472,7 +3474,7 @@ function gainedEternityPoints() {
 	if (player.masterystudies) {
 		if (player.quantum.bigRip.active) {
 			if (isBigRipUpgradeActive(5)) ret = ret.times(player.quantum.bigRip.spaceShards.max(1))
-			if (isBigRipUpgradeActive(8)) ret = ret.times(Decimal.pow(2, player.replicanti.galaxies+extraReplGalaxies).min(hasNU(11)?1/0:Number.MAX_VALUE))
+			if (isBigRipUpgradeActive(8)) ret = ret.times(tmp.bru[0])
 		}
 		if (tmp.be) ret = ret.times(getBreakUpgMult(7))
 	}
@@ -7998,7 +8000,7 @@ function gameLoop(diff) {
 			document.getElementById("ec11reward").textContent = "Reward: Further reduce the tickspeed cost multiplier increase, Currently: "+player.tickSpeedMultDecrease.toFixed(2)+"x "
 			document.getElementById("ec12reward").textContent = "Reward: Infinity Dimension cost multipliers are reduced. (x^"+(1-ECTimesCompleted("eterc12")*0.008)+")"
 			document.getElementById("ec13reward").textContent = "Reward: Increase the power of meta-antimatter. ("+(9+ECTimesCompleted("eterc13")*0.2)+"x)"
-			document.getElementById("ec14reward").textContent = "Reward: Free tickspeed upgrades increase IC3 reward "+getEC14Power()+" times."
+			document.getElementById("ec14reward").textContent = "Reward: Free tickspeed upgrades increase IC3 reward "+getEC14Power().toFixed(0)+" times."
 
 			document.getElementById("ec10span").textContent = shortenMoney(ec10bonus) + "x"
 		}
@@ -8006,10 +8008,12 @@ function gameLoop(diff) {
 		    if (player.quantum.autoOptions.sacrifice) document.getElementById("electronsAmount2").textContent="You have " + getFullExpansion(Math.round(player.quantum.electrons.amount)) + " electrons."
 			for (var c=1;c<9;c++) {
 				if (c==5) document.getElementById("qc5reward").textContent = getDimensionPowerMultiplier(true, "linear").toFixed(2)
-				else if (c!=2&&c!=7&&c!=8) document.getElementById("qc"+c+"reward").textContent = shorten(getQCReward(c))
+				else if (c>7) document.getElementById("qc8reward").textContent = getQCReward(8).toFixed(1)
+				else if (c!=2&&c<7) document.getElementById("qc"+c+"reward").textContent = shorten(getQCReward(c))
 			}
             if (player.masterystudies.includes("d14")) {
-                document.getElementById("bigripupg14current").textContent=tmp.bru[0].toFixed(2)
+                document.getElementById("bigripupg8current").textContent=shortenDimensions(tmp.bru[0])+(Decimal.gte(tmp.bru[0],Number.MAX_VALUE)&&!hasNU(11)?" (cap)":"")
+                document.getElementById("bigripupg14current").textContent=tmp.bru[1].toFixed(2)
                 var bru15effect = Math.sqrt(player.eternityPoints.add(1).log10()) * 3.55
                 document.getElementById("bigripupg15current").textContent=bru15effect < 999.995 ? bru15effect.toFixed(2) : getFullExpansion(Math.round(bru15effect))
                 document.getElementById("bigripupg16current").textContent=shorten(player.dilation.dilatedTime.div(1e100).pow(0.155).max(1))
@@ -8819,6 +8823,7 @@ function resetUP() {
 	updatePowers()
 	mult18 = 1
 	tmp.nb[5] = 1
+	tmp.nb[7] = 1
 	updatePowerInt = setInterval(updatePowers, 100)
 }
 

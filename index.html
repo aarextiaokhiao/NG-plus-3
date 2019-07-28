@@ -3612,7 +3612,7 @@
                             <td><button class='gluonupgrade unavailablebtn' id="bigripupg5" onclick='buyBigRipUpg(5)'>Gain 20 Time Theorems.<br>Cost: <span id="bigripupg5cost"></span> Space Shards</button></td>
                             <td><button class='gluonupgrade unavailablebtn' id="bigripupg6" onclick='buyBigRipUpg(6)'>Space Shards boost Eternity Points gain.<br>Cost: <span id="bigripupg6cost"></span> Space Shards</button></td>
                             <td><button class='gluonupgrade unavailablebtn' id="bigripupg7" onclick='buyBigRipUpg(7)'>You start with Time Study 192.<br>Cost: <span id="bigripupg7cost"></span> Space Shards</button></td>
-                            <td><button class='gluonupgrade unavailablebtn' id="bigripupg8" onclick='buyBigRipUpg(8)'>Each replicated galaxy increases your EP gain by 2x.<br>Cost: <span id="bigripupg8cost"></span> Space Shards</button></td>
+                            <td><button class='gluonupgrade unavailablebtn' id="bigripupg8" onclick='buyBigRipUpg(8)'>Each replicated galaxy increases your EP gain by 2x.<br>Currently: <span id="bigripupg8current">1</span>x<br>Cost: <span id="bigripupg8cost"></span> Space Shards</button></td>
                         </tr>
                         <tr>
                             <td><button class='gluonupgrade unavailablebtn' id="bigripupg9" onclick='buyBigRipUpg(9)' style='font-size: 10px'>Gain 1,350 Time Theorems but reset the study tree and repeal upgrades 3 & 5 - 8.<br>Cost: <span id="bigripupg9cost"></span> Space Shards</button></td>
@@ -4693,14 +4693,14 @@
 					</tr>
 					<tr class="neutrinoBoosts" id="neutrinoBoostRow3">
 						<td>In Big Rips, they make Tree Upgrades stronger by <span class="neutrinos" id="neutrinoBoost7" style="font-size:35px">0.0</span>%.</td>
-						<td id="neutrinoBoostCell8">In Big Rips, they make you gain extra replicated galaxies faster after 100 by <span class="neutrinos" id="neutrinoBoost8" style="font-size:35px">1.0</span>%.</td>
-						<td id="neutrinoBoostCell9">In Big Rips, they make free galaxies more efficient to <span class="neutrinos" id="neutrinoBoost9" style="font-size:35px">0.0</span>% of a normal galaxy.</td>
+						<td id="neutrinoBoostCell8">In Big Rips, they make QC8 reward stronger by <span class="neutrinos" id="neutrinoBoost8" style="font-size:35px">0.0</span>%.</td>
+						<td id="neutrinoBoostCell9">In Big Rips, they speed up quark spins production by <span class="neutrinos" id="neutrinoBoost9" style="font-size:35px">1.00</span>x.</td>
 						<td></td>
 					</tr>
 					<tr>
 						<td><button id="neutrinoUnlock" class="gluonupgrade unavailablebtn" onclick="unlockNeutrinoBoost()">Unlock a new boost based on your neutrinos.<br>Cost: <span id="neutrinoUnlockCost">2</span> GHP</button></td>
-						<td><button id="neutrinoMultUpg" class="gluonupgrade unavailablebtn" onclick="buyNeutrinoMult()">You gain 5x more neutrinos.<br>Currently: <span id="neutrinoMult">1</span>x<br>Cost: <span id="neutrinoMultUpgCost">3</span> GHP</button></td>
-						<td><button id="ghpMultUpg" class="gluonupgrade unavailablebtn" onclick="buyGHPMult()">You gain 2x more GHP.<br>Currently: <span id="ghpMult"></span>x<br>Cost: <span id="ghpMultUpgCost"></span> of any neutrinos</button></td>
+						<td><button id="neutrinoMultUpg" class="gluonupgrade unavailablebtn" onclick="buyNeutrinoMult()">You gain 5x more neutrinos.<br>Currently: <span id="neutrinoMult">1</span>x<br>Cost: <span id="neutrinoMultUpgCost">3</span> GHP</button><br><button class="storebtn" onclick='maxNeutrinoMult()' style='width:190px'>Max Neutrino mult</button></td>
+						<td><button id="ghpMultUpg" class="gluonupgrade unavailablebtn" onclick="buyGHPMult()">You gain 2x more GHP.<br>Currently: <span id="ghpMult"></span>x<br>Cost: <span id="ghpMultUpgCost"></span> of any neutrinos</button><br><button class="storebtn" onclick='maxGHPMult()' style='width:190px'>Max GHP mult</button></td>
 					</tr>
 					<tr>
 						<td><button class="gluonupgrade unavailablebtn" id="neutrinoUpg1" onclick="buyNeutrinoUpg(1)" style="font-size: 10px">Meta-Dimension Boosts cost less.<br>Currently: -<span id="neutrinoUpg1Pow"></span><br>(Constant in Big Rip runs)<br>Cost: <span id="neutrinoUpg1Cost"></span> of any neutrinos</button></td>
@@ -4719,8 +4719,8 @@
 					</tr>
 					<tr>
 						<td><button class="gluonupgrade unavailablebtn" id="neutrinoUpg10" onclick="buyNeutrinoUpg(10)">Banked eternities are counted in Big Rips.<br>Cost: <span id="neutrinoUpg10Cost"></span> of any neutrinos</button></td>
-						<td><button class="gluonupgrade unavailablebtn" id="neutrinoUpg11" onclick="buyNeutrinoUpg(11)" style="font-size: 10px">8th Big Rip upgrade will never get repealed and capped.<br>Cost: <span id="neutrinoUpg11Cost"></span> of any neutrinos</button></td>
-						<td><button class="gluonupgrade unavailablebtn" id="neutrinoUpg12" onclick="buyNeutrinoUpg(12)" style="font-size: 10px">You gain more Eternal Matter based on your Space Shards.<br>Currently: <span id="neutrinoUpg12Pow">1.0</span>x<br>Cost: <span id="neutrinoUpg12Cost"></span> of any neutrinos</button></td>
+						<td><button class="gluonupgrade unavailablebtn" id="neutrinoUpg11" onclick="buyNeutrinoUpg(11)">8th Big Rip upgrade is never repealed and capped.<br>Cost: <span id="neutrinoUpg11Cost"></span> of any neutrinos</button></td>
+						<td><button class="gluonupgrade unavailablebtn" id="neutrinoUpg12" onclick="buyNeutrinoUpg(12)" style="font-size: 10px">In Big Rips, each replicated galaxy boosts EC14 reward and each free galaxy boosts IC3 multiplier increase.<br>Cost: <span id="neutrinoUpg12Cost"></span> of any neutrinos</button></td>
 					</tr>
 				</table>
 			</div>
