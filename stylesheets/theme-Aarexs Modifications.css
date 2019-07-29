@@ -506,7 +506,7 @@ strong { color: #0072e5 }
 #dilstudy14.dilationupgbought, .gluonupgradebought.bigrip {
 	border: 1px solid #191919 !important
 }
-#spaceShards, #spaceShards2 {
+.SSAmount {
 	color: #5be567 !important
 }
 .ghostifybtn, .brCompleted {

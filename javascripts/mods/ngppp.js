@@ -478,7 +478,7 @@ function getEC14Power() {
 	if (player.masterystudies===undefined) return 0
 	if (player.currentEterChall=='eterc14') return 5
 	let ret=ECTimesCompleted("eterc14")*2
-	if (hasNU(12)) if (player.quantum.bigRip.active) ret*=(player.replicanti.galaxies+extraReplGalaxies)*0.001+1
+	if (hasNU(12)) if (player.quantum.bigRip.active) ret*=Math.sqrt(player.replicanti.galaxies+extraReplGalaxies)*.03+1
 	return ret
 }
 
@@ -880,7 +880,7 @@ function getMPTPower(on) {
 	if (!inQC(0)) return 1
 	a = player.quantum.electrons.amount
 	if (a>187300) a = Math.sqrt((a-149840)*37460)+149840
-	if (GUBought("rg4")) a *= 0.7
+	if (tmp.rg4) a *= 0.7
 	if (player.masterystudies != undefined) if (on == undefined ? player.masterystudies.includes("d13") : on) a *= Math.sqrt(getTreeUpgradeEffect(4))
 	return a+1
 }
@@ -995,7 +995,6 @@ function updateQuantumChallenges() {
 	}
 	if (player.masterystudies.includes("d14")) {
 		document.getElementById("spaceShards").textContent = shortenDimensions(player.quantum.bigRip.spaceShards)
-		document.getElementById("spaceShards2").textContent = shortenDimensions(player.quantum.bigRip.spaceShards)
 		for (var u=1;u<18;u++) {
 			document.getElementById("bigripupg"+u).className = player.quantum.bigRip.upgrades.includes(u) ? "gluonupgradebought bigrip" : player.quantum.bigRip.spaceShards.lt(bigRipUpgCosts[u]) ? "gluonupgrade unavailablebtn" : "gluonupgrade bigrip"
 			document.getElementById("bigripupg"+u+"cost").textContent = shortenDimensions(new Decimal(bigRipUpgCosts[u]))
@@ -1567,12 +1566,9 @@ function buyMaxQuantumFood() {
 	let toBuy = Math.floor(minGluons.div(player.quantum.replicants.quantumFoodCost).times(4).add(1).log(5))
 	if (toBuy < 1) return
 	let toSpend = Decimal.pow(5, toBuy).minus(1).div(4).times(player.quantum.replicants.quantumFoodCost)
-	if (toSpend.gt(player.quantum.gluons.rg)) player.quantum.gluons.rg = new Decimal(0)
-	else player.quantum.gluons.rg = player.quantum.gluons.rg.sub(toSpend)
-	if (toSpend.gt(player.quantum.gluons.gb)) player.quantum.gluons.gb = new Decimal(0)
-	else player.quantum.gluons.gb = player.quantum.gluons.gb.sub(toSpend)
-	if (toSpend.gt(player.quantum.gluons.br)) player.quantum.gluons.br = new Decimal(0)
-	else player.quantum.gluons.br = player.quantum.gluons.br.sub(toSpend)
+	player.quantum.gluons.rg = player.quantum.gluons.rg.sub(player.quantum.gluons.rg.min(toSpend))
+	player.quantum.gluons.gb = player.quantum.gluons.gb.sub(player.quantum.gluons.gb.min(toSpend))
+	player.quantum.gluons.br = player.quantum.gluons.br.sub(player.quantum.gluons.br.min(toSpend))
 	player.quantum.replicants.quantumFood += toBuy
 	player.quantum.replicants.quantumFoodCost = player.quantum.replicants.quantumFoodCost.times(Decimal.pow(5, toBuy))
 	updateGluons("spend")
@@ -1915,7 +1911,6 @@ function getDecayRate(branch) {
 function getQuarkSpinProduction(branch) {
 	let ret = Decimal.pow(2,getBranchUpgLevel(branch,1)*(1+getRadioactiveDecays(branch)/10)).times(getTreeUpgradeEffect(3)).times(getTreeUpgradeEffect(5))
 	if (hasNU(4)) ret = ret.times(tmp.nu[2].pow(2))
-	if (player.quantum.bigRip.active) if (ghostified&&player.ghostify.neutrinos.boosts>8) ret=ret.times(tmp.nb[8])
 	ret = ret.times(todspeed)
 	return ret
 }
@@ -2058,6 +2053,11 @@ function getELCMult() {
 	return ret
 }
 
+function toggleRG4Upg() {
+	player.quantum.rg4=!player.quantum.rg4
+	document.getElementById('rg4toggle').textContent="Toggle: O"+(player.quantum.rg4?"N":"FF")	
+}
+
 function updateElectronsEffect() {
 	document.getElementById("sacrificedGals").textContent=getFullExpansion(player.quantum.electrons.sacGals)
 	document.getElementById("electronsAmount").textContent=getFullExpansion(Math.round(player.quantum.electrons.amount))
@@ -2097,6 +2097,7 @@ function maxBuyLimit() {
 	updateReplicants()
 }
 
+var nanospeed=1
 function rotateAutoAssign() {
 	player.quantum.autoOptions.assignQKRotate=player.quantum.autoOptions.assignQKRotate?(player.quantum.autoOptions.assignQKRotate+1)%3:1
 	document.getElementById('autoAssignRotate').textContent="Rotation: "+(player.quantum.autoOptions.assignQKRotate>1?"Left":player.quantum.autoOptions.assignQKRotate?"Right":"None")
@@ -2136,13 +2137,13 @@ function maxTreeUpg() {
 	for (u=1;u<9;u++) {
 		var cost=getTreeUpgradeCost(u)
 		var newSpins=[]
+		var lvl=getTreeUpgradeLevel(u)
 		var min
 		for (c=0;c<3;c++) {
 			min=todData[colors[c]].spin.min(c?min:1/0)
 			newSpins[c]=todData[colors[c]].spin
 		}
-		if (min.gte(cost)) {
-			var lvl=getTreeUpgradeLevel(u)
+		if (todData[colors[lvl%3]].spin.gte(cost)) {
 			var increment=1
 			while (min.gte(getTreeUpgradeCost(u,increment-1))) increment*=2
 			var toBuy=0
@@ -2207,6 +2208,7 @@ function radioactiveDecay(shorthand) {
 	data.quarks=new Decimal(0)
 	data.spin=new Decimal(0)
 	data.upgrades={}
+	if (player.ghostify.milestones>3) data.upgrades[1]=5
 	data.decays=data.decays===undefined?1:data.decays+1
 	updateTODStuff()
 }
@@ -2854,7 +2856,7 @@ function buyBreakUpg(id) {
 		document.getElementById("breakUpg7Cost").textContent = shortenDimensions(getBreakUpgCost(7))
 	} else player.quantum.breakEternity.upgrades.push(id)
 	document.getElementById("eternalMatter").textContent = shortenDimensions(player.quantum.breakEternity.eternalMatter)
-	for (var u=1;u<8;u++) document.getElementById("breakUpg" + u).className = player.quantum.breakEternity.upgrades.includes(u) ? "eternityupbtnbought" : player.quantum.breakEternity.eternalMatter.gte(getBreakUpgCost(u)) ? "eternityupbtn" : "eternityupbtnlocked"
+	for (var u=1;u<7;u++) document.getElementById("breakUpg" + u).className = player.quantum.breakEternity.upgrades.includes(u) ? "eternityupbtnbought" : player.quantum.breakEternity.eternalMatter.gte(getBreakUpgCost(u)) ? "eternityupbtn" : "eternityupbtnlocked"
 }
 
 function getBreakUpgMult(id) {
@@ -2912,7 +2914,7 @@ function maxBuyBEEPMult() {
 	document.getElementById("eternalMatter").textContent = shortenDimensions(player.quantum.breakEternity.eternalMatter)
 	document.getElementById("breakUpg7Mult").textContent = shortenDimensions(getBreakUpgMult(7))
 	document.getElementById("breakUpg7Cost").textContent = shortenDimensions(getBreakUpgCost(7))
-	for (var u=1;u<8;u++) document.getElementById("breakUpg" + u).className = player.quantum.breakEternity.upgrades.includes(u) ? "eternityupbtnbought" : player.quantum.breakEternity.eternalMatter.gte(getBreakUpgCost(u)) ? "eternityupbtn" : "eternityupbtnlocked"
+	for (var u=1;u<7;u++) document.getElementById("breakUpg" + u).className = player.quantum.breakEternity.upgrades.includes(u) ? "eternityupbtnbought" : player.quantum.breakEternity.eternalMatter.gte(getBreakUpgCost(u)) ? "eternityupbtn" : "eternityupbtnlocked"
 }
 
 function getGHPGain() {
@@ -3414,7 +3416,7 @@ function ghostifyReset(implode, gain, amount, force) {
 			},
 			bigRip: {
 				active: false,
-				conf: true,
+				conf: player.quantum.bigRip.conf,
 				times: 0,
 				bestThisRun: new Decimal(0),
 				bestAntimatter: player.quantum.bigRip.bestAntimatter,
@@ -3449,7 +3451,8 @@ function ghostifyReset(implode, gain, amount, force) {
 				1: 0,
 				2: 0
 			},
-			upgrades: bm > 1 ? player.quantum.upgrades : []
+			upgrades: bm > 1 ? player.quantum.upgrades : [],
+			rg4: false
 		},
 		old: false,
 		dontWant: true,
@@ -3558,14 +3561,16 @@ function ghostifyReset(implode, gain, amount, force) {
 	for (var i=1;i<9;i++) {
 		var num=bm>=permUnlocks[i-1]?10:0
 		eds[i]={workers:new Decimal(num),progress:new Decimal(0),perm:new Decimal(num)}
-		if (num>9) {
-			player.quantum.replicants.limitDim=i
-			player.quantum.replicants.quantumFoodCost=Decimal.pow(5,30).times(player.quantum.replicants.quantumFoodCost)
-		}
+		if (num>9) player.quantum.replicants.limitDim=i
 	}
 	if (bm>6) {
 		player.quantum.replicants.limit=10
 		player.quantum.replicants.limitCost=Decimal.pow(200,player.quantum.replicants.limitDim*9).times(1e49)
+		player.quantum.replicants.quantumFoodCost=Decimal.pow(5,player.quantum.replicants.limitDim*30).times(2e46)
+	}
+	if (bm>3) {
+		var colors=['r','g','b']
+		for (var c=0;c<3;c++) player.quantum.tod[colors[c]].upgrades[1]=5
 	}
 	if (bm) {
 		for (var i=1;i<9;i++) player.quantum.challenges[i] = 2
@@ -3611,9 +3616,13 @@ function ghostifyReset(implode, gain, amount, force) {
 		else document.getElementById("neutrinoUpg"+(player.ghostify.times+2)).style.display=""
 	}
 	document.getElementById("GHPAmount").textContent = shortenDimensions(player.ghostify.ghostParticles)
-	player.ghostify.neutrinos.electron = new Decimal(0)
-	player.ghostify.neutrinos.mu = new Decimal(0)
-	player.ghostify.neutrinos.tau = new Decimal(0)
+	if (bm>6) player.ghostify.neutrinos.generationGain=player.ghostify.neutrinos.generationGain%3+1
+	else {
+		player.ghostify.neutrinos.electron = new Decimal(0)
+		player.ghostify.neutrinos.mu = new Decimal(0)
+		player.ghostify.neutrinos.tau = new Decimal(0)
+		player.ghostify.neutrinos.generationGain = 1
+	}
 	player.ghostify.noGrind = !player.masterystudies.includes("d13")
 	updateLastTenGhostifies()
 	updateBraveMilestones()

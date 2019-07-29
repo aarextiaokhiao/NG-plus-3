@@ -45,7 +45,7 @@ function getGalaxyPowerEff(ng, bi) {
 	}
 	eff *= colorBoosts.r
 	if (GUBought("rg2")) eff *= Math.pow(player.dilation.freeGalaxies/5e3+1,0.25)
-	if (GUBought("rg4")) eff *= 1.5
+	if (tmp.rg4) eff *= 1.5
 	return eff
 }
 
@@ -55,7 +55,7 @@ function getTickSpeedMultiplier() {
 	if (player.tickspeedBoosts != undefined) if (player.galacticSacrifice.upgrades.includes(34)) realnormalgalaxies += 4
 	if ((player.currentChallenge == "postc3" || isIC3Trapped()) && !tmp.be) {
 		if (player.currentChallenge=="postcngmm_3" || (player.challenges.includes("postcngmm_3") && player.tickspeedBoosts === undefined)) {
-			if (GUBought("rg4")) realnormalgalaxies *= 0.4
+			if (tmp.rg4) realnormalgalaxies *= 0.4
 			return Decimal.pow(0.998, getGalaxyPower(realnormalgalaxies) * getGalaxyPowerEff(realnormalgalaxies, true))
 		}
 		return 1;
@@ -67,7 +67,7 @@ function getTickSpeedMultiplier() {
 	let useLinear
 	let linearGalaxies
 	if (inERS) {
-		if (GUBought("rg4")) realnormalgalaxies *= 0.4
+		if (tmp.rg4) realnormalgalaxies *= 0.4
 		galaxies = getGalaxyPower(realnormalgalaxies) * getGalaxyPowerEff(realnormalgalaxies, true)
 		linearGalaxies = Math.min(galaxies,5)
 		useLinear = true
@@ -76,7 +76,7 @@ function getTickSpeedMultiplier() {
 		useLinear = realnormalgalaxies + player.replicanti.galaxies + player.dilation.freeGalaxies < 3
 	}
 	if (useLinear) {
-		if (GUBought("rg4")) realnormalgalaxies *= 0.4
+		if (tmp.rg4) realnormalgalaxies *= 0.4
 		baseMultiplier = 0.9;
 		if (inERS && galaxies == 0) baseMultiplier = 0.89
 		else if (realnormalgalaxies == 0) baseMultiplier = 0.89
@@ -91,7 +91,7 @@ function getTickSpeedMultiplier() {
 	if (!inERS) {
 		baseMultiplier = 0.8
 		if (player.currentChallenge == "challenge6" || player.currentChallenge == "postc1") baseMultiplier = 0.83
-		if (GUBought("rg4")) realnormalgalaxies *= 0.4
+		if (tmp.rg4) realnormalgalaxies *= 0.4
 		galaxies = getGalaxyPower(realnormalgalaxies) * getGalaxyPowerEff(realnormalgalaxies, true)
 	}
 	let perGalaxy = player.infinityUpgradesRespecced != undefined ? 0.98 : 0.965

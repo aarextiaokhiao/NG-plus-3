@@ -324,17 +324,6 @@ function updateMetaDimensions () {
 	var message = 'Lose all your previous progress, but '
     document.getElementById("quantumResetLabel").textContent = (bigRipped?'Ghostify':'Quantum')+': requires '+shorten(req)+' meta-antimatter '+(!inQC(0)? "and "+shortenCosts(Decimal.pow(10,getQCGoal()))+" antimatter":player.masterystudies?"and an EC14 completion":"")
 	if (reqGotten && bigRipped && ghostified) {
-Search
-
-
-
-
-7
-
-8
-
-
-
 		var GS = getGHPGain()
 		message += "gain " + shortenDimensions(GS) + " Ghost Particle" + (GS.lt(2) ? "" : "s")
 	} else if (reqGotten && !bigRipped && (player.quantum.times || player.ghostify.milestones)) {
@@ -525,14 +514,16 @@ function isQuantumReached() {
 }
 
 let quarkGain = function () {
+	let ma = player.meta.antimatter
 	if (player.masterystudies) {
 		if (!player.quantum.times&&!player.ghostify.milestones) return new Decimal(1)
-		var log = player.meta.antimatter.max(1).log10() / 280 - 1.355
+		if (player.ghostify.milestones) ma = player.meta.bestAntimatter
+		var log = ma.max(1).log10() / 280 - 1.355
 		if (log > 1.2) log = log*log/1.2
 		if (log > 738 && !hasNU(8)) log = Math.sqrt(log * 738)
 		return Decimal.pow(10, log).times(Decimal.pow(2, player.quantum.multPower.total)).floor()
 	}
-	return Decimal.pow(10, player.meta.antimatter.max(1).log(10) / Math.log10(Number.MAX_VALUE) - 1).times(quarkMult()).floor();
+	return Decimal.pow(10, ma.max(1).log(10) / Math.log10(Number.MAX_VALUE) - 1).times(quarkMult()).floor();
 }
 
 let quarkMult = function () {
@@ -736,7 +727,7 @@ function quantumReset(force, auto, challid, bigRip, implode=false) {
 	var oheHeadstart = bigRip ? player.quantum.bigRip.upgrades.includes(2) : speedrunMilestonesReached > 0
 	var oldTime = player.quantum.time
 	player.quantum.time=0
-	document.getElementById("quarks").innerHTML="You have <b class='QKAmount'>"+shortenDimensions(player.quantum.quarks)+"</b> quark"+(player.quantum.quarks.lt(2)?".":"s.")
+	updateQuarkDisplay()
 	document.getElementById("galaxyPoints2").innerHTML="You have <span class='GPAmount'>0</span> Galaxy points."
 	if (player.masterystudies) {
 		var aea = {
@@ -939,7 +930,7 @@ function quantumReset(force, auto, challid, bigRip, implode=false) {
 			power: new Decimal(1),
 			baseAmount: 0
 		},
-		infDimBuyers: oheHeadstart ? player.infDimBuyers : [false, false, false, false, false, false, false, false],
+		infDimBuyers: oheHeadstart || bigRip ? player.infDimBuyers : [false, false, false, false, false, false, false, false],
 		timeShards: new Decimal(0),
 		tickThreshold: new Decimal(1),
 		totalTickGained: 0,
@@ -1022,7 +1013,7 @@ function quantumReset(force, auto, challid, bigRip, implode=false) {
 		etercreq: 0,
 		autoIP: new Decimal(0),
 		autoTime: 1e300,
-		infMultBuyer: oheHeadstart ? player.infMultBuyer : false,
+		infMultBuyer: oheHeadstart || bigRip ? player.infMultBuyer : false,
 		autoCrunchMode: oheHeadstart || bigRip ? player.autoCrunchMode : "amount",
 		autoEterMode: oheHeadstart ? player.autoEterMode : "amount",
 		peakSpent: player.masterystudies ? 0 : undefined,
@@ -1233,6 +1224,7 @@ function quantumReset(force, auto, challid, bigRip, implode=false) {
 		document.getElementById("metaAntimatterEffectType").textContent=inQC(3)?"multiplier on all Infinity Dimensions":"extra multiplier per dimension boost"
 		updateColorCharge()
 		updateGluons()
+		document.getElementById('rg4toggle').style.display=inQC(1)||QCIntensity(1)?"none":""
 		updateElectrons()
 		updateBankedEter()
 		updateQuantumChallenges()
@@ -1389,6 +1381,14 @@ function quantumReset(force, auto, challid, bigRip, implode=false) {
 	drawMasteryTree()
 	Marathon2 = 0;
 	document.getElementById("quantumConfirmBtn").style.display = "inline-block"
+}
+
+function updateQuarkDisplay() {
+	let msg=""
+	if (quantumed) msg+="You have <b class='QKAmount'>"+shortenDimensions(player.quantum.quarks)+"</b> quark"+(player.quantum.quarks.round().eq(1)?"":"s")
+	if (player.masterystudies!==undefined?player.masterystudies.includes("d14"):false) msg+=" and <b class='SSAmount'>"+shortenDimensions(player.quantum.bigRip.spaceShards)+"</b> Space Shard"+(player.quantum.bigRip.spaceShards.round().eq(1)?"":"s")
+	if (quantumed) msg+="."
+	document.getElementById("quarks").innerHTML=msg
 }
 
 function metaReset2() {

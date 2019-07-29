@@ -1902,6 +1902,10 @@ br {
     font-size: 9px;
 }
 
+#gluonupgrades td {
+	vertical-align: 0
+}
+
 .gluonupgrade.rg { animation: rgupg 5s infinite }
 .gluonupgrade.gb { animation: gbupg 5s infinite }
 .gluonupgrade.br { animation: brupg 5s infinite }

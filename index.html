@@ -2707,10 +2707,10 @@
                         <td><div id="braveMilestone1" class="achievement achievementlocked"></div></td>
                         <td><div id="braveMilestone2" class="achievement achievementlocked" ach-tooltip="Reward: Colored quarks do not cancel, you keep your gluon upgrades, and you can quick Big Rip."></div></td>
                         <td><div id="braveMilestone3" class="achievement achievementlocked" ach-tooltip="Reward: You keep your Electron upgrades."></div></td>
-                        <td><div id="braveMilestone4" class="achievement achievementlocked" ach-tooltip="Reward: Quantuming doesn't reset your Tachyon particles unless you are in a QC."></div></td>
+                        <td><div id="braveMilestone4" class="achievement achievementlocked" ach-tooltip="Reward: Quantuming doesn't reset your Tachyon particles unless you are in a QC and you start with 5 of 1st upgrades of each Branch."></div></td>
                         <td><div id="braveMilestone5" class="achievement achievementlocked" ach-tooltip="Reward: Quantuming doesn't reset your Meta-Dimension Boosts unless you are in a QC or you are going to undo Big Rip."></div></td>
                         <td><div id="braveMilestone6" class="achievement achievementlocked" ach-tooltip="Reward: Quantuming doesn't reset your normal replicants unless you are in a QC or you are going to undo Big Rip."></div></td>
-                        <td><div id="braveMilestone7" class="achievement achievementlocked" ach-tooltip="Reward: Start Ghostifies with 10 worker replicants."></div></td>
+                        <td><div id="braveMilestone7" class="achievement achievementlocked" ach-tooltip="Reward: Start Ghostifies with 10 worker replicants and Ghostifying doesn't reset Neutrinos."></div></td>
                         <td><div id="braveMilestone8" class="achievement achievementlocked" ach-tooltip="Reward: You gain ^0.5 amount of quarks, ^0.5 amount of gluons, and 1% of Space Shards you will gain per second."></div></td>
                     </tr>
                     <tr id="braveRow2">
@@ -3600,7 +3600,7 @@
                 </table>
                 <div id="bigrip">
                     To big rip the universe, you need to assign a PC with QC6 & 8 first.<br>
-                    You have <span id="spaceShards" style="font-size:35px">0</span> Space Shards.
+                    You have <span class="SSAmount" id="spaceShards" style="font-size:35px">0</span> Space Shards.
                     <table class="table" align="center" style="margin: auto">
                         <tr>
                             <td><button class='gluonupgrade unavailablebtn' id="bigripupg1" onclick='buyBigRipUpg(1)'>Infinity Points boost Normal Dimensions, but all other upgrades except 2nd repeal it.<br>Cost: <span id="bigripupg1cost"></span> Space Shards</button></td>
@@ -4495,7 +4495,10 @@
 					<td><button id='brupg2' onclick='buyGluonUpg("br",2)'>Sacrifice affects dilated time production.<br><span id='brupg2current'></span><br><span id='brupg1current'></span>Cost: 2 BR gluons</button></td>
 				</tr><tr>
 					<td><button id='rgupg3' onclick='buyGluonUpg("rg",3)'>First Meta Dimension is boosted by dimension boosts.<br>Cost: 4 RG gluons</button></td>
-					<td><button id='rgupg4' onclick='buyGluonUpg("rg",4)'>Galaxies are 50% stronger, but electrons are 30% weaker and normal galaxies are 60% weaker.<br>Cost: 100 RG gluons</button></td>
+					<td>
+						<button id='rgupg4' onclick='buyGluonUpg("rg",4)'>Galaxies are 50% stronger, but electrons are 30% weaker and normal galaxies are 60% weaker.<br>Cost: 100 RG gluons</button><br>
+						<button class="storebtn" id='rg4toggle' onclick='toggleRG4Upg()' style='width:142.5px; height:15px; font-size:9px'>Toggle: ON</button>
+					</td>
 					<td><button id='gbupg3' onclick='buyGluonUpg("gb",3)'>You get 2.3x more IP per mult upgrade.<br>Cost: 4 GB gluons</button></td>
 					<td><button id='gbupg4' onclick='buyGluonUpg("gb",4)'>Massively decrease the tickspeed cost multiplier increase to 1.25x.<br>Cost: 100 GB gluons</button></td>
 					<td><button id='brupg3' onclick='buyGluonUpg("br",3)'>Tachyon particles boost the dilated time production more by a little bit.<br>Cost: 4 BR gluons</button></td>
@@ -4694,7 +4697,7 @@
 					<tr class="neutrinoBoosts" id="neutrinoBoostRow3">
 						<td>In Big Rips, they make Tree Upgrades stronger by <span class="neutrinos" id="neutrinoBoost7" style="font-size:35px">0.0</span>%.</td>
 						<td id="neutrinoBoostCell8">In Big Rips, they make QC8 reward stronger by <span class="neutrinos" id="neutrinoBoost8" style="font-size:35px">0.0</span>%.</td>
-						<td id="neutrinoBoostCell9">In Big Rips, they speed up quark spins production by <span class="neutrinos" id="neutrinoBoost9" style="font-size:35px">1.00</span>x.</td>
+						<td id="neutrinoBoostCell9">In Big Rips, they boost IC3 reward strength by <span class="neutrinos" id="neutrinoBoost9" style="font-size:35px">1.00</span>x.</td>
 						<td></td>
 					</tr>
 					<tr>
@@ -4720,13 +4723,12 @@
 					<tr>
 						<td><button class="gluonupgrade unavailablebtn" id="neutrinoUpg10" onclick="buyNeutrinoUpg(10)">Banked eternities are counted in Big Rips.<br>Cost: <span id="neutrinoUpg10Cost"></span> of any neutrinos</button></td>
 						<td><button class="gluonupgrade unavailablebtn" id="neutrinoUpg11" onclick="buyNeutrinoUpg(11)">8th Big Rip upgrade is never repealed and capped.<br>Cost: <span id="neutrinoUpg11Cost"></span> of any neutrinos</button></td>
-						<td><button class="gluonupgrade unavailablebtn" id="neutrinoUpg12" onclick="buyNeutrinoUpg(12)" style="font-size: 10px">In Big Rips, each replicated galaxy boosts EC14 reward and each free galaxy boosts IC3 multiplier increase.<br>Cost: <span id="neutrinoUpg12Cost"></span> of any neutrinos</button></td>
+						<td><button class="gluonupgrade unavailablebtn" id="neutrinoUpg12" onclick="buyNeutrinoUpg(12)" style="font-size: 10px">In Big Rips, each replicated galaxy boosts EC14 reward by 0.033x^0.5+1 and each free galaxy boosts IC3 reward by 0.33%.<br>Cost: <span id="neutrinoUpg12Cost"></span> of any neutrinos</button></td>
 					</tr>
 				</table>
 			</div>
 			<div id="automaticghosts" class="ghostifytab">
 				<div>Your quantum worth is currently <b class="QKAmount" id="quantumWorth3">0</b>.</div>
-				<div>You have <b id="spaceShards2">0</b> Space Shards.</div>
 				<table class='qtable'>
 					<tr>
 						<td>You have <span id="automatorGhostsAmount" style="font-size:35px">1</span> Automator Ghosts.<br>Next Automator Ghost at <span id="nextAutomatorGhost"style="font-size:35px">?.?</span>.</td>

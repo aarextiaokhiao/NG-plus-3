@@ -1779,6 +1779,8 @@ if (player.version < 5) {
       document.getElementById('rebuyupgauto').textContent="Rebuyable upgrade auto: O"+(player.autoEterOptions.rebuyupg?"N":"FF")
       document.getElementById('metaboostauto').textContent="Meta-boost auto: O"+(player.autoEterOptions.metaboost?"N":"FF")
       document.getElementById('priorityquantum').value=formatValue("Scientific", new Decimal(player.quantum.autobuyer.limit), 2, 0)
+      document.getElementById('rg4toggle').style.display=inQC(1)||QCIntensity(1)?"none":""
+      document.getElementById('rg4toggle').textContent="Toggle: O"+(player.quantum.rg4?"N":"FF")
       document.getElementById("respecPC").className=player.quantum.pairedChallenges.respec?"quantumbtn":"storebtn"
       document.getElementById('sacrificeAuto').textContent="Auto: O"+(player.quantum.autoOptions.sacrifice?"N":"FF")
       document.getElementById("produceQuarkCharge").innerHTML="S" + (player.quantum.nanofield.producingCharge ? "top" : "tart") + " production of preon charge." + (player.quantum.nanofield.producingCharge ? "" : "<br>(You will not get preons when you do this.)")

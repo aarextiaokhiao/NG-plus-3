@@ -946,21 +946,24 @@ let kongEPMult = 1
 let tmp = {
 	rm: new Decimal(1),
 	it: 1,
+	rg4: false,
 	nrm: new Decimal(1),
 	ns: 1,
 	bru: [],
 	be: false,
 	beu: [],
-	bm: [250,200,150,100,75,50,25,20,15,12,10,8,6,4,2,1],
+	bm: [250,187,125,62,50,37,25,12,10,8,6,5,4,3,2,1],
 	nb: [],
-	nbc: [null,3,4,6,15,50,1e3,1e14,1e100],
+	nbc: [null,3,4,6,15,50,1e3,1e14,1e40],
 	nu: [],
-	nuc: [null,1e6,1e7,1e8,2e8,5e8,2e9,5e9,75e8,1e10,7e12,1e18,1/0]
+	nuc: [null,1e6,1e7,1e8,2e8,5e8,2e9,5e9,75e8,1e10,7e12,1e18,1e60]
 }
 function updateTemp() {
 	tmp.nrm=player.replicanti.amount.max(1)
+	tmp.rg4=false
 	if (player.masterystudies !== undefined) {
 		tmp.be=player.quantum.bigRip.active&&player.quantum.breakEternity.break
+		tmp.rg4=player.quantum.upgrades.includes("rg4")&&(player.quantum.rg4||inQC(1)||QCIntensity(1))
 		if (player.masterystudies.includes("d14")) {
 			tmp.bru[0]=Decimal.pow(2,player.replicanti.galaxies+extraReplGalaxies) //BRU8
 			if (!hasNU(11)) tmp.bru[0]=tmp.bru[0].min(Number.MAX_VALUE)
@@ -969,9 +972,9 @@ function updateTemp() {
 			tmp.bru[1]=Math.sqrt(player.quantum.bigRip.spaceShards.div(3e15).add(1).log10()*ret+1) //BRU14
 		}
 		if (!player.dilation.active&&player.quantum.bigRip.active&&player.quantum.bigRip.upgrades.includes(14)) tmp.nrm=tmp.nrm.pow(tmp.bru[1])
-		tmp.ns=1
+		tmp.ns=nanospeed
 		if (ghostified) {
-			if (player.quantum.nanofield.rewards<16) tmp.ns=player.ghostify.milestones?6:3
+			if (player.quantum.nanofield.rewards<16) tmp.ns*=player.ghostify.milestones?6:3
 			tmp.nb[0]=Math.log10(player.ghostify.neutrinos.electron.add(1).log10()+player.ghostify.neutrinos.mu.add(1).log10()+player.ghostify.neutrinos.tau.add(1).log10()+1)*0.75
 			if (player.ghostify.neutrinos.boosts>1) tmp.nb[1]=Math.pow(Math.pow(player.ghostify.neutrinos.electron.add(1).log10(),2)+Math.pow(player.ghostify.neutrinos.mu.add(1).log10(),2)+Math.pow(player.ghostify.neutrinos.tau.add(1).log10(),2),0.25)*1.5
 			if (player.ghostify.neutrinos.boosts>2) tmp.nb[2]=Math.pow(Math.pow(Math.log10(Math.max(player.ghostify.neutrinos.electron.max(1).log10()-5,1))/Math.log10(5),2)+Math.pow(Math.log10(Math.max(player.ghostify.neutrinos.mu.max(1).log10()-5,1))/Math.log10(5),2)+Math.pow(Math.log10(Math.max(player.ghostify.neutrinos.tau.max(1).log10()-5,1))/Math.log10(5),2),0.25)/Math.pow(3,0.25)+3
@@ -979,8 +982,8 @@ function updateTemp() {
 			if (player.ghostify.neutrinos.boosts>4) tmp.nb[4]=Math.min((player.ghostify.neutrinos.electron.max(1).log10()+player.ghostify.neutrinos.mu.max(1).log10()+player.ghostify.neutrinos.tau.max(1).log10())/33,1)
 			if (player.ghostify.neutrinos.boosts>5) tmp.nb[5]=Math.pow(Math.pow(Math.pow(player.ghostify.neutrinos.electron.add(1).log10(),2)+Math.pow(player.ghostify.neutrinos.mu.add(1).log10(),2)+Math.pow(player.ghostify.neutrinos.tau.add(1).log10(),2),0.25)*0.525+1,tmp.be?0.5:1)
 			if (player.ghostify.neutrinos.boosts>6) tmp.nb[6]=Math.sqrt(Math.log10(player.ghostify.neutrinos.electron.add(1).log10()+player.ghostify.neutrinos.mu.add(1).log10()+player.ghostify.neutrinos.tau.add(1).log10()+1))*2.35+1
-			if (player.ghostify.neutrinos.boosts>7) tmp.nb[7]=2//Math.pow(Math.pow(player.ghostify.neutrinos.electron.add(1).log10(),2)+Math.pow(player.ghostify.neutrinos.mu.add(1).log10(),2)+Math.pow(player.ghostify.neutrinos.tau.add(1).log10(),2),0.25)*0.032+1
-			if (player.ghostify.neutrinos.boosts>8) tmp.nb[8]=1
+			if (player.ghostify.neutrinos.boosts>7) tmp.nb[7]=Math.pow(Math.pow(player.ghostify.neutrinos.electron.add(1).log10(),2)+Math.pow(player.ghostify.neutrinos.mu.add(1).log10(),2)+Math.pow(player.ghostify.neutrinos.tau.add(1).log10(),2),0.25)/10+1
+			if (player.ghostify.neutrinos.boosts>8) tmp.nb[8]=(player.ghostify.neutrinos.electron.add(1).log10()+player.ghostify.neutrinos.mu.add(1).log10()+player.ghostify.neutrinos.tau.add(1).log10())/10
 			tmp.nu[0]=Math.max(100-(player.quantum.bigRip.active?0:player.meta.resets),0) //NU1
 			tmp.nu[1]=Math.pow(Math.max(player.quantum.colorPowers.b.log10()/250+1,1),2) //NU3
 			var ret=Math.max(-player.tickspeed.div(1e3).log10()/4e13-4,0)
@@ -1076,7 +1079,7 @@ function getInfinitiedGain() {
 
 function getEternitied() {
 	let total = player.eternities
-	if (player.eternitiesBank) if (player.quantum.bigRip.active?hasNU(10):inQC(0)) total = nA(total, player.eternitiesBank)
+	if (player.eternitiesBank) if (inQC(0)||(hasNU(10)?player.quantum.bigRip.active:false)) total = nA(total, player.eternitiesBank)
 	return total
 }
 
@@ -1298,7 +1301,8 @@ function updateDimensions() {
             if (isNaN(tickmult)) ticklabel = 'Break the tick interval by Infinite';
             else ticklabel = 'Reduce the tick interval by ' + ((1 - tickmult) * 100).toFixed(places) + '%';
         }
-        if (player.galacticSacrifice || player.currentChallenge == "postc3" || isIC3Trapped()) document.getElementById("tickLabel").innerHTML = ((isIC3Trapped() || player.currentChallenge == "postc3") && !tmp.be ? "M" : ticklabel + '<br>and m') + 'ultiply all dimensions by ' + getPostC3RewardMult().toPrecision(4) + '.'
+        let ic3mult=getPostC3RewardMult()
+        if (player.galacticSacrifice || player.currentChallenge == "postc3" || isIC3Trapped()) document.getElementById("tickLabel").innerHTML = ((isIC3Trapped() || player.currentChallenge == "postc3") && !tmp.be ? "M" : ticklabel + '<br>and m') + 'ultiply all dimensions by ' + (ic3mult>999.95?shorten(ic3mult):ic3mult.toPrecision(4)) + '.'
         else document.getElementById("tickLabel").textContent = ticklabel + '.'
 
         document.getElementById("tickSpeed").style.visibility = "visible";
@@ -1683,9 +1687,9 @@ function updateDimensions() {
         }
         if (document.getElementById("breakEternity").style.display == "block") {
              document.getElementById("eternalMatter").textContent = shortenDimensions(player.quantum.breakEternity.eternalMatter)
-             for (var u=1;u<7;u++) {
+             for (var u=1;u<8;u++) {
                  document.getElementById("breakUpg" + u).className = player.quantum.breakEternity.upgrades.includes(u) ? "eternityupbtnbought" : player.quantum.breakEternity.eternalMatter.gte(getBreakUpgCost(u)) ? "eternityupbtn" : "eternityupbtnlocked"
-                 document.getElementById("breakUpg" + u + "Mult").textContent = shortenMoney(getBreakUpgMult(u))
+                 if (u<7) document.getElementById("breakUpg" + u + "Mult").textContent = shortenMoney(getBreakUpgMult(u))
              }
         }
     }
@@ -2301,7 +2305,7 @@ function updateInfCosts() {
             let ng = player.galaxies
             if (!tmp.be) ng = Math.max(ng - player.quantum.electrons.sacGals, 0) * Math.max(Math.min(10 - player.quantum.electrons.amount / 16857, 1), 0)
             if (player.tickspeedBoosts !== undefined) if (player.galacticSacrifice.upgrades.includes(34)) ng += 4
-            if (GUBought("rg4")) ng *= 0.4
+            if (tmp.rg4) ng *= 0.4
             let exp = 0.2
             if (player.galaxies >= 1e4) exp *= Math.max(6 - player.galaxies / 2e3, 0)
             document.getElementById("232desc").textContent = "Currently: "+(Math.pow(1 + ng / 1000, exp) * 100 - 100).toFixed(1)+"%"
@@ -2315,12 +2319,15 @@ function getPostC3RewardMult() {
 	let perGalaxy = 0.005;
 	if (player.tickspeedBoosts != undefined) perGalaxy = 0.002
 	if (inQC(2)) perGalaxy = 0
-	if (hasNU(12)) if (player.quantum.bigRip.active) perGalaxy*=player.dilation.freeGalaxies*0.001+1
+	if (player.quantum.bigRip.active) {
+		if (ghostified&&player.ghostify.neutrinos.boosts>8) perGalaxy*=tmp.nb[8]
+		if (hasNU(12)) perGalaxy*=player.dilation.freeGalaxies*.03+1
+	}
 	if (!player.galacticSacrifice) return player.galaxies*perGalaxy+1.05
 	if (player.challenges.length > 15 && player.achievements.includes("r67")) perGalaxy *= player.challenges.length/10-0.5
 	var realnormalgalaxies = player.galaxies
 	if (player.masterystudies) realnormalgalaxies = Math.max(player.galaxies-player.quantum.electrons.sacGals,0)
-	if (GUBought("rg4")) realnormalgalaxies *= 0.4
+	if (tmp.rg4) realnormalgalaxies *= 0.4
 	if (player.masterystudies) if (player.masterystudies.includes('t311')) realnormalgalaxies *= 0.5
 	perGalaxy *= getGalaxyPowerEff()
 	let ret = getGalaxyPower(realnormalgalaxies)*perGalaxy+1.05
@@ -3661,8 +3668,8 @@ function setAchieveTooltip() {
 	immunity.setAttribute('ach-tooltip', "Get "+shorten(Decimal.pow(10, 8e7))+" antimatter with at least 1 normal galaxies while in Eternity Challenge 7 and big ripped.")
     notSmart.setAttribute('ach-tooltip', "Get "+shorten(1e215)+" Time Shards without having time study 11 while big ripped.")
     soLife.setAttribute('ach-tooltip', "Reach "+shorten(Decimal.pow(10, 35e4))+" IP without studies and normal EP multi upgrades but in dilated and big ripped.")
-    willenough.setAttribute('ach-tooltip', "Reach "+shortenCosts( new Decimal("1e20000000"))+" replicanti.")
-    bm1.setAttribute('ach-tooltip', "Reward: Start Ghostifies with all Speedrun Milestones and all "+shorten(Number.MAX_VALUE)+" QK features unlocked, all Paired Challenges completed, all Big Rip upgrades bought, and Nanofield is 2x faster until you reach 16 rewards.")
+    willenough.setAttribute('ach-tooltip', "Reach "+shortenCosts( new Decimal("1e31000000"))+" replicanti.")
+    bm1.setAttribute('ach-tooltip', "Reward: Start Ghostifies with all Speedrun Milestones and all "+shorten(Number.MAX_VALUE)+" QK features unlocked, all Paired Challenges completed, all Big Rip upgrades bought, Nanofield is 2x faster until you reach 16 rewards, and you get quarks based on your best MA this quantum.")
     bm14.setAttribute('ach-tooltip', "Reward: Start Ghostifies with "+shortenCosts(1e25)+" Quark Spins.")
 }
 
@@ -6613,14 +6620,13 @@ function updateInfPower() {
     else document.getElementById("infPowPerSec").textContent = "You are getting " +shortenDimensions(DimensionProduction(1))+" Infinity Power per second."
 }
 
-function getReplSpeed () {
-	let ret = .2;
-	if (player.dilation.upgrades.includes('ngpp1')) {
-		ret /= 1 + player.dilation.dilatedTime.max(1).log(10) / 10
-	}
-	ret = ret + 1
-	if (GUBought("gb2")) ret = Math.sqrt(ret)
-	return Math.max(ret, 1.001);
+function getReplSpeed() {
+	let inc=.2
+	let exp=308
+	if (player.dilation.upgrades.includes('ngpp1')) inc/=1+player.dilation.dilatedTime.max(1).log(10)/10
+	inc=inc+1
+	if (GUBought("gb2")) exp*=2
+	return {inc:inc,exp:exp}
 }
 
 function updateTimeShards() {
@@ -6724,7 +6730,7 @@ setInterval(function() {
 
     document.getElementById("eternitybtn").style.display = (player.infinityPoints.gte(player.eternityChallGoal) && (player.infDimensionsUnlocked[7] || getEternitied() > 24)) ? "inline-block" : "none"
 
-    setAndMaybeShow("quarks", quantumed, '"You have <b class=\'QKAmount\'>"+shortenDimensions(player.quantum.quarks)+"</b> quark"+(player.quantum.quarks.eq(1)?".":"s.")')
+    updateQuarkDisplay()
 
     document.getElementById("bigcrunch").parentElement.style.top = haveBlock ? "139px" : "19px"
     document.getElementById("quantumBlock").style.display = haveBlock ? "" : "none"
@@ -7031,7 +7037,7 @@ setInterval(function() {
                 else if (player.quantum.nanofield.rewards>1/0&&u>7) giveAchievement("But I don't want to grind!")
             }
         }
-        if (player.replicanti.amount.e >= 1/0) giveAchievement("Will it be enough?")
+        if (player.replicanti.amount.e >= 31e6) giveAchievement("Will it be enough?")
         if (player.quantum.bigRip.active) {
             let ableToGetRid7 = ableToGetRid2 && player.epmult.eq(1)
             let ableToGetRid8 = ableToGetRid7 && player.quantum.breakEternity.upgrades.length < 1 && player.quantum.breakEternity.upgrades.epMultPower < 1
@@ -7091,7 +7097,7 @@ setInterval(function() {
             updateBreakEternity()
         }
         if (player.ghostify.milestones>notifyId2) {
-            $.notify("You became a ghost in at most "+getFullExpansion(tmp.bm[notifyId2])+" quantumed stat! "+(["You now start with all Speedrun Milestones and all "+shorten(Number.MAX_VALUE)+" QK features unlocked, all Paired Challenges completed, all Big Rip upgrades bought, and Nanofield is 2x faster until you reach 16 rewards", "For now on, colored quarks do not cancel, you keep your gluon upgrades, and you can quick Big Rip", "You now keep your Electron upgrades", "For now on, Quantuming doesn't reset your Tachyon particles unless you are in a QC", "For now on, Quantuming doesn't reset your Meta-Dimension Boosts unless you are in a QC", "For now on, Quantuming doesn't reset your normal replicants unless you are in a QC", "You now start with 10 worker replicants.", "You are now gaining ^0.5 amount of quarks, ^0.5 amount of gluons, and 1% of Space Shards you will gain per second.", "You now start with 10 of Second Emperor Dimensions", "You now start with 10 of Fourth Emperor Dimensions", "You now start with 10 of Sixth Emperor Dimensions", "You now start with 10 of Eighth Emperor Dimensions", "You now start with first 16 Nanofield rewards", "You now start with "+shortenCosts(1e25)+" quark spins", "You now start with Break Eternity unlocked and all Break Eternity upgrades bought", "You unlocked 'I rather oppose the theory of everything' achievement"])[notifyId2]+".","success")
+            $.notify("You became a ghost in at most "+getFullExpansion(tmp.bm[notifyId2])+" quantumed stat! "+(["You now start with all Speedrun Milestones and all "+shorten(Number.MAX_VALUE)+" QK features unlocked, all Paired Challenges completed, all Big Rip upgrades bought, Nanofield is 2x faster until you reach 16 rewards, and you get quarks based on your best MA this quantum", "For now on, colored quarks do not cancel, you keep your gluon upgrades, and you can quick Big Rip", "You now keep your Electron upgrades", "For now on, Quantuming doesn't reset your Tachyon particles unless you are in a QC and you start with 5 of 1st upgrades of each Branch", "For now on, Quantuming doesn't reset your Meta-Dimension Boosts unless you are in a QC or you are going to undo Big Rip", "For now on, Quantuming doesn't reset your normal replicants unless you are in a QC or you are going to undo Big Rip", "You now start with 10 worker replicants and Ghostifying now doesn't reset Neutrinos.", "You are now gaining ^0.5 amount of quarks, ^0.5 amount of gluons, and 1% of Space Shards you will gain per second.", "You now start with 10 of Second Emperor Dimensions", "You now start with 10 of Fourth Emperor Dimensions", "You now start with 10 of Sixth Emperor Dimensions", "You now start with 10 of Eighth Emperor Dimensions", "You now start with first 16 Nanofield rewards", "You now start with "+shortenCosts(1e25)+" quark spins", "You now start with Break Eternity unlocked and all Break Eternity upgrades bought", "You unlocked 'I rather oppose the theory of everything' achievement"])[notifyId2]+".","success")
             notifyId2++
         }
         if (player.quantum.autoOptions.assignQK && player.ghostify.milestones > 7) assignAll() 
@@ -7553,6 +7559,7 @@ function gameLoop(diff) {
     }
     let ts273Mult = getMTSMult(273)
     let chance = Decimal.pow(player.replicanti.chance, ts273Mult.toNumber())
+    let speeds = getReplSpeed()
     if (chance.lt(1)) chance = new Decimal(player.replicanti.chance)
     let frequency = 0
     if (chance.gte("1e9999998")) frequency = ts273Mult.times(Math.log10(player.replicanti.chance)/Math.log10(2))
@@ -7564,15 +7571,15 @@ function gameLoop(diff) {
     if (player.replicanti.amount.lt(Number.MAX_VALUE) && player.achievements.includes("r134")) interval /= 2
     if (player.exdilation != undefined) interval /= Math.cbrt(getBlackholePowerEffect())
     if (isBigRipUpgradeActive(4)) interval /= 10
-    if (player.replicanti.amount.gt(Number.MAX_VALUE)) interval = player.boughtDims ? Math.pow(player.achievements.includes("r107")?Math.max(player.replicanti.amount.log(2)/1024,1):1, -.25) : Decimal.pow(getReplSpeed(), Math.max(player.replicanti.amount.log10() - 308, 0)/308).times(interval)
+    if (player.replicanti.amount.gt(Number.MAX_VALUE)) interval = player.boughtDims ? Math.pow(player.achievements.includes("r107")?Math.max(player.replicanti.amount.log(2)/1024,1):1, -.25) : Decimal.pow(speeds.inc, Math.max(player.replicanti.amount.log10() - speeds.exp, 0)/speeds.exp).times(interval)
     if (player.masterystudies) if (player.masterystudies.includes("t332")) interval = Decimal.div(interval, player.galaxies)
     var est = Decimal.div((frequency ? frequency.times(Math.log10(2)/Math.log10(Math.E) * 1e3) : Decimal.add(chance, 1).log(Math.E) * 1e3), interval)
 
     var current = player.replicanti.amount.ln()
 
     if (player.replicanti.unl && (diff > 5 || chance.gt(1) || interval < 50 || est.gt(50) || player.timestudy.studies.includes(192))) {
-        if (player.timestudy.studies.includes(192) && est.toNumber() > 0 && est.toNumber() < 1/0) player.replicanti.amount = Decimal.pow(Math.E, current +Math.log((diff*est/10) * (Math.log10(getReplSpeed())/308)+1) / (Math.log10(getReplSpeed())/308))
-        else if (player.timestudy.studies.includes(192)) player.replicanti.amount = Decimal.pow(Math.E, current + est.times(diff * Math.log10(getReplSpeed()) / 3080).add(1).log(Math.E) / (Math.log10(getReplSpeed())/308))
+        if (player.timestudy.studies.includes(192) && est.toNumber() > 0 && est.toNumber() < 1/0) player.replicanti.amount = Decimal.pow(Math.E, current +Math.log((diff*est/10) * (Math.log10(speeds.inc)/speeds.exp)+1) / (Math.log10(speeds.inc)/speeds.exp))
+        else if (player.timestudy.studies.includes(192)) player.replicanti.amount = Decimal.pow(Math.E, current + est.times(diff * Math.log10(speeds.inc) / speeds.exp / 10).add(1).log(Math.E) / (Math.log10(speeds.inc)/speeds.exp))
         else player.replicanti.amount = Decimal.pow(Math.E, current +(diff*est/10)).min(getReplicantiLimit())
         replicantiTicks = 0
     } else {
@@ -7632,8 +7639,7 @@ function gameLoop(diff) {
         }
     }
 
-    var estimate = Math.max((Math.log(Number.MAX_VALUE) - current) / est.toNumber(), 0)
-    document.getElementById("replicantiapprox").textContent = "Approximately "+ timeDisplay(estimate*10) + " Until Infinite Replicanti"
+    document.getElementById("replicantiapprox").textContent = player.masterystudies !== undefined && player.dilation.upgrades.includes("ngpp1") && player.replicanti.amount.gte(Number.MAX_VALUE) ? "Replicate interval is "+(speeds.inc*100-100).toFixed(2)+"% slower per "+getFullExpansion(Math.floor(speeds.exp))+" OoMs." : "Approximately "+ timeDisplay(Math.max((Math.log(Number.MAX_VALUE) - current) / est.toNumber(), 0)*10) + " Until Infinite Replicanti"
 
     document.getElementById("replicantiamount").textContent = shortenDimensions(player.replicanti.amount)
     document.getElementById("replicantimult").textContent = shorten(getIDReplMult())
@@ -8112,9 +8118,9 @@ function gameLoop(diff) {
                 player.quantum.gluons.gb=player.quantum.gluons.gb.add(player.quantum.usedQuarks.g.min(player.quantum.usedQuarks.b).sqrt().times(diff/10))
                 player.quantum.gluons.br=player.quantum.gluons.br.add(player.quantum.usedQuarks.b.min(player.quantum.usedQuarks.r).sqrt().times(diff/10))
                 if (player.achievements.includes("ng3p66")) player.quantum.quarks=player.quantum.quarks.add(quarkGain().times(diff/1e3))
-                document.getElementById("quarks").innerHTML="You have <b class='QKAmount'>"+shortenDimensions(player.quantum.quarks)+"</b> quark"+(player.quantum.quarks.lt(2)?".":"s.")
-                updateQuantumWorth("quick")
             }
+            updateQuarkDisplay()
+            updateQuantumWorth("quick")
         }
     }
     if (player.dilation.upgrades.includes(10)) {
@@ -8824,6 +8830,7 @@ function resetUP() {
 	mult18 = 1
 	tmp.nb[5] = 1
 	tmp.nb[7] = 1
+	tmp.nb[8] = 1
 	updatePowerInt = setInterval(updatePowers, 100)
 }
 
