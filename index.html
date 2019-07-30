@@ -1671,6 +1671,7 @@
                 <button id="toggleallmetadims" style="width:300px; height: 30px; font-size: 12px" onclick="toggleAllMetaDims()" class="storebtn">Toggle all meta-dims autobuyer ON/OFF</button>
             </div>
             <div id="emperordimensions" class="dimtab">
+				You have <span class="rqC" id="rgEDs">1</span> red-green, <span class="QKAmount" id="gbEDs">1</span> green-blue, and <span class="bqC" id="brEDs">1</span> blue-red gluons.<br>
                 <div>
                     <p>You have <span id="replicantAmountED" style="font-size:35px; color: black">0</span> normal replicants.</p>
                 </div>
@@ -2547,16 +2548,16 @@
                                 <div id="Kee-hee-hee!" class="achievement achievementlocked" style="background-image: url(images/151.png)" ach-tooltip="Become a ghost. Reward: Gain 100x eternitied stat as before (weakens as you have more), all quantum mechanic unlocks only require Time Theorems, assignation options are kept permanently, Nanofield is 3x faster until you reach 16 rewards, and start with 1 Eighth Time Dimension in Big Rips."></div>
                             </td>
                             <td>
-                                <div id="Finite Time" class="achievement achievementlocked" style="background-image: url(images/152.png)" ach-tooltip="Reach e??? ticks/s in Big Rips without Time Dimensions."></div>
+                                <div id="Finite Time" class="achievement achievementlocked" style="background-image: url(images/152.png)"></div>
                             </td>
                             <td>
                                 <div id="This achievement doesn't exist 4" class="achievement achievementlocked" style="background-image: url(images/153.png)" ach-tooltip="Reach 9.999999e99 Eternal Matter. Reward: Meta Dimensions don't get affected by dilation if you are not in a Quantum Challenge."></div>
                             </td>
                             <td>
-                                <div id="Really?" class="achievement achievementlocked" style="background-image: url(images/154.png)" ach-tooltip="Fail your first Big Rip run in this Ghostify with all Neutrino upgrades bought."></div>
+                                <div id="Really?" class="achievement achievementlocked" style="background-image: url(images/154.png)"></div>
                             </td>
                             <td>
-                                <div id="But I don't want to grind!" class="achievement achievementlocked" style="background-image: url(images/155.png)" ach-tooltip="Get reward ??? without having Tree Upgrades."></div>
+                                <div id="But I don't want to grind!" class="achievement achievementlocked" style="background-image: url(images/155.png)" ach-tooltip="Get 21th Nanofield reward without having Tree Upgrades."></div>
                             </td>
                             <td>
                                 <div id="I rather oppose the theory of everything" class="achievement achievementlocked" style="background-image: url(images/156.png)" ach-tooltip="Complete Brave Milestones. Reward: You gain 1% of quarks you will gain per second."></div>
@@ -2565,7 +2566,7 @@
                                 <div id="Will it be enough?" class="achievement achievementlocked" style="background-image: url(images/157.png)"></div>
                             </td>
                             <td>
-                                <div id="Please answer me why you are dying." class="achievement achievementlocked" style="background-image: url(images/158.png)" ach-tooltip="Reach ??? IP while dilated, big ripped, and without having time studies, EP mult upgrades, and Break Eternity upgrades."></div>
+                                <div id="Please answer me why you are dying." class="achievement achievementlocked" style="background-image: url(images/158.png)"></div>
                             </td>
                         </tr>
                 </table>
@@ -4802,13 +4803,13 @@
 						<td id="autoGhost10"><div class="autoBuyerDiv" style="display:block">
 							<b>Auto-Limit Upgrade Ghost</b><br>
 							(buys if possible)<br>
-							Power consumption: 0.5<br>
+							Power consumption: 1<br>
 							Is active: <input id="isAutoGhostOn10" type="checkbox" onchange="toggleAutoGhost(10)"></input>
 						</div></td>
 						<td id="autoGhost11"><div class="autoBuyerDiv" style="display:block">
 							<b>Auto-Preon Generate Ghost</b><br>
 							Power consumption: 0.5<br>
-							Start producing preon charge when you have <input id="autoGhost4pw" type="number" min=0></input>s worth of preon production and <input id="autoGhost4lw" type="number" min=0></input>s worth loss of preon loss, but stop producing preon charge when you have <input id="autoGhost4cw" type="number" min=0></input>s worth of preon charge production.
+							Start producing preon charge when you have <input id="autoGhost11pw" onchange="changeAutoGhost('11pw')"></input>s worth of preon production and <input id="autoGhost11lw" type="text" onchange="changeAutoGhost('11lw')"></input>s worth loss of preon loss, but stop producing preon charge when you have <input id="autoGhost11cw" type="text" onchange="changeAutoGhost('11cw')"></input>s worth of preon charge production.
 							Is active: <input id="isAutoGhostOn11" type="checkbox" onchange="toggleAutoGhost(11)"></input>
 						</div></td>
 						<td id="autoGhost12"><div class="autoBuyerDiv" style="display:block">
@@ -4822,6 +4823,7 @@
 						<td id="autoGhost13"><div class="autoBuyerDiv" style="display:block">
 							<b>Auto-Big Rip Ghost</b><br>
 							Power consumption: 0.5<br>
+							Big Rip in <input id="autoGhost13t" onchange="changeAutoGhost('13t')"></input> seconds after you go quantum and undo the Big Rip after <input id="autoGhost13u" onchange="changeAutoGhost('13u')"></input> seconds.<br>
 							Is active: <input id="isAutoGhostOn13" type="checkbox" onchange="toggleAutoGhost(13)"></input>
 						</div></td>
 						<td id="autoGhost14"><div class="autoBuyerDiv" style="display:block">
@@ -4832,6 +4834,7 @@
 						<td id="autoGhost15"><div class="autoBuyerDiv" style="display:block">
 							<b>Auto-Ghostify Ghost</b><br>
 							Power consumption: 0.5<br>
+							Amount of GHP to wait until reset: <input id="autoGhost15a" onchange="changeAutoGhost('15a')"></input><br>
 							Is active: <input id="isAutoGhostOn15" type="checkbox" onchange="toggleAutoGhost(15)"></input>
 						</div></td>
 					</tr>

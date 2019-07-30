@@ -335,15 +335,15 @@ button, div.storebtn {
 	color: #009900 !important
 }
 
-.red, #rgRepl {
+.red, #rgRepl, #rgEDs {
 	color: #e50000 !important
 }
 
-.green, #gbRepl, #quarkTranslation, #quarkCharge, #quarkChargeRate {
+.green, #gbRepl, #quarkTranslation, #gbEDs, #quarkCharge, #quarkChargeRate {
 	color: #00e500 !important
 }
 
-.blue, #brRepl {
+.blue, #brRepl, #brEDs {
 	color: #0000e5 !important
 }
 

@@ -2255,7 +2255,7 @@ br {
 	height: 90px
 }
 
-#automaticghosts input[type=number] {
+#autoGhost11pw, #autoGhost11lw, #autoGhost11cw {
 	width: 50px
 }
 

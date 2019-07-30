@@ -1242,7 +1242,7 @@ if (player.version < 5) {
           player.quantum.nanofield.producingCharge = false
       }
       if (player.quantum.autobuyer.peakTime === undefined) player.quantum.autobuyer.peakTime = 0
-      if (player.quantum.nanofield.rewards>17&&player.quantum.tod.upgrades[1]==undefined) {
+      if (player.quantum.nanofield.rewards>17&&player.quantum.tod.upgrades[1]==undefined&&!player.ghostify.reached) {
           var newMS=[]
           for (var m=0;m<player.masterystudies.length;m++) {
               var d=player.masterystudies[m].split("d")
