@@ -1178,52 +1178,6 @@ if (player.version < 5) {
       player.aarexModifications.newGame3PlusVersion = 2
   }
   if (player.masterystudies) {
-      //Testing-exclusive
-      if (player.eternityBuyer.dilMode === undefined) {
-          player.eternityBuyer.dilMode = "amount"
-          player.eternityBuyer.tpUpgraded = false
-          player.eternityBuyer.slowStop = false
-          player.eternityBuyer.slowStopped = false
-          player.eternityBuyer.presets = {on: false, autoDil: false, selected: -1, selectNext: 0, left: 1, order: []}
-      }
-      if (player.eternityBuyer.presets.selectNext === undefined) {
-          player.eternityBuyer.presets.selected = -1
-          player.eternityBuyer.presets.selectNext = 0
-      }
-      if (player.eternityBuyer.presets.left === undefined) player.eternityBuyer.presets.left = 1
-      if (player.eternityBuyer.ifAD === undefined) player.eternityBuyer.ifAD = false
-      if (player.quantum.reached === undefined) player.quantum.reached = player.quantum.times > 0
-      if (player.quantum.nonMAGoalReached === undefined ? true : player.quantum.nonMAGoalReached.length === undefined) player.quantum.nonMAGoalReached = []
-      if (player.quantum.bigRip.savedAutobuyersNoBR === undefined) player.quantum.bigRip.savedAutobuyersNoBR = {}
-      if (player.quantum.bigRip.savedAutobuyersBR === undefined) player.quantum.bigRip.savedAutobuyersBR = {}
-      if (player.quantum.bigRip.upgrades.includes(10) && !player.quantum.bigRip.upgrades.includes(9)) {
-          player.quantum.bigRip.upgrades.push(9)
-          if (player.quantum.bigRip.active) tweakBigRip(9, true)
-      }
-      if (player.quantum.breakEternity.upgradesReset === undefined && player.ghostify.times < 1) {
-          var newUpgrades = []
-          for (var u=0;u<player.quantum.breakEternity.upgrades.length;u++) if (player.quantum.breakEternity.upgrades[u]<4) newUpgrades.push(player.quantum.breakEternity.upgrades[u])
-          player.quantum.breakEternity.upgrades = newUpgrades
-          player.quantum.breakEternity.epMultPower = 0
-          player.quantum.breakEternity.upgradesReset = true
-      }
-      if (player.quantum.pairedChallenges.fastest === undefined) player.quantum.pairedChallenges.fastest = {}
-      if (player.quantum.qcsNoDil === undefined) player.quantum.qcsNoDil = {}
-      if (player.ghostify.reached === undefined) player.ghostify.reached = player.ghostify.times > 0
-      if (player.ghostify.timeReset === undefined) {
-          player.ghostify.time = player.totalTimePlayed
-          player.ghostify.timeReset = true
-      }
-      if (player.ghostify.neutrinos.boosts === undefined) player.ghostify.neutrinos.boosts = 1
-      if (player.ghostify.automatorGhosts === undefined) player.ghostify.automatorGhosts = setupAutomaticGhostsData()
-      if (player.ghostify.automatorGhosts[11].pw === undefined) {
-          player.ghostify.automatorGhosts[11].pw = 1
-          player.ghostify.automatorGhosts[11].lw = 1
-          player.ghostify.automatorGhosts[11].cw = 1
-      }
-      if (player.options.animations.ghostify === undefined) player.options.animations.ghostify = true
-      if (player.aarexModifications.ghostifyConf === undefined) player.aarexModifications.ghostifyConf = true
-
       if (player.meta.bestOverQuantums === undefined) player.meta.bestOverQuantums = player.meta.bestAntimatter
       document.getElementById('prioritydil').value=player.eternityBuyer.dilationPerAmount
       if (player.achievements.includes("ng3p52")) document.getElementById("autoDilValue").value=player.eternityBuyer.dilationPerAmount
@@ -2016,7 +1970,7 @@ function change_save(id) {
   changeSaveDesc(metaSave.current, savePlacement)
 
   $.notify("Save #"+savePlacement+" loaded", "info")
-  localStorage.setItem("AD_aarexModifications_ghostify",btoa(JSON.stringify(metaSave)))
+  localStorage.setItem("AD_aarexModifications",btoa(JSON.stringify(metaSave)))
 }
 
 function rename_save(id) {
@@ -2059,7 +2013,7 @@ function export_save(id) {
 	let parent = output.parentElement
 
 	parent.style.display = ""
-	output.value = localStorage.getItem(btoa("dsAM_ghostify_"+id))
+	output.value = localStorage.getItem(btoa("dsAM_"+id))
 
 	output.onblur = function() {
 		parent.style.display = "none"
@@ -2093,7 +2047,7 @@ function move(id,offset) {
 	document.getElementById("saves").rows[placement+offset].innerHTML=getSaveLayout(id)
 	changeSaveDesc(metaSave.saveOrder[placement], placement+1)
 	changeSaveDesc(id, placement+offset+1)
-	localStorage.setItem("AD_aarexModifications_ghostify",btoa(JSON.stringify(metaSave)))
+	localStorage.setItem("AD_aarexModifications",btoa(JSON.stringify(metaSave)))
 }
 
 function delete_save(saveId) {
@@ -2106,7 +2060,7 @@ function delete_save(saveId) {
 	for (orderId=0;orderId<metaSave.saveOrder.length;orderId++) {
 		if (alreadyDeleted) changeSaveDesc(metaSave.saveOrder[orderId], orderId)
 		if (metaSave.saveOrder[orderId]==saveId) {
-			localStorage.removeItem(btoa("dsAM_ghostify_"+saveId))
+			localStorage.removeItem(btoa("dsAM_"+saveId))
 			alreadyDeleted=true
 			document.getElementById("saves").deleteRow(orderId)
 			if (savePlacement>orderId+1) savePlacement--
@@ -2117,7 +2071,7 @@ function delete_save(saveId) {
 	if (metaSave.current==saveId) {
 		change_save(metaSave.saveOrder[0])
 		document.getElementById("loadmenu").style.display="block"
-	} else localStorage.setItem("AD_aarexModifications_ghostify",btoa(JSON.stringify(metaSave)))
+	} else localStorage.setItem("AD_aarexModifications",btoa(JSON.stringify(metaSave)))
 	$.notify("Save deleted", "info")
 }
 
@@ -2134,7 +2088,7 @@ function new_game(id) {
 	metaSave.current=1
 	while (metaSave.saveOrder.includes(metaSave.current)) metaSave.current++
 	metaSave.saveOrder.push(metaSave.current)
-	localStorage.setItem("AD_aarexModifications_ghostify",btoa(JSON.stringify(metaSave)))
+	localStorage.setItem("AD_aarexModifications",btoa(JSON.stringify(metaSave)))
 	changeSaveDesc(oldId, savePlacement)
 	latestRow=document.getElementById("saves").insertRow(loadedSaves)
 	latestRow.innerHTML=getSaveLayout(metaSave.current)
@@ -2146,7 +2100,7 @@ function new_game(id) {
 	startInterval()
 	
 	$.notify("Save created", "info")
-	localStorage.setItem("AD_aarexModifications_ghostify",btoa(JSON.stringify(metaSave)))
+	localStorage.setItem("AD_aarexModifications",btoa(JSON.stringify(metaSave)))
 	closeToolTip()
 	showDimTab('antimatterdimensions')
 	showStatsTab('stats')
@@ -2458,19 +2412,19 @@ function loadAutoBuyerSettings() {
 }
 
 function set_save(id, value) {
-	localStorage.setItem(btoa('dsAM_ghostify_'+id), btoa(JSON.stringify(value, function(k, v) { return (v === Infinity) ? "Infinity" : v; })));
+	localStorage.setItem(btoa('dsAM_'+id), btoa(JSON.stringify(value, function(k, v) { return (v === Infinity) ? "Infinity" : v; })));
 }
 
 function get_save(id) {
     try {
-        var dimensionSave = localStorage.getItem(btoa('dsAM_ghostify_'+id))
+        var dimensionSave = localStorage.getItem(btoa('dsAM_'+id))
         if (dimensionSave !== null) dimensionSave = JSON.parse(atob(dimensionSave, function(k, v) { return (v === Infinity) ? "Infinity" : v; }))
         return dimensionSave
     } catch(e) { }
 }
 
 function initiateMetaSave() {
-	metaSave = localStorage.getItem('AD_aarexModifications_ghostify')
+	metaSave = localStorage.getItem('AD_aarexModifications')
 	if (metaSave == null) metaSave = {presetsOrder:[], version:2}
 	else metaSave = JSON.parse(atob(metaSave))
 	if (metaSave.current == undefined) {
@@ -2493,14 +2447,14 @@ function migrateOldSaves() {
 				for (id=0;id<3;id++) {
 					if (ngSave.saves[id] != null) {
 						metaSave.saveOrder.push(1+id)
-						localStorage.setItem(btoa('dsAM_ghostify_'+(1+id)), btoa(JSON.stringify(ngSave.saves[id], function(k, v) { return (v === Infinity) ? "Infinity" : v; })));
+						localStorage.setItem(btoa('dsAM_'+(1+id)), btoa(JSON.stringify(ngSave.saves[id], function(k, v) { return (v === Infinity) ? "Infinity" : v; })));
 					}
 				}
 				if (!metaSave.newGameMinus) metaSave.current=1+ngSave.currentSave
 			} else {
 				if (!metaSave.newGameMinus) metaSave.current=1
 				metaSave.saveOrder.push(1)
-				localStorage.setItem(btoa('dsAM_ghostify_1'), btoa(JSON.stringify(ngSave, function(k, v) { return (v === Infinity) ? "Infinity" : v; })));
+				localStorage.setItem(btoa('dsAM_1'), btoa(JSON.stringify(ngSave, function(k, v) { return (v === Infinity) ? "Infinity" : v; })));
 			}
 		}
 		localStorage.removeItem('dimensionSave_aarexModifications')
@@ -2511,14 +2465,14 @@ function migrateOldSaves() {
 				for (id=0;id<3;id++) {
 					if (ngmSave.saves[id] != null) {
 						metaSave.saveOrder.push(4+id)
-						localStorage.setItem(btoa('dsAM_ghostify_'+(4+id)), btoa(JSON.stringify(ngmSave.saves[id], function(k, v) { return (v === Infinity) ? "Infinity" : v; })));
+						localStorage.setItem(btoa('dsAM_'+(4+id)), btoa(JSON.stringify(ngmSave.saves[id], function(k, v) { return (v === Infinity) ? "Infinity" : v; })));
 					}
 				}
 				if (metaSave.newGameMinus) metaSave.current=4+ngmSave.currentSave
 			} else {
 				if (metaSave.newGameMinus) metaSave.current=4
 				metaSave.saveOrder.push(4)
-				localStorage.setItem(btoa('dsAM_ghostify_4'), btoa(JSON.stringify(ngmSave, function(k, v) { return (v === Infinity) ? "Infinity" : v; })));
+				localStorage.setItem(btoa('dsAM_4'), btoa(JSON.stringify(ngmSave, function(k, v) { return (v === Infinity) ? "Infinity" : v; })));
 			}
 		}
 		localStorage.removeItem('dimensionSave_NGM')
@@ -2530,7 +2484,7 @@ function migrateOldSaves() {
 			var studyTreePreset=localStorage.getItem("studyTree"+id)
 			if (studyTreePreset !== null) {
 				metaSave.presetsOrder.push(id)
-				localStorage.setItem(btoa("dsAM_ghostify_ST_"+id),btoa(JSON.stringify({preset:studyTreePreset})))
+				localStorage.setItem(btoa("dsAM_ST_"+id),btoa(JSON.stringify({preset:studyTreePreset})))
 				localStorage.removeItem("studyTree"+id)
 			}
 		}
