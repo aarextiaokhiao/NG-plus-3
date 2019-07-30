@@ -1176,6 +1176,31 @@ if (player.version < 5) {
       player.options.animations.ghostify = true
       player.aarexModifications.ghostifyConf = true
   }
+  if (player.aarexModifications.newGamePlusVersion < 2) {
+        if (player.masterystudies!==undefined?!player.quantum.reached&&!player.ghostify.reached:true) {
+            player.money=Decimal.max(player.money,1e25)
+            player.infinitiedBank=nMx(player.infinitiedBank,1e6)
+            var filter=["timeMult","dimMult","timeMult2","unspentBonus","27Mult","18Mult","36Mult","resetMult","passiveGen","45Mult","resetBoost","galaxyBoost"]
+            for (var u=0;u<filter.length;u++) if (!player.infinityUpgrades.includes(filter[u])) player.infinityUpgrades.push(filter[u])
+            if (!player.achievements.includes("r85")) player.infMult=Decimal.times(player.infMult,4)
+            if (!player.achievements.includes("r93")) player.infMult=Decimal.times(player.infMult,4)
+            player.dimensionMultDecrease=2
+            player.tickSpeedMultDecrease=1.65
+            player.eternities=nMx(player.eternities,100)
+            for (var c=2;c<(player.tickspeedBoosts!==undefined?16:player.galacticSacrifice!==undefined?15:13);c++) if (!player.challenges.includes("challenge"+c)) player.challenges.push("challenge"+c)
+            player.replicanti.unl=true
+            player.replicanti.amount=Decimal.max(player.replicanti.amount,1)
+            if (!player.dilation.studies.includes(1)) player.dilation.studies.push(1)
+        }
+        if (!player.achievements.includes("r77")) player.achievements.push("r77")
+        if (!player.achievements.includes("r78")) player.achievements.push("r78")
+        if (!player.achievements.includes("r85")) player.achievements.push("r85")
+        if (!player.achievements.includes("r93")) player.achievements.push("r93")
+        if (!player.achievements.includes("r95")) player.achievements.push("r95")
+        if (!player.achievements.includes("r102")) player.achievements.push("r102")
+        if (!player.achievements.includes("r131")) player.achievements.push("r131")
+        player.aarexModifications.newGamePlusVersion=2
+  }
   if (player.aarexModifications.newGame3PlusVersion < 2.01) player.aarexModifications.newGame3PlusVersion = 2.01
   if (player.masterystudies) {
       if (player.meta.bestOverQuantums === undefined) player.meta.bestOverQuantums = player.meta.bestAntimatter

@@ -338,9 +338,29 @@ function updateNewPlayer(reseted) {
         player.aarexModifications.newGameMinusVersion = 2.2
     }
     if (modesChosen.ngp) {
-        player.achievements.push("r123")
-        for (ec = 1; ec < 13; ec++) player.eternityChalls['eterc' + ec] = 5
-        player.aarexModifications.newGamePlusVersion = 1
+        player.money=new Decimal(1e25)
+        player.infinitiedBank=1e6
+        player.infinityUpgrades=["timeMult", "dimMult", "timeMult2", "unspentBonus", "27Mult", "18Mult", "36Mult", "resetMult", "passiveGen", "45Mult", "resetBoost", "galaxyBoost"]
+        player.infMult=16
+        player.dimensionMultDecrease=2
+        player.tickSpeedMultDecrease=1.65
+        player.eternities=100
+        player.challenges=challengesCompletedOnEternity()
+        player.replicanti.unl=true
+        player.replicanti.amount=new Decimal(1)
+        for (ec=1;ec<13;ec++) player.eternityChalls['eterc'+ec]=5
+        player.eternityChalls.eterc1=1
+        player.eternityChalls.eterc4=1
+        player.eternityChalls.eterc10=1
+        player.dilation.studies=[1]
+        player.achievements.push("r77")
+        player.achievements.push("r78")
+        player.achievements.push("r85")
+        player.achievements.push("r93")
+        player.achievements.push("r95")
+        player.achievements.push("r102")
+        player.achievements.push("r131")
+        player.aarexModifications.newGamePlusVersion=2
     }
     if (modesChosen.ngpp && modesChosen.ngpp != 3) {
         player.aarexModifications.newGamePlusPlusVersion = 2.90142
@@ -2166,10 +2186,7 @@ document.getElementById("postinfi31").onclick = function() {
         player.tickSpeedMultDecrease--;
         if (player.tickSpeedMultDecrease > 2) document.getElementById("postinfi31").innerHTML = "Tickspeed cost multiplier increase <br>"+player.tickSpeedMultDecrease+"x -> "+(player.tickSpeedMultDecrease-1)+"x<br>Cost: "+shortenDimensions(player.tickSpeedMultDecreaseCost) +" IP"
         else {
-            if (player.aarexModifications.newGamePlusVersion&&player.aarexModifications.newGamePlusPlusVersion) {
-                for (c=1;c<6;c++) player.tickSpeedMultDecrease-=0.07
-                $.notify("Your tickspeed cost multiplier increase has been decreased to 1.65x because you are playing NG++ mode.")
-            }
+            for (c=0;c<ECTimesCompleted("eterc11");c++) player.tickSpeedMultDecrease-=0.07
             document.getElementById("postinfi31").innerHTML = "Tickspeed cost multiplier increase<br>"+player.tickSpeedMultDecrease.toFixed(player.tickSpeedMultDecrease<2?2:0)+"x"
         }
     }
@@ -2198,15 +2215,7 @@ document.getElementById("postinfi42").onclick = function() {
         player.dimensionMultDecrease--;
         if (player.dimensionMultDecrease > 3) document.getElementById("postinfi42").innerHTML = "Dimension cost multiplier increase <br>"+player.dimensionMultDecrease+"x -> "+(player.dimensionMultDecrease-1)+"x<br>Cost: "+shortenCosts(player.dimensionMultDecreaseCost) +" IP"
         else {
-            if (player.aarexModifications.newGamePlusVersion) {
-                for (c=0;c<ECTimesCompleted("eterc6");c++) player.dimensionMultDecrease-=0.2
-                if (!player.meta) {
-                    for (c=0;c<ECTimesCompleted("eterc11");c++) player.tickSpeedMultDecrease-=0.07
-                    $.notify("Your tickspeed cost multiplier increase has been decreased to "+player.tickSpeedMultDecrease.toFixed(2)+"x too.")
-                    document.getElementById("postinfi31").innerHTML = "Tickspeed cost multiplier increase<br>"+player.tickSpeedMultDecrease.toFixed(2)+"x"
-                }
-                $.notify("Your dimension cost multiplier increase has been decreased to "+player.dimensionMultDecrease.toFixed(ECTimesCompleted("eterc6")%5>0?1:0)+"x because you are playing NG+ mode.")
-            }
+            for (c=0;c<ECTimesCompleted("eterc6");c++) player.dimensionMultDecrease-=0.2
             document.getElementById("postinfi42").innerHTML = "Dimension cost multiplier increase<br>"+player.dimensionMultDecrease.toFixed(ECTimesCompleted("eterc6")%5>0?1:0)+"x"
         }
     }
@@ -7666,7 +7675,7 @@ function gameLoop(diff) {
                 for (var i=0; temp.gt(i); i++) {
                     if (chance > Math.random()) player.replicanti.amount = player.replicanti.amount.plus(1)
                 }
-            } else if (player.replicanti.amount.eq(getReplicantiLimit())) {
+            } else if (player.replicanti.amount.lt(getReplicantiLimit())) {
                 var temp = Decimal.round(player.replicanti.amount.dividedBy(100))
                 if (Math.round(chance) !== 1) {
                     let counter = 0
