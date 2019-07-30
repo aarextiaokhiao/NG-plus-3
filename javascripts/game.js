@@ -2097,7 +2097,7 @@ function buyMaxEPMult() {
 
 function playerInfinityUpgradesOnEternity() {
 	if (getEternitied() > 19 || player.achievements.includes("ng3p51")) return
-	else if (getEternitied() < 4) {
+	else if (getEternitied() > 3) {
 		var filter = ["timeMult", "dimMult", "timeMult2", "skipReset1", "skipReset2", "unspentBonus", "27Mult", "18Mult", "36Mult", "resetMult", "skipReset3", "passiveGen", "45Mult", "resetBoost", "galaxyBoost", "skipResetGalaxy"]
 		var newUpgrades = []
 		for (u=0;u<player.infinityUpgrades.length;u++) if (filter.includes(player.infinityUpgrades[u])) newUpgrades.push(player.infinityUpgrades[u])
