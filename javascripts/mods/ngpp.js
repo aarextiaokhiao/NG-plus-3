@@ -1190,7 +1190,7 @@ function quantumReset(force, auto, challid, bigRip, implode=false) {
 			player.quantum.challenge=player.quantum.pairedChallenges.order[pc]
 			player.quantum.pairedChallenges.current=pc
 		}
-		if (!(challid && bigRip == player.quantum.bigRip.active) && player.ghostify.milestones > 5) player.quantum.replicants.amount = new Decimal(0)
+		if (!challid && bigRip == player.quantum.bigRip.active && player.ghostify.milestones > 5) player.quantum.replicants.amount = new Decimal(0)
 		player.quantum.replicants.requirement = new Decimal("1e3000000")
 		player.quantum.replicants.quarks = new Decimal(0)
 		player.quantum.replicants.eggonProgress = new Decimal(0)

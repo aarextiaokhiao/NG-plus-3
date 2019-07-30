@@ -233,7 +233,7 @@ function canBuyMasteryStudy(type, id) {
 		if (id>10) return player.masterystudies.includes("t351")&&(ghostified||eds[1].workers.gt(9.9))
 		if (id>9) return player.masterystudies.includes("t302")&&(ghostified||player.quantum.pairedChallenges.completed>3)
 		if (id>8) return player.masterystudies.includes("d8")&&(ghostified||QCIntensity(8))
-		if (id>7) return player.masterystudies.includes("t272")&&(ghostified||player.quantum.electrons.amount.gte(16750))
+		if (id>7) return player.masterystudies.includes("t272")&&(ghostified||player.quantum.electrons.amount>16750)
 		if (id>6) return player.masterystudies.includes("t252")
 	} else {
 		if (player.timestudy.theorem<masterystudies.costs.ec[id]||player.eternityChallUnlocked) return false
@@ -3901,6 +3901,7 @@ function toggleAutoGhost(id) {
 }
 
 function isAutoGhostActive(id) {
+	if (!ghostified) return
 	return player.ghostify.automatorGhosts[id].on
 }
 

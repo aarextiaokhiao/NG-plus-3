@@ -652,7 +652,7 @@ if (player.version < 5) {
           }
           player.aarexModifications.newGamePlusVersion = 1
           if (confirm("Do you want to migrate your NG++ save into new NG+++ mode?")) {
-              player.aarexModifications.newGame3PlusVersion = 2
+              player.aarexModifications.newGame3PlusVersion = 2.01
               player.respecMastery=false
               player.dbPower = 1
               player.dilation.times = 0
@@ -1175,8 +1175,8 @@ if (player.version < 5) {
       }
       player.options.animations.ghostify = true
       player.aarexModifications.ghostifyConf = true
-      player.aarexModifications.newGame3PlusVersion = 2
   }
+  if (player.aarexModifications.newGame3PlusVersion < 2.01) player.aarexModifications.newGame3PlusVersion = 2.01
   if (player.masterystudies) {
       if (player.meta.bestOverQuantums === undefined) player.meta.bestOverQuantums = player.meta.bestAntimatter
       document.getElementById('prioritydil').value=player.eternityBuyer.dilationPerAmount
