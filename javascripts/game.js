@@ -7136,7 +7136,7 @@ setInterval(function() {
             player.quantum.reached = true
             if (document.getElementById("welcome").style.display != "flex") document.getElementById("welcome").style.display = "flex"
             else player.aarexModifications.popUpId = ""
-            document.getElementById("welcomeMessage").innerHTML = "Congratulations! You reached 9.32e446 MA and then completed EC14 for the first time! You unlocked the fifth layer called Quantum! It comes after Dimension Boost, Antimatter Galaxy, Big Church, and Eternity. This allows you to get gigantic numbers!"
+            document.getElementById("welcomeMessage").innerHTML = "Congratulations! You reached 9.32e446 MA and then completed EC14 for the first time! You unlocked the fifth layer called Quantum! It comes after Dimension Boost, Antimatter Galaxy, Big Crunch, and Eternity. This allows you to get gigantic numbers!"
         }
         if (player.quantum.autoECN!==undefined) {
             justImported=true
