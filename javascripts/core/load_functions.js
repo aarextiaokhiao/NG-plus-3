@@ -2382,6 +2382,7 @@ function transformSaveToDecimal() {
       player.ghostify.neutrinos.electron = new Decimal(player.ghostify.neutrinos.electron)
       player.ghostify.neutrinos.mu = new Decimal(player.ghostify.neutrinos.mu)
       player.ghostify.neutrinos.tau = new Decimal(player.ghostify.neutrinos.tau)
+      if (player.ghostify.automatorGhosts!==undefined) player.ghostify.automatorGhosts[15].a=new Decimal(player.ghostify.automatorGhosts[15].a)
   }
 }
 

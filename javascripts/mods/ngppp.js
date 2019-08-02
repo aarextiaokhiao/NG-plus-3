@@ -3873,6 +3873,7 @@ function setupAutomaticGhostsData() {
 	data[11].pw = 1
 	data[11].lw = 1
 	data[11].cw = 1
+	data[15].a = 1
 	return data
 }
 
