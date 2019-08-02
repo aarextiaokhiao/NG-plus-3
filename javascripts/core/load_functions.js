@@ -652,7 +652,7 @@ if (player.version < 5) {
           }
           player.aarexModifications.newGamePlusVersion = 1
           if (confirm("Do you want to migrate your NG++ save into new NG+++ mode?")) {
-              player.aarexModifications.newGame3PlusVersion = 2.02
+              player.aarexModifications.newGame3PlusVersion = 2.03
               player.respecMastery=false
               player.dbPower = 1
               player.dilation.times = 0
@@ -1201,7 +1201,7 @@ if (player.version < 5) {
         if (!player.achievements.includes("r131")) player.achievements.push("r131")
         player.aarexModifications.newGamePlusVersion=2
   }
-  if (player.aarexModifications.newGame3PlusVersion < 2.02) player.aarexModifications.newGame3PlusVersion = 2.02
+  if (player.aarexModifications.newGame3PlusVersion < 2.03) player.aarexModifications.newGame3PlusVersion = 2.03
   if (player.masterystudies) {
       if (player.meta.bestOverQuantums === undefined) player.meta.bestOverQuantums = player.meta.bestAntimatter
       document.getElementById('prioritydil').value=player.eternityBuyer.dilationPerAmount
@@ -1748,7 +1748,7 @@ if (player.version < 5) {
       updateMasteryStudyCosts()
       updateMasteryStudyButtons()
       if (quantumed) giveAchievement("Sub-atomic")
-      if (player.quantum.best<=1) giveAchievement("Quantum doesn't take so long")
+      if (player.quantum.best<=10) giveAchievement("Quantum doesn't take so long")
       if (ghostified) giveAchievement("Kee-hee-hee!")
       document.getElementById('reward3disable').textContent="6 hours reward: O"+(player.quantum.disabledRewards[3]?"FF":"N")
       document.getElementById('reward4disable').textContent="4.5 hours reward: O"+(player.quantum.disabledRewards[4]?"FF":"N")

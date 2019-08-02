@@ -483,7 +483,10 @@ function getMTSMult(id, modifier) {
 		if (ret>100) ret=Math.sqrt(ret*100)
 		return ret
 	}
-	if (id==431) return Math.pow(Math.max(player.dilation.freeGalaxies/1e4-.5,1),2)
+	if (id==431) {
+		let x=player.dilation.freeGalaxies
+		return Decimal.pow(Math.max(x/1e4,1),Math.max(x/1e4+Math.log10(x)/2,1))
+	}
 }
 
 //v1.3
@@ -640,7 +643,7 @@ function updateQuantumTabs() {
 		document.getElementById("nanofieldreward7").textContent = "Remote galaxy cost scaling starts " + getFullExpansion(getNanofieldRewardEffect(7)) + " later and the production of preon charge is " + shortenMoney(getNanofieldRewardEffect("7g")) + "x faster."
 		document.getElementById("nanofieldreward8").textContent = "Add " + getNanofieldRewardEffect(8).toFixed(2) + "x to multiplier per ten dimensions before getting affected by electrons and the production of preon energy is " + shortenMoney(getNanofieldRewardEffect("8c")) + "x faster."
 
-		document.getElementById("ns").textContent = "Nanofield speed multiplier is currently "+shorten(tmp.ns)+"x."
+		document.getElementById("ns").textContent = ghostified || nanospeed !== 1 ? "Nanofield speed multiplier is currently "+shorten(tmp.ns)+"x." : ""
 	}
 	if (document.getElementById("tod").style.display == "block") {
 		var branchNum=0
@@ -672,6 +675,7 @@ function updateQuantumTabs() {
 			document.getElementById("treeupg"+u).className="gluonupgrade "+(canBuyTreeUpg(u)?shorthands[getTreeUpgradeLevel(u)%3]:"unavailablebtn")
 			document.getElementById("treeupg"+u+"current").textContent=getTreeUpgradeEffectDesc(u)
 		}
+		document.getElementById("todspeed").textContent = todspeed !== 1 ? "ToD speed multiplier is currently "+shorten(todspeed)+"x." : ""
 	}
 }
 
@@ -1902,7 +1906,7 @@ function unstableQuarks(branch) {
 	if (player.quantum.usedQuarks[branch].eq(0)) return
 	player.quantum.tod[branch].quarks=player.quantum.tod[branch].quarks.max(getUnstableGain(branch))
 	player.quantum.tod[branch].gainDiv=player.quantum.usedQuarks[branch].max(player.quantum.tod[branch].gainDiv)
-	player.quantum.usedQuarks[branch]=new Decimal(0)
+	if (player.ghostify.milestones<4) player.quantum.usedQuarks[branch]=new Decimal(0)
 	updateColorCharge()
 	updateQuantumWorth()
 }
@@ -1920,12 +1924,15 @@ function getDecayRate(branch) {
 	}
 	ret = ret.times(getTreeUpgradeEffect(3))
 	ret = ret.times(getTreeUpgradeEffect(5))
+	if (player.masterystudies.includes("t431")) ret = ret.times(getMTSMult(431))
 	if (hasNU(4)) ret = ret.times(tmp.nu[2])
+	if (player.quantum.bigRip.active) if (hasNU(12)) ret = ret.div(player.galaxies*0.035+1)
 	return ret.min(Math.pow(2,40)).times(todspeed)
 }
 
 function getQuarkSpinProduction(branch) {
 	let ret = Decimal.pow(2,getBranchUpgLevel(branch,1)*(1+getRadioactiveDecays(branch)/10)).times(getTreeUpgradeEffect(3)).times(getTreeUpgradeEffect(5))
+	if (player.masterystudies.includes("t431")) ret = ret.times(getMTSMult(431))
 	if (hasNU(4)) ret = ret.times(tmp.nu[2].pow(2))
 	ret = ret.times(todspeed)
 	return ret
@@ -2132,7 +2139,7 @@ function unstableAll() {
 		if (player.quantum.usedQuarks[colors[c]].gt(0)) {
 			bData.quarks=bData.quarks.max(getUnstableGain(colors[c]))
 			bData.gainDiv=player.quantum.usedQuarks[colors[c]].max(bData.gainDiv)
-			player.quantum.usedQuarks[colors[c]]=new Decimal(0)
+			if (player.ghostify.milestones<4) player.quantum.usedQuarks[colors[c]]=new Decimal(0)
 		}
 	}
 	updateColorCharge()
@@ -3837,7 +3844,7 @@ function buyGHPMult() {
 	let generations=["electron","mu","tau"]
 	for (g=0;g<3;g++) player.ghostify.neutrinos[generations[g]]=player.ghostify.neutrinos[generations[g]].sub(cost.times(player.ghostify.neutrinos[generations[g]]).div(sum)).round()
 	player.ghostify.multPower++
-	player.ghostify.automatorGhosts[15].a=player.ghostify.automatorGhosts[15].a.timos(5)
+	player.ghostify.automatorGhosts[15].a=player.ghostify.automatorGhosts[15].a.times(5)
 	document.getElementById("autoGhost15a").value=formatValue("Scientific", player.ghostify.automatorGhosts[15].a, 2, 1)
 	document.getElementById("ghpMult").textContent=shortenDimensions(Decimal.pow(2,player.ghostify.multPower-1))
 	document.getElementById("ghpMultUpgCost").textContent=shortenDimensions(Decimal.pow(25,player.ghostify.multPower-1).times(25e8))
@@ -3852,7 +3859,7 @@ function maxGHPMult() {
 	let generations=["electron","mu","tau"]
 	for (g=0;g<3;g++) player.ghostify.neutrinos[generations[g]]=player.ghostify.neutrinos[generations[g]].sub(toSpend.times(player.ghostify.neutrinos[generations[g]]).div(sum).min(player.ghostify.neutrinos[generations[g]])).round()
 	player.ghostify.multPower+=toBuy
-	player.ghostify.automatorGhosts[15].a=player.ghostify.automatorGhosts[15].a.timos(Decimal.pow(5,toBuy))
+	player.ghostify.automatorGhosts[15].a=player.ghostify.automatorGhosts[15].a.times(Decimal.pow(5,toBuy))
 	document.getElementById("autoGhost15a").value=formatValue("Scientific", player.ghostify.automatorGhosts[15].a, 2, 1)
 	document.getElementById("ghpMult").textContent=shortenDimensions(Decimal.pow(2,player.ghostify.multPower-1))
 	document.getElementById("ghpMultUpgCost").textContent=shortenDimensions(Decimal.pow(25,player.ghostify.multPower-1).times(25e8))

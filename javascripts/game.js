@@ -413,7 +413,7 @@ function updateNewPlayer(reseted) {
         player.options.gSacrificeConfirmation = true
     }
     if (modesChosen.ngpp === 2 || modesChosen.ngpp === 4) {
-        player.aarexModifications.newGame3PlusVersion = 2.02
+        player.aarexModifications.newGame3PlusVersion = 2.03
         player.respecMastery=false
         player.dbPower = 1
         player.dilation.times = 0
@@ -3287,10 +3287,6 @@ function showNextModeMessage() {
 		document.getElementById("welcome").style.display = "flex"
 		document.getElementById("welcomeMessage").innerHTML = ngModeMessages[ngModeMessages.length-1]
 		ngModeMessages.pop()
-	} else if (player.aarexModifications.popUpId!=="NG+3's 1st anniversary") {
-		document.getElementById("welcome").style.display = "flex"
-		document.getElementById("welcomeMessage").innerHTML = "Happy 1st anniversary to NG+3! "+(player.masterystudies!==undefined?"During this day, the Ghostify update is finally released! Thank you for playing! ~ The developer of NG+3":"If you didn't play NG+3, then go to Options, click 'Load' button, click 'NG++' mode twice, and then click 'New Save'.")
-		player.aarexModifications.popUpId="NG+3's 1st anniversary"
 	} else document.getElementById("welcome").style.display = "none"
 }
 
@@ -6760,6 +6756,7 @@ function setAndMaybeShow(elementName, condition, contents) {
 }
 
 setInterval(function() {
+    updateTemp()
     if (getDimensionFinalMultiplier(1).gte(new Decimal("1e308")) &&
         getDimensionFinalMultiplier(2).gte(new Decimal("1e308")) &&
         getDimensionFinalMultiplier(3).gte(new Decimal("1e308")) &&
@@ -7177,7 +7174,7 @@ setInterval(function() {
             updateBreakEternity()
         }
         if (player.ghostify.milestones>notifyId2) {
-            $.notify("You became a ghost in at most "+getFullExpansion(tmp.bm[notifyId2])+" quantumed stat! "+(["You now start with all Speedrun Milestones and all "+shorten(Number.MAX_VALUE)+" QK features unlocked, all Paired Challenges completed, all Big Rip upgrades bought, Nanofield is 2x faster until you reach 16 rewards, and you get quarks based on your best MA this quantum", "For now on, colored quarks do not cancel, you keep your gluon upgrades, and you can quick Big Rip", "You now keep your Electron upgrades", "For now on, Quantuming doesn't reset your Tachyon particles unless you are in a QC and you start with 5 of 1st upgrades of each Branch", "For now on, Quantuming doesn't reset your Meta-Dimension Boosts unless you are in a QC or you are going to undo Big Rip", "For now on, Quantuming doesn't reset your normal replicants unless you are in a QC or you are going to undo Big Rip", "You now start with 10 worker replicants and Ghostifying now doesn't reset Neutrinos.", "You are now gaining ^0.5 amount of quarks, ^0.5 amount of gluons, and 1% of Space Shards you will gain per second.", "You now start with 10 of Second Emperor Dimensions", "You now start with 10 of Fourth Emperor Dimensions", "You now start with 10 of Sixth Emperor Dimensions", "You now start with 10 of Eighth Emperor Dimensions", "You now start with first 16 Nanofield rewards", "You now start with "+shortenCosts(1e25)+" quark spins", "You now start with Break Eternity unlocked and all Break Eternity upgrades bought", "You unlocked 'I rather oppose the theory of everything' achievement"])[notifyId2]+".","success")
+            $.notify("You became a ghost in at most "+getFullExpansion(tmp.bm[notifyId2])+" quantumed stat! "+(["You now start with all Speedrun Milestones and all "+shorten(Number.MAX_VALUE)+" QK features unlocked, all Paired Challenges completed, all Big Rip upgrades bought, Nanofield is 2x faster until you reach 16 rewards, and you get quarks based on your best MA this quantum", "For now on, colored quarks do not cancel, you keep your gluon upgrades, and you can quick Big Rip", "You now keep your Electron upgrades", "For now on, Quantuming doesn't reset your Tachyon particles unless you are in a QC, unstabilizing quarks doesn't lose your colored quarks, and you start with 5 of 1st upgrades of each Branch", "For now on, Quantuming doesn't reset your Meta-Dimension Boosts unless you are in a QC or you are going to undo Big Rip", "For now on, Quantuming doesn't reset your normal replicants unless you are in a QC or you are going to undo Big Rip", "You now start with 10 worker replicants and Ghostifying now doesn't reset Neutrinos.", "You are now gaining ^0.5 amount of quarks, ^0.5 amount of gluons, and 1% of Space Shards you will gain per second.", "You now start with 10 of Second Emperor Dimensions", "You now start with 10 of Fourth Emperor Dimensions", "You now start with 10 of Sixth Emperor Dimensions", "You now start with 10 of Eighth Emperor Dimensions", "You now start with first 16 Nanofield rewards", "You now start with "+shortenCosts(1e25)+" quark spins", "You now start with Break Eternity unlocked and all Break Eternity upgrades bought", "You unlocked 'I rather oppose the theory of everything' achievement"])[notifyId2]+".","success")
             notifyId2++
         }
         if (player.quantum.autoOptions.assignQK && player.ghostify.milestones > 7) assignAll() 

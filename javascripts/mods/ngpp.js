@@ -706,7 +706,7 @@ function quantumReset(force, auto, challid, bigRip, implode=false) {
 				}
 				document.getElementById("metaMaxAllDiv").style.display=removeMaxAll?"none":""
 			}
-			if (player.quantum.best<=1) giveAchievement("Quantum doesn't take so long")
+			if (player.quantum.best<=10) giveAchievement("Quantum doesn't take so long")
 		}
 		player.quantum.times++
 		if (!inQC(6)) {

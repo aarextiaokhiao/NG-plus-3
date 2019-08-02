@@ -2715,7 +2715,7 @@
                         <td><div id="braveMilestone1" class="achievement achievementlocked"></div></td>
                         <td><div id="braveMilestone2" class="achievement achievementlocked" ach-tooltip="Reward: Colored quarks do not cancel, you keep your gluon upgrades, and you can quick Big Rip."></div></td>
                         <td><div id="braveMilestone3" class="achievement achievementlocked" ach-tooltip="Reward: You keep your Electron upgrades."></div></td>
-                        <td><div id="braveMilestone4" class="achievement achievementlocked" ach-tooltip="Reward: Quantuming doesn't reset your Tachyon particles unless you are in a QC and you start with 5 of 1st upgrades of each Branch."></div></td>
+                        <td><div id="braveMilestone4" class="achievement achievementlocked" ach-tooltip="Reward: Quantuming doesn't reset your Tachyon particles unless you are in a QC, unstabilizing quarks doesn't lose your colored quarks, and you start with 5 of 1st upgrades of each Branch."></div></td>
                         <td><div id="braveMilestone5" class="achievement achievementlocked" ach-tooltip="Reward: Quantuming doesn't reset your Meta-Dimension Boosts unless you are in a QC or you are going to undo Big Rip."></div></td>
                         <td><div id="braveMilestone6" class="achievement achievementlocked" ach-tooltip="Reward: Quantuming doesn't reset your normal replicants unless you are in a QC or you are going to undo Big Rip."></div></td>
                         <td><div id="braveMilestone7" class="achievement achievementlocked" ach-tooltip="Reward: Start Ghostifies with 10 worker replicants and Ghostifying doesn't reset Neutrinos."></div></td>
@@ -4635,6 +4635,7 @@
 				<br><br>
 			</div>
 			<div class='quantumtab' id='tod'>
+				<span id="todspeed"></span>
 				<table class="qtable"><tr id="todRow"></tr></table>
 				<button class="storebtn" onclick="unstableAll()" style="width: 210px">Gain all unstable quarks</button>
 				<table class="table" align="center" style="margin: auto">
@@ -4731,7 +4732,7 @@
 					<tr>
 						<td><button class="gluonupgrade unavailablebtn" id="neutrinoUpg10" onclick="buyNeutrinoUpg(10)">Banked eternities are counted in Big Rips.<br>Cost: <span id="neutrinoUpg10Cost"></span> of any neutrinos</button></td>
 						<td><button class="gluonupgrade unavailablebtn" id="neutrinoUpg11" onclick="buyNeutrinoUpg(11)">8th Big Rip upgrade is never repealed and capped.<br>Cost: <span id="neutrinoUpg11Cost"></span> of any neutrinos</button></td>
-						<td><button class="gluonupgrade unavailablebtn" id="neutrinoUpg12" onclick="buyNeutrinoUpg(12)" style="font-size: 10px">In Big Rips, each replicated galaxy boosts EC14 reward by 0.033x^0.5+1 and each free galaxy boosts IC3 reward by 0.33%.<br>Cost: <span id="neutrinoUpg12Cost"></span> of any neutrinos</button></td>
+						<td><button class="gluonupgrade unavailablebtn" id="neutrinoUpg12" onclick="buyNeutrinoUpg(12)" style="font-size: 9px">In Big Rips, each normal galaxy slows down unstable quarks decay by 0.35%, each replicated galaxy boosts EC14 reward by 0.035x^0.5+1, and each free galaxy boosts IC3 reward by 0.35%.<br>Cost: <span id="neutrinoUpg12Cost"></span> of any neutrinos</button></td>
 					</tr>
 				</table>
 			</div>
