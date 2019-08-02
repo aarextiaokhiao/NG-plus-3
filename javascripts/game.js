@@ -413,7 +413,7 @@ function updateNewPlayer(reseted) {
         player.options.gSacrificeConfirmation = true
     }
     if (modesChosen.ngpp === 2 || modesChosen.ngpp === 4) {
-        player.aarexModifications.newGame3PlusVersion = 2.01
+        player.aarexModifications.newGame3PlusVersion = 2.02
         player.respecMastery=false
         player.dbPower = 1
         player.dilation.times = 0
@@ -2502,19 +2502,19 @@ function autoBuyRG() {
 
 function updateExtraReplGalaxies() {
 	let ts225Eff = 0
-    let ts226Eff = 0
-	let speed = 4*getQCReward(8)
-    if (player.timestudy.studies.includes(225)) {
-        ts225Eff = Math.floor(player.replicanti.amount.e / 1e3)
-        if (ts225Eff > 99) ts225Eff = Math.floor(Math.sqrt(0.25 + (ts225Eff - 99) * speed) + 98.5)
-    }
-    if (player.timestudy.studies.includes(226)) {
-        ts226Eff = Math.floor(player.replicanti.gal / 15)
-        if (ts226Eff > 99) ts226Eff = Math.floor(Math.sqrt(0.25 + (ts226Eff - 99) * speed) + 98.5)
-    }
-    extraReplGalaxies = ts225Eff + ts226Eff
-    if (extraReplGalaxies > 325) extraReplGalaxies = (Math.sqrt(0.9216+0.16*(extraReplGalaxies-324))-0.96)/0.08+324
-    extraReplGalaxies = Math.floor(extraReplGalaxies * (colorBoosts.g + gatheredQuarksBoost))
+	let ts226Eff = 0
+	let speed = getQCReward(8) * 2
+	if (player.timestudy.studies.includes(225)) {
+		ts225Eff = Math.floor(player.replicanti.amount.e / 1e3)
+		if (ts225Eff > 99) ts225Eff = Math.floor(Math.sqrt(0.25 + (ts225Eff - 99) * speed) + 98.5)
+	}
+	if (player.timestudy.studies.includes(226)) {
+		ts226Eff = Math.floor(player.replicanti.gal / 15)
+		if (ts226Eff > 99) ts226Eff = Math.floor(Math.sqrt(0.25 + (ts226Eff - 99) * speed) + 98.5)
+	}
+	extraReplGalaxies = ts225Eff + ts226Eff
+	if (extraReplGalaxies > 325) extraReplGalaxies = (Math.sqrt(0.9216+0.16*(extraReplGalaxies-324))-0.96)/0.08+324
+	extraReplGalaxies = Math.floor(extraReplGalaxies * (colorBoosts.g + gatheredQuarksBoost))
 }
 
 function updateMilestones() {
@@ -5144,7 +5144,7 @@ function eternity(force, auto, presetLoad, dilated) {
         if (player.dilation.active && (!force || player.infinityPoints.gte(Number.MAX_VALUE))) {
             var gain=getDilGain()
             if (player.dilation.totalTachyonParticles.lt(gain)) {
-                if (gain.div(player.dilation.totalTachyonParticles).lt(2)) player.eternityBuyer.slowStopped=true
+                if (player.dilation.totalTachyonParticles.gt(0)&&gain.div(player.dilation.totalTachyonParticles).lt(2)) player.eternityBuyer.slowStopped=true
                 player.dilation.totalTachyonParticles=gain
                 player.dilation.tachyonParticles=player.dilation.totalTachyonParticles
                 if (player.masterystudies) {
@@ -5419,7 +5419,7 @@ function eternity(force, auto, presetLoad, dilated) {
                 if (dilated&&dilActive) {
                     if (pData.selected>-1) {
                         pData.reselect=pData.selected
-                        document.getElementById("apselected"+pData.selected).textContent=""
+                        if (apLoaded&&loadedAPs>pData.selected) document.getElementById("apselected"+pData.selected).textContent=""
                     }
                     pData.selected="dil"
                     document.getElementById("apDilSelected").textContent=">>"
@@ -5428,7 +5428,7 @@ function eternity(force, auto, presetLoad, dilated) {
                 } else if (player.masterystudies.includes("t291")&&player.eternityPoints.log10()>=oldEP.log10()*1.01&&!dilated2&&grindActive) {
                     if (pData.selected>-1) {
                         pData.reselect=pData.selected
-                        document.getElementById("apselected"+pData.selected).textContent=""
+                        if (apLoaded&&loadedAPs>pData.selected) document.getElementById("apselected"+pData.selected).textContent=""
                     }
                     pData.selected="grind"
                     document.getElementById("apGrindSelected").textContent=">>"
@@ -5441,25 +5441,25 @@ function eternity(force, auto, presetLoad, dilated) {
                         presetLoad=pData[pData.order[pData.selected]].preset
                         document.getElementById("apDilSelected").textContent=""
                         document.getElementById("apGrindSelected").textContent=""
-                        document.getElementById("apselected"+pData.selected).textContent=">>"
+                        if (apLoaded&&loadedAPs>pData.selected) document.getElementById("apselected"+pData.selected).textContent=">>"
                         delete pData.reselect
                     }
                     if (pData.selectNext>-1&&((pData.selected<0&&pData.order.length)||pData.reselect!==undefined||pData.order.length>1)) {
                         pData.left--
                         if (pData.left<1) {
-                            if (pData.selected>-1) document.getElementById("apselected"+pData.selected).textContent=""
+                            if (apLoaded&&loadedAPs>pData.selected&&pData.selected>-1) document.getElementById("apselected"+pData.selected).textContent=""
                             pData.selected=pData.selectNext
                             for (var p=1;p<pData.order.length;p++) {
                                 if (pData[pData.order[(pData.selectNext+p)%pData.order.length]].on) {
                                     pData.selectNext=(pData.selectNext+p)%pData.order.length
-                                    document.getElementById("apselected"+pData.selectNext).textContent=">"
+                                    if (apLoaded&&loadedAPs>pData.selectNext) document.getElementById("apselected"+pData.selectNext).textContent=">"
                                     break
                                 } else if (p==pData.order.length-1) pData.selectNext=-1
                             }
                             pData.left=pData[pData.order[pData.selected]].length
                             forceRespec=true
                             presetLoad=pData[pData.order[pData.selected]].preset
-                            document.getElementById("apselected"+pData.selected).textContent=">>"
+                            if (apLoaded&&loadedAPs>pData.selected) document.getElementById("apselected"+pData.selected).textContent=">>"
                         }
                         document.getElementById("eternitiesLeft").textContent=getFullExpansion(pData.left)
                     }
@@ -7243,8 +7243,7 @@ function gameLoop(diff) {
     updateTemp()
     if (diff > player.autoTime && !player.break) player.infinityPoints = player.infinityPoints.plus(player.autoIP.times(diff/player.autoTime))
     player.matter = player.matter.times(Decimal.pow((1.03 + player.resets/200 + player.galaxies/100), diff));
-    if (player.matter.gt(player.money) && (player.currentChallenge == "challenge12" || player.currentChallenge == "postc1")) quickReset()
-    else if (player.matter.pow(20).gt(player.money) && (player.currentChallenge == "postc7" || inQC(6))) {
+    if (player.matter.pow(20).gt(player.money) && (player.currentChallenge == "postc7" || (inQC(6) && !player.achievements.includes("ng3p34")))) {
         if (player.masterystudies !== undefined ? player.quantum.bigRip.active && reachedInfinity() : false) {}
         else if (inQC(6)) {
             document.getElementById("challfail").style.display = "block"
@@ -7254,7 +7253,7 @@ function gameLoop(diff) {
             if (failureCount > 9) giveAchievement("You're a failure")
             if (player.quantum.bigRip.times == 1 && player.ghostify.neutrinos.upgrades.length > 8) giveAchievement("Really?")
         } else quickReset()
-    }
+    } else if (player.matter.gt(player.money) && (player.currentChallenge == "challenge12" || player.currentChallenge == "postc1")) quickReset()
 
     if (player.currentChallenge == "postc8" || inQC(6)) player.postC8Mult = player.postC8Mult.times(Math.pow(0.000000046416, diff))
 
@@ -7646,7 +7645,6 @@ function gameLoop(diff) {
     let ts273Mult = getMTSMult(273)
     let chance = Decimal.pow(player.replicanti.chance, ts273Mult.toNumber())
     let speeds = getReplSpeed()
-    if (chance.lt(1)) chance = new Decimal(player.replicanti.chance)
     let frequency = 0
     if (chance.gte("1e9999998")) frequency = ts273Mult.times(Math.log10(player.replicanti.chance)/Math.log10(2))
     let interval = player.replicanti.interval
@@ -7768,7 +7766,7 @@ function gameLoop(diff) {
         document.getElementById("eternitybtnPeak").textContent = (showEPmin
         ? "Peaked at "+(EPminpeakType == "normal" ? shortenDimensions(EPminpeak) : shorten(EPminpeak))+EPminpeakUnits : "")
     }
-    document.getElementById("quantumbtnFlavor").textContent = ((player.quantum!==undefined?!player.quantum.times&&!player.ghostify.milestones:false)||!inQC(0)?((player.masterystudies !== undefined ? player.quantum.bigRip.active : false)?"I am":inQC(0)?"My computer is":player.quantum.challenge.length>1?"Paired challenge is":"My challenging skills are")+" not powerful enough... ":"") + "I need to go quantum."
+    document.getElementById("quantumbtnFlavor").textContent = ((player.quantum!==undefined?!player.quantum.times&&(player.ghostify!==undefined?!player.ghostify.milestones:true):false)||!inQC(0)?((player.masterystudies !== undefined ? player.quantum.bigRip.active : false)?"I am":inQC(0)?"My computer is":player.quantum.challenge.length>1?"Paired challenge is":"My challenging skills are")+" not powerful enough... ":"") + "I need to go quantum."
     var showGain = quantumed && (inQC(0)||player.options.theme=="Aarex's Modifications") ? "QK" : ""
     if (player.masterystudies !== undefined) if (player.quantum.bigRip.active) showGain = "SS"
     document.getElementById("quantumbtnQKGain").textContent = showGain == "QK" ? "Gain "+shortenDimensions(quarkGain())+" quark"+(quarkGain().eq(1)?".":"s.") : ""

@@ -652,7 +652,7 @@ if (player.version < 5) {
           }
           player.aarexModifications.newGamePlusVersion = 1
           if (confirm("Do you want to migrate your NG++ save into new NG+++ mode?")) {
-              player.aarexModifications.newGame3PlusVersion = 2.01
+              player.aarexModifications.newGame3PlusVersion = 2.02
               player.respecMastery=false
               player.dbPower = 1
               player.dilation.times = 0
@@ -1201,7 +1201,7 @@ if (player.version < 5) {
         if (!player.achievements.includes("r131")) player.achievements.push("r131")
         player.aarexModifications.newGamePlusVersion=2
   }
-  if (player.aarexModifications.newGame3PlusVersion < 2.01) player.aarexModifications.newGame3PlusVersion = 2.01
+  if (player.aarexModifications.newGame3PlusVersion < 2.02) player.aarexModifications.newGame3PlusVersion = 2.02
   if (player.masterystudies) {
       if (player.meta.bestOverQuantums === undefined) player.meta.bestOverQuantums = player.meta.bestAntimatter
       document.getElementById('prioritydil').value=player.eternityBuyer.dilationPerAmount
@@ -1838,6 +1838,7 @@ if (player.version < 5) {
   document.getElementById("timestudy361").style.display=!player.masterystudies?"none":player.masterystudies.includes("d11")||ghostified?"":"none"
   document.getElementById("timestudy362").style.display=!player.masterystudies?"none":player.masterystudies.includes("d11")||ghostified?"":"none"
   document.getElementById("nfstudies").style.display=!player.masterystudies?"none":player.masterystudies.includes("d12")||ghostified?"":"none"
+  document.getElementById("todstudies").style.display=!player.masterystudies?"none":player.masterystudies.includes("d13")||ghostified?"":"none"
   document.getElementById("quarksAnimBtn").style.display=quantumed&&player.masterystudies?"inline-block":"none"
   document.getElementById("quarksAnimBtn").textContent="Quarks: O"+(player.options.animations.quarks?"N":"FF")
   document.getElementById('dilationmode').style.display=speedrunMilestonesReached>4?"":"none"

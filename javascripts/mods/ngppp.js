@@ -1,12 +1,12 @@
-masterystudies={initialCosts:{time:{241: 1e71, 251: 2e71, 252: 2e71, 253: 2e71, 261: 5e71, 262: 5e71, 263: 5e71, 264: 5e71, 265: 5e71, 266: 5e71, 271: 2.7434842249657063e76, 272: 2.7434842249657063e76, 273: 2.7434842249657063e76, 281: 6.858710562414266e76, 282: 6.858710562414266e76, 291: 2.143347050754458e77, 292: 2.143347050754458e77, 301: 8.573388203017832e77, 302: 2.6791838134430725e78, 303: 8.573388203017832e77, 311: 8.573388203017832e77, 312: 8.573388203017832e77, 321: 2.6791838134430727e76, 322: 9.324815538194444e77, 323: 2.6791838134430727e76, 331: 1.0172526041666666e79, 332: 1.0172526041666666e79, 341: 9.5367431640625e78, 342: 1.0172526041666666e79, 343: 1.0172526041666666e79, 344: 9.5367431640625e78, 351: 2.1192762586805557e79, 361: 1.5894571940104167e79, 362: 1.5894571940104167e79, 371: 2.1192762586805557e79, 372: 6.622738308376736e79, 373: 2.1192762586805557e79, 381: 6.622738308376736e79, 382: 6.622738308376736e79, 383: 6.622738308376736e79, 391: 8.27842288547092e79, 392: 8.27842288547092e79, 393: 8.27842288547092e79, 401: 4.967053731282552e80, 402: 8.278422885470921e80, 411: 1.3245476616753473e61, 412: 1.655684577094184e61, 421: 1.9868214925130208e62},
+masterystudies={initialCosts:{time:{241: 1e71, 251: 2e71, 252: 2e71, 253: 2e71, 261: 5e71, 262: 5e71, 263: 5e71, 264: 5e71, 265: 5e71, 266: 5e71, 271: 2.7434842249657063e76, 272: 2.7434842249657063e76, 273: 2.7434842249657063e76, 281: 6.858710562414266e76, 282: 6.858710562414266e76, 291: 2.143347050754458e77, 292: 2.143347050754458e77, 301: 8.573388203017832e77, 302: 2.6791838134430725e78, 303: 8.573388203017832e77, 311: 8.573388203017832e77, 312: 8.573388203017832e77, 321: 2.6791838134430727e76, 322: 9.324815538194444e77, 323: 2.6791838134430727e76, 331: 1.0172526041666666e79, 332: 1.0172526041666666e79, 341: 9.5367431640625e78, 342: 1.0172526041666666e79, 343: 1.0172526041666666e79, 344: 9.5367431640625e78, 351: 2.1192762586805557e79, 361: 1.5894571940104167e79, 362: 1.5894571940104167e79, 371: 2.1192762586805557e79, 372: 6.622738308376736e79, 373: 2.1192762586805557e79, 381: 6.622738308376736e79, 382: 6.622738308376736e79, 383: 6.622738308376736e79, 391: 8.27842288547092e79, 392: 8.27842288547092e79, 393: 8.27842288547092e79, 401: 4.967053731282552e80, 402: 8.278422885470921e80, 411: 1.3245476616753473e61, 412: 1.655684577094184e61, 421: 1.9868214925130208e62, 431: 1.1037897180627893e65},
 		ec:{13:1e72, 14:1e72}},
 	costs:{time:{},
 		ec:{},
 		dil:{7: 2e82, 8: 2e84, 9: 4e85, 10: 4e87, 11: 3e90, 12: 3e92, 13: 1e95, 14: 2e98},
 		mc:{}},
-	costmults:{241: 1, 251: 2.5, 252: 2.5, 253: 2.5, 261: 6, 262: 6, 263: 6, 264: 6, 265: 6, 266: 6, 271: 2, 272: 2, 273: 2, 281: 4, 282: 4, 291: 1, 292: 1, 301: 2, 302: 131072, 303: 2, 311: 64, 312: 64, 321: 2, 322: 2, 323: 2, 331: 2, 332: 2, 341: 1, 342: 1, 343: 1, 344: 1, 351: 4, 361: 1, 362: 1, 371: 2, 372: 2, 373: 2, 381: 1, 382: 1, 383: 2, 391: 1, 392: 1, 393: 1, 401: 1e20, 402: 1e20, 411: 1, 412: 1, 421: 1},
+	costmults:{241: 1, 251: 2.5, 252: 2.5, 253: 2.5, 261: 6, 262: 6, 263: 6, 264: 6, 265: 6, 266: 6, 271: 2, 272: 2, 273: 2, 281: 4, 282: 4, 291: 1, 292: 1, 301: 2, 302: 131072, 303: 2, 311: 64, 312: 64, 321: 2, 322: 2, 323: 2, 331: 2, 332: 2, 341: 1, 342: 1, 343: 1, 344: 1, 351: 4, 361: 1, 362: 1, 371: 2, 372: 2, 373: 2, 381: 1, 382: 1, 383: 2, 391: 1, 392: 1, 393: 1, 401: 1e20, 402: 1e20, 411: 1, 412: 1, 421: 1, 431: 1},
 	costmult:1,
-	allTimeStudies: [241, 251, 252, 253, 261, 262, 263, 264, 265, 266, 271, 272, 273, 281, 282, 291, 292, 301, 302, 303, 311, 312, 321, 322, 323, 331, 332, 341, 342, 343, 344, 351, 361, 362, 371, 372, 373, 381, 382, 383, 391, 392, 393, 401, 402, 411, 412, 421],
+	allTimeStudies: [241, 251, 252, 253, 261, 262, 263, 264, 265, 266, 271, 272, 273, 281, 282, 291, 292, 301, 302, 303, 311, 312, 321, 322, 323, 331, 332, 341, 342, 343, 344, 351, 361, 362, 371, 372, 373, 381, 382, 383, 391, 392, 393, 401, 402, 411, 412, 421, 431],
 	initialReqs:{13:728e3,14:255e5},
 	incrementReqs:{13:6e3,14:9e5},
 	reqs:{},
@@ -70,12 +70,18 @@ function updateMasteryStudyButtons() {
 		document.getElementById("ts411Current").textContent="Currently: "+shorten(getMTSMult(411))+"x"
 		document.getElementById("ts421Current").textContent="Currently: "+shorten(getMTSMult(421))+"x"
 		
-		for (var d=13;d<15;d++) {
-			var div=document.getElementById("dilstudy" + d)
-			if (player.masterystudies.includes("d" + d)) div.className="dilationupgbought"
-			else if (canBuyMasteryStudy('d', d)) div.className="dilationupg"
-			else div.className="timestudylocked"
-		}
+		var div=document.getElementById("dilstudy13")
+		if (player.masterystudies.includes("d13")) div.className="dilationupgbought"
+		else if (canBuyMasteryStudy('d', 13)) div.className="dilationupg"
+		else div.className="timestudylocked"
+	}
+	if (player.masterystudies.includes("d13")||ghostified) {
+		document.getElementById("ts431Current").textContent="Currently: "+shorten(getMTSMult(431))+"x"
+		
+		var div=document.getElementById("dilstudy14")
+		if (player.masterystudies.includes("d14")) div.className="dilationupgbought"
+		else if (canBuyMasteryStudy('d', 14)) div.className="dilationupg"
+		else div.className="timestudylocked"
 	}
 }
 
@@ -174,6 +180,7 @@ function buyMasteryStudy(type, id, quick=false) {
 		if (type=="d"&&id==13) {
 			showTab("quantumtab")
 			showQuantumTab("tod")
+			document.getElementById("todstudies").style.display=""
 			updateColorCharge()
 			updateTODStuff()
 		}
@@ -186,6 +193,7 @@ function canBuyMasteryStudy(type, id) {
 		var row=Math.floor(id/10)
 		if (masterystudies.latestBoughtRow>row) return false
 		var col=id%10
+		if (row>42) return player.masterystudies.includes('d13')&&player.masterystudies.includes('t431')
 		if (row>40) return player.masterystudies.includes('t'+(id-10))
 		if (row>39) return player.masterystudies.includes('d12')&&player.masterystudies.includes('t392')
 		if (row>38) {
@@ -227,7 +235,7 @@ function canBuyMasteryStudy(type, id) {
 		if (row>24) return player.masterystudies.includes('t241')
 	} else if (type=='d') {
 		if (player.timestudy.theorem<masterystudies.costs.dil[id]||player.masterystudies.includes('d'+id)) return false
-		if (id>13) return player.masterystudies.includes("t412")&&player.masterystudies.includes("d12")&&player.achievements.includes("ng3p34")
+		if (id>13) return player.masterystudies.includes("t431")&&player.achievements.includes("ng3p34")
 		if (id>12) return player.masterystudies.includes("t412")&&(ghostified||player.quantum.nanofield.rewards>15)
 		if (id>11) return player.masterystudies.includes("t392")&&(ghostified||eds[8].workers.gt(9.9))
 		if (id>10) return player.masterystudies.includes("t351")&&(ghostified||eds[1].workers.gt(9.9))
@@ -365,7 +373,10 @@ function drawMasteryTree() {
 		drawMasteryBranch("timestudy402", "timestudy412")
 		drawMasteryBranch("timestudy411", "timestudy421")
 		drawMasteryBranch("timestudy412", "dilstudy13")
-		drawMasteryBranch("dilstudy13", "dilstudy14")
+	}
+	if (player.masterystudies.includes("d13")||ghostified) {
+		drawMasteryBranch("dilstudy13", "timestudy431")
+		drawMasteryBranch("timestudy431", "dilstudy14")
 	}
 }
 
@@ -440,7 +451,8 @@ function getMTSMult(id, modifier) {
 		var intensity = 0
 		if (player.masterystudies ? player.masterystudies.includes("t273") || modifier == "ms" : false) intensity = 5
 		if (ghostified ? player.ghostify.neutrinos.boosts > 1 && modifier != "pn" : false) intensity += tmp.nb[1]
-		return Decimal.pow(Math.log10(player.replicanti.chance+1), intensity).max(1)
+		if (player.replicanti.chance<9) return new Decimal(1)
+		return Decimal.pow(Math.log10(player.replicanti.chance+1), intensity)
 	}
 	if (id==281) return Decimal.pow(10,Math.pow(tmp.rm.max(1).log10(),0.25)/10)
 	if (id==282) return Decimal.pow(10,Math.pow(tmp.rm.max(1).log10(),0.25)/15)
@@ -471,6 +483,7 @@ function getMTSMult(id, modifier) {
 		if (ret>100) ret=Math.sqrt(ret*100)
 		return ret
 	}
+	if (id==431) return Math.pow(Math.max(player.dilation.freeGalaxies/1e4-.5,1),2)
 }
 
 //v1.3
@@ -1503,7 +1516,7 @@ function getQCReward(num) {
 	if (num == 6) return player.achPow.pow(QCIntensity(6)>1?3:1)
 	if (num == 7) return Math.pow(0.975, QCIntensity(7))
 	if (num == 8) {
-		let ret=QCIntensity(8)/2+1
+		let ret=QCIntensity(8)+2
 		if (ghostified) if (player.ghostify.neutrinos.boosts > 7 && player.quantum.bigRip.active && tmp.nb[7]) ret*=tmp.nb[7]
 		return ret
 	}
@@ -1982,7 +1995,7 @@ function getTreeUpgradeEffectDesc(upg) {
 	return shortenMoney(getTreeUpgradeEffect(upg))
 }
 
-var branchUpgCostScales = [[300, 15], [600, 10], [8e7, 7]]
+var branchUpgCostScales = [[300, 15], [50, 8], [8e7, 7]]
 function getBranchUpgCost(branch, upg) {
 	var lvl = getBranchUpgLevel(branch, upg)
 	var scale = branchUpgCostScales[upg-1]

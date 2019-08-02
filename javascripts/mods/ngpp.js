@@ -1372,6 +1372,7 @@ function quantumReset(force, auto, challid, bigRip, implode=false) {
 			document.getElementById("replicantsstudies").style.display="none"
 			document.getElementById("empstudies").style.display="none"
 			document.getElementById("nfstudies").style.display="none"
+			document.getElementById("todstudies").style.display="none"
 		}
 		if (document.getElementById("metadimensions").style.display == "block"||document.getElementById("emperordimensions").style.display == "block") showDimTab("antimatterdimensions")
 		if (document.getElementById("masterystudies").style.display=="block") showEternityTab("timestudies", document.getElementById("eternitystore").style.display!="block")
