@@ -193,7 +193,7 @@ function canBuyMasteryStudy(type, id) {
 		var row=Math.floor(id/10)
 		if (masterystudies.latestBoughtRow>row) return false
 		var col=id%10
-		if (row>42) return player.masterystudies.includes('d13')&&player.masterystudies.includes('t431')
+		if (row>42) return player.masterystudies.includes('d13')&&player.masterystudies.includes('t412')
 		if (row>40) return player.masterystudies.includes('t'+(id-10))
 		if (row>39) return player.masterystudies.includes('d12')&&player.masterystudies.includes('t392')
 		if (row>38) {
