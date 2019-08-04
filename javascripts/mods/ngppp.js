@@ -2002,7 +2002,7 @@ function getTreeUpgradeEffectDesc(upg) {
 	return shortenMoney(getTreeUpgradeEffect(upg))
 }
 
-var branchUpgCostScales = [[300, 15], [50, 8], [8e7, 7]]
+var branchUpgCostScales = [[300, 15], [50, 8], [4e7, 7]]
 function getBranchUpgCost(branch, upg) {
 	var lvl = getBranchUpgLevel(branch, upg)
 	var scale = branchUpgCostScales[upg-1]
@@ -2603,6 +2603,8 @@ function switchAB() {
 		data.eternity.presets[id]=Object.assign({},player.eternityBuyer.presets[id])
 		data.eternity.presets.order.push(id)
 	}
+	if (data.eternity.presets.dil!==undefined) data.eternity.presets.dil=Object.assign({},data.eternity.presets.dil)
+	if (data.eternity.presets.grind!==undefined) data.eternity.presets.grind=Object.assign({},data.eternity.presets.grind)
 	var data = player.quantum.bigRip["savedAutobuyers" + (bigRip ? "No" : "") + "BR"]
 	for (var d=1;d<9;d++) if (data["d"+d]) player.autobuyers[d-1] = {
 		interval: data["d"+d].time,
@@ -2955,7 +2957,7 @@ function getGHPGain() {
 
 ghostified = false
 function ghostify(auto) {
-	if ((!isQuantumReached()&&player.quantum.bigRip.active)||implosionCheck) return
+	if (!isQuantumReached()||!player.quantum.bigRip.active||implosionCheck) return
 	if (player.aarexModifications.ghostifyConf&&!auto) if(!confirm("Becoming a ghost resets everything quantum resets, and also resets your banked stats, best TP & MA, quarks, gluons, electrons, Quantum Challenges, Replicants, Nanofield, and Tree of Decay to gain a Ghost Particle. Are you ready for this?")) return
 	if (!ghostified) {
 		if (!confirm("Are you sure you want to do that? You will lose everything you have!")) return
@@ -3811,6 +3813,7 @@ function unlockNeutrinoBoost() {
 	player.ghostify.ghostParticles=player.ghostify.ghostParticles.sub(cost).round()
 	player.ghostify.neutrinos.boosts++
 	updateNeutrinoBoosts()
+	updateTemp()
 }
 
 function hasNU(id) {

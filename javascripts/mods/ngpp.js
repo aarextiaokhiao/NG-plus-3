@@ -1213,14 +1213,13 @@ function quantumReset(force, auto, challid, bigRip, implode=false) {
 		player.quantum.bigRip.active = bigRip
 		if (bigRip) {
 			for (var u=0;u<player.quantum.bigRip.upgrades.length;u++) tweakBigRip(player.quantum.bigRip.upgrades[u])
-			if (player.quantum.bigRip.times < 1) document.getElementById("bigRipConfirmBtn").style.display = "inline-block"
+			if (player.quantum.bigRip.times < 1) {
+				document.getElementById("bigRipConfirmBtn").style.display = "inline-block"
+				document.getElementById("hotkeysDesc").innerHTML="Hotkeys: 1-8 for buy 10 dimension, shift+1-8 for buy 1 dimension, T to buy max tickspeed, shift+T to buy one tickspeed, M for max all<br>S for sacrifice, D for dimension boost,"+(player.tickspeedBoosts==undefined?"":" B for tickspeed boost,")+" G for become a ghost, C for crunch, A for toggle autobuyers, R for replicanti galaxies, E for eternity, Q for quantum, U for unstabilize all quarks.<br>You can hold shift while buying time studies to buy all up until that point, see each study's number, and save study trees.<br>Hotkeys do not work while holding control."
+			}
 			player.quantum.bigRip.times++
 			player.quantum.bigRip.bestThisRun = player.money
 			giveAchievement("To the new dimension!")
-			if (!player.quantum.bigRip.upgrades.includes(2)) {
-				showTab("infinity")
-				showInfTab("preinf")
-			}
 			if (player.quantum.breakEternity.break) player.quantum.breakEternity.did = true
 		} else if (isRewardEnabled(11)) unstoreTT()
 		document.getElementById("metaAntimatterEffectType").textContent=inQC(3)?"multiplier on all Infinity Dimensions":"extra multiplier per dimension boost"
@@ -1362,9 +1361,6 @@ function quantumReset(force, auto, challid, bigRip, implode=false) {
 	if (speedrunMilestonesReached < 14 || !isRewardEnabled(4)) {
 		document.getElementById("respecMastery").style.display = "none"
 		document.getElementById("respecMastery2").style.display = "none"
-		document.getElementById("timestudy322").style.display="none"
-		document.getElementById("timestudy361").style.display = "none"
-		document.getElementById("timestudy362").style.display = "none"
 		document.getElementById("edtabbtn").style.display = "none"
 		document.getElementById("nanofieldtabbtn").style.display = "none"
 		document.getElementById("todtabbtn").style.display = "none"
@@ -1373,6 +1369,9 @@ function quantumReset(force, auto, challid, bigRip, implode=false) {
 			document.getElementById("empstudies").style.display="none"
 			document.getElementById("nfstudies").style.display="none"
 			document.getElementById("todstudies").style.display="none"
+			document.getElementById("timestudy322").style.display="none"
+			document.getElementById("timestudy361").style.display="none"
+			document.getElementById("timestudy362").style.display="none"
 		}
 		if (document.getElementById("metadimensions").style.display == "block"||document.getElementById("emperordimensions").style.display == "block") showDimTab("antimatterdimensions")
 		if (document.getElementById("masterystudies").style.display=="block") showEternityTab("timestudies", document.getElementById("eternitystore").style.display!="block")

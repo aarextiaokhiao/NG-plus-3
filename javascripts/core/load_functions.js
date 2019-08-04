@@ -652,7 +652,7 @@ if (player.version < 5) {
           }
           player.aarexModifications.newGamePlusVersion = 1
           if (confirm("Do you want to migrate your NG++ save into new NG+++ mode?")) {
-              player.aarexModifications.newGame3PlusVersion = 2.03
+              player.aarexModifications.newGame3PlusVersion = 2.04
               player.respecMastery=false
               player.dbPower = 1
               player.dilation.times = 0
@@ -1201,7 +1201,7 @@ if (player.version < 5) {
         if (!player.achievements.includes("r131")) player.achievements.push("r131")
         player.aarexModifications.newGamePlusVersion=2
   }
-  if (player.aarexModifications.newGame3PlusVersion < 2.03) player.aarexModifications.newGame3PlusVersion = 2.03
+  if (player.aarexModifications.newGame3PlusVersion < 2.04) player.aarexModifications.newGame3PlusVersion = 2.04
   if (player.masterystudies) {
       if (player.meta.bestOverQuantums === undefined) player.meta.bestOverQuantums = player.meta.bestAntimatter
       document.getElementById('prioritydil').value=player.eternityBuyer.dilationPerAmount
@@ -1605,14 +1605,14 @@ if (player.version < 5) {
   document.getElementsByClassName("hideInMorse").display = player.options.notation == "Morse code" ? "none" : ""
 
   document.getElementById("decimalMode").textContent = "Decimal mode: "+(break_infinity_js?"Slow but accurate":"Fast but inaccurate")
-  document.getElementById("decimalMode").style.visbility = Decimal.gt(player.totalmoney,"1e9000000000000000") ? "hidden" : ""
+  document.getElementById("decimalMode").style.visibility = Decimal.gt(player.totalmoney,"1e9000000000000000") ? "hidden" : ""
   document.getElementById("hideProductionTab").textContent = (player.aarexModifications.hideProductionTab?"Show":"Hide")+" production tab"
   document.getElementById("hideRepresentation").textContent=(player.aarexModifications.hideRepresentation?"Show":"Hide")+" antimatter representation"
   document.getElementById("showAchRowNums").textContent=(player.aarexModifications.showAchRowNums?"Hide":"Show")+" achievement row numbers"
   document.getElementById("hideCompletedAchs").textContent=(player.aarexModifications.hideCompletedAchs?"Show":"Hide")+" completed achievement rows"
   document.getElementById("hideSecretAchs").textContent=(player.aarexModifications.hideSecretAchs?"Show":"Hide")+" secret achievements"
 
-  document.getElementById("hotkeysDesc").innerHTML = "Hotkeys: 1-8 for buy 10 dimension, shift+1-8 for buy 1 dimension, T to buy max tickspeed, shift+T to buy one tickspeed, M for max all<br>S for sacrifice, D for dimension boost,"+(player.tickspeedBoosts==undefined?"":" B for tickspeed boost,")+" G for galaxy, C for crunch, A for toggle autobuyers, R for replicanti galaxies, E for eternity"+(player.meta?", Q for quantum":"")+(player.boughtDims?".":".<br>You can hold shift while buying time studies to buy all up until that point, see each study's number, and save study trees.<br>Hotkeys do not work while holding control.")
+  document.getElementById("hotkeysDesc").innerHTML = "Hotkeys: 1-8 for buy 10 dimension, shift+1-8 for buy 1 dimension, T to buy max tickspeed, shift+T to buy one tickspeed, M for max all<br>S for sacrifice, D for dimension boost,"+(player.tickspeedBoosts==undefined?"":" B for tickspeed boost,")+" G for "+(player.achievements.includes("ng3p51")?"become a ghost":"galaxy")+", C for crunch, A for toggle autobuyers, R for replicanti galaxies, E for eternity"+(player.meta?", Q for quantum":"")+(quantumed?", U for unstabilize all quarks":"")+(player.boughtDims?".":".<br>You can hold shift while buying time studies to buy all up until that point, see each study's number, and save study trees.<br>Hotkeys do not work while holding control.")
 
   document.getElementById("secretstudy").style.opacity = 0
   document.getElementById("secretstudy").style.cursor = "pointer"

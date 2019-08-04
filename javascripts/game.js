@@ -413,7 +413,7 @@ function updateNewPlayer(reseted) {
         player.options.gSacrificeConfirmation = true
     }
     if (modesChosen.ngpp === 2 || modesChosen.ngpp === 4) {
-        player.aarexModifications.newGame3PlusVersion = 2.03
+        player.aarexModifications.newGame3PlusVersion = 2.04
         player.respecMastery=false
         player.dbPower = 1
         player.dilation.times = 0
@@ -1322,7 +1322,7 @@ function updateDimensions() {
             else ticklabel = 'Reduce the tick interval by ' + ((1 - tickmult) * 100).toFixed(places) + '%';
         }
         let ic3mult=getPostC3RewardMult()
-        if (player.galacticSacrifice || player.currentChallenge == "postc3" || isIC3Trapped()) document.getElementById("tickLabel").innerHTML = ((isIC3Trapped() || player.currentChallenge == "postc3") && !tmp.be ? "M" : ticklabel + '<br>and m') + 'ultiply all dimensions by ' + (ic3mult>999.95?shorten(ic3mult):ic3mult.toPrecision(4)) + '.'
+        if (player.galacticSacrifice || player.currentChallenge == "postc3" || isIC3Trapped()) document.getElementById("tickLabel").innerHTML = ((isIC3Trapped() || player.currentChallenge == "postc3") && player.currentChallenge != "postcngmm_3" && (!player.challenges.includes("postcngmm_3") || player.tickspeedBoosts !== undefined) && !tmp.be ? "M" : ticklabel + '<br>and m') + 'ultiply all dimensions by ' + (ic3mult>999.95?shorten(ic3mult):ic3mult.toPrecision(4)) + '.'
         else document.getElementById("tickLabel").textContent = ticklabel + '.'
 
         document.getElementById("tickSpeed").style.visibility = "visible";
@@ -2336,8 +2336,8 @@ function getPostC3RewardMult() {
 	if (player.challenges.length > 15 && player.achievements.includes("r67")) perGalaxy *= player.challenges.length/10-0.5
 	var realnormalgalaxies = player.galaxies
 	if (player.masterystudies) realnormalgalaxies = Math.max(player.galaxies-player.quantum.electrons.sacGals,0)
+	if (player.galacticSacrifice.upgrades.includes(34)) realnormalgalaxies += 4
 	if (tmp.rg4) realnormalgalaxies *= 0.4
-	if (player.masterystudies) if (player.masterystudies.includes('t311')) realnormalgalaxies *= 0.5
 	perGalaxy *= getGalaxyPowerEff()
 	let ret = getGalaxyPower(realnormalgalaxies)*perGalaxy+1.05
 	if (player.currentChallenge=="challenge6"||player.currentChallenge=="postc1") ret -= 0.05
@@ -3662,7 +3662,7 @@ function setAchieveTooltip() {
     tfms.setAttribute('ach-tooltip', "Reward: Start with "+shortenCosts(1e13)+" eternities.")
     tms.setAttribute('ach-tooltip', "Reward: Start with "+shortenCosts(1e25)+" meta-antimatter on reset.")
     tfms2.setAttribute('ach-tooltip', "Reward: Start with "+shortenCosts(1e100)+" dilated time and dilated time does not reset until quantum.")
-    memories.setAttribute('ach-tooltip', "Reach "+shortenCosts(new Decimal("1e1700"))+" MA while not having over 4 dimension boosts and fifth normal Dimensions.")
+    memories.setAttribute('ach-tooltip', "Reach "+shortenCosts(new Decimal("1e1700"))+" MA without having Normal Dimensions 5-8 and without having more than 4 Dimension Boosts.")
     squared.setAttribute('ach-tooltip', "Reach "+shortenCosts(new Decimal("1e1500"))+" MA with exactly 8 meta-dimension boosts.")
     seriously.setAttribute('ach-tooltip', "Reach "+shortenCosts(new Decimal("1e354000"))+" IP without having time studies while dilated and running QC2.")
     internal.setAttribute('ach-tooltip', "Reach "+shortenCosts(new Decimal("1e333"))+" MA without having second meta dimensions and meta dimension boosts.")
@@ -8431,9 +8431,11 @@ function autoBuyerTick() {
 
 
     if (player.galacticSacrifice) if (player.autobuyers[12]%1 !== 0) {
-        if (getGSAmount().gte(player.autobuyers[12].priority) && player.autobuyers[12].isOn) {
+        if (player.autobuyers[12].ticks*100 >= player.autobuyers[12].interval && getGSAmount().gte(player.autobuyers[12].priority) && player.autobuyers[12].isOn) {
             galacticSacrifice(true);
+            player.autobuyers[12].ticks=0
         }
+        player.autobuyers[12].ticks++
     }
 
     if (player.autobuyers[10]%1 !== 0) {
@@ -8469,9 +8471,11 @@ function autoBuyerTick() {
     }
 
     if (player.autoSacrifice%1 !== 0) {
-        if (calcSacrificeBoost().gte(player.autoSacrifice.priority) && player.autoSacrifice.isOn) {
+        if ((player.galacticSacrifice!==undefined?player.autoSacrifice.ticks*100>=player.autoSacrifice.interval:true) && calcSacrificeBoost().gte(player.autoSacrifice.priority) && player.autoSacrifice.isOn) {
             sacrifice(true)
+            if (player.galacticSacrifice!==undefined) player.autoSacrifice.ticks=0
         }
+        if (player.galacticSacrifice!==undefined) player.autoSacrifice.ticks++
     }
 
 
@@ -8820,7 +8824,8 @@ window.addEventListener('keydown', function(event) {
 		break;
 
 		case 71: // G
-			document.getElementById("secondSoftReset").onclick()
+			if (player.achievements.includes("ng3p51")) ghostify()
+			else document.getElementById("secondSoftReset").onclick()
 		break;
 
 		case 77: // M
@@ -8843,6 +8848,10 @@ window.addEventListener('keydown', function(event) {
 		case 84: // T
 			if (shiftDown) buyTickSpeed()
 			else buyMaxTickSpeed()
+		break;
+
+		case 85: // U
+			if (player.masterystudies !== undefined) unstableAll()
 		break;
 
 		case 82: //R
@@ -8908,11 +8917,8 @@ var updatePowerInt
 function resetUP() {
 	clearInterval(updatePowerInt)
 	updatePowers()
+    updateTemp()
 	mult18 = 1
-	tmp.nb[5] = 1
-	tmp.nb[7] = 1
-	tmp.nb[8] = 1
-	tmp.nu[2] = new Decimal(1)
 	updatePowerInt = setInterval(updatePowers, 100)
 }
 

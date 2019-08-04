@@ -211,7 +211,7 @@ function getTickspeed() {
 }
 
 function updateTickSpeed() {
-	var showTickspeed = Decimal.lt(player.tickspeed, 1e3) || (player.currentChallenge != "postc3" && !isIC3Trapped())
+	var showTickspeed = (player.currentChallenge != "postc3" && !isIC3Trapped()) || player.currentChallenge == "postcngmm_3" || (player.challenges.includes("postcngmm_3") && player.tickspeedBoosts === undefined)
 	var label = ""
 	if (showTickspeed) {
 		var tickspeed = getTickspeed()
