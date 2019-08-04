@@ -1787,6 +1787,7 @@ function assignAll(auto) {
 	var sum = ratios.r+ratios.g+ratios.b
 	var oldQuarks = player.quantum.quarks.floor()
 	var colors = ['r','g','b']
+	if (oldQuarks.eq(0)) return
 	for (c=0;c<3;c++) {
 		var toAssign = oldQuarks.times(ratios[colors[c]]/sum).round()
 		player.quantum.usedQuarks[colors[c]] = player.quantum.usedQuarks[colors[c]].add(toAssign).round()
