@@ -652,7 +652,7 @@ if (player.version < 5) {
           }
           player.aarexModifications.newGamePlusVersion = 1
           if (confirm("Do you want to migrate your NG++ save into new NG+++ mode?")) {
-              player.aarexModifications.newGame3PlusVersion = 2.06
+              player.aarexModifications.newGame3PlusVersion = 2.061
               player.respecMastery=false
               player.dbPower = 1
               player.dilation.times = 0
@@ -1201,7 +1201,7 @@ if (player.version < 5) {
         if (!player.achievements.includes("r131")) player.achievements.push("r131")
         player.aarexModifications.newGamePlusVersion=2
   }
-  if (player.aarexModifications.newGame3PlusVersion < 2.06) player.aarexModifications.newGame3PlusVersion = 2.06
+  if (player.aarexModifications.newGame3PlusVersion < 2.061) player.aarexModifications.newGame3PlusVersion = 2.061
   if (player.masterystudies) {
       if (player.meta.bestOverQuantums === undefined) player.meta.bestOverQuantums = player.meta.bestAntimatter
       document.getElementById('prioritydil').value=player.eternityBuyer.dilationPerAmount

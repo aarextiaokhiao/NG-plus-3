@@ -2865,7 +2865,7 @@ function breakEternity() {
 
 function getEMGain() {
 	let mult=1
-	let log=player.timeShards.div(1e12).log10()*0.25
+	let log=player.timeShards.div(1e9).log10()*0.25
 	if (log>15) return Decimal.pow(10,Math.sqrt(log*15)).times(mult).floor()
 	return Decimal.pow(10,log).times(mult).floor()
 }
@@ -2897,7 +2897,7 @@ function getBreakUpgMult(id) {
 	}
 	if (id == 2) {
 		var log = player.eternityPoints.div("1e1290").add(1).log10()
-		return Math.pow(Math.log10(log + 1) * 1.6 + 1, 2)
+		return Math.pow(Math.log10(log + 1) * 1.6 + 1, player.currentEternityChall == "eterc10" ? 1 : 2)
 	}
 	if (id == 3) {
 		var log = player.eternityPoints.div("1e1370").add(1).log10()
