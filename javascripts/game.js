@@ -413,7 +413,7 @@ function updateNewPlayer(reseted) {
         player.options.gSacrificeConfirmation = true
     }
     if (modesChosen.ngpp === 2 || modesChosen.ngpp === 4) {
-        player.aarexModifications.newGame3PlusVersion = 2.05
+        player.aarexModifications.newGame3PlusVersion = 2.06
         player.respecMastery=false
         player.dbPower = 1
         player.dilation.times = 0
@@ -7168,7 +7168,7 @@ setInterval(function() {
             else player.aarexModifications.popUpId = ""
             document.getElementById("welcomeMessage").innerHTML = "You are almost there for a supreme completion! However, completing this turns you to a ghost instead. This allows you to pass big rip universes and unlock new stuff! However, you need to lose everything too. Therefore, this is the sixth layer of NG+3."
         }
-        if (player.eternityPoints.gte("1e1220") && player.quantum.bigRip.active && !player.quantum.breakEternity.unlocked) {
+        if (player.eternityPoints.gte("1e1215") && player.quantum.bigRip.active && !player.quantum.breakEternity.unlocked) {
             player.quantum.breakEternity.unlocked = true
             $.notify("Congratulations! You have unlocked Break Eternity!", "success")
             updateBreakEternity()

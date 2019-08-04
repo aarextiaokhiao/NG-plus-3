@@ -2845,7 +2845,7 @@ function updateBreakEternity() {
 		document.getElementById("breakUpg7Mult").textContent = shortenDimensions(getBreakUpgMult(7))
 	} else {
 		document.getElementById("breakEternityReq").style.display = ""
-		document.getElementById("breakEternityReq").textContent = "You need to get " + shorten(new Decimal("1e1220")) + " EP before you will be able to Break Eternity."
+		document.getElementById("breakEternityReq").textContent = "You need to get " + shorten(new Decimal("1e1215")) + " EP before you will be able to Break Eternity."
 		document.getElementById("breakEternityNoBigRip").style.display = "none"
 		document.getElementById("breakEternityShop").style.display = "none"
 	}
@@ -2865,7 +2865,7 @@ function breakEternity() {
 
 function getEMGain() {
 	let mult=1
-	let log=player.timeShards.div(1e15).max(1).log10()*0.25
+	let log=player.timeShards.div(1e12).log10()*0.25
 	if (log>15) return Decimal.pow(10,Math.sqrt(log*15)).times(mult).floor()
 	return Decimal.pow(10,log).times(mult).floor()
 }
@@ -2892,7 +2892,7 @@ function buyBreakUpg(id) {
 function getBreakUpgMult(id) {
 	if (id == 1) {
 		var log1 = player.eternityPoints.div("1e1280").add(1).log10()
-		var log2 = player.quantum.breakEternity.eternalMatter.add(1).log10()
+		var log2 = player.quantum.breakEternity.eternalMatter.times(10).max(1).log10()
 		return Decimal.pow(10, Math.pow(log1, 1/3) * 0.5 + Math.pow(log2, 1/3)).max(1)
 	}
 	if (id == 2) {

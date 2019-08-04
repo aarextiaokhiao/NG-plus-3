@@ -149,10 +149,10 @@ function galacticUpgradeSpanDisplay () {
 	if (player.infinitied>0||player.eternities!==0||quantumed) document.getElementById('galspan11').innerHTML = shortenDimensions(galUpgrade11())
 	document.getElementById('galspan12').innerHTML = shorten(galUpgrade12())
 	document.getElementById('galspan13').innerHTML = shorten(galUpgrade13())
-	document.getElementById('galspan23').innerHTML = shorten(getDimensionBoostPower(false, "g23"))
+	document.getElementById('galspan23').innerHTML = shorten(galUpgrade23())
 	document.getElementById('galspan31').innerHTML = galUpgrade31().toFixed(2)
 	document.getElementById('galspan32').innerHTML = shorten(galUpgrade32())
-	document.getElementById('galspan33').innerHTML = shorten(getDimensionPowerMultiplier(true, "g33"))
+	document.getElementById('galspan33').innerHTML = shorten(galUpgrade33())
 	document.getElementById('galcost33').innerHTML = shortenCosts(galUpgradeCosts[33])
 	if (player.tickspeedBoosts!=undefined) {
 		document.getElementById('galcost14').innerHTML = shortenCosts(1e3)

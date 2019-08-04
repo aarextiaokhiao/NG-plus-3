@@ -8,7 +8,7 @@ function getDimensionBoostPower(next, focusOn) {
       if (player.currentChallenge == "postc7" || inQC(6) || player.timestudy.studies.includes(81)) ret = 10
   }
   if (player.boughtDims) ret += player.timestudy.ers_studies[4] + (next ? 1 : 0)
-  if (player.galacticSacrifice ? (player.galacticSacrifice.upgrades.includes(23) && player.currentChallenge != "challenge15") || focusOn == "g23" : false) ret *= galUpgrade23()
+  if (player.galacticSacrifice ? (player.galacticSacrifice.upgrades.includes(23) && player.currentChallenge != "challenge15") : false) ret *= galUpgrade23()
   if (player.infinityUpgrades.includes("resetMult")&&player.galacticSacrifice) ret *= 1.2 + 0.05 * player.infinityPoints.max(1).log(10)
   if (!player.boughtDims&&player.achievements.includes("r101")) ret = ret*1.01
   if (player.timestudy.studies.includes(83)) ret = Decimal.pow(1.0004, player.totalTickGained).times(ret);
