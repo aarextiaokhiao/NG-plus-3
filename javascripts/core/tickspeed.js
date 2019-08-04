@@ -211,7 +211,7 @@ function getTickspeed() {
 }
 
 function updateTickSpeed() {
-	var showTickspeed = (player.currentChallenge != "postc3" && !isIC3Trapped()) || player.currentChallenge == "postcngmm_3" || (player.challenges.includes("postcngmm_3") && player.tickspeedBoosts === undefined)
+	var showTickspeed = (player.currentChallenge != "postc3" && !isIC3Trapped()) || player.currentChallenge == "postcngmm_3" || (player.challenges.includes("postcngmm_3") && player.tickspeedBoosts === undefined) || tmp.be
 	var label = ""
 	if (showTickspeed) {
 		var tickspeed = getTickspeed()
