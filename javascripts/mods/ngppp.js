@@ -2149,11 +2149,8 @@ function unstableAll() {
 function getUQName(shorthand) {
 	let ret="unstable"
 	if (player.quantum.tod[shorthand].decays!==undefined) {
-		let mod8=player.quantum.tod[shorthand].decays%8
-		let div8=(player.quantum.tod[shorthand].decays-mod8)/8
-		if (div8>0) ret="ghostly"+(div8>1?"^"+getFullExpansion(div8):"")+" "+ret
-		if (mod8>1) ret=(["infinity ","eternity ","quantum "])[Math.floor(mod8/2)-1]+ret
-		if (mod8%2>0) ret="radioactive "+ret
+		let amt=player.quantum.tod[shorthand].decays
+		ret=(amt>5?"Mk"+getFullExpansion(amt+1):(["radioactive","infinity","eternal","quantum","ghostly"])[amt-1])+" "+ret
 	}
 	return ret
 }
@@ -3000,6 +2997,7 @@ function ghostifyReset(implode, gain, amount, force) {
 	}
 	if (player.quantum.bigRip.active) switchAB()
 	var bm = player.ghostify.milestones
+	if (bm > 2) for (var c=1;c<9;c++) player.quantum.electrons.mult += 0.5-QCIntensity(c)*0.25
 	if (bm > 15) giveAchievement("I rather oppose the theory of everything")
 	player.ghostify.time = 0
 	player = {

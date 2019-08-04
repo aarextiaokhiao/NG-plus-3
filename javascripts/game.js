@@ -413,7 +413,7 @@ function updateNewPlayer(reseted) {
         player.options.gSacrificeConfirmation = true
     }
     if (modesChosen.ngpp === 2 || modesChosen.ngpp === 4) {
-        player.aarexModifications.newGame3PlusVersion = 2.04
+        player.aarexModifications.newGame3PlusVersion = 2.05
         player.respecMastery=false
         player.dbPower = 1
         player.dilation.times = 0
@@ -972,7 +972,7 @@ let tmp = {
 	bru: [],
 	be: false,
 	beu: [],
-	bm: [250,187,125,62,50,40,30,25,20,15,10,5,4,3,2,1],
+	bm: [300,200,150,100,50,40,30,25,20,15,10,5,4,3,2,1],
 	nb: [],
 	nbc: [null,3,4,6,15,50,1e3,1e14,1e40],
 	nu: [],
@@ -8099,7 +8099,7 @@ function gameLoop(diff) {
 				else if (c!=2&&c<7) document.getElementById("qc"+c+"reward").textContent = shorten(getQCReward(c))
 			}
             if (player.masterystudies.includes("d14")) {
-                document.getElementById("bigripupg8current").textContent=shortenDimensions(tmp.bru[0])+(Decimal.gte(tmp.bru[0],Number.MAX_VALUE)&&!hasNU(11)?" (cap)":"")
+                document.getElementById("bigripupg8current").textContent=shortenDimensions(tmp.bru[0])+(Decimal.gte(tmp.bru[0],Number.MAX_VALUE)&&!hasNU(11)?"x (cap)":"x")
                 document.getElementById("bigripupg14current").textContent=tmp.bru[1].toFixed(2)
                 var bru15effect = Math.sqrt(player.eternityPoints.add(1).log10()) * 3.55
                 document.getElementById("bigripupg15current").textContent=bru15effect < 999.995 ? bru15effect.toFixed(2) : getFullExpansion(Math.round(bru15effect))
