@@ -1028,6 +1028,7 @@ function updateQuantumChallenges() {
 	document.getElementById("qc2reward").textContent = Math.round(getQCReward(2)*100-100)
 	document.getElementById("qc7desc").textContent="Dimension & tickspeed cost multiplier increases are "+shorten(Number.MAX_VALUE)+"x. Multiplier per ten dimensions and meta-antimatter's effect on dimension boosts are disabled. "
 	document.getElementById("qc7reward").textContent = (100-getQCReward(7)*100).toFixed(2)
+	document.getElementById("qc8reward").textContent = getQCReward(8)
 }
 
 function inQC(num) {
@@ -1519,11 +1520,7 @@ function getQCReward(num) {
 	if (num == 5) return Math.log10(1 + player.resets) * Math.pow(QCIntensity(5), 0.4)
 	if (num == 6) return player.achPow.pow(QCIntensity(6)>1?3:1)
 	if (num == 7) return Math.pow(0.975, QCIntensity(7))
-	if (num == 8) {
-		let ret=QCIntensity(8)+2
-		if (ghostified) if (player.ghostify.neutrinos.boosts > 7 && player.quantum.bigRip.active && tmp.nb[7]) ret*=tmp.nb[7]
-		return ret
-	}
+	if (num == 8) return QCIntensity(8)+2
 }
 
 function maybeShowFillAll() {
@@ -3655,7 +3652,6 @@ function ghostifyReset(implode, gain, amount, force) {
 		player.ghostify.neutrinos.tau = new Decimal(0)
 		player.ghostify.neutrinos.generationGain = 1
 	}
-	player.ghostify.noGrind = !player.masterystudies.includes("d13")
 	updateLastTenGhostifies()
 	updateBraveMilestones()
 }

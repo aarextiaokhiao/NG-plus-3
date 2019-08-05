@@ -413,7 +413,7 @@ function updateNewPlayer(reseted) {
         player.options.gSacrificeConfirmation = true
     }
     if (modesChosen.ngpp === 2 || modesChosen.ngpp === 4) {
-        player.aarexModifications.newGame3PlusVersion = 2.061
+        player.aarexModifications.newGame3PlusVersion = 2.062
         player.respecMastery=false
         player.dbPower = 1
         player.dilation.times = 0
@@ -8093,10 +8093,9 @@ function gameLoop(diff) {
 		}
 		if (document.getElementById("quantumchallenges").style.display == "block") {
 		    if (player.quantum.autoOptions.sacrifice) document.getElementById("electronsAmount2").textContent="You have " + getFullExpansion(Math.round(player.quantum.electrons.amount)) + " electrons."
-			for (var c=1;c<9;c++) {
+			for (var c=1;c<7;c++) {
 				if (c==5) document.getElementById("qc5reward").textContent = getDimensionPowerMultiplier(true, "linear").toFixed(2)
-				else if (c>7) document.getElementById("qc8reward").textContent = getQCReward(8).toFixed(1)
-				else if (c!=2&&c<7) document.getElementById("qc"+c+"reward").textContent = shorten(getQCReward(c))
+				else if (c!=2) document.getElementById("qc"+c+"reward").textContent = shorten(getQCReward(c))
 			}
             if (player.masterystudies.includes("d14")) {
                 document.getElementById("bigripupg8current").textContent=shortenDimensions(tmp.bru[0])+(Decimal.gte(tmp.bru[0],Number.MAX_VALUE)&&!hasNU(11)?"x (cap)":"x")
