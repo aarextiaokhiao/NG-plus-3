@@ -103,7 +103,6 @@ function getDimensionFinalMultiplier(tier) {
   if (player.masterystudies != undefined) if (player.dilation.active) multiplier = multiplier.pow(getNanofieldRewardEffect(5))
   if (isBigRipUpgradeActive(1)) {
       let exp = player.quantum.bigRip.upgrades.includes(17) ? 2.9 : 1
-      if (ghostified && player.ghostify.neutrinos.boosts > 7) exp *= tmp.nb[7]
       multiplier = multiplier.times(player.infinityPoints.pow(exp).max(1))
   }
   return multiplier;
