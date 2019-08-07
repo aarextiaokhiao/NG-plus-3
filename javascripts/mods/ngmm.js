@@ -2,7 +2,10 @@ function getGSAmount() {
 	if (isEmptiness) return new Decimal(0)
 	let galaxies = player.galaxies + player.replicanti.galaxies + player.dilation.freeGalaxies;
 	let y = 1.5 
-	if (player.challenges.includes("postcngmm_1")) y += Math.max(0, 0.05*(galaxies - 10)) + 0.005 * Math.pow(Math.max(0, galaxies-30) , 2) + 0.0005 * Math.pow(Math.max(0, galaxies-50) , 3)
+	if (player.challenges.includes("postcngmm_1")) {
+		y += Math.max(0, 0.05*(galaxies - 10)) + 0.005 * Math.pow(Math.max(0, galaxies-30) , 2) + 0.0005 * Math.pow(Math.max(0, galaxies-50) , 3)
+		y *= .08*player.challenges.length
+	}
 	if (y > 100) y = Math.pow(316.22*y,1/3)
 	else if (y > 10) y = Math.pow(10*y , .5)
 	let z = 1
@@ -18,8 +21,8 @@ function getGSAmount() {
 	if (player.galacticSacrifice.upgrades.includes(32)) ret = ret.times(galUpgrade32())
 	if (player.infinityUpgrades.includes("galPointMult")) ret = ret.times(getPost01Mult())
 	if (player.achievements.includes('r37')) {
-		if (player.bestInfinityTime<18e3) ret = ret.times(10+Math.pow(Math.log10(18000/player.bestInfinityTime),2)*10)
-		else ret = ret.times(Math.max(18e4/player.bestInfinityTime,1))
+		if (player.bestInfinityTime >= 18000) ret = ret.times(Math.max(180000/player.bestInfinityTime,1))
+		else ret = ret.times(10*(1+Math.pow(Math.log10(18000/player.bestInfinityTime),2)))
 	}
 	if (player.achievements.includes("r62")) ret = ret.times(Math.max(1, player.infinityPoints.log10()))
 	return ret.floor()
@@ -107,21 +110,16 @@ function reduceDimCosts() {
 }
 
 let galUpgrade11 = function () {
-	let x = player.infinitied;
+	let x = Math.min(player.infinitied, 1e6);
 	let y;
-	if (x < 1) {
-		y = 2;
-	} else if (x < 5) {
-		y = x + 2;
-	} else if (x < 100) {
-		y = Math.pow(x + 5, .5) + 4;
-	} else {
-		let z = 10
-		if (player.challenges.length > 14 && player.challenges.includes("postcngmm_1")) z -= (player.challenges.length-8)/4
-		if (z < 6) z = Math.pow(1296 * z, .2)
-		y = Math.pow(Math.log(x), Math.log(x) / z) + 14;
-	}
-	return Decimal.pow(10, y);
+	let z = 10
+	if (player.challenges.length > 14 && player.challenges.includes("postcngmm_1")) z -= (player.challenges.length-8)/4
+	if (z < 6) z = Math.pow(1296 * z, .2)
+	if (x < 1) y = 2
+	else if (x < 5) y = x + 2
+	else if (x < 100) y = Math.pow(x + 5, .5) + 4
+	else y = Math.pow(Math.log(x), Math.log(x) / z) + 14
+	return Decimal.pow(10, Math.min(y, 2e4));
 }
 let galUpgrade12 = function () {
 	return 2 * Math.pow(1 + player.galacticSacrifice.time / 600, 0.5);

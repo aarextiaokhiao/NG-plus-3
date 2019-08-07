@@ -19,7 +19,7 @@ function getDimensionFinalMultiplier(tier) {
   if (player.infinityUpgrades.includes("currentMult")) multiplier = multiplier.times(currentMult)
   if (player.infinityUpgrades.includes("infinitiedMult")) multiplier = multiplier.times(infinitiedMult)
   if (player.infinityUpgrades.includes("achievementMult")) multiplier = multiplier.times(achievementMult)
-  if (player.infinityUpgrades.includes("challengeMult")) multiplier = multiplier.times(challengeMult)
+  if (player.infinityUpgrades.includes("challengeMult")) multiplier = multiplier.times(worstChallengeBonus)
 
   let timeAndDimMult = timeMult()
   if (hasInfinityMult(tier)) timeAndDimMult = dimMults().times(timeAndDimMult)

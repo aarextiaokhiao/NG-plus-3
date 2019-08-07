@@ -2327,6 +2327,7 @@ function getPostC3RewardMult() {
 	if (player.currentChallenge=="postcngmm_3") return 1
 	let perGalaxy = 0.005;
 	if (player.tickspeedBoosts != undefined) perGalaxy = 0.002
+	if (player.challenges.length > 15) perGalaxy *= (player.challenges.length-5)/10
 	if (inQC(2)) perGalaxy = 0
 	if (player.masterystudies !== undefined ? player.quantum.bigRip.active : false) {
 		if (ghostified&&player.ghostify.neutrinos.boosts>8) perGalaxy*=tmp.nb[8]
@@ -6727,6 +6728,10 @@ function updateDilation() {
 
 function getNewInfReq() {
 	let reqs = [new Decimal("1e1100"), new Decimal("1e1900"), new Decimal("1e2400"), new Decimal("1e10500"), new Decimal("1e30000"), new Decimal("1e45000"), new Decimal("1e54000")]
+	if (player.galacticSacrifice !== undefined) {
+		if (player.tickspeedBoosts !== undefined) reqs[1] = new Decimal("1e1500")
+		reqs[4] = new Decimal("1e9600")
+	}
 	for (var tier=0;tier<7;tier++) if (!player.infDimensionsUnlocked[tier]) return {money: reqs[tier], tier: tier+1}
 	return {money: new Decimal("1e60000"), tier: 8}
 }
@@ -8891,7 +8896,6 @@ var totalMult = 1
 var currentMult = 1
 var infinitiedMult = 1
 var achievementMult = 1
-var challengeMult = 1
 var unspentBonus = 1
 var mult18 = 1
 var ec10bonus = new Decimal(1)
@@ -8901,7 +8905,6 @@ function updatePowers() {
 	currentMult = Math.pow(player.money.e+1, player.galacticSacrifice?2:0.5)
 	infinitiedMult = getInfinitiedMult()
 	achievementMult = Math.max(Math.pow((player.achievements.length-(player.galacticSacrifice?10:30)-getSecretAchAmount()), player.galacticSacrifice?5:3)/40,1)
-	challengeMult = Decimal.pow(worstChallengeBonus, player.galacticSacrifice?2:1)
 	unspentBonus = getUnspentBonus()
 	if (player.boughtDims) mult18 = getDimensionFinalMultiplier(1).max(1).times(getDimensionFinalMultiplier(8).max(1)).pow(0.02)
 	else mult18 = getDimensionFinalMultiplier(1).times(getDimensionFinalMultiplier(8)).pow(0.02)
