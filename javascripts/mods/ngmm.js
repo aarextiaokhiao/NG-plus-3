@@ -6,8 +6,8 @@ function getGSAmount() {
 		y += Math.max(0, 0.05*(galaxies - 10)) + 0.005 * Math.pow(Math.max(0, galaxies-30) , 2) + 0.0005 * Math.pow(Math.max(0, galaxies-50) , 3)
 		y *= .08*player.challenges.length
 	}
-	if (y > 100) y = Math.pow(316.22*y,1/3)
-	else if (y > 10) y = Math.pow(10*y , .5)
+	if (y > 100) y = Math.pow(316.22*y, 2/5)
+	else if (y > 10) y = Math.pow(10*y, .5)
 	let z = 1
 	if (player.challenges.length > 17 && player.achievements.includes("r67")) {
 		z = 0.06*player.challenges.length
@@ -24,7 +24,7 @@ function getGSAmount() {
 		if (player.bestInfinityTime >= 18000) ret = ret.times(Math.max(180000/player.bestInfinityTime,1))
 		else ret = ret.times(10*(1+Math.pow(Math.log10(18000/player.bestInfinityTime),2)))
 	}
-	if (player.achievements.includes("r62")) ret = ret.times(Math.max(1, player.infinityPoints.log10()))
+	if (player.achievements.includes("r62")) ret = ret.times(player.infinityPoints.max(10).log10())
 	return ret.floor()
 }
 
@@ -111,12 +111,11 @@ function reduceDimCosts() {
 
 let galUpgrade11 = function () {
 	let x = Math.min(player.infinitied, 1e6);
-	let y;
+	let y = 2;
 	let z = 10
 	if (player.challenges.length > 14 && player.challenges.includes("postcngmm_1")) z -= (player.challenges.length-8)/4
 	if (z < 6) z = Math.pow(1296 * z, .2)
-	if (x < 1) y = 2
-	else if (x < 5) y = x + 2
+	if (x > 0 && x < 5) y = x + 2
 	else if (x < 100) y = Math.pow(x + 5, .5) + 4
 	else y = Math.pow(Math.log(x), Math.log(x) / z) + 14
 	return Decimal.pow(10, Math.min(y, 2e4));
@@ -196,11 +195,11 @@ function productAllTotalBought1 () {
 }
 
 function productAllDims1(){
-	var ret = 0;
+	var ret = new Decimal(0)
 	for (i = 1; i <= 8; i++) {
-		ret += Math.max(player[TIER_NAMES[i] + "Amount"].max(1).log10(), 0);
+		ret = ret.add(Math.max(player[TIER_NAMES[i] + "Amount"].max(1).log10(),0));
 	}
-	return Math.min(1,ret);
+	return ret.min(1)
 }
 
 document.getElementById("challenge13").onclick = function () {

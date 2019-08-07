@@ -2327,7 +2327,6 @@ function getPostC3RewardMult() {
 	if (player.currentChallenge=="postcngmm_3") return 1
 	let perGalaxy = 0.005;
 	if (player.tickspeedBoosts != undefined) perGalaxy = 0.002
-	if (player.challenges.length > 15) perGalaxy *= (player.challenges.length-5)/10
 	if (inQC(2)) perGalaxy = 0
 	if (player.masterystudies !== undefined ? player.quantum.bigRip.active : false) {
 		if (ghostified&&player.ghostify.neutrinos.boosts>8) perGalaxy*=tmp.nb[8]
@@ -6729,7 +6728,7 @@ function updateDilation() {
 function getNewInfReq() {
 	let reqs = [new Decimal("1e1100"), new Decimal("1e1900"), new Decimal("1e2400"), new Decimal("1e10500"), new Decimal("1e30000"), new Decimal("1e45000"), new Decimal("1e54000")]
 	if (player.galacticSacrifice !== undefined) {
-		if (player.tickspeedBoosts !== undefined) reqs[1] = new Decimal("1e1500")
+		if (player.tickspeedBoosts === undefined) reqs[1] = new Decimal("1e1500")
 		reqs[4] = new Decimal("1e9600")
 	}
 	for (var tier=0;tier<7;tier++) if (!player.infDimensionsUnlocked[tier]) return {money: reqs[tier], tier: tier+1}

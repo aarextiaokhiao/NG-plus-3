@@ -29,7 +29,7 @@ function getGalaxyPowerEff(ng, bi) {
 	if (player.galacticSacrifice) if (player.galacticSacrifice.upgrades.includes(22)) eff *= 5;
 	if (player.infinityUpgrades.includes("galaxyBoost")) eff *= 2;
 	if (player.infinityUpgrades.includes("postGalaxy")) eff *= player.galacticSacrifice ? 1.7 : 1.5;
-	if (player.challenges.includes("postc5")) eff *= player.galacticSacrifice ? 1.3 : 1.1;
+	if (player.challenges.includes("postc5")) eff *= player.galacticSacrifice ? 1.15 : 1.1;
 	if (player.achievements.includes("r86")) eff *= player.galacticSacrifice ? 1.05 : 1.01
 	if (player.galacticSacrifice) {
 		if (player.achievements.includes("r83")) eff *= 1.05
@@ -126,15 +126,11 @@ document.getElementById("tickSpeed").onclick = function () {
 };
 
 function getTickSpeedCostMultiplierIncrease() {
-  if (inQC(7)) return Number.MAX_VALUE
-  let ret = player.tickSpeedMultDecrease;
-  if (player.currentChallenge === 'postcngmm_2') {
-    ret = Math.pow(ret, .5);
-  } else if (player.challenges.includes('postcngmm_2')) {
-    ret = Math.pow(ret, .9);
-    ret = Math.pow(ret, 1 / (1 + Math.pow(player.galaxies, 0.7) / 10));
-  }
-  return ret;
+	if (inQC(7)) return Number.MAX_VALUE
+	let ret = player.tickSpeedMultDecrease;
+	if (player.currentChallenge === 'postcngmm_2') ret = Math.pow(ret, .5)
+	else if (player.challenges.includes('postcngmm_2')) ret = Math.pow(ret, .9 / (1 + Math.pow(player.galaxies, 0.7) / 10))
+	return ret
 }
 
 function buyMaxPostInfTickSpeed (mult) {
