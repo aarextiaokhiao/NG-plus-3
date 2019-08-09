@@ -982,17 +982,7 @@ function updateTemp() {
 	tmp.nrm=player.replicanti.amount.max(1)
 	tmp.rg4=false
 	if (player.masterystudies !== undefined) {
-		tmp.be=player.quantum.bigRip.active&&player.quantum.breakEternity.break
-		tmp.rg4=player.quantum.upgrades.includes("rg4")&&(player.quantum.rg4||inQC(1)||QCIntensity(1))
-		if (player.masterystudies.includes("d14")) {
-			tmp.bru[0]=Decimal.pow(2,player.replicanti.galaxies+extraReplGalaxies) //BRU8
-			if (!hasNU(11)) tmp.bru[0]=tmp.bru[0].min(Number.MAX_VALUE)
-			if (!player.quantum.bigRip.active) tmp.bru[0]=1
-			var ret=Math.min(player.quantum.bigRip.spaceShards.div(3e18).add(1).log10()/3,0.4)
-			tmp.bru[1]=Math.sqrt(player.quantum.bigRip.spaceShards.div(3e15).add(1).log10()*ret+1) //BRU14
 		}
-		if (!player.dilation.active&&player.quantum.bigRip.active&&player.quantum.bigRip.upgrades.includes(14)) tmp.nrm=tmp.nrm.pow(tmp.bru[1])
-		tmp.ns=nanospeed
 		if (ghostified) {
 			if (player.quantum.nanofield.rewards<16) tmp.ns*=player.ghostify.milestones?6:3
 			tmp.nb[0]=Math.log10(player.ghostify.neutrinos.electron.add(1).log10()+player.ghostify.neutrinos.mu.add(1).log10()+player.ghostify.neutrinos.tau.add(1).log10()+1)*0.75
@@ -1010,6 +1000,22 @@ function updateTemp() {
 			tmp.nu[2]=Decimal.pow(20,Math.pow(ret,1/4)) //NU4
 			tmp.nu[3]=player.quantum.colorPowers.g.add(1).pow(1/400) //NU7
 		}
+		if (player.masterystudies.includes("d14")) {
+			let exp = player.quantum.bigRip.upgrades.includes(17) ? 2.9 : 1
+			if (ghostified && player.ghostify.neutrinos.boosts > 7) exp *= tmp.nb[7]
+			let log = player.infinityPoints.max(1).log10() * exp
+			if (log > 3e8) log = Math.pow(log / 3e8, 0.75) * 3e8
+			tmp.bru[0]=Decimal.pow(10, log) //BRU1
+			tmp.bru[1]=Decimal.pow(2,player.replicanti.galaxies+extraReplGalaxies) //BRU8
+			if (!hasNU(11)) tmp.bru[0]=tmp.bru[0].min(Number.MAX_VALUE)
+			if (!player.quantum.bigRip.active) tmp.bru[0]=1
+			var ret=Math.min(player.quantum.bigRip.spaceShards.div(3e18).add(1).log10()/3,0.4)
+			tmp.bru[2]=Math.sqrt(player.quantum.bigRip.spaceShards.div(3e15).add(1).log10()*ret+1) //BRU14
+		}
+		tmp.be=player.quantum.bigRip.active&&player.quantum.breakEternity.break
+		tmp.ns=nanospeed
+		tmp.rg4=player.quantum.upgrades.includes("rg4")&&(player.quantum.rg4||(hasNU(13)?player.quantum.bigRip.active:inQC(1)||QCIntensity(1)))
+		if (!player.dilation.active&&player.quantum.bigRip.active&&player.quantum.bigRip.upgrades.includes(14)) tmp.nrm=tmp.nrm.pow(tmp.bru[2])
 	} else tmp.be=false
 	var ret=(3-player.tickspeed.log10())*0.000005
 	if (ghostified&&player.ghostify.neutrinos.boosts>3) ret*=tmp.nb[3]
