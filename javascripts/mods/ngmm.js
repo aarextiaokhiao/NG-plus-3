@@ -111,13 +111,12 @@ function reduceDimCosts() {
 
 let galUpgrade11 = function () {
 	let x = Math.min(player.infinitied, 1e6);
-	let y = 2;
+	let y = Math.max(x + 2, 2);
 	let z = 10
 	if (player.challenges.length > 14 && player.challenges.includes("postcngmm_1")) z -= (player.challenges.length-8)/4
 	if (z < 6) z = Math.pow(1296 * z, .2)
-	if (x > 0 && x < 5) y = x + 2
-	else if (x < 100) y = Math.pow(x + 5, .5) + 4
-	else y = Math.pow(Math.log(x), Math.log(x) / z) + 14
+	if (x > 99) y = Math.pow(Math.log(x), Math.log(x) / z) + 14
+	else if (x > 4) y = Math.pow(x + 5, .5) + 4
 	return Decimal.pow(10, Math.min(y, 2e4));
 }
 let galUpgrade12 = function () {

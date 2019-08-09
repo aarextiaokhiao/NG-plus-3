@@ -711,6 +711,7 @@ function quantumReset(force, auto, challid, bigRip, implode=false) {
 		player.quantum.times++
 		if (!inQC(6)) {
 			player.quantum.quarks = player.quantum.quarks.plus(qkGain)
+			if (player.masterystudies !== undefined ? player.ghostify.milestones < 8 : true) player.quantum.quarks = player.quantum.quarks.round()
 			if (player.masterystudies != undefined && player.quantum.quarks.gte(Number.MAX_VALUE) && !player.quantum.reachedInfQK) {
 				if (!ghostified) {
 					document.getElementById("welcome").style.display = "flex"
