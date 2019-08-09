@@ -5401,6 +5401,7 @@ function eternity(force, auto, presetLoad, dilated) {
             aarexModifications: player.aarexModifications
         };
         if (player.galacticSacrifice && getEternitied() < 2) player.autobuyers[12]=13
+        if (player.tickspeedBoosts !== undefined && getEternitied() < 2) player.autobuyers[13]=14
         var dilated2=player.dilation.active
         if (dilated2) {
             player.dilation.active = false
@@ -6381,6 +6382,7 @@ function startEternityChallenge(name, startgoal, goalIncrease) {
         aarexModifications: player.aarexModifications
     };
     if (player.galacticSacrifice && getEternitied() < 2) player.autobuyers[12]=13
+    if (player.tickspeedBoosts !== undefined && getEternitied() < 2) player.autobuyers[13]=14
     if (player.dilation.active) {
         player.dilation.active = false
         if (player.masterystudies && quantumed) updateColorCharge()
@@ -6470,7 +6472,7 @@ function startEternityChallenge(name, startgoal, goalIncrease) {
     Marathon2 = 0;
     updatePowers()
     doAutoEterTick()
-    if (player.masterystudies&&player.dilation.upgrades.includes("ngpp3")&&getEternitied()>=1e9) player.dbPower=new Decimal(1)
+    if (player.masterystudies&&player.dilation.upgrades.includes("ngpp3")&&getEternitied()>=1e9) player.dbPower=getDimensionBoostPower()
 }
 
 var failsafeDilateTime = false

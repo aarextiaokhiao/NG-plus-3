@@ -3050,7 +3050,7 @@ function ghostifyReset(implode, gain, amount, force) {
 		thisInfinityTime: 0,
 		resets: 0,
 		dbPower: player.dbPower,
-		tickspeedBoosts: player.tickspeedBoosts,
+		tickspeedBoosts: player.tickspeedBoosts !== undefined ? 16 : undefined,
 		galaxies: 0,
 		galacticSacrifice: resetGalacticSacrifice(),
 		totalmoney: player.totalmoney,

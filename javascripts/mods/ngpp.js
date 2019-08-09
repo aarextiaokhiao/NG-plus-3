@@ -827,7 +827,7 @@ function quantumReset(force, auto, challid, bigRip, implode=false) {
 		thisInfinityTime: 0,
 		resets: keepABnICs ? 4 : 0,
 		dbPower: player.dbPower,
-		tickspeedBoosts: player.tickspeedBoosts,
+		tickspeedBoosts: player.tickspeedBoosts !== undefined ? (keepABnICs ? 16 : 0) : undefined,
 		galaxies: keepABnICs ? 1 : 0,
 		galacticSacrifice: resetGalacticSacrifice(),
 		totalmoney: player.totalmoney,
