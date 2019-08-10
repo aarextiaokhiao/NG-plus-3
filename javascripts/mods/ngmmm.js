@@ -1,11 +1,11 @@
 function getTickspeedBoostRequirement(bulk=1) {
 	let resets=player.tickspeedBoosts+bulk-1
-	return {tier:player.currentChallenge=="challenge4"?6:8,amount:resets*5+35}
+	return {tier:player.currentChallenge=="challenge4"?6:8,amount:resets*5+30}
 }
 
 function tickspeedBoost(bulk) {
 	player.tickspeedBoosts+=bulk
-	softReset(player.achievements.includes("r27")?0:-player.resets,true)
+	softReset(player.achievements.includes("r27")&&5*player.galaxies-8>player.tickspeedBoosts?0:-player.resets,true)
 	player.tickBoughtThisInf=updateTBTIonGalaxy()
 }
 
@@ -17,9 +17,8 @@ function resetTickspeedBoosts() {
 function getProductBoughtMult() {
 	let mult = 1
 	if (player.tickspeedBoosts != undefined) {
-		mult = 0.2
-		if (player.galacticSacrifice.upgrades.includes(24)) mult = galUpgrade24().max(0.2)
-		if (player.currentChallenge == "challenge13" || player.currentChallenge == "postc1") mult = Math.max(mult/2, 0.1)
+		mult = player.galacticSacrifice.upgrades.includes(24) ? galUpgrade24() : 0.2
+		if (player.currentChallenge == "challenge13" || player.currentChallenge == "postc1") mult = Decimal.div(mult, 2)
 	}
 	return mult
 }
@@ -61,5 +60,5 @@ function manualTickspeedBoost() {
 }
 
 function galUpgrade24() {
-	return player.galacticSacrifice.galaxyPoints.pow(0.25).div(10)
+	return player.galacticSacrifice.galaxyPoints.pow(0.25).div(20).max(0.2)
 }

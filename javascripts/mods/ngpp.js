@@ -518,7 +518,7 @@ let quarkGain = function () {
 	if (player.masterystudies) {
 		if (!player.quantum.times&&!player.ghostify.milestones) return new Decimal(1)
 		if (player.ghostify.milestones) ma = player.meta.bestAntimatter
-		var log = ma.max(1).log10() / 280 - 1.355
+		var log = (ma.max(1).log10() - 379.4) / (player.achievements.includes("ng3p63") ? 279.8 : 280)
 		if (log > 1.2) log = log*log/1.2
 		if (log > 738 && !hasNU(8)) log = Math.sqrt(log * 738)
 		return Decimal.pow(10, log).times(Decimal.pow(2, player.quantum.multPower.total)).floor()
@@ -1032,9 +1032,8 @@ function quantumReset(force, auto, challid, bigRip, implode=false) {
 		dilation: {
 			studies: bigRip ? (player.quantum.bigRip.upgrades.includes(12) ? [1,2,3,4,5,6] : player.quantum.bigRip.upgrades.includes(10) ? [1] : []) : isRewardEnabled(4) ? (speedrunMilestonesReached > 5 ? [1,2,3,4,5,6] : [1]) : [],
 			active: false,
-			tachyonParticles: player.achievements.includes("ng3p37") && (bigRip ? player.quantum.bigRip.upgrades.includes(11) : true) ? player.dilation.bestTP.pow(!challid && player.ghostify.milestones > 3 ? 1 : 0.5) : new Decimal(0),
+			tachyonParticles: (player.achievements.includes("ng3p37") && (bigRip ? player.quantum.bigRip.upgrades.includes(11) : true)) || player.achievements.includes("ng3p7x") ? player.dilation.bestTP.pow(player.achievements.includes("ng3p7x") || (!challid && player.ghostify.milestones > 3) ? 1 : 0.5) : new Decimal(0),
 			dilatedTime: new Decimal(speedrunMilestonesReached>21 && isRewardEnabled(4) && !bigRip?1e100:0),
-			totalTachyonParticles: player.achievements.includes("ng3p37") && (bigRip ? player.quantum.bigRip.upgrades.includes(11) : true) ? player.dilation.bestTP.pow(!challid && player.ghostify.milestones > 3 ? 1 : 0.5) : new Decimal(0),
 			bestTP: player.dilation.bestTP,
 			bestTPOverGhostifies: player.dilation.bestTPOverGhostifies,
 			nextThreshold: new Decimal(1000),
@@ -1119,6 +1118,7 @@ function quantumReset(force, auto, challid, bigRip, implode=false) {
 	player.eternityChallUnlocked=0
 	if (headstart) for (ec=1;ec<13;ec++) player.eternityChalls['eterc'+ec]=5
 	else if (isRewardEnabled(3) && !bigRip) for (ec=1;ec<15;ec++) player.eternityChalls['eterc'+ec] = 5
+	player.dilation.totalTachyonParticles = player.dilation.tachyonParticles
 	if (player.masterystudies) {
 		giveAchievement("Sub-atomic")
 		ipMultPower=GUBought("gb3")?2.3:player.masterystudies.includes("t241")?2.2:2
@@ -1226,7 +1226,7 @@ function quantumReset(force, auto, challid, bigRip, implode=false) {
 		document.getElementById("metaAntimatterEffectType").textContent=inQC(3)?"multiplier on all Infinity Dimensions":"extra multiplier per dimension boost"
 		updateColorCharge()
 		updateGluons()
-		document.getElementById('rg4toggle').style.display=inQC(1)||QCIntensity(1)?"none":""
+		document.getElementById('rg4toggle').style.display=(hasNU(13)?player.quantum.bigRip.active:inQC(1)||QCIntensity(1))?"none":""
 		updateElectrons()
 		updateBankedEter()
 		updateQuantumChallenges()
@@ -1345,7 +1345,6 @@ function quantumReset(force, auto, challid, bigRip, implode=false) {
 	document.getElementById("eternitybtn").style.display = player.infinityPoints.gte(player.eternityChallGoal) ? "inline-block" : "none"
 	document.getElementById("eternityPoints2").style.display = "inline-block"
 	document.getElementById("eternitystorebtn").style.display = "inline-block"
-	document.getElementById("infiMult").innerHTML = "Multiply infinity points from all sources by 2 <br>currently: "+shorten(getIPMult()) +"x<br>Cost: "+shortenCosts(player.infMultCost)+" IP"
 	updateEternityUpgrades()
 	document.getElementById("totaltickgained").textContent = "You've gained "+player.totalTickGained.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")+" tickspeed upgrades."
 	updateTickSpeed();
@@ -1388,9 +1387,12 @@ function quantumReset(force, auto, challid, bigRip, implode=false) {
 
 function updateQuarkDisplay() {
 	let msg=""
-	if (quantumed) msg+="You have <b class='QKAmount'>"+shortenDimensions(player.quantum.quarks)+"</b> quark"+(player.quantum.quarks.round().eq(1)?"":"s")
-	if (player.masterystudies!==undefined?player.masterystudies.includes("d14"):false) msg+=" and <b class='SSAmount'>"+shortenDimensions(player.quantum.bigRip.spaceShards)+"</b> Space Shard"+(player.quantum.bigRip.spaceShards.round().eq(1)?"":"s")
-	if (quantumed) msg+="."
+	if (quantumed) {
+		msg+="You have <b class='QKAmount'>"+shortenDimensions(player.quantum.quarks)+"</b> "	
+		if (player.masterystudies!==undefined?player.masterystudies.includes("d14"):false) msg+=" QK and <b class='SSAmount'>"+shortenDimensions(player.quantum.bigRip.spaceShards)+"</b> Space Shard"+(player.quantum.bigRip.spaceShards.round().eq(1)?"":"s")
+		else msg+="quark"+(player.quantum.quarks.round().eq(1)?"":"s")
+		msg+="."
+	}
 	document.getElementById("quarks").innerHTML=msg
 }
 

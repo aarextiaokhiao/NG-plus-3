@@ -156,8 +156,9 @@ button, div.storebtn {
     color: #e5e5e5 !important
 }
 
-#singularityPower, #darkMatterAmount, #darkMatterPerSecond, #nextUpgrade, #darkMatterDT, #nextDiscounts, #blackholePowAmount, #replicantAmount, #workerReplAmount, #hatchProgress, #babyReplAmount, #growupRate, #replicantAmountED {
-	color: #0c0c0c !important
+#singularityPower, #darkMatterAmount, #darkMatterPerSecond, #nextUpgrade, #darkMatterDT, #nextDiscounts, #blackholePowAmount, #replicantAmount, #workerReplAmount, #hatchProgress, #babyReplAmount, #growupRate, #replicantAmountED, .dmAmount {
+	color: #0c0c0c !important;
+	text-shadow: 0px 0px 3px #0c0c0c, 0px 0px 4.5px #e5e5e5
 }
 
 .infchallengediv, .pc2completed {
@@ -308,7 +309,7 @@ button, div.storebtn {
 	background-color: #57e5e5 !important
 }
 
-#tachyonParticleAmount, #dilatedTimeAmount, #dilatedTimePerSecond, #galaxyThreshold, #DilMultAmount, #exDilationAmount, #exDilationBenefit {
+#tachyonParticleAmount, #dilatedTimeAmount, #dilatedTimePerSecond, #galaxyThreshold, #DilMultAmount, #exDilationAmount, #exDilationBenefit, #dtGPH {
 	color: #00e500 !important
 }
 
@@ -316,7 +317,7 @@ button, div.storebtn {
 	color: #00e5e5 !important
 }
 
-#metadimensions table #quantum.storebtn, .quantumbtn, #pastquantums, #speedrunsbtn button, #dilstudy8.dilationupgbought, #qctabbtn, #qcsbtn, #dilstudy9.dilationupgbought, #pccompletionsbtn {
+#metadimensions table #quantum.storebtn, .quantumbtn, #pastquantums, #dilstudy8.dilationupgbought, #qctabbtn, #qcsbtn, #dilstudy9.dilationupgbought, #pccompletionsbtn {
 	background-color: #009900 !important;
 	color: #191919 !important
 }
@@ -327,7 +328,7 @@ button, div.storebtn {
 	color: #191919 !important
 }
 
-#metadimensions table #quantum.storebtn:hover, .quantumbtn:hover, #pastquantums:hover, #speedrunsbtn button:hover, #dilstudy8.dilationupg, #qctabbtn:hover, #qcsbtn:hover, #dilstudy9.dilationupg, #pccompletionsbtn:hover {
+#metadimensions table #quantum.storebtn:hover, .quantumbtn:hover, #pastquantums:hover, #dilstudy8.dilationupg, #qctabbtn:hover, #qcsbtn:hover, #dilstudy9.dilationupg, #pccompletionsbtn:hover {
 	background-color: #269926 !important
 }
 
@@ -538,6 +539,43 @@ button, div.storebtn {
 
 #tooMuchPowerConsumed {
 	color: #e50000
+}
+
+#gphtabbtn {
+	background-color: #bfaf5f !important;
+	color: #191919 !important
+}
+
+#gphtabbtn:hover {
+	background-color: #bcae67 !important
+}
+
+.gphAmount {
+	color: #bfaf5f
+}
+
+.ghr {
+	color: #ccc8b7
+}
+
+.orange {
+	color: #e57200
+}
+
+.yellow {
+	color: #e5e500
+}
+
+.indigo {
+	color: #3900e5
+}
+
+.violet {
+	color: #7200e5
+}
+
+.uv {
+	color: #ac00e5
 }
 				
 @keyframes rg {

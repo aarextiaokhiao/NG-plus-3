@@ -7,7 +7,6 @@ function buyWithAntimatter() {
       player.money = player.money.minus(player.timestudy.amcost)
       player.timestudy.amcost = player.timestudy.amcost.times(new Decimal("1e20000"))
       player.timestudy.theorem += 1
-      updateTheoremButtons()
       updateTimeStudyButtons()
       return true
   } else return false
@@ -18,7 +17,6 @@ function buyWithIP() {
       player.infinityPoints = player.infinityPoints.minus(player.timestudy.ipcost)
       player.timestudy.ipcost = player.timestudy.ipcost.times(1e100)
       player.timestudy.theorem += 1
-      updateTheoremButtons()
       updateTimeStudyButtons()
       return true
   } else return false
@@ -33,7 +31,6 @@ function buyWithEP() {
       player.eternityPoints = player.eternityPoints.minus(player.timestudy.epcost)
       player.timestudy.epcost = player.timestudy.epcost.times(2)
       player.timestudy.theorem += 1
-      updateTheoremButtons()
       updateTimeStudyButtons()
       updateEternityUpgrades()
       return true
@@ -62,7 +59,6 @@ function maxTheorems() {
 		if (!break_infinity_js && isNaN(player.eternityPoints.logarithm)) player.eternityPoints = new Decimal(0)
 		player.timestudy.epcost = player.timestudy.epcost.times(Decimal.pow(2, gainTT))
 	}
-	updateTheoremButtons()
 	updateTimeStudyButtons()
 	updateEternityUpgrades()
 }
@@ -130,7 +126,6 @@ function buyTimeStudy(name, check, quickBuy) {
           else document.getElementById("replicantiresettoggle").textContent = "Auto galaxy OFF (disabled)"
       }
       if (quickBuy) return
-      updateTheoremButtons()
       updateTimeStudyButtons()
       drawStudyTree()
   }
@@ -153,7 +148,6 @@ function buyDilationStudy(name, cost) {
         player.dilation.studies.push(name)
         player.timestudy.theorem -= cost
         document.getElementById("dilstudy"+name).className = "dilationupgbought"
-        updateTheoremButtons()
         updateTimeStudyButtons()
         drawStudyTree()
     }
@@ -427,16 +421,15 @@ function respecTimeStudies(force, presetLoad) {
       player.timestudy.studies=respecedTS
   }
   if (respecMastery) {
-      if (player.eternityChallUnlocked>12) player.timestudy.theorem += masterystudies.costs.ec[player.eternityChallUnlocked]
-
       var respecedMS=[]
+      player.timestudy.theorem+=masterystudies.spentTT
+	  if (player.masterystudies.includes("t373")) {
+		  updateColorCharge()
+		  gotAch=false
+	  }
       for (id=0;id<player.masterystudies.length;id++) {
-          var t = player.masterystudies[id].split("t")[1]
-          if (t) {
-			  if (t==373) updateColorCharge()
-              player.timestudy.theorem+=masterystudies.costs.time[t]
-              gotAch=false
-          } else respecedMS.push(player.masterystudies[id])
+          var d = player.masterystudies[id].split("d")[1]
+          if (d) respecedMS.push(player.masterystudies[id])
       }
       if (player.masterystudies.length>respecedMS.length) player.quantum.wasted = false
       player.masterystudies=respecedMS
@@ -451,7 +444,6 @@ function respecTimeStudies(force, presetLoad) {
   updateEternityChallenges()
   if (!presetLoad) {
       updateTimeStudyButtons()
-      updateTheoremButtons()
       drawStudyTree()
   }
   if (gotAch) giveAchievement("You do know how these work, right?")
@@ -578,12 +570,12 @@ function importStudyTree(input) {
 			setTimeout(function(){ justImported = false; }, 100);
 		}
 		if (player.masterystudies.length > oldLengthMS) {
+			updateMasteryStudyCosts()
 			updateMasteryStudyButtons()
 			updateMasteryStudyTextDisplay()
 			drawMasteryTree()
 		}
 		if (player.timestudy.length > oldLength) {
-			updateTheoremButtons()
 			updateTimeStudyButtons()
 			drawStudyTree()
 		}
@@ -623,14 +615,14 @@ function new_preset(importing) {
 	latestRow.innerHTML=getPresetLayout(placement)
 	loadedPresets++
 	changePresetTitle(placement, loadedPresets)
-	localStorage.setItem("AD_aarexModifications",btoa(JSON.stringify(metaSave)))
+	localStorage.setItem("AD_aarexModifications_gph",btoa(JSON.stringify(metaSave)))
 	$.notify("Preset created", "info")
 }
 
 //Smart presets
 var onERS = false
 var onNGP3 = false
-var prefix = "dsAM_ST_"
+var prefix = "dsAM_gph_ST_"
 var poData
 
 function save_preset(id) {
@@ -688,7 +680,7 @@ function delete_preset(presetId) {
     }
     metaSave["presetsOrder"+(player.boughtDims?"_ers":"")]=newPresetsOrder
     poData=newPresetsOrder
-    localStorage.setItem("AD_aarexModifications",btoa(JSON.stringify(metaSave)))
+    localStorage.setItem("AD_aarexModifications_gph",btoa(JSON.stringify(metaSave)))
     $.notify("Preset deleted", "info")
 }
 
@@ -714,7 +706,7 @@ function move_preset(id,offset) {
 	document.getElementById("presets").rows[placement+offset].innerHTML=getPresetLayout(id)
 	changePresetTitle(poData[placement],placement)
 	changePresetTitle(poData[placement+offset],placement+offset)
-	localStorage.setItem("AD_aarexModifications",btoa(JSON.stringify(metaSave)))
+	localStorage.setItem("AD_aarexModifications_gph",btoa(JSON.stringify(metaSave)))
 }
 
 var loadedPresets=0
@@ -726,8 +718,8 @@ function openStudyPresets() {
 		document.getElementById("presets").innerHTML=""
 		presets = {}
 		onERS = saveOnERS
-		if (onERS) prefix = "dsERS_ST_"
-		else prefix = "dsAM_ST_"
+		if (onERS) prefix = "dsERS_gph_ST_"
+		else prefix = "dsAM_gph_ST_"
 		loadedPresets = 0
 	} else if (saveOnNGP3!=onNGP3) {
 		onNGP3=saveOnNGP3
@@ -761,7 +753,7 @@ function openStudyPresets() {
 }
 
 function getPresetLayout(id) {
-	return "<b id='preset_"+id+"_title'>Preset #"+(loadedPresets+1)+"</b><br><button class='storebtn' onclick='save_preset("+id+")'>Save</button><button class='storebtn' onclick='load_preset("+id+")'>Load</button>"+(onNGP3?"<button class='storebtn' style='font-size: 10px' onclick='load_preset("+id+", true)'>Load and Eternity</button>":"")+"<button class='storebtn' onclick='rename_preset("+id+")'>Rename</button><button class='storebtn' onclick='move_preset("+id+",-1)'>Move up</button><button class='storebtn' onclick='move_preset("+id+",1)'>Move down</button><button class='storebtn' onclick='delete_preset("+id+")'>Delete</button>"
+	return "<b id='preset_"+id+"_title'>Preset #"+(loadedPresets+1)+"</b><br><button class='storebtn' onclick='save_preset("+id+")'>Save</button><button class='storebtn' onclick='load_preset("+id+")'>Load</button>"+(onNGP3?"<button class='storebtn' style='font-size: 10px' onclick='load_preset("+id+", true)'>Eternity and Load</button>":"")+"<button class='storebtn' onclick='rename_preset("+id+")'>Rename</button><button class='storebtn' onclick='move_preset("+id+",-1)'>Move up</button><button class='storebtn' onclick='move_preset("+id+",1)'>Move down</button><button class='storebtn' onclick='delete_preset("+id+")'>Delete</button>"
 }
 
 function changePresetTitle(id, placement) {

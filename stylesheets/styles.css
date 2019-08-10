@@ -1859,7 +1859,7 @@ br {
     position: relative;
 }
 
-.qtable, #gluonupgrades {
+.qtable, #gluonupgrades, #lights {
 	width:100%
 }
 
@@ -2155,6 +2155,12 @@ br {
 	color: #1f1f1f;
 	box-shadow: inset 0px 0px 10px 0px #6b996e, inset 0px 0px 20px 0px #6b996e, inset 0px 0px 30px 0px #6b996e
 }
+.gluonupgradebought.bigripoff {
+	background: #999999;
+	border: 3px solid #727272;
+	color: #bf0000;
+	box-shadow: inset 0px 0px 10px 0px #727272, inset 0px 0px 20px 0px #727272, inset 0px 0px 30px 0px #727272
+}
 
 #ghostifyani {
 	position: fixed;
@@ -2257,6 +2263,47 @@ br {
 
 #autoGhost11pw, #autoGhost11lw, #autoGhost11cw {
 	width: 50px
+}
+
+#lights td {
+	min-width:25%;
+	width:25%;
+	max-width:25%;
+	text-align:center
+}
+
+.gluonupgrade.gph {
+	background: #ccc8b7;
+	border: 1px solid #bfaf5f;
+	box-shadow: inset 0px 0px 20px 0px #bfaf5f;
+	color: black;
+	text-shadow: 0px 0px 3px black, 0px 0px 6px #bfaf5f
+}
+
+.gluonupgrade.gph:hover {
+	color: white;
+	text-shadow: 0px 0px 3px white, 0px 0px 6px black;
+	cursor: pointer
+}
+
+.orange {
+	color: #bf5f00
+}
+
+.yellow {
+	color: #bfbf00
+}
+
+.indigo {
+	color: #2f00bf
+}
+
+.violet {
+	color: #5f00bf
+}
+
+.uv {
+	color: #8f00bf
 }
 
 @media print,

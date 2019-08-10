@@ -1,8 +1,5 @@
 function getDimensionFinalMultiplier(tier) {
-  //if (player.currentEternityChall == "eterc3" && tier > 4) return new Decimal(0)
-  var name = TIER_NAMES[tier];
-
-  let multiplier = new Decimal(player[name + 'Pow']);
+  let multiplier = player[TIER_NAMES[tier] + 'Pow']
 
   if (player.currentChallenge == "postcngm3_2") return player.infinityPower.pow(getInfinityPowerEffectPower()).max(1)
   if (player.currentEternityChall == "eterc11") return player.infinityPower.pow(getInfinityPowerEffectPower()).max(1).times(Decimal.pow(getDimensionBoostPower(), player.resets - tier + 1).max(1))
@@ -101,11 +98,7 @@ function getDimensionFinalMultiplier(tier) {
       if (multiplier.lt(1)) multiplier = new Decimal(1)
   }
   if (player.masterystudies != undefined) if (player.dilation.active) multiplier = multiplier.pow(getNanofieldRewardEffect(5))
-  if (isBigRipUpgradeActive(1)) {
-      let exp = player.quantum.bigRip.upgrades.includes(17) ? 2.9 : 1
-      if (ghostified && player.ghostify.neutrinos.boosts > 7) exp *= tmp.nb[7]
-      multiplier = multiplier.times(player.infinityPoints.pow(exp).max(1))
-  }
+  if (isBigRipUpgradeActive(1)) multiplier = multiplier.times(tmp.bru[0])
   return multiplier;
 }
 
@@ -308,7 +301,7 @@ function buyOneDimension(tier) {
 		else if (player.currentChallenge == "challenge5") multiplySameCosts(player[name + 'Cost'])
 		else player[name + "Cost"] = player[name + "Cost"].times(getDimensionCostMultiplier(tier))
 		if (costIncreaseActive(player[name + "Cost"])) player.costMultipliers[tier-1] = player.costMultipliers[tier-1].times(getDimensionCostMultiplierIncrease())
-		floatText(name+"D", "x" + shortenMoney(getDimensionPowerMultiplier(tier)))
+		floatText("D"+tier, "x" + shortenMoney(getDimensionPowerMultiplier(tier)))
 	}
 	if (tier < 2 && player.firstAmount.gte(1e150)) giveAchievement("There's no point in doing that")
 	onBuyDimension(tier)
@@ -331,7 +324,7 @@ function buyManyDimension(tier, quick) {
 	else player[name + "Cost"] = player[name + "Cost"].times(getDimensionCostMultiplier(tier))
 	if (costIncreaseActive(player[name + "Cost"])) player.costMultipliers[tier-1] = player.costMultipliers[tier-1].times(getDimensionCostMultiplierIncrease())
 	if (!quick) {
-		floatText(name+"D", "x" + shortenMoney(getDimensionPowerMultiplier(tier)))
+		floatText("D"+tier, "x" + shortenMoney(getDimensionPowerMultiplier(tier)))
 		onBuyDimension(tier)
 	}
 	return true
@@ -397,7 +390,7 @@ function buyBulkDimension(tier, bulk, auto) {
 		player.costMultipliers[tier-1] = newMult.times(mi)
 		bought += toBuy
 	}
-	if (!auto) floatText(name+"D", "x" + shortenMoney(Decimal.pow(getDimensionPowerMultiplier(tier), bought)))
+	if (!auto) floatText("D"+tier, "x" + shortenMoney(Decimal.pow(getDimensionPowerMultiplier(tier), bought)))
 	onBuyDimension(tier)
 }
 
@@ -418,71 +411,6 @@ function getOrSubResource(tier, sub) {
 		else player.money = player.money.sub(sub)
 	}
 }
-
-
-document.getElementById("first").onclick = function () {
-    buyOneDimension(1);
-};
-
-document.getElementById("second").onclick = function () {
-    buyOneDimension(2);
-};
-
-document.getElementById("third").onclick = function () {
-    buyOneDimension(3);
-};
-
-document.getElementById("fourth").onclick = function () {
-    buyOneDimension(4);
-};
-
-document.getElementById("fifth").onclick = function () {
-    buyOneDimension(5);
-};
-
-document.getElementById("sixth").onclick = function () {
-    buyOneDimension(6);
-};
-
-document.getElementById("seventh").onclick = function () {
-    buyOneDimension(7);
-};
-
-document.getElementById("eight").onclick = function () {
-    buyOneDimension(8);
-};
-
-document.getElementById("firstMax").onclick = function () {
-    buyManyDimension(1);
-};
-
-document.getElementById("secondMax").onclick = function () {
-    buyManyDimension(2);
-};
-
-document.getElementById("thirdMax").onclick = function () {
-    buyManyDimension(3);
-};
-
-document.getElementById("fourthMax").onclick = function () {
-    buyManyDimension(4);
-};
-
-document.getElementById("fifthMax").onclick = function () {
-    buyManyDimension(5);
-};
-
-document.getElementById("sixthMax").onclick = function () {
-    buyManyDimension(6);
-};
-
-document.getElementById("seventhMax").onclick = function () {
-    buyManyDimension(7);
-};
-
-document.getElementById("eightMax").onclick = function () {
-    buyManyDimension(8);
-};
 
 
 function timeMult() {

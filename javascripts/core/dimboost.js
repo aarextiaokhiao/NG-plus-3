@@ -246,19 +246,6 @@ function softReset(bulk) {
           document.getElementById("gConfirmation").style.display = "inline-block"
       }
   }
-  if (player.eternities < 30) {
-      document.getElementById("secondRow").style.display = "none";
-      document.getElementById("thirdRow").style.display = "none";
-      document.getElementById("tickSpeed").style.visibility = "hidden";
-      document.getElementById("tickSpeedMax").style.visibility = "hidden";
-      document.getElementById("tickLabel").style.visibility = "hidden";
-      document.getElementById("tickSpeedAmount").style.visibility = "hidden";
-      document.getElementById("fourthRow").style.display = "none";
-      document.getElementById("fifthRow").style.display = "none";
-      document.getElementById("sixthRow").style.display = "none";
-      document.getElementById("seventhRow").style.display = "none";
-      document.getElementById("eightRow").style.display = "none";
-  }
 
   updateTickSpeed()
   if (player.challenges.includes("challenge1")) player.money = new Decimal(100).max(player.money)
@@ -287,7 +274,7 @@ function setInitialDimensionPower() {
 		let softCapStart = 1024
 		let frac = 8
 		if (player.currentChallenge == "postcngm3_1") softCapStart = 0
-		else if (player.challenges.includes("postcngm3_1")) frac = 6
+		if (player.challenges.includes("postcngm3_1")) frac = 6
 		if (ic3PowerTB > softCapStart) ic3PowerTB = Math.sqrt((ic3PowerTB - softCapStart) / frac + 1024) * 32 + softCapStart - 1024
 		ic3Power += ic3PowerTB
 	}
@@ -304,7 +291,7 @@ function maxBuyDimBoosts(manual) {
 			while (bought >= getShiftRequirement(r).amount) r++
 		} else {
 			var scaling = 4
-			if (player.galacticSacrifice) if (player.galacticSacrifice.upgrades.includes(21)) scaling = 6
+			if (player.galacticSacrifice && player.tickspeedBoosts === undefined && player.galacticSacrifice.upgrades.includes(21)) scaling = 6
 			var firstReq = getShiftRequirement(scaling - player.resets)
 			var supersonicStart = getSupersonicStart()
 			r = (bought - firstReq.amount) / firstReq.mult + scaling + 1
@@ -330,7 +317,7 @@ function getShiftRequirement(bulk) {
 	var resetNum = player.resets + bulk
 	var maxTier = player.currentChallenge == "challenge4" ? 6 : 8
 	tier = Math.min(resetNum + 4, maxTier)
-	if (tier == maxTier) amount += Math.max(resetNum + (player.galacticSacrifice ? (player.galacticSacrifice.upgrades.includes(21) ? 2 : 4) : 4) - maxTier, 0) * mult
+	if (tier == maxTier) amount += Math.max(resetNum + (player.galacticSacrifice && player.tickspeedBoosts === undefined && player.galacticSacrifice.upgrades.includes(21) ? 2 : 4) - maxTier, 0) * mult
 	var costStart = getSupersonicStart()
 	if (player.currentEternityChall == "eterc5") {
 		amount += Math.pow(resetNum, 3) + resetNum
@@ -389,7 +376,7 @@ document.getElementById("softReset").onclick = function () {
   if (player.resets <= pastResets) return
   if (player.currentEternityChall=='eterc13') return
   var dimensionBoostPower = getDimensionBoostPower()
-  for (var tier = 1; tier < 9; tier++) if (player.resets >= tier) floatText(TIER_NAMES[tier] + "D", "x" + shortenDimensions(dimensionBoostPower.pow(player.resets + 1 - tier)))
+  for (var tier = 1; tier < 9; tier++) if (player.resets >= tier) floatText("D"+tier, "x" + shortenDimensions(dimensionBoostPower.pow(player.resets + 1 - tier)))
 };
 
 function skipResets() {

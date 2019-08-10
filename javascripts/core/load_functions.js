@@ -1,6 +1,7 @@
 var inflationCheck = false
 var notifyId = 0
 function onLoad(noOffline) {
+  tmp.ngp3=player.masterystudies!==undefined
   happyHalloween=false
   if (player.totalmoney === undefined || isNaN(player.totalmoney)) player.totalmoney = player.money;
   if (player.tickspeed === undefined) player.tickspeed = new Decimal(1000)
@@ -41,7 +42,6 @@ function onLoad(noOffline) {
   if (player.newsArray === undefined) player.newsArray = [];
   if (player.chall2Pow === undefined) player.chall2Pow = 1;
   if (player.chall3Pow === undefined) player.chall3Pow = 0.01;
-  if (player.firstAmount !== 0) document.getElementById("secondRow").style.display = "table-row";
   if (player.challenges === undefined) player.challenges = []
   if (player.currentChallenge === undefined) player.currentChallenge = ""
   if (player.infinitied > 0 && !player.challenges.includes("challenge1")) player.challenges.push("challenge1")
@@ -115,9 +115,9 @@ function onLoad(noOffline) {
 
   sliderText.textContent = "Update rate: " + player.options.updateRate + "ms";
   slider.value = player.options.updateRate;
+  slider.min=player.aarexModifications.performanceTicks?0:33
 
   if (player.secondAmount !== 0) {
-      document.getElementById("thirdRow").style.display = "table-row";
       document.getElementById("tickSpeed").style.visibility = "visible";
       document.getElementById("tickSpeedMax").style.visibility = "visible";
       document.getElementById("tickLabel").style.visibility = "visible";
@@ -221,16 +221,6 @@ function onLoad(noOffline) {
       }
   }
   if (player.autobuyers[8].tier == 10) player.autobuyers[8].tier = 9
-
-  if (player.thirdAmount !== 0 || getEternitied() >= 30) document.getElementById("fourthRow").style.display = "table-row";
-  if (player.fourthAmount !== 0|| getEternitied() >= 30)
-  if (player.resets > 0) document.getElementById("fifthRow").style.display = "table-row";
-  if (player.fifthAmount !== 0|| getEternitied() >= 30)
-  if (player.resets > 1) document.getElementById("sixthRow").style.display = "table-row";
-  if (player.sixthAmount !== 0|| getEternitied() >= 30)
-  if (player.resets > 2 && player.currentChallenge !== "challenge4" && player.currentChallenge !== "postc1") document.getElementById("seventhRow").style.display = "table-row";
-  if (player.seventhAmount !== 0|| getEternitied() >= 30)
-  if (player.resets > 3 && player.currentChallenge !== "challenge4") document.getElementById("eightRow").style.display = "table-row";
 
   document.getElementById("totaltickgained").textContent = "You've gained "+getFullExpansion(player.totalTickGained)+" tickspeed upgrades."
 
@@ -652,7 +642,7 @@ if (player.version < 5) {
           }
           player.aarexModifications.newGamePlusVersion = 1
           if (confirm("Do you want to migrate your NG++ save into new NG+++ mode?")) {
-              player.aarexModifications.newGame3PlusVersion = 2.062
+              player.aarexModifications.newGame3PlusVersion = 2.1
               player.respecMastery=false
               player.dbPower = 1
               player.dilation.times = 0
@@ -757,19 +747,16 @@ if (player.version < 5) {
                   r: {
                       quarks: 0,
                       spin: 0,
-                      gainDiv: 0,
                       upgrades: {}
                   },
                   g: {
                       quarks: 0,
                       spin: 0,
-                      gainDiv: 0,
                       upgrades: {}
                   },
                   b: {
                       quarks: 0,
                       spin: 0,
-                      gainDiv: 0,
                       upgrades: {}
                   },
                   upgrades: {}
@@ -811,7 +798,15 @@ if (player.version < 5) {
                       multPower: 1,
                       upgrades: []
                   },
-                  automatorGhosts: setupAutomaticGhostsData()
+                  automatorGhosts: setupAutomaticGhostsData(),
+                  ghostlyPhotons: {
+                      unl: false,
+                      amount: 0,
+                      ghostlyRays: 0,
+                      darkMatter: 0,
+                      lights: [0,0,0,0,0,0,0,0],
+                      enpowerments: 0
+                  }
               }
               player.options.animations.ghostify = true
               player.aarexModifications.ghostifyConf = true
@@ -1085,19 +1080,16 @@ if (player.version < 5) {
           r: {
               quarks: 0,
               spin: 0,
-              gainDiv: 0,
               upgrades: {}
           },
           g: {
               quarks: 0,
               spin: 0,
-              gainDiv: 0,
               upgrades: {}
           },
           b: {
               quarks: 0,
               spin: 0,
-              gainDiv: 0,
               upgrades: {}
           },
           upgrades: {}
@@ -1115,11 +1107,6 @@ if (player.version < 5) {
           forceToQuantumAndRemove=true
           setTTAfterQuantum=2e94
       }
-  }
-  if (player.aarexModifications.newGame3PlusVersion < 1.99971) {
-      player.quantum.tod.r.gainDiv = Decimal.div(player.quantum.tod.r.gainDiv, 1e30)
-      player.quantum.tod.g.gainDiv = Decimal.div(player.quantum.tod.g.gainDiv, 1e30)
-      player.quantum.tod.b.gainDiv = Decimal.div(player.quantum.tod.b.gainDiv, 1e30)
   }
   if (player.aarexModifications.newGame3PlusVersion < 2) {
       player.eternityBuyer.dilMode = "amount"
@@ -1201,7 +1188,17 @@ if (player.version < 5) {
         if (!player.achievements.includes("r131")) player.achievements.push("r131")
         player.aarexModifications.newGamePlusVersion=2
   }
-  if (player.aarexModifications.newGame3PlusVersion < 2.062) player.aarexModifications.newGame3PlusVersion = 2.062
+  if (player.aarexModifications.newGame3PlusVersion < 2.1) {
+      player.ghostify.ghostlyPhotons = {
+          unl: false,
+          amount: 0,
+          ghostlyRays: 0,
+          darkMatter: 0,
+          lights: [0,0,0,0,0,0,0,0],
+          enpowerments: 0
+      }
+	  player.aarexModifications.newGame3PlusVersion = 2.1
+  }
   if (player.masterystudies) {
       if (player.meta.bestOverQuantums === undefined) player.meta.bestOverQuantums = player.meta.bestAntimatter
       document.getElementById('prioritydil').value=player.eternityBuyer.dilationPerAmount
@@ -1394,6 +1391,7 @@ if (player.version < 5) {
       player.infchallengeTimes.push(600*60*24*31)
       player.aarexModifications.newGameMinusMinusVersion = 1.5
   }
+  if (player.aarexModifications.newGameMinusMinusVersion < 2) player.aarexModifications.newGameMinusMinusVersion = 2
   if (player.aarexModifications.newGame3MinusVersion < 2.1) {
       player.autobuyers[13]=14
       player.overXGalaxiesTickspeedBoost=1
@@ -1565,6 +1563,7 @@ if (player.version < 5) {
   document.getElementById("progressBarBtn").textContent = (player.aarexModifications.progressBar?"Hide":"Show")+" progress bar"
   document.getElementById("toggleLogRateChange").textContent = "Logarithm rate: O"+(player.aarexModifications.logRateChange?"N":"FF")
   document.getElementById("tabsSave").textContent = "Saved tabs: O"+(player.aarexModifications.tabsSave.on?"N":"FF")
+  document.getElementById("performanceTicks").textContent = "Performance ticks: O"+(player.aarexModifications.performanceTicks?"N":"FF")
   dimDescEnd = (player.aarexModifications.logRateChange?" OoM":"%")+"/s)"
 
   document.getElementById("quantumtabbtn").style.display = quantumed ? "" : "none"
@@ -1586,20 +1585,6 @@ if (player.version < 5) {
   }
 
   document.getElementById("infmultbuyer").style.display = getEternitied()>0||player.masterystudies?"inline-block":"none"
-  if (getEternitied() < 30) {
-    document.getElementById("secondRow").style.display = "none";
-    document.getElementById("thirdRow").style.display = "none";
-    document.getElementById("tickSpeed").style.visibility = "hidden";
-    document.getElementById("tickSpeedMax").style.visibility = "hidden";
-    document.getElementById("tickLabel").style.visibility = "hidden";
-    document.getElementById("tickSpeedAmount").style.visibility = "hidden";
-    document.getElementById("fourthRow").style.display = "none";
-    document.getElementById("fifthRow").style.display = "none";
-    document.getElementById("sixthRow").style.display = "none";
-    document.getElementById("seventhRow").style.display = "none";
-    document.getElementById("eightRow").style.display = "none";
-}
-
   if (!player.options.hotkeys) document.getElementById("hotkeys").textContent = "Enable hotkeys"
 
   document.getElementsByClassName("hideInMorse").display = player.options.notation == "Morse code" ? "none" : ""
@@ -1662,22 +1647,26 @@ if (player.version < 5) {
   }
   if (player.tickspeedBoosts == undefined) {
       document.getElementById("icngm3_row").style.display="none"
+	  galUpgradeCosts[31]=2
+	  galUpgradeCosts[12]=3
 	  galUpgradeCosts[32]=8
 	  galUpgradeCosts[13]=20
-	  galUpgradeCosts[23]=100
 	  galUpgradeCosts[33]=1e3
   } else {
       document.getElementById("icngm3_row").style.display=""
       order=['postcngmm_1','postcngmm_2','postcngm3_1','postcngm3_2','postcngmm_3','postc1','postc2','postc4','postc5','postc6','postc7','postc8']
-	  galUpgradeCosts[32]=30
-	  galUpgradeCosts[13]=100
-	  galUpgradeCosts[23]=200
+	  galUpgradeCosts[31]=5
+	  galUpgradeCosts[12]=5
+	  galUpgradeCosts[32]=20
+	  galUpgradeCosts[13]=50
 	  galUpgradeCosts[33]=5e10
   }
+  document.getElementById("galcost31").textContent=galUpgradeCosts[31]
+  document.getElementById("galcost12").textContent=galUpgradeCosts[12]
   document.getElementById("galcost32").textContent=galUpgradeCosts[32]
   document.getElementById("galcost13").textContent=galUpgradeCosts[13]
-  document.getElementById("galcost23").textContent=galUpgradeCosts[23]
   var showMoreGal = player.tickspeedBoosts!=undefined ? "" : "none"
+  document.getElementById("galaxy21").innerHTML=(player.tickspeedBoosts!=undefined?"Reduce the dimension boost cost multiplier to 5":"Dimension boost scaling starts 2 later and increases the cost by 5 each")+".<br>Cost: 1 GP"
   for (i=1;i<4;i++) document.getElementById("galaxy"+i+"4div").style.display=showMoreGal
   document.getElementById("preinfupgrades").style.display=player.infinityUpgradesRespecced?"none":""
   document.getElementById("infi1div").style.display=player.infinityUpgradesRespecced==undefined?"none":""
@@ -1758,7 +1747,7 @@ if (player.version < 5) {
       document.getElementById('rebuyupgauto').textContent="Rebuyable upgrade auto: O"+(player.autoEterOptions.rebuyupg?"N":"FF")
       document.getElementById('metaboostauto').textContent="Meta-boost auto: O"+(player.autoEterOptions.metaboost?"N":"FF")
       document.getElementById('priorityquantum').value=formatValue("Scientific", new Decimal(player.quantum.autobuyer.limit), 2, 0)
-      document.getElementById('rg4toggle').style.display=inQC(1)||QCIntensity(1)?"none":""
+      document.getElementById('rg4toggle').style.display=(hasNU(13)?player.quantum.bigRip.active:inQC(1)||QCIntensity(1))?"none":""
       document.getElementById('rg4toggle').textContent="Toggle: O"+(player.quantum.rg4?"N":"FF")
       document.getElementById("respecPC").className=player.quantum.pairedChallenges.respec?"quantumbtn":"storebtn"
       document.getElementById('sacrificeAuto').textContent="Auto: O"+(player.quantum.autoOptions.sacrifice?"N":"FF")
@@ -1774,6 +1763,8 @@ if (player.version < 5) {
           if (u%3==1) document.getElementById("neutrinoUpg"+u).parentElement.parentElement.style.display=u>player.ghostify.times+2?"none":""
           else document.getElementById("neutrinoUpg"+u).style.display=u>player.ghostify.times+2?"none":""
       }
+      updateGPHUnlocks()
+      document.getElementById("gphUnl").textContent="To unlock Ghostly Photons, you need to get "+shortenCosts(Decimal.pow(10,62e8))+" antimatter while your universe is Big Ripped first."
   }
   transformSaveToDecimal();
   updateChallengeTimes();
@@ -1861,7 +1852,7 @@ if (player.version < 5) {
   var tabsSave = player.aarexModifications.tabsSave
   showDimTab(tabsSave.on && tabsSave.tabDims !== undefined ? tabsSave.tabDims : 'antimatterdimensions')
   showStatsTab(tabsSave.on && tabsSave.tabStats !== undefined ? tabsSave.tabStats : 'stats')
-  showAchTab(tabsSave.on && tabsSave.tabAchs !== undefined ? tabsSave.tabAchs : 'normalachievements')
+  showAchTab(tabsSave.on && (tabsSave.tabAchs == 'normalachievements' || tabsSave.tabAchs == 'secretachievements') ? tabsSave.tabAchs : 'normalachievements')
   showChallengesTab(tabsSave.on && tabsSave.tabChalls !== undefined ? tabsSave.tabChalls : 'normalchallenges')
   showInfTab(tabsSave.on && tabsSave.tabInfinity !== undefined ? tabsSave.tabInfinity : 'preinf')
   showEternityTab(tabsSave.on && tabsSave.tabEternity !== undefined ? tabsSave.tabEternity : 'timestudies', true)
@@ -1877,7 +1868,7 @@ if (player.version < 5) {
       player.totalmoney=new Decimal("1e9e15")
       softReset(0)
       delete player.aarexModifications.switch
-  } else if (player.aarexModifications.offlineProgress && !noOffline) {
+  } else if (false) {
       let diff = new Date().getTime() - player.lastUpdate
       if (diff > 1000*1000) {
           simulateTime(diff/1000)
@@ -1996,7 +1987,7 @@ function change_save(id) {
   changeSaveDesc(metaSave.current, savePlacement)
 
   $.notify("Save #"+savePlacement+" loaded", "info")
-  localStorage.setItem("AD_aarexModifications",btoa(JSON.stringify(metaSave)))
+  localStorage.setItem("AD_aarexModifications_gph",btoa(JSON.stringify(metaSave)))
 }
 
 function rename_save(id) {
@@ -2039,7 +2030,7 @@ function export_save(id) {
 	let parent = output.parentElement
 
 	parent.style.display = ""
-	output.value = localStorage.getItem(btoa("dsAM_"+id))
+	output.value = localStorage.getItem(btoa("dsAM_gph_"+id))
 
 	output.onblur = function() {
 		parent.style.display = "none"
@@ -2073,7 +2064,7 @@ function move(id,offset) {
 	document.getElementById("saves").rows[placement+offset].innerHTML=getSaveLayout(id)
 	changeSaveDesc(metaSave.saveOrder[placement], placement+1)
 	changeSaveDesc(id, placement+offset+1)
-	localStorage.setItem("AD_aarexModifications",btoa(JSON.stringify(metaSave)))
+	localStorage.setItem("AD_aarexModifications_gph",btoa(JSON.stringify(metaSave)))
 }
 
 function delete_save(saveId) {
@@ -2086,7 +2077,7 @@ function delete_save(saveId) {
 	for (orderId=0;orderId<metaSave.saveOrder.length;orderId++) {
 		if (alreadyDeleted) changeSaveDesc(metaSave.saveOrder[orderId], orderId)
 		if (metaSave.saveOrder[orderId]==saveId) {
-			localStorage.removeItem(btoa("dsAM_"+saveId))
+			localStorage.removeItem(btoa("dsAM_gph_"+saveId))
 			alreadyDeleted=true
 			document.getElementById("saves").deleteRow(orderId)
 			if (savePlacement>orderId+1) savePlacement--
@@ -2097,7 +2088,7 @@ function delete_save(saveId) {
 	if (metaSave.current==saveId) {
 		change_save(metaSave.saveOrder[0])
 		document.getElementById("loadmenu").style.display="block"
-	} else localStorage.setItem("AD_aarexModifications",btoa(JSON.stringify(metaSave)))
+	} else localStorage.setItem("AD_aarexModifications_gph",btoa(JSON.stringify(metaSave)))
 	$.notify("Save deleted", "info")
 }
 
@@ -2114,7 +2105,7 @@ function new_game(id) {
 	metaSave.current=1
 	while (metaSave.saveOrder.includes(metaSave.current)) metaSave.current++
 	metaSave.saveOrder.push(metaSave.current)
-	localStorage.setItem("AD_aarexModifications",btoa(JSON.stringify(metaSave)))
+	localStorage.setItem("AD_aarexModifications_gph",btoa(JSON.stringify(metaSave)))
 	changeSaveDesc(oldId, savePlacement)
 	latestRow=document.getElementById("saves").insertRow(loadedSaves)
 	latestRow.innerHTML=getSaveLayout(metaSave.current)
@@ -2126,7 +2117,7 @@ function new_game(id) {
 	startInterval()
 	
 	$.notify("Save created", "info")
-	localStorage.setItem("AD_aarexModifications",btoa(JSON.stringify(metaSave)))
+	localStorage.setItem("AD_aarexModifications_gph",btoa(JSON.stringify(metaSave)))
 	closeToolTip()
 	showDimTab('antimatterdimensions')
 	showStatsTab('stats')
@@ -2361,11 +2352,6 @@ function transformSaveToDecimal() {
           player.quantum.tod.g.spin = new Decimal(player.quantum.tod.g.spin)
           player.quantum.tod.b.quarks = new Decimal(player.quantum.tod.b.quarks)
           player.quantum.tod.b.spin = new Decimal(player.quantum.tod.b.spin)
-          if (player.quantum.tod.r.gainDiv) {
-              player.quantum.tod.r.gainDiv = new Decimal(player.quantum.tod.r.gainDiv)
-              player.quantum.tod.g.gainDiv = new Decimal(player.quantum.tod.g.gainDiv)
-              player.quantum.tod.b.gainDiv = new Decimal(player.quantum.tod.b.gainDiv)
-          }
       }
   }
   if (player.ghostify) {
@@ -2383,6 +2369,11 @@ function transformSaveToDecimal() {
       player.ghostify.neutrinos.mu = new Decimal(player.ghostify.neutrinos.mu)
       player.ghostify.neutrinos.tau = new Decimal(player.ghostify.neutrinos.tau)
       if (player.ghostify.automatorGhosts!==undefined) player.ghostify.automatorGhosts[15].a=new Decimal(player.ghostify.automatorGhosts[15].a)
+      if (player.ghostify.ghostlyPhotons) {
+          player.ghostify.ghostlyPhotons.amount=new Decimal(player.ghostify.ghostlyPhotons.amount)
+          player.ghostify.ghostlyPhotons.ghostlyRays=new Decimal(player.ghostify.ghostlyPhotons.ghostlyRays)
+          player.ghostify.ghostlyPhotons.darkMatter=new Decimal(player.ghostify.ghostlyPhotons.darkMatter)
+      }
   }
 }
 
@@ -2439,19 +2430,19 @@ function loadAutoBuyerSettings() {
 }
 
 function set_save(id, value) {
-	localStorage.setItem(btoa('dsAM_'+id), btoa(JSON.stringify(value, function(k, v) { return (v === Infinity) ? "Infinity" : v; })));
+	localStorage.setItem(btoa('dsAM_gph_'+id), btoa(JSON.stringify(value, function(k, v) { return (v === Infinity) ? "Infinity" : v; })));
 }
 
 function get_save(id) {
     try {
-        var dimensionSave = localStorage.getItem(btoa('dsAM_'+id))
+        var dimensionSave = localStorage.getItem(btoa('dsAM_gph_'+id))
         if (dimensionSave !== null) dimensionSave = JSON.parse(atob(dimensionSave, function(k, v) { return (v === Infinity) ? "Infinity" : v; }))
         return dimensionSave
     } catch(e) { }
 }
 
 function initiateMetaSave() {
-	metaSave = localStorage.getItem('AD_aarexModifications')
+	metaSave = localStorage.getItem('AD_aarexModifications_gph')
 	if (metaSave == null) metaSave = {presetsOrder:[], version:2}
 	else metaSave = JSON.parse(atob(metaSave))
 	if (metaSave.current == undefined) {
@@ -2474,14 +2465,14 @@ function migrateOldSaves() {
 				for (id=0;id<3;id++) {
 					if (ngSave.saves[id] != null) {
 						metaSave.saveOrder.push(1+id)
-						localStorage.setItem(btoa('dsAM_'+(1+id)), btoa(JSON.stringify(ngSave.saves[id], function(k, v) { return (v === Infinity) ? "Infinity" : v; })));
+						localStorage.setItem(btoa('dsAM_gph_'+(1+id)), btoa(JSON.stringify(ngSave.saves[id], function(k, v) { return (v === Infinity) ? "Infinity" : v; })));
 					}
 				}
 				if (!metaSave.newGameMinus) metaSave.current=1+ngSave.currentSave
 			} else {
 				if (!metaSave.newGameMinus) metaSave.current=1
 				metaSave.saveOrder.push(1)
-				localStorage.setItem(btoa('dsAM_1'), btoa(JSON.stringify(ngSave, function(k, v) { return (v === Infinity) ? "Infinity" : v; })));
+				localStorage.setItem(btoa('dsAM_gph_1'), btoa(JSON.stringify(ngSave, function(k, v) { return (v === Infinity) ? "Infinity" : v; })));
 			}
 		}
 		localStorage.removeItem('dimensionSave_aarexModifications')
@@ -2492,14 +2483,14 @@ function migrateOldSaves() {
 				for (id=0;id<3;id++) {
 					if (ngmSave.saves[id] != null) {
 						metaSave.saveOrder.push(4+id)
-						localStorage.setItem(btoa('dsAM_'+(4+id)), btoa(JSON.stringify(ngmSave.saves[id], function(k, v) { return (v === Infinity) ? "Infinity" : v; })));
+						localStorage.setItem(btoa('dsAM_gph_'+(4+id)), btoa(JSON.stringify(ngmSave.saves[id], function(k, v) { return (v === Infinity) ? "Infinity" : v; })));
 					}
 				}
 				if (metaSave.newGameMinus) metaSave.current=4+ngmSave.currentSave
 			} else {
 				if (metaSave.newGameMinus) metaSave.current=4
 				metaSave.saveOrder.push(4)
-				localStorage.setItem(btoa('dsAM_4'), btoa(JSON.stringify(ngmSave, function(k, v) { return (v === Infinity) ? "Infinity" : v; })));
+				localStorage.setItem(btoa('dsAM_gph_4'), btoa(JSON.stringify(ngmSave, function(k, v) { return (v === Infinity) ? "Infinity" : v; })));
 			}
 		}
 		localStorage.removeItem('dimensionSave_NGM')
@@ -2511,7 +2502,7 @@ function migrateOldSaves() {
 			var studyTreePreset=localStorage.getItem("studyTree"+id)
 			if (studyTreePreset !== null) {
 				metaSave.presetsOrder.push(id)
-				localStorage.setItem(btoa("dsAM_ST_"+id),btoa(JSON.stringify({preset:studyTreePreset})))
+				localStorage.setItem(btoa("dsAM_gph_ST_"+id),btoa(JSON.stringify({preset:studyTreePreset})))
 				localStorage.removeItem("studyTree"+id)
 			}
 		}

@@ -165,6 +165,14 @@ const allAchievements = {
   ng3p66 : "I rather oppose the theory of everything",
   ng3p67 : "Will it be enough?",
   ng3p68 : "Please answer me why you are dying.",
+  ng3p71 : "Progressing to for Ghosts",
+  ng3p72 : "ng3p72",
+  ng3p73 : "ng3p73",
+  ng3p74 : "ng3p74",
+  ng3p75 : "ng3p75",
+  ng3p76 : "ng3p76",
+  ng3p77 : "ng3p77",
+  ng3p78 : "ng3p78",
   s11 : "The first one's always free",
   s12 : "Just in case",
   s13 : "It pays to have respect",
@@ -303,7 +311,7 @@ function giveAchievement(name) {
 function updateAchievements() {
 	var amount = 0
 	var rowsShown = 0
-	for (var i=1; i<22; i++) {
+	for (var i=1; i<23; i++) {
 		var shown=true
 		var rowid=i
 		if (i>15) {

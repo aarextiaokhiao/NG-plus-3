@@ -17,7 +17,8 @@ function getGSAmount() {
 	let resetMult = player.resets-(player.currentChallenge=="challenge4"?2:4)
 	if (player.tickspeedBoosts !== undefined) resetMult = (resetMult+1)/2
 	let ret = Decimal.pow(galaxies, y).times(Decimal.pow(Math.max(0, resetMult), z)).max(0)
-	ret = ret.times(player.eightAmount/50+1)
+	ret = ret.times(getAmount(8)/50+1)
+	if (player.achievements.includes("r23") && player.tickspeedBoosts !== undefined) ret = ret.times(Decimal.pow(player.tickspeedBoosts/10,Math.max(getAmount(8)/75,1)).max(1))
 	if (player.galacticSacrifice.upgrades.includes(32)) ret = ret.times(galUpgrade32())
 	if (player.infinityUpgrades.includes("galPointMult")) ret = ret.times(getPost01Mult())
 	if (player.achievements.includes('r37')) {
@@ -64,13 +65,11 @@ function isIC3Trapped() {
 //v1.2
 
 let galUpgradeCosts = {
-	11: 1,
-	12: 3,
-	21: 1,
-	22: 5,
 	31: 2,
-	14: 1e3,
-	24: 3e3,
+	22: 5,
+	23: 100,
+	14: 300,
+	24: 1e3,
 	34: 1e5
 }
 
@@ -151,9 +150,8 @@ function galacticUpgradeSpanDisplay () {
 	document.getElementById('galspan33').innerHTML = shorten(galUpgrade33())
 	document.getElementById('galcost33').innerHTML = shortenCosts(galUpgradeCosts[33])
 	if (player.tickspeedBoosts!=undefined) {
-		document.getElementById('galcost14').innerHTML = shortenCosts(1e3)
 		document.getElementById('galspan24').innerHTML = shorten(galUpgrade24())
-		document.getElementById('galcost24').innerHTML = shortenCosts(3e3)
+		document.getElementById('galcost24').innerHTML = shortenCosts(1e3)
 		document.getElementById('galcost34').innerHTML = shortenCosts(1e5)
 	}
 }
@@ -283,4 +281,21 @@ function renameIC(id) {
 //v1.501
 function isADSCRunning() {
 	return player.currentChallenge === "challenge13" || (player.currentChallenge === "postc1" && player.galacticSacrifice) || player.tickspeedBoosts !== undefined
+}
+
+//v1.6
+document.getElementById("postinfi50").onclick = function() {
+    buyInfinityUpgrade("postinfi50",1e25);
+}
+
+document.getElementById("postinfi51").onclick = function() {
+    buyInfinityUpgrade("postinfi51",1e29);
+}
+
+document.getElementById("postinfi52").onclick = function() {
+    buyInfinityUpgrade("postinfi52",1e33);
+}
+
+document.getElementById("postinfi53").onclick = function() {
+    buyInfinityUpgrade("postinfi53",1e37);
 }
