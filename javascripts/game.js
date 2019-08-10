@@ -982,6 +982,7 @@ function updateTemp() {
 	tmp.nrm=player.replicanti.amount.max(1)
 	tmp.rg4=false
 	if (player.masterystudies !== undefined) {
+		tmp.ns=nanospeed
 		if (ghostified) {
 			if (player.quantum.nanofield.rewards<16) tmp.ns*=player.ghostify.milestones?6:3
 			tmp.nb[0]=Math.log10(player.ghostify.neutrinos.electron.add(1).log10()+player.ghostify.neutrinos.mu.add(1).log10()+player.ghostify.neutrinos.tau.add(1).log10()+1)*0.75
@@ -1007,7 +1008,6 @@ function updateTemp() {
 			tmp.bru[1]=Math.sqrt(player.quantum.bigRip.spaceShards.div(3e15).add(1).log10()*ret+1) //BRU14
 		}
 		tmp.be=player.quantum.bigRip.active&&player.quantum.breakEternity.break
-		tmp.ns=nanospeed
 		tmp.rg4=player.quantum.upgrades.includes("rg4")&&(player.quantum.rg4||inQC(1)||QCIntensity(1))
 		if (!player.dilation.active&&player.quantum.bigRip.active&&player.quantum.bigRip.upgrades.includes(14)) tmp.nrm=tmp.nrm.pow(tmp.bru[1])
 	} else tmp.be=false
