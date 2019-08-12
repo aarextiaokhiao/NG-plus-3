@@ -42,7 +42,7 @@ function galacticSacrifice(auto) {
 
 function resetGalacticSacrifice() {
 	return player.galacticSacrifice ? {
-		galaxyPoints: player.achievements.includes("r33")?player.infinityPoints.div(10).pow(2):new Decimal(0),
+		galaxyPoints: (player.achievements.includes("r46")&&player.tickspeedBoosts!=undefined)?player.galacticSacrifice.galaxyPoints:player.achievements.includes("r33")?player.infinityPoints.div(10).pow(2):new Decimal(0),
 		time: 0,
 		times: 0,
 		upgrades: []
@@ -50,9 +50,9 @@ function resetGalacticSacrifice() {
 }
 
 function newGalacticDataOnInfinity() {
-	if (player.galacticSacrifice&&player.achievements.includes("r36")) {
+	if (player.galacticSacrifice&&player.achievements.includes("r3"+(player.tickspeedBoosts==undefined?6:3))) {
 		var data=player.galacticSacrifice
-		data.galaxyPoints=data.galaxyPoints.add(getGSAmount())
+		data.galaxyPoints=player.tickspeedBoosts==undefined?data.galaxyPoints.add(getGSAmount()):player.achievements.includes("r46")?player.galacticSacrifice.galaxyPoints:new Decimal(0)
 		data.time=0
 		return data
 	} else return resetGalacticSacrifice()
@@ -65,12 +65,13 @@ function isIC3Trapped() {
 //v1.2
 
 let galUpgradeCosts = {
-	31: 2,
+	11: 1,
+	21: 1,
 	22: 5,
 	23: 100,
 	14: 300,
 	24: 1e3,
-	34: 1e5
+	34: 1/0
 }
 
 function buyGalaxyUpgrade(i) {
@@ -109,10 +110,10 @@ function reduceDimCosts() {
 }
 
 let galUpgrade11 = function () {
-	let x = Math.min(player.infinitied, 1e6);
+	let x = Math.min(player.infinitied, player.tickspeedBoosts !== undefined ? 4 : 1e6);
 	let y = Math.max(x + 2, 2);
 	let z = 10
-	if (player.challenges.length > 14 && player.challenges.includes("postcngmm_1")) z -= (player.challenges.length-8)/4
+	if (player.challenges.length > 14 && player.challenges.includes("postcngmm_1") && player.tickspeedBoosts == undefined) z -= (player.challenges.length-8)/4
 	if (z < 6) z = Math.pow(1296 * z, .2)
 	if (x > 99) y = Math.pow(Math.log(x), Math.log(x) / z) + 14
 	else if (x > 4) y = Math.pow(x + 5, .5) + 4
@@ -136,7 +137,7 @@ let galUpgrade32 = function () {
 	return x.pow(0.003).add(1);
 }
 let galUpgrade33 = function () {
-	if (player.tickspeedBoosts != undefined) return player.galacticSacrifice.galaxyPoints.add(1).log10()/5+1
+	if (player.tickspeedBoosts != undefined) return player.galacticSacrifice.galaxyPoints.div(1e5).add(1).log10()/5+1
 	return player.galacticSacrifice.galaxyPoints.max(1).log10()/4+1
 }
 
@@ -152,7 +153,7 @@ function galacticUpgradeSpanDisplay () {
 	if (player.tickspeedBoosts!=undefined) {
 		document.getElementById('galspan24').innerHTML = shorten(galUpgrade24())
 		document.getElementById('galcost24').innerHTML = shortenCosts(1e3)
-		document.getElementById('galcost34').innerHTML = shortenCosts(1e5)
+		document.getElementById('galcost34').innerHTML = shortenCosts(1/0)
 	}
 }
 
@@ -177,7 +178,6 @@ function resetTotalBought() {
 }
 
 function productAllTotalBought () {
-	if ((player.currentChallenge == "challenge11" || player.currentChallenge == "postc1") && player.tickspeedBoosts != undefined) return 1
 	var ret = 1;
 	var mult = getProductBoughtMult()
 	for (i = 1; i <= 8; i++) {

@@ -283,7 +283,8 @@ button, div.storebtn {
 	background-color: #00e500 !important;
 	color: #191919 !important;
 	animation: none;
-	box-shadow: 1px 2px rgba(229,229,229,0.4)
+	box-shadow: 1px 2px rgba(229,229,229,0.4);
+	text-shadow: none
 }
 
 .dilationupg, .dilationbtn:hover, .dilationupgrebuyable:hover, #dilationeterupgrow .eternityupbtn, #buyQuantumFood.storebtn:hover, #buyMaxQuantumFood.storebtn:hover, #feedNormal.storebtn:hover, #feedBaby.storebtn:hover, #buyQuantumFoodED.storebtn:hover, #buyMaxQuantumFoodED.storebtn:hover, #emperordimensions table .storebtn:hover, #greenBtn:hover, .gluonupgrade.g:hover {
@@ -462,7 +463,8 @@ button, div.storebtn {
 #redBtn, .gluonupgrade.r {
 	background-color: #e50000 !important;
 	color: #191919 !important;
-	box-shadow: 1px 2px rgba(229,229,229,0.4)
+	box-shadow: 1px 2px rgba(229,229,229,0.4);
+	text-shadow: none
 }
 
 #redBtn:hover, .gluonupgrade.r:hover {
@@ -474,7 +476,8 @@ button, div.storebtn {
 #blueBtn, .gluonupgrade.b {
 	background-color: #0000e5 !important;
 	color: #191919 !important;
-	box-shadow: 1px 2px rgba(229,229,229,0.4)
+	box-shadow: 1px 2px rgba(229,229,229,0.4);
+	text-shadow: none
 }
 
 #blueBtn:hover, .gluonupgrade.b:hover {

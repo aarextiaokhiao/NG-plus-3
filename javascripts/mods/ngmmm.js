@@ -1,6 +1,8 @@
 function getTickspeedBoostRequirement(bulk=1) {
 	let resets=player.tickspeedBoosts+bulk-1
-	return {tier:player.currentChallenge=="challenge4"?6:8,amount:resets*5+30}
+	let mult=5
+	if (player.galacticSacrifice.upgrades.includes(34)&&player.currentChallenge!="postcngmm_1"&&player.currentChallenge!="postc1") mult=3
+	return {tier:player.currentChallenge=="challenge4"?6:8,amount:resets*mult+30,mult:mult}
 }
 
 function tickspeedBoost(bulk) {
@@ -25,7 +27,7 @@ function getProductBoughtMult() {
 
 function isTickspeedBoostPossible() {
 	if (player.tickspeedBoosts == undefined) return
-	if (reachedInfinity()) return
+	if (tmp.ri) return
 	return player.resets > 4 || player.tickspeedBoosts > 0 || player.galaxies > 0 || player.galacticSacrifice.times > 0 || player.infinitied > 0 || player.eternities != 0 || quantumed
 }
 
@@ -55,7 +57,7 @@ function manualTickspeedBoost() {
 	let req=getTickspeedBoostRequirement()
 	let amount=getAmount(req.tier)
 	if (!(amount>=req.amount)) return
-	if (player.infinityUpgrades.includes("bulkBoost")) tickspeedBoost(Math.floor((amount-req.amount)/5+1))
+	if (player.infinityUpgrades.includes("bulkBoost")||player.achievements.includes("r28")) tickspeedBoost(Math.floor((amount-req.amount)/req.mult+1))
 	else tickspeedBoost(1)
 }
 

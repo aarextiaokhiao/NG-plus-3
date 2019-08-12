@@ -23,7 +23,7 @@ function getDimensionBoostPower(next, focusOn) {
 
 function softReset(bulk) {
   //if (bulk < 1) bulk = 1 (fixing issue 184)
-  if (reachedInfinity()) return;
+  if (tmp.ri) return;
   var oldResets = player.resets
   player.resets+=bulk;
   if (player.masterystudies) if (player.resets > 4) player.old = false
@@ -270,6 +270,7 @@ function setInitialDimensionPower() {
 		let mult = 30
 		if (player.currentChallenge == "challenge15" || player.currentChallenge == "postc1") mult = 15
 		else if (player.galacticSacrifice.upgrades.includes(14)) mult = 32
+		if (player.currentChallenge == "challenge6") mult *= Math.min(player.galaxies / 30, 1)
 		let ic3PowerTB = player.tickspeedBoosts * mult
 		let softCapStart = 1024
 		let frac = 8
@@ -368,10 +369,10 @@ function getSupersonicMultIncrease() {
 document.getElementById("softReset").onclick = function () {
   if (inQC(6)) return
   var req = getShiftRequirement(0)
-  if (reachedInfinity() || getAmount(req.tier) < req.amount) return;
+  if (tmp.ri || getAmount(req.tier) < req.amount) return;
   auto = false;
   var pastResets = player.resets
-  if (player.infinityUpgrades.includes("bulkBoost") || player.autobuyers[9].bulkBought) maxBuyDimBoosts(true);
+  if (player.infinityUpgrades.includes("bulkBoost") || (player.achievements.includes("r28") && player.resets > (player.currentChallenge == "challenge4" ? 1 : 3) && player.tickspeedBoosts !== undefined) || player.autobuyers[9].bulkBought) maxBuyDimBoosts(true);
   else softReset(1)
   if (player.resets <= pastResets) return
   if (player.currentEternityChall=='eterc13') return

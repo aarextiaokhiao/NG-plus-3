@@ -4072,7 +4072,7 @@ function changeAutoGhost(o) {
 		if (!isNaN(num)&&num>0) player.ghostify.automatorGhosts[13].u=num
 	} else if (o=="15a") {
 		var num=fromValue(document.getElementById("autoGhost15a").value)
-		if (!isNaN(break_infinity_js?num:num.logarithm)) player.ghostify.automatorGhosts[15].a=num
+		if (!isNaN(break_infinity_js?num:num.l)) player.ghostify.automatorGhosts[15].a=num
 	}
 }
 

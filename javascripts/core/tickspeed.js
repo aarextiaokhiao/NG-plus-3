@@ -35,7 +35,7 @@ function getGalaxyPowerEff(ng, bi) {
 		if (player.achievements.includes("r83")) eff *= 1.05
 		if (player.achievements.includes("r45")) eff *= 1.02
 		if (player.infinityUpgrades.includes("postinfi51")) eff *= 1.2
-		if (player.challenges.length > 14 && player.achievements.includes("r67")) eff *= .07*player.challenges.length
+		if (player.challenges.length > 14 && player.achievements.includes("r67") && player.tickspeedBoosts == undefined) eff *= .07*player.challenges.length
 	}
 	if (player.achievements.includes("ngpp8") && player.meta != undefined) eff *= 1.001;
 	if (player.timestudy.studies.includes(212)) eff *= Math.min(Math.pow(player.timeShards.max(2).log2(), 0.005), 1.1)
@@ -56,7 +56,6 @@ function getTickSpeedMultiplier() {
 		realnormalgalaxies=Math.max(player.galaxies-player.quantum.electrons.sacGals,0)
 		realnormalgalaxies=realnormalgalaxies*Math.max(Math.min(10-(player.quantum.electrons.amount+realnormalgalaxies*getELCMult())/16857,1),0)
 	}
-	if (player.tickspeedBoosts != undefined) if (player.galacticSacrifice.upgrades.includes(34)) realnormalgalaxies += 4
 	if ((player.currentChallenge == "postc3" || isIC3Trapped()) && !tmp.be) {
 		if (player.currentChallenge=="postcngmm_3" || (player.challenges.includes("postcngmm_3") && player.tickspeedBoosts === undefined)) {
 			if (tmp.rg4) realnormalgalaxies *= 0.4
@@ -163,6 +162,7 @@ function cannotUsePostInfTickSpeed () {
 function buyMaxTickSpeed() {
 	if (player.currentChallenge == "challenge14") return false
 	if (!canBuyTickSpeed()) return false
+	if (player.tickSpeedCost.gt(player.money)) return false
 	let cost = player.tickSpeedCost
 	if (player.currentChallenge != "postc5" && player.currentChallenge != "challenge5" && player.currentChallenge != "challenge9" && !costIncreaseActive(player.tickSpeedCost)) {
 		let max = Number.POSITIVE_INFINITY

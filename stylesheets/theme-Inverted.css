@@ -44,3 +44,11 @@ body {
     color: white !important;
     background-color: #ED85DF !important;
 }
+
+.gluonupgrade.r {
+	color: #ff0000
+}
+
+.gluonupgrade.b {
+	color: #1f1fff
+}

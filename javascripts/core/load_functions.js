@@ -1405,7 +1405,12 @@ if (player.version < 5) {
       newChallRecords.push(600*60*24*31)
       for (c=2;c<10;c++) newChallRecords.push(player.infchallengeTimes[c])
       player.infchallengeTimes=newChallRecords
-      player.aarexModifications.newGame3MinusVersion = 2.2
+  }
+  if (player.aarexModifications.newGame3MinusVersion < 3) {
+      var newUpgs=[]
+      for (var u=0;u<player.galacticSacrifice.upgrades.length;u++) if (player.galacticSacrifice.upgrades[u]!=34) newUpgs.push(player.galacticSacrifice.upgrades[u])
+      player.galacticSacrifice.upgrades=newUpgs
+      player.aarexModifications.newGame3MinusVersion = 3
   }
   if (player.aarexModifications.ersVersion === undefined && player.timestudy.studies.length>0 && typeof(player.timestudy.studies[0])!=="number") {
       newAchievements=[]
@@ -1593,7 +1598,7 @@ if (player.version < 5) {
   document.getElementById("decimalMode").style.visibility = Decimal.gt(player.totalmoney,"1e9000000000000000") ? "hidden" : ""
   document.getElementById("hideProductionTab").textContent = (player.aarexModifications.hideProductionTab?"Show":"Hide")+" production tab"
   document.getElementById("hideRepresentation").textContent=(player.aarexModifications.hideRepresentation?"Show":"Hide")+" antimatter representation"
-  document.getElementById("showAchRowNums").textContent=(player.aarexModifications.showAchRowNums?"Hide":"Show")+" achievement row numbers"
+  document.getElementById("showAchRowNums").textContent=(player.aarexModifications.showAchRowNums?"Hide":"Show")+" achievement row progresses"
   document.getElementById("hideCompletedAchs").textContent=(player.aarexModifications.hideCompletedAchs?"Show":"Hide")+" completed achievement rows"
   document.getElementById("hideSecretAchs").textContent=(player.aarexModifications.hideSecretAchs?"Show":"Hide")+" secret achievements"
 
@@ -1619,8 +1624,8 @@ if (player.version < 5) {
   document.getElementById("infi44").innerHTML="You start with the 8th dimension unlocked"+(player.tickspeedBoosts==undefined?"":", 16 tickspeed boosts")+", and a Galaxy<br>Cost: 500 IP"
   var showMoreBreak = player.galacticSacrifice ? "" : "none"
   for (i=1;i<5;i++) document.getElementById("postinfi0"+i).parentElement.style.display=showMoreBreak
-  document.getElementById("d5AutoChallengeDesc").textContent=player.galacticSacrifice?"Tickspeed upgrades start out useless, but galaxies make them stronger.":"Tickspeed starts at 7%."
-  document.getElementById("d8AutoChallengeDesc").textContent=(player.tickspeedBoosts==undefined?"":"Product of bought, ")+"Dimension Boosts"+(player.tickspeedBoosts==undefined?"":",")+" and galaxies are useless, sacrifice resets everything but is immensely more powerful"
+  document.getElementById("d5AutoChallengeDesc").textContent=player.galacticSacrifice?"Tickspeed upgrades"+(player.tickspeedBoosts==undefined?"":" and Tickspeed Boosts")+" start out useless, but galaxies make them stronger.":"Tickspeed starts at 7%."
+  document.getElementById("d8AutoChallengeDesc").textContent="Dimension Boosts and galaxies are useless, sacrifice resets everything but is immensely more powerful"
   document.getElementById("autoDBChallengeDesc").textContent="There are only 6 dimensions, with dimension boost"+(player.tickspeedBoosts==undefined?"":", tickspeed boost,")+" and antimatter galaxy costs modified."
   document.getElementById("autoCrunchChallengeDesc").textContent="Each dimension produces the dimension 2 below it; first dimensions produce reduced antimatter. "+(player.galacticSacrifice?"Galaxies are far more powerful.":"")
   document.getElementById("autoDSChallengeDesc").textContent=player.tickspeedBoosts==undefined?"Per-ten multiplier is always 1x, but product of dimensions bought multiplies all dimensions.":"There is the product of amount instead of the product of bought."
@@ -2423,7 +2428,7 @@ function loadAutoBuyerSettings() {
   if (player.masterystudies) {
       document.getElementById("prioritydil").value = player.eternityBuyer.dilationPerAmount
       if (player.quantum) if (player.quantum.autobuyer) {
-          if (isNaN(break_infinity_js ? player.quantum.autobuyer.limit : player.quantum.autobuyer.limit.logarithm)) player.quantum.autobuyer.limit = new Decimal(1)
+          if (isNaN(break_infinity_js ? player.quantum.autobuyer.limit : player.quantum.autobuyer.limit.l)) player.quantum.autobuyer.limit = new Decimal(1)
           document.getElementById("priorityquantum").value = player.quantum.autobuyer.mode == "amount" || player.quantum.autobuyer.mode == "relative" ? formatValue("Scientific", player.quantum.autobuyer.limit, 2, 0) : player.quantum.autobuyer.limit
       }
   }

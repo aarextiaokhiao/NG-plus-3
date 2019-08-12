@@ -414,7 +414,7 @@ function toggleAchRowNums() {
 	// 0 == not visible, 1 == visible
 	player.aarexModifications.showAchRowNums=!player.aarexModifications.showAchRowNums
 	updateAchievements()
-	document.getElementById("showAchRowNums").textContent=(player.aarexModifications.showAchRowNums?"Hide":"Show")+" achievement row numbers"
+	document.getElementById("showAchRowNums").textContent=(player.aarexModifications.showAchRowNums?"Hide":"Show")+" achievement row progresses"
 }
 
 function toggleCompletedAchs() {

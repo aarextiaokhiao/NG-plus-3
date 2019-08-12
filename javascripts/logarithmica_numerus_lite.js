@@ -48,29 +48,22 @@
 			return tmp
 		}
 		
-		fromNumber() {
-			return Decimal.fromNumber(this)
-		}
-		
 		static fromString(v) {
 			var tmp=new Decimal()
 			var findE=v.search('e')
 			if (findE==-1) {
 				v=parseFloat(v)
-				return {l:Math.log10(v)}
-			}
-			var split=[v.slice(0,findE),v.slice(findE+1,v.length)]
-			split[1]=parseFloat(split[1])
-			if (split[0]=='') tmp.l=split[1]
-			else {
-				split[0]=parseFloat(split[0])
-				tmp.l=Math.log10(split[0])+split[1]
+				tmp.l=Math.log10(v)
+			} else {
+				var split=[v.slice(0,findE),v.slice(findE+1,v.length)]
+				split[1]=parseFloat(split[1])
+				if (split[0]=='') tmp.l=split[1]
+				else {
+					split[0]=parseFloat(split[0])
+					tmp.l=Math.log10(split[0])+split[1]
+				}
 			}
 			return tmp
-		}
-		
-		fromString() {
-			return Decimal.fromString(this)
 		}
 		
 		static fromMantissaExponent(m,e) {

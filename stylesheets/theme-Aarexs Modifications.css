@@ -465,19 +465,22 @@ strong { color: #0072e5 }
 	background-color: #191919 !important;
     border-color: #e50000 !important;
 	box-shadow: none !important;
-	color: #e5e5e5 !important
+	color: #e5e5e5 !important;
+	text-shadow: none
 }
 .gluonupgrade.g {
 	background-color: #191919 !important;
     border-color: #00e500 !important;
 	box-shadow: none !important;
-	color: #e5e5e5 !important
+	color: #e5e5e5 !important;
+	text-shadow: none
 }
 .gluonupgrade.b {
 	background-color: #191919 !important;
     border-color: #0000e5 !important;
 	box-shadow: none !important;
-	color: #e5e5e5 !important
+	color: #e5e5e5 !important;
+	text-shadow: none
 }
 .gluonupgrade.r:hover {
 	background-color: #e50000 !important;
@@ -527,7 +530,6 @@ strong { color: #0072e5 }
 	border: transparent !important;
 	font-family: Typewriter;
 	font-weight: bold;
-	border-radius: 4px;
 	transition-duration: 0.2s;
 	animation: ghostifytext 4s linear infinite
 }
@@ -538,6 +540,25 @@ strong { color: #0072e5 }
 }
 #tooMuchPowerConsumed {
 	color: #e50000
+}
+.neutrinos {
+	color: #cccccc !important
+}
+.gluonupgrade.neutrinoupg {
+	border-color: #cccccc !important;
+	box-shadow: none;
+	text-shadow: none;
+}
+.gluonupgrade.neutrinoupg:hover {
+	background-color: #cccccc !important;
+	border-color: #cccccc !important
+}
+.gluonupgradebought.neutrinoupg {
+	background-color: #cccccc !important;
+	border-color: #191919 !important;
+	color: #191919 !important;
+	box-shadow: none;
+	text-shadow: none;
 }
 #gphtabbtn {
 	background-color: #191919 !important;
