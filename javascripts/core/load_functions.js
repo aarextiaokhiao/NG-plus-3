@@ -1651,6 +1651,7 @@ if (player.version < 5) {
       document.getElementById("icngmm_4div").style.display=""
       document.getElementById("ic3div").style.display="none"
       document.getElementById("icngmm_4div").appendChild(document.getElementById("postc2").parentElement.parentElement)
+      document.getElementById("postc2reward").innerHTML = "Reward: More powerful sacrifice"
   } else {
       order=['postc1','postc2','postc3','postc4','postc5','postc6','postc7','postc8']
       document.getElementById("icngmm_row").style.display="none"
