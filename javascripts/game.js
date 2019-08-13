@@ -411,6 +411,7 @@ function updateNewPlayer(reseted) {
         player.infchallengeTimes.push(600*60*24*31)
         player.infchallengeTimes.push(600*60*24*31)
         player.options.gSacrificeConfirmation = true
+	document.getElementById("postc2reward").innerHTML = "Reward: More powerful sacrifice"
     }
     if (modesChosen.ngpp === 2 || modesChosen.ngpp === 4) {
         player.aarexModifications.newGame3PlusVersion = 2.062
