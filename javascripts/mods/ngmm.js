@@ -9,7 +9,7 @@ function getGSAmount() {
 	if (y > 100) y = Math.pow(316.22*y, 2/5)
 	else if (y > 10) y = Math.pow(10*y, .5)
 	let z = 1
-	if (player.challenges.length > 17 && player.achievements.includes("r67")) {
+	if (player.challenges.length > 17) {
 		z = 0.06*player.challenges.length
 		z += galaxies/100
 		if (player.tickspeedBoosts == undefined) z *= Math.log(galaxies+3)
@@ -18,7 +18,7 @@ function getGSAmount() {
 	if (player.tickspeedBoosts !== undefined) resetMult = (resetMult+1)/2
 	let ret = Decimal.pow(galaxies, y).times(Decimal.pow(Math.max(0, resetMult), z)).max(0)
 	ret = ret.times(getAmount(8)/50+1)
-	if (player.achievements.includes("r23") && player.tickspeedBoosts !== undefined) ret = ret.times(Decimal.pow(player.tickspeedBoosts/10,Math.max(getAmount(8)/75,1)).max(1))
+	if (player.achievements.includes("r23") && player.tickspeedBoosts !== undefined) ret=ret.times(Decimal.pow(player.tickspeedBoosts/10,Math.max(getAmount(8)/75,1)).max(1))
 	if (player.galacticSacrifice.upgrades.includes(32)) ret = ret.times(galUpgrade32())
 	if (player.infinityUpgrades.includes("galPointMult")) ret = ret.times(getPost01Mult())
 	if (player.achievements.includes('r37')) {
@@ -31,18 +31,18 @@ function getGSAmount() {
 
 function galacticSacrifice(auto) {
 	if (getGSAmount().eq(0)) return
+	if (tmp.ri) return
 	if (player.options.gSacrificeConfirmation&&!auto) if (!confirm("Galactic Sacrifice will do a galaxy reset, and then remove all of your galaxies, in exchange of galaxy points which can be use to buy many overpowered upgrades, but it will take a lot of time to recover, are you sure you wanna do this?")) return
 	player.galacticSacrifice.galaxyPoints = player.galacticSacrifice.galaxyPoints.plus(getGSAmount())
-	player.galaxies = -1
 	player.galacticSacrifice.times++
 	player.galacticSacrifice.time = 0
 	GPminpeak = new Decimal(0)
-	galaxyReset()
+	galaxyReset(-player.galaxies)
 }
 
 function resetGalacticSacrifice() {
 	return player.galacticSacrifice ? {
-		galaxyPoints: (player.achievements.includes("r46")&&player.tickspeedBoosts!=undefined)?player.galacticSacrifice.galaxyPoints:player.achievements.includes("r33")?player.infinityPoints.div(10).pow(2):new Decimal(0),
+		galaxyPoints: player.achievements.includes("r33")?player.infinityPoints.div(10).pow(2):new Decimal(0),
 		time: 0,
 		times: 0,
 		upgrades: []
@@ -52,7 +52,7 @@ function resetGalacticSacrifice() {
 function newGalacticDataOnInfinity() {
 	if (player.galacticSacrifice&&player.achievements.includes("r3"+(player.tickspeedBoosts==undefined?6:3))) {
 		var data=player.galacticSacrifice
-		data.galaxyPoints=player.tickspeedBoosts==undefined?data.galaxyPoints.add(getGSAmount()):player.achievements.includes("r46")?player.galacticSacrifice.galaxyPoints:new Decimal(0)
+		data.galaxyPoints=player.tickspeedBoosts==undefined?data.galaxyPoints.add(getGSAmount()):new Decimal(0)
 		data.time=0
 		return data
 	} else return resetGalacticSacrifice()
@@ -98,7 +98,7 @@ function reduceDimCosts() {
 			var name = TIER_NAMES[d]
 			player[name+"Cost"] = player[name+"Cost"].div(div)
 		}
-		if (player.achievements.includes('r48')) player.tickSpeedCost = player.tickSpeedCost.div(div)
+		if (player.achievements.includes('r48') && player.tickspeedBoosts == undefined) player.tickSpeedCost = player.tickSpeedCost.div(div)
 	}
 	if (player.infinityUpgradesRespecced != undefined) {
 		for (d=1;d<9;d++) {
@@ -142,6 +142,7 @@ let galUpgrade33 = function () {
 }
 
 function galacticUpgradeSpanDisplay () {
+	document.getElementById("galaxyPoints").innerHTML = "You have <span class='GPAmount'>"+shortenDimensions(player.galacticSacrifice.galaxyPoints)+"</span> Galaxy point"+(player.galacticSacrifice.galaxyPoints.eq(1)?".":"s.")
 	if (player.infinitied>0||player.eternities!==0||quantumed) document.getElementById('galspan11').innerHTML = shortenDimensions(galUpgrade11())
 	document.getElementById('galspan12').innerHTML = shorten(galUpgrade12())
 	document.getElementById('galspan13').innerHTML = shorten(galUpgrade13())

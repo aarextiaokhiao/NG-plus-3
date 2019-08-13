@@ -76,7 +76,7 @@ function getDimensionFinalMultiplier(tier) {
 		
 	if (player.galacticSacrifice) {
 		if (player.galacticSacrifice.upgrades.includes(12)) mult = mult.times(galUpgrade12())
-		if (player.galacticSacrifice.upgrades.includes(13) && player.currentChallenge != "challenge15" && player.currentChallenge != "postc1") mult = mult.times(galUpgrade13())
+		if (player.galacticSacrifice.upgrades.includes(13) && (player.currentChallenge != "challenge14" || player.tickspeedBoosts == undefined)) mult = mult.times(galUpgrade13())
 		if (player.challenges.includes("postc4")) mult = mult.pow(1.05);
 		if (player.galacticSacrifice.upgrades.includes(31)) mult = mult.pow(galUpgrade31());
 	}
@@ -105,7 +105,7 @@ function getDimensionFinalMultiplier(tier) {
 function getDimensionDescription(tier) {
 	var name = TIER_NAMES[tier];
 	if (tier > Math.min(inQC(1) ? 1 : player.currentEternityChall == "eterc3" ? 3 : player.currentChallenge == "challenge4" || player.currentChallenge == "postc1" ? 5 : 7, player.resets + 3) - (player.currentChallenge == "challenge7" || inQC(4) ? 1 : 0)) return getFullExpansion(player.currentChallenge == "challenge11" ? getAmount(tier) : player[name + 'Bought']) + ' (' + dimBought(tier) + ')';
-	else return shortenDimensions(player[name + 'Amount']) + ' (' + dimBought(tier) + ')	(+' + formatValue(player.options.notation, getDimensionRateOfChange(tier), 2, 2) + dimDescEnd;
+	else return shortenDimensions(player[name + 'Amount']) + ' (' + dimBought(tier) + ')  (+' + formatValue(player.options.notation, getDimensionRateOfChange(tier), 2, 2) + dimDescEnd;
 }
 
 function getDimensionRateOfChange(tier) {
@@ -125,7 +125,7 @@ function getDimensionRateOfChange(tier) {
 	if (player.aarexModifications.logRateChange) {
 		var change = current.add(toGain.div(10)).log10()-current.log10()
 		if (change<0||isNaN(change)) change = 0
-	} else var change	= toGain.times(10).dividedBy(current);
+	} else var change = toGain.times(10).dividedBy(current);
 
 	return change;
 }
@@ -147,10 +147,10 @@ function multiplySameCosts(cost) {
 		if (player[tiers[i] + "Cost"].e == cost.e) player[tiers[i] + "Cost"] = player[tiers[i] + "Cost"].times(tierCosts[i])
 	}
 	if (player.tickSpeedCost.e == cost.e) player.tickSpeedCost = player.tickSpeedCost.times(player.tickspeedMultiplier)
-}	
-	
+}
+
 function multiplyPC5Costs(cost, tier) {
-	var tiers = [ null, "first", "second", "third", "fourth", "fifth", "sixth", "seventh", "eight" ];	
+	var tiers = [ null, "first", "second", "third", "fourth", "fifth", "sixth", "seventh", "eight" ];
 	if (tier < 5) {
 		for (var i = 1; i<9; i++) {
 			if (player[tiers[i] + "Cost"].e <= cost.e) {
@@ -188,9 +188,9 @@ function getDimensionPowerMultiplier(nonrandom, focusOn) {
 	if (player.infinityUpgrades.includes('dimMult')) dimMult *= infUpg12Pow()
 	if ((player.currentChallenge == "challenge9" || player.currentChallenge == "postc1")&&!nonrandom) dimMult = Math.pow(10/0.30,Math.random())*0.30
 
-	if (player.achievements.includes("r58")) dimMult = player.galacticSacrifice?Math.pow(dimMult,1.0666):dimMult*1.01;
+	if (player.achievements.includes("r58")) dimMult = player.galacticSacrifice?Math.pow(dimMult,player.tickspeedBoosts==undefined?1.0666:Math.min(Math.sqrt(1800,player.challengeTimes[3])*.1+1,1.0666)):dimMult*1.01;
 	dimMult += ECTimesCompleted("eterc3") * 0.8
-	if (player.galacticSacrifice) if (player.galacticSacrifice.upgrades.includes(33) && player.currentChallenge != "challenge15" && player.currentChallenge != "postc1") dimMult *= galUpgrade33();
+	if (player.galacticSacrifice) if (player.galacticSacrifice.upgrades.includes(33) && (player.currentChallenge != "challenge14" || player.tickspeedBoosts == undefined)) dimMult *= galUpgrade33();
 	if (focusOn == "no-QC5") return dimMult
 	if (QCIntensity(5)) dimMult += getQCReward(5)
 	if (player.masterystudies) {
@@ -217,7 +217,6 @@ function clearDimensions(amount) {
 	
 	
 function getDimensionCostMultiplier(tier) {
-	
 	var multiplier2 = [new Decimal(1e3),new Decimal(5e3),new Decimal(1e4),new Decimal(1.2e4),new Decimal(1.8e4),new Decimal(2.6e4),new Decimal(3.2e4),new Decimal(4.2e4)];
 	if (player.currentChallenge == "challenge10") return multiplier2[tier - 1];
 	else return player.costMultipliers[tier - 1];
@@ -278,8 +277,8 @@ function buyOneDimension(tier) {
 	recordBought(name, 1)
 	if (dimBought(tier) < 1) {
 		player[name + "Pow"] = player[name + "Pow"].times(getDimensionPowerMultiplier(tier))
-		if (player.currentChallenge == "postc5") multiplyPC5Costs(player[name + 'Cost'], tier)
-		else if (player.currentChallenge == "challenge5") multiplySameCosts(player[name + 'Cost'])
+		if (player.currentChallenge == "postc5" && player.tickspeedBoosts == undefined) multiplyPC5Costs(player[name + 'Cost'], tier)
+		else if (player.currentChallenge == "challenge5" && player.tickspeedBoosts == undefined) multiplySameCosts(player[name + 'Cost'])
 		else player[name + "Cost"] = player[name + "Cost"].times(getDimensionCostMultiplier(tier))
 		if (costIncreaseActive(player[name + "Cost"])) player.costMultipliers[tier-1] = player.costMultipliers[tier-1].times(getDimensionCostMultiplierIncrease())
 		floatText("D"+tier, "x" + shortenMoney(getDimensionPowerMultiplier(tier)))
@@ -301,8 +300,8 @@ function buyManyDimension(tier, quick) {
 	player[name + "Amount"] = player[name + "Amount"].add(toBuy)
 	recordBought(name, toBuy)
 	player[name + "Pow"] = player[name + "Pow"].times(getDimensionPowerMultiplier(tier))
-	if (player.currentChallenge == "postc5") multiplyPC5Costs(player[name + 'Cost'], tier)
-	else if (player.currentChallenge == "challenge5") multiplySameCosts(player[name + 'Cost'])
+	if (player.currentChallenge == "postc5" && player.tickspeedBoosts == undefined) multiplyPC5Costs(player[name + 'Cost'], tier)
+	else if (player.currentChallenge == "challenge5" && player.tickspeedBoosts == undefined) multiplySameCosts(player[name + 'Cost'])
 	else player[name + "Cost"] = player[name + "Cost"].times(getDimensionCostMultiplier(tier))
 	if (costIncreaseActive(player[name + "Cost"])) player.costMultipliers[tier-1] = player.costMultipliers[tier-1].times(getDimensionCostMultiplierIncrease())
 	if (!quick) {

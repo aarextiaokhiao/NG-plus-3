@@ -27,6 +27,7 @@ function getProductBoughtMult() {
 
 function isTickspeedBoostPossible() {
 	if (player.tickspeedBoosts == undefined) return
+	if (player.currentChallenge == "challenge5") return
 	if (tmp.ri) return
 	return player.resets > 4 || player.tickspeedBoosts > 0 || player.galaxies > 0 || player.galacticSacrifice.times > 0 || player.infinitied > 0 || player.eternities != 0 || quantumed
 }
@@ -42,6 +43,7 @@ document.getElementById("buyerBtnTickspeedBoost").onclick = function () {
 function autoTickspeedBoostBoolean() {
     var req = getTickspeedBoostRequirement()
     var amount = getAmount(req.tier)
+	if (!isTickspeedBoostPossible()) return false
     if (!player.autobuyers[13].isOn) return false
     if (player.autobuyers[13].ticks*100 < player.autobuyers[13].interval) return false
     if (amount < req.amount) return false

@@ -206,10 +206,11 @@ function buyMaxInfDims(tier) {
 }
 
 function getInfinityPowerEffectPower() {
-	if (player.galacticSacrifice != undefined) {
-		if (player.currentChallenge == "postcngm3_2") return Math.max(player.galaxies, 7)
-		if (player.currentChallenge.includes("postcngm3_2")) return Math.max(Math.pow(player.galaxies + (player.resets + player.tickspeedBoosts) / 24, 0.7), 7)
-		return Math.max(Math.pow(player.galaxies, 0.7), 7)
+	if (player.galacticSacrifice!=undefined) {
+		let ret=Math.pow(player.galaxies, 0.7)
+		if (player.currentChallenge=="postcngm3_2"||(player.tickspeedBoosts!=undefined&&player.currentChallenge=="postc1")) ret=player.galaxies
+		else if (player.currentChallenge.includes("postcngm3_2")) ret=Math.pow(player.galaxies+(player.resets+player.tickspeedBoosts)/24,0.7)
+		return Math.max(ret,7)
 	}
 	return 7
 }

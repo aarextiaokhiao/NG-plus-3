@@ -5,10 +5,10 @@ function getTimeDimensionPower(tier) {
   if (tmp.be) {
     var mult = tmp.it
     if (player.timestudy.studies.includes(11) && tier == 1) mult = mult.times(getTS11Mult())
-    if (player.quantum.breakEternity.upgrades.includes(1) && tier < 5) mult = mult.times(getBreakUpgMult(1))
-    if (player.quantum.breakEternity.upgrades.includes(4) && tier > 3 && tier < 7) mult = mult.times(getBreakUpgMult(4))
-    if (player.quantum.bigRip.upgrades.includes(13)) mult = mult.times(player.replicanti.amount.max(1).pow(1e-6))
-    if (tier == 7 && player.quantum.bigRip.upgrades.includes(16)) mult = mult.times(player.dilation.dilatedTime.div(1e100).pow(0.155).max(1))
+    if (tmp.qu.breakEternity.upgrades.includes(1) && tier < 5) mult = mult.times(getBreakUpgMult(1))
+    if (tmp.qu.breakEternity.upgrades.includes(4) && tier > 3 && tier < 7) mult = mult.times(getBreakUpgMult(4))
+    if (tmp.qu.bigRip.upgrades.includes(13)) mult = mult.times(player.replicanti.amount.max(1).pow(1e-6))
+    if (tier == 7 && tmp.qu.bigRip.upgrades.includes(16)) mult = mult.times(player.dilation.dilatedTime.div(1e100).pow(0.155).max(1))
     if (mult.lt(0)) mult = new Decimal(0)
     if (player.dilation.active || player.galacticSacrifice) {
       mult = Decimal.pow(10, Math.pow(mult.max(1).log10(), dilationPowerStrength()))
@@ -193,7 +193,7 @@ function buyMaxTimeDimensions() {
 }
 
 function getTS11Mult() {
-	let bigRipped = player.masterystudies === undefined ? false : player.quantum.bigRip.active
+	let bigRipped = player.masterystudies === undefined ? false : tmp.qu.bigRip.active
 	let log = -player.tickspeed.div(1e3).pow(0.005).times(0.95).plus(player.tickspeed.div(1e3).pow(0.0003).times(0.95)).log10()
 	if (bigRipped && log > 900) log = Math.sqrt(log * 900)
 	else log = Math.min(log, 2500)
