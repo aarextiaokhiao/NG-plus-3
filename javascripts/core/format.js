@@ -112,6 +112,37 @@ function getAASAbbreviation(x) {
 	return result
 }
 
+var timeDivisions = ["minute", "hour", "day", "week", "month", "year"]
+var timeValues = {
+	year: 31556952,
+	month: 2629746,
+	week: 604800,
+	day: 86400,
+	hour: 3600,
+	minute: 60,
+	second: 1
+}
+function timePadEnd(value) {
+	return (value < 10 ? "0" : "") + value
+}
+function getTimeAbbreviation(seconds) {
+	var data = {second: seconds}
+	for (var d=5; d>-1; d--) {
+		var division = timeDivisions[d]
+		data[division] = Math.floor(data.second / timeValues[division])
+		data.second -= data[division] * timeValues[division]
+	}
+	if (data.year > 99) return getFullExpansion(data.year) + " years"
+	if (data.year > 9) return data.year + " years, " + data.month + "m"
+	if (data.year) return data.year + " year" + (data.year == 1 ? "" : "s") + ", " + data.month + "m & " + data.week + "w"
+	if (data.month) return data.month + " month" + (data.month == 1 ? "" : "s") + ", " + data.week + "w & " + data.day + "d"
+	if (data.week) return data.week + " week" + (data.week == 1 ? "" : "s") + ", " + data.day + " day" + (data.day == 1 ? "" : "s") + " & " + data.hour + "h"
+	if (data.day) return data.day + " day" + (data.day == 1 ? "" : "s") + " & " + data.hour + ":" + timePadEnd(data.minute)
+	if (data.hour) return data.hour + ":" + timePadEnd(data.minute) + ":" + timePadEnd(data.second)
+	if (data.minute) return data.minute + ":" + timePadEnd(data.second)
+	return data.second + " secs"
+}
+
 const inflog = Math.log10(Number.MAX_VALUE)
 function formatValue(notation, value, places, placesUnder1000, noInf) {
     if (notation === "Same notation") notation = player.options.notation
@@ -222,7 +253,9 @@ function formatValue(notation, value, places, placesUnder1000, noInf) {
             return formatPsi(matissa,power)
         }
         if (notation === "Greek" || notation === "Morse code" || notation === "Symbols" || notation === "Lines" || notation === "Simplified Written") {
-            if (matissa>=10-Math.pow(10,-places)/2) {
+            places=Math.min(places,14-Math.floor(Math.log10(power)))
+            if (places<1) matissa = 0
+            else if (matissa>=10-Math.pow(10,-places)/2) {
                 matissa=Math.pow(10,places)
                 power-=places+1
             } else {
@@ -260,7 +293,7 @@ function formatValue(notation, value, places, placesUnder1000, noInf) {
             else pow = getFullExpansion(pow);
         }
 
-        if (notation === "Logarithm") {
+        if (notation === "Logarithm" || (notation === "Mixed logarithm" && power > 32)) {
             var base=player.options.logarithm.base
             var prefix
             if (base==10) {
@@ -327,6 +360,15 @@ function formatValue(notation, value, places, placesUnder1000, noInf) {
             }
             return matissa+getAASAbbreviation(Math.floor(power/3)-1)
         }
+        if (notation === "Time") {
+            if (power>=3e9+3) return getTimeAbbreviation(power/3)
+            matissa = (matissa*Math.pow(10,power%3)).toFixed(Math.max(places-power%3,0))
+            if (parseFloat(matissa)==1e3) {
+                matissa = (1).toFixed(places)
+                power+=3
+            }
+            return matissa+" "+getTimeAbbreviation(Math.floor(power/3))
+        }
         if (matissa >= 1000) {
             matissa /= 1000;
             power++;
@@ -342,7 +384,7 @@ function formatValue(notation, value, places, placesUnder1000, noInf) {
         }
         if (places<0) matissa = ""
 
-        if (notation === "Standard" || notation === "Mixed scientific") {
+        if (notation === "Standard" || notation === "Mixed scientific" || notation === "Mixed logarithm") {
             if (power <= 303) return matissa + " " + FormatList[(power - (power % 3)) / 3];
             else if (power > 3e11+2) return getShortAbbreviation(power) + "s";
             else return matissa + " " + getAbbreviation(power);
@@ -664,12 +706,13 @@ function preformat(int) {
 
 let small = ['','m','μ','n','p','f','a','z','y']
 function timeDisplayShort(time, rep, places) {
-	if (time == 1/0) {
+	if (Decimal.gt(time, Number.MAX_VALUE)) {
 		if (Decimal.eq(time, 1/0)) return 'eternity'
 		return shorten(Decimal.div(time, 31536e4)) + 'y'
 	}
 	time = time / 10
 	if (rep && time < 1) {
+		if (Decimal.lt(time, Number.MIN_VALUE)) return "1/"+formatValue(player.options.notation, Decimal.div(10, time), places, 0)+"s"
 		if (time < 1e-24) return "1/"+formatValue(player.options.notation, 1/time, places, 0)+"s"
 		if (time < 0.01) {
 			var log = Math.ceil(-Math.log10(time))
@@ -680,7 +723,8 @@ function timeDisplayShort(time, rep, places) {
 	if (time < 60) return time.toFixed(time < 10 ? places : places-1) + " s" + (rep ? "" : "econds")
 	if (time < 3600) return Math.floor(time/60) + ":" + preformat(Math.floor(time%60))
 	if (time < 86400) return Math.floor(time/3600) + ":" + preformat(Math.floor((time/60)%60)) + ":" + preformat(Math.floor(time%60))
-	if (time < 31536e3) return Math.floor(time/86400) + 'd, ' + Math.floor((time/3600)%24) + ":" + preformat(Math.floor((time/60)%60)) + ":" + preformat(Math.floor(time%60))
-	if (time < 31536e4) return Math.floor(time/31536e3) + 'y, ' + Math.floor((time/86400)%365) + 'd, ' + Math.floor((time/3600)%24) + ":" + preformat(Math.floor((time/60)%60)) + ":" + preformat(Math.floor(time%60))
+	if (time < 31556952 && rep) return Math.floor(time/86400) + 'd & ' + ((time/3600)%24).toFixed(1) + "h"
+	if (time < 31556952) return Math.floor(time/86400) + 'd & ' + Math.floor((time/3600)%24) + ":" + preformat(Math.floor((time/60)%60)) + ":" + preformat(Math.floor(time%60))
+	if (time < 315569520) return Math.floor(time/31536e3) + 'y & ' + ((time/86400)%365.2425).toFixed(1) + 'd'
 	return shorten(time/31536e3) + 'y'
 }

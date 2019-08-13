@@ -335,13 +335,14 @@ function studiesUntil(id) {
   buyTimeStudy(id, studyCosts[all.indexOf(id)], 0, true);
 }
 
-function respecTimeStudies(force) {
-  var respecTime=player.respec||force
+function respecTimeStudies(force, presetLoad) {
+  var respecTime=player.respec||(force&&(presetLoad||player.eternityChallUnlocked<13))
   var respecMastery=false
   var gotAch=respecTime||player.timestudy.studies.length<1
   if (player.masterystudies) {
       respecMastery=player.respecMastery||force
       gotAch=gotAch&&(respecMastery||player.masterystudies.length<1)
+      delete player.quantum.autoECN
   }
   if (respecTime) {
        if (player.boughtDims) {
@@ -350,14 +351,15 @@ function respecTimeStudies(force) {
           if (temp>player.timestudy.theorem) gotAch=false
           player.timestudy.ers_studies=[null,0,0,0,0,0,0]
        } else {
+          var bru7activated = isBigRipUpgradeActive(7)
           for (var i=0; i<all.length; i++) {
-              if (player.timestudy.studies.includes(all[i])) {
+              if (player.timestudy.studies.includes(all[i]) && (!bru7activated || all[i] !== 192)) {
                   player.timestudy.theorem += studyCosts[i]
                   gotAch=false
               }
           }
           if (player.masterystudies) if (player.timestudy.studies.length>1) player.quantum.wasted = false
-          player.timestudy.studies = []
+          player.timestudy.studies=bru7activated?[192]:[]
           switch(player.eternityChallUnlocked) {
               case 1:
               player.timestudy.theorem += 30
@@ -425,7 +427,7 @@ function respecTimeStudies(force) {
       player.timestudy.studies=respecedTS
   }
   if (respecMastery) {
-      if (player.eternityChallUnlocked > 12) player.timestudy.theorem += masterystudies.costs.ec[player.eternityChallUnlocked]
+      if (player.eternityChallUnlocked>12) player.timestudy.theorem += masterystudies.costs.ec[player.eternityChallUnlocked]
 
       var respecedMS=[]
       for (id=0;id<player.masterystudies.length;id++) {
@@ -438,16 +440,20 @@ function respecTimeStudies(force) {
       }
       if (player.masterystudies.length>respecedMS.length) player.quantum.wasted = false
       player.masterystudies=respecedMS
-      maybeShowFillAll()
-      drawMasteryTree()
       updateMasteryStudyCosts()
-      updateMasteryStudyButtons()
+      if (!presetLoad) {
+          maybeShowFillAll()
+          drawMasteryTree()
+          updateMasteryStudyButtons()
+      }
   }
   player.eternityChallUnlocked = 0
   updateEternityChallenges()
-  updateTimeStudyButtons()
-  updateTheoremButtons()
-  drawStudyTree()
+  if (!presetLoad) {
+      updateTimeStudyButtons()
+      updateTheoremButtons()
+      drawStudyTree()
+  }
   if (gotAch) giveAchievement("You do know how these work, right?")
   if (!GUBought("gb3")) ipMultPower=2
   if (player.replicanti.galaxybuyer) document.getElementById("replicantiresettoggle").textContent = "Auto galaxy ON"
@@ -455,13 +461,14 @@ function respecTimeStudies(force) {
 }
 
 function getTotalTT(tree) {
-	var result=tree.timestudy.theorem
+	tree=tree.timestudy
+	var result=tree.theorem
 	if (tree.boughtDims) {
-		for (id=1;id<7;id++) result+=tree.timestudy.ers_studies[id]*(tree.timestudy.ers_studies[id]+1)/2
+		for (id=1;id<7;id++) result+=tree.ers_studies[id]*(tree.ers_studies[id]+1)/2
 		return result
 	} else {
 		var ecCosts=[0,30,35,40,70,130,85,115,115,415,550,1,1]
-		for (id=0;id<all.length;id++) if (tree.timestudy.studies.includes(all[id])) result+=studyCosts[id]
+		for (id=0;id<all.length;id++) if (tree.studies.includes(all[id])) result+=studyCosts[id]
 		return result+ecCosts[player.eternityChallUnlocked]
 	}
 }
@@ -622,6 +629,7 @@ function new_preset(importing) {
 
 //Smart presets
 var onERS = false
+var onNGP3 = false
 var prefix = "dsAM_ST_"
 var poData
 
@@ -648,7 +656,15 @@ function save_preset(id) {
 	$.notify("Preset saved", "info")
 }
 
-function load_preset(id) {
+function load_preset(id, reset) {
+	if (reset) {
+		var id7unlocked = player.infDimensionsUnlocked[7]
+		if (player.masterystudies !== undefined) if (player.quantum.bigRip.active) id7unlocked = true
+		if (player.infinityPoints.lt(player.eternityChallGoal) || !id7unlocked) return
+		player.respec = true
+		player.respecMastery = true
+		eternity(false, false, true)
+	}
 	importStudyTree(presets[id].preset)
 	closeToolTip()
 	$.notify("Preset loaded", "info")
@@ -705,6 +721,7 @@ var loadedPresets=0
 function openStudyPresets() {
 	closeToolTip()
 	let saveOnERS = !(!player.boughtDims)
+	let saveOnNGP3 = player.masterystudies !== undefined
 	if (saveOnERS != onERS) {
 		document.getElementById("presets").innerHTML=""
 		presets = {}
@@ -712,6 +729,12 @@ function openStudyPresets() {
 		if (onERS) prefix = "dsERS_ST_"
 		else prefix = "dsAM_ST_"
 		loadedPresets = 0
+	} else if (saveOnNGP3!=onNGP3) {
+		onNGP3=saveOnNGP3
+		for (var p=0;p<loadedPresets;p++) {
+			document.getElementById("presets").rows[p].innerHTML=getPresetLayout(poData[p])
+			changePresetTitle(poData[p],p+1)
+		}
 	}
 	document.getElementById("presetsmenu").style.display = "block";
 	clearInterval(loadSavesIntervalId)
@@ -738,7 +761,7 @@ function openStudyPresets() {
 }
 
 function getPresetLayout(id) {
-	return "<b id='preset_"+id+"_title'>Preset #"+(loadedPresets+1)+"</b><br><button class='storebtn' onclick='save_preset("+id+")'>Save</button><button class='storebtn' onclick='load_preset("+id+")'>Load</button><button class='storebtn' onclick='rename_preset("+id+")'>Rename</button><button class='storebtn' onclick='move_preset("+id+",-1)'>Move up</button><button class='storebtn' onclick='move_preset("+id+",1)'>Move down</button><button class='storebtn' onclick='delete_preset("+id+")'>Delete</button>"
+	return "<b id='preset_"+id+"_title'>Preset #"+(loadedPresets+1)+"</b><br><button class='storebtn' onclick='save_preset("+id+")'>Save</button><button class='storebtn' onclick='load_preset("+id+")'>Load</button>"+(onNGP3?"<button class='storebtn' style='font-size: 10px' onclick='load_preset("+id+", true)'>Load and Eternity</button>":"")+"<button class='storebtn' onclick='rename_preset("+id+")'>Rename</button><button class='storebtn' onclick='move_preset("+id+",-1)'>Move up</button><button class='storebtn' onclick='move_preset("+id+",1)'>Move down</button><button class='storebtn' onclick='delete_preset("+id+")'>Delete</button>"
 }
 
 function changePresetTitle(id, placement) {

@@ -53,6 +53,7 @@ function animationOnOff(name) {
     else if (name == "tachyonParticles") document.getElementById("tachyonParticleAnimBtn").textContent = "Tachyon particles: " + ((player.options.animations.tachyonParticles) ? "ON" : "OFF")
     else if (name == "blackHole") document.getElementById("blackHoleAnimBtn").textContent = "Black hole: " + ((player.options.animations.blackHole) ? "ON" : "OFF")
     else if (name == "quarks") document.getElementById("quarksAnimBtn").textContent="Quarks: O"+(player.options.animations[name]?"N":"FF")
+    else if (name == "ghostify") document.getElementById("ghostifyAnimBtn").textContent="Ghostify: O"+(player.options.animations[name]?"N":"FF")
 }
 
 function drawAnimations(ts){

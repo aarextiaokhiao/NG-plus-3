@@ -82,6 +82,9 @@ function updateBlackhole() {
     for (let tier = 1; tier <= 4; ++tier) {
       document.getElementById("blackholeD"+tier).textContent = DISPLAY_NAMES[tier] + " Black Hole Dimension x" + shortenMoney(getBlackholeDimensionPower(tier));
       document.getElementById("blackholeAmount"+tier).textContent = getBlackholeDimensionDescription(tier);
+      document.getElementById("blackholeMax"+tier).textContent = "Cost: " + shortenCosts(player["blackholeDimension"+tier].cost) + " EP";
+      if (player.eternityPoints.gte(player["blackholeDimension"+tier].cost)) document.getElementById("blackholeMax"+tier).className = "storebtn"
+      else document.getElementById("blackholeMax"+tier).className = "unavailablebtn"
     }
   }
 }
@@ -205,10 +208,13 @@ function exDilationUpgradeStrength(x,add=0) {
 
 function reverseDilation () {
     if (!canReverseDilation()) return;
-    if (!(!player.options.exdilationconfirm || confirm('Reversing dilation will make you lose all your tachyon particles, ' +
+    if (player.options.exdilationconfirm) if (!confirm('Reversing dilation will make you lose all your tachyon particles, ' +
     'dilated time, dilation upgrades, and blackhole power, but you will gain ex-dilation ' +
-    'that makes repeatable upgrades more powerful. Are you sure you want to do this?'))) return;
+    'that makes repeatable upgrades more powerful. Are you sure you want to do this?')) return;
+    var eterConf = player.options.eternityconfirm
+    player.options.eternityconfirm = false
     eternity(true);
+    player.options.eternityconfirm = eterConf
     player.exdilation.unspent = player.exdilation.unspent.plus(getExDilationGain());
     player.exdilation.times++;
     player.dilation = {
@@ -244,4 +250,5 @@ function boostDilationUpgrade(x) {
     player.exdilation.unspent = new Decimal(0);
     updateDilation();
     updateDilationUpgradeButtons();
+    updateExdilation();
 }

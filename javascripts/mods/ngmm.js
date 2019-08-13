@@ -2,9 +2,12 @@ function getGSAmount() {
 	if (isEmptiness) return new Decimal(0)
 	let galaxies = player.galaxies + player.replicanti.galaxies + player.dilation.freeGalaxies;
 	let y = 1.5 
-	if (player.challenges.includes("postcngmm_1")) y += Math.max(0, 0.05*(galaxies - 10)) + 0.005 * Math.pow(Math.max(0, galaxies-30) , 2) + 0.0005 * Math.pow(Math.max(0, galaxies-50) , 3)
-	if (y > 100) y = Math.pow(316.22*y,1/3)
-	else if (y > 10) y = Math.pow(10*y , .5)
+	if (player.challenges.includes("postcngmm_1")) {
+		y += Math.max(0, 0.05*(galaxies - 10)) + 0.005 * Math.pow(Math.max(0, galaxies-30) , 2) + 0.0005 * Math.pow(Math.max(0, galaxies-50) , 3)
+		y *= .08*player.challenges.length
+	}
+	if (y > 100) y = Math.pow(316.22*y, 2/5)
+	else if (y > 10) y = Math.pow(10*y, .5)
 	let z = 1
 	if (player.challenges.length > 17 && player.achievements.includes("r67")) {
 		z = 0.06*player.challenges.length
@@ -18,10 +21,10 @@ function getGSAmount() {
 	if (player.galacticSacrifice.upgrades.includes(32)) ret = ret.times(galUpgrade32())
 	if (player.infinityUpgrades.includes("galPointMult")) ret = ret.times(getPost01Mult())
 	if (player.achievements.includes('r37')) {
-		if (player.bestInfinityTime<18e3) ret = ret.times(10+Math.pow(Math.log10(18000/player.bestInfinityTime),2)*10)
-		else ret = ret.times(Math.max(18e4/player.bestInfinityTime,1))
+		if (player.bestInfinityTime >= 18000) ret = ret.times(Math.max(180000/player.bestInfinityTime,1))
+		else ret = ret.times(10*(1+Math.pow(Math.log10(18000/player.bestInfinityTime),2)))
 	}
-	if (player.achievements.includes("r62")) ret = ret.times(Math.max(1, player.infinityPoints.log10()))
+	if (player.achievements.includes("r62")) ret = ret.times(player.infinityPoints.max(10).log10())
 	return ret.floor()
 }
 
@@ -107,21 +110,14 @@ function reduceDimCosts() {
 }
 
 let galUpgrade11 = function () {
-	let x = player.infinitied;
-	let y;
-	if (x < 1) {
-		y = 2;
-	} else if (x < 5) {
-		y = x + 2;
-	} else if (x < 100) {
-		y = Math.pow(x + 5, .5) + 4;
-	} else {
-		let z = 10
-		if (player.challenges.length > 14 && player.challenges.includes("postcngmm_1")) z -= (player.challenges.length-8)/4
-		if (z < 6) z = Math.pow(1296 * z, .2)
-		y = Math.pow(Math.log(x), Math.log(x) / z) + 14;
-	}
-	return Decimal.pow(10, y);
+	let x = Math.min(player.infinitied, 1e6);
+	let y = Math.max(x + 2, 2);
+	let z = 10
+	if (player.challenges.length > 14 && player.challenges.includes("postcngmm_1")) z -= (player.challenges.length-8)/4
+	if (z < 6) z = Math.pow(1296 * z, .2)
+	if (x > 99) y = Math.pow(Math.log(x), Math.log(x) / z) + 14
+	else if (x > 4) y = Math.pow(x + 5, .5) + 4
+	return Decimal.pow(10, Math.min(y, 2e4));
 }
 let galUpgrade12 = function () {
 	return 2 * Math.pow(1 + player.galacticSacrifice.time / 600, 0.5);
@@ -149,10 +145,10 @@ function galacticUpgradeSpanDisplay () {
 	if (player.infinitied>0||player.eternities!==0||quantumed) document.getElementById('galspan11').innerHTML = shortenDimensions(galUpgrade11())
 	document.getElementById('galspan12').innerHTML = shorten(galUpgrade12())
 	document.getElementById('galspan13').innerHTML = shorten(galUpgrade13())
-	document.getElementById('galspan23').innerHTML = shorten(getDimensionBoostPower(false, "g23"))
+	document.getElementById('galspan23').innerHTML = shorten(galUpgrade23())
 	document.getElementById('galspan31').innerHTML = galUpgrade31().toFixed(2)
 	document.getElementById('galspan32').innerHTML = shorten(galUpgrade32())
-	document.getElementById('galspan33').innerHTML = shorten(getDimensionPowerMultiplier(true, "g33"))
+	document.getElementById('galspan33').innerHTML = shorten(galUpgrade33())
 	document.getElementById('galcost33').innerHTML = shortenCosts(galUpgradeCosts[33])
 	if (player.tickspeedBoosts!=undefined) {
 		document.getElementById('galcost14').innerHTML = shortenCosts(1e3)
@@ -187,22 +183,22 @@ function productAllTotalBought () {
 	var ret = 1;
 	var mult = getProductBoughtMult()
 	for (i = 1; i <= 8; i++) {
-		if (player.currentChallenge == "challenge13" && player.tickspeedBoosts != undefined) ret *= Math.max(1+player[TIER_NAMES[i]+"Amount"].log10()*mult, 1);
-		else if (player.totalBoughtDims[TIER_NAMES[i]]) ret = Decimal.times(ret, Math.max(player.totalBoughtDims[TIER_NAMES[i]] ? player.totalBoughtDims[TIER_NAMES[i]] * mult : 1, 1));
+		if (player.currentChallenge == "challenge13" && player.tickspeedBoosts != undefined) ret = Decimal.times(player[TIER_NAMES[i]+"Amount"].max(1).log10(),mult).add(1).times(ret);
+		else if (player.totalBoughtDims[TIER_NAMES[i]]) ret = Decimal.times(ret,player.totalBoughtDims[TIER_NAMES[i]]?Decimal.times(player.totalBoughtDims[TIER_NAMES[i]],mult).max(1):1);
 	}
 	return ret;
 }
 
 function productAllTotalBought1 () {
-	return Math.pow(Math.log10(Math.max(productAllTotalBought(), 10)), 2);
+	return Math.pow(Decimal.max(productAllTotalBought(),10).log10(),2);
 }
 
 function productAllDims1(){
-	var ret = 0;
+	var ret = new Decimal(0)
 	for (i = 1; i <= 8; i++) {
-		ret += Math.max(player[TIER_NAMES[i] + "Amount"].log10(), 0);
+		ret = ret.add(Math.max(player[TIER_NAMES[i] + "Amount"].max(1).log10(),0));
 	}
-	return Math.min(1,ret);
+	return ret.min(1)
 }
 
 document.getElementById("challenge13").onclick = function () {

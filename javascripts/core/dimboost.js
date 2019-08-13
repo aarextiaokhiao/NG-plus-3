@@ -8,11 +8,11 @@ function getDimensionBoostPower(next, focusOn) {
       if (player.currentChallenge == "postc7" || inQC(6) || player.timestudy.studies.includes(81)) ret = 10
   }
   if (player.boughtDims) ret += player.timestudy.ers_studies[4] + (next ? 1 : 0)
-  if (player.galacticSacrifice ? (player.galacticSacrifice.upgrades.includes(23) && player.currentChallenge != "challenge15") || focusOn == "g23" : false) ret *= galUpgrade23()
+  if (player.galacticSacrifice ? (player.galacticSacrifice.upgrades.includes(23) && player.currentChallenge != "challenge15") : false) ret *= galUpgrade23()
   if (player.infinityUpgrades.includes("resetMult")&&player.galacticSacrifice) ret *= 1.2 + 0.05 * player.infinityPoints.max(1).log(10)
   if (!player.boughtDims&&player.achievements.includes("r101")) ret = ret*1.01
   if (player.timestudy.studies.includes(83)) ret = Decimal.pow(1.0004, player.totalTickGained).times(ret);
-  if (player.timestudy.studies.includes(231)) ret = Decimal.pow(Math.max(player.resets, 0), 0.3).times(ret)
+  if (player.timestudy.studies.includes(231)) ret = Decimal.pow(Math.max(player.resets, 1), 0.3).times(ret)
   if (player.galacticSacrifice) {
       if (player.currentChallenge == "postc7" || inQC(6) || player.timestudy.studies.includes(81)) ret = Math.pow(ret,3)
       else if (player.challenges.includes("postc7")) ret = Math.pow(ret,2)
@@ -206,6 +206,7 @@ function softReset(bulk) {
       quantum: player.quantum,
       old: player.old,
       dontWant: player.dontWant,
+      ghostify: player.ghostify,
       aarexModifications: player.aarexModifications
   };
   if (player.currentChallenge == "challenge10" || player.currentChallenge == "postc1") {
@@ -324,7 +325,7 @@ function maxBuyDimBoosts(manual) {
 }
 
 function getShiftRequirement(bulk) {
-	let amount = player.tickspeedBoosts==undefined?20:30;
+	let amount = 20
 	let mult = getDimboostCostIncrease()
 	var resetNum = player.resets + bulk
 	var maxTier = player.currentChallenge == "challenge4" ? 6 : 8
@@ -349,9 +350,8 @@ function getShiftRequirement(bulk) {
 }
 
 function getDimboostCostIncrease () {
-	if (false) return 15;
+	if (player.currentChallenge=="postcngmm_1") return 15;
 	let ret = 15
-	if (player.currentChallenge=="postcngmm_1") return ret
 	if (player.galacticSacrifice) {
 		if (player.galacticSacrifice.upgrades.includes(21)) ret -= 10
 		if (player.infinityUpgrades.includes('dimboostCost')) ret -= 1

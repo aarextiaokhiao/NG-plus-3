@@ -4,6 +4,9 @@ body {
 .container, .statstab, b, input {
     font-family:'Inconsolata', monospace !important
 }
+#ghostlyNewsTicker b, #ghostifyanitext b {
+    font-family:'Typewriter' !important
+}
 #container div {
     color: #e5e5e5
 }
@@ -156,11 +159,11 @@ strong { color: #0072e5 }
     border-color: #e2bd00 !important;
     border-radius: 0px !important
 }
-#eternitybtn, #eternitystorebtn, #pasteternities, #tdtabbtn button, #timedimensions td:nth-child(4) .storebtn, .eternityupbtn, .milestonereward, .timestudy, .eternityttbtn, #eterctabbtn {
+#eternitybtn, #eternitystorebtn, #pasteternities, #tdtabbtn button, #timedimensions td:nth-child(4) .storebtn, .eternityupbtn, .milestonereward, .timestudy, .eternityttbtn, #eterctabbtn, #breakEternityTabbtn button, #autoEternityTabbtn button {
     border-color: #7100e2 !important;
     animation: none
 }
-#eternitybtn:hover, #eternitystorebtn:hover, #pasteternities:hover, #tdtabbtn button:hover, #timedimensions td:nth-child(4) .storebtn:hover, .timestudy:hover, .eternityttbtn:hover, #eterctabbtn:hover {
+#eternitybtn:hover, #eternitystorebtn:hover, #pasteternities:hover, #tdtabbtn button:hover, #timedimensions td:nth-child(4) .storebtn:hover, .timestudy:hover, .eternityttbtn:hover, #eterctabbtn:hover, #breakEternityTabbtn button:hover, #autoEternityTabbtn button:hover {
     background-color: #7100e2 !important
 }
 #TTbuttons {
@@ -194,7 +197,7 @@ strong { color: #0072e5 }
     background-color: #7100e2 !important;
     color: #191919 !important
 }
-.EPAmount2, #timeShardAmount, #tickThreshold {
+.EPAmount2, #timeShardAmount, #tickThreshold, #eternalMatter {
     color: #7100e2 !important
 }
 .timestudylocked, .timestudy, .eternitychallengestudylocked, .eternitychallengestudy {
@@ -367,7 +370,7 @@ strong { color: #0072e5 }
 #progressbar.quantumProgress {
 	background-color: #009900 !important
 }
-.QKAmount, #gatheredQuarks, #normalReplGatherRate, #workerReplGatherRate, #babyReplGatherRate, #gatherRate, .empQuarks, #quarksNanofield, #quarkLoss { color: #009900 !important }
+.QKAmount, #gatheredQuarks, #normalReplGatherRate, #workerReplGatherRate, #babyReplGatherRate, #growupRate, #gatherRate, .empQuarks, #quarksNanofield, #quarkLoss { color: #009900 !important }
 .red { color: #e50000 }
 .green, #quarkTranslation, #quarkCharge, #quarkChargeRate { color: #00e500 }
 .blue { color: #0000e5 }
@@ -415,11 +418,18 @@ strong { color: #0072e5 }
     color: #e5e5e5 !important;
     border-radius: 0px !important
 }
+.ndcompleted {
+    background-color: #191919 !important;
+    border-color: #72e572 !important;
+    color: #e5e5e5 !important;
+    border-radius: 0px !important;
+	animation: none
+}
 #dilstudy10.dilationupg, #dilstudy11.dilationupg { border: 2px solid #333333 !important }
 #dilstudy10.dilationupg:hover, #dilstudy10.dilationupgbought, #dilstudy11.dilationupg:hover, #dilstudy11.dilationupgbought { background-color: #333333 !important }
 #quantumFoodAmount, #quantumFoodAmountED { color: #b7e5b7 !important }
-#buyQuantumFood.storebtn, #buyMaxQuantumFood.storebtn, #feedNormal.storebtn, #feedBaby.storebtn, #breakLimit.storebtn, #emperordimensions .storebtn, #buyQuantumFoodED .storebtn, #buyMaxQuantumFoodED .storebtn { border: 2px solid #b7e5b7 !important }
-#buyQuantumFood.storebtn:hover, #buyMaxQuantumFood.storebtn:hover, #feedNormal.storebtn:hover, #feedBaby.storebtn:hover, #breakLimit.storebtn:hover, #emperordimensions .storebtn:hover, #buyQuantumFoodED .storebtn:hover, #buyMaxQuantumFoodED .storebtn:hover { background-color: #b7e5b7 !important }
+#buyQuantumFood.storebtn, #buyMaxQuantumFood.storebtn, #feedNormal.storebtn #breakLimit.storebtn, #emperordimensions .storebtn, #buyQuantumFoodED .storebtn, #buyMaxQuantumFoodED .storebtn { border: 2px solid #b7e5b7 !important }
+#buyQuantumFood.storebtn:hover, #buyMaxQuantumFood.storebtn:hover, #feedNormal.storebtn:hover, #breakLimit.storebtn:hover, #emperordimensions .storebtn:hover, #buyQuantumFoodED .storebtn:hover, #buyMaxQuantumFoodED .storebtn:hover { background-color: #b7e5b7 !important }
 #eggonAmount, #eggonRate { color: #e5dab7 !important }
 #reduceHatchSpeed.storebtn { border: 2px solid #e5dab7 !important }
 #reduceHatchSpeed.storebtn:hover { background-color: #e5dab7 !important }
@@ -477,6 +487,54 @@ strong { color: #0072e5 }
 .gluonupgrade.b:hover {
 	background-color: #0000e5 !important;
 	color: #191919 !important
+}
+#dilstudy14.dilationupg, .gluonupgrade.bigrip {
+	border: 1px solid #5be567 !important;
+	color: #e5e5e5 !important;
+	box-shadow: none !important
+}
+.bigripbtn {
+	border: 3px solid #5be567 !important;
+	color: #e5e5e5 !important;
+	box-shadow: none !important
+}
+#dilstudy14.dilationupg:hover, #dilstudy14.dilationupgbought, .bigripbtn:hover:hover, .gluonupgrade.bigrip:hover, .gluonupgradebought.bigrip {
+	background-color: #5be567 !important;
+	color: #191919 !important;
+	box-shadow: none !important
+}
+#dilstudy14.dilationupgbought, .gluonupgradebought.bigrip {
+	border: 1px solid #191919 !important
+}
+.SSAmount {
+	color: #5be567 !important
+}
+.ghostifybtn, .brCompleted {
+	border-radius: 0px;
+	border-color: transparent !important
+}
+.ghostifybtn:hover {
+	border-color: rgba(255,255,255,0.5) !important
+}
+#GHPAmount, #quantumedBMAmount {
+	animation: ghostifytext 4s linear infinite
+}
+.aarexmodsghostifybtn {
+	background: linear-gradient(#0c001e, #3a003f) !important;
+	border: transparent !important;
+	font-family: Typewriter;
+	font-weight: bold;
+	border-radius: 4px;
+	transition-duration: 0.2s;
+	animation: ghostifytext 4s linear infinite
+}
+.aarexmodsghostifybtn:hover {
+	border: rgba(255,255,255,0.5) !important;
+	box-shadow: inset 0px 0px 12px 0px #ffffff !important;
+	cursor: pointer
+}
+#tooMuchPowerConsumed {
+	color: #e50000
 }
 .notifyjs-bootstrap-info {
     background-color: #0072e5;

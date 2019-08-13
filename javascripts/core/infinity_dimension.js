@@ -45,20 +45,15 @@ function DimensionProduction(tier) {
   ret = ret.times(DimensionPower(tier))
   if (player.challenges.includes("postc6")&&!inQC(3)) {
       let tick = new Decimal(player.tickspeed)
-      if (player.dilation.active || player.galacticSacrifice) {
-        tick = Decimal.pow(10, Math.pow(Math.abs(tick.log10()), dilationPowerStrength()))
-        if (player.dilation.upgrades.includes(9)) {
-          tick = Decimal.pow(10, Math.pow(Math.abs(tick.log10()), 1.05))
-        }
-      }
-      tick = new Decimal(1).dividedBy(tick)
-      return ret.times(tick.times(1000).pow(0.0005))
+      if (player.dilation.active || player.galacticSacrifice) tick = Decimal.pow(10, Math.pow(Math.abs(tick.log10()), dilationPowerStrength()))
+      return ret.times(Decimal.div(1000, tick).pow(0.0005))
   }
   else return ret
 }
 
 function DimensionPower(tier) {
   var dim = player["infinityDimension"+tier]
+  if (player.currentEternityChall == "eterc2" || player.currentEternityChall == "eterc10" || player.currentEternityChall == "eterc13") return new Decimal(0)
   if (player.currentEternityChall == "eterc11") return new Decimal(1)
   if (player.currentEternityChall=='eterc14') return getIDReplMult()
   if (inQC(3)) return getExtraDimensionBoostPower()
@@ -66,7 +61,6 @@ function DimensionPower(tier) {
 
   mult = mult.times(infDimPow)
 
-  mult = mult.times(kongAllDimMult)
   if (player.achievements.includes("r94") && tier == 1) mult = mult.times(2);
   if (player.achievements.includes("r75") && !player.boughtDims) mult = mult.times(player.achPow);
   if (player.replicanti.unl && player.replicanti.amount.gt(1)) mult = mult.times(getIDReplMult())
@@ -90,7 +84,6 @@ function DimensionPower(tier) {
   if (player.timestudy.studies.includes(92)) mult = mult.times(Decimal.pow(2, 600/Math.max(player.bestEternity, 20)))
   if (player.timestudy.studies.includes(162)) mult = mult.times(player.aarexModifications.newGameExpVersion?1e55:1e11)
   if (ECTimesCompleted("eterc2") !== 0 && tier == 1) mult = mult.times(player.infinityPower.pow(1.5/(700-ECTimesCompleted("eterc2")*100)).min(new Decimal("1e100")).plus(1))
-  if (player.currentEternityChall == "eterc2" || player.currentEternityChall == "eterc10" || player.currentEternityChall == "eterc13") mult = mult.times(0)
 
   if (ECTimesCompleted("eterc4") !== 0) mult = mult.times(player.infinityPoints.pow(0.003 + ECTimesCompleted("eterc4")*0.002).min(new Decimal("1e200")))
 
@@ -100,12 +93,7 @@ function DimensionPower(tier) {
 
   if (mult.lt(0)) mult = new Decimal(0)
 
-  if (player.dilation.active || player.galacticSacrifice) {
-    mult = Decimal.pow(10, Math.pow(mult.max(1).log10(), dilationPowerStrength()))
-    if (player.dilation.upgrades.includes(9)) {
-      mult = Decimal.pow(10, Math.pow(mult.log10(), 1.05))
-    }
-  }
+  if (player.dilation.active || player.galacticSacrifice) mult = Decimal.pow(10, Math.pow(mult.max(1).log10(), dilationPowerStrength()))
 
   return mult
 }
@@ -182,13 +170,11 @@ function buyManyInfinityDimension(tier) {
   if (player.infinityPoints.lt(dim.cost)) return false
   if (!player.infDimensionsUnlocked[tier-1]) return false
   if (player.eterc8ids == 0) return false
-  player.infinityPoints = player.infinityPoints.minus(dim.cost)
+  if (player.infinityPoints.lt(Decimal.pow(10, 1e10))) player.infinityPoints = player.infinityPoints.minus(dim.cost)
   dim.amount = dim.amount.plus(10);
-  if (ECTimesCompleted("eterc12")) {
-      dim.cost = Decimal.round(dim.cost.times(Math.pow(infCostMults[tier], 1-ECTimesCompleted("eterc12")*0.008)))
-  } else {
-      dim.cost = Decimal.round(dim.cost.times(infCostMults[tier]))
-  }
+  let costMult = infCostMults[tier]
+  if (ECTimesCompleted("eterc12")) costMult = Math.pow(costMult, 1-ECTimesCompleted("eterc12")*0.008)
+  dim.cost = Decimal.round(dim.cost.times(costMult))
   dim.power = dim.power.times(infPowerMults[tier])
   dim.baseAmount += 10
 
@@ -204,16 +190,12 @@ function buyMaxInfDims(tier) {
   if (player.infinityPoints.lt(dim.cost)) return false
   if (!player.infDimensionsUnlocked[tier-1]) return false
 
-  let costMult;
-  if (ECTimesCompleted("eterc12")) {
-      costMult = Math.pow(infCostMults[tier], 1-ECTimesCompleted("eterc12")*0.008)
-  } else {
-      costMult = infCostMults[tier]
-  }
+  let costMult = infCostMults[tier]
+  if (ECTimesCompleted("eterc12")) costMult = Math.pow(costMult, 1-ECTimesCompleted("eterc12")*0.008)
 
   var toBuy = Math.floor((player.infinityPoints.e - dim.cost.e) / Math.log10(costMult))
   dim.cost = dim.cost.times(Decimal.pow(costMult, toBuy-1))
-  player.infinityPoints = player.infinityPoints.minus(dim.cost)
+  if (player.infinityPoints.lt(Decimal.pow(10, 1e10))) player.infinityPoints = player.infinityPoints.minus(dim.cost)
   dim.cost = dim.cost.times(costMult)
   dim.amount = dim.amount.plus(10*toBuy);
   dim.power = dim.power.times(Decimal.pow(infPowerMults[tier], toBuy))
@@ -269,15 +251,16 @@ function loadInfAutoBuyers() {
 var infDimPow = 1
 
 function getIDReplMult() {
-	if (player.masterystudies) if (player.masterystudies.includes('t311')) return getReplMult().pow(17.3)
-	return getReplMult()
+	if (player.masterystudies) if (player.masterystudies.includes('t311')) return tmp.rm.pow(17.3)
+	return tmp.rm
 }
 
 function getEU2Mult() {
-	if (player.boughtDims) return Decimal.pow(getEternitied(), Math.log(getEternitied()*2+1)/Math.log(4))
-	var cap = Math.min(getEternitied(), 100000)
-	var soft = getEternitied() - cap
-	return Decimal.pow(cap/200 + 1, Math.log(cap*2+1)/Math.log(4)).times(new Decimal(soft/200 + 1).times(Math.log(soft*2+1)/Math.log(4)).max(1)).max(player.achievements.includes("ngpp15")?Decimal.pow(10, Math.pow(Math.log10(getEternitied()), 4.75)):1)
+	var e = getEternitied()
+	if (player.boughtDims) return Decimal.pow(e, Decimal.times(e,2).add(1).log(Math.E)/Math.log(4))
+	var cap = nMn(e, 100000)
+	var soft = nS(e, cap)
+	return Decimal.pow(cap/200 + 1, Math.log(cap*2+1)/Math.log(4)).times(Decimal.div(soft,200).add(1).times(Decimal.times(soft,2).add(1).log(Math.E)/Math.log(4)).max(1)).max(player.achievements.includes("ngpp15")?Decimal.pow(10, Math.pow(Decimal.log10(e), 4.75)):1)
 }
 
 function getEU3Mult() {

@@ -55,6 +55,7 @@ button, div.storebtn {
 
 .completedrow {
 	background-color: #005f00;
+	color: #e5e5e5
 }
 
 #footer {
@@ -78,7 +79,7 @@ button, div.storebtn {
     border-radius: 0px !important
 }
 
-#coinAmount, #dilatedGalaxies, #sacrificedGals {
+#coinAmount, #dilatedGalaxies, #normalGalaxies, #sacrificedGals {
 	color: #0072e5 !important
 }
 
@@ -155,7 +156,7 @@ button, div.storebtn {
     color: #e5e5e5 !important
 }
 
-#singularityPower, #darkMatterAmount, #darkMatterPerSecond, #nextUpgrade, #darkMatterDT, #nextDiscounts, #blackholePowAmount, #replicantAmount, #workerReplAmount, #hatchProgress, #babyReplAmount, #replicantAmountED {
+#singularityPower, #darkMatterAmount, #darkMatterPerSecond, #nextUpgrade, #darkMatterDT, #nextDiscounts, #blackholePowAmount, #replicantAmount, #workerReplAmount, #hatchProgress, #babyReplAmount, #growupRate, #replicantAmountED {
 	color: #0c0c0c !important
 }
 
@@ -168,7 +169,7 @@ button, div.storebtn {
 	box-shadow: 1px 2px rgba(229,229,229,0.4)
 }
 
-#eternitybtn, #eternitystorebtn, #pasteternities, #tdtabbtn button, #timedimensions td:nth-child(4) .storebtn, .timetheorembtn, .timestudybought, .eternityupbtnbought, .milestonereward, #eterctabbtn, #eterchallengesbtn {
+#eternitybtn, #eternitystorebtn, #pasteternities, #tdtabbtn button, #timedimensions td:nth-child(4) .storebtn, .timetheorembtn, .timestudybought, .eternityupbtnbought, .milestonereward, #eterctabbtn, #eterchallengesbtn, #breakEternityTabbtn button, #autoEternityTabbtn button {
 	background-color: #7200e5 !important;
 	color: #191919 !important
 }
@@ -177,13 +178,13 @@ button, div.storebtn {
 	color: #191919 !important
 }
 
-#eternitybtn:hover, #eternitystorebtn:hover, #pasteternities:hover, #tdtabbtn button:hover, #timedimensions td:nth-child(4) .storebtn:hover, .timetheorembtn:hover, .timestudy, .timestudy.timedimstudy, .timestudy.passivestudy, .timestudybought.lightstudy, .eternityupbtn, #eterctabbtn:hover, #eterchallengesbtn:hover {
+#eternitybtn:hover, #eternitystorebtn:hover, #pasteternities:hover, #tdtabbtn button:hover, #timedimensions td:nth-child(4) .storebtn:hover, .timetheorembtn:hover, .timestudy, .timestudy.timedimstudy, .timestudy.passivestudy, .timestudybought.lightstudy, .eternityupbtn, #eterctabbtn:hover, #eterchallengesbtn:hover, #breakEternityTabbtn button:hover, #autoEternityTabbtn button:hover {
 	background-color: #8f39e5 !important;
 	color: #191919 !important;
 	animation: none !important
 }
 
-.EPAmount2, #timeShardAmount, #tickThreshold {
+.EPAmount2, #timeShardAmount, #tickThreshold, #eternalMatter {
 	color: #7200e5 !important
 }
 
@@ -320,6 +321,8 @@ button, div.storebtn {
 	color: #191919 !important
 }
 
+#progressbar.quantumProgress { background: #009900 !important }
+
 #quantumbtn div {
 	color: #191919 !important
 }
@@ -332,15 +335,15 @@ button, div.storebtn {
 	color: #009900 !important
 }
 
-.red, #rgRepl {
+.red, #rgRepl, #rgEDs {
 	color: #e50000 !important
 }
 
-.green, #gbRepl, #quarkTranslation, #quarkCharge, #quarkChargeRate {
+.green, #gbRepl, #quarkTranslation, #gbEDs, #quarkCharge, #quarkChargeRate {
 	color: #00e500 !important
 }
 
-.blue, #brRepl {
+.blue, #brRepl, #brEDs {
 	color: #0000e5 !important
 }
 
@@ -389,6 +392,16 @@ button, div.storebtn {
 	border-radius: 0px !important;
 	font-weight: normal !important;
 	box-shadow: 1px 2px rgba(229,229,229,0.4)
+}
+
+.ndcompleted {
+	background-color: #57e557 !important;
+	color: #191919 !important;
+	border: none !important;
+	border-radius: 0px !important;
+	font-weight: normal !important;
+	box-shadow: 1px 2px rgba(229,229,229,0.4);
+	animation: none
 }
 
 #dilstudy10.dilationupg:hover, #dilstudy11.dilationupg:hover {
@@ -467,6 +480,64 @@ button, div.storebtn {
 	background-color: #3939e5 !important;
 	color: #191919 !important;
 	box-shadow: 1px 2px rgba(229,229,229,0.4)
+}
+
+#dilstudy14.dilationupgbought, .bigripbtn, .gluonupgradebought.bigrip {
+	background-color: #5be567 !important;
+	color: #191919 !important;
+	box-shadow: 1px 2px rgba(229,229,229,0.4)
+}
+
+#dilstudy14.dilationupg, .bigripbtn:hover, .gluonupgrade.bigrip {
+	background-color: #7ee586 !important;
+	color: #191919 !important;
+	box-shadow: 1px 2px rgba(229,229,229,0.4)
+}
+
+#dilstudy14.dilationupg:hover, .gluonupgrade.bigrip:hover {
+	background-color: #a0e5a6 !important
+}
+
+.SSAmount {
+	color: #5be567 !important
+}
+
+.ghostifybtn, .brCompleted {
+	border: none !important;
+	border-radius: 0px !important;
+	border-color: transparent !important;
+	box-shadow: inset 0px 0px 12px 0px transparent, 1px 2px rgba(229,229,229,0.4)
+}
+
+.ghostifybtn:hover {
+	border-color: rgba(255,255,255,0.5);
+	box-shadow: inset 0px 0px 12px 0px #ffffff, 1px 2px rgba(229,229,229,0.4)
+}
+
+.aarexmodsghostifybtn {
+	background: linear-gradient(#0c001e, #3a003f) !important;
+	font-family: Typewriter;
+	font-weight: bold;
+	border-radius: 4px;
+	box-shadow: inset 0px 0px 12px 0px none, 1px 2px rgba(229,229,229,0.4);
+	transition-duration: 0.2s;
+	animation: ghostifytext 4s linear infinite
+}
+
+.aarexmodsghostifybtn:hover {
+	box-shadow: inset 0px 0px 12px 0px #ffffff, 1px 2px rgba(229,229,229,0.4)
+}
+
+.neutrinos {
+	color: #cccccc
+}
+
+#GHPAmount, #quantumedBMAmount {
+	animation: ghostifytext 4s linear infinite
+}
+
+#tooMuchPowerConsumed {
+	color: #e50000
 }
 				
 @keyframes rg {
