@@ -91,6 +91,7 @@ function updateMasteryStudyCosts() {
 	masterystudies.latestBoughtRow=0
 	masterystudies.costmult=1
 	masterystudies.spentTT=0
+	let total=0
 	for (id=0;id<player.masterystudies.length;id++) {
 		var t=player.masterystudies[id].split("t")[1]
 		if (t) {
@@ -98,6 +99,8 @@ function updateMasteryStudyCosts() {
 			masterystudies.spentTT+=masterystudies.costs.time[t]
 			if (masterystudies.allTimeStudies.includes(parseInt(t))) masterystudies.costmult*=masterystudies.costmults[t]
 			masterystudies.latestBoughtRow=Math.max(masterystudies.latestBoughtRow,Math.floor(t/10))
+			total++
+			if (total>1/0) giveAchievement("The Theory of Ultimate Studies")
 		}
 	}
 	for (id=0;id<masterystudies.allTimeStudies.length;id++) {
@@ -556,7 +559,11 @@ function getMTSMult(id, modifier) {
 	if (id==391) return player.meta.antimatter.max(1).pow(8e-4)
 	if (id==392) return Decimal.pow(1.6,Math.sqrt(tmp.qu.replicants.quarks.add(1).log10()))
 	if (id==393) return Decimal.pow(4e5,Math.sqrt(getTotalWorkers().add(1).log10()))
-	if (id==401) return tmp.qu.replicants.quarks.div(1e28).add(1).pow(0.2)
+	if (id==401) {
+		let log=tmp.qu.replicants.quarks.div(1e28).add(1).log10()*0.2
+		if (log>5) log=Math.log10(log*2)*5
+		return Decimal.pow(10,log)
+	}
 	if (id==411) return getTotalReplicants().div(1e24).add(1).pow(0.2)
 	if (id==421) {
 		let ret=Math.pow(Math.max(-player.tickspeed.log10()/1e13-0.75,1),4)
@@ -1483,15 +1490,17 @@ function fillAll() {
 }
 
 //v1.99872
-function maxAllDilUpgs(quick) {
-	while (buyDilationUpgrade(11,true)) {}
-	while (buyDilationUpgrade(3,true)) {}
+function maxAllDilUpgs() {
+	let update
+	while (buyDilationUpgrade(11,true)) {update=true}
+	while (buyDilationUpgrade(3,true)) {update=true}
 	var cost=Decimal.pow(10,player.dilation.rebuyables[1]+5)
 	if (player.dilation.dilatedTime.gte(cost)) {
 		var toBuy=Math.floor(player.dilation.dilatedTime.div(cost).times(9).add(1).log10())
 		var toSpend=Decimal.pow(10,toBuy).sub(1).div(9).times(cost)
 		player.dilation.dilatedTime=player.dilation.dilatedTime.sub(player.dilation.dilatedTime.min(cost))
 		player.dilation.rebuyables[1]+=toBuy
+		update=true
 	}
 	if (speedrunMilestonesReached>21) {
 		var cost=Decimal.pow(10,player.dilation.rebuyables[2]*2+6)
@@ -1501,11 +1510,13 @@ function maxAllDilUpgs(quick) {
 			player.dilation.dilatedTime=player.dilation.dilatedTime.sub(player.dilation.dilatedTime.min(cost))
 			player.dilation.rebuyables[2]+=toBuy
 			resetDilationGalaxies()
+			update=true
 		}
-	} else buyDilationUpgrade(2,true)
-	updateDilationUpgradeCosts()
-	updateDilationUpgradeButtons()
-	updateTimeStudyButtons()
+	} else if (buyDilationUpgrade(2,true)) update=true
+	if (update) {
+		updateDilationUpgradeCosts()
+		updateDilationUpgradeButtons()
+	}
 }
 
 function updateQCTimes() {
@@ -1801,8 +1812,7 @@ function getQuarkEnergyProduction() {
 	if (player.masterystudies.includes("t411")) ret = ret.times(getMTSMult(411))
 	if (player.masterystudies.includes("t421")) ret = ret.times(getMTSMult(421))
 	ret = ret.times(getNanofieldRewardEffect("8c"))
-	if (ghostified && player.ghostify.neutrinos.boosts > 4) ret = ret.times(tmp.nb[4])
-	if (ghostified && player.ghostify.ghostlyPhotons.enpowerments > 1) ret = ret.times(tmp.le[8])
+	if (hasNU(15)) ret = ret.times(tmp.nu[5])
 	ret = ret.times(tmp.ns)
 	return ret
 }
@@ -1810,7 +1820,7 @@ function getQuarkEnergyProduction() {
 function getQuarkAntienergyProduction() {
 	let ret = tmp.qu.nanofield.charge.sqrt()
 	if (player.masterystudies.includes("t401")) ret = ret.div(getMTSMult(401))
-	if (ghostified && player.ghostify.ghostlyPhotons.enpowerments > 1) ret = ret.times(tmp.le[8])
+	if (hasNU(15)) ret = ret.times(tmp.nu[5])
 	ret = ret.times(tmp.ns)
 	return ret
 }
@@ -2002,8 +2012,8 @@ function getDecayRate(branch) {
 	if (hasNU(4)) ret = ret.times(tmp.nu[2])
 	if (tmp.qu.bigRip.active) {
 		if (hasNU(12)) ret = ret.div(player.galaxies*0.035+1)
-		if (isBigRipUpgradeActive(19)) ret = ret.div(tmp.bru[4])
-		if (isBigRipUpgradeActive(20)) ret = ret.times(tmp.bru[5])
+		if (isBigRipUpgradeActive(19)) ret = ret.times(tmp.bru[4])
+		if (isBigRipUpgradeActive(20)) ret = ret.div(tmp.bru[5])
 	}
 	return ret.min(Math.pow(2,40)).times(todspeed)
 }
@@ -2014,7 +2024,7 @@ function getQuarkSpinProduction(branch) {
 	if (hasNU(4)) ret = ret.times(tmp.nu[2].pow(2))
 	if (tmp.qu.bigRip.active) {
 		if (isBigRipUpgradeActive(18)) ret = ret.times(tmp.bru[3])
-		if (isBigRipUpgradeActive(20)) ret = ret.times(tmp.bru[5])
+		if (isBigRipUpgradeActive(19)) ret = ret.times(tmp.bru[4])
 	}
 	ret = ret.times(todspeed)
 	return ret
@@ -2315,6 +2325,7 @@ function radioactiveDecay(shorthand) {
 	data.upgrades={}
 	if (player.ghostify.milestones>3) data.upgrades[1]=5
 	data.decays=data.decays===undefined?1:data.decays+1
+	if (!tmp.qu.bigRip.active) giveAchievement("Weak Decay")
 	let sum=0
     for (var c=0;c<3;c++) sum+=getRadioactiveDecays((['r','g','b'])[c])
 	if (sum>9) giveAchievement("Radioactive Decaying to the max!")
@@ -3003,6 +3014,9 @@ function getBreakUpgMult(id) {
 		return Decimal.pow(10, Math.pow(log1, 1/3) / 1.7 + Math.pow(log2, 1/3) * 2)
 	}
 	if (id == 7) return Decimal.pow(1e9, tmp.qu.breakEternity.epMultPower)
+	if (id == 8) return 0
+	if (id == 9) return 1
+	if (id == 10) return 1
 }
 
 function getExtraTickReductionMult() {
@@ -3082,6 +3096,8 @@ function ghostifyReset(implode, gain, amount, force) {
 	var bm = player.ghostify.milestones
 	if (bm > 2) for (var c=1;c<9;c++) tmp.qu.electrons.mult += 0.5-QCIntensity(c)*0.25
 	if (bm > 15) giveAchievement("I rather oppose the theory of everything")
+	if (player.eternityPoints.e>=1/0&&!player.dilation.times) giveAchievement("Overchallenged")
+	if (player.ghostify.best<=1) giveAchievement("Running through the Big Rips")
 	player.ghostify.time = 0
 	player = {
 		money: new Decimal(10),
@@ -3349,7 +3365,7 @@ function ghostifyReset(implode, gain, amount, force) {
 			studies: bm ? player.dilation.studies : [],
 			active: false,
 			times: 0,
-			tachyonParticles: player.achievements.includes("ng3p7x") ? player.dilation.bestTPOverGhostifies : new Decimal(0),
+			tachyonParticles: player.achievements.includes("ng3p66") ? player.dilation.bestTPOverGhostifies : new Decimal(0),
 			dilatedTime: new Decimal(bm ? 1e100 : 0),
 			bestTPOverGhostifies: player.dilation.bestTPOverGhostifies,
 			nextThreshold: new Decimal(1000),
@@ -3362,6 +3378,20 @@ function ghostifyReset(implode, gain, amount, force) {
 				4: 0,
 			}
 		},
+		exdilation: player.exdilation!=undefined?{
+			unspent: new Decimal(0),
+			spent: {
+				1: 0,
+				2: 0,
+				3: 0
+			},
+			times: 0
+		}:player.exdilation,
+		blackhole: player.exdilation!=undefined?{
+			unl: speedrunMilestonesReached > 4,
+			upgrades: {dilatedTime: 0, bankedInfinities: 0, replicanti: 0, total: 0},
+			power: new Decimal(0)
+		}:player.blackhole,
 		why: player.why,
 		options: player.options,
 		meta: {
@@ -3623,6 +3653,31 @@ function ghostifyReset(implode, gain, amount, force) {
 	EPminpeak = new Decimal(0)
 	player.dilation.totalTachyonParticles = player.dilation.tachyonParticles
 	player.dilation.bestTP = player.dilation.tachyonParticles
+	if (player.exdilation!=undefined) {
+		for (var d=1;d<5;d++) player["blackholeDimension"+d] = {
+			cost: Decimal.pow(10,4000*d),
+			amount: 0,
+			power: 1,
+			bought: 0
+		}
+		if (speedrunMilestonesReached < 3) {
+			document.getElementById("blackholediv").style.display="none"
+			document.getElementById("blackholeunlock").style.display="inline-block"
+		}
+	}
+	if (player.achievements.includes("ng3p77")) {
+		player.timestudy.studies=[]
+		player.masterystudies=[]
+		for (var t=0;t<all.length;t++) player.timestudy.studies.push(all[t])
+		for (var c=1;c<15;c++) player.eternityChalls["eterc"+c]=5
+		for (var t=0;t<masterystudies.allTimeStudies.length;t++) player.masterystudies.push("t"+masterystudies.allTimeStudies[t])
+		for (var d=1;d<7;d++) player.dilation.studies.push(d)
+		for (var d=7;d<15;d++) player.masterystudies.push("d"+d)
+		if (bm<2) {
+			player.dimensionMultDecrease=2
+			player.tickSpeedMultDecrease=1.65
+		}
+	}
 	document.getElementById("eternitybtn").style.display = "none"
 	document.getElementById("eternityPoints2").innerHTML = "You have <span class=\"EPAmount2\">"+shortenDimensions(player.eternityPoints)+"</span> Eternity point"+((player.eternityPoints.eq(1)) ? "." : "s.")
 	document.getElementById("epmult").innerHTML = "You gain 5 times more EP<p>Currently: 1x<p>Cost: 500 EP"
@@ -3634,13 +3689,9 @@ function ghostifyReset(implode, gain, amount, force) {
 	updateEternityUpgrades()
 	updateTheoremButtons()
 	updateTimeStudyButtons()
-	if (player.autoEterMode=="replicanti"||player.autoEterMode=="peak") {
-		player.autoEterMode="amount"
-		updateAutoEterMode()
-	}
+	if (!bm) updateAutoEterMode()
 	updateEternityChallenges()
 	updateDilationUpgradeCosts()
-	for (let i = 2; i <= 8; i++) if (!canBuyMetaDimension(i)) document.getElementById(i + "MetaRow").style.display = "none"
 	if (!bm) {
 		document.getElementById("masterystudyunlock").style.display = "none"
 		document.getElementById('rebuyupgmax').style.display = ""
@@ -3685,9 +3736,11 @@ function ghostifyReset(implode, gain, amount, force) {
 		document.getElementById('toggleallmetadims').style.display="none"
 		document.getElementById('metaboostauto').style.display="none"
 		document.getElementById("autoBuyerQuantum").style.display="none"
+		document.getElementById('toggleautoquantummode').style.display="none"
+	}
+	if (!bm&&!player.achievements.includes("ng3p77")) {
 		document.getElementById("electronstabbtn").style.display = "none"
 		document.getElementById("nanofieldtabbtn").style.display = "none"
-		document.getElementById('toggleautoquantummode').style.display="none"
 		document.getElementById("edtabbtn").style.display = "none"
 	}
 	document.getElementById('bestTP').textContent="Your best Tachyon particles in this Ghostify was "+shorten(player.dilation.bestTP)+"."
@@ -3715,7 +3768,7 @@ function ghostifyReset(implode, gain, amount, force) {
 		document.getElementById("ghostifyAnimBtn").style.display = "inline-block"
 		document.getElementById("ghostifyConfirmBtn").style.display = "inline-block"
 		giveAchievement("Kee-hee-hee!")
-	} else if (player.ghostify.times<11) {
+	} else if (player.ghostify.times>2&&player.ghostify.times<11) {
 		$.notify("You unlocked "+(player.ghostify.times+2)+"th Neutrino upgrade!", "success")
 		if (player.ghostify.times%3>1) document.getElementById("neutrinoUpg"+(player.ghostify.times+2)).parentElement.parentElement.style.display=""
 		else document.getElementById("neutrinoUpg"+(player.ghostify.times+2)).style.display=""
@@ -3826,16 +3879,16 @@ function updateGhostifyTabs() {
 		if (player.ghostify.neutrinos.boosts>8) document.getElementById("neutrinoBoost9").textContent=shorten(tmp.nb[8])
 		document.getElementById("neutrinoUpg1Pow").textContent=tmp.nu[0]
 		document.getElementById("neutrinoUpg3Pow").textContent=shorten(tmp.nu[1])
-		if (player.ghostify.times>1) document.getElementById("neutrinoUpg4Pow").textContent=shorten(tmp.nu[2])
+		document.getElementById("neutrinoUpg4Pow").textContent=shorten(tmp.nu[2])
 		if (player.ghostify.times>4) document.getElementById("neutrinoUpg7Pow").textContent=shorten(tmp.nu[3])
 		if (player.ghostify.ghostlyPhotons.unl) {
 			document.getElementById("neutrinoUpg14Pow").textContent=shorten(tmp.nu[4])
-			document.getElementById("neutrinoUpg15Pow").textContent=(tmp.nu[5]*100-100).toFixed(1)
+			document.getElementById("neutrinoUpg15Pow").textContent=shorten(tmp.nu[5])
 		}
 		for (var u=1;u<16;u++) {
 			var e=false
 			if (u>12) e=player.ghostify.ghostlyPhotons.unl
-			else e=player.ghostify.times+3>u
+			else e=player.ghostify.times+3>u||u<4
 			if (e) {
 				if (hasNU(u)) document.getElementById("neutrinoUpg" + u).className = "gluonupgradebought neutrinoupg"
 				else if (sum.gte(tmp.nuc[u])) document.getElementById("neutrinoUpg" + u).className = "gluonupgrade neutrinoupg"
@@ -3880,7 +3933,7 @@ function updateGhostifyTabs() {
 		for (var e=1;e<4;e++) {
 			if (gphData.enpowerments>=e) {
 				if (e==1) document.getElementById("leBoost1").textContent=getFullExpansion(Math.floor(tmp.le[7]))
-				if (e==2) document.getElementById("leBoost2").textContent=getFullExpansion(Math.floor(tmp.le[7]))
+				if (e==2) document.getElementById("leBoost2").textContent=(tmp.le[8]*100-100).toFixed(1)
 				if (e==3) {
 					document.getElementById("leBoost3b").textContent=shorten(getMTSMult(273, "pl"))
 					document.getElementById("leBoost3").textContent=shorten(getMTSMult(273))

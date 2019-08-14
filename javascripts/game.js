@@ -613,7 +613,7 @@ function updateNewPlayer(reseted) {
     if (modesChosen.ngpp > 2) {
         player.aarexModifications.newGameUpdateVersion = 1
         player.exdilation = {
-            unspent: new Decimal(0),
+            unspent: 0,
             spent: {
                 1: 0,
                 2: 0,
@@ -624,28 +624,10 @@ function updateNewPlayer(reseted) {
         player.blackhole = {
             unl: false,
             upgrades: {dilatedTime: 0, bankedInfinities: 0, replicanti: 0, total: 0},
-            power: new Decimal(0)
+            power: 0
         }
-        player.blackholeDimension1 = {
-            cost: '1e4000',
-            amount: 0,
-            power: 1,
-            bought: 0
-        }
-        player.blackholeDimension2 = {
-            cost: '1e8000',
-            amount: 0,
-            power: 1,
-            bought: 0
-        }
-        player.blackholeDimension3 = {
-            cost: '1e12000',
-            amount: 0,
-            power: 1,
-            bought: 0
-        }
-        player.blackholeDimension4 = {
-            cost: '1e16000',
+        for (var d=1;d<5;d++) player["blackholeDimension"+d] = {
+            cost: Decimal.pow(10,4000*d),
             amount: 0,
             power: 1,
             bought: 0
@@ -1038,7 +1020,7 @@ function updateTemp() {
 			tmp.bru[4]=1 //BRU19
 			tmp.bru[5]=1 //BRU20
 			tmp.nu[4]=Decimal.pow(player.ghostify.ghostParticles.add(1).log10(),Math.pow(tmp.qu.colorPowers.r.add(tmp.qu.colorPowers.g).add(tmp.qu.colorPowers.b).add(1).log10()*0,1)+1).max(1) //NU14
-			tmp.nu[5]=1 //NU15
+			tmp.nu[5]=Decimal.pow(4,tmp.qu.nanofield.power) //NU15
 		}
 		tmp.ns=nanospeed
 		if (ghostified) {
@@ -1213,9 +1195,11 @@ function getGalaxyRequirement(offset=0, display) {
 	if (tmp.be) {
 		amount *= 50
 		if (tmp.qu.breakEternity.upgrades.includes(2)) amount /= getBreakUpgMult(2)
+		if (player.currentEternityChall=="eterc10"&&tmp.qu.breakEternity.upgrades.includes(9)) amount /= getBreakUpgMult(9)
 	}
 	if (!player.galacticSacrifice&&!player.boughtDims) {
 		let ghostlySpeed = tmp.be ? 55 : 1
+		if (ghostified&&player.ghostify.ghostlyPhotons.unl&&player.ghostify.ghostlyPhotons.enpowerments>1) ghostlySpeed /= tmp.le[8]
 		let scalingSpeed = 1
 		if (galaxies >= 302500 / ghostlySpeed) {
 			scalingSpeed = (galaxies + 1 - 302500 / ghostlySpeed) * ghostlySpeed / 1e4 + 1
@@ -1297,6 +1281,7 @@ function sacrificeConf() {
 function getDilPower() {
 	var ret = Decimal.pow(3, player.dilation.rebuyables[3] * exDilationUpgradeStrength(3))
 	if (tmp.ngp3) {
+		if (tmp.be&&tmp.qu.breakEternity.upgrades.includes(10)) ret = ret.pow(getBreakUpgMult(10))
 		if (player.masterystudies.includes("t264")) ret = ret.times(getMTSMult(264))
 		if (GUBought("br1")) ret = ret.times(player.dilation.dilatedTime.add(1).log10()+1)
 		if (player.masterystudies.includes("t341")) ret = ret.times(getMTSMult(341))
@@ -1964,11 +1949,13 @@ function updateChallenges() {
 		buttons[i].textContent = "Start"
 	}
 
+	tmp.cp=player.tickspeedBoosts==undefined?-14:0
 	infDimPow=1
 	for (var i=0; i < player.challenges.length; i++) {
 		document.getElementById(player.challenges[i]).className = "completedchallengesbtn";
 		document.getElementById(player.challenges[i]).textContent = "Completed"
-		if (player.challenges.includes("postc1")) if (player.challenges[i].split("postc")[1]) infDimPow *= 1.3
+		if (player.challenges[i].split("postc").length<1||player.tickspeedBoosts==undefined) tmp.cp++
+		if (player.challenges.includes("postc1")) if (player.challenges[i].split("postc")[1]) infDimPow*=1.3
 	}
 	
 	var challengeRunning
@@ -2458,7 +2445,7 @@ function getPostC3RewardMult() {
 		if (hasNU(12)) perGalaxy*=player.dilation.freeGalaxies*.035+1
 	}
 	if (!player.galacticSacrifice) return player.galaxies*perGalaxy+1.05
-	if (player.challenges.length > 15) perGalaxy *= player.challenges.length/10-.5
+	if (tmp.cp>1) perGalaxy *= tmp.cp/10+.9
 	var realnormalgalaxies = player.galaxies
 	if (tmp.ngp3) realnormalgalaxies = Math.max(player.galaxies-tmp.qu.electrons.sacGals,0)
 	if (player.currentChallenge == "challenge15" || (player.currentChallenge == "postc1" && player.tickspeedBoosts != undefined)) realnormalgalaxies = 0
@@ -7065,6 +7052,11 @@ setInterval(function() {
         let ableToGetRid4 = ableToGetRid2 && inQC(2)
         let ableToGetRid5 = ableToGetRid4 && player.dontWant
         let ableToGetRid6 = ableToGetRid2 && inQC(6) && inQC(8)
+        let noTree = false
+        for (var u=1;u<9;u++) {
+            if (tmp.qu.tod.upgrades[u]) break
+            else noTree = true
+        }
 
         if (player.meta.antimatter.gte(Number.MAX_VALUE)) giveAchievement("I don't have enough fuel!")
         if (player.galaxies>899&&!player.dilation.studies.includes(1)) giveAchievement("No more tax fraud!")
@@ -7090,20 +7082,17 @@ setInterval(function() {
         if (player.timestudy.theorem>11e6&&tmp.qu.wasted) giveAchievement("Studies are wasted")
         if (tmp.qu.replicants.requirement.gte("1e14500000")) giveAchievement("Stop blocking me!")
         if (player.infinityPoints.gte(Decimal.pow(10, 275e3))&&ableToGetRid6) giveAchievement("Are you currently dying?")
-        if (!player.achievements.includes("ng3p65")) {
-            for (var u=1;u<9;u++) {
-                if (tmp.qu.tod.upgrades[u]) break
-                else if (tmp.qu.nanofield.rewards>20&&u>7) giveAchievement("But I don't want to grind!")
-            }
-        }
+        if (tmp.qu.nanofield.rewards>20&&noTree) giveAchievement("But I don't want to grind!")
         if (player.replicanti.amount.e >= 36e6) giveAchievement("Will it be enough?")
         if (tmp.qu.bigRip.active) {
             let ableToGetRid7 = ableToGetRid2 && player.epmult.eq(1)
             let ableToGetRid8 = ableToGetRid7 && !tmp.qu.breakEternity.did
+            let ableToGetRid9 = ableToGetRid8 && noTree
             if (player.currentEternityChall == "eterc7" && player.galaxies == 1 && player.money.e >= 8e7) giveAchievement("Time Immunity")
             if (!player.timestudy.studies.includes(11) && player.timeShards.e > 214) giveAchievement("You're not really smart.")
             if (ableToGetRid7 && player.infinityPoints.e >= 35e4) giveAchievement("And so your life?")
             if (ableToGetRid8 && player.infinityPoints.e >= 95e4) giveAchievement("Please answer me why you are dying.")
+            if (ableToGetRid9 && player.infinityPoints.e >= 1/0) giveAchievement("Why do you want to die?")
         }
         if (tmp.qu.bigRip.spaceShards.e>32&&!tmp.qu.breakEternity.did) giveAchievement("Finite Time")
         if (player.infinitied >= Number.MAX_VALUE) giveAchievement("Meta-Infinity confirmed?")
@@ -7308,7 +7297,10 @@ function gameLoop(diff) {
         if (player.currentChallenge == "challenge7" || inQC(4)) tempa.add(getDimensionProductionPerSecond(2).times(diff/10))
         player.money = player.money.plus(tempa)
         player.totalmoney = player.totalmoney.plus(tempa)
-        if (tmp.ngp3 && tmp.qu.bigRip.active) tmp.qu.bigRip.totalAntimatter = tmp.qu.bigRip.totalAntimatter.add(tempa)
+        if (tmp.ngp3 && tmp.qu.bigRip.active) {
+            tmp.qu.bigRip.totalAntimatter = tmp.qu.bigRip.totalAntimatter.add(tempa)
+            tmp.qu.bigRip.bestThisRun = tmp.qu.bigRip.bestThisRun.max(player.money)
+        }
         if (player.totalmoney.gt("1e9000000000000000")) {
             document.getElementById("decimalMode").style.visibility = "hidden"
             if (break_infinity_js) {
@@ -7602,6 +7594,7 @@ function gameLoop(diff) {
             if (getEternitied()>6) {
 				player.challenges.push(order[player.postChallUnlocked])
 				if (order[player.postChallUnlocked]=="postc1") for (var i=0;i<player.challenges.length;i++) if (player.challenges[i].split("postc")[1]) infDimPow *= 1.3
+                tmp.cp++
 			}
             player.postChallUnlocked++
             nextUnlock=getNextAt(order[player.postChallUnlocked])
@@ -7734,7 +7727,7 @@ function gameLoop(diff) {
         ? "Peaked at "+(EPminpeakType == "normal" ? shortenDimensions(EPminpeak) : shorten(EPminpeak))+EPminpeakUnits : "")
     }
     document.getElementById("quantumbtnFlavor").textContent = ((tmp.qu!==undefined?!tmp.qu.times&&(player.ghostify!==undefined?!player.ghostify.milestones:true):false)||!inQC(0)?((tmp.ngp3 ? tmp.qu.bigRip.active : false)?"I am":inQC(0)?"My computer is":tmp.qu.challenge.length>1?"Paired challenges are":"My challenging skills are")+" not powerful enough... ":"") + "I need to go quantum."
-    var showGain = quantumed && (inQC(0)||player.options.theme=="Aarex's Modifications") ? "QK" : ""
+    var showGain = ((quantumed && tmp.qu.times) || (ghostified && player.ghostify.milestones)) && (inQC(0)||player.options.theme=="Aarex's Modifications") ? "QK" : ""
     if (tmp.ngp3) if (tmp.qu.bigRip.active) showGain = "SS"
     document.getElementById("quantumbtnQKGain").textContent = showGain == "QK" ? "Gain "+shortenDimensions(quarkGain())+" quark"+(quarkGain().eq(1)?".":"s.") : ""
     if (showGain == "SS") document.getElementById("quantumbtnQKGain").textContent = "Gain " + shortenDimensions(getSpaceShardsGain()) + " Space Shards."

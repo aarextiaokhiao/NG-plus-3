@@ -116,7 +116,6 @@ function onLoad(noOffline) {
 
   sliderText.textContent = "Update rate: " + player.options.updateRate + "ms";
   slider.value = player.options.updateRate;
-  slider.min=player.aarexModifications.performanceTicks?0:33
 
   if (player.secondAmount !== 0) {
       document.getElementById("tickSpeed").style.visibility = "visible";
@@ -396,10 +395,12 @@ if (player.version < 5) {
       player.aarexModifications.popUpId = 0
   }
   if (player.aarexModifications.tabsSave === undefined) player.aarexModifications.tabsSave = {on: false}
+  if (player.aarexModifications.performanceTicks === undefined) player.aarexModifications.performanceTicks = false
   if (player.aarexModifications.newGamePlusPlusVersion == undefined && player.aarexModifications.newGame3PlusVersion != undefined) {
       delete player.masterystudies
       delete player.aarexModifications.newGame3PlusVersion
   }
+  slider.min=player.aarexModifications.performanceTicks?0:33
   transformSaveToDecimal();
   updateTickSpeed();
   updateAchievements();
@@ -1767,7 +1768,7 @@ if (player.version < 5) {
       document.getElementById('autoAssignRotate').textContent="Rotation: "+(tmp.qu.autoOptions.assignQKRotate>1?"Left":tmp.qu.autoOptions.assignQKRotate?"Right":"None")
       document.getElementById('autoReset').textContent="Auto: O"+(tmp.qu.autoOptions.replicantiReset?"N":"FF")
       updateAutoQuantumMode()
-      for (var u=4;u<13;u++) {
+      for (var u=5;u<13;u++) {
           if (u%3==1) document.getElementById("neutrinoUpg"+u).parentElement.parentElement.style.display=u>player.ghostify.times+2?"none":""
           else document.getElementById("neutrinoUpg"+u).style.display=u>player.ghostify.times+2?"none":""
       }

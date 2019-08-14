@@ -54,9 +54,11 @@ function softReset(bulk, tier=1) {
 		player[name+"Cost"]=new Decimal(costs[d-1])
 		player.costMultipliers[d-1]=new Decimal(costMults[d-1])
 	}
+	player.money=new Decimal(10)
 	player.totalBoughtDims=resetTotalBought()
+	player.tickspeed=new Decimal(player.aarexModifications.newGameExpVersion?500:1000)
 	player.tickSpeedCost=new Decimal(1e3)
-	player.tickSpeedMultiplier=new Decimal(10)
+	player.tickspeedMultiplier=new Decimal(10)
 	player.sacrificed=new Decimal(0)
 	player.chall3Pow=new Decimal(0.01)
 	player.matter=new Decimal(0)
@@ -89,7 +91,6 @@ function softReset(bulk, tier=1) {
 	hideDimensions()
 	updateTickSpeed()
 	if (!player.achievements.includes("r111")) {
-		player.money=new Decimal(100)
 		if (player.challenges.includes("challenge1")) player.money = new Decimal(100)
 		if (player.achievements.includes("r37")) player.money = new Decimal(1000)
 		if (player.achievements.includes("r54")) player.money = new Decimal(2e5)

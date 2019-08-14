@@ -4,13 +4,13 @@ function getGSAmount() {
 	let y = 1.5 
 	if (player.challenges.includes("postcngmm_1")) {
 		y += Math.max(0, 0.05*(galaxies - 10)) + 0.005 * Math.pow(Math.max(0, galaxies-30) , 2) + 0.0005 * Math.pow(Math.max(0, galaxies-50) , 3)
-		y *= .08*player.challenges.length
+		y *= .08*(tmp.cp+14)
 	}
 	if (y > 100) y = Math.pow(316.22*y, 2/5)
 	else if (y > 10) y = Math.pow(10*y, .5)
 	let z = 1
-	if (player.challenges.length > 17) {
-		z = 0.06*player.challenges.length
+	if (tmp.cp>3) {
+		z = 0.06*(tmp.cp+14)
 		z += galaxies/100
 		if (player.tickspeedBoosts == undefined) z *= Math.log(galaxies+3)
 	}
@@ -113,7 +113,7 @@ let galUpgrade11 = function () {
 	let x = Math.min(player.infinitied, player.tickspeedBoosts !== undefined ? 4 : 1e6);
 	let y = Math.max(x + 2, 2);
 	let z = 10
-	if (player.challenges.length > 14 && player.challenges.includes("postcngmm_1") && player.tickspeedBoosts == undefined) z -= (player.challenges.length-8)/4
+	if (tmp.cp > 0 && player.challenges.includes("postcngmm_1") && player.tickspeedBoosts == undefined) z -= (tmp.cp+6)/4
 	if (z < 6) z = Math.pow(1296 * z, .2)
 	if (x > 99) y = Math.pow(Math.log(x), Math.log(x) / z) + 14
 	else if (x > 4) y = Math.pow(x + 5, .5) + 4

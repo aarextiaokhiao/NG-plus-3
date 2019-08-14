@@ -2,24 +2,25 @@
 
 function getTimeDimensionPower(tier) {
   if (player.currentEternityChall == "eterc11") return new Decimal(1)
-  if (tmp.be) {
-    var mult = tmp.it
-    if (player.timestudy.studies.includes(11) && tier == 1) mult = mult.times(getTS11Mult())
-    if (tmp.qu.breakEternity.upgrades.includes(1) && tier < 5) mult = mult.times(getBreakUpgMult(1))
-    if (tmp.qu.breakEternity.upgrades.includes(4) && tier > 3 && tier < 7) mult = mult.times(getBreakUpgMult(4))
-    if (tmp.qu.bigRip.upgrades.includes(13)) mult = mult.times(player.replicanti.amount.max(1).pow(1e-6))
-    if (tier == 7 && tmp.qu.bigRip.upgrades.includes(16)) mult = mult.times(player.dilation.dilatedTime.div(1e100).pow(0.155).max(1))
-    if (mult.lt(0)) mult = new Decimal(0)
-    if (player.dilation.active || player.galacticSacrifice) {
-      mult = Decimal.pow(10, Math.pow(mult.max(1).log10(), dilationPowerStrength()))
-      if (player.dilation.upgrades.includes(9)) {
-        mult = Decimal.pow(10, Math.pow(mult.log10(), 1.05))
-      }
-    }
-    return mult
-  }
   var dim = player["timeDimension"+tier]
   var ret = dim.power.pow(player.boughtDims?1:2)
+  if (tmp.be) {
+    ret = tmp.it
+    if (player.timestudy.studies.includes(11) && tier == 1) ret = ret.times(getTS11Mult())
+    if (tmp.qu.breakEternity.upgrades.includes(1) && tier < 5) ret = ret.times(getBreakUpgMult(1))
+    if (tmp.qu.breakEternity.upgrades.includes(4) && tier > 3 && tier < 7) ret = ret.times(getBreakUpgMult(4))
+    if (tmp.qu.bigRip.upgrades.includes(13)) ret = ret.times(player.replicanti.amount.max(1).pow(1e-6))
+    if (tier == 7 && tmp.qu.bigRip.upgrades.includes(16)) ret = ret.times(player.dilation.dilatedTime.div(1e100).pow(0.155).max(1))
+    if (!player.dilation.active && tmp.qu.breakEternity.upgrades.includes(8)) ret = ret.times(dim.power.pow(getBreakUpgMult(8)))
+    if (ret.lt(0)) ret = new Decimal(0)
+    if (player.dilation.active || player.galacticSacrifice) {
+      ret = Decimal.pow(10, Math.pow(ret.max(1).log10(), dilationPowerStrength()))
+      if (player.dilation.upgrades.includes(9)) {
+        ret = Decimal.pow(10, Math.pow(ret.log10(), 1.05))
+      }
+    }
+    return ret
+  }
 
   if (player.timestudy.studies.includes(11) && tier == 1) ret = ret.times(getTS11Mult())
   if (player.achievements.includes("r105")) ret = ret.times(tmp.it)
