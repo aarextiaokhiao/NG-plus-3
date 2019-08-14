@@ -71,7 +71,7 @@ let galUpgradeCosts = {
 	23: 100,
 	14: 300,
 	24: 1e3,
-	34: 1/0
+	34: 1e17
 }
 
 function buyGalaxyUpgrade(i) {
@@ -137,7 +137,7 @@ let galUpgrade32 = function () {
 	return x.pow(0.003).add(1);
 }
 let galUpgrade33 = function () {
-	if (player.tickspeedBoosts != undefined) return player.galacticSacrifice.galaxyPoints.div(1e5).add(1).log10()/5+1
+	if (player.tickspeedBoosts != undefined) return player.galacticSacrifice.galaxyPoints.div(1e10).add(1).log10()/5+1
 	return player.galacticSacrifice.galaxyPoints.max(1).log10()/4+1
 }
 
@@ -154,7 +154,7 @@ function galacticUpgradeSpanDisplay () {
 	if (player.tickspeedBoosts!=undefined) {
 		document.getElementById('galspan24').innerHTML = shorten(galUpgrade24())
 		document.getElementById('galcost24').innerHTML = shortenCosts(1e3)
-		document.getElementById('galcost34').innerHTML = shortenCosts(1/0)
+		document.getElementById('galcost34').innerHTML = shortenCosts(1e17)
 	}
 }
 

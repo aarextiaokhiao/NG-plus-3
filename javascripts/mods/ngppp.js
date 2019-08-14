@@ -1,10 +1,10 @@
-masterystudies={initialCosts:{time:{241: 1e71, 251: 2e71, 252: 2e71, 253: 2e71, 261: 5e71, 262: 5e71, 263: 5e71, 264: 5e71, 265: 5e71, 266: 5e71, 271: 2.7434842249657063e76, 272: 2.7434842249657063e76, 273: 2.7434842249657063e76, 281: 6.858710562414266e76, 282: 6.858710562414266e76, 291: 2.143347050754458e77, 292: 2.143347050754458e77, 301: 8.573388203017832e77, 302: 2.6791838134430725e78, 303: 8.573388203017832e77, 311: 8.573388203017832e77, 312: 8.573388203017832e77, 321: 2.6791838134430727e76, 322: 9.324815538194444e77, 323: 2.6791838134430727e76, 331: 1.0172526041666666e79, 332: 1.0172526041666666e79, 341: 9.5367431640625e78, 342: 1.0172526041666666e79, 343: 1.0172526041666666e79, 344: 9.5367431640625e78, 351: 2.1192762586805557e79, 361: 1.5894571940104167e79, 362: 1.5894571940104167e79, 371: 2.1192762586805557e79, 372: 6.622738308376736e79, 373: 2.1192762586805557e79, 381: 6.622738308376736e79, 382: 6.622738308376736e79, 383: 6.622738308376736e79, 391: 8.27842288547092e79, 392: 8.27842288547092e79, 393: 8.27842288547092e79, 401: 4.967053731282552e80, 402: 8.278422885470921e80, 411: 1.3245476616753473e61, 412: 1.655684577094184e61, 421: 1.9868214925130208e62, 431: 1.1037897180627893e65},
+masterystudies={initialCosts:{time:{241: 1e71, 251: 2e71, 252: 2e71, 253: 2e71, 261: 5e71, 262: 5e71, 263: 5e71, 264: 5e71, 265: 5e71, 266: 5e71, 271: 2.7434842249657063e76, 272: 2.7434842249657063e76, 273: 2.7434842249657063e76, 281: 6.858710562414266e76, 282: 6.858710562414266e76, 291: 2.143347050754458e77, 292: 2.143347050754458e77, 301: 8.573388203017832e77, 302: 2.6791838134430725e78, 303: 8.573388203017832e77, 311: 8.573388203017832e77, 312: 8.573388203017832e77, 321: 2.6791838134430727e76, 322: 9.324815538194444e77, 323: 2.6791838134430727e76, 331: 1.0172526041666666e79, 332: 1.0172526041666666e79, 341: 9.5367431640625e78, 342: 1.0172526041666666e79, 343: 1.0172526041666666e79, 344: 9.5367431640625e78, 351: 2.1192762586805557e79, 361: 1.5894571940104167e79, 362: 1.5894571940104167e79, 371: 2.1192762586805557e79, 372: 6.622738308376736e79, 373: 2.1192762586805557e79, 381: 6.622738308376736e79, 382: 6.622738308376736e79, 383: 6.622738308376736e79, 391: 8.27842288547092e79, 392: 8.27842288547092e79, 393: 8.27842288547092e79, 401: 4.967053731282552e80, 402: 8.278422885470921e80, 411: 1.3245476616753473e71, 412: 1.655684577094184e71, 421: 1.9868214925130208e72, 431: 1.1037897180627893e75},
 		ec:{13:1e72, 14:1e72}},
 	costs:{time:{},
 		ec:{},
 		dil:{7: 2e82, 8: 2e84, 9: 4e85, 10: 4e87, 11: 3e90, 12: 3e92, 13: 1e95, 14: 2e98},
 		mc:{}},
-	costmults:{241: 1, 251: 2.5, 252: 2.5, 253: 2.5, 261: 6, 262: 6, 263: 6, 264: 6, 265: 6, 266: 6, 271: 2, 272: 2, 273: 2, 281: 4, 282: 4, 291: 1, 292: 1, 301: 2, 302: 131072, 303: 2, 311: 64, 312: 64, 321: 2, 322: 2, 323: 2, 331: 2, 332: 2, 341: 1, 342: 1, 343: 1, 344: 1, 351: 4, 361: 1, 362: 1, 371: 2, 372: 2, 373: 2, 381: 1, 382: 1, 383: 2, 391: 1, 392: 1, 393: 1, 401: 1e20, 402: 1e20, 411: 1, 412: 1, 421: 1, 431: 1},
+	costmults:{241: 1, 251: 2.5, 252: 2.5, 253: 2.5, 261: 6, 262: 6, 263: 6, 264: 6, 265: 6, 266: 6, 271: 2, 272: 2, 273: 2, 281: 4, 282: 4, 291: 1, 292: 1, 301: 2, 302: 131072, 303: 2, 311: 64, 312: 64, 321: 2, 322: 2, 323: 2, 331: 2, 332: 2, 341: 1, 342: 1, 343: 1, 344: 1, 351: 4, 361: 1, 362: 1, 371: 2, 372: 2, 373: 2, 381: 1, 382: 1, 383: 2, 391: 1, 392: 1, 393: 1, 401: 1e10, 402: 1e10, 411: 1, 412: 1, 421: 1, 431: 1},
 	costmult:1,
 	allTimeStudies: [241, 251, 252, 253, 261, 262, 263, 264, 265, 266, 271, 272, 273, 281, 282, 291, 292, 301, 302, 303, 311, 312, 321, 322, 323, 331, 332, 341, 342, 343, 344, 351, 361, 362, 371, 372, 373, 381, 382, 383, 391, 392, 393, 401, 402, 411, 412, 421, 431],
 	initialReqs:{13:728e3,14:255e5},
@@ -48,6 +48,7 @@ function updateMasteryStudyButtons() {
 		}
 	}
 	if (player.masterystudies.includes("d10")||ghostified) {
+		document.getElementById("ts332Current").textContent="Currently: "+shorten(Math.max(player.galaxies,1))+"x"
 		document.getElementById("ts341Current").textContent="Currently: "+shorten(getMTSMult(341))+"x"
 		document.getElementById("ts344Current").textContent="Currently: "+(getMTSMult(344)*100-100).toFixed(2)+"%"
 		document.getElementById("ts351Current").textContent="Currently: "+shorten(getMTSMult(351))+"x"
@@ -202,7 +203,7 @@ function canBuyMasteryStudy(type, id) {
 		var row=Math.floor(id/10)
 		if (masterystudies.latestBoughtRow>row) return false
 		var col=id%10
-		if (row>42) return player.masterystudies.includes('d13')&&player.masterystudies.includes('t412')
+		if (row>42) return player.masterystudies.includes('d13')&&(player.masterystudies.includes('t412')||player.masterystudies.includes('t421'))
 		if (row>40) return player.masterystudies.includes('t'+(id-10))
 		if (row>39) return player.masterystudies.includes('d12')&&player.masterystudies.includes('t392')
 		if (row>38) {
@@ -245,7 +246,7 @@ function canBuyMasteryStudy(type, id) {
 	} else if (type=='d') {
 		if (player.timestudy.theorem<masterystudies.costs.dil[id]||player.masterystudies.includes('d'+id)) return false
 		if (id>13) return player.masterystudies.includes("t431")&&player.achievements.includes("ng3p34")
-		if (id>12) return player.masterystudies.includes("t412")&&(ghostified||tmp.qu.nanofield.rewards>15)
+		if (id>12) return (player.masterystudies.includes('t412')||player.masterystudies.includes('t421'))&&(ghostified||tmp.qu.nanofield.rewards>15)
 		if (id>11) return player.masterystudies.includes("t392")&&(ghostified||eds[8].workers.gt(9.9))
 		if (id>10) return player.masterystudies.includes("t351")&&(ghostified||eds[1].workers.gt(9.9))
 		if (id>9) return player.masterystudies.includes("t302")&&(ghostified||tmp.qu.pairedChallenges.completed>3)
@@ -382,6 +383,7 @@ function drawMasteryTree() {
 		drawMasteryBranch("timestudy402", "timestudy412")
 		drawMasteryBranch("timestudy411", "timestudy421")
 		drawMasteryBranch("timestudy412", "dilstudy13")
+		drawMasteryBranch("timestudy421", "dilstudy13")
 	}
 	if (player.masterystudies.includes("d13")||ghostified) {
 		drawMasteryBranch("dilstudy13", "timestudy431")
@@ -2313,6 +2315,9 @@ function radioactiveDecay(shorthand) {
 	data.upgrades={}
 	if (player.ghostify.milestones>3) data.upgrades[1]=5
 	data.decays=data.decays===undefined?1:data.decays+1
+	let sum=0
+    for (var c=0;c<3;c++) sum+=getRadioactiveDecays((['r','g','b'])[c])
+	if (sum>9) giveAchievement("Radioactive Decaying to the max!")
 	updateTODStuff()
 }
 
@@ -2833,12 +2838,14 @@ function unstoreTT() {
 
 function getSpaceShardsGain() {
 	let ret = Decimal.pow(tmp.qu.bigRip.bestThisRun.add(1).log10()/2000, 1.5).times(player.dilation.dilatedTime.add(1).pow(0.05))
-	if (tmp.qu.breakEternity.break) {
+	if (tmp.be) {
 		if (tmp.qu.breakEternity.upgrades.includes(3)) ret = ret.times(getBreakUpgMult(3))
 		if (tmp.qu.breakEternity.upgrades.includes(6)) ret = ret.times(getBreakUpgMult(6))
 	}
 	if (hasNU(9)) ret = ret.times(Decimal.max(getEternitied(), 1).pow(0.1))
-	return ret.floor()
+	ret = ret.floor()
+	if (isNaN(ret.e)) return new Decimal(0)
+	return ret
 }
 
 let bigRipUpgCosts = [0, 2, 3, 5, 20, 30, 45, 60, 150, 300, 2000, 1e10, 3e14, 1e17, 3e18, 3e20, 5e22, 1e33, 1/0, 1/0, 1/0]

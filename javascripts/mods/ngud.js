@@ -49,6 +49,9 @@ function getBlackholeUpgradeExponent() {
   if (ret > 2) {
     ret = (ret - 2) / Math.log2(ret) + 2;
   }
+  if (ret > 20 && player.aarexModifications.ngudpV) { // this should only happen if you are playing NGUd'.
+    ret = Math.min(20 + Math.pow(Math.log10(ret-19),2),ret)
+  }
   return ret;
 }
 
@@ -159,8 +162,21 @@ function resetBlackhole() {
   }
 }
 
-function buyMaxBlackholeDimensions() {
-  for(var i=1; i<5; i++) while(buyBlackholeDimension(i)) continue
+function buyMaxBlackholeDimensions(){
+    for (var i = 1; i <5; i ++){
+        // i is the tier
+        let e = player.eternityPoints.log10()
+        let dim = player["blackholeDimension" + i]
+        if (dim.cost.log10() <= e){
+            let diff = e - dim.cost.log10()
+            let buying = Math.ceil(diff/blackholeDimCostMults[i].log10())
+			player.eternityPoints = player.eternityPoints.minus(player.eternityPoints.min(Decimal.pow(blackholeDimCostMults[tier],buying-1).times(dim.cost)))
+            dim.amount = dim.amount.plus(buying)
+            dim.bought += buying    
+            dim.cost = Decimal.pow(blackholeDimCostMults[tier], dim.bought).times(blackholeDimStartCosts[tier])
+            dim.power = dim.power.times(Decimal.pow(2,buying))
+        }
+    }
 }
 
 //v1: ex-dilation part
@@ -172,7 +188,7 @@ function updateExdilation() {
 	document.getElementById("xdp").style.display = "none"
 	document.getElementById("xdrow").style.display = "none"
 	document.getElementById("exdilationConfirmBtn").style.display = "none"
-	if (player.exdilation == undefined) return
+	if (player.exdilation == undefined || player.aarexModifications.ngudpV) return
 	if (player.exdilation.times < 1) return
 	document.getElementById("xdp").style.display = ""
 	document.getElementById("xdrow").style.display = ""

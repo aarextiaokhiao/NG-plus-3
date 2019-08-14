@@ -21,7 +21,7 @@ function getDimensionBoostPower(next, focusOn) {
 	return new Decimal(ret)
 }
 
-function softReset(bulk, tier) {
+function softReset(bulk, tier=1) {
 	//if (bulk < 1) bulk = 1 (fixing issue 184)
 	if (tmp.ri) return;
 	var oldResets = player.resets

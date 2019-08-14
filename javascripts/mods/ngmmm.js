@@ -1,7 +1,7 @@
 function getTickspeedBoostRequirement(bulk=1) {
 	let resets=player.tickspeedBoosts+bulk-1
 	let mult=5
-	if (player.galacticSacrifice.upgrades.includes(34)&&player.currentChallenge!="postcngmm_1"&&player.currentChallenge!="postc1") mult=3
+	if (player.galacticSacrifice.upgrades.includes(34)&&player.currentChallenge!="postcngmm_1"&&player.currentChallenge!="postc1") mult=4
 	return {tier:player.currentChallenge=="challenge4"?6:8,amount:resets*mult+30,mult:mult}
 }
 

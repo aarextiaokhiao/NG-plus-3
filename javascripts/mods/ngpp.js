@@ -1,6 +1,7 @@
 function getDilationMetaDimensionMultiplier () {
 	let pow = 0.1
 	if (player.masterystudies != undefined) if (player.masterystudies.includes("d12")) pow = getNanofieldRewardEffect(4)
+	if (player.aarexModifications.ngudpV) pow /= 2
 	return player.dilation.dilatedTime.div(1e40).pow(pow).plus(1);
 }
 
