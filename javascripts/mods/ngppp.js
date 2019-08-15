@@ -2758,7 +2758,9 @@ function getSpaceShardsGain() {
 		if (player.quantum.breakEternity.upgrades.includes(6)) ret = ret.times(getBreakUpgMult(6))
 	}
 	if (hasNU(9)) ret = ret.times(Decimal.max(getEternitied(), 1).pow(0.1))
-	return ret.floor()
+	ret = ret.floor()
+	if (isNaN(ret.e)) return new Decimal(0)
+	return ret
 }
 
 let bigRipUpgCosts = [0, 2, 3, 5, 20, 30, 45, 60, 150, 300, 2000, 1e10, 3e14, 1e17, 3e18, 3e20, 5e22, 1e33]
