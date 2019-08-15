@@ -627,7 +627,7 @@ function updateNewPlayer(reseted) {
             power: 0
         }
         for (var d=1;d<5;d++) player["blackholeDimension"+d] = {
-            cost: Decimal.pow(10,4000*d),
+            cost: Decimal.pow(10,d>3?2e4:4000*d),
             amount: 0,
             power: 1,
             bought: 0
@@ -6460,7 +6460,7 @@ function startDilatedEternity(auto) {
 
 function dilationPowerStrength() {
 	let pow = 0.75
-	if (player.exdilation != undefined) pow += exDilationBenefit() * 0.25
+	if (player.exdilation != undefined && !player.aarexModifications.ngudpV) pow += exDilationBenefit() * 0.25
 	if (player.dilation.upgrades.includes(9)) pow *= 1.05
 	return pow;
 }
@@ -6697,7 +6697,7 @@ function getNewInfReq() {
 		if (player.tickspeedBoosts === undefined) {
 			reqs[1] = new Decimal("1e1500")
 			reqs[3] = new Decimal("1e9600")
-		}
+		} else reqs[0] = new Decimal("1e1150")
 	}
 	for (var tier=0;tier<7;tier++) if (!player.infDimensionsUnlocked[tier]) return {money: reqs[tier], tier: tier+1}
 	return {money: new Decimal("1e60000"), tier: 8}

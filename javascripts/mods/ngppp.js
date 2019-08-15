@@ -3381,9 +3381,9 @@ function ghostifyReset(implode, gain, amount, force) {
 		exdilation: player.exdilation!=undefined?{
 			unspent: new Decimal(0),
 			spent: {
-				1: 0,
-				2: 0,
-				3: 0
+				1: new Decimal(0),
+				2: new Decimal(0),
+				3: new Decimal(0)
 			},
 			times: 0
 		}:player.exdilation,
@@ -3655,9 +3655,9 @@ function ghostifyReset(implode, gain, amount, force) {
 	player.dilation.bestTP = player.dilation.tachyonParticles
 	if (player.exdilation!=undefined) {
 		for (var d=1;d<5;d++) player["blackholeDimension"+d] = {
-			cost: Decimal.pow(10,4000*d),
-			amount: 0,
-			power: 1,
+			cost: Decimal.pow(10,d>3?2e4:4e3*d),
+			amount: new Decimal(0),
+			power: new Decimal(1),
 			bought: 0
 		}
 		if (speedrunMilestonesReached < 3) {

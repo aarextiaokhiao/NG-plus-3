@@ -289,7 +289,7 @@ function updateMetaDimensions () {
 	document.getElementById("metaAntimatterPerSec").textContent = 'You are getting ' + shortenDimensions(getMetaDimensionProduction(1)) + ' meta-antimatter per second.'
 	let showDim = false
 	let useTwo = player.options.notation=="Logarithm" ? 2 : 0
-	for (let tier = 8; tier > 1; tier--) {
+	for (let tier = 8; tier > 0; tier--) {
 		showDim = showDim || canBuyMetaDimension(tier)
 		document.getElementById(tier + "MetaRow").style.display = showDim ? "" : "none"
 		if (showDim) {
@@ -1042,9 +1042,9 @@ function quantumReset(force, auto, challid, bigRip, implode=false) {
 		exdilation: player.exdilation!=undefined?{
 			unspent: new Decimal(0),
 			spent: {
-				1: 0,
-				2: 0,
-				3: 0
+				1: new Decimal(0),
+				2: new Decimal(0),
+				3: new Decimal(0)
 			},
 			times: 0
 		}:player.exdilation,
@@ -1128,9 +1128,9 @@ function quantumReset(force, auto, challid, bigRip, implode=false) {
 	player.dilation.totalTachyonParticles = player.dilation.tachyonParticles
 	if (player.exdilation!=undefined) {
 		for (var d=1;d<5;d++) player["blackholeDimension"+d] = {
-			cost: Decimal.pow(10,4000*d),
-			amount: 0,
-			power: 1,
+			cost: Decimal.pow(10,d>3?2e4:4e3*d),
+			amount: new Decimal(0),
+			power: new Decimal(1),
 			bought: 0
 		}
 		if (speedrunMilestonesReached < 3) {
