@@ -542,7 +542,7 @@ function getMTSMult(id, modifier) {
 	if (id==301) return Math.floor(extraReplGalaxies/4.15)
 	if (id==303) return Decimal.pow(4.7,Math.pow(Math.log10(Math.max(player.galaxies,1)),1.5))
 	if (id==322) {
-		let log = Math.sqrt(-player.tickspeed.div(1000).log10())/20000
+		let log = Math.sqrt(3-getTickspeed().log10())/20000
 		if (log>110) log = Math.sqrt(log * 27.5) + 55
 		return Decimal.pow(10, log)
 	}
@@ -2951,6 +2951,7 @@ function breakEternity() {
 	tmp.qu.breakEternity.did = true
 	document.getElementById("breakEternityBtn").textContent = (tmp.qu.breakEternity.break ? "FIX" : "BREAK") + " ETERNITY"
 	giveAchievement("Time Breaker")
+	if (tmp.qu.bigRip.active && !tmp.qu.breakEternity.break && document.getElementById("timedimensions").style.display == "block") showDimTab("antimatterdimensions")
 	if (!player.dilation.active && isSmartPeakActivated) {
 		EPminpeakType = 'normal'
 		EPminpeak = new Decimal(0)
@@ -3950,7 +3951,7 @@ function onNotationChangeNeutrinos() {
 	document.getElementById("neutrinoMult").textContent=shortenDimensions(Decimal.pow(5,player.ghostify.neutrinos.multPower-1))
 	document.getElementById("neutrinoMultUpgCost").textContent=shortenDimensions(Decimal.pow(4,player.ghostify.neutrinos.multPower-1).times(2))
 	document.getElementById("ghpMult").textContent=shortenDimensions(Decimal.pow(2,player.ghostify.multPower-1))
-	document.getElementById("ghpMultUpgCost").textContent=shortenDimensions(Decimal.pow(25,player.ghostify.multPower-1).times(1e10))
+	document.getElementById("ghpMultUpgCost").textContent=shortenDimensions(getGHPMultCost())
 	for (var u=1; u<16; u++) document.getElementById("neutrinoUpg"+u+"Cost").textContent=shortenDimensions(tmp.nuc[u])
 	document.getElementById("QKNerfPoint").textContent=shorten(new Decimal("1e738"))
 }
@@ -3964,11 +3965,10 @@ function getNeutrinoGain() {
 
 function buyNeutrinoUpg(id) {
 	let sum=player.ghostify.neutrinos.electron.add(player.ghostify.neutrinos.mu).add(player.ghostify.neutrinos.tau).round()
-	let cost=new Decimal(tmp.nuc[id])
-	if (!sum.gte(cost)||player.ghostify.neutrinos.upgrades.includes(id)) return
+	let cost=tmp.nuc[id]
+	if (sum.lt(cost)||player.ghostify.neutrinos.upgrades.includes(id)) return
 	player.ghostify.neutrinos.upgrades.push(id)
-	let generations=["electron","mu","tau"]
-	for (g=0;g<3;g++) player.ghostify.neutrinos[generations[g]]=player.ghostify.neutrinos[generations[g]].sub(cost.times(player.ghostify.neutrinos[generations[g]]).div(sum)).round()
+	subNeutrinos(cost)
 	if (id==2) {
 		document.getElementById("eggonsCell").style.display="none"
 		document.getElementById("workerReplWhat").textContent="babies"
@@ -4022,10 +4022,8 @@ function maxNeutrinoMult() {
 function buyGHPMult() {
 	let sum=player.ghostify.neutrinos.electron.add(player.ghostify.neutrinos.mu).add(player.ghostify.neutrinos.tau).round()
 	let cost=getGHPMultCost()
-	if (!sum.gte(cost)) return
-	let generations=["electron","mu","tau"]
-	for (g=0;g<3;g++) player.ghostify.neutrinos[generations[g]]=player.ghostify.neutrinos[generations[g]].sub(cost.times(player.ghostify.neutrinos[generations[g]]).div(sum)).round()
-	player.ghostify.multPower++
+	if (sum.lt(cost)) return
+	subNeutrinos(cost)
 	player.ghostify.automatorGhosts[15].a=player.ghostify.automatorGhosts[15].a.times(5)
 	document.getElementById("autoGhost15a").value=formatValue("Scientific", player.ghostify.automatorGhosts[15].a, 2, 1)
 	document.getElementById("ghpMult").textContent=shortenDimensions(Decimal.pow(2,player.ghostify.multPower-1))
@@ -4035,11 +4033,9 @@ function buyGHPMult() {
 function maxGHPMult() {
 	let sum=player.ghostify.neutrinos.electron.add(player.ghostify.neutrinos.mu).add(player.ghostify.neutrinos.tau).round()
 	let cost=getGHPMultCost()
-	if (!sum.gte(cost)) return
+	if (sum.lt(cost)) return
 	let toBuy=Math.floor(sum.div(cost).times(24).add(1).log(25))
-	let toSpend=Decimal.pow(25,toBuy).sub(1).div(24).times(cost)
-	let generations=["electron","mu","tau"]
-	for (g=0;g<3;g++) player.ghostify.neutrinos[generations[g]]=player.ghostify.neutrinos[generations[g]].sub(toSpend.times(player.ghostify.neutrinos[generations[g]]).div(sum).min(player.ghostify.neutrinos[generations[g]])).round()
+	subNeutrinos(Decimal.pow(25,toBuy).sub(1).div(24).times(cost))
 	player.ghostify.multPower+=toBuy
 	player.ghostify.automatorGhosts[15].a=player.ghostify.automatorGhosts[15].a.times(Decimal.pow(5,toBuy))
 	document.getElementById("autoGhost15a").value=formatValue("Scientific", player.ghostify.automatorGhosts[15].a, 2, 1)
@@ -4151,6 +4147,13 @@ function rotateAutoUnstable() {
 }
 
 //v2.1
+function subNeutrinos(sub) {
+	let neu=player.ghostify.neutrinos
+	let sum=neu.electron.add(neu.mu).add(neu.tau).round()
+	let gen=["electron","mu","tau"]
+	for (g=0;g<3;g++) neu[gen[g]]=neu[gen[g]].sub(neu[gen[g]].div(sum).times(sub).min(neu[gen[g]])).round()
+}
+
 function getGHPMultCost(offset=0) {
 	let lvl=player.ghostify.multPower+offset
 	return Decimal.pow(5,lvl*2+Math.max(lvl-85,0)*(lvl-84)-1).times(25e8)
@@ -4174,7 +4177,7 @@ function getGPHProduction() {
 }
 
 function getGHRProduction() {
-	return player.ghostify.ghostlyPhotons.amount.sqrt(1/3)
+	return player.ghostify.ghostlyPhotons.amount.pow(1/3)
 }
 
 function getGHRCap() {

@@ -40,9 +40,7 @@ function getMetaDimensionMultiplier (tier) {
   if (tier%2>0) multiplier = multiplier.times(QC4Reward)
   multiplier = multiplier.times(getQCReward(6))
   
-  if (multiplier.lt(1)) multiplier = new Decimal(1)
-  if ((player.dilation.active && !(inQC(0) && player.achievements.includes("ng3p63"))) || player.galacticSacrifice) multiplier = Decimal.pow(10, Math.pow(multiplier.log10(), dilationPowerStrength()))
-  return multiplier;
+  return dilates(multiplier.max(1), true)
 }
 
 function getMetaDimensionDescription(tier) {
@@ -422,6 +420,10 @@ function doAutoEterTick() {
 	if (player.achievements.includes("ngpp17")) {
 		for (d=1;d<9;d++) if (player.autoEterOptions["td"+d]) buyMaxTimeDimension(d)
 		if (player.autoEterOptions.epmult) buyMaxEPMult()
+		if (player.autoEterOptions.blackhole) {
+			buyMaxBlackholeDimensions()
+			feedBlackholeMax()
+		}
 	}
 	if (player.autoEterOptions.tt && !player.dilation.upgrades.includes(10) && speedrunMilestonesReached > 1) maxTheorems()
 }
@@ -1241,7 +1243,13 @@ function quantumReset(force, auto, challid, bigRip, implode=false) {
 			tmp.qu.bigRip.bestThisRun = player.money
 			giveAchievement("To the new dimension!")
 			if (tmp.qu.breakEternity.break) tmp.qu.breakEternity.did = true
-		} else if (isRewardEnabled(11)) unstoreTT()
+		} else {
+			if (!tmp.qu.bigRip.upgrades.includes(1)&&oheHeadstart) {
+				player.infmultbuyer=true
+				for (var d=0;d<8;d++) player.infDimBuyers[d]=true
+			}
+			if (isRewardEnabled(11)) unstoreTT()
+		}
 		document.getElementById("metaAntimatterEffectType").textContent=inQC(3)?"multiplier on all Infinity Dimensions":"extra multiplier per dimension boost"
 		updateColorCharge()
 		updateGluons()
@@ -1397,6 +1405,7 @@ function quantumReset(force, auto, challid, bigRip, implode=false) {
 		if (document.getElementById("quantumchallenges").style.display == "block") showChallengesTab("normalchallenges")
 		if (document.getElementById("electrons").style.display == "block"||document.getElementById("replicants").style.display == "block"||document.getElementById("nanofield").style.display == "block") showQuantumTab("uquarks")
 	}
+	if (inQC(8) && (document.getElementById("infinitydimensions").style.display == "block" || (document.getElementById("timedimensions").style.display == "block" && !tmp.be))) showDimTab("antimatterdimensions")
 	document.getElementById("breakEternityTabbtn").style.display = bigRip || tmp.qu.breakEternity.unlocked ? "" : "none"
 	if (!bigRip && !tmp.qu.breakEternity.unlocked) if (document.getElementById("breakEternity").style.display == "block") showEternityTab("timestudies", document.getElementById("eternitystore").style.display!="block")
 	drawMasteryTree()

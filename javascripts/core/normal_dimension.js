@@ -81,8 +81,7 @@ function getDimensionFinalMultiplier(tier) {
 		if (player.galacticSacrifice.upgrades.includes(31)) mult = mult.pow(galUpgrade31());
 	}
 
-	if (mult.lt(1)) mult = new Decimal(1)
-	if (player.dilation.active || player.galacticSacrifice) mult = Decimal.pow(10, Math.pow(mult.log10(), dilationPowerStrength()))
+	mult = dilates(mult.max(1))
 
 	if (player.dilation.upgrades.includes(6)) mult = mult.times(player.dilation.dilatedTime.max(1).pow(308))
 	if (useHigherNDReplMult) mult = mult.times(tmp.nrm)
@@ -258,11 +257,9 @@ function costIncreaseActive(cost) {
 function getDimensionCostMultiplierIncrease() {
 	if (inQC(7)) return Number.MAX_VALUE
 	let ret = player.dimensionMultDecrease;
-	if (player.currentChallenge === 'postcngmm_2') {
-	ret = Math.pow(ret, .5);
-	} else if (player.challenges.includes('postcngmm_2')) {
-	ret = Math.pow(ret, .9);
-	}
+	if (player.aarexModifications.ngm4V) ret = Math.pow(ret, 1.25)
+	if (player.currentChallenge === 'postcngmm_2') ret = Math.pow(ret, .5)
+	else if (player.challenges.includes('postcngmm_2')) ret = Math.pow(ret, .9)
 	return ret;
 }
 
@@ -429,12 +426,7 @@ function getDimensionProductionPerSecond(tier) {
 	ret = ret.times(getDimensionFinalMultiplier(tier))
 	if (player.currentChallenge == "challenge2" || player.currentChallenge == "postc1") ret = ret.times(player.chall2Pow)
 	if (tier == 1 && (player.currentChallenge == "challenge3" || player.currentChallenge == "postc1")) ret = ret.times(player.chall3Pow)
-	let tick = getTickspeed()
-	if (player.dilation.active || player.galacticSacrifice) {
-		var maximum = player.galacticSacrifice ? 3 : 0
-		tick = Decimal.pow(10, Math.pow(Math.abs(maximum-tick.log10()), dilationPowerStrength()))
-		if (player.masterystudies != undefined) tick = tick.pow(getNanofieldRewardEffect(5))
-		return ret.times(Decimal.pow(10,(player.aarexModifications.newGame3MinusVersion?2:3)-maximum)).times(tick);
-	}
-	return ret.div(tick.div(1e3));
+	if (player.tickspeedBoosts != undefined) ret = ret.div(10)
+	if (player.aarexModifications.ngm4V) ret = ret.div(100)
+	return ret.times(dilates(Decimal.div(player.galacticSacrifice == undefined ? 1 : 1000, getTickspeed()), true))
 }

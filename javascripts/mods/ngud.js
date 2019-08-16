@@ -70,9 +70,9 @@ function updateBlackhole() {
   document.getElementById("blackholePowAmount").innerHTML = shortenMoney(player.blackhole.power);
   document.getElementById("blackholePowPerSec").innerHTML = "You are getting " + shortenMoney(getBlackholeDimensionProduction(1)) + " black hole power per second.";
   document.getElementById("DilMultAmount").innerHTML = formatValue(player.options.notation, getBlackholePowerEffect(), 2, 2)
-  document.getElementById("InfAndReplMultAmount").innerHTML = formatValue(player.options.notation, Math.cbrt(getBlackholePowerEffect()), 2, 2)
+  document.getElementById("InfAndReplMultAmount").innerHTML = formatValue(player.options.notation, getBlackholePowerEffect().pow(1/3), 2, 2)
   document.getElementById("blackholeDil").innerHTML = "Feed the black hole with dilated time<br>Cost: "+shortenCosts(new Decimal(1e20).times(Decimal.pow(10, player.blackhole.upgrades.dilatedTime)))+" dilated time";
-  document.getElementById("blackholeInf").innerHTML = "Feed the black hole with banked infinities<br>Cost: "+formatValue(player.options.notation, 5e9 * Math.pow(2, player.blackhole.upgrades.bankedInfinities), 1, 1)+" banked infinities";
+  document.getElementById("blackholeInf").innerHTML = "Feed the black hole with banked infinities<br>Cost: "+formatValue(player.options.notation, Decimal.pow(2, player.blackhole.upgrades.bankedInfinities).times(5e9).round(), 1, 1)+" banked infinities";
   document.getElementById("blackholeRepl").innerHTML = "Feed the black hole with replicanti<br>Cost: "+shortenCosts(new Decimal("1e20000").times(Decimal.pow("1e1000", player.blackhole.upgrades.replicanti)))+" replicanti";
   document.getElementById("blackholeDil").className = canFeedBlackHole(1) ? 'eternityupbtn' : 'eternityupbtnlocked';
   document.getElementById("blackholeInf").className = canFeedBlackHole(2) ? 'eternityupbtn' : 'eternityupbtnlocked';
@@ -120,6 +120,7 @@ function feedBlackHole(i, bulk) {
 			let toSpend = Decimal.pow(10, toBuy).sub(1).div(9).times(cost)
 			player.dilation.dilatedTime = player.dilation.dilatedTime.minus(player.dilation.dilatedTime.min(toSpend))
 			player.blackhole.upgrades.dilatedTime+=toBuy
+			player.blackhole.upgrades.total+=toBuy
 		} else {
 			player.dilation.dilatedTime = player.dilation.dilatedTime.minus(new Decimal(1e20).times(Decimal.pow(10, player.blackhole.upgrades.dilatedTime)))
 			player.blackhole.upgrades.dilatedTime++
@@ -131,6 +132,7 @@ function feedBlackHole(i, bulk) {
 			let toSpend = Decimal.pow(10, 1e3*toBuy-1).times(cost).round()
 			player.infinitiedBank = nS(player.infinitiedBank, nMn(player.infinitiedBank, toBuy))
 			player.blackhole.upgrades.bankedInfinities+=toBuy
+			player.blackhole.upgrades.total+=toBuy
 		} else {
 			player.infinitiedBank = nS(player.infinitiedBank, cost)
 			player.blackhole.upgrades.bankedInfinities++
@@ -142,12 +144,13 @@ function feedBlackHole(i, bulk) {
 			let toSpend = Decimal.pow(10, 1e3*toBuy-1).times(cost)
 			player.replicanti.amount = player.replicanti.amount.minus(player.replicanti.amount.min(toSpend)).max(1)
 			player.blackhole.upgrades.replicanti+=toBuy
+			player.blackhole.upgrades.total+=toBuy
 		} else {
 			player.replicanti.amount = player.replicanti.amount.minus(cost)
 			player.blackhole.upgrades.replicanti++
 		}
 	}
-	player.blackhole.upgrades.total++
+	if (!bulk) player.blackhole.upgrades.total++
 	updateBlackhole()
 }
 

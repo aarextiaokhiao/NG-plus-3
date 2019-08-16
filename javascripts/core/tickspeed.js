@@ -28,14 +28,18 @@ function getGalaxyPowerEff(ng, bi) {
 	let eff = 1
 	if (player.galacticSacrifice) if (player.galacticSacrifice.upgrades.includes(22)) eff *= 5;
 	if (player.infinityUpgrades.includes("galaxyBoost")) eff *= 2;
-	if (player.infinityUpgrades.includes("postGalaxy")) eff *= player.galacticSacrifice ? 1.7 : 1.5;
+	if (player.infinityUpgrades.includes("postGalaxy")) eff *= player.tickspeedBoosts!=undefined? 1.1 : player.galacticSacrifice ? 1.7 : 1.5;
 	if (player.challenges.includes("postc5")) eff *= player.galacticSacrifice ? 1.15 : 1.1;
 	if (player.achievements.includes("r86")) eff *= player.galacticSacrifice ? 1.05 : 1.01
 	if (player.galacticSacrifice) {
 		if (player.achievements.includes("r83")) eff *= 1.05
 		if (player.achievements.includes("r45")) eff *= 1.02
 		if (player.infinityUpgrades.includes("postinfi51")) eff *= 1.2
-		if (player.challenges.length > 14 && player.achievements.includes("r67") && player.tickspeedBoosts == undefined) eff *= .07*player.challenges.length
+		if (tmp.cp && player.achievements.includes("r67")) {
+			let x=tmp.cp
+			if (x>4&&player.tickspeedBoosts != undefined) x=Math.sqrt(x-1)+2
+			eff *= .07*(x+14)
+		}
 	}
 	if (player.currentChallenge == "challenge5") eff *= 0.75
 	if (player.achievements.includes("ngpp8") && player.meta != undefined) eff *= 1.001;
@@ -58,10 +62,10 @@ function getTickSpeedMultiplier() {
 		realnormalgalaxies=realnormalgalaxies*Math.max(Math.min(10-(player.quantum.electrons.amount+realnormalgalaxies*getELCMult())/16857,1),0)
 	}
 	if ((player.currentChallenge == "postc3" || isIC3Trapped()) && !tmp.be) {
-		if (player.currentChallenge=="postcngmm_3" || (player.challenges.includes("postcngmm_3") && player.tickspeedBoosts === undefined)) {
+		if (player.currentChallenge=="postcngmm_3" || player.challenges.includes("postcngmm_3")) {
 			if (player.currentChallenge == "challenge15" || (player.currentChallenge == "postc1" && player.tickspeedBoosts != undefined)) realnormalgalaxies = 0
 			else if (tmp.rg4) realnormalgalaxies *= 0.4
-			return Decimal.pow(0.998, getGalaxyPower(realnormalgalaxies) * getGalaxyPowerEff(realnormalgalaxies, true))
+			return Decimal.pow(player.tickspeedBoosts != undefined ? 0.9995 : 0.998, getGalaxyPower(realnormalgalaxies) * getGalaxyPowerEff(realnormalgalaxies, true))
 		}
 		return 1;
 	}
@@ -211,6 +215,7 @@ function getTickspeed() {
 		if (player.singularity != undefined) ret = ret.times(getDarkMatterMult())
 		return Decimal.div(1000, ret)
 	}
+	if (isNaN(player.tickspeed.e)) return new Decimal(1e3)
 	return player.tickspeed
 }
 

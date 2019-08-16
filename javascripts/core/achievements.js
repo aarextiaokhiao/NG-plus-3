@@ -290,6 +290,7 @@ function giveAchievement(name) {
     if (name == "GAS GAS GAS") {
         document.getElementById('epmultauto').style.display=""
         for (i=1;i<9;i++) document.getElementById("td"+i+'auto').style.visibility="visible"
+        if (player.aarexModifications.ngudpV) document.getElementById("blackholeAuto").style.display=""
     }
     if (name == "It will never be enough") document.getElementById('replicantibulkmodetoggle').style.display="inline-block"
     if (name == "I already got rid of you..." || name == "No dilation means no production.") {

@@ -18,7 +18,7 @@ function getGSAmount() {
 	if (player.tickspeedBoosts !== undefined) resetMult = (resetMult+1)/2
 	let ret = Decimal.pow(galaxies, y).times(Decimal.pow(Math.max(0, resetMult), z)).max(0)
 	ret = ret.times(getAmount(8)/50+1)
-	if (player.achievements.includes("r23") && player.tickspeedBoosts !== undefined) ret=ret.times(Decimal.pow(player.tickspeedBoosts/10,Math.max(getAmount(8)/75,1)).max(1))
+	if (player.achievements.includes("r23") && player.tickspeedBoosts !== undefined) ret=ret.times(Decimal.pow(Math.max(player.tickspeedBoosts/10,1),Math.max(getAmount(8)/75,1)))
 	if (player.galacticSacrifice.upgrades.includes(32)) ret = ret.times(galUpgrade32())
 	if (player.infinityUpgrades.includes("galPointMult")) ret = ret.times(getPost01Mult())
 	if (player.achievements.includes('r37')) {
@@ -96,6 +96,10 @@ function reduceDimCosts() {
 		if (player.galacticSacrifice.upgrades.includes(11)) div=galUpgrade11()
 		for (d=1;d<9;d++) {
 			var name = TIER_NAMES[d]
+			if (player.aarexModifications.ngm4V) {
+				player[name+"Cost"] = player[name+"Cost"].pow(1.25).times(10)
+				player.costMultipliers[d-1] = player.costMultipliers[d-1].pow(1.25)
+			}
 			player[name+"Cost"] = player[name+"Cost"].div(div)
 		}
 		if (player.achievements.includes('r48') && player.tickspeedBoosts == undefined) player.tickSpeedCost = player.tickSpeedCost.div(div)

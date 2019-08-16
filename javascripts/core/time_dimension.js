@@ -51,13 +51,7 @@ function getTimeDimensionPower(tier) {
   if (player.replicanti.unl && player.replicanti.amount.gt(1) && player.dilation.upgrades.includes(5)) ret = ret.times(tmp.rm.pow(0.1))
 
   if (inQC(6)) ret = ret.times(player.postC8Mult).dividedBy(player.matter.max(1))
-  if (ret.lt(0)) ret = new Decimal(0)
-
-  if (player.dilation.active || player.galacticSacrifice) ret = Decimal.pow(10, Math.pow(ret.max(1).log10(), dilationPowerStrength()))
-
-
-  return ret
-
+  return dilates(ret)
 }
 
 
@@ -68,9 +62,8 @@ function getTimeDimensionProduction(tier) {
   var ret = dim.amount
   if (inQC(4) && tier == 1) ret = ret.plus(player.timeDimension2.amount.floor())
   ret = ret.times(getTimeDimensionPower(tier))
-  if (player.currentEternityChall == "eterc7") {
-      ret = ret.dividedBy(player.tickspeed.dividedBy(1000))
-  }
+  if (player.currentEternityChall == "eterc7") ret = ret.dividedBy(player.tickspeed.dividedBy(1000))
+  if (player.aarexModifications.ngm4V) ret = ret.div(100)
   if (player.currentEternityChall == "eterc1") return new Decimal(0)
   return ret
 }

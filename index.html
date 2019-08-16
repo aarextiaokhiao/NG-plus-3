@@ -993,25 +993,20 @@
 					<div id="blackholePowPerSec">You are getting 0 black hole power per second.</div>
 					<br/>
 					<table class="table" style="margin: 0 auto">
-						  <tr>
-								<td>
-									<button id="blackholeDil" class="eternityupbtn" onclick="feedBlackHole(1)">Feed the black hole with dilated time<br>Cost: xx dilated time</button>
-								</td>
-								<td>
-									<button id="blackholeInf" class="eternityupbtn" onclick="feedBlackHole(2)">Feed the black hole with banked infinities<br>Cost: xx banked infinities</button>
-								</td>
-								<td>
-									<button id="blackholeRepl" class="eternityupbtn" onclick="feedBlackHole(3)">Feed the black hole with replicanti<br>Cost: xx replicanti</button>
-								</td>
-						  </tr>
-						  <tr id="blackholeMax">
-								<td></td>
-								<td>
-									<button class="storebtn" onclick="feedBlackholeMax()" style="height: 25px; width: 190px; font-size:10px; margin-top: -3px;">Max all upgrades</button>
-								</td>
-								<td></td>
-						  </tr>
+						<tr>
+							<td>
+								<button id="blackholeDil" class="eternityupbtn" onclick="feedBlackHole(1)">Feed the black hole with dilated time<br>Cost: xx dilated time</button>
+							</td>
+							<td>
+								<button id="blackholeInf" class="eternityupbtn" onclick="feedBlackHole(2)">Feed the black hole with banked infinities<br>Cost: xx banked infinities</button>
+							</td>
+							<td>
+								<button id="blackholeRepl" class="eternityupbtn" onclick="feedBlackHole(3)">Feed the black hole with replicanti<br>Cost: xx replicanti</button>
+							</td>
+						</tr>
 					</table>
+					<div><button id="blackholeMax" class="storebtn" onclick="feedBlackholeMax()" style="height: 25px; width: 190px; font-size:10px; margin-top: -3px;">Max all upgrades</button></div>
+					<div><button id="blackholeauto" class="storebtn" onclick="toggleAutoEter('blackhole')" style="height: 25px; width: 190px; font-size:10px; margin-top: 3px;"></button></div>
 					<button id="maxBlackholeDimensions" class="storebtn" style="font-size: 12px; width: 230px;" onclick="buyMaxBlackholeDimensions()">Max all black hole dimensions</Button>
 					<table class="table">
 						<tr style="font-size: 17px" id="blackholeRow1">
@@ -4764,47 +4759,47 @@
 					</tr></table>
 					<table id="lights"><tr>
 						<td>
-							You have <span class="red" id="light1" style="font-size:35px"></span> red light.<br>
-							Next light at <span class="ghr" id="lightThreshold1"></span> Ghostly Rays.<br>
+							You have <span class="red" id="light1" style="font-size:35px"></span> red Light.<br>
+							Next Light at <span class="ghr" id="lightThreshold1"></span> Ghostly Rays.<br>
 							They boost Tachyon particles boost to dilated time production by <span class="red" id="lightBoost1" style="font-size:35px"></span>%.<br>
 							<span id="le3">They boost "replicate chance boosts itself" from ^<span id="leBoost3b"></span> to ^<span class="red" id="leBoost3" style="font-size:35px"></span> too.</span>
 						</td>
 						<td>
-							You have <span class="orange" id="light2" style="font-size:35px"></span> orange light.<br>
-							Next light at <span class="ghr" id="lightThreshold2"></span> Ghostly Rays.<br>
-							They boost red light strength by <span class="orange" id="lightStrength1" style="font-size:35px"></span>x and reduce the limit of galaxy threshold increase to ^<span class="orange" id="lightBoost2" style="font-size:35px"></span>.
+							You have <span class="orange" id="light2" style="font-size:35px"></span> orange Light.<br>
+							Next Light at <span class="ghr" id="lightThreshold2"></span> Ghostly Rays.<br>
+							They boost red Light strength by <span class="orange" id="lightStrength1" style="font-size:35px"></span>x and reduce the limit of galaxy threshold increase to ^<span class="orange" id="lightBoost2" style="font-size:35px"></span>.
 						</td>
 						<td>
-							You have <span class="yellow" id="light3" style="font-size:35px"></span> yellow light.<br>
-							Next light at <span class="ghr" id="lightThreshold3"></span> Ghostly Rays.<br>
-							They boost orange light strength by <span class="yellow" id="lightStrength2" style="font-size:35px"></span>x and boost electrons by <span class="yellow" id="lightBoost3" style="font-size:35px"></span>% only if 100 RG upgrade is disabled.
+							You have <span class="yellow" id="light3" style="font-size:35px"></span> yellow Light.<br>
+							Next Light at <span class="ghr" id="lightThreshold3"></span> Ghostly Rays.<br>
+							They boost orange Light strength by <span class="yellow" id="lightStrength2" style="font-size:35px"></span>x and boost electrons by <span class="yellow" id="lightBoost3" style="font-size:35px"></span>% only if 100 RG upgrade is disabled.
 						</td>
 						<td>
-							You have <span class="green" id="light4" style="font-size:35px"></span> green light.<br>
-							Next light at <span class="ghr" id="lightThreshold4"></span> Ghostly Rays.<br>
-							They boost yellow light strength by <span class="green" id="lightStrength3" style="font-size:35px"></span>x and boost preon boost by <span class="green" id="lightBoost4" style="font-size:35px"></span>%.<br>
+							You have <span class="green" id="light4" style="font-size:35px"></span> green Light.<br>
+							Next Light at <span class="ghr" id="lightThreshold4"></span> Ghostly Rays.<br>
+							They boost yellow Light strength by <span class="green" id="lightStrength3" style="font-size:35px"></span>x and boost preon boost by <span class="green" id="lightBoost4" style="font-size:35px"></span>%.<br>
 							<span id="le1">Every 0.1% of green power effect, they add <span class="green" id="leBoost1" style="font-size:35px"></span> to free galaxies amount in TS431 too.</span>
 						</td>
 					</tr><tr>
 						<td>
-							You have <span class="blue" id="light5" style="font-size:35px"></span> blue light.<br>
-							Next light at <span class="ghr" id="lightThreshold5"></span> Ghostly Rays.<br>
-							They boost green light strength by <span class="blue" id="lightStrength4" style="font-size:35px"></span>x and boost blue power boost on dilated time production by <span class="blue" id="lightBoost5" style="font-size:35px"></span>%.<br>
+							You have <span class="blue" id="light5" style="font-size:35px"></span> blue Light.<br>
+							Next Light at <span class="ghr" id="lightThreshold5"></span> Ghostly Rays.<br>
+							They boost green Light strength by <span class="blue" id="lightStrength4" style="font-size:35px"></span>x and boost blue power boost on dilated time production by <span class="blue" id="lightBoost5" style="font-size:35px"></span>%.<br>
 							<span id="le2">They slow down Ghostly Galaxies scaling by <span class="blue" id="leBoost2" style="font-size:35px"></span>% too.</span>
 						</td>
 						<td>
-							You have <span class="indigo" id="light6" style="font-size:35px"></span> indigo light.<br>
-							Next light at <span class="ghr" id="lightThreshold6"></span> Ghostly Rays.<br>
-							They boost blue light strength by <span class="indigo" id="lightStrength5" style="font-size:35px"></span>x and increase your Neutrino gain by <span class="indigo" id="lightBoost6" style="font-size:35px"></span>x.
+							You have <span class="indigo" id="light6" style="font-size:35px"></span> indigo Light.<br>
+							Next Light at <span class="ghr" id="lightThreshold6"></span> Ghostly Rays.<br>
+							They boost blue Light strength by <span class="indigo" id="lightStrength5" style="font-size:35px"></span>x and increase your Neutrino gain by <span class="indigo" id="lightBoost6" style="font-size:35px"></span>x.
 						</td>
 						<td>
-							You have <span class="violet" id="light7" style="font-size:35px"></span> violet light.<br>
-							Next light at <span class="ghr" id="lightThreshold7"></span> Ghostly Rays.<br>
-							They boost indigo light strength by <span class="violet" id="lightStrength6" style="font-size:35px"></span>x and in Big Rips, make your tickspeed multiplier boosts sixth Time Dimensions by <span class="violet" id="lightBoost7" style="font-size:35px"></span>x.<br>(Your tickspeed multiplier boosts more if you have more.)
+							You have <span class="violet" id="light7" style="font-size:35px"></span> violet Light.<br>
+							Next Light at <span class="ghr" id="lightThreshold7"></span> Ghostly Rays.<br>
+							They boost indigo Light strength by <span class="violet" id="lightStrength6" style="font-size:35px"></span>x and in Big Rips, make your tickspeed multiplier boosts sixth Time Dimensions by <span class="violet" id="lightBoost7" style="font-size:35px"></span>x.<br>(Your tickspeed multiplier boosts more if you have more.)
 						</td>
 						<td>
-							You have <span class="uv" id="light8" style="font-size:35px"></span> ultraviolet light.<br>
-							Next light at <span class="ghr" id="lightThreshold8"></span> Ghostly Rays.
+							You have <span class="uv" id="light8" style="font-size:35px"></span> ultraviolet Light.<br>
+							Next Light at <span class="ghr" id="lightThreshold8"></span> Ghostly Rays.
 						</td>
 					</tr></table>
 					<button class="gluonupgrade gph" id="lightEmpowerment" onclick="lightEmpowerment()">Reset this mechanic to gain 1 Light Empowerment!<br>(requires <span id="lightEmpowermentReq"></span> ultraviolet light.)</button><br>

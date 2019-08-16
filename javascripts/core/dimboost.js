@@ -45,7 +45,7 @@ function softReset(bulk, tier=1) {
 	}
 	var costs=[10,100,1e4,1e6,1e9,1e13,1e18,1e24]
 	var costMults=[1e3,1e4,1e5,1e6,1e8,1e10,1e12,1e15]
-	if (player.currentChallenge == "challenge10" || player.currentChallenge == "postc1") costs=[10,100,500,2500,2e4,2e5,4e6]
+	if (player.currentChallenge == "challenge10" || player.currentChallenge == "postc1") costs=[10,100,100,500,2500,2e4,2e5,4e6]
 	if (player.currentChallenge == "postc1") costMults=[1e3,5e3,1e4,12e3,18e3,26e3,32e3,42e3]
 	for (var d=1;d<9;d++) {
 		var name=TIER_NAMES[d]
@@ -119,9 +119,14 @@ function setInitialDimensionPower() {
 		let softCapStart = 1024
 		let frac = 8
 		if (player.currentChallenge == "postcngm3_1"||player.currentChallenge=="postc1") softCapStart = 0
-		if (player.challenges.includes("postcngm3_1")) frac = 6
+		if (player.challenges.includes("postcngm3_1")) frac = 7
 		if (ic3PowerTB > softCapStart) ic3PowerTB = Math.sqrt((ic3PowerTB - softCapStart) / frac + 1024) * 32 + softCapStart - 1024
 		if (player.currentChallenge == "challenge15" || player.currentChallenge == "postc1") ic3PowerTB *= Math.max(player.galacticSacrifice.galaxyPoints.div(1e3).add(1).log(8),1)
+		if (player.achievements.includes("r67")) {
+			let x=tmp.cp
+			if (x>4) x=Math.sqrt(x-1)+2
+			ic3PowerTB*=x*.15+1
+		}
 		ic3Power += ic3PowerTB
 	}
 	player.postC3Reward=Decimal.pow(getPostC3RewardMult(),ic3Power)

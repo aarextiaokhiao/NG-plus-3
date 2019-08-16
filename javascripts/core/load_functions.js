@@ -1414,6 +1414,11 @@ if (player.version < 5) {
       for (var u=0;u<player.galacticSacrifice.upgrades.length;u++) if (player.galacticSacrifice.upgrades[u]!=34) newUpgs.push(player.galacticSacrifice.upgrades[u])
       player.galacticSacrifice.upgrades=newUpgs
       player.aarexModifications.newGame3MinusVersion = 3
+      player.aarexModifications.ngmX=3
+  } else if (!player.aarexModifications.ngmX && player.tickspeedBoosts !== undefined) {
+      player.aarexModifications.ngm4V=1
+      player.aarexModifications.ngmX=4
+      reduceDimCosts()
   }
   if (player.aarexModifications.ersVersion === undefined && player.timestudy.studies.length>0 && typeof(player.timestudy.studies[0])!=="number") {
       newAchievements=[]
@@ -1715,6 +1720,8 @@ if (player.version < 5) {
       if (player.dilation.studies.includes(1)) document.getElementById("dilationeterupgrow").style.display="table-row"
       document.getElementById("blackHoleAnimBtn").textContent = "Black hole: " + ((player.options.animations.blackHole) ? "ON" : "OFF")
       document.getElementById("blackholeMax").style.display = player.aarexModifications.ngudpV ? "" : "none"
+      document.getElementById("blackholeauto").style.display = player.aarexModifications.ngudpV && player.achievements.includes("ngpp17") ? "" : "none"
+      document.getElementById('blackholeauto').textContent="Auto: O"+(player.autoEterOptions.blackhole?"N":"FF")
       if (player.blackhole.unl == true) {
           document.getElementById("blackholediv").style.display="inline-block"
           document.getElementById("blackholeunlock").style.display="none"
@@ -1902,7 +1909,8 @@ if (player.version < 5) {
       if (player.infinityUpgradesRespecced) ngModeMessages.push('Welcome to Infinity Respecced, created by Aarex! In this mode, all of infinity upgrades are replaced with new upgrades except 2x IP mult. Oh, break infinity is removed.')
       if (player.boughtDims) ngModeMessages.push('Welcome to Eternity Respecced created by dan-simon! NOTE: This is broken right now. I will fix it in later time, like after months.')
       if (player.galacticSacrifice) {
-          if (player.aarexModifications.newGame3MinusVersion) ngModeMessages.push('Welcome to NG--- mode, the nerfed version of NG-- mode! This mode reduces tickspeed multiplier multiplier and nerfs galaxies, but have a new feature called \"Tickspeed Boosts\" and 1 achievement buff.')
+          if (player.aarexModifications.ngm4V) ngModeMessages.push('Welcome to NG-4 mode, the nerfed version of NG--- mode! This mode features even more changes from NG--- and is very hardcore. WIP by Nyan Cat and edited by Aarex.')
+          else if (player.aarexModifications.newGame3MinusVersion) ngModeMessages.push('Welcome to NG--- mode, the nerfed version of NG-- mode! This mode reduces tickspeed multiplier multiplier and nerfs galaxies, but have a new feature called \"Tickspeed Boosts\" and 1 achievement buff.')
           else ngModeMessages.push('Welcome to NG-- mode created by Nyan cat! Dilation is always locked but have more balancing, IC3 trap, and a new feature called "Galactic Sacrifice".')
       }
       if (player.aarexModifications.newGameMinusVersion) ngModeMessages.push("Welcome to NG- mode! Everything are nerfed by the creator slabdrill, making the end-game harder to reach.")
@@ -1952,8 +1960,8 @@ function load_game(noOffline) {
 		if (break_infinity_js) Decimal = Decimal_BI
 		initCost = [null, new Decimal(10), new Decimal(1e2), new Decimal(1e4), new Decimal(1e6), new Decimal(1e9), new Decimal(1e13), new Decimal(1e18), new Decimal(1e24)]
 		costMults = [null, new Decimal(1e3), new Decimal(1e4), new Decimal(1e5), new Decimal(1e6), new Decimal(1e8), new Decimal(1e10), new Decimal(1e12), new Decimal(1e15)]
-		nextAt = {postc1:new Decimal("1e2000"),postc1_ngmm:new Decimal("1e3000"),postc2:new Decimal("1e5000"),postc3:new Decimal("1e12000"),postc4:new Decimal("1e14000"),postc5:new Decimal("1e18000"),postc6:new Decimal("1e20000"),postc7:new Decimal("1e23000"),postc8:new Decimal("1e28000"),postcngmm_1:new Decimal("1e750"),postcngmm_1_ngm3:new Decimal("1e1080"),postcngmm_2:new Decimal("1e1350"),postcngmm_3:new Decimal("1e2000"),postcngm3_1:new Decimal("1e1520"),postcngm3_2:new Decimal("1e1770")}
-		goals = {postc1:new Decimal("1e850"),postc1_ngmm:new Decimal("1e650"),postc2:new Decimal("1e10500"),postc3:new Decimal("1e5000"),postc4:new Decimal("1e13000"),postc5:new Decimal("1e11111"),postc6:new Decimal("2e22222"),postc7:new Decimal("1e10000"),postc7_ngmm:new Decimal("1e15000"),postc8:new Decimal("1e27000"),postcngmm_1:new Decimal("1e550"),postcngmm_1_ngm3:new Decimal("1e1000"),postcngmm_2:new Decimal("1e950"),postcngmm_2_ngm3:new Decimal("1e1100"),postcngmm_3:new Decimal("1e1200"),postcngm3_1:new Decimal("1e600"),postcngm3_2:new Decimal("1e920")}
+		nextAt = {postc1:new Decimal("1e2000"),postc1_ngmm:new Decimal("1e3000"),postc1_ngm3:new Decimal("1e3760"),postc2:new Decimal("1e5000"),postc3:new Decimal("1e12000"),postc4:new Decimal("1e14000"),postc5:new Decimal("1e18000"),postc6:new Decimal("1e20000"),postc7:new Decimal("1e23000"),postc8:new Decimal("1e28000"),postcngmm_1:new Decimal("1e750"),postcngmm_1_ngm3:new Decimal("1e1080"),postcngmm_2:new Decimal("1e1350"),postcngmm_3:new Decimal("1e2000"),postcngmm_3_ngm3:new Decimal("1e2650"),postcngm3_1:new Decimal("1e1560"),postcngm3_2:new Decimal("1e2085")}
+		goals = {postc1:new Decimal("1e850"),postc1_ngmm:new Decimal("1e650"),postc2:new Decimal("1e10500"),postc3:new Decimal("1e5000"),postc4:new Decimal("1e13000"),postc5:new Decimal("1e11111"),postc6:new Decimal("2e22222"),postc7:new Decimal("1e10000"),postc7_ngmm:new Decimal("1e15000"),postc8:new Decimal("1e27000"),postcngmm_1:new Decimal("1e550"),postcngmm_1_ngm3:new Decimal("1e650"),postcngmm_2:new Decimal("1e950"),postcngmm_2_ngm3:new Decimal("1e1090"),postcngmm_3:new Decimal("1e1200"),postcngmm_3_ngm3:new Decimal("1e1230"),postcngm3_1:new Decimal("1e550"),postcngm3_2:new Decimal("1e610")}
 		setUnlocks = [Decimal.pow(Number.MAX_VALUE, 2.9)]
 	}
 	onLoad(noOffline)
