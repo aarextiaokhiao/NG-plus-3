@@ -1394,7 +1394,7 @@ if (player.version < 5) {
       player.infchallengeTimes.push(600*60*24*31)
       player.aarexModifications.newGameMinusMinusVersion = 1.5
   }
-  if (player.aarexModifications.newGameMinusMinusVersion < 2) player.aarexModifications.newGameMinusMinusVersion = 2
+  if (player.aarexModifications.newGameMinusMinusVersion < 1.6) player.aarexModifications.newGameMinusMinusVersion = 1.6
   if (player.aarexModifications.newGame3MinusVersion < 2.1) {
       player.autobuyers[13]=14
       player.overXGalaxiesTickspeedBoost=1
@@ -1414,9 +1414,10 @@ if (player.version < 5) {
       for (var u=0;u<player.galacticSacrifice.upgrades.length;u++) if (player.galacticSacrifice.upgrades[u]!=34) newUpgs.push(player.galacticSacrifice.upgrades[u])
       player.galacticSacrifice.upgrades=newUpgs
       player.aarexModifications.newGame3MinusVersion = 3
-      player.aarexModifications.ngmX=3
+      player.aarexModifications.ngmX=player.aarexModifications.newGame4MinusVersion?4:3
+      if (player.aarexModifications.ngmX>3) reduceDimCosts()
   } else if (!player.aarexModifications.ngmX && player.tickspeedBoosts !== undefined) {
-      player.aarexModifications.ngm4V=1
+      player.aarexModifications.newGame4MinusVersion = 1
       player.aarexModifications.ngmX=4
       reduceDimCosts()
   }
@@ -1909,7 +1910,7 @@ if (player.version < 5) {
       if (player.infinityUpgradesRespecced) ngModeMessages.push('Welcome to Infinity Respecced, created by Aarex! In this mode, all of infinity upgrades are replaced with new upgrades except 2x IP mult. Oh, break infinity is removed.')
       if (player.boughtDims) ngModeMessages.push('Welcome to Eternity Respecced created by dan-simon! NOTE: This is broken right now. I will fix it in later time, like after months.')
       if (player.galacticSacrifice) {
-          if (player.aarexModifications.ngm4V) ngModeMessages.push('Welcome to NG-4 mode, the nerfed version of NG--- mode! This mode features even more changes from NG--- and is very hardcore. WIP by Nyan Cat and edited by Aarex.')
+          if (player.aarexModifications.ngmX>3) ngModeMessages.push('Welcome to NG-4 mode, the nerfed version of NG--- mode! This mode features even more changes from NG--- and is very hardcore. WIP by Nyan Cat and edited by Aarex.')
           else if (player.aarexModifications.newGame3MinusVersion) ngModeMessages.push('Welcome to NG--- mode, the nerfed version of NG-- mode! This mode reduces tickspeed multiplier multiplier and nerfs galaxies, but have a new feature called \"Tickspeed Boosts\" and 1 achievement buff.')
           else ngModeMessages.push('Welcome to NG-- mode created by Nyan cat! Dilation is always locked but have more balancing, IC3 trap, and a new feature called "Galactic Sacrifice".')
       }

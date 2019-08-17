@@ -104,7 +104,7 @@ function getDimensionFinalMultiplier(tier) {
 function getDimensionDescription(tier) {
 	var name = TIER_NAMES[tier];
 	if (tier > Math.min(inQC(1) ? 1 : player.currentEternityChall == "eterc3" ? 3 : player.currentChallenge == "challenge4" || player.currentChallenge == "postc1" ? 5 : 7, player.resets + 3) - (player.currentChallenge == "challenge7" || inQC(4) ? 1 : 0)) return getFullExpansion(player.currentChallenge == "challenge11" ? getAmount(tier) : player[name + 'Bought']) + ' (' + dimBought(tier) + ')';
-	else return shortenDimensions(player[name + 'Amount']) + ' (' + dimBought(tier) + ')  (+' + formatValue(player.options.notation, getDimensionRateOfChange(tier), 2, 2) + dimDescEnd;
+	else return shortenND(player[name + 'Amount']) + ' (' + dimBought(tier) + ')  (+' + formatValue(player.options.notation, getDimensionRateOfChange(tier), 2, 2) + dimDescEnd;
 }
 
 function getDimensionRateOfChange(tier) {
@@ -169,9 +169,8 @@ function multiplyPC5Costs(cost, tier) {
 	
 function canBuyDimension(tier) {
 	if (tmp.ri) return false;
-	if (tier > player.resets + 4) return false;
-	if (tier > 1 && player[TIER_NAMES[tier - 1] + 'Amount'] == 0 && getEternitied() < 30) return false;
-	if ((player.currentChallenge == "challenge4" || player.currentChallenge == "postc1") && tier > 6) return false
+	if (tier > Math.min(player.resets + 4, (player.currentChallenge == "challenge4" || player.currentChallenge == "postc1") ? 6 : 8)) return false
+	if (tier > 1 && player[TIER_NAMES[tier - 1] + 'Amount'] == 0 && getEternitied() < 30) return false
 
 	return true;
 }
@@ -257,7 +256,7 @@ function costIncreaseActive(cost) {
 function getDimensionCostMultiplierIncrease() {
 	if (inQC(7)) return Number.MAX_VALUE
 	let ret = player.dimensionMultDecrease;
-	if (player.aarexModifications.ngm4V) ret = Math.pow(ret, 1.25)
+	if (player.aarexModifications.ngmX>3) ret = Math.pow(ret, 1.25)
 	if (player.currentChallenge === 'postcngmm_2') ret = Math.pow(ret, .5)
 	else if (player.challenges.includes('postcngmm_2')) ret = Math.pow(ret, .9)
 	return ret;
@@ -427,6 +426,7 @@ function getDimensionProductionPerSecond(tier) {
 	if (player.currentChallenge == "challenge2" || player.currentChallenge == "postc1") ret = ret.times(player.chall2Pow)
 	if (tier == 1 && (player.currentChallenge == "challenge3" || player.currentChallenge == "postc1")) ret = ret.times(player.chall3Pow)
 	if (player.tickspeedBoosts != undefined) ret = ret.div(10)
-	if (player.aarexModifications.ngm4V) ret = ret.div(100)
+	if (player.aarexModifications.ngmX>3) ret = ret.div(100)
+	if (tier == 1 && (player.currentChallenge == "challenge7" || inQC(4))) ret = ret.plus(getDimensionProductionPerSecond(2))
 	return ret.times(dilates(Decimal.div(player.galacticSacrifice == undefined ? 1 : 1000, getTickspeed()), true))
 }

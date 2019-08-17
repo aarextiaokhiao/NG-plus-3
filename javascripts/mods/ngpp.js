@@ -1,7 +1,7 @@
 function getDilationMetaDimensionMultiplier () {
 	let pow = 0.1
 	if (player.masterystudies != undefined) if (player.masterystudies.includes("d12")) pow = getNanofieldRewardEffect(4)
-	if (player.aarexModifications.ngudpV) pow /= 2
+	if (player.aarexModifications.ngudpV) pow /= player.quantum.colorPowers.b.gt(0) ? 2 : 3
 	return player.dilation.dilatedTime.div(1e40).pow(pow).plus(1);
 }
 
@@ -1129,6 +1129,7 @@ function quantumReset(force, auto, challid, bigRip, implode=false) {
 	else if (isRewardEnabled(3) && !bigRip) for (ec=1;ec<15;ec++) player.eternityChalls['eterc'+ec] = 5
 	player.dilation.totalTachyonParticles = player.dilation.tachyonParticles
 	if (player.exdilation!=undefined) {
+		if (player.eternityUpgrades.length) for (var u=7;u<10;u++) player.eternityUpgrades.push(u)
 		for (var d=1;d<5;d++) player["blackholeDimension"+d] = {
 			cost: Decimal.pow(10,d>3?2e4:4e3*d),
 			amount: new Decimal(0),

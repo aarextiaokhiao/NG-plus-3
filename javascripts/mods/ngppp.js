@@ -542,7 +542,7 @@ function getMTSMult(id, modifier) {
 	if (id==301) return Math.floor(extraReplGalaxies/4.15)
 	if (id==303) return Decimal.pow(4.7,Math.pow(Math.log10(Math.max(player.galaxies,1)),1.5))
 	if (id==322) {
-		let log = Math.sqrt(3-getTickspeed().log10())/20000
+		let log = Math.sqrt(3-player.tickspeed.log10())/2e4
 		if (log>110) log = Math.sqrt(log * 27.5) + 55
 		return Decimal.pow(10, log)
 	}
@@ -2170,7 +2170,11 @@ function getELCMult() {
 
 function toggleRG4Upg() {
 	tmp.qu.rg4=!tmp.qu.rg4
-	document.getElementById('rg4toggle').textContent="Toggle: O"+(tmp.qu.rg4?"N":"FF")	
+	document.getElementById('rg4toggle').textContent="Toggle: O"+(tmp.qu.rg4?"N":"FF")
+	if (tmp.qu.rg4&&player.achievements.includes("ng3p71")) {
+		tmp.rg4=true
+		galaxyReset(0)
+	}
 }
 
 function updateElectronsEffect() {
@@ -2855,7 +2859,6 @@ function getSpaceShardsGain() {
 	}
 	if (hasNU(9)) ret = ret.times(Decimal.max(getEternitied(), 1).pow(0.1))
 	ret = ret.floor()
-	if (isNaN(ret.e)) return new Decimal(0)
 	return ret
 }
 
@@ -3655,6 +3658,7 @@ function ghostifyReset(implode, gain, amount, force) {
 	player.dilation.totalTachyonParticles = player.dilation.tachyonParticles
 	player.dilation.bestTP = player.dilation.tachyonParticles
 	if (player.exdilation!=undefined) {
+		if (player.eternityUpgrades.length) for (var u=7;u<10;u++) player.eternityUpgrades.push(u)
 		for (var d=1;d<5;d++) player["blackholeDimension"+d] = {
 			cost: Decimal.pow(10,d>3?2e4:4e3*d),
 			amount: new Decimal(0),
@@ -4034,11 +4038,34 @@ function maxGHPMult() {
 	let sum=player.ghostify.neutrinos.electron.add(player.ghostify.neutrinos.mu).add(player.ghostify.neutrinos.tau).round()
 	let cost=getGHPMultCost()
 	if (sum.lt(cost)) return
-	let toBuy=Math.floor(sum.div(cost).times(24).add(1).log(25))
-	subNeutrinos(Decimal.pow(25,toBuy).sub(1).div(24).times(cost))
-	player.ghostify.multPower+=toBuy
-	player.ghostify.automatorGhosts[15].a=player.ghostify.automatorGhosts[15].a.times(Decimal.pow(5,toBuy))
-	document.getElementById("autoGhost15a").value=formatValue("Scientific", player.ghostify.automatorGhosts[15].a, 2, 1)
+	if (player.ghostify.multPower<85) {
+		let toBuy=Math.min(Math.floor(sum.div(cost).times(24).add(1).log(25)),85-player.ghostify.multPower)
+		subNeutrinos(Decimal.pow(25,toBuy).sub(1).div(24).times(cost))
+		cost=getGHPMultCost()
+		player.ghostify.multPower+=toBuy
+		player.ghostify.automatorGhosts[15].a=player.ghostify.automatorGhosts[15].a.times(Decimal.pow(5,toBuy))
+		document.getElementById("autoGhost15a").value=formatValue("Scientific", player.ghostify.automatorGhosts[15].a, 2, 1)
+	}
+	if (player.ghostify.multPower>84) {
+		let b=player.ghostify.multPower*2-167
+		let x=Math.floor((-b+Math.sqrt(b*b+4*sum.div(cost).log(5)))/2)+1
+		if (x) {
+			let toBuy=x
+			let toSpend=0
+			while (x>0) {
+				cost=getGHPMultCost(x-1)
+				if (sum.div(cost).gt(1e16)) break
+				toSpend=cost.add(toSpend)
+				if (sum.lt(toSpend)) {
+					toSpend=cost
+					toBuy--
+				}
+				x--
+			}
+			subNeutrinos(toSpend)
+			player.ghostify.multPower+=toBuy
+		}
+	}
 	document.getElementById("ghpMult").textContent=shortenDimensions(Decimal.pow(2,player.ghostify.multPower-1))
 	document.getElementById("ghpMultUpgCost").textContent=shortenDimensions(getGHPMultCost())
 }

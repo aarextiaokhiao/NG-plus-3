@@ -96,7 +96,7 @@ function reduceDimCosts() {
 		if (player.galacticSacrifice.upgrades.includes(11)) div=galUpgrade11()
 		for (d=1;d<9;d++) {
 			var name = TIER_NAMES[d]
-			if (player.aarexModifications.ngm4V) {
+			if (player.aarexModifications.ngmX>3) {
 				player[name+"Cost"] = player[name+"Cost"].pow(1.25).times(10)
 				player.costMultipliers[d-1] = player.costMultipliers[d-1].pow(1.25)
 			}

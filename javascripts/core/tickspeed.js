@@ -45,9 +45,10 @@ function getGalaxyPowerEff(ng, bi) {
 	if (player.achievements.includes("ngpp8") && player.meta != undefined) eff *= 1.001;
 	if (player.timestudy.studies.includes(212)) eff *= Math.min(Math.pow(player.timeShards.max(2).log2(), 0.005), 1.1)
 	if (player.timestudy.studies.includes(232)&&bi) {
-		let exp = 0.2
-		if (player.masterystudies != undefined) if (player.galaxies >= 1e4 && !tmp.be) exp *= 6 - player.galaxies / 2e3
-		eff *= Math.pow(1+ng/1000, exp)
+		let exp=0.2
+		if (tmp.ngp3) if (player.galaxies>=1e4&&!tmp.be) exp*=6-player.galaxies/2e3
+		tmp.ts232=Math.pow(1+ng/1000,exp)
+		eff*=tmp.ts232
 	}
 	eff *= colorBoosts.r
 	if (GUBought("rg2")) eff *= Math.pow(player.dilation.freeGalaxies/5e3+1,0.25)
@@ -215,7 +216,6 @@ function getTickspeed() {
 		if (player.singularity != undefined) ret = ret.times(getDarkMatterMult())
 		return Decimal.div(1000, ret)
 	}
-	if (isNaN(player.tickspeed.e)) return new Decimal(1e3)
 	return player.tickspeed
 }
 
