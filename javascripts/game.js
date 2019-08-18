@@ -999,9 +999,9 @@ let tmp = {
 	nb: [],
 	nbc: [null,3,4,6,15,50,1e3,1e14,1e40],
 	nu: [],
-	nuc: [null,1e6,1e7,1e8,2e8,5e8,2e9,5e9,75e8,1e10,7e12,1e18,1e60,1e125,1/0,1/0],
-	lt: [16e3,1/0,1/0,1/0,1/0,1/0,1/0,1/0],
-	lti: [2,1/0,1/0,1/0,1/0,1/0,1/0,1/0],
+	nuc: [null,1e6,1e7,1e8,2e8,5e8,2e9,5e9,75e8,1e10,7e12,1e18,1e60,1e125,1e160,1/0],
+	lt: [16e3,25e4,1/0,1/0,1/0,1/0,1/0,1/0],
+	lti: [2,2,1/0,1/0,1/0,1/0,1/0,1/0],
 	ls: [0,0,0,0,0,0,0],
 	le: [0,0,0,0,0,0,0]
 }
@@ -1015,8 +1015,8 @@ function updateTemp() {
 		tmp.ppti=1
 		if (player.ghostify.ghostlyPhotons.unl) {
 			for (var c=6;c>-1;c--) tmp.ls[c]=player.ghostify.ghostlyPhotons.lights[c]*Math.sqrt((c>5?1:tmp.ls[c+1]+1)*(player.ghostify.ghostlyPhotons.enpowerments+1))
-			tmp.le[0]=Math.pow(tmp.ls[0]>2?Math.sqrt(tmp.ls[0]-1)+2:tmp.ls[0],1/2)*.15+1
-			tmp.le[1]=1 //Orange light
+			tmp.le[0]=Math.pow(tmp.ls[0]>2?Math.sqrt(tmp.ls[0]-2)+2:tmp.ls[0],1/2)*.15+1
+			tmp.le[1]=1/(tmp.ls[1]+1) //Orange light
 			tmp.le[2]=1 //Yellow light
 			tmp.le[3]=1 //Green light
 			tmp.le[4]=0 //Blue light
@@ -1028,7 +1028,7 @@ function updateTemp() {
 			tmp.bru[3]=1 //BRU18
 			tmp.bru[4]=1 //BRU19
 			tmp.bru[5]=1 //BRU20
-			tmp.nu[4]=Decimal.pow(player.ghostify.ghostParticles.add(1).log10(),Math.pow(tmp.qu.colorPowers.r.add(tmp.qu.colorPowers.g).add(tmp.qu.colorPowers.b).add(1).log10()*0,1)+1).max(1) //NU14
+			tmp.nu[4]=Decimal.pow(player.ghostify.ghostParticles.add(1).log10(),Math.pow(tmp.qu.colorPowers.r.add(tmp.qu.colorPowers.g).add(tmp.qu.colorPowers.b).add(1).log10(),0.5)/3+1).max(1) //NU14
 			tmp.nu[5]=Decimal.pow(2,tmp.qu.nanofield.rewards/2) //NU15
 			if (hasNU(15)) tmp.ns=tmp.ns.times(tmp.nu[5])
 			tmp.ppti*=tmp.le[1]
@@ -2069,7 +2069,7 @@ function updateEternityChallenges() {
 		document.getElementById(property).textContent=onchallenge?"Running":"Start"
 		document.getElementById(property).className=onchallenge?"onchallengebtn":"challengesbtn"
 	}
-	document.getElementById("eterctabbtn").style.display = locked?"none":"inline-block"
+	document.getElementById("eterctabbtn").parentElement.style.display = locked?"none":""
 	document.getElementById("autoEC").style.display=quantumed&&tmp.ngp3?"inline-block":"none"
 	if (quantumed&&tmp.ngp3) document.getElementById("autoEC").className=tmp.qu.autoEC?"timestudybought":"storebtn"
 }
@@ -3812,7 +3812,7 @@ function onNotationChange() {
 		updateTODStuff()
 		updateBreakEternity()
 		onNotationChangeNeutrinos()
-		document.getElementById("gphUnl").textContent="To unlock Ghostly Photons, you need to get "+shortenCosts(Decimal.pow(10,62e8))+" antimatter while your universe is Big Ripped first."
+		document.getElementById("gphUnl").textContent="To unlock Ghostly Photons, you need to get "+shortenCosts(Decimal.pow(10,61e8))+" antimatter while your universe is Big Ripped first."
 	}
 	document.getElementById("epmult").innerHTML = "You gain 5 times more EP<p>Currently: "+shortenDimensions(player.epmult)+"x<p>Cost: "+shortenDimensions(player.epmultCost)+" EP"
 	document.getElementById("achmultlabel").textContent = "Current achievement multiplier on each Dimension: " + shortenMoney(player.achPow) + "x"
@@ -7214,7 +7214,7 @@ setInterval(function() {
             $.notify("Congratulations! You have unlocked Break Eternity!", "success")
             updateBreakEternity()
         }
-        if (player.money.gte(Decimal.pow(10,62e8))&&tmp.qu.bigRip.active&&!player.ghostify.ghostlyPhotons.unl) {
+        if (player.money.gte(Decimal.pow(10,61e8))&&tmp.qu.bigRip.active&&!player.ghostify.ghostlyPhotons.unl) {
             player.ghostify.ghostlyPhotons.unl=true
             $.notify("Congratulations! You have unlocked Ghostly Photons!", "success")
             giveAchievement("Progressing as a Ghost")
@@ -7369,8 +7369,6 @@ function gameLoop(diff) {
         if (player.totalmoney.gt("1e9000000000000000")) {
             document.getElementById("decimalMode").style.visibility = "hidden"
             if (break_infinity_js) {
-                player.money = tempm
-                player.totalmoney = temptm
                 clearInterval(gameLoopIntervalId)
                 alert("You reached the limit of break_infinity.js. You need to switch to logarithmica_numerus.js now.")
                 player.aarexModifications.breakInfinity = !player.aarexModifications.breakInfinity
@@ -7431,8 +7429,8 @@ function gameLoop(diff) {
 
         if (player.ghostify.ghostlyPhotons.unl) {
             var data=player.ghostify.ghostlyPhotons
-            data[tmp.qu.bigRip.active?"amount":"darkMatter"]=data[tmp.qu.bigRip.active?"amount":"darkMatter"].add(getGPHProduction().times(diff/10)).max(getGPHProduction().times(1e3))
-            data.ghostlyRays=data.ghostlyRays.add(getGHRProduction().times(diff/10)).max(getGHRProduction().times(1e3)).min(getGHRCap())
+            data[tmp.qu.bigRip.active?"amount":"darkMatter"]=data[tmp.qu.bigRip.active?"amount":"darkMatter"].add(getGPHProduction().times(diff/10))//.max(getGPHProduction().times(2e3))
+            data.ghostlyRays=data.ghostlyRays.add(getGHRProduction().times(diff/10))/*.max(getGHRProduction().times(2e3))*/.min(getGHRCap())
             for (var c=0;c<8;c++) if (data.ghostlyRays.gte(getLightThreshold(c))) data.lights[c]+=Math.floor(data.ghostlyRays.div(getLightThreshold(c)).log(tmp.lti[c])+1)
         }
         if (tmp.qu.nanofield.producingCharge) {
@@ -7723,7 +7721,6 @@ function gameLoop(diff) {
             }
             replicantiTicks -= interval
         }
-
     }
     if (player.replicanti.amount.gt(0)) replicantiTicks += player.options.updateRate
     if (tmp.ngp3) if (player.masterystudies.includes("d10") && tmp.qu.autoOptions.replicantiReset && player.replicanti.amount.gt(tmp.qu.replicants.requirement)) replicantReset()
@@ -8699,17 +8696,17 @@ window.onfocus = function() {
 
 window.addEventListener('keydown', function(event) {
 	if (!player.options.hotkeys || controlDown === true || document.activeElement.type === "text" || document.activeElement.type === "number" || onImport) return false
-	const tmp = event.keyCode;
-	if (tmp >= 49 && tmp <= 56) {
-		if (shiftDown) buyOneDimension(tmp-48)
-		else buyManyDimension(tmp-48)
+	const key = event.keyCode;
+	if (key >= 49 && key <= 56) {
+		if (shiftDown) buyOneDimension(key-48)
+		else buyManyDimension(key-48)
 		return false;
-	} else if (tmp >= 97 && tmp <= 104) {
-		if (shiftDown) buyOneDimension(tmp-96)
-		else buyManyDimension(tmp-96)
+	} else if (key >= 97 && key <= 104) {
+		if (shiftDown) buyOneDimension(key-96)
+		else buyManyDimension(key-96)
 		return false;
 	}
-	switch (event.keyCode) {
+	switch (key) {
 		case 65: // A
 			toggleAutoBuyers();
 		break;

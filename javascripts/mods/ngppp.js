@@ -821,12 +821,14 @@ function updateColorCharge() {
 	document.getElementById("redAssign").className=canAssign?"storebtn":"unavailablebtn"
 	document.getElementById("greenAssign").className=canAssign?"storebtn":"unavailablebtn"
 	document.getElementById("blueAssign").className=canAssign?"storebtn":"unavailablebtn"
-	document.getElementById("rggain").textContent=shortenDimensions(tmp.qu.usedQuarks.r.min(tmp.qu.usedQuarks.g))
-	document.getElementById("gbgain").textContent=shortenDimensions(tmp.qu.usedQuarks.g.min(tmp.qu.usedQuarks.b))
-	document.getElementById("brgain").textContent=shortenDimensions(tmp.qu.usedQuarks.b.min(tmp.qu.usedQuarks.r))
-	document.getElementById("rednext").textContent=shortenDimensions(tmp.qu.usedQuarks.r.sub(tmp.qu.usedQuarks.r.min(tmp.qu.usedQuarks.g)).round())
-	document.getElementById("greennext").textContent=shortenDimensions(tmp.qu.usedQuarks.g.sub(tmp.qu.usedQuarks.g.min(tmp.qu.usedQuarks.b)).round())
-	document.getElementById("bluenext").textContent=shortenDimensions(tmp.qu.usedQuarks.b.sub(tmp.qu.usedQuarks.b.min(tmp.qu.usedQuarks.r)).round())
+	var uq=tmp.qu.usedQuarks
+	var gl=tmp.qu.gluons
+	for (var p=0;p<3;p++) {
+		var pair=(["rg","gb","br"])[p]
+		var diff=uq[pair[0]].min(uq[pair[1]])
+		document.getElementById(pair+"gain").textContent=shortenDimensions(diff)
+		document.getElementById(pair+"next").textContent=shortenDimensions(uq[pair[0]].sub(diff).round())
+	}
 	document.getElementById("assignAllButton").className=canAssign?"storebtn":"unavailablebtn"
 	document.getElementById("bluePowerMDEffect").style.display=player.masterystudies.includes("t383")?"":"none"
 	if (player.masterystudies.includes("d13")) {
@@ -858,11 +860,6 @@ function updateGluons(mode) {
 		}
 	}
 	if (player.ghostify.milestones<8&&!player.achievements.includes("ng3p66")) mode=undefined
-	if (mode==undefined||mode=="display") {
-		document.getElementById("rg").textContent=shortenDimensions(tmp.qu.gluons.rg)
-		document.getElementById("gb").textContent=shortenDimensions(tmp.qu.gluons.gb)
-		document.getElementById("br").textContent=shortenDimensions(tmp.qu.gluons.br)
-	}
 	var names=["rg","gb","br"]
 	var sevenUpgrades=player.masterystudies.includes("d9")
 	var eightUpgrades=player.masterystudies.includes("d13")
@@ -874,6 +871,7 @@ function updateGluons(mode) {
 		}
 		if (mode==undefined||mode=="display") {
 			var name=names[c]
+			document.getElementById(name).textContent=shortenDimensions(tmp.qu.gluons[name])
 			for (u=1;u<=(eightUpgrades?8:sevenUpgrades?7:4);u++) {
 				var upg=name+"upg"+u
 				if (u>4) document.getElementById(upg+"cost").textContent=shortenMoney(new Decimal(GUCosts[u]))
@@ -1462,7 +1460,7 @@ function getCurrentQCData() {
 var bankedEterGain
 function updateBankedEter(updateHtml=true) {
 	bankedEterGain=0
-	if (player.achievements.includes("ng3p15")) bankedEterGain=nD(player.eternities,5)
+	if (player.achievements.includes("ng3p15")) bankedEterGain=nD(player.eternities,20)
 	if (updateHtml) {
 		setAndMaybeShow("bankedEterGain",bankedEterGain>0,'"You will gain "+getFullExpansion(bankedEterGain)+" banked eternities on next quantum."')
 		setAndMaybeShow("eternitiedBank",player.eternitiesBank,'"You have "+getFullExpansion(player.eternitiesBank)+" banked eternities."')
@@ -2837,7 +2835,28 @@ function unstoreTT() {
 	for (var s=7;s<15;s++) if (player.masterystudies.includes("d"+s)) newMS.push("d"+s)
 	player.timestudy.studies=newTS
 	player.masterystudies=newMS
-	updateTimeStudyButtons()
+	for (var i=0; i<player.timestudy.studies.length; i++) {
+		if (player.timestudy.studies.length>0&&typeof(player.timestudy.studies[0])!=="number") break
+		if (player.timestudy.studies[i] == 71 || player.timestudy.studies[i] == 81 || player.timestudy.studies[i] == 91 || player.timestudy.studies[i] == 101) {
+			document.getElementById(""+player.timestudy.studies[i]).className = "timestudybought normaldimstudy"
+		} else if (player.timestudy.studies[i] == 72 || player.timestudy.studies[i] == 82 || player.timestudy.studies[i] == 92 || player.timestudy.studies[i] == 102) {
+			document.getElementById(""+player.timestudy.studies[i]).className = "timestudybought infdimstudy"
+		} else if (player.timestudy.studies[i] == 73 || player.timestudy.studies[i] == 83 || player.timestudy.studies[i] == 93 || player.timestudy.studies[i] == 103) {
+			document.getElementById(""+player.timestudy.studies[i]).className = "timestudybought timedimstudy"
+		} else if (player.timestudy.studies[i] == 121 || player.timestudy.studies[i] == 131 || player.timestudy.studies[i] == 141) {
+			document.getElementById(""+player.timestudy.studies[i]).className = "timestudybought activestudy"
+		} else if (player.timestudy.studies[i] == 122 || player.timestudy.studies[i] == 132 || player.timestudy.studies[i] == 142) {
+			document.getElementById(""+player.timestudy.studies[i]).className = "timestudybought passivestudy"
+		} else if (player.timestudy.studies[i] == 123 || player.timestudy.studies[i] == 133 || player.timestudy.studies[i] == 143) {
+			document.getElementById(""+player.timestudy.studies[i]).className = "timestudybought idlestudy"
+		} else if (player.timestudy.studies[i] == 221 || player.timestudy.studies[i] == 224 || player.timestudy.studies[i] == 225 || player.timestudy.studies[i] == 228 || player.timestudy.studies[i] == 231 || player.timestudy.studies[i] == 234) {
+			document.getElementById(player.timestudy.studies[i]).className = "timestudybought darkstudy"
+		} else if (player.timestudy.studies[i] == 222 || player.timestudy.studies[i] == 223 || player.timestudy.studies[i] == 226 || player.timestudy.studies[i] == 227 || player.timestudy.studies[i] == 232 || player.timestudy.studies[i] == 233) {
+			document.getElementById(player.timestudy.studies[i]).className = "timestudybought lightstudy"
+		} else {
+			document.getElementById(""+player.timestudy.studies[i]).className = "timestudybought"
+		}
+	}
 	updateTheoremButtons()
 	drawStudyTree()
 	maybeShowFillAll()
@@ -2857,7 +2876,7 @@ function getSpaceShardsGain() {
 	return ret
 }
 
-let bigRipUpgCosts = [0, 2, 3, 5, 20, 30, 45, 60, 150, 300, 2000, 1e10, 3e14, 1e17, 3e18, 3e20, 5e22, 1e33, 1/0, 1/0, 1/0]
+let bigRipUpgCosts = [0, 2, 3, 5, 20, 30, 45, 60, 150, 300, 2000, 3e9, 3e14, 1e17, 3e18, 3e20, 5e22, 1e33, 1/0, 1/0, 1/0]
 function buyBigRipUpg(id) {
 	if (tmp.qu.bigRip.spaceShards.lt(bigRipUpgCosts[id])||tmp.qu.bigRip.upgrades.includes(id)) return
 	tmp.qu.bigRip.spaceShards=tmp.qu.bigRip.spaceShards.sub(bigRipUpgCosts[id])
@@ -3049,14 +3068,14 @@ function getGHPGain() {
 }
 
 ghostified = false
-function ghostify(auto) {
-	if (!isQuantumReached()||!tmp.qu.bigRip.active||implosionCheck) return
-	if (player.aarexModifications.ghostifyConf&&!auto) if(!confirm("Becoming a ghost resets everything quantum resets, and also resets your banked stats, best TP & MA, quarks, gluons, electrons, Quantum Challenges, Replicants, Nanofield, and Tree of Decay to gain a Ghost Particle. Are you ready for this?")) return
+function ghostify(auto, force) {
+	if (!force&&(!isQuantumReached()||!tmp.qu.bigRip.active||implosionCheck)) return
+	if (player.aarexModifications.ghostifyConf&&!auto&&!force) if(!confirm("Becoming a ghost resets everything quantum resets, and also resets your banked stats, best TP & MA, quarks, gluons, electrons, Quantum Challenges, Replicants, Nanofield, and Tree of Decay to gain a Ghost Particle. Are you ready for this?")) return
 	if (!ghostified) {
 		if (!confirm("Are you sure you want to do that? You will lose everything you have!")) return
 		if (!confirm("ARE YOU REALLY SURE YOU WANT TO DO THAT? YOU CAN'T UNDO THIS AFTER YOU BECAME A GHOST AND PASS THE UNIVERSE EVEN IT IS BIG RIPPED! THIS IS YOUR LAST CHANCE!")) return
 	}
-	var implode = player.options.animations.ghostify
+	var implode = player.options.animations.ghostify && !force
 	if (implode) {
 		var gain = getGHPGain()
 		var amount = player.ghostify.ghostParticles.add(gain).round()
@@ -3096,7 +3115,7 @@ function ghostifyReset(implode, gain, amount, force) {
 	if (bm > 2) for (var c=1;c<9;c++) tmp.qu.electrons.mult += 0.5-QCIntensity(c)*0.25
 	if (bm > 15) giveAchievement("I rather oppose the theory of everything")
 	if (player.eternityPoints.e>=1/0&&player.ghostify.under) giveAchievement("Underchallenged")
-	if (player.ghostify.best<=1) giveAchievement("Running through the Big Rips")
+	if (player.ghostify.best<=5) giveAchievement("Running through Big Rips")
 	player.ghostify.time = 0
 	player = {
 		money: new Decimal(10),
@@ -3334,7 +3353,7 @@ function ghostifyReset(implode, gain, amount, force) {
 		eternityChalls: bm ? player.eternityChalls : {},
 		eternityChallGoal: new Decimal(Number.MAX_VALUE),
 		currentEternityChall: "",
-		eternityChallUnlocked: 0,
+		eternityChallUnlocked: player.eternityChallUnlocked,
 		etercreq: 0,
 		autoIP: new Decimal(0),
 		autoTime: 1e300,
@@ -3652,6 +3671,11 @@ function ghostifyReset(implode, gain, amount, force) {
 	//Eternity
 	EPminpeakType = 'normal'
 	EPminpeak = new Decimal(0)
+	if (bm) {
+		if (player.eternityChallUnlocked>12) player.timestudy.theorem+=masterystudies.costs.ec[player.eternityChallUnlocked]
+		else player.timestudy.theorem+=([0,30,35,40,70,130,85,115,115,415,550,1,1])[player.eternityChallUnlocked]
+	}
+	player.eternityChallUnlocked=0
 	player.dilation.totalTachyonParticles = player.dilation.tachyonParticles
 	player.dilation.bestTP = player.dilation.tachyonParticles
 	if (player.exdilation!=undefined) {
@@ -3920,7 +3944,7 @@ function updateGhostifyTabs() {
 		for (var c=0;c<8;c++) {
 			document.getElementById("light"+(c+1)).textContent=getFullExpansion(gphData.lights[c])
 			document.getElementById("lightThreshold"+(c+1)).textContent=shorten(getLightThreshold(c))
-			if (c>0&&c<7) document.getElementById("lightStrength"+c).textContent=shorten(Math.sqrt(tmp.ls[c])+1)
+			if (c>0&&c<7) document.getElementById("lightStrength"+c).textContent=shorten(Math.sqrt(tmp.ls[c]+1))
 		}
 		document.getElementById("lightBoost1").textContent=tmp.le[0].toFixed(3)
 		document.getElementById("lightBoost2").textContent=tmp.le[1].toFixed(3)
@@ -4221,11 +4245,13 @@ function getLightThreshold(l) {
 }
 
 function getLightEmpowermentReq() {
-	return player.ghostify.ghostlyPhotons.enpowerments*0+1/0
+	return 0
 }
 
 function lightEmpowerment() {
 	if (!(player.ghostify.ghostlyPhotons.lights[7]>=getLightEmpowermentReq())) return
+	if (!confirm("You will become a ghost, but Ghostly Photons will be reset. You will gain 1 Light Empowerment from this. Are you sure you want to proceed?")) return
+	ghostify(false, true)
 	player.ghostify.ghostlyPhotons.amount=new Decimal(0)
 	player.ghostify.ghostlyPhotons.darkMatter=new Decimal(0)
 	player.ghostify.ghostlyPhotons.ghostlyRays=new Decimal(0)

@@ -254,44 +254,46 @@ function updateTimeStudyButtons() {
   }
   for (var i=0; i<all.length; i++) {
       if (!player.timestudy.studies.includes(all[i])) {
+		  var className
           if (canBuyStudy(all[i]) && studyCosts[i]<=player.timestudy.theorem) {
               if (all[i] == 71 || all[i] == 81 || all[i] == 91 || all[i] == 101) {
-                  document.getElementById(all[i]).className = "timestudy normaldimstudy"
+                  className = "timestudy normaldimstudy"
               } else if (all[i] == 72 || all[i] == 82 || all[i] == 92 || all[i] == 102) {
-                  document.getElementById(all[i]).className = "timestudy infdimstudy"
+                  className = "timestudy infdimstudy"
               } else if (all[i] == 73 || all[i] == 83 || all[i] == 93 || all[i] == 103) {
-                  document.getElementById(all[i]).className = "timestudy timedimstudy"
+                  className = "timestudy timedimstudy"
               } else if (all[i] == 121 || all[i] == 131 || all[i] == 141) {
-                  document.getElementById(all[i]).className = "timestudy activestudy"
+                  className = "timestudy activestudy"
               } else if (all[i] == 122 || all[i] == 132 || all[i] == 142) {
-                  document.getElementById(all[i]).className = "timestudy passivestudy"
+                  className = "timestudy passivestudy"
               } else if (all[i] == 123 || all[i] == 133 || all[i] == 143) {
-                  document.getElementById(all[i]).className = "timestudy idlestudy"
+                  className = "timestudy idlestudy"
               } else if (all[i] == 221 || all[i] == 224 || all[i] == 225 || all[i] == 228 || all[i] == 231 || all[i] == 234) {
-                  document.getElementById(all[i]).className = "timestudy darkstudy"
+                  className = "timestudy darkstudy"
               } else if (all[i] == 222 || all[i] == 223 || all[i] == 226 || all[i] == 227 || all[i] == 232 || all[i] == 233) {
-                  document.getElementById(all[i]).className = "timestudy lightstudy"
+                  className = "timestudy lightstudy"
               } else {
-                  document.getElementById(all[i]).className = "timestudy"
+                  className = "timestudy"
               }
           }
           else {
               if (all[i] == 71 || all[i] == 81 || all[i] == 91 || all[i] == 101) {
-                  document.getElementById(all[i]).className = "timestudylocked normaldimstudylocked"
+                  className = "timestudylocked normaldimstudylocked"
               } else if (all[i] == 72 || all[i] == 82 || all[i] == 92 || all[i] == 102) {
-                  document.getElementById(all[i]).className = "timestudylocked infdimstudylocked"
+                  className = "timestudylocked infdimstudylocked"
               } else if (all[i] == 73 || all[i] == 83 || all[i] == 93 || all[i] == 103) {
-                  document.getElementById(all[i]).className = "timestudylocked timedimstudylocked"
+                  className = "timestudylocked timedimstudylocked"
               } else if (all[i] == 121 || all[i] == 131 || all[i] == 141) {
-                  document.getElementById(all[i]).className = "timestudylocked activestudylocked"
+                  className = "timestudylocked activestudylocked"
               } else if (all[i] == 122 || all[i] == 132 || all[i] == 142) {
-                  document.getElementById(all[i]).className = "timestudylocked passivestudylocked"
+                  className = "timestudylocked passivestudylocked"
               } else if (all[i] == 123 || all[i] == 133 || all[i] == 143) {
-                  document.getElementById(all[i]).className = "timestudylocked idlestudylocked"
+                  className = "timestudylocked idlestudylocked"
               } else {
-                  document.getElementById(all[i]).className = "timestudylocked"
+                  className = "timestudylocked"
               }
           }
+		  document.getElementById(all[i]).className = className
       }
   }
 

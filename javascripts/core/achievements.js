@@ -170,7 +170,7 @@ const allAchievements = {
   ng3p73 : "Meta-Infinity confirmed?",
   ng3p74 : "Weak Decay",
   ng3p75 : "Radioactive Decaying to the max!",
-  ng3p76 : "Running through the Big Rips",
+  ng3p76 : "Running through Big Rips",
   ng3p77 : "The Theory of Ultimate Studies",
   ng3p78 : "Aren't you already dead?",
   s11 : "The first one's always free",

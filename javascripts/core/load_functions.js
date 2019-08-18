@@ -1786,7 +1786,7 @@ if (player.version < 5) {
           else document.getElementById("neutrinoUpg"+u).style.display=u>player.ghostify.times+2?"none":""
       }
       updateGPHUnlocks()
-      document.getElementById("gphUnl").textContent="To unlock Ghostly Photons, you need to get "+shortenCosts(Decimal.pow(10,62e8))+" antimatter while your universe is Big Ripped first."
+      document.getElementById("gphUnl").textContent="To unlock Ghostly Photons, you need to get "+shortenCosts(Decimal.pow(10,61e8))+" antimatter while your universe is Big Ripped first."
   }
   transformSaveToDecimal();
   hideDimensions()
