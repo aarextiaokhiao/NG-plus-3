@@ -1466,7 +1466,7 @@ if (player.version < 5) {
   }
   if (player.aarexModifications.newGameExpVersion === undefined && !player.masterystudies && Decimal.gt(player.infMultCost,10) && Math.round(Decimal.div(player.infMultCost,10).log(4)*1e3)%1e3<1) player.aarexModifications.newGameExpVersion=1
   if (player.aarexModifications.newGameUpdateVersion === undefined && player.exdilation != undefined) {
-      player.aarexModifications.newGameUpdateVersion=1
+      player.aarexModifications.newGameUpdateVersion=1.01
       player.options.animations.blackHole=true
       player.aarexModifications.dilationConf=player.options.dilationconfirm
       var newAchievements=[]
@@ -1478,6 +1478,10 @@ if (player.version < 5) {
       player.achievements=newAchievements
       delete player.options.dilationconfirm
       updateAchievements()
+  }
+  if (player.aarexModifications.newGameUpdateVersion<1.01) {
+      player.blackholeDimension4.cost=Decimal.min(player.blackholeDimension4.cost,"1e20000")
+      player.aarexModifications.newGameUpdateVersion=1.01
   }
   if (player.exdilation !== undefined && player.options.exdilationconfirm === undefined) player.options.exdilationconfirm = true
   if (player.aarexModifications.irsVersion < 1.1) {
@@ -1765,7 +1769,7 @@ if (player.version < 5) {
       document.getElementById('rebuyupgauto').textContent="Rebuyable upgrade auto: O"+(player.autoEterOptions.rebuyupg?"N":"FF")
       document.getElementById('metaboostauto').textContent="Meta-boost auto: O"+(player.autoEterOptions.metaboost?"N":"FF")
       document.getElementById('priorityquantum').value=formatValue("Scientific", new Decimal(tmp.qu.autobuyer.limit), 2, 0)
-      document.getElementById('rg4toggle').style.display=(hasNU(13)?tmp.qu.bigRip.active:inQC(1)||QCIntensity(1))?"none":""
+      document.getElementById('rg4toggle').style.display=(inQC(1)||QCIntensity(1))?"none":""
       document.getElementById('rg4toggle').textContent="Toggle: O"+(tmp.qu.rg4?"N":"FF")
       document.getElementById("respecPC").className=tmp.qu.pairedChallenges.respec?"quantumbtn":"storebtn"
       document.getElementById('sacrificeAuto').textContent="Auto: O"+(tmp.qu.autoOptions.sacrifice?"N":"FF")

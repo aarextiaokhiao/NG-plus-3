@@ -69,11 +69,11 @@ body {
     background-color: #00e500 !important;
     color: #191919 !important
 }
-.unavailablebtn, .infinistorebtnlocked, .newdimlocked, .milestonerewardlocked, .eternityupbtnlocked, .eternityttbtnlocked, .lockedchallengesbtn, .dilationupglocked, .dilationupgrebuyablelocked, .nanofieldrewardlocked {
+.unavailablebtn, .infinistorebtnlocked, .newdimlocked, .milestonerewardlocked, .eternityupbtnlocked, .eternityttbtnlocked, .lockedchallengesbtn, .dilationupglocked, .dilationupgrebuyablelocked, .nanofieldrewardlocked, .gluonupgradebought.bigripoff {
     border-color: #e50000 !important;
     color: #e5e5e5 !important
 }
-.unavailablebtn:hover, .infinistorebtnlocked:hover, .newdimlocked:hover, .infinistorebtnbought:hover, .onchallengebtn:hover, .completedchallengesbtn:hover, .milestonerewardlocked:hover, .milestonereward:hover, .timestudylocked:hover, .eternityupbtnlocked:hover, .eternityttbtnlocked:hover, .eternitychallengestudylocked:hover, .lockedchallengesbtn:hover, .dilationupglocked:hover, .dilationupgbought:hover, .dilationupgrebuyablelocked:hover, .dilationupgrebuyablebought:hover, .upgbought:hover, .nanofieldrewardlocked:hover {
+.unavailablebtn:hover, .infinistorebtnlocked:hover, .newdimlocked:hover, .infinistorebtnbought:hover, .onchallengebtn:hover, .completedchallengesbtn:hover, .milestonerewardlocked:hover, .milestonereward:hover, .timestudylocked:hover, .eternityupbtnlocked:hover, .eternityttbtnlocked:hover, .eternitychallengestudylocked:hover, .lockedchallengesbtn:hover, .dilationupglocked:hover, .dilationupgbought:hover, .dilationupgrebuyablelocked:hover, .dilationupgrebuyablebought:hover, .upgbought:hover, .nanofieldrewardlocked:hover, .gluonupgradebought.bigripoff:hover {
     background-color: #191919 !important;
     color: #e5e5e5 !important
 }
@@ -509,8 +509,12 @@ strong { color: #0072e5 }
 	color: #191919 !important;
 	box-shadow: none !important
 }
-#dilstudy14.dilationupgbought, .gluonupgradebought.bigrip {
+#dilstudy14.dilationupgbought, .gluonupgradebought.bigrip, .gluonupgradebought.bigripoff {
 	border: 1px solid #191919 !important
+}
+.gluonupgradebought.bigripoff {
+	border: 1px solid #999999 !important;
+	box-shadow: none !important
 }
 .SSAmount {
 	color: #5be567 !important

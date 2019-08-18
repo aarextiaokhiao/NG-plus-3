@@ -954,10 +954,21 @@
 								<button id="breakUpg8" class="eternityupbtnlocked" onclick="buyBreakUpg(8)">Boost per-1 bought Time Dimension multiplier based on your Tachyon particles if you didn't dilate time.<br>Currently: ^<span id="breakUpg8Mult">???</span><br>Cost: <span id="breakUpg8Cost"></span> Eternal Matter</button>
 							</td>
 							<td>
-								<button id="breakUpg9" class="eternityupbtnlocked" onclick="buyBreakUpg(9)">Divide the galaxy cost based on your Eternal Matter if you are in EC10.<br>Currently: /<span id="breakUpg9Mult">???</span><br>Cost: <span id="breakUpg9Cost"></span> Eternal Matter</button>
+								<button id="breakUpg9" class="eternityupbtnlocked" onclick="buyBreakUpg(9)">Divide the galaxy cost based on your Eternal Matter if you are in Eternity Challenge 10.<br>Currently: /<span id="breakUpg9Mult">???</span><br>Cost: <span id="breakUpg9Cost"></span> Eternal Matter</button>
 							</td>
 							<td>
 								<button id="breakUpg10" class="eternityupbtnlocked" onclick="buyBreakUpg(10)">Eternity Points make 3x TP gain upgrades stronger.<br>Currently: ^<span id="breakUpg10Mult">???</span><br>Cost: <span id="breakUpg10Cost"></span> Eternal Matter</button>
+							</td>
+						</tr>
+						<tr id="breakUpgRS">
+							<td>
+								<button class="eternityupbtn" onclick="eternity()">Eternal Matter: <span id="eterShortcutEM"></span><br>Start a normal Eternity run.</button>
+							</td>
+							<td>
+								<button class="eternitychallengestudy" onclick="startEC10()" style="width: 190px; height: 90px; margin: 0">Eternity Points: <span id="eterShortcutEP"></span><br>Start Eternity Challenge 10.</button>
+							</td>
+							<td>
+								<button class="dilationupg" onclick="startDilatedEternity(false, true)" style="width: 190px; height: 90px; margin: 0">Tachyon particles: <span id="eterShortcutTP"></span><br>Dilate time.</button>
 							</td>
 						</tr>
 						<tr>
@@ -2468,10 +2479,10 @@
 						</tr>
 						<tr id="achRowng3p7">
 							<td>
-								<div id="Progressing as a Ghost" class="achievement achievementlocked" style="background-image: url(images/159.png)" ach-tooltip="Unlock Ghostly Photons. Reward: Turning on 100 RG upgrade acts like a galaxy reset, but you don't gain anything."></div>
+								<div id="Progressing as a Ghost" class="achievement achievementlocked" style="background-image: url(images/159.png)" ach-tooltip="Unlock Ghostly Photons."></div>
 							</td>
 							<td>
-								<div id="Overchallenged" class="achievement achievementlocked" style="background-image: url(images/160.png)" ach-tooltip="Become a ghost with at least ??? EP without dilating time while Big Ripped."></div>
+								<div id="Underchallenged" class="achievement achievementlocked" style="background-image: url(images/160.png)" ach-tooltip="Become a ghost with at least ??? EP without dilating time while Big Ripped."></div>
 							</td>
 							<td>
 								<div id="Meta-Infinity confirmed?" class="achievement achievementlocked" style="background-image: url(images/161.png)"></div>
@@ -4596,9 +4607,9 @@
 						<td><button class="gluonupgrade unavailablebtn" id="neutrinoUpg12" onclick="buyNeutrinoUpg(12)" style="font-size: 9px">In Big Rips, each normal galaxy slows down unstable quarks decay by 3.5%, each replicated galaxy boosts EC14 reward by 0.035x^0.5+1, and each free galaxy boosts IC3 reward by 3.5%.<br>Cost: <span id="neutrinoUpg12Cost"></span> of any neutrinos</button></td>
 					</tr>
 					<tr id="gphRow">
-						<td><button class="gluonupgrade unavailablebtn" id="neutrinoUpg13" onclick="buyNeutrinoUpg(13)">You can toggle 100 RG upgrade again, but only for non-Big Rip runs.<br>Cost: <span id="neutrinoUpg13Cost"></span> of any neutrinos</button></td>
+						<td><button class="gluonupgrade unavailablebtn" id="neutrinoUpg13" onclick="buyNeutrinoUpg(13)">100 BR upgrade don't get affected by 100 RG upgrade.<br>Cost: <span id="neutrinoUpg13Cost"></span> of any neutrinos</button></td>
 						<td><button class="gluonupgrade unavailablebtn" id="neutrinoUpg14" onclick="buyNeutrinoUpg(14)" style="font-size: 10px">Gain more neutrinos based on your GHP and color powers.<br>Currently: <span id="neutrinoUpg14Pow"></span>x<br>Cost: <span id="neutrinoUpg14Cost"></span> of any neutrinos</button></td>
-						<td><button class="gluonupgrade unavailablebtn" id="neutrinoUpg15" onclick="buyNeutrinoUpg(15)">Preon charge produces faster based on your preon power.<br>Currently: <span id="neutrinoUpg15Pow"></span>x<br>Cost: <span id="neutrinoUpg15Cost"></span> of any neutrinos</button></td>
+						<td><button class="gluonupgrade unavailablebtn" id="neutrinoUpg15" onclick="buyNeutrinoUpg(15)">Nanofield is faster based on your rewards.<br>Currently: <span id="neutrinoUpg15Pow"></span>x<br>Cost: <span id="neutrinoUpg15Cost"></span> of any neutrinos</button></td>
 					</tr>
 				</table>
 			</div>
@@ -4719,7 +4730,7 @@
 				<table style="margin: auto">
 					<tr id="braveRow1">
 						<td><div id="braveMilestone1" class="achievement achievementlocked"></div></td>
-						<td><div id="braveMilestone2" class="achievement achievementlocked" ach-tooltip="Reward: Colored quarks do not cancel, you keep your gluon upgrades, and you can quick Big Rip."></div></td>
+						<td><div id="braveMilestone2" class="achievement achievementlocked" ach-tooltip="Reward: Colored quarks do not cancel, you keep your gluon upgrades, you can quick Big Rip, and completing an Eternity Challenge doesn't respec your time studies."></div></td>
 						<td><div id="braveMilestone3" class="achievement achievementlocked" ach-tooltip="Reward: You keep your Electron upgrades."></div></td>
 						<td><div id="braveMilestone4" class="achievement achievementlocked" ach-tooltip="Reward: Quantuming doesn't reset your Tachyon particles unless you are in a QC, unstabilizing quarks doesn't lose your colored quarks, and you start with 5 of 1st upgrades of each Branch."></div></td>
 						<td><div id="braveMilestone5" class="achievement achievementlocked" ach-tooltip="Reward: Quantuming doesn't reset your Meta-Dimension Boosts unless you are in a QC or you are going to undo Big Rip."></div></td>
@@ -4761,18 +4772,18 @@
 						<td>
 							You have <span class="red" id="light1" style="font-size:35px"></span> red Light.<br>
 							Next Light at <span class="ghr" id="lightThreshold1"></span> Ghostly Rays.<br>
-							They boost Tachyon particles boost to dilated time production by <span class="red" id="lightBoost1" style="font-size:35px"></span>%.<br>
+							They boost Tachyon particles boost to dilated time production by ^<span class="red" id="lightBoost1" style="font-size:35px"></span>.<br>
 							<span id="le3">They boost "replicate chance boosts itself" from ^<span id="leBoost3b"></span> to ^<span class="red" id="leBoost3" style="font-size:35px"></span> too.</span>
 						</td>
 						<td>
 							You have <span class="orange" id="light2" style="font-size:35px"></span> orange Light.<br>
 							Next Light at <span class="ghr" id="lightThreshold2"></span> Ghostly Rays.<br>
-							They boost red Light strength by <span class="orange" id="lightStrength1" style="font-size:35px"></span>x and reduce the limit of galaxy threshold increase to ^<span class="orange" id="lightBoost2" style="font-size:35px"></span>.
+							They boost red Light strength by <span class="orange" id="lightStrength1" style="font-size:35px"></span>x and reduce preon power threshold increase to ^<span class="orange" id="lightBoost2" style="font-size:35px"></span>.
 						</td>
 						<td>
 							You have <span class="yellow" id="light3" style="font-size:35px"></span> yellow Light.<br>
 							Next Light at <span class="ghr" id="lightThreshold3"></span> Ghostly Rays.<br>
-							They boost orange Light strength by <span class="yellow" id="lightStrength2" style="font-size:35px"></span>x and boost electrons by <span class="yellow" id="lightBoost3" style="font-size:35px"></span>% only if 100 RG upgrade is disabled.
+							They boost orange Light strength by <span class="yellow" id="lightStrength2" style="font-size:35px"></span>x and multiply the multiplier per ten dimensions by <span class="yellow" id="lightBoost3" style="font-size:35px"></span>x before getting affected by electrons.
 						</td>
 						<td>
 							You have <span class="green" id="light4" style="font-size:35px"></span> green Light.<br>
@@ -4784,7 +4795,7 @@
 						<td>
 							You have <span class="blue" id="light5" style="font-size:35px"></span> blue Light.<br>
 							Next Light at <span class="ghr" id="lightThreshold5"></span> Ghostly Rays.<br>
-							They boost green Light strength by <span class="blue" id="lightStrength4" style="font-size:35px"></span>x and boost blue power boost on dilated time production by <span class="blue" id="lightBoost5" style="font-size:35px"></span>%.<br>
+							They boost green Light strength by <span class="blue" id="lightStrength4" style="font-size:35px"></span>x and reduce the blue power effect softcap by <span class="blue" id="lightBoost5" style="font-size:35px"></span>%.<br>
 							<span id="le2">They slow down Ghostly Galaxies scaling by <span class="blue" id="leBoost2" style="font-size:35px"></span>% too.</span>
 						</td>
 						<td>
@@ -4795,7 +4806,7 @@
 						<td>
 							You have <span class="violet" id="light7" style="font-size:35px"></span> violet Light.<br>
 							Next Light at <span class="ghr" id="lightThreshold7"></span> Ghostly Rays.<br>
-							They boost indigo Light strength by <span class="violet" id="lightStrength6" style="font-size:35px"></span>x and in Big Rips, make your tickspeed multiplier boosts sixth Time Dimensions by <span class="violet" id="lightBoost7" style="font-size:35px"></span>x.<br>(Your tickspeed multiplier boosts more if you have more.)
+							They boost indigo Light strength by <span class="violet" id="lightStrength6" style="font-size:35px"></span>x and in Big Rips, make your tickspeed multiplier boosts sixth Time Dimensions by <span class="violet" id="lightBoost7" style="font-size:35px"></span>x.<br>(Your tickspeed multiplier boosts more if you have more violet Light.)
 						</td>
 						<td>
 							You have <span class="uv" id="light8" style="font-size:35px"></span> ultraviolet Light.<br>

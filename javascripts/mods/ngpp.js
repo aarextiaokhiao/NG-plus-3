@@ -1,7 +1,7 @@
 function getDilationMetaDimensionMultiplier () {
 	let pow = 0.1
 	if (player.masterystudies != undefined) if (player.masterystudies.includes("d12")) pow = getNanofieldRewardEffect(4)
-	if (player.aarexModifications.ngudpV) pow /= player.quantum.colorPowers.b.gt(0) ? 2 : 3
+	if (player.aarexModifications.ngudpV) pow /= 3-Math.min(1,Math.log10(1+player.quantum.colorPowers.b.plus(10).log10()))
 	return player.dilation.dilatedTime.div(1e40).pow(pow).plus(1);
 }
 
@@ -36,7 +36,7 @@ function getMetaDimensionMultiplier (tier) {
       if (player.masterystudies.includes("t393")) multiplier = multiplier.times(getMTSMult(393))
   }
   if (GUBought("rg3")&&tier<2) multiplier = multiplier.times(player.resets)
-  if (GUBought("br4")) multiplier = multiplier.times(Decimal.pow(getDimensionPowerMultiplier(), 0.0003))
+  if (GUBought("br4")) multiplier = multiplier.times(Decimal.pow(getDimensionPowerMultiplier(true, "br4"), 0.0003))
   if (tier%2>0) multiplier = multiplier.times(QC4Reward)
   multiplier = multiplier.times(getQCReward(6))
   
@@ -102,11 +102,11 @@ function metaBoost() {
 				player.meta.resets=Math.min(player.meta.resets+Math.floor((player.meta[8].bought-req.amount)/(req.mult+1))+1,req.scalingStart)
 				if (player.meta.resets==req.scalingStart) req = getMetaShiftRequirement()
 			}
-			if (player.meta.resets>=req.scalingStart&&player.meta.resets<100) {
-				player.meta.resets=Math.min(player.meta.resets+Math.floor((player.meta[8].bought-req.amount)/(req.mult+1))+1,100)
-				if (player.meta.resets>99) req = getMetaShiftRequirement()
+			if (player.meta.resets>=req.scalingStart&&player.meta.resets<110) {
+				player.meta.resets=Math.min(player.meta.resets+Math.floor((player.meta[8].bought-req.amount)/(req.mult+1))+1,110)
+				if (player.meta.resets>109) req = getMetaShiftRequirement()
 			}
-			if (player.meta.resets>99) player.meta.resets+=Math.floor((player.meta[8].bought-req.amount)/req.mult)+1
+			if (player.meta.resets>109) player.meta.resets+=Math.floor((player.meta[8].bought-req.amount)/req.mult)+1
 		} else {
 			if (player.meta.resets<=req.scalingStart) {
 				player.meta.resets=Math.min(player.meta.resets+Math.floor((player.meta[8].bought-req.amount)/req.mult)+1,req.scalingStart)
@@ -751,6 +751,8 @@ function quantumReset(force, auto, challid, bigRip, implode=false) {
 				boughtI: player.timestudy.ipcost.log("1e100"),
 				boughtE: Math.round(player.timestudy.epcost.log(2))
 			}
+			if (player.eternityChallUnlocked>12) tmp.qu.bigRip.storedTS+=masterystudies.costs.ec[player.eternityChallUnlocked]
+			else tmp.qu.bigRip.storedTS+=([0,30,35,40,70,130,85,115,115,415,550,1,1])[player.eternityChallUnlocked]
 			for (var s=0;s<player.masterystudies.length;s++) if (player.masterystudies[s].indexOf("t") == 0) tmp.qu.bigRip.storedTS.studies.push(player.masterystudies[s].split("t")[1])
 		}
 		if (bigRip != tmp.qu.bigRip.active) switchAB()
@@ -1122,8 +1124,10 @@ function quantumReset(force, auto, challid, bigRip, implode=false) {
 	if (player.galacticSacrifice && !keepABnICs) player.autobuyers[12]=13
 	if (player.tickspeedBoosts !== undefined && !keepABnICs) player.autobuyers[13]=14
 	player.challenges=challengesCompletedOnEternity(true)
-	if (player.eternityChallUnlocked>12) player.timestudy.theorem+=masterystudies.costs.ec[player.eternityChallUnlocked]
-	else player.timestudy.theorem+=([0,30,35,40,70,130,85,115,115,415,550,1,1])[player.eternityChallUnlocked]
+	if (isRewardEnabled(11) && (bigRip ? tmp.qu.bigRip.upgrades.includes(12) : true)) {
+		if (player.eternityChallUnlocked>12) player.timestudy.theorem+=masterystudies.costs.ec[player.eternityChallUnlocked]
+		else player.timestudy.theorem+=([0,30,35,40,70,130,85,115,115,415,550,1,1])[player.eternityChallUnlocked]
+	}
 	player.eternityChallUnlocked=0
 	if (headstart) for (ec=1;ec<13;ec++) player.eternityChalls['eterc'+ec]=5
 	else if (isRewardEnabled(3) && !bigRip) for (ec=1;ec<15;ec++) player.eternityChalls['eterc'+ec] = 5
@@ -1145,16 +1149,16 @@ function quantumReset(force, auto, challid, bigRip, implode=false) {
 		giveAchievement("Sub-atomic")
 		ipMultPower=GUBought("gb3")?2.3:player.masterystudies.includes("t241")?2.2:2
 		player.dilation.times=0
-		var diffrg=tmp.qu.usedQuarks.r.min(tmp.qu.usedQuarks.g)
-		var diffgb=tmp.qu.usedQuarks.g.min(tmp.qu.usedQuarks.b)
-		var diffbr=tmp.qu.usedQuarks.b.min(tmp.qu.usedQuarks.r)
-		tmp.qu.usedQuarks.r=tmp.qu.usedQuarks.r.sub(diffrg).round()
-		tmp.qu.usedQuarks.g=tmp.qu.usedQuarks.g.sub(diffgb).round()
-		tmp.qu.usedQuarks.b=tmp.qu.usedQuarks.b.sub(diffbr).round()
-		tmp.qu.gluons.rg=tmp.qu.gluons.rg.add(diffrg).round()
-		tmp.qu.gluons.gb=tmp.qu.gluons.gb.add(diffgb).round()
-		tmp.qu.gluons.br=tmp.qu.gluons.br.add(diffbr).round()
 		if (!force) {
+			var diffrg=tmp.qu.usedQuarks.r.min(tmp.qu.usedQuarks.g)
+			var diffgb=tmp.qu.usedQuarks.g.min(tmp.qu.usedQuarks.b)
+			var diffbr=tmp.qu.usedQuarks.b.min(tmp.qu.usedQuarks.r)
+			tmp.qu.usedQuarks.r=tmp.qu.usedQuarks.r.sub(diffrg).round()
+			tmp.qu.usedQuarks.g=tmp.qu.usedQuarks.g.sub(diffgb).round()
+			tmp.qu.usedQuarks.b=tmp.qu.usedQuarks.b.sub(diffbr).round()
+			tmp.qu.gluons.rg=tmp.qu.gluons.rg.add(diffrg).round()
+			tmp.qu.gluons.gb=tmp.qu.gluons.gb.add(diffgb).round()
+			tmp.qu.gluons.br=tmp.qu.gluons.br.add(diffbr).round()
 			var intensity=tmp.qu.challenge.length
 			var qc1=tmp.qu.challenge[0]
 			var qc2=tmp.qu.challenge[1]
@@ -1254,7 +1258,7 @@ function quantumReset(force, auto, challid, bigRip, implode=false) {
 		document.getElementById("metaAntimatterEffectType").textContent=inQC(3)?"multiplier on all Infinity Dimensions":"extra multiplier per dimension boost"
 		updateColorCharge()
 		updateGluons()
-		document.getElementById('rg4toggle').style.display=(hasNU(13)?tmp.qu.bigRip.active:inQC(1)||QCIntensity(1))?"none":""
+		document.getElementById('rg4toggle').style.display=inQC(1)||QCIntensity(1)?"none":""
 		updateElectrons()
 		updateBankedEter()
 		updateQuantumChallenges()
@@ -1301,7 +1305,10 @@ function quantumReset(force, auto, challid, bigRip, implode=false) {
 		document.getElementById("limittext").textContent="Amount of IP to wait until reset:"
 		document.getElementById("epmult").innerHTML = "You gain 5 times more EP<p>Currently: "+shortenDimensions(player.epmult)+"x<p>Cost: "+shortenDimensions(player.epmultCost)+" EP"
 	}
-	
+	if (!oheHeadstart) {
+		player.autobuyers[9].bulk=Math.ceil(player.autobuyers[9].bulk)
+		document.getElementById("bulkDimboost").value=player.autobuyers[9].bulk
+	}
 	setInitialDimensionPower()
 	resetUP()
 	if (oheHeadstart) player.replicanti.amount = new Decimal(1)

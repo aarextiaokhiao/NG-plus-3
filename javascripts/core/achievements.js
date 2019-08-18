@@ -166,7 +166,7 @@ const allAchievements = {
   ng3p67 : "Will it be enough?",
   ng3p68 : "Please answer me why you are dying.",
   ng3p71 : "Progressing as a Ghost",
-  ng3p72 : "Overchallenged",
+  ng3p72 : "Underchallenged",
   ng3p73 : "Meta-Infinity confirmed?",
   ng3p74 : "Weak Decay",
   ng3p75 : "Radioactive Decaying to the max!",

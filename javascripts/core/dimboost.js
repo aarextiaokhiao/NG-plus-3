@@ -33,14 +33,18 @@ function softReset(bulk, tier=1) {
 	if (player.currentChallenge=="challenge14"&&player.tickspeedBoosts==undefined) player.tickBoughtThisInf.pastResets.push({resets:player.resets,bought:player.tickBoughtThisInf.current})
 	if (player.dilation.upgrades.includes("ngpp3") && player.eternities >= 1e9 && player.masterystudies && player.aarexModifications.switch === undefined && tier < 2) {
 		skipResets()
-		player.matter = new Decimal(0)
-		player.postC8Mult = new Decimal(1)
+		player.matter=new Decimal(0)
+		player.postC8Mult=new Decimal(1)
 		if (player.currentEternityChall=='eterc13') return
-		var power = player[TIER_NAMES[tier] + 'Pow']
-		var temp = getDimensionBoostPower()
-		if (player.dbPower === undefined || isNaN(break_infinity_js ? player.dbPower : player.dbPower.logarithm)) player.dbPower = temp
-		for (tier = 1; tier < 9; tier++) player[TIER_NAMES[tier] + 'Pow'] = player[TIER_NAMES[tier] + 'Pow'].div(player.dbPower.pow(Math.max(oldResets + 1 - tier, 0))).times(temp.pow(Math.max(player.resets + 1 - tier, 0)))
-		player.dbPower = temp
+		var temp=getDimensionBoostPower()
+		var temp2=getDimensionPowerMultiplier()
+		if (player.dbPower!=undefined&&!isNaN(break_infinity_js?player.dbPower:player.dbPower.logarithm)) for (tier=1;tier<9;tier++) {
+            var dimPow
+            if (player.currentChallenge=="challenge9"||player.currentChallenge=="postc1") dimPow=player[TIER_NAMES[tier]+'Pow'].div(player.dbPower.pow(Math.max(oldResets+1-tier,0)))
+            else dimPow=Decimal.pow(temp2,Math.floor(player[TIER_NAMES[tier]+'Bought']/10))
+            player[TIER_NAMES[tier]+'Pow']=temp.pow(Math.max(player.resets+1-tier,0)).times(dimPow)
+        }
+		player.dbPower=temp
 		return
 	}
 	var costs=[10,100,1e4,1e6,1e9,1e13,1e18,1e24]

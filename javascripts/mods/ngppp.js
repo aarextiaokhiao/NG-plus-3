@@ -2,7 +2,7 @@ masterystudies={initialCosts:{time:{241: 1e71, 251: 2e71, 252: 2e71, 253: 2e71, 
 		ec:{13:1e72, 14:1e72}},
 	costs:{time:{},
 		ec:{},
-		dil:{7: 2e82, 8: 2e84, 9: 4e85, 10: 4e87, 11: 3e90, 12: 3e92, 13: 1e95, 14: 2e98},
+		dil:{7: 2e82, 8: 2e84, 9: 4e85, 10: 4e87, 11: 3e90, 12: 3e92, 13: 1e95, 14: 1e98},
 		mc:{}},
 	costmults:{241: 1, 251: 2.5, 252: 2.5, 253: 2.5, 261: 6, 262: 6, 263: 6, 264: 6, 265: 6, 266: 6, 271: 2, 272: 2, 273: 2, 281: 4, 282: 4, 291: 1, 292: 1, 301: 2, 302: 131072, 303: 2, 311: 64, 312: 64, 321: 2, 322: 2, 323: 2, 331: 2, 332: 2, 341: 1, 342: 1, 343: 1, 344: 1, 351: 4, 361: 1, 362: 1, 371: 2, 372: 2, 373: 2, 381: 1, 382: 1, 383: 2, 391: 1, 392: 1, 393: 1, 401: 1e10, 402: 1e10, 411: 1, 412: 1, 421: 1, 431: 1},
 	costmult:1,
@@ -631,7 +631,7 @@ function updateQuantumTabs() {
 		document.getElementById("brupg1current").textContent="Currently: "+shortenMoney(player.dilation.dilatedTime.add(1).log10()+1)+"x"
 		document.getElementById("rgupg2current").textContent="Currently: "+(Math.pow(player.dilation.freeGalaxies/5e3+1,0.25)*100-100).toFixed(1)+"%"
 		document.getElementById("brupg2current").textContent="Currently: "+shortenMoney(Decimal.pow(2.2, Math.pow(calcTotalSacrificeBoost().log10()/1e6, 0.25)))+"x"
-		document.getElementById("brupg4current").textContent="Currently: "+shortenMoney(Decimal.pow(getDimensionPowerMultiplier(), 0.0003))+"x"
+		document.getElementById("brupg4current").textContent="Currently: "+shortenMoney(Decimal.pow(getDimensionPowerMultiplier(true, "br4"), 0.0003))+"x"
 		if (player.masterystudies.includes("d9")) {
 			document.getElementById("gbupg5current").textContent="Currently: "+(Math.sqrt(player.replicanti.galaxies)/5.5).toFixed(1)+"%"
 			document.getElementById("brupg5current").textContent="Currently: "+Math.min(Math.sqrt(player.dilation.tachyonParticles.max(1).log10())*1.3,14).toFixed(1)+"%"
@@ -725,7 +725,7 @@ function updateQuantumTabs() {
 		document.getElementById("nanofieldreward1").textContent = "Hatch speed is " + shortenDimensions(getNanofieldRewardEffect(1)) + "x faster."
 		document.getElementById("nanofieldreward2").textContent = "Meta-antimatter effect power is increased by " + getNanofieldRewardEffect(2).toFixed(1) + "x."
 		document.getElementById("nanofieldreward3").textContent = "Free galaxy gain is increased by " + (getNanofieldRewardEffect(3)*100-100).toFixed(1) + "%."
-		document.getElementById("nanofieldreward4").textContent = "Dilated time multiplier power on Meta Dimensions is " + getNanofieldRewardEffect(4).toFixed(3) + "x."
+		document.getElementById("nanofieldreward4").textContent = "Dilated time boost to Meta Dimensions is increased to ^" + getNanofieldRewardEffect(4).toFixed(3) + "."
 		document.getElementById("nanofieldreward5").textContent = "While dilated, Normal Dimension multipliers and tickspeed are raised to the power of " + getNanofieldRewardEffect(5).toFixed(2) + "."
 		document.getElementById("nanofieldreward6").textContent = "Meta-dimension boost power is increased to " + getNanofieldRewardEffect(6).toFixed(2) + "x."
 		document.getElementById("nanofieldreward7").textContent = "Remote galaxy cost scaling starts " + getFullExpansion(getNanofieldRewardEffect(7)) + " later and the production of preon charge is " + shortenMoney(getNanofieldRewardEffect("7g")) + "x faster."
@@ -978,13 +978,12 @@ function sacrificeGalaxy(auto=false) {
 	if (!tmp.qu.autoOptions.sacrifice) updateElectronsEffect()
 }
 
-function getMPTPower(on) {
+function getMPTPower(on, br4) {
 	if (!inQC(0)) return 1
 	a = tmp.qu.electrons.amount
 	if (a>187300) a = Math.sqrt((a-149840)*37460)+149840
-	if (tmp.rg4) a *= 0.7
-	else if (player.ghostify.ghostlyPhotons.unl) a *= tmp.le[2]
-	if (player.masterystudies != undefined) if (on == undefined ? player.masterystudies.includes("d13") : on) a *= Math.sqrt(getTreeUpgradeEffect(4))
+	if (tmp.rg4 && (!br4 || !hasNU(13))) a *= 0.7
+	if (player.masterystudies != undefined) if (on == undefined ? player.masterystudies.includes("d13") : on) a *= getTreeUpgradeEffect(4)
 	return a+1
 }
 
@@ -1100,7 +1099,7 @@ function updateQuantumChallenges() {
 		document.getElementById("spaceShards").textContent = shortenDimensions(tmp.qu.bigRip.spaceShards)
 		for (var u=18;u<21;u++) document.getElementById("bigripupg"+u).parentElement.style.display=player.ghostify.ghostlyPhotons.unl?"":"none"
 		for (var u=1;u<(player.ghostify.ghostlyPhotons.unl?21:18);u++) {
-			document.getElementById("bigripupg"+u).className = tmp.qu.bigRip.upgrades.includes(u) ? "gluonupgradebought bigrip" : tmp.qu.bigRip.spaceShards.lt(bigRipUpgCosts[u]) ? "gluonupgrade unavailablebtn" : "gluonupgrade bigrip"
+			document.getElementById("bigripupg"+u).className = tmp.qu.bigRip.upgrades.includes(u) ? "gluonupgradebought bigrip" + (isBigRipUpgradeActive(u, true) ? "" : "off") : tmp.qu.bigRip.spaceShards.lt(bigRipUpgCosts[u]) ? "gluonupgrade unavailablebtn" : "gluonupgrade bigrip"
 			document.getElementById("bigripupg"+u+"cost").textContent = shortenDimensions(new Decimal(bigRipUpgCosts[u]))
 		}
 	}
@@ -1208,7 +1207,7 @@ function updateMasteryStudyTextDisplay() {
 	if (player.masterystudies.includes("d12")) {
 		document.getElementById("ds13Cost").textContent="Cost: "+shorten(1e95)+" Time Theorems"
 		document.getElementById("ds13Req").innerHTML=ghostified?"":"<br>Requirement: 16 Nanofield rewards"
-		document.getElementById("ds14Cost").textContent="Cost: "+shorten(2e98)+" Time Theorems"
+		document.getElementById("ds14Cost").textContent="Cost: "+shorten(1e98)+" Time Theorems"
 		document.getElementById("ds14Req").innerHTML=ghostified?"":"<br>Requirement: 'The Challenging Day' achievement"
 	}
 }
@@ -1632,10 +1631,7 @@ function getTotalReplicants(data) {
 function feedReplicant(tier, max) {
 	if (!canFeedReplicant(tier)) return
 	var toFeed = max ? Math.min(tmp.qu.replicants.quantumFood, tmp.qu.replicants.limitDim > tier ? Math.round(getWorkerAmount(tier - 1).toNumber() * 3) : Math.round((tmp.qu.replicants.limit - eds[tier].perm - eds[tier].progress.toNumber()) * 3)) : 1
-	if (tier<8) {
-		var reduced = Math.max(toFeed - Math.round((10 - eds[tier].perm - eds[tier].progress.toNumber()) * 3), 0)
-		if (reduced > 0) tmp.qu.replicants.quantumFoodCost=tmp.qu.replicants.quantumFoodCost.div(Decimal.pow(5, reduced))
-	}
+	if (tmp.qu.replicants.limitDim > tier) tmp.qu.replicants.quantumFoodCost=tmp.qu.replicants.quantumFoodCost.div(Decimal.pow(5, toFeed))
 	eds[tier].progress=eds[tier].progress.add(toFeed/3)
 	if (tier<8||getWorkerAmount(tier+1).eq(0)) eds[tier].progress=eds[tier].progress.times(3).round().div(3)
 	if (eds[tier].progress.gte(1)) {
@@ -1812,7 +1808,6 @@ function getQuarkEnergyProduction() {
 	if (player.masterystudies.includes("t411")) ret = ret.times(getMTSMult(411))
 	if (player.masterystudies.includes("t421")) ret = ret.times(getMTSMult(421))
 	ret = ret.times(getNanofieldRewardEffect("8c"))
-	if (hasNU(15)) ret = ret.times(tmp.nu[5])
 	ret = ret.times(tmp.ns)
 	return ret
 }
@@ -1820,7 +1815,6 @@ function getQuarkEnergyProduction() {
 function getQuarkAntienergyProduction() {
 	let ret = tmp.qu.nanofield.charge.sqrt()
 	if (player.masterystudies.includes("t401")) ret = ret.div(getMTSMult(401))
-	if (hasNU(15)) ret = ret.times(tmp.nu[5])
 	ret = ret.times(tmp.ns)
 	return ret
 }
@@ -2009,6 +2003,7 @@ function getDecayRate(branch) {
 	ret = ret.times(getTreeUpgradeEffect(3))
 	ret = ret.times(getTreeUpgradeEffect(5))
 	if (player.masterystudies.includes("t431")) ret = ret.times(getMTSMult(431))
+	if (player.ghostify.milestones>13) ret = ret.times(10)
 	if (hasNU(4)) ret = ret.times(tmp.nu[2])
 	if (tmp.qu.bigRip.active) {
 		if (hasNU(12)) ret = ret.div(player.galaxies*0.035+1)
@@ -2021,6 +2016,7 @@ function getDecayRate(branch) {
 function getQuarkSpinProduction(branch) {
 	let ret = Decimal.pow(2,getBranchUpgLevel(branch,1)*(1+getRadioactiveDecays(branch)/10)).times(getTreeUpgradeEffect(3)).times(getTreeUpgradeEffect(5))
 	if (player.masterystudies.includes("t431")) ret = ret.times(getMTSMult(431))
+	if (player.ghostify.milestones>13) ret = ret.times(10)
 	if (hasNU(4)) ret = ret.times(tmp.nu[2].pow(2))
 	if (tmp.qu.bigRip.active) {
 		if (isBigRipUpgradeActive(18)) ret = ret.times(tmp.bru[3])
@@ -2078,7 +2074,7 @@ function getTreeUpgradeEffect(upg) {
 		for (var upg=1;upg<9;upg++) if (tmp.qu.tod.upgrades[upg]) power+=tmp.qu.tod.upgrades[upg]
 		return Decimal.pow(2, Math.sqrt(Math.sqrt(Math.max(lvl * 3 - 2, 0)) * Math.max(power - 10, 0)))
 	}
-	if (upg==4) return 1 + Math.log10(lvl * 0.5 + 1) * 0.1
+	if (upg==4) return Math.sqrt(1 + Math.log10(lvl * 0.5 + 1) * 0.1)
 	if (upg==5) return Math.pow(Math.log10(player.meta.bestOverQuantums.add(1).log10()+1)/5+1,Math.sqrt(lvl))
 	if (upg==6) return Decimal.pow(2, lvl)
 	if (upg==7) return Decimal.pow(player.replicanti.amount.max(1).log10()+1, 0.25*lvl)
@@ -2089,7 +2085,7 @@ function getTreeUpgradeEffect(upg) {
 function getTreeUpgradeEffectDesc(upg) {
 	if (upg==1) return getFullExpansion(getTreeUpgradeEffect(upg))
 	if (upg==2) return getDilExp("TU3").toFixed(2) + " -> " + getDilExp().toFixed(2)
-	if (upg==4) return "^" + shorten(getMPTPower(false)) + " -> ^" + shorten(getMPTPower(true))
+	if (upg==4) return "^" + getFullExpansion(Math.round(getMPTPower(false))) + " -> ^" + getFullExpansion(Math.round(getMPTPower(true)))
 	if (upg==8) return "+" + getTreeUpgradeEffect(8).toFixed(2)
 	return shortenMoney(getTreeUpgradeEffect(upg))
 }
@@ -2171,10 +2167,6 @@ function getELCMult() {
 function toggleRG4Upg() {
 	tmp.qu.rg4=!tmp.qu.rg4
 	document.getElementById('rg4toggle').textContent="Toggle: O"+(tmp.qu.rg4?"N":"FF")
-	if (tmp.qu.rg4&&player.achievements.includes("ng3p71")) {
-		tmp.rg4=true
-		galaxyReset(0)
-	}
 }
 
 function updateElectronsEffect() {
@@ -2606,7 +2598,10 @@ function bigRip(auto) {
 	if (player.ghostify.milestones>1) {
 		tmp.qu.pairedChallenges.order={1:[1,2],2:[3,4],3:[5,7],4:[6,8]}
 		tmp.qu.pairedChallenges.completed=3
-		for (var c=1;c<9;c++) tmp.qu.challenges[c]=(c==6||c==8)?1:2
+		for (var c=1;c<9;c++) {
+			tmp.qu.electrons.mult+=(2-tmp.qu.challenges[c])*0.25
+			tmp.qu.challenges[c]=2
+		}
 		quantumReset(true,auto,12,true)
 	} else {
 		for (var p=1;p<5;p++) {
@@ -2874,7 +2869,7 @@ function buyBigRipUpg(id) {
 		tmp.qu.bigRip.upgrades.push(9)
 		if (tmp.qu.bigRip.active) tweakBigRip(9, true)
 	}
-	for (var u=1;u<18;u++) document.getElementById("bigripupg"+u).className = tmp.qu.bigRip.upgrades.includes(u) ? "gluonupgradebought bigrip" : tmp.qu.bigRip.spaceShards.lt(bigRipUpgCosts[u]) ? "gluonupgrade unavailablebtn" : "gluonupgrade bigrip"
+	for (var u=1;u<18;u++) document.getElementById("bigripupg"+u).className = tmp.qu.bigRip.upgrades.includes(u) ? "gluonupgradebought bigrip" + (isBigRipUpgradeActive(u, true) ? "" : "off") : tmp.qu.bigRip.spaceShards.lt(bigRipUpgCosts[u]) ? "gluonupgrade unavailablebtn" : "gluonupgrade bigrip"
 }
 
 function tweakBigRip(id, reset) {
@@ -3100,7 +3095,7 @@ function ghostifyReset(implode, gain, amount, force) {
 	var bm = player.ghostify.milestones
 	if (bm > 2) for (var c=1;c<9;c++) tmp.qu.electrons.mult += 0.5-QCIntensity(c)*0.25
 	if (bm > 15) giveAchievement("I rather oppose the theory of everything")
-	if (player.eternityPoints.e>=1/0&&!player.dilation.times) giveAchievement("Overchallenged")
+	if (player.eternityPoints.e>=1/0&&player.ghostify.under) giveAchievement("Underchallenged")
 	if (player.ghostify.best<=1) giveAchievement("Running through the Big Rips")
 	player.ghostify.time = 0
 	player = {
@@ -3643,6 +3638,8 @@ function ghostifyReset(implode, gain, amount, force) {
 	hideMaxIDButton()
 	if (!bm) {
 		ipMultPower = player.masterystudies.includes("t241") ? 2.2 : 2
+		player.autobuyers[9].bulk=Math.ceil(player.autobuyers[9].bulk)
+		document.getElementById("bulkDimboost").value=player.autobuyers[9].bulk
 		document.getElementById("replicantidiv").style.display="none"
 		document.getElementById("replicantiunlock").style.display="inline-block"
 		document.getElementById("replicantiresettoggle").style.display = "none"
@@ -3789,6 +3786,7 @@ function ghostifyReset(implode, gain, amount, force) {
 	player.ghostify.ghostlyPhotons.amount=new Decimal(0)
 	player.ghostify.ghostlyPhotons.darkMatter=new Decimal(0)
 	player.ghostify.ghostlyPhotons.ghostlyRays=new Decimal(0)
+	player.ghostify.under=true
 	updateLastTenGhostifies()
 	updateBraveMilestones()
 }
@@ -3878,7 +3876,7 @@ function updateGhostifyTabs() {
 		if (player.ghostify.neutrinos.boosts>2) document.getElementById("neutrinoBoost3").textContent=tmp.nb[2].toFixed(2)
 		if (player.ghostify.neutrinos.boosts>3) document.getElementById("neutrinoBoost4").textContent=(tmp.nb[3]*100-100).toFixed(1)
 		if (player.ghostify.neutrinos.boosts>4) document.getElementById("neutrinoBoost5").textContent=(100-tmp.nb[4]*100).toFixed(1)
-		if (player.ghostify.neutrinos.boosts>5) document.getElementById("neutrinoBoost6").textContent=(tmp.nb[5]*100-100).toFixed(1)
+		if (player.ghostify.neutrinos.boosts>5) document.getElementById("neutrinoBoost6").textContent=tmp.nb[5]<10.995?(tmp.nb[5]*100-100).toFixed(1):getFullExpansion(Math.floor(tmp.nb[5]*100-100))
 		if (player.ghostify.neutrinos.boosts>6) document.getElementById("neutrinoBoost7").textContent=(tmp.nb[6]*100-100).toFixed(1)
 		if (player.ghostify.neutrinos.boosts>7) document.getElementById("neutrinoBoost8").textContent=(tmp.nb[7]*100-100).toFixed(1)
 		if (player.ghostify.neutrinos.boosts>8) document.getElementById("neutrinoBoost9").textContent=shorten(tmp.nb[8])
@@ -3922,13 +3920,13 @@ function updateGhostifyTabs() {
 		for (var c=0;c<8;c++) {
 			document.getElementById("light"+(c+1)).textContent=getFullExpansion(gphData.lights[c])
 			document.getElementById("lightThreshold"+(c+1)).textContent=shorten(getLightThreshold(c))
-			if (c<6) document.getElementById("lightStrength"+(c+1)).textContent=shorten(Math.sqrt(tmp.ls[c])+1)
+			if (c>0&&c<7) document.getElementById("lightStrength"+c).textContent=shorten(Math.sqrt(tmp.ls[c])+1)
 		}
-		document.getElementById("lightBoost1").textContent=(tmp.le[0]*100-100).toFixed(1)
+		document.getElementById("lightBoost1").textContent=tmp.le[0].toFixed(3)
 		document.getElementById("lightBoost2").textContent=tmp.le[1].toFixed(3)
-		document.getElementById("lightBoost3").textContent=(tmp.le[2]*100-100).toFixed(1)
+		document.getElementById("lightBoost3").textContent=shorten(tmp.le[2])
 		document.getElementById("lightBoost4").textContent=(tmp.le[3]*100-100).toFixed(1)
-		document.getElementById("lightBoost5").textContent=(tmp.le[4]*100-100).toFixed(1)
+		document.getElementById("lightBoost5").textContent=(tmp.le[4]*100).toFixed(1)
 		document.getElementById("lightBoost6").textContent=shorten(tmp.le[5])
 		document.getElementById("lightBoost7").textContent=shorten(tmp.le[6])
 		document.getElementById("lightEmpowerment").className="gluonupgrade "+(gphData.lights[7]>=getLightEmpowermentReq()?"gph":"unavailablebtn")
@@ -3981,7 +3979,6 @@ function buyNeutrinoUpg(id) {
 		document.getElementById("electronsGainMult").textContent=getELCMult().toFixed(2)
 		tmp.qu.electrons.amount*=3
 	}
-	if (id==13&&!tmp.qu.bigRip.active) document.getElementById('rg4toggle').style.display=tmp.qu.bigRip.active?"none":""
 }
 
 function updateNeutrinoBoosts() {
@@ -4174,6 +4171,15 @@ function rotateAutoUnstable() {
 }
 
 //v2.1
+function startEC10() {
+	if (canUnlockEC(10, 550, 181)) {
+		justImported=true
+		document.getElementById("ec10unl").onclick()
+		justImported=false
+	}
+	startEternityChallenge('eterc10', new Decimal('1e3000'), new Decimal('1e300'))
+}
+
 function subNeutrinos(sub) {
 	let neu=player.ghostify.neutrinos
 	let sum=neu.electron.add(neu.mu).add(neu.tau).round()
@@ -4187,32 +4193,31 @@ function getGHPMultCost(offset=0) {
 }
 
 function updateGPHUnlocks() {
-	document.getElementById("gphUnl").style.display=player.ghostify.ghostlyPhotons.unl?"none":""
-	document.getElementById("gphDiv").style.display=player.ghostify.ghostlyPhotons.unl?"":"none"
-	document.getElementById("gphRow").style.display=player.ghostify.ghostlyPhotons.unl?"":"none"
+	let unl=player.ghostify.ghostlyPhotons.unl
+	document.getElementById("gphUnl").style.display=unl?"none":""
+	document.getElementById("gphDiv").style.display=unl?"":"none"
+	document.getElementById("gphRow").style.display=unl?"":"none"
+	document.getElementById("breakUpgR3").style.display=unl?"":"none"
+	document.getElementById("breakUpgRS").style.display=unl?"":"none"
 }
 
 function getGPHProduction() {
-	if (tmp.qu.bigRip.active) {
-		var ret=player.dilation.dilatedTime.div("1e485")
-		if (ret.gt(1)) ret=ret.pow(0.01)
-	} else {
-		var ret=player.dilation.dilatedTime.div("1e935")
-		if (ret.gt(1)) ret=ret.pow(0.005)
-	}
+	if (tmp.qu.bigRip.active) var ret=player.dilation.dilatedTime.div("1e485")
+	else var ret=player.dilation.dilatedTime.div("1e935")
+	if (ret.gt(1)) ret=ret.pow(0.02)
 	return ret
 }
 
 function getGHRProduction() {
-	return player.ghostify.ghostlyPhotons.amount.pow(1/3)
+	return player.ghostify.ghostlyPhotons.amount.sqrt().div(2)
 }
 
 function getGHRCap() {
-	return player.ghostify.ghostlyPhotons.darkMatter.sqrt().times(1e3)
+	return player.ghostify.ghostlyPhotons.darkMatter.pow(0.4).times(1e3)
 }
 
 function getLightThreshold(l) {
-	return Decimal.pow(tmp.lti[l]).times(tmp.lt[l])
+	return Decimal.pow(tmp.lti[l],player.ghostify.ghostlyPhotons.lights[l]).times(tmp.lt[l])
 }
 
 function getLightEmpowermentReq() {

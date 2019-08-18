@@ -193,7 +193,8 @@ function getDimensionPowerMultiplier(nonrandom, focusOn) {
 	if (QCIntensity(5)) dimMult += getQCReward(5)
 	if (player.masterystudies) {
 		if (player.masterystudies.includes("d12")) dimMult += getNanofieldRewardEffect(8)
-		if (focusOn != "linear") dimMult = Decimal.pow(dimMult, getMPTPower())
+		if (player.ghostify.ghostlyPhotons.unl) dimMult *= tmp.le[2]
+		if (focusOn != "linear") dimMult = Decimal.pow(dimMult, getMPTPower(undefined, focusOn == "br4"))
 	}
 	return dimMult;
 }
@@ -428,5 +429,7 @@ function getDimensionProductionPerSecond(tier) {
 	if (player.tickspeedBoosts != undefined) ret = ret.div(10)
 	if (player.aarexModifications.ngmX>3) ret = ret.div(100)
 	if (tier == 1 && (player.currentChallenge == "challenge7" || inQC(4))) ret = ret.plus(getDimensionProductionPerSecond(2))
-	return ret.times(dilates(Decimal.div(player.galacticSacrifice == undefined ? 1 : 1000, getTickspeed()), true))
+	let tick = dilates(Decimal.div(player.galacticSacrifice == undefined ? 1 : 1000, getTickspeed()))
+	if (player.dilation.active && player.masterystudies != undefined) tick = tick.pow(getNanofieldRewardEffect(5))
+	return ret.times(tick)
 }
