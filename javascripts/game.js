@@ -999,9 +999,9 @@ let tmp = {
 	nb: [],
 	nbc: [null,3,4,6,15,50,1e3,1e14,1e40],
 	nu: [],
-	nuc: [null,1e6,1e7,1e8,2e8,5e8,2e9,5e9,75e8,1e10,7e12,1e18,1e60,1e125,1e160,1/0],
-	lt: [16e3,25e4,1/0,1/0,1/0,1/0,1/0,1/0],
-	lti: [2,2,1/0,1/0,1/0,1/0,1/0,1/0],
+	nuc: [null,1e6,1e7,1e8,2e8,5e8,2e9,5e9,75e8,1e10,7e12,1e18,1e60,1e125,1e165,1/0],
+	lt: [16e3,25e4,1e6,1/0,1/0,1/0,1/0,1/0],
+	lti: [2,5,1.5,1/0,1/0,1/0,1/0,1/0],
 	ls: [0,0,0,0,0,0,0],
 	le: [0,0,0,0,0,0,0]
 }
@@ -1017,7 +1017,7 @@ function updateTemp() {
 			for (var c=6;c>-1;c--) tmp.ls[c]=player.ghostify.ghostlyPhotons.lights[c]*Math.sqrt((c>5?1:tmp.ls[c+1]+1)*(player.ghostify.ghostlyPhotons.enpowerments+1))
 			tmp.le[0]=Math.pow(tmp.ls[0]>2?Math.sqrt(tmp.ls[0]-2)+2:tmp.ls[0],1/2)*.15+1
 			tmp.le[1]=1/(tmp.ls[1]+1) //Orange light
-			tmp.le[2]=1 //Yellow light
+			tmp.le[2]=tmp.ls[2]/5e3 //Yellow light
 			tmp.le[3]=1 //Green light
 			tmp.le[4]=0 //Blue light
 			tmp.le[5]=1 //Indigo light
@@ -1028,7 +1028,7 @@ function updateTemp() {
 			tmp.bru[3]=1 //BRU18
 			tmp.bru[4]=1 //BRU19
 			tmp.bru[5]=1 //BRU20
-			tmp.nu[4]=Decimal.pow(player.ghostify.ghostParticles.add(1).log10(),Math.pow(tmp.qu.colorPowers.r.add(tmp.qu.colorPowers.g).add(tmp.qu.colorPowers.b).add(1).log10(),0.5)/3+1).max(1) //NU14
+			tmp.nu[4]=Decimal.pow(player.ghostify.ghostParticles.add(1).log10(),Math.pow(tmp.qu.colorPowers.r.add(tmp.qu.colorPowers.g).add(tmp.qu.colorPowers.b).add(1).log10(),1/3)/1.1+1).max(1) //NU14
 			tmp.nu[5]=Decimal.pow(2,tmp.qu.nanofield.rewards/2) //NU15
 			if (hasNU(15)) tmp.ns=tmp.ns.times(tmp.nu[5])
 			tmp.ppti*=tmp.le[1]
@@ -3339,7 +3339,10 @@ function toggle_mode(id) {
   // Change submod
   if (!hasSubMod || modes[id]===0) modes[id]=!modes[id]
   else if (modes[id] === true) modes[id] = 2
-  else modes[id] = (modes[id]+1) % (modCaps[id]+1)
+  else {
+	if (id == "ngp" && modes[id] === 1 && !metaSave.ngp4) modes[id] = false
+	else modes[id] = (modes[id]+1) % (modCaps[id]+1)
+  }
   // Convert bool to int
   subModId = modes[id]
   if (subModId<2) subModId = subModId|0
@@ -7209,6 +7212,11 @@ setInterval(function() {
             else player.aarexModifications.popUpId = ""
             document.getElementById("welcomeMessage").innerHTML = "You are almost there for a supreme completion! However, completing this turns you to a ghost instead. This allows you to pass big rip universes and unlock new stuff! However, you need to lose everything too. Therefore, this is the sixth layer of NG+3."
         }
+        if (player.masterystudies&&(player.masterystudies.includes("d14")||player.achievements.includes("ng3p51"))&&!player.aarexModifications.newGameExpVersion&&!metaSave.ngp4) {
+            $.notify("Congratulations! You unlocked NG+4!", "success")
+            metaSave.ngp4=true
+            localStorage.setItem("AD_aarexModifications_gph",btoa(JSON.stringify(metaSave)))
+        }
         if (player.eternityPoints.gte("1e1215") && tmp.qu.bigRip.active && !tmp.qu.breakEternity.unlocked) {
             tmp.qu.breakEternity.unlocked = true
             $.notify("Congratulations! You have unlocked Break Eternity!", "success")
@@ -7369,10 +7377,11 @@ function gameLoop(diff) {
         if (player.totalmoney.gt("1e9000000000000000")) {
             document.getElementById("decimalMode").style.visibility = "hidden"
             if (break_infinity_js) {
+                player.totalmoney = Decimal.pow(10, 9e15-1)
+                player.money = player.totalmoney
                 clearInterval(gameLoopIntervalId)
                 alert("You reached the limit of break_infinity.js. You need to switch to logarithmica_numerus.js now.")
                 player.aarexModifications.breakInfinity = !player.aarexModifications.breakInfinity
-                player.aarexModifications.switch = true
                 save_game(true)
                 document.location.reload(true)
                 return
@@ -7429,8 +7438,8 @@ function gameLoop(diff) {
 
         if (player.ghostify.ghostlyPhotons.unl) {
             var data=player.ghostify.ghostlyPhotons
-            data[tmp.qu.bigRip.active?"amount":"darkMatter"]=data[tmp.qu.bigRip.active?"amount":"darkMatter"].add(getGPHProduction().times(diff/10))//.max(getGPHProduction().times(2e3))
-            data.ghostlyRays=data.ghostlyRays.add(getGHRProduction().times(diff/10))/*.max(getGHRProduction().times(2e3))*/.min(getGHRCap())
+            data[tmp.qu.bigRip.active?"amount":"darkMatter"]=data[tmp.qu.bigRip.active?"amount":"darkMatter"].add(getGPHProduction().times(diff/10)).max(getGPHProduction().times(3e3))
+            data.ghostlyRays=data.ghostlyRays.add(getGHRProduction().times(diff/10)).max(getGHRProduction().times(3e3)).min(getGHRCap())
             for (var c=0;c<8;c++) if (data.ghostlyRays.gte(getLightThreshold(c))) data.lights[c]+=Math.floor(data.ghostlyRays.div(getLightThreshold(c)).log(tmp.lti[c])+1)
         }
         if (tmp.qu.nanofield.producingCharge) {

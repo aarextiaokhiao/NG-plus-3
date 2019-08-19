@@ -1886,12 +1886,7 @@ if (player.version < 5) {
   document.getElementById("secretoptionsbtn").style.display=player.options.secrets?"":"none"
   document.getElementById("ghostlynewsbtn").textContent=((player.options.secrets!==undefined?player.options.secrets.ghostlyNews:false)?"Hide":"Show")+" ghostly news ticker"
   var detectNGPStart = player.lastUpdate == 1531944153054
-  if (player.aarexModifications.switch) {
-      player.money=new Decimal("1e9e15")
-      player.totalmoney=new Decimal("1e9e15")
-      softReset(0)
-      delete player.aarexModifications.switch
-  } else if (false) {
+  if (false) {
       let diff = new Date().getTime() - player.lastUpdate
       if (diff > 1000*1000) {
           simulateTime(diff/1000)
@@ -2469,7 +2464,7 @@ function get_save(id) {
 
 function initiateMetaSave() {
 	metaSave = localStorage.getItem('AD_aarexModifications_gph')
-	if (metaSave == null) metaSave = {presetsOrder:[], version:2}
+	if (metaSave == null) metaSave = {presetsOrder: [], version: 2.02}
 	else metaSave = JSON.parse(atob(metaSave))
 	if (metaSave.current == undefined) {
 		metaSave.current = 1
@@ -2533,8 +2528,6 @@ function migrateOldSaves() {
 			}
 		}
 	}
-	if (metaSave.version < 2.01) {
-		metaSave.presetsOrder_ers=[]
-	}
-	metaSave.version=2.01
+	if (metaSave.version < 2.01) metaSave.presetsOrder_ers=[]
+	metaSave.version=2.02
 }

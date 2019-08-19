@@ -977,12 +977,15 @@ function sacrificeGalaxy(auto=false) {
 }
 
 function getMPTPower(on, br4) {
-	if (!inQC(0)) return 1
+	let e = 1
+	if (!inQC(0)) e = 0
+	if (tmp.qu.bigRip.active && player.ghostify.ghostlyPhotons.unl) e = tmp.le[2]
+	if (e == 0) return 1
 	a = tmp.qu.electrons.amount
 	if (a>187300) a = Math.sqrt((a-149840)*37460)+149840
 	if (tmp.rg4 && (!br4 || !hasNU(13))) a *= 0.7
 	if (player.masterystudies != undefined) if (on == undefined ? player.masterystudies.includes("d13") : on) a *= getTreeUpgradeEffect(4)
-	return a+1
+	return a*e+1
 }
 
 //v1.8
@@ -3948,7 +3951,7 @@ function updateGhostifyTabs() {
 		}
 		document.getElementById("lightBoost1").textContent=tmp.le[0].toFixed(3)
 		document.getElementById("lightBoost2").textContent=tmp.le[1].toFixed(3)
-		document.getElementById("lightBoost3").textContent=shorten(tmp.le[2])
+		document.getElementById("lightBoost3").textContent=(tmp.le[2]*100).toFixed(3)
 		document.getElementById("lightBoost4").textContent=(tmp.le[3]*100-100).toFixed(1)
 		document.getElementById("lightBoost5").textContent=(tmp.le[4]*100).toFixed(1)
 		document.getElementById("lightBoost6").textContent=shorten(tmp.le[5])
@@ -4245,7 +4248,7 @@ function getLightThreshold(l) {
 }
 
 function getLightEmpowermentReq() {
-	return 0
+	return 1/0
 }
 
 function lightEmpowerment() {

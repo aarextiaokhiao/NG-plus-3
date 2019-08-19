@@ -436,17 +436,17 @@ function respecTimeStudies(force, presetLoad) {
       if (player.masterystudies.length>respecedMS.length) player.quantum.wasted = false
       player.masterystudies=respecedMS
       updateMasteryStudyCosts()
+      drawMasteryTree()
       if (!presetLoad) {
           maybeShowFillAll()
-          drawMasteryTree()
           updateMasteryStudyButtons()
       }
   }
   player.eternityChallUnlocked = 0
   updateEternityChallenges()
+  drawStudyTree()
   if (!presetLoad) {
       updateTimeStudyButtons()
-      drawStudyTree()
   }
   if (gotAch) giveAchievement("You do know how these work, right?")
   if (!GUBought("gb3")) ipMultPower=2
