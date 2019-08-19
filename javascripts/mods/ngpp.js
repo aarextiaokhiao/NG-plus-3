@@ -1150,13 +1150,14 @@ function quantumReset(force, auto, challid, bigRip, implode=false) {
 		ipMultPower=GUBought("gb3")?2.3:player.masterystudies.includes("t241")?2.2:2
 		player.dilation.times=0
 		if (!force) {
-			var uq=tmp.qu.usedQuarks
-			var gl=tmp.qu.gluons
-			for (var p=0;p<3;p++) {
-				var pair=(["rg","gb","br"])[p]
-				var diff=uq[pair[0]].min(uq[pair[1]])
-				gl[pair]=gl[pair].add(diff).round()
-				uq[pair[0]]=uq[pair[0]].sub(diff).round()
+			var u=tmp.qu.usedQuarks
+			var g=tmp.qu.gluons
+			var p=["rg","gb","br"]
+			var d=[]
+			for (var c=0;c<3;c++) d[c]=u[p[c][0]].min(u[p[c][1]])
+			for (var c=0;c<3;c++) {
+				g[p[c]]=g[p[c]].add(d[c]).round()
+				u[p[c][0]]=u[p[c][0]].sub(d[c]).round()
 			}
 			var intensity=tmp.qu.challenge.length
 			var qc1=tmp.qu.challenge[0]

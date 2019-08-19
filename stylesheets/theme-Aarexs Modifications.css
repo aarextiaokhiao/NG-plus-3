@@ -390,11 +390,12 @@ strong { color: #0072e5 }
 	border: 2px solid #191919 !important;
 	color: #191919 !important
 }
-#dilstudy7.dilationupg, #electronstabbtn button, #electrons .storebtn { 
+#dilstudy7.dilationupg, #electronstabbtn button, #electrons .gluonupgrade.storebtn { 
+	background-color: #191919 !important;
 	border: 2px solid #d2e500 !important;
-	animation: none
+	animation: none !important
 }
-#dilstudy7.dilationupg:hover, #electronstabbtn button:hover, #dilstudy7.dilationupgbought, #electrons .storebtn:hover { background-color: #d2e500 !important }
+#dilstudy7.dilationupg:hover, #electronstabbtn button:hover, #dilstudy7.dilationupgbought, #electrons .gluonupgrade.storebtn:hover { background-color: #d2e500 !important }
 #electronsAmount, #electronsTranslation { color: #d2e500 !important }
 #electronsEffect { color: #00e500 !important }
 .quantumchallengediv {
@@ -500,11 +501,12 @@ strong { color: #0072e5 }
 	box-shadow: none !important
 }
 .bigripbtn {
+	background-color: #191919 !important;
 	border: 3px solid #5be567 !important;
 	color: #e5e5e5 !important;
 	box-shadow: none !important
 }
-#dilstudy14.dilationupg:hover, #dilstudy14.dilationupgbought, .bigripbtn:hover:hover, .gluonupgrade.bigrip:hover, .gluonupgradebought.bigrip {
+#dilstudy14.dilationupg:hover, #dilstudy14.dilationupgbought, .bigripbtn:hover, .gluonupgrade.bigrip:hover, .gluonupgradebought.bigrip {
 	background-color: #5be567 !important;
 	color: #191919 !important;
 	box-shadow: none !important

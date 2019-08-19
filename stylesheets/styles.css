@@ -1928,14 +1928,14 @@ br {
 .gluonupgradebought.br { animation: brupgbought 5s infinite }
 
 #electrons .gluonupgrade.storebtn {
-	background: black;
+	background-color: black !important;
 	border-color: #8e991e;
 	color: #8e991e;
 	animation: electronupg 5s infinite
 }
 
 #electrons .gluonupgrade.storebtn:hover {
-	background: #8e991e;
+	background-color: #8e991e !important;
 	color: #ffffff;
 	animation: electronupg 5s infinite
 }
@@ -2125,7 +2125,7 @@ br {
 	width:150px;
 	height: 30px;
 	color: black;
-	background: #2d7233;
+	background: #2d7233 !important;
 	font-weight: bold;
 	font-family: Typewriter;
 	border: 3px solid #5be567;
@@ -2138,28 +2138,28 @@ br {
 	box-shadow: inset 0px 0px 10px 0px #5be567, inset 0px 0px 20px 0px #5be567, inset 0px 0px 30px 0px #5be567
 }
 .bigripbtn:hover {
-	background: #a0e5a6;
+	background: #a0e5a6 !important;
 	color: #6b996e
 }
 .gluonupgrade.bigrip {
-	background: #2d7233;
+	background: #2d7233 !important;
 	border: 3px solid #5be567;
 	color: #5be567;
 	box-shadow: inset 0px 0px 10px 0px #5be567, inset 0px 0px 20px 0px #5be567, inset 0px 0px 30px 0px #5be567
 }
 .gluonupgrade.bigrip:hover {
-	background: #a0e5a6;
+	background: #a0e5a6 !important;
 	color: #6b996e;
 	cursor: pointer
 }
 .gluonupgradebought.bigrip {
-	background: #a0e5a6;
+	background: #a0e5a6 !important;
 	border: 3px solid #6b996e;
 	color: #1f1f1f;
 	box-shadow: inset 0px 0px 10px 0px #6b996e, inset 0px 0px 20px 0px #6b996e, inset 0px 0px 30px 0px #6b996e
 }
 .gluonupgradebought.bigripoff {
-	background: #999999;
+	background: #999999 !important;
 	border: 3px solid #727272;
 	color: #bf0000;
 	box-shadow: inset 0px 0px 10px 0px #727272, inset 0px 0px 20px 0px #727272, inset 0px 0px 30px 0px #727272
@@ -2240,7 +2240,7 @@ br {
 }
 
 .gluonupgrade.neutrinoupg {
-	background: black;
+	background: black !important;
 	border: 1px solid #bfbfbf;
 	box-shadow: inset 0px 0px 20px 0px #bfbfbf;
 	color: black;
@@ -2248,12 +2248,12 @@ br {
 }
 
 .gluonupgrade.neutrinoupg:hover {
-	background: white;
+	background: white !important;
 	cursor: pointer
 }
 
 .gluonupgradebought.neutrinoupg {
-	background: white;
+	background: white !important;
 	border: 1px solid #bfbfbf;
 	box-shadow: inset 0px 0px 20px 0px #bfbfbf;
 	color: white;

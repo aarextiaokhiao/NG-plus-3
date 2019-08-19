@@ -353,12 +353,12 @@ button, div.storebtn {
 	color: #0000e5 !important
 }
 
-#dilstudy7.dilationupgbought, #electronstabbtn button, #electrons .storebtn {
+#dilstudy7.dilationupgbought, #electronstabbtn button, #electrons .gluonupgrade.storebtn {
 	background-color: #e5e500 !important;
 	animation: none !important
 }
 
-#dilstudy7.dilationupg, #electronstabbtn button:hover, #electrons .storebtn:hover {
+#dilstudy7.dilationupg, #electronstabbtn button:hover, #electrons .gluonupgrade.storebtn:hover {
 	background-color: #e5e539 !important
 }
 

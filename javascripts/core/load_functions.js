@@ -635,6 +635,7 @@ if (player.version < 5) {
               delete player.timeDimensionAutobuyer
               delete player.ep5xAutobuyer
           }
+          tmp.qu=player.quantum
           if (tmp.qu) {
               player.aarexModifications.newGamePlusPlusVersion = 2.901
               tmp.qu.time = player.totalTimePlayed
@@ -1210,6 +1211,7 @@ if (player.version < 5) {
       document.getElementById("workerReplWhat").textContent = player.ghostify.neutrinos.upgrades.includes(2) ? "babies" : "eggons"
       updateQuantumWorth()
       if (tmp.qu.autoOptions === undefined) tmp.qu.autoOptions = {}
+      if (tmp.qu.nonMAGoalReached === undefined) tmp.qu.nonMAGoalReached = {}
       if (tmp.qu.challengeRecords === undefined) tmp.qu.challengeRecords = {}
       if (tmp.qu.pairedChallenges.completions === undefined) tmp.qu.pairedChallenges.completions = {}
       if (tmp.qu["10ofield"] !== undefined) {
