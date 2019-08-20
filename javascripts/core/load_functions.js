@@ -1247,13 +1247,7 @@ if (player.version < 5) {
       gatheredQuarksBoost = 0
       tmp.be=false
   } else {
-      colorBoosts.r=Math.pow(Decimal.add(tmp.qu.colorPowers.r, 1).log10(),player.dilation.active?2/3:0.5)/10+1
-      colorBoosts.g=Math.sqrt(Decimal.add(tmp.qu.colorPowers.g, 1).log10()*2+1)
-      colorBoosts.b=Decimal.pow(10,Math.sqrt(Decimal.add(tmp.qu.colorPowers.b, 1).log10()))
-      if (colorBoosts.r>1.3) colorBoosts.r=Math.sqrt(colorBoosts.r*1.3)
-      if (colorBoosts.r>2.3&&(!player.dilation.active||getTreeUpgradeLevel(2)>7)) colorBoosts.r=Math.sqrt(colorBoosts.r*2.3)
-      if (colorBoosts.g>4.5) colorBoosts.g=Math.sqrt(colorBoosts.g*4.5)
-      if (colorBoosts.b.gt(1300)) colorBoosts.b=Decimal.pow(10,Math.sqrt(colorBoosts.b.log10()*Math.log10(1300)))
+      updateColorPowers()
       gatheredQuarksBoost = Math.pow(Decimal.add(tmp.qu.replicants.quarks, 1).log10(),player.masterystudies.includes("t362")?0.35:0.25)*0.67*(player.masterystudies.includes("t412")?1.25:1)
       eds=tmp.qu.emperorDimensions
       tmp.be=tmp.qu.bigRip.active&&tmp.qu.breakEternity.break

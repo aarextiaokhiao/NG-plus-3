@@ -613,7 +613,7 @@ function updateNewPlayer(reseted) {
         player.resets=4
     }
     if (modesChosen.ngpp > 2) {
-        player.aarexModifications.newGameUpdateVersion = 1
+        player.aarexModifications.newGameUpdateVersion = 1.01
         player.exdilation = {
             unspent: 0,
             spent: {
@@ -999,9 +999,9 @@ let tmp = {
 	nb: [],
 	nbc: [null,3,4,6,15,50,1e3,1e14,1e40],
 	nu: [],
-	nuc: [null,1e6,1e7,1e8,2e8,5e8,2e9,5e9,75e8,1e10,7e12,1e18,1e60,1e125,1e165,1/0],
-	lt: [16e3,25e4,1e6,1/0,1/0,1/0,1/0,1/0],
-	lti: [2,5,1.5,1/0,1/0,1/0,1/0,1/0],
+	nuc: [null,1e6,1e7,1e8,2e8,5e8,2e9,5e9,75e8,1e10,7e12,1e18,1e60,1e125,1e160,1e280],
+	lt: [16e3,2e5,6e5,2e6,6e6,1/0,1/0,1/0],
+	lti: [2,4,1.5,10,4,100,1,1],
 	ls: [0,0,0,0,0,0,0],
 	le: [0,0,0,0,0,0,0]
 }
@@ -1015,12 +1015,12 @@ function updateTemp() {
 		tmp.ppti=1
 		if (player.ghostify.ghostlyPhotons.unl) {
 			for (var c=6;c>-1;c--) tmp.ls[c]=player.ghostify.ghostlyPhotons.lights[c]*Math.sqrt((c>5?1:tmp.ls[c+1]+1)*(player.ghostify.ghostlyPhotons.enpowerments+1))
-			tmp.le[0]=Math.pow(tmp.ls[0],1/4)*.1+1
-			tmp.le[1]=1/(tmp.ls[1]+1) //Orange light
-			tmp.le[2]=tmp.ls[2]/5e3 //Yellow light
-			tmp.le[3]=1 //Green light
-			tmp.le[4]=0 //Blue light
-			tmp.le[5]=1 //Indigo light
+			tmp.le[0]=Math.pow(tmp.ls[0],1/4)*.15+1
+			tmp.le[1]=1/(tmp.ls[1]>9?Math.sqrt(tmp.ls[1]-1)+6:tmp.ls[1]+1) //Orange light
+			tmp.le[2]=Math.sqrt(tmp.ls[2])*45e3 //Yellow light
+			tmp.le[3]=Math.sqrt(tmp.ls[3]*1.5)+1 //Green light
+			tmp.le[4]=Math.min(Math.pow(tmp.ls[4],1/4)/2,1) //Blue light
+			tmp.le[5]=Decimal.pow(10,tmp.ls[5]*5) //Indigo light
 			tmp.le[6]=1 //Violet light
 			if (player.ghostify.ghostlyPhotons.enpowerments) tmp.le[7]=1 //Green light (LE#1)
 			if (player.ghostify.ghostlyPhotons.enpowerments>1) tmp.le[8]=1 //Blue light (LE#2)
@@ -1028,8 +1028,8 @@ function updateTemp() {
 			tmp.bru[3]=1 //BRU18
 			tmp.bru[4]=1 //BRU19
 			tmp.bru[5]=1 //BRU20
-			tmp.nu[4]=Decimal.pow(player.ghostify.ghostParticles.add(1).log10(),Math.pow(tmp.qu.colorPowers.r.add(tmp.qu.colorPowers.g).add(tmp.qu.colorPowers.b).add(1).log10(),1/3)/1.1+1).max(1) //NU14
-			tmp.nu[5]=Decimal.pow(2,tmp.qu.nanofield.rewards/2) //NU15
+			tmp.nu[4]=Decimal.pow(player.ghostify.ghostParticles.add(1).log10(),Math.pow(tmp.qu.colorPowers.r.add(tmp.qu.colorPowers.g).add(tmp.qu.colorPowers.b).add(1).log10(),1/3)*0.8+1).max(1) //NU14
+			tmp.nu[5]=Decimal.pow(2,tmp.qu.nanofield.rewards/2.5) //NU15
 			if (hasNU(15)) tmp.ns=tmp.ns.times(tmp.nu[5])
 			tmp.ppti*=tmp.le[1]
 		}
@@ -1214,7 +1214,7 @@ function getGalaxyRequirement(offset=0, display) {
 		if (ghostified&&player.ghostify.ghostlyPhotons.unl&&player.ghostify.ghostlyPhotons.enpowerments>1) ghostlySpeed /= tmp.le[8]
 		let scalingSpeed = 1
 		if (galaxies >= 302500 / ghostlySpeed) {
-			scalingSpeed = (galaxies + 1 - 302500 / ghostlySpeed) * ghostlySpeed / 1e4 + 1
+			scalingSpeed = Math.pow(2, (galaxies + 1 - 302500 / ghostlySpeed) * ghostlySpeed / 1e4)
 			scaling = 4
 		}
 		let galaxyCostScalingStart = getGalaxyCostScalingStart(galaxies, scalingSpeed)
@@ -1316,9 +1316,11 @@ function getDilGain() {
 }
 
 function getDilTimeGainPerSecond() {
+	let tp=player.dilation.tachyonParticles
+	if (tp.gt(1e250)&&player.aarexModifications.ngudpV) tp=Decimal.pow(tp.log10()*4,247/3+Math.log10(tp.log10()-240))
 	let exp=GUBought("br3")?1.1:1
 	if (ghostified&&player.ghostify.ghostlyPhotons.unl) exp*=tmp.le[0]
-	let gain = player.dilation.tachyonParticles.pow(exp).times(Decimal.pow(2, player.dilation.rebuyables[1] * exDilationUpgradeStrength(1)))
+	let gain = tp.pow(exp).times(Decimal.pow(2, player.dilation.rebuyables[1] * exDilationUpgradeStrength(1)))
 	if (player.exdilation != undefined) {
 		gain = gain.times(getBlackholePowerEffect())
 		if (player.eternityUpgrades.includes(7)) gain = gain.times(1 + Math.log10(Math.max(1, player.money.log(10))) / 40)
@@ -7228,6 +7230,7 @@ setInterval(function() {
             giveAchievement("Progressing as a Ghost")
             updateTemp()
             updateQuantumChallenges()
+            updateBreakEternity()
             updateGPHUnlocks()
         }
         if (player.ghostify.milestones>notifyId2) {
@@ -7406,8 +7409,11 @@ function gameLoop(diff) {
         var colorShorthands=["r","g","b"]
         for (var c=1;c<4;c++) {
             var shorthand=colorShorthands[c-1]
-            if (isAutoGhostActive(c)) if (tmp.qu.usedQuarks[shorthand].gt(0) && tmp.qu.tod[shorthand].quarks.eq(0)) unstableQuarks(shorthand)
-            if (isAutoGhostActive(13)) radioactiveDecay(shorthand)
+            if (isAutoGhostActive(c) && tmp.qu.usedQuarks[shorthand].gt(0) && tmp.qu.tod[shorthand].quarks.eq(0)) unstableQuarks(shorthand)
+            if (isAutoGhostActive(12) && getUnstableGain(shorthand).max(tmp.qu.tod[shorthand].quarks).gte(Decimal.pow(10, Math.pow(2, 50)))) {
+				unstableQuarks(shorthand)
+				radioactiveDecay(shorthand)
+			}
             if (isAutoGhostActive(5)) maxBranchUpg(shorthand)
         }
         if (isAutoGhostActive(6)) maxTreeUpg()
@@ -7427,19 +7433,12 @@ function gameLoop(diff) {
         var colorShorthands=["r","g","b"]
         if (player.ghostify.milestones>1) for (var c=0;c<3;c++) tmp.qu.colorPowers[colorShorthands[c]]=tmp.qu.colorPowers[colorShorthands[c]].add(tmp.qu.usedQuarks[colorShorthands[c]].times(diff/10))
         else tmp.qu.colorPowers[colorCharge.color]=tmp.qu.colorPowers[colorCharge.color].add(colorCharge.charge.times(diff/10))
-        colorBoosts.r=Math.pow(tmp.qu.colorPowers.r.add(1).log10(),player.dilation.active?2/3:0.5)/10+1
-        colorBoosts.g=Math.sqrt(tmp.qu.colorPowers.g.add(1).log10()*2+1)
-        colorBoosts.b=Decimal.pow(10,Math.sqrt(tmp.qu.colorPowers.b.add(1).log10()))
-        if (colorBoosts.r>1.3) colorBoosts.r=Math.sqrt(colorBoosts.r*1.3)
-        if (colorBoosts.r>2.3&&(!player.dilation.active||getTreeUpgradeLevel(2)>7||ghostified)) colorBoosts.r=Math.pow(colorBoosts.r/2.3,0.5*(ghostified&&player.ghostify.neutrinos.boosts>4?1+tmp.nb[4]:1))*2.3
-        if (colorBoosts.g>4.5) colorBoosts.g=Math.sqrt(colorBoosts.g*4.5)
-        if (player.aarexModifications.ngudpV) colorBoosts.g/=2
-        if (colorBoosts.b.gt(1300)) colorBoosts.b=Decimal.pow(10,Math.pow(colorBoosts.b.log10()/Math.log10(1300),0.5)*Math.log10(1300))
+        updateColorPowers()
 
         if (player.ghostify.ghostlyPhotons.unl) {
             var data=player.ghostify.ghostlyPhotons
-            data[tmp.qu.bigRip.active?"amount":"darkMatter"]=data[tmp.qu.bigRip.active?"amount":"darkMatter"].add(getGPHProduction().times(diff/10)).max(getGPHProduction().times(1e3))
-            data.ghostlyRays=data.ghostlyRays.add(getGHRProduction().times(diff/10)).max(getGHRProduction().times(1e3)).min(getGHRCap())
+            data[tmp.qu.bigRip.active?"amount":"darkMatter"]=data[tmp.qu.bigRip.active?"amount":"darkMatter"].add(getGPHProduction().times(diff/10)).max(getGPHProduction().times(1e4))
+            data.ghostlyRays=data.ghostlyRays.add(getGHRProduction().times(diff/10)).max(getGHRProduction().times(1e4)).min(getGHRCap())
             for (var c=0;c<8;c++) if (data.ghostlyRays.gte(getLightThreshold(c))) data.lights[c]+=Math.floor(data.ghostlyRays.div(getLightThreshold(c)).log(tmp.lti[c])+1)
         }
         if (tmp.qu.nanofield.producingCharge) {

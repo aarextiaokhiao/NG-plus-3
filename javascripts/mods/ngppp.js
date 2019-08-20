@@ -977,15 +977,14 @@ function sacrificeGalaxy(auto=false) {
 }
 
 function getMPTPower(on, br4) {
-	let e = 1
-	if (!inQC(0)) e = 0
-	if (tmp.qu.bigRip.active && player.ghostify.ghostlyPhotons.unl) e = tmp.le[2]
-	if (e == 0) return 1
-	a = tmp.qu.electrons.amount
-	if (a>187300) a = Math.sqrt((a-149840)*37460)+149840
+	if (!inQC(0)) return 1
+	var a = tmp.qu.electrons.amount
+	var s = 0
+	if (player.ghostify.ghostlyPhotons.unl) s = tmp.le[2]
+	if (a>187300+s) a = Math.sqrt((a-s-149840)*37460)+149840+s
 	if (tmp.rg4 && (!br4 || !hasNU(13))) a *= 0.7
 	if (player.masterystudies != undefined) if (on == undefined ? player.masterystudies.includes("d13") : on) a *= getTreeUpgradeEffect(4)
-	return a*e+1
+	return a+1
 }
 
 //v1.8
@@ -1191,9 +1190,9 @@ function updateMasteryStudyTextDisplay() {
 	document.getElementById("ec14Req").textContent="Requirement: "+getFullExpansion(masterystudies.reqs[14])+"% replicate chance"
 	if (quantumed) {
 		for (id=7;id<11;id++) document.getElementById("ds"+id+"Cost").textContent="Cost: "+shorten(masterystudies.costs.dil[id])+" Time Theorems"
-		document.getElementById("ds8Req").innerHTML=ghostified?"":"<br>Requirement: "+shorten(16750)+" electrons"
-		document.getElementById("ds9Req").innerHTML=ghostified?"":"<br>Requirement: Complete Quantum Challenge 8"
-		document.getElementById("ds10Req").innerHTML=ghostified?"":"<br>Requirement: Complete Paired Challenge 4"
+		document.getElementById("ds8Req").innerHTML=false?"":"<br>Requirement: "+getFullExpansion(16750)+" electrons"
+		document.getElementById("ds9Req").innerHTML=false?"":"<br>Requirement: Complete Quantum Challenge 8"
+		document.getElementById("ds10Req").innerHTML=false?"":"<br>Requirement: Complete Paired Challenge 4"
 		document.getElementById("321effect").textContent=shortenCosts(new Decimal("1e430"))
 	}
 	if (player.masterystudies.includes("d10")) {
@@ -2958,6 +2957,7 @@ function updateBreakEternity() {
 		for (var u=1;u<(player.ghostify.ghostlyPhotons.unl?11:8);u++) document.getElementById("breakUpg" + u + "Cost").textContent = shortenDimensions(getBreakUpgCost(u))
 		document.getElementById("breakUpg7MultIncrease").textContent = shortenDimensions(1e9)
 		document.getElementById("breakUpg7Mult").textContent = shortenDimensions(getBreakUpgMult(7))
+		document.getElementById("breakUpgRS").style.display = tmp.qu.bigRip.active && player.ghostify.ghostlyPhotons.unl ? "" : "none"
 	} else {
 		document.getElementById("breakEternityReq").style.display = ""
 		document.getElementById("breakEternityReq").textContent = "You need to get " + shorten(new Decimal("1e1215")) + " EP before you will be able to Break Eternity."
@@ -3951,7 +3951,7 @@ function updateGhostifyTabs() {
 		}
 		document.getElementById("lightBoost1").textContent=tmp.le[0].toFixed(3)
 		document.getElementById("lightBoost2").textContent=tmp.le[1].toFixed(3)
-		document.getElementById("lightBoost3").textContent=(tmp.le[2]*100).toFixed(3)
+		document.getElementById("lightBoost3").textContent=getFullExpansion(Math.floor(tmp.le[2]))
 		document.getElementById("lightBoost4").textContent=(tmp.le[3]*100-100).toFixed(1)
 		document.getElementById("lightBoost5").textContent=(tmp.le[4]*100).toFixed(1)
 		document.getElementById("lightBoost6").textContent=shorten(tmp.le[5])
@@ -4052,6 +4052,7 @@ function buyGHPMult() {
 	let cost=getGHPMultCost()
 	if (sum.lt(cost)) return
 	subNeutrinos(cost)
+	player.ghostify.multPower++
 	player.ghostify.automatorGhosts[15].a=player.ghostify.automatorGhosts[15].a.times(5)
 	document.getElementById("autoGhost15a").value=formatValue("Scientific", player.ghostify.automatorGhosts[15].a, 2, 1)
 	document.getElementById("ghpMult").textContent=shortenDimensions(Decimal.pow(2,player.ghostify.multPower-1))
@@ -4207,6 +4208,24 @@ function startEC10() {
 	startEternityChallenge('eterc10', new Decimal('1e3000'), new Decimal('1e300'))
 }
 
+function getCPPower(x) {
+	x=new Decimal(tmp.qu.colorPowers[x])
+	x=x.add(1).log10()
+	if (x>1024&&player.aarexModifications.ngudpV) x=Math.pow(x,.9)*2
+	return x
+}
+
+function updateColorPowers() {
+	colorBoosts.r=Math.pow(getCPPower('r'),player.dilation.active?2/3:0.5)/10+1
+	colorBoosts.g=Math.sqrt(getCPPower('g')*2+1)
+	colorBoosts.b=Decimal.pow(10,Math.sqrt(getCPPower('b')))
+	if (colorBoosts.r>1.3) colorBoosts.r=Math.sqrt(colorBoosts.r*1.3)
+	if (colorBoosts.r>2.3&&(!player.dilation.active||getTreeUpgradeLevel(2)>7||ghostified)) colorBoosts.r=Math.pow(colorBoosts.r/2.3,0.5*(ghostified&&player.ghostify.neutrinos.boosts>4?1+tmp.nb[4]:1))*2.3
+	if (colorBoosts.g>4.5) colorBoosts.g=Math.sqrt(colorBoosts.g*4.5)
+	if (player.aarexModifications.ngudpV) colorBoosts.g/=2
+	if (colorBoosts.b.gt(1300)) colorBoosts.b=Decimal.pow(10,Math.pow(colorBoosts.b.log10()/Math.log10(1300),player.ghostify.ghostlyPhotons.unl?.5+tmp.le[4]/2:.5)*Math.log10(1300))
+}
+
 function subNeutrinos(sub) {
 	let neu=player.ghostify.neutrinos
 	let sum=neu.electron.add(neu.mu).add(neu.tau).round()
@@ -4225,7 +4244,6 @@ function updateGPHUnlocks() {
 	document.getElementById("gphDiv").style.display=unl?"":"none"
 	document.getElementById("gphRow").style.display=unl?"":"none"
 	document.getElementById("breakUpgR3").style.display=unl?"":"none"
-	document.getElementById("breakUpgRS").style.display=unl?"":"none"
 }
 
 function getGPHProduction() {
