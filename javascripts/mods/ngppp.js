@@ -1190,9 +1190,9 @@ function updateMasteryStudyTextDisplay() {
 	document.getElementById("ec14Req").textContent="Requirement: "+getFullExpansion(masterystudies.reqs[14])+"% replicate chance"
 	if (quantumed) {
 		for (id=7;id<11;id++) document.getElementById("ds"+id+"Cost").textContent="Cost: "+shorten(masterystudies.costs.dil[id])+" Time Theorems"
-		document.getElementById("ds8Req").innerHTML=false?"":"<br>Requirement: "+getFullExpansion(16750)+" electrons"
-		document.getElementById("ds9Req").innerHTML=false?"":"<br>Requirement: Complete Quantum Challenge 8"
-		document.getElementById("ds10Req").innerHTML=false?"":"<br>Requirement: Complete Paired Challenge 4"
+		document.getElementById("ds8Req").innerHTML=ghostified?"":"<br>Requirement: "+getFullExpansion(16750)+" electrons"
+		document.getElementById("ds9Req").innerHTML=ghostified?"":"<br>Requirement: Complete Quantum Challenge 8"
+		document.getElementById("ds10Req").innerHTML=ghostified?"":"<br>Requirement: Complete Paired Challenge 4"
 		document.getElementById("321effect").textContent=shortenCosts(new Decimal("1e430"))
 	}
 	if (player.masterystudies.includes("d10")) {
@@ -3950,7 +3950,7 @@ function updateGhostifyTabs() {
 			if (c>0&&c<7) document.getElementById("lightStrength"+c).textContent=shorten(Math.sqrt(tmp.ls[c]+1))
 		}
 		document.getElementById("lightBoost1").textContent=tmp.le[0].toFixed(3)
-		document.getElementById("lightBoost2").textContent=tmp.le[1].toFixed(3)
+		document.getElementById("lightBoost2").textContent=tmp.le[1].toFixed(2)
 		document.getElementById("lightBoost3").textContent=getFullExpansion(Math.floor(tmp.le[2]))
 		document.getElementById("lightBoost4").textContent=(tmp.le[3]*100-100).toFixed(1)
 		document.getElementById("lightBoost5").textContent=(tmp.le[4]*100).toFixed(1)

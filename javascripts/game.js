@@ -1016,10 +1016,10 @@ function updateTemp() {
 		if (player.ghostify.ghostlyPhotons.unl) {
 			for (var c=6;c>-1;c--) tmp.ls[c]=player.ghostify.ghostlyPhotons.lights[c]*Math.sqrt((c>5?1:tmp.ls[c+1]+1)*(player.ghostify.ghostlyPhotons.enpowerments+1))
 			tmp.le[0]=Math.pow(tmp.ls[0],1/4)*.15+1
-			tmp.le[1]=1/(tmp.ls[1]>9?Math.sqrt(tmp.ls[1]-1)+6:tmp.ls[1]+1) //Orange light
-			tmp.le[2]=Math.sqrt(tmp.ls[2])*45e3 //Yellow light
+			tmp.le[1]=tmp.ls[1]>8?Math.sqrt(tmp.ls[1])+6:tmp.ls[1]+1 //Orange light
+			tmp.le[2]=Math.sqrt(tmp.ls[2]>20?Math.sqrt(tmp.ls[2]*20):tmp.ls[2])*45e3 //Yellow light
 			tmp.le[3]=Math.sqrt(tmp.ls[3]*1.5)+1 //Green light
-			tmp.le[4]=Math.min(Math.pow(tmp.ls[4],1/4)/2,1) //Blue light
+			tmp.le[4]=Math.min(Math.log10(Math.sqrt(tmp.ls[4]*2)+1)*5/4,1) //Blue light
 			tmp.le[5]=Decimal.pow(10,tmp.ls[5]*5) //Indigo light
 			tmp.le[6]=1 //Violet light
 			if (player.ghostify.ghostlyPhotons.enpowerments) tmp.le[7]=1 //Green light (LE#1)
@@ -1031,7 +1031,7 @@ function updateTemp() {
 			tmp.nu[4]=Decimal.pow(player.ghostify.ghostParticles.add(1).log10(),Math.pow(tmp.qu.colorPowers.r.add(tmp.qu.colorPowers.g).add(tmp.qu.colorPowers.b).add(1).log10(),1/3)*0.8+1).max(1) //NU14
 			tmp.nu[5]=Decimal.pow(2,tmp.qu.nanofield.rewards/2.5) //NU15
 			if (hasNU(15)) tmp.ns=tmp.ns.times(tmp.nu[5])
-			tmp.ppti*=tmp.le[1]
+			tmp.ppti/=tmp.le[1]
 		}
 		if (ghostified) {
 			var nt=[]
@@ -7437,8 +7437,8 @@ function gameLoop(diff) {
 
         if (player.ghostify.ghostlyPhotons.unl) {
             var data=player.ghostify.ghostlyPhotons
-            data[tmp.qu.bigRip.active?"amount":"darkMatter"]=data[tmp.qu.bigRip.active?"amount":"darkMatter"].add(getGPHProduction().times(diff/10)).max(getGPHProduction().times(1e4))
-            data.ghostlyRays=data.ghostlyRays.add(getGHRProduction().times(diff/10)).max(getGHRProduction().times(1e4)).min(getGHRCap())
+            data[tmp.qu.bigRip.active?"amount":"darkMatter"]=data[tmp.qu.bigRip.active?"amount":"darkMatter"].add(getGPHProduction().times(diff/10))//.max(getGPHProduction().times(1e4))
+            data.ghostlyRays=data.ghostlyRays.add(getGHRProduction().times(diff/10))/*.max(getGHRProduction().times(1e4))*/.min(getGHRCap())
             for (var c=0;c<8;c++) if (data.ghostlyRays.gte(getLightThreshold(c))) data.lights[c]+=Math.floor(data.ghostlyRays.div(getLightThreshold(c)).log(tmp.lti[c])+1)
         }
         if (tmp.qu.nanofield.producingCharge) {
