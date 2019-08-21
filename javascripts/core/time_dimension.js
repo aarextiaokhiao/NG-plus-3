@@ -10,8 +10,8 @@ function getTimeDimensionPower(tier) {
     if (tmp.qu.breakEternity.upgrades.includes(1) && tier < 5) ret = ret.times(getBreakUpgMult(1))
     if (tmp.qu.breakEternity.upgrades.includes(4) && tier > 3 && tier < 7) ret = ret.times(getBreakUpgMult(4))
     if (tmp.qu.bigRip.upgrades.includes(13)) ret = ret.times(player.replicanti.amount.max(1).pow(1e-6))
+    if (tier == 6 && player.ghostify.ghostlyPhotons.unl) ret = ret.times(tmp.le[6])
     if (tier == 7 && tmp.qu.bigRip.upgrades.includes(16)) ret = ret.times(player.dilation.dilatedTime.div(1e100).pow(0.155).max(1))
-    if (!player.dilation.active && tmp.qu.breakEternity.upgrades.includes(8)) ret = ret.times(dim.power.pow(getBreakUpgMult(8)))
     if (ret.lt(0)) ret = new Decimal(0)
     if (player.dilation.active || player.galacticSacrifice) {
       ret = Decimal.pow(10, Math.pow(ret.max(1).log10(), dilationPowerStrength()))

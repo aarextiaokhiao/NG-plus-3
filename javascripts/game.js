@@ -1000,8 +1000,8 @@ let tmp = {
 	nbc: [null,3,4,6,15,50,1e3,1e14,1e40],
 	nu: [],
 	nuc: [null,1e6,1e7,1e8,2e8,5e8,2e9,5e9,75e8,1e10,7e12,1e18,1e60,1e125,1e160,1e280],
-	lt: [16e3,2e5,6e5,2e6,6e6,1/0,1/0,1/0],
-	lti: [2,4,1.5,10,4,100,1,1],
+	lt: [16e3,2e5,6e5,2e6,6e6,5e7,24e7,125e7],
+	lti: [2,4,1.5,10,4,1e6,2.5,100],
 	ls: [0,0,0,0,0,0,0],
 	le: [0,0,0,0,0,0,0]
 }
@@ -1014,19 +1014,20 @@ function updateTemp() {
 		tmp.ns=new Decimal(nanospeed)
 		tmp.ppti=1
 		if (player.ghostify.ghostlyPhotons.unl) {
-			for (var c=6;c>-1;c--) tmp.ls[c]=player.ghostify.ghostlyPhotons.lights[c]*Math.sqrt((c>5?1:tmp.ls[c+1]+1)*(player.ghostify.ghostlyPhotons.enpowerments+1))
+			for (var c=6;c>-1;c--) tmp.ls[c]=player.ghostify.ghostlyPhotons.lights[c]*Math.sqrt(c>5?player.ghostify.ghostlyPhotons.enpowerments+1:tmp.ls[c+1]+1)
 			tmp.le[0]=Math.pow(tmp.ls[0],1/4)*.15+1
+			if (tmp.le[0]>1.5) tmp.le[0]=Math.log10(tmp.le[0]*20/3)*1.5
 			tmp.le[1]=tmp.ls[1]>8?Math.sqrt(tmp.ls[1])+6:tmp.ls[1]+1 //Orange light
-			tmp.le[2]=Math.sqrt(tmp.ls[2]>20?Math.sqrt(tmp.ls[2]*20):tmp.ls[2])*45e3 //Yellow light
+			tmp.le[2]=Math.sqrt(tmp.ls[2]>60?Math.log10(tmp.ls[2]/6)*Math.sqrt(1200):tmp.ls[2]>20?Math.sqrt(tmp.ls[2]*20):tmp.ls[2])*45e3 //Yellow light
 			tmp.le[3]=Math.sqrt(tmp.ls[3]*1.5)+1 //Green light
-			tmp.le[4]=Math.min(Math.log10(Math.sqrt(tmp.ls[4]*2)+1)*5/4,1) //Blue light
-			tmp.le[5]=Decimal.pow(10,tmp.ls[5]*5) //Indigo light
-			tmp.le[6]=1 //Violet light
-			if (player.ghostify.ghostlyPhotons.enpowerments) tmp.le[7]=1 //Green light (LE#1)
+			tmp.le[4]=Math.log10(Math.sqrt(tmp.ls[4]*2)+1)*5/4 //Blue light
+			tmp.le[5]=Decimal.pow(10,tmp.ls[5]*10) //Indigo light
+			tmp.le[6]=Decimal.pow(10,Math.pow(player.postC3Reward.log10()*tmp.ls[6],1/3)*2) //Violet light
+			if (player.ghostify.ghostlyPhotons.enpowerments) tmp.le[7]=Math.sqrt(tmp.ls[3]) //Green light (LE#1)
 			if (player.ghostify.ghostlyPhotons.enpowerments>1) tmp.le[8]=1 //Blue light (LE#2)
 			if (player.ghostify.ghostlyPhotons.enpowerments>2) tmp.le[9]=1 //Red light (LE#3)
-			tmp.bru[3]=1 //BRU18
-			tmp.bru[4]=1 //BRU19
+			tmp.bru[3]=Decimal.pow(tmp.qu.bigRip.spaceShards.div(1e140).add(1).log10()+1,Math.max(tmp.qu.bigRip.spaceShards.div(1e140).add(1).log10()/10,1)) //BRU18
+			tmp.bru[4]=Decimal.pow(10,Math.sqrt(player.timeShards.add(1).log10())/80) //BRU19
 			tmp.bru[5]=1 //BRU20
 			tmp.nu[4]=Decimal.pow(player.ghostify.ghostParticles.add(1).log10(),Math.pow(tmp.qu.colorPowers.r.add(tmp.qu.colorPowers.g).add(tmp.qu.colorPowers.b).add(1).log10(),1/3)*0.8+1).max(1) //NU14
 			tmp.nu[5]=Decimal.pow(2,tmp.qu.nanofield.rewards/2.5) //NU15
@@ -1073,6 +1074,7 @@ function updateTemp() {
 	} else tmp.be=false
 	var ret=(3-player.tickspeed.log10())*0.000005
 	if (ghostified&&player.ghostify.neutrinos.boosts>3) ret*=tmp.nb[3]
+	if (tmp.be&&!player.dilation.active&&tmp.qu.breakEternity.upgrades.includes(8)) ret*=getBreakUpgMult(8)
 	if (tmp.be) {
 		if (ret>100) ret=Math.pow(ret*100,0.5)
 	} else {
@@ -1293,7 +1295,6 @@ function sacrificeConf() {
 function getDilPower() {
 	var ret = Decimal.pow(3, player.dilation.rebuyables[3] * exDilationUpgradeStrength(3))
 	if (tmp.ngp3) {
-		if (tmp.be&&tmp.qu.breakEternity.upgrades.includes(10)) ret = ret.pow(getBreakUpgMult(10))
 		if (player.masterystudies.includes("t264")) ret = ret.times(getMTSMult(264))
 		if (GUBought("br1")) ret = ret.times(player.dilation.dilatedTime.add(1).log10()+1)
 		if (player.masterystudies.includes("t341")) ret = ret.times(getMTSMult(341))
@@ -3669,6 +3670,7 @@ function setAchieveTooltip() {
     let willenough = document.getElementById("Will it be enough?")
     let pls = document.getElementById("Please answer me why you are dying.")
     let bm1 = document.getElementById("braveMilestone1")
+    let bm10 = document.getElementById("braveMilestone10")
     let bm14 = document.getElementById("braveMilestone14")
     let mi = document.getElementById("Meta-Infinity confirmed?")
 
@@ -3766,6 +3768,7 @@ function setAchieveTooltip() {
     willenough.setAttribute('ach-tooltip', "Reach "+shortenCosts(new Decimal("1e36000000"))+" replicanti.")
     pls.setAttribute('ach-tooltip', "Reach "+shortenCosts(Decimal.pow(10, 95e4))+" IP while dilated, big ripped, and without having time studies, EP mult upgrades, and Break Eternity.")
     bm1.setAttribute('ach-tooltip', "Reward: Start Ghostifies with all Speedrun Milestones and all "+shorten(Number.MAX_VALUE)+" QK features unlocked, all Paired Challenges completed, all Big Rip upgrades bought, Nanofield is 2x faster until you reach 16 rewards, and you get quarks based on your best MA this quantum.")
+    bm10.setAttribute('ach-tooltip', "Reward: Start Ghostifies with 10 of Fourth Emperor Dimensions"+(player.aarexModifications.ngudpV?" and start Big Rips with 3rd row of Eternity upgrades.":"."))
     bm14.setAttribute('ach-tooltip', "Reward: Start Ghostifies with "+shortenCosts(1e25)+" Quark Spins and Branches are 10x faster.")
     mi.setAttribute('ach-tooltip', "Get "+shorten(Number.MAX_VALUE)+" infinitied stat.")
 }
@@ -7234,7 +7237,7 @@ setInterval(function() {
             updateGPHUnlocks()
         }
         if (player.ghostify.milestones>notifyId2) {
-            $.notify("You became a ghost in at most "+getFullExpansion(tmp.bm[notifyId2])+" quantumed stat! "+(["You now start with all Speedrun Milestones and all "+shorten(Number.MAX_VALUE)+" QK features unlocked, all Paired Challenges completed, all Big Rip upgrades bought, Nanofield is 2x faster until you reach 16 rewards, and you get quarks based on your best MA this quantum", "For now on, colored quarks do not cancel, you keep your gluon upgrades, you can quick Big Rip, and completing an Eternity Challenge doesn't respec your time studies.", "You now keep your Electron upgrades", "For now on, Quantuming doesn't reset your Tachyon particles unless you are in a QC, unstabilizing quarks doesn't lose your colored quarks, and you start with 5 of 1st upgrades of each Branch", "For now on, Quantuming doesn't reset your Meta-Dimension Boosts unless you are in a QC or you are going to undo Big Rip", "For now on, Quantuming doesn't reset your normal replicants unless you are in a QC or you are going to undo Big Rip", "You now start with 10 worker replicants and Ghostifying now doesn't reset Neutrinos.", "You are now gaining ^0.5 amount of quarks, ^0.5 amount of gluons, and 1% of Space Shards you will gain per second.", "You now start with 10 of Second Emperor Dimensions", "You now start with 10 of Fourth Emperor Dimensions", "You now start with 10 of Sixth Emperor Dimensions", "You now start with 10 of Eighth Emperor Dimensions", "You now start with first 16 Nanofield rewards", "You now start with "+shortenCosts(1e25)+" quark spins and Branches are 10x faster", "You now start with Break Eternity unlocked and all Break Eternity upgrades bought", "You unlocked 'I rather oppose the theory of everything' achievement"])[notifyId2]+".","success")
+            $.notify("You became a ghost in at most "+getFullExpansion(tmp.bm[notifyId2])+" quantumed stat! "+(["You now start with all Speedrun Milestones and all "+shorten(Number.MAX_VALUE)+" QK features unlocked, all Paired Challenges completed, all Big Rip upgrades bought, Nanofield is 2x faster until you reach 16 rewards, and you get quarks based on your best MA this quantum", "For now on, colored quarks do not cancel, you keep your gluon upgrades, you can quick Big Rip, and completing an Eternity Challenge doesn't respec your time studies.", "You now keep your Electron upgrades", "For now on, Quantuming doesn't reset your Tachyon particles unless you are in a QC, unstabilizing quarks doesn't lose your colored quarks, and you start with 5 of 1st upgrades of each Branch", "For now on, Quantuming doesn't reset your Meta-Dimension Boosts unless you are in a QC or you are going to undo Big Rip", "For now on, Quantuming doesn't reset your normal replicants unless you are in a QC or you are going to undo Big Rip", "You now start with 10 worker replicants and Ghostifying now doesn't reset Neutrinos.", "You are now gaining ^0.5 amount of quarks, ^0.5 amount of gluons, and 1% of Space Shards you will gain per second.", "You now start with 10 of Second Emperor Dimensions"+(player.aarexModifications.ngudpV?" and for now on, start Big Rips with 3rd row of Eternity upgrades":""), "You now start with 10 of Fourth Emperor Dimensions", "You now start with 10 of Sixth Emperor Dimensions", "You now start with 10 of Eighth Emperor Dimensions", "You now start with first 16 Nanofield rewards", "You now start with "+shortenCosts(1e25)+" quark spins and Branches are 10x faster", "You now start with Break Eternity unlocked and all Break Eternity upgrades bought", "You unlocked 'I rather oppose the theory of everything' achievement"])[notifyId2]+".","success")
             notifyId2++
         }
         if (tmp.qu.autoOptions.assignQK && player.ghostify.milestones > 7) assignAll() 
@@ -7437,8 +7440,8 @@ function gameLoop(diff) {
 
         if (player.ghostify.ghostlyPhotons.unl) {
             var data=player.ghostify.ghostlyPhotons
-            data[tmp.qu.bigRip.active?"amount":"darkMatter"]=data[tmp.qu.bigRip.active?"amount":"darkMatter"].add(getGPHProduction().times(diff/10))//.max(getGPHProduction().times(1e4))
-            data.ghostlyRays=data.ghostlyRays.add(getGHRProduction().times(diff/10))/*.max(getGHRProduction().times(1e4))*/.min(getGHRCap())
+            data[tmp.qu.bigRip.active?"amount":"darkMatter"]=data[tmp.qu.bigRip.active?"amount":"darkMatter"].add(getGPHProduction().times(diff/10))
+            data.ghostlyRays=data.ghostlyRays.add(getGHRProduction().times(diff/10)).min(getGHRCap())
             for (var c=0;c<8;c++) if (data.ghostlyRays.gte(getLightThreshold(c))) data.lights[c]+=Math.floor(data.ghostlyRays.div(getLightThreshold(c)).log(tmp.lti[c])+1)
         }
         if (tmp.qu.nanofield.producingCharge) {
@@ -8086,18 +8089,20 @@ function gameLoop(diff) {
             setAndMaybeShow('bestTPOverGhostifies',ghostified,'"Your best-ever Tachyon particles was "+shorten(player.dilation.bestTPOverGhostifies)+"."')
             tmp.qu.notrelative = false
         }
-        if (player.ghostify.milestones>7||player.achievements.includes("ng3p66")) {
+        if (player.ghostify.milestones>7) {
             if (tmp.qu.bigRip.active) {
                 tmp.qu.bigRip.spaceShards=tmp.qu.bigRip.spaceShards.add(getSpaceShardsGain().times(diff/1e3))
                 if (tmp.be&&player.ghostify.milestones>14) tmp.qu.breakEternity.eternalMatter=tmp.qu.breakEternity.eternalMatter.add(getEMGain().times(diff/1e3))
             } else {
-                var percentage=0.01
-                if (player.ghostify.milestones>7&&player.achievements.includes("ng3p66")) percentage=0.02
                 tmp.qu.quarks=tmp.qu.quarks.add(quarkGain().sqrt().times(diff/10))
-                tmp.qu.gluons.rg=tmp.qu.gluons.rg.add(tmp.qu.usedQuarks.r.min(tmp.qu.usedQuarks.g).sqrt().times(diff/10))
-                tmp.qu.gluons.gb=tmp.qu.gluons.gb.add(tmp.qu.usedQuarks.g.min(tmp.qu.usedQuarks.b).sqrt().times(diff/10))
-                tmp.qu.gluons.br=tmp.qu.gluons.br.add(tmp.qu.usedQuarks.b.min(tmp.qu.usedQuarks.r).sqrt().times(diff/10))
-                if (player.achievements.includes("ng3p66")) tmp.qu.quarks=tmp.qu.quarks.add(quarkGain().times(diff/1e3))
+                var p=["rg","gb","br"]
+                for (var i=0;i<3;i++) {
+                    var r=tmp.qu.usedQuarks[p[i][0]].min(tmp.qu.usedQuarks[p[i][1]])
+                    if (player.achievements.includes("ng3p71")) r=r.div(100)
+                    else r=r.sqrt()
+                    tmp.qu.gluons[p[i]]=tmp.qu.gluons[p[i]].add(r.times(diff/10))
+                }
+                if (player.ghostify.milestones>15) tmp.qu.quarks=tmp.qu.quarks.add(quarkGain().times(diff/1e3))
             }
             updateQuarkDisplay()
             updateQuantumWorth("quick")

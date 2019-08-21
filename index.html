@@ -951,13 +951,13 @@
 						</tr>
 						<tr id="breakUpgR3">
 							<td>
-								<button id="breakUpg8" class="eternityupbtnlocked" onclick="buyBreakUpg(8)">Boost per-1 bought Time Dimension multiplier based on your Tachyon particles if you didn't dilate time.<br>Currently: ^<span id="breakUpg8Mult">???</span><br>Cost: <span id="breakUpg8Cost"></span> Eternal Matter</button>
+								<button id="breakUpg8" class="eternityupbtnlocked" onclick="buyBreakUpg(8)">Infinite Time reward is stronger in non-Dilation runs based on your Tachyon Particles.<br>Currently: <span id="breakUpg8Mult">???</span>%<br>Cost: <span id="breakUpg8Cost"></span> Eternal Matter</button>
 							</td>
 							<td>
-								<button id="breakUpg9" class="eternityupbtnlocked" onclick="buyBreakUpg(9)">Divide the galaxy cost based on your Eternal Matter if you are in Eternity Challenge 10.<br>Currently: /<span id="breakUpg9Mult">???</span><br>Cost: <span id="breakUpg9Cost"></span> Eternal Matter</button>
+								<button id="breakUpg9" class="eternityupbtnlocked" onclick="buyBreakUpg(9)">Divide normal galaxy cost in Eternity Challenge 10 based on your Eternal Matter.<br>Currently: /<span id="breakUpg9Mult">???</span><br>Cost: <span id="breakUpg9Cost"></span> Eternal Matter</button>
 							</td>
 							<td>
-								<button id="breakUpg10" class="eternityupbtnlocked" onclick="buyBreakUpg(10)">Eternity Points make 3x TP gain upgrades stronger.<br>Currently: ^<span id="breakUpg10Mult">???</span><br>Cost: <span id="breakUpg10Cost"></span> Eternal Matter</button>
+								<button id="breakUpg10" class="eternityupbtnlocked" onclick="buyBreakUpg(10)">Divide the tickspeed reduction in Dilation runs based on your Eternity Points.<br>Currently: /<span id="breakUpg10Mult">???</span><br>Cost: <span id="breakUpg10Cost"></span> Eternal Matter</button>
 							</td>
 						</tr>
 						<tr id="breakUpgRS">
@@ -2468,7 +2468,7 @@
 								<div id="But I don't want to grind!" class="achievement achievementlocked" style="background-image: url(images/155.png)" ach-tooltip="Get 21st Nanofield reward without having Tree Upgrades."></div>
 							</td>
 							<td>
-								<div id="I rather oppose the theory of everything" class="achievement achievementlocked" style="background-image: url(images/156.png)" ach-tooltip="Complete Brave Milestones. Reward: You gain 1% of quarks you will gain per second and you keep your Tachyon particles on Quantum and Ghostify."></div>
+								<div id="I rather oppose the theory of everything" class="achievement achievementlocked" style="background-image: url(images/156.png)" ach-tooltip="Complete Brave Milestones."></div>
 							</td>
 							<td>
 								<div id="Will it be enough?" class="achievement achievementlocked" style="background-image: url(images/157.png)"></div>
@@ -2479,7 +2479,7 @@
 						</tr>
 						<tr id="achRowng3p7">
 							<td>
-								<div id="Progressing as a Ghost" class="achievement achievementlocked" style="background-image: url(images/159.png)" ach-tooltip="Unlock Ghostly Photons."></div>
+								<div id="Progressing as a Ghost" class="achievement achievementlocked" style="background-image: url(images/159.png)" ach-tooltip="Unlock Ghostly Photons. Reward: If you have 8th Brave Milestone, then you produce 1% of gluons you will gain per second."></div>
 							</td>
 							<td>
 								<div id="Underchallenged" class="achievement achievementlocked" style="background-image: url(images/160.png)" ach-tooltip="Become a ghost with at least ??? EP without dilating time while Big Ripped."></div>
@@ -4746,7 +4746,7 @@
 						<td><div id="braveMilestone13" class="achievement achievementlocked" ach-tooltip="Reward: Start Ghostifies with first 16 Nanofield rewards."></div></td>
 						<td><div id="braveMilestone14" class="achievement achievementlocked"></div></td>
 						<td><div id="braveMilestone15" class="achievement achievementlocked" ach-tooltip="Reward: You start Ghostifies with Break Eternity unlocked, gain 1% of Eternal Matter you will gain per second, and keep your Break Eternity upgrades."></div></td>
-						<td><div id="braveMilestone16" class="achievement achievementlocked" ach-tooltip="Reward: 'I rather oppose the theory of everything' achievement."></div></td>
+						<td><div id="braveMilestone16" class="achievement achievementlocked" ach-tooltip="Reward: You gain 1% of quarks you will gain per second and you keep your Tachyon particles on Quantum and Ghostify."></div></td>
 					</tr>
 				</table>
 			</div>
@@ -4795,7 +4795,7 @@
 						<td>
 							You have <span class="blue" id="light5" style="font-size:35px"></span> blue Light.<br>
 							Next Light at <span class="ghr" id="lightThreshold5"></span> Ghostly Rays.<br>
-							They boost green Light strength by <span class="blue" id="lightStrength4" style="font-size:35px"></span>x and reduce the blue power effect softcap by <span class="blue" id="lightBoost5" style="font-size:35px"></span>%.<br>
+							They boost green Light strength by <span class="blue" id="lightStrength4" style="font-size:35px"></span>x and reduce blue power effect softcap strength to <span class="blue" id="lightBoost5" style="font-size:35px"></span>%.<br>
 							<span id="le2">They slow down Ghostly Galaxies scaling by <span class="blue" id="leBoost2" style="font-size:35px"></span>% too.</span>
 						</td>
 						<td>
@@ -4815,7 +4815,7 @@
 					</tr></table>
 					<button class="gluonupgrade gph" id="lightEmpowerment" onclick="lightEmpowerment()">Gain 1 Light Empowerment, but become a ghost and reset this mechanic.<br>(requires <span id="lightEmpowermentReq"></span> ultraviolet light.)</button><br>
 					You have <span class="ghr" id="lightEmpowerments" style="font-size:35px">0</span> Light Empowerments.<br>
-					Translated to <span class="ghr" id="lightEmpowermentsEffect" style="font-size:35px"></span>x boost to all Lights.
+					Translated to <span class="ghr" id="lightEmpowermentsEffect" style="font-size:35px"></span>x boost to violet Light.
 				</div>
 			</div>
 			<div id="footercontainer">

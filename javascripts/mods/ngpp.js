@@ -1029,7 +1029,7 @@ function quantumReset(force, auto, challid, bigRip, implode=false) {
 		dilation: {
 			studies: bigRip ? (tmp.qu.bigRip.upgrades.includes(12) ? [1,2,3,4,5,6] : tmp.qu.bigRip.upgrades.includes(10) ? [1] : []) : isRewardEnabled(4) ? (speedrunMilestonesReached > 5 ? [1,2,3,4,5,6] : [1]) : [],
 			active: false,
-			tachyonParticles: (player.achievements.includes("ng3p37") && (bigRip ? tmp.qu.bigRip.upgrades.includes(11) : true)) || player.achievements.includes("ng3p71") ? player.dilation.bestTP.pow(player.achievements.includes("ng3p66") || (!challid && player.ghostify.milestones > 3) ? 1 : 0.5) : new Decimal(0),
+			tachyonParticles: (player.achievements.includes("ng3p37") && (bigRip ? tmp.qu.bigRip.upgrades.includes(11) : true)) || player.achievements.includes("ng3p71") ? player.dilation.bestTP.pow(player.ghostify.milestones > 15 || (!challid && player.ghostify.milestones > 3) ? 1 : 0.5) : new Decimal(0),
 			dilatedTime: new Decimal(speedrunMilestonesReached>21 && isRewardEnabled(4) && !bigRip?1e100:0),
 			bestTP: player.dilation.bestTP,
 			bestTPOverGhostifies: player.dilation.bestTPOverGhostifies,
@@ -1124,6 +1124,7 @@ function quantumReset(force, auto, challid, bigRip, implode=false) {
 	if (player.galacticSacrifice && !keepABnICs) player.autobuyers[12]=13
 	if (player.tickspeedBoosts !== undefined && !keepABnICs) player.autobuyers[13]=14
 	player.challenges=challengesCompletedOnEternity(true)
+	if (bigRip && player.ghostify.milestones > 9 && player.aarexModifications.ngudpV) for (var u=7;u<10;u++) player.eternityUpgrades.push(u)
 	if (isRewardEnabled(11) && (bigRip ? tmp.qu.bigRip.upgrades.includes(12) : true)) {
 		if (player.eternityChallUnlocked>12) player.timestudy.theorem+=masterystudies.costs.ec[player.eternityChallUnlocked]
 		else player.timestudy.theorem+=([0,30,35,40,70,130,85,115,115,415,550,1,1])[player.eternityChallUnlocked]
