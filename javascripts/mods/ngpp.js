@@ -1,7 +1,11 @@
 function getDilationMetaDimensionMultiplier () {
 	let pow = 0.1
 	if (player.masterystudies != undefined) if (player.masterystudies.includes("d12")) pow = getNanofieldRewardEffect(4)
-	if (player.aarexModifications.ngudpV) pow /= 3-Math.min(1,Math.log10(1+player.quantum.colorPowers.b.plus(10).log10()))
+	if (player.aarexModifications.ngudpV) {
+		let x=3-Math.min(1,Math.log10(1+player.quantum.colorPowers.b.plus(10).log10()))
+		if (player.quantum.colorPowers.b.gt("1e5000")) x-=Math.min(Math.log10(player.quantum.colorPowers.b.log10()-4900)-2,2)/3
+		pow/=x
+	}
 	return player.dilation.dilatedTime.div(1e40).pow(pow).plus(1);
 }
 
@@ -756,7 +760,7 @@ function quantumReset(force, auto, challid, bigRip, implode=false) {
 			for (var s=0;s<player.masterystudies.length;s++) if (player.masterystudies[s].indexOf("t") == 0) tmp.qu.bigRip.storedTS.studies.push(player.masterystudies[s].split("t")[1])
 		}
 		if (bigRip != tmp.qu.bigRip.active) switchAB()
-		if (!bigRip && tmp.qu.bigRip.active) if (player.galaxies == 9 && player.replicanti.galaxies == 9 && player.infinityDimension8.amount.round().eq(9) && player.timeDimension4.amount.round().eq(9)) giveAchievement("We can really afford 9.")
+		if (!bigRip && tmp.qu.bigRip.active) if (player.galaxies == 9 && player.replicanti.galaxies == 9 && player.timeDimension4.amount.round().eq(9)) giveAchievement("We can really afford 9.")
 	} else tmp.qu.gluons = 0;
 	if (player.tickspeedBoosts !== undefined) player.tickspeedBoosts = 0
 	if (player.achievements.includes("r104")) player.infinityPoints = new Decimal(2e25);
@@ -773,6 +777,8 @@ function quantumReset(force, auto, challid, bigRip, implode=false) {
 		}
 	}
 	var dilTimes = player.dilation.times
+	var bhd = []
+	if (player.aarexModifications.ngudpV) for (var d=0;d<4;d++) bhd[d]=Object.assign({},player["blackholeDimension"+(d+1)])
 	player = {
 		money: new Decimal(10),
 		tickSpeedCost: new Decimal(1000),
@@ -1029,7 +1035,7 @@ function quantumReset(force, auto, challid, bigRip, implode=false) {
 		dilation: {
 			studies: bigRip ? (tmp.qu.bigRip.upgrades.includes(12) ? [1,2,3,4,5,6] : tmp.qu.bigRip.upgrades.includes(10) ? [1] : []) : isRewardEnabled(4) ? (speedrunMilestonesReached > 5 ? [1,2,3,4,5,6] : [1]) : [],
 			active: false,
-			tachyonParticles: (player.achievements.includes("ng3p37") && (bigRip ? tmp.qu.bigRip.upgrades.includes(11) : true)) || player.achievements.includes("ng3p71") ? player.dilation.bestTP.pow(player.ghostify.milestones > 15 || (!challid && player.ghostify.milestones > 3) ? 1 : 0.5) : new Decimal(0),
+			tachyonParticles: (player.achievements.includes("ng3p37") && (bigRip ? tmp.qu.bigRip.upgrades.includes(11) : true)) || player.achievements.includes("ng3p71") ? player.dilation.bestTP.pow((player.ghostify.milestones > 15 && !bigRip) || (!challid && player.ghostify.milestones > 3) ? 1 : 0.5) : new Decimal(0),
 			dilatedTime: new Decimal(speedrunMilestonesReached>21 && isRewardEnabled(4) && !bigRip?1e100:0),
 			bestTP: player.dilation.bestTP,
 			bestTPOverGhostifies: player.dilation.bestTPOverGhostifies,
@@ -1135,7 +1141,7 @@ function quantumReset(force, auto, challid, bigRip, implode=false) {
 	player.dilation.totalTachyonParticles = player.dilation.tachyonParticles
 	if (player.exdilation!=undefined) {
 		if (player.eternityUpgrades.length) for (var u=7;u<10;u++) player.eternityUpgrades.push(u)
-		for (var d=1;d<5;d++) player["blackholeDimension"+d] = {
+		for (var d=1;d<5;d++) player["blackholeDimension"+d] = player.achievements.includes("ng3p67") && player.aarexModifications.ngudpV ? bhd[d-1] : {
 			cost: Decimal.pow(10,d>3?2e4:4e3*d),
 			amount: new Decimal(0),
 			power: new Decimal(1),

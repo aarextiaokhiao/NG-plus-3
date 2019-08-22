@@ -746,7 +746,7 @@ function updateQuantumTabs() {
 			var branch=tmp.qu.tod[shorthand]
 			var name=color+" "+getUQName(shorthand)+" quarks"
 			var rate=getDecayRate(shorthand)
-			var linear=Decimal.pow(2,getRadioactiveDecays(shorthand)*25)
+			var linear=Decimal.pow(2,getRDPower(shorthand))
 			document.getElementById(color+"UnstableGain").className=tmp.qu.usedQuarks[shorthand].gt(0)&&getUnstableGain(shorthand).gt(branch.quarks)?"storebtn":"unavailablebtn"
 			document.getElementById(color+"UnstableGain").textContent="Gain "+shortenMoney(getUnstableGain(shorthand))+" "+name+", but lose all your "+color+" quarks."
 			document.getElementById(color+"QuarkSpin").textContent=shortenMoney(branch.spin)
@@ -756,6 +756,10 @@ function updateQuantumTabs() {
 			let ret=getQuarkSpinProduction(shorthand)
 			document.getElementById(color+"QuarkSpinProduction").textContent="+"+shortenMoney(ret)+"/s"
 			if (branchNum==c+1) {
+				var decays=getRadioactiveDecays(shorthand)
+				var power=Math.floor(getBU1Power(shorthand)/120+1)
+				document.getElementById(color+"UpgPow1").textContent=decays||power>1?shorten(Decimal.pow(2,(1+decays*.1)/power)):2
+				document.getElementById(color+"UpgSpeed1").textContent=decays>2||power>1?shorten(Decimal.pow(2,Math.max(.8+decays*.1,1)/power)):2
 				for (var u=1;u<4;u++) document.getElementById(color+"upg"+u).className="gluonupgrade "+(branch.spin.lt(getBranchUpgCost(shorthand,u))?"unavailablebtn":shorthand)
 				if (ghostified) document.getElementById(shorthand+"RadioactiveDecay").className="gluonupgrade "+(branch.quarks.lt(Decimal.pow(10,Math.pow(2,50)))?"unavailablebtn":shorthand)
 			}
@@ -1933,13 +1937,9 @@ function updateTODStuff() {
 		var shorthand=shorthands[c]
 		var branch=tmp.qu.tod[shorthand]
 		var name=getUQName(shorthand)
-		var decays=getRadioactiveDecays(shorthand)
-		var power=Math.floor(getBU1Power(shorthand)/120+1)
 		document.getElementById(shorthand+"UQName").textContent=name
-		document.getElementById(color+"UpgPow1").textContent=decays||power>1?Math.pow(2,(1+decays*.1)/power).toFixed(2):2
-		document.getElementById(color+"UpgSpeed1").textContent=decays>2||power>1?Math.pow(2,Math.max(.8+decays*.1,1)/power).toFixed(2):2
 		for (var b=1;b<4;b++) {
-			document.getElementById(color+"upg"+b+"current").textContent=shortenDimensions(Decimal.pow(b==3?4:2,getBranchUpgLevel(shorthand,b,true)*(b<2?1+decays*0.1:1)))
+			document.getElementById(color+"upg"+b+"current").textContent=shortenDimensions(Decimal.pow(b>2?4:2,b>1?getBranchUpgLevel(shorthand,b):getBU1Power(shorthand)*(1+getRadioactiveDecays(shorthand)/10)))
 			document.getElementById(color+"upg"+b+"cost").textContent=shortenMoney(getBranchUpgCost(shorthand,b))
 			if (b>1) document.getElementById(color+"UpgName"+b).textContent=name
 		}
@@ -1977,10 +1977,10 @@ function showBranchTab(tabName) {
 function getUnstableGain(branch) {
 	let ret=tmp.qu.usedQuarks[branch].div("1e420").add(1).log10()
 	if (ret<2) ret=Math.max(tmp.qu.usedQuarks[branch].div("1e300").div(99).log10()/60,0)
-	let power=getBranchUpgLevel(branch,2)-getRadioactiveDecays(branch)*25
+	let power=getBranchUpgLevel(branch,2)-getRDPower(branch)
 	ret=Decimal.pow(2,power).times(ret)
 	if (ret.gt(1)) ret=Decimal.pow(ret, Math.pow(2,power+1))
-	return ret.times(Decimal.pow(2,getRadioactiveDecays(branch)*25+1)).min(Decimal.pow(10,Math.pow(2,51)))
+	return ret.times(Decimal.pow(2,getRDPower(branch)+1)).min(Decimal.pow(10,Math.pow(2,51)))
 }
 
 function unstableQuarks(branch) {
@@ -1992,7 +1992,7 @@ function unstableQuarks(branch) {
 }
 
 function getDecayRate(branch) {
-	let ret = Decimal.pow(2,getBU1Power(branch)*Math.max(getRadioactiveDecays(branch)*.1+.8,1)-getBranchUpgLevel(branch,3)*2-getRadioactiveDecays(branch)*25-4)
+	let ret = Decimal.pow(2,getBU1Power(branch)*Math.max(getRadioactiveDecays(branch)*.1+.8,1)-getBranchUpgLevel(branch,3)*2-getRDPower(branch)-4)
 	if (branch=="r") {
 		if (GUBought("rg8")) ret = ret.div(getGU8Effect("rg"))
 	}
@@ -2109,7 +2109,7 @@ function buyBranchUpg(branch,upg) {
 	bData.spin=bData.spin.sub(getBranchUpgCost(branch,upg))
 	if (bData.upgrades[upg]==undefined) bData.upgrades[upg]=0
 	bData.upgrades[upg]++
-	document.getElementById(colors[branch]+"upg"+upg+"current").textContent=shortenDimensions(Decimal.pow(upg>2?4:2, bData.upgrades[upg]*(upg==1?1+getRadioactiveDecays(branch)*0.1:1)))
+	document.getElementById(colors[branch]+"upg"+upg+"current").textContent=shortenDimensions(Decimal.pow(upg>2?4:2,upg>1?getBranchUpgLevel(shorthand,upg):getBU1Power(shorthand)*(1+getRadioactiveDecays(shorthand)/10)))
 	document.getElementById(colors[branch]+"upg"+upg+"cost").textContent=shortenMoney(getBranchUpgCost(branch, upg))
 }
 
@@ -2883,7 +2883,7 @@ function getSpaceShardsGain() {
 	return ret
 }
 
-let bigRipUpgCosts = [0, 2, 3, 5, 20, 30, 45, 60, 150, 300, 2000, 3e9, 3e14, 1e17, 3e18, 3e20, 5e22, 1e33, 1e145, 1e150, 1/0]
+let bigRipUpgCosts = [0, 2, 3, 5, 20, 30, 45, 60, 150, 300, 2000, 3e9, 3e14, 1e17, 3e18, 3e20, 5e22, 1e33, 1e145, 1e150, 1e160]
 function buyBigRipUpg(id) {
 	if (tmp.qu.bigRip.spaceShards.lt(bigRipUpgCosts[id])||tmp.qu.bigRip.upgrades.includes(id)) return
 	tmp.qu.bigRip.spaceShards=tmp.qu.bigRip.spaceShards.sub(bigRipUpgCosts[id])
@@ -2962,7 +2962,7 @@ function updateBreakEternity() {
 		for (var u=1;u<(player.ghostify.ghostlyPhotons.unl?11:8);u++) document.getElementById("breakUpg" + u + "Cost").textContent = shortenDimensions(getBreakUpgCost(u))
 		document.getElementById("breakUpg7MultIncrease").textContent = shortenDimensions(1e9)
 		document.getElementById("breakUpg7Mult").textContent = shortenDimensions(getBreakUpgMult(7))
-		document.getElementById("breakUpgRS").style.display = tmp.qu.bigRip.active && player.ghostify.ghostlyPhotons.unl ? "" : "none"
+		document.getElementById("breakUpgRS").style.display = tmp.qu.bigRip.active ? "" : "none"
 	} else {
 		document.getElementById("breakEternityReq").style.display = ""
 		document.getElementById("breakEternityReq").textContent = "You need to get " + shorten(new Decimal("1e1215")) + " EP before you will be able to Break Eternity."
@@ -2991,7 +2991,7 @@ function getEMGain() {
 	return Decimal.pow(10,log).times(mult).floor()
 }
 
-var breakUpgCosts = [1, 1e3, 1e6, 2e11, 8e17, 1e48, null, 1/0, 1/0, 1/0]
+var breakUpgCosts = [1, 1e3, 1e6, 2e11, 8e17, 1e48, null, 1e290, new Decimal("1e350"), 1/0]
 function getBreakUpgCost(id) {
 	if (id == 7) return Decimal.pow(2, tmp.qu.breakEternity.epMultPower).times(1e6)
 	return breakUpgCosts[id-1]
@@ -3040,8 +3040,8 @@ function getBreakUpgMult(id) {
 		return Decimal.pow(10, Math.pow(log1, 1/3) / 1.7 + Math.pow(log2, 1/3) * 2)
 	}
 	if (id == 7) return Decimal.pow(1e9, tmp.qu.breakEternity.epMultPower)
-	if (id == 8) return 0
-	if (id == 9) return 1
+	if (id == 8) return Math.log10(player.dilation.tachyonParticles.div(1e200).add(1).log10()/100+1)*3+1
+	if (id == 9) return Math.max(tmp.qu.breakEternity.eternalMatter.div(1e255).add(1).log10()/50+1,1)
 	if (id == 10) return 1
 }
 
@@ -3049,7 +3049,6 @@ function getExtraTickReductionMult() {
 	if (player.masterystudies !== undefined ? tmp.qu.bigRip.active && tmp.qu.breakEternity.break : false) {
 		let ret = new Decimal(1)
 		if (tmp.qu.breakEternity.upgrades.includes(5)) ret = ret.times(getBreakUpgMult(5))
-		if (player.dilation.active&&tmp.qu.breakEternity.upgrades.includes(10)) ret = ret.times(getBreakUpgMult(10))
 		return ret
 	} else return 1
 }
@@ -3685,8 +3684,8 @@ function ghostifyReset(implode, gain, amount, force) {
 		else player.timestudy.theorem+=([0,30,35,40,70,130,85,115,115,415,550,1,1])[player.eternityChallUnlocked]
 	}
 	player.eternityChallUnlocked=0
-	player.dilation.totalTachyonParticles = player.dilation.tachyonParticles
 	player.dilation.bestTP = player.dilation.tachyonParticles
+	player.dilation.totalTachyonParticles = player.dilation.bestTP
 	if (player.exdilation!=undefined) {
 		if (player.eternityUpgrades.length) for (var u=7;u<10;u++) player.eternityUpgrades.push(u)
 		for (var d=1;d<5;d++) player["blackholeDimension"+d] = {
@@ -3953,7 +3952,7 @@ function updateGhostifyTabs() {
 		for (var c=0;c<8;c++) {
 			document.getElementById("light"+(c+1)).textContent=getFullExpansion(gphData.lights[c])
 			document.getElementById("lightThreshold"+(c+1)).textContent=shorten(getLightThreshold(c))
-			if (c>0&&c<7) document.getElementById("lightStrength"+c).textContent=shorten(Math.sqrt(tmp.ls[c]+1))
+			if (c>0) document.getElementById("lightStrength"+c).textContent=(Math.sqrt(c>6?1:tmp.ls[c]+1)+gphData.enpowerments).toFixed(2)
 		}
 		document.getElementById("lightBoost1").textContent=tmp.le[0].toFixed(3)
 		document.getElementById("lightBoost2").textContent=tmp.le[1].toFixed(2)
@@ -3965,7 +3964,7 @@ function updateGhostifyTabs() {
 		document.getElementById("lightEmpowerment").className="gluonupgrade "+(gphData.lights[7]>=getLightEmpowermentReq()?"gph":"unavailablebtn")
 		document.getElementById("lightEmpowermentReq").textContent=getFullExpansion(getLightEmpowermentReq())
 		document.getElementById("lightEmpowerments").textContent=getFullExpansion(gphData.enpowerments)
-		document.getElementById("lightEmpowermentsEffect").textContent=shorten(Math.sqrt(gphData.enpowerments+1))
+		document.getElementById("lightEmpowermentsEffect").textContent=gphData.enpowerments
 		for (var e=1;e<4;e++) {
 			if (gphData.enpowerments>=e) {
 				if (e==1) document.getElementById("leBoost1").textContent=getFullExpansion(Math.floor(tmp.le[7]))
@@ -4239,7 +4238,7 @@ function updateColorPowers() {
 
 function getBU1Power(branch) {
 	let x=getBranchUpgLevel(branch,1)
-	let s=Math.sqrt(0.25+2*Math.floor(x/120))-0.5
+	let s=Math.floor(Math.sqrt(0.25+2*x/120)-0.5)
 	return s*120+(x-s*(s+1)*60)/(s+1)
 }
 
@@ -4253,6 +4252,12 @@ function subNeutrinos(sub) {
 function getGHPMultCost(offset=0) {
 	let lvl=player.ghostify.multPower+offset
 	return Decimal.pow(5,lvl*2+Math.max(lvl-85,0)*(lvl-84)-1).times(25e8)
+}
+
+function getRDPower(branch) {
+	let x=getRadioactiveDecays(branch)
+	let y=Math.max(x-10,0)
+	return x*25+Math.pow(y,2)*1.25+y*1.25
 }
 
 function updateGPHUnlocks() {
@@ -4283,7 +4288,7 @@ function getLightThreshold(l) {
 }
 
 function getLightEmpowermentReq() {
-	return player.ghostify.ghostlyPhotons.enpowerments?1/0:1
+	return Math.floor(player.ghostify.ghostlyPhotons.enpowerments*2+1)
 }
 
 function lightEmpowerment() {

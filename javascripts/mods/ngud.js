@@ -169,7 +169,7 @@ function buyBlackholeDimension(tier) {
   dim.cost = Decimal.pow(blackholeDimCostMults[tier], dim.bought).times(blackholeDimStartCosts[tier]);
   dim.power = dim.power.times(2)
   updateBlackhole();
-  if (tier === 4) {giveAchievement("We couldn't afford 5")}
+  if (tier > 3) giveAchievement("We couldn't afford 5")
   return true
 }
 
@@ -183,20 +183,21 @@ function resetBlackhole() {
 }
 
 function buyMaxBlackholeDimensions(){
-    for (var i = 1; i <5; i ++){
-        // i is the tier
-        let e = player.eternityPoints.log10()
-        let dim = player["blackholeDimension" + i]
-        if (dim.cost.log10() <= e){
-            let diff = e - dim.cost.log10()
-            let buying = Math.ceil(diff/blackholeDimCostMults[i].log10())
+	for (var i = 1; i <5; i ++){
+		// i is the tier
+		let e = player.eternityPoints.log10()
+		let dim = player["blackholeDimension" + i]
+		if (dim.cost.log10() <= e){
+			let diff = e - dim.cost.log10()
+			let buying = Math.ceil(diff/blackholeDimCostMults[i].log10())
 			player.eternityPoints = player.eternityPoints.minus(player.eternityPoints.min(Decimal.pow(blackholeDimCostMults[i],buying-1).times(dim.cost)))
-            dim.amount = dim.amount.plus(buying)
-            dim.bought += buying    
-            dim.cost = Decimal.pow(blackholeDimCostMults[i], dim.bought).times(blackholeDimStartCosts[i])
-            dim.power = dim.power.times(Decimal.pow(2,buying))
-        }
-    }
+			dim.amount = dim.amount.plus(buying)
+			dim.bought += buying	
+			dim.cost = Decimal.pow(blackholeDimCostMults[i], dim.bought).times(blackholeDimStartCosts[i])
+			dim.power = dim.power.times(Decimal.pow(2,buying))
+			if (i > 3) giveAchievement("We couldn't afford 5")
+		}
+	}
 }
 
 //v1: ex-dilation part

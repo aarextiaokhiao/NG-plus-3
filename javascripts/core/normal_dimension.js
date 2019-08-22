@@ -72,7 +72,7 @@ function getDimensionFinalMultiplier(tier) {
 	if (player.currentEternityChall == "eterc10") mult = mult.times(ec10bonus)
 	if (player.timestudy.studies.includes(193)) mult = mult.times(Decimal.pow(1.03, getEternitied()).min("1e13000"))
 	if (tier == 8 && player.timestudy.studies.includes(214)) mult = mult.times((calcTotalSacrificeBoost().pow(8)).min("1e46000").times(calcTotalSacrificeBoost().pow(1.1).min(new Decimal("1e125000"))))
-	if (tier == 8 && player.achievements.includes("ng3p27")) mult = mult.times(Decimal.pow(10,Math.pow(player.galaxies,Math.min(Math.sqrt(Math.log10(Math.max(player.galaxies,1)))*2,2.5))))
+	if (tier == 8 && player.achievements.includes("ng3p27")) mult = mult.times(tmp.ig)
 		
 	if (player.galacticSacrifice) {
 		if (player.galacticSacrifice.upgrades.includes(12)) mult = mult.times(galUpgrade12())

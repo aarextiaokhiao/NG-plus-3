@@ -2276,7 +2276,7 @@ br {
 }
 
 .gluonupgrade.gph {
-	background: #ccc8b7;
+	background: #ccc8b7 !important;
 	border: 1px solid #bfaf5f;
 	box-shadow: inset 0px 0px 20px 0px #bfaf5f;
 	color: black;
@@ -2307,6 +2307,29 @@ br {
 
 .uv {
 	color: #8f00bf
+}
+
+.gluonupgrade.wzb {
+	background: repeating-linear-gradient(#620d65, transparent 50%, #620d65 100%), repeating-linear-gradient(90deg, transparent, #c73415 50%, transparent 100%), black;
+	background-size: 200% 200%;
+	border: 1px solid transparent;
+	color: black;
+	text-shadow: 0px 0px 3px black, 0px 0px 6px white;
+	animation: wzb 5s linear infinite
+}
+
+.gluonupgrade.wzb:hover {
+	color: white;
+	cursor: pointer
+}
+
+@keyframes wzb { 
+	0%{
+		background-position: 0% 0%
+	}
+	100%{
+		background-position: 200% 200%
+	}
 }
 
 @media print,
