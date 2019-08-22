@@ -1084,6 +1084,7 @@ function updateTemp() {
 	tmp.it=Decimal.pow(10,x)
 
 	x=player.galaxies
+	if (tmp.ngp3&&!tmp.qu.bigRip.active&&player.ghostify.ghostlyPhotons.enpowerments>2) x*=tmp.le[9]
 	if (tmp.be&&player.dilation.active&&tmp.qu.breakEternity.upgrades.includes(10)) x*=getBreakUpgMult(10)
 	tmp.ig=Decimal.pow(10,Math.pow(x,Math.min(Math.sqrt(Math.log10(Math.max(x,1)))*2,2.5)))
 
@@ -2654,7 +2655,11 @@ function updateExtraReplGalaxies() {
 	}
 	extraReplGalaxies = ts225Eff + ts226Eff
 	if (extraReplGalaxies > 325) extraReplGalaxies = (Math.sqrt(0.9216+0.16*(extraReplGalaxies-324))-0.96)/0.08+324
-	extraReplGalaxies = Math.floor(extraReplGalaxies * (colorBoosts.g + gatheredQuarksBoost))
+	if (tmp.ngp3) {
+		gatheredQuarksBoost = Math.pow(tmp.qu.replicants.quarks.add(1).log10(),player.masterystudies.includes("t362")?0.35:0.25)*0.67*(player.masterystudies.includes("t412")?1.25:1)*(player.ghostify.ghostlyPhotons.unl?tmp.le[3]:1)
+		extraReplGalaxies *= colorBoosts.g + gatheredQuarksBoost
+	}
+	extraReplGalaxies = Math.floor(extraReplGalaxies)
 }
 
 function updateMilestones() {
@@ -7506,7 +7511,6 @@ function gameLoop(diff) {
             var rate = getGatherRate().total
             if (rate.gt(0)) tmp.qu.replicants.quarks = tmp.qu.replicants.quarks.add(rate.times(diff/10))
         }
-        gatheredQuarksBoost = Math.pow(tmp.qu.replicants.quarks.add(1).log10(),player.masterystudies.includes("t362")?0.35:0.25)*0.67*(player.masterystudies.includes("t412")?1.25:1)*(player.ghostify.ghostlyPhotons.unl?tmp.le[3]:1)
 
         for (dim=8;dim>1;dim--) {
             var promote = hasNU(2) ? 1/0 : getWorkerAmount(dim-2)

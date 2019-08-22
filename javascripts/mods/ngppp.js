@@ -533,7 +533,6 @@ function getMTSMult(id, modifier) {
 		var intensity = 0
 		if (player.masterystudies ? player.masterystudies.includes("t273") || modifier == "ms" : false) intensity = 5
 		if (ghostified ? player.ghostify.neutrinos.boosts > 1 && modifier != "pn" : false) intensity += tmp.nb[1]
-		if (ghostified ? player.ghostify.ghostlyPhotons.enpowerments > 2 && modifier != "pl" : false) intensity += tmp.le[9]
 		if (player.replicanti.chance<9) return new Decimal(1)
 		return Decimal.pow(Math.log10(player.replicanti.chance+1), intensity)
 	}
@@ -2976,7 +2975,11 @@ function breakEternity() {
 	tmp.qu.breakEternity.did = true
 	document.getElementById("breakEternityBtn").textContent = (tmp.qu.breakEternity.break ? "FIX" : "BREAK") + " ETERNITY"
 	giveAchievement("Time Breaker")
-	if (tmp.qu.bigRip.active && !tmp.qu.breakEternity.break && document.getElementById("timedimensions").style.display == "block") showDimTab("antimatterdimensions")
+	if (tmp.qu.bigRip.active) {
+		tmp.be = tmp.qu.breakEternity.break
+		updateTemp()
+		if (!tmp.be && document.getElementById("timedimensions").style.display == "block") showDimTab("antimatterdimensions")
+	}
 	if (!player.dilation.active && isSmartPeakActivated) {
 		EPminpeakType = 'normal'
 		EPminpeak = new Decimal(0)
@@ -3969,10 +3972,7 @@ function updateGhostifyTabs() {
 			if (gphData.enpowerments>=e) {
 				if (e==1) document.getElementById("leBoost1").textContent=getFullExpansion(Math.floor(tmp.le[7]))
 				if (e==2) document.getElementById("leBoost2").textContent=(tmp.le[8]*100-100).toFixed(1)
-				if (e==3) {
-					document.getElementById("leBoost3b").textContent=shorten(getMTSMult(273, "pl"))
-					document.getElementById("leBoost3").textContent=shorten(getMTSMult(273))
-				}
+				if (e==3) document.getElementById("leBoost3").textContent=shorten(getMTSMult(273))
 			}
 			document.getElementById("le"+e).style.display=e>gphData.enpowerments?"none":""
 		}
@@ -4288,7 +4288,7 @@ function getLightThreshold(l) {
 }
 
 function getLightEmpowermentReq() {
-	return Math.floor(player.ghostify.ghostlyPhotons.enpowerments*2+1)
+	return Math.floor(player.ghostify.ghostlyPhotons.enpowerments*2.4+1)
 }
 
 function lightEmpowerment() {

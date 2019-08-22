@@ -1238,17 +1238,8 @@ if (player.version < 5) {
       }
       updateAutoGhosts(true)
   }
-  if (player.aarexModifications.newGame3PlusVersion==undefined) {
-      colorBoosts={
-          r:1,
-          g:1,
-          b:1
-      }
-      gatheredQuarksBoost = 0
-      tmp.be=false
-  } else {
+  if (player.aarexModifications.newGame3PlusVersion!=undefined) {
       updateColorPowers()
-      gatheredQuarksBoost = Math.pow(Decimal.add(tmp.qu.replicants.quarks, 1).log10(),player.masterystudies.includes("t362")?0.35:0.25)*0.67*(player.masterystudies.includes("t412")?1.25:1)
       eds=tmp.qu.emperorDimensions
       tmp.be=tmp.qu.bigRip.active&&tmp.qu.breakEternity.break
   }
@@ -1753,7 +1744,6 @@ if (player.version < 5) {
   document.getElementById('aftereternity').style.display=player.achievements.includes("ng3p52")?"":"none"
   if (player.masterystudies) {
       updateMasteryStudyCosts()
-      updateMasteryStudyButtons()
       if (quantumed) giveAchievement("Sub-atomic")
       if (tmp.qu.best<=10) giveAchievement("Quantum doesn't take so long")
       if (ghostified) giveAchievement("Kee-hee-hee!")

@@ -50,7 +50,7 @@ function getGalaxyPowerEff(ng, bi) {
 		tmp.ts232=Math.pow(1+ng/1000,exp)
 		eff*=tmp.ts232
 	}
-	eff *= colorBoosts.r
+	if (tmp.ngp3) eff *= colorBoosts.r
 	if (GUBought("rg2")) eff *= Math.pow(player.dilation.freeGalaxies/5e3+1,0.25)
 	if (tmp.rg4) eff *= 1.5
 	return eff
