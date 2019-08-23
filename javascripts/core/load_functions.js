@@ -504,6 +504,7 @@ if (player.version < 5) {
           document.getElementById(""+player.timestudy.studies[i]).className = "timestudybought"
       }
   }
+  performedTS = false
 
   if (player.version > 7 && inERS && !player.aarexModifications.ersVersion) {
 	  player.version = 7

@@ -1025,7 +1025,7 @@ function updateTemp() {
 			tmp.le[6]=Decimal.pow(10,Math.pow(player.postC3Reward.log10()*tmp.ls[6],1/3)*2) //Violet light
 			if (player.ghostify.ghostlyPhotons.enpowerments) tmp.le[7]=Math.log10(tmp.ls[3]+1)*3 //Green light (LE#1)
 			if (player.ghostify.ghostlyPhotons.enpowerments>1) tmp.le[8]=Math.log10(tmp.ls[4]*10+1)/4+1 //Blue light (LE#2)
-			if (player.ghostify.ghostlyPhotons.enpowerments>2) tmp.le[9]=1 //Red light (LE#3)
+			if (player.ghostify.ghostlyPhotons.enpowerments>2) tmp.le[9]=Math.pow(tmp.ls[0]+1,.1)*2-1 //Red light (LE#3)
 			tmp.bru[3]=Decimal.pow(tmp.qu.bigRip.spaceShards.div(1e140).add(1).log10()+1,Math.max(tmp.qu.bigRip.spaceShards.div(1e140).add(1).log10()/10,1)) //BRU18
 			tmp.bru[4]=Decimal.pow(10,Math.sqrt(player.timeShards.add(1).log10())/80) //BRU19
 			tmp.bru[5]=Math.log10(quantumWorth.add(1).log10()+1) //BRU20
@@ -1844,7 +1844,9 @@ function updateDimensions() {
         }
     }
     if (document.getElementById("eternitystore").style.display == "block") {
-        if (document.getElementById("timestudies").style.display == "block" || document.getElementById("ers_timestudies").style.display == "block" || document.getElementById("masterystudies").style.display == "block") updateTheoremButtons()
+        if (document.getElementById("TTbuttons").style.display == "block") updateTheoremButtons()
+        if (document.getElementById("timestudies").style.display == "block" || document.getElementById("ers_timestudies").style.display == "block") updateTimeStudyButtons()
+        if (document.getElementById("masterystudies").style.display == "block") updateMasteryStudyButtons()
         if (document.getElementById("eternityupgrades").style.display == "block") {
             document.getElementById("eter1").innerHTML = "Infinity Dimensions multiplier based on unspent EP (x+1)<br>Currently: "+shortenMoney(player.eternityPoints.plus(1))+"x<br>Cost: 5 EP"
             document.getElementById("eter2").innerHTML = "Infinity Dimension multiplier based on eternities ("+(player.boughtDims?"x^log4(2x)":player.achievements.includes("ngpp15")?"x^log10(x)^3.75":"(x/200)^log4(2x)")+")<br>Currently: "+shortenMoney(getEU2Mult())+"x<br>Cost: 10 EP"
@@ -3270,7 +3272,12 @@ function changeSaveDesc(saveId, placement) {
 		var isSaveGhostified=temp.ghostify?temp.ghostify.times>0:false
 		var isSaveQuantumed=temp.quantum?temp.quantum.times>0:false
 		if (isSaveGhostified) {
-			message+="Ghost Particles: "+shortenDimensions(new Decimal(temp.ghostify.ghostParticles))+", Neutrinos: "+shortenDimensions(Decimal.add(temp.ghostify.neutrinos.electron, temp.ghostify.neutrinos.mu).add(temp.ghostify.neutrinos.tau).round())
+			if (temp.achievements.includes("ng3p71")) {
+				var data=temp.ghostify.ghostlyPhotons
+				var lights=0
+				for (var l=0;l<8;l++) lights+=data.lights[l]
+				message+="Ghostly Photons: "+shortenDimensions(new Decimal(data.amount))+", Dark Matter: "+shortenDimensions(new Decimal(data.darkMatter))+", Ghostly Rays: "+shortenDimensions(new Decimal(data.ghostlyRays))+", Lights: "+getFullExpansion(lights)+", Light Empowerments: "+getFullExpansion(data.enpowerments)
+			} else message+="Ghost Particles: "+shortenDimensions(new Decimal(temp.ghostify.ghostParticles))+", Neutrinos: "+shortenDimensions(Decimal.add(temp.ghostify.neutrinos.electron, temp.ghostify.neutrinos.mu).add(temp.ghostify.neutrinos.tau).round())
 		} else if (isSaveQuantumed) {
 			if (!temp.masterystudies) message+="End-game of NG++"
 			else if (temp.masterystudies.includes('d14')) message+="Best antimatter in big rips: "+shortenDimensions(new Decimal(temp.quantum.bigRip.bestAntimatter))+", Space Shards: "+shortenDimensions(new Decimal(temp.quantum.bigRip.spaceShards))+", Eternal Matter: "+shortenDimensions(new Decimal(temp.quantum.breakEternity.eternalMatter))
@@ -3688,6 +3695,7 @@ function setAchieveTooltip() {
     let bm10 = document.getElementById("braveMilestone10")
     let bm14 = document.getElementById("braveMilestone14")
     let mi = document.getElementById("Meta-Infinity confirmed?")
+    let wd = document.getElementById("Weak Decay")
 
     ndial.setAttribute('ach-tooltip', "Have exactly 99 Eighth Dimensions. Reward: Eighth Dimensions are 10% stronger"+(player.tickspeedBoosts==undefined?".":" and you gain more GP based on your Eighth Dimensions and your Tickspeed Boosts."));
     apocAchieve.setAttribute('ach-tooltip', "Get over " + formatValue(player.options.notation, 1e80, 0, 0) + " antimatter.");
@@ -3786,6 +3794,7 @@ function setAchieveTooltip() {
     bm10.setAttribute('ach-tooltip', "Reward: Start Ghostifies with 10 of Fourth Emperor Dimensions"+(player.aarexModifications.ngudpV?" and start Big Rips with 3rd row of Eternity upgrades.":"."))
     bm14.setAttribute('ach-tooltip', "Reward: Start Ghostifies with "+shortenCosts(1e25)+" Quark Spins and Branches are 10x faster.")
     mi.setAttribute('ach-tooltip', "Get "+shorten(Number.MAX_VALUE)+" infinitied stat.")
+    wd.setAttribute('ach-tooltip', "Get "+shortenCosts(Decimal.pow(10, 1e12))+" Infinity Unstable Quarks for each Branch without Big Ripping.")
 }
 
 
@@ -5935,16 +5944,18 @@ function startChallenge(name) {
 }
 
 function unlockEChall(idx) {
-    if (player.eternityChallUnlocked == 0) {
-        player.eternityChallUnlocked = idx
-        document.getElementById("eterc"+player.eternityChallUnlocked+"div").style.display = "inline-block"
-        if (!justImported) showTab("challenges")
-        if (!justImported) showChallengesTab("eternitychallenges")
-        if (idx !== 13 && idx !== 14) player.etercreq = idx
-        if (tmp.ngp3) delete tmp.qu.autoECN
-    }
-    updateEternityChallenges()
-    updateTimeStudyButtons()
+	if (player.eternityChallUnlocked == 0) {
+		player.eternityChallUnlocked = idx
+		document.getElementById("eterc"+player.eternityChallUnlocked+"div").style.display = "inline-block"
+		if (!justImported) showTab("challenges")
+		if (!justImported) showChallengesTab("eternitychallenges")
+		if (idx !== 13 && idx !== 14) {
+			updateTimeStudyButtons(true)
+			player.etercreq = idx
+		}
+		if (tmp.ngp3) delete tmp.qu.autoECN
+	}
+	updateEternityChallenges()
 }
 
 function ECTimesCompleted(name) {
@@ -6091,7 +6102,6 @@ document.getElementById("ec1unl").onclick = function() {
     if (canUnlockEC(1, 30, 171)) {
         unlockEChall(1)
         player.timestudy.theorem -= 30
-        updateTimeStudyButtons()
         drawStudyTree()
     }
 }
@@ -6100,7 +6110,6 @@ document.getElementById("ec2unl").onclick = function() {
     if (canUnlockEC(2, 35, 171)) {
         unlockEChall(2)
         player.timestudy.theorem -= 35
-        updateTimeStudyButtons()
         drawStudyTree()
     }
 }
@@ -6109,7 +6118,6 @@ document.getElementById("ec3unl").onclick = function() {
     if (canUnlockEC(3, 40, 171)) {
         unlockEChall(3)
         player.timestudy.theorem -= 40
-        updateTimeStudyButtons()
         drawStudyTree()
     }
 }
@@ -6118,7 +6126,6 @@ document.getElementById("ec4unl").onclick = function() {
     if (canUnlockEC(4, 70, 143)) {
         unlockEChall(4)
         player.timestudy.theorem -= 70
-        updateTimeStudyButtons()
         drawStudyTree()
     }
 }
@@ -6127,7 +6134,6 @@ document.getElementById("ec5unl").onclick = function() {
     if (canUnlockEC(5, 130, 42)) {
         unlockEChall(5)
         player.timestudy.theorem -= 130
-        updateTimeStudyButtons()
         drawStudyTree()
     }
 }
@@ -6136,7 +6142,6 @@ document.getElementById("ec6unl").onclick = function() {
     if (canUnlockEC(6, 85, 121)) {
         unlockEChall(6)
         player.timestudy.theorem -= 85
-        updateTimeStudyButtons()
         drawStudyTree()
     }
 }
@@ -6145,7 +6150,6 @@ document.getElementById("ec7unl").onclick = function() {
     if (canUnlockEC(7, 115, 111)) {
         unlockEChall(7)
         player.timestudy.theorem -= 115
-        updateTimeStudyButtons()
         drawStudyTree()
     }
 }
@@ -6154,7 +6158,6 @@ document.getElementById("ec8unl").onclick = function() {
     if (canUnlockEC(8, 115, 123)) {
         unlockEChall(8)
         player.timestudy.theorem -= 115
-        updateTimeStudyButtons()
         drawStudyTree()
     }
 }
@@ -6163,7 +6166,6 @@ document.getElementById("ec9unl").onclick = function() {
     if (canUnlockEC(9, 415, 151)) {
         unlockEChall(9)
         player.timestudy.theorem -= 415
-        updateTimeStudyButtons()
         drawStudyTree()
     }
 }
@@ -6172,7 +6174,6 @@ document.getElementById("ec10unl").onclick = function() {
     if (canUnlockEC(10, 550, 181)) {
         unlockEChall(10)
         player.timestudy.theorem -= 550
-        updateTimeStudyButtons()
         drawStudyTree()
     }
 }
@@ -6181,8 +6182,6 @@ document.getElementById("ec11unl").onclick = function() {
     if (canUnlockEC(11, 1, 231, 232)) {
         unlockEChall(11)
         player.timestudy.theorem -= 1
-        updateTheoremButtons()
-        updateTimeStudyButtons()
         drawStudyTree()
     }
 }
@@ -6191,7 +6190,6 @@ document.getElementById("ec12unl").onclick = function() {
     if (canUnlockEC(12, 1, 233, 234)) {
         unlockEChall(12)
         player.timestudy.theorem -= 1
-        updateTimeStudyButtons()
         drawStudyTree()
     }
 }
@@ -6611,7 +6609,6 @@ function buyDilationUpgrade(id, max) {
     if (max) return true
     updateDilationUpgradeCosts()
     updateDilationUpgradeButtons()
-    updateTimeStudyButtons()
 }
 
 function getPassiveTTGen() {
@@ -7184,6 +7181,7 @@ setInterval(function() {
             if (!player.timestudy.studies.includes(11) && player.timeShards.e > 214) giveAchievement("You're not really smart.")
             if (ableToGetRid7 && player.infinityPoints.e >= 35e4) giveAchievement("And so your life?")
             if (ableToGetRid8 && player.infinityPoints.e >= 95e4) giveAchievement("Please answer me why you are dying.")
+            if (Math.min(Math.min(getRadioactiveDecays("r"),getRadioactiveDecays("g")),getRadioactiveDecays("b"))>1&&tmp.qu.tod.r.quarks.min(tmp.qu.tod.g.quarks).min(tmp.qu.tod.b.quarks).gte("1e1000000000000")&&!tmp.qu.bigRip.times) giveAchievement("Weak Decay")
             if (ableToGetRid9 && player.infinityPoints.e >= 1/0) giveAchievement("Why do you want to die?")
         }
         if (tmp.qu.bigRip.spaceShards.e>32&&!tmp.qu.breakEternity.did) giveAchievement("Finite Time")
@@ -7455,8 +7453,8 @@ function gameLoop(diff) {
 
         if (player.ghostify.ghostlyPhotons.unl) {
             var data=player.ghostify.ghostlyPhotons
-            data[tmp.qu.bigRip.active?"amount":"darkMatter"]=data[tmp.qu.bigRip.active?"amount":"darkMatter"].add(getGPHProduction().times(diff/10)).max(getGPHProduction().times(1e4))
-            data.ghostlyRays=data.ghostlyRays.add(getGHRProduction().times(diff/10)).max(getGHRProduction().times(1e4)).min(getGHRCap())
+            data[tmp.qu.bigRip.active?"amount":"darkMatter"]=data[tmp.qu.bigRip.active?"amount":"darkMatter"].add(getGPHProduction().times(diff/10))
+            data.ghostlyRays=data.ghostlyRays.add(getGHRProduction().times(diff/10)).min(getGHRCap())
             for (var c=0;c<8;c++) if (data.ghostlyRays.gte(getLightThreshold(c))) data.lights[c]+=Math.floor(data.ghostlyRays.div(getLightThreshold(c)).log(tmp.lti[c])+1)
         }
         if (tmp.qu.nanofield.producingCharge) {
@@ -8125,11 +8123,6 @@ function gameLoop(diff) {
     if (player.dilation.upgrades.includes(10)) {
 		var speed = getPassiveTTGen()
 		player.timestudy.theorem += speed * (diff + Math.max(Math.min(player.achievements.includes("ng3p44") ? diff * 9 : 0, 3600 - player.timestudy.theorem / speed), 0)) / 10
-        if ((document.getElementById("timestudies").style.display != "none" || document.getElementById("ers_timestudies").style.display != "none" || document.getElementById("masterystudies").style.display != "none") && document.getElementById("eternitystore").style.display != "none") {
-            document.getElementById("timetheorems").innerHTML = "You have <span style='display:inline' class=\"TheoremAmount\">"+(player.timestudy.theorem>99999?shortenMoney(player.timestudy.theorem):getFullExpansion(Math.floor(player.timestudy.theorem)))+"</span> Time Theorem"+ (player.timestudy.theorem == 1 ? "." : "s.")
-            if (document.getElementById("timestudies").style.display != "none") updateTimeStudyButtons()
-            else updateMasteryStudyButtons()
-        }
     }
 
     setAndMaybeShow("quantumClock", tmp.ngp3 ? (quantumed && tmp.qu.times > 1 && speedrunMilestonesReached < 28) : false, '"Quantum time: <b class=\'QKAmount\'>"+timeDisplayShort(tmp.qu.time)+"</b>"')

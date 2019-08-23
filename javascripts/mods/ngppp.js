@@ -40,7 +40,7 @@ function updateMasteryStudyButtons() {
 		document.getElementById("ts301Current").textContent="Currently: +"+getFullExpansion(getMTSMult(301))
 		document.getElementById("ts303Current").textContent="Currently: "+shorten(getMTSMult(303))+"x"
 		document.getElementById("ts322Current").textContent="Currently: "+shorten(getMTSMult(322))+"x"
-		for (id=7;id<11;id++) {
+		for (id=7;id<(ghostified||player.masterystudies.includes("d13")?15:player.masterystudies.includes("d12")?14:player.masterystudies.includes("d11")?13:player.masterystudies.includes("d10")?12:11);id++) {
 			var div=document.getElementById("dilstudy"+id)
 			if (player.masterystudies.includes("d"+id)) div.className="dilationupgbought"
 			else if (canBuyMasteryStudy('d', id)) div.className="dilationupg"
@@ -52,38 +52,18 @@ function updateMasteryStudyButtons() {
 		document.getElementById("ts341Current").textContent="Currently: "+shorten(getMTSMult(341))+"x"
 		document.getElementById("ts344Current").textContent="Currently: "+(getMTSMult(344)*100-100).toFixed(2)+"%"
 		document.getElementById("ts351Current").textContent="Currently: "+shorten(getMTSMult(351))+"x"
-		
-		var div=document.getElementById("dilstudy11")
-		if (player.masterystudies.includes("d11")) div.className="dilationupgbought"
-		else if (canBuyMasteryStudy('d', 11)) div.className="dilationupg"
-		else div.className="timestudylocked"
 	}
 	if (player.masterystudies.includes("d11")||ghostified) {
 		document.getElementById("ts361Current").textContent="Currently: "+shorten(getMTSMult(361))+"x"
 		for (r=37;r<40;r++) for (c=1;c<4;c++) document.getElementById("ts"+(r*10+c)+"Current").textContent="Currently: "+shorten(getMTSMult(r*10+c))+"x"
-		
-		var div=document.getElementById("dilstudy12")
-		if (player.masterystudies.includes("d12")) div.className="dilationupgbought"
-		else if (canBuyMasteryStudy('d', 12)) div.className="dilationupg"
-		else div.className="timestudylocked"
 	}
 	if (player.masterystudies.includes("d12")||ghostified) {
 		document.getElementById("ts401Current").textContent="Currently: "+shorten(getMTSMult(401))+"x"
 		document.getElementById("ts411Current").textContent="Currently: "+shorten(getMTSMult(411))+"x"
 		document.getElementById("ts421Current").textContent="Currently: "+shorten(getMTSMult(421))+"x"
-		
-		var div=document.getElementById("dilstudy13")
-		if (player.masterystudies.includes("d13")) div.className="dilationupgbought"
-		else if (canBuyMasteryStudy('d', 13)) div.className="dilationupg"
-		else div.className="timestudylocked"
 	}
 	if (player.masterystudies.includes("d13")||ghostified) {
 		document.getElementById("ts431Current").textContent="Currently: "+shorten(getMTSMult(431))+"x"
-		
-		var div=document.getElementById("dilstudy14")
-		if (player.masterystudies.includes("d14")) div.className="dilationupgbought"
-		else if (canBuyMasteryStudy('d', 14)) div.className="dilationupg"
-		else div.className="timestudylocked"
 	}
 }
 
@@ -100,7 +80,7 @@ function updateMasteryStudyCosts() {
 			if (masterystudies.allTimeStudies.includes(parseInt(t))) masterystudies.costmult*=masterystudies.costmults[t]
 			masterystudies.latestBoughtRow=Math.max(masterystudies.latestBoughtRow,Math.floor(t/10))
 			total++
-			if (total>1/0) giveAchievement("The Theory of Ultimate Studies")
+			if (total>44) giveAchievement("The Theory of Ultimate Studies")
 		}
 	}
 	for (id=0;id<masterystudies.allTimeStudies.length;id++) {
@@ -2241,7 +2221,8 @@ function getUQName(shorthand) {
 	let ret="unstable"
 	if (tmp.qu.tod[shorthand].decays!==undefined) {
 		let amt=tmp.qu.tod[shorthand].decays
-		ret=(amt>5?"Mk"+getFullExpansion(amt+1):(["radioactive","infinity","eternal","quantum","ghostly"])[amt-1])+" "+ret
+		if (amt>4) ret="ghostly"+(amt>9?"^"+Math.floor(amt/5):"")+" "+ret
+		if (amt%5) ret=(["radioactive","infinity","eternal","quantum"])[amt%5-1]+" "+ret
 	}
 	return ret
 }
@@ -2325,7 +2306,6 @@ function radioactiveDecay(shorthand) {
 	data.upgrades={}
 	if (player.ghostify.milestones>3) data.upgrades[1]=5
 	data.decays=data.decays===undefined?1:data.decays+1
-	if (!tmp.qu.bigRip.active) giveAchievement("Weak Decay")
 	let sum=0
     for (var c=0;c<3;c++) sum+=getRadioactiveDecays((['r','g','b'])[c])
 	if (sum>9) giveAchievement("Radioactive Decaying to the max!")
@@ -2863,6 +2843,7 @@ function unstoreTT() {
 			document.getElementById(""+player.timestudy.studies[i]).className = "timestudybought"
 		}
 	}
+	performedTS=false
 	updateTheoremButtons()
 	drawStudyTree()
 	maybeShowFillAll()
@@ -2994,7 +2975,7 @@ function getEMGain() {
 	return Decimal.pow(10,log).times(mult).floor()
 }
 
-var breakUpgCosts = [1, 1e3, 1e6, 2e11, 8e17, 1e48, null, 1e290, new Decimal("1e350"), 1/0]
+var breakUpgCosts = [1, 1e3, 1e6, 2e11, 8e17, 1e48, null, 1e290, new Decimal("1e350"), new Decimal("1e375")]
 function getBreakUpgCost(id) {
 	if (id == 7) return Decimal.pow(2, tmp.qu.breakEternity.epMultPower).times(1e6)
 	return breakUpgCosts[id-1]
@@ -3044,8 +3025,8 @@ function getBreakUpgMult(id) {
 	}
 	if (id == 7) return Decimal.pow(1e9, tmp.qu.breakEternity.epMultPower)
 	if (id == 8) return Math.log10(player.dilation.tachyonParticles.div(1e200).add(1).log10()/100+1)*3+1
-	if (id == 9) return Math.max(tmp.qu.breakEternity.eternalMatter.div(1e255).add(1).log10()/50+1,1)
-	if (id == 10) return 1
+	if (id == 9) return tmp.qu.breakEternity.eternalMatter.div("1e335").add(1).pow(0.05*Math.log10(4)).toNumber()
+	if (id == 10) return Math.max(Math.log10(player.eternityPoints.add(1).log10()+1)-1,1)
 }
 
 function getExtraTickReductionMult() {
@@ -3685,7 +3666,7 @@ function ghostifyReset(implode, gain, amount, force) {
 	if (bm) {
 		if (player.eternityChallUnlocked>12) player.timestudy.theorem+=masterystudies.costs.ec[player.eternityChallUnlocked]
 		else player.timestudy.theorem+=([0,30,35,40,70,130,85,115,115,415,550,1,1])[player.eternityChallUnlocked]
-	}
+	} else performedTS=false
 	player.eternityChallUnlocked=0
 	player.dilation.bestTP = player.dilation.tachyonParticles
 	player.dilation.totalTachyonParticles = player.dilation.bestTP
@@ -3972,7 +3953,7 @@ function updateGhostifyTabs() {
 			if (gphData.enpowerments>=e) {
 				if (e==1) document.getElementById("leBoost1").textContent=getFullExpansion(Math.floor(tmp.le[7]))
 				if (e==2) document.getElementById("leBoost2").textContent=(tmp.le[8]*100-100).toFixed(1)
-				if (e==3) document.getElementById("leBoost3").textContent=shorten(getMTSMult(273))
+				if (e==3) document.getElementById("leBoost3").textContent=tmp.le[9].toFixed(2)
 			}
 			document.getElementById("le"+e).style.display=e>gphData.enpowerments?"none":""
 		}

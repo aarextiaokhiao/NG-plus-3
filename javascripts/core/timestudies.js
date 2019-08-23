@@ -7,7 +7,7 @@ function buyWithAntimatter() {
       player.money = player.money.minus(player.timestudy.amcost)
       player.timestudy.amcost = player.timestudy.amcost.times(new Decimal("1e20000"))
       player.timestudy.theorem += 1
-      updateTimeStudyButtons()
+      updateTimeStudyButtons(true)
       return true
   } else return false
 }
@@ -17,7 +17,7 @@ function buyWithIP() {
       player.infinityPoints = player.infinityPoints.minus(player.timestudy.ipcost)
       player.timestudy.ipcost = player.timestudy.ipcost.times(1e100)
       player.timestudy.theorem += 1
-      updateTimeStudyButtons()
+      updateTimeStudyButtons(true)
       return true
   } else return false
 }
@@ -31,7 +31,7 @@ function buyWithEP() {
       player.eternityPoints = player.eternityPoints.minus(player.timestudy.epcost)
       player.timestudy.epcost = player.timestudy.epcost.times(2)
       player.timestudy.theorem += 1
-      updateTimeStudyButtons()
+      updateTimeStudyButtons(true)
       updateEternityUpgrades()
       return true
   } else return false
@@ -59,7 +59,7 @@ function maxTheorems() {
 		if (!break_infinity_js && isNaN(player.eternityPoints.logarithm)) player.eternityPoints = new Decimal(0)
 		player.timestudy.epcost = player.timestudy.epcost.times(Decimal.pow(2, gainTT))
 	}
-	updateTimeStudyButtons()
+	updateTimeStudyButtons(true)
 	updateEternityUpgrades()
 }
 
@@ -92,43 +92,43 @@ function updateTheoremButtons() {
 }
 
 function buyTimeStudy(name, check, quickBuy) {
-  var cost = studyCosts[all.indexOf(name)]
-  if (player.boughtDims) {
-      if (player.timestudy.theorem<player.timestudy.ers_studies[name]+1) return
-      player.timestudy.theorem-=player.timestudy.ers_studies[name]+1
-      player.timestudy.ers_studies[name]++
-      updateTimeStudyButtons()
-  } else if (shiftDown && check === undefined) studiesUntil(name);
-  else if (player.timestudy.theorem >= cost && canBuyStudy(name) && !player.timestudy.studies.includes(name)) {
-      player.timestudy.studies.push(name)
-      player.timestudy.theorem -= cost
-      if (name == 71 || name == 81 || name == 91 || name == 101) {
-          document.getElementById(""+name).className = "timestudybought normaldimstudy"
-      } else if (name == 72 || name == 82 || name == 92 || name == 102) {
-          document.getElementById(""+name).className = "timestudybought infdimstudy"
-      } else if (name == 73 || name == 83 || name == 93 || name == 103) {
-          document.getElementById(""+name).className = "timestudybought timedimstudy"
-      } else if (name == 121 || name == 131 || name == 141) {
-          document.getElementById(""+name).className = "timestudybought activestudy"
-      } else if (name == 122 || name == 132 || name == 142) {
-          document.getElementById(""+name).className = "timestudybought passivestudy"
-      } else if (name == 123 || name == 133 || name == 143) {
-          document.getElementById(""+name).className = "timestudybought idlestudy"
-      } else if (name == 221 || name == 224 || name == 225 || name == 228 || name == 231 || name == 234) {
-          document.getElementById(name).className = "timestudybought darkstudy"
-      } else if (name == 222 || name == 223 || name == 226 || name == 227 || name == 232 || name == 233) {
-          document.getElementById(name).className = "timestudybought lightstudy"
-      } else {
-          document.getElementById(""+name).className = "timestudybought"
-      }
-      if (name == 131 && speedrunMilestonesReached < 20) {
-          if (player.replicanti.galaxybuyer) document.getElementById("replicantiresettoggle").textContent = "Auto galaxy ON (disabled)"
-          else document.getElementById("replicantiresettoggle").textContent = "Auto galaxy OFF (disabled)"
-      }
-      if (quickBuy) return
-      updateTimeStudyButtons()
-      drawStudyTree()
-  }
+	var cost = studyCosts[all.indexOf(name)]
+	if (player.boughtDims) {
+		if (player.timestudy.theorem<player.timestudy.ers_studies[name]+1) return
+		player.timestudy.theorem-=player.timestudy.ers_studies[name]+1
+		player.timestudy.ers_studies[name]++
+		updateTimeStudyButtons(true)
+	} else if (shiftDown && check === undefined) studiesUntil(name);
+	else if (player.timestudy.theorem >= cost && canBuyStudy(name) && !player.timestudy.studies.includes(name)) {
+		player.timestudy.studies.push(name)
+		player.timestudy.theorem -= cost
+		if (name == 71 || name == 81 || name == 91 || name == 101) {
+			document.getElementById(name).className = "timestudybought normaldimstudy"
+		} else if (name == 72 || name == 82 || name == 92 || name == 102) {
+			document.getElementById(name).className = "timestudybought infdimstudy"
+		} else if (name == 73 || name == 83 || name == 93 || name == 103) {
+			document.getElementById(name).className = "timestudybought timedimstudy"
+		} else if (name == 121 || name == 131 || name == 141) {
+			document.getElementById(name).className = "timestudybought activestudy"
+		} else if (name == 122 || name == 132 || name == 142) {
+			document.getElementById(name).className = "timestudybought passivestudy"
+		} else if (name == 123 || name == 133 || name == 143) {
+			document.getElementById(name).className = "timestudybought idlestudy"
+		} else if (name == 221 || name == 224 || name == 225 || name == 228 || name == 231 || name == 234) {
+			document.getElementById(name).className = "timestudybought darkstudy"
+		} else if (name == 222 || name == 223 || name == 226 || name == 227 || name == 232 || name == 233) {
+			document.getElementById(name).className = "timestudybought lightstudy"
+		} else {
+			document.getElementById(name).className = "timestudybought"
+		}
+		if (name == 131 && speedrunMilestonesReached < 20) {
+			if (player.replicanti.galaxybuyer) document.getElementById("replicantiresettoggle").textContent = "Auto galaxy ON (disabled)"
+			else document.getElementById("replicantiresettoggle").textContent = "Auto galaxy OFF (disabled)"
+		}
+		if (quickBuy) return
+		updateTimeStudyButtons(true)
+		drawStudyTree()
+	}
 }
 
 function buyDilationStudy(name, cost) {
@@ -148,7 +148,7 @@ function buyDilationStudy(name, cost) {
         player.dilation.studies.push(name)
         player.timestudy.theorem -= cost
         document.getElementById("dilstudy"+name).className = "dilationupgbought"
-        updateTimeStudyButtons()
+        updateTimeStudyButtons(true)
         drawStudyTree()
     }
 }
@@ -238,7 +238,10 @@ function canBuyStudy(name) {
 
 var all = [11, 21, 22, 33, 31, 32, 41, 42, 51, 61, 62, 71, 72, 73, 81, 82 ,83, 91, 92, 93, 101, 102, 103, 111, 121, 122, 123, 131, 132, 133, 141, 142, 143, 151, 161, 162, 171, 181, 191, 192, 193, 201, 211, 212, 213, 214, 221, 222, 223, 224, 225, 226, 227, 228, 231, 232, 233, 234]
 var studyCosts = [1, 3, 2, 2, 3, 2, 4, 6, 3, 3, 3, 4, 6, 5, 4, 6, 5, 4, 5, 7, 4, 6, 6, 12, 9, 9, 9, 5, 5, 5, 4, 4, 4, 8, 7, 7, 15, 200, 400, 730, 300, 900, 120, 150, 200, 120, 900, 900, 900, 900, 900, 900, 900, 900, 500, 500, 500, 500]
-function updateTimeStudyButtons() {
+var performedTS
+function updateTimeStudyButtons(changed) {
+  if (changed ? player.dilation.upgrades.includes(10) : performedTS && !player.dilation.upgrades.includes(10)) return
+  performedTS = true
   if (player.boughtDims) {
       var locked=getTotalTT(player)<60
       document.getElementById("nextstudy").textContent=locked?"Next time study set unlock at 60 total Time Theorems.":""
@@ -445,9 +448,7 @@ function respecTimeStudies(force, presetLoad) {
   player.eternityChallUnlocked = 0
   updateEternityChallenges()
   drawStudyTree()
-  if (!presetLoad) {
-      updateTimeStudyButtons()
-  }
+  if (!presetLoad) updateTimeStudyButtons(true)
   if (gotAch) giveAchievement("You do know how these work, right?")
   if (!GUBought("gb3")) ipMultPower=2
   if (player.replicanti.galaxybuyer) document.getElementById("replicantiresettoggle").textContent = "Auto galaxy ON"
@@ -578,7 +579,7 @@ function importStudyTree(input) {
 			drawMasteryTree()
 		}
 		if (player.timestudy.length > oldLength) {
-			updateTimeStudyButtons()
+			updateTimeStudyButtons(true)
 			drawStudyTree()
 		}
 	}

@@ -1413,6 +1413,7 @@ function quantumReset(force, auto, challid, bigRip, implode=false) {
 	document.getElementById("respecMastery").style.display = keepMastery ? "block" : "none"
 	document.getElementById("respecMastery2").style.display = keepMastery ? "block" : "none"
 	if (!keepMastery) {
+		performedTS=false
 		if (document.getElementById("metadimensions").style.display == "block") showDimTab("antimatterdimensions")
 		if (document.getElementById("masterystudies").style.display == "block") showEternityTab("timestudies", document.getElementById("eternitystore").style.display!="block")
 	}
