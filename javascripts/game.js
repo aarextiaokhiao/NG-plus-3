@@ -583,6 +583,7 @@ function updateNewPlayer(reseted) {
                 ghostlyRays: 0,
                 darkMatter: 0,
                 lights: [0,0,0,0,0,0,0,0],
+                maxRed: 0,
                 enpowerments: 0
             }
         }
@@ -1000,7 +1001,7 @@ let tmp = {
 	nbc: [null,3,4,6,15,50,1e3,1e14,1e40],
 	nu: [],
 	nuc: [null,1e6,1e7,1e8,2e8,5e8,2e9,5e9,75e8,1e10,7e12,1e18,1e60,1e125,1e160,1e280],
-	lt: [16e3,2e5,6e5,2e6,6e6,5e7,24e7,125e7],
+	lt: [12800,16e4,48e4,16e5,6e6,5e7,24e7,125e7],
 	lti: [2,4,1.5,10,4,1e3,2.5,3],
 	ls: [0,0,0,0,0,0,0],
 	le: [0,0,0,0,0,0,0]
@@ -1014,7 +1015,12 @@ function updateTemp() {
 		tmp.ns=new Decimal(nanospeed)
 		tmp.ppti=1
 		if (player.ghostify.ghostlyPhotons.unl) {
-			for (var c=6;c>-1;c--) tmp.ls[c]=player.ghostify.ghostlyPhotons.lights[c]*(Math.sqrt(c>5?1:tmp.ls[c+1]+1)+player.ghostify.ghostlyPhotons.enpowerments)
+			for (var c=6;c>-1;c--) {
+				var x=player.ghostify.ghostlyPhotons.lights[c]
+				if (c<1) x=(player.ghostify.ghostlyPhotons.maxRed+x*2)/3
+				tmp.ls[c]=x*(Math.sqrt(c>5?1:tmp.ls[c+1]+1)+player.ghostify.ghostlyPhotons.enpowerments)
+			}
+			tmp.ls[7]=player.ghostify.ghostlyPhotons.lights[0]*(Math.sqrt(tmp.ls[2]+1)+player.ghostify.ghostlyPhotons.enpowerments) //Other red Light boosts than 0 LE
 			tmp.le[0]=Math.pow(tmp.ls[0],1/4)*.15+1
 			if (tmp.le[0]>1.5) tmp.le[0]=Math.log10(tmp.le[0]*20/3)*1.5
 			tmp.le[1]=tmp.ls[1]>64?Math.log10(tmp.ls[1]/64)+14:tmp.ls[1]>8?Math.sqrt(tmp.ls[1])+6:tmp.ls[1]+1 //Orange light
@@ -1025,7 +1031,7 @@ function updateTemp() {
 			tmp.le[6]=Decimal.pow(10,Math.pow(player.postC3Reward.log10()*tmp.ls[6],1/3)*2) //Violet light
 			if (player.ghostify.ghostlyPhotons.enpowerments) tmp.le[7]=Math.log10(tmp.ls[3]+1)*3 //Green light (LE#1)
 			if (player.ghostify.ghostlyPhotons.enpowerments>1) tmp.le[8]=Math.log10(tmp.ls[4]*10+1)/4+1 //Blue light (LE#2)
-			if (player.ghostify.ghostlyPhotons.enpowerments>2) tmp.le[9]=Math.pow(tmp.ls[0]+1,.1)*2-1 //Red light (LE#3)
+			if (player.ghostify.ghostlyPhotons.enpowerments>2) tmp.le[9]=Math.pow(tmp.ls[7]+1,.1)*2-1 //Red light (LE#3)
 			tmp.bru[3]=Decimal.pow(tmp.qu.bigRip.spaceShards.div(1e140).add(1).log10()+1,Math.max(tmp.qu.bigRip.spaceShards.div(1e140).add(1).log10()/10,1)) //BRU18
 			tmp.bru[4]=Decimal.pow(10,Math.sqrt(player.timeShards.add(1).log10())/80) //BRU19
 			tmp.bru[5]=Math.log10(quantumWorth.add(1).log10()+1) //BRU20
@@ -3199,7 +3205,7 @@ function load_saves() {
 	closeToolTip();
 	if (metaSave.alert) {
 		metaSave.alert=false
-		localStorage.setItem("AD_aarexModifications_gph",btoa(JSON.stringify(metaSave)))
+		localStorage.setItem("AD_aarexModifications",btoa(JSON.stringify(metaSave)))
 	}
 	document.getElementById("loadmenu").style.display = "block";
 	changeSaveDesc(metaSave.current, savePlacement)
@@ -3497,10 +3503,10 @@ function import_save(type) {
 			metaSave.saveOrder.push(newSaveId)
 			latestRow=document.getElementById("saves").insertRow(loadedSaves)
 			latestRow.innerHTML = getSaveLayout(newSaveId)
-			localStorage.setItem(btoa("dsAM_gph_"+newSaveId),save_data)
+			localStorage.setItem(btoa("dsAM_"+newSaveId),save_data)
 			loadedSaves++
 			changeSaveDesc(newSaveId, loadedSaves)
-			localStorage.setItem("AD_aarexModifications_gph",btoa(JSON.stringify(metaSave)))
+			localStorage.setItem("AD_aarexModifications",btoa(JSON.stringify(metaSave)))
         } else {
             set_save(type, decoded_save_data)
             changeSaveDesc(type, placement)
@@ -3695,7 +3701,9 @@ function setAchieveTooltip() {
     let bm10 = document.getElementById("braveMilestone10")
     let bm14 = document.getElementById("braveMilestone14")
     let mi = document.getElementById("Meta-Infinity confirmed?")
+    let uc = document.getElementById("Underchallenged")
     let wd = document.getElementById("Weak Decay")
+    let arent = document.getElementById("Aren't you already dead?")
 
     ndial.setAttribute('ach-tooltip', "Have exactly 99 Eighth Dimensions. Reward: Eighth Dimensions are 10% stronger"+(player.tickspeedBoosts==undefined?".":" and you gain more GP based on your Eighth Dimensions and your Tickspeed Boosts."));
     apocAchieve.setAttribute('ach-tooltip', "Get over " + formatValue(player.options.notation, 1e80, 0, 0) + " antimatter.");
@@ -3793,8 +3801,10 @@ function setAchieveTooltip() {
     bm1.setAttribute('ach-tooltip', "Reward: Start Ghostifies with all Speedrun Milestones and all "+shorten(Number.MAX_VALUE)+" QK features unlocked, all Paired Challenges completed, all Big Rip upgrades bought, Nanofield is 2x faster until you reach 16 rewards, and you get quarks based on your best MA this quantum.")
     bm10.setAttribute('ach-tooltip', "Reward: Start Ghostifies with 10 of Fourth Emperor Dimensions"+(player.aarexModifications.ngudpV?" and start Big Rips with 3rd row of Eternity upgrades.":"."))
     bm14.setAttribute('ach-tooltip', "Reward: Start Ghostifies with "+shortenCosts(1e25)+" Quark Spins and Branches are 10x faster.")
+    uc.setAttribute('ach-tooltip', "Become a ghost with at least "+shortenCosts(Decimal.pow(10, 22e4))+" EP without starting Eternity Challenge 10 while Big Ripped.")
     mi.setAttribute('ach-tooltip', "Get "+shorten(Number.MAX_VALUE)+" infinitied stat.")
     wd.setAttribute('ach-tooltip', "Get "+shortenCosts(Decimal.pow(10, 1e12))+" Infinity Unstable Quarks for each Branch without Big Ripping.")
+    arent.setAttribute('ach-tooltip', "Reach "+shortenCosts(Decimal.pow(10, 18e5))+" IP while dilated and big ripped and without having studies, EP mult upgrades, Tree Upgrades, and Break Eternity.")
 }
 
 
@@ -7182,7 +7192,7 @@ setInterval(function() {
             if (ableToGetRid7 && player.infinityPoints.e >= 35e4) giveAchievement("And so your life?")
             if (ableToGetRid8 && player.infinityPoints.e >= 95e4) giveAchievement("Please answer me why you are dying.")
             if (Math.min(Math.min(getRadioactiveDecays("r"),getRadioactiveDecays("g")),getRadioactiveDecays("b"))>1&&tmp.qu.tod.r.quarks.min(tmp.qu.tod.g.quarks).min(tmp.qu.tod.b.quarks).gte("1e1000000000000")&&!tmp.qu.bigRip.times) giveAchievement("Weak Decay")
-            if (ableToGetRid9 && player.infinityPoints.e >= 1/0) giveAchievement("Why do you want to die?")
+            if (ableToGetRid9 && player.infinityPoints.e >= 18e5) giveAchievement("Aren't you already dead?")
         }
         if (tmp.qu.bigRip.spaceShards.e>32&&!tmp.qu.breakEternity.did) giveAchievement("Finite Time")
         if (nG(getInfinitied(), Number.MAX_VALUE)) giveAchievement("Meta-Infinity confirmed?")
@@ -7207,10 +7217,9 @@ setInterval(function() {
         if (isAutoGhostActive(14)) maxBuyBEEPMult()
         if (isAutoGhostActive(4)&&player.ghostify.automatorGhosts[4].mode=="t") rotateAutoUnstable()
         if (isAutoGhostActive(10)) maxBuyLimit()
-        if (isAutoGhostActive(9)&&tmp.qu.replicants.quantumFood>0) {
-            let d=tmp.qu.replicants.limitDim
-            if (canFeedReplicant(d)) feedReplicant(d, true)
-            else if (d>1&&!eds[d].perm&&canFeedReplicant(d-1)) feedReplicant(d-1, true)
+        if (isAutoGhostActive(9)&&tmp.qu.replicants.quantumFood>0) for (d=1;d<9;d++) if (canFeedReplicant(d)&&(d==tmp.qu.replicants.limitDim||(!eds[d+1].perm&&eds[d].workers.lt(11)))) {
+            feedReplicant(d, true)
+            break
         }
         if (isAutoGhostActive(8)) buyMaxQuantumFood()
         if (isAutoGhostActive(7)) maxQuarkMult()
@@ -7230,10 +7239,10 @@ setInterval(function() {
             else player.aarexModifications.popUpId = ""
             document.getElementById("welcomeMessage").innerHTML = "You are almost there for a supreme completion! However, completing this turns you to a ghost instead. This allows you to pass big rip universes and unlock new stuff! However, you need to lose everything too. Therefore, this is the sixth layer of NG+3."
         }
-        if (player.masterystudies&&(player.masterystudies.includes("d14")||player.achievements.includes("ng3p51"))&&!player.aarexModifications.newGameExpVersion&&!metaSave.ngp4) {
+        if (player.masterystudies&&(player.masterystudies.includes("d14")||player.achievements.includes("ng3p51"))&&!player.aarexModifications.newGameExpVersion&&!player.aarexModifications.ngudpV&&!metaSave.ngp4) {
             $.notify("Congratulations! You unlocked NG+4!", "success")
             metaSave.ngp4=true
-            localStorage.setItem("AD_aarexModifications_gph",btoa(JSON.stringify(metaSave)))
+            localStorage.setItem("AD_aarexModifications",btoa(JSON.stringify(metaSave)))
         }
         if (player.eternityPoints.gte("1e1215") && tmp.qu.bigRip.active && !tmp.qu.breakEternity.unlocked) {
             tmp.qu.breakEternity.unlocked = true
@@ -7456,6 +7465,7 @@ function gameLoop(diff) {
             data[tmp.qu.bigRip.active?"amount":"darkMatter"]=data[tmp.qu.bigRip.active?"amount":"darkMatter"].add(getGPHProduction().times(diff/10))
             data.ghostlyRays=data.ghostlyRays.add(getGHRProduction().times(diff/10)).min(getGHRCap())
             for (var c=0;c<8;c++) if (data.ghostlyRays.gte(getLightThreshold(c))) data.lights[c]+=Math.floor(data.ghostlyRays.div(getLightThreshold(c)).log(tmp.lti[c])+1)
+            data.maxRed = Math.max(data.lights[0], data.maxRed)
         }
         if (tmp.qu.nanofield.producingCharge) {
             var rate = getQuarkChargeProduction()
@@ -8645,7 +8655,7 @@ function initGame() {
     setupText()
     initiateMetaSave()
     migrateOldSaves()
-    localStorage.setItem('AD_aarexModifications_gph', btoa(JSON.stringify(metaSave)))
+    localStorage.setItem('AD_aarexModifications', btoa(JSON.stringify(metaSave)))
     load_game();
     if (player.aarexModifications.tabsSave.on) {
         showTab(player.aarexModifications.tabsSave.tabMain)

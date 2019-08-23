@@ -3104,9 +3104,15 @@ function ghostifyReset(implode, gain, amount, force) {
 	}
 	if (tmp.qu.bigRip.active) switchAB()
 	var bm = player.ghostify.milestones
-	if (bm > 2) for (var c=1;c<9;c++) tmp.qu.electrons.mult += 0.5-QCIntensity(c)*0.25
+	var nBRU = []
+	var nBEU = []
+	for (var u=16;u>0;u--) {
+		if (nBRU.includes(u+1)||tmp.qu.bigRip.upgrades.includes(u)) nBRU.push(u)
+		if (u<10&&(nBEU.includes(u+1)||tmp.qu.breakEternity.upgrades.includes(u))) nBEU.push(u)
+	}
+	if (bm > 2) for (var c=1;c<9;c++) tmp.qu.electrons.mult += .5-QCIntensity(c)*.25
 	if (bm > 15) giveAchievement("I rather oppose the theory of everything")
-	if (player.eternityPoints.e>=1/0&&player.ghostify.under) giveAchievement("Underchallenged")
+	if (player.eternityPoints.e>=22e4&&player.ghostify.under) giveAchievement("Underchallenged")
 	if (player.ghostify.best<=5) giveAchievement("Running through Big Rips")
 	player.ghostify.time = 0
 	player = {
@@ -3573,13 +3579,13 @@ function ghostifyReset(implode, gain, amount, force) {
 				savedAutobuyersNoBR: tmp.qu.bigRip.savedAutobuyersNoBR,
 				savedAutobuyersBR: tmp.qu.bigRip.savedAutobuyersBR,
 				spaceShards: new Decimal(0),
-				upgrades: []
+				upgrades: bm ? nBRU : []
 			},
 			breakEternity: {
 				unlocked: bm > 14,
 				break: bm > 14 ? tmp.qu.breakEternity.break : false,
 				eternalMatter: new Decimal(0),
-				upgrades: bm > 14 ? [1, 2, 3, 4, 5, 6] : [],
+				upgrades: bm > 14 ? nBEU : [],
 				epMultPower: 0
 			},
 			notrelative: true,
@@ -3746,10 +3752,8 @@ function ghostifyReset(implode, gain, amount, force) {
 		var colors=['r','g','b']
 		for (var c=0;c<3;c++) tmp.qu.tod[colors[c]].upgrades[1]=5
 	}
-	if (bm) {
-		for (var i=1;i<9;i++) tmp.qu.challenges[i] = 2
-		for (var u=1;u<18;u++) tmp.qu.bigRip.upgrades.push(u)
-	} else {
+	if (bm) for (var i=1;i<9;i++) tmp.qu.challenges[i] = 2
+	else {
 		document.getElementById('rebuyupgauto').style.display="none"
 		document.getElementById('toggleallmetadims').style.display="none"
 		document.getElementById('metaboostauto').style.display="none"
@@ -3938,6 +3942,7 @@ function updateGhostifyTabs() {
 			document.getElementById("lightThreshold"+(c+1)).textContent=shorten(getLightThreshold(c))
 			if (c>0) document.getElementById("lightStrength"+c).textContent=(Math.sqrt(c>6?1:tmp.ls[c]+1)+gphData.enpowerments).toFixed(2)
 		}
+		document.getElementById("lightMax1").textContent=getFullExpansion(gphData.maxRed)
 		document.getElementById("lightBoost1").textContent=tmp.le[0].toFixed(3)
 		document.getElementById("lightBoost2").textContent=tmp.le[1].toFixed(2)
 		document.getElementById("lightBoost3").textContent=getFullExpansion(Math.floor(tmp.le[2]))

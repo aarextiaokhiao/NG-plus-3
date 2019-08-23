@@ -618,14 +618,14 @@ function new_preset(importing) {
 	latestRow.innerHTML=getPresetLayout(placement)
 	loadedPresets++
 	changePresetTitle(placement, loadedPresets)
-	localStorage.setItem("AD_aarexModifications_gph",btoa(JSON.stringify(metaSave)))
+	localStorage.setItem("AD_aarexModifications",btoa(JSON.stringify(metaSave)))
 	$.notify("Preset created", "info")
 }
 
 //Smart presets
 var onERS = false
 var onNGP3 = false
-var prefix = "dsAM_gph_ST_"
+var prefix = "dsAM_ST_"
 var poData
 
 function save_preset(id) {
@@ -683,7 +683,7 @@ function delete_preset(presetId) {
     }
     metaSave["presetsOrder"+(player.boughtDims?"_ers":"")]=newPresetsOrder
     poData=newPresetsOrder
-    localStorage.setItem("AD_aarexModifications_gph",btoa(JSON.stringify(metaSave)))
+    localStorage.setItem("AD_aarexModifications",btoa(JSON.stringify(metaSave)))
     $.notify("Preset deleted", "info")
 }
 
@@ -709,7 +709,7 @@ function move_preset(id,offset) {
 	document.getElementById("presets").rows[placement+offset].innerHTML=getPresetLayout(id)
 	changePresetTitle(poData[placement],placement)
 	changePresetTitle(poData[placement+offset],placement+offset)
-	localStorage.setItem("AD_aarexModifications_gph",btoa(JSON.stringify(metaSave)))
+	localStorage.setItem("AD_aarexModifications",btoa(JSON.stringify(metaSave)))
 }
 
 var loadedPresets=0
@@ -721,8 +721,8 @@ function openStudyPresets() {
 		document.getElementById("presets").innerHTML=""
 		presets = {}
 		onERS = saveOnERS
-		if (onERS) prefix = "dsERS_gph_ST_"
-		else prefix = "dsAM_gph_ST_"
+		if (onERS) prefix = "dsERS_ST_"
+		else prefix = "dsAM_ST_"
 		loadedPresets = 0
 	} else if (saveOnNGP3!=onNGP3) {
 		onNGP3=saveOnNGP3

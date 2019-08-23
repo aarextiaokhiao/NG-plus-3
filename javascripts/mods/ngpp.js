@@ -100,7 +100,7 @@ function metaBoost() {
 	let req = getMetaShiftRequirement()
 	let isNU1ReductionActive = hasNU(1) ? !tmp.qu.bigRip.active : false
 	if (player.meta[req.tier].bought<Math.floor(req.amount)) return
-	if (speedrunMilestonesReached>26 && req.tier>7) {
+	if (isRewardEnabled(27) && req.tier>7) {
 		if (isNU1ReductionActive) {
 			if (player.meta.resets<=req.scalingStart) {
 				player.meta.resets=Math.min(player.meta.resets+Math.floor((player.meta[8].bought-req.amount)/(req.mult+1))+1,req.scalingStart)
@@ -1035,7 +1035,7 @@ function quantumReset(force, auto, challid, bigRip, implode=false) {
 		dilation: {
 			studies: bigRip ? (tmp.qu.bigRip.upgrades.includes(12) ? [1,2,3,4,5,6] : tmp.qu.bigRip.upgrades.includes(10) ? [1] : []) : isRewardEnabled(4) ? (speedrunMilestonesReached > 5 ? [1,2,3,4,5,6] : [1]) : [],
 			active: false,
-			tachyonParticles: (player.achievements.includes("ng3p37") && (bigRip ? tmp.qu.bigRip.upgrades.includes(11) : true)) || player.achievements.includes("ng3p71") ? player.dilation.bestTP.pow((player.ghostify.milestones > 15 && !bigRip) || (!challid && player.ghostify.milestones > 3) ? 1 : 0.5) : new Decimal(0),
+			tachyonParticles: (player.achievements.includes("ng3p37") && (bigRip ? tmp.qu.bigRip.upgrades.includes(11) : true)) || player.achievements.includes("ng3p71") ? player.dilation.bestTP.pow((player.ghostify.milestones > 15 && (!bigRip || player.achievements.includes("ng3p71"))) || (!challid && player.ghostify.milestones > 3) ? 1 : 0.5) : new Decimal(0),
 			dilatedTime: new Decimal(speedrunMilestonesReached>21 && isRewardEnabled(4) && !bigRip?1e100:0),
 			bestTP: player.dilation.bestTP,
 			bestTPOverGhostifies: player.dilation.bestTPOverGhostifies,
