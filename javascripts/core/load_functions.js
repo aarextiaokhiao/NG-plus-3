@@ -646,7 +646,7 @@ if (player.version < 5) {
           }
           player.aarexModifications.newGamePlusVersion = 1
           if (confirm("Do you want to migrate your NG++ save into new NG+++ mode?")) {
-              player.aarexModifications.newGame3PlusVersion = 2.1
+              player.aarexModifications.newGame3PlusVersion = 2.101
               player.respecMastery=false
               player.dbPower = 1
               player.dilation.times = 0
@@ -1204,7 +1204,12 @@ if (player.version < 5) {
           maxRed: 0,
           enpowerments: 0
       }
-	  player.aarexModifications.newGame3PlusVersion = 2.1
+  }
+  if (player.aarexModifications.newGame3PlusVersion < 2.101) {
+	  var newAchievements=[]
+      for (var a=0;a<player.achievements.length;a++) if (player.achievements[a]!="ng3p67") newAchievements.push(player.achievements[a])
+	  player.achievements=newAchievements
+	  player.aarexModifications.newGame3PlusVersion = 2.101
   }
   if (player.masterystudies) {
       if (player.meta.bestOverQuantums === undefined) player.meta.bestOverQuantums = player.meta.bestAntimatter
@@ -1716,7 +1721,7 @@ if (player.version < 5) {
       document.getElementById("blackHoleAnimBtn").textContent = "Black hole: " + ((player.options.animations.blackHole) ? "ON" : "OFF")
       document.getElementById("blackholeMax").style.display = player.aarexModifications.ngudpV ? "" : "none"
       document.getElementById("blackholeauto").style.display = player.aarexModifications.ngudpV && player.achievements.includes("ngpp17") ? "" : "none"
-      document.getElementById('blackholeauto').textContent="Auto: O"+(player.autoEterOptions.blackhole?"N":"FF")
+      document.getElementById('blackholeauto').textContent="Auto: O"+(player.aarexModifications.ngudpV&&player.autoEterOptions.blackhole?"N":"FF")
       if (player.blackhole.unl == true) {
           document.getElementById("blackholediv").style.display="inline-block"
           document.getElementById("blackholeunlock").style.display="none"
@@ -1875,7 +1880,7 @@ if (player.version < 5) {
   document.getElementById("secretoptionsbtn").style.display=player.options.secrets?"":"none"
   document.getElementById("ghostlynewsbtn").textContent=((player.options.secrets!==undefined?player.options.secrets.ghostlyNews:false)?"Hide":"Show")+" ghostly news ticker"
   var detectNGPStart = player.lastUpdate == 1531944153054
-  if (false) {
+  if (player.aarexModifications.offlineProgress && !noOffline) {
       let diff = new Date().getTime() - player.lastUpdate
       if (diff > 1000*1000) {
           simulateTime(diff/1000)

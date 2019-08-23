@@ -20,11 +20,11 @@ var player
 var metaSave = null
 var modes = {
 	ngm: false,
-	ngp: false,
-	ngpp: false,
-	arrows: false,
-	ngmm: false,
-	rs: false
+	ngp: 0,
+	ngpp: 0,
+	arrows: 0,
+	ngmm: 0,
+	rs: 0
 }
 function updateNewPlayer(reseted) {
     if (reseted) {
@@ -415,7 +415,7 @@ function updateNewPlayer(reseted) {
         player.options.gSacrificeConfirmation = true
     }
     if (modesChosen.ngpp === 2 || modesChosen.ngpp > 3) {
-        player.aarexModifications.newGame3PlusVersion = 2.1
+        player.aarexModifications.newGame3PlusVersion = 2.101
         player.respecMastery=false
         player.dbPower = 1
         player.dilation.times = 0
@@ -1020,7 +1020,7 @@ function updateTemp() {
 				if (c<1) x=(player.ghostify.ghostlyPhotons.maxRed+x*2)/3
 				tmp.ls[c]=x*(Math.sqrt(c>5?1:tmp.ls[c+1]+1)+player.ghostify.ghostlyPhotons.enpowerments)
 			}
-			tmp.ls[7]=player.ghostify.ghostlyPhotons.lights[0]*(Math.sqrt(tmp.ls[2]+1)+player.ghostify.ghostlyPhotons.enpowerments) //Other red Light boosts than 0 LE
+			tmp.ls[7]=player.ghostify.ghostlyPhotons.lights[0]*(Math.sqrt(tmp.ls[1]+1)+player.ghostify.ghostlyPhotons.enpowerments) //Other red Light boosts than 0 LE
 			tmp.le[0]=Math.pow(tmp.ls[0],1/4)*.15+1
 			if (tmp.le[0]>1.5) tmp.le[0]=Math.log10(tmp.le[0]*20/3)*1.5
 			tmp.le[1]=tmp.ls[1]>64?Math.log10(tmp.ls[1]/64)+14:tmp.ls[1]>8?Math.sqrt(tmp.ls[1])+6:tmp.ls[1]+1 //Orange light
@@ -3366,31 +3366,23 @@ var modSubNames = {
   rs: ["NONE", "Eternity", "Infinity"]
 }
 function toggle_mode(id) {
-  hasSubMod = Object.keys(modCaps).includes(id)
-  // Change submod
-  if (!hasSubMod || modes[id]===0) modes[id]=!modes[id]
-  else if (modes[id] === true) modes[id] = 2
-  else {
-	if (id == "ngp" && modes[id] === 1 && !metaSave.ngp4) modes[id] = false
+	hasSubMod = Object.keys(modCaps).includes(id)
+	// Change submod
+	if (!hasSubMod || modes[id]===0) modes[id]=!modes[id]
+	else if (id == "ngp" && modes.ngp && (modes.ngpp < 2 || modes.ngpp === 3 || !metaSave.ngp4)) modes[id] = 0
+	else if (modes[id] === true) modes[id] = 2
 	else modes[id] = (modes[id]+1) % (modCaps[id]+1)
-  }
-  // Convert bool to int
-  subModId = modes[id]
-  if (subModId<2) subModId = subModId|0
-  // Update displays
+	// Convert bool to int
+	subModId = modes[id]
+	if (subModId<2) subModId = subModId|0
+	// Update displays
 	document.getElementById(id+"Btn").textContent=`${modFullNames[id]}: ${hasSubMod?modSubNames[id][subModId]:subModId?"ON":"OFF"}`
-	if (id=="ngp"&&modes.ngp>1&&modes.ngpp!=2&&modes.ngpp<4) {
-		modes.ngpp=2
-		modes.rs=0
-		document.getElementById("ngppBtn").textContent="NG++: NG+++"
-		document.getElementById("rsBtn").textContent="Respecced: NONE"
-	}
 	if (id=="ngpp"&&modes.ngpp) {
 		if (!modes.ngp) toggle_mode("ngp")
 		modes.rs=0
 		document.getElementById("rsBtn").textContent="Respecced: NONE"
 	}
-	if (id=="ngpp"&&modes.ngp>1&&modes.ngpp!=2&&modes.ngpp<4) {
+	if (id=="ngpp"&&modes.ngp===2&&(!modes.ngpp||modes.ngpp===3)) {
 		modes.ngp=true
 		document.getElementById("ngpBtn").textContent="NG+: ON"
 	}
@@ -7182,7 +7174,7 @@ setInterval(function() {
         if (tmp.qu.replicants.requirement.gte("1e14500000")) giveAchievement("Stop blocking me!")
         if (player.infinityPoints.gte(Decimal.pow(10, 275e3))&&ableToGetRid6) giveAchievement("Are you currently dying?")
         if (tmp.qu.nanofield.rewards>20&&noTree) giveAchievement("But I don't want to grind!")
-        if (player.replicanti.amount.e >= player.aarexModifications.ngudpV ? 268435456 : 36e6) giveAchievement("Will it be enough?")
+        if (player.replicanti.amount.e >= (player.aarexModifications.ngudpV ? 268435456 : 36e6)) giveAchievement("Will it be enough?")
         if (tmp.qu.bigRip.active) {
             let ableToGetRid7 = ableToGetRid2 && player.epmult.eq(1)
             let ableToGetRid8 = ableToGetRid7 && !tmp.qu.breakEternity.did

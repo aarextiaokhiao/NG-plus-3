@@ -2088,7 +2088,7 @@ function buyBranchUpg(branch,upg) {
 	bData.spin=bData.spin.sub(getBranchUpgCost(branch,upg))
 	if (bData.upgrades[upg]==undefined) bData.upgrades[upg]=0
 	bData.upgrades[upg]++
-	document.getElementById(colors[branch]+"upg"+upg+"current").textContent=shortenDimensions(Decimal.pow(upg>2?4:2,upg>1?getBranchUpgLevel(shorthand,upg):getBU1Power(shorthand)*(1+getRadioactiveDecays(shorthand)/10)))
+	document.getElementById(colors[branch]+"upg"+upg+"current").textContent=shortenDimensions(Decimal.pow(upg>2?4:2,upg>1?getBranchUpgLevel(branch,upg):getBU1Power(branch)*(1+getRadioactiveDecays(branch)/10)))
 	document.getElementById(colors[branch]+"upg"+upg+"cost").textContent=shortenMoney(getBranchUpgCost(branch, upg))
 }
 
@@ -3108,7 +3108,7 @@ function ghostifyReset(implode, gain, amount, force) {
 	var nBEU = []
 	for (var u=16;u>0;u--) {
 		if (nBRU.includes(u+1)||tmp.qu.bigRip.upgrades.includes(u)) nBRU.push(u)
-		if (u<10&&(nBEU.includes(u+1)||tmp.qu.breakEternity.upgrades.includes(u))) nBEU.push(u)
+		if (u<11&&(nBEU.includes(u+1)||tmp.qu.breakEternity.upgrades.includes(u))) nBEU.push(u)
 	}
 	if (bm > 2) for (var c=1;c<9;c++) tmp.qu.electrons.mult += .5-QCIntensity(c)*.25
 	if (bm > 15) giveAchievement("I rather oppose the theory of everything")
