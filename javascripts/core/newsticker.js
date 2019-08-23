@@ -205,7 +205,7 @@ newsArray = [//always true
 ["New prestige layer coming soon, Police-ize! When you prestige, you unlock officer dimensions. They behave like all other dimensions except they produce anti-anti-antimatter. This anti-anti-antimatter can be used to purchase more officer dimensions. The anti-anti-antimatter also makes your galaxies feel more safer, providing a boost in galaxy efficiency, based on your highest reached AAAM.", "player.masterystudies !== undefined", "am50"],
 ['"THERE WILL BE NO NG+4. NG+3 ALWAYS HAVE UPDATES." - Aarex', "ghostified", "am51"],
 ["No. You are not really at current end-game.", "(player.masterystudies !== undefined ? player.quantum.bigRip.bestAntimatter.gte(Decimal.pow(10, 1e9)) : false)", "am52"],
-["Congratulations for beating NG+3! (for now...) You already know what comes next after neutrinos.", "player.totalmoney.gte(Decimal.pow(10, 12e15))", "am53"],
+["Congratulations for beating NG+3! (for now...) A secret is unlocked in Ghostly News Ticker...", "player.totalmoney.gte(Decimal.pow(10, 5e16))", "am53"],
 ["You're reading news too much.", "player.newsArray.length >= 215", "am54"],
 ["You're addicted to news.", "player.newsArray.length >= 230", "am55"],
 ["Okay. You can stop reading the news.", "player.newsArray.length >= 245", "am56"],
@@ -277,7 +277,15 @@ newsArray = [//always true
 ["Don't click this news", true, "am122"],
 ["TIANAMEN SQUARE 6/4/1989 TIANAMEN SQUARE 6/4/1989 TIANAMEN SQUARE 6/4/1989", "new Date().getMonth() == 6 && new Date().getDate() == 4", "am123"],
 ["You chose poorly.", "quantumed && !ghostified ? player.quantum.times < 2 && player.quantum.usedQuarks.b.gt(0) : false", "am124"],
-/*NEXT ID: am125*/
+["Eternity Challenge 10 is confirmed to be a boost!", "ghostified && (player.ghostify.ghostlyPhotons.lights[0] > 3 || player.ghostify.ghostlyPhotons.enpowerments)", "am125"],
+["When will Trio Challenges be released?!", "player.achievements.includes('ng3p25')", "am126"],
+["Welcome to the hell of NG-.", "player.tickspeedBoosts !== undefined", "am127"],
+["Start playing NG+3 instead. You are not doing your progress.", "player.aarexModifications.ngp4V", "am128"],
+["If NGUd+ is a combination of NG+3 and NGUd, then why isn't NGUd' a combination of NG' and NGUd?", "player.aarexModifications.ngudpV", "am129"],
+["Congratulations for beating NG-3! (for now...)", "player.tickspeedBoosts !== undefined && player.postChallUnlocked > 5", "am130"],
+["Progressing as a Ghost...", "ghostified && player.ghostify.ghostlyPhotons.unl", "am131"],
+["VROOOOOOM!!!", "player.infinityUpgrades.includes('postGalaxy')", "am132"],
+/*NEXT ID: am133*/
 
 //Ghostly news ticker messages
 ["Kee-hee-hee!", true, "gn1"],
@@ -296,8 +304,11 @@ newsArray = [//always true
 ["Are your ghost particles ghostly? If not, talk to your ghostly boss.", true, "gn14"],
 ["What's a ghostify? -some new person that joined the discord server", true, "gn15"],
 ["BREAKING NEWS: Because of antimatter, someone has been turned into a basketball. The news ticker writers are baffled.", true, "gn16"],
-["If you read 'Congratulations for beating NG+3' message, here is a spoiler: There will be Photons!", "player.newsArray.includes('am68') && player.totalmoney.gte(Decimal.pow(10, 12e15))", "gn17"],
-["WARNING: Do not interact evil ghosts. They can scare you out.", true, "gn18"]];}
+["If you read 'Congratulations for beating NG+3' message, here is a spoiler: In the next update, there will be W & Z Bosons!", "player.newsArray.includes('am68') && player.totalmoney.gte(Decimal.pow(10, 5e16))", "gn17"],
+["WARNING: Do not interact evil ghosts. They can scare you out.", true, "gn18"],
+["Do you know that ghosts are proved to be undead?", true, "gn19"],
+["I got Ghost Particles. I got Neutrinos. That makes me a ghost.", true, "gn20"]
+];}
 
 document.addEventListener("visibilitychange", function() {if (!document.hidden) {scrollNextMessage();}}, false);
 var scrollTimeouts = [];

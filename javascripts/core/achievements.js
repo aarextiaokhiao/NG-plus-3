@@ -165,6 +165,14 @@ const allAchievements = {
   ng3p66 : "I rather oppose the theory of everything",
   ng3p67 : "Will it be enough?",
   ng3p68 : "Please answer me why you are dying.",
+  ng3p71 : "Progressing as a Ghost",
+  ng3p72 : "Underchallenged",
+  ng3p73 : "Meta-Infinity confirmed?",
+  ng3p74 : "Weak Decay",
+  ng3p75 : "Radioactive Decaying to the max!",
+  ng3p76 : "Running through Big Rips",
+  ng3p77 : "The Theory of Ultimate Studies",
+  ng3p78 : "Aren't you already dead?",
   s11 : "The first one's always free",
   s12 : "Just in case",
   s13 : "It pays to have respect",
@@ -282,6 +290,7 @@ function giveAchievement(name) {
     if (name == "GAS GAS GAS") {
         document.getElementById('epmultauto').style.display=""
         for (i=1;i<9;i++) document.getElementById("td"+i+'auto').style.visibility="visible"
+        if (player.aarexModifications.ngudpV) document.getElementById("blackholeAuto").style.display=""
     }
     if (name == "It will never be enough") document.getElementById('replicantibulkmodetoggle').style.display="inline-block"
     if (name == "I already got rid of you..." || name == "No dilation means no production.") {
@@ -303,7 +312,7 @@ function giveAchievement(name) {
 function updateAchievements() {
 	var amount = 0
 	var rowsShown = 0
-	for (var i=1; i<22; i++) {
+	for (var i=1; i<23; i++) {
 		var shown=true
 		var rowid=i
 		if (i>15) {
@@ -406,7 +415,7 @@ function toggleAchRowNums() {
 	// 0 == not visible, 1 == visible
 	player.aarexModifications.showAchRowNums=!player.aarexModifications.showAchRowNums
 	updateAchievements()
-	document.getElementById("showAchRowNums").textContent=(player.aarexModifications.showAchRowNums?"Hide":"Show")+" achievement row numbers"
+	document.getElementById("showAchRowNums").textContent=(player.aarexModifications.showAchRowNums?"Hide":"Show")+" achievement row progresses"
 }
 
 function toggleCompletedAchs() {

@@ -1859,7 +1859,7 @@ br {
     position: relative;
 }
 
-.qtable, #gluonupgrades {
+.qtable, #gluonupgrades, #lights {
 	width:100%
 }
 
@@ -1928,14 +1928,14 @@ br {
 .gluonupgradebought.br { animation: brupgbought 5s infinite }
 
 #electrons .gluonupgrade.storebtn {
-	background: black;
+	background-color: black !important;
 	border-color: #8e991e;
 	color: #8e991e;
 	animation: electronupg 5s infinite
 }
 
 #electrons .gluonupgrade.storebtn:hover {
-	background: #8e991e;
+	background-color: #8e991e !important;
 	color: #ffffff;
 	animation: electronupg 5s infinite
 }
@@ -2050,40 +2050,43 @@ br {
 }
 
 .gluonupgrade.r {
-	background-color: #1f0000;
+	background-color: #1f0000 !important;
 	border: 1px solid #3f0000;
 	box-shadow: inset 0px 0px 5px 0px #7f0000;
+	text-shadow: 0px 0px 2px #1f0000, 0px 0px 2px #ff0000;
 	color: #7f0000
 }
 .gluonupgrade.g {
-	background-color: #001f00;
+	background-color: #001f00 !important;
 	border: 1px solid #003f00;
 	box-shadow: inset 0px 0px 5px 0px #007f00;
+	text-shadow: 0px 0px 2px #001f00, 0px 0px 2px #00ff00;
 	color: #007f00
 }
 .gluonupgrade.b {
-	background-color: #00001f;
+	background-color: #00001f !important;
 	border: 1px solid #00003f;
 	box-shadow: inset 0px 0px 5px 0px #00007f;
-	color: #00007f
+	text-shadow: 0px 0px 2px #00001f, 0px 0px 2px #0000ff;
+	color: #00009f
 }
 
 .gluonupgrade.r:hover {
-	background-color: #7f0000;
+	background-color: #7f0000 !important;
 	border: 1px solid #3f0000;
 	box-shadow: inset 0px 0px 5px 0px #bf0000;
 	color: #1f0000;
 	cursor: pointer
 }
 .gluonupgrade.g:hover {
-	background-color: #007f00;
+	background-color: #007f00 !important;
 	border: 1px solid #003f00;
 	box-shadow: inset 0px 0px 5px 0px #00bf00;
 	color: #001f00;
 	cursor: pointer
 }
 .gluonupgrade.b:hover {
-	background-color: #00007f;
+	background-color: #00007f !important;
 	border: 1px solid #00003f;
 	box-shadow: inset 0px 0px 5px 0px #0000bf;
 	color: #00001f;
@@ -2122,7 +2125,7 @@ br {
 	width:150px;
 	height: 30px;
 	color: black;
-	background: #2d7233;
+	background: #2d7233 !important;
 	font-weight: bold;
 	font-family: Typewriter;
 	border: 3px solid #5be567;
@@ -2135,25 +2138,31 @@ br {
 	box-shadow: inset 0px 0px 10px 0px #5be567, inset 0px 0px 20px 0px #5be567, inset 0px 0px 30px 0px #5be567
 }
 .bigripbtn:hover {
-	background: #a0e5a6;
+	background: #a0e5a6 !important;
 	color: #6b996e
 }
 .gluonupgrade.bigrip {
-	background: #2d7233;
+	background: #2d7233 !important;
 	border: 3px solid #5be567;
 	color: #5be567;
 	box-shadow: inset 0px 0px 10px 0px #5be567, inset 0px 0px 20px 0px #5be567, inset 0px 0px 30px 0px #5be567
 }
 .gluonupgrade.bigrip:hover {
-	background: #a0e5a6;
+	background: #a0e5a6 !important;
 	color: #6b996e;
 	cursor: pointer
 }
 .gluonupgradebought.bigrip {
-	background: #a0e5a6;
+	background: #a0e5a6 !important;
 	border: 3px solid #6b996e;
 	color: #1f1f1f;
 	box-shadow: inset 0px 0px 10px 0px #6b996e, inset 0px 0px 20px 0px #6b996e, inset 0px 0px 30px 0px #6b996e
+}
+.gluonupgradebought.bigripoff {
+	background: #999999 !important;
+	border: 3px solid #727272;
+	color: #bf0000;
+	box-shadow: inset 0px 0px 10px 0px #727272, inset 0px 0px 20px 0px #727272, inset 0px 0px 30px 0px #727272
 }
 
 #ghostifyani {
@@ -2231,7 +2240,7 @@ br {
 }
 
 .gluonupgrade.neutrinoupg {
-	background: black;
+	background: black !important;
 	border: 1px solid #bfbfbf;
 	box-shadow: inset 0px 0px 20px 0px #bfbfbf;
 	color: black;
@@ -2239,12 +2248,12 @@ br {
 }
 
 .gluonupgrade.neutrinoupg:hover {
-	background: white;
+	background: white !important;
 	cursor: pointer
 }
 
 .gluonupgradebought.neutrinoupg {
-	background: white;
+	background: white !important;
 	border: 1px solid #bfbfbf;
 	box-shadow: inset 0px 0px 20px 0px #bfbfbf;
 	color: white;
@@ -2257,6 +2266,70 @@ br {
 
 #autoGhost11pw, #autoGhost11lw, #autoGhost11cw {
 	width: 50px
+}
+
+#lights td {
+	min-width:25%;
+	width:25%;
+	max-width:25%;
+	text-align:center
+}
+
+.gluonupgrade.gph {
+	background: #ccc8b7 !important;
+	border: 1px solid #bfaf5f;
+	box-shadow: inset 0px 0px 20px 0px #bfaf5f;
+	color: black;
+	text-shadow: 0px 0px 3px black, 0px 0px 6px #bfaf5f
+}
+
+.gluonupgrade.gph:hover {
+	color: white;
+	text-shadow: 0px 0px 3px white, 0px 0px 6px black;
+	cursor: pointer
+}
+
+.orange {
+	color: #bf5f00
+}
+
+.yellow {
+	color: #bfbf00
+}
+
+.indigo {
+	color: #2f00bf
+}
+
+.violet {
+	color: #5f00bf
+}
+
+.uv {
+	color: #8f00bf
+}
+
+.gluonupgrade.wzb {
+	background: repeating-linear-gradient(#620d65, transparent 50%, #620d65 100%), repeating-linear-gradient(90deg, transparent, #c73415 50%, transparent 100%), black;
+	background-size: 200% 200%;
+	border: 1px solid transparent;
+	color: black;
+	text-shadow: 0px 0px 3px black, 0px 0px 6px white;
+	animation: wzb 5s linear infinite
+}
+
+.gluonupgrade.wzb:hover {
+	color: white;
+	cursor: pointer
+}
+
+@keyframes wzb { 
+	0%{
+		background-position: 0% 0%
+	}
+	100%{
+		background-position: 200% 200%
+	}
 }
 
 @media print,

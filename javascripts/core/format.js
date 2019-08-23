@@ -673,12 +673,16 @@ shortenInfDimCosts = function (money) {
 };
 
 shortenDimensions = function (money) {
-  return formatValue(player.options.notation, money, 2, 0);
+	return formatValue(player.options.notation, money, 2, 0);
 };
 
 shortenMoney = function (money) {
   return formatValue(player.options.notation, money, 2, 1);
 };
+
+shortenND = function (money) {
+	return formatValue(player.options.notation, money, 2, player.aarexModifications.ngmX > 3 ? Math.min(Math.max(3 - money.exponent, 0), 3) : 0)
+}
 
 
 function timeDisplay(time) {

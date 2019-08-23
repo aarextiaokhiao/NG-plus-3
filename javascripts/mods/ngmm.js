@@ -4,20 +4,21 @@ function getGSAmount() {
 	let y = 1.5 
 	if (player.challenges.includes("postcngmm_1")) {
 		y += Math.max(0, 0.05*(galaxies - 10)) + 0.005 * Math.pow(Math.max(0, galaxies-30) , 2) + 0.0005 * Math.pow(Math.max(0, galaxies-50) , 3)
-		y *= .08*player.challenges.length
+		y *= .08*(tmp.cp+14)
 	}
 	if (y > 100) y = Math.pow(316.22*y, 2/5)
 	else if (y > 10) y = Math.pow(10*y, .5)
 	let z = 1
-	if (player.challenges.length > 17 && player.achievements.includes("r67")) {
-		z = 0.06*player.challenges.length
+	if (tmp.cp>3) {
+		z = 0.06*(tmp.cp+14)
 		z += galaxies/100
 		if (player.tickspeedBoosts == undefined) z *= Math.log(galaxies+3)
 	}
 	let resetMult = player.resets-(player.currentChallenge=="challenge4"?2:4)
 	if (player.tickspeedBoosts !== undefined) resetMult = (resetMult+1)/2
 	let ret = Decimal.pow(galaxies, y).times(Decimal.pow(Math.max(0, resetMult), z)).max(0)
-	ret = ret.times(player.eightAmount/50+1)
+	ret = ret.times(getAmount(8)/50+1)
+	if (player.achievements.includes("r23") && player.tickspeedBoosts !== undefined) ret=ret.times(Decimal.pow(Math.max(player.tickspeedBoosts/10,1),Math.max(getAmount(8)/75,1)))
 	if (player.galacticSacrifice.upgrades.includes(32)) ret = ret.times(galUpgrade32())
 	if (player.infinityUpgrades.includes("galPointMult")) ret = ret.times(getPost01Mult())
 	if (player.achievements.includes('r37')) {
@@ -30,13 +31,13 @@ function getGSAmount() {
 
 function galacticSacrifice(auto) {
 	if (getGSAmount().eq(0)) return
+	if (tmp.ri) return
 	if (player.options.gSacrificeConfirmation&&!auto) if (!confirm("Galactic Sacrifice will do a galaxy reset, and then remove all of your galaxies, in exchange of galaxy points which can be use to buy many overpowered upgrades, but it will take a lot of time to recover, are you sure you wanna do this?")) return
 	player.galacticSacrifice.galaxyPoints = player.galacticSacrifice.galaxyPoints.plus(getGSAmount())
-	player.galaxies = -1
 	player.galacticSacrifice.times++
 	player.galacticSacrifice.time = 0
 	GPminpeak = new Decimal(0)
-	galaxyReset()
+	galaxyReset(-player.galaxies)
 }
 
 function resetGalacticSacrifice() {
@@ -49,9 +50,9 @@ function resetGalacticSacrifice() {
 }
 
 function newGalacticDataOnInfinity() {
-	if (player.galacticSacrifice&&player.achievements.includes("r36")) {
+	if (player.galacticSacrifice&&player.achievements.includes("r3"+(player.tickspeedBoosts==undefined?6:3))) {
 		var data=player.galacticSacrifice
-		data.galaxyPoints=data.galaxyPoints.add(getGSAmount())
+		data.galaxyPoints=player.tickspeedBoosts==undefined?data.galaxyPoints.add(getGSAmount()):new Decimal(0)
 		data.time=0
 		return data
 	} else return resetGalacticSacrifice()
@@ -65,13 +66,12 @@ function isIC3Trapped() {
 
 let galUpgradeCosts = {
 	11: 1,
-	12: 3,
 	21: 1,
 	22: 5,
-	31: 2,
-	14: 1e3,
-	24: 3e3,
-	34: 1e5
+	23: 100,
+	14: 300,
+	24: 1e3,
+	34: 1e17
 }
 
 function buyGalaxyUpgrade(i) {
@@ -96,9 +96,13 @@ function reduceDimCosts() {
 		if (player.galacticSacrifice.upgrades.includes(11)) div=galUpgrade11()
 		for (d=1;d<9;d++) {
 			var name = TIER_NAMES[d]
+			if (player.aarexModifications.ngmX>3) {
+				player[name+"Cost"] = player[name+"Cost"].pow(1.25).times(10)
+				player.costMultipliers[d-1] = player.costMultipliers[d-1].pow(1.25)
+			}
 			player[name+"Cost"] = player[name+"Cost"].div(div)
 		}
-		if (player.achievements.includes('r48')) player.tickSpeedCost = player.tickSpeedCost.div(div)
+		if (player.achievements.includes('r48') && player.tickspeedBoosts == undefined) player.tickSpeedCost = player.tickSpeedCost.div(div)
 	}
 	if (player.infinityUpgradesRespecced != undefined) {
 		for (d=1;d<9;d++) {
@@ -110,10 +114,10 @@ function reduceDimCosts() {
 }
 
 let galUpgrade11 = function () {
-	let x = Math.min(player.infinitied, 1e6);
+	let x = Math.min(player.infinitied, player.tickspeedBoosts !== undefined ? 4 : 1e6);
 	let y = Math.max(x + 2, 2);
 	let z = 10
-	if (player.challenges.length > 14 && player.challenges.includes("postcngmm_1")) z -= (player.challenges.length-8)/4
+	if (tmp.cp > 0 && player.challenges.includes("postcngmm_1") && player.tickspeedBoosts == undefined) z -= (tmp.cp+6)/4
 	if (z < 6) z = Math.pow(1296 * z, .2)
 	if (x > 99) y = Math.pow(Math.log(x), Math.log(x) / z) + 14
 	else if (x > 4) y = Math.pow(x + 5, .5) + 4
@@ -137,11 +141,12 @@ let galUpgrade32 = function () {
 	return x.pow(0.003).add(1);
 }
 let galUpgrade33 = function () {
-	if (player.tickspeedBoosts != undefined) return player.galacticSacrifice.galaxyPoints.add(1).log10()/5+1
+	if (player.tickspeedBoosts != undefined) return player.galacticSacrifice.galaxyPoints.div(1e10).add(1).log10()/5+1
 	return player.galacticSacrifice.galaxyPoints.max(1).log10()/4+1
 }
 
 function galacticUpgradeSpanDisplay () {
+	document.getElementById("galaxyPoints").innerHTML = "You have <span class='GPAmount'>"+shortenDimensions(player.galacticSacrifice.galaxyPoints)+"</span> Galaxy point"+(player.galacticSacrifice.galaxyPoints.eq(1)?".":"s.")
 	if (player.infinitied>0||player.eternities!==0||quantumed) document.getElementById('galspan11').innerHTML = shortenDimensions(galUpgrade11())
 	document.getElementById('galspan12').innerHTML = shorten(galUpgrade12())
 	document.getElementById('galspan13').innerHTML = shorten(galUpgrade13())
@@ -151,10 +156,9 @@ function galacticUpgradeSpanDisplay () {
 	document.getElementById('galspan33').innerHTML = shorten(galUpgrade33())
 	document.getElementById('galcost33').innerHTML = shortenCosts(galUpgradeCosts[33])
 	if (player.tickspeedBoosts!=undefined) {
-		document.getElementById('galcost14').innerHTML = shortenCosts(1e3)
 		document.getElementById('galspan24').innerHTML = shorten(galUpgrade24())
-		document.getElementById('galcost24').innerHTML = shortenCosts(3e3)
-		document.getElementById('galcost34').innerHTML = shortenCosts(1e5)
+		document.getElementById('galcost24').innerHTML = shortenCosts(1e3)
+		document.getElementById('galcost34').innerHTML = shortenCosts(1e17)
 	}
 }
 
@@ -179,7 +183,6 @@ function resetTotalBought() {
 }
 
 function productAllTotalBought () {
-	if ((player.currentChallenge == "challenge11" || player.currentChallenge == "postc1") && player.tickspeedBoosts != undefined) return 1
 	var ret = 1;
 	var mult = getProductBoughtMult()
 	for (i = 1; i <= 8; i++) {
@@ -283,4 +286,21 @@ function renameIC(id) {
 //v1.501
 function isADSCRunning() {
 	return player.currentChallenge === "challenge13" || (player.currentChallenge === "postc1" && player.galacticSacrifice) || player.tickspeedBoosts !== undefined
+}
+
+//v1.6
+document.getElementById("postinfi50").onclick = function() {
+    buyInfinityUpgrade("postinfi50",1e25);
+}
+
+document.getElementById("postinfi51").onclick = function() {
+    buyInfinityUpgrade("postinfi51",1e29);
+}
+
+document.getElementById("postinfi52").onclick = function() {
+    buyInfinityUpgrade("postinfi52",1e33);
+}
+
+document.getElementById("postinfi53").onclick = function() {
+    buyInfinityUpgrade("postinfi53",1e37);
 }

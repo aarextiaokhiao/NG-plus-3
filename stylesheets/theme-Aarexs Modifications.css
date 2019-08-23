@@ -69,11 +69,11 @@ body {
     background-color: #00e500 !important;
     color: #191919 !important
 }
-.unavailablebtn, .infinistorebtnlocked, .newdimlocked, .milestonerewardlocked, .eternityupbtnlocked, .eternityttbtnlocked, .lockedchallengesbtn, .dilationupglocked, .dilationupgrebuyablelocked, .nanofieldrewardlocked {
+.unavailablebtn, .infinistorebtnlocked, .newdimlocked, .milestonerewardlocked, .eternityupbtnlocked, .eternityttbtnlocked, .lockedchallengesbtn, .dilationupglocked, .dilationupgrebuyablelocked, .nanofieldrewardlocked, .gluonupgradebought.bigripoff {
     border-color: #e50000 !important;
     color: #e5e5e5 !important
 }
-.unavailablebtn:hover, .infinistorebtnlocked:hover, .newdimlocked:hover, .infinistorebtnbought:hover, .onchallengebtn:hover, .completedchallengesbtn:hover, .milestonerewardlocked:hover, .milestonereward:hover, .timestudylocked:hover, .eternityupbtnlocked:hover, .eternityttbtnlocked:hover, .eternitychallengestudylocked:hover, .lockedchallengesbtn:hover, .dilationupglocked:hover, .dilationupgbought:hover, .dilationupgrebuyablelocked:hover, .dilationupgrebuyablebought:hover, .upgbought:hover, .nanofieldrewardlocked:hover {
+.unavailablebtn:hover, .infinistorebtnlocked:hover, .newdimlocked:hover, .infinistorebtnbought:hover, .onchallengebtn:hover, .completedchallengesbtn:hover, .milestonerewardlocked:hover, .milestonereward:hover, .timestudylocked:hover, .eternityupbtnlocked:hover, .eternityttbtnlocked:hover, .eternitychallengestudylocked:hover, .lockedchallengesbtn:hover, .dilationupglocked:hover, .dilationupgbought:hover, .dilationupgrebuyablelocked:hover, .dilationupgrebuyablebought:hover, .upgbought:hover, .nanofieldrewardlocked:hover, .gluonupgradebought.bigripoff:hover {
     background-color: #191919 !important;
     color: #e5e5e5 !important
 }
@@ -152,7 +152,10 @@ strong { color: #0072e5 }
 }
 #singularitytabbtn, #singularityunlock.storebtn, #sacrificeIP.storebtn, #blackHoleTabbtn button, #blackholeunlock.storebtn, #blackholediv table .storebtn, #replicantstabbtn button, #replicantReset.storebtn, #edtabbtn button { border: 2px solid #333333 !important }
 #singularitytabbtn:hover, #singularityunlock.storebtn:hover, #sacrificeIP.storebtn:hover, #blackHoleTabbtn button:hover, #blackholeunlock.storebtn:hover, #blackholediv table .storebtn:hover, #replicantstabbtn button:hover, #replicantReset.storebtn:hover, #edtabbtn button:hover { background-color: #333333 !important }
-#singularityPower, #darkMatter, #darkMatterPerSecond, #darkMatterDT, #nextDiscounts, #darkMatterMult, #blackholePowAmount, #DilMultAmount, #InfAndReplMultAmount, #replicantAmount, #workerReplAmount, #babyReplAmount, #workerProgress, #hatchProgress, #growupProgress, #replicantAmountED, #normalReplicantsNanofield { color: #333333 !important }
+#singularityPower, #darkMatter, #darkMatterPerSecond, #darkMatterDT, #nextDiscounts, #darkMatterMult, #blackholePowAmount, #DilMultAmount, #InfAndReplMultAmount, #replicantAmount, #workerReplAmount, #babyReplAmount, #workerProgress, #hatchProgress, #growupProgress, #replicantAmountED, #normalReplicantsNanofield, .dmAmount { 
+	color: #333333 !important;
+	text-shadow: 0px 0px 3px #333333, 0px 0px 4.5px #e5e5e5
+}
 .infchallengediv {
     background-color: #191919 !important;
     font-family:'Inconsolata', monospace !important;
@@ -361,10 +364,10 @@ strong { color: #0072e5 }
 #metaAntimatterAmount, #metaAntimatterBest, #metaAntimatterPower, #metaAntimatterEffect {
     color: #00e5e5 !important
 }
-#quantum.storebtn, .quantumbtn, #pastquantums, #speedrunsbtn button, #dilstudy8.dilationupg, #qctabbtn, #dilstudy9.dilationupg, #pccompletionsbtn {
+#quantum.storebtn, .quantumbtn, #pastquantums, #dilstudy8.dilationupg, #qctabbtn, #dilstudy9.dilationupg, #pccompletionsbtn {
     border-color: #009900 !important
 }
-#quantum.storebtn:hover, .quantumbtn:hover, #pastquantums:hover, #speedrunsbtn button:hover, #dilstudy8.dilationupg:hover, #dilstudy8.dilationupgbought, #qctabbtn:hover, #dilstudy9.dilationupg:hover, #dilstudy9.dilationupgbought, #pccompletionsbtn:hover {
+#quantum.storebtn:hover, .quantumbtn:hover, #pastquantums:hover, #dilstudy8.dilationupg:hover, #dilstudy8.dilationupgbought, #qctabbtn:hover, #dilstudy9.dilationupg:hover, #dilstudy9.dilationupgbought, #pccompletionsbtn:hover {
     background-color: #009900 !important
 }
 #progressbar.quantumProgress {
@@ -387,11 +390,12 @@ strong { color: #0072e5 }
 	border: 2px solid #191919 !important;
 	color: #191919 !important
 }
-#dilstudy7.dilationupg, #electronstabbtn button, #electrons .storebtn { 
+#dilstudy7.dilationupg, #electronstabbtn button, #electrons .gluonupgrade.storebtn { 
+	background-color: #191919 !important;
 	border: 2px solid #d2e500 !important;
-	animation: none
+	animation: none !important
 }
-#dilstudy7.dilationupg:hover, #electronstabbtn button:hover, #dilstudy7.dilationupgbought, #electrons .storebtn:hover { background-color: #d2e500 !important }
+#dilstudy7.dilationupg:hover, #electronstabbtn button:hover, #dilstudy7.dilationupgbought, #electrons .gluonupgrade.storebtn:hover { background-color: #d2e500 !important }
 #electronsAmount, #electronsTranslation { color: #d2e500 !important }
 #electronsEffect { color: #00e500 !important }
 .quantumchallengediv {
@@ -462,19 +466,22 @@ strong { color: #0072e5 }
 	background-color: #191919 !important;
     border-color: #e50000 !important;
 	box-shadow: none !important;
-	color: #e5e5e5 !important
+	color: #e5e5e5 !important;
+	text-shadow: none
 }
 .gluonupgrade.g {
 	background-color: #191919 !important;
     border-color: #00e500 !important;
 	box-shadow: none !important;
-	color: #e5e5e5 !important
+	color: #e5e5e5 !important;
+	text-shadow: none
 }
 .gluonupgrade.b {
 	background-color: #191919 !important;
     border-color: #0000e5 !important;
 	box-shadow: none !important;
-	color: #e5e5e5 !important
+	color: #e5e5e5 !important;
+	text-shadow: none
 }
 .gluonupgrade.r:hover {
 	background-color: #e50000 !important;
@@ -494,17 +501,22 @@ strong { color: #0072e5 }
 	box-shadow: none !important
 }
 .bigripbtn {
+	background-color: #191919 !important;
 	border: 3px solid #5be567 !important;
 	color: #e5e5e5 !important;
 	box-shadow: none !important
 }
-#dilstudy14.dilationupg:hover, #dilstudy14.dilationupgbought, .bigripbtn:hover:hover, .gluonupgrade.bigrip:hover, .gluonupgradebought.bigrip {
+#dilstudy14.dilationupg:hover, #dilstudy14.dilationupgbought, .bigripbtn:hover, .gluonupgrade.bigrip:hover, .gluonupgradebought.bigrip {
 	background-color: #5be567 !important;
 	color: #191919 !important;
 	box-shadow: none !important
 }
-#dilstudy14.dilationupgbought, .gluonupgradebought.bigrip {
+#dilstudy14.dilationupgbought, .gluonupgradebought.bigrip, .gluonupgradebought.bigripoff {
 	border: 1px solid #191919 !important
+}
+.gluonupgradebought.bigripoff {
+	border: 1px solid #999999 !important;
+	box-shadow: none !important
 }
 .SSAmount {
 	color: #5be567 !important
@@ -524,7 +536,6 @@ strong { color: #0072e5 }
 	border: transparent !important;
 	font-family: Typewriter;
 	font-weight: bold;
-	border-radius: 4px;
 	transition-duration: 0.2s;
 	animation: ghostifytext 4s linear infinite
 }
@@ -535,6 +546,64 @@ strong { color: #0072e5 }
 }
 #tooMuchPowerConsumed {
 	color: #e50000
+}
+.neutrinos {
+	color: #cccccc !important
+}
+.gluonupgrade.neutrinoupg {
+	border-color: #cccccc !important;
+	box-shadow: none;
+	text-shadow: none;
+}
+.gluonupgrade.neutrinoupg:hover {
+	background-color: #cccccc !important;
+	border-color: #cccccc !important
+}
+.gluonupgradebought.neutrinoupg {
+	background-color: #cccccc !important;
+	border-color: #191919 !important;
+	color: #191919 !important;
+	box-shadow: none;
+	text-shadow: none;
+}
+#gphtabbtn {
+	background-color: #191919 !important;
+    border-color: #bfaf5f !important;
+	color: #e5e5e5 !important
+}
+#gphtabbtn:hover {
+	background-color: #bfaf5f !important;
+	color: #191919 !important
+}
+.gluonupgrade.gph {
+	border-color: #bfaf5f !important;
+	color: #191919 !important;
+	text-shadow: 0px 0px 3px #191919, 0px 0px 6px #bfaf5f
+}
+.gluonupgrade.gph:hover {
+	color: #e5e5e5 !important;
+	text-shadow: 0px 0px 3px #e5e5e5, 0px 0px 6px #191919;
+}
+.gphAmount {
+	color: #bfaf5f
+}
+.ghr {
+	color: #ccc8b7
+}
+.orange {
+	color: #e57200
+}
+.yellow {
+	color: #e5e500
+}
+.indigo {
+	color: #3900e5
+}
+.violet {
+	color: #7200e5
+}
+.uv {
+	color: #ac00e5
 }
 .notifyjs-bootstrap-info {
     background-color: #0072e5;
