@@ -39,9 +39,8 @@ function softReset(bulk, tier=1) {
 		var temp=getDimensionBoostPower()
 		var temp2=getDimensionPowerMultiplier()
 		if (player.dbPower!=undefined&&!isNaN(break_infinity_js?player.dbPower:player.dbPower.logarithm)) for (tier=1;tier<9;tier++) {
-            var dimPow
-            if (player.currentChallenge=="challenge9"||player.currentChallenge=="postc1") dimPow=player[TIER_NAMES[tier]+'Pow'].div(player.dbPower.pow(Math.max(oldResets+1-tier,0)))
-            else dimPow=Decimal.pow(temp2,Math.floor(player[TIER_NAMES[tier]+'Bought']/10))
+            var dimPow=player[TIER_NAMES[tier]+'Pow'].div(player.dbPower.pow(Math.max(oldResets+1-tier,0)))
+            if (player.currentChallenge!="challenge9"&&player.currentChallenge!="postc1") dimPow=Decimal.pow(temp2,Math.floor(player[TIER_NAMES[tier]+'Bought']/10)).max(dimPow)
             player[TIER_NAMES[tier]+'Pow']=temp.pow(Math.max(player.resets+1-tier,0)).times(dimPow)
         }
 		player.dbPower=temp

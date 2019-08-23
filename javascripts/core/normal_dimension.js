@@ -428,7 +428,7 @@ function getDimensionProductionPerSecond(tier) {
 	if (player.tickspeedBoosts != undefined) ret = ret.div(10)
 	if (player.aarexModifications.ngmX>3) ret = ret.div(100)
 	if (tier == 1 && (player.currentChallenge == "challenge7" || inQC(4))) ret = ret.plus(getDimensionProductionPerSecond(2))
-	let tick = dilates(Decimal.div(player.galacticSacrifice == undefined ? 1 : 1000, getTickspeed()))
+	let tick = dilates(Decimal.div(1e3,getTickspeed()),"tick")
 	if (player.dilation.active && player.masterystudies != undefined) tick = tick.pow(getNanofieldRewardEffect(5))
 	return ret.times(tick)
 }

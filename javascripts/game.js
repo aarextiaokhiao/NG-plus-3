@@ -6532,13 +6532,16 @@ function startDilatedEternity(auto, shortcut) {
     if (tmp.ngp3 && quantumed) updateColorCharge()
 }
 
-function dilates(x, meta) {
+function dilates(x, m) {
 	let y = 0
-	if (player.dilation.active && (!meta || !player.achievements.includes("ng3p63") || !inQC(0))) y++
+	if (player.dilation.active && (m!="meta" || !player.achievements.includes("ng3p63") || !inQC(0))) y++
 	if (player.galacticSacrifice !== undefined) y++
 	if (y) {
-		x = x.max(1)
-		if (x.gt(10) || !player.aarexModifications.ngmX>3) x = Decimal.pow(10, Math.pow(Math.abs(x.log10()), Math.pow(dilationPowerStrength(), y)))
+		if (m!="tick") x = x.max(1)
+		else if (player.galacticSacrifice==undefined) x = x.times(1e3)
+		if (x.gt(10) || !(player.aarexModifications.ngmX>3)) x = Decimal.pow(10, Math.pow(x.log10(), Math.pow(dilationPowerStrength(), y)))
+		if (m=="tick"&&player.galacticSacrifice==undefined) x = x.div(1e3)
+		if (m=="tick"&&x.lt(1)) x = Decimal.div(1,x)
 	}
 	return x.max(0)
 }

@@ -44,7 +44,7 @@ function getMetaDimensionMultiplier (tier) {
   if (tier%2>0) multiplier = multiplier.times(QC4Reward)
   multiplier = multiplier.times(getQCReward(6))
   
-  return dilates(multiplier.max(1), true)
+  return dilates(multiplier.max(1), "meta")
 }
 
 function getMetaDimensionDescription(tier) {
