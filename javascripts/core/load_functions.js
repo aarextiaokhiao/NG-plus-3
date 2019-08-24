@@ -1299,6 +1299,7 @@ if (player.version < 5) {
           player.aarexModifications.newGameMinusMinusVersion = 1.5
           updateChallenges()
       }
+      if (Decimal.pow(1e15, player.replicanti.chance*100).times(1e135).div(player.replicanti.chanceCost).gte(1e59)) player.aarexModifications.newGameMinusMinusVersion = 1.9
       if (player.aarexModifications.newGameMinusMinusVersion) updateAchievements()
   }
   if (player.aarexModifications.newGameMinusMinusVersion < 1.1) player.galaxyPoints = 0
@@ -1389,7 +1390,12 @@ if (player.version < 5) {
       player.infchallengeTimes.push(600*60*24*31)
       player.aarexModifications.newGameMinusMinusVersion = 1.5
   }
-  if (player.aarexModifications.newGameMinusMinusVersion < 1.6) player.aarexModifications.newGameMinusMinusVersion = 1.6
+  if (player.aarexModifications.newGameMinusMinusVersion < 1.9) {
+      player.replicanti.chanceCost=player.replicanti.chanceCost.div(1e60)
+      player.replicanti.intervalCost=player.replicanti.intervalCost.div(1e60)
+      player.replicanti.galCost=player.replicanti.galCost.div(1e60)
+      player.aarexModifications.newGameMinusMinusVersion = 1.9
+  }
   if (player.aarexModifications.newGame3MinusVersion < 2.1) {
       player.autobuyers[13]=14
       player.overXGalaxiesTickspeedBoost=1
@@ -1692,6 +1698,7 @@ if (player.version < 5) {
   if (player.infinityUpgradesRespecced != undefined) order = []
   document.getElementById("icngmm_3reward").textContent="Reward: " + (player.tickspeedBoosts == undefined ? "???" : "Every tickspeed purchase decreases tickspeed based on galaxies")
   document.getElementById("ic1desc").textContent="All previous challenges (except tickspeed challenge"+(player.galacticSacrifice?',':" and")+" automatic big crunch challenge"+(player.galacticSacrifice?", and automatic galactic sacrifice challenge":"")+") at once."
+  document.getElementById("ic1reward").textContent="Reward: "+(player.galacticSacrifice?2:1.3)+"x on all Infinity Dimensions for each Infinity Challenge completed"
   document.getElementById("ic7desc").textContent="You can't get Antimatter Galaxies, but dimensional boost multiplier "+(player.galacticSacrifice?"is cubed":"2.5x -> 10x")
   document.getElementById("ic7reward").textContent="Reward: Dimensional boost multiplier "+(player.galacticSacrifice?"is squared":"2.5x -> 4x")
   document.getElementById("replicantitabbtn").style.display=player.infinityUpgradesRespecced?"none":""

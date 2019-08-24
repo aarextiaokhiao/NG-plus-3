@@ -118,6 +118,11 @@ let galUpgrade11 = function () {
 	let y = Math.max(x + 2, 2);
 	let z = 10
 	if (tmp.cp > 0 && player.challenges.includes("postcngmm_1") && player.tickspeedBoosts == undefined) z -= (tmp.cp+6)/4
+	if (player.infinityUpgrades.includes("postinfi61")) {
+		x += 1e7
+		z -= .1
+		if (player.galacticSacrifice.upgrades.length>9) x += player.galacticSacrifice.upgrades.length*1e7
+	}
 	if (z < 6) z = Math.pow(1296 * z, .2)
 	if (x > 99) y = Math.pow(Math.log(x), Math.log(x) / z) + 14
 	else if (x > 4) y = Math.pow(x + 5, .5) + 4
@@ -127,7 +132,12 @@ let galUpgrade12 = function () {
 	return 2 * Math.pow(1 + player.galacticSacrifice.time / 600, 0.5);
 }
 let galUpgrade13 = function () {
-	return player.galacticSacrifice.galaxyPoints.div(5).plus(1).pow(3)
+	let exp = 3
+	if (player.infinityUpgrades.includes("postinfi62")) {
+		if (player.currentEternityChall === "") exp *= Math.pow(Math.log(player.resets+3), 2)
+		else exp *= Math.pow(Math.log(player.resets+3), 0.5)
+	}
+	return player.galacticSacrifice.galaxyPoints.div(5).plus(1).pow(exp)
 }
 let galUpgrade23 = function () {
 	return player.galacticSacrifice.galaxyPoints.max(1).log10()*3/4+1
@@ -272,7 +282,7 @@ document.getElementById("postinfi04").onclick = function() {
 function galIP(){
     let gal = player.galaxies
     if (gal<5) return gal
-    if (gal<50) return 2 + Math.pow(5+gal, 0.6)
+    if (gal<50) return 2+Math.pow(5+gal,0.6)
     return Math.pow(gal,.4)+7
 }
 
@@ -303,4 +313,33 @@ document.getElementById("postinfi52").onclick = function() {
 
 document.getElementById("postinfi53").onclick = function() {
     buyInfinityUpgrade("postinfi53",1e37);
+}
+
+//v1.9
+document.getElementById("postinfi60").onclick = function() {
+    buyInfinityUpgrade("postinfi60",1e50);
+}
+
+document.getElementById("postinfi61").onclick = function() {
+    buyInfinityUpgrade("postinfi61",new Decimal("1e450"));
+}
+
+document.getElementById("postinfi62").onclick = function() {
+    buyInfinityUpgrade("postinfi62",new Decimal("1e700"));
+}
+
+document.getElementById("postinfi63").onclick = function() {
+    buyInfinityUpgrade("postinfi63",new Decimal("1e2000"));
+}
+
+function getB60Mult() {
+	let g=player.galaxies
+	if (g<95) return 1
+	return Decimal.pow(getEternitied()>0?2.5:3,g-95)
+}
+
+function getPostC3Exp() {
+	let g = getGalaxyPower(0)-player.dilation.freeGalaxies
+	if (g<7) return 1+g/5
+	return 2+Math.pow(g-5,0.5)/5
 }

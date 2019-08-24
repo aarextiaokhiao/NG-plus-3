@@ -60,7 +60,8 @@ function DimensionPower(tier) {
 
   if (player.achievements.includes("r94") && tier == 1) mult = mult.times(2);
   if (player.achievements.includes("r75") && !player.boughtDims) mult = mult.times(player.achPow);
-  if (player.replicanti.unl && player.replicanti.amount.gt(1)) mult = mult.times(getIDReplMult())
+  if (player.achievements.includes("r66") && player.galacticSacrifice !== undefined) mult = mult.times(Math.max(1, Math.abs(player.tickspeed.log10()) / 29))
+  if (player.replicanti.unl && player.replicanti.amount.gt(1) && player.galacticSacrifice === undefined) mult = mult.times(getIDReplMult())
 
   if (player.timestudy.studies.includes(72) && tier == 4) {
       mult = mult.times(calcTotalSacrificeBoost().pow(0.04).max(1).min("1e30000"))
@@ -88,7 +89,9 @@ function DimensionPower(tier) {
 
   if (inQC(6)) mult = mult.times(player.postC8Mult).dividedBy(player.matter.max(1))
 
-  return dilates(mult)
+  mult = dilates(mult)
+  if (player.replicanti.unl && player.replicanti.amount.gt(1) && player.galacticSacrifice !== undefined) mult = mult.times(getIDReplMult())
+  return mult
 }
 
 
