@@ -646,7 +646,7 @@ if (player.version < 5) {
           }
           player.aarexModifications.newGamePlusVersion = 1
           if (confirm("Do you want to migrate your NG++ save into new NG+++ mode?")) {
-              player.aarexModifications.newGame3PlusVersion = 2.101
+              player.aarexModifications.newGame3PlusVersion = 2.11
               player.respecMastery=false
               player.dbPower = 1
               player.dilation.times = 0
@@ -1209,8 +1209,8 @@ if (player.version < 5) {
 	  var newAchievements=[]
       for (var a=0;a<player.achievements.length;a++) if (player.achievements[a]!="ng3p67") newAchievements.push(player.achievements[a])
 	  player.achievements=newAchievements
-	  player.aarexModifications.newGame3PlusVersion = 2.101
   }
+  if (player.aarexModifications.newGame3PlusVersion < 2.11) player.aarexModifications.newGame3PlusVersion = 2.11
   if (player.masterystudies) {
       if (player.meta.bestOverQuantums === undefined) player.meta.bestOverQuantums = player.meta.bestAntimatter
       document.getElementById('prioritydil').value=player.eternityBuyer.dilationPerAmount
@@ -1299,7 +1299,7 @@ if (player.version < 5) {
           player.aarexModifications.newGameMinusMinusVersion = 1.5
           updateChallenges()
       }
-      if (Decimal.pow(1e15, player.replicanti.chance*100).times(1e135).div(player.replicanti.chanceCost).gte(1e59)) player.aarexModifications.newGameMinusMinusVersion = 1.9
+      if (Decimal.pow(1e15, player.replicanti.chance*100).times(1e135).div(player.replicanti.chanceCost).gte(1e59)) player.aarexModifications.newGameMinusMinusVersion = 1.91
       if (player.aarexModifications.newGameMinusMinusVersion) updateAchievements()
   }
   if (player.aarexModifications.newGameMinusMinusVersion < 1.1) player.galaxyPoints = 0
@@ -1394,7 +1394,14 @@ if (player.version < 5) {
       player.replicanti.chanceCost=player.replicanti.chanceCost.div(1e60)
       player.replicanti.intervalCost=player.replicanti.intervalCost.div(1e60)
       player.replicanti.galCost=player.replicanti.galCost.div(1e60)
-      player.aarexModifications.newGameMinusMinusVersion = 1.9
+  }
+  if (player.aarexModifications.newGameMinusMinusVersion < 1.91) {
+      var infBaseCost = [undefined,1e8,1e9,1e10,1e20,1e140,1e200,1e250,1e280]
+      for (tier=1;tier<9;tier++) {
+          let dim = player["infinityDimension"+tier]
+          dim.cost = new Decimal(infBaseCost[tier]).times(Decimal.pow(infCostMults[tier]/(player.infinityUpgrades.includes("postinfi53")?50:1), (dim.baseAmount/10)*(ECTimesCompleted("eterc12")?1-ECTimesCompleted("eterc12")*0.008:1)))
+      }
+      player.aarexModifications.newGameMinusMinusVersion = 1.91
   }
   if (player.aarexModifications.newGame3MinusVersion < 2.1) {
       player.autobuyers[13]=14

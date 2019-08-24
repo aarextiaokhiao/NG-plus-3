@@ -731,7 +731,7 @@ function updateQuantumTabs() {
 			document.getElementById(color+"QuarkSpin").textContent=shortenMoney(branch.spin)
 			document.getElementById(color+"UnstableQuarks").textContent=shortenMoney(branch.quarks)
 			document.getElementById(color+"QuarksDecayRate").textContent=branch.quarks.lt(linear)&&rate.lt(1)?"You are losing "+shorten(linear.times(rate))+" "+name+" per second":"Their half-life is "+timeDisplayShort(Decimal.div(10,rate),true,2)+(linear.eq(1)?"":" until their amount reaches "+shorten(linear))
-			document.getElementById(color+"QuarksDecayTime").textContent=timeDisplayShort(Decimal.div(10,rate).times(branch.quarks.gt(linear)?branch.quarks.div(linear).log(2):branch.quarks.div(linear)))
+			document.getElementById(color+"QuarksDecayTime").textContent=timeDisplayShort(Decimal.div(10,rate).times(branch.quarks.gt(linear)?branch.quarks.div(linear).log(2)+1:branch.quarks.div(linear)))
 			let ret=getQuarkSpinProduction(shorthand)
 			document.getElementById(color+"QuarkSpinProduction").textContent="+"+shortenMoney(ret)+"/s"
 			if (branchNum==c+1) {
@@ -2860,6 +2860,7 @@ function getSpaceShardsGain() {
 	}
 	if (hasNU(9)) ret = ret.times(Decimal.max(getEternitied(), 1).pow(0.1))
 	ret = ret.floor()
+	if (isNaN(ret.e)) return new Decimal(0)
 	return ret
 }
 
@@ -2969,10 +2970,9 @@ function breakEternity() {
 }
 
 function getEMGain() {
-	let mult=1
 	let log=player.timeShards.div(1e9).log10()*0.25
-	if (log>15) return Decimal.pow(10,Math.sqrt(log*15)).times(mult).floor()
-	return Decimal.pow(10,log).times(mult).floor()
+	if (log>15) log=Math.sqrt(log*15)
+	return Decimal.pow(10,log).floor()
 }
 
 var breakUpgCosts = [1, 1e3, 1e6, 2e11, 8e17, 1e48, null, 1e290, new Decimal("1e350"), new Decimal("1e375")]

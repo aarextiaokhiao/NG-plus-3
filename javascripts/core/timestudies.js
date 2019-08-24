@@ -439,11 +439,11 @@ function respecTimeStudies(force, presetLoad) {
       if (player.masterystudies.length>respecedMS.length) player.quantum.wasted = false
       player.masterystudies=respecedMS
       updateMasteryStudyCosts()
-      drawMasteryTree()
       if (!presetLoad) {
           maybeShowFillAll()
           updateMasteryStudyButtons()
       }
+      drawMasteryTree()
   }
   player.eternityChallUnlocked = 0
   updateEternityChallenges()

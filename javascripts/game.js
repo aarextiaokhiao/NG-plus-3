@@ -400,7 +400,7 @@ function updateNewPlayer(reseted) {
         player.aarexModifications.quantumConf = true
     }
     if (modesChosen.ngmm) {
-        player.aarexModifications.newGameMinusMinusVersion = 1.9
+        player.aarexModifications.newGameMinusMinusVersion = 1.91
         player.galacticSacrifice = {}
         player.galacticSacrifice = resetGalacticSacrifice()
         player.totalBoughtDims = {}
@@ -415,7 +415,7 @@ function updateNewPlayer(reseted) {
         player.options.gSacrificeConfirmation = true
     }
     if (modesChosen.ngpp === 2 || modesChosen.ngpp > 3) {
-        player.aarexModifications.newGame3PlusVersion = 2.101
+        player.aarexModifications.newGame3PlusVersion = 2.11
         player.respecMastery=false
         player.dbPower = 1
         player.dilation.times = 0
@@ -1795,7 +1795,7 @@ function updateDimensions() {
             document.getElementById("postinfi12").innerHTML = "Power up all dimensions based on amount infinitied <br>Currently: "+shorten(getInfinitiedMult())+"x<br>Cost: "+shortenCosts(1e5)+" IP"
             if (player.timestudy.studies.includes(31)) document.getElementById("postinfi12").innerHTML = "Power up all dimensions based on amount infinitied <br>Currently: "+shortenMoney(getInfinitiedMult())+"x<br>Cost: "+shortenCosts(1e5)+" IP"
             document.getElementById("postinfi41").innerHTML = "Makes galaxies "+(player.tickspeedBoosts!=undefined?1:player.galacticSacrifice?7:5)+"0% stronger <br>Cost: "+shortenCosts(5e11)+" IP"
-            document.getElementById("postinfi32").innerHTML = "Power up all dimensions based on slowest challenge run<br>Currently: "+shorten(worstChallengeBonus)+"x<br>Cost: "+shortenCosts(1e7)+" IP"
+            document.getElementById("postinfi32").innerHTML = "Power up all dimensions based on slowest normal challenge run<br>Currently: "+shorten(worstChallengeBonus)+"x<br>Cost: "+shortenCosts(1e7)+" IP"
             document.getElementById("postinfi13").innerHTML = "You passively generate Infinitied stat based on your fastest infinity.<br>1 Infinity every "+timeDisplay(player.bestInfinityTime*5)+ " <br>Cost: "+shortenCosts(20e6)+" IP"
             document.getElementById("postinfi23").innerHTML = "Option to bulk buy Dimension"+(player.tickspeedBoosts==undefined?"":" and Tickspeed")+" Boosts <br>Cost: "+shortenCosts(player.tickspeedBoosts!=undefined?2e4:player.galacticSacrifice?5e6:5e9)+" IP"
             document.getElementById("postinfi33").innerHTML = "Autobuyers work twice as fast <br>Cost:"+shortenCosts(1e15)+" IP"
@@ -1886,18 +1886,15 @@ function updateDimensions() {
             }
         }
         if (document.getElementById("dilation").style.display == "block") {
-            if (!ghostified || player.ghostify.neutrinos.boosts < 8 || player.ghostify.milestones < 16 || tmp.qu.bigRip.active) {
-                document.getElementById("enabledilation").parentElement.style.display=""
-                if (player.dilation.active) {
-                    let gain = getDilGain()
-                    let msg = "Disable dilation"
-                    if (player.infinityPoints.lt(Number.MAX_VALUE)) {}
-                    else if (player.dilation.totalTachyonParticles.gt(gain)) msg += ".<br>Reach " + shortenMoney(Decimal.pow(10, player.dilation.totalTachyonParticles.div(getDilPower()).pow(1/getDilExp()).    toNumber() * 400)) + " antimatter to gain more Tachyon particles"
-                    else msg += " for " + shortenMoney(gain.sub(player.dilation.totalTachyonParticles)) + " Tachyon particles"
-                    document.getElementById("enabledilation").innerHTML = msg + "."
-                }
-                else document.getElementById("enabledilation").textContent = "Dilate time."+((player.eternityBuyer.isOn&&player.eternityBuyer.dilationMode&&!player.eternityBuyer.slowStopped&&player.eternityBuyer.dilMode=="amount"?!isNaN(player.eternityBuyer.statBeforeDilation):false) ? " " + (player.eternityBuyer.dilationPerAmount - player.eternityBuyer.statBeforeDilation) + " left before dilation." : "")
-            } else document.getElementById("enabledilation").parentElement.style.display="none"
+            if (player.dilation.active) {
+                let gain = getDilGain()
+                let msg = "Disable dilation"
+                if (player.infinityPoints.lt(Number.MAX_VALUE)) {}
+                else if (player.dilation.totalTachyonParticles.gt(gain)) msg += ".<br>Reach " + shortenMoney(Decimal.pow(10, player.dilation.totalTachyonParticles.div(getDilPower()).pow(1/getDilExp()).    toNumber() * 400)) + " antimatter to gain more Tachyon particles"
+                else msg += " for " + shortenMoney(gain.sub(player.dilation.totalTachyonParticles)) + " Tachyon particles"
+                document.getElementById("enabledilation").innerHTML = msg + "."
+            }
+            else document.getElementById("enabledilation").textContent = "Dilate time."+((player.eternityBuyer.isOn&&player.eternityBuyer.dilationMode&&!player.eternityBuyer.slowStopped&&player.eternityBuyer.dilMode=="amount"?!isNaN(player.eternityBuyer.statBeforeDilation):false) ? " " + (player.eternityBuyer.dilationPerAmount - player.eternityBuyer.statBeforeDilation) + " left before dilation." : "")
             if (player.exdilation==undefined||player.aarexModifications.ngudpV?false:player.blackhole.unl) {
                 document.getElementById("reversedilationdiv").style.display = ""
                 if (canReverseDilation()) {
@@ -2227,11 +2224,11 @@ function buyInfinityUpgrade(name, cost) {
 		player.infinityUpgrades.push(name)
 		player.infinityPoints = player.infinityPoints.minus(cost)
 		if (name == "postinfi53") {
+			var infBaseCost = [undefined,1e8,1e9,1e10,1e20,1e140,1e200,1e250,1e280]
 			for (tier=1;tier<9;tier++) {
 				let dim = player["infinityDimension"+tier]
 				dim.cost = new Decimal(infBaseCost[tier]).times(Decimal.pow(infCostMults[tier]/(player.infinityUpgrades.includes("postinfi53")?50:1), (dim.baseAmount/10)*(ECTimesCompleted("eterc12")?1-ECTimesCompleted("eterc12")*0.008:1)))
 			}
-			updateInfinityDimensions()
 		}
 	}
 }

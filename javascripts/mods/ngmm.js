@@ -333,9 +333,7 @@ document.getElementById("postinfi63").onclick = function() {
 }
 
 function getB60Mult() {
-	let g=player.galaxies
-	if (g<95) return 1
-	return Decimal.pow(getEternitied()>0?2.5:3,g-95)
+	return Decimal.pow(getEternitied()>0?2.5:3,player.galaxies-95).max(1)
 }
 
 function getPostC3Exp() {
