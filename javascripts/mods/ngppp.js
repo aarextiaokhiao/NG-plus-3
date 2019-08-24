@@ -2586,7 +2586,7 @@ function bigRip(auto) {
 			tmp.qu.electrons.mult+=(2-tmp.qu.challenges[c])*0.25
 			tmp.qu.challenges[c]=2
 		}
-		quantumReset(true,auto,12,true)
+		quantum(auto,true,12,true)
 	} else {
 		for (var p=1;p<5;p++) {
 			var pcData=tmp.qu.pairedChallenges.order[p]
@@ -2595,7 +2595,7 @@ function bigRip(auto) {
 				var pc2=Math.max(pcData[0],pcData[1])
 				if (pc1==6&&pc2==8) {
 					if (p-1>tmp.qu.pairedChallenges.completed) return
-					quantum(true,auto,p+8,true)
+					quantum(auto,true,p+8,true)
 				}
 			}
 		}
