@@ -823,7 +823,7 @@ function updateColorCharge() {
 
 function assignQuark(color) {
 	if (color!="r"&&tmp.qu.times<2&&!ghostified) if (!confirm("It is recommended to assign your first quarks to red. Are you sure you want to do that?")) return
-	var usedQuarks=tmp.qu.quarks.floor()
+	var usedQuarks=tmp.qu.quarks.floor().min(tmp.qu.quarks)
 	tmp.qu.usedQuarks[color]=tmp.qu.usedQuarks[color].add(usedQuarks).round()
 	tmp.qu.quarks=tmp.qu.quarks.sub(usedQuarks)
 	document.getElementById("quarks").innerHTML="You have <b class='QKAmount'>0</b> quarks."
@@ -3041,13 +3041,10 @@ function maxBuyBEEPMult() {
 	let cost=getBreakUpgCost(7)
 	if (!tmp.qu.breakEternity.eternalMatter.gte(cost)) return
 	let toBuy=Math.floor(tmp.qu.breakEternity.eternalMatter.div(cost).add(1).log(2))
-	let toSpend=Decimal.pow(2,toBuy).sub(1).times(cost)
+	let toSpend=Decimal.pow(2,toBuy).sub(1).times(cost).min(tmp.qu.breakEternity.eternalMatter)
 	tmp.qu.breakEternity.epMultPower+=toBuy
-	if (tmp.qu.breakEternity.eternalMatter.lt(toSpend)) tmp.qu.breakEternity.eternalMatter=new Decimal(0)
-	else {
-		tmp.qu.breakEternity.eternalMatter=tmp.qu.breakEternity.eternalMatter.sub(toSpend)
-		if (player.ghostify.milestones < 8) tmp.qu.breakEternity.eternalMatter = tmp.qu.breakEternity.eternalMatter.round()
-	}
+	tmp.qu.breakEternity.eternalMatter=tmp.qu.breakEternity.eternalMatter.sub(toSpend)
+	if (player.ghostify.milestones < 15) tmp.qu.breakEternity.eternalMatter = tmp.qu.breakEternity.eternalMatter.round()
 	document.getElementById("eternalMatter").textContent = shortenDimensions(tmp.qu.breakEternity.eternalMatter)
 	document.getElementById("breakUpg7Mult").textContent = shortenDimensions(getBreakUpgMult(7))
 	document.getElementById("breakUpg7Cost").textContent = shortenDimensions(getBreakUpgCost(7))
