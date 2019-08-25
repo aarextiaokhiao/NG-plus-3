@@ -289,3 +289,10 @@ function boostDilationUpgrade(x) {
     updateDilationUpgradeButtons();
     updateExdilation();
 }
+
+//v1.1
+function getD18Bonus() {
+	let x=player.replicanti.amount.max(1).log10()/1e3
+	if (x>100&&player.aarexModifications.ngudpV) x=Math.log(x)*50 //NGUd'
+	return Decimal.pow(1.05,x)
+}

@@ -1252,7 +1252,7 @@ if (player.version < 5) {
       tmp.be=tmp.qu.bigRip.active&&tmp.qu.breakEternity.break
   }
   if (player.aarexModifications.newGameMinusMinusVersion === undefined && !player.meta) {
-      if (player.version == 13) player.version = 12
+      if (player.exdilation == undefined && player.version == 13) player.version = 12
       if (player.galacticSacrifice) {
           player.galacticSacrifice.time = (player.lastUpdate - player.galacticSacrifice.last) / 100
           player.aarexModifications.newGameMinusMinusVersion = 1.29
@@ -1486,10 +1486,22 @@ if (player.version < 5) {
       player.achievements=newAchievements
       delete player.options.dilationconfirm
       updateAchievements()
+      if (player.version==13) {
+          player.version=12
+          var newDilUpgs=[]
+          for (var u=0;u<player.dilation.upgrades.length;u++) {
+              var id=player.dilation.upgrades[u]
+              if (id>10) id="ngud"+(id-10)
+              newDilUpgs.push(id)
+          }
+          player.dilation.upgrades=newDilUpgs
+          player.aarexModifications.newGameUpdateVersion=1.1
+      }
   }
-  if (player.aarexModifications.newGameUpdateVersion<1.01) {
-      player.blackholeDimension4.cost=Decimal.min(player.blackholeDimension4.cost,"1e20000")
-      player.aarexModifications.newGameUpdateVersion=1.01
+  if (player.aarexModifications.newGameUpdateVersion<1.01) player.blackholeDimension4.cost=Decimal.min(player.blackholeDimension4.cost,"1e20000")
+  if (player.aarexModifications.newGameUpdateVersion<1.1) {
+      player.version = 12
+      player.aarexModifications.newGameUpdateVersion=1.1
   }
   if (player.exdilation !== undefined && player.options.exdilationconfirm === undefined) player.options.exdilationconfirm = true
   if (player.aarexModifications.irsVersion < 1.1) {
@@ -1511,6 +1523,7 @@ if (player.version < 5) {
       for (dim=1;dim<9;dim++) player.dimtechs["dim"+dim+"Upgrades"] = 0
       player.aarexModifications.irsVersion = 1.2
   }
+  if (player.aarexModifications.ngudpV < 1.1) player.aarexModifications.ngudpV = 1.1
   ipMultPower=2
   if (player.masterystudies) if (player.masterystudies.includes("t241")) ipMultPower=2.2
   if (GUBought("gb3")) ipMultPower=2.3

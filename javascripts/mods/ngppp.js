@@ -962,9 +962,9 @@ function sacrificeGalaxy(auto=false) {
 function getMPTPower(on, br4) {
 	if (!inQC(0)) return 1
 	var a = tmp.qu.electrons.amount
-	var s = 0
-	if (player.ghostify.ghostlyPhotons.unl) s = tmp.le[2]
-	if (a>187300+s) a = Math.sqrt((a-s-149840)*37460)+149840+s
+	var s = 149840
+	if (player.ghostify.ghostlyPhotons.unl) s += tmp.le[2]
+	if (a>37460+s) a = Math.sqrt((a-s)*37460)+s
 	if (tmp.rg4 && (!br4 || !hasNU(13))) a *= 0.7
 	if (player.masterystudies != undefined) if (on == undefined ? player.masterystudies.includes("d13") : on) a *= getTreeUpgradeEffect(4)
 	return a+1

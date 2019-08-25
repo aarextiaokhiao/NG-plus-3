@@ -1300,7 +1300,7 @@ function quantumReset(force, auto, challid, bigRip, implode=false) {
 		}
 		if (bigRip?tmp.qu.bigRip.upgrades.includes(12):isRewardEnabled(11)&&isRewardEnabled(4)) player.dilation.upgrades.push(10)
 		else tmp.qu.wasted = !isRewardEnabled(11)||bigRip
-		if (bigRip?tmp.qu.bigRip.upgrades.includes(12):speedrunMilestonesReached>13&&isRewardEnabled(4)) for (i=3;i<7;i++) player.dilation.upgrades.push("ngpp"+i)
+		if (bigRip?tmp.qu.bigRip.upgrades.includes(12):speedrunMilestonesReached>13&&isRewardEnabled(4)) for (i=(player.exdilation!=undefined?1:3);i<7;i++) if (i!=2||!player.aarexModifications.ngudpV) player.dilation.upgrades.push((i>2?"ngpp":"ngud")+i)
 		tmp.qu.notrelative = true
 		updateMasteryStudyCosts()
 		updateMasteryStudyButtons()
