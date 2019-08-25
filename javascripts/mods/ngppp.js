@@ -3103,7 +3103,7 @@ function ghostifyReset(implode, gain, amount, force) {
 	var bm = player.ghostify.milestones
 	var nBRU = []
 	var nBEU = []
-	for (var u=16;u>0;u--) {
+	for (var u=20;u>0;u--) {
 		if (nBRU.includes(u+1)||tmp.qu.bigRip.upgrades.includes(u)) nBRU.push(u)
 		if (u<11&&(nBEU.includes(u+1)||tmp.qu.breakEternity.upgrades.includes(u))) nBEU.push(u)
 	}
