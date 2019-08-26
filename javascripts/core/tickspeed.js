@@ -7,7 +7,7 @@ function canBuyTickSpeed() {
 function getGalaxyPower(ng, bi) {
 	let replGalEff = 1
 	if (player.boughtDims) replGalEff = Math.log10(player.replicanti.limit.log(2))/Math.log10(2)/10
-	else if (ECTimesCompleted("eterc8") > 0) replGalEff = Math.max(Math.pow(Math.log10(player.infinityPower.plus(1).log10()+1), 0.03 * ECTimesCompleted("eterc8")), 1)
+	else if (ECTimesCompleted("eterc8") > 0) replGalEff = getECReward(8)
 	if (player.masterystudies && player.masterystudies.includes("t344")) replGalEff *= getMTSMult(344)
 	let extraReplGalPower = 0
 	if (player.timestudy.studies.includes(133)) extraReplGalPower += player.replicanti.galaxies/2
@@ -47,7 +47,7 @@ function getGalaxyPowerEff(ng, bi) {
 
 	let exp=0.2
 	if (tmp.ngp3&&player.galaxies>=1e4&&!tmp.be) exp*=Math.max(6-player.galaxies/2e3,0)
-	tmp.ts232=Math.pow(1+ng/1000,exp)
+	if (bi) tmp.ts232=Math.pow(1+ng/1000,exp)
 	if (player.timestudy.studies.includes(232)&&bi) eff*=tmp.ts232
 
 	if (tmp.ngp3) eff *= colorBoosts.r

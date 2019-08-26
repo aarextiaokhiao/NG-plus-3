@@ -47,15 +47,15 @@ function getDimensionFinalMultiplier(tier) {
 		if (player.achievements.includes("r92") && player.thisInfinityTime < 600) mult = mult.times(Math.max(101-player.thisInfinityTime/6, 1));
 	}
 	if (player.boughtDims&&player.achievements.includes("r98")) mult = mult.times(player.infinityDimension8.amount.max(1))
-	if (player.achievements.includes("r84")) mult = mult.times(player.money.pow(player.galacticSacrifice?0.00002:0.00004).plus(1));
-	else if (player.achievements.includes("r73")) mult = mult.times(player.money.pow(player.galacticSacrifice?0.00001:0.00002).plus(1));
+	if (player.achievements.includes("r84")) mult = mult.times(player.money.pow(player.galacticSacrifice?0.0002:0.00004).plus(1));
+	else if (player.achievements.includes("r73")) mult = mult.times(player.money.pow(player.galacticSacrifice?0.0001:0.00002).plus(1));
 
 
 	if (player.timestudy.studies.includes(71) && tier !== 8) mult = mult.times(calcTotalSacrificeBoost().pow(0.25).min("1e210000"));
 	if (player.timestudy.studies.includes(91)) mult = mult.times(Decimal.pow(10, Math.min(player.thisEternity, 18000)/60));
 	let useHigherNDReplMult = !player.dilation.active ? false : !player.masterystudies ? false : player.masterystudies.includes("t323")
 	if (!useHigherNDReplMult) mult = mult.times(tmp.nrm)
-	if (player.timestudy.studies.includes(161)) mult = mult.times(new Decimal(player.aarexModifications.newGameExpVersion?"1e3080":"1e616"))
+	if (player.timestudy.studies.includes(161)) mult = mult.times(new Decimal(player.galacticSacrifice?"1e6660":player.aarexModifications.newGameExpVersion?"1e3080":"1e616"))
 	if (player.timestudy.studies.includes(234) && tier == 1) mult = mult.times(calcTotalSacrificeBoost())
 
 	mult = mult.times(player.postC3Reward)

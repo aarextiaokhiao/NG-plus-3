@@ -124,10 +124,11 @@ function buyMasteryStudy(type, id, quick=false) {
 		}
 		if (id==241&&!GUBought("gb3")) {
 			var otherMults=1
-			ipMultPower=2.2
 			if (player.achievements.includes("r85")) otherMults*=4
 			if (player.achievements.includes("r93")) otherMults*=4
-			player.infMult=player.infMult.div(otherMults).pow(Math.log10(2.2)/Math.log10(2)).times(otherMults)
+			var old=getIPMultPower()
+			ipMultPower=2.2
+			player.infMult=player.infMult.div(otherMults).pow(Math.log10(getIPMultPower())/Math.log10(old)).times(otherMults)
 		}
 		if (id==266&&player.replicanti.gal>399) {
 			var gal=player.replicanti.gal
@@ -558,10 +559,15 @@ function getMTSMult(id, modifier) {
 
 //v1.3
 function getEC14Power() {
-	if (player.masterystudies===undefined) return 0
-	if (player.currentEterChall=='eterc14') return 5
-	let ret=ECTimesCompleted("eterc14")*2
-	if (hasNU(12)) if (tmp.qu.bigRip.active) ret*=Math.sqrt(player.replicanti.galaxies+extraReplGalaxies)*.035+1
+	let ret = 0
+	if (player.masterystudies) {
+		if (player.currentEterChall=='eterc14') ret=5
+		else {
+			ret=ECTimesCompleted("eterc14")*2
+			if (hasNU(12)) if (tmp.qu.bigRip.active) ret*=Math.sqrt(player.replicanti.galaxies+extraReplGalaxies)*.035+1
+		}
+	}
+	if (player.galacticSacrifice !== undefined) ret++
 	return ret
 }
 
@@ -882,8 +888,9 @@ function buyGluonUpg(color, id) {
 		var otherMults=1
 		if (player.achievements.includes("r85")) otherMults*=4
 		if (player.achievements.includes("r93")) otherMults*=4
-		player.infMult=player.infMult.div(otherMults).pow(Math.log10(2.3)/Math.log10(ipMultPower)).times(otherMults)
+		var old=getIPMultPower()
 		ipMultPower=2.3
+		player.infMult=player.infMult.div(otherMults).pow(Math.log10(getIPMultPower())/Math.log10(old)).times(otherMults)
 	}
 	if (name=="rg4" && !tmp.qu.autoOptions.sacrifice) updateElectronsEffect()
 	if (name=="gb4") player.tickSpeedMultDecrease=1.25
@@ -1394,8 +1401,7 @@ function maxAllID() {
 	for (t=1;t<9;t++) {
 		var dim=player["infinityDimension"+t]
 		if (player.infDimensionsUnlocked[t-1]&&player.infinityPoints.gte(dim.cost)) {
-			var costMult=infCostMults[t]
-			if (ECTimesCompleted("eterc12")) costMult=Math.pow(costMult,1-ECTimesCompleted("eterc12")*0.008)
+			var costMult=getIDCostMult(t)
 			if (player.infinityPoints.lt(Decimal.pow(10, 1e10))) {
 				var toBuy=Math.max(Math.floor(player.infinityPoints.div(9-t).div(dim.cost).times(costMult-1).add(1).log(costMult)),1)
 				var toSpend=Decimal.pow(costMult,toBuy).sub(1).div(costMult-1).times(dim.cost).round()
@@ -4193,7 +4199,7 @@ function startEC10() {
 		document.getElementById("ec10unl").onclick()
 		justImported=false
 	}
-	startEternityChallenge('eterc10', new Decimal('1e3000'), new Decimal('1e300'))
+	startEternityChallenge(10)
 }
 
 function getCPPower(x) {

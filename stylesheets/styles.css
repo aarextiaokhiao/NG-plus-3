@@ -896,6 +896,14 @@ button {
 	margin: 5px;
 }
 
+.scrollablemenu {
+	display: block !important;
+	min-height: 250px;
+	height: 250px;
+	max-height: 250px;
+	overflow-y: auto
+}
+
 #saves { width: 100%; }
 
 .notationOptions {

@@ -1299,7 +1299,7 @@ if (player.version < 5) {
           player.aarexModifications.newGameMinusMinusVersion = 1.5
           updateChallenges()
       }
-      if (Decimal.pow(1e15, player.replicanti.chance*100).times(1e135).div(player.replicanti.chanceCost).gte(1e59)) player.aarexModifications.newGameMinusMinusVersion = 1.91
+      if (Decimal.pow(1e15, player.replicanti.chance*100).times(1e135).div(player.replicanti.chanceCost).gte(1e59)) player.aarexModifications.newGameMinusMinusVersion = 2
       if (player.aarexModifications.newGameMinusMinusVersion) updateAchievements()
   }
   if (player.aarexModifications.newGameMinusMinusVersion < 1.1) player.galaxyPoints = 0
@@ -1396,12 +1396,17 @@ if (player.version < 5) {
       player.replicanti.galCost=player.replicanti.galCost.div(1e60)
   }
   if (player.aarexModifications.newGameMinusMinusVersion < 1.91) {
-      var infBaseCost = [undefined,1e8,1e9,1e10,1e20,1e140,1e200,1e250,1e280]
       for (tier=1;tier<9;tier++) {
           let dim = player["infinityDimension"+tier]
-          dim.cost = new Decimal(infBaseCost[tier]).times(Decimal.pow(infCostMults[tier]/(player.infinityUpgrades.includes("postinfi53")?50:1), (dim.baseAmount/10)*(ECTimesCompleted("eterc12")?1-ECTimesCompleted("eterc12")*0.008:1)))
+          dim.cost = Decimal.pow(getIDCostMult(tier),dim.baseAmount/10).times(infBaseCost[tier])
       }
-      player.aarexModifications.newGameMinusMinusVersion = 1.91
+  }
+  if (player.aarexModifications.newGameMinusMinusVersion < 2) {
+      for (tier=1;tier<9;tier++) {
+          let dim = player["infinityDimension"+tier]
+          dim.power = Decimal.pow(getInfBuy10Mult(tier), dim.baseAmount/10)
+      }
+      player.aarexModifications.newGameMinusMinusVersion = 2
   }
   if (player.aarexModifications.newGame3MinusVersion < 2.1) {
       player.autobuyers[13]=14
@@ -1707,7 +1712,7 @@ if (player.version < 5) {
   document.getElementById("galcost13").textContent=galUpgradeCosts[13]
   var showMoreGal = player.tickspeedBoosts!=undefined ? "" : "none"
   document.getElementById("galaxy21").innerHTML=(player.tickspeedBoosts!=undefined?"Reduce the dimension boost cost multiplier to 5":"Dimension boost scaling starts 2 later and increases the cost by 5 each")+".<br>Cost: 1 GP"
-  for (i=1;i<4;i++) document.getElementById("galaxy"+i+"4div").style.display=showMoreGal
+  for (i=1;i<6;i++) document.getElementById("galaxy"+i+"4div").style.display=showMoreGal
   document.getElementById("preinfupgrades").style.display=player.infinityUpgradesRespecced?"none":""
   document.getElementById("infi1div").style.display=player.infinityUpgradesRespecced==undefined?"none":""
   document.getElementById("infi3div").style.display=player.infinityUpgradesRespecced==undefined?"none":""
@@ -1716,14 +1721,13 @@ if (player.version < 5) {
   updateSingularity()
   updateDimTechs()
   if (player.infinityUpgradesRespecced != undefined) order = []
-  document.getElementById("icngmm_3reward").textContent="Reward: " + (player.tickspeedBoosts == undefined ? "???" : "Every tickspeed purchase decreases tickspeed based on galaxies")
   document.getElementById("ic1desc").textContent="All previous challenges (except tickspeed challenge"+(player.galacticSacrifice?',':" and")+" automatic big crunch challenge"+(player.galacticSacrifice?", and automatic galactic sacrifice challenge":"")+") at once."
   document.getElementById("ic1reward").textContent="Reward: "+(player.galacticSacrifice?2:1.3)+"x on all Infinity Dimensions for each Infinity Challenge completed"
   document.getElementById("ic7desc").textContent="You can't get Antimatter Galaxies, but dimensional boost multiplier "+(player.galacticSacrifice?"is cubed":"2.5x -> 10x")
   document.getElementById("ic7reward").textContent="Reward: Dimensional boost multiplier "+(player.galacticSacrifice?"is squared":"2.5x -> 4x")
   document.getElementById("replicantitabbtn").style.display=player.infinityUpgradesRespecced?"none":""
   document.getElementById("41").innerHTML="Each galaxy gives a 1."+(player.aarexModifications.newGameExpVersion?5:2)+"x multiplier on IP gained. <span>Cost: 4 Time Theorems"
-  document.getElementById("42").innerHTML="Galaxy requirement goes up "+(player.aarexModifications.newGameExpVersion?48:52)+" 8ths instead of 60.<span>Cost: 6 Time Theorems"
+  document.getElementById("42").innerHTML=(player.galacticSacrifice?"Galaxy cost multiplier is reduced by "+(player.aarexModifications.newGameExpVersion?12:13)+"/15x":"Galaxy requirement goes up "+(player.aarexModifications.newGameExpVersion?48:52)+" 8ths instead of 60")+".<span>Cost: 6 Time Theorems"
   document.getElementById("61").innerHTML="You gain 10"+(player.aarexModifications.newGameExpVersion?0:"")+"x more EP<span>Cost: 3 Time Theorems"
   document.getElementById("62").innerHTML="You gain replicanti "+(player.aarexModifications.newGameExpVersion?4:3)+" times faster<span>Cost: 3 Time Theorems"
   document.getElementById("81").innerHTML="Dimensional boost power "+(player.galacticSacrifice?"is cubed":"becomes 10x")+"<span>Cost: 4 Time Theorems"

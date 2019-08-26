@@ -6,7 +6,9 @@ function getGSAmount() {
 		y += Math.max(0, 0.05*(galaxies - 10)) + 0.005 * Math.pow(Math.max(0, galaxies-30) , 2) + 0.0005 * Math.pow(Math.max(0, galaxies-50) , 3)
 		y *= .08*(tmp.cp+14)
 	}
-	if (y > 100) y = Math.pow(316.22*y, 2/5)
+	if (player.galacticSacrifice.upgrades.includes(52)) {
+		if (y > 100) y = Math.pow(1e4*y , 1/3)
+	} else if (y > 100) y = Math.pow(316.22*y, 1/3)
 	else if (y > 10) y = Math.pow(10*y, .5)
 	let z = 1
 	if (tmp.cp>3) {
@@ -71,7 +73,13 @@ let galUpgradeCosts = {
 	23: 100,
 	14: 300,
 	24: 1e3,
-	34: 1e17
+	34: 1e17,
+	41: "1e1650",
+	42: "1e2300",
+	43: "1e3700",
+	51: "1e5500",
+	52: "1e8000",
+	53: "1e25000"
 }
 
 function buyGalaxyUpgrade(i) {
@@ -86,6 +94,12 @@ function buyGalaxyUpgrade(i) {
 			}
 		}
 		reduceDimCosts()
+	}
+	if (i==41) {
+		for (tier=1;tier<9;tier++) {
+			let dim = player["infinityDimension"+tier]
+			dim.power = Decimal.pow(getInfBuy10Mult(tier), dim.baseAmount/10)
+		}
 	}
 }
 
@@ -113,19 +127,30 @@ function reduceDimCosts() {
 	}
 }
 
-let galUpgrade11 = function () {
-	let x = Math.min(player.infinitied, player.tickspeedBoosts !== undefined ? 4 : 1e6);
-	let y = Math.max(x + 2, 2);
-	let z = 10
-	if (tmp.cp > 0 && player.challenges.includes("postcngmm_1") && player.tickspeedBoosts == undefined) z -= (tmp.cp+6)/4
+let galUpgrade11=function () {
+	let x=Math.min(player.infinitied,1e6);
+	let y=Math.max(x+2,2);
+	let z=10
+	if (player.tickspeedBoosts!=undefined) return Decimal.pow(10,Math.min(y,6))
+	if (tmp.cp>0&&player.challenges.includes("postcngmm_1")) z-=(tmp.cp+6)/4
+	if (tmp.cp>6) z+=0.085*tmp.cp-0.31
+	if (tmp.cp>0&&getEternitied()>0&&getInfinitied() < 1e8) x+=2e6
 	if (player.infinityUpgrades.includes("postinfi61")) {
-		x += 1e7
-		z -= .1
-		if (player.galacticSacrifice.upgrades.length>9) x += player.galacticSacrifice.upgrades.length*1e7
+		x+=1e7
+		z-=.1
+		if (player.galacticSacrifice.upgrades.length>9) x+=player.galacticSacrifice.upgrades.length*1e7
 	}
-	if (z < 6) z = Math.pow(1296 * z, .2)
-	if (x > 99) y = Math.pow(Math.log(x), Math.log(x) / z) + 14
-	else if (x > 4) y = Math.pow(x + 5, .5) + 4
+	if (tmp.ec) {
+		x+=1e10*tmp.ec
+		z-=Math.pow(tmp.ec,0.3)/10
+	}
+	if (x>1e8) x=Math.pow(1e8*x,.5)
+	if (getEternitied()>0) z-=0.5
+	if (z<6) z=Math.pow(1296*z,.2)
+	if (x>99) y=Math.pow(Math.log(x),Math.log(x)/z)+14
+	else if (x>4) y=Math.sqrt(x+5)+4
+	if (y>1000) y=Math.sqrt(1000*y)
+	if (y>1e4) y=Math.pow(1e8*y,1/3)
 	return Decimal.pow(10, Math.min(y, 2e4));
 }
 let galUpgrade12 = function () {
@@ -170,11 +195,19 @@ function galacticUpgradeSpanDisplay () {
 		document.getElementById('galcost24').innerHTML = shortenCosts(1e3)
 		document.getElementById('galcost34').innerHTML = shortenCosts(1e17)
 	}
+	if (player.infinityUpgrades.includes("postinfi63")) {
+		document.getElementById("galcost41").innerHTML = shortenCosts(new Decimal("1e1650"))
+		document.getElementById("galcost42").innerHTML = shortenCosts(new Decimal("1e2300"))
+		document.getElementById("galcost43").innerHTML = shortenCosts(new Decimal("1e3700"))
+		document.getElementById("galcost51").innerHTML = shortenCosts(new Decimal("1e5500"))
+		document.getElementById("galcost52").innerHTML = shortenCosts(new Decimal("1e8000"))
+		document.getElementById("galcost53").innerHTML = shortenCosts(new Decimal("1e25000"))
+	}
 }
 
 function galacticUpgradeButtonTypeDisplay () {
-	for (let i = 1; i <= 3; i++) {
-		for (let j = 1; j <= (player.tickspeedBoosts!=undefined?4:3); j++) {
+	for (let i = 1; i < (player.infinityUpgrades.includes("postinfi63")?6:4); i++) {
+		for (let j = 1; j < (player.tickspeedBoosts!=undefined?5:4); j++) {
 			let e = document.getElementById('galaxy' + i + j);
 			if (player.galacticSacrifice.upgrades.includes(+(i + '' + j))) {
 				e.className = 'infinistorebtnbought'
@@ -185,6 +218,7 @@ function galacticUpgradeButtonTypeDisplay () {
 			}
 		}
 	}
+	for (var r=1;r<3;r++) document.getElementById("newgalrow"+r).style.display=player.infinityUpgrades.includes("postinfi63")?"":"none"
 }
 
 //v1.295
@@ -339,5 +373,25 @@ function getB60Mult() {
 function getPostC3Exp() {
 	let g = getGalaxyPower(0)-player.dilation.freeGalaxies
 	if (g<7) return 1+g/5
-	return 2+Math.pow(g-5,0.5)/5
+	let y=5
+	let z=.5
+	if (tmp.ec>29) {
+		if (player.currentEternityChall=="") {
+			z=.9
+			if (tmp.ec>42) y=2
+			else if (tmp.ec>37) y=3.5
+		} else z=.6
+	}
+	return 2+Math.pow(g-5,z)/y
+}
+
+//v2
+let galUpgrade43 = function () {
+	return Decimal.pow(player.galacticSacrifice.galaxyPoints.log10(),50)
+}
+
+let galUpgrade51 = function () {
+	let x=player.galacticSacrifice.galaxyPoints.log10()/1e3
+	if (x>20) x=Math.sqrt(x*20)
+	return Decimal.pow(10,x)
 }

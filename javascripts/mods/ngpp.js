@@ -265,7 +265,7 @@ function getExtraDimensionBoostPower() {
 function getExtraDimensionBoostPowerExponent() {
 	let power = 8
 	if (player.dilation.upgrades.includes("ngpp5")) power++
-	power += ECTimesCompleted("eterc13")*0.2
+	power += getECReward(13)
 	if (player.masterystudies != undefined) {
 		if (player.masterystudies.includes("d12")) power += getNanofieldRewardEffect(2)
 		if (player.masterystudies.includes("d13")) power += getTreeUpgradeEffect(8)
