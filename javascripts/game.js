@@ -2460,9 +2460,8 @@ function updateInfCosts() {
         document.getElementById("142desc").textContent = "You gain "+shortenCosts(1e25)+"x more IP"
         document.getElementById("143desc").textContent = "Currently: "+shortenMoney(Decimal.pow(15, Math.log(player.thisInfinityTime)*Math.pow(player.thisInfinityTime, 0.125)))+"x"
         document.getElementById("151desc").textContent = shortenCosts(1e4)+"x multiplier on all Time dimensions"
-        var ts16Xbase=player.aarexModifications.newGameExpVersion?1e55:1e11
-        document.getElementById("161desc").textContent = shortenCosts(player.galacticSacrifice?new Decimal("1e6660"):Decimal.pow(ts16Xbase,56))+"x multiplier on all normal dimensions"
-        document.getElementById("162desc").textContent = shortenCosts(player.galacticSacrifice?1e234:ts16Xbase)+"x multiplier on all Infinity dimensions"
+        document.getElementById("161desc").textContent = shortenCosts(Decimal.pow(10,(player.galacticSacrifice?6660:616)*(player.aarexModifications.newGameExpVersion?5:1)))+"x multiplier on all normal dimensions"
+        document.getElementById("162desc").textContent = shortenCosts(Decimal.pow(10,(player.galacticSacrifice?234:11)*(player.aarexModifications.newGameExpVersion?5:1)))+"x multiplier on all Infinity dimensions"
         document.getElementById("192desc").textContent = "You can get beyond "+shortenMoney(Number.MAX_VALUE)+" replicantis, but the interval is increased the more you have"
         document.getElementById("193desc").textContent = "Currently: "+shortenMoney(Decimal.pow(1.03, getEternitied()).min("1e13000"))+"x"
         document.getElementById("212desc").textContent = "Currently: "+((Math.pow(player.timeShards.max(2).log2(), 0.005)-1)*100).toFixed(2)+"%"
@@ -5371,7 +5370,7 @@ function eternity(force, auto, presetLoad, dilated) {
             dbPower: player.dbPower,
             tickspeedBoosts: player.tickspeedBoosts,
             galaxies: (getEternitied() > 3) ? 1 : 0,
-            galacticSacrifice: resetGalacticSacrifice(),
+            galacticSacrifice: newGalacticDataOnInfinity(true),
             totalmoney: player.totalmoney,
             interval: null,
             lastUpdate: player.lastUpdate,
@@ -6331,7 +6330,7 @@ function startEternityChallenge(n) {
         dbPower: player.dbPower,
         tickspeedBoosts: player.tickspeedBoosts,
         galaxies: (getEternitied() > 3) ? 1 : 0,
-        galacticSacrifice: resetGalacticSacrifice(),
+        galacticSacrifice: newGalacticDataOnInfinity(true),
         totalmoney: player.totalmoney,
         interval: null,
         lastUpdate: player.lastUpdate,

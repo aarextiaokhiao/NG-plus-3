@@ -51,10 +51,10 @@ function resetGalacticSacrifice() {
 	} : undefined
 }
 
-function newGalacticDataOnInfinity() {
-	if (player.galacticSacrifice&&player.achievements.includes("r3"+(player.tickspeedBoosts==undefined?6:3))) {
+function newGalacticDataOnInfinity(eternity) {
+	if (player.galacticSacrifice&&(eternity?getEternitied()>6:player.achievements.includes("r3"+(player.tickspeedBoosts==undefined?6:3)))) {
 		var data=player.galacticSacrifice
-		data.galaxyPoints=player.tickspeedBoosts==undefined?data.galaxyPoints.add(getGSAmount()):new Decimal(0)
+		data.galaxyPoints=player.tickspeedBoosts==undefined?(eternity?data.galaxyPoints:data.galaxyPoints.add(getGSAmount())):new Decimal(0)
 		data.time=0
 		return data
 	} else return resetGalacticSacrifice()
@@ -128,7 +128,7 @@ function reduceDimCosts() {
 }
 
 let galUpgrade11=function () {
-	let x=player.infinitied,1e6;
+	let x=getInfinitied()
 	if (x>1e6 && getEternitied() == 0) x = 1e6
 	let y=Math.max(x+2,2);
 	let z=10

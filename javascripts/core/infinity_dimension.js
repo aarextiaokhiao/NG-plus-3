@@ -81,7 +81,7 @@ function DimensionPower(tier) {
   if (player.eternityUpgrades.includes(3)) mult = mult.times(getEU3Mult())
 
   if (player.timestudy.studies.includes(92)) mult = mult.times(Decimal.pow(2, 600/Math.max(player.bestEternity, 20)))
-  if (player.timestudy.studies.includes(162)) mult = mult.times(player.galacticSacrifice?1e234:player.aarexModifications.newGameExpVersion?1e55:1e11)
+  if (player.timestudy.studies.includes(162)) mult = mult.times(Decimal.pow(10,(player.galacticSacrifice?234:11)*(player.aarexModifications.newGameExpVersion?5:1)))
   if (ECTimesCompleted("eterc2") !== 0 && tier == 1) mult = mult.times(getECReward(2))
 
   if (ECTimesCompleted("eterc4") !== 0) mult = mult.times(getECReward(4))
