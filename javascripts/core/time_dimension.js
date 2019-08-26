@@ -48,7 +48,7 @@ function getTimeDimensionPower(tier) {
   if (player.replicanti.unl && player.replicanti.amount.gt(1) && player.dilation.upgrades.includes(5)) ret = ret.times(tmp.rm.pow(0.1))
 
   if (inQC(6)) ret = ret.times(player.postC8Mult).dividedBy(player.matter.max(1))
-  ret=dilates(ret)
+  if (player.galacticSacrifice || player.dilation.active) ret=dilates(ret)
   if (player.galacticSacrifice !== undefined) ret=ret.times(ret2)
   return ret
 }
