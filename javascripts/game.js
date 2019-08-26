@@ -3606,11 +3606,11 @@ function getIPMult() {
 		if (player.achievements.includes("r85")) mult = mult.times(4)
 		if (player.achievements.includes("r93")) mult = mult.times(4)
 		if (player.achievements.includes("r43")) mult = mult.times(1.25)
-		if (player.achievements.includes("r55")) mult = mult.times(Math.max(Math.log10(6000/player.bestInfinityTime), 1))
-		if (player.achievements.includes("r41")) mult = mult.times(Math.pow(Math.log10(player.spreadingCancer), .05))
+		if (player.achievements.includes("r55")) mult = mult.times(Math.min(Math.log10(Math.max(6000/player.bestInfinityTime, 10)), 10))
+		if (player.achievements.includes("r41")) mult = mult.times(Math.pow(Math.log10(Math.max(player.spreadingCancer, 10)), .05))
 		if (player.achievements.includes("r51")) {
-			let galaxies = player.galaxies + player.replicanti.galaxies+player.dilation.freeGalaxies
-			if (galaxies < 5 && galaxies > 0) mult = mult.times(galaxies)
+			let galaxies = player.galaxies + player.replicanti.galaxies + player.dilation.freeGalaxies
+			if (galaxies < 5) mult = mult.times(Math.max(galaxies, 1))
 			else if (galaxies < 50) mult = mult.times(Decimal.pow(galaxies+5,0.5).plus(2))
 			else mult = mult.times(Decimal.pow(galaxies,0.3).plus(7))
 		}
@@ -4821,7 +4821,7 @@ function checkForEndMe() {
     if (temp <= 1800) giveAchievement("Not-so-challenging")
     if (temp <= 50) giveAchievement("End me")
     var temp2 = 0
-    for (var i=0; i<8;i++) {
+    for (var i=0; i<player.infchallengeTimes.length;i++) {
         temp2 += player.infchallengeTimes[i]
     }
     infchallengeTimes = temp2
@@ -5159,8 +5159,7 @@ function bigCrunch(autoed) {
         }
 
         if (getEternitied() >= 40 && player.replicanti.auto[0] && player.currentEternityChall !== "eterc8" && isChanceAffordable()) {
-            var maxCost = (tmp.ngp3 ? player.masterystudies.includes("t265") : false) ? 1/0 : "1e1620"
-            var bought = Math.max(Math.floor(player.infinityPoints.min(maxCost).div(player.replicanti.chanceCost).log(1e15) + 1), 0)
+            var bought = Math.min(Math.max(Math.floor(player.infinityPoints.div(player.replicanti.chanceCost).log(1e15) + 1), 0), tmp.ngp3&&player.masterystudies.includes("t265")?1/0:100-Math.round(player.replicanti.chance*100))
             player.replicanti.chance = Math.round(player.replicanti.chance*100+bought)/100
             player.replicanti.chanceCost = player.replicanti.chanceCost.times(Decimal.pow(1e15, bought))
         }

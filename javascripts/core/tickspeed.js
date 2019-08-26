@@ -115,7 +115,7 @@ function buyTickSpeed() {
 	if (!canBuyTickSpeed()) return false
 	if (player.tickSpeedCost.gt(player.money)) return false
 	player.money = player.money.minus(player.tickSpeedCost)
-	if (player.currentChallenge != "challenge5" && player.currentChallenge != "postc5" && player.tickspeedBoosts == undefined) player.tickSpeedCost = player.tickSpeedCost.times(player.tickspeedMultiplier)
+	if ((player.currentChallenge != "challenge5" && player.currentChallenge != "postc5") || player.tickspeedBoosts != undefined) player.tickSpeedCost = player.tickSpeedCost.times(player.tickspeedMultiplier)
 	else multiplySameCosts(player.tickSpeedCost)
 	if (costIncreaseActive(player.tickSpeedCost)) player.tickspeedMultiplier = player.tickspeedMultiplier.times(getTickSpeedCostMultiplierIncrease())
 	if (player.currentChallenge == "challenge2" || player.currentChallenge == "postc1") player.chall2Pow = 0
