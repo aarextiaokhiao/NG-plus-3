@@ -128,7 +128,8 @@ function reduceDimCosts() {
 }
 
 let galUpgrade11=function () {
-	let x=Math.min(player.infinitied,1e6);
+	let x=player.infinitied,1e6;
+	if (x>1e6 && getEternitied() == 0) x = 1e6
 	let y=Math.max(x+2,2);
 	let z=10
 	if (player.tickspeedBoosts!=undefined) return Decimal.pow(10,Math.min(y,6))
