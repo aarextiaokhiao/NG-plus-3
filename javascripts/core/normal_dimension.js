@@ -55,7 +55,7 @@ function getDimensionFinalMultiplier(tier) {
 	if (player.timestudy.studies.includes(91)) mult = mult.times(Decimal.pow(10, Math.min(player.thisEternity, 18000)/60));
 	let useHigherNDReplMult = !player.dilation.active ? false : !player.masterystudies ? false : player.masterystudies.includes("t323")
 	if (!useHigherNDReplMult) mult = mult.times(tmp.nrm)
-	if (player.timestudy.studies.includes(161)) mult = mult.times(new Decimal(player.galacticSacrifice?"1e6660":player.aarexModifications.newGameExpVersion?"1e3080":"1e616"))
+	if (player.timestudy.studies.includes(161)) mult = mult.times(Decimal.pow(10,(player.galacticSacrifice?6660:616)*(player.aarexModifications.newGameExpVersion?5:1)))
 	if (player.timestudy.studies.includes(234) && tier == 1) mult = mult.times(calcTotalSacrificeBoost())
 
 	mult = mult.times(player.postC3Reward)
