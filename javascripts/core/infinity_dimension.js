@@ -92,7 +92,7 @@ function DimensionPower(tier) {
 
   if (inQC(6)) mult = mult.times(player.postC8Mult).dividedBy(player.matter.max(1))
 
-  mult = dilates(mult)
+  if (player.galacticSacrifice || player.dilation.active) mult = dilates(mult)
   if (player.replicanti.unl && player.replicanti.amount.gt(1) && player.galacticSacrifice !== undefined) mult = mult.times(getIDReplMult())
   if (player.galacticSacrifice !== undefined) mult = mult.times(ec9)
   return mult
