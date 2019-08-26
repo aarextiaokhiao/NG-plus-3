@@ -187,7 +187,7 @@ function getShiftRequirement(bulk) {
 	if (player.challenges.includes("postc5")) amount -= 1
 	if (player.infinityUpgradesRespecced != undefined) amount -= getInfUpgPow(4)
 
-	return { tier: tier, amount: amount, mult: mult };
+	return { tier: tier, amount: Math.ceil(amount), mult: mult };
 }
 
 function getDimboostCostIncrease () {
