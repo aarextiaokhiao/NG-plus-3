@@ -45,15 +45,14 @@ function getBlackholeDimensionDescription(tier) {
 }
 
 function getBlackholeUpgradeExponent() {
-  let ret = player.blackhole.upgrades.total / 10;
-  if (ret > 2) {
-    ret = (ret - 2) / Math.log2(ret) + 2;
-  }
-  return ret;
+	let ret = player.blackhole.upgrades.total / 10
+	if (ret > 2) ret = (ret - 2) / Math.log2(ret) + 2
+	if (ret > 20 && player.aarexModifications.ngudpV) ret = Math.min(20+Math.pow(Math.log10(ret-19),2),ret) // this should only happen if you are playing NGUd'.
+	return ret
 }
 
 function getBlackholePowerEffect() {
-  return Math.pow(Math.max(player.blackhole.power.log(2), 1), getBlackholeUpgradeExponent());
+	return Decimal.pow(Math.max(player.blackhole.power.max(1).log(2), 1), getBlackholeUpgradeExponent())
 }
 
 function unlockBlackhole() {
@@ -71,9 +70,9 @@ function updateBlackhole() {
   document.getElementById("blackholePowAmount").innerHTML = shortenMoney(player.blackhole.power);
   document.getElementById("blackholePowPerSec").innerHTML = "You are getting " + shortenMoney(getBlackholeDimensionProduction(1)) + " black hole power per second.";
   document.getElementById("DilMultAmount").innerHTML = formatValue(player.options.notation, getBlackholePowerEffect(), 2, 2)
-  document.getElementById("InfAndReplMultAmount").innerHTML = formatValue(player.options.notation, Math.cbrt(getBlackholePowerEffect()), 2, 2)
+  document.getElementById("InfAndReplMultAmount").innerHTML = formatValue(player.options.notation, getBlackholePowerEffect().pow(1/3), 2, 2)
   document.getElementById("blackholeDil").innerHTML = "Feed the black hole with dilated time<br>Cost: "+shortenCosts(new Decimal(1e20).times(Decimal.pow(10, player.blackhole.upgrades.dilatedTime)))+" dilated time";
-  document.getElementById("blackholeInf").innerHTML = "Feed the black hole with banked infinities<br>Cost: "+formatValue(player.options.notation, 5e9 * Math.pow(2, player.blackhole.upgrades.bankedInfinities), 1, 1)+" banked infinities";
+  document.getElementById("blackholeInf").innerHTML = "Feed the black hole with banked infinities<br>Cost: "+formatValue(player.options.notation, Decimal.pow(2, player.blackhole.upgrades.bankedInfinities).times(5e9).round(), 1, 1)+" banked infinities";
   document.getElementById("blackholeRepl").innerHTML = "Feed the black hole with replicanti<br>Cost: "+shortenCosts(new Decimal("1e20000").times(Decimal.pow("1e1000", player.blackhole.upgrades.replicanti)))+" replicanti";
   document.getElementById("blackholeDil").className = canFeedBlackHole(1) ? 'eternityupbtn' : 'eternityupbtnlocked';
   document.getElementById("blackholeInf").className = canFeedBlackHole(2) ? 'eternityupbtn' : 'eternityupbtnlocked';
@@ -104,31 +103,55 @@ function drawBlackhole(ts) {
 
 function canFeedBlackHole (i) {
     if (i === 1) {
-        return new Decimal(1e20).times(Decimal.pow(10, player.blackhole.upgrades.dilatedTime)).lte(player.dilation.dilatedTime);
+        return Decimal.pow(10, player.blackhole.upgrades.dilatedTime+20).lte(player.dilation.dilatedTime)
     } else if (i === 2) {
-        return 5e9 * Math.pow(2, player.blackhole.upgrades.bankedInfinities) <= player.infinitiedBank;
+        return Decimal.pow(2, player.blackhole.upgrades.bankedInfinities).times(5e9).round().lte(player.infinitiedBank)
     } else if (i === 3) {
-        return new Decimal("1e20000").times(Decimal.pow("1e1000", player.blackhole.upgrades.replicanti)).lte(player.replicanti.amount);
+        return Decimal.pow(10, 1e3*player.blackhole.upgrades.replicanti+2e4).lte(player.replicanti.amount)
     }
 }
 
-function feedBlackHole (i) {
-  if (!canFeedBlackHole(i)) {
-    return false;
-  }
-  if (i === 1) {
-      player.dilation.dilatedTime = player.dilation.dilatedTime.minus(new Decimal(1e20).times(Decimal.pow(10, player.blackhole.upgrades.dilatedTime)));
-      player.blackhole.upgrades.dilatedTime++;
-  } else if (i === 2) {
-      player.infinitiedBank -= 5e9 * Math.pow(2, player.blackhole.upgrades.bankedInfinities);
-      player.blackhole.upgrades.bankedInfinities++;
-  } else if (i === 3) {
-      player.replicanti.amount = player.replicanti.amount.minus(new Decimal("1e20000").times(Decimal.pow("1e1000", player.blackhole.upgrades.replicanti)));
-      player.blackhole.upgrades.replicanti++;
-  }
-  player.blackhole.upgrades.total++;
-  updateBlackhole();
-  return true;
+function feedBlackHole(i, bulk) {
+	if (!canFeedBlackHole(i)) return
+	if (i === 1) {
+		let cost = Decimal.pow(10, player.blackhole.upgrades.dilatedTime+20)
+		if (bulk) {
+			let toBuy = Math.floor(player.dilation.dilatedTime.div(cost).times(9).plus(1).log10())
+			let toSpend = Decimal.pow(10, toBuy).sub(1).div(9).times(cost)
+			player.dilation.dilatedTime = player.dilation.dilatedTime.minus(player.dilation.dilatedTime.min(toSpend))
+			player.blackhole.upgrades.dilatedTime+=toBuy
+			player.blackhole.upgrades.total+=toBuy
+		} else {
+			player.dilation.dilatedTime = player.dilation.dilatedTime.minus(new Decimal(1e20).times(Decimal.pow(10, player.blackhole.upgrades.dilatedTime)))
+			player.blackhole.upgrades.dilatedTime++
+		}
+	} else if (i === 2) {
+		let cost = Decimal.pow(2, player.blackhole.upgrades.bankedInfinities).times(5e9).round()
+		if (bulk) {
+			let toBuy = Math.floor(Decimal.div(player.infinitiedBank, cost).plus(1).log(2))
+			let toSpend = Decimal.pow(10, 1e3*toBuy-1).times(cost).round()
+			player.infinitiedBank = nS(player.infinitiedBank, nMn(player.infinitiedBank, toBuy))
+			player.blackhole.upgrades.bankedInfinities+=toBuy
+			player.blackhole.upgrades.total+=toBuy
+		} else {
+			player.infinitiedBank = nS(player.infinitiedBank, cost)
+			player.blackhole.upgrades.bankedInfinities++
+		}
+	} else if (i === 3) {
+		let cost = Decimal.pow(10, 1e3*player.blackhole.upgrades.replicanti+2e4)
+		if (bulk) {
+			let toBuy = Math.floor(player.replicanti.amount.div(cost).log10()/1e3+1)
+			let toSpend = Decimal.pow(10, 1e3*toBuy-1).times(cost)
+			player.replicanti.amount = player.replicanti.amount.minus(player.replicanti.amount.min(toSpend)).max(1)
+			player.blackhole.upgrades.replicanti+=toBuy
+			player.blackhole.upgrades.total+=toBuy
+		} else {
+			player.replicanti.amount = player.replicanti.amount.minus(cost)
+			player.blackhole.upgrades.replicanti++
+		}
+	}
+	if (!bulk) player.blackhole.upgrades.total++
+	updateBlackhole()
 }
 
 let blackholeDimStartCosts = [null, new Decimal('1e4000'), new Decimal('1e8000'), new Decimal('1e12000'), new Decimal('1e20000')];
@@ -146,7 +169,7 @@ function buyBlackholeDimension(tier) {
   dim.cost = Decimal.pow(blackholeDimCostMults[tier], dim.bought).times(blackholeDimStartCosts[tier]);
   dim.power = dim.power.times(2)
   updateBlackhole();
-  if (tier === 4) {giveAchievement("We couldn't afford 5")}
+  if (tier > 3) giveAchievement("We couldn't afford 5")
   return true
 }
 
@@ -159,8 +182,22 @@ function resetBlackhole() {
   }
 }
 
-function buyMaxBlackholeDimensions() {
-  for(var i=1; i<5; i++) while(buyBlackholeDimension(i)) continue
+function buyMaxBlackholeDimensions(){
+	for (var i = 1; i <5; i ++){
+		// i is the tier
+		let e = player.eternityPoints.log10()
+		let dim = player["blackholeDimension" + i]
+		if (dim.cost.log10() <= e){
+			let diff = e - dim.cost.log10()
+			let buying = Math.ceil(diff/blackholeDimCostMults[i].log10())
+			player.eternityPoints = player.eternityPoints.minus(player.eternityPoints.min(Decimal.pow(blackholeDimCostMults[i],buying-1).times(dim.cost)))
+			dim.amount = dim.amount.plus(buying)
+			dim.bought += buying	
+			dim.cost = Decimal.pow(blackholeDimCostMults[i], dim.bought).times(blackholeDimStartCosts[i])
+			dim.power = dim.power.times(Decimal.pow(2,buying))
+			if (i > 3) giveAchievement("We couldn't afford 5")
+		}
+	}
 }
 
 //v1: ex-dilation part
@@ -172,7 +209,7 @@ function updateExdilation() {
 	document.getElementById("xdp").style.display = "none"
 	document.getElementById("xdrow").style.display = "none"
 	document.getElementById("exdilationConfirmBtn").style.display = "none"
-	if (player.exdilation == undefined) return
+	if (player.exdilation == undefined || player.aarexModifications.ngudpV) return
 	if (player.exdilation.times < 1) return
 	document.getElementById("xdp").style.display = ""
 	document.getElementById("xdrow").style.display = ""
@@ -251,4 +288,11 @@ function boostDilationUpgrade(x) {
     updateDilation();
     updateDilationUpgradeButtons();
     updateExdilation();
+}
+
+//v1.1
+function getD18Bonus() {
+	let x=player.replicanti.amount.max(1).log10()/1e3
+	if (x>100&&player.aarexModifications.ngudpV) x=Math.log(x)*50 //NGUd'
+	return Decimal.pow(1.05,x)
 }
