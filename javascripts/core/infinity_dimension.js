@@ -41,7 +41,8 @@ function DimensionProduction(tier) {
   var ret = dim.amount
   if (inQC(4) && tier == 1) ret = ret.plus(player.infinityDimension2.amount.floor())
   if (player.currentEternityChall == "eterc11") return ret
-  if (player.currentEternityChall == "eterc7") ret = dilates(ret.dividedBy(player.tickspeed.dividedBy(1000)))
+  if (player.currentEternityChall == "eterc7" && player.galacticSacrifice) ret = dilates(ret.dividedBy(player.tickspeed.dividedBy(1000)))
+  else if (player.currentEternityChall == "eterc7") ret = ret.dividedBy(player.tickspeed.dividedBy(1000))
   if (player.aarexModifications.ngm4V) ret = ret.div(100)
   ret = ret.times(DimensionPower(tier))
   if (player.challenges.includes("postc6")&&!inQC(3)) return ret.times(Decimal.div(1000, dilates(player.tickspeed)).pow(0.0005))
