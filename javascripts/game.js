@@ -413,7 +413,6 @@ function updateNewPlayer(reseted) {
         player.infchallengeTimes.push(600*60*24*31)
         player.infchallengeTimes.push(600*60*24*31)
         player.options.gSacrificeConfirmation = true
-	document.getElementById("postc2reward").innerHTML = "Reward: More powerful sacrifice"
     }
     if (modesChosen.ngpp === 2 || modesChosen.ngpp > 3) {
         player.aarexModifications.newGame3PlusVersion = 2.11
@@ -6330,7 +6329,7 @@ function startEternityChallenge(n) {
         dbPower: player.dbPower,
         tickspeedBoosts: player.tickspeedBoosts,
         galaxies: (getEternitied() > 3) ? 1 : 0,
-        galacticSacrifice: newGalacticDataOnInfinity(true),
+        galacticSacrifice: resetGalacticSacrifice(true),
         totalmoney: player.totalmoney,
         interval: null,
         lastUpdate: player.lastUpdate,
@@ -6603,8 +6602,8 @@ function startDilatedEternity(auto, shortcut) {
 
 function dilates(x, m) {
 	let y = 0
-	if (player.dilation.active && (m!="meta" || !player.achievements.includes("ng3p63") || !inQC(0))) y++
-	if (player.galacticSacrifice !== undefined) y++
+	if (player.dilation.active && m!=2 && (m!="meta" || !player.achievements.includes("ng3p63") || !inQC(0))) y++
+	if (player.galacticSacrifice !== undefined && m!=1) y++
 	if (y) {
 		if (m!="tick") x = x.max(1)
 		else if (player.galacticSacrifice==undefined) x = x.times(1e3)

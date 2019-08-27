@@ -42,9 +42,9 @@ function galacticSacrifice(auto) {
 	galaxyReset(-player.galaxies)
 }
 
-function resetGalacticSacrifice() {
+function resetGalacticSacrifice(eternity) {
 	return player.galacticSacrifice ? {
-		galaxyPoints: player.achievements.includes("r33")?player.infinityPoints.div(10).pow(2):new Decimal(0),
+		galaxyPoints: player.achievements.includes("r33")&&!eternity?player.infinityPoints.div(10).pow(2):new Decimal(0),
 		time: 0,
 		times: 0,
 		upgrades: []
@@ -55,6 +55,7 @@ function newGalacticDataOnInfinity(eternity) {
 	if (player.galacticSacrifice&&(eternity?getEternitied()>6:player.achievements.includes("r3"+(player.tickspeedBoosts==undefined?6:3)))) {
 		var data=player.galacticSacrifice
 		data.galaxyPoints=player.tickspeedBoosts==undefined?(eternity?data.galaxyPoints:data.galaxyPoints.add(getGSAmount())):new Decimal(0)
+		if (player.tickspeedBoosts!=undefined) data.times=0
 		data.time=0
 		return data
 	} else return resetGalacticSacrifice()

@@ -81,10 +81,7 @@ function getDimensionFinalMultiplier(tier) {
 		if (player.galacticSacrifice.upgrades.includes(31)) mult = mult.pow(galUpgrade31());
 	}
 
-	mult = dilates(mult.max(1))
-
-	if (player.dilation.upgrades.includes(6)) mult = mult.times(player.dilation.dilatedTime.max(1).pow(308))
-	if (useHigherNDReplMult) mult = mult.times(tmp.nrm)
+	mult = dilates(mult.max(1), 2)
 	if (player.challenges.includes("postcngmm_1")||player.currentChallenge=="postcngmm_1") mult = mult.times(timeAndDimMult)
 	if (player.galacticSacrifice) {
 		if (player.achievements.includes("r56") && player.thisInfinityTime < 1800) mult = mult.times(3600/(player.thisInfinityTime+1800));
@@ -94,11 +91,14 @@ function getDimensionFinalMultiplier(tier) {
 		if (player.achievements.includes("r92") && player.thisInfinityTime < 600) mult = mult.times(Math.max(101-player.thisInfinityTime/6, 1));
 		if (player.currentChallenge == "postc6" || inQC(6)) mult = mult.dividedBy(player.matter.max(1))
 		if (player.currentChallenge == "postc8" || inQC(6)) mult = mult.times(player.postC8Mult)
-		if (mult.lt(1)) mult = new Decimal(1)
 	}
-	if (player.masterystudies != undefined) if (player.dilation.active) mult = mult.pow(getNanofieldRewardEffect(5))
+
+	mult = dilates(mult.max(1), 1)
+	if (player.dilation.upgrades.includes(6)) mult = mult.times(player.dilation.dilatedTime.max(1).pow(308))
+	if (useHigherNDReplMult) mult = mult.times(tmp.nrm)
 	if (isBigRipUpgradeActive(1)) mult = mult.times(tmp.bru[0])
-	return mult;
+	if (player.masterystudies != undefined && player.dilation.active) mult = mult.pow(getNanofieldRewardEffect(5))
+	return mult
 }
 
 function getDimensionDescription(tier) {
