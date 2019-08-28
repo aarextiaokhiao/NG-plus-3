@@ -1836,7 +1836,7 @@ function updateDimensions() {
             if (player.galacticSacrifice&&(player.infinityDimension3.amount.gt(0)||player.eternities>(player.aarexModifications.newGameMinusVersion?-20:0)||quantumed)) {
                 document.getElementById("postinfir5").style.display = ""
                 if (player.infinityUpgrades.includes("postinfi50")) document.getElementById("postinfi50").className = "infinistorebtnbought"
-                else if (player.infinityPoints.gte(1e25)) document.getElementById("postinfi50").className = "infinistorebtn1"
+                else if (player.infinityPoints.gte(player.tickspeedBoosts==undefined?1e25:2e18)) document.getElementById("postinfi50").className = "infinistorebtn1"
                 else document.getElementById("postinfi50").className = "infinistorebtnlocked"
                 if (player.infinityUpgrades.includes("postinfi51")) document.getElementById("postinfi51").className = "infinistorebtnbought"
                 else if (player.infinityPoints.gte(1e29)) document.getElementById("postinfi51").className = "infinistorebtn1"
@@ -6329,7 +6329,7 @@ function startEternityChallenge(n) {
         dbPower: player.dbPower,
         tickspeedBoosts: player.tickspeedBoosts,
         galaxies: (getEternitied() > 3) ? 1 : 0,
-        galacticSacrifice: newGalacticDataOnInfinity(true),
+        galacticSacrifice: resetGalacticSacrifice(true),
         totalmoney: player.totalmoney,
         interval: null,
         lastUpdate: player.lastUpdate,
@@ -6602,8 +6602,8 @@ function startDilatedEternity(auto, shortcut) {
 
 function dilates(x, m) {
 	let y = 0
-	if (player.dilation.active && (m!="meta" || !player.achievements.includes("ng3p63") || !inQC(0))) y++
-	if (player.galacticSacrifice !== undefined) y++
+	if (player.dilation.active && m!=2 && (m!="meta" || !player.achievements.includes("ng3p63") || !inQC(0))) y++
+	if (player.galacticSacrifice !== undefined && m!=1) y++
 	if (y) {
 		if (m!="tick") x = x.max(1)
 		else if (player.galacticSacrifice==undefined) x = x.times(1e3)

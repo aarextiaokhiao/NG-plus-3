@@ -44,13 +44,13 @@ function getTimeDimensionPower(tier) {
   if (ECTimesCompleted("eterc10") !== 0) ret = ret.times(getECReward(10))
   if (player.achievements.includes("r128")) ret = ret.times(Math.max(player.timestudy.studies.length, 1))
   if (player.galacticSacrifice !== undefined && player.galacticSacrifice.upgrades.includes(43)) ret = ret.times(galUpgrade43())
-
   if (player.replicanti.unl && player.replicanti.amount.gt(1) && player.dilation.upgrades.includes(5)) ret = ret.times(tmp.rm.pow(0.1))
-
   if (inQC(6)) ret = ret.times(player.postC8Mult).dividedBy(player.matter.max(1))
-  if (player.galacticSacrifice || player.dilation.active) ret=dilates(ret)
+
+  ret=dilates(ret, 2)
   if (player.galacticSacrifice !== undefined) ret=ret.times(ret2)
-  return ret
+
+  return dilates(ret, 1)
 }
 
 
