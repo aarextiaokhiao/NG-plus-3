@@ -96,11 +96,13 @@ function buyGalaxyUpgrade(i) {
 		}
 		reduceDimCosts()
 	}
-	if (i==41) {
-		for (tier=1;tier<9;tier++) {
-			let dim = player["infinityDimension"+tier]
-			dim.power = Decimal.pow(getInfBuy10Mult(tier), dim.baseAmount/10)
-		}
+	if (i==41) for (tier=1;tier<9;tier++) {
+		let dim = player["infinityDimension"+tier]
+		dim.power = Decimal.pow(getInfBuy10Mult(tier), dim.baseAmount/10)
+	}
+	if (i==42) for (tier=1;tier<9;tier++) {
+		let dim = player["infinityDimension"+tier]
+		dim.cost = Decimal.pow(getIDCostMult(tier),dim.baseAmount/10).times(infBaseCost[tier])
 	}
 }
 

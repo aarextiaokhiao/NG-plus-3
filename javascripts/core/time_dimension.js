@@ -29,7 +29,7 @@ function getTimeDimensionPower(tier) {
   ret = ret.times(kongAllDimMult)
  
   var ret2 = new Decimal(1)
-  if (player.currentEternityChall == "eterc9") ret2 = ret2.times((Decimal.pow(Math.max(player.infinityPower.log2(), 1), 4)).max(1))
+  if (player.currentEternityChall == "eterc9") ret2 = ret2.times((Decimal.pow(Math.max(player.infinityPower.log2(), 1), player.galacticSacrifice == undefined ? 4 : 10)).max(1))
   if (ECTimesCompleted("eterc1") !== 0) ret2 = ret2.times(getECReward(1))
   if (player.eternityUpgrades.includes(4)) ret2 = ret2.times(player.achPow)
   if (player.eternityUpgrades.includes(5)) ret2 = ret2.times(Math.max(player.timestudy.theorem, 1))
@@ -186,13 +186,10 @@ function buyMaxTimeDimensions() {
 }
 
 function getTS11Mult() {
-	if (player.galacticSacrifice) {
-		return player.tickspeed.dividedBy(1000).pow(0.005).times(0.95).plus(player.tickspeed.dividedBy(1000).pow(0.0003).times(0.05)).pow(-1)
-	}
 	let bigRipped = player.masterystudies === undefined ? false : tmp.qu.bigRip.active
 	let log = -player.tickspeed.div(1e3).pow(0.005).times(0.95).plus(player.tickspeed.div(1e3).pow(0.0003).times(0.95)).log10()
 	if (bigRipped && log > 900) log = Math.sqrt(log * 900)
-	else log = Math.min(log, 2500)
+	else if (player.galacticSacrifice === undefined) log = Math.min(log, 2500)
 	log /= player.aarexModifications.newGameExpVersion ? 4 : 1
 	return Decimal.pow(10, log)
 }
