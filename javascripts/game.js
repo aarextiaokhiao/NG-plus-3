@@ -1836,7 +1836,7 @@ function updateDimensions() {
             if (player.galacticSacrifice&&(player.infinityDimension3.amount.gt(0)||player.eternities>(player.aarexModifications.newGameMinusVersion?-20:0)||quantumed)) {
                 document.getElementById("postinfir5").style.display = ""
                 if (player.infinityUpgrades.includes("postinfi50")) document.getElementById("postinfi50").className = "infinistorebtnbought"
-                else if (player.infinityPoints.gte(player.tickspeedBoosts==undefined?1e25:2e18)) document.getElementById("postinfi50").className = "infinistorebtn1"
+                else if (player.infinityPoints.gte(1e25)) document.getElementById("postinfi50").className = "infinistorebtn1"
                 else document.getElementById("postinfi50").className = "infinistorebtnlocked"
                 if (player.infinityUpgrades.includes("postinfi51")) document.getElementById("postinfi51").className = "infinistorebtnbought"
                 else if (player.infinityPoints.gte(1e29)) document.getElementById("postinfi51").className = "infinistorebtn1"
@@ -6255,7 +6255,7 @@ function getECReward(x) {
 		else r=r.min(1e100)
 		return r.add(1).max(1)
 	}
-	if (x==4) return player.infinityPoints.pow((m2?.4:0.003)+c*(m2?.2:0.002)).min(m2?1/0:1e200)
+	if (x==4) return player.infinityPoints.max(1).pow((m2?.4:0.003)+c*(m2?.2:0.002)).min(m2?1/0:1e200)
 	if (x==5) return c*5
 	if (x==8) return Math.max(Math.pow(Math.log10(player.infinityPower.plus(1).log10()+1),(m2?0.05:0.03)*c), 1)
 	if (x==9) return player.timeShards.pow(c*0.1).plus(1).min(m2?"1e4000":"1e400")
@@ -6788,12 +6788,6 @@ function resetDilationGalaxies() {
 	player.dilation.nextThreshold = new Decimal(1000)
 	player.dilation.freeGalaxies = 0
 	gainDilationGalaxies()
-}
-
-function calcPerSec(amount, pow, hasMult) {
-	var mult = Decimal.floor(amount).times(pow).times(player.achPow)
-	if (hasMult) mult = mult.times(dimMults())
-	return mult.times(timeMult()).times(player.chall2Pow).dividedBy(player.tickspeed.dividedBy(1000));
 }
 
 function quickReset() {
