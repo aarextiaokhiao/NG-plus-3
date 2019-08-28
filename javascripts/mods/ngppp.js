@@ -1410,7 +1410,7 @@ function maxAllID() {
 			} else var toBuy = Math.floor(player.infinityPoints.div(dim.cost).log(costMult))
 			dim.amount=dim.amount.add(toBuy*10)
 			dim.baseAmount+=toBuy*10
-			dim.power=dim.power.times(Decimal.pow(infPowerMults[t],toBuy))
+			dim.power=dim.power.times(Decimal.pow(getInfBuy10Mult(t),toBuy))
 			dim.cost=dim.cost.times(Decimal.pow(costMult,toBuy))
 		}
 	}
