@@ -1836,7 +1836,7 @@ function updateDimensions() {
             if (player.galacticSacrifice&&(player.infinityDimension3.amount.gt(0)||player.eternities>(player.aarexModifications.newGameMinusVersion?-20:0)||quantumed)) {
                 document.getElementById("postinfir5").style.display = ""
                 if (player.infinityUpgrades.includes("postinfi50")) document.getElementById("postinfi50").className = "infinistorebtnbought"
-                else if (player.infinityPoints.gte(1e25)) document.getElementById("postinfi50").className = "infinistorebtn1"
+                else if (player.infinityPoints.gte(player.tickspeedBoosts==undefined?1e25:2e18)) document.getElementById("postinfi50").className = "infinistorebtn1"
                 else document.getElementById("postinfi50").className = "infinistorebtnlocked"
                 if (player.infinityUpgrades.includes("postinfi51")) document.getElementById("postinfi51").className = "infinistorebtnbought"
                 else if (player.infinityPoints.gte(1e29)) document.getElementById("postinfi51").className = "infinistorebtn1"

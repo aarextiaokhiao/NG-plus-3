@@ -2710,7 +2710,7 @@ function switchAB() {
 		interval: data.sacrifice.time,
 		cost: player.autoSacrifice.cost,
 		bulk: 1,
-		priority: data.sacrifice.priority,
+		priority: data.sacrifice.amount,
 		tier: 1,
 		target: 13,
 		ticks: 0,

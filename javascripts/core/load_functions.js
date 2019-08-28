@@ -696,7 +696,7 @@ if (player.version < 5) {
               tmp.qu.multPower = {rg:0,gb:0,br:0,total:0}
               tmp.qu.challenge = []
               tmp.qu.challenges = {}
-              tmp.qu.nonMAGoalReached = {}
+              tmp.qu.nonMAGoalReached = []
               tmp.qu.challengeRecords = {}
               tmp.qu.pairedChallenges = {
                   order: {},
@@ -1219,7 +1219,7 @@ if (player.version < 5) {
       document.getElementById("workerReplWhat").textContent = player.ghostify.neutrinos.upgrades.includes(2) ? "babies" : "eggons"
       updateQuantumWorth()
       if (tmp.qu.autoOptions === undefined) tmp.qu.autoOptions = {}
-      if (tmp.qu.nonMAGoalReached === undefined) tmp.qu.nonMAGoalReached = {}
+      if (tmp.qu.nonMAGoalReached === undefined || typeof(tmp.qu.nonMAGoalReached) !== "array") tmp.qu.nonMAGoalReached = []
       if (tmp.qu.challengeRecords === undefined) tmp.qu.challengeRecords = {}
       if (tmp.qu.pairedChallenges.completions === undefined) tmp.qu.pairedChallenges.completions = {}
       if (tmp.qu["10ofield"] !== undefined) {
