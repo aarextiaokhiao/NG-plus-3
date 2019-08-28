@@ -186,6 +186,9 @@ function buyMaxTimeDimensions() {
 }
 
 function getTS11Mult() {
+	if (player.galacticSacrifice) {
+		return player.tickspeed.dividedBy(1000).pow(0.005).times(0.95).plus(player.tickspeed.dividedBy(1000).pow(0.0003).times(0.05)).pow(-1)
+	}
 	let bigRipped = player.masterystudies === undefined ? false : tmp.qu.bigRip.active
 	let log = -player.tickspeed.div(1e3).pow(0.005).times(0.95).plus(player.tickspeed.div(1e3).pow(0.0003).times(0.95)).log10()
 	if (bigRipped && log > 900) log = Math.sqrt(log * 900)
