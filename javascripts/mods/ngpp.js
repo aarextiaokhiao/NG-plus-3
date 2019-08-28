@@ -866,7 +866,7 @@ function quantumReset(force, auto, challid, bigRip, implode=false) {
 		overXGalaxies: keepABnICs ? player.overXGalaxies : 0,
 		overXGalaxiesTickspeedBoost: keepABnICs || player.tickspeedBoosts == undefined ? player.overXGalaxiesTickspeedBoost : 0,
 		spreadingCancer: player.spreadingCancer,
-		postChallUnlocked: player.achievements.includes("r133") || bigRip ? 8 : 0,
+		postChallUnlocked: player.achievements.includes("r133") || bigRip ? order.length : 0,
 		postC4Tier: 0,
 		postC3Reward: new Decimal(1),
 		eternityPoints: new Decimal(0),
@@ -1129,7 +1129,7 @@ function quantumReset(force, auto, challid, bigRip, implode=false) {
 	if (player.achievements.includes("r78")) player.money = new Decimal(1e25)
 	if (player.galacticSacrifice && !keepABnICs) player.autobuyers[12]=13
 	if (player.tickspeedBoosts !== undefined && !keepABnICs) player.autobuyers[13]=14
-	player.challenges=challengesCompletedOnEternity(true)
+	player.challenges=challengesCompletedOnEternity(bigRip)
 	if (bigRip && player.ghostify.milestones > 9 && player.aarexModifications.ngudpV) for (var u=7;u<10;u++) player.eternityUpgrades.push(u)
 	if (isRewardEnabled(11) && (bigRip ? tmp.qu.bigRip.upgrades.includes(12) : true)) {
 		if (player.eternityChallUnlocked>12) player.timestudy.theorem+=masterystudies.costs.ec[player.eternityChallUnlocked]

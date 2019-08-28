@@ -3206,7 +3206,7 @@ function ghostifyReset(implode, gain, amount, force) {
 		overXGalaxies: player.overXGalaxies,
 		overXGalaxiesTickspeedBoost: player.tickspeedBoosts == undefined ? player.overXGalaxiesTickspeedBoost : 0,
 		spreadingCancer: player.spreadingCancer,
-		postChallUnlocked: 8,
+		postChallUnlocked: player.achievements.includes("r133") ? order.length : 0,
 		postC4Tier: 0,
 		postC3Reward: new Decimal(1),
 		eternityPoints: new Decimal(0),
@@ -3914,7 +3914,7 @@ function updateGhostifyTabs() {
 		for (var u=1;u<16;u++) {
 			var e=false
 			if (u>12) e=player.ghostify.ghostlyPhotons.unl
-			else e=player.ghostify.times+3>u||u<4
+			else e=player.ghostify.times+3>u||u<5
 			if (e) {
 				if (hasNU(u)) document.getElementById("neutrinoUpg" + u).className = "gluonupgradebought neutrinoupg"
 				else if (sum.gte(tmp.nuc[u])) document.getElementById("neutrinoUpg" + u).className = "gluonupgrade neutrinoupg"

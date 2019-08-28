@@ -5398,7 +5398,7 @@ function eternity(force, auto, presetLoad, dilated) {
             extraDimPowerIncrease: getEternitied() > 19 ? player.extraDimPowerIncrease : 0,
             dimPowerIncreaseCost: getEternitied() > 19 ? player.dimPowerIncreaseCost : 1e3,
             version: player.version,
-            postChallUnlocked: (player.achievements.includes("r133")) ? 8 : 0,
+            postChallUnlocked: player.achievements.includes("r133") ? order.length : 0,
             postC4Tier: 1,
             postC8Mult: new Decimal(1),
             overXGalaxies: player.overXGalaxies,
@@ -5696,7 +5696,7 @@ function eternity(force, auto, presetLoad, dilated) {
 function challengesCompletedOnEternity(bigRip) {
 	var array = []
 	if (getEternitied()>1||bigRip||player.achievements.includes("ng3p51")) for (i=1;i<(player.galacticSacrifice?15:13);i++) array.push("challenge"+i)
-	if (player.achievements.includes("r133")) for (i=1;i<9;i++) array.push("postc"+i)
+	if (player.achievements.includes("r133")) for (i=0;i<order.length;i++) array.push(order[i])
 	return array
 }
 
@@ -6358,7 +6358,7 @@ function startEternityChallenge(n) {
         extraDimPowerIncrease: getEternitied() > 19 ? player.extraDimPowerIncrease : 0,
         dimPowerIncreaseCost: getEternitied() > 19 ? player.dimPowerIncreaseCost : 1e3,
         version: player.version,
-        postChallUnlocked: (player.achievements.includes("r133")) ? 8 : 0,
+        postChallUnlocked: player.achievements.includes("r133") ? order.length : 0,
         postC4Tier: 1,
         postC8Mult: new Decimal(1),
         overXGalaxies: player.overXGalaxies,
