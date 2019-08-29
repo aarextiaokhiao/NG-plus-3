@@ -34,7 +34,7 @@ function getGalaxyPowerEff(ng, bi) {
 	if (player.galacticSacrifice) {
 		if (player.achievements.includes("r83")) eff *= 1.05
 		if (player.achievements.includes("r45")) eff *= 1.02
-		if (player.infinityUpgrades.includes("postinfi51")) eff *= 1.2
+		if (player.infinityUpgrades.includes("postinfi51")) eff *= player.tickspeedBoosts!=undefined? 1.15 : 1.2
 		if (tmp.cp && player.achievements.includes("r67")) {
 			let x=tmp.cp
 			if (x>4&&player.tickspeedBoosts != undefined) x=Math.sqrt(x-1)+2

@@ -40,6 +40,7 @@ function DimensionProduction(tier) {
   var dim = player["infinityDimension"+tier]
   var ret = dim.amount
   if (inQC(4) && tier == 1) ret = ret.plus(player.infinityDimension2.amount.floor())
+  if (player.tickspeedBoosts !== undefined && player.currentChallenge == "postc2") return new Decimal(0)
   if (player.currentEternityChall == "eterc11") return ret
   if (player.currentEternityChall == "eterc7") ret = dilates(ret.dividedBy(player.tickspeed.dividedBy(1000)))
   if (player.aarexModifications.ngm4V) ret = ret.div(100)

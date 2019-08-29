@@ -142,19 +142,19 @@ function maxBuyDimBoosts(manual) {
 		var r
 		if (player.currentEternityChall == "eterc5") {
 			r = 1
-			while (bought >= getShiftRequirement(r, true).amount) r++
+			while (bought >= getShiftRequirement(r).amount) r++
 		} else {
 			var scaling = 4
 			if (player.galacticSacrifice && player.tickspeedBoosts === undefined && player.galacticSacrifice.upgrades.includes(21)) scaling = 6
-			var firstReq = getShiftRequirement(scaling - player.resets, true)
+			var firstReq = getShiftRequirement(scaling - player.resets)
 			var supersonicStart = getSupersonicStart()
 			r = (bought - firstReq.amount) / firstReq.mult + scaling + 1
 			if (r > supersonicStart - 1) {
 				var a = getSupersonicMultIncrease() / 2
 				var b = firstReq.mult + a
-				var skips = (Math.sqrt(b * b + 4 * a * (bought - getShiftRequirement(supersonicStart - player.resets - 1, true).amount) / 4e4) - b) / (2 * a)
+				var skips = (Math.sqrt(b * b + 4 * a * (bought - getShiftRequirement(supersonicStart - player.resets - 1).amount) / 4e4) - b) / (2 * a)
 				var setPoint = supersonicStart + Math.floor(skips) * 4e4
-				var pointReq = getShiftRequirement(setPoint - player.resets, true)
+				var pointReq = getShiftRequirement(setPoint - player.resets)
 				r = (bought - pointReq.amount) / pointReq.mult + setPoint + 1
 			}
 			r = Math.floor(r - player.resets) 
@@ -165,7 +165,7 @@ function maxBuyDimBoosts(manual) {
 	}
 }
 
-function getShiftRequirement(bulk, nonround) {
+function getShiftRequirement(bulk) {
 	let amount = 20
 	let mult = getDimboostCostIncrease()
 	var resetNum = player.resets + bulk
@@ -186,7 +186,6 @@ function getShiftRequirement(bulk, nonround) {
 	if (player.infinityUpgrades.includes("resetBoost")) amount -= 9;
 	if (player.challenges.includes("postc5")) amount -= 1
 	if (player.infinityUpgradesRespecced != undefined) amount -= getInfUpgPow(4)
-	if (!nonround) amount = Math.ceil(amount)
 
 	return { tier: tier, amount: amount, mult: mult };
 }
@@ -226,7 +225,7 @@ document.getElementById("softReset").onclick = function () {
 	if (tmp.ri || getAmount(req.tier) < req.amount) return;
 	auto = false;
 	var pastResets = player.resets
-	if (player.infinityUpgrades.includes("bulkBoost") || (player.achievements.includes("r28") && player.resets > (player.currentChallenge == "challenge4" ? 1 : 3) && player.tickspeedBoosts !== undefined) || player.autobuyers[9].bulkBought) maxBuyDimBoosts(true);
+	if ((player.infinityUpgrades.includes("bulkBoost") || (player.achievements.includes("r28") && player.tickspeedBoosts !== undefined) || player.autobuyers[9].bulkBought) && player.resets > (player.currentChallenge == "challenge4" ? 1 : 3)) maxBuyDimBoosts(true);
 	else softReset(1)
 	if (player.resets <= pastResets) return
 	if (player.currentEternityChall=='eterc13') return

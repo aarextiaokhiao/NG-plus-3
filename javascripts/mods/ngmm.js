@@ -3,12 +3,14 @@ function getGSAmount() {
 	let galaxies = player.galaxies + player.replicanti.galaxies + player.dilation.freeGalaxies;
 	let y = 1.5 
 	if (player.challenges.includes("postcngmm_1")) {
-		y += Math.max(0, 0.05*(galaxies - 10)) + 0.005 * Math.pow(Math.max(0, galaxies-30) , 2) + 0.0005 * Math.pow(Math.max(0, galaxies-50) , 3)
+		y += Math.max(0, 0.05*(galaxies - 10)) + 0.005 * Math.pow(Math.max(0, galaxies-30) , 2)
+		if (player.tickspeedBoosts == undefined) y += 0.0005 * Math.pow(Math.max(0, galaxies-50) , 3)
+		if (player.achievements.includes("r121") && player.tickspeedBoosts == undefined) y += 1e-5 * Math.pow(Math.max(galaxies - 500, 0), 4)
 		y *= .08*(tmp.cp+14)
 	}
-	if (player.galacticSacrifice.upgrades.includes(52)) {
+	if (player.galacticSacrifice.upgrades.includes(52) && player.tickspeedBoosts == undefined) {
 		if (y > 100) y = Math.pow(1e4*y , 1/3)
-	} else if (y > 100) y = Math.pow(316.22*y, 1/3)
+	} else if (y > 100 && player.tickspeedBoosts == undefined) y = Math.pow(316.22*y, 1/3)
 	else if (y > 10) y = Math.pow(10*y, .5)
 	let z = 1
 	if (tmp.cp>3) {
@@ -27,7 +29,7 @@ function getGSAmount() {
 		if (player.bestInfinityTime >= 18000) ret = ret.times(Math.max(180000/player.bestInfinityTime,1))
 		else ret = ret.times(10*(1+Math.pow(Math.log10(18000/player.bestInfinityTime),2)))
 	}
-	if (player.achievements.includes("r62")) ret = ret.times(player.infinityPoints.max(10).log10())
+	if (player.achievements.includes("r62")&&player.tickspeedBoosts==undefined) ret = ret.times(player.infinityPoints.max(10).log10())
 	return ret.floor()
 }
 
@@ -338,19 +340,19 @@ function isADSCRunning() {
 
 //v1.6
 document.getElementById("postinfi50").onclick = function() {
-    buyInfinityUpgrade("postinfi50",1e25);
+    buyInfinityUpgrade("postinfi50",player.tickspeedBoosts==undefined?1e25:2e18);
 }
 
 document.getElementById("postinfi51").onclick = function() {
-    buyInfinityUpgrade("postinfi51",1e29);
+    buyInfinityUpgrade("postinfi51",player.tickspeedBoosts==undefined?1e29:1e20);
 }
 
 document.getElementById("postinfi52").onclick = function() {
-    buyInfinityUpgrade("postinfi52",1e33);
+    buyInfinityUpgrade("postinfi52",player.tickspeedBoosts==undefined?1e33:1e25);
 }
 
 document.getElementById("postinfi53").onclick = function() {
-    buyInfinityUpgrade("postinfi53",1e37);
+    buyInfinityUpgrade("postinfi53",player.tickspeedBoosts==undefined?1e37:1e29);
 }
 
 //v1.9

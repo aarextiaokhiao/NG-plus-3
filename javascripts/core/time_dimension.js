@@ -29,7 +29,7 @@ function getTimeDimensionPower(tier) {
   ret = ret.times(kongAllDimMult)
  
   var ret2 = new Decimal(1)
-  if (player.currentEternityChall == "eterc9") ret2 = ret2.times((Decimal.pow(Math.max(player.infinityPower.log2(), 1), player.galacticSacrifice == undefined ? 4 : 10)).max(1))
+  if (player.currentEternityChall == "eterc9") ret2 = ret2.times((Decimal.pow(Math.max(player.infinityPower.log2(), 1), player.galacticSacrifice == undefined ? 4 : 30)).max(1))
   if (ECTimesCompleted("eterc1") !== 0) ret2 = ret2.times(getECReward(1))
   if (player.eternityUpgrades.includes(4)) ret2 = ret2.times(player.achPow)
   if (player.eternityUpgrades.includes(5)) ret2 = ret2.times(Math.max(player.timestudy.theorem, 1))
@@ -112,6 +112,7 @@ var timeDimStartCosts = [null, 1, 5, 100, 1000, "1e2350", "1e2650", "1e3000", "1
 
 function timeDimCost(tier, bought) {
 	cost = Decimal.pow(timeDimCostMults[tier], bought).times(timeDimStartCosts[tier])
+	if (player.galacticSacrifice !== undefined) return cost
 	if (cost.gte(Number.MAX_VALUE)) cost = Decimal.pow(timeDimCostMults[tier]*1.5, bought).times(timeDimStartCosts[tier])
 	if (cost.gte("1e1300")) cost = Decimal.pow(timeDimCostMults[tier]*2.2, bought).times(timeDimStartCosts[tier])
 	if (tier > 4) cost = Decimal.pow(timeDimCostMults[tier]*100, bought).times(timeDimStartCosts[tier])

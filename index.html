@@ -2954,7 +2954,7 @@
 						</td>
 						<td id='ic2div'>
 							<div class="infchallengediv" id="postc2div" style="height: 140px; display: none">
-								<span>Automatically sacrifice every 8 ticks once you have 8th Dimension.</span>
+								<span id='ic2desc'></span>
 								<br>
 								<br>
 								<div class="outer">
@@ -2967,8 +2967,7 @@
 						</td>
 					</tr>
 					<tr>
-						<td id='icngmm_4div' style='display:none'>
-						</td>
+						<td id='icngmm_4div' style='display:none'></td>
 						<td id='ic3div'>
 							<div class="infchallengediv" id="postc3div" style="height: 140px; display: none">
 								<span>Tickspeed interval decrease is always at 0%, but every tickspeed purchase you get a static multiplier on all dimensions (increases with galaxies).</span>
@@ -2982,7 +2981,7 @@
 								</div>
 							</div>
 						</td>
-						<td>
+						<td id='ic4div'>
 							<div class="infchallengediv" id="postc4div" style="height: 140px; display: none">
 								<span>Only latest bought dimension production is normal, all other dimensions produce less.</span>
 								<br>
@@ -2995,8 +2994,37 @@
 								</div>
 							</div>
 						</td>
+						<td id='icngm3_div1' style='display:none'>
+							<div class="infchallengediv" id="postcngmm_3div" style="height: 140px; display: none">
+								<span>???</span>
+								<br>
+								<br>
+								<div class="outer">
+									<button id="postcngm3_3" class="challengesbtn" onclick="startChallenge('postcngm3_3')">Start</button>
+									<br>
+									<span id="postcngm3_3goal"></span><br>
+									<span></span>
+								</div>
+							</div>
+						</td>
 					</tr>
+					<tr id='icngm3_row2'>
+						<td id='icngm3_div2'></td>
+						<td>
+							<div class="infchallengediv" id="postcngm3_4div" style="height: 140px; display: none">
+								<span>???</span>
+								<br>
+								<br>
+								<div class="outer">
+									<button id="postcngm3_4" class="challengesbtn" onclick="startChallenge('postcngm3_4')"></button>
+									<br>
+									<span id="postcngm3_4goal" ></span><br>
+									<span></span>
+								</div>
+							</div>
+						</td>
 					<tr>
+					</tr>
 						<td>
 							<div class="infchallengediv" id="postc5div" style="height: 140px; display: none">
 								<span>When buying dimensions 1-4, everything with costs smaller or equal increases. When buying dimensions 5-8, everything with costs bigger or equal increases. When buying tickspeed, everything with the same cost increases.</span>
@@ -3025,33 +3053,33 @@
 						</td>
 					</tr>
 					<tr>
-							<td>
-								<div class="infchallengediv" id="postc7div" style="height: 140px; display: none">
-									<span id='ic7desc'></span>
+						<td>
+							<div class="infchallengediv" id="postc7div" style="height: 140px; display: none">
+								<span id='ic7desc'></span>
+								<br>
+								<br>
+								<div class="outer">
+									<button id="postc7" class="challengesbtn" onclick="startChallenge('postc7')">Start</button>
 									<br>
-									<br>
-									<div class="outer">
-										<button id="postc7" class="challengesbtn" onclick="startChallenge('postc7')">Start</button>
-										<br>
-										<span id="postc7goal" >Goal: 1e10000</span><br>
-										<span id='ic7reward'></span>
-									</div>
+									<span id="postc7goal" >Goal: 1e10000</span><br>
+									<span id='ic7reward'></span>
 								</div>
-							</td>
-							<td>
-								<div class="infchallengediv" id="postc8div" style="height: 140px; display: none">
-									<span>Your production is at 100% after purchasing anything, after that it rapidly drops down.</span>
+							</div>
+						</td>
+						<td>
+							<div class="infchallengediv" id="postc8div" style="height: 140px; display: none">
+								<span>Your production is at 100% after purchasing anything, after that it rapidly drops down.</span>
+								<br>
+								<br>
+								<div class="outer">
+									<button id="postc8" class="challengesbtn" onclick="startChallenge('postc8')">Start</button>
 									<br>
-									<br>
-									<div class="outer">
-										<button id="postc8" class="challengesbtn" onclick="startChallenge('postc8')">Start</button>
-										<br>
-										<span id="postc8goal" >Goal: 1e27000</span><br>
-										<span>Reward: You get a multiplier to dimensions 2-7 based on 1st and 8th dimension multipliers.</span>
-									</div>
+									<span id="postc8goal" >Goal: 1e27000</span><br>
+									<span>Reward: You get a multiplier to dimensions 2-7 based on 1st and 8th dimension multipliers.</span>
 								</div>
-							</td>
-						</tr>
+							</div>
+						</td>
+					</tr>
 				</table>
 
 			</div>

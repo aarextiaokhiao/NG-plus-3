@@ -10,7 +10,7 @@ function getDimensionFinalMultiplier(tier) {
 
 	mult = mult.times(player.achPow)
 
-	if (player.currentEternityChall != "eterc9") mult = mult.times(player.infinityPower.pow(getInfinityPowerEffectPower()).max(1))
+	if (player.currentEternityChall != "eterc9" && (player.tickspeedBoosts == undefined || player.currentChallenge != "postc2")) mult = mult.times(player.infinityPower.pow(getInfinityPowerEffectPower()).max(1))
 
 	if (player.infinityUpgrades.includes("totalMult")) mult = mult.times(totalMult)
 	if (player.infinityUpgrades.includes("currentMult")) mult = mult.times(currentMult)
