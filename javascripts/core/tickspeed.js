@@ -41,7 +41,7 @@ function getGalaxyPowerEff(ng, bi) {
 			eff *= .07*(x+14)
 		}
 	}
-	if (player.currentChallenge == "challenge5") eff *= 0.75
+	if (player.tickspeedBoosts !== undefined && player.currentChallenge == "challenge5") eff *= 0.75
 	if (player.achievements.includes("ngpp8") && player.meta != undefined) eff *= 1.001;
 	if (player.timestudy.studies.includes(212)) eff *= Math.min(Math.pow(player.timeShards.max(2).log2(), 0.005), 1.1)
 
