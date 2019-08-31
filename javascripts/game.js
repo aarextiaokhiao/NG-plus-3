@@ -1987,7 +1987,7 @@ function updateCosts() {
 		}
 		if (document.getElementById("infinitydimensions").style.display == "block" && player.infDimensionsUnlocked[i-1]) {
 			document.getElementById("infMax"+i).textContent = "Cost: " + shortenInfDimCosts(getIDCost(i)) + " IP"
-			if (player.infinityPoints.gte(player["infinityDimension"+i].cost)) document.getElementById("infMax"+i).className = "storebtn"
+			if (player.infinityPoints.gte(getIDCost(i))) document.getElementById("infMax"+i).className = "storebtn"
 			else document.getElementById("infMax"+i).className = "unavailablebtn"
 		}
 		if (document.getElementById("timedimensions").style.display == "block" && (i < 5 || player.dilation.studies.includes(i - 4))) {
