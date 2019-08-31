@@ -1,6 +1,15 @@
 function getGSAmount() {
 	if (isEmptiness) return new Decimal(0)
 	let galaxies = player.galaxies + player.replicanti.galaxies + player.dilation.freeGalaxies;
+	if (player.achievements.includes("r127")) galaxies += Math.pow(0.5772156649+.5*Math.pow(Math.PI,.5)+3.35988+0.43828+0.95531,0.739085+1.30637) 
+	//.5772156649 is the E-M constant, .5*Math.pow(Math.PI,.5) is root(pi)/2, 0.739085 is the unique real solution to cos(x)=x, 
+	// 1.30637 is Mills constant, 3.35988 is an approximation of the sum of the recipricals of fibonacci numbers, 0.43828 is the real part of the infinite power tower of i 
+	// 0.95531 is artan(root2)
+	if (player.achievements.includes("r135")) galaxies += Math.pow(Math.E+Math.PI+0.56714+4.81047+0.78343+1.75793+.8296262+1.20205,.286078+1.45136) 
+	// obviously e and pi, .286078 + .8296262 are the values given in the achievement 
+	// 0.56714 is the infinite power towers of 1/e, 0.78343 integral from 0 to 1 of x^x, 4.81047 principal root of i^-i 
+	// 1.45136 is the root of li, 1.75793 = root(1+root(2+root(3+... , 1.20205 = sum of reciprocals of cubes 
+	if (player.achievements.includes("r137")) galaxies += Math.max(200,player.dilation.freeGalaxies*3) + player.dilation.freeGalaxies
 	let y = 1.5 
 	if (player.challenges.includes("postcngmm_1")) {
 		y += Math.max(0, 0.05*(galaxies - 10)) + 0.005 * Math.pow(Math.max(0, galaxies-30) , 2)
@@ -22,7 +31,14 @@ function getGSAmount() {
 	let resetMult = player.resets-(player.currentChallenge=="challenge4"?2:4)
 	if (player.tickspeedBoosts !== undefined) resetMult = (resetMult+1)/2
 	let ret = Decimal.pow(galaxies, y).times(Decimal.pow(Math.max(0, resetMult), z)).max(0)
-	ret = ret.times(getAmount(8)/50+1)
+	let exp = 1
+	if (player.achievements.includes("r124")) {
+		let amt = getAmount(8)/50
+		if (amt>1048576) amt = Math.pow(Math.log2(amt)/5,10)
+		if (amt>1024) amt = 24+Math.pow(Math.log2(amt),3)
+		exp += amt
+	}
+	ret = ret.times(Decimal.pow(getAmount(8)/50+1,exp))
 	if (player.achievements.includes("r23") && player.tickspeedBoosts !== undefined) ret=ret.times(Decimal.pow(Math.max(player.tickspeedBoosts/10,1),Math.max(getAmount(8)/75,1)))
 	if (player.galacticSacrifice.upgrades.includes(32)) ret = ret.times(galUpgrade32())
 	if (player.infinityUpgrades.includes("galPointMult")) ret = ret.times(getPost01Mult())
