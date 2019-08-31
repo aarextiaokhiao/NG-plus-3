@@ -22,7 +22,14 @@ function getGSAmount() {
 	let resetMult = player.resets-(player.currentChallenge=="challenge4"?2:4)
 	if (player.tickspeedBoosts !== undefined) resetMult = (resetMult+1)/2
 	let ret = Decimal.pow(galaxies, y).times(Decimal.pow(Math.max(0, resetMult), z)).max(0)
-	ret = ret.times(getAmount(8)/50+1)
+	let exp = 1
+	if (player.achievements.includes("r124")) {
+		let amt = getAmount(8)/50
+		if (amt>1048576) amt = Math.pow(Math.log2(amt)/5,10)
+		if (amt>1024) amt = 24+Math.pow(Math.log2(amt),3)
+		exp += amt
+	}
+	ret = ret.times(Decimal.pow(getAmount(8)/50+1,exp))
 	if (player.achievements.includes("r23") && player.tickspeedBoosts !== undefined) ret=ret.times(Decimal.pow(Math.max(player.tickspeedBoosts/10,1),Math.max(getAmount(8)/75,1)))
 	if (player.galacticSacrifice.upgrades.includes(32)) ret = ret.times(galUpgrade32())
 	if (player.infinityUpgrades.includes("galPointMult")) ret = ret.times(getPost01Mult())
