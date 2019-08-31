@@ -13,7 +13,12 @@ function getGSAmount() {
 	let ret = Decimal.pow(galaxies, y).times(Decimal.pow(Math.max(0, resetMult), z)).max(0)
 	ret = ret.times(Decimal.pow(1+getAmount(8)/div2,exp))
 	
-	// following are the achievements/upgs that effect GP gain directly
+	ret = ret.times(getGPMultipliers())
+	return ret.floor()
+}
+
+function getGPMultipliers(){
+	let ret = new Decimal(1)
 	if (player.achievements.includes("r23") && player.tickspeedBoosts !== undefined) ret=ret.times(Decimal.pow(Math.max(player.tickspeedBoosts/10,1),Math.max(getAmount(8)/75,1)))
 	if (player.galacticSacrifice.upgrades.includes(32)) ret = ret.times(galUpgrade32())
 	if (player.infinityUpgrades.includes("galPointMult")) ret = ret.times(getPost01Mult())
@@ -22,7 +27,8 @@ function getGSAmount() {
 		else ret = ret.times(10*(1+Math.pow(Math.log10(18000/player.bestInfinityTime),2)))
 	}
 	if (player.achievements.includes("r62")&&player.tickspeedBoosts==undefined) ret = ret.times(player.infinityPoints.max(10).log10())
-	return ret.floor()
+	return ret
+
 }
 
 function getGSGalaxies(){
@@ -39,10 +45,11 @@ function getGSGalaxyExp(galaxies){
 	if (player.challenges.includes("postcngmm_1")) {
 		y += Math.max(0, 0.05*(galaxies - 10)) + 0.005 * Math.pow(Math.max(0, galaxies-30) , 2)
 		if (player.tickspeedBoosts == undefined || player.challenges.includes("postcngm3_4") || player.currentChallenge == "postcngm3_4") y += 0.0005 * Math.pow(Math.max(0, galaxies-50) , 3)
-		if (player.achievements.includes("r121") && player.tickspeedBoosts == undefined) y += 1e-5 * Math.pow(Math.max(galaxies - 500, 0), 4)
+		if (player.achievements.includes("r121") && player.tickspeedBoosts == undefined) y += 1e-5 * Math.pow(Math.max(galaxies - 500, 0), 4) 
 		y *= .08*(tmp.cp+14)
 		if (player.infinityUpgrades.includes("postinfi60")&&player.tickspeedBoosts!=undefined) y *= Math.log10(Math.max(galaxies-50, 1))*2.5+1
 	}
+	if (player.achievements.includes("r121")) y *= Math.log(3+galaxies)
 	if (player.galacticSacrifice.upgrades.includes(52) && player.tickspeedBoosts == undefined) {
 		if (y > 100) y = Math.pow(1e4*y , 1/3)
 	} else if (y > 100 && player.tickspeedBoosts == undefined) {
@@ -50,6 +57,7 @@ function getGSGalaxyExp(galaxies){
 	} else if (y > 10) {
 		y = Math.pow(10*y, .5)
 	}
+	if (player.achievements.includes("r121")) y += 10
 	return y
 }
 
