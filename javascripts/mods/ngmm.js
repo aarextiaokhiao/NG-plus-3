@@ -177,32 +177,41 @@ function reduceDimCosts() {
 }
 
 let galUpgrade11=function () {
-	let x=getInfinitied()
-	if (x>1e6 && getEternitied() == 0) x = 1e6
-	let y=Math.max(x+2,2);
-	let z=10
-	if (player.tickspeedBoosts!=undefined) return Decimal.pow(10,Math.min(y,6))
-	if (tmp.cp>0&&player.challenges.includes("postcngmm_1")) z-=(tmp.cp+6)/4
-	if (tmp.cp>6) z+=0.085*tmp.cp-0.31
-	if (tmp.cp>0&&getEternitied()>0&&getInfinitied() < 1e8) x+=2e6
-	if (player.infinityUpgrades.includes("postinfi61")) {
-		x+=1e7
-		z-=.1
-		if (player.galacticSacrifice.upgrades.length>9) x+=player.galacticSacrifice.upgrades.length*1e7
-	}
-	if (tmp.ec) {
-		x+=1e10*tmp.ec
-		z-=Math.pow(tmp.ec,0.3)/10
-	}
-	if (x>1e8) x=Math.pow(1e8*x,.5)
-	if (getEternitied()>0) z-=0.5
-	if (z<6) z=Math.pow(1296*z,.2)
+	if (player.tickspeedBoosts!=undefined) return Decimal.pow(10,2+Math.min(4,getInfinitied()))
+	let x=getG11Infinities()
+	let z=getG11Divider()
+	//define y
 	if (x>99) y=Math.pow(Math.log(x),Math.log(x)/z)+14
 	else if (x>4) y=Math.sqrt(x+5)+4
+	else y=x+2
+	//softcap y
 	if (y>1000) y=Math.sqrt(1000*y)
 	if (y>1e4) y=Math.pow(1e8*y,1/3)
 	return Decimal.pow(10, Math.min(y, 2e4));
 }
+
+function getG11Infinities(){
+	let x = getInfinitied()
+	if (x>1e6 && getEternitied() == 0) x = 1e6
+	if (tmp.cp>0&&getEternitied()>0&&getInfinitied() < 1e8) x+=2e6
+	if (player.infinityUpgrades.includes("postinfi61")) x += 1e7
+	if (player.infinityUpgrades.includes("postinfi61") && player.galacticSacrifice.upgrades.length>9) x+=player.galacticSacrifice.upgrades.length*1e7
+	x+=1e10*tmp.ec
+	if (x>1e8) x=Math.pow(1e8*x,.5)
+	return x
+}
+
+function getG11Divider(){
+	let z = 10
+	if (tmp.cp>0&&player.challenges.includes("postcngmm_1")) z-=(tmp.cp+6)/4
+	if (tmp.cp>6) z+=0.085*tmp.cp-0.31
+	if (player.infinityUpgrades.includes("postinfi61")) z -= .1
+	z-=Math.pow(tmp.ec,0.3)/10
+	if (getEternitied()>0) z-=0.5
+	if (z<6) z=Math.pow(1296*z,.2)
+	return z
+}
+
 let galUpgrade12 = function () {
 	return 2 * Math.pow(1 + player.galacticSacrifice.time / 600, 0.5);
 }
