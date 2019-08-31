@@ -1,7 +1,14 @@
 function getGSAmount() {
 	if (isEmptiness) return new Decimal(0)
 	let galaxies = player.galaxies + player.replicanti.galaxies + player.dilation.freeGalaxies;
-	if (player.achievements.includes("r135")) galaxies += Math.pow(Math.E*Math.PI,.286078 + .8296262) // obviously e and pi, but the other two constants are the values given in the achievement 
+	if (player.achievements.includes("r127")) galaxies += Math.pow(0.5772156649+.5*Math.pow(Math.PI,.5)+3.35988+0.43828+0.95531,0.739085+1.30637) 
+	//.5772156649 is the E-M constant, .5*Math.pow(Math.PI,.5) is root(pi)/2, 0.739085 is the unique real solution to cos(x)=x, 
+	// 1.30637 is Mills constant, 3.35988 is an approximation of the sum of the recipricals of fibonacci numbers, 0.43828 is the real part of the infinite power tower of i 
+	// 0.95531 is artan(root2)
+	if (player.achievements.includes("r135")) galaxies += Math.pow(Math.E+Math.PI+0.56714+4.81047+0.78343+1.75793+.8296262+1.20205,.286078+1.45136) 
+	// obviously e and pi, .286078 + .8296262 are the values given in the achievement 
+	// 0.56714 is the infinite power towers of 1/e, 0.78343 integral from 0 to 1 of x^x, 4.81047 principal root of i^-i 
+	// 1.45136 is the root of li, 1.75793 = root(1+root(2+root(3+... , 1.20205 = sum of reciprocals of cubes 
 	if (player.achievements.includes("r137")) galaxies += Math.max(200,player.dilation.freeGalaxies*3) + player.dilation.freeGalaxies
 	let y = 1.5 
 	if (player.challenges.includes("postcngmm_1")) {
