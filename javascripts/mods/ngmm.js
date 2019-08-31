@@ -344,9 +344,10 @@ document.getElementById("postinfi04").onclick = function() {
 //v1.41
 function galIP(){
     let gal = player.galaxies
+    if (player.achievements.includes("r122")) gal += 2*player.replicanti.galaxies
     if (gal<5) return gal
     if (gal<50) return 2+Math.pow(5+gal,0.6)
-    return Math.pow(gal,.4)+7
+    return Math.min(Math.pow(gal,.4)+7,50)
 }
 
 //v1.5
