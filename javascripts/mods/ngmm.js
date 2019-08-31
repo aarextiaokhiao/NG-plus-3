@@ -33,10 +33,11 @@ function getGPMultipliers(){
 
 function getGSGalaxies(){
 	let galaxies = player.galaxies + player.replicanti.galaxies + player.dilation.freeGalaxies;
+	if (player.achievements.includes("r121")) galaxies += 30.008
 	if (player.achievements.includes("r127")) galaxies += R127
 	if (player.achievements.includes("r132")) galaxies += player.replicanti.galaxies * .540 // 54.0% boost becasue of the 540 in the achievement
 	if (player.achievements.includes("r135")) galaxies += R135
-	if (player.achievements.includes("r137")) galaxies += Math.max(200,player.dilation.freeGalaxies*3) + player.dilation.freeGalaxies
+	if (player.achievements.includes("r137")) galaxies += Math.max(200,player.dilation.freeGalaxies*4) + 2*player.dilation.freeGalaxies
 	return galaxies
 }
 
@@ -468,7 +469,7 @@ let galUpgrade43 = function () {
 
 let galUpgrade51 = function () {
 	let x=player.galacticSacrifice.galaxyPoints.log10()/1e3
-	if (x>20) x=Math.sqrt(x*20)
+	if (x>200) x=Math.sqrt(x*200)
 	return Decimal.pow(10,x)
 }
 
