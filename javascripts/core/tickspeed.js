@@ -166,7 +166,7 @@ function buyMaxPostInfTickSpeed (mult) {
 }
 
 function cannotUsePostInfTickSpeed () {
-	return (player.currentChallenge != "challenge5" && player.currentChallenge != "postc5" && player.tickspeedBoosts == undefined) || !costIncreaseActive(player.tickSpeedCost) || (player.tickSpeedMultDecrease > 2 && player.tickspeedMultiplier.lt(Number.MAX_SAFE_INTEGER));
+	return ((player.currentChallenge == "challenge5" || player.currentChallenge == "postc5") && player.tickspeedBoosts == undefined) || !costIncreaseActive(player.tickSpeedCost) || (player.tickSpeedMultDecrease > 2 && player.tickspeedMultiplier.lt(Number.MAX_SAFE_INTEGER));
 }
 
 function buyMaxTickSpeed() {
