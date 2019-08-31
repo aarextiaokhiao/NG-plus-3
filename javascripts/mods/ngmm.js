@@ -1,10 +1,40 @@
 function getGSAmount() {
 	if (isEmptiness) return new Decimal(0)
+	let galaxies = getGSGalaxies()
+	let y = getGSGalaxyExp(galaxies)
+	let z = getGSDimboostExp(galaxies)
+	let resetMult = player.resets-(player.currentChallenge=="challenge4"?2:4)
+	if (player.tickspeedBoosts !== undefined) resetMult = (resetMult+1)/2
+	let exp = getD8Exp()
+	let div2 = 50
+	if (player.achievements.includes("r102")) div2 = 10
+	if (player.totalmoney.l > 2e6) div2 /= Math.log(player.totalmoney.l) // Math.log(e) = 1
+	
+	let ret = Decimal.pow(galaxies, y).times(Decimal.pow(Math.max(0, resetMult), z)).max(0)
+	ret = ret.times(Decimal.pow(1+getAmount(8)/div2,exp))
+	
+	// following are the achievements/upgs that effect GP gain directly
+	if (player.achievements.includes("r23") && player.tickspeedBoosts !== undefined) ret=ret.times(Decimal.pow(Math.max(player.tickspeedBoosts/10,1),Math.max(getAmount(8)/75,1)))
+	if (player.galacticSacrifice.upgrades.includes(32)) ret = ret.times(galUpgrade32())
+	if (player.infinityUpgrades.includes("galPointMult")) ret = ret.times(getPost01Mult())
+	if (player.achievements.includes('r37')) {
+		if (player.bestInfinityTime >= 18000) ret = ret.times(Math.max(180000/player.bestInfinityTime,1))
+		else ret = ret.times(10*(1+Math.pow(Math.log10(18000/player.bestInfinityTime),2)))
+	}
+	if (player.achievements.includes("r62")&&player.tickspeedBoosts==undefined) ret = ret.times(player.infinityPoints.max(10).log10())
+	return ret.floor()
+}
+
+function getGSGalaxies(){
 	let galaxies = player.galaxies + player.replicanti.galaxies + player.dilation.freeGalaxies;
 	if (player.achievements.includes("r127")) galaxies += R127
 	if (player.achievements.includes("r132")) galaxies += player.replicanti.galaxies * .540 // 54.0% boost becasue of the 540 in the achievement
 	if (player.achievements.includes("r135")) galaxies += R135
 	if (player.achievements.includes("r137")) galaxies += Math.max(200,player.dilation.freeGalaxies*3) + player.dilation.freeGalaxies
+	return galaxies
+}
+
+function getGSGalaxyExp(galaxies){
 	let y = 1.5 
 	if (player.challenges.includes("postcngmm_1")) {
 		y += Math.max(0, 0.05*(galaxies - 10)) + 0.005 * Math.pow(Math.max(0, galaxies-30) , 2)
@@ -15,17 +45,25 @@ function getGSAmount() {
 	}
 	if (player.galacticSacrifice.upgrades.includes(52) && player.tickspeedBoosts == undefined) {
 		if (y > 100) y = Math.pow(1e4*y , 1/3)
-	} else if (y > 100 && player.tickspeedBoosts == undefined) y = Math.pow(316.22*y, 1/3)
-	else if (y > 10) y = Math.pow(10*y, .5)
+	} else if (y > 100 && player.tickspeedBoosts == undefined) {
+		y = Math.pow(316.22*y, 1/3)
+	} else if (y > 10) {
+		y = Math.pow(10*y, .5)
+	}
+	return y
+}
+
+function getGSDimboostExp(galaxies){
 	let z = 1
 	if (tmp.cp>3) {
 		z = 0.06*(tmp.cp+14)
 		z += galaxies/100
 		if (player.tickspeedBoosts == undefined) z *= Math.log(galaxies+3)
 	}
-	let resetMult = player.resets-(player.currentChallenge=="challenge4"?2:4)
-	if (player.tickspeedBoosts !== undefined) resetMult = (resetMult+1)/2
-	let ret = Decimal.pow(galaxies, y).times(Decimal.pow(Math.max(0, resetMult), z)).max(0)
+	return z
+}
+
+function getD8Exp(){
 	let exp = 1
 	if (player.achievements.includes("r124")) {
 		let div = 30
@@ -36,19 +74,7 @@ function getGSAmount() {
 		if (amt>1024) amt = 24+Math.pow(Math.log2(amt),3)
 		exp += amt
 	}
-	let div2 = 50
-	if (player.achievements.includes("r102")) div2 = 10
-	if (player.totalmoney.l > 2e6) div2 /= Math.log(player.totalmoney.l) // Math.log(e) = 1
-	ret = ret.times(Decimal.pow(getAmount(8)/div2+1,exp))
-	if (player.achievements.includes("r23") && player.tickspeedBoosts !== undefined) ret=ret.times(Decimal.pow(Math.max(player.tickspeedBoosts/10,1),Math.max(getAmount(8)/75,1)))
-	if (player.galacticSacrifice.upgrades.includes(32)) ret = ret.times(galUpgrade32())
-	if (player.infinityUpgrades.includes("galPointMult")) ret = ret.times(getPost01Mult())
-	if (player.achievements.includes('r37')) {
-		if (player.bestInfinityTime >= 18000) ret = ret.times(Math.max(180000/player.bestInfinityTime,1))
-		else ret = ret.times(10*(1+Math.pow(Math.log10(18000/player.bestInfinityTime),2)))
-	}
-	if (player.achievements.includes("r62")&&player.tickspeedBoosts==undefined) ret = ret.times(player.infinityPoints.max(10).log10())
-	return ret.floor()
+	return exp
 }
 
 function galacticSacrifice(auto) {
