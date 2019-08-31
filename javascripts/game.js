@@ -400,7 +400,7 @@ function updateNewPlayer(reseted) {
         player.aarexModifications.quantumConf = true
     }
     if (modesChosen.ngmm) {
-        player.aarexModifications.newGameMinusMinusVersion = 2.2
+        player.aarexModifications.newGameMinusMinusVersion = 2.3
         player.galacticSacrifice = {}
         player.galacticSacrifice = resetGalacticSacrifice()
         player.totalBoughtDims = {}
@@ -3692,6 +3692,7 @@ function setAchieveTooltip() {
     let over9000 = document.getElementById("IT'S OVER 9000")
     let dawg = document.getElementById("Yo dawg, I heard you liked infinities...")
     let eatass = document.getElementById("Like feasting on a behind")
+    let newI = document.getElementById("Eternities are the new infinity")
     let layer = document.getElementById("But I wanted another prestige layer...")
     let fkoff = document.getElementById("What do I have to do to get rid of you")
     let minaj = document.getElementById("Popular music")
@@ -3758,7 +3759,7 @@ function setAchieveTooltip() {
     zero.setAttribute('ach-tooltip',"Get to Infinity without Dimension shifts, boosts or galaxies in a challenge. Reward: Dimensions 1-4 are 25% stronger"+(player.galacticSacrifice&&player.tickspeedBoosts==undefined?" and 1.25x to IP.":"."))
     potato.setAttribute('ach-tooltip', "Get more than " + formatValue(player.options.notation, 1e29, 0, 0) + " ticks per second. Reward: Reduces starting tick interval by 2%.");
     potato2.setAttribute('ach-tooltip', "Get more than " + formatValue(player.options.notation, 1e58, 0, 0) + " ticks per second. Reward: Reduces starting tick interval by 2%.");
-    potato3.setAttribute('ach-tooltip', "Get more than "+shortenCosts(new Decimal("1e8296262"))+" ticks per second.")
+    potato3.setAttribute('ach-tooltip', "Get more than "+shortenCosts(new Decimal("1e8296262"))+" ticks per second." + (player.galacticSacrifice !== undefined ? " Reward: Galaxy boost to Galaxy points gain is buffed." : ""))
     dimensional.setAttribute('ach-tooltip', "Reach " + formatValue(player.options.notation, 1e12, 0, 0) + " of all dimensions except 8th.");
     anti.setAttribute('ach-tooltip', "Complete all the challenges. Reward: All dimension are 10% stronger"+(player.galacticSacrifice&&player.tickspeedBoosts==undefined?" and tickspeed cost is also reduced based on dimension cost reduction.":"."))
     forever.setAttribute('ach-tooltip', "Infinity in 1 minute or less. Reward: Start with "+shortenCosts(1e10)+" antimatter"+(player.galacticSacrifice&&player.tickspeedBoosts==undefined?" and multiplier to IP based on your best infinity time.":"."))
@@ -3791,10 +3792,11 @@ function setAchieveTooltip() {
     nine.setAttribute('ach-tooltip', "Eternity with exactly 9 replicanti." + (player.boughtDims ? " Reward: Replicanti multiplier to ID is 9% stronger (after time studies)." : ""))
     infiniteIP.setAttribute('ach-tooltip', "Reach "+shortenCosts(new Decimal("1e30008"))+" IP." + (player.galacticSacrifice == undefined || player.tickspeedBoosts != undefined ? "" : " Reward: Your total galaxies boost Galaxy points gain more."))
     fiveMore.setAttribute('ach-tooltip', "Complete 50 unique eternity challenge tiers." + (player.galacticSacrifice !== undefined ? " Reward: Divide Infinity Dimension costs based on your g11 multiplier." : ""))
+    newI.setAttribute('ach-tooltip', "Eternity in under 200ms." + (player.galacticSacrifice !== undefined ? " Reward: Dimension Boosts boost to Galaxy points gain is buffed." : ""))
     over9000.setAttribute('ach-tooltip', "Get a total sacrifice multiplier of "+shortenCosts(new Decimal("1e9000"))+". Reward: Sacrifice doesn't reset your dimensions.")
     dawg.setAttribute('ach-tooltip', "Have all your past 10 infinities be at least "+shortenMoney(Number.MAX_VALUE)+" times higher IP than the previous one. Reward: Your antimatter doesn't reset on dimboost/galaxy.")
     eatass.setAttribute('ach-tooltip', "Reach "+shortenCosts(1e100)+" IP without any infinities or first dimensions. Reward: IP multiplier based on time spent this infinity.")
-    layer.setAttribute('ach-tooltip', "Reach "+shortenMoney(Number.MAX_VALUE)+" EP.")
+    layer.setAttribute('ach-tooltip', "Reach "+shortenMoney(Number.MAX_VALUE)+" EP." + (player.galacticSacrifice !== undefined ? " Reward: Galaxy boost to Galaxy points gain is buffed." : ""))
     fkoff.setAttribute('ach-tooltip', "Reach "+shortenCosts(new Decimal("1e22000"))+" IP without any time studies. Reward: Time dimensions are multiplied by the number of studies you have.")
     minaj.setAttribute('ach-tooltip', "Have 180 times more non-bonus replicanti galaxies than normal galaxies. Reward: Replicanti galaxies divide your replicanti by "+shortenMoney(Number.MAX_VALUE)+" instead of resetting them to 1.")
     infstuff.setAttribute('ach-tooltip', "Reach "+shortenCosts(new Decimal("1e140000"))+" IP without buying IDs or IP multipliers. Reward: You start eternities with all Infinity Challenges unlocked and completed"+(player.meta?", and your infinity gain is multiplied by dilated time^(1/4).":"."))
@@ -7691,7 +7693,7 @@ function gameLoop(diff) {
         player.tickspeed = player.tickspeed.times(Decimal.pow(getTickSpeedMultiplier(), player.totalTickGained - oldT))
     } else if (player.timeShards.gt(player.tickThreshold)) {
         let thresholdMult=player.timestudy.studies.includes(171)?1.25:1.33
-	if (player.galacticSacrifice) thresholdMult=player.timestudy.studies.includes(171)?1.1:1.15
+        if (player.galacticSacrifice!==undefined) thresholdMult=player.timestudy.studies.includes(171)?1.1:1.15
         if (QCIntensity(7)) thresholdMult *= getQCReward(7)
         gain = Math.ceil(new Decimal(player.timeShards).dividedBy(player.tickThreshold).log10() / Math.log10(thresholdMult))
         player.totalTickGained += gain
