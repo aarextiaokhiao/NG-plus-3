@@ -175,7 +175,11 @@ let galUpgrade12 = function () {
 }
 let galUpgrade13 = function () {
 	let exp = 3
-	if (player.infinityUpgrades.includes("postinfi62")) {
+	if (player.achievements.includes("r117")) exp += .07
+	if (player.infinityUpgrades.includes("postinfi62") && player.achievements.includes("r117")) {
+		if (player.currentEternityChall === "") exp *= Math.pow(.8+Math.log(player.resets+3), 2.08)
+		else exp *= Math.pow(.8+Math.log(player.resets+3), 0.5)
+	} else if (player.infinityUpgrades.includes("postinfi62")){
 		if (player.currentEternityChall === "") exp *= Math.pow(Math.log(player.resets+3), 2)
 		else exp *= Math.pow(Math.log(player.resets+3), 0.5)
 	}
