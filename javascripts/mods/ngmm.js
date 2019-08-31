@@ -1,6 +1,7 @@
 function getGSAmount() {
 	if (isEmptiness) return new Decimal(0)
 	let galaxies = player.galaxies + player.replicanti.galaxies + player.dilation.freeGalaxies;
+	if (player.achievements.includes("r137")) galaxies += Math.max(200,player.dilation.freeGalaxies*3) + player.dilation.freeGalaxies
 	let y = 1.5 
 	if (player.challenges.includes("postcngmm_1")) {
 		y += Math.max(0, 0.05*(galaxies - 10)) + 0.005 * Math.pow(Math.max(0, galaxies-30) , 2)
