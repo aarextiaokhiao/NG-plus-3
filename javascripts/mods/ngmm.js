@@ -38,7 +38,7 @@ function getGSAmount() {
 	}
 	let div2 = 50
 	if (player.achievements.includes("r102")) div2 = 10
-	if (player.totalmoney.l > 2e6) div2 /= Math.log10(player.totalmoney.l)
+	if (player.totalmoney.l > 2e6) div2 /= Math.log(player.totalmoney.l) // Math.log(e) = 1
 	ret = ret.times(Decimal.pow(getAmount(8)/div2+1,exp))
 	if (player.achievements.includes("r23") && player.tickspeedBoosts !== undefined) ret=ret.times(Decimal.pow(Math.max(player.tickspeedBoosts/10,1),Math.max(getAmount(8)/75,1)))
 	if (player.galacticSacrifice.upgrades.includes(32)) ret = ret.times(galUpgrade32())
