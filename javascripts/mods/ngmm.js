@@ -82,7 +82,7 @@ function getD8Exp(){
 		if (amt>1048576) amt = Math.pow(Math.log2(amt)/5,10)
 		if (amt>1024) amt = 24+Math.pow(Math.log2(amt),3)
 		exp += amt
-		if (player.totalmoney.l > 2.75e6) exp = Math.pow(exp,Math.min(1.2,1+player.totalmoney.l/1e8))
+		if (player.totalmoney.l > 2.75e6) exp = Math.pow(exp,Math.min(1.3,1+player.totalmoney.l/1e8+Math.sqrt(player.totalmoney.l/275)/3e3))
 	}
 	return exp
 }
