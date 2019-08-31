@@ -22,7 +22,7 @@ function resetTickspeedBoosts() {
 function getProductBoughtMult() {
 	let mult = 1
 	if (player.tickspeedBoosts != undefined) {
-		mult = player.galacticSacrifice.upgrades.includes(24) ? galUpgrade24() : 0.2
+		mult = player.galacticSacrifice.upgrades.includes(24) && player.currentChallenge != "postcngm3_4" ? galUpgrade24() : 0.2
 		if (player.currentChallenge == "challenge13" || player.currentChallenge == "postc1") mult = Decimal.div(mult, 2)
 	}
 	return mult
@@ -30,7 +30,7 @@ function getProductBoughtMult() {
 
 function isTickspeedBoostPossible() {
 	if (player.tickspeedBoosts == undefined) return
-	if (player.currentChallenge == "challenge5") return
+	if (player.currentChallenge == "challenge5" || player.currentChallenge == "postcngm3_3") return
 	if (tmp.ri) return
 	return player.resets > 4 || player.tickspeedBoosts > 0 || player.galaxies > 0 || player.galacticSacrifice.times > 0 || player.infinitied > 0 || player.eternities != 0 || quantumed
 }
@@ -68,4 +68,10 @@ function manualTickspeedBoost() {
 
 function galUpgrade24() {
 	return player.galacticSacrifice.galaxyPoints.pow(0.25).div(20).max(0.2)
+}
+
+//v3.2
+function divideTickspeedIC5() {
+	if (player.currentChallenge != "postc5" || player.tickspeedBoosts == undefined) return
+	player.tickspeed = player.tickspeed.div(Decimal.pow(2, Math.pow(player.tickspeedBoosts, 1.5)))
 }

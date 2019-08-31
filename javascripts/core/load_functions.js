@@ -440,8 +440,8 @@ if (player.version < 5) {
       document.getElementById("replicantiunlock").style.display="inline-block"
   }
 
-  if (player.currentChallenge == "challenge12" || player.currentChallenge == "challenge9" || ((player.currentChallenge == "challenge5" || player.currentChallenge == "challenge14") && player.tickspeedBoosts == undefined) ||
-      player.currentChallenge == "postc1" || player.currentChallenge == "postc4" || player.currentChallenge == "postc5" || player.currentChallenge == "postc6" || player.currentChallenge == "postc8") document.getElementById("quickReset").style.display = "inline-block";
+  if (player.currentChallenge == "challenge12" || player.currentChallenge == "challenge9" || ((player.currentChallenge == "challenge5" || player.currentChallenge == "challenge14" || player.currentChallenge == "postc4" || player.currentChallenge == "postc5") && player.tickspeedBoosts == undefined) ||
+      player.currentChallenge == "postc1" || player.currentChallenge == "postc6" || player.currentChallenge == "postc8") document.getElementById("quickReset").style.display = "inline-block";
   else document.getElementById("quickReset").style.display = "none";
 
 
@@ -1407,7 +1407,7 @@ if (player.version < 5) {
           dim.power = Decimal.pow(getInfBuy10Mult(tier), dim.baseAmount/10)
       }
   }
-  if (player.aarexModifications.newGameMinusMinusVersion < 2.1) player.aarexModifications.newGameMinusMinusVersion = 2.1
+  if (player.aarexModifications.newGameMinusMinusVersion < 2.2) player.aarexModifications.newGameMinusMinusVersion = 2.2
   if (player.aarexModifications.newGame3MinusVersion < 2.1) {
       player.autobuyers[13]=14
       player.overXGalaxiesTickspeedBoost=1
@@ -1434,7 +1434,7 @@ if (player.version < 5) {
       player.aarexModifications.ngmX=4
       reduceDimCosts()
   }
-  if (player.aarexModifications.newGame3MinusVersion < 3.1) player.aarexModifications.newGame3MinusVersion = 3.1
+  if (player.aarexModifications.newGame3MinusVersion < 3.2) player.aarexModifications.newGame3MinusVersion = 3.2
   if (player.aarexModifications.ersVersion === undefined && player.timestudy.studies.length>0 && typeof(player.timestudy.studies[0])!=="number") {
       newAchievements=[]
       for (id=0;id<player.achievements.length;id++) {
@@ -1732,8 +1732,10 @@ if (player.version < 5) {
   updateDimTechs()
   if (player.infinityUpgradesRespecced != undefined) order = []
   document.getElementById("ic1desc").textContent="All previous challenges (except tickspeed challenge"+(player.galacticSacrifice?',':" and")+" automatic big crunch challenge"+(player.galacticSacrifice?", and automatic galactic sacrifice challenge":"")+") at once."
-  document.getElementById("ic2desc").textContent=(player.tickspeedBoosts==undefined?"":"Infinity Dimensions do nothing. Sacrifice is way stronger. ")+"Automatically sacrifice every 8 ticks once you have 8th Dimension."
   document.getElementById("ic1reward").textContent="Reward: "+(player.galacticSacrifice?2:1.3)+"x on all Infinity Dimensions for each Infinity Challenge completed"
+  document.getElementById("ic2desc").textContent=(player.tickspeedBoosts==undefined?"":"Infinity Dimensions do nothing. Sacrifice is way stronger. ")+"Automatically sacrifice every 8 ticks once you have 8th Dimension."
+  document.getElementById("ic4desc").textContent=player.tickspeedBoosts==undefined?"Only latest bought dimension production is normal, all other dimensions produce less.":"All Normal Dimension multipliers are squared root without dilation penalty."
+  document.getElementById("ic5desc").textContent=player.tickspeedBoosts==undefined?"When buying dimensions 1-4, everything with costs smaller or equal increases. When buying dimensions 5-8, everything with costs bigger or equal increases. When buying tickspeed, everything with the same cost increases.":"You can't get tickspeed upgrades and galaxies. Tickspeed Boosts boost tickspeed instead."
   document.getElementById("ic7desc").textContent="You can't get Antimatter Galaxies, but dimensional boost multiplier "+(player.galacticSacrifice?"is cubed":"2.5x -> 10x")
   document.getElementById("ic7reward").textContent="Reward: Dimensional boost multiplier "+(player.galacticSacrifice?"is squared":"2.5x -> 4x")
   document.getElementById("replicantitabbtn").style.display=player.infinityUpgradesRespecced?"none":""
@@ -1996,8 +1998,8 @@ function load_game(noOffline) {
 		if (break_infinity_js) Decimal = Decimal_BI
 		initCost = [null, new Decimal(10), new Decimal(1e2), new Decimal(1e4), new Decimal(1e6), new Decimal(1e9), new Decimal(1e13), new Decimal(1e18), new Decimal(1e24)]
 		costMults = [null, new Decimal(1e3), new Decimal(1e4), new Decimal(1e5), new Decimal(1e6), new Decimal(1e8), new Decimal(1e10), new Decimal(1e12), new Decimal(1e15)]
-		nextAt = {postc1:new Decimal("1e2000"),postc1_ngmm:new Decimal("1e3000"),postc1_ngm3:new Decimal("1e3760"),postc2:new Decimal("1e5000"),postc3:new Decimal("1e12000"),postc4:new Decimal("1e14000"),postc5:new Decimal("1e18000"),postc6:new Decimal("1e20000"),postc7:new Decimal("1e23000"),postc8:new Decimal("1e28000"),postcngmm_1:new Decimal("1e750"),postcngmm_1_ngm3:new Decimal("1e1080"),postcngmm_2:new Decimal("1e1350"),postcngmm_3:new Decimal("1e2000"),postcngmm_3_ngm3:new Decimal("1e2650"),postcngm3_1:new Decimal("1e1560"),postcngm3_2:new Decimal("1e2085"),postcngm3_3:new Decimal("1e8220"),postcngm3_4:new Decimal("1e16000")}
-		goals = {postc1:new Decimal("1e850"),postc1_ngmm:new Decimal("1e650"),postc1_ngm3:new Decimal("1e375"),postc2:new Decimal("1e10500"),postc2_ngm3:new Decimal("1e4250"),postc3:new Decimal("1e5000"),postc4:new Decimal("1e13000"),postc5:new Decimal("1e11111"),postc6:new Decimal("2e22222"),postc7:new Decimal("1e10000"),postc7_ngmm:new Decimal("1e15000"),postc8:new Decimal("1e27000"),postcngmm_1:new Decimal("1e550"),postcngmm_1_ngm3:new Decimal("1e650"),postcngmm_2:new Decimal("1e950"),postcngmm_2_ngm3:new Decimal("1e1090"),postcngmm_3:new Decimal("1e1200"),postcngmm_3_ngm3:new Decimal("1e1230"),postcngm3_1:new Decimal("1e550"),postcngm3_2:new Decimal("1e610"),postcngm3_3:new Decimal(1/0),postcngm3_4:new Decimal(1/0)}
+		nextAt = {postc1:new Decimal("1e2000"),postc1_ngmm:new Decimal("1e3000"),postc1_ngm3:new Decimal("1e3760"),postc2:new Decimal("1e5000"),postc3:new Decimal("1e12000"),postc4:new Decimal("1e14000"),postc5:new Decimal("1e18000"),postc5_ngm3:new Decimal("1e21500"),postc6:new Decimal("1e20000"),postc6_ngm3:new Decimal("1e23000"),postc7:new Decimal("1e23000"),postc7_ngm3:new Decimal("1e26000"),postc8:new Decimal("1e28000"),postcngmm_1:new Decimal("1e750"),postcngmm_1_ngm3:new Decimal("1e1080"),postcngmm_2:new Decimal("1e1350"),postcngmm_3:new Decimal("1e2000"),postcngmm_3_ngm3:new Decimal("1e2650"),postcngm3_1:new Decimal("1e1560"),postcngm3_2:new Decimal("1e2085"),postcngm3_3:new Decimal("1e8140"),postcngm3_4:new Decimal("1e17000")}
+		goals = {postc1:new Decimal("1e850"),postc1_ngmm:new Decimal("1e650"),postc1_ngm3:new Decimal("1e375"),postc2:new Decimal("1e10500"),postc2_ngm3:new Decimal("1e4250"),postc3:new Decimal("1e5000"),postc4:new Decimal("1e13000"),postc4_ngm3:new Decimal("1e4210"),postc5:new Decimal("1e11111"),postc5_ngm3:new Decimal("7.77e7777"),postc6:new Decimal("2e22222"),postc7:new Decimal("1e10000"),postc7_ngmm:new Decimal("1e15000"),postc7_ngm3:new Decimal(1/0),postc8:new Decimal("1e27000"),postc8_ngm3:new Decimal(1/0),postcngmm_1:new Decimal("1e550"),postcngmm_1_ngm3:new Decimal("1e650"),postcngmm_2:new Decimal("1e950"),postcngmm_2_ngm3:new Decimal("1e1090"),postcngmm_3:new Decimal("1e1200"),postcngmm_3_ngm3:new Decimal("1e1230"),postcngm3_1:new Decimal("1e550"),postcngm3_2:new Decimal("1e610"),postcngm3_3:new Decimal("8.8888e888"),postcngm3_4:new Decimal("1e12345")}
 		setUnlocks = [Decimal.pow(Number.MAX_VALUE, 2.9)]
 	}
 	onLoad(noOffline)

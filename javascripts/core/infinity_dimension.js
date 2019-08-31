@@ -165,6 +165,11 @@ function resetInfDimensions() {
 var infCostMults = [null, 1e3, 1e6, 1e8, 1e10, 1e15, 1e20, 1e25, 1e30]
 var infPowerMults = [[null, 50, 30, 10, 5, 5, 5, 5, 5], [null, 500, 300, 100, 50, 25, 10, 5, 5]]
 var infBaseCost = [null, 1e8, 1e9, 1e10, 1e20, 1e140, 1e200, 1e250, 1e280]
+function getIDCost(tier) {
+	let ret=player["infinityDimension"+tier].cost
+	if (player.galacticSacrifice !== undefined && player.achievements.includes("r123")) ret=ret.div(galUpgrade11())
+	return ret
+}
 
 function getIDCostMult(tier) {
 	let ret=infCostMults[tier]
@@ -183,10 +188,11 @@ function getInfBuy10Mult(tier) {
 function buyManyInfinityDimension(tier) {
   if (player.eterc8ids <= 0 && player.currentEternityChall == "eterc8") return false
   var dim = player["infinityDimension"+tier]
-  if (player.infinityPoints.lt(dim.cost)) return false
+  var cost = getIDCost(tier)
+  if (player.infinityPoints.lt(cost)) return false
   if (!player.infDimensionsUnlocked[tier-1]) return false
   if (player.eterc8ids == 0) return false
-  if (player.infinityPoints.lt(Decimal.pow(10, 1e10))) player.infinityPoints = player.infinityPoints.minus(dim.cost)
+  if (player.infinityPoints.lt(Decimal.pow(10, 1e10))) player.infinityPoints = player.infinityPoints.minus(cost)
   dim.amount = dim.amount.plus(10);
   dim.cost = Decimal.round(dim.cost.times(getIDCostMult(tier)))
   dim.power = dim.power.times(getInfBuy10Mult(tier))
@@ -200,14 +206,14 @@ function buyManyInfinityDimension(tier) {
 
 function buyMaxInfDims(tier) {
   var dim = player["infinityDimension"+tier]
-
-  if (player.infinityPoints.lt(dim.cost)) return false
+  var cost = getIDCost(tier)
+  if (player.infinityPoints.lt(cost)) return false
   if (!player.infDimensionsUnlocked[tier-1]) return false
 
   var costMult=getIDCostMult(tier)
-  var toBuy = Math.floor((player.infinityPoints.e - dim.cost.e) / Math.log10(costMult))
+  var toBuy = Math.floor(player.infinityPoints.div(cost).log10() / Math.log10(costMult))
   dim.cost = dim.cost.times(Decimal.pow(costMult, toBuy-1))
-  if (player.infinityPoints.lt(Decimal.pow(10, 1e10))) player.infinityPoints = player.infinityPoints.minus(dim.cost.min(player.infinityPoints))
+  if (player.infinityPoints.lt(Decimal.pow(10, 1e10))) player.infinityPoints = player.infinityPoints.minus(getIDCost(tier).min(player.infinityPoints))
   dim.cost = dim.cost.times(costMult)
   dim.amount = dim.amount.plus(10*toBuy);
   dim.power = dim.power.times(Decimal.pow(getInfBuy10Mult(tier), toBuy))

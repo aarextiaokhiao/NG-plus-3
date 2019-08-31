@@ -41,7 +41,7 @@ function getGalaxyPowerEff(ng, bi) {
 			eff *= .07*(x+14)
 		}
 	}
-	if (player.tickspeedBoosts !== undefined && player.currentChallenge == "challenge5") eff *= 0.75
+	if (player.tickspeedBoosts !== undefined && (player.currentChallenge == "challenge5" || player.currentChallenge == "postcngm3_3")) eff *= 0.75
 	if (player.achievements.includes("ngpp8") && player.meta != undefined) eff *= 1.001;
 	if (player.timestudy.studies.includes(212)) eff *= Math.min(Math.pow(player.timeShards.max(2).log2(), 0.005), 1.1)
 
@@ -166,7 +166,7 @@ function buyMaxPostInfTickSpeed (mult) {
 }
 
 function cannotUsePostInfTickSpeed () {
-	return player.currentChallenge == "challenge5" || player.currentChallenge == "postc5" || !costIncreaseActive(player.tickSpeedCost) || (player.tickSpeedMultDecrease > 2 && player.tickspeedMultiplier.lt(Number.MAX_SAFE_INTEGER));
+	return (player.currentChallenge != "challenge5" && player.currentChallenge != "postc5" && player.tickspeedBoosts == undefined) || !costIncreaseActive(player.tickSpeedCost) || (player.tickSpeedMultDecrease > 2 && player.tickspeedMultiplier.lt(Number.MAX_SAFE_INTEGER));
 }
 
 function buyMaxTickSpeed() {
@@ -174,7 +174,7 @@ function buyMaxTickSpeed() {
 	if (!canBuyTickSpeed()) return false
 	if (player.tickSpeedCost.gt(player.money)) return false
 	let cost = player.tickSpeedCost
-	if (player.currentChallenge != "postc5" && (player.currentChallenge != "challenge5" || player.tickspeedBoosts != undefined) && player.currentChallenge != "challenge9" && !costIncreaseActive(player.tickSpeedCost)) {
+	if (((player.currentChallenge != "challenge5" && player.currentChallenge != "postc5") || player.tickspeedBoosts != undefined) && player.currentChallenge != "challenge9" && !costIncreaseActive(player.tickSpeedCost)) {
 		let max = Number.POSITIVE_INFINITY
 		if (player.currentChallenge != "challenge10" && player.currentChallenge != "postc1" && player.infinityUpgradesRespecced == undefined) max = Math.ceil(Decimal.div(Number.MAX_VALUE, cost).log(10))
 		var toBuy = Math.min(Math.floor(player.money.div(cost).times(9).add(1).log(10)), max)
@@ -190,7 +190,7 @@ function buyMaxTickSpeed() {
 	var mult = getTickSpeedMultiplier()
 	if (player.currentChallenge == "challenge2" || player.currentChallenge == "postc1") player.chall2Pow = 0
 	if (cannotUsePostInfTickSpeed()) {
-		while (player.money.gt(player.tickSpeedCost) && (player.tickSpeedCost.lt(Number.MAX_VALUE) || player.tickSpeedMultDecrease > 2 || player.currentChallenge == "postc5")) {
+		while (player.money.gt(player.tickSpeedCost) && (player.tickSpeedCost.lt(Number.MAX_VALUE) || player.tickSpeedMultDecrease > 2 || (player.currentChallenge == "postc5" && player.tickspeedBoosts == undefined))) {
 			player.money = player.money.minus(player.tickSpeedCost);
 			if (player.currentChallenge != "challenge5" && player.currentChallenge != "postc5") player.tickSpeedCost = player.tickSpeedCost.times(player.tickspeedMultiplier);
 			else multiplySameCosts(player.tickSpeedCost)

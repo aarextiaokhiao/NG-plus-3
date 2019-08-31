@@ -4,9 +4,10 @@ function getGSAmount() {
 	let y = 1.5 
 	if (player.challenges.includes("postcngmm_1")) {
 		y += Math.max(0, 0.05*(galaxies - 10)) + 0.005 * Math.pow(Math.max(0, galaxies-30) , 2)
-		if (player.tickspeedBoosts == undefined) y += 0.0005 * Math.pow(Math.max(0, galaxies-50) , 3)
+		if (player.tickspeedBoosts == undefined || player.challenges.includes("postcngm3_4") || player.currentChallenge == "postcngm3_4") y += 0.0005 * Math.pow(Math.max(0, galaxies-50) , 3)
 		if (player.achievements.includes("r121") && player.tickspeedBoosts == undefined) y += 1e-5 * Math.pow(Math.max(galaxies - 500, 0), 4)
 		y *= .08*(tmp.cp+14)
+		if (player.infinityUpgrades.includes("postinfi60")&&player.tickspeedBoosts!=undefined) y *= Math.log10(Math.max(galaxies-50, 1))*2.5+1
 	}
 	if (player.galacticSacrifice.upgrades.includes(52) && player.tickspeedBoosts == undefined) {
 		if (y > 100) y = Math.pow(1e4*y , 1/3)
@@ -179,7 +180,7 @@ let galUpgrade31 = function () {
 let galUpgrade32 = function () {
 	let x = player.totalmoney
 	if (!player.break) x = x.min(Number.MAX_VALUE)
-	return x.pow(0.003).add(1);
+	return x.pow(0.003).add(1)
 }
 let galUpgrade33 = function () {
 	if (player.tickspeedBoosts != undefined) return player.galacticSacrifice.galaxyPoints.div(1e10).add(1).log10()/5+1
