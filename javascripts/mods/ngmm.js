@@ -27,7 +27,10 @@ function getGSAmount() {
 	let ret = Decimal.pow(galaxies, y).times(Decimal.pow(Math.max(0, resetMult), z)).max(0)
 	let exp = 1
 	if (player.achievements.includes("r124")) {
-		let amt = getAmount(8)/42
+		let div = 30
+		if (player.currentEternityChall == "") div += 12
+		else if (player.achievements.length>90) div -= .1*(player.achievements.length-90)
+		let amt = getAmount(8)/div
 		if (amt>1048576) amt = Math.pow(Math.log2(amt)/5,10)
 		if (amt>1024) amt = 24+Math.pow(Math.log2(amt),3)
 		exp += amt
