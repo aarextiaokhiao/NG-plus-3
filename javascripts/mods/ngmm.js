@@ -249,6 +249,9 @@ let galUpgrade31 = function () {
 let galUpgrade32 = function () {
 	let x = player.totalmoney
 	let exp = .003
+	if (player.achievements.includes("r123")) exp = .005
+	let l = Math.max(player.galacticSacrifice.galaxyPoints.l-5e4,0)
+	if (player.achievements.includes("r123")) exp += Math.min(.015,l/2e7)
 	if (!player.break) x = x.min(Number.MAX_VALUE)
 	if (player.achievements.includes("r113")) exp += exp/60
 	return x.pow(exp).add(1)
