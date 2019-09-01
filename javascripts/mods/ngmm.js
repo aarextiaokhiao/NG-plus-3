@@ -485,7 +485,8 @@ function getPostC3Exp() {
 	if (tmp.ec>29) {
 		if (player.currentEternityChall=="") {
 			z=.9
-			if (tmp.ec>42) y=2
+			if (tmp.ec>53) y = 1.4-((tmp.ec-54)/15)
+			else if (tmp.ec>42) y=2
 			else if (tmp.ec>37) y=3.5
 		} else z=.6
 	}
