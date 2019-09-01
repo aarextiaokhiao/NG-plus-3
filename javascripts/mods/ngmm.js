@@ -483,7 +483,7 @@ function getPostC3Exp() {
 	let y=5
 	let z=.5
 	if (tmp.ec>29) {
-		if (player.currentEternityChall=="") {
+		if (player.currentEternityChall=="" || player.currentEternityChall=="eterc12") {
 			z=.9
 			if (tmp.ec>53) y = 1.4-((tmp.ec-54)/15)
 			else if (tmp.ec>42) y=2
