@@ -17,6 +17,25 @@ function getGSAmount() {
 	return ret.floor()
 }
 
+function getGSoffset(offset=0){
+	if (isEmptiness) return new Decimal(0)
+	let galaxies = getGSGalaxies() + offset
+	let y = getGSGalaxyExp(galaxies) 
+	let z = getGSDimboostExp(galaxies)
+	let resetMult = player.resets-(player.currentChallenge=="challenge4"?2:4)
+	if (player.tickspeedBoosts !== undefined) resetMult = (resetMult+1)/2
+	let exp = getD8Exp()
+	let div2 = 50
+	if (player.achievements.includes("r102")) div2 = 10
+	if (player.totalmoney.l > 2e6) div2 /= Math.log(player.totalmoney.l) // Math.log(e) = 1
+	
+	let ret = Decimal.pow(galaxies, y).times(Decimal.pow(Math.max(0, resetMult), z)).max(0)
+	ret = ret.times(Decimal.pow(1+getAmount(8)/div2,exp))
+	
+	ret = ret.times(getGPMultipliers())
+	return ret.floor()
+}
+
 function getGPMultipliers(){
 	let ret = new Decimal(1)
 	if (player.achievements.includes("r23") && player.tickspeedBoosts !== undefined) ret=ret.times(Decimal.pow(Math.max(player.tickspeedBoosts/10,1),Math.max(getAmount(8)/75,1)))
@@ -251,7 +270,7 @@ let galUpgrade32 = function () {
 	let exp = .003
 	if (player.achievements.includes("r123")) exp = .005
 	let l = Math.max(player.galacticSacrifice.galaxyPoints.l-5e4,0)
-	if (player.achievements.includes("r123")) exp += Math.min(.015,l/2e7)
+	if (player.achievements.includes("r123")) exp += Math.min(.005,l/2e8)
 	if (!player.break) x = x.min(Number.MAX_VALUE)
 	if (player.achievements.includes("r113")) exp += exp/60
 	return x.pow(exp).add(1)
