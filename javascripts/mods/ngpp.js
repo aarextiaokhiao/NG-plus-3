@@ -830,6 +830,7 @@ function quantumReset(force, auto, challid, bigRip, implode=false) {
 		thisInfinityTime: 0,
 		resets: keepABnICs ? 4 : 0,
 		dbPower: player.dbPower,
+        tdBoosts: resetTDBoosts(),
 		tickspeedBoosts: player.tickspeedBoosts !== undefined ? (keepABnICs ? 16 : 0) : undefined,
 		galaxies: keepABnICs ? 1 : 0,
 		galacticSacrifice: resetGalacticSacrifice(),
@@ -1123,6 +1124,7 @@ function quantumReset(force, auto, challid, bigRip, implode=false) {
 		aarexModifications: player.aarexModifications
 	};
 	if (player.challenges.includes("challenge1")) player.money = new Decimal(100)
+	if (player.aarexModifications.ngmX>3) player.money = new Decimal(200)
 	if (player.achievements.includes("r37")) player.money = new Decimal(1000)
 	if (player.achievements.includes("r54")) player.money = new Decimal(2e5)
 	if (player.achievements.includes("r55")) player.money = new Decimal(1e10)

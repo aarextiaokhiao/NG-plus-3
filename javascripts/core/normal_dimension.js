@@ -75,10 +75,12 @@ function getDimensionFinalMultiplier(tier) {
 	if (tier == 8 && player.achievements.includes("ng3p27")) mult = mult.times(tmp.ig)
 		
 	if (player.galacticSacrifice) {
-		if (player.galacticSacrifice.upgrades.includes(12)) mult = mult.times(galUpgrade12())
-		if (player.galacticSacrifice.upgrades.includes(13) && ((player.currentChallenge != "challenge14" && player.currentChallenge != "postcngm3_3" && player.currentChallenge != "postcngm3_4") || player.tickspeedBoosts == undefined)) mult = mult.times(galUpgrade13())
+		if (player.galacticSacrifice.upgrades.includes(12)) mult = mult.times(galMults.u12())
+		if (player.galacticSacrifice.upgrades.includes(13) && ((player.currentChallenge != "challenge14" && player.currentChallenge != "postcngm3_3" && player.currentChallenge != "postcngm3_4") || player.tickspeedBoosts == undefined)) mult = mult.times(galMults.u13())
+		if (player.galacticSacrifice.upgrades.includes(15)) mult = mult.times(galMults.u15())
+		if (player.galacticSacrifice.upgrades.includes(35)) mult = mult.times(galMults.u35())
 		if (player.challenges.includes("postc4")) mult = mult.pow(1.05);
-		if (player.galacticSacrifice.upgrades.includes(31)) mult = mult.pow(galUpgrade31());
+		if (player.galacticSacrifice.upgrades.includes(31)) mult = mult.pow(galMults.u31());
 	}
 
 	mult = dilates(mult.max(1), 2)
@@ -189,7 +191,7 @@ function getDimensionPowerMultiplier(nonrandom, focusOn) {
 
 	if (player.achievements.includes("r58")) dimMult = player.galacticSacrifice?Math.pow(dimMult,player.tickspeedBoosts==undefined?1.0666:Math.min(Math.sqrt(1800,player.challengeTimes[3])*.1+1,1.0666)):dimMult*1.01;
 	dimMult += ECTimesCompleted("eterc3") * 0.8
-	if (player.galacticSacrifice) if (player.galacticSacrifice.upgrades.includes(33) && ((player.currentChallenge != "challenge14" && player.currentChallenge != "postcngm3_3" && player.currentChallenge != "postcngm3_4") || player.tickspeedBoosts == undefined)) dimMult *= galUpgrade33();
+	if (player.galacticSacrifice) if (player.galacticSacrifice.upgrades.includes(33) && ((player.currentChallenge != "challenge14" && player.currentChallenge != "postcngm3_3" && player.currentChallenge != "postcngm3_4") || player.tickspeedBoosts == undefined)) dimMult *= galMults.u33();
 	if (focusOn == "no-QC5") return dimMult
 	if (QCIntensity(5)) dimMult += getQCReward(5)
 	if (player.masterystudies) {
@@ -431,5 +433,6 @@ function getDimensionProductionPerSecond(tier) {
 	if (tier == 1 && (player.currentChallenge == "challenge7" || player.currentChallenge == "postcngm3_3" || inQC(4))) ret = ret.plus(getDimensionProductionPerSecond(2))
 	let tick = dilates(Decimal.div(1e3,getTickspeed()),"tick")
 	if (player.dilation.active && player.masterystudies != undefined) tick = tick.pow(getNanofieldRewardEffect(5))
-	return ret.times(tick)
+	ret = ret.times(tick)
+	return ret
 }

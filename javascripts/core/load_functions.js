@@ -1407,7 +1407,7 @@ if (player.version < 5) {
           dim.power = Decimal.pow(getInfBuy10Mult(tier), dim.baseAmount/10)
       }
   }
-  if (player.aarexModifications.newGameMinusMinusVersion < 2.3) player.aarexModifications.newGameMinusMinusVersion = 2.3
+  if (player.aarexModifications.newGameMinusMinusVersion < 2.301) player.aarexModifications.newGameMinusMinusVersion = 2.301
   if (player.aarexModifications.newGame3MinusVersion < 2.1) {
       player.autobuyers[13]=14
       player.overXGalaxiesTickspeedBoost=1
@@ -1530,6 +1530,11 @@ if (player.version < 5) {
       player.aarexModifications.irsVersion = 1.2
   }
   if (player.aarexModifications.ngudpV < 1.1) player.aarexModifications.ngudpV = 1.1
+  if (player.aarexModifications.newGame4MinusVersion<2) {
+      player.tdBoosts=0
+      resetTDs()
+      player.aarexModifications.newGame4MinusVersion=2
+  }
   ipMultPower=2
   if (player.masterystudies) if (player.masterystudies.includes("t241")) ipMultPower=2.2
   if (GUBought("gb3")) ipMultPower=2.3
@@ -1654,7 +1659,8 @@ if (player.version < 5) {
   document.getElementById("respecMastery2").style.display = player.dilation.upgrades.includes("ngpp6") && player.masterystudies ? "block" : "none"
 
   if (player.galacticSacrifice) {
-      document.getElementById("galaxy11").innerHTML = "Normal dimensions are "+(player.infinitied>0||getEternitied()!==0||quantumed?"cheaper based on your infinitied stat.<br>Currently: <span id='galspan11'>"+shortenDimensions(galUpgrade11())+"</span>x":"99% cheaper.")+"<br>Cost: 1 GP"
+      document.getElementById("galaxy11").innerHTML = "Normal"+(player.aarexModifications.ngmX>3?" and Time D":" d")+"imensions are "+(player.infinitied>0||getEternitied()!==0||quantumed?"cheaper based on your infinitied stat.<br>Currently: <span id='galspan11'></span>x":"99% cheaper.")+"<br>Cost: 1 GP"
+      document.getElementById("galaxy15").innerHTML = "Normal and Time Dimensions produce "+(player.infinitied>0||getEternitied()!==0||quantumed?"faster based on your infinitied stat.<br>Currently: <span id='galspan15'></span>x":"100x faster")+".<br>Cost: 1 GP"
   } else {
       document.getElementById("infi21").innerHTML = "Increase the multiplier for buying 10 Dimensions<br>"+(player.aarexModifications.newGameExpVersion?"20x -> 24x":"2x -> 2.2x")+"<br>Cost: 1 IP"
       document.getElementById("infi33").innerHTML = "Increase Dimension Boost multiplier<br>2x -> 2.5x<br>Cost: 7 IP"
@@ -1696,11 +1702,11 @@ if (player.version < 5) {
       document.getElementById("icngm3_row").style.display="none"
       document.getElementById("icngm3_row2").style.display="none"
       document.getElementById("icngm3_div1").style.display="none"
-	  galUpgradeCosts[31]=2
-	  galUpgradeCosts[12]=3
-	  galUpgradeCosts[32]=8
-	  galUpgradeCosts[13]=20
-	  galUpgradeCosts[33]=1e3
+	  galCosts[31]=2
+	  galCosts[12]=3
+	  galCosts[32]=8
+	  galCosts[13]=20
+	  galCosts[33]=1e3
       document.getElementById("ic4div").appendChild(document.getElementById("postc4").parentElement.parentElement)
       document.getElementById("ic4div").style.display=""
   } else {
@@ -1708,21 +1714,21 @@ if (player.version < 5) {
       document.getElementById("icngm3_row2").style.display=""
       document.getElementById("icngm3_div1").style.display=""
       order=['postcngmm_1','postcngmm_2','postcngm3_1','postcngm3_2','postcngmm_3','postc1','postc2','postcngm3_3','postc4','postcngm3_4','postc5','postc6','postc7','postc8']
-	  galUpgradeCosts[31]=5
-	  galUpgradeCosts[12]=5
-	  galUpgradeCosts[32]=20
-	  galUpgradeCosts[13]=50
-	  galUpgradeCosts[33]=1e15
+	  galCosts[31]=5
+	  galCosts[12]=5
+	  galCosts[32]=20
+	  galCosts[13]=50
+	  galCosts[33]=1e15
       document.getElementById("icngm3_div2").appendChild(document.getElementById("postc4").parentElement.parentElement)
       document.getElementById("ic4div").style.display="none"
   }
-  document.getElementById("galcost31").textContent=galUpgradeCosts[31]
-  document.getElementById("galcost12").textContent=galUpgradeCosts[12]
-  document.getElementById("galcost32").textContent=galUpgradeCosts[32]
-  document.getElementById("galcost13").textContent=galUpgradeCosts[13]
-  var showMoreGal = player.tickspeedBoosts!=undefined ? "" : "none"
-  document.getElementById("galaxy21").innerHTML=(player.tickspeedBoosts!=undefined?"Reduce the dimension boost cost multiplier to 5":"Dimension boost scaling starts 2 later and increases the cost by 5 each")+".<br>Cost: 1 GP"
-  for (i=1;i<6;i++) document.getElementById("galaxy"+i+"4div").style.display=showMoreGal
+  document.getElementById("galaxy21").innerHTML=(player.tickspeedBoosts!=undefined?"Reduce the dimension boost cost multiplier to "+(player.aarexModifications.ngmX>3?10:5):"Dimension boost scaling starts 2 later and increases the cost by 5 each")+".<br>Cost: 1 GP"
+  document.getElementById("galaxy12").innerHTML="Normal "+(player.aarexModifications.ngmX>3?"and Time D":"d")+"mensions gain a multiplier based on time since last galactic sacrifice.<br>Currently: <span id='galspan12'>x</span>x<br>Cost: "+galCosts[12]+" GP"
+  document.getElementById("galBuff22").textContent=player.aarexModifications.ngmX>3?2:5
+  document.getElementById("galaxy13").innerHTML="Normal "+(player.aarexModifications.ngmX>3?"and Time D":"d")+"imensions gain a multiplier based on your galaxy points.<br>Currently: <span id='galspan13'>x</span>x<br>Cost: "+galCosts[13]+" GP"
+  document.getElementById("galDesc23").textContent="Dimension "+(player.aarexModifications.ngmX>3?" Boosta and Time Dimension B":"b")+"oosts are stronger based on your galaxy points."
+  document.getElementById("galcost31").textContent=galCosts[31]
+  document.getElementById("galcost32").textContent=galCosts[32]
   document.getElementById("preinfupgrades").style.display=player.infinityUpgradesRespecced?"none":""
   document.getElementById("infi1div").style.display=player.infinityUpgradesRespecced==undefined?"none":""
   document.getElementById("infi3div").style.display=player.infinityUpgradesRespecced==undefined?"none":""

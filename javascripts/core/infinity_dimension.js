@@ -43,7 +43,7 @@ function DimensionProduction(tier) {
   if (player.tickspeedBoosts !== undefined && player.currentChallenge == "postc2") return new Decimal(0)
   if (player.currentEternityChall == "eterc11") return ret
   if (player.currentEternityChall == "eterc7") ret = dilates(ret.dividedBy(player.tickspeed.dividedBy(1000)))
-  if (player.aarexModifications.ngm4V) ret = ret.div(100)
+  if (player.aarexModifications.ngmX>3) ret = ret.div(100)
   ret = ret.times(DimensionPower(tier))
   if (player.challenges.includes("postc6")&&!inQC(3)) return ret.times(Decimal.div(1000, dilates(player.tickspeed)).pow(0.0005))
   return ret
@@ -167,7 +167,7 @@ var infPowerMults = [[null, 50, 30, 10, 5, 5, 5, 5, 5], [null, 500, 300, 100, 50
 var infBaseCost = [null, 1e8, 1e9, 1e10, 1e20, 1e140, 1e200, 1e250, 1e280]
 function getIDCost(tier) {
 	let ret=player["infinityDimension"+tier].cost
-	if (player.galacticSacrifice !== undefined && player.achievements.includes("r123")) ret=ret.div(galUpgrade11())
+	if (player.galacticSacrifice !== undefined && player.achievements.includes("r123")) ret=ret.div(galMults.u11())
 	return ret
 }
 

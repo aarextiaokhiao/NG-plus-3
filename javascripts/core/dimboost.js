@@ -8,7 +8,7 @@ function getDimensionBoostPower(next, focusOn) {
 		if (player.currentChallenge == "postc7" || inQC(6) || player.timestudy.studies.includes(81)) ret = 10
 	}
 	if (player.boughtDims) ret += player.timestudy.ers_studies[4] + (next ? 1 : 0)
-	if (player.galacticSacrifice && player.galacticSacrifice.upgrades.includes(23) && ((player.currentChallenge != "challenge14" && player.currentChallenge != "postcngm3_3" && player.currentChallenge != "postcngm3_4") || player.tickspeedBoosts == undefined)) ret *= galUpgrade23()
+	if (player.galacticSacrifice && player.galacticSacrifice.upgrades.includes(23) && ((player.currentChallenge != "challenge14" && player.currentChallenge != "postcngm3_3" && player.currentChallenge != "postcngm3_4") || player.tickspeedBoosts == undefined)) ret *= galMults.u23()
 	if (player.infinityUpgrades.includes("resetMult")&&player.galacticSacrifice) ret *= 1.2 + 0.05 * player.infinityPoints.max(1).log(10)
 	if (!player.boughtDims&&player.achievements.includes("r101")) ret = ret*1.01
 	if (player.timestudy.studies.includes(83)) ret = Decimal.pow(1.0004, player.totalTickGained).times(ret);
@@ -67,6 +67,7 @@ function softReset(bulk, tier=1) {
 	player.chall11Pow=new Decimal(1)
 	player.postC4Tier=1
 	player.postC8Mult=new Decimal(1)
+    resetTDs()
 	reduceDimCosts()
 	skipResets()
 	if (player.currentChallenge == "postc2") {
@@ -96,6 +97,7 @@ function softReset(bulk, tier=1) {
 	if (!player.achievements.includes("r111")) {
 		player.money=new Decimal(10)
 		if (player.challenges.includes("challenge1")) player.money = new Decimal(100)
+		if (player.aarexModifications.ngmX>3) player.money = new Decimal(200)
 		if (player.achievements.includes("r37")) player.money = new Decimal(1000)
 		if (player.achievements.includes("r54")) player.money = new Decimal(2e5)
 		if (player.achievements.includes("r55")) player.money = new Decimal(1e10)
@@ -122,7 +124,7 @@ function setInitialDimensionPower() {
 		let ic3PowerTB = player.tickspeedBoosts * mult
 		let softCapStart = 1024
 		let frac = 8
-		if (player.currentChallenge == "postcngm3_1"||player.currentChallenge=="postc1") softCapStart = 0
+		if (player.currentChallenge=="postcngm3_1"||player.currentChallenge=="postc1") softCapStart = 0
 		if (player.challenges.includes("postcngm3_1")) frac = 7
 		if (ic3PowerTB > softCapStart) ic3PowerTB = Math.sqrt((ic3PowerTB - softCapStart) / frac + 1024) * 32 + softCapStart - 1024
 		if (player.currentChallenge == "challenge15" || player.currentChallenge == "postc1" || player.currentChallenge == "postcngm3_3") ic3PowerTB *= Math.max(player.galacticSacrifice.galaxyPoints.div(1e3).add(1).log(8),1)
@@ -173,6 +175,7 @@ function getShiftRequirement(bulk) {
 	var resetNum = player.resets + bulk
 	var maxTier = player.currentChallenge == "challenge4" ? 6 : 8
 	tier = Math.min(resetNum + 4, maxTier)
+	if (player.aarexModifications.ngmX > 3) amount = 10
 	if (tier == maxTier) amount += Math.max(resetNum + (player.galacticSacrifice && player.tickspeedBoosts === undefined && player.galacticSacrifice.upgrades.includes(21) ? 2 : 4) - maxTier, 0) * mult
 	var costStart = getSupersonicStart()
 	if (player.currentEternityChall == "eterc5") {
@@ -195,6 +198,7 @@ function getShiftRequirement(bulk) {
 function getDimboostCostIncrease () {
 	if (player.currentChallenge=="postcngmm_1") return 15;
 	let ret = 15
+	if (player.aarexModifications.ngmX > 3) ret += 5
 	if (player.galacticSacrifice) {
 		if (player.galacticSacrifice.upgrades.includes(21)) ret -= 10
 		if (player.infinityUpgrades.includes('dimboostCost')) ret -= 1

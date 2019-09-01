@@ -3171,6 +3171,7 @@ function ghostifyReset(implode, gain, amount, force) {
 		thisInfinityTime: 0,
 		resets: 0,
 		dbPower: player.dbPower,
+        tdBoosts: resetTDBoosts(),
 		tickspeedBoosts: player.tickspeedBoosts !== undefined ? 16 : undefined,
 		galaxies: 0,
 		galacticSacrifice: resetGalacticSacrifice(),
@@ -3621,6 +3622,7 @@ function ghostifyReset(implode, gain, amount, force) {
 	tmp.qu=player.quantum
 	//Pre-infinity
 	if (player.challenges.includes("challenge1")) player.money = new Decimal(100)
+	if (player.aarexModifications.ngmX>3) player.money = new Decimal(200)
 	if (player.achievements.includes("r37")) player.money = new Decimal(1000)
 	if (player.achievements.includes("r54")) player.money = new Decimal(2e5)
 	if (player.achievements.includes("r55")) player.money = new Decimal(1e10)
