@@ -456,10 +456,11 @@ if (player.version < 5) {
   if (player.infinitied == 0 && getEternitied() == 0) document.getElementById("infinityPoints2").style.display = "none"
 
   var isInIC1=player.galacticSacrifice&&!player.aarexModifications.newGameMinusMinusVersion?player.currentChallenge=="postc4":player.currentChallenge=="postc1"
-  if (player.currentChallenge == "challenge12" || isInIC1 || player.currentChallenge == "postc6" || inQC(6)) document.getElementById("matter").style.display = "block";
+  if (player.currentChallenge == "challenge12" || isInIC1 || player.currentChallenge == "postc6" || inQC(6) || player.pSac !== undefined) document.getElementById("matter").style.display = "block";
   else document.getElementById("matter").style.display = "none";
   if (player.currentChallenge == "challenge13" || player.tickspeedBoosts != undefined || (isInIC1 && player.galacticSacrifice)) document.getElementById("chall13Mult").style.display = "block";
   else document.getElementById("chall13Mult").style.display = "none";
+  document.getElementById("ec12Mult").style.display = player.pSac !== undefined ? "" : "none"
 
   var inERS=!(!player.boughtDims)
   if (player.replicanti.galaxybuyer !== undefined && !inERS) {
@@ -1953,7 +1954,8 @@ if (player.version < 5) {
       if (player.infinityUpgradesRespecced) ngModeMessages.push('Welcome to Infinity Respecced, created by Aarex! In this mode, all of infinity upgrades are replaced with new upgrades except 2x IP mult. Oh, break infinity is removed.')
       if (player.boughtDims) ngModeMessages.push('Welcome to Eternity Respecced created by dan-simon! NOTE: This is broken right now. I will fix it in later time, like after months.')
       if (player.galacticSacrifice) {
-          if (player.aarexModifications.ngmX>3) ngModeMessages.push('Welcome to NG-4 mode, the nerfed version of NG--- mode! This mode features even more changes from NG--- and is very hardcore. WIP by Nyan Cat and edited by Aarex.')
+          if (player.aarexModifications.ngmX>4) ngModeMessages.push('Welcome to NG-5 mode, a more hardcore mode than NG-4! This is very hardcore because you are stuck in more challenges. Good luck! This mode is made by Aarex.')
+          else if (player.aarexModifications.ngmX>3) ngModeMessages.push('Welcome to NG-4 mode, the nerfed version of NG--- mode! This mode features even more changes from NG--- and is very hardcore. WIP by Nyan Cat and edited by Aarex.')
           else if (player.aarexModifications.newGame3MinusVersion) ngModeMessages.push('Welcome to NG--- mode, the nerfed version of NG-- mode! This mode reduces tickspeed multiplier multiplier and nerfs galaxies, but have a new feature called \"Tickspeed Boosts\" and 1 achievement buff.')
           else ngModeMessages.push('Welcome to NG-- mode created by Nyan cat! Dilation is always locked but have more balancing, IC3 trap, and a new feature called "Galactic Sacrifice".')
       }
@@ -2237,6 +2239,7 @@ function transformSaveToDecimal() {
       player.galacticSacrifice.galaxyPoints = Decimal.round(player.galacticSacrifice.galaxyPoints)
       if (player.dimPowerIncreaseCost !== undefined) player.dimPowerIncreaseCost = new Decimal(player.dimPowerIncreaseCost)
   }
+  if (player.pSac !== undefined) player.pSac.px = new Decimal(player.pSac.px)
   player.costMultipliers = [new Decimal(player.costMultipliers[0]), new Decimal(player.costMultipliers[1]), new Decimal(player.costMultipliers[2]), new Decimal(player.costMultipliers[3]), new Decimal(player.costMultipliers[4]), new Decimal(player.costMultipliers[5]), new Decimal(player.costMultipliers[6]), new Decimal(player.costMultipliers[7])]
   player.tickspeedMultiplier = new Decimal(player.tickspeedMultiplier)
   player.matter = new Decimal(player.matter)

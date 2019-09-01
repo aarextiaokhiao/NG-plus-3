@@ -2069,7 +2069,7 @@ function getTreeUpgradeEffect(upg) {
 	if (upg==5) return Math.pow(Math.log10(player.meta.bestOverQuantums.add(1).log10()+1)/5+1,Math.sqrt(lvl))
 	if (upg==6) return Decimal.pow(2, lvl)
 	if (upg==7) return Decimal.pow(player.replicanti.amount.max(1).log10()+1, 0.25*lvl)
-	if (upg==8) return Math.log10(player.meta.bestAntimatter.add(1).log10()+1)/4*Math.sqrt(lvl)
+	if (upg==8) return Math.log10(Decimal.add(player.meta.bestAntimatter,1).log10()+1)/4*Math.sqrt(lvl)
 	return 0
 }
 

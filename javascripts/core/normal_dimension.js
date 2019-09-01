@@ -106,7 +106,7 @@ function getDimensionFinalMultiplier(tier) {
 
 function getDimensionDescription(tier) {
 	var name = TIER_NAMES[tier];
-	if (tier > Math.min(inQC(1) ? 1 : player.currentEternityChall == "eterc3" ? 3 : player.currentChallenge == "challenge4" || player.currentChallenge == "postc1" ? 5 : 7, player.resets + 3) - (player.currentChallenge == "challenge7" || player.currentChallenge == "postcngm3_3" || inQC(4) ? 1 : 0)) return getFullExpansion(player.currentChallenge == "challenge11" ? getAmount(tier) : player[name + 'Bought']) + ' (' + dimBought(tier) + ')';
+	if (tier > Math.min(inQC(1) ? 1 : player.currentEternityChall == "eterc3" ? 3 : player.currentChallenge == "challenge4" || player.currentChallenge == "postc1" ? 5 : 7, player.resets + 3) - (player.currentChallenge == "challenge7" || player.currentChallenge == "postcngm3_3" || inQC(4) || player.pSac !== undefined ? 1 : 0)) return getFullExpansion(player.currentChallenge == "challenge11" ? getAmount(tier) : player[name + 'Bought']) + ' (' + dimBought(tier) + ')';
 	else return shortenND(player[name + 'Amount']) + ' (' + dimBought(tier) + ')  (+' + formatValue(player.options.notation, getDimensionRateOfChange(tier), 2, 2) + dimDescEnd;
 }
 
@@ -117,9 +117,10 @@ function getDimensionRateOfChange(tier) {
 
 	let toGain = getDimensionProductionPerSecond(tier + 1)
 	if (tier == 7 && player.currentEternityChall == "eterc7") toGain = DimensionProduction(1).times(10)
+	if (player.pSac !== undefined) toGain = toGain.div(getEC12Mult())
 
 	var name = TIER_NAMES[tier];
-	if (player.currentChallenge == "challenge7" || player.currentChallenge == "postcngm3_3" || inQC(4)) {
+	if (player.currentChallenge == "challenge7" || player.currentChallenge == "postcngm3_3" || inQC(4) || player.pSac !== undefined) {
 		if (tier == 7) return 0
 		else toGain = getDimensionProductionPerSecond(tier + 2);
 	}
@@ -228,7 +229,7 @@ function onBuyDimension(tier) {
 	
 	if (player.currentChallenge == "challenge2" || player.currentChallenge == "postc1") player.chall2Pow = 0
 	if (player.currentChallenge == "challenge8" || player.currentChallenge == "postc1") clearDimensions(tier-1)
-	if ((player.currentChallenge == "challenge12" || player.currentChallenge == "postc1" || player.currentChallenge == "postc6" || inQC(6)) && player.matter.equals(0)) player.matter = new Decimal(1)
+	if ((player.currentChallenge == "challenge12" || player.currentChallenge == "postc1" || player.currentChallenge == "postc6" || inQC(6) || player.pSac !== undefined) && player.matter.equals(0)) player.matter = new Decimal(1)
 	player.postC4Tier = tier;
 	player.postC8Mult = new Decimal(1)
 	if (tier != 8) player.dimlife = false
@@ -430,7 +431,7 @@ function getDimensionProductionPerSecond(tier) {
 	if (tier == 1 && (player.currentChallenge == "challenge3" || player.currentChallenge == "postc1")) ret = ret.times(player.chall3Pow)
 	if (player.tickspeedBoosts != undefined) ret = ret.div(10)
 	if (player.aarexModifications.ngmX>3) ret = ret.div(100)
-	if (tier == 1 && (player.currentChallenge == "challenge7" || player.currentChallenge == "postcngm3_3" || inQC(4))) ret = ret.plus(getDimensionProductionPerSecond(2))
+	if (tier == 1 && (player.currentChallenge == "challenge7" || player.currentChallenge == "postcngm3_3" || inQC(4) || player.pSac !== undefined)) ret = ret.plus(getDimensionProductionPerSecond(2))
 	let tick = dilates(Decimal.div(1e3,getTickspeed()),"tick")
 	if (player.dilation.active && player.masterystudies != undefined) tick = tick.pow(getNanofieldRewardEffect(5))
 	ret = ret.times(tick)

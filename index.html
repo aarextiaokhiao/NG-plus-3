@@ -54,6 +54,10 @@
 			</button>
 		</div>
 		<div style="position: relative">
+			<div id="px">You have <span class='pxAmount'>0</span> Paradoxes.</div>
+			<span id="pSacPos"><button id="pSac" class="storebtn" onclick="pSac()"></button></span>
+		</div>
+		<div style="position: relative">
 			<div class="EP" id="galaxyPoints2">You have <span class='GPAmount'>0</span> Galaxy points.</div>
 			<span id="sacpos" class="eterpos"><button id="sacrificebtn" class="storebtn" onclick="galacticSacrifice()"></button></span>
 		</div>
@@ -85,6 +89,7 @@
 		<div id='quantumBlock' style='height:120px'></div>
 		<div id="matter"></div>
 		<div id="chall13Mult"></div>
+		<div id="ec12Mult"></div>
 		<div>
 			<p>You have <span id="coinAmount" style="font-size:25px; color: black">0</span> antimatter.</p>
 		</div>
@@ -107,6 +112,7 @@
 			<button id="statisticsbtn" style="font-family: Typewriter; font-size: 20px" class="tabbtn">Statistics</button>
 			<button id="achievementsbtn" style="font-family: Typewriter; font-size: 20px" class="tabbtn">Achievements</button>
 			<button id="challengesbtn" style="font-family: Typewriter; font-size: 20px" class="tabbtn">Challenges</button>
+			<button id="paradoxbtn" style="font-family: Typewriter; font-size: 20px; display: none" class="tabbtn" onclick='showTab("paradox")'>Paradox</button>
 			<button id="galaxybtn" style="font-family: Typewriter; font-size: 20px; display: none" onclick='showTab("galaxy")'>Galaxy</button>
 			<button id="infinitybtn" style="font-family: Typewriter; font-size: 20px; display: none" class="infinitybtn">Infinity</button>
 			<button id="eternitystorebtn" style="font-family: Typewriter; font-size: 20px; display: none" class="eternitytabbtn">Eternity</button>
@@ -1778,6 +1784,13 @@
 				<div id="gsStatistics">
 					<div id="sacrificed"></div>
 					<div id="thisSacrifice"></div>
+					<br>
+				</div>
+				<div id="psStatistics">
+					<div id="pSacrificedNormal"></div>
+					<div id="pSacrificedForced"></div>
+					<div id="pSacrificed"></div>
+					<div id="thisPSac"></div>
 					<br>
 				</div>
 				<div id="totalTime">You have played for </div>
@@ -5131,6 +5144,7 @@
 <script type="text/javascript" src="javascripts/mods/irs.js??2"></script>
 <script type="text/javascript" src="javascripts/mods/ngudp.js"></script>
 <script type="text/javascript" src="javascripts/mods/ngm4.js"></script>
+<script type="text/javascript" src="javascripts/mods/ngm5.js"></script>
 <script type="text/javascript" src="javascripts/game.js?15"></script>
 <script type="text/javascript" src="javascripts/sha512.js"></script>
 </body>

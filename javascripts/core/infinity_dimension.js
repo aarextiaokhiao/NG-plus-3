@@ -9,6 +9,7 @@ function DimensionDescription(tier) {
 
 function DimensionRateOfChange(tier) {
   var toGain = DimensionProduction(tier+(inQC(4)&&tier<8?2:1))
+  if (player.pSac !== undefined) toGain = toGain.div(getEC12Mult())
   var current = Decimal.max(player["infinityDimension"+tier].amount, 1);
   if (player.aarexModifications.logRateChange) {
       var change = current.add(toGain.div(10)).log10()-current.log10()

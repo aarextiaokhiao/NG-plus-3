@@ -259,7 +259,7 @@ function getMetaDimensionProduction(tier) {
 function getExtraDimensionBoostPower() {
 	if (player.currentEternityChall=="eterc14"||inQC(7)) return new Decimal(1)
 	if (inQC(3)) return player.meta.bestAntimatter.pow(Math.pow(player.meta.bestAntimatter.max(1e8).log10()/8,2))
-	return player.meta.bestAntimatter.pow(getExtraDimensionBoostPowerExponent()).plus(1)
+	return Decimal.pow(player.meta.bestAntimatter,getExtraDimensionBoostPowerExponent()).plus(1)
 }
 
 function getExtraDimensionBoostPowerExponent() {

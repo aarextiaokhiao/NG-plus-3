@@ -414,11 +414,17 @@ button {
     width: 210px;
 }
 
-#sacrificebtn {
+#sacrificebtn, #pSac {
 	width: 210px;
 	height: 70px;
 	font-family: Typewriter;
 	font-size: 11px
+}
+
+.infpos {
+	position: absolute;
+	left: 75%;
+	top: 40px;
 }
 
 .eterpos {
@@ -436,6 +442,18 @@ button {
 .sacpos {
 	position: absolute;
 	right: 75%;
+	top: 160px;
+}
+
+.ghostifyPos {
+	position: absolute;
+	left: 75%;
+	top: 160px;
+}
+
+.pSacPos {
+	position: absolute;
+	transform: translate(-50%,0);
 	top: 160px;
 }
 
@@ -536,6 +554,15 @@ button {
 	font-size:12px;
 }
 
+.PX {
+	position:absolute;
+	right:50%;
+	top: 120px;
+	transform:translate(105px,0);
+	width:210px;
+	font-size:12px;
+}
+
 #bigripbtn, #ghostifybtn {
 	cursor: pointer;
 	position: absolute;
@@ -547,7 +574,7 @@ button {
 	font-size: 11px
 }
 
-#GHPAmount, #quantumedBMAmount {
+.pxAmount, #GHPAmount, #quantumedBMAmount {
 	font-weight: bold;
 }
 
@@ -642,6 +669,23 @@ button {
 .eternitybtn:hover {
     color: #511568;
     background: white;
+}
+
+#paradoxbtn {
+	background: radial-gradient(#7f007f, #ff00ff);
+	border: 2px solid #ff00ff;
+	color: #ff00ff;
+	text-shadow: 0px 0px 3px #000000, 0px 0px 6px #ff00ff;
+	font-family: Typewriter;
+	font-weight: bold;
+	border-radius: 4px;
+	transition-duration: 0.2s
+}
+
+#paradoxbtn:hover {
+	box-shadow: inset 0px 0px 12px 0px #ff00ff;
+	text-shadow: 0px 0px 6px #000000, 0px 0px 6px #ff00ff;
+	cursor: pointer
 }
 
 #galaxybtn {

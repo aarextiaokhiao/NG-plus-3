@@ -91,6 +91,7 @@ function isTDUnlocked(t) {
 
 function getTimeDimensionRateOfChange(tier) {
   let toGain = getTimeDimensionProduction(tier+(inQC(4)?2:1))
+  if (player.pSac !== undefined) toGain = toGain.div(getEC12Mult())
   var current = Decimal.max(player["timeDimension"+tier].amount, 1);
   if (player.aarexModifications.logRateChange) {
       var change = current.add(toGain.div(10)).log10()-current.log10()
