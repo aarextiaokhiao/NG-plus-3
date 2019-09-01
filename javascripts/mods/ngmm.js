@@ -398,8 +398,7 @@ function galIP(){
     let rg = player.replicanti.galaxies
     if (player.timestudy.studies.includes(132)) rg *= 1.4
     if (player.timestudy.studies.includes(133)) rg *= 1.5
-    if (player.achievements.includes("r122") && player.currentEternityChall=="") gal += 90*rg
-    if (player.achievements.includes("r122")) gal += 10*rg 
+    if (player.achievements.includes("r122")) gal += 100*rg 
     if (gal<5) return gal
     if (gal<50) return 2+Math.pow(5+gal,0.6)
     return Math.min(Math.pow(gal,.4)+7,155)
