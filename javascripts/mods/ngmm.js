@@ -395,10 +395,14 @@ document.getElementById("postinfi04").onclick = function() {
 //v1.41
 function galIP(){
     let gal = player.galaxies
-    if (player.achievements.includes("r122")) gal += 2*player.replicanti.galaxies
+    let rg = player.replicanti.galaxies
+    if (player.timestudy.studies.includes(132)) rg *= 1.4
+    if (player.timestudy.studies.includes(133)) rg *= 1.5
+    if (player.achievements.includes("r122") && player.currentEternityChall=="") gal += 90*rg
+    if (player.achievements.includes("r122")) gal += 10*rg 
     if (gal<5) return gal
     if (gal<50) return 2+Math.pow(5+gal,0.6)
-    return Math.min(Math.pow(gal,.4)+7,50)
+    return Math.min(Math.pow(gal,.4)+7,155)
 }
 
 //v1.5
