@@ -229,6 +229,7 @@ function getG11Infinities(){
 	if (player.infinityUpgrades.includes("postinfi61")) x += 1e7
 	if (player.infinityUpgrades.includes("postinfi61") && player.galacticSacrifice.upgrades.length>9) x+=player.galacticSacrifice.upgrades.length*1e7
 	x+=1e10*tmp.ec
+	if (tmp.ec > 53) x += (tmp.ec-50)*1e16
 	if (x>1e8) x=Math.pow(1e8*x,.5)
 	return x
 }
