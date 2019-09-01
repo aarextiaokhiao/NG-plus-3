@@ -1212,6 +1212,7 @@ function getRemoteGalaxyScalingStart(galaxies) {
 		if (player.masterystudies.includes("d12")) n += getNanofieldRewardEffect(7)
 		if (galaxies > 1/0 && !tmp.be) n -= galaxies - 1/0
 	}
+	if (player.galacticSacrifice) return n + 1e7
 	return n
 }
 
