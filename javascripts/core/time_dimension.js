@@ -86,7 +86,7 @@ function isTDUnlocked(t) {
 		if ((player.currentChallenge=="challenge4"||player.currentChallenge=="postc1")&&t>6) return
 		return player.tdBoosts>t-2
 	}
-	return t<5||player.dilation.studies.includes(t-4)
+	return t<5||player.dilation.studies.includes(t-3)
 }
 
 function getTimeDimensionRateOfChange(tier) {
