@@ -6271,7 +6271,7 @@ function getECReward(x) {
 		return r.plus(1).min(m2?"1e10000":"1e400")
 	}
 	if (x==10) return Decimal.pow(getInfinitied(),m2?2:.9).times(c*(m2?0.02:0.000002)).add(1).max(1).pow(player.timestudy.studies.includes(31)?4:1)
-	if (x==12) return 1-c*0.008
+	if (x==12) return 1-c*(m2?.02:0.008)
 	if (x==13) return c*0.2
 }
 
