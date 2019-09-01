@@ -174,10 +174,16 @@ function getIDCost(tier) {
 
 function getIDCostMult(tier) {
 	let ret=infCostMults[tier]
-	if (player.infinityUpgrades.includes("postinfi53")) ret/=50
 	if (ECTimesCompleted("eterc12")) ret=Math.pow(ret,getECReward(12))
-	if (player.galacticSacrifice!==undefined&&player.galacticSacrifice.upgrades.includes(42)) ret/=1+5*Math.log10(player.eternityPoints.plus(1).log10()+1)
-	return Math.max(ret,Math.pow(infCostMults[tier],.1))
+	if (player.galacticSacrifice==undefined) return ret
+	if (player.infinityUpgrades.includes("postinfi53")) ret/=50
+	if (player.galacticSacrifice.upgrades.includes(42)) ret/=1+5*Math.log10(player.eternityPoints.plus(1).log10()+1)
+	let cap = .1
+	if (player.achPow.gte(Decimal.pow(5,11.9))) {
+		cap = .02
+		ret /= Math.max(1,Math.log(player.totalmoney.log10())/10-.5)
+	}
+	return Math.max(ret,Math.pow(infCostMults[tier],cap))
 }
 
 function getInfBuy10Mult(tier) {

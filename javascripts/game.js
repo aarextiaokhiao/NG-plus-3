@@ -401,7 +401,7 @@ function updateNewPlayer(reseted) {
         tmp.qu=player.quantum
     }
     if (modesChosen.ngmm) {
-        player.aarexModifications.newGameMinusMinusVersion = 2.301
+        player.aarexModifications.newGameMinusMinusVersion = 2.4
         player.galacticSacrifice = {}
         player.galacticSacrifice = resetGalacticSacrifice()
         player.totalBoughtDims = {}
@@ -1222,6 +1222,7 @@ function getRemoteGalaxyScalingStart(galaxies) {
 		if (player.masterystudies.includes("d12")) n += getNanofieldRewardEffect(7)
 		if (galaxies > 1/0 && !tmp.be) n -= galaxies - 1/0
 	}
+	if (player.galacticSacrifice != undefined) n += 1e7
 	return n
 }
 
@@ -6290,8 +6291,8 @@ document.getElementById("ec12unl").onclick = function() {
 }
 
 function getECGoal(x) {
-	let gi=[[1800,975,600,2750,750,850,2000,1300,1750,3000,500,110000,38000000,1595000],[2675,1125,1025,4000,600,850,1450,2100,2250,5000,500,150000,38000000,1595000]]
-	let gm=[[200,175,75,550,400,250,530,900,250,300,200,12000,1200000,250000],[400,175,100,850,300,225,530,500,300,500,200,20000,1200000,250000]]
+	let gi=[[1800,975,600,2750,750,850,2000,1300,1750,3000,500,110000,38000000,1595000],[2675,1125,1025,4000,600,850,1450,2100,2250,2500,35000,37500,38000000,1595000]]
+	let gm=[[200,175,75,550,400,250,530,900,250,300,200,12000,1200000,250000],[400,250,100,850,300,225,530,500,300,250,3250,7500,1200000,250000]]
 	let i=player.galacticSacrifice!=undefined?1:0
 	return Decimal.pow(10,gi[i][x-1]+gm[i][x-1]*ECTimesCompleted("eterc"+x))
 }
@@ -6311,11 +6312,11 @@ function getECReward(x) {
 	if (x==8) return Math.max(Math.pow(Math.log10(player.infinityPower.plus(1).log10()+1),(m2?0.05:0.03)*c), 1)
 	if (x==9) {
 		let r=player.timeShards.pow(c/(m2?1:10))
-		if (m2) r=r.times(Decimal.pow(player.timeShards.max(1).log10(),500*c))
+		if (m2) r=r.times(Decimal.pow(player.timeShards.max(10).log10(),500*c))
 		return r.plus(1).min(m2?"1e10000":"1e400")
 	}
 	if (x==10) return Decimal.pow(getInfinitied(),m2?2:.9).times(c*(m2?0.02:0.000002)).add(1).max(1).pow(player.timestudy.studies.includes(31)?4:1)
-	if (x==12) return 1-c*0.008
+	if (x==12) return 1-c*(m2?.06:0.008)
 	if (x==13) return c*0.2
 }
 

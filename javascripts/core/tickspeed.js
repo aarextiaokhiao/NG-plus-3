@@ -138,8 +138,9 @@ document.getElementById("tickSpeed").onclick = function () {
 function getTickSpeedCostMultiplierIncrease() {
 	if (inQC(7)) return Number.MAX_VALUE
 	let ret = player.tickSpeedMultDecrease;
+	let exp = .9-.02*ECTimesCompleted("eterc11")
 	if (player.currentChallenge === 'postcngmm_2') ret = Math.pow(ret, .5)
-	else if (player.challenges.includes('postcngmm_2')) ret = Math.pow(ret, .9 / (1 + Math.pow(player.galaxies, 0.7) / 10))
+	else if (player.challenges.includes('postcngmm_2')) ret = Math.pow(ret, exp / (1 + Math.pow(player.galaxies, 0.7) / 10))
 	return ret
 }
 
