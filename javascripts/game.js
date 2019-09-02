@@ -6668,13 +6668,22 @@ function startDilatedEternity(auto, shortcut) {
 }
 
 function dilates(x, m) {
-	let y = 0
-	if (player.dilation.active && m!=2 && (m!="meta" || !player.achievements.includes("ng3p63") || !inQC(0))) y++
-	if (player.galacticSacrifice !== undefined && m!=1) y++
-	if (y) {
+	let e = 1
+	let a = false
+	if (player.dilation.active && m!=2 && (m!="meta" || !player.achievements.includes("ng3p63") || !inQC(0))) {
+		e *= dilationPowerStrength()
+		if (player.exdilation != undefined && !player.aarexModifications.ngudpV) e += exDilationBenefit() * (1 - e)
+		if (player.dilation.upgrades.includes(9)) e *= 1.05
+		a = true
+	}
+	if (player.galacticSacrifice !== undefined && m!=1) {
+		e *= dilationPowerStrength()
+		a = true
+	}
+	if (a) {
 		if (m!="tick") x = x.max(1)
 		else if (player.galacticSacrifice==undefined) x = x.times(1e3)
-		if (x.gt(10) || !(player.aarexModifications.ngmX>3)) x = Decimal.pow(10, Math.pow(x.log10(), Math.pow(dilationPowerStrength(), y)))
+		if (x.gt(10) || !(player.aarexModifications.ngmX>3)) x = Decimal.pow(10, Math.pow(x.log10(), e))
 		if (m=="tick"&&player.galacticSacrifice==undefined) x = x.div(1e3)
 		if (m=="tick"&&x.lt(1)) x = Decimal.div(1,x)
 	}
@@ -6684,8 +6693,6 @@ function dilates(x, m) {
 function dilationPowerStrength() {
 	let pow = 0.75
 	if (player.aarexModifications.ngmX>3) pow = 0.7
-	if (player.exdilation != undefined && !player.aarexModifications.ngudpV) pow += exDilationBenefit() * 0.25
-	if (player.dilation.upgrades.includes(9)) pow *= 1.05
 	return pow;
 }
 
