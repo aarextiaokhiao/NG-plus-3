@@ -475,7 +475,7 @@ let galMults = {
 	},
 	u51: function() {
 		let x=player.galacticSacrifice.galaxyPoints.log10()/1e3
-		if (x>20) x=Math.sqrt(x*20)
+		if (x>200) x=Math.sqrt(x*200)
 		return Decimal.pow(10,x)
 	},
 	u12: function() {
@@ -483,12 +483,20 @@ let galMults = {
 	},
 	u32: function() {
 		let x = player.totalmoney
+		let exp = .003
+		if (player.achievements.includes("r123")) exp = .005
+		let l = Math.max(player.galacticSacrifice.galaxyPoints.l-5e4,0)
+		if (player.achievements.includes("r123")) exp += Math.min(.005,l/2e8)
 		if (!player.break) x = x.min(Number.MAX_VALUE)
-		return x.pow(0.003).add(1)
+		if (player.achievements.includes("r113")) exp += exp/60
+		return x.pow(exp).add(1)
 	},
 	u13: function() {
 		let exp = 3
-		if (player.infinityUpgrades.includes("postinfi62")) {
+		if (player.infinityUpgrades.includes("postinfi62") && player.achievements.includes("r117")) {
+			if (player.currentEternityChall === "") exp *= Math.pow(.8+Math.log(player.resets+3), 2.08)
+			else exp *= Math.pow(.8+Math.log(player.resets+3), 0.5)
+		} else if (player.infinityUpgrades.includes("postinfi62")){
 			if (player.currentEternityChall === "") exp *= Math.pow(Math.log(player.resets+3), 2)
 			else exp *= Math.pow(Math.log(player.resets+3), 0.5)
 		}
