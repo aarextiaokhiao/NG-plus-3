@@ -1408,7 +1408,7 @@ if (player.version < 5) {
           dim.power = Decimal.pow(getInfBuy10Mult(tier), dim.baseAmount/10)
       }
   }
-  if (player.aarexModifications.newGameMinusMinusVersion < 2.4) player.aarexModifications.newGameMinusMinusVersion = 2.4
+  if (player.aarexModifications.newGameMinusMinusVersion < 2.41) player.aarexModifications.newGameMinusMinusVersion = 2.41
   if (player.aarexModifications.newGame3MinusVersion < 2.1) {
       player.autobuyers[13]=14
       player.overXGalaxiesTickspeedBoost=1

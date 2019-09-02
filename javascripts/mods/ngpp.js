@@ -983,7 +983,7 @@ function quantumReset(force, auto, challid, bigRip, implode=false) {
 			bought: 0
 		},
 		timeDimension8: {
-			cost: new Decimal("1e3350"),
+			cost: timeDimCost(8,ghostified&&bigRip?1:0),
 			amount: new Decimal(ghostified&&bigRip?1:0),
 			power: new Decimal(1),
 			bought: ghostified&&bigRip?1:0
@@ -1168,10 +1168,11 @@ function quantumReset(force, auto, challid, bigRip, implode=false) {
 				g[p[c]]=g[p[c]].add(d[c]).round()
 				u[p[c][0]]=u[p[c][0]].sub(d[c]).round()
 			}
-			var intensity=tmp.qu.challenge.length
-			var qc1=tmp.qu.challenge[0]
-			var qc2=tmp.qu.challenge[1]
-			if (getCurrentQCData().length>1) {
+			var qc=getCurrentQCData()
+			var intensity=qc.length
+			var qc1=qc[0]
+			var qc2=qc[1]
+			if (intensity>1) {
 				if (tmp.qu.pairedChallenges.current>tmp.qu.pairedChallenges.completed) {
 					tmp.qu.challenges[qc1]=2
 					tmp.qu.challenges[qc2]=2
@@ -1190,7 +1191,7 @@ function quantumReset(force, auto, challid, bigRip, implode=false) {
 				}
 				if (tmp.qu.pairedChallenges.fastest[pcid] === undefined) tmp.qu.pairedChallenges.fastest[pcid] = oldTime
 				else tmp.qu.pairedChallenges.fastest[pcid] = tmp.qu.pairedChallenges.fastest[pcid] = Math.min(tmp.qu.pairedChallenges.fastest[pcid], oldTime)
-			} else if (intensity>0) {
+			} else if (intensity) {
 				if (!tmp.qu.challenges[qc1]) {
 					tmp.qu.challenges[qc1]=1
 					tmp.qu.electrons.mult+=0.25

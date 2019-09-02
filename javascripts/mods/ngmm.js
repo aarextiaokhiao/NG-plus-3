@@ -196,6 +196,10 @@ function buyGalaxyUpgrade(i) {
 		let dim = player["infinityDimension"+tier]
 		dim.cost = Decimal.pow(getIDCostMult(tier),dim.baseAmount/10).times(infBaseCost[tier])
 	}
+	if (i==53) {
+		player.infMult = new Decimal(1)
+		player.infMultCost = new Decimal(10)
+	}
 }
 
 function reduceDimCosts(upg) {
@@ -449,7 +453,7 @@ let R127 = Math.pow(0.5772156649+.5*Math.pow(Math.PI,.5)+3.35988+0.43828+0.95531
 // 1.30637 is Mills constant, 3.35988 is an approximation of the sum of the recipricals of fibonacci numbers, 0.43828 is the real part of the infinite power tower of i 
 // 0.95531 is artan(root2)
 	
-let R135 = Math.pow(Math.E+Math.PI+0.56714+4.81047+0.78343+1.75793+.8296262+1.20205,.286078+1.45136) 
+let R135 = Math.pow(Math.E+Math.PI+0.56714+4.81047+0.78343+1.75793+2.286078+1.20205,1.45136+.829626)
 // obviously e and pi, .286078 + .8296262 are the values given in the achievement 
 // 0.56714 is the infinite power towers of 1/e, 0.78343 integral from 0 to 1 of x^x, 4.81047 principal root of i^-i 
 // 1.45136 is the root of li, 1.75793 = root(1+root(2+root(3+... , 1.20205 = sum of reciprocals of cubes

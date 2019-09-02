@@ -401,7 +401,7 @@ function updateNewPlayer(reseted) {
         tmp.qu=player.quantum
     }
     if (modesChosen.ngmm) {
-        player.aarexModifications.newGameMinusMinusVersion = 2.4
+        player.aarexModifications.newGameMinusMinusVersion = 2.41
         player.galacticSacrifice = {}
         player.galacticSacrifice = resetGalacticSacrifice()
         player.totalBoughtDims = {}
