@@ -112,6 +112,7 @@
 			<button id="statisticsbtn" style="font-family: Typewriter; font-size: 20px" class="tabbtn">Statistics</button>
 			<button id="achievementsbtn" style="font-family: Typewriter; font-size: 20px" class="tabbtn">Achievements</button>
 			<button id="challengesbtn" style="font-family: Typewriter; font-size: 20px" class="tabbtn">Challenges</button>
+			<button id="automationbtn" style="font-family: Typewriter; font-size: 20px" class="tabbtn" onclick='showTab("autobuyers")'>Automation</button>
 			<button id="paradoxbtn" style="font-family: Typewriter; font-size: 20px; display: none" class="tabbtn" onclick='showTab("paradox")'>Paradox</button>
 			<button id="galaxybtn" style="font-family: Typewriter; font-size: 20px; display: none" onclick='showTab("galaxy")'>Galaxy</button>
 			<button id="infinitybtn" style="font-family: Typewriter; font-size: 20px; display: none" class="infinitybtn">Infinity</button>
@@ -1699,6 +1700,11 @@
 						<td><div><button id="decimalMode" onclick="switchDecimalMode()" class="storebtn" style="color:black; width: 200px; height: 55px"></button></div></td>
 						<td><div><button id="performanceTicks" onclick="togglePerformanceTicks()" class="storebtn" style="color:black; width: 200px; height: 55px"></button></div></td>
 					</tr>
+					<tr>
+						<td></td>
+						<td><div><button id="maxHighestTD" class="storebtn" style="color:black; width: 200px; height: 55px">Only max your highest Time Dimensions: OFF</button></div></td>
+						<td></td>
+					</tr>
 				</table>
 			</div>
 			<div class='optionstab' id='secrets' style='display:none'>
@@ -1812,6 +1818,7 @@
 				<div id="challengetime13"></div>
 				<div id="challengetime14"></div>
 				<div id="challengetime15"></div>
+				<div id="challengetime16"></div>
 				<br>
 				<div id="challengetimesum"></div>
 			</div>
@@ -1829,6 +1836,8 @@
 				<div id="infchallengetime10"></div>
 				<div id="infchallengetime11"></div>
 				<div id="infchallengetime12"></div>
+				<div id="infchallengetime13"></div>
+				<div id="infchallengetime14"></div>
 				<br>
 				<div id="infchallengetimesum"></div>
 			</div>
@@ -2646,7 +2655,7 @@
 					<tr>
 						<td>
 							<div class= "challengediv">
-								<span style="font-size: 110%">Reach infinity for the first time.</span>
+								<span style="font-size: 110%" id='d1AutoChallengeDesc'></span>
 								<br>
 								<br>
 								<div class="outer">
@@ -2854,7 +2863,7 @@
 					<tr id="ngmmmchalls">
 						<td>
 							<div class= "challengediv">
-								<span style="font-size: 110%">Dimension Boosts and Galaxies only boost Galaxy point gain and Tickspeed Boosts are nerfed, but Galaxy points boost Tickspeed Boosts.</span>
+								<span style="font-size: 110%" id="autoTBChallengeDesc"></span>
 								<br>
 								<br>
 
@@ -2863,6 +2872,20 @@
 									<button id="challenge15" class="challengesbtn">Start</button>
 									<br>
 									<span>Reward: Automated Tickspeed Boosts</span>
+								</div>
+							</div>
+						</td>
+						<td id="ngm4chall">
+							<div class= "challengediv">
+								<span style="font-size: 110%">Tickspeed Multiplier boost to Time Dimensions is weaker.</span>
+								<br>
+								<br>
+
+								<div class="outer">
+
+									<button id="challenge16" class="challengesbtn">Start</button>
+									<br>
+									<span>Reward: Automated Time Dimension Boosts</span>
 								</div>
 							</div>
 						</td>
@@ -3564,6 +3587,7 @@
 				</tr>
 			</table>
 		</div>
+		<div id="automation_ngm4_placement"></div>
 		<div id="galaxy" class="tab" align="center" style="display: none">
 			<div id="vanillaGalaxyPoints">
 				<br>
@@ -3679,7 +3703,7 @@
 			</div>
 			<tr>
 				<td><button class="secondarytabbtn" onclick="showInfTab('preinf')">Upgrades</button><td>
-				<td><button class="secondarytabbtn" onclick="showInfTab('autobuyers')">Autobuyers</button><td>
+				<td><button id="autobuyersbtn" class="secondarytabbtn" onclick="showInfTab('autobuyers')">Autobuyers</button><td>
 				<td><button id="postinfbtn" class="secondarytabbtn" onclick="showInfTab('postinf')" >Break Infinity</button><td>
 				<td><button id="replicantitabbtn" class="secondarytabbtn" onclick="showInfTab('replicantis')">Replicantis</button><td>
 				<td><button id="singularitytabbtn" class="secondarytabbtn" onclick="showInfTab('singularity')">Singularity</button><td>
@@ -3729,7 +3753,7 @@
 				</table>
 			</div>
 		</div>
-
+		<div id="automation_ng_placement"></div>
 		<div id="autobuyers" class="inftab">
 			<br>
 			<table class="table" style="margin: 0 auto">
@@ -4087,6 +4111,25 @@
 							<input type="checkbox" onchange="updateAutobuyers()" id="14ison"></input>
 						</div>
 					</td>
+				</tr>
+				<tr>
+					<td></td>
+					<td>
+						<div class="autoBuyerDiv" id="autoTDBoost">
+							<div>Automatic Time Dimension Boosts</div>
+							<button class="autobuyerbtn" id="buyerBtnTDBoost"></button>
+							<div style="font-size: 80%"id="intervalTDBoost"></div>
+							<span style="font-size: 80%">Max 8ths used on reset:</span>
+							<input type="text" onchange="updatePriorities()" id="priority16"></input>
+							<br>
+							<span style="font-size: 80%">Galaxies required to always Time Dimension Boost:</span>
+							<input type="text" onchange="updatePriorities()" id="overGalaxiesTDBoost"></input>
+							<br>
+							<span style="font-size: 80%">Is active</span>
+							<input type="checkbox" onchange="updateAutobuyers()"   id="16ison"></input>
+						</div>
+					</td>
+					<td></td>
 				</tr>
 			</table>
 

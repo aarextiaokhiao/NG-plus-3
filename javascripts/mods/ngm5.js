@@ -6,12 +6,13 @@ function canPSac() {
 	return !tmp.ri&&false
 }
 
-function pSac() {
+function pSac(chall) {
 	if (!canPSac()) return
-	pSacReset()
+    if (player.options.challConf&&chall) if (!confirm("You will Paradox Sacrifice without gaining anything. You need to Paradox Sacrifice with special conditions to complete this challenge.")) return
+	pSacReset(chall)
 }
 
-function pSacReset(force) {
+function pSacReset(force, chall) {
 	player.pSac.px = player.pSac.px.add(getPxGain()).round()
 	player.pSac.times++
 	player.pSac[force?"forcedTimes":"normalTimes"]++
@@ -51,8 +52,8 @@ let puCosts = {}
 let puCaps = {}
 
 function inPxC(x) {
-	if (x==0) return player.pSac==undefined||!player.pSac.challenge
-	return player.pSac!=undefined&&player.pSac.challenge==x
+	if (x==0) return player.pSac==undefined||!player.pSac.chall
+	return player.pSac!=undefined&&player.pSac.chall==x
 }
 
 function resetPSac() {

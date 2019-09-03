@@ -5,31 +5,12 @@ function getGSAmount(offset=0) {
 	let z = getGSDimboostExp(galaxies)
 	let resetMult = player.resets
 	if (player.aarexModifications.ngmX>3) resetMult = resetMult+player.tdBoosts/2-1
-	resetMult -= player.currentChallenge=="challenge4"?2:4
+	resetMult -= inNC(4)?2:4
 	if (player.tickspeedBoosts!==undefined) resetMult = (resetMult+1)/2
 	let exp = getD8Exp()
 	let div2 = 50
 	if (player.achievements.includes("r102")) div2 = 10
 	if (player.totalmoney.log10() > 2e6) div2 /= Math.log(player.totalmoney.log10()) // Math.log(e) = 1
-	
-	let ret = Decimal.pow(galaxies, y).times(Decimal.pow(Math.max(0, resetMult), z)).max(0)
-	ret = ret.times(Decimal.pow(1+getAmount(8)/div2,exp))
-	
-	ret = ret.times(getGPMultipliers())
-	return ret.floor()
-}
-
-function getGSoffset(offset=0){
-	if (isEmptiness) return new Decimal(0)
-	let galaxies = getGSGalaxies() + offset
-	let y = getGSGalaxyExp(galaxies) 
-	let z = getGSDimboostExp(galaxies)
-	let resetMult = player.resets-(player.currentChallenge=="challenge4"?2:4)
-	if (player.tickspeedBoosts !== undefined) resetMult = (resetMult+1)/2
-	let exp = getD8Exp()
-	let div2 = 50
-	if (player.achievements.includes("r102")) div2 = 10
-	if (player.totalmoney.l > 2e6) div2 /= Math.log(player.totalmoney.l) // Math.log(e) = 1
 	
 	let ret = Decimal.pow(galaxies, y).times(Decimal.pow(Math.max(0, resetMult), z)).max(0)
 	ret = ret.times(Decimal.pow(1+getAmount(8)/div2,exp))
@@ -119,14 +100,44 @@ function getD8Exp(){
 	return exp
 }
 
-function galacticSacrifice(auto) {
-	if (getGSAmount().eq(0)) return
+function galacticSacrifice(auto, force, chall) {
+	if (getGSAmount().eq(0) && !force) return
 	if (tmp.ri) return
-	if (player.options.gSacrificeConfirmation&&!auto) if (!confirm("Galactic Sacrifice will do a galaxy reset, and then remove all of your galaxies, in exchange of galaxy points which can be use to buy many overpowered upgrades, but it will take a lot of time to recover, are you sure you wanna do this?")) return
-	player.galacticSacrifice.galaxyPoints = player.galacticSacrifice.galaxyPoints.plus(getGSAmount())
-	player.galacticSacrifice.times++
+	if (player.options.gSacrificeConfirmation&&!auto&&!force) if (!confirm("Galactic Sacrifice will do a galaxy reset, and then remove all of your galaxies, in exchange of galaxy points which can be use to buy many overpowered upgrades, but it will take a lot of time to recover, are you sure you wanna do this?")) return
+    if (player.options.challConf&&chall) if (!confirm("You will Galactic Sacrifice without gaining anything. You need to Galactic Sacrifice with special conditions to complete this challenge.")) return
+	if (!force) {
+		player.galacticSacrifice.galaxyPoints=player.galacticSacrifice.galaxyPoints.plus(getGSAmount())
+		player.galacticSacrifice.times++
+		GPminpeak = new Decimal(0)
+	}
+	if (chall) {
+		player.galacticSacrifice.chall=chall
+		showTab("dimensions")
+	}
+	if (player.aarexModifications.ngmX > 3) {
+		if (!force) {
+			if (!player.challenges.includes("challenge1")) player.challenges.push("challenge1")
+			if (player.galacticSacrifice.chall) {
+				if (!player.challenges.includes("challenge"+player.galacticSacrifice.chall)) player.challenges.push("challenge"+player.galacticSacrifice.chall)
+				player.challengeTimes[player.galacticSacrifice.chall-2]=Math.min(player.challengeTimes[player.galacticSacrifice.chall-2],player.galacticSacrifice.time)
+			}
+			if (player.challenges.length>1) giveAchievement("Daredevil")
+			if (player.challenges.length==player.challengeTimes.length+1) giveAchievement("AntiChallenged")
+			if (player.challenges.length==player.challengeTimes.length+player.infchallengeTimes.length+1) giveAchievement("Anti-antichallenged")
+			if (inNC(2)&&player.galacticSacrifice.time<=1800) giveAchievement("Many Deaths")
+			if (inNC(11)&&player.galacticSacrifice.time<=1800) giveAchievement("Gift from the Gods")
+			if (inNC(5)&&player.galacticSacrifice.time<=1800) giveAchievement("Is this hell?")
+			if (inNC(3)&&player.galacticSacrifice.time<=100) giveAchievement("You did this again just for the achievement right?");
+			if (player.firstAmount==1&&player.resets==0&&player.galaxies==0&&inNC(12)) giveAchievement("ERROR 909: Dimension not found")
+		}
+		if (!chall&&(force||!player.options.retryChallenge)) delete player.galacticSacrifice.chall
+        document.getElementById("challengeconfirmation").style.display = "inline-block"
+		updateChallenges()
+		updateNCVisuals()
+		updateChallengeTimes()
+		updateAutobuyers()
+	}
 	player.galacticSacrifice.time = 0
-	GPminpeak = new Decimal(0)
 	player.pSac = resetPSac()
 	galaxyReset(-player.galaxies)
 }
@@ -287,7 +298,7 @@ function productAllTotalBought () {
 	var ret = 1;
 	var mult = getProductBoughtMult()
 	for (i = 1; i <= 8; i++) {
-		if (player.currentChallenge == "challenge13" && player.tickspeedBoosts != undefined) ret = Decimal.times(player[TIER_NAMES[i]+"Amount"].max(1).log10(),mult).add(1).times(ret);
+		if (inNC(13) && player.tickspeedBoosts != undefined) ret = Decimal.times(player[TIER_NAMES[i]+"Amount"].max(1).log10(),mult).add(1).times(ret);
 		else if (player.totalBoughtDims[TIER_NAMES[i]]) ret = Decimal.times(ret,player.totalBoughtDims[TIER_NAMES[i]]?Decimal.times(player.totalBoughtDims[TIER_NAMES[i]],mult).max(1):1);
 	}
 	return ret;
@@ -306,7 +317,7 @@ function productAllDims1(){
 }
 
 document.getElementById("challenge13").onclick = function () {
-	startChallenge("challenge13", Number.MAX_VALUE);
+	startNormalChallenge(13)
 }
 
 //v1.3
@@ -317,7 +328,7 @@ function gSacrificeConf() {
 }
 
 document.getElementById("challenge14").onclick = function () {
-	startChallenge("challenge14", Number.MAX_VALUE);
+	startNormalChallenge(14)
 }
 
 function updateTBTIonGalaxy() {
@@ -390,7 +401,7 @@ function renameIC(id) {
 
 //v1.501
 function isADSCRunning() {
-	return player.currentChallenge === "challenge13" || (player.currentChallenge === "postc1" && player.galacticSacrifice) || player.tickspeedBoosts !== undefined
+	return inNC(13) || (player.currentChallenge === "postc1" && player.galacticSacrifice) || player.tickspeedBoosts !== undefined
 }
 
 //v1.6

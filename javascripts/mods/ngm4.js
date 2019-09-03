@@ -1,7 +1,7 @@
 function getTDBoostReq() {
 	let amount=player.tdBoosts>2?10:2
-	let maxTier=player.currentChallenge=="challenge4"?6:8
-	let mult=2
+	let maxTier=inNC(4)||player.pSac!=undefined?6:8
+	let mult=inNC(4)||player.pSac!=undefined?3:2
 	return {amount:Math.ceil(amount+Math.max(player.tdBoosts-maxTier+1,0)*mult),mult:mult,tier:Math.min(player.tdBoosts+1,maxTier)}
 }
 
@@ -32,4 +32,20 @@ function resetTDs() {
 		player.tickThreshold=new Decimal(0.01)
 		document.getElementById("totaltickgained").textContent = "You've gained "+getFullExpansion(player.totalTickGained)+" tickspeed upgrades."
 	}
+}
+
+//v2.1
+document.getElementById("challenge16").onclick = function () {
+	startNormalChallenge(16)
+}
+
+function autoTDBoostBoolean() {
+    var req = getTDBoostReq()
+    var amount = player["timeDimension"+req.tier].bought
+    if (!player.autobuyers[14].isOn) return false
+    if (player.autobuyers[14].ticks*100 < player.autobuyers[14].interval) return false
+    if (amount < req.amount) return false
+    if (player.autobuyers[14].overXGals <= player.galaxies) return true
+    if (player.autobuyers[14].priority < req.amount) return false
+    return true
 }

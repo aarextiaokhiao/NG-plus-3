@@ -5,7 +5,7 @@ function getTickspeedBoostRequirement(bulk=1) {
 		if (player.galacticSacrifice.upgrades.includes(34)) mult=4
 		if (player.infinityUpgrades.includes("postinfi52")) mult=3
 	}
-	return {tier:player.currentChallenge=="challenge4"?6:8,amount:resets*mult+30,mult:mult}
+	return {tier:inNC(4)||player.pSac!=undefined?6:8,amount:resets*mult+30,mult:mult}
 }
 
 function tickspeedBoost(bulk) {
@@ -24,20 +24,20 @@ function getProductBoughtMult() {
 	let mult = 1
 	if (player.tickspeedBoosts != undefined) {
 		mult = player.galacticSacrifice.upgrades.includes(24) && player.currentChallenge != "postcngm3_4" ? galMults.u24() : 0.2
-		if (player.currentChallenge == "challenge13" || player.currentChallenge == "postc1") mult = Decimal.div(mult, 2)
+		if (inNC(13) || player.currentChallenge == "postc1") mult = Decimal.div(mult, 2)
 	}
 	return mult
 }
 
 function isTickspeedBoostPossible() {
 	if (player.tickspeedBoosts == undefined) return
-	if (player.currentChallenge == "challenge5" || player.currentChallenge == "postcngm3_3") return
+	if (inNC(5) || player.currentChallenge == "postcngm3_3") return
 	if (tmp.ri) return
 	return player.resets > 4 || player.tickspeedBoosts > 0 || player.galaxies > 0 || player.galacticSacrifice.times > 0 || player.infinitied > 0 || player.eternities != 0 || quantumed
 }
 
 document.getElementById("challenge15").onclick = function () {
-	startChallenge("challenge15", Number.MAX_VALUE);
+	startNormalChallenge(15)
 }
 
 document.getElementById("buyerBtnTickspeedBoost").onclick = function () {

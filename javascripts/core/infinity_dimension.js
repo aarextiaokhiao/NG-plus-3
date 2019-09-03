@@ -2,7 +2,7 @@
 
 
 function DimensionDescription(tier) {
-  if (tier > (inQC(4) ? 6 : 7) && (ECTimesCompleted("eterc7") === 0 || player.timeDimension1.amount.eq(0) || tier == 7) && player.currentEternityChall != "eterc7") return getFullExpansion(Math.round(player["infinityDimension"+tier].amount.toNumber()));
+  if (tier > (inQC(4) || player.pSac!=undefined ? 6 : 7) && (ECTimesCompleted("eterc7") === 0 || player.timeDimension1.amount.eq(0) || tier == 7) && player.currentEternityChall != "eterc7") return getFullExpansion(Math.round(player["infinityDimension"+tier].amount.toNumber()));
   else return shortenDimensions(player['infinityDimension'+tier].amount)+' (+' + formatValue(player.options.notation, DimensionRateOfChange(tier), 2, 2) + dimDescEnd;
 }
 
@@ -46,6 +46,7 @@ function DimensionProduction(tier) {
   if (player.currentEternityChall == "eterc7") ret = dilates(ret.dividedBy(player.tickspeed.dividedBy(1000)))
   if (player.aarexModifications.ngmX>3) ret = ret.div(100)
   ret = ret.times(DimensionPower(tier))
+  if (player.pSac!=undefined) ret = ret.times(player.chall2Pow)
   if (player.challenges.includes("postc6")&&!inQC(3)) return ret.times(Decimal.div(1000, dilates(player.tickspeed)).pow(0.0005))
   return ret
 }
@@ -205,6 +206,7 @@ function buyManyInfinityDimension(tier) {
   dim.power = dim.power.times(getInfBuy10Mult(tier))
   dim.baseAmount += 10
 
+  if (player.pSac!=undefined) player.chall2Pow=0
   if (player.currentEternityChall == "eterc8") player.eterc8ids-=1
   document.getElementById("eterc8ids").textContent = "You have "+player.eterc8ids+" purchases left."
   if (inQC(6)) player.postC8Mult = new Decimal(1)

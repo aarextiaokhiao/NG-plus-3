@@ -3621,12 +3621,7 @@ function ghostifyReset(implode, gain, amount, force) {
 	}
 	tmp.qu=player.quantum
 	//Pre-infinity
-	if (player.challenges.includes("challenge1")) player.money = new Decimal(100)
-	if (player.aarexModifications.ngmX>3) player.money = new Decimal(200)
-	if (player.achievements.includes("r37")) player.money = new Decimal(1000)
-	if (player.achievements.includes("r54")) player.money = new Decimal(2e5)
-	if (player.achievements.includes("r55")) player.money = new Decimal(1e10)
-	if (player.achievements.includes("r78")) player.money = new Decimal(1e25)
+	setInitialMoney()
 	setInitialDimensionPower()
 	updatePowers()
 	mult18 = new Decimal(1)
@@ -3656,7 +3651,7 @@ function ghostifyReset(implode, gain, amount, force) {
 	document.getElementById("infmultbuyer").textContent="Max buy IP mult"
 	if (implode) showChallengesTab("normalchallenges")
 	updateChallenges()
-	document.getElementById("matter").style.display = "none"
+	changeNCVisuals()
 	updateAutobuyers()
 	hideMaxIDButton()
 	if (!bm) {

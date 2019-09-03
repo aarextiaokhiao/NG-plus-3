@@ -94,15 +94,18 @@ function softReset(bulk, tier=1) {
 	}
 	hideDimensions()
 	updateTickSpeed()
-	if (!player.achievements.includes("r111")) {
-		player.money=new Decimal(10)
-		if (player.challenges.includes("challenge1")) player.money = new Decimal(100)
-		if (player.aarexModifications.ngmX>3) player.money = new Decimal(200)
-		if (player.achievements.includes("r37")) player.money = new Decimal(1000)
-		if (player.achievements.includes("r54")) player.money = new Decimal(2e5)
-		if (player.achievements.includes("r55")) player.money = new Decimal(1e10)
-		if (player.achievements.includes("r78")) player.money = new Decimal(1e25)
-	}
+	if (!player.achievements.includes("r111")) setInitialMoney()
+}
+
+function setInitialMoney() {
+	var x=10
+	if (player.challenges.includes("challenge1")) x=100
+	if (player.aarexModifications.ngmX>3) x=200
+	if (player.achievements.includes("r37")) x=1000
+	if (player.achievements.includes("r54")) x=2e5
+	if (player.achievements.includes("r55")) x=1e10
+	if (player.achievements.includes("r78")) x=1e25
+	player.money=new Decimal(x)
 }
 
 function setInitialDimensionPower() {
@@ -140,8 +143,9 @@ function setInitialDimensionPower() {
 }
 
 function maxBuyDimBoosts(manual) {
+	let tier = player.pSac != undefined ? 6 : 8
 	if (inQC(6)) return
-	if (player.autobuyers[9].priority >= getAmount(8) || player.galaxies >= player.overXGalaxies || getShiftRequirement(0).tier < 8 || manual) {
+	if (player.autobuyers[9].priority >= getAmount(tier) || player.galaxies >= player.overXGalaxies || getShiftRequirement(0).tier < tier || manual) {
 		var bought = Math.min(getAmount(getShiftRequirement(0).tier), (player.galaxies >= player.overXGalaxies || manual) ? 1/0 : player.autobuyers[9].priority)
 		var r
 		if (player.currentEternityChall == "eterc5") {
@@ -173,7 +177,7 @@ function getShiftRequirement(bulk) {
 	let amount = 20
 	let mult = getDimboostCostIncrease()
 	var resetNum = player.resets + bulk
-	var maxTier = player.currentChallenge == "challenge4" ? 6 : 8
+	var maxTier = inNC(4) || player.pSac != undefined ? 6 : 8
 	tier = Math.min(resetNum + 4, maxTier)
 	if (player.aarexModifications.ngmX > 3) amount = 10
 	if (tier == maxTier) amount += Math.max(resetNum + (player.galacticSacrifice && player.tickspeedBoosts === undefined && player.galacticSacrifice.upgrades.includes(21) ? 2 : 4) - maxTier, 0) * mult
@@ -207,7 +211,7 @@ function getDimboostCostIncrease () {
 		if (player.timestudy.studies.includes(211)) ret -= 5
 		if (player.timestudy.studies.includes(222)) ret -= 2
 		if (player.masterystudies) if (player.masterystudies.includes("t261")) ret -= 1
-		if (player.currentChallenge == "challenge4") ret += 5
+		if (inNC(4)) ret += 5
 		if (player.boughtDims&&player.achievements.includes('r101')) ret -= Math.min(8, Math.pow(player.eternityPoints.max(1).log(10), .25))
 	}
 	return ret;
@@ -231,7 +235,7 @@ document.getElementById("softReset").onclick = function () {
 	if (tmp.ri || getAmount(req.tier) < req.amount) return;
 	auto = false;
 	var pastResets = player.resets
-	if ((player.infinityUpgrades.includes("bulkBoost") || (player.achievements.includes("r28") && player.tickspeedBoosts !== undefined) || player.autobuyers[9].bulkBought) && player.resets > (player.currentChallenge == "challenge4" ? 1 : 3)) maxBuyDimBoosts(true);
+	if ((player.infinityUpgrades.includes("bulkBoost") || (player.achievements.includes("r28") && player.tickspeedBoosts !== undefined) || player.autobuyers[9].bulkBought) && player.resets > (inNC(4) || player.pSac != undefined ? 1 : 3)) maxBuyDimBoosts(true);
 	else softReset(1)
 	if (player.resets <= pastResets) return
 	if (player.currentEternityChall=='eterc13') return
@@ -240,7 +244,7 @@ document.getElementById("softReset").onclick = function () {
 };
 
 function skipResets() {
-	if (player.currentChallenge == "") {
+	if (inNC(0)) {
 		var upToWhat = 0
 		for (s=1;s<4;s++) if (player.infinityUpgrades.includes("skipReset"+s)) upToWhat=s
 		if (player.infinityUpgrades.includes("skipResetGalaxy")) {

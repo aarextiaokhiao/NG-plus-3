@@ -1328,23 +1328,16 @@ function quantumReset(force, auto, challid, bigRip, implode=false) {
 	updateRespecButtons()
 	if (player.achievements.includes("r36")) player.tickspeed = player.tickspeed.times(0.98);
 	if (player.achievements.includes("r45")) player.tickspeed = player.tickspeed.times(0.98);
-	if (inQC(6)) document.getElementById("matter").style.display = "block";
-	else document.getElementById("matter").style.display = "none";
-       if (isADSCRunning()) document.getElementById("chall13Mult").style.display = "block";
-       else document.getElementById("chall13Mult").style.display = "none";
-	document.getElementById("quickReset").style.display = "none";
 	if (player.infinitied >= 1 && !player.challenges.includes("challenge1")) player.challenges.push("challenge1");
 	updateAutobuyers();
-	if (player.achievements.includes("r37")) player.money = new Decimal(1000);
-	if (player.achievements.includes("r54")) player.money = new Decimal(2e5);
-	if (player.achievements.includes("r55")) player.money = new Decimal(1e10);
-	if (player.achievements.includes("r78")) player.money = new Decimal(1e25);
+	setInitialMoney()
 	if (player.achievements.includes("r85")) player.infMult = player.infMult.times(4);
 	if (player.achievements.includes("r93")) player.infMult = player.infMult.times(4);
 	if (player.achievements.includes("r104")) player.infinityPoints = new Decimal(2e25);
 	if (player.achievements.includes("r142")) player.meta.antimatter = new Decimal(100);
 	resetInfDimensions();
 	updateChallenges();
+	changeNCVisuals()
 	updateChallengeTimes()
 	updateLastTenRuns()
 	updateLastTenEternities()
