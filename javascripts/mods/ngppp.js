@@ -3651,7 +3651,7 @@ function ghostifyReset(implode, gain, amount, force) {
 	document.getElementById("infmultbuyer").textContent="Max buy IP mult"
 	if (implode) showChallengesTab("normalchallenges")
 	updateChallenges()
-	changeNCVisuals()
+	updateNCVisuals()
 	updateAutobuyers()
 	hideMaxIDButton()
 	if (!bm) {

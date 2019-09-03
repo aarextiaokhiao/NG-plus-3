@@ -1337,7 +1337,7 @@ function quantumReset(force, auto, challid, bigRip, implode=false) {
 	if (player.achievements.includes("r142")) player.meta.antimatter = new Decimal(100);
 	resetInfDimensions();
 	updateChallenges();
-	changeNCVisuals()
+	updateNCVisuals()
 	updateChallengeTimes()
 	updateLastTenRuns()
 	updateLastTenEternities()
