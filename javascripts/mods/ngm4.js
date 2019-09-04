@@ -8,6 +8,7 @@ function getTDBoostReq() {
 function tdBoost(bulk) {
 	let req=getTDBoostReq()
 	if (player["timeDimension"+req.tier].bought<req.amount) return
+	if (cantReset()) return
 	player.tdBoosts+=bulk
 	softReset(player.achievements.includes("r26")&&player.resets>=player.tdBoosts?0:-player.resets)
 	player.tickBoughtThisInf=updateTBTIonGalaxy()
@@ -40,12 +41,22 @@ document.getElementById("challenge16").onclick = function () {
 }
 
 function autoTDBoostBoolean() {
-    var req = getTDBoostReq()
-    var amount = player["timeDimension"+req.tier].bought
-    if (!player.autobuyers[14].isOn) return false
-    if (player.autobuyers[14].ticks*100 < player.autobuyers[14].interval) return false
-    if (amount < req.amount) return false
-    if (player.autobuyers[14].overXGals <= player.galaxies) return true
-    if (player.autobuyers[14].priority < req.amount) return false
-    return true
+	var req = getTDBoostReq()
+	var amount = player["timeDimension"+req.tier].bought
+	if (!player.autobuyers[14].isOn) return false
+	if (player.autobuyers[14].ticks*100 < player.autobuyers[14].interval) return false
+	if (amount < req.amount) return false
+	if (player.aarexModifications.ngmX > 3 && inNC(14)) return false
+	if (player.autobuyers[14].overXGals <= player.galaxies) return true
+	if (player.autobuyers[14].priority < req.amount) return false
+	return true
+}
+
+//v2.11
+function cantReset() {
+	return player.aarexModifications.ngmX > 3 && inNC(14) && getTotalResets() > 9
+}
+
+document.getElementById("buyerBtnTDBoost").onclick = function () {
+	buyAutobuyer(14)
 }

@@ -1,5 +1,5 @@
 function getDimensionBoostPower(next, focusOn) {
-	if (player.currentChallenge == "challenge11" || player.currentChallenge == "challenge15" || player.currentChallenge == "postc1" || player.currentChallenge == "postcngm3_1") return Decimal.fromNumber(1);
+	if (inNC(11) || inNC(15) || player.currentChallenge == "postc1" || player.currentChallenge == "postcngm3_1") return Decimal.fromNumber(1);
 
 	var ret = 2
 	if (!player.galacticSacrifice) {
@@ -8,7 +8,7 @@ function getDimensionBoostPower(next, focusOn) {
 		if (player.currentChallenge == "postc7" || inQC(6) || player.timestudy.studies.includes(81)) ret = 10
 	}
 	if (player.boughtDims) ret += player.timestudy.ers_studies[4] + (next ? 1 : 0)
-	if (player.galacticSacrifice && player.galacticSacrifice.upgrades.includes(23) && ((player.currentChallenge != "challenge14" && player.currentChallenge != "postcngm3_3" && player.currentChallenge != "postcngm3_4") || player.tickspeedBoosts == undefined)) ret *= galMults.u23()
+	if (player.galacticSacrifice && player.galacticSacrifice.upgrades.includes(23) && ((!inNC(14) && player.currentChallenge != "postcngm3_3") || player.tickspeedBoosts == undefined || player.aarexModifications.ngmX > 3) && player.currentChallenge != "postcngm3_4") ret *= galMults.u23()
 	if (player.infinityUpgrades.includes("resetMult")&&player.galacticSacrifice) ret *= 1.2 + 0.05 * player.infinityPoints.max(1).log(10)
 	if (!player.boughtDims&&player.achievements.includes("r101")) ret = ret*1.01
 	if (player.timestudy.studies.includes(83)) ret = Decimal.pow(1.0004, player.totalTickGained).times(ret);
@@ -30,7 +30,7 @@ function softReset(bulk, tier=1) {
 	if (player.resets >= 10) {
 		giveAchievement("Boosting to the max");
 	}
-	if (player.currentChallenge=="challenge14"&&player.tickspeedBoosts==undefined) player.tickBoughtThisInf.pastResets.push({resets:player.resets,bought:player.tickBoughtThisInf.current})
+	if (inNC(14)&&player.tickspeedBoosts==undefined) player.tickBoughtThisInf.pastResets.push({resets:player.resets,bought:player.tickBoughtThisInf.current})
 	if (player.dilation.upgrades.includes("ngpp3") && player.eternities >= 1e9 && player.masterystudies && player.aarexModifications.switch === undefined && tier < 2) {
 		skipResets()
 		player.matter=new Decimal(0)
@@ -40,7 +40,7 @@ function softReset(bulk, tier=1) {
 		var temp2=getDimensionPowerMultiplier()
 		if (player.dbPower!=undefined&&!isNaN(break_infinity_js?player.dbPower:player.dbPower.logarithm)) for (tier=1;tier<9;tier++) {
             var dimPow=player[TIER_NAMES[tier]+'Pow'].div(player.dbPower.pow(Math.max(oldResets+1-tier,0)))
-            if (player.currentChallenge!="challenge9"&&player.currentChallenge!="postc1") dimPow=Decimal.pow(temp2,Math.floor(player[TIER_NAMES[tier]+'Bought']/10)).max(dimPow)
+            if (!inNC(9)&&player.currentChallenge!="postc1") dimPow=Decimal.pow(temp2,Math.floor(player[TIER_NAMES[tier]+'Bought']/10)).max(dimPow)
             player[TIER_NAMES[tier]+'Pow']=temp.pow(Math.max(player.resets+1-tier,0)).times(dimPow)
         }
 		player.dbPower=temp
@@ -48,7 +48,7 @@ function softReset(bulk, tier=1) {
 	}
 	var costs=[10,100,1e4,1e6,1e9,1e13,1e18,1e24]
 	var costMults=[1e3,1e4,1e5,1e6,1e8,1e10,1e12,1e15]
-	if (player.currentChallenge == "challenge10" || player.currentChallenge == "postc1") costs=[10,100,100,500,2500,2e4,2e5,4e6]
+	if (!inNC(10) || player.currentChallenge == "postc1") costs=[10,100,100,500,2500,2e4,2e5,4e6]
 	if (player.currentChallenge == "postc1") costMults=[1e3,5e3,1e4,12e3,18e3,26e3,32e3,42e3]
 	for (var d=1;d<9;d++) {
 		var name=TIER_NAMES[d]
@@ -121,16 +121,16 @@ function setInitialDimensionPower() {
 	var ic3Power=player.totalTickGained*getEC14Power()
 	if (player.tickspeedBoosts!=undefined&&player.currentChallenge!="postc5") {
 		let mult = 30
-		if (player.currentChallenge == "challenge14" || player.currentChallenge == "postcngm3_3") mult = 20
+		if ((inNC(14) && player.aarexModifications.ngmX == 3) || player.currentChallenge == "postcngm3_3") mult = 20
 		else if (player.galacticSacrifice.upgrades.includes(14)) mult = 32
-		if (player.currentChallenge == "challenge6") mult *= Math.min(player.galaxies / 30, 1)
+		if (inNC(6)) mult *= Math.min(player.galaxies / 30, 1)
 		let ic3PowerTB = player.tickspeedBoosts * mult
 		let softCapStart = 1024
 		let frac = 8
 		if (player.currentChallenge=="postcngm3_1"||player.currentChallenge=="postc1") softCapStart = 0
 		if (player.challenges.includes("postcngm3_1")) frac = 7
 		if (ic3PowerTB > softCapStart) ic3PowerTB = Math.sqrt((ic3PowerTB - softCapStart) / frac + 1024) * 32 + softCapStart - 1024
-		if (player.currentChallenge == "challenge15" || player.currentChallenge == "postc1" || player.currentChallenge == "postcngm3_3") ic3PowerTB *= Math.max(player.galacticSacrifice.galaxyPoints.div(1e3).add(1).log(8),1)
+		if (inNC(15) || player.currentChallenge == "postc1" || player.currentChallenge == "postcngm3_3") ic3PowerTB *= player.aarexModifications.ngmX>3?.2:Math.max(player.galacticSacrifice.galaxyPoints.div(1e3).add(1).log(8),1)
 		else if (player.challenges.includes("postcngm3_3")) ic3PowerTB *= Math.max(Math.sqrt(player.galacticSacrifice.galaxyPoints.max(1).log10())/15+.6,1)
 		if (player.achievements.includes("r67")) {
 			let x=tmp.cp
@@ -139,6 +139,7 @@ function setInitialDimensionPower() {
 		}
 		ic3Power += ic3PowerTB
 	}
+	if ((inNC(15) || player.currentChallenge == "postc1" || player.currentChallenge == "postcngm3_3") && player.aarexModifications.ngmX > 3) ic3Power-=(player.resets+player.tdBoosts)*10
 	player.postC3Reward=Decimal.pow(getPostC3RewardMult(),ic3Power)
 }
 
@@ -231,11 +232,12 @@ function getSupersonicMultIncrease() {
 
 document.getElementById("softReset").onclick = function () {
 	if (inQC(6)) return
+	if (cantReset()) return
 	var req = getShiftRequirement(0)
 	if (tmp.ri || getAmount(req.tier) < req.amount) return;
 	auto = false;
 	var pastResets = player.resets
-	if ((player.infinityUpgrades.includes("bulkBoost") || (player.achievements.includes("r28") && player.tickspeedBoosts !== undefined) || player.autobuyers[9].bulkBought) && player.resets > (inNC(4) || player.pSac != undefined ? 1 : 3)) maxBuyDimBoosts(true);
+	if ((player.infinityUpgrades.includes("bulkBoost") || (player.achievements.includes("r28") && player.tickspeedBoosts !== undefined) || player.autobuyers[9].bulkBought) && player.resets > (inNC(4) || player.pSac != undefined ? 1 : 3) && (!inNC(14) || !(player.aarexModifications.ngmX > 3))) maxBuyDimBoosts(true);
 	else softReset(1)
 	if (player.resets <= pastResets) return
 	if (player.currentEternityChall=='eterc13') return
@@ -254,4 +256,11 @@ function skipResets() {
 		if (player.resets<upToWhat) player.resets=upToWhat
 		if (player.tickspeedBoosts<upToWhat*4) player.tickspeedBoosts=upToWhat*4
 	}
+}
+
+function getTotalResets() {
+	let r=player.resets+player.galaxies
+	if (player.tickspeedBoosts) r+=player.tickspeedBoosts
+	if (player.aarexModifications.ngmX>3) r+=player.tdBoosts
+	return r
 }

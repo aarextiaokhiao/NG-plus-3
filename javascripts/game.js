@@ -690,10 +690,11 @@ function updateNewPlayer(reseted) {
     }
     if (modesChosen.ngpp > 4) player.aarexModifications.ngudpV=1.1
     if (modesChosen.ngmm > 2) {
-        player.aarexModifications.newGame4MinusVersion=2.1
+        player.aarexModifications.newGame4MinusVersion=2.11
         player.aarexModifications.ngmX=4
         player.tdBoosts=0
         player.challengeTimes.push(600*60*24*31)
+        player.autobuyers.push(15)
         resetTDs()
         reduceDimCosts()
     }
@@ -1171,6 +1172,7 @@ function updateMoney() {
 		var mult = getProductBoughtMult()
 		element3.innerHTML = formatValue(player.options.notation, productAllTotalBought(), 2, 1) + 'x multiplier on all dimensions (product of '+(player.tickspeedBoosts!=undefined&&(inNC(13)||player.currentChallenge=="postc1")?"1+log10(amount)":"bought")+(mult==1?"":"*"+shorten(mult))+').'
 	}
+	if (inNC(14) && player.aarexModifications.ngmX > 3) document.getElementById("c14Resets").textContent = "You have "+getFullExpansion(10-getTotalResets())+" resets left."
 	if (player.pSac !== undefined) document.getElementById("ec12Mult").textContent = "Time speed: 1 / " + shorten(getEC12Mult()) + "x"
 }
 
@@ -2534,7 +2536,7 @@ function getPostC3RewardMult() {
 	}
 	var realnormalgalaxies = player.galaxies
 	if (tmp.ngp3) realnormalgalaxies = Math.max(player.galaxies-tmp.qu.electrons.sacGals,0)
-	if (inNC(15) || (player.currentChallenge == "postc1" && player.tickspeedBoosts != undefined)) realnormalgalaxies = 0
+	if ((inNC(15) && player.aarexModifications.ngmX == 3) || (player.currentChallenge == "postc1" && player.tickspeedBoosts != undefined)) realnormalgalaxies = 0
 	else if (tmp.rg4) realnormalgalaxies *= 0.4
 	perGalaxy *= getGalaxyPowerEff()
 	let ret = getGalaxyPower(realnormalgalaxies)*perGalaxy+1.05
@@ -2845,9 +2847,9 @@ buyAutobuyer = function(id) {
         updateAutobuyers()
         return
     }
-    if ((player.aarexModifications.ngmX>3?player.galacticSacrifice.galaxyPoints:player.infinityPoints).lt(player.autobuyers[id].cost)) return false;
+    if ((player.aarexModifications.ngmX>3&&id!=11?player.galacticSacrifice.galaxyPoints:player.infinityPoints).lt(player.autobuyers[id].cost)) return false;
     if (player.autobuyers[id].bulk >= 1e100) return false;
-    if (player.aarexModifications.ngmX>3) player.galacticSacrifice.galaxyPoints = player.galacticSacrifice.galaxyPoints.minus(player.autobuyers[id].cost)
+    if (player.aarexModifications.ngmX>3&&id!=11) player.galacticSacrifice.galaxyPoints = player.galacticSacrifice.galaxyPoints.minus(player.autobuyers[id].cost)
     else player.infinityPoints = player.infinityPoints.minus(player.autobuyers[id].cost)
     if (player.autobuyers[id].interval <= 100) {
         player.autobuyers[id].bulk = Math.min(player.autobuyers[id].bulk * 2, 1e100);
@@ -2980,9 +2982,9 @@ document.getElementById("toggleBtnTickSpeed").onclick = function () {
 
 
 document.getElementById("secondSoftReset").onclick = function() {
-    var bool = !inNC(11) && player.currentChallenge != "postc1" && (player.currentChallenge != "postc5" || player.tickspeedBoosts == undefined) && player.currentChallenge != "postc7" && !((player.currentEternityChall == "eterc6"|| inQC(6)) && !tmp.be) && !tmp.ri
+    var bool = !inNC(11) && player.currentChallenge != "postc1" && (player.currentChallenge != "postc5" || player.tickspeedBoosts == undefined) && player.currentChallenge != "postc7" && !((player.currentEternityChall == "eterc6"|| inQC(6)) && !tmp.be) && !tmp.ri || !cantReset()
     if (getAmount(inNC(4)||player.pSac!=undefined?6:8) >= getGalaxyRequirement() && bool) {
-        if ((getEternitied() >= 7 || player.autobuyers[10].bulkBought) && !shiftDown) maxBuyGalaxies(true);
+        if ((getEternitied() >= 7 || player.autobuyers[10].bulkBought) && !shiftDown && (!inNC(14) || !(player.aarexModifications.ngmX > 3))) maxBuyGalaxies(true);
         else {
             if (ghostified) {
                 var generation = (["electron", "mu", "tau"])[player.ghostify.neutrinos.generationGain-1]
@@ -3585,7 +3587,7 @@ function breakInfinity() {
 }
 
 function onPostBreak() {
-	return (player.break && player.currentChallenge == "") || player.currentChallenge.includes("p")
+	return (player.break && inNC(0)) || player.currentChallenge.includes("p")
 }
 
 function gainedInfinityPoints(next) {
@@ -4363,7 +4365,7 @@ function updateAutobuyers() {
 
     var maxedAutobuy = 0;
     var e100autobuy = 0;
-    var currencyEnd = player.aarexModifications.ngmX > 3 ? " GP" : "IP"
+    var currencyEnd = player.aarexModifications.ngmX > 3 ? " GP" : " IP"
     for (let tier = 1; tier <= 8; ++tier) {
         document.getElementById("toggleBtn" + tier).style.display = "inline-block";
         if (player.autobuyers[tier-1].bulk >= 1e100) {
@@ -4422,7 +4424,7 @@ function updateAutobuyers() {
     document.getElementById("buyerBtnTickSpeed").innerHTML = "40% smaller interval <br>Cost: " + player.autobuyers[8].cost + currencyEnd
     document.getElementById("buyerBtnDimBoost").innerHTML = "40% smaller interval <br>Cost: " + player.autobuyers[9].cost + currencyEnd
     document.getElementById("buyerBtnGalaxies").innerHTML = "40% smaller interval <br>Cost: " + player.autobuyers[10].cost + currencyEnd
-    document.getElementById("buyerBtnInf").innerHTML = "40% smaller interval <br>Cost: " + player.autobuyers[11].cost + currencyEnd
+    document.getElementById("buyerBtnInf").innerHTML = "40% smaller interval <br>Cost: " + player.autobuyers[11].cost + " IP"
     document.getElementById("buyerBtnSac").innerHTML = "40% smaller interval <br>Cost: " + player.autoSacrifice.cost + currencyEnd
     if (player.autobuyers[9].interval <= 100) {
         if (player.infinityUpgradesRespecced != undefined && !player.autobuyers[9].bulkBought) document.getElementById("buyerBtnDimBoost").innerHTML = "Buy bulk feature<br>Cost: "+shortenCosts(1e4)+currencyEnd
@@ -6030,10 +6032,8 @@ function startNormalChallenge(x) {
 		if (player.infinitied < 1 && player.eternities < 1 && !quantumed) return
 		startChallenge("challenge7", Number.MAX_VALUE)
 	}
-	if (player.aarexModifications.ngmX > 3) {
-		if (x==14||x==15) return
-		galacticSacrifice(false, true, x)
-	} else startChallenge("challenge"+x, Number.MAX_VALUE)
+	if (player.aarexModifications.ngmX > 3) galacticSacrifice(false, true, x)
+	else startChallenge("challenge"+x, Number.MAX_VALUE)
 }
 
 function inNC(x) {
@@ -6055,6 +6055,9 @@ function updateNCVisuals() {
 
 	if (isADSCRunning()) document.getElementById("chall13Mult").style.display = "block"
 	else document.getElementById("chall13Mult").style.display = "none"
+
+	if (inNC(14) && player.aarexModifications.ngmX > 3) document.getElementById("c14Resets").style.display = "block"
+	else document.getElementById("c14Resets").style.display = "none"
 
 	if (inNC(9) || inNC(12) || ((inNC(5) || inNC(14) || chall == "postc4" || chall == "postc5") && player.tickspeedBoosts == undefined) || player.pSac !== undefined || chall == "postc1" || chall == "postc6" || chall == "postc8") document.getElementById("quickReset").style.display = "inline-block"
 	else document.getElementById("quickReset").style.display = "none"
@@ -8395,6 +8398,7 @@ function dimBoolean() {
     if (!player.autobuyers[9].isOn) return false
     if (player.autobuyers[9].ticks*100 < player.autobuyers[9].interval) return false
     if (amount < req.amount) return false
+	if (player.aarexModifications.ngmX > 3 && inNC(14)) return false
     if (getEternitied() < 10 && !player.autobuyers[9].bulkBought && amount < getShiftRequirement(player.autobuyers[9].bulk-1).amount) return false
     if (player.overXGalaxies <= player.galaxies) return true
     if (player.autobuyers[9].priority < req.amount && req.tier == ((inNC(4) || player.currentChallenge == "postc1") ? 6 : 8)) return false
@@ -8502,7 +8506,7 @@ function autoBuyerTick() {
     }
 
     if (player.autobuyers[10]%1 !== 0) {
-        if (player.autobuyers[10].ticks*100 >= player.autobuyers[10].interval && getAmount(inNC(4)||player.pSac != undefined?6:8) >= getGalaxyRequirement()) {
+        if (player.autobuyers[10].ticks*100 >= player.autobuyers[10].interval && getAmount(inNC(4)||player.pSac != undefined?6:8) >= getGalaxyRequirement() && (!inNC(14) || !(player.aarexModifications.ngmX > 3))) {
             if (getEternitied() < 9) {
                 if (player.autobuyers[10].isOn && player.autobuyers[10].priority > player.galaxies) {
                     autoS = false;

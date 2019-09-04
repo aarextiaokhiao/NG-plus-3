@@ -15,7 +15,7 @@ function getGSAmount(offset=0) {
 	let ret = Decimal.pow(galaxies, y).times(Decimal.pow(Math.max(0, resetMult), z)).max(0)
 	ret = ret.times(Decimal.pow(1+getAmount(8)/div2,exp))
 	
-	ret = ret.times(getGPMultipliers())
+	if (!player.galacticSacrifice.chall) ret = ret.times(getGPMultipliers())
 	return ret.floor()
 }
 
@@ -104,7 +104,7 @@ function galacticSacrifice(auto, force, chall) {
 	if (getGSAmount().eq(0) && !force) return
 	if (tmp.ri) return
 	if (player.options.gSacrificeConfirmation&&!auto&&!force) if (!confirm("Galactic Sacrifice will do a galaxy reset, and then remove all of your galaxies, in exchange of galaxy points which can be use to buy many overpowered upgrades, but it will take a lot of time to recover, are you sure you wanna do this?")) return
-    if (player.options.challConf&&chall) if (!confirm("You will Galactic Sacrifice without gaining anything. You need to Galactic Sacrifice with special conditions to complete this challenge.")) return
+    if (player.options.challConf&&chall) if (!confirm("You will Galactic Sacrifice without gaining anything. You need to Galactic Sacrifice with special conditions to complete this challenge. Some Galaxy Points gain multipliers won't work in this challenge.")) return
 	if (!force) {
 		player.galacticSacrifice.galaxyPoints=player.galacticSacrifice.galaxyPoints.plus(getGSAmount())
 		player.galacticSacrifice.times++

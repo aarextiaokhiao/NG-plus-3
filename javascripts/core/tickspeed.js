@@ -64,7 +64,7 @@ function getTickSpeedMultiplier() {
 	}
 	if ((player.currentChallenge == "postc3" || isIC3Trapped()) && !tmp.be) {
 		if (player.currentChallenge=="postcngmm_3" || player.challenges.includes("postcngmm_3")) {
-			if (inNC(15) || (player.currentChallenge == "postc1" && player.tickspeedBoosts != undefined)) realnormalgalaxies = 0
+			if ((inNC(15) || (player.currentChallenge == "postc1" && player.tickspeedBoosts != undefined)) && player.aarexModifications.ngmX == 3) realnormalgalaxies = 0
 			else if (tmp.rg4) realnormalgalaxies *= 0.4
 			return Decimal.pow(player.tickspeedBoosts != undefined ? 0.9995 : 0.998, getGalaxyPower(realnormalgalaxies) * getGalaxyPowerEff(realnormalgalaxies, true))
 		}
@@ -77,7 +77,7 @@ function getTickSpeedMultiplier() {
 	let useLinear
 	let linearGalaxies
 	if (inERS) {
-		if (inNC(15) || (player.currentChallenge == "postc1" && player.tickspeedBoosts != undefined)) realnormalgalaxies = 0
+		if ((inNC(15) && player.aarexModifications.ngmX == 3) || (player.currentChallenge == "postc1" && player.tickspeedBoosts != undefined)) realnormalgalaxies = 0
 		else if (tmp.rg4) realnormalgalaxies *= 0.4
 		galaxies = getGalaxyPower(realnormalgalaxies) * getGalaxyPowerEff(realnormalgalaxies, true)
 		linearGalaxies = Math.min(galaxies,5)
@@ -87,7 +87,7 @@ function getTickSpeedMultiplier() {
 		useLinear = realnormalgalaxies + player.replicanti.galaxies + player.dilation.freeGalaxies < 3
 	}
 	if (useLinear) {
-		if (inNC(15) || (player.currentChallenge == "postc1" && player.tickspeedBoosts != undefined)) realnormalgalaxies = 0
+		if ((inNC(15) && player.aarexModifications.ngmX == 3) || (player.currentChallenge == "postc1" && player.tickspeedBoosts != undefined)) realnormalgalaxies = 0
 		else if (tmp.rg4) realnormalgalaxies *= 0.4
 		baseMultiplier = 0.9;
 		if (inERS && galaxies == 0) baseMultiplier = 0.89
@@ -103,7 +103,7 @@ function getTickSpeedMultiplier() {
 	if (!inERS) {
 		baseMultiplier = 0.8
 		if (inNC(6) || player.currentChallenge == "postc1") baseMultiplier = 0.83
-		if (inNC(15) || (player.currentChallenge == "postc1" && player.tickspeedBoosts != undefined)) realnormalgalaxies = 0
+		if ((inNC(15) && player.aarexModifications.ngmX == 3) || (player.currentChallenge == "postc1" && player.tickspeedBoosts != undefined)) realnormalgalaxies = 0
 		else if (tmp.rg4) realnormalgalaxies *= 0.4
 		galaxies = getGalaxyPower(realnormalgalaxies) * getGalaxyPowerEff(realnormalgalaxies, true)
 	}

@@ -39,7 +39,7 @@ function getTimeDimensionPower(tier) {
 
       //NG-4 upgrades
       if (player.galacticSacrifice.upgrades.includes(12)) ret = ret.times(galMults.u12())
-      if (player.galacticSacrifice.upgrades.includes(13)&&!inNC(14)&&player.currentChallenge!="postngm3_3"&&player.currentChallenge!="postngm3_4") ret = ret.times(galMults.u13())
+      if (player.galacticSacrifice.upgrades.includes(13)&&player.currentChallenge!="postngm3_4") ret = ret.times(galMults.u13())
       if (player.galacticSacrifice.upgrades.includes(15)) ret = ret.times(galMults.u15())
       if (player.galacticSacrifice.upgrades.includes(31)) ret = ret.pow(galMults.u31())
   }

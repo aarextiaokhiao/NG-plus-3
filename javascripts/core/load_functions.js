@@ -1536,8 +1536,8 @@ if (player.version < 5) {
       if ((player.galacticSacrifice.times > 0 || player.infinitied > 0 || player.eternities != 0 || (tmp.qu !== undefined && tmp.qu.times > 0) || (player.ghostify !== undefined && player.ghostify.times > 0)) && !player.challenges.includes("challenge1")) player.challenges.push("challenge1")
       player.autobuyers.push(15)
       player.challengeTimes.push(600*60*24*31)
-      player.aarexModifications.newGame4MinusVersion=2.1
   }
+  if (player.aarexModifications.newGame4MinusVersion<2.11) player.aarexModifications.newGame4MinusVersion=2.11
   if (player.aarexModifications.ngm5V<0.1) player.aarexModifications.ngm5V=0.1
   ipMultPower=2
   if (player.masterystudies) if (player.masterystudies.includes("t241")) ipMultPower=2.2
@@ -1680,8 +1680,8 @@ if (player.version < 5) {
   document.getElementById("autoDBChallengeDesc").textContent="There are only 6 dimensions, with dimension boost"+(player.tickspeedBoosts==undefined?"":", tickspeed boost,")+" and antimatter galaxy costs modified."
   document.getElementById("autoCrunchChallengeDesc").textContent="Each dimension produces the dimension 2 below it; first dimensions produce reduced antimatter. "+(player.galacticSacrifice?"Galaxies are far more powerful.":"")
   document.getElementById("autoDSChallengeDesc").textContent=player.tickspeedBoosts==undefined?"Per-ten multiplier is always 1x, but product of dimensions bought multiplies all dimensions.":"There is the product of amount instead of the product of bought."
-  document.getElementById("autoGSChallengeDesc").textContent=player.aarexModifications.ngmX>3?"This challenge is currently locked yet. This will be replaced soon! :)":player.tickspeedBoosts==undefined?"You can only get 308 tickspeed upgrades. This count does not reset on resets.":"All galaxy upgrades from the third column are disabled and Tickspeed Boosts give 20 free tickspeed purchases each instead."
-  document.getElementById("autoTBChallengeDesc").textContent=player.aarexModifications.ngmX>3?"This challenge is currently locked yet. This will be replaced soon! :)":"Dimension Boosts and Galaxies only boost Galaxy point gain and Tickspeed Boosts are nerfed, but Galaxy points boost Tickspeed Boosts."
+  document.getElementById("autoGSChallengeDesc").textContent=player.aarexModifications.ngmX>3?"You can hold up to 10 total Dimension Boosts, Time Dimension Boosts, Tickspeed Boosts, and Galaxies.":"All galaxy upgrades from the third column are disabled and Tickspeed Boosts give 20 free tickspeed purchases each instead."
+  document.getElementById("autoTBChallengeDesc").textContent=player.aarexModifications.ngmX>3?"Dimension Boosts and Time Dimension Boosts divide Tickspeed Multiplier instead.":"Dimension Boosts and Galaxies only boost Galaxy point gain and Tickspeed Boosts are nerfed, but Galaxy points boost Tickspeed Boosts."
   document.getElementById("infPowEffectPowerDiv").innerHTML=player.galacticSacrifice?"Raised to the power of <span id='infPowEffectPower' style='font-size:35px; color: black'></span>, t":"T"
   document.getElementById("ngmmchalls").style.display=player.galacticSacrifice?"":"none"
   document.getElementById("ngmmmchalls").style.display=player.tickspeedBoosts==undefined?"none":""
