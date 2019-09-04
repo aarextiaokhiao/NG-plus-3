@@ -108,7 +108,6 @@ function galacticSacrifice(auto, force, chall) {
 	if (!force) {
 		player.galacticSacrifice.galaxyPoints=player.galacticSacrifice.galaxyPoints.plus(getGSAmount())
 		player.galacticSacrifice.times++
-		GPminpeak = new Decimal(0)
 	}
 	if (chall) {
 		player.galacticSacrifice.chall=chall
@@ -137,6 +136,7 @@ function galacticSacrifice(auto, force, chall) {
 		updateChallengeTimes()
 		updateAutobuyers()
 	}
+	GPminpeak = new Decimal(0)
 	player.galacticSacrifice.time = 0
 	player.pSac = resetPSac()
 	galaxyReset(-player.galaxies)
@@ -195,6 +195,7 @@ function buyGalaxyUpgrade(i) {
 			for (d=1;d<9;d++) {
 				var name = TIER_NAMES[d]
 				player[name+"Cost"] = player[name+"Cost"].times(10)
+				if (player.aarexModifications.ngmX>3) player["timeDimension"+d].cost = player["timeDimension"+d].cost.times(10)
 			}
 		}
 		reduceDimCosts(true)

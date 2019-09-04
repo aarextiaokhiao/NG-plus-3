@@ -7734,6 +7734,7 @@ function gameLoop(diff) {
         }
     }
     var step = inQC(4) || player.pSac!=undefined ? 2 : 1
+    var stepT = (inNC(7) && player.aarexModifications.ngmX > 3) || step
     for (let tier=1;tier<9;tier++) {
         if (player.infDimensionsUnlocked[tier-1]) {
             document.getElementById("infRow"+tier).style.display = "inline-block"
@@ -7743,9 +7744,9 @@ function gameLoop(diff) {
 
         if (tier < 9 - step){
             player["infinityDimension"+tier].amount = player["infinityDimension"+tier].amount.plus(DimensionProduction(tier+step).times(diff/100))
-            player["timeDimension"+tier].amount = player["timeDimension"+tier].amount.plus(getTimeDimensionProduction(tier+step).times(diff/100)).max(getTimeDimensionProduction(tier+step).times(/*1e3/(8-step)*/0))
             if (player.meta) player.meta[tier].amount = player.meta[tier].amount.plus(getMetaDimensionProduction(tier+step).times(diff/100))
         }
+        if (tier < 9 - stepT) player["timeDimension"+tier].amount = player["timeDimension"+tier].amount.plus(getTimeDimensionProduction(tier+stepT).times(diff/100))
         if (player.exdilation != undefined) if (tier < 5 - step) player["blackholeDimension"+tier].amount = player["blackholeDimension"+tier].amount.plus(getBlackholeDimensionProduction(tier+step).times(diff/100))
     }
     document.getElementById("idtabbtn").style.display = ((player.infDimensionsUnlocked[0] || player.eternities > 0 || quantumed) && !inQC(8)) ? "" : "none"
@@ -8529,7 +8530,7 @@ function autoBuyerTick() {
 
     if (player.aarexModifications.ngmX>3) if (player.autobuyers[14]%1 !== 0) {
         if (autoTDBoostBoolean()) {
-            tdBoost()
+            tdBoost(1)
             player.autobuyers[14].ticks = 0
         }
         player.autobuyers[14].ticks += 1;
