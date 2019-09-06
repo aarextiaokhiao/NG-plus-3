@@ -60,3 +60,8 @@ function cantReset() {
 document.getElementById("buyerBtnTDBoost").onclick = function () {
 	buyAutobuyer(14)
 }
+
+function maxHighestTD() {
+	player.aarexModifications.maxHighestTD=!player.aarexModifications.maxHighestTD
+	document.getElementById("maxHighestTD").textContent = "Max only highest Time Dimensions: O"+(player.aarexModifications.maxHighestTD?"N":"FF")
+}

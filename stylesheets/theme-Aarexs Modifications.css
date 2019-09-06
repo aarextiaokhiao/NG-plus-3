@@ -91,12 +91,12 @@ strong { color: #0072e5 }
 #pSac, #paradoxbtn {
 	background: radial-gradient(#720072, #e500e5);
 	border-color: #e500e5 !important;
-	color: #e500e5 !important;
+	color: #e572e5 !important;
 	text-shadow: 0px 0px 3px #191919, 0px 0px 6px #e500e5;
 }
 #pSac:hover, #paradoxbtn:hover {
 	box-shadow: inset 0px 0px 12px 0px #e500e5;
-	color: #e500e5 !important;
+	color: #e572e5 !important;
 	text-shadow: 0px 0px 6px #191919, 0px 0px 6px #e500e5;
 }
 .pxAmount {

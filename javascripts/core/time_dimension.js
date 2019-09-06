@@ -16,18 +16,6 @@ function getTimeDimensionPower(tier) {
     return dilates(ret)
   }
 
-  if (player.timestudy.studies.includes(11) && tier == 1) ret = ret.times(getTS11Mult())
-  if (player.achievements.includes("r105")) ret = ret.times(tmp.it)
-  if (player.boughtDims) {
-      if (player.achievements.includes('r117')) {
-        ret = ret.times(1 + Math.pow(Math.log(player.eternities), 1.5) / Math.log(100));
-      } else if (player.achievements.includes('r102')) {
-        ret = ret.times(1 + Math.log(player.eternities) / Math.log(100));
-      }
-  }
-
-  ret = ret.times(kongAllDimMult)
- 
   if (player.aarexModifications.ngmX>3) {
       //Tickspeed multiplier boost
       var x=player.postC3Reward
@@ -43,6 +31,18 @@ function getTimeDimensionPower(tier) {
       if (player.galacticSacrifice.upgrades.includes(15)) ret = ret.times(galMults.u15())
       if (player.galacticSacrifice.upgrades.includes(31)) ret = ret.pow(galMults.u31())
   }
+
+  if (player.timestudy.studies.includes(11) && tier == 1) ret = ret.times(getTS11Mult())
+  if (player.achievements.includes("r105")) ret = ret.times(tmp.it)
+  if (player.boughtDims) {
+      if (player.achievements.includes('r117')) {
+        ret = ret.times(1 + Math.pow(Math.log(player.eternities), 1.5) / Math.log(100));
+      } else if (player.achievements.includes('r102')) {
+        ret = ret.times(1 + Math.log(player.eternities) / Math.log(100));
+      }
+  }
+  ret = ret.times(kongAllDimMult)
+ 
   var ret2 = new Decimal(1)
   if (player.currentEternityChall == "eterc9") ret2 = ret2.times((Decimal.pow(Math.max(player.infinityPower.log2(), 1), player.galacticSacrifice == undefined ? 4 : 30)).max(1))
   if (ECTimesCompleted("eterc1") !== 0) ret2 = ret2.times(getECReward(1))
@@ -92,7 +92,7 @@ function isTDUnlocked(t) {
 }
 
 function getTimeDimensionRateOfChange(tier) {
-  let toGain = getTimeDimensionProduction(tier+(inQC(4)?2:1))
+  let toGain = getTimeDimensionProduction(tier+(inQC(4)||player.pSac!==undefined?2:1))
   if (player.pSac !== undefined) toGain = toGain.div(getEC12Mult())
   var current = Decimal.max(player["timeDimension"+tier].amount, 1);
   if (player.aarexModifications.logRateChange) {

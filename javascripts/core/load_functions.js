@@ -1620,6 +1620,9 @@ if (player.version < 5) {
   document.getElementById("performanceTicks").textContent = "Performance ticks: O"+(player.aarexModifications.performanceTicks?"N":"FF")
   dimDescEnd = (player.aarexModifications.logRateChange?" OoM":"%")+"/s)"
 
+  document.getElementById("maxHighestTD").parentElement.parentElement.style.display = player.aarexModifications.ngmX > 3 ? "" : "none"
+  document.getElementById("maxHighestTD").textContent = "Max only highest Time Dimensions: O"+(player.aarexModifications.maxHighestTD?"N":"FF")
+
   document.getElementById("quantumtabbtn").style.display = quantumed ? "" : "none"
   document.getElementById("ghostifytabbtn").style.display = ghostified ? "" : "none"
 

@@ -6904,12 +6904,16 @@ function quickReset() {
 
 
 function updateInfPower() {
-    document.getElementById("infPowAmount").textContent = shortenMoney(player.infinityPower)
+	document.getElementById("infPowAmount").textContent = shortenMoney(player.infinityPower)
 	if (player.galacticSacrifice) document.getElementById("infPowEffectPower").textContent = getInfinityPowerEffectPower().toFixed(2)
-    if (player.currentEternityChall == "eterc9") document.getElementById("infDimMultAmount").textContent = shortenMoney((Decimal.pow(Math.max(player.infinityPower.log2(), 1), 4)).max(1))
-    else document.getElementById("infDimMultAmount").textContent = shortenMoney(player.infinityPower.pow(getInfinityPowerEffectPower()))
-    if (player.currentEternityChall == "eterc7") document.getElementById("infPowPerSec").textContent = "You are getting " +shortenDimensions(DimensionProduction(1))+" Seventh Dimensions per second."
-    else document.getElementById("infPowPerSec").textContent = "You are getting " +shortenDimensions(DimensionProduction(1))+" Infinity Power per second."
+	if (player.currentEternityChall == "eterc9") document.getElementById("infDimMultAmount").textContent = shortenMoney((Decimal.pow(Math.max(player.infinityPower.log2(), 1), 4)).max(1))
+	else document.getElementById("infDimMultAmount").textContent = shortenMoney(player.infinityPower.pow(getInfinityPowerEffectPower()))
+	if (player.currentEternityChall == "eterc7") document.getElementById("infPowPerSec").textContent = "You are getting " +shortenDimensions(DimensionProduction(1))+" Seventh Dimensions per second."
+	else {
+		let r=DimensionProduction(1)
+		if (player.pSac!=undefined) r=r.div(getEC12Mult())
+		document.getElementById("infPowPerSec").textContent = "You are getting " +shortenDimensions(r)+" Infinity Power per second."
+	}
 }
 
 function getReplSpeed() {
@@ -7734,7 +7738,7 @@ function gameLoop(diff) {
         }
     }
     var step = inQC(4) || player.pSac!=undefined ? 2 : 1
-    var stepT = (inNC(7) && player.aarexModifications.ngmX > 3) || step
+    var stepT = inNC(7) && player.aarexModifications.ngmX > 3 ? 2 : step
     for (let tier=1;tier<9;tier++) {
         if (player.infDimensionsUnlocked[tier-1]) {
             document.getElementById("infRow"+tier).style.display = "inline-block"
