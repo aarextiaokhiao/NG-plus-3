@@ -1109,10 +1109,15 @@ function updateTemp() {
 	tmp.rm=getReplMult()
 	updateExtraReplGalaxies()
 
+	//Time Study 232 effect
+	var exp=0.2
+	if (tmp.ngp3&&player.galaxies>=1e4&&!tmp.be) exp*=Math.max(6-player.galaxies/2e3,0)
+	tmp.ts232=Math.pow(1+initialGalaxies()/1000,exp)
+
 	//mv: Matter speed
 	tmp.mv = 1.03 + player.resets/200 + player.galaxies/100
-	if (pSac !== undefined) {
 		var exp = 10
+	if (player.pSac !== undefined) {
 		tmp.mv = Decimal.pow(tmp.mv, exp)
 	}
 }
@@ -2534,12 +2539,9 @@ function getPostC3RewardMult() {
 		if (player.tickspeedBoosts != undefined) perGalaxy *= tmp.cp/10+.9
 		else perGalaxy *= tmp.cp/5+.8
 	}
-	var realnormalgalaxies = player.galaxies
-	if (tmp.ngp3) realnormalgalaxies = Math.max(player.galaxies-tmp.qu.electrons.sacGals,0)
-	if ((inNC(15) && player.aarexModifications.ngmX == 3) || (player.currentChallenge == "postc1" && player.tickspeedBoosts != undefined)) realnormalgalaxies = 0
-	else if (tmp.rg4) realnormalgalaxies *= 0.4
+	var g=initialGalaxies()
 	perGalaxy *= getGalaxyPowerEff()
-	let ret = getGalaxyPower(realnormalgalaxies)*perGalaxy+1.05
+	let ret = getGalaxyPower(g)*perGalaxy+1.05
 	if (inNC(6)||player.currentChallenge=="postc1") ret -= player.aarexModifications.ngmX>3?0.02:0.05
 	else if (player.aarexModifications.ngmX == 3) ret -= 0.03
 	if (player.galacticSacrifice != undefined) return Decimal.pow(ret,getPostC3Exp())

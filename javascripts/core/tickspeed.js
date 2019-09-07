@@ -1,7 +1,12 @@
-function canBuyTickSpeed() {
-  if (player.currentEternityChall == "eterc9") return false
-  if (player.galacticSacrifice&&player.tickspeedBoosts==undefined&&inNC(14)&&player.tickBoughtThisInf.current>307) return false
-  return canBuyDimension(3);
+function initialGalaxies() {
+	let g=player.galaxies
+	if (tmp.ngp3) {
+		g=Math.max(g-player.quantum.electrons.sacGals,0)
+		g*=Math.max(Math.min(10-(player.quantum.electrons.amount+g*getELCMult())/16857,1),0)
+	}
+	if (tmp.rg4) g*=0.4
+	if ((inNC(15)||player.currentChallenge=="postc1")&&player.aarexModifications.ngmX==3) g=0
+	return g
 }
 
 function getGalaxyPower(ng, bi) {
@@ -24,7 +29,7 @@ function getGalaxyPower(ng, bi) {
 	return galaxyPower
 }
 
-function getGalaxyPowerEff(ng, bi) {
+function getGalaxyPowerEff(bi) {
 	let eff = 1
 	if (player.galacticSacrifice) if (player.galacticSacrifice.upgrades.includes(22)) eff *= player.aarexModifications.ngmX>3?2:5;
 	if (player.infinityUpgrades.includes("galaxyBoost")) eff *= 2;
@@ -44,10 +49,6 @@ function getGalaxyPowerEff(ng, bi) {
 	if (player.tickspeedBoosts !== undefined && (inNC(5) || player.currentChallenge == "postcngm3_3")) eff *= 0.75
 	if (player.achievements.includes("ngpp8") && player.meta != undefined) eff *= 1.001;
 	if (player.timestudy.studies.includes(212)) eff *= Math.min(Math.pow(player.timeShards.max(2).log2(), 0.005), 1.1)
-
-	let exp=0.2
-	if (tmp.ngp3&&player.galaxies>=1e4&&!tmp.be) exp*=Math.max(6-player.galaxies/2e3,0)
-	if (bi) tmp.ts232=Math.pow(1+ng/1000,exp)
 	if (player.timestudy.studies.includes(232)&&bi) eff*=tmp.ts232
 
 	if (tmp.ngp3) eff *= colorBoosts.r
@@ -57,18 +58,10 @@ function getGalaxyPowerEff(ng, bi) {
 }
 
 function getTickSpeedMultiplier() {
-	let realnormalgalaxies = player.galaxies
-	if (player.masterystudies && !tmp.be) {
-		realnormalgalaxies=Math.max(player.galaxies-player.quantum.electrons.sacGals,0)
-		realnormalgalaxies=realnormalgalaxies*Math.max(Math.min(10-(player.quantum.electrons.amount+realnormalgalaxies*getELCMult())/16857,1),0)
-	}
+	let g = initialGalaxies()
 	if ((player.currentChallenge == "postc3" || isIC3Trapped()) && !tmp.be) {
-		if (player.currentChallenge=="postcngmm_3" || player.challenges.includes("postcngmm_3")) {
-			if ((inNC(15) || (player.currentChallenge == "postc1" && player.tickspeedBoosts != undefined)) && player.aarexModifications.ngmX == 3) realnormalgalaxies = 0
-			else if (tmp.rg4) realnormalgalaxies *= 0.4
-			return Decimal.pow(player.tickspeedBoosts != undefined ? 0.9995 : 0.998, getGalaxyPower(realnormalgalaxies) * getGalaxyPowerEff(realnormalgalaxies, true))
-		}
-		return 1;
+		if (player.currentChallenge=="postcngmm_3" || player.challenges.includes("postcngmm_3")) return Decimal.pow(player.tickspeedBoosts != undefined ? 0.9995 : 0.998, getGalaxyPower(g) * getGalaxyPowerEff(true))
+		return 1
 	}
 	if (inQC(2)) return 0.89
 	let inERS = player.boughtDims != undefined || player.infinityUpgradesRespecced != undefined
@@ -77,38 +70,38 @@ function getTickSpeedMultiplier() {
 	let useLinear
 	let linearGalaxies
 	if (inERS) {
-		if ((inNC(15) && player.aarexModifications.ngmX == 3) || (player.currentChallenge == "postc1" && player.tickspeedBoosts != undefined)) realnormalgalaxies = 0
-		else if (tmp.rg4) realnormalgalaxies *= 0.4
-		galaxies = getGalaxyPower(realnormalgalaxies) * getGalaxyPowerEff(realnormalgalaxies, true)
+		galaxies = getGalaxyPower(g) * getGalaxyPowerEff(true)
 		linearGalaxies = Math.min(galaxies,5)
 		useLinear = true
 	} else {
 		linearGalaxies = 2
-		useLinear = realnormalgalaxies + player.replicanti.galaxies + player.dilation.freeGalaxies < 3
+		useLinear = g + player.replicanti.galaxies + player.dilation.freeGalaxies < 3
 	}
 	if (useLinear) {
-		if ((inNC(15) && player.aarexModifications.ngmX == 3) || (player.currentChallenge == "postc1" && player.tickspeedBoosts != undefined)) realnormalgalaxies = 0
-		else if (tmp.rg4) realnormalgalaxies *= 0.4
 		baseMultiplier = 0.9;
 		if (inERS && galaxies == 0) baseMultiplier = 0.89
-		else if (realnormalgalaxies == 0) baseMultiplier = 0.89
+		else if (g == 0) baseMultiplier = 0.89
 		if (inNC(6) || player.currentChallenge == "postc1") baseMultiplier = 0.93;
 		if (inERS) {
 			baseMultiplier -= linearGalaxies*0.02
 		} else {
 			let perGalaxy = 0.02 * getGalaxyPowerEff()
-			return Decimal.div(Math.max(baseMultiplier-realnormalgalaxies*perGalaxy,0.83), getExtraTickReductionMult());
+			return Decimal.div(Math.max(baseMultiplier-g*perGalaxy,0.83), getExtraTickReductionMult());
 		}
 	}
 	if (!inERS) {
 		baseMultiplier = 0.8
 		if (inNC(6) || player.currentChallenge == "postc1") baseMultiplier = 0.83
-		if ((inNC(15) && player.aarexModifications.ngmX == 3) || (player.currentChallenge == "postc1" && player.tickspeedBoosts != undefined)) realnormalgalaxies = 0
-		else if (tmp.rg4) realnormalgalaxies *= 0.4
-		galaxies = getGalaxyPower(realnormalgalaxies) * getGalaxyPowerEff(realnormalgalaxies, true)
+		galaxies = getGalaxyPower(g) * getGalaxyPowerEff(true)
 	}
 	let perGalaxy = player.infinityUpgradesRespecced != undefined ? 0.98 : 0.965
 	return Decimal.pow(perGalaxy, galaxies-linearGalaxies).times(baseMultiplier).div(getExtraTickReductionMult())
+}
+
+function canBuyTickSpeed() {
+  if (player.currentEternityChall == "eterc9") return false
+  if (player.galacticSacrifice&&player.tickspeedBoosts==undefined&&inNC(14)&&player.tickBoughtThisInf.current>307) return false
+  return canBuyDimension(3);
 }
 
 function buyTickSpeed() {
