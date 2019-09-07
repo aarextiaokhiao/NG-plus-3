@@ -44,7 +44,7 @@ function getTimeDimensionPower(tier) {
   ret = ret.times(kongAllDimMult)
  
   var ret2 = new Decimal(1)
-  if (player.currentEternityChall == "eterc9") ret2 = ret2.times((Decimal.pow(Math.max(player.infinityPower.log2(), 1), player.galacticSacrifice == undefined ? 4 : 30)).max(1))
+  if (player.currentEternityChall == "eterc9") ret2 = ret2.times(getInfinityPowerEffect())
   if (ECTimesCompleted("eterc1") !== 0) ret2 = ret2.times(getECReward(1))
   if (player.eternityUpgrades.includes(4)) ret2 = ret2.times(player.achPow)
   if (player.eternityUpgrades.includes(5)) ret2 = ret2.times(Math.max(player.timestudy.theorem, 1))

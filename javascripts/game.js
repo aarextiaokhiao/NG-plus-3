@@ -690,7 +690,7 @@ function updateNewPlayer(reseted) {
     }
     if (modesChosen.ngpp > 4) player.aarexModifications.ngudpV=1.1
     if (modesChosen.ngmm > 2) {
-        player.aarexModifications.newGame4MinusVersion=2.11
+        player.aarexModifications.newGame4MinusVersion=2.111
         player.aarexModifications.ngmX=4
         player.tdBoosts=0
         player.challengeTimes.push(600*60*24*31)
@@ -1237,13 +1237,14 @@ function getDGAdd(x) {
 
 function getRemoteGalaxyScalingStart(galaxies) {
 	var n = 800
+	if (player.aarexModifications.ngmX > 3) n = 6
+	else if (player.galacticSacrifice != undefined) n += 1e7
 	if (tmp.ngp3) {
 		for (var t=251;t<254;t++) if (player.masterystudies.includes("t"+t)) n += getMTSMult(t)
 		if (player.masterystudies.includes("t301")) n += getMTSMult(301)
 		if (player.masterystudies.includes("d12")) n += getNanofieldRewardEffect(7)
 		if (galaxies > 1/0 && !tmp.be) n -= galaxies - 1/0
 	}
-	if (player.galacticSacrifice != undefined) n += 1e7
 	return n
 }
 
@@ -1287,7 +1288,7 @@ function getGalaxyRequirement(offset=0, display) {
 			if (GUBought("rg7")) speed2 *= 0.9
 			if (GUBought("gb7")) speed2 /= 1+Math.log10(1+player.infinityPoints.max(1).log10())/100
 			if (GUBought("br7")) speed2 /= 1+Math.log10(1+player.eternityPoints.max(1).log10())/80
-			amount = amount * Math.pow(GUBought("rg1") ? 1.001 : 1.002, (galaxies-remoteGalaxyScalingStart-1) * speed2)
+			amount = amount * Math.pow(1 + (GUBought("rg1") ? 1 : 2) / (player.aarexModifications.ngmX > 3 ? 10 : 1e3), (galaxies-remoteGalaxyScalingStart+1) * speed2)
 			scaling = Math.max(scaling, 3)
 		}
 		if (galaxies > 1399 && !tmp.be) scaling = Math.max(scaling, 4)
@@ -4110,7 +4111,7 @@ function calcSacrificeBoost() {
 		if (player.infinityUpgradesRespecced != undefined) sacrificePow *= getInfUpgPow(5)
 		ret = Decimal.pow(Math.max(player.firstAmount.e/10.0, 1), sacrificePow).dividedBy(((Decimal.max(player.sacrificed.e, 1)).dividedBy(10.0)).pow(sacrificePow).max(1)).max(1);
 	} else {
-		ret = player.firstAmount.pow(0.05).dividedBy(player.sacrificed.pow(0.04).max(1)).max(1);
+		ret = player.firstAmount.pow(0.05).dividedBy(player.sacrificed.pow(player.aarexModifications.ngmX>3?0.05:0.04).max(1)).max(1);
 	}
 	if (player.boughtDims) ret = ret.pow(1 + Math.log(1 + Math.log(1 + player.timestudy.ers_studies[1] / 5)))
 	return ret
@@ -6908,8 +6909,7 @@ function quickReset() {
 function updateInfPower() {
 	document.getElementById("infPowAmount").textContent = shortenMoney(player.infinityPower)
 	if (player.galacticSacrifice) document.getElementById("infPowEffectPower").textContent = getInfinityPowerEffectPower().toFixed(2)
-	if (player.currentEternityChall == "eterc9") document.getElementById("infDimMultAmount").textContent = shortenMoney((Decimal.pow(Math.max(player.infinityPower.log2(), 1), 4)).max(1))
-	else document.getElementById("infDimMultAmount").textContent = shortenMoney(player.infinityPower.pow(getInfinityPowerEffectPower()))
+	document.getElementById("infDimMultAmount").textContent = shortenMoney(getInfinityPowerEffect())
 	if (player.currentEternityChall == "eterc7") document.getElementById("infPowPerSec").textContent = "You are getting " +shortenDimensions(DimensionProduction(1))+" Seventh Dimensions per second."
 	else {
 		let r=DimensionProduction(1)

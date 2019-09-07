@@ -1,8 +1,8 @@
 function getDimensionFinalMultiplier(tier) {
 	let mult = player[TIER_NAMES[tier] + 'Pow']
 
-	if (player.currentChallenge == "postcngm3_2") return player.infinityPower.pow(getInfinityPowerEffectPower()).max(1)
-	if (player.currentEternityChall == "eterc11") return player.infinityPower.pow(getInfinityPowerEffectPower()).max(1).times(Decimal.pow(getDimensionBoostPower(), player.resets - tier + 1).max(1))
+	if (player.currentChallenge == "postcngm3_2") return getInfinityPowerEffect()
+	if (player.currentEternityChall == "eterc11") return getInfinityPowerEffect().times(Decimal.pow(getDimensionBoostPower(), player.resets - tier + 1).max(1))
 	if ((inNC(7) || player.currentChallenge == "postcngm3_3") && !player.galacticSacrifice) {
 		if (tier == 4) mult = mult.pow(1.4)
 		if (tier == 2) mult = mult.pow(1.7)
@@ -10,7 +10,7 @@ function getDimensionFinalMultiplier(tier) {
 
 	mult = mult.times(player.achPow)
 
-	if (player.currentEternityChall != "eterc9" && (player.tickspeedBoosts == undefined || player.currentChallenge != "postc2")) mult = mult.times(player.infinityPower.pow(getInfinityPowerEffectPower()).max(1))
+	if (player.currentEternityChall != "eterc9" && (player.tickspeedBoosts == undefined || player.currentChallenge != "postc2")) mult = mult.times(getInfinityPowerEffect())
 
 	if (player.infinityUpgrades.includes("totalMult")) mult = mult.times(totalMult)
 	if (player.infinityUpgrades.includes("currentMult")) mult = mult.times(currentMult)

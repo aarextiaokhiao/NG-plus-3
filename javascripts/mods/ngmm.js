@@ -22,13 +22,9 @@ function getGSAmount(offset=0) {
 function getGPMultipliers(){
 	let ret = new Decimal(1)
 	if (player.achievements.includes("r23") && player.tickspeedBoosts !== undefined) {
-		let d8Div=75
 		let tbDiv=10
-		if (player.aarexModifications.ngmX>3) {
-			d8Div=60
-			tbDiv=5
-		}
-		ret=ret.times(Decimal.pow(Math.max(player.tickspeedBoosts/tbDiv,1),Math.max(getAmount(8)/d8Div,1)))
+		if (player.aarexModifications.ngmX>3) tbDiv=5
+		ret=ret.times(Decimal.pow(Math.max(player.tickspeedBoosts/tbDiv,1),Math.max(getAmount(8)/75,1)))
 	}
 	if (player.galacticSacrifice.upgrades.includes(32)) ret = ret.times(galMults.u32())
 	if (player.infinityUpgrades.includes("galPointMult")) ret = ret.times(getPost01Mult())
@@ -535,15 +531,15 @@ let galMults = {
 		return Decimal.pow(10,getInfinitied()+2).max(1).min(1e6)
 	},
 	u25: function() {
-		let r=Math.max(player.galacticSacrifice.galaxyPoints.log10()-1.5,1)
-		if (r>3) r=Math.pow(r*6+9,1/3)
+		let r=Math.max(player.galacticSacrifice.galaxyPoints.log10()-2,1)
+		if (r>2.5) r=Math.pow(r*6.25,1/3)
 		return r
 	},
 	u35: function() {
 		let r=1
 		let p=getProductBoughtMult()
 		for (var d=1;d<9;d++) {
-			r=Decimal.times(player["timeDimension"+d].bought/5,p).max(1).times(r)
+			r=Decimal.times(player["timeDimension"+d].bought/6,p).max(1).times(r)
 		}
 		return r
 	}

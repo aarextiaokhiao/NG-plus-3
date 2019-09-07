@@ -1537,7 +1537,7 @@ if (player.version < 5) {
       player.autobuyers.push(15)
       player.challengeTimes.push(600*60*24*31)
   }
-  if (player.aarexModifications.newGame4MinusVersion<2.11) player.aarexModifications.newGame4MinusVersion=2.11
+  if (player.aarexModifications.newGame4MinusVersion<2.111) player.aarexModifications.newGame4MinusVersion=2.111
   if (player.aarexModifications.ngm5V<0.1) player.aarexModifications.ngm5V=0.1
   ipMultPower=2
   if (player.masterystudies) if (player.masterystudies.includes("t241")) ipMultPower=2.2

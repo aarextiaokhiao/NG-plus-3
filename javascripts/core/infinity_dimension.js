@@ -177,6 +177,13 @@ function buyMaxInfDims(tier) {
   buyManyInfinityDimension(tier)
 }
 
+function getInfinityPowerEffect() {
+	if (player.currentEternityChall == "eterc9") return Decimal.pow(Math.max(player.infinityPower.log2(),1),player.galacticSacrifice==undefined?4:30).max(1)
+	let log = player.infinityPower.max(1).log10()
+	log *= getInfinityPowerEffectPower()
+	return Decimal.pow(10, log)
+}
+
 function getInfinityPowerEffectPower() {
 	if (player.galacticSacrifice!=undefined) {
 		let ret=Math.pow(player.galaxies, 0.7)
