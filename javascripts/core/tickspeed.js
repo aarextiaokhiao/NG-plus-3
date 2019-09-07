@@ -1,6 +1,6 @@
 function initialGalaxies() {
 	let g=player.galaxies
-	if (tmp.ngp3) {
+	if (tmp.ngp3&&!tmp.be) {
 		g=Math.max(g-player.quantum.electrons.sacGals,0)
 		g*=Math.max(Math.min(10-(player.quantum.electrons.amount+g*getELCMult())/16857,1),0)
 	}
