@@ -702,8 +702,8 @@ function updateNewPlayer(reseted) {
         player.aarexModifications.ngm5V=0.5
         player.aarexModifications.ngmX=5
         player.infDimensionsUnlocked[0]=true
-        resetIDs_ngm5()
         resetPSac()
+        resetIDs_ngm5()
     }
 }
 updateNewPlayer()
