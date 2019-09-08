@@ -67,6 +67,10 @@ function softReset(bulk, tier=1) {
 	player.chall11Pow=new Decimal(1)
 	player.postC4Tier=1
 	player.postC8Mult=new Decimal(1)
+	if (player.pSac !== undefined) {
+		resetInfDimensions()
+		player.pSac.dims.extraTime=0
+	}
     resetTDs()
 	reduceDimCosts()
 	skipResets()
@@ -180,7 +184,7 @@ function getShiftRequirement(bulk) {
 	var resetNum = player.resets + bulk
 	var maxTier = inNC(4) || player.pSac != undefined ? 6 : 8
 	tier = Math.min(resetNum + 4, maxTier)
-	if (player.aarexModifications.ngmX > 3) amount = 10
+	if (player.aarexModifications.ngmX > 3 && player.pSac == undefined) amount = 10
 	if (tier == maxTier) amount += Math.max(resetNum + (player.galacticSacrifice && player.tickspeedBoosts === undefined && player.galacticSacrifice.upgrades.includes(21) ? 2 : 4) - maxTier, 0) * mult
 	var costStart = getSupersonicStart()
 	if (player.currentEternityChall == "eterc5") {
@@ -201,9 +205,9 @@ function getShiftRequirement(bulk) {
 }
 
 function getDimboostCostIncrease () {
-	if (player.currentChallenge=="postcngmm_1") return 15;
 	let ret = 15
 	if (player.aarexModifications.ngmX > 3) ret += 5
+	if (player.currentChallenge=="postcngmm_1") return ret
 	if (player.galacticSacrifice) {
 		if (player.galacticSacrifice.upgrades.includes(21)) ret -= 10
 		if (player.infinityUpgrades.includes('dimboostCost')) ret -= 1

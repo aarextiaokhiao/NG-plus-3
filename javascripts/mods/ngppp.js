@@ -376,6 +376,15 @@ function drawMasteryTree() {
 }
 
 function setupText() {
+	var pu=document.getElementById("pUpgs")
+	for (r=1;r<=puSizes.y;r++) {
+		row=pu.insertRow(r-1)
+		for (c=1;c<=puSizes.x;c++) {
+			var col=row.insertCell(c-1)
+			var id=(r*10+c)
+			col.innerHTML="<button id='pu"+id+"' class='infinistorebtn1' onclick='buyPU("+id+","+(r<2)+")'>"+(typeof(puDescs[id])=="function"?"<span id='pud"+id+"'></span>":puDescs[id]||"???")+(puMults[id]?"<br>Currently: <span id='pue"+id+"'></span>":"")+"<br><span id='puc"+id+"'></span></button>"
+		}
+	}
 	var iut=document.getElementById("preinfupgrades")
 	for (r=1;r<5;r++) {
 		row=iut.insertRow(r-1)
@@ -457,6 +466,7 @@ function setupText() {
 		}
 	}
 	var ndsDiv = document.getElementById("parent")
+	var pdsDiv = document.getElementById("pdTable")
 	var edsDiv = document.getElementById("empDimTable")
 	for (d=1;d<9;d++) {
 		var row=ndsDiv.insertRow(d-1)
@@ -466,6 +476,14 @@ function setupText() {
 		html+='<td id="A'+d+'"></td>'
 		html+='<td align="right" width="10%"><button id="B'+d+'" style="color:black; height: 25px; font-size: 10px; width: 135px" class="storebtn" onclick="buyOneDimension('+d+')"></button></td>'
 		html+='<td align="right" width="10%"><button id="M'+d+'" style="color:black; width:210px; height: 25px; font-size: 10px" class="storebtn" onclick="buyManyDimension('+d+')"></button></td>'
+		row.innerHTML=html
+		
+		var row=pdsDiv.insertRow(d-1)
+		row.id="pR"+d
+		row.style["font-size"]="16px"
+		var html='<td id="pD'+d+'" width="41%">'+DISPLAY_NAMES[d]+' Paradox Dimension x1</td>'
+		html+='<td id="pA'+d+'">0 (0)</td>'
+		html+='<td align="right" width="10%"><button id="pB'+d+'" style="color:black; width:195px; height:30px" class="storebtn" align="right" onclick="buyPD('+d+')">Cost: ??? Px</button></td></tr>'
 		row.innerHTML=html
 		
 		var row=edsDiv.insertRow(d-1)
@@ -1398,6 +1416,7 @@ function breakLimit() {
 
 //v1.9984
 function maxAllID() {
+	if (player.pSac !== undefined) maxAllIDswithAM()
 	for (t=1;t<9;t++) {
 		var dim=player["infinityDimension"+t]
         var cost=getIDCost(t)
@@ -1430,6 +1449,7 @@ function hideMaxIDButton(onLoad=false) {
 			}
 		}
 	}
+	if (player.pSac !== undefined) hide=false
 	document.getElementById("maxAllID").style.display=hide?"none":""
 }
 

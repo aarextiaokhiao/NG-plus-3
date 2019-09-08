@@ -1539,6 +1539,12 @@ if (player.version < 5) {
   }
   if (player.aarexModifications.newGame4MinusVersion<2.111) player.aarexModifications.newGame4MinusVersion=2.111
   if (player.aarexModifications.ngm5V<0.1) player.aarexModifications.ngm5V=0.1
+  if (player.aarexModifications.ngm5V<0.5) {
+      player.infDimensionsUnlocked[0]=true
+      resetIDs_ngm5()
+      resetPDs(true)
+      player.aarexModifications.ngm5V=0.5
+  }
   ipMultPower=2
   if (player.masterystudies) if (player.masterystudies.includes("t241")) ipMultPower=2.2
   if (GUBought("gb3")) ipMultPower=2.3
@@ -1685,7 +1691,7 @@ if (player.version < 5) {
   document.getElementById("autoDSChallengeDesc").textContent=player.tickspeedBoosts==undefined?"Per-ten multiplier is always 1x, but product of dimensions bought multiplies all dimensions.":"There is the product of amount instead of the product of bought."
   document.getElementById("autoGSChallengeDesc").textContent=player.aarexModifications.ngmX>3?"You can hold up to 10 total Dimension Boosts, Time Dimension Boosts, Tickspeed Boosts, and Galaxies.":"All galaxy upgrades from the third column are disabled and Tickspeed Boosts give 20 free tickspeed purchases each instead."
   document.getElementById("autoTBChallengeDesc").textContent=player.aarexModifications.ngmX>3?"Dimension Boosts and Time Dimension Boosts divide Tickspeed Multiplier instead.":"Dimension Boosts and Galaxies only boost Galaxy point gain and Tickspeed Boosts are nerfed, but Galaxy points boost Tickspeed Boosts."
-  document.getElementById("infPowEffectPowerDiv").innerHTML=player.galacticSacrifice?"Raised to the power of <span id='infPowEffectPower' style='font-size:35px; color: black'></span>, t":"T"
+  document.getElementById("infPowEffectPowerDiv").innerHTML=player.galacticSacrifice&&player.pSac==undefined?"Raised to the power of <span id='infPowEffectPower' style='font-size:35px; color: black'></span>, t":"T"
   document.getElementById("ngmmchalls").style.display=player.galacticSacrifice?"":"none"
   document.getElementById("ngmmmchalls").style.display=player.tickspeedBoosts==undefined?"none":""
   document.getElementById("ngm4chall").style.display=player.aarexModifications.ngmX>3?"":"none"
@@ -1803,6 +1809,10 @@ if (player.version < 5) {
   document.getElementById('assignAll').style.display=(player.masterystudies?tmp.qu.reachedInfQK||ghostified:false)?"":"none"
   document.getElementById('autoReset').style.display=player.achievements.includes("ng3p47")?"":"none"
   document.getElementById('aftereternity').style.display=player.achievements.includes("ng3p52")?"":"none"
+  if (player.pSac !== undefined) {
+      updateParadoxUpgrades()
+      updatePUCosts()
+  }
   if (player.masterystudies) {
       updateMasteryStudyCosts()
       if (quantumed) giveAchievement("Sub-atomic")
@@ -2243,7 +2253,18 @@ function transformSaveToDecimal() {
       player.galacticSacrifice.galaxyPoints = Decimal.round(player.galacticSacrifice.galaxyPoints)
       if (player.dimPowerIncreaseCost !== undefined) player.dimPowerIncreaseCost = new Decimal(player.dimPowerIncreaseCost)
   }
-  if (player.pSac !== undefined) player.pSac.px = new Decimal(player.pSac.px)
+  if (player.pSac !== undefined) {
+      player.pSac.px = new Decimal(player.pSac.px)
+      for (var d=1;d<9;d++) player["infinityDimension"+d].costAM = new Decimal(player["infinityDimension"+d].costAM)
+      if (player.pSac.dims !== undefined) {
+          player.pSac.dims.power = new Decimal(player.pSac.dims.power)
+          for (var d=1;d<9;d++) {
+              player.pSac.dims[d].cost = new Decimal(player.pSac.dims[d].cost)
+              player.pSac.dims[d].amount = new Decimal(player.pSac.dims[d].amount)
+              player.pSac.dims[d].power = new Decimal(player.pSac.dims[d].power)
+          }
+      }
+  }
   player.costMultipliers = [new Decimal(player.costMultipliers[0]), new Decimal(player.costMultipliers[1]), new Decimal(player.costMultipliers[2]), new Decimal(player.costMultipliers[3]), new Decimal(player.costMultipliers[4]), new Decimal(player.costMultipliers[5]), new Decimal(player.costMultipliers[6]), new Decimal(player.costMultipliers[7])]
   player.tickspeedMultiplier = new Decimal(player.tickspeedMultiplier)
   player.matter = new Decimal(player.matter)

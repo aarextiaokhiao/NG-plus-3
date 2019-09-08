@@ -1162,6 +1162,7 @@
 					<td><button class="secondarytabbtn" onclick="showDimTab('antimatterdimensions')">Dimensions</button></td>
 					<td id="idtabbtn"><button class="secondarytabbtn" onclick="showDimTab('infinitydimensions')">Infinity Dimensions</button></td>
 					<td id="tdtabbtn"><button class="secondarytabbtn" onclick="showDimTab('timedimensions')">Time Dimensions</button></td>
+					<td id="pdtabbtn"><button class="secondarytabbtn" onclick="showDimTab('pdims')">Paradox Dimensions</button></td>
 					<td id="mdtabbtn"><button class="secondarytabbtn" onclick="showDimTab('metadimensions')">Meta Dimensions</button></td>
 					<td id="edtabbtn"><button class="secondarytabbtn" onclick="showDimTab('emperordimensions')">Emperor Dimensions</button></td>
 					<td id="prodtabbtn"><button class="secondarytabbtn" onclick="showDimTab('production')">Production</button></td>
@@ -1456,6 +1457,12 @@
 							</tr>
 						</table>
 						<button id="togglealltimedims"style="width:140px; height: 30px; font-size: 12px; visibility: hidden" onclick="toggleAllTimeDims()" class="storebtn">Toggle all ON/OFF</button>
+			</div>
+			<div id="pdims" class="dimtab">
+				<div>You have <span id="pPow" style="font-size:35px; color: #ff00ff">0</span> Paradox Power. You get <span id="pPowEffect" style="font-size:35px; color: #ff00ff">0</span> extra seconds while matter exceeds your antimatter amount.</div>
+				<div id="pPowProduction">You are getting 0 Paradox Power per second.</div>
+				<button class="storebtn" style="font-size: 12px" onclick="maxPDs()">Max all</Button>
+				<table id="pdTable" class="table"></table>
 			</div>
 			<div id="metadimensions" class="dimtab">
 				  <div>
@@ -3589,6 +3596,7 @@
 			</table>
 		</div>
 		<div id="automation_ngm4_placement"></div>
+		<div id="paradox" class="tab"><table class="table" id="pUpgs" style="margin: 0 auto"></table></div>
 		<div id="galaxy" class="tab" align="center" style="display: none">
 			<div id="vanillaGalaxyPoints">
 				<br>

@@ -699,9 +699,11 @@ function updateNewPlayer(reseted) {
         reduceDimCosts()
     }
     if (modesChosen.ngmm > 3) {
-        player.aarexModifications.ngm5V=0.1
+        player.aarexModifications.ngm5V=0.5
         player.aarexModifications.ngmX=5
-        player.pSac=resetPSac()
+        player.infDimensionsUnlocked[0]=true
+        resetIDs_ngm5()
+        resetPSac()
     }
 }
 updateNewPlayer()
@@ -1116,8 +1118,8 @@ function updateTemp() {
 
 	//mv: Matter speed
 	tmp.mv = 1.03 + player.resets/200 + player.galaxies/100
-		var exp = 10
 	if (player.pSac !== undefined) {
+		var exp = 10/puMults[12](hasPU(12,true))
 		tmp.mv = Decimal.pow(tmp.mv, exp)
 	}
 }
@@ -1169,8 +1171,9 @@ function updateMoney() {
 	if (player.currentChallenge == "postc6" || inQC(6)) element2.textContent = "There is " + formatValue(player.options.notation, Decimal.pow(player.matter,20), 2, 1) + " matter."; //TODO
 	else if (inNC(12) || player.currentChallenge == "postc1" || player.pSac !== undefined) {
 		var txt = "There is " + formatValue(player.options.notation, player.matter, 2, 1) + " matter."
-		if (player.pSac !== undefined && player.matter.gt(0)) txt += " (" + timeDisplay(player.money.div(player.matter).log(tmp.mv) * getEC12Mult()) + " left until matter reset)"
-		element2.textContent = txt
+		var extra = getExtraTime()
+		if (player.pSac !== undefined && player.matter.gt(0)) txt += " (" + timeDisplayShort(Math.max(player.money.div(player.matter).log(tmp.mv) * getEC12Mult(),0)) + (extra ? " + " + timeDisplayShort((extra - player.pSac.dims.extraTime) * 10 * getEC12Mult()) : "") + " left until matter reset)"
+		element2.innerHTML = txt
 	}
 	var element3 = document.getElementById("chall13Mult");
 	if (isADSCRunning()) {
@@ -1255,7 +1258,7 @@ function getGalaxyRequirement(offset=0, display) {
 	let scaling = 0
 	if (player.galacticSacrifice != undefined) amount -= (player.galacticSacrifice.upgrades.includes(22) && player.galaxies > 0) ? 60 : 40
 	if (player.aarexModifications.ngmX > 3) amount -= 10
-	if (inNC(4)) amount = player.tickspeedBoosts == undefined ? 99 + base : amount + (player.aarexModifications.ngmX > 3 ? 20 : -30)
+	if (inNC(4) || player.pSac !== undefined) amount = player.tickspeedBoosts == undefined ? 99 + base : amount + (player.aarexModifications.ngmX > 3 ? 20 : -30)
 	if (tmp.be) {
 		amount *= 50
 		if (tmp.qu.breakEternity.upgrades.includes(2)) amount /= getBreakUpgMult(2)
@@ -1414,7 +1417,7 @@ function updateDimensions() {
         }
 
         var shiftRequirement = getShiftRequirement(0);
-        var isShift = player.resets < ((inNC(4) || player.currentChallenge == "postc1") ? 2 : 4)
+        var isShift = player.resets < (inNC(4) || player.currentChallenge == "postc1" || player.pSac !== undefined ? 2 : 4)
         document.getElementById("resetLabel").textContent = 'Dimension ' + (isShift ? "Shift" : player.resets < getSupersonicStart() ? "Boost" : "Supersonic") + ' ('+ getFullExpansion(Math.ceil(player.resets)) +'): requires ' + getFullExpansion(Math.ceil(shiftRequirement.amount)) + " " + DISPLAY_NAMES[shiftRequirement.tier] + " Dimensions"
         document.getElementById("softReset").textContent = "Reset the game for a " + (isShift ? "new dimension" : "boost")
         var totalReplGalaxies = player.replicanti.galaxies + extraReplGalaxies
@@ -1456,6 +1459,22 @@ function updateDimensions() {
         document.getElementById("tickSpeedAmount").style.visibility = "hidden";
     }
 
+	if (document.getElementById("dimensions").style.display == "block" && document.getElementById("pdims").style.display == "block") {
+		document.getElementById("pPow").textContent = shortenMoney(player.pSac.dims.power)
+		document.getElementById("pPowProduction").textContent = "You are getting " + shortenDimensions(getPDProduction(1).div(getEC12Mult())) + " Paradox Power per second."
+		document.getElementById("pPowEffect").textContent = getFullExpansion(Math.floor(getExtraTime() * getEC12Mult()))
+		var shown
+		for (let t = 8; t > 0; t--) {
+			shown = shown || isDimUnlocked(t)
+			document.getElementById("pR"+t).style.display = shown ? "" : "none"
+			if (shown) {
+				document.getElementById("pD"+t).textContent = DISPLAY_NAMES[t] + " Paradox Dimension x" + shortenMoney(getPDPower(t))
+				document.getElementById("pB"+t).textContent = "Cost: " + shortenDimensions(player.pSac.dims[t].cost) + " Px"
+				document.getElementById("pB"+t).className = (player.pSac.px.gte(player.pSac.dims[t].cost) ? "stor" : "unavailabl") + "ebtn"
+				document.getElementById("pA"+t).textContent = getPDDesc(t)
+			}
+		}
+	}
     if (document.getElementById("dimensions").style.display == "block" && document.getElementById("metadimensions").style.display == "block") updateMetaDimensions()
     if (document.getElementById("dimensions").style.display == "block" && document.getElementById("emperordimensions").style.display == "block") updateEmperorDimensions()
     if (document.getElementById("quantumtab").style.display == "block") updateQuantumTabs()
@@ -2029,8 +2048,8 @@ function updateCosts() {
 			document.getElementById('M'+i).textContent = 'Until 10, Cost: ' + shortenPreInfCosts(cost.times(10 - dimBought(i)));
 		}
 		if (document.getElementById("infinitydimensions").style.display == "block" && player.infDimensionsUnlocked[i-1]) {
-			document.getElementById("infMax"+i).textContent = "Cost: " + shortenInfDimCosts(getIDCost(i)) + " IP"
-			if (player.infinityPoints.gte(getIDCost(i))) document.getElementById("infMax"+i).className = "storebtn"
+			document.getElementById("infMax"+i).textContent = "Cost: " + (player.pSac !== undefined ? shortenDimensions(player["infinityDimension"+i].costAM) : shortenInfDimCosts(getIDCost(i)) + " IP")
+			if (player.pSac !== undefined ? player.money.gte(player["infinityDimension"+i].costAM) : player.infinityPoints.gte(getIDCost(i))) document.getElementById("infMax"+i).className = "storebtn"
 			else document.getElementById("infMax"+i).className = "unavailablebtn"
 		}
 	}
@@ -2241,6 +2260,7 @@ document.getElementById("maxall").onclick = function () {
 	if (player.currentChallenge !== 'challenge14') buyMaxTickSpeed()
 	for (var tier=1; tier<9;tier++) buyBulkDimension(tier, 1/0)
 	if (player.aarexModifications.ngmX>3) buyMaxTimeDimensions()
+	if (player.pSac!=undefined) maxAllIDswithAM()
 }
 
 
@@ -2545,6 +2565,7 @@ function getPostC3RewardMult() {
 	let ret = getGalaxyPower(g)*perGalaxy+1.05
 	if (inNC(6)||player.currentChallenge=="postc1") ret -= player.aarexModifications.ngmX>3?0.02:0.05
 	else if (player.aarexModifications.ngmX == 3) ret -= 0.03
+	if (hasPU(33)) ret += puMults[33]()
 	if (player.galacticSacrifice != undefined) return Decimal.pow(ret,getPostC3Exp())
 	return ret
 }
@@ -3182,6 +3203,10 @@ function galaxyReset(bulk) {
         player.seventhCost = new Decimal(2e5)
         player.eightCost = new Decimal(4e6)
     }
+	if (player.pSac !== undefined) {
+		resetInfDimensions()
+		player.pSac.dims.extraTime=0
+	}
     resetTDs()
     reduceDimCosts()
     skipResets()
@@ -3890,6 +3915,7 @@ function updateNotationOption() {
 function onNotationChange() {
     document.getElementsByClassName("hideInMorse").display = player.options.notation == "Morse code" || player.options.notation == 'Spazzy' ? "none" : ""
 	updateNotationOption()
+	if (player.pSac !== undefined) updatePUCosts()
 	updateLastTenRuns();
 	updateLastTenEternities();
 	updateLastTenQuantums();
@@ -5162,7 +5188,7 @@ function bigCrunch(autoed) {
 
         giveAchievement("To infinity!");
         player.tdBoosts = resetTDBoosts()
-        player.pSac = resetPSac()
+        resetPSac()
         resetTDs()
         reduceDimCosts()
         setInitialDimensionPower();
@@ -5664,7 +5690,7 @@ function eternity(force, auto, presetLoad, dilated) {
         player.replicanti.chanceCost = Decimal.pow(1e15, player.replicanti.chance * 100).times(player.galacticSacrifice!==undefined?1e75:1e135)
         player.replicanti.intervalCost = Decimal.pow(1e10, Math.round(Math.log10(1000/player.replicanti.interval)/-Math.log10(0.9))).times(player.galacticSacrifice!==undefined?1e80:player.boughtDims?1e150:1e140)
         player.tdBoosts = resetTDBoosts()
-        player.pSac = resetPSac()
+        resetPSac()
         resetTDs()
         reduceDimCosts()
         setInitialDimensionPower()
@@ -5977,7 +6003,7 @@ function startChallenge(name) {
         player.eightCost = new Decimal(4e6)
     }
     player.tdBoosts = resetTDBoosts()
-    player.pSac = resetPSac()
+    resetPSac()
     resetTDs()
     reduceDimCosts()
     if (player.currentChallenge == "postc1") player.costMultipliers = [new Decimal(1e3),new Decimal(5e3),new Decimal(1e4),new Decimal(1.2e4),new Decimal(1.8e4),new Decimal(2.6e4),new Decimal(3.2e4),new Decimal(4.2e4)];
@@ -6596,7 +6622,7 @@ function startEternityChallenge(n) {
     player.replicanti.chanceCost = Decimal.pow(1e15, player.replicanti.chance * 100).times(player.galacticSacrifice!==undefined?1e75:1e135)
     player.replicanti.intervalCost = Decimal.pow(1e10, Math.round(Math.log10(1000/player.replicanti.interval)/-Math.log10(0.9))).times(player.galacticSacrifice!==undefined?1e80:player.boughtDims?1e150:1e140)
     player.tdBoosts = resetTDBoosts()
-    player.pSac = resetPSac()
+    resetPSac()
     resetTDs()
     reduceDimCosts()
     setInitialDimensionPower()
@@ -6664,6 +6690,8 @@ function startEternityChallenge(n) {
 
 function getEC12Mult() {
 	let r = 1e3
+	let p14 = hasPU(14, true)
+	if (p14) r /= puMults[14](p14)
 	return r
 }
 
@@ -6908,7 +6936,7 @@ function quickReset() {
 
 function updateInfPower() {
 	document.getElementById("infPowAmount").textContent = shortenMoney(player.infinityPower)
-	if (player.galacticSacrifice) document.getElementById("infPowEffectPower").textContent = getInfinityPowerEffectPower().toFixed(2)
+	if (player.galacticSacrifice && player.pSac == undefined) document.getElementById("infPowEffectPower").textContent = getInfinityPowerEffectPower().toFixed(2)
 	document.getElementById("infDimMultAmount").textContent = shortenMoney(getInfinityPowerEffect())
 	if (player.currentEternityChall == "eterc7") document.getElementById("infPowPerSec").textContent = "You are getting " +shortenDimensions(DimensionProduction(1))+" Seventh Dimensions per second."
 	else {
@@ -7460,13 +7488,34 @@ function gameLoop(diff) {
     diff = diff / 100
     var diffStat = diff
     if (diff < 0) diff = 1;
-    if (player.version === 12.2 && typeof player.shameLevel === 'number') diff *= Math.min(Math.pow(10, player.shameLevel), 1);
+    if (player.version === 12.2 && typeof player.shameLevel === 'number') diff *= Math.min(Math.pow(10, player.shameLevel), 1)
     if (player.currentEternityChall === "eterc12" || player.pSac !== undefined) diff /= getEC12Mult()
     if (player.thisInfinityTime < -10) player.thisInfinityTime = Infinity
     if (player.bestInfinityTime < -10) player.bestInfinityTime = Infinity
     updateTemp()
     if (diff > player.autoTime && !player.break) player.infinityPoints = player.infinityPoints.plus(player.autoIP.times(diff/player.autoTime))
-    player.matter = player.matter.times(Decimal.pow(tmp.mv, diff));
+    var haveExtraTime = player.pSac !== undefined
+    var pxGain
+    if (haveExtraTime) {
+        //Paradox Power
+        player.pSac.dims.power=player.pSac.dims.power.add(getPDProduction(1).times(diff/10))
+        for (var t=1;t<7;t++) {
+            if (!isDimUnlocked(t+2)) break
+            player.pSac.dims[t].amount=player.pSac.dims[t].amount.add(getPDProduction(t+2).times(diff/10))
+        }
+
+        //Matter
+        if (player.matter.lt(player.money)) {
+            player.matter=player.matter.times(Decimal.pow(tmp.mv, diff))
+            if (player.matter.gte(player.money)) player.pSac.dims.extraTime+=player.matter.div(player.money).log(tmp.mv)/10
+            player.matter=player.matter.min(player.money)
+        } else player.pSac.dims.extraTime+=diff/10
+        if (player.pSac.dims.extraTime>getExtraTime()) {
+            pxGain=getPxGain()
+            player.matter=new Decimal(1/0)
+            haveExtraTime=false
+        }
+    } else player.matter = player.matter.times(Decimal.pow(tmp.mv, diff))
     if (player.matter.pow(20).gt(player.money) && (player.currentChallenge == "postc7" || (inQC(6) && !player.achievements.includes("ng3p34")))) {
         if (tmp.ngp3 ? tmp.qu.bigRip.active && tmp.ri : false) {}
         else if (inQC(6)) {
@@ -7476,15 +7525,16 @@ function gameLoop(diff) {
             failureCount++
             if (failureCount > 9) giveAchievement("You're a failure")
         } else quickReset()
-    } else if (player.matter.gt(player.money) && (inNC(12) || player.currentChallenge == "postc1" || player.pSac !== undefined)) {
-        if (player.pSac !== undefined && !player.resets) pSacReset(true)
+    } else if (player.matter.gt(player.money) && (inNC(12) || player.currentChallenge == "postc1" || player.pSac !== undefined) && !haveExtraTime) {
+        if (player.pSac!=undefined && !player.resets) pSacReset(true, undefined, pxGain)
         else quickReset()
 	}
 
     if (player.currentChallenge == "postc8" || inQC(6)) player.postC8Mult = player.postC8Mult.times(Math.pow(0.000000046416, diff))
 
     if (inNC(3) || player.matter.gte(1)) player.chall3Pow = player.chall3Pow.times(Decimal.pow(1.00038, diff));
-    player.chall2Pow = Math.min(player.chall2Pow + diff/1800, 1);
+    var div = 1800 / puMults[11](hasPU(11,true))
+    player.chall2Pow = Math.min(player.chall2Pow + diff/div, 1);
     if (player.currentChallenge == "postc2" || inQC(6)) {
         postC2Count++;
         if (postC2Count >= 8 || diff > 80) {
@@ -7573,6 +7623,7 @@ function gameLoop(diff) {
     if (player.pSac !== undefined) player.pSac.time += diffStat
     failsafeDilateTime = false
 
+    document.getElementById("pdtabbtn").style.display = pSacrificed() ? "" : "none"
     document.getElementById("tdtabbtn").style.display = ((player.eternities > 0 || quantumed || player.aarexModifications.ngmX > 3) && (!inQC(8) || tmp.be)) ? "" : "none"
     document.getElementById("mdtabbtn").style.display = player.dilation.studies.includes(6) ? "" : "none"
 
@@ -8038,6 +8089,7 @@ function gameLoop(diff) {
         document.getElementById("galaxyPoints2").innerHTML = "You have <span class='GPAmount'>"+shortenDimensions(player.galacticSacrifice.galaxyPoints)+"</span> Galaxy point"+(player.galacticSacrifice.galaxyPoints.eq(1)?".":"s.")
     } else document.getElementById("galaxybtn").style.display = "none";
     document.getElementById("automationbtn").style.display = player.aarexModifications.ngmX > 3 && (player.challenges.includes("challenge1") || player.infinitied > 0 || player.eternities != 0 || quantumed) && !isEmptiness ? "inline-block" : "none"
+    if (document.getElementById("paradox").style.display=='block') updatePUMults()
     if (document.getElementById("galaxy").style.display=='block') {
         galacticUpgradeSpanDisplay()
         galacticUpgradeButtonTypeDisplay()

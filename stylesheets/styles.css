@@ -688,6 +688,41 @@ button {
 	cursor: pointer
 }
 
+.pupg {
+	background: #7f007f;
+	border: 1px solid #ff00ff;
+    width: 190px;
+    height: 90px;
+	color: #ff7fff;
+	text-shadow: 0px 0px 3px #000000, 0px 0px 6px #ff00ff;
+	font-family: Typewriter;
+	font-weight: bold;
+    font-size:  10px;
+	border-radius: 4px;
+	transition-duration: 0.2s
+}
+
+.pupg:hover {
+	box-shadow: inset 0px 0px 12px 0px #ff00ff;
+	text-shadow: 0px 0px 6px #000000, 0px 0px 6px #ff00ff;
+	cursor: pointer
+}
+
+.pubought {
+	background: #ff00ff;
+	border: 1px solid #ff7fff;
+    width: 190px;
+    height: 90px;
+	color: #ffffff;
+	box-shadow: inset 0px 0px 12px 0px #ffffff;
+	text-shadow: 0px 0px 6px #000000, 0px 0px 6px #ff00ff;
+	font-family: Typewriter;
+	font-weight: bold;
+    font-size:  10px;
+	border-radius: 4px;
+	transition-duration: 0.2s
+}
+
 #galaxybtn {
     color: #4169E1;
     background: #000000;

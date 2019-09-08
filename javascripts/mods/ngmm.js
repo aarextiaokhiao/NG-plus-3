@@ -134,7 +134,7 @@ function galacticSacrifice(auto, force, chall) {
 	}
 	GPminpeak = new Decimal(0)
 	player.galacticSacrifice.time = 0
-	player.pSac = resetPSac()
+	resetPSac()
 	galaxyReset(-player.galaxies)
 }
 

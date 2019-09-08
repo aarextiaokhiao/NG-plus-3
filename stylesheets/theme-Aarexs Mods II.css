@@ -87,21 +87,40 @@ button, div.storebtn {
 	background-color: #999999 !important
 }
 
-#pSac, #paradoxbtn {
+#pSac, #paradoxbtn, #pdtabbtn button {
 	box-shadow: 1px 2px rgba(229,229,229,0.4);
 	background: radial-gradient(#720072, #e500e5);
 	color: #e572e5 !important;
 	text-shadow: 0px 0px 3px #191919, 0px 0px 6px #e500e5;
 }
 
-#pSac:hover, #paradoxbtn:hover {
+#pSac:hover, #paradoxbtn:hover, #pdtabbtn button:hover {
 	box-shadow: 1px 2px rgba(229,229,229,0.4), inset 0px 0px 12px 0px #e500e5;
 	color: #e572e5 !important;
 	text-shadow: 0px 0px 6px #191919, 0px 0px 6px #e500e5;
 }
 
-.pxAmount {
+.pxAmount, #pPow, #pPowEffect {
 	color: #e500e5 !important
+}
+
+.pupg {
+	background: #720072;
+	color: #e572e5;
+	box-shadow: 1px 2px rgba(229,229,229,0.4), inset 0px 0px 12px 0px transparent;
+	text-shadow: 0px 0px 3px #000000, 0px 0px 6px #e500e5
+}
+
+.pupg:hover {
+	box-shadow: 1px 2px rgba(229,229,229,0.4), inset 0px 0px 12px 0px #e500e5;
+	text-shadow: 0px 0px 6px #000000, 0px 0px 6px #e500e5
+}
+
+.pubought {
+	background: #e500e5;
+	color: #e5e5e5;
+	box-shadow: 1px 2px rgba(229,229,229,0.4), inset 0px 0px 12px 0px #e5e5e5;
+	text-shadow: 0px 0px 6px #000000, 0px 0px 6px #e500e5
 }
 
 #gSacrifice.storebtn, #sacrificebtn, #galaxybtn, #galaxy .infinistorebtn1, #galaxy .infinistorebtn2, #galaxy .infinistorebtn3, #galaxy .infinistorebtn4 {

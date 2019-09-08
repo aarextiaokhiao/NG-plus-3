@@ -16,12 +16,14 @@ function getTimeDimensionPower(tier) {
     return dilates(ret)
   }
 
+  if (hasPU(32)) ret=ret.times(puMults[32]())
   if (player.aarexModifications.ngmX>3) {
       //Tickspeed multiplier boost
       var x=player.postC3Reward
       var exp=([5,3,2,1.5,1,.5,1/3,0])[tier-1]
       if (x.gt(1e10)) x=Decimal.pow(10,Math.sqrt(x.log10()*5+50))
       if (player.galacticSacrifice.upgrades.includes(25)) exp*=galMults.u25()
+      if (player.pSac!=undefined) exp/=2
       if (inNC(16)) exp/=2
       ret=ret.times(x.pow(exp))
 
@@ -29,6 +31,7 @@ function getTimeDimensionPower(tier) {
       if (player.galacticSacrifice.upgrades.includes(12)) ret = ret.times(galMults.u12())
       if (player.galacticSacrifice.upgrades.includes(13)&&player.currentChallenge!="postngm3_4") ret = ret.times(galMults.u13())
       if (player.galacticSacrifice.upgrades.includes(15)) ret = ret.times(galMults.u15())
+      if (player.pSac !== undefined) if (tier==2) ret = ret.pow(puMults[13](hasPU(13, true))) //NG-5, not NG-4.
       if (player.galacticSacrifice.upgrades.includes(31)) ret = ret.pow(galMults.u31())
   }
 
@@ -164,6 +167,7 @@ function buyTimeDimension(tier) {
 	if (player.aarexModifications.ngmX>3) {
 		dim.cost = dim.cost.times(timeDimCostMults[1][tier])
 		if (inNC(2)||player.currentChallenge=="postc1"||player.pSac!=undefined) player.chall2Pow=0
+		reduceMatter(1)
 	} else {
 		dim.power = dim.power.times(player.boughtDims?3:2)
 		dim.cost = timeDimCost(tier, dim.bought)
@@ -200,6 +204,7 @@ function buyMaxTimeDimension(tier, bulk) {
 		if (bulk) toBuy=Math.min(toBuy,bulk)
 		getOrSubResourceTD(tier,Decimal.pow(timeDimCostMults[1][tier],toBuy).sub(1).div(timeDimCostMults[1][tier]-1).times(dim.cost))
 		if (inNC(2)||player.currentChallenge=="postc1"||player.pSac!=undefined) player.chall2Pow=0
+		reduceMatter(toBuy)
 	} else {
 		var increment=1
 		while (player.eternityPoints.gte(timeDimCost(tier,dim.bought+increment*2-1))) {

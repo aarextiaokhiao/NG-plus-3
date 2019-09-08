@@ -76,6 +76,7 @@ function getDimensionFinalMultiplier(tier) {
 		
 	if (player.galacticSacrifice) {
 		if (player.galacticSacrifice.upgrades.includes(12)) mult = mult.times(galMults.u12())
+		if (player.pSac !== undefined) if (tier==2) mult = mult.pow(puMults[13](hasPU(13, true)))
 		if (player.galacticSacrifice.upgrades.includes(13) && ((!inNC(14) && player.currentChallenge != "postcngm3_3") || player.tickspeedBoosts == undefined || player.aarexModifications.ngmX > 3) && player.currentChallenge != "postcngm3_4") mult = mult.times(galMults.u13())
 		if (player.galacticSacrifice.upgrades.includes(15)) mult = mult.times(galMults.u15())
 		if (player.galacticSacrifice.upgrades.includes(35)) mult = mult.times(galMults.u35())
@@ -286,6 +287,7 @@ function buyOneDimension(tier) {
 	if (tier<2&&getAmount(1)>=1e150) giveAchievement("There's no point in doing that")
 	if (getAmount(8)==99) giveAchievement("The 9th Dimension is a lie");
 	onBuyDimension(tier)
+	reduceMatter(1)
 	return true
 }
 
@@ -308,6 +310,7 @@ function buyManyDimension(tier, quick) {
 		floatText("D"+tier, "x" + shortenMoney(getDimensionPowerMultiplier(tier)))
 		onBuyDimension(tier)
 	}
+	reduceMatter(toBuy)
 	return true
 }
 
@@ -336,6 +339,7 @@ function buyBulkDimension(tier, bulk, auto) {
 		player[name + "Cost"] = player[name + "Cost"].times(Decimal.pow(mult, toBuy))
 		if (costIncreaseActive(player[name + "Cost"])) player.costMultipliers[tier-1] = player.costMultipliers[tier-1].times(getDimensionCostMultiplierIncrease())
 		bought += toBuy
+		reduceMatter(toBuy*10)
 	}
 	let stopped = false
 	let failsafe = 0
@@ -370,6 +374,7 @@ function buyBulkDimension(tier, bulk, auto) {
 		player[name + "Cost"] = newCost.times(newMult)
 		player.costMultipliers[tier-1] = newMult.times(mi)
 		bought += toBuy
+		reduceMatter(toBuy*10)
 	}
 	if (!auto) floatText("D"+tier, "x" + shortenMoney(Decimal.pow(getDimensionPowerMultiplier(tier), bought)))
 	onBuyDimension(tier)
@@ -427,7 +432,7 @@ function getDimensionProductionPerSecond(tier) {
 		else if (tier == 2) ret = ret.pow(1.5)
 	}
 	ret = ret.times(getDimensionFinalMultiplier(tier))
-	if (inNC(2) || player.currentChallenge == "postc1") ret = ret.times(player.chall2Pow)
+	if (inNC(2) || player.currentChallenge == "postc1" || player.pSac !== undefined) ret = ret.times(player.chall2Pow)
 	if (tier == 1 && (inNC(3) || player.currentChallenge == "postc1")) ret = ret.times(player.chall3Pow)
 	if (player.tickspeedBoosts != undefined) ret = ret.div(10)
 	if (player.aarexModifications.ngmX>3) ret = ret.div(100)
