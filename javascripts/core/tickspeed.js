@@ -160,7 +160,6 @@ function buyMaxPostInfTickSpeed (mult) {
 	player.tickSpeedCost = player.tickSpeedCost.times(player.tickspeedMultiplier)
 	player.tickspeedMultiplier = player.tickspeedMultiplier.times(mi)
 	player.postC8Mult = new Decimal(1)
-	reduceMatter(buying)
 }
 
 function cannotUsePostInfTickSpeed () {

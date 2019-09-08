@@ -284,17 +284,18 @@ function maxPDs() {
 	let ps=player.pSac
 	let upd=false
 	for (var d=1;d<9;d++) {
-		let c=player.pSac.dims[d].cost
-		let m=pdCostMults[d]
-		if (!ps.px.gte(c)) break
-		let tb=Math.floor(ps.px.div(c).times(m-1).add(1).log(m))
-		let ts=Decimal.pow(m,tb).sub(1).div(m-1).times(c)
-		ps.px=ps.px.sub(ts.min(ps.px)).round()
-		ps.dims[d].bought+=tb
-		ps.dims[d].amount=ps.dims[d].amount.add(tb)
-		ps.dims[d].cost=ps.dims[d].cost.times(Decimal.pow(m,tb))
-		ps.dims[d].power=ps.dims[d].power.times(Decimal.pow(2,tb))
-		upd=true
+		var c=player.pSac.dims[d].cost
+		if (ps.px.gte(c)) {
+			var m=pdCostMults[d]
+			var tb=Math.floor(ps.px.div(c).times(m-1).add(1).log(m))
+			var ts=Decimal.pow(m,tb).sub(1).div(m-1).times(c)
+			ps.px=ps.px.sub(ts.min(ps.px)).round()
+			ps.dims[d].bought+=tb
+			ps.dims[d].amount=ps.dims[d].amount.add(tb)
+			ps.dims[d].cost=ps.dims[d].cost.times(Decimal.pow(m,tb))
+			ps.dims[d].power=ps.dims[d].power.times(Decimal.pow(2,tb))
+			upd=true
+		}
 	}
 	if (upd) updateParadoxUpgrades()
 }
