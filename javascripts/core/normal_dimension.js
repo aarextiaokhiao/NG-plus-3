@@ -76,7 +76,7 @@ function getDimensionFinalMultiplier(tier) {
 		
 	if (player.galacticSacrifice) {
 		if (player.galacticSacrifice.upgrades.includes(12)) mult = mult.times(galMults.u12())
-		if (player.pSac !== undefined) if (tier==2) mult = mult.pow(puMults[13](hasPU(13, true)))
+		if (player.pSac !== undefined) if (tier==2) mult = mult.pow(puMults[13](hasPU(13, true, true)))
 		if (player.galacticSacrifice.upgrades.includes(13) && ((!inNC(14) && player.currentChallenge != "postcngm3_3") || player.tickspeedBoosts == undefined || player.aarexModifications.ngmX > 3) && player.currentChallenge != "postcngm3_4") mult = mult.times(galMults.u13())
 		if (player.galacticSacrifice.upgrades.includes(15)) mult = mult.times(galMults.u15())
 		if (player.galacticSacrifice.upgrades.includes(35)) mult = mult.times(galMults.u35())

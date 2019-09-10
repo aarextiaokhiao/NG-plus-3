@@ -31,7 +31,7 @@ function getTimeDimensionPower(tier) {
       if (player.galacticSacrifice.upgrades.includes(12)) ret = ret.times(galMults.u12())
       if (player.galacticSacrifice.upgrades.includes(13)&&player.currentChallenge!="postngm3_4") ret = ret.times(galMults.u13())
       if (player.galacticSacrifice.upgrades.includes(15)) ret = ret.times(galMults.u15())
-      if (player.pSac !== undefined) if (tier==2) ret = ret.pow(puMults[13](hasPU(13, true))) //NG-5, not NG-4.
+      if (player.pSac !== undefined) if (tier==2) ret = ret.pow(puMults[13](hasPU(13, true, true))) //NG-5, not NG-4.
       if (player.galacticSacrifice.upgrades.includes(31)) ret = ret.pow(galMults.u31())
   }
 
@@ -197,6 +197,7 @@ function buyMaxTimeDimension(tier, bulk) {
 	var dim=player['timeDimension'+tier]
 	var res=getOrSubResourceTD(tier)
 	if (player.aarexModifications.ngmX>3&&getAmount(1)<1) return
+	if (player.aarexModifications.maxHighestTD&&tier<8&&player["timeDimension"+(tier+1)].bought>0) return
 	if (!isTDUnlocked(tier)) return
 	if (res.lt(dim.cost)) return
 	if (player.aarexModifications.ngmX>3) {
@@ -244,7 +245,7 @@ function buyMaxTimeDimension(tier, bulk) {
 }
 
 function buyMaxTimeDimensions() {
-  for (i=1; i<9; i++) buyMaxTimeDimension(i)
+	for (i=1; i<9; i++) buyMaxTimeDimension(i)
 }
 
 function getTS11Mult() {

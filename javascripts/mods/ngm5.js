@@ -63,13 +63,13 @@ function isDimUnlocked(d) {
 
 //Paradox Sacrifices
 function getPxGain() {
-	let r=new Decimal(Math.sqrt(player.matter.max(1).log10()+1))
+	let r=new Decimal(Math.sqrt(player.matter.max(player.money).max(1).log10()+1))
 	for (var d=1;d<9;d++) r=r.times(Math.pow(player[TIER_NAMES[d]+"Amount"].max(10).log10(),1/3))
 	return r.floor()
 }
 
 function canPSac() {
-	return player.pSac!=undefined&&!tmp.ri&&player.matter.gte(1e3)&&player.totalTickGained
+	return player.pSac!=undefined&&!tmp.ri&&player.matter.max(player.money).gte(1e3)&&player.totalTickGained
 }
 
 function pSac(chall) {
@@ -215,9 +215,10 @@ function getPUCost(x,r,l) {
 	return puCosts[x]
 }
 
-function hasPU(x,r) {
-	if (r) return (player.pSac!=undefined&&player.pSac.rebuyables[x])||0
-	return player.pSac!=undefined&&player.pSac.upgs.includes(x)
+function hasPU(x,r,nq) {
+	let e=player.pSac!=undefined&&!(nq&&player.aarexModifications.quickReset)
+	if (r) return (e&&player.pSac.rebuyables[x])||0
+	return e&&player.pSac.upgs.includes(x)
 }
 
 function updateParadoxUpgrades() {
@@ -236,9 +237,9 @@ function updatePUMults() {
 		for (var c=1;c<=puSizes.x;c++) {
 			var id=r*10+c
 			if (puMults[id]) {
-				if (id==13) document.getElementById("pue13").textContent="^"+puMults[13](hasPU(13,true)).toFixed(2)
+				if (id==13) document.getElementById("pue13").textContent="^"+puMults[13](hasPU(13,true,true)).toFixed(2)
 				else if (id==33) document.getElementById("pue33").textContent="+"+puMults[33]().toFixed(4)
-				else document.getElementById("pue"+id).textContent=shorten(puMults[id](hasPU(id,true)))+"x"
+				else document.getElementById("pue"+id).textContent=shorten(puMults[id](hasPU(id,true,r<2)))+"x"
 			}
 		}
 	}
@@ -255,7 +256,7 @@ function updatePUCosts() {
 
 //p21
 function reduceMatter(x) {
-	if (hasPU(21)) player.matter=player.matter.div(Decimal.pow(1.01,x))
+	if (hasPU(21, false, true)) player.matter=player.matter.div(Decimal.pow(1.01,x))
 }
 
 //Paradox Challenges
@@ -343,6 +344,7 @@ function resetPDs(full) {
 }
 
 function getExtraTime() {
+	if (!haveExtraTime()) return 0
 	return Math.log10(player.pSac.dims.power.add(1).log10()+1)*4
 }
 
@@ -365,4 +367,14 @@ function resetPSac() {
 		updateParadoxUpgrades()
 		updatePUCosts()
 	}
+}
+
+//v0.51
+function haveExtraTime() {
+	return player.pSac !== undefined && !player.aarexModifications.quickReset
+}
+
+function quickMReset() {
+	player.aarexModifications.quickReset=!player.aarexModifications.quickReset
+	document.getElementById("quickMReset").textContent = "Quick matter reset: O"+(player.aarexModifications.quickReset?"N":"FF")
 }

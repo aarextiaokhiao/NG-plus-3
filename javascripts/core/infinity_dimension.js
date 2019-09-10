@@ -62,7 +62,7 @@ function DimensionPower(tier) {
   mult = mult.times(infDimPow)
 
   if (hasPU(31)) mult = mult.times(puMults[31]())
-  if (player.pSac !== undefined) if (tier==2) mult = mult.pow(puMults[13](hasPU(13, true)))
+  if (player.pSac !== undefined) if (tier==2) mult = mult.pow(puMults[13](hasPU(13, true, true)))
 
   if (player.achievements.includes("r94") && tier == 1) mult = mult.times(2);
   if (player.achievements.includes("r75") && !player.boughtDims) mult = mult.times(player.achPow);

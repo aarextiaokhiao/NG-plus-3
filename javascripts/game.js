@@ -699,7 +699,7 @@ function updateNewPlayer(reseted) {
         reduceDimCosts()
     }
     if (modesChosen.ngmm > 3) {
-        player.aarexModifications.ngm5V=0.5
+        player.aarexModifications.ngm5V=0.51
         player.aarexModifications.ngmX=5
         player.infDimensionsUnlocked[0]=true
         resetPSac()
@@ -1119,7 +1119,7 @@ function updateTemp() {
 	//mv: Matter speed
 	tmp.mv = 1.03 + player.resets/200 + player.galaxies/100
 	if (player.pSac !== undefined) {
-		var exp = 10/puMults[12](hasPU(12,true))
+		var exp = 10 / puMults[12](hasPU(12, true, true))
 		tmp.mv = Decimal.pow(tmp.mv, exp)
 	}
 }
@@ -7494,16 +7494,16 @@ function gameLoop(diff) {
     if (player.bestInfinityTime < -10) player.bestInfinityTime = Infinity
     updateTemp()
     if (diff > player.autoTime && !player.break) player.infinityPoints = player.infinityPoints.plus(player.autoIP.times(diff/player.autoTime))
-    var haveExtraTime = player.pSac !== undefined
-    var pxGain
-    if (haveExtraTime) {
+    if (player.pSac !== undefined) {
         //Paradox Power
         player.pSac.dims.power=player.pSac.dims.power.add(getPDProduction(1).times(diff/10))
         for (var t=1;t<7;t++) {
             if (!isDimUnlocked(t+2)) break
             player.pSac.dims[t].amount=player.pSac.dims[t].amount.add(getPDProduction(t+2).times(diff/10))
         }
-
+    }
+    var haveET = haveExtraTime()
+    if (haveET) {
         //Matter
         if (player.matter.lt(player.money)) {
             player.matter=player.matter.times(Decimal.pow(tmp.mv, diff))
@@ -7513,7 +7513,7 @@ function gameLoop(diff) {
         if (player.pSac.dims.extraTime>getExtraTime()) {
             pxGain=getPxGain()
             player.matter=new Decimal(1/0)
-            haveExtraTime=false
+            haveET=false
         }
     } else player.matter = player.matter.times(Decimal.pow(tmp.mv, diff))
     if (player.matter.pow(20).gt(player.money) && (player.currentChallenge == "postc7" || (inQC(6) && !player.achievements.includes("ng3p34")))) {
@@ -7525,7 +7525,7 @@ function gameLoop(diff) {
             failureCount++
             if (failureCount > 9) giveAchievement("You're a failure")
         } else quickReset()
-    } else if (player.matter.gt(player.money) && (inNC(12) || player.currentChallenge == "postc1" || player.pSac !== undefined) && !haveExtraTime) {
+    } else if (player.matter.gt(player.money) && (inNC(12) || player.currentChallenge == "postc1" || player.pSac !== undefined) && !haveET) {
         if (player.pSac!=undefined && !player.resets) pSacReset(true, undefined, pxGain)
         else quickReset()
 	}
@@ -7533,7 +7533,7 @@ function gameLoop(diff) {
     if (player.currentChallenge == "postc8" || inQC(6)) player.postC8Mult = player.postC8Mult.times(Math.pow(0.000000046416, diff))
 
     if (inNC(3) || player.matter.gte(1)) player.chall3Pow = player.chall3Pow.times(Decimal.pow(1.00038, diff));
-    var div = 1800 / puMults[11](hasPU(11,true))
+    var div = 1800 / puMults[11](hasPU(11, true, true))
     player.chall2Pow = Math.min(player.chall2Pow + diff/div, 1);
     if (player.currentChallenge == "postc2" || inQC(6)) {
         postC2Count++;

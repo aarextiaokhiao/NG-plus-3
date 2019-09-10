@@ -1543,8 +1543,8 @@ if (player.version < 5) {
       player.infDimensionsUnlocked[0]=true
       resetIDs_ngm5()
       resetPDs(true)
-      player.aarexModifications.ngm5V=0.5
   }
+  if (player.aarexModifications.ngm5V<0.51) player.aarexModifications.ngm5V=0.51
   ipMultPower=2
   if (player.masterystudies) if (player.masterystudies.includes("t241")) ipMultPower=2.2
   if (GUBought("gb3")) ipMultPower=2.3
@@ -1628,6 +1628,9 @@ if (player.version < 5) {
 
   document.getElementById("maxHighestTD").parentElement.parentElement.style.display = player.aarexModifications.ngmX > 3 ? "" : "none"
   document.getElementById("maxHighestTD").textContent = "Max only highest Time Dimensions: O"+(player.aarexModifications.maxHighestTD?"N":"FF")
+
+  document.getElementById("quickMReset").style.display = pSacrificed() ? "" : "none"
+  document.getElementById("quickMReset").textContent = "Quick matter reset: O"+(player.aarexModifications.quickReset?"N":"FF")
 
   document.getElementById("quantumtabbtn").style.display = quantumed ? "" : "none"
   document.getElementById("ghostifytabbtn").style.display = ghostified ? "" : "none"
