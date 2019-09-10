@@ -7502,7 +7502,8 @@ function gameLoop(diff) {
             player.pSac.dims[t].amount=player.pSac.dims[t].amount.add(getPDProduction(t+2).times(diff/10))
         }
     }
-    var haveET = haveExtraTime()
+    var haveET=haveExtraTime()
+    var pxGain
     if (haveET) {
         //Matter
         if (player.matter.lt(player.money)) {
@@ -7515,7 +7516,11 @@ function gameLoop(diff) {
             player.matter=new Decimal(1/0)
             haveET=false
         }
-    } else player.matter = player.matter.times(Decimal.pow(tmp.mv, diff))
+    } else {
+        var newMatter=player.matter.times(Decimal.pow(tmp.mv,diff))
+        if (player.pSac!=undefined&&!haveET&&newMatter.gt(player.money)) pxGain=getPxGain()
+        player.matter=newMatter
+    }
     if (player.matter.pow(20).gt(player.money) && (player.currentChallenge == "postc7" || (inQC(6) && !player.achievements.includes("ng3p34")))) {
         if (tmp.ngp3 ? tmp.qu.bigRip.active && tmp.ri : false) {}
         else if (inQC(6)) {
