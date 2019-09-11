@@ -3080,7 +3080,12 @@ function maxBuyBEEPMult() {
 function getGHPGain() {
 	if (player.masterystudies == undefined) return new Decimal(0)
 	if (!tmp.qu.bigRip.active) return new Decimal(0)
-	return tmp.qu.bigRip.bestThisRun.div(Decimal.pow(10,getQCGoal())).pow(2/getQCGoal()).times(Decimal.pow(2,player.ghostify.multPower-1)).floor()
+	let log=(tmp.qu.bigRip.bestThisRun.log10()/getQCGoal()-1)*2
+	if (player.aarexModifications.nguepV) {
+		if (log>1e4) log=Math.sqrt(1e4*log)
+		if (log>2e4) log=Math.pow(4e4*log,1/3)
+	}
+	return Decimal.pow(10, log).times(Decimal.pow(2,player.ghostify.multPower-1)).floor()
 }
 
 ghostified = false
@@ -4221,9 +4226,8 @@ function startEC10() {
 }
 
 function getCPPower(x) {
-	x=new Decimal(tmp.qu.colorPowers[x])
-	x=x.add(1).log10()
-	if (x>1024&&player.aarexModifications.ngudpV) x=Math.pow(x,.9)*2
+	x=Decimal.add(tmp.qu.colorPowers[x],1).log10()
+	if (x>1024&&player.aarexModifications.ngudpV&&!player.aarexModifications.nguepV) x=Math.pow(x,.9)*2
 	return x
 }
 
@@ -4233,7 +4237,7 @@ function updateColorPowers() {
 	if (colorBoosts.r>1.3) colorBoosts.r=Math.sqrt(colorBoosts.r*1.3)
 	if (colorBoosts.r>2.3&&(!player.dilation.active||getTreeUpgradeLevel(2)>7||ghostified)) colorBoosts.r=Math.pow(colorBoosts.r/2.3,0.5*(ghostified&&player.ghostify.neutrinos.boosts>4?1+tmp.nb[4]:1))*2.3
 	if (colorBoosts.g>4.5) colorBoosts.g=Math.sqrt(colorBoosts.g*4.5)
-	if (player.aarexModifications.ngudpV) colorBoosts.g/=2
+	if (player.aarexModifications.ngudpV&&!player.aarexModifications.nguepV) colorBoosts.g=(colorBoosts.g+1)/2
 	let l=Math.sqrt(getCPPower('b'))
 	if (l>Math.log10(1300)) {
 		l=Decimal.pow(l/Math.log10(1300),player.ghostify.ghostlyPhotons.unl?.5+tmp.le[4]/2:.5).times(Math.log10(1300))

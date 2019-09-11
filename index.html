@@ -5021,16 +5021,18 @@
 		<div id="offlinePopup" style="height: 150px">You made X antimatter and stuff</div>
 		<button class="storebtn" style="font-size: 15px" onclick="closeToolTip()" style="display: inline">Okay</button>
 	</div>
-	<div class="popup loadmenu" id="loadmenu" style="overflow-y:hidden; height: 360px">
+	<div class="popup loadmenu" id="loadmenu" style="overflow-y:hidden; height: 380px">
 		<button class="closebtn storebtn" onclick="closeToolTip()">&times;</button>
 		<button class="storebtn" style="font-size: 15px" onclick="new_game()" style="display: inline">New save</button>
 		<button class="storebtn" style="font-size: 15px" onclick="import_save('new')" style="display: inline">Import</button>
 		<button class="storebtn" id='ngmBtn' style="font-size: 15px" onclick="toggle_mode('ngm')" style="display: inline">NG-: OFF</button>
 		<button class="storebtn" id='ngmmBtn' style="font-size: 15px" onclick="toggle_mode('ngmm')" style="display: inline">NG--: OFF</button><br>
-		<button class="storebtn" id='rsBtn' style="font-size: 15px; width:255px" onclick="toggle_mode('rs')" style="display: inline">Respecced: NONE</button>
+		<button class="storebtn longbtn" id='rsBtn' style="font-size: 15px" onclick="toggle_mode('rs')" style="display: inline">Respecced: NONE</button>
 		<button class="storebtn" id='ngpBtn' style="font-size: 15px" onclick="toggle_mode('ngp')" style="display: inline">NG+: OFF</button>
 		<button class="storebtn" id='ngppBtn' style="font-size: 15px" onclick="toggle_mode('ngpp')" style="display: inline">NG++: OFF</button><br>
-		<button class="storebtn" id='arrowsBtn' style="font-size: 15px; width:255px" onclick="toggle_mode('arrows')" style="display: inline">NG↑: Linear (↑⁰)</button><br>
+		<button class="storebtn longbtn" id='arrowsBtn' style="font-size: 15px" onclick="toggle_mode('arrows')" style="display: inline">NG↑: Linear (↑⁰)</button>
+		<button class="storebtn longbtn" id='ngudBtn' style="font-size: 15px" onclick="toggle_mode('ngud')" style="display: inline">NGUd: OFF</button><br>
+		<button class="storebtn longbtn" id='nguepBtn' style="font-size: 15px" onclick="toggle_mode('nguep')" style="display: inline">NGUd↑': Linear' (↑⁰')</button><br>
 		Click "Load" while holding shift to load a save but w/o offline progress.
 		<div style="height:230px;overflow-y:auto">
 			<table id='saves'>

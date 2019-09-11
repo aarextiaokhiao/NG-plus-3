@@ -1,7 +1,7 @@
 function getDilationMetaDimensionMultiplier () {
 	let pow = 0.1
 	if (player.masterystudies != undefined) if (player.masterystudies.includes("d12")) pow = getNanofieldRewardEffect(4)
-	if (player.aarexModifications.ngudpV) {
+	if (player.aarexModifications.ngudpV&&!player.aarexModifications.nguepV) {
 		let x=3-Math.min(1,Math.log10(1+player.quantum.colorPowers.b.plus(10).log10()))
 		if (player.quantum.colorPowers.b.gt("1e5000")) x-=Math.min(Math.log10(player.quantum.colorPowers.b.log10()-4900)-2,2)/3
 		pow/=x
@@ -520,6 +520,7 @@ let quarkGain = function () {
 		var log = (ma.max(1).log10() - 379.4) / (player.achievements.includes("ng3p63") ? 279.8 : 280)
 		if (log > 1.2) log = log*log/1.2
 		if (log > 738 && !hasNU(8)) log = Math.sqrt(log * 738)
+		if (log > 1e4 && player.aarexModifications.nguepV) log = Math.sqrt(1e4 * log)
 		return Decimal.pow(10, log).times(Decimal.pow(2, tmp.qu.multPower.total)).floor()
 	}
 	return Decimal.pow(10, ma.max(1).log(10) / Math.log10(Number.MAX_VALUE) - 1).times(quarkMult()).floor();

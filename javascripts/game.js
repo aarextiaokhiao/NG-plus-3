@@ -24,7 +24,9 @@ var modes = {
 	ngpp: 0,
 	arrows: 0,
 	ngmm: 0,
-	rs: 0
+	rs: 0,
+	ngud: 0,
+	nguep: 0
 }
 function updateNewPlayer(reseted) {
     if (reseted) {
@@ -34,7 +36,9 @@ function updateNewPlayer(reseted) {
 			arrows: player.aarexModifications.newGameExpVersion !== undefined,
             ngpp: player.meta == undefined ? (player.blackhole == undefined ? false : 3) : tmp.ngp3 ? (player.aarexModifications.ngudpV ? 5 : player.exdilation !== undefined ? 4 : 2) : true,
             ngmm: player.aarexModifications.ngmX ? player.aarexModifications.ngmX - 1 : player.galacticSacrifice !== undefined ? 1 : 0,
-            rs: player.infinityUpgradesRespecced != undefined ? 2 : player.boughtDims !== undefined
+            rs: player.infinityUpgradesRespecced != undefined ? 2 : player.boughtDims !== undefined,
+			ngud: player.aarexModifications.ngudpV !== undefined ? 2 : player.exdilation !== undefined ? 1 : 0,
+			nguep: player.aarexModifications.nguepV !== undefined
         }
     } else var modesChosen = modes
     player = {
@@ -415,7 +419,7 @@ function updateNewPlayer(reseted) {
         player.infchallengeTimes.push(600*60*24*31)
         player.options.gSacrificeConfirmation = true
     }
-    if (modesChosen.ngpp === 2 || modesChosen.ngpp > 3) {
+    if (modesChosen.ngpp > 1) {
         player.aarexModifications.newGame3PlusVersion = 2.11
         player.respecMastery=false
         player.dbPower = 1
@@ -616,7 +620,7 @@ function updateNewPlayer(reseted) {
         for (u=1;u<5;u++) player.infinityUpgrades.push("skipReset"+(u>3?"Galaxy":u))
         player.resets=4
     }
-    if (modesChosen.ngpp > 2) {
+    if (modesChosen.ngud) {
         player.aarexModifications.newGameUpdateVersion = 1.1
         player.exdilation = {
             unspent: 0,
@@ -688,7 +692,8 @@ function updateNewPlayer(reseted) {
         player.achievements.push("ng3p47")
         player.aarexModifications.ngp4V=1
     }
-    if (modesChosen.ngpp > 4) player.aarexModifications.ngudpV=1.1
+    if (modesChosen.ngud > 1) player.aarexModifications.ngudpV=1.1
+    if (modesChosen.nguep) player.aarexModifications.nguepV=1
     if (modesChosen.ngmm > 2) {
         player.aarexModifications.newGame4MinusVersion=2.111
         player.aarexModifications.ngmX=4
@@ -1377,7 +1382,7 @@ function getDilGain() {
 
 function getDilTimeGainPerSecond() {
 	let tp=player.dilation.tachyonParticles
-	if (tp.gt(1e250)&&player.aarexModifications.ngudpV) tp=Decimal.pow(tp.log10()*4,247/3+Math.log10(tp.log10()-240))
+	if (tp.gt(1e250)&&player.aarexModifications.ngudpV&&!player.aarexModifications.nguepV) tp=Decimal.pow(tp.log10()*4,247/3+Math.log10(tp.log10()-240))
 	let exp=GUBought("br3")?1.1:1
 	if (ghostified&&player.ghostify.ghostlyPhotons.unl) exp*=tmp.le[0]
 	let gain = tp.pow(exp).times(Decimal.pow(2, player.dilation.rebuyables[1] * exDilationUpgradeStrength(1)))
@@ -3340,7 +3345,8 @@ function changeSaveDesc(saveId, placement) {
 			if (temp.boughtDims) message+="Eternity Respecced, "
 			if (temp.aarexModifications.newGameExpVersion) message+="NG^, "
 			if (temp.exdilation!==undefined||temp.meta!==undefined) {
-				if (temp.aarexModifications.ngudpV) message+="NG Update', "
+				if (temp.aarexModifications.nguepV) message+="NG Update^', "
+				else if (temp.aarexModifications.ngudpV) message+="NG Update', "
 				else if (temp.exdilation!==undefined&&temp.meta!==undefined) message+="NG Update+, "
 				else if (temp.exdilation!==undefined) message+="NG Update, "
 				else if (temp.meta!==undefined) message+="NG++"+(temp.masterystudies!==undefined?"+":"")+(temp.aarexModifications.ngp4V!==undefined?"+":"")+", "
@@ -3426,10 +3432,12 @@ function changeSaveDesc(saveId, placement) {
 
 var modCaps = {
   ngp: 2,
-  ngpp: 5,
+  ngpp: 2,
   arrows: 2,
   ngmm: 4,
-  rs: 2
+  rs: 2,
+  ngud: 3,
+  nguep: 2
 }
 var modFullNames = {
   rs: "Respecced",
@@ -3437,19 +3445,24 @@ var modFullNames = {
   ngpp: "NG++",
   ngp: "NG+",
   ngmm: "NG--",
-  ngm: "NG-"
+  ngm: "NG-",
+  ngud: "NGUd",
+  nguep: "NGUd↑'"
 }
 var modSubNames = {
   ngp: ["OFF", "ON", "NG++++"],
-  ngpp: ["OFF", "ON", "NG+++", "NGUd", "NGUd+", "NGUd'"],
+  ngpp: ["OFF", "ON", "NG+++"],
   arrows: ["Linear (↑⁰)", "Exponential (↑)", "Tetrational (↑↑)"],
   ngmm: ["OFF", "ON", "NG---", "NG-4", "NG-5"],
-  rs: ["NONE", "Eternity", "Infinity"]
+  rs: ["NONE", "Eternity", "Infinity"],
+  ngud: ["OFF", "ON", "Prime (')", "Semiprime (S')"],
+  nguep: ["Linear' (↑⁰')", "Exponential' (↑')", "Tetrational' (↑↑')"]
 }
 function toggle_mode(id) {
 	hasSubMod = Object.keys(modCaps).includes(id)
 	// Change submod
-	if (!hasSubMod || modes[id]===0) modes[id]=!modes[id]
+	if (id == "ngpp" && !modes.ngpp && modes.ngud) modes[id] = 2
+	else if (!hasSubMod || modes[id]===0) modes[id]=!modes[id]
 	else if (id == "ngp" && modes.ngp && (modes.ngpp < 2 || modes.ngpp === 3 || !metaSave.ngp4)) modes[id] = 0
 	else if (modes[id] === true) modes[id] = 2
 	else modes[id] = (modes[id]+1) % (modCaps[id]+1)
@@ -3458,7 +3471,7 @@ function toggle_mode(id) {
 	if (subModId<2) subModId = subModId|0
 	// Update displays
 	document.getElementById(id+"Btn").textContent=`${modFullNames[id]}: ${hasSubMod?modSubNames[id][subModId]:subModId?"ON":"OFF"}`
-	if (id=="ngpp"&&modes.ngpp) {
+	if ((id=="ngpp"&&modes.ngpp)||(id=="ngud"&&modes.ngud)) {
 		if (!modes.ngp) toggle_mode("ngp")
 		modes.rs=0
 		document.getElementById("rsBtn").textContent="Respecced: NONE"
@@ -3467,9 +3480,28 @@ function toggle_mode(id) {
 		modes.ngp=true
 		document.getElementById("ngpBtn").textContent="NG+: ON"
 	}
+	if (id=="ngpp"&&!modes.ngpp&&modes.ngud>1) {
+		modes.ngud=true
+		modes.nguep=0
+		document.getElementById("ngudBtn").textContent="NGUd: ON"
+		document.getElementById("nguepBtn").textContent="NGUd↑': Linear' (↑⁰')"
+	}
+	if (id=="ngud"&&(modes.ngud!==true?!modes.ngpp:modes.ngpp==1)) {
+		modes.ngpp=2
+		document.getElementById("ngppBtn").textContent="NG++: NG+++"
+	}
+	if (id=="ngud"&&!modes.ngud&&modes.nguep) {
+		modes.nguep=0
+		document.getElementById("nguepBtn").textContent="NGUd↑': Linear' (↑⁰')"
+	}
+	if (id=="nguep"&&modes.nguep) while (!(modes.ngud>1)) toggle_mode("ngud")
 	if (id=="rs"&&modes.rs) {
 		modes.ngpp=0
+		modes.ngud=0
+		modes.nguep=0
 		document.getElementById("ngppBtn").textContent="NG++: OFF"
+		document.getElementById("ngudBtn").textContent="NGUd: OFF"
+		document.getElementById("nguepBtn").textContent="NGUd↑': Linear' (↑⁰')"
 	}
 }
 
@@ -6809,7 +6841,7 @@ function buyDilationUpgrade(id, max) {
 
 function getPassiveTTGen() {
 	var log=player.dilation.tachyonParticles.max(1).log10()
-	var scs=player.aarexModifications.ngudpV?73:80
+	var scs=player.aarexModifications.ngudpV&&!player.aarexModifications.nguepV?73:80
 	if (log>scs) log=scs+Math.sqrt(log*5-375)-5
 	let normal=Math.pow(10,log)/(ghostified?200:2e4)
 	if (!player.achievements.includes("ng3p18")) return normal
@@ -6900,7 +6932,7 @@ function gainDilationGalaxies() {
 
 function getFreeGalaxyGainMult() {
 	let galaxyMult = player.dilation.upgrades.includes(4) ? 2 : 1
-	if (player.aarexModifications.ngudpV) galaxyMult /= 1.5
+	if (player.aarexModifications.ngudpV&&!player.aarexModifications.nguepV) galaxyMult /= 1.5
 	galaxyMult *= getQCReward(2)
 	if (tmp.ngp3) if (player.masterystudies.includes("d12")) galaxyMult *= getNanofieldRewardEffect(3)
 	return galaxyMult

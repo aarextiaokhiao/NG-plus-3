@@ -975,6 +975,10 @@ button {
 	margin: 5px;
 }
 
+.longbtn {
+	width: 257.5px
+}
+
 .scrollablemenu {
 	display: block !important;
 	min-height: 250px;
