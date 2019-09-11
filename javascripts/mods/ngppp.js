@@ -3083,7 +3083,7 @@ function getGHPGain() {
 	let log=(tmp.qu.bigRip.bestThisRun.log10()/getQCGoal()-1)*2
 	if (player.aarexModifications.nguepV) {
 		if (log>1e4) log=Math.sqrt(1e4*log)
-		if (log>2e4) log=Math.pow(4e4*log,1/3)
+		if (log>2e4) log=Math.pow(4e8*log,1/3)
 	}
 	return Decimal.pow(10, log).times(Decimal.pow(2,player.ghostify.multPower-1)).floor()
 }
