@@ -288,8 +288,9 @@ function giveAchievement(name) {
     }
     if (name == "The swarm" && player.boughtDims) document.getElementById('replicantigalaxypowerdiv').style.display=""
     if (name == "GAS GAS GAS") {
-        document.getElementById('epmultauto').style.display=""
         for (i=1;i<9;i++) document.getElementById("td"+i+'auto').style.visibility="visible"
+        document.getElementById('togglealltimedims').style.display=""
+        document.getElementById('epmultauto').style.display=""
         if (player.aarexModifications.ngudpV) document.getElementById("blackholeAuto").style.display=""
     }
     if (name == "It will never be enough") document.getElementById('replicantibulkmodetoggle').style.display="inline-block"

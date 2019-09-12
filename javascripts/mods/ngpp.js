@@ -517,10 +517,15 @@ let quarkGain = function () {
 	if (player.masterystudies) {
 		if (!tmp.qu.times&&!player.ghostify.milestones) return new Decimal(1)
 		if (player.ghostify.milestones) ma = player.meta.bestAntimatter
-		var log = (ma.max(1).log10() - 379.4) / (player.achievements.includes("ng3p63") ? 279.8 : 280)
+		let log = (ma.max(1).log10() - 379.4) / (player.achievements.includes("ng3p63") ? 279.8 : 280)
 		if (log > 1.2) log = log*log/1.2
 		if (log > 738 && !hasNU(8)) log = Math.sqrt(log * 738)
-		if (log > 1e4 && player.aarexModifications.nguepV) log = Math.sqrt(1e4 * log)
+		if (player.aarexModifications.nguepV&&log>1e4) {
+			let dlog=Math.log10(log)
+			let capped=Math.floor(Math.log10(Math.max(dlog-2,1))/Math.log10(2))
+			dlog=(dlog-Math.pow(2,capped)-2)/Math.pow(2,capped)+capped+3
+			log=Math.pow(10,dlog)
+		}
 		return Decimal.pow(10, log).times(Decimal.pow(2, tmp.qu.multPower.total)).floor()
 	}
 	return Decimal.pow(10, ma.max(1).log(10) / Math.log10(Number.MAX_VALUE) - 1).times(quarkMult()).floor();
