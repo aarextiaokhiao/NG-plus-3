@@ -4481,6 +4481,10 @@ function updateAutobuyers() {
         document.getElementById("buyerBtnTickspeedBoost").style.display = "none"
         maxedAutobuy++;
     }
+    if (player.aarexModifications.ngmX > 3) if (player.autobuyers[14].interval <= 100) {
+        document.getElementById("buyerBtnTDBoost").style.display = "none"
+        maxedAutobuy++;
+    }
 
     document.getElementById("buyerBtnTickSpeed").innerHTML = "40% smaller interval <br>Cost: " + player.autobuyers[8].cost + currencyEnd
     document.getElementById("buyerBtnDimBoost").innerHTML = "40% smaller interval <br>Cost: " + player.autobuyers[9].cost + currencyEnd
@@ -4502,7 +4506,7 @@ function updateAutobuyers() {
 	if (player.aarexModifications.ngmX > 3) document.getElementById("buyerBtnTDBoost").innerHTML = "40% smaller interval <br>Cost: " + player.autobuyers[14].cost + currencyEnd
 
     if (maxedAutobuy >= 9) giveAchievement("Age of Automation");
-    if (maxedAutobuy >= (player.tickspeedBoosts!=undefined ? 15 : player.galacticSacrifice ? 14 : 12)) giveAchievement("Definitely not worth it");
+    if (maxedAutobuy >= (player.tdBoosts!=undefined ? 16 : player.tickspeedBoosts!=undefined ? 15 : player.galacticSacrifice ? 14 : 12)) giveAchievement("Definitely not worth it");
     if (e100autobuy >= 8) giveAchievement("Professional bodybuilder");
 
 
@@ -4721,10 +4725,10 @@ function updatePriorities() {
 }
 
 function updateCheckBoxes() {
-    for (var i = 0; i < 12; i++) {
+    for (var i = 0; i < player.autobuyers.length; i++) {
         if (player.autobuyers[i]%1 !== 0) {
-            if (player.autobuyers[i].isOn) document.getElementById((i+1) + "ison").checked = "true";
-            else document.getElementById((i+1) + "ison").checked = ""
+            var id = (i + (i > 11 ? 2 : 1)) + "ison"
+            document.getElementById(id).checked = player.autobuyers[i].isOn ? "true" : ""
         }
     }
     if (player.autoSacrifice.isOn) document.getElementById("13ison").checked = "true"
@@ -4734,10 +4738,6 @@ function updateCheckBoxes() {
          document.getElementById("dilatedeternityison").checked = player.eternityBuyer.dilationMode
          if (tmp.qu) if (tmp.qu.autobuyer) document.getElementById("quantumison").checked = tmp.qu.autobuyer.enabled
     } else document.getElementById("dilatedeternityison").checked = false
-    if (player.autobuyers[12] !== undefined ? player.autobuyers[12].isOn : false) document.getElementById("14ison").checked = "true"
-    else document.getElementById("14ison").checked = ""
-    if (player.autobuyers[13] !== undefined ? player.autobuyers[13].isOn : false) document.getElementById("15ison").checked = "true"
-    else document.getElementById("15ison").checked = ""
 }
 
 
