@@ -1507,7 +1507,10 @@ if (player.version < 5) {
       player.version = 12
       player.aarexModifications.newGameUpdateVersion=1.1
   }
-  if (player.exdilation !== undefined && player.options.exdilationconfirm === undefined) player.options.exdilationconfirm = true
+  if (player.exdilation !== undefined) {
+      if (player.options.exdilationconfirm === undefined) player.options.exdilationconfirm = true
+      if (player.meta !== undefined && player.exdilation.spent[4] === undefined) player.exdilation.spent[4] = 0
+  }
   if (player.aarexModifications.irsVersion < 1.1) {
       player.singularity = {
           unlocked: false,
@@ -2336,6 +2339,7 @@ function transformSaveToDecimal() {
       player.exdilation.spent[1] = new Decimal(player.exdilation.spent[1])
       player.exdilation.spent[2] = new Decimal(player.exdilation.spent[2])
       player.exdilation.spent[3] = new Decimal(player.exdilation.spent[3])
+      if (player.exdilation.spent[4] !== undefined) player.exdilation.spent[4] = new Decimal(player.exdilation.spent[4])
   }
 
   if (player.meta !== undefined) {

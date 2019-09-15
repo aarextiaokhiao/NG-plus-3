@@ -1061,7 +1061,8 @@ function quantumReset(force, auto, challid, bigRip, implode=false) {
 			spent: {
 				1: new Decimal(0),
 				2: new Decimal(0),
-				3: new Decimal(0)
+				3: new Decimal(0),
+				4: new Decimal(0)
 			},
 			times: 0
 		}:player.exdilation,

@@ -3429,7 +3429,8 @@ function ghostifyReset(implode, gain, amount, force) {
 			spent: {
 				1: new Decimal(0),
 				2: new Decimal(0),
-				3: new Decimal(0)
+				3: new Decimal(0),
+				4: new Decimal(0)
 			},
 			times: 0
 		}:player.exdilation,
