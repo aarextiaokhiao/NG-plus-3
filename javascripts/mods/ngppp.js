@@ -4100,7 +4100,7 @@ function updateAutoGhosts(load) {
 			document.getElementById("nextAutomatorGhost").textContent=autoGhostRequirements[player.ghostify.automatorGhosts.ghosts-3].toFixed(2)
 		}
 	}
-	powerConsumed=100
+	powerConsumed=0
 	for (var ghost=1;ghost<16;ghost++) {
 		if (ghost>player.ghostify.automatorGhosts.ghosts) {
 			if (load) document.getElementById("autoGhost"+ghost).style.display="none"
