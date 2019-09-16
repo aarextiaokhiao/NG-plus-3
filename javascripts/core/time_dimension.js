@@ -230,6 +230,7 @@ function buyMaxTimeDimension(tier, bulk) {
 			num--
 		}
 		player.eternityPoints=newEP
+		if (isNaN(newEP.e)) player.eternityPoints=new Decimal(0)
 	}
 	dim.amount=dim.amount.plus(toBuy);
 	dim.bought+=toBuy

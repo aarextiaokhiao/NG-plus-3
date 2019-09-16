@@ -256,5 +256,5 @@ function getEU2Mult() {
 
 function getEU3Mult() {
 	if (player.boughtDims) return player.timeShards.div(1e12).plus(1)
-	return Decimal.pow(2,300/Math.max(infchallengeTimes, player.achievements.includes("r112") ? 6.1 : 7.5))
+	return Decimal.pow(2, 300 / Math.max(infchallengeTimes, 6.1))
 }

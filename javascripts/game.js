@@ -420,7 +420,7 @@ function updateNewPlayer(reseted) {
         player.options.gSacrificeConfirmation = true
     }
     if (modesChosen.ngpp > 1) {
-        player.aarexModifications.newGame3PlusVersion = 2.11
+        player.aarexModifications.newGame3PlusVersion = 2.12
         player.respecMastery=false
         player.dbPower = 1
         player.dilation.times = 0
@@ -1017,7 +1017,7 @@ let tmp = {
 	beu: [],
 	bm: [300,200,150,100,50,40,30,25,20,15,10,5,4,3,2,1],
 	nb: [],
-	nbc: [null,3,4,6,15,50,1e3,1e14,1e40],
+	nbc: [null,3,4,6,15,50,1e3,1e14,1e39],
 	nu: [],
 	nuc: [null,1e6,1e7,1e8,2e8,5e8,2e9,5e9,75e8,1e10,7e12,1e18,1e60,1e125,1e160,1e280],
 	lt: [12800,16e4,48e4,16e5,6e6,5e7,24e7,125e7],
@@ -2390,6 +2390,7 @@ function buyMaxEPMult() {
 		num--
 	}
 	player.eternityPoints=newEP
+	if (isNaN(newEP.e)) player.eternityPoints=new Decimal(0)
 	player.epmult=player.epmult.times(Decimal.pow(5, toBuy))
 	player.epmultCost=getEPCost(bought+toBuy)
 	document.getElementById("epmult").innerHTML = "You gain 5 times more EP<p>Currently: "+shortenDimensions(player.epmult)+"x<p>Cost: "+shortenDimensions(player.epmultCost)+" EP"
@@ -3011,7 +3012,7 @@ document.getElementById("toggleBtnTickSpeed").onclick = function () {
 
 
 document.getElementById("secondSoftReset").onclick = function() {
-    var bool = !inNC(11) && player.currentChallenge != "postc1" && (player.currentChallenge != "postc5" || player.tickspeedBoosts == undefined) && player.currentChallenge != "postc7" && !((player.currentEternityChall == "eterc6"|| inQC(6)) && !tmp.be) && !tmp.ri || !cantReset()
+    var bool = !inNC(11) && player.currentChallenge != "postc1" && (player.currentChallenge != "postc5" || player.tickspeedBoosts == undefined) && player.currentChallenge != "postc7" && !((player.currentEternityChall == "eterc6" || inQC(6)) && !tmp.be) && !tmp.ri && !cantReset()
     if (getAmount(inNC(4)||player.pSac!=undefined?6:8) >= getGalaxyRequirement() && bool) {
         if ((getEternitied() >= 7 || player.autobuyers[10].bulkBought) && !shiftDown && (!inNC(14) || !(player.aarexModifications.ngmX > 3))) maxBuyGalaxies(true);
         else {

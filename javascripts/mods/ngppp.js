@@ -2151,8 +2151,8 @@ function updateQuantumWorth(mode) {
 			var automaticCharge = Math.max(Math.log10(quantumWorth.add(1).log10()/150)/Math.log10(2),0)+Math.max(tmp.qu.bigRip.spaceShards.add(1).log10()/20-0.5,0)
 			player.ghostify.automatorGhosts.power = Math.max(automaticCharge, player.ghostify.automatorGhosts.power)
 			if (mode != "quick") {
-				document.getElementById("automaticCharge").textContent = automaticCharge.toFixed(1)
-				document.getElementById("automaticPower").textContent = player.ghostify.automatorGhosts.power.toFixed(1)
+				document.getElementById("automaticCharge").textContent = automaticCharge.toFixed(2)
+				document.getElementById("automaticPower").textContent = player.ghostify.automatorGhosts.power.toFixed(2)
 			}
 			while (player.ghostify.automatorGhosts.power>=autoGhostRequirements[player.ghostify.automatorGhosts.ghosts-3]) {
 				player.ghostify.automatorGhosts.ghosts++
@@ -2638,49 +2638,32 @@ function switchAB() {
 	var bigRip = tmp.qu.bigRip.active
 	var data = tmp.qu.bigRip["savedAutobuyers" + (bigRip ? "" : "No") + "BR"]
 	for (d=1;d<9;d++) if (player.autobuyers[d-1] % 1 !== 0) data["d"+d] = {
-		time: player.autobuyers[d-1].interval,
 		priority: player.autobuyers[d-1].priority,
 		perTen: player.autobuyers[d-1].target > 10,
 		on: player.autobuyers[d-1].isOn,
 	}
 	if (player.autobuyers[8] % 1 !== 0) data.tickspeed = {
-		time: player.autobuyers[8].interval,
 		priority: player.autobuyers[8].priority,
 		max: player.autobuyers[8].target == 10,
 		on: player.autobuyers[8].isOn
 	}
-	if (player.autoSacrifice % 1 !== 0) data.sacrifice = {
-		time: player.autoSacrifice.interval,
-		amount: player.autoSacrifice.priority,
-		on: player.autoSacrifice.isOn
-	}
 	if (player.autobuyers[9] % 1 !== 0) data.dimBoosts = {
-		time: player.autobuyers[9].interval,
 		maxDims: player.autobuyers[9].priority,
 		always: player.overXGalaxies,
 		bulk: player.autobuyers[9].bulk,
 		on: player.autobuyers[9].isOn
 	}
 	if (player.tickspeedBoosts !== undefined) if (player.autobuyers[13] % 1 !== 0) data.tickBoosts = {
-		time: player.autobuyers[13].interval,
 		maxDims: player.autobuyers[13].priority,
 		always: player.overXGalaxiesTickspeedBoost,
 		bulk: player.autobuyers[13].bulk,
 		on: player.autobuyers[13].isOn
 	}
-	if (player.autobuyers[10] % 1 !== 0) data.galaxies = {
-		time: player.autobuyers[10].interval,
-		maxGalaxies: player.autobuyers[10].priority,
-		bulkTime: player.autobuyers[10].bulk,
-		on: player.autobuyers[10].isOn
-	}
 	if (player.galacticSacrifice !== undefined) if (player.autobuyers[12] % 1 !== 0) data.galSacrifice = {
-		time: player.autobuyers[12].interval,
 		amount: player.autobuyers[12].priority,
 		on: player.autobuyers[12].isOn
 	}
 	if (player.autobuyers[11] % 1 !== 0) data.crunch = {
-		time: player.autobuyers[11].interval,
 		mode: player.autoCrunchMode,
 		amount: new Decimal(player.autobuyers[11].priority),
 		on: player.autobuyers[11].isOn
@@ -2708,7 +2691,7 @@ function switchAB() {
 	if (data.eternity.presets.grind!==undefined) data.eternity.presets.grind=Object.assign({},data.eternity.presets.grind)
 	var data = tmp.qu.bigRip["savedAutobuyers" + (bigRip ? "No" : "") + "BR"]
 	for (var d=1;d<9;d++) if (data["d"+d]) player.autobuyers[d-1] = {
-		interval: data["d"+d].time,
+		interval: player.autobuyers[d-1].interval,
 		cost: player.autobuyers[d-1].cost,
 		bulk: player.autobuyers[d-1].bulk,
 		priority: data["d"+d].priority,
@@ -2718,7 +2701,7 @@ function switchAB() {
 		isOn: data["d"+d].on
 	}
 	if (data.tickspeed) player.autobuyers[8] = {
-		interval: data.tickspeed.time,
+		interval: player.autobuyers[8].interval,
 		cost: player.autobuyers[8].cost,
 		bulk: 1,
 		priority: data.tickspeed.priority,
@@ -2727,19 +2710,9 @@ function switchAB() {
 		ticks: 0,
 		isOn: data.tickspeed.on
 	}
-	if (data.sacrifice) player.autoSacrifice = {
-		interval: data.sacrifice.time,
-		cost: player.autoSacrifice.cost,
-		bulk: 1,
-		priority: data.sacrifice.amount,
-		tier: 1,
-		target: 13,
-		ticks: 0,
-		isOn: data.sacrifice.on
-	}
 	if (data.dimBoosts) {
 		player.autobuyers[9] = {
-			interval: data.dimBoosts.time,
+			interval: player.autobuyers[9].interval,
 			cost: player.autobuyers[9].cost,
 			bulk: data.dimBoosts.bulk,
 			priority: data.dimBoosts.maxDims,
@@ -2752,7 +2725,7 @@ function switchAB() {
 	}
 	if (data.tickBoosts) {
 		player.autobuyers[13] = {
-			interval: data.tickBoosts.time,
+			interval: player.autobuyers[13].interval,
 			cost: player.autobuyers[13].cost,
 			bulk: data.tickBoosts.bulk,
 			priority: data.tickBoosts.maxDims,
@@ -2763,18 +2736,8 @@ function switchAB() {
 		}
 		player.overXGalaxiesTickspeedBoost = data.tickBoosts.always
 	}
-	if (data.galaxies) player.autobuyers[10] = {
-		interval: data.galaxies.time,
-		cost: player.autobuyers[10].cost,
-		bulk: data.galaxies.bulkTime,
-		priority: data.galaxies.maxGalaxies,
-		tier: 1,
-		target: 11,
-		ticks: 0,
-		isOn: data.galaxies.on
-	}
 	if (data.galacticSacrifice) player.autobuyers[12] = {
-		interval: data.galacticSacrifice.time,
+		interval: player.autobuyers[12].interval,
 		cost: player.autobuyers[12].cost,
 		bulk: 1,
 		priority: data.galacticSacrifice.amount,
@@ -2785,7 +2748,7 @@ function switchAB() {
 	}
 	if (data.crunch) {
 		player.autobuyers[11] = {
-			interval: data.crunch.time,
+			interval: player.autobuyers[11].interval,
 			cost: player.autobuyers[11].cost,
 			bulk: 1,
 			priority: new Decimal(data.crunch.amount),
@@ -4134,10 +4097,10 @@ function updateAutoGhosts(load) {
 		else {
 			document.getElementById("automatorGhostsAmount").textContent=player.ghostify.automatorGhosts.ghosts
 			document.getElementById("nextAutomatorGhost").parentElement.style.display=""
-			document.getElementById("nextAutomatorGhost").textContent=autoGhostRequirements[player.ghostify.automatorGhosts.ghosts-3].toFixed(1)
+			document.getElementById("nextAutomatorGhost").textContent=autoGhostRequirements[player.ghostify.automatorGhosts.ghosts-3].toFixed(2)
 		}
 	}
-	powerConsumed=0
+	powerConsumed=100
 	for (var ghost=1;ghost<16;ghost++) {
 		if (ghost>player.ghostify.automatorGhosts.ghosts) {
 			if (load) document.getElementById("autoGhost"+ghost).style.display="none"
@@ -4159,7 +4122,7 @@ function updateAutoGhosts(load) {
 		document.getElementById("autoGhost13u").value=player.ghostify.automatorGhosts[13].u
 		document.getElementById("autoGhost15a").value=formatValue("Scientific", player.ghostify.automatorGhosts[15].a, 2, 1)
 	}
-	document.getElementById("consumedPower").textContent=powerConsumed.toFixed(1)
+	document.getElementById("consumedPower").textContent=powerConsumed.toFixed(2)
 	isAutoGhostsSafe=player.ghostify.automatorGhosts.power>=powerConsumed
 	document.getElementById("tooMuchPowerConsumed").style.display=isAutoGhostsSafe?"none":""
 }

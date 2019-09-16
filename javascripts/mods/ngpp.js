@@ -589,7 +589,7 @@ function doQuantumProgress() {
 			var gg = getGHPGain()
 			if (player.meta.antimatter.lt(Decimal.pow(Number.MAX_VALUE, power))) id = 1
 			else if (!tmp.qu.breakEternity.unlocked) id = 4
-			else if (!ghostified || player.money.lt(getQCGoal())) id = 5
+			else if (!ghostified || player.money.lt(getQCGoal()) || Decimal.lt(gg, 2)) id = 5
 			else id = 6
 		} else if (inQC(0)) {
 			var gqk = quarkGain()
@@ -619,7 +619,7 @@ function doQuantumProgress() {
 		if (goal > 512 && !tmp.qu.reachedInfQK) document.getElementById("progresspercent").setAttribute('ach-tooltip',"Percentage to new QoL features ("+shorten(Number.MAX_VALUE)+" QK)")
 		else document.getElementById("progresspercent").setAttribute('ach-tooltip',"Percentage to "+shortenDimensions(Decimal.pow(2,goal))+" QK gain")
 	} else if (id == 4) {
-		var percentage = Math.min(player.eternityPoints.max(1).log10() / 1200, 100).toFixed(2) + "%"
+		var percentage = Math.min(player.eternityPoints.max(1).log10() / 12.15, 100).toFixed(2) + "%"
 		document.getElementById("progressbar").style.width = percentage
 		document.getElementById("progresspercent").textContent = percentage
 		document.getElementById("progresspercent").setAttribute('ach-tooltip','Eternity points percentage to Break Eternity')
@@ -630,7 +630,7 @@ function doQuantumProgress() {
 		document.getElementById("progresspercent").setAttribute('ach-tooltip','Percentage to Ghostify')
 	} else if (id == 6) {
 		var ggLog = gg.log2()
-		var goal = Math.pow(2,Math.ceil(Math.log10(ggLog) / Math.log10(2)))
+		var goal = Math.pow(2, Math.ceil(Math.log10(ggLog) / Math.log10(2)))
 		var percentage = Math.min(ggLog / goal * 100, 100).toFixed(2) + "%"
 		document.getElementById("progressbar").style.width = percentage
 		document.getElementById("progresspercent").textContent = percentage
@@ -784,6 +784,8 @@ function quantumReset(force, auto, challid, bigRip, implode=false) {
 	}
 	var dilTimes = player.dilation.times
 	var bhd = []
+	var bigRipChanged = player.masterystudies !== undefined && bigRip != player.quantum.bigRip.active
+	var turnSomeOn = !bigRip || player.quantum.bigRip.upgrades.includes(1)
 	if (player.aarexModifications.ngudpV) for (var d=0;d<4;d++) bhd[d]=Object.assign({},player["blackholeDimension"+(d+1)])
 	player = {
 		money: new Decimal(10),
@@ -942,7 +944,7 @@ function quantumReset(force, auto, challid, bigRip, implode=false) {
 			power: new Decimal(1),
 			baseAmount: 0
 		},
-		infDimBuyers: oheHeadstart || (bigRip ? tmp.qu.bigRip.upgrades.includes(1) : false) ? player.infDimBuyers : [false, false, false, false, false, false, false, false],
+		infDimBuyers: bigRipChanged ? [turnSomeOn, turnSomeOn, turnSomeOn, turnSomeOn, turnSomeOn, turnSomeOn, turnSomeOn, turnSomeOn] : oheHeadstart ? player.infDimBuyers : [false, false, false, false, false, false, false, false],
 		timeShards: new Decimal(0),
 		tickThreshold: new Decimal(1),
 		totalTickGained: 0,
@@ -1008,8 +1010,8 @@ function quantumReset(force, auto, challid, bigRip, implode=false) {
 			gal: 0,
 			galaxies: 0,
 			galCost: new Decimal(player.galacticSacrifice!=undefined?1e110:1e170),
-			galaxybuyer: oheHeadstart ? player.replicanti.galaxybuyer : undefined,
-			auto: oheHeadstart ? player.replicanti.auto : [false, false, false]
+			galaxybuyer: bigRipChanged ? turnSomeOn : oheHeadstart ? player.replicanti.galaxybuyer : undefined,
+			auto: bigRipChanged ? [turnSomeOn, turnSomeOn, turnSomeOn] : oheHeadstart ? player.replicanti.auto : [false, false, false]
 		},
 		timestudy: isRewardEnabled(11) && (bigRip ? tmp.qu.bigRip.upgrades.includes(12) : true) ? player.timestudy : {
 			theorem: 0,
@@ -1025,7 +1027,7 @@ function quantumReset(force, auto, challid, bigRip, implode=false) {
 		etercreq: 0,
 		autoIP: new Decimal(0),
 		autoTime: 1e300,
-		infMultBuyer: oheHeadstart || (bigRip ? tmp.qu.bigRip.upgrades.includes(1) : false) ? player.infMultBuyer : false,
+		infMultBuyer: bigRipChanged ? turnSomeOn : oheHeadstart ? player.infMultBuyer : false,
 		autoCrunchMode: keepABnICs ? player.autoCrunchMode : "amount",
 		autoEterMode: keepABnICs ? player.autoEterMode : "amount",
 		peakSpent: player.masterystudies ? 0 : undefined,
