@@ -34,6 +34,7 @@
 <div id="snow" style="display: none; "></div>
 <body id="body" style="height: 95vh; " onload="initGame()">
 	<div id='ghostlyNewsTicker'><span id='ghostlyNewsTickerText'></span></div>
+	<div style="display: none;"><textarea id="bugExportOutput" style="color:black; width: 200px; height: 55px;"></textarea></div>
 	<div id="container" class="container" style="color:#4F5957; font-family: Typewriter; text-align:center; font-size: 11px; display:none">
 		<div id='ghostlyNewsTickerBlock'></div>
 		<div id='game' style='display:none'>
@@ -1683,6 +1684,11 @@
 						<td><div><button id="autoSave" onclick='toggleAutoSave()' class="storebtn" style="color:black; width: 200px; height: 55px; font-size: 20px"></button></div></td>
 						<td><div><button id="offlineProgress" onclick='toggleOfflineProgress()' class="storebtn" style="color:black; width: 200px; height: 55px; font-size: 15px"></button></div></td>
 						<td><div><button id="reset" class="storebtn" style="color:black; width: 200px; height: 55px; font-size: 20px">RESET THE GAME</button></div></td>
+					</tr>
+					<tr style="display: none">
+						<td></td>
+						<td><div><button id="bugExport" onclick="bugExport()" class="storebtn" style="color:black; width: 200px; height: 55px; font-size: 12px">Export "Infinite" bug save<br><b>(WARNING: This disappears when you reload the game!)</button></b></div></td>
+						<td></td>
 					</tr>
 				</table>
 			</div>
@@ -5189,6 +5195,7 @@
 <script type="text/javascript" src="javascripts/core/devtools.js"></script>
 <script type="text/javascript" src="javascripts/core/load_functions.js?15"></script>
 <script type="text/javascript" src="javascripts/core/newsticker.js?8"></script>
+<script type="text/javascript" src="javascripts/core/infinite_bug_detection.js"></script>
 <script type="text/javascript" src="javascripts/mods/ngmm.js?2"></script>
 <script type="text/javascript" src="javascripts/mods/ers.js?1"></script>
 <script type="text/javascript" src="javascripts/mods/ngpp.js?10"></script>

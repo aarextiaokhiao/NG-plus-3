@@ -509,15 +509,15 @@ function quantum(auto, force, challid, bigRip) {
 }
 
 function isQuantumReached() {
-	return player.money.log10()>=getQCGoal()&&player.meta.antimatter.gte(Decimal.pow(Number.MAX_VALUE,player.masterystudies?1.45:1))&&(!player.masterystudies||ECTimesCompleted("eterc14"))
+	return player.money.log10()>=getQCGoal()&&player.meta.antimatter.gte(Decimal.pow(Number.MAX_VALUE,player.masterystudies?1.45:1))&&(!player.masterystudies||ECTimesCompleted("eterc14"))&&quarkGain().gt(0)
 }
 
 let quarkGain = function () {
-	let ma = player.meta.antimatter
+	let ma = player.meta.antimatter.max(1)
 	if (player.masterystudies) {
 		if (!tmp.qu.times&&!player.ghostify.milestones) return new Decimal(1)
-		if (player.ghostify.milestones) ma = player.meta.bestAntimatter
-		let log = (ma.max(1).log10() - 379.4) / (player.achievements.includes("ng3p63") ? 279.8 : 280)
+		if (player.ghostify.milestones) ma = player.meta.bestAntimatter.max(1)
+		let log = (ma.log10() - 379.4) / (player.achievements.includes("ng3p63") ? 279.8 : 280)
 		if (log > 1.2) log = log*log/1.2
 		if (log > 738 && !hasNU(8)) log = Math.sqrt(log * 738)
 		if (player.aarexModifications.nguepV&&log>1e4) {
@@ -528,7 +528,7 @@ let quarkGain = function () {
 		}
 		return Decimal.pow(10, log).times(Decimal.pow(2, tmp.qu.multPower.total)).floor()
 	}
-	return Decimal.pow(10, ma.max(1).log(10) / Math.log10(Number.MAX_VALUE) - 1).times(quarkMult()).floor();
+	return Decimal.pow(10, ma.log(10) / Math.log10(Number.MAX_VALUE) - 1).times(quarkMult()).floor();
 }
 
 let quarkMult = function () {
@@ -687,7 +687,7 @@ function quantumReset(force, auto, challid, bigRip, implode=false) {
 			tmp.qu.last10[i] = tmp.qu.last10[i-1]
 		}
 		var qkGain=quarkGain()
-		var array=[tmp.qu.time, qkGain]
+		var array=[tmp.qu.time,qkGain]
 		if (!inQC(0)) {
 			if (tmp.qu.pairedChallenges.current > 0) {
 				array.push([tmp.qu.pairedChallenges.current, tmp.qu.challenge])
@@ -715,9 +715,9 @@ function quantumReset(force, auto, challid, bigRip, implode=false) {
 		}
 		tmp.qu.times++
 		if (!inQC(6)) {
-			tmp.qu.quarks = tmp.qu.quarks.plus(qkGain)
-			if (player.masterystudies !== undefined ? player.ghostify.milestones < 8 : true) tmp.qu.quarks = tmp.qu.quarks.round()
-			if (player.masterystudies != undefined && tmp.qu.quarks.gte(Number.MAX_VALUE) && !tmp.qu.reachedInfQK) {
+			tmp.qu.quarks = tmp.qu.quarks.add(qkGain)
+			if (player.masterystudies === undefined || player.ghostify.milestones < 8) tmp.qu.quarks = tmp.qu.quarks.round()
+			if (player.masterystudies !== undefined && tmp.qu.quarks.gte(Number.MAX_VALUE) && !tmp.qu.reachedInfQK) {
 				if (!ghostified) {
 					document.getElementById("welcome").style.display = "flex"
 					document.getElementById("welcomeMessage").innerHTML = "Congratulations for getting " + shorten(Number.MAX_VALUE) + " quarks! You have unlocked new QoL features, like quantum autobuyer modes, assign all, and auto-assignation!"

@@ -1987,6 +1987,7 @@ if (player.version < 5) {
           else ngModeMessages.push("Welcome to NG+-+-+ mode, created by earthernsence! This mode combines NG--, NG-, and NG+++ features. Good luck!")
       }
       if (inflationCheck) ngModeMessages = ["I'm terribly sorry. But your save was appeared that there is an inflation, which it defeats the rule of incremental games. Your save was forced to reset everything."]
+      if (infiniteCheck) ngModeMessages = ["I'm terribly sorry, but there has been an Infinite bug detected within your save file, which is why said save file will get reset. Luckily, you can export your save before this reset. Thanks! :)"]
       if (forceToQuantumAndRemove) {
           quantum(false, true, 0)
           ngModeMessages = ["Due to balancing changes, you are forced to quantum, lose your TT, and lose your best TP, but you now have "+shorten(setTTAfterQuantum)+" TT for free."]
@@ -1995,6 +1996,7 @@ if (player.version < 5) {
           document.getElementById('bestTP').textContent = "Your best ever Tachyon particles was 0."
       }
       inflationCheck = false
+      infiniteCheck = false
       closeToolTip()
       showNextModeMessage()
   } else if (player.aarexModifications.popUpId!="STD") showNextModeMessage()
@@ -2014,12 +2016,14 @@ function checkNGM(imported) {
 }
 
 var savePlacement
-function load_game(noOffline) {
+function load_game(noOffline, init) {
 	if (!metaSave.saveOrder.includes(metaSave.current)) metaSave.current=metaSave.saveOrder[0]
 	var dimensionSave=get_save(metaSave.current)
+	infiniteDetected=false
 	if (dimensionSave!=null) {
 		if (dimensionSave.quantum !== undefined) if (dimensionSave.quantum.timeFluxPower !== undefined) dimensionSave = get_save(metaSave.current + "_af2019")
 		player=dimensionSave
+		if (isNaN(Decimal.log(player.money))) infiniteCheck=true
 	}
 	savePlacement=1
 	while (metaSave.saveOrder[savePlacement-1]!=metaSave.current) savePlacement++
@@ -2031,6 +2035,10 @@ function load_game(noOffline) {
 		nextAt = {postc1:new Decimal("1e2000"),postc1_ngmm:new Decimal("1e3000"),postc1_ngm3:new Decimal("1e3760"),postc2:new Decimal("1e5000"),postc3:new Decimal("1e12000"),postc4:new Decimal("1e14000"),postc5:new Decimal("1e18000"),postc5_ngm3:new Decimal("1e21500"),postc6:new Decimal("1e20000"),postc6_ngm3:new Decimal("1e23000"),postc7:new Decimal("1e23000"),postc7_ngm3:new Decimal("1e26000"),postc8:new Decimal("1e28000"),postcngmm_1:new Decimal("1e750"),postcngmm_1_ngm3:new Decimal("1e1080"),postcngmm_2:new Decimal("1e1350"),postcngmm_3:new Decimal("1e2000"),postcngmm_3_ngm3:new Decimal("1e2650"),postcngm3_1:new Decimal("1e1560"),postcngm3_2:new Decimal("1e2085"),postcngm3_3:new Decimal("1e8140"),postcngm3_4:new Decimal("1e17000")}
 		goals = {postc1:new Decimal("1e850"),postc1_ngmm:new Decimal("1e650"),postc1_ngm3:new Decimal("1e375"),postc2:new Decimal("1e10500"),postc2_ngm3:new Decimal("1e4250"),postc3:new Decimal("1e5000"),postc4:new Decimal("1e13000"),postc4_ngm3:new Decimal("1e4210"),postc5:new Decimal("1e11111"),postc5_ngm3:new Decimal("7.77e7777"),postc6:new Decimal("2e22222"),postc7:new Decimal("1e10000"),postc7_ngmm:new Decimal("1e15000"),postc7_ngm3:new Decimal(1/0),postc8:new Decimal("1e27000"),postc8_ngm3:new Decimal(1/0),postcngmm_1:new Decimal("1e550"),postcngmm_1_ngm3:new Decimal("1e650"),postcngmm_2:new Decimal("1e950"),postcngmm_2_ngm3:new Decimal("1e1090"),postcngmm_3:new Decimal("1e1200"),postcngmm_3_ngm3:new Decimal("1e1230"),postcngm3_1:new Decimal("1e550"),postcngm3_2:new Decimal("1e610"),postcngm3_3:new Decimal("8.8888e888"),postcngm3_4:new Decimal("1e12345")}
 		setUnlocks = [Decimal.pow(Number.MAX_VALUE, 2.9)]
+	}
+	if (infiniteCheck) {
+		exportInfiniteSave()
+		updateNewPlayer(true)
 	}
 	onLoad(noOffline)
 	startInterval()
@@ -2045,7 +2053,8 @@ function reload() {
 
 var noSave=false
 function save_game(silent) {
-  if (noSave) return
+  isInfiniteDetected()
+  if (noSave || infiniteDetected) return
   set_save(metaSave.current, player);
   if (!silent) $.notify("Game saved", "info")
 }

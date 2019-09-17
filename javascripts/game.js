@@ -3271,6 +3271,7 @@ document.getElementById("exportbtn").onclick = function () {
         if (document.execCommand('copy')) {
             $.notify("Exported save #"+savePlacement+" to clipboard", "info");
             output.blur();
+            output.onblur();
         }
     } catch(ex) {
         // well, we tried.
@@ -3601,18 +3602,23 @@ function import_save(type) {
         if (type==metaSave.current) {
             clearInterval(gameLoopIntervalId)
             player = decoded_save_data;
+			if (isNaN(Decimal.log(player.money))) infiniteDetected=true
             onLoad()
+			if (infiniteDetected) {
+                if (document.getElementById("welcome").style.display != "flex") document.getElementById("welcome").style.display = "flex"
+                document.getElementById("welcomeMessage").innerHTML = "Because you imported a save that has an Infinite bug in it, saving is disabled. You're so lucky that you can easily get your save back. :D"
+			}
             startInterval()
         } else if (type=="new") {
-			var newSaveId=1
-			while (metaSave.saveOrder.includes(newSaveId)) newSaveId++
-			metaSave.saveOrder.push(newSaveId)
-			latestRow=document.getElementById("saves").insertRow(loadedSaves)
-			latestRow.innerHTML = getSaveLayout(newSaveId)
-			localStorage.setItem(btoa("dsAM_"+newSaveId),save_data)
-			loadedSaves++
-			changeSaveDesc(newSaveId, loadedSaves)
-			localStorage.setItem("AD_aarexModifications",btoa(JSON.stringify(metaSave)))
+            var newSaveId=1
+            while (metaSave.saveOrder.includes(newSaveId)) newSaveId++
+            metaSave.saveOrder.push(newSaveId)
+            latestRow=document.getElementById("saves").insertRow(loadedSaves)
+            latestRow.innerHTML = getSaveLayout(newSaveId)
+            localStorage.setItem(btoa("dsAM_"+newSaveId),save_data)
+            loadedSaves++
+            changeSaveDesc(newSaveId, loadedSaves)
+            localStorage.setItem("AD_aarexModifications",btoa(JSON.stringify(metaSave)))
         } else {
             set_save(type, decoded_save_data)
             changeSaveDesc(type, placement)
@@ -5814,8 +5820,8 @@ function gainEternitiedStat() {
 		if (hasNU(9)) ret = nM(ret, tmp.qu.bigRip.spaceShards.max(1).pow(.1))
 	}
 	if (quantumed && player.eternities < 1e5) ret = Math.max(ret, 20)
-	if (player.dilation.upgrades.includes('ngpp2')) ret = nM(player.dilation.dilatedTime.pow(player.aarexModifications.ngudpV?.2:.1).max(1), ret)
-	if (player.dilation.upgrades.includes('ngud2')) ret = nM(player.dilation.dilatedTime.pow(.1).max(1), ret)
+	if (player.dilation.upgrades.includes('ngpp2')) ret = nM(player.dilation.dilatedTime.max(1).pow(player.aarexModifications.ngudpV?.2:.1), ret)
+	if (player.dilation.upgrades.includes('ngud2')) ret = nM(player.dilation.dilatedTime.max(1).pow(.1), ret)
 	if (typeof(ret) == "number") ret = Math.floor(ret)
 	return ret
 }
@@ -7630,6 +7636,7 @@ function gameLoop(diff) {
         var tempa = getDimensionProductionPerSecond(1).times(diff/10)
         player.money = player.money.plus(tempa)
         player.totalmoney = player.totalmoney.plus(tempa)
+        isInfiniteDetected()
         if (tmp.ngp3 && tmp.qu.bigRip.active) {
             tmp.qu.bigRip.totalAntimatter = tmp.qu.bigRip.totalAntimatter.add(tempa)
             tmp.qu.bigRip.bestThisRun = tmp.qu.bigRip.bestThisRun.max(player.money)
@@ -8901,7 +8908,7 @@ function initGame() {
     initiateMetaSave()
     migrateOldSaves()
     localStorage.setItem('AD_aarexModifications', btoa(JSON.stringify(metaSave)))
-    load_game()
+    load_game(false, true)
 
     //show one tab during init or they'll all start hidden
     if (player.aarexModifications.tabsSave.on) {
@@ -9099,6 +9106,7 @@ function resetUP() {
 function switchDecimalMode() {
 	if (confirm('This option switch the Decimal library to '+(player.aarexModifications.breakInfinity?'logarithmica_numerus_lite':'break_infinity.min')+'.js. Are you sure you want to do that?')) {
 		player.aarexModifications.breakInfinity = !player.aarexModifications.breakInfinity
+		if (player.aarexModifications.breakInfinity && !player.aarexModifications.performanceTicks && confirm("WARNING: This will probably make this game laggy without Performance Ticks! Do you want to turn on Performance Ticks?")) player.aarexModifications.performanceTicks = true
 		save_game(true)
 		document.location.reload(true)
 	}

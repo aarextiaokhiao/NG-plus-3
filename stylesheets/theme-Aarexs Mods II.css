@@ -590,7 +590,7 @@ button, div.storebtn {
 	animation: ghostifytext 4s linear infinite
 }
 
-#tooMuchPowerConsumed {
+#bugExport b, #tooMuchPowerConsumed {
 	color: #e50000
 }
 

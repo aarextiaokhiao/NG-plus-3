@@ -2302,7 +2302,7 @@ br {
 	text-shadow: none !important
 }
 
-#tooMuchPowerConsumed {
+#bugExport b, #tooMuchPowerConsumed {
 	color: #ff0000
 }
 

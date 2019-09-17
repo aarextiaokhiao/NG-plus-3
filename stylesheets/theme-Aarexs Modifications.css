@@ -573,7 +573,7 @@ strong { color: #0072e5 }
 	box-shadow: inset 0px 0px 12px 0px #ffffff !important;
 	cursor: pointer
 }
-#tooMuchPowerConsumed {
+#bugExport b, #tooMuchPowerConsumed {
 	color: #e50000
 }
 .neutrinos {

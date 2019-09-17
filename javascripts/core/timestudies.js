@@ -524,6 +524,7 @@ function exportStudyTree() {
       if (document.execCommand('copy')) {
           $.notify("exported to clipboard", "info");
           output.blur();
+          output.onblur();
       }
   } catch(ex) {
       // well, we tried.
