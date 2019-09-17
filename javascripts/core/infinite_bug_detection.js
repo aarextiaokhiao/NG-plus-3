@@ -1,10 +1,13 @@
-//Infinite bug save prevention
+function detectInfinite() {
+	return isNaN(Decimal.log10(player.money))
+}
+
 var infiniteDetected = false
 var infiniteCheck = false
 var infiniteSave
 function isInfiniteDetected() {
 	if (infiniteDetected) return
-	if (isNaN(player.money.e)) {
+	if (detectInfinite()) {
 		infiniteDetected = true
 		exportInfiniteSave()
 		reload()

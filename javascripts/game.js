@@ -420,7 +420,7 @@ function updateNewPlayer(reseted) {
         player.options.gSacrificeConfirmation = true
     }
     if (modesChosen.ngpp > 1) {
-        player.aarexModifications.newGame3PlusVersion = 2.12
+        player.aarexModifications.newGame3PlusVersion = 2.121
         player.respecMastery=false
         player.dbPower = 1
         player.dilation.times = 0
@@ -692,8 +692,8 @@ function updateNewPlayer(reseted) {
         player.achievements.push("ng3p47")
         player.aarexModifications.ngp4V=1
     }
-    if (modesChosen.ngud > 1) player.aarexModifications.ngudpV=1.1
-    if (modesChosen.nguep) player.aarexModifications.nguepV=1
+    if (modesChosen.ngud > 1) player.aarexModifications.ngudpV=1.11
+    if (modesChosen.nguep) player.aarexModifications.nguepV=1.02
     if (modesChosen.ngmm > 2) {
         player.aarexModifications.newGame4MinusVersion=2.111
         player.aarexModifications.ngmX=4
@@ -1019,7 +1019,7 @@ let tmp = {
 	nb: [],
 	nbc: [null,3,4,6,15,50,1e3,1e14,1e39],
 	nu: [],
-	nuc: [null,1e6,1e7,1e8,2e8,5e8,2e9,5e9,75e8,1e10,7e12,1e18,1e60,1e125,1e160,1e280],
+	nuc: [null,1e6,1e7,1e8,2e8,5e8,2e9,5e9,75e8,1e10,7e12,1e18,1e55,1e125,1e160,1e280],
 	lt: [12800,16e4,48e4,16e5,6e6,5e7,24e7,125e7],
 	lti: [2,4,1.5,10,4,1e3,2.5,3],
 	ls: [0,0,0,0,0,0,0],
@@ -1064,14 +1064,30 @@ function updateTemp() {
 			for (var g=0;g<3;g++) nt[g]=player.ghostify.neutrinos[(["electron","mu","tau"])[g]]
 			if (tmp.qu.nanofield.rewards<16) tmp.ns=tmp.ns.times(player.ghostify.milestones?6:3)
 			tmp.nb[0]=Math.log10(nt[0].add(1).log10()+nt[1].add(1).log10()+nt[2].add(1).log10()+1)*0.75
-			if (player.ghostify.neutrinos.boosts>1) tmp.nb[1]=Math.pow(Math.pow(nt[0].add(1).log10(),2)+Math.pow(nt[1].add(1).log10(),2)+Math.pow(nt[2].add(1).log10(),2),0.25)*1.5
+			if (player.ghostify.neutrinos.boosts>1) {
+				var nb2=Math.pow(Math.pow(nt[0].add(1).log10(),2)+Math.pow(nt[1].add(1).log10(),2)+Math.pow(nt[2].add(1).log10(),2),0.25)*1.5
+				if (nb2>100) nb2=Math.pow(Math.log10(nb2)+8,2)
+				tmp.nb[1]=nb2
+			}
 			if (player.ghostify.neutrinos.boosts>2) tmp.nb[2]=Math.pow(Math.pow(Math.log10(Math.max(nt[0].max(1).log10()-5,1))/Math.log10(5),2)+Math.pow(Math.log10(Math.max(nt[1].max(1).log10()-5,1))/Math.log10(5),2)+Math.pow(Math.log10(Math.max(nt[2].max(1).log10()-5,1))/Math.log10(5),2),0.25)/Math.pow(3,0.25)+3
-			if (player.ghostify.neutrinos.boosts>3) tmp.nb[3]=Math.pow(Math.pow(nt[0].add(1).log10(),2)+Math.pow(nt[1].add(1).log10(),2)+Math.pow(nt[2].add(1).log10(),2),0.25)*0.07+1
+			if (player.ghostify.neutrinos.boosts>3) {
+				var nb4=Math.pow(Math.pow(nt[0].add(1).log10(),2)+Math.pow(nt[1].add(1).log10(),2)+Math.pow(nt[2].add(1).log10(),2),0.25)*0.07+1
+				if (nb4>10) nb4=6+Math.log2(nb4+6)
+				tmp.nb[3]=nb4
+			}
 			if (player.ghostify.neutrinos.boosts>4) tmp.nb[4]=Math.min((nt[0].max(1).log10()+nt[1].max(1).log10()+nt[2].max(1).log10())/33,1)
 			if (player.ghostify.neutrinos.boosts>5) tmp.nb[5]=Math.pow(Math.pow(Math.pow(nt[0].add(1).log10(),2)+Math.pow(nt[1].add(1).log10(),2)+Math.pow(nt[2].add(1).log10(),2),0.25)*0.525+1,tmp.be?0.5:1)
 			if (player.ghostify.neutrinos.boosts>6) tmp.nb[6]=Math.sqrt(Math.log10(nt[0].add(1).log10()+nt[1].add(1).log10()+nt[2].add(1).log10()+1))*2.35+1
-			if (player.ghostify.neutrinos.boosts>7) tmp.nb[7]=Math.pow(Math.pow(nt[0].add(1).log10(),2)+Math.pow(nt[1].add(1).log10(),2)+Math.pow(nt[2].add(1).log10(),2),0.25)/10+1
-			if (player.ghostify.neutrinos.boosts>8) tmp.nb[8]=(nt[0].add(1).log10()+nt[1].add(1).log10()+nt[2].add(1).log10())/10
+			if (player.ghostify.neutrinos.boosts>7) {
+				var nb8=Math.pow(Math.pow(nt[0].add(1).log10(),2)+Math.pow(nt[1].add(1).log10(),2)+Math.pow(nt[2].add(1).log10(),2),0.25)/10+1
+				if (nb8>11) nb8=7+Math.log2(nb8+5)
+				tmp.nb[7]=nb8
+			}
+			if (player.ghostify.neutrinos.boosts>8) {
+				var nb9=(nt[0].add(1).log10()+nt[1].add(1).log10()+nt[2].add(1).log10())/10
+				if (nb9>4096) nb9=Math.pow(Math.log2(nb9)+4,3)
+				tmp.nb[8]=nb9
+			}
 			tmp.nu[0]=Math.max(110-(tmp.qu.bigRip.active?0:player.meta.resets),0) //NU1
 			tmp.nu[1]=Math.pow(Math.max(tmp.qu.colorPowers.b.log10()/250+1,1),2) //NU3
 			var ret=Math.max(-player.tickspeed.div(1e3).log10()/4e13-4,0)
@@ -1111,7 +1127,12 @@ function updateTemp() {
 	x=player.galaxies
 	if (tmp.ngp3&&!tmp.qu.bigRip.active&&player.ghostify.ghostlyPhotons.enpowerments>2) x*=tmp.le[9]
 	if (tmp.be&&player.dilation.active&&tmp.qu.breakEternity.upgrades.includes(10)) x*=getBreakUpgMult(10)
-	tmp.ig=Decimal.pow(10,Math.pow(x,Math.min(Math.sqrt(Math.log10(Math.max(x,1)))*2,2.5)))
+	var igLog=Math.pow(x,Math.min(Math.sqrt(Math.log10(Math.max(x,1)))*2,2.5))
+	if (player.aarexModifications.ngudpV){
+		if (igLog>1e15) igLog = Math.pow(10+6*Math.log10(igLog),7.5)
+		if (igLog>1e16) igLog = Math.pow(84+Math.log10(igLog),8)
+	}
+	tmp.ig=Decimal.pow(10,igLog)
 
 	tmp.rm=getReplMult()
 	updateExtraReplGalaxies()
@@ -3549,83 +3570,83 @@ function verify_save(obj) {
 
 var onImport = false
 function import_save(type) {
-    if (type=="current") type=metaSave.current
-    else if (type!="new") {
-        var placement=1
-        while (metaSave.saveOrder[placement-1]!=type) placement++
-    }
-    onImport = true
-    var save_data = prompt("Input your save. "+(type=="new"?"":"("+(type==metaSave.current?"your current save file":"save #"+placement)+" will be overwritten!)"));
-    onImport = false
-    if (save_data.constructor !== String) save_data = "";
-    if (sha512_256(save_data.replace(/\s/g, '').toUpperCase()) === "80b7fdc794f5dfc944da6a445a3f21a2d0f7c974d044f2ea25713037e96af9e3") {
-        document.getElementById("body").style.animation = "barrelRoll 5s 1";
-        giveAchievement("Do a barrel roll!")
-        setTimeout(function(){ document.getElementById("body").style.animation = ""; }, 5000)
-    }
-    if (sha512_256(save_data.replace(/\s/g, '').toUpperCase()) === "857876556a230da15fe1bb6f410ca8dbc9274de47c1a847c2281a7103dd2c274") giveAchievement("So do I");
-    if (sha512_256(save_data) === "de24687ee7ba1acd8f5dc8f71d41a3d4b7f14432fff53a4d4166e7eea48a88c0") {
-        player.options.theme = "S1";
-        player.options.secretThemeKey = save_data;
-        setTheme(player.options.theme);
-    } else if (sha512_256(save_data) === "76269d18c05c9ebec8a990a096cee046dea042a0421f8ab81d17f34dd1cdbdbf") {
-        player.options.theme = "S2";
-        player.options.secretThemeKey = save_data;
-        setTheme(player.options.theme);
-    } else if (sha512_256(save_data) === "d764e9a1d1e18081be19f3483b537ae1159ab40d10e096df1d9e857d68d6ba7a") {
-        player.options.theme = "S3";
-        player.options.secretThemeKey = save_data;
-        setTheme(player.options.theme);
-    } else if (sha512_256(save_data) === "ae0199482ecfa538a03eb37c67866e67a11f1832516c26c7939e971e514d40c5") {
-        player.options.theme = "S4";
-        player.options.secretThemeKey = save_data;
-        setTheme(player.options.theme);
-    } else if (sha512_256(save_data) === "7a668b64cdfe1bcdf7a38d3858429ee21290268de66b9784afba27dc5225ce28") {
-        player.options.theme = "S5";
-        player.options.secretThemeKey = save_data;
-        setTheme(player.options.theme);
-    } else if (sha512_256(save_data) === "4f82333af895f5c89e6b2082a7dab5a35b964614e74908961fe915cefca1c6d0") {
-        player.options.theme = "S6";
-        player.options.secretThemeKey = save_data;
-        setTheme(player.options.theme);
-    } else {
-        var decoded_save_data = JSON.parse(atob(save_data, function(k, v) { return (v === Infinity) ? "Infinity" : v; }));
-        if (!verify_save(decoded_save_data)) {
-            forceHardReset = true
-            document.getElementById("reset").click()
-            forceHardReset = false
-            return
-        } else if (!decoded_save_data||!save_data) {
-            alert('could not load the save..')
-            return
-        }
-        if (type==metaSave.current) {
-            clearInterval(gameLoopIntervalId)
-            player = decoded_save_data;
-			if (isNaN(Decimal.log(player.money))) infiniteDetected=true
-            onLoad()
+	if (type=="current") type=metaSave.current
+	else if (type!="new") {
+		var placement=1
+		while (metaSave.saveOrder[placement-1]!=type) placement++
+	}
+	onImport = true
+	var save_data = prompt("Input your save. "+(type=="new"?"":"("+(type==metaSave.current?"your current save file":"save #"+placement)+" will be overwritten!)"));
+	onImport = false
+	if (save_data.constructor !== String) save_data = "";
+	if (sha512_256(save_data.replace(/\s/g, '').toUpperCase()) === "80b7fdc794f5dfc944da6a445a3f21a2d0f7c974d044f2ea25713037e96af9e3") {
+		document.getElementById("body").style.animation = "barrelRoll 5s 1";
+		giveAchievement("Do a barrel roll!")
+		setTimeout(function(){ document.getElementById("body").style.animation = ""; }, 5000)
+	}
+	if (sha512_256(save_data.replace(/\s/g, '').toUpperCase()) === "857876556a230da15fe1bb6f410ca8dbc9274de47c1a847c2281a7103dd2c274") giveAchievement("So do I");
+	if (sha512_256(save_data) === "de24687ee7ba1acd8f5dc8f71d41a3d4b7f14432fff53a4d4166e7eea48a88c0") {
+		player.options.theme = "S1";
+		player.options.secretThemeKey = save_data;
+		setTheme(player.options.theme);
+	} else if (sha512_256(save_data) === "76269d18c05c9ebec8a990a096cee046dea042a0421f8ab81d17f34dd1cdbdbf") {
+		player.options.theme = "S2";
+		player.options.secretThemeKey = save_data;
+		setTheme(player.options.theme);
+	} else if (sha512_256(save_data) === "d764e9a1d1e18081be19f3483b537ae1159ab40d10e096df1d9e857d68d6ba7a") {
+		player.options.theme = "S3";
+		player.options.secretThemeKey = save_data;
+		setTheme(player.options.theme);
+	} else if (sha512_256(save_data) === "ae0199482ecfa538a03eb37c67866e67a11f1832516c26c7939e971e514d40c5") {
+		player.options.theme = "S4";
+		player.options.secretThemeKey = save_data;
+		setTheme(player.options.theme);
+	} else if (sha512_256(save_data) === "7a668b64cdfe1bcdf7a38d3858429ee21290268de66b9784afba27dc5225ce28") {
+		player.options.theme = "S5";
+		player.options.secretThemeKey = save_data;
+		setTheme(player.options.theme);
+	} else if (sha512_256(save_data) === "4f82333af895f5c89e6b2082a7dab5a35b964614e74908961fe915cefca1c6d0") {
+		player.options.theme = "S6";
+		player.options.secretThemeKey = save_data;
+		setTheme(player.options.theme);
+	} else {
+		var decoded_save_data = JSON.parse(atob(save_data, function(k, v) { return (v === Infinity) ? "Infinity" : v; }));
+		if (!verify_save(decoded_save_data)) {
+			forceHardReset = true
+			document.getElementById("reset").click()
+			forceHardReset = false
+			return
+		} else if (!decoded_save_data||!save_data) {
+			alert('could not load the save..')
+			return
+		}
+		if (type==metaSave.current) {
+			clearInterval(gameLoopIntervalId)
+			player = decoded_save_data;
+			if (detectInfinite()) infiniteDetected=true
+			onLoad()
 			if (infiniteDetected) {
-                if (document.getElementById("welcome").style.display != "flex") document.getElementById("welcome").style.display = "flex"
-                document.getElementById("welcomeMessage").innerHTML = "Because you imported a save that has an Infinite bug in it, saving is disabled. You're so lucky that you can easily get your save back. :D"
+				if (document.getElementById("welcome").style.display != "flex") document.getElementById("welcome").style.display = "flex"
+				document.getElementById("welcomeMessage").innerHTML = "Because you imported a save that has an Infinite bug in it, saving is disabled. You're so lucky that you can easily get your save back. :D"
 			}
-            startInterval()
-        } else if (type=="new") {
-            var newSaveId=1
-            while (metaSave.saveOrder.includes(newSaveId)) newSaveId++
-            metaSave.saveOrder.push(newSaveId)
-            latestRow=document.getElementById("saves").insertRow(loadedSaves)
-            latestRow.innerHTML = getSaveLayout(newSaveId)
-            localStorage.setItem(btoa("dsAM_"+newSaveId),save_data)
-            loadedSaves++
-            changeSaveDesc(newSaveId, loadedSaves)
-            localStorage.setItem("AD_aarexModifications",btoa(JSON.stringify(metaSave)))
-        } else {
-            set_save(type, decoded_save_data)
-            changeSaveDesc(type, placement)
-            $.notify("Save renamed", "info")
-        }
-    }
-};
+			startInterval()
+		} else if (type=="new") {
+			var newSaveId=1
+			while (metaSave.saveOrder.includes(newSaveId)) newSaveId++
+			metaSave.saveOrder.push(newSaveId)
+			latestRow=document.getElementById("saves").insertRow(loadedSaves)
+			latestRow.innerHTML = getSaveLayout(newSaveId)
+			localStorage.setItem(btoa("dsAM_"+newSaveId),save_data)
+			loadedSaves++
+			changeSaveDesc(newSaveId, loadedSaves)
+			localStorage.setItem("AD_aarexModifications",btoa(JSON.stringify(metaSave)))
+		} else {
+			set_save(type, decoded_save_data)
+			changeSaveDesc(type, placement)
+			$.notify("Save renamed", "info")
+		}
+	}
+}
 
 document.getElementById("reset").onclick = function () {
 	if (!forceHardReset) if (!confirm("Do you really want to erase all your progress?")) return
@@ -3979,7 +4000,7 @@ function onNotationChange() {
 		updateTODStuff()
 		updateBreakEternity()
 		onNotationChangeNeutrinos()
-		document.getElementById("gphUnl").textContent="To unlock Ghostly Photons, you need to get "+shortenCosts(Decimal.pow(10,61e8))+" antimatter while your universe is Big Ripped first."
+		document.getElementById("gphUnl").textContent="To unlock Ghostly Photons, you need to get "+shortenCosts(Decimal.pow(10,605e7))+" antimatter while your universe is Big Ripped first."
 	}
 	document.getElementById("epmult").innerHTML = "You gain 5 times more EP<p>Currently: "+shortenDimensions(player.epmult)+"x<p>Cost: "+shortenDimensions(player.epmultCost)+" EP"
 	document.getElementById("achmultlabel").textContent = "Current achievement multiplier on each Dimension: " + shortenMoney(player.achPow) + "x"
@@ -4133,6 +4154,12 @@ function switchSubNotation(id) {
 	player.options.spazzy.subNotation = notationArray[id]
 	document.getElementById("chosenSubNotation").textContent="Sub-notation: "+(player.options.spazzy.subNotation=="Emojis"?"Cancer":player.options.spazzy.subNotation)
 	onNotationChange()
+}
+
+function showHideFooter(toggle) {
+	if (toggle) player.aarexModifications.noFooter=!player.aarexModifications.noFooter
+	document.getElementById("footerBtn").textContent = (player.aarexModifications.noFooter?"Show":"Hide")+" footer"
+	document.documentElement.style.setProperty('--footer', player.aarexModifications.noFooter?"none":"")
 }
 
 document.getElementById("newsbtn").onclick = function() {
@@ -7457,7 +7484,7 @@ setInterval(function() {
             $.notify("Congratulations! You have unlocked Break Eternity!", "success")
             updateBreakEternity()
         }
-        if (player.money.gte(Decimal.pow(10,61e8))&&tmp.qu.bigRip.active&&!player.ghostify.ghostlyPhotons.unl) {
+        if (player.money.gte(Decimal.pow(10,605e7))&&tmp.qu.bigRip.active&&!player.ghostify.ghostlyPhotons.unl) {
             player.ghostify.ghostlyPhotons.unl=true
             $.notify("Congratulations! You have unlocked Ghostly Photons!", "success")
             giveAchievement("Progressing as a Ghost")

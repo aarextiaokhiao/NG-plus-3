@@ -21,9 +21,6 @@ body {
     background-color: #0072e5;
     color: #191919;
 }
-#footer {
-    display: none
-}
 .achievementlocked {
     background-color: #727272 !important;
     border-color: #720000 !important;

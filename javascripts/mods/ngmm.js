@@ -337,8 +337,10 @@ function resetTickBoughtThisInf() {
 }
 
 function upgradeSacAutobuyer() {
-	if (player.infinityPoints.lt(player.autoSacrifice.cost)) return false;
-	player.infinityPoints = player.infinityPoints.minus(player.autoSacrifice.cost);
+	let cost=player.autoSacrifice.cost
+	if ((player.aarexModifications.ngmX>3?player.galacticSacrifice.galaxyPoints:player.infinityPoints).lt(cost)) return false
+	if (player.aarexModifications.ngmX>3) player.galacticSacrifice.galaxyPoints=player.galacticSacrifice.galaxyPoints.sub(cost)
+	else player.infinityPoints=player.infinityPoints.sub(cost)
 	if (player.autoSacrifice.interval > 100) {
 		player.autoSacrifice.interval = Math.max(player.autoSacrifice.interval*0.6, 100);
 		if (player.autoSacrifice.interval > 120) player.autoSacrifice.cost *= 2; //if your last purchase wont be very strong, dont double the cost

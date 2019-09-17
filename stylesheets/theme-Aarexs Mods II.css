@@ -62,10 +62,6 @@ button, div.storebtn {
 	color: #e5e5e5
 }
 
-#footer {
-    display: none
-}
-
 #progress {
     bottom: 5px !important;
     background-color: #191919 !important;

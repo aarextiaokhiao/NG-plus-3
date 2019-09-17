@@ -541,12 +541,17 @@ function getMTSMult(id, modifier) {
 	if (id==303) return Decimal.pow(4.7,Math.pow(Math.log10(Math.max(player.galaxies,1)),1.5))
 	if (id==322) {
 		let log = Math.sqrt(3-player.tickspeed.log10())/2e4
-		if (log>110) log = Math.sqrt(log * 27.5) + 55
-		return Decimal.pow(10, log)
+		if (log>110) log=Math.sqrt(log*27.5)+55
+		if (log>1e3&&player.aarexModifications.ngudpV!==undefined) log=Math.pow(7+Math.log10(log),3)
+		return Decimal.pow(10,log)
 	}
 	if (id==341) return Decimal.pow(2,Math.sqrt(tmp.qu.replicants.quarks.add(1).log10()))
 	if (id==344) return Math.pow(tmp.qu.replicants.quarks.div(1e7).add(1).log10(),0.25)*0.17+1
-	if (id==351) return player.timeShards.max(1).pow(14e-7)
+	if (id==351) {
+		let log=player.timeShards.max(1).log10()*14e-7
+		if (log>1e4) log=Math.pow(log*Math.pow(10,36),.1)
+		return Decimal.pow(10,log)
+	}
 	if (id==361) return player.dilation.tachyonParticles.max(1).pow(0.01824033924212366)
 	if (id==371) return Math.pow(extraReplGalaxies+1,0.3)
 	if (id==372) return Math.sqrt(player.timeShards.add(1).log10())/20+1
@@ -3067,9 +3072,10 @@ function getGHPGain() {
 	if (player.masterystudies == undefined) return new Decimal(0)
 	if (!tmp.qu.bigRip.active) return new Decimal(0)
 	let log=(tmp.qu.bigRip.bestThisRun.log10()/getQCGoal()-1)*2
-	if (player.aarexModifications.nguepV) {
-		if (log>1e4) log=Math.sqrt(1e4*log)
+	if (log>1e4&&player.aarexModifications.ngudpV!==undefined) log=Math.sqrt(log*1e4)
+	if (player.aarexModifications.nguepV!==undefined) {
 		if (log>2e4) log=Math.pow(4e8*log,1/3)
+		if (log>59049) log=Math.pow(Math.log10(log)/Math.log10(9)+4,5)
 	}
 	return Decimal.pow(10, log).times(Decimal.pow(2,player.ghostify.multPower-1)).floor()
 }
@@ -4267,8 +4273,8 @@ function updateGPHUnlocks() {
 }
 
 function getGPHProduction() {
-	if (tmp.qu.bigRip.active) var ret=player.dilation.dilatedTime.div("1e485")
-	else var ret=player.dilation.dilatedTime.div("1e935")
+	if (tmp.qu.bigRip.active) var ret=player.dilation.dilatedTime.div("1e480")
+	else var ret=player.dilation.dilatedTime.div("1e930")
 	if (ret.gt(1)) ret=ret.pow(0.02)
 	return ret
 }

@@ -48,8 +48,8 @@ function softReset(bulk, tier=1) {
 	}
 	var costs=[10,100,1e4,1e6,1e9,1e13,1e18,1e24]
 	var costMults=[1e3,1e4,1e5,1e6,1e8,1e10,1e12,1e15]
-	if (!inNC(10) || player.currentChallenge == "postc1") costs=[10,100,100,500,2500,2e4,2e5,4e6]
-	if (player.currentChallenge == "postc1") costMults=[1e3,5e3,1e4,12e3,18e3,26e3,32e3,42e3]
+	if (inNC(10)||player.currentChallenge == "postc1") costs=[10,100,100,500,2500,2e4,2e5,4e6]
+	if (inNC(10)) costMults=[1e3,5e3,1e4,12e3,18e3,26e3,32e3,42e3]
 	for (var d=1;d<9;d++) {
 		var name=TIER_NAMES[d]
 		player[name+"Amount"]=new Decimal(0)

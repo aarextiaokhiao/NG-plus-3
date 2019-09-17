@@ -396,6 +396,7 @@ if (player.version < 5) {
   }
   if (player.aarexModifications.tabsSave === undefined) player.aarexModifications.tabsSave = {on: false}
   if (player.aarexModifications.performanceTicks === undefined) player.aarexModifications.performanceTicks = false
+  if (player.aarexModifications.noFooter == undefined) player.aarexModifications.noFooter = player.options.theme == "Aarex's Modifications" || player.options.theme == "Aarex's Mods II"
   if (player.aarexModifications.newGamePlusPlusVersion == undefined && player.aarexModifications.newGame3PlusVersion != undefined) {
       delete player.masterystudies
       delete player.aarexModifications.newGame3PlusVersion
@@ -640,7 +641,7 @@ if (player.version < 5) {
           }
           player.aarexModifications.newGamePlusVersion = 1
           if (confirm("Do you want to migrate your NG++ save into new NG+++ mode?")) {
-              player.aarexModifications.newGame3PlusVersion = 2.12
+              player.aarexModifications.newGame3PlusVersion = 2.121
               player.respecMastery=false
               player.dbPower = 1
               player.dilation.times = 0
@@ -1204,7 +1205,7 @@ if (player.version < 5) {
       for (var a=0;a<player.achievements.length;a++) if (player.achievements[a]!="ng3p67") newAchievements.push(player.achievements[a])
 	  player.achievements=newAchievements
   }
-  if (player.aarexModifications.newGame3PlusVersion < 2.12) player.aarexModifications.newGame3PlusVersion = 2.12
+  if (player.aarexModifications.newGame3PlusVersion < 2.121) player.aarexModifications.newGame3PlusVersion = 2.121
   if (player.masterystudies) {
       if (player.meta.bestOverQuantums === undefined) player.meta.bestOverQuantums = player.meta.bestAntimatter
       document.getElementById('prioritydil').value=player.eternityBuyer.dilationPerAmount
@@ -1530,7 +1531,8 @@ if (player.version < 5) {
       for (dim=1;dim<9;dim++) player.dimtechs["dim"+dim+"Upgrades"] = 0
       player.aarexModifications.irsVersion = 1.2
   }
-  if (player.aarexModifications.ngudpV < 1.1) player.aarexModifications.ngudpV = 1.1
+  if (player.aarexModifications.ngudpV < 1.11) player.aarexModifications.ngudpV = 1.11
+  if (player.aarexModifications.nguepV < 1.02) player.aarexModifications.nguepV = 1.02
   if (player.aarexModifications.newGame4MinusVersion<2) {
       player.tdBoosts=0
       resetTDs()
@@ -1857,7 +1859,7 @@ if (player.version < 5) {
           if (u%3==1) document.getElementById("neutrinoUpg"+u).parentElement.parentElement.style.display=u>player.ghostify.times+2?"none":""
           else document.getElementById("neutrinoUpg"+u).style.display=u>player.ghostify.times+2?"none":""
       }
-      document.getElementById("gphUnl").textContent="To unlock Ghostly Photons, you need to get "+shortenCosts(Decimal.pow(10,61e8))+" antimatter while your universe is Big Ripped first."
+      document.getElementById("gphUnl").textContent="To unlock Ghostly Photons, you need to get "+shortenCosts(Decimal.pow(10,605e7))+" antimatter while your universe is Big Ripped first."
       document.getElementById("bpc68").textContent = shortenMoney(tmp.qu.pairedChallenges.pc68best)
       updateElectrons()
       updateAutoQuantumMode()
@@ -1935,6 +1937,7 @@ if (player.version < 5) {
   }
   notifyId=speedrunMilestonesReached
   notifyId2=player.masterystudies===undefined?0:player.ghostify.milestones
+  showHideFooter()
   document.getElementById("newsbtn").textContent=(player.options.newsHidden?"Show":"Hide")+" news ticker"
   document.getElementById("game").style.display=player.options.newsHidden?"none":"block"
   var tabsSave = player.aarexModifications.tabsSave
@@ -2023,7 +2026,7 @@ function load_game(noOffline, init) {
 	if (dimensionSave!=null) {
 		if (dimensionSave.quantum !== undefined) if (dimensionSave.quantum.timeFluxPower !== undefined) dimensionSave = get_save(metaSave.current + "_af2019")
 		player=dimensionSave
-		if (isNaN(Decimal.log(player.money))) infiniteCheck=true
+		if (detectInfinite()) infiniteCheck=true
 	}
 	savePlacement=1
 	while (metaSave.saveOrder[savePlacement-1]!=metaSave.current) savePlacement++

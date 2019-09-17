@@ -1010,13 +1010,13 @@ button {
     pointer-events: none;
 }
 
-
 #footer {
     height: 50px;
     margin: auto;
     text-align:center;
     font-size: 15px;
     font-family: Typewriter;
+	display: var(--footer)
 }
 
 #footer tr td div {
