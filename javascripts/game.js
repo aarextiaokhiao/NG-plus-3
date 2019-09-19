@@ -637,7 +637,7 @@ function updateNewPlayer(reseted) {
             power: 0
         }
         for (var d=1;d<5;d++) player["blackholeDimension"+d] = {
-            cost: Decimal.pow(10,d>3?2e4:4000*d),
+            cost: blackholeDimStartCosts[d],
             amount: 0,
             power: 1,
             bought: 0
@@ -692,8 +692,8 @@ function updateNewPlayer(reseted) {
         player.achievements.push("ng3p47")
         player.aarexModifications.ngp4V=1
     }
-    if (modesChosen.ngud > 1) player.aarexModifications.ngudpV=1.11
-    if (modesChosen.nguep) player.aarexModifications.nguepV=1.02
+    if (modesChosen.ngud == 2) player.aarexModifications.ngudpV=1.12
+    if (modesChosen.nguep) player.aarexModifications.nguepV=1.03
     if (modesChosen.ngmm > 2) {
         player.aarexModifications.newGame4MinusVersion=2.111
         player.aarexModifications.ngmX=4
@@ -1121,6 +1121,12 @@ function updateTemp() {
 	} else {
 		if (x>12e8) x=Math.pow(x*144e10,1/3)
 		else if (x>12e4) x=Math.pow(x*12e4,0.5)
+	}
+	if (player.aarexModifications.ngudpV) {
+		if (x>1e8) x=Math.pow(1e8*x,.5)
+		if (x>1e9) x=Math.pow(1+Math.log10(x),9)
+		if (tmp.be&&x>1e7) x=Math.pow(93+Math.log10(x),3.5)
+		if (player.dilation.active&&x>1e5) x=Math.pow(1e20*x,.2)
 	}
 	tmp.it=Decimal.pow(10,x)
 
@@ -7474,7 +7480,7 @@ setInterval(function() {
             else player.aarexModifications.popUpId = ""
             document.getElementById("welcomeMessage").innerHTML = "You are almost there for a supreme completion! However, completing this turns you to a ghost instead. This allows you to pass big rip universes and unlock new stuff! However, you need to lose everything too. Therefore, this is the sixth layer of NG+3."
         }
-        if (player.masterystudies&&(player.masterystudies.includes("d14")||player.achievements.includes("ng3p51"))&&!player.aarexModifications.newGameExpVersion&&!player.aarexModifications.ngudpV&&!metaSave.ngp4) {
+        if (player.masterystudies&&(player.masterystudies.includes("d14")||player.achievements.includes("ng3p51"))&&!player.aarexModifications.newGameExpVersion&&!player.aarexModifications.ngudpV&&!player.aarexModifications.nguepV&&!metaSave.ngp4) {
             $.notify("Congratulations! You unlocked NG+4!", "success")
             metaSave.ngp4=true
             localStorage.setItem("AD_aarexModifications",btoa(JSON.stringify(metaSave)))

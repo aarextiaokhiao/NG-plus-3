@@ -1510,6 +1510,10 @@ if (player.version < 5) {
   }
   if (player.exdilation !== undefined) {
       if (player.options.exdilationconfirm === undefined) player.options.exdilationconfirm = true
+      if (player.options.exdilationConfirm !== undefined) {
+          player.options.exdilationconfirm = player.options.exdilationConfirm
+          delete player.options.exdilationConfirm
+      }
       if (player.meta !== undefined && player.exdilation.spent[4] === undefined) player.exdilation.spent[4] = 0
   }
   if (player.aarexModifications.irsVersion < 1.1) {
@@ -1531,8 +1535,8 @@ if (player.version < 5) {
       for (dim=1;dim<9;dim++) player.dimtechs["dim"+dim+"Upgrades"] = 0
       player.aarexModifications.irsVersion = 1.2
   }
-  if (player.aarexModifications.ngudpV < 1.11) player.aarexModifications.ngudpV = 1.11
-  if (player.aarexModifications.nguepV < 1.02) player.aarexModifications.nguepV = 1.02
+  if (player.aarexModifications.ngudpV < 1.12) player.aarexModifications.ngudpV = 1.12
+  if (player.aarexModifications.nguepV < 1.03) player.aarexModifications.nguepV = 1.03
   if (player.aarexModifications.newGame4MinusVersion<2) {
       player.tdBoosts=0
       resetTDs()
@@ -1620,7 +1624,7 @@ if (player.version < 5) {
   document.getElementById("challengeconfirmation").textContent = "Challenge confirmation: O" + (player.options.challConf ? "N" : "FF")
   document.getElementById("eternityconf").textContent = "Eternity confirmation: O" + (player.options.eternityconfirm ? "N" : "FF")
   document.getElementById("dilationConfirmBtn").textContent = "Dilation confirmation: O" + (player.aarexModifications.dilationConf ? "N" : "FF")
-  document.getElementById("exdilationConfirmBtn").textContent = "Reverse dilation confirmation: O" + (player.options.exdilationConfirm ? "N" : "FF")
+  document.getElementById("exdilationConfirmBtn").textContent = "Reverse dilation confirmation: O" + (player.options.exdilationconfirm ? "N" : "FF")
   document.getElementById("quantumConfirmBtn").textContent = "Quantum confirmation: O" + (player.aarexModifications.quantumConf ? "N" : "FF")
   document.getElementById("bigRipConfirmBtn").textContent = "Big Rip confirmation: O" + ((player.masterystudies === undefined ? false : tmp.qu.bigRip.conf) ? "N" : "FF")
   document.getElementById("ghostifyConfirmBtn").textContent = "Ghostify confirmation: O" + (player.aarexModifications.ghostifyConf ? "N" : "FF")
@@ -2334,18 +2338,14 @@ function transformSaveToDecimal() {
   if (player.exdilation !== undefined) {
       player.blackhole.power = new Decimal(player.blackhole.power)
 
-      player.blackholeDimension1.amount = new Decimal(player.blackholeDimension1.amount)
-      player.blackholeDimension2.amount = new Decimal(player.blackholeDimension2.amount)
-      player.blackholeDimension3.amount = new Decimal(player.blackholeDimension3.amount)
-      player.blackholeDimension4.amount = new Decimal(player.blackholeDimension4.amount)
-      player.blackholeDimension1.cost = new Decimal(player.blackholeDimension1.cost)
-      player.blackholeDimension2.cost = new Decimal(player.blackholeDimension2.cost)
-      player.blackholeDimension3.cost = new Decimal(player.blackholeDimension3.cost)
-      player.blackholeDimension4.cost = new Decimal(player.blackholeDimension4.cost)
-      player.blackholeDimension1.power = new Decimal(player.blackholeDimension1.power)
-      player.blackholeDimension2.power = new Decimal(player.blackholeDimension2.power)
-      player.blackholeDimension3.power = new Decimal(player.blackholeDimension3.power)
-      player.blackholeDimension4.power = new Decimal(player.blackholeDimension4.power)
+      for (var d=1;d<9;d++) {
+          var dim=player["blackholeDimension"+d]
+          if (dim!==undefined) {
+              dim.amount = new Decimal(dim.amount)
+              dim.cost = new Decimal(dim.cost)
+              dim.power = new Decimal(dim.power)
+          }
+      }
 
       player.exdilation.unspent = new Decimal(player.exdilation.unspent)
       player.exdilation.spent[1] = new Decimal(player.exdilation.spent[1])

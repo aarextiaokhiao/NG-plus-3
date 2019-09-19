@@ -2983,7 +2983,7 @@ function getEMGain() {
 	if (player.aarexModifications.ngudpV !== undefined) {
 		let dlog=Math.log10(log)/Math.log10(2)
 		let start=9 //Starts at e512.
-		if (player.aarexModifications.nguepV !== undefined) start=12 //Starts at e4,096.
+		if (player.aarexModifications.nguepV !== undefined) start=11 //Starts at e2,048.
 		if (dlog>start) {
 			let capped=Math.min(Math.floor(Math.log10(Math.max(dlog+2-start,1))/Math.log10(2)),20-start)
 			dlog=(dlog-Math.pow(2,capped)-start+2)/Math.pow(2,capped)+capped+start-1
@@ -3034,6 +3034,7 @@ function getBreakUpgMult(id) {
 		var log1 = player.eternityPoints.div("1e2230").add(1).log10()
 		var log2 = player.timeShards.div(1e90).add(1).log10()
 		var log = Math.pow(log1, 1/3) + Math.pow(log2, 1/3)
+		if (log>100&&player.aarexModifications.ngudpV) log = Math.log10(log)*50
 		return Decimal.pow(1e4, log)
 	}
 	if (id == 6) {
@@ -3042,8 +3043,19 @@ function getBreakUpgMult(id) {
 		return Decimal.pow(10, Math.pow(log1, 1/3) / 1.7 + Math.pow(log2, 1/3) * 2)
 	}
 	if (id == 7) return Decimal.pow(1e9, tmp.qu.breakEternity.epMultPower)
-	if (id == 8) return Math.log10(player.dilation.tachyonParticles.div(1e200).add(1).log10()/100+1)*3+1
-	if (id == 9) return tmp.qu.breakEternity.eternalMatter.div("1e335").add(1).pow(0.05*Math.log10(4)).toNumber()
+	if (id == 8) {
+		var effect=Math.log10(player.dilation.tachyonParticles.div(1e200).add(1).log10()/100+1)*3+1
+		if (effect>2.2&&player.aarexModifications.ngudpV!==undefined) {
+			effect=1.2+Math.log10(effect+7.8)
+			if (player.aarexModifications.nguepV===undefined) effect=1.2+Math.log10(effect+7.8)
+		}
+		return effect
+	}
+	if (id == 9) {
+		var effect = tmp.qu.breakEternity.eternalMatter.div("1e335").add(1).pow(0.05*Math.log10(4))
+		if (player.aarexModifications.ngudpV && effect.gte(Decimal.pow(10,100))) effect = Decimal.pow(Decimal.log10(effect),50)
+		return effect.toNumber()
+	}
 	if (id == 10) return Math.max(Math.log10(player.eternityPoints.add(1).log10()+1)-1,1)
 }
 
@@ -3698,7 +3710,7 @@ function ghostifyReset(implode, gain, amount, force) {
 	if (player.exdilation!=undefined) {
 		if (player.eternityUpgrades.length) for (var u=7;u<10;u++) player.eternityUpgrades.push(u)
 		for (var d=1;d<5;d++) player["blackholeDimension"+d] = {
-			cost: Decimal.pow(10,d>3?2e4:4e3*d),
+			cost: blackholeDimStartCosts[d],
 			amount: new Decimal(0),
 			power: new Decimal(1),
 			bought: 0

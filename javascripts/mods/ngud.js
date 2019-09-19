@@ -279,8 +279,8 @@ function reverseDilation () {
 }
 
 function toggleExdilaConf() {
-	player.options.exdilationConfirm = !player.options.exdilationConfirm
-	document.getElementById("exdilationConfirmBtn").textContent = "Reverse dilation confirmation: O" + (player.options.exdilationConfirm ? "N" : "FF")
+	player.options.exdilationconfirm = !player.options.exdilationconfirm
+	document.getElementById("exdilationConfirmBtn").textContent = "Reverse dilation confirmation: O" + (player.options.exdilationconfirm ? "N" : "FF")
 }
 
 function boostDilationUpgrade(x) {
