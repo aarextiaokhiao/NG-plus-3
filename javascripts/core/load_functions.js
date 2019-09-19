@@ -2043,10 +2043,8 @@ function load_game(noOffline, init) {
 		goals = {postc1:new Decimal("1e850"),postc1_ngmm:new Decimal("1e650"),postc1_ngm3:new Decimal("1e375"),postc2:new Decimal("1e10500"),postc2_ngm3:new Decimal("1e4250"),postc3:new Decimal("1e5000"),postc4:new Decimal("1e13000"),postc4_ngm3:new Decimal("1e4210"),postc5:new Decimal("1e11111"),postc5_ngm3:new Decimal("7.77e7777"),postc6:new Decimal("2e22222"),postc7:new Decimal("1e10000"),postc7_ngmm:new Decimal("1e15000"),postc7_ngm3:new Decimal(1/0),postc8:new Decimal("1e27000"),postc8_ngm3:new Decimal(1/0),postcngmm_1:new Decimal("1e550"),postcngmm_1_ngm3:new Decimal("1e650"),postcngmm_2:new Decimal("1e950"),postcngmm_2_ngm3:new Decimal("1e1090"),postcngmm_3:new Decimal("1e1200"),postcngmm_3_ngm3:new Decimal("1e1230"),postcngm3_1:new Decimal("1e550"),postcngm3_2:new Decimal("1e610"),postcngm3_3:new Decimal("8.8888e888"),postcngm3_4:new Decimal("1e12345")}
 		setUnlocks = [Decimal.pow(Number.MAX_VALUE, 2.9)]
 	}
-	if (infiniteCheck) {
-		exportInfiniteSave()
-		updateNewPlayer(true)
-	}
+	if (infiniteCheck) exportInfiniteSave()
+	if (infiniteCheck || infiniteCheck2) updateNewPlayer(true)
 	onLoad(noOffline)
 	startInterval()
 }

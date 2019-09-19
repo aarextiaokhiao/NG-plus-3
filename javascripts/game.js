@@ -3657,6 +3657,7 @@ function import_save(type) {
 document.getElementById("reset").onclick = function () {
 	if (!forceHardReset) if (!confirm("Do you really want to erase all your progress?")) return
 	clearInterval(gameLoopIntervalId)
+	infiniteDetected = false
 	updateNewPlayer(true)
 	save_game(true)
 	onLoad()
@@ -7505,6 +7506,7 @@ setInterval(function() {
         }
         if (tmp.qu.autoOptions.assignQK && player.ghostify.milestones > 7) assignAll() 
     }
+	infiniteCheck2 = false
 }, 1000)
 
 function fact(v) {
@@ -7669,7 +7671,7 @@ function gameLoop(diff) {
         var tempa = getDimensionProductionPerSecond(1).times(diff/10)
         player.money = player.money.plus(tempa)
         player.totalmoney = player.totalmoney.plus(tempa)
-        isInfiniteDetected()
+        if (isInfiniteDetected()) return
         if (tmp.ngp3 && tmp.qu.bigRip.active) {
             tmp.qu.bigRip.totalAntimatter = tmp.qu.bigRip.totalAntimatter.add(tempa)
             tmp.qu.bigRip.bestThisRun = tmp.qu.bigRip.bestThisRun.max(player.money)
