@@ -1417,7 +1417,7 @@ function getDil3Power() {
 
 function getDilExp(disable) {
 	let ret = 1.5
-	if (player.meta !== undefined && !player.aarexModifications.nguspV) ret += getDilUpgPower(4)
+	if (player.meta !== undefined && !player.aarexModifications.nguspV) ret += getDilUpgPower(4) / 4
 	if (tmp.ngp3) {
 		if ((!tmp.qu.bigRip.active || tmp.qu.bigRip.upgrades.includes(11)) && player.masterystudies.includes("d13") && disable != "TU3") ret += getTreeUpgradeEffect(2)
 		if (ghostified && disable != "neutrinos") ret += tmp.nb[0]
@@ -1444,6 +1444,7 @@ function getDilTimeGainPerSecond() {
 	if (player.dilation.upgrades.includes('ngpp2')) gain = gain.times(Decimal.max(getEternitied(), 1).pow(player.aarexModifications.ngudpV?.2:.1))
 	if (player.dilation.upgrades.includes('ngud2')) gain = gain.times(Decimal.max(getEternitied(), 1).pow(.1))
 	if (player.dilation.upgrades.includes('ngpp6')) gain = gain.times(getDil17Bonus())
+	if (player.dilation.upgrades.includes('ngusp3')) gain = gain.times(getD22Bonus())
 	if (tmp.ngp3 ? !tmp.qu.bigRip.active || tmp.qu.bigRip.upgrades.includes(11) : false) {
 		if (player.masterystudies.includes("t263")) gain = gain.times(getMTSMult(263))
 		if (player.masterystudies.includes("t281")) gain = gain.times(getMTSMult(281))
@@ -2027,7 +2028,7 @@ function updateDimensions() {
                 document.getElementById("reversedilationdiv").style.display = ""
                 if (canReverseDilation()) {
                     document.getElementById("reversedilation").className = "dilationbtn"
-                    document.getElementById("reversedilation").innerHTML = "Reverse dilation."+(player.exdilation.times>0?"<br>Gain "+shortenDimensions(getExDilationGain())+" ex-dilation":"")
+                    document.getElementById("reversedilation").innerHTML = "Reverse dilation."+(player.exdilation.times>0||quantumed?"<br>Gain "+shortenDimensions(getExDilationGain())+" ex-dilation":"")
                 } else {
                     let req=getExdilationReq()
                     document.getElementById("reversedilation").className = "eternityupbtnlocked"
@@ -6984,7 +6985,10 @@ function updateDilationUpgradeButtons() {
         document.getElementById("dil17desc").textContent = "Currently: "+shortenMoney(getDil17Bonus()) + 'x';
     } else document.getElementById("mddilupg").style.display = "none"
     if (player.exdilation != undefined) document.getElementById("dil18desc").textContent = "Currently: "+shortenMoney(getD18Bonus())+"x"
-    if (isDilUpgUnlocked(21)) document.getElementById("dil21desc").textContent = "Currently: +"+shortenMoney(getD21Bonus())+" to exponent before softcap"
+    if (isDilUpgUnlocked(21)) {
+		document.getElementById("dil21desc").textContent = "Currently: +"+shortenMoney(getD21Bonus())+" to exponent before softcap"
+		document.getElementById("dil22desc").textContent = "Currently: "+shortenMoney(getD22Bonus())+"x"
+	}
 }
 
 function getRebuyableDilUpgCost(id) {

@@ -21,6 +21,11 @@ function getD21Bonus() {
 	return r
 }
 
+function getD22Bonus() {
+	let l=player.meta.antimatter.max(1).log10()
+	return Decimal.pow(10,Math.max(Math.sqrt(Math.max(l-120,0))-10,0)/1.5)
+}
+
 function distribEx() {
 	let toAdd=player.exdilation.unspent
 	for (var u=1;u<5;u++) toAdd=toAdd.add(player.exdilation.spent[u])

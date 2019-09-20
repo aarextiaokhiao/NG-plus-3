@@ -2058,7 +2058,10 @@ function load_game(noOffline, init) {
 		setUnlocks = [Decimal.pow(Number.MAX_VALUE, 2.9)]
 	}
 	if (infiniteCheck) exportInfiniteSave()
-	if (infiniteCheck || infiniteCheck2) updateNewPlayer(true)
+	if (infiniteCheck || infiniteCheck2) {
+		updateNewPlayer(true)
+		infiniteCheck2 = false
+	}
 	onLoad(noOffline)
 	startInterval()
 }
