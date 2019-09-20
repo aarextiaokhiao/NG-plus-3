@@ -51,6 +51,7 @@ function getGalaxyPowerEff(bi) {
 	if (player.timestudy.studies.includes(212)) eff *= Math.min(Math.pow(player.timeShards.max(2).log2(), 0.005), 1.1)
 	if (player.timestudy.studies.includes(232)&&bi) eff*=tmp.ts232
 
+	if (player.exdilation != undefined && player.aarexModifications.nguspV && player.dilation.active) eff *= exDilationBenefit() + 1
 	if (tmp.ngp3) eff *= colorBoosts.r
 	if (GUBought("rg2")) eff *= Math.pow(player.dilation.freeGalaxies/5e3+1,0.25)
 	if (tmp.rg4) eff *= 1.5

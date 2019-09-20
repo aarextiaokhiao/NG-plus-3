@@ -1554,6 +1554,15 @@ if (player.version < 5) {
       resetPDs(true)
   }
   if (player.aarexModifications.ngm5V<0.51) player.aarexModifications.ngm5V=0.51
+  if (player.aarexModifications.nguspV !== undefined) {
+      if (player.blackholeDimension5 === undefined) for (var d=5;d<9;d++) player["blackholeDimension"+d] = {
+          cost: blackholeDimStartCosts[d],
+          amount: 0,
+          power: 1,
+          bought: 0
+      }
+      if (player.dilation.autoUpgrades === undefined) player.dilation.autoUpgrades = []
+  }
   ipMultPower=2
   if (player.masterystudies) if (player.masterystudies.includes("t241")) ipMultPower=2.2
   if (GUBought("gb3")) ipMultPower=2.3
@@ -1790,7 +1799,7 @@ if (player.version < 5) {
   if (player.exdilation != undefined) {
       if (player.dilation.studies.includes(1)) document.getElementById("dilationeterupgrow").style.display="table-row"
       document.getElementById("blackHoleAnimBtn").textContent = "Black hole: " + ((player.options.animations.blackHole) ? "ON" : "OFF")
-      document.getElementById("blackholeMax").style.display = player.aarexModifications.ngudpV ? "" : "none"
+      document.getElementById("blackholeMax").style.display = player.aarexModifications.ngudpV || player.aarexModifications.nguspV ? "" : "none"
       document.getElementById("blackholeauto").style.display = player.aarexModifications.ngudpV && player.achievements.includes("ngpp17") ? "" : "none"
       document.getElementById('blackholeauto').textContent="Auto: O"+(player.aarexModifications.ngudpV&&player.autoEterOptions.blackhole?"N":"FF")
       if (player.blackhole.unl == true) {
@@ -1805,8 +1814,10 @@ if (player.version < 5) {
   var suffix="NG"+(player.meta!=undefined?"pp":"ud")
   document.getElementById("uhDiv"+suffix).appendChild(document.getElementById("Universal harmony"))
   document.getElementById("feDiv"+suffix).appendChild(document.getElementById("In the grim darkness of the far endgame"))
-  document.getElementById("dil15").style["font-size"]=player.masterystudies==undefined?"10px":"9px"
-  document.getElementById("dil15formula").style.display=player.masterystudies==undefined?"none":""
+  document.getElementById("dil11effect").textContent=player.aarexModifications.nguspV?"You gain even more tachyon particles from the previous upgrade.":"Tachyon particle formula is better."
+  document.getElementById("dil15").style["font-size"]=player.masterystudies==undefined||player.aarexModifications.nguspV!==undefined?"10px":"9px"
+  document.getElementById("dil15formula").style.display=player.masterystudies==undefined||player.aarexModifications.nguspV!==undefined?"none":""
+  document.getElementById("exDilationDesc").innerHTML = player.aarexModifications.nguspV ? 'making galaxies <span id="exDilationBenefit" style="font-size:25px; color: black">0</span>% stronger in dilation.' : 'making dilation <span id="exDilationBenefit" style="font-size:25px; color: black">0</span>% less severe.'
   document.getElementById("metaAntimatterEffectType").textContent=inQC(3)?"multiplier on all Infinity Dimensions":"extra multiplier per dimension boost"
   for (i=1;i<9;i++) document.getElementById("td"+i+'auto').style.visibility=player.achievements.includes("ngpp17")?"visible":"hidden"
   document.getElementById('togglealltimedims').style.visibility=player.achievements.includes("ngpp17")?"visible":"hidden"
@@ -1836,6 +1847,7 @@ if (player.version < 5) {
       document.getElementById('reward27disable').textContent="10 seconds reward: O"+(tmp.qu.disabledRewards[27]?"FF":"N")
       document.getElementById('coloredQuarksProduction').innerHTML=player.ghostify.milestones>1?"You are getting <span id='rPowerRate' style='font-size:35px' class='red'></span> red power, <span id='gPowerRate' style='font-size:35px' class='green'></span> green power, and <span id='bPowerRate' style='font-size:35px' class='blue'></span> blue power per second.":"They have a <span id='colorChargeAmount' style='font-size:35px'></span><span id='colorCharge'></span> charge, which produces <span id='powerRate' style='font-size:35px'></span> <span id='colorPower'></span> per second."
       document.getElementById('rebuyupgauto').textContent="Rebuyable upgrade auto: O"+(player.autoEterOptions.rebuyupg?"N":"FF")
+      document.getElementById('dilUpgsauto').textContent="Auto-buy dilation upgrades: O"+(player.autoEterOptions.dilUpgs?"N":"FF")
       document.getElementById('metaboostauto').textContent="Meta-boost auto: O"+(player.autoEterOptions.metaboost?"N":"FF")
       document.getElementById('priorityquantum').value=formatValue("Scientific", new Decimal(tmp.qu.autobuyer.limit), 2, 0)
       document.getElementById('rg4toggle').style.display=(inQC(1)||QCIntensity(1))?"none":""
@@ -1971,8 +1983,10 @@ if (player.version < 5) {
           if (!player.aarexModifications.newGamePlusVersion) ngModeMessages.push("WARNING! You are disabling NG+ features on NG++! Standard NG++ have all of NG++ features and I recommend you to create a new save with NG+ and NG++ modes on.")
           if (player.aarexModifications.ngp4V) ngModeMessages.push("Welcome to NG++++ mode by Aarex! This is a NG+ version of NG+3 which makes you start with more stuff! It is recommended to not use this mode to progress in NG+3.")
           if (player.exdilation!==undefined) {
-              if (player.aarexModifications.nguepV) ngModeMessages.push("Welcome to NG Update^' mode made by pg132! NGUd^' is like NGUd', but non-Black Hole nerfs are removed to make NGUd^' a NG^-like mod of NGUd'. This mod is very easy to beat, but you can't break this mod. :'(")
-              else if (player.aarexModifications.ngudpV) ngModeMessages.push("Welcome to NG Update' mode made by pg132! NGUd' is like NGUd+, but you can't reverse dilation. Good luck for beating this mod. >:)")
+              if (player.aarexModifications.nguspV) ngModeMessages.push("Welcome to NG Update Semiprime mode made by Aarex! This is like NGUd', but it is really a combination of NG+3 and NGUd. This mode is more balanced too. Good luck! :)")
+              if (player.aarexModifications.nguepV) ngModeMessages.push("Welcome to NG Update Exponential Prime mode made by pg132! NGUd^' is like NGUd', but non-Black Hole nerfs are removed to make NGUd^' a NG^-like mod of NGUd'. This mod is very easy to beat, but you can't break this mod. :'(")
+              else if (player.aarexModifications.nguspV) {}
+              else if (player.aarexModifications.ngudpV) ngModeMessages.push("Welcome to NG Update Prime mode made by pg132! NGUd' is like NGUd+, but you can't reverse dilation. Good luck for beating this mod. >:)")
               else if (player.meta!==undefined) ngModeMessages.push("Welcome to NG Update+ mode, a combination made by Soul147 (Sigma)! This is a combination of dan-simon's NG Update and Aarex's NG+++. I think in this mode, you can break the game...")
               else ngModeMessages.push("Welcome to NG Update mode, an another dan-simon's end-game mod! In this mode, there are black hole and ex-dilation.")
           } else if (player.masterystudies&&!player.aarexModifications.ngp4V) ngModeMessages.push("Welcome to NG+++ mode, the extension of dan-simon's NG++ made by Aarex! There are a lot of content that are added. Good luck for beating this mode!")
@@ -2061,7 +2075,7 @@ function save_game(silent) {
   isInfiniteDetected()
   if (noSave || infiniteDetected) return
   set_save(metaSave.current, player);
-  if (!silent) $.notify("Game saved", "info")
+  $.notify("Game saved", "info")
 }
 
 function overwrite_save(id) {
@@ -2083,6 +2097,7 @@ function change_save(id) {
   metaSave.current=id
   changeSaveDesc(oldId, savePlacement)
   updateNewPlayer()
+  infiniteCheck2 = false
   closeToolTip()
   load_game(shiftDown)
   savePlacement=1
@@ -2197,13 +2212,14 @@ function delete_save(saveId) {
 
 var ngModeMessages=[]
 function new_game(id) {
-	if (modes.arrows > 1 || modes.ngud > 2 || modes.nguep > 1) {
+	if (modes.arrows > 1 || modes.ngud > 3 || modes.nguep > 1) {
 		alert("Coming soon...")
 		return
 	}
 	save_game(true)
 	clearInterval(gameLoopIntervalId)
 	updateNewPlayer()
+	infiniteCheck2 = false
 	var oldId=metaSave.current
 	metaSave.current=1
 	while (metaSave.saveOrder.includes(metaSave.current)) metaSave.current++

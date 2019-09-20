@@ -37,7 +37,7 @@ function updateNewPlayer(reseted) {
             ngpp: player.meta == undefined ? false : tmp.ngp3 ? 2 : true,
             ngmm: player.aarexModifications.ngmX ? player.aarexModifications.ngmX - 1 : player.galacticSacrifice !== undefined ? 1 : 0,
             rs: player.infinityUpgradesRespecced != undefined ? 2 : player.boughtDims !== undefined,
-			ngud: player.aarexModifications.ngudpV !== undefined ? 2 : player.exdilation !== undefined ? 1 : 0,
+			ngud: player.aarexModifications.nguspV !== undefined ? 3 : player.aarexModifications.ngudpV !== undefined ? 2 : player.exdilation !== undefined ? 1 : 0,
 			nguep: player.aarexModifications.nguepV !== undefined
         }
     } else var modesChosen = modes
@@ -693,6 +693,15 @@ function updateNewPlayer(reseted) {
         player.aarexModifications.ngp4V=1
     }
     if (modesChosen.ngud == 2) player.aarexModifications.ngudpV=1.12
+    if (modesChosen.ngud == 3) {
+        for (var d=5;d<9;d++) player["blackholeDimension"+d] = {
+            cost: blackholeDimStartCosts[d],
+            amount: 0,
+            power: 1,
+            bought: 0
+        }
+        player.aarexModifications.nguspV=1
+    }
     if (modesChosen.nguep) player.aarexModifications.nguepV=1.03
     if (modesChosen.ngmm > 2) {
         player.aarexModifications.newGame4MinusVersion=2.111
@@ -1383,7 +1392,7 @@ function sacrificeConf() {
 }
 
 function getDilPower() {
-	var ret = Decimal.pow(3, player.dilation.rebuyables[3] * exDilationUpgradeStrength(3))
+	var ret = Decimal.pow(getDil3Power(), getDilUpgPower(3))
 	if (player.dilation.upgrades.includes("ngud1")) ret = getD18Bonus().times(ret)
 	if (tmp.ngp3) {
 		if (player.masterystudies.includes("t264")) ret = ret.times(getMTSMult(264))
@@ -1393,9 +1402,22 @@ function getDilPower() {
 	return ret
 }
 
+function getDilUpgPower(x) {
+	let r=player.dilation.rebuyables[x]
+	if (player.aarexModifications.nguspV) r+=exDilationUpgradeStrength(x)
+	else if (player.exdilation!=undefined&&!player.aarexModifications.ngudpV) r*=exDilationUpgradeStrength(x)
+	return r
+}
+
+function getDil3Power() {
+	let ret = 3
+	if (player.aarexModifications.nguspV) ret += getDilUpgPower(4) / 2
+	return ret
+}
+
 function getDilExp(disable) {
 	let ret = 1.5
-	if (player.dilation.rebuyables[4]) ret += player.dilation.rebuyables[4] / 4
+	if (player.meta !== undefined && !player.aarexModifications.nguspV) ret += getDilUpgPower(4)
 	if (tmp.ngp3) {
 		if ((!tmp.qu.bigRip.active || tmp.qu.bigRip.upgrades.includes(11)) && player.masterystudies.includes("d13") && disable != "TU3") ret += getTreeUpgradeEffect(2)
 		if (ghostified && disable != "neutrinos") ret += tmp.nb[0]
@@ -1412,7 +1434,7 @@ function getDilTimeGainPerSecond() {
 	if (tp.gt(1e250)&&player.aarexModifications.ngudpV&&!player.aarexModifications.nguepV) tp=Decimal.pow(tp.log10()*4,247/3+Math.log10(tp.log10()-240))
 	let exp=GUBought("br3")?1.1:1
 	if (ghostified&&player.ghostify.ghostlyPhotons.unl) exp*=tmp.le[0]
-	let gain = tp.pow(exp).times(Decimal.pow(2, player.dilation.rebuyables[1] * exDilationUpgradeStrength(1)))
+	let gain = tp.pow(exp).times(Decimal.pow(2, getDilUpgPower(1)))
 	if (player.exdilation != undefined) {
 		gain = gain.times(getBlackholePowerEffect())
 		if (player.eternityUpgrades.includes(7)) gain = gain.times(1 + Math.log10(Math.max(1, player.money.log(10))) / 40)
@@ -2007,8 +2029,9 @@ function updateDimensions() {
                     document.getElementById("reversedilation").className = "dilationbtn"
                     document.getElementById("reversedilation").innerHTML = "Reverse dilation."+(player.exdilation.times>0?"<br>Gain "+shortenDimensions(getExDilationGain())+" ex-dilation":"")
                 } else {
+                    let req=getExdilationReq()
                     document.getElementById("reversedilation").className = "eternityupbtnlocked"
-                    document.getElementById("reversedilation").textContent = "Get "+(player.eternityPoints.lt("1e10000")?shortenCosts(new Decimal("1e10000"))+" EP and ":"")+shortenCosts(1e30)+" dilated time to reverse dilation."
+                    document.getElementById("reversedilation").textContent = "Get "+(player.eternityPoints.lt(req.ep)?shortenCosts(new Decimal(req.ep))+" EP and ":"")+shortenCosts(req.dt)+" dilated time to reverse dilation."
                 }
             } else {
                 document.getElementById("reversedilationdiv").style.display = "none"
@@ -2539,7 +2562,7 @@ function updateInfCosts() {
         document.getElementById("193desc").textContent = "Currently: "+shortenMoney(Decimal.pow(1.03, getEternitied()).min("1e13000"))+"x"
         document.getElementById("212desc").textContent = "Currently: "+((Math.pow(player.timeShards.max(2).log2(), 0.005)-1)*100).toFixed(2)+"%"
         document.getElementById("214desc").textContent = "Currently: "+shortenMoney(((calcTotalSacrificeBoost().pow(8)).min("1e46000").times(calcTotalSacrificeBoost().pow(1.1)).div(calcTotalSacrificeBoost())).max(1).min(new Decimal("1e125000")))+"x"
-        document.getElementById("metaCost").textContent = shortenCosts(1e24);
+        document.getElementById("metaCost").textContent = shortenCosts(getMetaUnlCost());
 
         var ec1Mult=player.aarexModifications.newGameExpVersion?1e3:2e4
         if (player.etercreq !== 1) document.getElementById("ec1unl").innerHTML = "Eternity Challenge 1<span>Requirement: "+(ECTimesCompleted("eterc1")+1)*ec1Mult+" Eternities<span>Cost: 30 Time Theorems"
@@ -3214,6 +3237,10 @@ function galaxyReset(bulk) {
         blackholeDimension2: player.blackholeDimension2,
         blackholeDimension3: player.blackholeDimension3,
         blackholeDimension4: player.blackholeDimension4,
+        blackholeDimension5: player.blackholeDimension5,
+        blackholeDimension6: player.blackholeDimension6,
+        blackholeDimension7: player.blackholeDimension7,
+        blackholeDimension8: player.blackholeDimension8,
         why: player.why,
         shameLevel: player.shameLevel,
         options: player.options,
@@ -3374,10 +3401,7 @@ function changeSaveDesc(saveId, placement) {
 			if (temp.boughtDims) message+="Eternity Respecced, "
 			if (temp.aarexModifications.newGameExpVersion) message+="NG^, "
 			if (temp.exdilation!==undefined||temp.meta!==undefined) {
-				if (temp.aarexModifications.nguepV) message+="NG Update^', "
-				else if (temp.aarexModifications.ngudpV) message+="NG Update', "
-				else if (temp.exdilation!==undefined&&temp.meta!==undefined) message+="NG Update+, "
-				else if (temp.exdilation!==undefined) message+="NG Update, "
+				if (temp.exdilation!==undefined) message+="NG Update"+(temp.aarexModifications.nguepV?"^":"")+(temp.aarexModifications.nguspV?"S'":temp.aarexModifications.ngudpV?"'":player.meta!==undefined?"+":"")+", "
 				else if (temp.meta!==undefined) message+="NG++"+(temp.masterystudies!==undefined?"+":"")+(temp.aarexModifications.ngp4V!==undefined?"+":"")+", "
 				if (temp.aarexModifications.newGamePlusVersion===undefined) message+="No NG+ features, "
 			} else if (temp.aarexModifications.newGamePlusVersion) message+="NG+, "
@@ -3465,7 +3489,7 @@ var modCaps = {
   arrows: 2,
   ngmm: 4,
   rs: 2,
-  ngud: 3,
+  ngud: 4,
   nguep: 2
 }
 var modFullNames = {
@@ -3484,7 +3508,7 @@ var modSubNames = {
   arrows: ["Linear (↑⁰)", "Exponential (↑)", "Tetrational (↑↑)"],
   ngmm: ["OFF", "ON", "NG---", "NG-4", "NG-5"],
   rs: ["NONE", "Eternity", "Infinity"],
-  ngud: ["OFF", "ON", "Prime (')", "Semiprime (S')"],
+  ngud: ["OFF", "ON", "Prime (')", "Semiprime (S')", "Semiprime.1 (S'.1)"],
   nguep: ["Linear' (↑⁰')", "Exponential' (↑')", "Tetrational' (↑↑')"]
 }
 function toggle_mode(id) {
@@ -3628,6 +3652,7 @@ function import_save(type) {
 		}
 		if (type==metaSave.current) {
 			clearInterval(gameLoopIntervalId)
+			infiniteCheck2 = false
 			player = decoded_save_data;
 			if (detectInfinite()) infiniteDetected=true
 			onLoad()
@@ -3916,9 +3941,9 @@ function setAchieveTooltip() {
     thinking.setAttribute('ach-tooltip', "Eternity for "+shortenCosts( new Decimal("1e600"))+" EP in 1 minute or less while dilated.")
     thisis.setAttribute('ach-tooltip', "Reach "+shortenCosts(new Decimal('1e20000'))+" IP without any time studies while dilated.")
     stillamil.setAttribute('ach-tooltip',"Reach "+shortenCosts(1e6)+" black hole power.")
-    out.setAttribute('ach-tooltip',"Get more than "+shortenCosts(1e5)+" ex-dilation.")
+    out.setAttribute('ach-tooltip',"Get more than "+shortenCosts(1e5)+" ex-dilation." + (player.aarexModifications.nguspV !== undefined ? " Reward: You can distribute ex-dilation from all dilation boosts." : ""))
     ridNGud.setAttribute('ach-tooltip', "Reach "+shortenCosts(new Decimal("1e20000"))+" IP without any time studies or dilation upgrades while dilated.")
-    onlywar.setAttribute('ach-tooltip', "Reach "+shortenMoney(new Decimal('1e40000'))+" EP.")
+    onlywar.setAttribute('ach-tooltip', "Reach "+shortenMoney(new Decimal('1e40000'))+" EP." + (player.aarexModifications.nguspV !== undefined ? " Reward: You can auto-buy dilation upgrades every 1 second if you have at least "+shortenMoney(new Decimal('1e40000'))+" EP." : ""))
     thecap.setAttribute('ach-tooltip', "Get "+shortenDimensions(1e12)+" eternities. Reward: Eternity upgrade 2 uses a better formula.")
     neverenough.setAttribute('ach-tooltip', "Reach "+shortenCosts( new Decimal("1e100000"))+" replicanti. Reward: You can buy max replicanti galaxies.")
     harmony.setAttribute('ach-tooltip', player.meta?"Have at least 700 normal, replicanti, and free dilated galaxies. Reward: Galaxies are 0.1% stronger.":"Get the same number (at least 300) of normal, replicanti, and free galaxies.")
@@ -5218,6 +5243,10 @@ function bigCrunch(autoed) {
             blackholeDimension2: player.blackholeDimension2,
             blackholeDimension3: player.blackholeDimension3,
             blackholeDimension4: player.blackholeDimension4,
+            blackholeDimension5: player.blackholeDimension5,
+            blackholeDimension6: player.blackholeDimension6,
+            blackholeDimension7: player.blackholeDimension7,
+            blackholeDimension8: player.blackholeDimension8,
             why: player.why,
             shameLevel: player.shameLevel,
             options: player.options,
@@ -5676,6 +5705,10 @@ function eternity(force, auto, presetLoad, dilated) {
             blackholeDimension2: player.blackholeDimension2,
             blackholeDimension3: player.blackholeDimension3,
             blackholeDimension4: player.blackholeDimension4,
+            blackholeDimension5: player.blackholeDimension5,
+            blackholeDimension6: player.blackholeDimension6,
+            blackholeDimension7: player.blackholeDimension7,
+            blackholeDimension8: player.blackholeDimension8,
             why: player.why,
             shameLevel: player.shameLevel,
             options: player.options,
@@ -6054,6 +6087,10 @@ function startChallenge(name) {
       blackholeDimension2: player.blackholeDimension2,
       blackholeDimension3: player.blackholeDimension3,
       blackholeDimension4: player.blackholeDimension4,
+      blackholeDimension5: player.blackholeDimension5,
+      blackholeDimension6: player.blackholeDimension6,
+      blackholeDimension7: player.blackholeDimension7,
+      blackholeDimension8: player.blackholeDimension8,
       why: player.why,
       shameLevel: player.shameLevel,
       options: player.options,
@@ -6670,6 +6707,10 @@ function startEternityChallenge(n) {
         blackholeDimension2: player.blackholeDimension2,
         blackholeDimension3: player.blackholeDimension3,
         blackholeDimension4: player.blackholeDimension4,
+        blackholeDimension5: player.blackholeDimension5,
+        blackholeDimension6: player.blackholeDimension6,
+        blackholeDimension7: player.blackholeDimension7,
+        blackholeDimension8: player.blackholeDimension8,
         why: player.why,
         shameLevel: player.shameLevel,
         options: player.options,
@@ -6793,7 +6834,7 @@ function dilates(x, m) {
 	let a = false
 	if (player.dilation.active && m!=2 && (m!="meta" || !player.achievements.includes("ng3p63") || !inQC(0))) {
 		e *= dilationPowerStrength()
-		if (player.exdilation != undefined && !player.aarexModifications.ngudpV) e += exDilationBenefit() * (1 - e)
+		if (player.exdilation != undefined && !player.aarexModifications.ngudpV && !player.aarexModifications.nguspV) e += exDilationBenefit() * (1 - e)
 		if (player.dilation.upgrades.includes(9)) e *= 1.05
 		a = true
 	}
@@ -6835,17 +6876,44 @@ function dilationPowerStrength() {
                                2e12,        1e10,       1e11,
                                             1e15,
                               [1e8, 1e4],   1e20,       1e25,
-                              1e50,    1e60,    1e80,   1e100,
-                              1e20,    1e25]
+                              1e50,    1e60,    1e80,   1e100, // Meta Row (NG++)
+                              1e79,    1e84,    1e89,   1e100, // Meta Row (NGUdS')
+                              1e20,    1e25,    1e50,   1e55,   1e94] //Last 3 upgrades are NGUdS' exclusive.
 
+ const scaleStarts = [72, 24]
+
+function getDilUpgId(x) {
+	return x > 19 ? "ngusp" + (x - 19) : x > 17 ? "ngud" + (x - 17) : x > 11 ? "ngpp" + (x - 11) : x
+}
+
+function isDilUpgUnlocked(x) {
+	let unl = true
+	if (x > 17) {
+		unl = player.exdilation !== undefined
+		if (x > 19) unl = unl && player.aarexModifications.nguspV !== undefined && player.dilation.studies.includes(6)
+		else if (x > 18) unl = unl && player.aarexModifications.ngudpV === undefined && player.aarexModifications.nguspV === undefined
+	} else if (x > 14) unl = player.dilation.studies.includes(6)
+	else if (x > 10) unl = player.dilation.rebuyables[4] !== undefined
+	return unl
+}
+
+function getDilUpgCost(x) {
+	let cost = DIL_UPG_COSTS[x]
+	if (x > 13) cost = DIL_UPG_COSTS[x + (player.aarexModifications.nguspV !== undefined || x > 17 ? 4 : 0)]
+	else if (x == 11) cost = getRebuyableDilUpgCost(4)
+	else if (x < 4) cost = getRebuyableDilUpgCost(x)
+	return cost
+}
 
 function buyDilationUpgrade(id, max) {
+	let cost = getDilUpgCost(id)
     if (id > 3 && id != 11) { // Not rebuyable
-        var uid = id > 17 ? "ngud" + (id - 17) : id > 11 ? "ngpp" + (id - 11) : id
-        if (player.dilation.dilatedTime < DIL_UPG_COSTS[id]) return // Not enough dilated time
+        var uid = getDilUpgId(id)
+        if (!player.dilation.dilatedTime.gte(cost)) return // Not enough dilated time
         if (player.dilation.upgrades.includes(uid)) return // Has the upgrade
-        player.dilation.dilatedTime = player.dilation.dilatedTime.minus(DIL_UPG_COSTS[id])
+        player.dilation.dilatedTime = player.dilation.dilatedTime.minus(cost)
         player.dilation.upgrades.push(uid)
+		if (player.aarexModifications.nguspV !== undefined && !player.dilation.autoUpgrades.includes(id)) player.dilation.autoUpgrades.push(id)
         if (id == 4) player.dilation.freeGalaxies *= 2 // Double the current galaxies
         if (id == 10 && tmp.ngp3) tmp.qu.wasted = false
         if (id == 14) {
@@ -6862,11 +6930,10 @@ function buyDilationUpgrade(id, max) {
             }
         }
     } else { // Is rebuyable
-        let realCost = getRebuyableDilUpgCost(id > 3 ? 4 : id)
-        if (!player.dilation.dilatedTime.gte(realCost)) return false
-        if (realCost.gt("1e10000")) return
+        if (!player.dilation.dilatedTime.gte(cost)) return false
+        if (cost.gt("1e10000")) return
 
-        player.dilation.dilatedTime = player.dilation.dilatedTime.minus(realCost)
+        player.dilation.dilatedTime = player.dilation.dilatedTime.minus(cost)
         player.dilation.rebuyables[id > 3 ? 4 : id] += 1
         if (id == 2) {
             if (speedrunMilestonesReached<22) player.dilation.dilatedTime = new Decimal(0)
@@ -6894,22 +6961,19 @@ function getPassiveTTGen() {
 }
 
 function updateDilationUpgradeButtons() {
-    for (var i = 1; i < 20; i++) {
-        if ((i > 17 && player.exdilation === undefined) || (i > 18 && player.aarexModifications.ngudpV)) document.getElementById("n"+(i-14)).style.display = "none"
-        else if (i > 10 && i < 14 && player.dilation.rebuyables[4] === undefined) document.getElementById("n"+(i-10)).style.display = "none"
-        else {
-            if (i > 17) document.getElementById("n"+(i-14)).style.display = "table-cell"
-            if (i > 10 && i < 14) document.getElementById("n"+(i-10)).style.display = "table-cell"
-            if (i < 4 || i == 11) {
-                document.getElementById("dil"+i).className = ( getRebuyableDilUpgCost(i > 3 ? 4 : i).gt(player.dilation.dilatedTime) ) ? "dilationupgrebuyablelocked" : "dilationupgrebuyable";
-            } else if (player.dilation.upgrades.includes(i > 17 ? "ngud" + (i - 17) : i > 11 ? "ngpp" + (i - 11) : i)) {
-                document.getElementById("dil"+i).className = "dilationupgbought"
-            } else {
-                document.getElementById("dil"+i).className = ( DIL_UPG_COSTS[i] > player.dilation.dilatedTime ) ? "dilationupglocked" : "dilationupg";
-            }
-        }
+    for (var i = 1; i < 23; i++) {
+		let n
+		let show
+        if (i > 17) n = i - 14
+        else if (i > 10 && i < 14) n = i - 10
+        if (!n || isDilUpgUnlocked(i)) {
+            if (n) document.getElementById("n"+n).style.display = "table-cell"
+            document.getElementById("dil"+i).className = player.dilation.upgrades.includes(getDilUpgId(i)) ? "dilationupgbought" : player.dilation.dilatedTime.gte(getDilUpgCost(i)) ? "dilationupg" : "dilationupglocked"
+        } else document.getElementById("n"+n).style.display = "none"
     }
     var genSpeed = getPassiveTTGen()
+	var power = getDil3Power()
+	document.getElementById("dil3desc").textContent = power > 3 ? "Gain " + shorten(power) + "x more Tachyon Particles." : "Triple the amount of Tachyon Particles gained."
     document.getElementById("dil7desc").textContent = "Currently: "+shortenMoney(player.dilation.dilatedTime.max(1).pow(1000).max(1))+"x"
     document.getElementById("dil10desc").textContent = "Currently: "+shortenMoney(player.achievements.includes("ng3p44") && player.timestudy.theorem / genSpeed < 3600 ? genSpeed * 10 : genSpeed)+"/s"
     if (player.dilation.studies.includes(6)) {
@@ -6919,15 +6983,18 @@ function updateDilationUpgradeButtons() {
         document.getElementById("dil17formula").textContent = "(log(x)^0.5"+(tmp.ngp3?")":"/2)")
         document.getElementById("dil17desc").textContent = "Currently: "+shortenMoney(getDil17Bonus()) + 'x';
     } else document.getElementById("mddilupg").style.display = "none"
-    if (player.exdilation != undefined ) document.getElementById("dil18desc").textContent = "Currently: "+shortenMoney(getD18Bonus())+"x"
+    if (player.exdilation != undefined) document.getElementById("dil18desc").textContent = "Currently: "+shortenMoney(getD18Bonus())+"x"
+    if (isDilUpgUnlocked(21)) document.getElementById("dil21desc").textContent = "Currently: +"+shortenMoney(getD21Bonus())+" to exponent before softcap"
 }
 
-var scaleStarts = [72, 24]
 function getRebuyableDilUpgCost(id) {
 	var costGroup = DIL_UPG_COSTS[id>3?11:id]
 	var amount = player.dilation.rebuyables[id]
 	let cost = new Decimal(costGroup[0]).times(Decimal.pow(costGroup[1],amount))
-	if (id > 2) {
+	if (player.aarexModifications.nguspV) {
+		if (id > 3) cost = cost.times(1e7)
+		if (id > 2 && cost.gte(1e25)) cost = Decimal.pow(10, Math.pow(cost.log10()/2.5-5, 2))
+	} else if (id > 2) {
 		if (player.meta != undefined && amount >= scaleStarts[id-3]) return cost.times(Decimal.pow(costGroup[1],(amount-scaleStarts[id-3]+1)*(amount-scaleStarts[id-3]+2)/4))
 		if (player.exdilation != undefined && !player.aarexModifications.ngudpV && cost.gt(1e30)) cost = cost.div(1e30).pow(cost.log(1e30)).times(1e30)
 	}
@@ -6935,33 +7002,18 @@ function getRebuyableDilUpgCost(id) {
 }
 
 function updateDilationUpgradeCosts() {
-	document.getElementById("dil1cost").textContent = "Cost: " + shortenCosts(getRebuyableDilUpgCost(1)) + " dilated time"
-	document.getElementById("dil2cost").textContent = "Cost: " + shortenCosts(getRebuyableDilUpgCost(2)) + " dilated time"
-	document.getElementById("dil3cost").textContent = "Cost: " + formatValue(player.options.notation, getRebuyableDilUpgCost(3), 1, 1) + " dilated time"
-	document.getElementById("dil4cost").textContent = "Cost: " + shortenCosts(DIL_UPG_COSTS[4]) + " dilated time"
-	document.getElementById("dil5cost").textContent = "Cost: " + shortenCosts(DIL_UPG_COSTS[5]) + " dilated time"
-	document.getElementById("dil6cost").textContent = "Cost: " + shortenCosts(DIL_UPG_COSTS[6]) + " dilated time"
-	document.getElementById("dil7cost").textContent = "Cost: " + shortenCosts(DIL_UPG_COSTS[7]) + " dilated time"
-	document.getElementById("dil8cost").textContent = "Cost: " + shortenCosts(DIL_UPG_COSTS[8]) + " dilated time"
-	document.getElementById("dil9cost").textContent = "Cost: " + shortenCosts(DIL_UPG_COSTS[9]) + " dilated time"
-	document.getElementById("dil10cost").textContent = "Cost: " + shortenCosts(DIL_UPG_COSTS[10]) + " dilated time"
-	if (player.meta) {
-		document.getElementById("dil11cost").textContent = "Cost: " + shortenCosts(getRebuyableDilUpgCost(4)) + " dilated time"
-		document.getElementById("dil12cost").textContent = "Cost: " + shortenCosts(DIL_UPG_COSTS[12]) + " dilated time"
-		document.getElementById("dil13cost").textContent = "Cost: " + shortenCosts(DIL_UPG_COSTS[13]) + " dilated time"
-		if (player.dilation.studies.includes(6)) for (id=14;id<18;id++) document.getElementById("dil"+id+"cost").textContent = "Cost: " + shortenCosts(DIL_UPG_COSTS[id]) + " dilated time"
+	for (var x=1; x<23; x++) if (isDilUpgUnlocked(x)) {
+		if (x == 3) document.getElementById("dil3cost").textContent = "Cost: " + formatValue(player.options.notation, getRebuyableDilUpgCost(3), 1, 1) + " dilated time"
+		else document.getElementById("dil"+x+"cost").textContent = "Cost: " + shortenCosts(getDilUpgCost(x)) + " dilated time"
 	}
-	if (player.exdilation != undefined) {
-		document.getElementById("dil18oom").textContent = shortenCosts(new Decimal("1e1000"))
-		document.getElementById("dil18cost").textContent = "Cost: " + shortenCosts(DIL_UPG_COSTS[18]) + " dilated time"
-		document.getElementById("dil19cost").textContent = "Cost: " + shortenCosts(DIL_UPG_COSTS[19]) + " dilated time"
-	}
+	if (player.exdilation != undefined) document.getElementById("dil18oom").textContent = shortenCosts(new Decimal("1e1000"))
 }
 
 function gainDilationGalaxies() {
-	if (player.dilation.nextThreshold.lte(player.dilation.dilatedTime)) {
-		let thresholdMult = inQC(5) ? Math.pow(10, 2.8) : 1.35 + 3.65 * Math.pow(0.8, player.dilation.rebuyables[2] * exDilationUpgradeStrength(2))
-		if (player.exdilation != undefined) thresholdMult -= .1 * exDilationUpgradeStrength(2)
+	if (player.dilation.dilatedTime.gte(player.dilation.nextThreshold)) {
+		let thresholdMult = inQC(5) ? Math.pow(10, 2.8) : 1.35 + 3.65 * Math.pow(0.8, getDilUpgPower(2))
+		if (player.exdilation != undefined) thresholdMult -= Math.min(.1 * exDilationUpgradeStrength(2), 0.2)
+		if (thresholdMult < 1.15 && player.aarexModifications.nguspV !== undefined) thresholdMult = 1.05 + 0.1 / (2.15 - thresholdMult)
 		let galaxyMult = getFreeGalaxyGainMult()
 		let thresholdGalaxies = player.dilation.freeGalaxies / galaxyMult
 		let timesGained = Math.floor(player.dilation.dilatedTime.div(player.dilation.nextThreshold).log(thresholdMult) + 1 + thresholdGalaxies)
@@ -7022,7 +7074,7 @@ function updateInfPower() {
 function getReplSpeed() {
 	let inc=.2
 	let exp=308
-	if (player.dilation.upgrades.includes('ngpp1')) inc/=1+player.dilation.dilatedTime.max(1).log(10)/10
+	if (player.dilation.upgrades.includes('ngpp1') && (!player.aarexModifications.nguspV || player.aarexModifications.nguepV)) inc/=1+player.dilation.dilatedTime.max(1).log(10)/10
 	inc=inc+1
 	if (GUBought("gb2")) exp*=2
 	return {inc:inc,exp:exp}
@@ -7361,6 +7413,11 @@ setInterval(function() {
     document.getElementById("blackHoleTabbtn").style.display = player.dilation.studies.includes(1) && player.exdilation != undefined ? "table-cell" : "none"
     updateDilationUpgradeButtons()
 
+	var canAutoUpgs = canAutoDilUpgs()
+	document.getElementById('dilUpgsauto').style.display = canAutoUpgs ? "" : "none"
+	document.getElementById('distribEx').style.display = player.achievements.includes("ngud14") && player.aarexModifications.nguspV !== undefined ? "" : "none"
+	if (canAutoUpgs && player.autoEterOptions.dilUpgs) autoBuyDilUpgs()
+
     if (player.infinityDimension1.baseAmount == 0 &&
         player.infinityDimension2.baseAmount == 0 &&
         player.infinityDimension3.baseAmount == 0 &&
@@ -7506,7 +7563,6 @@ setInterval(function() {
         }
         if (tmp.qu.autoOptions.assignQK && player.ghostify.milestones > 7) assignAll() 
     }
-	infiniteCheck2 = false
 }, 1000)
 
 function fact(v) {
@@ -7884,7 +7940,7 @@ function gameLoop(diff) {
             if (player.meta) player.meta[tier].amount = player.meta[tier].amount.plus(getMetaDimensionProduction(tier+step).times(diff/100))
         }
         if (tier < 9 - stepT) player["timeDimension"+tier].amount = player["timeDimension"+tier].amount.plus(getTimeDimensionProduction(tier+stepT).times(diff/100))
-        if (player.exdilation != undefined) if (tier < 5 - step) player["blackholeDimension"+tier].amount = player["blackholeDimension"+tier].amount.plus(getBlackholeDimensionProduction(tier+step).times(diff/100))
+        if (player.exdilation != undefined) if (isBHDimUnlocked(tier+step)) player["blackholeDimension"+tier].amount = player["blackholeDimension"+tier].amount.plus(getBlackholeDimensionProduction(tier+step).times(diff/100))
     }
     document.getElementById("idtabbtn").style.display = ((player.infDimensionsUnlocked[0] || player.eternities > 0 || quantumed) && !inQC(8)) ? "" : "none"
 
@@ -7997,6 +8053,7 @@ function gameLoop(diff) {
     if (isBigRipUpgradeActive(4)) interval /= 10
     if (player.replicanti.amount.gt(Number.MAX_VALUE)) interval = player.boughtDims ? Math.pow(player.achievements.includes("r107")?Math.max(player.replicanti.amount.log(2)/1024,1):1, -.25) : Decimal.pow(speeds.inc, Math.max(player.replicanti.amount.log10() - speeds.exp, 0)/speeds.exp).times(interval)
     if (player.exdilation != undefined) interval = Decimal.div(interval, getBlackholePowerEffect().pow(1/3))
+	if (player.dilation.upgrades.includes('ngpp1') && player.aarexModifications.nguspV && !player.aarexModifications.nguepV) interval = interval.div(player.dilation.dilatedTime.max(1).pow(0.05))
     if (tmp.ngp3) if (player.masterystudies.includes("t332")) interval = Decimal.div(interval,Math.max(player.galaxies,1))
     var est = Decimal.div((frequency ? frequency.times(Math.log10(2)/Math.log10(Math.E) * 1e3) : Decimal.add(chance, 1).log(Math.E) * 1e3), interval)
 
@@ -8059,7 +8116,7 @@ function gameLoop(diff) {
         }
     }
 
-    document.getElementById("replicantiapprox").textContent = tmp.ngp3 && player.dilation.upgrades.includes("ngpp1") && player.replicanti.amount.gte(Number.MAX_VALUE) ? "Replicate interval is "+(speeds.inc*100-100).toFixed(2)+"% slower per "+getFullExpansion(Math.floor(speeds.exp))+" OoMs." : "Approximately "+ timeDisplay(Math.max((Math.log(Number.MAX_VALUE) - current) / est.toNumber(), 0)*10) + " Until Infinite Replicanti"
+    document.getElementById("replicantiapprox").textContent = tmp.ngp3 && player.dilation.upgrades.includes("ngpp1") && player.replicanti.amount.gte(Number.MAX_VALUE) && (!player.aarexModifications.nguspV || player.aarexModifications.nguepV) ? "Replicate interval is "+(speeds.inc*100-100).toFixed(2)+"% slower per "+getFullExpansion(Math.floor(speeds.exp))+" OoMs." : "Approximately "+ timeDisplay(Math.max((Math.log(Number.MAX_VALUE) - current) / est.toNumber(), 0)*10) + " Until Infinite Replicanti"
 
     document.getElementById("replicantiamount").textContent = shortenDimensions(player.replicanti.amount)
     document.getElementById("replicantimult").textContent = shorten(getIDReplMult())

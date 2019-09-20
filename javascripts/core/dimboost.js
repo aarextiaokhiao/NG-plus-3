@@ -224,8 +224,10 @@ function getDimboostCostIncrease () {
 
 function getSupersonicStart() {
 	if (inQC(5)) return 0
-	if (player.masterystudies) if (player.masterystudies.includes("t331")) return 8e5
-	return 56e4
+	let r = 56e4
+	if (player.aarexModifications.nguspV && !player.aarexModifications.nguepV) r = 1e5
+	if (player.masterystudies) if (player.masterystudies.includes("t331")) r += 24e4
+	return r
 }
 
 function getSupersonicMultIncrease() {

@@ -3421,6 +3421,7 @@ function ghostifyReset(implode, gain, amount, force) {
 			nextThreshold: new Decimal(1000),
 			freeGalaxies: 0,
 			upgrades: bm ? player.dilation.upgrades : [],
+			autoUpgrades: bm ? player.dilation.autoUpgrades : player.aarexModifications.nguspV ? [] : undefined,
 			rebuyables: {
 				1: 0,
 				2: 0,
@@ -3709,7 +3710,7 @@ function ghostifyReset(implode, gain, amount, force) {
 	player.dilation.totalTachyonParticles = player.dilation.bestTP
 	if (player.exdilation!=undefined) {
 		if (player.eternityUpgrades.length) for (var u=7;u<10;u++) player.eternityUpgrades.push(u)
-		for (var d=1;d<5;d++) player["blackholeDimension"+d] = {
+		for (var d=1;d<(player.aarexModifications.nguspV?9:5);d++) player["blackholeDimension"+d] = {
 			cost: blackholeDimStartCosts[d],
 			amount: new Decimal(0),
 			power: new Decimal(1),

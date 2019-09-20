@@ -1,12 +1,15 @@
-function getDilationMetaDimensionMultiplier () {
+function getDilationMetaDimensionMultiplier() {
 	let pow = 0.1
+	let div = 1e40
+	if (player.aarexModifications.nguspV !== undefined) div = 1e50
 	if (player.masterystudies != undefined) if (player.masterystudies.includes("d12")) pow = getNanofieldRewardEffect(4)
 	if (player.aarexModifications.ngudpV&&!player.aarexModifications.nguepV) {
 		let x=3-Math.min(1,Math.log10(1+player.quantum.colorPowers.b.plus(10).log10()))
 		if (player.quantum.colorPowers.b.gt("1e5000")) x-=Math.min(Math.log10(player.quantum.colorPowers.b.log10()-4900)-2,2)/3
 		pow/=x
 	}
-	return player.dilation.dilatedTime.div(1e40).pow(pow).plus(1);
+	let ret = player.dilation.dilatedTime.div(div).pow(pow).plus(1)
+	return ret
 }
 
 function getMetaDimensionMultiplier (tier) {
@@ -258,8 +261,14 @@ function getMetaDimensionProduction(tier) {
 
 function getExtraDimensionBoostPower() {
 	if (player.currentEternityChall=="eterc14"||inQC(7)) return new Decimal(1)
-	if (inQC(3)) return player.meta.bestAntimatter.pow(Math.pow(player.meta.bestAntimatter.max(1e8).log10()/8,2))
-	return Decimal.pow(player.meta.bestAntimatter,getExtraDimensionBoostPowerExponent()).plus(1)
+	let r
+	if (inQC(3)) r=player.meta.bestAntimatter.pow(Math.pow(player.meta.bestAntimatter.max(1e8).log10()/8,2))
+	else r=Decimal.pow(player.meta.bestAntimatter,getExtraDimensionBoostPowerExponent()).plus(1)
+	if (player.aarexModifications.nguspV) {
+		let l=r.log(2)
+		if (l>1024) r=Decimal.pow(2,Math.pow(l*32,2/3))
+	}
+	return r
 }
 
 function getExtraDimensionBoostPowerExponent() {
@@ -386,6 +395,7 @@ function toggleAutoEterMode() {
 function getDil15Bonus () {
 	let max=3
 	if (ghostified) if (player.ghostify.neutrinos.boosts>2) max=tmp.nb[2]
+	if (player.aarexModifications.nguspV !== undefined) return Math.min(Math.max(player.dilation.dilatedTime.max(1).log10()/10-6.25,2),max)
 	return Math.min(Math.log10(player.dilation.dilatedTime.max(1e10).log(10))+1,max)
 }
 
@@ -407,7 +417,7 @@ function toggleAllTimeDims() {
 
 function toggleAutoEter(id) {
 	player.autoEterOptions[id]=!player.autoEterOptions[id]
-	document.getElementById(id+'auto').textContent=(id=="rebuyupg"?"Rebuyable upgrade a":id=="metaboost"?"Meta-boost a":"A")+"uto: O"+(player.autoEterOptions[id]?"N":"FF")
+	document.getElementById(id+'auto').textContent=(id=="dilUpgs"?"Auto-buy dilation upgrades":(id=="rebuyupg"?"Rebuyable upgrade a":id=="metaboost"?"Meta-boost a":"A")+"uto")+": O"+(player.autoEterOptions[id]?"N":"FF")
 	if (id.slice(0,2)=="td") {
 		var removeMaxAll=false
 		for (d=1;d<9;d++) {
@@ -1051,6 +1061,7 @@ function quantumReset(force, auto, challid, bigRip, implode=false) {
 			nextThreshold: new Decimal(1000),
 			freeGalaxies: 0,
 			upgrades: speedrunMilestonesReached > 5 && isRewardEnabled(4) && (!bigRip || tmp.qu.bigRip.upgrades.includes(12)) ? [4,5,6,7,8,9,"ngpp1","ngpp2"] : [],
+			autoUpgrades: [],
 			rebuyables: {
 				1: 0,
 				2: 0,
@@ -1152,7 +1163,7 @@ function quantumReset(force, auto, challid, bigRip, implode=false) {
 	player.dilation.totalTachyonParticles = player.dilation.tachyonParticles
 	if (player.exdilation!=undefined) {
 		if (player.eternityUpgrades.length) for (var u=7;u<10;u++) player.eternityUpgrades.push(u)
-		for (var d=1;d<5;d++) player["blackholeDimension"+d] = player.achievements.includes("ng3p67") && player.aarexModifications.ngudpV ? bhd[d-1] : {
+		for (var d=1;d<(player.aarexModifications.nguspV?9:5);d++) player["blackholeDimension"+d] = player.achievements.includes("ng3p67") && player.aarexModifications.ngudpV ? bhd[d-1] : {
 			cost: blackholeDimStartCosts[d],
 			amount: new Decimal(0),
 			power: new Decimal(1),
@@ -1312,7 +1323,14 @@ function quantumReset(force, auto, challid, bigRip, implode=false) {
 		}
 		if (bigRip?tmp.qu.bigRip.upgrades.includes(12):isRewardEnabled(11)&&isRewardEnabled(4)) player.dilation.upgrades.push(10)
 		else tmp.qu.wasted = !isRewardEnabled(11)||bigRip
-		if (bigRip?tmp.qu.bigRip.upgrades.includes(12):speedrunMilestonesReached>13&&isRewardEnabled(4)) for (i=(player.exdilation!=undefined?1:3);i<7;i++) if (i!=2||!player.aarexModifications.ngudpV) player.dilation.upgrades.push((i>2?"ngpp":"ngud")+i)
+		if (bigRip?tmp.qu.bigRip.upgrades.includes(12):speedrunMilestonesReached>13&&isRewardEnabled(4)) {
+			for (i=(player.exdilation!=undefined?1:3);i<7;i++) if (i!=2||!player.aarexModifications.ngudpV) player.dilation.upgrades.push((i>2?"ngpp":"ngud")+i)
+			if (player.aarexModifications.nguspV) {
+				for (var i=1;i<3;i++) player.dilation.upgrades.push("ngusp"+i)
+				for (var i=4;i<23;i++) if (player.dilation.upgrades.includes(getDilUpgId(i))) player.dilation.autoUpgrades.push(i)
+				updateExdilation()
+			}
+		}
 		tmp.qu.notrelative = true
 		updateMasteryStudyCosts()
 		updateMasteryStudyButtons()
@@ -1443,4 +1461,9 @@ function updateQuarkDisplay() {
 function metaReset2() {
 	if (player.masterystudies !== undefined ? tmp.qu.bigRip.active : false) ghostify()
 	else quantum(false, false, 0)
+}
+
+function getMetaUnlCost() {
+	if (player.aarexModifications.nguspV) return 1e21
+	return 1e24
 }
