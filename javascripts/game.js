@@ -1554,7 +1554,7 @@ function updateDimensions() {
         if (player.pSac !== undefined && player.pSac.times) {
             document.getElementById("psStatistics").style.display = ""
             document.getElementById("pSacrificedNormal").textContent = "You have Paradox Sacrificed "+getFullExpansion(player.pSac.normalTimes)+" times."
-            document.getElementById("pSacrificedForced").textContent = "You have forced to do a Paradox Sacrifice "+getFullExpansion(player.pSac.forcedTimes)+" times."
+            document.getElementById("pSacrificedForced").textContent = "You have been forced to do a Paradox Sacrifice "+getFullExpansion(player.pSac.forcedTimes)+" times."
             document.getElementById("pSacrificed").textContent = "You have Paradox Sacrificed a total of "+getFullExpansion(player.pSac.times)+" times."
             document.getElementById("thisPSac").textContent = "You have spent "+timeDisplay(player.pSac.time)+" in this Paradox Sacrifice."
         } else document.getElementById("psStatistics").style.display = "none"
@@ -3063,17 +3063,11 @@ document.getElementById("toggleBtnTickSpeed").onclick = function () {
 
 
 document.getElementById("secondSoftReset").onclick = function() {
-    var bool = !inNC(11) && player.currentChallenge != "postc1" && (player.currentChallenge != "postc5" || player.tickspeedBoosts == undefined) && player.currentChallenge != "postc7" && !((player.currentEternityChall == "eterc6" || inQC(6)) && !tmp.be) && !tmp.ri && !cantReset()
-    if (getAmount(inNC(4)||player.pSac!=undefined?6:8) >= getGalaxyRequirement() && bool) {
-        if ((getEternitied() >= 7 || player.autobuyers[10].bulkBought) && !shiftDown && (!inNC(14) || !(player.aarexModifications.ngmX > 3))) maxBuyGalaxies(true);
-        else {
-            if (ghostified) {
-                var generation = (["electron", "mu", "tau"])[player.ghostify.neutrinos.generationGain-1]
-                player.ghostify.neutrinos[generation] = player.ghostify.neutrinos[generation].add(getNeutrinoGain()).round()
-            }
-            galaxyReset(1);
-        }
-    }
+	var bool = !inNC(11) && player.currentChallenge != "postc1" && (player.currentChallenge != "postc5" || player.tickspeedBoosts == undefined) && player.currentChallenge != "postc7" && !((player.currentEternityChall == "eterc6" || inQC(6)) && !tmp.be) && !tmp.ri && !cantReset()
+	if (getAmount(inNC(4)||player.pSac!=undefined?6:8) >= getGalaxyRequirement() && bool) {
+		if ((getEternitied() >= 7 || player.autobuyers[10].bulkBought) && !shiftDown && (!inNC(14) || !(player.aarexModifications.ngmX > 3))) maxBuyGalaxies(true);
+		else galaxyReset(1)
+	}
 }
 
 
@@ -3083,6 +3077,10 @@ function galaxyReset(bulk) {
     autoS = true;
     if (player.sacrificed == 0 && bulk > 0) giveAchievement("I don't believe in Gods");
     if (player.tickspeedBoosts !== undefined) player.tickspeedBoosts = 0
+	if (ghostified) {
+		var generation = (["electron", "mu", "tau"])[player.ghostify.neutrinos.generationGain-1]
+		player.ghostify.neutrinos[generation] = player.ghostify.neutrinos[generation].add(getNeutrinoGain().times(bulk)).round()
+	}
     player = {
         money: player.achievements.includes("r111") ? player.money : new Decimal(10),
         tickSpeedCost: new Decimal(1000),
@@ -3280,7 +3278,7 @@ function galaxyReset(bulk) {
     setInitialDimensionPower();
 
 
-    if (player.options.notation == "Emojis") player.spreadingCancer+=1;
+    if (player.options.notation == "Emojis") player.spreadingCancer+=bulk
     if (player.spreadingCancer >= 10) giveAchievement("Spreading Cancer")
     if (player.spreadingCancer >= 1000000) giveAchievement("Cancer = Spread")
     if (player.achievements.includes("r36")) player.tickspeed = player.tickspeed.times(0.98);
@@ -8619,11 +8617,6 @@ function maxBuyGalaxies(manual) {
 			if (amount >= getGalaxyRequirement(check) && (player.autobuyers[10].priority > player.galaxies + check || manual)) toSkip+=increment
 			increment/=2
 		}
-		if (player.options.notation=="Emojis") player.spreadingCancer+=toSkip+1
-        if (ghostified) {
-            var generation = (["electron", "mu", "tau"])[player.ghostify.neutrinos.generationGain-1]
-            player.ghostify.neutrinos[generation] = player.ghostify.neutrinos[generation].add(getNeutrinoGain().times(toSkip+1)).round()
-        }
 		galaxyReset(toSkip+1)
 	}
 }
