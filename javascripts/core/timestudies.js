@@ -613,20 +613,19 @@ function new_preset(importing) {
 	var placement=1
 	while (poData.includes(placement)) placement++
 	presets[placement]={preset:input}
-	localStorage.setItem(btoa(prefix+placement),btoa(JSON.stringify(presets[placement])))
+	localStorage.setItem(btoa(presetPrefix+placement),btoa(JSON.stringify(presets[placement])))
 	poData.push(placement)
 	latestRow=document.getElementById("presets").insertRow(loadedPresets)
 	latestRow.innerHTML=getPresetLayout(placement)
 	loadedPresets++
 	changePresetTitle(placement, loadedPresets)
-	localStorage.setItem("AD_aarexModifications",btoa(JSON.stringify(metaSave)))
+	localStorage.setItem(metaSaveId,btoa(JSON.stringify(metaSave)))
 	$.notify("Preset created", "info")
 }
 
 //Smart presets
 var onERS = false
 var onNGP3 = false
-var prefix = "dsAM_ST_"
 var poData
 
 function save_preset(id) {
@@ -648,7 +647,7 @@ function save_preset(id) {
 		}
 		presets[id].preset=player.timestudy.studies+(mtsstudies.length>0?","+mtsstudies:"")+"|"+player.eternityChallUnlocked
 	}
-	localStorage.setItem(btoa(prefix+id),btoa(JSON.stringify(presets[id])))
+	localStorage.setItem(btoa(presetPrefix+id),btoa(JSON.stringify(presets[id])))
 	$.notify("Preset saved", "info")
 }
 
@@ -676,7 +675,7 @@ function delete_preset(presetId) {
             changePresetTitle(poData[id], id)
         } else if (poData[id]==presetId) {
             delete presets[presetId]
-            localStorage.removeItem(btoa(prefix+presetId))
+            localStorage.removeItem(btoa(presetPrefix+presetId))
             alreadyDeleted=true
             document.getElementById("presets").deleteRow(id)
             loadedPresets--
@@ -684,13 +683,13 @@ function delete_preset(presetId) {
     }
     metaSave["presetsOrder"+(player.boughtDims?"_ers":"")]=newPresetsOrder
     poData=newPresetsOrder
-    localStorage.setItem("AD_aarexModifications",btoa(JSON.stringify(metaSave)))
+    localStorage.setItem(metaSaveId,btoa(JSON.stringify(metaSave)))
     $.notify("Preset deleted", "info")
 }
 
 function rename_preset(id) {
 	presets[id].title=prompt("Input a new name of this preset. It is necessary to rename it into related names!")
-	localStorage.setItem(btoa(prefix+id),btoa(JSON.stringify(presets[id])))
+	localStorage.setItem(btoa(presetPrefix+id),btoa(JSON.stringify(presets[id])))
 	placement=1
 	while (poData[placement-1]!=id) placement++
 	changePresetTitle(id, placement)
@@ -710,7 +709,7 @@ function move_preset(id,offset) {
 	document.getElementById("presets").rows[placement+offset].innerHTML=getPresetLayout(id)
 	changePresetTitle(poData[placement],placement)
 	changePresetTitle(poData[placement+offset],placement+offset)
-	localStorage.setItem("AD_aarexModifications",btoa(JSON.stringify(metaSave)))
+	localStorage.setItem(metaSaveId,btoa(JSON.stringify(metaSave)))
 }
 
 var loadedPresets=0
@@ -722,8 +721,8 @@ function openStudyPresets() {
 		document.getElementById("presets").innerHTML=""
 		presets = {}
 		onERS = saveOnERS
-		if (onERS) prefix = "dsERS_ST_"
-		else prefix = "dsAM_ST_"
+		if (onERS) presetPrefix = prefix+"ERS_ST_"
+		else presetPrefix = prefix+"AM_ST_"
 		loadedPresets = 0
 	} else if (saveOnNGP3!=onNGP3) {
 		onNGP3=saveOnNGP3
@@ -762,10 +761,10 @@ function getPresetLayout(id) {
 
 function changePresetTitle(id, placement) {
 	if (presets[id]===undefined) {
-		var preset=localStorage.getItem(btoa(prefix+id))
+		var preset=localStorage.getItem(btoa(presetPrefix+id))
 		if (preset===null) {
 			presets[id]={preset:"|0",title:"Deleted preset #"+placement}
-			localStorage.setItem(btoa(prefix+id),btoa(JSON.stringify(presets[id])))
+			localStorage.setItem(btoa(presetPrefix+id),btoa(JSON.stringify(presets[id])))
 		} else presets[id]=JSON.parse(atob(preset))
 	}
 	document.getElementById("preset_"+id+"_title").textContent=presets[id].title?presets[id].title:"Preset #"+placement

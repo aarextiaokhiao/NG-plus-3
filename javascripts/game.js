@@ -3346,7 +3346,7 @@ function load_saves() {
 	closeToolTip();
 	if (metaSave.alert) {
 		metaSave.alert=false
-		localStorage.setItem("AD_aarexModifications",btoa(JSON.stringify(metaSave)))
+		localStorage.setItem(metaSaveId,btoa(JSON.stringify(metaSave)))
 	}
 	document.getElementById("loadmenu").style.display = "block";
 	changeSaveDesc(metaSave.current, savePlacement)
@@ -3666,10 +3666,10 @@ function import_save(type) {
 			metaSave.saveOrder.push(newSaveId)
 			latestRow=document.getElementById("saves").insertRow(loadedSaves)
 			latestRow.innerHTML = getSaveLayout(newSaveId)
-			localStorage.setItem(btoa("dsAM_"+newSaveId),save_data)
+			localStorage.setItem(btoa(savePrefix+newSaveId),save_data)
 			loadedSaves++
 			changeSaveDesc(newSaveId, loadedSaves)
-			localStorage.setItem("AD_aarexModifications",btoa(JSON.stringify(metaSave)))
+			localStorage.setItem(metaSaveId,btoa(JSON.stringify(metaSave)))
 		} else {
 			set_save(type, decoded_save_data)
 			changeSaveDesc(type, placement)
@@ -7543,7 +7543,7 @@ setInterval(function() {
         if (player.masterystudies&&(player.masterystudies.includes("d14")||player.achievements.includes("ng3p51"))&&!player.aarexModifications.newGameExpVersion&&!player.aarexModifications.ngudpV&&!player.aarexModifications.nguepV&&!metaSave.ngp4) {
             $.notify("Congratulations! You unlocked NG+4!", "success")
             metaSave.ngp4=true
-            localStorage.setItem("AD_aarexModifications",btoa(JSON.stringify(metaSave)))
+            localStorage.setItem(metaSaveId,btoa(JSON.stringify(metaSave)))
         }
         if (player.eternityPoints.gte("1e1215") && tmp.qu.bigRip.active && !tmp.qu.breakEternity.unlocked) {
             tmp.qu.breakEternity.unlocked = true

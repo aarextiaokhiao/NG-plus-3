@@ -1,4 +1,9 @@
 var inflationCheck = false
+var betaId = ""
+var prefix = betaId + "ds"
+var savePrefix = prefix + "AM_"
+var presetPrefix = prefix + "AM_ST_"
+var metaSaveId = betaId + "AD_aarexModifications"
 var notifyId = 0
 function onLoad(noOffline) {
   tmp.ngp3=player.masterystudies!==undefined
@@ -2108,7 +2113,7 @@ function change_save(id) {
   changeSaveDesc(metaSave.current, savePlacement)
 
   $.notify("Save #"+savePlacement+" loaded", "info")
-  localStorage.setItem("AD_aarexModifications",btoa(JSON.stringify(metaSave)))
+  localStorage.setItem(metaSaveId,btoa(JSON.stringify(metaSave)))
 }
 
 function rename_save(id) {
@@ -2151,7 +2156,7 @@ function export_save(id) {
 	let parent = output.parentElement
 
 	parent.style.display = ""
-	output.value = localStorage.getItem(btoa("dsAM_"+id))
+	output.value = localStorage.getItem(btoa(savePrefix+id))
 
 	output.onblur = function() {
 		parent.style.display = "none"
@@ -2185,7 +2190,7 @@ function move(id,offset) {
 	document.getElementById("saves").rows[placement+offset].innerHTML=getSaveLayout(id)
 	changeSaveDesc(metaSave.saveOrder[placement], placement+1)
 	changeSaveDesc(id, placement+offset+1)
-	localStorage.setItem("AD_aarexModifications",btoa(JSON.stringify(metaSave)))
+	localStorage.setItem(metaSaveId,btoa(JSON.stringify(metaSave)))
 }
 
 function delete_save(saveId) {
@@ -2198,7 +2203,7 @@ function delete_save(saveId) {
 	for (orderId=0;orderId<metaSave.saveOrder.length;orderId++) {
 		if (alreadyDeleted) changeSaveDesc(metaSave.saveOrder[orderId], orderId)
 		if (metaSave.saveOrder[orderId]==saveId) {
-			localStorage.removeItem(btoa("dsAM_"+saveId))
+			localStorage.removeItem(btoa(savePrefix+saveId))
 			alreadyDeleted=true
 			document.getElementById("saves").deleteRow(orderId)
 			if (savePlacement>orderId+1) savePlacement--
@@ -2209,7 +2214,7 @@ function delete_save(saveId) {
 	if (metaSave.current==saveId) {
 		change_save(metaSave.saveOrder[0])
 		document.getElementById("loadmenu").style.display="block"
-	} else localStorage.setItem("AD_aarexModifications",btoa(JSON.stringify(metaSave)))
+	} else localStorage.setItem(metaSaveId,btoa(JSON.stringify(metaSave)))
 	$.notify("Save deleted", "info")
 }
 
@@ -2227,7 +2232,7 @@ function new_game(id) {
 	metaSave.current=1
 	while (metaSave.saveOrder.includes(metaSave.current)) metaSave.current++
 	metaSave.saveOrder.push(metaSave.current)
-	localStorage.setItem("AD_aarexModifications",btoa(JSON.stringify(metaSave)))
+	localStorage.setItem(metaSaveId,btoa(JSON.stringify(metaSave)))
 	changeSaveDesc(oldId, savePlacement)
 	latestRow=document.getElementById("saves").insertRow(loadedSaves)
 	latestRow.innerHTML=getSaveLayout(metaSave.current)
@@ -2239,7 +2244,7 @@ function new_game(id) {
 	startInterval()
 	
 	$.notify("Save created", "info")
-	localStorage.setItem("AD_aarexModifications",btoa(JSON.stringify(metaSave)))
+	localStorage.setItem(metaSaveId,btoa(JSON.stringify(metaSave)))
 	closeToolTip()
 	showDimTab('antimatterdimensions')
 	showStatsTab('stats')
@@ -2566,19 +2571,19 @@ function loadAutoBuyerSettings() {
 }
 
 function set_save(id, value) {
-	localStorage.setItem(btoa('dsAM_'+id), btoa(JSON.stringify(value, function(k, v) { return (v === Infinity) ? "Infinity" : v; })));
+	localStorage.setItem(btoa(savePrefix+id), btoa(JSON.stringify(value, function(k, v) { return (v === Infinity) ? "Infinity" : v; })));
 }
 
 function get_save(id) {
     try {
-        var dimensionSave = localStorage.getItem(btoa('dsAM_'+id))
+        var dimensionSave = localStorage.getItem(btoa(savePrefix+id))
         if (dimensionSave !== null) dimensionSave = JSON.parse(atob(dimensionSave, function(k, v) { return (v === Infinity) ? "Infinity" : v; }))
         return dimensionSave
     } catch(e) { }
 }
 
 function initiateMetaSave() {
-	metaSave = localStorage.getItem('AD_aarexModifications')
+	metaSave = localStorage.getItem(metaSaveId)
 	if (metaSave == null) metaSave = {presetsOrder: [], version: 2.02}
 	else metaSave = JSON.parse(atob(metaSave))
 	if (metaSave.current == undefined) {
