@@ -1364,15 +1364,13 @@ var worstChallengeBonus = 1
 
 function updateWorstChallengeTime() {
     worstChallengeTime = 1
-    for (var i=0; i<player.challengeTimes.length; i++) {
-        if (player.challengeTimes[i] > worstChallengeTime) worstChallengeTime = player.challengeTimes[i]
-    }
+    for (var i=0; i<player.challengeTimes.length; i++) worstChallengeTime = Math.max(worstChallengeTime, player.challengeTimes[i])
 }
 
 function updateWorstChallengeBonus() {
 	updateWorstChallengeTime()
 	// challengeTimes are in ticks (0.1s); 33us is an actual reasonable limit given EC12
-	actualWorst = Math.max(33e-6, (tmp.ngp3 ? Math.min.apply(null, player.challengeTimes) : worstChallengeTime) * 0.1)
+	actualWorst = Math.max(33e-6, worstChallengeTime * 0.1)
 	// Change very slightly between 0.1s and 0.02s; then reward clever players
 	if (actualWorst < 0.1) {
 		if (!player.masterystudies) actualWorst = 0.1 //Don't let the bonus change outside of NG+++
@@ -4853,11 +4851,9 @@ function updateChallengeTimes() {
 	for (c=2;c<17;c++) setAndMaybeShow("challengetime"+c,player.challengeTimes[challOrder[c]-2]<600*60*24*31,'"'+challNames[c]+' time record: "+timeDisplayShort(player.challengeTimes['+(challOrder[c]-2)+'], false, 3)')
 	var temp=0
 	var tempcounter=0
-	for (var i=0;i<player.challengeTimes.length;i++) {
-		if (player.challengeTimes[i]<600*60*24*31) {
-			temp+=player.challengeTimes[i]
-			tempcounter++
-		}
+	for (var i=0;i<player.challengeTimes.length;i++) if (player.challenges.includes("challenge"+(i+2))) {
+		temp+=player.challengeTimes[i]
+		tempcounter++
 	}
 	setAndMaybeShow("challengetimesum",tempcounter>1,'"Sum of completed challenge time records is "+timeDisplayShort('+temp+', false, 3)')
 	document.getElementById("challengetimesbtn").style.display = tempcounter>0 ? "inline-block" : "none"
