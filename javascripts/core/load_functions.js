@@ -1,5 +1,5 @@
 var inflationCheck = false
-var betaId = ""
+var betaId = "WZB_"
 var prefix = betaId + "ds"
 var savePrefix = prefix + "AM_"
 var presetPrefix = prefix + "AM_ST_"
@@ -646,7 +646,7 @@ if (player.version < 5) {
           }
           player.aarexModifications.newGamePlusVersion = 1
           if (confirm("Do you want to migrate your NG++ save into new NG+++ mode?")) {
-              player.aarexModifications.newGame3PlusVersion = 2.121
+              player.aarexModifications.newGame3PlusVersion = 2.2
               player.respecMastery=false
               player.dbPower = 1
               player.dilation.times = 0
@@ -811,6 +811,24 @@ if (player.version < 5) {
                       lights: [0,0,0,0,0,0,0,0],
                       maxRed: 0,
                       enpowerments: 0
+                  },
+                  bl: {
+                      watt: 0,
+                      ticks: 0,
+                      am: 0,
+                      amountToExtract: 1,
+                      typeToExtract: 1,
+                      extracting: false,
+                      extractProgress: 0,
+                      glyphs: [0,0,0,0,0],
+                      enchants: {},
+                      usedEnchants: {},
+                      upgrades: [],
+                      battery: 0,
+                      speed: 1
+                  },
+                  wzb: {
+                      unl: false
                   }
               }
               player.options.animations.ghostify = true
@@ -1210,7 +1228,27 @@ if (player.version < 5) {
       for (var a=0;a<player.achievements.length;a++) if (player.achievements[a]!="ng3p67") newAchievements.push(player.achievements[a])
 	  player.achievements=newAchievements
   }
-  if (player.aarexModifications.newGame3PlusVersion < 2.121) player.aarexModifications.newGame3PlusVersion = 2.121
+  if (player.aarexModifications.newGame3PlusVersion < 2.2) {
+      player.ghostify.bl = {
+          watt: 0,
+          ticks: 0,
+          am: 0,
+          amountToExtract: 1,
+          typeToExtract: 1,
+          extracting: false,
+          extractProgress: 0,
+          glyphs: [0,0,0,0,0],
+          enchants: {},
+          usedEnchants: {},
+          upgrades: [],
+          battery: 0,
+          speed: 1
+      }
+      player.ghostify.wzb = {
+          unl: false
+      }
+      player.aarexModifications.newGame3PlusVersion = 2.2
+  }
   if (player.masterystudies) {
       if (player.meta.bestOverQuantums === undefined) player.meta.bestOverQuantums = player.meta.bestAntimatter
       document.getElementById('prioritydil').value=player.eternityBuyer.dilationPerAmount
@@ -1630,6 +1668,7 @@ if (player.version < 5) {
   document.getElementById("quantumConfirmBtn").style.display = quantumed ? "inline-block" : "none"
   document.getElementById("bigRipConfirmBtn").style.display = (player.masterystudies === undefined ? false : tmp.qu.bigRip.times) ? "inline-block" : "none"
   document.getElementById("ghostifyConfirmBtn").style.display = ghostified ? "inline-block" : "none"
+  document.getElementById("leConfirmBtn").style.display = ghostified && player.ghostify.ghostlyPhotons.enpowerments ? "inline-block" : "none"
 
   document.getElementById("confirmation").checked = !player.options.sacrificeConfirmation
   document.getElementById("sacConfirmBtn").textContent = "Sacrifice confirmation: O" + (player.options.sacrificeConfirmation ? "N" : "FF")
@@ -1642,6 +1681,7 @@ if (player.version < 5) {
   document.getElementById("quantumConfirmBtn").textContent = "Quantum confirmation: O" + (player.aarexModifications.quantumConf ? "N" : "FF")
   document.getElementById("bigRipConfirmBtn").textContent = "Big Rip confirmation: O" + ((player.masterystudies === undefined ? false : tmp.qu.bigRip.conf) ? "N" : "FF")
   document.getElementById("ghostifyConfirmBtn").textContent = "Ghostify confirmation: O" + (player.aarexModifications.ghostifyConf ? "N" : "FF")
+  document.getElementById("leConfirmBtn").textContent = "Light Empowerment confirmation: O" + (player.aarexModifications.leNoConf ? "FF" : "N")
 
   document.getElementById("progressBarBtn").textContent = (player.aarexModifications.progressBar?"Hide":"Show")+" progress bar"
   document.getElementById("toggleLogRateChange").textContent = "Logarithm rate: O"+(player.aarexModifications.logRateChange?"N":"FF")
@@ -1881,7 +1921,11 @@ if (player.version < 5) {
           else document.getElementById("neutrinoUpg"+u).style.display=u>player.ghostify.times+2?"none":""
       }
       document.getElementById("gphUnl").textContent="To unlock Ghostly Photons, you need to get "+shortenCosts(Decimal.pow(10,605e7))+" antimatter while your universe is Big Ripped first."
-      document.getElementById("bpc68").textContent = shortenMoney(tmp.qu.pairedChallenges.pc68best)
+      document.getElementById("blUnl").textContent="To unlock Bosonic Lab, you need to get "+shortenCosts(Decimal.pow(10,4e10))+" red ghostly unstable quarks first."
+      document.getElementById("bpc68").textContent=shortenMoney(tmp.qu.pairedChallenges.pc68best)
+      document.getElementById("odSlider").value=Math.round(player.ghostify.bl.speed.log(3)+1)*20
+      document.getElementById("amountToExtract").value=formatValue("Scientific",player.ghostify.bl.amountToExtract,3,0)
+      for (var g=1;g<6;g++) document.getElementById("typeToExtract"+g).className=player.ghostify.bl.typeToExtract==g?"chosenbtn":"storebtn"
       updateElectrons()
       updateAutoQuantumMode()
       updateColorCharge()
@@ -1891,6 +1935,8 @@ if (player.version < 5) {
       updateBraveMilestones()
       updateNeutrinoBoosts()
       updateGPHUnlocks()
+      updateBLUnlocks()
+      updateBosonicUpgradeCosts()
   }
   transformSaveToDecimal();
   hideDimensions()
@@ -1971,6 +2017,7 @@ if (player.version < 5) {
   showQuantumTab(tabsSave.on && tabsSave.tabQuantum !== undefined ? tabsSave.tabQuantum : 'uquarks')
   showBranchTab(tabsSave.on && tabsSave.tabBranch !== undefined ? tabsSave.tabBranch : 'red')
   showGhostifyTab(tabsSave.on && tabsSave.tabGhostify !== undefined ? tabsSave.tabGhostify : 'neutrinos')
+  showBLTab(tabsSave.on && tabsSave.tabBL !== undefined ? tabsSave.tabBL : 'bextab')
   if (!player.options.newsHidden) scrollNextMessage()
   document.getElementById("secretoptionsbtn").style.display=player.options.secrets?"":"none"
   document.getElementById("ghostlynewsbtn").textContent=((player.options.secrets!==undefined?player.options.secrets.ghostlyNews:false)?"Hide":"Show")+" ghostly news ticker"
@@ -2255,6 +2302,7 @@ function new_game(id) {
 	showQuantumTab('uquarks')
 	showBranchTab('red')
 	showGhostifyTab('neutrinos')
+	showBLTab('bextab')
 }
 
 function transformSaveToDecimal() {
@@ -2509,6 +2557,22 @@ function transformSaveToDecimal() {
           player.ghostify.ghostlyPhotons.amount=new Decimal(player.ghostify.ghostlyPhotons.amount)
           player.ghostify.ghostlyPhotons.ghostlyRays=new Decimal(player.ghostify.ghostlyPhotons.ghostlyRays)
           player.ghostify.ghostlyPhotons.darkMatter=new Decimal(player.ghostify.ghostlyPhotons.darkMatter)
+      }
+      if (player.ghostify.bl) {
+          player.ghostify.bl.watt=new Decimal(player.ghostify.bl.watt)
+          player.ghostify.bl.ticks=new Decimal(player.ghostify.bl.ticks)
+          player.ghostify.bl.am=new Decimal(player.ghostify.bl.am)
+          player.ghostify.bl.amountToExtract=new Decimal(player.ghostify.bl.amountToExtract)
+          player.ghostify.bl.extractProgress=new Decimal(player.ghostify.bl.extractProgress)
+          for (var t=0;t<5;t++) player.ghostify.bl.glyphs[t]=new Decimal(player.ghostify.bl.glyphs[t])
+          player.ghostify.bl.battery=new Decimal(player.ghostify.bl.battery)
+          player.ghostify.bl.speed=new Decimal(player.ghostify.bl.speed)
+
+          player.ghostify.wzb.wQk.progress=new Decimal(player.ghostify.wzb.wQk.progress)
+          player.ghostify.wzb.zNe.progress=new Decimal(player.ghostify.wzb.zNe.progress)
+          player.ghostify.wzb.wpb=new Decimal(player.ghostify.wzb.wpb)
+          player.ghostify.wzb.wnb=new Decimal(player.ghostify.wzb.wnb)
+          player.ghostify.wzb.zb=new Decimal(player.ghostify.wzb.zb)
       }
   }
 }

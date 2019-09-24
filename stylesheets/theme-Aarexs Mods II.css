@@ -157,7 +157,7 @@ button, div.storebtn {
 	color: #e59900 !important;
 }
 
-.infinistorebtnbought, .completedchallengesbtn {
+.infinistorebtnbought, .completedchallengesbtn, .chosenbtn {
 	background-color: #00e500 !important;
 	color: #191919 !important;
 	border: none !important;
@@ -590,12 +590,12 @@ button, div.storebtn {
 	color: #e50000
 }
 
-#gphtabbtn {
+#gphtabbtn button {
 	background-color: #bfaf5f !important;
 	color: #191919 !important
 }
 
-#gphtabbtn:hover {
+#gphtabbtn button:hover {
 	background-color: #bcae67 !important
 }
 
@@ -631,9 +631,76 @@ button, div.storebtn {
 	color: #191919 !important;
 	text-shadow: 0px 0px 3px #191919, 0px 0px 6px #bfaf5f
 }
+
 .gluonupgrade.gph:hover {
 	color: #e5e5e5 !important;
 	text-shadow: 0px 0px 3px #e5e5e5, 0px 0px 6px #191919;
+}
+
+#bltabbtn button, .gluonupgrade.bl {
+	background: repeating-linear-gradient(#620d65, transparent 50%, #620d65 100%), repeating-linear-gradient(90deg, transparent, #c73415 50%, transparent 100%), #191919 !important;
+	background-size: 200% 200% !important;
+	color: #191919 !important;
+	text-shadow: 0px 0px 3px #191919, 0px 0px 6px #e5e5e5;
+	animation: bl 5s linear infinite
+}
+
+#bltabbtn button:hover, .gluonupgrade.bl:hover {
+	color: #e5e5e5 !important
+}
+
+#bWatt, #bWattLoss, #zb, #bAM, #bAMProduction, #bAMEffect, #bBt, #bBtProduction, #odSpeed {
+	color: #c73415
+}
+
+.bGlyph {
+	background: #e5e5e5;
+	box-shadow: 0px 0px 12px #e5e5e5
+}
+
+.bGlyph.Infinity {
+	background: #e59900;
+	box-shadow: 0px 0px 12px #e59900
+}
+
+.bGlyph.Eternity {
+	background: #8f39e5;
+	box-shadow: 0px 0px 12px #8f39e5
+}
+
+.bGlyph.Quantum {
+	background: #269926;
+	box-shadow: 0px 0px 12px #269926
+}
+
+.bGlyph.Ethereal {
+	box-shadow: 0px 0px 12px #3964e5
+}
+
+.gluonupgradebought.bl {
+	background: repeating-linear-gradient(#9df29a, transparent 50%, #9df29a 100%), repeating-linear-gradient(90deg, transparent, #38cbea 50%, transparent 100%), #191919 !important;
+	background-size: 200% 200% !important;
+	color: #191919 !important;
+	text-shadow: 0px 0px 3px #191919, 0px 0px 6px #e5e5e5;
+}
+
+#wpb {
+	color: #620d65;
+	text-shadow: 0px 0px 3px #0c0c0c, 0px 0px 4.5px #e5e5e5
+}
+
+#wnb {
+	color: #9df29a
+}
+
+.zero {
+	background: repeating-linear-gradient(#620d65, transparent 50%, #620d65 100%), repeating-linear-gradient(90deg, transparent, #9df29a 50%, transparent 100%), #191919;
+	background-size: 200% 200%;
+	box-shadow: 0px 0px 12px #e5e5e5
+}
+
+.down #wQkSymbol {
+	transform: translate(-50%, 15%)
 }
 				
 @keyframes rg {

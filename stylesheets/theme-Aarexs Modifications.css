@@ -56,7 +56,7 @@ body {
 #coinAmount {
     color: #0072e5 !important
 }
-.storebtn, .completedchallengesbtn, .pc4completed {
+.storebtn, .completedchallengesbtn, .pc4completed, .chosenbtn {
     border-color: #00e500 !important;
     background-color: #191919 !important;
     color: #e5e5e5 !important;
@@ -490,7 +490,7 @@ strong { color: #0072e5 }
 }
 .gluonupgrade.r {
 	background-color: #191919 !important;
-    border-color: #e50000 !important;
+    border-color: #cc6666 !important;
 	box-shadow: none !important;
 	color: #e5e5e5 !important;
 	text-shadow: none
@@ -510,7 +510,7 @@ strong { color: #0072e5 }
 	text-shadow: none
 }
 .gluonupgrade.r:hover {
-	background-color: #e50000 !important;
+	background-color: #cc6666 !important;
 	color: #191919 !important
 }
 .gluonupgrade.g:hover {
@@ -592,12 +592,12 @@ strong { color: #0072e5 }
 	box-shadow: none;
 	text-shadow: none;
 }
-#gphtabbtn {
+#gphtabbtn button {
 	background-color: #191919 !important;
     border-color: #bfaf5f !important;
 	color: #e5e5e5 !important
 }
-#gphtabbtn:hover {
+#gphtabbtn button:hover {
 	background-color: #bfaf5f !important;
 	color: #191919 !important
 }
@@ -630,6 +630,61 @@ strong { color: #0072e5 }
 }
 .uv {
 	color: #ac00e5
+}
+#bltabbtn button, .gluonupgrade.bl {
+	background: repeating-linear-gradient(#620d65, transparent 50%, #620d65 100%), repeating-linear-gradient(90deg, transparent, #c73415 50%, transparent 100%), #191919 !important;
+	background-size: 200% 200% !important;
+	border: 1px solid transparent !important;
+	color: #191919 !important;
+	text-shadow: 0px 0px 3px #191919, 0px 0px 6px #e5e5e5;
+	animation: bl 5s linear infinite
+}
+#bltabbtn button:hover, .gluonupgrade.bl:hover {
+	color: #e5e5e5 !important
+}
+#bWatt, #bWattLoss, #zb, #bAM, #bAMProduction, #bAMEffect, #bBt, #bBtProduction, #odSpeed {
+	color: #c73415
+}
+.bGlyph {
+	background: #e5e5e5;
+	box-shadow: 0px 0px 12px #e5e5e5
+}
+.bGlyph.Infinity {
+	background: #e2bd00;
+	box-shadow: 0px 0px 12px #e2bd00
+}
+.bGlyph.Eternity {
+	background: #7100e2;
+	box-shadow: 0px 0px 12px #7100e2
+}
+.bGlyph.Quantum {
+	background: #009900;
+	box-shadow: 0px 0px 12px #009900
+}
+.bGlyph.Ethereal {
+	box-shadow: 0px 0px 12px #3964e5
+}
+.gluonupgradebought.bl {
+	background: repeating-linear-gradient(#9df29a, transparent 50%, #9df29a 100%), repeating-linear-gradient(90deg, transparent, #38cbea 50%, transparent 100%), #191919 !important;
+	background-size: 200% 200% !important;
+	border: 1px solid transparent !important;
+	color: #191919 !important;
+	text-shadow: 0px 0px 3px #191919, 0px 0px 6px #e5e5e5;
+}
+#wpb {
+	color: #620d65;
+	text-shadow: 0px 0px 3px #0c0c0c, 0px 0px 4.5px #e5e5e5
+}
+#wnb {
+	color: #9df29a
+}
+.zero {
+	background: repeating-linear-gradient(#620d65, transparent 50%, #620d65 100%), repeating-linear-gradient(90deg, transparent, #9df29a 50%, transparent 100%), #191919;
+	background-size: 200% 200%;
+	box-shadow: 0px 0px 12px #e5e5e5
+}
+.down #wQkSymbol {
+	transform: translate(-50%, 15%)
 }
 .notifyjs-bootstrap-info {
     background-color: #0072e5;

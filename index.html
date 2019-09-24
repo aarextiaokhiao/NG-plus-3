@@ -4759,7 +4759,8 @@
 					<td><button class="secondarytabbtn" onclick="showGhostifyTab('neutrinos')">Neutrinos</button></td>
 					<td><button class="secondarytabbtn" onclick="showGhostifyTab('automaticghosts')">Automator Ghosts</button></td>
 					<td><button class="secondarytabbtn" onclick="showGhostifyTab('bravemilestones')">Brave Milestones</button></td>
-					<td><button id="gphtabbtn" class="secondarytabbtn" onclick="showGhostifyTab('gphtab')">Ghostly Photons</button></td>
+					<td id="gphtabbtn"><button class="secondarytabbtn" onclick="showGhostifyTab('gphtab')">Ghostly Photons</button></td>
+					<td id="bltabbtn"><button class="secondarytabbtn" onclick="showGhostifyTab('bltab')">Bosonic Lab</button></td>
 				</tr>
 			</table>
 			<div id="neutrinos" class="ghostifytab">
@@ -5025,6 +5026,57 @@
 					Translated to +<span class="ghr" id="lightEmpowermentsEffect" style="font-size:35px"></span>x multiplier to all Light strength boosts.<br>
 				</div>
 			</div>
+			<div id="bltab" class="ghostifytab">
+				<div id="blUnl"></div>
+				<div id="blDiv">
+					<table class='qtable'><tr>
+						<td>
+							You have <span id="bWatt" style="font-size:35px"></span> Bosonic Watt. <span id="bWattLoss" style="font-size:25px"></span><br>You have played Bosonic Lab for <span id="bTicks"></span> ticks.
+						</td>
+						<td>
+							You have <span id="bAM" style="font-size:35px"></span> Bosonic Antimatter. <span id="bAMProduction" style="font-size:25px"></span>
+						</td>
+						<td>
+							You have <span id="bBt" style="font-size:35px"></span> Bosonic Battery. <span id="bBtProduction" style="font-size:25px"></span><br>
+							Overdrive Speed: <span id="odSpeed" style="font-size:25px"></span><span id="odSpeedWBBt"></span><br>
+							<input id="odSlider" style="width: 180px;" type="range" min="0" max="40" value="20" class="slider" oninput="changeOverdriveSpeed()">
+						</td>
+					</tr></table>
+					<b style="font-size: 35px">Bosonic Glyphs</b><br>
+					<table id="bGlyphs" align="center" style="margin: auto"><tr></tr></table>
+					<table class="table" align="center" style="margin: auto">
+						<tr>
+							<td><button class="secondarytabbtn" onclick="showBLTab('bextab')">Bosonic Extractor</button></td>
+							<td><button class="secondarytabbtn" onclick="showBLTab('butab')">Bosonic Upgrades</button></td>
+							<td><button class="secondarytabbtn" onclick="showBLTab('wzbtab')">W & Z Bosons</button></td>
+						</tr>
+					</table>
+					<div id="bextab" class="bltab">
+						<table class='qtable'><tr>
+							<td>
+								Amount to extract Bosonic Glyphs:<br>
+								<input id="amountToExtract" onchange="changeAmountToExtract()"></input>
+							</td>
+							<td>
+								Type to extract Bosonic Glyphs:<br>
+								<button id="typeToExtract1" class="storebtn" onclick="changeTypeToExtract(1)" style="width: 25px; font-size: 12px"><div class="bGlyph" type="1"></div></button>
+								<button id="typeToExtract2" class="storebtn" onclick="changeTypeToExtract(2)" style="width: 25px; font-size: 12px"><div class="bGlyph" type="2"></div></button>
+								<button id="typeToExtract3" class="storebtn" onclick="changeTypeToExtract(3)" style="width: 25px; font-size: 12px"><div class="bGlyph" type="3"></div></button>
+								<button id="typeToExtract4" class="storebtn" onclick="changeTypeToExtract(4)" style="width: 25px; font-size: 12px"><div class="bGlyph" type="4"></div></button>
+								<button id="typeToExtract5" class="storebtn" onclick="changeTypeToExtract(5)" style="width: 25px; font-size: 12px"><div class="bGlyph" type="5"></div></button>
+							</td>
+							<td>
+								<button class="storebtn" id="extract" onclick="extract()" style="width: 180px"></button><br>
+								<span id="extractTime"></span>
+							</td>
+						</tr></table>
+						<b style="font-size: 35px">Bosonic Enchants</b><br>
+						Coming soon...
+					</div>
+					<div id="butab" class="bltab"><table class="table" id="bosonicUpgs" align="center" style="margin: auto"></table></div>
+					<div id="wzbtab" class="bltab">Coming soon...</div>
+				</div>
+			</div>
 			<div id="footercontainer">
 				<table id="footer">
 					<tr>
@@ -5127,6 +5179,7 @@
 			<button id="quantumConfirmBtn" class="storebtn" onclick="toggleQuantumConf()" style="width: 200px; height: 55px; font-size: 15px" style="display: inline"></button>
 			<button id="bigRipConfirmBtn" class="storebtn" onclick="toggleBigRipConf()" style="width: 200px; height: 55px; font-size: 15px" style="display: inline"></button>
 			<button id="ghostifyConfirmBtn" class="storebtn" onclick="toggleGhostifyConf()" style="width: 200px; height: 55px; font-size: 15px" style="display: inline"></button>
+			<button id="leConfirmBtn" class="storebtn" onclick="toggleLEConf()" style="width: 200px; height: 55px; font-size: 15px" style="display: inline"></button>
 		</div>
 	</div>
 	<div class="popup optionmenu" id="notationmenu" style="overflow-y:hidden; width: 450px">

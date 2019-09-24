@@ -4,6 +4,7 @@ function initialGalaxies() {
 		g=Math.max(g-player.quantum.electrons.sacGals,0)
 		g*=Math.max(Math.min(10-(player.quantum.electrons.amount+g*getELCMult())/16857,1),0)
 	}
+	if (hasBosonicUpg(14)) g=Math.max(Math.min(player.galaxies,tmp.blu[14]),g)
 	if (tmp.rg4) g*=0.4
 	if ((inNC(15)||player.currentChallenge=="postc1")&&player.aarexModifications.ngmX==3) g=0
 	return g
