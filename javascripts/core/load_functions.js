@@ -1923,7 +1923,7 @@ if (player.version < 5) {
       document.getElementById("gphUnl").textContent="To unlock Ghostly Photons, you need to get "+shortenCosts(Decimal.pow(10,605e7))+" antimatter while your universe is Big Ripped first."
       document.getElementById("blUnl").textContent="To unlock Bosonic Lab, you need to get "+shortenCosts(Decimal.pow(10,4e10))+" red ghostly unstable quarks first."
       document.getElementById("bpc68").textContent=shortenMoney(tmp.qu.pairedChallenges.pc68best)
-      document.getElementById("odSlider").value=Math.round(player.ghostify.bl.speed.log(3)+1)*20
+      document.getElementById("odSlider").value=Math.round(Decimal.log(player.ghostify.bl.speed,3)+1)*20
       document.getElementById("amountToExtract").value=formatValue("Scientific",player.ghostify.bl.amountToExtract,3,0)
       for (var g=1;g<6;g++) document.getElementById("typeToExtract"+g).className=player.ghostify.bl.typeToExtract==g?"chosenbtn":"storebtn"
       updateElectrons()
@@ -2567,12 +2567,6 @@ function transformSaveToDecimal() {
           for (var t=0;t<5;t++) player.ghostify.bl.glyphs[t]=new Decimal(player.ghostify.bl.glyphs[t])
           player.ghostify.bl.battery=new Decimal(player.ghostify.bl.battery)
           player.ghostify.bl.speed=new Decimal(player.ghostify.bl.speed)
-
-          player.ghostify.wzb.wQk.progress=new Decimal(player.ghostify.wzb.wQk.progress)
-          player.ghostify.wzb.zNe.progress=new Decimal(player.ghostify.wzb.zNe.progress)
-          player.ghostify.wzb.wpb=new Decimal(player.ghostify.wzb.wpb)
-          player.ghostify.wzb.wnb=new Decimal(player.ghostify.wzb.wnb)
-          player.ghostify.wzb.zb=new Decimal(player.ghostify.wzb.zb)
       }
   }
 }
