@@ -9041,7 +9041,7 @@ function initGame() {
     setupText()
     initiateMetaSave()
     migrateOldSaves()
-    localStorage.setItem('AD_aarexModifications', btoa(JSON.stringify(metaSave)))
+    localStorage.setItem(metaSaveId, btoa(JSON.stringify(metaSave)))
     load_game(false, true)
 
     //show one tab during init or they'll all start hidden
