@@ -189,6 +189,10 @@
 			v1=new Decimal(v1)
 			v2=new Decimal(v2)
 			var expdiff=v1.l-v2.l
+			if (expdiff<0) {
+				v1.l=Number.NEGATIVE_INFINITY
+				return v1
+			}
 			if (expdiff>=15||v2.l==Number.NEGATIVE_INFINITY) return v1
 			v1.l=v1.l+Math.log10(1-Math.pow(10,-expdiff))
 			return v1
@@ -244,6 +248,10 @@
 		static div(v1,v2) {
 			v1=new Decimal(v1)
 			v2=new Decimal(v2)
+			if ((v1.l==Number.POSITIVE_INFINITY||v1.l==Number.NEGATIVE_INFINITY)&&v2.l==v1.l) {
+				v1.l=Number.NEGATIVE_INFINITY
+				return v1
+			}
 			v1.l=v1.l-v2.l
 			return v1
 		}
@@ -305,6 +313,10 @@
 		static mod(v1,v2) {
 			v1=new Decimal(v1)
 			v2=new Decimal(v2)
+			if ((v1.l==Number.POSITIVE_INFINITY||v1.l==Number.NEGATIVE_INFINITY)&&v2.l==v1.l) {
+				v1.l=Number.NEGATIVE_INFINITY
+				return v1
+			}
 			var expdiff=v1.l-v2.l
 			if (expdiff<0) return v1
 			if (expdiff>=15) v2.l=Number.NEGATIVE_INFINITY
