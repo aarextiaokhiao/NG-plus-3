@@ -814,6 +814,7 @@ if (player.version < 5) {
                   },
                   bl: {
                       watt: 0,
+                      speed: 1,
                       ticks: 0,
                       am: 0,
                       amountToExtract: 1,
@@ -822,10 +823,10 @@ if (player.version < 5) {
                       extractProgress: 0,
                       glyphs: [0,0,0,0,0],
                       enchants: {},
-                      usedEnchants: {},
+                      usedEnchants: [],
                       upgrades: [],
                       battery: 0,
-                      speed: 1
+                      odSpeed: 1
                   },
                   wzb: {
                       unl: false
@@ -1232,6 +1233,7 @@ if (player.version < 5) {
       player.ghostify.bl = {
           watt: 0,
           ticks: 0,
+          speed: 1,
           am: 0,
           amountToExtract: 1,
           typeToExtract: 1,
@@ -1239,10 +1241,10 @@ if (player.version < 5) {
           extractProgress: 0,
           glyphs: [0,0,0,0,0],
           enchants: {},
-          usedEnchants: {},
+          usedEnchants: [],
           upgrades: [],
           battery: 0,
-          speed: 1
+          odSpeed: 1
       }
       player.ghostify.wzb = {
           unl: false
@@ -1282,6 +1284,7 @@ if (player.version < 5) {
           forceToQuantumAndRemove=true
           setTTAfterQuantum=2e94
       }
+      if (typeof(player.ghostify.bl.usedEnchants)!=="array") player.ghostify.bl.usedEnchants=[]
       updateAutoGhosts(true)
   }
   if (player.aarexModifications.newGame3PlusVersion!=undefined) {
@@ -1923,7 +1926,7 @@ if (player.version < 5) {
       document.getElementById("gphUnl").textContent="To unlock Ghostly Photons, you need to get "+shortenCosts(Decimal.pow(10,605e7))+" antimatter while your universe is Big Ripped first."
       document.getElementById("blUnl").textContent="To unlock Bosonic Lab, you need to get "+shortenCosts(Decimal.pow(10,4e10))+" red ghostly unstable quarks first."
       document.getElementById("bpc68").textContent=shortenMoney(tmp.qu.pairedChallenges.pc68best)
-      document.getElementById("odSlider").value=Math.round(Decimal.log(player.ghostify.bl.speed,3)+1)*20
+      document.getElementById("odSlider").value=Math.round(Decimal.log(player.ghostify.bl.odSpeed,3)*20+20)
       document.getElementById("amountToExtract").value=formatValue("Scientific",player.ghostify.bl.amountToExtract,3,0)
       for (var g=1;g<6;g++) document.getElementById("typeToExtract"+g).className=player.ghostify.bl.typeToExtract==g?"chosenbtn":"storebtn"
       updateElectrons()
@@ -1936,7 +1939,7 @@ if (player.version < 5) {
       updateNeutrinoBoosts()
       updateGPHUnlocks()
       updateBLUnlocks()
-      updateBosonicUpgradeCosts()
+      updateBosonicStuffCosts()
   }
   transformSaveToDecimal();
   hideDimensions()
@@ -2559,14 +2562,14 @@ function transformSaveToDecimal() {
           player.ghostify.ghostlyPhotons.darkMatter=new Decimal(player.ghostify.ghostlyPhotons.darkMatter)
       }
       if (player.ghostify.bl) {
-          player.ghostify.bl.watt=new Decimal(player.ghostify.bl.watt)
           player.ghostify.bl.ticks=new Decimal(player.ghostify.bl.ticks)
           player.ghostify.bl.am=new Decimal(player.ghostify.bl.am)
           player.ghostify.bl.amountToExtract=new Decimal(player.ghostify.bl.amountToExtract)
           player.ghostify.bl.extractProgress=new Decimal(player.ghostify.bl.extractProgress)
           for (var t=0;t<5;t++) player.ghostify.bl.glyphs[t]=new Decimal(player.ghostify.bl.glyphs[t])
           player.ghostify.bl.battery=new Decimal(player.ghostify.bl.battery)
-          player.ghostify.bl.speed=new Decimal(player.ghostify.bl.speed)
+          player.ghostify.bl.odSpeed=new Decimal(player.ghostify.bl.odSpeed)
+          for (var g2=2;g2<6;g2++) for (var g1=1;g1<g2;g1++) if (player.ghostify.bl.enchants[g1*10+g2]!==undefined) player.ghostify.bl.enchants[g1*10+g2]=new Decimal(player.ghostify.bl.enchants[g1*10+g2])
       }
   }
 }

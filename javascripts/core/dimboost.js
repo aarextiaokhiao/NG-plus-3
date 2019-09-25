@@ -232,8 +232,10 @@ function getSupersonicStart() {
 
 function getSupersonicMultIncrease() {
 	if (inQC(5)) return 20
-	if (player.masterystudies) if (player.masterystudies.includes("t331")) return 1
-	return 4
+	let r=4
+	if (player.masterystudies) if (player.masterystudies.includes("t331")) r=1
+	if (player.masterystudies.includes("d12")&&hasBosonicUpg(22)) r/=getNanofieldRewardEffect(1)
+	return r
 }
 
 document.getElementById("softReset").onclick = function () {

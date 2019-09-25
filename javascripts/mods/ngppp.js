@@ -518,6 +518,28 @@ function setupText() {
 		document.getElementById(color+"Branch").innerHTML=html
 	}
 	for (var m=1;m<17;m++) document.getElementById("braveMilestone"+m).textContent=getFullExpansion(tmp.bm[m-1])+"x quantumed"
+	//Bosonic Extractor
+	var ben=document.getElementById("bosonicEnchants")
+	var g1=1
+	var g2=2
+	for (r=1;r<3;r++) {
+		var row=ben.insertRow(r-1)
+		for (c=1;c<6;c++) {
+			var col=row.insertCell(c-1)
+			var id=(g1*10+g2)
+			col.innerHTML="<button id='bEn"+id+"' class='gluonupgrade unavailablebtn' style='font-size: 9px' onclick='takeEnchantAction("+id+")'>"+(bosonicEnchantDescs[id]||"???")+"<br>"+
+			"Currently: <span id='bEnEffect"+id+"'>???</span><br>"+
+			"Level: <span id='bEnLvl"+id+"'>0</span><br>"+
+			"<span id='bEnOn"+id+"'>Disabled</span><br>"+
+			"Cost: <span id='bEnG1Cost"+id+"'>???</span> <div class='bGlyph' type='"+g1+"'></div> & <span id='bEnG2Cost"+id+"'>???</span> <div class='bGlyph' type='"+g2+"'></div></button><br>"
+			
+			g1++
+			if (g1==g2) {
+				g1=1
+				g2++
+			}
+		}
+	}
 	//Bosonic Upgrades
 	var bu=document.getElementById("bosonicUpgs")
 	for (r=1;r<3;r++) {
@@ -759,7 +781,8 @@ function updateQuantumTabs() {
 			document.getElementById("nanofieldreward" + reward).className = reward > rewards ? "nanofieldrewardlocked" : "nanofieldreward"
 			document.getElementById("reward" + reward + "tier").textContent = getFullExpansion(Math.ceil((rewards + 1 - reward)/8))
 		}
-		document.getElementById("nanofieldreward1").textContent = "Hatch speed is " + shortenDimensions(getNanofieldRewardEffect(1)) + "x faster."
+		document.getElementById("nanofieldreward1").textContent = hasBosonicUpg(22) ? "Dimension Supersonic scaling is " + shorten(getNanofieldRewardEffect(1)) + "x slower." :
+			"Hatch speed is " + shortenDimensions(getNanofieldRewardEffect(1)) + "x faster."
 		document.getElementById("nanofieldreward2").textContent = "Meta-antimatter effect power is increased by " + getNanofieldRewardEffect(2).toFixed(1) + "x."
 		document.getElementById("nanofieldreward3").textContent = "Free galaxy gain is increased by " + (getNanofieldRewardEffect(3)*100-100).toFixed(1) + "%."
 		document.getElementById("nanofieldreward4").textContent = "Dilated time boost to Meta Dimensions is increased to ^" + getNanofieldRewardEffect(4).toFixed(3) + "."
@@ -882,7 +905,8 @@ function updateColorCharge() {
 function assignQuark(color) {
 	if (color!="r"&&tmp.qu.times<2&&!ghostified) if (!confirm("It is recommended to assign your first quarks to red. Are you sure you want to do that?")) return
 	var usedQuarks=tmp.qu.quarks.floor().min(tmp.qu.quarks)
-	tmp.qu.usedQuarks[color]=tmp.qu.usedQuarks[color].add(usedQuarks).round()
+	var mult=getAssignMult()
+	tmp.qu.usedQuarks[color]=tmp.qu.usedQuarks[color].add(usedQuarks.times(mult)).round()
 	tmp.qu.quarks=tmp.qu.quarks.sub(usedQuarks)
 	document.getElementById("quarks").innerHTML="You have <b class='QKAmount'>0</b> quarks."
 	updateColorCharge()
@@ -1758,7 +1782,7 @@ function getHatchSpeed() {
 	if (player.masterystudies.includes("t372")) speed /= getMTSMult(372)
 	if (player.masterystudies.includes("t381")) speed /= getMTSMult(381)
 	if (player.masterystudies.includes("t391")) speed /= getMTSMult(391)
-	if (player.masterystudies.includes("d12")) speed /= getNanofieldRewardEffect(1)
+	if (player.masterystudies.includes("d12") && !hasBosonicUpg(22)) speed /= getNanofieldRewardEffect(1)
 	if (player.masterystudies.includes("t402")) speed /= 30
 	return speed
 }
@@ -1870,7 +1894,10 @@ function getQuarkChargeProductionCap() {
 function getNanofieldRewardEffect(id) {
 	var rewards = tmp.qu.nanofield.rewards
 	var stacks = Math.ceil((rewards - id + 1) / 8)
-	if (id == 1) return Decimal.pow(30, stacks)
+	if (id == 1) {
+		if (hasBosonicUpg(22)) return stacks+1
+		return Decimal.pow(30,stacks)
+	}
 	if (id == 2) return stacks * 6.8
 	if (id == 3) return 1 + Math.pow(stacks, 0.83) * 0.039
 	if (id == 4) return 0.1 + Math.sqrt(stacks) * 0.021
@@ -1915,10 +1942,11 @@ function assignAll(auto) {
 	var sum = ratios.r+ratios.g+ratios.b
 	var oldQuarks = tmp.qu.quarks.floor()
 	var colors = ['r','g','b']
+	var mult = getAssignMult()
 	if (oldQuarks.eq(0)) return
 	for (c=0;c<3;c++) {
 		var toAssign = oldQuarks.times(ratios[colors[c]]/sum).round()
-		tmp.qu.usedQuarks[colors[c]] = tmp.qu.usedQuarks[colors[c]].add(toAssign).round()
+		tmp.qu.usedQuarks[colors[c]] = tmp.qu.usedQuarks[colors[c]].add(toAssign.times(mult)).round()
 	}
 	tmp.qu.quarks = new Decimal(0)
 	if (tmp.qu.autoOptions.assignQKRotate) {
@@ -3867,6 +3895,8 @@ function ghostifyReset(implode, gain, amount, force) {
 	player.ghostify.ghostlyPhotons.amount=new Decimal(0)
 	player.ghostify.ghostlyPhotons.darkMatter=new Decimal(0)
 	player.ghostify.ghostlyPhotons.ghostlyRays=new Decimal(0)
+	player.ghostify.bl.watt=0
+	player.ghostify.bl.speed=0
 	player.ghostify.under=true
 	updateLastTenGhostifies()
 	updateBraveMilestones()
@@ -4028,17 +4058,18 @@ function updateGhostifyTabs() {
 	}
 	if (document.getElementById("bltab").style.display=="block"&&player.ghostify.wzb.unl) {
 		let data=player.ghostify.bl
-		let speed=data.speed.min(data.battery.gt(0)?1/0:1)
+		let speed=data.odSpeed.min(data.battery.gt(0)?1/0:1).times(data.speed)
 		document.getElementById("bWatt").textContent=shorten(data.watt)
-		document.getElementById("bWattLoss").textContent="-"+shorten(getBosonicWattLoss())+"/s"
+		document.getElementById("bSpeed").textContent=data.speed.toFixed(2)
+		document.getElementById("bTotalSpeed").textContent=shorten(speed)
 		document.getElementById("bTicks").textContent=shorten(data.ticks)
 		document.getElementById("bAM").textContent=shorten(data.am)
-		document.getElementById("bAMProduction").textContent="+"+shorten(getBosonicAMProduction())+"/s"
+		document.getElementById("bAMProduction").textContent="+"+shorten(getBosonicAMProduction().times(speed))+"/s"
 		document.getElementById("bBt").textContent=shorten(data.battery)
-		document.getElementById("bBtProduction").textContent="-"+shorten(data.speed.gt(1)?getBosonicBatteryProduction():0)+"/s"
-		document.getElementById("odSpeed").textContent=speed.lt(1)?"/"+shorten(Decimal.div(1,speed)):shorten(speed)+"x"
-		document.getElementById("odSpeedWBBt").style.display=data.battery.eq(0)&&data.speed.gt(1)?"":"none"
-		document.getElementById("odSpeedWBBt").textContent=" ("+shorten(data.speed)+"x if you have Bosonic Battery)"
+		document.getElementById("bBtProduction").textContent="-"+shorten(data.odSpeed.gt(1)?getBosonicBatteryProduction().times(data.speed):0)+"/s"
+		document.getElementById("odSpeed").textContent=data.odSpeed.lt(1)?"/"+shorten(Decimal.div(1,data.odSpeed)):shorten(data.odSpeed.min(data.battery.gt(0)?1/0:1))+"x"
+		document.getElementById("odSpeedWBBt").style.display=data.battery.eq(0)&&data.odSpeed.gt(1)?"":"none"
+		document.getElementById("odSpeedWBBt").textContent=" ("+shorten(data.odSpeed)+"x if you have Bosonic Battery)"
 		for (var g=1;g<6;g++) document.getElementById("bGlyph"+g).textContent=shortenDimensions(data.glyphs[g-1])
 		if (document.getElementById("bextab").style.display=="block") {
 			if (data.extracting) {
@@ -4048,6 +4079,7 @@ function updateGhostifyTabs() {
 				document.getElementById("extract").textContent="Extract"
 				document.getElementById("extractTime").textContent="This will take "+shorten(getExtractTime())+" ticks"
 			}
+			updateBosonicEnchantDescs()
 		}
 		if (document.getElementById("butab").style.display=="block") updateBosonicUpgradeDescs()
 	}
@@ -4381,6 +4413,12 @@ function lightEmpowerment() {
 }
 
 //v2.2
+function getAssignMult() {
+	let r=new Decimal(1)
+	if (hasBosonicUpg(23)) r=r.times(tmp.blu[23])
+	return r
+}
+
 function toggleLEConf() {
 	player.aarexModifications.leNoConf = !player.aarexModifications.leNoConf
 	document.getElementById("leConfirmBtn").textContent = "Light Empowerment confirmation: O" + (player.aarexModifications.leNoConf ? "FF" : "N")
@@ -4393,19 +4431,8 @@ function updateBLUnlocks() {
 	document.getElementById("blDiv").style.display=unl?"":"none"
 }
 
-function getBosonicWattGainGal(x) {
-	let r = Decimal.pow(10,Math.max(x/1e3-6,0)).sub(1)
-	return r
-}
-
-function getBosonicWattGain(galAdd=0) {
-	let gal=player.galaxies
-	return getBosonicWattGainGal(gal+galAdd).sub(getBosonicWattGainGal(gal))
-}
-
-function getBosonicWattLoss() {
-	let r = tmp.wzbs
-	return r
+function getBosonicWattGain() {
+	return player.money.log10()/1e16-4
 }
 
 function bosonicTick(diff) {
@@ -4414,17 +4441,17 @@ function bosonicTick(diff) {
 	let data=player.ghostify.bl
 	diff=new Decimal(diff)
 	if (isNaN(diff.e)) return
-	if (data.speed.gt(1)&&data.battery.gt(0)) {
+	if (data.odSpeed.gt(1)&&data.battery.gt(0)) {
 		var bBtP=getBosonicBatteryProduction()
 		var odDiff=diff.times(bBtP).min(data.battery)
-		var fasterDiff=odDiff.div(bBtP).times(data.speed)
+		var fasterDiff=odDiff.div(bBtP).times(data.odSpeed)
 		data.battery=data.battery.sub(diff.times(bBtP).min(data.battery))
 		diff=fasterDiff.add(diff.sub(odDiff.min(diff)))
-	} else diff=diff.times(data.speed.min(1))
+	} else diff=diff.times(data.odSpeed.min(1))
 	data.ticks=data.ticks.add(diff)
 
 	//Bosonic Extractor
-	data.extractProgress=data.extractProgress.add(diff.div(getExtractTime()))
+	if (data.extracting) data.extractProgress=data.extractProgress.add(diff.div(getExtractTime()))
 	if (data.extractProgress.gte(1)) {
 		data.glyphs[data.typeToExtract-1]=data.glyphs[data.typeToExtract-1].add(data.amountToExtract).round()
 		data.extracting=false
@@ -4455,6 +4482,21 @@ function showBLTab(tabName) {
 	}
 	if (oldTab !== tabName) player.aarexModifications.tabsSave.tabBL = tabName
 	closeToolTip()
+}
+
+function updateBosonicStuffCosts() {
+	for (var g2=2;g2<6;g2++) for (var g1=1;g1<g2;g1++) {
+		var id=g1*10+g2
+		var data=bosonicEnchantCosts[id]
+		document.getElementById("bEnG1Cost"+id).textContent=(data!==undefined&&data[0]!==undefined&&shortenDimensions(data[0]))||"???"
+		document.getElementById("bEnG2Cost"+id).textContent=(data!==undefined&&data[1]!==undefined&&shortenDimensions(data[1]))||"???"
+	}
+	for (var r=1;r<3;r++) for (var c=1;c<6;c++) {
+		var id=r*10+c
+		var data=bosonicUpgReqData[id]
+		document.getElementById("bosonicUpgCost"+id).textContent=(data[0]!==undefined&&shorten(data[0]))||"???"
+		for (var g=1;g<3;g++) document.getElementById("bosonicUpgG"+g+"Req"+id).textContent=(data[g*2-1]!==undefined&&shortenDimensions(new Decimal(data[g*2-1])))||"???"
+	}
 }
 
 //Bosonic Extractor / Bosonic Glyphs
@@ -4491,21 +4533,82 @@ function changeTypeToExtract(x) {
 	data.extractProgress=new Decimal(0)
 }
 
+function canBuyBosonicEnchant(id) {
+	let data=player.ghostify.bl
+	let costData=bosonicEnchantCosts[id]
+	let g1=Math.floor(id/10)
+	let g2=id%10
+	if (costData===undefined) return
+	if (costData[0]===undefined||!data.glyphs[g1-1].gte(costData[0])) return
+	if (costData[1]===undefined||!data.glyphs[g2-1].gte(costData[1])) return
+	return true
+}
+
+function takeEnchantAction(id) {
+	let data=player.ghostify.bl
+	if (bosonicEnchantAction=="upgrade") {
+		let costData=bosonicEnchantCosts[id]
+		let g1=Math.floor(id/10)
+		let g2=id%10
+		if (!canBuyBosonicEnchant(id)) return
+		data.glyphs[g1-1]=data.glyphs[g1-1].sub(costData[0]).round()
+		data.glyphs[g2-1]=data.glyphs[g2-1].sub(costData[1]).round()
+		if (data.enchants[id]==undefined) data.enchants[id]=new Decimal(1)
+		else data.enchants[id]=data.enchants[id].add(1).round()
+	} else if (bosonicEnchantAction=="use") {
+		if (data.enchants[id]) {
+			if (data.usedEnchants.includes(id)) {
+				var newData=[]
+				for (var u=0;u<data.usedEnchants.length;u++) if (data.usedEnchants[u]!=id) newData.push(data.usedEnchants[u])
+				data.usedEnchants=newData
+			} else data.usedEnchants.push(id)
+		}
+	}
+}
+
+function changeEnchantAction(id) {
+	bosonicEnchantAction=(["upgrade","use"])[id-1]
+}
+
+function updateBosonicEnchantDescs() {
+	let data=player.ghostify.bl
+	for (var g2=2;g2<6;g2++) for (var g1=1;g1<g2;g1++) {
+		var id=g1*10+g2
+		if (bosonicEnchantAction=="upgrade") document.getElementById("bEn"+id).className="gluonupgrade "+(canBuyBosonicEnchant(id)?"bl":"unavailablebtn")
+		else if (bosonicEnchantAction=="use") document.getElementById("bEn"+id).className="gluonupgrade "+(data.enchants[id]?"bl":"unavailablebtn")
+		document.getElementById("bEnLvl"+id).textContent=shortenDimensions(tmp.bEnLvl[id])
+		document.getElementById("bEnOn"+id).textContent=data.usedEnchants.includes(id)?"Enabled":"Disabled"
+		if (tmp.bEn[id]!==undefined) document.getElementById("bEnEffect"+id).textContent=shorten(tmp.bEn[id])+"x"
+	}
+	document.getElementById("usedEnchants").textContent="You have used "+data.usedEnchants.length+" / 3 Bosonic Enchants."
+}
+
 var glyphNames=[null, "Infinity", "Eternity", "Quantum", "Ghostly", "Ethereal"]
 var glyphScalings={
 	1: 60,
-	2: 1/0,
+	2: 120,
 	3: 1/0,
 	4: 1/0,
 	5: 1/0
 }
+var bosonicEnchantAction="upgrade"
 var bosonicEnchantCosts={
-	12: [1,1]
+	12: [1,1],
+	13: [undefined,1e100]
 }
 var bosonicEnchantDescs={
-	12: "",
-	13: "",
-	14: ""
+	12: "Bosonic Extractor automatically extracts.",
+	13: "Speed up W & Z Bosons.",
+	23: "Extracting takes less time."
+}
+var bosonicEnchantEffects={
+}
+var autoExtractTimes={
+	1: 60,
+	2: 120,
+	3: 1/0,
+	4: 1/0,
+	5: 1/0
 }
 
 //Bosonic Upgrades
@@ -4547,15 +4650,6 @@ function hasBosonicUpg(id) {
 	return ghostified && player.ghostify.wzb.unl && player.ghostify.bl.upgrades.includes(id)
 }
 
-function updateBosonicUpgradeCosts() {
-	for (var r=1;r<3;r++) for (var c=1;c<6;c++) {
-		var id=r*10+c
-		var data=bosonicUpgReqData[id]
-		document.getElementById("bosonicUpgCost"+id).textContent=(data[0]!==undefined&&shorten(data[0]))||"???"
-		for (var g=1;g<3;g++) document.getElementById("bosonicUpgG"+g+"Req"+id).textContent=(data[g*2-1]!==undefined&&shortenDimensions(new Decimal(data[g*2-1])))||"???"
-	}
-}
-
 function updateBosonicUpgradeDescs() {
 	for (var r=1;r<3;r++) for (var c=1;c<6;c++) {
 		var id=r*10+c
@@ -4580,7 +4674,7 @@ var bosonicUpgDescs = {
 	22: "Replace first Nanofield reward with a new powerful boost.",
 	23: "Assigning gives more colored quarks based on your meta-antimatter.",
 	24: "You gain Tachyon particles without dilation, but with reduced formula.",
-	25: "Dimension Supersonic starts later for each 1 total galaxy."
+	25: "???"
 }
 var bosonicUpgCosts = {
 	11: {
@@ -4608,17 +4702,21 @@ var bosonicUpgEffects = {
 	},
 	21: function() {
 		return 1/Math.sqrt(1+player.quantum.usedQuarks.b.add(1).log10()/1e4)
+	},
+	23: function() {
+		return Decimal.pow(player.meta.antimatter.add(1).log10()+1, 1000)
 	}
 }
 
 //Bosonic Overdrive
 function getBosonicBatteryProduction() {
-	let r=player.ghostify.bl.speed
-	if (r.lt(1)) r=Decimal.div(1,r).pow(.8).sub(1)
-	else r=r.pow(1.25).sub(1).times(getBosonicWattLoss())
+	let r=player.ghostify.bl.odSpeed
+	if (r.lt(1)) r=Decimal.div(1,r).pow(.8)
+	else r=r.pow(1.25)
+	r=r.sub(1)
 	return r
 }
 
 function changeOverdriveSpeed() {
-	player.ghostify.bl.speed = Decimal.pow(3,document.getElementById("odSlider").value/20-1)
+	player.ghostify.bl.odSpeed = Decimal.pow(3,document.getElementById("odSlider").value/20-1)
 }

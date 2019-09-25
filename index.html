@@ -4676,32 +4676,32 @@
 						<td class="milestoneText">Second reward (<span id="reward2tier">0</span>):</td>
 					</tr>
 					<tr>
-						<td><button class="nanofieldrewardlocked" id="nanofieldreward1">Hatch speed is 1x faster.</button></td>
-						<td><button class="nanofieldrewardlocked" id="nanofieldreward2">Meta-antimatter effect power is increased by 0.0x.</button></td>
+						<td><button class="nanofieldrewardlocked" id="nanofieldreward1"></button></td>
+						<td><button class="nanofieldrewardlocked" id="nanofieldreward2"></button></td>
 					</tr>
 					<tr>
 						<td class="milestoneText">Third reward (<span id="reward3tier">0</span>):</td>
 						<td class="milestoneText">Fourth reward (<span id="reward4tier">0</span>):</td>
 					</tr>
 					<tr>
-						<td><button class="nanofieldrewardlocked" id="nanofieldreward3">Free galaxy gain is increased by 0.0%.</button></td>
-						<td><button class="nanofieldrewardlocked" id="nanofieldreward4">Dilated time multiplier power on Meta Dimensions is 0.100x.</button></td>
+						<td><button class="nanofieldrewardlocked" id="nanofieldreward3"></button></td>
+						<td><button class="nanofieldrewardlocked" id="nanofieldreward4"></button></td>
 					</tr>
 					<tr>
 						<td class="milestoneText">Fifth reward (<span id="reward5tier">0</span>):</td>
 						<td class="milestoneText">Sixth reward (<span id="reward6tier">0</span>):</td>
 					</tr>
 					<tr>
-						<td><button class="nanofieldrewardlocked" id="nanofieldreward5">While dilated, Normal Dimension multipliers and tickspeed are raised to the power of 1.0.</button></td>
-						<td><button class="nanofieldrewardlocked" id="nanofieldreward6">Meta-dimension boost power is increased to 3.0x.</button></td>
+						<td><button class="nanofieldrewardlocked" id="nanofieldreward5"></button></td>
+						<td><button class="nanofieldrewardlocked" id="nanofieldreward6"></button></td>
 					</tr>
 					<tr>
 						<td class="milestoneText">Seventh reward (<span id="reward7tier">0</span>):</td>
 						<td class="milestoneText">Eighth reward (<span id="reward8tier">0</span>):</td>
 					</tr>
 					<tr>
-						<td><button class="nanofieldrewardlocked" id="nanofieldreward7">Remote galaxy cost scaling starts 0 later and the production of preon charge is 1x faster.</button></td>
-						<td><button class="nanofieldrewardlocked" id="nanofieldreward8" style="font-size:10px">Add 0.00x to multiplier per ten dimensions before getting affected by electrons and the production of preon energy is 1.0x faster.</button></td>
+						<td><button class="nanofieldrewardlocked" id="nanofieldreward7" style="font-size:10px"></button></td>
+						<td><button class="nanofieldrewardlocked" id="nanofieldreward8" style="font-size:10px"></button></td>
 					</tr>
 				</table>
 				<br><br>
@@ -5031,7 +5031,7 @@
 				<div id="blDiv">
 					<table class='qtable'><tr>
 						<td>
-							You have <span id="bWatt" style="font-size:35px"></span> Bosonic Watt. <span id="bWattLoss" style="font-size:25px"></span><br>You have played Bosonic Lab for <span id="bTicks"></span> ticks.
+							You have <span id="bWatt" style="font-size:35px"></span> Bosonic Watts.<br>Bosonic Speed: <span id="bSpeed" style="font-size:25px"></span>x<br>Bosonic Lab is currently running at <span id="bTotalSpeed" style="font-size:25px"></span>x.<br>You have played Bosonic Lab for <span id="bTicks"></span> ticks.
 						</td>
 						<td>
 							You have <span id="bAM" style="font-size:35px"></span> Bosonic Antimatter. <span id="bAMProduction" style="font-size:25px"></span>
@@ -5039,7 +5039,7 @@
 						<td>
 							You have <span id="bBt" style="font-size:35px"></span> Bosonic Battery. <span id="bBtProduction" style="font-size:25px"></span><br>
 							Overdrive Speed: <span id="odSpeed" style="font-size:25px"></span><span id="odSpeedWBBt"></span><br>
-							<input id="odSlider" style="width: 180px;" type="range" min="0" max="40" value="20" class="slider" oninput="changeOverdriveSpeed()">
+							<input id="odSlider" style="width: 180px;" type="range" min="0" max="40" class="slider" oninput="changeOverdriveSpeed()">
 						</td>
 					</tr></table>
 					<b style="font-size: 35px">Bosonic Glyphs</b><br>
@@ -5071,7 +5071,10 @@
 							</td>
 						</tr></table>
 						<b style="font-size: 35px">Bosonic Enchants</b><br>
-						Coming soon...
+						<button class="storebtn" onclick="changeEnchantAction(1)" style="width: 150px">Upgrade enchants</button>
+						<button class="storebtn" onclick="changeEnchantAction(2)" style="width: 150px">Use enchants</button><br>
+						<span id="usedEnchants"></span><br>
+						<table class="table" id="bosonicEnchants" align="center" style="margin: auto"></table>
 					</div>
 					<div id="butab" class="bltab"><table class="table" id="bosonicUpgs" align="center" style="margin: auto"></table></div>
 					<div id="wzbtab" class="bltab">Coming soon...</div>

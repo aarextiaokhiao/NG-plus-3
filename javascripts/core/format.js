@@ -146,7 +146,7 @@ function getTimeAbbreviation(seconds) {
 const inflog = Math.log10(Number.MAX_VALUE)
 function formatValue(notation, value, places, placesUnder1000, noInf) {
     if (notation === "Same notation") notation = player.options.notation
-    if (notation === 'Iroha' && (onPostBreak() || Decimal.lt(value, Number.MAX_VALUE))) return iroha(value, 5)
+    if (notation === 'Iroha' && (onPostBreak() || Decimal.lt(value, getLimit()) || noInf)) return iroha(value, 5)
     if (Decimal.eq(value, 1/0)) return "Infinite"
     if ((onPostBreak() || Decimal.lt(value, getLimit()) || noInf) && (Decimal.gte(value,1000))) {
         if (notation === "AF2019") {
@@ -293,7 +293,7 @@ function formatValue(notation, value, places, placesUnder1000, noInf) {
             else pow = getFullExpansion(pow);
         }
 
-        if (notation === "Logarithm" || (notation === "Mixed logarithm" && power > 32)) {
+        if (notation === "Logarithm" || notation === 'Iroha' || (notation === "Mixed logarithm" && power > 32)) {
             var base=player.options.logarithm.base
             var prefix
             if (base==10) {
@@ -614,6 +614,8 @@ let iroha_negate = function (x) {return '見' + x}
 
 let iroha_invert = function (x) {return '世' + x}
 
+let iroha_log = function (x) {return 'ログ' + x}
+
 let iroha_special = 'いろはにほへとちりぬるをわかよたれそつねならむうゐのおくやまけふこえてあさきゆめみしゑひもせアイウエオカキクケコ';
 
 function iroha (n, depth) {
@@ -638,6 +640,9 @@ function iroha (n, depth) {
     return iroha_invert(iroha(bin_inv(n), depth));
   }
   let log = bin_log(bin_log(n));
+  if (log < -27 || log > 55) {
+	  return iroha_log(iroha(bin_log(n), depth))
+  }
   let prefix = (log.lt(0)) ? ((x) => x + 27) : ((x) => x);
   log = log.abs();
   let num = Math.round(log.floor().toNumber());

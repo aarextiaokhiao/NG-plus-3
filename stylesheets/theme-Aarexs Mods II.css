@@ -649,7 +649,7 @@ button, div.storebtn {
 	color: #e5e5e5 !important
 }
 
-#bWatt, #bWattLoss, #zb, #bAM, #bAMProduction, #bAMEffect, #bBt, #bBtProduction, #odSpeed {
+#bWatt, #bSpeed, #bTotalSpeed, #bAM, #bAMProduction, #bAMEffect, #bBt, #bBtProduction, #odSpeed {
 	color: #c73415
 }
 
@@ -682,25 +682,6 @@ button, div.storebtn {
 	background-size: 200% 200% !important;
 	color: #191919 !important;
 	text-shadow: 0px 0px 3px #191919, 0px 0px 6px #e5e5e5;
-}
-
-#wpb {
-	color: #620d65;
-	text-shadow: 0px 0px 3px #0c0c0c, 0px 0px 4.5px #e5e5e5
-}
-
-#wnb {
-	color: #9df29a
-}
-
-.zero {
-	background: repeating-linear-gradient(#620d65, transparent 50%, #620d65 100%), repeating-linear-gradient(90deg, transparent, #9df29a 50%, transparent 100%), #191919;
-	background-size: 200% 200%;
-	box-shadow: 0px 0px 12px #e5e5e5
-}
-
-.down #wQkSymbol {
-	transform: translate(-50%, 15%)
 }
 				
 @keyframes rg {

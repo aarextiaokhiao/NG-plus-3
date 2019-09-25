@@ -593,6 +593,7 @@ function updateNewPlayer(reseted) {
             },
             bl: {
                 watt: 0,
+                speed: 1,
                 ticks: 0,
                 am: 0,
                 amountToExtract: 1,
@@ -601,10 +602,10 @@ function updateNewPlayer(reseted) {
                 extractProgress: 0,
                 glyphs: [0,0,0,0,0],
                 enchants: {},
-                usedEnchants: {},
+                usedEnchants: [],
                 upgrades: [],
                 battery: 0,
-                speed: 1
+                odSpeed: 1
             },
             wzb: {
                 unl: false
@@ -1051,6 +1052,8 @@ let tmp = {
 	lti: [2,4,1.5,10,4,1e3,2.5,3],
 	ls: [0,0,0,0,0,0,0],
 	le: [0,0,0,0,0,0,0],
+	bEnLvl: {},
+	bEn: {},
 	blu: {}
 }
 function updateTemp() {
@@ -1062,11 +1065,16 @@ function updateTemp() {
 		tmp.ns=new Decimal(nanospeed)
 		tmp.ppti=1
 		if (player.ghostify.wzb.unl) {
-			tmp.wzbs=new Decimal(1)
 			for (var r=1;r<3;r++) for (var c=1;c<6;c++) {
 				var id=r*10+c
 				if (bosonicUpgEffects[id]!==undefined) tmp.blu[id]=bosonicUpgEffects[id]()
 			}
+			for (var g2=2;g2<6;g2++) for (var g1=1;g1<g2;g1++) {
+				var id=g1*10+g2
+				tmp.bEnLvl[id]=player.ghostify.bl.enchants[id]||new Decimal(0)
+				if (bosonicEnchantEffects[id]!==undefined) tmp.bEn[id]=bosonicEnchantEffects[id]()
+			}
+			tmp.wzbs=new Decimal(1)
 		}
 		if (player.ghostify.ghostlyPhotons.unl) {
 			let lePower=player.ghostify.ghostlyPhotons.enpowerments
@@ -3108,7 +3116,6 @@ function galaxyReset(bulk) {
 	if (ghostified) {
 		var generation = (["electron", "mu", "tau"])[player.ghostify.neutrinos.generationGain-1]
 		player.ghostify.neutrinos[generation] = player.ghostify.neutrinos[generation].add(getNeutrinoGain().times(bulk)).round()
-		if (player.ghostify.wzb.unl && player.quantum.bigRip.active) player.ghostify.bl.watt = player.ghostify.bl.watt.add(getBosonicWattGain(bulk))
 	}
     player = {
         money: player.achievements.includes("r111") ? player.money : new Decimal(10),
@@ -4060,7 +4067,7 @@ function onNotationChange() {
 		updateTODStuff()
 		updateBreakEternity()
 		onNotationChangeNeutrinos()
-		updateBosonicUpgradeCosts()
+		updateBosonicStuffCosts()
 		document.getElementById("gphUnl").textContent="To unlock Ghostly Photons, you need to get "+shortenCosts(Decimal.pow(10,605e7))+" antimatter while your universe is Big Ripped first."
 		document.getElementById("blUnl").textContent="To unlock Bosonic Lab, you need to get "+shortenCosts(Decimal.pow(10,4e10))+" red ghostly unstable quarks first."
 	}
@@ -7833,11 +7840,14 @@ function gameLoop(diff) {
 
         if (player.ghostify.wzb.unl) {
             var data=player.ghostify.bl
-            var loss=getBosonicWattLoss()
-            var toAdd=loss.times(diff/10).min(data.watt)
-            var bosonicDiff=toAdd.div(loss)
-            data.watt=data.watt.sub(toAdd.min(data.watt))
-            bosonicTick(bosonicDiff)
+            var wattGained=Math.max(getBosonicWattGain(),data.watt)
+            data.speed=Math.min((wattGained-data.watt)*2+data.speed,wattGained)
+            data.watt=wattGained
+            if (data.speed>0) {
+                var limitDiff=Math.min(diff/10,data.speed*7200)
+                bosonicTick((data.speed-limitDiff/14400)*limitDiff)
+                data.speed-=limitDiff/7200
+            }
         }
         if (player.ghostify.ghostlyPhotons.unl) {
             var data=player.ghostify.ghostlyPhotons
