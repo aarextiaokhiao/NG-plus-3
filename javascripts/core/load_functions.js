@@ -402,6 +402,7 @@ if (player.version < 5) {
   if (player.aarexModifications.tabsSave === undefined) player.aarexModifications.tabsSave = {on: false}
   if (player.aarexModifications.performanceTicks === undefined) player.aarexModifications.performanceTicks = false
   if (player.aarexModifications.noFooter == undefined) player.aarexModifications.noFooter = player.options.theme == "Aarex's Modifications" || player.options.theme == "Aarex's Mods II"
+  player.aarexModifications.beta = betaId
   if (player.aarexModifications.newGamePlusPlusVersion == undefined && player.aarexModifications.newGame3PlusVersion != undefined) {
       delete player.masterystudies
       delete player.aarexModifications.newGame3PlusVersion

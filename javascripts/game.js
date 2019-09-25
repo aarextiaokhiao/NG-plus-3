@@ -3684,6 +3684,9 @@ function import_save(type) {
 		} else if (!decoded_save_data||!save_data) {
 			alert('could not load the save..')
 			return
+		} else if (decoded_save_data.aarexModifications&&decoded_save_data.aarexModifications.beta!=""&&decoded_save_data.aarexModifications.beta!=betaId) {
+			alert('You are not allowed to import saves from a'+(betaId!=""?"n other":"")+' test server.')
+			return
 		}
 		if (type==metaSave.current) {
 			clearInterval(gameLoopIntervalId)
