@@ -63,7 +63,7 @@ function updateMasteryStudyButtons() {
 		document.getElementById("ts421Current").textContent="Currently: "+shorten(getMTSMult(421))+"x"
 	}
 	if (player.masterystudies.includes("d13")||ghostified) {
-		document.getElementById("ts431Current").textContent="Currently: "+shorten(getMTSMult(431))+"x"
+		document.getElementById("ts431Current").textContent=shiftDown&&player.ghostify.ghostlyPhotons.enpowerments?"Galaxy amount: "+getFullExpansion(Math.floor(player.dilation.freeGalaxies))+" + "+getFullExpansion(Math.floor((colorBoosts.g+gatheredQuarksBoost)*100*tmp.le[7])):"Currently: "+shorten(getMTSMult(431))+"x"
 	}
 }
 
@@ -519,25 +519,17 @@ function setupText() {
 	}
 	for (var m=1;m<17;m++) document.getElementById("braveMilestone"+m).textContent=getFullExpansion(tmp.bm[m-1])+"x quantumed"
 	//Bosonic Extractor
-	var ben=document.getElementById("bosonicEnchants")
-	var g1=1
-	var g2=2
-	for (r=1;r<3;r++) {
-		var row=ben.insertRow(r-1)
-		for (c=1;c<6;c++) {
-			var col=row.insertCell(c-1)
+	var ben=document.getElementById("enchants")
+	for (var g2=2;g2<6;g2++) {
+		var row=ben.insertRow(g2-2)
+		for (var g1=1;g1<g2;g1++) {
+			var col=row.insertCell(g1-1)
 			var id=(g1*10+g2)
-			col.innerHTML="<button id='bEn"+id+"' class='gluonupgrade unavailablebtn' style='font-size: 9px' onclick='takeEnchantAction("+id+")'>"+(bosonicEnchantDescs[id]||"???")+"<br>"+
+			col.innerHTML="<button id='bEn"+id+"' class='gluonupgrade unavailablebtn' style='font-size: 9px' onclick='takeEnchantAction("+id+")'>"+(enchantDescs[id]||"???")+"<br>"+
 			"Currently: <span id='bEnEffect"+id+"'>???</span><br>"+
 			"Level: <span id='bEnLvl"+id+"'>0</span><br>"+
 			"<span id='bEnOn"+id+"'>Disabled</span><br>"+
-			"Cost: <span id='bEnG1Cost"+id+"'>???</span> <div class='bGlyph' type='"+g1+"'></div> & <span id='bEnG2Cost"+id+"'>???</span> <div class='bGlyph' type='"+g2+"'></div></button><br>"
-			
-			g1++
-			if (g1==g2) {
-				g1=1
-				g2++
-			}
+			"Cost: <span id='bEnG1Cost"+id+"'>???</span> <div class='bRune' type='"+g1+"'></div> & <span id='bEnG2Cost"+id+"'>???</span> <div class='bRune' type='"+g2+"'></div></button><br>"
 		}
 	}
 	//Bosonic Upgrades
@@ -551,22 +543,22 @@ function setupText() {
 			col.innerHTML="<button id='bosonicUpg"+id+"' class='gluonupgrade unavailablebtn' style='font-size: 9px' onclick='buyBosonicUpgrade("+id+")'>"+(bosonicUpgDescs[id]||"???")+"<br>"+
 			(bosonicUpgEffects[id]!==undefined?"Currently: <span id='bosonicUpgEffect"+id+"'>0</span><br>":"")+
 			"Cost: <span id='bosonicUpgCost"+id+"'></span> Bosonic Antimatter<br>"+
-			"Requires: <span id='bosonicUpgG1Req"+id+"'></span> <div class='bGlyph' type='"+bosonicUpgReqData[id][2]+"'></div> & <span id='bosonicUpgG2Req"+id+"'></span> <div class='bGlyph' type='"+bosonicUpgReqData[id][4]+"'></div></button>"
+			"Requires: <span id='bosonicUpgG1Req"+id+"'></span> <div class='bRune' type='"+bosonicUpgReqData[id][2]+"'></div> & <span id='bosonicUpgG2Req"+id+"'></span> <div class='bRune' type='"+bosonicUpgReqData[id][4]+"'></div></button>"
 		}
 	}
-	//Bosonic Glyphs
-	var bGlyphTable=document.getElementById("bGlyphs")
+	//Bosonic Runes
+	var bRuneTable=document.getElementById("bRunes")
 	for (var g=1;g<6;g++) {
-		var col=bGlyphTable.rows[0].insertCell(g-1)
-		col.innerHTML='<div class="bGlyph" type="'+g+'"></div>: <span id="bGlyph'+g+'"></span>'
+		var col=bRuneTable.rows[0].insertCell(g-1)
+		col.innerHTML='<div class="bRune" type="'+g+'"></div>: <span id="bRune'+g+'"></span>'
 	}
-	var glyphs=document.getElementsByClassName("bGlyph")
+	var glyphs=document.getElementsByClassName("bRune")
 	for (var g=0;g<glyphs.length;g++) {
 		var glyph=glyphs[g]
 		var type=glyph.getAttribute("type")
 		if (type>0&&type<glyphNames.length) {
-			glyph.className="bGlyph "+glyphNames[type]
-			glyph.setAttribute("ach-tooltip",glyphNames[type]+" Bosonic Glyph")
+			glyph.className="bRune "+glyphNames[type]
+			glyph.setAttribute("ach-tooltip",glyphNames[type]+" Bosonic Rune")
 		}
 	}
 }
@@ -2698,6 +2690,7 @@ function toggleBigRipConf() {
 
 function switchAB() {
 	var bigRip = tmp.qu.bigRip.active
+	tmp.qu.bigRip["savedAutobuyers" + (bigRip ? "" : "No") + "BR"] = {}
 	var data = tmp.qu.bigRip["savedAutobuyers" + (bigRip ? "" : "No") + "BR"]
 	for (d=1;d<9;d++) if (player.autobuyers[d-1] % 1 !== 0) data["d"+d] = {
 		priority: player.autobuyers[d-1].priority,
@@ -2768,7 +2761,7 @@ function switchAB() {
 		bulk: 1,
 		priority: data.tickspeed.priority,
 		tier: 1,
-		target: (data.tickspeed.max ? 10 : 1),
+		target: player.autobuyers[8].target,
 		ticks: 0,
 		isOn: data.tickspeed.on
 	}
@@ -2842,6 +2835,7 @@ function switchAB() {
 		if (player.eternityBuyer.presets.left === undefined) player.eternityBuyer.presets.left = 1
 		player.autoEterMode = data.eternity.mode
 	}
+	tmp.qu.bigRip["savedAutobuyers" + (bigRip ? "No" : "") + "BR"] = {}
 	updateCheckBoxes()
 	loadAutoBuyerSettings()
 	if (player.autoCrunchMode == "amount") {
@@ -3141,6 +3135,7 @@ function getGHPGain() {
 	if (player.masterystudies == undefined) return new Decimal(0)
 	if (!tmp.qu.bigRip.active) return new Decimal(0)
 	let log=(tmp.qu.bigRip.bestThisRun.log10()/getQCGoal()-1)*2
+	if (hasBosonicUpg(25)) log+=tmp.blu[25].log10()
 	if (log>1e4&&player.aarexModifications.ngudpV!==undefined) log=Math.sqrt(log*1e4)
 	if (player.aarexModifications.nguepV!==undefined) {
 		if (log>2e4) log=Math.pow(4e8*log,1/3)
@@ -3571,7 +3566,8 @@ function ghostifyReset(implode, gain, amount, force) {
 			autoOptions: {
 				assignQK: tmp.qu.autoOptions.assignQK,
 				assignQKRotate: tmp.qu.autoOptions.assignQKRotate,
-				sacrifice: bm ? tmp.qu.autoOptions.sacrifice : false
+				sacrifice: bm ? tmp.qu.autoOptions.sacrifice : false,
+				replicantiReset: tmp.qu.autoOptions.replicantiReset
 			},
 			assignAllRatios: tmp.qu.assignAllRatios,
 			quarks: new Decimal(0),
@@ -3895,8 +3891,8 @@ function ghostifyReset(implode, gain, amount, force) {
 	player.ghostify.ghostlyPhotons.amount=new Decimal(0)
 	player.ghostify.ghostlyPhotons.darkMatter=new Decimal(0)
 	player.ghostify.ghostlyPhotons.ghostlyRays=new Decimal(0)
-	player.ghostify.bl.watt=0
-	player.ghostify.bl.speed=0
+	tmp.bl.watt=0
+	tmp.bl.speed=0
 	player.ghostify.under=true
 	updateLastTenGhostifies()
 	updateBraveMilestones()
@@ -3986,7 +3982,7 @@ function updateGhostifyTabs() {
 		}
 		if (player.ghostify.neutrinos.boosts>2) document.getElementById("neutrinoBoost3").textContent=tmp.nb[2].toFixed(2)
 		if (player.ghostify.neutrinos.boosts>3) document.getElementById("neutrinoBoost4").textContent=(tmp.nb[3]*100-100).toFixed(1)
-		if (player.ghostify.neutrinos.boosts>4) document.getElementById("neutrinoBoost5").textContent=(100-tmp.nb[4]*100).toFixed(1)
+		if (player.ghostify.neutrinos.boosts>4) document.getElementById("neutrinoBoost5").textContent=(tmp.nb[4]*100).toFixed(1)
 		if (player.ghostify.neutrinos.boosts>5) document.getElementById("neutrinoBoost6").textContent=tmp.nb[5]<10.995?(tmp.nb[5]*100-100).toFixed(1):getFullExpansion(Math.floor(tmp.nb[5]*100-100))
 		if (player.ghostify.neutrinos.boosts>6) document.getElementById("neutrinoBoost7").textContent=(tmp.nb[6]*100-100).toFixed(1)
 		if (player.ghostify.neutrinos.boosts>7) document.getElementById("neutrinoBoost8").textContent=(tmp.nb[7]*100-100).toFixed(1)
@@ -4040,7 +4036,7 @@ function updateGhostifyTabs() {
 		document.getElementById("lightBoost2").textContent=tmp.le[1].toFixed(2)
 		document.getElementById("lightBoost3").textContent=getFullExpansion(Math.floor(tmp.le[2]))
 		document.getElementById("lightBoost4").textContent=(tmp.le[3]*100-100).toFixed(1)
-		document.getElementById("lightBoost5").textContent=(100-tmp.le[4]*100).toFixed(1)+(hasBosonicUpg(11)?"-"+(tmp.blu[11]*100).toFixed(1):"")
+		document.getElementById("lightBoost5").textContent=(tmp.le[4]*100).toFixed(1)+(hasBosonicUpg(11)?"+"+(tmp.blu[11]*100).toFixed(1):"")
 		document.getElementById("lightBoost6").textContent=shorten(tmp.le[5])
 		document.getElementById("lightBoost7").textContent=shorten(tmp.le[6])
 		document.getElementById("lightEmpowerment").className="gluonupgrade "+(gphData.lights[7]>=getLightEmpowermentReq()?"gph":"unavailablebtn")
@@ -4057,7 +4053,7 @@ function updateGhostifyTabs() {
 		}
 	}
 	if (document.getElementById("bltab").style.display=="block"&&player.ghostify.wzb.unl) {
-		let data=player.ghostify.bl
+		let data=tmp.bl
 		let speed=data.odSpeed.min(data.battery.gt(0)?1/0:1).times(data.speed)
 		document.getElementById("bWatt").textContent=shorten(data.watt)
 		document.getElementById("bSpeed").textContent=data.speed.toFixed(2)
@@ -4070,7 +4066,7 @@ function updateGhostifyTabs() {
 		document.getElementById("odSpeed").textContent=data.odSpeed.lt(1)?"/"+shorten(Decimal.div(1,data.odSpeed)):shorten(data.odSpeed.min(data.battery.gt(0)?1/0:1))+"x"
 		document.getElementById("odSpeedWBBt").style.display=data.battery.eq(0)&&data.odSpeed.gt(1)?"":"none"
 		document.getElementById("odSpeedWBBt").textContent=" ("+shorten(data.odSpeed)+"x if you have Bosonic Battery)"
-		for (var g=1;g<6;g++) document.getElementById("bGlyph"+g).textContent=shortenDimensions(data.glyphs[g-1])
+		for (var g=1;g<6;g++) document.getElementById("bRune"+g).textContent=shortenDimensions(data.glyphs[g-1])
 		if (document.getElementById("bextab").style.display=="block") {
 			if (data.extracting) {
 				document.getElementById("extract").textContent="Extracting ("+data.extractProgress.times(100).toFixed(1)+"%)"
@@ -4079,7 +4075,7 @@ function updateGhostifyTabs() {
 				document.getElementById("extract").textContent="Extract"
 				document.getElementById("extractTime").textContent="This will take "+shorten(getExtractTime())+" ticks"
 			}
-			updateBosonicEnchantDescs()
+			updateEnchantDescs()
 		}
 		if (document.getElementById("butab").style.display=="block") updateBosonicUpgradeDescs()
 	}
@@ -4432,13 +4428,13 @@ function updateBLUnlocks() {
 }
 
 function getBosonicWattGain() {
-	return player.money.log10()/1e16-4
+	return player.money.log10()/2e16-1.25
 }
 
 function bosonicTick(diff) {
 	let lDiff //Mechanic-local diff
 	let lData //Mechanic-local data
-	let data=player.ghostify.bl
+	let data=tmp.bl
 	diff=new Decimal(diff)
 	if (isNaN(diff.e)) return
 	if (data.odSpeed.gt(1)&&data.battery.gt(0)) {
@@ -4451,11 +4447,25 @@ function bosonicTick(diff) {
 	data.ticks=data.ticks.add(diff)
 
 	//Bosonic Extractor
+	if (data.usedEnchants.includes(12)) {
+		data.autoExtract=data.autoExtract.add(diff.times(tmp.bEn[12]))
+		if (!data.extracting&&data.autoExtract.gte(1)) {
+			data.extracting=true
+			data.autoExtract=data.autoExtract.sub(1)
+		}
+	} else data.autoExtract=new Decimal(1)
 	if (data.extracting) data.extractProgress=data.extractProgress.add(diff.div(getExtractTime()))
 	if (data.extractProgress.gte(1)) {
-		data.glyphs[data.typeToExtract-1]=data.glyphs[data.typeToExtract-1].add(data.amountToExtract).round()
-		data.extracting=false
-		data.extractProgress=new Decimal(0)
+		var oldAuto=data.autoExtract.floor()
+		var toAdd=data.extractProgress.min(oldAuto.add(1).round()).floor()
+		data.autoExtract=data.autoExtract.sub(toAdd.min(oldAuto))
+		data.glyphs[data.typeToExtract-1]=data.glyphs[data.typeToExtract-1].add(data.amountToExtract.times(toAdd)).round()
+		if (data.usedEnchants.includes(12)&&toAdd.gt(oldAuto.add(1).round())) {
+			data.extractProgress=data.extractProgress.sub(toAdd.min(data.extractProgress))
+		} else {
+			data.extracting=false
+			data.extractProgress=new Decimal(0)
+		}
 	}
 	
 	//Bosonic Antimatter production
@@ -4487,7 +4497,7 @@ function showBLTab(tabName) {
 function updateBosonicStuffCosts() {
 	for (var g2=2;g2<6;g2++) for (var g1=1;g1<g2;g1++) {
 		var id=g1*10+g2
-		var data=bosonicEnchantCosts[id]
+		var data=enchantCosts[id]
 		document.getElementById("bEnG1Cost"+id).textContent=(data!==undefined&&data[0]!==undefined&&shortenDimensions(data[0]))||"???"
 		document.getElementById("bEnG2Cost"+id).textContent=(data!==undefined&&data[1]!==undefined&&shortenDimensions(data[1]))||"???"
 	}
@@ -4499,43 +4509,47 @@ function updateBosonicStuffCosts() {
 	}
 }
 
-//Bosonic Extractor / Bosonic Glyphs
+//Bosonic Extractor / Bosonic Runes
 function extract() {
-	let data=player.ghostify.bl
+	let data=tmp.bl
 	if (data.extracting) return
 	data.extracting=true
 }
 
-function getExtractTime() {
-	let data=player.ghostify.bl
-	return data.amountToExtract.pow(2).times(glyphScalings[data.typeToExtract])
+function getExtractTime(noFast) {
+	let data=tmp.bl
+	let r=data.amountToExtract.pow(2).times(glyphScalings[data.typeToExtract])
+	if (!noFast) r=r.div(getEnchantEffect(23))
+	return r
 }
 
 function changeAmountToExtract() {
-	let data=player.ghostify.bl
+	let data=tmp.bl
 	let x=fromValue(document.getElementById("amountToExtract").value)
 	if (isNaN(x)) return
 	x=x.round()
 	if (x.lt(1)) return
-	if (x.eq(player.ghostify.bl.amountToExtract)) return
+	if (x.eq(tmp.bl.amountToExtract)) return
 	data.amountToExtract=x
 	data.extracting=false
 	data.extractProgress=new Decimal(0)
+	data.autoExtract=new Decimal(1)
 }
 
 function changeTypeToExtract(x) {
-	let data=player.ghostify.bl
+	let data=tmp.bl
 	if (data.typeToExtract==x) return
 	document.getElementById("typeToExtract"+data.typeToExtract).className="storebtn"
 	document.getElementById("typeToExtract"+x).className="chosenbtn"
 	data.typeToExtract=x
 	data.extracting=false
 	data.extractProgress=new Decimal(0)
+	data.autoExtract=new Decimal(1)
 }
 
-function canBuyBosonicEnchant(id) {
-	let data=player.ghostify.bl
-	let costData=bosonicEnchantCosts[id]
+function canBuyEnchant(id) {
+	let data=tmp.bl
+	let costData=enchantCosts[id]
 	let g1=Math.floor(id/10)
 	let g2=id%10
 	if (costData===undefined) return
@@ -4544,43 +4558,68 @@ function canBuyBosonicEnchant(id) {
 	return true
 }
 
+function canUseEnchant(id) {
+	if (!tmp.bl.enchants[id]) return
+	if (enchantsLimit==1) {
+		if (tmp.bl.usedEnchants.includes(id)) return
+	} else if (!tmp.bl.usedEnchants.includes(id)&&tmp.bl.usedEnchants.length>=enchantsLimit) return
+	return true
+}
+
 function takeEnchantAction(id) {
-	let data=player.ghostify.bl
-	if (bosonicEnchantAction=="upgrade") {
-		let costData=bosonicEnchantCosts[id]
+	let data=tmp.bl
+	if (enchantAction=="upgrade") {
+		let costData=enchantCosts[id]
 		let g1=Math.floor(id/10)
 		let g2=id%10
-		if (!canBuyBosonicEnchant(id)) return
+		if (!canBuyEnchant(id)) return
 		data.glyphs[g1-1]=data.glyphs[g1-1].sub(costData[0]).round()
 		data.glyphs[g2-1]=data.glyphs[g2-1].sub(costData[1]).round()
 		if (data.enchants[id]==undefined) data.enchants[id]=new Decimal(1)
 		else data.enchants[id]=data.enchants[id].add(1).round()
-	} else if (bosonicEnchantAction=="use") {
-		if (data.enchants[id]) {
-			if (data.usedEnchants.includes(id)) {
-				var newData=[]
-				for (var u=0;u<data.usedEnchants.length;u++) if (data.usedEnchants[u]!=id) newData.push(data.usedEnchants[u])
-				data.usedEnchants=newData
-			} else data.usedEnchants.push(id)
+	} else if (enchantAction=="use") {
+		if (canUseEnchant(id)) {
+			if (enchantsLimit==1) data.usedEnchants=[id]
+			else {
+				if (data.usedEnchants.includes(id)) {
+					var newData=[]
+					for (var u=0;u<data.usedEnchants.length;u++) if (data.usedEnchants[u]!=id) newData.push(data.usedEnchants[u])
+					data.usedEnchants=newData
+				} else data.usedEnchants.push(id)
+			}
 		}
 	}
 }
 
 function changeEnchantAction(id) {
-	bosonicEnchantAction=(["upgrade","use"])[id-1]
+	enchantAction=(["upgrade","use"])[id-1]
 }
 
-function updateBosonicEnchantDescs() {
-	let data=player.ghostify.bl
+function getEnchantEffect(id, desc) {
+	let data=tmp.bl
+	let l=new Decimal(0)
+	if (enchantEffects[id]===undefined) return
+	if (desc?data.enchants[id]:data.usedEnchants.includes(id)) l=data.enchants[id]
+	return enchantEffects[id](l)
+}
+
+function updateEnchantDescs() {
+	let data=tmp.bl
 	for (var g2=2;g2<6;g2++) for (var g1=1;g1<g2;g1++) {
 		var id=g1*10+g2
-		if (bosonicEnchantAction=="upgrade") document.getElementById("bEn"+id).className="gluonupgrade "+(canBuyBosonicEnchant(id)?"bl":"unavailablebtn")
-		else if (bosonicEnchantAction=="use") document.getElementById("bEn"+id).className="gluonupgrade "+(data.enchants[id]?"bl":"unavailablebtn")
+		if (enchantAction=="upgrade") document.getElementById("bEn"+id).className="gluonupgrade "+(canBuyEnchant(id)?"bl":"unavailablebtn")
+		else if (enchantAction=="use") document.getElementById("bEn"+id).className="gluonupgrade "+(canUseEnchant(id)?"storebtn":"unavailablebtn")
 		document.getElementById("bEnLvl"+id).textContent=shortenDimensions(tmp.bEnLvl[id])
 		document.getElementById("bEnOn"+id).textContent=data.usedEnchants.includes(id)?"Enabled":"Disabled"
-		if (tmp.bEn[id]!==undefined) document.getElementById("bEnEffect"+id).textContent=shorten(tmp.bEn[id])+"x"
+		if (tmp.bEn[id]!==undefined) {
+			let effect=getEnchantEffect(id,true)
+			if (id==12) {
+				if (effect.lt(1)) document.getElementById("bEnEffect"+id).textContent=effect.m.toFixed(2)+"/"+shortenCosts(Decimal.pow(10,-effect.e))+" ticks"
+				else document.getElementById("bEnEffect"+id).textContent=shorten(effect)+"/tick"
+			} else document.getElementById("bEnEffect"+id).textContent=shorten(effect)+"x"
+		}
 	}
-	document.getElementById("usedEnchants").textContent="You have used "+data.usedEnchants.length+" / 3 Bosonic Enchants."
+	document.getElementById("usedEnchants").textContent="You have used "+data.usedEnchants.length+" / "+enchantsLimit+" Bosonic Enchants."
 }
 
 var glyphNames=[null, "Infinity", "Eternity", "Quantum", "Ghostly", "Ethereal"]
@@ -4591,21 +4630,28 @@ var glyphScalings={
 	4: 1/0,
 	5: 1/0
 }
-var bosonicEnchantAction="upgrade"
-var bosonicEnchantCosts={
+var enchantAction="upgrade"
+var enchantCosts={
 	12: [1,1],
 	13: [undefined,1e100]
 }
-var bosonicEnchantDescs={
+var enchantDescs={
 	12: "Bosonic Extractor automatically extracts.",
 	13: "Speed up W & Z Bosons.",
 	23: "Extracting takes less time."
 }
-var bosonicEnchantEffects={
+var enchantEffects={
+	12: function(l) {
+		return Decimal.div(l,getExtractTime(true)).div(autoExtractScalings[tmp.bl.typeToExtract])
+	},
+	23: function(l) {
+		return Decimal.add(l,1).pow(2)
+	}
 }
-var autoExtractTimes={
-	1: 60,
-	2: 120,
+var enchantsLimit=2
+var autoExtractScalings={
+	1: 1,
+	2: 1.5,
 	3: 1/0,
 	4: 1/0,
 	5: 1/0
@@ -4633,48 +4679,47 @@ function setupBosonicUpgReqData() {
 function canBuyBosonicUpg(id) {
 	let rData=bosonicUpgReqData[id]
 	if (rData[0]===undefined||rData[1]===undefined||rData[3]===undefined) return
-	if (!player.ghostify.bl.am.gte(rData[0])) return
-	for (var g=1;g<3;g++) if (!player.ghostify.bl.glyphs[rData[g*2]-1].gte(rData[g*2-1])) return
+	if (!tmp.bl.am.gte(rData[0])) return
+	for (var g=1;g<3;g++) if (!tmp.bl.glyphs[rData[g*2]-1].gte(rData[g*2-1])) return
 	return true
 }
 
 function buyBosonicUpgrade(id) {
-	if (player.ghostify.bl.upgrades.includes(id)) return
+	if (tmp.bl.upgrades.includes(id)) return
 	if (!canBuyBosonicUpg(id)) return
-	player.ghostify.bl.upgrades.push(id)
-	player.ghostify.bl.am=player.ghostify.bl.am.sub(bosonicUpgReqData[id][0])
+	tmp.bl.upgrades.push(id)
+	tmp.bl.am=tmp.bl.am.sub(bosonicUpgReqData[id][0])
 	updateTemp()
 }
 
 function hasBosonicUpg(id) {
-	return ghostified && player.ghostify.wzb.unl && player.ghostify.bl.upgrades.includes(id)
+	return ghostified && player.ghostify.wzb.unl && tmp.bl.upgrades.includes(id)
 }
 
 function updateBosonicUpgradeDescs() {
 	for (var r=1;r<3;r++) for (var c=1;c<6;c++) {
 		var id=r*10+c
-		document.getElementById("bosonicUpg"+id).className=player.ghostify.bl.upgrades.includes(id)?"gluonupgradebought bl":canBuyBosonicUpg(id)?"gluonupgrade bl":"gluonupgrade unavailablebtn"
+		document.getElementById("bosonicUpg"+id).className=tmp.bl.upgrades.includes(id)?"gluonupgradebought bl":canBuyBosonicUpg(id)?"gluonupgrade bl":"gluonupgrade unavailablebtn"
 		if (tmp.blu[id]!==undefined) {
 			if (id==11||id==13) document.getElementById("bosonicUpgEffect"+id).textContent=(tmp.blu[id]*100).toFixed(1)+"%"
 			else if (id==12) document.getElementById("bosonicUpgEffect"+id).textContent="+"+getFullExpansion(Math.round(tmp.blu[id]))
 			else if (id==14) document.getElementById("bosonicUpgEffect"+id).textContent=getFullExpansion(Math.round(tmp.blu[id]))
-			else if (id==21) document.getElementById("bosonicUpgEffect"+id).textContent="^"+(tmp.blu[id]).toFixed(3)
 			else document.getElementById("bosonicUpgEffect"+id).textContent=shorten(tmp.blu[id])+"x"
 		}
 	}
 }
 
 var bosonicUpgDescs = {
-	11: "Bosonic Antimatter subtracts blue Light effect.",
+	11: "Bosonic Antimatter adds blue Light effect.",
 	12: 'Free tickspeed upgrades add normal galaxy amount of "Intergalactic" reward.',
 	13: "Light Empowerments are stronger based on your Radioactive Decays.",
 	14: "Sacrificed galaxies cancel less galaxies based on your free galaxies.",
 	15: "Infinitied stat boosts dilated time production.",
-	21: "Reduce free galaxy threshold increase based on your blue power.",
+	21: "'Decrease free galaxy threshold' upgrades decrease free galaxy threshold more.",
 	22: "Replace first Nanofield reward with a new powerful boost.",
 	23: "Assigning gives more colored quarks based on your meta-antimatter.",
 	24: "You gain Tachyon particles without dilation, but with reduced formula.",
-	25: "???"
+	25: "Gain more Ghost Particles based on your quarks."
 }
 var bosonicUpgCosts = {
 	11: {
@@ -4686,7 +4731,7 @@ var bosonicUpgCosts = {
 var bosonicUpgReqData = {}
 var bosonicUpgEffects = {
 	11: function() {
-		return Math.pow(player.ghostify.bl.am.add(1).log10()/10+1,0.3)-1
+		return Math.pow(tmp.bl.am.add(1).log10()/10+1,0.3)-1
 	},
 	12: function() {
 		return Math.pow(player.totalTickGained,1/2.75)
@@ -4700,17 +4745,17 @@ var bosonicUpgEffects = {
 	15: function() {
 		return getInfinitied()
 	},
-	21: function() {
-		return 1/Math.sqrt(1+player.quantum.usedQuarks.b.add(1).log10()/1e4)
-	},
 	23: function() {
 		return Decimal.pow(player.meta.antimatter.add(1).log10()+1, 1000)
+	},
+	25: function() {
+		return player.quantum.quarks.add(1).pow(0.001)
 	}
 }
 
 //Bosonic Overdrive
 function getBosonicBatteryProduction() {
-	let r=player.ghostify.bl.odSpeed
+	let r=tmp.bl.odSpeed
 	if (r.lt(1)) r=Decimal.div(1,r).pow(.8)
 	else r=r.pow(1.25)
 	r=r.sub(1)
@@ -4718,5 +4763,5 @@ function getBosonicBatteryProduction() {
 }
 
 function changeOverdriveSpeed() {
-	player.ghostify.bl.odSpeed = Decimal.pow(3,document.getElementById("odSlider").value/20-1)
+	tmp.bl.odSpeed = Decimal.pow(3,document.getElementById("odSlider").value/20-1)
 }

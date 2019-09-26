@@ -4778,7 +4778,7 @@
 					</tr>
 					<tr class="neutrinoBoosts" id="neutrinoBoostRow2">
 						<td>They make Infinite time reward stronger by <span class="neutrinos" id="neutrinoBoost4" style="font-size:35px">0.0</span>%.</td>
-						<td id="neutrinoBoostCell5">They reduce 130% red power boost nerf strength to <span class="neutrinos" id="neutrinoBoost5" style="font-size:35px">100.0</span>%.</td>
+						<td id="neutrinoBoostCell5">They reduce the nerf to red power boost over 130% by <span class="neutrinos" id="neutrinoBoost5" style="font-size:35px">100.0</span>%.</td>
 						<td id="neutrinoBoostCell6">They slow down Distant Antimatter Galaxies by <span class="neutrinos" id="neutrinoBoost6" style="font-size:35px">0.0</span>%.<br>(Nerfed in Big Rip runs)</td>
 					</tr>
 					<tr class="neutrinoBoosts" id="neutrinoBoostRow3">
@@ -5002,7 +5002,7 @@
 						<td>
 							You have <span class="blue" id="light5" style="font-size:35px"></span> blue Light.<br>
 							Next Light at <span class="ghr" id="lightThreshold5"></span> Ghostly Rays.<br>
-							They boost green Light strength by <span class="blue" id="lightStrength4" style="font-size:35px"></span>x and reduce blue power effect softcap strength to <span class="blue" id="lightBoost5" style="font-size:35px"></span>%.<br>
+							They boost green Light strength by <span class="blue" id="lightStrength4" style="font-size:35px"></span>x and reduce the nerf to blue power boost by <span class="blue" id="lightBoost5" style="font-size:35px"></span>%.<br>
 							<span id="le2">In Big Rips, they slow down Ghostly Galaxies scaling by <span class="blue" id="leBoost2" style="font-size:35px"></span>%.</span>
 						</td>
 						<td>
@@ -5042,8 +5042,8 @@
 							<input id="odSlider" style="width: 180px;" type="range" min="0" max="40" class="slider" oninput="changeOverdriveSpeed()">
 						</td>
 					</tr></table>
-					<b style="font-size: 35px">Bosonic Glyphs</b><br>
-					<table id="bGlyphs" align="center" style="margin: auto"><tr></tr></table>
+					<b style="font-size: 35px">Bosonic Runes</b><br>
+					<table id="bRunes" align="center" style="margin: auto"><tr></tr></table>
 					<table class="table" align="center" style="margin: auto">
 						<tr>
 							<td><button class="secondarytabbtn" onclick="showBLTab('bextab')">Bosonic Extractor</button></td>
@@ -5054,16 +5054,16 @@
 					<div id="bextab" class="bltab">
 						<table class='qtable'><tr>
 							<td>
-								Amount to extract Bosonic Glyphs:<br>
+								Amount to extract Bosonic Runes:<br>
 								<input id="amountToExtract" onchange="changeAmountToExtract()"></input>
 							</td>
 							<td>
-								Type to extract Bosonic Glyphs:<br>
-								<button id="typeToExtract1" class="storebtn" onclick="changeTypeToExtract(1)" style="width: 25px; font-size: 12px"><div class="bGlyph" type="1"></div></button>
-								<button id="typeToExtract2" class="storebtn" onclick="changeTypeToExtract(2)" style="width: 25px; font-size: 12px"><div class="bGlyph" type="2"></div></button>
-								<button id="typeToExtract3" class="storebtn" onclick="changeTypeToExtract(3)" style="width: 25px; font-size: 12px"><div class="bGlyph" type="3"></div></button>
-								<button id="typeToExtract4" class="storebtn" onclick="changeTypeToExtract(4)" style="width: 25px; font-size: 12px"><div class="bGlyph" type="4"></div></button>
-								<button id="typeToExtract5" class="storebtn" onclick="changeTypeToExtract(5)" style="width: 25px; font-size: 12px"><div class="bGlyph" type="5"></div></button>
+								Type to extract Bosonic Runes:<br>
+								<button id="typeToExtract1" class="storebtn" onclick="changeTypeToExtract(1)" style="width: 25px; font-size: 12px"><div class="bRune" type="1"></div></button>
+								<button id="typeToExtract2" class="storebtn" onclick="changeTypeToExtract(2)" style="width: 25px; font-size: 12px"><div class="bRune" type="2"></div></button>
+								<button id="typeToExtract3" class="storebtn" onclick="changeTypeToExtract(3)" style="width: 25px; font-size: 12px"><div class="bRune" type="3"></div></button>
+								<button id="typeToExtract4" class="storebtn" onclick="changeTypeToExtract(4)" style="width: 25px; font-size: 12px"><div class="bRune" type="4"></div></button>
+								<button id="typeToExtract5" class="storebtn" onclick="changeTypeToExtract(5)" style="width: 25px; font-size: 12px"><div class="bRune" type="5"></div></button>
 							</td>
 							<td>
 								<button class="storebtn" id="extract" onclick="extract()" style="width: 180px"></button><br>
@@ -5074,7 +5074,7 @@
 						<button class="storebtn" onclick="changeEnchantAction(1)" style="width: 150px">Upgrade enchants</button>
 						<button class="storebtn" onclick="changeEnchantAction(2)" style="width: 150px">Use enchants</button><br>
 						<span id="usedEnchants"></span><br>
-						<table class="table" id="bosonicEnchants" align="center" style="margin: auto"></table>
+						<table class="table" id="enchants" align="center" style="margin: auto"></table>
 					</div>
 					<div id="butab" class="bltab"><table class="table" id="bosonicUpgs" align="center" style="margin: auto"></table></div>
 					<div id="wzbtab" class="bltab">Coming soon...</div>

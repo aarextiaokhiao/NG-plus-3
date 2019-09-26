@@ -600,6 +600,7 @@ function updateNewPlayer(reseted) {
                 typeToExtract: 1,
                 extracting: false,
                 extractProgress: 0,
+                autoExtract: 0,
                 glyphs: [0,0,0,0,0],
                 enchants: {},
                 usedEnchants: [],
@@ -613,6 +614,7 @@ function updateNewPlayer(reseted) {
         }
         player.options.animations.ghostify = true
         player.aarexModifications.ghostifyConf = true
+        tmp.bl=player.ghostify.bl
     }
     if (modesChosen.rs===true) {
         player.aarexModifications.ersVersion = 1.02
@@ -1071,8 +1073,8 @@ function updateTemp() {
 			}
 			for (var g2=2;g2<6;g2++) for (var g1=1;g1<g2;g1++) {
 				var id=g1*10+g2
-				tmp.bEnLvl[id]=player.ghostify.bl.enchants[id]||new Decimal(0)
-				if (bosonicEnchantEffects[id]!==undefined) tmp.bEn[id]=bosonicEnchantEffects[id]()
+				tmp.bEnLvl[id]=tmp.bl.enchants[id]||new Decimal(0)
+				if (enchantEffects[id]!==undefined) tmp.bEn[id]=getEnchantEffect(id)
 			}
 			tmp.wzbs=new Decimal(1)
 		}
@@ -4071,8 +4073,8 @@ function onNotationChange() {
 		updateBreakEternity()
 		onNotationChangeNeutrinos()
 		updateBosonicStuffCosts()
-		document.getElementById("gphUnl").textContent="To unlock Ghostly Photons, you need to get "+shortenCosts(Decimal.pow(10,605e7))+" antimatter while your universe is Big Ripped first."
-		document.getElementById("blUnl").textContent="To unlock Bosonic Lab, you need to get "+shortenCosts(Decimal.pow(10,4e10))+" red ghostly unstable quarks first."
+		document.getElementById("gphUnl").textContent="To unlock Ghostly Photons, you need to get "+shortenCosts(Decimal.pow(10,6025e6))+" antimatter while your universe is Big Ripped first."
+		document.getElementById("blUnl").textContent="To unlock Bosonic Lab, you need to get "+shortenCosts(Decimal.pow(10,1e10))+" red ghostly unstable quarks first."
 	}
 	document.getElementById("epmult").innerHTML = "You gain 5 times more EP<p>Currently: "+shortenDimensions(player.epmult)+"x<p>Cost: "+shortenDimensions(player.epmultCost)+" EP"
 	document.getElementById("achmultlabel").textContent = "Current achievement multiplier on each Dimension: " + shortenMoney(player.achPow) + "x"
@@ -7053,7 +7055,10 @@ function updateDilationUpgradeCosts() {
 function gainDilationGalaxies() {
 	if (player.dilation.dilatedTime.gte(player.dilation.nextThreshold)) {
 		let thresholdMult = inQC(5) ? Math.pow(10, 2.8) : 1.35 + 3.65 * Math.pow(0.8, getDilUpgPower(2))
-		if (hasBosonicUpg(21)) thresholdMult = Math.pow(thresholdMult,tmp.blu[21])
+		if (hasBosonicUpg(21)) {
+			thresholdMult -= getDilUpgPower(2)/1e5
+			if (thresholdMult < 1.15) thresholdMult = 1.05 + 0.1 / (2.15 - thresholdMult)
+		}
 		if (player.exdilation != undefined) thresholdMult -= Math.min(.1 * exDilationUpgradeStrength(2), 0.2)
 		if (thresholdMult < 1.15 && player.aarexModifications.nguspV !== undefined) thresholdMult = 1.05 + 0.1 / (2.15 - thresholdMult)
 		let galaxyMult = getFreeGalaxyGainMult()
@@ -7590,7 +7595,7 @@ setInterval(function() {
             $.notify("Congratulations! You have unlocked Break Eternity!", "success")
             updateBreakEternity()
         }
-        if (player.money.gte(Decimal.pow(10,605e7))&&tmp.qu.bigRip.active&&!player.ghostify.ghostlyPhotons.unl) {
+        if (player.money.gte(Decimal.pow(10,6025e6))&&tmp.qu.bigRip.active&&!player.ghostify.ghostlyPhotons.unl) {
             player.ghostify.ghostlyPhotons.unl=true
             $.notify("Congratulations! You have unlocked Ghostly Photons!", "success")
             giveAchievement("Progressing as a Ghost")
@@ -7599,7 +7604,7 @@ setInterval(function() {
             updateBreakEternity()
             updateGPHUnlocks()
         }
-        if (((player.quantum.tod.r.quarks.gte(Decimal.pow(10,4e10))&&player.quantum.tod.r.decays==5)||player.quantum.tod.r.decays>5)&&!player.ghostify.wzb.unl) {
+        if (((player.quantum.tod.r.quarks.gte(Decimal.pow(10,1e10))&&player.quantum.tod.r.decays==5)||player.quantum.tod.r.decays>5)&&!player.ghostify.wzb.unl) {
             player.ghostify.wzb.unl=true
             $.notify("Congratulations! You have unlocked Bosonic Lab!", "success")
             updateTemp()
@@ -7842,7 +7847,7 @@ function gameLoop(diff) {
         updateColorPowers()
 
         if (player.ghostify.wzb.unl) {
-            var data=player.ghostify.bl
+            var data=tmp.bl
             var wattGained=Math.max(getBosonicWattGain(),data.watt)
             data.speed=Math.min((wattGained-data.watt)*2+data.speed,wattGained)
             data.watt=wattGained

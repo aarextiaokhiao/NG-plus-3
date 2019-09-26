@@ -645,23 +645,23 @@ strong { color: #0072e5 }
 #bWatt, #bSpeed, #bTotalSpeed, #bAM, #bAMProduction, #bAMEffect, #bBt, #bBtProduction, #odSpeed {
 	color: #c73415
 }
-.bGlyph {
+.bRune {
 	background: #e5e5e5;
 	box-shadow: 0px 0px 12px #e5e5e5
 }
-.bGlyph.Infinity {
+.bRune.Infinity {
 	background: #e2bd00;
 	box-shadow: 0px 0px 12px #e2bd00
 }
-.bGlyph.Eternity {
+.bRune.Eternity {
 	background: #7100e2;
 	box-shadow: 0px 0px 12px #7100e2
 }
-.bGlyph.Quantum {
+.bRune.Quantum {
 	background: #009900;
 	box-shadow: 0px 0px 12px #009900
 }
-.bGlyph.Ethereal {
+.bRune.Ethereal {
 	box-shadow: 0px 0px 12px #3964e5
 }
 .gluonupgradebought.bl {
