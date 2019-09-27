@@ -1069,12 +1069,12 @@ function updateTemp() {
 		if (player.ghostify.wzb.unl) {
 			for (var r=1;r<3;r++) for (var c=1;c<6;c++) {
 				var id=r*10+c
-				if (bosonicUpgEffects[id]!==undefined) tmp.blu[id]=bosonicUpgEffects[id]()
+				if (bu.effects[id]!==undefined) tmp.blu[id]=bu.effects[id]()
 			}
 			for (var g2=2;g2<6;g2++) for (var g1=1;g1<g2;g1++) {
 				var id=g1*10+g2
 				tmp.bEnLvl[id]=tmp.bl.enchants[id]||new Decimal(0)
-				if (enchantEffects[id]!==undefined) tmp.bEn[id]=getEnchantEffect(id)
+				if (bEn.effects[id]!==undefined) tmp.bEn[id]=getEnchantEffect(id)
 			}
 			tmp.wzbs=new Decimal(1)
 		}
@@ -7274,6 +7274,7 @@ setInterval(function() {
     var bigRipped = false
     if (player.meta !== undefined) if (isQuantumReached()) showQuantumBtn = true
     if (tmp.ngp3) if (tmp.qu.bigRip.active) bigRipped = true
+    document.getElementById("quantumbtn").className = bigRipped ? "bigripbtn" : "quantumbtn"
     document.getElementById("quantumbtn").style.display = showQuantumBtn || bigRipped ? "" : "none"
     document.getElementById("bigripbtn").style.display = canBigRip ? "" : "none"
 

@@ -100,33 +100,33 @@ function getMetaShiftRequirement() {
 }
 
 function metaBoost() {
-	let req = getMetaShiftRequirement()
-	let isNU1ReductionActive = hasNU(1) ? !tmp.qu.bigRip.active : false
-	if (player.meta[req.tier].bought<Math.floor(req.amount)) return
-	if (isRewardEnabled(27) && req.tier>7) {
+	let req=getMetaShiftRequirement()
+	let isNU1ReductionActive = hasNU(1)?!tmp.qu.bigRip.active:false
+	if (!(player.meta[req.tier].bought>=req.amount)) return
+	if (isRewardEnabled(27)&&req.tier>7) {
 		if (isNU1ReductionActive) {
-			if (player.meta.resets<=req.scalingStart) {
+			if (player.meta.resets<req.scalingStart) {
 				player.meta.resets=Math.min(player.meta.resets+Math.floor((player.meta[8].bought-req.amount)/(req.mult+1))+1,req.scalingStart)
-				if (player.meta.resets==req.scalingStart) req = getMetaShiftRequirement()
+				if (player.meta.resets==req.scalingStart) req=getMetaShiftRequirement()
 			}
 			if (player.meta.resets>=req.scalingStart&&player.meta.resets<110) {
 				player.meta.resets=Math.min(player.meta.resets+Math.floor((player.meta[8].bought-req.amount)/(req.mult+1))+1,110)
-				if (player.meta.resets>109) req = getMetaShiftRequirement()
+				if (player.meta.resets>109) req=getMetaShiftRequirement()
 			}
 			if (player.meta.resets>109) player.meta.resets+=Math.floor((player.meta[8].bought-req.amount)/req.mult)+1
 		} else {
-			if (player.meta.resets<=req.scalingStart) {
+			if (player.meta.resets<req.scalingStart) {
 				player.meta.resets=Math.min(player.meta.resets+Math.floor((player.meta[8].bought-req.amount)/req.mult)+1,req.scalingStart)
-				if (player.meta.resets==req.scalingStart) req = getMetaShiftRequirement()
+				if (player.meta.resets==req.scalingStart) req=getMetaShiftRequirement()
 			}
 			if (player.meta.resets>=req.scalingStart) player.meta.resets+=Math.floor((player.meta[8].bought-req.amount)/req.mult)+1
 		}
-		if (inQC(4) && player.meta.resets > 54) if (player.meta[8].bought>=Math.floor(getMetaShiftRequirement().amount)) player.meta.resets++
+		if (inQC(4)) if (player.meta[8].bought>=getMetaShiftRequirement().amount) player.meta.resets++
 	} else player.meta.resets++
 	if (player.meta.resets>9) giveAchievement("Meta-boosting to the max")
-	player.meta.antimatter = new Decimal(speedrunMilestonesReached>18?1e25:player.achievements.includes("ngpp12")?100:10);
-	clearMetaDimensions();
-	if (player.masterystudies === undefined ? true : !tmp.qu.bigRip.active) document.getElementById("quantumbtn").style.display="none"
+	player.meta.antimatter = new Decimal(speedrunMilestonesReached>18?1e25:player.achievements.includes("ngpp12")?100:10)
+	clearMetaDimensions()
+	if (player.masterystudies===undefined?true:!tmp.qu.bigRip.active) document.getElementById("quantumbtn").style.display="none"
 }
 
 
