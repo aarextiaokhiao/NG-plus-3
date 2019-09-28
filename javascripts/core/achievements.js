@@ -173,6 +173,14 @@ const allAchievements = {
   ng3p76 : "Running through Big Rips",
   ng3p77 : "The Theory of Ultimate Studies",
   ng3p78 : "Aren't you already dead?",
+  ng3p81 : "Even Ghostlier than before",
+  ng3p82 : "ng3p82",
+  ng3p83 : "ng3p83",
+  ng3p84 : "ng3p84",
+  ng3p85 : "ng3p85",
+  ng3p86 : "ng3p86",
+  ng3p87 : "ng3p87",
+  ng3p88 : "ng3p88",
   s11 : "The first one's always free",
   s12 : "Just in case",
   s13 : "It pays to have respect",
@@ -197,6 +205,14 @@ const allAchievements = {
   s36 : "While you were away... Nothing happened.",
   s37 : "You followed the instructions",
   s38 : "Professional bodybuilder",
+  ng3ps11 : "ng3ps11",
+  ng3ps12 : "ng3ps12",
+  ng3ps13 : "ng3ps13",
+  ng3ps14 : "ng3ps14",
+  ng3ps15 : "ng3ps15",
+  ng3ps16 : "ng3ps16",
+  ng3ps17 : "ng3ps17",
+  ng3ps18 : "ng3ps18",
 };
 const secretAchievementTooltips = {
     s11 : "Click on this achievement.",
@@ -313,7 +329,7 @@ function giveAchievement(name) {
 function updateAchievements() {
 	var amount = 0
 	var rowsShown = 0
-	for (var i=1; i<23; i++) {
+	for (var i=1; i<24; i++) {
 		var shown=true
 		var rowid=i
 		if (i>15) {
@@ -372,25 +388,33 @@ function updateAchievements() {
 		}
 	}
 	for (var i=1; i<document.getElementById("secretachievementtable").children[0].children.length+1; i++) {
-		var n = 0
-		var achNum = i * 10
-		for (var l=0; l<8; l++) {
-			achNum += 1;
-			var name = allAchievements["s"+achNum]
-			if (player.achievements.includes("s"+achNum)) {
-				n++
-				document.getElementById(name).setAttribute('ach-tooltip', secretAchievementTooltips["s"+achNum])
-				document.getElementById(name).className = "achievementunlocked"
-			} else {
-				document.getElementById(name).className = "achievementhidden"
-				document.getElementById(name).setAttribute('ach-tooltip', (name[name.length-1] !== "?" && name[name.length-1] !== "!" && name[name.length-1] !== ".") ? name+"." : name)
+		var shown=true
+		var rowid="secretAchRow"+i
+		if (i>3) {
+			shown=player.masterystudies!==undefined
+			rowid="secretAchRowng3p"+(i-3)
+		}
+		if (shown) {
+			var n = 0
+			var achNum = i * 10
+			for (var l=0; l<8; l++) {
+				achNum += 1;
+				var achId = "s"+achNum
+				if (achNum>40) achId = "ng3ps"+(achNum-30)
+				var name = allAchievements[achId]
+				if (player.achievements.includes(achId)) {
+					n++
+					document.getElementById(name).setAttribute('ach-tooltip', secretAchievementTooltips["s"+achNum])
+					document.getElementById(name).className = "achievementunlocked"
+				} else {
+					document.getElementById(name).className = "achievementhidden"
+					document.getElementById(name).setAttribute('ach-tooltip', (name[name.length-1] !== "?" && name[name.length-1] !== "!" && name[name.length-1] !== ".") ? name+"." : name)
+				}
 			}
+			if (n == 8) document.getElementById(rowid).className = "completedrow"
+			else document.getElementById(rowid).className = ""
 		}
-		if (n == 8) {
-			document.getElementById("secretAchRow"+i).className = "completedrow"
-		} else {
-			document.getElementById("secretAchRow"+i).className = ""
-		}
+		document.getElementById(rowid).style.display = shown ? "" : "none"
 	}
 
 	player.achPow = Decimal.pow(player.aarexModifications.newGameMinusMinusVersion ? 5 : 1.5, amount)

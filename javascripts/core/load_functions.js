@@ -402,7 +402,6 @@ if (player.version < 5) {
   if (player.aarexModifications.tabsSave === undefined) player.aarexModifications.tabsSave = {on: false}
   if (player.aarexModifications.performanceTicks === undefined) player.aarexModifications.performanceTicks = false
   if (player.aarexModifications.noFooter == undefined) player.aarexModifications.noFooter = player.options.theme == "Aarex's Modifications" || player.options.theme == "Aarex's Mods II"
-  player.aarexModifications.beta = betaId
   if (player.aarexModifications.newGamePlusPlusVersion == undefined && player.aarexModifications.newGame3PlusVersion != undefined) {
       delete player.masterystudies
       delete player.aarexModifications.newGame3PlusVersion
@@ -772,7 +771,6 @@ if (player.version < 5) {
                   conf: true,
                   times: 0,
                   bestThisRun: 0,
-                  bestAntimatter: 0,
                   totalAntimatter: 0,
                   savedAutobuyersNoBR: {},
                   savedAutobuyersBR: {},
@@ -824,7 +822,7 @@ if (player.version < 5) {
                       extracting: false,
                       extractProgress: 0,
                       autoExtract: 0,
-                      glyphs: [0,0,0,0,0],
+                      glyphs: [],
                       enchants: {},
                       usedEnchants: [],
                       upgrades: [],
@@ -835,9 +833,10 @@ if (player.version < 5) {
                       unl: false
                   }
               }
+              tmp.bl=player.ghostify.bl
+              for (var g=1;g<br.names.length;g++) tmp.bl.glyphs.push(0)
               player.options.animations.ghostify = true
               player.aarexModifications.ghostifyConf = true
-              tmp.bl=player.ghostify.bl
           }
           player.dilation.upgrades=migratedUpgrades
           resetDilationGalaxies()
@@ -1154,7 +1153,6 @@ if (player.version < 5) {
           conf: true,
           times: 0,
           bestThisRun: 0,
-          bestAntimatter: 0,
           totalAntimatter: 0,
           savedAutobuyersNoBR: {},
           savedAutobuyersBR: {},
@@ -1244,7 +1242,7 @@ if (player.version < 5) {
           extracting: false,
           extractProgress: 0,
           autoExtract: 0,
-          glyphs: [0,0,0,0,0],
+          glyphs: [],
           enchants: {},
           usedEnchants: [],
           upgrades: [],
@@ -1254,8 +1252,9 @@ if (player.version < 5) {
       player.ghostify.wzb = {
           unl: false
       }
-      player.aarexModifications.newGame3PlusVersion = 2.2
       tmp.bl=player.ghostify.bl
+      for (var g=1;g<br.names.length;g++) tmp.bl.glyphs.push(0)
+      player.aarexModifications.newGame3PlusVersion = 2.2
   }
   if (player.masterystudies) {
       if (player.meta.bestOverQuantums === undefined) player.meta.bestOverQuantums = player.meta.bestAntimatter
@@ -1290,6 +1289,7 @@ if (player.version < 5) {
           forceToQuantumAndRemove=true
           setTTAfterQuantum=2e94
       }
+      if (player.ghostify.wzb.unl) giveAchievement("Even Ghostlier than before")
       if (!tmp.bl.usedEnchants.length) tmp.bl.usedEnchants=[]
       updateAutoGhosts(true)
   }
@@ -1934,7 +1934,7 @@ if (player.version < 5) {
       document.getElementById("bpc68").textContent=shortenMoney(tmp.qu.pairedChallenges.pc68best)
       document.getElementById("odSlider").value=Math.round(Decimal.log(tmp.bl.odSpeed,3)*20+20)
       document.getElementById("amountToExtract").value=formatValue("Scientific",tmp.bl.amountToExtract,3,0)
-      for (var g=1;g<6;g++) document.getElementById("typeToExtract"+g).className=tmp.bl.typeToExtract==g?"chosenbtn":"storebtn"
+      for (var g=1;g<br.names.length;g++) document.getElementById("typeToExtract"+g).className=tmp.bl.typeToExtract==g?"chosenbtn":"storebtn"
       updateElectrons()
       updateAutoQuantumMode()
       updateColorCharge()
@@ -2552,7 +2552,6 @@ function transformSaveToDecimal() {
       player.meta.bestOverGhostifies = Decimal.max(player.meta.bestOverGhostifies, player.meta.bestOverQuantums)
       tmp.qu.pairedChallenges.pc68best = new Decimal(tmp.qu.pairedChallenges.pc68best)
       tmp.qu.bigRip.bestThisRun = new Decimal(tmp.qu.bigRip.bestThisRun)
-      tmp.qu.bigRip.bestAntimatter = new Decimal(tmp.qu.bigRip.bestAntimatter)
       tmp.qu.bigRip.totalAntimatter = new Decimal(tmp.qu.bigRip.totalAntimatter)
       tmp.qu.bigRip.spaceShards = new Decimal(tmp.qu.bigRip.spaceShards)
       tmp.qu.breakEternity.eternalMatter = new Decimal(tmp.qu.breakEternity.eternalMatter)
@@ -2573,10 +2572,10 @@ function transformSaveToDecimal() {
           tmp.bl.amountToExtract=new Decimal(tmp.bl.amountToExtract)
           tmp.bl.extractProgress=new Decimal(tmp.bl.extractProgress)
           tmp.bl.autoExtract=new Decimal(tmp.bl.autoExtract)
-          for (var t=0;t<5;t++) tmp.bl.glyphs[t]=new Decimal(tmp.bl.glyphs[t])
+          for (var t=0;t<br.names.length-1;t++) tmp.bl.glyphs[t]=new Decimal(tmp.bl.glyphs[t]||0)
           tmp.bl.battery=new Decimal(tmp.bl.battery)
           tmp.bl.odSpeed=new Decimal(tmp.bl.odSpeed)
-          for (var g2=2;g2<6;g2++) for (var g1=1;g1<g2;g1++) if (tmp.bl.enchants[g1*10+g2]!==undefined) tmp.bl.enchants[g1*10+g2]=new Decimal(tmp.bl.enchants[g1*10+g2])
+          for (var g2=2;g2<br.names.length;g2++) for (var g1=1;g1<g2;g1++) if (tmp.bl.enchants[g1*10+g2]!==undefined) tmp.bl.enchants[g1*10+g2]=new Decimal(tmp.bl.enchants[g1*10+g2])
       }
   }
 }

@@ -235,10 +235,14 @@ function updateExdilation() {
 	document.getElementById("exDilationAmount").textContent = shortenDimensions(player.exdilation.unspent)
 	document.getElementById("exDilationBenefit").textContent = (player.aarexModifications.nguspV?exDilationBenefit()*100:exDilationBenefit()/0.0075).toFixed(1)
 	for (var i=1;i<5;i++) {
-		document.getElementById("xd"+i).style.height = player.aarexModifications.nguspV ? "60px" : "50px"
-		document.getElementById("xd"+i).className = player.exdilation.unspent.eq(0) ? "dilationupgrebuyablelocked" : "dilationupgrebuyable";
-		if (player.aarexModifications.nguspV !== undefined) document.getElementById("xd"+i+"span").textContent = '+' + exDilationUpgradeStrength(i).toFixed(1) + ' free upgrades -> +' + exDilationUpgradeStrength(i,player.exdilation.unspent).toFixed(1)
-		else document.getElementById("xd"+i+"span").textContent = exDilationUpgradeStrength(i).toFixed(2) + 'x -> ' + exDilationUpgradeStrength(i,player.exdilation.unspent).toFixed(2) + 'x'
+		let unl = isDilUpgUnlocked(i > 3 ? 11 : i)
+		if (unl) {
+			document.getElementById("xd"+i).style.height = player.aarexModifications.nguspV ? "60px" : "50px"
+			document.getElementById("xd"+i).className = player.exdilation.unspent.eq(0) ? "dilationupgrebuyablelocked" : "dilationupgrebuyable";
+			if (player.aarexModifications.nguspV !== undefined) document.getElementById("xd"+i+"span").textContent = '+' + exDilationUpgradeStrength(i).toFixed(1) + ' free upgrades -> +' + exDilationUpgradeStrength(i,player.exdilation.unspent).toFixed(1)
+			else document.getElementById("xd"+i+"span").textContent = exDilationUpgradeStrength(i).toFixed(2) + 'x -> ' + exDilationUpgradeStrength(i,player.exdilation.unspent).toFixed(2) + 'x'
+		}
+		document.getElementById("xd"+i).style.display = unl ? "" : "none"
 	}
 }
 

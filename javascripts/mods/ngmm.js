@@ -117,8 +117,8 @@ function galacticSacrifice(auto, force, chall) {
 				player.challengeTimes[player.galacticSacrifice.chall-2]=Math.min(player.challengeTimes[player.galacticSacrifice.chall-2],player.galacticSacrifice.time)
 			}
 			if (player.challenges.length>1) giveAchievement("Daredevil")
-			if (player.challenges.length==player.challengeTimes.length+1) giveAchievement("AntiChallenged")
-			if (player.challenges.length==player.challengeTimes.length+player.infchallengeTimes.length+1) giveAchievement("Anti-antichallenged")
+			if (player.challenges.length==getTotalNormalChallenges()+1) giveAchievement("AntiChallenged")
+			if (player.challenges.length==getTotalNormalChallenges()+player.infchallengeTimes.length+1) giveAchievement("Anti-antichallenged")
 			if (inNC(2)&&player.galacticSacrifice.time<=1800) giveAchievement("Many Deaths")
 			if (inNC(11)&&player.galacticSacrifice.time<=1800) giveAchievement("Gift from the Gods")
 			if (inNC(5)&&player.galacticSacrifice.time<=1800) giveAchievement("Is this hell?")

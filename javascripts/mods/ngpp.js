@@ -432,7 +432,7 @@ function toggleAutoEter(id) {
 function doAutoEterTick() {
 	if (!player.meta) return
 	if (player.achievements.includes("ngpp17")) {
-		for (d=1;d<9;d++) if (player.autoEterOptions["td"+d]) buyMaxTimeDimension(d)
+		if (player.masterystudies == undefined || tmp.be || !tmp.qu.bigRip.active) for (d=1;d<9;d++) if (player.autoEterOptions["td"+d]) buyMaxTimeDimension(d)
 		if (player.autoEterOptions.epmult) buyMaxEPMult()
 		if (player.autoEterOptions.blackhole) {
 			buyMaxBlackholeDimensions()
