@@ -5105,11 +5105,11 @@
 					<div id="bextab" class="bltab">
 						<table class='qtable'><tr>
 							<td>
-								Amount to extract Bosonic Runes:<br>
+								Amount of Bosonic Runes to extract:<br>
 								<input id="amountToExtract" onchange="changeAmountToExtract()"></input>
 							</td>
 							<td>
-								Type to extract Bosonic Runes:<br>
+								Type of Bosonic Rune to extract:<br>
 								<div id="typeToExtract"></div>
 							</td>
 							<td>
@@ -5124,7 +5124,22 @@
 						<table class="table" id="enchants" align="center" style="margin: auto"></table>
 					</div>
 					<div id="butab" class="bltab"><table class="table" id="bUpgs" align="center" style="margin: auto"></table></div>
-					<div id="wzbtab" class="bltab">Coming soon...</div>
+					<div id="wzbtab" class="bltab">
+						<span id="wzbSpeed"></span>
+						<table class='qtable'><tr>
+							<td>
+								You have <span id="wpb" style="font-size:35px"></span> W+ Bosons and <span id="wnb" style="font-size:35px"></span> W- Bosons.<br>
+								Translated to <span id="wbTime" style="font-size:35px"></span>x faster extracting time and <span id="wbSpeed" style="font-size:35px"></span>x speed.
+							</td>
+							<td>
+								You have <span id="dp" style="font-size:35px"></span> Dark Preons.<br>
+								<span id="dpPercentage" style="font-size:25px"></span>% to gain 1 Dark Preon. <span id="dpPercentageGain" style="font-size:25px"></span>
+							</td>
+							<td>
+								You have <span id="zb" style="font-size:35px"></span> Z Bosons.
+							</td>
+						</tr></table>
+					</div>
 				</div>
 			</div>
 			<div id="footercontainer">

@@ -247,10 +247,12 @@ function getIDReplMult() {
 }
 
 function getEU2Mult() {
-	var e = getEternitied()
+	var e = nMx(getEternitied(), 0)
+	if (typeof(e) == "number" && isNaN(e)) e = 0
 	if (player.boughtDims) return Decimal.pow(e, Decimal.times(e,2).add(1).log(Math.E)/Math.log(4))
-	var cap = nMn(e, 100000)
-	var soft = nS(e, cap)
+	var cap = nMn(e, 1e5)
+	var soft = 0
+	if (e > 1e5) soft = nS(e, cap)
 	return Decimal.pow(cap/200 + 1, Math.log(cap*2+1)/Math.log(4)).times(Decimal.div(soft,200).add(1).times(Decimal.times(soft,2).add(1).log(Math.E)/Math.log(4)).max(1)).max(player.achievements.includes("ngpp15")?Decimal.pow(10, Math.pow(Decimal.log10(e), 4.75)):1)
 }
 

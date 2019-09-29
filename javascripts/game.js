@@ -608,7 +608,17 @@ function updateNewPlayer(reseted) {
                 odSpeed: 1
             },
             wzb: {
-                unl: false
+                unl: false,
+                dP: 0,
+                dPPercentage: 0,
+                dPUse: 0,
+                wQkUp: true,
+                zNeGen: 1,
+                zNePercentage: 1,
+                zNeReq: 1,
+                wpb: 0,
+                wnb: 0,
+                wb: 0
             }
         }
         tmp.bl=player.ghostify.bl
@@ -1076,7 +1086,9 @@ function updateTemp() {
 				tmp.bEnLvl[id]=tmp.bl.enchants[id]||new Decimal(0)
 				if (bEn.effects[id]!==undefined) tmp.bEn[id]=getEnchantEffect(id)
 			}
+			tmp.wzbt=new Decimal(1)
 			tmp.wzbs=new Decimal(1)
+			tmp.dppg=new Decimal(1)
 		}
 		if (player.ghostify.ghostlyPhotons.unl) {
 			let lePower=player.ghostify.ghostlyPhotons.enpowerments

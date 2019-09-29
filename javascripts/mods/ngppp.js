@@ -4086,6 +4086,18 @@ function updateGhostifyTabs() {
 			updateEnchantDescs()
 		}
 		if (document.getElementById("butab").style.display=="block") updateBosonicUpgradeDescs()
+		if (document.getElementById("wzbtab").style.display=="block") {
+			let data2=player.ghostify.wzb
+			document.getElementById("wzbSpeed").textContent="Current speed with Bosonic Speed: "+shorten(speed.times(tmp.wzbs))+"x"
+			document.getElementById("dp").textContent=shortenDimensions(data2.dP)
+			document.getElementById("dpPercentage").textContent=data2.dPPercentage.toFixed(1)
+			document.getElementById("dpPercentageGain").textContent="+"+shorten(tmp.dppg.times(speed.times(tmp.wzbs)))+"%/s"
+			document.getElementById("wpb").textContent=shortenDimensions(data2.wpb)
+			document.getElementById("wnb").textContent=shortenDimensions(data2.wnb)
+			document.getElementById("wbTime").textContent=shorten(tmp.wzbt)
+			document.getElementById("wbSpeed").textContent=shorten(tmp.wzbs)
+			document.getElementById("zb").textContent=shortenDimensions(data2.zb)
+		}
 	}
 }
 
@@ -4457,7 +4469,12 @@ function bosonicTick(diff) {
 		diff=fasterDiff.add(diff.sub(odDiff.min(diff)))
 	} else diff=diff.times(data.odSpeed.min(1))
 	data.ticks=data.ticks.add(diff)
-
+	
+	//W & Z Bosons
+	lDiff=diff.times(tmp.wzbs)
+	lData=player.ghostify.wzb
+	lData.dPPercentage=lData.dPPercentage.add(tmp.dppg.times(lDiff)).min(100)
+	
 	//Bosonic Extractor
 	if (data.usedEnchants.includes(12)) {
 		data.autoExtract=data.autoExtract.add(diff.times(tmp.bEn[12]))
@@ -4534,6 +4551,7 @@ function getExtractTime(noFast) {
 	let data=tmp.bl
 	let r=data.amountToExtract.pow(2).times(br.scalings[data.typeToExtract]||1/0)
 	if (!noFast) r=r.div(getEnchantEffect(23))
+	r=r.div(tmp.wzbt)
 	return r
 }
 

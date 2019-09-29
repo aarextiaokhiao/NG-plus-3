@@ -830,7 +830,17 @@ if (player.version < 5) {
                       odSpeed: 1
                   },
                   wzb: {
-                      unl: false
+                      unl: false,
+                      dP: 0,
+                      dPPercentage: 0,
+                      dPUse: 0,
+                      wQkUp: true,
+                      zNeGen: 1,
+                      zNePercentage: 1,
+                      zNeReq: 1,
+                      wpb: 0,
+                      wnb: 0,
+                      wb: 0
                   }
               }
               tmp.bl=player.ghostify.bl
@@ -1250,7 +1260,17 @@ if (player.version < 5) {
           odSpeed: 1
       }
       player.ghostify.wzb = {
-          unl: false
+          unl: false,
+          dP: 0,
+          dPPercentage: 0,
+          dPUse: 0,
+          wQkUp: true,
+          zNeGen: 1,
+          zNePercentage: 1,
+          zNeReq: 1,
+          wpb: 0,
+          wnb: 0,
+          wb: 0
       }
       tmp.bl=player.ghostify.bl
       for (var g=1;g<br.names.length;g++) tmp.bl.glyphs.push(0)
@@ -1291,6 +1311,11 @@ if (player.version < 5) {
       }
       if (player.ghostify.wzb.unl) giveAchievement("Even Ghostlier than before")
       if (!tmp.bl.usedEnchants.length) tmp.bl.usedEnchants=[]
+      if (player.ghostify.wzb.dPUse===undefined) {
+          player.ghostify.wzb.dPUse=0
+          player.ghostify.wzb.wQkUp=true
+          player.ghostify.wzb.zNeGen=1
+      }
       updateAutoGhosts(true)
   }
   if (player.aarexModifications.newGame3PlusVersion!=undefined) {
@@ -2576,6 +2601,14 @@ function transformSaveToDecimal() {
           tmp.bl.battery=new Decimal(tmp.bl.battery)
           tmp.bl.odSpeed=new Decimal(tmp.bl.odSpeed)
           for (var g2=2;g2<br.names.length;g2++) for (var g1=1;g1<g2;g1++) if (tmp.bl.enchants[g1*10+g2]!==undefined) tmp.bl.enchants[g1*10+g2]=new Decimal(tmp.bl.enchants[g1*10+g2])
+
+          player.ghostify.wzb.dP=new Decimal(player.ghostify.wzb.dP)
+          player.ghostify.wzb.dPPercentage=new Decimal(player.ghostify.wzb.dPPercentage)
+          player.ghostify.wzb.zNePercentage=new Decimal(player.ghostify.wzb.zNePercentage)
+          player.ghostify.wzb.zNeReq=new Decimal(player.ghostify.wzb.zNeReq)
+          player.ghostify.wzb.wpb=new Decimal(player.ghostify.wzb.wpb)
+          player.ghostify.wzb.wnb=new Decimal(player.ghostify.wzb.wnb)
+          player.ghostify.wzb.zb=new Decimal(player.ghostify.wzb.zb)
       }
   }
 }
