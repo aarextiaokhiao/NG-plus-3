@@ -2479,12 +2479,13 @@ br {
 }
 
 .chosenbtn {
-	width: 25px;
+    width: 120px;
 	height: 25px;
 	background: #3A7F42;
 	border: 1px solid #127A20;
 	border-radius: 4px;
-	font-size: 12px;
+	font-size: 13px;
+	font-weight: bold;
     font-family: Typewriter;
 	transition-duration: 0.2s
 }

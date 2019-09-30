@@ -482,6 +482,7 @@ function updateNewPlayer(reseted) {
             respec: false
         }
         tmp.qu.qcsNoDil = {}
+        tmp.qu.qcsMods = {current:[]}
         player.dilation.bestTP = 0
         player.old = true
         tmp.qu.autoOptions = {}
@@ -610,7 +611,6 @@ function updateNewPlayer(reseted) {
             wzb: {
                 unl: false,
                 dP: 0,
-                dPPercentage: 0,
                 dPUse: 0,
                 wQkUp: true,
                 zNeGen: 1,
@@ -1047,10 +1047,11 @@ let kongDimMult = 1
 let kongAllDimMult = 1
 let kongEPMult = 1
 let tmp = {
+	nrm: new Decimal(1),
 	rm: new Decimal(1),
 	it: 1,
 	rg4: false,
-	nrm: new Decimal(1),
+	pct: "",
 	ns: 1,
 	bru: [],
 	be: false,
@@ -1088,6 +1089,7 @@ function updateTemp() {
 			}
 			tmp.wzbt=new Decimal(1)
 			tmp.wzbs=new Decimal(1)
+			tmp.wzbb=new Decimal(0)
 			tmp.dppg=new Decimal(1)
 		}
 		if (player.ghostify.ghostlyPhotons.unl) {
@@ -1194,10 +1196,11 @@ function updateTemp() {
 	if (tmp.ngp3&&!tmp.qu.bigRip.active&&player.ghostify.ghostlyPhotons.enpowerments>2) x*=tmp.le[9]
 	if (tmp.be&&player.dilation.active&&tmp.qu.breakEternity.upgrades.includes(10)) x*=getBreakUpgMult(10)
 	var igLog=Math.pow(x,Math.min(Math.sqrt(Math.log10(Math.max(x,1)))*2,2.5))
-	if (player.aarexModifications.ngudpV){
-		if (igLog>1e15) igLog = Math.pow(10+6*Math.log10(igLog),7.5)
-		if (igLog>1e16) igLog = Math.pow(84+Math.log10(igLog),8)
+	if (player.aarexModifications.ngudpV) {
+		if (igLog>1e15) igLog=Math.pow(10+6*Math.log10(igLog),7.5)
+		if (igLog>1e16) igLog=Math.pow(84+Math.log10(igLog),8)
 	}
+	tmp.igg=x
 	tmp.ig=Decimal.pow(10,igLog)
 
 	tmp.rm=getReplMult()
@@ -1468,6 +1471,7 @@ function getDilExp(disable) {
 }
 
 function getDilGain() {
+	if (inQCModifier("ad")) return new Decimal(0)
     return Decimal.pow(Decimal.log10(player.money) / 400, getDilExp()).times(getDilPower());
 }
 
@@ -1521,7 +1525,7 @@ function updateDimensions() {
         var totalReplGalaxies = player.replicanti.galaxies + extraReplGalaxies
         var nextGal = getGalaxyRequirement(0, true)
         var msg = (nextGal.scaling > 4 ? "Ghostly" : nextGal.scaling > 3 ? "Dark Matter" : (["", "Distant ", "Farther ", "Remote "])[nextGal.scaling] + "Antimatter") + ' Galaxies ('+ getFullExpansion(player.galaxies) + ((totalReplGalaxies + player.dilation.freeGalaxies) > 0 ? ' + ' + getFullExpansion(totalReplGalaxies)  + (player.dilation.freeGalaxies > 0 ? ' + ' + getFullExpansion(Math.floor(player.dilation.freeGalaxies)) : '') : '') +'): requires ' + getFullExpansion(nextGal.amount) + ' '+DISPLAY_NAMES[inNC(4) || player.pSac != undefined ? 6 : 8]+' Dimensions'
-        if (player.achievements.includes("ng3p37") && shiftRequirement.tier > 7) msg += '<br>"Intergalactic" reward multiplier' + (player.dilation.active || player.galacticSacrifice != undefined ? " (estimated): " : ": ") + shorten(dilates(tmp.ig).pow(player.dilation.active?getNanofieldRewardEffect(5):1)) + 'x to Eighth Dimensions'
+        if (player.achievements.includes("ng3p37") && shiftRequirement.tier > 7) msg += '<br>"Intergalactic" reward multiplier' + (player.dilation.active || player.galacticSacrifice != undefined ? " (estimated)" : "") + " (" + getFullExpansion(player.galaxies) + (Math.floor(tmp.igg - player.galaxies) > 0 ? " + " + getFullExpansion(Math.floor(tmp.igg - player.galaxies)) : "") + "): " + shorten(dilates(tmp.ig).pow(player.dilation.active?getNanofieldRewardEffect(5):1)) + 'x to Eighth Dimensions'
         document.getElementById("secondResetLabel").innerHTML = msg
 		if (isTickspeedBoostPossible()) {
 			var tickReq = getTickspeedBoostRequirement()
@@ -2060,7 +2064,7 @@ function updateDimensions() {
             if (player.dilation.active) {
                 let gain = getDilGain()
                 let msg = "Disable dilation"
-                if (player.infinityPoints.lt(Number.MAX_VALUE)) {}
+                if (player.infinityPoints.lt(Number.MAX_VALUE)||inQCModifier("ad")) {}
                 else if (player.dilation.totalTachyonParticles.gt(gain)) msg += ".<br>Reach " + shortenMoney(Decimal.pow(10, player.dilation.totalTachyonParticles.div(getDilPower()).pow(1/getDilExp()).    toNumber() * 400)) + " antimatter to gain more Tachyon particles"
                 else msg += " for " + shortenMoney(gain.sub(player.dilation.totalTachyonParticles)) + " Tachyon particles"
                 document.getElementById("enabledilation").innerHTML = msg + "."
@@ -7079,7 +7083,7 @@ function gainDilationGalaxies() {
 	if (player.dilation.dilatedTime.gte(player.dilation.nextThreshold)) {
 		let thresholdMult = inQC(5) ? Math.pow(10, 2.8) : !canBuyGalaxyThresholdUpg() ? 1.35 : 1.35 + 3.65 * Math.pow(0.8, getDilUpgPower(2))
 		if (hasBosonicUpg(21)) {
-			thresholdMult -= tmp.bu[21]
+			thresholdMult -= tmp.blu[21]
 			if (thresholdMult < 1.15) thresholdMult = 1.05 + 0.1 / (2.15 - thresholdMult)
 		}
 		if (player.exdilation != undefined) thresholdMult -= Math.min(.1 * exDilationUpgradeStrength(2), 0.2)
@@ -7285,7 +7289,7 @@ setInterval(function() {
     } else document.getElementById("galaxyPoints2").style.display="none"
     document.getElementById("sacpos").className = preQuantumEnd?"sacpos":postBreak?"quantumpos":"eterpos"
 
-    document.getElementById("eternitybtn").style.display = (player.infinityPoints.gte(player.eternityChallGoal) && (player.infDimensionsUnlocked[7] || getEternitied() > 24)) ? "inline-block" : "none"
+    document.getElementById("eternitybtn").style.display = (player.infinityPoints.gte(player.eternityChallGoal) && (player.infDimensionsUnlocked[7] || getEternitied() > 24) && (!player.dilation.active || !inQCModifier("ad"))) ? "inline-block" : "none"
 
     updateQuarkDisplay()
 
@@ -7557,12 +7561,15 @@ setInterval(function() {
             let ableToGetRid7 = ableToGetRid2 && player.epmult.eq(1)
             let ableToGetRid8 = ableToGetRid7 && !tmp.qu.breakEternity.did
             let ableToGetRid9 = ableToGetRid8 && noTree
+            let ableToGetRid10 = ableToGetRid9 && inQCModifier("ad")
             if (player.currentEternityChall == "eterc7" && player.galaxies == 1 && player.money.e >= 8e7) giveAchievement("Time Immunity")
             if (!player.timestudy.studies.includes(11) && player.timeShards.e > 214) giveAchievement("You're not really smart.")
             if (ableToGetRid7 && player.infinityPoints.e >= 35e4) giveAchievement("And so your life?")
             if (ableToGetRid8 && player.infinityPoints.e >= 95e4) giveAchievement("Please answer me why you are dying.")
             if (Math.min(Math.min(getRadioactiveDecays("r"),getRadioactiveDecays("g")),getRadioactiveDecays("b"))>1&&tmp.qu.tod.r.quarks.min(tmp.qu.tod.g.quarks).min(tmp.qu.tod.b.quarks).gte("1e1000000000000")&&!tmp.qu.bigRip.times) giveAchievement("Weak Decay")
             if (ableToGetRid9 && player.infinityPoints.e >= 18e5) giveAchievement("Aren't you already dead?")
+            if (inQC(6)&&inQC(8)&&tmp.qu.pairedChallenges.current==1&&player.infinityPoints.e>=1/0) giveAchievement("Back to Challenge One")
+            if (ableToGetRid10 && player.infinityPoints.e >= 1/0) giveAchievement("I give up.")
         }
         if (tmp.qu.bigRip.spaceShards.e>32&&!tmp.qu.breakEternity.did) giveAchievement("Finite Time")
         if (nG(getInfinitied(), Number.MAX_VALUE)) giveAchievement("Meta-Infinity confirmed?")

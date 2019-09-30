@@ -1928,10 +1928,11 @@
 				<br>
 				Lowest PC # done w/ every combination of PCs:
 				<table id="pccompletionstable"></table>
+				<div id="modifiersStats"></div>
 				Best PC w/ QC6 & 8: <span id="bpc68"></span><br>
-				Unique PC completions: <span id="upcc"></span> / 28<br>
-				No dilation: <span id="udcc"></span> / 28<br>
-				Ranking: <span id="pccranking"></span> / 141.4
+				<span id="upcc" style="display: block"></span>
+				<span id="udcc"></span>
+				Ranking: <span id="pccranking"></span> / <span id="pccrankingMax"></span>
 			</div>
 			<div id="lasttenruns" class="statstab">
 				<div id="run1"></div>
@@ -2592,13 +2593,13 @@
 								<div id="Even Ghostlier than before" class="achievement achievementlocked" style="background-image: url(images/167.png)" ach-tooltip="Unlock Bosonic Lab."></div>
 							</td>
 							<td>
-								<div id="ng3p82" class="achievement achievementlocked" style="background-image: url(images/achhidden.png)"></div>
+								<div id="Overchallenged" class="achievement achievementlocked" style="background-image: url(images/168.png)" ach-tooltip="Become a ghost with at least ??? EP while Big Ripped with Anti-Dilation modifier."></div>
 							</td>
 							<td>
-								<div id="ng3p83" class="achievement achievementlocked" style="background-image: url(images/achhidden.png)"></div>
+								<div id="All-Challenging Nighter" class="achievement achievementlocked" style="background-image: url(images/169.png)" ach-tooltip="Get 165 Paired Challenges ranking."></div>
 							</td>
 							<td>
-								<div id="ng3p84" class="achievement achievementlocked" style="background-image: url(images/achhidden.png)"></div>
+								<div id="Big Rip isn't enough" class="achievement achievementlocked" style="background-image: url(images/170.png)" ach-tooltip="Complete a Paired Challenge with Quantum Challenges 6 and 8 combinations."></div>
 							</td>
 							<td>
 								<div id="ng3p85" class="achievement achievementlocked" style="background-image: url(images/achhidden.png)"></div>
@@ -2607,10 +2608,10 @@
 								<div id="ng3p86" class="achievement achievementlocked" style="background-image: url(images/achhidden.png)"></div>
 							</td>
 							<td>
-								<div id="ng3p87" class="achievement achievementlocked" style="background-image: url(images/achhidden.png)"></div>
+								<div id="Back to Challenge One" class="achievement achievementlocked" style="background-image: url(images/173.png)" ach-tooltip="Get ??? antimatter in Paired Challenge 1 with Quantum Challenges 6 and 8 combinations."></div>
 							</td>
 							<td>
-								<div id="ng3p88" class="achievement achievementlocked" style="background-image: url(images/achhidden.png)"></div>
+								<div id="I give up." class="achievement achievementlocked" style="background-image: url(images/174.png)" ach-tooltip="Reach ??? IP while dilated and big ripped with Anti-Dilation modifier and without having studies, EP mult upgrades, Tree Upgrades, and Break Eternity."></div>
 							</td>
 						</tr>
 				</table>
@@ -3450,7 +3451,11 @@
 			<div id="quantumchallenges" class="challengeTab">
 				<div>Spend electrons to start quantum challenges.</div>
 				<div id='electronsAmount2'></div>
-				<table  class="table" style="margin: 0 auto">
+				<div id="modifiersdiv">
+					<b style="font-size: 35px">Modifiers</b><br>
+					<div id="modifiers"></div>
+				</div>
+				<table class="table" style="margin: 0 auto">
 					<tr>
 						<td>
 							<div class="quantumchallengediv" id="qc1div">
@@ -5129,14 +5134,14 @@
 						<table class='qtable'><tr>
 							<td>
 								You have <span id="wpb" style="font-size:35px"></span> W+ Bosons and <span id="wnb" style="font-size:35px"></span> W- Bosons.<br>
-								Translated to <span id="wbTime" style="font-size:35px"></span>x faster extracting time and <span id="wbSpeed" style="font-size:35px"></span>x speed.
+								Translated to <span id="wbTime" style="font-size:35px"></span>x faster extracting time and <span id="wbSpeed" style="font-size:35px"></span>x Bosonic Matter production speed.
 							</td>
 							<td>
-								You have <span id="dp" style="font-size:35px"></span> Dark Preons.<br>
-								<span id="dpPercentage" style="font-size:25px"></span>% to gain 1 Dark Preon. <span id="dpPercentageGain" style="font-size:25px"></span>
+								You have <span id="dp" style="font-size:35px"></span> Dark Preons. <span id="dpProduction" style="font-size:25px"></span>
 							</td>
 							<td>
-								You have <span id="zb" style="font-size:35px"></span> Z Bosons.
+								You have <span id="zb" style="font-size:35px"></span> Z Bosons.<br>
+								Translated to <span id="zbSpeed" style="font-size:35px"></span>x speed.
 							</td>
 						</tr></table>
 					</div>

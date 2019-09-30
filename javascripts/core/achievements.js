@@ -174,13 +174,13 @@ const allAchievements = {
   ng3p77 : "The Theory of Ultimate Studies",
   ng3p78 : "Aren't you already dead?",
   ng3p81 : "Even Ghostlier than before",
-  ng3p82 : "ng3p82",
-  ng3p83 : "ng3p83",
-  ng3p84 : "ng3p84",
+  ng3p82 : "Overchallenged",
+  ng3p83 : "All-Challenging Nighter",
+  ng3p84 : "Big Rip isn't enough",
   ng3p85 : "ng3p85",
   ng3p86 : "ng3p86",
-  ng3p87 : "ng3p87",
-  ng3p88 : "ng3p88",
+  ng3p87 : "Back to Challenge One",
+  ng3p88 : "I give up.",
   s11 : "The first one's always free",
   s12 : "Just in case",
   s13 : "It pays to have respect",
@@ -269,61 +269,61 @@ function clearOldAchieves(){
     }
 }
 
-function giveAchievement(name) {
+function giveAchievement(name, noUpdate) {
+	if (player.achievements.includes(name)){ clearOldAchieves(); }
 
-    if (player.achievements.includes(name)){ clearOldAchieves(); }
+	if (player.achievements.includes(allAchievementNums[name])) return false
 
-    if (player.achievements.includes(allAchievementNums[name])) return false
+	var ngudAchId=allAchievementNums[name].split("ngud")[1]
+	if (ngudAchId!=undefined) if (player.exdilation==undefined) return
 
-    var ngudAchId=allAchievementNums[name].split("ngud")[1]
-    if (ngudAchId!=undefined) if (player.exdilation==undefined) return
+	var ngppAchId=allAchievementNums[name].split("ngpp")[1]
+	if (ngppAchId!=undefined) {
+		ngppAchId=parseInt(ngppAchId)
+		if (player.meta==undefined&&(player.exdilation==undefined||(ngppAchId!=13&&ngppAchId!=18))) return
+	}
 
-    var ngppAchId=allAchievementNums[name].split("ngpp")[1]
-    if (ngppAchId!=undefined) {
-        ngppAchId=parseInt(ngppAchId)
-        if (player.meta==undefined&&(player.exdilation==undefined||(ngppAchId!=13&&ngppAchId!=18))) return
-    }
+	if (allAchievementNums[name].split("ng3p")[1]&&!player.masterystudies) return false
 
-    if (allAchievementNums[name].split("ng3p")[1]&&!player.masterystudies) return false
+	if (player.boughtDims) {
+		var r=allAchievementNums[name].split("r")[1]
+		if (r<0) r=0
+		else r=parseInt(allAchievementNums[name].split("r")[1])
+		if (r==105||(r!=117&&r>110)) return false
+	}
 
-    if (player.boughtDims) {
-        var r=allAchievementNums[name].split("r")[1]
-        if (r<0) r=0
-        else r=parseInt(allAchievementNums[name].split("r")[1])
-        if (r==105||(r!=117&&r>110)) return false
-    }
-
-    if (name == "A sound financial decision") localStorage.setItem(btoa("dsAM_asfd"),"")
-    else $.notify(name, "success");
-    player.achievements.push(allAchievementNums[name]);
-    document.getElementById(name).className = "achievementunlocked"
-    if (name == "All your IP are belong to us" || name == "MAXIMUM OVERDRIVE") {
-        player.infMult = player.infMult.times(4);
-        player.autoIP = player.autoIP.times(4);
-        if (player.autoCrunchMode == "amount" && player.autobuyers[11].priority != undefined) player.autobuyers[11].priority = Decimal.times(player.autobuyers[11].priority, 4);
-    }
-    if (name == "The swarm" && player.boughtDims) document.getElementById('replicantigalaxypowerdiv').style.display=""
-    if (name == "GAS GAS GAS") {
-        for (i=1;i<9;i++) document.getElementById("td"+i+'auto').style.visibility="visible"
-        document.getElementById('togglealltimedims').style.display=""
-        document.getElementById('epmultauto').style.display=""
-        if (player.aarexModifications.ngudpV) document.getElementById("blackholeAuto").style.display=""
-    }
-    if (name == "It will never be enough") document.getElementById('replicantibulkmodetoggle').style.display="inline-block"
-    if (name == "I already got rid of you..." || name == "No dilation means no production.") {
-        player.dilation.bestTP = Decimal.max(player.dilation.tachyonParticles, player.dilation.bestTP)
-        document.getElementById('bestTP').style.display=""
-        document.getElementById('bestTP').textContent="Your best ever Tachyon particles was "+shorten(player.dilation.bestTP)+"."
-    }
-    if (name == "Twice in the row") document.getElementById('toggleautoquantummode').style.display=""
+	player.achievements.push(allAchievementNums[name])
+	if (name == "All your IP are belong to us" || name == "MAXIMUM OVERDRIVE") {
+		player.infMult = player.infMult.times(4);
+		player.autoIP = player.autoIP.times(4);
+		if (player.autoCrunchMode == "amount" && player.autobuyers[11].priority != undefined) player.autobuyers[11].priority = Decimal.times(player.autobuyers[11].priority, 4);
+	}
+	if (name == "The swarm" && player.boughtDims) document.getElementById('replicantigalaxypowerdiv').style.display=""
+	if (name == "GAS GAS GAS") {
+		for (i=1;i<9;i++) document.getElementById("td"+i+'auto').style.visibility="visible"
+		document.getElementById('togglealltimedims').style.display=""
+		document.getElementById('epmultauto').style.display=""
+		if (player.aarexModifications.ngudpV) document.getElementById("blackholeAuto").style.display=""
+	}
+	if (name == "It will never be enough") document.getElementById('replicantibulkmodetoggle').style.display="inline-block"
+	if (name == "I already got rid of you..." || name == "No dilation means no production.") {
+		player.dilation.bestTP = Decimal.max(player.dilation.tachyonParticles, player.dilation.bestTP)
+		document.getElementById('bestTP').style.display=""
+		document.getElementById('bestTP').textContent="Your best ever Tachyon particles was "+shorten(player.dilation.bestTP)+"."
+	}
+	if (name == "Twice in the row") document.getElementById('toggleautoquantummode').style.display=""
 	if (name == "Stop blocking me!") document.getElementById('autoReset').style.display=""
-    if (name == "Quantum doesn't take so long") {
-        updateAutobuyers()
-        updateAutoEterMode()
-        loadAutoBuyerSettings()
-    }
+	if (name == "Quantum doesn't take so long") {
+		updateAutobuyers()
+		updateAutoEterMode()
+		loadAutoBuyerSettings()
+	}
 	if (name == "Kee-hee-hee!" && (player.achievements.includes("ng3p18") || player.achievements.includes("ng3p37"))) setAndMaybeShow('bestTPOverGhostifies',true,'"Your best-ever Tachyon particles was "+shorten(player.dilation.bestTPOverGhostifies)+"."')
-    updateAchievements();
+    if (!noUpdate) {
+		if (name == "A sound financial decision") localStorage.setItem(btoa("dsAM_asfd"),"")
+		else $.notify(name, "success");
+		updateAchievements()
+	}
 }
 
 function updateAchievements() {

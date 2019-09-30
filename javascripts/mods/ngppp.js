@@ -460,7 +460,6 @@ function setupText() {
 			var col = row.insertCell(c)
 			if (c<1) col.textContent = "#" + r
 			else if (c==r) {
-				col.textContent = "QC" + r
 				col.id = "qcC" + r
 			} else col.id = "pc" + r + c
 		}
@@ -518,9 +517,21 @@ function setupText() {
 		document.getElementById(color+"Branch").innerHTML=html
 	}
 	for (var m=1;m<17;m++) document.getElementById("braveMilestone"+m).textContent=getFullExpansion(tmp.bm[m-1])+"x quantumed"
+	//Quantum Challenge modifiers
+	var modDiv=""
+	for (var m=0;m<qcm.modifiers.length;m++) {
+		var id=qcm.modifiers[m]
+		modDiv+=' <button id="qcm_'+id+'" onclick="toggleQCModifier(\''+id+'\')">'+(qcm.names[id]||"???")+'</button>'
+	}
+	document.getElementById("modifiers").innerHTML=modDiv
+	var modDiv='<button class="storebtn" id="qcms_normal" onclick="showQCModifierStats(\'\')">Normal</button>'
+	for (var m=0;m<qcm.modifiers.length;m++) {
+		var id=qcm.modifiers[m]
+		modDiv+=' <button class="storebtn" id="qcms_'+id+'" onclick="showQCModifierStats(\''+id+'\')">'+(qcm.names[id]||"???")+'</button>'
+	}
+	document.getElementById("modifiersStats").innerHTML=modDiv
 	//Bosonic Extractor
 	var ben=document.getElementById("enchants")
-	var toeDiv=""
 	for (var g2=2;g2<br.names.length;g2++) {
 		var row=ben.insertRow(g2-2)
 		for (var g1=1;g1<g2;g1++) {
@@ -1603,66 +1614,63 @@ function updateQCTimes() {
 }
 
 //v1.99873
+var ranking=0
 function updatePCCompletions() {
+	var shownormal=false
 	document.getElementById("pccompletionsbtn").style.display = "none"
 	if (!player.masterystudies) return
-	var tempcounter=0
-	var tempcounter2=0
-	var ranking=0
+	ranking=0
+	tmp.pcc={} //PC Completion counters
 	for (var c1=2;c1<9;c1++) for (var c2=1;c2<c1;c2++) {
 		var rankingPart=0
-		if (c2*10+c1==68 && ghostified) {
-			rankingPart=2
-			tempcounter++
-		} else {
-			if (tmp.qu.pairedChallenges.completions[c2*10+c1]) {
-				rankingPart=5-tmp.qu.pairedChallenges.completions[c2*10+c1]
-				tempcounter++
-			}
-			if (tmp.qu.qcsNoDil["pc"+(c2*10+c1)]) {
-				rankingPart+=5-tmp.qu.qcsNoDil["pc"+(c2*10+c1)]
-				tempcounter2++
+		if (tmp.qu.pairedChallenges.completions[c2*10+c1]) {
+			rankingPart=5-tmp.qu.pairedChallenges.completions[c2*10+c1]
+			tmp.pcc.normal=(tmp.pcc.normal||0)+1
+		} else if (c2*10+c1==68&&ghostified) {
+			rankingPart=0.5
+			tmp.pcc.normal=(tmp.pcc.normal||0)+1
+		}
+		if (tmp.qu.qcsNoDil["pc"+(c2*10+c1)]) {
+			rankingPart+=5-tmp.qu.qcsNoDil["pc"+(c2*10+c1)]
+			tmp.pcc.noDil=(tmp.pcc.noDil||0)+1
+		}
+		for (var m=0;m<qcm.modifiers.length;m++) {
+			var id=qcm.modifiers[m]
+			var data=tmp.qu.qcsMods[id]
+			if (data&&data["pc"+(c2*10+c1)]) {
+				rankingPart+=5-data["pc"+(c2*10+c1)]
+				tmp.pcc[id]=(tmp.pcc[id]||0)+1
+				shownormal=true
 			}
 		}
 		ranking+=Math.sqrt(rankingPart)
 	}
 	ranking=ranking/56*100
-	if (tempcounter>0) document.getElementById("pccompletionsbtn").style.display = "inline-block"
-	if (tempcounter>23) giveAchievement("The Challenging Day")
-	document.getElementById("upcc").textContent = tempcounter
-	document.getElementById("udcc").textContent = tempcounter2
-	document.getElementById("pccranking").textContent = ranking.toFixed(1)
-	for (r=1;r<9;r++) for (c=1;c<9;c++) {
-		if (r!=c) {
-			var divid = "pc" + (r*10+c)
-			var pcid = r*10+c
-			if (r>c) pcid = c*10+r
-			var comp = tmp.qu.pairedChallenges.completions[pcid]
-			if (comp !== undefined) {
-				document.getElementById(divid).textContent = "PC" + comp
-				document.getElementById(divid).className = (tmp.qu.qcsNoDil["pc" + pcid] ? "nd" : "pc" + comp) + "completed"
-				var achTooltip = 'Fastest time: ' + (tmp.qu.pairedChallenges.fastest[pcid] ? timeDisplayShort(tmp.qu.pairedChallenges.fastest[pcid]) : "N/A")
-				if (tmp.qu.qcsNoDil["pc" + pcid]) achTooltip += ", No dilation: PC" + tmp.qu.qcsNoDil["pc" + pcid]
-				document.getElementById(divid).setAttribute('ach-tooltip', achTooltip)
-				if (divid=="pc38") giveAchievement("Hardly marked")
-			} else if (pcid == 68 && ghostified) {
-				document.getElementById(divid).textContent = "BR"
-				document.getElementById(divid).className = "brCompleted"
-				document.getElementById(divid).removeAttribute('ach-tooltip')
-				document.getElementById(divid).setAttribute('ach-tooltip', 'Fastest time from start of Ghostify: ' + timeDisplayShort(player.ghostify.best))
-			} else {
-				document.getElementById(divid).textContent = ""
-				document.getElementById(divid).className = ""
-				document.getElementById(divid).removeAttribute('ach-tooltip')
-			}
-		} else if (tmp.qu.qcsNoDil["qc"+r]) {
-			document.getElementById("qcC"+r).className = "ndcompleted"
-			document.getElementById("qcC"+r).setAttribute('ach-tooltip', 'No dilation achieved!')
-		} else {
-			document.getElementById("qcC"+r).className = "pc1completed"
-			document.getElementById("qcC"+r).removeAttribute('ach-tooltip')
-		}
+	if (ranking) document.getElementById("pccompletionsbtn").style.display = "inline-block"
+	if (tmp.pcc.normal>23) giveAchievement("The Challenging Day")
+	document.getElementById("pccranking").textContent=ranking.toFixed(1)
+	document.getElementById("pccrankingMax").textContent=Math.sqrt(1e4*(2+qcm.modifiers.length)).toFixed(1)
+	updatePCTable()
+	for (var m=0;m<qcm.modifiers.length;m++) {
+		var id=qcm.modifiers[m]
+		var shownormal=tmp.qu.qcsMods[id]!==undefined||shownormal
+		document.getElementById("qcms_"+id).style.display=tmp.qu.qcsMods[id]!==undefined?"":"none"
 	}
+	document.getElementById("qcms_normal").style.display=shownormal?"":"none"
+	if (ranking>=75) {
+		document.getElementById("modifiersdiv").style.display=""
+		for (var m=0;m<qcm.modifiers.length;m++) {
+			var id=qcm.modifiers[m]
+			if (ranking>=qcm.reqs[id]||!qcm.reqs[id]) {
+				document.getElementById("qcm_"+id).className=qcm.on.includes(id)?"chosenbtn":"storebtn"
+				document.getElementById("qcm_"+id).setAttribute('ach-tooltip', qcm.descs[id]||"???")
+			} else {
+				document.getElementById("qcm_"+id).className="unavailablebtn"
+				document.getElementById("qcm_"+id).setAttribute('ach-tooltip', 'Get '+qcm.reqs[id]+' Paired Challenges ranking to unlock this modifier. Ranking: '+ranking.toFixed(1))
+			}
+		}
+	} else document.getElementById("modifiersdiv").style.display="none"
+	if (ranking>=165) giveAchievement("All-Challenging Nighter")
 }
 
 //v1.99874
@@ -2676,7 +2684,7 @@ function bigRip(auto) {
 			tmp.qu.electrons.mult+=(2-tmp.qu.challenges[c])*0.25
 			tmp.qu.challenges[c]=2
 		}
-		quantum(auto,true,12,true)
+		quantum(auto,true,12,true,true)
 	} else {
 		for (var p=1;p<5;p++) {
 			var pcData=tmp.qu.pairedChallenges.order[p]
@@ -2685,7 +2693,7 @@ function bigRip(auto) {
 				var pc2=Math.max(pcData[0],pcData[1])
 				if (pc1==6&&pc2==8) {
 					if (p-1>tmp.qu.pairedChallenges.completed) return
-					quantum(auto,true,p+8,true)
+					quantum(auto,true,p+8,true,true)
 				}
 			}
 		}
@@ -2983,8 +2991,10 @@ function tweakBigRip(id, reset) {
 			epcost: new Decimal(1),
 			studies: []
 		}
-		player.dilation.tachyonParticles = player.dilation.tachyonParticles.max(player.dilation.bestTP.sqrt())
-		player.dilation.totalTachyonParticles = player.dilation.totalTachyonParticles.max(player.dilation.bestTP.sqrt())
+		if (!inQCModifier("ad")) {
+			player.dilation.tachyonParticles = player.dilation.tachyonParticles.max(player.dilation.bestTP.sqrt())
+			player.dilation.totalTachyonParticles = player.dilation.totalTachyonParticles.max(player.dilation.bestTP.sqrt())
+		}
 	}
 }
 
@@ -3207,6 +3217,7 @@ function ghostifyReset(implode, gain, amount, force) {
 	if (bm > 2) for (var c=1;c<9;c++) tmp.qu.electrons.mult += .5-QCIntensity(c)*.25
 	if (bm > 15) giveAchievement("I rather oppose the theory of everything")
 	if (player.eternityPoints.e>=22e4&&player.ghostify.under) giveAchievement("Underchallenged")
+	if (player.eternityPoints.e>=1/0&&inQCModifier("ad")) giveAchievement("Overchallenged")
 	if (player.ghostify.best<=5) giveAchievement("Running through Big Rips")
 	player.ghostify.time = 0
 	player = {
@@ -3621,6 +3632,7 @@ function ghostifyReset(implode, gain, amount, force) {
 				respec: false
 			},
 			qcsNoDil: tmp.qu.qcsNoDil,
+			qcsMods: tmp.qu.qcsMods,
 			replicants: {
 				amount: new Decimal(0),
 				requirement: new Decimal("1e3000000"),
@@ -3818,6 +3830,7 @@ function ghostifyReset(implode, gain, amount, force) {
 	updateMasteryStudyButtons()
 
 	//Quantum
+	tmp.qu.qcsMods.current=[]
 	tmp.qu.replicants.amount = new Decimal(0)
 	tmp.qu.replicants.requirement = new Decimal("1e3000000")
 	tmp.qu.replicants.quarks = new Decimal(0)
@@ -4088,14 +4101,15 @@ function updateGhostifyTabs() {
 		if (document.getElementById("butab").style.display=="block") updateBosonicUpgradeDescs()
 		if (document.getElementById("wzbtab").style.display=="block") {
 			let data2=player.ghostify.wzb
+			let r=data2.dP.pow(3).add(speed.times(tmp.wzbs).times(getDarkPreonProduction())).pow(1/3)
 			document.getElementById("wzbSpeed").textContent="Current speed with Bosonic Speed: "+shorten(speed.times(tmp.wzbs))+"x"
-			document.getElementById("dp").textContent=shortenDimensions(data2.dP)
-			document.getElementById("dpPercentage").textContent=data2.dPPercentage.toFixed(1)
-			document.getElementById("dpPercentageGain").textContent="+"+shorten(tmp.dppg.times(speed.times(tmp.wzbs)))+"%/s"
+			document.getElementById("dp").textContent=shorten(data2.dP)
+			document.getElementById("dpProduction").textContent="+"+shorten(r.sub(data2.dP.min(r)))+"/s"
 			document.getElementById("wpb").textContent=shortenDimensions(data2.wpb)
 			document.getElementById("wnb").textContent=shortenDimensions(data2.wnb)
 			document.getElementById("wbTime").textContent=shorten(tmp.wzbt)
-			document.getElementById("wbSpeed").textContent=shorten(tmp.wzbs)
+			document.getElementById("wbSpeed").textContent=shorten(tmp.wzbb)
+			document.getElementById("zbSpeed").textContent=shorten(tmp.wzbs)
 			document.getElementById("zb").textContent=shortenDimensions(data2.zb)
 		}
 	}
@@ -4439,9 +4453,114 @@ function getAssignMult() {
 	return r
 }
 
+function showQCModifierStats(id) {
+	tmp.pct=id
+	updatePCTable()
+}
+
+function updatePCTable() {
+	var data=tmp.qu.qcsMods[tmp.pct]
+	for (r=1;r<9;r++) for (c=1;c<9;c++) {
+		if (r!=c) {
+			var divid = "pc" + (r*10+c)
+			var pcid = r*10+c
+			if (r>c) pcid = c*10+r
+			if (tmp.pct=="") {
+				var comp = tmp.qu.pairedChallenges.completions[pcid]
+				if (comp !== undefined) {
+					document.getElementById(divid).textContent = "PC" + comp
+					document.getElementById(divid).className = (tmp.qu.qcsNoDil["pc" + pcid] ? "nd" : "pc" + comp) + "completed"
+					var achTooltip = 'Fastest time: ' + (tmp.qu.pairedChallenges.fastest[pcid] ? timeDisplayShort(tmp.qu.pairedChallenges.fastest[pcid]) : "N/A")
+					if (tmp.qu.qcsNoDil["pc" + pcid]) achTooltip += ", No dilation: PC" + tmp.qu.qcsNoDil["pc" + pcid]
+					document.getElementById(divid).setAttribute('ach-tooltip', achTooltip)
+					if (divid=="pc38") giveAchievement("Hardly marked")
+					if (divid=="pc68") giveAchievement("Big Rip isn't enough")
+				} else if (pcid == 68 && ghostified) {
+					document.getElementById(divid).textContent = "BR"
+					document.getElementById(divid).className = "brCompleted"
+					document.getElementById(divid).removeAttribute('ach-tooltip')
+					document.getElementById(divid).setAttribute('ach-tooltip', 'Fastest time from start of Ghostify: ' + timeDisplayShort(player.ghostify.best))
+				} else {
+					document.getElementById(divid).textContent = ""
+					document.getElementById(divid).className = ""
+					document.getElementById(divid).removeAttribute('ach-tooltip')
+				}
+			} else if (data&&data["pc" + pcid]) {
+				var comp = data["pc" + pcid]
+				document.getElementById(divid).textContent = "PC" + comp
+				document.getElementById(divid).className = "pc" + comp + "completed"
+				document.getElementById(divid).removeAttribute('ach-tooltip')
+			} else {
+				document.getElementById(divid).textContent = ""
+				document.getElementById(divid).className = ""
+				document.getElementById(divid).removeAttribute('ach-tooltip')
+			}
+		} else {
+			var divid="qcC"+r
+			if (tmp.pct==""||(data&&data["qc"+r])) {
+				document.getElementById(divid).textContent = "QC"+r
+				if (tmp.qu.qcsNoDil["qc"+r]&&tmp.pct=="") {
+					document.getElementById(divid).className = "ndcompleted"
+					document.getElementById(divid).setAttribute('ach-tooltip', "No dilation achieved!")
+				} else {
+					document.getElementById(divid).className = "pc1completed"
+					document.getElementById(divid).removeAttribute('ach-tooltip')
+				}
+			} else {
+				document.getElementById(divid).textContent = ""
+				document.getElementById(divid).className = ""
+				document.getElementById(divid).removeAttribute('ach-tooltip')
+			}
+		}
+	}
+	document.getElementById("upcc").textContent = (tmp.pct==""?"Unique PC completions":(qcm.names[tmp.pct]||"???"))+": "+(tmp.pcc.normal||0)+" / 28"
+	document.getElementById("udcc").style.display = tmp.pct==""?"block":"none"
+	document.getElementById("udcc").textContent="No dilation: "+(tmp.pcc.noDil||0)+" / 28"
+}
+
 function toggleLEConf() {
 	player.aarexModifications.leNoConf = !player.aarexModifications.leNoConf
 	document.getElementById("leConfirmBtn").textContent = "Light Empowerment confirmation: O" + (player.aarexModifications.leNoConf ? "FF" : "N")
+}
+
+//Quantum Challenge modifiers
+var qcm={
+	modifiers:["ad"],
+	names:{
+		ad:"Anti-Dilation"
+	},
+	reqs:{
+		ad:100
+	},
+	descs:{
+		ad:"You always have no Tachyon particles. You can dilate time, but you can't gain Tachyon particles."
+	},
+	on:[]
+}
+
+function toggleQCModifier(id) {
+	if (!(ranking>=qcm.reqs[id])&&qcm.reqs[id]) return
+	if (qcm.on.includes(id)) {
+		let data=[]
+		for (var m=0;m<qcm.on.length;m++) if (qcm.on[m]!=id) data.push(qcm.on[m])
+		qcm.on=data
+	} else qcm.on.push(id)
+	document.getElementById("qcm_"+id).className=qcm.on.includes(id)?"chosenbtn":"storebtn"
+}
+
+function inQCModifier(id) {
+	if (player.masterystudies==undefined) return
+	return tmp.qu.qcsMods.current.includes(id)
+}
+
+function recordModifiedQC(id,num,mod) {
+	var data=tmp.qu.qcsMods[mod]
+	if (data===undefined) {
+		data={}
+		tmp.qu.qcsMods[mod]=data
+	}
+	if (data[id]===undefined) data[id]=num
+	else data[id]=Math.min(num,data[id])
 }
 
 //Bosonic Lab
@@ -4473,7 +4592,7 @@ function bosonicTick(diff) {
 	//W & Z Bosons
 	lDiff=diff.times(tmp.wzbs)
 	lData=player.ghostify.wzb
-	lData.dPPercentage=lData.dPPercentage.add(tmp.dppg.times(lDiff)).min(100)
+	lData.dP=lData.dP.pow(3).add(getDarkPreonProduction().times(lDiff)).pow(1/3)
 	
 	//Bosonic Extractor
 	if (data.usedEnchants.includes(12)) {
@@ -4504,7 +4623,8 @@ function bosonicTick(diff) {
 }
 
 function getBosonicAMProduction() {
-	return new Decimal(0)
+	let r=tmp.wzbb
+	return r
 }
 
 function showBLTab(tabName) {
@@ -4805,4 +4925,9 @@ function getBosonicBatteryProduction() {
 
 function changeOverdriveSpeed() {
 	tmp.bl.odSpeed = Decimal.pow(3,document.getElementById("odSlider").value/20-1)
+}
+
+//W & Z Bosons
+function getDarkPreonProduction() {
+	return new Decimal(0)
 }

@@ -450,7 +450,7 @@ function replicantiGalaxyBulkModeToggle() {
 
 // v2.9
 quantumed = false
-function quantum(auto, force, challid, bigRip) {
+function quantum(auto, force, challid, bigRip, quick) {
     if (player.masterystudies !== undefined) if (!auto && !force && tmp.qu.bigRip.active) force = true
 	if (!(isQuantumReached()||force)||implosionCheck) return
 	var headstart = player.aarexModifications.newGamePlusVersion > 0 && !player.masterystudies
@@ -458,6 +458,8 @@ function quantum(auto, force, challid, bigRip) {
 	if (!quantumed) if (!confirm("Are you sure you want to do that? You will lose everything you have!")) return
 	var pc=challid-8
 	if (player.masterystudies) {
+		tmp.preQCMods=tmp.qu.qcsMods.current
+		tmp.qu.qcsMods.current=[]
 		if (challid>0) {
 			var abletostart=false
 			if (pc>0) {
@@ -478,6 +480,7 @@ function quantum(auto, force, challid, bigRip) {
 					if (player.options.challConf || (tmp.qu.pairedChallenges.completions.length < 1 && !ghostified)) if (!confirm("You will start a Quantum Challenge, but you need to do 2 challenges at one. Completing it boosts the rewards of Quantum Challenges that you chose in this Paired Challenge.")) return
 				} else if (player.options.challConf || (QCIntensity(1) == 0 && !ghostified)) if (!confirm("You will do a quantum reset but you will not gain quarks, and keep your electrons & sacrificed galaxies, and you can't buy electron upgrades. You have to reach the set goal of antimatter to complete this challenge. NOTE: Electrons and banked eternities do nothing in quantum challenges and your electrons and sacrificed galaxies do not reset until you end the challenge.")) return
 				tmp.qu.electrons.amount -= getQCCost(challid)
+				if (!quick) for (var m=0;m<qcm.on.length;m++) if (ranking>=qcm.reqs[qcm.on[m]]||!qcm.reqs[qcm.on[m]]) tmp.qu.qcsMods.current.push(qcm.on[m])
 			} else if (pcFocus&&pc<1) {
 				if (!assigned.includes(challid)) {
 					if (!tmp.qu.pairedChallenges.order[pcFocus]) tmp.qu.pairedChallenges.order[pcFocus]=[challid]
@@ -794,6 +797,8 @@ function quantumReset(force, auto, challid, bigRip, implode=false) {
 	}
 	var dilTimes = player.dilation.times
 	var bhd = []
+	var modifiers=[]
+	for (var m=0;m<tmp.qu.qcsMods.current.length;m++) modifiers.push(tmp.qu.qcsMods.current[m])
 	var bigRipChanged = player.masterystudies !== undefined && bigRip != player.quantum.bigRip.active
 	var turnSomeOn = !bigRip || player.quantum.bigRip.upgrades.includes(1)
 	if (player.aarexModifications.ngudpV) for (var d=0;d<4;d++) bhd[d]=Object.assign({},player["blackholeDimension"+(d+1)])
@@ -1054,8 +1059,8 @@ function quantumReset(force, auto, challid, bigRip, implode=false) {
 		dilation: {
 			studies: bigRip ? (tmp.qu.bigRip.upgrades.includes(12) ? [1,2,3,4,5,6] : tmp.qu.bigRip.upgrades.includes(10) ? [1] : []) : isRewardEnabled(4) ? (speedrunMilestonesReached > 5 ? [1,2,3,4,5,6] : [1]) : [],
 			active: false,
-			tachyonParticles: (player.achievements.includes("ng3p37") && (!bigRip || tmp.qu.bigRip.upgrades.includes(11))) || player.achievements.includes("ng3p71") ? player.dilation.bestTP.pow((player.ghostify.milestones > 15 && (!bigRip || player.achievements.includes("ng3p71"))) || (!challid && player.ghostify.milestones > 3) ? 1 : 0.5) : new Decimal(0),
-			dilatedTime: new Decimal(speedrunMilestonesReached>21 && isRewardEnabled(4) && !bigRip?1e100:0),
+			tachyonParticles: (((player.achievements.includes("ng3p37") && (!bigRip || tmp.qu.bigRip.upgrades.includes(11))) || player.achievements.includes("ng3p71")) && !inQCModifier("ad")) ? player.dilation.bestTP.pow((player.ghostify.milestones > 15 && (!bigRip || player.achievements.includes("ng3p71"))) || (!challid && player.ghostify.milestones > 3) ? 1 : 0.5) : new Decimal(0),
+			dilatedTime: new Decimal(speedrunMilestonesReached>21 && isRewardEnabled(4) && !inQCModifier("ad") && !bigRip?1e100:0),
 			bestTP: player.dilation.bestTP,
 			bestTPOverGhostifies: player.dilation.bestTPOverGhostifies,
 			nextThreshold: new Decimal(1000),
@@ -1209,6 +1214,7 @@ function quantumReset(force, auto, challid, bigRip, implode=false) {
 					if (tmp.qu.qcsNoDil["pc" + pcid] === undefined) tmp.qu.qcsNoDil["pc" + pcid] = tmp.qu.pairedChallenges.current
 					else tmp.qu.qcsNoDil["pc" + pcid] = Math.min(tmp.qu.pairedChallenges.current,tmp.qu.qcsNoDil["pc" + pcid])
 				}
+				for (m=0;m<tmp.preQCMods.length;m++) recordModifiedQC("pc"+pcid,tmp.qu.pairedChallenges.current,tmp.preQCMods[m])
 				if (tmp.qu.pairedChallenges.fastest[pcid] === undefined) tmp.qu.pairedChallenges.fastest[pcid] = oldTime
 				else tmp.qu.pairedChallenges.fastest[pcid] = tmp.qu.pairedChallenges.fastest[pcid] = Math.min(tmp.qu.pairedChallenges.fastest[pcid], oldTime)
 			} else if (intensity) {
@@ -1219,6 +1225,7 @@ function quantumReset(force, auto, challid, bigRip, implode=false) {
 				if (tmp.qu.challengeRecords[qc1] == undefined) tmp.qu.challengeRecords[qc1]=oldTime
 				else tmp.qu.challengeRecords[qc1]=Math.min(tmp.qu.challengeRecords[qc1],oldTime)
 				if (dilTimes == 0) tmp.qu.qcsNoDil["qc" + qc1] = 1
+				for (m=0;m<tmp.preQCMods.length;m++) recordModifiedQC("qc"+qc1,1,tmp.preQCMods[m])
 			}
 			if (tmp.qu.pairedChallenges.respec) {
 				tmp.qu.electrons.mult-=tmp.qu.pairedChallenges.completed*0.5

@@ -1,9 +1,29 @@
 var dev = {};
 
 dev.giveAllAchievements = function() {
-    Object.keys(allAchievements).forEach( function(key) {
-        giveAchievement(allAchievements[key])
+	var gave=[]
+    Object.keys(allAchievements).forEach(function(key) {
+		var got=player.achievements.includes(key)
+        giveAchievement(allAchievements[key], true)
+		if (player.achievements.includes(key)&&!got) gave.push(key)
     })
+	if (gave.length<11) for (var a=0;a<gave.length;a++) $.notify(allAchievements[key], "success")
+	if (gave.length>1) $.notify("Gave "+gave.length+" achievements.", "success")
+	updateAchievements()
+}
+
+dev.giveAllNGAchievements = function() {
+	var gave=[]
+    Object.keys(allAchievements).forEach(function(key) {
+		if (key[0]=="r"||key[0]=="s") {
+			var got=player.achievements.includes(key)
+			giveAchievement(allAchievements[key], true)
+			if (player.achievements.includes(key)&&!got) gave.push(key)
+		}
+    })
+	if (gave.length<11) for (var a=0;a<gave.length;a++) $.notify(allAchievements[key], "success")
+	if (gave.length>1) $.notify("Gave "+gave.length+" achievements.", "success")
+	updateAchievements()
 }
 
 dev.doubleEverything = function() {

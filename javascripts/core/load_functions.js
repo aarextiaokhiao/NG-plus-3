@@ -709,6 +709,7 @@ if (player.version < 5) {
                   respec: false
               }
               tmp.qu.qcsNoDil = {}
+              tmp.qu.qcsMods = {current:[]}
               player.dilation.bestTP = 0
               player.old = false
               tmp.qu.autoOptions = {}
@@ -832,7 +833,6 @@ if (player.version < 5) {
                   wzb: {
                       unl: false,
                       dP: 0,
-                      dPPercentage: 0,
                       dPUse: 0,
                       wQkUp: true,
                       zNeGen: 1,
@@ -1242,6 +1242,7 @@ if (player.version < 5) {
 	  player.achievements=newAchievements
   }
   if (player.aarexModifications.newGame3PlusVersion < 2.2) {
+      if (tmp.qu.qcsMods === undefined) tmp.qu.qcsMods = {current:[]}
       player.ghostify.bl = {
           watt: 0,
           ticks: 0,
@@ -1262,7 +1263,6 @@ if (player.version < 5) {
       player.ghostify.wzb = {
           unl: false,
           dP: 0,
-          dPPercentage: 0,
           dPUse: 0,
           wQkUp: true,
           zNeGen: 1,
@@ -1285,6 +1285,7 @@ if (player.version < 5) {
       updateQuantumWorth()
       if (tmp.qu.autoOptions === undefined) tmp.qu.autoOptions = {}
       if (tmp.qu.nonMAGoalReached === undefined || !tmp.qu.nonMAGoalReached.length) tmp.qu.nonMAGoalReached = []
+      if (tmp.qu.qcsMods === undefined) tmp.qu.qcsMods = {current:[]}
       if (tmp.qu.challengeRecords === undefined) tmp.qu.challengeRecords = {}
       if (tmp.qu.pairedChallenges.completions === undefined) tmp.qu.pairedChallenges.completions = {}
       if (tmp.qu["10ofield"] !== undefined) {
@@ -2603,7 +2604,6 @@ function transformSaveToDecimal() {
           for (var g2=2;g2<br.names.length;g2++) for (var g1=1;g1<g2;g1++) if (tmp.bl.enchants[g1*10+g2]!==undefined) tmp.bl.enchants[g1*10+g2]=new Decimal(tmp.bl.enchants[g1*10+g2])
 
           player.ghostify.wzb.dP=new Decimal(player.ghostify.wzb.dP)
-          player.ghostify.wzb.dPPercentage=new Decimal(player.ghostify.wzb.dPPercentage)
           player.ghostify.wzb.zNePercentage=new Decimal(player.ghostify.wzb.zNePercentage)
           player.ghostify.wzb.zNeReq=new Decimal(player.ghostify.wzb.zNeReq)
           player.ghostify.wzb.wpb=new Decimal(player.ghostify.wzb.wpb)
