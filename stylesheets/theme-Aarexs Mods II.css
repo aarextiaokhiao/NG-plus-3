@@ -192,7 +192,7 @@ button, div.storebtn {
     color: #e5e5e5 !important
 }
 
-#singularityPower, #darkMatterAmount, #darkMatterPerSecond, #nextUpgrade, #darkMatterDT, #nextDiscounts, #blackholePowAmount, #replicantAmount, #workerReplAmount, #hatchProgress, #babyReplAmount, #growupRate, #replicantAmountED, .dmAmount, #dp, #dpProduction {
+#singularityPower, #darkMatterAmount, #darkMatterPerSecond, #nextUpgrade, #darkMatterDT, #nextDiscounts, #blackholePowAmount, #replicantAmount, #workerReplAmount, #hatchProgress, #babyReplAmount, #growupRate, #replicantAmountED, .dmAmount {
 	color: #0c0c0c !important;
 	text-shadow: 0px 0px 3px #0c0c0c, 0px 0px 4.5px #e5e5e5
 }
@@ -684,6 +684,10 @@ button, div.storebtn {
 	text-shadow: 0px 0px 3px #191919, 0px 0px 6px #e5e5e5;
 }
 
+#ap, #apProduction, #apLoss {
+	color: #e55be5 !important
+}
+
 #wpb, #wbTime, #wbSpeed {
 	color: #620d65;
 	text-shadow: 0px 0px 3px #0c0c0c, 0px 0px 4.5px #e5e5e5
@@ -691,6 +695,16 @@ button, div.storebtn {
 
 #wnb {
 	color: #9df29a
+}
+
+.zero {
+	background: repeating-linear-gradient(#620d65, transparent 50%, #620d65 100%), repeating-linear-gradient(90deg, transparent, #9df29a 50%, transparent 100%), #191919;
+	background-size: 200% 200%;
+	box-shadow: 0px 0px 12px #e5e5e5
+}
+
+.down #wQkSymbol {
+	transform: translate(-50%, 15%)
 }
 
 @keyframes rg {

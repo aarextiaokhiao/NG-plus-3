@@ -2513,6 +2513,52 @@ br {
 	animation: bl 5s linear infinite
 }
 
+#wQk {
+	position: relative;
+	left: calc(50% - 120px);
+	height: 240px;
+	width: 240px;
+	border-radius: 120px !important;
+	font-size: 120px;
+	margin-top: 24px;
+	margin-bottom: 24px;
+	transition-duration: 0.2s
+}
+
+.up {
+	background: #620d65;
+	box-shadow: 0px 0px 12px #620d65
+}
+
+.down {
+	background: #9df29a;
+	box-shadow: 0px 0px 12px #9df29a
+}
+
+.zero {
+	background: repeating-linear-gradient(#620d65, transparent 50%, #620d65 100%), repeating-linear-gradient(90deg, transparent, #9df29a 50%, transparent 100%), black;
+	background-size: 200% 200%;
+	box-shadow: 0px 0px 12px white;
+	animation: bl 5s linear infinite
+}
+
+#wQkSymbol {
+	position: absolute;
+	color: white
+}
+
+.up #wQkSymbol {
+	transform: translate(-50%, 15%)
+}
+
+.down #wQkSymbol {
+	transform: translate(-50%, 12%)
+}
+
+.zero #wQkSymbol {
+	transform: translate(-50%, 15%)
+}
+
 @media print,
 screen and (max-width: 960px) {
     div.wrapper {

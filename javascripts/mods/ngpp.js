@@ -797,8 +797,6 @@ function quantumReset(force, auto, challid, bigRip, implode=false) {
 	}
 	var dilTimes = player.dilation.times
 	var bhd = []
-	var modifiers=[]
-	for (var m=0;m<tmp.qu.qcsMods.current.length;m++) modifiers.push(tmp.qu.qcsMods.current[m])
 	var bigRipChanged = player.masterystudies !== undefined && bigRip != player.quantum.bigRip.active
 	var turnSomeOn = !bigRip || player.quantum.bigRip.upgrades.includes(1)
 	if (player.aarexModifications.ngudpV) for (var d=0;d<4;d++) bhd[d]=Object.assign({},player["blackholeDimension"+(d+1)])
@@ -1329,7 +1327,7 @@ function quantumReset(force, auto, challid, bigRip, implode=false) {
 			document.getElementById("electronstabbtn").style.display="none"
 		}
 		if (bigRip?tmp.qu.bigRip.upgrades.includes(12):isRewardEnabled(11)&&isRewardEnabled(4)) player.dilation.upgrades.push(10)
-		else tmp.qu.wasted = !isRewardEnabled(11)||bigRip
+		else tmp.qu.wasted = (!isRewardEnabled(11)||bigRip)&&tmp.qu.bigRip.storedTS===undefined
 		if (bigRip?tmp.qu.bigRip.upgrades.includes(12):speedrunMilestonesReached>13&&isRewardEnabled(4)) {
 			for (i=(player.exdilation!=undefined?1:3);i<7;i++) if (i!=2||!player.aarexModifications.ngudpV) player.dilation.upgrades.push((i>2?"ngpp":"ngud")+i)
 			if (player.aarexModifications.nguspV) {

@@ -4100,11 +4100,23 @@ function updateGhostifyTabs() {
 		}
 		if (document.getElementById("butab").style.display=="block") updateBosonicUpgradeDescs()
 		if (document.getElementById("wzbtab").style.display=="block") {
+			let lSpeed=speed.times(tmp.wzbs)
 			let data2=player.ghostify.wzb
-			let r=data2.dP.pow(3).add(speed.times(tmp.wzbs).times(getDarkPreonProduction())).pow(1/3)
-			document.getElementById("wzbSpeed").textContent="Current speed with Bosonic Speed: "+shorten(speed.times(tmp.wzbs))+"x"
-			document.getElementById("dp").textContent=shorten(data2.dP)
-			document.getElementById("dpProduction").textContent="+"+shorten(r.sub(data2.dP.min(r)))+"/s"
+			let show0=data2.dPUse==1&&lSpeed.times(getAntiPreonLoss()).gte(2e3)
+			let r
+			if (data2.dPUse) r=lSpeed.times(getAntiPreonLoss())
+			else {
+				r=data2.dP.pow(3).add(lSpeed.times(getAntiPreonProduction())).pow(1/3)
+				r=r.sub(data2.dP.min(r))
+			}
+			document.getElementById("wzbSpeed").textContent="Current W & Z Bosons speed: "+shorten(tmp.wzbs)+"x (w/ Bosonic Speed: "+shorten(lSpeed)+"x)"
+			document.getElementById("ap").textContent=shorten(data2.dP)
+			document.getElementById("apProduction").textContent=(data2.dPUse?"-":"+")+shorten(r)+"/s"
+			document.getElementById("apUse").textContent=data2.dPUse==0?"":"You are currently consuming Anti-Preons to "+(["","decay W Quark","oscillate Z Neutrino"])[data2.dPUse]+"."
+			document.getElementById("wQkType").textContent=data2.wQkUp?"up":"down"
+			document.getElementById("wQkProgress").textContent=data2.wQkProgress.times(100).toFixed(1)+"% to turn W Quark to a"+(data2.wQkUp?" down":"n up")+" quark."
+			document.getElementById("wQk").className=show0?"zero":data2.wQkUp?"up":"down"
+			document.getElementById("wQkSymbol").textContent=show0?"0":data2.wQkUp?"+":"−"
 			document.getElementById("wpb").textContent=shortenDimensions(data2.wpb)
 			document.getElementById("wnb").textContent=shortenDimensions(data2.wnb)
 			document.getElementById("wbTime").textContent=shorten(tmp.wzbt)
@@ -4590,9 +4602,24 @@ function bosonicTick(diff) {
 	data.ticks=data.ticks.add(diff)
 	
 	//W & Z Bosons
+	let apDiff=new Decimal(0)
 	lDiff=diff.times(tmp.wzbs)
 	lData=player.ghostify.wzb
-	lData.dP=lData.dP.pow(3).add(getDarkPreonProduction().times(lDiff)).pow(1/3)
+	if (lData.dPUse==1) {
+		apDiff=lDiff.times(getAntiPreonLoss()).times(2).min(lData.dP)
+		lData.wQkProgress=lData.wQkProgress.add(apDiff.div(100))
+		if (lData.wQkProgress.gt(1)) {
+			let toSub=lData.wQkProgress.floor()
+			lData.wpb=lData.wpb.add(toSub.add(lData.wQkUp?1:0).div(2).floor()).round()
+			lData.wnb=lData.wnb.add(toSub.add(lData.wQkUp?0:1).div(2).floor()).round()
+			if (toSub.mod(2).gt(0)) lData.wQkUp=!lData.wQkUp
+			lData.wQkProgress=lData.wQkProgress.sub(toSub.min(lData.wQkProgress))
+		}
+	}
+	if (lData.dPUse) {
+		lData.dP=lData.dP.sub(getAntiPreonLoss().times(lDiff).min(lData.dP))
+		if (lData.dP.eq(0)) lData.dPUse=0
+	} else lData.dP=lData.dP.pow(3).add(getAntiPreonProduction().times(lDiff)).pow(1/3)
 	
 	//Bosonic Extractor
 	if (data.usedEnchants.includes(12)) {
@@ -4607,7 +4634,6 @@ function bosonicTick(diff) {
 		var oldAuto=data.autoExtract.floor()
 		if (!data.usedEnchants.includes(12)) oldAuto=new Decimal(0)
 		var toAdd=data.extractProgress.min(oldAuto.add(1).round()).floor()
-		console.log(toAdd)
 		data.autoExtract=data.autoExtract.sub(toAdd.min(oldAuto))
 		data.glyphs[data.typeToExtract-1]=data.glyphs[data.typeToExtract-1].add(data.amountToExtract.times(toAdd)).round()
 		if (data.usedEnchants.includes(12)&&toAdd.gt(oldAuto.add(1).round())) {
@@ -4789,12 +4815,15 @@ var bEn={
 	},
 	descs:{
 		12: "Bosonic Extractor automatically extracts.",
-		13: "Speed up W & Z Bosons.",
+		13: "Speed up the use of Anti-Preons, but you consume Anti-Preons faster.",
 		23: "Extracting takes less time."
 	},
 	effects:{
 		12: function(l) {
 			return Decimal.div(l,getExtractTime(true)).div(bEn.autoScalings[tmp.bl.typeToExtract])
+		},
+		13: function(l) {
+			return Decimal.div(l,5).add(1)
 		},
 		23: function(l) {
 			return Decimal.add(l,1).pow(2)
@@ -4928,6 +4957,16 @@ function changeOverdriveSpeed() {
 }
 
 //W & Z Bosons
-function getDarkPreonProduction() {
+function getAntiPreonProduction() {
+	return new Decimal(1)
+}
+
+function getAntiPreonLoss() {
+	if (player.ghostify.wzb.dPUse==1) return tmp.bEn[13].div(2)
+	if (player.ghostify.wzb.dPUse==2) return new Decimal(0)
 	return new Decimal(0)
+}
+
+function useAntiPreon(id) {
+	player.ghostify.wzb.dPUse=id
 }

@@ -175,7 +175,7 @@ const allAchievements = {
   ng3p78 : "Aren't you already dead?",
   ng3p81 : "Even Ghostlier than before",
   ng3p82 : "Overchallenged",
-  ng3p83 : "All-Challenging Nighter",
+  ng3p83 : "Pulling an All-Nighter",
   ng3p84 : "Big Rip isn't enough",
   ng3p85 : "ng3p85",
   ng3p86 : "ng3p86",

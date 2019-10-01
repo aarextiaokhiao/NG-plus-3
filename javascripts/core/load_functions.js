@@ -426,6 +426,7 @@ if (player.version < 5) {
   if (!player.replicanti.auto[2]) document.getElementById("replauto3").textContent = "Auto: OFF"
 
   document.getElementById("automation_ng"+(player.aarexModifications.ngmX>3?"m4":"")+"_placement").appendChild(document.getElementById("autobuyers"))
+  if (player.aarexModifications.ngmX>3) document.getElementById("autobuyers").style.display="none"
   document.getElementById("autobuyers").className=(player.aarexModifications.ngmX>3?"":"inf")+"tab"
   document.getElementById("autobuyersbtn").style.display=player.aarexModifications.ngmX>3?"none":""
   loadAutoBuyerSettings();
@@ -835,8 +836,9 @@ if (player.version < 5) {
                       dP: 0,
                       dPUse: 0,
                       wQkUp: true,
+                      wQkProgress: 0,
                       zNeGen: 1,
-                      zNePercentage: 1,
+                      zNeProgress: 1,
                       zNeReq: 1,
                       wpb: 0,
                       wnb: 0,
@@ -1265,8 +1267,9 @@ if (player.version < 5) {
           dP: 0,
           dPUse: 0,
           wQkUp: true,
+          wQkProgress: 0,
           zNeGen: 1,
-          zNePercentage: 1,
+          zNeProgress: 1,
           zNeReq: 1,
           wpb: 0,
           wnb: 0,
@@ -2604,7 +2607,8 @@ function transformSaveToDecimal() {
           for (var g2=2;g2<br.names.length;g2++) for (var g1=1;g1<g2;g1++) if (tmp.bl.enchants[g1*10+g2]!==undefined) tmp.bl.enchants[g1*10+g2]=new Decimal(tmp.bl.enchants[g1*10+g2])
 
           player.ghostify.wzb.dP=new Decimal(player.ghostify.wzb.dP)
-          player.ghostify.wzb.zNePercentage=new Decimal(player.ghostify.wzb.zNePercentage)
+          player.ghostify.wzb.wQkProgress=new Decimal(player.ghostify.wzb.wQkProgress)
+          player.ghostify.wzb.zNeProgress=new Decimal(player.ghostify.wzb.zNeProgress)
           player.ghostify.wzb.zNeReq=new Decimal(player.ghostify.wzb.zNeReq)
           player.ghostify.wzb.wpb=new Decimal(player.ghostify.wzb.wpb)
           player.ghostify.wzb.wnb=new Decimal(player.ghostify.wzb.wnb)
