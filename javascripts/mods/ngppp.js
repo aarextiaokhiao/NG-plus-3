@@ -1539,7 +1539,9 @@ function getCurrentQCData() {
 var bankedEterGain
 function updateBankedEter(updateHtml=true) {
 	bankedEterGain=0
-	if (player.achievements.includes("ng3p15")) bankedEterGain=nD(player.eternities,20)
+	if (player.achievements.includes("ng3p15")) bankedEterGain=player.eternities
+	if (player.achievements.includes("ng3p73")) bankedEterGain=nA(bankedEterGain,gainEternitiedStat())
+	bankedEterGain=nD(bankedEterGain,20)
 	if (updateHtml) {
 		setAndMaybeShow("bankedEterGain",bankedEterGain>0,'"You will gain "+getFullExpansion(bankedEterGain)+" banked eternities on next quantum."')
 		setAndMaybeShow("eternitiedBank",player.eternitiesBank,'"You have "+getFullExpansion(player.eternitiesBank)+" banked eternities."')
@@ -4102,26 +4104,23 @@ function updateGhostifyTabs() {
 		if (document.getElementById("wzbtab").style.display=="block") {
 			let lSpeed=speed.times(tmp.wzbs)
 			let data2=player.ghostify.wzb
-			let show0=data2.dPUse==1&&lSpeed.times(getAntiPreonLoss()).gte(2e3)
+			let show0=data2.dPUse==1&&lSpeed.times(getAntiPreonLoss()).div(aplScalings[1]).gte(1e3)
 			let r
-			if (data2.dPUse) r=lSpeed.times(getAntiPreonLoss())
-			else {
-				r=data2.dP.pow(3).add(lSpeed.times(getAntiPreonProduction())).pow(1/3)
-				r=r.sub(data2.dP.min(r))
-			}
+			if (!data2.dPUse) r=lSpeed.times(getAntiPreonProduction())
+			else r=lSpeed.times(getAntiPreonLoss())
 			document.getElementById("wzbSpeed").textContent="Current W & Z Bosons speed: "+shorten(tmp.wzbs)+"x (w/ Bosonic Speed: "+shorten(lSpeed)+"x)"
 			document.getElementById("ap").textContent=shorten(data2.dP)
 			document.getElementById("apProduction").textContent=(data2.dPUse?"-":"+")+shorten(r)+"/s"
-			document.getElementById("apUse").textContent=data2.dPUse==0?"":"You are currently consuming Anti-Preons to "+(["","decay W Quark","oscillate Z Neutrino"])[data2.dPUse]+"."
+			document.getElementById("apUse").textContent=data2.dPUse==0?"":"You are currently consuming Anti-Preons to "+(["","decay W Quark","oscillate Z Neutrino","convert W- to W+ Bosons"])[data2.dPUse]+"."
 			document.getElementById("wQkType").textContent=data2.wQkUp?"up":"down"
 			document.getElementById("wQkProgress").textContent=data2.wQkProgress.times(100).toFixed(1)+"% to turn W Quark to a"+(data2.wQkUp?" down":"n up")+" quark."
 			document.getElementById("wQk").className=show0?"zero":data2.wQkUp?"up":"down"
 			document.getElementById("wQkSymbol").textContent=show0?"0":data2.wQkUp?"+":"−"
 			document.getElementById("wpb").textContent=shortenDimensions(data2.wpb)
 			document.getElementById("wnb").textContent=shortenDimensions(data2.wnb)
-			document.getElementById("wbTime").textContent=shorten(tmp.wzbt)
-			document.getElementById("wbSpeed").textContent=shorten(tmp.wzbb)
-			document.getElementById("zbSpeed").textContent=shorten(tmp.wzbs)
+			document.getElementById("wbTime").textContent=shorten(tmp.wbt)
+			document.getElementById("wbSpeed").textContent=shorten(tmp.wbb)
+			document.getElementById("zbProduction").textContent=shorten(tmp.zba)
 			document.getElementById("zb").textContent=shortenDimensions(data2.zb)
 		}
 	}
@@ -4602,24 +4601,31 @@ function bosonicTick(diff) {
 	data.ticks=data.ticks.add(diff)
 	
 	//W & Z Bosons
-	let apDiff=new Decimal(0)
+	let apDiff
+	let apSpeed
 	lDiff=diff.times(tmp.wzbs)
 	lData=player.ghostify.wzb
-	if (lData.dPUse==1) {
-		apDiff=lDiff.times(getAntiPreonLoss()).times(2).min(lData.dP)
-		lData.wQkProgress=lData.wQkProgress.add(apDiff.div(100))
-		if (lData.wQkProgress.gt(1)) {
-			let toSub=lData.wQkProgress.floor()
-			lData.wpb=lData.wpb.add(toSub.add(lData.wQkUp?1:0).div(2).floor()).round()
-			lData.wnb=lData.wnb.add(toSub.add(lData.wQkUp?0:1).div(2).floor()).round()
-			if (toSub.mod(2).gt(0)) lData.wQkUp=!lData.wQkUp
-			lData.wQkProgress=lData.wQkProgress.sub(toSub.min(lData.wQkProgress))
-		}
-	}
 	if (lData.dPUse) {
-		lData.dP=lData.dP.sub(getAntiPreonLoss().times(lDiff).min(lData.dP))
+		apSpeed=getAntiPreonLoss().div(aplScalings[player.ghostify.wzb.dPUse])
+		if (isNaN(apSpeed.e)) apSpeed=new Decimal(0)
+		apDiff=lDiff.times(apSpeed).min(lData.dP)
+		if (lData.dPUse==1) {
+			lData.wQkProgress=lData.wQkProgress.add(apDiff.div(100))
+			if (lData.wQkProgress.gt(1)) {
+				let toSub=lData.wQkProgress.floor()
+				lData.wpb=lData.wpb.add(toSub.add(lData.wQkUp?1:0).div(2).floor())
+				lData.wnb=lData.wnb.add(toSub.add(lData.wQkUp?0:1).div(2).floor())
+				if (toSub.mod(2).gt(0)) lData.wQkUp=!lData.wQkUp
+				lData.wQkProgress=lData.wQkProgress.sub(toSub.min(lData.wQkProgress))
+			}
+		}
+		if (lData.dPUse==3) {
+			lData.wpb=lData.wpb.add(lData.wnb.min(apDiff))
+			lData.wnb=lData.wnb.sub(lData.wnb.min(apDiff))
+		}
+		lData.dP=lData.dP.sub(lDiff.times(getAntiPreonLoss()).min(lData.dP))
 		if (lData.dP.eq(0)) lData.dPUse=0
-	} else lData.dP=lData.dP.pow(3).add(getAntiPreonProduction().times(lDiff)).pow(1/3)
+	} else lData.dP=lData.dP.add(getAntiPreonProduction().times(lDiff))
 	
 	//Bosonic Extractor
 	if (data.usedEnchants.includes(12)) {
@@ -4649,7 +4655,7 @@ function bosonicTick(diff) {
 }
 
 function getBosonicAMProduction() {
-	let r=tmp.wzbb
+	let r=tmp.wbb
 	return r
 }
 
@@ -4697,7 +4703,7 @@ function getExtractTime(noFast) {
 	let data=tmp.bl
 	let r=data.amountToExtract.pow(2).times(br.scalings[data.typeToExtract]||1/0)
 	if (!noFast) r=r.div(getEnchantEffect(23))
-	r=r.div(tmp.wzbt)
+	r=r.div(tmp.wbt)
 	return r
 }
 
@@ -4820,7 +4826,7 @@ var bEn={
 	},
 	effects:{
 		12: function(l) {
-			return Decimal.div(l,getExtractTime(true)).div(bEn.autoScalings[tmp.bl.typeToExtract])
+			return Decimal.div(l,tmp.bl.amountToExtract).pow(0.75).div(getExtractTime(true)).div(bEn.autoScalings[tmp.bl.typeToExtract])
 		},
 		13: function(l) {
 			return Decimal.div(l,5).add(1)
@@ -4958,13 +4964,20 @@ function changeOverdriveSpeed() {
 
 //W & Z Bosons
 function getAntiPreonProduction() {
-	return new Decimal(1)
+	let r=new Decimal(0.1)
+	r=r.times(tmp.zba)
+	return r
+}
+
+var aplScalings={
+	0:0,
+	1:0.08,
+	2:0.2,
+	3:1
 }
 
 function getAntiPreonLoss() {
-	if (player.ghostify.wzb.dPUse==1) return tmp.bEn[13].div(2)
-	if (player.ghostify.wzb.dPUse==2) return new Decimal(0)
-	return new Decimal(0)
+	return tmp.bEn[13].times(aplScalings[player.ghostify.wzb.dPUse])
 }
 
 function useAntiPreon(id) {

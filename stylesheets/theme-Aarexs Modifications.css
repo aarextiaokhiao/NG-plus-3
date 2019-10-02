@@ -642,7 +642,7 @@ strong { color: #0072e5 }
 #bltabbtn button:hover, .gluonupgrade.bl:hover {
 	color: #e5e5e5 !important
 }
-#bWatt, #bSpeed, #bTotalSpeed, #bAM, #bAMProduction, #bAMEffect, #bBt, #bBtProduction, #odSpeed, #zb, #zbSpeed {
+#bWatt, #bSpeed, #bTotalSpeed, #bAM, #bAMProduction, #bAMEffect, #bBt, #bBtProduction, #odSpeed, #zb, #zbProduction {
 	color: #c73415
 }
 .chosenbtn {

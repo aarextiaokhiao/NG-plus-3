@@ -23,7 +23,7 @@ function buyWithIP() {
 }
 
 function buyWithEP() {
-  if (cantBuyTTWithEP()) {
+  if (!canBuyTTWithEP()) {
       alert("You need to buy at least 1 time dimension before you can purchase theorems with Eternity points.")
       return false;
   }
@@ -37,9 +37,8 @@ function buyWithEP() {
   } else return false
 }
 
-function cantBuyTTWithEP() {
-	if (player.masterystudies !== undefined && tmp.qu.bigRip.active) return
-	return player.timeDimension1.bought < 0
+function canBuyTTWithEP() {
+	return player.timeDimension1.bought || (player.masterystudies !== undefined && tmp.qu.bigRip.active)
 }
 
 function maxTheorems() {
@@ -58,7 +57,7 @@ function maxTheorems() {
 	}
 	
 	gainTT = Math.floor(player.eternityPoints.div(player.timestudy.epcost).plus(1).log2())
-	if (gainTT > 0 && cantBuyTTWithEP()) {
+	if (gainTT > 0 && canBuyTTWithEP()) {
 		player.timestudy.theorem += gainTT
 		player.eternityPoints = player.eternityPoints.sub(Decimal.pow(2, gainTT).sub(1).times(player.timestudy.epcost))
 		if (!break_infinity_js && isNaN(player.eternityPoints.logarithm)) player.eternityPoints = new Decimal(0)

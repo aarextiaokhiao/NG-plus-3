@@ -694,8 +694,11 @@ function quantumReset(force, auto, challid, bigRip, implode=false) {
 	document.getElementById("quantumbtn").style.display="none"
 	document.getElementById("bigripbtn").style.display="none"
 	document.getElementById("ghostifybtn").style.display="none"
-	if (force) bankedEterGain=0
-	else {
+	updateBankedEter()
+	if (force) {
+		if (bigRip&&player.achievements.includes("ng3p73")) player.infinitiedBank=nA(player.infinitiedBank,gainBankedInf())
+		else bankedEterGain=0
+	} else {
 		for (var i=tmp.qu.last10.length-1; i>0; i--) {
 			tmp.qu.last10[i] = tmp.qu.last10[i-1]
 		}
@@ -742,6 +745,7 @@ function quantumReset(force, auto, challid, bigRip, implode=false) {
 		}
 		if (!inQC(4)) if (player.meta.resets<1) giveAchievement("Infinity Morals")
 		if (player.dilation.rebuyables[1] + player.dilation.rebuyables[2] + player.dilation.rebuyables[3] + player.dilation.rebuyables[4] < 1 && player.dilation.upgrades.length < 1) giveAchievement("Never make paradoxes!")
+		if (player.achievements.includes("ng3p73")) player.infinitiedBank=nA(player.infinitiedBank,gainBankedInf())
 	}
 	var oheHeadstart = bigRip ? tmp.qu.bigRip.upgrades.includes(2) : speedrunMilestonesReached > 0
 	var keepABnICs = oheHeadstart || bigRip || player.achievements.includes("ng3p51")
@@ -1275,14 +1279,12 @@ function quantumReset(force, auto, challid, bigRip, implode=false) {
 		tmp.qu.bigRip.active = bigRip
 		if (bigRip) {
 			for (var u=0;u<tmp.qu.bigRip.upgrades.length;u++) tweakBigRip(tmp.qu.bigRip.upgrades[u])
-			if (tmp.qu.bigRip.times < 1) {
-				document.getElementById("bigRipConfirmBtn").style.display = "inline-block"
-				document.getElementById("hotkeysDesc").innerHTML="Hotkeys: 1-8 for buy 10 dimension, shift+1-8 for buy 1 dimension, T to buy max tickspeed, shift+T to buy one tickspeed, M for max all<br>S for sacrifice, D for dimension boost,"+(player.tickspeedBoosts==undefined?"":" B for tickspeed boost,")+" G for become a ghost, C for crunch, A for toggle autobuyers, R for replicanti galaxies, E for eternity, Q for quantum, U for unstabilize all quarks.<br>You can hold shift while buying time studies to buy all up until that point, see each study's number, and save study trees.<br>Hotkeys do not work while holding control."
-			}
+			if (tmp.qu.bigRip.times < 1) document.getElementById("bigRipConfirmBtn").style.display = "inline-block"
 			tmp.qu.bigRip.times++
 			tmp.qu.bigRip.bestThisRun = player.money
 			giveAchievement("To the new dimension!")
 			if (tmp.qu.breakEternity.break) tmp.qu.breakEternity.did = true
+			if (player.achievements.includes("ng3p78")) player.ghostify.neutrinos.generationGain = player.ghostify.neutrinos.generationGain % 3 + 1
 		} else {
 			if (!tmp.qu.bigRip.upgrades.includes(1)&&oheHeadstart) {
 				player.infmultbuyer=true

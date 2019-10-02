@@ -1088,9 +1088,12 @@ function updateTemp() {
 				tmp.bEnLvl[id]=tmp.bl.enchants[id]||new Decimal(0)
 				if (bEn.effects[id]!==undefined) tmp.bEn[id]=getEnchantEffect(id)
 			}
-			tmp.wzbt=new Decimal(1)
-			tmp.wzbs=new Decimal(1)
-			tmp.wzbb=new Decimal(0)
+			var wpl=player.ghostify.wzb.wpb.add(1).log10()
+			var wnl=player.ghostify.wzb.wnb.add(1).log10()
+			tmp.wzbs=new Decimal(1) //W & Z Bosons speed
+			tmp.zba=new Decimal(1) //Z Bosons boost to Anti-Preon production
+			tmp.wbt=Decimal.pow(1,Math.max(wpl-wnl,0)) //W Bosons boost to extract time
+			tmp.wbb=Decimal.pow(1,Math.sqrt(wpl*wpl+wnl*wnl)).sub(1) //W Bosons boost to Bosonic Antimatter production
 			tmp.dppg=new Decimal(1)
 		}
 		if (player.ghostify.ghostlyPhotons.unl) {
@@ -1206,6 +1209,9 @@ function updateTemp() {
 
 	tmp.rm=getReplMult()
 	updateExtraReplGalaxies()
+
+	//Eternity Upgrade #2 boost w/ "The cap is a million, not a trillion" reward
+	tmp.eu2b=1
 
 	//Time Study 232 effect
 	var exp=0.2
@@ -2049,8 +2055,14 @@ function updateDimensions() {
         if (document.getElementById("timestudies").style.display == "block" || document.getElementById("ers_timestudies").style.display == "block") updateTimeStudyButtons()
         if (document.getElementById("masterystudies").style.display == "block") updateMasteryStudyButtons()
         if (document.getElementById("eternityupgrades").style.display == "block") {
+            var eu2formula="(x/200)^log4(2x)"
+            if (player.boughtDims!==undefined) eu2formula="x^log4(2x)"
+            else if (player.achievements.includes("ngpp15")) {
+                eu2formula="x^log10(x)^3.75"
+                if (tmp.eu2b!=1) eu2formula="10^("+tmp.eu2b.toFixed(2)+"*log10(x))^4.75"
+            }
             document.getElementById("eter1").innerHTML = "Infinity Dimensions multiplier based on unspent EP (x+1)<br>Currently: "+shortenMoney(player.eternityPoints.plus(1))+"x<br>Cost: 5 EP"
-            document.getElementById("eter2").innerHTML = "Infinity Dimension multiplier based on eternities ("+(player.boughtDims?"x^log4(2x)":player.achievements.includes("ngpp15")?"x^log10(x)^3.75":"(x/200)^log4(2x)")+")<br>Currently: "+shortenMoney(getEU2Mult())+"x<br>Cost: 10 EP"
+            document.getElementById("eter2").innerHTML = "Infinity Dimension multiplier based on eternities ("+eu2formula+")<br>Currently: "+shortenMoney(getEU2Mult())+"x<br>Cost: 10 EP"
             document.getElementById("eter3").innerHTML = "Infinity Dimensions multiplier based on "+(player.boughtDims?"time shards (x/"+shortenCosts(1e12)+"+1)":"sum of Infinity Challenge times")+"<br>Currently: "+shortenMoney(getEU3Mult())+"x<br>Cost: "+shortenCosts(50e3)+" EP"
             document.getElementById("eter4").innerHTML = "Your achievement bonus affects Time Dimensions"+"<br>Cost: "+shortenCosts(1e16)+" EP"
             document.getElementById("eter5").innerHTML = "Time Dimensions are multiplied by your unspent time theorems"+"<br>Cost: "+shortenCosts(1e40)+" EP"
@@ -4031,12 +4043,12 @@ function setAchieveTooltip() {
     finite.setAttribute('ach-tooltip', "Get "+shortenCosts(1e33)+" Space Shards without Breaking Eternity.")
     really.setAttribute('ach-tooltip', "Undo Big Rip with at least "+shortenCosts(Decimal.pow(10, 1e5))+" matter.")
     willenough.setAttribute('ach-tooltip', "Reach "+shortenCosts(Decimal.pow(10,player.aarexModifications.ngudpV?268435456:36000000))+" replicanti."+(player.aarexModifications.ngudpV?" Reward: You keep Black Hole Dimensions on Quantum.":""))
-    pls.setAttribute('ach-tooltip', "Reach "+shortenCosts(Decimal.pow(10, 95e4))+" IP while dilated, big ripped, and without having time studies, EP mult upgrades, and Break Eternity.")
+    pls.setAttribute('ach-tooltip', "Reach "+shortenCosts(Decimal.pow(10, 95e4))+" IP while dilated, big ripped, and without having time studies, EP mult upgrades, and Break Eternity. Reward: You gain a different generation of Neutrinos when you Big Rip the universe.")
     bm1.setAttribute('ach-tooltip', "Reward: Start Ghostifies with all Speedrun Milestones and all "+shorten(Number.MAX_VALUE)+" QK features unlocked, all Paired Challenges completed, all Big Rip upgrades bought, Nanofield is 2x faster until you reach 16 rewards, and you get quarks based on your best MA this quantum.")
     bm10.setAttribute('ach-tooltip', "Reward: Start Ghostifies with 10 of Fourth Emperor Dimensions"+(player.aarexModifications.ngudpV?" and start Big Rips with 3rd row of Eternity upgrades.":"."))
     bm14.setAttribute('ach-tooltip', "Reward: Start Ghostifies with "+shortenCosts(1e25)+" Quark Spins and Branches are 10x faster.")
     uc.setAttribute('ach-tooltip', "Become a ghost with at least "+shortenCosts(Decimal.pow(10, 22e4))+" EP without starting Eternity Challenge 10 while Big Ripped.")
-    mi.setAttribute('ach-tooltip', "Get "+shorten(Number.MAX_VALUE)+" infinitied stat.")
+    mi.setAttribute('ach-tooltip', "Get "+shorten(Number.MAX_VALUE)+" infinitied stat. Reward: You gain banked infinites and eternities when you either go quantum or Big Rip the universe without having to gain infinitied and eternitied.")
     wd.setAttribute('ach-tooltip', "Get "+shortenCosts(Decimal.pow(10, 1e12))+" Infinity Unstable Quarks for each Branch without Big Ripping.")
     arent.setAttribute('ach-tooltip', "Reach "+shortenCosts(Decimal.pow(10, 18e5))+" IP while dilated and big ripped and without having studies, EP mult upgrades, Tree Upgrades, and Break Eternity.")
 }
@@ -4901,7 +4913,23 @@ function toggleHotkeys() {
     }
 }
 
-
+function updateHotkeys() {
+	let html = "Hotkeys: 1-8 for buy 10 dimension, shift+1-8 for buy 1 dimension, T to buy max tickspeed, shift+T to buy one tickspeed, M for max all,<br>S for sacrifice"
+	if (!player.achievements.includes("r136")) html += ", D for dimension boost"
+	if (!player.achievements.includes("ng3p51")) {
+		if (player.tickspeedBoosts !== undefined) html += ", B for tickspeed boost"
+		html += ", G for galaxy"
+	}
+	html += ", C for crunch, A for toggle autobuyers, R for replicanti galaxies, E for eternity"
+	if (player.achievements.includes("r136")) html += ", D to dilate time"
+	if (player.meta !== undefined) html += ", Q for quantum"
+	if (player.masterystudies !== undefined) html += ", U for unstabilize all quarks"
+	if (player.achievements.includes("ng3p51")) html += ", B for Big Rip, G to become a ghost"
+	html += "."
+	if (player.boughtDims === undefined) html += "<br>You can hold shift while buying time studies to buy all up until that point, see each study's number, and save study trees."
+	html += "<br>Hotkeys do not work while holding control."
+	document.getElementById("hotkeysDesc").innerHTML = html
+}
 
 
 
@@ -5953,7 +5981,7 @@ function gainEternitiedStat() {
 function gainBankedInf() {
 	let ret = 0 
 	let numerator = player.infinitied
-	if (speedrunMilestonesReached > 27) numerator = nA(getInfinitiedGain(), player.infinitied)
+	if (speedrunMilestonesReached > 27 || player.achievements.includes("ng3p73")) numerator = nA(getInfinitiedGain(), player.infinitied)
 	let frac = 0.05
 	if (player.timestudy.studies.includes(191)) ret = nM(numerator, frac)
 	if (player.achievements.includes("r131")) ret = nA(nM(numerator, frac), ret)
@@ -7449,6 +7477,7 @@ setInterval(function() {
     var bankedInfGain=gainBankedInf()
     document.getElementById("bankedInfGain").style.display = bankedInfGain>0 ? "block" : "none"
     document.getElementById("bankedInfGain").textContent = "You will gain " + getFullExpansion(bankedInfGain) + " banked infinities on next Eternity."
+	if (player.achievements.includes("ng3p73")) updateBankedEter(true)
 
     let checkEmpty = player.timestudy.studies.length < 1
     if (player.boughtDims) checkEmpty = checkEmpty && player.timestudy.theorem == getTotalTT(player)
@@ -9183,11 +9212,13 @@ window.addEventListener('keydown', function(event) {
 		break;
 
 		case 66: // B
-			if (player.tickspeedBoosts != undefined) manualTickspeedBoost()
+			if (player.achievements.includes("ng3p51")) bigRip()
+			else if (player.tickspeedBoosts != undefined) manualTickspeedBoost()
 		break;
 
 		case 68: // D
-			document.getElementById("softReset").onclick()
+			if (player.achievements.includes("r136")) startDilatedEternity(false, true)
+			else document.getElementById("softReset").onclick()
 		break;
 
 		case 71: // G
