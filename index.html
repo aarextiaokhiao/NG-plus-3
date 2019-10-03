@@ -149,7 +149,7 @@
 					<td><button class="storebtn" onclick="importStudyTree()" style="width:150px; height: 40px; font-size: 10px; margin: auto">Import tree</button><td>
 				</tr>
 				<button class="storebtn" onclick="respecMasteryToggle()" id="respecMastery" style="width:150px; height: 40px; font-size: 10px; margin: auto">Respec mastery studies on next Eternity</button>
-				<button class="storebtn" onclick="fillAll()" id="fillAll" style="width:150px; height: 40px; font-size: 10px; margin: auto">Fill all in time studies</button>
+				<button class="storebtn" onclick="fillAll()" id="fillAll" style="width:150px; height: 40px; font-size: 10px; margin: auto">Buy all time studies</button>
 				<table class="table" id="studytable">
 					<tr>
 						<td style="opacity: 0;"><button class="timestudylocked"></button></td>
@@ -432,7 +432,7 @@
 					<td><button class="storebtn" onclick="importStudyTree()" style="width:150px; height: 40px; font-size: 10px; margin: auto">Import tree</button><td>
 				</tr>
 				<button class="storebtn" onclick="respecMasteryToggle()" id="respecMastery2" style="width:150px; height: 40px; font-size: 10px; margin: auto">Respec mastery studies on next Eternity</button>
-				<button class="storebtn" onclick="fillAll()" id="fillAll2" style="width:150px; height: 40px; font-size: 10px; margin: auto">Fill all in time studies</button>
+				<button class="storebtn" onclick="fillAll()" id="fillAll2" style="width:150px; height: 40px; font-size: 10px; margin: auto">Buy all time studies</button>
 				<table class="table" id="studytable">
 					<tr>
 						<td><button class="dilationupg" id="back" onclick="showEternityTab('timestudies')">Lead back to time studies.</button></td>
@@ -440,7 +440,7 @@
 				</table>
 				<table class="table" id="studytable">
 					<tr>
-						<td><button class="timestudylocked" id="timestudy241" onclick='buyMasteryStudy("t", 241)'>You get 2.2x more IP per mult upgrade.</button></td>
+						<td><button class="timestudylocked" id="timestudy241" onclick='buyMasteryStudy("t", 241)'>The IP mult multiplies IP gain by 2.2x per upgrade.</button></td>
 					</tr>
 				</table>
 				<table class="table" id="studytable">
@@ -2392,7 +2392,7 @@
 							<td id="feDivNGpp">
 							</td>
 							<td>
-								<div id="Meta-boosting to the max" class="achievement achievementlocked" style="background-image: url(images/100.png)" ach-tooltip="Get 10 meta-dimension boosts. Reward: Meta-dimension boosts are each 1.01x stronger."><br></div>
+								<div id="Meta-boosting to the max" class="achievement achievementlocked" style="background-image: url(images/100.png)" ach-tooltip="Get 10 meta-dimension boosts. Reward: Meta-dimension boosts are 1% stronger."><br></div>
 							</td>
 							<td>
 								<div id="The cap is a million, not a trillion" class="achievement achievementlocked" style="background-image: url(images/101.png)" ach-tooltip="Get 1e12 eternities. Reward: Eternity upgrade 2 uses a better formula."><br></div>
@@ -2440,7 +2440,7 @@
 								<div id="We are not going squared." class="achievement achievementlocked" style="background-image: url(images/114.png)"><br></div>
 							</td>
 							<td>
-								<div id="This achievement doesn't exist 3" class="achievement achievementlocked" style="background-image: url(images/115.png)" ach-tooltip="Reach 9e99,999,999 EP. Reward: Gain more EP based on amount of IP you had when eternitying."><br></div>
+								<div id="This achievement doesn't exist 3" class="achievement achievementlocked" style="background-image: url(images/115.png)" ach-tooltip="Reach 9e99,999,999 EP. Reward: Gain more EP based on the amount of IP you had when eternitying."><br></div>
 							</td>
 							<td>
 								<div id="Old memories come true" class="achievement achievementlocked" style="background-image: url(images/116.png)"><br></div>
@@ -2449,10 +2449,10 @@
 								<div id="Twice in a row" class="achievement achievementlocked" style="background-image: url(images/117.png)" ach-tooltip="Complete Paired Challenge 4. Reward: Unlock '# of dilated' mode of quantum autobuyer."><br></div>
 							</td>
 							<td>
-								<div id="Infinity Morals" class="achievement achievementlocked" style="background-image: url(images/118.png)" ach-tooltip="Quantum without having meta-dimension boosts."><br></div>
+								<div id="Infinity Morals" class="achievement achievementlocked" style="background-image: url(images/118.png)" ach-tooltip="Quantum without any meta-dimension boosts."><br></div>
 							</td>
 							<td>
-								<div id="Intergalactic" class="achievement achievementlocked" style="background-image: url(images/119.png)" ach-tooltip="Reach 4,000,000 Eighth Dimensions while having no replicated/free galaxies. Reward: Eighth Dimensions are stronger based on your normal galaxies."><br></div>
+								<div id="Intergalactic" class="achievement achievementlocked" style="background-image: url(images/119.png)" ach-tooltip="Reach 4,000,000 Eighth Dimensions without any replicated/free galaxies. Reward: Eighth Dimensions are stronger based on your normal galaxies."><br></div>
 							</td>
 							<td>
 								<div id="Seriously, I already got rid of you." class="achievement achievementlocked" style="background-image: url(images/120.png)"><br></div>
@@ -2466,7 +2466,7 @@
 								<div id="The truth of anti-challenged" class="achievement achievementlocked" style="background-image: url(images/128.png)"></div>
 							</td>
 							<td>
-								<div id="Never make paradoxes!" class="achievement achievementlocked" style="background-image: url(images/129.png)" ach-tooltip="Quantum without having dilation upgrades."></div>
+								<div id="Never make paradoxes!" class="achievement achievementlocked" style="background-image: url(images/129.png)" ach-tooltip="Quantum without any dilation upgrades."></div>
 							</td>
 							<td>
 								<div id="The Challenging Day" class="achievement achievementlocked" style="background-image: url(images/130.png)" ach-tooltip="Complete 24 unique paired challenge combinations. Reward: Matter can bypass antimatter in QC6."></div>
@@ -2512,7 +2512,7 @@
 						</tr>
 						<tr id="achRowng3p5">
 							<td>
-								<div id="To the new dimension!" class="achievement achievementlocked" style="background-image: url(images/143.png)" ach-tooltip='Big Rip the universe. Reward: Keep your Infinity Upgrades and autobuyers, Time Theorems production is 100x faster, unlock "X times eternitied" mode of Eternity autobuyer, and gain 1 EC11 completion when you complete EC12.'></div>
+								<div id="To the new dimension!" class="achievement achievementlocked" style="background-image: url(images/143.png)" ach-tooltip='Big Rip the universe. Reward: Keep your Infinity Upgrades and autobuyers, Time Theorems production is 100x faster, unlock "X times eternitied" mode of Eternity autobuyer, and gain 1 EC11 completion whenever you complete EC12.'></div>
 							</td>
 							<td>
 								<div id="Quantum doesn't take so long" class="achievement achievementlocked" style="background-image: url(images/144.png)" ach-tooltip="Quantum in under 1 second. Reward: Expand Automatic Eternity to contain new after-eternity features."></div>
@@ -2521,7 +2521,7 @@
 								<div id="Gonna go fast" class="achievement achievementlocked" style="background-image: url(images/145.png)"></div>
 							</td>
 							<td>
-								<div id="We can really afford 9." class="achievement achievementlocked" style="background-image: url(images/146.png)" ach-tooltip="Undo the big rip with exactly 9 galaxies, 9 replicated galaxies, 9 Fourth Time Dimensions."></div>
+								<div id="We can really afford 9." class="achievement achievementlocked" style="background-image: url(images/146.png)" ach-tooltip="Undo the big rip with exactly 9 galaxies, 9 replicated galaxies, and 9 Fourth Time Dimensions."></div>
 							</td>
 							<td>
 								<div id="Time Breaker" class="achievement achievementlocked" style="background-image: url(images/147.png)" ach-tooltip="Break Eternity. Reward: Galaxies don't reset your Dimension Boosts."></div>
@@ -2538,7 +2538,7 @@
 						</tr>
 						<tr id="achRowng3p6">
 							<td>
-								<div id="Kee-hee-hee!" class="achievement achievementlocked" style="background-image: url(images/151.png)" ach-tooltip="Become a ghost. Reward: Gain 100x eternitied stat as before (weakens as you have more), all quantum mechanic unlocks only require Time Theorems, assignation options are kept permanently, Nanofield is 3x faster until you reach 16 rewards, and start with 1 Eighth Time Dimension in Big Rips."></div>
+								<div id="Kee-hee-hee!" class="achievement achievementlocked" style="background-image: url(images/151.png)" ach-tooltip="Become a ghost. Reward: Multiply eternitied stat gain by 100x (weakens as you have more), all quantum mechanic unlocks only require Time Theorems, assignation options are kept permanently, Nanofield is 3x faster until you reach 16 rewards, and start with 1 Eighth Time Dimension in Big Rips."></div>
 							</td>
 							<td>
 								<div id="Finite Time" class="achievement achievementlocked" style="background-image: url(images/152.png)"></div>
