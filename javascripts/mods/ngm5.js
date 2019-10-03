@@ -6,7 +6,7 @@ function buyIDwithAM(t) {
 	let d=player["infinityDimension"+t]
 	let c=d.costAM
 	if (getAmount(1)<1) {
-		alert("You need to buy 1 of first Normal Dimension to be able to buy Infinity Dimensions.")
+		alert("You need to have at least 1 First Dimension to be able to buy Infinity Dimensions.")
 		return
 	}
 	if (!player.infDimensionsUnlocked[t-1]) return
@@ -137,14 +137,14 @@ let puMults = {
 let puDescs = {
 	11: "Dimension multiplier increases 2x faster.",
 	12: "Matter increases slower.",
-	13: "Second Dimensions are stronger.",
+	13: "Second Dimension multiplier is raised to a power.",
 	14: "Time speed is 2x faster.",
-	21: "Buying something divides matter if there are at least 1 matter.",
+	21: "Buying something divides matter if there is at least 1 matter.",
 	22: "Antimatter boosts Paradox Dimensions 1 & 4.",
 	23: "Infinity power boosts Paradox Dimensions 2 & 5.",
 	24: "Time Shards boost Paradox Dimensions 3 & 6.",
 	31: function() {
-		return "Infinity Dimensions produce faster"+(player.galacticSacrifice.times>0||player.infinitied>0||player.eternities>0||quantumed?" based on your Galactic Sacrificed stat.":".")
+		return "Gain a multiplier to Infinity Dimensions"+(player.galacticSacrifice.times>0||player.infinitied>0||player.eternities>0||quantumed?" based on your Galactic Sacrificed stat.":".")
 	},
 	32: "Infinity Power boosts Time Dimensions.",
 	33: "Add Tickspeed Multiplier increase based on your Paradoxes.",
