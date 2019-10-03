@@ -522,7 +522,7 @@ function quantum(auto, force, challid, bigRip, quick) {
 }
 
 function isQuantumReached() {
-	return player.money.log10()>=getQCGoal()&&player.meta.antimatter.gte(Decimal.pow(Number.MAX_VALUE,player.masterystudies?1.45:1))&&(!player.masterystudies||ECTimesCompleted("eterc14"))&&quarkGain().gt(0)
+	return player.money.log10()>=getQCGoal()&&(player.meta.antimatter.max(player.achievements.includes("ng3p76")?player.meta.bestOverQuantums:0).gte(Decimal.pow(Number.MAX_VALUE,player.masterystudies?1.45:1)))&&(!player.masterystudies||ECTimesCompleted("eterc14"))&&quarkGain().gt(0)
 }
 
 let quarkGain = function () {

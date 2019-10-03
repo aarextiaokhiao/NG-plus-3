@@ -1092,7 +1092,7 @@ function updateTemp() {
 			var wnl=player.ghostify.wzb.wnb.add(1).log10()
 			tmp.wzbs=new Decimal(1) //W & Z Bosons speed
 			tmp.zba=new Decimal(1) //Z Bosons boost to Anti-Preon production
-			tmp.wbt=Decimal.pow(1,Math.max(wpl-wnl,0)) //W Bosons boost to extract time
+			tmp.wbt=Decimal.pow(1,Math.max(wpl*(player.ghostify.wzb.wpb.sub(player.ghostify.wzb.wnb.min(player.ghostify.wzb.wpb))).div(player.ghostify.wzb.wpb.max(1)).toNumber(),0)) //W Bosons boost to extract time
 			tmp.wbb=Decimal.pow(1,Math.sqrt(wpl*wpl+wnl*wnl)).sub(1) //W Bosons boost to Bosonic Antimatter production
 			tmp.dppg=new Decimal(1)
 		}
@@ -4034,7 +4034,7 @@ function setAchieveTooltip() {
     error404.setAttribute('ach-tooltip', "Get "+shorten(Decimal.pow(10,16e11))+" antimatter without having all types of non-First Dimensions and at least 2 normal galaxies.")
     ie.setAttribute('ach-tooltip', "Get "+shorten(Decimal.pow(10,8e6))+" antimatter in a PC with QC6 & QC8 combination.")
     wasted.setAttribute('ach-tooltip', "Get "+shorten(11e6)+" TT without having generated TTs, gaining your TTs back, and respeccing studies. Reward: Time Theorems production is 10x faster until you have 1 hour worth of normal TT production.")
-    stop.setAttribute('ach-tooltip', "Get the replicanti reset requirement to "+shorten(Decimal.pow(10,145e5))+". Reward: Getting a normal replicant manually doesn't reset your replicanti and can be autoed.")
+    stop.setAttribute('ach-tooltip', "Get the replicanti reset requirement to "+shorten(Decimal.pow(10,125e5))+". Reward: Getting a normal replicant manually doesn't reset your replicanti and can be autoed.")
     dying.setAttribute('ach-tooltip', "Reach "+shorten(Decimal.pow(10, 275e3))+" IP while dilated, in PC6+8, and without having studies.")
     gofast.setAttribute('ach-tooltip', "Get "+shorten(Decimal.pow(10, 1185))+" EP first and then double that by disabling dilation while big ripped.")
 	immunity.setAttribute('ach-tooltip', "Get "+shorten(Decimal.pow(10, 8e7))+" antimatter with at least 1 normal galaxies while in Eternity Challenge 7 and big ripped.")
@@ -7583,7 +7583,7 @@ setInterval(function() {
         }
         if (player.money.e>=8e6&&inQC(6)&&inQC(8)) giveAchievement("Impossible expectations")
         if (player.timestudy.theorem>11e6&&tmp.qu.wasted) giveAchievement("Studies are wasted")
-        if (tmp.qu.replicants.requirement.gte("1e14500000")) giveAchievement("Stop blocking me!")
+        if (tmp.qu.replicants.requirement.gte("1e12500000")) giveAchievement("Stop blocking me!")
         if (player.infinityPoints.gte(Decimal.pow(10, 275e3))&&ableToGetRid6) giveAchievement("Are you currently dying?")
         if (tmp.qu.nanofield.rewards>20&&noTree) giveAchievement("But I don't want to grind!")
         if (player.replicanti.amount.e >= (player.aarexModifications.ngudpV ? 268435456 : 36e6)) giveAchievement("Will it be enough?")
