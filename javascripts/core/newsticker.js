@@ -285,7 +285,10 @@ newsArray = [//always true
 ["Congratulations for beating NG-3! (for now...)", "player.tickspeedBoosts !== undefined && player.postChallUnlocked > 5", "am130"],
 ["Progressing as a Ghost...", "ghostified && player.ghostify.ghostlyPhotons.unl", "am131"],
 ["VROOOOOOM!!!", "player.infinityUpgrades.includes('postGalaxy')", "am132"],
-/*NEXT ID: am133*/
+["Quantum Challenges are not challenging enough.", "player.masterystudies !== undefined && player.masterystudies.includes('d9')", "am133"],
+["U is the new M", "player.achievements.includes('ng3p45')", "am134"],
+["Antimatter has just declared war on Matter. We are no longer safe. We are no longer free.", true, "am135"],
+/*NEXT ID: am136*/
 
 //Ghostly news ticker messages
 ["Kee-hee-hee!", true, "gn1"],
@@ -307,7 +310,10 @@ newsArray = [//always true
 ["If you read 'Congratulations for beating NG+3' message, here is a spoiler: In the next update, there will be W & Z Bosons!", "player.newsArray.includes('am68') && player.totalmoney.gte(Decimal.pow(10, 5e16))", "gn17"],
 ["WARNING: Do not interact evil ghosts. They can scare you out.", true, "gn18"],
 ["Do you know that ghosts are proved to be undead?", true, "gn19"],
-["I got Ghost Particles. I got Neutrinos. That makes me a ghost.", true, "gn20"]
+["I got Ghost Particles. I got Neutrinos. That makes me a ghost.", true, "gn20"],
+["Ghostly Photons can't emit light. They emit ghostly light!", "player.achievements.includes('ng3p71')", "gn21"],
+["You got Light Empowerments? That means you have Ghostly Light inside of you! Kee-hee-hee!", "player.ghostify.ghostlyPhotons.enpowerments || player.achievements.includes('ng3p81')", "gn22"],
+["Ghosts can experiment and discover some Bosons.", "player.achievements.includes('ng3p81')", "gn23"]
 ];}
 
 document.addEventListener("visibilitychange", function() {if (!document.hidden) {scrollNextMessage();}}, false);

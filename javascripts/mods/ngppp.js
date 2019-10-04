@@ -1019,7 +1019,7 @@ function doAutoMetaTick() {
 				buyDilationUpgrade(11)
 				buyDilationUpgrade(3)
 				buyDilationUpgrade(1)
-				if (canMaxGalaxyThresholdUpg()) buyDilationUpgrade(2)
+				if (canBuyGalaxyThresholdUpg()) buyDilationUpgrade(2)
 			}
 		}
 	}

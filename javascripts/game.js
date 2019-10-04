@@ -3946,6 +3946,7 @@ function setAchieveTooltip() {
     let uc = document.getElementById("Underchallenged")
     let wd = document.getElementById("Weak Decay")
     let arent = document.getElementById("Aren't you already dead?")
+    let ee = document.getElementById("Everlasting Eternities")
 
     alot.setAttribute('ach-tooltip', "Buy a single Second Dimension."+(player.aarexModifications.ngmX>3?" Reward: You gain Time Shards 100x faster.":""))
     ndial.setAttribute('ach-tooltip', "Have exactly 99 Eighth Dimensions. Reward: Eighth Dimensions are 10% stronger"+(player.tickspeedBoosts==undefined?".":" and you gain more GP based on your Eighth Dimensions and your Tickspeed Boosts."));
@@ -4051,6 +4052,7 @@ function setAchieveTooltip() {
     mi.setAttribute('ach-tooltip', "Get "+shorten(Number.MAX_VALUE)+" infinitied stat. Reward: You gain banked infinites and eternities when you either go quantum or Big Rip the universe without having to gain infinitied and eternitied.")
     wd.setAttribute('ach-tooltip', "Get "+shortenCosts(Decimal.pow(10, 1e12))+" Infinity Unstable Quarks for each Branch without Big Ripping.")
     arent.setAttribute('ach-tooltip', "Reach "+shortenCosts(Decimal.pow(10, 18e5))+" IP while dilated and big ripped and without having studies, EP mult upgrades, Tree Upgrades, and Break Eternity.")
+    ee.setAttribute('ach-tooltip', "Get "+shorten(Number.MAX_VALUE)+" eternitied stat.")
 }
 
 
@@ -5478,6 +5480,7 @@ function eternity(force, auto, presetLoad, dilated) {
         if (player.dead && !force) giveAchievement("You're already dead.")
         if (player.infinitied <= 1 && !force) giveAchievement("Do I really need to infinity")
         if (gainedEternityPoints().gte("1e600") && player.thisEternity <= 600 && player.dilation.active && !force) giveAchievement("Now you're thinking with dilation!")
+        if (ghostified && player.currentEternityChall == "eterc11" && inQC(6) && inQC(8) && inQCModifier('ad')) giveAchievement("The Deep Challenge")
         if (isEmptiness) {
             showTab("dimensions")
             isEmptiness = false
@@ -7603,6 +7606,7 @@ setInterval(function() {
         }
         if (tmp.qu.bigRip.spaceShards.e>32&&!tmp.qu.breakEternity.did) giveAchievement("Finite Time")
         if (nG(getInfinitied(), Number.MAX_VALUE)) giveAchievement("Meta-Infinity confirmed?")
+        if (nG(getEternitied(), Number.MAX_VALUE)) giveAchievement("Everlasting Eternities")
     }
     if (speedrunMilestonesReached>notifyId) {
         $.notify("You have unlocked "+timeDisplayShort(speedrunMilestones[notifyId]*36e3)+" speedrun milestone! "+(["You now start with 20,000 eternities when going quantum","You unlocked time theorem autobuyer","You now start with all Eternity Challenges completed and\neternity upgrades bought","You now start with dilation unlocked","You unlocked a new option for eternity autobuyer","You now start with all dilation studies and\nnon-rebuyable dilation upgrades before Meta Dimensions unlocked except passive TT gen upgrade","You unlocked first meta dimension autobuyer","You unlocked second meta dimension autobuyer","You unlocked third meta dimension autobuyer","You unlocked fourth meta dimension autobuyer","You unlocked fifth meta dimension autobuyer and you now keep time studies and passive TT gen upgrade","You unlocked sixth meta dimension autobuyer","You unlocked seventh meta dimension autobuyer","You unlocked eighth meta dimension autobuyer and\nall non-rebuyable dilation upgrades","You unlocked meta-dimension boost autobuyer","You now keep all time studies in mastery studies","You can now buy Meta Dimensions without buying the previous dimension","You now start with "+shortenCosts(1e13)+" eternities","You now start with "+shortenCosts(1e25)+" meta-antimatter on reset","You can now turn on automatic replicated galaxies anytime","You made rebuyable dilation upgrade and Meta Dimension autobuyers 3x faster","You now start with "+shortenCosts(1e100)+" dilated time on quantum and dilated time does not reset until quantum","You unlocked quantum autobuyer","You now keep replicanti on eternity","You unlocked manual mode for eternity autobuyer and sacrifice galaxy autobuyer","Your rebuyable dilation upgrade autobuyer now can buy max all upgrades","You now can buy max meta-dimension boosts and start with 4 meta-dimension boosts","For now on, you can gain banked infinities based on your post-crunch infinitied stat"])[notifyId]+".","success")
