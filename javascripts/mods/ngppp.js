@@ -799,7 +799,7 @@ function updateQuantumTabs() {
 		document.getElementById("nanofieldreward7").textContent = "Remote galaxy cost scaling starts " + getFullExpansion(getNanofieldRewardEffect(7)) + " later and the production of preon charge is " + shortenMoney(getNanofieldRewardEffect("7g")) + "x faster."
 		document.getElementById("nanofieldreward8").textContent = "Add " + getNanofieldRewardEffect(8).toFixed(2) + "x to multiplier per ten dimensions before getting affected by electrons and the production of preon energy is " + shortenMoney(getNanofieldRewardEffect("8c")) + "x faster."
 
-		document.getElementById("ns").textContent = ghostified || nanospeed !== 1 ? "Nanofield speed multiplier is currently "+shorten(tmp.ns)+"x." : ""
+		document.getElementById("ns").textContent = ghostified || tmp.ns.neq(1) ? "Nanofield speed multiplier is currently "+shorten(tmp.ns)+"x." : ""
 	}
 	if (document.getElementById("tod").style.display == "block") {
 		var branchNum=0
@@ -1680,7 +1680,11 @@ function getQCReward(num) {
 	if (QCIntensity(num) < 1) return 1
 	if (num == 1) return Decimal.pow(10, Math.pow(getDimensionFinalMultiplier(1).times(getDimensionFinalMultiplier(2)).log10(), QCIntensity(1)>1?0.275:0.25)/200)
 	if (num == 2) return 1.2 + QCIntensity(2) * 0.2
-	if (num == 3) return Decimal.pow(10, Math.sqrt(Math.max(player.infinityPower.log10(), 0)/(QCIntensity(3)>1?2e8:1e9)))
+	if (num == 3) {
+		let log=Math.sqrt(Math.max(player.infinityPower.log10(),0)/(QCIntensity(3)>1?2e8:1e9))
+		if (log>1331) log=Math.pow(log*121,3/5)
+		return Decimal.pow(10,log)
+	}
 	if (num == 4) {
 		let mult = player.meta[2].amount.times(player.meta[4].amount).times(player.meta[6].amount).times(player.meta[8].amount).max(1)
 		if (QCIntensity(4) > 1) return mult.pow(1/75)
@@ -3185,6 +3189,7 @@ function ghostify(auto, force) {
 			showTab("")
 		}, seconds * 250)
 		setTimeout(function(){
+			if (Math.random()<1e-3) giveAchievement("Boo!")
 			ghostifyReset(true, gain, amount)
 		}, seconds * 500)
 		setTimeout(function(){
@@ -4655,7 +4660,8 @@ function bosonicTick(diff) {
 }
 
 function getBosonicAMProduction() {
-	let r=tmp.wbb
+	let r=Decimal.pow(10,player.money.max(1).log10()/25e15-2) //Antimatter part
+	r=r.times(tmp.wbb) //W Bosons part
 	return r
 }
 

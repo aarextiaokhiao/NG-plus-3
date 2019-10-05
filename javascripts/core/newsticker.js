@@ -205,7 +205,7 @@ newsArray = [//always true
 ["New prestige layer coming soon, Police-ize! When you prestige, you unlock officer dimensions. They behave like all other dimensions except they produce anti-anti-antimatter. This anti-anti-antimatter can be used to purchase more officer dimensions. The anti-anti-antimatter also makes your galaxies feel more safer, providing a boost in galaxy efficiency, based on your highest reached AAAM.", "player.masterystudies !== undefined", "am50"],
 ['"THERE WILL BE NO NG+4. NG+3 ALWAYS HAVE UPDATES." - Aarex', "ghostified", "am51"],
 ["No. You are not really at current end-game.", "(player.masterystudies !== undefined ? player.quantum.bigRip.bestAntimatter.gte(Decimal.pow(10, 1e9)) : false)", "am52"],
-["Congratulations for beating NG+3! (for now...) A secret is unlocked in Ghostly News Ticker...", "player.totalmoney.gte(Decimal.pow(10, 5e16))", "am53"],
+["Congratulations for beating NG+3! (for now...) A secret is unlocked in Ghostly News Ticker...", "player.totalmoney.gte(Decimal.pow(10, 2e17))", "am53"],
 ["You're reading news too much.", "player.newsArray.length >= 215", "am54"],
 ["You're addicted to news.", "player.newsArray.length >= 230", "am55"],
 ["Okay. You can stop reading the news.", "player.newsArray.length >= 245", "am56"],
@@ -288,7 +288,12 @@ newsArray = [//always true
 ["Quantum Challenges are not challenging enough.", "player.masterystudies !== undefined && player.masterystudies.includes('d9')", "am133"],
 ["U is the new M", "player.achievements.includes('ng3p45')", "am134"],
 ["Antimatter has just declared war on Matter. We are no longer safe. We are no longer free.", true, "am135"],
-/*NEXT ID: am136*/
+["Which one looks different? Preons or anti-preons?", 'player.achievements.includes("ng3p81")', "am136"],
+['"Anti-preons are coming. They will destroy our Nanofield work. We are doomed." ~ Worker replicant #179,769,308.', 'player.achievements.includes("ng3p81")', "am137"],
+["GET A FREE PASS TO A GHOST TRANSFORMATION MACHINE NOW! IT IS TOTALLY WORTH IT!", 'ghostified', "am138"],
+['I told you "don\'t click that news" or else you will get a useless achievement.', "player.achievements.includes('ng3ps12')", "am139"],
+["Want to decay a quark multiple times? Be a Bosonic Lab scientist!", "ghostified && player.ghostify.ghostlyPhotons.enpowerments>3", "am140"],
+/*NEXT ID: am141*/
 
 //Ghostly news ticker messages
 ["Kee-hee-hee!", true, "gn1"],
@@ -307,13 +312,24 @@ newsArray = [//always true
 ["Are your ghost particles ghostly? If not, talk to your ghostly boss.", true, "gn14"],
 ["What's a ghostify? -some new person that joined the discord server", true, "gn15"],
 ["BREAKING NEWS: Because of antimatter, someone has been turned into a basketball. The news ticker writers are baffled.", true, "gn16"],
-["If you read 'Congratulations for beating NG+3' message, here is a spoiler: In the next update, there will be W & Z Bosons!", "player.newsArray.includes('am68') && player.totalmoney.gte(Decimal.pow(10, 5e16))", "gn17"],
+["If you read 'Congratulations for beating NG+3' message, here is a spoiler: In the next update, there will be Higgs Bosons!", "player.newsArray.includes('am68') && player.totalmoney.gte(Decimal.pow(10, 2e17))", "gn17"],
 ["WARNING: Do not interact evil ghosts. They can scare you out.", true, "gn18"],
 ["Do you know that ghosts are proved to be undead?", true, "gn19"],
 ["I got Ghost Particles. I got Neutrinos. That makes me a ghost.", true, "gn20"],
 ["Ghostly Photons can't emit light. They emit ghostly light!", "player.achievements.includes('ng3p71')", "gn21"],
-["You got Light Empowerments? That means you have Ghostly Light inside of you! Kee-hee-hee!", "player.ghostify.ghostlyPhotons.enpowerments || player.achievements.includes('ng3p81')", "gn22"],
-["Ghosts can experiment and discover some Bosons.", "player.achievements.includes('ng3p81')", "gn23"]
+["You got Light Empowerments? That means you have Ghostly Light inside of you! Kee-hee-hee!", "player.ghostify.ghostlyPhotons.enpowerments", "gn22"],
+["Ghosts can experiment and discover some Bosons.", "player.achievements.includes('ng3p81')", "gn23"],
+["Some ghosts were injured due to the annihilation of preons and anti-preons.", "player.achievements.includes('ng3p81')", "gn24"],
+["A new study shows that ghosts can do extreme work.", true, "gn25"],
+["A new evidence states that there is Bosonic Lab inside of their secret laboratory.", true, "gn26"],
+["Ghosts have dominated some universes!", true, "gn27"],
+["Boo! Kee-hee-hee!", "Math.random() <= 0.001", "gn28"],
+["An anti-preon ghost is discovered. He is evil to Nanofield. Don't ever observe him or else he will take over your Nanofield.", "player.achievements.includes('ng3p81')", "gn29"],
+["Ghosts found a ghostly kind of Radioactive Decays!", "Math.max(Math.max(getRadioactiveDecays('r'), getRadioactiveDecays('g')), getRadioactiveDecays('b')) > 4", "gn30"],
+["Ghosts discovered that some particles, including bosons, are ghostly!", true, "gn31"],
+["Ghosts don't know how to write more news. They decided to stop it for today.", true, "gn32"],
+["The Anti-Preon Ghost is getting closer. He will destroy your Nanofield. Stay away from him.", "tmp.bl.upgrades.includes(13)", "gn33"],
+["WARNING! The Anti-Preon Ghost will control over your Nanofield! Be careful! Oh. Worker replicants are warned of that Ghost too.", "tmp.bl.upgrades.includes(22)", "gn34"]
 ];}
 
 document.addEventListener("visibilitychange", function() {if (!document.hidden) {scrollNextMessage();}}, false);
@@ -324,14 +340,14 @@ function scrollNextMessage() {
   if (player.options.newsHidden) return false
   var s = document.getElementById('news');
   updateNewsArray();
-  //select a message at random
+  tmp.blankedOut=false
 
+  //select a message at random
   try {
     do {nextMsgIndex = Math.floor(Math.random() * newsArray.length)} while (!eval(newsArray[nextMsgIndex][1]) || (newsArray[nextMsgIndex][2].indexOf("am") > -1 && !player.achievements.includes("r22")) || newsArray[nextMsgIndex][2].indexOf("gn") > -1)
   } catch(e) {
       console.log("Newsarray doesn't work at idx " + nextMsgIndex)
   }
-
   scrollTimeouts.forEach(function(v) {clearTimeout(v);});
   scrollTimeouts = [];
 
@@ -373,7 +389,12 @@ function scrollNextMessage() {
     s.style.transform = 'translateX(-'+(textWidth+5)+'px)';
     //automatically start the next message scrolling after this one finishes
     //you could add more time to this timeout if you wanted to have some time between messages
-    scrollTimeouts.push(setTimeout(scrollNextMessage, Math.ceil(transformDuration * 1000 + (newsArray[nextMsgIndex][2] == "am104" ? 6e4 : 0))));
+	scrollTimeouts.push(setTimeout(function() {
+		if (newsArray[nextMsgIndex][2] == "am104") {
+			tmp.blankedOut=true
+			setTimeout(scrollNextMessage, 60e3)
+		} else scrollNextMessage()
+	}, Math.ceil(transformDuration * 1000)));
   }, 100));
 }
 
@@ -382,6 +403,7 @@ function nextGhostlyNewsTickerMsg() {
 	if (ghostlyNewsTickerCache) return
 	ghostlyNewsTickerCache = true
 	updateNewsArray()
+	tmp.blankedOut2=false
 	try {
 		do {nextMsgIndex = Math.floor(Math.random() * newsArray.length)} while (!eval(newsArray[nextMsgIndex][1]) || newsArray[nextMsgIndex][2].indexOf("gn") < 0)
 	} catch(e) {
@@ -402,7 +424,12 @@ function nextGhostlyNewsTickerMsg() {
 			newsText.style["transition-timing-function"] = "linear"
 			newsText.style["transition-duration"] = (duration / 100) + "s"
 			setTimeout(function() {
-				ghostlyNewsTickerCache = false
+				if (newsArray[nextMsgIndex][2]=="gn32") {
+					tmp.blankedOut2=true
+					setTimeout(function() {
+						ghostlyNewsTickerCache=false
+					}, 60e3)
+				} else ghostlyNewsTickerCache=false
 			}, duration * 10)
 		}, 2000)
 	}, 100)
@@ -414,3 +441,7 @@ function toggleGhostlyNews() {
 	document.getElementById("ghostlyNewsTickerBlock").style.height=(player.options.secrets.ghostlyNews?16:0)+"px"
 	document.getElementById("ghostlynewsbtn").textContent=(player.options.secrets.ghostlyNews?"Hide":"Show")+" ghostly news ticker"
 }
+
+document.getElementById("ghostlyNewsTicker").onclick = function () {
+	if (tmp.blankedOut2) giveAchievement("Blanked out")
+};

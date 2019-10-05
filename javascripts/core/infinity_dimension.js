@@ -253,7 +253,9 @@ function getEU2Mult() {
 	var cap = nMn(e, 1e5)
 	var soft = 0
 	if (e > 1e5) soft = nS(e, cap)
-	return Decimal.pow(cap/200 + 1, Math.log(cap*2+1)/Math.log(4)).times(Decimal.div(soft,200).add(1).times(Decimal.times(soft,2).add(1).log(Math.E)/Math.log(4)).max(1)).max(player.achievements.includes("ngpp15")?Decimal.pow(10, Math.pow(Decimal.log10(e)*tmp.eu2b, 4.75)):1)
+	var achReward = 1
+	if (player.achievements.includes("ngpp15")) achReward = Decimal.pow(10, Math.pow(Decimal.log10(e) * tmp.eu2b, 4.75))
+	return Decimal.pow(cap/200 + 1, Math.log(cap*2+1)/Math.log(4)).times(Decimal.div(soft,200).add(1).times(Decimal.times(soft,2).add(1).log(Math.E)/Math.log(4)).max(1)).max(achReward)
 }
 
 function getEU3Mult() {

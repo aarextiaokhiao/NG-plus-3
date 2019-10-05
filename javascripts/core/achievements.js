@@ -205,11 +205,11 @@ const allAchievements = {
   s36 : "While you were away... Nothing happened.",
   s37 : "You followed the instructions",
   s38 : "Professional bodybuilder",
-  ng3ps11 : "ng3ps11",
-  ng3ps12 : "ng3ps12",
-  ng3ps13 : "ng3ps13",
+  ng3ps11 : "Blanked out",
+  ng3ps12 : "Lie the news",
+  ng3ps13 : "Two tickers",
   ng3ps14 : "ng3ps14",
-  ng3ps15 : "ng3ps15",
+  ng3ps15 : "Boo!",
   ng3ps16 : "ng3ps16",
   ng3ps17 : "ng3ps17",
   ng3ps18 : "ng3ps18",
@@ -239,7 +239,11 @@ const secretAchievementTooltips = {
     s36 : "Have nothing happen while you were away.",
     s37 : "Follow instructions.",
     s38 : "Get all your dimension bulk buyers to 1e100.",
-  };
+    ng3ps11 : "Click on the news ticker that doesn't show anything.",
+    ng3ps12 : "Click on the news ticker that you shouldn't do.",
+    ng3ps13 : "Make 2 news tickers shown.",
+    ng3ps15 : "You have a 1/1,000 chance of getting this achievement every time 'You became a ghost!' animation appears.",
+};
 const allAchievementNums = Object.invert(allAchievements)
 // to retrieve by value: Object.keys(allAchievements).find(key => allAchievements[key] === "L4D: Left 4 Dimensions");
 
