@@ -2595,7 +2595,7 @@ function transformSaveToDecimal() {
           player.ghostify.ghostlyPhotons.ghostlyRays=new Decimal(player.ghostify.ghostlyPhotons.ghostlyRays)
           player.ghostify.ghostlyPhotons.darkMatter=new Decimal(player.ghostify.ghostlyPhotons.darkMatter)
       }
-      if (tmp.bl) {
+      if (tmp.bl && player.ghostify.wzb) {
           tmp.bl.ticks=new Decimal(tmp.bl.ticks)
           tmp.bl.am=new Decimal(tmp.bl.am)
           tmp.bl.amountToExtract=new Decimal(tmp.bl.amountToExtract)

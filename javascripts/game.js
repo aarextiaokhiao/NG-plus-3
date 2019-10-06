@@ -1092,7 +1092,7 @@ function updateTemp() {
 			var wnl=player.ghostify.wzb.wnb.add(1).log10()
 			tmp.wzbs=new Decimal(1) //W & Z Bosons speed
 			tmp.zba=new Decimal(1) //Z Bosons boost to Anti-Preon production
-			tmp.wbt=Decimal.pow(1,Math.max(wpl*(player.ghostify.wzb.wpb.sub(player.ghostify.wzb.wnb.min(player.ghostify.wzb.wpb))).div(player.ghostify.wzb.wpb.max(1)).toNumber(),0)) //W Bosons boost to extract time
+			tmp.wbt=Decimal.pow(3,Math.max(wpl*(player.ghostify.wzb.wpb.sub(player.ghostify.wzb.wnb.min(player.ghostify.wzb.wpb))).div(player.ghostify.wzb.wpb.max(1)).toNumber(),0)) //W Bosons boost to extract time
 			tmp.wbb=Decimal.pow(1,Math.sqrt(wpl*wpl+wnl*wnl)).sub(1) //W Bosons boost to Bosonic Antimatter production
 			tmp.dppg=new Decimal(1)
 		}
@@ -1113,7 +1113,7 @@ function updateTemp() {
 			tmp.le[4]=Math.log10(Math.sqrt(tmp.ls[4]*2)+1)*5/4 //Blue light
 			tmp.le[5]=Decimal.pow(10,tmp.ls[5]*10) //Indigo light
 			tmp.le[6]=Decimal.pow(10,Math.pow(player.postC3Reward.log10()*tmp.ls[6],1/3)*2) //Violet light
-			if (player.ghostify.ghostlyPhotons.enpowerments) tmp.le[7]=Math.log10(tmp.ls[3]+1)*3 //Green light (LE#1)
+			if (player.ghostify.ghostlyPhotons.enpowerments) tmp.le[7]={effect:Math.log10(tmp.ls[3]+1)*3} //Green light (LE#1)
 			if (player.ghostify.ghostlyPhotons.enpowerments>1) tmp.le[8]=Math.log10(tmp.ls[4]*10+1)/4+1 //Blue light (LE#2)
 			if (player.ghostify.ghostlyPhotons.enpowerments>2) tmp.le[9]=Math.pow(tmp.ls[7]+1,.1)*2-1 //Red light (LE#3)
 			tmp.bru[3]=Decimal.pow(tmp.qu.bigRip.spaceShards.div(1e140).add(1).log10()+1,Math.max(tmp.qu.bigRip.spaceShards.div(1e140).add(1).log10()/10,1)) //BRU18
@@ -1222,7 +1222,10 @@ function updateTemp() {
 
 	//Extra galaxy amount of TS431
 	tmp.eg431=0
-	if (player.masterystudies !== undefined) if (player.ghostify.ghostlyPhotons.enpowerments) tmp.eg431+=(colorBoosts.g+gatheredQuarksBoost)*100*tmp.le[7]
+	if (player.masterystudies !== undefined && player.ghostify.ghostlyPhotons.enpowerments) {
+		tmp.le[7].total=(colorBoosts.g+gatheredQuarksBoost)*100*tmp.le[7].effect
+		tmp.eg431+=tmp.le[7].total
+	}
 
 	//mv: Matter speed
 	tmp.mv = 1.03 + player.resets/200 + player.galaxies/100
@@ -8180,7 +8183,7 @@ function gameLoop(diff) {
     let chance = Decimal.pow(player.replicanti.chance, ts273Mult.toNumber())
     let speeds = getReplSpeed()
     let frequency = 0
-    if (chance.gte("1e9999998")) frequency = ts273Mult.times(Math.log10(player.replicanti.chance)/Math.log10(2))
+    if (chance.gte("1e9999998")) frequency = ts273Mult.times(Math.log10(player.replicanti.chance+1)/Math.log10(2))
     let interval = player.replicanti.interval
     if (player.timestudy.studies.includes(62)) interval = interval/(player.aarexModifications.newGameExpVersion?4:3)
     if (player.replicanti.amount.gt(Number.MAX_VALUE)||player.timestudy.studies.includes(133)) interval *= 10

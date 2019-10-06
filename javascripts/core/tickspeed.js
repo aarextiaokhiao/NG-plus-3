@@ -122,13 +122,12 @@ function buyTickSpeed() {
 	player.postC8Mult = new Decimal(1)
 	if (inNC(14) && player.tickspeedBoosts == undefined) player.tickBoughtThisInf.current++
 	player.why = player.why + 1
+	updateTickSpeed()
 	return true
 }
 
 document.getElementById("tickSpeed").onclick = function () {
-  buyTickSpeed();
-
-  updateTickSpeed();
+	buyTickSpeed()
 };
 
 function getTickSpeedCostMultiplierIncrease() {

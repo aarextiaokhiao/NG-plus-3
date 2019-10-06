@@ -581,7 +581,7 @@ function setupText() {
 }
 
 //v1.1
-function getMTSMult(id, modifier) {
+function getMTSMult(id, uses = "") {
 	if (id==251) return Math.floor(player.resets/3e3)
 	if (id==252) return Math.floor(player.dilation.freeGalaxies/7)
 	if (id==253) return Math.floor(extraReplGalaxies/9)*20
@@ -590,8 +590,9 @@ function getMTSMult(id, modifier) {
 	if (id==264) return Math.pow(player.galaxies+1,0.25)*2
 	if (id==273) {
 		var intensity = 0
-		if (player.masterystudies ? player.masterystudies.includes("t273") || modifier == "ms" : false) intensity = 5
-		if (ghostified ? player.ghostify.neutrinos.boosts > 1 && modifier != "pn" : false) intensity += tmp.nb[1]
+		if (player.masterystudies ? player.masterystudies.includes("t273") || !uses.includes("ms") : false) intensity = 5
+		if (ghostified ? player.ghostify.neutrinos.boosts > 1 && !uses.includes("pn") : false) intensity += tmp.nb[1]
+		if (uses.includes("intensity")) return intensity
 		if (player.replicanti.chance<9) return new Decimal(1)
 		return Decimal.pow(Math.log10(player.replicanti.chance+1), intensity)
 	}
@@ -1780,13 +1781,13 @@ function isLimitUpgAffordable() {
 
 function getLimitMsg() {
 	if (!player.masterystudies.includes("d11")) return tmp.qu.replicants.limit
-	return tmp.qu.replicants.limit+" ED"+tmp.qu.replicants.limitDim+"s"
+	return getFullExpansion(tmp.qu.replicants.limit)+" ED"+tmp.qu.replicants.limitDim+"s"
 }
 
 function getNextLimitMsg() {
 	if (!player.masterystudies.includes("d11")) return tmp.qu.replicants.limit+1
 	if (tmp.qu.replicants.limit > 9 && tmp.qu.replicants.limitDim < 8) return "1 ED"+(tmp.qu.replicants.limitDim+1)+"s"
-	return (tmp.qu.replicants.limit+1)+" ED"+tmp.qu.replicants.limitDim+"s"
+	return getFullExpansion(tmp.qu.replicants.limit+1)+" ED"+tmp.qu.replicants.limitDim+"s"
 }
 
 function getHatchSpeed() {
@@ -4005,8 +4006,10 @@ function updateGhostifyTabs() {
 		document.getElementById("preNeutrinoBoost1").textContent=getDilExp("neutrinos").toFixed(2)
 		document.getElementById("neutrinoBoost1").textContent=getDilExp().toFixed(2)
 		if (player.ghostify.neutrinos.boosts>1) {
-			document.getElementById("preNeutrinoBoost2").textContent=shorten(getMTSMult(273, "pn"))
+			document.getElementById("preNeutrinoBoost2").textContent="^"+shorten(getMTSMult(273, "pn"))
 			document.getElementById("neutrinoBoost2").textContent="^"+shorten(getMTSMult(273))
+			document.getElementById("preNeutrinoBoost2Exp").textContent=getMTSMult(273, ["pn", "intensity"]).toFixed(2)
+			document.getElementById("neutrinoBoost2Exp").textContent=getMTSMult(273, "intensity").toFixed(2)
 		}
 		if (player.ghostify.neutrinos.boosts>2) document.getElementById("neutrinoBoost3").textContent=tmp.nb[2].toFixed(2)
 		if (player.ghostify.neutrinos.boosts>3) document.getElementById("neutrinoBoost4").textContent=(tmp.nb[3]*100-100).toFixed(1)
@@ -4073,7 +4076,10 @@ function updateGhostifyTabs() {
 		document.getElementById("lightEmpowermentsEffect").textContent=lePower.toFixed(2)
 		for (var e=1;e<4;e++) {
 			if (gphData.enpowerments>=e) {
-				if (e==1) document.getElementById("leBoost1").textContent=getFullExpansion(Math.floor(tmp.le[7]))
+				if (e==1) {
+					document.getElementById("leBoost1").textContent=getFullExpansion(Math.floor(tmp.le[7].effect))
+					document.getElementById("leBoost1Total").textContent=getFullExpansion(Math.floor(tmp.le[7].total))
+				}
 				if (e==2) document.getElementById("leBoost2").textContent=(tmp.le[8]*100-100).toFixed(1)
 				if (e==3) document.getElementById("leBoost3").textContent=tmp.le[9].toFixed(2)
 			}
@@ -4109,7 +4115,7 @@ function updateGhostifyTabs() {
 		if (document.getElementById("wzbtab").style.display=="block") {
 			let lSpeed=speed.times(tmp.wzbs)
 			let data2=player.ghostify.wzb
-			let show0=data2.dPUse==1&&lSpeed.times(getAntiPreonLoss()).div(aplScalings[1]).gte(1e3)
+			let show0=data2.dPUse==1&&lSpeed.times(getAntiPreonLoss()).div(aplScalings[1]).gte(10)
 			let r
 			if (!data2.dPUse) r=lSpeed.times(getAntiPreonProduction())
 			else r=lSpeed.times(getAntiPreonLoss())
@@ -4611,11 +4617,10 @@ function bosonicTick(diff) {
 	lDiff=diff.times(tmp.wzbs)
 	lData=player.ghostify.wzb
 	if (lData.dPUse) {
-		apSpeed=getAntiPreonLoss().div(aplScalings[player.ghostify.wzb.dPUse])
-		if (isNaN(apSpeed.e)) apSpeed=new Decimal(0)
-		apDiff=lDiff.times(apSpeed).min(lData.dP)
+		apDiff=lDiff.times(getAntiPreonLoss()).min(lData.dP).div(aplScalings[player.ghostify.wzb.dPUse])
+		if (isNaN(apDiff.e)) apDiff=new Decimal(0)
 		if (lData.dPUse==1) {
-			lData.wQkProgress=lData.wQkProgress.add(apDiff.div(100))
+			lData.wQkProgress=lData.wQkProgress.add(apDiff)
 			if (lData.wQkProgress.gt(1)) {
 				let toSub=lData.wQkProgress.floor()
 				lData.wpb=lData.wpb.add(toSub.add(lData.wQkUp?1:0).div(2).floor())
@@ -4832,7 +4837,7 @@ var bEn={
 	},
 	effects:{
 		12: function(l) {
-			return Decimal.div(l,tmp.bl.amountToExtract).pow(0.75).div(getExtractTime(true)).div(bEn.autoScalings[tmp.bl.typeToExtract])
+			return l.pow(0.75).div(getExtractTime(true)).div(bEn.autoScalings[tmp.bl.typeToExtract])
 		},
 		13: function(l) {
 			return Decimal.div(l,5).add(1)
@@ -4932,16 +4937,16 @@ var bu={
 			return Math.pow(tmp.bl.am.add(1).log10()/10+1,0.3)-1
 		},
 		12: function() {
-			return Math.pow(player.totalTickGained,1/2.75)
+			return Math.sqrt(player.totalTickGained)
 		},
 		13: function() {
-			return getRadioactiveDecays('r')+getRadioactiveDecays('g')+getRadioactiveDecays('b')+1
+			return (getRadioactiveDecays('r')+getRadioactiveDecays('g')+getRadioactiveDecays('b'))/10+1
 		},
 		14: function() {
 			return player.dilation.freeGalaxies
 		},
 		15: function() {
-			return getInfinitied()
+			return Decimal.pow(getInfinitied(),.2)
 		},
 		21: function() {
 			return player.dilation.dilatedTime.max(1).log10()/2e5
@@ -4977,13 +4982,13 @@ function getAntiPreonProduction() {
 
 var aplScalings={
 	0:0,
-	1:0.08,
-	2:0.2,
-	3:1
+	1:8,
+	2:1/0,
+	3:16
 }
 
 function getAntiPreonLoss() {
-	return tmp.bEn[13].times(aplScalings[player.ghostify.wzb.dPUse])
+	return tmp.bEn[13].times(0.08)
 }
 
 function useAntiPreon(id) {

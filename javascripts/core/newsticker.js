@@ -293,7 +293,10 @@ newsArray = [//always true
 ["GET A FREE PASS TO A GHOST TRANSFORMATION MACHINE NOW! IT IS TOTALLY WORTH IT!", 'ghostified', "am138"],
 ['I told you "don\'t click that news" or else you will get a useless achievement.', "player.achievements.includes('ng3ps12')", "am139"],
 ["Want to decay a quark multiple times? Be a Bosonic Lab scientist!", "ghostified && player.ghostify.ghostlyPhotons.enpowerments>3", "am140"],
-/*NEXT ID: am141*/
+['"Anti-preons destroyed our rewards by anti-Nanofield. We should take revenge and steal their rewards back." ~ Worker replicant #247,273,145.', 'ghostified && tmp.bl.upgrades.includes(24)', "am141"],
+["BOSONIC OVERDRIVE!!!", 'player.achievements.includes("ng3p81") && tmp.bl.odSpeed.gt(1) && tmp.bl.battery.gt(0)', "am142"],
+["If preons, Nanofield, and Anti-Preons exist, then why Anti-Nanofield doesn't exist?", 'ghostified && tmp.bl.upgrades.includes(24)', "am143"],
+/*NEXT ID: am144*/
 
 //Ghostly news ticker messages
 ["Kee-hee-hee!", true, "gn1"],
@@ -329,7 +332,19 @@ newsArray = [//always true
 ["Ghosts discovered that some particles, including bosons, are ghostly!", true, "gn31"],
 ["Ghosts don't know how to write more news. They decided to stop it for today.", true, "gn32"],
 ["The Anti-Preon Ghost is getting closer. He will destroy your Nanofield. Stay away from him.", "tmp.bl.upgrades.includes(13)", "gn33"],
-["WARNING! The Anti-Preon Ghost will control over your Nanofield! Be careful! Oh. Worker replicants are warned of that Ghost too.", "tmp.bl.upgrades.includes(22)", "gn34"]
+["WARNING! The Anti-Preon Ghost will control over your Nanofield! Be careful! Oh. Worker replicants are warned of that Ghost too.", "tmp.bl.upgrades.includes(21)", "gn34"],
+["A ghost tried to take Anti-Preons out, but Bosonic Lab workers decided to ban them out because an Anti-Preon is a resource of Bosonic Lab.", "player.achievements.includes('ng3p81')", "gn35"],
+["You got one ghostly particle, whatever that means.", "tmp.bl.upgrades.includes(21)", "gn36"],
+['"Welcome, a new ghost, to the Ghostify layer! Kee-hee-hee!" - Aarex', true, "gn37"],
+["Can you buy max light empowerments?", "player.ghostify.ghostlyPhotons.enpowerments>2", "gn38"],
+["Wait a second. This new laboratory isn't anti-Nanofield...", "tmp.bl.upgrades.includes(21)", "gn39"],
+["There is no 0x Brave Milestone because no one talks about it.", true, "gn40"],
+["There are actually no anti-ghosts because ghosts are made of ghostly matter.", true, "gn41"],
+["Are we living in ghostly universe or anti-ghostly universe?", true, "gn42"],
+["New matter discovered. Ghostly Matter! The scientists who discovered it were already dead.", true, "gn43"],
+["Florida man attempts to write down his antimatter. When finishes, he finds out he's a ghost.", true, "gn44"],
+["It's photons, not protons!", true, "gn45"],
+["Ghostly news company has become partners with us. They are made entirely of ghostly matter.", true, "gn46"]
 ];}
 
 document.addEventListener("visibilitychange", function() {if (!document.hidden) {scrollNextMessage();}}, false);

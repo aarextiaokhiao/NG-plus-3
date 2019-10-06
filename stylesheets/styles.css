@@ -2331,6 +2331,10 @@ br {
 	transition-duration: 1s
 }
 
+.neutrinos {
+	font-size: 35px
+}
+
 .gluonupgrade.neutrinoupg {
 	background: black !important;
 	border: 1px solid #bfbfbf;
