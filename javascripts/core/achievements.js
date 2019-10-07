@@ -208,7 +208,7 @@ const allAchievements = {
   ng3ps11 : "Blanked out",
   ng3ps12 : "Lie the news",
   ng3ps13 : "Two tickers",
-  ng3ps14 : "ng3ps14",
+  ng3ps14 : "News for other species",
   ng3ps15 : "Boo!",
   ng3ps16 : "ng3ps16",
   ng3ps17 : "ng3ps17",
@@ -242,6 +242,7 @@ const secretAchievementTooltips = {
     ng3ps11 : "Click on the news ticker that doesn't show anything.",
     ng3ps12 : "Click on the news ticker that you shouldn't do.",
     ng3ps13 : "Make 2 news tickers shown.",
+    ng3ps14 : "Unlock or show ghostly news ticker.",
     ng3ps15 : "You have a 1/1,000 chance of getting this achievement every time 'You became a ghost!' animation appears.",
 };
 const allAchievementNums = Object.invert(allAchievements)

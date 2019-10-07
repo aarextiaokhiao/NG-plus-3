@@ -296,7 +296,8 @@ newsArray = [//always true
 ['"Anti-preons destroyed our rewards by anti-Nanofield. We should take revenge and steal their rewards back." ~ Worker replicant #247,273,145.', 'ghostified && tmp.bl.upgrades.includes(24)', "am141"],
 ["BOSONIC OVERDRIVE!!!", 'player.achievements.includes("ng3p81") && tmp.bl.odSpeed.gt(1) && tmp.bl.battery.gt(0)', "am142"],
 ["If preons, Nanofield, and Anti-Preons exist, then why Anti-Nanofield doesn't exist?", 'ghostified && tmp.bl.upgrades.includes(24)', "am143"],
-/*NEXT ID: am144*/
+['Wait a second. I think I\'ve realized something. The main writer never says what broadcasting channel we\'re on. I was always curious what channel our news show is on, so I went into a top secret room the main writer never tells us to go in. And what I found...I found what channel we broadcasted on. It is "999". But channel 999 doesn\'t exist! And I also found some other things...at the bottom-right of the page, it says "Sponsored by Hevipelle". Who is Hevipelle? I\'ve never heard anyone named Hevipelle in the world. Does this mean...does this mean that Hevipelle is a nickname for someone? A...oh no. There\'s more text. A sentence says...it says..."Because the physics of the game "Antimatter Dimensions" does not allow for visuals, all thoughts, feelings, and actions made by any being are put into short news tickers. OH MY GOD I\'M IN A VIDEOGAME OH GOD THIS IS A NEWS TICKER F\*\*\* THIS DEVELOP-sifdweyfwytrwqe8723648765237869iyusdqwe-0))$#(&)QBTR&_(B)&30-b5q&)rfb)+B0R-98w#$)9b)({bew)#(5R[q)(t()qet){(q#*bT8bb &){rb&rqw#b %&r7#w&R&{07&&b#w$&b )r ({e[-(b reafbgu ({brdiuufertuyreuyyuyuefuyuyfiYUiuyEYUFiuyGUY087378578052}}}}}}},,,', true , "am144"],
+/*NEXT ID: am145*/
 
 //Ghostly news ticker messages
 ["Kee-hee-hee!", true, "gn1"],
@@ -344,7 +345,8 @@ newsArray = [//always true
 ["New matter discovered. Ghostly Matter! The scientists who discovered it were already dead.", true, "gn43"],
 ["Florida man attempts to write down his antimatter. When finishes, he finds out he's a ghost.", true, "gn44"],
 ["It's photons, not protons!", true, "gn45"],
-["Ghostly news company has become partners with us. They are made entirely of ghostly matter.", true, "gn46"]
+["Ghostly news company has become partners with us. They are made entirely of ghostly matter.", true, "gn46"],
+["Antimatter ghosts do not exist. Just like matter ghosts. But Ghostly Matter Ghosts do.", true, "gn47"]
 ];}
 
 document.addEventListener("visibilitychange", function() {if (!document.hidden) {scrollNextMessage();}}, false);
@@ -417,6 +419,7 @@ var ghostlyNewsTickerCache = false
 function nextGhostlyNewsTickerMsg() {
 	if (ghostlyNewsTickerCache) return
 	ghostlyNewsTickerCache = true
+	giveAchievement("News for other species")
 	updateNewsArray()
 	tmp.blankedOut2=false
 	try {

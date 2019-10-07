@@ -2341,6 +2341,7 @@ document.getElementById("news").onclick = function () {
 		player.options.secrets.ghostlyNews = false
 		document.getElementById("ghostlynewsbtn").style.display = ""
 		$.notify("You unlocked ghostly news ticker option!", "success")
+		giveAchievement("News for other species")
 	}
 	if (document.getElementById("news").textContent === "Don't click this news") {
 		alert("I told you so.")
