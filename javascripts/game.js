@@ -1118,10 +1118,9 @@ function updateTemp() {
 			if (player.ghostify.ghostlyPhotons.enpowerments>2) tmp.le[9]=Math.pow(tmp.ls[7]+1,.1)*2-1 //Red light (LE#3)
 			tmp.bru[3]=Decimal.pow(tmp.qu.bigRip.spaceShards.div(1e140).add(1).log10()+1,Math.max(tmp.qu.bigRip.spaceShards.div(1e140).add(1).log10()/10,1)) //BRU18
 			tmp.bru[4]=Decimal.pow(10,Math.sqrt(player.timeShards.add(1).log10())/80) //BRU19
-			tmp.bru[5]=Math.log10(quantumWorth.add(1).log10()+1) //BRU20
-			tmp.nu[4]=Decimal.pow(player.ghostify.ghostParticles.add(1).log10(),Math.pow(tmp.qu.colorPowers.r.add(tmp.qu.colorPowers.g).add(tmp.qu.colorPowers.b).add(1).log10(),1/3)*0.8+1).max(1) //NU14
-			tmp.nu[5]=Decimal.pow(2,tmp.qu.nanofield.rewards/2.5) //NU15
-			if (hasNU(15)) tmp.ns=tmp.ns.times(tmp.nu[5])
+			tmp.nu[6]=Decimal.pow(player.ghostify.ghostParticles.add(1).log10(),Math.pow(tmp.qu.colorPowers.r.add(tmp.qu.colorPowers.g).add(tmp.qu.colorPowers.b).add(1).log10(),1/3)*0.8+1).max(1) //NU14
+			tmp.nu[7]=Decimal.pow(2,tmp.qu.nanofield.rewards/2.5) //NU15
+			if (hasNU(15)) tmp.ns=tmp.ns.times(tmp.nu[7])
 			tmp.ppti/=tmp.le[1]
 		}
 		if (ghostified) {
@@ -1160,6 +1159,8 @@ function updateTemp() {
 			var nu7=tmp.qu.colorPowers.g.add(1).log10()/400
 			if (nu7>40) nu7=Math.sqrt(nu7*10)+20
 			tmp.nu[3]=Decimal.pow(10,nu7) //NU7
+			tmp.nu[4]=undefined
+			tmp.nu[5]=player.dilation.freeGalaxies*.035+1 //NU12 (IC3)
 		}
 		if (player.masterystudies.includes("d14")) {
 			let exp = tmp.qu.bigRip.upgrades.includes(17) ? 2.9 : 1
@@ -1212,8 +1213,7 @@ function updateTemp() {
 	tmp.rm=getReplMult()
 	updateExtraReplGalaxies()
 
-	//Eternity Upgrade #2 boost w/ "The cap is a million, not a trillion" reward
-	tmp.eu2b=1
+	tmp.eu2b=1 //Eternity Upgrade #2 boost w/ "The cap is a million, not a trillion" reward
 
 	//Time Study 232 effect
 	var exp=0.2
@@ -1226,6 +1226,8 @@ function updateTemp() {
 		tmp.le[7].total=(colorBoosts.g+gatheredQuarksBoost)*100*tmp.le[7].effect
 		tmp.eg431+=tmp.le[7].total
 	}
+	
+	tmp.nu[4]=Math.sqrt(player.replicanti.galaxies+extraReplGalaxies)*.035+1 //NU12 (EC14)
 
 	//mv: Matter speed
 	tmp.mv = 1.03 + player.resets/200 + player.galaxies/100
@@ -2680,7 +2682,7 @@ function getPostC3RewardMult() {
 	if (inQC(2)) perGalaxy = 0
 	if (tmp.ngp3 ? tmp.qu.bigRip.active : false) {
 		if (ghostified&&player.ghostify.neutrinos.boosts>8) perGalaxy*=tmp.nb[8]
-		if (hasNU(12)) perGalaxy*=player.dilation.freeGalaxies*.035+1
+		if (hasNU(12)) perGalaxy*=tmp.nu[5]
 	}
 	if (!player.galacticSacrifice) return player.galaxies*perGalaxy+1.05
 	if (tmp.cp>1) {
@@ -8499,7 +8501,7 @@ function gameLoop(diff) {
             if (player.masterystudies.includes("d14")) {
                 if (player.ghostify.milestones>7) {
                     document.getElementById("spaceShards").textContent=shortenDimensions(tmp.qu.bigRip.spaceShards)
-                    for (var u=1;u<(player.ghostify.ghostlyPhotons.unl?21:18);u++) {
+                    for (var u=1;u<(player.ghostify.ghostlyPhotons.unl?20:18);u++) {
                         document.getElementById("bigripupg"+u).className = tmp.qu.bigRip.upgrades.includes(u) ? "gluonupgradebought bigrip" + (isBigRipUpgradeActive(u, true) ? "" : "off") : tmp.qu.bigRip.spaceShards.lt(bigRipUpgCosts[u]) ? "gluonupgrade unavailablebtn" : "gluonupgrade bigrip"
                         document.getElementById("bigripupg"+u+"cost").textContent = shortenDimensions(new Decimal(bigRipUpgCosts[u]))
                     }
@@ -8513,7 +8515,6 @@ function gameLoop(diff) {
                 if (player.ghostify.ghostlyPhotons.unl) {
                     document.getElementById("bigripupg18current").textContent=shorten(tmp.bru[3])
                     document.getElementById("bigripupg19current").textContent=shorten(tmp.bru[4])
-                    document.getElementById("bigripupg20current").textContent=shorten(tmp.bru[5])
                 }
 			}
 		}

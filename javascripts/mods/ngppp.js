@@ -630,7 +630,7 @@ function getMTSMult(id, uses = "") {
 	}
 	if (id==411) return getTotalReplicants().div(1e24).add(1).pow(0.2)
 	if (id==421) {
-		let ret=Math.pow(Math.max(-player.tickspeed.log10()/1e13-0.75,1),4)
+		let ret=Math.pow(Math.max(-getTickspeed().log10()/1e13-0.75,1),4)
 		if (ret>100) ret=Math.sqrt(ret*100)
 		return ret
 	}
@@ -647,7 +647,7 @@ function getEC14Power() {
 		if (player.currentEterChall=='eterc14') ret=5
 		else {
 			ret=ECTimesCompleted("eterc14")*2
-			if (hasNU(12)) if (tmp.qu.bigRip.active) ret*=Math.sqrt(player.replicanti.galaxies+extraReplGalaxies)*.035+1
+			if (hasNU(12)) if (tmp.qu.bigRip.active) ret*=tmp.nu[4]
 		}
 	}
 	if (player.galacticSacrifice !== undefined) ret++
@@ -1173,8 +1173,8 @@ function updateQuantumChallenges() {
 	}
 	if (player.masterystudies.includes("d14")) {
 		document.getElementById("spaceShards").textContent = shortenDimensions(tmp.qu.bigRip.spaceShards)
-		for (var u=18;u<21;u++) document.getElementById("bigripupg"+u).parentElement.style.display=player.ghostify.ghostlyPhotons.unl?"":"none"
-		for (var u=1;u<(player.ghostify.ghostlyPhotons.unl?21:18);u++) {
+		for (var u=18;u<20;u++) document.getElementById("bigripupg"+u).parentElement.style.display=player.ghostify.ghostlyPhotons.unl?"":"none"
+		for (var u=1;u<(player.ghostify.ghostlyPhotons.unl?20:18);u++) {
 			document.getElementById("bigripupg"+u).className = tmp.qu.bigRip.upgrades.includes(u) ? "gluonupgradebought bigrip" + (isBigRipUpgradeActive(u, true) ? "" : "off") : tmp.qu.bigRip.spaceShards.lt(bigRipUpgCosts[u]) ? "gluonupgrade unavailablebtn" : "gluonupgrade bigrip"
 			document.getElementById("bigripupg"+u+"cost").textContent = shortenDimensions(new Decimal(bigRipUpgCosts[u]))
 		}
@@ -2091,11 +2091,7 @@ function getDecayRate(branch) {
 	if (player.masterystudies.includes("t431")) ret = ret.times(getMTSMult(431))
 	if (player.ghostify.milestones>13) ret = ret.times(10)
 	if (hasNU(4)) ret = ret.times(tmp.nu[2])
-	if (tmp.qu.bigRip.active) {
-		if (hasNU(12)) ret = ret.div(player.galaxies*0.035+1)
-		if (isBigRipUpgradeActive(19)) ret = ret.times(tmp.bru[4])
-		if (isBigRipUpgradeActive(20)) ret = ret.div(tmp.bru[5])
-	}
+	if (tmp.qu.bigRip.active && isBigRipUpgradeActive(19)) ret = ret.times(tmp.bru[4])
 	return ret.min(Math.pow(2,40)).times(todspeed)
 }
 
@@ -2686,7 +2682,7 @@ function bigRip(auto) {
 	if (!player.masterystudies.includes("d14")||tmp.qu.electrons.amount<62500||!inQC(0)) return
 	if (player.ghostify.milestones>1) {
 		tmp.qu.pairedChallenges.order={1:[1,2],2:[3,4],3:[5,7],4:[6,8]}
-		tmp.qu.pairedChallenges.completed=3
+		tmp.qu.pairedChallenges.completed=4
 		for (var c=1;c<9;c++) {
 			tmp.qu.electrons.mult+=(2-tmp.qu.challenges[c])*0.25
 			tmp.qu.challenges[c]=2
@@ -4022,9 +4018,13 @@ function updateGhostifyTabs() {
 		document.getElementById("neutrinoUpg3Pow").textContent=shorten(tmp.nu[1])
 		document.getElementById("neutrinoUpg4Pow").textContent=shorten(tmp.nu[2])
 		if (player.ghostify.times>4) document.getElementById("neutrinoUpg7Pow").textContent=shorten(tmp.nu[3])
+		if (player.ghostify.times>9) {
+			document.getElementById("neutrinoUpg12Pow1").textContent=shorten(tmp.nu[4])
+			document.getElementById("neutrinoUpg12Pow2").textContent=shorten(tmp.nu[5])
+		}
 		if (player.ghostify.ghostlyPhotons.unl) {
-			document.getElementById("neutrinoUpg14Pow").textContent=shorten(tmp.nu[4])
-			document.getElementById("neutrinoUpg15Pow").textContent=shorten(tmp.nu[5])
+			document.getElementById("neutrinoUpg14Pow").textContent=shorten(tmp.nu[6])
+			document.getElementById("neutrinoUpg15Pow").textContent=shorten(tmp.nu[7])
 		}
 		for (var u=1;u<16;u++) {
 			var e=false
@@ -4151,7 +4151,7 @@ function onNotationChangeNeutrinos() {
 function getNeutrinoGain() {
 	let ret=Decimal.pow(5,player.ghostify.neutrinos.multPower-1)
 	if (player.ghostify.ghostlyPhotons.unl) ret=ret.times(tmp.le[5])
-	if (hasNU(14)) ret=ret.times(tmp.nu[4])
+	if (hasNU(14)) ret=ret.times(tmp.nu[6])
 	return ret
 }
 

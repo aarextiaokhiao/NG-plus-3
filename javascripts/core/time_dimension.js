@@ -207,15 +207,12 @@ function buyMaxTimeDimension(tier, bulk) {
 		if (inNC(2)||player.currentChallenge=="postc1"||player.pSac!=undefined) player.chall2Pow=0
 		reduceMatter(toBuy)
 	} else {
+		var toBuy=0
 		var increment=1
-		while (player.eternityPoints.gte(timeDimCost(tier,dim.bought+increment*2-1))) {
-			increment*=2
-		}
-		var toBuy=increment
-		for (p=0;p<53;p++) {
-			increment/=2
-			if (increment<1) break
+		while (player.eternityPoints.gte(timeDimCost(tier,dim.bought+increment-1))) increment*=2
+		while (increment>=1) {
 			if (player.eternityPoints.gte(timeDimCost(tier,dim.bought+toBuy+increment-1))) toBuy+=increment
+			increment/=2
 		}
 		var num=toBuy
 		var newEP=player.eternityPoints
