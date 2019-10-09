@@ -2099,14 +2099,14 @@ br {
 	border: 2px solid #4c4c4c;
 	width: 210px;
 	height: 90px;
-	color: #4c4c4c;
+	text-shadow: 0px 0px 1px #4c4c4c, 0px 0px 2px #4c4c4c, 0px 0px 3px #4c4c4c;
+	color: #727272;
 	font-size: 12px;
 	animation: nanofieldanimation 5s infinite
 }
 
 #produceQuarkCharge:hover {
-	color: #727272;
-	text-shadow: 0px 0px 1px #4c4c4c, 0px 0px 2px #4c4c4c, 0px 0px 3px #4c4c4c;
+	color: #999999
 }
 
 .nanofieldreward {
