@@ -780,7 +780,7 @@ function quantumReset(force, auto, challid, bigRip, implode=false) {
 			}
 			if (player.eternityChallUnlocked>12) tmp.qu.bigRip.storedTS.tt+=masterystudies.costs.ec[player.eternityChallUnlocked]
 			else tmp.qu.bigRip.storedTS.tt+=([0,30,35,40,70,130,85,115,115,415,550,1,1])[player.eternityChallUnlocked]
-			for (var s=0;s<player.masterystudies.length;s++) if (player.masterystudies[s].indexOf("t") == 0) tmp.qu.bigRip.storedTS.studies.push(player.masterystudies[s].split("t")[1])
+			for (var s=0;s<player.masterystudies.length;s++) if (player.masterystudies[s].indexOf("t") == 0) tmp.qu.bigRip.storedTS.studies.push(parseInt(player.masterystudies[s].split("t")[1]))
 		}
 		if (bigRip != tmp.qu.bigRip.active) switchAB()
 		if (!bigRip && tmp.qu.bigRip.active) if (player.galaxies == 9 && player.replicanti.galaxies == 9 && player.timeDimension4.amount.round().eq(9)) giveAchievement("We can really afford 9.")

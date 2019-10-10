@@ -482,28 +482,7 @@ if (player.version < 5) {
 
   document.getElementById("epmult").innerHTML = "You gain 5 times more EP<p>Currently: "+shortenDimensions(player.epmult)+"x<p>Cost: "+shortenDimensions(player.epmultCost)+" EP"
 
-  for (var i=0; i<player.timestudy.studies.length; i++) {
-      if (player.timestudy.studies.length>0&&typeof(player.timestudy.studies[0])!=="number") break
-      if (player.timestudy.studies[i] == 71 || player.timestudy.studies[i] == 81 || player.timestudy.studies[i] == 91 || player.timestudy.studies[i] == 101) {
-          document.getElementById(""+player.timestudy.studies[i]).className = "timestudybought normaldimstudy"
-      } else if (player.timestudy.studies[i] == 72 || player.timestudy.studies[i] == 82 || player.timestudy.studies[i] == 92 || player.timestudy.studies[i] == 102) {
-          document.getElementById(""+player.timestudy.studies[i]).className = "timestudybought infdimstudy"
-      } else if (player.timestudy.studies[i] == 73 || player.timestudy.studies[i] == 83 || player.timestudy.studies[i] == 93 || player.timestudy.studies[i] == 103) {
-          document.getElementById(""+player.timestudy.studies[i]).className = "timestudybought timedimstudy"
-      } else if (player.timestudy.studies[i] == 121 || player.timestudy.studies[i] == 131 || player.timestudy.studies[i] == 141) {
-          document.getElementById(""+player.timestudy.studies[i]).className = "timestudybought activestudy"
-      } else if (player.timestudy.studies[i] == 122 || player.timestudy.studies[i] == 132 || player.timestudy.studies[i] == 142) {
-          document.getElementById(""+player.timestudy.studies[i]).className = "timestudybought passivestudy"
-      } else if (player.timestudy.studies[i] == 123 || player.timestudy.studies[i] == 133 || player.timestudy.studies[i] == 143) {
-          document.getElementById(""+player.timestudy.studies[i]).className = "timestudybought idlestudy"
-      } else if (player.timestudy.studies[i] == 221 || player.timestudy.studies[i] == 224 || player.timestudy.studies[i] == 225 || player.timestudy.studies[i] == 228 || player.timestudy.studies[i] == 231 || player.timestudy.studies[i] == 234) {
-          document.getElementById(player.timestudy.studies[i]).className = "timestudybought darkstudy"
-      } else if (player.timestudy.studies[i] == 222 || player.timestudy.studies[i] == 223 || player.timestudy.studies[i] == 226 || player.timestudy.studies[i] == 227 || player.timestudy.studies[i] == 232 || player.timestudy.studies[i] == 233) {
-          document.getElementById(player.timestudy.studies[i]).className = "timestudybought lightstudy"
-      } else {
-          document.getElementById(""+player.timestudy.studies[i]).className = "timestudybought"
-      }
-  }
+  updateBoughtTimeStudies()
   performedTS = false
 
   if (player.version > 7 && inERS && !player.aarexModifications.ersVersion) {
@@ -680,7 +659,6 @@ if (player.version < 5) {
               player.eternityBuyer.slowStop = false
               player.eternityBuyer.slowStopped = false
               player.eternityBuyer.ifAD = false
-              player.eternityBuyer.presets = {on: false, autoDil: false, selected: -1, left: 1, order: []}
               tmp.qu.autobuyer = {
                   enabled: false,
                   limit: 1,
@@ -1154,7 +1132,6 @@ if (player.version < 5) {
       player.eternityBuyer.slowStop = false
       player.eternityBuyer.slowStopped = false
       player.eternityBuyer.ifAD = false
-      player.eternityBuyer.presets = {on: false, autoDil: false, selected: -1, left: 1, order: []}
       tmp.qu.reached = tmp.qu.times > 0
       tmp.qu.nonMAGoalReached = {}
       tmp.qu.pairedChallenges.fastest = {}
@@ -1280,6 +1257,7 @@ if (player.version < 5) {
       player.aarexModifications.newGame3PlusVersion = 2.2
   }
   if (player.masterystudies) {
+	  if (player.eternityBuyer.presets === undefined) player.eternityBuyer.presets = {on: false, autoDil: false, selected: -1, selectNext: 0, left: 1, order: []}
       if (player.meta.bestOverQuantums === undefined) player.meta.bestOverQuantums = player.meta.bestAntimatter
       document.getElementById('prioritydil').value=player.eternityBuyer.dilationPerAmount
       if (player.achievements.includes("ng3p52")) document.getElementById("autoDilValue").value=player.eternityBuyer.dilationPerAmount

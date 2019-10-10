@@ -1358,7 +1358,7 @@ function getRemoteGalaxyScalingStart(galaxies) {
 	if (tmp.ngp3) {
 		for (var t=251;t<254;t++) if (player.masterystudies.includes("t"+t)) n += getMTSMult(t)
 		if (player.masterystudies.includes("t301")) n += getMTSMult(301)
-		if (player.masterystudies.includes("d12")) n += getNanofieldRewardEffect(7)
+		if (player.masterystudies.includes("d12")) n += getNanofieldRewardEffect(7, "remote")
 		if (galaxies > 1/0 && !tmp.be) n -= galaxies - 1/0
 	}
 	return n

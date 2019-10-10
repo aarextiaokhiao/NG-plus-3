@@ -790,15 +790,15 @@ function updateQuantumTabs() {
 			document.getElementById("nanofieldreward" + reward).className = reward > rewards ? "nanofieldrewardlocked" : "nanofieldreward"
 			document.getElementById("reward" + reward + "tier").textContent = getFullExpansion(Math.ceil((rewards + 1 - reward)/8))
 		}
-		document.getElementById("nanofieldreward1").textContent = hasBosonicUpg(22) ? "Dimension Supersonic scaling is " + shorten(getNanofieldRewardEffect(1)) + "x slower." :
-			"Hatch speed is " + shortenDimensions(getNanofieldRewardEffect(1)) + "x faster."
+		document.getElementById("nanofieldreward1").textContent = hasBosonicUpg(22) ? "Dimension Supersonic scaling is " + shorten(getNanofieldRewardEffect(1, "supersonic")) + "x slower." :
+			"Hatch speed is " + shortenDimensions(getNanofieldRewardEffect(1, "speed")) + "x faster."
 		document.getElementById("nanofieldreward2").textContent = "Meta-antimatter effect power is increased by " + getNanofieldRewardEffect(2).toFixed(1) + "x."
 		document.getElementById("nanofieldreward3").textContent = "Free galaxy gain is increased by " + (getNanofieldRewardEffect(3)*100-100).toFixed(1) + "%."
 		document.getElementById("nanofieldreward4").textContent = "Dilated time boost to Meta Dimensions is increased to ^" + getNanofieldRewardEffect(4).toFixed(3) + "."
 		document.getElementById("nanofieldreward5").textContent = "While dilated, Normal Dimension multipliers and tickspeed are raised to the power of " + getNanofieldRewardEffect(5).toFixed(2) + "."
 		document.getElementById("nanofieldreward6").textContent = "Meta-dimension boost power is increased to " + getNanofieldRewardEffect(6).toFixed(2) + "x."
-		document.getElementById("nanofieldreward7").textContent = "Remote galaxy cost scaling starts " + getFullExpansion(getNanofieldRewardEffect(7)) + " later and the production of preon charge is " + shortenMoney(getNanofieldRewardEffect("7g")) + "x faster."
-		document.getElementById("nanofieldreward8").textContent = "Add " + getNanofieldRewardEffect(8).toFixed(2) + "x to multiplier per ten dimensions before getting affected by electrons and the production of preon energy is " + shortenMoney(getNanofieldRewardEffect("8c")) + "x faster."
+		document.getElementById("nanofieldreward7").textContent = "Remote galaxy cost scaling starts " + getFullExpansion(getNanofieldRewardEffect(7, "remote")) + " later and the production of preon charge is " + shortenMoney(getNanofieldRewardEffect(7, "charge")) + "x faster."
+		document.getElementById("nanofieldreward8").textContent = "Add " + getNanofieldRewardEffect(8, "per-10").toFixed(2) + "x to multiplier per ten dimensions before getting affected by electrons and the production of preon energy is " + shortenMoney(getNanofieldRewardEffect(8, "energy")) + "x faster."
 
 		document.getElementById("ns").textContent = ghostified || tmp.ns.neq(1) ? "Nanofield speed multiplier is currently "+shorten(tmp.ns)+"x." : ""
 	}
@@ -1797,7 +1797,7 @@ function getHatchSpeed() {
 	if (player.masterystudies.includes("t372")) speed /= getMTSMult(372)
 	if (player.masterystudies.includes("t381")) speed /= getMTSMult(381)
 	if (player.masterystudies.includes("t391")) speed /= getMTSMult(391)
-	if (player.masterystudies.includes("d12") && !hasBosonicUpg(22)) speed /= getNanofieldRewardEffect(1)
+	if (player.masterystudies.includes("d12") && !hasBosonicUpg(22)) speed /= getNanofieldRewardEffect(1, "speed")
 	if (player.masterystudies.includes("t402")) speed /= 30
 	return speed
 }
@@ -1867,7 +1867,7 @@ function maxReduceHatchSpeed() {
 }
 
 function getQuarkChargeProduction(noSpeed) {
-	let ret = getNanofieldRewardEffect("7g")
+	let ret = getNanofieldRewardEffect(7, "charge")
 	if (hasNU(3)) ret = ret.times(tmp.nu[1])
 	if (hasNU(7)) ret = ret.times(tmp.nu[3])
 	if (!noSpeed) ret = ret.times(tmp.ns)
@@ -1890,7 +1890,7 @@ function getQuarkEnergyProduction() {
 	let ret = tmp.qu.nanofield.charge.sqrt()
 	if (player.masterystudies.includes("t411")) ret = ret.times(getMTSMult(411))
 	if (player.masterystudies.includes("t421")) ret = ret.times(getMTSMult(421))
-	ret = ret.times(getNanofieldRewardEffect("8c"))
+	ret = ret.times(getNanofieldRewardEffect(8, "energy"))
 	ret = ret.times(tmp.ns)
 	return ret
 }
@@ -1906,22 +1906,26 @@ function getQuarkChargeProductionCap() {
 	return tmp.qu.nanofield.charge.times(2500).sqrt()
 }
 
-function getNanofieldRewardEffect(id) {
+function getNanofieldRewardEffect(id, effect) {
 	var rewards = tmp.qu.nanofield.rewards
 	var stacks = Math.ceil((rewards - id + 1) / 8)
 	if (id == 1) {
-		if (hasBosonicUpg(22)) return stacks+1
-		return Decimal.pow(30,stacks)
+		if (effect == "supersonic") return stacks + 1
+		if (effect == "speed") return Decimal.pow(30, stacks)
 	}
 	if (id == 2) return stacks * 6.8
 	if (id == 3) return 1 + Math.pow(stacks, 0.83) * 0.039
 	if (id == 4) return 0.1 + Math.sqrt(stacks) * 0.021
 	if (id == 5) return 1 + stacks * 0.36
 	if (id == 6) return 3 + stacks * 1.34
-	if (id == 7) return stacks * 2150
-	if (id == "7g") return Decimal.pow(2.6,Math.ceil((rewards - 6) / 8))
-	if (id == 8) return stacks * 0.76
-	if (id == "8c") return tmp.qu.nanofield.rewards>7?2.5:1
+	if (id == 7) {
+		if (effect == "remote") return stacks * 2150
+		if (effect == "charge") return Decimal.pow(2.6, Math.ceil((rewards - 6) / 8))
+	}
+	if (id == 8) {
+		if (effect == "per-10") return stacks * 0.76
+		if (effect == "energy") return tmp.qu.nanofield.rewards>7?2.5:1
+	}
 }
 
 function updateAutoQuantumMode() {
@@ -2881,34 +2885,15 @@ function unstoreTT() {
 	var newMS=[]
 	var studies=tmp.qu.bigRip.storedTS.studies
 	for (var s=0;s<studies.length;s++) {
-		if (studies[s]<240) newTS.push(studies[s])
-		else newMS.push("t"+studies[s])
+		var num=studies[s]
+		if (typeof(num)=="string") num=parseInt(num)
+		if (num<240) newTS.push(num)
+		else newMS.push("t"+num)
 	}
 	for (var s=7;s<15;s++) if (player.masterystudies.includes("d"+s)) newMS.push("d"+s)
 	player.timestudy.studies=newTS
 	player.masterystudies=newMS
-	for (var i=0; i<player.timestudy.studies.length; i++) {
-		if (player.timestudy.studies.length>0&&typeof(player.timestudy.studies[0])!=="number") break
-		if (player.timestudy.studies[i] == 71 || player.timestudy.studies[i] == 81 || player.timestudy.studies[i] == 91 || player.timestudy.studies[i] == 101) {
-			document.getElementById(""+player.timestudy.studies[i]).className = "timestudybought normaldimstudy"
-		} else if (player.timestudy.studies[i] == 72 || player.timestudy.studies[i] == 82 || player.timestudy.studies[i] == 92 || player.timestudy.studies[i] == 102) {
-			document.getElementById(""+player.timestudy.studies[i]).className = "timestudybought infdimstudy"
-		} else if (player.timestudy.studies[i] == 73 || player.timestudy.studies[i] == 83 || player.timestudy.studies[i] == 93 || player.timestudy.studies[i] == 103) {
-			document.getElementById(""+player.timestudy.studies[i]).className = "timestudybought timedimstudy"
-		} else if (player.timestudy.studies[i] == 121 || player.timestudy.studies[i] == 131 || player.timestudy.studies[i] == 141) {
-			document.getElementById(""+player.timestudy.studies[i]).className = "timestudybought activestudy"
-		} else if (player.timestudy.studies[i] == 122 || player.timestudy.studies[i] == 132 || player.timestudy.studies[i] == 142) {
-			document.getElementById(""+player.timestudy.studies[i]).className = "timestudybought passivestudy"
-		} else if (player.timestudy.studies[i] == 123 || player.timestudy.studies[i] == 133 || player.timestudy.studies[i] == 143) {
-			document.getElementById(""+player.timestudy.studies[i]).className = "timestudybought idlestudy"
-		} else if (player.timestudy.studies[i] == 221 || player.timestudy.studies[i] == 224 || player.timestudy.studies[i] == 225 || player.timestudy.studies[i] == 228 || player.timestudy.studies[i] == 231 || player.timestudy.studies[i] == 234) {
-			document.getElementById(player.timestudy.studies[i]).className = "timestudybought darkstudy"
-		} else if (player.timestudy.studies[i] == 222 || player.timestudy.studies[i] == 223 || player.timestudy.studies[i] == 226 || player.timestudy.studies[i] == 227 || player.timestudy.studies[i] == 232 || player.timestudy.studies[i] == 233) {
-			document.getElementById(player.timestudy.studies[i]).className = "timestudybought lightstudy"
-		} else {
-			document.getElementById(""+player.timestudy.studies[i]).className = "timestudybought"
-		}
-	}
+	updateBoughtTimeStudies()
 	performedTS=false
 	updateTheoremButtons()
 	drawStudyTree()
