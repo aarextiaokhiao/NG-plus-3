@@ -1276,21 +1276,22 @@ function quantumReset(force, auto, challid, bigRip, implode=false) {
 		tmp.qu.nanofield.powerThreshold = new Decimal(50)
 		player.eternityBuyer.tpUpgraded = false
 		player.eternityBuyer.slowStopped = false
-		tmp.qu.bigRip.active = bigRip
-		if (bigRip) {
-			for (var u=0;u<tmp.qu.bigRip.upgrades.length;u++) tweakBigRip(tmp.qu.bigRip.upgrades[u])
-			if (tmp.qu.bigRip.times < 1) document.getElementById("bigRipConfirmBtn").style.display = "inline-block"
-			tmp.qu.bigRip.times++
-			tmp.qu.bigRip.bestThisRun = player.money
-			giveAchievement("To the new dimension!")
-			if (tmp.qu.breakEternity.break) tmp.qu.breakEternity.did = true
-			if (player.achievements.includes("ng3p78")) player.ghostify.neutrinos.generationGain = player.ghostify.neutrinos.generationGain % 3 + 1
-		} else {
-			if (!tmp.qu.bigRip.upgrades.includes(1)&&oheHeadstart) {
-				player.infmultbuyer=true
-				for (var d=0;d<8;d++) player.infDimBuyers[d]=true
+		if (tmp.qu.bigRip.active!=bigRip) {
+			if (bigRip) {
+				for (var u=0;u<tmp.qu.bigRip.upgrades.length;u++) tweakBigRip(tmp.qu.bigRip.upgrades[u])
+				if (tmp.qu.bigRip.times<1) document.getElementById("bigRipConfirmBtn").style.display="inline-block"
+				tmp.qu.bigRip.times++
+				giveAchievement("To the new dimension!")
+				if (tmp.qu.breakEternity.break) tmp.qu.breakEternity.did=true
+			} else {
+				if (!tmp.qu.bigRip.upgrades.includes(1)&&oheHeadstart) {
+					player.infmultbuyer=true
+					for (var d=0;d<8;d++) player.infDimBuyers[d]=true
+				}
+				if (isRewardEnabled(11)) unstoreTT()
 			}
-			if (isRewardEnabled(11)) unstoreTT()
+			if (ghostified) player.ghostify.neutrinos.generationGain=player.ghostify.neutrinos.generationGain % 3 + 1
+			tmp.qu.bigRip.active=bigRip
 		}
 		document.getElementById("metaAntimatterEffectType").textContent=inQC(3)?"multiplier on all Infinity Dimensions":"extra multiplier per dimension boost"
 		updateColorCharge()

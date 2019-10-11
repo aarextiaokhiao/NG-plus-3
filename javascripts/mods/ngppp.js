@@ -3425,7 +3425,7 @@ function ghostifyReset(implode, gain, amount, force) {
 		autoSacrifice: player.autoSacrifice,
 		replicanti: {
 			amount: new Decimal(bm ? 1 : 0),
-			unl: bm ? true : false,
+			unl: bm > 0,
 			chance: 0.01,
 			chanceCost: new Decimal(player.galacticSacrifice!==undefined?1e90:1e150),
 			interval: 1000,
@@ -3501,7 +3501,7 @@ function ghostifyReset(implode, gain, amount, force) {
 			times: 0
 		}:player.exdilation,
 		blackhole: player.exdilation!=undefined?{
-			unl: speedrunMilestonesReached > 4,
+			unl: bm > 0,
 			upgrades: {dilatedTime: 0, bankedInfinities: 0, replicanti: 0, total: 0},
 			power: new Decimal(0)
 		}:player.blackhole,
@@ -3512,7 +3512,7 @@ function ghostifyReset(implode, gain, amount, force) {
 			bestAntimatter: new Decimal(100),
 			bestOverQuantums: new Decimal(100),
 			bestOverGhostifies: player.meta.bestOverGhostifies,
-			resets: 0,
+			resets: bm ? 4 : 0,
 			'1': {
 				amount: new Decimal(0),
 				bought: 0,
@@ -3891,12 +3891,14 @@ function ghostifyReset(implode, gain, amount, force) {
 		else document.getElementById("neutrinoUpg"+(player.ghostify.times+2)).style.display=""
 	}
 	document.getElementById("GHPAmount").textContent = shortenDimensions(player.ghostify.ghostParticles)
-	if (bm>6) player.ghostify.neutrinos.generationGain=player.ghostify.neutrinos.generationGain%3+1
-	else {
-		player.ghostify.neutrinos.electron = new Decimal(0)
-		player.ghostify.neutrinos.mu = new Decimal(0)
-		player.ghostify.neutrinos.tau = new Decimal(0)
-		player.ghostify.neutrinos.generationGain = 1
+	if (bm<7) {
+		player.ghostify.neutrinos.electron=new Decimal(0)
+		player.ghostify.neutrinos.mu=new Decimal(0)
+		player.ghostify.neutrinos.tau=new Decimal(0)
+		player.ghostify.neutrinos.generationGain=1
+	} else if (!force) {
+		player.ghostify.neutrinos.generationGain=player.ghostify.neutrinos.generationGain%3+1
+		if (player.achievements.includes("ng3p68")) gainNeutrinos(1e6,"all")
 	}
 	player.ghostify.ghostlyPhotons.amount=new Decimal(0)
 	player.ghostify.ghostlyPhotons.darkMatter=new Decimal(0)
@@ -4322,7 +4324,7 @@ function changeAutoGhost(o) {
 		if (!isNaN(num)&&num>0) player.ghostify.automatorGhosts[11].cw=num
 	} else if (o=="13t") {
 		var num=parseFloat(document.getElementById("autoGhost13t").value)
-		if (!isNaN(num)&&num>0) player.ghostify.automatorGhosts[13].t=num
+		if (!isNaN(num)&&num>=0) player.ghostify.automatorGhosts[13].t=num
 	} else if (o=="13u") {
 		var num=parseFloat(document.getElementById("autoGhost13u").value)
 		if (!isNaN(num)&&num>0) player.ghostify.automatorGhosts[13].u=num
@@ -4568,6 +4570,20 @@ function recordModifiedQC(id,num,mod) {
 	}
 	if (data[id]===undefined) data[id]=num
 	else data[id]=Math.min(num,data[id])
+}
+
+function gainNeutrinos(bulkGal, type) {
+	let gain=getNeutrinoGain().times(bulkGal)
+	let gens=["electron","mu","tau"]
+	if (type=="all") {
+		for (var g=0;g<3;g++) {
+			var gen=gens[g]
+			player.ghostify.neutrinos[gen]=player.ghostify.neutrinos[gen].add(gain).round()
+		}
+	} else if (type=="gen") {
+		var gen=gens[player.ghostify.neutrinos.generationGain-1]
+		player.ghostify.neutrinos[gen]=player.ghostify.neutrinos[gen].add(gain).round()
+	}
 }
 
 //Bosonic Lab
