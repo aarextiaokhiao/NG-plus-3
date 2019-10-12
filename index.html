@@ -1800,8 +1800,6 @@
 			<div id="stats" class="statstab">
 				<div id='brfilter'><br></div>
 				<div id="totalmoney">You have made x antimatter.</div>
-				<div id="bestmoneythisrip"></div>
-				<div id="totalmoneybigrip"></div>
 				<div id="totalresets">You have made x dimensional boosts/shifts.</div>
 				<div id="tdboosts"></div>
 				<div id="boosts"></div>
@@ -1816,9 +1814,15 @@
 				</div>
 				<div id="quantumStatistics">
 					<div id="quantumed"></div>
-					<div id="bigRipped"></div>
 					<div id="bestQuantum"></div>
 					<div id="thisQuantum"></div>
+					<br>
+				</div>
+				<div id="bigRipStatistics">
+					<div id="bigRipped"></div>
+					<div id="bestmoneythisrip"></div>
+					<div id="totalmoneybigrip"></div>
+					<div id="bestgalsbigrip"></div>
 					<br>
 				</div>
 				<div id="eternityStatistics">
@@ -4728,32 +4732,32 @@
 				You have gotten <span id="rewards" style="font-size:35px"></span> rewards.
 				<table class="table" align=center style="margin: auto" id="milestones">
 					<tr>
-						<td class="milestoneText">First reward (<span id="reward1tier">0</span>):</td>
-						<td class="milestoneText">Second reward (<span id="reward2tier">0</span>):</td>
+						<td id="nanofieldreward1tier" class="milestoneText"></td>
+						<td id="nanofieldreward2tier" class="milestoneText"></td>
 					</tr>
 					<tr>
 						<td><button class="nanofieldrewardlocked" id="nanofieldreward1"></button></td>
 						<td><button class="nanofieldrewardlocked" id="nanofieldreward2"></button></td>
 					</tr>
 					<tr>
-						<td class="milestoneText">Third reward (<span id="reward3tier">0</span>):</td>
-						<td class="milestoneText">Fourth reward (<span id="reward4tier">0</span>):</td>
+						<td id="nanofieldreward3tier" class="milestoneText"></td>
+						<td id="nanofieldreward4tier" class="milestoneText"></td>
 					</tr>
 					<tr>
 						<td><button class="nanofieldrewardlocked" id="nanofieldreward3"></button></td>
 						<td><button class="nanofieldrewardlocked" id="nanofieldreward4"></button></td>
 					</tr>
 					<tr>
-						<td class="milestoneText">Fifth reward (<span id="reward5tier">0</span>):</td>
-						<td class="milestoneText">Sixth reward (<span id="reward6tier">0</span>):</td>
+						<td id="nanofieldreward5tier" class="milestoneText"></td>
+						<td id="nanofieldreward6tier" class="milestoneText"></td>
 					</tr>
 					<tr>
 						<td><button class="nanofieldrewardlocked" id="nanofieldreward5"></button></td>
 						<td><button class="nanofieldrewardlocked" id="nanofieldreward6"></button></td>
 					</tr>
 					<tr>
-						<td class="milestoneText">Seventh reward (<span id="reward7tier">0</span>):</td>
-						<td class="milestoneText">Eighth reward (<span id="reward8tier">0</span>):</td>
+						<td id="nanofieldreward7tier" class="milestoneText"></td>
+						<td id="nanofieldreward8tier" class="milestoneText"></td>
 					</tr>
 					<tr>
 						<td><button class="nanofieldrewardlocked" id="nanofieldreward7" style="font-size:10px"></button></td>
@@ -4821,6 +4825,7 @@
 			</table>
 			<div id="neutrinos" class="ghostifytab">
 				<div id="neutrinosGain"></div>
+				<div id="neutrinosGainGhostify"></div>
 				<table class='qtable'>
 					<tr>
 						<td>You have <span class="neutrinos" id="electronNeutrinos">0</span> electron neutrinos.</td>

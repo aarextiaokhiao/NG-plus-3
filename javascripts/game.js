@@ -1598,8 +1598,6 @@ function updateDimensions() {
 
     if (document.getElementById("stats").style.display == "block" && document.getElementById("statistics").style.display == "block") {
         document.getElementById("totalmoney").textContent = 'You have made a total of ' + shortenMoney(player.totalmoney) + ' antimatter.'
-        document.getElementById("bestmoneythisrip").textContent = (!tmp.ngp3 ? false : tmp.qu.bigRip.active) ? 'Your best antimatter for this big rip is ' + shortenMoney(tmp.qu.bigRip.bestThisRun) + "." : ""
-        document.getElementById("totalmoneybigrip").textContent = (!tmp.ngp3 ? false : ghostified || tmp.qu.bigRip.times) ? 'You have made a total of ' + shortenMoney(tmp.qu.bigRip.totalAntimatter) + ' antimatter in all big rips.' : ""
         document.getElementById("totalresets").textContent = 'You have done ' + getFullExpansion(player.resets) + ' dimension boosts/shifts.'
         document.getElementById("tdboosts").textContent = player.aarexModifications.ngmX>3?'You have done ' + getFullExpansion(player.tdBoosts) + ' time dimension boosts/shifts.':""
         var showBoosts=isTickspeedBoostPossible()
@@ -1658,16 +1656,24 @@ function updateDimensions() {
         if (player.exdilation == undefined ? false : player.exdilation.times > 1) document.getElementById("exdilated").textContent = "You have reversed dilation "+getFullExpansion(player.exdilation.times)+" times."
         else document.getElementById("exdilated").textContent = ""
 
-        if (player.meta ? tmp.qu.times < 1 : true) document.getElementById("quantumStatistics").style.display = "none"
+        if (!quantumed) document.getElementById("quantumStatistics").style.display = "none"
         else {
             document.getElementById("quantumStatistics").style.display = ""
             document.getElementById("quantumed").textContent = "You have gone quantum "+getFullExpansion(tmp.qu.times)+" times."
-            document.getElementById("bigRipped").textContent = (!tmp.ngp3 ? false : tmp.qu.bigRip.times) ? "You have big ripped the universe "+getFullExpansion(tmp.qu.bigRip.times)+" times." : ""
             document.getElementById("thisQuantum").textContent = "You have spent "+timeDisplay(tmp.qu.time)+" in this quantum."
             document.getElementById("bestQuantum").textContent = "Your fastest quantum is in "+timeDisplay(tmp.qu.best)+"."
         }
 
-        if (tmp.ngp3 ? player.ghostify.times < 1 : true) document.getElementById("ghostifyStatistics").style.display = "none"
+		if (!player.achievements.includes("ng3p51"))  document.getElementById("bigRipStatistics").style.display = "none"
+        else {
+			document.getElementById("bigRipStatistics").style.display = ""
+            setAndMaybeShow("bigRipped", tmp.qu.bigRip.times, '"You have big ripped the universe "+getFullExpansion(tmp.qu.bigRip.times)+" times."')
+			setAndMaybeShow("bestmoneythisrip", tmp.qu.bigRip.active, "'Your best antimatter for this big rip is ' + shortenMoney(tmp.qu.bigRip.bestThisRun) + '.'")
+			document.getElementById("totalmoneybigrip").textContent = 'You have made a total of ' + shortenMoney(tmp.qu.bigRip.totalAntimatter) + ' antimatter in all big rips.'
+			document.getElementById("bestgalsbigrip").textContent = 'Your best amount of normal galaxies for all Big Rips is ' + getFullExpansion(tmp.qu.bigRip.bestGals) + "."
+		}
+
+        if (!ghostified) document.getElementById("ghostifyStatistics").style.display = "none"
         else {
             document.getElementById("ghostifyStatistics").style.display = ""
             document.getElementById("ghostified").textContent = "You have became a ghost and passed big ripped universes "+getFullExpansion(player.ghostify.times)+" times."
@@ -2335,7 +2341,7 @@ function toggleChallengeRetry() {
 
 document.getElementById("news").onclick = function () {
 	if (document.getElementById("news").textContent === "Click this to unlock a secret achievement.") giveAchievement("Real news")
-	if (document.getElementById("news").textContent === "If you are a ghost, try to click me!" && ghostified && (player.options.secrets.ghostlyNews !== undefined ? player.options.secrets.ghostlyNews !== undefined : false)) {
+	if (document.getElementById("news").textContent === "If you are a ghost, try to click me!" && ghostified && (player.options.secrets === undefined || player.options.secrets.ghostlyNews === undefined)) {
 		if (player.options.secrets === undefined) {
 			player.options.secrets = {}
 			document.getElementById("secretoptionsbtn").style.display = ""
@@ -2348,7 +2354,7 @@ document.getElementById("news").onclick = function () {
 	if (document.getElementById("news").textContent === "Don't click this news") {
 		alert("I told you so.")
 		clearInterval(gameLoopIntervalId)
-		simulateTime(0)
+		simulateTime(0, false, "lair")
 		player.lastUpdate = new Date().getTime()
 		startInterval()
 		giveAchievement("Lie the news")
@@ -3149,7 +3155,6 @@ function galaxyReset(bulk) {
     autoS = true;
     if (player.sacrificed == 0 && bulk > 0) giveAchievement("I don't believe in Gods");
     if (player.tickspeedBoosts !== undefined) player.tickspeedBoosts = 0
-	if (ghostified) gainNeutrinos(bulk, "gen")
     player = {
         money: player.achievements.includes("r111") ? player.money : new Decimal(10),
         tickSpeedCost: new Decimal(1000),
@@ -3370,7 +3375,11 @@ function galaxyReset(bulk) {
     if (player.achievements.includes("r66")) player.tickspeed = player.tickspeed.times(0.98);
     if (player.galaxies >= 540 && player.replicanti.galaxies == 0) giveAchievement("Unique snowflakes")
     if (!player.achievements.includes("ngpp18")) checkUniversalHarmony()
-    if (tmp.ngp3) if (tmp.qu.autoOptions.sacrifice) sacrificeGalaxy(6, true)
+    if (tmp.ngp3 && bulk) {
+        if (tmp.qu.autoOptions.sacrifice) sacrificeGalaxy(6, true)
+        if (tmp.qu.bigRip.active) tmp.qu.bigRip.bestGals = Math.max(tmp.qu.bigRip.bestGals, player.galaxies)
+	    if (ghostified) gainNeutrinos(bulk, "gen")
+    }
     hideDimensions()
     updateTickSpeed();
 };
@@ -4054,7 +4063,7 @@ function setAchieveTooltip() {
     finite.setAttribute('ach-tooltip', "Get "+shortenCosts(1e33)+" Space Shards without Breaking Eternity.")
     really.setAttribute('ach-tooltip', "Undo Big Rip with at least "+shortenCosts(Decimal.pow(10, 1e5))+" matter.")
     willenough.setAttribute('ach-tooltip', "Reach "+shortenCosts(Decimal.pow(10,player.aarexModifications.ngudpV?268435456:36000000))+" replicanti."+(player.aarexModifications.ngudpV?" Reward: You keep Black Hole Dimensions on Quantum.":""))
-    pls.setAttribute('ach-tooltip', "Reach "+shortenCosts(Decimal.pow(10, 95e4))+" IP while dilated, big ripped, and without having time studies, EP mult upgrades, and Break Eternity. Reward: Each time you become a ghost, you gain "+shortenCosts(1e6)+" galaxies worth of all generations of neutrinos.")
+    pls.setAttribute('ach-tooltip', "Reach "+shortenCosts(Decimal.pow(10, 95e4))+" IP while dilated, big ripped, and without having time studies, EP mult upgrades, and Break Eternity. Reward: Each time you become a ghost, you gain "+shortenDimensions(2e3)+" galaxies worth of all generations of neutrinos, multiplied by your best-ever galaxy amount in all Big Rips.")
     bm1.setAttribute('ach-tooltip', "Reward: Start Ghostifies with all Speedrun Milestones and all "+shorten(Number.MAX_VALUE)+" QK features unlocked, all Paired Challenges completed, all Big Rip upgrades bought, Nanofield is 2x faster until you reach 16 rewards, and you get quarks based on your best MA this quantum.")
     bm10.setAttribute('ach-tooltip', "Reward: Start Ghostifies with 10 of Fourth Emperor Dimensions"+(player.aarexModifications.ngudpV?" and start Big Rips with 3rd row of Eternity upgrades.":"."))
     bm14.setAttribute('ach-tooltip', "Reward: Start Ghostifies with "+shortenCosts(1e25)+" Quark Spins and Branches are 10x faster.")
@@ -7500,125 +7509,128 @@ setInterval(function() {
 
     let ableToGetRid2 = checkEmpty && player.dilation.active
 
-    if (infchallengeTimes < 7.5) giveAchievement("Never again")
-    if (player.infinityPoints.gte(new Decimal("1e22000")) && checkEmpty) giveAchievement("What do I have to do to get rid of you")
-    if (player.replicanti.galaxies >= 180*player.galaxies && player.galaxies > 0) giveAchievement("Popular music")
-    if (getEternitied() >= 1e12) giveAchievement("The cap is a million, not a trillion")
-    if (player.eternityPoints.gte(Number.MAX_VALUE)) giveAchievement("But I wanted another prestige layer...")
-    if (player.eternityPoints.gte("1e40000")) giveAchievement("In the grim darkness of the far endgame")
-    if (player.eternityPoints.gte("9e99999999")) giveAchievement("This achievement doesn't exist 3")
-    if (player.infinityPoints.gte(1e100) && player.firstAmount.equals(0) && player.infinitied == 0 && player.resets <= 4 && player.galaxies <= 1 && player.replicanti.galaxies == 0) giveAchievement("Like feasting on a behind")
-    if (player.infinityPoints.gte('9.99999e999')) giveAchievement("This achievement doesn't exist II");
-    if (player.infinityPoints.gte('1e30008')) giveAchievement("Can you get infinite IP?");
-    if (player.infinitied > 2e6) giveAchievement("2 Million Infinities")
-    if (player.money.gte("9.9999e9999")) giveAchievement("This achievement doesn't exist")
-    if (player.money.gte("1e35000")) giveAchievement("I got a few to spare")
-    if (player.infinityPower.gt(1)) giveAchievement("A new beginning.");
-    if (player.infinityPower.gt(1e6)) giveAchievement("1 million is a lot"); //TBD
-    if (player.infinityPower.gt(1e260)) giveAchievement("Minute of infinity"); //TBD
-    if (player.totalTickGained >= 308) giveAchievement("Infinite time");
-    if (player.totalTickGained>=1e6) giveAchievement("GAS GAS GAS")
-    if (player.firstPow >= 10e30) giveAchievement("I forgot to nerf that")
-    if (player.money >= 10e79) giveAchievement("Antimatter Apocalypse")
-    if (player.totalTimePlayed >= 10 * 60 * 60 * 24 * 8) giveAchievement("One for each dimension")
-    if (player.seventhAmount > 1e12) giveAchievement("Multidimensional");
-    if (player.tickspeed.lt(1e-26)) giveAchievement("Faster than a potato");
-    if (player.tickspeed.lt(1e-55)) giveAchievement("Faster than a squared potato");
-    if (Math.random() < 0.00001) giveAchievement("Do you feel lucky? Well do ya punk?")
-    if ((player.matter.gte(2.586e15) && player.currentChallenge == "postc6") || player.matter.gte(Number.MAX_VALUE)) giveAchievement("It's not called matter dimensions is it?")
-
-    document.getElementById("dilationTabbtn").style.display = (player.dilation.studies.includes(1)) ? "table-cell" : "none"
-    document.getElementById("blackHoleTabbtn").style.display = player.dilation.studies.includes(1) && player.exdilation != undefined ? "table-cell" : "none"
-    updateDilationUpgradeButtons()
+	if (infchallengeTimes < 7.5) giveAchievement("Never again")
+	if (player.infinityPoints.gte(new Decimal("1e22000")) && checkEmpty) giveAchievement("What do I have to do to get rid of you")
+	if (player.replicanti.galaxies >= 180*player.galaxies && player.galaxies > 0) giveAchievement("Popular music")
+	if (getEternitied() >= 1e12) giveAchievement("The cap is a million, not a trillion")
+	if (player.eternityPoints.gte(Number.MAX_VALUE)) giveAchievement("But I wanted another prestige layer...")
+	if (player.eternityPoints.gte("1e40000")) giveAchievement("In the grim darkness of the far endgame")
+	if (player.eternityPoints.gte("9e99999999")) giveAchievement("This achievement doesn't exist 3")
+	if (player.infinityPoints.gte(1e100) && player.firstAmount.equals(0) && player.infinitied == 0 && player.resets <= 4 && player.galaxies <= 1 && player.replicanti.galaxies == 0) giveAchievement("Like feasting on a behind")
+	if (player.infinityPoints.gte('9.99999e999')) giveAchievement("This achievement doesn't exist II");
+	if (player.infinityPoints.gte('1e30008')) giveAchievement("Can you get infinite IP?");
+	if (player.infinitied > 2e6) giveAchievement("2 Million Infinities")
+	if (player.money.gte("9.9999e9999")) giveAchievement("This achievement doesn't exist")
+	if (player.money.gte("1e35000")) giveAchievement("I got a few to spare")
+	if (player.infinityPower.gt(1)) giveAchievement("A new beginning.");
+	if (player.infinityPower.gt(1e6)) giveAchievement("1 million is a lot"); //TBD
+	if (player.infinityPower.gt(1e260)) giveAchievement("Minute of infinity"); //TBD
+	if (player.totalTickGained >= 308) giveAchievement("Infinite time");
+	if (player.totalTickGained>=1e6) giveAchievement("GAS GAS GAS")
+	if (player.firstPow >= 10e30) giveAchievement("I forgot to nerf that")
+	if (player.money >= 10e79) giveAchievement("Antimatter Apocalypse")
+	if (player.totalTimePlayed >= 10 * 60 * 60 * 24 * 8) giveAchievement("One for each dimension")
+	if (player.seventhAmount > 1e12) giveAchievement("Multidimensional");
+	if (player.tickspeed.lt(1e-26)) giveAchievement("Faster than a potato");
+	if (player.tickspeed.lt(1e-55)) giveAchievement("Faster than a squared potato");
+	if (Math.random() < 0.00001) giveAchievement("Do you feel lucky? Well do ya punk?")
+	if ((player.matter.gte(2.586e15) && player.currentChallenge == "postc6") || player.matter.gte(Number.MAX_VALUE)) giveAchievement("It's not called matter dimensions is it?")
+	if (player.infinityDimension1.baseAmount == 0 &&
+		player.infinityDimension2.baseAmount == 0 &&
+		player.infinityDimension3.baseAmount == 0 &&
+		player.infinityDimension4.baseAmount == 0 &&
+		player.infinityDimension5.baseAmount == 0 &&
+		player.infinityDimension6.baseAmount == 0 &&
+		player.infinityDimension7.baseAmount == 0 &&
+		player.infinityDimension8.baseAmount == 0 &&
+		player.infMultCost.equals(10) &&
+		player.infinityPoints.gt(new Decimal("1e140000"))) {
+		giveAchievement("I never liked this infinity stuff anyway")
+	}
+	if (player.replicanti.amount.gt(new Decimal("1e20000"))) giveAchievement("When will it be enough?")
+	if (player.boughtDims && player.replicanti.amount.gt("1e1000000")) giveAchievement("Do you really need a guide for this?");
+	if (player.tickspeed.e < -8296262) giveAchievement("Faster than a potato^286078")
+	if (ableToGetRid2 && player.infinityPoints.e >= 20000) giveAchievement("This is what I have to do to get rid of you.")
+	if (player.why >= 1e6) giveAchievement("Should we tell them about buy max...")
+	if (player.replicanti.amount.gt(new Decimal("1e100000"))) giveAchievement("It will never be enough")
+	if (player.exdilation!==undefined) {
+		let ableToGetRid3 = ableToGetRid2 && player.dilation.upgrades.length === 0 && player.dilation.rebuyables[1] === 0 && player.dilation.rebuyables[2] === 0 && player.dilation.rebuyables[3] === 0
+		if (player.blackhole.power.gt(0)) giveAchievement("A newer beginning.")
+		if (player.blackhole.power.gt(1e6)) giveAchievement("1 million is still a lot")
+		if (player.exdilation.unspent.gt(1e5)) giveAchievement("Finally I'm out of that channel");
+		if (ableToGetRid2 && player.infinityPoints.e >= 20000) giveAchievement("I already got rid of you.")
+	}
+	checkUniversalHarmony()
+	if (tmp.ngp3) {
+		let ableToGetRid3 = ableToGetRid2 && tmp.qu.electrons.amount == 0
+		let ableToGetRid4 = ableToGetRid2 && inQC(2)
+		let ableToGetRid5 = ableToGetRid4 && player.dontWant
+		let ableToGetRid6 = ableToGetRid2 && inQC(6) && inQC(8)
+		let noTree = false
+		for (var u=1;u<9;u++) {
+			if (tmp.qu.tod.upgrades[u]) break
+			else noTree = true
+		}
+		if (player.meta.antimatter.gte(Number.MAX_VALUE)) giveAchievement("I don't have enough fuel!")
+		if (player.galaxies>899&&!player.dilation.studies.includes(1)) giveAchievement("No more tax fraud!")
+		if (player.money.gte(Decimal.pow(10,3*86400*365.2425*2019))) giveAchievement("Old age")
+		if (player.infinityPoints.e>=4e5&&ableToGetRid3) giveAchievement("I already got rid of you...")
+		if (player.meta.resets == 8) if (player.meta.antimatter.e>1499) giveAchievement("We are not going squared.")
+		if (player.eightBought>=4e6&&player.replicanti.galaxies+extraReplGalaxies+player.dilation.freeGalaxies<1) giveAchievement("Intergalactic")
+		if (player.old&&player.meta.antimatter.e>1699) giveAchievement("Old memories come true")
+		if (player.infinityPoints.e>=354e3&&ableToGetRid4) giveAchievement("Seriously, I already got rid of you.")
+		if (player.meta.antimatter.e>332&&player.meta[2].amount.eq(0)&&player.meta.resets<1) giveAchievement("ERROR 500: INTERNAL DIMENSION ERROR")
+		if (player.money.e>=788e11&&tmp.qu.pairedChallenges.completed<1) giveAchievement("The truth of anti-challenged")
+		if (player.money.e>=62e10&&player.currentEternityChall=="eterc11") giveAchievement("I can’t get my multipliers higher!")
+		if (player.replicanti.amount.e>=2e6&&player.dilation.tachyonParticles.eq(0)) giveAchievement("No dilation means no production.")
+		if (player.infinityPoints.gte(Decimal.pow(Number.MAX_VALUE, 1000))&&ableToGetRid5) giveAchievement("I don't want you to live anymore.")
+		if (player.dilation.dilatedTime.e>410&&tmp.qu.notrelative) giveAchievement("Time is not relative")
+		if (!player.achievements.includes("ng3p42")) {
+			for (d=2;d<9;d++) {
+				if (player[TIER_NAMES[d]+"Amount"].gt(0) || player["infinityDimension"+d].amount.gt(0) || player["timeDimension"+d].amount.gt(0) || player.meta[d].amount.gt(0)) break
+				else if (player.money.e>16e11&&d>7) giveAchievement("ERROR 404: DIMENSIONS NOT FOUND")
+			}
+		}
+		if (player.money.e>=8e6&&inQC(6)&&inQC(8)) giveAchievement("Impossible expectations")
+		if (player.timestudy.theorem>11e6&&tmp.qu.wasted) giveAchievement("Studies are wasted")
+		if (tmp.qu.replicants.requirement.gte("1e12500000")) giveAchievement("Stop blocking me!")
+		if (player.infinityPoints.gte(Decimal.pow(10, 275e3))&&ableToGetRid6) giveAchievement("Are you currently dying?")
+		if (tmp.qu.nanofield.rewards>20&&noTree) giveAchievement("But I don't want to grind!")
+		if (player.replicanti.amount.e >= (player.aarexModifications.ngudpV ? 268435456 : 36e6)) giveAchievement("Will it be enough?")
+		if (tmp.qu.bigRip.active) {
+			let ableToGetRid7 = ableToGetRid2 && player.epmult.eq(1)
+			let ableToGetRid8 = ableToGetRid7 && !tmp.qu.breakEternity.did
+			let ableToGetRid9 = ableToGetRid8 && noTree
+			let ableToGetRid10 = ableToGetRid9 && inQCModifier("ad")
+			if (player.currentEternityChall == "eterc7" && player.galaxies == 1 && player.money.e >= 8e7) giveAchievement("Time Immunity")
+			if (!player.timestudy.studies.includes(11) && player.timeShards.e > 214) giveAchievement("You're not really smart.")
+			if (ableToGetRid7 && player.infinityPoints.e >= 35e4) giveAchievement("And so your life?")
+			if (ableToGetRid8 && player.infinityPoints.e >= 95e4) giveAchievement("Please answer me why you are dying.")
+			if (Math.min(Math.min(getRadioactiveDecays("r"),getRadioactiveDecays("g")),getRadioactiveDecays("b"))>1&&tmp.qu.tod.r.quarks.min(tmp.qu.tod.g.quarks).min(tmp.qu.tod.b.quarks).gte("1e1000000000000")&&!tmp.qu.bigRip.times) giveAchievement("Weak Decay")
+			if (ableToGetRid9 && player.infinityPoints.e >= 18e5) giveAchievement("Aren't you already dead?")
+			if (inQC(6)&&inQC(8)&&tmp.qu.pairedChallenges.current==1&&player.infinityPoints.e>=1/0) giveAchievement("Back to Challenge One")
+			if (ableToGetRid10 && player.infinityPoints.e >= 1/0) giveAchievement("I give up.")
+		}
+		if (tmp.qu.bigRip.spaceShards.e>32&&!tmp.qu.breakEternity.did) giveAchievement("Finite Time")
+		if (nG(getInfinitied(), Number.MAX_VALUE)) giveAchievement("Meta-Infinity confirmed?")
+		if (nG(getEternitied(), Number.MAX_VALUE)) giveAchievement("Everlasting Eternities")
+		if (player.options.secrets && player.options.secrets.ghostlyNews && !player.options.newsHidden) giveAchievement("Two tickers")
+	}
 
 	var canAutoUpgs = canAutoDilUpgs()
 	document.getElementById('dilUpgsauto').style.display = canAutoUpgs ? "" : "none"
 	document.getElementById('distribEx').style.display = player.achievements.includes("ngud14") && player.aarexModifications.nguspV !== undefined ? "" : "none"
 	if (canAutoUpgs && player.autoEterOptions.dilUpgs) autoBuyDilUpgs()
 
-    if (player.infinityDimension1.baseAmount == 0 &&
-        player.infinityDimension2.baseAmount == 0 &&
-        player.infinityDimension3.baseAmount == 0 &&
-        player.infinityDimension4.baseAmount == 0 &&
-        player.infinityDimension5.baseAmount == 0 &&
-        player.infinityDimension6.baseAmount == 0 &&
-        player.infinityDimension7.baseAmount == 0 &&
-        player.infinityDimension8.baseAmount == 0 &&
-        player.infMultCost.equals(10) &&
-        player.infinityPoints.gt(new Decimal("1e140000"))) {
-        giveAchievement("I never liked this infinity stuff anyway")
-    }
+	document.getElementById("dilationTabbtn").style.display = (player.dilation.studies.includes(1)) ? "table-cell" : "none"
+	document.getElementById("blackHoleTabbtn").style.display = player.dilation.studies.includes(1) && player.exdilation != undefined ? "table-cell" : "none"
+	updateDilationUpgradeButtons()
 
-    if (player.replicanti.amount.gt(new Decimal("1e20000"))) giveAchievement("When will it be enough?")
-    if (player.replicanti.amount.gt(new Decimal("1e100000"))) giveAchievement("It will never be enough")
-    if (player.boughtDims && player.replicanti.amount.gt("1e1000000")) giveAchievement("Do you really need a guide for this?");
-    if (player.tickspeed.e < -8296262) giveAchievement("Faster than a potato^286078")
-    if (ableToGetRid2 && player.infinityPoints.e >= 20000) giveAchievement("This is what I have to do to get rid of you.")
-    if (player.why >= 1e6) giveAchievement("Should we tell them about buy max...")
-    checkUniversalHarmony()
-    if (player.exdilation!=undefined) {
-        let ableToGetRid3 = ableToGetRid2 && player.dilation.upgrades.length === 0 && player.dilation.rebuyables[1] === 0 && player.dilation.rebuyables[2] === 0 && player.dilation.rebuyables[3] === 0
-        if (player.blackhole.power.gt(0)) giveAchievement("A newer beginning.")
-        if (player.blackhole.power.gt(1e6)) giveAchievement("1 million is still a lot")
-        if (player.exdilation.unspent.gt(1e5)) giveAchievement("Finally I'm out of that channel");
-        if (ableToGetRid2 && player.infinityPoints.e >= 20000) giveAchievement("I already got rid of you.")
-    }
-    if (tmp.ngp3) {
-        let ableToGetRid3 = ableToGetRid2 && tmp.qu.electrons.amount == 0
-        let ableToGetRid4 = ableToGetRid2 && inQC(2)
-        let ableToGetRid5 = ableToGetRid4 && player.dontWant
-        let ableToGetRid6 = ableToGetRid2 && inQC(6) && inQC(8)
-        let noTree = false
-        for (var u=1;u<9;u++) {
-            if (tmp.qu.tod.upgrades[u]) break
-            else noTree = true
-        }
+	document.getElementById('epmultauto').style.display=player.achievements.includes("ngpp17")?"":"none"
+	for (i=1;i<9;i++) document.getElementById("td"+i+'auto').style.visibility=player.achievements.includes("ngpp17")?"visible":"hidden"
+	document.getElementById('togglealltimedims').style.visibility=player.achievements.includes("ngpp17")?"visible":"hidden"
+	document.getElementById('replicantibulkmodetoggle').style.display=player.achievements.includes("ngpp16")?"inline-block":"none"
 
-        if (player.meta.antimatter.gte(Number.MAX_VALUE)) giveAchievement("I don't have enough fuel!")
-        if (player.galaxies>899&&!player.dilation.studies.includes(1)) giveAchievement("No more tax fraud!")
-        if (player.money.gte(Decimal.pow(10,3*86400*365.2425*2019))) giveAchievement("Old age")
-        if (player.infinityPoints.e>=4e5&&ableToGetRid3) giveAchievement("I already got rid of you...")
-        if (player.meta.resets == 8) if (player.meta.antimatter.e>1499) giveAchievement("We are not going squared.")
-        if (player.eightBought>=4e6&&player.replicanti.galaxies+extraReplGalaxies+player.dilation.freeGalaxies<1) giveAchievement("Intergalactic")
-        if (player.old&&player.meta.antimatter.e>1699) giveAchievement("Old memories come true")
-        if (player.infinityPoints.e>=354e3&&ableToGetRid4) giveAchievement("Seriously, I already got rid of you.")
-        if (player.meta.antimatter.e>332&&player.meta[2].amount.eq(0)&&player.meta.resets<1) giveAchievement("ERROR 500: INTERNAL DIMENSION ERROR")
-        if (player.money.e>=788e11&&tmp.qu.pairedChallenges.completed<1) giveAchievement("The truth of anti-challenged")
-        if (player.money.e>=62e10&&player.currentEternityChall=="eterc11") giveAchievement("I can’t get my multipliers higher!")
-        if (player.replicanti.amount.e>=2e6&&player.dilation.tachyonParticles.eq(0)) giveAchievement("No dilation means no production.")
-        if (player.infinityPoints.gte(Decimal.pow(Number.MAX_VALUE, 1000))&&ableToGetRid5) giveAchievement("I don't want you to live anymore.")
-        if (player.dilation.dilatedTime.e>410&&tmp.qu.notrelative) giveAchievement("Time is not relative")
-        if (!player.achievements.includes("ng3p42")) {
-            for (d=2;d<9;d++) {
-                if (player[TIER_NAMES[d]+"Amount"].gt(0) || player["infinityDimension"+d].amount.gt(0) || player["timeDimension"+d].amount.gt(0) || player.meta[d].amount.gt(0)) break
-                else if (player.money.e>16e11&&d>7) giveAchievement("ERROR 404: DIMENSIONS NOT FOUND")
-            }
-        }
-        if (player.money.e>=8e6&&inQC(6)&&inQC(8)) giveAchievement("Impossible expectations")
-        if (player.timestudy.theorem>11e6&&tmp.qu.wasted) giveAchievement("Studies are wasted")
-        if (tmp.qu.replicants.requirement.gte("1e12500000")) giveAchievement("Stop blocking me!")
-        if (player.infinityPoints.gte(Decimal.pow(10, 275e3))&&ableToGetRid6) giveAchievement("Are you currently dying?")
-        if (tmp.qu.nanofield.rewards>20&&noTree) giveAchievement("But I don't want to grind!")
-        if (player.replicanti.amount.e >= (player.aarexModifications.ngudpV ? 268435456 : 36e6)) giveAchievement("Will it be enough?")
-        if (tmp.qu.bigRip.active) {
-            let ableToGetRid7 = ableToGetRid2 && player.epmult.eq(1)
-            let ableToGetRid8 = ableToGetRid7 && !tmp.qu.breakEternity.did
-            let ableToGetRid9 = ableToGetRid8 && noTree
-            let ableToGetRid10 = ableToGetRid9 && inQCModifier("ad")
-            if (player.currentEternityChall == "eterc7" && player.galaxies == 1 && player.money.e >= 8e7) giveAchievement("Time Immunity")
-            if (!player.timestudy.studies.includes(11) && player.timeShards.e > 214) giveAchievement("You're not really smart.")
-            if (ableToGetRid7 && player.infinityPoints.e >= 35e4) giveAchievement("And so your life?")
-            if (ableToGetRid8 && player.infinityPoints.e >= 95e4) giveAchievement("Please answer me why you are dying.")
-            if (Math.min(Math.min(getRadioactiveDecays("r"),getRadioactiveDecays("g")),getRadioactiveDecays("b"))>1&&tmp.qu.tod.r.quarks.min(tmp.qu.tod.g.quarks).min(tmp.qu.tod.b.quarks).gte("1e1000000000000")&&!tmp.qu.bigRip.times) giveAchievement("Weak Decay")
-            if (ableToGetRid9 && player.infinityPoints.e >= 18e5) giveAchievement("Aren't you already dead?")
-            if (inQC(6)&&inQC(8)&&tmp.qu.pairedChallenges.current==1&&player.infinityPoints.e>=1/0) giveAchievement("Back to Challenge One")
-            if (ableToGetRid10 && player.infinityPoints.e >= 1/0) giveAchievement("I give up.")
-        }
-        if (tmp.qu.bigRip.spaceShards.e>32&&!tmp.qu.breakEternity.did) giveAchievement("Finite Time")
-        if (nG(getInfinitied(), Number.MAX_VALUE)) giveAchievement("Meta-Infinity confirmed?")
-        if (nG(getEternitied(), Number.MAX_VALUE)) giveAchievement("Everlasting Eternities")
-        if (player.options.secrets && player.options.secrets.ghostlyNews && !player.options.newsHidden) giveAchievement("Two tickers")
-    }
     if (speedrunMilestonesReached>notifyId) {
         $.notify("You have unlocked "+timeDisplayShort(speedrunMilestones[notifyId]*36e3)+" speedrun milestone! "+(["You now start with 20,000 eternities when going quantum","You unlocked time theorem autobuyer","You now start with all Eternity Challenges completed and\neternity upgrades bought","You now start with dilation unlocked","You unlocked a new option for eternity autobuyer","You now start with all dilation studies and\nnon-rebuyable dilation upgrades before Meta Dimensions unlocked except passive TT gen upgrade","You unlocked first meta dimension autobuyer","You unlocked second meta dimension autobuyer","You unlocked third meta dimension autobuyer","You unlocked fourth meta dimension autobuyer","You unlocked fifth meta dimension autobuyer and you now keep time studies and passive TT gen upgrade","You unlocked sixth meta dimension autobuyer","You unlocked seventh meta dimension autobuyer","You unlocked eighth meta dimension autobuyer and\nall non-rebuyable dilation upgrades","You unlocked meta-dimension boost autobuyer","You now keep all time studies in mastery studies","You can now buy Meta Dimensions without buying the previous dimension","You now start with "+shortenCosts(1e13)+" eternities","You now start with "+shortenCosts(1e25)+" meta-antimatter on reset","You can now turn on automatic replicated galaxies anytime","You made rebuyable dilation upgrade and Meta Dimension autobuyers 3x faster","You now start with "+shortenCosts(1e100)+" dilated time on quantum and dilated time does not reset until quantum","You unlocked quantum autobuyer","You now keep replicanti on eternity","You unlocked manual mode for eternity autobuyer and sacrifice galaxy autobuyer","Your rebuyable dilation upgrade autobuyer now can buy max all upgrades","You now can buy max meta-dimension boosts and start with 4 meta-dimension boosts","For now on, you can gain banked infinities based on your post-crunch infinitied stat"])[notifyId]+".","success")
         notifyId++
@@ -8620,8 +8632,7 @@ function gameLoop(diff) {
     player.lastUpdate = thisUpdate;
 }
 
-function simulateTime(seconds, real) {
-
+function simulateTime(seconds, real, id) {
     //the game is simulated at a 50ms update rate, with a max of 1000 ticks
     //warning: do not call this function with real unless you know what you're doing
     var ticks = seconds * 20;
@@ -8645,7 +8656,6 @@ function simulateTime(seconds, real) {
         autoBuyerTick();
     }
     closeToolTip()
-    document.getElementById("offlineprogress").style.display = "block"
     var popupString = "While you were away"
     if (player.money.gt(playerStart.money)) popupString+= ",<br> your antimatter increased "+shortenMoney(player.money.log10() - (playerStart.money).log10())+" orders of magnitude"
     if (player.infinityPower.gt(playerStart.infinityPower) && !quantumed) popupString+= ",<br> infinity power increased "+shortenMoney(player.infinityPower.log10() - (Decimal.max(playerStart.infinityPower, 1)).log10())+" orders of magnitude"
@@ -8664,9 +8674,10 @@ function simulateTime(seconds, real) {
     if (popupString.length == 20) {
         popupString = popupString.slice(0, -1);
         popupString+= "... Nothing happened."
+        if (id == "lair") popupString+= "<br><br>I told you so."
         giveAchievement("While you were away... Nothing happened.")
     }
-
+    document.getElementById("offlineprogress").style.display = "block"
     document.getElementById("offlinePopup").innerHTML = popupString
 }
 

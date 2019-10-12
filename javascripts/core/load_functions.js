@@ -752,6 +752,7 @@ if (player.version < 5) {
                   times: 0,
                   bestThisRun: 0,
                   totalAntimatter: 0,
+                  bestGals: 0,
                   savedAutobuyersNoBR: {},
                   savedAutobuyersBR: {},
                   spaceShards: 0,
@@ -1221,7 +1222,6 @@ if (player.version < 5) {
 	  player.achievements=newAchievements
   }
   if (player.aarexModifications.newGame3PlusVersion < 2.2) {
-      if (tmp.qu.qcsMods === undefined) tmp.qu.qcsMods = {current:[]}
       player.ghostify.bl = {
           watt: 0,
           ticks: 0,
@@ -1291,6 +1291,7 @@ if (player.version < 5) {
           forceToQuantumAndRemove=true
           setTTAfterQuantum=2e94
       }
+      if (tmp.qu.bigRip.bestGals==undefined) tmp.qu.bigRip.bestGals=0
       if (player.ghostify.wzb.unl) giveAchievement("Even Ghostlier than before")
       if (!tmp.bl.usedEnchants.length) tmp.bl.usedEnchants=[]
       if (player.ghostify.wzb.dPUse===undefined) {
@@ -1854,7 +1855,6 @@ if (player.version < 5) {
   document.getElementById("231desc").textContent = ""
   document.getElementById("232desc").textContent = ""
   document.getElementById('replicantigalaxypowerdiv').style.display=player.achievements.includes("r106")&&player.boughtDims?"":"none"
-  document.getElementById('epmultauto').style.display=player.achievements.includes("ngpp17")?"":"none"
   document.getElementById("dilationeterupgrow").style.display="none"
   document.getElementById("blackHoleAnimBtn").style.display="none"
   if (player.exdilation != undefined) {
@@ -1880,14 +1880,11 @@ if (player.version < 5) {
   document.getElementById("dil15formula").style.display=player.masterystudies==undefined||player.aarexModifications.nguspV!==undefined?"none":""
   document.getElementById("exDilationDesc").innerHTML = player.aarexModifications.nguspV ? 'making galaxies <span id="exDilationBenefit" style="font-size:25px; color: black">0</span>% stronger in dilation.' : 'making dilation <span id="exDilationBenefit" style="font-size:25px; color: black">0</span>% less severe.'
   document.getElementById("metaAntimatterEffectType").textContent=inQC(3)?"multiplier on all Infinity Dimensions":"extra multiplier per dimension boost"
-  for (i=1;i<9;i++) document.getElementById("td"+i+'auto').style.visibility=player.achievements.includes("ngpp17")?"visible":"hidden"
-  document.getElementById('togglealltimedims').style.visibility=player.achievements.includes("ngpp17")?"visible":"hidden"
-  document.getElementById('replicantibulkmodetoggle').style.display=player.achievements.includes("ngpp16")?"inline-block":"none"
-  document.getElementById('replicantibulkmodetoggle').textContent="Mode: "+(player.galaxyMaxBulk?"Max":"Singles")
   if (player.meta) {
       document.getElementById('epmultauto').textContent="Auto: O"+(player.autoEterOptions.epmult?"N":"FF")
       for (i=1;i<9;i++) document.getElementById("td"+i+'auto').textContent="Auto: O"+(player.autoEterOptions["td"+i]?"N":"FF")
   }
+  document.getElementById('replicantibulkmodetoggle').textContent="Mode: "+(player.galaxyMaxBulk?"Max":"Singles")
   document.getElementById('sacrificeAuto').style.display=speedrunMilestonesReached>24?"":"none"
   document.getElementById('toggleautoquantummode').style.display=(player.masterystudies?tmp.qu.reachedInfQK||player.achievements.includes("ng3p25"):false)?"":"none"
   document.getElementById('assignAll').style.display=(player.masterystudies?tmp.qu.reachedInfQK||ghostified:false)?"":"none"

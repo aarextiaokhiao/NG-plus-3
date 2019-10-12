@@ -788,7 +788,7 @@ function updateQuantumTabs() {
 
 		for (var reward=1; reward<9; reward++) {
 			document.getElementById("nanofieldreward" + reward).className = reward > rewards ? "nanofieldrewardlocked" : "nanofieldreward"
-			document.getElementById("reward" + reward + "tier").textContent = getFullExpansion(Math.ceil((rewards + 1 - reward)/8))
+			document.getElementById("nanofieldreward" + reward + "tier").textContent = (rewards % 8 + 1 == reward ? "Next" : DISPLAY_NAMES[reward]) + " reward (" + getFullExpansion(Math.ceil((rewards + 1 - reward)/8)) + "): "
 		}
 		document.getElementById("nanofieldreward1").textContent = hasBosonicUpg(22) ? "Dimension Supersonic scaling is " + shorten(getNanofieldRewardEffect(1, "supersonic")) + "x slower." :
 			"Hatch speed is " + shortenDimensions(getNanofieldRewardEffect(1, "speed")) + "x faster."
@@ -3204,6 +3204,7 @@ function ghostifyReset(implode, gain, amount, force) {
 		if (u<11&&(nBEU.includes(u+1)||tmp.qu.breakEternity.upgrades.includes(u))) nBEU.push(u)
 	}
 	if (bm > 2) for (var c=1;c<9;c++) tmp.qu.electrons.mult += .5-QCIntensity(c)*.25
+	if (bm > 6 && !force && player.achievements.includes("ng3p68")) gainNeutrinos(2e3*tmp.qu.bigRip.bestGals, "all")
 	if (bm > 15) giveAchievement("I rather oppose the theory of everything")
 	if (player.eternityPoints.e>=22e4&&player.ghostify.under) giveAchievement("Underchallenged")
 	if (player.eternityPoints.e>=1/0&&inQCModifier("ad")) giveAchievement("Overchallenged")
@@ -3674,6 +3675,7 @@ function ghostifyReset(implode, gain, amount, force) {
 				times: 0,
 				bestThisRun: new Decimal(0),
 				totalAntimatter: tmp.qu.bigRip.totalAntimatter,
+				bestGals: tmp.qu.bigRip.bestGals,
 				savedAutobuyersNoBR: tmp.qu.bigRip.savedAutobuyersNoBR,
 				savedAutobuyersBR: tmp.qu.bigRip.savedAutobuyersBR,
 				spaceShards: new Decimal(0),
@@ -3896,10 +3898,7 @@ function ghostifyReset(implode, gain, amount, force) {
 		player.ghostify.neutrinos.mu=new Decimal(0)
 		player.ghostify.neutrinos.tau=new Decimal(0)
 		player.ghostify.neutrinos.generationGain=1
-	} else if (!force) {
-		player.ghostify.neutrinos.generationGain=player.ghostify.neutrinos.generationGain%3+1
-		if (player.achievements.includes("ng3p68")) gainNeutrinos(1e6,"all")
-	}
+	} else if (!force) player.ghostify.neutrinos.generationGain=player.ghostify.neutrinos.generationGain%3+1
 	player.ghostify.ghostlyPhotons.amount=new Decimal(0)
 	player.ghostify.ghostlyPhotons.darkMatter=new Decimal(0)
 	player.ghostify.ghostlyPhotons.ghostlyRays=new Decimal(0)
@@ -3983,6 +3982,7 @@ function updateGhostifyTabs() {
 		var neutrinoGain = getNeutrinoGain()
 		var sum = player.ghostify.neutrinos.electron.add(player.ghostify.neutrinos.mu).add(player.ghostify.neutrinos.tau).round()
 		document.getElementById("neutrinosGain").textContent="You gain " + shortenDimensions(neutrinoGain) + " " + generations[player.ghostify.neutrinos.generationGain - 1] + " neutrino" + (neutrinoGain.eq(1) ? "" : "s") + " each time you get 1 normal galaxy."
+		setAndMaybeShow("neutrinosGainGhostify",player.achievements.includes("ng3p68"),'"You will gain "+shortenDimensions(Decimal.times(\''+neutrinoGain.toString()+'\',tmp.qu.bigRip.bestGals*2e3))+" of all neutrinos after you become a ghost."')
 		document.getElementById("electronNeutrinos").textContent=shortenDimensions(player.ghostify.neutrinos.electron)
 		document.getElementById("muonNeutrinos").textContent=shortenDimensions(player.ghostify.neutrinos.mu)
 		document.getElementById("tauNeutrinos").textContent=shortenDimensions(player.ghostify.neutrinos.tau)
@@ -4653,7 +4653,7 @@ function bosonicTick(diff) {
 		var toAdd=data.extractProgress.min(oldAuto.add(1).round()).floor()
 		data.autoExtract=data.autoExtract.sub(toAdd.min(oldAuto))
 		data.glyphs[data.typeToExtract-1]=data.glyphs[data.typeToExtract-1].add(data.amountToExtract.times(toAdd)).round()
-		if (data.usedEnchants.includes(12)&&toAdd.gt(oldAuto.add(1).round())) {
+		if (data.usedEnchants.includes(12)&&oldAuto.add(1).round().gt(toAdd)) {
 			data.extractProgress=data.extractProgress.sub(toAdd.min(data.extractProgress))
 		} else {
 			data.extracting=false
@@ -4823,17 +4823,18 @@ var br={
 	names:[null, "Infinity", "Eternity", "Quantum", /*"Ghostly", "Ethereal", "Sixth", "Seventh", "Eighth", "Ninth"*/], //Current limit of 9.
 	scalings:{
 		1: 60,
-		2: 120
+		2: 120,
+		3: 600
 	}
 }
 var bEn={
 	costs:{
 		12: [3,1],
-		13: [undefined,1e100]
+		13: [20,2]
 	},
 	descs:{
 		12: "Bosonic Extractor automatically extracts.",
-		13: "Speed up the use of Anti-Preons, but you consume Anti-Preons faster.",
+		13: "Speed up the production and use of Anti-Preons.",
 		23: "Extracting takes less time."
 	},
 	effects:{
@@ -4841,7 +4842,7 @@ var bEn={
 			return l.pow(0.75).div(getExtractTime(true)).div(bEn.autoScalings[tmp.bl.typeToExtract])
 		},
 		13: function(l) {
-			return Decimal.div(l,5).add(1)
+			return Decimal.add(l,1).sqrt()
 		},
 		23: function(l) {
 			return Decimal.add(l,1).pow(2)
@@ -4852,7 +4853,7 @@ var bEn={
 	autoScalings:{
 		1: 1.5,
 		2: 2,
-		3: 1/0,
+		3: 3,
 		4: 1/0,
 		5: 1/0
 	}
@@ -4977,6 +4978,7 @@ function changeOverdriveSpeed() {
 //W & Z Bosons
 function getAntiPreonProduction() {
 	let r=new Decimal(0.1)
+	r=r.times(tmp.bEn[13])
 	r=r.times(tmp.zba)
 	return r
 }

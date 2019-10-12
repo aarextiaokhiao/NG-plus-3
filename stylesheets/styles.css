@@ -2339,21 +2339,23 @@ br {
 	background: black !important;
 	border: 1px solid #bfbfbf;
 	box-shadow: inset 0px 0px 20px 0px #bfbfbf;
-	color: black;
+	color: #bfbfbf;
 	text-shadow: 0px 0px 3px #bfbfbf, 0px 0px 6px #bfbfbf
 }
 
 .gluonupgrade.neutrinoupg:hover {
 	background: white !important;
+	color: #3f3f3f;
+	text-shadow: 0px 0px 3px #3f3f3f, 0px 0px 6px #3f3f3f;
 	cursor: pointer
 }
 
 .gluonupgradebought.neutrinoupg {
-	background: white !important;
-	border: 1px solid #bfbfbf;
-	box-shadow: inset 0px 0px 20px 0px #bfbfbf;
-	color: white;
-	text-shadow: 0px 0px 3px black, 0px 0px 6px black
+	background: #bfbfbf !important;
+	border: 1px solid #7f7f7f;
+	box-shadow: inset 0px 0px 20px 0px #7f7f7f;
+	color: #3f3f3f;
+	text-shadow: 0px 0px 3px #3f3f3f, 0px 0px 6px #3f3f3f
 }
 
 .neutrinoBoosts {

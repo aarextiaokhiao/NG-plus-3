@@ -1281,6 +1281,7 @@ function quantumReset(force, auto, challid, bigRip, implode=false) {
 				for (var u=0;u<tmp.qu.bigRip.upgrades.length;u++) tweakBigRip(tmp.qu.bigRip.upgrades[u])
 				if (tmp.qu.bigRip.times<1) document.getElementById("bigRipConfirmBtn").style.display="inline-block"
 				tmp.qu.bigRip.times++
+				tmp.qu.bigRip.bestThisRun=player.money
 				giveAchievement("To the new dimension!")
 				if (tmp.qu.breakEternity.break) tmp.qu.breakEternity.did=true
 			} else {
