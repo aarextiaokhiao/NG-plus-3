@@ -1091,9 +1091,10 @@ function updateTemp() {
 			var wpl=player.ghostify.wzb.wpb.add(1).log10()
 			var wnl=player.ghostify.wzb.wnb.add(1).log10()
 			tmp.wzbs=new Decimal(1) //W & Z Bosons speed
-			tmp.zba=new Decimal(1) //Z Bosons boost to Anti-Preon production
 			tmp.wbt=Decimal.pow(3,Math.max(wpl*(player.ghostify.wzb.wpb.sub(player.ghostify.wzb.wnb.min(player.ghostify.wzb.wpb))).div(player.ghostify.wzb.wpb.max(1)).toNumber(),0)) //W Bosons boost to extract time
-			tmp.wbb=Decimal.pow(1,Math.sqrt(wpl*wpl+wnl*wnl)).sub(1) //W Bosons boost to Bosonic Antimatter production
+			tmp.wbo=Decimal.pow(1,Math.max(wpl*(player.ghostify.wzb.wpb.sub(player.ghostify.wzb.wnb.min(player.ghostify.wzb.wpb))).div(player.ghostify.wzb.wpb.max(1)).toNumber(),0)) //W Bosons boost to Z Neutrino oscillation requirement
+			tmp.wbp=Decimal.pow(1,Math.sqrt(wpl*wpl+wnl*wnl)).sub(1) //W Bosons boost to Bosonic Antimatter production
+			tmp.zbs=new Decimal(1) //Z Bosons boost to W Quark decay speed and W- to W+ conversion speed
 			tmp.dppg=new Decimal(1)
 		}
 		if (player.ghostify.ghostlyPhotons.unl) {
@@ -7937,12 +7938,12 @@ function gameLoop(diff) {
         if (player.ghostify.wzb.unl) {
             var data=tmp.bl
             var wattGained=Math.max(getBosonicWattGain(),data.watt)
-            data.speed=Math.min((wattGained-data.watt)*2+data.speed,wattGained)
+            data.speed=Math.max(Math.min(wattGained-data.watt+data.speed,wattGained),data.speed)
             data.watt=wattGained
             if (data.speed>0) {
-                var limitDiff=Math.min(diff/10,data.speed*7200)
-                bosonicTick((data.speed-limitDiff/14400)*limitDiff)
-                data.speed=Math.max(data.speed-limitDiff/7200,0)
+                var limitDiff=Math.min(diff/10,data.speed*14400)
+                bosonicTick((data.speed-limitDiff/28800)*limitDiff)
+                data.speed=Math.max(data.speed-limitDiff/14400,0)
             }
         }
         if (player.ghostify.ghostlyPhotons.unl) {

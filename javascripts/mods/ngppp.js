@@ -3903,7 +3903,6 @@ function ghostifyReset(implode, gain, amount, force) {
 	player.ghostify.ghostlyPhotons.darkMatter=new Decimal(0)
 	player.ghostify.ghostlyPhotons.ghostlyRays=new Decimal(0)
 	tmp.bl.watt=0
-	tmp.bl.speed=0
 	player.ghostify.under=true
 	updateLastTenGhostifies()
 	updateBraveMilestones()
@@ -4102,7 +4101,7 @@ function updateGhostifyTabs() {
 		if (document.getElementById("wzbtab").style.display=="block") {
 			let lSpeed=speed.times(tmp.wzbs)
 			let data2=player.ghostify.wzb
-			let show0=data2.dPUse==1&&lSpeed.times(getAntiPreonLoss()).div(aplScalings[1]).gte(10)
+			let show0=data2.dPUse==1&&lSpeed.times(getAntiPreonLoss()).div(aplScalings[1]).times(tmp.zbs).gte(10)
 			let r
 			if (!data2.dPUse) r=lSpeed.times(getAntiPreonProduction())
 			else r=lSpeed.times(getAntiPreonLoss())
@@ -4117,8 +4116,14 @@ function updateGhostifyTabs() {
 			document.getElementById("wpb").textContent=shortenDimensions(data2.wpb)
 			document.getElementById("wnb").textContent=shortenDimensions(data2.wnb)
 			document.getElementById("wbTime").textContent=shorten(tmp.wbt)
-			document.getElementById("wbSpeed").textContent=shorten(tmp.wbb)
-			document.getElementById("zbProduction").textContent=shorten(tmp.zba)
+			document.getElementById("wbOscillate").textContent=shorten(tmp.wbo)
+			document.getElementById("wbProduction").textContent=shorten(tmp.wbp)
+			document.getElementById("zNeGen").textContent=(["electron","Mu","Tau"])[data2.zNeGen-1]
+			document.getElementById("zNeProgress").textContent=data2.zNeProgress.times(100).toFixed(1)+"% to oscillate Z Neutrino to "+(["Mu","Tau","electron"])[data2.zNeGen-1]+"."
+			document.getElementById("zNeReq").textContent="Oscillate progress gain speed is currently "+shorten(data2.zNeReq)+"x."
+			document.getElementById("zNe").className=(["electron","mu","tau"])[data2.zNeGen-1]
+			document.getElementById("zNeSymbol").textContent=(["e","μ","τ"])[data2.zNeGen-1]
+			document.getElementById("zbSpeed").textContent=shorten(tmp.zbs)
 			document.getElementById("zb").textContent=shortenDimensions(data2.zb)
 		}
 	}
@@ -4621,7 +4626,7 @@ function bosonicTick(diff) {
 		apDiff=lDiff.times(getAntiPreonLoss()).min(lData.dP).div(aplScalings[player.ghostify.wzb.dPUse])
 		if (isNaN(apDiff.e)) apDiff=new Decimal(0)
 		if (lData.dPUse==1) {
-			lData.wQkProgress=lData.wQkProgress.add(apDiff)
+			lData.wQkProgress=lData.wQkProgress.add(apDiff.times(tmp.zbs))
 			if (lData.wQkProgress.gt(1)) {
 				let toSub=lData.wQkProgress.floor()
 				lData.wpb=lData.wpb.add(toSub.add(lData.wQkUp?1:0).div(2).floor())
@@ -4631,8 +4636,8 @@ function bosonicTick(diff) {
 			}
 		}
 		if (lData.dPUse==3) {
-			lData.wpb=lData.wpb.add(lData.wnb.min(apDiff))
-			lData.wnb=lData.wnb.sub(lData.wnb.min(apDiff))
+			lData.wpb=lData.wpb.add(lData.wnb.min(apDiff).times(tmp.zbs))
+			lData.wnb=lData.wnb.sub(lData.wnb.min(apDiff).times(tmp.zbs))
 		}
 		lData.dP=lData.dP.sub(lDiff.times(getAntiPreonLoss()).min(lData.dP))
 		if (lData.dP.eq(0)) lData.dPUse=0
@@ -4667,7 +4672,7 @@ function bosonicTick(diff) {
 
 function getBosonicAMProduction() {
 	let r=Decimal.pow(10,player.money.max(1).log10()/25e15-2) //Antimatter part
-	r=r.times(tmp.wbb) //W Bosons part
+	r=r.times(tmp.wbp) //W Bosons part
 	return r
 }
 
@@ -4773,6 +4778,18 @@ function takeEnchantAction(id) {
 		data.glyphs[g2-1]=data.glyphs[g2-1].sub(costData[1]).round()
 		if (data.enchants[id]==undefined) data.enchants[id]=new Decimal(1)
 		else data.enchants[id]=data.enchants[id].add(1).round()
+	} else if (bEn.action=="max") {
+		let costData=bEn.costs[id]
+		let g1=Math.floor(id/10)
+		let g2=id%10
+		if (!canBuyEnchant(id)) return
+		let lvl1=data.glyphs[g1-1].div(costData[0]).floor()
+		let lvl2=data.glyphs[g2-1].div(costData[1]).floor()
+		let lvl=lvl1.min(lvl2)
+		data.glyphs[g1-1]=data.glyphs[g1-1].sub(lvl.times(costData[0]).min(data.glyphs[g1-1])).round()
+		data.glyphs[g2-1]=data.glyphs[g2-1].sub(lvl.times(costData[1]).min(data.glyphs[g2-1])).round()
+		if (data.enchants[id]==undefined) data.enchants[id]=new Decimal(lvl)
+		else data.enchants[id]=data.enchants[id].add(lvl).round()
 	} else if (bEn.action=="use") {
 		if (canUseEnchant(id)) {
 			if (bEn.limit==1) data.usedEnchants=[id]
@@ -4788,7 +4805,7 @@ function takeEnchantAction(id) {
 }
 
 function changeEnchantAction(id) {
-	bEn.action=(["upgrade","use"])[id-1]
+	bEn.action=bEn.actions[id-1]
 }
 
 function getEnchantEffect(id, desc) {
@@ -4803,7 +4820,7 @@ function updateEnchantDescs() {
 	let data=tmp.bl
 	for (var g2=2;g2<br.names.length;g2++) for (var g1=1;g1<g2;g1++) {
 		var id=g1*10+g2
-		if (bEn.action=="upgrade") document.getElementById("bEn"+id).className="gluonupgrade "+(canBuyEnchant(id)?"bl":"unavailablebtn")
+		if (bEn.action=="upgrade"||bEn.action=="max") document.getElementById("bEn"+id).className="gluonupgrade "+(canBuyEnchant(id)?"bl":"unavailablebtn")
 		else if (bEn.action=="use") document.getElementById("bEn"+id).className="gluonupgrade "+(canUseEnchant(id)?"storebtn":"unavailablebtn")
 		if (shiftDown) document.getElementById("bEnLvl"+id).textContent="Enchant id: "+id
 		else document.getElementById("bEnLvl"+id).textContent="Level: "+shortenDimensions(tmp.bEnLvl[id])
@@ -4849,11 +4866,12 @@ var bEn={
 		}
 	},
 	action:"upgrade",
+	actions:["upgrade","max","use"],
 	limit:2,
 	autoScalings:{
 		1: 1.5,
-		2: 2,
-		3: 3,
+		2: 3,
+		3: 12,
 		4: 1/0,
 		5: 1/0
 	}
@@ -4978,8 +4996,7 @@ function changeOverdriveSpeed() {
 //W & Z Bosons
 function getAntiPreonProduction() {
 	let r=new Decimal(0.1)
-	r=r.times(tmp.bEn[13])
-	r=r.times(tmp.zba)
+	if (tmp.bl.usedEnchants.includes(13)) r=r.times(tmp.bEn[13])
 	return r
 }
 
@@ -4991,7 +5008,9 @@ var aplScalings={
 }
 
 function getAntiPreonLoss() {
-	return tmp.bEn[13].times(0.08)
+	let r=new Decimal(0.05)
+	if (tmp.bl.usedEnchants.includes(13)) r=r.times(tmp.bEn[13])
+	return r
 }
 
 function useAntiPreon(id) {

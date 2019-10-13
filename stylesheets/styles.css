@@ -2565,6 +2565,38 @@ br {
 	transform: translate(-50%, 15%)
 }
 
+#zNe {
+	position: relative;
+	left: calc(50% - 120px);
+	height: 240px;
+	width: 240px;
+	background: #bfbfbf;
+	box-shadow: 0px 0px 12px #7f7f7f;
+	border-radius: 120px !important;
+	font-size: 120px;
+	margin-top: 24px;
+	margin-bottom: 24px;
+	transition-duration: 0.2s
+}
+
+#zNeSymbol {
+	position: absolute;
+	color: #3f3f3f;
+	text-shadow: 0px 0px 3px #3f3f3f, 0px 0px 6px #3f3f3f
+}
+
+.electron #zNeSymbol {
+	transform: translate(-50%, 10%)
+}
+
+.mu #zNeSymbol {
+	transform: translate(-50%, 0%)
+}
+
+.tau #zNeSymbol {
+	transform: translate(-50%, 0%)
+}
+
 @media print,
 screen and (max-width: 960px) {
     div.wrapper {

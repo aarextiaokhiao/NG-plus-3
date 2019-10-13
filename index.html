@@ -5128,7 +5128,8 @@
 						</tr></table>
 						<b style="font-size: 35px">Bosonic Enchants</b><br>
 						<button class="storebtn" onclick="changeEnchantAction(1)" style="width: 150px">Upgrade enchants</button>
-						<button class="storebtn" onclick="changeEnchantAction(2)" style="width: 150px">Use enchants</button><br>
+						<button class="storebtn" onclick="changeEnchantAction(2)" style="width: 150px">Max enchants</button>
+						<button class="storebtn" onclick="changeEnchantAction(3)" style="width: 150px">Use enchants</button><br>
 						<span id="usedEnchants"></span><br>
 						<table class="table" id="enchants" align="center" style="margin: auto"></table>
 					</div>
@@ -5138,21 +5139,31 @@
 						<table class='qtable'><tr>
 							<td>
 								You have <span id="wpb" style="font-size:35px"></span> W+ Bosons and <span id="wnb" style="font-size:35px"></span> W- Bosons.<br>
-								Translated to <span id="wbTime" style="font-size:35px"></span>x faster extracting time and <span id="wbSpeed" style="font-size:35px"></span>x Bosonic Matter production speed.
+								Translated to <span id="wbTime" style="font-size:35px"></span>x faster extracting time, <span id="wbOscillate" style="font-size:35px"></span>x faster oscillate progression gain, <span id="wbProduction" style="font-size:35px"></span>x Bosonic Matter production speed.
 							</td>
+							<td></td>
 							<td>
+								You have <span id="zb" style="font-size:35px"></span> Z Bosons.<br>
+								Translated to <span id="zbSpeed" style="font-size:35px"></span>x faster decay speed of W Quark and faster conversion speed of W+ to W-.
+							</td>
+						</tr><tr><td colspan=3>
 								You have <span id="ap" style="font-size:35px"></span> Anti-Preons. <span id="apProduction" style="font-size:25px"></span><br>
 								<span id="apUse"></span><br>
 								<button class="storebtn" style="width:150px" onclick="useAntiPreon(0)">Gain Anti-Preons</button> <button class="storebtn" onclick="useAntiPreon(1)">Decay W Quark</button> <button class="storebtn" style="width:150px" onclick="useAntiPreon(3)">Convert W- to W+</button> <button class="storebtn" style="width:180px" onclick="useAntiPreon(2)">Oscillate Z Neutrino</button>
-							</td>
+						</td></tr><tr>
 							<td>
-								You have <span id="zb" style="font-size:35px"></span> Z Bosons.<br>
-								Translated to <span id="zbProduction" style="font-size:35px"></span>x faster Anti-Preons production.
+								W Quark is currently <span id="wQkType"></span>.<br>
+								<span id="wQkProgress"></span><br>
+								<div id="wQk"><span id="wQkSymbol"></span></div>
+							</td>
+							<td></td>
+							<td>
+								Z Neutrino is currently <span id="zNeGen">electron</span>.<br>
+								<span id="zNeProgress"></span><br>
+								<span id="zNeReq"></span><br>
+								<div id="zNe"><span id="zNeSymbol"></span></div>
 							</td>
 						</tr></table>
-						W Quark is currently <span id="wQkType"></span>.<br>
-						<span id="wQkProgress"></span><br>
-						<div id="wQk"><span id="wQkSymbol"></span></div>
 					</div>
 				</div>
 			</div>

@@ -649,7 +649,7 @@ button, div.storebtn {
 	color: #e5e5e5 !important
 }
 
-#bWatt, #bSpeed, #bTotalSpeed, #bAM, #bAMProduction, #bAMEffect, #bBt, #bBtProduction, #odSpeed, #zb, #zbProduction {
+#bWatt, #bSpeed, #bTotalSpeed, #bAM, #bAMProduction, #bAMEffect, #bBt, #bBtProduction, #odSpeed, #zb, #zbSpeed {
 	color: #c73415
 }
 
@@ -688,7 +688,7 @@ button, div.storebtn {
 	color: #e55be5 !important
 }
 
-#wpb, #wbTime, #wbSpeed {
+#wpb, #wbTime, #wbOscillate, #wbProduction {
 	color: #620d65;
 	text-shadow: 0px 0px 3px #0c0c0c, 0px 0px 4.5px #e5e5e5
 }
@@ -705,6 +705,14 @@ button, div.storebtn {
 
 .down #wQkSymbol {
 	transform: translate(-50%, 15%)
+}
+
+.mu #zNeSymbol {
+	transform: translate(-50%, 10%)
+}
+
+.tau #zNeSymbol {
+	transform: translate(-50%, 10%)
 }
 
 @keyframes rg {
