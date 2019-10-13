@@ -1295,9 +1295,9 @@ function getRemoteGalaxyScalingStart(galaxies) {
 function getGalaxyRequirement(offset=0, display) {
 	let galaxies = player.galaxies+offset
 	let base = galaxies*getGalaxyCostIncrease()
-	let amount = 60+base
+	let amount = 80+base
 	let scaling = 0
-	if (player.galacticSacrifice != undefined) amount -= (player.galacticSacrifice.upgrades.includes(22) && player.galaxies > 0) ? 60 : 40
+	if (player.galacticSacrifice != undefined) amount -= (player.galacticSacrifice.upgrades.includes(22) && player.galaxies > 0) ? 80 : 60
 	if (player.aarexModifications.ngmX > 3) amount -= 10
 	if (inNC(4) || player.pSac !== undefined) amount = player.tickspeedBoosts == undefined ? 99 + base : amount + (player.aarexModifications.ngmX > 3 ? 20 : -30)
 	if (tmp.be) {
