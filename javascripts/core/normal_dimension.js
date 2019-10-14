@@ -226,8 +226,7 @@ function getDimensionCostMultiplier(tier) {
 }
 	
 function onBuyDimension(tier) {
-	if (!player.break) giveAchievement(allAchievements["r1"+tier])
-	
+	giveAchievement(allAchievements["r1"+tier])
 	if (inNC(2) || player.currentChallenge == "postc1" || player.pSac !== undefined) player.chall2Pow = 0
 	if (inNC(8) || player.currentChallenge == "postc1") clearDimensions(tier-1)
 	if ((inNC(12) || player.currentChallenge == "postc1" || player.currentChallenge == "postc6" || inQC(6) || player.pSac !== undefined) && player.matter.equals(0)) player.matter = new Decimal(1)

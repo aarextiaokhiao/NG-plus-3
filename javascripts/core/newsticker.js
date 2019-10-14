@@ -295,8 +295,9 @@ newsArray = [//always true
 ["BOSONIC OVERDRIVE!!!", 'player.achievements.includes("ng3p81") && tmp.bl.odSpeed.gt(1) && tmp.bl.battery.gt(0)', "am142"],
 ["If preons, Nanofield, and Anti-Preons exist, then why Anti-Nanofield doesn't exist?", 'ghostified && tmp.bl.upgrades.includes(24)', "am143"],
 ['Wait a second. I think I\'ve realized something. The main writer never says what broadcasting channel we\'re on. I was always curious what channel our news show is on, so I went into a top secret room the main writer never tells us to go in. And what I found...I found what channel we broadcasted on. It is "999". But channel 999 doesn\'t exist! And I also found some other things...at the bottom-right of the page, it says "Sponsored by Hevipelle". Who is Hevipelle? I\'ve never heard anyone named Hevipelle in the world. Does this mean...does this mean that Hevipelle is a nickname for someone? A...oh no. There\'s more text. A sentence says...it says..."Because the physics of the game "Antimatter Dimensions" does not allow for visuals, all thoughts, feelings, and actions made by any being are put into short news tickers. OH MY GOD I\'M IN A VIDEOGAME OH GOD THIS IS A NEWS TICKER F\*\*\* THIS DEVELOP-sifdweyfwytrwqe8723648765237869iyusdqwe-0))$#(&)QBTR&_(B)&30-b5q&)rfb)+B0R-98w#$)9b)({bew)#(5R[q)(t()qet){(q#*bT8bb &){rb&rqw#b %&r7#w&R&{07&&b#w$&b )r ({e[-(b reafbgu ({brdiuufertuyreuyyuyuefuyuyfiYUiuyEYUFiuyGUY087378578052}}}}}}},,,', true , "am144"],
-["Hi, Billy Mays here for the Antimatter Dimensions game, the new easier way to waste time!", true, "am145"]
-/*NEXT ID: am146*/
+["Hi, Billy Mays here for the Antimatter Dimensions game, the new easier way to waste time!", true, "am145"],
+["When does the 0th dimension come out", true, "am146"]
+/*NEXT ID: am147*/
 ];}
 
 document.addEventListener("visibilitychange", function() {if (!document.hidden) {scrollNextMessage();}}, false);
