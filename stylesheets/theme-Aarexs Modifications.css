@@ -574,7 +574,7 @@ strong { color: #0072e5 }
 	color: #e50000
 }
 .neutrinos {
-	color: #cccccc !important
+	color: #5f5f5f
 }
 .gluonupgrade.neutrinoupg {
 	border-color: #cccccc !important;
@@ -681,8 +681,7 @@ strong { color: #0072e5 }
 	color: #e55be5 !important
 }
 #wpb, #wbTime, #wbOscillate, #wbProduction {
-	color: #620d65;
-	text-shadow: 0px 0px 3px #0c0c0c, 0px 0px 4.5px #e5e5e5
+	color: #7b267e;
 }
 #wnb {
 	color: #9df29a

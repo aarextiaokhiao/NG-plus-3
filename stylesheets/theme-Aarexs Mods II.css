@@ -579,7 +579,7 @@ button, div.storebtn {
 }
 
 .neutrinos {
-	color: #cccccc
+	color: #5f5f5f
 }
 
 #GHPAmount, #quantumedBMAmount {
@@ -689,8 +689,7 @@ button, div.storebtn {
 }
 
 #wpb, #wbTime, #wbOscillate, #wbProduction {
-	color: #620d65;
-	text-shadow: 0px 0px 3px #0c0c0c, 0px 0px 4.5px #e5e5e5
+	color: #7b267e;
 }
 
 #wnb {
