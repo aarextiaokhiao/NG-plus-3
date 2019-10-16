@@ -2021,16 +2021,17 @@ if (player.version < 5) {
   document.getElementById("newsbtn").textContent=(player.options.newsHidden?"Show":"Hide")+" news ticker"
   document.getElementById("game").style.display=player.options.newsHidden?"none":"block"
   var tabsSave = player.aarexModifications.tabsSave
-  showDimTab(tabsSave.on && tabsSave.tabDims !== undefined ? tabsSave.tabDims : 'antimatterdimensions')
-  showStatsTab(tabsSave.on && tabsSave.tabStats !== undefined ? tabsSave.tabStats : 'stats')
-  showAchTab(tabsSave.on && (tabsSave.tabAchs == 'normalachievements' || tabsSave.tabAchs == 'secretachievements') ? tabsSave.tabAchs : 'normalachievements')
-  showChallengesTab(tabsSave.on && tabsSave.tabChalls !== undefined ? tabsSave.tabChalls : 'normalchallenges')
-  showInfTab(tabsSave.on && tabsSave.tabInfinity !== undefined ? tabsSave.tabInfinity : 'preinf')
-  showEternityTab(tabsSave.on && tabsSave.tabEternity !== undefined ? tabsSave.tabEternity : 'timestudies', true)
-  showQuantumTab(tabsSave.on && tabsSave.tabQuantum !== undefined ? tabsSave.tabQuantum : 'uquarks')
-  showBranchTab(tabsSave.on && tabsSave.tabBranch !== undefined ? tabsSave.tabBranch : 'red')
-  showGhostifyTab(tabsSave.on && tabsSave.tabGhostify !== undefined ? tabsSave.tabGhostify : 'neutrinos')
-  showBLTab(tabsSave.on && tabsSave.tabBL !== undefined ? tabsSave.tabBL : 'bextab')
+  showDimTab((tabsSave.on && tabsSave.tabDims) || 'antimatterdimensions')
+  showStatsTab((tabsSave.on && tabsSave.tabStats) || 'stats')
+  showAchTab((tabsSave.on && (tabsSave.tabAchs == 'normalachievements' || tabsSave.tabAchs == 'secretachievements') && tabsSave.tabAchs) || 'normalachievements')
+  showChallengesTab((tabsSave.on && tabsSave.tabChalls) || 'normalchallenges')
+  showInfTab((tabsSave.on && tabsSave.tabInfinity) || 'preinf')
+  showEternityTab((tabsSave.on && tabsSave.tabEternity) || 'timestudies', true)
+  showQuantumTab((tabsSave.on && tabsSave.tabQuantum) || 'uquarks')
+  showNFTab((tabsSave.on && tabsSave.tabNF) || 'nanoverse')
+  showBranchTab((tabsSave.on && tabsSave.tabBranch) || 'red')
+  showGhostifyTab((tabsSave.on && tabsSave.tabGhostify) || 'neutrinos')
+  showBLTab((tabsSave.on && tabsSave.tabBL) || 'bextab')
   if (!player.options.newsHidden) scrollNextMessage()
   document.getElementById("secretoptionsbtn").style.display=player.options.secrets?"":"none"
   document.getElementById("ghostlynewsbtn").textContent=((player.options.secrets!==undefined?player.options.secrets.ghostlyNews:false)?"Hide":"Show")+" ghostly news ticker"

@@ -80,7 +80,7 @@ function updateMasteryStudyCosts() {
 			if (masterystudies.allTimeStudies.includes(parseInt(t))) masterystudies.costmult*=masterystudies.costmults[t]
 			masterystudies.latestBoughtRow=Math.max(masterystudies.latestBoughtRow,Math.floor(t/10))
 			total++
-			if (total>44) giveAchievement("The Theory of Ultimate Studies")
+			if (total>=47) giveAchievement("The Theory of Ultimate Studies")
 		}
 	}
 	for (id=0;id<masterystudies.allTimeStudies.length;id++) {
@@ -1271,16 +1271,16 @@ function updateMasteryStudyTextDisplay() {
 		document.getElementById("ds10Req").innerHTML=ghostified?"":"<br>Requirement: Complete Paired Challenge 4"
 		document.getElementById("321effect").textContent=shortenCosts(new Decimal("1e430"))
 	}
-	if (player.masterystudies.includes("d10")) {
+	if (player.masterystudies.includes("d10")||ghostified) {
 		for (id=341;id<345;id++) document.getElementById("ts"+id+"Cost").textContent="Cost: "+shorten(masterystudies.costs.time[id])+" Time Theorems"
 		document.getElementById("ds11Cost").textContent="Cost: "+shorten(3e90)+" Time Theorems"
 		document.getElementById("ds11Req").innerHTML=ghostified?"":"<br>Requirement: 10 worker replicants"
 	}
-	if (player.masterystudies.includes("d11")) {
+	if (player.masterystudies.includes("d11")||ghostified) {
 		document.getElementById("ds12Cost").textContent="Cost: "+shorten(3e92)+" Time Theorems"
 		document.getElementById("ds12Req").innerHTML=ghostified?"":"<br>Requirement: 10 8th Emperor Dimensions"
 	}
-	if (player.masterystudies.includes("d12")) {
+	if (player.masterystudies.includes("d12")||ghostified) {
 		document.getElementById("ds13Cost").textContent="Cost: "+shorten(1e95)+" Time Theorems"
 		document.getElementById("ds13Req").innerHTML=ghostified?"":"<br>Requirement: 16 Nanofield rewards"
 		document.getElementById("ds14Cost").textContent="Cost: "+shorten(1e98)+" Time Theorems"
@@ -3051,7 +3051,7 @@ function getEMGain() {
 	return Decimal.pow(10,log).floor()
 }
 
-var breakUpgCosts = [1, 1e3, 1e6, 2e11, 8e17, 1e48, null, 1e290, new Decimal("1e350"), new Decimal("1e375")]
+var breakUpgCosts = [1, 1e3, 2e6, 2e11, 8e17, 1e48, null, 1e290, new Decimal("1e350"), new Decimal("1e375")]
 function getBreakUpgCost(id) {
 	if (id == 7) return Decimal.pow(2, tmp.qu.breakEternity.epMultPower).times(1e6)
 	return breakUpgCosts[id-1]
@@ -4532,6 +4532,24 @@ function updatePCTable() {
 	document.getElementById("udcc").textContent="No dilation: "+(tmp.pcc.noDil||0)+" / 28"
 }
 
+function showNFTab(tabName) {
+	//iterate over all elements in div_tab class. Hide everything that's not tabName and show tabName
+	var tabs = document.getElementsByClassName('nftab');
+	var tab;
+	var oldTab
+	for (var i = 0; i < tabs.length; i++) {
+		tab = tabs.item(i);
+		if (tab.style.display == 'block') oldTab = tab.id
+		if (tab.id === tabName) {
+			tab.style.display = 'block';
+		} else {
+			tab.style.display = 'none';
+		}
+	}
+	if (oldTab !== tabName) player.aarexModifications.tabsSave.tabNF = tabName
+	closeToolTip()
+}
+
 function toggleLEConf() {
 	player.aarexModifications.leNoConf = !player.aarexModifications.leNoConf
 	document.getElementById("leConfirmBtn").textContent = "Light Empowerment confirmation: O" + (player.aarexModifications.leNoConf ? "FF" : "N")
@@ -4596,6 +4614,7 @@ function updateBLUnlocks() {
 	let unl=player.ghostify.wzb.unl
 	document.getElementById("blUnl").style.display=unl?"none":""
 	document.getElementById("blDiv").style.display=unl?"":"none"
+	document.getElementById("nftabs").style.display=unl?"":"none"
 }
 
 function getBosonicWattGain() {

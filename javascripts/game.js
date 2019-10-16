@@ -1057,7 +1057,7 @@ let tmp = {
 	bru: [],
 	be: false,
 	beu: [],
-	bm: [300,200,150,100,50,40,30,25,20,15,10,5,4,3,2,1],
+	bm: [200,175,150,100,50,40,30,25,20,15,10,5,4,3,2,1],
 	nb: [],
 	nbc: [null,3,4,6,15,50,1e3,1e14,1e39],
 	nu: [],
@@ -5104,9 +5104,7 @@ function checkForEndMe() {
     if (temp <= 1800) giveAchievement("Not-so-challenging")
     if (temp <= 50) giveAchievement("End me")
     var temp2 = 0
-    for (var i=0; i<order.length;i++) {
-        temp2 += player.infchallengeTimes[i]
-    }
+    for (var i=0; i<order.length;i++) temp2 += player.infchallengeTimes[i]
     infchallengeTimes = temp2
     if (temp2 <= 66.6) giveAchievement("Yes. This is hell.")
 }
@@ -8900,13 +8898,13 @@ function autoBuyerTick() {
 
     for (var i=0; i<priority.length; i++) {
         if (priority[i].ticks*100 >= priority[i].interval || priority[i].interval == 100) {
-            if ((priority[i].isOn && canBuyDimension(priority[i].tier)) ) {
+            if (priority[i].isOn) {
                 if (priority[i] == player.autobuyers[8]) {
                     if (!inNC(14) | player.tickspeedBoosts != undefined) {
                         if (priority[i].target == 10) buyMaxTickSpeed()
                         else buyTickSpeed()
                     }
-                } else {
+                } else if (canBuyDimension(priority[i].tier)) {
                     if (priority[i].target > 10) {
                         if (player.options.bulkOn) buyBulkDimension(priority[i].target-10, priority[i].bulk, true)
                         else buyBulkDimension(priority[i].target-10, 1, true)
