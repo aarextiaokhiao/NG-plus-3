@@ -4973,13 +4973,14 @@ var bu={
 	},
 	effects:{
 		11: function() {
-			return Math.pow(tmp.bl.am.add(1).log10()/10+1,0.3)-1
+			let l=tmp.bl.am.add(1).log10()
+			return Math.pow(l,0.5-0.25*l/(l+3))/5
 		},
 		12: function() {
 			return Math.sqrt(player.totalTickGained)
 		},
 		13: function() {
-			return (getRadioactiveDecays('r')+getRadioactiveDecays('g')+getRadioactiveDecays('b'))/10+1
+			return Math.pow(getRadioactiveDecays('r')+getRadioactiveDecays('g')+getRadioactiveDecays('b'),0.6)/5+1
 		},
 		14: function() {
 			return player.dilation.freeGalaxies
