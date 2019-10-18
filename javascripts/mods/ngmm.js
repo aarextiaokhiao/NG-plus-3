@@ -91,16 +91,16 @@ function getD8Exp(){
 		if (amt>1048576) amt = Math.pow(Math.log2(amt)/5,10)
 		if (amt>1024) amt = 24+Math.pow(Math.log2(amt),3)
 		exp += amt
-		if (player.totalmoney.log10 > 2.75e6) exp = Math.pow(exp,Math.min(1.3,1+player.totalmoney.log10()/1e8+Math.sqrt(player.totalmoney.log10()/275)/3e3))
+		if (player.totalmoney.log10() > 2.75e6) exp = Math.pow(exp,Math.min(1.3,1+player.totalmoney.log10()/1e8+Math.sqrt(player.totalmoney.log10()/275)/3e3))
 	}
 	return exp
 }
 
 function galacticSacrifice(auto, force, chall) {
-	if (getGSAmount().eq(0) && !force) return
+	if (getGSAmount().eq(0)&&!force) return
 	if (tmp.ri) return
 	if (player.options.gSacrificeConfirmation&&!auto&&!force) if (!confirm("Galactic Sacrifice will do a galaxy reset, and then remove all of your galaxies, in exchange of galaxy points which can be use to buy many overpowered upgrades, but it will take a lot of time to recover, are you sure you wanna do this?")) return
-    if (player.options.challConf&&chall) if (!confirm("You will Galactic Sacrifice without gaining anything. You need to Galactic Sacrifice with special conditions to complete this challenge. Some Galaxy Points gain multipliers won't work in this challenge.")) return
+	if (player.options.challConf&&chall) if (!confirm("You will Galactic Sacrifice without gaining anything. You need to Galactic Sacrifice with special conditions to complete this challenge. Some Galaxy Points gain multipliers won't work in this challenge.")) return
 	if (!force) {
 		player.galacticSacrifice.galaxyPoints=player.galacticSacrifice.galaxyPoints.plus(getGSAmount())
 		player.galacticSacrifice.times++
@@ -126,14 +126,14 @@ function galacticSacrifice(auto, force, chall) {
 			if (player.firstAmount==1&&player.resets==0&&player.galaxies==0&&inNC(12)) giveAchievement("ERROR 909: Dimension not found")
 		}
 		if (!chall&&(force||!player.options.retryChallenge)) delete player.galacticSacrifice.chall
-        document.getElementById("challengeconfirmation").style.display = "inline-block"
+		document.getElementById("challengeconfirmation").style.display = "inline-block"
 		updateChallenges()
 		updateNCVisuals()
 		updateChallengeTimes()
 		updateAutobuyers()
 	}
-	GPminpeak = new Decimal(0)
-	player.galacticSacrifice.time = 0
+	GPminpeak=new Decimal(0)
+	player.galacticSacrifice.time=0
 	resetPSac()
 	galaxyReset(-player.galaxies)
 }
