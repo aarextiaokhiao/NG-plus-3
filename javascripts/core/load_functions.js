@@ -2044,6 +2044,7 @@ if (player.version < 5) {
   } else player.lastUpdate = new Date().getTime()
   if (player.totalTimePlayed < 1 || inflationCheck || forceToQuantumAndRemove) {
       ngModeMessages=[]
+      if (player.aarexModifications.newGameMult) ngModeMessages.push("Welcome to NG* mode, made by Despacit and Soul147! This mode adds too many overpowerful buffs! This mode may be broken.")
       if (player.aarexModifications.newGameExpVersion) ngModeMessages.push("Welcome to NG^ mode, made by Naruyoko! This mode adds way many buffs that this mode may be broken!")
       if (player.meta!==undefined||player.exdilation!==undefined) {
           if (!player.aarexModifications.newGamePlusVersion) ngModeMessages.push("WARNING! You are disabling NG+ features on NG++! Standard NG++ have all of NG++ features and I recommend you to create a new save with NG+ and NG++ modes on.")

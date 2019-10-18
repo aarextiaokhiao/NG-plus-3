@@ -245,12 +245,3 @@ function buyMaxTimeDimension(tier, bulk) {
 function buyMaxTimeDimensions() {
 	for (i=1; i<9; i++) buyMaxTimeDimension(i)
 }
-
-function getTS11Mult() {
-	let bigRipped = player.masterystudies === undefined ? false : tmp.qu.bigRip.active
-	let log = -player.tickspeed.div(1e3).pow(0.005).times(0.95).plus(player.tickspeed.div(1e3).pow(0.0003).times(0.95)).log10()
-	if (bigRipped && log > 900) log = Math.sqrt(log * 900)
-	else if (player.galacticSacrifice === undefined) log = Math.min(log, 2500)
-	log /= player.aarexModifications.newGameExpVersion ? 4 : 1
-	return Decimal.pow(10, log)
-}

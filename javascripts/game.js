@@ -26,19 +26,21 @@ var modes = {
 	ngmm: 0,
 	rs: 0,
 	ngud: 0,
-	nguep: 0
+	nguep: 0,
+	ngmu: 0
 }
 function updateNewPlayer(reseted) {
     if (reseted) {
         var modesChosen = {
             ngm: player.aarexModifications.newGameMinusVersion !== undefined,
             ngp: player.aarexModifications.ngp4V !== undefined ? 2 : player.aarexModifications.newGamePlusVersion !== undefined ? 1 : 0,
-			arrows: player.aarexModifications.newGameExpVersion !== undefined,
+            arrows: player.aarexModifications.newGameExpVersion !== undefined,
             ngpp: player.meta == undefined ? false : tmp.ngp3 ? 2 : true,
             ngmm: player.aarexModifications.ngmX ? player.aarexModifications.ngmX - 1 : player.galacticSacrifice !== undefined ? 1 : 0,
             rs: player.infinityUpgradesRespecced != undefined ? 2 : player.boughtDims !== undefined,
-			ngud: player.aarexModifications.nguspV !== undefined ? 3 : player.aarexModifications.ngudpV !== undefined ? 2 : player.exdilation !== undefined ? 1 : 0,
-			nguep: player.aarexModifications.nguepV !== undefined
+            ngud: player.aarexModifications.nguspV !== undefined ? 3 : player.aarexModifications.ngudpV !== undefined ? 2 : player.exdilation !== undefined ? 1 : 0,
+            nguep: player.aarexModifications.nguepV !== undefined,
+            ngmu: player.aarexModifications.newGameMult === 1
         }
     } else var modesChosen = modes
     player = {
@@ -400,7 +402,7 @@ function updateNewPlayer(reseted) {
                 2: 0
             },
             upgrades: []
-		}
+        }
         player.aarexModifications.quantumConf = true
         tmp.qu=player.quantum
     }
@@ -751,6 +753,13 @@ function updateNewPlayer(reseted) {
         resetPSac()
         resetIDs_ngm5()
     }
+	if (modesChosen.ngmu) {
+		player.aarexModifications.newGameMult=1
+		player.infMult=256
+		player.eternities=100
+		player.replicanti.unl=true
+		player.replicanti.amount=new Decimal(1)
+	}
 }
 updateNewPlayer()
 
@@ -1312,7 +1321,7 @@ function getInfinitied() {
 function getInfinitiedGain() {
 	let infGain=1
 	if (player.thisInfinityTime > 50 && player.achievements.includes("r87")) infGain=250
-	if (player.timestudy.studies.includes(32)) infGain*=Math.max(player.resets,1)
+	if (player.timestudy.studies.includes(32)) infGain*=getTS32Mult()
 	if (player.achievements.includes("r133") && player.meta) infGain=nM(player.dilation.dilatedTime.pow(.25).max(1),infGain)
 	return infGain
 }
@@ -2621,7 +2630,7 @@ function updateInfCosts() {
 
     if (document.getElementById("timestudies").style.display == "block" && document.getElementById("eternitystore").style.display == "block") {
         document.getElementById("11desc").textContent = "Currently: "+shortenMoney(getTS11Mult())+"x"
-        document.getElementById("32desc").textContent = "You gain "+getFullExpansion(player.resets, 1)+"x more infinitied stat (based on dimension boosts)"
+        document.getElementById("32desc").textContent = "You gain "+getFullExpansion(getTS32Mult())+"x more infinitied stat (based on dimension boosts)"
         document.getElementById("51desc").textContent = "You gain "+shortenCosts(player.aarexModifications.newGameExpVersion?1e30:1e15)+"x more IP"
         document.getElementById("71desc").textContent = "Currently: "+shortenMoney(calcTotalSacrificeBoost().pow(0.25).max(1).min("1e210000"))+"x"
         document.getElementById("72desc").textContent = "Currently: "+shortenMoney(calcTotalSacrificeBoost().pow(0.04).max(1).min("1e30000"))+"x"
@@ -3477,6 +3486,7 @@ function changeSaveDesc(saveId, placement) {
 			if (temp.aarexModifications.ngmX>3) message+="NG-"+temp.aarexModifications.ngmX+", "
 			else if (temp.galacticSacrifice) message+="NG--"+(temp.tickspeedBoosts!=undefined?"-":"")+", "
 			if (temp.boughtDims) message+="Eternity Respecced, "
+			if (temp.aarexModifications.newGameMult) message+="NG*, "
 			if (temp.aarexModifications.newGameExpVersion) message+="NG^, "
 			if (temp.exdilation!==undefined||temp.meta!==undefined) {
 				if (temp.exdilation!==undefined) message+="NG Update"+(temp.aarexModifications.nguepV?"^":"")+(temp.aarexModifications.nguspV?"S'":temp.aarexModifications.ngudpV?"'":player.meta!==undefined?"+":"")+", "
@@ -3581,7 +3591,8 @@ var modFullNames = {
   ngmm: "NG--",
   ngm: "NG-",
   ngud: "NGUd",
-  nguep: "NGUd↑'"
+  nguep: "NGUd↑'",
+  ngmu: "NG*"
 }
 var modSubNames = {
   ngp: ["OFF", "ON", "NG++++"],
@@ -6945,24 +6956,25 @@ function startDilatedEternity(auto, shortcut) {
 }
 
 function dilates(x, m) {
-	let e = 1
-	let a = false
-	if (player.dilation.active && m!=2 && (m!="meta" || !player.achievements.includes("ng3p63") || !inQC(0))) {
-		e *= dilationPowerStrength()
-		if (player.exdilation != undefined && !player.aarexModifications.ngudpV && !player.aarexModifications.nguspV) e += exDilationBenefit() * (1 - e)
-		if (player.dilation.upgrades.includes(9)) e *= 1.05
-		a = true
+	let e=1
+	let a=false
+	if (player.dilation.active&&m!=2&&(m!="meta"||!player.achievements.includes("ng3p63")||!inQC(0))) {
+		e*=dilationPowerStrength()
+		if (player.aarexModifications.newGameMult) e=0.9+Math.min((player.dilation.dilatedTime.add(1).log10())/1000,0.05)
+		if (player.exdilation!=undefined&&!player.aarexModifications.ngudpV&&!player.aarexModifications.nguspV) e+=exDilationBenefit()*(1-e)
+		if (player.dilation.upgrades.includes(9)) e*=1.05
+		a=true
 	}
-	if (player.galacticSacrifice !== undefined && m!=1) {
-		e *= dilationPowerStrength()
-		a = true
+	if (player.galacticSacrifice!==undefined&&m!=1) {
+		e*=dilationPowerStrength()
+		a=true
 	}
 	if (a) {
-		if (m!="tick") x = x.max(1)
-		else if (player.galacticSacrifice==undefined) x = x.times(1e3)
-		if (x.gt(10) || !(player.aarexModifications.ngmX>3)) x = Decimal.pow(10, Math.pow(x.log10(), e))
-		if (m=="tick"&&player.galacticSacrifice==undefined) x = x.div(1e3)
-		if (m=="tick"&&x.lt(1)) x = Decimal.div(1,x)
+		if (m!="tick") x=x.max(1)
+		else if (player.galacticSacrifice==undefined) x=x.times(1e3)
+		if (x.gt(10)||!(player.aarexModifications.ngmX>3)) x=Decimal.pow(10, Math.pow(x.log10(),e))
+		if (m=="tick"&&player.galacticSacrifice==undefined) x=x.div(1e3)
+		if (m=="tick"&&x.lt(1)) x=Decimal.div(1,x)
 	}
 	return x.max(0)
 }
@@ -7672,7 +7684,7 @@ setInterval(function() {
             else player.aarexModifications.popUpId = ""
             document.getElementById("welcomeMessage").innerHTML = "You are almost there for a supreme completion! However, completing this turns you to a ghost instead. This allows you to pass big rip universes and unlock new stuff! However, you need to lose everything too. Therefore, this is the sixth layer of NG+3."
         }
-        if (player.masterystudies&&(player.masterystudies.includes("d14")||player.achievements.includes("ng3p51"))&&!player.aarexModifications.newGameExpVersion&&!player.aarexModifications.ngudpV&&!player.aarexModifications.nguepV&&!metaSave.ngp4) {
+        if (player.masterystudies&&(player.masterystudies.includes("d14")||player.achievements.includes("ng3p51"))&&!player.aarexModifications.newGameMult&&!player.aarexModifications.newGameExpVersion&&!player.aarexModifications.ngudpV&&!player.aarexModifications.nguepV&&!metaSave.ngp4) {
             $.notify("Congratulations! You unlocked NG+4!", "success")
             metaSave.ngp4=true
             localStorage.setItem(metaSaveId,btoa(JSON.stringify(metaSave)))
@@ -8118,24 +8130,29 @@ function gameLoop(diff) {
 
     if (player.exdilation != undefined) player.blackhole.power = player.blackhole.power.plus(getBlackholeDimensionProduction(1).times(diff/10))
 
-    let gain;
-    if (player.boughtDims) {
-        var oldT = player.totalTickGained
-        player.totalTickGained = getTotalTickGained()
-        player.tickThreshold = tickCost(player.totalTickGained+1)
-        player.tickspeed = player.tickspeed.times(Decimal.pow(getTickSpeedMultiplier(), player.totalTickGained - oldT))
-    } else if (player.timeShards.gt(player.tickThreshold)) {
-        let thresholdMult=player.timestudy.studies.includes(171)?1.25:1.33
-        if (player.galacticSacrifice!==undefined&&!(player.aarexModifications.ngmX>3)) thresholdMult=player.timestudy.studies.includes(171)?1.1:1.15
-        if (QCIntensity(7)) thresholdMult *= getQCReward(7)
-        gain = Math.ceil(new Decimal(player.timeShards).dividedBy(player.tickThreshold).log10() / Math.log10(thresholdMult))
-        player.totalTickGained += gain
-        player.tickspeed = player.tickspeed.times(Decimal.pow(getTickSpeedMultiplier(), gain))
-        player.postC3Reward=Decimal.pow(getPostC3RewardMult(),gain*getEC14Power()).times(player.postC3Reward)
-        player.tickThreshold = Decimal.pow(thresholdMult,player.totalTickGained).times(player.aarexModifications.ngmX>3?0.01:1)
-        document.getElementById("totaltickgained").textContent = "You've gained "+getFullExpansion(player.totalTickGained)+" tickspeed upgrades."
-        updateTickSpeed();
-    }
+	let gain;
+	if (player.boughtDims) {
+		var oldT = player.totalTickGained
+		player.totalTickGained = getTotalTickGained()
+		player.tickThreshold = tickCost(player.totalTickGained+1)
+		player.tickspeed = player.tickspeed.times(Decimal.pow(getTickSpeedMultiplier(), player.totalTickGained - oldT))
+	} else if (player.timeShards.gt(player.tickThreshold)) {
+		let thresholdMult=1.33
+		if (player.galacticSacrifice!==undefined&&!(player.aarexModifications.ngmX>3)) thresholdMult=1.15
+		if (player.timestudy.studies.includes(171)) {
+			if (thresholdMult==1.15) thresholdMult=1.1
+			else thresholdMult=1.25
+			if (player.aarexModifications.newGameMult) thresholdMult-=0.08
+		}
+		if (QCIntensity(7)) thresholdMult*=getQCReward(7)
+		gain = Math.ceil(new Decimal(player.timeShards).dividedBy(player.tickThreshold).log10()/Math.log10(thresholdMult))
+		player.totalTickGained += gain
+		player.tickspeed = player.tickspeed.times(Decimal.pow(getTickSpeedMultiplier(),gain))
+		player.postC3Reward=Decimal.pow(getPostC3RewardMult(),gain*getEC14Power()).times(player.postC3Reward)
+		player.tickThreshold = Decimal.pow(thresholdMult,player.totalTickGained).times(player.aarexModifications.ngmX>3?0.01:1)
+		document.getElementById("totaltickgained").textContent = "You've gained "+getFullExpansion(player.totalTickGained)+" tickspeed upgrades."
+		updateTickSpeed();
+	}
 
     document.getElementById("bigcrunch").style.display = 'none'
     document.getElementById("postInfinityButton").style.display = 'none'

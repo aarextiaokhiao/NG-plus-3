@@ -187,6 +187,7 @@ function getDimensionPowerMultiplier(nonrandom, focusOn) {
 	}
 	let dimMult = player.tickspeedBoosts==undefined?2:1
 	if (player.aarexModifications.newGameExpVersion) dimMult *= 10
+	if (player.aarexModifications.newGameMult) dimMult *= 2.1
 
 	if (player.infinityUpgrades.includes('dimMult')) dimMult *= infUpg12Pow()
 	if ((inNC(9) || player.currentChallenge == "postc1")&&!nonrandom) dimMult = Math.pow(10/0.30,Math.random())*0.30
@@ -200,6 +201,7 @@ function getDimensionPowerMultiplier(nonrandom, focusOn) {
 		if (player.masterystudies.includes("d12")) dimMult += getNanofieldRewardEffect(8, "per-10")
 		if (focusOn != "linear") dimMult = Decimal.pow(dimMult, getMPTPower(undefined, focusOn == "br4"))
 	}
+	if (player.aarexModifications.newGameMult) dimMult = Decimal.times(dimMult,Math.log10(player.resets+1)+1)
 	return dimMult;
 }
 
