@@ -544,7 +544,7 @@
 					<tr>
 						<td><button class="timestudylocked" id="timestudy361" style='font-size:10px' onclick='buyMasteryStudy("t", 361)'>Hatch speed is faster based on your tachyon particles.<br><span id="ts361Current"></span></button></td>
 						<td><button class="timestudylocked" id="dilstudy11" onclick='buyMasteryStudy("d", 11)'>Unlock Emperor Dimensions<br><span id="ds11Cost"></span><span id="ds11Req"></span></button></td>
-						<td><button class="timestudylocked" id="timestudy362" onclick='buyMasteryStudy("t", 362)'>Reduce the softcap for preon boost.</button></td>
+						<td><button class="timestudylocked" id="timestudy362" onclick='buyMasteryStudy("t", 362)'><span id="362desc"></span></button></td>
 					</tr>
 				</table>
 				</div>
@@ -1209,6 +1209,7 @@
 				</tr>
 			</table>
 			<div id="antimatterdimensions" class="dimtab">
+				<p id="mp10d"></p>
 				<p></p>
 				<input id="confirmation" type="checkbox" style="width:20px; height: 18px; display: none" ach-tooltip="No confirmation when doing Dimensional Sacrifice" onchange="sacrificeConf()">
 				<button id="sacrifice" class="storebtn" style="font-size:12px; width: 320px; display: none" ach-tooltip="">Dimensional Sacrifice</button>
@@ -1242,6 +1243,9 @@
 						<td>
 							<button id="secondSoftReset" style="color:black; width: 200px; height: 35px; font-size: 9px" class="storebtn">Lose all your previous progress, but get a tickspeed boost</button>
 						</td>
+					</tr>
+					<tr style="font-size: 15px">
+						<td id="intergalacticLabel" colspan=2></td>
 					</tr>
 				</table>
 				<button id="quickReset" style="color:black; width: 200px; height: 50px; font-size: 12px; display: none" class="storebtn" onclick="quickReset()">Lose a reset, returning to the start of the reset</button>
@@ -1724,9 +1728,9 @@
 						<td><div><button id="offlineProgress" onclick='toggleOfflineProgress()' class="storebtn" style="color:black; width: 200px; height: 55px; font-size: 15px"></button></div></td>
 						<td><div><button id="reset" class="storebtn" style="color:black; width: 200px; height: 55px; font-size: 20px">RESET THE GAME</button></div></td>
 					</tr>
-					<tr style="display: none">
-						<td></td>
-						<td><div><button id="bugExport" onclick="bugExport()" class="storebtn" style="color:black; width: 200px; height: 55px; font-size: 12px">Export "Infinite" bug save<br><b>(WARNING: This disappears when you reload the game!)</button></b></div></td>
+					<tr>
+						<td><div class="storebtn" style="color:black; width: 198px; height: 55px; font-size:130%; text-align: center;"><b id="autoSaveInterval">Auto-save interval: 30s</b><input id="autoSaveIntervalSlider" style="width: 170px;" type="range" min="15" max="120" value="30" class="slider" oninput="changeAutoSaveInterval()"></div></td>
+						<td><div><button id="bugExport" onclick="bugExport()" class="storebtn" style="color:black; width:200px; height:55px; font-size:12px; display:none">Export "Infinite" bug save<br><b>(WARNING: This disappears when you reload the game!)</button></b></div></td>
 						<td></td>
 					</tr>
 				</table>
@@ -5172,6 +5176,7 @@
 								Z Neutrino is currently <span id="zNeGen">electron</span>.<br>
 								<span id="zNeProgress"></span><br>
 								<span id="zNeReq"></span><br>
+								<span id="zbGain"></span><br>
 								<div id="zNe"><span id="zNeSymbol"></span></div>
 							</td>
 						</tr></table>
@@ -5227,7 +5232,8 @@
 		<button class="storebtn" id='ngpBtn' style="font-size: 15px" onclick="toggle_mode('ngp')" style="display: inline">NG+: OFF</button>
 		<button class="storebtn" id='ngppBtn' style="font-size: 15px" onclick="toggle_mode('ngpp')" style="display: inline">NG++: OFF</button><br>
 		<button class="storebtn longbtn" id='ngudBtn' style="font-size: 15px" onclick="toggle_mode('ngud')" style="display: inline">NGUd: OFF</button>
-		<button class="storebtn" id='ngmuBtn' style="font-size: 15px" onclick="toggle_mode('ngmu')" style="display: inline">NG*: OFF</button><br>
+		<button class="storebtn" id='ngmuBtn' style="font-size: 15px" onclick="toggle_mode('ngmu')" style="display: inline">NG*: OFF</button>
+		<button class="storebtn" id='ngumuBtn' style="font-size: 15px" onclick="toggle_mode('ngumu')" style="display: inline">NGUd*': OFF</button><br>
 		<button class="storebtn longbtn" id='arrowsBtn' style="font-size: 15px" onclick="toggle_mode('arrows')" style="display: inline">NG↑: Linear (↑⁰)</button>
 		<button class="storebtn longbtn" id='nguepBtn' style="font-size: 15px" onclick="toggle_mode('nguep')" style="display: inline">NGUd↑': Linear' (↑⁰')</button><br>
 		Click "Load" while holding shift to load a save but w/o offline progress.

@@ -4,8 +4,14 @@ function getDilationMetaDimensionMultiplier() {
 	if (player.aarexModifications.nguspV !== undefined) div = 1e50
 	if (player.masterystudies != undefined) if (player.masterystudies.includes("d12")) pow = getNanofieldRewardEffect(4)
 	if (player.aarexModifications.ngudpV&&!player.aarexModifications.nguepV) {
-		let x=3-Math.min(1,Math.log10(1+player.quantum.colorPowers.b.plus(10).log10()))
-		if (player.quantum.colorPowers.b.gt("1e5000")) x-=Math.min(Math.log10(player.quantum.colorPowers.b.log10()-4900)-2,2)/3
+		let l=tmp.qu.colorPowers.b.plus(10).log10()
+		let x=3-Math.log10(l+1)
+		if (player.aarexModifications.ngumuV) {
+			if (x<2) x=2-2*(2-x)/(5-x)
+		} else {
+			x=Math.max(x,2)
+			if (l>5000) x-=Math.min(Math.log10(l-4900)-2,2)/3
+		}
 		pow/=x
 	}
 	let ret = player.dilation.dilatedTime.div(div).pow(pow).plus(1)
@@ -294,7 +300,7 @@ function updateMetaDimensions () {
 	document.getElementById("metaAntimatterAmount").textContent = shortenMoney(player.meta.antimatter)
 	document.getElementById("metaAntimatterBest").textContent = shortenMoney(player.meta.bestAntimatter)
 	document.getElementById("bestAntimatterQuantum").textContent = player.masterystudies && quantumed ? "Your best" + (ghostified ? "" : "-ever") + " meta-antimatter" + (ghostified ? " in this Ghostify" : "") + " was " + shortenMoney(player.meta.bestOverQuantums) + "." : ""
-	document.getElementById("bestAntimatterTranslation").innerHTML = (player.masterystudies ? tmp.qu.nanofield.rewards > 1 && player.currentEternityChall != "eterc14" && !inQC(3) && !inQC(4) : false) ? 'Raised to the power of <span id="metaAntimatterPower" style="font-size:35px; color: black">'+formatValue(player.options.notation, getExtraDimensionBoostPowerExponent(), 2, 1)+'</span>, t' : "T"
+	document.getElementById("bestAntimatterTranslation").innerHTML = ((player.masterystudies != undefined && tmp.qu.nanofield.rewards > 1) && player.currentEternityChall != "eterc14" && !inQC(3) && !inQC(4) && player.aarexModifications.nguspV === undefined) ? 'Raised to the power of <span id="metaAntimatterPower" style="font-size:35px; color: black">'+formatValue(player.options.notation, getExtraDimensionBoostPowerExponent(), 2, 1)+'</span>, t' : "T"
 	setAndMaybeShow("bestMAOverGhostifies", ghostified, '"Your best-ever meta-antimatter was " + shortenMoney(player.meta.bestOverGhostifies) + "."')
 	document.getElementById("metaAntimatterEffect").textContent = shortenMoney(getExtraDimensionBoostPower())
 	document.getElementById("metaAntimatterPerSec").textContent = 'You are getting ' + shortenDimensions(getMetaDimensionProduction(1)) + ' meta-antimatter per second.'
@@ -533,8 +539,10 @@ let quarkGain = function () {
 		let log = (ma.log10() - 379.4) / (player.achievements.includes("ng3p63") ? 279.8 : 280)
 		if (log > 1.2) log = log*log/1.2
 		if (log > 738 && !hasNU(8)) log = Math.sqrt(log * 738)
-		if (player.aarexModifications.nguepV&&log>1e4) {
-			let dlog=Math.log10(log)
+		let dlog = Math.log10(log)
+		let start = 4 //Starts at e10k.
+		if (player.aarexModifications.ngumuV) start++ //Starts at e100k.
+		if ((player.aarexModifications.ngumuV||player.aarexModifications.nguepV)&&dlog>start) {
 			let capped=Math.floor(Math.log10(Math.max(dlog-2,1))/Math.log10(2))
 			dlog=(dlog-Math.pow(2,capped)-2)/Math.pow(2,capped)+capped+3
 			log=Math.pow(10,dlog)
@@ -1170,7 +1178,7 @@ function quantumReset(force, auto, challid, bigRip, implode=false) {
 	player.dilation.totalTachyonParticles = player.dilation.tachyonParticles
 	if (player.exdilation!=undefined) {
 		if (player.eternityUpgrades.length) for (var u=7;u<10;u++) player.eternityUpgrades.push(u)
-		for (var d=1;d<(player.aarexModifications.nguspV?9:5);d++) player["blackholeDimension"+d] = player.achievements.includes("ng3p67") && player.aarexModifications.ngudpV ? bhd[d-1] : {
+		for (var d=1;d<(player.aarexModifications.nguspV?9:5);d++) player["blackholeDimension"+d] = player.achievements.includes("ng3p67") && player.aarexModifications.ngudpV && !player.aarexModifications.ngumuV ? bhd[d-1] : {
 			cost: blackholeDimStartCosts[d],
 			amount: new Decimal(0),
 			power: new Decimal(1),

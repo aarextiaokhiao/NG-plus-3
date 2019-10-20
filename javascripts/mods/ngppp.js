@@ -248,53 +248,59 @@ function canBuyMasteryStudy(type, id) {
 	return true
 }
 
-function drawMasteryBranch(num1, num2) {
-	var type=num2.split("ec")[1]?"ec":num2.split("di")[1]?"d":"t"
-	var start=document.getElementById(num1).getBoundingClientRect();
-	var end=document.getElementById(num2).getBoundingClientRect();
+var occupied
+function drawMasteryBranch(id1, id2) {
+	var type1=id1.split("ec")[1]?"c":id1.split("dil")[1]?"d":id1.split("time")[1]?"t":undefined
+	var type2=id2.split("ec")[1]?"c":id2.split("dil")[1]?"d":id2.split("time")[1]?"t":undefined
+	var start=document.getElementById(id1).getBoundingClientRect();
+	var end=document.getElementById(id2).getBoundingClientRect();
 	var x1=start.left + (start.width / 2) + (document.documentElement.scrollLeft || document.body.scrollLeft);
 	var y1=start.top + (start.height / 2) + (document.documentElement.scrollTop || document.body.scrollTop);
 	var x2=end.left + (end.width / 2) + (document.documentElement.scrollLeft || document.body.scrollLeft);
 	var y2=end.top + (end.height / 2) + (document.documentElement.scrollTop || document.body.scrollTop);
 	msctx.lineWidth=15;
 	msctx.beginPath();
-	var drawBoughtLine=false
-	if (type=="ec") {
-		if (player.eternityChallUnlocked==num2.slice(2,4)) drawBoughtLine=player.masterystudies.includes('t'+num1.split("study")[1])
-	} else drawBoughtLine=player.masterystudies.includes(type+num2.split("study")[1])
+	var drawBoughtLine=true
+	if (type1=="t"||type1=="d") drawBoughtLine=player.masterystudies.includes(type1+id1.split("study")[1])
+	if (type2=="t"||type2=="d") drawBoughtLine=drawBoughtLine&&player.masterystudies.includes(type2+id2.split("study")[1])
+	if (type2=="c") drawBoughtLine=drawBoughtLine&&player.eternityChallUnlocked==id2.slice(2,4)
 	if (drawBoughtLine) {
-		if (type=="d" && player.options.theme == "Aarex's Modifications") {
-			msctx.strokeStyle=parseInt(num2.split("study")[1])<8?"#D2E500":parseInt(num2.split("study")[1])>9?"#333333":"#009900";
-		} else if (type=="ec") {
+		if (type2=="d" && player.options.theme == "Aarex's Modifications") {
+			msctx.strokeStyle=parseInt(id2.split("study")[1])<8?"#D2E500":parseInt(id2.split("study")[1])>9?"#333333":"#009900";
+		} else if (type2=="c") {
 			msctx.strokeStyle="#490066";
 		} else {
 			msctx.strokeStyle="#000000";
 		}
-	} else if (type=="d" && player.options.theme == "Aarex's Modifications") {
-		msctx.strokeStyle=parseInt(num2.split("study")[1])<8?"#697200":parseInt(num2.split("study")[1])>11?"#727272":parseInt(num2.split("study")[1])>9?"#262626":"#006600";
+	} else if (type2=="d" && player.options.theme == "Aarex's Modifications") {
+		msctx.strokeStyle=parseInt(id2.split("study")[1])<8?"#697200":parseInt(id2.split("study")[1])>11?"#727272":parseInt(id2.split("study")[1])>9?"#262626":"#006600";
 	} else msctx.strokeStyle="#444";
 	msctx.moveTo(x1, y1);
 	msctx.lineTo(x2, y2);
 	msctx.stroke();
-    if (shiftDown && type == "t") {
-		var start = document.getElementById(num2).getBoundingClientRect();
-		var x1 = start.left + (start.width / 2) + (document.documentElement.scrollLeft || document.body.scrollLeft);
-		var y1 = start.top + (start.height / 2) + (document.documentElement.scrollTop || document.body.scrollTop);
-		var mult = masterystudies.costmults[num2.split("study")[1]]
-		var msg = num2.split("study")[1] + " (" + (mult>1e3?shorten(mult):mult) + "x)"
-		msctx.fillStyle = 'white';
-		msctx.strokeStyle = 'black';
-		msctx.lineWidth = 3;
-		msctx.font = "15px Typewriter";
-		msctx.strokeText(msg, x1 - start.width / 2, y1 - start.height / 2 - 1);
-		msctx.fillText(msg, x1 - start.width / 2, y1 - start.height / 2 - 1);
-    }
+	if (!occupied.includes(id2) && type2 == "t") {
+		occupied.push(id2)
+		if (shiftDown) {
+			var start = document.getElementById(id2).getBoundingClientRect();
+			var x1 = start.left + (start.width / 2) + (document.documentElement.scrollLeft || document.body.scrollLeft);
+			var y1 = start.top + (start.height / 2) + (document.documentElement.scrollTop || document.body.scrollTop);
+			var mult = masterystudies.costmults[id2.split("study")[1]]
+			var msg = id2.split("study")[1] + " (" + (mult>1e3?shorten(mult):mult) + "x)"
+			msctx.fillStyle = 'white';
+			msctx.strokeStyle = 'black';
+			msctx.lineWidth = 3;
+			msctx.font = "15px Typewriter";
+			msctx.strokeText(msg, x1 - start.width / 2, y1 - start.height / 2 - 1);
+			msctx.fillText(msg, x1 - start.width / 2, y1 - start.height / 2 - 1);
+		}
+	}
 }
 
 function drawMasteryTree() {
 	msctx.clearRect(0, 0, msc.width, msc.height);
 	if (player === undefined) return
 	if (document.getElementById("eternitystore").style.display === "none" || document.getElementById("masterystudies").style.display === "none" || player.masterystudies === undefined) return
+	occupied=[]
 	drawMasteryBranch("back", "timestudy241")
 	drawMasteryBranch("timestudy241", "timestudy251")
 	drawMasteryBranch("timestudy241", "timestudy252")
@@ -1052,14 +1058,14 @@ function sacrificeGalaxy(auto=false) {
 	if (!tmp.qu.autoOptions.sacrifice) updateElectronsEffect()
 }
 
-function getMPTPower(on, br4) {
+function getMPTPower(mod) {
 	if (!inQC(0)) return 1
 	var a = tmp.qu.electrons.amount
 	var s = 149840
 	if (player.ghostify.ghostlyPhotons.unl) s += tmp.le[2]
 	if (a>37460+s) a = Math.sqrt((a-s)*37460)+s
-	if (tmp.rg4 && (!br4 || !hasNU(13))) a *= 0.7
-	if (player.masterystudies != undefined) if (on == undefined ? player.masterystudies.includes("d13") : on) a *= getTreeUpgradeEffect(4)
+	if (tmp.rg4 && (mod != "br4" || !hasNU(13))) a *= 0.7
+	if (player.masterystudies !== undefined && player.masterystudies.includes("d13") && mod != "noTree") a *= getTreeUpgradeEffect(4)
 	return a+1
 }
 
@@ -2174,7 +2180,7 @@ function getTreeUpgradeEffect(upg) {
 function getTreeUpgradeEffectDesc(upg) {
 	if (upg==1) return getFullExpansion(getTreeUpgradeEffect(upg))
 	if (upg==2) return getDilExp("TU3").toFixed(2) + " -> " + getDilExp().toFixed(2)
-	if (upg==4) return "^" + getFullExpansion(Math.round(getMPTPower(false))) + " -> ^" + getFullExpansion(Math.round(getMPTPower(true)))
+	if (upg==4) return "^" + getFullExpansion(Math.round(getMPTPower("noTree"))) + " -> ^" + getFullExpansion(Math.round(getMPTPower()))
 	if (upg==8) return "+" + getTreeUpgradeEffect(8).toFixed(2)
 	return shortenMoney(getTreeUpgradeEffect(upg))
 }
@@ -2916,6 +2922,7 @@ function getSpaceShardsGain() {
 		let dlog=Math.log10(log)/Math.log10(4)
 		let start=5 //Starts at e1,024.
 		if (player.aarexModifications.nguepV) start++ //Starts at e4,096.
+		if (player.aarexModifications.ngumuV) start-- //Starts at e256. (NGUd*' only)
 		if (dlog>start) {
 			let capped=Math.min(Math.floor(Math.log10(Math.max(dlog+2-start,1))/Math.log10(2)),10-start)
 			dlog=(dlog-Math.pow(2,capped)-start+2)/Math.pow(2,capped)+capped+start-1
@@ -3201,7 +3208,7 @@ function ghostifyReset(implode, gain, amount, force) {
 	var nBEU = []
 	for (var u=20;u>0;u--) {
 		if (nBRU.includes(u+1)||tmp.qu.bigRip.upgrades.includes(u)) nBRU.push(u)
-		if (u<11&&(nBEU.includes(u+1)||tmp.qu.breakEternity.upgrades.includes(u))) nBEU.push(u)
+		if (u<11&&u!=7&&(nBEU.includes(u+1)||tmp.qu.breakEternity.upgrades.includes(u))) nBEU.push(u)
 	}
 	if (bm > 2) for (var c=1;c<9;c++) tmp.qu.electrons.mult += .5-QCIntensity(c)*.25
 	if (bm > 6 && !force && player.achievements.includes("ng3p68")) gainNeutrinos(2e3*tmp.qu.bigRip.bestGals, "all")
@@ -4120,11 +4127,12 @@ function updateGhostifyTabs() {
 			document.getElementById("wbProduction").textContent=shorten(tmp.wbp)
 			document.getElementById("zNeGen").textContent=(["electron","Mu","Tau"])[data2.zNeGen-1]
 			document.getElementById("zNeProgress").textContent=data2.zNeProgress.times(100).toFixed(1)+"% to oscillate Z Neutrino to "+(["Mu","Tau","electron"])[data2.zNeGen-1]+"."
-			document.getElementById("zNeReq").textContent="Oscillate progress gain speed is currently "+shorten(data2.zNeReq)+"x."
+			document.getElementById("zNeReq").textContent="Oscillate progress gain speed is currently "+(data2.zNeReq.lt(1)?"1 / "+shorten(Decimal.div(1,data2.zNeReq)):shorten(data2.zNeReq))+"x."
 			document.getElementById("zNe").className=(["electron","mu","tau"])[data2.zNeGen-1]
 			document.getElementById("zNeSymbol").textContent=(["e","μ","τ"])[data2.zNeGen-1]
-			document.getElementById("zbSpeed").textContent=shorten(tmp.zbs)
 			document.getElementById("zb").textContent=shortenDimensions(data2.zb)
+			document.getElementById("zbGain").textContent="You will gain "+shortenDimensions(Decimal.div(1,data2.zNeReq))+" Z Bosons on next oscillation."
+			document.getElementById("zbSpeed").textContent=shorten(tmp.zbs)
 		}
 	}
 }
@@ -4363,20 +4371,29 @@ function startEC10() {
 	startEternityChallenge(10)
 }
 
-function getCPPower(x) {
+function getCPLog(x) {
 	x=Decimal.add(tmp.qu.colorPowers[x],1).log10()
-	if (x>1024&&player.aarexModifications.ngudpV&&!player.aarexModifications.nguepV) x=Math.pow(x,.9)*2
+	if (x>1024&&player.aarexModifications.ngudpV&&!player.aarexModifications.nguepV) {
+		if (player.aarexModifications.ngumuV) x=Math.sqrt(x)*32
+		else x=Math.pow(x,.9)*2
+	}
 	return x
 }
 
 function updateColorPowers() {
-	colorBoosts.r=Math.pow(getCPPower('r'),player.dilation.active?2/3:0.5)/10+1
-	colorBoosts.g=Math.sqrt(getCPPower('g')*2+1)
+	colorBoosts.r=Math.pow(getCPLog('r'),player.dilation.active?2/3:0.5)/10+1
+	colorBoosts.g=Math.sqrt(getCPLog('g')*2+1)
 	if (colorBoosts.r>1.3) colorBoosts.r=Math.sqrt(colorBoosts.r*1.3)
 	if (colorBoosts.r>2.3&&(!player.dilation.active||getTreeUpgradeLevel(2)>7||ghostified)) colorBoosts.r=Math.pow(colorBoosts.r/2.3,0.5*(ghostified&&player.ghostify.neutrinos.boosts>4?1+tmp.nb[4]:1))*2.3
 	if (colorBoosts.g>4.5) colorBoosts.g=Math.sqrt(colorBoosts.g*4.5)
-	if (player.aarexModifications.ngudpV&&!player.aarexModifications.nguepV) colorBoosts.g=(colorBoosts.g+1)/2
-	let l=Math.sqrt(getCPPower('b'))
+	let m=1
+	if (player.aarexModifications.ngumuV&&player.masterystudies.includes("t362")) {
+		m+=tmp.qu.replicants.quarks.add(1).log10()/10
+		if (m>4) m=Math.sqrt(m*4)
+	}
+	if (player.aarexModifications.ngudpV&&!player.aarexModifications.nguepV) m/=2
+	colorBoosts.g=(colorBoosts.g-1)*m+1
+	let l=Math.sqrt(getCPLog('b'))
 	if (l>Math.log10(1300)) {
 		let softcapPower=1
 		if (player.ghostify.ghostlyPhotons.unl) softcapPower+=tmp.le[4]

@@ -27,7 +27,8 @@ var modes = {
 	rs: 0,
 	ngud: 0,
 	nguep: 0,
-	ngmu: 0
+	ngmu: 0,
+	ngumu: 0
 }
 function updateNewPlayer(reseted) {
     if (reseted) {
@@ -40,7 +41,8 @@ function updateNewPlayer(reseted) {
             rs: player.infinityUpgradesRespecced != undefined ? 2 : player.boughtDims !== undefined,
             ngud: player.aarexModifications.nguspV !== undefined ? 3 : player.aarexModifications.ngudpV !== undefined ? 2 : player.exdilation !== undefined ? 1 : 0,
             nguep: player.aarexModifications.nguepV !== undefined,
-            ngmu: player.aarexModifications.newGameMult === 1
+            ngmu: player.aarexModifications.newGameMult === 1,
+            ngumu: player.aarexModifications.ngumuV !== undefined
         }
     } else var modesChosen = modes
     player = {
@@ -760,6 +762,7 @@ function updateNewPlayer(reseted) {
 		player.replicanti.unl=true
 		player.replicanti.amount=new Decimal(1)
 	}
+    if (modesChosen.ngumu) player.aarexModifications.ngumuV=1.03
 }
 updateNewPlayer()
 
@@ -1542,21 +1545,27 @@ function updateDimensions() {
             }
         }
 
+		setAndMaybeShow("mp10d",player.aarexModifications.newGameMult,"'Multiplier per 10 dimensions: '+shorten(getDimensionPowerMultiplier(true))+'x'")
+
         var shiftRequirement = getShiftRequirement(0);
         var isShift = player.resets < (inNC(4) || player.currentChallenge == "postc1" || player.pSac !== undefined ? 2 : 4)
         document.getElementById("resetLabel").textContent = 'Dimension ' + (isShift ? "Shift" : player.resets < getSupersonicStart() ? "Boost" : "Supersonic") + ' ('+ getFullExpansion(Math.ceil(player.resets)) +'): requires ' + getFullExpansion(Math.ceil(shiftRequirement.amount)) + " " + DISPLAY_NAMES[shiftRequirement.tier] + " Dimensions"
         document.getElementById("softReset").textContent = "Reset the game for a " + (isShift ? "new dimension" : "boost")
-        var totalReplGalaxies = player.replicanti.galaxies + extraReplGalaxies
-        var nextGal = getGalaxyRequirement(0, true)
-        var msg = (nextGal.scaling > 4 ? "Ghostly" : nextGal.scaling > 3 ? "Dark Matter" : (["", "Distant ", "Farther ", "Remote "])[nextGal.scaling] + "Antimatter") + ' Galaxies ('+ getFullExpansion(player.galaxies) + ((totalReplGalaxies + player.dilation.freeGalaxies) > 0 ? ' + ' + getFullExpansion(totalReplGalaxies)  + (player.dilation.freeGalaxies > 0 ? ' + ' + getFullExpansion(Math.floor(player.dilation.freeGalaxies)) : '') : '') +'): requires ' + getFullExpansion(nextGal.amount) + ' '+DISPLAY_NAMES[inNC(4) || player.pSac != undefined ? 6 : 8]+' Dimensions'
-        if (player.achievements.includes("ng3p37") && shiftRequirement.tier > 7) msg += '<br>"Intergalactic" reward multiplier' + (player.dilation.active || player.galacticSacrifice != undefined ? " (estimated)" : "") + " (" + getFullExpansion(player.galaxies) + (Math.floor(tmp.igg - player.galaxies) > 0 ? " + " + getFullExpansion(Math.floor(tmp.igg - player.galaxies)) : "") + "): " + shorten(dilates(tmp.ig).pow(player.dilation.active?getNanofieldRewardEffect(5):1)) + 'x to Eighth Dimensions'
-        document.getElementById("secondResetLabel").innerHTML = msg
+
 		if (isTickspeedBoostPossible()) {
 			var tickReq = getTickspeedBoostRequirement()
 			document.getElementById("tickReset").style.display = ""
 			document.getElementById("tickResetLabel").textContent = "Tickspeed Boost ("+getFullExpansion(player.tickspeedBoosts)+"): requires "+getFullExpansion(tickReq.amount)+" "+DISPLAY_NAMES[tickReq.tier]+" Dimensions"
 			document.getElementById("tickResetBtn").className = getAmount(tickReq.tier)<tickReq.amount ? "unavailablebtn" : "storebtn"
 		} else document.getElementById("tickReset").style.display = "none"
+
+        var nextGal = getGalaxyRequirement(0, true)
+        var totalReplGalaxies = player.replicanti.galaxies + extraReplGalaxies
+        document.getElementById("secondResetLabel").innerHTML = (nextGal.scaling > 4 ? "Ghostly" : nextGal.scaling > 3 ? "Dark Matter" : (["", "Distant ", "Farther ", "Remote "])[nextGal.scaling] + "Antimatter") + ' Galaxies ('+ getFullExpansion(player.galaxies) + ((totalReplGalaxies + player.dilation.freeGalaxies) > 0 ? ' + ' + getFullExpansion(totalReplGalaxies)  + (player.dilation.freeGalaxies > 0 ? ' + ' + getFullExpansion(Math.floor(player.dilation.freeGalaxies)) : '') : '') +'): requires ' + getFullExpansion(nextGal.amount) + ' '+DISPLAY_NAMES[inNC(4) || player.pSac != undefined ? 6 : 8]+' Dimensions'
+		if (player.achievements.includes("ng3p37") && shiftRequirement.tier > 7) {
+			document.getElementById("intergalacticLabel").parentElement.style.display = ""
+			document.getElementById("intergalacticLabel").innerHTML = 'Intergalactic Boost ' + (player.dilation.active || player.galacticSacrifice != undefined ? " (estimated)" : "") + " (" + getFullExpansion(player.galaxies) + (Math.floor(tmp.igg - player.galaxies) > 0 ? " + " + getFullExpansion(Math.floor(tmp.igg - player.galaxies)) : "") + "): " + shorten(dilates(tmp.ig).pow(player.dilation.active?getNanofieldRewardEffect(5):1)) + 'x to Eighth Dimensions'
+		} else document.getElementById("intergalacticLabel").parentElement.style.display = "none"
     }
 
     if (canBuyDimension(3) || player.currentEternityChall == "eterc9") {
@@ -2132,7 +2141,7 @@ function updateDimensions() {
         if (document.getElementById("breakEternity").style.display == "block") {
             document.getElementById("eternalMatter").textContent = shortenDimensions(tmp.qu.breakEternity.eternalMatter)
             for (var u=1;u<(player.ghostify.ghostlyPhotons.unl?11:8);u++) {
-                document.getElementById("breakUpg" + u).className = tmp.qu.breakEternity.upgrades.includes(u) ? "eternityupbtnbought" : tmp.qu.breakEternity.eternalMatter.gte(getBreakUpgCost(u)) ? "eternityupbtn" : "eternityupbtnlocked"
+                document.getElementById("breakUpg" + u).className = (tmp.qu.breakEternity.upgrades.includes(u) && u != 7) ? "eternityupbtnbought" : tmp.qu.breakEternity.eternalMatter.gte(getBreakUpgCost(u)) ? "eternityupbtn" : "eternityupbtnlocked"
                 if (u==8) document.getElementById("breakUpg8Mult").textContent = (getBreakUpgMult(8)*100-100).toFixed(1)
                 else if (u!=7) document.getElementById("breakUpg" + u + "Mult").textContent = shortenMoney(getBreakUpgMult(u))
             }
@@ -2910,15 +2919,8 @@ function updateMilestones() {
 }
 
 function replicantiGalaxyAutoToggle() {
-    if (player.replicanti.galaxybuyer) {
-        player.replicanti.galaxybuyer = false
-        if (player.timestudy.studies.includes(131)&&speedrunMilestonesReached<20) document.getElementById("replicantiresettoggle").textContent = "Auto galaxy OFF (disabled)"
-        else document.getElementById("replicantiresettoggle").textContent = "Auto galaxy OFF"
-    } else {
-        player.replicanti.galaxybuyer = true
-        if (player.timestudy.studies.includes(131)&&speedrunMilestonesReached<20) document.getElementById("replicantiresettoggle").textContent = "Auto galaxy ON (disabled)"
-        else document.getElementById("replicantiresettoggle").textContent = "Auto galaxy ON"
-    }
+	player.replicanti.galaxybuyer=!player.replicanti.galaxybuyer
+	document.getElementById("replicantiresettoggle").textContent="Auto galaxy "+(player.replicanti.galaxybuyer?"ON":"OFF")+(player.timestudy.studies.includes(131)&&speedrunMilestonesReached<20?" (disabled)":"")
 }
 
 function infMultAutoToggle() {
@@ -3489,7 +3491,7 @@ function changeSaveDesc(saveId, placement) {
 			if (temp.aarexModifications.newGameMult) message+="NG*, "
 			if (temp.aarexModifications.newGameExpVersion) message+="NG^, "
 			if (temp.exdilation!==undefined||temp.meta!==undefined) {
-				if (temp.exdilation!==undefined) message+="NG Update"+(temp.aarexModifications.nguepV?"^":"")+(temp.aarexModifications.nguspV?"S'":temp.aarexModifications.ngudpV?"'":player.meta!==undefined?"+":"")+", "
+				if (temp.exdilation!==undefined) message+="NG Update"+(temp.aarexModifications.ngumuV?"*":"")+(temp.aarexModifications.nguepV?"^":"")+(temp.aarexModifications.nguspV?"S'":temp.aarexModifications.ngudpV?"'":player.meta!==undefined?"+":"")+", "
 				else if (temp.meta!==undefined) message+="NG++"+(temp.masterystudies!==undefined?"+":"")+(temp.aarexModifications.ngp4V!==undefined?"+":"")+", "
 				if (temp.aarexModifications.newGamePlusVersion===undefined) message+="No NG+ features, "
 			} else if (temp.aarexModifications.newGamePlusVersion) message+="NG+, "
@@ -3581,7 +3583,8 @@ var modCaps = {
   ngmm: 4,
   rs: 2,
   ngud: 4,
-  nguep: 2
+  nguep: 2,
+  ngmu: 2
 }
 var modFullNames = {
   rs: "Respecced",
@@ -3592,7 +3595,8 @@ var modFullNames = {
   ngm: "NG-",
   ngud: "NGUd",
   nguep: "NGUd↑'",
-  ngmu: "NG*"
+  ngmu: "NG*",
+  ngumu: "NGUd*'"
 }
 var modSubNames = {
   ngp: ["OFF", "ON", "NG++++"],
@@ -3601,7 +3605,8 @@ var modSubNames = {
   ngmm: ["OFF", "ON", "NG---", "NG-4", "NG-5"],
   rs: ["NONE", "Eternity", "Infinity"],
   ngud: ["OFF", "ON", "Prime (')", "Semiprime (S')", "Semiprime.1 (S'.1)"],
-  nguep: ["Linear' (↑⁰')", "Exponential' (↑')", "Tetrational' (↑↑')"]
+  nguep: ["Linear' (↑⁰')", "Exponential' (↑')", "Tetrational' (↑↑')"],
+  ngmu: ["OFF", "ON", "Prime"]
 }
 function toggle_mode(id) {
 	hasSubMod = Object.keys(modCaps).includes(id)
@@ -3625,39 +3630,32 @@ function toggle_mode(id) {
 		modes.ngp=true
 		document.getElementById("ngpBtn").textContent="NG+: ON"
 	}
-	if (id=="ngpp"&&!modes.ngpp&&modes.ngud>1) {
-		modes.ngud=true
-		modes.nguep=0
-		document.getElementById("ngudBtn").textContent="NGUd: ON"
-		document.getElementById("nguepBtn").textContent="NGUd↑': Linear' (↑⁰')"
-	}
 	if (id=="ngud"&&(modes.ngud!==true?!modes.ngpp:modes.ngpp==1)) {
 		modes.ngpp=2
 		document.getElementById("ngppBtn").textContent="NG++: NG+++"
 	}
-	if (id=="ngud"&&!modes.ngud&&modes.nguep) {
-		modes.nguep=0
-		document.getElementById("nguepBtn").textContent="NGUd↑': Linear' (↑⁰')"
-	}
-	if (id=="nguep"&&modes.nguep) while (!(modes.ngud>1)) toggle_mode("ngud")
 	if (id=="rs"&&modes.rs) {
 		modes.ngpp=0
 		modes.ngud=0
-		modes.nguep=0
 		document.getElementById("ngppBtn").textContent="NG++: OFF"
 		document.getElementById("ngudBtn").textContent="NGUd: OFF"
-		document.getElementById("nguepBtn").textContent="NGUd↑': Linear' (↑⁰')"
 	}
+	if (((id=="ngpp"||id=="ngud")&&!modes[id])||(id=="rs"&&modes.rs)) {
+		if (modes.ngud>1) {
+			modes.ngud=true
+			document.getElementById("ngudBtn").textContent="NGUd: ON"
+		}
+		modes.nguep=0
+		modes.ngumu=0
+		document.getElementById("nguepBtn").textContent="NGUd↑': Linear' (↑⁰')"
+		document.getElementById("ngumuBtn").textContent="NGUd*': OFF"
+	}
+	if ((id=="ngumu"||id=="nguep")&&modes[id]) while (!(modes.ngud>1)) toggle_mode("ngud")
 }
 
 function toggleOfflineProgress() {
 	player.aarexModifications.offlineProgress = !player.aarexModifications.offlineProgress
 	document.getElementById("offlineProgress").textContent = "Offline progress: O"+(player.aarexModifications.offlineProgress?"N":"FF")
-};
-
-function toggleAutoSave() {
-	player.aarexModifications.autoSave = !player.aarexModifications.autoSave
-	document.getElementById("autoSave").textContent = "Auto save: O"+(player.aarexModifications.autoSave?"N":"FF")
 };
 
 document.getElementById("animationoptionsbtn").onclick = function () {
@@ -4074,7 +4072,7 @@ function setAchieveTooltip() {
     soLife.setAttribute('ach-tooltip', "Reach "+shortenCosts(Decimal.pow(10, 35e4))+" IP without studies and normal EP multi upgrades but in dilated and big ripped.")
     finite.setAttribute('ach-tooltip', "Get "+shortenCosts(1e33)+" Space Shards without Breaking Eternity.")
     really.setAttribute('ach-tooltip', "Undo Big Rip with at least "+shortenCosts(Decimal.pow(10, 1e5))+" matter.")
-    willenough.setAttribute('ach-tooltip', "Reach "+shortenCosts(Decimal.pow(10,player.aarexModifications.ngudpV?268435456:36000000))+" replicanti."+(player.aarexModifications.ngudpV?" Reward: You keep Black Hole Dimensions on Quantum.":""))
+    willenough.setAttribute('ach-tooltip', "Reach "+shortenCosts(Decimal.pow(10,player.aarexModifications.ngudpV?268435456:36000000))+" replicanti."+(player.aarexModifications.ngudpV&&!player.aarexModifications.ngumuV?" Reward: You keep Black Hole Dimensions on Quantum.":""))
     pls.setAttribute('ach-tooltip', "Reach "+shortenCosts(Decimal.pow(10, 95e4))+" IP while dilated, big ripped, and without having time studies, EP mult upgrades, and Break Eternity. Reward: Each time you become a ghost, you gain "+shortenDimensions(2e3)+" galaxies worth of all generations of neutrinos, multiplied by your best-ever galaxy amount in all Big Rips.")
     bm1.setAttribute('ach-tooltip', "Reward: Start Ghostifies with all Speedrun Milestones and all "+shorten(Number.MAX_VALUE)+" QK features unlocked, all Paired Challenges completed, all Big Rip upgrades bought, Nanofield is 2x faster until you reach 16 rewards, and you get quarks based on your best MA this quantum.")
     bm10.setAttribute('ach-tooltip', "Reward: Start Ghostifies with 10 of Fourth Emperor Dimensions"+(player.aarexModifications.ngudpV?" and start Big Rips with 3rd row of Eternity upgrades.":"."))
@@ -4542,44 +4540,31 @@ function updateAutobuyers() {
     if (player.challenges.includes("challenge12") && player.autobuyers[10] == 11) {
         player.autobuyers[10] = autoBuyerGalaxy
         document.getElementById("autoBuyerGalaxies").style.display = "inline-block"
-    } else {
-        document.getElementById("autoBuyerGalaxies").style.display = "none"
         document.getElementById("buyerBtnGalaxies").style.display = ""
-    }
-
+    } else document.getElementById("autoBuyerGalaxies").style.display = "none"
     if ((player.challenges.includes("postc2") || player.challenges.includes("challenge13") || player.challenges.includes("challenge16")) && player.autoSacrifice == 1) {
         player.autoSacrifice = autoSacrifice
         document.getElementById("autoBuyerSac").style.display = "inline-block"
-    } else {
-        document.getElementById("autoBuyerSac").style.display = "none"
         document.getElementById("buyerBtnSac").style.display = ""
-    }
-
+    } else document.getElementById("autoBuyerSac").style.display = "none"
     if (player.challenges.includes("challenge14") && player.autobuyers[12] == 13) {
         player.autobuyers[12] = autoGalSacrifice
         document.getElementById("autoBuyerGalSac").style.display = "inline-block"
-    } else {
-        document.getElementById("autoBuyerGalSac").style.display = "none"
         document.getElementById("buyerBtnGalSac").style.display = ""
-    }
+    } else document.getElementById("autoBuyerGalSac").style.display = "none"
     if (player.challenges.includes("challenge15") && player.autobuyers[13] == 14) {
         player.autobuyers[13] = autoTickspeedBoost
         document.getElementById("autoBuyerTickspeedBoost").style.display = "inline-block"
-    } else {
-        document.getElementById("autoBuyerTickspeedBoost").style.display = "none"
         document.getElementById("buyerBtnTickspeedBoost").style.display = ""
-    }
+    } else document.getElementById("autoBuyerTickspeedBoost").style.display = "none"
     if (player.challenges.includes("challenge16") && player.autobuyers[14] == 15) {
         player.autobuyers[14] = autoTDBoost
         document.getElementById("autoTDBoost").style.display = "inline-block"
-    } else {
-        document.getElementById("autoTDBoost").style.display = "none"
         document.getElementById("buyerBtnTDBoost").style.display = ""
-    }
+    } else document.getElementById("autoTDBoost").style.display = "none"
 
-    if (getEternitied() < 100) {
-        document.getElementById("autoBuyerEter").style.display = "none"
-    }
+    if (getEternitied() >= 100) document.getElementById("autoBuyerEter").style.display = ""
+    else document.getElementById("autoBuyerEter").style.display = "none"
 
 	var intervalUnits = player.infinityUpgrades.includes("autoBuyerUpgrade") ? 1/2000 : 1/1000
 	for (var tier = 1; tier <= 8; ++tier) {
@@ -7279,8 +7264,18 @@ function setAndMaybeShow(elementName, condition, contents) {
 	}
 }
 
+let autoSaveSeconds=0
 setInterval(function() {
-    updateTemp()
+	updateTemp()
+
+	if (player.aarexModifications.autoSave) {
+		autoSaveSeconds++
+		if (autoSaveSeconds >= getAutoSaveInterval()) {
+			save_game()
+			autoSaveSeconds=0
+		}
+	}
+
     if (getDimensionFinalMultiplier(1).gte(new Decimal("1e308")) &&
         getDimensionFinalMultiplier(2).gte(new Decimal("1e308")) &&
         getDimensionFinalMultiplier(3).gte(new Decimal("1e308")) &&
@@ -7297,8 +7292,6 @@ setInterval(function() {
         getDimensionFinalMultiplier(5).lt(getDimensionFinalMultiplier(6)) &&
         getDimensionFinalMultiplier(6).lt(getDimensionFinalMultiplier(7)) &&
         getDimensionFinalMultiplier(7).lt(getDimensionFinalMultiplier(8))) giveAchievement("How the antitables have turned")
-
-
 
     if (player.infinitied > 0 || player.infinityPoints.gt(0) || player.infinityUpgrades.length > 0 || getEternitied() > 0 || quantumed) document.getElementById("infinityPoints2").style.display = "inline-block"
     else document.getElementById("infinityPoints2").style.display = "none"
@@ -7422,7 +7415,6 @@ setInterval(function() {
     else document.getElementById("replauto2").style.visibility = "hidden"
     if (getEternitied() >= 80) document.getElementById("replauto3").style.visibility = "visible"
     else document.getElementById("replauto3").style.visibility = "hidden"
-    if (getEternitied() >= 100) document.getElementById("autoBuyerEter").style.display = "table-cell"
 
     if (getEternitied() == 0 && !quantumed) document.getElementById("pasteternities").style.display = "none"
     else document.getElementById("pasteternities").style.display = "inline-block"
@@ -7684,7 +7676,7 @@ setInterval(function() {
             else player.aarexModifications.popUpId = ""
             document.getElementById("welcomeMessage").innerHTML = "You are almost there for a supreme completion! However, completing this turns you to a ghost instead. This allows you to pass big rip universes and unlock new stuff! However, you need to lose everything too. Therefore, this is the sixth layer of NG+3."
         }
-        if (player.masterystudies&&(player.masterystudies.includes("d14")||player.achievements.includes("ng3p51"))&&!player.aarexModifications.newGameMult&&!player.aarexModifications.newGameExpVersion&&!player.aarexModifications.ngudpV&&!player.aarexModifications.nguepV&&!metaSave.ngp4) {
+        if (player.masterystudies&&(player.masterystudies.includes("d14")||player.achievements.includes("ng3p51"))&&!player.aarexModifications.newGameMult&&!player.aarexModifications.newGameExpVersion&&!player.aarexModifications.ngudpV&&!player.aarexModifications.ngumuV&&!player.aarexModifications.nguepV&&!metaSave.ngp4) {
             $.notify("Congratulations! You unlocked NG+4!", "success")
             metaSave.ngp4=true
             localStorage.setItem(metaSaveId,btoa(JSON.stringify(metaSave)))
@@ -9127,11 +9119,6 @@ function closeToolTip() {
     var elements = document.getElementsByClassName("popup")
     for (var i=0; i<elements.length; i++) if (elements[i].id!='welcome') elements[i].style.display = "none"
 }
-
-setInterval(function () {
-    if (player.aarexModifications.autoSave) save_game()
-}, 30000);
-
 
 function initGame() {
     //setup the onclick callbacks for the buttons

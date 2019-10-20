@@ -199,9 +199,10 @@ function getDimensionPowerMultiplier(nonrandom, focusOn) {
 	if (QCIntensity(5)) dimMult += getQCReward(5)
 	if (player.masterystudies) {
 		if (player.masterystudies.includes("d12")) dimMult += getNanofieldRewardEffect(8, "per-10")
-		if (focusOn != "linear") dimMult = Decimal.pow(dimMult, getMPTPower(undefined, focusOn == "br4"))
+		if (focusOn != "linear") dimMult = Decimal.pow(dimMult, getMPTPower(focusOn))
 	}
 	if (player.aarexModifications.newGameMult) dimMult = Decimal.times(dimMult,Math.log10(player.resets+1)+1)
+	if (player.aarexModifications.newGameMult) dimMult = Decimal.times(dimMult,Math.log10(player.galaxies+1)*5+1)
 	return dimMult;
 }
 

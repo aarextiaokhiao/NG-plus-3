@@ -122,6 +122,9 @@ function onLoad(noOffline) {
   sliderText.textContent = "Update rate: " + player.options.updateRate + "ms";
   slider.value = player.options.updateRate;
 
+  document.getElementById("autoSaveInterval").textContent = "Auto-save interval: " + getAutoSaveInterval() + "s"
+  document.getElementById("autoSaveIntervalSlider").value = getAutoSaveInterval()
+
   if (player.secondAmount !== 0) {
       document.getElementById("tickSpeed").style.visibility = "visible";
       document.getElementById("tickSpeedMax").style.visibility = "visible";
@@ -462,10 +465,6 @@ if (player.version < 5) {
   if (player.infinitied == 0 && getEternitied() == 0) document.getElementById("infinityPoints2").style.display = "none"
 
   var inERS=!(!player.boughtDims)
-  if (player.replicanti.galaxybuyer !== undefined && !inERS) {
-      replicantiGalaxyAutoToggle()
-      replicantiGalaxyAutoToggle()
-  }
 
   if (player.eternityChallUnlocked === null) player.eternityChallUnlocked = 0
   if (player.eternityChallUnlocked !== 0) document.getElementById("eterc"+player.eternityChallUnlocked+"div").style.display = "inline-block"
@@ -1299,6 +1298,7 @@ if (player.version < 5) {
           player.ghostify.wzb.wQkUp=true
           player.ghostify.wzb.zNeGen=1
       }
+      if (Decimal.eq(player.ghostify.wzb.zNeReq,0)) player.ghostify.wzb.zNeReq=1
       updateAutoGhosts(true)
   }
   if (player.aarexModifications.newGame3PlusVersion!=undefined) {
@@ -1843,6 +1843,7 @@ if (player.version < 5) {
   document.getElementById("ic7desc").textContent="You can't get Antimatter Galaxies, but dimensional boost multiplier "+(player.galacticSacrifice?"is cubed":"2.5x -> 10x")
   document.getElementById("ic7reward").textContent="Reward: Dimensional boost multiplier "+(player.galacticSacrifice?"is squared":"2.5x -> 4x")
   document.getElementById("replicantitabbtn").style.display=player.infinityUpgradesRespecced?"none":""
+  document.getElementById("replicantiresettoggle").textContent="Auto galaxy "+(player.replicanti.galaxybuyer?"ON":"OFF")+(player.timestudy.studies.includes(131)&&speedrunMilestonesReached<20?" (disabled)":"")
   document.getElementById("41").innerHTML="Each galaxy gives a 1."+(player.aarexModifications.newGameExpVersion?5:2)+"x multiplier on IP gained. <span>Cost: 4 Time Theorems"
   document.getElementById("42").innerHTML=(player.galacticSacrifice?"Galaxy cost multiplier is reduced by "+(player.aarexModifications.newGameExpVersion?12:13)+"/15x":"Galaxy requirement goes up "+(player.aarexModifications.newGameExpVersion?48:52)+" 8ths instead of 60")+".<span>Cost: 6 Time Theorems"
   document.getElementById("61").innerHTML="You gain 10"+(player.aarexModifications.newGameExpVersion?0:"")+"x more EP<span>Cost: 3 Time Theorems"
@@ -1925,6 +1926,8 @@ if (player.version < 5) {
       document.getElementById("empstudies").style.display=player.masterystudies.includes("d11")||ghostified?"":"none"
       document.getElementById("timestudy361").style.display=player.masterystudies.includes("d11")||ghostified?"":"none"
       document.getElementById("timestudy362").style.display=player.masterystudies.includes("d11")||ghostified?"":"none"
+      document.getElementById("timestudy362").style["font-size"] = player.masterystudies !== undefined ? "10px" : "0.65rem"
+      document.getElementById("362desc").textContent="Reduce the softcap for preon boost"+(player.aarexModifications.ngumuV?" and preons reduce green power effect.":".")
       document.getElementById("nfstudies").style.display=player.masterystudies.includes("d12")||ghostified?"":"none"
       document.getElementById("todstudies").style.display=player.masterystudies.includes("d13")||ghostified?"":"none"
       document.getElementById("nanofieldtabbtn").style.display=player.masterystudies.includes("d12")?"":"none"
@@ -2044,15 +2047,17 @@ if (player.version < 5) {
   } else player.lastUpdate = new Date().getTime()
   if (player.totalTimePlayed < 1 || inflationCheck || forceToQuantumAndRemove) {
       ngModeMessages=[]
-      if (player.aarexModifications.newGameMult) ngModeMessages.push("Welcome to NG* mode, made by Despacit and Soul147! This mode adds too many overpowerful buffs! This mode may be broken.")
+      if (player.aarexModifications.newGameMult) ngModeMessages.push("Welcome to NG Multiplied mode, made by Despacit and Soul147! This mode adds too many overpowerful buffs! This mode may be broken.")
       if (player.aarexModifications.newGameExpVersion) ngModeMessages.push("Welcome to NG^ mode, made by Naruyoko! This mode adds way many buffs that this mode may be broken!")
       if (player.meta!==undefined||player.exdilation!==undefined) {
           if (!player.aarexModifications.newGamePlusVersion) ngModeMessages.push("WARNING! You are disabling NG+ features on NG++! Standard NG++ have all of NG++ features and I recommend you to create a new save with NG+ and NG++ modes on.")
           if (player.aarexModifications.ngp4V) ngModeMessages.push("Welcome to NG++++ mode by Aarex! This is a NG+ version of NG+3 which makes you start with more stuff! It is recommended to not use this mode to progress in NG+3.")
           if (player.exdilation!==undefined) {
               if (player.aarexModifications.nguspV) ngModeMessages.push("Welcome to NG Update Semiprime mode made by Aarex! This is like NGUd', but it is really a combination of NG+3 and NGUd. This mode is more balanced too. Good luck! :)")
-              if (player.aarexModifications.nguepV) ngModeMessages.push("Welcome to NG Update Exponential Prime mode made by pg132! NGUd^' is like NGUd', but non-Black Hole nerfs are removed to make NGUd^' a NG^-like mod of NGUd'. This mod is very easy to beat, but you can't break this mod. :'(")
-              else if (player.aarexModifications.nguspV) {}
+              if (player.aarexModifications.ngumuV||player.aarexModifications.nguepV) {
+                  if (player.aarexModifications.ngumuV) ngModeMessages.push("Welcome to NG Update Multiplied Prime mode, made by Aarex! This is a NG*-like mod of NGUd'. This mod is very easy to beat, but you can't break this mod. :'(")
+                  if (player.aarexModifications.nguepV) ngModeMessages.push("Welcome to NG Update Exponential Prime mode made by pg132! NGUd^' is like NGUd', but non-Black Hole nerfs are removed to make NGUd^' a NG^-like mod of NGUd'. This mod is very easy to beat, but you can't break this mod. :'(")
+              } else if (player.aarexModifications.nguspV) {}
               else if (player.aarexModifications.ngudpV) ngModeMessages.push("Welcome to NG Update Prime mode made by pg132! NGUd' is like NGUd+, but you can't reverse dilation. Good luck for beating this mod. >:)")
               else if (player.meta!==undefined) ngModeMessages.push("Welcome to NG Update+ mode, a combination made by Soul147 (Sigma)! This is a combination of dan-simon's NG Update and Aarex's NG+++. I think in this mode, you can break the game...")
               else ngModeMessages.push("Welcome to NG Update mode, an another dan-simon's end-game mod! In this mode, there are black hole and ex-dilation.")
@@ -2146,6 +2151,22 @@ function save_game(silent) {
   if (noSave || infiniteDetected) return
   set_save(metaSave.current, player);
   $.notify("Game saved", "info")
+}
+
+function toggleAutoSave() {
+	player.aarexModifications.autoSave = !player.aarexModifications.autoSave
+	document.getElementById("autoSave").textContent = "Auto save: O"+(player.aarexModifications.autoSave?"N":"FF")
+	autoSaveSeconds = 0
+}
+
+function changeAutoSaveInterval() {
+	player.aarexModifications.autoSaveInterval = document.getElementById("autoSaveIntervalSlider").value
+	document.getElementById("autoSaveInterval").textContent = "Auto-save interval: " + player.aarexModifications.autoSaveInterval + "s"
+	autoSaveSeconds = 0
+}
+
+function getAutoSaveInterval() {
+	return player.aarexModifications.autoSaveInterval || 30
 }
 
 function overwrite_save(id) {
@@ -2282,7 +2303,7 @@ function delete_save(saveId) {
 
 var ngModeMessages=[]
 function new_game(id) {
-	if (modes.arrows > 1 || modes.ngud > 3 || modes.nguep > 1) {
+	if (modes.arrows > 1 || modes.ngud > 3 || modes.nguep > 1 || modes.ngmu > 1) {
 		alert("Coming soon...")
 		return
 	}

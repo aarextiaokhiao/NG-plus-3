@@ -26,7 +26,7 @@ function isInfiniteDetected() {
 
 function exportInfiniteSave() {
 	infiniteSave = btoa(JSON.stringify(player))
-	document.getElementById("bugExport").parentElement.parentElement.parentElement.style.display = ""
+	document.getElementById("bugExport").style.display = ""
 	bugExport()
 }
 
