@@ -1241,7 +1241,7 @@ function updateTemp() {
 		tmp.eg431+=tmp.le[7].total
 	}
 	
-	if (ghostified) tmp.nu[4].replicated=Math.sqrt(player.replicanti.galaxies+extraReplGalaxies)*.035+1 //NU12 (Replicated galaxy effect)
+	if (tmp.nu[4]&&ghostified) tmp.nu[4].replicated=Math.sqrt(player.replicanti.galaxies+extraReplGalaxies)*.035+1 //NU12 (Replicated galaxy effect)
 
 	//mv: Matter speed
 	tmp.mv = 1.03 + player.resets/200 + player.galaxies/100

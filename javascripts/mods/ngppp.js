@@ -2296,11 +2296,11 @@ function maxBuyLimit() {
 			tmp.qu.gluons.br=tmp.qu.gluons.br.sub(tmp.qu.gluons.br.min(toSpend))
 			tmp.qu.replicants.limitCost=tmp.qu.replicants.limitCost.times(Decimal.pow(200,Math.max(Math.min(toAdd,9-limit%10),0)))
 			tmp.qu.replicants.limit+=toAdd
-			var dimAdd=Math.max(Math.min(Math.ceil(tmp.qu.replicants.limit/10-1),8-tmp.qu.replicants.limitDim),0)
-			if (dimAdd>0) {
-				tmp.qu.replicants.limit-=dimAdd*10
-				tmp.qu.replicants.limitDim+=dimAdd
-			}
+		}
+		var dimAdd=Math.max(Math.min(Math.ceil(tmp.qu.replicants.limit/10-1),8-tmp.qu.replicants.limitDim),0)
+		if (dimAdd>0) {
+			tmp.qu.replicants.limit-=dimAdd*10
+			tmp.qu.replicants.limitDim+=dimAdd
 		}
 		min=tmp.qu.gluons.rg.min(tmp.qu.gluons.gb).min(tmp.qu.gluons.br)
 		if (!min.gte(tmp.qu.replicants.limitCost)&&isLimitUpgAffordable()) break
