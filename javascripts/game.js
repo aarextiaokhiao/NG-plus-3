@@ -1131,9 +1131,9 @@ function updateTemp() {
 			if (player.ghostify.ghostlyPhotons.enpowerments>2) tmp.le[9]=Math.pow(tmp.ls[7]+1,.1)*2-1 //Red light (LE#3)
 			tmp.bru[3]=Decimal.pow(tmp.qu.bigRip.spaceShards.div(1e140).add(1).log10()+1,Math.max(tmp.qu.bigRip.spaceShards.div(1e140).add(1).log10()/10,1)) //BRU18
 			tmp.bru[4]=Decimal.pow(10,Math.sqrt(player.timeShards.add(1).log10())/80) //BRU19
-			tmp.nu[6]=Decimal.pow(player.ghostify.ghostParticles.add(1).log10(),Math.pow(tmp.qu.colorPowers.r.add(tmp.qu.colorPowers.g).add(tmp.qu.colorPowers.b).add(1).log10(),1/3)*0.8+1).max(1) //NU14
-			tmp.nu[7]=Decimal.pow(2,tmp.qu.nanofield.rewards/2.5) //NU15
-			if (hasNU(15)) tmp.ns=tmp.ns.times(tmp.nu[7])
+			tmp.nu[5]=Decimal.pow(player.ghostify.ghostParticles.add(1).log10(),Math.pow(tmp.qu.colorPowers.r.add(tmp.qu.colorPowers.g).add(tmp.qu.colorPowers.b).add(1).log10(),1/3)*0.8+1).max(1) //NU14
+			tmp.nu[6]=Decimal.pow(2,tmp.qu.nanofield.rewards/2.5) //NU15
+			if (hasNU(15)) tmp.ns=tmp.ns.times(tmp.nu[6])
 			tmp.ppti/=tmp.le[1]
 		}
 		if (ghostified) {
@@ -1167,13 +1167,14 @@ function updateTemp() {
 			}
 			tmp.nu[0]=Math.max(110-(tmp.qu.bigRip.active?0:player.meta.resets),0) //NU1
 			tmp.nu[1]=Math.pow(Math.max(tmp.qu.colorPowers.b.log10()/250+1,1),2) //NU3
-			var ret=Math.max(-player.tickspeed.div(1e3).log10()/4e13-4,0)
-			tmp.nu[2]=Decimal.pow(20,Math.pow(ret,1/4)) //NU4
+			tmp.nu[2]=Decimal.pow(20,Math.pow(Math.max(-getTickspeed().div(1e3).log10()/4e13-4,0),1/4)) //NU4
 			var nu7=tmp.qu.colorPowers.g.add(1).log10()/400
 			if (nu7>40) nu7=Math.sqrt(nu7*10)+20
 			tmp.nu[3]=Decimal.pow(10,nu7) //NU7
-			tmp.nu[4]=undefined
-			tmp.nu[5]=player.dilation.freeGalaxies*.035+1 //NU12 (IC3)
+			tmp.nu[4]={ //NU12 (Normal and free galaxy effects)
+				normal: player.galaxies*0+1,
+				free: player.dilation.freeGalaxies*.035+1
+			}
 		}
 		if (player.masterystudies.includes("d14")) {
 			let exp = tmp.qu.bigRip.upgrades.includes(17) ? 2.9 : 1
@@ -1240,7 +1241,7 @@ function updateTemp() {
 		tmp.eg431+=tmp.le[7].total
 	}
 	
-	tmp.nu[4]=Math.sqrt(player.replicanti.galaxies+extraReplGalaxies)*.035+1 //NU12 (EC14)
+	tmp.nu[4].replicated=Math.sqrt(player.replicanti.galaxies+extraReplGalaxies)*.035+1 //NU12 (Replicated galaxy effect)
 
 	//mv: Matter speed
 	tmp.mv = 1.03 + player.resets/200 + player.galaxies/100
@@ -2707,7 +2708,7 @@ function getPostC3RewardMult() {
 	if (inQC(2)) perGalaxy = 0
 	if (tmp.ngp3 ? tmp.qu.bigRip.active : false) {
 		if (ghostified&&player.ghostify.neutrinos.boosts>8) perGalaxy*=tmp.nb[8]
-		if (hasNU(12)) perGalaxy*=tmp.nu[5]
+		if (hasNU(12)) perGalaxy*=tmp.nu[4].free
 	}
 	if (!player.galacticSacrifice) return player.galaxies*perGalaxy+1.05
 	if (tmp.cp>1) {

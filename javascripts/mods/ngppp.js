@@ -653,7 +653,7 @@ function getEC14Power() {
 		if (player.currentEterChall=='eterc14') ret=5
 		else {
 			ret=ECTimesCompleted("eterc14")*2
-			if (hasNU(12)) if (tmp.qu.bigRip.active) ret*=tmp.nu[4]
+			if (hasNU(12)) if (tmp.qu.bigRip.active) ret*=tmp.nu[4].replicated
 		}
 	}
 	if (player.galacticSacrifice !== undefined) ret++
@@ -2106,15 +2106,16 @@ function getDecayRate(branch) {
 }
 
 function getQuarkSpinProduction(branch) {
-	let ret = Decimal.pow(2,getBU1Power(branch)*(1+getRadioactiveDecays(branch)/10)).times(getTreeUpgradeEffect(3)).times(getTreeUpgradeEffect(5))
-	if (player.masterystudies.includes("t431")) ret = ret.times(getMTSMult(431))
-	if (player.ghostify.milestones>13) ret = ret.times(10)
-	if (hasNU(4)) ret = ret.times(tmp.nu[2].pow(2))
+	let ret=Decimal.pow(2,getBU1Power(branch)*(1+getRadioactiveDecays(branch)/10)).times(getTreeUpgradeEffect(3)).times(getTreeUpgradeEffect(5))
+	if (player.masterystudies.includes("t431")) ret=ret.times(getMTSMult(431))
+	if (player.ghostify.milestones>13) ret=ret.times(10)
+	if (hasNU(4)) ret=ret.times(tmp.nu[2].pow(2))
 	if (tmp.qu.bigRip.active) {
-		if (isBigRipUpgradeActive(18)) ret = ret.times(tmp.bru[3])
-		if (isBigRipUpgradeActive(19)) ret = ret.times(tmp.bru[4])
+		if (isBigRipUpgradeActive(18)) ret=ret.times(tmp.bru[3])
+		if (isBigRipUpgradeActive(19)) ret=ret.times(tmp.bru[4])
+		if (hasNU(12)) ret=ret.times(tmp.nu[4].normal)
 	}
-	ret = ret.times(todspeed)
+	ret=ret.times(todspeed)
 	return ret
 }
 
@@ -4011,13 +4012,14 @@ function updateGhostifyTabs() {
 		document.getElementById("neutrinoUpg3Pow").textContent=shorten(tmp.nu[1])
 		document.getElementById("neutrinoUpg4Pow").textContent=shorten(tmp.nu[2])
 		if (player.ghostify.times>4) document.getElementById("neutrinoUpg7Pow").textContent=shorten(tmp.nu[3])
-		if (player.ghostify.times>9) {
-			document.getElementById("neutrinoUpg12Pow1").textContent=shorten(tmp.nu[4])
-			document.getElementById("neutrinoUpg12Pow2").textContent=shorten(tmp.nu[5])
-		}
+		if (player.ghostify.times>9) document.getElementById("neutrinoUpg12").setAttribute('ach-tooltip',
+			"Normal galaxy effect: "+shorten(tmp.nu[4].normal)+"x to spin production, "+
+			"Replicated galaxy effect: "+shorten(tmp.nu[4].replicated)+"x to EC14 reward, "+
+			"Free galaxy effect: "+shorten(tmp.nu[4].free)+"x to IC3 reward"
+		)
 		if (player.ghostify.ghostlyPhotons.unl) {
-			document.getElementById("neutrinoUpg14Pow").textContent=shorten(tmp.nu[6])
-			document.getElementById("neutrinoUpg15Pow").textContent=shorten(tmp.nu[7])
+			document.getElementById("neutrinoUpg14Pow").textContent=shorten(tmp.nu[5])
+			document.getElementById("neutrinoUpg15Pow").textContent=shorten(tmp.nu[6])
 		}
 		for (var u=1;u<16;u++) {
 			var e=false
@@ -4145,13 +4147,12 @@ function onNotationChangeNeutrinos() {
 	document.getElementById("ghpMult").textContent=shortenDimensions(Decimal.pow(2,player.ghostify.multPower-1))
 	document.getElementById("ghpMultUpgCost").textContent=shortenDimensions(getGHPMultCost())
 	for (var u=1; u<16; u++) document.getElementById("neutrinoUpg"+u+"Cost").textContent=shortenDimensions(tmp.nuc[u])
-	document.getElementById("QKNerfPoint").textContent=shorten(new Decimal("1e738"))
 }
 
 function getNeutrinoGain() {
 	let ret=Decimal.pow(5,player.ghostify.neutrinos.multPower-1)
 	if (player.ghostify.ghostlyPhotons.unl) ret=ret.times(tmp.le[5])
-	if (hasNU(14)) ret=ret.times(tmp.nu[6])
+	if (hasNU(14)) ret=ret.times(tmp.nu[5])
 	return ret
 }
 
@@ -5003,7 +5004,7 @@ var bu={
 			return player.dilation.freeGalaxies
 		},
 		15: function() {
-			return Decimal.pow(getInfinitied(),.2)
+			return Decimal.add(getInfinitied(),1).pow(.2)
 		},
 		21: function() {
 			return player.dilation.dilatedTime.max(1).log10()/2e5
