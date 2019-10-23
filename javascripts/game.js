@@ -3627,7 +3627,7 @@ function toggle_mode(id) {
 		modes.rs=0
 		document.getElementById("rsBtn").textContent="Respecced: NONE"
 	}
-	if (id=="ngpp"&&modes.ngp===2&&(!modes.ngpp||modes.ngpp===3)) {
+	if (((id=="ngpp"&&!modes.ngpp)||(id=="rs"&&modes.rs))&&modes.ngp===2) {
 		modes.ngp=true
 		document.getElementById("ngpBtn").textContent="NG+: ON"
 	}
