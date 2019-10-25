@@ -29,7 +29,8 @@ function getGalaxyPower(ng, bi) {
 	else otherGalPower += Math.min(player.replicanti.galaxies, player.replicanti.gal) * (replGalEff - 1) + extraReplGalPower
 	otherGalPower += Math.floor(player.dilation.freeGalaxies) * ((player.masterystudies ? player.masterystudies.includes("t343") : false) ? replGalEff : 1)
 
-	let galaxyPower = Math.max(ng-(bi?2:0),0)+(tmp.be?0:otherGalPower)
+	let galaxyPower = ng
+	if (!tmp.be) galaxyPower = Math.max(ng-(bi?2:0),0)+otherGalPower
 	if ((inNC(7)||inQC(4))&&player.galacticSacrifice) galaxyPower *= galaxyPower
 	return galaxyPower
 }
@@ -70,22 +71,22 @@ function getGalaxyTickSpeedMultiplier() {
 		return 1
 	}
 	if (inQC(2)) return 0.89
-	let inERS = player.boughtDims != undefined || player.infinityUpgradesRespecced != undefined
-	let galaxies = getGalaxyPower(g) * getGalaxyPowerEff(true)
+	let inRS = player.boughtDims != undefined || player.infinityUpgradesRespecced != undefined
+	let galaxies = getGalaxyPower(g, !inRS) * getGalaxyPowerEff(true)
 	let baseMultiplier = 0.8
 	let linearGalaxies = 2
 	let useLinear = g + player.replicanti.galaxies + player.dilation.freeGalaxies <= linearGalaxies
 	if (inNC(6) || player.currentChallenge == "postc1" || player.pSac != undefined) baseMultiplier = 0.83
-	if (inERS) {
-		linearGalaxies = 5
-		useLinear = galaxies <= linearGalaxies
+	if (inRS) {
+		linearGalaxies = Math.min(galaxies, 5)
+		useLinear = true
 	}
 	if (useLinear) {
 		baseMultiplier = 0.9;
 		if (inERS && galaxies == 0) baseMultiplier = 0.89
 		else if (g == 0) baseMultiplier = 0.89
 		if (inNC(6) || player.currentChallenge == "postc1" || player.pSac != undefined) baseMultiplier = 0.93
-		if (inERS) {
+		if (inRS) {
 			baseMultiplier -= linearGalaxies*0.02
 		} else {
 			let perGalaxy = 0.02 * getGalaxyPowerEff()
