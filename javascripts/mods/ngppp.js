@@ -540,7 +540,7 @@ function getMTSMult(id, modifier) {
 	if (id==301) return Math.floor(extraReplGalaxies/4.15)
 	if (id==303) return Decimal.pow(4.7,Math.pow(Math.log10(Math.max(player.galaxies,1)),1.5))
 	if (id==322) {
-		let log = Math.sqrt(3-player.tickspeed.log10())/2e4
+		let log = Math.sqrt(Math.max(3-getTickspeed().log10(),0))/2e4
 		if (log>110) log=Math.sqrt(log*27.5)+55
 		if (log>1e3&&player.aarexModifications.ngudpV!==undefined) log=Math.pow(7+Math.log10(log),3)
 		return Decimal.pow(10,log)

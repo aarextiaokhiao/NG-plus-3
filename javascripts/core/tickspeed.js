@@ -1,3 +1,7 @@
+function getTickSpeedMultiplier() {
+	return Decimal.div(getGalaxyTickSpeedMultiplier(), getExtraTickReductionMult())
+}
+
 function initialGalaxies() {
 	let g=player.galaxies
 	if (tmp.ngp3&&!tmp.be) {
@@ -58,7 +62,7 @@ function getGalaxyPowerEff(bi) {
 	return eff
 }
 
-function getTickSpeedMultiplier() {
+function getGalaxyTickSpeedMultiplier() {
 	let g = initialGalaxies()
 	if ((player.currentChallenge == "postc3" || isIC3Trapped()) && !tmp.be) {
 		if (player.currentChallenge=="postcngmm_3" || player.challenges.includes("postcngmm_3")) return Decimal.pow(player.tickspeedBoosts != undefined ? 0.9995 : 0.998, getGalaxyPower(g) * getGalaxyPowerEff(true))
@@ -66,37 +70,29 @@ function getTickSpeedMultiplier() {
 	}
 	if (inQC(2)) return 0.89
 	let inERS = player.boughtDims != undefined || player.infinityUpgradesRespecced != undefined
-	let galaxies
-	let baseMultiplier
-	let useLinear
-	let linearGalaxies
+	let galaxies = getGalaxyPower(g) * getGalaxyPowerEff(true)
+	let baseMultiplier = 0.8
+	let linearGalaxies = 2
+	let useLinear = g + player.replicanti.galaxies + player.dilation.freeGalaxies <= linearGalaxies
+	if (inNC(6) || player.currentChallenge == "postc1" || player.pSac != undefined) baseMultiplier = 0.83
 	if (inERS) {
-		galaxies = getGalaxyPower(g) * getGalaxyPowerEff(true)
-		linearGalaxies = Math.min(galaxies,5)
-		useLinear = true
-	} else {
-		linearGalaxies = 2
-		useLinear = g + player.replicanti.galaxies + player.dilation.freeGalaxies < 3
+		linearGalaxies = 5
+		useLinear = galaxies <= linearGalaxies
 	}
 	if (useLinear) {
 		baseMultiplier = 0.9;
 		if (inERS && galaxies == 0) baseMultiplier = 0.89
 		else if (g == 0) baseMultiplier = 0.89
-		if (inNC(6) || player.currentChallenge == "postc1") baseMultiplier = 0.93;
+		if (inNC(6) || player.currentChallenge == "postc1" || player.pSac != undefined) baseMultiplier = 0.93
 		if (inERS) {
 			baseMultiplier -= linearGalaxies*0.02
 		} else {
 			let perGalaxy = 0.02 * getGalaxyPowerEff()
-			return Decimal.div(Math.max(baseMultiplier-g*perGalaxy,0.83), getExtraTickReductionMult());
+			return Math.max(baseMultiplier-g*perGalaxy,0.83)
 		}
 	}
-	if (!inERS) {
-		baseMultiplier = 0.8
-		if (inNC(6) || player.currentChallenge == "postc1") baseMultiplier = 0.83
-		galaxies = getGalaxyPower(g) * getGalaxyPowerEff(true)
-	}
 	let perGalaxy = player.infinityUpgradesRespecced != undefined ? 0.98 : 0.965
-	return Decimal.pow(perGalaxy, galaxies-linearGalaxies).times(baseMultiplier).div(getExtraTickReductionMult())
+	return Decimal.pow(perGalaxy, galaxies-linearGalaxies).times(baseMultiplier)
 }
 
 function canBuyTickSpeed() {
