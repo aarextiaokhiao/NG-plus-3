@@ -82,7 +82,7 @@ function getGalaxyTickSpeedMultiplier() {
 	}
 	if (useLinear) {
 		baseMultiplier = 0.9;
-		if (inERS && galaxies == 0) baseMultiplier = 0.89
+		if (inRS && galaxies == 0) baseMultiplier = 0.89
 		else if (g == 0) baseMultiplier = 0.89
 		if (inNC(6) || player.currentChallenge == "postc1" || player.pSac != undefined) baseMultiplier = 0.93
 		if (inRS) {
