@@ -35,7 +35,7 @@ function getGalaxyPower(ng, bi) {
 	return galaxyPower
 }
 
-function getGalaxyPowerEff(bi) {
+function getGalaxyEff(bi) {
 	let eff = 1
 	if (player.galacticSacrifice) if (player.galacticSacrifice.upgrades.includes(22)) eff *= player.aarexModifications.ngmX>3?2:5;
 	if (player.infinityUpgrades.includes("galaxyBoost")) eff *= 2;
@@ -67,12 +67,12 @@ function getGalaxyPowerEff(bi) {
 function getGalaxyTickSpeedMultiplier() {
 	let g = initialGalaxies()
 	if ((player.currentChallenge == "postc3" || isIC3Trapped()) && !tmp.be) {
-		if (player.currentChallenge=="postcngmm_3" || player.challenges.includes("postcngmm_3")) return Decimal.pow(player.tickspeedBoosts != undefined ? 0.9995 : 0.998, getGalaxyPower(g) * getGalaxyPowerEff(true))
+		if (player.currentChallenge=="postcngmm_3" || player.challenges.includes("postcngmm_3")) return Decimal.pow(player.tickspeedBoosts != undefined ? 0.9995 : 0.998, getGalaxyPower(g) * getGalaxyEff(true))
 		return 1
 	}
 	if (inQC(2)) return 0.89
 	let inRS = player.boughtDims != undefined || player.infinityUpgradesRespecced != undefined
-	let galaxies = getGalaxyPower(g, !inRS) * getGalaxyPowerEff(true)
+	let galaxies = getGalaxyPower(g, !inRS) * getGalaxyEff(true)
 	let baseMultiplier = 0.8
 	let linearGalaxies = 2
 	let useLinear = g + player.replicanti.galaxies + player.dilation.freeGalaxies <= linearGalaxies
@@ -89,7 +89,7 @@ function getGalaxyTickSpeedMultiplier() {
 		if (inRS) {
 			baseMultiplier -= linearGalaxies*0.02
 		} else {
-			let perGalaxy = 0.02 * getGalaxyPowerEff()
+			let perGalaxy = 0.02 * getGalaxyEff()
 			return Math.max(baseMultiplier-g*perGalaxy,0.83)
 		}
 	}

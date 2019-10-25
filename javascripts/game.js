@@ -1172,7 +1172,7 @@ function updateTemp() {
 			if (nu7>40) nu7=Math.sqrt(nu7*10)+20
 			tmp.nu[3]=Decimal.pow(10,nu7) //NU7
 			tmp.nu[4]={ //NU12 (Normal and free galaxy effects)
-				normal: player.galaxies*0+1,
+				normal: Math.sqrt(player.galaxies*.0035+1),
 				free: player.dilation.freeGalaxies*.035+1
 			}
 		}
@@ -1571,15 +1571,12 @@ function updateDimensions() {
 
     if (canBuyDimension(3) || player.currentEternityChall == "eterc9") {
         var tickmult = getTickSpeedMultiplier()
+        var tickmultNum = tickmult.toNumber()
         var ticklabel
-        if (Decimal.lt(tickmult,1e-9)) ticklabel = "Divide the tick interval by " + shortenDimensions(Decimal.recip(tickmult))
-        else {
-            tickmult = new Decimal(tickmult).toNumber()
-            var places = 0
-            if (tickmult < 0.2) places = Math.floor(Math.log10(Math.round(1/tickmult)))
-            if (isNaN(tickmult)) ticklabel = 'Break the tick interval by Infinite';
-            else ticklabel = 'Reduce the tick interval by ' + ((1 - tickmult) * 100).toFixed(places) + '%';
-        }
+        var e = Math.floor(Math.log10(Math.round(1/tickmultNum)))
+        if (isNaN(tickmultNum)) ticklabel = 'Break the tick interval by Infinite';
+        else if (e >= 9) ticklabel = "Divide the tick interval by " + shortenDimensions(Decimal.recip(tickmult))
+        else ticklabel = 'Reduce the tick interval by ' + ((1 - tickmultNum) * 100).toFixed(e) + '%'
         let ic3mult=getPostC3RewardMult()
         if (player.galacticSacrifice || player.currentChallenge == "postc3" || isIC3Trapped()) document.getElementById("tickLabel").innerHTML = ((isIC3Trapped() || player.currentChallenge == "postc3") && player.currentChallenge != "postcngmm_3" && !player.challenges.includes("postcngmm_3") && !tmp.be ? "M" : ticklabel + '<br>and m') + 'ultiply all dimensions by ' + (ic3mult>999.95?shorten(ic3mult):new Decimal(ic3mult).toNumber().toPrecision(4)) + '.'
         else document.getElementById("tickLabel").textContent = ticklabel + '.'
@@ -2716,7 +2713,7 @@ function getPostC3RewardMult() {
 		else perGalaxy *= tmp.cp/5+.8
 	}
 	var g=initialGalaxies()
-	perGalaxy *= getGalaxyPowerEff()
+	perGalaxy *= getGalaxyEff()
 	let ret = getGalaxyPower(g)*perGalaxy+1.05
 	if (inNC(6)||player.currentChallenge=="postc1") ret -= player.aarexModifications.ngmX>3?0.02:0.05
 	else if (player.aarexModifications.ngmX == 3) ret -= 0.03
@@ -4564,7 +4561,7 @@ function updateAutobuyers() {
         document.getElementById("buyerBtnTDBoost").style.display = ""
     } else document.getElementById("autoTDBoost").style.display = "none"
 
-    if (getEternitied() >= 100) document.getElementById("autoBuyerEter").style.display = ""
+    if (getEternitied() >= 100) document.getElementById("autoBuyerEter").style.display = "inline-block"
     else document.getElementById("autoBuyerEter").style.display = "none"
 
 	var intervalUnits = player.infinityUpgrades.includes("autoBuyerUpgrade") ? 1/2000 : 1/1000
