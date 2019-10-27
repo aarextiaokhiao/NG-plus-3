@@ -119,7 +119,7 @@
 			<button id="paradoxbtn" style="font-family: Typewriter; font-size: 20px; display: none" class="tabbtn" onclick='showTab("paradox")'>Paradox</button>
 			<button id="galaxybtn" style="font-family: Typewriter; font-size: 20px; display: none" onclick='showTab("galaxy")'>Galaxy</button>
 			<button id="infinitybtn" style="font-family: Typewriter; font-size: 20px; display: none" class="infinitybtn" onclick="showTab('infinity')">Infinity</button>
-			<button id="eternitystorebtn" style="font-family: Typewriter; font-size: 20px; display: none" class="eternitytabbtn">Eternity</button>
+			<button id="eternitystorebtn" style="font-family: Typewriter; font-size: 20px; display: none" class="eternitytabbtn" onclick="showTab('eternitystore')">Eternity</button>
 			<button id="quantumtabbtn" style="font-family: Typewriter; font-size: 20px; display: none" class="quantumbtn" onclick='showTab("quantumtab")'>Quantum</button>
 			<button id="ghostifytabbtn" style="font-family: Typewriter; font-size: 20px" class="ghostifybtn" onclick='showTab("ghostify")'>Ghostify</button>
 		</div>
@@ -141,7 +141,6 @@
 					<td id="autoEternityTabbtn"><button class="secondarytabbtn" onclick="showEternityTab('autoEternity')">Auto-Eternity</button></td>
 				</tr>
 			</table>
-			<div style="display: none;"><textarea id="output" style="color:black; width: 200px; height: 55px;"></textarea></div>
 			<div class="eternitytab" id="timestudies" style="font-size: 15px">
 				<canvas id="studyTreeCanvas"></canvas>
 				<tr>
@@ -5210,11 +5209,6 @@
 	<div class="popup optionmenu" id="welcome">
 		<div><text id="welcomeMessage"></text></div>
 		<button class="storebtn" style="font-size: 15px" onclick="showNextModeMessage()" style="display: inline">Okay</button>
-	</div>
-	<div class="popup" id="sorry">
-		I'm sorry for the save data wipe. I recommend you to export your save data and save it in your backup saves folder. Thanks. <3<br>
-		<button class="storebtn" style="font-size: 15px" onclick="document.getElementById('exportallbtn').click()" style="display: inline">Export all</button>
-		<button class="storebtn" style="font-size: 15px" onclick="load_saves()" style="display: inline">Okay</button>
 	</div>
 	<div class="popup" id="offlineprogress" style="width: 450px; height: 200px;">
 		<div id="offlinePopup" style="height: 150px">You made X antimatter and stuff</div>

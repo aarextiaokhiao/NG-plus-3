@@ -2239,13 +2239,16 @@ function rename_save(id) {
 }
 
 function export_save(id) {
-    var placement=1
-    while (metaSave.saveOrder[placement-1]!=id) placement++
-	let output = document.getElementById('exportOutput')
+	var placement=1
+	if (!id) id=metaSave.current
+	while (metaSave.saveOrder[placement-1]!=id) placement++
+
+	let output = document.getElementById('output')
 	let parent = output.parentElement
 
 	parent.style.display = ""
-	output.value = localStorage.getItem(btoa(savePrefix+id))
+	if (id == metaSave.current) output.value = btoa(JSON.stringify(player, function(k, v) { return (v === Infinity) ? "Infinity" : v }))
+	else output.value = localStorage.getItem(btoa(savePrefix+id))
 
 	output.onblur = function() {
 		parent.style.display = "none"
@@ -2258,6 +2261,7 @@ function export_save(id) {
 		if (document.execCommand('copy')) {
 			$.notify("Exported save #"+placement+" to clipboard", "info")
 			output.blur()
+			output.onblur()
 		}
 	} catch(ex) {
 		// well, we tried.
