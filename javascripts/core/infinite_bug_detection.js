@@ -31,7 +31,7 @@ function exportInfiniteSave() {
 }
 
 function bugExport() {
-	let output = document.getElementById('bugExportOutput');
+	let output = document.getElementById('output');
 	let parent = output.parentElement;
 
 	parent.style.display = "";

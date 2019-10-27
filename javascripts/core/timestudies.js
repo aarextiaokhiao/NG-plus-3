@@ -521,7 +521,7 @@ function importSpec () {
 }
 
 function exportStudyTree() {
-  let output = document.getElementById('treeExportOutput');
+  let output = document.getElementById('output');
   let parent = output.parentElement;
 
   parent.style.display = "";

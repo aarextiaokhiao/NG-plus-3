@@ -456,7 +456,7 @@ function replicantiGalaxyBulkModeToggle() {
 
 // v2.9
 quantumed = false
-function quantum(auto, force, challid, bigRip, quick) {
+function quantum(auto, force, challid, bigRip = false, quick) {
     if (player.masterystudies !== undefined) if (!auto && !force && tmp.qu.bigRip.active) force = true
 	if (!(isQuantumReached()||force)||implosionCheck) return
 	var headstart = player.aarexModifications.newGamePlusVersion > 0 && !player.masterystudies
@@ -1251,7 +1251,7 @@ function quantumReset(force, auto, challid, bigRip, implode=false) {
 				document.getElementById("respecPC").className="storebtn"
 			}
 			if (tmp.qu.autoOptions.assignQK) assignAll(true)
-			if (ghostified) player.ghostify.neutrinos.generationGain = player.ghostify.neutrinos.generationGain % 3 + 1
+			if (ghostified) player.ghostify.neutrinos.generationGain=player.ghostify.neutrinos.generationGain%3+1
 			if (isAutoGhostActive(4)&&player.ghostify.automatorGhosts[4].mode!="t") rotateAutoUnstable()
 		}
 		tmp.qu.pairedChallenges.current=0
@@ -1299,7 +1299,7 @@ function quantumReset(force, auto, challid, bigRip, implode=false) {
 				}
 				if (isRewardEnabled(11)) unstoreTT()
 			}
-			if (ghostified) player.ghostify.neutrinos.generationGain=player.ghostify.neutrinos.generationGain % 3 + 1
+			if (ghostified) player.ghostify.neutrinos.generationGain=player.ghostify.neutrinos.generationGain%3+1
 			tmp.qu.bigRip.active=bigRip
 		}
 		document.getElementById("metaAntimatterEffectType").textContent=inQC(3)?"multiplier on all Infinity Dimensions":"extra multiplier per dimension boost"

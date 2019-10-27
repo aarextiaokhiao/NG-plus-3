@@ -1382,7 +1382,7 @@ if (player.version < 5) {
       if (ECTimesCompleted("eterc6")>0) {
           forceHardReset=true
           inflationCheck=true
-          document.getElementById("reset").click()
+          reset_game()
           forceHardReset=false
           return
 	  }
@@ -2148,7 +2148,7 @@ function reload() {
 var noSave=false
 function save_game(silent) {
   isInfiniteDetected()
-  if (noSave || infiniteDetected) return
+  if (!game_loaded || noSave || infiniteDetected) return
   set_save(metaSave.current, player);
   $.notify("Game saved", "info")
 }
@@ -2182,21 +2182,27 @@ function overwrite_save(id) {
 }
 
 function change_save(id) {
-  save_game(true)
-  clearInterval(gameLoopIntervalId)
-  var oldId=metaSave.current
-  metaSave.current=id
-  changeSaveDesc(oldId, savePlacement)
-  updateNewPlayer()
-  infiniteCheck2 = false
-  closeToolTip()
-  load_game(shiftDown)
-  savePlacement=1
-  while (metaSave.saveOrder[savePlacement-1]!=id) savePlacement++
-  changeSaveDesc(metaSave.current, savePlacement)
+	if (!game_loaded) {
+		metaSave.current=id
+		localStorage.setItem(metaSaveId, btoa(JSON.stringify(metaSave)))
+		document.location.reload(true)
+		return
+	}
+	save_game(true)
+	clearInterval(gameLoopIntervalId)
+	var oldId=metaSave.current
+	metaSave.current=id
+	changeSaveDesc(oldId, savePlacement)
+	updateNewPlayer()
+	infiniteCheck2 = false
+	closeToolTip()
+	load_game(shiftDown)
+	savePlacement=1
+	while (metaSave.saveOrder[savePlacement-1]!=id) savePlacement++
+	changeSaveDesc(metaSave.current, savePlacement)
 
-  $.notify("Save #"+savePlacement+" loaded", "info")
-  localStorage.setItem(metaSaveId,btoa(JSON.stringify(metaSave)))
+	$.notify("Save #"+savePlacement+" loaded", "info")
+	localStorage.setItem(metaSaveId,btoa(JSON.stringify(metaSave)))
 }
 
 function rename_save(id) {
@@ -2278,7 +2284,7 @@ function move(id,offset) {
 
 function delete_save(saveId) {
 	if (metaSave.saveOrder.length<2) {
-		document.getElementById("reset").click()
+		reset_game()
 		return
 	} else if (!confirm("Do you really want to erase this save? You will lose access if you do that!")) return
 	var alreadyDeleted=false

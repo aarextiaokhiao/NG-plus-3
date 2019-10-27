@@ -3394,29 +3394,34 @@ function galaxyReset(bulk) {
     updateTickSpeed();
 };
 
-document.getElementById("exportbtn").onclick = function () {
-    let output = document.getElementById('exportOutput');
-    let parent = output.parentElement;
+function export_save(id) {
+	var placement=1
+	if (!id) id=metaSave.current
+	while (metaSave.saveOrder[placement-1]!=id) placement++
 
-    parent.style.display = "";
-    output.value = btoa(JSON.stringify(player, function(k, v) { return (v === Infinity) ? "Infinity" : v; }));
+	let output = document.getElementById('output');
+	let parent = output.parentElement;
 
-    output.onblur = function() {
-        parent.style.display = "none";
-    }
+	parent.style.display = "";
+	if (id == metaSave.current) output.value = btoa(JSON.stringify(player, function(k, v) { return (v === Infinity) ? "Infinity" : v; }))
+	else output.value = localStorage.getItem(btoa(savePrefix+id))
 
-    output.focus();
-    output.select();
+	output.onblur = function() {
+		parent.style.display = "none";
+	}
 
-    try {
-        if (document.execCommand('copy')) {
-            $.notify("Exported save #"+savePlacement+" to clipboard", "info");
-            output.blur();
-            output.onblur();
-        }
-    } catch(ex) {
-        // well, we tried.
-    }
+	output.focus();
+	output.select();
+
+	try {
+		if (document.execCommand('copy')) {
+			$.notify("Exported save #"+placement+" to clipboard", "info");
+			output.blur();
+			output.onblur();
+		}
+	} catch(ex) {
+		// well, we tried.
+	}
 };
 
 document.getElementById("save").onclick = function () {
@@ -3431,12 +3436,8 @@ var latestRow
 var loadSavesIntervalId
 var occupied=false
 function load_saves() {
-	closeToolTip();
-	if (metaSave.alert) {
-		metaSave.alert=false
-		localStorage.setItem(metaSaveId,btoa(JSON.stringify(metaSave)))
-	}
-	document.getElementById("loadmenu").style.display = "block";
+	closeToolTip()
+	document.getElementById("loadmenu").style.display = "block"
 	changeSaveDesc(metaSave.current, savePlacement)
 	clearInterval(loadSavesIntervalId)
 	occupied=false
@@ -3460,13 +3461,6 @@ function load_saves() {
 		occupied=false
 	}, 0)
 }
-
-document.getElementById("load").onclick = function () {
-	if (metaSave.alert) {
-		closeToolTip()
-		document.getElementById("sorry").style.display = "inline-block"
-	} else load_saves()
-};
 
 function getSaveLayout(id) {
 	return "<b id='save_"+id+"_title'>Save #"+(loadedSaves+1)+"</b><div id='save_"+id+"_desc'></div><button class='storebtn' onclick='overwrite_save("+id+")'>Save</button><button class='storebtn' onclick='change_save("+id+")'>Load</button><button class='storebtn' onclick='rename_save("+id+")'>Rename</button><button class='storebtn' onclick='export_save("+id+")'>Export</button><button class='storebtn' onclick='import_save("+id+")'>Import</button><button class='storebtn' onclick='move("+id+",-1)'>Move up</button><button class='storebtn' onclick='move("+id+",1)'>Move down</button><button class='storebtn' onclick='delete_save("+id+")'>Delete</button>"
@@ -3731,7 +3725,7 @@ function import_save(type) {
 		var decoded_save_data = JSON.parse(atob(save_data, function(k, v) { return (v === Infinity) ? "Infinity" : v; }));
 		if (!verify_save(decoded_save_data)) {
 			forceHardReset = true
-			document.getElementById("reset").click()
+			reset_game()
 			forceHardReset = false
 			return
 		} else if (!decoded_save_data||!save_data) {
@@ -3739,18 +3733,23 @@ function import_save(type) {
 			return
 		}
 		/*
-			//Live-server only
-			let ghostify_data=decoded_save_data.ghostify
-			if (ghostify_data&&ghostify_data.wzb&&ghostify_data.wzb.unlReal!==undefined&&ghostify_data.wzb.unl!=ghostify_data.wzb.unlReal) {
-				alert('You are not allowed to import this save.')
-				return
-			}
+		//Live-server only
+		let ghostify_data=decoded_save_data.ghostify
+		if (ghostify_data&&ghostify_data.wzb&&ghostify_data.wzb.unlReal!==undefined&&ghostify_data.wzb.unl!=ghostify_data.wzb.unlReal) {
+			alert('You are not allowed to import this save.')
+			return
+		}
 		*/
 		if (type==metaSave.current) {
 			clearInterval(gameLoopIntervalId)
 			infiniteCheck2 = false
 			player = decoded_save_data;
 			if (detectInfinite()) infiniteDetected=true
+			if (!game_loaded) {
+				set_save(metaSave.current, player)
+				document.location.reload(true)
+				return
+			}
 			onLoad()
 			if (infiniteDetected) {
 				if (document.getElementById("welcome").style.display != "flex") document.getElementById("welcome").style.display = "flex"
@@ -3761,25 +3760,42 @@ function import_save(type) {
 			var newSaveId=1
 			while (metaSave.saveOrder.includes(newSaveId)) newSaveId++
 			metaSave.saveOrder.push(newSaveId)
-			latestRow=document.getElementById("saves").insertRow(loadedSaves)
-			latestRow.innerHTML = getSaveLayout(newSaveId)
 			localStorage.setItem(btoa(savePrefix+newSaveId),save_data)
+			if (!game_loaded) {
+				metaSave.current=newSaveId
+				localStorage.setItem(metaSaveId,btoa(JSON.stringify(metaSave)))
+				document.location.reload(true)
+				return
+			}
+			latestRow=document.getElementById("saves").insertRow(loadedSaves)
+			latestRow.innerHTML=getSaveLayout(newSaveId)
 			loadedSaves++
 			changeSaveDesc(newSaveId, loadedSaves)
 			localStorage.setItem(metaSaveId,btoa(JSON.stringify(metaSave)))
 		} else {
 			set_save(type, decoded_save_data)
+			if (!game_loaded) {
+				metaSave.current=type
+				localStorage.setItem(metaSaveId,btoa(JSON.stringify(metaSave)))
+				document.location.reload(true)
+				return
+			}
 			changeSaveDesc(type, placement)
-			$.notify("Save renamed", "info")
+			$.notify("Save #"+placement+" imported", "info")
 		}
 	}
 }
 
-document.getElementById("reset").onclick = function () {
+function reset_game() {
 	if (!forceHardReset) if (!confirm("Do you really want to erase all your progress?")) return
 	clearInterval(gameLoopIntervalId)
 	infiniteDetected = false
 	updateNewPlayer(true)
+	if (!game_loaded) {
+		set_save(metaSave.current, player)
+		document.location.reload(true)
+		return
+	}
 	save_game(true)
 	onLoad()
 	startInterval()
@@ -9114,60 +9130,43 @@ function showOptionTab(tabName) {
     closeToolTip()
 }
 
-function closeToolTip() {
+function closeToolTip(showStuck) {
     var elements = document.getElementsByClassName("popup")
     for (var i=0; i<elements.length; i++) if (elements[i].id!='welcome') elements[i].style.display = "none"
+	if (showStuck && !game_loaded) showStuckPopup()
 }
 
+var game_loaded
 function initGame() {
-    //setup the onclick callbacks for the buttons
-    document.getElementById('dimensionsbtn').onclick = function () {
-        showTab('dimensions');
-    };
-    document.getElementById('optionsbtn').onclick = function () {
-        showTab('options');
-    };
-    document.getElementById('statisticsbtn').onclick = function () {
-        showTab('statistics');
-    };
-    document.getElementById('achievementsbtn').onclick = function () {
-        showTab('achievements');
-    };
-    document.getElementById('challengesbtn').onclick=function () {
-      showTab('challenges');
-    };
-    document.getElementById('infinitybtn').onclick = function () {
-        showTab('infinity');
-    };
-    document.getElementById("eternitystorebtn").onclick = function () {
-        showTab('eternitystore')
-    }
+	//Setup stuff.
+	setupBosonicUpgReqData()
+	setupText()
+	initiateMetaSave()
+	migrateOldSaves()
+	localStorage.setItem(metaSaveId, btoa(JSON.stringify(metaSave)))
 
-    setupBosonicUpgReqData()
-    setupText()
-    initiateMetaSave()
-    migrateOldSaves()
-    localStorage.setItem(metaSaveId, btoa(JSON.stringify(metaSave)))
-    load_game(false, true)
+	//Load a save.
+	load_game(false, true)
+	game_loaded=true
 
-    //show one tab during init or they'll all start hidden
-    if (player.aarexModifications.tabsSave.on) {
-        showTab(player.aarexModifications.tabsSave.tabMain)
-        if (player.aarexModifications.tabsSave.tabOptions !== undefined) showOptionTab(player.aarexModifications.tabsSave.tabOptions)
-    } else {
+	//show one tab during init or they'll all start hidden
+	if (player.aarexModifications.tabsSave.on) {
+		showTab(player.aarexModifications.tabsSave.tabMain)
+		if (player.aarexModifications.tabsSave.tabOptions !== undefined) showOptionTab(player.aarexModifications.tabsSave.tabOptions)
+	} else {
 		showTab('dimensions', true)
 		if (player.aarexModifications.progressBar) document.getElementById("progress").style.display = "block"
 		else document.getElementById("progress").style.display = "none"
 	}
-    updateTickSpeed();
-    updateAutobuyers();
-    updateChallengeTimes()
-    window.addEventListener("resize", resizeCanvas);
-    clearInterval(stuckTimeout)
-    setTimeout(function(){
-        document.getElementById("container").style.display = "block"
-        document.getElementById("loading").style.display = "none"
-    },1000)
+	updateTickSpeed();
+	updateAutobuyers();
+	updateChallengeTimes()
+	window.addEventListener("resize", resizeCanvas);
+	clearInterval(stuckTimeout)
+	setTimeout(function(){
+		document.getElementById("container").style.display = "block"
+		document.getElementById("loading").style.display = "none"
+	},1000)
 }
 
 window.addEventListener('keydown', function(event) {
