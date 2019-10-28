@@ -157,25 +157,26 @@ function formatValue(notation, value, places, placesUnder1000, noInf) {
             for (var c=0;c<12;c++) result += digits[Math.floor(translated[c]+Math.max(Math.log10(Number.MAX_VALUE)*(c+1)-log*(c+2), 0))%64]
             return result
         }
-        if (notation === "Hexadecimal") {
+        if (notation === "Hexadecimal" || notation === "Base-64") {
             value = Decimal.pow(value, 1/Math.log10(16))
-            var mantissa = Math.pow(value.m, Math.log10(16))
+            var base = notation === "Hexadecimal" ? 16 : 64
+            var mantissa = Math.pow(value.m, Math.log10(base))
             var power = value.e
-            if (mantissa > 16 - Math.pow(16, -2)/2) {
+            if (mantissa > base - Math.pow(base, -2)/2) {
                 mantissa = 1
                 power++
             }
-            var digits=[0,1,2,3,4,5,6,7,8,9,'A','B','C','D','E','F']
-            mantissa=digits[Math.floor(mantissa)].toString()+'.'+digits[Math.floor(mantissa*16)%16].toString()+digits[Math.floor(mantissa*256)%16].toString()
+            var digits="0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz+/"
+            mantissa=digits[Math.floor(mantissa)].toString()+'.'+digits[Math.floor(mantissa*base)%base].toString()+digits[Math.floor(mantissa*Math.pow(base,2))%base].toString()
             if (power > 100000 && !(player.options.commas === "Commas")) return mantissa + "e" + formatValue(player.options.commas, power, 3, 3)
             else {
-                if (power >= Math.pow(16, 12)) return mantissa + "e" + formatValue(player.options.notation, power, 3, 3)
+                if (power >= Math.pow(base, 12)) return mantissa + "e" + formatValue(player.options.notation, power, 3, 3)
                 var digit=0
                 var result=''
                 var temp=power
                 while (power>0) {
-                    result=digits[power%16].toString()+(temp>1e5&&digit>0&&digit%3<1?',':'')+result
-                    power=Math.floor(power/16)
+                    result=digits[power%base].toString()+(temp>1e5&&digit>0&&digit%3<1?',':'')+result
+                    power=Math.floor(power/base)
                     digit++
                 }
                 return mantissa + "e" + result;
