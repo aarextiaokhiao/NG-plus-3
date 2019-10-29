@@ -158,8 +158,8 @@ function formatValue(notation, value, places, placesUnder1000, noInf) {
             return result
         }
         if (notation === "Hexadecimal" || notation === "Base-64") {
-            value = Decimal.pow(value, 1/Math.log10(16))
             var base = notation === "Hexadecimal" ? 16 : 64
+            value = Decimal.pow(value, 1/Math.log10(base))
             var mantissa = Math.pow(value.m, Math.log10(base))
             var power = value.e
             if (mantissa > base - Math.pow(base, -2)/2) {
