@@ -4111,6 +4111,7 @@ function updateGhostifyTabs() {
 			let lSpeed=speed.times(tmp.wzbs)
 			let data2=player.ghostify.wzb
 			let show0=data2.dPUse==1&&lSpeed.times(getAntiPreonLoss()).div(aplScalings[1]).times(tmp.zbs).gte(10)
+			let gainSpeed=getOscillateGainSpeed()
 			let r
 			if (!data2.dPUse) r=lSpeed.times(getAntiPreonProduction())
 			else r=lSpeed.times(getAntiPreonLoss())
@@ -4129,7 +4130,7 @@ function updateGhostifyTabs() {
 			document.getElementById("wbProduction").textContent=shorten(tmp.wbp)
 			document.getElementById("zNeGen").textContent=(["electron","Mu","Tau"])[data2.zNeGen-1]
 			document.getElementById("zNeProgress").textContent=data2.zNeProgress.times(100).toFixed(1)+"% to oscillate Z Neutrino to "+(["Mu","Tau","electron"])[data2.zNeGen-1]+"."
-			document.getElementById("zNeReq").textContent="Oscillate progress gain speed is currently "+(data2.zNeReq.lt(1)?"1 / "+shorten(Decimal.div(1,data2.zNeReq)):shorten(data2.zNeReq))+"x."
+			document.getElementById("zNeReq").textContent="Oscillate progress gain speed is currently "+(gainSpeed.gt(1)?"1 / "+shorten(gainSpeed):shorten(Decimal.div(1,gainSpeed)))+"x."
 			document.getElementById("zNe").className=(["electron","mu","tau"])[data2.zNeGen-1]
 			document.getElementById("zNeSymbol").textContent=(["e","μ","τ"])[data2.zNeGen-1]
 			document.getElementById("zb").textContent=shortenDimensions(data2.zb)
@@ -5075,4 +5076,9 @@ function getAntiPreonLoss() {
 
 function useAntiPreon(id) {
 	player.ghostify.wzb.dPUse=id
+}
+
+function getOscillateGainSpeed() {
+	let r=tmp.wbo
+	return Decimal.div(player.ghostify.wzb.zNeReq,r)
 }
