@@ -4130,11 +4130,11 @@ function updateGhostifyTabs() {
 			document.getElementById("wbProduction").textContent=shorten(tmp.wbp)
 			document.getElementById("zNeGen").textContent=(["electron","Mu","Tau"])[data2.zNeGen-1]
 			document.getElementById("zNeProgress").textContent=data2.zNeProgress.times(100).toFixed(1)+"% to oscillate Z Neutrino to "+(["Mu","Tau","electron"])[data2.zNeGen-1]+"."
-			document.getElementById("zNeReq").textContent="Oscillate progress gain speed is currently "+(gainSpeed.gt(1)?"1 / "+shorten(gainSpeed):shorten(Decimal.div(1,gainSpeed)))+"x."
+			document.getElementById("zNeReq").textContent="Oscillate progress gain speed is currently "+(gainSpeed.gt(1)?shorten(gainSpeed):"1 / "+shorten(Decimal.div(1,gainSpeed)))+"x."
 			document.getElementById("zNe").className=(["electron","mu","tau"])[data2.zNeGen-1]
 			document.getElementById("zNeSymbol").textContent=(["e","μ","τ"])[data2.zNeGen-1]
 			document.getElementById("zb").textContent=shortenDimensions(data2.zb)
-			document.getElementById("zbGain").textContent="You will gain "+shortenDimensions(Decimal.div(1,data2.zNeReq))+" Z Bosons on next oscillation."
+			document.getElementById("zbGain").textContent="You will gain "+shortenDimensions(data2.zNeReq)+" Z Bosons on next oscillation."
 			document.getElementById("zbSpeed").textContent=shorten(tmp.zbs)
 		}
 	}
@@ -4695,6 +4695,16 @@ function bosonicTick(diff) {
 				lData.wQkProgress=lData.wQkProgress.sub(toSub.min(lData.wQkProgress))
 			}
 		}
+		if (lData.dPUse==2) {
+			lData.zNeProgress=lData.zNeProgress.add(apDiff.times(getOscillateGainSpeed()))
+			if (lData.zNeProgress.gte(1)) {
+				let oscillated=Math.floor(lData.zNeProgress.add(1).log(2))
+				lData.zb=lData.zb.add(Decimal.pow(2,oscillated-1).times(lData.zNeReq))
+				lData.zNeProgress=lData.zNeProgress.sub(Decimal.pow(2,oscillated).sub(1).min(lData.zNeProgress)).div(Decimal.pow(2,oscillated))
+				lData.zNeReq=lData.zNeReq.times(Decimal.pow(2,oscillated))
+				lData.zNeGen=(lData.zNeGen+oscillated-1)%3+1
+			}
+		}
 		if (lData.dPUse==3) {
 			lData.wpb=lData.wpb.add(lData.wnb.min(apDiff).times(tmp.zbs))
 			lData.wnb=lData.wnb.sub(lData.wnb.min(apDiff).times(tmp.zbs))
@@ -4702,6 +4712,7 @@ function bosonicTick(diff) {
 		lData.dP=lData.dP.sub(lDiff.times(getAntiPreonLoss()).min(lData.dP))
 		if (lData.dP.eq(0)) lData.dPUse=0
 	} else lData.dP=lData.dP.add(getAntiPreonProduction().times(lDiff))
+	lData.zNeReq=Decimal.pow(10,Math.sqrt(Math.max(Math.pow(lData.zNeReq.log10(),2)-lDiff/100,0)))
 	
 	//Bosonic Extractor
 	if (data.usedEnchants.includes(12)) {
@@ -5064,7 +5075,7 @@ function getAntiPreonProduction() {
 var aplScalings={
 	0:0,
 	1:8,
-	2:1/0,
+	2:32,
 	3:16
 }
 
@@ -5080,5 +5091,5 @@ function useAntiPreon(id) {
 
 function getOscillateGainSpeed() {
 	let r=tmp.wbo
-	return Decimal.div(player.ghostify.wzb.zNeReq,r)
+	return Decimal.div(r,player.ghostify.wzb.zNeReq)
 }
