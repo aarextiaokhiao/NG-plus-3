@@ -1105,7 +1105,7 @@ function updateTemp() {
 			tmp.wzbs=new Decimal(1) //W & Z Bosons speed
 			tmp.wbt=Decimal.pow(3,Math.max(wpl*(player.ghostify.wzb.wpb.sub(player.ghostify.wzb.wnb.min(player.ghostify.wzb.wpb))).div(player.ghostify.wzb.wpb.max(1)).toNumber(),0)) //W Bosons boost to extract time
 			tmp.wbo=Decimal.pow(10,Math.max(wpl*(player.ghostify.wzb.wpb.sub(player.ghostify.wzb.wnb.min(player.ghostify.wzb.wpb))).div(player.ghostify.wzb.wpb.max(1)).toNumber(),0)) //W Bosons boost to Z Neutrino oscillation requirement
-			tmp.wbp=Decimal.pow(1,Math.sqrt(wpl*wpl+wnl*wnl)).sub(1) //W Bosons boost to Bosonic Antimatter production
+			tmp.wbp=player.ghostify.wzb.wpb.add(player.ghostify.wzb.wnb).div(100).max(1).pow(1/3).sub(1) //W Bosons boost to Bosonic Antimatter production
 			tmp.zbs=player.ghostify.wzb.zb.div(10).add(1).sqrt() //Z Bosons boost to W Quark decay speed and W- to W+ conversion speed
 			tmp.dppg=new Decimal(1)
 		}

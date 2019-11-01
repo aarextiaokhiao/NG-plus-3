@@ -611,6 +611,7 @@ function doQuantumProgress() {
 			if (player.meta.antimatter.lt(Decimal.pow(Number.MAX_VALUE, power))) id = 1
 			else if (!tmp.qu.breakEternity.unlocked) id = 4
 			else if (!ghostified || player.money.lt(getQCGoal()) || Decimal.lt(gg, 2)) id = 5
+			else if (player.ghostify.neutrinos.boosts > 8 && hasNU(12) && !player.ghostify.ghostlyPhotons.unl) id = 7
 			else id = 6
 		} else if (inQC(0)) {
 			var gqk = quarkGain()
@@ -656,6 +657,11 @@ function doQuantumProgress() {
 		document.getElementById("progressbar").style.width = percentage
 		document.getElementById("progresspercent").textContent = percentage
 		document.getElementById("progresspercent").setAttribute('ach-tooltip',"Percentage to "+shortenDimensions(Decimal.pow(2,goal))+" GHP gain")
+	} else if (id == 7) {
+		var percentage = Math.min(tmp.qu.bigRip.bestThisRun.max(1).log10() / 6025e4, 100).toFixed(2) + "%"
+		document.getElementById("progressbar").style.width = percentage
+		document.getElementById("progresspercent").textContent = percentage
+		document.getElementById("progresspercent").setAttribute('ach-tooltip',"Percentage to Ghostly Photons")
 	}
 }
 

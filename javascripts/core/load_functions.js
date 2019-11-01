@@ -1919,7 +1919,7 @@ if (player.version < 5) {
       document.getElementById("ratio_b").value = tmp.qu.assignAllRatios.b
       document.getElementById('autoAssign').textContent="Auto: O"+(tmp.qu.autoOptions.assignQK?"N":"FF")
       document.getElementById('autoAssignRotate').textContent="Rotation: "+(tmp.qu.autoOptions.assignQKRotate>1?"Left":tmp.qu.autoOptions.assignQKRotate?"Right":"None")
-      document.getElementById('autoReset').textContent="Auto: O"+(tmp.qu.autoOptions.assignQK?"N":"FF")
+      document.getElementById('autoReset').textContent="Auto: O"+(tmp.qu.autoOptions.replicantiReset?"N":"FF")
       document.getElementById("quantumstudies").style.display=quantumed&&player.masterystudies?"":"none"
       document.getElementById("replicantsstudies").style.display=player.masterystudies.includes("d10")||ghostified?"":"none"
       document.getElementById("timestudy322").style.display=player.masterystudies.includes("d10")||ghostified?"":"none"
