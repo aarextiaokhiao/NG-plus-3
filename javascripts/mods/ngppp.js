@@ -5021,7 +5021,7 @@ var bu={
 		22: "Replace first Nanofield reward with a new powerful boost.",
 		23: "Assigning gives more colored quarks based on your meta-antimatter.",
 		24: "You gain Tachyon particles without dilation, but with reduced formula.",
-		25: "Gain more Ghost Particles based on your quarks."
+		25: "Gain more Ghost Particles based on your quantum worth."
 	},
 	effects:{
 		11: function() {
@@ -5047,7 +5047,7 @@ var bu={
 			return Decimal.pow(player.meta.antimatter.add(1).log10()+1, 1000)
 		},
 		25: function() {
-			return player.quantum.quarks.add(1).pow(0.001)
+			return quantumWorth.add(1).pow(0.001)
 		}
 	}
 }
