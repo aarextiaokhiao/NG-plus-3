@@ -5026,7 +5026,7 @@ var bu={
 	effects:{
 		11: function() {
 			let l=tmp.bl.am.add(1).log10()
-			return Math.pow(l,0.5-0.25*l/(l+3))/5
+			return Math.pow(l,0.5-0.25*l/(l+3))/4
 		},
 		12: function() {
 			return Math.sqrt(player.totalTickGained)

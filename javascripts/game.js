@@ -7925,7 +7925,7 @@ function gameLoop(diff) {
         if (player.ghostify.wzb.unl) {
             var data=tmp.bl
             var wattGained=Math.max(getBosonicWattGain(),data.watt)
-            data.speed=Math.max(Math.min(wattGained-data.watt+data.speed,wattGained),data.speed)
+            data.speed=Math.max(Math.min(wattGained+(data.watt-data.speed)*2,wattGained),data.speed)
             data.watt=wattGained
             if (data.speed>0) {
                 var limitDiff=Math.min(diff/10,data.speed*14400)
