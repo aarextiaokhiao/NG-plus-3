@@ -2150,15 +2150,16 @@ function buyTreeUpg(upg) {
 	document.getElementById("treeupg"+upg+"cost").textContent=shortenMoney(getTreeUpgradeCost(upg))+" "+colors[tmp.qu.tod.upgrades[upg]%3]
 }
 
-function getTreeUpgradeLevel(upg) {
-	upg=tmp.qu.tod.upgrades[upg]
-	if (upg) return upg
-	else return 0
+function getTreeUpgradeLevel(upg,boost) {
+	let lvl=tmp.qu.tod.upgrades[upg]||0
+	if (boost) {
+		if (tmp.qu.bigRip.active&&player.ghostify.neutrinos.boosts>6) lvl*=tmp.nb[6]
+	}
+	return lvl
 }
 
 function getTreeUpgradeEffect(upg) {
-	let lvl=getTreeUpgradeLevel(upg)
-	if (tmp.qu.bigRip.active&&player.ghostify.neutrinos.boosts>6) lvl*=tmp.nb[6]
+	let lvl=getTreeUpgradeLevel(upg,true)
 	if (upg==1) return Math.floor(lvl * 30)
 	if (upg==2) {
 		if (lvl > 64) lvl = (lvl + 128) / 3
@@ -4993,7 +4994,7 @@ function updateBosonicUpgradeDescs() {
 		document.getElementById("bUpg"+id).className=tmp.bl.upgrades.includes(id)?"gluonupgradebought bl":canBuyBosonicUpg(id)?"gluonupgrade bl":"gluonupgrade unavailablebtn"
 		if (tmp.blu[id]!==undefined) {
 			if (id==11||id==13) document.getElementById("bUpgEffect"+id).textContent=(tmp.blu[id]*100).toFixed(1)+"%"
-			else if (id==12) document.getElementById("bUpgEffect"+id).textContent="+"+getFullExpansion(Math.round(tmp.blu[id]))
+			else if (id==12) document.getElementById("bUpgEffect"+id).textContent="^"+tmp.blu[id].toFixed(2)
 			else if (id==14) document.getElementById("bUpgEffect"+id).textContent=getFullExpansion(Math.round(tmp.blu[id]))
 			else if (id==21) document.getElementById("bUpgEffect"+id).textContent="-"+tmp.blu[id].toFixed(5)
 			else document.getElementById("bUpgEffect"+id).textContent=shorten(tmp.blu[id])+"x"
@@ -5005,7 +5006,7 @@ var bu={
 	rows:2,
 	costs:{
 		11: {
-			am: 1/0,
+			am: 200,
 			g1: 200,
 			g2: 100
 		}
@@ -5013,7 +5014,7 @@ var bu={
 	reqData:{},
 	descs:{
 		11: "Bosonic Antimatter adds blue Light effect.",
-		12: 'Free tickspeed upgrades add normal galaxy amount of "Intergalactic" reward.',
+		12: '8th Tree Upgrade boosts Infinity Challenge 3 effect instead if you Big Rip the universe.',
 		13: "Light Empowerments are stronger based on your Radioactive Decays.",
 		14: "Sacrificed galaxies cancel less galaxies based on your free galaxies.",
 		15: "Infinitied stat boosts dilated time production.",
@@ -5029,7 +5030,7 @@ var bu={
 			return Math.pow(l,0.5-0.25*l/(l+3))/4
 		},
 		12: function() {
-			return Math.sqrt(player.totalTickGained)
+			return Math.max(getTreeUpgradeLevel(8,true)/100-3,1)
 		},
 		13: function() {
 			return Math.pow(getRadioactiveDecays('r')+getRadioactiveDecays('g')+getRadioactiveDecays('b'),0.6)/5+1

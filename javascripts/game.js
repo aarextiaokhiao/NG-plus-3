@@ -1213,7 +1213,6 @@ function updateTemp() {
 	tmp.it=Decimal.pow(10,x)
 
 	x=player.galaxies
-	if (hasBosonicUpg(12)) x+=tmp.blu[12]
 	if (tmp.ngp3&&!tmp.qu.bigRip.active&&player.ghostify.ghostlyPhotons.enpowerments>2) x*=tmp.le[9]
 	if (tmp.be&&player.dilation.active&&tmp.qu.breakEternity.upgrades.includes(10)) x*=getBreakUpgMult(10)
 	var igLog=Math.pow(x,Math.min(Math.sqrt(Math.log10(Math.max(x,1)))*2,2.5))
@@ -1577,7 +1576,7 @@ function updateDimensions() {
         if (isNaN(tickmultNum)) ticklabel = 'Break the tick interval by Infinite';
         else if (e >= 9) ticklabel = "Divide the tick interval by " + shortenDimensions(Decimal.recip(tickmult))
         else ticklabel = 'Reduce the tick interval by ' + ((1 - tickmultNum) * 100).toFixed(e) + '%'
-        let ic3mult=getPostC3RewardMult()
+        let ic3mult=getPostC3Mult()
         if (player.galacticSacrifice || player.currentChallenge == "postc3" || isIC3Trapped()) document.getElementById("tickLabel").innerHTML = ((isIC3Trapped() || player.currentChallenge == "postc3") && player.currentChallenge != "postcngmm_3" && !player.challenges.includes("postcngmm_3") && !tmp.be ? "M" : ticklabel + '<br>and m') + 'ultiply all dimensions by ' + (ic3mult>999.95?shorten(ic3mult):new Decimal(ic3mult).toNumber().toPrecision(4)) + '.'
         else document.getElementById("tickLabel").textContent = ticklabel + '.'
 
@@ -2696,30 +2695,6 @@ function updateInfCosts() {
         }
     }
     if (document.getElementById("ers_timestudies").style.display == "block" && document.getElementById("eternitystore").style.display == "block") updateERSTTDesc()
-}
-
-function getPostC3RewardMult() {
-	if (player.currentChallenge=="postcngmm_3") return 1
-	let perGalaxy = 0.005;
-	if (player.tickspeedBoosts != undefined) perGalaxy = 0.002
-	if (inQC(2)) perGalaxy = 0
-	if (tmp.ngp3 ? tmp.qu.bigRip.active : false) {
-		if (ghostified&&player.ghostify.neutrinos.boosts>8) perGalaxy*=tmp.nb[8]
-		if (hasNU(12)) perGalaxy*=tmp.nu[4].free
-	}
-	if (!player.galacticSacrifice) return player.galaxies*perGalaxy+1.05
-	if (tmp.cp>1) {
-		if (player.tickspeedBoosts != undefined) perGalaxy *= tmp.cp/10+.9
-		else perGalaxy *= tmp.cp/5+.8
-	}
-	var g=initialGalaxies()
-	perGalaxy *= getGalaxyEff()
-	let ret = getGalaxyPower(g)*perGalaxy+1.05
-	if (inNC(6)||player.currentChallenge=="postc1") ret -= player.aarexModifications.ngmX>3?0.02:0.05
-	else if (player.aarexModifications.ngmX == 3) ret -= 0.03
-	if (hasPU(33)) ret += puMults[33]()
-	if (player.galacticSacrifice != undefined) return Decimal.pow(ret,getPostC3Exp())
-	return ret
 }
 
 function toggleProductionTab() {
@@ -8125,7 +8100,7 @@ function gameLoop(diff) {
 		gain = Math.ceil(new Decimal(player.timeShards).dividedBy(player.tickThreshold).log10()/Math.log10(thresholdMult))
 		player.totalTickGained += gain
 		player.tickspeed = player.tickspeed.times(Decimal.pow(getTickSpeedMultiplier(),gain))
-		player.postC3Reward=Decimal.pow(getPostC3RewardMult(),gain*getEC14Power()).times(player.postC3Reward)
+		player.postC3Reward=Decimal.pow(getPostC3Mult(),gain*getEC14Power()).times(player.postC3Reward)
 		player.tickThreshold = Decimal.pow(thresholdMult,player.totalTickGained).times(player.aarexModifications.ngmX>3?0.01:1)
 		document.getElementById("totaltickgained").textContent = "You've gained "+getFullExpansion(player.totalTickGained)+" tickspeed upgrades."
 		updateTickSpeed();

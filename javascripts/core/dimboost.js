@@ -144,7 +144,7 @@ function setInitialDimensionPower() {
 		ic3Power += ic3PowerTB
 	}
 	if ((inNC(15) || player.currentChallenge == "postc1" || player.currentChallenge == "postcngm3_3") && player.aarexModifications.ngmX > 3) ic3Power-=(player.resets+player.tdBoosts)*10
-	player.postC3Reward=Decimal.pow(getPostC3RewardMult(),ic3Power)
+	player.postC3Reward=Decimal.pow(getPostC3Mult(),ic3Power)
 }
 
 function maxBuyDimBoosts(manual) {

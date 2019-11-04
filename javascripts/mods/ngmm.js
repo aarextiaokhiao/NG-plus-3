@@ -441,22 +441,6 @@ function getB60Mult() {
 	return Decimal.pow(getEternitied()>0?2.5:3,player.galaxies-95).max(1)
 }
 
-function getPostC3Exp() {
-	let g = getGalaxyPower(0)-player.dilation.freeGalaxies
-	if (g<7) return 1+g/5
-	let y=5
-	let z=.5
-	if (tmp.ec>29) {
-		if (player.currentEternityChall=="" || player.currentEternityChall=="eterc12") {
-			z=.9
-			if (tmp.ec>53) y = 1.4-((tmp.ec-54)/15)
-			else if (tmp.ec>42) y=2
-			else if (tmp.ec>37) y=3.5
-		} else z=.6
-	}
-	return 2+Math.pow(g-5,z)/y
-}
-
 //v2.3
 let R127 = Math.pow(0.5772156649+.5*Math.pow(Math.PI,.5)+3.35988+0.43828+0.95531,0.739085+1.30637) 
 //.5772156649 is the E-M constant, .5*Math.pow(Math.PI,.5) is root(pi)/2, 0.739085 is the unique real solution to cos(x)=x, 
