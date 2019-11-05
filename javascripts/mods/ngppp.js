@@ -691,7 +691,7 @@ function updateQuantumTabs() {
 		document.getElementById("greenPower").textContent=shortenMoney(tmp.qu.colorPowers.g)
 		document.getElementById("bluePower").textContent=shortenMoney(tmp.qu.colorPowers.b)
 		document.getElementById("redTranslation").textContent=((colorBoosts.r-1)*100).toFixed(1)
-		var msg = getFullExpansion(Math.round((colorBoosts.g-1)*100))+(gatheredQuarksBoost>0?"+"+getFullExpansion(Math.round(gatheredQuarksBoost*100)):"")
+		var msg = getFullExpansion(Math.round((colorBoosts.g-1)*100))+(tmp.pe>0?"+"+getFullExpansion(Math.round(tmp.pe*100)):"")
 		document.getElementById("greenTranslation").textContent=msg
 		document.getElementById("blueTranslation").textContent=shortenMoney(colorBoosts.b)
 		if (player.masterystudies.includes("t383")) document.getElementById("blueTranslationMD").textContent=shorten(getMTSMult(383))
@@ -746,7 +746,7 @@ function updateQuantumTabs() {
 		document.getElementById("gatherRate").textContent=tmp.qu.nanofield.producingCharge?'-'+shortenDimensions(getQuarkLossProduction())+'/s':'+'+shortenDimensions(gatherRateData.total)+'/s'
 
 		document.getElementById("gatheredQuarks").textContent=shortenDimensions(tmp.qu.replicants.quarks.floor())
-		document.getElementById("quarkTranslation").textContent=getFullExpansion(Math.round(gatheredQuarksBoost*100))
+		document.getElementById("quarkTranslation").textContent=getFullExpansion(Math.round(tmp.pe*100))
 
 		var eggonRate = getTotalWorkers().times(getEDMultiplier(1)).times(3)
 		if (eggonRate.lt(30)) {
@@ -5018,7 +5018,7 @@ var bu={
 		13: "Light Empowerments are stronger based on your Radioactive Decays.",
 		14: "Sacrificed galaxies cancel less galaxies based on your free galaxies.",
 		15: "Infinitied stat boosts dilated time production.",
-		21: "Decrease free galaxy threshold based on your dilated time.",
+		21: "Every 1% of green power effect, decrease free galaxy threshold increase by 0.00001.",
 		22: "Replace first Nanofield reward with a new powerful boost.",
 		23: "Assigning gives more colored quarks based on your meta-antimatter.",
 		24: "You gain Tachyon particles without dilation, but with reduced formula.",
@@ -5042,7 +5042,7 @@ var bu={
 			return Decimal.add(getInfinitied(),1).pow(.2)
 		},
 		21: function() {
-			return player.dilation.dilatedTime.max(1).log10()/2e5
+			return (colorBoosts.g+tmp.pe)/1e3
 		},
 		23: function() {
 			return Decimal.pow(player.meta.antimatter.add(1).log10()+1, 1000)

@@ -62,7 +62,7 @@ function drawAnimations(ts){
         if (player.options.theme == "Aarex's Modifications") ctx3.fillStyle="#e5e5e5";
         else if (player.options.theme == "Dark" || player.options.theme == "Dark Metro") ctx3.fillStyle="#FFF";
         else ctx3.fillStyle="#000";
-        for (i=0; i<player.dilation.tachyonParticles.exponent+1; i++) {
+        for (i=0; i<Math.min(player.dilation.tachyonParticles.e+1,100); i++) {
             if (typeof particles["particle"+i] == "undefined") {
                 particles["particle"+i] = {}
                 particles["particle"+i].goalX = Math.ceil(Math.random() * canvas3.width);

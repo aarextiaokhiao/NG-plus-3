@@ -283,7 +283,7 @@ function getExtraDimensionBoostPowerExponent() {
 	power += getECReward(13)
 	if (player.masterystudies != undefined) {
 		if (player.masterystudies.includes("d12")) power += getNanofieldRewardEffect(2)
-		if (player.masterystudies.includes("d13")) power += getTreeUpgradeEffect(8)
+		if (player.masterystudies.includes("d13") && (!hasBosonicUpg(12) || !tmp.qu.bigRip.active)) power += getTreeUpgradeEffect(8)
 	}
 	return power
 }

@@ -1235,12 +1235,13 @@ function updateTemp() {
 
 	//Extra galaxy amount of TS431
 	tmp.eg431=0
-	if (player.masterystudies !== undefined && player.ghostify.ghostlyPhotons.enpowerments) {
-		tmp.le[7].total=(colorBoosts.g+gatheredQuarksBoost)*100*tmp.le[7].effect
+	if (tmp.ngp3 !== undefined && player.ghostify.ghostlyPhotons.enpowerments) {
+		tmp.le[7].total=(colorBoosts.g+tmp.pe)*100*tmp.le[7].effect
 		tmp.eg431+=tmp.le[7].total
 	}
 	
-	if (tmp.nu[4]&&ghostified) tmp.nu[4].replicated=Math.sqrt(player.replicanti.galaxies+extraReplGalaxies)*.035+1 //NU12 (Replicated galaxy effect)
+	if (tmp.nu[4]&&ghostified) tmp.nu[4].replicated=Math.sqrt(player.replicanti.galaxies+extraReplGalaxies)*.035+1 //NU12 (Replicated galaxy effect
+	if (tmp.ngp3&&player.ghostify.wzb.unl) tmp.bEn[21]=getEnchantEffect(21) //BU21 recalculation
 
 	//mv: Matter speed
 	tmp.mv = 1.03 + player.resets/200 + player.galaxies/100
@@ -2867,8 +2868,8 @@ function updateExtraReplGalaxies() {
 	extraReplGalaxies = ts225Eff + ts226Eff
 	if (extraReplGalaxies > 325) extraReplGalaxies = (Math.sqrt(0.9216+0.16*(extraReplGalaxies-324))-0.96)/0.08+324
 	if (tmp.ngp3) {
-		gatheredQuarksBoost = Math.pow(tmp.qu.replicants.quarks.add(1).log10(),player.masterystudies.includes("t362")?0.35:0.25)*0.67*(player.masterystudies.includes("t412")?1.25:1)*(player.ghostify.ghostlyPhotons.unl?tmp.le[3]:1)
-		extraReplGalaxies *= colorBoosts.g + gatheredQuarksBoost
+		tmp.pe = Math.pow(tmp.qu.replicants.quarks.add(1).log10(),player.masterystudies.includes("t362")?0.35:0.25)*0.67*(player.masterystudies.includes("t412")?1.25:1)*(player.ghostify.ghostlyPhotons.unl?tmp.le[3]:1)
+		extraReplGalaxies *= colorBoosts.g + tmp.pe
 	}
 	extraReplGalaxies = Math.floor(extraReplGalaxies)
 }
