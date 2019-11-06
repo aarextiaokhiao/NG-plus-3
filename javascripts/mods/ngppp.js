@@ -4729,7 +4729,7 @@ function bosonicTick(diff) {
 		if (!data.usedEnchants.includes(12)) oldAuto=new Decimal(0)
 		var toAdd=data.extractProgress.min(oldAuto.add(1).round()).floor()
 		data.autoExtract=data.autoExtract.sub(toAdd.min(oldAuto))
-		data.glyphs[data.typeToExtract-1]=data.glyphs[data.typeToExtract-1].add(data.amountToExtract.times(toAdd)).round()
+		data.glyphs[data.typeToExtract-1]=data.glyphs[data.typeToExtract-1].add(toAdd).round()
 		if (data.usedEnchants.includes(12)&&oldAuto.add(1).round().gt(toAdd)) {
 			data.extractProgress=data.extractProgress.sub(toAdd.min(data.extractProgress))
 		} else {
@@ -4743,7 +4743,7 @@ function bosonicTick(diff) {
 }
 
 function getBosonicAMProduction() {
-	let r=Decimal.pow(10,player.money.max(1).log10()/25e15-2) //Antimatter part
+	let r=Decimal.pow(10,player.money.max(1).log10()/15e15-3) //Antimatter part
 	r=r.times(tmp.wbp) //W Bosons part
 	return r
 }
@@ -4790,23 +4790,10 @@ function extract() {
 
 function getExtractTime(noFast) {
 	let data=tmp.bl
-	let r=data.amountToExtract.pow(2).times(br.scalings[data.typeToExtract]||1/0)
+	let r=new Decimal(br.scalings[data.typeToExtract]||1/0)
 	if (!noFast) r=r.div(getEnchantEffect(23))
 	r=r.div(tmp.wbt)
 	return r
-}
-
-function changeAmountToExtract() {
-	let data=tmp.bl
-	let x=fromValue(document.getElementById("amountToExtract").value)
-	if (isNaN(x)) return
-	x=x.round()
-	if (x.lt(1)) return
-	if (x.eq(tmp.bl.amountToExtract)) return
-	data.amountToExtract=x
-	data.extracting=false
-	data.extractProgress=new Decimal(0)
-	data.autoExtract=new Decimal(1)
 }
 
 function changeTypeToExtract(x) {

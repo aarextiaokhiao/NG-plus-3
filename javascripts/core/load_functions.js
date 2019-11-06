@@ -797,7 +797,6 @@ if (player.version < 5) {
                       speed: 1,
                       ticks: 0,
                       am: 0,
-                      amountToExtract: 1,
                       typeToExtract: 1,
                       extracting: false,
                       extractProgress: 0,
@@ -1226,7 +1225,6 @@ if (player.version < 5) {
           ticks: 0,
           speed: 1,
           am: 0,
-          amountToExtract: 1,
           typeToExtract: 1,
           extracting: false,
           extractProgress: 0,
@@ -1940,7 +1938,6 @@ if (player.version < 5) {
       document.getElementById("blUnl").textContent="To unlock Bosonic Lab, you need to get "+shortenCosts(Decimal.pow(10,1e10))+" red ghostly unstable quarks first."
       document.getElementById("bpc68").textContent=shortenMoney(tmp.qu.pairedChallenges.pc68best)
       document.getElementById("odSlider").value=Math.round(Decimal.log(tmp.bl.odSpeed,3)*20+20)
-      document.getElementById("amountToExtract").value=formatValue("Scientific",tmp.bl.amountToExtract,3,0)
       for (var g=1;g<br.names.length;g++) document.getElementById("typeToExtract"+g).className=tmp.bl.typeToExtract==g?"chosenbtn":"storebtn"
       updateElectrons()
       updateAutoQuantumMode()
@@ -2606,7 +2603,6 @@ function transformSaveToDecimal() {
       if (tmp.bl && player.ghostify.wzb) {
           tmp.bl.ticks=new Decimal(tmp.bl.ticks)
           tmp.bl.am=new Decimal(tmp.bl.am)
-          tmp.bl.amountToExtract=new Decimal(tmp.bl.amountToExtract)
           tmp.bl.extractProgress=new Decimal(tmp.bl.extractProgress)
           tmp.bl.autoExtract=new Decimal(tmp.bl.autoExtract)
           for (var t=0;t<br.names.length-1;t++) tmp.bl.glyphs[t]=new Decimal(tmp.bl.glyphs[t]||0)

@@ -600,7 +600,6 @@ function updateNewPlayer(reseted) {
                 speed: 1,
                 ticks: 0,
                 am: 0,
-                amountToExtract: 1,
                 typeToExtract: 1,
                 extracting: false,
                 extractProgress: 0,
