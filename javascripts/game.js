@@ -1234,7 +1234,7 @@ function updateTemp() {
 
 	//Extra galaxy amount of TS431
 	tmp.eg431=0
-	if (tmp.ngp3 !== undefined && player.ghostify.ghostlyPhotons.enpowerments) {
+	if (tmp.ngp3 && player.ghostify.ghostlyPhotons.enpowerments) {
 		tmp.le[7].total=(colorBoosts.g+tmp.pe)*100*tmp.le[7].effect
 		tmp.eg431+=tmp.le[7].total
 	}
