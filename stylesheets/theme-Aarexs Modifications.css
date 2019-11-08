@@ -53,6 +53,9 @@ body {
     color: #191919 !important;
     border-radius: 0px !important
 }
+#footer {
+    font-family: 'Inconsolata', monospace !important
+}
 #coinAmount {
     color: #0072e5 !important
 }

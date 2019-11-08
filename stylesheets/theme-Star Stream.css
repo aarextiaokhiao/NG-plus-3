@@ -86,6 +86,11 @@ input {
     font-weight: 900;
 }
 
+#footer {
+    font-family:'IBM Plex Mono', monospace !important;
+    font-weight: 500
+}
+
 #coinAmount {
     font-weight: 900;
     transition:0.2s;

@@ -79,6 +79,10 @@ button, div.storebtn {
     border-radius: 0px !important
 }
 
+#footer {
+	font-family: "Roboto" !important
+}
+
 #coinAmount, #dilatedGalaxies, #normalGalaxies, #sacrificedGals {
 	color: #0072e5 !important
 }
