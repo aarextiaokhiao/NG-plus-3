@@ -1679,7 +1679,7 @@ function updatePCCompletions() {
 			}
 		}
 	} else document.getElementById("modifiersdiv").style.display="none"
-	if (ranking>=165) giveAchievement("All-Challenging Nighter")
+	if (ranking>=165) giveAchievement("Pulling an All-Nighter")
 }
 
 //v1.99874
