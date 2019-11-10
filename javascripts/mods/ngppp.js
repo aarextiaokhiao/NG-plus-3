@@ -5017,7 +5017,7 @@ var bu={
 			return Math.pow(l,0.5-0.25*l/(l+3))/4
 		},
 		12: function() {
-			return Math.max(getTreeUpgradeLevel(8,true)/100-3,1)
+			return Math.max(Math.sqrt(getTreeUpgradeLevel(8,true)/100)-1,1)
 		},
 		13: function() {
 			return Math.pow(getRadioactiveDecays('r')+getRadioactiveDecays('g')+getRadioactiveDecays('b'),0.6)/5+1
