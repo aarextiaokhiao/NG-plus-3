@@ -4092,7 +4092,7 @@ function onNotationChange() {
 		updateBreakEternity()
 		onNotationChangeNeutrinos()
 		updateBosonicStuffCosts()
-		document.getElementById("gphUnl").textContent="To unlock Ghostly Photons, you need to get "+shortenCosts(Decimal.pow(10,6025e6))+" antimatter while your universe is Big Ripped first."
+		document.getElementById("gphUnl").textContent="To unlock Ghostly Photons, you need to get "+shortenCosts(Decimal.pow(10,6e9))+" antimatter while your universe is Big Ripped first."
 		document.getElementById("blUnl").textContent="To unlock Bosonic Lab, you need to get "+shortenCosts(Decimal.pow(10,1e10))+" red ghostly unstable quarks first."
 	}
 	document.getElementById("epmult").innerHTML = "You gain 5 times more EP<p>Currently: "+shortenDimensions(player.epmult)+"x<p>Cost: "+shortenDimensions(player.epmultCost)+" EP"
@@ -7646,7 +7646,7 @@ setInterval(function() {
             $.notify("Congratulations! You have unlocked Break Eternity!", "success")
             updateBreakEternity()
         }
-        if (player.money.gte(Decimal.pow(10,6025e6))&&tmp.qu.bigRip.active&&!player.ghostify.ghostlyPhotons.unl) {
+        if (player.money.gte(Decimal.pow(10,6e9))&&tmp.qu.bigRip.active&&!player.ghostify.ghostlyPhotons.unl) {
             player.ghostify.ghostlyPhotons.unl=true
             $.notify("Congratulations! You have unlocked Ghostly Photons!", "success")
             giveAchievement("Progressing as a Ghost")
