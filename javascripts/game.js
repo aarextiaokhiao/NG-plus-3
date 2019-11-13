@@ -2777,7 +2777,7 @@ function getRGCost(offset=0, costChange) {
 		else {
 			let increase = 0
 			if (player.currentEternityChall == "eterc6") increase = offset * ((offset + player.replicanti.gal * 2) + 3)
-			else increase = offset * (2.5 * (offset + player.replicanti.gal * 2) + 27.5)
+			else increase = offset * (2.5 * (offset + player.replicanti.gal * 2) + 22.5)
 			if (player.replicanti.gal + offset > 99) increase += (offset - Math.max(99 - player.replicanti.gal, 0)) * (25 * (offset - Math.max(99 - player.replicanti.gal, 0) + Math.max(player.replicanti.gal, 99) * 2) - 4725)
 			if (player.replicanti.gal + offset > 399) {
 				if (player.exdilation != undefined) for (var g = Math.max(player.replicanti.gal, 399); g < player.replicanti.gal + offset; g++) increase += Math.pow(g - 389, 2)
