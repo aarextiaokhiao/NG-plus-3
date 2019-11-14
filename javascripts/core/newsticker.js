@@ -299,8 +299,9 @@ newsArray = [//always true
 ["When does the 0th dimension come out", true, "am146"],
 ["I was in a wrong laboratory. Then I found a better laboratory that actually boosts for good.", "player.achievements.includes('ng3p81')", "am147"],
 ["I was stuck in a grinding section. Thanks to gods, I can finally get out of here.", false, "am148"],
-["The end is near...", "ghostified && tmp.bl.upgrades.includes(23)", "am149"]
-/*NEXT ID: am150*/
+["The end is near...", "ghostified && tmp.bl.upgrades.includes(23)", "am149"],
+["We have updated our Terms of Service to comply with COPPA Act.", true, "am150"]
+/*NEXT ID: am151*/
 ];}
 
 document.addEventListener("visibilitychange", function() {if (!document.hidden) {scrollNextMessage();}}, false);
