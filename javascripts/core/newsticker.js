@@ -300,8 +300,10 @@ newsArray = [//always true
 ["I was in a wrong laboratory. Then I found a better laboratory that actually boosts for good.", "player.achievements.includes('ng3p81')", "am147"],
 ["I was stuck in a grinding section. Thanks to gods, I can finally get out of here.", false, "am148"],
 ["The end is near...", "ghostified && tmp.bl.upgrades.includes(23)", "am149"],
-["We have updated our Terms of Service to comply with COPPA Act.", true, "am150"]
-/*NEXT ID: am151*/
+["We have updated our Terms of Service to comply with COPPA Act.", true, "am150"],
+["Tree of Decay isn't a upgrade tree, I have been lied to", "player.masterystudies !== undefined && player.masterystudies.includes('d13')", "am151"],
+["ELECTRONS CONSUME YOUR STARS", "player.masterystudies !== undefined && player.masterystudies.includes('d7')", "am152"]
+/*NEXT ID: am153*/
 ];}
 
 document.addEventListener("visibilitychange", function() {if (!document.hidden) {scrollNextMessage();}}, false);
