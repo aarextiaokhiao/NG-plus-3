@@ -1335,13 +1335,319 @@ function getEternitied() {
 	return total
 }
 
+function galaxyReset(bulk) {
+    if (tmp.ri) return
+    if (autoS) auto = false;
+    autoS = true;
+    if (player.sacrificed == 0 && bulk > 0) giveAchievement("I don't believe in Gods");
+    if (player.tickspeedBoosts !== undefined) player.tickspeedBoosts = 0
+    player = {
+        money: player.achievements.includes("r111") ? player.money : new Decimal(10),
+        tickSpeedCost: new Decimal(1000),
+        tickBoughtThisInf: updateTBTIonGalaxy(),
+        firstCost: new Decimal(10),
+        secondCost: new Decimal(100),
+        thirdCost: new Decimal(10000),
+        fourthCost: new Decimal(1000000),
+        fifthCost: new Decimal(1e9),
+        sixthCost: new Decimal(1e13),
+        seventhCost: new Decimal(1e18),
+        eightCost: new Decimal(1e24),
+        firstAmount: new Decimal(0),
+        secondAmount: new Decimal(0),
+        thirdAmount: new Decimal(0),
+        fourthAmount: new Decimal(0),
+        firstBought: 0,
+        secondBought: 0,
+        thirdBought: 0,
+        fourthBought: 0,
+        fifthAmount: new Decimal(0),
+        sixthAmount: new Decimal(0),
+        seventhAmount: new Decimal(0),
+        eightAmount: new Decimal(0),
+        fifthBought: 0,
+        sixthBought: 0,
+        seventhBought: 0,
+        eightBought: 0,
+        boughtDims: player.boughtDims,
+        totalBoughtDims: resetTotalBought(),
+        firstPow: new Decimal(1),
+        secondPow: new Decimal(1),
+        thirdPow: new Decimal(1),
+        fourthPow: new Decimal(1),
+        fifthPow: new Decimal(1),
+        sixthPow: new Decimal(1),
+        seventhPow: new Decimal(1),
+        eightPow: new Decimal(1),
+        sacrificed: new Decimal(0),
+        achievements: player.achievements,
+        challenges: player.challenges,
+        currentChallenge: player.currentChallenge,
+        infinityUpgrades: player.infinityUpgrades,
+        infinityUpgradesRespecced: player.infinityUpgradesRespecced,
+        setsUnlocked: player.setsUnlocked,
+        infinityPoints: player.infinityPoints,
+        infinitied: player.infinitied,
+        infinitiedBank: player.infinitiedBank,
+        totalTimePlayed: player.totalTimePlayed,
+        bestInfinityTime: player.bestInfinityTime,
+        thisInfinityTime: player.thisInfinityTime,
+        resets: player.achievements.includes("ng3p55") ? player.resets : 0,
+        dbPower: player.dbPower,
+        tdBoosts: resetTDBoosts(),
+        tickspeedBoosts: player.tickspeedBoosts,
+        galaxies: player.galaxies + bulk,
+        pSac: player.pSac,
+        galacticSacrifice: player.galacticSacrifice,
+        totalmoney: player.totalmoney,
+        interval: null,
+        lastUpdate: player.lastUpdate,
+        achPow: player.achPow,
+        newsArray: player.newsArray,
+        autobuyers: player.autobuyers,
+        costMultipliers: [new Decimal(1e3), new Decimal(1e4), new Decimal(1e5), new Decimal(1e6), new Decimal(1e8), new Decimal(1e10), new Decimal(1e12), new Decimal(1e15)],
+        tickspeedMultiplier: new Decimal(10),
+        chall2Pow: player.chall2Pow,
+        chall3Pow: new Decimal(0.01),
+        matter: new Decimal(0),
+        chall11Pow: new Decimal(1),
+        partInfinityPoint: player.partInfinityPoint,
+        partInfinitied: player.partInfinitied,
+        break: player.break,
+        challengeTimes: player.challengeTimes,
+        infchallengeTimes: player.infchallengeTimes,
+        lastTenRuns: player.lastTenRuns,
+        lastTenEternities: player.lastTenEternities,
+        infMult: player.infMult,
+        infMultCost: player.infMultCost,
+        tickSpeedMultDecrease: player.tickSpeedMultDecrease,
+        tickSpeedMultDecreaseCost: player.tickSpeedMultDecreaseCost,
+        dimensionMultDecrease: player.dimensionMultDecrease,
+        dimensionMultDecreaseCost: player.dimensionMultDecreaseCost,
+        extraDimPowerIncrease: player.extraDimPowerIncrease,
+        dimPowerIncreaseCost: player.dimPowerIncreaseCost,
+        version: player.version,
+        overXGalaxies: player.overXGalaxies,
+        overXGalaxiesTickspeedBoost: player.overXGalaxiesTickspeedBoost,
+        singularity: player.singularity,
+        dimtechs: player.dimtechs,
+        spreadingCancer: player.spreadingCancer,
+        infDimensionsUnlocked: player.infDimensionsUnlocked,
+        infinityPower: player.infinityPower,
+        postChallUnlocked: player.postChallUnlocked,
+        postC4Tier: 1,
+        postC8Mult: new Decimal(1),
+        infinityDimension1: player.infinityDimension1,
+        infinityDimension2: player.infinityDimension2,
+        infinityDimension3: player.infinityDimension3,
+        infinityDimension4: player.infinityDimension4,
+        infinityDimension5: player.infinityDimension5,
+        infinityDimension6: player.infinityDimension6,
+        infinityDimension7: player.infinityDimension7,
+        infinityDimension8: player.infinityDimension8,
+        infDimBuyers: player.infDimBuyers,
+        timeShards: player.timeShards,
+        tickThreshold: player.tickThreshold,
+        timeDimension1: player.timeDimension1,
+        timeDimension2: player.timeDimension2,
+        timeDimension3: player.timeDimension3,
+        timeDimension4: player.timeDimension4,
+        timeDimension5: player.timeDimension5,
+        timeDimension6: player.timeDimension6,
+        timeDimension7: player.timeDimension7,
+        timeDimension8: player.timeDimension8,
+        eternityPoints: player.eternityPoints,
+        eternities: player.eternities,
+        eternitiesBank: player.eternitiesBank,
+        thisEternity: player.thisEternity,
+        bestEternity: player.bestEternity,
+        eternityUpgrades: player.eternityUpgrades,
+        epmult: player.epmult,
+        epmultCost: player.epmultCost,
+        totalTickGained: player.totalTickGained,
+        offlineProd: player.offlineProd,
+        offlineProdCost: player.offlineProdCost,
+        challengeTarget: player.challengeTarget,
+        autoSacrifice: player.autoSacrifice,
+        replicanti: player.replicanti,
+        timestudy: player.timestudy,
+        eternityChalls: player.eternityChalls,
+        eternityChallGoal: player.eternityChallGoal,
+        currentEternityChall: player.currentEternityChall,
+        eternityChallUnlocked: player.eternityChallUnlocked,
+        etercreq: player.etercreq,
+        autoIP: player.autoIP,
+        autoTime: player.autoTime,
+        infMultBuyer: player.infMultBuyer,
+        autoCrunchMode: player.autoCrunchMode,
+        autoEterMode: player.autoEterMode,
+        peakSpent: player.peakSpent,
+        respec: player.respec,
+        respecMastery: player.respecMastery,
+        eternityBuyer: player.eternityBuyer,
+        eterc8ids: player.eterc8ids,
+        eterc8repl: player.eterc8repl,
+        dimlife: player.dimlife,
+        dead: player.dead,
+        dilation: player.dilation,
+        exdilation: player.exdilation,
+        blackhole: player.blackhole,
+        blackholeDimension1: player.blackholeDimension1,
+        blackholeDimension2: player.blackholeDimension2,
+        blackholeDimension3: player.blackholeDimension3,
+        blackholeDimension4: player.blackholeDimension4,
+        blackholeDimension5: player.blackholeDimension5,
+        blackholeDimension6: player.blackholeDimension6,
+        blackholeDimension7: player.blackholeDimension7,
+        blackholeDimension8: player.blackholeDimension8,
+        why: player.why,
+        shameLevel: player.shameLevel,
+        options: player.options,
+        meta: player.meta,
+        masterystudies: player.masterystudies,
+        autoEterOptions: player.autoEterOptions,
+        galaxyMaxBulk: player.galaxyMaxBulk,
+        quantum: tmp.qu,
+        old: player.old,
+        dontWant: player.dontWant,
+        ghostify: player.ghostify,
+        aarexModifications: player.aarexModifications
+    };
+
+    if (inNC(10) || player.currentChallenge == "postc1") {
+        player.thirdCost = new Decimal(100)
+        player.fourthCost = new Decimal(500)
+        player.fifthCost = new Decimal(2500)
+        player.sixthCost = new Decimal(2e4)
+        player.seventhCost = new Decimal(2e5)
+        player.eightCost = new Decimal(4e6)
+    }
+	if (player.pSac !== undefined) {
+		resetInfDimensions()
+		player.pSac.dims.extraTime=0
+	}
+    resetTDs()
+    reduceDimCosts()
+    skipResets()
+    if (player.currentChallenge == "postc2") {
+        player.eightAmount = new Decimal(1);
+        player.eightBought = 1;
+        player.resets = 4;
+    }
+	
+    setInitialDimensionPower();
 
 
+    if (player.options.notation == "Emojis") player.spreadingCancer+=bulk
+    if (player.spreadingCancer >= 10) giveAchievement("Spreading Cancer")
+    if (player.spreadingCancer >= 1000000) giveAchievement("Cancer = Spread")
+    if (player.achievements.includes("r36")) player.tickspeed = player.tickspeed.times(0.98);
+    if (player.achievements.includes("r45")) player.tickspeed = player.tickspeed.times(0.98);
+    if (player.achievements.includes("r83")) player.tickspeed = player.tickspeed.times(Decimal.pow(0.95,player.galaxies));
+    divideTickspeedIC5()
 
+    if (player.infinitied < 1 && player.eternities == 0 && !quantumed) {
+        document.getElementById("sacrifice").style.display = "none"
+        document.getElementById("confirmation").style.display = "none"
+        if (player.galacticSacrifice && (player.galaxies > 0 || (player.galacticSacrifice ? player.galacticSacrifice.times > 0 : false))) {
+            document.getElementById("gSacrifice").style.display = "inline-block"
+            document.getElementById("gConfirmation").style.display = "inline-block"
+        }
+    }
+    if (player.galaxies >= 50) giveAchievement("YOU CAN GET 50 GALAXIES!??")
+    if (player.galaxies >= 2) giveAchievement("Double Galaxy");
+    if (player.galaxies >= 1) giveAchievement("You got past The Big Wall");
+    if (!player.achievements.includes("r111")) setInitialMoney()
+    if (player.achievements.includes("r66")) player.tickspeed = player.tickspeed.times(0.98);
+    if (player.galaxies >= 540 && player.replicanti.galaxies == 0) giveAchievement("Unique snowflakes")
+    if (!player.achievements.includes("ngpp18")) checkUniversalHarmony()
+    if (tmp.ngp3 && bulk) {
+        if (tmp.qu.autoOptions.sacrifice) sacrificeGalaxy(6, true)
+        if (tmp.qu.bigRip.active) tmp.qu.bigRip.bestGals = Math.max(tmp.qu.bigRip.bestGals, player.galaxies)
+	    if (ghostified) gainNeutrinos(bulk, "gen")
+    }
+    hideDimensions()
+    updateTickSpeed();
+}
 
+document.getElementById("secondSoftReset").onclick = function() {
+	var bool = !inNC(11) && player.currentChallenge != "postc1" && (player.currentChallenge != "postc5" || player.tickspeedBoosts == undefined) && player.currentChallenge != "postc7" && !((player.currentEternityChall == "eterc6" || inQC(6)) && !tmp.be) && !tmp.ri && !cantReset()
+	if (getAmount(inNC(4)||player.pSac!=undefined?6:8) >= getGalaxyRequirement() && bool) {
+		if ((getEternitied() >= 7 || player.autobuyers[10].bulkBought) && !shiftDown && (!inNC(14) || !(player.aarexModifications.ngmX > 3))) maxBuyGalaxies(true);
+		else galaxyReset(1)
+	}
+}
 
+function getGalaxyRequirement(offset=0, display) {
+	let galaxies = player.galaxies+offset
+	let base = galaxies*getGalaxyReqMultiplier()
+	let amount = 80+base
+	let scaling = 0
+	if (player.galacticSacrifice != undefined) amount -= (player.galacticSacrifice.upgrades.includes(22) && player.galaxies > 0) ? 80 : 60
+	if (player.aarexModifications.ngmX > 3) amount -= 10
+	if (inNC(4) || player.pSac !== undefined) amount = player.tickspeedBoosts == undefined ? 99 + base : amount + (player.aarexModifications.ngmX > 3 ? 20 : -30)
+	if (tmp.be) {
+		amount *= 50
+		if (tmp.qu.breakEternity.upgrades.includes(2)) amount /= getBreakUpgMult(2)
+		if (player.currentEternityChall=="eterc10"&&tmp.qu.breakEternity.upgrades.includes(9)) amount /= getBreakUpgMult(9)
+	}
+	if (!player.boughtDims) {
+		let ghostlySpeed = tmp.be ? 55 : 1
+		let scalingSpeed = 1
+		let div = 1e4
+		if (galaxies >= 302500 / ghostlySpeed) {
+			if (player.ghostify.ghostlyPhotons.enpowerments > 1 && tmp.be) div *= tmp.le[8]
+			scalingSpeed = Math.pow(2, (galaxies + 1 - 302500 / ghostlySpeed) * ghostlySpeed / div)
+			scaling = 5
+		}
+		let distantStart = getDistantScalingStart(galaxies, scalingSpeed)
+		if (galaxies >= distantStart) {
+			let speed = scalingSpeed
+			if (GUBought("rg6")) speed *= 0.867
+			if (GUBought("gb6")) speed /= 1+Math.pow(player.infinityPower.max(1).log10(),0.25)/2810
+			if (GUBought("br6")) speed /= 1+player.meta.resets/340
+			if (ghostified) if (player.ghostify.neutrinos.boosts > 5) speed /= tmp.nb[5]
+			amount += getDistantAdd(galaxies-distantStart+1)*speed
+			if (galaxies>=distantStart*2.5&&player.galacticSacrifice!=undefined) {
+				// 5 times worse scaling
+				amount += 4*speed*getDistantAdd(galaxies-distantStart*2.5+1)
+				scaling = Math.max(scaling, 2)
+			} else scaling = Math.max(scaling, 1)
+		}
+		let remoteStart = getRemoteScalingStart(galaxies)
+		if (galaxies >= remoteStart && !tmp.be && !hasNU(6)) {
+			let speed2 = scalingSpeed
+			if (GUBought("rg7")) speed2 *= 0.9
+			if (GUBought("gb7")) speed2 /= 1+Math.log10(1+player.infinityPoints.max(1).log10())/100
+			if (GUBought("br7")) speed2 /= 1+Math.log10(1+player.eternityPoints.max(1).log10())/80
+			amount = amount * Math.pow(1 + (GUBought("rg1") ? 1 : 2) / (player.aarexModifications.ngmX > 3 ? 10 : 1e3), (galaxies-remoteStart+1) * speed2)
+			scaling = Math.max(scaling, 3)
+		}
+		if (galaxies > 1399 && !tmp.be) scaling = Math.max(scaling, 4)
+	}
+	amount = Math.ceil(amount)
 
-function getGalaxyCostScalingStart(galaxies, scalingSpeed) {
+	if (player.infinityUpgrades.includes("resetBoost")) amount -= 9
+	if (player.challenges.includes("postc5")) amount -= 1
+	if (player.infinityUpgradesRespecced != undefined) amount -= getInfUpgPow(6)
+	if (display) return {amount: amount, scaling: scaling}
+	return amount
+}
+
+function getGalaxyReqMultiplier(ts) {
+    if (player.currentChallenge=="postcngmm_1") return 60
+    let ret = 60
+    if (player.galacticSacrifice) {
+		if (player.galacticSacrifice.upgrades.includes(22)) ret -= 30
+    } else if (player.timestudy.studies.includes(42)) ret *= (player.aarexModifications.newGameExpVersion?12:13)/15
+    if (inNC(4)) ret = 90
+    if (player.infinityUpgrades.includes("galCost")) ret -= 5
+    if (player.infinityUpgrades.includes("postinfi52") && player.tickspeedBoosts == undefined) ret -= 3
+	if (player.galacticSacrifice && player.timestudy.studies.includes(42)) ret *= (player.aarexModifications.newGameExpVersion?12:13)/15
+    return ret
+}
+
+function getDistantScalingStart(galaxies, scalingSpeed) {
     var n = 100+getECReward(5)
     if (player.timestudy.studies.includes(223)) n += 7
     if (player.timestudy.studies.includes(224)) n += Math.floor(player.resets/2000)
@@ -1359,12 +1665,12 @@ function getGalaxyCostScalingStart(galaxies, scalingSpeed) {
     return Math.min(scalingSpeed>1?n:Math.max(n,0),player.currentEternityChall=="eterc5"?0:1/0)
 }
 
-function getDGAdd(x) {
+function getDistantAdd(x) {
 	if (player.galacticSacrifice!==undefined&&player.tickspeedBoosts==undefined) return Math.pow(x,1.5)+x
 	return (x+1)*x
 }
 
-function getRemoteGalaxyScalingStart(galaxies) {
+function getRemoteScalingStart(galaxies) {
 	var n = 800
 	if (player.aarexModifications.ngmX > 3) n = 6
 	else if (player.galacticSacrifice != undefined) n += 1e7
@@ -1375,73 +1681,6 @@ function getRemoteGalaxyScalingStart(galaxies) {
 		if (galaxies > 1/0 && !tmp.be) n -= galaxies - 1/0
 	}
 	return n
-}
-
-function getGalaxyRequirement(offset=0, display) {
-	let galaxies = player.galaxies+offset
-	let base = galaxies*getGalaxyCostIncrease()
-	let amount = 80+base
-	let scaling = 0
-	if (player.galacticSacrifice != undefined) amount -= (player.galacticSacrifice.upgrades.includes(22) && player.galaxies > 0) ? 80 : 60
-	if (player.aarexModifications.ngmX > 3) amount -= 10
-	if (inNC(4) || player.pSac !== undefined) amount = player.tickspeedBoosts == undefined ? 99 + base : amount + (player.aarexModifications.ngmX > 3 ? 20 : -30)
-	if (tmp.be) {
-		amount *= 50
-		if (tmp.qu.breakEternity.upgrades.includes(2)) amount /= getBreakUpgMult(2)
-		if (player.currentEternityChall=="eterc10"&&tmp.qu.breakEternity.upgrades.includes(9)) amount /= getBreakUpgMult(9)
-	}
-	if (!player.boughtDims) {
-		let ghostlySpeed = tmp.be ? 55 : 1
-		let scalingSpeed = 1
-		if (galaxies >= 302500 / ghostlySpeed) {
-			scalingSpeed = Math.pow(2, (galaxies + 1 - 302500 / ghostlySpeed) * ghostlySpeed / 1e4 / (player.ghostify.ghostlyPhotons.enpowerments>2&&tmp.be?tmp.le[8]:1))
-			scaling = 5
-		}
-		let galaxyCostScalingStart = getGalaxyCostScalingStart(galaxies, scalingSpeed)
-		if (galaxies >= galaxyCostScalingStart) {
-			let speed = scalingSpeed
-			if (GUBought("rg6")) speed *= 0.867
-			if (GUBought("gb6")) speed /= 1+Math.pow(player.infinityPower.max(1).log10(),0.25)/2810
-			if (GUBought("br6")) speed /= 1+player.meta.resets/340
-			if (ghostified) if (player.ghostify.neutrinos.boosts > 5) speed /= tmp.nb[5]
-			amount += getDGAdd(galaxies-galaxyCostScalingStart+1)*speed
-			if (galaxies>=galaxyCostScalingStart*2.5&&player.galacticSacrifice!=undefined) {
-				// 5 times worse scaling
-				amount += 4*speed*getDGAdd(galaxies-galaxyCostScalingStart*2.5+1)
-				scaling = Math.max(scaling, 2)
-			} else scaling = Math.max(scaling, 1)
-		}
-		let remoteGalaxyScalingStart = getRemoteGalaxyScalingStart(galaxies)
-		if (galaxies >= remoteGalaxyScalingStart && !tmp.be && !hasNU(6)) {
-			let speed2 = scalingSpeed
-			if (GUBought("rg7")) speed2 *= 0.9
-			if (GUBought("gb7")) speed2 /= 1+Math.log10(1+player.infinityPoints.max(1).log10())/100
-			if (GUBought("br7")) speed2 /= 1+Math.log10(1+player.eternityPoints.max(1).log10())/80
-			amount = amount * Math.pow(1 + (GUBought("rg1") ? 1 : 2) / (player.aarexModifications.ngmX > 3 ? 10 : 1e3), (galaxies-remoteGalaxyScalingStart+1) * speed2)
-			scaling = Math.max(scaling, 3)
-		}
-		if (galaxies > 1399 && !tmp.be) scaling = Math.max(scaling, 4)
-	}
-	amount = Math.ceil(amount)
-
-	if (player.infinityUpgrades.includes("resetBoost")) amount -= 9
-	if (player.challenges.includes("postc5")) amount -= 1
-	if (player.infinityUpgradesRespecced != undefined) amount -= getInfUpgPow(6)
-	if (display) return {amount: amount, scaling: scaling}
-	return amount
-}
-
-function getGalaxyCostIncrease(ts) {
-    if (player.currentChallenge=="postcngmm_1") return 60
-    let ret = 60
-    if (player.galacticSacrifice) {
-		if (player.galacticSacrifice.upgrades.includes(22)) ret -= 30
-    } else if (player.timestudy.studies.includes(42)) ret *= (player.aarexModifications.newGameExpVersion?12:13)/15
-    if (inNC(4)) ret = 90
-    if (player.infinityUpgrades.includes("galCost")) ret -= 5
-    if (player.infinityUpgrades.includes("postinfi52") && player.tickspeedBoosts == undefined) ret -= 3
-	if (player.galacticSacrifice && player.timestudy.studies.includes(42)) ret *= (player.aarexModifications.newGameExpVersion?12:13)/15
-    return ret
 }
 
 var worstChallengeTime = 1
@@ -3109,264 +3348,6 @@ document.getElementById("toggleBtnTickSpeed").onclick = function () {
         player.autobuyers[8].target = 1
         document.getElementById("toggleBtnTickSpeed").textContent = "Buys singles"
     }
-}
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-document.getElementById("secondSoftReset").onclick = function() {
-	var bool = !inNC(11) && player.currentChallenge != "postc1" && (player.currentChallenge != "postc5" || player.tickspeedBoosts == undefined) && player.currentChallenge != "postc7" && !((player.currentEternityChall == "eterc6" || inQC(6)) && !tmp.be) && !tmp.ri && !cantReset()
-	if (getAmount(inNC(4)||player.pSac!=undefined?6:8) >= getGalaxyRequirement() && bool) {
-		if ((getEternitied() >= 7 || player.autobuyers[10].bulkBought) && !shiftDown && (!inNC(14) || !(player.aarexModifications.ngmX > 3))) maxBuyGalaxies(true);
-		else galaxyReset(1)
-	}
-}
-
-
-function galaxyReset(bulk) {
-    if (tmp.ri) return
-    if (autoS) auto = false;
-    autoS = true;
-    if (player.sacrificed == 0 && bulk > 0) giveAchievement("I don't believe in Gods");
-    if (player.tickspeedBoosts !== undefined) player.tickspeedBoosts = 0
-    player = {
-        money: player.achievements.includes("r111") ? player.money : new Decimal(10),
-        tickSpeedCost: new Decimal(1000),
-        tickBoughtThisInf: updateTBTIonGalaxy(),
-        firstCost: new Decimal(10),
-        secondCost: new Decimal(100),
-        thirdCost: new Decimal(10000),
-        fourthCost: new Decimal(1000000),
-        fifthCost: new Decimal(1e9),
-        sixthCost: new Decimal(1e13),
-        seventhCost: new Decimal(1e18),
-        eightCost: new Decimal(1e24),
-        firstAmount: new Decimal(0),
-        secondAmount: new Decimal(0),
-        thirdAmount: new Decimal(0),
-        fourthAmount: new Decimal(0),
-        firstBought: 0,
-        secondBought: 0,
-        thirdBought: 0,
-        fourthBought: 0,
-        fifthAmount: new Decimal(0),
-        sixthAmount: new Decimal(0),
-        seventhAmount: new Decimal(0),
-        eightAmount: new Decimal(0),
-        fifthBought: 0,
-        sixthBought: 0,
-        seventhBought: 0,
-        eightBought: 0,
-        boughtDims: player.boughtDims,
-        totalBoughtDims: resetTotalBought(),
-        firstPow: new Decimal(1),
-        secondPow: new Decimal(1),
-        thirdPow: new Decimal(1),
-        fourthPow: new Decimal(1),
-        fifthPow: new Decimal(1),
-        sixthPow: new Decimal(1),
-        seventhPow: new Decimal(1),
-        eightPow: new Decimal(1),
-        sacrificed: new Decimal(0),
-        achievements: player.achievements,
-        challenges: player.challenges,
-        currentChallenge: player.currentChallenge,
-        infinityUpgrades: player.infinityUpgrades,
-        infinityUpgradesRespecced: player.infinityUpgradesRespecced,
-        setsUnlocked: player.setsUnlocked,
-        infinityPoints: player.infinityPoints,
-        infinitied: player.infinitied,
-        infinitiedBank: player.infinitiedBank,
-        totalTimePlayed: player.totalTimePlayed,
-        bestInfinityTime: player.bestInfinityTime,
-        thisInfinityTime: player.thisInfinityTime,
-        resets: player.achievements.includes("ng3p55") ? player.resets : 0,
-        dbPower: player.dbPower,
-        tdBoosts: resetTDBoosts(),
-        tickspeedBoosts: player.tickspeedBoosts,
-        galaxies: player.galaxies + bulk,
-        pSac: player.pSac,
-        galacticSacrifice: player.galacticSacrifice,
-        totalmoney: player.totalmoney,
-        interval: null,
-        lastUpdate: player.lastUpdate,
-        achPow: player.achPow,
-        newsArray: player.newsArray,
-        autobuyers: player.autobuyers,
-        costMultipliers: [new Decimal(1e3), new Decimal(1e4), new Decimal(1e5), new Decimal(1e6), new Decimal(1e8), new Decimal(1e10), new Decimal(1e12), new Decimal(1e15)],
-        tickspeedMultiplier: new Decimal(10),
-        chall2Pow: player.chall2Pow,
-        chall3Pow: new Decimal(0.01),
-        matter: new Decimal(0),
-        chall11Pow: new Decimal(1),
-        partInfinityPoint: player.partInfinityPoint,
-        partInfinitied: player.partInfinitied,
-        break: player.break,
-        challengeTimes: player.challengeTimes,
-        infchallengeTimes: player.infchallengeTimes,
-        lastTenRuns: player.lastTenRuns,
-        lastTenEternities: player.lastTenEternities,
-        infMult: player.infMult,
-        infMultCost: player.infMultCost,
-        tickSpeedMultDecrease: player.tickSpeedMultDecrease,
-        tickSpeedMultDecreaseCost: player.tickSpeedMultDecreaseCost,
-        dimensionMultDecrease: player.dimensionMultDecrease,
-        dimensionMultDecreaseCost: player.dimensionMultDecreaseCost,
-        extraDimPowerIncrease: player.extraDimPowerIncrease,
-        dimPowerIncreaseCost: player.dimPowerIncreaseCost,
-        version: player.version,
-        overXGalaxies: player.overXGalaxies,
-        overXGalaxiesTickspeedBoost: player.overXGalaxiesTickspeedBoost,
-        singularity: player.singularity,
-        dimtechs: player.dimtechs,
-        spreadingCancer: player.spreadingCancer,
-        infDimensionsUnlocked: player.infDimensionsUnlocked,
-        infinityPower: player.infinityPower,
-        postChallUnlocked: player.postChallUnlocked,
-        postC4Tier: 1,
-        postC8Mult: new Decimal(1),
-        infinityDimension1: player.infinityDimension1,
-        infinityDimension2: player.infinityDimension2,
-        infinityDimension3: player.infinityDimension3,
-        infinityDimension4: player.infinityDimension4,
-        infinityDimension5: player.infinityDimension5,
-        infinityDimension6: player.infinityDimension6,
-        infinityDimension7: player.infinityDimension7,
-        infinityDimension8: player.infinityDimension8,
-        infDimBuyers: player.infDimBuyers,
-        timeShards: player.timeShards,
-        tickThreshold: player.tickThreshold,
-        timeDimension1: player.timeDimension1,
-        timeDimension2: player.timeDimension2,
-        timeDimension3: player.timeDimension3,
-        timeDimension4: player.timeDimension4,
-        timeDimension5: player.timeDimension5,
-        timeDimension6: player.timeDimension6,
-        timeDimension7: player.timeDimension7,
-        timeDimension8: player.timeDimension8,
-        eternityPoints: player.eternityPoints,
-        eternities: player.eternities,
-        eternitiesBank: player.eternitiesBank,
-        thisEternity: player.thisEternity,
-        bestEternity: player.bestEternity,
-        eternityUpgrades: player.eternityUpgrades,
-        epmult: player.epmult,
-        epmultCost: player.epmultCost,
-        totalTickGained: player.totalTickGained,
-        offlineProd: player.offlineProd,
-        offlineProdCost: player.offlineProdCost,
-        challengeTarget: player.challengeTarget,
-        autoSacrifice: player.autoSacrifice,
-        replicanti: player.replicanti,
-        timestudy: player.timestudy,
-        eternityChalls: player.eternityChalls,
-        eternityChallGoal: player.eternityChallGoal,
-        currentEternityChall: player.currentEternityChall,
-        eternityChallUnlocked: player.eternityChallUnlocked,
-        etercreq: player.etercreq,
-        autoIP: player.autoIP,
-        autoTime: player.autoTime,
-        infMultBuyer: player.infMultBuyer,
-        autoCrunchMode: player.autoCrunchMode,
-        autoEterMode: player.autoEterMode,
-        peakSpent: player.peakSpent,
-        respec: player.respec,
-        respecMastery: player.respecMastery,
-        eternityBuyer: player.eternityBuyer,
-        eterc8ids: player.eterc8ids,
-        eterc8repl: player.eterc8repl,
-        dimlife: player.dimlife,
-        dead: player.dead,
-        dilation: player.dilation,
-        exdilation: player.exdilation,
-        blackhole: player.blackhole,
-        blackholeDimension1: player.blackholeDimension1,
-        blackholeDimension2: player.blackholeDimension2,
-        blackholeDimension3: player.blackholeDimension3,
-        blackholeDimension4: player.blackholeDimension4,
-        blackholeDimension5: player.blackholeDimension5,
-        blackholeDimension6: player.blackholeDimension6,
-        blackholeDimension7: player.blackholeDimension7,
-        blackholeDimension8: player.blackholeDimension8,
-        why: player.why,
-        shameLevel: player.shameLevel,
-        options: player.options,
-        meta: player.meta,
-        masterystudies: player.masterystudies,
-        autoEterOptions: player.autoEterOptions,
-        galaxyMaxBulk: player.galaxyMaxBulk,
-        quantum: tmp.qu,
-        old: player.old,
-        dontWant: player.dontWant,
-        ghostify: player.ghostify,
-        aarexModifications: player.aarexModifications
-    };
-
-    if (inNC(10) || player.currentChallenge == "postc1") {
-        player.thirdCost = new Decimal(100)
-        player.fourthCost = new Decimal(500)
-        player.fifthCost = new Decimal(2500)
-        player.sixthCost = new Decimal(2e4)
-        player.seventhCost = new Decimal(2e5)
-        player.eightCost = new Decimal(4e6)
-    }
-	if (player.pSac !== undefined) {
-		resetInfDimensions()
-		player.pSac.dims.extraTime=0
-	}
-    resetTDs()
-    reduceDimCosts()
-    skipResets()
-    if (player.currentChallenge == "postc2") {
-        player.eightAmount = new Decimal(1);
-        player.eightBought = 1;
-        player.resets = 4;
-    }
-	
-    setInitialDimensionPower();
-
-
-    if (player.options.notation == "Emojis") player.spreadingCancer+=bulk
-    if (player.spreadingCancer >= 10) giveAchievement("Spreading Cancer")
-    if (player.spreadingCancer >= 1000000) giveAchievement("Cancer = Spread")
-    if (player.achievements.includes("r36")) player.tickspeed = player.tickspeed.times(0.98);
-    if (player.achievements.includes("r45")) player.tickspeed = player.tickspeed.times(0.98);
-    if (player.achievements.includes("r83")) player.tickspeed = player.tickspeed.times(Decimal.pow(0.95,player.galaxies));
-    divideTickspeedIC5()
-
-    if (player.infinitied < 1 && player.eternities == 0 && !quantumed) {
-        document.getElementById("sacrifice").style.display = "none"
-        document.getElementById("confirmation").style.display = "none"
-        if (player.galacticSacrifice && (player.galaxies > 0 || (player.galacticSacrifice ? player.galacticSacrifice.times > 0 : false))) {
-            document.getElementById("gSacrifice").style.display = "inline-block"
-            document.getElementById("gConfirmation").style.display = "inline-block"
-        }
-    }
-    if (player.galaxies >= 50) giveAchievement("YOU CAN GET 50 GALAXIES!??")
-    if (player.galaxies >= 2) giveAchievement("Double Galaxy");
-    if (player.galaxies >= 1) giveAchievement("You got past The Big Wall");
-    if (!player.achievements.includes("r111")) setInitialMoney()
-    if (player.achievements.includes("r66")) player.tickspeed = player.tickspeed.times(0.98);
-    if (player.galaxies >= 540 && player.replicanti.galaxies == 0) giveAchievement("Unique snowflakes")
-    if (!player.achievements.includes("ngpp18")) checkUniversalHarmony()
-    if (tmp.ngp3 && bulk) {
-        if (tmp.qu.autoOptions.sacrifice) sacrificeGalaxy(6, true)
-        if (tmp.qu.bigRip.active) tmp.qu.bigRip.bestGals = Math.max(tmp.qu.bigRip.bestGals, player.galaxies)
-	    if (ghostified) gainNeutrinos(bulk, "gen")
-    }
-    hideDimensions()
-    updateTickSpeed();
 }
 
 document.getElementById("save").onclick = function () {

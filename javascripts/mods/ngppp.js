@@ -1913,8 +1913,7 @@ function getQuarkChargeProductionCap() {
 }
 
 function getNanofieldRewardEffect(id, effect) {
-	var rewards = tmp.qu.nanofield.rewards
-	var stacks = Math.ceil((rewards - id + 1) / 8)
+	var stacks = Math.ceil((tmp.qu.nanofield.rewards - id + 1) / 8)
 	if (id == 1) {
 		if (effect == "supersonic") return stacks + 1
 		if (effect == "speed") return Decimal.pow(30, stacks)
@@ -1926,11 +1925,11 @@ function getNanofieldRewardEffect(id, effect) {
 	if (id == 6) return 3 + stacks * 1.34
 	if (id == 7) {
 		if (effect == "remote") return stacks * 2150
-		if (effect == "charge") return Decimal.pow(2.6, Math.ceil((rewards - 6) / 8))
+		if (effect == "charge") return Decimal.pow(2.6, stacks)
 	}
 	if (id == 8) {
 		if (effect == "per-10") return stacks * 0.76
-		if (effect == "energy") return tmp.qu.nanofield.rewards>7?2.5:1
+		if (effect == "energy") return stacks ? 2.5 : 1
 	}
 }
 
@@ -4135,7 +4134,7 @@ function updateGhostifyTabs() {
 			document.getElementById("zNe").className=(["electron","mu","tau"])[data2.zNeGen-1]
 			document.getElementById("zNeSymbol").textContent=(["e","μ","τ"])[data2.zNeGen-1]
 			document.getElementById("zb").textContent=shortenDimensions(data2.zb)
-			document.getElementById("zbGain").textContent="You will gain "+shortenDimensions(data2.zNeReq)+" Z Bosons on next oscillation."
+			document.getElementById("zbGain").textContent="You will gain "+shortenDimensions(data2.zNeReq.pow(0.75))+" Z Bosons on next oscillation."
 			document.getElementById("zbSpeed").textContent=shorten(tmp.zbs)
 		}
 	}
@@ -4700,7 +4699,7 @@ function bosonicTick(diff) {
 			lData.zNeProgress=lData.zNeProgress.add(apDiff.times(getOscillateGainSpeed()))
 			if (lData.zNeProgress.gte(1)) {
 				let oscillated=Math.floor(lData.zNeProgress.add(1).log(2))
-				lData.zb=lData.zb.add(Decimal.pow(2,oscillated-1).times(lData.zNeReq))
+				lData.zb=lData.zb.add(Decimal.pow(Math.pow(2,0.75),oscillated).sub(1).div(Math.pow(2,0.75)-1).times(lData.zNeReq.pow(0.75)))
 				lData.zNeProgress=lData.zNeProgress.sub(Decimal.pow(2,oscillated).sub(1).min(lData.zNeProgress)).div(Decimal.pow(2,oscillated))
 				lData.zNeReq=lData.zNeReq.times(Decimal.pow(2,oscillated))
 				lData.zNeGen=(lData.zNeGen+oscillated-1)%3+1
@@ -4788,10 +4787,10 @@ function extract() {
 	data.extracting=true
 }
 
-function getExtractTime(noFast) {
+function getExtractTime() {
 	let data=tmp.bl
 	let r=new Decimal(br.scalings[data.typeToExtract]||1/0)
-	if (!noFast) r=r.div(getEnchantEffect(23))
+	r=r.div(getEnchantEffect(23))
 	r=r.div(tmp.wbt)
 	return r
 }
@@ -4915,7 +4914,7 @@ var bEn={
 	},
 	effects:{
 		12: function(l) {
-			return l.pow(0.75).div(getExtractTime(true)).div(bEn.autoScalings[tmp.bl.typeToExtract])
+			return l.pow(0.75).div(bEn.autoScalings[tmp.bl.typeToExtract])
 		},
 		13: function(l) {
 			return Decimal.add(l,1).sqrt()
@@ -4996,6 +4995,11 @@ var bu={
 			am: 200,
 			g1: 200,
 			g2: 100
+		},
+		12: {
+			am: 6e4,
+			g2: 3e3,
+			g3: 800
 		}
 	},
 	reqData:{},
@@ -5017,7 +5021,7 @@ var bu={
 			return Math.pow(l,0.5-0.25*l/(l+3))/4
 		},
 		12: function() {
-			return Math.max(Math.sqrt(getTreeUpgradeLevel(8,true)/100)-1,1)
+			return 1//Math.max(Math.sqrt(getTreeUpgradeLevel(8,true)/100)-1,1)
 		},
 		13: function() {
 			return Math.pow(getRadioactiveDecays('r')+getRadioactiveDecays('g')+getRadioactiveDecays('b'),0.6)/5+1
