@@ -144,7 +144,6 @@ function getPostC3Exp() {
 		}
 		x=2+Math.pow(g-5,z)/y
 	}
-	if (hasBosonicUpg(12)&&tmp.qu.bigRip.active) x*=tmp.blu[12]
 	return x
 }
 

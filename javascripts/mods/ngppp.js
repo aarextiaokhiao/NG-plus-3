@@ -4980,7 +4980,6 @@ function updateBosonicUpgradeDescs() {
 		document.getElementById("bUpg"+id).className=tmp.bl.upgrades.includes(id)?"gluonupgradebought bl":canBuyBosonicUpg(id)?"gluonupgrade bl":"gluonupgrade unavailablebtn"
 		if (tmp.blu[id]!==undefined) {
 			if (id==11||id==13) document.getElementById("bUpgEffect"+id).textContent=(tmp.blu[id]*100).toFixed(1)+"%"
-			else if (id==12) document.getElementById("bUpgEffect"+id).textContent="^"+tmp.blu[id].toFixed(2)
 			else if (id==14) document.getElementById("bUpgEffect"+id).textContent=getFullExpansion(Math.round(tmp.blu[id]))
 			else if (id==21) document.getElementById("bUpgEffect"+id).textContent="-"+tmp.blu[id].toFixed(5)
 			else document.getElementById("bUpgEffect"+id).textContent=shorten(tmp.blu[id])+"x"
@@ -4997,7 +4996,7 @@ var bu={
 			g2: 100
 		},
 		12: {
-			am: 6e4,
+			am: 4e5,
 			g2: 3e3,
 			g3: 800
 		}
@@ -5005,7 +5004,7 @@ var bu={
 	reqData:{},
 	descs:{
 		11: "Bosonic Antimatter adds blue Light effect.",
-		12: '8th Tree Upgrade boosts Infinity Challenge 3 effect instead if you Big Rip the universe.',
+		12: "???",
 		13: "Light Empowerments are stronger based on your Radioactive Decays.",
 		14: "Sacrificed galaxies cancel less galaxies based on your free galaxies.",
 		15: "Infinitied stat boosts dilated time production.",
@@ -5019,9 +5018,6 @@ var bu={
 		11: function() {
 			let l=tmp.bl.am.add(1).log10()
 			return Math.pow(l,0.5-0.25*l/(l+3))/4
-		},
-		12: function() {
-			return 1//Math.max(Math.sqrt(getTreeUpgradeLevel(8,true)/100)-1,1)
 		},
 		13: function() {
 			return Math.pow(getRadioactiveDecays('r')+getRadioactiveDecays('g')+getRadioactiveDecays('b'),0.6)/5+1
