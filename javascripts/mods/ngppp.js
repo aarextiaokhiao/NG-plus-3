@@ -2271,6 +2271,7 @@ function updateElectronsEffect() {
 	if (!tmp.qu.autoOptions.sacrifice) document.getElementById("electronsAmount2").textContent="You have " + getFullExpansion(Math.round(tmp.qu.electrons.amount)) + " electrons."
 	document.getElementById("electronsTranslation").textContent=getFullExpansion(Math.round(getMPTPower()))
 	document.getElementById("electronsEffect").textContent = shorten(getDimensionPowerMultiplier(true))
+	document.getElementById("linearPerTenMult").textContent = shorten(getDimensionPowerMultiplier(true, "linear"))
 }
 
 function maxBuyLimit() {
@@ -4041,8 +4042,7 @@ function updateGhostifyTabs() {
 	if (document.getElementById("automaticghosts").style.display=="block") if (player.ghostify.milestones>7) updateQuantumWorth("display")
 	if (document.getElementById("gphtab").style.display=="block"&&player.ghostify.ghostlyPhotons.unl) {
 		var gphData=player.ghostify.ghostlyPhotons
-		var lePower=gphData.enpowerments
-		if (hasBosonicUpg(13)) lePower*=tmp.blu[13]
+		var lePower=getLightEmpowermentBoost()
 		document.getElementById("dtGPH").textContent=shorten(player.dilation.dilatedTime)
 		document.getElementById("gphProduction").textContent=shorten(getGPHProduction())
 		document.getElementById("gphProduction").className=(tmp.qu.bigRip.active?"gph":"dm")+"Amount"
@@ -4591,6 +4591,12 @@ function getMaximumUnstableQuarks() {
 	return r
 }
 
+function getLightEmpowermentBoost() {
+	let r=player.ghostify.ghostlyPhotons.enpowerments
+	if (hasBosonicUpg(13)) r*=tmp.blu[13]
+	return r
+}
+
 function toggleLEConf() {
 	player.aarexModifications.leNoConf = !player.aarexModifications.leNoConf
 	document.getElementById("leConfirmBtn").textContent = "Light Empowerment confirmation: O" + (player.aarexModifications.leNoConf ? "FF" : "N")
@@ -4979,9 +4985,9 @@ function updateBosonicUpgradeDescs() {
 		var id=r*10+c
 		document.getElementById("bUpg"+id).className=tmp.bl.upgrades.includes(id)?"gluonupgradebought bl":canBuyBosonicUpg(id)?"gluonupgrade bl":"gluonupgrade unavailablebtn"
 		if (tmp.blu[id]!==undefined) {
-			if (id==11||id==13) document.getElementById("bUpgEffect"+id).textContent=(tmp.blu[id]*100).toFixed(1)+"%"
+			if (id==11) document.getElementById("bUpgEffect"+id).textContent=(tmp.blu[id]*100).toFixed(1)+"%"
+			else if (id==12) document.getElementById("bUpgEffect"+id).textContent="-"+tmp.blu[id].toFixed(5)
 			else if (id==14) document.getElementById("bUpgEffect"+id).textContent=getFullExpansion(Math.round(tmp.blu[id]))
-			else if (id==21) document.getElementById("bUpgEffect"+id).textContent="-"+tmp.blu[id].toFixed(5)
 			else document.getElementById("bUpgEffect"+id).textContent=shorten(tmp.blu[id])+"x"
 		}
 	}
@@ -5004,11 +5010,11 @@ var bu={
 	reqData:{},
 	descs:{
 		11: "Bosonic Antimatter adds blue Light effect.",
-		12: "???",
-		13: "Light Empowerments are stronger based on your Radioactive Decays.",
+		12: "Every 1% of green power effect, decrease free galaxy threshold increase by 0.0000??.",
+		13: "Radioactive Decays boost Light Empowerments.",
 		14: "Sacrificed galaxies cancel less galaxies based on your free galaxies.",
-		15: "Infinitied stat boosts dilated time production.",
-		21: "Every 1% of green power effect, decrease free galaxy threshold increase by 0.00001.",
+		15: "Ghostifies and dilated time boost each other.",
+		21: "???",
 		22: "Replace first Nanofield reward with a new powerful boost.",
 		23: "Assigning gives more colored quarks based on your meta-antimatter.",
 		24: "You gain Tachyon particles without dilation, but with reduced formula.",
@@ -5019,6 +5025,9 @@ var bu={
 			let l=tmp.bl.am.add(1).log10()
 			return Math.pow(l,0.5-0.25*l/(l+3))/4
 		},
+		12: function() {
+			return 0 //(colorBoosts.g+tmp.pe)/1e3
+		},
 		13: function() {
 			return Math.pow(getRadioactiveDecays('r')+getRadioactiveDecays('g')+getRadioactiveDecays('b'),0.6)/5+1
 		},
@@ -5027,9 +5036,6 @@ var bu={
 		},
 		15: function() {
 			return Decimal.add(getInfinitied(),1).pow(.2)
-		},
-		21: function() {
-			return (colorBoosts.g+tmp.pe)/1e3
 		},
 		23: function() {
 			return Decimal.pow(player.meta.antimatter.add(1).log10()+1, 1000)

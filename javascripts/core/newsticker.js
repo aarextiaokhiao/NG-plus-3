@@ -440,12 +440,12 @@ function nextGhostlyNewsTickerMsg() {
 	updateGhostlyNewsArray()
 	tmp.blankedOut2=false
 	try {
-		do {nextMsgIndex = Math.floor(Math.random() * ghostlyNewsArray.length)} while (!eval(ghostlyNewsArray[nextMsgIndex][1]))
+		do {ghostlyNewsIndex = Math.floor(Math.random() * ghostlyNewsArray.length)} while (!eval(ghostlyNewsArray[ghostlyNewsIndex][1]))
 	} catch(e) {
-		console.log("Newsarray doesn't work at idx " + nextMsgIndex)
+		console.log("Newsarray doesn't work at idx " + ghostlyNewsIndex)
 	}
 	var newsText = document.getElementById("ghostlyNewsTickerText")
-	newsText.textContent = ghostlyNewsArray[nextMsgIndex][0]
+	newsText.textContent = ghostlyNewsArray[ghostlyNewsIndex][0]
 	newsText.innerHTML = "<b>NEWS!</b> " + newsText.innerHTML
 	newsText.style.left = "100%"
 	newsText.style["transition-duration"] = "0s"
@@ -459,7 +459,7 @@ function nextGhostlyNewsTickerMsg() {
 			newsText.style["transition-timing-function"] = "linear"
 			newsText.style["transition-duration"] = (duration / 100) + "s"
 			setTimeout(function() {
-				if (ghostlyNewsArray[nextMsgIndex][2]=="gn32") {
+				if (ghostlyNewsArray[ghostlyNewsIndex][2]=="gn32") {
 					tmp.blankedOut2=true
 					setTimeout(function() {
 						ghostlyNewsTickerCache=false

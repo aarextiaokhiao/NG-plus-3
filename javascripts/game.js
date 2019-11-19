@@ -1109,8 +1109,7 @@ function updateTemp() {
 			tmp.dppg=new Decimal(1)
 		}
 		if (player.ghostify.ghostlyPhotons.unl) {
-			let lePower=player.ghostify.ghostlyPhotons.enpowerments
-			if (hasBosonicUpg(13)) lePower*=tmp.blu[13]
+			let lePower=getLightEmpowermentBoost()
 			for (var c=6;c>-1;c--) {
 				var x=player.ghostify.ghostlyPhotons.lights[c]
 				if (c<1) x=(player.ghostify.ghostlyPhotons.maxRed+x*2)/3
@@ -7069,8 +7068,8 @@ function updateDilationUpgradeCosts() {
 function gainDilationGalaxies() {
 	if (player.dilation.dilatedTime.gte(player.dilation.nextThreshold)) {
 		let thresholdMult = inQC(5) ? Math.pow(10, 2.8) : !canBuyGalaxyThresholdUpg() ? 1.35 : 1.35 + 3.65 * Math.pow(0.8, getDilUpgPower(2))
-		if (hasBosonicUpg(21)) {
-			thresholdMult -= tmp.blu[21]
+		if (hasBosonicUpg(12)) {
+			thresholdMult -= tmp.blu[12]
 			if (thresholdMult < 1.15) thresholdMult = 1.05 + 0.1 / (2.15 - thresholdMult)
 		}
 		if (player.exdilation != undefined) thresholdMult -= Math.min(.1 * exDilationUpgradeStrength(2), 0.2)

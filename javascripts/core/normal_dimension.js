@@ -197,7 +197,7 @@ function getDimensionPowerMultiplier(nonrandom, focusOn) {
 	if (player.galacticSacrifice) if (player.galacticSacrifice.upgrades.includes(33) && ((!inNC(14) && player.currentChallenge != "postcngm3_3") || player.tickspeedBoosts == undefined || player.aarexModifications.ngmX > 3) && player.currentChallenge != "postcngm3_4") dimMult *= galMults.u33();
 	if (focusOn == "no-QC5") return dimMult
 	if (QCIntensity(5)) dimMult += getQCReward(5)
-	if (player.masterystudies) {
+	if (tmp.ngp3) {
 		if (player.masterystudies.includes("d12")) dimMult += getNanofieldRewardEffect(8, "per-10")
 		if (focusOn != "linear") dimMult = Decimal.pow(dimMult, getMPTPower(focusOn))
 	}
