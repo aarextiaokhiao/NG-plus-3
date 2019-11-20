@@ -233,7 +233,7 @@ function getSupersonicMultIncrease() {
 	if (inQC(5)) return 20
 	let r=4
 	if (player.masterystudies) if (player.masterystudies.includes("t331")) r=1
-	if (player.masterystudies.includes("d12")&&hasBosonicUpg(22)) r/=getNanofieldRewardEffect(1,"supersonic")
+	if (player.masterystudies.includes("d12")&&hasBosonicUpg(21)) r/=getNanofieldRewardEffect(1,"supersonic")
 	return r
 }
 

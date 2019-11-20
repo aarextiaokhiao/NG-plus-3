@@ -1070,7 +1070,7 @@ let tmp = {
 	beu: [],
 	bm: [200,175,150,100,50,40,30,25,20,15,10,5,4,3,2,1],
 	nb: [],
-	nbc: [null,3,4,6,15,50,1e3,1e14,1e35],
+	nbc: [null,3,4,6,15,50,1e3,1e14,1e35,"1e10000"],
 	nu: [],
 	nuc: [null,1e6,1e7,1e8,2e8,5e8,2e9,5e9,75e8,1e10,7e12,1e18,1e55,1e125,1e160,1e280],
 	lt: [12800,16e4,48e4,16e5,6e6,5e7,24e7,125e7],
@@ -1163,6 +1163,7 @@ function updateTemp() {
 				if (nb9>4096) nb9=Math.pow(Math.log2(nb9)+4,3)
 				tmp.nb[8]=nb9
 			}
+			if (player.ghostify.neutrinos.boosts>9) tmp.nb[9]=1+Math.pow(nt[0].add(1).log10()+nt[1].add(1).log10()+nt[2].add(1).log10(),.75)
 			tmp.nu[0]=Math.max(110-(tmp.qu.bigRip.active?0:player.meta.resets),0) //NU1
 			tmp.nu[1]=Math.pow(Math.max(tmp.qu.colorPowers.b.log10()/250+1,1),2) //NU3
 			tmp.nu[2]=Decimal.pow(20,Math.pow(Math.max(-getTickspeed().div(1e3).log10()/4e13-4,0),1/4)) //NU4
@@ -1676,7 +1677,7 @@ function getRemoteScalingStart(galaxies) {
 	if (tmp.ngp3) {
 		for (var t=251;t<254;t++) if (player.masterystudies.includes("t"+t)) n += getMTSMult(t)
 		if (player.masterystudies.includes("t301")) n += getMTSMult(301)
-		if (player.masterystudies.includes("d12")) n += getNanofieldRewardEffect(7, "remote")
+		if (player.masterystudies.includes("d12") && !hasBosonicUpg(22)) n += getNanofieldRewardEffect(7, "remote")
 		if (galaxies > 1/0 && !tmp.be) n -= galaxies - 1/0
 	}
 	return n
@@ -9254,8 +9255,10 @@ function updatePowers() {
 	if (player.boughtDims) mult18 = getDimensionFinalMultiplier(1).max(1).times(getDimensionFinalMultiplier(8).max(1)).pow(0.02)
 	else mult18 = getDimensionFinalMultiplier(1).times(getDimensionFinalMultiplier(8)).pow(0.02)
 	if (player.currentEternityChall == "eterc10" || inQC(6)) {
-		ec10bonus = Decimal.pow(getInfinitied(), 1000).max(1)
-		if (player.timestudy.studies.includes(31)) ec10bonus = ec10bonus.pow(4)
+		let ec10exp = 1e3
+		if (player.timestudy.studies.includes(31)) ec10exp *= 4
+		if (ghostified && player.ghostify.neutrinos.boosts > 9) ec10exp *= tmp.nb[9]
+		ec10bonus = Decimal.pow(getInfinitied(), ec10exp).max(1)
 	} else {
 		ec10bonus = new Decimal(1)
 	}
