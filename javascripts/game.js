@@ -4074,7 +4074,7 @@ function onNotationChange() {
 		onNotationChangeNeutrinos()
 		updateBosonicStuffCosts()
 		document.getElementById("gphUnl").textContent="To unlock Ghostly Photons, you need to get "+shortenCosts(Decimal.pow(10,6e9))+" antimatter while your universe is Big Ripped first."
-		document.getElementById("blUnl").textContent="To unlock Bosonic Lab, you need to get "+shortenCosts(Decimal.pow(10,1e10))+" red ghostly unstable quarks first."
+		document.getElementById("blUnl").textContent="To unlock Bosonic Lab, you need to get "+shortenCosts(Decimal.pow(10,1e10))+" ghostly unstable quarks first."
 	}
 	document.getElementById("epmult").innerHTML = "You gain 5 times more EP<p>Currently: "+shortenDimensions(player.epmult)+"x<p>Cost: "+shortenDimensions(player.epmultCost)+" EP"
 	document.getElementById("achmultlabel").textContent = "Current achievement multiplier on each Dimension: " + shortenMoney(player.achPow) + "x"
@@ -7636,7 +7636,8 @@ setInterval(function() {
             updateBreakEternity()
             updateGPHUnlocks()
         }
-        if (((player.quantum.tod.r.quarks.gte(Decimal.pow(10,1e10))&&player.quantum.tod.r.decays==5)||player.quantum.tod.r.decays>5)&&!player.ghostify.wzb.unl) {
+        let max=getMaximumUnstableQuarks()
+        if (max.quarks.log10()>1e10&&max.decays>=5&&!player.ghostify.wzb.unl) {
             player.ghostify.wzb.unl=true
             player.ghostify.wzb.unlReal=true
             $.notify("Congratulations! You have unlocked Bosonic Lab!", "success")

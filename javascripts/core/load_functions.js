@@ -1289,6 +1289,7 @@ if (player.version < 5) {
           setTTAfterQuantum=2e94
       }
       if (tmp.qu.bigRip.bestGals==undefined) tmp.qu.bigRip.bestGals=0
+      if (player.ghostify.ghostlyPhotons.maxRed==undefined) player.ghostify.ghostlyPhotons.maxRed=0
       if (player.ghostify.wzb.unl) giveAchievement("Even Ghostlier than before")
       if (!tmp.bl.usedEnchants.length) tmp.bl.usedEnchants=[]
       if (player.ghostify.wzb.dPUse===undefined) {
@@ -1935,7 +1936,7 @@ if (player.version < 5) {
           else document.getElementById("neutrinoUpg"+u).style.display=u>player.ghostify.times+2?"none":""
       }
       document.getElementById("gphUnl").textContent="To unlock Ghostly Photons, you need to get "+shortenCosts(Decimal.pow(10,6e9))+" antimatter while your universe is Big Ripped first."
-      document.getElementById("blUnl").textContent="To unlock Bosonic Lab, you need to get "+shortenCosts(Decimal.pow(10,1e10))+" red ghostly unstable quarks first."
+      document.getElementById("blUnl").textContent="To unlock Bosonic Lab, you need to get "+shortenCosts(Decimal.pow(10,1e10))+" ghostly unstable quarks first."
       document.getElementById("bpc68").textContent=shortenMoney(tmp.qu.pairedChallenges.pc68best)
       document.getElementById("odSlider").value=Math.round(Decimal.log(tmp.bl.odSpeed,3)*20+20)
       for (var g=1;g<br.names.length;g++) document.getElementById("typeToExtract"+g).className=tmp.bl.typeToExtract==g?"chosenbtn":"storebtn"
