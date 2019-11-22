@@ -8203,7 +8203,7 @@ function gameLoop(diff) {
         document.getElementById("replicantireset").click()
     }
     chance = chance.times(100)
-    document.getElementById("replicantichance").innerHTML = "Replicate "+(frequency?"frequency: "+shorten(frequency)+"x":"chance: "+getFullExpansion(chance.gt(1e12)?chance:Math.round(chance.toNumber()))+"%") + (isChanceAffordable() ? "<br>+1% Cost: "+shortenCosts(player.replicanti.chanceCost)+" IP" : "")
+    document.getElementById("replicantichance").innerHTML = "Replicate "+(frequency?"amount: "+shorten(frequency)+"x":"chance: "+getFullExpansion(chance.gt(1e12)?chance:Math.round(chance.toNumber()))+"%") + (isChanceAffordable() ? "<br>+1% Cost: "+shortenCosts(player.replicanti.chanceCost)+" IP" : "")
     document.getElementById("replicantiinterval").innerHTML = "Interval: "+timeDisplayShort(Decimal.div(interval, 100), true, 3) + (isIntervalAffordable() ? "<br>-> "+timeDisplayShort(Decimal.times(interval, 9e-3), true, 3)+" Cost: "+shortenCosts(player.replicanti.intervalCost)+" IP" : "")
 
 
