@@ -4919,7 +4919,7 @@ var bEn={
 		13: [20,2]
 	},
 	descs:{
-		12: "Bosonic Extractor automatically extracts.",
+		12: "You automatically extract Bosonic Runes.",
 		13: "Speed up the production and use of Anti-Preons.",
 		23: "Extracting takes less time."
 	},
