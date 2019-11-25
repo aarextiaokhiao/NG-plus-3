@@ -825,7 +825,7 @@ function updateQuantumTabs() {
 			var rate=getDecayRate(shorthand)
 			var linear=Decimal.pow(2,getRDPower(shorthand))
 			document.getElementById(color+"UnstableGain").className=tmp.qu.usedQuarks[shorthand].gt(0)&&getUnstableGain(shorthand).gt(branch.quarks)?"storebtn":"unavailablebtn"
-			document.getElementById(color+"UnstableGain").textContent="Gain "+shortenMoney(getUnstableGain(shorthand))+" "+name+", but lose all your "+color+" quarks."
+			document.getElementById(color+"UnstableGain").textContent="Gain "+shortenMoney(getUnstableGain(shorthand))+" "+name+(player.ghostify.milestones>3?".":", but lose all your "+color+" quarks.")
 			document.getElementById(color+"QuarkSpin").textContent=shortenMoney(branch.spin)
 			document.getElementById(color+"UnstableQuarks").textContent=shortenMoney(branch.quarks)
 			document.getElementById(color+"QuarksDecayRate").textContent=branch.quarks.lt(linear)&&rate.lt(1)?"You are losing "+shorten(linear.times(rate))+" "+name+" per second":"Their half-life is "+timeDisplayShort(Decimal.div(10,rate),true,2)+(linear.eq(1)?"":" until their amount reaches "+shorten(linear))
@@ -878,17 +878,11 @@ function updateColorCharge() {
 	if (player.ghostify.milestones<2) {
 		document.getElementById("powerRate").textContent=shortenDimensions(colorCharge.charge)
 		if (colorCharge.charge.eq(0)) {
-			document.getElementById("colorChargeAmount").style.display='none'
-			document.getElementById("colorCharge").textContent='neutral'
-			document.getElementById("powerRate").className=''
+			document.getElementById("colorCharge").innerHTML='neutral charge'
 			document.getElementById("colorPower").textContent=''
-			document.getElementById("powerRate").parentElement.className=""
 		} else {
 			var color=colorShorthands[colorCharge.color]
-			document.getElementById("colorChargeAmount").style.display=''
-			document.getElementById("colorChargeAmount").className=color
-			document.getElementById("colorChargeAmount").textContent=shortenDimensions(colorCharge.charge)
-			document.getElementById("colorCharge").textContent=' '+color
+			document.getElementById("colorCharge").innerHTML='<span class="'+color+'">'+color+'</span> charge of <span class="'+color+'" style="font-size:35px">' + shortenDimensions(colorCharge.charge) + "</span>"
 			document.getElementById("powerRate").className=color
 			document.getElementById("colorPower").textContent=color+' power'
 			document.getElementById("powerRate").parentElement.className=colorCharge.color+"qC"
@@ -3204,7 +3198,7 @@ function ghostifyReset(implode, gain, amount, force) {
 		player.ghostify.best = Math.min(player.ghostify.best, player.ghostify.time)
 		while (tmp.qu.times<=tmp.bm[player.ghostify.milestones]) {
 			player.ghostify.milestones++
-			if (player.ghostify.milestones==2) document.getElementById('coloredQuarksProduction').innerHTML="You are getting <span id='rPowerRate' style='font-size:35px' class='red'></span> red power, <span id='gPowerRate' style='font-size:35px' class='green'></span> green power, and <span id='bPowerRate' style='font-size:35px' class='blue'></span> blue power per second."
+			if (player.ghostify.milestones==2) updateColoredQuarksProduction()
 		}
 	}
 	if (tmp.qu.bigRip.active) switchAB()
@@ -4489,6 +4483,12 @@ function getAssignMult() {
 	let r=new Decimal(1)
 	if (hasBosonicUpg(23)) r=r.times(tmp.blu[23])
 	return r
+}
+
+function updateColoredQuarksProduction() {
+	document.getElementById('coloredQuarksProduction').innerHTML = player.ghostify.milestones > 1 ?
+		"You are getting <span id='rPowerRate' style='font-size:35px' class='red'></span> red power, <span id='gPowerRate' style='font-size:35px' class='green'></span> green power, and <span id='bPowerRate' style='font-size:35px' class='blue'></span> blue power per second." :
+		"Your quarks have a net <span id='colorCharge'></span>, which produces <span id='powerRate' style='font-size:35px'></span> <span id='colorPower'></span> per second."
 }
 
 function showQCModifierStats(id) {

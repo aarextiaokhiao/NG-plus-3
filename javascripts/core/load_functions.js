@@ -1903,7 +1903,6 @@ if (player.version < 5) {
       document.getElementById('reward4disable').textContent="4.5 hours reward: O"+(tmp.qu.disabledRewards[4]?"FF":"N")
       document.getElementById('reward11disable').textContent="33.3 mins reward: O"+(tmp.qu.disabledRewards[11]?"FF":"N")
       document.getElementById('reward27disable').textContent="10 seconds reward: O"+(tmp.qu.disabledRewards[27]?"FF":"N")
-      document.getElementById('coloredQuarksProduction').innerHTML=player.ghostify.milestones>1?"You are getting <span id='rPowerRate' style='font-size:35px' class='red'></span> red power, <span id='gPowerRate' style='font-size:35px' class='green'></span> green power, and <span id='bPowerRate' style='font-size:35px' class='blue'></span> blue power per second.":"They have a <span id='colorChargeAmount' style='font-size:35px'></span><span id='colorCharge'></span> charge, which produces <span id='powerRate' style='font-size:35px'></span> <span id='colorPower'></span> per second."
       document.getElementById('rebuyupgauto').textContent="Rebuyable upgrade auto: O"+(player.autoEterOptions.rebuyupg?"N":"FF")
       document.getElementById('dilUpgsauto').textContent="Auto-buy dilation upgrades: O"+(player.autoEterOptions.dilUpgs?"N":"FF")
       document.getElementById('metaboostauto').textContent="Meta-boost auto: O"+(player.autoEterOptions.metaboost?"N":"FF")
@@ -1940,6 +1939,7 @@ if (player.version < 5) {
       document.getElementById("bpc68").textContent=shortenMoney(tmp.qu.pairedChallenges.pc68best)
       document.getElementById("odSlider").value=Math.round(Decimal.log(tmp.bl.odSpeed,3)*20+20)
       for (var g=1;g<br.names.length;g++) document.getElementById("typeToExtract"+g).className=tmp.bl.typeToExtract==g?"chosenbtn":"storebtn"
+      updateColoredQuarksProduction()
       updateElectrons()
       updateAutoQuantumMode()
       updateColorCharge()
