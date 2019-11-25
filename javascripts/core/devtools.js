@@ -197,7 +197,7 @@ dev.setNuet = function(n){
 	player.ghostify.neutrinos.tau = Decimal.pow(10,n)
 }
 
-def.addNuet = function(n){
+dev.addNuet = function(n){
 	player.ghostify.neutrinos.electron = player.ghostify.neutrinos.electron.plus(Decimal.pow(10,n))
 	player.ghostify.neutrinos.mu = player.ghostify.neutrinos.mu.plus(Decimal.pow(10,n))
 	player.ghostify.neutrinos.tau = player.ghostify.neutrinos.tau.plus(Decimal.pow(10,n))
