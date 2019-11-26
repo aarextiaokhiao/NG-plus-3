@@ -879,6 +879,7 @@ function updateColorCharge() {
 		document.getElementById("powerRate").textContent=shortenDimensions(colorCharge.charge)
 		if (colorCharge.charge.eq(0)) {
 			document.getElementById("colorCharge").innerHTML='neutral charge'
+			document.getElementById("powerRate").className=''
 			document.getElementById("colorPower").textContent=''
 		} else {
 			var color=colorShorthands[colorCharge.color]
@@ -3187,6 +3188,7 @@ function ghostify(auto, force) {
 }
 
 function ghostifyReset(implode, gain, amount, force) {
+	var bulk = getGhostifiedGain()
 	if (!force) {
 		if (gain === undefined) {
 			var gain = getGHPGain()
@@ -3194,7 +3196,7 @@ function ghostifyReset(implode, gain, amount, force) {
 		} else player.ghostify.ghostParticles = amount
 		for (var i=player.ghostify.last10.length-1; i>0; i--) player.ghostify.last10[i] = player.ghostify.last10[i-1]
 		player.ghostify.last10[0] = [player.ghostify.time, gain]
-		player.ghostify.times++
+		player.ghostify.times = nA(player.ghostify.times, bulk)
 		player.ghostify.best = Math.min(player.ghostify.best, player.ghostify.time)
 		while (tmp.qu.times<=tmp.bm[player.ghostify.milestones]) {
 			player.ghostify.milestones++
@@ -3210,7 +3212,7 @@ function ghostifyReset(implode, gain, amount, force) {
 		if (u<11&&u!=7&&(nBEU.includes(u+1)||tmp.qu.breakEternity.upgrades.includes(u))) nBEU.push(u)
 	}
 	if (bm > 2) for (var c=1;c<9;c++) tmp.qu.electrons.mult += .5-QCIntensity(c)*.25
-	if (bm > 6 && !force && player.achievements.includes("ng3p68")) gainNeutrinos(2e3*tmp.qu.bigRip.bestGals, "all")
+	if (bm > 6 && !force && player.achievements.includes("ng3p68")) gainNeutrinos(Decimal.times(2e3 * tmp.qu.bigRip.bestGals, bulk), "all")
 	if (bm > 15) giveAchievement("I rather oppose the theory of everything")
 	if (player.eternityPoints.e>=22e4&&player.ghostify.under) giveAchievement("Underchallenged")
 	if (player.eternityPoints.e>=1/0&&inQCModifier("ad")) giveAchievement("Overchallenged")
@@ -4596,6 +4598,12 @@ function getMaximumUnstableQuarks() {
 	return r
 }
 
+function getGhostifiedGain() {
+	let r=1
+	if (hasBosonicUpg(15)) r=nN(player.dilation.dilatedTime.pow(0))
+	return r
+}
+
 function getLightEmpowermentBoost() {
 	let r=player.ghostify.ghostlyPhotons.enpowerments
 	if (hasBosonicUpg(13)) r*=tmp.blu[13]
@@ -4647,8 +4655,8 @@ function recordModifiedQC(id,num,mod) {
 	else data[id]=Math.min(num,data[id])
 }
 
-function gainNeutrinos(bulkGal, type) {
-	let gain=getNeutrinoGain().times(bulkGal)
+function gainNeutrinos(bulk,type) {
+	let gain=getNeutrinoGain().times(bulk)
 	let gens=["electron","mu","tau"]
 	if (type=="all") {
 		for (var g=0;g<3;g++) {
@@ -5015,7 +5023,7 @@ var bu={
 	reqData:{},
 	descs:{
 		11: "Bosonic Antimatter adds blue Light effect.",
-		12: "Every 1% of green power effect, decrease free galaxy threshold increase by 0.0000??.",
+		12: "Every 100% of green power effect, decrease free galaxy threshold increase by 0.0007.",
 		13: "Radioactive Decays boost Light Empowerments.",
 		14: "Sacrificed galaxies cancel less galaxies based on your free galaxies.",
 		15: "Ghostifies and dilated time boost each other.",
@@ -5031,16 +5039,13 @@ var bu={
 			return Math.pow(l,0.5-0.25*l/(l+3))/4
 		},
 		12: function() {
-			return 0 //(colorBoosts.g+tmp.pe)/1e3
+			return (colorBoosts.g+tmp.pe-1)*7e-4
 		},
 		13: function() {
 			return Math.pow(getRadioactiveDecays('r')+getRadioactiveDecays('g')+getRadioactiveDecays('b'),0.6)/5+1
 		},
 		14: function() {
 			return player.dilation.freeGalaxies
-		},
-		15: function() {
-			return Decimal.add(getInfinitied(),1).pow(.2)
 		},
 		23: function() {
 			return Decimal.pow(player.meta.antimatter.add(1).log10()+1, 1000)

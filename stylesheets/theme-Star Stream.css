@@ -106,7 +106,8 @@ input {
     border-radius: 0 !important
 }
 
-.completedchallengesbtn {
+.completedchallengesbtn,
+.chosenbtn {
     border-color: #090 !important;
     background-color: #5f0 !important;
     color:black !important;
