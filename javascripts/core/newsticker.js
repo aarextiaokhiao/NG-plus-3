@@ -302,7 +302,9 @@ newsArray = [//always true
 ["The end is near...", "ghostified && tmp.bl.upgrades.includes(23)", "am149"],
 ["We have updated our Terms of Service to comply with COPPA Act.", true, "am150"],
 ["Tree of Decay isn't a upgrade tree, I have been lied to", "player.masterystudies !== undefined && player.masterystudies.includes('d13')", "am151"],
-["ELECTRONS CONSUME YOUR STARS", "player.masterystudies !== undefined && player.masterystudies.includes('d7')", "am152"]
+["ELECTRONS CONSUME YOUR STARS", "player.masterystudies !== undefined && player.masterystudies.includes('d7')", "am152"],
+['"New game dammit" - GrayStillPlays', "player.masterystudies !== undefined", "am153"],
+['"More zeroes dammit" - GrayStillPlays', "player.masterystudies !== undefined", "am154"]
 /*NEXT ID: am153*/
 ];}
 

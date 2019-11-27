@@ -1124,7 +1124,7 @@ function updateTemp() {
 			tmp.le[4]=Math.log10(Math.sqrt(tmp.ls[4]*2)+1)*5/4 //Blue light
 			tmp.le[5]=Decimal.pow(10,tmp.ls[5]*10) //Indigo light
 			tmp.le[6]=Decimal.pow(10,Math.pow(player.postC3Reward.log10()*tmp.ls[6],1/3)*2) //Violet light
-			if (player.ghostify.ghostlyPhotons.enpowerments) tmp.le[7]={effect:Math.log10(tmp.ls[3]+1)*3} //Green light (LE#1)
+			if (player.ghostify.ghostlyPhotons.enpowerments) tmp.le[7]={effect:Math.log10(tmp.ls[3]+1)*300} //Green light (LE#1)
 			if (player.ghostify.ghostlyPhotons.enpowerments>1) tmp.le[8]=Math.log10(tmp.ls[4]*10+1)/4+1 //Blue light (LE#2)
 			if (player.ghostify.ghostlyPhotons.enpowerments>2) tmp.le[9]=Math.pow(tmp.ls[7]+1,.1)*2-1 //Red light (LE#3)
 			tmp.bru[3]=Decimal.pow(tmp.qu.bigRip.spaceShards.div(1e140).add(1).log10()+1,Math.max(tmp.qu.bigRip.spaceShards.div(1e140).add(1).log10()/10,1)) //BRU18
@@ -1235,7 +1235,7 @@ function updateTemp() {
 	//Extra galaxy amount of TS431
 	tmp.eg431=0
 	if (tmp.ngp3 && player.ghostify.ghostlyPhotons.enpowerments) {
-		tmp.le[7].total=(colorBoosts.g+tmp.pe-1)*100*tmp.le[7].effect
+		tmp.le[7].total=(colorBoosts.g+tmp.pe-1)*tmp.le[7].effect
 		tmp.eg431+=tmp.le[7].total
 	}
 	

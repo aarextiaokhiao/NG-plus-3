@@ -2590,6 +2590,7 @@ function transformSaveToDecimal() {
       tmp.qu.bigRip.totalAntimatter = new Decimal(tmp.qu.bigRip.totalAntimatter)
       tmp.qu.bigRip.spaceShards = new Decimal(tmp.qu.bigRip.spaceShards)
       tmp.qu.breakEternity.eternalMatter = new Decimal(tmp.qu.breakEternity.eternalMatter)
+      player.ghostify.times = nP(player.ghostify.times)
       player.ghostify.ghostParticles = new Decimal(player.ghostify.ghostParticles)
       for (var r=0;r<10;r++) player.ghostify.last10[r][1] = new Decimal(player.ghostify.last10[r][1])
       player.ghostify.neutrinos.electron = new Decimal(player.ghostify.neutrinos.electron)

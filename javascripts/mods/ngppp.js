@@ -80,7 +80,7 @@ function updateMasteryStudyCosts() {
 			if (masterystudies.allTimeStudies.includes(parseInt(t))) masterystudies.costmult*=masterystudies.costmults[t]
 			masterystudies.latestBoughtRow=Math.max(masterystudies.latestBoughtRow,Math.floor(t/10))
 			total++
-			if (total>=47) giveAchievement("The Theory of Ultimate Studies")
+			if (total>=48) giveAchievement("The Theory of Ultimate Studies")
 		}
 	}
 	for (id=0;id<masterystudies.allTimeStudies.length;id++) {
