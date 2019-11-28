@@ -304,7 +304,7 @@ function giveAchievement(name, noUpdate) {
 		if (player.autoCrunchMode == "amount" && player.autobuyers[11].priority != undefined) player.autobuyers[11].priority = Decimal.times(player.autobuyers[11].priority, 4);
 	}
 	if (name == "The swarm" && player.boughtDims) document.getElementById('replicantigalaxypowerdiv').style.display=""
-	if (name == "I told you already, time is relative" || name == "To the new dimension!") updateHotkeys()
+	if (name == "I told you already, time is relative" || name == "I'm so meta" || name == "To the new dimension!") updateHotkeys()
 	if (name == "GAS GAS GAS") {
 		for (i=1;i<9;i++) document.getElementById("td"+i+'auto').style.visibility="visible"
 		document.getElementById('togglealltimedims').style.display=""

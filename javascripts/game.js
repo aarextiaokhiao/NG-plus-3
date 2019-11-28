@@ -1122,7 +1122,7 @@ function updateTemp() {
 			tmp.le[2]=Math.sqrt(tmp.ls[2]>60?(Math.log10(tmp.ls[2]/6)+2)/3*Math.sqrt(1200):tmp.ls[2]>20?Math.sqrt(tmp.ls[2]*20):tmp.ls[2])*45e3 //Yellow light
 			tmp.le[3]=tmp.ls[3]>8?Math.log10(tmp.ls[3]/8)+Math.sqrt(12)+1:Math.sqrt(tmp.ls[3]*1.5)+1 //Green light
 			tmp.le[4]=Math.log10(Math.sqrt(tmp.ls[4]*2)+1)*5/4 //Blue light
-			tmp.le[5]=Decimal.pow(10,tmp.ls[5]*10) //Indigo light
+			tmp.le[5]=Decimal.pow(10,tmp.ls[5]>25?Math.sqrt(tmp.ls[5]*1e3+37500):tmp.ls[5]*10) //Indigo light
 			tmp.le[6]=Decimal.pow(10,Math.pow(player.postC3Reward.log10()*tmp.ls[6],1/3)*2) //Violet light
 			if (player.ghostify.ghostlyPhotons.enpowerments) tmp.le[7]={effect:Math.log10(tmp.ls[3]+1)*300} //Green light (LE#1)
 			if (player.ghostify.ghostlyPhotons.enpowerments>1) tmp.le[8]=Math.log10(tmp.ls[4]*10+1)/4+1 //Blue light (LE#2)
@@ -4880,6 +4880,7 @@ function updateHotkeys() {
 	}
 	html += ", C for crunch, A for toggle autobuyers, R for replicanti galaxies, E for eternity"
 	if (player.achievements.includes("r136")) html += ", D to dilate time"
+	if (player.achievements.includes("ngpp11")) html += ", shift+D to Meta-Dimension Boost"
 	if (player.meta !== undefined) html += ", Q for quantum"
 	if (player.masterystudies !== undefined) html += ", U for unstabilize all quarks"
 	if (player.achievements.includes("ng3p51")) html += ", B for Big Rip, G to become a ghost"
@@ -9174,7 +9175,8 @@ window.addEventListener('keydown', function(event) {
 		break;
 
 		case 68: // D
-			if (player.achievements.includes("r136")) startDilatedEternity(false, true)
+			if (shiftDown && player.achievements.includes("ngpp11")) metaBoost()
+			else if (player.achievements.includes("r136")) startDilatedEternity(false, true)
 			else document.getElementById("softReset").onclick()
 		break;
 
