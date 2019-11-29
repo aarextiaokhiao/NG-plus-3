@@ -210,7 +210,7 @@ const allAchievements = {
   ng3ps13 : "Two tickers",
   ng3ps14 : "News for other species",
   ng3ps15 : "Boo!",
-  ng3ps16 : "ng3ps16",
+  ng3ps16 : "Up and Down and Up and Down...",
   ng3ps17 : "ng3ps17",
   ng3ps18 : "ng3ps18",
 };
@@ -244,6 +244,7 @@ const secretAchievementTooltips = {
     ng3ps13 : "Make 2 news tickers shown.",
     ng3ps14 : "Unlock or show ghostly news ticker.",
     ng3ps15 : "You have a 1/1,000 chance of getting this achievement every time 'You became a ghost!' animation appears.",
+    ng3ps16 : 'Press the "Continue to mastery studies." button and the "Lead back to time studies." button 100 times each.'
 };
 const allAchievementNums = Object.invert(allAchievements)
 // to retrieve by value: Object.keys(allAchievements).find(key => allAchievements[key] === "L4D: Left 4 Dimensions");
@@ -335,6 +336,7 @@ function giveAchievement(name, noUpdate) {
 function updateAchievements() {
 	var amount = 0
 	var rowsShown = 0
+	var rowsNum = 0
 	for (var i=1; i<24; i++) {
 		var shown=true
 		var rowid=i
@@ -351,6 +353,7 @@ function updateAchievements() {
 		rowid="achRow" + rowid
 		var n = 0
 		if (shown) {
+			rowsNum++
 			var achNum = i * 10
 			for (var l=0; l<8; l++) {
 				achNum += 1;
@@ -386,13 +389,19 @@ function updateAchievements() {
 			rowsShown++
 			var numberelement = document.getElementById(rowid + "number")
 			if (numberelement === null) {
-				numberelement = document.getElementById(rowid).insertCell(0)
-				numberelement.id = rowid + "number"
+				document.getElementById(rowid).insertCell(0).innerHTML = '<div class="achRowInfo" id="' + rowid + 'number"></div>'
+				numberelement = document.getElementById(rowid + "number")
 			}
-			numberelement.style.display = player.aarexModifications.showAchRowNums ? "" : "none"
-			if (player.aarexModifications.showAchRowNums) numberelement.textContent = n + " / 8"
+			numberelement.parentElement.style.display = player.aarexModifications.showAchRowNums ? "" : "none"
+			if (player.aarexModifications.showAchRowNums) numberelement.innerHTML = "Row #" + rowsNum + "<br>" + n + " / 8<br>(" + (n*12.5).toFixed(1) + "%)"
 		}
 	}
+	player.achPow = Decimal.pow(player.aarexModifications.newGameMinusMinusVersion ? 5 : 1.5, amount)
+	document.getElementById("achmultlabel").textContent = "Current achievement multiplier on each Dimension: " + shortenMoney(player.achPow) + "x"
+	document.getElementById("nothingness").style.display = rowsShown ? "none" : ""
+
+	rowsShown = 0
+	rowsNum = 0
 	for (var i=1; i<document.getElementById("secretachievementtable").children[0].children.length+1; i++) {
 		var shown=true
 		var rowid="secretAchRow"+i
@@ -400,8 +409,9 @@ function updateAchievements() {
 			shown=player.masterystudies!==undefined
 			rowid="secretAchRowng3p"+(i-3)
 		}
+		var n = 0
 		if (shown) {
-			var n = 0
+			rowsNum++
 			var achNum = i * 10
 			for (var l=0; l<8; l++) {
 				achNum += 1;
@@ -417,15 +427,25 @@ function updateAchievements() {
 					document.getElementById(name).setAttribute('ach-tooltip', (name[name.length-1] !== "?" && name[name.length-1] !== "!" && name[name.length-1] !== ".") ? name+"." : name)
 				}
 			}
-			if (n == 8) document.getElementById(rowid).className = "completedrow"
-			else document.getElementById(rowid).className = ""
+			if (n == 8) {
+				document.getElementById(rowid).className = "completedrow"
+				if (player.aarexModifications.hideCompletedAchs) shown = false
+				amount++
+			} else document.getElementById(rowid).className = ""
 		}
 		document.getElementById(rowid).style.display = shown ? "" : "none"
+		if (shown) {
+			rowsShown++
+			var numberelement = document.getElementById(rowid + "number")
+			if (numberelement === null) {
+				document.getElementById(rowid).insertCell(0).innerHTML = '<div class="achRowInfo" id="' + rowid + 'number"></div>'
+				numberelement = document.getElementById(rowid + "number")
+			}
+			numberelement.parentElement.style.display = player.aarexModifications.showAchRowNums ? "" : "none"
+			if (player.aarexModifications.showAchRowNums) numberelement.innerHTML = "Secret row #" + rowsNum + "<br>" + n + " / 8<br>(" + (n*12.5).toFixed(1) + "%)"
+		}
 	}
-
-	player.achPow = Decimal.pow(player.aarexModifications.newGameMinusMinusVersion ? 5 : 1.5, amount)
-	document.getElementById("achmultlabel").textContent = "Current achievement multiplier on each Dimension: " + shortenMoney(player.achPow) + "x"
-	document.getElementById("nothingness").style.display = rowsShown ? "none" : ""
+	document.getElementById("nothingnessSecret").style.display = rowsShown ? "none" : ""
 }
 
 function getSecretAchAmount() {
@@ -446,7 +466,7 @@ function toggleAchRowNums() {
 	// 0 == not visible, 1 == visible
 	player.aarexModifications.showAchRowNums=!player.aarexModifications.showAchRowNums
 	updateAchievements()
-	document.getElementById("showAchRowNums").textContent=(player.aarexModifications.showAchRowNums?"Hide":"Show")+" achievement row progresses"
+	document.getElementById("showAchRowNums").textContent=(player.aarexModifications.showAchRowNums?"Hide":"Show")+" achievement row info"
 }
 
 function toggleCompletedAchs() {

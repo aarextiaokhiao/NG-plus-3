@@ -1139,11 +1139,7 @@ function updateTemp() {
 			for (var g=0;g<3;g++) nt[g]=player.ghostify.neutrinos[(["electron","mu","tau"])[g]]
 			if (tmp.qu.nanofield.rewards<16) tmp.ns=tmp.ns.times(player.ghostify.milestones?6:3)
 			tmp.nb[0]=Math.log10(nt[0].add(1).log10()+nt[1].add(1).log10()+nt[2].add(1).log10()+1)*0.75
-			if (player.ghostify.neutrinos.boosts>1) {
-				var nb2=Math.pow(Math.pow(nt[0].add(1).log10(),2)+Math.pow(nt[1].add(1).log10(),2)+Math.pow(nt[2].add(1).log10(),2),0.25)*1.5
-				if (nb2>100) nb2=Math.pow(Math.log10(nb2)+8,2)
-				tmp.nb[1]=nb2
-			}
+			tmp.nb[1]=Math.pow(Math.pow(nt[0].add(1).log10(),2)+Math.pow(nt[1].add(1).log10(),2)+Math.pow(nt[2].add(1).log10(),2),0.25)*1.5
 			if (player.ghostify.neutrinos.boosts>2) tmp.nb[2]=Math.pow(Math.pow(Math.log10(Math.max(nt[0].max(1).log10()-5,1))/Math.log10(5),2)+Math.pow(Math.log10(Math.max(nt[1].max(1).log10()-5,1))/Math.log10(5),2)+Math.pow(Math.log10(Math.max(nt[2].max(1).log10()-5,1))/Math.log10(5),2),0.25)/Math.pow(3,0.25)+3
 			if (player.ghostify.neutrinos.boosts>3) {
 				var nb4=Math.pow(Math.pow(nt[0].add(1).log10(),2)+Math.pow(nt[1].add(1).log10(),2)+Math.pow(nt[2].add(1).log10(),2),0.25)*0.07+1
@@ -7136,7 +7132,11 @@ function updateInfPower() {
 function getReplSpeed() {
 	let inc=.2
 	let exp=308
-	if (player.dilation.upgrades.includes('ngpp1') && (!player.aarexModifications.nguspV || player.aarexModifications.nguepV)) inc/=1+player.dilation.dilatedTime.max(1).log(10)/10
+	if (player.dilation.upgrades.includes('ngpp1') && (!player.aarexModifications.nguspV || player.aarexModifications.nguepV)) {
+		let x=1+player.dilation.dilatedTime.max(1).log(10)/10
+		inc/=Math.min(x,200)
+		if (x>200) exp+=x/10-20
+	}
 	inc=inc+1
 	if (GUBought("gb2")) exp*=2
 	return {inc:inc,exp:exp}

@@ -14,7 +14,10 @@ masterystudies={initialCosts:{time:{241: 1e71, 251: 2e71, 252: 2e71, 253: 2e71, 
 	spentTT: 0}
 
 function portal() {
-	if (player.dilation.upgrades.includes("ngpp6")) showEternityTab("masterystudies")
+	if (player.dilation.upgrades.includes("ngpp6")) {
+		recordUpDown(1)
+		showEternityTab("masterystudies")
+	}
 }
 	
 function updateMasteryStudyButtons() {
@@ -4481,6 +4484,23 @@ function canBuyGalaxyThresholdUpg() {
 	return player.masterystudies==undefined||player.dilation.rebuyables[2]<60
 }
 
+function portalBack() {
+	recordUpDown(2)
+	showEternityTab("timestudies")
+}
+
+var upDown={
+	point:0,
+	times:0
+}
+
+function recordUpDown(x) {
+	if (upDown.point>0&&upDown.point==x) return
+	upDown.point=x
+	upDown.times++
+	if (upDown.times>=200) giveAchievement("Up and Down and Up and Down...")
+}
+
 function getAssignMult() {
 	let r=new Decimal(1)
 	if (hasBosonicUpg(23)) r=r.times(tmp.blu[23])
@@ -5023,6 +5043,11 @@ var bu={
 			am: 3e6,
 			g1: 1e4,
 			g3: 1e3
+		},
+		14: {
+			am: 4e7,
+			g1: 35e3,
+			g2: 15e3
 		}
 	},
 	reqData:{},
@@ -5035,7 +5060,7 @@ var bu={
 		21: "Replace first Nanofield reward with a new powerful boost.",
 		22: "Replace seventh Nanofield reward with a new powerful boost.",
 		23: "Assigning gives more colored quarks based on your meta-antimatter.",
-		24: "You gain Tachyon particles without dilation, but with reduced formula.",
+		24: "You gain Quarks and Space Shards at the same time.",
 		25: "Gain more Ghost Particles based on your quantum worth."
 	},
 	effects:{
@@ -5047,10 +5072,10 @@ var bu={
 			return (colorBoosts.g+tmp.pe-1)*7e-4
 		},
 		13: function() {
-			return Math.pow(getRadioactiveDecays('r')+getRadioactiveDecays('g')+getRadioactiveDecays('b'),0.6)/5+1
+			return Math.max(Math.sqrt(getRadioactiveDecays('r')+getRadioactiveDecays('g')+getRadioactiveDecays('b'))/3+.6,1)
 		},
 		14: function() {
-			return player.dilation.freeGalaxies
+			return player.dilation.freeGalaxies*0
 		},
 		23: function() {
 			return Decimal.pow(player.meta.antimatter.add(1).log10()+1, 1000)

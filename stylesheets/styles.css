@@ -867,6 +867,12 @@ button {
     user-select: none;
 }
 
+.achRowInfo {
+    width: 104px;
+    margin: 0px auto;
+    text-align: center
+}
+
 .autoBuyerDiv {
     border: solid 1px grey;
     width:230px;
