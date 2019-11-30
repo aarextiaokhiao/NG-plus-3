@@ -4118,7 +4118,7 @@ function updateGhostifyTabs() {
 			let r
 			if (!data2.dPUse) r=lSpeed.times(getAntiPreonProduction())
 			else r=lSpeed.times(getAntiPreonLoss())
-			document.getElementById("wzbSpeed").textContent="Current W & Z Bosons speed: "+shorten(tmp.wzbs)+"x (w/ Bosonic Speed: "+shorten(lSpeed)+"x)"
+			//document.getElementById("wzbSpeed").textContent="Current W & Z Bosons speed: "+shorten(tmp.wzbs)+"x (w/ Bosonic Speed: "+shorten(lSpeed)+"x)"
 			document.getElementById("ap").textContent=shorten(data2.dP)
 			document.getElementById("apProduction").textContent=(data2.dPUse?"-":"+")+shorten(r)+"/s"
 			document.getElementById("apUse").textContent=data2.dPUse==0?"":"You are currently consuming Anti-Preons to "+(["","decay W Quark","oscillate Z Neutrino","convert W- to W+ Bosons"])[data2.dPUse]+"."
@@ -4829,7 +4829,6 @@ function extract() {
 function getExtractTime() {
 	let data=tmp.bl
 	let r=new Decimal(br.scalings[data.typeToExtract]||1/0)
-	r=r.div(getEnchantEffect(23))
 	r=r.div(tmp.wbt)
 	return r
 }
@@ -4944,12 +4943,13 @@ var br={
 var bEn={
 	costs:{
 		12: [3,1],
-		13: [20,2]
+		13: [20,2],
+		23: [1e4,2e3]
 	},
 	descs:{
 		12: "You automatically extract Bosonic Runes.",
 		13: "Speed up the production and use of Anti-Preons.",
-		23: "Extracting takes less time."
+		23: "Bosonic Antimatter boosts oscillate speed."
 	},
 	effects:{
 		12: function(l) {
@@ -4959,7 +4959,7 @@ var bEn={
 			return Decimal.add(l,1).sqrt()
 		},
 		23: function(l) {
-			return Decimal.add(l,1).pow(2)
+			return Decimal.pow(tmp.bl.am.add(10).log10(),Math.max(Math.log10(l)+1,0)/3)
 		}
 	},
 	action:"upgrade",
@@ -5020,7 +5020,7 @@ function updateBosonicUpgradeDescs() {
 		if (tmp.blu[id]!==undefined) {
 			if (id==11) document.getElementById("bUpgEffect"+id).textContent=(tmp.blu[id]*100).toFixed(1)+"%"
 			else if (id==12) document.getElementById("bUpgEffect"+id).textContent="-"+tmp.blu[id].toFixed(5)
-			else if (id==14) document.getElementById("bUpgEffect"+id).textContent=getFullExpansion(Math.round(tmp.blu[id]))
+			else if (id==14) document.getElementById("bUpgEffect"+id).textContent=getFullExpansion(tmp.blu[id])+(tmp.blu[id]>tmp.qu.electrons.sacGals&&!tmp.qu.bigRip.active?" (+"+getFullExpansion(Math.max(tmp.blu[id]-tmp.qu.electrons.sacGals,0))+" Antielectronic Galaxies)":"")
 			else document.getElementById("bUpgEffect"+id).textContent=shorten(tmp.blu[id])+"x"
 		}
 	}
@@ -5045,9 +5045,9 @@ var bu={
 			g3: 1e3
 		},
 		14: {
-			am: 4e7,
-			g1: 35e3,
-			g2: 15e3
+			am: 2e8,
+			g1: 2e5,
+			g2: 1e5
 		}
 	},
 	reqData:{},
@@ -5075,7 +5075,10 @@ var bu={
 			return Math.max(Math.sqrt(getRadioactiveDecays('r')+getRadioactiveDecays('g')+getRadioactiveDecays('b'))/3+.6,1)
 		},
 		14: function() {
-			return player.dilation.freeGalaxies*0
+			let x=Math.pow(player.dilation.freeGalaxies/1e0,1.5)
+			let y=Math.max(tmp.qu.electrons.sacGals,player.galaxies)
+			if (x>y+1e5) x=Math.sqrt((x-y)*1e5)+y
+			return Math.round(x)
 		},
 		23: function() {
 			return Decimal.pow(player.meta.antimatter.add(1).log10()+1, 1000)
@@ -5125,5 +5128,6 @@ function useAntiPreon(id) {
 
 function getOscillateGainSpeed() {
 	let r=tmp.wbo
+	if (tmp.bl.usedEnchants.includes(23)) r=r.times(tmp.bEn[23])
 	return Decimal.div(r,player.ghostify.wzb.zNeReq)
 }

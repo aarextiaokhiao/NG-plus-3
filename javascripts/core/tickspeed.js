@@ -10,7 +10,7 @@ function initialGalaxies() {
 	}
 	if (hasBosonicUpg(14)) g=Math.max(Math.min(player.galaxies,tmp.blu[14]),g)
 	if (tmp.rg4) g*=0.4
-	if ((inNC(15)||player.currentChallenge=="postc1")&&player.aarexModifications.ngmX==3) g=0
+	if ((inNC(15)||player.currentChallenge=="postc1")&&player.tickspeedBoosts!=undefined) g=0
 	return g
 }
 
@@ -28,6 +28,7 @@ function getGalaxyPower(ng, bi, noDil) {
 	if (player.masterystudies ? player.masterystudies.includes("t342") : false) otherGalPower = (otherGalPower + extraReplGalPower) * replGalEff
 	else otherGalPower += Math.min(player.replicanti.galaxies, player.replicanti.gal) * (replGalEff - 1) + extraReplGalPower
 	if (!noDil) otherGalPower += Math.floor(player.dilation.freeGalaxies) * ((player.masterystudies ? player.masterystudies.includes("t343") : false) ? replGalEff : 1)
+	otherGalPower += tmp.aeg
 
 	let galaxyPower = ng
 	if (!tmp.be) galaxyPower = Math.max(ng-(bi?2:0),0)+otherGalPower

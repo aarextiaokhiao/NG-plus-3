@@ -1207,16 +1207,24 @@ function updateTemp() {
 	}
 	tmp.it=Decimal.pow(10,x)
 
-	x=player.galaxies
-	if (tmp.ngp3&&!tmp.qu.bigRip.active&&player.ghostify.ghostlyPhotons.enpowerments>2) x*=tmp.le[9]
-	if (tmp.be&&player.dilation.active&&tmp.qu.breakEternity.upgrades.includes(10)) x*=getBreakUpgMult(10)
-	var igLog=Math.pow(x,Math.min(Math.sqrt(Math.log10(Math.max(x,1)))*2,2.5))
-	if (player.aarexModifications.ngudpV) {
-		if (igLog>1e15) igLog=Math.pow(10+6*Math.log10(igLog),7.5)
-		if (igLog>1e16) igLog=Math.pow(84+Math.log10(igLog),8)
+	//aeg: Antielectronic Galaxies
+	tmp.aeg=0
+	if (hasBosonicUpg(14)&&!tmp.qu.bigRip.active) tmp.aeg=Math.max(tmp.blu[14]-tmp.qu.electrons.sacGals,0)
+
+	//Intergalactic reward
+	if (tmp.ngp3) {
+		x=player.galaxies
+		if (tmp.ngp3&&!tmp.qu.bigRip.active&&player.ghostify.ghostlyPhotons.enpowerments>2) x*=tmp.le[9]
+		if (tmp.be&&player.dilation.active&&tmp.qu.breakEternity.upgrades.includes(10)) x*=getBreakUpgMult(10)
+		var igLog=Math.pow(x,Math.min(Math.sqrt(Math.log10(Math.max(x,1)))*2,2.5))
+		if (player.aarexModifications.ngudpV) {
+			if (igLog>1e15) igLog=Math.pow(10+6*Math.log10(igLog),7.5)
+			if (igLog>1e16) igLog=Math.pow(84+Math.log10(igLog),8)
+		}
+		x+=tmp.aeg
+		tmp.igg=x
+		tmp.ig=Decimal.pow(10,igLog)
 	}
-	tmp.igg=x
-	tmp.ig=Decimal.pow(10,igLog)
 
 	tmp.rm=getReplMult()
 	updateExtraReplGalaxies()
@@ -1229,7 +1237,7 @@ function updateTemp() {
 	tmp.ts232=Math.pow(1+initialGalaxies()/1000,exp)
 
 	//Extra galaxy amount of TS431
-	tmp.eg431=0
+	tmp.eg431=tmp.aeg*.1
 	if (tmp.ngp3 && player.ghostify.ghostlyPhotons.enpowerments) {
 		tmp.le[7].total=(colorBoosts.g+tmp.pe-1)*tmp.le[7].effect
 		tmp.eg431+=tmp.le[7].total
@@ -1796,7 +1804,8 @@ function updateDimensions() {
 
         var nextGal = getGalaxyRequirement(0, true)
         var totalReplGalaxies = player.replicanti.galaxies + extraReplGalaxies
-        document.getElementById("secondResetLabel").innerHTML = (nextGal.scaling > 4 ? "Ghostly" : nextGal.scaling > 3 ? "Dark Matter" : (["", "Distant ", "Farther ", "Remote "])[nextGal.scaling] + "Antimatter") + ' Galaxies ('+ getFullExpansion(player.galaxies) + ((totalReplGalaxies + player.dilation.freeGalaxies) > 0 ? ' + ' + getFullExpansion(totalReplGalaxies)  + (player.dilation.freeGalaxies > 0 ? ' + ' + getFullExpansion(Math.floor(player.dilation.freeGalaxies)) : '') : '') +'): requires ' + getFullExpansion(nextGal.amount) + ' '+DISPLAY_NAMES[inNC(4) || player.pSac != undefined ? 6 : 8]+' Dimensions'
+        var totalTypes = tmp.aeg ? 4 : player.dilation.freeGalaxies ? 3 : totalReplGalaxies ? 2 : 1
+        document.getElementById("secondResetLabel").innerHTML = (nextGal.scaling > 4 ? "Ghostly" : nextGal.scaling > 3 ? "Dark Matter" : (["", "Distant ", "Farther ", "Remote "])[nextGal.scaling] + "Antimatter") + ' Galaxies ('+ getFullExpansion(player.galaxies) + (totalTypes > 1 ? ' + ' + getFullExpansion(totalReplGalaxies) : '') + (totalTypes > 2 ? ' + ' + getFullExpansion(Math.round(player.dilation.freeGalaxies)) : '') + (totalTypes > 3 ? ' + ' + getFullExpansion(tmp.aeg) : '') +'): requires ' + getFullExpansion(nextGal.amount) + ' '+DISPLAY_NAMES[inNC(4) || player.pSac != undefined ? 6 : 8]+' Dimensions'
 		if (player.achievements.includes("ng3p37") && shiftRequirement.tier > 7) {
 			document.getElementById("intergalacticLabel").parentElement.style.display = ""
 			document.getElementById("intergalacticLabel").innerHTML = 'Intergalactic Boost ' + (player.dilation.active || player.galacticSacrifice != undefined ? " (estimated)" : "") + " (" + getFullExpansion(player.galaxies) + (Math.floor(tmp.igg - player.galaxies) > 0 ? " + " + getFullExpansion(Math.floor(tmp.igg - player.galaxies)) : "") + "): " + shorten(dilates(tmp.ig).pow(player.dilation.active?getNanofieldRewardEffect(5):1)) + 'x to Eighth Dimensions'
