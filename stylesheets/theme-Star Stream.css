@@ -17,9 +17,10 @@ input {
     font-family:'IBM Plex Mono', monospace !important
 }
 
-#ghostlyNewsTicker b,
+#ghostlyNewsTicker span,
 #ghostifyanitext b {
-    font-family:'IBM Plex Mono' !important
+    font-family:'IBM Plex Mono' !important;
+    animation: ghostifybtntext 4s linear infinite
 }
 
 #container div {
@@ -989,9 +990,12 @@ strong { color: #0072e5 }
     font-weight: 500 !important;
 }
 
-.ghostifybtn, .brCompleted {
+.ghostifybtn, .brCompleted, #quantum.aarexmodsghostifybtn {
+	background: linear-gradient(#0c0033, #2e0033) !important;
+    box-shadow: inset 0px 0px 5px 0px transparent !important;
     border-radius: 0px;
     border-color: #770077 !important;
+	text-shadow: none !important;
     transition: 0.2s;
     animation: ghostifybtntext 4s linear infinite
 }
@@ -1000,7 +1004,7 @@ strong { color: #0072e5 }
     color: #000;
 }
 
-.ghostifybtn:hover {
+.ghostifybtn:hover, #quantum.aarexmodsghostifybtn:hover {
     border-color: rgba(255,255,255,0.5) !important;
     box-shadow: inset 0px 0px 5px 0px white !important;
 }
@@ -1073,6 +1077,10 @@ strong { color: #0072e5 }
 
 .uv {
     color: #ac00e5
+}
+
+.gluonupgradebought.bl {
+    color: #191919 !important
 }
 
 .notifyjs-bootstrap-info {

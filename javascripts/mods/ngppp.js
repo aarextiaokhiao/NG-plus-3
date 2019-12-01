@@ -4179,13 +4179,13 @@ function buyNeutrinoUpg(id) {
 
 function updateNeutrinoBoosts() {
 	for (var b=2;b<11;b++) document.getElementById("neutrinoBoost"+(b%3==1?"Row"+(b+2)/3:"Cell"+b)).style.display=player.ghostify.neutrinos.boosts>=b?"":"none"
-	document.getElementById("neutrinoUnlock").style.display=player.ghostify.neutrinos.boosts>9?"none":""
+	document.getElementById("neutrinoUnlock").style.display=player.ghostify.neutrinos.boosts>=10?"none":""
 	document.getElementById("neutrinoUnlockCost").textContent=shortenDimensions(tmp.nbc[player.ghostify.neutrinos.boosts])
 }
 
 function unlockNeutrinoBoost() {
 	var cost=tmp.nbc[player.ghostify.neutrinos.boosts]
-	if (!player.ghostify.ghostParticles.gte(cost)||player.ghostify.neutrinos.boosts>9) return
+	if (!player.ghostify.ghostParticles.gte(cost)||player.ghostify.neutrinos.boosts>=10) return
 	player.ghostify.ghostParticles=player.ghostify.ghostParticles.sub(cost).round()
 	player.ghostify.neutrinos.boosts++
 	updateNeutrinoBoosts()

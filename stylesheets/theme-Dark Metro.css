@@ -545,6 +545,14 @@ input {
     color: #64DD17 !important;
 }
 
+#metaAntimatterAmount, #metaAntimatterBest, #metaAntimatterPower, #metaAntimatterEffect {
+    color: #2682ca !important
+}
+
+#replicantAmountED {
+	color: #757575 !important
+}
+
 @keyframes metroStudyGlowIn {
     0%  {box-shadow: inset 0px 0px 3px 0px #673AB7;}
     50% {box-shadow: inset 0px 0px 20px 0px #673AB7;}

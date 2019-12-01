@@ -561,17 +561,16 @@ strong { color: #0072e5 }
 	animation: ghostifytext 4s linear infinite
 }
 .aarexmodsghostifybtn {
-	background: linear-gradient(#0c001e, #3a003f) !important;
-	border: transparent !important;
-	font-family: Typewriter;
+	background: linear-gradient(#0c0033, #2e0033);
+	border: 2px solid;
+	box-shadow: inset 0px 0px 24px 0px black;
 	font-weight: bold;
 	transition-duration: 0.2s;
 	animation: ghostifytext 4s linear infinite
 }
 .aarexmodsghostifybtn:hover {
-	border: rgba(255,255,255,0.5) !important;
-	box-shadow: inset 0px 0px 12px 0px #ffffff !important;
-	cursor: pointer
+	background: linear-gradient(#0c0033, #2e0033);
+	box-shadow: inset 0px 0px 12px 0px #420072
 }
 #bugExport b, #tooMuchPowerConsumed {
 	color: #e50000

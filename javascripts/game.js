@@ -7007,16 +7007,16 @@ function buyDilationUpgrade(id, max) {
 }
 
 function getPassiveTTGen() {
-	var log=player.dilation.tachyonParticles.max(1).log10()
-	var scs=player.aarexModifications.ngudpV&&!player.aarexModifications.nguepV?73:80
-	if (log>scs) log=scs+Math.sqrt(log*5-375)-5
-	let normal=Math.pow(10,log)/(ghostified?200:2e4)
-	if (!player.achievements.includes("ng3p18")) return normal
-	if (tmp.ngp3) if (tmp.qu.bigRip.active) return normal
+	let r=getTTGenPart(player.dilation.tachyonParticles)
+	if (player.achievements.includes("ng3p18")&&!tmp.qu.bigRip.active) r+=getTTGenPart(player.dilation.bestTP)/50
+	return r
+}
 
-	log=player.dilation.bestTP.max(1).log10()
-	if (log>scs) log=scs+Math.sqrt(log*5-375)-5
-	return Math.pow(10,log)/(ghostified?1e3:1e5)+normal
+function getTTGenPart(x) {
+	x=x.max(1)
+	let y=player.aarexModifications.ngudpV&&!player.aarexModifications.nguepV?73:80
+	if (x.gt(Math.pow(10,y))) x=Math.pow(10,y+Math.sqrt(x.log10()*5-375)-5)
+	return x/(ghostified?1e3:1e5)
 }
 
 function updateDilationUpgradeButtons() {
@@ -9289,7 +9289,7 @@ function resetUP() {
 }
 
 function switchDecimalMode() {
-	if (confirm('This option switch the Decimal library to '+(player.aarexModifications.breakInfinity?'logarithmica_numerus_lite':'break_infinity.min')+'.js. Are you sure you want to do that?')) {
+	if (confirm('You will change this option to '+(player.aarexModifications.breakInfinity?'logarithmica_numerus_lite':'break_infinity.min')+'.js. This requires a game reload. Are you sure you want to do that?')) {
 		player.aarexModifications.breakInfinity = !player.aarexModifications.breakInfinity
 		if (player.aarexModifications.breakInfinity && !player.aarexModifications.performanceTicks && confirm("WARNING: This will probably make this game laggy without Performance Ticks! Do you want to turn on Performance Ticks?")) player.aarexModifications.performanceTicks = true
 		save_game(true)

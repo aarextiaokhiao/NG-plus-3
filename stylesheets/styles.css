@@ -199,7 +199,7 @@ button {
     background: #007308;
     border: 4px solid #127A20;
     border-radius: 10px;
-	color: black
+	color: white
 }
 
 .storebtn {
@@ -792,8 +792,9 @@ button {
 }
 
 .ghostifybtn {
-	background: linear-gradient(#0c001e, #3a003f);
-	border: 2px solid transparent;
+	background: linear-gradient(#0c0033, #2e0033);
+	box-shadow: inset 0px 0px 24px 0px black;
+	border: 2px solid;
 	font-family: Typewriter;
 	font-weight: bold;
 	border-radius: 4px;
@@ -806,8 +807,7 @@ button {
 }
 
 .ghostifybtn:hover {
-	border-color: rgba(255,255,255,0.5);
-	box-shadow: inset 0px 0px 12px 0px #ffffff;
+	box-shadow: inset 0px 0px 12px 0px #420072;
 	cursor: pointer
 }
 
@@ -1059,7 +1059,10 @@ button {
 .quantumProgress { background: #0a640a !important }
 .quantumProgress #progresspercent { color: #32c832 }
 
-.ghostifyProgress { background: linear-gradient(#0c001e, #3a003f) !important }
+.ghostifyProgress { 
+	background: linear-gradient(#0c0033, #2e0033) !important;
+	box-shadow: inset 0px 0px 24px 0px black
+}
 .ghostifyProgress #progresspercent { animation: ghostifytext 4s linear infinite }
 .ghostifyProgress #progresspercent::before { text-shadow: none }
 
@@ -2297,7 +2300,8 @@ br {
 }
 
 .brCompleted {
-	background: linear-gradient(#0c001e, #3a003f);
+	background: linear-gradient(#0c0033, #2e0033);
+	box-shadow: inset 0px 0px 24px 0px black;
 	border: 2px solid transparent;
 	font-family: Typewriter;
 	border-radius: 10px;
@@ -2320,7 +2324,7 @@ br {
 	width: 100%;
 	height: 0px;
 	animation: ghostifytext 4s linear infinite;
-	background: linear-gradient(#0c001e, #3a003f);
+	background: linear-gradient(#0c0033, #2e0033);
 	overflow: hidden;
 	transition-duration: 1s
 }
@@ -2883,16 +2887,19 @@ screen and (max-width: 480px) {
 
 @keyframes ghostifytext { 
 	0%{
-		color: #e900ff;
-		text-shadow: 0px 0px 3px #e900ff, 0px 0px 6px #ffffff;
+		border-color: #690072;
+		color: #e0ace5;
+		text-shadow: 0px 0px 3px white, 0px 0px 6px #d200e5;
 	}
 	50% {
-		color: #6a00ff;
-		text-shadow: 0px 0px 6px #6a00ff, 0px 0px 6px #ffffff;
+		border-color: #1c0072;
+		color: #baace5;
+		text-shadow: 0px 0px 6px white, 0px 0px 6px #3900e5;
 	}
 	100%{
-		color: #e900ff;
-		text-shadow: 0px 0px 3px #e900ff, 0px 0px 6px #ffffff;
+		border-color: #690072;
+		color: #e0ace5;
+		text-shadow: 0px 0px 3px white, 0px 0px 6px #d200e5;
 	}
 }
 

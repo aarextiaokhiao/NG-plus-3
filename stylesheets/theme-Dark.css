@@ -583,6 +583,10 @@ input {
     color: #2682ca !important
 }
 
+#replicantAmountED {
+	color: #757575 !important
+}
+
 @keyframes antimatterGlow {
     0%  {color: #2196F3;}
     33% {color: #673AB7;}

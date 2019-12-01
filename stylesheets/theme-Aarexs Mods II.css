@@ -560,26 +560,26 @@ button, div.storebtn {
 	border: none !important;
 	border-radius: 0px !important;
 	border-color: transparent !important;
-	box-shadow: inset 0px 0px 12px 0px transparent, 1px 2px rgba(229,229,229,0.4)
+	box-shadow: inset 0px 0px 24px 0px black, 1px 2px rgba(229,229,229,0.4)
 }
 
 .ghostifybtn:hover {
 	border-color: rgba(255,255,255,0.5);
-	box-shadow: inset 0px 0px 12px 0px #ffffff, 1px 2px rgba(229,229,229,0.4)
+	box-shadow: inset 0px 0px 12px 0px #420072, 1px 2px rgba(229,229,229,0.4)
 }
 
 .aarexmodsghostifybtn {
-	background: linear-gradient(#0c001e, #3a003f) !important;
-	font-family: Typewriter;
-	font-weight: bold;
+	background: linear-gradient(#0c0033, #2e0033);
 	border-radius: 4px;
-	box-shadow: inset 0px 0px 12px 0px none, 1px 2px rgba(229,229,229,0.4);
+	box-shadow: inset 0px 0px 24px 0px black, 1px 2px rgba(229,229,229,0.4);
+	font-weight: bold;
 	transition-duration: 0.2s;
 	animation: ghostifytext 4s linear infinite
 }
 
 .aarexmodsghostifybtn:hover {
-	box-shadow: inset 0px 0px 12px 0px #ffffff, 1px 2px rgba(229,229,229,0.4)
+	background: linear-gradient(#0c0033, #2e0033);
+	box-shadow: inset 0px 0px 12px 0px #420072, 1px 2px rgba(229,229,229,0.4)
 }
 
 .neutrinos {
