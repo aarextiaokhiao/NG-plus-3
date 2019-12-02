@@ -1106,6 +1106,7 @@ function updateTemp() {
 			tmp.wbo=Decimal.pow(10,Math.max(wpl*(player.ghostify.wzb.wpb.sub(player.ghostify.wzb.wnb.min(player.ghostify.wzb.wpb))).div(player.ghostify.wzb.wpb.max(1)).toNumber(),0)) //W Bosons boost to Z Neutrino oscillation requirement
 			tmp.wbp=player.ghostify.wzb.wpb.add(player.ghostify.wzb.wnb).div(100).max(1).pow(1/3).sub(1) //W Bosons boost to Bosonic Antimatter production
 			tmp.zbs=player.ghostify.wzb.zb.div(10).add(1).sqrt() //Z Bosons boost to W Quark decay speed and W- to W+ conversion speed
+			if (tmp.zbs.gt(1e4)) tmp.zbs=tmp.zbs.times(1e4).sqrt()
 			tmp.dppg=new Decimal(1)
 		}
 		if (player.ghostify.ghostlyPhotons.unl) {
@@ -1771,7 +1772,11 @@ function getDilTimeGainPerSecond() {
 		gain = gain.times(colorBoosts.b)
 		if (GUBought("br2")) gain = gain.times(Decimal.pow(2.2, Math.pow(calcTotalSacrificeBoost().max(1).log10()/1e6, 0.25)))
 	}
-	if (hasBosonicUpg(15)) gain = gain.times(Decimal.pow(player.ghostify.times, 0))
+	if (hasBosonicUpg(15)) {
+		var r = Decimal.max(player.ghostify.times,1)
+		r = r.div(r.div(3e7).add(1)).min(3e7).pow(2).times(r).pow(2)
+		gain = gain.times(r)
+	}
 	return gain;
 }
 

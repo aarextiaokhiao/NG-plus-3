@@ -3992,7 +3992,7 @@ function updateGhostifyTabs() {
 		var neutrinoGain = getNeutrinoGain()
 		var sum = player.ghostify.neutrinos.electron.add(player.ghostify.neutrinos.mu).add(player.ghostify.neutrinos.tau).round()
 		document.getElementById("neutrinosGain").textContent="You gain " + shortenDimensions(neutrinoGain) + " " + generations[player.ghostify.neutrinos.generationGain - 1] + " neutrino" + (neutrinoGain.eq(1) ? "" : "s") + " each time you get 1 normal galaxy."
-		setAndMaybeShow("neutrinosGainGhostify",player.achievements.includes("ng3p68"),'"You will gain "+shortenDimensions(Decimal.times(\''+neutrinoGain.toString()+'\',tmp.qu.bigRip.bestGals*2e3))+" of all neutrinos after you become a ghost."')
+		setAndMaybeShow("neutrinosGainGhostify",player.achievements.includes("ng3p68"),'"You gain "+shortenDimensions(Decimal.times(\''+neutrinoGain.toString()+'\',tmp.qu.bigRip.bestGals*2e3))+" of all neutrinos each time you get 1x Ghostified stat."')
 		document.getElementById("electronNeutrinos").textContent=shortenDimensions(player.ghostify.neutrinos.electron)
 		document.getElementById("muonNeutrinos").textContent=shortenDimensions(player.ghostify.neutrinos.mu)
 		document.getElementById("tauNeutrinos").textContent=shortenDimensions(player.ghostify.neutrinos.tau)
@@ -4620,7 +4620,7 @@ function getMaximumUnstableQuarks() {
 
 function getGhostifiedGain() {
 	let r=1
-	if (hasBosonicUpg(15)) r=nN(player.dilation.dilatedTime.pow(0))
+	if (hasBosonicUpg(15)) r=nN(player.dilation.dilatedTime.div("1e1520").add(1).pow(.05))
 	return r
 }
 
@@ -5048,6 +5048,11 @@ var bu={
 			am: 2e8,
 			g1: 2e5,
 			g2: 1e5
+		},
+		15: {
+			am: 1e9,
+			g2: 25e4,
+			g3: 35e3,
 		}
 	},
 	reqData:{},
@@ -5075,7 +5080,7 @@ var bu={
 			return Math.max(Math.sqrt(getRadioactiveDecays('r')+getRadioactiveDecays('g')+getRadioactiveDecays('b'))/3+.6,1)
 		},
 		14: function() {
-			let x=Math.pow(player.dilation.freeGalaxies*0,1.5)
+			let x=Math.pow(Math.max(player.dilation.freeGalaxies/20-1800,0),1.5)
 			let y=Math.max(tmp.qu.electrons.sacGals,player.galaxies)
 			if (x>y+1e5) x=Math.pow((x-y)*1e10,1/3)+y
 			return Math.round(x)
