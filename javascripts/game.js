@@ -1070,7 +1070,7 @@ let tmp = {
 	beu: [],
 	bm: [200,175,150,100,50,40,30,25,20,15,10,5,4,3,2,1],
 	nb: [],
-	nbc: [null,3,4,6,15,50,1e3,1e14,1e35,"1e10000"],
+	nbc: [null,3,4,6,15,50,1e3,1e14,1e35,"1e850"],
 	nu: [],
 	nuc: [null,1e6,1e7,1e8,2e8,5e8,2e9,5e9,75e8,1e10,7e12,1e18,1e55,1e125,1e160,1e280],
 	lt: [12800,16e4,48e4,16e5,6e6,5e7,24e7,125e7],
@@ -1131,7 +1131,7 @@ function updateTemp() {
 			tmp.bru[3]=Decimal.pow(tmp.qu.bigRip.spaceShards.div(1e140).add(1).log10()+1,Math.max(tmp.qu.bigRip.spaceShards.div(1e140).add(1).log10()/10,1)) //BRU18
 			tmp.bru[4]=Decimal.pow(10,Math.sqrt(player.timeShards.add(1).log10())/80) //BRU19
 			tmp.nu[5]=Decimal.pow(player.ghostify.ghostParticles.add(1).log10(),Math.pow(tmp.qu.colorPowers.r.add(tmp.qu.colorPowers.g).add(tmp.qu.colorPowers.b).add(1).log10(),1/3)*0.8+1).max(1) //NU14
-			tmp.nu[6]=Decimal.pow(2,tmp.qu.nanofield.rewards/2.5) //NU15
+			tmp.nu[6]=Decimal.pow(2,(tmp.qu.nanofield.rewards>90?Math.sqrt(90*tmp.qu.nanofield.rewards):tmp.qu.nanofield.rewards)/2.5) //NU15
 			if (hasNU(15)) tmp.ns=tmp.ns.times(tmp.nu[6])
 			tmp.ppti/=tmp.le[1]
 		}
@@ -1160,7 +1160,7 @@ function updateTemp() {
 				if (nb9>4096) nb9=Math.pow(Math.log2(nb9)+4,3)
 				tmp.nb[8]=nb9
 			}
-			if (player.ghostify.neutrinos.boosts>9) tmp.nb[9]=1+Math.pow(nt[0].add(1).log10()+nt[1].add(1).log10()+nt[2].add(1).log10(),.75)
+			if (player.ghostify.neutrinos.boosts>9) tmp.nb[9]=0
 			tmp.nu[0]=Math.max(110-(tmp.qu.bigRip.active?0:player.meta.resets),0) //NU1
 			tmp.nu[1]=Math.pow(Math.max(tmp.qu.colorPowers.b.log10()/250+1,1),2) //NU3
 			tmp.nu[2]=Decimal.pow(20,Math.pow(Math.max(-getTickspeed().div(1e3).log10()/4e13-4,0),1/4)) //NU4
@@ -1748,9 +1748,9 @@ function getDilGain() {
 
 function getDilTimeGainPerSecond() {
 	let tp=player.dilation.tachyonParticles
-	if (tp.gt(1e250)&&player.aarexModifications.ngudpV&&!player.aarexModifications.nguepV) tp=Decimal.pow(tp.log10()*4,247/3+Math.log10(tp.log10()-240))
 	let exp=GUBought("br3")?1.1:1
 	if (ghostified&&player.ghostify.ghostlyPhotons.unl) exp*=tmp.le[0]
+	if (tp.gt(1e250)&&player.aarexModifications.ngudpV&&!player.aarexModifications.nguepV) tp=Decimal.pow(tp.log10()*4,247/3+Math.log10(tp.log10()-240))
 	let gain = tp.pow(exp).times(Decimal.pow(2, getDilUpgPower(1)))
 	if (player.exdilation != undefined) {
 		gain = gain.times(getBlackholePowerEffect())
@@ -1772,11 +1772,7 @@ function getDilTimeGainPerSecond() {
 		gain = gain.times(colorBoosts.b)
 		if (GUBought("br2")) gain = gain.times(Decimal.pow(2.2, Math.pow(calcTotalSacrificeBoost().max(1).log10()/1e6, 0.25)))
 	}
-	if (hasBosonicUpg(15)) {
-		var r = Decimal.max(player.ghostify.times,1)
-		r = r.div(r.div(3e7).add(1)).min(3e7).pow(2).times(r).pow(2)
-		gain = gain.times(r)
-	}
+	if (hasBosonicUpg(15)) gain = gain.times(tmp.blu[15].dt)
 	return gain;
 }
 
@@ -8094,6 +8090,8 @@ function gameLoop(diff) {
 			if (player.aarexModifications.newGameMult) thresholdMult-=0.08
 		}
 		if (QCIntensity(7)) thresholdMult*=getQCReward(7)
+		if (ghostified&&player.ghostify.neutrinos.boosts>9) thresholdMult-=tmp.nb[9]
+		if (thresholdMult<1.1) thresholdMult=1.05+0.05/(2.1-thresholdMult)
 		gain = Math.ceil(new Decimal(player.timeShards).dividedBy(player.tickThreshold).log10()/Math.log10(thresholdMult))
 		player.totalTickGained += gain
 		player.tickspeed = player.tickspeed.times(Decimal.pow(getTickSpeedMultiplier(),gain))
@@ -9276,10 +9274,8 @@ function updatePowers() {
 	if (player.boughtDims) mult18 = getDimensionFinalMultiplier(1).max(1).times(getDimensionFinalMultiplier(8).max(1)).pow(0.02)
 	else mult18 = getDimensionFinalMultiplier(1).times(getDimensionFinalMultiplier(8)).pow(0.02)
 	if (player.currentEternityChall == "eterc10" || inQC(6)) {
-		let ec10exp = 1e3
-		if (player.timestudy.studies.includes(31)) ec10exp *= 4
-		if (ghostified && player.ghostify.neutrinos.boosts > 9) ec10exp *= tmp.nb[9]
-		ec10bonus = Decimal.pow(getInfinitied(), ec10exp).max(1)
+		ec10bonus = Decimal.pow(getInfinitied(), 1e3).max(1)
+		if (player.timestudy.studies.includes(31)) ec10bonus = ec10bonus.pow(4)
 	} else {
 		ec10bonus = new Decimal(1)
 	}

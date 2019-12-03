@@ -799,7 +799,7 @@ function updateQuantumTabs() {
 			document.getElementById("nanofieldreward" + reward).className = reward > rewards ? "nanofieldrewardlocked" : "nanofieldreward"
 			document.getElementById("nanofieldreward" + reward + "tier").textContent = (rewards % 8 + 1 == reward ? "Next" : DISPLAY_NAMES[reward]) + " reward (" + getFullExpansion(Math.ceil((rewards + 1 - reward)/8)) + "): "
 		}
-		document.getElementById("nanofieldreward1").textContent = hasBosonicUpg(21) ? "Dimension Supersonic scaling is " + shorten(getNanofieldRewardEffect(1, "supersonic")) + "x slower." :
+		document.getElementById("nanofieldreward1").textContent = hasBosonicUpg(21) ? "Dimension Supersonic scaling starts " + getFullExpansion(getNanofieldRewardEffect(1, "supersonic")) + " later." :
 			"Hatch speed is " + shortenDimensions(getNanofieldRewardEffect(1, "speed")) + "x faster."
 		document.getElementById("nanofieldreward2").textContent = "Meta-antimatter effect power is increased by " + getNanofieldRewardEffect(2).toFixed(1) + "x."
 		document.getElementById("nanofieldreward3").textContent = "Free galaxy gain is increased by " + (getNanofieldRewardEffect(3)*100-100).toFixed(1) + "%."
@@ -1915,7 +1915,7 @@ function getQuarkChargeProductionCap() {
 function getNanofieldRewardEffect(id, effect) {
 	var stacks = Math.ceil((tmp.qu.nanofield.rewards - id + 1) / 8)
 	if (id == 1) {
-		if (effect == "supersonic") return stacks + 1
+		if (effect == "supersonic") return Math.max(stacks - 3.5, 0) * 75e5
 		if (effect == "speed") return Decimal.pow(30, stacks)
 	}
 	if (id == 2) return stacks * 6.8
@@ -1926,7 +1926,7 @@ function getNanofieldRewardEffect(id, effect) {
 	if (id == 7) {
 		if (effect == "remote") return stacks * 2150
 		if (effect == "charge") return Decimal.pow(2.6, stacks)
-		if (effect == "neutrinos") return Decimal.pow(1, stacks)
+		if (effect == "neutrinos") return Decimal.pow(1e10, stacks)
 	}
 	if (id == 8) {
 		if (effect == "per-10") return stacks * 0.76
@@ -4011,7 +4011,7 @@ function updateGhostifyTabs() {
 		if (player.ghostify.neutrinos.boosts>6) document.getElementById("neutrinoBoost7").textContent=(tmp.nb[6]*100-100).toFixed(1)
 		if (player.ghostify.neutrinos.boosts>7) document.getElementById("neutrinoBoost8").textContent=(tmp.nb[7]*100-100).toFixed(1)
 		if (player.ghostify.neutrinos.boosts>8) document.getElementById("neutrinoBoost9").textContent=shorten(tmp.nb[8])
-		if (player.ghostify.neutrinos.boosts>9) document.getElementById("neutrinoBoost10").textContent=getFullExpansion(Math.floor(tmp.nb[9]))
+		if (player.ghostify.neutrinos.boosts>9) document.getElementById("neutrinoBoost10").textContent=tmp.nb[9].toFixed(4)
 		document.getElementById("neutrinoUpg1Pow").textContent=tmp.nu[0]
 		document.getElementById("neutrinoUpg3Pow").textContent=shorten(tmp.nu[1])
 		document.getElementById("neutrinoUpg4Pow").textContent=shorten(tmp.nu[2])
@@ -4100,13 +4100,12 @@ function updateGhostifyTabs() {
 		document.getElementById("odSpeedWBBt").textContent=" ("+shorten(data.odSpeed)+"x if you have Bosonic Battery)"
 		for (var g=1;g<br.names.length;g++) document.getElementById("bRune"+g).textContent=shortenDimensions(data.glyphs[g-1])
 		if (document.getElementById("bextab").style.display=="block") {
-			if (data.extracting) {
-				document.getElementById("extract").textContent="Extracting ("+data.extractProgress.times(100).toFixed(1)+"%)"
-				document.getElementById("extractTime").textContent=shorten(getExtractTime().times(Decimal.sub(1,data.extractProgress)))+" ticks left to extract"
-			} else {
-				document.getElementById("extract").textContent="Extract"
-				document.getElementById("extractTime").textContent="This will take "+shorten(getExtractTime())+" ticks"
-			}
+			let time=getExtractTime()
+			if (data.extracting) document.getElementById("extract").textContent="Extracting"+(time.lt(0.1)?"":" ("+data.extractProgress.times(100).toFixed(1)+"%)")
+			else document.getElementById("extract").textContent="Extract"
+			if (time.lt(0.1)) document.getElementById("extractTime").textContent="This will automatically take "+shorten(Decimal.div(1,time))+" runes/tick."
+			else if (data.extracting) document.getElementById("extractTime").textContent=shorten(time.times(Decimal.sub(1,data.extractProgress)))+" ticks left to extract."
+			else document.getElementById("extractTime").textContent="This will take "+shorten(time)+" ticks."
 			updateEnchantDescs()
 		}
 		if (document.getElementById("butab").style.display=="block") updateBosonicUpgradeDescs()
@@ -4620,7 +4619,7 @@ function getMaximumUnstableQuarks() {
 
 function getGhostifiedGain() {
 	let r=1
-	if (hasBosonicUpg(15)) r=nN(player.dilation.dilatedTime.div("1e1520").add(1).pow(.05))
+	if (hasBosonicUpg(15)) r=nN(tmp.blu[15].gh)
 	return r
 }
 
@@ -4959,7 +4958,10 @@ var bEn={
 			return Decimal.add(l,1).sqrt()
 		},
 		23: function(l) {
-			return Decimal.pow(tmp.bl.am.add(10).log10(),Math.max(Math.log10(l)+1,0)/3)
+			let exp=Math.max(l.log10()+1,0)/3
+			if (tmp.bl.am.gt(1e11)) exp*=tmp.bl.am.div(10).log10()/10
+			if (exp>5) exp=Math.sqrt(exp*5)
+			return Decimal.pow(tmp.bl.am.add(10).log10(),exp)
 		}
 	},
 	action:"upgrade",
@@ -5021,6 +5023,7 @@ function updateBosonicUpgradeDescs() {
 			if (id==11) document.getElementById("bUpgEffect"+id).textContent=(tmp.blu[id]*100).toFixed(1)+"%"
 			else if (id==12) document.getElementById("bUpgEffect"+id).textContent="-"+tmp.blu[id].toFixed(5)
 			else if (id==14) document.getElementById("bUpgEffect"+id).textContent=getFullExpansion(tmp.blu[id])+(tmp.blu[id]>tmp.qu.electrons.sacGals&&!tmp.qu.bigRip.active?" (+"+getFullExpansion(Math.max(tmp.blu[id]-tmp.qu.electrons.sacGals,0))+" Antielectronic Galaxies)":"")
+			else if (id==15) document.getElementById("bUpgEffect"+id).textContent=shorten(tmp.blu[id].gh)+"x more Ghostifies & "+shorten(tmp.blu[id].dt)+"x more DT"
 			else document.getElementById("bUpgEffect"+id).textContent=shorten(tmp.blu[id])+"x"
 		}
 	}
@@ -5053,6 +5056,16 @@ var bu={
 			am: 1e9,
 			g2: 25e4,
 			g3: 35e3,
+		},
+		21: {
+			am: 8e10,
+			g1: 5e6,
+			g2: 25e5
+		},
+		22: {
+			am: 5e11,
+			g2: 4e6,
+			g3: 75e4
 		}
 	},
 	reqData:{},
@@ -5084,6 +5097,13 @@ var bu={
 			let y=Math.max(tmp.qu.electrons.sacGals,player.galaxies)
 			if (x>y+1e5) x=Math.pow((x-y)*1e10,1/3)+y
 			return Math.round(x)
+		},
+		15: function() {
+			let gLog = Decimal.max(player.ghostify.times,1).log10()
+			return {
+				dt: Decimal.pow(10,2*gLog+3*gLog/(gLog/20+1)),
+				gh: player.dilation.dilatedTime.div("1e1520").add(1).pow(.05)
+			}
 		},
 		23: function() {
 			return Decimal.pow(player.meta.antimatter.add(1).log10()+1, 1000)

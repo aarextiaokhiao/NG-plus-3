@@ -225,7 +225,10 @@ function getSupersonicStart() {
 	if (inQC(5)) return 0
 	let r = 56e4
 	if (player.aarexModifications.nguspV && !player.aarexModifications.nguepV) r = 1e5
-	if (player.masterystudies) if (player.masterystudies.includes("t331")) r += 24e4
+	if (tmp.ngp3) {
+		if (player.masterystudies.includes("t331")) r += 24e4
+		if (player.masterystudies.includes("d12") && hasBosonicUpg(21)) r += getNanofieldRewardEffect(1, "supersonic")
+	}
 	return r
 }
 
@@ -233,7 +236,6 @@ function getSupersonicMultIncrease() {
 	if (inQC(5)) return 20
 	let r=4
 	if (player.masterystudies) if (player.masterystudies.includes("t331")) r=1
-	if (player.masterystudies.includes("d12")&&hasBosonicUpg(21)) r/=getNanofieldRewardEffect(1,"supersonic")
 	return r
 }
 
