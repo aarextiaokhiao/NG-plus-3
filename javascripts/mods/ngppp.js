@@ -4086,7 +4086,7 @@ function updateGhostifyTabs() {
 	}
 	if (document.getElementById("bltab").style.display=="block"&&player.ghostify.wzb.unl) {
 		let data=tmp.bl
-		let speed=data.odSpeed.min(data.battery.gt(0)?1/0:1).times(data.speed)
+		let speed=data.speed*(data.battery.gt(0)?data.odSpeed:1)
 		document.getElementById("bWatt").textContent=shorten(data.watt)
 		document.getElementById("bSpeed").textContent=data.speed.toFixed(2)
 		document.getElementById("bTotalSpeed").textContent=shorten(speed)
@@ -4094,23 +4094,23 @@ function updateGhostifyTabs() {
 		document.getElementById("bAM").textContent=shorten(data.am)
 		document.getElementById("bAMProduction").textContent="+"+shorten(getBosonicAMProduction().times(speed))+"/s"
 		document.getElementById("bBt").textContent=shorten(data.battery)
-		document.getElementById("bBtProduction").textContent="-"+shorten(data.odSpeed.gt(1)?getBosonicBatteryProduction().times(data.speed):0)+"/s"
-		document.getElementById("odSpeed").textContent=data.odSpeed.lt(1)?"/"+shorten(Decimal.div(1,data.odSpeed)):shorten(data.odSpeed.min(data.battery.gt(0)?1/0:1))+"x"
-		document.getElementById("odSpeedWBBt").style.display=data.battery.eq(0)&&data.odSpeed.gt(1)?"":"none"
-		document.getElementById("odSpeedWBBt").textContent=" ("+shorten(data.odSpeed)+"x if you have Bosonic Battery)"
+		document.getElementById("bBtProduction").textContent="-"+shorten(getBosonicBatteryLoss().times(data.speed))+"/s"
+		document.getElementById("odSpeed").textContent=(data.battery.gt(0)?data.odSpeed:1).toFixed(2)+"x"
+		document.getElementById("odSpeedWBBt").style.display=data.battery.eq(0)&&data.odSpeed>1?"":"none"
+		document.getElementById("odSpeedWBBt").textContent=" ("+data.odSpeed.toFixed(2)+"x if you have Bosonic Battery)"
 		for (var g=1;g<br.names.length;g++) document.getElementById("bRune"+g).textContent=shortenDimensions(data.glyphs[g-1])
 		if (document.getElementById("bextab").style.display=="block") {
-			let time=getExtractTime()
+			let time=getExtractTime().div(speed)
 			if (data.extracting) document.getElementById("extract").textContent="Extracting"+(time.lt(0.1)?"":" ("+data.extractProgress.times(100).toFixed(1)+"%)")
 			else document.getElementById("extract").textContent="Extract"
-			if (time.lt(0.1)) document.getElementById("extractTime").textContent="This will automatically take "+shorten(Decimal.div(1,time))+" runes/tick."
-			else if (data.extracting) document.getElementById("extractTime").textContent=shorten(time.times(Decimal.sub(1,data.extractProgress)))+" ticks left to extract."
-			else document.getElementById("extractTime").textContent="This will take "+shorten(time)+" ticks."
+			if (time.lt(0.1)) document.getElementById("extractTime").textContent="This would automatically take "+shorten(Decimal.div(1,time))+" runes per second."
+			else if (data.extracting) document.getElementById("extractTime").textContent=shorten(time.times(Decimal.sub(1,data.extractProgress)))+" seconds left to extract."
+			else document.getElementById("extractTime").textContent="This will take "+shorten(time)+" seconds."
 			updateEnchantDescs()
 		}
 		if (document.getElementById("butab").style.display=="block") updateBosonicUpgradeDescs()
 		if (document.getElementById("wzbtab").style.display=="block") {
-			let lSpeed=speed.times(tmp.wzbs)
+			let lSpeed=tmp.wzbs.times(speed)
 			let data2=player.ghostify.wzb
 			let show0=data2.dPUse==1&&lSpeed.times(getAntiPreonLoss()).div(aplScalings[1]).times(tmp.zbs).gte(10)
 			let gainSpeed=getOscillateGainSpeed()
@@ -4706,13 +4706,13 @@ function bosonicTick(diff) {
 	let data=tmp.bl
 	diff=new Decimal(diff)
 	if (isNaN(diff.e)) return
-	if (data.odSpeed.gt(1)&&data.battery.gt(0)) {
-		var bBtP=getBosonicBatteryProduction()
-		var odDiff=diff.times(bBtP).min(data.battery)
-		var fasterDiff=odDiff.div(bBtP).times(data.odSpeed)
-		data.battery=data.battery.sub(diff.times(bBtP).min(data.battery))
+	if (data.odSpeed>1&&data.battery.gt(0)) {
+		var bBtL=getBosonicBatteryLoss()
+		var odDiff=diff.times(bBtL).min(data.battery)
+		var fasterDiff=odDiff.div(bBtL).times(data.odSpeed)
+		data.battery=data.battery.sub(diff.times(bBtL).min(data.battery))
 		diff=fasterDiff.add(diff.sub(odDiff.min(diff)))
-	} else diff=diff.times(data.odSpeed.min(1))
+	}
 	data.ticks=data.ticks.add(diff)
 	
 	//W & Z Bosons
@@ -4731,6 +4731,7 @@ function bosonicTick(diff) {
 				lData.wnb=lData.wnb.add(toSub.add(lData.wQkUp?0:1).div(2).floor())
 				if (toSub.mod(2).gt(0)) lData.wQkUp=!lData.wQkUp
 				lData.wQkProgress=lData.wQkProgress.sub(toSub.min(lData.wQkProgress))
+				if (data.odSpeed==1) data.battery=data.battery.add(toSub.div(1e6))
 			}
 		}
 		if (lData.dPUse==2) {
@@ -4767,9 +4768,8 @@ function bosonicTick(diff) {
 		var toAdd=data.extractProgress.min(oldAuto.add(1).round()).floor()
 		data.autoExtract=data.autoExtract.sub(toAdd.min(oldAuto))
 		data.glyphs[data.typeToExtract-1]=data.glyphs[data.typeToExtract-1].add(toAdd).round()
-		if (data.usedEnchants.includes(12)&&oldAuto.add(1).round().gt(toAdd)) {
-			data.extractProgress=data.extractProgress.sub(toAdd.min(data.extractProgress))
-		} else {
+		if (data.usedEnchants.includes(12)&&oldAuto.add(1).round().gt(toAdd)) data.extractProgress=data.extractProgress.sub(toAdd.min(data.extractProgress))
+		else {
 			data.extracting=false
 			data.extractProgress=new Decimal(0)
 		}
@@ -4854,6 +4854,16 @@ function canBuyEnchant(id) {
 	return true
 }
 
+function getMaxEnchantLevelGain(id) {
+	let data=tmp.bl
+	let costData=bEn.costs[id]
+	let g1=Math.floor(id/10)
+	let g2=id%10
+	let lvl1=data.glyphs[g1-1].div(costData[0]).floor()
+	let lvl2=data.glyphs[g2-1].div(costData[1]).floor()
+	return lvl1.min(lvl2)
+}
+
 function canUseEnchant(id) {
 	if (!tmp.bl.enchants[id]) return
 	if (bEn.limit==1) {
@@ -4874,13 +4884,11 @@ function takeEnchantAction(id) {
 		if (data.enchants[id]==undefined) data.enchants[id]=new Decimal(1)
 		else data.enchants[id]=data.enchants[id].add(1).round()
 	} else if (bEn.action=="max") {
+		let lvl=getMaxEnchantLevelGain(id)
 		let costData=bEn.costs[id]
 		let g1=Math.floor(id/10)
 		let g2=id%10
 		if (!canBuyEnchant(id)) return
-		let lvl1=data.glyphs[g1-1].div(costData[0]).floor()
-		let lvl2=data.glyphs[g2-1].div(costData[1]).floor()
-		let lvl=lvl1.min(lvl2)
 		data.glyphs[g1-1]=data.glyphs[g1-1].sub(lvl.times(costData[0]).min(data.glyphs[g1-1])).round()
 		data.glyphs[g2-1]=data.glyphs[g2-1].sub(lvl.times(costData[1]).min(data.glyphs[g2-1])).round()
 		if (data.enchants[id]==undefined) data.enchants[id]=new Decimal(lvl)
@@ -4919,12 +4927,14 @@ function updateEnchantDescs() {
 		else if (bEn.action=="use") document.getElementById("bEn"+id).className="gluonupgrade "+(canUseEnchant(id)?"storebtn":"unavailablebtn")
 		if (shiftDown) document.getElementById("bEnLvl"+id).textContent="Enchant id: "+id
 		else document.getElementById("bEnLvl"+id).textContent="Level: "+shortenDimensions(tmp.bEnLvl[id])
-		document.getElementById("bEnOn"+id).textContent=data.usedEnchants.includes(id)?"Enabled":"Disabled"
+		if (bEn.action=="max") document.getElementById("bEnOn"+id).textContent="+"+shortenDimensions(getMaxEnchantLevelGain(id))+" levels"
+		else document.getElementById("bEnOn"+id).textContent=data.usedEnchants.includes(id)?"Enabled":"Disabled"
 		if (tmp.bEn[id]!=undefined) {
 			let effect=getEnchantEffect(id,true)
 			if (id==12) {
-				if (effect.lt(1)&&effect.gt(0)) document.getElementById("bEnEffect"+id).textContent=effect.m.toFixed(2)+"/"+shortenCosts(Decimal.pow(10,-effect.e))+" ticks"
-				else document.getElementById("bEnEffect"+id).textContent=shorten(effect)+"/tick"
+				effect=effect.times(data.speed*(data.battery.gt(0)?data.odSpeed:1))
+				if (effect.lt(1)&&effect.gt(0)) document.getElementById("bEnEffect"+id).textContent=effect.m.toFixed(2)+"/"+shortenCosts(Decimal.pow(10,-effect.e))+" seconds"
+				else document.getElementById("bEnEffect"+id).textContent=shorten(effect)+"/second"
 			} else document.getElementById("bEnEffect"+id).textContent=shorten(effect)+"x"	
 		}
 	}
@@ -5066,6 +5076,11 @@ var bu={
 			am: 5e11,
 			g2: 4e6,
 			g3: 75e4
+		},
+		23: {
+			am: 1e13,
+			g2: 15e6,
+			g3: 15e3
 		}
 	},
 	reqData:{},
@@ -5106,7 +5121,7 @@ var bu={
 			}
 		},
 		23: function() {
-			return Decimal.pow(player.meta.antimatter.add(1).log10()+1, 1000)
+			return player.meta.antimatter.div("1e15000").add(1).pow(0.1)
 		},
 		25: function() {
 			return quantumWorth.add(1).pow(0.001)
@@ -5115,16 +5130,13 @@ var bu={
 }
 
 //Bosonic Overdrive
-function getBosonicBatteryProduction() {
-	let r=tmp.bl.odSpeed
-	if (r.lt(1)) r=Decimal.div(1,r).pow(.8)
-	else r=r.pow(1.25)
-	r=r.sub(1)
-	return r
+function getBosonicBatteryLoss() {
+	if (tmp.bl.odSpeed==1) return new Decimal(0)
+	return Decimal.pow(10,tmp.bl.odSpeed*2-3)
 }
 
 function changeOverdriveSpeed() {
-	tmp.bl.odSpeed = Decimal.pow(3,document.getElementById("odSlider").value/20-1)
+	tmp.bl.odSpeed=document.getElementById("odSlider").value/50*4+1
 }
 
 //W & Z Bosons

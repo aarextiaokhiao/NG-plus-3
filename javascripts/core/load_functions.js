@@ -1298,6 +1298,7 @@ if (player.version < 5) {
           player.ghostify.wzb.wQkUp=true
           player.ghostify.wzb.zNeGen=1
       }
+      tmp.bl.odSpeed=Math.max(tmp.bl.odSpeed,1)
       if (Decimal.eq(player.ghostify.wzb.zNeReq,0)) player.ghostify.wzb.zNeReq=1
       updateAutoGhosts(true)
   }
@@ -1938,7 +1939,7 @@ if (player.version < 5) {
       document.getElementById("gphUnl").textContent="To unlock Ghostly Photons, you need to get "+shortenCosts(Decimal.pow(10,6e9))+" antimatter while your universe is Big Ripped first."
       document.getElementById("blUnl").textContent="To unlock Bosonic Lab, you need to get "+shortenCosts(Decimal.pow(10,1e10))+" ghostly unstable quarks first."
       document.getElementById("bpc68").textContent=shortenMoney(tmp.qu.pairedChallenges.pc68best)
-      document.getElementById("odSlider").value=Math.round(Decimal.log(tmp.bl.odSpeed,3)*20+20)
+      document.getElementById("odSlider").value=Math.round((tmp.bl.odSpeed-1)/4*50)
       for (var g=1;g<br.names.length;g++) document.getElementById("typeToExtract"+g).className=tmp.bl.typeToExtract==g?"chosenbtn":"storebtn"
       updateColoredQuarksProduction()
       updateElectrons()
@@ -2610,7 +2611,6 @@ function transformSaveToDecimal() {
           tmp.bl.autoExtract=new Decimal(tmp.bl.autoExtract)
           for (var t=0;t<br.names.length-1;t++) tmp.bl.glyphs[t]=new Decimal(tmp.bl.glyphs[t]||0)
           tmp.bl.battery=new Decimal(tmp.bl.battery)
-          tmp.bl.odSpeed=new Decimal(tmp.bl.odSpeed)
           for (var g2=2;g2<br.names.length;g2++) for (var g1=1;g1<g2;g1++) if (tmp.bl.enchants[g1*10+g2]!==undefined) tmp.bl.enchants[g1*10+g2]=new Decimal(tmp.bl.enchants[g1*10+g2])
 
           player.ghostify.wzb.dP=new Decimal(player.ghostify.wzb.dP)

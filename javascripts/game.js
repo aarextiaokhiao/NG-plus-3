@@ -1070,7 +1070,7 @@ let tmp = {
 	beu: [],
 	bm: [200,175,150,100,50,40,30,25,20,15,10,5,4,3,2,1],
 	nb: [],
-	nbc: [null,3,4,6,15,50,1e3,1e14,1e35,"1e850"],
+	nbc: [null,3,4,6,15,50,1e3,1e14,1e35,"1e900"],
 	nu: [],
 	nuc: [null,1e6,1e7,1e8,2e8,5e8,2e9,5e9,75e8,1e10,7e12,1e18,1e55,1e125,1e160,1e280],
 	lt: [12800,16e4,48e4,16e5,6e6,5e7,24e7,125e7],
@@ -1160,7 +1160,7 @@ function updateTemp() {
 				if (nb9>4096) nb9=Math.pow(Math.log2(nb9)+4,3)
 				tmp.nb[8]=nb9
 			}
-			if (player.ghostify.neutrinos.boosts>9) tmp.nb[9]=0
+			if (player.ghostify.neutrinos.boosts>9) tmp.nb[9]=Math.max(nt[0].add(1).log10()+nt[1].add(1).log10()+nt[2].add(1).log10()-3e3)/75e4
 			tmp.nu[0]=Math.max(110-(tmp.qu.bigRip.active?0:player.meta.resets),0) //NU1
 			tmp.nu[1]=Math.pow(Math.max(tmp.qu.colorPowers.b.log10()/250+1,1),2) //NU3
 			tmp.nu[2]=Decimal.pow(20,Math.pow(Math.max(-getTickspeed().div(1e3).log10()/4e13-4,0),1/4)) //NU4
@@ -1189,7 +1189,10 @@ function updateTemp() {
 		}
 		tmp.be=tmp.qu.bigRip.active&&tmp.qu.breakEternity.break
 		tmp.rg4=tmp.qu.upgrades.includes("rg4")&&(tmp.qu.rg4||inQC(1)||QCIntensity(1))
-		if (!player.dilation.active&&tmp.qu.bigRip.active&&tmp.qu.bigRip.upgrades.includes(14)) tmp.nrm=tmp.nrm.pow(tmp.bru[2])
+		if (tmp.qu.bigRip.active) {
+			if (!player.dilation.active&&tmp.qu.bigRip.upgrades.includes(14)) tmp.nrm=tmp.nrm.pow(tmp.bru[2])
+			if (tmp.nrm.gt("1e1000000000")) tmp.nrm=Decimal.pow(10,Math.pow(tmp.nrm.log10()*3e4,2/3))
+		}
 	} else tmp.be=false
 	var x=(3-player.tickspeed.log10())*0.000005
 	if (ghostified&&player.ghostify.neutrinos.boosts>3) x*=tmp.nb[3]
@@ -7521,6 +7524,7 @@ setInterval(function() {
 		let ableToGetRid5 = ableToGetRid4 && player.dontWant
 		let ableToGetRid6 = ableToGetRid2 && inQC(6) && inQC(8)
 		let noTree = false
+		let minUQ = getMinimumUnstableQuarks()
 		for (var u=1;u<9;u++) {
 			if (tmp.qu.tod.upgrades[u]) break
 			else noTree = true
@@ -7556,17 +7560,16 @@ setInterval(function() {
 			let ableToGetRid8 = ableToGetRid7 && !tmp.qu.breakEternity.did
 			let ableToGetRid9 = ableToGetRid8 && noTree
 			let ableToGetRid10 = ableToGetRid9 && inQCModifier("ad")
-			let minUQ = getMinimumUnstableQuarks()
 			if (player.currentEternityChall == "eterc7" && player.galaxies == 1 && player.money.e >= 8e7) giveAchievement("Time Immunity")
 			if (!player.timestudy.studies.includes(11) && player.timeShards.e > 214) giveAchievement("You're not really smart.")
 			if (ableToGetRid7 && player.infinityPoints.e >= 35e4) giveAchievement("And so your life?")
 			if (ableToGetRid8 && player.infinityPoints.e >= 95e4) giveAchievement("Please answer me why you are dying.")
-			if (minUQ.quarks.e>=1e12&&minUQ.decays>=2&&!tmp.qu.bigRip.times) giveAchievement("Weak Decay")
 			if (ableToGetRid9 && player.infinityPoints.e >= 18e5) giveAchievement("Aren't you already dead?")
 			if (inQC(6)&&inQC(8)&&tmp.qu.pairedChallenges.current==1&&player.infinityPoints.e>=1/0) giveAchievement("Back to Challenge One")
 			if (ableToGetRid10 && player.infinityPoints.e >= 1/0) giveAchievement("I give up.")
 		}
 		if (tmp.qu.bigRip.spaceShards.e>32&&!tmp.qu.breakEternity.did) giveAchievement("Finite Time")
+		if (minUQ.quarks.e>=1e12&&minUQ.decays>=2&&!tmp.qu.bigRip.times) giveAchievement("Weak Decay")
 		if (nG(getInfinitied(), Number.MAX_VALUE)) giveAchievement("Meta-Infinity confirmed?")
 		if (nG(getEternitied(), Number.MAX_VALUE)) giveAchievement("Everlasting Eternities")
 		if (player.options.secrets && player.options.secrets.ghostlyNews && !player.options.newsHidden) giveAchievement("Two tickers")
@@ -7923,21 +7926,20 @@ function gameLoop(diff) {
         var AErate = getQuarkAntienergyProduction()
         var toAddAE = AErate.times(diff/10).min(getQuarkChargeProductionCap().sub(tmp.qu.nanofield.antienergy))
         if (toAddAE.gt(0)) {
+            var toAdd = 0
             tmp.qu.nanofield.antienergy = tmp.qu.nanofield.antienergy.add(toAddAE).min(getQuarkChargeProductionCap())
             tmp.qu.nanofield.energy = tmp.qu.nanofield.energy.add(toAddAE.div(AErate).times(getQuarkEnergyProduction()))
             if (tmp.qu.nanofield.energy.gte(tmp.qu.nanofield.powerThreshold) && tmp.qu.nanofield.power < 15) {
-                var toAdd = Math.min(Math.floor(tmp.qu.nanofield.energy.div(tmp.qu.nanofield.powerThreshold).log(4) / tmp.ppti + 1), 15 - tmp.qu.nanofield.power)
-                tmp.qu.nanofield.power += toAdd
+                toAdd = Math.min(Math.floor(tmp.qu.nanofield.energy.div(tmp.qu.nanofield.powerThreshold).log(4) / tmp.ppti + 1), 15 - tmp.qu.nanofield.power)
                 tmp.qu.nanofield.powerThreshold = tmp.qu.nanofield.powerThreshold.times(Decimal.pow(4, toAdd * tmp.ppti))
-                tmp.qu.nanofield.rewards = Math.max(tmp.qu.nanofield.rewards, tmp.qu.nanofield.power)
             }
             if (tmp.qu.nanofield.energy.gte(tmp.qu.nanofield.powerThreshold) && tmp.qu.nanofield.power > 14) {
                 var b = tmp.qu.nanofield.power - 13.5
-                var toAdd = Math.floor(Math.sqrt(b * b + 2 * tmp.qu.nanofield.energy.div(tmp.qu.nanofield.powerThreshold).log(4) / tmp.ppti) - b + 1)
+                toAdd = Math.floor(Math.sqrt(b * b + 2 * tmp.qu.nanofield.energy.div(tmp.qu.nanofield.powerThreshold).log(4) / tmp.ppti) - b + 1)
                 tmp.qu.nanofield.powerThreshold = tmp.qu.nanofield.powerThreshold.times(Decimal.pow(4, (0.5 * toAdd * toAdd + b * toAdd) * tmp.ppti))
-                tmp.qu.nanofield.power += toAdd
-                tmp.qu.nanofield.rewards = Math.max(tmp.qu.nanofield.rewards, tmp.qu.nanofield.power)
             }
+            tmp.qu.nanofield.power += toAdd
+            tmp.qu.nanofield.rewards = Math.max(tmp.qu.nanofield.rewards, tmp.qu.nanofield.power)
         }
         var colorShorthands=["r","g","b"]
         for (var c=0;c<3;c++) {
