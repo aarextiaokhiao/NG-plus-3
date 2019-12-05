@@ -2313,7 +2313,7 @@ br {
 	text-shadow: none !important
 }
 
-#bugExport b, #tooMuchPowerConsumed {
+#bugExport b, .warning {
 	color: #ff0000
 }
 
@@ -2606,6 +2606,23 @@ br {
 
 .tau #zNeSymbol {
 	transform: translate(-50%, 0%)
+}
+
+#antipreon {
+	position: relative
+}
+
+#apgInfo {
+	position: relative;
+	width: 100%;
+	background: #e55be5;
+	box-shadow: 0px 0px 12px #e55be5;
+	color: white;
+	animation: apgInfo 5s ease infinite
+}
+
+#apgInfo .warning {
+	color: #bf0000
 }
 
 @media print,
@@ -2910,5 +2927,17 @@ screen and (max-width: 480px) {
 	}
 	100%{
 		background-position: 200% 200%
+	}
+}
+
+@keyframes apgInfo { 
+	0%{
+		top: 0px
+	}
+	50%{
+		top: 6px
+	}
+	100%{
+		top: 0px
 	}
 }

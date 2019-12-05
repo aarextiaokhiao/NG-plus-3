@@ -1088,6 +1088,7 @@ function updateTemp() {
 	tmp.rg4=false
 	if (tmp.ngp3) {
 		tmp.ns=new Decimal(nanospeed)
+		tmp.apgw=tmp.qu.nanofield.apgWoke||getAntiPreonGhostWake()
 		tmp.ppti=1
 		if (player.ghostify.wzb.unl) {
 			for (var r=1;r<=bu.rows;r++) for (var c=1;c<6;c++) {
@@ -1124,7 +1125,9 @@ function updateTemp() {
 			tmp.le[3]=tmp.ls[3]>8?Math.log10(tmp.ls[3]/8)+Math.sqrt(12)+1:Math.sqrt(tmp.ls[3]*1.5)+1 //Green light
 			tmp.le[4]=Math.log10(Math.sqrt(tmp.ls[4]*2)+1)*5/4 //Blue light
 			tmp.le[5]=Decimal.pow(10,tmp.ls[5]>25?Math.sqrt(tmp.ls[5]*1e3+37500):tmp.ls[5]*10) //Indigo light
-			tmp.le[6]=Decimal.pow(10,Math.pow(player.postC3Reward.log10()*tmp.ls[6],1/3)*2) //Violet light
+			tmp.le[6]=Math.pow(player.postC3Reward.log10()*tmp.ls[6],1/3)*2 //Violet light
+			if (tmp.le[6]>15e3) tmp.le[6]=Math.pow(tmp.le[6]/15e3,3/4)*15e3
+			tmp.le[6]=Decimal.pow(10,tmp.le[6])
 			if (player.ghostify.ghostlyPhotons.enpowerments) tmp.le[7]={effect:Math.log10(tmp.ls[3]+1)*300} //Green light (LE#1)
 			if (player.ghostify.ghostlyPhotons.enpowerments>1) tmp.le[8]=Math.log10(tmp.ls[4]*10+1)/4+1 //Blue light (LE#2)
 			if (player.ghostify.ghostlyPhotons.enpowerments>2) tmp.le[9]=Math.pow(tmp.ls[7]+1,.1)*2-1 //Red light (LE#3)
@@ -3115,7 +3118,8 @@ function updateExtraReplGalaxies() {
 	extraReplGalaxies = ts225Eff + ts226Eff
 	if (extraReplGalaxies > 325) extraReplGalaxies = (Math.sqrt(0.9216+0.16*(extraReplGalaxies-324))-0.96)/0.08+324
 	if (tmp.ngp3) {
-		tmp.pe = Math.pow(tmp.qu.replicants.quarks.add(1).log10(),player.masterystudies.includes("t362")?0.35:0.25)*0.67*(player.masterystudies.includes("t412")?1.25:1)*(player.ghostify.ghostlyPhotons.unl?tmp.le[3]:1)
+		tmp.pe=Math.pow(tmp.qu.replicants.quarks.add(1).log10(),player.masterystudies.includes("t362")?0.35:0.25)*0.67*(player.masterystudies.includes("t412")?1.25:1)*(player.ghostify.ghostlyPhotons.unl?tmp.le[3]:1)
+		if (tmp.pe>50) tmp.pe=50*Math.pow(tmp.pe/50,5/7)
 		extraReplGalaxies *= colorBoosts.g + tmp.pe
 	}
 	extraReplGalaxies = Math.floor(extraReplGalaxies)
@@ -7926,20 +7930,27 @@ function gameLoop(diff) {
         var AErate = getQuarkAntienergyProduction()
         var toAddAE = AErate.times(diff/10).min(getQuarkChargeProductionCap().sub(tmp.qu.nanofield.antienergy))
         if (toAddAE.gt(0)) {
-            var toAdd = 0
             tmp.qu.nanofield.antienergy = tmp.qu.nanofield.antienergy.add(toAddAE).min(getQuarkChargeProductionCap())
             tmp.qu.nanofield.energy = tmp.qu.nanofield.energy.add(toAddAE.div(AErate).times(getQuarkEnergyProduction()))
             if (tmp.qu.nanofield.energy.gte(tmp.qu.nanofield.powerThreshold) && tmp.qu.nanofield.power < 15) {
-                toAdd = Math.min(Math.floor(tmp.qu.nanofield.energy.div(tmp.qu.nanofield.powerThreshold).log(4) / tmp.ppti + 1), 15 - tmp.qu.nanofield.power)
+                var toAdd = Math.min(Math.floor(tmp.qu.nanofield.energy.div(tmp.qu.nanofield.powerThreshold).log(4) / tmp.ppti + 1), 15 - tmp.qu.nanofield.power)
+                tmp.qu.nanofield.power += toAdd
                 tmp.qu.nanofield.powerThreshold = tmp.qu.nanofield.powerThreshold.times(Decimal.pow(4, toAdd * tmp.ppti))
             }
             if (tmp.qu.nanofield.energy.gte(tmp.qu.nanofield.powerThreshold) && tmp.qu.nanofield.power > 14) {
                 var b = tmp.qu.nanofield.power - 13.5
-                toAdd = Math.floor(Math.sqrt(b * b + 2 * tmp.qu.nanofield.energy.div(tmp.qu.nanofield.powerThreshold).log(4) / tmp.ppti) - b + 1)
+                var toAdd = Math.floor(Math.sqrt(b * b + 2 * tmp.qu.nanofield.energy.div(tmp.qu.nanofield.powerThreshold).log(4) / tmp.ppti) - b + 1)
+                tmp.qu.nanofield.power += toAdd
                 tmp.qu.nanofield.powerThreshold = tmp.qu.nanofield.powerThreshold.times(Decimal.pow(4, (0.5 * toAdd * toAdd + b * toAdd) * tmp.ppti))
             }
-            tmp.qu.nanofield.power += toAdd
             tmp.qu.nanofield.rewards = Math.max(tmp.qu.nanofield.rewards, tmp.qu.nanofield.power)
+            if (!tmp.qu.nanofield.apgWoke && tmp.qu.nanofield.rewards >= tmp.apgw) {
+                tmp.qu.nanofield.apgWoke = tmp.apgw
+                $.notify("You reached " + getFullExpansion(tmp.apgw) + " rewards... The Anti-Preon Ghost has woken up and took over the Nanoverse! Be careful!")
+                showTab("quantumtab")
+                showQuantumTab("nanofield")
+                showNFTab("antipreon")
+            }
         }
         var colorShorthands=["r","g","b"]
         for (var c=0;c<3;c++) {

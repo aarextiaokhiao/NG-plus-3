@@ -4775,7 +4775,21 @@
 					<br><br>
 				</div>
 				<div class='nftab' id='antipreon'>
-					Coming soon...<br><br>It will not have HP, ATK, DEF, etc. This game isn't RPG.
+					<div id="apgInfo">
+						You have <span id="rewards_AP" style="font-size:35px"></span> rewards.<br>
+						<span id="sleepy">
+							The Anti-Preon Ghost is currently sleepy...
+							<b class="warning">Don't get <span id="rewards_wake">104</span> rewards or else he will wake up and take over the Nanoverse!</b>
+						</span>
+						<b id="woke" class="warning" style="font-size: 25px; display: none">The Anti-Preon Ghost has woken up and took control the Nanoverse!</b><br><br>
+						The following effects will be applied when he wakes up:<br>
+						- When you get 1 preon power, you will lose preons faster if you are producing preon charge.<br>
+						- When you get 1 preon power, your preon charge production is 2x slower.<br>
+						- When you get 1 preon power, your anti-energy production is 2x faster.<br>
+						- Reward tiers are softcapped.<br><br>
+						However, the scientists from Bosonic Lab gave an advantage. You will gain 0.5 extra tiers to your current reward when he wakes up.<br>
+						Good luck for getting more rewards. :)
+					</div>
 				</div>
 			</div>
 			<div class='quantumtab' id='tod'>
@@ -4902,7 +4916,7 @@
 					<tr>
 						<td>You have <span id="automatorGhostsAmount" style="font-size:35px">1</span> Automator Ghosts.<br>Next Automator Ghost at <span id="nextAutomatorGhost"style="font-size:35px">?.?</span>.</td>
 						<td>You have <span id="automaticCharge" style="font-size:35px">0.0</span> Automator Charge.</td>
-						<td>You have <span id="automaticPower" style="font-size:35px">0.0</span> Automator Power.<br>Automator Ghosts are using <span id="consumedPower" style="font-size:35px">0.0</span> Automator Power.<br><b id="tooMuchPowerConsumed">WARNING: NOT ENOUGH POWER TO AUTOMATE!</b></td>
+						<td>You have <span id="automaticPower" style="font-size:35px">0.0</span> Automator Power.<br>Automator Ghosts are using <span id="consumedPower" style="font-size:35px">0.0</span> Automator Power.<br><b id="tooMuchPowerConsumed" class="warning">WARNING: NOT ENOUGH POWER TO AUTOMATE!</b></td>
 					</tr>
 				</table>
 				<table style="margin: 0 auto">
