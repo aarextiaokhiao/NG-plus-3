@@ -2933,8 +2933,9 @@ function unstoreTT() {
 }
 
 function getSpaceShardsGain() {
-	let ret = Decimal.pow(tmp.qu.bigRip.bestThisRun.add(1).log10()/2000, 1.5).times(player.dilation.dilatedTime.add(1).pow(0.05))
-	if (tmp.be) {
+	let ret = tmp.qu.bigRip.active ? tmp.qu.bigRip.bestThisRun : player.money
+	ret = Decimal.pow(ret.add(1).log10()/2000, 1.5).times(player.dilation.dilatedTime.add(1).pow(0.05))
+	if (!tmp.qu.bigRip.active || tmp.be) {
 		if (tmp.qu.breakEternity.upgrades.includes(3)) ret = ret.times(getBreakUpgMult(3))
 		if (tmp.qu.breakEternity.upgrades.includes(6)) ret = ret.times(getBreakUpgMult(6))
 	}
@@ -3111,6 +3112,7 @@ function getBreakUpgMult(id) {
 	}
 	if (id == 3) {
 		var log = player.eternityPoints.div("1e1370").add(1).log10()
+		if (!tmp.be && hasBosonicUpg(24)) log /= 2e6
 		return Decimal.pow(10, Math.pow(log, 1/3) * 0.5)
 	}
 	if (id == 4) {
@@ -3128,6 +3130,7 @@ function getBreakUpgMult(id) {
 	if (id == 6) {
 		var log1 = player.eternityPoints.div("1e4900").add(1).log10()
 		var log2 = tmp.qu.breakEternity.eternalMatter.div(1e45).add(1).log10()
+		if (!tmp.be && hasBosonicUpg(24)) log1 /= 2e6
 		return Decimal.pow(10, Math.pow(log1, 1/3) / 1.7 + Math.pow(log2, 1/3) * 2)
 	}
 	if (id == 7) return Decimal.pow(1e9, tmp.qu.breakEternity.epMultPower)
@@ -3172,7 +3175,6 @@ function getGHPGain() {
 	if (player.masterystudies == undefined) return new Decimal(0)
 	if (!tmp.qu.bigRip.active) return new Decimal(0)
 	let log=(tmp.qu.bigRip.bestThisRun.log10()/getQCGoal()-1)*2
-	if (hasBosonicUpg(25)) log+=tmp.blu[25].log10()
 	if (log>1e4&&player.aarexModifications.ngudpV!==undefined) log=Math.sqrt(log*1e4)
 	if (player.aarexModifications.nguepV!==undefined) {
 		if (log>2e4) log=Math.pow(4e8*log,1/3)
@@ -5055,6 +5057,7 @@ function updateBosonicUpgradeDescs() {
 			else if (id==12) document.getElementById("bUpgEffect"+id).textContent="-"+tmp.blu[id].toFixed(5)
 			else if (id==14) document.getElementById("bUpgEffect"+id).textContent=getFullExpansion(tmp.blu[id])+(tmp.blu[id]>tmp.qu.electrons.sacGals&&!tmp.qu.bigRip.active?" (+"+getFullExpansion(Math.max(tmp.blu[id]-tmp.qu.electrons.sacGals,0))+" Antielectronic Galaxies)":"")
 			else if (id==15) document.getElementById("bUpgEffect"+id).textContent=shorten(tmp.blu[id].gh)+"x more Ghostifies & "+shorten(tmp.blu[id].dt)+"x more DT"
+			else if (id==25) document.getElementById("bUpgEffect"+id).textContent="^"+tmp.blu[25].toFixed(2)
 			else document.getElementById("bUpgEffect"+id).textContent=shorten(tmp.blu[id])+"x"
 		}
 	}
@@ -5107,6 +5110,11 @@ var bu={
 			am: 1e15,
 			g1: 8e7,
 			g2: 4e7
+		},
+		25: {
+			am: 15e16,
+			g2: 75e6,
+			g3: 15e6,
 		}
 	},
 	reqData:{},
@@ -5119,8 +5127,8 @@ var bu={
 		21: "Replace first Nanofield reward with a new powerful boost.",
 		22: "Replace seventh Nanofield reward with a new powerful boost.",
 		23: "Assigning gives more colored quarks based on your meta-antimatter.",
-		24: "You gain Quarks and Space Shards at the same time.",
-		25: "Gain more Ghost Particles based on your quantum worth."
+		24: "You produce Space Shards without having to Big Rip, but Break Eternity upgrades are nerfed.",
+		25: "Electrons boost per-ten Meta Dimensions multiplier."
 	},
 	effects:{
 		11: function() {
@@ -5150,7 +5158,7 @@ var bu={
 			return player.meta.antimatter.add(1).pow(0.06)
 		},
 		25: function() {
-			return quantumWorth.add(1).pow(0.001)
+			return 1
 		}
 	}
 }

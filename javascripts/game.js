@@ -1126,7 +1126,7 @@ function updateTemp() {
 			tmp.le[4]=Math.log10(Math.sqrt(tmp.ls[4]*2)+1)*5/4 //Blue light
 			tmp.le[5]=Decimal.pow(10,tmp.ls[5]>25?Math.sqrt(tmp.ls[5]*1e3+37500):tmp.ls[5]*10) //Indigo light
 			tmp.le[6]=Math.pow(player.postC3Reward.log10()*tmp.ls[6],1/3)*2 //Violet light
-			if (tmp.le[6]>15e3) tmp.le[6]=Math.pow(tmp.le[6]/15e3,3/4)*15e3
+			if (tmp.le[6]>15e3) tmp.le[6]=Math.pow(tmp.le[6]/15e3,.6)*15e3
 			tmp.le[6]=Decimal.pow(10,tmp.le[6])
 			if (player.ghostify.ghostlyPhotons.enpowerments) tmp.le[7]={effect:Math.log10(tmp.ls[3]+1)*300} //Green light (LE#1)
 			if (player.ghostify.ghostlyPhotons.enpowerments>1) tmp.le[8]=Math.log10(tmp.ls[4]*10+1)/4+1 //Blue light (LE#2)
@@ -3119,7 +3119,6 @@ function updateExtraReplGalaxies() {
 	if (extraReplGalaxies > 325) extraReplGalaxies = (Math.sqrt(0.9216+0.16*(extraReplGalaxies-324))-0.96)/0.08+324
 	if (tmp.ngp3) {
 		tmp.pe=Math.pow(tmp.qu.replicants.quarks.add(1).log10(),player.masterystudies.includes("t362")?0.35:0.25)*0.67*(player.masterystudies.includes("t412")?1.25:1)*(player.ghostify.ghostlyPhotons.unl?tmp.le[3]:1)
-		if (tmp.pe>50) tmp.pe=50*Math.pow(tmp.pe/50,5/7)
 		extraReplGalaxies *= colorBoosts.g + tmp.pe
 	}
 	extraReplGalaxies = Math.floor(extraReplGalaxies)
@@ -8579,10 +8578,8 @@ function gameLoop(diff) {
             tmp.qu.notrelative = false
         }
         if (player.ghostify.milestones>7) {
-            if (tmp.qu.bigRip.active) {
-                tmp.qu.bigRip.spaceShards=tmp.qu.bigRip.spaceShards.add(getSpaceShardsGain().times(diff/1e3))
-                if (tmp.be&&player.ghostify.milestones>14) tmp.qu.breakEternity.eternalMatter=tmp.qu.breakEternity.eternalMatter.add(getEMGain().times(diff/1e3))
-            } else {
+            if (tmp.qu.bigRip.active||hasBosonicUpg(24)) tmp.qu.bigRip.spaceShards=tmp.qu.bigRip.spaceShards.add(getSpaceShardsGain().times(diff/1e3))
+            if (!tmp.qu.bigRip.active) {
                 tmp.qu.quarks=tmp.qu.quarks.add(quarkGain().sqrt().times(diff/10))
                 var p=["rg","gb","br"]
                 for (var i=0;i<3;i++) {
@@ -8593,6 +8590,7 @@ function gameLoop(diff) {
                 }
                 if (player.ghostify.milestones>15) tmp.qu.quarks=tmp.qu.quarks.add(quarkGain().times(diff/1e3))
             }
+            if (tmp.be&&player.ghostify.milestones>14) tmp.qu.breakEternity.eternalMatter=tmp.qu.breakEternity.eternalMatter.add(getEMGain().times(diff/1e3))
             updateQuarkDisplay()
             updateQuantumWorth("quick")
         }

@@ -26,13 +26,15 @@ function getMetaDimensionMultiplier (tier) {
   let multiplierpower = Math.floor(player.meta[tier].bought / 10)
   let boostpower = power
   let strength = 1
+  let boughtStrength = 1
   if (player.masterystudies != undefined) {
       if (player.masterystudies.includes("t312")) strength = 1.045
       if (player.masterystudies.includes("d12")) boostpower = getNanofieldRewardEffect(6)
+      if (hasBosonicUpg(25)) boughtStrength = tmp.blu[25]
   }
   if (player.achievements.includes("ngpp14")) boostpower *= 1.01
   if (inQC(8)) boostpower = 1
-  let multiplier = Decimal.pow(power, Math.floor(player.meta[tier].bought / 10)).times(Decimal.pow(boostpower, Math.max(0, player.meta.resets - tier + 1)*strength)).times(getDilationMetaDimensionMultiplier());
+  let multiplier = Decimal.pow(power, Math.floor(player.meta[tier].bought / 10) * boughtStrength).times(Decimal.pow(boostpower, Math.max(0, player.meta.resets - tier + 1)*strength)).times(getDilationMetaDimensionMultiplier());
   if (player.dilation.upgrades.includes("ngpp3")) {
     multiplier = multiplier.times(getDil14Bonus());
   }
