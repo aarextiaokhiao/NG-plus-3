@@ -1662,7 +1662,7 @@ function updatePCCompletions() {
 		}
 		ranking+=Math.sqrt(rankingPart)
 	}
-	ranking=1/0
+	ranking*=100/56
 	if (ranking) document.getElementById("pccompletionsbtn").style.display = "inline-block"
 	if (tmp.pcc.normal>23) giveAchievement("The Challenging Day")
 	document.getElementById("pccranking").textContent=ranking.toFixed(1)
@@ -4782,6 +4782,7 @@ function bosonicTick(diff) {
 		if (!data.extracting&&data.autoExtract.gte(1)) {
 			data.extracting=true
 			data.autoExtract=data.autoExtract.sub(1)
+			dynuta.times=0
 		}
 	} else data.autoExtract=new Decimal(1)
 	if (data.extracting) data.extractProgress=data.extractProgress.add(diff.div(getExtractTime()))
@@ -4791,11 +4792,20 @@ function bosonicTick(diff) {
 		var toAdd=data.extractProgress.min(oldAuto.add(1).round()).floor()
 		data.autoExtract=data.autoExtract.sub(toAdd.min(oldAuto))
 		data.glyphs[data.typeToExtract-1]=data.glyphs[data.typeToExtract-1].add(toAdd).round()
+		if (dynuta.check) {
+			dynuta.check=false
+			dynuta.times++
+			if (dynuta.times>=20) giveAchievement("Did you not understand the automation?")
+		}
 		if (data.usedEnchants.includes(12)&&oldAuto.add(1).round().gt(toAdd)) data.extractProgress=data.extractProgress.sub(toAdd.min(data.extractProgress))
 		else {
 			data.extracting=false
 			data.extractProgress=new Decimal(0)
 		}
+	}
+	if (data.extracting&&data.extractProgress.lt(1)) {
+		dynuta.check=false
+		dynuta.times=0
 	}
 	
 	//Bosonic Antimatter production
@@ -4842,9 +4852,14 @@ function updateBosonicStuffCosts() {
 }
 
 //Bosonic Extractor / Bosonic Runes
+let dynuta={
+	check:false,
+	times:0
+}
 function extract() {
 	let data=tmp.bl
 	if (data.extracting) return
+	dynuta.check=true
 	data.extracting=true
 }
 

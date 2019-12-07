@@ -1,5 +1,5 @@
 var inflationCheck = false
-var betaId = "WZB_"
+var betaId = ""
 var prefix = betaId + "ds"
 var savePrefix = prefix + "AM_"
 var presetPrefix = prefix + "AM_ST_"
