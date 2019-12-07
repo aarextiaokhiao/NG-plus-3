@@ -7667,6 +7667,7 @@ setInterval(function() {
             player.ghostify.wzb.unl=true
             player.ghostify.wzb.unlReal=true
             $.notify("Congratulations! You have unlocked Bosonic Lab!", "success")
+            giveAchievement("Even Ghostlier than before")
             updateTemp()
             updateBLUnlocks()
         }

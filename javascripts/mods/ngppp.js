@@ -599,11 +599,10 @@ function getMTSMult(id, uses = "") {
 	if (id==264) return Math.pow(player.galaxies+1,0.25)*2
 	if (id==273) {
 		var intensity = 0
-		if (player.masterystudies ? player.masterystudies.includes("t273") || !uses.includes("ms") : false) intensity = 5
-		if (ghostified ? player.ghostify.neutrinos.boosts > 1 && !uses.includes("pn") : false) intensity += tmp.nb[1]
+		if (player.masterystudies !== undefined && (player.masterystudies.includes("t273") || uses.includes("ms"))) intensity = 5
+		if (ghostified && player.ghostify.neutrinos.boosts > 1 && !uses.includes("pn")) intensity += tmp.nb[1]
 		if (uses.includes("intensity")) return intensity
-		if (player.replicanti.chance<9) return new Decimal(1)
-		return Decimal.pow(Math.log10(player.replicanti.chance+1), intensity)
+		return Decimal.max(Math.log10(player.replicanti.chance + 1), 1).pow(intensity)
 	}
 	if (id==281) return Decimal.pow(10,Math.pow(tmp.rm.max(1).log10(),0.25)/10)
 	if (id==282) return Decimal.pow(10,Math.pow(tmp.rm.max(1).log10(),0.25)/15)
