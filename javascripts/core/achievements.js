@@ -420,7 +420,7 @@ function updateAchievements() {
 				var name = allAchievements[achId]
 				if (player.achievements.includes(achId)) {
 					n++
-					document.getElementById(name).setAttribute('ach-tooltip', secretAchievementTooltips["s"+achNum])
+					document.getElementById(name).setAttribute('ach-tooltip', secretAchievementTooltips[achId])
 					document.getElementById(name).className = "achievementunlocked"
 				} else {
 					document.getElementById(name).className = "achievementhidden"

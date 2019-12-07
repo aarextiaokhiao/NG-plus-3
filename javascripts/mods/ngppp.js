@@ -1662,7 +1662,7 @@ function updatePCCompletions() {
 		}
 		ranking+=Math.sqrt(rankingPart)
 	}
-	ranking=ranking/56*100
+	ranking=1/0
 	if (ranking) document.getElementById("pccompletionsbtn").style.display = "inline-block"
 	if (tmp.pcc.normal>23) giveAchievement("The Challenging Day")
 	document.getElementById("pccranking").textContent=ranking.toFixed(1)
@@ -1886,7 +1886,7 @@ function getQuarkChargeProduction(noSpeed) {
 	if (hasNU(7)) ret = ret.times(tmp.nu[3])
 	if (!noSpeed) {
 		ret = ret.times(tmp.ns)
-		if (tmp.qu.nanofield.power > tmp.apgw) ret = ret.div(Decimal.pow(2, tmp.qu.nanofield.power - tmp.apgw))
+		if (tmp.qu.nanofield.power > tmp.apgw) ret = ret.div(Decimal.pow(2, (tmp.qu.nanofield.power - tmp.apgw) / 2))
 	}
 	return ret
 }
@@ -1899,7 +1899,7 @@ function startProduceQuarkCharge() {
 function getQuarkLossProduction() {
 	let ret = getQuarkChargeProduction(true).pow(4).times(4e25)
 	if (hasNU(3)) ret = ret.div(10)
-	if (tmp.qu.nanofield.power > tmp.apgw) ret = ret.pow((tmp.qu.nanofield.power-tmp.apgw)/10+1)
+	if (tmp.qu.nanofield.power > tmp.apgw) ret = ret.pow((tmp.qu.nanofield.power-tmp.apgw)/5+1)
 	ret = ret.times(tmp.ns)
 	return ret
 }
@@ -1916,7 +1916,7 @@ function getQuarkEnergyProduction() {
 function getQuarkAntienergyProduction() {
 	let ret = tmp.qu.nanofield.charge.sqrt()
 	if (player.masterystudies.includes("t401")) ret = ret.div(getMTSMult(401))
-	if (tmp.qu.nanofield.power > tmp.apgw) ret = ret.times(Decimal.pow(2, tmp.qu.nanofield.power - tmp.apgw))
+	if (tmp.qu.nanofield.power > tmp.apgw) ret = ret.times(Decimal.pow(2, (tmp.qu.nanofield.power - tmp.apgw) / 2))
 	ret = ret.times(tmp.ns)
 	return ret
 }
@@ -1932,7 +1932,7 @@ function getNanofieldRewardEffect(id, effect) {
 	if (rewards >= apgw) {
 		let sbsc = Math.ceil((apgw - id + 1) / 8)
 		stacks = Math.sqrt((stacks / 2 + sbsc / 2) * sbsc)
-		if (id == (rewards - 1) % 8 + 1) stacks+=0.5
+		if (id == (rewards - 1) % 8 + 1) stacks += 0.5
 	}
 	if (id == 1) {
 		if (effect == "supersonic") return Math.floor(Math.max(stacks - 3.5, 0) * 75e5)
@@ -3240,7 +3240,7 @@ function ghostifyReset(implode, gain, amount, force) {
 	if (bm > 6 && !force && player.achievements.includes("ng3p68")) gainNeutrinos(Decimal.times(2e3 * tmp.qu.bigRip.bestGals, bulk), "all")
 	if (bm > 15) giveAchievement("I rather oppose the theory of everything")
 	if (player.eternityPoints.e>=22e4&&player.ghostify.under) giveAchievement("Underchallenged")
-	if (player.eternityPoints.e>=1/0&&inQCModifier("ad")) giveAchievement("Overchallenged")
+	if (player.eternityPoints.e>=375e3&&inQCModifier("ad")) giveAchievement("Overchallenged")
 	if (player.ghostify.best<=5) giveAchievement("Running through Big Rips")
 	player.ghostify.time = 0
 	player = {
@@ -5158,7 +5158,7 @@ var bu={
 			return player.meta.antimatter.add(1).pow(0.06)
 		},
 		25: function() {
-			return 1
+			return Math.sqrt(tmp.qu.electrons.amount+1)/8e3+1
 		}
 	}
 }

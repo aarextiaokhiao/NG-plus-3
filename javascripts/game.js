@@ -3928,6 +3928,10 @@ function setAchieveTooltip() {
     let wd = document.getElementById("Weak Decay")
     let arent = document.getElementById("Aren't you already dead?")
     let ee = document.getElementById("Everlasting Eternities")
+    let oc = document.getElementById("Overchallenged")
+    let btco = document.getElementById("Back to Challenge One")
+    let tdc = document.getElementById("The Deep Challenge")
+    let igu = document.getElementById("I give up.")
 
     alot.setAttribute('ach-tooltip', "Buy a single Second Dimension."+(player.aarexModifications.ngmX>3?" Reward: You gain Time Shards 100x faster.":""))
     ndial.setAttribute('ach-tooltip', "Have exactly 99 Eighth Dimensions. Reward: Eighth Dimensions are 10% stronger"+(player.tickspeedBoosts==undefined?".":" and you gain more GP based on your Eighth Dimensions and your Tickspeed Boosts."));
@@ -4034,6 +4038,10 @@ function setAchieveTooltip() {
     wd.setAttribute('ach-tooltip', "Get "+shortenCosts(Decimal.pow(10, 1e12))+" Infinity Unstable Quarks for each Branch without Big Ripping.")
     arent.setAttribute('ach-tooltip', "Reach "+shortenCosts(Decimal.pow(10, 18e5))+" IP while dilated and big ripped and without having studies, EP mult upgrades, Tree Upgrades, and Break Eternity.")
     ee.setAttribute('ach-tooltip', "Get "+shorten(Number.MAX_VALUE)+" eternitied stat.")
+    oc.setAttribute('ach-tooltip', "Become a ghost with at least "+shortenCosts(Decimal.pow(10, 375e3))+" EP while Big Ripped with Anti-Dilation modifier.")
+    btco.setAttribute('ach-tooltip', "Get a Paired Challenge 1 reward after you get "+shortenCosts(Decimal.pow(10, 165e7))+" antimatter in Quantum Challenges 6 and 8.")
+    tdc.setAttribute('ach-tooltip', "Complete Eternity Challenge 11 with "+shortenCosts(Decimal.pow(10, 15500))+" IP in a Paired Challenge with Quantum Challenges 6 and 8 combinations and Anti-Dilation modifier.")
+    igu.setAttribute('ach-tooltip', "Reach "+shortenCosts(Decimal.pow(10, 175e5))+" IP while dilated and big ripped with Anti-Dilation modifier and without having studies, EP mult upgrades, Tree Upgrades, and Break Eternity.")
 }
 
 
@@ -5468,6 +5476,7 @@ function eternity(force, auto, presetLoad, dilated) {
             updateBreakEternity()
             if (tmp.qu.breakEternity.eternalMatter.gte(9.999999e99)) giveAchievement("This achievement doesn't exist 4")
         }
+        if (player.infinityPoints.e>=15500&&player.currentEternityChall=="eterc11"&&inQC(6)&&inQC(8)&&inQCModifier("ad")) giveAchievement("This achievement doesn't exist 4")
         addEternityTime(array)
         var forceRespec = false
         if (player.currentEternityChall !== "") {
@@ -7568,7 +7577,6 @@ setInterval(function() {
 			if (ableToGetRid7 && player.infinityPoints.e >= 35e4) giveAchievement("And so your life?")
 			if (ableToGetRid8 && player.infinityPoints.e >= 95e4) giveAchievement("Please answer me why you are dying.")
 			if (ableToGetRid9 && player.infinityPoints.e >= 18e5) giveAchievement("Aren't you already dead?")
-			if (inQC(6)&&inQC(8)&&tmp.qu.pairedChallenges.current==1&&player.infinityPoints.e>=1/0) giveAchievement("Back to Challenge One")
 			if (ableToGetRid10 && player.infinityPoints.e >= 1/0) giveAchievement("I give up.")
 		}
 		if (tmp.qu.bigRip.spaceShards.e>32&&!tmp.qu.breakEternity.did) giveAchievement("Finite Time")

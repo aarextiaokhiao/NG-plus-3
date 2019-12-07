@@ -815,6 +815,7 @@ function quantumReset(force, auto, challid, bigRip, implode=false) {
 			document.getElementById("bpc68").textContent = shortenMoney(player.money)
 		}
 	}
+	var oldMoney = player.money
 	var dilTimes = player.dilation.times
 	var bhd = []
 	var bigRipChanged = player.masterystudies !== undefined && bigRip != player.quantum.bigRip.active
@@ -1216,16 +1217,17 @@ function quantumReset(force, auto, challid, bigRip, implode=false) {
 			var qc1=qc[0]
 			var qc2=qc[1]
 			if (intensity>1) {
+				var qc1st=Math.min(qc1,qc2)
+				var qc2st=Math.max(qc1,qc2)
+				var pcid=qc1st*10+qc2st
 				if (tmp.qu.pairedChallenges.current>tmp.qu.pairedChallenges.completed) {
 					tmp.qu.challenges[qc1]=2
 					tmp.qu.challenges[qc2]=2
 					tmp.qu.electrons.mult+=0.5
 					tmp.qu.pairedChallenges.completed=tmp.qu.pairedChallenges.current
+					if (pcid==68&&tmp.qu.pairedChallenges.current==1&&oldMoney.e>=165e7) giveAchievement("Back to Challenge One")
 					if (tmp.qu.pairedChallenges.current==4) giveAchievement("Twice in a row")
 				}
-				var qc1st=Math.min(qc1,qc2)
-				var qc2st=Math.max(qc1,qc2)
-				var pcid=qc1st*10+qc2st
 				if (tmp.qu.pairedChallenges.completions[pcid] === undefined) tmp.qu.pairedChallenges.completions[pcid] = tmp.qu.pairedChallenges.current
 				else tmp.qu.pairedChallenges.completions[pcid] = Math.min(tmp.qu.pairedChallenges.current,tmp.qu.pairedChallenges.completions[pcid])
 				if (dilTimes == 0) {
