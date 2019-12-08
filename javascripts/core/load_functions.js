@@ -122,9 +122,6 @@ function onLoad(noOffline) {
   sliderText.textContent = "Update rate: " + player.options.updateRate + "ms";
   slider.value = player.options.updateRate;
 
-  document.getElementById("autoSaveInterval").textContent = "Auto-save interval: " + getAutoSaveInterval() + "s"
-  document.getElementById("autoSaveIntervalSlider").value = getAutoSaveInterval()
-
   if (player.secondAmount !== 0) {
       document.getElementById("tickSpeed").style.visibility = "visible";
       document.getElementById("tickSpeedMax").style.visibility = "visible";
@@ -419,10 +416,12 @@ if (player.version < 5) {
   toggleChallengeRetry()
   toggleBulk()
   toggleBulk()
-
+ 
   document.getElementById("rename").innerHTML = "<p style='font-size:15px'>Rename</p>Name: "+(player.aarexModifications.save_name?player.aarexModifications.save_name:"Save #" + savePlacement)
   document.getElementById("offlineProgress").textContent = "Offline progress: O"+(player.aarexModifications.offlineProgress?"N":"FF")
   document.getElementById("autoSave").textContent = "Auto save: O"+(player.aarexModifications.autoSave?"N":"FF")
+  document.getElementById("autoSaveInterval").textContent = "Auto-save interval: " + getAutoSaveInterval() + "s"
+  document.getElementById("autoSaveIntervalSlider").value = getAutoSaveInterval()
 
   if (!player.replicanti.auto[0]) document.getElementById("replauto1").textContent = "Auto: OFF"
   if (!player.replicanti.auto[1]) document.getElementById("replauto2").textContent = "Auto: OFF"
@@ -1892,6 +1891,7 @@ if (player.version < 5) {
   document.getElementById('assignAll').style.display=(player.masterystudies?tmp.qu.reachedInfQK||ghostified:false)?"":"none"
   document.getElementById('autoReset').style.display=player.achievements.includes("ng3p47")?"":"none"
   document.getElementById('aftereternity').style.display=player.achievements.includes("ng3p52")?"":"none"
+  transformSaveToDecimal()
   if (player.pSac !== undefined) {
       updateParadoxUpgrades()
       updatePUCosts()
@@ -1954,7 +1954,6 @@ if (player.version < 5) {
       updateBLUnlocks()
       updateBosonicStuffCosts()
   }
-  transformSaveToDecimal();
   hideDimensions()
   updateChallenges()
   updateNCVisuals()

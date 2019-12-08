@@ -1269,6 +1269,7 @@ function quantumReset(force, auto, challid, bigRip, implode=false) {
 			tmp.qu.electrons.amount=0
 			tmp.qu.electrons.sacGals=0
 			tmp.qu.challenge=[]
+			tmp.aeg=0
 		} else if (pc<1) tmp.qu.challenge=[challid]
 		else {
 			tmp.qu.challenge=tmp.qu.pairedChallenges.order[pc]

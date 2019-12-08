@@ -1083,7 +1083,7 @@ let tmp = {
 }
 function updateTemp() {
 	tmp.ngp3=player.masterystudies!==undefined
-	tmp.ri=player.money.gte(getLimit()) && ((player.currentChallenge != "" && player.money.gte(player.challengeTarget)) || !onPostBreak())
+	tmp.ri=player.money.gte(getLimit())&&((player.currentChallenge!=""&&player.money.gte(player.challengeTarget))||!onPostBreak())
 	tmp.nrm=player.replicanti.amount.max(1)
 	tmp.rg4=false
 	if (tmp.ngp3) {
