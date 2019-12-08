@@ -7033,7 +7033,7 @@ function getTTGenPart(x) {
 	x=x.max(1)
 	let y=player.aarexModifications.ngudpV&&!player.aarexModifications.nguepV?73:80
 	if (x.gt(Math.pow(10,y))) x=Math.pow(10,y+Math.sqrt(x.log10()*5-375)-5)
-	return x/(ghostified?1e3:1e5)
+	return x/(ghostified?200:2e4)
 }
 
 function updateDilationUpgradeButtons() {
