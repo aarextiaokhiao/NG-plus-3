@@ -121,7 +121,7 @@ function setInitialDimensionPower() {
 	if (player.infinityUpgradesRespecced!=undefined) tickspeedPower+=player.infinityUpgradesRespecced[1]*10
 	player.tickspeed=Decimal.pow(getTickSpeedMultiplier(), tickspeedPower).times(player.aarexModifications.newGameExpVersion?500:1e3)
 	
-	var ic3Power=player.totalTickGained*getEC14Power()
+	var ic3Power=player.totalTickGained*getECReward(14)
 	if (player.tickspeedBoosts!=undefined&&player.currentChallenge!="postc5") {
 		let mult = 30
 		if ((inNC(14) && player.aarexModifications.ngmX == 3) || player.currentChallenge == "postcngm3_3") mult = 20

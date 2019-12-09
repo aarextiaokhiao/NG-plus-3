@@ -424,7 +424,7 @@ function updateNewPlayer(reseted) {
         player.options.gSacrificeConfirmation = true
     }
     if (modesChosen.ngpp > 1) {
-        player.aarexModifications.newGame3PlusVersion = 2.2
+        player.aarexModifications.newGame3PlusVersion = 2.201
         player.respecMastery=false
         player.dbPower = 1
         player.dilation.times = 0
@@ -6292,8 +6292,7 @@ function unlockEChall(idx) {
 }
 
 function ECTimesCompleted(name) {
-    if (player.eternityChalls[name] === undefined) return 0
-    else return player.eternityChalls[name]
+    return player.eternityChalls[name]||0
 }
 
 function canUnlockEC(idx, cost, study, study2) {
@@ -6544,17 +6543,35 @@ function getECReward(x) {
 		else r=r.min(1e100)
 		return r.max(1)
 	}
+	if (x==3) return c*0.8
 	if (x==4) return player.infinityPoints.max(1).pow((m2?.4:0.003)+c*(m2?.2:0.002)).min(m2?1/0:1e200)
 	if (x==5) return c*5
-	if (x==8) return Math.max(Math.pow(Math.log10(player.infinityPower.plus(1).log10()+1),(m2?0.05:0.03)*c), 1)
+	if (x==8) {
+		let x=Math.log10(player.infinityPower.plus(1).log10()+1)
+		if (x>0) x=Math.pow(x,(m2?0.05:0.03)*c)
+		return Math.max(x,1)
+	}
 	if (x==9) {
-		let r=player.timeShards.pow(c/(m2?1:10))
+		let r=player.timeShards
+		if (r.gt(0)) r=r.pow(c/(m2?1:10))
 		if (m2) r=r.times(Decimal.pow(player.timeShards.max(10).log10(),500*c))
 		return r.plus(1).min(m2?"1e10000":"1e400")
 	}
-	if (x==10) return Decimal.pow(getInfinitied(),m2?2:.9).times(c*(m2?0.02:0.000002)).add(1).max(1).pow(player.timestudy.studies.includes(31)?4:1)
+	if (x==10) return Decimal.pow(getInfinitied(),m2?2:.9).times(c*(m2?0.02:0.000002)).add(1).pow(player.timestudy.studies.includes(31)?4:1)
 	if (x==12) return 1-c*(m2?.06:0.008)
 	if (x==13) return c*0.2
+	if (x==14) {
+		let x=0
+		if (tmp.ngp3) {
+			if (player.currentEterChall=='eterc14') x=5
+			else {
+				x=c*2
+				if (hasNU(12)) if (tmp.qu.bigRip.active) x*=tmp.nu[4].replicated
+			}
+		}
+		if (player.galacticSacrifice!==undefined) x++
+		return x
+	}
 }
 
 function startEternityChallenge(n) {
@@ -8117,7 +8134,7 @@ function gameLoop(diff) {
 		gain = Math.ceil(new Decimal(player.timeShards).dividedBy(player.tickThreshold).log10()/Math.log10(thresholdMult))
 		player.totalTickGained += gain
 		player.tickspeed = player.tickspeed.times(Decimal.pow(getTickSpeedMultiplier(),gain))
-		player.postC3Reward=Decimal.pow(getPostC3Mult(),gain*getEC14Power()).times(player.postC3Reward)
+		player.postC3Reward=Decimal.pow(getPostC3Mult(),gain*getECReward(14)).times(player.postC3Reward)
 		player.tickThreshold = Decimal.pow(thresholdMult,player.totalTickGained).times(player.aarexModifications.ngmX>3?0.01:1)
 		document.getElementById("totaltickgained").textContent = "You've gained "+getFullExpansion(player.totalTickGained)+" tickspeed upgrades."
 		updateTickSpeed();
@@ -8475,7 +8492,7 @@ function gameLoop(diff) {
 		if (document.getElementById("eternitychallenges").style.display == "block") {
 			document.getElementById("ec1reward").textContent = "Reward: "+shortenMoney(getECReward(1))+"x on all Time Dimensions (based on time spent this Eternity)"
 			document.getElementById("ec2reward").textContent = "Reward: Infinity power affects 1st Infinity Dimension with reduced effect, Currently: "+shortenMoney(getECReward(2))+"x"
-			document.getElementById("ec3reward").textContent = "Reward: Increase the multiplier for buying 10 dimensions, Currently: "+shorten(getDimensionPowerMultiplier(true, "no-QC5"))+"x"
+			document.getElementById("ec3reward").textContent = "Reward: Increase the multiplier for buying 10 dimensions, Currently: "+shorten(getDimensionPowerMultiplier(true,"no-QC5"))+"x"
 			document.getElementById("ec4reward").textContent = "Reward: Infinity Dimension multiplier from unspent IP, Currently: "+shortenMoney(getECReward(4))+"x"
 			document.getElementById("ec5reward").textContent = "Reward: Galaxy cost scaling starts "+getECReward(5)+" galaxies later."
 			document.getElementById("ec6reward").textContent = "Reward: Further reduce the dimension cost multiplier increase, Currently: "+player.dimensionMultDecrease.toFixed(1)+"x "
@@ -8486,7 +8503,7 @@ function gameLoop(diff) {
 			document.getElementById("ec11reward").textContent = "Reward: Further reduce the tickspeed cost multiplier increase, Currently: "+player.tickSpeedMultDecrease.toFixed(2)+"x "
 			document.getElementById("ec12reward").textContent = "Reward: Infinity Dimension cost multipliers are reduced. (x^"+getECReward(12)+")"
 			document.getElementById("ec13reward").textContent = "Reward: Increase the power of meta-antimatter. ("+(getECReward(13)+9)+"x)"
-			document.getElementById("ec14reward").textContent = "Reward: Free tickspeed upgrades increase IC3 reward "+getEC14Power().toFixed(0)+" times."
+			document.getElementById("ec14reward").textContent = "Reward: Free tickspeed upgrades increase IC3 reward "+getECReward(14).toFixed(0)+" times."
 
 			document.getElementById("ec10span").textContent = shortenMoney(ec10bonus) + "x"
 		}

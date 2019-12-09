@@ -186,21 +186,20 @@ function getInfinityPowerEffect() {
 	if (player.currentEternityChall == "eterc9") return Decimal.pow(Math.max(player.infinityPower.log2(),1),player.galacticSacrifice==undefined?4:30).max(1)
 	let log = player.infinityPower.max(1).log10()
 	log *= getInfinityPowerEffectPower()
-	if (hasPU(34)) log *= puMults[34]()
 	if (log > 10 && player.pSac !== undefined) log = Math.pow(log * 200 - 1e3, 1/3)
 	return Decimal.pow(10, log)
 }
 
 function getInfinityPowerEffectPower() {
+	let x=7
 	if (player.galacticSacrifice!=undefined) {
-		let ret=Math.pow(player.galaxies,0.7)
-		if (player.currentChallenge=="postcngm3_2"||(player.tickspeedBoosts!=undefined&&player.currentChallenge=="postc1")) ret=player.galaxies
-		else if (player.challenges.includes("postcngm3_2")) ret=Math.pow(player.galaxies+(player.resets+player.tickspeedBoosts)/30,0.7)
-		let min=7
-		if (player.pSac!==undefined) min=3
-		return Math.max(ret,7)
+		x=Math.pow(player.galaxies,0.7)
+		if (player.currentChallenge=="postcngm3_2"||(player.tickspeedBoosts!=undefined&&player.currentChallenge=="postc1")) x=player.galaxies
+		else if (player.challenges.includes("postcngm3_2")) x=Math.pow(player.galaxies+(player.resets+player.tickspeedBoosts)/30,0.7)
+		x=Math.max(x,7)
 	}
-	return 7
+	if (hasPU(34)) x*=puMults[34]()
+	return x
 }
 
 function switchAutoInf(tier) {

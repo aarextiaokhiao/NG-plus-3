@@ -136,7 +136,6 @@ function buyMasteryStudy(type, id, quick=false) {
 		if (id==266&&player.replicanti.gal>399) {
 			var gal=player.replicanti.gal
 			player.replicanti.gal=0
-			player.replicanti.galCost=new Decimal(1e170)
 			player.replicanti.galCost=getRGCost(gal)
 			player.replicanti.gal=gal
 		}
@@ -648,20 +647,6 @@ function getMTSMult(id, uses = "") {
 	}
 }
 
-//v1.3
-function getEC14Power() {
-	let ret = 0
-	if (player.masterystudies) {
-		if (player.currentEterChall=='eterc14') ret=5
-		else {
-			ret=ECTimesCompleted("eterc14")*2
-			if (hasNU(12)) if (tmp.qu.bigRip.active) ret*=tmp.nu[4].replicated
-		}
-	}
-	if (player.galacticSacrifice !== undefined) ret++
-	return ret
-}
-
 //v1.5
 function showQuantumTab(tabName) {
 	//iterate over all elements in div_tab class. Hide everything that's not tabName and show tabName
@@ -1057,12 +1042,11 @@ function toggleAllMetaDims() {
 function sacrificeGalaxy(auto=false) {
 	var amount=player.galaxies-tmp.qu.electrons.sacGals
 	if (amount<1) return
-	if (player.options.sacrificeConfirmation&&!auto) if (!confirm("Sacrificing your galaxies reduces your tickspeed and so your tick interval. You will gain a boost for multiplier per ten dimensions. Are you sure you want to do that?")) return
-	var old=new Decimal(getTickSpeedMultiplier()).log10()
+	if (player.options.sacrificeConfirmation&&!auto) if (!confirm("You will perform a galaxy reset, but you will exchange all your galaxies to electrons which will give a boost to multiplier per ten dimensions.")) return
 	tmp.qu.electrons.sacGals+=amount
 	tmp.qu.electrons.amount+=getELCMult()*amount
-	player.tickspeed=player.tickspeed.pow(old/new Decimal(getTickSpeedMultiplier()).log10())
 	if (!tmp.qu.autoOptions.sacrifice) updateElectronsEffect()
+	if (!auto) galaxyReset(0)
 }
 
 function getMPTPower(mod) {
@@ -1692,7 +1676,7 @@ function updatePCCompletions() {
 //v1.99874
 function getQCReward(num) {
 	if (QCIntensity(num) < 1) return 1
-	if (num == 1) return Decimal.pow(10, Math.pow(getDimensionFinalMultiplier(1).times(getDimensionFinalMultiplier(2)).log10(), QCIntensity(1)>1?0.275:0.25)/200)
+	if (num == 1) return Decimal.pow(10, Math.pow(getDimensionFinalMultiplier(1).times(getDimensionFinalMultiplier(2)).max(1).log10(), QCIntensity(1)>1?0.275:0.25)/200)
 	if (num == 2) return 1.2 + QCIntensity(2) * 0.2
 	if (num == 3) {
 		let log=Math.sqrt(Math.max(player.infinityPower.log10(),0)/(QCIntensity(3)>1?2e8:1e9))
