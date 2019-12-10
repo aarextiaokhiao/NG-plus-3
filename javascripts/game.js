@@ -6563,7 +6563,7 @@ function getECReward(x) {
 	if (x==14) {
 		let x=0
 		if (tmp.ngp3) {
-			if (player.currentEterChall=='eterc14') x=5
+			if (player.currentEternityChall=='eterc14') x=5
 			else {
 				x=c*2
 				if (hasNU(12)) if (tmp.qu.bigRip.active) x*=tmp.nu[4].replicated
