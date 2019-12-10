@@ -1251,7 +1251,7 @@ if (player.version < 5) {
       tmp.bl=player.ghostify.bl
       for (var g=1;g<br.names.length;g++) tmp.bl.glyphs.push(0)
   }
-  if (player.aarexModifications.newGame3PlusVersion < 2.201) player.aarexModifications.newGame3PlusVersion = 2.201
+  if (player.aarexModifications.newGame3PlusVersion < 2.202) player.aarexModifications.newGame3PlusVersion = 2.202
   if (player.masterystudies) {
 	  if (player.eternityBuyer.presets === undefined) player.eternityBuyer.presets = {on: false, autoDil: false, selected: -1, selectNext: 0, left: 1, order: []}
       if (player.meta.bestOverQuantums === undefined) player.meta.bestOverQuantums = player.meta.bestAntimatter

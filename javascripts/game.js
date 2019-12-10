@@ -424,7 +424,7 @@ function updateNewPlayer(reseted) {
         player.options.gSacrificeConfirmation = true
     }
     if (modesChosen.ngpp > 1) {
-        player.aarexModifications.newGame3PlusVersion = 2.201
+        player.aarexModifications.newGame3PlusVersion = 2.202
         player.respecMastery=false
         player.dbPower = 1
         player.dilation.times = 0

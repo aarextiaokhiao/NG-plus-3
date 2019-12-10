@@ -3192,13 +3192,13 @@ function ghostify(auto, force) {
 		setTimeout(function(){
 			implosionCheck=0
 		}, seconds * 1000)
-	} else ghostifyReset()
+	} else ghostifyReset(false, 0, 0, force)
 }
 
 function ghostifyReset(implode, gain, amount, force) {
 	var bulk = getGhostifiedGain()
 	if (!force) {
-		if (gain === undefined) {
+		if (!implode) {
 			var gain = getGHPGain()
 			player.ghostify.ghostParticles = player.ghostify.ghostParticles.add(gain).round()
 		} else player.ghostify.ghostParticles = amount
@@ -3224,7 +3224,7 @@ function ghostifyReset(implode, gain, amount, force) {
 	if (bm > 15) giveAchievement("I rather oppose the theory of everything")
 	if (player.eternityPoints.e>=22e4&&player.ghostify.under) giveAchievement("Underchallenged")
 	if (player.eternityPoints.e>=375e3&&inQCModifier("ad")) giveAchievement("Overchallenged")
-	if (player.ghostify.best<=5) giveAchievement("Running through Big Rips")
+	if (player.ghostify.best<=6) giveAchievement("Running through Big Rips")
 	player.ghostify.time = 0
 	player = {
 		money: new Decimal(10),
