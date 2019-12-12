@@ -2312,7 +2312,7 @@ function delete_save(saveId) {
 
 var ngModeMessages=[]
 function new_game(id) {
-	if (modes.arrows > 1 || modes.ngud > 3 || modes.nguep > 1 || modes.ngmu > 1) {
+	if (modes.arrows > 1 || modes.ngud > 3 || modes.nguep > 1 || modes.ngmu > 1 || modes.ngumu > 1) {
 		alert("Coming soon...")
 		return
 	}

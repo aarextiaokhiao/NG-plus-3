@@ -3514,7 +3514,8 @@ var modCaps = {
   rs: 2,
   ngud: 4,
   nguep: 2,
-  ngmu: 2
+  ngmu: 3,
+  ngumu: 3
 }
 var modFullNames = {
   rs: "Respecced",
@@ -3536,7 +3537,8 @@ var modSubNames = {
   rs: ["NONE", "Eternity", "Infinity"],
   ngud: ["OFF", "ON", "Prime (')", "Semiprime (S')", "Semiprime.1 (S'.1)"],
   nguep: ["Linear' (↑⁰')", "Exponential' (↑')", "Tetrational' (↑↑')"],
-  ngmu: ["OFF", "ON", "Prime"]
+  ngmu: ["OFF", "ON", "NG**", "NG*3"],
+  ngumu: ["OFF", "ON", "**'", "*3'"]
 }
 function toggle_mode(id) {
 	hasSubMod = Object.keys(modCaps).includes(id)
