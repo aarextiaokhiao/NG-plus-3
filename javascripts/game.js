@@ -748,7 +748,7 @@ function updateNewPlayer(reseted) {
         reduceDimCosts()
     }
     if (modesChosen.ngmm > 3) {
-        player.aarexModifications.ngm5V=0.51
+        player.aarexModifications.ngm5V=0.52
         player.aarexModifications.ngmX=5
         player.infDimensionsUnlocked[0]=true
         resetPSac()
@@ -1866,6 +1866,7 @@ function updateDimensions() {
     if (document.getElementById("stats").style.display == "block" && document.getElementById("statistics").style.display == "block") {
         document.getElementById("totalmoney").textContent = 'You have made a total of ' + shortenMoney(player.totalmoney) + ' antimatter.'
         document.getElementById("totalresets").textContent = 'You have done ' + getFullExpansion(player.resets) + ' dimension boosts/shifts.'
+        setAndMaybeShow("lostResets", player.pSac && player.pSac.lostResets, '"You have lost a total of "+getFullExpansion(player.pSac.lostResets)+" dimension boosts/shifts only after matter exceeded your antimatter."')
         document.getElementById("tdboosts").textContent = player.aarexModifications.ngmX>3?'You have done ' + getFullExpansion(player.tdBoosts) + ' time dimension boosts/shifts.':""
         var showBoosts=isTickspeedBoostPossible()
         document.getElementById("boosts").style.display = showBoosts?'':'none'
@@ -7794,6 +7795,7 @@ function gameLoop(diff) {
             if (failureCount > 9) giveAchievement("You're a failure")
         } else quickReset()
     } else if (player.matter.gt(player.money) && (inNC(12) || player.currentChallenge == "postc1" || player.pSac !== undefined) && !haveET) {
+        if (player.pSac!=undefined) player.pSac.lostResets++
         if (player.pSac!=undefined && !player.resets) pSacReset(true, undefined, pxGain)
         else quickReset()
 	}

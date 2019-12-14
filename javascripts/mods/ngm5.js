@@ -358,7 +358,7 @@ function resetPSac() {
 			times: 0,
 			normalTimes: 0,
 			forcedTimes: 0,
-			lostResets: 0,
+			lostResets: (player.pSac && player.pSac.lostResets) || 0,
 			px: new Decimal(0),
 			upgs: keepPU ? player.pSac.upgs : [],
 			rebuyables: keepPU ? player.pSac.rebuyables : {}
