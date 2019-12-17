@@ -1,5 +1,5 @@
 var inflationCheck = false
-var betaId = ""
+var betaId = "3.1"
 var prefix = betaId + "ds"
 var savePrefix = prefix + "AM_"
 var presetPrefix = prefix + "AM_ST_"
@@ -818,7 +818,12 @@ if (player.version < 5) {
                       zNeReq: 1,
                       wpb: 0,
                       wnb: 0,
-                      wb: 0
+                      zb: 0
+                  },
+                  hb: {
+                      times: 0,
+                      amount: 0,
+                      boosts: {}
                   }
               }
               tmp.bl=player.ghostify.bl
@@ -1249,9 +1254,15 @@ if (player.version < 5) {
           wb: 0
       }
       tmp.bl=player.ghostify.bl
-      for (var g=1;g<br.names.length;g++) tmp.bl.glyphs.push(0)
   }
-  if (player.aarexModifications.newGame3PlusVersion < 2.202) player.aarexModifications.newGame3PlusVersion = 2.202
+  if (player.aarexModifications.newGame3PlusVersion < 2.3) {
+      player.ghostify.hb = {
+          times: 0,
+          amount: 0,
+          boosts: {}
+      }
+      player.aarexModifications.newGame3PlusVersion = 2.3
+  }
   if (player.masterystudies) {
 	  if (player.eternityBuyer.presets === undefined) player.eternityBuyer.presets = {on: false, autoDil: false, selected: -1, selectNext: 0, left: 1, order: []}
       if (player.meta.bestOverQuantums === undefined) player.meta.bestOverQuantums = player.meta.bestAntimatter
@@ -1291,6 +1302,7 @@ if (player.version < 5) {
       if (player.ghostify.neutrinos.boosts==undefined) player.ghostify.neutrinos.boosts=1
       if (player.ghostify.ghostlyPhotons.maxRed==undefined) player.ghostify.ghostlyPhotons.maxRed=0
       if (player.ghostify.wzb.unl) giveAchievement("Even Ghostlier than before")
+      for (var g=tmp.bl.glyphs.length+1;g<br.names.length;g++) tmp.bl.glyphs.push(0)
       if (!tmp.bl.usedEnchants.length) tmp.bl.usedEnchants=[]
       if (player.ghostify.wzb.dPUse===undefined) {
           player.ghostify.wzb.dPUse=0
@@ -2620,6 +2632,7 @@ function transformSaveToDecimal() {
           player.ghostify.wzb.wnb=new Decimal(player.ghostify.wzb.wnb)
           player.ghostify.wzb.zb=new Decimal(player.ghostify.wzb.zb)
       }
+      if (player.ghostify.hb) calculateTotalHiggs()
   }
 }
 

@@ -181,6 +181,14 @@ const allAchievements = {
   ng3p86 : "Back to Challenge One",
   ng3p87 : "The Deep Challenge",
   ng3p88 : "I give up.",
+  ng3p91 : "Bosons have gone too far!",
+  ng3p92 : "ng3p92",
+  ng3p93 : "ng3p93",
+  ng3p94 : "ng3p94",
+  ng3p95 : "ng3p95",
+  ng3p96 : "ng3p96",
+  ng3p97 : "ng3p97",
+  ng3p98 : "ng3p98",
   s11 : "The first one's always free",
   s12 : "Just in case",
   s13 : "It pays to have respect",
@@ -339,7 +347,7 @@ function updateAchievements() {
 	var amount = 0
 	var rowsShown = 0
 	var rowsNum = 0
-	for (var i=1; i<24; i++) {
+	for (var i=1; i<25; i++) {
 		var shown=true
 		var rowid=i
 		if (i>15) {

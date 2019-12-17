@@ -1841,6 +1841,7 @@ function getEDMultiplier(dim) {
 	if (player.masterystudies.includes("t402")) ret = ret.times(30)
 	if (player.masterystudies.includes("d13")) ret = ret.times(getTreeUpgradeEffect(6))
 	if (hasNU(7)&&dim%2) ret = ret.times(tmp.nu[3])
+	if (player.achievements.includes("ng3p91")) ret = ret.times(player.achPow)
 	if (player.dilation.active || player.galacticSacrifice) ret = Decimal.pow(10, Math.pow(ret.log10(), dilationPowerStrength()))
 	return ret
 }
@@ -4158,6 +4159,11 @@ function updateGhostifyTabs() {
 			document.getElementById("zbGain").textContent="You will gain "+shortenDimensions(data2.zNeReq.pow(0.75))+" Z Bosons on next oscillation."
 			document.getElementById("zbSpeed").textContent=shorten(tmp.zbs)
 		}
+		if (document.getElementById("hbtab").style.display=="block") {
+			document.getElementById("hbReset").className="gluonupgrade "+(tmp.bl.am.lt(1e19)?"unavailablebtn":"storebtn")
+			document.getElementById("hbGain").textContent=shortenDimensions(getHiggsGain())
+			document.getElementById("hbReq").textContent=shortenCosts(1e19)
+		}
 	}
 }
 
@@ -4976,7 +4982,7 @@ function updateEnchantDescs() {
 }
 
 var br={
-	names:[null, "Infinity", "Eternity", "Quantum", /*"Ghostly", "Ethereal", "Sixth", "Seventh", "Eighth", "Ninth"*/], //Current limit of 9.
+	names:[null, "Infinity", "Eternity", "Quantum", "Ghostly", /*"Ethereal", "Sixth", "Seventh", "Eighth", "Ninth"*/], //Current limit of 9.
 	scalings:{
 		1: 60,
 		2: 120,
@@ -5075,7 +5081,7 @@ function updateBosonicUpgradeDescs() {
 }
 
 var bu={
-	rows:2,
+	rows:4,
 	costs:{
 		11: {
 			am: 200,
@@ -5217,4 +5223,75 @@ function getOscillateGainSpeed() {
 //Anti-Preon Ghost's Lair
 function getAntiPreonGhostWake() {
 	return 104
+}
+
+//v2.3: NG+3.1
+function blReset() {
+	ghostify(false, true)
+	delete tmp.qu.nanofield.apgWoke
+	player.ghostify.neutrinos.electron=new Decimal(0)
+	player.ghostify.neutrinos.mu=new Decimal(0)
+	player.ghostify.neutrinos.tau=new Decimal(0)
+	player.ghostify.ghostlyPhotons.amount=new Decimal(0)
+	player.ghostify.ghostlyPhotons.darkMatter=new Decimal(0)
+	player.ghostify.ghostlyPhotons.ghostlyRays=new Decimal(0)
+	player.ghostify.ghostlyPhotons.lights=[0,0,0,0,0,0,0,0]
+	tmp.bl = {
+		watt: new Decimal(0),
+		ticks: tmp.bl.ticks,
+		speed: 1,
+		am: new Decimal(0),
+		typeToExtract: 1,
+		extracting: false,
+		extractProgress: new Decimal(0),
+		autoExtract: new Decimal(0),
+		glyphs: [],
+		enchants: {},
+		usedEnchants: [],
+		upgrades: [],
+		battery: new Decimal(0),
+		odSpeed: tmp.bl.odSpeed
+	}
+	for (var g=1;g<br.names.length;g++) tmp.bl.glyphs.push(new Decimal(0))
+	player.ghostify.wzb = {
+		unl: true,
+		dP: new Decimal(0),
+		dPUse: 0,
+		wQkUp: true,
+		wQkProgress: new Decimal(0),
+		zNeGen: 1,
+		zNeProgress: new Decimal(0),
+		zNeReq: new Decimal(1),
+		wpb: new Decimal(0),
+		wnb: new Decimal(0),
+		zb: new Decimal(0)
+	}
+}
+
+function hbReset() {
+	if (tmp.bl.am.lt(1e19)) return
+	if (!confirm("Reseting this lab resets everything that Light Empowerment resets, but also Neutrinos and Bosonic Lab. You will gain Higgs Bosons when you do that. You will also make Anti-Preon Ghost sleepy again.")) return
+	changeFieldParticleAmt("0;0", getHiggsGain().add(player.ghostify.hb.boosts["0;0"] || 0))
+	calculateTotalHiggs()
+	blReset()
+	player.ghostify.hb.times++
+	giveAchievement("Bosons have gone too far!")
+}
+
+function getHiggsGain() {
+	let r=tmp.bl.am.div(1e19).pow(.1)
+	return r.floor()
+}
+
+function calculateTotalHiggs() {
+	player.ghostify.hb.amount = new Decimal(0)
+	for (var b in player.ghostify.hb.boosts) {
+		player.ghostify.hb.boosts[b] = new Decimal(player.ghostify.hb.boosts[b])
+		player.ghostify.hb.amount = player.ghostify.hb.amount.add(player.ghostify.hb.boosts[b])
+	}
+	player.ghostify.hb.amount = player.ghostify.hb.amount.round()
+}
+
+function changeFieldParticleAmt(id, amt) {
+	player.ghostify.hb.boosts[id] = new Decimal(amt)
 }

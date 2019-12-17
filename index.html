@@ -2622,6 +2622,32 @@
 								<div id="I give up." class="achievement achievementlocked" style="background-image: url(images/174.png)"></div>
 							</td>
 						</tr>
+						<tr id="achRowng3p9">
+							<td>
+								<div id="Bosons have gone too far!" class="achievement achievementlocked" style="background-image: url(images/175.png)" ach-tooltip="Unlock Higgs Bosons. Reward: Your achievement bonus boosts Emperor Dimensions."></div>
+							</td>
+							<td>
+								<div id="ng3p92" class="achievement achievementlocked" style="background-image: url(images/achhidden.png)"></div>
+							</td>
+							<td>
+								<div id="ng3p93" class="achievement achievementlocked" style="background-image: url(images/achhidden.png)"></div>
+							</td>
+							<td>
+								<div id="ng3p94" class="achievement achievementlocked" style="background-image: url(images/achhidden.png)"></div>
+							</td>
+							<td>
+								<div id="ng3p95" class="achievement achievementlocked" style="background-image: url(images/achhidden.png)"></div>
+							</td>
+							<td>
+								<div id="ng3p96" class="achievement achievementlocked" style="background-image: url(images/achhidden.png)"></div>
+							</td>
+							<td>
+								<div id="ng3p97" class="achievement achievementlocked" style="background-image: url(images/achhidden.png)"></div>
+							</td>
+							<td>
+								<div id="ng3p98" class="achievement achievementlocked" style="background-image: url(images/achhidden.png)"></div>
+							</td>
+						</tr>
 				</table>
 				<div id="nothingness">You completed all normal achievements! Congratulations!</div>
 			</div>
@@ -5141,6 +5167,7 @@
 							<td><button class="secondarytabbtn" onclick="showBLTab('bextab')">Bosonic Extractor</button></td>
 							<td><button class="secondarytabbtn" onclick="showBLTab('butab')">Bosonic Upgrades</button></td>
 							<td><button class="secondarytabbtn" onclick="showBLTab('wzbtab')">W & Z Bosons</button></td>
+							<td><button class="secondarytabbtn" id="hbtabbtn" onclick="showBLTab('hbtab')">Higgs Bosons</button></td>
 						</tr>
 					</table>
 					<div id="bextab" class="bltab">
@@ -5187,6 +5214,10 @@
 								<div id="zNe"><span id="zNeSymbol"></span></div>
 							</td>
 						</tr></table>
+					</div>
+					<div id="hbtab" class="bltab">
+						<button class="gluonupgrade hb" id="hbReset" onclick="hbReset()">Reset this lab for <span id="hbGain"></span> Higgs.<br>(requires <span id="hbReq"></span> Bosonic Antimatter)</button>
+						<div id="hbDiv"></div>
 					</div>
 				</div>
 			</div>
