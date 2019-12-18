@@ -4160,7 +4160,7 @@ function updateGhostifyTabs() {
 			document.getElementById("zbSpeed").textContent=shorten(tmp.zbs)
 		}
 		if (document.getElementById("hbtab").style.display=="block") {
-			document.getElementById("hbReset").className="gluonupgrade "+(tmp.bl.am.lt(1e19)?"unavailablebtn":"storebtn")
+			document.getElementById("hbReset").className="gluonupgrade "+(tmp.bl.am.lt(1e19)?"unavailablebtn":"hb")
 			document.getElementById("hbGain").textContent=shortenDimensions(getHiggsGain())
 			document.getElementById("hbReq").textContent=shortenCosts(1e19)
 		}
@@ -4401,8 +4401,8 @@ function startEC10() {
 	startEternityChallenge(10)
 }
 
-function getCPLog(x) {
-	x=Decimal.add(tmp.qu.colorPowers[x],1).log10()
+function getCPLog(c) {
+	x=Decimal.add(tmp.qu.colorPowers[c],1).log10()
 	if (x>1024&&player.aarexModifications.ngudpV&&!player.aarexModifications.nguepV) {
 		if (player.aarexModifications.ngumuV) x=Math.sqrt(x)*32
 		else x=Math.pow(x,.9)*2
@@ -5271,7 +5271,7 @@ function blReset() {
 function hbReset() {
 	if (tmp.bl.am.lt(1e19)) return
 	if (!confirm("Reseting this lab resets everything that Light Empowerment resets, but also Neutrinos and Bosonic Lab. You will gain Higgs Bosons when you do that. You will also make Anti-Preon Ghost sleepy again.")) return
-	changeFieldParticleAmt("0;0", getHiggsGain().add(player.ghostify.hb.boosts["0;0"] || 0))
+	changeFieldParticleAmt("0;0", getHiggsGain().add(getFieldParticleAmt(id)))
 	calculateTotalHiggs()
 	blReset()
 	player.ghostify.hb.times++
@@ -5292,6 +5292,10 @@ function calculateTotalHiggs() {
 	player.ghostify.hb.amount = player.ghostify.hb.amount.round()
 }
 
+function getFieldParticleAmt(id) {
+	return player.ghostify.hb.boosts[id] || 0
+}
+
 function changeFieldParticleAmt(id, amt) {
-	player.ghostify.hb.boosts[id] = new Decimal(amt)
+	player.ghostify.hb.boosts[id] = Decimal.round(amt)
 }

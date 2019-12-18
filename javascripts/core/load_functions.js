@@ -625,7 +625,7 @@ if (player.version < 5) {
           }
           player.aarexModifications.newGamePlusVersion = 1
           if (confirm("Do you want to migrate your NG++ save into new NG+++ mode?")) {
-              player.aarexModifications.newGame3PlusVersion = 2.201
+              player.aarexModifications.newGame3PlusVersion = 2.3
               player.respecMastery=false
               player.dbPower = 1
               player.dilation.times = 0

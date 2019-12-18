@@ -2608,6 +2608,21 @@ br {
 	transform: translate(-50%, 0%)
 }
 
+.gluonupgrade.hb {
+	background: radial-gradient(#ffff00, transparent 50%, transparent 100%), radial-gradient(#7f7f00, #7f7f00, transparent 60%, transparent 100%), linear-gradient(transparent, #7f7f00 50%, transparent 100%), radial-gradient(#3f3f00, black 50%, #3f3f00 100%);
+	background-position: center;
+	border: 1px solid #7f7f7f;
+	color: white;
+	text-shadow: 0px 0px 3px #3f3f00, 0px 0px 6px #3f3f00;
+	animation: hb 5s ease infinite
+}
+
+.gluonupgrade.hb:hover {
+	border-color: #ffff00;
+	box-shadow: 0px 0px 12px #ffff00, inset 0px 0px 24px #ffff00;
+	cursor: pointer
+}
+
 #antipreon {
 	position: relative
 }
@@ -2939,5 +2954,17 @@ screen and (max-width: 480px) {
 	}
 	100%{
 		top: 0px
+	}
+}
+
+@keyframes hb { 
+	0%{
+		background-size: 100% 100%, 100% 100%, 100% 100%, 100% 100%
+	}
+	50%{
+		background-size: 120% 120%, 110% 110%, 120% 120%, 80% 80%
+	}
+	100%{
+		background-size: 100% 100%, 100% 100%, 100% 100%, 100% 100%
 	}
 }
