@@ -4016,8 +4016,10 @@ function updateGhostifyTabs() {
 		document.getElementById("electronNeutrinos").textContent=shortenDimensions(player.ghostify.neutrinos.electron)
 		document.getElementById("muonNeutrinos").textContent=shortenDimensions(player.ghostify.neutrinos.mu)
 		document.getElementById("tauNeutrinos").textContent=shortenDimensions(player.ghostify.neutrinos.tau)
-		document.getElementById("preNeutrinoBoost1").textContent=getDilExp("neutrinos").toFixed(2)
-		document.getElementById("neutrinoBoost1").textContent=getDilExp().toFixed(2)
+		if (player.ghostify.neutrinos.boosts) {
+			document.getElementById("preNeutrinoBoost1").textContent=getDilExp("neutrinos").toFixed(2)
+			document.getElementById("neutrinoBoost1").textContent=getDilExp().toFixed(2)
+		}
 		if (player.ghostify.neutrinos.boosts>1) {
 			document.getElementById("preNeutrinoBoost2").textContent="^"+shorten(getMTSMult(273, "pn"))
 			document.getElementById("neutrinoBoost2").textContent="^"+shorten(getMTSMult(273))
@@ -4202,7 +4204,7 @@ function buyNeutrinoUpg(id) {
 }
 
 function updateNeutrinoBoosts() {
-	for (var b=2;b<11;b++) document.getElementById("neutrinoBoost"+(b%3==1?"Row"+(b+2)/3:"Cell"+b)).style.display=player.ghostify.neutrinos.boosts>=b?"":"none"
+	for (var b=1;b<11;b++) document.getElementById("neutrinoBoost"+(b%3==1?"Row"+(b+2)/3:"Cell"+b)).style.display=player.ghostify.neutrinos.boosts>=b?"":"none"
 	document.getElementById("neutrinoUnlock").style.display=player.ghostify.neutrinos.boosts>=10?"none":""
 	document.getElementById("neutrinoUnlockCost").textContent=shortenDimensions(tmp.nbc[player.ghostify.neutrinos.boosts])
 }

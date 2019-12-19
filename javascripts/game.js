@@ -581,7 +581,7 @@ function updateNewPlayer(reseted) {
                 mu: 0,
                 tau: 0,
                 generationGain: 1,
-                boosts: 1,
+                boosts: 0,
                 multPower: 1,
                 upgrades: []
             },
@@ -1075,7 +1075,7 @@ let tmp = {
 	beu: [],
 	bm: [200,175,150,100,50,40,30,25,20,15,10,5,4,3,2,1],
 	nb: [],
-	nbc: [null,3,4,6,15,50,1e3,1e14,1e35,"1e900"],
+	nbc: [1,2,4,6,15,50,1e3,1e14,1e35,"1e900"],
 	nu: [],
 	nuc: [null,1e6,1e7,1e8,2e8,5e8,2e9,5e9,75e8,1e10,7e12,1e18,1e55,1e125,1e160,1e280],
 	lt: [12800,16e4,48e4,16e5,6e6,5e7,24e7,125e7],
@@ -1580,7 +1580,7 @@ function galaxyReset(bulk) {
     if (tmp.ngp3 && bulk) {
         if (tmp.qu.autoOptions.sacrifice) sacrificeGalaxy(6, true)
         if (tmp.qu.bigRip.active) tmp.qu.bigRip.bestGals = Math.max(tmp.qu.bigRip.bestGals, player.galaxies)
-	    if (ghostified) gainNeutrinos(bulk, "gen")
+	    if (ghostified && player.ghostify.neutrinos.boosts) gainNeutrinos(bulk, "gen")
     }
     hideDimensions()
     updateTickSpeed();
@@ -1747,7 +1747,7 @@ function getDilExp(disable) {
 	if (player.meta !== undefined && !player.aarexModifications.nguspV) ret += getDilUpgPower(4) / 4
 	if (tmp.ngp3) {
 		if ((!tmp.qu.bigRip.active || tmp.qu.bigRip.upgrades.includes(11)) && player.masterystudies.includes("d13") && disable != "TU3") ret += getTreeUpgradeEffect(2)
-		if (ghostified && disable != "neutrinos") ret += tmp.nb[0]
+		if (ghostified && player.ghostify.neutrinos.boosts && disable != "neutrinos") ret += tmp.nb[0]
 	}
 	return ret
 }
@@ -1761,7 +1761,6 @@ function getDilTimeGainPerSecond() {
 	let tp=player.dilation.tachyonParticles
 	let exp=GUBought("br3")?1.1:1
 	if (ghostified&&player.ghostify.ghostlyPhotons.unl) exp*=tmp.le[0]
-	if (tp.gt(1e250)&&player.aarexModifications.ngudpV&&!player.aarexModifications.nguepV) tp=Decimal.pow(tp.log10()*4,247/3+Math.log10(tp.log10()-240))
 	let gain = tp.pow(exp).times(Decimal.pow(2, getDilUpgPower(1)))
 	if (player.exdilation != undefined) {
 		gain = gain.times(getBlackholePowerEffect())

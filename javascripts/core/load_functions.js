@@ -1173,7 +1173,7 @@ if (player.version < 5) {
               mu: 0,
               tau: 0,
               generationGain: 1,
-              boosts: 1,
+              boosts: 0,
               multPower: 1,
               upgrades: []
           },
@@ -1299,7 +1299,7 @@ if (player.version < 5) {
           setTTAfterQuantum=2e94
       }
       if (tmp.qu.bigRip.bestGals==undefined) tmp.qu.bigRip.bestGals=0
-      if (player.ghostify.neutrinos.boosts==undefined) player.ghostify.neutrinos.boosts=1
+      if (player.ghostify.neutrinos.boosts==undefined||!player.ghostify.times) player.ghostify.neutrinos.boosts=0
       if (player.ghostify.ghostlyPhotons.maxRed==undefined) player.ghostify.ghostlyPhotons.maxRed=0
       if (player.ghostify.wzb.unl) giveAchievement("Even Ghostlier than before")
       for (var g=tmp.bl.glyphs.length+1;g<br.names.length;g++) tmp.bl.glyphs.push(0)
