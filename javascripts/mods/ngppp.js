@@ -5272,7 +5272,7 @@ function blReset() {
 
 function hbReset() {
 	if (tmp.bl.am.lt(1e19)) return
-	if (!confirm("Reseting this lab resets everything that Light Empowerment resets, but also Neutrinos and Bosonic Lab. You will gain Higgs Bosons when you do that. You will also make Anti-Preon Ghost sleepy again.")) return
+	if (!confirm("Reseting Bosonic Lab resets everything that Light Empowerment resets, but also Neutrinos and Bosonic Lab. You will gain Higgs Bosons when you do that. You will also make Anti-Preon Ghost sleepy again.")) return
 	changeFieldParticleAmt("0;0", getHiggsGain().add(getFieldParticleAmt(id)))
 	calculateTotalHiggs()
 	blReset()
