@@ -36,7 +36,7 @@ function updateNewPlayer(reseted) {
             ngm: player.aarexModifications.newGameMinusVersion !== undefined,
             ngp: player.aarexModifications.ngp4V !== undefined ? 2 : player.aarexModifications.newGamePlusVersion !== undefined ? 1 : 0,
             arrows: player.aarexModifications.newGameExpVersion !== undefined,
-            ngpp: player.meta == undefined ? false : tmp.ngp3 ? 2 : true,
+            ngpp: player.meta == undefined ? false : player.aarexModifications.ngp3lV ? 3 : player.aarexModifications.ngp3mpV ? 4 : tmp.ngp3 ? 2 : true,
             ngmm: player.aarexModifications.ngmX ? player.aarexModifications.ngmX - 1 : player.galacticSacrifice !== undefined ? 1 : 0,
             rs: player.infinityUpgradesRespecced != undefined ? 2 : player.boughtDims !== undefined,
             ngud: player.aarexModifications.nguspV !== undefined ? 3 : player.aarexModifications.ngudpV !== undefined ? 2 : player.exdilation !== undefined ? 1 : 0,
@@ -767,6 +767,8 @@ function updateNewPlayer(reseted) {
 		player.replicanti.amount=new Decimal(1)
 	}
     if (modesChosen.ngumu) player.aarexModifications.ngumuV=1.03
+    if (modesChosen.ngpp === 3) player.aarexModifications.ngp3lV=1
+    if (modesChosen.ngpp === 4) player.aarexModifications.ngp3mpV=1
 }
 updateNewPlayer()
 
@@ -3417,20 +3419,17 @@ function changeSaveDesc(saveId, placement) {
 		var temp=isSaveCurrent?player:get_save(saveId)
 		if (temp.aarexModifications==null) temp.aarexModifications={}
 		var message=""
-		if (temp.aarexModifications.newGameMinusVersion&&temp.meta&&temp.galacticSacrifice&&temp.masterystudies) message="NG+-+-+"+(temp.tickspeedBoosts==undefined?"":"-")+(temp.aarexModifications.ngp4V!==undefined?"+":"")+", "+(temp.aarexModifications.newGamePlusVersion?"":"No NG+ features, ")
-		else {
-			if (temp.aarexModifications.newGameMinusVersion) message+="NG-, "
-			if (temp.aarexModifications.ngmX>3) message+="NG-"+temp.aarexModifications.ngmX+", "
-			else if (temp.galacticSacrifice) message+="NG--"+(temp.tickspeedBoosts!=undefined?"-":"")+", "
-			if (temp.boughtDims) message+="Eternity Respecced, "
-			if (temp.aarexModifications.newGameMult) message+="NG*, "
-			if (temp.aarexModifications.newGameExpVersion) message+="NG^, "
-			if (temp.exdilation!==undefined||temp.meta!==undefined) {
-				if (temp.exdilation!==undefined) message+="NG Update"+(temp.aarexModifications.ngumuV?"*":"")+(temp.aarexModifications.nguepV?"^":"")+(temp.aarexModifications.nguspV?"S'":temp.aarexModifications.ngudpV?"'":player.meta!==undefined?"+":"")+", "
-				else if (temp.meta!==undefined) message+="NG++"+(temp.masterystudies!==undefined?"+":"")+(temp.aarexModifications.ngp4V!==undefined?"+":"")+", "
-				if (temp.aarexModifications.newGamePlusVersion===undefined) message+="No NG+ features, "
-			} else if (temp.aarexModifications.newGamePlusVersion) message+="NG+, "
-		}
+		if (temp.aarexModifications.newGameMinusVersion) message+="NG-, "
+		if (temp.aarexModifications.ngmX>3) message+="NG-"+temp.aarexModifications.ngmX+", "
+		else if (temp.galacticSacrifice) message+="NG--"+(temp.tickspeedBoosts!=undefined?"-":"")+", "
+		if (temp.boughtDims) message+="Eternity Respecced, "
+		if (temp.aarexModifications.newGameMult) message+="NG*, "
+		if (temp.aarexModifications.newGameExpVersion) message+="NG^, "
+		if (temp.exdilation!==undefined||temp.meta!==undefined) {
+			if (temp.exdilation!==undefined) message+="NG Update"+(temp.aarexModifications.ngumuV?"*":"")+(temp.aarexModifications.nguepV?"^":"")+(temp.aarexModifications.nguspV?"S'":temp.aarexModifications.ngudpV?"'":player.meta!==undefined?"+":"")+", "
+			if (temp.exdilation===undefined||temp.aarexModifications.ngp3lV!==undefined||temp.aarexModifications.ngp3mpV!==undefined||temp.aarexModifications.ngp4V!==undefined) message+="NG++"+(temp.masterystudies!==undefined?"+":"")+(temp.aarexModifications.ngp4V!==undefined?"+":"")+(temp.aarexModifications.ngp3lV!==undefined?"L":temp.aarexModifications.ngp3mpV!==undefined?"-'":"")+", "
+			if (temp.aarexModifications.newGamePlusVersion===undefined) message+="No NG+ features, "
+		} else if (temp.aarexModifications.newGamePlusVersion) message+="NG+, "
 		message+=isSaveCurrent?"Selected<br>":"Played for "+timeDisplayShort(temp.totalTimePlayed)+"<br>"
 		var originalBreak=player.break
 		var originalNotation=player.options.notation
@@ -3513,7 +3512,7 @@ function changeSaveDesc(saveId, placement) {
 
 var modCaps = {
   ngp: 2,
-  ngpp: 2,
+  ngpp: 4,
   arrows: 2,
   ngmm: 4,
   rs: 2,
@@ -3536,7 +3535,7 @@ var modFullNames = {
 }
 var modSubNames = {
   ngp: ["OFF", "ON", "NG++++"],
-  ngpp: ["OFF", "ON", "NG+++"],
+  ngpp: ["OFF", "ON", "NG+++", "NG+3L", "NG+3-'"],
   arrows: ["Linear (↑⁰)", "Exponential (↑)", "Tetrational (↑↑)"],
   ngmm: ["OFF", "ON", "NG---", "NG-4", "NG-5"],
   rs: ["NONE", "Eternity", "Infinity"],
@@ -3550,7 +3549,7 @@ function toggle_mode(id) {
 	// Change submod
 	if (id == "ngpp" && !modes.ngpp && modes.ngud) modes[id] = 2
 	else if (!hasSubMod || modes[id]===0) modes[id]=!modes[id]
-	else if (id == "ngp" && modes.ngp && (modes.ngpp < 2 || modes.ngpp === 3 || !metaSave.ngp4)) modes[id] = 0
+	else if (id == "ngp" && modes.ngp && (modes.ngpp < 2 || !metaSave.ngp4)) modes[id] = 0
 	else if (modes[id] === true) modes[id] = 2
 	else modes[id] = (modes[id]+1) % (modCaps[id]+1)
 	// Convert bool to int
