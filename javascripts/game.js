@@ -372,7 +372,7 @@ function updateNewPlayer(reseted) {
         player.achievements.push("r131")
         player.aarexModifications.newGamePlusVersion=2
     }
-    if (modesChosen.ngpp && modesChosen.ngpp != 3) {
+    if (modesChosen.ngpp) {
         player.aarexModifications.newGamePlusPlusVersion = 2.90142
         player.autoEterMode = "amount"
         player.dilation.rebuyables[4] = 0
