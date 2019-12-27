@@ -81,6 +81,7 @@ function getTimeDimensionProduction(tier) {
   if (player.aarexModifications.ngmX>3&&(inNC(2)||player.currentChallenge=="postc1"||player.pSac!=undefined)) ret = ret.times(player.chall2Pow)
   if (player.currentEternityChall == "eterc7") ret = dilates(ret.dividedBy(player.tickspeed.dividedBy(1000)))
   if (player.aarexModifications.ngmX>3&&(tier>1||!player.achievements.includes("r12"))) ret = ret.div(100)
+  if (player.aarexModifications.ngexV) ret = ret.div(10/tier)
   if (player.currentEternityChall == "eterc1") return new Decimal(0)
   return ret
 }

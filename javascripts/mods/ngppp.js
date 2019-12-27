@@ -3147,14 +3147,6 @@ function getBreakUpgMult(id) {
 	if (id == 10) return Math.max(Math.log10(player.eternityPoints.add(1).log10()+1)-1,1)
 }
 
-function getExtraTickReductionMult() {
-	if (player.masterystudies !== undefined ? tmp.qu.bigRip.active && tmp.qu.breakEternity.break : false) {
-		let ret = new Decimal(1)
-		if (tmp.qu.breakEternity.upgrades.includes(5)) ret = ret.times(getBreakUpgMult(5))
-		return ret
-	} else return 1
-}
-
 function maxBuyBEEPMult() {
 	let cost=getBreakUpgCost(7)
 	if (!tmp.qu.breakEternity.eternalMatter.gte(cost)) return

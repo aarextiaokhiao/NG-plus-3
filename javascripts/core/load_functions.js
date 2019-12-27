@@ -1779,7 +1779,7 @@ if (player.version < 5) {
   var showMoreBreak = player.galacticSacrifice ? "" : "none"
   for (i=1;i<5;i++) document.getElementById("postinfi0"+i).parentElement.style.display=showMoreBreak
   document.getElementById("d1AutoChallengeDesc").textContent=(player.aarexModifications.ngmX>3?"Galactic Sacrifice":"Reach infinity")+" for the first time."
-  document.getElementById("d5AutoChallengeDesc").textContent=player.galacticSacrifice?"Tickspeed upgrades"+(player.tickspeedBoosts==undefined?"":" and Tickspeed Boosts")+(player.aarexModifications.ngmX>3?" are weaker":" start out useless")+", but galaxies make them stronger.":"Tickspeed starts at 7%."
+  document.getElementById("d5AutoChallengeDesc").textContent=player.aarexModifications.ngexV?"Each Dimension Boost reduces your tickspeed reduction by 0.1% additively, but galaxies are 50% stronger.":player.galacticSacrifice?"Tickspeed upgrades"+(player.tickspeedBoosts==undefined?"":" and Tickspeed Boosts")+(player.aarexModifications.ngmX>3?" are weaker":" start out useless")+", but galaxies make them stronger.":"Tickspeed starts at 7%."
   document.getElementById("tbAutoChallengeDesc").textContent=player.tickspeedBoosts==undefined?"Whenever you buy 10 of a dimension or tickspeed, everything else of equal cost will increase to its next cost step.":"You can't get Tickspeed Boosts and Antimatter Galaxies are 25% weaker."
   document.getElementById("autoDBChallengeDesc").textContent="There are only 6 dimensions, with dimension boost"+(player.tickspeedBoosts==undefined?"":", tickspeed boost,")+" and antimatter galaxy costs modified."
   document.getElementById("autoCrunchChallengeDesc").textContent="Each dimension produces the dimension 2 below it; first dimensions produce reduced antimatter. "+(player.galacticSacrifice?"Galaxies are far more powerful.":"")
@@ -2058,13 +2058,13 @@ if (player.version < 5) {
   } else player.lastUpdate = new Date().getTime()
   if (player.totalTimePlayed < 1 || inflationCheck || forceToQuantumAndRemove) {
       ngModeMessages=[]
+      if (player.aarexModifications.ngexV) ngModeMessages.push("Welcome to Expert Mode! This is a more difficult version of Antimatter Dimensions. Good luck!")
       if (player.aarexModifications.newGameMult) ngModeMessages.push("Welcome to NG Multiplied mode, made by Despacit and Soul147! This mode adds too many overpowerful buffs! This mode may be broken.")
       if (player.aarexModifications.newGameExpVersion) ngModeMessages.push("Welcome to NG^ mode, made by Naruyoko! This mode adds way many buffs that this mode may be broken!")
       if (player.meta!==undefined||player.exdilation!==undefined) {
           if (!player.aarexModifications.newGamePlusVersion) ngModeMessages.push("WARNING! You are disabling NG+ features on NG++! Standard NG++ have all of NG++ features and I recommend you to create a new save with NG+ and NG++ modes on.")
           if (player.aarexModifications.ngp4V) ngModeMessages.push("Welcome to NG++++ mode by Aarex! This is a NG+ version of NG+3 which makes you start with more stuff! It is recommended to not use this mode to progress in NG+3.")
-          if (player.aarexModifications.ngp3mpV) ngModeMessages.push("Welcome to NG+++-' mode, made by Aarex and despacit! This is a harder version of NG+3. Good luck for beating this mod. >:)")
-          if (player.aarexModifications.ngp3lV) ngModeMessages.push("Welcome to NG+++L mode, made by Aarex! This mod is basically the last version of NG+3 before NG+3.1 happens. Good luck.")
+          if (player.aarexModifications.ngp3lV) ngModeMessages.push("Welcome to NG+++ Legacy mode, made by Aarex! This mod is basically the last version of NG+3 before NG+3.1 happens. Good luck.")
           if (player.exdilation!==undefined) {
               if (player.aarexModifications.nguspV) ngModeMessages.push("Welcome to NG Update Semiprime mode made by Aarex! This is like NGUd', but it is really a combination of NG+3 and NGUd. This mode is more balanced too. Good luck! :)")
               if (player.aarexModifications.ngumuV||player.aarexModifications.nguepV) {

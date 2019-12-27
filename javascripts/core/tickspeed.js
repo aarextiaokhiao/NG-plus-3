@@ -1,5 +1,8 @@
 function getTickSpeedMultiplier() {
-	return Decimal.div(getGalaxyTickSpeedMultiplier(), getExtraTickReductionMult())
+	let ret = new Decimal(getGalaxyTickSpeedMultiplier())
+	if (tmp.be && tmp.qu.breakEternity.upgrades.includes(5)) ret = ret.div(getBreakUpgMult(5))
+	if (inNC(6, 2)) ret = ret.add(player.resets * 1e-3)
+	return ret.min(1)
 }
 
 function initialGalaxies() {
@@ -38,9 +41,10 @@ function getGalaxyPower(ng, bi, noDil) {
 
 function getGalaxyEff(bi) {
 	let eff = 1
+	if (inNC(6, 2)) eff *= 1.5
 	if (player.galacticSacrifice) if (player.galacticSacrifice.upgrades.includes(22)) eff *= player.aarexModifications.ngmX>3?2:5;
 	if (player.infinityUpgrades.includes("galaxyBoost")) eff *= 2;
-	if (player.infinityUpgrades.includes("postGalaxy")) eff *= player.tickspeedBoosts!=undefined? 1.1 : player.galacticSacrifice ? 1.7 : 1.5;
+	if (player.infinityUpgrades.includes("postGalaxy")) eff *= getPostGalaxyEff();
 	if (player.challenges.includes("postc5")) eff *= player.galacticSacrifice ? 1.15 : 1.1;
 	if (player.achievements.includes("r86")) eff *= player.galacticSacrifice ? 1.05 : 1.01
 	if (player.galacticSacrifice) {
@@ -65,6 +69,12 @@ function getGalaxyEff(bi) {
 	return eff
 }
 
+function getPostGalaxyEff() {
+	let ret = player.tickspeedBoosts!=undefined? 1.1 : player.galacticSacrifice ? 1.7 : 1.5
+	if (player.aarexModifications.ngexV && !player.challenges.includes("postc5")) ret -= 0.05
+	return ret
+}
+
 function getGalaxyTickSpeedMultiplier() {
 	let g = initialGalaxies()
 	if ((player.currentChallenge == "postc3" || isIC3Trapped()) && !tmp.be) {
@@ -76,22 +86,23 @@ function getGalaxyTickSpeedMultiplier() {
 	let galaxies = getGalaxyPower(g, !inRS) * getGalaxyEff(true)
 	let baseMultiplier = 0.8
 	let linearGalaxies = 2
+	if (inNC(6, 1) && player.aarexModifications.ngexV) linearGalaxies += 2
 	let useLinear = g + player.replicanti.galaxies + player.dilation.freeGalaxies <= linearGalaxies
-	if (inNC(6) || player.currentChallenge == "postc1" || player.pSac != undefined) baseMultiplier = 0.83
+	if (inNC(6, 1) || player.currentChallenge == "postc1" || player.pSac != undefined) baseMultiplier = 0.83
 	if (inRS) {
-		linearGalaxies = Math.min(galaxies, 5)
+		linearGalaxies = Math.min(galaxies, linearGalaxies + 3)
 		useLinear = true
 	}
 	if (useLinear) {
 		baseMultiplier = 0.9;
 		if (inRS && galaxies == 0) baseMultiplier = 0.89
 		else if (g == 0) baseMultiplier = 0.89
-		if (inNC(6) || player.currentChallenge == "postc1" || player.pSac != undefined) baseMultiplier = 0.93
+		if (inNC(6, 1) || player.currentChallenge == "postc1" || player.pSac != undefined) baseMultiplier = 0.93
 		if (inRS) {
 			baseMultiplier -= linearGalaxies*0.02
 		} else {
 			let perGalaxy = 0.02 * getGalaxyEff()
-			return Math.max(baseMultiplier-g*perGalaxy,0.83)
+			return Math.max(baseMultiplier-g*perGalaxy, 0.83)
 		}
 	}
 	let perGalaxy = player.infinityUpgradesRespecced != undefined ? 0.98 : 0.965
@@ -122,7 +133,7 @@ function getPostC3Base() {
 	var g=initialGalaxies()
 	perGalaxy *= getGalaxyEff()
 	let ret = getGalaxyPower(g)*perGalaxy+1.05
-	if (inNC(6)||player.currentChallenge=="postc1") ret -= player.aarexModifications.ngmX>3?0.02:0.05
+	if (inNC(6, 1) || player.currentChallenge == "postc1") ret -= player.aarexModifications.ngmX > 3 ? 0.02 : 0.05
 	else if (player.aarexModifications.ngmX == 3) ret -= 0.03
 	if (hasPU(33)) ret += puMults[33]()
 	return ret

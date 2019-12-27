@@ -4290,7 +4290,7 @@
 		</div>
 		<div id="postinf" class="inftab" align="center">
 			<br>
-			<div id="abletobreak">You need to get Automated Big Crunch interval to 0.1 to be able to break infinity</div>
+			<div id="abletobreak"></div>
 				<br>
 				<table id="breaktable" class="table" style="margin: 0 auto; padding-left: 8px">
 					<tr>
@@ -5256,24 +5256,28 @@
 		<div id="offlinePopup" style="height: 150px">You made X antimatter and stuff</div>
 		<button class="storebtn" style="font-size: 15px" onclick="closeToolTip()" style="display: inline">Okay</button>
 	</div>
-	<div class="popup loadmenu" id="loadmenu" style="overflow-y:hidden; height: 380px">
+	<div class="popup loadmenu" id="loadmenu" style="overflow-y:hidden; height: 360px">
 		<button class="closebtn storebtn" onclick="closeToolTip(true)">&times;</button>
 		<button class="storebtn" style="font-size: 15px" onclick="new_game()" style="display: inline">New save</button>
 		<button class="storebtn" style="font-size: 15px" onclick="import_save('new')" style="display: inline">Import</button>
-		<button class="storebtn" id='ngmBtn' style="font-size: 15px" onclick="toggle_mode('ngm')" style="display: inline">NG-: OFF</button>
-		<button class="storebtn" id='ngmmBtn' style="font-size: 15px" onclick="toggle_mode('ngmm')" style="display: inline">NG--: OFF</button><br>
-		<button class="storebtn longbtn" id='rsBtn' style="font-size: 15px" onclick="toggle_mode('rs')" style="display: inline">Respecced: NONE</button>
-		<button class="storebtn" id='ngpBtn' style="font-size: 15px" onclick="toggle_mode('ngp')" style="display: inline">NG+: OFF</button>
-		<button class="storebtn" id='ngppBtn' style="font-size: 15px" onclick="toggle_mode('ngpp')" style="display: inline">NG++: OFF</button><br>
-		<button class="storebtn longbtn" id='ngudBtn' style="font-size: 15px" onclick="toggle_mode('ngud')" style="display: inline">NGUd: OFF</button>
-		<button class="storebtn" id='ngmuBtn' style="font-size: 15px" onclick="toggle_mode('ngmu')" style="display: inline">NG*: OFF</button>
-		<button class="storebtn" id='ngumuBtn' style="font-size: 15px" onclick="toggle_mode('ngumu')" style="display: inline">NGUd*': OFF</button><br>
-		<button class="storebtn longbtn" id='arrowsBtn' style="font-size: 15px" onclick="toggle_mode('arrows')" style="display: inline">NG↑: Linear (↑⁰)</button>
-		<button class="storebtn longbtn" id='nguepBtn' style="font-size: 15px" onclick="toggle_mode('nguep')" style="display: inline">NGUd↑': Linear' (↑⁰')</button><br>
+		<button id="modsBtn" class="storebtn" style="font-size: 15px" onclick="show_mods()" style="display: inline">Mods</button><br>
 		Click "Load" while holding shift to load a save but w/o offline progress.
-		<div style="height:230px;overflow-y:auto">
+		<div id="savesTab" style="height:300px;overflow-y:auto">
 			<table id='saves'>
 			</table>
+		</div>
+		<div id="modsTab" style="height:300px;overflow-y:auto;display:none">
+			<button class="storebtn longbtn" id='ngpBtn' style="font-size: 15px" onclick="toggle_mod('ngp')" style="display: inline">NG+: OFF</button>
+			<button class="storebtn longbtn" id='ngppBtn' style="font-size: 15px" onclick="toggle_mod('ngpp')" style="display: inline">NG++: OFF</button>
+			<button class="storebtn longbtn" id='ngmBtn' style="font-size: 15px" onclick="toggle_mod('ngm')" style="display: inline">NG-: OFF</button>
+			<button class="storebtn longbtn" id='ngmmBtn' style="font-size: 15px" onclick="toggle_mod('ngmm')" style="display: inline">NG--: OFF</button>
+			<button class="storebtn longbtn" id='ngudBtn' style="font-size: 15px" onclick="toggle_mod('ngud')" style="display: inline">NGUd: OFF</button>
+			<button class="storebtn longbtn" id='ngmuBtn' style="font-size: 15px" onclick="toggle_mod('ngmu')" style="display: inline">NG*: OFF</button>
+			<button class="storebtn longbtn" id='arrowsBtn' style="font-size: 15px" onclick="toggle_mod('arrows')" style="display: inline">NG↑: Linear (↑⁰)</button>
+			<button class="storebtn longbtn" id='ngumuBtn' style="font-size: 15px" onclick="toggle_mod('ngumu')" style="display: inline">NGUd*': OFF</button>
+			<button class="storebtn longbtn" id='nguepBtn' style="font-size: 15px" onclick="toggle_mod('nguep')" style="display: inline">NGUd↑': Linear' (↑⁰')</button>
+			<button class="storebtn longbtn" id='rsBtn' style="font-size: 15px" onclick="toggle_mod('rs')" style="display: inline">Respecced: NONE</button>
+			<button class="storebtn longbtn" id='ngexBtn' style="font-size: 15px" onclick="toggle_mod('ngex')" style="display: inline">Expert Mode: OFF</button>
 		</div>
 	</div>
 	<div class="popup loadmenu" id="presetsmenu" style="overflow-y:hidden">
