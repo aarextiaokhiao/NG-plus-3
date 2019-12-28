@@ -3436,10 +3436,11 @@ function changeSaveDesc(saveId, placement) {
 		if (temp.aarexModifications.ngmX>3) msg+="-"+temp.aarexModifications.ngmX
 		else if (temp.galacticSacrifice) msg+="--"+(temp.tickspeedBoosts!=undefined?"-":"")
 		else if (temp.aarexModifications.newGameMinusVersion) msg+="-"
-		if (temp.boughtDims) msg=msg==""?"Eternity Respecced":"ER"+msg
-		else if (temp.singularity) msg=msg==""?"Infinity Respecced":"IR"+msg
+		var ex=temp.aarexModifications.ngexV
+		if (temp.boughtDims) msg=msg!=""||ex?"ER"+msg:"Eternity Respecced"
+		else if (temp.singularity) msg=msg!=""||ex?"IR"+msg:"Infinity Respecced"
 		else msg="NG"+msg
-		if (temp.aarexModifications.ngexV) msg=msg=="NG"?"Expert Mode":msg+"Ex"
+		if (ex) msg=msg=="NG"?"Expert Mode":msg+"Ex"
 		if (temp.galacticSacrifice&&temp.aarexModifications.newGameMinusVersion) msg+=", NG-"
 		if ((temp.exdilation||temp.meta)&&!temp.aarexModifications.newGamePlusVersion) msg+=", no NG+ features"
 		msg=(msg=="NG"?"":msg+"<br>")+(isSaveCurrent?"Selected<br>":"Played for "+timeDisplayShort(temp.totalTimePlayed)+"<br>")
@@ -3759,8 +3760,13 @@ function reset_game() {
 	startInterval()
 };
 
+function canBreakInfinity() {
+	if (player.aarexModifications.ngexV) return player.challenges.length == getTotalNormalChallenges() + 1
+	return player.autobuyers[11] % 1 != 0 && player.autobuyers[11].interval <= 100
+}
+
 function breakInfinity() {
-	if (player.autobuyers[11]%1 === 0 || player.autobuyers[11].interval>100) return false
+	if (!canBreakInfinity()) return false
 	if (player.break && !player.currentChallenge.includes("post")) {
 		player.break = false
 		document.getElementById("break").textContent = "BREAK INFINITY"
@@ -4591,11 +4597,14 @@ function updateAutobuyers() {
 
     if (player.autobuyers[11].interval <= 100) {
         document.getElementById("buyerBtnInf").style.display = "none"
+        maxedAutobuy++
+    }
+
+    if (canBreakInfinity()) {
         document.getElementById("postinftable").style.display = "inline-block"
         document.getElementById("breaktable").style.display = "inline-block"
         document.getElementById("abletobreak").style.display = "none"
 		document.getElementById("break").style.display = "inline-block"
-        maxedAutobuy++;
     } else {
         document.getElementById("postinftable").style.display = "none"
         document.getElementById("breaktable").style.display = "none"
@@ -9367,3 +9376,4 @@ function switchDecimalMode() {
 		document.location.reload(true)
 	}
 }
+
