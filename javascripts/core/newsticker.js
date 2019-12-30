@@ -306,7 +306,8 @@ newsArray = [//always true
 ['"New game dammit" - GrayStillPlays', "player.masterystudies !== undefined", "am153"],
 ['"More zeroes dammit" - GrayStillPlays', "player.masterystudies !== undefined", "am154"],
 ["i know your type. you're, uh, very determined, aren't you? you'll never give up, even if there's, uh... absolutely NO benefit to persevering whatsoever. if i can make that clear. no matter what, you'll just keep going. not out of any desire for good or evil... but just because you think you can. and because you \"can\"... ... you \"have to\". but now, you've reached the end. there is nothing left for you now. so, uh, in my personal opinion... the most \"determined\" thing you can do here? is to, uh, completely give up. and... well... do literally anything else.", "player.masterystudies !== undefined", "am155"],
-["NG+3 has prestige layers, and onions have layers. Does this mean NG+3 is a prestige onion?", "player.newsArray.includes('am85')", "am156"]
+["NG+3 has prestige layers, and onions have layers. Does this mean NG+3 is a prestige onion?", "player.newsArray.includes('am85')", "am156"],
+["First-time developer releases incremental game, gets mocked by Aarex for inflation", true, "am157"]
 ];}
 
 document.addEventListener("visibilitychange", function() {if (!document.hidden) {scrollNextMessage();}}, false);
