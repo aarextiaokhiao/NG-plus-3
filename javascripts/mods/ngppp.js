@@ -5214,7 +5214,7 @@ function getOscillateGainSpeed() {
 	return Decimal.div(r,player.ghostify.wzb.zNeReq)
 }
 
-//Anti-Preon Ghost's Lair
+//Anti-Preontius' Lair
 function getAntiPreonGhostWake() {
 	return 104
 }
@@ -5264,7 +5264,7 @@ function blReset() {
 
 function hbReset() {
 	if (tmp.bl.am.lt(1e19)) return
-	if (!confirm("You will reset Bosonic Lab, but you will also reset Neutrinos and everything else that Light Empowerment resets. However, you will also make Anti-Preon Ghost sleepy again. You will gain Higgs Bosons from this. Are you sure you want to do that?")) return
+	if (!confirm("You will reset Bosonic Lab, but you will also reset Neutrinos and everything else that Light Empowerment resets. However, you will also make Anti-Preontius sleepy again. You will gain Higgs Bosons from this. Are you sure you want to do that?")) return
 	changeFieldParticleAmt("0;0", getHiggsGain().add(getFieldParticleAmt(id)))
 	calculateTotalHiggs()
 	blReset()

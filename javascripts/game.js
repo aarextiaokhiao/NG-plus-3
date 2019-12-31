@@ -8008,7 +8008,7 @@ function gameLoop(diff) {
             tmp.qu.nanofield.rewards = Math.max(tmp.qu.nanofield.rewards, tmp.qu.nanofield.power)
             if (!tmp.qu.nanofield.apgWoke && tmp.qu.nanofield.rewards >= tmp.apgw) {
                 tmp.qu.nanofield.apgWoke = tmp.apgw
-                $.notify("You reached " + getFullExpansion(tmp.apgw) + " rewards... The Anti-Preon Ghost has woken up and took over the Nanoverse! Be careful!")
+                $.notify("You reached " + getFullExpansion(tmp.apgw) + " rewards... The Anti-Preontius has woken up and took over the Nanoverse! Be careful!")
                 showTab("quantumtab")
                 showQuantumTab("nanofield")
                 showNFTab("antipreon")
