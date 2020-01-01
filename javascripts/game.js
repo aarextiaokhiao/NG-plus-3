@@ -3712,7 +3712,7 @@ function import_save(type) {
 			onLoad()
 			if (infiniteDetected) {
 				if (document.getElementById("welcome").style.display != "flex") document.getElementById("welcome").style.display = "flex"
-				document.getElementById("welcomeMessage").innerHTML = "Because you imported a save that has an Infinite bug in it, saving is disabled. You're so lucky that you can easily get your save back. :D"
+				document.getElementById("welcomeMessage").innerHTML = "Because you imported a save that has an Infinite bug in it, saving is disabled. Some functions are disabled to prevent further damage to your save. It is highly recommended that you report this occurrence to the #bugs_and_glitches channel on the Discord server so the bug can be looked into and fixed. You shouldn't try to modify or do anything with the save as it may result in undesirable effects, and will be hard reset after you switch saves or refresh the game."
 			}
 			startInterval()
 		} else if (type=="new") {
