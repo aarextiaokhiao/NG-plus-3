@@ -5044,7 +5044,7 @@ function updateLastTenEternities() {
             if (eppm<1) tempstring = shorten(eppm*60) + " " + unit + "/hour"
             msg = "The Eternity " + (i == 0 ? '1 eternity' : (i+1) + ' eternities') + " ago took " + timeDisplayShort(player.lastTenEternities[i][0], false, 3)
             if (player.lastTenEternities[i][2]) {
-                if (player.lastTenEternities[i][2] == "b") msg += " while the eternity was broken"
+                if (player.lastTenEternities[i][2] == "b") msg += " while it was broken"
                 else if (player.lastTenEternities[i][2].toString().slice(0,1) == "d") msg += " while dilated"
                 else msg += " in Eternity Challenge " + player.lastTenEternities[i][2]
             }
