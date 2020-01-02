@@ -4253,10 +4253,10 @@ function maxGHPMult() {
 	if (player.ghostify.multPower<85) {
 		let toBuy=Math.min(Math.floor(sum.div(cost).times(24).add(1).log(25)),85-player.ghostify.multPower)
 		subNeutrinos(Decimal.pow(25,toBuy).sub(1).div(24).times(cost))
-		cost=getGHPMultCost()
 		player.ghostify.multPower+=toBuy
 		player.ghostify.automatorGhosts[15].a=player.ghostify.automatorGhosts[15].a.times(Decimal.pow(5,toBuy))
 		document.getElementById("autoGhost15a").value=formatValue("Scientific", player.ghostify.automatorGhosts[15].a, 2, 1)
+		cost=getGHPMultCost()
 	}
 	if (player.ghostify.multPower>84) {
 		let b=player.ghostify.multPower*2-167
