@@ -2328,7 +2328,7 @@ function updateDimensions() {
         } else if (document.getElementById("dimtechs").style.display == "block" && document.getElementById("dimtechsdiv").style.display == "") {
             document.getElementById("darkMatterDT").textContent = shortenMoney(player.singularity.darkMatter)
             document.getElementById("nextDiscounts").textContent = shortenMoney(getNextDiscounts())
-            document.getElementById("discounts").textContent = "All of your dim-techs gave " + getFullExpansion(player.dimtechs.discounts) + " discounts."
+            document.getElementById("discounts").textContent = "All of your dim-techs gained a total of " + getFullExpansion(player.dimtechs.discounts) + " discount upgrades."
         }
     }
     if (document.getElementById("eternitystore").style.display == "block") {
