@@ -9136,14 +9136,12 @@ function initGame() {
 	game_loaded=true
 
 	//show one tab during init or they'll all start hidden
-	if (player.aarexModifications.tabsSave&&player.aarexModifications.tabsSave.on) {
-		showTab(player.aarexModifications.tabsSave.tabMain)
-		if (player.aarexModifications.tabsSave.tabOptions !== undefined) showOptionTab(player.aarexModifications.tabsSave.tabOptions)
-	} else {
-		showTab('dimensions', true)
-		if (player.aarexModifications.progressBar) document.getElementById("progress").style.display = "block"
-		else document.getElementById("progress").style.display = "none"
-	}
+	let tabsSaveData=player.aarexModifications.tabsSave
+	let tabsSave=tabsSaveData&&tabsSaveData.on
+	showTab((tabsSave&&tabsSaveData.tabMain)||"dimensions",true)
+	showOptionTab((tabsSave&&tabsSaveData.tabOptions)||"saving")
+	if (player.aarexModifications.progressBar&&document.getElementById("dimensions").style.display!="none") document.getElementById("progress").style.display = "block"
+	else document.getElementById("progress").style.display = "none"
 	updateTickSpeed();
 	updateAutobuyers();
 	updateChallengeTimes()
