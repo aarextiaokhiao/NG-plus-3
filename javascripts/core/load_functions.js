@@ -371,6 +371,7 @@ if (player.version < 5) {
       player.aarexModifications = {
           breakInfinity: false
       }
+      break_infinity_js = false
   }
   if (break_infinity_js!=player.aarexModifications.breakInfinity) {
       save_game(true)
@@ -402,6 +403,12 @@ if (player.version < 5) {
   if (player.aarexModifications.tabsSave === undefined) player.aarexModifications.tabsSave = {on: false}
   if (player.aarexModifications.performanceTicks === undefined) player.aarexModifications.performanceTicks = false
   if (player.aarexModifications.noFooter == undefined) player.aarexModifications.noFooter = player.options.theme == "Aarex's Modifications" || player.options.theme == "Aarex's Mods II"
+  if (player.masterystudies !== undefined && player.aarexModifications.newGame3PlusVersion === undefined) {
+	  forceHardReset = true
+	  reset_game()
+	  forceHardReset = false
+	  return
+  }
   if (player.aarexModifications.newGamePlusPlusVersion == undefined && player.aarexModifications.newGame3PlusVersion != undefined) {
       delete player.masterystudies
       delete player.aarexModifications.newGame3PlusVersion
