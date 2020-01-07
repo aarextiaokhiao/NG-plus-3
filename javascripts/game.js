@@ -9173,7 +9173,7 @@ function initGame() {
 	game_loaded=true
 
 	//show one tab during init or they'll all start hidden
-	if (player.aarexModifications.tabsSave.on) {
+	if (player.aarexModifications.tabsSave&&player.aarexModifications.tabsSave.on) {
 		showTab(player.aarexModifications.tabsSave.tabMain)
 		if (player.aarexModifications.tabsSave.tabOptions !== undefined) showOptionTab(player.aarexModifications.tabsSave.tabOptions)
 	} else {
