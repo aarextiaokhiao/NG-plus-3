@@ -1149,7 +1149,7 @@ function updateTemp() {
 			}
 			if (player.ghostify.neutrinos.boosts>4) tmp.nb[4]=Math.min((nt[0].max(1).log10()+nt[1].max(1).log10()+nt[2].max(1).log10())/33,1)
 			if (player.ghostify.neutrinos.boosts>5) tmp.nb[5]=Math.pow(Math.pow(Math.pow(nt[0].add(1).log10(),2)+Math.pow(nt[1].add(1).log10(),2)+Math.pow(nt[2].add(1).log10(),2),0.25)*0.525+1,tmp.be?0.5:1)
-			if (player.ghostify.neutrinos.boosts>6) tmp.nb[6]=Math.sqrt(Math.log10(nt[0].add(1).log10()+nt[1].add(1).log10()+nt[2].add(1).log10()+1))*2.35+1
+			if (player.ghostify.neutrinos.boosts>6) tmp.nb[6]=Math.sqrt(Math.log10(nt[0].add(1).log10()+nt[1].add(1).log10()+nt[2].add(1).log10()+1))*2.35
 			if (player.ghostify.neutrinos.boosts>7) {
 				var nb8=Math.pow(Math.pow(nt[0].add(1).log10(),2)+Math.pow(nt[1].add(1).log10(),2)+Math.pow(nt[2].add(1).log10(),2),0.25)/10+1
 				if (nb8>11) nb8=7+Math.log2(nb8+5)
@@ -1187,12 +1187,13 @@ function updateTemp() {
 				tmp.bru[1]=1
 			}
 		}
-		tmp.be=tmp.qu.bigRip.active&&tmp.qu.breakEternity.break
-		tmp.rg4=tmp.qu.upgrades.includes("rg4")&&(tmp.qu.rg4||inQC(1)||QCIntensity(1))
 		if (tmp.qu.bigRip.active) {
 			if (!player.dilation.active&&tmp.qu.bigRip.upgrades.includes(14)) tmp.nrm=tmp.nrm.pow(tmp.bru[2])
 			if (tmp.nrm.gt("1e1000000000")) tmp.nrm=Decimal.pow(10,Math.pow(tmp.nrm.log10()*3e4,2/3))
 		}
+		tmp.be=tmp.qu.bigRip.active&&tmp.qu.breakEternity.break
+		tmp.rg4=tmp.qu.upgrades.includes("rg4")&&(tmp.qu.rg4||inQC(1)||QCIntensity(1))
+		tmp.tue=getTreeUpgradeEfficiency()
 	} else tmp.be=false
 	var x=(3-player.tickspeed.log10())*0.000005
 	if (ghostified&&player.ghostify.neutrinos.boosts>3) x*=tmp.nb[3]
@@ -8370,7 +8371,7 @@ function gameLoop(diff) {
     document.getElementById("GHPGain").textContent = ghostifyGains.length ? "Gain " + ghostifyGains[0] + (ghostifyGains.length > 2 ? ", " + ghostifyGains[1] + "," : "") + (ghostifyGains.length > 1 ? " and " + ghostifyGains[ghostifyGains.length-1] : "") + "." : ""
     var showGHPPeakValue = GHPminpeakValue.lt(1e6)||player.options.theme=="Aarex's Modifications"
     document.getElementById("GHPRate").textContent = ghostifyGains.length == 1 && showGHPPeakValue ? getGHPRate(currentGHPmin) : ""
-    document.getElementById("GHPPeak").textContent = ghostifyGains.length == 1 ? (showGHPPeakValue?"":"Peaked at ")+getGHPRate(GHPminpeak)+(showGHPPeakValue?" at "+shortenDimensions(GHPminpeakValue)+" GHP":"") : ""
+    document.getElementById("GHPPeak").textContent = ghostifyGains.length == 1 ? (showGHPPeakValue?"":"Peaked at ")+getGHPRate(GHPminpeak)+(showGHPPeakValue?" at "+shortenDimensions(GHPminpeakValue)+" GhP":"") : ""
     updateMoney();
     updateCoinPerSec();
     updateDimensions()

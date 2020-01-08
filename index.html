@@ -4835,6 +4835,7 @@
 				<div class="branchtab" id="greenBranch"></div>
 				<div class="branchtab" id="blueBranch"></div>
 				<div class="branchtab" id="upgradesBranch">
+					<span id="treeUpgradeEff"></span>
 					<table class="table" align="center" style="margin: auto"><tr>
 						<td><button class='gluonupgrade unavailablebtn' id='treeupg1' onclick='buyTreeUpg(1)'>Meta Dimension Boosts are cheaper.<br>Level: <span id='treeupg1lvl'>?</span><br>Currently: -<span id='treeupg1current'>?</span><br>Cost: <span id="treeupg1cost"></span> quark spin</button></td>
 						<td><button class='gluonupgrade unavailablebtn' id='treeupg2' onclick='buyTreeUpg(2)'>TP gain formula exponent is increased.<br>Level: <span id='treeupg2lvl'>?</span><br>Currently: <span id='treeupg2current'>?</span><br>Cost: <span id="treeupg2cost"></span> quark spin</button></td>
@@ -4896,7 +4897,7 @@
 						<td id="neutrinoBoostCell6">They slow down Distant Antimatter Galaxies by <span class="neutrinos" id="neutrinoBoost6">0.0</span>%.<br>(Nerfed in Big Rip runs)</td>
 					</tr>
 					<tr class="neutrinoBoosts" id="neutrinoBoostRow3">
-						<td>In Big Rips, they make Tree Upgrades stronger by <span class="neutrinos" id="neutrinoBoost7">0.0</span>%.</td>
+						<td>In Big Rips, they add the efficiency of Tree Upgrades by <span class="neutrinos" id="neutrinoBoost7">0.0</span>%. (<span id="preNeutrinoBoost7Eff">100.0</span>% to <span class="neutrinos" id="neutrinoBoost7Eff" style="font-size:25px">100.0</span>%)</td>
 						<td id="neutrinoBoostCell8">In Big Rips, they boost first Big Rip upgrade strength by <span class="neutrinos" id="neutrinoBoost8">0.0</span>%.</td>
 						<td id="neutrinoBoostCell9">In Big Rips, they boost IC3 reward strength by <span class="neutrinos" id="neutrinoBoost9">1.00</span>x.</td>
 					</tr>
@@ -4906,9 +4907,9 @@
 						<td></td>
 					</tr>
 					<tr>
-						<td><button id="neutrinoUnlock" class="gluonupgrade unavailablebtn" onclick="unlockNeutrinoBoost()">Unlock a new boost based on your neutrinos.<br>Cost: <span id="neutrinoUnlockCost">2</span> GHP</button></td>
-						<td><button id="neutrinoMultUpg" class="gluonupgrade unavailablebtn" onclick="buyNeutrinoMult()">You gain 5x more neutrinos.<br>Currently: <span id="neutrinoMult">1</span>x<br>Cost: <span id="neutrinoMultUpgCost">3</span> GHP</button><br><button class="storebtn" onclick='maxNeutrinoMult()' style='width:190px'>Max Neutrino mult</button></td>
-						<td><button id="ghpMultUpg" class="gluonupgrade unavailablebtn" onclick="buyGHPMult()">You gain 2x more GHP.<br>Currently: <span id="ghpMult"></span>x<br>Cost: <span id="ghpMultUpgCost"></span> of any neutrinos</button><br><button class="storebtn" onclick='maxGHPMult()' style='width:190px'>Max GHP mult</button></td>
+						<td><button id="neutrinoUnlock" class="gluonupgrade unavailablebtn" onclick="unlockNeutrinoBoost()">Unlock a new boost based on your neutrinos.<br>Cost: <span id="neutrinoUnlockCost">2</span> GhP</button></td>
+						<td><button id="neutrinoMultUpg" class="gluonupgrade unavailablebtn" onclick="buyNeutrinoMult()">You gain 5x more neutrinos.<br>Currently: <span id="neutrinoMult">1</span>x<br>Cost: <span id="neutrinoMultUpgCost">3</span> GhP</button><br><button class="storebtn" onclick='maxNeutrinoMult()' style='width:190px'>Max Neutrino mult</button></td>
+						<td><button id="ghpMultUpg" class="gluonupgrade unavailablebtn" onclick="buyGHPMult()">You gain 2x more GhP.<br>Currently: <span id="ghpMult"></span>x<br>Cost: <span id="ghpMultUpgCost"></span> of any neutrinos</button><br><button class="storebtn" onclick='maxGHPMult()' style='width:190px'>Max GhP mult</button></td>
 					</tr>
 					<tr>
 						<td><button class="gluonupgrade unavailablebtn" id="neutrinoUpg1" onclick="buyNeutrinoUpg(1)" style="font-size: 10px">Meta-Dimension Boosts cost less.<br>Currently: -<span id="neutrinoUpg1Pow"></span><br>(Constant in Big Rip runs)<br>Cost: <span id="neutrinoUpg1Cost"></span> of any neutrinos</button></td>
@@ -4932,7 +4933,7 @@
 					</tr>
 					<tr id="gphRow">
 						<td><button class="gluonupgrade unavailablebtn" id="neutrinoUpg13" onclick="buyNeutrinoUpg(13)">100 RG upgrade doesn't nerf 100 BR upgrade.<br>Cost: <span id="neutrinoUpg13Cost"></span> of any neutrinos</button></td>
-						<td><button class="gluonupgrade unavailablebtn" id="neutrinoUpg14" onclick="buyNeutrinoUpg(14)" style="font-size: 10px">Gain more neutrinos based on your GHP and color powers.<br>Currently: <span id="neutrinoUpg14Pow"></span>x<br>Cost: <span id="neutrinoUpg14Cost"></span> of any neutrinos</button></td>
+						<td><button class="gluonupgrade unavailablebtn" id="neutrinoUpg14" onclick="buyNeutrinoUpg(14)" style="font-size: 10px">Gain more neutrinos based on your GhP and color powers.<br>Currently: <span id="neutrinoUpg14Pow"></span>x<br>Cost: <span id="neutrinoUpg14Cost"></span> of any neutrinos</button></td>
 						<td><button class="gluonupgrade unavailablebtn" id="neutrinoUpg15" onclick="buyNeutrinoUpg(15)">Nanofield is faster based on your rewards.<br>Currently: <span id="neutrinoUpg15Pow"></span>x<br>Cost: <span id="neutrinoUpg15Cost"></span> of any neutrinos</button></td>
 					</tr>
 				</table>
@@ -5043,7 +5044,7 @@
 						<td id="autoGhost15"><div class="autoBuyerDiv" style="display:block">
 							<b>Auto-Ghostify Ghost</b><br>
 							Power consumption: 0.5<br>
-							Amount of GHP to wait until reset: <input id="autoGhost15a" onchange="changeAutoGhost('15a')"></input><br>
+							Amount of GhP to wait until reset: <input id="autoGhost15a" onchange="changeAutoGhost('15a')"></input><br>
 							Is active: <input id="isAutoGhostOn15" type="checkbox" onchange="toggleAutoGhost(15)"></input>
 						</div></td>
 					</tr>

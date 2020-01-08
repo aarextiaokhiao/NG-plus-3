@@ -806,7 +806,7 @@ function updateQuantumTabs() {
 		}
 	}
 	if (document.getElementById("tod").style.display == "block") {
-		var branchNum=0
+		var branchNum
 		var colors=["red","green","blue"]
 		var shorthands=["r","g","b"]
 		if (document.getElementById("redBranch").style.display == "block") branchNum=1
@@ -836,9 +836,15 @@ function updateQuantumTabs() {
 				if (ghostified) document.getElementById(shorthand+"RadioactiveDecay").className="gluonupgrade "+(branch.quarks.lt(Decimal.pow(10,Math.pow(2,50)))?"unavailablebtn":shorthand)
 			}
 		}
-		if (branchNum<1) for (var u=1;u<9;u++) {
-			document.getElementById("treeupg"+u).className="gluonupgrade "+(canBuyTreeUpg(u)?shorthands[getTreeUpgradeLevel(u)%3]:"unavailablebtn")
-			document.getElementById("treeupg"+u+"current").textContent=getTreeUpgradeEffectDesc(u)
+		if (!branchNum) {
+			for (var u=1;u<9;u++) {
+				var lvl=getTreeUpgradeLevel(u)
+				document.getElementById("treeupg"+u).className="gluonupgrade "+(canBuyTreeUpg(u)?shorthands[getTreeUpgradeLevel(u)%3]:"unavailablebtn")
+				document.getElementById("treeupg"+u+"current").textContent=getTreeUpgradeEffectDesc(u)
+				document.getElementById("treeupg"+u+"lvl").textContent=getFullExpansion(lvl)+(tmp.tue>1?" -> "+getFullExpansion(Math.floor(lvl*tmp.tue)):"")
+				document.getElementById("treeupg"+u+"cost").textContent=shortenMoney(getTreeUpgradeCost(u))+" "+colors[lvl%3]
+			}
+			setAndMaybeShow("treeUpgradeEff",ghostified,'"Tree upgrade efficiency: "+(tmp.tue*100).toFixed(1)+"%"')
 		}
 		document.getElementById("todspeed").textContent = todspeed !== 1 ? "ToD speed multiplier is currently "+shorten(todspeed)+"x." : ""
 	}
@@ -2060,11 +2066,6 @@ function updateTODStuff() {
 			document.getElementById(shorthand+"RDLvl").textContent=getFullExpansion(getRadioactiveDecays(shorthand))
 		} else document.getElementById(shorthand+"RadioactiveDecay").parentElement.parentElement.style.display="none"
 	}
-	for (var t=1;t<9;t++) {
-		var lvl=getTreeUpgradeLevel(t)
-		document.getElementById("treeupg"+t+"lvl").textContent=getFullExpansion(lvl)
-		document.getElementById("treeupg"+t+"cost").textContent=shortenMoney(getTreeUpgradeCost(t))+" "+colors[lvl%3]
-	}
 }
 
 function showBranchTab(tabName) {
@@ -2136,7 +2137,7 @@ function getQuarkSpinProduction(branch) {
 	return ret
 }
 
-function getTreeUpgradeCost(upg, add) {
+function getTreeUpgradeCost(upg,add) {
 	lvl=getTreeUpgradeLevel(upg)
 	if (add!==undefined) lvl+=add
 	if (upg==1) return Decimal.pow(2,lvl*2+Math.max(lvl-35,0)*(lvl-34)/2).times(50)
@@ -2163,20 +2164,14 @@ function buyTreeUpg(upg) {
 	branch.spin=branch.spin.sub(getTreeUpgradeCost(upg))
 	if (!tmp.qu.tod.upgrades[upg]) tmp.qu.tod.upgrades[upg]=0
 	tmp.qu.tod.upgrades[upg]++
-	document.getElementById("treeupg"+upg+"lvl").textContent=tmp.qu.tod.upgrades[upg]
-	document.getElementById("treeupg"+upg+"cost").textContent=shortenMoney(getTreeUpgradeCost(upg))+" "+colors[tmp.qu.tod.upgrades[upg]%3]
 }
 
-function getTreeUpgradeLevel(upg,boost) {
-	let lvl=tmp.qu.tod.upgrades[upg]||0
-	if (boost) {
-		if (tmp.qu.bigRip.active&&player.ghostify.neutrinos.boosts>6) lvl*=tmp.nb[6]
-	}
-	return lvl
+function getTreeUpgradeLevel(upg) {
+	return tmp.qu.tod.upgrades[upg]||0
 }
 
 function getTreeUpgradeEffect(upg) {
-	let lvl=getTreeUpgradeLevel(upg,true)
+	let lvl=getTreeUpgradeLevel(upg)*tmp.tue
 	if (upg==1) return Math.floor(lvl * 30)
 	if (upg==2) {
 		if (lvl > 64) lvl = (lvl + 128) / 3
@@ -2185,8 +2180,8 @@ function getTreeUpgradeEffect(upg) {
 	if (upg==3) {
 		if (lvl<1) return 1
 		let power=0
-		for (var upg=1;upg<9;upg++) if (tmp.qu.tod.upgrades[upg]) power+=tmp.qu.tod.upgrades[upg]
-		return Decimal.pow(2, Math.sqrt(Math.sqrt(Math.max(lvl * 3 - 2, 0)) * Math.max(power - 10, 0)))
+		for (var upg=1;upg<9;upg++) power+=getTreeUpgradeLevel(upg)
+		return Decimal.pow(2,Math.sqrt(Math.sqrt(Math.max(lvl*3-2,0)) * Math.max(power-10,0)))
 	}
 	if (upg==4) return Math.sqrt(1 + Math.log10(lvl * 0.5 + 1) * 0.1)
 	if (upg==5) return Math.pow(Math.log10(player.meta.bestOverQuantums.add(1).log10()+1)/5+1,Math.sqrt(lvl))
@@ -2397,7 +2392,6 @@ function maxTreeUpg() {
 			}
 		}
 	}
-	if (update) updateTODStuff()
 }
 
 function maxBranchUpg(branch, weak) {
@@ -3937,9 +3931,9 @@ function toggleGhostifyConf() {
 }
 
 function getGHPRate(num) {
-	if (num.lt(1/60)) return (num*1440).toFixed(1)+" GHP/day"
-	if (num.lt(1)) return (num*60).toFixed(1)+" GHP/hr"
-	return shorten(num)+" GHP/min"
+	if (num.lt(1/60)) return (num*1440).toFixed(1)+" GhP/day"
+	if (num.lt(1)) return (num*60).toFixed(1)+" GhP/hr"
+	return shorten(num)+" GhP/min"
 }
 
 var averageGHP = new Decimal(0)
@@ -3952,9 +3946,9 @@ function updateLastTenGhostifies() {
     for (var i=0; i<10; i++) {
         if (player.ghostify.last10[i][1].gt(0)) {
             var qkpm = player.ghostify.last10[i][1].dividedBy(player.ghostify.last10[i][0]/600)
-            var tempstring = shorten(qkpm) + " GHP/min"
-            if (qkpm<1) tempstring = shorten(qkpm*60) + " GHP/hour"
-            var msg = "The Ghostify " + (i == 0 ? '1 Ghostify' : (i+1) + ' Ghostifies') + " ago took " + timeDisplayShort(player.ghostify.last10[i][0], false, 3) + " and gave " + shortenDimensions(player.ghostify.last10[i][1]) +" GHP. "+ tempstring
+            var tempstring = shorten(qkpm) + " GhP/min"
+            if (qkpm<1) tempstring = shorten(qkpm*60) + " GhP/hour"
+            var msg = "The Ghostify " + (i == 0 ? '1 Ghostify' : (i+1) + ' Ghostifies') + " ago took " + timeDisplayShort(player.ghostify.last10[i][0], false, 3) + " and gave " + shortenDimensions(player.ghostify.last10[i][1]) +" GhP. "+ tempstring
             document.getElementById("ghostifyrun"+(i+1)).textContent = msg
             tempTime = tempTime.plus(player.ghostify.last10[i][0])
             tempGHP = tempGHP.plus(player.ghostify.last10[i][1])
@@ -3966,10 +3960,10 @@ function updateLastTenGhostifies() {
         tempTime = tempTime.dividedBy(listed)
         tempGHP = tempGHP.dividedBy(listed)
         var qkpm = tempGHP.dividedBy(tempTime/600)
-        var tempstring = shorten(qkpm) + " GHP/min"
+        var tempstring = shorten(qkpm) + " GhP/min"
         averageGHP = tempGHP
-        if (qkpm<1) tempstring = shorten(qkpm*60) + " GHP/hour"
-        document.getElementById("averageGhostifyRun").textContent = "Last " + listed + " Ghostifys average time: "+ timeDisplayShort(tempTime, false, 3)+" Average GHP gain: "+shortenDimensions(tempGHP)+" GHP. "+tempstring
+        if (qkpm<1) tempstring = shorten(qkpm*60) + " GhP/hour"
+        document.getElementById("averageGhostifyRun").textContent = "Last " + listed + " Ghostifys average time: "+ timeDisplayShort(tempTime, false, 3)+" Average GhP gain: "+shortenDimensions(tempGHP)+" GhP. "+tempstring
     } else document.getElementById("averageGhostifyRun").textContent = ""
 }
 
@@ -4022,7 +4016,11 @@ function updateGhostifyTabs() {
 		if (player.ghostify.neutrinos.boosts>3) document.getElementById("neutrinoBoost4").textContent=(tmp.nb[3]*100-100).toFixed(1)
 		if (player.ghostify.neutrinos.boosts>4) document.getElementById("neutrinoBoost5").textContent=(tmp.nb[4]*100).toFixed(1)
 		if (player.ghostify.neutrinos.boosts>5) document.getElementById("neutrinoBoost6").textContent=tmp.nb[5]<10.995?(tmp.nb[5]*100-100).toFixed(1):getFullExpansion(Math.floor(tmp.nb[5]*100-100))
-		if (player.ghostify.neutrinos.boosts>6) document.getElementById("neutrinoBoost7").textContent=(tmp.nb[6]*100-100).toFixed(1)
+		if (player.ghostify.neutrinos.boosts>6) {
+			document.getElementById("neutrinoBoost7").textContent=(tmp.nb[6]*100).toFixed(1)
+			document.getElementById("preNeutrinoBoost7Eff").textContent=(getTreeUpgradeEfficiency("noNB")*100).toFixed(1)
+			document.getElementById("neutrinoBoost7Eff").textContent=(getTreeUpgradeEfficiency("br")*100).toFixed(1)
+		}
 		if (player.ghostify.neutrinos.boosts>7) document.getElementById("neutrinoBoost8").textContent=(tmp.nb[7]*100-100).toFixed(1)
 		if (player.ghostify.neutrinos.boosts>8) document.getElementById("neutrinoBoost9").textContent=shorten(tmp.nb[8])
 		if (player.ghostify.neutrinos.boosts>9) document.getElementById("neutrinoBoost10").textContent=tmp.nb[9].toFixed(4)
@@ -5220,6 +5218,12 @@ function getAntiPreonGhostWake() {
 }
 
 //v2.3: NG+3.1
+function getTreeUpgradeEfficiency(mod) {
+	let r=1
+	if (player.ghostify.neutrinos.boosts>6&&(tmp.qu.bigRip.active||mod=="br")&&mod!="noNB") r+=tmp.nb[6]
+	return r
+}
+
 function blReset() {
 	ghostify(false, true)
 	delete tmp.qu.nanofield.apgWoke
