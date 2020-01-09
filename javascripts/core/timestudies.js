@@ -96,6 +96,7 @@ function updateTheoremButtons() {
 }
 
 function buyTimeStudy(name, check, quickBuy) {
+	if (inQCModifier("sm")) return
 	var cost = studyCosts[all.indexOf(name)]
 	if (player.boughtDims) {
 		if (player.timestudy.theorem<player.timestudy.ers_studies[name]+1) return
@@ -440,35 +441,21 @@ function respecTimeStudies(force, presetLoad) {
               break;
           }
        }
-  } else if (respecMastery) {
-      var respecedTS=[]
-      var secondSplitPick=0
-      var earlyDLStudies=[]
-      for (t=0;t<all.length;t++) {
-          var id=all[t]
-          if (player.timestudy.studies.includes(id)) {
-              if ((id<120||id>150||secondSplitPick<1||secondSplitPick==id%10)&&(id<220||!earlyDLStudies.includes(id%2>0?id+1:id-1))) {
-                  respecedTS.push(id)
-                  if (id>120&&id<130) secondSplitPick=id%10
-                  if (id>220) earlyDLStudies.push(id)
-              } else player.timestudy.theorem+=studyCosts[t]
-          }
-      }
-      player.timestudy.studies=respecedTS
   }
   if (respecMastery) {
       var respecedMS=[]
       player.timestudy.theorem+=masterystudies.spentTT
-	  if (player.masterystudies.includes("t373")) {
-		  updateColorCharge()
-		  gotAch=false
-	  }
+	  if (player.masterystudies.includes("t373")) updateColorCharge()
       for (id=0;id<player.masterystudies.length;id++) {
-          var d = player.masterystudies[id].split("d")[1]
+          var d=player.masterystudies[id].split("d")[1]
           if (d) respecedMS.push(player.masterystudies[id])
       }
-      if (player.masterystudies.length>respecedMS.length) player.quantum.wasted = false
+      if (player.masterystudies.length>respecedMS.length) {
+          player.quantum.wasted=false
+          gotAch=false
+      }
       player.masterystudies=respecedMS
+      respecUnbuyableTimeStudies()
       updateMasteryStudyCosts()
       if (!presetLoad) {
           maybeShowFillAll()
@@ -484,6 +471,23 @@ function respecTimeStudies(force, presetLoad) {
   if (!GUBought("gb3")) ipMultPower=2
   if (player.replicanti.galaxybuyer) document.getElementById("replicantiresettoggle").textContent = "Auto galaxy ON"
   else document.getElementById("replicantiresettoggle").textContent = "Auto galaxy OFF"
+}
+
+function respecUnbuyableTimeStudies() {
+	var respecedTS=[]
+	var secondSplitPick
+	var earlyDLStudies=[]
+	for (t=0;t<all.length;t++) {
+		var id=all[t]
+		if (player.timestudy.studies.includes(id)) {
+			if (!inQCModifier("sm")&&(id<120||id>150||!secondSplitPick||secondSplitPick==id%10||player.masterystudies.includes("t272"))&&(id<220||!earlyDLStudies.includes(id%2>0?id+1:id-1)||player.masterystudies.includes("t302"))) {
+				respecedTS.push(id)
+				if (id>120&&id<130) secondSplitPick=id%10
+				if (id>220) earlyDLStudies.push(id)
+			} else player.timestudy.theorem+=studyCosts[t]
+		}
+	}
+	player.timestudy.studies=respecedTS
 }
 
 function getTotalTT(tree) {

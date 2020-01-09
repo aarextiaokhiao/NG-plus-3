@@ -350,9 +350,12 @@ function updateAchievements() {
 	for (var i=1; i<25; i++) {
 		var shown=true
 		var rowid=i
+		var rownum=i
 		if (i>15) {
 			shown=!(!player.masterystudies)
-			rowid="ng3p"+(i-15)
+			rownum=i-15
+			if (rownum>8) shown=!tmp.ngp3l
+			rowid="ng3p"+rownum
 		} else if (i>14) {
 			shown=player.meta!=undefined
 			rowid="ngpp1"

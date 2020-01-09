@@ -73,8 +73,8 @@ function updateMasteryStudyButtons() {
 function updateMasteryStudyCosts() {
 	masterystudies.latestBoughtRow=0
 	masterystudies.costmult=1
+	masterystudies.bought=0
 	masterystudies.spentTT=0
-	let total=0
 	for (id=0;id<player.masterystudies.length;id++) {
 		var t=player.masterystudies[id].split("t")[1]
 		if (t) {
@@ -82,8 +82,8 @@ function updateMasteryStudyCosts() {
 			masterystudies.spentTT+=masterystudies.costs.time[t]
 			if (masterystudies.allTimeStudies.includes(parseInt(t))) masterystudies.costmult*=masterystudies.costmults[t]
 			masterystudies.latestBoughtRow=Math.max(masterystudies.latestBoughtRow,Math.floor(t/10))
-			total++
-			if (total>=48) giveAchievement("The Theory of Ultimate Studies")
+			masterystudies.bought++
+			if (masterystudies.bought>=48) giveAchievement("The Theory of Ultimate Studies")
 		}
 	}
 	for (id=0;id<masterystudies.allTimeStudies.length;id++) {
@@ -185,6 +185,7 @@ function buyMasteryStudy(type, id, quick=false) {
 
 function canBuyMasteryStudy(type, id) {
 	if (type=='t') {
+		if (inQCModifier("sm")&&masterystudies.bought>=20) return false
 		if (player.timestudy.theorem<masterystudies.costs.time[id]||player.masterystudies.includes('t'+id)||player.eternityChallUnlocked>12||!masterystudies.allTimeStudies.includes(id)) return false
 		var row=Math.floor(id/10)
 		if (masterystudies.latestBoughtRow>row) return false
@@ -540,8 +541,9 @@ function setupText() {
 	document.getElementById("modifiersStats").innerHTML=modDiv
 	//Bosonic Extractor
 	var ben=document.getElementById("enchants")
-	for (var g2=2;g2<br.names.length;g2++) {
+	for (var g2=2;g2<=br.limit;g2++) {
 		var row=ben.insertRow(g2-2)
+		row.id="bEnRow"+(g2-1)
 		for (var g1=1;g1<g2;g1++) {
 			var col=row.insertCell(g1-1)
 			var id=(g1*10+g2)
@@ -553,7 +555,7 @@ function setupText() {
 		}
 	}
 	var toeDiv=""
-	for (var g=1;g<br.names.length;g++) toeDiv+=' <button id="typeToExtract'+g+'" class="storebtn" onclick="changeTypeToExtract('+g+')" style="width: 25px; font-size: 12px"><div class="bRune" type="'+g+'"></div></button>'
+	for (var g=1;g<=br.limit;g++) toeDiv+=' <button id="typeToExtract'+g+'" class="storebtn" onclick="changeTypeToExtract('+g+')" style="width: 25px; font-size: 12px"><div class="bRune" type="'+g+'"></div></button>'
 	document.getElementById("typeToExtract").innerHTML=toeDiv
 	//Bosonic Upgrades
 	var buTable=document.getElementById("bUpgs")
@@ -571,9 +573,10 @@ function setupText() {
 	}
 	//Bosonic Runes
 	var brTable=document.getElementById("bRunes")
-	for (var g=1;g<br.names.length;g++) {
-		var width=100/br.names.length
+	for (var g=1;g<=br.limit;g++) {
+		var width=100/br.limit
 		var col=brTable.rows[0].insertCell(g-1)
+		col.id="bRuneCol"+g
 		col.innerHTML='<div class="bRune" type="'+g+'"></div>: <span id="bRune'+g+'"></span>'
 		col.style="min-width:"+width+"%;width:"+width+"%;max-width:"+width+"%"
 	}
@@ -581,7 +584,7 @@ function setupText() {
 	for (var g=0;g<glyphs.length;g++) {
 		var glyph=glyphs[g]
 		var type=glyph.getAttribute("type")
-		if (type>0&&type<br.names.length) {
+		if (type>0&&type<=br.limit) {
 			glyph.className="bRune "+br.names[type]
 			glyph.setAttribute("ach-tooltip",br.names[type]+" Bosonic Rune")
 		}
@@ -1269,7 +1272,8 @@ function canBuyElectronUpg(id) {
 function updateMasteryStudyTextDisplay() {
 	if (!player.masterystudies) return
 	document.getElementById("costmult").textContent=shorten(masterystudies.costmult)
-	document.getElementById("totalspent").textContent=shortenDimensions(masterystudies.spentTT)
+	document.getElementById("totalmsbought").textContent=masterystudies.bought
+	document.getElementById("totalttspent").textContent=shortenDimensions(masterystudies.spentTT)
 	for (id=0;id<(quantumed?masterystudies.allTimeStudies.length:10);id++) {
 		var name=masterystudies.allTimeStudies[id]
 		document.getElementById("ts"+name+"Cost").textContent="Cost: "+shorten(masterystudies.costs.time[name])+" Time Theorems"
@@ -4110,7 +4114,7 @@ function updateGhostifyTabs() {
 		document.getElementById("odSpeed").textContent=(data.battery.gt(0)?data.odSpeed:1).toFixed(2)+"x"
 		document.getElementById("odSpeedWBBt").style.display=data.battery.eq(0)&&data.odSpeed>1?"":"none"
 		document.getElementById("odSpeedWBBt").textContent=" ("+data.odSpeed.toFixed(2)+"x if you have Bosonic Battery)"
-		for (var g=1;g<br.names.length;g++) document.getElementById("bRune"+g).textContent=shortenDimensions(data.glyphs[g-1])
+		for (var g=1;g<=br.limit;g++) document.getElementById("bRune"+g).textContent=shortenDimensions(data.glyphs[g-1])
 		if (document.getElementById("bextab").style.display=="block") {
 			let time=getExtractTime().div(speed)
 			if (data.extracting) document.getElementById("extract").textContent="Extracting"+(time.lt(0.1)?"":" ("+data.extractProgress.times(100).toFixed(1)+"%)")
@@ -4653,15 +4657,18 @@ function toggleLEConf() {
 
 //Quantum Challenge modifiers
 var qcm={
-	modifiers:["ad"],
+	modifiers:["ad","sm"],
 	names:{
-		ad:"Anti-Dilation"
+		ad:"Anti-Dilation",
+		sm:"Supermastery"
 	},
 	reqs:{
-		ad:100
+		ad:100,
+		sm:165
 	},
 	descs:{
-		ad:"You always have no Tachyon particles. You can dilate time, but you can't gain Tachyon particles."
+		ad:"You always have no Tachyon particles. You can dilate time, but you can't gain Tachyon particles.",
+		sm:"You can't have normal time studies and more than 20 normal mastery studies."
 	},
 	on:[]
 }
@@ -4831,7 +4838,7 @@ function showBLTab(tabName) {
 }
 
 function updateBosonicStuffCosts() {
-	for (var g2=2;g2<br.names.length;g2++) for (var g1=1;g1<g2;g1++) {
+	for (var g2=2;g2<=br.limit;g2++) for (var g1=1;g1<g2;g1++) {
 		var id=g1*10+g2
 		var data=bEn.costs[id]
 		document.getElementById("bEnG1Cost"+id).textContent=(data!==undefined&&data[0]!==undefined&&shortenDimensions(data[0]))||"???"
@@ -4953,7 +4960,7 @@ function getEnchantEffect(id, desc) {
 
 function updateEnchantDescs() {
 	let data=tmp.bl
-	for (var g2=2;g2<br.names.length;g2++) for (var g1=1;g1<g2;g1++) {
+	for (var g2=2;g2<=br.limit;g2++) for (var g1=1;g1<g2;g1++) {
 		var id=g1*10+g2
 		if (bEn.action=="upgrade"||bEn.action=="max") document.getElementById("bEn"+id).className="gluonupgrade "+(canBuyEnchant(id)?"bl":"unavailablebtn")
 		else if (bEn.action=="use") document.getElementById("bEn"+id).className="gluonupgrade "+(canUseEnchant(id)?"storebtn":"unavailablebtn")
@@ -4974,7 +4981,8 @@ function updateEnchantDescs() {
 }
 
 var br={
-	names:[null, "Infinity", "Eternity", "Quantum", "Ghostly", /*"Ethereal", "Sixth", "Seventh", "Eighth", "Ninth"*/], //Current limit of 9.
+	names:[null, "Infinity", "Eternity", "Quantum", "Ghostly", /*"Ethereal", "Sixth", "Seventh", "Eighth", "Ninth"*/], //Current maximum limit of 9.
+	limit:4,
 	scalings:{
 		1: 60,
 		2: 120,
@@ -5027,7 +5035,7 @@ function setupBosonicUpgReqData() {
 		if (data) {
 			if (data.am!==undefined) rData[0]=data.am
 			var p=1
-			for (var g=1;g<br.names.length;g++) if (data["g"+g]!==undefined) {
+			for (var g=1;g<=br.limit;g++) if (data["g"+g]!==undefined) {
 				rData[p*2-1]=data["g"+g]
 				rData[p*2]=g
 				p++
@@ -5218,9 +5226,42 @@ function getAntiPreonGhostWake() {
 }
 
 //v2.3: NG+3.1
+function setNonlegacyStuff() {
+	//Bosonic Runes/Extractor/Enchants
+	if (!br.maxLimit) br.maxLimit=br.limit
+	br.limit=tmp.ngp3l?3:br.maxLimit
+	
+	//Bosonic Upgrades
+	if (!bu.maxRows) bu.maxRows=bu.rows
+	bu.rows=tmp.ngp3l?2:bu.maxRows
+}
+
+function displayNonlegacyStuff() {
+	//QC Modifiers
+	for (var m=1;m<qcm.modifiers.length;m++) document.getElementById("qcm_"+qcm.modifiers[m]).style.display=tmp.ngp3l?"none":""
+
+	//Bosonic Runes/Extractor/Enchants
+	var width=100/br.limit
+	for (var r=1;r<=br.maxLimit;r++) {
+		document.getElementById("bRune"+r).style="min-width:"+width+"%;width:"+width+"%;max-width:"+width+"%"
+		if (r>3) {
+			document.getElementById("bRuneCol"+r).style.display=tmp.ngp3l?"none":""
+			document.getElementById("typeToExtract"+r).style.display=tmp.ngp3l?"none":""
+			document.getElementById("bEnRow"+(r-1)).style.display=tmp.ngp3l?"none":""
+		}
+	}
+	
+	//Bosonic Upgrades
+	for (var r=3;r<=bu.maxRows;r++) document.getElementById("bUpgRow"+r).style.display=tmp.ngp3l?"none":""
+	
+	//Higgs Bosons
+	document.getElementById("hbtabbtn").style.display=tmp.ngp3l?"none":""
+}
+
 function getTreeUpgradeEfficiency(mod) {
 	let r=1
 	if (player.ghostify.neutrinos.boosts>6&&(tmp.qu.bigRip.active||mod=="br")&&mod!="noNB") r+=tmp.nb[6]
+	if (player.achievements.includes("ng3p62")&&tmp.qu.bigRip.active&&!tmp.be&&!tmp.ngp3l) r+=0.5
 	return r
 }
 
@@ -5250,7 +5291,7 @@ function blReset() {
 		battery: new Decimal(0),
 		odSpeed: tmp.bl.odSpeed
 	}
-	for (var g=1;g<br.names.length;g++) tmp.bl.glyphs.push(new Decimal(0))
+	for (var g=1;g<=br.limit;g++) tmp.bl.glyphs.push(new Decimal(0))
 	player.ghostify.wzb = {
 		unl: true,
 		dP: new Decimal(0),
@@ -5267,7 +5308,7 @@ function blReset() {
 }
 
 function hbReset() {
-	if (tmp.bl.am.lt(1e19)) return
+	if (tmp.bl.am.lt(1e19)||tmp.ngp3l) return
 	if (!confirm("You will reset Bosonic Lab, but you will also reset Neutrinos and everything else that Light Empowerment resets. However, you will also make Anti-Preontius sleepy again. You will gain Higgs Bosons from this. Are you sure you want to do that?")) return
 	changeFieldParticleAmt("0;0", getHiggsGain().add(getFieldParticleAmt(id)))
 	calculateTotalHiggs()

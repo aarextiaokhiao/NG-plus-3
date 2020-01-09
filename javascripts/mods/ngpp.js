@@ -489,6 +489,24 @@ function quantum(auto, force, challid, bigRip = false, quick) {
 				} else if (player.options.challConf || (QCIntensity(1) == 0 && !ghostified)) if (!confirm("You will do a quantum reset but you will not gain quarks, and keep your electrons & sacrificed galaxies, and you can't buy electron upgrades. You have to reach the set goal of antimatter to complete this challenge. NOTE: Electrons and banked eternities do nothing in quantum challenges and your electrons and sacrificed galaxies do not reset until you end the challenge.")) return
 				tmp.qu.electrons.amount -= getQCCost(challid)
 				if (!quick) for (var m=0;m<qcm.on.length;m++) if (ranking>=qcm.reqs[qcm.on[m]]||!qcm.reqs[qcm.on[m]]) tmp.qu.qcsMods.current.push(qcm.on[m])
+				if (tmp.qu.qcsMods.current.includes("sm")) {
+					var count=0
+					var newMS=[]
+					for (var i=0;i<player.masterystudies.length;i++) {
+						var study=player.masterystudies[i]
+						var split=study.split("t")
+						if (!split[1]) newMS.push(study)
+						else if (count<20) {
+							newMS.push(study)
+							count++
+						} else {
+							if (study=="t373") updateColorCharge()
+							player.timestudy.theorem+=masterystudies.costs.time[split[1]]
+						}
+					}
+					player.masterystudies=newMS
+					respecUnbuyableTimeStudies()
+				}
 			} else if (pcFocus&&pc<1) {
 				if (!assigned.includes(challid)) {
 					if (!tmp.qu.pairedChallenges.order[pcFocus]) tmp.qu.pairedChallenges.order[pcFocus]=[challid]

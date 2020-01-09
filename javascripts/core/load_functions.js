@@ -414,6 +414,9 @@ if (player.version < 5) {
       delete player.aarexModifications.newGame3PlusVersion
   }
   if (player.aarexModifications.newGame3PlusVersion>=2.2) tmp.bl=player.ghostify.bl
+  tmp.ngp3l=player.aarexModifications.ngp3lV!==undefined
+  setNonlegacyStuff()
+
   slider.min=player.aarexModifications.performanceTicks?0:33
   transformSaveToDecimal();
   updateTickSpeed();
@@ -834,7 +837,7 @@ if (player.version < 5) {
                   }
               }
               tmp.bl=player.ghostify.bl
-              for (var g=1;g<br.names.length;g++) tmp.bl.glyphs.push(0)
+              for (var g=1;g<=br.limit;g++) tmp.bl.glyphs.push(0)
               player.options.animations.ghostify = true
               player.aarexModifications.ghostifyConf = true
           }
@@ -1309,7 +1312,7 @@ if (player.version < 5) {
       if (player.ghostify.neutrinos.boosts==undefined||!player.ghostify.times) player.ghostify.neutrinos.boosts=0
       if (player.ghostify.ghostlyPhotons.maxRed==undefined) player.ghostify.ghostlyPhotons.maxRed=0
       if (player.ghostify.wzb.unl) giveAchievement("Even Ghostlier than before")
-      for (var g=tmp.bl.glyphs.length+1;g<br.names.length;g++) tmp.bl.glyphs.push(0)
+      for (var g=tmp.bl.glyphs.length+1;g<=br.limit;g++) tmp.bl.glyphs.push(0)
       if (!tmp.bl.usedEnchants.length) tmp.bl.usedEnchants=[]
       if (player.ghostify.wzb.dPUse===undefined) {
           player.ghostify.wzb.dPUse=0
@@ -1916,6 +1919,7 @@ if (player.version < 5) {
       updatePUCosts()
   }
   if (player.masterystudies) {
+      displayNonlegacyStuff()
       updateMasteryStudyCosts()
       if (quantumed) giveAchievement("Sub-atomic")
       if (tmp.qu.best<=10) giveAchievement("Quantum doesn't take so long")
@@ -1959,7 +1963,7 @@ if (player.version < 5) {
       document.getElementById("blUnl").textContent="To unlock Bosonic Lab, you need to get "+shortenCosts(Decimal.pow(10,1e10))+" ghostly unstable quarks first."
       document.getElementById("bpc68").textContent=shortenMoney(tmp.qu.pairedChallenges.pc68best)
       document.getElementById("odSlider").value=Math.round((tmp.bl.odSpeed-1)/4*50)
-      for (var g=1;g<br.names.length;g++) document.getElementById("typeToExtract"+g).className=tmp.bl.typeToExtract==g?"chosenbtn":"storebtn"
+      for (var g=1;g<=br.limit;g++) document.getElementById("typeToExtract"+g).className=tmp.bl.typeToExtract==g?"chosenbtn":"storebtn"
       updateColoredQuarksProduction()
       updateElectrons()
       updateAutoQuantumMode()
@@ -2623,9 +2627,9 @@ function transformSaveToDecimal() {
           tmp.bl.am=new Decimal(tmp.bl.am)
           tmp.bl.extractProgress=new Decimal(tmp.bl.extractProgress)
           tmp.bl.autoExtract=new Decimal(tmp.bl.autoExtract)
-          for (var t=0;t<br.names.length-1;t++) tmp.bl.glyphs[t]=new Decimal(tmp.bl.glyphs[t]||0)
+          for (var t=0;t<=br.limit-1;t++) tmp.bl.glyphs[t]=new Decimal(tmp.bl.glyphs[t]||0)
           tmp.bl.battery=new Decimal(tmp.bl.battery)
-          for (var g2=2;g2<br.names.length;g2++) for (var g1=1;g1<g2;g1++) if (tmp.bl.enchants[g1*10+g2]!==undefined) tmp.bl.enchants[g1*10+g2]=new Decimal(tmp.bl.enchants[g1*10+g2])
+          for (var g2=2;g2<=br.limit;g2++) for (var g1=1;g1<g2;g1++) if (tmp.bl.enchants[g1*10+g2]!==undefined) tmp.bl.enchants[g1*10+g2]=new Decimal(tmp.bl.enchants[g1*10+g2])
 
           player.ghostify.wzb.dP=new Decimal(player.ghostify.wzb.dP)
           player.ghostify.wzb.wQkProgress=new Decimal(player.ghostify.wzb.wQkProgress)
