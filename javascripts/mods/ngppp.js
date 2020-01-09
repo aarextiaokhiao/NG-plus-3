@@ -5155,7 +5155,7 @@ var bu={
 		14: function() {
 			let x=Math.pow(Math.max(player.dilation.freeGalaxies/20-1800,0),1.5)
 			let y=Math.max(tmp.qu.electrons.sacGals,player.galaxies)
-			if (x>y+1e5) x=Math.pow((x-y)*1e10,1/3)+y
+			if (x>y) x=Math.pow((x-y+1e5)*1e10,1/3)+y-1e5
 			return Math.round(x)
 		},
 		15: function() {
