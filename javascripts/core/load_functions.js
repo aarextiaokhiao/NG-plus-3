@@ -6,7 +6,6 @@ var presetPrefix = prefix + "AM_ST_"
 var metaSaveId = betaId + "AD_aarexModifications"
 var notifyId = 0
 function onLoad(noOffline) {
-  tmp.ngp3=player.masterystudies!==undefined
   tmp.qu=player.quantum
   happyHalloween=false
   if (player.totalmoney === undefined || isNaN(player.totalmoney)) player.totalmoney = player.money;
@@ -414,7 +413,9 @@ if (player.version < 5) {
       delete player.aarexModifications.newGame3PlusVersion
   }
   if (player.aarexModifications.newGame3PlusVersion>=2.2) tmp.bl=player.ghostify.bl
+  tmp.ngp3=player.masterystudies!==undefined
   tmp.ngp3l=player.aarexModifications.ngp3lV!==undefined
+  tmp.ngex=player.aarexModifications.ngexV!==undefined
   setNonlegacyStuff()
 
   slider.min=player.aarexModifications.performanceTicks?0:33
