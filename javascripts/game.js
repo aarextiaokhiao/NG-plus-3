@@ -1193,7 +1193,10 @@ function updateTemp() {
 		tmp.be=tmp.qu.bigRip.active&&tmp.qu.breakEternity.break
 		tmp.rg4=tmp.qu.upgrades.includes("rg4")&&(tmp.qu.rg4||inQC(1)||QCIntensity(1))
 		tmp.tue=getTreeUpgradeEfficiency()
+		tmp.mpte=getMPTExp()
 	} else tmp.be=false
+	if (player.meta !== undefined) tmp.mdgm = getMetaDimensionGlobalMultiplier()
+	tmp.mptb=getMPTBase()
 	var x=(3-player.tickspeed.log10())*0.000005
 	if (ghostified&&player.ghostify.neutrinos.boosts>3) x*=tmp.nb[3]
 	if (tmp.be&&!player.dilation.active&&tmp.qu.breakEternity.upgrades.includes(8)) x*=getBreakUpgMult(8)
@@ -1795,7 +1798,7 @@ function updateDimensions() {
             }
         }
 
-		setAndMaybeShow("mp10d",player.aarexModifications.newGameMult,"'Multiplier per 10 dimensions: '+shorten(getDimensionPowerMultiplier(true))+'x'")
+		setAndMaybeShow("mp10d",player.aarexModifications.newGameMult,"'Multiplier per 10 dimensions: '+shorten(getDimensionPowerMultiplier(\"non-random\"))+'x'")
 
         var shiftRequirement = getShiftRequirement(0);
         var isShift = player.resets < (inNC(4) || player.currentChallenge == "postc1" || player.pSac !== undefined ? 2 : 4)
@@ -3551,7 +3554,7 @@ var modSubNames = {
 function toggle_mod(id) {
 	hasSubMod = Object.keys(modSubNames).includes(id)
 	// Change submod
-	subMode = ((modes[id] || 0) + 1) % ((hasSubMod && modSubNames[id].length) || 2)
+	var subMode = ((modes[id] || 0) + 1) % ((hasSubMod && modSubNames[id].length) || 2)
 	if (id == "ngp" && subMode == 2 && (!(modes.ngpp >= 2) || !metaSave.ngp4)) subMode = 0
 	else if (id == "ngpp" && subMode == 1 && modes.ngud) subMode = 2
 	else if (id == "ngpp" && subMode == 3 && modes.ngex) subMode = 0
@@ -3568,7 +3571,7 @@ function toggle_mod(id) {
 		modes.ngp=1
 		document.getElementById("ngpBtn").textContent="NG+: ON"
 	}
-	if (((id=="ngud"&&modes.ngpp==1)||(id=="ngex"&&modes.ngpp==3))&&subMode) {
+	if (((id=="ngud"&&(modes.ngpp==1||subMode==2))||(id=="ngex"&&modes.ngpp==3))&&subMode) {
 		modes.ngpp=2
 		document.getElementById("ngppBtn").textContent="NG++: NG+++"
 	}
@@ -8533,7 +8536,7 @@ function gameLoop(diff) {
 		if (document.getElementById("eternitychallenges").style.display == "block") {
 			document.getElementById("ec1reward").textContent = "Reward: "+shortenMoney(getECReward(1))+"x on all Time Dimensions (based on time spent this Eternity)"
 			document.getElementById("ec2reward").textContent = "Reward: Infinity power affects 1st Infinity Dimension with reduced effect, Currently: "+shortenMoney(getECReward(2))+"x"
-			document.getElementById("ec3reward").textContent = "Reward: Increase the multiplier for buying 10 dimensions, Currently: "+shorten(getDimensionPowerMultiplier(true,"no-QC5"))+"x"
+			document.getElementById("ec3reward").textContent = "Reward: Increase the multiplier for buying 10 dimensions, Currently: "+shorten(getDimensionPowerMultiplier("no-QC5"))+"x"
 			document.getElementById("ec4reward").textContent = "Reward: Infinity Dimension multiplier from unspent IP, Currently: "+shortenMoney(getECReward(4))+"x"
 			document.getElementById("ec5reward").textContent = "Reward: Galaxy cost scaling starts "+getECReward(5)+" galaxies later."
 			document.getElementById("ec6reward").textContent = "Reward: Further reduce the dimension cost multiplier increase, Currently: "+player.dimensionMultDecrease.toFixed(1)+"x "
@@ -8551,7 +8554,7 @@ function gameLoop(diff) {
 		if (document.getElementById("quantumchallenges").style.display == "block") {
 		    if (tmp.qu.autoOptions.sacrifice) document.getElementById("electronsAmount2").textContent="You have " + getFullExpansion(Math.round(tmp.qu.electrons.amount)) + " electrons."
 			for (var c=1;c<7;c++) {
-				if (c==5) document.getElementById("qc5reward").textContent = getDimensionPowerMultiplier(true, "linear").toFixed(2)
+				if (c==5) document.getElementById("qc5reward").textContent = getDimensionPowerMultiplier("linear").toFixed(2)
 				else if (c!=2) document.getElementById("qc"+c+"reward").textContent = shorten(getQCReward(c))
 			}
             if (player.masterystudies.includes("d14")) {

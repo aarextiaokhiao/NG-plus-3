@@ -180,30 +180,44 @@ function canBuyDimension(tier) {
 	return true;
 }
 	
-function getDimensionPowerMultiplier(nonrandom, focusOn) {
+function getDimensionPowerMultiplier(focusOn) {
+	let ret = focusOn || inNC(9) || player.currentChallenge=="postc1" ? getMPTBase(focusOn) : tmp.mpbe
+	let exp = 1
+	if (tmp.ngp3 && focusOn != "linear") exp = focusOn == "no-rg4" ? getMPTExp(focusOn) : tmp.mpte
+	if (exp > 1) ret = Decimal.pow(ret, exp)
+	if (player.aarexModifications.newGameMult !== undefined) {
+		ret = Decimal.times(ret, Math.log10(player.resets+1)+1)
+		ret = Decimal.times(ret, Math.log10(player.galaxies+1)*5+1)
+	}
+	return ret
+}
+	
+function getMPTBase(focusOn) {
 	if (((inQC(5)||inQC(7))&&focusOn!="linear")||(((inNC(13)&&player.tickspeedBoosts==undefined)||player.currentChallenge=="postc1"||player.currentChallenge=="postcngm3_1")&&player.galacticSacrifice!=undefined)) {
 		if (player.masterystudies) if (player.masterystudies.includes("t321")) return new Decimal("1e430")
 		return 1
 	}
-	let dimMult = player.tickspeedBoosts==undefined?2:1
-	if (player.aarexModifications.newGameExpVersion) dimMult *= 10
-	if (player.aarexModifications.newGameMult) dimMult *= 2.1
-
-	if (player.infinityUpgrades.includes('dimMult')) dimMult *= infUpg12Pow()
-	if ((inNC(9)||player.currentChallenge == "postc1")&&!nonrandom) dimMult = Math.pow(10/0.30,Math.random())*0.30
-
-	if (player.achievements.includes("r58")) dimMult = player.galacticSacrifice?Math.pow(dimMult,player.tickspeedBoosts==undefined?1.0666:Math.min(Math.sqrt(1800,player.challengeTimes[3])*.1+1,1.0666)):dimMult*1.01;
-	dimMult += getECReward(3)
-	if (player.galacticSacrifice) if (player.galacticSacrifice.upgrades.includes(33) && ((!inNC(14) && player.currentChallenge != "postcngm3_3") || player.tickspeedBoosts == undefined || player.aarexModifications.ngmX > 3) && player.currentChallenge != "postcngm3_4") dimMult *= galMults.u33();
-	if (focusOn == "no-QC5") return dimMult
-	if (QCIntensity(5)) dimMult += getQCReward(5)
-	if (tmp.ngp3) {
-		if (player.masterystudies.includes("d12")) dimMult += getNanofieldRewardEffect(8, "per-10")
-		if (focusOn != "linear") dimMult = Decimal.pow(dimMult, getMPTPower(focusOn))
+	let ret = 2
+	if (player.tickspeedBoosts !== undefined) ret = 1
+	if (player.aarexModifications.newGameExpVersion) ret *= 10
+	if (player.aarexModifications.newGameMult) ret *= 2.1
+	if (player.infinityUpgrades.includes('ret')) ret *= infUpg12Pow()
+	if ((inNC(9)||player.currentChallenge=="postc1")&&!focusOn) ret = Math.pow(10/0.30,Math.random())*0.30
+	if (player.achievements.includes("r58")) {
+		if (player.galacticSacrifice !== undefined) {
+			let exp = 1.0666
+			if (player.tickspeedBoosts !== undefined) exp = Math.min(Math.sqrt(1800 / player.challengeTimes[3] + 1), exp)
+			ret = Math.pow(ret, exp)
+		} else ret *= 1.01
 	}
-	if (player.aarexModifications.newGameMult) dimMult = Decimal.times(dimMult,Math.log10(player.resets+1)+1)
-	if (player.aarexModifications.newGameMult) dimMult = Decimal.times(dimMult,Math.log10(player.galaxies+1)*5+1)
-	return dimMult;
+	ret += getECReward(3)
+	if (player.galacticSacrifice !== undefined) if (player.galacticSacrifice.upgrades.includes(33) && ((!inNC(14) && player.currentChallenge != "postcngm3_3") || player.tickspeedBoosts == undefined || player.aarexModifications.ngmX > 3) && player.currentChallenge != "postcngm3_4") ret *= galMults.u33();
+	if (focusOn == "no-QC5") return ret
+	if (tmp.ngp3) {
+		ret += getQCReward(5)
+		if (player.masterystudies.includes("d12")) ret += getNanofieldRewardEffect(8, "per-10")
+	}
+	return ret
 }
 
 function infUpg12Pow() {

@@ -3,7 +3,7 @@ function getBlackholeDimensionPower(tier) {
   var dim = player["blackholeDimension"+tier];
 
   let ret = dim.power
-  if (player.aarexModifications.ngumuV) ret = ret.pow(Math.sqrt(getMPTPower()))
+  if (player.aarexModifications.ngumuV) ret = ret.pow(Math.sqrt(getMPTExp()))
 
   if (ret.lt(1)) {
     ret = new Decimal(1)

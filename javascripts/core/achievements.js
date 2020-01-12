@@ -354,7 +354,7 @@ function updateAchievements() {
 		if (i>15) {
 			shown=!(!player.masterystudies)
 			rownum=i-15
-			if (rownum>8) shown=!tmp.ngp3l
+			if (rownum>8) shown=shown&&!tmp.ngp3l
 			rowid="ng3p"+rownum
 		} else if (i>14) {
 			shown=player.meta!=undefined

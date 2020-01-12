@@ -695,7 +695,7 @@ function updateQuantumTabs() {
 		document.getElementById("brupg1current").textContent="Currently: "+shortenMoney(player.dilation.dilatedTime.add(1).log10()+1)+"x"
 		document.getElementById("rgupg2current").textContent="Currently: "+(Math.pow(player.dilation.freeGalaxies/5e3+1,0.25)*100-100).toFixed(1)+"%"
 		document.getElementById("brupg2current").textContent="Currently: "+shortenMoney(Decimal.pow(2.2, Math.pow(calcTotalSacrificeBoost().log10()/1e6, 0.25)))+"x"
-		document.getElementById("brupg4current").textContent="Currently: "+shortenMoney(Decimal.pow(getDimensionPowerMultiplier(true, "br4"), 0.0003))+"x"
+		document.getElementById("brupg4current").textContent="Currently: "+shortenMoney(Decimal.pow(getDimensionPowerMultiplier(hasNU(13)&&"no-rg4"), 0.0003))+"x"
 		if (player.masterystudies.includes("d9")) {
 			document.getElementById("gbupg5current").textContent="Currently: "+(Math.sqrt(player.replicanti.galaxies)/5.5).toFixed(1)+"%"
 			document.getElementById("brupg5current").textContent="Currently: "+Math.min(Math.sqrt(player.dilation.tachyonParticles.max(1).log10())*1.3,14).toFixed(1)+"%"
@@ -1071,13 +1071,13 @@ function sacrificeGalaxy(auto=false) {
 	if (!auto) galaxyReset(0)
 }
 
-function getMPTPower(mod) {
+function getMPTExp(mod) {
 	if (!inQC(0)) return 1
 	var a = tmp.qu.electrons.amount
 	var s = 149840
 	if (player.ghostify.ghostlyPhotons.unl) s += tmp.le[2]
 	if (a>37460+s) a = Math.sqrt((a-s)*37460)+s
-	if (tmp.rg4 && (mod != "br4" || !hasNU(13))) a *= 0.7
+	if (tmp.rg4 && mod != "no-rg4") a *= 0.7
 	if (player.masterystudies !== undefined && player.masterystudies.includes("d13") && mod != "noTree") a *= getTreeUpgradeEffect(4)
 	return a+1
 }
@@ -1244,7 +1244,7 @@ function getQCGoal(num) {
 }
 
 function QCIntensity(num) {
-	if (player.masterystudies != undefined) if (tmp.qu != undefined) if (tmp.qu.challenges != undefined) if (tmp.qu.challenges[num] != undefined) return tmp.qu.challenges[num]
+	if (tmp.ngp3 && tmp.qu != undefined && tmp.qu.challenges != undefined) return tmp.qu.challenges[num] || 0
 	return 0
 }
 
@@ -2198,7 +2198,7 @@ function getTreeUpgradeEffect(upg) {
 function getTreeUpgradeEffectDesc(upg) {
 	if (upg==1) return getFullExpansion(getTreeUpgradeEffect(upg))
 	if (upg==2) return getDilExp("TU3").toFixed(2) + " -> " + getDilExp().toFixed(2)
-	if (upg==4) return "^" + getFullExpansion(Math.round(getMPTPower("noTree"))) + " -> ^" + getFullExpansion(Math.round(getMPTPower()))
+	if (upg==4) return "^" + getFullExpansion(Math.round(getMPTExp("noTree"))) + " -> ^" + getFullExpansion(Math.round(tmp.mpte))
 	if (upg==8) return "+" + getTreeUpgradeEffect(8).toFixed(2)
 	return shortenMoney(getTreeUpgradeEffect(upg))
 }
@@ -2286,9 +2286,9 @@ function updateElectronsEffect() {
 	document.getElementById("sacrificedGals").textContent=getFullExpansion(tmp.qu.electrons.sacGals)
 	document.getElementById("electronsAmount").textContent=getFullExpansion(Math.round(tmp.qu.electrons.amount))
 	if (!tmp.qu.autoOptions.sacrifice) document.getElementById("electronsAmount2").textContent="You have " + getFullExpansion(Math.round(tmp.qu.electrons.amount)) + " electrons."
-	document.getElementById("electronsTranslation").textContent=getFullExpansion(Math.round(getMPTPower()))
-	document.getElementById("electronsEffect").textContent = shorten(getDimensionPowerMultiplier(true))
-	document.getElementById("linearPerTenMult").textContent = shorten(getDimensionPowerMultiplier(true, "linear"))
+	document.getElementById("electronsTranslation").textContent=getFullExpansion(Math.round(tmp.mpte))
+	document.getElementById("electronsEffect").textContent = shorten(getDimensionPowerMultiplier("non-random"))
+	document.getElementById("linearPerTenMult").textContent = shorten(getDimensionPowerMultiplier("linear"))
 }
 
 function maxBuyLimit() {
