@@ -1,24 +1,9 @@
 //v1: black hole part
 function getBlackholeDimensionPower(tier) {
-  var dim = player["blackholeDimension"+tier];
-
+  let dim = player["blackholeDimension"+tier];
   let ret = dim.power
   if (player.aarexModifications.ngumuV) ret = ret.pow(Math.sqrt(getMPTExp()))
-
-  if (ret.lt(1)) {
-    ret = new Decimal(1)
-  }
-
-  if (player.dilation.active) {
-    ret = Decimal.pow(10, Math.pow(ret.log10(), 0.75))
-    if (player.dilation.upgrades.includes(9)) {
-      ret = Decimal.pow(10, Math.pow(ret.log10(), 1.05))
-    }
-  }
-
-
-  return ret
-
+  return dilates(ret.max(1), 1)
 }
 
 

@@ -1831,13 +1831,11 @@ function updateEmperorDimensions() {
 	document.getElementById("replicantAmountED").textContent=shortenDimensions(tmp.qu.replicants.amount)
 	for (d=1;d<9;d++) {
 		document.getElementById("empD"+d).textContent = DISPLAY_NAMES[d] + " Emperor Dimension x" + formatValue(player.options.notation, getEDMultiplier(d), 2, 1)
-		
 		document.getElementById("empAmount"+d).textContent = d<8?shortenDimensions(eds[d].workers)+" (+"+shorten(getEDRateOfChange(d))+dimDescEnd:getFullExpansion(eds[8].perm)
+		document.getElementById("empQuarks"+d).textContent = shorten(production.workers[d])
 		document.getElementById("empFeed"+d).className=(canFeedReplicant(d)?"stor":"unavailabl")+"ebtn"
 		document.getElementById("empFeed"+d).textContent="Feed ("+Math.round(eds[d].progress.toNumber()*100)+"%, "+getFullExpansion(eds[d].perm)+" kept)"
 		document.getElementById("empFeedMax"+d).className=(canFeedReplicant(d)?"stor":"unavailabl")+"ebtn"
-
-		document.getElementById("empQuarks"+d).textContent = shorten(production.workers[d])
 	}
 	document.getElementById("totalWorkers").textContent = shortenDimensions(getTotalWorkers())
 	document.getElementById("totalQuarkProduction").textContent = shorten(production.workersTotal)
@@ -1852,8 +1850,7 @@ function getEDMultiplier(dim) {
 	if (player.masterystudies.includes("d13")) ret = ret.times(getTreeUpgradeEffect(6))
 	if (hasNU(7)&&dim%2) ret = ret.times(tmp.nu[3])
 	if (player.achievements.includes("ng3p91")) ret = ret.times(player.achPow)
-	if (player.dilation.active || player.galacticSacrifice) ret = Decimal.pow(10, Math.pow(ret.log10(), dilationPowerStrength()))
-	return ret
+	return dilates(ret, 1)
 }
 
 function getEDRateOfChange(dim) {
