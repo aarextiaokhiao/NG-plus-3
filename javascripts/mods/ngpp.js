@@ -501,24 +501,6 @@ function quantum(auto, force, challid, bigRip = false, quick) {
 				} else if (player.options.challConf || (QCIntensity(1) == 0 && !ghostified)) if (!confirm("You will do a quantum reset but you will not gain quarks, and keep your electrons & sacrificed galaxies, and you can't buy electron upgrades. You have to reach the set goal of antimatter to complete this challenge. NOTE: Electrons and banked eternities do nothing in quantum challenges and your electrons and sacrificed galaxies do not reset until you end the challenge.")) return
 				tmp.qu.electrons.amount -= getQCCost(challid)
 				if (!quick) for (var m=0;m<qcm.on.length;m++) if (ranking>=qcm.reqs[qcm.on[m]]||!qcm.reqs[qcm.on[m]]) tmp.qu.qcsMods.current.push(qcm.on[m])
-				if (tmp.qu.qcsMods.current.includes("sm")) {
-					var count=0
-					var newMS=[]
-					for (var i=0;i<player.masterystudies.length;i++) {
-						var study=player.masterystudies[i]
-						var split=study.split("t")
-						if (!split[1]) newMS.push(study)
-						else if (count<20) {
-							newMS.push(study)
-							count++
-						} else {
-							if (study=="t373") updateColorCharge()
-							player.timestudy.theorem+=masterystudies.costs.time[split[1]]
-						}
-					}
-					player.masterystudies=newMS
-					respecUnbuyableTimeStudies()
-				}
 			} else if (pcFocus&&pc<1) {
 				if (!assigned.includes(challid)) {
 					if (!tmp.qu.pairedChallenges.order[pcFocus]) tmp.qu.pairedChallenges.order[pcFocus]=[challid]
@@ -816,6 +798,24 @@ function quantumReset(force, auto, challid, bigRip, implode=false) {
 			for (var s=0;s<player.masterystudies.length;s++) if (player.masterystudies[s].indexOf("t") == 0) tmp.qu.bigRip.storedTS.studies.push(parseInt(player.masterystudies[s].split("t")[1]))
 		}
 		if (bigRip != tmp.qu.bigRip.active) switchAB()
+		if (inQCModifier("sm")) {
+			var count=0
+			var newMS=[]
+			for (var i=0;i<player.masterystudies.length;i++) {
+				var study=player.masterystudies[i]
+				var split=study.split("t")
+				if (!split[1]) newMS.push(study)
+				else if (count<20) {
+					newMS.push(study)
+					count++
+				} else {
+					if (study=="t373") updateColorCharge()
+					player.timestudy.theorem+=masterystudies.costs.time[split[1]]
+				}
+			}
+			player.masterystudies=newMS
+			respecUnbuyableTimeStudies()
+		}
 		if (!bigRip && tmp.qu.bigRip.active) if (player.galaxies == 9 && player.replicanti.galaxies == 9 && player.timeDimension4.amount.round().eq(9)) giveAchievement("We can really afford 9.")
 	} else tmp.qu.gluons = 0;
 	if (player.tickspeedBoosts !== undefined) player.tickspeedBoosts = 0
@@ -1064,7 +1064,7 @@ function quantumReset(force, auto, challid, bigRip, implode=false) {
 			galaxybuyer: bigRipChanged ? turnSomeOn : oheHeadstart ? player.replicanti.galaxybuyer : undefined,
 			auto: bigRipChanged ? [turnSomeOn, turnSomeOn, turnSomeOn] : oheHeadstart ? player.replicanti.auto : [false, false, false]
 		},
-		timestudy: isRewardEnabled(11) && (bigRip ? tmp.qu.bigRip.upgrades.includes(12) : true) ? player.timestudy : {
+		timestudy: isRewardEnabled(11) && (!bigRip || tmp.qu.bigRip.upgrades.includes(12)) ? player.timestudy : {
 			theorem: 0,
 			amcost: new Decimal("1e20000"),
 			ipcost: new Decimal(1),
@@ -1175,7 +1175,7 @@ function quantumReset(force, auto, challid, bigRip, implode=false) {
 				cost: new Decimal(1e24)
 			}
 		},
-		masterystudies: tmp.ngp3 ? (!bigRip || tmp.qu.bigRip.upgrades.includes(12) ? ["d7", "d8", "d9", "d10", "d11", "d12", "d13", "d14"] : speedrunMilestonesReached > 10 && isRewardEnabled(4) ? player.masterystudies : []) : undefined,
+		masterystudies: tmp.ngp3 ? (bigRip && !tmp.qu.bigRip.upgrades.includes(12) ? ["d7", "d8", "d9", "d10", "d11", "d12", "d13", "d14"] : speedrunMilestonesReached > 10 && isRewardEnabled(4) ? player.masterystudies : []) : undefined,
 		autoEterOptions: player.autoEterOptions,
 		galaxyMaxBulk: player.galaxyMaxBulk,
 		quantum: tmp.qu,
@@ -1194,7 +1194,7 @@ function quantumReset(force, auto, challid, bigRip, implode=false) {
 	if (player.tickspeedBoosts !== undefined && !keepABnICs) player.autobuyers[13]=14
 	player.challenges=challengesCompletedOnEternity(bigRip)
 	if (bigRip && player.ghostify.milestones > 9 && player.aarexModifications.ngudpV) for (var u=7;u<10;u++) player.eternityUpgrades.push(u)
-	if (isRewardEnabled(11) && (!bigRip || tmp.qu.bigRip.upgrades.includes(12))) {
+	if (isRewardEnabled(11) && (bigRip && !tmp.qu.bigRip.upgrades.includes(12))) {
 		if (player.eternityChallUnlocked>12) player.timestudy.theorem+=masterystudies.costs.ec[player.eternityChallUnlocked]
 		else player.timestudy.theorem+=([0,30,35,40,70,130,85,115,115,415,550,1,1])[player.eternityChallUnlocked]
 	}
