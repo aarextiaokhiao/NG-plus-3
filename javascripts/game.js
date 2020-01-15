@@ -5507,9 +5507,8 @@ function eternity(force, auto, presetLoad, dilated) {
             if (player.ghostify.milestones < 15) tmp.qu.breakEternity.eternalMatter = tmp.qu.breakEternity.eternalMatter.round()
             array = [player.thisEternity, getEMGain(), "b"]
             updateBreakEternity()
-            if (tmp.qu.breakEternity.eternalMatter.gte(9.999999e99)) giveAchievement("This achievement doesn't exist 4")
         }
-        if (player.infinityPoints.e>=15500&&player.currentEternityChall=="eterc11"&&inQC(6)&&inQC(8)&&inQCModifier("ad")) giveAchievement("This achievement doesn't exist 4")
+        if (player.infinityPoints.e>=15500&&player.currentEternityChall=="eterc11"&&inQC(6)&&inQC(8)&&inQCModifier("ad")) giveAchievement("The Deep Challenge")
         addEternityTime(array)
         var forceRespec = false
         if (player.currentEternityChall !== "") {
@@ -7631,6 +7630,7 @@ setInterval(function() {
 			if (player.currentEternityChall == "eterc7" && player.galaxies == 1 && player.money.e >= 8e7) giveAchievement("Time Immunity")
 			if (!player.timestudy.studies.includes(11) && player.timeShards.e > 214) giveAchievement("You're not really smart.")
 			if (ableToGetRid7 && player.infinityPoints.e >= 35e4) giveAchievement("And so your life?")
+			if (tmp.qu.breakEternity.eternalMatter.gte(9.999999e99)) giveAchievement("This achievement doesn't exist 4")
 			if (ableToGetRid8 && player.infinityPoints.e >= 95e4) giveAchievement("Please answer me why you are dying.")
 			if (ableToGetRid9 && player.infinityPoints.e >= 18e5) giveAchievement("Aren't you already dead?")
 			if (ableToGetRid10 && player.infinityPoints.e >= 8e4) giveAchievement("I give up.")
