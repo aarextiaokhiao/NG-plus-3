@@ -136,12 +136,15 @@ function buyTimeStudy(name, check, quickBuy) {
 	}
 }
 
+function getDilationTotalTTReq() {
+	return tmp.ngex?12950:13000
+}
+
 function buyDilationStudy(name, cost) {
     if (player.timestudy.theorem >= cost && !player.dilation.studies.includes(name) && (player.dilation.studies.includes(name-1)||name<2)) {
         if (name < 2) {
-            if (ECTimesCompleted("eterc11")+ECTimesCompleted("eterc12")<10||getTotalTT(player)<13000) return
+            if (ECTimesCompleted("eterc11")+ECTimesCompleted("eterc12")<10||getTotalTT(player)<getDilationTotalTTReq()) return
             showEternityTab("dilation")
-            document.getElementById("dilstudy1").innerHTML = "Unlock time dilation<span>Cost: 5000 Time Theorems"
             if (player.eternityUpgrades.length<1) giveAchievement("Work harder.")
 			if (player.blackhole != undefined) updateEternityUpgrades()
         } else if (name > 5) {
@@ -817,4 +820,14 @@ function getTS11Mult() {
 
 function getTS32Mult() {
 	return Math.pow(Math.max(player.resets,1),player.aarexModifications.newGameMult?4:1)
+}
+
+function getTS62Mult() {
+	let r=player.aarexModifications.newGameExpVersion?4:3
+	if (tmp.ngex) r--
+	return r
+}
+
+function getTS213Mult() {
+	return tmp.ngex?10:20
 }

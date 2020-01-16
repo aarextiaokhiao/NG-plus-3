@@ -1191,6 +1191,8 @@ function updateTemp() {
 			if (tmp.nrm.gt("1e1000000000")) tmp.nrm=Decimal.pow(10,Math.pow(tmp.nrm.log10()*3e4,2/3))
 		}
 		tmp.be=tmp.qu.bigRip.active&&tmp.qu.breakEternity.break
+		tmp.twr=getTotalWorkers()
+		tmp.tpa=getTotalReplicants()
 		tmp.rg4=tmp.qu.upgrades.includes("rg4")&&(tmp.qu.rg4||inQC(1)||QCIntensity(1))
 		tmp.tue=getTreeUpgradeEfficiency()
 		tmp.mpte=getMPTExp()
@@ -2939,8 +2941,7 @@ function updateInfCosts() {
         document.getElementById("ec11unl").innerHTML = "Eternity Challenge 11<span>Requirement: Use only the Normal Dimension path<span>Cost: 1 Time Theorem"
         document.getElementById("ec12unl").innerHTML = "Eternity Challenge 12<span>Requirement: Use only the Time Dimension path<span>Cost: 1 Time Theorem"
 
-        if (player.dilation.studies.includes(1)) document.getElementById("dilstudy1").innerHTML = "Unlock time dilation<span>Cost: 5000 Time Theorems"
-        else document.getElementById("dilstudy1").innerHTML = "Unlock time dilation<span>Requirement: 5 EC11 and EC12 completions and 13000 total theorems<span>Cost: 5000 Time Theorems"
+        document.getElementById("dilstudy1").innerHTML = "Unlock time dilation"+(player.dilation.studies.includes(1)?"":"<span>Requirement: 5 EC11 and EC12 completions and "+getFullExpansion(getDilationTotalTTReq())+" total theorems")+"<span>Cost: "+getFullExpansion(5e3)+" Time Theorems"
 
         if (tmp.ngp3) {
             document.getElementById("221desc").textContent = "Currently: "+shorten(Decimal.pow(1.0025, player.resets))+"x"
@@ -6563,6 +6564,13 @@ document.getElementById("ec12unl").onclick = function() {
     }
 }
 
+function getEC12TimeLimit() {
+	//In the multiple of 0.1 seconds
+	let r=10-2*ECTimesCompleted("eterc12")
+	if (tmp.ngex) r*=3.75
+	return Math.max(r,1)
+}
+
 function getECGoal(x) {
 	let gi=[[1800,975,600,2750,750,850,2000,1300,1750,3000,500,110000,38000000,1595000],[2675,1125,1025,4000,600,850,1450,2100,2250,2500,35000,37500,38000000,1595000]]
 	let gm=[[200,175,75,550,400,250,530,900,250,300,200,12000,1200000,250000],[400,250,100,850,300,225,530,500,300,250,3250,7500,1200000,250000]]
@@ -7080,14 +7088,16 @@ function buyDilationUpgrade(id, max) {
 function getPassiveTTGen() {
 	let r=getTTGenPart(player.dilation.tachyonParticles)
 	if (player.achievements.includes("ng3p18")&&!tmp.qu.bigRip.active) r+=getTTGenPart(player.dilation.bestTP)/50
+	if (tmp.ngex) r*=.8
+	r/=(ghostified?200:2e4)
 	return r
 }
 
 function getTTGenPart(x) {
-	x=x.max(1)
+	x=x.max(1).log10()
 	let y=player.aarexModifications.ngudpV&&!player.aarexModifications.nguepV?73:80
-	if (x.gt(Math.pow(10,y))) x=Math.pow(10,y+Math.sqrt(x.log10()*5-375)-5)
-	return x/(ghostified?200:2e4)
+	if (x>y) x=Math.sqrt((x-y+5)*5)+y-5
+	return Math.pow(10,x)
 }
 
 function updateDilationUpgradeButtons() {
@@ -7479,7 +7489,8 @@ setInterval(function() {
 
     if (getEternitied() >= 80 && player.replicanti.auto[2] && player.currentEternityChall !== "eterc8") autoBuyRG()
 
-    for (var c=1;c<15;c++) document.getElementById("eterc"+c+"goal").textContent = "Goal: "+shortenCosts(getECGoal(c))+" IP"+(c==12?" in "+(Math.max(10 - ECTimesCompleted("eterc12")*2, 1)/10)+((ECTimesCompleted("eterc12") === 0) ? " second or less." :" seconds or less."):c==4?" in "+Math.max((16-(ECTimesCompleted("eterc4")*4)),0)+" infinities or less.":"")
+    let ec12TimeLimit = Math.round(getEC12TimeLimit() * 10) / 100
+    for (var c=1;c<15;c++) document.getElementById("eterc"+c+"goal").textContent = "Goal: "+shortenCosts(getECGoal(c))+" IP"+(c==12?" in "+ec12TimeLimit+" second"+(ec12TimeLimit==1?"":"s")+" or less.":c==4?" in "+Math.max((16-(ECTimesCompleted("eterc4")*4)),0)+" infinities or less.":"")
 
     document.getElementById("eterc1completed").textContent = "Completed "+ECTimesCompleted("eterc1")+" times."
     document.getElementById("eterc2completed").textContent = "Completed "+ECTimesCompleted("eterc2")+" times."
@@ -7510,7 +7521,7 @@ setInterval(function() {
         document.getElementById("eterc8ids").style.display = "none"
     }
 
-    if (player.currentEternityChall == "eterc12" && player.thisEternity >= Math.max(2 * (5 - ECTimesCompleted("eterc12")), 1)) {
+    if (player.currentEternityChall == "eterc12" && player.thisEternity >= getEC12TimeLimit()) {
         document.getElementById("challfail").style.display = "block"
         setTimeout(exitChallenge, 500)
         giveAchievement("You're a mistake")
@@ -7676,7 +7687,7 @@ setInterval(function() {
         if (isAutoGhostActive(14)) maxBuyBEEPMult()
         if (isAutoGhostActive(4)&&player.ghostify.automatorGhosts[4].mode=="t") rotateAutoUnstable()
         if (isAutoGhostActive(10)) maxBuyLimit()
-        if (isAutoGhostActive(9)&&tmp.qu.replicants.quantumFood>0) for (d=1;d<9;d++) if (canFeedReplicant(d)&&(d==tmp.qu.replicants.limitDim||(!eds[d+1].perm&&eds[d].workers.lt(11)))) {
+        if (isAutoGhostActive(9)&&tmp.qu.replicants.quantumFood>0) for (d=1;d<9;d++) if (canFeedReplicant(d)&&(d==tmp.qu.replicants.limitDim||(!tmp.eds[d+1].perm&&tmp.eds[d].workers.lt(11)))) {
             feedReplicant(d, true)
             break
         }
@@ -7921,7 +7932,7 @@ function gameLoop(diff) {
     player.totalTimePlayed += diffStat
     if (tmp.ngp3) player.ghostify.time += diffStat
     if (player.meta) tmp.qu.time += diffStat
-    if (player.currentEternityChall=="eterc12") diffStat/=1e3
+    if (player.currentEternityChall=="eterc12") diffStat /= 1e3
     player.thisEternity += diffStat
     player.thisInfinityTime += diffStat
     if (player.galacticSacrifice) player.galacticSacrifice.time += diffStat
@@ -8042,25 +8053,25 @@ function gameLoop(diff) {
         for (dim=8;dim>1;dim--) {
             var promote = hasNU(2) ? 1/0 : getWorkerAmount(dim-2)
             if (canFeedReplicant(dim-1,true)) {
-               if (dim>2) promote = eds[dim-2].workers.sub(10).round().min(promote)
-               eds[dim-1].progress = eds[dim-1].progress.add(eds[dim].workers.times(getEDMultiplier(dim)).times(diff/200)).min(promote)
-               var toAdd = eds[dim-1].progress.floor()
+               if (dim>2) promote = tmp.eds[dim-2].workers.sub(10).round().min(promote)
+               tmp.eds[dim-1].progress = tmp.eds[dim-1].progress.add(tmp.eds[dim].workers.times(getEDMultiplier(dim)).times(diff/200)).min(promote)
+               var toAdd = tmp.eds[dim-1].progress.floor()
                if (toAdd.gt(0)) {
                    if (!hasNU(2)) {
-                       if (dim>2 && toAdd.gt(getWorkerAmount(dim-2))) eds[dim-2].workers = new Decimal(0)
-                       else if (dim>2) eds[dim-2].workers = eds[dim-2].workers.sub(toAdd).round()
+                       if (dim>2 && toAdd.gt(getWorkerAmount(dim-2))) tmp.eds[dim-2].workers = new Decimal(0)
+                       else if (dim>2) tmp.eds[dim-2].workers = tmp.eds[dim-2].workers.sub(toAdd).round()
                        else if (toAdd.gt(tmp.qu.replicants.amount)) tmp.qu.replicants.amount = new Decimal(0)
                        else tmp.qu.replicants.amount = tmp.qu.replicants.amount.sub(toAdd).round()
                    }
-                   if (toAdd.gt(eds[dim-1].progress)) eds[dim-1].progress = new Decimal(0)
-                   else eds[dim-1].progress = eds[dim-1].progress.sub(toAdd)
-                   eds[dim-1].workers = eds[dim-1].workers.add(toAdd).round()
+                   if (toAdd.gt(tmp.eds[dim-1].progress)) tmp.eds[dim-1].progress = new Decimal(0)
+                   else tmp.eds[dim-1].progress = tmp.eds[dim-1].progress.sub(toAdd)
+                   tmp.eds[dim-1].workers = tmp.eds[dim-1].workers.add(toAdd).round()
                }
             }
-            if (!canFeedReplicant(dim-1,true)) eds[dim-1].progress = new Decimal(0)
+            if (!canFeedReplicant(dim-1,true)) tmp.eds[dim-1].progress = new Decimal(0)
         }
 
-        tmp.qu.replicants.eggonProgress = tmp.qu.replicants.eggonProgress.add(getTotalWorkers().times(getEDMultiplier(1)).times(diff/200))
+        tmp.qu.replicants.eggonProgress = tmp.qu.replicants.eggonProgress.add(tmp.twr.times(getEDMultiplier(1)).times(diff/200))
         var toAdd = tmp.qu.replicants.eggonProgress.floor()
         if (toAdd.gt(0)) {
             if (toAdd.gt(tmp.qu.replicants.eggonProgress)) tmp.qu.replicants.eggonProgress = new Decimal(0)
@@ -8081,8 +8092,8 @@ function gameLoop(diff) {
         }
         if (tmp.qu.replicants.eggons.lt(1)) tmp.qu.replicants.babyProgress = new Decimal(0)
 
-        if (tmp.qu.replicants.babies.gt(0)&&getTotalReplicants().gt(0)) {
-            tmp.qu.replicants.ageProgress = tmp.qu.replicants.ageProgress.add(getTotalReplicants().times(diff/(player.achievements.includes("ng3p35")?400:4e3))).min(tmp.qu.replicants.babies)
+        if (tmp.qu.replicants.babies.gt(0)&&tmp.tpa.gt(0)) {
+            tmp.qu.replicants.ageProgress = tmp.qu.replicants.ageProgress.add(tmp.tpa.times(diff/(player.achievements.includes("ng3p35")?400:4e3))).min(tmp.qu.replicants.babies)
             var toAdd = tmp.qu.replicants.ageProgress.floor()
             if (toAdd.gt(0)) {
                 if (toAdd.gt(tmp.qu.replicants.babies)) tmp.qu.replicants.babies = new Decimal(0)
@@ -8239,9 +8250,9 @@ function gameLoop(diff) {
     if (chance.gte("1e9999998")) frequency = ts273Mult.times(Math.log10(player.replicanti.chance+1)/Math.log10(2))
     let interval = player.replicanti.interval
     if (player.aarexModifications.ngexV) interval *= .8
-    if (player.timestudy.studies.includes(62)) interval = interval/(player.aarexModifications.newGameExpVersion?4:3)
+    if (player.timestudy.studies.includes(62)) interval /= getTS62Mult()
     if (player.replicanti.amount.gt(Number.MAX_VALUE)||player.timestudy.studies.includes(133)) interval *= 10
-    if (player.timestudy.studies.includes(213)) interval /= 20
+    if (player.timestudy.studies.includes(213)) interval /= getTS213Mult()
     if (GUBought("gb1")) interval /= 1-Math.min(Decimal.log10(getTickSpeedMultiplier()),0)
     if (player.replicanti.amount.lt(Number.MAX_VALUE) && player.achievements.includes("r134")) interval /= 2
     if (isBigRipUpgradeActive(4)) interval /= 10

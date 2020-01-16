@@ -1301,9 +1301,9 @@ function quantumReset(force, auto, challid, bigRip, implode=false) {
 		tmp.qu.replicants.babies = new Decimal(0)
 		tmp.qu.replicants.growupProgress = new Decimal(0)
 		for (d=1;d<9;d++) {
-			if (d>7||eds[d].perm<10) tmp.qu.replicants.quantumFood+=Math.round(eds[d].progress.toNumber()*3)%3
-			eds[d].workers=new Decimal(eds[d].perm)
-			eds[d].progress=new Decimal(0)
+			if (d>7||tmp.eds[d].perm<10) tmp.qu.replicants.quantumFood+=Math.round(tmp.eds[d].progress.toNumber()*3)%3
+			tmp.eds[d].workers=new Decimal(tmp.eds[d].perm)
+			tmp.eds[d].progress=new Decimal(0)
 		}
 		tmp.qu.nanofield.charge = new Decimal(0)
 		tmp.qu.nanofield.energy = new Decimal(0)
