@@ -638,7 +638,7 @@ function getMTSMult(id, uses = "") {
 		if (log>5) log=Math.log10(log*2)*5
 		return Decimal.pow(10,log)
 	}
-	if (id==411) return tmp.twr.div(1e24).add(1).pow(0.2)
+	if (id==411) return tmp.tra.div(1e24).add(1).pow(0.2)
 	if (id==421) {
 		let ret=Math.pow(Math.max(-getTickspeed().log10()/1e13-0.75,1),4)
 		if (ret>100) ret=Math.sqrt(ret*100)

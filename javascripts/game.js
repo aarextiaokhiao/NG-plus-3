@@ -1192,7 +1192,7 @@ function updateTemp() {
 		}
 		tmp.be=tmp.qu.bigRip.active&&tmp.qu.breakEternity.break
 		tmp.twr=getTotalWorkers()
-		tmp.tpa=getTotalReplicants()
+		tmp.tra=getTotalReplicants()
 		tmp.rg4=tmp.qu.upgrades.includes("rg4")&&(tmp.qu.rg4||inQC(1)||QCIntensity(1))
 		tmp.tue=getTreeUpgradeEfficiency()
 		tmp.mpte=getMPTExp()
@@ -8092,8 +8092,8 @@ function gameLoop(diff) {
         }
         if (tmp.qu.replicants.eggons.lt(1)) tmp.qu.replicants.babyProgress = new Decimal(0)
 
-        if (tmp.qu.replicants.babies.gt(0)&&tmp.tpa.gt(0)) {
-            tmp.qu.replicants.ageProgress = tmp.qu.replicants.ageProgress.add(tmp.tpa.times(diff/(player.achievements.includes("ng3p35")?400:4e3))).min(tmp.qu.replicants.babies)
+        if (tmp.qu.replicants.babies.gt(0)&&tmp.tra.gt(0)) {
+            tmp.qu.replicants.ageProgress = tmp.qu.replicants.ageProgress.add(tmp.tra.times(diff/(player.achievements.includes("ng3p35")?400:4e3))).min(tmp.qu.replicants.babies)
             var toAdd = tmp.qu.replicants.ageProgress.floor()
             if (toAdd.gt(0)) {
                 if (toAdd.gt(tmp.qu.replicants.babies)) tmp.qu.replicants.babies = new Decimal(0)
