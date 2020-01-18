@@ -1236,6 +1236,7 @@ function updateTemp() {
 	}
 
 	tmp.rm=getReplMult()
+	if (!player.timestudy.studies.includes(101)) tmp.nrm=1
 	updateExtraReplGalaxies()
 
 	tmp.eu2b=1 //Eternity Upgrade #2 boost w/ "The cap is a million, not a trillion" reward
@@ -8253,7 +8254,7 @@ function gameLoop(diff) {
     if (player.timestudy.studies.includes(62)) interval /= getTS62Mult()
     if (player.replicanti.amount.gt(Number.MAX_VALUE)||player.timestudy.studies.includes(133)) interval *= 10
     if (player.timestudy.studies.includes(213)) interval /= getTS213Mult()
-    if (GUBought("gb1")) interval /= 1-Math.min(Decimal.log10(getTickSpeedMultiplier()),0)
+    if (GUBought("gb1")) interval /= 1-Decimal.min(getTickSpeedMultiplier(),1).log10()
     if (player.replicanti.amount.lt(Number.MAX_VALUE) && player.achievements.includes("r134")) interval /= 2
     if (isBigRipUpgradeActive(4)) interval /= 10
     if (player.replicanti.amount.gt(Number.MAX_VALUE)) interval = player.boughtDims ? Math.pow(player.achievements.includes("r107")?Math.max(player.replicanti.amount.log(2)/1024,1):1, -.25) : Decimal.pow(speeds.inc, Math.max(player.replicanti.amount.log10() - speeds.exp, 0)/speeds.exp).times(interval)
