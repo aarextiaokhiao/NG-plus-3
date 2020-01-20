@@ -309,7 +309,8 @@ newsArray = [//always true
 ["NG+3 has prestige layers, and onions have layers. Does this mean NG+3 is a prestige onion?", "player.newsArray.includes('am85')", "am156"],
 ["First-time developer releases incremental game, gets mocked by Aarex for inflation", true, "am157"],
 ["Click on the news message before this if you can travel back in time.", true, "am158"],
-["After Aarex's life, NG+Pi is now finally released!", true, "am159"]
+["After Aarex's life, NG+Pi is now finally released!", "tmp.ngp3", "am159"],
+["The next hour is in 5 updates- Wait, it's not supposed to go like that?", true, "am160"]
 ];}
 
 document.addEventListener("visibilitychange", function() {if (!document.hidden) {scrollNextMessage();}}, false);
