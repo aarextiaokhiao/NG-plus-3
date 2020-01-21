@@ -414,7 +414,7 @@ function updateNewPlayer(reseted) {
         player.options.gSacrificeConfirmation = true
     }
     if (modesChosen.ngpp>1) {
-        player.aarexModifications.newGame3PlusVersion = 2.3
+        player.aarexModifications.newGame3PlusVersion = 2.21
         player.respecMastery=false
         player.dbPower = 1
         player.dilation.times = 0
@@ -613,11 +613,6 @@ function updateNewPlayer(reseted) {
                 wpb: 0,
                 wnb: 0,
                 zb: 0
-            },
-            hb: {
-                times: 0,
-                amount: 0,
-                boosts: {}
             }
         }
         tmp.bl=player.ghostify.bl

@@ -4153,11 +4153,6 @@ function updateGhostifyTabs() {
 			document.getElementById("zbGain").textContent="You will gain "+shortenDimensions(data2.zNeReq.pow(0.75))+" Z Bosons on next oscillation."
 			document.getElementById("zbSpeed").textContent=shorten(tmp.zbs)
 		}
-		if (document.getElementById("hbtab").style.display=="block") {
-			document.getElementById("hbReset").className="gluonupgrade "+(tmp.bl.am.lt(1e19)?"unavailablebtn":"hb")
-			document.getElementById("hbGain").textContent=shortenDimensions(getHiggsGain())
-			document.getElementById("hbReq").textContent=shortenCosts(1e19)
-		}
 	}
 }
 
@@ -4979,8 +4974,8 @@ function updateEnchantDescs() {
 }
 
 var br={
-	names:[null, "Infinity", "Eternity", "Quantum", "Ghostly", /*"Ethereal", "Sixth", "Seventh", "Eighth", "Ninth"*/], //Current maximum limit of 9.
-	limit:4,
+	names:[null, "Infinity", "Eternity", "Quantum", "Ghostly", "Ethereal", "Sixth", "Seventh", "Eighth", "Ninth"], //Current maximum limit of 9.
+	limit:3,
 	scalings:{
 		1: 60,
 		2: 120,
@@ -5079,7 +5074,7 @@ function updateBosonicUpgradeDescs() {
 }
 
 var bu={
-	rows:4,
+	rows:2,
 	costs:{
 		11: {
 			am: 200,
@@ -5223,7 +5218,7 @@ function getAntiPreonGhostWake() {
 	return 104
 }
 
-//v2.3: NG+3.1
+//v2.21: NG+3.1
 function setNonlegacyStuff() {
 	//Bosonic Runes/Extractor/Enchants
 	if (!br.maxLimit) br.maxLimit=br.limit
@@ -5251,9 +5246,6 @@ function displayNonlegacyStuff() {
 	
 	//Bosonic Upgrades
 	for (var r=3;r<=bu.maxRows;r++) document.getElementById("bUpgRow"+r).style.display=tmp.ngp3l?"none":""
-	
-	//Higgs Bosons
-	document.getElementById("hbtabbtn").style.display=tmp.ngp3l?"none":""
 }
 
 function getTreeUpgradeEfficiency(mod) {
@@ -5261,78 +5253,4 @@ function getTreeUpgradeEfficiency(mod) {
 	if (player.ghostify.neutrinos.boosts>6&&(tmp.qu.bigRip.active||mod=="br")&&mod!="noNB") r+=tmp.nb[6]
 	if (player.achievements.includes("ng3p62")&&tmp.qu.bigRip.active&&!tmp.be&&!tmp.ngp3l) r+=0.5
 	return r
-}
-
-function blReset() {
-	ghostify(false, true)
-	delete tmp.qu.nanofield.apgWoke
-	player.ghostify.neutrinos.electron=new Decimal(0)
-	player.ghostify.neutrinos.mu=new Decimal(0)
-	player.ghostify.neutrinos.tau=new Decimal(0)
-	player.ghostify.ghostlyPhotons.amount=new Decimal(0)
-	player.ghostify.ghostlyPhotons.darkMatter=new Decimal(0)
-	player.ghostify.ghostlyPhotons.ghostlyRays=new Decimal(0)
-	player.ghostify.ghostlyPhotons.lights=[0,0,0,0,0,0,0,0]
-	tmp.bl = {
-		watt: new Decimal(0),
-		ticks: tmp.bl.ticks,
-		speed: 1,
-		am: new Decimal(0),
-		typeToExtract: 1,
-		extracting: false,
-		extractProgress: new Decimal(0),
-		autoExtract: new Decimal(0),
-		glyphs: [],
-		enchants: {},
-		usedEnchants: [],
-		upgrades: [],
-		battery: new Decimal(0),
-		odSpeed: tmp.bl.odSpeed
-	}
-	for (var g=1;g<=br.limit;g++) tmp.bl.glyphs.push(new Decimal(0))
-	player.ghostify.wzb = {
-		unl: true,
-		dP: new Decimal(0),
-		dPUse: 0,
-		wQkUp: true,
-		wQkProgress: new Decimal(0),
-		zNeGen: 1,
-		zNeProgress: new Decimal(0),
-		zNeReq: new Decimal(1),
-		wpb: new Decimal(0),
-		wnb: new Decimal(0),
-		zb: new Decimal(0)
-	}
-}
-
-function hbReset() {
-	if (tmp.bl.am.lt(1e19)||tmp.ngp3l) return
-	if (!confirm("You will reset Bosonic Lab, but you will also reset Neutrinos and everything else that Light Empowerment resets. However, you will also make Anti-Preontius sleepy again. You will gain Higgs Bosons from this. Are you sure you want to do that?")) return
-	changeFieldParticleAmt("0;0", getHiggsGain().add(getFieldParticleAmt(id)))
-	calculateTotalHiggs()
-	blReset()
-	player.ghostify.hb.times++
-	giveAchievement("Bosons have gone too far!")
-}
-
-function getHiggsGain() {
-	let r=tmp.bl.am.div(1e19).pow(.1)
-	return r.floor()
-}
-
-function calculateTotalHiggs() {
-	player.ghostify.hb.amount = new Decimal(0)
-	for (var b in player.ghostify.hb.boosts) {
-		player.ghostify.hb.boosts[b] = new Decimal(player.ghostify.hb.boosts[b])
-		player.ghostify.hb.amount = player.ghostify.hb.amount.add(player.ghostify.hb.boosts[b])
-	}
-	player.ghostify.hb.amount = player.ghostify.hb.amount.round()
-}
-
-function getFieldParticleAmt(id) {
-	return player.ghostify.hb.boosts[id] || 0
-}
-
-function changeFieldParticleAmt(id, amt) {
-	player.ghostify.hb.boosts[id] = Decimal.round(amt)
 }

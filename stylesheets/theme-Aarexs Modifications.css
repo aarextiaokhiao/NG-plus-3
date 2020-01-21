@@ -703,18 +703,6 @@ strong { color: #0072e5 }
 .tau #zNeSymbol {
 	transform: translate(-50%, 10%)
 }
-#hbtabbtn, .gluonupgrade.hb {
-	background: radial-gradient(#e5e500, transparent 50%, transparent 100%), radial-gradient(#727200, #727200, transparent 60%, transparent 100%), linear-gradient(transparent, #727200 50%, transparent 100%), radial-gradient(#3f3f00, #191919 50%, #3f3f00 100%);
-	background-position: center;
-	border-color: #727200 !important;
-	color: #e5e5e5 !important;
-	text-shadow: 0px 0px 3px #3f3f00, 0px 0px 6px #3f3f00;
-	animation: hb 5s ease infinite
-}
-#hbtabbtn:hover, .gluonupgrade.hb:hover {
-	border-color: #e5e500 !important;
-	box-shadow: 0px 0px 12px #e5e500, inset 0px 0px 24px #e5e500
-}
 .notifyjs-bootstrap-info {
     background-color: #0072e5;
     font-family:'Inconsolata', monospace;
