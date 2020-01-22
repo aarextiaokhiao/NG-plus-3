@@ -1913,6 +1913,7 @@ if (player.version < 5) {
   }
   if (player.masterystudies) {
       displayNonlegacyStuff()
+      updateUnlockedMasteryStudies()
       updateMasteryStudyCosts()
       if (quantumed) giveAchievement("Sub-atomic")
       if (tmp.qu.best<=10) giveAchievement("Quantum doesn't take so long")
@@ -1936,16 +1937,7 @@ if (player.version < 5) {
       document.getElementById('autoAssign').textContent="Auto: O"+(tmp.qu.autoOptions.assignQK?"N":"FF")
       document.getElementById('autoAssignRotate').textContent="Rotation: "+(tmp.qu.autoOptions.assignQKRotate>1?"Left":tmp.qu.autoOptions.assignQKRotate?"Right":"None")
       document.getElementById('autoReset').textContent="Auto: O"+(tmp.qu.autoOptions.replicantiReset?"N":"FF")
-      document.getElementById("quantumstudies").style.display=quantumed&&player.masterystudies?"":"none"
-      document.getElementById("replicantsstudies").style.display=player.masterystudies.includes("d10")||ghostified?"":"none"
-      document.getElementById("timestudy322").style.display=player.masterystudies.includes("d10")||ghostified?"":"none"
-      document.getElementById("empstudies").style.display=player.masterystudies.includes("d11")||ghostified?"":"none"
-      document.getElementById("timestudy361").style.display=player.masterystudies.includes("d11")||ghostified?"":"none"
-      document.getElementById("timestudy362").style.display=player.masterystudies.includes("d11")||ghostified?"":"none"
-      document.getElementById("timestudy362").style["font-size"] = player.masterystudies !== undefined ? "10px" : "0.65rem"
       document.getElementById("362desc").textContent="Reduce the softcap for preon boost"+(player.aarexModifications.ngumuV?" and preons reduce green power effect.":".")
-      document.getElementById("nfstudies").style.display=player.masterystudies.includes("d12")||ghostified?"":"none"
-      document.getElementById("todstudies").style.display=player.masterystudies.includes("d13")||ghostified?"":"none"
       document.getElementById("nanofieldtabbtn").style.display=player.masterystudies.includes("d12")?"":"none"
       document.getElementById("ghostifyAnimBtn").textContent="Ghostify: O"+(player.options.animations.ghostify?"N":"FF")
       for (var u=5;u<13;u++) {

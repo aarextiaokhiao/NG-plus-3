@@ -8255,7 +8255,7 @@ function gameLoop(diff) {
     if (player.replicanti.amount.gt(Number.MAX_VALUE)) interval = player.boughtDims ? Math.pow(player.achievements.includes("r107")?Math.max(player.replicanti.amount.log(2)/1024,1):1, -.25) : Decimal.pow(speeds.inc, Math.max(player.replicanti.amount.log10() - speeds.exp, 0)/speeds.exp).times(interval)
     if (player.exdilation != undefined) interval = Decimal.div(interval, getBlackholePowerEffect().pow(1/3))
 	if (player.dilation.upgrades.includes('ngpp1') && player.aarexModifications.nguspV && !player.aarexModifications.nguepV) interval = interval.div(player.dilation.dilatedTime.max(1).pow(0.05))
-    if (tmp.ngp3) if (player.masterystudies.includes("t332")) interval = Decimal.div(interval,Math.max(player.galaxies,1))
+    if (tmp.ngp3) if (player.masterystudies.includes("t332")) interval = Decimal.div(interval, getMTSMult(332))
     var est = Decimal.div((frequency ? frequency.times(Math.log10(2)/Math.log10(Math.E) * 1e3) : Decimal.add(chance, 1).log(Math.E) * 1e3), interval)
     var estLog10 = est.times(Math.log10(Math.E))
 

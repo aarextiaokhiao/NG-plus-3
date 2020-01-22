@@ -354,7 +354,7 @@
 				</table>
 				<table class="table" id="studytable">
 					<tr>
-						<td><button class="dilationupg" id="masteryportal" onclick="portal()"></button></td>
+						<td><button class="dilationupg" id="masteryportal" onclick="enterMasteryPortal()"></button></td>
 					</tr>
 				</table>
 				<div style="height: 60px;"></div>
@@ -436,7 +436,7 @@
 				<button class="storebtn" onclick="fillAll()" id="fillAll2" style="width:150px; height: 40px; font-size: 10px; margin: auto">Buy all time studies</button>
 				<table class="table" id="studytable">
 					<tr>
-						<td><button class="dilationupg" id="back" onclick="portalBack()">Lead back to time studies.</button></td>
+						<td><button class="dilationupg" id="back" onclick="exitMasteryPortal()">Lead back to time studies.</button></td>
 					</tr>
 				</table>
 				<table class="table" id="studytable">
@@ -467,7 +467,6 @@
 						<td><button class="eternitychallengestudy" id="ec14unl" onclick='buyMasteryStudy("ec", 14)'>Eternity Challenge 14<span id="ec14Req"></span><span id="ec14Cost" style="display: block;"></span></button></td>
 					</tr>
 				</table>
-				<div id='quantumstudies'>
 				<table class="table" id="studytable">
 					<tr>
 						<td><button class="timestudylocked" id="dilstudy7" onclick='buyMasteryStudy("d", 7)'>Unlock Electrons</span><br><span id="ds7Cost"></span></button></td>
@@ -519,8 +518,6 @@
 						<td><button class="timestudylocked" id="timestudy323" style='font-size:10px' onclick='buyMasteryStudy("t", 323)'>Cancel dilation penalty for Normal Dimensions boost from replicanti.</button></td>
 					</tr>
 				</table>
-				</div>
-				<div id="replicantsstudies">
 				<table class="table" id="studytable">
 					<tr>
 						<td><button class="timestudylocked" id="timestudy331" style='font-size:10px' onclick='buyMasteryStudy("t", 331)'>Dimension Supersonic scaling starts 340,000 later and increases cost slower by 3 less.</button></td>
@@ -547,8 +544,6 @@
 						<td><button class="timestudylocked" id="timestudy362" onclick='buyMasteryStudy("t", 362)'><span id="362desc"></span></button></td>
 					</tr>
 				</table>
-				</div>
-				<div id="empstudies">
 				<table class="table" id="studytable">
 					<tr>
 						<td><button class="timestudylocked" id="timestudy371" style='font-size:10px' onclick='buyMasteryStudy("t", 371)'>Hatch speed is faster based on your extra replicated galaxies.<br><span id="ts371Current"></span></button></td>
@@ -575,8 +570,6 @@
 						<td><button class="timestudylocked" id="dilstudy12" onclick='buyMasteryStudy("d", 12)'>Unlock Nanofield<br><span id="ds12Cost"></span><span id="ds12Req"></span></button></td>
 					</tr>
 				</table>
-				</div>
-				<div id="nfstudies">
 				<table class="table" id="studytable">
 					<tr>
 						<td><button class="timestudylocked" id="timestudy401" style='font-size:10px' onclick='buyMasteryStudy("t", 401)'>The production of preon anti-energy is slower based on your preons.<br><span id="ts401Current"></span></button></td>
@@ -595,15 +588,12 @@
 						<td><button class="timestudylocked" id="dilstudy13" onclick='buyMasteryStudy("d", 13)'>Unlock Tree of Decay<br><span id="ds13Cost"></span><span id="ds13Req"></span></button></td>
 					</tr>
 				</table>
-				</div>
-				<div id="todstudies">
 				<table class="table" id="studytable">
 					<tr>
 						<td><button class="timestudylocked" id="timestudy431" style='font-size:10px' onclick='buyMasteryStudy("t", 431)'>Branches are faster based on your free galaxies.<br><span id="ts431Current"></span></button></td>
 						<td><button class="timestudylocked" id="dilstudy14" onclick='buyMasteryStudy("d", 14)'>Unlock Big Rip<br><span id="ds14Cost"></span><span id="ds14Req"></span></button></td>
 					</tr>
 				</table>
-				</div>
 				<div style="height: 60px;"></div>
 				<div>
 					<table id="footer">
@@ -5417,6 +5407,7 @@
 <script type="text/javascript" src="javascripts/mods/ngm4.js"></script>
 <script type="text/javascript" src="javascripts/mods/ngm5.js"></script>
 <script type="text/javascript" src="javascripts/mods/ngusp.js"></script>
+<script type="text/javascript" src="javascripts/mods/ngp3/masterystudies.js"></script>
 <script type="text/javascript" src="javascripts/game.js?15"></script>
 <script type="text/javascript" src="javascripts/sha512.js"></script>
 </body>

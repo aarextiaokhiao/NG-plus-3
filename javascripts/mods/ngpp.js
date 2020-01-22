@@ -1464,15 +1464,7 @@ function quantumReset(force, auto, challid, bigRip, implode=false) {
 		document.getElementById("edtabbtn").style.display = "none"
 		document.getElementById("nanofieldtabbtn").style.display = "none"
 		document.getElementById("todtabbtn").style.display = "none"
-		if (!ghostified) {
-			document.getElementById("replicantsstudies").style.display="none"
-			document.getElementById("empstudies").style.display="none"
-			document.getElementById("nfstudies").style.display="none"
-			document.getElementById("todstudies").style.display="none"
-			document.getElementById("timestudy322").style.display="none"
-			document.getElementById("timestudy361").style.display="none"
-			document.getElementById("timestudy362").style.display="none"
-		}
+		updateUnlockedMasteryStudies()
 		if (document.getElementById("emperordimensions").style.display == "block") showDimTab("antimatterdimensions")
 		if (document.getElementById("quantumchallenges").style.display == "block") showChallengesTab("normalchallenges")
 		if (document.getElementById("electrons").style.display == "block"||document.getElementById("replicants").style.display == "block"||document.getElementById("nanofield").style.display == "block") showQuantumTab("uquarks")
