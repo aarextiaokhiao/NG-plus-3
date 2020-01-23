@@ -24,7 +24,8 @@ var masteryStudies = {
 	},
 	ecReqsStored: {},
 	types: {t: "time", ec: "ec", d: "dil"},
-	allStudies: [241, 251, 252, 253, 261, 262, 263, 264, 265, 266, 272, 271, 273, 281, 282, 291, 292, 301, 302, 303, 311, 312, 321, 323, 322, 331, 332, 341, 342, 343, 344, 351, 361, 362, 371, 372, 373, 381, 382, 383, 391, 392, 393, 401, 402, 411, 412, 421, 431],
+	allStudies: [],
+	allTimeStudies: [],
 	allStudyEffects: {
 		251: function(x) {
 			return "+" + getFullExpansion(Math.floor(x))
@@ -55,9 +56,9 @@ var masteryStudies = {
 	},
 	ecsUpTo: 14,
 	unlocksUpTo: 14,
-	allConnections: {241: [251, 252, 253], 251: [261, 262], 252: [263, 264, 272], 253: [265, 266], 261: ["ec13"], 262: ["ec13"], 263: ["ec13"], 264: ["ec14"], 265: ["ec14"], 266: ["ec14"], 272: [271, 273, "d7"], 271: [281], 273: [282], d7: ["d8"]},
+	allConnections: {241: [251, 253, 252], 251: [261, 262], 252: [263, 264, "d7"], 253: [265, 266], 261: ["ec13"], 262: ["ec13"], 263: ["ec13"], 264: ["ec14"], 265: ["ec14"], 266: ["ec14"], d7: [272], 272: [271, 273, 281, 282, "d8"], 271: [281], 273: [282], d8: ["d9"], d9: [291, 292, 302], 291: [301], 292: [303], 301: [311], 302: ["d10"], 303: [312], 311: [321], d10: [322], 312: [323], 322: [331, 332], 331: [342], 332: [343], 342: [341], 343: [344], 344: [351], 351: ["d11"], d11: [361, 362], 361: [371], 362: [373], 371: [372], 372: [381], 373: [382], 381: [391], 382: [383], 383: [393], 391: [392], 393: [392], 392: ["d12"], d12: [401, 402], 401: [411], 402: [412], 411: [421], 412: ["d13"], 421: ["d13"], d13: [431], 431: ["d14"]},
 	allUnlocks: {
-		r27: function() {
+		d7: function() {
 			return quantumed
 		},
 		r29: function() {
@@ -94,6 +95,13 @@ function exitMasteryPortal() {
 	showEternityTab("timestudies")
 }
 
+function convertMasteryStudyIdToDisplay(x) {
+	x=x.toString()
+	var ec=x.split("ec")[1]
+	var dil=x.split("d")[1]
+	return ec?"ec"+ec+"unl":dil?"dilstudy"+dil:"timestudy"+x
+}
+
 function updateMasteryStudyCosts() {
 	masteryStudies.latestBoughtRow=0
 	masteryStudies.costMult=1
@@ -104,13 +112,13 @@ function updateMasteryStudyCosts() {
 		if (t) {
 			masteryStudies.costs.time[t]=((tmp.ngp3l&&masteryStudies.initialCosts.time_legacy[t])||masteryStudies.initialCosts.time[t])*masteryStudies.costMult
 			masteryStudies.ttSpent+=masteryStudies.costs.time[t]
-			if (masteryStudies.allStudies.includes(parseInt(t))) masteryStudies.costMult*=masteryStudies.costMults[t]
+			if (masteryStudies.allTimeStudies.includes(parseInt(t))) masteryStudies.costMult*=masteryStudies.costMults[t]
 			masteryStudies.latestBoughtRow=Math.max(masteryStudies.latestBoughtRow,Math.floor(t/10))
 			masteryStudies.bought++
 		}
 	}
-	for (id=0;id<masteryStudies.allStudies.length;id++) {
-		var name=masteryStudies.allStudies[id]
+	for (id=0;id<masteryStudies.allTimeStudies.length;id++) {
+		var name=masteryStudies.allTimeStudies[id]
 		if (!masteryStudies.unlocked.includes(name)) break
 		if (!player.masterystudies.includes("t"+name)) masteryStudies.costs.time[name]=((tmp.ngp3l&&masteryStudies.initialCosts.time_legacy[name])||masteryStudies.initialCosts.time[name])*masteryStudies.costMult
 	}
@@ -122,6 +130,26 @@ function updateMasteryStudyCosts() {
 	if (player.eternityChallUnlocked>12) masteryStudies.ttSpent+=masteryStudies.costs.ec[player.eternityChallUnlocked]
 	if (masteryStudies.bought>=48) giveAchievement("The Theory of Ultimate Studies")
 	updateMasteryStudyTextDisplay()
+}
+
+function setupMasteryStudies() {
+	masteryStudies.allStudies=[241]
+	var map=masteryStudies.allStudies
+	var pos=0
+	while (true) {
+		var id=map[pos]
+		if (!id) break
+		var paths=masteryStudies.allConnections[id]
+		if (paths) for (var x=0;x<paths.length;x++) {
+			var y=paths[x]
+			if (!map.includes(y)&&y!="d7") {
+				map.push(y)
+				if (y=="ec14") map.push("d7")
+				if (typeof(y)=="number") masteryStudies.allTimeStudies.push(y)
+			}
+		}
+		pos++
+	}
 }
 
 function updateUnlockedMasteryStudies() {
@@ -136,8 +164,8 @@ function updateUnlockedMasteryStudies() {
 			document.getElementById("timestudy"+id).parentElement.parentElement.parentElement.parentElement.style=unl?"":"display: none !important"
 			if (unl) masteryStudies.unlocked.push("r"+rowNum)
 		}
-		document.getElementById("timestudy"+id).style.visibility=unl?"":"hidden"
 		if (masteryStudies.allUnlocks[id]&&!masteryStudies.allUnlocks[id]()) unl=false
+		document.getElementById(convertMasteryStudyIdToDisplay(id)).style.visibility=unl?"":"hidden"
 		if (unl) masteryStudies.unlocked.push(id)
 	}
 }
@@ -231,7 +259,7 @@ function buyMasteryStudy(type, id, quick=false) {
 function canBuyMasteryStudy(type, id) {
 	if (type=='t') {
 		if (inQCModifier("sm")&&masteryStudies.bought>=20) return false
-		if (player.timestudy.theorem<masteryStudies.costs.time[id]||player.masterystudies.includes('t'+id)||player.eternityChallUnlocked>12||!masteryStudies.allStudies.includes(id)) return false
+		if (player.timestudy.theorem<masteryStudies.costs.time[id]||player.masterystudies.includes('t'+id)||player.eternityChallUnlocked>12||!masteryStudies.allTimeStudies.includes(id)) return false
 		var row=Math.floor(id/10)
 		if (masteryStudies.latestBoughtRow>row) return false
 		var col=id%10
@@ -298,8 +326,8 @@ function canBuyMasteryStudy(type, id) {
 	
 function updateMasteryStudyButtons() {
 	if (!tmp.ngp3) return
-	for (id=0;id<masteryStudies.allStudies.length;id++) {
-		var name=masteryStudies.allStudies[id]
+	for (id=0;id<masteryStudies.allTimeStudies.length;id++) {
+		var name=masteryStudies.allTimeStudies[id]
 		var div=document.getElementById("timestudy"+name)
 		var mult=getMTSMult(name, "ms")
 		if (!masteryStudies.unlocked.includes(name)) break
@@ -320,39 +348,6 @@ function updateMasteryStudyButtons() {
 		else if (canBuyMasteryStudy('d', id)) div.className="dilationupg"
 		else div.className="timestudylocked"
 	}
-	/*for (id=251;id<254;id++) document.getElementById("ts"+id+"Current").textContent="Currently: +"+getFullExpansion(getMTSMult(id))
-	for (id=262;id<265;id++) document.getElementById("ts"+id+"Current").textContent="Currently: "+shorten(getMTSMult(id))+"x"
-	if (quantumed) {
-		document.getElementById("ts273Current").textContent="Currently: ^"+shorten(getMTSMult(273, "ms"))
-		for (id=281;id<283;id++) document.getElementById("ts"+id+"Current").textContent="Currently: "+shorten(getMTSMult(id))+"x"
-		document.getElementById("ts301Current").textContent="Currently: +"+getFullExpansion(getMTSMult(301))
-		document.getElementById("ts303Current").textContent="Currently: "+shorten(getMTSMult(303))+"x"
-		document.getElementById("ts322Current").textContent="Currently: "+shorten(getMTSMult(322))+"x"
-		for (id=7;id<(ghostified||player.masterystudies.includes("d13")?15:player.masterystudies.includes("d12")?14:player.masterystudies.includes("d11")?13:player.masterystudies.includes("d10")?12:11);id++) {
-			var div=document.getElementById("dilstudy"+id)
-			if (player.masterystudies.includes("d"+id)) div.className="dilationupgbought"
-			else if (canBuyMasteryStudy('d', id)) div.className="dilationupg"
-			else div.className="timestudylocked"
-		}
-	}
-	if (player.masterystudies.includes("d10")||ghostified) {
-		document.getElementById("ts332Current").textContent="Currently: "+shorten(Math.max(player.galaxies,1))+"x"
-		document.getElementById("ts341Current").textContent="Currently: "+shorten(getMTSMult(341))+"x"
-		document.getElementById("ts344Current").textContent="Currently: "+(getMTSMult(344)*100-100).toFixed(2)+"%"
-		document.getElementById("ts351Current").textContent="Currently: "+shorten(getMTSMult(351))+"x"
-	}
-	if (player.masterystudies.includes("d11")||ghostified) {
-		document.getElementById("ts361Current").textContent="Currently: "+shorten(getMTSMult(361))+"x"
-		for (r=37;r<40;r++) for (c=1;c<4;c++) document.getElementById("ts"+(r*10+c)+"Current").textContent="Currently: "+shorten(getMTSMult(r*10+c))+"x"
-	}
-	if (player.masterystudies.includes("d12")||ghostified) {
-		document.getElementById("ts401Current").textContent="Currently: "+shorten(getMTSMult(401))+"x"
-		document.getElementById("ts411Current").textContent="Currently: "+shorten(getMTSMult(411))+"x"
-		document.getElementById("ts421Current").textContent="Currently: "+shorten(getMTSMult(421))+"x"
-	}
-	if (player.masterystudies.includes("d13")||ghostified) {
-		document.getElementById("ts431Current").textContent=shiftDown&&tmp.eg431?"Galaxy amount: "+getFullExpansion(Math.floor(player.dilation.freeGalaxies))+" + "+getFullExpansion(Math.floor(tmp.eg431)):"Currently: "+shorten(getMTSMult(431))+"x"
-	}*/
 }
 
 function updateMasteryStudyTextDisplay() {
@@ -360,8 +355,8 @@ function updateMasteryStudyTextDisplay() {
 	document.getElementById("costmult").textContent=shorten(masteryStudies.costMult)
 	document.getElementById("totalmsbought").textContent=masteryStudies.bought
 	document.getElementById("totalttspent").textContent=shortenDimensions(masteryStudies.ttSpent)
-	for (id=0;id<(quantumed?masteryStudies.allStudies.length:10);id++) {
-		var name=masteryStudies.allStudies[id]
+	for (id=0;id<(quantumed?masteryStudies.allTimeStudies.length:10);id++) {
+		var name=masteryStudies.allTimeStudies[id]
 		document.getElementById("ts"+name+"Cost").textContent="Cost: "+shorten(masteryStudies.costs.time[name])+" Time Theorems"
 	}
 	for (id=13;id<15;id++) {
@@ -448,82 +443,11 @@ function drawMasteryTree() {
 	if (document.getElementById("eternitystore").style.display === "none" || document.getElementById("masterystudies").style.display === "none" || player.masterystudies === undefined) return
 	occupied=[]
 	drawMasteryBranch("back", "timestudy241")
-	drawMasteryBranch("timestudy241", "timestudy251")
-	drawMasteryBranch("timestudy241", "timestudy252")
-	drawMasteryBranch("timestudy241", "timestudy253")
-	drawMasteryBranch("timestudy251", "timestudy261")
-	drawMasteryBranch("timestudy251", "timestudy262")
-	drawMasteryBranch("timestudy252", "timestudy263")
-	drawMasteryBranch("timestudy252", "timestudy264")
-	drawMasteryBranch("timestudy253", "timestudy265")
-	drawMasteryBranch("timestudy253", "timestudy266")
-	drawMasteryBranch("timestudy261", "ec13unl")
-	drawMasteryBranch("timestudy262", "ec13unl")
-	drawMasteryBranch("timestudy263", "ec13unl")
-	drawMasteryBranch("timestudy264", "ec14unl")
-	drawMasteryBranch("timestudy265", "ec14unl")
-	drawMasteryBranch("timestudy266", "ec14unl")
-	if (quantumed) {
-		drawMasteryBranch("timestudy252", "dilstudy7")
-		drawMasteryBranch("dilstudy7", "timestudy271")
-		drawMasteryBranch("dilstudy7", "timestudy272")
-		drawMasteryBranch("dilstudy7", "timestudy273")
-		drawMasteryBranch("timestudy271","timestudy281")
-		drawMasteryBranch("timestudy272","timestudy281")
-		drawMasteryBranch("timestudy272","timestudy282")
-		drawMasteryBranch("timestudy273","timestudy282")
-		drawMasteryBranch("timestudy272", "dilstudy8")
-		drawMasteryBranch("dilstudy8", "dilstudy9")
-		drawMasteryBranch("dilstudy9", "timestudy291")
-		drawMasteryBranch("dilstudy9", "timestudy292")
-		drawMasteryBranch("timestudy291", "timestudy301")
-		drawMasteryBranch("dilstudy9", "timestudy302")
-		drawMasteryBranch("timestudy292", "timestudy303")
-		drawMasteryBranch("timestudy301", "timestudy311")
-		drawMasteryBranch("timestudy303", "timestudy312")
-		drawMasteryBranch("timestudy302", "dilstudy10")
-		drawMasteryBranch("timestudy311", "timestudy321")
-		drawMasteryBranch("timestudy312", "timestudy323")
-	}
-	if (player.masterystudies.includes("d10")||ghostified) {
-		drawMasteryBranch("dilstudy10", "timestudy322")
-		drawMasteryBranch("timestudy322", "timestudy331")
-		drawMasteryBranch("timestudy322", "timestudy332")
-		drawMasteryBranch("timestudy331", "timestudy342")
-		drawMasteryBranch("timestudy332", "timestudy343")
-		drawMasteryBranch("timestudy342", "timestudy341")
-		drawMasteryBranch("timestudy343", "timestudy344")
-		drawMasteryBranch("timestudy344", "timestudy351")
-		drawMasteryBranch("timestudy351", "dilstudy11")
-	}
-	if (player.masterystudies.includes("d11")||ghostified) {
-		drawMasteryBranch("dilstudy11", "timestudy361")
-		drawMasteryBranch("dilstudy11", "timestudy362")
-		drawMasteryBranch("timestudy361", "timestudy371")
-		drawMasteryBranch("timestudy371", "timestudy372")
-		drawMasteryBranch("timestudy362", "timestudy373")
-		drawMasteryBranch("timestudy372", "timestudy381")
-		drawMasteryBranch("timestudy383", "timestudy382")
-		drawMasteryBranch("timestudy373", "timestudy383")
-		drawMasteryBranch("timestudy373", "timestudy383")
-		drawMasteryBranch("timestudy381", "timestudy391")
-		drawMasteryBranch("timestudy391", "timestudy392")
-		drawMasteryBranch("timestudy393", "timestudy392")
-		drawMasteryBranch("timestudy382", "timestudy393")
-		drawMasteryBranch("timestudy392", "dilstudy12")
-	}
-	if (player.masterystudies.includes("d12")||ghostified) {
-		drawMasteryBranch("dilstudy12", "timestudy401")
-		drawMasteryBranch("dilstudy12", "timestudy402")
-		drawMasteryBranch("timestudy401", "timestudy411")
-		drawMasteryBranch("timestudy402", "timestudy412")
-		drawMasteryBranch("timestudy411", "timestudy421")
-		drawMasteryBranch("timestudy412", "dilstudy13")
-		drawMasteryBranch("timestudy421", "dilstudy13")
-	}
-	if (player.masterystudies.includes("d13")||ghostified) {
-		drawMasteryBranch("dilstudy13", "timestudy431")
-		drawMasteryBranch("timestudy431", "dilstudy14")
+	for (var x=0;x<masteryStudies.allStudies.length;x++) {
+		var id=masteryStudies.allStudies[x]
+		var paths=masteryStudies.allConnections[id]
+		if (!masteryStudies.unlocked.includes(id)) return
+		if (paths) for (var y=0;y<paths.length;y++) if (masteryStudies.unlocked.includes(paths[y])) drawMasteryBranch(convertMasteryStudyIdToDisplay(id), convertMasteryStudyIdToDisplay(paths[y]))
 	}
 }
 

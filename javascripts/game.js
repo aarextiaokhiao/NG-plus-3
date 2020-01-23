@@ -9172,6 +9172,7 @@ function closeToolTip(showStuck) {
 var game_loaded
 function initGame() {
 	//Setup stuff.
+	setupMasteryStudies()
 	setupBosonicUpgReqData()
 	setupText()
 	initiateMetaSave()

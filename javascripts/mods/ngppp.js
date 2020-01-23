@@ -66,8 +66,8 @@ function setupText() {
 	document.getElementById("infi44").onclick = function() {
 		if (player.infinityUpgrades.includes("skipReset3")) buyInfinityUpgrade("skipResetGalaxy", 500)
 	}
-	for (id=0;id<masteryStudies.allStudies.length;id++) {
-		var name=masteryStudies.allStudies[id]
+	for (id=0;id<masteryStudies.allTimeStudies.length;id++) {
+		var name=masteryStudies.allTimeStudies[id]
 		var div=document.getElementById("timestudy"+name)
 		div.innerHTML=div.innerHTML+"<br><span id='ts"+name+"Cost'></span>"
 	}
@@ -3325,7 +3325,7 @@ function ghostifyReset(implode, gain, amount, force) {
 		player.masterystudies=[]
 		for (var t=0;t<all.length;t++) player.timestudy.studies.push(all[t])
 		for (var c=1;c<15;c++) player.eternityChalls["eterc"+c]=5
-		for (var t=0;t<masteryStudies.allStudies.length;t++) player.masterystudies.push("t"+masteryStudies.allStudies[t])
+		for (var t=0;t<masteryStudies.allTimeStudies.length;t++) player.masterystudies.push("t"+masteryStudies.allTimeStudies[t])
 		for (var d=1;d<7;d++) player.dilation.studies.push(d)
 		for (var d=7;d<15;d++) player.masterystudies.push("d"+d)
 		if (bm<2) {
