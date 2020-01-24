@@ -1914,6 +1914,7 @@ if (player.version < 5) {
   if (player.masterystudies) {
       displayNonlegacyStuff()
       updateUnlockedMasteryStudies()
+      updateSpentableMasteryStudies()
       updateMasteryStudyCosts()
       if (quantumed) giveAchievement("Sub-atomic")
       if (tmp.qu.best<=10) giveAchievement("Quantum doesn't take so long")
