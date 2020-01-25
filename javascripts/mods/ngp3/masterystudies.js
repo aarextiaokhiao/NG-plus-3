@@ -23,6 +23,60 @@ var masteryStudies = {
 		}
 	},
 	ecReqsStored: {},
+	ecReqDisplays: {
+		13: function() {
+			return getFullExpansion(masteryStudies.ecReqsStored[13]) + " dimension boosts"
+		},
+		14: function() {
+			return getFullExpansion(masteryStudies.ecReqsStored[14]) + "% dimension boosts"
+		}
+	},
+	unlockReqConditions: {
+		8: function() {
+			return tmp.qu.electrons.amount >= 16750
+		},
+		9: function() {
+			return QCIntensity(8) >= 1
+		},
+		10: function() {
+			return tmp.qu.pairedChallenges.completed == 4
+		},
+		11: function() {
+			return tmp.eds[1].perm == 10
+		},
+		12: function() {
+			return tmp.eds[8].perm >= 10
+		},
+		13: function() {
+			return tmp.qu.nanofield.rewards >= 16
+		},
+		14: function() {
+			return player.achievements.includes("ng3p34")
+		}
+	},
+	unlockReqDisplays: {
+		8: function() {
+			return getFullExpansion(16750) + " electrons"
+		},
+		9: function() {
+			return "Complete Quantum Challenge 8"
+		},
+		10: function() {
+			return "Complete Paired Challenge 4"
+		},
+		11: function() {
+			return getFullExpansion(10) + " worker replicants"
+		},
+		12: function() {
+			return getFullExpansion(10) + " Eighth Emperor Dimensions"
+		},
+		13: function() {
+			return getFullExpansion(16) + " Nanofield rewards"
+		},
+		14: function() {
+			return "Get 'The Challenging Day' achievement"
+		}
+	},
 	types: {t: "time", ec: "ec", d: "dil"},
 	allStudies: [],
 	allTimeStudies: [],
@@ -211,28 +265,12 @@ function buyMasteryStudy(type, id, quick=false) {
 	if (quick) setMasteryStudyCost(id,type)
 	if (canBuyMasteryStudy(type, id)) {
 		player.timestudy.theorem-=masteryStudies.costs[masteryStudies.types[type]][id]
-		if (type=='ec') {
-			player.eternityChallUnlocked=id
-			player.etercreq=id
-			updateEternityChallenges()
-			if (!quick) {
-				showTab("challenges")
-				showChallengesTab("eternitychallenges")
-			}
-			delete tmp.qu.autoECN
-		} else player.masterystudies.push(type+id)
 		if (type=="t") {
 			addSpentableMasteryStudies(id)
 			if (id==302) maybeShowFillAll()
 			if (quick) {
 				masteryStudies.costMult*=masteryStudies.costMults[id]
 				masteryStudies.latestBoughtRow=Math.max(masteryStudies.latestBoughtRow,Math.floor(id/10))
-			} else {
-				if (id==302) fillAll()
-				masteryStudies.bought++
-				updateMasteryStudyCosts()
-				updateMasteryStudyButtons()
-				drawMasteryTree()
 			}
 			if (id==241&&!GUBought("gb3")) {
 				var otherMults=1
@@ -250,6 +288,12 @@ function buyMasteryStudy(type, id, quick=false) {
 			}
 			if (id==383) updateColorCharge()
 		}
+		if (type=='ec') {
+			player.eternityChallUnlocked=id
+			player.etercreq=id
+			updateEternityChallenges()
+			delete tmp.qu.autoECN
+		} else player.masterystudies.push(type+id)
 		if (type=="d") {
 			if (id==7) {
 				showTab("quantumtab")
@@ -287,8 +331,18 @@ function buyMasteryStudy(type, id, quick=false) {
 				updateColorCharge()
 				updateTODStuff()
 			}
-			updateUnlockedMasteryStudies()
-			updateSpentableMasteryStudies()
+		}
+		if (!quick) {
+			if (type=="t") {
+				if (id==302) fillAll()
+				masteryStudies.bought++
+			} else if (type=="ec") {
+				showTab("challenges")
+				showChallengesTab("eternitychallenges")
+			} else if (type=="d") {
+				updateUnlockedMasteryStudies()
+				updateSpentableMasteryStudies()
+			}
 			updateMasteryStudyCosts()
 			updateMasteryStudyButtons()
 			drawMasteryTree()
@@ -304,6 +358,7 @@ function canBuyMasteryStudy(type, id) {
 		if (!masteryStudies.spentable.includes(id)) return false
 	} else if (type=='d') {
 		if (player.timestudy.theorem<masteryStudies.costs.dil[id]||player.masterystudies.includes('d'+id)) return false
+		if (!ghostified && !(masteryStudies.unlockReqConditions[id] && masteryStudies.unlockReqConditions[id]())) return false
 		if (!masteryStudies.spentable.includes("d"+id)) return false
 	} else {
 		if (player.timestudy.theorem<masteryStudies.costs.ec[id]||player.eternityChallUnlocked) return false
@@ -329,12 +384,14 @@ function updateMasteryStudyButtons() {
 	}
 	for (id=13;id<=masteryStudies.ecsUpTo;id++) {
 		var div=document.getElementById("ec"+id+"unl")
+		if (!masteryStudies.unlocked.includes("ec"+id)) break
 		if (player.eternityChallUnlocked==id) div.className="eternitychallengestudybought"
 		else if (canBuyMasteryStudy('ec', id)) div.className="eternitychallengestudy"
 		else div.className="timestudylocked"
 	}
 	for (id=7;id<=masteryStudies.unlocksUpTo;id++) {
 		var div=document.getElementById("dilstudy"+id)
+		if (!masteryStudies.unlocked.includes("d"+id)) break
 		if (player.masterystudies.includes("d"+id)) div.className="dilationupgbought"
 		else if (canBuyMasteryStudy('d', id)) div.className="dilationupg"
 		else div.className="timestudylocked"
@@ -346,38 +403,24 @@ function updateMasteryStudyTextDisplay() {
 	document.getElementById("costmult").textContent=shorten(masteryStudies.costMult)
 	document.getElementById("totalmsbought").textContent=masteryStudies.bought
 	document.getElementById("totalttspent").textContent=shortenDimensions(masteryStudies.ttSpent)
-	for (id=0;id<(quantumed?masteryStudies.allTimeStudies.length:10);id++) {
+	for (id=0;id<masteryStudies.allTimeStudies.length;id++) {
 		var name=masteryStudies.allTimeStudies[id]
+		if (!masteryStudies.unlocked.includes(name)) break
 		document.getElementById("ts"+name+"Cost").textContent="Cost: "+shorten(masteryStudies.costs.time[name])+" Time Theorems"
 	}
-	for (id=13;id<15;id++) {
+	for (id=13;id<=masteryStudies.ecsUpTo;id++) {
+		if (!masteryStudies.unlocked.includes("ec"+id)) break
 		document.getElementById("ec"+id+"Cost").textContent="Cost: "+shorten(masteryStudies.costs.ec[id])+" Time Theorems"
 		document.getElementById("ec"+id+"Req").style.display=player.etercreq==id?"none":"block"
+		document.getElementById("ec"+id+"Req").textContent="Requirement: "+masteryStudies.ecReqDisplays[id]()
 	}
-	document.getElementById("ec13Req").textContent="Requirement: "+getFullExpansion(masteryStudies.ecReqsStored[13])+" dimension boosts"
-	document.getElementById("ec14Req").textContent="Requirement: "+getFullExpansion(masteryStudies.ecReqsStored[14])+"% replicate chance"
-	if (quantumed) {
-		for (id=7;id<11;id++) document.getElementById("ds"+id+"Cost").textContent="Cost: "+shorten(masteryStudies.costs.dil[id])+" Time Theorems"
-		document.getElementById("ds8Req").innerHTML=ghostified?"":"<br>Requirement: "+getFullExpansion(16750)+" electrons"
-		document.getElementById("ds9Req").innerHTML=ghostified?"":"<br>Requirement: Complete Quantum Challenge 8"
-		document.getElementById("ds10Req").innerHTML=ghostified?"":"<br>Requirement: Complete Paired Challenge 4"
-		document.getElementById("321effect").textContent=shortenCosts(new Decimal("1e430"))
+	for (id=7;id<=masteryStudies.unlocksUpTo;id++) {
+		if (!masteryStudies.unlocked.includes("d"+id)) break
+		var req=masteryStudies.unlockReqDisplays[id]&&masteryStudies.unlockReqDisplays[id]()
+		document.getElementById("ds"+id+"Cost").textContent="Cost: "+shorten(masteryStudies.costs.dil[id])+" Time Theorems"
+		if (req) document.getElementById("ds"+id+"Req").innerHTML=ghostified?"":"<br>Requirement: "+req
 	}
-	if (player.masterystudies.includes("d10")||ghostified) {
-		for (id=341;id<345;id++) document.getElementById("ts"+id+"Cost").textContent="Cost: "+shorten(masteryStudies.costs.time[id])+" Time Theorems"
-		document.getElementById("ds11Cost").textContent="Cost: "+shorten(3e90)+" Time Theorems"
-		document.getElementById("ds11Req").innerHTML=ghostified?"":"<br>Requirement: 10 worker replicants"
-	}
-	if (player.masterystudies.includes("d11")||ghostified) {
-		document.getElementById("ds12Cost").textContent="Cost: "+shorten(3e92)+" Time Theorems"
-		document.getElementById("ds12Req").innerHTML=ghostified?"":"<br>Requirement: 10 8th Emperor Dimensions"
-	}
-	if (player.masterystudies.includes("d12")||ghostified) {
-		document.getElementById("ds13Cost").textContent="Cost: "+shorten(1e95)+" Time Theorems"
-		document.getElementById("ds13Req").innerHTML=ghostified?"":"<br>Requirement: 16 Nanofield rewards"
-		document.getElementById("ds14Cost").textContent="Cost: "+shorten(1e98)+" Time Theorems"
-		document.getElementById("ds14Req").innerHTML=ghostified?"":"<br>Requirement: 'The Challenging Day' achievement"
-	}
+	if (quantumed) document.getElementById("321effect").textContent=shortenCosts(new Decimal("1e430"))
 }
 
 var occupied
