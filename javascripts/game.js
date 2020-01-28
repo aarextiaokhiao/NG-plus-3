@@ -5165,11 +5165,8 @@ function bigCrunch(autoed) {
         if (player.currentEternityChall == "eterc4") {
             infGain = 1
             if (player.infinitied >= 16 - (ECTimesCompleted("eterc4")*4)) {
-                document.getElementById("challfail").style.display = "block"
                 setTimeout(exitChallenge, 500)
-                giveAchievement("You're a mistake")
-                failureCount++
-                if (failureCount > 9) giveAchievement("You're a failure")
+                onChallengeFail()
             }
         } else infGain=getInfinitiedGain()
         if (autoS && auto) {
@@ -6013,6 +6010,13 @@ function exitChallenge() {
         return
     }
     if (tmp.ngp3) if (!inQC(0)) quantum(false, true, 0)
+}
+
+function onChallengeFail() {
+	document.getElementById("challfail").style.display = "block"
+	giveAchievement("You're a mistake")
+	failureCount++
+	if (failureCount > 9) giveAchievement("You're a failure")
 }
 
 function startChallenge(name) {
@@ -7518,11 +7522,8 @@ setInterval(function() {
     }
 
     if (player.currentEternityChall == "eterc12" && player.thisEternity >= getEC12TimeLimit()) {
-        document.getElementById("challfail").style.display = "block"
         setTimeout(exitChallenge, 500)
-        giveAchievement("You're a mistake")
-        failureCount++
-        if (failureCount > 9) giveAchievement("You're a failure")
+        onChallengeFail()
     }
 
     document.getElementById("infinitiedBank").style.display = (player.infinitiedBank > 0) ? "block" : "none"
@@ -7830,11 +7831,8 @@ function gameLoop(diff) {
     if (player.matter.pow(20).gt(player.money) && (player.currentChallenge == "postc7" || (inQC(6) && !player.achievements.includes("ng3p34")))) {
         if (tmp.ngp3 ? tmp.qu.bigRip.active && tmp.ri : false) {}
         else if (inQC(6)) {
-            document.getElementById("challfail").style.display = "block"
             quantum(false, true, 0)
-            giveAchievement("You're a mistake")
-            failureCount++
-            if (failureCount > 9) giveAchievement("You're a failure")
+            onChallengeFail()
         } else quickReset()
     } else if (player.matter.gt(player.money) && (inNC(12) || player.currentChallenge == "postc1" || player.pSac !== undefined) && !haveET) {
         if (player.pSac!=undefined) player.pSac.lostResets++
