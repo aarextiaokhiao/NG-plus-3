@@ -212,7 +212,15 @@ const allAchievements = {
   ng3ps15 : "Boo!",
   ng3ps16 : "Up and Down and Up and Down...",
   ng3ps17 : "Did you not understand the automation?",
-  ng3ps18 : "The Ultimate Challenge"
+  ng3ps18 : "The Ultimate Challenge",
+  ng3ps21 : "ng3ps21",
+  ng3ps22 : "ng3ps22",
+  ng3ps23 : "ng3ps23",
+  ng3ps24 : "ng3ps24",
+  ng3ps25 : "ng3ps25",
+  ng3ps26 : "ng3ps26",
+  ng3ps27 : "ng3ps27",
+  ng3ps28 : "ng3ps28"
 };
 const secretAchievementTooltips = {
 	s11 : "Click on this achievement.",
@@ -246,7 +254,15 @@ const secretAchievementTooltips = {
 	ng3ps15 : "You have a 1/1,000 chance of getting this achievement every time 'You became a ghost!' animation appears.",
 	ng3ps16 : 'Press the "Continue to mastery studies." button and the "Lead back to time studies." button 100 times each.',
 	ng3ps17 : "Manually extract 20 runes in the row, all in 1 game tick for each rune.",
-	ng3ps18 : "Be in 20 unique challenges at the same time."
+	ng3ps18 : "Be in 20 unique challenges at the same time.",
+	ng3ps21 : "ng3ps21",
+	ng3ps22 : "ng3ps22",
+	ng3ps23 : "ng3ps23",
+	ng3ps24 : "ng3ps24",
+	ng3ps25 : "ng3ps25",
+	ng3ps26 : "ng3ps26",
+	ng3ps27 : "ng3ps27",
+	ng3ps28 : "ng3ps28"
 };
 const allAchievementNums = Object.invert(allAchievements)
 // to retrieve by value: Object.keys(allAchievements).find(key => allAchievements[key] === "L4D: Left 4 Dimensions");
@@ -407,7 +423,7 @@ function updateAchievements() {
 
 	rowsShown = 0
 	rowsNum = 0
-	for (var i=1; i<document.getElementById("secretachievementtable").children[0].children.length+1; i++) {
+	for (var i=1; i<=document.getElementById("secretachievementtable").children[0].children.length; i++) {
 		var shown=true
 		var rowid="secretAchRow"+i
 		if (i>3) {
