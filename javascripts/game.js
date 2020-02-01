@@ -7750,9 +7750,8 @@ function gameLoop(diff) {
         if (player.options.secrets ? player.options.secrets.ghostlyNews : false) nextGhostlyNewsTickerMsg()
         var diff = Math.min(thisUpdate - player.lastUpdate, 21600000);
     }
-    diff = diff / 100
+    diff = Math.max(diff / 100, 0)
     var diffStat = diff
-    if (diff < 0) diff = 1;
     if (player.version === 12.2 && typeof player.shameLevel === 'number') diff *= Math.min(Math.pow(10, player.shameLevel), 1)
     if (player.currentEternityChall === "eterc12" || player.pSac !== undefined) diff /= getEC12Mult()
     if (player.thisInfinityTime < -10) player.thisInfinityTime = Infinity
