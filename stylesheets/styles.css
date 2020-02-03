@@ -1519,6 +1519,10 @@ button {
     font-size: 20px;
 }
 
+.milestoneTextSmall {
+    font-size: 15px;
+}
+
 #production {
     font-size: 12px;
 }
@@ -2118,7 +2122,7 @@ br {
 	color: #999999
 }
 
-.nanofieldreward {
+.nfReward {
 	background: black !important;
 	border: 1px solid #4c4c4c;
 	border-radius: 4px;
@@ -2133,7 +2137,7 @@ br {
 	transition-duration: 0.2s
 }
 
-.nanofieldrewardlocked {
+.nfRewardlocked {
     background: #A3A3A3;
     border: 1px solid #B84B5F;
 	border-radius: 4px;

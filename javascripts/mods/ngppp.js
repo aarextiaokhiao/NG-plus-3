@@ -139,7 +139,24 @@ function setupText() {
 		html+="</tr></table>"
 		document.getElementById(color+"Branch").innerHTML=html
 	}
-	for (var m=1;m<17;m++) document.getElementById("braveMilestone"+m).textContent=getFullExpansion(tmp.bm[m-1])+"x quantumed"
+	//Nanofield
+	var nfRewards=document.getElementById("nfRewards")
+	var row=0
+	for (var r=1;r<=8;r+=2) {
+		nfRewards.insertRow(row).innerHTML = 
+			"<td id='nfRewardHeader"+r+"' class='milestoneText'></td>" +
+			"<td id='nfRewardHeader"+(r+1)+"' class='milestoneText'></td>"
+		row++
+		nfRewards.insertRow(row).innerHTML = 
+			"<td id='nfRewardTier"+r+"' class='milestoneTextSmall'></td>" +
+			"<td id='nfRewardTier"+(r+1)+"' class='milestoneTextSmall'></td>"
+		row++
+		nfRewards.insertRow(row).innerHTML = 
+			"<td><button class='nfRewardlocked' id='nfReward"+r+"'></button></td>" +
+			"<td><button class='nfRewardlocked' id='nfReward"+(r+1)+"'></button></td>"
+		row++
+	}
+	document.getElementById("nfReward8").style["font-size"]="10px"
 	//Quantum Challenge modifiers
 	var modDiv=""
 	for (var m=0;m<qcm.modifiers.length;m++) {
@@ -153,6 +170,8 @@ function setupText() {
 		modDiv+=' <button class="storebtn" id="qcms_'+id+'" onclick="showQCModifierStats(\''+id+'\')">'+(qcm.names[id]||"???")+'</button>'
 	}
 	document.getElementById("modifiersStats").innerHTML=modDiv
+	//Brave Milestones
+	for (var m=1;m<17;m++) document.getElementById("braveMilestone"+m).textContent=getFullExpansion(tmp.bm[m-1])+"x quantumed"
 	//Bosonic Extractor
 	var ben=document.getElementById("enchants")
 	for (var g2=2;g2<=br.limit;g2++) {
@@ -336,23 +355,24 @@ function updateQuantumTabs() {
 			document.getElementById("quarkAntienergy").textContent=shortenMoney(tmp.qu.nanofield.antienergy)
 			document.getElementById("quarkAntienergyRate").textContent=shortenMoney(getQuarkAntienergyProduction())
 			document.getElementById("quarkChargeProductionCap").textContent=shortenMoney(getQuarkChargeProductionCap())
-			document.getElementById("rewards").textContent=getFullExpansion(tmp.qu.nanofield.rewards)
+			document.getElementById("rewards").textContent=getFullExpansion(rewards)
 
 			for (var reward=1; reward<9; reward++) {
-				document.getElementById("nanofieldreward" + reward).className = reward > rewards ? "nanofieldrewardlocked" : "nanofieldreward"
-				document.getElementById("nanofieldreward" + reward + "tier").textContent = (rewards % 8 + 1 == reward ? "Next" : DISPLAY_NAMES[reward]) + " reward (" + getFullExpansion(Math.ceil((rewards + 1 - reward)/8)) + "): "
+				document.getElementById("nfReward" + reward).className = reward > rewards ? "nfRewardlocked" : "nfReward"
+				document.getElementById("nfRewardHeader" + reward).textContent = (rewards % 8 + 1 == reward ? "Next" : DISPLAY_NAMES[reward]) + " reward"
+				document.getElementById("nfRewardTier" + reward).textContent = "Tier " + getFullExpansion(Math.ceil((rewards + 1 - reward) / 8)) + " / Power: " + getNanofieldRewardTier(reward, rewards).toFixed(1)
 			}
-			document.getElementById("nanofieldreward1").textContent = hasBosonicUpg(21) ? "Dimension Supersonic scaling starts " + getFullExpansion(getNanofieldRewardEffect(1, "supersonic")) + " later." :
+			document.getElementById("nfReward1").textContent = hasBosonicUpg(21) ? "Dimension Supersonic scaling starts " + getFullExpansion(getNanofieldRewardEffect(1, "supersonic")) + " later." :
 				"Hatch speed is " + shortenDimensions(getNanofieldRewardEffect(1, "speed")) + "x faster."
-			document.getElementById("nanofieldreward2").textContent = "Meta-antimatter effect power is increased by " + getNanofieldRewardEffect(2).toFixed(1) + "x."
-			document.getElementById("nanofieldreward3").textContent = "Free galaxy gain is increased by " + (getNanofieldRewardEffect(3)*100-100).toFixed(1) + "%."
-			document.getElementById("nanofieldreward4").textContent = "Dilated time boost to Meta Dimensions is increased to ^" + getNanofieldRewardEffect(4).toFixed(3) + "."
-			document.getElementById("nanofieldreward5").textContent = "While dilated, Normal Dimension multipliers and tickspeed are raised to the power of " + getNanofieldRewardEffect(5).toFixed(2) + "."
-			document.getElementById("nanofieldreward6").textContent = "Meta-dimension boost power is increased to " + getNanofieldRewardEffect(6).toFixed(2) + "x."
-			document.getElementById("nanofieldreward7").textContent = (hasBosonicUpg(22) ? "You gain " + shorten(getNanofieldRewardEffect(7, "neutrinos")) + "x more neutrinos" :
+			document.getElementById("nfReward2").textContent = "Meta-antimatter effect power is increased by " + getNanofieldRewardEffect(2).toFixed(1) + "x."
+			document.getElementById("nfReward3").textContent = "Free galaxy gain is increased by " + (getNanofieldRewardEffect(3)*100-100).toFixed(1) + "%."
+			document.getElementById("nfReward4").textContent = "Dilated time boost to Meta Dimensions is increased to ^" + getNanofieldRewardEffect(4).toFixed(3) + "."
+			document.getElementById("nfReward5").textContent = "While dilated, Normal Dimension multipliers and tickspeed are raised to the power of " + getNanofieldRewardEffect(5).toFixed(2) + "."
+			document.getElementById("nfReward6").textContent = "Meta-dimension boost power is increased to " + getNanofieldRewardEffect(6).toFixed(2) + "x."
+			document.getElementById("nfReward7").textContent = (hasBosonicUpg(22) ? "You gain " + shorten(getNanofieldRewardEffect(7, "neutrinos")) + "x more neutrinos" :
 				"Remote galaxy cost scaling starts " + getFullExpansion(getNanofieldRewardEffect(7, "remote")) + " later") +
 				" and the production of preon charge is " + shortenMoney(getNanofieldRewardEffect(7, "charge")) + "x faster."
-			document.getElementById("nanofieldreward8").textContent = "Add " + getNanofieldRewardEffect(8, "per-10").toFixed(2) + "x to multiplier per ten dimensions before getting affected by electrons and the production of preon energy is " + shortenMoney(getNanofieldRewardEffect(8, "energy")) + "x faster."
+			document.getElementById("nfReward8").textContent = "Add " + getNanofieldRewardEffect(8, "per-10").toFixed(2) + "x to multiplier per ten dimensions before getting affected by electrons and the production of preon energy is " + shortenMoney(getNanofieldRewardEffect(8, "energy")) + "x faster."
 
 			document.getElementById("ns").textContent = ghostified || tmp.ns.neq(1) ? "Nanofield speed multiplier is currently "+shorten(tmp.ns)+"x." : ""
 		}
@@ -1444,31 +1464,24 @@ function getQuarkChargeProductionCap() {
 }
 
 function getNanofieldRewardEffect(id, effect) {
-	let rewards = tmp.qu.nanofield.rewards
-	let stacks = Math.ceil((rewards - id + 1) / 8)
-	let apgw = tmp.apgw
-	if (rewards >= apgw) {
-		let sbsc = Math.ceil((apgw - id + 1) / 8)
-		stacks = Math.sqrt((stacks / 2 + sbsc / 2) * sbsc)
-		if (id == (rewards - 1) % 8 + 1) stacks += 0.5
-	}
+	let tier = getNanofieldRewardTier(id, tmp.qu.nanofield.rewards)
 	if (id == 1) {
-		if (effect == "supersonic") return Math.floor(Math.max(stacks - 3.5, 0) * 75e5)
-		if (effect == "speed") return Decimal.pow(30, stacks)
+		if (effect == "supersonic") return Math.floor(Math.max(tier - 3.5, 0) * 75e5)
+		if (effect == "speed") return Decimal.pow(30, tier)
 	}
-	if (id == 2) return stacks * 6.8
-	if (id == 3) return 1 + Math.pow(stacks, 0.83) * 0.039
-	if (id == 4) return 0.1 + Math.sqrt(stacks) * 0.021
-	if (id == 5) return 1 + stacks * 0.36
-	if (id == 6) return 3 + stacks * 1.34
+	if (id == 2) return tier * 6.8
+	if (id == 3) return 1 + Math.pow(tier, 0.83) * 0.039
+	if (id == 4) return 0.1 + Math.sqrt(tier) * 0.021
+	if (id == 5) return 1 + tier * 0.36
+	if (id == 6) return 3 + tier * 1.34
 	if (id == 7) {
-		if (effect == "remote") return stacks * 2150
-		if (effect == "charge") return Decimal.pow(2.6, stacks)
-		if (effect == "neutrinos") return Decimal.pow(1e10, stacks)
+		if (effect == "remote") return tier * 2150
+		if (effect == "charge") return Decimal.pow(2.6, tier)
+		if (effect == "neutrinos") return Decimal.pow(1e10, tier)
 	}
 	if (id == 8) {
-		if (effect == "per-10") return stacks * 0.76
-		if (effect == "energy") return stacks ? 2.5 : 1
+		if (effect == "per-10") return tier * 0.76
+		if (effect == "energy") return tier ? 2.5 : 1
 	}
 }
 
@@ -4745,6 +4758,17 @@ function displayNonlegacyStuff() {
 	
 	//Bosonic Upgrades
 	for (var r=3;r<=bu.maxRows;r++) document.getElementById("bUpgRow"+r).style.display=tmp.ngp3l?"none":""
+}
+
+function getNanofieldRewardTier(reward, rewards) {
+	let x = Math.ceil((rewards - reward + 1) / 8)
+	let apgw = tmp.apgw
+	if (rewards >= apgw) {
+		let sbsc = Math.ceil((apgw - reward + 1) / 8)
+		x = Math.sqrt((x / 2 + sbsc / 2) * sbsc)
+		if (reward == (rewards - 1) % 8 + 1) x += 0.5
+	}
+	return x
 }
 
 function getTreeUpgradeEfficiency(mod) {
