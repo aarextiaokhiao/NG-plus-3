@@ -156,6 +156,7 @@ function setupText() {
 			"<td><button class='nfRewardlocked' id='nfReward"+(r+1)+"'></button></td>"
 		row++
 	}
+	document.getElementById("nfReward7").style["font-size"]="10px"
 	document.getElementById("nfReward8").style["font-size"]="10px"
 	//Quantum Challenge modifiers
 	var modDiv=""
