@@ -1953,151 +1953,150 @@ function updateDimensions() {
         if (player.aarexModifications.hideRepresentation) document.getElementById("infoScale").textContent=""
         else if (player.money.gt(Decimal.pow(10, 3 * 86400 * 365.2425 * 79.3 / 10))) {
             var years = player.money.log10() / 3 / 86400 / 365.2425
-            if (years>2019) {
-                eventBC = years - 2018
-                if (eventBC > 5332e3) {
-                    since = "???"
-                    eventBC = 1/0 - eventBC
-                } else if (eventBC > 35e5) {
+            if (years>=1e9) var message = "<br>If you end the non-stop writing of your full antimatter amount with 3 digits per second, you would start it "+(years/1e9).toFixed(2)+" GYA."
+            else if (years>=1e7) var message = "<br>If you end the non-stop writing of your full antimatter amount with 3 digits per second, you would start it "+(years/1e6).toFixed(2)+" MYA."
+            else if (years>=2020) {
+                var bc = years-2020+1
+                var since
+                var sinceYears
+                if (bc > 5332e3) {}
+                else if (bc > 35e5) {
                     since = "start of Pliocene epoch"
-                    eventBC = 5332e3 - eventBC
-                } else if (eventBC > 258e4) {
+                    sinceYears = 5332e3 - bc
+                } else if (bc > 258e4) {
                     since = "birthdate of Lucy (typical Australopithicus afarensis female)"
-                    eventBC = 35e5 - eventBC
-                } else if (eventBC > 781e3) {
+                    sinceYears = 35e5 - bc
+                } else if (bc > 781e3) {
                     since = "Quaternary period"
-                    eventBC = 258e4 - eventBC
-                } else if (eventBC > 315e3) {
+                    sinceYears = 258e4 - bc
+                } else if (bc > 315e3) {
                     since = "Calabrian age"
-                    eventBC = 781e3 - eventBC
-                } else if (eventBC > 25e4) {
+                    sinceYears = 781e3 - bc
+                } else if (bc > 25e4) {
                     since = "Homo sapiens"
-                    eventBC = 315e3 - eventBC
-                } else if (eventBC > 195e3) {
+                    sinceYears = 315e3 - bc
+                } else if (bc > 195e3) {
                     since = "Homo neanderthalensis"
-                    eventBC = 25e4 - eventBC
-                } else if (eventBC > 16e4) {
+                    sinceYears = 25e4 - bc
+                } else if (bc > 16e4) {
                     since = "emergence of anatomically modern humans"
-                    eventBC = 195e3 - eventBC
-                } else if (eventBC > 125e3) {
+                    sinceYears = 195e3 - bc
+                } else if (bc > 125e3) {
                     since = "Homo sapiens idaltu"
-                    eventBC = 16e4 - eventBC
-                } else if (eventBC > 7e4) {
+                    sinceYears = 16e4 - bc
+                } else if (bc > 7e4) {
                     since = "peak of Eemian interglacial period"
-                    eventBC = 125e3 - eventBC
-                } else if (eventBC > 67e3) {
+                    sinceYears = 125e3 - bc
+                } else if (bc > 67e3) {
                     since = "earliest abstract/symbolic art"
-                    eventBC = 7e4 - eventBC
-                } else if (eventBC > 5e4) {
+                    sinceYears = 7e4 - bc
+                } else if (bc > 5e4) {
                     since = "Upper Paleolithic"
-                    eventBC = 67e3 - eventBC
-                } else if (eventBC > 45e3) {
+                    sinceYears = 67e3 - bc
+                } else if (bc > 45e3) {
                     since = "Late Stone Age"
-                    eventBC = 5e4 - eventBC
-                } else if (eventBC > 4e4) {
+                    sinceYears = 5e4 - bc
+                } else if (bc > 4e4) {
                     since = "European early modern humans"
-                    eventBC = 45e3 - eventBC
-                } else if (eventBC > 4e4) {
-                    since = "European early modern humans"
-                    eventBC = 45e3 - eventBC
-                } else if (eventBC > 35e3) {
+                    sinceYears = 45e3 - bc
+                } else if (bc > 35e3) {
                     since = "first human settlement"
-                    eventBC = 4e4 - eventBC
-                } else if (eventBC > 33e3) {
+                    sinceYears = 4e4 - bc
+                } else if (bc > 33e3) {
                     since = "oldest known figurative art"
-                    eventBC = 35e3 - eventBC
-                } else if (eventBC > 31e3) {
+                    sinceYears = 35e3 - bc
+                } else if (bc > 31e3) {
                     since = "oldest known domesticated dog"
-                    eventBC = 33e3 - eventBC
-                } else if (eventBC > 29e3) {
+                    sinceYears = 33e3 - bc
+                } else if (bc > 29e3) {
                     since = "Last Glacial Maximum"
-                    eventBC = 31e3 - eventBC
-                } else if (eventBC > 28e3) {
+                    sinceYears = 31e3 - bc
+                } else if (bc > 28e3) {
                     since = "oldest ovens"
-                    eventBC = 29e3 - eventBC
-                } else if (eventBC > 25e3) {
+                    sinceYears = 29e3 - bc
+                } else if (bc > 25e3) {
                     since = "oldest known twisted rope"
-                    eventBC = 28e3 - eventBC
-                } else if (eventBC > 2e4) {
+                    sinceYears = 28e3 - bc
+                } else if (bc > 2e4) {
                     since = "oldest human permanent settlement (hamlet considering built of rocks and of mammoth bones)"
-                    eventBC = 25e3 - eventBC
-                } else if (eventBC > 16e3) {
+                    sinceYears = 25e3 - bc
+                } else if (bc > 16e3) {
                     since = "rise of Kerberan culture"
-                    eventBC = 2e4 - eventBC
-                } else if (eventBC > 15e3) {
+                    sinceYears = 2e4 - bc
+                } else if (bc > 15e3) {
                     since = "colonization of North America"
-                    eventBC = 16e3 - eventBC
-                } else if (eventBC > 14e3) {
+                    sinceYears = 16e3 - bc
+                } else if (bc > 14e3) {
                     since = "domestication of the pig"
-                    eventBC = 15e3 - eventBC
-                } else if (eventBC > 11600) {
+                    sinceYears = 15e3 - bc
+                } else if (bc > 11600) {
                     since = "prehistoric warfare"
-                    eventBC = 14e3 - eventBC
-                } else if (eventBC > 1e4) {
+                    sinceYears = 14e3 - bc
+                } else if (bc > 1e4) {
                     since = "Holocene"
-                    eventBC = 11600 - eventBC
-                } else if (eventBC > 8e3) {
+                    sinceYears = 11600 - bc
+                } else if (bc > 8e3) {
                     since = "death of other human breeds"
-                    eventBC = 1e4 - eventBC
-                } else if (eventBC > 6e3) {
+                    sinceYears = 1e4 - bc
+                } else if (bc > 6e3) {
                     since = "agricultural revolution"
-                    eventBC = 8e3 - eventBC
-                } else if (eventBC > 5e3) {
+                    sinceYears = 8e3 - bc
+                } else if (bc > 5e3) {
                     since = "farmers arrived in Europe"
-                    eventBC = 6e3 - eventBC
-                } else if (eventBC > 4e3) {
+                    sinceYears = 6e3 - bc
+                } else if (bc > 4e3) {
                     since = "first metal tools"
-                    eventBC = 5e3 - eventBC
-                } else if (eventBC > 3200) {
+                    sinceYears = 5e3 - bc
+                } else if (bc > 3200) {
                     since = "first horse"
-                    eventBC = 4e3 - eventBC
-                } else if (eventBC > 3e3) {
+                    sinceYears = 4e3 - bc
+                } else if (bc > 3e3) {
                     since = "Sumerian cuneiform writing system"
-                    eventBC = 3200 - eventBC
-                } else if (eventBC > 2600) {
+                    sinceYears = 3200 - bc
+                } else if (bc > 2600) {
                     since = "union of Egypt"
-                    eventBC = 3e3 - eventBC
-                } else if (eventBC > 2500) {
+                    sinceYears = 3e3 - bc
+                } else if (bc > 2500) {
                     since = "rise of Maya"
-                    eventBC = 2600 - eventBC
-                } else if (eventBC > 2300) {
+                    sinceYears = 2600 - bc
+                } else if (bc > 2300) {
                     since = "extinct of mammoths"
-                    eventBC = 2500 - eventBC
-                } else if (eventBC > 1800) {
+                    sinceYears = 2500 - bc
+                } else if (bc > 1800) {
                     since = "rise of Akkadian Empire"
-                    eventBC = 2300 - eventBC
-                } else if (eventBC > 1175) {
+                    sinceYears = 2300 - bc
+                } else if (bc > 1175) {
                     since = "first alphabetic writing"
-                    eventBC = 1800 - eventBC
-                } else if (eventBC > 1400) {
+                    sinceYears = 1800 - bc
+                } else if (bc > 1400) {
                     since = "rise of Olmec civilization"
-                    eventBC = 1400 - eventBC
-                } else if (eventBC > 800) {
+                    sinceYears = 1400 - bc
+                } else if (bc > 800) {
                     since = "end of bronze age"
-                    eventBC = 1175 - eventBC
-                } else if (eventBC > 753) {
+                    sinceYears = 1175 - bc
+                } else if (bc > 753) {
                     since = "rise of Greek city-states"
-                    eventBC = 800 - eventBC
-                } else if (eventBC > 653) {
+                    sinceYears = 800 - bc
+                } else if (bc > 653) {
                     since = "rise of Rome"
-                    eventBC = 753 - eventBC
-                } else if (eventBC > 539) {
+                    sinceYears = 753 - bc
+                } else if (bc > 539) {
                     since = "rise of Persian Empire"
-                    eventBC = 653 - eventBC
-                } else if (eventBC > 356) {
+                    sinceYears = 653 - bc
+                } else if (bc > 356) {
                     since = "fall of Babylonian Empire"
-                    eventBC = 539 - eventBC
-                } else if (eventBC > 200) {
+                    sinceYears = 539 - bc
+                } else if (bc > 200) {
                     since = "birth of Alexander the Great"
-                    eventBC = 356 - eventBC
-                } else if (eventBC > 4) {
+                    sinceYears = 356 - bc
+                } else if (bc > 4) {
                     since = "the first paper"
-                    eventBC = 200 - eventBC
+                    sinceYears = 200 - bc
                 } else {
                     since = "birth of Jesus Christ"
-                    eventBC = 4 - eventBC
+                    sinceYears = 4 - bc
                 }
-                var message = "<br>If you end the non-stop writing of your full antimatter amount with 3 digits per second, you would start it in "+getFullExpansion(Math.floor(years - 2018))+" BC."+(since=="???"?"":"<br>(around "+getFullExpansion(Math.ceil(eventBC))+" years since the "+since+")")
+                var message = "<br>If you end the non-stop writing of your full antimatter amount with 3 digits per second, you would start it in "+getFullExpansion(Math.floor(bc))+" BC."+(since?"<br>(around "+getFullExpansion(Math.ceil(sinceYears))+" years since the "+since+")":"")
             } else {
                 var message = "<br>If you start writing 3 digits of your full antimatter amount a second down when you were an American baby,<br> you would "
                 if (years>79.3) message+="become a ghost for "+((years-79.3) / years * 100).toFixed(3)+"% of this session."
