@@ -2098,7 +2098,7 @@ function updateDimensions() {
                 }
                 var message = "<br>If you end the non-stop writing of your full antimatter amount with 3 digits per second, you would start it in "+getFullExpansion(Math.floor(bc))+" BC."+(since?"<br>(around "+getFullExpansion(Math.ceil(sinceYears))+" years since the "+since+")":"")
             } else {
-                var message = "<br>If you start writing 3 digits of your full antimatter amount a second down when you were an American baby,<br> you would "
+                var message = "<br>If you start writing 3 digits of your full antimatter amount a second down after you were born as American,<br> you would "
                 if (years>79.3) message+="become a ghost for "+((years-79.3) / years * 100).toFixed(3)+"% of this session."
                 else message+="waste "+(years / 0.793).toFixed(3)+"% of your average life."
             }
