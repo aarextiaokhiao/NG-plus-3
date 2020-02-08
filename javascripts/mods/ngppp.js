@@ -3561,7 +3561,7 @@ function updateGhostifyTabs() {
 		document.getElementById("neutrinoUpg4Pow").textContent=shorten(tmp.nu[2])
 		if (player.ghostify.times>4) document.getElementById("neutrinoUpg7Pow").textContent=shorten(tmp.nu[3])
 		if (player.ghostify.times>9) document.getElementById("neutrinoUpg12").setAttribute('ach-tooltip',
-			"Normal galaxy effect: "+shorten(tmp.nu[4].normal)+"x to spin production, "+
+			"Normal galaxy effect: "+shorten(tmp.nu[4].normal)+"x to quark spin production, "+
 			"Replicated galaxy effect: "+shorten(tmp.nu[4].replicated)+"x to EC14 reward, "+
 			"Free galaxy effect: "+shorten(tmp.nu[4].free)+"x to IC3 reward"
 		)
