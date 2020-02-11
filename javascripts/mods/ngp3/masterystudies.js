@@ -265,6 +265,12 @@ function buyMasteryStudy(type, id, quick=false) {
 	if (quick) setMasteryStudyCost(id,type)
 	if (canBuyMasteryStudy(type, id)) {
 		player.timestudy.theorem-=masteryStudies.costs[masteryStudies.types[type]][id]
+		if (type=='ec') {
+			player.eternityChallUnlocked=id
+			player.etercreq=id
+			updateEternityChallenges()
+			delete tmp.qu.autoECN
+		} else player.masterystudies.push(type+id)
 		if (type=="t") {
 			addSpentableMasteryStudies(id)
 			if (id==302) maybeShowFillAll()
@@ -288,12 +294,6 @@ function buyMasteryStudy(type, id, quick=false) {
 			}
 			if (id==383) updateColorCharge()
 		}
-		if (type=='ec') {
-			player.eternityChallUnlocked=id
-			player.etercreq=id
-			updateEternityChallenges()
-			delete tmp.qu.autoECN
-		} else player.masterystudies.push(type+id)
 		if (type=="d") {
 			if (id==7) {
 				showTab("quantumtab")

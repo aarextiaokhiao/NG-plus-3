@@ -310,7 +310,8 @@ newsArray = [//always true
 ["First-time developer releases incremental game, gets mocked by Aarex for inflation", true, "am157"],
 ["Click on the news message before this if you can travel back in time.", true, "am158"],
 ["After Aarex's life, NG+Pi is now finally released!", "tmp.ngp3", "am159"],
-["The next hour is in 5 updates- Wait, it's not supposed to go like that?", true, "am160"]
+["The next hour is in 5 updates- Wait, it's not supposed to go like that?", true, "am160"],
+["The invasion of the battle replicants has been postponed indefinitely. Everyone, please remain calm!", "player.masterystudies && player.masterystudies.includes('d12')", "am161"]
 ];}
 
 document.addEventListener("visibilitychange", function() {if (!document.hidden) {scrollNextMessage();}}, false);
