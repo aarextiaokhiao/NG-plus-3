@@ -497,7 +497,7 @@ function updateColorCharge() {
 function assignQuark(color) {
 	if (color!="r"&&tmp.qu.times<2&&!ghostified) if (!confirm("It is recommended to assign your first quarks to red. Are you sure you want to do that?")) return
 	var usedQuarks=tmp.qu.quarks.floor().min(tmp.qu.quarks)
-	var mult=getAssignMult()
+	var mult=getQuarkAssignMult()
 	tmp.qu.usedQuarks[color]=tmp.qu.usedQuarks[color].add(usedQuarks.times(mult)).round()
 	tmp.qu.quarks=tmp.qu.quarks.sub(usedQuarks)
 	document.getElementById("quarks").innerHTML="You have <b class='QKAmount'>0</b> quarks."
@@ -1519,7 +1519,7 @@ function assignAll(auto) {
 	var sum = ratios.r+ratios.g+ratios.b
 	var oldQuarks = tmp.qu.quarks.floor()
 	var colors = ['r','g','b']
-	var mult = getAssignMult()
+	var mult = getQuarkAssignMult()
 	if (oldQuarks.eq(0)) return
 	for (c=0;c<3;c++) {
 		var toAssign = oldQuarks.times(ratios[colors[c]]/sum).round()
@@ -4027,7 +4027,7 @@ function canBuyGalaxyThresholdUpg() {
 	return !tmp.ngp3 || player.dilation.rebuyables[2]<60
 }
 
-function getAssignMult() {
+function getQuarkAssignMult() {
 	let r=new Decimal(1)
 	if (hasBosonicUpg(23)) r=r.times(tmp.blu[23])
 	return r
