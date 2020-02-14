@@ -3495,7 +3495,7 @@ function updateLastTenGhostifies() {
         var tempstring = shorten(qkpm) + " GhP/min"
         averageGHP = tempGHP
         if (qkpm<1) tempstring = shorten(qkpm*60) + " GhP/hour"
-        document.getElementById("averageGhostifyRun").textContent = "Last " + listed + " Ghostifys average time: "+ timeDisplayShort(tempTime, false, 3)+" Average GhP gain: "+shortenDimensions(tempGHP)+" GhP. "+tempstring
+        document.getElementById("averageGhostifyRun").textContent = "Last " + listed + " Ghostifies average time: "+ timeDisplayShort(tempTime, false, 3)+" Average GhP gain: "+shortenDimensions(tempGHP)+" GhP. "+tempstring
     } else document.getElementById("averageGhostifyRun").textContent = ""
 }
 
