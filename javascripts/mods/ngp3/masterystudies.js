@@ -1,7 +1,7 @@
 var masteryStudies = {
 	initCosts: {
-		time: {241: 1e71, 251: 2e71, 252: 2e71, 253: 2e71, 261: 5e71, 262: 5e71, 263: 5e71, 264: 5e71, 265: 5e71, 266: 5e71, 271: 2.7434842249657063e76, 272: 2.7434842249657063e76, 273: 2.7434842249657063e76, 281: 6.858710562414266e76, 282: 6.858710562414266e76, 291: 2.143347050754458e77, 292: 2.143347050754458e77, 301: 8.573388203017832e77, 302: 2.6791838134430725e78, 303: 8.573388203017832e77, 311: 8.573388203017832e77, 312: 8.573388203017832e77, 321: 2.6791838134430727e76, 322: 9.324815538194444e77, 323: 2.6791838134430727e76, 331: 1.0172526041666666e79, 332: 1.0172526041666666e79, 341: 9.5367431640625e78, 342: 1.0172526041666666e79, 343: 1.0172526041666666e79, 344: 9.5367431640625e78, 351: 2.1192762586805557e79, 361: 1.5894571940104167e79, 362: 1.5894571940104167e79, 371: 2.1192762586805557e79, 372: 6.622738308376736e79, 373: 2.1192762586805557e79, 381: 6.622738308376736e79, 382: 6.622738308376736e79, 383: 6.622738308376736e79, 391: 8.27842288547092e79, 392: 8.27842288547092e79, 393: 8.27842288547092e79, 401: 4.967053731282552e80, 402: 8.278422885470921e80, 411: 1.3245476616753473e71, 412: 1.655684577094184e71, 421: 1.9868214925130208e72, 431: 1.1037897180627893e75},
-		time_legacy: {},
+		time: {241: 2e71, 251: 3e71, 252: 3e71, 253: 3e71, 261: 5e71, 262: 5e71, 263: 5e71, 264: 5e71, 265: 5e71, 266: 5e71, 271: 2.7434842249657063e76, 272: 2.7434842249657063e76, 273: 2.7434842249657063e76, 281: 6.858710562414266e76, 282: 6.858710562414266e76, 291: 2.143347050754458e77, 292: 2.143347050754458e77, 301: 8.573388203017832e77, 302: 2.6791838134430725e78, 303: 8.573388203017832e77, 311: 8.573388203017832e77, 312: 8.573388203017832e77, 321: 2.6791838134430727e76, 322: 9.324815538194444e77, 323: 2.6791838134430727e76, 331: 1.0172526041666666e79, 332: 1.0172526041666666e79, 341: 9.5367431640625e78, 342: 1.0172526041666666e79, 343: 1.0172526041666666e79, 344: 9.5367431640625e78, 351: 2.1192762586805557e79, 361: 1.5894571940104167e79, 362: 1.5894571940104167e79, 371: 2.1192762586805557e79, 372: 6.622738308376736e79, 373: 2.1192762586805557e79, 381: 6.622738308376736e79, 382: 6.622738308376736e79, 383: 6.622738308376736e79, 391: 8.27842288547092e79, 392: 8.27842288547092e79, 393: 8.27842288547092e79, 401: 4.967053731282552e80, 402: 8.278422885470921e80, 411: 1.3245476616753473e71, 412: 1.655684577094184e71, 421: 1.9868214925130208e72, 431: 1.1037897180627893e75},
+		time_legacy: {241: 1e71, 251: 2e71, 252: 2e71, 253: 2e71},
 		ec: {13: 1e72, 14: 1e72},
 		ec_legacy: {},
 		dil: {7: 2e82, 8: 2e84, 9: 4e85, 10: 4e87, 11: 3e90, 12: 3e92, 13: 1e95, 14: 1e98},
@@ -9,10 +9,11 @@ var masteryStudies = {
 	},
 	costs: {
 		time: {},
+		time_mults: {241: 1, 251: 2.5, 252: 2.5, 253: 2.5, 261: 6, 262: 6, 263: 6, 264: 6, 265: 6, 266: 6, 271: 2, 272: 2, 273: 2, 281: 4, 282: 4, 291: 1, 292: 1, 301: 2, 302: 131072, 303: 2, 311: 64, 312: 64, 321: 2, 322: 2, 323: 2, 331: 2, 332: 2, 341: 1, 342: 1, 343: 1, 344: 1, 351: 4, 361: 1, 362: 1, 371: 2, 372: 2, 373: 2, 381: 1, 382: 1, 383: 2, 391: 1, 392: 1, 393: 1, 401: 1e10, 402: 1e10, 411: 1, 412: 1, 421: 1, 431: 1},
+		time_mults_legacy: {},
 		ec: {},
 		dil: {}
 	},
-	costMults: {241: 1, 251: 2.5, 252: 2.5, 253: 2.5, 261: 6, 262: 6, 263: 6, 264: 6, 265: 6, 266: 6, 271: 2, 272: 2, 273: 2, 281: 4, 282: 4, 291: 1, 292: 1, 301: 2, 302: 131072, 303: 2, 311: 64, 312: 64, 321: 2, 322: 2, 323: 2, 331: 2, 332: 2, 341: 1, 342: 1, 343: 1, 344: 1, 351: 4, 361: 1, 362: 1, 371: 2, 372: 2, 373: 2, 381: 1, 382: 1, 383: 2, 391: 1, 392: 1, 393: 1, 401: 1e10, 402: 1e10, 411: 1, 412: 1, 421: 1, 431: 1},
 	costMult: 1,
 	ecReqs: {
 		13: function() {
@@ -164,7 +165,7 @@ function updateMasteryStudyCosts() {
 		if (t) {
 			setMasteryStudyCost(t,"t")
 			masteryStudies.ttSpent+=masteryStudies.costs.time[t]
-			if (masteryStudies.allTimeStudies.includes(t)) masteryStudies.costMult*=masteryStudies.costMults[t]||1
+			if (masteryStudies.allTimeStudies.includes(t)) masteryStudies.costMult*=getMasteryStudyCostMult(t)
 			masteryStudies.latestBoughtRow=Math.max(masteryStudies.latestBoughtRow,Math.floor(t/10))
 			masteryStudies.bought++
 		}
@@ -261,6 +262,10 @@ function setMasteryStudyCost(id,type) {
 	masteryStudies.costs[type][id]=(tmp.ngp3l&&d[type+"_legacy"][id])||d[type][id]||0
 }
 
+function getMasteryStudyCostMult(id) {
+	return (tmp.ngp3l&&masteryStudies.costs.time_mults_legacy[id])||masteryStudies.costs.time_mults[id]||1
+}
+
 function buyMasteryStudy(type, id, quick=false) {
 	if (quick) setMasteryStudyCost(id,type)
 	if (canBuyMasteryStudy(type, id)) {
@@ -275,7 +280,7 @@ function buyMasteryStudy(type, id, quick=false) {
 			addSpentableMasteryStudies(id)
 			if (id==302) maybeShowFillAll()
 			if (quick) {
-				masteryStudies.costMult*=masteryStudies.costMults[id]
+				masteryStudies.costMult*=getMasteryStudyCostMult(id)
 				masteryStudies.latestBoughtRow=Math.max(masteryStudies.latestBoughtRow,Math.floor(id/10))
 			}
 			if (id==241&&!GUBought("gb3")) {
@@ -459,7 +464,7 @@ function drawMasteryBranch(id1, id2) {
 			var start = document.getElementById(id2).getBoundingClientRect();
 			var x1 = start.left + (start.width / 2) + (document.documentElement.scrollLeft || document.body.scrollLeft);
 			var y1 = start.top + (start.height / 2) + (document.documentElement.scrollTop || document.body.scrollTop);
-			var mult = masteryStudies.costMults[id2.split("study")[1]]
+			var mult = getMasteryStudyCostMult(id2.split("study")[1])
 			var msg = id2.split("study")[1] + " (" + (mult>1e3?shorten(mult):mult) + "x)"
 			msctx.fillStyle = 'white';
 			msctx.strokeStyle = 'black';
