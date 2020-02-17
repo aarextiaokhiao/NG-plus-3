@@ -32,7 +32,8 @@ function updateNewPlayer(reseted) {
             nguep: player.aarexModifications.nguepV !== undefined,
             ngmu: player.aarexModifications.newGameMult === 1,
             ngumu: player.aarexModifications.ngumuV !== undefined,
-            ngex: player.aarexModifications.ngexV !== undefined
+            ngex: player.aarexModifications.ngexV !== undefined,
+            aau: player.aarexModifications.aau !== undefined
         }
     } else var modesChosen = modes
     player = {
@@ -754,6 +755,10 @@ function updateNewPlayer(reseted) {
     if (modesChosen.ngumu) player.aarexModifications.ngumuV=1.03
     if (modesChosen.ngpp==3) player.aarexModifications.ngp3lV=1
     if (modesChosen.ngex) player.aarexModifications.ngexV=0.1
+    if (modesChosen.aau) {
+		player.aarexModifications.aau=1
+		dev.giveAllAchievements(true)
+	}
 }
 updateNewPlayer()
 
@@ -3536,7 +3541,8 @@ var modFullNames = {
   nguep: "NGUd↑'",
   ngmu: "NG*",
   ngumu: "NGUd*'",
-  ngex: "Expert Mode"
+  ngex: "Expert Mode",
+  aau: "AAU"
 }
 var modSubNames = {
   ngp: ["OFF", "ON", "NG++++"],
@@ -7707,7 +7713,7 @@ setInterval(function() {
             else player.aarexModifications.popUpId = ""
             document.getElementById("welcomeMessage").innerHTML = "You are almost there for a supreme completion! However, completing this turns you to a ghost instead. This allows you to pass big rip universes and unlock new stuff! However, you need to lose everything too. Therefore, this is the sixth layer of NG+3."
         }
-        if (player.masterystudies&&(player.masterystudies.includes("d14")||player.achievements.includes("ng3p51"))&&!player.aarexModifications.newGameMult&&!player.aarexModifications.newGameExpVersion&&!player.aarexModifications.ngudpV&&!player.aarexModifications.ngumuV&&!player.aarexModifications.nguepV&&!metaSave.ngp4) {
+        if (player.masterystudies&&(player.masterystudies.includes("d14")||player.achievements.includes("ng3p51"))&&!player.aarexModifications.newGameMult&&!player.aarexModifications.newGameExpVersion&&!player.aarexModifications.ngudpV&&!player.aarexModifications.ngumuV&&!player.aarexModifications.nguepV&&!player.aarexModifications.aau&&!metaSave.ngp4) {
             $.notify("Congratulations! You unlocked NG+4!", "success")
             metaSave.ngp4=true
             localStorage.setItem(metaSaveId,btoa(JSON.stringify(metaSave)))

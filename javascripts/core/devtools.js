@@ -1,15 +1,17 @@
 var dev = {};
 
-dev.giveAllAchievements = function() {
+dev.giveAllAchievements = function(slient) {
 	var gave=[]
 	Object.keys(allAchievements).forEach(function(key) {
 		var got=player.achievements.includes(key)
 		giveAchievement(allAchievements[key], true)
 		if (player.achievements.includes(key)&&!got) gave.push(key)
 	})
-	if (gave.length<11) for (var a=0;a<gave.length;a++) $.notify(allAchievements[gave[a]], "success")
-	if (gave.length>1) $.notify("Gave "+gave.length+" achievements.", "success")
-	updateAchievements()
+	if (!slient) {
+		if (gave.length<11) for (var a=0;a<gave.length;a++) $.notify(allAchievements[gave[a]], "success")
+		if (gave.length>1) $.notify("Gave "+gave.length+" achievements.", "success")
+		updateAchievements()
+	}
 }
 
 dev.giveAllNGAchievements = function() {
