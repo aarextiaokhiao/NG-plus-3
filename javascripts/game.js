@@ -112,7 +112,7 @@ function updateNewPlayer(reseted) {
         dimensionMultDecreaseCost: 1e8,
         overXGalaxies: 10,
         version: 10,
-        infDimensionsUnlocked: [false, false, false, false, false, false, false, false],
+        infDimensionsUnlocked: [],
         infinityPower: new Decimal(1),
         spreadingCancer: modesChosen.ngm ? -9990 : 0,
         postChallUnlocked: 0,
@@ -741,7 +741,6 @@ function updateNewPlayer(reseted) {
     if (modesChosen.ngmm>3) {
         player.aarexModifications.ngm5V=0.52
         player.aarexModifications.ngmX=5
-        player.infDimensionsUnlocked[0]=true
         resetPSac()
         resetIDs_ngm5()
     }
@@ -759,6 +758,7 @@ function updateNewPlayer(reseted) {
 		player.aarexModifications.aau=1
 		dev.giveAllAchievements(true)
 	}
+    player.infDimensionsUnlocked=resetInfDimUnlocked()
 }
 updateNewPlayer()
 
@@ -1177,7 +1177,7 @@ function updateTemp() {
 			let log = player.infinityPoints.max(1).log10() * exp
 			if (log > 3e8) log = Math.pow(log / 3e8, 0.75) * 3e8
 			tmp.bru[0]=Decimal.pow(10, log) //BRU1
-			tmp.bru[1]=Decimal.pow(2,player.replicanti.galaxies+extraReplGalaxies) //BRU8
+			tmp.bru[1]=Decimal.pow(2,getTotalRG()) //BRU8
 			if (!hasNU(11)) tmp.bru[1]=tmp.bru[1].min(Number.MAX_VALUE)
 			var ret=Math.min(tmp.qu.bigRip.spaceShards.div(3e18).add(1).log10()/3,0.4)
 			tmp.bru[2]=Math.sqrt(tmp.qu.bigRip.spaceShards.div(3e15).add(1).log10()*ret+1) //BRU14
@@ -1253,7 +1253,7 @@ function updateTemp() {
 		tmp.eg431+=tmp.le[7].total
 	}
 	
-	if (tmp.nu[4]&&ghostified) tmp.nu[4].replicated=Math.sqrt(player.replicanti.galaxies+extraReplGalaxies)*.035+1 //NU12 (Replicated galaxy effect
+	if (tmp.nu[4]&&ghostified) tmp.nu[4].replicated=Math.sqrt(getTotalRG())*.035+1 //NU12 (Replicated galaxy effect
 	if (tmp.ngp3&&player.ghostify.wzb.unl) tmp.bEn[21]=getEnchantEffect(21) //BU21 recalculation
 
 	//mv: Matter speed
@@ -1724,7 +1724,7 @@ function getDilPower() {
 	var ret = Decimal.pow(getDil3Power(), getDilUpgPower(3))
 	if (player.dilation.upgrades.includes("ngud1")) ret = getD18Bonus().times(ret)
 	if (tmp.ngp3) {
-		if (player.achievements.includes("ng3p11") && !tmp.ngp3l) ret = ret.times(Math.max((player.replicanti.galaxies + extraReplGalaxies) / 125, 1))
+		if (player.achievements.includes("ng3p11") && !tmp.ngp3l) ret = ret.times(Math.max(getTotalRG() / 125, 1))
 		if (player.masterystudies.includes("t264")) ret = ret.times(getMTSMult(264))
 		if (GUBought("br1")) ret = ret.times(player.dilation.dilatedTime.add(1).log10()+1)
 		if (player.masterystudies.includes("t341")) ret = ret.times(getMTSMult(341))
@@ -1818,7 +1818,7 @@ function updateDimensions() {
 		} else document.getElementById("tickReset").style.display = "none"
 
         var nextGal = getGalaxyRequirement(0, true)
-        var totalReplGalaxies = player.replicanti.galaxies + extraReplGalaxies
+        var totalReplGalaxies = getTotalRG()
         var totalTypes = tmp.aeg ? 4 : player.dilation.freeGalaxies ? 3 : totalReplGalaxies ? 2 : 1
         document.getElementById("secondResetLabel").innerHTML = (nextGal.scaling > 4 ? "Ghostly" : nextGal.scaling > 3 ? "Dark Matter" : (["", "Distant ", "Farther ", "Remote "])[nextGal.scaling] + "Antimatter") + ' Galaxies ('+ getFullExpansion(player.galaxies) + (totalTypes > 1 ? ' + ' + getFullExpansion(totalReplGalaxies) : '') + (totalTypes > 2 ? ' + ' + getFullExpansion(Math.round(player.dilation.freeGalaxies)) : '') + (totalTypes > 3 ? ' + ' + getFullExpansion(tmp.aeg) : '') +'): requires ' + getFullExpansion(nextGal.amount) + ' '+DISPLAY_NAMES[inNC(4) || player.pSac != undefined ? 6 : 8]+' Dimensions'
 		if (player.achievements.includes("ng3p37") && shiftRequirement.tier > 7) {
@@ -2884,7 +2884,7 @@ function updateInfCosts() {
         if (player.timestudy.studies.includes(131)) replGalOver += Math.floor(player.replicanti.gal / 2)
         document.getElementById("replicantimax").innerHTML = (player.replicanti.gal<3e3?"Max Replicanti galaxies":(player.replicanti.gal<58200?"Distant":"Ghostly")+" Replicated Galaxies")+": "+getFullExpansion(player.replicanti.gal)+(replGalOver > 1 ? "+" + getFullExpansion(replGalOver) : "")+"<br>+1 Cost: "+shortenCosts(getRGCost())+" IP"
         document.getElementById("replicantiunlock").innerHTML = "Unlock Replicantis<br>Cost: "+shortenCosts(player.galacticSacrifice!=undefined&&player.tickspeedBoosts==undefined?1e80:1e140)+" IP"
-        document.getElementById("replicantireset").innerHTML = "Reset replicanti amount, but get a free galaxy<br>" + getFullExpansion(player.replicanti.galaxies) + (extraReplGalaxies ? "+" + getFullExpansion(extraReplGalaxies) : "") + " replicated galax" + ((player.replicanti.galaxies + extraReplGalaxies) == 1 ? "y" : "ies") + " created."
+        document.getElementById("replicantireset").innerHTML = "Reset replicanti amount, but get a free galaxy<br>" + getFullExpansion(player.replicanti.galaxies) + (extraReplGalaxies ? "+" + getFullExpansion(extraReplGalaxies) : "") + " replicated galax" + (getTotalRG() == 1 ? "y" : "ies") + " created."
 
         document.getElementById("replicantichance").className = (player.infinityPoints.gte(player.replicanti.chanceCost) && isChanceAffordable()) ? "storebtn" : "unavailablebtn"
         document.getElementById("replicantiinterval").className = (player.infinityPoints.gte(player.replicanti.intervalCost) && ((player.replicanti.interval !== 50) || player.timestudy.studies.includes(22)) && (player.replicanti.interval !== 1)) ? "storebtn" : "unavailablebtn"
@@ -3129,6 +3129,10 @@ function updateExtraReplGalaxies() {
 		extraReplGalaxies *= colorBoosts.g + tmp.pe
 	}
 	extraReplGalaxies = Math.floor(extraReplGalaxies)
+}
+
+function getTotalRG() {
+	return player.replicanti.galaxies + extraReplGalaxies
 }
 
 function updateMilestones() {
@@ -3926,11 +3930,13 @@ function setAchieveTooltip() {
     let neverenough = document.getElementById("It will never be enough")
     let harmony = document.getElementById("Universal harmony")
     let notenough = document.getElementById("I don't have enough fuel!")
+    let hadron = document.getElementById("Hadronization")
     let old = document.getElementById("Old age")
     let rid = document.getElementById("I already got rid of you...")
     let tfms = document.getElementById("speedrunMilestone18")
     let tms = document.getElementById("speedrunMilestone19")
     let tfms2 = document.getElementById("speedrunMilestone22")
+    let special = document.getElementById("Special Relativity")
     let memories = document.getElementById("Old memories come true")
     let squared = document.getElementById("We are not going squared.")
     let seriously = document.getElementById("Seriously, I already got rid of you.")
@@ -4036,8 +4042,10 @@ function setAchieveTooltip() {
     neverenough.setAttribute('ach-tooltip', "Reach "+shortenCosts( new Decimal("1e100000"))+" replicanti. Reward: You can buy max replicanti galaxies.")
     harmony.setAttribute('ach-tooltip', player.meta?"Have at least 700 normal, replicanti, and free dilated galaxies. Reward: Galaxies are 0.1% stronger.":"Get the same number (at least 300) of normal, replicanti, and free galaxies.")
     notenough.setAttribute('ach-tooltip', "Reach "+shorten(Number.MAX_VALUE)+" meta-antimatter."+(tmp.ngp3l?"":" Reward: You produce dilated time faster based on your normal galaxies. You gain more Tachyon particles based on your replicated galaxies."))
+    hadron.setAttribute('ach-tooltip', "Have colored quarks but have no color charge."+(tmp.ngp3l?"":" Reward: Quantum worth boosts all Meta Dimensions."))
     old.setAttribute('ach-tooltip', "Reach "+shortenCosts(Decimal.pow(10,3*86400*365.2425*2019))+" antimatter.")
     rid.setAttribute('ach-tooltip', "Reach "+shortenCosts(new Decimal("1e400000"))+" IP while dilated without having studies and electrons. Reward: Generate time theorems based on your best-ever tachyon particles.")
+    special.setAttribute('ach-tooltip', "Quantum in under 5 seconds."+(tmp.ngp3l?"":" Reward: Start with all Infinity Dimensions unlocked if you have at least 25 eternities."))
     tfms.setAttribute('ach-tooltip', "Reward: Start with "+shortenCosts(1e13)+" eternities.")
     tms.setAttribute('ach-tooltip', "Reward: Start with "+shortenCosts(1e25)+" meta-antimatter on reset.")
     tfms2.setAttribute('ach-tooltip', "Reward: Start with "+shortenCosts(1e100)+" dilated time and dilated time does not reset until quantum.")
@@ -5391,7 +5399,7 @@ function bigCrunch(autoed) {
         reduceDimCosts()
         setInitialDimensionPower();
 
-        document.getElementById("replicantireset").innerHTML = "Reset replicanti amount, but get a free galaxy<br>" + getFullExpansion(player.replicanti.galaxies) + (extraReplGalaxies ? "+" + getFullExpansion(extraReplGalaxies) : "") + " replicated galax" + ((player.replicanti.galaxies + extraReplGalaxies) == 1 ? "y" : "ies") + " created."
+        document.getElementById("replicantireset").innerHTML = "Reset replicanti amount, but get a free galaxy<br>" + getFullExpansion(player.replicanti.galaxies) + (extraReplGalaxies ? "+" + getFullExpansion(extraReplGalaxies) : "") + " replicated galax" + (getTotalRG() == 1 ? "y" : "ies") + " created."
 
         if (player.achievements.includes("r36")) player.tickspeed = player.tickspeed.times(0.98);
         if (player.achievements.includes("r45")) player.tickspeed = player.tickspeed.times(0.98);
@@ -5680,7 +5688,7 @@ function eternity(force, auto, presetLoad, dilated) {
             overXGalaxies: player.overXGalaxies,
             overXGalaxiesTickspeedBoost: player.overXGalaxiesTickspeedBoost,
             spreadingCancer: player.spreadingCancer,
-            infDimensionsUnlocked: [false, false, false, false, false, false, false, false],
+            infDimensionsUnlocked: resetInfDimUnlocked(),
             infinityPower: new Decimal(1),
             infinityDimension1 : {
                 cost: new Decimal(1e8),
@@ -6260,7 +6268,7 @@ function startChallenge(name) {
 
     if (player.infinitied >= 10) giveAchievement("That's a lot of infinites");
 
-    document.getElementById("replicantireset").innerHTML = "Reset replicanti amount, but get a free galaxy<br>" + player.replicanti.galaxies + (extraReplGalaxies ? "+" + extraReplGalaxies : "") + " replicated galax" + ((player.replicanti.galaxies + extraReplGalaxies) == 1 ? "y" : "ies") + " created."
+    document.getElementById("replicantireset").innerHTML = "Reset replicanti amount, but get a free galaxy<br>" + player.replicanti.galaxies + (extraReplGalaxies ? "+" + extraReplGalaxies : "") + " replicated galax" + (getTotalRG() == 1 ? "y" : "ies") + " created."
 
     resetInfDimensions();
     hideDimensions()
@@ -6728,7 +6736,7 @@ function startEternityChallenge(n) {
         overXGalaxies: player.overXGalaxies,
         overXGalaxiesTickspeedBoost: player.overXGalaxiesTickspeedBoost,
         spreadingCancer: player.spreadingCancer,
-        infDimensionsUnlocked: [false, false, false, false, false, false, false, false],
+        infDimensionsUnlocked: resetInfDimUnlocked(),
         infinityPower: new Decimal(1),
         infinityDimension1 : {
             cost: new Decimal(1e8),
@@ -7616,7 +7624,7 @@ setInterval(function() {
 		if (player.money.gte(Decimal.pow(10,3*86400*365.2425*2019))) giveAchievement("Old age")
 		if (player.infinityPoints.e>=4e5&&ableToGetRid3) giveAchievement("I already got rid of you...")
 		if (player.meta.resets == 8) if (player.meta.antimatter.e>1499) giveAchievement("We are not going squared.")
-		if (player.eightBought>=4e6&&player.replicanti.galaxies+extraReplGalaxies+player.dilation.freeGalaxies<1) giveAchievement("Intergalactic")
+		if (player.eightBought>=4e6&&getTotalRG()+player.dilation.freeGalaxies<1) giveAchievement("Intergalactic")
 		if (player.old&&player.meta.antimatter.e>1699) giveAchievement("Old memories come true")
 		if (player.infinityPoints.e>=354e3&&ableToGetRid4) giveAchievement("Seriously, I already got rid of you.")
 		if (player.meta.antimatter.e>332&&player.meta[2].amount.eq(0)&&player.meta.resets<1) giveAchievement("ERROR 500: INTERNAL DIMENSION ERROR")

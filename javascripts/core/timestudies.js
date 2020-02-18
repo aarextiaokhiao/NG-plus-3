@@ -677,7 +677,7 @@ function save_preset(id) {
 		presets[id].preset=l.join('/');
 	} else {
 		var mtsstudies=[]
-		if (player.masterystudies) {
+		if (tmp.ngp3) {
 			for (mid=0;mid<player.masterystudies.length;mid++) {
 				var t = player.masterystudies[mid].split("t")[1]
 				if (t) mtsstudies.push(t)

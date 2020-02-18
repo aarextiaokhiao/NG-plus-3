@@ -29,10 +29,13 @@ var masteryStudies = {
 			return getFullExpansion(masteryStudies.ecReqsStored[13]) + " dimension boosts"
 		},
 		14: function() {
-			return getFullExpansion(masteryStudies.ecReqsStored[14]) + "% dimension boosts"
+			return getFullExpansion(masteryStudies.ecReqsStored[14]) + "% replicate chance"
 		}
 	},
 	unlockReqConditions: {
+		7: function() {
+			return tmp.ngp3l || quantumWorth.gte(50)
+		},
 		8: function() {
 			return tmp.qu.electrons.amount >= 16750
 		},
@@ -56,6 +59,9 @@ var masteryStudies = {
 		}
 	},
 	unlockReqDisplays: {
+		7: function() {
+			if (!tmp.ngp3l) return "50 quantum worth"
+		},
 		8: function() {
 			return getFullExpansion(16750) + " electrons"
 		},
@@ -79,9 +85,65 @@ var masteryStudies = {
 		}
 	},
 	types: {t: "time", ec: "ec", d: "dil"},
-	allStudies: [],
-	allTimeStudies: [],
-	allStudyEffects: {
+	studies: [],
+	timeStudies: [],
+	timeStudyDescs: {
+		241: "The IP mult multiplies IP gain by 2.2x per upgrade.",
+		251: "Remote cost scaling starts 1 galaxy later per 3,000 dimension boosts.",
+		252: "Remote cost scaling starts 1 galaxy later per 7 free galaxies.",
+		253: function() {
+			return "Remote cost scaling starts "+(tmp.ngp3l?"20 galaxies later per 9 extra replicated galaxies.":"??? galaxies later per ??? total replicated galaxies.")
+		},
+		261: "Dimensional boost costs scale by another 1 less.",
+		262: "Dimensional boosts affect Meta Dimensions at reduced rate.",
+		263: "Meta-dimension boosts affect dilated time production.",
+		264: "You gain more tachyon particles based on your galaxies.",
+		265: "You can buy replicate chance upgrades over 100%.",
+		266: "Post-400 max replicated galaxy cost scaling is reduced.",
+		271: "You can buy beyond 1ms interval upgrades but the cost starts to increase faster.",
+		272: "Pick all paths on all 3-way splits in time studies.",
+		273: "Replicate chance boosts itself.",
+		281: "Replicanti multiplier boosts DT production at greatly reduced rate.",
+		282: "Replicanti multiplier boosts Meta Dimensions at greatly reduced rate.",
+		291: "You gain 1% of your EP gained on eternity each second.",
+		292: "You can gain tachyon particles without disabling dilation.",
+		301: "Remote cost scaling starts 1 galaxy later per 4.15 extra replicated galaxies.",
+		302: "Pick all time studies before mastery studies.",
+		303: "Meta Dimensions are stronger based on your galaxies.",
+		311: "Replicanti boost to all Infinity Dimensions is 17.3x stronger.",
+		312: "Meta-dimension boosts are 4.5% stronger and cost scale by 1 less.",
+		321: "Buff multiplier per 10 normal Dimensions to <span id='321effect'></span>x if it is 1x.",
+		322: "Tickspeed boosts DT production at greatly reduced rate.",
+		323: "Cancel dilation penalty for Normal Dimensions boost from replicanti.",
+		331: "Dimension Supersonic scaling starts 340,000 later and increases cost slower by 3 less.",
+		332: "You gain replicanti faster based on your normal galaxies.",
+		341: "Preons boost DT production at reduced rate.",
+		342: "All replicated galaxies are stronger and use the same formula.",
+		343: "Free galaxies are as strong as a normal replicated galaxy.",
+		344: "Replicated galaxies are more effective based on your preons.",
+		351: "Time Shards boost all Meta Dimensions.",
+		361: "Hatch speed is faster based on your tachyon particles.",
+		362: function() {
+			return "Reduce the softcap for preon boost"+(player.aarexModifications.ngumuV?" and preons reduce green power effect.":".")
+		},
+		371: "Hatch speed is faster based on your extra replicated galaxies.",
+		372: "Hatch speed is faster based on your time shards.",
+		373: "You get more preons based on your galaxies.",
+		381: "Hatch speed is faster based on your tickspeed reduction multiplier.",
+		382: "Eighth Dimensions boost Meta Dimensions.",
+		383: "Blue power boosts Meta Dimensions.",
+		391: "Hatch speed is faster based on your meta-antimatter.",
+		392: "Preons boost all Emperor Dimensions.",
+		393: "Workers boost Meta Dimensions.",
+		401: "The production of preon anti-energy is slower based on your preons.",
+		402: "Emperor Dimensions and hatch speed are faster by 25x.",
+		411: "The production of preon energy is faster based on your replicants.",
+		412: "Preon effect is 25% stronger.",
+		421: "Tickspeed boosts preon energy production.",
+		431: "Branches are faster based on your free galaxies."
+	},
+	hasStudyEffect: [251, 252, 253, 262, 263, 264, 273, 281, 282, 301, 303, 322, 332, 341, 344, 351, 361, 371, 372, 373, 381, 382, 383, 391, 392, 393, 401, 411, 421, 431],
+	studyEffectDisplays: {
 		251: function(x) {
 			return "+" + getFullExpansion(Math.floor(x))
 		},
@@ -165,13 +227,13 @@ function updateMasteryStudyCosts() {
 		if (t) {
 			setMasteryStudyCost(t,"t")
 			masteryStudies.ttSpent+=masteryStudies.costs.time[t]
-			if (masteryStudies.allTimeStudies.includes(t)) masteryStudies.costMult*=getMasteryStudyCostMult(t)
+			if (masteryStudies.timeStudies.includes(t)) masteryStudies.costMult*=getMasteryStudyCostMult(t)
 			masteryStudies.latestBoughtRow=Math.max(masteryStudies.latestBoughtRow,Math.floor(t/10))
 			masteryStudies.bought++
 		}
 	}
-	for (id=0;id<masteryStudies.allTimeStudies.length;id++) {
-		var name=masteryStudies.allTimeStudies[id]
+	for (id=0;id<masteryStudies.timeStudies.length;id++) {
+		var name=masteryStudies.timeStudies[id]
 		if (!masteryStudies.unlocked.includes(name)) break
 		if (!player.masterystudies.includes("t"+name)) setMasteryStudyCost(name,"t")
 	}
@@ -191,8 +253,8 @@ function updateMasteryStudyCosts() {
 }
 
 function setupMasteryStudies() {
-	masteryStudies.allStudies=[241]
-	var map=masteryStudies.allStudies
+	masteryStudies.studies=[241]
+	var map=masteryStudies.studies
 	var part
 	var pos=0
 	while (true) {
@@ -203,7 +265,7 @@ function setupMasteryStudies() {
 			id=part
 			part=""
 		}
-		if (typeof(id)=="number") masteryStudies.allTimeStudies.push(id)
+		if (typeof(id)=="number") masteryStudies.timeStudies.push(id)
 		var paths=masteryStudies.allConnections[id]
 		if (paths) for (var x=0;x<paths.length;x++) {
 			var y=paths[x]
@@ -214,14 +276,21 @@ function setupMasteryStudies() {
 		}
 		pos++
 	}
+	for (id=0;id<masteryStudies.timeStudies.length;id++) {
+		var name=masteryStudies.timeStudies[id]
+		var html="<span id='ts"+name+"Desc'></span>"
+		if (masteryStudies.hasStudyEffect.includes(name)) html+="<br>Currently: <span id='ts"+name+"Current'></span>"
+		html+="<br>Cost: <span id='ts"+name+"Cost'></span> Time Theorems"
+		document.getElementById("timestudy"+name).innerHTML=html
+	}
 }
 
 function updateUnlockedMasteryStudies() {
 	var unl=true
 	var rowNum=0
 	masteryStudies.unlocked=[]
-	for (var x=0;x<masteryStudies.allStudies.length;x++) {
-		var id=masteryStudies.allStudies[x]
+	for (var x=0;x<masteryStudies.studies.length;x++) {
+		var id=masteryStudies.studies[x]
 		var divid=convertMasteryStudyIdToDisplay(id)
 		if (Math.floor(id/10)>rowNum) {
 			rowNum=Math.floor(id/10)
@@ -358,7 +427,7 @@ function buyMasteryStudy(type, id, quick=false) {
 function canBuyMasteryStudy(type, id) {
 	if (type=='t') {
 		if (inQCModifier("sm")&&masteryStudies.bought>=20) return false
-		if (player.timestudy.theorem<masteryStudies.costs.time[id]||player.masterystudies.includes('t'+id)||player.eternityChallUnlocked>12||!masteryStudies.allTimeStudies.includes(id)) return false
+		if (player.timestudy.theorem<masteryStudies.costs.time[id]||player.masterystudies.includes('t'+id)||player.eternityChallUnlocked>12||!masteryStudies.timeStudies.includes(id)) return false
 		if (masteryStudies.latestBoughtRow>Math.floor(id/10)) return false
 		if (!masteryStudies.spentable.includes(id)) return false
 	} else if (type=='d') {
@@ -377,15 +446,17 @@ function canBuyMasteryStudy(type, id) {
 	
 function updateMasteryStudyButtons() {
 	if (!tmp.ngp3) return
-	for (id=0;id<masteryStudies.allTimeStudies.length;id++) {
-		var name=masteryStudies.allTimeStudies[id]
+	for (id=0;id<masteryStudies.timeStudies.length;id++) {
+		var name=masteryStudies.timeStudies[id]
 		var div=document.getElementById("timestudy"+name)
-		var mult=getMTSMult(name, "ms")
 		if (!masteryStudies.unlocked.includes(name)) break
 		if (player.masterystudies.includes("t"+name)) div.className="timestudybought"
 		else if (canBuyMasteryStudy('t', name)) div.className="timestudy"
 		else div.className="timestudylocked"
-		if (mult!==undefined) document.getElementById("ts"+name+"Current").textContent="Currently: "+(masteryStudies.allStudyEffects[name]?masteryStudies.allStudyEffects[name](mult):shorten(mult)+"x")
+		if (masteryStudies.hasStudyEffect.includes(name)) {
+			var mult=getMTSMult(name, "ms")
+			document.getElementById("ts"+name+"Current").textContent=(masteryStudies.studyEffectDisplays[name]?masteryStudies.studyEffectDisplays[name](mult):shorten(mult)+"x")
+		}
 	}
 	for (id=13;id<=masteryStudies.ecsUpTo;id++) {
 		var div=document.getElementById("ec"+id+"unl")
@@ -408,10 +479,10 @@ function updateMasteryStudyTextDisplay() {
 	document.getElementById("costmult").textContent=shorten(masteryStudies.costMult)
 	document.getElementById("totalmsbought").textContent=masteryStudies.bought
 	document.getElementById("totalttspent").textContent=shortenDimensions(masteryStudies.ttSpent)
-	for (id=0;id<masteryStudies.allTimeStudies.length;id++) {
-		var name=masteryStudies.allTimeStudies[id]
+	for (id=0;id<masteryStudies.timeStudies.length;id++) {
+		var name=masteryStudies.timeStudies[id]
 		if (!masteryStudies.unlocked.includes(name)) break
-		document.getElementById("ts"+name+"Cost").textContent="Cost: "+shorten(masteryStudies.costs.time[name])+" Time Theorems"
+		document.getElementById("ts"+name+"Cost").textContent=shorten(masteryStudies.costs.time[name])
 	}
 	for (id=13;id<=masteryStudies.ecsUpTo;id++) {
 		if (!masteryStudies.unlocked.includes("ec"+id)) break
@@ -423,7 +494,7 @@ function updateMasteryStudyTextDisplay() {
 		if (!masteryStudies.unlocked.includes("d"+id)) break
 		var req=masteryStudies.unlockReqDisplays[id]&&masteryStudies.unlockReqDisplays[id]()
 		document.getElementById("ds"+id+"Cost").textContent="Cost: "+shorten(masteryStudies.costs.dil[id])+" Time Theorems"
-		if (req) document.getElementById("ds"+id+"Req").innerHTML=ghostified?"":"<br>Requirement: "+req
+		if (req) document.getElementById("ds"+id+"Req").innerHTML=ghostified||!req?"":"<br>Requirement: "+req
 	}
 	if (quantumed) document.getElementById("321effect").textContent=shortenCosts(new Decimal("1e430"))
 }
@@ -482,8 +553,8 @@ function drawMasteryTree() {
 	if (document.getElementById("eternitystore").style.display === "none" || document.getElementById("masterystudies").style.display === "none" || player.masterystudies === undefined) return
 	occupied=[]
 	drawMasteryBranch("back", "timestudy241")
-	for (var x=0;x<masteryStudies.allStudies.length;x++) {
-		var id=masteryStudies.allStudies[x]
+	for (var x=0;x<masteryStudies.studies.length;x++) {
+		var id=masteryStudies.studies[x]
 		var paths=masteryStudies.allConnections[id]
 		if (!masteryStudies.unlocked.includes(id)) return
 		if (paths) for (var y=0;y<paths.length;y++) if (masteryStudies.unlocked.includes(paths[y])) drawMasteryBranch(convertMasteryStudyIdToDisplay(id), convertMasteryStudyIdToDisplay(paths[y]))
@@ -493,9 +564,16 @@ function drawMasteryTree() {
 function getMTSMult(id, uses = "") {
 	if (id==251) return Math.floor(player.resets/3e3)
 	if (id==252) return Math.floor(player.dilation.freeGalaxies/7)
-	if (id==253) return Math.floor(extraReplGalaxies/9)*20
+	if (id==253) {
+		if (tmp.ngp3l) return Math.floor(extraReplGalaxies/9)*20
+		return Math.floor(getTotalRG()/Number.MAX_VALUE)*0
+	}
 	if (id==262) return Math.max(player.resets/15e3-19,1)
-	if (id==263) return player.meta.resets+1
+	if (id==263) {
+		let x=player.meta.resets
+		if (!tmp.ngp3l) x=x*(x+10)/15
+		return x+1
+	}
 	if (id==264) return Math.pow(player.galaxies+1,0.25)*2
 	if (id==273) {
 		var intensity = 0

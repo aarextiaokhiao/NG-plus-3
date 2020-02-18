@@ -66,11 +66,6 @@ function setupText() {
 	document.getElementById("infi44").onclick = function() {
 		if (player.infinityUpgrades.includes("skipReset3")) buyInfinityUpgrade("skipResetGalaxy", 500)
 	}
-	for (id=0;id<masteryStudies.allTimeStudies.length;id++) {
-		var name=masteryStudies.allTimeStudies[id]
-		var div=document.getElementById("timestudy"+name)
-		div.innerHTML=div.innerHTML+"<br><span id='ts"+name+"Cost'></span>"
-	}
 	var pcct = document.getElementById("pccompletionstable")
 	var row = pcct.insertRow(0)
 	for (c=0;c<9;c++) {
@@ -2858,7 +2853,7 @@ function ghostifyReset(implode, gain, amount, force) {
 		eternityUpgrades: bm ? [1, 2, 3, 4, 5, 6] : [],
 		epmult: new Decimal(1),
 		epmultCost: new Decimal(500),
-		infDimensionsUnlocked: [false, false, false, false, false, false, false, false],
+		infDimensionsUnlocked: resetInfDimUnlocked(),
 		infinityPower: new Decimal(1),
 		infinityDimension1 : {
 			cost: new Decimal(1e8),
@@ -3339,7 +3334,7 @@ function ghostifyReset(implode, gain, amount, force) {
 		player.masterystudies=[]
 		for (var t=0;t<all.length;t++) player.timestudy.studies.push(all[t])
 		for (var c=1;c<15;c++) player.eternityChalls["eterc"+c]=5
-		for (var t=0;t<masteryStudies.allTimeStudies.length;t++) player.masterystudies.push("t"+masteryStudies.allTimeStudies[t])
+		for (var t=0;t<masteryStudies.timeStudies.length;t++) player.masterystudies.push("t"+masteryStudies.timeStudies[t])
 		for (var d=1;d<7;d++) player.dilation.studies.push(d)
 		for (var d=7;d<15;d++) player.masterystudies.push("d"+d)
 		if (bm<2) {

@@ -1915,6 +1915,11 @@ if (player.version < 5) {
       displayNonlegacyStuff()
       updateUnlockedMasteryStudies()
       updateSpentableMasteryStudies()
+      for (var i=0;i<masteryStudies.timeStudies.length;i++) {
+          var t=masteryStudies.timeStudies[i]
+          var d=masteryStudies.timeStudyDescs[t]
+          document.getElementById("ts"+t+"Desc").innerHTML=(typeof(d)=="function"?d():d)||"Unknown desc."
+      }
       updateMasteryStudyCosts()
       if (quantumed) giveAchievement("Sub-atomic")
       if (tmp.qu.best<=10) giveAchievement("Quantum doesn't take so long")
@@ -1938,7 +1943,6 @@ if (player.version < 5) {
       document.getElementById('autoAssign').textContent="Auto: O"+(tmp.qu.autoOptions.assignQK?"N":"FF")
       document.getElementById('autoAssignRotate').textContent="Rotation: "+(tmp.qu.autoOptions.assignQKRotate>1?"Left":tmp.qu.autoOptions.assignQKRotate?"Right":"None")
       document.getElementById('autoReset').textContent="Auto: O"+(tmp.qu.autoOptions.replicantiReset?"N":"FF")
-      document.getElementById("362desc").textContent="Reduce the softcap for preon boost"+(player.aarexModifications.ngumuV?" and preons reduce green power effect.":".")
       document.getElementById("nanofieldtabbtn").style.display=player.masterystudies.includes("d12")?"":"none"
       document.getElementById("ghostifyAnimBtn").textContent="Ghostify: O"+(player.options.animations.ghostify?"N":"FF")
       for (var u=5;u<13;u++) {
