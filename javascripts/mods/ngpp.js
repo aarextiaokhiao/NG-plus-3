@@ -179,9 +179,13 @@ function metaBuyOneDimension(tier) {
 
 function getMetaCost(tier, boughtTen) {
 	let cost=initCost[tier].times(costMults[tier].pow(boughtTen))
-	let scalingStart=Math.ceil(Decimal.div("1e1100", initCost[tier]).log(costMults[tier]))
+	let scalingStart=Math.ceil(Decimal.div(getMetaCostScalingStart(), initCost[tier]).log(costMults[tier]))
 	if (boughtTen>=scalingStart) cost=cost.times(Decimal.pow(10,(boughtTen-scalingStart+1)*(boughtTen-scalingStart+2)/2))
 	return cost
+}
+
+function getMetaCostScalingStart() {
+	return tmp.ngp3l ? "1e1100" : "1e900"
 }
 
 function getMetaMaxCost(tier) {
@@ -209,7 +213,7 @@ function buyMaxMetaDimension(tier) {
 	if (getMetaMaxCost(tier).gt(player.meta.antimatter)) return
 	var currentBought=Math.floor(player.meta[tier].bought/10)
 	var bought=player.meta.antimatter.div(10).div(initCost[tier]).log(costMults[tier])+1
-	var scalingStart=Math.ceil(Decimal.div("1e1100", initCost[tier]).log(costMults[tier]))
+	var scalingStart=Math.ceil(Decimal.div(getMetaCostScalingStart(), initCost[tier]).log(costMults[tier]))
 	if (bought>=scalingStart) {
 		b=costMults[tier].log10()+0.5
 		bought=Math.sqrt(b*b+2*(bought-scalingStart)*costMults[tier].log10())-b+scalingStart
