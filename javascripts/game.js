@@ -1253,7 +1253,7 @@ function updateTemp() {
 		tmp.eg431+=tmp.le[7].total
 	}
 	
-	if (tmp.nu[4]&&ghostified) tmp.nu[4].replicated=Math.sqrt(getTotalRG())*.035+1 //NU12 (Replicated galaxy effect
+	if (tmp.nu[4]&&ghostified) tmp.nu[4].replicated=Math.sqrt(getTotalRG())*(tmp.ngp3l?.035:.0175)+1 //NU12 (Replicated galaxy effect)
 	if (tmp.ngp3&&player.ghostify.wzb.unl) tmp.bEn[21]=getEnchantEffect(21) //BU21 recalculation
 
 	//mv: Matter speed
@@ -6586,11 +6586,79 @@ function getEC12TimeLimit() {
 	return Math.max(r,1)
 }
 
+var ecExpData = {
+	inits: {
+		eterc1: 1800,
+		eterc2: 975,
+		eterc3: 600,
+		eterc4: 2750,
+		eterc5: 750,
+		eterc6: 850,
+		eterc7: 2000,
+		eterc8: 1300,
+		eterc9: 1750,
+		eterc10: 3000,
+		eterc11: 500,
+		eterc12: 110000,
+		eterc13: 38000000,
+		eterc14: 1595000,
+		eterc1_ngmm: 2675,
+		eterc2_ngmm: 1125,
+		eterc3_ngmm: 1025,
+		eterc4_ngmm: 4000,
+		eterc5_ngmm: 600,
+		eterc6_ngmm: 850,
+		eterc7_ngmm: 1450,
+		eterc8_ngmm: 2100,
+		eterc9_ngmm: 2250,
+		eterc10_ngmm: 2500,
+		eterc11_ngmm: 35000,
+		eterc12_ngmm: 37500
+	},
+	increases: {
+		eterc1: 200,
+		eterc2: 175,
+		eterc3: 75,
+		eterc4: 550,
+		eterc5: 400,
+		eterc6: 250,
+		eterc7: 530,
+		eterc8: 900,
+		eterc9: 250,
+		eterc10: 300,
+		eterc11: 200,
+		eterc12: 12000,
+		eterc13: 1200000,
+		eterc14: 320000,
+		eterc1_ngmm: 400,
+		eterc2_ngmm: 250,
+		eterc3_ngmm: 100,
+		eterc4_ngmm: 850,
+		eterc5_ngmm: 300,
+		eterc6_ngmm: 225,
+		eterc8_ngmm: 500,
+		eterc9_ngmm: 300,
+		eterc10_ngmm: 250,
+		eterc11_ngmm: 3250,
+		eterc12_ngmm: 7500,
+		eterc14_legacy: 250000
+	}
+}
 function getECGoal(x) {
-	let gi=[[1800,975,600,2750,750,850,2000,1300,1750,3000,500,110000,38000000,1595000],[2675,1125,1025,4000,600,850,1450,2100,2250,2500,35000,37500,38000000,1595000]]
-	let gm=[[200,175,75,550,400,250,530,900,250,300,200,12000,1200000,250000],[400,250,100,850,300,225,530,500,300,250,3250,7500,1200000,250000]]
-	let i=player.galacticSacrifice!=undefined?1:0
-	return Decimal.pow(10,gi[i][x-1]+gm[i][x-1]*ECTimesCompleted("eterc"+x))
+	let expInit=ecExpData.inits[x]
+	let expIncrease=ecExpData.increases[x]
+	let completions=ECTimesCompleted("eterc"+x)
+	if (player.galacticSacrifice!=undefined) {
+		expInit=ecExpData.inits[x+"_ngmm"]||expInit
+		expIncrease=ecExpData.increases[x+"_ngmm"]||expIncrease
+	}
+	if (tmp.ngp3l) {
+		expInit=ecExpData.inits[x+"_legacy"]||expInit
+		expIncrease=ecExpData.increases[x+"_legacy"]||expIncrease
+	}
+	let exp=expInit+expIncrease*completions
+	if (x=="ec13"&&!tmp.ngp3l) exp+=600000*Math.max(completions-2,0)*(completions-3,0)
+	return Decimal.pow(10,exp)
 }
 
 function getECReward(x) {
@@ -6620,18 +6688,7 @@ function getECReward(x) {
 	if (x==10) return Decimal.pow(getInfinitied(),m2?2:.9).times(c*(m2?0.02:0.000002)).add(1).pow(player.timestudy.studies.includes(31)?4:1)
 	if (x==12) return 1-c*(m2?.06:0.008)
 	if (x==13) return c*0.2
-	if (x==14) {
-		let x=0
-		if (tmp.ngp3) {
-			if (player.currentEternityChall=='eterc14') x=5
-			else {
-				x=c*2
-				if (hasNU(12)) if (tmp.qu.bigRip.active) x*=tmp.nu[4].replicated
-			}
-		}
-		if (player.galacticSacrifice!==undefined) x++
-		return x
-	}
+	if (x==14) return getIC3EffFromFreeUpgs()
 }
 
 function startEternityChallenge(n) {
@@ -6834,7 +6891,7 @@ function startEternityChallenge(n) {
         },
         timestudy: player.timestudy,
         eternityChalls: player.eternityChalls,
-        eternityChallGoal: getECGoal(n),
+        eternityChallGoal: getECGoal("eterc"+n),
         currentEternityChall: "eterc"+n,
         eternityChallUnlocked: player.eternityChallUnlocked,
         etercreq: player.etercreq,
@@ -7505,7 +7562,7 @@ setInterval(function() {
     if (getEternitied() >= 80 && player.replicanti.auto[2] && player.currentEternityChall !== "eterc8") autoBuyRG()
 
     let ec12TimeLimit = Math.round(getEC12TimeLimit() * 10) / 100
-    for (var c=1;c<15;c++) document.getElementById("eterc"+c+"goal").textContent = "Goal: "+shortenCosts(getECGoal(c))+" IP"+(c==12?" in "+ec12TimeLimit+" second"+(ec12TimeLimit==1?"":"s")+" or less.":c==4?" in "+Math.max((16-(ECTimesCompleted("eterc4")*4)),0)+" infinities or less.":"")
+    for (var c=1;c<15;c++) document.getElementById("eterc"+c+"goal").textContent = "Goal: "+shortenCosts(getECGoal("eterc"+c))+" IP"+(c==12?" in "+ec12TimeLimit+" second"+(ec12TimeLimit==1?"":"s")+" or less.":c==4?" in "+Math.max((16-(ECTimesCompleted("eterc4")*4)),0)+" infinities or less.":"")
 
     document.getElementById("eterc1completed").textContent = "Completed "+ECTimesCompleted("eterc1")+" times."
     document.getElementById("eterc2completed").textContent = "Completed "+ECTimesCompleted("eterc2")+" times."
@@ -8192,7 +8249,7 @@ function gameLoop(diff) {
 		gain = Math.ceil(new Decimal(player.timeShards).dividedBy(player.tickThreshold).log10()/Math.log10(thresholdMult))
 		player.totalTickGained += gain
 		player.tickspeed = player.tickspeed.times(Decimal.pow(getTickSpeedMultiplier(),gain))
-		player.postC3Reward=Decimal.pow(getPostC3Mult(),gain*getECReward(14)).times(player.postC3Reward)
+		player.postC3Reward=Decimal.pow(getPostC3Mult(),gain*getIC3EffFromFreeUpgs()).times(player.postC3Reward)
 		player.tickThreshold = Decimal.pow(thresholdMult,player.totalTickGained).times(player.aarexModifications.ngmX>3?0.01:1)
 		document.getElementById("totaltickgained").textContent = "You've gained "+getFullExpansion(player.totalTickGained)+" tickspeed upgrades."
 		updateTickSpeed();
@@ -8566,7 +8623,7 @@ function gameLoop(diff) {
 			document.getElementById("ec11reward").textContent = "Reward: Further reduce the tickspeed cost multiplier increase, Currently: "+player.tickSpeedMultDecrease.toFixed(2)+"x "
 			document.getElementById("ec12reward").textContent = "Reward: Infinity Dimension cost multipliers are reduced. (x^"+getECReward(12)+")"
 			document.getElementById("ec13reward").textContent = "Reward: Increase the power of meta-antimatter. ("+(getECReward(13)+9)+"x)"
-			document.getElementById("ec14reward").textContent = "Reward: Free tickspeed upgrades increase IC3 reward "+getECReward(14).toFixed(0)+" times."
+			document.getElementById("ec14reward").textContent = "Reward: Free tickspeed upgrades increase IC3 reward "+getIC3EffFromFreeUpgs().toFixed(0)+" times."
 
 			document.getElementById("ec10span").textContent = shortenMoney(ec10bonus) + "x"
 		}

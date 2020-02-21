@@ -88,6 +88,19 @@ function getTimeDimensionProduction(tier) {
   return ret
 }
 
+function getIC3EffFromFreeUpgs() {
+	let x=0
+	if (tmp.ngp3) {
+		if (player.currentEternityChall=='eterc14') x=5
+		else {
+			x=ECTimesCompleted("eterc14")*(tmp.ngp3l?2:4)
+			if (hasNU(12)) if (tmp.qu.bigRip.active) x*=tmp.nu[4].replicated
+		}
+	}
+	if (player.galacticSacrifice!==undefined) x++
+	return x
+}
+
 function isTDUnlocked(t) {
 	if (t>8) return
 	if (player.aarexModifications.ngmX>3) {

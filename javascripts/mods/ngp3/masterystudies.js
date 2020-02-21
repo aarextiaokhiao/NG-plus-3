@@ -576,7 +576,7 @@ function getMTSMult(id, uses = "") {
 	}
 	if (id==264) {
 		if (tmp.ngp3l) return Math.pow(player.galaxies+1,0.25)*2
-		return player.galaxies/400+1
+		return player.galaxies/100+1
 	}
 	if (id==273) {
 		var intensity = 0
