@@ -45,7 +45,7 @@ function getMetaDimensionGlobalMultiplier() {
 		ret = ret.times(getQCReward(6))
 		if (player.achievements.includes("ng3p13") && !tmp.ngp3l) ret = ret.times(Decimal.pow(1, Math.pow(Decimal.plus(quantumWorth, 1).log10(), 0.75)))
 	}
-	if (GUBought("br4")) ret = ret.times(Decimal.pow(getDimensionPowerMultiplier(hasNU(13) && "no-rg4"), 0.0003))
+	if (GUBought("br4")) ret = ret.times(Decimal.pow(getDimensionPowerMultiplier(hasNU(13) && "no-rg4"), 0.0003).max(1))
 	
 	return ret
 }
