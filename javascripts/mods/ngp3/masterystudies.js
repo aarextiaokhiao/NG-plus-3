@@ -568,7 +568,10 @@ function getMTSMult(id, uses = "") {
 		if (tmp.ngp3l) return Math.floor(extraReplGalaxies/9)*20
 		return Math.floor(getTotalRG()/8)*3
 	}
-	if (id==262) return Math.max(player.resets/15e3-19,1)
+	if (id==262) {
+		if (tmp.ngp3l) return Math.max(player.resets/15e3-19,1)
+		return Math.max(player.resets/1e5-4.5,1)
+	}
 	if (id==263) {
 		let x=player.meta.resets
 		if (!tmp.ngp3l) x=x*(x+10)/60
