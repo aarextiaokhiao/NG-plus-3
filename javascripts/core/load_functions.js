@@ -2087,7 +2087,7 @@ if (player.version < 5) {
           else ngModeMessages.push('Welcome to NG-- mode created by Nyan cat! Dilation is always locked but have more balancing, IC3 trap, and a new feature called "Galactic Sacrifice".')
       }
       if (player.aarexModifications.newGameMinusVersion) ngModeMessages.push("Welcome to NG- mode! Everything are nerfed by the creator slabdrill, making the end-game harder to reach.")
-      if (player.aarexModifications.aau) ngModeMessages.push("WARNING: You are about to enter a mode that you start with all achievements unlocked! This mode is way easier and probably way faster than a mode without AAU! Made by Apeirogon.")
+      if (player.aarexModifications.aau) ngModeMessages.push("WARNING: You are about to enter a mode that you start with all achievements unlocked! This mode is way easier and probably way faster than the same mode, but without AAU! Made by Apeirogon.")
       if (inflationCheck) ngModeMessages = ["I'm terribly sorry. But your save was appeared that there is an inflation, which it defeats the rule of incremental games. Your save was forced to reset everything."]
       if (infiniteCheck) ngModeMessages = ["I'm terribly sorry, but there has been an Infinite bug detected within your save file, which is why said save file will get reset. Luckily, you can export your save before this reset. Thanks! :)"]
       if (forceToQuantumAndRemove) {
