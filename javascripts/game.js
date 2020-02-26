@@ -1960,10 +1960,11 @@ function updateDimensions() {
         if (player.aarexModifications.hideRepresentation) document.getElementById("infoScale").textContent=""
         else if (player.money.gt(Decimal.pow(10, 3 * 86400 * 365.2425 * 79.3 / 10))) {
             var years = player.money.log10() / 3 / 86400 / 365.2425
+            var todayYear = new Date().getFullYear() || 2020
             if (years>=1e9) var message = "<br>If you end the non-stop writing of your full antimatter amount with 3 digits per second, you would start it "+(years/1e9).toFixed(2)+" GYA."
             else if (years>=1e7) var message = "<br>If you end the non-stop writing of your full antimatter amount with 3 digits per second, you would start it "+(years/1e6).toFixed(2)+" MYA."
-            else if (years>=2020) {
-                var bc = years-2020+1
+            else if (years>=todayYear) {
+                var bc = years-todayYear+1
                 var since
                 var sinceYears
                 if (bc > 5332e3) {}
@@ -4043,7 +4044,7 @@ function setAchieveTooltip() {
     harmony.setAttribute('ach-tooltip', player.meta?"Have at least 700 normal, replicanti, and free dilated galaxies. Reward: Galaxies are 0.1% stronger.":"Get the same number (at least 300) of normal, replicanti, and free galaxies.")
     notenough.setAttribute('ach-tooltip', "Reach "+shorten(Number.MAX_VALUE)+" meta-antimatter."+(tmp.ngp3l?"":" Reward: You produce dilated time faster based on your normal galaxies. You gain more Tachyon particles based on your replicated galaxies."))
     hadron.setAttribute('ach-tooltip', "Have colored quarks but have no color charge."+(tmp.ngp3l?"":" Reward: Quantum worth boosts all Meta Dimensions."))
-    old.setAttribute('ach-tooltip', "Reach "+shortenCosts(Decimal.pow(10,3*86400*365.2425*2019))+" antimatter.")
+    old.setAttribute('ach-tooltip', "Reach "+shortenCosts(getOldAgeRequirement())+" antimatter.")
     rid.setAttribute('ach-tooltip', "Reach "+shortenCosts(new Decimal("1e400000"))+" IP while dilated without having studies and electrons. Reward: Generate time theorems based on your best-ever tachyon particles.")
     special.setAttribute('ach-tooltip', "Quantum in under 5 seconds."+(tmp.ngp3l?"":" Reward: Start with all Infinity Dimensions unlocked if you have at least 25 eternities."))
     tfms.setAttribute('ach-tooltip', "Reward: Start with "+shortenCosts(1e13)+" eternities.")
@@ -7678,7 +7679,7 @@ setInterval(function() {
 		}
 		if (player.meta.antimatter.gte(Number.MAX_VALUE)) giveAchievement("I don't have enough fuel!")
 		if (player.galaxies>899&&!player.dilation.studies.includes(1)) giveAchievement("No more tax fraud!")
-		if (player.money.gte(Decimal.pow(10,3*86400*365.2425*2019))) giveAchievement("Old age")
+		if (player.money.gte(getOldAgeRequirement())) giveAchievement("Old age")
 		if (player.infinityPoints.e>=4e5&&ableToGetRid3) giveAchievement("I already got rid of you...")
 		if (player.meta.resets == 8) if (player.meta.antimatter.e>1499) giveAchievement("We are not going squared.")
 		if (player.eightBought>=4e6&&getTotalRG()+player.dilation.freeGalaxies<1) giveAchievement("Intergalactic")

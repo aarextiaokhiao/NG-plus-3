@@ -615,7 +615,11 @@ function doAutoMetaTick() {
 			}
 		}
 	}
-	for (dim=8;dim>0;dim--) if (player.autoEterOptions["md"+dim] && speedrunMilestonesReached > 5+dim) buyMaxMetaDimension(dim)
+	for (var d=1;d<=8;d++) {
+		var dim = d
+		if (tmp.ngp3l) dim = 9 - d
+		if (player.autoEterOptions["md" + dim] && speedrunMilestonesReached >= 6 + dim) buyMaxMetaDimension(dim)
+	}
 	if (player.autoEterOptions.metaboost && speedrunMilestonesReached > 14) metaBoost()
 }
 
@@ -4754,6 +4758,12 @@ function displayNonlegacyStuff() {
 	
 	//Bosonic Upgrades
 	for (var r=3;r<=bu.maxRows;r++) document.getElementById("bUpgRow"+r).style.display=tmp.ngp3l?"none":""
+}
+
+function getOldAgeRequirement() {
+	let year = new Date().getFullYear() || 2020
+	if (tmp.ngp3l) year = 2019
+	return Decimal.pow(10, 3 * 86400 * 365.2425 * year)
 }
 
 function getNanofieldRewardTier(reward, rewards) {
