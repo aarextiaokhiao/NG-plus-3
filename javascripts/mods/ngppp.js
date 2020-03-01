@@ -668,12 +668,13 @@ function disableReward(id) {
 	document.getElementById("reward"+id+"disable").textContent=(id>11?"10 seconds":id>4?"33.3 mins":(id>3?4.5:6)+" hours")+" reward: O"+(tmp.qu.disabledRewards[id]?"FF":"N")
 }
 
-function updateElectrons() {
+function updateElectrons(retroactive) {
 	if (player.masterystudies ? !player.masterystudies.includes("d7") : true) {
 		document.getElementById("electronstabbtn").style.display="none"
 		return
 	} else document.getElementById("electronstabbtn").style.display=""
 	document.getElementById("electronsGainMult").textContent=getELCMult().toFixed(2)
+	if (retroactive) tmp.qu.electrons.amount=getELCMult()*tmp.qu.electrons.sacGals
 	if (!tmp.qu.autoOptions.sacrifice) updateElectronsEffect()
 	for (u=1;u<5;u++) {
 		var cost=getElectronUpgCost(u)
@@ -703,7 +704,7 @@ function buyElectronUpg(u) {
 	else player.timestudy.theorem-=cost
 	tmp.qu.electrons.rebuyables[u-1]++
 	tmp.qu.electrons.mult+=0.25
-	updateElectrons()
+	updateElectrons(!tmp.ngp3l)
 }
 
 //v1.9
@@ -3713,10 +3714,7 @@ function buyNeutrinoUpg(id) {
 		document.getElementById("eggonsCell").style.display="none"
 		document.getElementById("workerReplWhat").textContent="babies"
 	}
-	if (id==5) {
-		document.getElementById("electronsGainMult").textContent=getELCMult().toFixed(2)
-		tmp.qu.electrons.amount*=3
-	}
+	if (id==5) updateElectrons(true)
 }
 
 function updateNeutrinoBoosts() {
