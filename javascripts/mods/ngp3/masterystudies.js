@@ -89,10 +89,10 @@ var masteryStudies = {
 	timeStudies: [],
 	timeStudyDescs: {
 		241: "The IP mult multiplies IP gain by 2.2x per upgrade.",
-		251: "Remote cost scaling starts 1 galaxy later per 3,000 dimension boosts.",
-		252: "Remote cost scaling starts 1 galaxy later per 7 free galaxies.",
+		251: "Remote antimatter galaxies scaling starts 1 galaxy later per 3,000 dimension boosts.",
+		252: "Remote antimatter galaxies scaling starts 1 galaxy later per 7 free galaxies.",
 		253: function() {
-			return "Remote cost scaling starts "+(tmp.ngp3l?"20 galaxies later per 9 extra replicated galaxies.":"3 galaxies later per 8 total replicated galaxies.")
+			return "Remote antimatter galaxies scaling starts "+(tmp.ngp3l?"20 galaxies later per 9 extra replicated galaxies.":"3 galaxies later per 8 total replicated galaxies.")
 		},
 		261: "Dimensional boost costs scale by another 1 less.",
 		262: "Dimensional boosts affect Meta Dimensions at reduced rate.",
