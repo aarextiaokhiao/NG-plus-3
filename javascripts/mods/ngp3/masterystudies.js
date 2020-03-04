@@ -92,7 +92,7 @@ var masteryStudies = {
 		251: "Remote antimatter galaxies scaling starts 1 galaxy later per 3,000 dimension boosts.",
 		252: "Remote antimatter galaxies scaling starts 1 galaxy later per 7 free galaxies.",
 		253: function() {
-			return "Remote antimatter galaxies scaling starts "+(tmp.ngp3l?"20 galaxies later per 9 extra replicated galaxies.":"3 galaxies later per 8 total replicated galaxies.")
+			return "Remote antimatter galaxies scaling starts "+(tmp.ngp3l?"20 galaxies later per 9 extra replicated galaxies.":"1 galaxy later per 4 total replicated galaxies.")
 		},
 		261: "Dimensional boost costs scale by another 1 less.",
 		262: "Dimensional boosts affect Meta Dimensions at reduced rate.",
@@ -566,7 +566,7 @@ function getMTSMult(id, uses = "") {
 	if (id==252) return Math.floor(player.dilation.freeGalaxies/7)
 	if (id==253) {
 		if (tmp.ngp3l) return Math.floor(extraReplGalaxies/9)*20
-		return Math.floor(getTotalRG()/8)*3
+		return Math.floor(getTotalRG()/4)
 	}
 	if (id==262) {
 		if (tmp.ngp3l) return Math.max(player.resets/15e3-19,1)
