@@ -363,6 +363,7 @@ function buyMasteryStudy(type, id, quick=false) {
 			if (id==266&&player.replicanti.gal>399) {
 				var gal=player.replicanti.gal
 				player.replicanti.gal=0
+				player.replicanti.galCost=new Decimal(player.galacticSacrifice!=undefined?1e110:1e170)
 				player.replicanti.galCost=getRGCost(gal)
 				player.replicanti.gal=gal
 			}
