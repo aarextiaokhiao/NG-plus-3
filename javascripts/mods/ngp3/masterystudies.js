@@ -94,9 +94,9 @@ var masteryStudies = {
 		253: function() {
 			return "Remote antimatter galaxies scaling starts "+(tmp.ngp3l?"20 galaxies later per 9 extra replicated galaxies.":"1 galaxy later per 4 total replicated galaxies.")
 		},
-		261: "Dimensional boost costs scale by another 1 less.",
-		262: "Dimensional boosts affect Meta Dimensions at reduced rate.",
-		263: "Meta-dimension boosts affect dilated time production.",
+		261: "Dimension boost costs scale by another 1 less.",
+		262: "Dimension boosts boost Meta Dimensions at reduced rate.",
+		263: "Meta-dimension boosts boost dilated time production.",
 		264: "You gain more tachyon particles based on your galaxies.",
 		265: "You can buy replicate chance upgrades over 100%.",
 		266: "Post-400 max replicated galaxy cost scaling is reduced.",
