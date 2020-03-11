@@ -571,7 +571,7 @@ function getMTSMult(id, uses = "") {
 	}
 	if (id==262) {
 		if (tmp.ngp3l) return Math.max(player.resets/15e3-19,1)
-		return Math.max(player.resets/1e5-4.5,1)
+		return Decimal.pow(Math.max(player.resets/5e4-10,1),Math.sqrt(Math.max(player.resets/1e5-5.5,1)))
 	}
 	if (id==263) {
 		let x=player.meta.resets
