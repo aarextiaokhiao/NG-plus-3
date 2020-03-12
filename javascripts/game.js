@@ -6603,7 +6603,7 @@ var ecExpData = {
 		eterc10: 3000,
 		eterc11: 500,
 		eterc12: 110000,
-		eterc13: 38000000,
+		eterc13: 38500000,
 		eterc14: 1595000,
 		eterc1_ngmm: 2675,
 		eterc2_ngmm: 1125,
@@ -6616,7 +6616,8 @@ var ecExpData = {
 		eterc9_ngmm: 2250,
 		eterc10_ngmm: 2500,
 		eterc11_ngmm: 35000,
-		eterc12_ngmm: 37500
+		eterc12_ngmm: 37500,
+		eterc13_legacy: 38000000,
 	},
 	increases: {
 		eterc1: 200,
@@ -6631,7 +6632,7 @@ var ecExpData = {
 		eterc10: 300,
 		eterc11: 200,
 		eterc12: 12000,
-		eterc13: 1200000,
+		eterc13: 1000000,
 		eterc14: 320000,
 		eterc1_ngmm: 400,
 		eterc2_ngmm: 250,
@@ -6644,13 +6645,14 @@ var ecExpData = {
 		eterc10_ngmm: 250,
 		eterc11_ngmm: 3250,
 		eterc12_ngmm: 7500,
+		eterc13_legacy: 1200000,
 		eterc14_legacy: 250000
 	}
 }
 function getECGoal(x) {
 	let expInit=ecExpData.inits[x]
 	let expIncrease=ecExpData.increases[x]
-	let completions=ECTimesCompleted("eterc"+x)
+	let completions=ECTimesCompleted(x)
 	if (player.galacticSacrifice!=undefined) {
 		expInit=ecExpData.inits[x+"_ngmm"]||expInit
 		expIncrease=ecExpData.increases[x+"_ngmm"]||expIncrease
@@ -6690,7 +6692,14 @@ function getECReward(x) {
 	}
 	if (x==10) return Decimal.pow(getInfinitied(),m2?2:.9).times(c*(m2?0.02:0.000002)).add(1).pow(player.timestudy.studies.includes(31)?4:1)
 	if (x==12) return 1-c*(m2?.06:0.008)
-	if (x==13) return c*0.2
+	if (x==13) {
+		var data={
+			main:[0,0.25,0.5,0.7,0.85,1],
+			legacy:[0,0.2,0.4,0.6,0.8,1]
+		}
+		var dataUsed=data[tmp.ngp3l?"legacy":"main"]
+		return dataUsed[c]
+	}
 	if (x==14) return getIC3EffFromFreeUpgs()
 }
 
