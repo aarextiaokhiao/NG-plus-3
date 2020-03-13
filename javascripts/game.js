@@ -7446,7 +7446,7 @@ setInterval(function() {
             }
         }
     }
-    if (!preQuantumEnd && player.meta !== undefined) preQuantumEnd = player.meta.bestAntimatter.gte(Decimal.pow(Number.MAX_VALUE,tmp.ngp3?1.45:1))&&(!tmp.ngp3||ECTimesCompleted("eterc14"))
+    if (!preQuantumEnd && player.meta !== undefined) preQuantumEnd = isQuantumReached()
     var haveBlock = (player.galacticSacrifice!=undefined&&postBreak)||(player.pSac!=undefined&&player.infinitied>0)||preQuantumEnd
     var haveBlock2 = player.pSac!==undefined&&(ghostified||player.achievements.includes("ng3p51")||canBigRip)
 
@@ -7472,8 +7472,8 @@ setInterval(function() {
 
     var showQuantumBtn = false
     var bigRipped = false
-    if (player.meta !== undefined) if (isQuantumReached()) showQuantumBtn = true
-    if (tmp.ngp3) if (tmp.qu.bigRip.active) bigRipped = true
+    if (player.meta !== undefined && isQuantumReached()) showQuantumBtn = true
+    if (tmp.ngp3 && tmp.qu.bigRip.active) bigRipped = true
     document.getElementById("quantumbtn").className = bigRipped ? "bigripbtn" : "quantumbtn"
     document.getElementById("quantumbtn").style.display = showQuantumBtn || bigRipped ? "" : "none"
     document.getElementById("bigripbtn").style.display = canBigRip ? "" : "none"
@@ -7756,11 +7756,11 @@ setInterval(function() {
         notifyId++
     }
     if (tmp.ngp3) {
-        if (!tmp.qu.reached) if (ECTimesCompleted("eterc14") > 0 && player.meta.antimatter.gte(Decimal.pow(Number.MAX_VALUE, 1.45))) {
+        if (!tmp.qu.reached && isQuantumReached()) {
             tmp.qu.reached = true
             if (document.getElementById("welcome").style.display != "flex") document.getElementById("welcome").style.display = "flex"
             else player.aarexModifications.popUpId = ""
-            document.getElementById("welcomeMessage").innerHTML = "Congratulations! You reached 9.32e446 MA and then completed EC14 for the first time! You unlocked the fifth layer called Quantum! It comes after Dimension Boost, Antimatter Galaxy, Big Crunch, and Eternity. This allows you to get gigantic numbers!"
+            document.getElementById("welcomeMessage").innerHTML = "Congratulations! You reached " + shorten(getQuantumReq()) + " MA and then completed EC14 for the first time! You unlocked the fifth layer called Quantum! It comes after Dimension Boost, Antimatter Galaxy, Big Crunch, and Eternity. This allows you to get gigantic numbers!"
         }
         if (tmp.qu.autoECN!==undefined) {
             justImported=true
