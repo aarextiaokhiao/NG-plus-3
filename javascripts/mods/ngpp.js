@@ -347,7 +347,7 @@ function updateMetaDimensions () {
 		document.getElementById("metaSoftReset").className = 'unavailablebtn'
 	}
 	var bigRipped = player.masterystudies !== undefined ? tmp.qu.bigRip.active : fals
-	var req = Decimal.pow(Number.MAX_VALUE,player.masterystudies?1.45:1)
+	var req = getQuantumReq()
 	var reqGotten = isQuantumReached()
 	var newClassName = reqGotten?(bigRipped&&player.options.theme=="Aarex's Modifications"?"":"storebtn ")+(bigRipped?"aarexmodsghostifybtn":""):'unavailablebtn'
 	var message = 'Lose all your previous progress, but '
@@ -546,8 +546,12 @@ function quantum(auto, force, challid, bigRip = false, quick) {
 	} else quantumReset(force, auto, challid, bigRip)
 }
 
+function getQuantumReq() {
+	return Decimal.pow(Number.MAX_VALUE, tmp.ngp3l ? 1.45 : tmp.ngp3 ? 1.4 : 1)
+}
+
 function isQuantumReached() {
-	return player.money.log10()>=getQCGoal()&&(player.meta.antimatter.max(player.achievements.includes("ng3p76")?player.meta.bestOverQuantums:0).gte(Decimal.pow(Number.MAX_VALUE,player.masterystudies?1.45:1)))&&(!player.masterystudies||ECTimesCompleted("eterc14"))&&quarkGain().gt(0)
+	return player.money.log10()>=getQCGoal()&&(player.meta.antimatter.max(player.achievements.includes("ng3p76")?player.meta.bestOverQuantums:0).gte(getQuantumReq()))&&(!player.masterystudies||ECTimesCompleted("eterc14"))&&quarkGain().gt(0)
 }
 
 let quarkGain = function () {
@@ -624,25 +628,25 @@ function updateLastTenQuantums() {
 
 //v2.9014
 function doQuantumProgress() {
-	var power = player.masterystudies != undefined ? 1.45 : 1
+	var quantumReq = getQuantumReq()
 	var id = 1
-	if (quantumed && power > 1) {
+	if (quantumed && tmp.ngp3) {
 		if (tmp.qu.bigRip.active) {
 			var gg = getGHPGain()
-			if (player.meta.antimatter.lt(Decimal.pow(Number.MAX_VALUE, power))) id = 1
+			if (player.meta.antimatter.lt(quantumReq)) id = 1
 			else if (!tmp.qu.breakEternity.unlocked) id = 4
 			else if (!ghostified || player.money.lt(getQCGoal()) || Decimal.lt(gg, 2)) id = 5
 			else if (player.ghostify.neutrinos.boosts > 8 && hasNU(12) && !player.ghostify.ghostlyPhotons.unl) id = 7
 			else id = 6
 		} else if (inQC(0)) {
 			var gqk = quarkGain()
-			if (player.meta.antimatter.gte(Decimal.pow(Number.MAX_VALUE, power)) && Decimal.gt(gqk, 1)) id = 3
-		} else if (player.money.lt(Decimal.pow(10, getQCGoal())) || player.meta.antimatter.gte(Decimal.pow(Number.MAX_VALUE, power))) id = 2
+			if (player.meta.antimatter.gte(quantumReq) && Decimal.gt(gqk, 1)) id = 3
+		} else if (player.money.lt(Decimal.pow(10, getQCGoal())) || player.meta.antimatter.gte(quantumReq)) id = 2
 	}
 	var className = id > 4 ? "ghostifyProgress" : "quantumProgress"
 	if (document.getElementById("progressbar").className != className) document.getElementById("progressbar").className = className
 	if (id == 1) {
-		var percentage = Math.min(player.meta.antimatter.max(1).log10() / Decimal.log10(Number.MAX_VALUE) / power * 100, 100).toFixed(2) + "%"
+		var percentage = Math.min(player.meta.antimatter.max(1).log10() / quantumReq.log10() * 100, 100).toFixed(2) + "%"
 		document.getElementById("progressbar").style.width = percentage
 		document.getElementById("progresspercent").textContent = percentage
 		document.getElementById("progresspercent").setAttribute('ach-tooltip',(player.masterystudies?"Meta-antimatter p":"P")+'ercentage to quantum')

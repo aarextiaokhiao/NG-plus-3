@@ -1775,6 +1775,7 @@ function getDilTimeGainPerSecond() {
 	if (player.dilation.upgrades.includes('ngud2')) gain = gain.times(Decimal.max(getEternitied(), 1).pow(.1))
 	if (player.dilation.upgrades.includes('ngpp6')) gain = gain.times(getDil17Bonus())
 	if (player.dilation.upgrades.includes('ngusp3')) gain = gain.times(getD22Bonus())
+	if (tmp.ngp3 && !tmp.ngp3l) gain = gain.times(Math.max((player.replicanti.amount.log10()-2e4)/8e3+1,1))
 	if (tmp.ngp3 ? !tmp.qu.bigRip.active || tmp.qu.bigRip.upgrades.includes(11) : false) {
 		if (player.achievements.includes("ng3p11") && !tmp.ngp3l) gain = gain.times(Math.max(player.galaxies / 600 + 0.5, 1))
 		if (player.masterystudies.includes("t263")) gain = gain.times(getMTSMult(263))
@@ -7307,7 +7308,9 @@ function getReplSpeed() {
 	let inc=.2
 	let exp=308
 	if (player.dilation.upgrades.includes('ngpp1') && (!player.aarexModifications.nguspV || player.aarexModifications.nguepV)) {
-		let x=1+player.dilation.dilatedTime.max(1).log(10)/10
+		let expDiv=10
+		if (tmp.ngp3 && !tmp.ngp3l) expDiv=9
+		let x=1+player.dilation.dilatedTime.max(1).log10()/expDiv
 		inc/=Math.min(x,200)
 		if (x>200) exp+=x/10-20
 	}

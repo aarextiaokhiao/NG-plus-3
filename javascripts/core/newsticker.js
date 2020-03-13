@@ -313,7 +313,9 @@ newsArray = [//always true
 ["The next hour is in 5 updates- Wait, it's not supposed to go like that?", true, "am160"],
 ["The invasion of the battle replicants has been postponed indefinitely. Everyone, please remain calm!", "player.masterystudies && player.masterystudies.includes('d12')", "am161"],
 ['"Onion was a mistake." ~ TheTastyPi, 2020', "player.newsArray.includes('am87')", "am162"],
-['"Egg is the new Onion" ~ I\'m sorry, 2020', "player.newsArray.includes('am82')", "am163"]
+['"Egg is the new Onion" ~ I\'m sorry, 2020', "player.newsArray.includes('am82')", "am163"],
+["Anti-Coronavirus has been detected. Surprisingly, it only seems to be making more antimatter.", true, "am164"],
+["Are you getting tired for not being a ghost? Come into the Ghostify machine and see yourself! 308 Antimatter Drive, Dimensionverse", "ghostified", "am165"]
 ];}
 
 document.addEventListener("visibilitychange", function() {if (!document.hidden) {scrollNextMessage();}}, false);
