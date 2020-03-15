@@ -8049,8 +8049,7 @@ function gameLoop(diff) {
     }
     if (tmp.ngp3) {
         var colorShorthands=["r","g","b"]
-        if (player.ghostify.milestones>1) for (var c=0;c<3;c++) tmp.qu.colorPowers[colorShorthands[c]]=tmp.qu.colorPowers[colorShorthands[c]].add(tmp.qu.usedQuarks[colorShorthands[c]].times(diff/10))
-        else tmp.qu.colorPowers[colorCharge.color]=tmp.qu.colorPowers[colorCharge.color].add(colorCharge.charge.times(diff/10))
+        for (var c=0;c<3;c++) tmp.qu.colorPowers[colorShorthands[c]]=tmp.qu.colorPowers[colorShorthands[c]].add(colorCharge[colorShorthands[c]].times(diff/10))
         updateColorPowers()
 
         if (player.ghostify.wzb.unl) {

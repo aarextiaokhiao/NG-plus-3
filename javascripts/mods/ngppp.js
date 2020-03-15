@@ -434,36 +434,36 @@ colorBoosts={
 	b:1
 }
 function updateColorCharge() {
+	if (!tmp.ngp3) return
+
 	var colors=['r','g','b']
-	if (player.masterystudies) {
-		if (player.ghostify.milestones<2) {
-			var sorted=[]
-			for (s=1;s<4;s++) {
-				var search=''
-				for (i=0;i<3;i++) if (!sorted.includes(colors[i])&&(search==''||tmp.qu.usedQuarks[colors[i]].gte(tmp.qu.usedQuarks[search]))) search=colors[i]
-				sorted.push(search)
-			}
-			colorCharge={color:sorted[0],charge:Decimal.sub(tmp.qu.usedQuarks[sorted[0]]).sub(tmp.qu.usedQuarks[sorted[1]])}
-			if (tmp.qu.usedQuarks[sorted[0]].gt(0)&&colorCharge.charge.eq(0)) giveAchievement("Hadronization")
-		} else colorCharge={color:'r',charge:new Decimal(0)}
-	} else {
-		colorCharge={color:'r',charge:new Decimal(0)}
-		return
+	var normalColorCharge={}
+	var quantumWorthBonus=quantumWorth.pow(.8).div(100)
+
+	for (var i=0;i<3;i++) {
+		var ret=new Decimal(0)
+		if (player.ghostify.milestones>=2) ret=tmp.qu.usedQuarks[colors[i]]
+		if (!tmp.ngp3l) ret=ret.add(quantumWorthBonus)
+		colorCharge[colors[i]]=quantumWorthBonus
 	}
-	if (player.ghostify.milestones<2) {
-		document.getElementById("powerRate").textContent=shortenDimensions(colorCharge.charge)
-		if (colorCharge.charge.eq(0)) {
-			document.getElementById("colorCharge").innerHTML='neutral charge'
-			document.getElementById("powerRate").className=''
-			document.getElementById("colorPower").textContent=''
-		} else {
-			var color=colorShorthands[colorCharge.color]
-			document.getElementById("colorCharge").innerHTML='<span class="'+color+'">'+color+'</span> charge of <span class="'+color+'" style="font-size:35px">' + shortenDimensions(colorCharge.charge) + "</span>"
-			document.getElementById("powerRate").className=color
-			document.getElementById("colorPower").textContent=color+' power'
-			document.getElementById("powerRate").parentElement.className=colorCharge.color+"qC"
-		}
-	} else for (c=0;c<3;c++) document.getElementById(colors[c]+"PowerRate").textContent=shortenDimensions(tmp.qu.usedQuarks[colors[c]])
+	var sorted=[]
+	for (var s=1;s<4;s++) {
+		var search=''
+		for (var i=0;i<3;i++) if (!sorted.includes(colors[i])&&(search==''||tmp.qu.usedQuarks[colors[i]].gte(tmp.qu.usedQuarks[search]))) search=colors[i]
+		sorted.push(search)
+	}
+
+	normalColorCharge={color:sorted[0],charge:Decimal.sub(tmp.qu.usedQuarks[sorted[0]]).sub(tmp.qu.usedQuarks[sorted[1]])}
+	if (player.ghostify.milestones<2) colorCharge[sorted[0]]=colorCharge[sorted[0]].add(normalColorCharge.charge)
+	if (tmp.qu.usedQuarks[sorted[0]].gt(0)&&normalColorCharge.charge.eq(0)) giveAchievement("Hadronization")
+
+	if (normalColorCharge.charge.eq(0)) document.getElementById("colorCharge").innerHTML='neutral charge'
+	else {
+		var color=colorShorthands[normalColorCharge.color]
+		document.getElementById("colorCharge").innerHTML='<span class="'+color+'">'+color+'</span> charge of <span class="'+color+'" style="font-size:35px">' + shortenDimensions(normalColorCharge.charge) + "</span>"
+	}
+	for (c=0;c<3;c++) document.getElementById(colors[c]+"PowerRate").textContent=shortenDimensions(colorCharge[colors[c]])
+
 	document.getElementById("redQuarks").textContent=shortenDimensions(tmp.qu.usedQuarks.r)
 	document.getElementById("greenQuarks").textContent=shortenDimensions(tmp.qu.usedQuarks.g)
 	document.getElementById("blueQuarks").textContent=shortenDimensions(tmp.qu.usedQuarks.b)
@@ -2738,10 +2738,7 @@ function ghostifyReset(implode, gain, amount, force) {
 		player.ghostify.last10[0] = [player.ghostify.time, gain]
 		player.ghostify.times = nA(player.ghostify.times, bulk)
 		player.ghostify.best = Math.min(player.ghostify.best, player.ghostify.time)
-		while (tmp.qu.times<=tmp.bm[player.ghostify.milestones]) {
-			player.ghostify.milestones++
-			if (player.ghostify.milestones==2) updateColoredQuarksProduction()
-		}
+		while (tmp.qu.times<=tmp.bm[player.ghostify.milestones]) player.ghostify.milestones++
 	}
 	if (tmp.qu.bigRip.active) switchAB()
 	var bm = player.ghostify.milestones
@@ -4028,12 +4025,6 @@ function getQuarkAssignMult() {
 	let r=new Decimal(1)
 	if (hasBosonicUpg(23)) r=r.times(tmp.blu[23])
 	return r
-}
-
-function updateColoredQuarksProduction() {
-	document.getElementById('coloredQuarksProduction').innerHTML = player.ghostify.milestones > 1 ?
-		"You are getting <span id='rPowerRate' style='font-size:35px' class='red'></span> red power, <span id='gPowerRate' style='font-size:35px' class='green'></span> green power, and <span id='bPowerRate' style='font-size:35px' class='blue'></span> blue power per second." :
-		"Your quarks have a net <span id='colorCharge'></span>, which produces <span id='powerRate' style='font-size:35px'></span> <span id='colorPower'></span> per second."
 }
 
 function showQCModifierStats(id) {

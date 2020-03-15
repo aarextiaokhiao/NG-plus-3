@@ -4576,7 +4576,8 @@
 					G: <input id="ratio_g" type="number" min=0 onchange="changeRatio('g')"></input>
 					B: <input id="ratio_b" type="number" min=0 onchange="changeRatio('b')"></input>
 				</div>
-				<p id="coloredQuarksProduction"></p>
+				Your quarks have a net <span id='colorCharge'></span>.<br>
+				You are getting <span id='rPowerRate' style='font-size:35px' class='red'></span> red power, <span id='gPowerRate' style='font-size:35px' class='green'></span> green power, and <span id='bPowerRate' style='font-size:35px' class='blue'></span> blue power per second.
 				<table class='qtable'><tr>
 					<td class="rqC">
 						<p>You have <span class="red" id="redPower" style="font-size:35px">0.0</span> red power.<br>
@@ -5009,7 +5010,7 @@
 				</table>
 			</div>
 			<div id="bravemilestones" class="ghostifytab">
-				<div>Get # of quantumed stat below the requirement and then become a ghost for a reward!</div>
+				<div>Get # of quantumed stat at or below the requirement and then become a ghost for a reward!</div>
 				<table style="margin: auto">
 					<tr id="braveRow1">
 						<td><div id="braveMilestone1" class="achievement achievementlocked"></div></td>
