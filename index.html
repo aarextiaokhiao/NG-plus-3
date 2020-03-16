@@ -4589,32 +4589,32 @@
 					</td>
 					<td class="bqC">
 						<p>You have <span class="blue" id="bluePower" style="font-size:35px">0.0</span> blue power.<br>
-						Translated to <span class="blue" id="blueTranslation" style="font-size:35px">1.0</span>x dilated time production<span id="bluePowerMDEffect"> and <span class="blue" id="blueTranslationMD" style="font-size:35px">1.0</span>x production from all Meta Dimensions</span>.</span>
+						Translated to <span class="blue" id="blueTranslation" style="font-size:35px">1.0</span>x faster dilated time production<span id="bluePowerMDEffect"> and <span class="blue" id="blueTranslationMD" style="font-size:35px">1.0</span>x production from all Meta Dimensions</span>.</span>
 					</td>
 				</tr></table>
 			</div>
 			<div class='quantumtab' id='gluons'>
 				<div>Your quantum worth is currently <b class="QKAmount" id="quantumWorth2">0</b>.</div>
 				<table id='gluonupgrades'><tr>
-					<td class="rqC" colspan=2><p>You have <span id="rg" style="font-size:35px">0</span> red-green gluons.<br>+<span id='rggain'>0</span> on next quantum from red quarks.<br><span id='rgnext'>0</span> red quarks on next quantum.</p></td>
-					<td class="gqC" colspan=2><p>You have <span id="gb" style="font-size:35px">0</span> green-blue gluons.<br>+<span id='gbgain'>0</span> on next quantum from green quarks.<br><span id='gbnext'>0</span> green quarks on next quantum.</p></td>
-					<td class="bqC" colspan=2><p>You have <span id="br" style="font-size:35px">0</span> blue-red gluons.<br>+<span id='brgain'>0</span> on next quantum from blue quarks.<br><span id='brnext'>0</span> blue quarks on next quantum.</p></td>
+					<td class="rqC" colspan=2><p>You have <span id="rg" style="font-size:35px">0</span> red-green gluons.<br>You will gain <span id='rggain'>0</span> on next quantum,<br>but reduce your red quarks to <span id='rgnext'>0</span>.</p></td>
+					<td class="gqC" colspan=2><p>You have <span id="gb" style="font-size:35px">0</span> green-blue gluons.<br>You will gain <span id='gbgain'>0</span> on next quantum,<br>but reduce your green quarks to <span id='gbnext'>0</span>.</p></td>
+					<td class="bqC" colspan=2><p>You have <span id="br" style="font-size:35px">0</span> blue-red gluons.<br>You will gain <span id='brgain'>0</span> on next quantum,<br>but reduce your  blue quarks to <span id='brnext'>0</span>.</p></td>
 				</tr><tr>
-					<td><button id='rgupg1' onclick='buyGluonUpg("rg",1)'>Remote galaxy cost scaling is reduced.<br>Cost: 1 RG gluons</button></td>
+					<td><button id='rgupg1' onclick='buyGluonUpg("rg",1)'>Remote antimatter galaxy cost scaling is approximately 2x slower.<br>Cost: 1 RG gluons</button></td>
 					<td><button id='rgupg2' onclick='buyGluonUpg("rg",2)'>Galaxies are more effective based on your free galaxies.<br><span id='rgupg2current'></span><br>Cost: 2 RG gluons</button></td>
 					<td><button id='gbupg1' onclick='buyGluonUpg("gb",1)' style='font-size:8.5px'>You gain replicanti faster based on your tickspeed reduction multiplier.<br><span id='gbupg1current'></span><br>Cost: 1 GB gluons</button></td>
 					<td><button id='gbupg2' onclick='buyGluonUpg("gb",2)'>Replicate interval scaling is 2x slower.<br>Cost: 2 GB gluons</button></td>
 					<td><button id='brupg1' onclick='buyGluonUpg("br",1)'>You gain more tachyon particles based on your dilated time.<br><span id='brupg1current'></span><br>Cost: 1 BR gluons</button></td>
-					<td><button id='brupg2' onclick='buyGluonUpg("br",2)'>Sacrifice affects dilated time production.<br><span id='brupg2current'></span><br><span id='brupg1current'></span>Cost: 2 BR gluons</button></td>
+					<td><button id='brupg2' onclick='buyGluonUpg("br",2)'>Sacrifice boosts dilated time production.<br><span id='brupg2current'></span><br><span id='brupg1current'></span>Cost: 2 BR gluons</button></td>
 				</tr><tr>
-					<td><button id='rgupg3' onclick='buyGluonUpg("rg",3)'>First Meta Dimension is boosted by dimension boosts.<br>Cost: 4 RG gluons</button></td>
+					<td><button id='rgupg3' onclick='buyGluonUpg("rg",3)'>Dimension boosts boost first Meta Dimension.<br>Cost: 4 RG gluons</button></td>
 					<td>
 						<button id='rgupg4' onclick='buyGluonUpg("rg",4)'>Galaxies are 50% stronger, but electrons are 30% weaker and normal galaxies are 60% weaker.<br>Cost: 100 RG gluons</button><br>
 						<button class="storebtn" id='rg4toggle' onclick='toggleRG4Upg()' style='width:142.5px; height:15px; font-size:9px'>Toggle: ON</button>
 					</td>
 					<td><button id='gbupg3' onclick='buyGluonUpg("gb",3)'>The IP mult multiplies IP gain by 2.3x per upgrade.<br>Cost: 4 GB gluons</button></td>
 					<td><button id='gbupg4' onclick='buyGluonUpg("gb",4)'>Massively decrease the tickspeed cost multiplier increase to 1.25x.<br>Cost: 100 GB gluons</button></td>
-					<td><button id='brupg3' onclick='buyGluonUpg("br",3)'>Tachyon particles boost the dilated time production by a little bit more.<br>Cost: 4 BR gluons</button></td>
+					<td><button id='brupg3' onclick='buyGluonUpg("br",3)'>Tachyon particles boosts dilated time production a little more.<br>Cost: 4 BR gluons</button></td>
 					<td><button id='brupg4' onclick='buyGluonUpg("br",4)'>Multiplier per ten dimensions boosts Meta Dimensions.<br><span id='brupg4current'></span><br>Cost: 100 BR gluons</button></td>
 				</tr><tr id='gupgrow3'>
 					<td><button id='rgupg5' onclick='buyGluonUpg("rg",5)'>Slow down Dark Matter Galaxies effect by 13%.<br>Cost: <span id='rgupg5cost'></span> RG gluons</button></td>
