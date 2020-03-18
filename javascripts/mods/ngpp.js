@@ -710,7 +710,7 @@ function quantumReset(force, auto, challid, bigRip, implode=false) {
 		showDimTab("antimatterdimensions")
 		showChallengesTab("challenges")
 		showInfTab("preinf")
-		showEternityTab("timestudies", document.getElementById("eternitystore").style.display != "block" && document.getElementById("timestudies").style.display != "block")
+		showEternityTab("timestudies", true)
 	}
 	if (!quantumed) {
 		quantumed=true
@@ -721,7 +721,6 @@ function quantumReset(force, auto, challid, bigRip, implode=false) {
 		if (tmp.ngp3) {
 			document.getElementById("bestAntimatterType").textContent = "Your best meta-antimatter for this quantum"
 			document.getElementById("quarksAnimBtn").style.display="inline-block"
-			document.getElementById("quantumstudies").style.display=""
 		}
 		if (isEmptiness) {
 			showTab("dimensions")
