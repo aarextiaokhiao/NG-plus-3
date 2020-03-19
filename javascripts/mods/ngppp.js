@@ -490,7 +490,7 @@ function updateColorCharge() {
 }
 
 function assignQuark(color) {
-	if (color!="r"&&tmp.qu.times<2&&!ghostified) if (!confirm("It is recommended to assign your first quarks to red. Are you sure you want to do that?")) return
+	if (tmp.ngp3l&&color!="r"&&tmp.qu.times<2&&!ghostified) if (!confirm("It is recommended to assign your first quarks to red. Are you sure you want to do that?")) return
 	var usedQuarks=tmp.qu.quarks.floor().min(tmp.qu.quarks)
 	var mult=getQuarkAssignMult()
 	tmp.qu.usedQuarks[color]=tmp.qu.usedQuarks[color].add(usedQuarks.times(mult)).round()
