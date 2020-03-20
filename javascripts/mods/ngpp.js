@@ -43,7 +43,7 @@ function getMetaDimensionGlobalMultiplier() {
 		if (player.masterystudies.includes("t393")) ret = ret.times(getMTSMult(393))
 		ret = ret.times(getQCReward(3))
 		ret = ret.times(getQCReward(6))
-		if (player.achievements.includes("ng3p13") && !tmp.ngp3l) ret = ret.times(Decimal.pow(5, Math.pow(Decimal.plus(quantumWorth, 1).log10(), 0.75)))
+		if (player.achievements.includes("ng3p13") && !tmp.ngp3l) ret = ret.times(Decimal.pow(3, Math.pow(Decimal.plus(quantumWorth, 1).log10(), 0.75)))
 	}
 	if (GUBought("br4")) ret = ret.times(Decimal.pow(getDimensionPowerMultiplier(hasNU(13) && "no-rg4"), 0.0003).max(1))
 	
@@ -559,11 +559,14 @@ let quarkGain = function () {
 	if (tmp.ngp3) {
 		if (!tmp.qu.times&&!player.ghostify.milestones) return new Decimal(1)
 		if (player.ghostify.milestones) ma = player.meta.bestAntimatter.max(1)
+
 		let log = (ma.log10() - 379.4) / (player.achievements.includes("ng3p63") ? 279.8 : 280)
-		if (tmp.ngp3l) {
-			if (log > 1.2) log = log * log / 1.2
-			if (log > 738 && !hasNU(8)) log = Math.sqrt(log * 738)
-		} else log += Math.pow(Math.max(player.eternityPoints.log10()/1e6-1,0),.7)
+		let logBoost = tmp.ngp3l ? 1.2 : 2
+		let logBoostExp = tmp.ngp3l ? 2 : 1.5
+		if (log > logBoost) log = Math.pow(log / logBoost, logBoostExp) * logBoost
+		if (log > 738 && !hasNU(8)) log = Math.sqrt(log * 738)
+		if (!tmp.ngp3l) log += Math.pow(Math.max(player.eternityPoints.log10()/1e6-1,0),.7)
+
 		let dlog = Math.log10(log)
 		let start = 4 //Starts at e10k.
 		if (player.aarexModifications.ngumuV) start++ //Starts at e100k.
