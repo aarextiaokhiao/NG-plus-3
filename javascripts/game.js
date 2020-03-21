@@ -3127,8 +3127,20 @@ function updateExtraReplGalaxies() {
 	extraReplGalaxies = ts225Eff + ts226Eff
 	if (extraReplGalaxies > 325) extraReplGalaxies = (Math.sqrt(0.9216+0.16*(extraReplGalaxies-324))-0.96)/0.08+324
 	if (tmp.ngp3) {
-		tmp.pe=Math.pow(tmp.qu.replicants.quarks.add(1).log10(),player.masterystudies.includes("t362")?0.35:0.25)*0.67*(player.masterystudies.includes("t412")?1.25:1)*(player.ghostify.ghostlyPhotons.unl?tmp.le[3]:1)
-		extraReplGalaxies *= colorBoosts.g + tmp.pe
+		let expData={
+			normal: 1/3,
+			ts362: 0.4,
+			legacy: 0.25,
+			ts362legacy: 0.35
+		}
+		let expVarName=(player.masterystudies.includes("t362")?"ts362":"")+(tmp.ngp3l?"legacy":"")
+		if (expVarName=="") expVarName="normal"
+
+		tmp.pe=Math.pow(tmp.qu.replicants.quarks.add(1).log10(),expData[expVarName])
+		if (tmp.ngp3l) tmp.pe*=0.67
+		if (player.masterystudies.includes("t412")) tmp.pe*=1.25
+		if (player.ghostify.ghostlyPhotons.unl) tmp.pe*=tmp.le[3]
+		extraReplGalaxies*=colorBoosts.g+tmp.pe
 	}
 	extraReplGalaxies = Math.floor(extraReplGalaxies)
 }
