@@ -3933,7 +3933,7 @@ function updateColorPowers() {
 	if (tmp.ngp3l) {
 		colorBoosts.g=Math.sqrt(getCPLog('g')*2+1)
 		if (colorBoosts.g>4.5) colorBoosts.g=Math.sqrt(colorBoosts.g*4.5)
-	} else colorBoosts.g=Math.pow(getCPLog('g'),1/3)*2+1
+	} else colorBoosts.g=Math.pow(getCPLog('g')+1,1/3)*2-1
 	let m=1
 	if (player.aarexModifications.ngumuV&&player.masterystudies.includes("t362")) {
 		m+=tmp.qu.replicants.quarks.add(1).log10()/10
@@ -3943,16 +3943,20 @@ function updateColorPowers() {
 	colorBoosts.g=(colorBoosts.g-1)*m+1
 
 	//Blue
-	let l=Math.sqrt(getCPLog('b'))
-	if (l>Math.log10(1300)) {
-		let softcapPower=1
-		if (player.ghostify.ghostlyPhotons.unl) softcapPower+=tmp.le[4]
-		if (hasBosonicUpg(11)) softcapPower+=tmp.blu[11]
-		l=Decimal.pow(l/Math.log10(1300),softcapPower/2).times(Math.log10(1300))
-		if (l.lt(100)) l=l.toNumber()
-		else l=Math.min(l.toNumber(),l.log10()*(40+10*l.sub(90).log10()))
+	let log=getCPLog('b')
+	if (tmp.ngp3l) log=Math.sqrt(l)
+	else log=Math.sqrt(log+1)-1
+
+	let softcapStartLog=tmp.ngp3l?Math.log10(1300):3
+	let softcapPower=1
+	if (player.ghostify.ghostlyPhotons.unl) softcapPower+=tmp.le[4]
+	if (hasBosonicUpg(11)) softcapPower+=tmp.blu[11]
+	if (log>softcapStartLog) {
+		log=Decimal.pow(log/softcapStartLog,softcapPower/2).times(softcapStartLog)
+		if (log.lt(100)) log=log.toNumber()
+		else log=Math.min(log.toNumber(),log.log10()*(40+10*log.sub(90).log10()))
 	}
-	colorBoosts.b=Decimal.pow(10,l)
+	colorBoosts.b=Decimal.pow(10,log)
 }
 
 function getBU1Power(branch) {

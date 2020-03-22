@@ -3137,7 +3137,7 @@ function updateExtraReplGalaxies() {
 		if (expVarName=="") expVarName="normal"
 
 		tmp.pe=Math.pow(tmp.qu.replicants.quarks.add(1).log10(),expData[expVarName])
-		if (tmp.ngp3l) tmp.pe*=0.67
+		tmp.pe*=tmp.ngp3l?0.67:0.8
 		if (player.masterystudies.includes("t412")) tmp.pe*=1.25
 		if (player.ghostify.ghostlyPhotons.unl) tmp.pe*=tmp.le[3]
 		extraReplGalaxies*=colorBoosts.g+tmp.pe
