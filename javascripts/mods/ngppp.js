@@ -308,7 +308,7 @@ function updateQuantumTabs() {
 		document.getElementById("gatheredQuarks").textContent=shortenDimensions(tmp.qu.replicants.quarks.floor())
 		document.getElementById("quarkTranslation").textContent=getFullExpansion(Math.round(tmp.pe*100))
 
-		var eggonRate = tmp.twr.times(getEDMultiplier(1)).times(3)
+		var eggonRate = tmp.twr.times(getEmperorDimensionMultiplier(1)).times(3)
 		if (eggonRate.lt(30)) {
 			document.getElementById("eggonRate").textContent=shortenDimensions(eggonRate)
 			document.getElementById("eggonRateTimeframe").textContent="minute"
@@ -1365,8 +1365,8 @@ function updateEmperorDimensions() {
 	document.getElementById("brEDs").textContent=shortenDimensions(tmp.qu.gluons.br)
 	document.getElementById("replicantAmountED").textContent=shortenDimensions(tmp.qu.replicants.amount)
 	for (d=1;d<9;d++) {
-		document.getElementById("empD"+d).textContent = DISPLAY_NAMES[d] + " Emperor Dimension x" + formatValue(player.options.notation, getEDMultiplier(d), 2, 1)
-		document.getElementById("empAmount"+d).textContent = d<8?shortenDimensions(tmp.eds[d].workers)+" (+"+shorten(getEDRateOfChange(d))+dimDescEnd:getFullExpansion(tmp.eds[8].perm)
+		document.getElementById("empD"+d).textContent = DISPLAY_NAMES[d] + " Emperor Dimension x" + formatValue(player.options.notation, getEmperorDimensionMultiplier(d), 2, 1)
+		document.getElementById("empAmount"+d).textContent = d<8?shortenDimensions(tmp.eds[d].workers)+" (+"+shorten(getEmperorDimensionRateOfChange(d))+dimDescEnd:getFullExpansion(tmp.eds[8].perm)
 		document.getElementById("empQuarks"+d).textContent = shorten(production.workers[d])
 		document.getElementById("empFeed"+d).className=(canFeedReplicant(d)?"stor":"unavailabl")+"ebtn"
 		document.getElementById("empFeed"+d).textContent="Feed ("+Math.round(tmp.eds[d].progress.toNumber()*100)+"%, "+getFullExpansion(tmp.eds[d].perm)+" kept)"
@@ -1375,30 +1375,6 @@ function updateEmperorDimensions() {
 	document.getElementById("totalWorkers").textContent = shortenDimensions(tmp.twr)
 	document.getElementById("totalQuarkProduction").textContent = shorten(production.workersTotal)
 	if (player.ghostify.milestones>7) updateReplicants("display")
-}
-
-function getEDMultiplier(dim) {
-	let ret = new Decimal(1)
-	if (player.currentEternityChall === "eterc11") return ret
-	if (player.masterystudies.includes("t392")) ret = getMTSMult(392)
-	if (player.masterystudies.includes("t402")) ret = ret.times(30)
-	if (player.masterystudies.includes("d13")) ret = ret.times(getTreeUpgradeEffect(6))
-	if (hasNU(7)&&dim%2) ret = ret.times(tmp.nu[3])
-	if (player.achievements.includes("ng3p91")) ret = ret.times(player.achPow)
-	return dilates(ret, 1)
-}
-
-function getEDRateOfChange(dim) {
-	if (!canFeedReplicant(dim, true)) return 0
-	let toGain = getEDMultiplier(dim+1).times(tmp.eds[dim+1].workers).div(20)
-
-	var current = tmp.eds[dim].workers.add(tmp.eds[dim].progress).max(1)
-	if (player.aarexModifications.logRateChange) {
-		var change = current.add(toGain).log10()-current.log10()
-		if (change<0||isNaN(change)) change = 0
-	} else var change = toGain.times(10).dividedBy(current)
-
-	return change
 }
 
 //v1.9995

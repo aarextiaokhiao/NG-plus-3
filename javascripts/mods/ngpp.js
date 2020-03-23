@@ -22,7 +22,7 @@ function getMetaDimensionMultiplier(tier) {
 	if (player.currentEternityChall === "eterc11") return new Decimal(1)
 	let ret = Decimal.pow(getPerTenMetaPower(), Math.floor(player.meta[tier].bought / 10))
 	ret = ret.times(Decimal.pow(getMetaBoostPower(), Math.max(player.meta.resets + 1 - tier, 0)))
-	ret = ret.times(tmp.mdgm)
+	ret = ret.times(tmp.mdgm) //Global multiplier of all Meta Dimensions
 	if (GUBought("rg3")&&tier<2) ret = ret.times(player.resets)
 	if (tier%2>0) ret = ret.times(QC4Reward)
 	return dilates(ret.max(1), "meta")

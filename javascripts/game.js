@@ -1190,6 +1190,7 @@ function updateTemp() {
 			if (!player.dilation.active&&tmp.qu.bigRip.upgrades.includes(14)) tmp.nrm=tmp.nrm.pow(tmp.bru[2])
 			if (tmp.nrm.gt("1e1000000000")) tmp.nrm=Decimal.pow(10,Math.pow(tmp.nrm.log10()*3e4,2/3))
 		}
+		if (player.masterystudies.includes("d10")) tmp.edgm = getEmperorDimensionGlobalMultiplier() //Update global multiplier of all Emperor Dimensions
 		tmp.be=tmp.qu.bigRip.active&&tmp.qu.breakEternity.break
 		tmp.twr=getTotalWorkers()
 		tmp.tra=getTotalReplicants()
@@ -1197,7 +1198,7 @@ function updateTemp() {
 		tmp.tue=getTreeUpgradeEfficiency()
 		tmp.mpte=getMPTExp()
 	} else tmp.be=false
-	if (player.meta !== undefined) tmp.mdgm = getMetaDimensionGlobalMultiplier()
+	if (player.meta !== undefined) tmp.mdgm = getMetaDimensionGlobalMultiplier() //Update global multiplier of all Meta Dimensions
 	tmp.mptb=getMPTBase()
 	var x=(3-player.tickspeed.log10())*0.000005
 	if (ghostified&&player.ghostify.neutrinos.boosts>3) x*=tmp.nb[3]
@@ -8136,65 +8137,66 @@ function gameLoop(diff) {
             branch.spin=branch.spin.add(sProd.times(decayed))
         }
 
-        if (!tmp.qu.nanofield.producingCharge) {
-            var rate = getGatherRate().total
-            if (rate.gt(0)) tmp.qu.replicants.quarks = tmp.qu.replicants.quarks.add(rate.times(diff/10))
-        }
+		if (player.masterystudies.includes("d11")) {
+			for (dim=8;dim>1;dim--) {
+				var promote = hasNU(2) ? 1/0 : getWorkerAmount(dim-2)
+				if (canFeedReplicant(dim-1,true)) {
+				   if (dim>2) promote = tmp.eds[dim-2].workers.sub(10).round().min(promote)
+				   tmp.eds[dim-1].progress = tmp.eds[dim-1].progress.add(tmp.eds[dim].workers.times(getEmperorDimensionMultiplier(dim)).times(diff/200)).min(promote)
+				   var toAdd = tmp.eds[dim-1].progress.floor()
+				   if (toAdd.gt(0)) {
+					   if (!hasNU(2)) {
+						   if (dim>2 && toAdd.gt(getWorkerAmount(dim-2))) tmp.eds[dim-2].workers = new Decimal(0)
+						   else if (dim>2) tmp.eds[dim-2].workers = tmp.eds[dim-2].workers.sub(toAdd).round()
+						   else if (toAdd.gt(tmp.qu.replicants.amount)) tmp.qu.replicants.amount = new Decimal(0)
+						   else tmp.qu.replicants.amount = tmp.qu.replicants.amount.sub(toAdd).round()
+					   }
+					   if (toAdd.gt(tmp.eds[dim-1].progress)) tmp.eds[dim-1].progress = new Decimal(0)
+					   else tmp.eds[dim-1].progress = tmp.eds[dim-1].progress.sub(toAdd)
+					   tmp.eds[dim-1].workers = tmp.eds[dim-1].workers.add(toAdd).round()
+				   }
+				}
+				if (!canFeedReplicant(dim-1,true)) tmp.eds[dim-1].progress = new Decimal(0)
+			}
+		}
 
-        for (dim=8;dim>1;dim--) {
-            var promote = hasNU(2) ? 1/0 : getWorkerAmount(dim-2)
-            if (canFeedReplicant(dim-1,true)) {
-               if (dim>2) promote = tmp.eds[dim-2].workers.sub(10).round().min(promote)
-               tmp.eds[dim-1].progress = tmp.eds[dim-1].progress.add(tmp.eds[dim].workers.times(getEDMultiplier(dim)).times(diff/200)).min(promote)
-               var toAdd = tmp.eds[dim-1].progress.floor()
-               if (toAdd.gt(0)) {
-                   if (!hasNU(2)) {
-                       if (dim>2 && toAdd.gt(getWorkerAmount(dim-2))) tmp.eds[dim-2].workers = new Decimal(0)
-                       else if (dim>2) tmp.eds[dim-2].workers = tmp.eds[dim-2].workers.sub(toAdd).round()
-                       else if (toAdd.gt(tmp.qu.replicants.amount)) tmp.qu.replicants.amount = new Decimal(0)
-                       else tmp.qu.replicants.amount = tmp.qu.replicants.amount.sub(toAdd).round()
-                   }
-                   if (toAdd.gt(tmp.eds[dim-1].progress)) tmp.eds[dim-1].progress = new Decimal(0)
-                   else tmp.eds[dim-1].progress = tmp.eds[dim-1].progress.sub(toAdd)
-                   tmp.eds[dim-1].workers = tmp.eds[dim-1].workers.add(toAdd).round()
-               }
-            }
-            if (!canFeedReplicant(dim-1,true)) tmp.eds[dim-1].progress = new Decimal(0)
-        }
+		if (player.masterystudies.includes("d10")) {
+			tmp.qu.replicants.eggonProgress = tmp.qu.replicants.eggonProgress.add(tmp.twr.times(getEmperorDimensionMultiplier(1)).times(diff/200))
+			var toAdd = tmp.qu.replicants.eggonProgress.floor()
+			if (toAdd.gt(0)) {
+				if (toAdd.gt(tmp.qu.replicants.eggonProgress)) tmp.qu.replicants.eggonProgress = new Decimal(0)
+				else tmp.qu.replicants.eggonProgress = tmp.qu.replicants.eggonProgress.sub(toAdd)
+				tmp.qu.replicants.eggons = tmp.qu.replicants.eggons.add(toAdd).round()
+			}
 
-        tmp.qu.replicants.eggonProgress = tmp.qu.replicants.eggonProgress.add(tmp.twr.times(getEDMultiplier(1)).times(diff/200))
-        var toAdd = tmp.qu.replicants.eggonProgress.floor()
-        if (toAdd.gt(0)) {
-            if (toAdd.gt(tmp.qu.replicants.eggonProgress)) tmp.qu.replicants.eggonProgress = new Decimal(0)
-            else tmp.qu.replicants.eggonProgress = tmp.qu.replicants.eggonProgress.sub(toAdd)
-            tmp.qu.replicants.eggons = tmp.qu.replicants.eggons.add(toAdd).round()
-        }
+			if (tmp.qu.replicants.eggons.gt(0)) {
+				tmp.qu.replicants.babyProgress = tmp.qu.replicants.babyProgress.add(diff/getHatchSpeed()/10)
+				var toAdd = hasNU(2) ? tmp.qu.replicants.eggons : tmp.qu.replicants.babyProgress.floor().min(tmp.qu.replicants.eggons)
+				if (toAdd.gt(0)) {
+					if (toAdd.gt(tmp.qu.replicants.eggons)) tmp.qu.replicants.eggons = new Decimal(0)
+					else tmp.qu.replicants.eggons = tmp.qu.replicants.eggons.sub(toAdd).round()
+					if (toAdd.gt(tmp.qu.replicants.babyProgress)) tmp.qu.replicants.babyProgress = new Decimal(0)
+					else tmp.qu.replicants.babyProgress = tmp.qu.replicants.babyProgress.sub(toAdd)
+					tmp.qu.replicants.babies = tmp.qu.replicants.babies.add(toAdd).round()
+				}
+			}
+			if (tmp.qu.replicants.eggons.lt(1)) tmp.qu.replicants.babyProgress = new Decimal(0)
 
-        if (tmp.qu.replicants.eggons.gt(0)) {
-            tmp.qu.replicants.babyProgress = tmp.qu.replicants.babyProgress.add(diff/getHatchSpeed()/10)
-            var toAdd = hasNU(2) ? tmp.qu.replicants.eggons : tmp.qu.replicants.babyProgress.floor().min(tmp.qu.replicants.eggons)
-            if (toAdd.gt(0)) {
-                if (toAdd.gt(tmp.qu.replicants.eggons)) tmp.qu.replicants.eggons = new Decimal(0)
-                else tmp.qu.replicants.eggons = tmp.qu.replicants.eggons.sub(toAdd).round()
-                if (toAdd.gt(tmp.qu.replicants.babyProgress)) tmp.qu.replicants.babyProgress = new Decimal(0)
-                else tmp.qu.replicants.babyProgress = tmp.qu.replicants.babyProgress.sub(toAdd)
-                tmp.qu.replicants.babies = tmp.qu.replicants.babies.add(toAdd).round()
-            }
-        }
-        if (tmp.qu.replicants.eggons.lt(1)) tmp.qu.replicants.babyProgress = new Decimal(0)
+			if (tmp.qu.replicants.babies.gt(0)&&tmp.tra.gt(0)) {
+				tmp.qu.replicants.ageProgress = tmp.qu.replicants.ageProgress.add(tmp.tra.times(diff/(player.achievements.includes("ng3p35")?400:4e3))).min(tmp.qu.replicants.babies)
+				var toAdd = tmp.qu.replicants.ageProgress.floor()
+				if (toAdd.gt(0)) {
+					if (toAdd.gt(tmp.qu.replicants.babies)) tmp.qu.replicants.babies = new Decimal(0)
+					else tmp.qu.replicants.babies = tmp.qu.replicants.babies.sub(toAdd).round()
+					if (toAdd.gt(tmp.qu.replicants.ageProgress)) tmp.qu.replicants.ageProgress = new Decimal(0)
+					else tmp.qu.replicants.ageProgress = tmp.qu.replicants.ageProgress.sub(toAdd)
+					tmp.qu.replicants.amount = tmp.qu.replicants.amount.add(toAdd).round()
+				}
+			}
+			if (tmp.qu.replicants.babies.lt(1)) tmp.qu.replicants.ageProgress = new Decimal(0)
 
-        if (tmp.qu.replicants.babies.gt(0)&&tmp.tra.gt(0)) {
-            tmp.qu.replicants.ageProgress = tmp.qu.replicants.ageProgress.add(tmp.tra.times(diff/(player.achievements.includes("ng3p35")?400:4e3))).min(tmp.qu.replicants.babies)
-            var toAdd = tmp.qu.replicants.ageProgress.floor()
-            if (toAdd.gt(0)) {
-                if (toAdd.gt(tmp.qu.replicants.babies)) tmp.qu.replicants.babies = new Decimal(0)
-                else tmp.qu.replicants.babies = tmp.qu.replicants.babies.sub(toAdd).round()
-                if (toAdd.gt(tmp.qu.replicants.ageProgress)) tmp.qu.replicants.ageProgress = new Decimal(0)
-                else tmp.qu.replicants.ageProgress = tmp.qu.replicants.ageProgress.sub(toAdd)
-                tmp.qu.replicants.amount = tmp.qu.replicants.amount.add(toAdd).round()
-            }
-        }
-        if (tmp.qu.replicants.babies.lt(1)) tmp.qu.replicants.ageProgress = new Decimal(0)
+			if (!tmp.qu.nanofield.producingCharge) tmp.qu.replicants.quarks = tmp.qu.replicants.quarks.add(getGatherRate().total.max(0).times(diff/10))
+		}
     }
     if (speedrunMilestonesReached>5) {
         tmp.qu.metaAutobuyerWait+=diff
