@@ -18,10 +18,11 @@ var masteryStudies = {
 	ecReqs: {
 		13: function() {
 			let comps = ECTimesCompleted("eterc13")
-			return 728e3 + (tmp.ngp3l ? 6000 : (4000 + 500 * comps)) * comps
+			return 728e3 + (tmp.ngp3l ? 6000 : (1500 + 3000 * comps)) * comps
 		},
 		14: function() {
-			return 255e5 + 9e5 * ECTimesCompleted("eterc14")
+			let comps = ECTimesCompleted("eterc14")
+			return 255e5 + (tmp.ngp3l ? 9e5 : (2e6 + 2e6 * comps)) * comps
 		}
 	},
 	ecReqsStored: {},
