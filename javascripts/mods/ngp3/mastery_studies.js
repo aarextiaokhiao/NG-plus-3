@@ -103,7 +103,7 @@ var masteryStudies = {
 		265: "Replicate chance upgrades can go over 100%.",
 		266: "Reduce the post-400 max replicated galaxy cost scaling.",
 		271: "You can buy beyond 1ms interval upgrades but the cost starts to increase faster.",
-		272: "Pick all paths on all 3-way splits in time studies.",
+		272: "You can buy all time studies in all 3-way splits.",
 		273: "Replicate chance boosts itself.",
 		281: "Replicanti multiplier boosts DT production at greatly reduced rate.",
 		282: "Replicanti multiplier boosts Meta Dimensions at greatly reduced rate.",
