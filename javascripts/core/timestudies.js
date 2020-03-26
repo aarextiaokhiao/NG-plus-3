@@ -315,8 +315,8 @@ function updateTimeStudyButtons(changed) {
   }
   document.getElementById("dilstudy6").style.display = player.meta ? "" : "none"
   document.getElementById("masteryportal").style.display = player.masterystudies ? "" : "none"
-  if (player.masterystudies) {
-      document.getElementById("masteryportal").textContent = player.dilation.upgrades.includes("ngpp6") ? "Continue to mastery studies." : !player.dilation.studies.includes(1) ? "To be continued...." : "Mastery portal (" + (player.dilation.studies.includes(6) ? "66%: requires "+shortenCosts(1e100)+" dilated time upgrade)" : "33%: requires meta-dimensions)") 
+  if (tmp.ngp3) {
+      document.getElementById("masteryportal").innerHTML = player.dilation.upgrades.includes("ngpp6") ? "Mastery portal<span>Continue into mastery studies.</span>" : !player.dilation.studies.includes(1) ? "To be continued...." : "Mastery portal (" + (player.dilation.studies.includes(6) ? "66%: requires "+shortenCosts(1e100)+" dilated time upgrade)" : "33%: requires meta-dimensions)") 
       document.getElementById("masteryportal").className = player.dilation.upgrades.includes("ngpp6") ? "dilationupg" : "timestudylocked"
   }
 }

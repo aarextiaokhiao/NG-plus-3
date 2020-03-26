@@ -110,7 +110,7 @@ var masteryStudies = {
 		291: "You gain 1% of your EP gained on eternity each second.",
 		292: "You can gain tachyon particles without disabling dilation.",
 		301: "Remote cost scaling starts 1 galaxy later per 4.15 extra replicated galaxies.",
-		302: "Pick all time studies before mastery studies.",
+		302: "You can buy all time studies before mastery portal.",
 		303: "Meta Dimensions are stronger based on your galaxies.",
 		311: "Replicanti boost to all Infinity Dimensions is 17.3x stronger.",
 		312: "Meta-dimension boosts are 4.5% stronger and cost scale by 1 less.",
