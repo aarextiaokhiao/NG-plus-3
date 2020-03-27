@@ -528,8 +528,8 @@ function quantum(auto, force, challid, bigRip = false, quick) {
 		}
 		if (speedrunMilestonesReached > 3 && !isRewardEnabled(4)) {
 			for (var s=0;s<player.masterystudies.length;s++) {
-				if (player.masterystudies[s].indexOf("t") >= 0) player.timestudy.theorem += masterystudies.costs.time[player.masterystudies[s].split("t")[1]]
-				else player.timestudy.theorem += masterystudies.costs.dil[player.masterystudies[s].split("d")[1]]
+				if (player.masterystudies[s].indexOf("t") >= 0) player.timestudy.theorem += masteryStudies.costs.time[player.masterystudies[s].split("t")[1]]
+				else player.timestudy.theorem += masteryStudies.costs.dil[player.masterystudies[s].split("d")[1]]
 			}
 		}
 	}
@@ -806,7 +806,7 @@ function quantumReset(force, auto, challid, bigRip, implode=false) {
 				boughtI: player.timestudy.ipcost.log("1e100"),
 				boughtE: Math.round(player.timestudy.epcost.log(2))
 			}
-			if (player.eternityChallUnlocked>12) tmp.qu.bigRip.storedTS.tt+=masterystudies.costs.ec[player.eternityChallUnlocked]
+			if (player.eternityChallUnlocked>12) tmp.qu.bigRip.storedTS.tt+=masteryStudies.costs.ec[player.eternityChallUnlocked]
 			else tmp.qu.bigRip.storedTS.tt+=([0,30,35,40,70,130,85,115,115,415,550,1,1])[player.eternityChallUnlocked]
 			for (var s=0;s<player.masterystudies.length;s++) if (player.masterystudies[s].indexOf("t") == 0) tmp.qu.bigRip.storedTS.studies.push(parseInt(player.masterystudies[s].split("t")[1]))
 		}
@@ -823,7 +823,7 @@ function quantumReset(force, auto, challid, bigRip, implode=false) {
 					count++
 				} else {
 					if (study=="t373") updateColorCharge()
-					player.timestudy.theorem+=masterystudies.costs.time[split[1]]
+					player.timestudy.theorem+=masteryStudies.costs.time[split[1]]
 				}
 			}
 			player.masterystudies=newMS
@@ -1208,7 +1208,7 @@ function quantumReset(force, auto, challid, bigRip, implode=false) {
 	player.challenges=challengesCompletedOnEternity(bigRip)
 	if (bigRip && player.ghostify.milestones > 9 && player.aarexModifications.ngudpV) for (var u=7;u<10;u++) player.eternityUpgrades.push(u)
 	if (isRewardEnabled(11) && (bigRip && !tmp.qu.bigRip.upgrades.includes(12))) {
-		if (player.eternityChallUnlocked>12) player.timestudy.theorem+=masterystudies.costs.ec[player.eternityChallUnlocked]
+		if (player.eternityChallUnlocked>12) player.timestudy.theorem+=masteryStudies.costs.ec[player.eternityChallUnlocked]
 		else player.timestudy.theorem+=([0,30,35,40,70,130,85,115,115,415,550,1,1])[player.eternityChallUnlocked]
 	}
 	player.eternityChallUnlocked=0
