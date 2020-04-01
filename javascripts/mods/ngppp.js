@@ -3920,7 +3920,7 @@ function updateColorPowers() {
 
 	//Blue
 	let log=getCPLog('b')
-	if (tmp.ngp3l) log=Math.sqrt(l)
+	if (tmp.ngp3l) log=Math.sqrt(log)
 	else log=Math.sqrt(log+1)-1
 
 	let softcapStartLog=tmp.ngp3l?Math.log10(1300):3
