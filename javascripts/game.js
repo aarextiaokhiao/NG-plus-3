@@ -4314,7 +4314,8 @@ function showHideFooter(toggle) {
 	document.documentElement.style.setProperty('--footer', player.aarexModifications.noFooter?"none":"")
 }
 
-document.getElementById("newsbtn").onclick = function() {
+document.getElementById("newsbtn").onclick = function(force) {
+	if (!force && af2020.newsBroken()) return
 	player.options.newsHidden=!player.options.newsHidden
 	document.getElementById("newsbtn").textContent=(player.options.newsHidden?"Show":"Hide")+" news ticker"
 	document.getElementById("game").style.display=player.options.newsHidden?"none":"block"
@@ -7889,7 +7890,7 @@ function gameLoop(diff) {
     var thisUpdate = new Date().getTime();
     if (thisUpdate - player.lastUpdate >= 21600000) giveAchievement("Don't you dare to sleep")
     if (typeof diff === 'undefined') {
-        if (player.options.secrets ? player.options.secrets.ghostlyNews : false) nextGhostlyNewsTickerMsg()
+        if (player.options.secrets && player.options.secrets.ghostlyNews) nextGhostlyNewsTickerMsg()
         var diff = Math.min(thisUpdate - player.lastUpdate, 21600000);
     }
     diff = Math.max(diff / 100, 0)
@@ -9279,6 +9280,9 @@ function initGame() {
 	//Load a save.
 	load_game(false, true)
 	game_loaded=true
+	
+	//April Fools!
+	af2020.init()
 
 	//show one tab during init or they'll all start hidden
 	let tabsSaveData=player.aarexModifications.tabsSave

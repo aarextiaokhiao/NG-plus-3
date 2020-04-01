@@ -2103,6 +2103,7 @@ if (player.version < 5) {
   } else if (player.aarexModifications.popUpId!="STD") showNextModeMessage()
   document.getElementById("ghostlyNewsTicker").style.height=((player.options.secrets!==undefined?player.options.secrets.ghostlyNews:false)?24:0)+"px"
   document.getElementById("ghostlyNewsTickerBlock").style.height=((player.options.secrets!==undefined?player.options.secrets.ghostlyNews:false)?16:0)+"px"
+  af2020.onSaveLoad()
 }
 
 function checkNGM(imported) {
