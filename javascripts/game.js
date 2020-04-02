@@ -4261,7 +4261,6 @@ function showHideFooter(toggle) {
 }
 
 document.getElementById("newsbtn").onclick = function(force) {
-	if (!force) return
 	player.options.newsHidden=!player.options.newsHidden
 	document.getElementById("newsbtn").textContent=(player.options.newsHidden?"Show":"Hide")+" news ticker"
 	document.getElementById("game").style.display=player.options.newsHidden?"none":"block"
