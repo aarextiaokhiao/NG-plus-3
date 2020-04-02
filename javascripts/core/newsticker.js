@@ -306,7 +306,7 @@ newsArray = [//always true
 ['"New game dammit" - GrayStillPlays', "player.masterystudies !== undefined", "am153"],
 ['"More zeroes dammit" - GrayStillPlays', "player.masterystudies !== undefined", "am154"],
 ["i know your type. you're, uh, very determined, aren't you? you'll never give up, even if there's, uh... absolutely NO benefit to persevering whatsoever. if i can make that clear. no matter what, you'll just keep going. not out of any desire for good or evil... but just because you think you can. and because you \"can\"... ... you \"have to\". but now, you've reached the end. there is nothing left for you now. so, uh, in my personal opinion... the most \"determined\" thing you can do here? is to, uh, completely give up. and... well... do literally anything else.", "player.masterystudies !== undefined", "am155"]
-/*NEXT ID: am153*/
+/*NEXT ID: am156*/
 ];}
 
 document.addEventListener("visibilitychange", function() {if (!document.hidden) {scrollNextMessage();}}, false);
@@ -325,18 +325,12 @@ function scrollNextMessage() {
   } catch(e) {
       console.log("Newsarray doesn't work at idx " + nextMsgIndex)
   }
-
-  //April Fools!
-  var af2020index = undefined
-  if (Math.random() < 0.9 && af2020.newsBroken()) af2020index = Math.floor(Math.random() * af2020.messages.length)
-
   scrollTimeouts.forEach(function(v) {clearTimeout(v);});
   scrollTimeouts = [];
 
   //set the text
   var m = newsArray[nextMsgIndex][0];
-  if (af2020index) m = "BREAKING NEWS! " + af2020.messages[af2020index]
-  else if (newsArray[nextMsgIndex][2] == "am37") {
+  if (newsArray[nextMsgIndex][2] == "am37") {
     //coded by Naruyoko
     var m = ""
     for (var i=0;i<256;i++) m+=String.fromCharCode(Math.random()*95+32);
@@ -359,7 +353,7 @@ function scrollNextMessage() {
     let rate = 100; //change this value to change the scroll speed
     let transformDuration = dist / rate;
 
-    if (!player.options.newsHidden && !player.newsArray.includes(newsArray[nextMsgIndex][2]) && af2020index == undefined) {
+    if (!player.options.newsHidden && !player.newsArray.includes(newsArray[nextMsgIndex][2])) {
         player.newsArray.push(newsArray[nextMsgIndex][2]);
         if (player.newsArray.length>=50) giveAchievement("Fake News")
     }
@@ -480,7 +474,6 @@ function nextGhostlyNewsTickerMsg() {
 }
 
 function toggleGhostlyNews(force) {
-	if (!force && af2020.newsBroken()) return
 	player.options.secrets.ghostlyNews=!player.options.secrets.ghostlyNews
 	document.getElementById("ghostlyNewsTicker").style.height=(player.options.secrets.ghostlyNews?24:0)+"px"
 	document.getElementById("ghostlyNewsTickerBlock").style.height=(player.options.secrets.ghostlyNews?16:0)+"px"
