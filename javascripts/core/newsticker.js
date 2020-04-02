@@ -316,6 +316,7 @@ newsArray = [//always true
 ['"Egg is the new Onion" ~ I\'m sorry, 2020', "player.newsArray.includes('am82')", "am163"],
 ["Anti-Coronavirus has been detected. Surprisingly, it only seems to be making more antimatter.", true, "am164"],
 ["Are you getting tired for not being a ghost? Come into the Ghostify machine and see yourself! 308 Antimatter Drive, Dimensionverse", "ghostified", "am165"]
+/*NEXT ID: am166*/
 ];}
 
 document.addEventListener("visibilitychange", function() {if (!document.hidden) {scrollNextMessage();}}, false);
@@ -334,18 +335,12 @@ function scrollNextMessage() {
   } catch(e) {
       console.log("Newsarray doesn't work at idx " + nextMsgIndex)
   }
-
-  //April Fools!
-  var af2020index = undefined
-  if (Math.random() < 0.9 && af2020.newsBroken()) af2020index = Math.floor(Math.random() * af2020.messages.length)
-
   scrollTimeouts.forEach(function(v) {clearTimeout(v);});
   scrollTimeouts = [];
 
   //set the text
   var m = newsArray[nextMsgIndex][0];
-  if (af2020index) m = "BREAKING NEWS! " + af2020.messages[af2020index]
-  else if (newsArray[nextMsgIndex][2] == "am37") {
+  if (newsArray[nextMsgIndex][2] == "am37") {
     //coded by Naruyoko
     var m = ""
     for (var i=0;i<256;i++) m+=String.fromCharCode(Math.random()*95+32);
@@ -368,7 +363,7 @@ function scrollNextMessage() {
     let rate = 100; //change this value to change the scroll speed
     let transformDuration = dist / rate;
 
-    if (!player.options.newsHidden && !player.newsArray.includes(newsArray[nextMsgIndex][2]) && af2020index == undefined) {
+    if (!player.options.newsHidden && !player.newsArray.includes(newsArray[nextMsgIndex][2])) {
         player.newsArray.push(newsArray[nextMsgIndex][2]);
         if (player.newsArray.length>=50) giveAchievement("Fake News")
     }
@@ -492,7 +487,6 @@ function nextGhostlyNewsTickerMsg() {
 }
 
 function toggleGhostlyNews(force) {
-	if (!force && af2020.newsBroken()) return
 	player.options.secrets.ghostlyNews=!player.options.secrets.ghostlyNews
 	document.getElementById("ghostlyNewsTicker").style.height=(player.options.secrets.ghostlyNews?24:0)+"px"
 	document.getElementById("ghostlyNewsTickerBlock").style.height=(player.options.secrets.ghostlyNews?16:0)+"px"

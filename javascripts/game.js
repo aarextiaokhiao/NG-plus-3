@@ -4315,7 +4315,6 @@ function showHideFooter(toggle) {
 }
 
 document.getElementById("newsbtn").onclick = function(force) {
-	if (!force && af2020.newsBroken()) return
 	player.options.newsHidden=!player.options.newsHidden
 	document.getElementById("newsbtn").textContent=(player.options.newsHidden?"Show":"Hide")+" news ticker"
 	document.getElementById("game").style.display=player.options.newsHidden?"none":"block"
@@ -9280,9 +9279,6 @@ function initGame() {
 	//Load a save.
 	load_game(false, true)
 	game_loaded=true
-	
-	//April Fools!
-	af2020.init()
 
 	//show one tab during init or they'll all start hidden
 	let tabsSaveData=player.aarexModifications.tabsSave
