@@ -41,10 +41,10 @@ function getMetaDimensionGlobalMultiplier() {
 		if (player.masterystudies.includes("t382")) ret = ret.times(getMTSMult(382))
 		if (player.masterystudies.includes("t383")) ret = ret.times(getMTSMult(383))
 		if (player.masterystudies.includes("t393")) ret = ret.times(getMTSMult(393))
-		if (GUBought("br4")) ret = ret.times(Decimal.pow(getDimensionPowerMultiplier(hasNU(13) && "no-rg4"), 0.0003).max(1))
+		if (GUBought("br4")) ret = ret.times(Decimal.pow(getDimensionPowerMultiplier(), 0.0003).max(1))
 		ret = ret.times(getQCReward(3))
 		ret = ret.times(getQCReward(6))
-		if (player.achievements.includes("ng3p13") && !tmp.ngp3l) ret = ret.times(Decimal.pow(3, Math.pow(Decimal.plus(quantumWorth, 1).log10(), 0.75)))
+		if (player.achievements.includes("ng3p13") && !tmp.ngp3l) ret = ret.times(Decimal.pow(2, Math.pow(Decimal.plus(quantumWorth, 1).log10(), 0.75)))
 	}
 	
 	return ret

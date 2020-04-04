@@ -180,8 +180,8 @@ function canBuyDimension(tier) {
 	return true;
 }
 	
-function getDimensionPowerMultiplier(focusOn) {
-	let ret = focusOn || inNC(9) || player.currentChallenge=="postc1" ? getMPTBase(focusOn) : tmp.mpbe
+function getDimensionPowerMultiplier(focusOn, debug) {
+	let ret = focusOn || inNC(9) || player.currentChallenge=="postc1" ? getMPTBase(focusOn) : tmp.mptb
 	let exp = 1
 	if (tmp.ngp3 && focusOn != "linear") exp = focusOn == "no-rg4" ? getMPTExp(focusOn) : tmp.mpte
 	if (exp > 1) ret = Decimal.pow(ret, exp)
