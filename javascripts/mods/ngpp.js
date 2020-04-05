@@ -307,11 +307,11 @@ function getExtraDimensionBoostPowerExponent() {
 	return power
 }
 
-function getDil14Bonus () {
+function getDil14Bonus() {
 	return 1 + Math.log10(1 - Math.min(0, player.tickspeed.log(10)));
 }
 
-function getDil17Bonus () {
+function getDil17Bonus() {
 	return Math.sqrt(player.meta.bestAntimatter.max(1).log10())/(player.masterystudies?1:2);
 }
 
