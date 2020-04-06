@@ -783,7 +783,7 @@ function updateQuantumChallenges() {
 		document.getElementById(property+"goal").textContent="Goal: "+shortenCosts(Decimal.pow(10,getQCGoal(qc)))+" antimatter"
 	}
 	document.getElementById("qc2reward").textContent = Math.round(getQCReward(2)*100-100)
-	document.getElementById("qc7desc").textContent="Dimension & tickspeed cost multiplier increases are "+shorten(Number.MAX_VALUE)+"x. Multiplier per ten dimensions and meta-antimatter's effect on dimension boosts are disabled. "
+	document.getElementById("qc7desc").textContent="Dimension and tickspeed cost multiplier increases are "+shorten(Number.MAX_VALUE)+"x. Multiplier per ten Dimensions and meta-Antimatter boost to Dimension Boosts are disabled"
 	document.getElementById("qc7reward").textContent = (100-getQCReward(7)*100).toFixed(2)
 	document.getElementById("qc8reward").textContent = getQCReward(8)
 }
