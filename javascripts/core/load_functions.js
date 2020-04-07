@@ -1957,7 +1957,7 @@ if (player.version < 5) {
       updateElectrons()
       updateAutoQuantumMode()
       updateColorCharge()
-      updateGluons()
+      updateGluonsTabOnUpdate()
       updateReplicants()
       updateTODStuff()
       updateBraveMilestones()

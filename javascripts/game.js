@@ -4138,8 +4138,8 @@ function onNotationChange() {
 	updateExdilation()
 	updateMilestones()
 	if (tmp.ngp3) {
-		updateColorCharge()
-		updateGluons("notation")
+		updateQuarksTabOnUpdate()
+		updateGluonsTabOnUpdate("notation")
 		updateQuantumWorth("notation")
 		updateElectrons()
 		updateBankedEter()

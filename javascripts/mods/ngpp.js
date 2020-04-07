@@ -1345,7 +1345,7 @@ function quantumReset(force, auto, challid, bigRip, implode=false) {
 		}
 		document.getElementById("metaAntimatterEffectType").textContent=inQC(3)?"multiplier on all Infinity Dimensions":"extra multiplier per dimension boost"
 		updateColorCharge()
-		updateGluons()
+		updateGluonsTabOnUpdate()
 		document.getElementById('rg4toggle').style.display=inQC(1)||QCIntensity(1)?"none":""
 		updateElectrons()
 		updateBankedEter()
