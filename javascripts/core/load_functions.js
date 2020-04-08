@@ -1904,7 +1904,10 @@ if (player.version < 5) {
   document.getElementById('replicantibulkmodetoggle').textContent="Mode: "+(player.galaxyMaxBulk?"Max":"Singles")
   document.getElementById('sacrificeAuto').style.display=speedrunMilestonesReached>24?"":"none"
   document.getElementById('toggleautoquantummode').style.display=(player.masterystudies?tmp.qu.reachedInfQK||player.achievements.includes("ng3p25"):false)?"":"none"
-  document.getElementById('assignAll').style.display=(player.masterystudies?tmp.qu.reachedInfQK||ghostified:false)?"":"none"
+  var autoAssignUnl = tmp.ngp3 && (tmp.qu.reachedInfQK || ghostified)
+  document.getElementById('assignAll').style.display = !tmp.ngp3l || autoAssignUnl ? "" : "none"
+  document.getElementById('autoAssign').style.display = autoAssignUnl ? "" : "none"
+  document.getElementById('autoAssignRotate').style.display = autoAssignUnl ? "" : "none"
   document.getElementById('autoReset').style.display=player.achievements.includes("ng3p47")?"":"none"
   document.getElementById('aftereternity').style.display=player.achievements.includes("ng3p52")?"":"none"
   if (player.pSac !== undefined) {

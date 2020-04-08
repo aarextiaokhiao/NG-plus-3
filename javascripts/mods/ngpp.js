@@ -762,12 +762,14 @@ function quantumReset(force, auto, challid, bigRip, implode=false) {
 			tmp.qu.quarks = tmp.qu.quarks.add(qkGain)
 			if (!tmp.ngp3 || player.ghostify.milestones < 8) tmp.qu.quarks = tmp.qu.quarks.round()
 			if (tmp.ngp3 && tmp.qu.quarks.gte(Number.MAX_VALUE) && !tmp.qu.reachedInfQK) {
+				tmp.qu.reachedInfQK = true
 				if (!ghostified) {
 					document.getElementById("welcome").style.display = "flex"
 					document.getElementById("welcomeMessage").innerHTML = "Congratulations for getting " + shorten(Number.MAX_VALUE) + " quarks! You have unlocked new QoL features, like quantum autobuyer modes, assign all, and auto-assignation!"
-					document.getElementById('assignAll').style.display=""
+					document.getElementById('assignAll').style.display = ""
+					document.getElementById('autoAssign').style.display = ""
+					document.getElementById('autoAssignRotate').style.display = ""
 				}
-				tmp.qu.reachedInfQK = true
 				document.getElementById('toggleautoquantummode').style.display=""
 			}
 		}

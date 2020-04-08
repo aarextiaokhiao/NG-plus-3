@@ -28,47 +28,7 @@ function updateQuantumWorth(mode) {
 	if (mode != "quick") for (var e=1;e<4;e++) document.getElementById("quantumWorth"+e).textContent = shortenDimensions(quantumWorth)
 }
 
-//Quark Assertment Machine
-
-//Color Charge
-colorCharge={
-	normal: {}
-}
-colorShorthands={r:'red',
-	g:'green',
-	b:'blue'}
-colorBoosts={
-	r:1,
-	g:1,
-	b:1
-}
-function updateColorCharge() {
-	if (!tmp.ngp3) return
-	var colors=['r','g','b']
-	var quantumWorthBonus=quantumWorth.pow(.8).div(100)
-
-	for (var i=0;i<3;i++) {
-		var ret=new Decimal(0)
-		if (player.ghostify.milestones>=2) ret=tmp.qu.usedQuarks[colors[i]]
-		if (!tmp.ngp3l) ret=ret.add(quantumWorthBonus)
-		colorCharge[colors[i]]=quantumWorthBonus
-	}
-
-	var sorted=[]
-	for (var s=1;s<4;s++) {
-		var search=''
-		for (var i=0;i<3;i++) if (!sorted.includes(colors[i])&&(search==''||tmp.qu.usedQuarks[colors[i]].gte(tmp.qu.usedQuarks[search]))) search=colors[i]
-		sorted.push(search)
-	}
-
-	colorCharge.normal={color:sorted[0],charge:Decimal.sub(tmp.qu.usedQuarks[sorted[0]]).sub(tmp.qu.usedQuarks[sorted[1]])}
-	if (player.ghostify.milestones<2) colorCharge[sorted[0]]=colorCharge[sorted[0]].add(colorCharge.normal.charge)
-	if (tmp.qu.usedQuarks[sorted[0]].gt(0)&&colorCharge.normal.charge.eq(0)) giveAchievement("Hadronization")
-
-	updateQuarksTabOnUpdate()
-}
-
-//Quark Assignation: NG+3L
+//Quark Assertment Machine (Quark Assignation: NG+3L)
 function assignQuark(color) {
 	if (tmp.ngp3l&&color!="r"&&tmp.qu.times<2&&!ghostified) if (!confirm("It is recommended to assign your first quarks to red. Are you sure you want to do that?")) return
 	var usedQuarks=tmp.qu.quarks.floor().min(tmp.qu.quarks)
@@ -107,7 +67,7 @@ function assignAll(auto) {
 		var colors = ['r','g','b']
 		for (c=0;c<3;c++) document.getElementById("ratio_" + colors[c]).value = tmp.qu.assignAllRatios[colors[c]]
 	}
-	if (!mult.eq(1)) updateQuantumWorth()
+	if (mult.gt(1)) updateQuantumWorth()
 	updateColorCharge()
 }
 
@@ -142,6 +102,44 @@ function toggleAutoAssign() {
 function rotateAutoAssign() {
 	tmp.qu.autoOptions.assignQKRotate=tmp.qu.autoOptions.assignQKRotate?(tmp.qu.autoOptions.assignQKRotate+1)%3:1
 	document.getElementById('autoAssignRotate').textContent="Rotation: "+(tmp.qu.autoOptions.assignQKRotate>1?"Left":tmp.qu.autoOptions.assignQKRotate?"Right":"None")
+}
+
+//Color Charge
+colorCharge={
+	normal: {}
+}
+colorShorthands={r:'red',
+	g:'green',
+	b:'blue'}
+colorBoosts={
+	r:1,
+	g:1,
+	b:1
+}
+function updateColorCharge() {
+	if (!tmp.ngp3) return
+	var colors=['r','g','b']
+	var quantumWorthBonus=quantumWorth.pow(.8).div(100)
+
+	for (var i=0;i<3;i++) {
+		var ret=new Decimal(0)
+		if (player.ghostify.milestones>=2) ret=tmp.qu.usedQuarks[colors[i]]
+		if (!tmp.ngp3l) ret=ret.add(quantumWorthBonus)
+		colorCharge[colors[i]]=quantumWorthBonus
+	}
+
+	var sorted=[]
+	for (var s=1;s<4;s++) {
+		var search=''
+		for (var i=0;i<3;i++) if (!sorted.includes(colors[i])&&(search==''||tmp.qu.usedQuarks[colors[i]].gte(tmp.qu.usedQuarks[search]))) search=colors[i]
+		sorted.push(search)
+	}
+
+	colorCharge.normal={color:sorted[0],charge:Decimal.sub(tmp.qu.usedQuarks[sorted[0]]).sub(tmp.qu.usedQuarks[sorted[1]])}
+	if (player.ghostify.milestones<2) colorCharge[sorted[0]]=colorCharge[sorted[0]].add(colorCharge.normal.charge)
+	if (tmp.qu.usedQuarks[sorted[0]].gt(0)&&colorCharge.normal.charge.eq(0)) giveAchievement("Hadronization")
+
+	updateQuarksTabOnUpdate()
 }
 
 //Gluons
