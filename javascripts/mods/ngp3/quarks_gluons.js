@@ -111,11 +111,7 @@ colorCharge={
 colorShorthands={r:'red',
 	g:'green',
 	b:'blue'}
-colorBoosts={
-	r:1,
-	g:1,
-	b:1
-}
+
 function updateColorCharge() {
 	if (!tmp.ngp3) return
 	var colors=['r','g','b']
@@ -140,6 +136,74 @@ function updateColorCharge() {
 	if (tmp.qu.usedQuarks[sorted[0]].gt(0)&&colorCharge.normal.charge.eq(0)) giveAchievement("Hadronization")
 
 	updateQuarksTabOnUpdate()
+}
+
+colorBoosts={
+	r:1,
+	g:1,
+	b:1,
+	dim: {
+		r:1,
+		g:1,
+		b:1
+	}
+}
+
+function getCPLog(c) {
+	x=Decimal.add(tmp.qu.colorPowers[c],1).log10()
+	if (x>1024&&player.aarexModifications.ngudpV&&!player.aarexModifications.nguepV) {
+		if (player.aarexModifications.ngumuV) x=Math.sqrt(x)*32
+		else x=Math.pow(x,.9)*2
+	}
+	return x
+}
+
+function updateColorPowers() {
+	//Logs
+	var rLog = getCPLog('r')
+	var gLog = getCPLog('g')
+	var bLog = getCPLog('b')
+
+	//Red
+	colorBoosts.r=Math.pow(rLog,player.dilation.active?2/3:0.5)/10+1
+	if (colorBoosts.r>1.3) colorBoosts.r=Math.sqrt(colorBoosts.r*1.3)
+	if (colorBoosts.r>2.3&&(!player.dilation.active||getTreeUpgradeLevel(2)>7||ghostified)) colorBoosts.r=Math.pow(colorBoosts.r/2.3,0.5*(ghostified&&player.ghostify.neutrinos.boosts>4?1+tmp.nb[4]:1))*2.3
+
+	//Green
+	if (tmp.ngp3l) {
+		colorBoosts.g=Math.sqrt(gLog*2+1)
+		if (colorBoosts.g>4.5) colorBoosts.g=Math.sqrt(colorBoosts.g*4.5)
+	} else colorBoosts.g=Math.pow(gLog+1,1/3)*2-1
+	let m=1
+	if (player.aarexModifications.ngumuV&&player.masterystudies.includes("t362")) {
+		m+=tmp.qu.replicants.quarks.add(1).log10()/10
+		if (m>4) m=Math.sqrt(m*4)
+	}
+	if (player.aarexModifications.ngudpV&&!player.aarexModifications.nguepV) m/=2
+	colorBoosts.g=(colorBoosts.g-1)*m+1
+
+	//Blue
+	let log
+	if (tmp.ngp3l) log=Math.sqrt(bLog)
+	else log=Math.sqrt(bLog+1)-1
+
+	let softcapStartLog=tmp.ngp3l?Math.log10(1300):3
+	let softcapPower=1
+	if (player.ghostify.ghostlyPhotons.unl) softcapPower+=tmp.le[4]
+	if (hasBosonicUpg(11)) softcapPower+=tmp.blu[11]
+	if (log>softcapStartLog) {
+		log=Decimal.pow(log/softcapStartLog,softcapPower/2).times(softcapStartLog)
+		if (log.lt(100)) log=log.toNumber()
+		else log=Math.min(log.toNumber(),log.log10()*(40+10*log.sub(90).log10()))
+	}
+	colorBoosts.b=Decimal.pow(10,log)
+
+	//Dimensions
+	if (!tmp.ngp3l) {
+		colorBoosts.dim.r = Decimal.pow(10, Math.sqrt(player.money.add(1).log10()) * Math.pow(rLog, 4/7))
+		colorBoosts.dim.g = Decimal.pow(10, Math.sqrt(player.infinityPower.add(1).log10()) * Math.pow(gLog, 4/7))
+		colorBoosts.dim.b = Decimal.pow(10, Math.pow(player.timeShards.add(1).log10(), 1/3) * Math.pow(bLog, 16/21))
+	}
 }
 
 //Gluons
@@ -229,6 +293,11 @@ function updateQuarksTab(tab) {
 	var msg = getFullExpansion(Math.round((colorBoosts.g-1)*100))+(tmp.pe>0?"+"+getFullExpansion(Math.round(tmp.pe*100)):"")
 	document.getElementById("greenTranslation").textContent=msg
 	document.getElementById("blueTranslation").textContent=shortenMoney(colorBoosts.b)
+	if (!tmp.ngp3l) {
+		document.getElementById("redDimTranslation").textContent=shortenMoney(colorBoosts.dim.r)
+		document.getElementById("greenDimTranslation").textContent=shortenMoney(colorBoosts.dim.g)
+		document.getElementById("blueDimTranslation").textContent=shortenMoney(colorBoosts.dim.b)
+	}
 	if (player.masterystudies.includes("t383")) document.getElementById("blueTranslationMD").textContent=shorten(getMTSMult(383))
 	if (player.ghostify.milestones>7) {
 		document.getElementById("assignAllButton").className=(tmp.qu.quarks.lt(1)?"unavailabl":"stor")+"ebtn"
@@ -279,6 +348,7 @@ function updateQuarksTabOnUpdate(mode) {
 
 	document.getElementById("quarkAssort").style.display=tmp.ngp3l?"none":""
 	document.getElementById("quarkAssign").style.display=tmp.ngp3l?"":"none"
+	document.getElementById("colorDimTranslations").style.display=tmp.ngp3l?"none":""
 	if (tmp.ngp3l) {
 		document.getElementById("redAssign").className=canAssign?"storebtn":"unavailablebtn"
 		document.getElementById("greenAssign").className=canAssign?"storebtn":"unavailablebtn"

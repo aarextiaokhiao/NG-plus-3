@@ -100,8 +100,10 @@ function getDimensionFinalMultiplier(tier) {
 	mult = dilates(mult.max(1), 1)
 	if (player.dilation.upgrades.includes(6)) mult = mult.times(player.dilation.dilatedTime.max(1).pow(308))
 	if (useHigherNDReplMult) mult = mult.times(tmp.nrm)
-	if (player.masterystudies != undefined && player.dilation.active) mult = mult.pow(getNanofieldRewardEffect(5))
+	if (quantumed && !tmp.ngp3l) mult = mult.times(colorBoosts.dim.r)
+	if (tmp.ngp3 && player.dilation.active) mult = mult.pow(getNanofieldRewardEffect(5))
 	if (isBigRipUpgradeActive(1)) mult = mult.times(tmp.bru[0])
+
 	return mult
 }
 

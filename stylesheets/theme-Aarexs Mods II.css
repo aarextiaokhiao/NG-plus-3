@@ -87,7 +87,7 @@ button, div.storebtn {
 	color: #0072e5 !important
 }
 
-.unavailablebtn, .infinistorebtnlocked, .lockedchallengesbtn, .newdimlocked, .timestudylocked, .milestonerewardlocked, .dilationupglocked, .dilationupgrebuyablelocked, .nfRewardlocked {
+.unavailablebtn, .infinistorebtnlocked, .lockedchallengesbtn, .newdimlocked, .timestudylocked, .milestonerewardlocked, .dilationupglocked, .dilationupgrebuyablelocked, .nfRewardlocked, .eternitychallengestudylocked {
 	background-color: #999999 !important
 }
 

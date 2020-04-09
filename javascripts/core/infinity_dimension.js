@@ -101,7 +101,9 @@ function DimensionPower(tier) {
   if (player.replicanti.unl && player.replicanti.amount.gt(1) && player.galacticSacrifice !== undefined) mult = mult.times(getIDReplMult())
   if (player.galacticSacrifice !== undefined) mult = mult.times(ec9)
 
-  return dilates(mult, 1)
+  mult = dilates(mult, 1)
+  if (quantumed && !tmp.ngp3l) mult = mult.times(colorBoosts.dim.g)
+  return mult
 }
 
 

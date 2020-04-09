@@ -70,7 +70,9 @@ function getTimeDimensionPower(tier) {
   ret=dilates(ret, 2)
   if (player.galacticSacrifice !== undefined) ret=ret.times(ret2)
 
-  return dilates(ret, 1)
+  ret = dilates(ret, 1)
+  if (quantumed && !tmp.ngp3l) ret = ret.times(colorBoosts.dim.b)
+  return ret
 }
 
 function getTimeDimensionProduction(tier) {
