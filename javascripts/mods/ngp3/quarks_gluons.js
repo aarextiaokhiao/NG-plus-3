@@ -158,22 +158,28 @@ function getCPLog(c) {
 	return x
 }
 
-function updateColorPowers() {
+function getCPLogs(c) {
+	return {
+		r: getCPLog("r"),
+		g: getCPLog("g"),
+		b: getCPLog("b")
+	}
+}
+
+function updateColorPowers(log) {
 	//Logs
-	var rLog = getCPLog('r')
-	var gLog = getCPLog('g')
-	var bLog = getCPLog('b')
+	if (log == undefined) log = getCPLogs()
 
 	//Red
-	colorBoosts.r=Math.pow(rLog,player.dilation.active?2/3:0.5)/10+1
+	colorBoosts.r=Math.pow(log.r,player.dilation.active?2/3:0.5)/10+1
 	if (colorBoosts.r>1.3) colorBoosts.r=Math.sqrt(colorBoosts.r*1.3)
 	if (colorBoosts.r>2.3&&(!player.dilation.active||getTreeUpgradeLevel(2)>7||ghostified)) colorBoosts.r=Math.pow(colorBoosts.r/2.3,0.5*(ghostified&&player.ghostify.neutrinos.boosts>4?1+tmp.nb[4]:1))*2.3
 
 	//Green
 	if (tmp.ngp3l) {
-		colorBoosts.g=Math.sqrt(gLog*2+1)
+		colorBoosts.g=Math.sqrt(log.g*2+1)
 		if (colorBoosts.g>4.5) colorBoosts.g=Math.sqrt(colorBoosts.g*4.5)
-	} else colorBoosts.g=Math.pow(gLog+1,1/3)*2-1
+	} else colorBoosts.g=Math.pow(log.g+1,1/3)*2-1
 	let m=1
 	if (player.aarexModifications.ngumuV&&player.masterystudies.includes("t362")) {
 		m+=tmp.qu.replicants.quarks.add(1).log10()/10
@@ -183,9 +189,9 @@ function updateColorPowers() {
 	colorBoosts.g=(colorBoosts.g-1)*m+1
 
 	//Blue
-	let log
-	if (tmp.ngp3l) log=Math.sqrt(bLog)
-	else log=Math.sqrt(bLog+1)-1
+	var bLog=log.b
+	if (tmp.ngp3l) bLog=Math.sqrt(bLog)
+	else bLog=Math.sqrt(log.b+1)-1
 
 	let softcapStartLog=tmp.ngp3l?Math.log10(1300):3
 	let softcapPower=1
@@ -193,17 +199,24 @@ function updateColorPowers() {
 	if (hasBosonicUpg(11)) softcapPower+=tmp.blu[11]
 	if (log>softcapStartLog) {
 		log=Decimal.pow(log/softcapStartLog,softcapPower/2).times(softcapStartLog)
-		if (log.lt(100)) log=log.toNumber()
+		if (log.lt(100)) bLog=bLog.toNumber()
 		else log=Math.min(log.toNumber(),log.log10()*(40+10*log.sub(90).log10()))
 	}
-	colorBoosts.b=Decimal.pow(10,log)
+	colorBoosts.b=Decimal.pow(10,bLog)
 
 	//Dimensions
-	if (!tmp.ngp3l) {
-		colorBoosts.dim.r = Decimal.pow(10, Math.sqrt(player.money.add(1).log10()) * Math.pow(rLog, 4/7))
-		colorBoosts.dim.g = Decimal.pow(10, Math.sqrt(player.infinityPower.add(1).log10()) * Math.pow(gLog, 4/7))
-		colorBoosts.dim.b = Decimal.pow(10, Math.pow(player.timeShards.add(1).log10(), 1/3) * Math.pow(bLog, 16/21))
-	}
+	updateColorDimPowers(log)
+}
+
+function updateColorDimPowers(log) {
+	if (tmp.ngp3l) return
+
+	//Logs
+	if (log == undefined) log = getCPLogs()
+
+	colorBoosts.dim.r = Decimal.pow(10, Math.sqrt(player.money.add(1).log10()) * Math.pow(log.r, 4/7))
+	colorBoosts.dim.g = Decimal.pow(10, Math.sqrt(player.infinityPower.add(1).log10()) * Math.pow(log.g, 4/7))
+	colorBoosts.dim.b = Decimal.pow(10, Math.sqrt(player.timeShards.add(1).log10()) * Math.pow(log.b, 8/21))
 }
 
 //Gluons

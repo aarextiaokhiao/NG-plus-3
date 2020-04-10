@@ -3037,6 +3037,7 @@ function ghostifyReset(implode, gain, amount, force) {
 	updateLastTenQuantums()
 	updateSpeedruns()
 	updateColorCharge()
+	updateColorDimPowers()
 	updateGluonsTabOnUpdate("prestige")
 	updateQuantumWorth("quick")
 	updateBankedEter()

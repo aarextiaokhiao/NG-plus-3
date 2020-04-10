@@ -615,7 +615,10 @@ function getMTSMult(id, uses = "") {
 	if (id==373) return Math.pow(player.galaxies+1,0.55)
 	if (id==381) return Decimal.min(getTickSpeedMultiplier(), 1).log10() / -135 + 1
 	if (id==382) return player.eightAmount.max(1).pow(Math.PI)
-	if (id==383) return Decimal.pow(3200,Math.pow(tmp.qu.colorPowers.b.add(1).log10(),0.25))
+	if (id==383) {
+		if (tmp.ngp3l) return Decimal.pow(3200,Math.pow(tmp.qu.colorPowers.b.add(1).log10(),0.25))
+		return Decimal.pow(2, Math.sqrt(player.meta.antimatter.add(1).log10()) * Math.pow(getCPLog("b"), 4/21))
+	}
 	if (id==391) return player.meta.antimatter.max(1).pow(8e-4)
 	if (id==392) return Decimal.pow(1.6,Math.sqrt(tmp.qu.replicants.quarks.add(1).log10()))
 	if (id==393) return Decimal.pow(4e5,Math.sqrt(tmp.twr.add(1).log10()))
