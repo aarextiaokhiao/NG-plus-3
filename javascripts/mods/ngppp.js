@@ -4239,9 +4239,11 @@ var bu={
 			return Math.max(Math.sqrt(getRadioactiveDecays('r')+getRadioactiveDecays('g')+getRadioactiveDecays('b'))/3+.6,1)
 		},
 		14: function() {
-			let x=Math.pow(Math.max(player.dilation.freeGalaxies/20-1800,0),1.5)
-			let y=Math.max(tmp.qu.electrons.sacGals,player.galaxies)
-			if (x>y) x=Math.pow((x-y+1e5)*1e10,1/3)+y-1e5
+			let x = Math.pow(Math.max(player.dilation.freeGalaxies / 20 - 1800, 0), 1.5)
+			let y = tmp.qu.electrons.sacGals
+			let z = Math.max(y, player.galaxies)
+			if (!tmp.ngp3l && x > y) x = (x + y * 2) / 3
+			if (x > z) x = Math.pow((x - z + 1e5) * 1e10, 1/3) + z - 1e5
 			return Math.round(x)
 		},
 		15: function() {

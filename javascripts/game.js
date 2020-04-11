@@ -1218,30 +1218,31 @@ function updateTemp() {
 	tmp.it=Decimal.pow(10,x)
 
 	//aeg: Antielectronic Galaxies
-	tmp.aeg=0
-	if (hasBosonicUpg(14)&&!tmp.qu.bigRip.active) tmp.aeg=Math.max(tmp.blu[14]-tmp.qu.electrons.sacGals,0)
+	tmp.aeg = 0
+	if (hasBosonicUpg(14) && !tmp.qu.bigRip.active) tmp.aeg = Math.max(tmp.blu[14] - tmp.qu.electrons.sacGals, 0)
 
 	//Intergalactic reward
 	tmp.igs = 0 //Intergalactic Scaling
 	if (tmp.ngp3) {
-		x=player.galaxies
-		if (!tmp.qu.bigRip.active&&player.ghostify.ghostlyPhotons.enpowerments>2) x*=tmp.le[9]
-		if (tmp.be&&player.dilation.active&&tmp.qu.breakEternity.upgrades.includes(10)) x*=getBreakUpgMult(10)
-		var igLog=Math.pow(x,Math.min(Math.sqrt(Math.log10(Math.max(x,1)))*2,2.5))
+		x = player.galaxies
+		if (!tmp.qu.bigRip.active&&player.ghostify.ghostlyPhotons.enpowerments>2) x *= tmp.le[9]
+		if (tmp.be&&player.dilation.active&&tmp.qu.breakEternity.upgrades.includes(10)) x *= getBreakUpgMult(10)
+		if (!tmp.ngp3l) x += tmp.aeg
+		tmp.igg = x
+
+		var igLog=Math.pow(x, Math.min(Math.sqrt(Math.log10(Math.max(x, 1))) * 2, 2.5))
 		if (!tmp.ngp3l && tmp.qu.bigRip.active && igLog > 1e9) {
-			igLog = Math.pow(igLog * 1e3, 3/4)
+			igLog = Math.pow(igLog * 1e3, .75)
 			tmp.igs = 1
 		}
 		if ((player.aarexModifications.ngudpV || !tmp.ngp3l) && igLog > 1e15) {
-			igLog=Math.pow(10+6*Math.log10(igLog),7.5)
+			igLog=Math.pow(10 + 6 * Math.log10(igLog), 7.5)
 			tmp.igs = 2
 		}
 		if (player.aarexModifications.ngudpV && igLog > 1e16) {
-			igLog=Math.pow(84+Math.log10(igLog),8)
+			igLog=Math.pow(84 + Math.log10(igLog), 8)
 			tmp.igs = 3
 		}
-		x+=tmp.aeg
-		tmp.igg=x
 		tmp.ig=Decimal.pow(10,igLog)
 	}
 
@@ -1257,7 +1258,7 @@ function updateTemp() {
 	tmp.ts232=Math.pow(1+initialGalaxies()/1000,exp)
 
 	//Extra galaxy amount of TS431
-	tmp.eg431=tmp.aeg*.1
+	tmp.eg431=tmp.aeg/10
 	if (tmp.ngp3 && player.ghostify.ghostlyPhotons.enpowerments) {
 		tmp.le[7].total=(colorBoosts.g+tmp.pe-1)*tmp.le[7].effect
 		tmp.eg431+=tmp.le[7].total
@@ -1602,18 +1603,17 @@ document.getElementById("secondSoftReset").onclick = function() {
 	}
 }
 
-var galReqData = {
-}
 function getGalaxyRequirement(offset = 0, display) {
-	galReqData.galaxies = player.galaxies + offset
+	tmp.grd = {} //Galaxy requirement data
+	tmp.grd.galaxies = player.galaxies + offset
 	let mult = getGalaxyReqMultiplier()
-	let base = galReqData.galaxies * mult
+	let base = tmp.grd.galaxies * mult
 	let amount = 80 + base
 	let scaling = 0
-	if (player.galacticSacrifice != undefined) amount -= (player.galacticSacrifice.upgrades.includes(22) && player.galReqData.galaxies > 0) ? 80 : 60
-	else if (inNC(6, 1) && player.aarexModifications.ngexV != undefined && galReqData.galaxies < 2) amount -= galReqData.galaxies == 1 ? 40 : 50
+	if (player.galacticSacrifice != undefined) amount -= (player.galacticSacrifice.upgrades.includes(22) && player.galaxies > 0) ? 80 : 60
+	else if (inNC(6, 1) && player.aarexModifications.ngexV != undefined && tmp.grd.galaxies < 2) amount -= tmp.grd.galaxies == 1 ? 40 : 50
 	if (player.aarexModifications.ngmX > 3) amount -= 10
-	if (inNC(6, 1) && player.aarexModifications.ngexV != undefined && galReqData.galaxies >= 2) amount -= 2 * mult
+	if (inNC(6, 1) && player.aarexModifications.ngexV != undefined && tmp.grd.galaxies >= 2) amount -= 2 * mult
 	if (inNC(4) || player.pSac !== undefined) amount = player.tickspeedBoosts == undefined ? 99 + base : amount + (player.aarexModifications.ngmX > 3 ? 20 : -30)
 	if (tmp.be) {
 		amount *= 50
@@ -1621,41 +1621,41 @@ function getGalaxyRequirement(offset = 0, display) {
 		if (player.currentEternityChall=="eterc10"&&tmp.qu.breakEternity.upgrades.includes(9)) amount /= getBreakUpgMult(9)
 	}
 	if (!player.boughtDims) {
-		galReqData.speed = 1
+		tmp.grd.speed = 1
 		let ghostlySpeed = tmp.be ? 55 : 1
 		let div = 1e4
-		if (galReqData.galaxies >= 302500 / ghostlySpeed) {
+		if (tmp.grd.galaxies >= 302500 / ghostlySpeed) {
 			if (player.ghostify.ghostlyPhotons.enpowerments > 1 && tmp.be) div *= tmp.le[8]
-			galReqData.speed = Math.pow(2, (galReqData.galaxies + 1 - 302500 / ghostlySpeed) * ghostlySpeed / div)
+			tmp.grd.speed = Math.pow(2, (tmp.grd.galaxies + 1 - 302500 / ghostlySpeed) * ghostlySpeed / div)
 			scaling = 5
 		}
 
 		let distantStart = getDistantScalingStart()
-		if (galReqData.galaxies >= distantStart) {
-			let speed = galReqData.speed
+		if (tmp.grd.galaxies >= distantStart) {
+			let speed = tmp.grd.speed
 			if (GUBought("rg6")) speed *= 0.867
 			if (GUBought("gb6")) speed /= 1+Math.pow(player.infinityPower.max(1).log10(),0.25)/2810
 			if (GUBought("br6")) speed /= 1+player.meta.resets/340
 			if (ghostified) if (player.ghostify.neutrinos.boosts > 5) speed /= tmp.nb[5]
-			amount += getDistantAdd(galReqData.galaxies-distantStart+1)*speed
-			if (galReqData.galaxies>=distantStart*2.5&&player.galacticSacrifice!=undefined) {
+			amount += getDistantAdd(tmp.grd.galaxies-distantStart+1)*speed
+			if (tmp.grd.galaxies>=distantStart*2.5&&player.galacticSacrifice!=undefined) {
 				// 5 times worse scaling
-				amount += 4*speed*getDistantAdd(galReqData.galaxies-distantStart*2.5+1)
+				amount += 4*speed*getDistantAdd(tmp.grd.galaxies-distantStart*2.5+1)
 				scaling = Math.max(scaling, 2)
 			} else scaling = Math.max(scaling, 1)
 		}
 
 		let remoteStart = getRemoteScalingStart()
-		if (galReqData.galaxies >= remoteStart && !tmp.be && !hasNU(6)) {
-			let speed2 = galReqData.speed
+		if (tmp.grd.galaxies >= remoteStart && !tmp.be && !hasNU(6)) {
+			let speed2 = tmp.grd.speed
 			if (GUBought("rg7")) speed2 *= 0.9
 			if (GUBought("gb7")) speed2 /= 1+Math.log10(1+player.infinityPoints.max(1).log10())/100
 			if (GUBought("br7")) speed2 /= 1+Math.log10(1+player.eternityPoints.max(1).log10())/80
-			amount = amount * Math.pow(1 + (GUBought("rg1") ? 1 : 2) / (player.aarexModifications.ngmX > 3 ? 10 : 1e3), (galReqData.galaxies-remoteStart+1) * speed2)
+			amount = amount * Math.pow(1 + (GUBought("rg1") ? 1 : 2) / (player.aarexModifications.ngmX > 3 ? 10 : 1e3), (tmp.grd.galaxies-remoteStart+1) * speed2)
 			scaling = Math.max(scaling, 3)
 		}
 
-		if (galReqData.galaxies >= galReqData.darkStart) scaling = 4
+		if (tmp.grd.galaxies >= tmp.grd.darkStart) scaling = 4
 	}
 	amount = Math.ceil(amount)
 
@@ -1667,36 +1667,36 @@ function getGalaxyRequirement(offset = 0, display) {
 }
 
 function getGalaxyReqMultiplier() {
-	if (inNC(6, 1) && player.aarexModifications.ngexV != undefined && galReqData.galaxies <= 2) return 0
-    if (player.currentChallenge == "postcngmm_1") return 60
-    let ret = 60
-    if (player.galacticSacrifice) {
+	if (inNC(6, 1) && player.aarexModifications.ngexV != undefined && tmp.grd.galaxies <= 2) return 0
+	if (player.currentChallenge == "postcngmm_1") return 60
+	let ret = 60
+	if (player.galacticSacrifice) {
 		if (player.galacticSacrifice.upgrades.includes(22)) ret -= 30
-    } else if (player.timestudy.studies.includes(42)) ret *= (player.aarexModifications.newGameExpVersion?12:13)/15
-    if (inNC(4)) ret = 90
-    if (player.infinityUpgrades.includes("galCost")) ret -= 5
-    if (player.infinityUpgrades.includes("postinfi52") && player.tickspeedBoosts == undefined) ret -= 3
+	} else if (player.timestudy.studies.includes(42)) ret *= (player.aarexModifications.newGameExpVersion?12:13)/15
+	if (inNC(4)) ret = 90
+	if (player.infinityUpgrades.includes("galCost")) ret -= 5
+	if (player.infinityUpgrades.includes("postinfi52") && player.tickspeedBoosts == undefined) ret -= 3
 	if (player.galacticSacrifice && player.timestudy.studies.includes(42)) ret *= (player.aarexModifications.newGameExpVersion?12:13)/15
-    return ret
+	return ret
 }
 
 function getDistantScalingStart() {
 	if (player.currentEternityChall == "eterc5") return 0
-    var n = 100+getECReward(5)
-    if (player.timestudy.studies.includes(223)) n += 7
-    if (player.timestudy.studies.includes(224)) n += Math.floor(player.resets/2000)
-    if (tmp.ngp3) if (tmp.qu.bigRip.active && tmp.qu.bigRip.upgrades.includes(15)) n += Math.sqrt(player.eternityPoints.add(1).log10()) * 3.55
+	var n = 100+getECReward(5)
+	if (player.timestudy.studies.includes(223)) n += 7
+	if (player.timestudy.studies.includes(224)) n += Math.floor(player.resets/2000)
+	if (tmp.ngp3) if (tmp.qu.bigRip.active && tmp.qu.bigRip.upgrades.includes(15)) n += Math.sqrt(player.eternityPoints.add(1).log10()) * 3.55
 
-    if (galReqData.galaxies >= galReqData.darkStart) {
-		let push = 5 / galReqData.speed
+	if (tmp.grd.galaxies >= tmp.grd.darkStart) {
+		let push = 5 / tmp.grd.speed
 		if (GUBought("rg5")) push *= 1.13
 		if (GUBought("gb5")) push *= 1+Math.sqrt(player.replicanti.galaxies)/550
 		if (GUBought("br5")) push *= 1+Math.min(Math.sqrt(player.dilation.tachyonParticles.max(1).log10())*0.013,0.14)
-		n -= Math.ceil((galReqData.galaxies - galReqData.darkStart + 1) / push)
+		n -= Math.ceil((tmp.grd.galaxies - tmp.grd.darkStart + 1) / push)
 	}
 
-	if (galReqData.speed == 1) return Math.max(n, 0)
-    return n
+	if (tmp.grd.speed == 1) return Math.max(n, 0)
+	return n
 }
 
 function getDistantAdd(x) {
