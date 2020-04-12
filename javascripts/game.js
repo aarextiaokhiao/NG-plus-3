@@ -1222,28 +1222,28 @@ function updateTemp() {
 	if (hasBosonicUpg(14) && !tmp.qu.bigRip.active) tmp.aeg = Math.max(tmp.blu[14] - tmp.qu.electrons.sacGals, 0)
 
 	//Intergalactic reward
-	tmp.igs = 0 //Intergalactic Scaling
 	if (tmp.ngp3) {
 		x = player.galaxies
-		if (!tmp.qu.bigRip.active&&player.ghostify.ghostlyPhotons.enpowerments>2) x *= tmp.le[9]
-		if (tmp.be&&player.dilation.active&&tmp.qu.breakEternity.upgrades.includes(10)) x *= getBreakUpgMult(10)
+		if (!tmp.qu.bigRip.active && player.ghostify.ghostlyPhotons.enpowerments>2) x *= tmp.le[9]
+		if (tmp.be && player.dilation.active && tmp.qu.breakEternity.upgrades.includes(10)) x *= getBreakUpgMult(10)
 		if (!tmp.ngp3l) x += tmp.aeg
 		tmp.igg = x
 
-		var igLog=Math.pow(x, Math.min(Math.sqrt(Math.log10(Math.max(x, 1))) * 2, 2.5))
-		if (!tmp.ngp3l && tmp.qu.bigRip.active && igLog > 1e9) {
+		var igLog = Math.pow(x, Math.min(Math.sqrt(Math.log10(Math.max(x, 1))) * 2, 2.5)) //Log10 of reward
+		tmp.igs = 0 //Intergalactic Scaling
+		if (!tmp.ngp3l && tmp.qu.bigRip.active && igLog > 1e9) { //Distant
 			igLog = Math.pow(igLog * 1e3, .75)
 			tmp.igs = 1
 		}
-		if ((player.aarexModifications.ngudpV || !tmp.ngp3l) && igLog > 1e15) {
-			igLog=Math.pow(10 + 6 * Math.log10(igLog), 7.5)
+		if ((player.aarexModifications.ngudpV || !tmp.ngp3l) && igLog > 1e15) { //Remote
+			igLog = Math.pow(10 + 6 * Math.log10(igLog), 7.5)
 			tmp.igs = 2
 		}
-		if (player.aarexModifications.ngudpV && igLog > 1e16) {
-			igLog=Math.pow(84 + Math.log10(igLog), 8)
+		if (player.aarexModifications.ngudpV && igLog > 1e16) { //Ghostly
+			igLog = Math.pow(84 + Math.log10(igLog), 8)
 			tmp.igs = 3
 		}
-		tmp.ig=Decimal.pow(10,igLog)
+		tmp.ig = Decimal.pow(10, igLog)
 	}
 
 	tmp.rm=getReplMult()
@@ -1655,7 +1655,7 @@ function getGalaxyRequirement(offset = 0, display) {
 			scaling = Math.max(scaling, 3)
 		}
 
-		if (tmp.grd.galaxies >= tmp.grd.darkStart) scaling = 4
+		if (tmp.grd.galaxies >= tmp.grd.darkStart) scaling = Math.max(scaling, 4)
 	}
 	amount = Math.ceil(amount)
 
@@ -1685,7 +1685,7 @@ function getDistantScalingStart() {
 	var n = 100+getECReward(5)
 	if (player.timestudy.studies.includes(223)) n += 7
 	if (player.timestudy.studies.includes(224)) n += Math.floor(player.resets/2000)
-	if (tmp.ngp3) if (tmp.qu.bigRip.active && tmp.qu.bigRip.upgrades.includes(15)) n += Math.sqrt(player.eternityPoints.add(1).log10()) * 3.55
+	if (tmp.ngp3) if (tmp.qu.bigRip.active && tmp.qu.bigRip.upgrades.includes(15)) n += getBigRipUpg15Effect()
 
 	if (tmp.grd.galaxies >= tmp.grd.darkStart) {
 		let push = 5 / tmp.grd.speed
@@ -1837,7 +1837,7 @@ function updateDimensions() {
         var nextGal = getGalaxyRequirement(0, true)
         var totalReplGalaxies = getTotalRG()
         var totalTypes = tmp.aeg ? 4 : player.dilation.freeGalaxies ? 3 : totalReplGalaxies ? 2 : 1
-        document.getElementById("secondResetLabel").innerHTML = (nextGal.scaling > 4 ? "Ghostly" : nextGal.scaling > 3 ? "Dark Matter" : (["", "Distant ", "Farther ", "Remote "])[nextGal.scaling] + "Antimatter") + ' Galaxies ('+ getFullExpansion(player.galaxies) + (totalTypes > 1 ? ' + ' + getFullExpansion(totalReplGalaxies) : '') + (totalTypes > 2 ? ' + ' + getFullExpansion(Math.round(player.dilation.freeGalaxies)) : '') + (totalTypes > 3 ? ' + ' + getFullExpansion(tmp.aeg) : '') +'): requires ' + getFullExpansion(nextGal.amount) + ' '+DISPLAY_NAMES[inNC(4) || player.pSac != undefined ? 6 : 8]+' Dimensions'
+        document.getElementById("secondResetLabel").innerHTML = (["", "Distant ", "Further ", "Remote ", "Dark Matter ", "Ghostly "])[nextGal.scaling] + (nextGal.scaling <= 3 ? "Antimatter " : "") + ' Galaxies ('+ getFullExpansion(player.galaxies) + (totalTypes > 1 ? ' + ' + getFullExpansion(totalReplGalaxies) : '') + (totalTypes > 2 ? ' + ' + getFullExpansion(Math.round(player.dilation.freeGalaxies)) : '') + (totalTypes > 3 ? ' + ' + getFullExpansion(tmp.aeg) : '') +'): requires ' + getFullExpansion(nextGal.amount) + ' '+DISPLAY_NAMES[inNC(4) || player.pSac != undefined ? 6 : 8]+' Dimensions'
 		if (player.achievements.includes("ng3p37") && shiftRequirement.tier > 7) {
 			document.getElementById("intergalacticLabel").parentElement.style.display = ""
 			document.getElementById("intergalacticLabel").innerHTML = (["", "Distant ", "Remote ", "Ghostly "])[tmp.igs] + 'Intergalactic Boost ' + (player.dilation.active || player.galacticSacrifice != undefined ? " (estimated)" : "") + " (" + getFullExpansion(player.galaxies) + (Math.floor(tmp.igg - player.galaxies) > 0 ? " + " + getFullExpansion(Math.floor(tmp.igg - player.galaxies)) : "") + "): " + shorten(dilates(tmp.ig).pow(player.dilation.active?getNanofieldRewardEffect(5):1)) + 'x to Eighth Dimensions'
@@ -8687,7 +8687,7 @@ function gameLoop(diff) {
                 document.getElementById("bigripupg1current").textContent=shortenDimensions(tmp.bru[0])
                 document.getElementById("bigripupg8current").textContent=shortenDimensions(tmp.bru[1])+(Decimal.gte(tmp.bru[1],Number.MAX_VALUE)&&!hasNU(11)?"x (cap)":"x")
                 document.getElementById("bigripupg14current").textContent=tmp.bru[2].toFixed(2)
-                var bru15effect = Math.sqrt(player.eternityPoints.add(1).log10()) * 3.55
+                var bru15effect = getBigRipUpg15Effect()
                 document.getElementById("bigripupg15current").textContent=bru15effect < 999.995 ? bru15effect.toFixed(2) : getFullExpansion(Math.round(bru15effect))
                 document.getElementById("bigripupg16current").textContent=shorten(player.dilation.dilatedTime.div(1e100).pow(0.155).max(1))
                 if (player.ghostify.ghostlyPhotons.unl) {

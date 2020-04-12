@@ -4360,3 +4360,9 @@ function getTreeUpgradeEfficiency(mod) {
 	if (player.achievements.includes("ng3p62")&&tmp.qu.bigRip.active&&!tmp.be&&!tmp.ngp3l) r+=0.5
 	return r
 }
+
+function getBigRipUpg15Effect() {
+	let r = Math.sqrt(player.eternityPoints.add(1).log10()) * 3.55
+	if (r > 1e4 && !tmp.ngp3l) r = Math.sqrt(r * 1e4)
+	return r
+}
