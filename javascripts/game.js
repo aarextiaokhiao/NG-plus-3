@@ -1651,7 +1651,7 @@ function getGalaxyRequirement(offset = 0, display) {
 			if (GUBought("rg7")) speed2 *= 0.9
 			if (GUBought("gb7")) speed2 /= 1+Math.log10(1+player.infinityPoints.max(1).log10())/100
 			if (GUBought("br7")) speed2 /= 1+Math.log10(1+player.eternityPoints.max(1).log10())/80
-			amount = amount * Math.pow(1 + (GUBought("rg1") ? 1 : 2) / (player.aarexModifications.ngmX > 3 ? 10 : 1e3), (tmp.grd.galaxies-remoteStart+1) * speed2)
+			amount *= Math.pow(1 + (GUBought("rg1") ? 1 : 2) / (player.aarexModifications.ngmX > 3 ? 10 : 1e3), (tmp.grd.galaxies - remoteStart + 1) * speed2)
 			scaling = Math.max(scaling, 3)
 		}
 
@@ -2964,10 +2964,11 @@ function updateInfCosts() {
         document.getElementById("dilstudy1").innerHTML = "Unlock time dilation"+(player.dilation.studies.includes(1)?"":"<span>Requirement: 5 EC11 and EC12 completions and "+getFullExpansion(getDilationTotalTTReq())+" total theorems")+"<span>Cost: "+getFullExpansion(5e3)+" Time Theorems"
 
         if (tmp.ngp3) {
+            var ts232display = tmp.ts232*100-100
             document.getElementById("221desc").textContent = "Currently: "+shorten(Decimal.pow(1.0025, player.resets))+"x"
             document.getElementById("227desc").textContent = "Currently: "+shorten(Math.pow(calcTotalSacrificeBoost().max(10).log10(), 10))+"x"
             document.getElementById("231desc").textContent = "Currently: "+shorten(Decimal.pow(Math.max(player.resets, 1), 0.3))+"x more power"
-            document.getElementById("232desc").textContent = "Currently: "+(tmp.ts232*100-100).toFixed(1)+"%"
+            document.getElementById("232desc").textContent = "Currently: "+(ts232display>=999.95?getFullExpansion(Math.floor(ts232display)):ts232display.toFixed(1))+"%"
         }
     }
     if (document.getElementById("ers_timestudies").style.display == "block" && document.getElementById("eternitystore").style.display == "block") updateERSTTDesc()

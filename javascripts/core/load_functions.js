@@ -1618,8 +1618,8 @@ if (player.version < 5) {
   transformSaveToDecimal()
   quantumed = false
   ghostified = false
-  if (player.meta !== undefined) quantumed = tmp.qu.times > 0
   if (player.masterystudies !== undefined) ghostified = player.ghostify.times > 0
+  if (player.meta !== undefined) quantumed = tmp.qu.times > 0 || ghostified
   updateTemp()
   if (player.masterystudies!==undefined) {
 	  if (player.eternityBuyer.presets === undefined) player.eternityBuyer.presets = {on: false, autoDil: false, selected: -1, selectNext: 0, left: 1, order: []}
