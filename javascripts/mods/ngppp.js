@@ -2312,11 +2312,13 @@ function maxBuyBEEPMult() {
 }
 
 function getGHPGain() {
-	if (player.masterystudies == undefined) return new Decimal(0)
-	if (!tmp.qu.bigRip.active) return new Decimal(0)
-	let log=(tmp.qu.bigRip.bestThisRun.log10()/getQCGoal()-1)*2
-	if (log>1e4&&player.aarexModifications.ngudpV!==undefined) log=Math.sqrt(log*1e4)
-	if (player.aarexModifications.nguepV!==undefined) {
+	if (!tmp.ngp3 || !tmp.qu.bigRip.active) return new Decimal(0)
+	if (!tmp.ngp3l && !ghostified) return new Decimal(1)
+	let log=(tmp.qu.bigRip.bestThisRun.log10()/getQCGoal()-1)
+	if (tmp.ngp3l) log*=2
+	else log+=(player.quantum.quarks.add(1).log10()-0)*0
+	if (log>1e4&&player.aarexModifications.ngudpV!=undefined) log=Math.sqrt(log*1e4)
+	if (player.aarexModifications.nguepV!=undefined) {
 		if (log>2e4) log=Math.pow(4e8*log,1/3)
 		if (log>59049) log=Math.pow(Math.log10(log)/Math.log10(9)+4,5)
 	}
