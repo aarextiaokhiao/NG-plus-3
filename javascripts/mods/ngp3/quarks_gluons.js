@@ -242,8 +242,7 @@ function buyGluonUpg(color, id) {
 }
 
 function GUBought(id) {
-	if (!player.masterystudies) return false
-	return tmp.qu.upgrades.includes(id)
+	return tmp.ngp3 && tmp.qu.upgrades.includes(id)
 }
 
 function buyQuarkMult(name) {
