@@ -138,7 +138,7 @@ var masteryStudies = {
 		392: "Preons boost all Emperor Dimensions.",
 		393: "Workers boost Meta Dimensions.",
 		401: "The production of preon anti-energy is slower based on your preons.",
-		402: "Emperor Dimensions and hatch speed are faster by 25x.",
+		402: "Emperor Dimensions and hatch speed are faster by 30x.",
 		411: "The production of preon energy is faster based on your replicants.",
 		412: "Preon effect is 25% stronger.",
 		421: "Tickspeed boosts preon energy production.",
@@ -175,7 +175,8 @@ var masteryStudies = {
 	},
 	ecsUpTo: 14,
 	unlocksUpTo: 14,
-	allConnections: {241: [251, 253, 252], 251: [261, 262], 252: [263, 264, "d7"], 253: [265, 266], 261: ["ec13"], 262: ["ec13"], 263: ["ec13"], 264: ["ec14"], 265: ["ec14"], 266: ["ec14"], d7: [272], 271: [281], 272: [271, 273, 281, 282, "d8"], 273: [282], d8: ["d9"], d9: [291, 292, 302], 291: [301], 292: [303], 301: [311], 302: ["d10"], 303: [312], 311: [321], 312: [323], d10: [322], 322: [331, 332], 331: [342], 332: [343], 342: [341], 343: [344], 344: [351], 351: ["d11"], d11: [361, 362], 361: [371], 362: [373], 371: [372], 372: [381], 373: [382], 381: [391], 382: [383], 383: [393], 391: [392], 393: [392], 392: ["d12"], d12: [401, 402], 401: [411], 402: [412], 411: [421], 412: ["d13"], 421: ["d13"], d13: [431], 431: ["d14"]},
+	allConnections: {241: [251, 253, 252], 251: [261, 262], 252: [263, 264], 253: [265, 266], 261: ["ec13"], 262: ["ec13"], 263: ["ec13"], 264: ["ec14"], 265: ["ec14"], 266: ["ec14"], ec13: ["d7"], ec14: ["d7"], d7: [272], 271: [281], 272: [271, 273, 281, 282, "d8"], 273: [282], d8: ["d9"], d9: [291, 292, 302], 291: [301], 292: [303], 301: [311], 302: ["d10"], 303: [312], 311: [321], 312: [323], d10: [322], 322: [331, 332], 331: [342], 332: [343], 342: [341], 343: [344], 344: [351], 351: ["d11"], d11: [361, 362], 361: [371], 362: [373], 371: [372], 372: [381], 373: [382], 381: [391], 382: [383], 383: [393], 391: [392], 393: [392], 392: ["d12"], d12: [401, 402], 401: [411], 402: [412], 411: [421], 412: ["d13"], 421: ["d13"], d13: [431], 431: ["d14"]},
+	allConnections_legacy: {252: [263, 264, "d7"], ec13: [], ec14: []},
 	allUnlocks: {
 		d7: function() {
 			return quantumed
@@ -268,8 +269,8 @@ function setupMasteryStudies() {
 			part=""
 		}
 		if (typeof(id)=="number") masteryStudies.timeStudies.push(id)
-		var paths=masteryStudies.allConnections[id]
-		if (paths) for (var x=0;x<paths.length;x++) {
+		var paths=getMasteryStudyConnections(id)
+		if (paths!==undefined) for (var x=0;x<paths.length;x++) {
 			var y=paths[x]
 			if (!map.includes(y)) {
 				if (y.toString()[0]=="d") part=y
@@ -278,6 +279,10 @@ function setupMasteryStudies() {
 		}
 		pos++
 	}
+}
+
+function setupMasteryStudiesHTML() {
+	setupMasteryStudies()
 	for (id=0;id<masteryStudies.timeStudies.length;id++) {
 		var name=masteryStudies.timeStudies[id]
 		var html="<span id='ts"+name+"Desc'></span>"
@@ -285,6 +290,10 @@ function setupMasteryStudies() {
 		html+="<br>Cost: <span id='ts"+name+"Cost'></span> Time Theorems"
 		document.getElementById("timestudy"+name).innerHTML=html
 	}
+}
+
+function getMasteryStudyConnections(id) {
+	return (tmp.ngp3l && masteryStudies.allConnections_legacy[id]) || masteryStudies.allConnections[id]
 }
 
 function updateUnlockedMasteryStudies() {
@@ -318,9 +327,14 @@ function addSpentableMasteryStudies(x) {
 	while (true) {
 		var id=map[pos]
 		if (!id) break
+		var isNum=typeof(id)=="number"
+		var ecId=!isNum&&id.split("ec")[1]
+		var canAdd=false
+		if (ecId) canAdd=ECTimesCompleted("eterc"+ecId)
+		else canAdd=player.masterystudies.includes(isNum?"t"+id:id)
 		if (masteryStudies.unlocked.includes(id)&&!masteryStudies.spentable.includes(id)) masteryStudies.spentable.push(id)
-		if (player.masterystudies.includes(typeof(id)=="number"?"t"+id:id)) {
-			var paths=masteryStudies.allConnections[id]
+		if (canAdd) {
+			var paths=getMasteryStudyConnections(id)
 			if (paths) for (var x=0;x<paths.length;x++) map.push(paths[x])
 		}
 		pos++
@@ -329,8 +343,8 @@ function addSpentableMasteryStudies(x) {
 
 function setMasteryStudyCost(id,type) {
 	let d=masteryStudies.initCosts
-	type=masteryStudies.types[type]
-	masteryStudies.costs[type][id]=((tmp.ngp3l&&d[type+"_legacy"][id])||d[type][id]||0)*masteryStudies.costMult
+	let type2=masteryStudies.types[type]
+	masteryStudies.costs[type2][id]=((tmp.ngp3l&&d[type2+"_legacy"][id])||d[type2][id]||0)*(type=="d"?1:masteryStudies.costMult)
 }
 
 function getMasteryStudyCostMult(id) {
@@ -558,7 +572,7 @@ function drawMasteryTree() {
 	drawMasteryBranch("back", "timestudy241")
 	for (var x=0;x<masteryStudies.studies.length;x++) {
 		var id=masteryStudies.studies[x]
-		var paths=masteryStudies.allConnections[id]
+		var paths=getMasteryStudyConnections(id)
 		if (!masteryStudies.unlocked.includes(id)) return
 		if (paths) for (var y=0;y<paths.length;y++) if (masteryStudies.unlocked.includes(paths[y])) drawMasteryBranch(convertMasteryStudyIdToDisplay(id), convertMasteryStudyIdToDisplay(paths[y]))
 	}

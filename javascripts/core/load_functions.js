@@ -1618,10 +1618,10 @@ if (player.version < 5) {
   transformSaveToDecimal()
   quantumed = false
   ghostified = false
-  if (player.masterystudies !== undefined) ghostified = player.ghostify.times > 0
-  if (player.meta !== undefined) quantumed = tmp.qu.times > 0 || ghostified
+  if (tmp.ngp3) ghostified = player.ghostify.times > 0
+  if (player.meta !== undefined) quantumed = ghostified || tmp.qu.times > 0
   updateTemp()
-  if (player.masterystudies!==undefined) {
+  if (tmp.ngp3) {
 	  if (player.eternityBuyer.presets === undefined) player.eternityBuyer.presets = {on: false, autoDil: false, selected: -1, selectNext: 0, left: 1, order: []}
       document.getElementById('prioritydil').value=player.eternityBuyer.dilationPerAmount
       if (player.achievements.includes("ng3p52")) document.getElementById("autoDilValue").value=player.eternityBuyer.dilationPerAmount
@@ -1904,7 +1904,7 @@ if (player.version < 5) {
   document.getElementById('replicantibulkmodetoggle').textContent="Mode: "+(player.galaxyMaxBulk?"Max":"Singles")
   document.getElementById('sacrificeAuto').style.display=speedrunMilestonesReached>24?"":"none"
   document.getElementById('toggleautoquantummode').style.display=(player.masterystudies?tmp.qu.reachedInfQK||player.achievements.includes("ng3p25"):false)?"":"none"
-  var autoAssignUnl = tmp.ngp3 && (tmp.qu.reachedInfQK || ghostified)
+  var autoAssignUnl = tmp.ngp3 && (ghostified || tmp.qu.reachedInfQK)
   document.getElementById('assignAll').style.display = !tmp.ngp3l || autoAssignUnl ? "" : "none"
   document.getElementById('autoAssign').style.display = autoAssignUnl ? "" : "none"
   document.getElementById('autoAssignRotate').style.display = autoAssignUnl ? "" : "none"
@@ -1914,8 +1914,9 @@ if (player.version < 5) {
       updateParadoxUpgrades()
       updatePUCosts()
   }
-  if (player.masterystudies) {
+  if (tmp.ngp3) {
       displayNonlegacyStuff()
+      setupMasteryStudies()
       updateUnlockedMasteryStudies()
       updateSpentableMasteryStudies()
       for (var i=0;i<masteryStudies.timeStudies.length;i++) {
