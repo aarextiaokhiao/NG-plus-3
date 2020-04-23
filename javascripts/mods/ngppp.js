@@ -1094,17 +1094,24 @@ function getHatchSpeed() {
 
 function updateEmperorDimensions() {
 	let production = getGatherRate()
+	let mults = {}
+	let limitDim = tmp.qu.replicants.limitDim
 	document.getElementById("rgEDs").textContent=shortenDimensions(tmp.qu.gluons.rg)
 	document.getElementById("gbEDs").textContent=shortenDimensions(tmp.qu.gluons.gb)
 	document.getElementById("brEDs").textContent=shortenDimensions(tmp.qu.gluons.br)
 	document.getElementById("replicantAmountED").textContent=shortenDimensions(tmp.qu.replicants.amount)
-	for (d=1;d<9;d++) {
-		document.getElementById("empD"+d).textContent = DISPLAY_NAMES[d] + " Emperor Dimension x" + formatValue(player.options.notation, getEmperorDimensionMultiplier(d), 2, 1)
-		document.getElementById("empAmount"+d).textContent = d<8?shortenDimensions(tmp.eds[d].workers)+" (+"+shorten(getEmperorDimensionRateOfChange(d))+dimDescEnd:getFullExpansion(tmp.eds[8].perm)
-		document.getElementById("empQuarks"+d).textContent = shorten(production.workers[d])
-		document.getElementById("empFeed"+d).className=(canFeedReplicant(d)?"stor":"unavailabl")+"ebtn"
-		document.getElementById("empFeed"+d).textContent="Feed ("+Math.round(tmp.eds[d].progress.toNumber()*100)+"%, "+getFullExpansion(tmp.eds[d].perm)+" kept)"
-		document.getElementById("empFeedMax"+d).className=(canFeedReplicant(d)?"stor":"unavailabl")+"ebtn"
+	for (d=1;d<=8;d++) mults[d] = getEmperorDimensionMultiplier(d)
+	for (d=1;d<=8;d++) {
+		if (d > limitDim) document.getElementById("empRow" + d).style.display = "none"
+		else {
+			document.getElementById("empRow"+d).style.display = ""
+			document.getElementById("empD"+d).textContent = DISPLAY_NAMES[d] + " Emperor Dimension x" + formatValue(player.options.notation, mults[d], 2, 1)
+			document.getElementById("empAmount"+d).textContent = d<limitDim?shortenDimensions(tmp.eds[d].workers)+" (+"+shorten(getEmperorDimensionRateOfChange(d))+dimDescEnd:getFullExpansion(tmp.eds[limitDim].perm)
+			document.getElementById("empQuarks"+d).textContent = shorten(production.workers[d])
+			document.getElementById("empFeed"+d).className=(canFeedReplicant(d)?"stor":"unavailabl")+"ebtn"
+			document.getElementById("empFeed"+d).textContent="Feed ("+(d == limitDim || mults[d + 1].times(tmp.eds[d + 1].workers).div(20).lt(1e3) ? Math.round(tmp.eds[d].progress.toNumber() * 100) + "%, " : "")+getFullExpansion(tmp.eds[d].perm)+" kept)"
+			document.getElementById("empFeedMax"+d).className=(canFeedReplicant(d)?"stor":"unavailabl")+"ebtn"
+		}
 	}
 	document.getElementById("totalWorkers").textContent = shortenDimensions(tmp.twr)
 	document.getElementById("totalQuarkProduction").textContent = shorten(production.workersTotal)
