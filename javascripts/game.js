@@ -7848,6 +7848,7 @@ setInterval(function() {
             $.notify("Congratulations! You have unlocked Bosonic Lab!", "success")
             giveAchievement("Even Ghostlier than before")
             updateTemp()
+            updateNeutrinoBoosts()
             updateBLUnlocks()
         }
         if (player.ghostify.milestones>notifyId2) {
