@@ -5161,7 +5161,7 @@ function bigCrunch(autoed) {
             implosionCheck = 1;
             document.getElementById("body").style.animation = "implode 2s 1";
             setTimeout(function(){ document.getElementById("body").style.animation = ""; }, 2000)
-            setTimeout(function(){ bigCrunch(); }, 1000)
+            setTimeout(bigCrunch, 1000)
             return
         }
         implosionCheck = 0;
@@ -8042,7 +8042,7 @@ function gameLoop(diff) {
     player.totalTimePlayed += diffStat
     if (tmp.ngp3) player.ghostify.time += diffStat
     if (player.meta) tmp.qu.time += diffStat
-    if (player.currentEternityChall=="eterc12") diffStat /= 1e3
+    if (player.currentEternityChall == "eterc12") diffStat /= 1e3
     player.thisEternity += diffStat
     player.thisInfinityTime += diffStat
     if (player.galacticSacrifice) player.galacticSacrifice.time += diffStat

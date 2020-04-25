@@ -122,7 +122,7 @@ function drawTreeBranch(num1, num2) {
     ctx.lineWidth=15;
     ctx.beginPath();
     if ((player.timestudy.studies.includes(name1) && player.timestudy.studies.includes(name2) && !isECName) || (player.timestudy.studies.includes(name1) && (player.eternityChallUnlocked === name2 && isECName)) || (player.dilation.studies.includes(name2-1) && (player.dilation.studies.includes(name2) && isDilStudyName))) {
-        if (name2 == 6 && isDilStudyName && player.options.theme == "Aarex's Modifications") {
+        if (name2 == 6 && isDilStudyName && (player.options.theme == "Aarex's Modifications" || player.options.theme == "Aarex's Mods II")) {
             ctx.strokeStyle="#00E5E5";
         } else if (name2 < 20 && isECName) {
             ctx.strokeStyle="#490066";
@@ -144,7 +144,7 @@ function drawTreeBranch(num1, num2) {
             ctx.strokeStyle="#000000";
         }
     } else {
-        if (name2 == 6 && isDilStudyName && player.options.theme == "Aarex's Modifications") {
+        if (name2 == 6 && isDilStudyName && (player.options.theme == "Aarex's Modifications" || player.options.theme == "Aarex's Mods II")) {
             ctx.strokeStyle="#007272";
         } else if (name2 < 20) {
             ctx.strokeStyle="#4b3753";
