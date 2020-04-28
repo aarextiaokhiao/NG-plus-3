@@ -2098,14 +2098,14 @@ function getSpaceShardsGain() {
 	ret = ret.floor()
 	if (player.aarexModifications.ngudpV !== undefined) {
 		let log=ret.log10()
-		let dlog=Math.log10(log)/Math.log10(4)
+		let log4log=Math.log10(log)/Math.log10(4)
 		let start=5 //Starts at e1,024.
 		if (player.aarexModifications.nguepV) start++ //Starts at e4,096.
 		if (player.aarexModifications.ngumuV) start-- //Starts at e256. (NGUd*' only)
-		if (dlog>start) {
-			let capped=Math.min(Math.floor(Math.log10(Math.max(dlog+2-start,1))/Math.log10(2)),10-start)
-			dlog=(dlog-Math.pow(2,capped)-start+2)/Math.pow(2,capped)+capped+start-1
-			log=Math.pow(4,dlog)
+		if (log4log>start) {
+			let capped=Math.min(Math.floor(Math.log10(Math.max(log4log+2-start,1))/Math.log10(2)),10-start)
+			log4log=(log4log-Math.pow(2,capped)-start+2)/Math.pow(2,capped)+capped+start-1
+			log=Math.pow(4,log4log)
 		}
 		if (log>Math.pow(2,20)) log=Math.pow(Math.log2(log)+12,4)
 		ret=Decimal.pow(10,log)
@@ -2225,13 +2225,13 @@ function getEMGain() {
 	let log=player.timeShards.div(1e9).log10()*0.25
 	if (log>15) log=Math.sqrt(log*15)
 	if (player.aarexModifications.ngudpV !== undefined) {
-		let dlog=Math.log10(log)/Math.log10(2)
+		let log2log=Math.log10(log)/Math.log10(2)
 		let start=9 //Starts at e512.
 		if (player.aarexModifications.nguepV !== undefined) start=11 //Starts at e2,048.
-		if (dlog>start) {
-			let capped=Math.min(Math.floor(Math.log10(Math.max(dlog+2-start,1))/Math.log10(2)),20-start)
-			dlog=(dlog-Math.pow(2,capped)-start+2)/Math.pow(2,capped)+capped+start-1
-			log=Math.pow(2,dlog)
+		if (log2log>start) {
+			let capped=Math.min(Math.floor(Math.log10(Math.max(log2log+2-start,1))/Math.log10(2)),20-start)
+			log2log=(log2log-Math.pow(2,capped)-start+2)/Math.pow(2,capped)+capped+start-1
+			log=Math.pow(2,log2log)
 		}
 	}
 	return Decimal.pow(10,log).floor()
