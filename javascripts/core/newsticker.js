@@ -329,8 +329,9 @@ newsArray = [//always true
 ["You have read over meta^-1-Infinity unique news ticker messages! What a great milestone!", "player.newsArray.length > 308", "am176"],
 ["People who read at least 350 news tickers are really unlikely to be ghosts.", "player.newsArray.length >= 350", "am177"],
 ["You are a no-life news reader.", "player.newsArray.length >= 400", "am178"],
-["Is not called matter dimensions for that?", "tmp.ngp3 && tmp.qu.bigRip.active", "am179"]
-/*NEXT ID: am180*/
+["Is not called matter dimensions for that?", "tmp.ngp3 && tmp.qu.bigRip.active", "am179"],
+["aarex has retired back to his cave after apeasing the masses with the higgs boson", false, "am180"]
+/*NEXT ID: am181*/
 ];}
 
 document.addEventListener("visibilitychange", function() {if (!document.hidden) {scrollNextMessage();}}, false);
