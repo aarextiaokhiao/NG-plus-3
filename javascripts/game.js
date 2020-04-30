@@ -916,6 +916,24 @@ function sortNumber(a,b) {
     return a - b;
 }
 
+function wordizeList(list, caseFirst) {
+	let length = list.length
+	if (caseFirst) {
+		let split0 = [list[0][0], list[0].slice(1)]
+		list[0] = split0[0].toUpperCase()
+		if (split0[1]) list[0] += split0[1]
+	}
+	let ret = ""
+	for (var i=0; i<length; i++) {
+		if (i > 0 && length > 2) {
+			ret += ", "
+			if (i == length - 1) ret += "and "
+		} else if (i > 0) ret += " and "
+		ret += list[i]
+	}
+	return ret
+}
+
 Chart.defaults.global.defaultFontColor = 'black';
 Chart.defaults.global.defaultFontFamily = 'Typewriter';
 var ctx2 = document.getElementById("normalDimChart").getContext('2d');
@@ -3092,8 +3110,9 @@ var extraReplGalaxies = 0
 function replicantiGalaxy() {
 	var maxGal=getMaxRG()
 	if (player.replicanti.amount.lt(getReplicantiLimit())||player.replicanti.galaxies==maxGal) return
-	player.replicanti.galaxies=Math.min(player.galaxyMaxBulk?1/0:player.replicanti.galaxies+1,maxGal)
-	player.replicanti.amount=Decimal.div(player.achievements.includes("r126")?player.replicanti.amount:1,Number.MAX_VALUE).max(1)
+	if (player.galaxyMaxBulk) player.replicanti.galaxies=maxGal
+	else player.replicanti.galaxies++
+	if (tmp.ngp3l||!player.achievements.includes("ng3p67")) player.replicanti.amount=Decimal.div(player.achievements.includes("r126")?player.replicanti.amount:1,Number.MAX_VALUE).max(1)
 	galaxyReset(0)
 }
 
@@ -4004,6 +4023,15 @@ function setAchieveTooltip() {
     let tdc = document.getElementById("The Deep Challenge")
     let igu = document.getElementById("I give up.")
 
+	let willenoughReward = []
+	if (!tmp.ngp3l) {
+		willenoughReward.push("you can gain replicated galaxies with reducing replicantis")
+		willenoughReward.push("you keep all your replicated galaxies on Infinity")
+		willenoughReward.push("keep all your replicanti upgrades on Eternity only when you start a normal Eternity run")
+	}
+	if (player.aarexModifications.ngudpV&&!player.aarexModifications.ngumuV) willenoughReward.push("you keep Black Hole Dimensions on Quantum")
+	willenoughReward = wordizeList(willenoughReward, true)
+
     alot.setAttribute('ach-tooltip', "Buy a single Second Dimension."+(player.aarexModifications.ngmX>3?" Reward: You gain Time Shards 100x faster.":""))
     ndial.setAttribute('ach-tooltip', "Have exactly 99 Eighth Dimensions. Reward: Eighth Dimensions are 10% stronger"+(player.tickspeedBoosts==undefined?".":" and you gain more GP based on your Eighth Dimensions and your Tickspeed Boosts."));
     apocAchieve.setAttribute('ach-tooltip', "Get over " + formatValue(player.options.notation, 1e80, 0, 0) + " antimatter.");
@@ -4101,7 +4129,7 @@ function setAchieveTooltip() {
     soLife.setAttribute('ach-tooltip', "Reach "+shortenCosts(Decimal.pow(10, 35e4))+" IP in Big Rip while dilated, with no EP multiplier upgrades and time studies.")
     finite.setAttribute('ach-tooltip', "Get "+shortenCosts(1e33)+" Space Shards without Breaking Eternity."+(tmp.ngp3l?"":" Reward: When Eternity is fixed, add the efficiency of Tree upgrades by 50%. When Eternity is broken, gain an small exponent boost to 8th Time Dimensions based on your current Ghostify time. This reward only works in Big Rips."))
     really.setAttribute('ach-tooltip', "Undo the Big Rip with at least "+shortenCosts(Decimal.pow(10, 5000))+" matter.")
-    willenough.setAttribute('ach-tooltip', "Reach "+shortenCosts(Decimal.pow(10,player.aarexModifications.ngudpV?268435456:36000000))+" replicanti."+(player.aarexModifications.ngudpV&&!player.aarexModifications.ngumuV?" Reward: You keep Black Hole Dimensions on Quantum.":""))
+    willenough.setAttribute('ach-tooltip', "Reach "+shortenCosts(Decimal.pow(10,player.aarexModifications.ngudpV?268435456:36000000))+" replicanti."+(willenoughReward!=""?" Reward: "+willenoughReward+".":""))
     oppose.setAttribute('ach-tooltip', "Become a ghost with at most 1x quantumed stat."+(tmp.ngp3l?"":" Reward: You gain more quarks based on your quantumed stat."))
     pls.setAttribute('ach-tooltip', "Reach "+shortenCosts(Decimal.pow(10, 95e4))+" IP in Big Rip while dilated, with no EP multiplier upgrades, time studies, and Break Eternity. Reward: Each time you become a ghost, you gain "+shortenDimensions(2e3)+" galaxies worth of all generations of neutrinos, multiplied by your best-ever galaxy amount in all Big Rips.")
     bm1.setAttribute('ach-tooltip', "Reward: Start Ghostifies with all Speedrun Milestones and all "+shorten(Number.MAX_VALUE)+" QK features unlocked, all Paired Challenges completed, all Big Rip upgrades bought, Nanofield is 2x faster until you reach 16 rewards, and you get quarks based on your best MA this quantum.")
@@ -5423,7 +5451,7 @@ function bigCrunch(autoed) {
 
         if (player.replicanti.unl && !player.achievements.includes("r95")) player.replicanti.amount = new Decimal(1)
 
-        if (speedrunMilestonesReached < 28) player.replicanti.galaxies = (player.timestudy.studies.includes(33)) ? Math.floor(player.replicanti.galaxies/2) :0
+        if (speedrunMilestonesReached < 28 && (tmp.ngp3l || !player.achievements.includes("ng3p67"))) player.replicanti.galaxies = (player.timestudy.studies.includes(33)) ? Math.floor(player.replicanti.galaxies/2) :0
 
         giveAchievement("To infinity!");
         player.tdBoosts = resetTDBoosts()
@@ -5530,7 +5558,7 @@ function eternity(force, auto, presetLoad, dilated) {
         if (player.dead && !force) giveAchievement("You're already dead.")
         if (player.infinitied <= 1 && !force) giveAchievement("Do I really need to infinity")
         if (gainedEternityPoints().gte("1e600") && player.thisEternity <= 600 && player.dilation.active && !force) giveAchievement("Now you're thinking with dilation!")
-        if (ghostified && player.currentEternityChall == "eterc11" && inQC(6) && inQC(8) && inQCModifier('ad')) giveAchievement("The Deep Challenge")
+        if (ghostified && player.currentEternityChall == "eterc11" && inQC(6) && inQC(8) && inQCModifier("ad") && player.infinityPoints.e >= 15500) giveAchievement("The Deep Challenge")
         if (isEmptiness) {
             showTab("dimensions")
             isEmptiness = false
@@ -5550,7 +5578,6 @@ function eternity(force, auto, presetLoad, dilated) {
             array = [player.thisEternity, getEMGain(), "b"]
             updateBreakEternity()
         }
-        if (player.infinityPoints.e>=15500&&player.currentEternityChall=="eterc11"&&inQC(6)&&inQC(8)&&inQCModifier("ad")) giveAchievement("The Deep Challenge")
         addEternityTime(array)
         var forceRespec = false
         if (player.currentEternityChall !== "") {
@@ -5807,11 +5834,13 @@ function eternity(force, auto, presetLoad, dilated) {
             replicanti: {
                 amount: speedrunMilestonesReached > 23 ? player.replicanti.amount : new Decimal(getEternitied() > 49 ? 1 : 0),
                 unl: getEternitied() > 49 ? true : false,
-                chance: (player.dilation.upgrades.includes("ngpp3")&&getEternitied()>=2e10&&player.masterystudies) ? Math.min(player.replicanti.chance, 1) : 0.01,
-                interval: (player.dilation.upgrades.includes("ngpp3")&&getEternitied()>=2e10&&player.masterystudies) ? Math.max(player.replicanti.interval,player.timestudy.studies.includes(22)?1:50) : 1000,
-                gal: 0,
+                chance: player.replicanti.chance,
+                chanceCost: player.replicanti.chanceCost,
+                interval: player.replicanti.interval,
+                intervalCost: player.replicanti.intervalCost,
+                gal: player.replicanti.gal,
+                galCost: player.replicanti.galCost,
                 galaxies: 0,
-                galCost: new Decimal(player.galacticSacrifice!=undefined?1e110:1e170),
                 galaxybuyer: (getEternitied() > 2) ? player.replicanti.galaxybuyer : undefined,
                 auto: player.replicanti.auto,
                 limit: player.replicanti.newLimit,
@@ -5931,8 +5960,7 @@ function eternity(force, auto, presetLoad, dilated) {
         if (player.replicanti.unl && speedrunMilestonesReached < 22) player.replicanti.amount = new Decimal(1)
         player.replicanti.galaxies = 0
         extraReplGalaxies = 0
-        player.replicanti.chanceCost = Decimal.pow(1e15, player.replicanti.chance * 100).times(player.galacticSacrifice!==undefined?1e75:1e135)
-        player.replicanti.intervalCost = Decimal.pow(1e10, Math.round(Math.log10(1000/player.replicanti.interval)/-Math.log10(0.9))).times(player.galacticSacrifice!==undefined?1e80:player.boughtDims?1e150:1e140)
+        if (dilated || tmp.ngp3l || !player.achievements.includes("ng3p67")) resetReplicantiUpgrades()
         player.tdBoosts = resetTDBoosts()
         resetPSac()
         resetTDs()
@@ -6009,6 +6037,16 @@ function eternity(force, auto, presetLoad, dilated) {
         if (tmp.ngp3&&player.dilation.upgrades.includes("ngpp3")&&getEternitied()>=1e9) player.dbPower=new Decimal(1)
         if (tmp.ngp3) updateBreakEternity()
     }
+}
+
+function resetReplicantiUpgrades() {
+	let keepPartial = tmp.ngp3 && player.dilation.upgrades.includes("ngpp3") && getEternitied() >= 2e10
+	player.replicanti.chance = keepPartial ? Math.min(player.replicanti.chance, 1) : 0.01
+	player.replicanti.interval = keepPartial ? Math.max(player.replicanti.interval, player.timestudy.studies.includes(22) ? 1 : 50) : 1000
+	player.replicanti.gal = 0
+	player.replicanti.chanceCost = Decimal.pow(1e15, player.replicanti.chance * 100).times(player.galacticSacrifice!==undefined?1e75:1e135)
+	player.replicanti.intervalCost = Decimal.pow(1e10, Math.round(Math.log10(1000/player.replicanti.interval)/-Math.log10(0.9))).times(player.galacticSacrifice!==undefined?1e80:player.boughtDims?1e150:1e140)
+	player.replicanti.galCost = new Decimal(player.galacticSacrifice!=undefined?1e110:1e170)	
 }
 
 function challengesCompletedOnEternity(bigRip) {
@@ -6921,11 +6959,13 @@ function startEternityChallenge(n) {
         replicanti: {
             amount: speedrunMilestonesReached > 23 ? player.replicanti.amount : new Decimal(getEternitied() > 49 ? 1 : 0),
             unl: getEternitied() > 49 ? true : false,
-            chance: (player.dilation.upgrades.includes("ngpp3")&&getEternitied()>=2e10&&player.masterystudies) ? Math.min(player.replicanti.chance, 1) : 0.01,
-            interval: (player.dilation.upgrades.includes("ngpp3")&&getEternitied()>=2e10&&player.masterystudies) ? Math.max(player.replicanti.interval,player.timestudy.studies.includes(22)?1:50) : 1000,
-            gal: 0,
+            chance: player.replicanti.chance,
+            chanceCost: player.replicanti.chanceCost,
+            interval: player.replicanti.interval,
+            intervalCost: player.replicanti.intervalCost,
+            gal: player.replicanti.gal,
+            galCost: player.replicanti.galCost,
             galaxies: 0,
-            galCost: new Decimal(player.galacticSacrifice!=undefined?1e110:1e170),
             galaxybuyer: (getEternitied() > 2) ? player.replicanti.galaxybuyer : undefined,
             auto: player.replicanti.auto,
             limit: player.replicanti.newLimit,
@@ -6983,8 +7023,7 @@ function startEternityChallenge(n) {
     if (player.replicanti.unl && speedrunMilestonesReached < 22) player.replicanti.amount = new Decimal(1)
     player.replicanti.galaxies = 0
     extraReplGalaxies = 0
-    player.replicanti.chanceCost = Decimal.pow(1e15, player.replicanti.chance * 100).times(player.galacticSacrifice!==undefined?1e75:1e135)
-    player.replicanti.intervalCost = Decimal.pow(1e10, Math.round(Math.log10(1000/player.replicanti.interval)/-Math.log10(0.9))).times(player.galacticSacrifice!==undefined?1e80:player.boughtDims?1e150:1e140)
+    resetReplicantiUpgrades()
     player.tdBoosts = resetTDBoosts()
     resetPSac()
     resetTDs()
