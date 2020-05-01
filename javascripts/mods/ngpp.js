@@ -286,9 +286,9 @@ function getMetaDimensionProduction(tier) {
 
 function getExtraDimensionBoostPower() {
 	if (player.currentEternityChall=="eterc14"||inQC(7)) return new Decimal(1)
-	let r
-	if (inQC(3)) r=player.meta.bestAntimatter.pow(Math.pow(player.meta.bestAntimatter.max(1e8).log10()/8,2))
-	else r=Decimal.pow(player.meta.bestAntimatter,getExtraDimensionBoostPowerExponent()).plus(1)
+	let r=getExtraDimensionBoostPowerUse()
+	r=r.pow(getExtraDimensionBoostPowerExponent(r)).max(1)
+	if (!inQC(3)) r=r.add(1)
 	if (player.aarexModifications.nguspV) {
 		let l=r.log(2)
 		if (l>1024) r=Decimal.pow(2,Math.pow(l*32,2/3))
@@ -296,8 +296,18 @@ function getExtraDimensionBoostPower() {
 	return r
 }
 
-function getExtraDimensionBoostPowerExponent() {
+function getExtraDimensionBoostPowerUse() {
+	if (!tmp.ngp3l && player.achievements.includes("ng3p71")) return player.meta.bestOverQuantums
+	return player.meta.bestAntimatter
+}
+
+function getExtraDimensionBoostPowerExponent(ma) {
 	let power = 8
+	if (inQC(3)) {
+		power = Math.pow(ma.log10() / 8, 2)
+		if (!tmp.ngp3l && power > 1e8) power = Math.pow(power * 1e6, 4/7)
+		return power
+	}
 	if (player.dilation.upgrades.includes("ngpp5")) power++
 	power += getECReward(13)
 	if (player.masterystudies != undefined) {
@@ -319,7 +329,7 @@ function updateMetaDimensions () {
 	document.getElementById("metaAntimatterAmount").textContent = shortenMoney(player.meta.antimatter)
 	document.getElementById("metaAntimatterBest").textContent = shortenMoney(player.meta.bestAntimatter)
 	document.getElementById("bestAntimatterQuantum").textContent = player.masterystudies && quantumed ? "Your best" + (ghostified ? "" : "-ever") + " meta-antimatter" + (ghostified ? " in this Ghostify" : "") + " was " + shortenMoney(player.meta.bestOverQuantums) + "." : ""
-	document.getElementById("bestAntimatterTranslation").innerHTML = ((player.masterystudies != undefined && tmp.qu.nanofield.rewards > 1) && player.currentEternityChall != "eterc14" && !inQC(3) && !inQC(4) && player.aarexModifications.nguspV === undefined) ? 'Raised to the power of <span id="metaAntimatterPower" style="font-size:35px; color: black">'+formatValue(player.options.notation, getExtraDimensionBoostPowerExponent(), 2, 1)+'</span>, t' : "T"
+	document.getElementById("bestAntimatterTranslation").innerHTML = (tmp.ngp3 && player.aarexModifications.nguspV === undefined && player.currentEternityChall != "eterc14" && (inQC(3) || tmp.qu.nanofield.rewards >= 2) && !inQC(7)) ? 'Raised to the power of <span id="metaAntimatterPower" style="font-size:35px; color: black">'+formatValue(player.options.notation, getExtraDimensionBoostPowerExponent(getExtraDimensionBoostPowerUse()), 2, 1)+'</span>, t' : "T"
 	setAndMaybeShow("bestMAOverGhostifies", ghostified, '"Your best-ever meta-antimatter was " + shortenMoney(player.meta.bestOverGhostifies) + "."')
 	document.getElementById("metaAntimatterEffect").textContent = shortenMoney(getExtraDimensionBoostPower())
 	document.getElementById("metaAntimatterPerSec").textContent = 'You are getting ' + shortenDimensions(getMetaDimensionProduction(1)) + ' meta-antimatter per second.'
@@ -1458,7 +1468,6 @@ function quantumReset(force, auto, challid, bigRip, implode=false) {
 	}
 	document.getElementById("infinityPoints1").innerHTML = "You have <span class=\"IPAmount1\">"+shortenDimensions(player.infinityPoints)+"</span> Infinity points."
 	document.getElementById("infinityPoints2").innerHTML = "You have <span class=\"IPAmount2\">"+shortenDimensions(player.infinityPoints)+"</span> Infinity points."
-	document.getElementById("replicantireset").innerHTML = "Reset replicanti amount, but get a free galaxy<br>"+player.replicanti.galaxies + " replicated galaxies created."
 	document.getElementById("eternitybtn").style.display = player.infinityPoints.gte(player.eternityChallGoal) ? "inline-block" : "none"
 	document.getElementById("eternityPoints2").style.display = "inline-block"
 	document.getElementById("eternitystorebtn").style.display = "inline-block"

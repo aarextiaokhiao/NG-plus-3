@@ -2918,9 +2918,12 @@ function updateInfCosts() {
     if (document.getElementById("replicantis").style.display == "block" && document.getElementById("infinity").style.display == "block") {
         let replGalOver = 0
         if (player.timestudy.studies.includes(131)) replGalOver += Math.floor(player.replicanti.gal / 2)
+        document.getElementById("replicantiamount").textContent = shortenDimensions(player.replicanti.amount)
+        document.getElementById("replicantimult").textContent = shorten(getIDReplMult())
         document.getElementById("replicantimax").innerHTML = (player.replicanti.gal<3e3?"Max Replicanti galaxies":(player.replicanti.gal<58200?"Distant":"Ghostly")+" Replicated Galaxies")+": "+getFullExpansion(player.replicanti.gal)+(replGalOver > 1 ? "+" + getFullExpansion(replGalOver) : "")+"<br>+1 Cost: "+shortenCosts(getRGCost())+" IP"
         document.getElementById("replicantiunlock").innerHTML = "Unlock Replicantis<br>Cost: "+shortenCosts(player.galacticSacrifice!=undefined&&player.tickspeedBoosts==undefined?1e80:1e140)+" IP"
-        document.getElementById("replicantireset").innerHTML = "Reset replicanti amount, but get a free galaxy<br>" + getFullExpansion(player.replicanti.galaxies) + (extraReplGalaxies ? "+" + getFullExpansion(extraReplGalaxies) : "") + " replicated galax" + (getTotalRG() == 1 ? "y" : "ies") + " created."
+        document.getElementById("replicantireset").innerHTML = (!tmp.ngp3l && player.achievements.includes("ng3p67") ? "Get " : player.achievements.includes("ngpp16") ? "Divide replicanti amount by " + shorten(Number.MAX_VALUE) + ", but get " : "Reset replicanti amount, but get ")+"1 free galaxy.<br>" + getFullExpansion(player.replicanti.galaxies) + (extraReplGalaxies ? "+" + getFullExpansion(extraReplGalaxies) : "") + " replicated galax" + (getTotalRG() == 1 ? "y" : "ies") + " created."
+        document.getElementById("replicantireset").style.height = (player.achievements.includes("ngpp16") && (tmp.ngp3l || !player.achievements.includes("ng3p67")) ? 90 : 70) + "px"
 
         document.getElementById("replicantichance").className = (player.infinityPoints.gte(player.replicanti.chanceCost) && isChanceAffordable()) ? "storebtn" : "unavailablebtn"
         document.getElementById("replicantiinterval").className = (player.infinityPoints.gte(player.replicanti.intervalCost) && ((player.replicanti.interval !== 50) || player.timestudy.studies.includes(22)) && (player.replicanti.interval !== 1)) ? "storebtn" : "unavailablebtn"
@@ -4025,11 +4028,11 @@ function setAchieveTooltip() {
 
 	let willenoughReward = []
 	if (!tmp.ngp3l) {
-		willenoughReward.push("you can gain replicated galaxies with reducing replicantis")
+		willenoughReward.push("replicated galaxies doesn't divide replicantis")
 		willenoughReward.push("you keep all your replicated galaxies on Infinity")
 		willenoughReward.push("keep all your replicanti upgrades on Eternity only when you start a normal Eternity run")
 	}
-	if (player.aarexModifications.ngudpV&&!player.aarexModifications.ngumuV) willenoughReward.push("you keep Black Hole Dimensions on Quantum")
+	if (player.aarexModifications.ngudpV&&!player.aarexModifications.ngumuV) willenoughReward.push("keep Black Hole Dimensions on Quantum")
 	willenoughReward = wordizeList(willenoughReward, true)
 
     alot.setAttribute('ach-tooltip', "Buy a single Second Dimension."+(player.aarexModifications.ngmX>3?" Reward: You gain Time Shards 100x faster.":""))
@@ -4139,6 +4142,7 @@ function setAchieveTooltip() {
     mi.setAttribute('ach-tooltip', "Get "+shorten(Number.MAX_VALUE)+" infinitied stat. Reward: You gain banked infinites and eternities when you either go quantum or Big Rip the universe without having to gain infinitied and eternitied.")
     wd.setAttribute('ach-tooltip', "Get "+shortenCosts(Decimal.pow(10, 1e12))+" Infinity Unstable Quarks for each Branch without Big Ripping.")
     arent.setAttribute('ach-tooltip', "Reach "+shortenCosts(Decimal.pow(10, 18e5))+" IP while dilated and big ripped and without having studies, EP mult upgrades, Tree Upgrades, and Break Eternity.")
+	document.getElementById("Even Ghostlier than before").setAttribute("ach-tooltip", "Unlock Bosonic Lab." + (tmp.ngp3l ? "" : " Reward: Meta-antimatter effect uses your best meta-antimatter in your current Ghostify instead of your current Quantum."))
     ee.setAttribute('ach-tooltip', "Get "+shorten(Number.MAX_VALUE)+" eternitied stat.")
     oc.setAttribute('ach-tooltip', "Become a ghost with at least "+shortenCosts(Decimal.pow(10, 375e3))+" EP while Big Ripped with Anti-Dilation modifier.")
     btco.setAttribute('ach-tooltip', "Get a Paired Challenge 1 reward after you get "+shortenCosts(Decimal.pow(10, 165e7))+" antimatter in Quantum Challenges 6 and 8.")
@@ -5460,8 +5464,6 @@ function bigCrunch(autoed) {
         reduceDimCosts()
         setInitialDimensionPower();
 
-        document.getElementById("replicantireset").innerHTML = "Reset replicanti amount, but get a free galaxy<br>" + getFullExpansion(player.replicanti.galaxies) + (extraReplGalaxies ? "+" + getFullExpansion(extraReplGalaxies) : "") + " replicated galax" + (getTotalRG() == 1 ? "y" : "ies") + " created."
-
         if (player.achievements.includes("r36")) player.tickspeed = player.tickspeed.times(0.98);
         if (player.achievements.includes("r45")) player.tickspeed = player.tickspeed.times(0.98);
         if (player.achievements.includes("r66")) player.tickspeed = player.tickspeed.times(0.98);
@@ -6016,7 +6018,6 @@ function eternity(force, auto, presetLoad, dilated) {
             document.getElementById("infmultbuyer").textContent = "Autobuy IP mult O"+(player.infMultBuyer?"N":"FF")
         }
         hideMaxIDButton()
-        document.getElementById("replicantireset").innerHTML = "Reset replicanti amount, but get a free galaxy<br>0 replicated galaxies created."
         document.getElementById("eternitybtn").style.display = player.infinityPoints.gte(player.eternityChallGoal) ? "inline-block" : "none"
         document.getElementById("eternityPoints2").style.display = "inline-block"
         document.getElementById("eternitystorebtn").style.display = "inline-block"
@@ -6338,8 +6339,6 @@ function startChallenge(name) {
 	setInitialMoney()
 
     if (player.infinitied >= 10) giveAchievement("That's a lot of infinites");
-
-    document.getElementById("replicantireset").innerHTML = "Reset replicanti amount, but get a free galaxy<br>" + player.replicanti.galaxies + (extraReplGalaxies ? "+" + extraReplGalaxies : "") + " replicated galax" + (getTotalRG() == 1 ? "y" : "ies") + " created."
 
     resetInfDimensions();
     hideDimensions()
@@ -7074,7 +7073,6 @@ function startEternityChallenge(n) {
         document.getElementById("infmultbuyer").textContent = "Autobuy IP mult O"+(player.infMultBuyer?"N":"FF")
     }
     hideMaxIDButton()
-    document.getElementById("replicantireset").innerHTML = "Reset replicanti amount, but get a free galaxy<br>0 replicated galaxies created."
     document.getElementById("eternitybtn").style.display = player.infinityPoints.gte(player.eternityChallGoal) ? "inline-block" : "none"
     document.getElementById("eternityPoints2").style.display = "inline-block"
     document.getElementById("eternitystorebtn").style.display = "inline-block"
@@ -8473,13 +8471,10 @@ function gameLoop(diff) {
     }
 
     document.getElementById("replicantiapprox").innerHTML = tmp.ngp3 && player.dilation.upgrades.includes("ngpp1") && player.timestudy.studies.includes(192) && player.replicanti.amount.gte(Number.MAX_VALUE) && (!player.aarexModifications.nguspV || player.aarexModifications.nguepV) ? 
-		"Replicanti increases by " + (estLog10 < Math.log10(2) ? "x2.00 per " + timeDisplay(Math.log10(2) / estLog10 * 10) : (estLog10.gte(1e4) ? shorten(estLog10) + " OoMs" : "x" + shorten(Decimal.pow(10, estLog10.toNumber()))) + " per second") + ".<br>" +
+		"Replicanti increases by " + (estLog10 < Math.log10(2) ? "x2.00 per " + timeDisplayShort(Math.log10(2) / estLog10 * 10) : (estLog10.gte(1e4) ? shorten(estLog10) + " OoMs" : "x" + shorten(Decimal.pow(10, estLog10.toNumber()))) + " per second") + ".<br>" +
 		"Replicate interval slows down by " + replSpeeds.inc.toFixed(3) + "x per " + getFullExpansion(Math.floor(replSpeeds.exp)) + " OoMs.<br>" +
 		"(2x slower per " + getFullExpansion(Math.floor(replSpeeds.exp * Math.log10(2) / Math.log10(replSpeeds.inc))) + " OoMs)" :
 		"Approximately "+ timeDisplay(Math.max((Math.log(Number.MAX_VALUE) - current) / est.toNumber(), 0)*10) + " Until Infinite Replicanti"
-
-    document.getElementById("replicantiamount").textContent = shortenDimensions(player.replicanti.amount)
-    document.getElementById("replicantimult").textContent = shorten(getIDReplMult())
 
     var currentQKmin = new Decimal(0)
     var currentGHPmin = new Decimal(0)
