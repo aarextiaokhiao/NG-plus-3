@@ -213,14 +213,14 @@ const allAchievements = {
   ng3ps16 : "Up and Down and Up and Down...",
   ng3ps17 : "Did you not understand the automation?",
   ng3ps18 : "The Ultimate Challenge",
-  ng3ps21 : "ng3ps21",
-  ng3ps22 : "ng3ps22",
-  ng3ps23 : "ng3ps23",
+  ng3ps21 : "The Forbidden Layer",
+  ng3ps22 : "400% Breaking News",
+  ng3ps23 : "keyboard broke?",
   ng3ps24 : "ng3ps24",
   ng3ps25 : "ng3ps25",
   ng3ps26 : "ng3ps26",
   ng3ps27 : "ng3ps27",
-  ng3ps28 : "ng3ps28"
+  ng3ps28 : "Good Luck"
 };
 const secretAchievementTooltips = {
 	s11 : "Click on this achievement.",
@@ -255,14 +255,14 @@ const secretAchievementTooltips = {
 	ng3ps16 : 'Press the "Continue to mastery studies." button and the "Lead back to time studies." button 100 times each.',
 	ng3ps17 : "Manually extract 20 runes in the row, all in 1 game tick for each rune.",
 	ng3ps18 : "Be in 20 unique challenges at the same time.",
-	ng3ps21 : "ng3ps21",
-	ng3ps22 : "ng3ps22",
-	ng3ps23 : "ng3ps23",
+	ng3ps21 : "Import Zombify, which is a cancelled layer.",
+	ng3ps22 : "Read 400 unique news tickers.",
+	ng3ps23 : "You have a 1/1,000,000 chance of getting this achievement every time you press a key.",
 	ng3ps24 : "ng3ps24",
 	ng3ps25 : "ng3ps25",
 	ng3ps26 : "ng3ps26",
 	ng3ps27 : "ng3ps27",
-	ng3ps28 : "ng3ps28"
+	ng3ps28 : "You have a 1/100,000 chance of getting this achievement every time you become a ghost."
 };
 const allAchievementNums = Object.invert(allAchievements)
 // to retrieve by value: Object.keys(allAchievements).find(key => allAchievements[key] === "L4D: Left 4 Dimensions");
@@ -307,7 +307,7 @@ function giveAchievement(name, noUpdate) {
 		if (player.meta==undefined&&(player.exdilation==undefined||(ngppAchId!=13&&ngppAchId!=18))) return
 	}
 
-	if (allAchievementNums[name].split("ng3p")[1]&&!player.masterystudies) return false
+	if (allAchievementNums[name].split("ng3p")[1]&&!tmp.ngp3) return false
 
 	if (player.boughtDims) {
 		var r=allAchievementNums[name].split("r")[1]
@@ -427,7 +427,8 @@ function updateAchievements() {
 		var shown=true
 		var rowid="secretAchRow"+i
 		if (i>3) {
-			shown=player.masterystudies!==undefined
+			shown=tmp.ngp3
+			if (shown&&i>4) shown=!tmp.ngp3l
 			rowid="secretAchRowng3p"+(i-3)
 		}
 		var n = 0

@@ -3720,6 +3720,7 @@ function import_save(type) {
 		setTimeout(function(){ document.getElementById("body").style.animation = ""; }, 5000)
 	}
 	if (sha512_256(save_data.replace(/\s/g, '').toUpperCase()) === "857876556a230da15fe1bb6f410ca8dbc9274de47c1a847c2281a7103dd2c274") giveAchievement("So do I");
+	if (sha512_256(save_data.replace(/\s/g, '').toUpperCase()) === "8aaff3cdcf68f6392b172ee9924a22918451e511c8e60b120f09e2c16d4e26ac" && !tmp.ngp3l) giveAchievement("The Forbidden Layer");
 	if (sha512_256(save_data) === "de24687ee7ba1acd8f5dc8f71d41a3d4b7f14432fff53a4d4166e7eea48a88c0") {
 		player.options.theme = "S1";
 		player.options.secretThemeKey = save_data;
@@ -9472,6 +9473,7 @@ window.addEventListener('keydown', function(event) {
         $.notify("Paying respects", "info")
         giveAchievement("It pays to have respect")
     }
+	if (!tmp.ngp3l && Math.random() <= 1e-6) giveAchievement("keyboard broke?")
     if (!player.options.hotkeys || controlDown === true || document.activeElement.type === "text") return false
     switch (event.keyCode) {
         case 67: // C

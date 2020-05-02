@@ -2364,6 +2364,7 @@ function ghostify(auto, force) {
 function ghostifyReset(implode, gain, amount, force) {
 	var bulk = getGhostifiedGain()
 	if (!force) {
+		if (!tmp.ngp3l && Math.random() <= 1e-5) giveAchievement("Good Luck")
 		if (!implode) {
 			var gain = getGHPGain()
 			player.ghostify.ghostParticles = player.ghostify.ghostParticles.add(gain).round()
