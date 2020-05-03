@@ -10,6 +10,7 @@ var justImported = false;
 var saved = 0;
 var painTimer = 0;
 var keySequence = 0;
+var keySequence2 = 0;
 var failureCount = 0;
 var implosionCheck = 0;
 var TIER_NAMES = [ null, "first", "second", "third", "fourth", "fifth", "sixth", "seventh", "eight" ];
@@ -1358,6 +1359,12 @@ function updateCoinPerSec() {
 	var ret = getDimensionProductionPerSecond(1)
 	if (player.pSac !== undefined) ret = ret.div(getEC12Mult())
 	element.textContent = 'You are getting ' + shortenND(ret) + ' antimatter per second.'
+}
+
+var clickedAntimatter
+function onAntimatterClick() {
+	clickedAntimatter++
+	if (!tmp.ngp3l && clickedAntimatter >= 10) giveAchievement("This is NOT a clicker game!")
 }
 
 function getInfinitied() {
@@ -9375,6 +9382,17 @@ window.addEventListener('keydown', function(event) {
         giveAchievement("30 Lives")
     } else {
         keySequence = 0;
+    }
+    if (keySequence2 == 0 && event.keyCode == 49) {
+        keySequence2++
+    } else if (keySequence2 == 1 && event.keyCode == 55) {
+        keySequence2++
+    } else if (keySequence2 == 2 && event.keyCode == 55) {
+        keySequence2++
+    } else if (keySequence2 == 3 && event.keyCode == 54) {
+        if (!tmp.ngp3l) giveAchievement("Revolution, when?")
+    } else {
+        keySequence2 = 0
     }
     if (event.keyCode == 17) controlDown = true;
     if (event.keyCode == 16) {

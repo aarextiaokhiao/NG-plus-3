@@ -2335,10 +2335,13 @@ function getGHPGain() {
 ghostified = false
 function ghostify(auto, force) {
 	if (!force&&(!isQuantumReached()||!tmp.qu.bigRip.active||implosionCheck)) return
-	if (player.aarexModifications.ghostifyConf&&!auto&&!force) if(!confirm("Becoming a ghost resets everything quantum resets, and also resets your banked stats, best TP & MA, quarks, gluons, electrons, Quantum Challenges, Replicants, Nanofield, and Tree of Decay to gain a Ghost Particle. Are you ready for this?")) return
-	if (!ghostified) {
-		if (!confirm("Are you sure you want to do that? You will lose everything you have!")) return
-		if (!confirm("ARE YOU REALLY SURE YOU WANT TO DO THAT? YOU CAN'T UNDO THIS AFTER YOU BECAME A GHOST AND PASS THE UNIVERSE EVEN IT IS BIG RIPPED! THIS IS YOUR LAST CHANCE!")) return
+	if (!auto && !force && player.aarexModifications.ghostifyConf && !confirm("Becoming a ghost resets everything quantum resets, and also resets your banked stats, best TP & MA, quarks, gluons, electrons, Quantum Challenges, Replicants, Nanofield, and Tree of Decay to gain a Ghost Particle. Are you ready for this?")) {
+		denyGhostify()
+		return
+	}
+	if (!ghostified && (!confirm("Are you sure you want to do that? You will lose everything you have!") || !confirm("ARE YOU REALLY SURE YOU WANT TO DO THAT? YOU CAN'T UNDO THIS AFTER YOU BECAME A GHOST AND PASS THE UNIVERSE EVEN IT IS BIG RIPPED! THIS IS YOUR LAST CHANCE!"))) {
+		denyGhostify()
+		return
 	}
 	var implode = player.options.animations.ghostify && !force
 	if (implode) {
@@ -2361,10 +2364,19 @@ function ghostify(auto, force) {
 	} else ghostifyReset(false, 0, 0, force)
 }
 
+var ghostifyDenied
+function denyGhostify() {
+	ghostifyDenied++
+	if (!tmp.ngp3l && ghostifyDenied >= 15) giveAchievement("You are supposed to become a ghost!")
+}
+
 function ghostifyReset(implode, gain, amount, force) {
 	var bulk = getGhostifiedGain()
 	if (!force) {
-		if (!tmp.ngp3l && Math.random() <= 1e-5) giveAchievement("Good Luck")
+		if (!tmp.ngp3l) {
+			if (Math.random() <= 1e-5) giveAchievement("Good Luck")
+		    if (tmp.qu.times >= 1e3 && player.ghostify.milestones >= 16) giveAchievement("Scared of ghosts?")
+		}
 		if (!implode) {
 			var gain = getGHPGain()
 			player.ghostify.ghostParticles = player.ghostify.ghostParticles.add(gain).round()

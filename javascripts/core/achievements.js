@@ -216,10 +216,10 @@ const allAchievements = {
   ng3ps21 : "The Forbidden Layer",
   ng3ps22 : "400% Breaking News",
   ng3ps23 : "keyboard broke?",
-  ng3ps24 : "ng3ps24",
-  ng3ps25 : "ng3ps25",
-  ng3ps26 : "ng3ps26",
-  ng3ps27 : "ng3ps27",
+  ng3ps24 : "Scared of ghosts?",
+  ng3ps25 : "This is NOT a clicker game!",
+  ng3ps26 : "You are supposed to become a ghost!",
+  ng3ps27 : "Revolution, when?",
   ng3ps28 : "Good Luck"
 };
 const secretAchievementTooltips = {
@@ -258,10 +258,10 @@ const secretAchievementTooltips = {
 	ng3ps21 : "Import Zombify, which is a cancelled layer.",
 	ng3ps22 : "Read 400 unique news tickers.",
 	ng3ps23 : "You have a 1/1,000,000 chance of getting this achievement every time you press a key.",
-	ng3ps24 : "ng3ps24",
-	ng3ps25 : "ng3ps25",
-	ng3ps26 : "ng3ps26",
-	ng3ps27 : "ng3ps27",
+	ng3ps24 : "Become a ghost with at least 1,000x quantumed stat after getting all Brave Milestones.",
+	ng3ps25 : "Click the antimatter display 10 times in a single session.",
+	ng3ps26 : "Deny the Ghostify confirmation 15 times in a single session.",
+	ng3ps27 : "Type 1776 on your keyboard.",
 	ng3ps28 : "You have a 1/100,000 chance of getting this achievement every time you become a ghost."
 };
 const allAchievementNums = Object.invert(allAchievements)

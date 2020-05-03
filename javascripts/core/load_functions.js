@@ -9,6 +9,8 @@ function onLoad(noOffline) {
   tmp.qu=player.quantum
   tmp.eds=tmp.qu&&tmp.qu.emperorDimensions
   happyHalloween=false
+  clickedAntimatter=0
+  ghostifyDenied=0
   if (player.totalmoney === undefined || isNaN(player.totalmoney)) player.totalmoney = player.money;
   if (player.tickspeed === undefined) player.tickspeed = new Decimal(1000)
   if (player.options === undefined) {
