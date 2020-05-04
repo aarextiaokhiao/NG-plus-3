@@ -1861,18 +1861,17 @@ if (player.version < 5) {
   document.getElementById("ic7reward").textContent="Reward: Dimensional boost multiplier "+(player.galacticSacrifice?"is squared":"2.5x -> 4x")
   document.getElementById("replicantitabbtn").style.display=player.infinityUpgradesRespecced?"none":""
   document.getElementById("replicantiresettoggle").textContent="Auto galaxy "+(player.replicanti.galaxybuyer?"ON":"OFF")+(player.timestudy.studies.includes(131)&&speedrunMilestonesReached<20?" (disabled)":"")
-  document.getElementById("41").innerHTML="Each galaxy gives a 1."+(player.aarexModifications.newGameExpVersion?5:2)+"x multiplier on IP gained. <span>Cost: 4 Time Theorems"
-  document.getElementById("42").innerHTML=(player.galacticSacrifice?"Galaxy cost multiplier is reduced by "+(player.aarexModifications.newGameExpVersion?12:13)+"/15x":"Galaxy requirement goes up "+(player.aarexModifications.newGameExpVersion?48:52)+" 8ths instead of 60")+".<span>Cost: 6 Time Theorems"
-  document.getElementById("61").innerHTML="You gain 10"+(player.aarexModifications.newGameExpVersion?0:"")+"x more EP<span>Cost: 3 Time Theorems"
-  document.getElementById("62desc").textContent=getTS62Mult()
-  document.getElementById("81").innerHTML="Dimensional boost power "+(player.galacticSacrifice?"is cubed":"becomes 10x")+"<span>Cost: 4 Time Theorems"
-  document.getElementById("213desc").textContent=getTS213Mult()
-  document.getElementById("221").style["font-size"] = player.masterystudies !== undefined ? "0.45rem" : "0.55rem"
-  document.getElementById("221desc").textContent = ""
-  document.getElementById("227desc").textContent = ""
-  document.getElementById("231").style["font-size"] = player.masterystudies !== undefined ? "0.55rem" : "0.65rem"
-  document.getElementById("231desc").textContent = ""
-  document.getElementById("232desc").textContent = ""
+  document.getElementById("41desc").textContent=tsMults[41]()
+  document.getElementById("42desc").textContent=player.galacticSacrifice?"Galaxy cost multiplier is reduced by "+Math.round(tsMults[42]()*15)+"/15x.":"Galaxy requirement goes up "+(60*tsMults[42]())+" 8ths instead of 60."
+  document.getElementById("61desc").innerHTML=tsMults[61]()
+  document.getElementById("62desc").textContent=tsMults[62]()
+  document.getElementById("81desc").textContent=player.galacticSacrifice?"is cubed":"becomes 10x"
+  document.getElementById("181desc").textContent = player.galacticSacrifice !== undefined && player.tickspeedBoosts === undefined && !tmp.ngp3l ? "1% of IP and GP gain on next reset" : "1% of your IP gained on crunch"
+  document.getElementById("211desc").textContent=tsMults[211]()
+  document.getElementById("213desc").textContent=tsMults[213]()
+  document.getElementById("221").style["font-size"] = tmp.ngp3 ? "0.45rem" : "0.55rem"
+  document.getElementById("222desc").textContent=tsMults[222]()
+  document.getElementById("231").style["font-size"] = tmp.ngp3 ? "0.55rem" : "0.65rem"
   document.getElementById('replicantigalaxypowerdiv').style.display=player.achievements.includes("r106")&&player.boughtDims?"":"none"
   document.getElementById("dilationeterupgrow").style.display="none"
   document.getElementById("blackHoleAnimBtn").style.display="none"
@@ -2070,7 +2069,7 @@ if (player.version < 5) {
       if (player.meta!==undefined||player.exdilation!==undefined) {
           if (!player.aarexModifications.newGamePlusVersion) ngModeMessages.push("WARNING! You are disabling NG+ features on NG++! Standard NG++ have all of NG++ features and I recommend you to create a new save with NG+ and NG++ modes on.")
           if (player.aarexModifications.ngp4V) ngModeMessages.push("Welcome to NG++++ mode by Aarex! This is a NG+ version of NG+3 which makes you start with more stuff! It is recommended to not use this mode to progress in NG+3.")
-          if (player.aarexModifications.ngp3lV) ngModeMessages.push("Welcome to NG+++ Legacy mode, made by Aarex! This mod is basically the last version of NG+3 before NG+3.1 happens. Good luck.")
+          if (player.aarexModifications.ngp3lV) ngModeMessages.push("Welcome to NG+++ Legacy mode, made by Aarex! All mods are affected to use things from the last version of NG+3 before NG+3.1. Good luck.")
           if (player.exdilation!==undefined) {
               if (player.aarexModifications.nguspV) ngModeMessages.push("Welcome to NG Update Semiprime mode made by Aarex! This is like NGUd', but it is really a combination of NG+3 and NGUd. This mode is more balanced too. Good luck! :)")
               if (player.aarexModifications.ngumuV||player.aarexModifications.nguepV) {

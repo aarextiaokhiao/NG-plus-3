@@ -6,7 +6,7 @@ function getTimeDimensionPower(tier) {
   var ret = dim.power.pow(player.boughtDims?1:2)
   if (tmp.be) {
     ret = tmp.it
-    if (player.timestudy.studies.includes(11) && tier == 1) ret = ret.times(getTS11Mult())
+    if (player.timestudy.studies.includes(11) && tier == 1) ret = ret.times(tsMults[11]())
     if (tmp.qu.breakEternity.upgrades.includes(1) && tier < 5) ret = ret.times(getBreakUpgMult(1))
     if (tmp.qu.breakEternity.upgrades.includes(4) && tier > 3 && tier < 7) ret = ret.times(getBreakUpgMult(4))
     if (tmp.qu.bigRip.upgrades.includes(13)) ret = ret.times(player.replicanti.amount.max(1).pow(1e-6))
@@ -36,7 +36,7 @@ function getTimeDimensionPower(tier) {
       if (player.galacticSacrifice.upgrades.includes(31)) ret = ret.pow(galMults.u31())
   }
 
-  if (player.timestudy.studies.includes(11) && tier == 1) ret = ret.times(getTS11Mult())
+  if (player.timestudy.studies.includes(11) && tier == 1) ret = ret.times(tsMults[11]())
   if (player.achievements.includes("r105")) ret = ret.times(tmp.it)
   if (player.boughtDims) {
       if (player.achievements.includes('r117')) {

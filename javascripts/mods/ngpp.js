@@ -768,6 +768,7 @@ function quantumReset(force, auto, challid, bigRip, implode=false) {
 			updateSpeedruns()
 		}
 		tmp.qu.times++
+		if (!tmp.ngp3l && tmp.qu.times >= 1e4) giveAchievement("Prestige No-lifer")
 		if (!inQC(6)) {
 			tmp.qu.quarks = tmp.qu.quarks.add(qkGain)
 			if (!tmp.ngp3 || player.ghostify.milestones < 8) tmp.qu.quarks = tmp.qu.quarks.round()

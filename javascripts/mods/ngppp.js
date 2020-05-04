@@ -2373,10 +2373,7 @@ function denyGhostify() {
 function ghostifyReset(implode, gain, amount, force) {
 	var bulk = getGhostifiedGain()
 	if (!force) {
-		if (!tmp.ngp3l) {
-			if (Math.random() <= 1e-5) giveAchievement("Good Luck")
-		    if (tmp.qu.times >= 1e3 && player.ghostify.milestones >= 16) giveAchievement("Scared of ghosts?")
-		}
+		if (!tmp.ngp3l && tmp.qu.times >= 1e3 && player.ghostify.milestones >= 16) giveAchievement("Scared of ghosts?")
 		if (!implode) {
 			var gain = getGHPGain()
 			player.ghostify.ghostParticles = player.ghostify.ghostParticles.add(gain).round()

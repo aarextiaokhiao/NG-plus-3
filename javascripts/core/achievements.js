@@ -218,9 +218,9 @@ const allAchievements = {
   ng3ps23 : "keyboard broke?",
   ng3ps24 : "Scared of ghosts?",
   ng3ps25 : "This is NOT a clicker game!",
-  ng3ps26 : "You are supposed to become a ghost!",
+  ng3ps26 : "Deny the afterlife",
   ng3ps27 : "Revolution, when?",
-  ng3ps28 : "Good Luck"
+  ng3ps28 : "Prestige No-lifer"
 };
 const secretAchievementTooltips = {
 	s11 : "Click on this achievement.",
@@ -262,7 +262,7 @@ const secretAchievementTooltips = {
 	ng3ps25 : "Click the antimatter display 10 times in a single session.",
 	ng3ps26 : "Deny the Ghostify confirmation 15 times in a single session.",
 	ng3ps27 : "Type 1776 on your keyboard.",
-	ng3ps28 : "You have a 1/100,000 chance of getting this achievement every time you become a ghost."
+	ng3ps28 : "Quantum 10,000 times."
 };
 const allAchievementNums = Object.invert(allAchievements)
 // to retrieve by value: Object.keys(allAchievements).find(key => allAchievements[key] === "L4D: Left 4 Dimensions");

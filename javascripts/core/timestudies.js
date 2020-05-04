@@ -809,25 +809,39 @@ function changePresetTitle(id, placement) {
 }
 
 //Time Study Effects
-function getTS11Mult() {
-	let bigRipped = player.masterystudies === undefined ? false : tmp.qu.bigRip.active
-	let log = -player.tickspeed.div(1e3).pow(0.005).times(0.95).plus(player.tickspeed.div(1e3).pow(0.0003).times(0.95)).log10()
-	if (bigRipped && log > 900) log = Math.sqrt(log * 900)
-	else if (player.galacticSacrifice === undefined) log = Math.min(log, 2500)
-	log /= player.aarexModifications.newGameExpVersion ? 4 : 1
-	return Decimal.pow(10, log)
-}
-
-function getTS32Mult() {
-	return Math.pow(Math.max(player.resets,1),player.aarexModifications.newGameMult?4:1)
-}
-
-function getTS62Mult() {
-	let r=player.aarexModifications.newGameExpVersion?4:3
-	if (tmp.ngex) r--
-	return r
-}
-
-function getTS213Mult() {
-	return tmp.ngex?10:20
+let tsMults = {
+	11: function() {
+		let bigRipped = tmp.ngp3 && tmp.qu.bigRip.active
+		let log = -player.tickspeed.div(1e3).pow(0.005).times(0.95).plus(player.tickspeed.div(1e3).pow(0.0003).times(0.95)).log10()
+		if (bigRipped && log > 900) log = Math.sqrt(log * 900)
+		else if (player.galacticSacrifice === undefined) log = Math.min(log, 2500)
+		log /= player.aarexModifications.newGameExpVersion ? 4 : 1
+		return Decimal.pow(10, log)
+	},
+	32: function() {
+		return Math.pow(Math.max(player.resets, 1), player.aarexModifications.newGameMult ? 4 : 1)
+	},
+	41: function() {
+		return player.aarexModifications.newGameExpVersion ? 1.5 : 1.2
+	},
+	42: function() {
+		return (player.aarexModifications.newGameExpVersion ? 12 : 13) / 15
+	},
+	61: function() {
+		return player.aarexModifications.newGameExpVersion ? 100 : 10
+	},
+	62: function() {
+		let r=player.aarexModifications.newGameExpVersion ? 4 : 3
+		if (tmp.ngex) r--
+		return r
+	},
+	211: function() {
+		return player.galacticSacrifice !== undefined && !tmp.ngp3l ? 1 : 5
+	},
+	213: function() {
+		return tmp.ngex ? 10 : 20
+	},
+	222: function() {
+		return player.galacticSacrifice !== undefined && !tmp.ngp3l ? .5 : 2
+	}
 }

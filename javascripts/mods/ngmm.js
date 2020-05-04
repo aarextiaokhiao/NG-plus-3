@@ -551,14 +551,15 @@ function getGSoffset(offset=0) {
 	return getGSAmount(offset)
 }
 
-function getG11Infinities(){
+function getG11Infinities() {
 	let x = getInfinitied()
-	if (x>1e6 && getEternitied() == 0) x = 1e6
-	if (tmp.cp>0&&getEternitied()>0&&getInfinitied() < 1e8) x+=2e6
+	let e = getEternitied()
+	if (e == 0 && x > 1e6) x = tmp.ngp3l ? 1e6 : Math.min(Math.pow(x * 1e12, 1/3), 1e7)
+	if (e > 0 && x < 1e8 && tmp.cp > 0) x += 2e6
 	if (player.infinityUpgrades.includes("postinfi61")) x += 1e7
-	if (player.infinityUpgrades.includes("postinfi61") && player.galacticSacrifice.upgrades.length>9) x+=player.galacticSacrifice.upgrades.length*1e7
-	x+=1e10*tmp.ec
-	if (x>1e8) x=Math.pow(1e8*x,.5)
+	if (player.infinityUpgrades.includes("postinfi61") && player.galacticSacrifice.upgrades.length > 9) x += player.galacticSacrifice.upgrades.length * 1e7
+	x += tmp.ec * 1e10
+	if (x > 1e8) x = Math.sqrt(x * 1e8)
 	return x
 }
 

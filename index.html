@@ -174,22 +174,22 @@
 				</table>
 				<table class="table" id="studytable">
 					<tr>
-						<td><button id="41" onclick="buyTimeStudy(41)"></button></td>
-						<td><button id="42" onclick="buyTimeStudy(42)"></button></td>
+						<td><button id="41" onclick="buyTimeStudy(41)">Each galaxy gives a <span id="41desc" style="display:inline"></span>x multiplier on IP gained.<span>Cost: 4 Time Theorems</button></td>
+						<td><button id="42" onclick="buyTimeStudy(42)"><span id="42desc"></span>Cost: 6 Time Theorems</button></td>
 					</tr>
 				</table>
 				<br>
 				<table class="table" id="studytable">
 					<tr>
 						<td style="opacity: 0;"><button class="timestudylocked"></button></td>
-						<td><button id="51" onclick="buyTimeStudy(51)"><span id=51desc>You gain 1e15 times more IP</span>Cost: 3 Time Theorems</button></td>
+						<td><button id="51" onclick="buyTimeStudy(51)"><span id="51desc">You gain 1e15 times more IP</span>Cost: 3 Time Theorems</button></td>
 						<td><button class="eternitychallengestudy" id="ec5unl">Eternity Challenge 5<span>Requirement: 200 galaxies<span>Cost: 100 Time Theorems</button></td>
 					</tr>
 				</table>
 				<table class="table" id="studytable">
 					<tr>
 						<td style="opacity: 0;"><button class="timestudylocked"></button></td>
-						<td><button id="61" onclick="buyTimeStudy(61)"></button></td>
+						<td><button id="61" onclick="buyTimeStudy(61)">You gain <span id="61desc" style="display:inline"></span>x more EP<span>Cost: 3 Time Theorems</button></td>
 						<td><button id="62" onclick="buyTimeStudy(62)">You gain replicanti <span id="62desc" style="display:inline"></span> times faster<span>Cost: 3 Time Theorems</button></td>
 					</tr>
 				</table>
@@ -201,7 +201,7 @@
 						<td><button id="73" onclick="buyTimeStudy(73)">Sacrifice affects 3rd Time Dimension with greatly reduced effect<span id="73desc">Currently: 1x</span>Cost: 5 Time Theorems</button></td>
 					</tr>
 					<tr>
-						<td><button id="81" onclick="buyTimeStudy(81)"></button></td>
+						<td><button id="81" onclick="buyTimeStudy(81)">Dimensional boost power <span id="81desc" style="display:inline"></span><span>Cost: 4 Time Theorems</button></td>
 						<td><button id="82" onclick="buyTimeStudy(82)">Dimensional boosts affect Infinity Dimensions<span id="82desc">Currently: 1x</span>Cost: 6 Time Theorems</button></td>
 						<td><button id="83" onclick="buyTimeStudy(83)">Dimensional boosts are 0.04% more effective for each tick upgrade gained from Time Dimensions<span>Cost: 5 Time Theorems</button></td>
 					</tr>
@@ -278,7 +278,7 @@
 				</table>
 				<table class="table" id="studytable">
 					<tr>
-						<td><button id="181" onclick="buyTimeStudy(181)">You gain 1% of your IP gained on crunch each second.<span>Cost: 200 Time Theorems</button></td>
+						<td><button id="181" onclick="buyTimeStudy(181)">You gain <span id="181desc" style="display:inline"></span> each second.<span>Cost: 200 Time Theorems</button></td>
 					</tr>
 					<tr>
 						<td><button class="eternitychallengestudy" id="ec10unl">Eternity Challenge 10<span>Requirement: 1e100 EP<span>Cost: 200 Time Theorems</button></td>
@@ -287,7 +287,7 @@
 				<table class="table" id="studytable">
 					<tr>
 						<td><button id="191" onclick="buyTimeStudy(191)">After eternity you permanently keep 5% of your infinities<span>Cost: 400 Time Theorems</button></td>
-						<td><button id="192" onclick="buyTimeStudy(192)" style="font-size: 10px;"><span id="192desc">You can get beyond 1.8e308 replicantis, but the interval is increased the more you have</span>Cost: 730 Time Theorems</button></td>
+						<td><button id="192" onclick="buyTimeStudy(192)" style="font-size: 10px;"><span id="192desc"></span>Cost: 730 Time Theorems</button></td>
 						<td><button id="193" onclick="buyTimeStudy(193)">Normal dimension boost based on eternities<span id="193desc">Currently: 1x</span>Cost: 300 Time Theorems</button></td>
 					</tr>
 				</table>
@@ -298,7 +298,7 @@
 				</table>
 				<table class="table" id="studytable">
 					<tr>
-						<td><button id="211" onclick="buyTimeStudy(211)">Dimensional boost requirement scaling is reduced by 5<span>Cost: 120 Time Theorems</button></td>
+						<td><button id="211" onclick="buyTimeStudy(211)">Dimensional boost requirement scaling is reduced by <span id="211desc" style="display:inline"></span>.<span>Cost: 120 Time Theorems</button></td>
 						<td><button id="212" onclick="buyTimeStudy(212)">Galaxies are more effective based on your timeshards<span id="212desc">Currently: 1x</span>Cost: 150 Time Theorems</button></td>
 						<td><button id="213" onclick="buyTimeStudy(213)">You gain replicanti <span id="213desc" style="display:inline"></span> times faster<span>Cost: 200 Time Theorems</button></td>
 						<td><button id="214" onclick="buyTimeStudy(214)">Sacrifice boosts the 8th dimension even more.<span id="214desc">Currently: 1x</span>Cost: 120 Time Theorems</button></td>
@@ -307,7 +307,7 @@
 				<table class="table" id="studytable">
 					<tr class="wideRow">
 						<td><button id="221" onclick="buyTimeStudy(221)">Dimensional boosts affect time dimensions with reduced power.<span id="221desc"></span><span>Cost: 900 Time Theorems</button></td>
-						<td><button id="222" onclick="buyTimeStudy(222)">Dimensional boost costs scale by another 2 less.<span>Cost: 900 Time Theorems</button></td>
+						<td><button id="222" onclick="buyTimeStudy(222)">Dimensional boost costs scale by another <span id="222desc" style="display:inline"></span> less.<span>Cost: 900 Time Theorems</button></td>
 						<td><button id="223" onclick="buyTimeStudy(223)">Galaxy cost scaling starts 7 galaxies later.<span>Cost: 900 Time Theorems</button></td>
 						<td><button id="224" onclick="buyTimeStudy(224)">Galaxy cost scaling starts 1 galaxy later for every 2000 dimensional boosts.<span>Cost: 900 Time Theorems</button></td>
 						<td><button id="225" onclick="buyTimeStudy(225)">You gain extra RGs based on how high above infinity your replicanti are.<span>Cost: 900 Time Theorems</button></td>
@@ -2738,13 +2738,13 @@
 							<div id="This is NOT a clicker game!" class="achievement achievementlocked" style="background-image: url(images/achhidden.png)"></div>
 						</td>
 						<td>
-							<div id="You are supposed to become a ghost!" class="achievement achievementlocked" style="background-image: url(images/achhidden.png)"></div>
+							<div id="Deny the afterlife" class="achievement achievementlocked" style="background-image: url(images/achhidden.png)"></div>
 						</td>
 						<td>
 							<div id="Revolution, when?" class="achievement achievementlocked" style="background-image: url(images/achhidden.png)"></div>
 						</td>
 						<td>
-							<div id="Good Luck" class="achievement achievementlocked" style="background-image: url(images/achhidden.png)"></div>
+							<div id="Prestige No-lifer" class="achievement achievementlocked" style="background-image: url(images/achhidden.png)"></div>
 						</td>
 					</tr>
 				</table>

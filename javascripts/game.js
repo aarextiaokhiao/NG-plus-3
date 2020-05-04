@@ -919,7 +919,7 @@ function sortNumber(a,b) {
 
 function wordizeList(list, caseFirst) {
 	let length = list.length
-	if (caseFirst) {
+	if (caseFirst && length > 0) {
 		let split0 = [list[0][0], list[0].slice(1)]
 		list[0] = split0[0].toUpperCase()
 		if (split0[1]) list[0] += split0[1]
@@ -1374,7 +1374,7 @@ function getInfinitied() {
 function getInfinitiedGain() {
 	let infGain=1
 	if (player.thisInfinityTime > 50 && player.achievements.includes("r87")) infGain=250
-	if (player.timestudy.studies.includes(32)) infGain*=getTS32Mult()
+	if (player.timestudy.studies.includes(32)) infGain*=tsMults[32]()
 	if (player.achievements.includes("r133") && player.meta) infGain=nM(player.dilation.dilatedTime.pow(.25).max(1),infGain)
 	return infGain
 }
@@ -1695,13 +1695,13 @@ function getGalaxyReqMultiplier() {
 	if (inNC(6, 1) && player.aarexModifications.ngexV != undefined && tmp.grd.galaxies <= 2) return 0
 	if (player.currentChallenge == "postcngmm_1") return 60
 	let ret = 60
-	if (player.galacticSacrifice) {
+	if (player.galacticSacrifice !== undefined) {
 		if (player.galacticSacrifice.upgrades.includes(22)) ret -= 30
-	} else if (player.timestudy.studies.includes(42)) ret *= (player.aarexModifications.newGameExpVersion?12:13)/15
+	} else if (player.timestudy.studies.includes(42)) ret *= tsMults[42]()
 	if (inNC(4)) ret = 90
 	if (player.infinityUpgrades.includes("galCost")) ret -= 5
 	if (player.infinityUpgrades.includes("postinfi52") && player.tickspeedBoosts == undefined) ret -= 3
-	if (player.galacticSacrifice && player.timestudy.studies.includes(42)) ret *= (player.aarexModifications.newGameExpVersion?12:13)/15
+	if (player.galacticSacrifice !== undefined && player.timestudy.studies.includes(42)) ret *= tsMults[42]()
 	return ret
 }
 
@@ -2940,8 +2940,8 @@ function updateInfCosts() {
     }
 
     if (document.getElementById("timestudies").style.display == "block" && document.getElementById("eternitystore").style.display == "block") {
-        document.getElementById("11desc").textContent = "Currently: "+shortenMoney(getTS11Mult())+"x"
-        document.getElementById("32desc").textContent = "You gain "+getFullExpansion(getTS32Mult())+"x more infinitied stat (based on dimension boosts)"
+        document.getElementById("11desc").textContent = "Currently: "+shortenMoney(tsMults[11]())+"x"
+        document.getElementById("32desc").textContent = "You gain "+getFullExpansion(tsMults[32]())+"x more infinitied stat (based on dimension boosts)"
         document.getElementById("51desc").textContent = "You gain "+shortenCosts(player.aarexModifications.newGameExpVersion?1e30:1e15)+"x more IP"
         document.getElementById("71desc").textContent = "Currently: "+shortenMoney(calcTotalSacrificeBoost().pow(0.25).max(1).min("1e210000"))+"x"
         document.getElementById("72desc").textContent = "Currently: "+shortenMoney(calcTotalSacrificeBoost().pow(0.04).max(1).min("1e30000"))+"x"
@@ -3866,7 +3866,7 @@ function gainedInfinityPoints(next) {
 
     if (player.infinityUpgradesRespecced == undefined) var ret = Decimal.pow(10, player.money.e/div -0.75).times(getIPMult())
     else var ret = player.money.div(Number.MAX_VALUE).pow(2*(1-Math.log10(2))/Decimal.log10(Number.MAX_VALUE)).times(getIPMult())
-    if (player.timestudy.studies.includes(41)) ret = ret.times(Decimal.pow(player.aarexModifications.newGameExpVersion?1.5:1.2, player.galaxies + player.replicanti.galaxies))
+    if (player.timestudy.studies.includes(41)) ret = ret.times(Decimal.pow(tsMults[41](), player.galaxies + player.replicanti.galaxies))
     if (player.timestudy.studies.includes(51)) ret = ret.times(player.aarexModifications.newGameExpVersion?1e30:1e15)
     if (player.timestudy.studies.includes(141)) ret = ret.times(new Decimal(1e45).dividedBy(Decimal.pow(15, Math.log(player.thisInfinityTime+1)*Math.pow(player.thisInfinityTime+1, 0.125))).max(1))
     if (player.timestudy.studies.includes(142)) ret = ret.times(1e25)
@@ -3904,7 +3904,7 @@ function getIPMult() {
 function gainedEternityPoints() {
     var ret = Decimal.pow(5, player.infinityPoints.plus(gainedInfinityPoints()).e/(player.achievements.includes("ng3p23")?307.8:308) -0.7).times(player.epmult).times(kongEPMult)
     if (player.aarexModifications.newGameExpVersion) ret = ret.times(10)
-    if (player.timestudy.studies.includes(61)) ret = ret.times(player.aarexModifications.newGameExpVersion?100:10)
+    if (player.timestudy.studies.includes(61)) ret = ret.times(tsMults[61]())
     if (player.timestudy.studies.includes(121)) ret = ret.times(((253 - averageEp.dividedBy(player.epmult).dividedBy(10).min(248).max(3))/5)) //x300 if tryhard, ~x60 if not
     else if (player.timestudy.studies.includes(122)) ret = ret.times(35)
     else if (player.timestudy.studies.includes(123)) ret = ret.times(Math.sqrt(1.39*player.thisEternity/10))
@@ -8406,9 +8406,9 @@ function gameLoop(diff) {
     if (chance.gte("1e9999998")) frequency = ts273Mult.times(Math.log10(player.replicanti.chance+1)/Math.log10(2))
     let interval = player.replicanti.interval
     if (player.aarexModifications.ngexV) interval *= .8
-    if (player.timestudy.studies.includes(62)) interval /= getTS62Mult()
+    if (player.timestudy.studies.includes(62)) interval /= tsMults[62]()
     if (player.replicanti.amount.gt(Number.MAX_VALUE)||player.timestudy.studies.includes(133)) interval *= 10
-    if (player.timestudy.studies.includes(213)) interval /= getTS213Mult()
+    if (player.timestudy.studies.includes(213)) interval /= tsMults[213]()
     if (GUBought("gb1")) interval /= 1-Decimal.min(getTickSpeedMultiplier(),1).log10()
     if (player.replicanti.amount.lt(Number.MAX_VALUE) && player.achievements.includes("r134")) interval /= 2
     if (isBigRipUpgradeActive(4)) interval /= 10
@@ -8579,7 +8579,10 @@ function gameLoop(diff) {
         document.getElementById("tickSpeed").className = 'storebtn';
         document.getElementById("tickSpeedMax").className = 'storebtn';
     }
-    if (player.achievements.includes("r56")&&player.tickspeedBoosts!=undefined) player.galacticSacrifice.galaxyPoints=player.galacticSacrifice.galaxyPoints.add(getGSAmount().times(diff/1e3))
+	let passiveGPGen = false
+	if (player.tickspeedBoosts !== undefined) passiveGPGen = player.achievements.includes("r56")
+	else if (player.galacticSacrifice !== undefined) passiveGPGen = !tmp.ngp3l && player.timestudy.studies.includes(181)
+	if (passiveGPGen) player.galacticSacrifice.galaxyPoints = player.galacticSacrifice.galaxyPoints.add(getGSAmount().times(diff / 1e3))
     if (pSacrificed()) {
         document.getElementById("paradoxbtn").style.display = ""
         document.getElementById("px").style.display = ""
