@@ -836,12 +836,12 @@ let tsMults = {
 		return r
 	},
 	211: function() {
-		return player.galacticSacrifice !== undefined && !tmp.ngp3l ? 1 : 5
+		return player.galacticSacrifice === undefined ? 5 : tmp.ngp3l ? 0 : 1
 	},
 	213: function() {
 		return tmp.ngex ? 10 : 20
 	},
 	222: function() {
-		return player.galacticSacrifice !== undefined && !tmp.ngp3l ? .5 : 2
+		return player.galacticSacrifice === undefined ? 2 : tmp.ngp3l ? 0 : .5
 	}
 }

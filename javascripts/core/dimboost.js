@@ -212,12 +212,12 @@ function getDimboostCostIncrease () {
 		if (player.infinityUpgrades.includes('dimboostCost')) ret -= 1
 		if (player.infinityUpgrades.includes("postinfi50")) ret -= 0.5
 	} else {
-		if (player.timestudy.studies.includes(211)) ret -= tsMults[211]()
-		if (player.timestudy.studies.includes(222)) ret -= tsMults[222]()
-		if (player.masterystudies) if (player.masterystudies.includes("t261")) ret -= 1
+		if (tmp.ngp3 && player.masterystudies.includes("t261")) ret -= 1
 		if (inNC(4)) ret += 5
-		if (player.boughtDims&&player.achievements.includes('r101')) ret -= Math.min(8, Math.pow(player.eternityPoints.max(1).log(10), .25))
+		if (player.boughtDims && player.achievements.includes('r101')) ret -= Math.min(8, Math.pow(player.eternityPoints.max(1).log(10), .25))
 	}
+	if (player.timestudy.studies.includes(211)) ret -= tsMults[211]()
+	if (player.timestudy.studies.includes(222)) ret -= tsMults[222]()
 	return ret;
 }
 
