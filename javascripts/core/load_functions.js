@@ -1866,7 +1866,7 @@ if (player.version < 5) {
   document.getElementById("61desc").innerHTML=tsMults[61]()
   document.getElementById("62desc").textContent=tsMults[62]()
   document.getElementById("81desc").textContent=player.galacticSacrifice?"is cubed":"becomes 10x"
-  document.getElementById("181desc").textContent = player.galacticSacrifice !== undefined && player.tickspeedBoosts === undefined && !tmp.ngp3l ? "1% of IP and GP gain on next reset" : "1% of your IP gained on crunch"
+  document.getElementById("181desc").textContent = player.galacticSacrifice !== undefined && player.tickspeedBoosts === undefined && !tmp.ngp3l ? "1% of your GP and IP gain on next reset" : "1% of your IP gained on crunch"
   document.getElementById("211desc").textContent=tsMults[211]()
   document.getElementById("213desc").textContent=tsMults[213]()
   document.getElementById("221").style["font-size"] = tmp.ngp3 ? "0.45rem" : "0.55rem"
