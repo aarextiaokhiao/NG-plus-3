@@ -7222,7 +7222,7 @@ function buyDilationUpgrade(id, max) {
             document.getElementById("respecMastery2").style.display = "block"
             if (!quantumed) $.notify("Congratulations for unlocking mastery studies! You can either click 'mastery studies' button\nor 'continue to mastery studies' button in time studies.")
             if (!quantumed) {
-                document.getElementById("welcomeMessage").innerHTML = "Congratulations for reaching the end of NG++! As of a reward, you have unlocked mastery studies. You can either click 'mastery studies' button or 'continue to mastery studies' button in time studies."
+                document.getElementById("welcomeMessage").innerHTML = "Congratulations for reaching the end-game of NG++. In NG+3, the game keeps going with a lot of new content starting at Mastery Studies. You can either click 'mastery studies' button or 'continue to mastery studies' button in time studies."
             }
         }
     } else { // Is rebuyable
