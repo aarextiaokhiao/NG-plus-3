@@ -151,7 +151,7 @@ function buyDilationStudy(name, cost) {
             giveAchievement("I'm so meta")
             showTab("dimensions")
             showDimTab("metadimensions")
-            for (id=14;id<18;id++) document.getElementById("dil"+id+"cost").textContent = "Cost: " + shortenCosts(DIL_UPG_COSTS[id]) + " dilated time"
+			updateDilationUpgradeCosts()
         }
         player.dilation.studies.push(name)
         player.timestudy.theorem -= cost
