@@ -829,18 +829,23 @@
 				<table>
 					<tr>
 						<td>
-							<button id="dil1" onclick="buyDilationUpgrade(1)">Double the dilated time production.<br><span id="dil1cost">Cost: 1e5 dilated time</span></button>
+							<button id="dil11" onclick="buyDilationUpgrade(11)">Double the dilated time production.<br><span id="dil11cost"></span></button>
 						</td>
 						<td>
-							<button id="dil2" onclick="buyDilationUpgrade(2)">Decrease the galaxy threshold multiplier, but reset free galaxies and dilated time.<br><span id="dil2cost">Cost: 1e6 dilated time</span></button>
+							<button id="dil12" onclick="buyDilationUpgrade(12)">Decrease the galaxy threshold multiplier, but reset free galaxies and dilated time.<br><span id="dil12cost"></span></button>
 						</td>
 						<td>
-							<button id="dil3" onclick="buyDilationUpgrade(3)"><span id="dil3desc"></span><br><span id="dil3cost">Cost: 1e7 dilated time</span></button>
+							<button id="dil13" onclick="buyDilationUpgrade(13)"><span id="dil13desc"></span><br><span id="dil13cost"></span></button>
 						</td>
-						<td id="n1">
-							<button id="dil11" onclick="buyDilationUpgrade(11)"><span id="dil11effect"></span><br><span id="dil11cost">Cost: 1e8 dilated time</span></button>
+						<td>
+							<button id="dil14" onclick="buyDilationUpgrade(14)"><span id="dil14desc"></span><br><span id="dil14cost"></span></button>
+						</td>
+						<td>
+							<button id="dil15" onclick="buyDilationUpgrade(15)">???<br><span id="dil15cost"></span></button>
 						</td>
 					</tr>
+				</table>
+				<table>
 					<tr id="xdrow">
 						<td>
 							<button id="xd1" style="height: 50px;" onclick="boostDilationUpgrade(1)">Boost the upgrade above with ex-dilation<br><span id="xd1span">1x -> 1.5x</span></button>
@@ -854,73 +859,110 @@
 						<td>
 							<button id="xd4" style="height: 50px;" onclick="boostDilationUpgrade(4)">Boost the upgrade above with ex-dilation<br><span id="xd4span">1x -> 1.5x</span></button>
 						</td>
-					</tr>
-					<tr>
 						<td>
-							<button id="dil4" onclick="buyDilationUpgrade(4)">Gain twice as many free galaxies.<br><span id="dil4cost">Cost: 5e6 dilated time</span></button>
-						</td>
-						<td>
-							<button id="dil5" onclick="buyDilationUpgrade(5)">Time Dimensions are affected by replicanti multiplier ^ 0.1.<br><span id="dil5cost">Cost: 1e9 dilated time</span></button>
-						</td>
-						<td>
-							<button id="dil6" onclick="buyDilationUpgrade(6)">Normal dimensions gain a multiplier based on dilated time, unaffected by time dilation.<br><span id="dil6cost">Cost: 5e7 dilated time</span></button>
-						</td>
-						<td id="n2">
-							<button id="dil12" onclick="buyDilationUpgrade(12)">Replicanti increases faster based on dilated time.<br><span id="dil12cost">Cost: 1e20 dilated time</span></button>
-						</td>
-					</tr>
-					<tr>
-						<td>
-							<button id="dil7" onclick="buyDilationUpgrade(7)">Gain a multiplier to IP based on dilated time.<br><span id="dil7desc"></span><br><span id="dil7cost"></span></button>
-						</td>
-						<td>
-							<button id="dil8" onclick="buyDilationUpgrade(8)">Pick all the study paths from the first split.<br><span id="dil8cost"></span></button>
-						</td>
-						<td>
-							<button id="dil9" onclick="buyDilationUpgrade(9)">Reduce the dilation penalty. (^ 1.05 after reduction)<br><span id="dil9cost"></span></button>
-						</td>
-						<td id="n3">
-							<button id="dil13" onclick="buyDilationUpgrade(13)">Eternities and dilated time power up each other.<br><span id="dil13cost"></span></button>
-						</td>
-					</tr>
-					<tr id="mddilupg">
-						<td>
-							<button id="dil14" onclick="buyDilationUpgrade(14)" style='font-size:10px'>Meta Dimensions gain a multiplier based on tickspeed.<br>(1+log(1+log(x)))<br><span id="dil14desc"></span><br><span id="dil14cost"></span></button>
-						</td>
-						<td>
-							<button id="dil15" onclick="buyDilationUpgrade(15)" style='font-size:10px'>Meta-dimension shifts, boosts, and per-ten upgrades are boosted by dilated time.<span id="dil15formula"> (log(log(x))+1)</span><br><span id="dil15desc"></span><br><span id="dil15cost"></span></button>
-						</td>
-						<td>
-							<button id="dil16" onclick="buyDilationUpgrade(16)">Meta-antimatter effect on dimension boosts is stronger.<br>(^8 -> ^9)<br><span id="dil16cost"></span></button>
-						</td>
-						<td>
-							<button id="dil17" onclick="buyDilationUpgrade(17)" style='font-size:10px'>Dilated time production is boosted based on best meta-antimatter.<br><span id="dil17formula"></span><br><span id="dil17desc"></span><br><span id="dil17cost"></span></button>
+							<button id="xd5" style="height: 50px;" onclick="boostDilationUpgrade(5)">Boost the upgrade above with ex-dilation<br><span id="xd5span">1x -> 1.5x</span></button>
 						</td>
 					</tr>
 				</table>
 				<table>
 					<tr>
 						<td>
-							<button class="timestudy" id="dil10" onclick="buyDilationUpgrade(10)">Generate time theorems based on tachyon particles.<br><span id="dil10desc"></span><br><span id="dil10cost"></span></button>
+							<button id="dil21" onclick="buyDilationUpgrade(21)">Gain twice as many free galaxies.<br><span id="dil21cost"></span></button>
 						</td>
-						<td id="n4">
-							<button class="timestudy" id="dil18" onclick="buyDilationUpgrade(18)">Gain 5% more Tachyon particles for each <span id="dil18oom"></span>x replicanti.<br><span id="dil18desc"></span><br><span id="dil18cost"></span></button>
+						<td>
+							<button id="dil22" onclick="buyDilationUpgrade(22)">Time Dimensions are affected by replicanti multiplier ^ 0.1.<br><span id="dil22cost"></span></button>
 						</td>
-						<td id="n5">
-							<button class="timestudy" id="dil19" onclick="buyDilationUpgrade(19)">Eternities and dilated time boost each other by ^0.1.<br><span id="dil19cost"></span></button>
+						<td>
+							<button id="dil23" onclick="buyDilationUpgrade(23)">Normal dimensions gain a multiplier based on dilated time, unaffected by time dilation.<br><span id="dil23cost"></span></button>
 						</td>
-						<td id="n6">
-							<button class="timestudy" id="dil20" onclick="buyDilationUpgrade(20)">Boost the ex-dilation gain.<br><span id="dil20cost"></span></button>
+						<td>
+							<button id="dil24" onclick="buyDilationUpgrade(24)">Replicanti increases faster based on dilated time.<br><span id="dil24cost"></span></button>
 						</td>
-						<td id="n7">
-							<button class="timestudy" id="dil21" onclick="buyDilationUpgrade(21)" style='font-size:10px'>Buff the black hole upgrade effect based on your Eternity points.<br><span id="dil21desc"></span><br><span id="dil21cost"></span></button>
+						<td>
+							<button id="dil25" onclick="buyDilationUpgrade(25)">???<br><span id="dil25cost"></span></button>
 						</td>
 					</tr>
 				</table>
-				<table id="n8">
+				<table>
 					<tr>
 						<td>
-							<button class="timestudy" id="dil22" onclick="buyDilationUpgrade(22)" style='font-size:10px'>You gain more dilated time based on your meta-antimatter.<br><span id="dil22desc"></span><br><span id="dil22cost"></span></button>
+							<button id="dil31" onclick="buyDilationUpgrade(31)">Gain a multiplier to IP based on dilated time.<br><span id="dil31desc"></span><br><span id="dil31cost"></span></button>
+						</td>
+						<td>
+							<button id="dil32" onclick="buyDilationUpgrade(32)">Pick all the study paths from the first split.<br><span id="dil32cost"></span></button>
+						</td>
+						<td>
+							<button id="dil33" onclick="buyDilationUpgrade(33)">Reduce the dilation penalty. (^ 1.05 after reduction)<br><span id="dil33cost"></span></button>
+						</td>
+						<td>
+							<button id="dil34" onclick="buyDilationUpgrade(34)">Eternities and dilated time power up each other.<br><span id="dil34cost"></span></button>
+						</td>
+						<td>
+							<button id="dil35" onclick="buyDilationUpgrade(35)">???<br><span id="dil35cost"></span></button>
+						</td>
+					</tr>
+				</table>
+				<table>
+					<tr>
+						<td>
+							<button id="dil71" onclick="buyDilationUpgrade(71)">???<br><span id="dil71cost"></span></button>
+						</td>
+						<td>
+							<button id="dil72" onclick="buyDilationUpgrade(72)">???<br><span id="dil72cost"></span></button>
+						</td>
+						<td>
+							<button id="dil73" onclick="buyDilationUpgrade(73)">???<br><span id="dil73cost"></span></button>
+						</td>
+						<td>
+							<button id="dil74" onclick="buyDilationUpgrade(74)">???<br><span id="dil74cost"></span></button>
+						</td>
+						<td>
+							<button id="dil75" onclick="buyDilationUpgrade(75)">???<br><span id="dil75cost"></span></button>
+						</td>
+					</tr>
+				</table>
+				<table>
+					<tr id="mddilupg">
+						<td>
+							<button id="dil51" onclick="buyDilationUpgrade(51)" style='font-size:10px'>Meta Dimensions gain a multiplier based on tickspeed.<br>(1+log(1+log(x)))<br><span id="dil51desc"></span><br><span id="dil51cost"></span></button>
+						</td>
+						<td>
+							<button id="dil52" onclick="buyDilationUpgrade(52)" style='font-size:10px'>Meta-dimension shifts, boosts, and per-ten upgrades are boosted by dilated time.<br><span id="dil52formula"></span><br><span id="dil52desc"></span><br><span id="dil52cost"></span></button>
+						</td>
+						<td>
+							<button id="dil53" onclick="buyDilationUpgrade(53)">Meta-antimatter effect on dimension boosts is stronger.<br>(^8 -> ^9)<br><span id="dil53cost"></span></button>
+						</td>
+						<td>
+							<button id="dil54" onclick="buyDilationUpgrade(54)" style='font-size:10px'>Dilated time production is boosted based on best meta-antimatter.<br><span id="dil54formula"></span><br><span id="dil54desc"></span><br><span id="dil54cost"></span></button>
+						</td>
+						<td>
+							<button id="dil55" onclick="buyDilationUpgrade(55)">???<br><span id="dil55cost"></span></button>
+						</td>
+					</tr>
+				</table>
+				<table>
+					<tr>
+						<td>
+							<button id="dil41" onclick="buyDilationUpgrade(41)">Generate time theorems based on tachyon particles.<br><span id="dil41desc"></span><br><span id="dil41cost"></span></button>
+						</td>
+						<td>
+							<button id="dil42" onclick="buyDilationUpgrade(42)">Gain 5% more Tachyon particles for each <span id="dil42oom"></span>x replicanti.<br><span id="dil42desc"></span><br><span id="dil42cost"></span></button>
+						</td>
+						<td>
+							<button id="dil43" onclick="buyDilationUpgrade(43)">Eternities and dilated time boost each other by ^0.1.<br><span id="dil43cost"></span></button>
+						</td>
+						<td>
+							<button id="dil44" onclick="buyDilationUpgrade(44)">Boost the ex-dilation gain.<br><span id="dil44cost"></span></button>
+						</td>
+						<td>
+							<button id="dil45" onclick="buyDilationUpgrade(45)" style='font-size:10px'>Buff the black hole upgrade effect based on your Eternity points.<br><span id="dil45desc"></span><br><span id="dil45cost"></span></button>
+						</td>
+					</tr>
+				</table>
+				<table>
+					<tr>
+						<td>
+							<button id="dil61" onclick="buyDilationUpgrade(61)" style='font-size:10px'>You gain more dilated time based on your meta-antimatter.<br><span id="dil61desc"></span><br><span id="dil61cost"></span></button>
 						</td>
 					</tr>
 				</table>

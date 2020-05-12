@@ -1893,9 +1893,9 @@ if (player.version < 5) {
   var suffix="NG"+(player.meta!=undefined?"pp":"ud")
   document.getElementById("uhDiv"+suffix).appendChild(document.getElementById("Universal harmony"))
   document.getElementById("feDiv"+suffix).appendChild(document.getElementById("In the grim darkness of the far endgame"))
-  document.getElementById("dil11effect").textContent=player.aarexModifications.nguspV?"You gain even more tachyon particles from the previous upgrade.":"The exponent of TP formula is better."
-  document.getElementById("dil15").style["font-size"]=player.masterystudies==undefined||player.aarexModifications.nguspV!==undefined?"10px":"9px"
-  document.getElementById("dil15formula").style.display=player.masterystudies==undefined||player.aarexModifications.nguspV!==undefined?"none":""
+  document.getElementById("dil14desc").textContent=player.aarexModifications.nguspV?"You gain even more tachyon particles from the previous upgrade.":"The exponent of TP formula is better."
+  document.getElementById("dil52").style["font-size"]=player.masterystudies==undefined||player.aarexModifications.nguspV!==undefined?"10px":"9px"
+  document.getElementById("dil52formula").style.display=player.masterystudies==undefined||player.aarexModifications.nguspV!==undefined?"none":""
   document.getElementById("exDilationDesc").innerHTML = player.aarexModifications.nguspV ? 'making galaxies <span id="exDilationBenefit" style="font-size:25px; color: black">0</span>% stronger in dilation.' : 'making dilation <span id="exDilationBenefit" style="font-size:25px; color: black">0</span>% less severe.'
   document.getElementById("metaAntimatterEffectType").textContent=inQC(3)?"multiplier on all Infinity Dimensions":"extra multiplier per dimension boost"
   if (player.meta) {

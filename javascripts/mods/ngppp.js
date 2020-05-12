@@ -441,10 +441,10 @@ function doAutoMetaTick() {
 		if (speedrunMilestonesReached > 25) maxAllDilUpgs()
 		else {
 			for (i=0;i<1;i++) {
+				buyDilationUpgrade(14)
+				buyDilationUpgrade(13)
 				buyDilationUpgrade(11)
-				buyDilationUpgrade(3)
-				buyDilationUpgrade(1)
-				if (canBuyGalaxyThresholdUpg()) buyDilationUpgrade(2)
+				if (canBuyGalaxyThresholdUpg()) buyDilationUpgrade(12)
 			}
 		}
 	}
@@ -862,8 +862,8 @@ function fillAll() {
 //v1.99872
 function maxAllDilUpgs() {
 	let update
-	while (buyDilationUpgrade(11,true)) {update=true}
-	while (buyDilationUpgrade(3,true)) {update=true}
+	while (buyDilationUpgrade(14,true)) {update=true}
+	while (buyDilationUpgrade(13,true)) {update=true}
 	var cost=Decimal.pow(10,player.dilation.rebuyables[1]+5)
 	if (player.dilation.dilatedTime.gte(cost)) {
 		var toBuy=Math.floor(player.dilation.dilatedTime.div(cost).times(9).add(1).log10())
@@ -883,7 +883,7 @@ function maxAllDilUpgs() {
 				resetDilationGalaxies()
 				update=true
 			}
-		} else if (buyDilationUpgrade(2,true)) update=true
+		} else if (buyDilationUpgrade(12,true)) update=true
 	}
 	if (update) {
 		updateDilationUpgradeCosts()

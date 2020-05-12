@@ -220,8 +220,8 @@ function updateExdilation() {
 	document.getElementById("exdilationConfirmBtn").style.display = "inline"
 	document.getElementById("exDilationAmount").textContent = shortenDimensions(player.exdilation.unspent)
 	document.getElementById("exDilationBenefit").textContent = (player.aarexModifications.nguspV?exDilationBenefit()*100:exDilationBenefit()/0.0075).toFixed(1)
-	for (var i=1;i<5;i++) {
-		let unl = isDilUpgUnlocked(i > 3 ? 11 : i)
+	for (var i=1;i<=DIL_UPG_SIZES[0];i++) {
+		let unl = isDilUpgUnlocked("r"+i)
 		if (unl) {
 			document.getElementById("xd"+i).style.height = player.aarexModifications.nguspV ? "60px" : "50px"
 			document.getElementById("xd"+i).className = player.exdilation.unspent.eq(0) ? "dilationupgrebuyablelocked" : "dilationupgrebuyable";
@@ -255,7 +255,7 @@ function exDilationBenefit() {
 }
 
 function exDilationUpgradeStrength(x,add=0) {
-	let ret = player.exdilation.spent[x].plus(add)
+	let ret = Decimal.plus(player.exdilation.spent[x] || 0,add)
 	if (player.aarexModifications.nguspV) {
 		ret = ret.add(1).log10() * 2
 		if (ret > 1) ret = Math.sqrt(ret)
@@ -297,7 +297,6 @@ function reverseDilation () {
             3: 0
         }
     }
-	if (player.meta !== undefined) player.dilation.rebuyables[4]=0
     resetBlackhole();
     updateDilation();
     updateDilationUpgradeButtons();
@@ -312,7 +311,7 @@ function toggleExdilaConf() {
 }
 
 function boostDilationUpgrade(x) {
-    player.exdilation.spent[x] = player.exdilation.spent[x].plus(player.exdilation.unspent).round();
+    player.exdilation.spent[x] = Decimal.plus(player.exdilation.spent[x] || 0, player.exdilation.unspent).round();
     player.exdilation.unspent = new Decimal(0);
     updateDilation();
     updateDilationUpgradeButtons();
