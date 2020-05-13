@@ -7192,14 +7192,13 @@ const DIL_UPG_COSTS = {
 	  ngpp1: 1e20,
 	  ngpp2: 1e25,
 	  ngpp3: 1e50,
-	  ngpp4: 1e50,
-	  ngpp5: 1e60,
-	  ngpp6: 1e80,
-	  ngpp7: 1e100,
-	  ngpp4_usp: 1e79,
-	  ngpp5_usp: 1e84,
-	  ngpp6_usp: 1e89,
-	  ngpp7_usp: 1e100,
+	  ngpp4: 1e60,
+	  ngpp5: 1e80,
+	  ngpp6: 1e100,
+	  ngpp3_usp: 1e79,
+	  ngpp4_usp: 1e84,
+	  ngpp5_usp: 1e89,
+	  ngpp6_usp: 1e100,
 	  ngmm1: 1/0,
 	  ngmm2: 1/0,
 	  ngmm3: 1/0,
@@ -7242,6 +7241,7 @@ const DIL_UPG_POS_IDS = {
 	61: "ngusp3"
 }
 const DIL_UPG_ID_POS = {}
+const DIL_UPG_UNLOCKED = {}
 
 function setupDilationUpgradeList() {
 	for (var x = 1; x <= DIL_UPG_SIZES[0]; x++) {
@@ -7267,7 +7267,11 @@ function isDilUpgUnlocked(id) {
 	let ngpp = id.split("ngpp")[1]
 	if (id == "r4") return player.meta !== undefined
 	if (id == "r5") return player.galacticSacrifice !== undefined && player.meta !== undefined && !tmp.ngp3l
-	if (id.split("ngmm")[1]) return player.galacticSacrifice !== undefined && player.meta !== undefined && !tmp.ngp3l
+	if (id.split("ngmm")[1]) {
+		let r = player.galacticSacrifice !== undefined && player.meta !== undefined && !tmp.ngp3l
+		if (id == "ngmm8") r = r && player.dilation.studies.includes(6)
+		return r
+	}
 	if (ngpp) {
 		ngpp = parseInt(ngpp)
 		let r = player.meta !== undefined
@@ -7315,11 +7319,12 @@ function getRebuyableDilUpgCost(id) {
 
 function buyDilationUpgrade(pos, max, isId) {
 	let id = pos
-	if (!isId) id = getDilUpgId(id)
+	if (isId) pos = DIL_UPG_ID_POS[id]
+	else id = getDilUpgId(id)
 	let cost = getDilUpgCost(id)
 	if (!player.dilation.dilatedTime.gte(cost)) return
-	if (!isDilUpgUnlocked(id)) return
-	if (toString(id)[0] == "r") {
+	let rebuyable = toString(id)[0] == "r"
+	if (rebuyable) {
 		// Rebuyable
         if (cost.gt("1e100000")) return
 		if (id[1] == 2 && !canBuyGalaxyThresholdUpg()) return
@@ -7357,7 +7362,7 @@ function buyDilationUpgrade(pos, max, isId) {
 	}
 
     if (max) return true
-    updateDilationUpgradeCosts()
+    if (rebuyable) updateDilationUpgradeCost(pos, id)
     updateDilationUpgradeButtons()
 }
 
@@ -7380,10 +7385,15 @@ function updateDilationUpgradeButtons() {
 	for (var i = 0; i < DIL_UPGS.length; i++) {
 		var pos = DIL_UPGS[i]
 		var id = getDilUpgId(pos)
-		if (isDilUpgUnlocked(id)) {
-			document.getElementById("dil" + pos).parentElement.style.display = ""
-			document.getElementById("dil" + pos).className = player.dilation.upgrades.includes(id) ? "dilationupgbought" : player.dilation.dilatedTime.gte(getDilUpgCost(id)) ? "dilationupg" : "dilationupglocked"
-		} else document.getElementById("dil" + pos).parentElement.style.display = "none"
+		var unl = isDilUpgUnlocked(id)
+		if (DIL_UPG_UNLOCKED[id] != unl) {
+			if (unl) {
+				DIL_UPG_UNLOCKED[id] = 1
+				updateDilationUpgradeCost(pos, id)
+			} else delete DIL_UPG_UNLOCKED[id]
+			document.getElementById("dil" + pos).parentElement.style.display = unl ? "" : "none"
+		}
+		if (unl) document.getElementById("dil" + pos).className = player.dilation.upgrades.includes(id) || (id == "r2" && !canBuyGalaxyThresholdUpg()) ? "dilationupgbought" : player.dilation.dilatedTime.gte(getDilUpgCost(id)) ? "dilationupg" : "dilationupglocked"
 	}
     var genSpeed = getPassiveTTGen()
 	var power = getDil3Power()
@@ -7403,17 +7413,22 @@ function updateDilationUpgradeButtons() {
 	}
 }
 
+function updateDilationUpgradeCost(pos, id) {
+	if (id == "r2" && !canBuyGalaxyThresholdUpg()) document.getElementById("dil" + pos + "cost").textContent = "Maxed out"
+	else {
+		let r = getDilUpgCost(id)
+		if (id == "r3") r = formatValue(player.options.notation, getRebuyableDilUpgCost(3), 1, 1)
+		else r = shortenCosts(r)
+		document.getElementById("dil" + pos + "cost").textContent = "Cost: " + r + " dilated time"
+	}
+	if (player.exdilation != undefined) document.getElementById("dil42oom").textContent = shortenCosts(new Decimal("1e1000"))
+}
+
 function updateDilationUpgradeCosts() {
 	for (var i = 0; i < DIL_UPGS.length; i++) {
 		var pos = DIL_UPGS[i]
 		var id = getDilUpgId(pos)
-		if (id == "r2" && !canBuyGalaxyThresholdUpg()) document.getElementById("dil" + pos + "cost").textContent = "Maxed out"
-		else if (isDilUpgUnlocked(id)) {
-			let r = getDilUpgCost(id)
-			if (id == "r3") r = formatValue(player.options.notation, getRebuyableDilUpgCost(3), 1, 1)
-			else r = shortenCosts(r)
-			document.getElementById("dil" + pos + "cost").textContent = "Cost: " + r + " dilated time"
-		}
+		if (DIL_UPG_UNLOCKED[id]) updateDilationUpgradeCost(pos, id)
 	}
 	if (player.exdilation != undefined) document.getElementById("dil42oom").textContent = shortenCosts(new Decimal("1e1000"))
 }

@@ -435,17 +435,14 @@ function toggleAutoTT() {
 }
 
 //v1.8
+const MAX_DIL_UPG_PRIORITIES = [4, 3, 1, 2]
 function doAutoMetaTick() {
 	if (!player.masterystudies) return
 	if (player.autoEterOptions.rebuyupg && speedrunMilestonesReached > 6) {
 		if (speedrunMilestonesReached > 25) maxAllDilUpgs()
-		else {
-			for (i=0;i<1;i++) {
-				buyDilationUpgrade(14)
-				buyDilationUpgrade(13)
-				buyDilationUpgrade(11)
-				if (canBuyGalaxyThresholdUpg()) buyDilationUpgrade(12)
-			}
+		else for (var i = 0; i < MAX_DIL_UPG_PRIORITIES.length; i++) {
+			var id = "r" + MAX_DIL_UPG_PRIORITIES[i]
+			if (isDilUpgUnlocked(id)) buyDilationUpgrade(id, false, true)
 		}
 	}
 	for (var d=1;d<=8;d++) {
@@ -862,28 +859,34 @@ function fillAll() {
 //v1.99872
 function maxAllDilUpgs() {
 	let update
-	while (buyDilationUpgrade(14,true)) {update=true}
-	while (buyDilationUpgrade(13,true)) {update=true}
-	var cost=Decimal.pow(10,player.dilation.rebuyables[1]+5)
-	if (player.dilation.dilatedTime.gte(cost)) {
-		var toBuy=Math.floor(player.dilation.dilatedTime.div(cost).times(9).add(1).log10())
-		var toSpend=Decimal.pow(10,toBuy).sub(1).div(9).times(cost)
-		player.dilation.dilatedTime=player.dilation.dilatedTime.sub(player.dilation.dilatedTime.min(cost))
-		player.dilation.rebuyables[1]+=toBuy
-		update=true
-	}
-	if (canBuyGalaxyThresholdUpg()) {
-		if (speedrunMilestonesReached>21) {
-			var cost=Decimal.pow(10,player.dilation.rebuyables[2]*2+6)
-			if (player.dilation.dilatedTime.gte(cost)) {
-				var toBuy=Math.min(Math.floor(player.dilation.dilatedTime.div(cost).times(99).add(1).log(100)),60-player.dilation.rebuyables[2])
-				var toSpend=Decimal.pow(100,toBuy).sub(1).div(99).times(cost)
-				player.dilation.dilatedTime=player.dilation.dilatedTime.sub(player.dilation.dilatedTime.min(cost))
-				player.dilation.rebuyables[2]+=toBuy
-				resetDilationGalaxies()
-				update=true
-			}
-		} else if (buyDilationUpgrade(12,true)) update=true
+	for (var i = 0; i < MAX_DIL_UPG_PRIORITIES.length; i++) {
+		var id = "r" + MAX_DIL_UPG_PRIORITIES[i]
+		if (isDilUpgUnlocked(id)) {
+			if (id == "r1") {	
+				var cost=Decimal.pow(10,player.dilation.rebuyables[1]+5)
+				if (player.dilation.dilatedTime.gte(cost)) {
+					var toBuy=Math.floor(player.dilation.dilatedTime.div(cost).times(9).add(1).log10())
+					var toSpend=Decimal.pow(10,toBuy).sub(1).div(9).times(cost)
+					player.dilation.dilatedTime=player.dilation.dilatedTime.sub(player.dilation.dilatedTime.min(cost))
+					player.dilation.rebuyables[1]+=toBuy
+					update=true
+				}
+			} else if (id == "r2") {
+				if (canBuyGalaxyThresholdUpg()) {
+					if (speedrunMilestonesReached>21) {
+						var cost=Decimal.pow(10,player.dilation.rebuyables[2]*2+6)
+						if (player.dilation.dilatedTime.gte(cost)) {
+							var toBuy=Math.min(Math.floor(player.dilation.dilatedTime.div(cost).times(99).add(1).log(100)),60-player.dilation.rebuyables[2])
+							var toSpend=Decimal.pow(100,toBuy).sub(1).div(99).times(cost)
+							player.dilation.dilatedTime=player.dilation.dilatedTime.sub(player.dilation.dilatedTime.min(cost))
+							player.dilation.rebuyables[2]+=toBuy
+							resetDilationGalaxies()
+							update=true
+						}
+					} else if (buyDilationUpgrade("r2", true, true)) update=true
+				}
+			} else while (buyDilationUpgrade(id, true, true)) update = true
+		}
 	}
 	if (update) {
 		updateDilationUpgradeCosts()

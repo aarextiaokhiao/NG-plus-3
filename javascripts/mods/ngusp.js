@@ -6,7 +6,7 @@ function autoBuyDilUpgs() {
 	if (player.autoEterOptions.dilUpgs) {
 		var upgs=player.dilation.autoUpgrades
 		var old=player.dilation.upgrades.length
-		for (var u=0;u<upgs.length;u++) buyDilationUpgrade(upgs[u],true)
+		for (var u=0;u<upgs.length;u++) buyDilationUpgrade(upgs[u], true, true)
 		maxAllDilUpgs()
 		if (player.dilation.upgrades.length>old) {
 			updateDilationUpgradeCosts()
@@ -27,10 +27,13 @@ function getD22Bonus() {
 }
 
 function distribEx() {
+	let unl=[]
+	for (var i=1;i<=DIL_UPG_SIZES[0];i++) if (isDilUpgUnlocked("r"+i)) unl.push(i)
+	let div=unl.length+1
 	let toAdd=player.exdilation.unspent
-	for (var u=1;u<5;u++) toAdd=toAdd.add(player.exdilation.spent[u])
-	toAdd=toAdd.div(5)
+	for (var u=0;u<div-1;u++) toAdd=toAdd.add(player.exdilation.spent[unl[u]]||0)
+	toAdd=toAdd.div(div)
 	player.exdilation.unspent=toAdd
-	for (var u=1;u<5;u++) player.exdilation.spent[u]=toAdd
+	for (var u=0;u<div-1;u++) player.exdilation.spent[unl[u]]=toAdd
 	updateExdilation()
 }
