@@ -297,6 +297,7 @@ function reverseDilation () {
             3: 0
         }
     }
+	if (player.meta !== undefined) player.dilation.rebuyables[4] = 0
     resetBlackhole();
     updateDilation();
     updateDilationUpgradeButtons();
