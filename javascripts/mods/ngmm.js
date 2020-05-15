@@ -501,7 +501,9 @@ let galMults = {
 		return player.galacticSacrifice.galaxyPoints.div(5).plus(1).pow(exp)
 	},
 	u23: function() {
-		return player.galacticSacrifice.galaxyPoints.max(1).log10()*3/4+1
+		let x=player.galacticSacrifice.galaxyPoints.max(1).log10()*3/4+1
+		if (!tmp.ngp3l&&player.achievements.includes("r138")) x*=player.dilation.bestIP.add(10).log10()
+		return x
 	},
 	u33: function() {
 		if (player.tickspeedBoosts != undefined) return player.galacticSacrifice.galaxyPoints.div(1e10).add(1).log10()/5+1

@@ -435,7 +435,7 @@ function toggleAutoTT() {
 }
 
 //v1.8
-const MAX_DIL_UPG_PRIORITIES = [4, 3, 1, 2]
+const MAX_DIL_UPG_PRIORITIES = [5, 4, 3, 1, 2]
 function doAutoMetaTick() {
 	if (!player.masterystudies) return
 	if (player.autoEterOptions.rebuyupg && speedrunMilestonesReached > 6) {

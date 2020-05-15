@@ -4109,7 +4109,7 @@ function setAchieveTooltip() {
     infstuff.setAttribute('ach-tooltip', "Reach "+shortenCosts(new Decimal("1e140000"))+" IP without buying IDs or IP multipliers. Reward: You start eternities with all Infinity Challenges unlocked and completed"+(player.meta?", and your infinity gain is multiplied by dilated time^(1/4).":"."))
     when.setAttribute('ach-tooltip', "Reach "+shortenCosts( new Decimal(tmp.ngex?"1e15000":"1e20000"))+" replicanti. Reward: You gain replicanti 2 times faster under "+shortenMoney(Number.MAX_VALUE)+" replicanti.")
     thinking.setAttribute('ach-tooltip', "Eternity for "+shortenCosts( new Decimal("1e600"))+" EP in 1 minute or less while dilated.")
-    thisis.setAttribute('ach-tooltip', "Reach "+shortenCosts(new Decimal('1e20000'))+" IP without any time studies while dilated.")
+    thisis.setAttribute('ach-tooltip', "Reach "+shortenCosts(new Decimal('1e20000'))+" IP without any time studies while dilated."+(player.galacticSacrifice!==undefined&&!tmp.ngp3l?" Reward: Boost g23 upgrade based on your best IP in dilation.":""))
     stillamil.setAttribute('ach-tooltip',"Reach "+shortenCosts(1e6)+" black hole power.")
     out.setAttribute('ach-tooltip',"Get more than "+shortenCosts(1e5)+" ex-dilation." + (player.aarexModifications.nguspV !== undefined ? " Reward: You can distribute ex-dilation from all dilation boosts." : ""))
     ridNGud.setAttribute('ach-tooltip', "Reach "+shortenCosts(new Decimal("1e20000"))+" IP without any time studies or dilation upgrades while dilated.")
@@ -7137,6 +7137,7 @@ function dilates(x, m) {
 		if (player.aarexModifications.newGameMult) e=0.9+Math.min((player.dilation.dilatedTime.add(1).log10())/1000,0.05)
 		if (player.exdilation!=undefined&&!player.aarexModifications.ngudpV&&!player.aarexModifications.nguspV) e+=exDilationBenefit()*(1-e)
 		if (player.dilation.upgrades.includes(9)) e*=1.05
+		if (player.dilation.rebuyables[5]) e+=0.0025*(1-1/Math.pow(player.dilation.rebuyables[5]+1,1/3))
 		a=true
 	}
 	if (player.galacticSacrifice!==undefined&&m!=1) {
@@ -7179,7 +7180,7 @@ const DIL_UPG_COSTS = {
 	  r2: [1e6, 100, 1/0],
 	  r3: [1e7, 20, 72],
 	  r4: [1e8, 1e4, 24],
-	  r5: [1/0, 1, 1/0],
+	  r5: [1e16, 10, 1/0],
 	  4: 5e6,
 	  5: 1e9,
 	  6: 5e7,
@@ -7199,8 +7200,8 @@ const DIL_UPG_COSTS = {
 	  ngpp4_usp: 1e84,
 	  ngpp5_usp: 1e89,
 	  ngpp6_usp: 1e100,
-	  ngmm1: 1/0,
-	  ngmm2: 1/0,
+	  ngmm1: 5e16,
+	  ngmm2: 1e19,
 	  ngmm3: 1/0,
 	  ngmm4: 1/0,
 	  ngmm5: 1/0,
@@ -7265,11 +7266,13 @@ function getDilUpgId(x) {
 function isDilUpgUnlocked(id) {
 	id = toString(id)
 	let ngpp = id.split("ngpp")[1]
+	let ngmm = id.split("ngmm")[1]
 	if (id == "r4") return player.meta !== undefined
-	if (id == "r5") return player.galacticSacrifice !== undefined && player.meta !== undefined && !tmp.ngp3l
-	if (id.split("ngmm")[1]) {
-		let r = player.galacticSacrifice !== undefined && player.meta !== undefined && !tmp.ngp3l
-		if (id == "ngmm8") r = r && player.dilation.studies.includes(6)
+	if (id == "r5") return player.galacticSacrifice !== undefined && !tmp.ngp3l
+	if (ngmm) {
+		let r = player.galacticSacrifice !== undefined && !tmp.ngp3l
+		if (ngmm >= 3) r = r && player.meta !== undefined
+		if (ngmm == 8) r = r && player.dilation.studies.includes(6)
 		return r
 	}
 	if (ngpp) {
@@ -7305,7 +7308,7 @@ function getDilUpgCost(id) {
 
 function getRebuyableDilUpgCost(id) {
 	var costGroup = DIL_UPG_COSTS["r"+id]
-	var amount = player.dilation.rebuyables[id]
+	var amount = player.dilation.rebuyables[id]||0
 	let cost = new Decimal(costGroup[0]).times(Decimal.pow(costGroup[1],amount))
 	if (player.aarexModifications.nguspV) {
 		if (id > 3) cost = cost.times(1e7)
@@ -7344,7 +7347,7 @@ function buyDilationUpgrade(pos, max, isId) {
 		player.dilation.dilatedTime = player.dilation.dilatedTime.sub(cost)
 		player.dilation.upgrades.push(id)
 		if (player.aarexModifications.nguspV !== undefined && !player.dilation.autoUpgrades.includes(id)) player.dilation.autoUpgrades.push(id)
-        if (id == 4) player.dilation.freeGalaxies *= 2 // Double the current galaxies
+        if (id == 4 || id == "ngmm1") player.dilation.freeGalaxies *= 2 // Double the current galaxies
         if (id == 10 && tmp.ngp3) tmp.qu.wasted = false
         if (id == "ngpp3" && tmp.ngp3) {
             updateMilestones()
@@ -7453,6 +7456,7 @@ function gainDilationGalaxies() {
 
 function getFreeGalaxyGainMult() {
 	let galaxyMult = player.dilation.upgrades.includes(4) ? 2 : 1
+	if (player.dilation.upgrades.includes("ngmm1")) galaxyMult *= 2
 	if (player.aarexModifications.ngudpV&&!player.aarexModifications.nguepV) galaxyMult /= 1.5
 	galaxyMult *= getQCReward(2)
 	if (tmp.ngp3) if (player.masterystudies.includes("d12")) galaxyMult *= getNanofieldRewardEffect(3)
@@ -8929,14 +8933,17 @@ function gameLoop(diff) {
             player.eternityPoints = player.eternityPoints.plus(gainedEternityPoints().times(diff/1000))
             document.getElementById("eternityPoints2").innerHTML = "You have <span class=\"EPAmount2\">"+shortenDimensions(player.eternityPoints)+"</span> Eternity points."
         }
-        if (player.dilation.active) if (player.masterystudies.includes("t292") && player.dilation.tachyonParticles.lt(getDilGain())) {
-            player.dilation.tachyonParticles = getDilGain()
-            player.dilation.bestTP = player.dilation.bestTP.max(player.dilation.tachyonParticles)
-            player.dilation.bestTPOverGhostifies = player.dilation.bestTPOverGhostifies.max(player.dilation.bestTP)
-            document.getElementById('bestTP').textContent="Your best"+(ghostified ? "" : " ever")+" Tachyon particles"+(ghostified ? " in this Ghostify" : "")+" was "+shorten(player.dilation.bestTP)+"."
-            setAndMaybeShow('bestTPOverGhostifies',ghostified,'"Your best-ever Tachyon particles was "+shorten(player.dilation.bestTPOverGhostifies)+"."')
-            tmp.qu.notrelative = false
-        }
+		if (player.dilation.active) {
+			if (player.galacticSacrifice !== undefined) player.dilation.bestIP = player.infinityPoints.max(player.dilation.bestIP)
+			if (player.masterystudies.includes("t292") && player.dilation.tachyonParticles.lt(getDilGain())) {
+				player.dilation.tachyonParticles = getDilGain()
+				player.dilation.bestTP = player.dilation.bestTP.max(player.dilation.tachyonParticles)
+				player.dilation.bestTPOverGhostifies = player.dilation.bestTPOverGhostifies.max(player.dilation.bestTP)
+				document.getElementById('bestTP').textContent="Your best"+(ghostified ? "" : " ever")+" Tachyon particles"+(ghostified ? " in this Ghostify" : "")+" was "+shorten(player.dilation.bestTP)+"."
+				setAndMaybeShow('bestTPOverGhostifies',ghostified,'"Your best-ever Tachyon particles was "+shorten(player.dilation.bestTPOverGhostifies)+"."')
+				tmp.qu.notrelative = false
+			}
+		}
         if (player.ghostify.milestones>7) {
             if (tmp.qu.bigRip.active||hasBosonicUpg(24)) tmp.qu.bigRip.spaceShards=tmp.qu.bigRip.spaceShards.add(getSpaceShardsGain().times(diff/1e3))
             if (!tmp.qu.bigRip.active) {
