@@ -7208,6 +7208,10 @@ const DIL_UPG_COSTS = {
 	  ngmm6: 1/0,
 	  ngmm7: 1/0,
 	  ngmm8: 1/0,
+	  ngmm9: 1/0,
+	  ngmm10: 1/0,
+	  ngmm11: 1/0,
+	  ngmm12: 1/0,
 	  ngusp1: 1e50,
 	  ngusp2: 1e55,
 	  ngusp3: 1e94
@@ -7233,26 +7237,32 @@ const DIL_UPG_OLD_POS_IDS = {
 	22: "ngusp3"
 }
 const DIL_UPG_POS_IDS = {
-	11: "r1",     12: "r2",    13: "r3",    14: "r4",     15: "r5",
-	21: 4,        22: 5,       23: 6,       24: "ngpp1",  25: "ngmm1",
-	31: 7,        32: 8,       33: 9,       34: "ngpp2",  35: "ngmm2",
-	71: "ngmm3",  72: "ngmm4", 73: "ngmm5", 74: "ngmm6",  75: "ngmm7",
-	51: "ngpp3",  52: "ngpp4", 53: "ngpp5", 54: "ngpp6",  55: "ngmm8",
-	41: 10,       42: "ngud1", 43: "ngud2", 44: "ngusp1", 45: "ngusp2",
+	11: "r1",     12: "r2",         13: "r3",         14: "r4",          15: "r5",
+	21: 4,        22: 5,            23: 6,            24: "ngpp1",       25: "ngmm1",
+	31: 7,        32: 8,            33: 9,            34: "ngpp2",       35: "ngmm2",
+	71: "ngmm7",  72: "ngmm8",      73: "ngmm9",      74: "ngmm10",      75: "ngmm11",
+	51: "ngpp3",  52: "ngpp4",      53: "ngpp5",      54: "ngpp6",       55: "ngmm12",
+	41: 10,       42: "ngud1",      43: "ngud2",      44: "ngusp1",      45: "ngusp2",
+                  ngmm_42: "ngmm3", ngmm_43: "ngmm4", ngmm_44: "ngmm5",  ngmm_45: "ngmm6",
 	61: "ngusp3"
 }
 const DIL_UPG_ID_POS = {}
 const DIL_UPG_UNLOCKED = {}
 
 function setupDilationUpgradeList() {
+	let DIL_UPG_PREFIXES = ["", "ngmm_"]
 	for (var x = 1; x <= DIL_UPG_SIZES[0]; x++) {
 		for (var y = 1; y <= DIL_UPG_SIZES[1]; y++)	{
-			let push = false
-			let id = DIL_UPG_POS_IDS[y * 10 + x]
-			if (id) push = true
-			if (push) {
-				DIL_UPGS.push(y * 10 + x)
-				DIL_UPG_ID_POS[id] = y * 10 + x
+			for (var i = 0; i < DIL_UPG_PREFIXES.length; i++)	{
+				let push = false
+				let pos = y * 10 + x
+				if (i >= 1) pos = DIL_UPG_PREFIXES[i] + pos
+				let id = DIL_UPG_POS_IDS[pos]
+				if (id) push = true
+				if (push) {
+					DIL_UPGS.push(pos)
+					DIL_UPG_ID_POS[id] = pos
+				}
 			}
 		}
 	}
@@ -7271,8 +7281,8 @@ function isDilUpgUnlocked(id) {
 	if (id == "r5") return player.galacticSacrifice !== undefined && !tmp.ngp3l
 	if (ngmm) {
 		let r = player.galacticSacrifice !== undefined && !tmp.ngp3l
-		if (ngmm >= 3) r = r && player.meta !== undefined
-		if (ngmm == 8) r = r && player.dilation.studies.includes(6)
+		if (ngmm >= 6) r = r && player.meta !== undefined
+		if (ngmm == 12) r = r && player.dilation.studies.includes(6)
 		return r
 	}
 	if (ngpp) {
