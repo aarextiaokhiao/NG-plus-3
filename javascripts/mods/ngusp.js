@@ -6,7 +6,11 @@ function autoBuyDilUpgs() {
 	if (player.autoEterOptions.dilUpgs) {
 		var upgs=player.dilation.autoUpgrades
 		var old=player.dilation.upgrades.length
-		for (var u=0;u<upgs.length;u++) buyDilationUpgrade(upgs[u], true, true)
+		for (var u=0;u<upgs.length;u++) {
+			var upg = upgs[u]
+			if (upg > 11) upg = DIL_UPG_OLD_POS_IDS[upg]
+			buyDilationUpgrade(upg, true, true)
+		}
 		maxAllDilUpgs()
 		if (player.dilation.upgrades.length>old) {
 			updateDilationUpgradeCosts()

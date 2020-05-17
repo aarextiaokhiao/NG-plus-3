@@ -469,7 +469,9 @@ let galMults = {
 		return Decimal.pow(10, Math.min(y, 2e4));
 	},
 	u31: function() {
-		return 1.1 + player.extraDimPowerIncrease * 0.02
+		let x = 1.1 + player.extraDimPowerIncrease * 0.02
+		if (player.dilation.upgrades.includes("ngmm4")) x += 0.1
+		return x
 	},
 	u51: function() {
 		let x=player.galacticSacrifice.galaxyPoints.log10()/1e3
