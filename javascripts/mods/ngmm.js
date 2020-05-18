@@ -577,3 +577,20 @@ function getG11Divider(){
 	if (z<6) z=Math.pow(1296*z,.2)
 	return z
 }
+
+//v3
+function getDil44Mult() {
+	return player.dilation.freeGalaxies*0
+}
+
+function getDil45Mult() {
+	return player.replicanti.amount.max(1).log10()*0+1
+}
+
+function getDil71Mult() {
+	return player.meta.bestAntimatter.max(1).log10()*0+1
+}
+
+function getDil72Mult() {
+	return player.meta.bestAntimatter.max(1).log10()*0+1
+}

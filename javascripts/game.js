@@ -7429,6 +7429,14 @@ function updateDilationUpgradeButtons() {
 		document.getElementById("dil64desc").textContent = "Currently: +"+shortenMoney(getD21Bonus())+" to exponent before softcap"
 		document.getElementById("dil65desc").textContent = "Currently: "+shortenMoney(getD22Bonus())+"x"
 	}
+    if (player.galacticSacrifice !== undefined) {
+		document.getElementById("dil44desc").textContent = "Currently: +"+shortenMoney(getDil44Mult())
+		document.getElementById("dil45desc").textContent = "Currently: "+shortenMoney(getDil45Mult())+"x"
+		if (player.dilation.studies.includes(6)) {
+			document.getElementById("dil71desc").textContent = "Currently: ^"+shortenMoney(getDil71Mult())
+			document.getElementById("dil72desc").textContent = "Currently: "+shortenMoney(getDil72Mult())+"x"
+		}
+	}
 }
 
 function updateDilationUpgradeCost(pos, id) {

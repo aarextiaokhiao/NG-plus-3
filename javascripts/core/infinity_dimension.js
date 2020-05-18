@@ -151,6 +151,7 @@ function getIDCostMult(tier) {
 function getInfBuy10Mult(tier) {
 	let ret = infPowerMults[player.galacticSacrifice!==undefined&&player.tickspeedBoosts===undefined?1:0][tier]
 	if (player.galacticSacrifice!==undefined&&player.galacticSacrifice.upgrades.includes(41)) ret *= player.galacticSacrifice.galaxyPoints.max(10).log10()
+	if (player.dilation.upgrades.includes("ngmm6")) ret *= getDil45Mult()
 	return ret
 }
 
@@ -209,6 +210,7 @@ function getInfinityPowerEffectPower() {
 		x=Math.max(x,7)
 	}
 	if (hasPU(34)) x*=puMults[34]()
+	if (player.dilation.upgrades.includes("ngmm5")) x+=getDil44Mult()
 	return x
 }
 
