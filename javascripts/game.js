@@ -7190,6 +7190,7 @@ const DIL_UPG_COSTS = {
 	  r2: [1e6, 100, 1/0],
 	  r3: [1e7, 20, 72],
 	  r4: [1e8, 1e4, 24],
+	  r4_ngmm: [1e30, 1e4, 18],
 	  r5: [1e16, 10, 1/0],
 	  4: 5e6,
 	  5: 1e9,
@@ -7323,6 +7324,7 @@ function getDilUpgCost(id) {
 
 function getRebuyableDilUpgCost(id) {
 	var costGroup = DIL_UPG_COSTS["r"+id]
+	if (id == 4 && player.galacticSacrifice !== undefined && !tmp.ngp3l) costGroup = DIL_UPG_COSTS.r4_ngmm
 	var amount = player.dilation.rebuyables[id]||0
 	let cost = new Decimal(costGroup[0]).times(Decimal.pow(costGroup[1],amount))
 	if (player.aarexModifications.nguspV) {
@@ -7535,6 +7537,7 @@ function getReplSpeed() {
 		inc/=Math.min(x,200)
 		if (x>200) exp+=x/10-20
 	}
+	if (player.dilation.upgrades.includes("ngmm10")) exp+=player.dilation.upgrades.length*0
 	inc=inc+1
 	if (GUBought("gb2")) exp*=2
 	return {inc:inc,exp:exp}
@@ -8562,6 +8565,7 @@ function gameLoop(diff) {
     if (player.replicanti.amount.gt(Number.MAX_VALUE)) interval = player.boughtDims ? Math.pow(player.achievements.includes("r107")?Math.max(player.replicanti.amount.log(2)/1024,1):1, -.25) : Decimal.pow(replSpeeds.inc, Math.max(player.replicanti.amount.log10() - replSpeeds.exp, 0)/replSpeeds.exp).times(interval)
     if (player.exdilation != undefined) interval = Decimal.div(interval, getBlackholePowerEffect().pow(1/3))
 	if (player.dilation.upgrades.includes('ngpp1') && player.aarexModifications.nguspV && !player.aarexModifications.nguepV) interval = interval.div(player.dilation.dilatedTime.max(1).pow(0.05))
+	if (player.dilation.upgrades.includes("ngmm9")) interval = Decimal.div(interval, getDil72Mult())
     if (tmp.ngp3) if (player.masterystudies.includes("t332")) interval = Decimal.div(interval, getMTSMult(332))
     var est = Decimal.div((frequency ? frequency.times(Math.log10(2)/Math.log10(Math.E) * 1e3) : Decimal.add(chance, 1).log(Math.E) * 1e3), interval)
     var estLog10 = est.times(Math.log10(Math.E))

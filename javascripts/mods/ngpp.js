@@ -25,7 +25,9 @@ function getMetaDimensionMultiplier(tier) {
 	ret = ret.times(tmp.mdgm) //Global multiplier of all Meta Dimensions
 	if (GUBought("rg3")&&tier<2) ret = ret.times(player.resets)
 	if (tier%2>0) ret = ret.times(QC4Reward)
-	return dilates(ret.max(1), "meta")
+	ret = dilates(dilates(ret.max(1), 2), "meta")
+	if (player.dilation.upgrades.includes("ngmm8")) ret = ret.pow(getDil71Mult())
+	return ret
 }
 
 function getMetaDimensionGlobalMultiplier() {

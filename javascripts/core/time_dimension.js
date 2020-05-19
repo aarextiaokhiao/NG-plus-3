@@ -67,12 +67,13 @@ function getTimeDimensionPower(tier) {
   if (!player.dilation.upgrades.includes("ngmm2") && player.dilation.upgrades.includes(5) && player.replicanti.amount.gt(1)) ret = ret.times(tmp.rm.pow(0.1))
   if (inQC(6)) ret = ret.times(player.postC8Mult).dividedBy(player.matter.max(1))
 
-  ret=dilates(ret, 2)
-  if (player.galacticSacrifice !== undefined) ret=ret.times(ret2)
+  ret = dilates(ret, 2)
+  if (player.galacticSacrifice !== undefined) ret = ret.times(ret2)
 
   ret = dilates(ret, 1)
   if (quantumed && !tmp.ngp3l) ret = ret.times(colorBoosts.dim.b)
   if (player.dilation.upgrades.includes("ngmm2") && player.dilation.upgrades.includes(5) && player.replicanti.amount.gt(1)) ret = ret.times(tmp.rm.pow(0.1))
+  if (player.dilation.upgrades.includes("ngmm8")) ret = ret.pow(getDil71Mult())
   return ret
 }
 
