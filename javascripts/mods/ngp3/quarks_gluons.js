@@ -214,8 +214,8 @@ function updateColorDimPowers(log) {
 	//Logs
 	if (log == undefined) log = getCPLogs()
 
-	colorBoosts.dim.r = Decimal.pow(10, Math.sqrt(player.money.add(1).log10()) * Math.pow(log.r, 4/7))
-	colorBoosts.dim.g = Decimal.pow(10, Math.sqrt(player.infinityPower.add(1).log10()) * Math.pow(log.g, 4/7))
+	colorBoosts.dim.r = Decimal.pow(10, Math.sqrt(player.money.add(1).log10()) * Math.pow(log.r, 4/7) * (inQC(6) ? 1 : 35))
+	colorBoosts.dim.g = Decimal.pow(10, Math.sqrt(player.infinityPower.add(1).log10()) * Math.pow(log.g, 4/7) * 5)
 	colorBoosts.dim.b = Decimal.pow(10, Math.sqrt(player.timeShards.add(1).log10()) * Math.pow(log.b, 8/21))
 }
 

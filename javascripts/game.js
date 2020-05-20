@@ -5916,7 +5916,7 @@ function eternity(force, auto, presetLoad, dilated) {
         };
         if (player.galacticSacrifice && getEternitied() < 2) player.autobuyers[12]=13
         if (player.tickspeedBoosts !== undefined && getEternitied() < 2) player.autobuyers[13]=14
-        var dilated2=player.dilation.active
+        var dilated2 = player.dilation.active
         if (dilated2) {
             player.dilation.active = false
             if (tmp.ngp3 && quantumed) updateColorCharge()
@@ -7136,7 +7136,10 @@ function startDilatedEternity(auto, shortcut) {
     eternity(true, true, undefined, true)
     if (!onActive) player.dilation.active = true;
     resetUP()
-    if (tmp.ngp3 && quantumed) updateColorCharge()
+    if (tmp.ngp3 && quantumed) {
+		updateColorCharge()
+		updateColorDimPowers()
+	}
 }
 
 function dilates(x, m) {
