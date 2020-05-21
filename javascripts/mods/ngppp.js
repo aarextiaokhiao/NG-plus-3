@@ -2179,7 +2179,7 @@ function isBigRipUpgradeActive(id, bigRipped) {
 	if (player.masterystudies == undefined) return false
 	if (bigRipped === undefined ? !tmp.qu.bigRip.active : !bigRipped) return false
 	if (id == 1) if (!tmp.qu.bigRip.upgrades.includes(17)) for (var u=3;u<18;u++) if (tmp.qu.bigRip.upgrades.includes(u)) return false
-	if (id > 2 && id != 4 && id < 9) if (tmp.qu.bigRip.upgrades.includes(9) && (id != 8 || !hasNU(9))) return false
+	if (id > 2 && id != 4 && id < 9) if (tmp.qu.bigRip.upgrades.includes(9) && (id != 8 || !hasNU(11))) return false
 	if (id == 4) if (tmp.qu.bigRip.upgrades.includes(11)) return false
 	return tmp.qu.bigRip.upgrades.includes(id)
 }
