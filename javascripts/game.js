@@ -3638,7 +3638,7 @@ function toggle_mod(id) {
 	hasSubMod = Object.keys(modSubNames).includes(id)
 	// Change submod
 	var subMode = ((modes[id] || 0) + 1) % ((hasSubMod && modSubNames[id].length) || 2)
-	if (id == "ngp" && subMode == 2 && (!(modes.ngpp >= 2) || !metaSave.ngp4)) subMode = 0
+	if (id == "ngp" && subMode == 2 && (!(modes.ngpp >= 2) || !metaSave.ngp4 || modes.ngex)) subMode = 0
 	else if (id == "ngpp" && subMode == 1 && modes.ngud) subMode = 2
 	else if (id == "ngpp" && subMode == 3 && modes.ngex) subMode = 0
 	else if (id == "arrows" && subMode == 2 && modes.rs) subMode = 0
@@ -3650,7 +3650,7 @@ function toggle_mod(id) {
 		modes.rs=0
 		document.getElementById("rsBtn").textContent="Respecced: NONE"
 	}
-	if (((id=="ngpp"&&!subMode)||(id=="rs"&&subMode))&&modes.ngp==2) {
+	if (((id=="ngpp"&&!subMode)||(id=="rs"&&subMode)||(id=="ngex"&&subMode))&&modes.ngp==2) {
 		modes.ngp=1
 		document.getElementById("ngpBtn").textContent="NG+: ON"
 	}
@@ -8023,6 +8023,7 @@ setInterval(function() {
         if (player.masterystudies&&(player.masterystudies.includes("d14")||player.achievements.includes("ng3p51"))&&!player.aarexModifications.newGameMult&&!player.aarexModifications.newGameExpVersion&&!player.aarexModifications.ngudpV&&!player.aarexModifications.ngumuV&&!player.aarexModifications.nguepV&&!player.aarexModifications.aau&&!metaSave.ngp4) {
             $.notify("Congratulations! You unlocked NG+4!", "success")
             metaSave.ngp4=true
+            checkForExpertMode()
             localStorage.setItem(metaSaveId,btoa(JSON.stringify(metaSave)))
         }
         if (player.eternityPoints.gte("1e1215") && tmp.qu.bigRip.active && !tmp.qu.breakEternity.unlocked) {
@@ -9509,8 +9510,8 @@ function initGame() {
 	showOptionTab((tabsSave&&tabsSaveData.tabOptions)||"saving")
 	if (player.aarexModifications.progressBar&&document.getElementById("dimensions").style.display!="none") document.getElementById("progress").style.display = "block"
 	else document.getElementById("progress").style.display = "none"
-	updateTickSpeed();
-	updateAutobuyers();
+	updateTickSpeed()
+	updateAutobuyers()
 	updateChallengeTimes()
 	window.addEventListener("resize", resizeCanvas);
 	clearInterval(stuckTimeout)
@@ -9518,6 +9519,9 @@ function initGame() {
 		document.getElementById("container").style.display = "block"
 		document.getElementById("loading").style.display = "none"
 	},1000)
+
+    //Check for Expert Mode
+    checkForExpertMode()
 }
 
 window.addEventListener('keydown', function(event) {
