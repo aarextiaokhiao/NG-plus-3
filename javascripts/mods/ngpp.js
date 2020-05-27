@@ -289,7 +289,7 @@ function getMetaDimensionProduction(tier) {
 function getExtraDimensionBoostPower() {
 	if (player.currentEternityChall=="eterc14"||inQC(7)) return new Decimal(1)
 	let r=getExtraDimensionBoostPowerUse()
-	r=r.pow(getExtraDimensionBoostPowerExponent(r)).max(1)
+	r=Decimal.pow(r,getExtraDimensionBoostPowerExponent(r)).max(1)
 	if (!inQC(3)) r=r.add(1)
 	if (player.aarexModifications.nguspV) {
 		let l=r.log(2)

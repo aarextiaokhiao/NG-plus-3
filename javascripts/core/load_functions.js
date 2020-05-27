@@ -1879,8 +1879,8 @@ if (player.version < 5) {
       if (player.dilation.studies.includes(1)) document.getElementById("dilationeterupgrow").style.display="table-row"
       document.getElementById("blackHoleAnimBtn").textContent = "Black hole: " + ((player.options.animations.blackHole) ? "ON" : "OFF")
       document.getElementById("blackholeMax").style.display = player.aarexModifications.ngudpV || player.aarexModifications.nguspV ? "" : "none"
-      document.getElementById("blackholeauto").style.display = player.aarexModifications.ngudpV && player.achievements.includes("ngpp17") ? "" : "none"
-      document.getElementById('blackholeauto').textContent="Auto: O"+(player.aarexModifications.ngudpV&&player.autoEterOptions.blackhole?"N":"FF")
+      document.getElementById("blackholeAuto").style.display = player.aarexModifications.ngudpV && player.achievements.includes("ngpp17") ? "" : "none"
+      document.getElementById('blackholeAuto').textContent="Auto: O"+(player.aarexModifications.ngudpV&&player.autoEterOptions.blackhole?"N":"FF")
       if (player.blackhole.unl == true) {
           document.getElementById("blackholediv").style.display="inline-block"
           document.getElementById("blackholeunlock").style.display="none"
@@ -2326,10 +2326,6 @@ function delete_save(saveId) {
 
 var ngModeMessages=[]
 function new_game(id) {
-	if (modes.arrows > 1 || (modes.ngpp > 1 && modes.ngex) || modes.ngud > 3 || modes.nguep > 1 || modes.ngmu > 1 || modes.ngumu > 1) {
-		alert("Coming soon...")
-		return
-	}
 	save_game(true)
 	clearInterval(gameLoopIntervalId)
 	updateNewPlayer()
@@ -2547,7 +2543,7 @@ function transformSaveToDecimal() {
 
   if (player.masterystudies) {
       player.dbPower = new Decimal(player.dbPower)
-      if (player.meta.bestOverQuantums != undefined) player.meta.bestOverQuantums = new Decimal(player.meta.bestOverQuantums)
+      player.meta.bestOverQuantums = Decimal.max(player.meta.bestOverQuantums, player.meta.bestAntimatter)
       if (tmp.qu ? tmp.qu.usedQuarks : false) {
           tmp.qu.usedQuarks.r = new Decimal(tmp.qu.usedQuarks.r)
           tmp.qu.usedQuarks.g = new Decimal(tmp.qu.usedQuarks.g)

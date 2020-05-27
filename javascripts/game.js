@@ -3626,35 +3626,46 @@ var modFullNames = {
 var modSubNames = {
   ngp: ["OFF", "ON", "NG++++"],
   ngpp: ["OFF", "ON", "NG+++", "NG+++ Legacy"],
-  arrows: ["Linear (↑⁰)", "Exponential (↑)", "Tetrational (↑↑)"],
+  arrows: ["Linear (↑⁰)", "Exponential (↑)"/*, "Tetrational (↑↑)"*/],
   ngmm: ["OFF", "ON", "NG---", "NG-4", "NG-5"],
   rs: ["NONE", "Eternity", "Infinity"],
-  ngud: ["OFF", "ON", "Prime (')", "Semiprime (S')", "Semiprime.1 (S'.1)"],
-  nguep: ["Linear' (↑⁰')", "Exponential' (↑')", "Tetrational' (↑↑')"],
+  ngud: ["OFF", "ON", "Prime (')", "Semiprime (S')"/*, "Semiprime.1 (S'.1)"*/],
+  nguep: ["Linear' (↑⁰')", "Exponential' (↑')"/*, "Tetrational' (↑↑')"*/]/*,
   ngmu: ["OFF", "ON", "NG**", "NG***"],
-  ngumu: ["OFF", "ON", "NGUd**'", "NGUd***'"]
+  ngumu: ["OFF", "ON", "NGUd**'", "NGUd***'"],
+  ngex: ["OFF", "ON", "DEATH MODE 💀"]*/
 }
 function toggle_mod(id) {
 	hasSubMod = Object.keys(modSubNames).includes(id)
 	// Change submod
 	var subMode = ((modes[id] || 0) + 1) % ((hasSubMod && modSubNames[id].length) || 2)
-	if (id == "ngp" && subMode == 2 && (!(modes.ngpp >= 2) || !metaSave.ngp4 || modes.ngex)) subMode = 0
-	else if (id == "ngpp" && subMode == 1 && modes.ngud) subMode = 2
+	if (id == "ngp" && subMode == 2 && (!(modes.ngpp >= 2) || !metaSave.ngp4)) subMode = 0
+	else if (id == "ngpp" && subMode == 1 && (modes.ngud || modes.ngex)) subMode = 2
 	else if (id == "ngpp" && subMode == 3 && modes.ngex) subMode = 0
 	else if (id == "arrows" && subMode == 2 && modes.rs) subMode = 0
 	modes[id] = subMode
 	// Update displays
 	document.getElementById(id+"Btn").textContent=`${modFullNames[id]}: ${hasSubMod?modSubNames[id][subMode]:subMode?"ON":"OFF"}`
+	if (id=="ngex"&&subMode) {
+		modes.ngp=0
+		modes.aau=0
+		document.getElementById("ngpBtn").textContent="NG+: OFF"
+		document.getElementById("aauBtn").textContent="AAU: OFF"
+	}
+	if ((id=="ngp"||id=="aau")&&subMode) {
+		modes.ngex=0
+		document.getElementById("ngexBtn").textContent="Expert Mode: OFF"
+	}
 	if ((id=="ngpp"||id=="ngud")&&subMode) {
-		if (!modes.ngp) toggle_mod("ngp")
+		if (!modes.ngp&&!modes.ngex) toggle_mod("ngp")
 		modes.rs=0
 		document.getElementById("rsBtn").textContent="Respecced: NONE"
 	}
-	if (((id=="ngpp"&&!subMode)||(id=="rs"&&subMode)||(id=="ngex"&&subMode))&&modes.ngp==2) {
+	if (((id=="ngpp"&&!subMode)||(id=="rs"&&subMode))&&modes.ngp==2) {
 		modes.ngp=1
 		document.getElementById("ngpBtn").textContent="NG+: ON"
 	}
-	if (((id=="ngud"&&(modes.ngpp==1||subMode==2))||(id=="ngex"&&modes.ngpp==3))&&subMode) {
+	if (((id=="ngud"&&((subMode>1&&!modes.ngpp)||modes.ngpp==1))||(id=="ngex"&&(modes.ngpp==1||modes.ngpp==3)))&&subMode) {
 		modes.ngpp=2
 		document.getElementById("ngppBtn").textContent="NG++: NG+++"
 	}
@@ -3669,7 +3680,7 @@ function toggle_mod(id) {
 			modes.ngud=1
 			document.getElementById("ngudBtn").textContent="NGUd: ON"
 		}
-		if (modes.arrows>1) {
+		if (id=="rs"&&modes.arrows>1) {
 			modes.arrows=1
 			document.getElementById("arrowsBtn").textContent="NG↑: Exponential (↑)"
 		}
@@ -3678,7 +3689,7 @@ function toggle_mod(id) {
 		document.getElementById("nguepBtn").textContent="NGUd↑': Linear' (↑⁰')"
 		document.getElementById("ngumuBtn").textContent="NGUd*': OFF"
 	}
-	if ((id=="ngumu"||id=="nguep")&&subMode) {
+	if ((id=="ngumu"||id=="nguep")&&!(modes.ngud>1)&&subMode) {
 		modes.ngud=1
 		toggle_mod("ngud")
 	}
