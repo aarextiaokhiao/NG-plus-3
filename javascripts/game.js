@@ -3652,7 +3652,7 @@ function toggle_mod(id) {
 		document.getElementById("ngpBtn").textContent="NG+: OFF"
 		document.getElementById("aauBtn").textContent="AAU: OFF"
 	}
-	if ((id=="ngp"||id=="aau")&&subMode) {
+	if ((id=="ngp"||id=="aau"||((id=="ngpp"||(id=="ngud"&&subMode>1))&&!metaSave.ngp3ex))&&subMode) {
 		modes.ngex=0
 		document.getElementById("ngexBtn").textContent="Expert Mode: OFF"
 	}
@@ -3665,9 +3665,13 @@ function toggle_mod(id) {
 		modes.ngp=1
 		document.getElementById("ngpBtn").textContent="NG+: ON"
 	}
-	if (((id=="ngud"&&((subMode>1&&!modes.ngpp)||modes.ngpp==1))||(id=="ngex"&&(modes.ngpp==1||modes.ngpp==3)))&&subMode) {
+	if (((id=="ngud"&&((subMode>1&&!modes.ngpp)||modes.ngpp==1))||(id=="ngex"&&(modes.ngpp==1||modes.ngpp==3)&&metaSave.ngp3ex))&&subMode) {
 		modes.ngpp=2
 		document.getElementById("ngppBtn").textContent="NG++: NG+++"
+	}
+	if (id=="ngex"&&!metaSave.ngp3ex&&subMode) {
+		modes.ngpp=0
+		document.getElementById("ngppBtn").textContent="NG++: OFF"
 	}
 	if (id=="rs"&&subMode) {
 		modes.ngpp=0
@@ -3675,7 +3679,7 @@ function toggle_mod(id) {
 		document.getElementById("ngppBtn").textContent="NG++: OFF"
 		document.getElementById("ngudBtn").textContent="NGUd: OFF"
 	}
-	if (((id=="ngpp"||id=="ngud")&&!subMode)||(id=="rs"&&subMode)) {
+	if (((id=="ngpp"||id=="ngud")&&!subMode)||((id=="rs"||(id=="ngex"&&!metaSave.ngp3ex))&&subMode)) {
 		if (modes.ngud>1) {
 			modes.ngud=1
 			document.getElementById("ngudBtn").textContent="NGUd: ON"
@@ -3693,6 +3697,7 @@ function toggle_mod(id) {
 		modes.ngud=1
 		toggle_mod("ngud")
 	}
+	if ((id=="ngex"||id=="ngpp")&&modes.ngex&&modes.ngpp) $.notify("In the deep depths of all Big Rips, a space crystal is impending you with more challenges...")
 }
 function show_mods() {
 	modsShown=!modsShown
