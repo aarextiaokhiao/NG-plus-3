@@ -3697,7 +3697,12 @@ function toggle_mod(id) {
 		modes.ngud=1
 		toggle_mod("ngud")
 	}
-	if ((id=="ngex"||id=="ngpp")&&modes.ngex&&modes.ngpp) $.notify("In the deep depths of all Big Rips, a space crystal is impending you with more challenges...")
+
+	var ngp3ex=modes.ngex&&modes.ngpp
+	if (modes.ngp3ex!=ngp3ex) {
+		if (ngp3ex) $.notify("In the deep depths of all Big Rips, a space crystal is impending you with more challenges...")
+		modes.ngp3ex=ngp3ex
+	}
 }
 function show_mods() {
 	modsShown=!modsShown
