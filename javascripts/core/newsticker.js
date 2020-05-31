@@ -330,8 +330,9 @@ newsArray = [//always true
 ["People who read at least 350 news tickers are really unlikely to be ghosts.", "player.newsArray.length >= 350", "am177"],
 ["You are a no-life news reader.", "player.newsArray.length >= 400", "am178"],
 ["Is not called matter dimensions for that?", "tmp.ngp3 && tmp.qu.bigRip.active", "am179"],
-["aarex has retired back to his cave after apeasing the masses with the higgs boson", false, "am180"]
-/*NEXT ID: am181*/
+["aarex has retired back to his cave after apeasing the masses with the higgs boson", false, "am180"],
+["We launched a mission rocket to land on a ghostly moon.", false, "am181"]
+/*NEXT ID: am182*/
 ];}
 
 document.addEventListener("visibilitychange", function() {if (!document.hidden) {scrollNextMessage();}}, false);
