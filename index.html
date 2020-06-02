@@ -4600,13 +4600,13 @@
 					</td>
 				</tr><tr id="quarkAssort">
 					<td>
-						<button class='storebtn' id='redAssort' onclick='assignQuark("r")'>Assort all</button>
+						<button class='storebtn' id='redAssort' onclick='assignQuark("r")'>Assort</button>
 					</td>
 					<td>
-						<button class='storebtn' id='greenAssort' onclick='assignQuark("g")'>Assort all</button>
+						<button class='storebtn' id='greenAssort' onclick='assignQuark("g")'>Assort</button>
 					</td>
 					<td>
-						<button class='storebtn' id='blueAssort' onclick='assignQuark("b")'>Assort all</button>
+						<button class='storebtn' id='blueAssort' onclick='assignQuark("b")'>Assort</button>
 					</td>
 				</tr><tr id="quarkAssign">
 					<td>
@@ -4620,9 +4620,20 @@
 					</td>
 				</tr></table>
 				<div id="assignAll">
-					<button class='storebtn' id="assignAllButton" style="width:135px" onclick='assignAll()'>Distribute all</button>
+					<button class='storebtn' id="assignAllButton" style="width:135px" onclick='assignAll()'>Distribute</button>
 					<button class='storebtn' id="autoAssign" onclick='toggleAutoAssign()'>Auto: OFF</button>
-					<button class='storebtn' id="autoAssignRotate" style="width:135px" onclick='rotateAutoAssign()'>Rotation: None</button><br>
+					<button class='storebtn' id="autoAssignRotate" style="width:135px" onclick='rotateAutoAssign()'>Rotation: None</button>
+				</div>
+				<div id="assortSettings">
+					You will get <span id="assort_amount"></span> colored quarks when you assort quarks<br>
+					Assort percentage: <input id="assort_percentage" type="number" min=1 max=100 onchange="changeAssortPercentage()">%<br>
+					<button class='storebtn' id="assort_percentage_10" style="width:50px" onclick="changeAssortPercentage(10)">10%</button>
+					<button class='storebtn' id="assort_percentage_25" style="width:50px" onclick="changeAssortPercentage(25)">25%</button>
+					<button class='storebtn' id="assort_percentage_50" style="width:50px" onclick="changeAssortPercentage(50)">50%</button>
+					<button class='storebtn' id="assort_percentage_75" style="width:50px" onclick="changeAssortPercentage(75)">75%</button>
+					<button class='storebtn' id="assort_percentage_100" style="width:50px" onclick="changeAssortPercentage(100)">100%</button>
+				</div>
+				<div id="ratioSettings">
 					Ratios:<br>
 					R: <input id="ratio_r" type="number" min=0 onchange="changeRatio('r')"></input>
 					G: <input id="ratio_g" type="number" min=0 onchange="changeRatio('g')"></input>
@@ -4650,17 +4661,31 @@
 					<td class="bqC">
 						Translated to <span class="blue" id="blueTranslation" style="font-size:35px">1.0</span>x faster dilated time production<span id="bluePowerMDEffect"> and <span class="blue" id="blueTranslationMD" style="font-size:35px">1.0</span>x production from all Meta Dimensions</span>.</span>
 					</td>
-				</tr><tr id="colorDimTranslations">
-					<td class="rqC">
-						Translated to <span class="red" id="redDimTranslation" style="font-size:35px">0.0</span>x faster normal Dimension productions.</p>
-					</td>
-					<td>
-						Translated to <span class="green" id="greenDimTranslation" style="font-size:35px">0</span>x faster Infinity Dimension productions.</p>
-					</td>
-					<td class="bqC">
-						Translated to <span class="blue" id="blueDimTranslation" style="font-size:35px">1.0</span>x faster Time Dimension productions.</span>
-					</td>
 				</tr></table>
+				<table class='qtable' id="colorDimTranslations">
+					<tr>
+						<td class="rqC">
+							Translated to <span class="red" id="redDimTranslation" style="font-size:35px">0.0</span>x faster normal Dimension productions.</p>
+						</td>
+						<td>
+							Translated to <span class="green" id="greenDimTranslation" style="font-size:35px">0</span>x faster Infinity Dimension productions.</p>
+						</td>
+						<td class="bqC">
+							Translated to <span class="blue" id="blueDimTranslation" style="font-size:35px">1.0</span>x faster Time Dimension productions.</span>
+						</td>
+					</tr><tr style="vertical-align: 0">
+						<td>
+							<button class='gluonupgrade unavailablebtn' id='redQuarkDimUpgrade' onclick='upgradeQuarkDimBoost("r")'>Upgrade this Dimension boost<br>Cost: <span id="redQuarkDimUpgradeCost">0</span> QK</button>
+						</td>
+						<td>
+							<button class='gluonupgrade unavailablebtn' id='greenQuarkDimUpgrade' onclick='upgradeQuarkDimBoost("g")'>Upgrade this Dimension boost<br>Cost: <span id="greenQuarkDimUpgradeCost">0</span> QK</button>
+							<button class="storebtn" onclick='maxQuarkMult()' style='width:190px'>Max all boosts above</button>
+						</td>
+						<td>
+							<button class='gluonupgrade unavailablebtn' id='blueQuarkDimUpgrade' onclick='upgradeQuarkDimBoost("b")'>Upgrade this Dimension boost<br>Cost: <span id="blueQuarkDimUpgradeCost">0</span> QK</button>
+						</td>
+					</tr>
+				</table>
 			</div>
 			<div class='quantumtab' id='gluons'>
 				<div>Your quantum worth (sum of quarks, colored quarks, and gluons) is currently <b class="QKAmount" id="quantumWorth2">0</b>.</div>

@@ -1910,6 +1910,8 @@ if (player.version < 5) {
   document.getElementById('autoAssign').style.display = autoAssignUnl ? "" : "none"
   document.getElementById('autoAssignRotate').style.display = autoAssignUnl ? "" : "none"
   document.getElementById('autoReset').style.display=player.achievements.includes("ng3p47")?"":"none"
+  document.getElementById('assortSettings').style.display = tmp.ngp3l ? "none" : ""
+  document.getElementById('ratioSettings').style.display = !tmp.ngp3l || autoAssignUnl ? "" : "none"
   document.getElementById('aftereternity').style.display=player.achievements.includes("ng3p52")?"":"none"
   if (player.pSac !== undefined) {
       updateParadoxUpgrades()
@@ -1959,6 +1961,7 @@ if (player.version < 5) {
       document.getElementById("bpc68").textContent=shortenMoney(tmp.qu.pairedChallenges.pc68best)
       document.getElementById("odSlider").value=Math.round((tmp.bl.odSpeed-1)/4*50)
       for (var g=1;g<=br.limit;g++) document.getElementById("typeToExtract"+g).className=tmp.bl.typeToExtract==g?"chosenbtn":"storebtn"
+      updateAssortPercentage()
       updateElectrons()
       updateAutoQuantumMode()
       updateColorCharge()

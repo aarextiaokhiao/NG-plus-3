@@ -2771,6 +2771,7 @@ function ghostifyReset(implode, gain, amount, force) {
 				sacrifice: bm ? tmp.qu.autoOptions.sacrifice : false,
 				replicantiReset: tmp.qu.autoOptions.replicantiReset
 			},
+			assortPercentage: tmp.qu.assortPercentage,
 			assignAllRatios: tmp.qu.assignAllRatios,
 			quarks: new Decimal(0),
 			usedQuarks: {

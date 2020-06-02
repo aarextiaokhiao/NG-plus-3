@@ -29,9 +29,35 @@ function updateQuantumWorth(mode) {
 }
 
 //Quark Assertment Machine (Quark Assignation: NG+3L)
+function getAssortPercentage() {
+	return tmp.qu.assortPercentage ? tmp.qu.assortPercentage : 100
+}
+
+function getAssortAmount() {
+	return tmp.qu.quarks.floor().min(tmp.qu.quarks).times(getAssortPercentage() / 100).round()
+}
+
+var assortDefaultPercentages = [10, 25, 50, 75, 100]
+function updateAssortPercentage() {
+	if (tmp.ngp3l) return
+	let percentage = getAssortPercentage()
+	document.getElementById("assort_percentage").value = percentage
+	for (var i = 0; i < assortDefaultPercentages.length; i++) {
+		var percentage2 = assortDefaultPercentages[i]
+		document.getElementById("assort_percentage_" + percentage2).className = percentage2 == percentage ? "chosenbtn" : "storebtn"
+	}
+}
+
+function changeAssortPercentage(x) {
+	tmp.qu.assortPercentage = Math.max(Math.min(parseFloat(x || document.getElementById("assort_percentage").value), 100), 0)
+	updateAssortPercentage()
+	updateQuarksTabOnUpdate()
+}
+
 function assignQuark(color) {
+	var usedQuarks=getAssortAmount()
+	if (usedQuarks.eq(0)) return
 	if (tmp.ngp3l&&color!="r"&&tmp.qu.times<2&&!ghostified) if (!confirm("It is recommended to assign your first quarks to red. Are you sure you want to do that?")) return
-	var usedQuarks=tmp.qu.quarks.floor().min(tmp.qu.quarks)
 	var mult=getQuarkAssignMult()
 	tmp.qu.usedQuarks[color]=tmp.qu.usedQuarks[color].add(usedQuarks.times(mult)).round()
 	tmp.qu.quarks=tmp.qu.quarks.sub(usedQuarks)
@@ -41,9 +67,9 @@ function assignQuark(color) {
 }
 
 function assignAll(auto) {
-	var ratios =  tmp.qu.assignAllRatios
+	var ratios = tmp.qu.assignAllRatios
 	var sum = ratios.r+ratios.g+ratios.b
-	var oldQuarks = tmp.qu.quarks.floor()
+	var oldQuarks = getAssortAmount()
 	var colors = ['r','g','b']
 	var mult = getQuarkAssignMult()
 	if (oldQuarks.eq(0)) return
@@ -51,7 +77,7 @@ function assignAll(auto) {
 		var toAssign = oldQuarks.times(ratios[colors[c]]/sum).round()
 		tmp.qu.usedQuarks[colors[c]] = tmp.qu.usedQuarks[colors[c]].add(toAssign.times(mult)).round()
 	}
-	tmp.qu.quarks = new Decimal(0)
+	tmp.qu.quarks = tmp.qu.quarks.sub(oldQuarks).round()
 	if (tmp.qu.autoOptions.assignQKRotate) {
 		if (tmp.qu.autoOptions.assignQKRotate > 1) {
 			tmp.qu.assignAllRatios = {
@@ -312,7 +338,9 @@ function updateQuarksTab(tab) {
 	}
 	if (player.masterystudies.includes("t383")) document.getElementById("blueTranslationMD").textContent=shorten(getMTSMult(383))
 	if (player.ghostify.milestones>7) {
-		document.getElementById("assignAllButton").className=(tmp.qu.quarks.lt(1)?"unavailabl":"stor")+"ebtn"
+		var assortAmount=getAssortAmount()
+		if (!tmp.ngp3l) document.getElementById("assort_amount").textContent = shortenDimensions(assortAmount)
+		document.getElementById("assignAllButton").className=(assortAmount.lt(1)?"unavailabl":"stor")+"ebtn"
 		updateQuantumWorth("display")
 	}
 }
@@ -355,9 +383,10 @@ function updateQuarksTabOnUpdate(mode) {
 	document.getElementById("redQuarks").textContent=shortenDimensions(tmp.qu.usedQuarks.r)
 	document.getElementById("greenQuarks").textContent=shortenDimensions(tmp.qu.usedQuarks.g)
 	document.getElementById("blueQuarks").textContent=shortenDimensions(tmp.qu.usedQuarks.b)
-	var canAssign=tmp.qu.quarks.gt(0)
 	document.getElementById("boost").style.display=player.dilation.active?"":"none"
 
+	var assortAmount=getAssortAmount()
+	var canAssign=assortAmount.gt(0)
 	document.getElementById("quarkAssort").style.display=tmp.ngp3l?"none":""
 	document.getElementById("quarkAssign").style.display=tmp.ngp3l?"":"none"
 	document.getElementById("colorDimTranslations").style.display=tmp.ngp3l?"none":""
@@ -366,6 +395,7 @@ function updateQuarksTabOnUpdate(mode) {
 		document.getElementById("greenAssign").className=canAssign?"storebtn":"unavailablebtn"
 		document.getElementById("blueAssign").className=canAssign?"storebtn":"unavailablebtn"
 	} else {
+		document.getElementById("assort_amount").textContent=shortenDimensions(assortAmount)
 		document.getElementById("redAssort").className=canAssign?"storebtn":"unavailablebtn"
 		document.getElementById("greenAssort").className=canAssign?"storebtn":"unavailablebtn"
 		document.getElementById("blueAssort").className=canAssign?"storebtn":"unavailablebtn"
