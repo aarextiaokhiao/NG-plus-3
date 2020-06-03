@@ -2159,7 +2159,7 @@ br {
 	border: 1px solid #3f0000;
 	box-shadow: inset 0px 0px 5px 0px #7f0000;
 	text-shadow: 0px 0px 2px #1f0000, 0px 0px 2px #ff0000;
-	color: #7f0000
+	color: #bf0000
 }
 .gluonupgrade.g {
 	background-color: #001f00 !important;
@@ -2173,11 +2173,11 @@ br {
 	border: 1px solid #00003f;
 	box-shadow: inset 0px 0px 5px 0px #00007f;
 	text-shadow: 0px 0px 2px #00001f, 0px 0px 2px #0000ff;
-	color: #00009f
+	color: #0000ff
 }
 
 .gluonupgrade.r:hover {
-	background-color: #7f0000 !important;
+	background-color: #bf0000 !important;
 	border: 1px solid #3f0000;
 	box-shadow: inset 0px 0px 5px 0px #bf0000;
 	color: #1f0000;
@@ -2191,7 +2191,7 @@ br {
 	cursor: pointer
 }
 .gluonupgrade.b:hover {
-	background-color: #00007f !important;
+	background-color: #0000ff !important;
 	border: 1px solid #00003f;
 	box-shadow: inset 0px 0px 5px 0px #0000bf;
 	color: #00001f;

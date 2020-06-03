@@ -1265,7 +1265,10 @@ if (player.version < 5) {
       tmp.bl=player.ghostify.bl
   }
   if (player.aarexModifications.newGame3PlusVersion < 2.21) {
-      //No save modification code yet! :(
+      if (prompt("Hey, player. Welcome to NG+3.1! This update changes this mod by A LOT. If you don't want to start playing NG+3.1, type 'legacy' on the bar.") == "legacy") {
+          player.aarexModifications.ngp3lV = 1
+          tmp.ngp3l = true
+      }
       player.aarexModifications.newGame3PlusVersion = 2.21
   }
   if (player.aarexModifications.newGameMinusMinusVersion === undefined && !player.meta) {
@@ -1675,6 +1678,7 @@ if (player.version < 5) {
       if (Decimal.eq(player.ghostify.wzb.zNeReq,0)) player.ghostify.wzb.zNeReq=1
       updateAutoGhosts(true)
   }
+  document.getElementById("exitLegacy").style.display = tmp.ngp3l ? "" : "none"
 
   if (player.options.commas == "Default") {
       player.options.commas == "AF2019";

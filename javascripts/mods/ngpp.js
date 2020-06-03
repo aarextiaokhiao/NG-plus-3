@@ -782,6 +782,7 @@ function quantumReset(force, auto, challid, bigRip, implode=false) {
 					document.getElementById('assignAll').style.display = ""
 					document.getElementById('autoAssign').style.display = ""
 					document.getElementById('autoAssignRotate').style.display = ""
+					document.getElementById('ratioSettings').style.display = ""
 				}
 				document.getElementById('toggleautoquantummode').style.display=""
 			}

@@ -4364,6 +4364,14 @@ function displayNonlegacyStuff() {
 	for (var r=3;r<=bu.maxRows;r++) document.getElementById("bUpgRow"+r).style.display=tmp.ngp3l?"none":""
 }
 
+function exitLegacy() {
+	if (!confirm("This ends the legacy mode, a.k.a. NG+3L, and bring you into NG+3.1. Are you sure?")) return
+	clearInterval(gameLoopIntervalId)
+	delete player.aarexModifications.ngp3lV
+	set_save(metaSave.current, player)
+	reload()
+}
+
 function getOldAgeRequirement() {
 	let year = new Date().getFullYear() || 2020
 	if (tmp.ngp3l) year = 2019
