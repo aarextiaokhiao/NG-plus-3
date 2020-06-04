@@ -147,7 +147,7 @@ function updateColorCharge() {
 		var ret=new Decimal(0)
 		if (player.ghostify.milestones>=2) ret=tmp.qu.usedQuarks[colors[i]]
 		if (!tmp.ngp3l) ret=ret.add(quantumWorthBonus)
-		colorCharge[colors[i]]=quantumWorthBonus
+		colorCharge[colors[i]]=ret
 	}
 
 	var sorted=[]
