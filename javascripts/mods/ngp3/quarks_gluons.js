@@ -37,7 +37,7 @@ function getAssortAmount() {
 	return tmp.qu.quarks.floor().min(tmp.qu.quarks).times(getAssortPercentage() / 100).round()
 }
 
-var assortDefaultPercentages = [10, 25, 50, 75, 100]
+var assortDefaultPercentages = [10, 25, 50, 100]
 function updateAssortPercentage() {
 	if (tmp.ngp3l) return
 	let percentage = getAssortPercentage()
