@@ -332,8 +332,9 @@ newsArray = [//always true
 ["Is not called matter dimensions for that?", "tmp.ngp3 && tmp.qu.bigRip.active", "am179"],
 ["aarex has retired back to his cave after apeasing the masses with the higgs boson", false, "am180"],
 ["We launched a mission rocket to land on a ghostly moon.", false, "am181"],
-["BREAKING NEWS! After the killing of a antimatter person, antimatter people started protesting!", false, "am182"]
-/*NEXT ID: am183*/
+["BREAKING NEWS! After the killing of a antimatter person, antimatter people started protesting!", false, "am182"],
+["Antimatter people protests have been extremely intensified!", false, "am183"]
+/*NEXT ID: am184*/
 ];}
 
 document.addEventListener("visibilitychange", function() {if (!document.hidden) {scrollNextMessage();}}, false);
