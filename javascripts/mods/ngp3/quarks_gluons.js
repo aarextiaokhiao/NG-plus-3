@@ -240,9 +240,16 @@ function updateColorDimPowers(log) {
 	//Logs
 	if (log == undefined) log = getCPLogs()
 
-	colorBoosts.dim.r = Decimal.pow(10, Math.sqrt(player.money.add(1).log10()) * Math.pow(log.r, 4/7) * (inQC(6) ? 1 : 35))
-	colorBoosts.dim.g = Decimal.pow(10, Math.sqrt(player.infinityPower.add(1).log10()) * Math.pow(log.g, 4/7) * 5)
-	colorBoosts.dim.b = Decimal.pow(10, Math.sqrt(player.timeShards.add(1).log10()) * Math.pow(log.b, 8/21))
+	colorBoosts.dim.r = Decimal.pow(10, Math.sqrt(player.money.add(1).log10()) * Math.pow(getColorDimPowerBase("r", log), 4/7) * (inQC(6) ? 1 : 35))
+	colorBoosts.dim.g = Decimal.pow(10, Math.sqrt(player.infinityPower.add(1).log10()) * Math.pow(getColorDimPowerBase("g", log), 4/7) * 5)
+	colorBoosts.dim.b = Decimal.pow(10, Math.sqrt(player.timeShards.add(1).log10()) * Math.pow(getColorDimPowerBase("b", log), 8/21))
+}
+
+function getColorDimPowerBase(color, log) {
+	if (log == undefined) log = getCPLogs()
+	let ret = Math.pow(log[color], 3/5)
+	ret *= Math.pow((tmp.qu.colorDimPower || 0) + 1, 2/5)
+	return ret
 }
 
 //Gluons
