@@ -5478,7 +5478,7 @@ function eternity(force, auto, presetLoad, dilated) {
             array = [player.thisEternity, getEMGain(), "b"]
             updateBreakEternity()
         }
-        if (player.infinityPoints.e>=15500&&player.currentEternityChall=="eterc11"&&inQC(6)&&inQC(8)&&inQCModifier("ad")) giveAchievement("The Deep Challenge")
+        if (ghostified&&player.infinityPoints.e>=15500&&player.currentEternityChall=="eterc11"&&inQC(6)&&inQC(8)&&inQCModifier("ad")) giveAchievement("The Deep Challenge")
         addEternityTime(array)
         var forceRespec = false
         if (player.currentEternityChall !== "") {
