@@ -1679,6 +1679,8 @@ if (player.version < 5) {
       updateAutoGhosts(true)
   }
   document.getElementById("exitLegacy").style.display = tmp.ngp3l ? "" : "none"
+  document.getElementById("gluonCharger1").style.display = tmp.ngp3l ? "none" : ""
+  document.getElementById("gluonCharger2").style.display = tmp.ngp3l ? "none" : ""
 
   if (player.options.commas == "Default") {
       player.options.commas == "AF2019";
