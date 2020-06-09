@@ -1679,8 +1679,6 @@ if (player.version < 5) {
       updateAutoGhosts(true)
   }
   document.getElementById("exitLegacy").style.display = tmp.ngp3l ? "" : "none"
-  document.getElementById("gluonCharger1").style.display = tmp.ngp3l ? "none" : ""
-  document.getElementById("gluonCharger2").style.display = tmp.ngp3l ? "none" : ""
 
   if (player.options.commas == "Default") {
       player.options.commas == "AF2019";
@@ -1758,7 +1756,7 @@ if (player.version < 5) {
 
   document.getElementsByClassName("hideInMorse").display = player.options.notation == "Morse code" ? "none" : ""
 
-  document.getElementById("decimalMode").textContent = "Big numbers library: "+(break_infinity_js?"break_infinity (slow)":"logarithmica_numerus (fast)")
+  document.getElementById("decimalMode").textContent = "Big number library: "+(break_infinity_js?"break_infinity (slow)":"logarithmica_numerus (fast)")
   document.getElementById("decimalMode").style.visibility = Decimal.gt(player.totalmoney,"1e9000000000000000") ? "hidden" : ""
   document.getElementById("hideProductionTab").textContent = (player.aarexModifications.hideProductionTab?"Show":"Hide")+" production tab"
   document.getElementById("hideRepresentation").textContent=(player.aarexModifications.hideRepresentation?"Show":"Hide")+" antimatter representation"
@@ -1945,7 +1943,9 @@ if (player.version < 5) {
       document.getElementById('dilUpgsauto').textContent="Auto-buy dilation upgrades: O"+(player.autoEterOptions.dilUpgs?"N":"FF")
       document.getElementById('metaboostauto').textContent="Meta-boost auto: O"+(player.autoEterOptions.metaboost?"N":"FF")
       document.getElementById('priorityquantum').value=formatValue("Scientific", new Decimal(tmp.qu.autobuyer.limit), 2, 0)
-      document.getElementById('rg4toggle').style.display=(inQC(1)||QCIntensity(1))?"none":""
+      document.getElementById("gluonCharger1").style.display = tmp.ngp3l ? "none" : ""
+      document.getElementById("gluonCharger2").style.display = tmp.ngp3l ? "none" : ""
+      document.getElementById('rg4toggle').style.display=(!tmp.ngp3l||inQC(1)||QCIntensity(1))?"none":""
       document.getElementById('rg4toggle').textContent="Toggle: O"+(tmp.qu.rg4?"N":"FF")
       document.getElementById("respecPC").className=tmp.qu.pairedChallenges.respec?"quantumbtn":"storebtn"
       document.getElementById('sacrificeAuto').textContent="Auto: O"+(tmp.qu.autoOptions.sacrifice?"N":"FF")
@@ -1963,6 +1963,7 @@ if (player.version < 5) {
           else document.getElementById("neutrinoUpg"+u).style.display=u>player.ghostify.times+2?"none":""
       }
       document.getElementById("gphUnl").textContent="To unlock Ghostly Photons, you need to get "+shortenCosts(Decimal.pow(10,6e9))+" antimatter while your universe is Big Ripped first."
+      document.getElementById("lightBoost4Type").textContent=tmp.ngp3l?"preon":"total green power"
       document.getElementById("blUnl").textContent="To unlock Bosonic Lab, you need to get "+shortenCosts(Decimal.pow(10,1e10))+" ghostly unstable quarks first."
       document.getElementById("bpc68").textContent=shortenMoney(tmp.qu.pairedChallenges.pc68best)
       document.getElementById("odSlider").value=Math.round((tmp.bl.odSpeed-1)/4*50)

@@ -5,7 +5,10 @@ function updateQuantumWorth(mode) {
 		if (mode!="notation") mode=undefined
 	} else if (mode=="notation") return
 	if (mode != "notation") {
-		if (mode != "display") quantumWorth = tmp.qu.quarks.add(tmp.qu.usedQuarks.r).add(tmp.qu.usedQuarks.g).add(tmp.qu.usedQuarks.b).add(tmp.qu.gluons.rg).add(tmp.qu.gluons.gb).add(tmp.qu.gluons.br).round()
+		if (mode != "display") {
+			quantumWorth = tmp.qu.quarks.add(tmp.qu.usedQuarks.r).add(tmp.qu.usedQuarks.g).add(tmp.qu.usedQuarks.b).add(tmp.qu.gluons.rg).add(tmp.qu.gluons.gb).add(tmp.qu.gluons.br).round()
+			if (!tmp.ngp3l) colorCharge.qwBonus = quantumWorth.pow(.8).div(100)
+		}
 		if (player.ghostify.times) {
 			var automaticCharge = Math.max(Math.log10(quantumWorth.add(1).log10()/150)/Math.log10(2),0)+Math.max(tmp.qu.bigRip.spaceShards.add(1).log10()/20-0.5,0)
 			player.ghostify.automatorGhosts.power = Math.max(automaticCharge, player.ghostify.automatorGhosts.power)
@@ -141,12 +144,9 @@ colorShorthands={r:'red',
 function updateColorCharge() {
 	if (!tmp.ngp3) return
 	var colors=['r','g','b']
-	var quantumWorthBonus=quantumWorth.pow(.8).div(100)
-
 	for (var i=0;i<3;i++) {
 		var ret=new Decimal(0)
 		if (player.ghostify.milestones>=2) ret=tmp.qu.usedQuarks[colors[i]]
-		if (!tmp.ngp3l) ret=ret.add(quantumWorthBonus)
 		colorCharge[colors[i]]=ret
 	}
 
@@ -162,6 +162,12 @@ function updateColorCharge() {
 	if (tmp.qu.usedQuarks[sorted[0]].gt(0)&&colorCharge.normal.charge.eq(0)) giveAchievement("Hadronization")
 
 	updateQuarksTabOnUpdate()
+}
+
+function getColorPowerProduction(color) {
+	let ret = new Decimal(colorCharge[color])
+	if (!tmp.ngp3l) ret = ret.add(colorCharge.qwBonus)
+	return ret
 }
 
 colorBoosts={
@@ -202,11 +208,14 @@ function updateColorPowers(log) {
 	if (colorBoosts.r>2.3&&(!player.dilation.active||getTreeUpgradeLevel(2)>7||ghostified)) colorBoosts.r=Math.pow(colorBoosts.r/2.3,0.5*(ghostified&&player.ghostify.neutrinos.boosts>4?1+tmp.nb[4]:1))*2.3
 
 	//Green
+	let m=1
 	if (tmp.ngp3l) {
 		colorBoosts.g=Math.sqrt(log.g*2+1)
 		if (colorBoosts.g>4.5) colorBoosts.g=Math.sqrt(colorBoosts.g*4.5)
-	} else colorBoosts.g=Math.pow(log.g+1,1/3)*2-1
-	let m=1
+	} else {
+		colorBoosts.g=Math.pow(log.g+1,1/3)*2-1
+		if (player.ghostify.ghostlyPhotons.unl) m*=tmp.le[3]
+	}
 	if (player.aarexModifications.ngumuV&&player.masterystudies.includes("t362")) {
 		m+=tmp.qu.replicants.quarks.add(1).log10()/10
 		if (m>4) m=Math.sqrt(m*4)
@@ -346,7 +355,11 @@ function updateQuarksTab(tab) {
 	if (player.masterystudies.includes("t383")) document.getElementById("blueTranslationMD").textContent=shorten(getMTSMult(383))
 	if (player.ghostify.milestones>7) {
 		var assortAmount=getAssortAmount()
-		if (!tmp.ngp3l) document.getElementById("assort_amount").textContent = shortenDimensions(assortAmount)
+		if (!tmp.ngp3l) {
+			var colors=['r','g','b']
+			document.getElementById("assort_amount").textContent=shortenDimensions(assortAmount)
+			for (c=0;c<3;c++) if (colorCharge[colors[c]].div(colorCharge.qwBonus).lte(1e16)) document.getElementById(colors[c]+"PowerRate").textContent="+"+shorten(getColorPowerProduction(colors[c]))+"/s"
+		}
 		document.getElementById("assignAllButton").className=(assortAmount.lt(1)?"unavailabl":"stor")+"ebtn"
 		updateQuantumWorth("display")
 	}
@@ -385,7 +398,7 @@ function updateQuarksTabOnUpdate(mode) {
 		var color=colorShorthands[colorCharge.normal.color]
 		document.getElementById("colorCharge").innerHTML='<span class="'+color+'">'+color+'</span> charge of <span class="'+color+'" style="font-size:35px">' + shortenDimensions(colorCharge.normal.charge) + "</span>"
 	}
-	for (c=0;c<3;c++) document.getElementById(colors[c]+"PowerRate").textContent=shortenDimensions(colorCharge[colors[c]])
+	for (c=0;c<3;c++) document.getElementById(colors[c]+"PowerRate").textContent="+"+shorten(getColorPowerProduction(colors[c]))+"/s"
 
 	document.getElementById("redQuarks").textContent=shortenDimensions(tmp.qu.usedQuarks.r)
 	document.getElementById("greenQuarks").textContent=shortenDimensions(tmp.qu.usedQuarks.g)

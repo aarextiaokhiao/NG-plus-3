@@ -254,7 +254,8 @@ var quantumTabs = {
 		electrons: function() {
 			document.getElementById("normalGalaxies").textContent=getFullExpansion(player.galaxies)
 			document.getElementById("sacrificeGal").className="gluonupgrade "+((player.galaxies>tmp.qu.electrons.sacGals&&inQC(0))?"stor":"unavailabl")+"ebtn"
-			document.getElementById("sacrificeGals").textContent=getFullExpansion(Math.max(player.galaxies-tmp.qu.electrons.sacGals, 0))
+			document.getElementById("sacrificeGals").textContent=getFullExpansion(Math.max(player.galaxies-tmp.qu.electrons.sacGals,0))
+			document.getElementById("electronsGain").textContent=getFullExpansion(Math.floor(Math.max(player.galaxies-tmp.qu.electrons.sacGals,0)*getELCMult()))
 			for (u=1;u<5;u++) document.getElementById("electronupg"+u).className="gluonupgrade "+(canBuyElectronUpg(u)?"stor":"unavailabl")+"ebtn"
 			if (tmp.qu.autoOptions.sacrifice) updateElectronsEffect()
 		},
@@ -470,7 +471,7 @@ function sacrificeGalaxy(auto=false) {
 	var amount=player.galaxies-tmp.qu.electrons.sacGals
 	if (amount<1) return
 	if (player.options.sacrificeConfirmation&&!auto) if (!confirm("You will perform a galaxy reset, but you will exchange all your galaxies to electrons which will give a boost to multiplier per ten dimensions.")) return
-	tmp.qu.electrons.sacGals+=amount
+	tmp.qu.electrons.sacGals=player.galaxies
 	tmp.qu.electrons.amount+=getELCMult()*amount
 	if (!tmp.qu.autoOptions.sacrifice) updateElectronsEffect()
 	if (!auto) galaxyReset(0)
@@ -3056,6 +3057,7 @@ function ghostifyReset(implode, gain, amount, force) {
 		document.getElementById("nanofieldtabbtn").style.display = "none"
 		document.getElementById("edtabbtn").style.display = "none"
 	}
+	if (tmp.ngp3l&&!bm) document.getElementById('rg4toggle').style.display=inQC(1)?"none":""
 	document.getElementById('bestTP').textContent="Your best Tachyon particles in this Ghostify was "+shorten(player.dilation.bestTP)+"."
 	updateLastTenQuantums()
 	updateSpeedruns()

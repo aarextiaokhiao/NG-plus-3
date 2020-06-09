@@ -1363,7 +1363,7 @@ function quantumReset(force, auto, challid, bigRip, implode=false) {
 		updateColorCharge()
 		updateColorDimPowers()
 		updateGluonsTabOnUpdate()
-		document.getElementById('rg4toggle').style.display=inQC(1)||QCIntensity(1)?"none":""
+		if (tmp.ngp3l&&!QCIntensity(1)) document.getElementById('rg4toggle').style.display=inQC(1)?"none":""
 		updateElectrons()
 		updateBankedEter()
 		updateQuantumChallenges()

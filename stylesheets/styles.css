@@ -2840,27 +2840,27 @@ screen and (max-width: 480px) {
 }
 
 @keyframes rgupg {
-	0% {background-color: #1f0000; border: 1px solid #3f0000; box-shadow: inset 0px 0px 5px 0px #7f0000; color: #7f0000}
+	0% {background-color: #1f0000; border: 1px solid #3f0000; box-shadow: inset 0px 0px 5px 0px #7f0000; color: #bf0000}
 	25% {background-color: #1f1f00; border: 1px solid #3f3f00; box-shadow: inset 0px 0px 10px 0px #7f7f00; color: #7f7f00}
 	50% {background-color: #001f00; border: 1px solid #003f00; box-shadow: inset 0px 0px 20px 0px #007f00; color: #007f00}
 	75% {background-color: #1f1f00; border: 1px solid #3f3f00; box-shadow: inset 0px 0px 10px 0px #7f7f00; color: #7f7f00}
-	100% {background-color: #1f0000; border: 1px solid #3f0000; box-shadow: inset 0px 0px 5px 0px #7f0000; color: #7f0000}
+	100% {background-color: #1f0000; border: 1px solid #3f0000; box-shadow: inset 0px 0px 5px 0px #7f0000; color: #bf0000}
 }
 
 @keyframes gbupg {
 	0% {background-color: #001f00; border: 1px solid #003f00; box-shadow: inset 0px 0px 5px 0px #007f00; color: #007f00}
 	25% {background-color: #001f1f; border: 1px solid #003f3f; box-shadow: inset 0px 0px 5px 0px #007f7f; color: #007f7f}
-	50% {background-color: #00001f; border: 1px solid #00003f; box-shadow: inset 0px 0px 5px 0px #00007f; color: #00007f}
+	50% {background-color: #00001f; border: 1px solid #00003f; box-shadow: inset 0px 0px 5px 0px #00007f; color: #0000df}
 	75% {background-color: #001f1f; border: 1px solid #003f3f; box-shadow: inset 0px 0px 5px 0px #007f7f; color: #007f7f}
 	100% {background-color: #001f00; border: 1px solid #003f00; box-shadow: inset 0px 0px 5px 0px #007f00; color: #007f00}
 }
 
 @keyframes brupg {
-	0% {background-color: #00001f; border: 1px solid #00003f; box-shadow: inset 0px 0px 5px 0px #00007f; color: #00007f}
+	0% {background-color: #00001f; border: 1px solid #00003f; box-shadow: inset 0px 0px 5px 0px #00007f; color: #0000df}
 	25% {background-color: #1f001f; border: 1px solid #3f003f; box-shadow: inset 0px 0px 5px 0px #7f007f; color: #7f007f}
-	50% {background-color: #1f0000; border: 1px solid #3f0000; box-shadow: inset 0px 0px 5px 0px #7f0000; color: #7f0000}
+	50% {background-color: #1f0000; border: 1px solid #3f0000; box-shadow: inset 0px 0px 5px 0px #7f0000; color: #bf0000}
 	75% {background-color: #1f001f; border: 1px solid #3f003f; box-shadow: inset 0px 0px 5px 0px #7f007f; color: #7f007f}
-	100% {background-color: #00001f; border: 1px solid #00003f; box-shadow: inset 0px 0px 5px 0px #00007f; color: #00007f}
+	100% {background-color: #00001f; border: 1px solid #00003f; box-shadow: inset 0px 0px 5px 0px #00007f; color: #0000df}
 }
 
 @keyframes rgupghover {

@@ -7,3 +7,7 @@ body {
 	font-family: Typewriter;
 	color: rgb(79, 89, 87);
 }
+
+.warning {
+	color: red
+}

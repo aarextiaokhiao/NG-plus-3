@@ -1142,7 +1142,7 @@ function updateTemp() {
 			if (tmp.le[0]>1.5) tmp.le[0]=Math.log10(tmp.le[0]*20/3)*1.5
 			tmp.le[1]=tmp.ls[1]>64?Math.log10(tmp.ls[1]/64)+14:tmp.ls[1]>8?Math.sqrt(tmp.ls[1])+6:tmp.ls[1]+1 //Orange light
 			tmp.le[2]=Math.sqrt(tmp.ls[2]>60?(Math.log10(tmp.ls[2]/6)+2)/3*Math.sqrt(1200):tmp.ls[2]>20?Math.sqrt(tmp.ls[2]*20):tmp.ls[2])*45e3 //Yellow light
-			tmp.le[3]=tmp.ls[3]>8?Math.log10(tmp.ls[3]/8)+Math.sqrt(12)+1:Math.sqrt(tmp.ls[3]*1.5)+1 //Green light
+			tmp.le[3]=tmp.ngp3l?(tmp.ls[3]>8?Math.log10(tmp.ls[3]/8)+Math.sqrt(12)+1:Math.sqrt(tmp.ls[3]*1.5)+1):1 //Green light
 			tmp.le[4]=Math.log10(Math.sqrt(tmp.ls[4]*2)+1)*5/4 //Blue light
 			tmp.le[5]=Decimal.pow(10,tmp.ls[5]>25?Math.sqrt(tmp.ls[5]*1e3+37500):tmp.ls[5]*10) //Indigo light
 			tmp.le[6]=Math.pow(player.postC3Reward.log10()*tmp.ls[6],1/3)*2 //Violet light
@@ -1218,7 +1218,7 @@ function updateTemp() {
 		tmp.be=tmp.qu.bigRip.active&&tmp.qu.breakEternity.break
 		tmp.twr=getTotalWorkers()
 		tmp.tra=getTotalReplicants()
-		tmp.rg4=tmp.qu.upgrades.includes("rg4")&&(tmp.qu.rg4||inQC(1)||QCIntensity(1))
+		tmp.rg4=tmp.qu.upgrades.includes("rg4")&&(tmp.qu.rg4||!tmp.ngp3l||inQC(1)||QCIntensity(1))
 		tmp.tue=getTreeUpgradeEfficiency()
 		tmp.mpte=getMPTExp()
 	} else tmp.be=false
@@ -3196,10 +3196,11 @@ function updateExtraReplGalaxies() {
 		}
 		let expVarName=(player.masterystudies.includes("t362")?"ts362":"")+(tmp.ngp3l?"legacy":"")
 		if (expVarName=="") expVarName="normal"
+		let exp=expData[expVarName]
+		if (!tmp.ngp3l&&player.masterystudies.includes("t412")) exp=.5
 
-		tmp.pe=Math.pow(tmp.qu.replicants.quarks.add(1).log10(),expData[expVarName])
-		tmp.pe*=tmp.ngp3l?0.67:0.8
-		if (player.masterystudies.includes("t412")) tmp.pe*=1.25
+		tmp.pe=Math.pow(tmp.qu.replicants.quarks.add(1).log10(),exp)
+		tmp.pe*=tmp.ngp3l?0.67*(player.masterystudies.includes("t412")?1.25:1):0.8
 		if (player.ghostify.ghostlyPhotons.unl) tmp.pe*=tmp.le[3]
 		extraReplGalaxies*=colorBoosts.g+tmp.pe
 	}
@@ -8299,7 +8300,7 @@ function gameLoop(diff) {
     }
     if (tmp.ngp3) {
         var colorShorthands=["r","g","b"]
-        for (var c=0;c<3;c++) tmp.qu.colorPowers[colorShorthands[c]]=tmp.qu.colorPowers[colorShorthands[c]].add(colorCharge[colorShorthands[c]].times(diff/10))
+        for (var c=0;c<3;c++) tmp.qu.colorPowers[colorShorthands[c]]=tmp.qu.colorPowers[colorShorthands[c]].add(getColorPowerProduction(colorShorthands[c]).times(diff/10))
         updateColorPowers()
 
         if (player.ghostify.wzb.unl) {

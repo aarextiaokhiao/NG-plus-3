@@ -140,7 +140,9 @@ var masteryStudies = {
 		401: "The production of preon anti-energy is slower based on your preons.",
 		402: "Emperor Dimensions and hatch speed are faster by 30x.",
 		411: "The production of preon energy is faster based on your replicants.",
-		412: "Preon effect is 25% stronger.",
+		412: function() {
+			return tmp.ngp3l?"Preon effect is 25% stronger.":"Further reduce the softcap of preon boost."
+		},
 		421: "Tickspeed boosts preon energy production.",
 		431: "Branches are faster based on your free galaxies."
 	},
