@@ -4245,16 +4245,16 @@ var bu={
 	},
 	reqData:{},
 	descs:{
-		11: "Bosonic Antimatter adds blue Light effect.",
-		12: "Every 100% of green power effect, decrease free galaxy threshold increase by 0.0007.",
-		13: "Radioactive Decays boost Light Empowerments.",
+		11: "Bosonic Antimatter increases blue Light effect.",
+		12: "For every 100% of green power effect, decrease the free galaxy threshold increase by 0.0007.",
+		13: "Radioactive Decays boost the effect of Light Empowerments.",
 		14: "Sacrificed galaxies cancel less galaxies based on your free galaxies.",
-		15: "Ghostifies and dilated time boost each other.",
-		21: "Replace first Nanofield reward with a new powerful boost.",
-		22: "Replace seventh Nanofield reward with a new powerful boost.",
+		15: "Ghostifies and dilated time power up each other.",
+		21: "Replace first Nanofield reward with a boost to slow down Dimension Supersonic scaling.",
+		22: "Replace seventh Nanofield reward with a boost to neutrino gain and preon charge.",
 		23: "Assigning gives more colored quarks based on your meta-antimatter.",
-		24: "You produce Space Shards without having to Big Rip, but Break Eternity upgrades are nerfed.",
-		25: "Electrons boost per-ten Meta Dimensions multiplier."
+		24: "You produce 1% of Space Shards on Big Rip per second, but Break Eternity upgrades are nerfed.",
+		25: "Electrons boost the per-ten Meta Dimensions multiplier."
 	},
 	effects:{
 		11: function() {
