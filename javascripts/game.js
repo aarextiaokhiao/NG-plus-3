@@ -7895,7 +7895,7 @@ setInterval(function() {
 	if (player.infinityPower.gt(1e260)) giveAchievement("Minute of infinity"); //TBD
 	if (player.totalTickGained >= 308) giveAchievement("Infinite time");
 	if (player.totalTickGained>=1e6) giveAchievement("GAS GAS GAS")
-	if (player.firstPow >= 10e30) giveAchievement("I forgot to nerf that")
+	if (dilates(player.firstPow, 2) >= 10e30) giveAchievement("I forgot to nerf that")
 	if (player.money >= 10e79) giveAchievement("Antimatter Apocalypse")
 	if (player.totalTimePlayed >= 10 * 60 * 60 * 24 * 8) giveAchievement("One for each dimension")
 	if (player.seventhAmount > 1e12) giveAchievement("Multidimensional");
