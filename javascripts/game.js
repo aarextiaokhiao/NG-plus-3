@@ -2469,12 +2469,12 @@ function updateChallenges() {
 		buttons[i].textContent = "Start"
 	}
 
-	tmp.cp=player.tickspeedBoosts==undefined?-14:0
+	tmp.cp=0
 	infDimPow=1
 	for (var i=0; i < player.challenges.length; i++) {
 		document.getElementById(player.challenges[i]).className = "completedchallengesbtn";
 		document.getElementById(player.challenges[i]).textContent = "Completed"
-		if (player.challenges[i].search("postc")==0||player.tickspeedBoosts==undefined) tmp.cp++
+		if (player.challenges[i].search("postc")==0) tmp.cp++
 		if (player.challenges.includes("postc1")) if (player.challenges[i].split("postc")[1]) infDimPow*=player.galacticSacrifice?2:1.3
 	}
 	
