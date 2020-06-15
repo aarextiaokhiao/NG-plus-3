@@ -2533,12 +2533,12 @@ function updateChallenges() {
 		buttons[i].textContent = "Start"
 	}
 
-	tmp.cp=player.tickspeedBoosts==undefined?-14:0
+	tmp.cp=0
 	infDimPow=1
 	for (var i=0; i < player.challenges.length; i++) {
 		document.getElementById(player.challenges[i]).className = "completedchallengesbtn";
 		document.getElementById(player.challenges[i]).textContent = "Completed"
-		if (player.challenges[i].search("postc")==0||player.tickspeedBoosts==undefined) tmp.cp++
+		if (player.challenges[i].search("postc")==0) tmp.cp++
 		if (player.challenges.includes("postc1")) if (player.challenges[i].split("postc")[1]) infDimPow*=player.galacticSacrifice?2:1.3
 	}
 	
@@ -4192,7 +4192,7 @@ function setAchieveTooltip() {
     oc.setAttribute('ach-tooltip', "Become a ghost with at least "+shortenCosts(Decimal.pow(10, 375e3))+" EP while Big Ripped with Anti-Dilation modifier.")
     btco.setAttribute('ach-tooltip', "Get a Paired Challenge 1 reward after you get "+shortenCosts(Decimal.pow(10, 165e7))+" antimatter in Quantum Challenges 6 and 8.")
     tdc.setAttribute('ach-tooltip', "Complete Eternity Challenge 11 with "+shortenCosts(Decimal.pow(10, 15500))+" IP in a Paired Challenge with Quantum Challenges 6 and 8 combinations and Anti-Dilation modifier.")
-    igu.setAttribute('ach-tooltip', "Reach "+shortenCosts(Decimal.pow(10, 225e3))+" IP while dilated and big ripped with Anti-Dilation modifier and without having studies, EP mult upgrades, Tree Upgrades, and Break Eternity.")
+    igu.setAttribute('ach-tooltip', "Reach "+shortenCosts(Decimal.pow(10, 22.5e3))+" IP while dilated and big ripped with Anti-Dilation modifier and without having studies, EP mult upgrades, Tree Upgrades, and Break Eternity.")
 }
 
 
@@ -7977,7 +7977,7 @@ setInterval(function() {
 			if (tmp.qu.breakEternity.eternalMatter.gte(9.999999e99)) giveAchievement("This achievement doesn't exist 4")
 			if (ableToGetRid8 && player.infinityPoints.e >= 95e4) giveAchievement("Please answer me why you are dying.")
 			if (ableToGetRid9 && player.infinityPoints.e >= 18e5) giveAchievement("Aren't you already dead?")
-			if (ableToGetRid10 && player.infinityPoints.e >= 225e3) giveAchievement("I give up.")
+			if (ableToGetRid10 && player.infinityPoints.e >= 22.5e3) giveAchievement("I give up.")
 		}
 		if (tmp.qu.bigRip.spaceShards.e>32&&!tmp.qu.breakEternity.did) giveAchievement("Finite Time")
 		if (minUQ.quarks.e>=1e12&&minUQ.decays>=2&&!tmp.qu.bigRip.times) giveAchievement("Weak Decay")
