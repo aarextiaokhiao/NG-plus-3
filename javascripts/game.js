@@ -1767,7 +1767,10 @@ function getDilTimeGainPerSecond() {
 	}
 	if (player.dilation.upgrades.includes('ngpp2')) {
 		gain = gain.times(Decimal.max(getEternitied(),1).pow(player.aarexModifications.ngudpV?.2:.1))
-		if (player.aarexModifications.newGameExpVersion) gain = gain.times(Decimal.max(getEternitied(),10).log10()).times(Math.pow(Decimal.max(getEternitied(),1e7).log10()-6,3))
+		if (player.aarexModifications.newGameExpVersion) { 
+			gain = gain.times(Decimal.max(getEternitied(),10).log10()).times(Math.pow(Decimal.max(getEternitied(),1e7).log10()-6,3))
+			if (Decimal.gt(getEternitied(),1e15)) gain = gain.times(Math.sqrt(new Decimal(getEternitied()).log10())) // this comes into play at the grind right before quantum
+		}
 	}
 	if (player.dilation.upgrades.includes('ngud2')) gain = gain.times(Decimal.max(getEternitied(), 1).pow(.1))
 	if (player.dilation.upgrades.includes('ngpp6')) gain = gain.times(getDil17Bonus())
