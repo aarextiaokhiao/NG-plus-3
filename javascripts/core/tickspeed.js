@@ -56,7 +56,8 @@ function getGalaxyEff(bi) {
 	}
 	if (player.tickspeedBoosts !== undefined && (inNC(5) || player.currentChallenge == "postcngm3_3")) eff *= 0.75
 	if (player.achievements.includes("ngpp8") && player.meta != undefined) eff *= 1.001;
-	if (player.timestudy.studies.includes(212)) eff *= Math.min(Math.pow(player.timeShards.max(2).log2(), 0.005), 1.1)
+	if (player.timestudy.studies.includes(212) && !player.aarexModifications.newGameExpVersion) eff *= Math.min(Math.pow(player.timeShards.max(2).log2(), 0.005), 1.1)
+	if (player.timestudy.studies.includes(212) && player.aarexModifications.newGameExpVersion) eff *= Math.min(Math.pow(player.timeShards.max(2).log2(), 0.006), 1.15)
 	if (player.timestudy.studies.includes(232)&&bi) eff*=tmp.ts232
 
 	if (player.aarexModifications.nguspV !== undefined && player.dilation.active) eff *= exDilationBenefit() + 1
