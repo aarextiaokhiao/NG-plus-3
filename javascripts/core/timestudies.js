@@ -808,10 +808,15 @@ function getTS11Mult() {
 	if (bigRipped && log > 900) log = Math.sqrt(log * 900)
 	else if (player.aarexModifications.newGameExpVersion) log = Math.min(log, 25000) // buff to NG+++^
 	else if (player.galacticSacrifice === undefined) log = Math.min(log, 2500)
-	log /= player.aarexModifications.newGameExpVersion ? 1 : 1 // changed this so that you can get to ghostify in NG+++^ per request
 	return Decimal.pow(10, log)
 }
 
 function getTS32Mult() {
 	return Math.pow(Math.max(player.resets,1),player.aarexModifications.newGameMult?4:1)
+}
+
+function getTS212Mult() {
+	let r = player.timeShards.max(2).log2()
+	if (player.aarexModifications.newGameExpVersion) return Math.min(Math.pow(r, 0.006), 1.15)
+	return Math.min(Math.pow(r, 0.005), 1.1)
 }

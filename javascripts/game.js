@@ -651,7 +651,7 @@ function updateNewPlayer(reseted) {
         player.overXGalaxiesTickspeedBoost=10
     }
     if (modesChosen.arrows) {
-        player.aarexModifications.newGameExpVersion = 1
+        player.aarexModifications.newGameExpVersion = 1.1
         for (u=1;u<5;u++) player.infinityUpgrades.push("skipReset"+(u>3?"Galaxy":u))
         player.resets=4
     }
@@ -1765,8 +1765,10 @@ function getDilTimeGainPerSecond() {
 		if (player.eternityUpgrades.includes(8)) gain = gain.times(1 + Math.log10(Math.max(1, player.infinityPoints.log(10))) / 20)
 		if (player.eternityUpgrades.includes(9)) gain = gain.times(1 + Math.log10(Math.max(1, player.eternityPoints.log(10))) / 10)
 	}
-	if (player.dilation.upgrades.includes('ngpp2')) gain = gain.times(Decimal.max(getEternitied(), 1).pow(player.aarexModifications.ngudpV?.2:.1))
-	if (player.dilation.upgrades.includes('ngpp2') && player.aarexModifications.newGameExpVersion) gain = gain.times(Decimal.max(getEternitied(), 10).log10()).times( (Decimal.max(getEternitied(),1e7).log10()-6)**3 )
+	if (player.dilation.upgrades.includes('ngpp2')) {
+		gain = gain.times(Decimal.max(getEternitied(),1).pow(player.aarexModifications.ngudpV?.2:.1))
+		if (player.aarexModifications.newGameExpVersion) gain = gain.times(Decimal.max(getEternitied(),10).log10()).times(Math.pow(Decimal.max(getEternitied(),1e7).log10()-6,3))
+	}
 	if (player.dilation.upgrades.includes('ngud2')) gain = gain.times(Decimal.max(getEternitied(), 1).pow(.1))
 	if (player.dilation.upgrades.includes('ngpp6')) gain = gain.times(getDil17Bonus())
 	if (player.dilation.upgrades.includes('ngusp3')) gain = gain.times(getD22Bonus())
@@ -2909,8 +2911,7 @@ function updateInfCosts() {
         document.getElementById("162desc").textContent = shortenCosts(Decimal.pow(10,(player.galacticSacrifice?234:11)*(player.aarexModifications.newGameExpVersion?5:1)))+"x multiplier on all Infinity dimensions"
         document.getElementById("192desc").textContent = "You can get beyond "+shortenMoney(Number.MAX_VALUE)+" replicantis, but the interval is increased the more you have"
         document.getElementById("193desc").textContent = "Currently: "+shortenMoney(Decimal.pow(1.03, getEternitied()).min("1e13000"))+"x"
-        if (player.aarexModifications.newGameExpVersion) document.getElementById("212desc").textContent = "Currently: "+((Math.min(Math.pow(player.timeShards.max(2).log2(), 0.005), 1.1)-1)*100).toFixed(2)+"%"
-	else document.getElementById("212desc").textContent = "Currently: "+((Math.min(Math.pow(player.timeShards.max(2).log2(), 0.006), 1.15)-1)*100).toFixed(2)+"%"
+        document.getElementById("212desc").textContent = "Currently: "+getTS212Mult().toFixed(2)+"%"
         document.getElementById("214desc").textContent = "Currently: "+shortenMoney(((calcTotalSacrificeBoost().pow(8)).min("1e46000").times(calcTotalSacrificeBoost().pow(1.1)).div(calcTotalSacrificeBoost())).max(1).min(new Decimal("1e125000")))+"x"
         document.getElementById("metaCost").textContent = shortenCosts(getMetaUnlCost());
 
