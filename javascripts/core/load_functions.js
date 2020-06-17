@@ -1502,7 +1502,8 @@ if (player.version < 5) {
       if (player.achievements.includes("r93")) player.infMult=player.infMult.times(4)
       player.aarexModifications.ersVersion=1.02
   }
-  if (player.aarexModifications.newGameExpVersion === undefined && !player.masterystudies && Decimal.gt(player.infMultCost,10) && Math.round(Decimal.div(player.infMultCost,10).log(4)*1e3)%1e3<1) player.aarexModifications.newGameExpVersion=1
+  if (player.aarexModifications.newGameExpVersion === undefined && !player.masterystudies && Decimal.gt(player.infMultCost,10) && Math.round(Decimal.div(player.infMultCost,10).log(4)*1e3)%1e3<1) player.aarexModifications.newGameExpVersion = 1
+  if (player.aarexModifications.newGameExpVersion < 1.11) player.aarexModifications.newGameExpVersion = 1.11
   if (player.aarexModifications.newGameUpdateVersion === undefined && player.exdilation != undefined) {
       player.aarexModifications.newGameUpdateVersion=1.01
       player.options.animations.blackHole=true

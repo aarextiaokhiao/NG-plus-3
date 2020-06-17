@@ -588,8 +588,16 @@ function getMTSMult(id, uses = "") {
 		return Math.floor(getTotalRG()/4)
 	}
 	if (id==262) {
-		if (tmp.ngp3l) return Math.max(player.resets/15e3-19,1)
-		return Decimal.pow(Math.max(player.resets/5e4-10,1),Math.sqrt(Math.max(player.resets/1e5-5.5,1)))
+		let r = 1
+		let exp = 1
+		if (tmp.ngp3l) r = Math.max(player.resets / 15e3 - 19, 1)
+		else {
+			r = Math.max(player.resets / 5e4 - 10, 1)
+			exp = Math.sqrt(Math.max(player.resets/1e5 - 5.5, 1))
+		}
+		if (player.aarexModifications.newGameExpVersion) exp *= 2
+		if (exp == 1) return r
+		return Decimal.pow(r, exp)
 	}
 	if (id==263) {
 		let x=player.meta.resets
@@ -597,8 +605,11 @@ function getMTSMult(id, uses = "") {
 		return x+1
 	}
 	if (id==264) {
-		if (tmp.ngp3l) return Math.pow(player.galaxies+1,0.25)*2
-		return player.galaxies/100+1
+		let r = 1
+		if (tmp.ngp3l) r = Math.pow(player.galaxies + 1, 0.25) * 2
+		else r = player.galaxies / 100 + 1
+		if (player.aarexModifications.newGameExpVersion) return r * r
+		return r
 	}
 	if (id==273) {
 		var intensity = 0

@@ -643,7 +643,7 @@ function updateNewPlayer(reseted) {
         player.overXGalaxiesTickspeedBoost=10
     }
     if (modesChosen.arrows) {
-        player.aarexModifications.newGameExpVersion = 1
+        player.aarexModifications.newGameExpVersion = 1.11
         for (u=1;u<5;u++) player.infinityUpgrades.push("skipReset"+(u>3?"Galaxy":u))
         player.resets=4
     }
@@ -1821,6 +1821,11 @@ function getDilTimeGainPerSecond() {
 	}
 	let eterExp = getEternitiesAndDTBoostExp()
 	if (eterExp > 0) gain = gain.times(Decimal.max(getEternitied(), 1).pow(eterExp))
+	if (player.dilation.upgrades.includes('ngpp2') && player.aarexModifications.newGameExpVersion) {
+		let e = new Decimal(getEternitied())
+		gain = gain.times(e.max(10).log10()).times(Math.pow(e.max(1e7).log10()-6,3))
+		if (e.gt(1e15)) gain = gain.times(Math.sqrt(e.log10())) // this comes into play at the grind right before quantum
+	}
 	if (player.dilation.upgrades.includes('ngpp6')) gain = gain.times(getDil17Bonus())
 	if (player.dilation.upgrades.includes('ngusp3')) gain = gain.times(getD22Bonus())
 	if (tmp.ngp3 && !tmp.ngp3l) gain = gain.times(Math.max((player.replicanti.amount.log10()-2e4)/8e3+1,1))
@@ -2975,7 +2980,7 @@ function updateInfCosts() {
         document.getElementById("162desc").textContent = shortenCosts(Decimal.pow(10,(player.galacticSacrifice?234:11)*(player.aarexModifications.newGameExpVersion?5:1)))+"x multiplier on all Infinity dimensions"
         document.getElementById("192desc").textContent = "You can get beyond "+shortenMoney(Number.MAX_VALUE)+" replicantis, but the interval is increased the more you have"
         document.getElementById("193desc").textContent = "Currently: "+shortenMoney(Decimal.pow(1.03, getEternitied()).min("1e13000"))+"x"
-        document.getElementById("212desc").textContent = "Currently: "+((Math.pow(player.timeShards.max(2).log2(), 0.005)-1)*100).toFixed(2)+"%"
+        document.getElementById("212desc").textContent = "Currently: "+((tsMults[212]()-1)*100).toFixed(2)+"%"
         document.getElementById("214desc").textContent = "Currently: "+shortenMoney(((calcTotalSacrificeBoost().pow(8)).min("1e46000").times(calcTotalSacrificeBoost().pow(1.1)).div(calcTotalSacrificeBoost())).max(1).min(new Decimal("1e125000")))+"x"
         document.getElementById("metaCost").textContent = shortenCosts(getMetaUnlCost());
 
@@ -6800,7 +6805,11 @@ function getECReward(x) {
 		let r=player.timeShards
 		if (r.gt(0)) r=r.pow(c/(m2?1:10))
 		if (m2) r=r.times(Decimal.pow(player.timeShards.max(10).log10(),500*c))
-		return r.plus(1).min(m2?"1e10000":"1e400")
+		if (m2) return r.plus(1).min("1e10000")
+		if (!player.aarexModifications.newGameExpVersion) return r.plus(1).min("1e400")
+		if (r.lt("1e400")) return r.plus(1)
+		let log = Math.sqrt(r.log10()*400)
+		return Decimal.pow(10,Math.min(50000,log))	
 	}
 	if (x==10) return Decimal.pow(getInfinitied(),m2?2:.9).times(c*(m2?0.02:0.000002)).add(1).pow(player.timestudy.studies.includes(31)?4:1)
 	if (x==12) return 1-c*(m2?.06:0.008)
