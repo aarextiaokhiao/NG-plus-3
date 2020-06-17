@@ -1766,6 +1766,7 @@ function getDilTimeGainPerSecond() {
 		if (player.eternityUpgrades.includes(9)) gain = gain.times(1 + Math.log10(Math.max(1, player.eternityPoints.log(10))) / 10)
 	}
 	if (player.dilation.upgrades.includes('ngpp2')) gain = gain.times(Decimal.max(getEternitied(), 1).pow(player.aarexModifications.ngudpV?.2:.1))
+	if (player.dilation.upgrades.includes('ngpp2') && player.aarexModifications.newGameExpVersion) gain = gain.times(Decimal.max(getEternitied(), 10).log10())
 	if (player.dilation.upgrades.includes('ngud2')) gain = gain.times(Decimal.max(getEternitied(), 1).pow(.1))
 	if (player.dilation.upgrades.includes('ngpp6')) gain = gain.times(getDil17Bonus())
 	if (player.dilation.upgrades.includes('ngusp3')) gain = gain.times(getD22Bonus())
