@@ -2908,7 +2908,8 @@ function updateInfCosts() {
         document.getElementById("162desc").textContent = shortenCosts(Decimal.pow(10,(player.galacticSacrifice?234:11)*(player.aarexModifications.newGameExpVersion?5:1)))+"x multiplier on all Infinity dimensions"
         document.getElementById("192desc").textContent = "You can get beyond "+shortenMoney(Number.MAX_VALUE)+" replicantis, but the interval is increased the more you have"
         document.getElementById("193desc").textContent = "Currently: "+shortenMoney(Decimal.pow(1.03, getEternitied()).min("1e13000"))+"x"
-        document.getElementById("212desc").textContent = "Currently: "+((Math.pow(player.timeShards.max(2).log2(), 0.005)-1)*100).toFixed(2)+"%"
+        if (player.aarexModifications.newGameExpVersion) document.getElementById("212desc").textContent = "Currently: "+((Math.min(Math.pow(player.timeShards.max(2).log2(), 0.005), 1.1)-1)*100).toFixed(2)+"%"
+	else document.getElementById("212desc").textContent = "Currently: "+((Math.min(Math.pow(player.timeShards.max(2).log2(), 0.006), 1.15)-1)*100).toFixed(2)+"%"
         document.getElementById("214desc").textContent = "Currently: "+shortenMoney(((calcTotalSacrificeBoost().pow(8)).min("1e46000").times(calcTotalSacrificeBoost().pow(1.1)).div(calcTotalSacrificeBoost())).max(1).min(new Decimal("1e125000")))+"x"
         document.getElementById("metaCost").textContent = shortenCosts(getMetaUnlCost());
 
