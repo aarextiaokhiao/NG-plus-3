@@ -593,9 +593,9 @@ function getMTSMult(id, uses = "") {
 	if (id==251) return Math.floor(player.resets/3e3)
 	if (id==252) return Math.floor(player.dilation.freeGalaxies/7)
 	if (id==253) return Math.floor(extraReplGalaxies/9)*20
-	if (id==262) return Math.pow( Math.max(player.resets/15e3-19,1) , player.aarexModifications.newGameExpVersion?2:1)
+	if (id==262) return Math.pow(Math.max(player.resets/15e3-19,1),player.aarexModifications.newGameExpVersion?2:1)
 	if (id==263) return player.meta.resets+1
-	if (id==264) return Math.pow( Math.pow(player.galaxies+1,0.25)*2 , player.aarexModifications.newGameExpVersion?2:1)
+	if (id==264) return Math.pow(Math.pow(player.galaxies+1,0.25)*2,player.aarexModifications.newGameExpVersion?2:1)
 	if (id==273) {
 		var intensity = 0
 		if (player.masterystudies !== undefined && (player.masterystudies.includes("t273") || uses.includes("ms"))) intensity = 5

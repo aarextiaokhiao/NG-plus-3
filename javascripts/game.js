@@ -651,7 +651,7 @@ function updateNewPlayer(reseted) {
         player.overXGalaxiesTickspeedBoost=10
     }
     if (modesChosen.arrows) {
-        player.aarexModifications.newGameExpVersion = 1.1
+        player.aarexModifications.newGameExpVersion = 1.11
         for (u=1;u<5;u++) player.infinityUpgrades.push("skipReset"+(u>3?"Galaxy":u))
         player.resets=4
     }
@@ -1766,10 +1766,11 @@ function getDilTimeGainPerSecond() {
 		if (player.eternityUpgrades.includes(9)) gain = gain.times(1 + Math.log10(Math.max(1, player.eternityPoints.log(10))) / 10)
 	}
 	if (player.dilation.upgrades.includes('ngpp2')) {
-		gain = gain.times(Decimal.max(getEternitied(),1).pow(player.aarexModifications.ngudpV?.2:.1))
+		let e = new Decimal(getEternitied())
+		gain = gain.times(e.max(1).pow(player.aarexModifications.ngudpV?.2:.1))
 		if (player.aarexModifications.newGameExpVersion) { 
-			gain = gain.times(Decimal.max(getEternitied(),10).log10()).times(Math.pow(Decimal.max(getEternitied(),1e7).log10()-6,3))
-			if (Decimal.gt(getEternitied(),1e15)) gain = gain.times(Math.sqrt(new Decimal(getEternitied()).log10())) // this comes into play at the grind right before quantum
+			gain = gain.times(e.max(10).log10()).times(Math.pow(e.max(1e7).log10()-6,3))
+			if (e.gt(1e15)) gain = gain.times(Math.sqrt(e.log10())) // this comes into play at the grind right before quantum
 		}
 	}
 	if (player.dilation.upgrades.includes('ngud2')) gain = gain.times(Decimal.max(getEternitied(), 1).pow(.1))
