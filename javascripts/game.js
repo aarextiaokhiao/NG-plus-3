@@ -4158,7 +4158,7 @@ function setAchieveTooltip() {
     harmony.setAttribute('ach-tooltip', player.meta?"Have at least 700 normal, replicanti, and free dilated galaxies. Reward: Galaxies are 0.1% stronger.":"Get the same number (at least 300) of normal, replicanti, and free galaxies.")
     notenough.setAttribute('ach-tooltip', "Reach "+shorten(Number.MAX_VALUE)+" meta-antimatter."+(tmp.ngp3l?"":" Reward: You produce dilated time faster based on your normal galaxies. You gain more Tachyon particles based on your replicated galaxies."))
     hadron.setAttribute('ach-tooltip', "Have colored quarks but have no color charge."+(tmp.ngp3l?"":" Reward: Quantum worth boosts all Meta Dimensions."))
-    old.setAttribute('ach-tooltip', "Reach "+shortenCosts(getOldAgeRequirement())+" antimatter.")
+    old.setAttribute('ach-tooltip', "Reach "+shortenCosts(getOldAgeRequirement())+" antimatter."+(tmp.ngp3l?"":" Reward: Get a multiplier to MD1 based on total antimatter.") )
     rid.setAttribute('ach-tooltip', "Reach "+shortenCosts(new Decimal("1e400000"))+" IP while dilated without having studies and electrons. Reward: Generate time theorems based on your best-ever tachyon particles.")
     special.setAttribute('ach-tooltip', "Quantum in under 5 seconds."+(tmp.ngp3l?"":" Reward: Start with all Infinity Dimensions unlocked if you have at least 25 eternities."))
     tfms.setAttribute('ach-tooltip', "Reward: Start with "+shortenCosts(1e13)+" eternities.")
