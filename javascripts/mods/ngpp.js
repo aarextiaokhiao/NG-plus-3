@@ -23,8 +23,15 @@ function getMetaDimensionMultiplier(tier) {
 	let ret = Decimal.pow(getPerTenMetaPower(), Math.floor(player.meta[tier].bought / 10))
 	ret = ret.times(Decimal.pow(getMetaBoostPower(), Math.max(player.meta.resets + 1 - tier, 0)))
 	ret = ret.times(tmp.mdgm) //Global multiplier of all Meta Dimensions
+	//Quantum upgrades
 	if (GUBought("rg3")&&tier<2) ret = ret.times(player.resets)
+	
+	//QC Rewards:
 	if (tier%2>0) ret = ret.times(QC4Reward)
+	
+	//Achievements:
+	if (tier == 1 && player.achievements.includes("ng3p17") && !tmp.ngp3l) ret = ret.times(Math.log10(player.totalmoney.log10()))
+	
 	ret = dilates(dilates(ret.max(1), 2), "meta")
 	if (player.dilation.upgrades.includes("ngmm8")) ret = ret.pow(getDil71Mult())
 	return ret
@@ -35,6 +42,7 @@ function getMetaDimensionGlobalMultiplier() {
 	if (player.dilation.upgrades.includes("ngpp3")) ret = ret.times(getDil14Bonus())
 	if (player.achievements.includes("ngpp12")) ret = ret.times(1.1)
 	if (tmp.ngp3) {
+		//Mastery Study Boosts
 		if (player.masterystudies.includes("t262")) ret = ret.times(getMTSMult(262))
 		if (player.masterystudies.includes("t282")) ret = ret.times(getMTSMult(282))
 		if (player.masterystudies.includes("t303")) ret = ret.times(getMTSMult(303))
@@ -43,9 +51,12 @@ function getMetaDimensionGlobalMultiplier() {
 		if (player.masterystudies.includes("t382")) ret = ret.times(getMTSMult(382))
 		if (player.masterystudies.includes("t383")) ret = ret.times(getMTSMult(383))
 		if (player.masterystudies.includes("t393")) ret = ret.times(getMTSMult(393))
+		//Qunatum Upgrades
 		if (GUBought("br4")) ret = ret.times(Decimal.pow(getDimensionPowerMultiplier(), 0.0003).max(1))
+		//QC Rewards
 		ret = ret.times(getQCReward(3))
 		ret = ret.times(getQCReward(6))
+		//Achievement Rewards
 		if (player.achievements.includes("ng3p13") && !tmp.ngp3l) ret = ret.times(Decimal.pow(2, Math.pow(Decimal.plus(quantumWorth, 1).log10(), 0.75)))
 	}
 	
@@ -96,13 +107,14 @@ function canBuyMetaDimension(tier) {
     return true;
 }
 
-function clearMetaDimensions () {
+function clearMetaDimensions () { //Resets costs and amounts
     for (i = 1; i <= 8; i++) {
         player.meta[i].amount = new Decimal(0);
         player.meta[i].bought = 0;
         player.meta[i].cost = new Decimal(initCost[i]);
     }
 }
+
 
 function getMetaShiftRequirement() {
 	var data = {tier: Math.min(8, player.meta.resets + 4), amount: 20}
@@ -120,6 +132,10 @@ function getMetaShiftRequirement() {
 		data.mult += multAdded
 	}
 	return data
+}
+
+function getMetaDimensionBoostRequirement(){
+	return getMetaShiftRequirement()
 }
 
 function metaBoost() {
