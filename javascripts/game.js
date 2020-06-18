@@ -1841,8 +1841,8 @@ function getDilTimeGainPerSecond() {
 		if (GUBought("br2")) gain = gain.times(Decimal.pow(2.2, Math.pow(calcTotalSacrificeBoost().max(1).log10()/1e6, 0.25)))
 	}
 	if (hasBosonicUpg(15)) gain = gain.times(tmp.blu[15].dt)
-	if (player.aarexModifications.newGameExpVersion && player.achievements.includes("r138") && gain.lt(1e100)) gain = gain.times(3)
-	if (player.aarexModifications.newGameExpVersion && player.achievements.includes("ngpp13")) gain = gain.times(2)
+	if (tmp.newNGP3E && player.achievements.includes("r138") && gain.lt(1e100)) gain = gain.times(3)
+	if (!tmp.ngp3l && (tmp.ngp3 || tmp.newNGP3E) && player.achievements.includes("ngpp13")) gain = gain.times(2)
 	return gain;
 }
 
@@ -4078,6 +4078,18 @@ function setAchieveTooltip() {
     let tdc = document.getElementById("The Deep Challenge")
     let igu = document.getElementById("I give up.")
 
+	let thisisReward = []
+	if (!tmp.ngp3l) {
+		if (player.galacticSacrifice!==undefined) thisisReward.push("boost g23 upgrade based on your best IP in dilation")
+		if (tmp.newNGP3E) thisisReward.push("DT production is 3x faster if under "+shortenCosts(1e100)+" DT/s")
+	}
+	thisisReward = wordizeList(thisisReward, true)
+
+	let onlywarReward = []
+	if (!tmp.ngp3l&&(tmp.ngp3||tmp.newNGP3E)) onlywarReward.push("DT production is 2x faster")
+	if (player.aarexModifications.nguspV!==undefined) onlywarReward.push("you can auto-buy dilation upgrades every 1 second if you have at least "+shortenMoney(new Decimal('1e40000'))+" EP")
+	onlywarReward = wordizeList(onlywarReward, true) 
+
 	let willenoughReward = []
 	if (!tmp.ngp3l) {
 		willenoughReward.push("replicated galaxies doesn't divide replicantis")
@@ -4148,11 +4160,11 @@ function setAchieveTooltip() {
     infstuff.setAttribute('ach-tooltip', "Reach "+shortenCosts(new Decimal("1e140000"))+" IP without buying IDs or IP multipliers. Reward: You start eternities with all Infinity Challenges unlocked and completed"+(player.meta?", and your infinity gain is multiplied by dilated time^(1/4).":"."))
     when.setAttribute('ach-tooltip', "Reach "+shortenCosts( new Decimal(tmp.ngex?"1e15000":"1e20000"))+" replicanti. Reward: You gain replicanti 2 times faster under "+shortenMoney(Number.MAX_VALUE)+" replicanti.")
     thinking.setAttribute('ach-tooltip', "Eternity for "+shortenCosts( new Decimal("1e600"))+" EP in 1 minute or less while dilated.")
-    thisis.setAttribute('ach-tooltip', "Reach "+shortenCosts(new Decimal('1e20000'))+" IP without any time studies while dilated."+(player.galacticSacrifice!==undefined&&!tmp.ngp3l?" Reward: Boost g23 upgrade based on your best IP in dilation.":"") + (player.aarexModifications.newGameExpVersion?" Reward: Gain 3x DT under e100 DT/s":""))
+    thisis.setAttribute('ach-tooltip', "Reach "+shortenCosts(new Decimal('1e20000'))+" IP without any time studies while dilated."+(thisisReward!=""?" Reward: "+thisisReward+".":""))
     stillamil.setAttribute('ach-tooltip',"Reach "+shortenCosts(1e6)+" black hole power.")
     out.setAttribute('ach-tooltip',"Get more than "+shortenCosts(1e5)+" ex-dilation." + (player.aarexModifications.nguspV !== undefined ? " Reward: You can distribute ex-dilation from all dilation boosts." : ""))
     ridNGud.setAttribute('ach-tooltip', "Reach "+shortenCosts(new Decimal("1e20000"))+" IP without any time studies or dilation upgrades while dilated.")
-    onlywar.setAttribute('ach-tooltip', "Reach "+shortenMoney(new Decimal('1e40000'))+" EP." + " Reward: Gain 2x DT" + (player.aarexModifications.nguspV !== undefined ? ". Additionally, you can auto-buy dilation upgrades every 1 second if you have at least "+shortenMoney(new Decimal('1e40000'))+" EP." : ""))
+    onlywar.setAttribute('ach-tooltip', "Reach "+shortenMoney(new Decimal('1e40000'))+" EP."+(onlywarReward!=""?" Reward: "+onlywarReward+".":""))
     thecap.setAttribute('ach-tooltip', "Get "+shortenDimensions(1e12)+" eternities. Reward: Eternity upgrade 2 uses a better formula.")
     neverenough.setAttribute('ach-tooltip', "Reach "+shortenCosts( new Decimal("1e100000"))+" replicanti. Reward: You can buy max replicanti galaxies.")
     harmony.setAttribute('ach-tooltip', player.meta?"Have at least 700 normal, replicanti, and free dilated galaxies. Reward: Galaxies are 0.1% stronger.":"Get the same number (at least 300) of normal, replicanti, and free galaxies.")

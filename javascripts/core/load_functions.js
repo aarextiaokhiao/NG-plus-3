@@ -419,6 +419,7 @@ if (player.version < 5) {
   tmp.ngp3=player.masterystudies!==undefined
   tmp.ngp3l=player.aarexModifications.ngp3lV!==undefined
   tmp.ngex=player.aarexModifications.ngexV!==undefined
+  tmp.newNGP3E=player.aarexModifications.newGameExpVersion!==undefined&&!tmp.ngp3l
   setNonlegacyStuff()
 
   slider.min=player.aarexModifications.performanceTicks?0:33

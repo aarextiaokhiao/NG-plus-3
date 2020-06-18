@@ -618,8 +618,8 @@ function getMTSMult(id, uses = "") {
 		if (uses.includes("intensity")) return intensity
 		return Decimal.max(Math.log10(player.replicanti.chance + 1), 1).pow(intensity)
 	}
-	if (id==281) return Decimal.pow(10,Math.pow(tmp.rm.max(1).log10(),0.25)/10 * player.aarexModifications.newGameExpVersion?2:1)
-	if (id==282) return Decimal.pow(10,Math.pow(tmp.rm.max(1).log10(),0.25)/15 * player.aarexModifications.newGameExpVersion?2:1)
+	if (id==281) return Decimal.pow(10,Math.pow(tmp.rm.max(1).log10(),0.25)/10*(tmp.newNGP3E?2:1))
+	if (id==282) return Decimal.pow(10,Math.pow(tmp.rm.max(1).log10(),0.25)/15*(tmp.newNGP3E?2:1))
 	if (id==301) return Math.floor(extraReplGalaxies/4.15)
 	if (id==303) return Decimal.pow(4.7,Math.pow(Math.log10(Math.max(player.galaxies,1)),1.5))
 	if (id==322) {
@@ -630,12 +630,12 @@ function getMTSMult(id, uses = "") {
 		return Decimal.pow(10,log)
 	}
 	if (id==332) return Math.max(player.galaxies, 1)
-	if (id==341) return Decimal.pow(player.aarexModifications.newGameExpVersion?4:2,Math.sqrt(tmp.qu.replicants.quarks.add(1).log10()))
-	if (id==344) return Math.pow(tmp.qu.replicants.quarks.div(1e7).add(1).log10(), player.aarexModifications.newGameExpVersion?.3:.25 )*0.17+1
+	if (id==341) return Decimal.pow(tmp.newNGP3E?4:2,Math.sqrt(tmp.qu.replicants.quarks.add(1).log10()))
+	if (id==344) return Math.pow(tmp.qu.replicants.quarks.div(1e7).add(1).log10(),tmp.newNGP3E?.3:.25)*0.17+1
 	if (id==351) {
 		let log=player.timeShards.max(1).log10()*14e-7
 		if (log>1e4) log=Math.pow(log*Math.pow(10,36),.1)
-		return Decimal.pow(player.aarexModifications.newGameExpVersion?14:10,log)
+		return Decimal.pow(tmp.newNGP3E?14:10,log)
 	}
 	if (id==361) return player.dilation.tachyonParticles.max(1).pow(0.01824033924212366)
 	if (id==371) return Math.pow(extraReplGalaxies+1,player.aarexModifications.newGameExpVersion?.5:.3)
@@ -645,16 +645,16 @@ function getMTSMult(id, uses = "") {
 	if (id==382) return player.eightAmount.max(1).pow(Math.PI)
 	if (id==383) {
 		if (tmp.ngp3l) return Decimal.pow(3200,Math.pow(tmp.qu.colorPowers.b.add(1).log10(),0.25))
-		if (player.aarexModifications.newGameExpVersion) return Decimal.pow(2, Math.sqrt(player.meta.antimatter.add(1).log10()) * Math.pow(getCPLog("b"), 1/5))
+		if (tmp.newNGP3E) return Decimal.pow(2, Math.sqrt(player.meta.antimatter.add(1).log10()) * Math.pow(getCPLog("b"), 1/5))
 		return Decimal.pow(2, Math.sqrt(player.meta.antimatter.add(1).log10()) * Math.pow(getCPLog("b"), 4/21))
 	}
 	if (id==391) return player.meta.antimatter.max(1).pow(8e-4)
-	if (id==392) return Decimal.pow(player.aarexModifications.newGameExpVersion?1.7:1.6,Math.sqrt(tmp.qu.replicants.quarks.add(1).log10()))
+	if (id==392) return Decimal.pow(tmp.newNGP3E?1.7:1.6,Math.sqrt(tmp.qu.replicants.quarks.add(1).log10()))
 	if (id==393) return Decimal.pow(4e5,Math.sqrt(tmp.twr.add(1).log10()))
 	if (id==401) {
 		let log=tmp.qu.replicants.quarks.div(1e28).add(1).log10()*0.2
 		if (log>5) log=Math.log10(log*2)*5
-		return Decimal.pow(player.aarexModifications.newGameExpVersion?12:10,log)
+		return Decimal.pow(tmp.newNGP3E?12:10,log)
 	}
 	if (id==411) return tmp.tra.div(1e24).add(1).pow(0.2)
 	if (id==421) {
@@ -665,7 +665,7 @@ function getMTSMult(id, uses = "") {
 	if (id==431) {
 		let x=player.dilation.freeGalaxies+tmp.eg431
 		let y=Decimal.pow(Math.max(x/1e4,1),Math.max(x/1e4+Math.log10(x)/2,1))
-		if (player.aarexModifications.newGameExpVersion) return y.times(y.plus(9).log10())
+		if (tmp.newNGP3E) return y.times(y.plus(9).log10())
 		return y
 	}
 }
