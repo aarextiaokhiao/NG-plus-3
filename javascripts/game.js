@@ -1892,66 +1892,32 @@ function getEternitiesAndDTBoostExp() {
 	return exp
 }
 
-function updateDimensions() {
-    if (document.getElementById("antimatterdimensions").style.display == "block" && document.getElementById("dimensions").style.display == "block") {
-        var shown
-        for (let tier = 8; tier > 0; tier--) {
-			shown = shown || canBuyDimension(tier)
-            var name = TIER_NAMES[tier];
-            if (shown) {
-				document.getElementById(tier+"Row").style.display = ""
-                document.getElementById("D"+tier).childNodes[0].nodeValue = DISPLAY_NAMES[tier] + " Dimension x" + formatValue(player.options.notation, getDimensionFinalMultiplier(tier), 2, 1)
-                document.getElementById("A"+tier).textContent = getDimensionDescription(tier)
-            }
-        }
+function tickspeedDisplay(){
+	if (canBuyDimension(3) || player.currentEternityChall == "eterc9") {
+        	var tickmult = getTickSpeedMultiplier()
+        	var tickmultNum = tickmult.toNumber()
+        	var ticklabel
+        	var e = Math.floor(Math.log10(Math.round(1/tickmultNum)))
+        	if (isNaN(tickmultNum)) ticklabel = 'Break the tick interval by Infinite';
+        	else if (e >= 9) ticklabel = "Divide the tick interval by " + shortenDimensions(Decimal.recip(tickmult))
+        	else ticklabel = 'Reduce the tick interval by ' + ((1 - tickmultNum) * 100).toFixed(e) + '%'
+        	let ic3mult=getPostC3Mult()
+        	if (player.galacticSacrifice || player.currentChallenge == "postc3" || isIC3Trapped()) document.getElementById("tickLabel").innerHTML = ((isIC3Trapped() || player.currentChallenge == "postc3") && player.currentChallenge != "postcngmm_3" && !player.challenges.includes("postcngmm_3") && !tmp.be ? "M" : ticklabel + '<br>and m') + 'ultiply all dimensions by ' + (ic3mult>999.95?shorten(ic3mult):new Decimal(ic3mult).toNumber().toPrecision(4)) + '.'
+        	else document.getElementById("tickLabel").textContent = ticklabel + '.'
 
-		setAndMaybeShow("mp10d",player.aarexModifications.newGameMult,"'Multiplier per 10 dimensions: '+shorten(getDimensionPowerMultiplier(\"non-random\"))+'x'")
+        	document.getElementById("tickSpeed").style.visibility = "visible";
+        	document.getElementById("tickSpeedMax").style.visibility = "visible";
+        	document.getElementById("tickLabel").style.visibility = "visible";
+        	document.getElementById("tickSpeedAmount").style.visibility = "visible";
+    	} else {
+        	document.getElementById("tickSpeed").style.visibility = "hidden";
+        	document.getElementById("tickSpeedMax").style.visibility = "hidden";
+        	document.getElementById("tickLabel").style.visibility = "hidden";
+        	document.getElementById("tickSpeedAmount").style.visibility = "hidden";
+    	}
+}
 
-        var shiftRequirement = getShiftRequirement(0);
-        var isShift = player.resets < (inNC(4) || player.currentChallenge == "postc1" || player.pSac !== undefined ? 2 : 4)
-        document.getElementById("resetLabel").textContent = 'Dimension ' + (isShift ? "Shift" : player.resets < getSupersonicStart() ? "Boost" : "Supersonic") + ' ('+ getFullExpansion(Math.ceil(player.resets)) +'): requires ' + getFullExpansion(Math.ceil(shiftRequirement.amount)) + " " + DISPLAY_NAMES[shiftRequirement.tier] + " Dimensions"
-        document.getElementById("softReset").textContent = "Reset the game for a " + (isShift ? "new dimension" : "boost")
-
-		if (isTickspeedBoostPossible()) {
-			var tickReq = getTickspeedBoostRequirement()
-			document.getElementById("tickReset").style.display = ""
-			document.getElementById("tickResetLabel").textContent = "Tickspeed Boost ("+getFullExpansion(player.tickspeedBoosts)+"): requires "+getFullExpansion(tickReq.amount)+" "+DISPLAY_NAMES[tickReq.tier]+" Dimensions"
-			document.getElementById("tickResetBtn").className = getAmount(tickReq.tier)<tickReq.amount ? "unavailablebtn" : "storebtn"
-		} else document.getElementById("tickReset").style.display = "none"
-
-        var nextGal = getGalaxyRequirement(0, true)
-        var totalReplGalaxies = getTotalRG()
-        var totalTypes = tmp.aeg ? 4 : player.dilation.freeGalaxies ? 3 : totalReplGalaxies ? 2 : 1
-        document.getElementById("secondResetLabel").innerHTML = (["", "Distant ", "Further ", "Remote ", "Dark Matter ", "Ghostly "])[nextGal.scaling] + (nextGal.scaling <= 3 ? "Antimatter " : "") + ' Galaxies ('+ getFullExpansion(player.galaxies) + (totalTypes > 1 ? ' + ' + getFullExpansion(totalReplGalaxies) : '') + (totalTypes > 2 ? ' + ' + getFullExpansion(Math.round(player.dilation.freeGalaxies)) : '') + (totalTypes > 3 ? ' + ' + getFullExpansion(tmp.aeg) : '') +'): requires ' + getFullExpansion(nextGal.amount) + ' '+DISPLAY_NAMES[inNC(4) || player.pSac != undefined ? 6 : 8]+' Dimensions'
-		if (player.achievements.includes("ng3p37") && shiftRequirement.tier > 7) {
-			document.getElementById("intergalacticLabel").parentElement.style.display = ""
-			document.getElementById("intergalacticLabel").innerHTML = (["", "Distant ", "Remote ", "Ghostly "])[tmp.igs] + 'Intergalactic Boost ' + (player.dilation.active || player.galacticSacrifice != undefined ? " (estimated)" : "") + " (" + getFullExpansion(player.galaxies) + (Math.floor(tmp.igg - player.galaxies) > 0 ? " + " + getFullExpansion(Math.floor(tmp.igg - player.galaxies)) : "") + "): " + shorten(dilates(tmp.ig).pow(player.dilation.active?getNanofieldRewardEffect(5):1)) + 'x to Eighth Dimensions'
-		} else document.getElementById("intergalacticLabel").parentElement.style.display = "none"
-    }
-
-    if (canBuyDimension(3) || player.currentEternityChall == "eterc9") {
-        var tickmult = getTickSpeedMultiplier()
-        var tickmultNum = tickmult.toNumber()
-        var ticklabel
-        var e = Math.floor(Math.log10(Math.round(1/tickmultNum)))
-        if (isNaN(tickmultNum)) ticklabel = 'Break the tick interval by Infinite';
-        else if (e >= 9) ticklabel = "Divide the tick interval by " + shortenDimensions(Decimal.recip(tickmult))
-        else ticklabel = 'Reduce the tick interval by ' + ((1 - tickmultNum) * 100).toFixed(e) + '%'
-        let ic3mult=getPostC3Mult()
-        if (player.galacticSacrifice || player.currentChallenge == "postc3" || isIC3Trapped()) document.getElementById("tickLabel").innerHTML = ((isIC3Trapped() || player.currentChallenge == "postc3") && player.currentChallenge != "postcngmm_3" && !player.challenges.includes("postcngmm_3") && !tmp.be ? "M" : ticklabel + '<br>and m') + 'ultiply all dimensions by ' + (ic3mult>999.95?shorten(ic3mult):new Decimal(ic3mult).toNumber().toPrecision(4)) + '.'
-        else document.getElementById("tickLabel").textContent = ticklabel + '.'
-
-        document.getElementById("tickSpeed").style.visibility = "visible";
-        document.getElementById("tickSpeedMax").style.visibility = "visible";
-        document.getElementById("tickLabel").style.visibility = "visible";
-        document.getElementById("tickSpeedAmount").style.visibility = "visible";
-    } else {
-        document.getElementById("tickSpeed").style.visibility = "hidden";
-        document.getElementById("tickSpeedMax").style.visibility = "hidden";
-        document.getElementById("tickLabel").style.visibility = "hidden";
-        document.getElementById("tickSpeedAmount").style.visibility = "hidden";
-    }
-
+function paradoxDimDisplay(){
 	if (document.getElementById("dimensions").style.display == "block" && document.getElementById("pdims").style.display == "block") {
 		document.getElementById("pPow").textContent = shortenMoney(player.pSac.dims.power)
 		document.getElementById("pPowProduction").textContent = "You are getting " + shortenDimensions(getPDProduction(1).div(getEC12Mult())) + " Paradox Power per second."
@@ -1968,13 +1934,10 @@ function updateDimensions() {
 			}
 		}
 	}
-    if (document.getElementById("dimensions").style.display == "block" && document.getElementById("metadimensions").style.display == "block") updateMetaDimensions()
-    if (document.getElementById("dimensions").style.display == "block" && document.getElementById("emperordimensions").style.display == "block") updateEmperorDimensions()
-    if (document.getElementById("quantumtab").style.display == "block") updateQuantumTabs()
-    if (document.getElementById("ghostify").style.display == "block") updateGhostifyTabs()
+}
 
-    if (document.getElementById("stats").style.display == "block" && document.getElementById("statistics").style.display == "block") {
-        document.getElementById("totalmoney").textContent = 'You have made a total of ' + shortenMoney(player.totalmoney) + ' antimatter.'
+function mainStatsDisplay(){
+	document.getElementById("totalmoney").textContent = 'You have made a total of ' + shortenMoney(player.totalmoney) + ' antimatter.'
         document.getElementById("totalresets").textContent = 'You have done ' + getFullExpansion(player.resets) + ' dimension boosts/shifts.'
         setAndMaybeShow("lostResets", player.pSac && player.pSac.lostResets, '"You have lost a total of "+getFullExpansion(player.pSac.lostResets)+" dimension boosts/shifts only after matter exceeded your antimatter."')
         document.getElementById("tdboosts").textContent = player.aarexModifications.ngmX>3?'You have done ' + getFullExpansion(player.tdBoosts) + ' time dimension boosts/shifts.':""
@@ -1986,23 +1949,29 @@ function updateDimensions() {
         document.getElementById("spreadingCancer").style.display = showCancer?'':'none'
         if (showCancer) document.getElementById("spreadingCancer").textContent = 'You have made '+getFullExpansion(player.spreadingCancer)+' total galaxies while using Cancer notation.'
         document.getElementById("totalTime").textContent = "You have played for " + timeDisplay(player.totalTimePlayed) + "."
+}
 
-        if (player.pSac !== undefined && player.pSac.times) {
+function paradoxSacDisplay(){
+	if (player.pSac !== undefined && player.pSac.times) {
             document.getElementById("psStatistics").style.display = ""
             document.getElementById("pSacrificedNormal").textContent = "You have Paradox Sacrificed "+getFullExpansion(player.pSac.normalTimes)+" times."
             document.getElementById("pSacrificedForced").textContent = "You have been forced to do a Paradox Sacrifice "+getFullExpansion(player.pSac.forcedTimes)+" times."
             document.getElementById("pSacrificed").textContent = "You have Paradox Sacrificed a total of "+getFullExpansion(player.pSac.times)+" times."
             document.getElementById("thisPSac").textContent = "You have spent "+timeDisplay(player.pSac.time)+" in this Paradox Sacrifice."
         } else document.getElementById("psStatistics").style.display = "none"
+}
 
-        if (player.galacticSacrifice ? player.galacticSacrifice.times < 1 : true) document.getElementById("gsStatistics").style.display = "none"
+function galaxySacDisplay(){
+	if (player.galacticSacrifice ? player.galacticSacrifice.times < 1 : true) document.getElementById("gsStatistics").style.display = "none"
         else {
             document.getElementById("gsStatistics").style.display = ""
             document.getElementById("sacrificed").textContent = "You have galactic sacrificed "+getFullExpansion(player.galacticSacrifice.times)+" times."
             document.getElementById("thisSacrifice").textContent = "You have spent "+timeDisplay(player.galacticSacrifice.time)+" in this galactic sacrifice."
         }
+}
 
-        document.getElementById("infinityStatistics").style.display = "none"
+function bestInfinityDisplay(){
+	document.getElementById("infinityStatistics").style.display = "none"
         if (player.bestInfinityTime==9999999999) {
             document.getElementById("bestInfinity").textContent = ""
             document.getElementById("thisInfinity").textContent = ""
@@ -2014,8 +1983,10 @@ function updateDimensions() {
             document.getElementById("infinitied").textContent = "You have infinitied " + getFullExpansion(player.infinitied) + " time" + (player.infinitied == 1 ? "" : "s") + (player.eternities!==0||player.eternitiesBank>0 ? " this eternity." : ".")
         }
         if (player.infinitiedBank>0) document.getElementById("infinityStatistics").style.display = ""
+}
 
-        document.getElementById("eternityStatistics").style.display = "none"
+function bestEternityDisplay(){
+	document.getElementById("eternityStatistics").style.display = "none"
         if (player.eternities == 0) {
             document.getElementById("besteternity").textContent = ""
             document.getElementById("thiseternity").textContent = ""
@@ -2027,37 +1998,103 @@ function updateDimensions() {
             document.getElementById("thiseternity").textContent = "Your fastest Eternity is in "+timeDisplay(player.bestEternity)+"."
         }
         if (player.eternitiesBank>0) document.getElementById("eternityStatistics").style.display = ""
+}
 
-        if (player.dilation.times) document.getElementById("dilated").textContent = "You have succesfully dilated "+getFullExpansion(player.dilation.times)+" times."
-        else document.getElementById("dilated").textContent = ""
-
-        if (player.exdilation == undefined ? false : player.exdilation.times > 1) document.getElementById("exdilated").textContent = "You have reversed dilation "+getFullExpansion(player.exdilation.times)+" times."
-        else document.getElementById("exdilated").textContent = ""
-
-        if (!quantumed) document.getElementById("quantumStatistics").style.display = "none"
+function bestQuantumDisplay(){
+	if (!quantumed) document.getElementById("quantumStatistics").style.display = "none"
         else {
             document.getElementById("quantumStatistics").style.display = ""
             document.getElementById("quantumed").textContent = "You have gone quantum "+getFullExpansion(tmp.qu.times)+" times."
             document.getElementById("thisQuantum").textContent = "You have spent "+timeDisplay(tmp.qu.time)+" in this quantum."
             document.getElementById("bestQuantum").textContent = "Your fastest quantum is in "+timeDisplay(tmp.qu.best)+"."
         }
+}
 
-		if (!player.achievements.includes("ng3p51"))  document.getElementById("bigRipStatistics").style.display = "none"
-        else {
-			document.getElementById("bigRipStatistics").style.display = ""
-            setAndMaybeShow("bigRipped", tmp.qu.bigRip.times, '"You have big ripped the universe "+getFullExpansion(tmp.qu.bigRip.times)+" times."')
-			setAndMaybeShow("bestmoneythisrip", tmp.qu.bigRip.active, "'Your best antimatter for this big rip is ' + shortenMoney(tmp.qu.bigRip.bestThisRun) + '.'")
-			document.getElementById("totalmoneybigrip").textContent = 'You have made a total of ' + shortenMoney(tmp.qu.bigRip.totalAntimatter) + ' antimatter in all big rips.'
-			document.getElementById("bestgalsbigrip").textContent = 'Your best amount of normal galaxies for all Big Rips is ' + getFullExpansion(tmp.qu.bigRip.bestGals) + "."
-		}
-
-        if (!ghostified) document.getElementById("ghostifyStatistics").style.display = "none"
+function bestGhostifyDisplay(){
+	if (!ghostified) document.getElementById("ghostifyStatistics").style.display = "none"
         else {
             document.getElementById("ghostifyStatistics").style.display = ""
             document.getElementById("ghostified").textContent = "You have became a ghost and passed big ripped universes "+getFullExpansion(player.ghostify.times)+" times."
             document.getElementById("thisGhostify").textContent = "You have spent "+timeDisplay(player.ghostify.time)+" in this Ghostify."
             document.getElementById("bestGhostify").textContent = "Your fastest Ghostify is in "+timeDisplay(player.ghostify.best)+"."
         }
+}
+
+function ng3p51Display(){
+	if (!player.achievements.includes("ng3p51"))  document.getElementById("bigRipStatistics").style.display = "none"
+        else {
+		document.getElementById("bigRipStatistics").style.display = ""
+            	setAndMaybeShow("bigRipped", tmp.qu.bigRip.times, '"You have big ripped the universe "+getFullExpansion(tmp.qu.bigRip.times)+" times."')
+		setAndMaybeShow("bestmoneythisrip", tmp.qu.bigRip.active, "'Your best antimatter for this big rip is ' + shortenMoney(tmp.qu.bigRip.bestThisRun) + '.'")
+		document.getElementById("totalmoneybigrip").textContent = 'You have made a total of ' + shortenMoney(tmp.qu.bigRip.totalAntimatter) + ' antimatter in all big rips.'
+		document.getElementById("bestgalsbigrip").textContent = 'Your best amount of normal galaxies for all Big Rips is ' + getFullExpansion(tmp.qu.bigRip.bestGals) + "."
+	}
+}
+
+function dilationStatsDisplay(){
+	if (player.dilation.times) document.getElementById("dilated").textContent = "You have succesfully dilated "+getFullExpansion(player.dilation.times)+" times."
+        else document.getElementById("dilated").textContent = ""
+
+        if (player.exdilation == undefined ? false : player.exdilation.times > 1) document.getElementById("exdilated").textContent = "You have reversed dilation "+getFullExpansion(player.exdilation.times)+" times."
+        else document.getElementById("exdilated").textContent = ""
+}
+
+function updateDimensions() {
+	if (document.getElementById("antimatterdimensions").style.display == "block" && document.getElementById("dimensions").style.display == "block") {
+        	var shown
+        	for (let tier = 8; tier > 0; tier--) {
+			shown = shown || canBuyDimension(tier)
+           		var name = TIER_NAMES[tier];
+            		if (shown) {
+				document.getElementById(tier+"Row").style.display = ""
+                		document.getElementById("D"+tier).childNodes[0].nodeValue = DISPLAY_NAMES[tier] + " Dimension x" + formatValue(player.options.notation, getDimensionFinalMultiplier(tier), 2, 1)
+                		document.getElementById("A"+tier).textContent = getDimensionDescription(tier)
+            		}
+       		}
+
+		setAndMaybeShow("mp10d",player.aarexModifications.newGameMult,"'Multiplier per 10 dimensions: '+shorten(getDimensionPowerMultiplier(\"non-random\"))+'x'")
+
+       		var shiftRequirement = getShiftRequirement(0);
+        	var isShift = player.resets < (inNC(4) || player.currentChallenge == "postc1" || player.pSac !== undefined ? 2 : 4)
+       		document.getElementById("resetLabel").textContent = 'Dimension ' + (isShift ? "Shift" : player.resets < getSupersonicStart() ? "Boost" : "Supersonic") + ' ('+ getFullExpansion(Math.ceil(player.resets)) +'): requires ' + getFullExpansion(Math.ceil(shiftRequirement.amount)) + " " + DISPLAY_NAMES[shiftRequirement.tier] + " Dimensions"
+        	document.getElementById("softReset").textContent = "Reset the game for a " + (isShift ? "new dimension" : "boost")
+
+		if (isTickspeedBoostPossible()) {
+			var tickReq = getTickspeedBoostRequirement()
+			document.getElementById("tickReset").style.display = ""
+			document.getElementById("tickResetLabel").textContent = "Tickspeed Boost ("+getFullExpansion(player.tickspeedBoosts)+"): requires "+getFullExpansion(tickReq.amount)+" "+DISPLAY_NAMES[tickReq.tier]+" Dimensions"
+			document.getElementById("tickResetBtn").className = getAmount(tickReq.tier)<tickReq.amount ? "unavailablebtn" : "storebtn"
+		} else document.getElementById("tickReset").style.display = "none"
+
+        	var nextGal = getGalaxyRequirement(0, true)
+        	var totalReplGalaxies = getTotalRG()
+      		var totalTypes = tmp.aeg ? 4 : player.dilation.freeGalaxies ? 3 : totalReplGalaxies ? 2 : 1
+        	document.getElementById("secondResetLabel").innerHTML = (["", "Distant ", "Further ", "Remote ", "Dark Matter ", "Ghostly "])[nextGal.scaling] + (nextGal.scaling <= 3 ? "Antimatter " : "") + ' Galaxies ('+ getFullExpansion(player.galaxies) + (totalTypes > 1 ? ' + ' + getFullExpansion(totalReplGalaxies) : '') + (totalTypes > 2 ? ' + ' + getFullExpansion(Math.round(player.dilation.freeGalaxies)) : '') + (totalTypes > 3 ? ' + ' + getFullExpansion(tmp.aeg) : '') +'): requires ' + getFullExpansion(nextGal.amount) + ' '+DISPLAY_NAMES[inNC(4) || player.pSac != undefined ? 6 : 8]+' Dimensions'
+		if (player.achievements.includes("ng3p37") && shiftRequirement.tier > 7) {
+			document.getElementById("intergalacticLabel").parentElement.style.display = ""
+			document.getElementById("intergalacticLabel").innerHTML = (["", "Distant ", "Remote ", "Ghostly "])[tmp.igs] + 'Intergalactic Boost ' + (player.dilation.active || player.galacticSacrifice != undefined ? " (estimated)" : "") + " (" + getFullExpansion(player.galaxies) + (Math.floor(tmp.igg - player.galaxies) > 0 ? " + " + getFullExpansion(Math.floor(tmp.igg - player.galaxies)) : "") + "): " + shorten(dilates(tmp.ig).pow(player.dilation.active?getNanofieldRewardEffect(5):1)) + 'x to Eighth Dimensions'
+		} else document.getElementById("intergalacticLabel").parentElement.style.display = "none"
+    	}
+
+	tickspeedDisplay()
+	paradoxDimDisplay()
+	
+    	if (document.getElementById("dimensions").style.display == "block" && document.getElementById("metadimensions").style.display == "block") updateMetaDimensions()
+    	if (document.getElementById("dimensions").style.display == "block" && document.getElementById("emperordimensions").style.display == "block") updateEmperorDimensions()
+    	if (document.getElementById("quantumtab").style.display == "block") updateQuantumTabs()
+    	if (document.getElementById("ghostify").style.display == "block") updateGhostifyTabs()
+
+    	if (document.getElementById("stats").style.display == "block" && document.getElementById("statistics").style.display == "block") {
+        
+	mainStatsDisplay()
+        paradoxSacDisplay()
+	galaxySacDisplay()
+	bestInfinityDisplay()
+	bestEternityDisplay()
+	bestQuantumDisplay()
+	bestGhostifyDisplay()
+	ng3p51Display()
+	dilationStatsDisplay()
 
         if (player.aarexModifications.hideRepresentation) document.getElementById("infoScale").textContent=""
         else if (player.money.gt(Decimal.pow(10, 3 * 86400 * 365.2425 * 79.3 / 10))) {
