@@ -1102,6 +1102,7 @@ let tmp = {
 	bEn: {},
 	blu: {}
 }
+
 function updateTemp() {
 	tmp.ri=player.money.gte(getLimit())&&((player.currentChallenge!=""&&player.money.gte(player.challengeTarget))||!onPostBreak())
 	tmp.nrm=player.replicanti.amount.max(1)
@@ -1892,6 +1893,38 @@ function getEternitiesAndDTBoostExp() {
 	return exp
 }
 
+//DISPLAY FUNCTIONS
+
+function dimShiftDisplay(){
+	var shiftRequirement = getShiftRequirement(0);
+        var isShift = player.resets < (inNC(4) || player.currentChallenge == "postc1" || player.pSac !== undefined ? 2 : 4)
+       	document.getElementById("resetLabel").textContent = 'Dimension ' + (isShift ? "Shift" : player.resets < getSupersonicStart() ? "Boost" : "Supersonic") + ' ('+ getFullExpansion(Math.ceil(player.resets)) +'): requires ' + getFullExpansion(Math.ceil(shiftRequirement.amount)) + " " + DISPLAY_NAMES[shiftRequirement.tier] + " Dimensions"
+        document.getElementById("softReset").textContent = "Reset the game for a " + (isShift ? "new dimension" : "boost")
+}
+
+function tickspeedBoostDisplay(){
+	if (isTickspeedBoostPossible()) {
+		var tickReq = getTickspeedBoostRequirement()
+		document.getElementById("tickReset").style.display = ""
+		document.getElementById("tickResetLabel").textContent = "Tickspeed Boost ("+getFullExpansion(player.tickspeedBoosts)+"): requires "+getFullExpansion(tickReq.amount)+" "+DISPLAY_NAMES[tickReq.tier]+" Dimensions"
+		document.getElementById("tickResetBtn").className = getAmount(tickReq.tier)<tickReq.amount ? "unavailablebtn" : "storebtn"
+	} else document.getElementById("tickReset").style.display = "none"
+}
+
+function galaxyReqDisplay(){
+	var nextGal = getGalaxyRequirement(0, true)
+        var totalReplGalaxies = getTotalRG()
+      	var totalTypes = tmp.aeg ? 4 : player.dilation.freeGalaxies ? 3 : totalReplGalaxies ? 2 : 1
+        document.getElementById("secondResetLabel").innerHTML = (["", "Distant ", "Further ", "Remote ", "Dark Matter ", "Ghostly "])[nextGal.scaling] + (nextGal.scaling <= 3 ? "Antimatter " : "") + ' Galaxies ('+ getFullExpansion(player.galaxies) + (totalTypes > 1 ? ' + ' + getFullExpansion(totalReplGalaxies) : '') + (totalTypes > 2 ? ' + ' + getFullExpansion(Math.round(player.dilation.freeGalaxies)) : '') + (totalTypes > 3 ? ' + ' + getFullExpansion(tmp.aeg) : '') +'): requires ' + getFullExpansion(nextGal.amount) + ' '+DISPLAY_NAMES[inNC(4) || player.pSac != undefined ? 6 : 8]+' Dimensions'
+}
+
+function intergalacticDisplay(){
+	if (player.achievements.includes("ng3p37") && shiftRequirement.tier > 7) {
+		document.getElementById("intergalacticLabel").parentElement.style.display = ""
+		document.getElementById("intergalacticLabel").innerHTML = (["", "Distant ", "Remote ", "Ghostly "])[tmp.igs] + 'Intergalactic Boost ' + (player.dilation.active || player.galacticSacrifice != undefined ? " (estimated)" : "") + " (" + getFullExpansion(player.galaxies) + (Math.floor(tmp.igg - player.galaxies) > 0 ? " + " + getFullExpansion(Math.floor(tmp.igg - player.galaxies)) : "") + "): " + shorten(dilates(tmp.ig).pow(player.dilation.active?getNanofieldRewardEffect(5):1)) + 'x to Eighth Dimensions'
+	} else document.getElementById("intergalacticLabel").parentElement.style.display = "none"
+}
+
 function tickspeedDisplay(){
 	if (canBuyDimension(3) || player.currentEternityChall == "eterc9") {
         	var tickmult = getTickSpeedMultiplier()
@@ -2171,26 +2204,10 @@ function updateDimensions() {
 
 		setAndMaybeShow("mp10d",player.aarexModifications.newGameMult,"'Multiplier per 10 dimensions: '+shorten(getDimensionPowerMultiplier(\"non-random\"))+'x'")
 
-       		var shiftRequirement = getShiftRequirement(0);
-        	var isShift = player.resets < (inNC(4) || player.currentChallenge == "postc1" || player.pSac !== undefined ? 2 : 4)
-       		document.getElementById("resetLabel").textContent = 'Dimension ' + (isShift ? "Shift" : player.resets < getSupersonicStart() ? "Boost" : "Supersonic") + ' ('+ getFullExpansion(Math.ceil(player.resets)) +'): requires ' + getFullExpansion(Math.ceil(shiftRequirement.amount)) + " " + DISPLAY_NAMES[shiftRequirement.tier] + " Dimensions"
-        	document.getElementById("softReset").textContent = "Reset the game for a " + (isShift ? "new dimension" : "boost")
-
-		if (isTickspeedBoostPossible()) {
-			var tickReq = getTickspeedBoostRequirement()
-			document.getElementById("tickReset").style.display = ""
-			document.getElementById("tickResetLabel").textContent = "Tickspeed Boost ("+getFullExpansion(player.tickspeedBoosts)+"): requires "+getFullExpansion(tickReq.amount)+" "+DISPLAY_NAMES[tickReq.tier]+" Dimensions"
-			document.getElementById("tickResetBtn").className = getAmount(tickReq.tier)<tickReq.amount ? "unavailablebtn" : "storebtn"
-		} else document.getElementById("tickReset").style.display = "none"
-
-        	var nextGal = getGalaxyRequirement(0, true)
-        	var totalReplGalaxies = getTotalRG()
-      		var totalTypes = tmp.aeg ? 4 : player.dilation.freeGalaxies ? 3 : totalReplGalaxies ? 2 : 1
-        	document.getElementById("secondResetLabel").innerHTML = (["", "Distant ", "Further ", "Remote ", "Dark Matter ", "Ghostly "])[nextGal.scaling] + (nextGal.scaling <= 3 ? "Antimatter " : "") + ' Galaxies ('+ getFullExpansion(player.galaxies) + (totalTypes > 1 ? ' + ' + getFullExpansion(totalReplGalaxies) : '') + (totalTypes > 2 ? ' + ' + getFullExpansion(Math.round(player.dilation.freeGalaxies)) : '') + (totalTypes > 3 ? ' + ' + getFullExpansion(tmp.aeg) : '') +'): requires ' + getFullExpansion(nextGal.amount) + ' '+DISPLAY_NAMES[inNC(4) || player.pSac != undefined ? 6 : 8]+' Dimensions'
-		if (player.achievements.includes("ng3p37") && shiftRequirement.tier > 7) {
-			document.getElementById("intergalacticLabel").parentElement.style.display = ""
-			document.getElementById("intergalacticLabel").innerHTML = (["", "Distant ", "Remote ", "Ghostly "])[tmp.igs] + 'Intergalactic Boost ' + (player.dilation.active || player.galacticSacrifice != undefined ? " (estimated)" : "") + " (" + getFullExpansion(player.galaxies) + (Math.floor(tmp.igg - player.galaxies) > 0 ? " + " + getFullExpansion(Math.floor(tmp.igg - player.galaxies)) : "") + "): " + shorten(dilates(tmp.ig).pow(player.dilation.active?getNanofieldRewardEffect(5):1)) + 'x to Eighth Dimensions'
-		} else document.getElementById("intergalacticLabel").parentElement.style.display = "none"
+		dimShiftDisplay()
+		tickspeedBoostDisplay()
+		galaxyReqDisplay()
+		intergalacticDisplay()
     	}
 
 	tickspeedDisplay()
