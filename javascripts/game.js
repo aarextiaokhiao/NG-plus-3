@@ -1103,166 +1103,152 @@ let tmp = {
 	blu: {}
 }
 
-function updateTemp() {
-	tmp.ri=player.money.gte(getLimit())&&((player.currentChallenge!=""&&player.money.gte(player.challengeTarget))||!onPostBreak())
-	tmp.nrm=player.replicanti.amount.max(1)
-	tmp.rg4=false
-	if (tmp.ngp3) {
-		tmp.ns=new Decimal(nanospeed)
-		tmp.apgw=tmp.qu.nanofield.apgWoke||getAntiPreonGhostWake()
-		tmp.ppti=1
-		if (player.ghostify.wzb.unl) {
-			for (var r=1;r<=bu.rows;r++) for (var c=1;c<6;c++) {
-				var id=r*10+c
-				if (bu.effects[id]!==undefined) tmp.blu[id]=bu.effects[id]()
-			}
-			for (var g2=2;g2<br.names.length;g2++) for (var g1=1;g1<g2;g1++) {
-				var id=g1*10+g2
-				tmp.bEnLvl[id]=tmp.bl.enchants[id]||new Decimal(0)
-				if (bEn.effects[id]!==undefined) tmp.bEn[id]=getEnchantEffect(id)
-			}
-			var wpl=player.ghostify.wzb.wpb.add(1).log10()
-			var wnl=player.ghostify.wzb.wnb.add(1).log10()
-			tmp.wzbs=new Decimal(1) //W & Z Bosons speed
-			tmp.wbt=Decimal.pow(3,Math.max(wpl*(player.ghostify.wzb.wpb.sub(player.ghostify.wzb.wnb.min(player.ghostify.wzb.wpb))).div(player.ghostify.wzb.wpb.max(1)).toNumber(),0)) //W Bosons boost to extract time
-			tmp.wbo=Decimal.pow(10,Math.max(wpl*(player.ghostify.wzb.wpb.sub(player.ghostify.wzb.wnb.min(player.ghostify.wzb.wpb))).div(player.ghostify.wzb.wpb.max(1)).toNumber(),0)) //W Bosons boost to Z Neutrino oscillation requirement
-			tmp.wbp=player.ghostify.wzb.wpb.add(player.ghostify.wzb.wnb).div(100).max(1).pow(1/3).sub(1) //W Bosons boost to Bosonic Antimatter production
-			tmp.zbs=player.ghostify.wzb.zb.div(10).add(1).sqrt() //Z Bosons boost to W Quark decay speed and W- to W+ conversion speed
-			if (tmp.zbs.gt(1e4)) tmp.zbs=tmp.zbs.times(1e4).sqrt()
-			tmp.dppg=new Decimal(1)
-		}
-		if (player.ghostify.ghostlyPhotons.unl) {
-			let lePower=getLightEmpowermentBoost()
-			for (var c=6;c>-1;c--) {
-				var x=player.ghostify.ghostlyPhotons.lights[c]
-				if (c<1) x=(player.ghostify.ghostlyPhotons.maxRed+x*2)/3
-				tmp.ls[c]=x*(Math.sqrt(c>5?1:tmp.ls[c+1]+1)+lePower)
-			}
-			tmp.ls[7]=player.ghostify.ghostlyPhotons.lights[0]*(Math.sqrt(tmp.ls[1]+1)+lePower) //Other red Light boosts than 0 LE
-			tmp.le[0]=Math.pow(tmp.ls[0],1/4)*.15+1
-			if (tmp.le[0]>1.5) tmp.le[0]=Math.log10(tmp.le[0]*20/3)*1.5
-			tmp.le[1]=tmp.ls[1]>64?Math.log10(tmp.ls[1]/64)+14:tmp.ls[1]>8?Math.sqrt(tmp.ls[1])+6:tmp.ls[1]+1 //Orange light
-			tmp.le[2]=Math.sqrt(tmp.ls[2]>60?(Math.log10(tmp.ls[2]/6)+2)/3*Math.sqrt(1200):tmp.ls[2]>20?Math.sqrt(tmp.ls[2]*20):tmp.ls[2])*45e3 //Yellow light
-			tmp.le[3]=tmp.ngp3l?(tmp.ls[3]>8?Math.log10(tmp.ls[3]/8)+Math.sqrt(12)+1:Math.sqrt(tmp.ls[3]*1.5)+1):1 //Green light
-			tmp.le[4]=Math.log10(Math.sqrt(tmp.ls[4]*2)+1)*5/4 //Blue light
-			tmp.le[5]=Decimal.pow(10,tmp.ls[5]>25?Math.sqrt(tmp.ls[5]*1e3+37500):tmp.ls[5]*10) //Indigo light
-			tmp.le[6]=Math.pow(player.postC3Reward.log10()*tmp.ls[6],1/3)*2 //Violet light
-			if (tmp.le[6]>15e3) tmp.le[6]=Math.pow(tmp.le[6]/15e3,.6)*15e3
-			tmp.le[6]=Decimal.pow(10,tmp.le[6])
-			if (player.ghostify.ghostlyPhotons.enpowerments) tmp.le[7]={effect:Math.log10(tmp.ls[3]+1)*300} //Green light (LE#1)
-			if (player.ghostify.ghostlyPhotons.enpowerments>1) tmp.le[8]=Math.log10(tmp.ls[4]*10+1)/4+1 //Blue light (LE#2)
-			if (player.ghostify.ghostlyPhotons.enpowerments>2) tmp.le[9]=Math.pow(tmp.ls[7]+1,.1)*2-1 //Red light (LE#3)
-			tmp.bru[3]=Decimal.pow(tmp.qu.bigRip.spaceShards.div(1e140).add(1).log10()+1,Math.max(tmp.qu.bigRip.spaceShards.div(1e140).add(1).log10()/10,1)) //BRU18
-			tmp.bru[4]=Decimal.pow(10,Math.sqrt(player.timeShards.add(1).log10())/80) //BRU19
-			tmp.nu[5]=Decimal.pow(player.ghostify.ghostParticles.add(1).log10(),Math.pow(tmp.qu.colorPowers.r.add(tmp.qu.colorPowers.g).add(tmp.qu.colorPowers.b).add(1).log10(),1/3)*0.8+1).max(1) //NU14
-			tmp.nu[6]=Decimal.pow(2,(tmp.qu.nanofield.rewards>90?Math.sqrt(90*tmp.qu.nanofield.rewards):tmp.qu.nanofield.rewards)/2.5) //NU15
-			if (hasNU(15)) tmp.ns=tmp.ns.times(tmp.nu[6])
-			tmp.ppti/=tmp.le[1]
-		}
-		if (ghostified) {
-			var nt=[]
-			for (var g=0;g<3;g++) nt[g]=player.ghostify.neutrinos[(["electron","mu","tau"])[g]]
-			if (tmp.qu.nanofield.rewards<16) tmp.ns=tmp.ns.times(player.ghostify.milestones?6:3)
-			//NEUTRINO BOOSTS
-			if (player.ghostify.neutrinos.boosts>=1){ // so it looks like the others, i didnt want to say player.ghostify.neutrinos.boosts>0 in case that breaks something
-				let nb1mult = .75
-				if (tmp.newNGP3E) nb1mult = 1 
-				let nb1neutrinos = nt[0].add(1).log10()+nt[1].add(1).log10()+nt[2].add(1).log10()
-				tmp.nb[0]=Math.log10(1+nb1neutrinos)*nb1mult
-			}
-			if (player.ghostify.neutrinos.boosts>=2){ // see comment above
-				let nb2neutrinos = Math.pow(nt[0].add(1).log10(),2)+Math.pow(nt[1].add(1).log10(),2)+Math.pow(nt[2].add(1).log10(),2)
-				tmp.nb[1]=Math.pow(nb2neutrinos,0.25)*1.5
-			}
-			if (player.ghostify.neutrinos.boosts>=3) {
-				let nb3exp = .25
-				if (tmp.newNGP3E) nb3exp = .275 
-				tmp.nb[2]=Math.pow(Math.pow(Math.log10(Math.max(nt[0].max(1).log10()-5,1))/Math.log10(5),2)+Math.pow(Math.log10(Math.max(nt[1].max(1).log10()-5,1))/Math.log10(5),2)+Math.pow(Math.log10(Math.max(nt[2].max(1).log10()-5,1))/Math.log10(5),2),nb3exp)/Math.pow(3,nb3exp)+3
-			}
-			if (player.ghostify.neutrinos.boosts>=4) {//this is the infinite time buff
-				var nb4neutrinos = Math.pow(nt[0].add(1).log10(),2)+Math.pow(nt[1].add(1).log10(),2)+Math.pow(nt[2].add(1).log10(),2)
-				var nb4=Math.pow(nb4neutrinos,0.25)*0.07+1
-				if (nb4>10) nb4=6+Math.log2(nb4+6)
-				if (nb4>16) nb4=12+Math.log2(nb4)
-				tmp.nb[3]=nb4
-			}
-			if (player.ghostify.neutrinos.boosts>=5) {
-				var nb5neutrinos = nt[0].max(1).log10()+nt[1].max(1).log10()+nt[2].max(1).log10()
-				tmp.nb[4]=Math.min(nb5neutrinos/33,1)
-			}
-			if (player.ghostify.neutrinos.boosts>=6) {
-				var nb6neutrinos = Math.pow(nt[0].add(1).log10(),2)+Math.pow(nt[1].add(1).log10(),2)+Math.pow(nt[2].add(1).log10(),2)
-				var nb6exp1 = .25
-				if (tmp.newNGP3E) nb6exp1 = .3
-				tmp.nb[5]=Math.pow( Math.pow(nb6neutrinos,nb6exp1)*0.525+1 ,tmp.be?0.5:1)
-			}
-			if (player.ghostify.neutrinos.boosts>=7) {
-				let nb7exp = .5
-				if (tmp.newNGP3E) nb7exp = .6
-				let nb7neutrinos = nt[0].add(1).log10()+nt[1].add(1).log10()+nt[2].add(1).log10()
-				let nb7 = Math.pow( Math.log10(1+nb7neutrinos) , nb7exp)*2.35
-				if (nb7>4) nb7 = 2*Math.log2(nb7)
-				tmp.nb[6] = nb7
-			}
-			if (player.ghostify.neutrinos.boosts>=8) {
-				let nb8neutrinos = Math.pow(nt[0].add(1).log10(),2)+Math.pow(nt[1].add(1).log10(),2)+Math.pow(nt[2].add(1).log10(),2)
-				let nb8exp = .25
-				if (tmp.newNGP3E) nb8exp = .26
-				var nb8=Math.pow(nb8neutrinos,nb8exp)/10+1
-				if (nb8>11) nb8=7+Math.log2(nb8+5)
-				tmp.nb[7]=nb8
-			}
-			if (player.ghostify.neutrinos.boosts>=9) {
-				var nb9=(nt[0].add(1).log10()+nt[1].add(1).log10()+nt[2].add(1).log10())/10
-				if (nb9>4096) nb9=Math.pow(Math.log2(nb9)+4,3)
-				tmp.nb[8]=nb9
-			}
-			if (player.ghostify.neutrinos.boosts>=10) {
-				tmp.nb[9]=Math.max(nt[0].add(1).log10()+nt[1].add(1).log10()+nt[2].add(1).log10()-3e3,0)/75e4
-			}
-			//NEUTRINO UPGRADES
-			tmp.nu[0]=Math.max(110-(tmp.qu.bigRip.active?0:player.meta.resets),0) //NU1
-			tmp.nu[1]=Math.pow(Math.max(tmp.qu.colorPowers.b.log10()/250+1,1),2) //NU3
-			let nu4base = 20
-			if (tmp.newNGP3E) nu4base = 50
-			tmp.nu[2]=Decimal.pow(nu4base,Math.pow(Math.max(-getTickspeed().div(1e3).log10()/4e13-4,0),1/4)) //NU4
-			var nu7=tmp.qu.colorPowers.g.add(1).log10()/400
-			if (nu7>40) nu7=Math.sqrt(nu7*10)+20
-			tmp.nu[3]=Decimal.pow(10,nu7) //NU7
-			tmp.nu[4]={ //NU12 (Normal and free galaxy effects)
-				normal: Math.sqrt(player.galaxies*.0035+1),
-				free: player.dilation.freeGalaxies*.035+1
-			}
-		}
-		if (player.masterystudies.includes("d14")) {
-			let exp = tmp.qu.bigRip.upgrades.includes(17) ? 2.9 : 1
-			if (ghostified && player.ghostify.neutrinos.boosts > 7) exp *= tmp.nb[7]
-			let log = player.infinityPoints.max(1).log10() * exp
-			if (log > 3e8) log = Math.pow(log / 3e8, 0.75) * 3e8
-			tmp.bru[0]=Decimal.pow(10, log) //BRU1
-			tmp.bru[1]=Decimal.pow(2,getTotalRG()) //BRU8
-			if (!hasNU(11)) tmp.bru[1]=tmp.bru[1].min(Number.MAX_VALUE)
-			var ret=Math.min(tmp.qu.bigRip.spaceShards.div(3e18).add(1).log10()/3,0.4)
-			tmp.bru[2]=Math.sqrt(tmp.qu.bigRip.spaceShards.div(3e15).add(1).log10()*ret+1) //BRU14
-			if (!tmp.qu.bigRip.active) {
-				tmp.bru[0]=1
-				tmp.bru[1]=1
-			}
-		}
-		if (tmp.qu.bigRip.active) {
-			if (!player.dilation.active&&tmp.qu.bigRip.upgrades.includes(14)) tmp.nrm=tmp.nrm.pow(tmp.bru[2])
-			if (tmp.nrm.gt("1e1000000000")) tmp.nrm=Decimal.pow(10,Math.pow(tmp.nrm.log10()*3e4,2/3))
-		}
-		if (player.masterystudies.includes("d10")) tmp.edgm = getEmperorDimensionGlobalMultiplier() //Update global multiplier of all Emperor Dimensions
-		tmp.be=tmp.qu.bigRip.active&&tmp.qu.breakEternity.break
-		tmp.twr=getTotalWorkers()
-		tmp.tra=getTotalReplicants()
-		tmp.rg4=tmp.qu.upgrades.includes("rg4")&&(tmp.qu.rg4||!tmp.ngp3l||inQC(1)||QCIntensity(1))
-		tmp.tue=getTreeUpgradeEfficiency()
-		tmp.mpte=getMPTExp()
-	} else tmp.be=false
-	if (player.meta !== undefined) tmp.mdgm = getMetaDimensionGlobalMultiplier() //Update global multiplier of all Meta Dimensions
-	tmp.mptb=getMPTBase()
+function updateWZBosonsTemp(){
+	for (var r=1;r<=bu.rows;r++) for (var c=1;c<6;c++) {
+		var id=r*10+c
+		if (bu.effects[id]!==undefined) tmp.blu[id]=bu.effects[id]()
+	}
+	for (var g2=2;g2<br.names.length;g2++) for (var g1=1;g1<g2;g1++) {
+		var id=g1*10+g2
+		tmp.bEnLvl[id]=tmp.bl.enchants[id]||new Decimal(0)
+		if (bEn.effects[id]!==undefined) tmp.bEn[id]=getEnchantEffect(id)
+	}
+	var wpl=player.ghostify.wzb.wpb.add(1).log10()
+	var wnl=player.ghostify.wzb.wnb.add(1).log10()
+	tmp.wzbs=new Decimal(1) //W & Z Bosons speed
+	tmp.wbt=Decimal.pow(3,Math.max(wpl*(player.ghostify.wzb.wpb.sub(player.ghostify.wzb.wnb.min(player.ghostify.wzb.wpb))).div(player.ghostify.wzb.wpb.max(1)).toNumber(),0)) //W Bosons boost to extract time
+	tmp.wbo=Decimal.pow(10,Math.max(wpl*(player.ghostify.wzb.wpb.sub(player.ghostify.wzb.wnb.min(player.ghostify.wzb.wpb))).div(player.ghostify.wzb.wpb.max(1)).toNumber(),0)) //W Bosons boost to Z Neutrino oscillation requirement
+	tmp.wbp=player.ghostify.wzb.wpb.add(player.ghostify.wzb.wnb).div(100).max(1).pow(1/3).sub(1) //W Bosons boost to Bosonic Antimatter production
+	tmp.zbs=player.ghostify.wzb.zb.div(10).add(1).sqrt() //Z Bosons boost to W Quark decay speed and W- to W+ conversion speed
+	if (tmp.zbs.gt(1e4)) tmp.zbs=tmp.zbs.times(1e4).sqrt()
+	tmp.dppg=new Decimal(1)
+	tmp.bEn[21]=getEnchantEffect(21) //BU21 recalculation
+}
+
+function updateGPhTemp(){
+	let lePower=getLightEmpowermentBoost()
+	for (var c=6;c>-1;c--) {
+		var x=player.ghostify.ghostlyPhotons.lights[c]
+		if (c<1) x=(player.ghostify.ghostlyPhotons.maxRed+x*2)/3
+		tmp.ls[c]=x*(Math.sqrt(c>5?1:tmp.ls[c+1]+1)+lePower)
+	}
+	tmp.ls[7]=player.ghostify.ghostlyPhotons.lights[0]*(Math.sqrt(tmp.ls[1]+1)+lePower) //Other red Light boosts than 0 LE
+	tmp.le[0]=Math.pow(tmp.ls[0],1/4)*.15+1
+	if (tmp.le[0]>1.5) tmp.le[0]=Math.log10(tmp.le[0]*20/3)*1.5
+	tmp.le[1]=tmp.ls[1]>64?Math.log10(tmp.ls[1]/64)+14:tmp.ls[1]>8?Math.sqrt(tmp.ls[1])+6:tmp.ls[1]+1 //Orange light
+	tmp.le[2]=Math.sqrt(tmp.ls[2]>60?(Math.log10(tmp.ls[2]/6)+2)/3*Math.sqrt(1200):tmp.ls[2]>20?Math.sqrt(tmp.ls[2]*20):tmp.ls[2])*45e3 //Yellow light
+	tmp.le[3]=tmp.ngp3l?(tmp.ls[3]>8?Math.log10(tmp.ls[3]/8)+Math.sqrt(12)+1:Math.sqrt(tmp.ls[3]*1.5)+1):1 //Green light
+	tmp.le[4]=Math.log10(Math.sqrt(tmp.ls[4]*2)+1)*5/4 //Blue light
+	tmp.le[5]=Decimal.pow(10,tmp.ls[5]>25?Math.sqrt(tmp.ls[5]*1e3+37500):tmp.ls[5]*10) //Indigo light
+	tmp.le[6]=Math.pow(player.postC3Reward.log10()*tmp.ls[6],1/3)*2 //Violet light
+	if (tmp.le[6]>15e3) tmp.le[6]=Math.pow(tmp.le[6]/15e3,.6)*15e3
+	tmp.le[6]=Decimal.pow(10,tmp.le[6])
+	if (player.ghostify.ghostlyPhotons.enpowerments) tmp.le[7]={effect:Math.log10(tmp.ls[3]+1)*300} //Green light (LE#1)
+	if (player.ghostify.ghostlyPhotons.enpowerments>1) tmp.le[8]=Math.log10(tmp.ls[4]*10+1)/4+1 //Blue light (LE#2)
+	if (player.ghostify.ghostlyPhotons.enpowerments>2) tmp.le[9]=Math.pow(tmp.ls[7]+1,.1)*2-1 //Red light (LE#3)
+	tmp.bru[3]=Decimal.pow(tmp.qu.bigRip.spaceShards.div(1e140).add(1).log10()+1,Math.max(tmp.qu.bigRip.spaceShards.div(1e140).add(1).log10()/10,1)) //BRU18
+	tmp.bru[4]=Decimal.pow(10,Math.sqrt(player.timeShards.add(1).log10())/80) //BRU19
+	tmp.nu[5]=Decimal.pow(player.ghostify.ghostParticles.add(1).log10(),Math.pow(tmp.qu.colorPowers.r.add(tmp.qu.colorPowers.g).add(tmp.qu.colorPowers.b).add(1).log10(),1/3)*0.8+1).max(1) //NU14
+	tmp.nu[6]=Decimal.pow(2,(tmp.qu.nanofield.rewards>90?Math.sqrt(90*tmp.qu.nanofield.rewards):tmp.qu.nanofield.rewards)/2.5) //NU15
+	if (hasNU(15)) tmp.ns=tmp.ns.times(tmp.nu[6])
+	tmp.ppti/=tmp.le[1]
+}
+
+function updateNeutrinoBoostsTemp(){
+	var nt=[]
+	for (var g=0;g<3;g++) nt[g] = player.ghostify.neutrinos[(["electron","mu","tau"])[g]]
+	if (tmp.qu.nanofield.rewards<16) tmp.ns = tmp.ns.times(player.ghostify.milestones?6:3)
+	if (player.ghostify.neutrinos.boosts>=1){ 
+		let nb1mult = .75
+		if (tmp.newNGP3E) nb1mult = .8
+		let nb1neutrinos = nt[0].add(1).log10()+nt[1].add(1).log10()+nt[2].add(1).log10()
+		tmp.nb[0]=Math.log10(1+nb1neutrinos)*nb1mult
+	}
+	if (player.ghostify.neutrinos.boosts>=2){ 
+		let nb2neutrinos = Math.pow(nt[0].add(1).log10(),2)+Math.pow(nt[1].add(1).log10(),2)+Math.pow(nt[2].add(1).log10(),2)
+		tmp.nb[1]=Math.pow(nb2neutrinos,0.25)*1.5
+	}
+	if (player.ghostify.neutrinos.boosts>=3) {
+		let nb3exp = .25
+		//if (tmp.newNGP3E) nb3exp = .275 
+		tmp.nb[2]=Math.pow(Math.pow(Math.log10(Math.max(nt[0].max(1).log10()-5,1))/Math.log10(5),2)+Math.pow(Math.log10(Math.max(nt[1].max(1).log10()-5,1))/Math.log10(5),2)+Math.pow(Math.log10(Math.max(nt[2].max(1).log10()-5,1))/Math.log10(5),2),nb3exp)/Math.pow(3,nb3exp)+3
+	}
+	if (player.ghostify.neutrinos.boosts>=4) {//this is the infinite time buff
+		var nb4neutrinos = Math.pow(nt[0].add(1).log10(),2)+Math.pow(nt[1].add(1).log10(),2)+Math.pow(nt[2].add(1).log10(),2)
+		var nb4=Math.pow(nb4neutrinos,0.25)*0.07+1
+		if (nb4 > 10) nb4=6+Math.log2(nb4+6)
+		if (nb4 > 16) nb4=12+Math.log2(nb4)
+		tmp.nb[3]=nb4
+	}
+	if (player.ghostify.neutrinos.boosts>=5) {
+		var nb5neutrinos = nt[0].max(1).log10()+nt[1].max(1).log10()+nt[2].max(1).log10()
+		tmp.nb[4]=Math.min(nb5neutrinos/33,1)
+	}
+	if (player.ghostify.neutrinos.boosts>=6) {
+		var nb6neutrinos = Math.pow(nt[0].add(1).log10(),2)+Math.pow(nt[1].add(1).log10(),2)+Math.pow(nt[2].add(1).log10(),2)
+		var nb6exp1 = .25
+		//if (tmp.newNGP3E) nb6exp1 = .3
+		tmp.nb[5] = Math.pow( Math.pow(nb6neutrinos,nb6exp1)*0.525+1 ,tmp.be?0.5:1)
+	}
+	if (player.ghostify.neutrinos.boosts>=7) {
+		let nb7exp = .5
+		if (tmp.newNGP3E) nb7exp = .6
+		let nb7neutrinos = nt[0].add(1).log10()+nt[1].add(1).log10()+nt[2].add(1).log10()
+		let nb7 = Math.pow( Math.log10(1+nb7neutrinos) , nb7exp)*2.35
+		if (nb7>4) nb7 = 2*Math.log2(nb7)
+		tmp.nb[6] = nb7
+	}
+	if (player.ghostify.neutrinos.boosts>=8) {
+		let nb8neutrinos = Math.pow(nt[0].add(1).log10(),2)+Math.pow(nt[1].add(1).log10(),2)+Math.pow(nt[2].add(1).log10(),2)
+		let nb8exp = .25
+		if (tmp.newNGP3E) nb8exp = .26
+		var nb8 = Math.pow(nb8neutrinos,nb8exp)/10+1
+		if (nb8 > 11) nb8=7+Math.log2(nb8+5)
+		tmp.nb[7]=nb8
+	}
+	if (player.ghostify.neutrinos.boosts>=9) {
+		var nb9 = (nt[0].add(1).log10()+nt[1].add(1).log10()+nt[2].add(1).log10())/10
+		if (nb9 > 4096) nb9=Math.pow(Math.log2(nb9)+4,3)
+		tmp.nb[8]=nb9
+	}
+	if (player.ghostify.neutrinos.boosts>=10) {
+		tmp.nb[9] = Math.max(nt[0].add(1).log10()+nt[1].add(1).log10()+nt[2].add(1).log10()-3e3,0)/75e4
+	}
+}
+
+function updateNeutrinoUpgradesTemp(){
+	tmp.nu[0]=Math.max(110-(tmp.qu.bigRip.active?0:player.meta.resets),0) //NU1
+	tmp.nu[1]=Math.pow(Math.max(tmp.qu.colorPowers.b.log10()/250+1,1),2) //NU3
+	let nu4base = 20
+	if (tmp.newNGP3E) nu4base = 50
+	tmp.nu[2] = Decimal.pow(nu4base,Math.pow(Math.max(-getTickspeed().div(1e3).log10()/4e13-4,0),1/4)) //NU4
+	var nu7 = tmp.qu.colorPowers.g.add(1).log10()/400
+	if (nu7 > 40) nu7=Math.sqrt(nu7*10)+20
+	tmp.nu[3] = Decimal.pow(10,nu7) //NU7
+	tmp.nu[4] = { //NU12 (Normal and free galaxy effects)
+		normal: Math.sqrt(player.galaxies*.0035+1),
+		free: player.dilation.freeGalaxies*.035+1,
+		replicated: Math.sqrt(getTotalRG())*(tmp.ngp3l?.035:.0175)+1 //NU12 (Replicated galaxy effect)
+	}
+}
+
+function updateD14Temp(){
+	let exp = tmp.qu.bigRip.upgrades.includes(17) ? 2.9 : 1
+	if (ghostified && player.ghostify.neutrinos.boosts > 7) exp *= tmp.nb[7]
+	let log = player.infinityPoints.max(1).log10() * exp
+	if (log > 3e8) log = Math.pow(log / 3e8, 0.75) * 3e8
+	tmp.bru[0]=Decimal.pow(10, log) //BRU1
+	tmp.bru[1]=Decimal.pow(2,getTotalRG()) //BRU8
+	if (!hasNU(11)) tmp.bru[1]=tmp.bru[1].min(Number.MAX_VALUE)
+	var ret=Math.min(tmp.qu.bigRip.spaceShards.div(3e18).add(1).log10()/3,0.4)
+	tmp.bru[2]=Math.sqrt(tmp.qu.bigRip.spaceShards.div(3e15).add(1).log10()*ret+1) //BRU14
+	if (!tmp.qu.bigRip.active) {
+		tmp.bru[0]=1
+		tmp.bru[1]=1
+	}
+}
+
+function updateInfiniteTimeTemp(){
 	var x=(3-player.tickspeed.log10())*0.000005
 	if (ghostified&&player.ghostify.neutrinos.boosts>3) x*=tmp.nb[3]
 	if (tmp.be&&!player.dilation.active&&tmp.qu.breakEternity.upgrades.includes(8)) x*=getBreakUpgMult(8)
@@ -1279,12 +1265,9 @@ function updateTemp() {
 		if (player.dilation.active&&x>1e5) x=Math.pow(1e20*x,.2)
 	}
 	tmp.it=Decimal.pow(10,x)
+}
 
-	//aeg: Antielectronic Galaxies
-	tmp.aeg = 0
-	if (hasBosonicUpg(14) && !tmp.qu.bigRip.active) tmp.aeg = Math.max(tmp.blu[14] - tmp.qu.electrons.sacGals, 0)
-
-	//Intergalactic reward
+function updateIntergalacticTemp(){
 	if (tmp.ngp3) {
 		x = player.galaxies
 		if (!tmp.qu.bigRip.active && player.ghostify.ghostlyPhotons.enpowerments>2) x *= tmp.le[9]
@@ -1308,6 +1291,46 @@ function updateTemp() {
 		}
 		tmp.ig = Decimal.pow(10, igLog)
 	}
+}
+
+function updateTemp() {
+	tmp.ri=player.money.gte(getLimit())&&((player.currentChallenge!=""&&player.money.gte(player.challengeTarget))||!onPostBreak())
+	tmp.nrm=player.replicanti.amount.max(1)
+	tmp.rg4=false
+	if (tmp.ngp3) {
+		tmp.ns=new Decimal(nanospeed)
+		tmp.apgw=tmp.qu.nanofield.apgWoke||getAntiPreonGhostWake()
+		tmp.ppti=1
+		if (player.ghostify.wzb.unl) updateWZBosonsTemp()
+		if (player.ghostify.ghostlyPhotons.unl) updateGPhTemp()
+		if (ghostified) {
+			updateNeutrinoBoostsTemp()
+			updateNeutrinoUpgradesTemp()		
+		}
+		if (player.masterystudies.includes("d14")) updateD14Temp()
+		if (tmp.qu.bigRip.active) {
+			if (!player.dilation.active&&tmp.qu.bigRip.upgrades.includes(14)) tmp.nrm=tmp.nrm.pow(tmp.bru[2])
+			if (tmp.nrm.gt("1e1000000000")) tmp.nrm=Decimal.pow(10,Math.pow(tmp.nrm.log10()*3e4,2/3))
+		}
+		if (player.masterystudies.includes("d10")) tmp.edgm = getEmperorDimensionGlobalMultiplier() //Update global multiplier of all Emperor Dimensions
+		tmp.be=tmp.qu.bigRip.active&&tmp.qu.breakEternity.break
+		tmp.twr=getTotalWorkers()
+		tmp.tra=getTotalReplicants()
+		tmp.rg4=tmp.qu.upgrades.includes("rg4")&&(tmp.qu.rg4||!tmp.ngp3l||inQC(1)||QCIntensity(1))
+		tmp.tue=getTreeUpgradeEfficiency()
+		tmp.mpte=getMPTExp()
+	} else tmp.be=false
+	if (player.meta !== undefined) tmp.mdgm = getMetaDimensionGlobalMultiplier() //Update global multiplier of all Meta Dimensions
+	tmp.mptb=getMPTBase()
+	
+	updateInfiniteTimeTemp()
+
+	//aeg: Antielectronic Galaxies
+	tmp.aeg = 0
+	if (hasBosonicUpg(14) && !tmp.qu.bigRip.active) tmp.aeg = Math.max(tmp.blu[14] - tmp.qu.electrons.sacGals, 0)
+
+	//Intergalactic reward
+	updateIntergalacticTemp() // starts with if (tmp.ngp3)
 
 	tmp.rm=getReplMult()
 	if (!player.timestudy.studies.includes(101)) tmp.nrm=1
@@ -1327,9 +1350,6 @@ function updateTemp() {
 		tmp.eg431+=tmp.le[7].total
 	}
 	
-	if (tmp.nu[4]&&ghostified) tmp.nu[4].replicated=Math.sqrt(getTotalRG())*(tmp.ngp3l?.035:.0175)+1 //NU12 (Replicated galaxy effect)
-	if (tmp.ngp3&&player.ghostify.wzb.unl) tmp.bEn[21]=getEnchantEffect(21) //BU21 recalculation
-
 	//mv: Matter speed
 	tmp.mv = 1.03 + player.resets/200 + player.galaxies/100
 	if (player.pSac !== undefined) {
@@ -1792,8 +1812,8 @@ var worstChallengeTime = 1
 var worstChallengeBonus = 1
 
 function updateWorstChallengeTime() {
-    worstChallengeTime = 1
-    for (var i=0; i<getTotalNormalChallenges(); i++) worstChallengeTime = Math.max(worstChallengeTime, player.challengeTimes[i])
+    	worstChallengeTime = 1
+    	for (var i=0; i<getTotalNormalChallenges(); i++) worstChallengeTime = Math.max(worstChallengeTime, player.challengeTimes[i])
 }
 
 function updateWorstChallengeBonus() {
@@ -1802,9 +1822,9 @@ function updateWorstChallengeBonus() {
 }
 
 function sacrificeConf() {
-    document.getElementById("confirmation").checked = player.options.sacrificeConfirmation
-    player.options.sacrificeConfirmation = !player.options.sacrificeConfirmation
-    document.getElementById("sacConfirmBtn").textContent = "Sacrifice confirmation: O" + (player.options.sacrificeConfirmation ? "N" : "FF")
+    	document.getElementById("confirmation").checked = player.options.sacrificeConfirmation
+    	player.options.sacrificeConfirmation = !player.options.sacrificeConfirmation
+    	document.getElementById("sacConfirmBtn").textContent = "Sacrifice confirmation: O" + (player.options.sacrificeConfirmation ? "N" : "FF")
 }
 
 function getDilPower() {
@@ -1844,7 +1864,16 @@ function getDilExp(disable) {
 
 function getDilGain() {
 	if (inQCModifier("ad")) return new Decimal(0)
-    return Decimal.pow(Decimal.log10(player.money) / 400, getDilExp()).times(getDilPower());
+    	return Decimal.pow(Decimal.log10(player.money) / 400, getDilExp()).times(getDilPower());
+}
+
+function getNGUDTGain(){
+	gain = new Decimal(1)
+	gain = gain.times(getBlackholePowerEffect())
+	if (player.eternityUpgrades.includes(7)) gain = gain.times(1 + Math.log10(Math.max(1, player.money.log(10))) / 40)
+	if (player.eternityUpgrades.includes(8)) gain = gain.times(1 + Math.log10(Math.max(1, player.infinityPoints.log(10))) / 20)
+	if (player.eternityUpgrades.includes(9)) gain = gain.times(1 + Math.log10(Math.max(1, player.eternityPoints.log(10))) / 10)
+	return gain
 }
 
 function getDilTimeGainPerSecond() {
@@ -1853,10 +1882,7 @@ function getDilTimeGainPerSecond() {
 	if (ghostified&&player.ghostify.ghostlyPhotons.unl) exp*=tmp.le[0]
 	let gain = tp.pow(exp).times(Decimal.pow(2, getDilUpgPower(1)))
 	if (player.exdilation != undefined) {
-		gain = gain.times(getBlackholePowerEffect())
-		if (player.eternityUpgrades.includes(7)) gain = gain.times(1 + Math.log10(Math.max(1, player.money.log(10))) / 40)
-		if (player.eternityUpgrades.includes(8)) gain = gain.times(1 + Math.log10(Math.max(1, player.infinityPoints.log(10))) / 20)
-		if (player.eternityUpgrades.includes(9)) gain = gain.times(1 + Math.log10(Math.max(1, player.eternityPoints.log(10))) / 10)
+		gain = gain.times( getNGUDTGain() )
 	}
 	let eterExp = getEternitiesAndDTBoostExp()
 	if (eterExp > 0) gain = gain.times(Decimal.max(getEternitied(), 1).pow(eterExp))
@@ -1923,6 +1949,24 @@ function intergalacticDisplay(){
 		document.getElementById("intergalacticLabel").parentElement.style.display = ""
 		document.getElementById("intergalacticLabel").innerHTML = (["", "Distant ", "Remote ", "Ghostly "])[tmp.igs] + 'Intergalactic Boost ' + (player.dilation.active || player.galacticSacrifice != undefined ? " (estimated)" : "") + " (" + getFullExpansion(player.galaxies) + (Math.floor(tmp.igg - player.galaxies) > 0 ? " + " + getFullExpansion(Math.floor(tmp.igg - player.galaxies)) : "") + "): " + shorten(dilates(tmp.ig).pow(player.dilation.active?getNanofieldRewardEffect(5):1)) + 'x to Eighth Dimensions'
 	} else document.getElementById("intergalacticLabel").parentElement.style.display = "none"
+}
+
+function dimensionTabDisplay(){
+	var shown
+        for (let tier = 8; tier > 0; tier--) {
+		shown = shown || canBuyDimension(tier)
+           	var name = TIER_NAMES[tier];
+            	if (shown) {
+			document.getElementById(tier+"Row").style.display = ""
+               		document.getElementById("D"+tier).childNodes[0].nodeValue = DISPLAY_NAMES[tier] + " Dimension x" + formatValue(player.options.notation, getDimensionFinalMultiplier(tier), 2, 1)
+               		document.getElementById("A"+tier).textContent = getDimensionDescription(tier)
+            	}
+       	}
+	setAndMaybeShow("mp10d",player.aarexModifications.newGameMult,"'Multiplier per 10 dimensions: '+shorten(getDimensionPowerMultiplier(\"non-random\"))+'x'")
+	dimShiftDisplay()
+	tickspeedBoostDisplay()
+	galaxyReqDisplay()
+	intergalacticDisplay()
 }
 
 function tickspeedDisplay(){
@@ -2189,210 +2233,196 @@ function preBreakUpgradeDisplay(){
 	}
 }
 
+function infoScaleDisplay(){
+	if (player.aarexModifications.hideRepresentation) document.getElementById("infoScale").textContent=""
+        else if (player.money.gt(Decimal.pow(10, 3 * 86400 * 365.2425 * 79.3 / 10))) {
+           	var years = player.money.log10() / 3 / 86400 / 365.2425
+            	var todayYear = new Date().getFullYear() || 2020
+            	if (years>=1e9) var message = "<br>If you end the non-stop writing of your full antimatter amount with 3 digits per second, you would start it "+(years/1e9).toFixed(2)+" GYA."
+           	else if (years>=1e7) var message = "<br>If you end the non-stop writing of your full antimatter amount with 3 digits per second, you would start it "+(years/1e6).toFixed(2)+" MYA."
+            	else if (years>=todayYear) { // bound to the  < } else { > line stuck btw two var message lines
+                	var bc = years-todayYear+1
+                	var since
+                	var sinceYears
+                	if (bc > 5332e3) {}
+                	else if (bc > 35e5) {
+                    		since = "start of Pliocene epoch"
+                    		sinceYears = 5332e3 - bc
+                	} else if (bc > 258e4) {
+                    		since = "birthdate of Lucy (typical Australopithicus afarensis female)"
+                    		sinceYears = 35e5 - bc
+                	} else if (bc > 781e3) {
+                    		since = "Quaternary period"
+                    		sinceYears = 258e4 - bc
+                	} else if (bc > 315e3) {
+                    		since = "Calabrian age"
+                    		sinceYears = 781e3 - bc
+                	} else if (bc > 25e4) {
+                    		since = "Homo sapiens"
+                    		sinceYears = 315e3 - bc
+                	} else if (bc > 195e3) {
+                    		since = "Homo neanderthalensis"
+                    		sinceYears = 25e4 - bc
+                	} else if (bc > 16e4) {
+                    		since = "emergence of anatomically modern humans"
+                    		sinceYears = 195e3 - bc
+                	} else if (bc > 125e3) {
+                    		since = "Homo sapiens idaltu"
+                    		sinceYears = 16e4 - bc
+                	} else if (bc > 7e4) {
+                    		since = "peak of Eemian interglacial period"
+                    		sinceYears = 125e3 - bc
+                	} else if (bc > 67e3) {
+                    		since = "earliest abstract/symbolic art"
+                    		sinceYears = 7e4 - bc
+                	} else if (bc > 5e4) {
+                    		since = "Upper Paleolithic"
+                    		sinceYears = 67e3 - bc
+                	} else if (bc > 45e3) {
+                    		since = "Late Stone Age"
+                    		sinceYears = 5e4 - bc
+                	} else if (bc > 4e4) {
+                    		since = "European early modern humans"
+                    		sinceYears = 45e3 - bc
+                	} else if (bc > 35e3) {
+                    		since = "first human settlement"
+                    		sinceYears = 4e4 - bc
+                	} else if (bc > 33e3) {
+                    		since = "oldest known figurative art"
+                    		sinceYears = 35e3 - bc
+                	} else if (bc > 31e3) {
+                    		since = "oldest known domesticated dog"
+                    		sinceYears = 33e3 - bc
+                	} else if (bc > 29e3) {
+                    		since = "Last Glacial Maximum"
+                    		sinceYears = 31e3 - bc
+                	} else if (bc > 28e3) {
+                    		since = "oldest ovens"
+                    		sinceYears = 29e3 - bc
+                	} else if (bc > 25e3) {
+                    		since = "oldest known twisted rope"
+                    		sinceYears = 28e3 - bc
+                	} else if (bc > 2e4) {
+                    		since = "oldest human permanent settlement (hamlet considering built of rocks and of mammoth bones)"
+                    		sinceYears = 25e3 - bc
+                	} else if (bc > 16e3) {
+                   		since = "rise of Kerberan culture"
+                    		sinceYears = 2e4 - bc
+                	} else if (bc > 15e3) {
+                    		since = "colonization of North America"
+                    		sinceYears = 16e3 - bc
+                	} else if (bc > 14e3) {
+                    		since = "domestication of the pig"
+                    		sinceYears = 15e3 - bc
+                	} else if (bc > 11600) {
+                    		since = "prehistoric warfare"
+                    		sinceYears = 14e3 - bc
+                	} else if (bc > 1e4) {
+                    		since = "Holocene"
+                    		sinceYears = 11600 - bc
+                	} else if (bc > 8e3) {
+                    		since = "death of other human breeds"
+                    		sinceYears = 1e4 - bc
+                	} else if (bc > 6e3) {
+                   		since = "agricultural revolution"
+                    		sinceYears = 8e3 - bc
+                	} else if (bc > 5e3) {
+                    		since = "farmers arrived in Europe"
+                    		sinceYears = 6e3 - bc
+                	} else if (bc > 4e3) {
+                    		since = "first metal tools"
+                    		sinceYears = 5e3 - bc
+                	} else if (bc > 3200) {
+                    		since = "first horse"
+                    		sinceYears = 4e3 - bc
+                	} else if (bc > 3e3) {
+                    		since = "Sumerian cuneiform writing system"
+                    		sinceYears = 3200 - bc
+                	} else if (bc > 2600) {
+                    		since = "union of Egypt"
+                    		sinceYears = 3e3 - bc
+                	} else if (bc > 2500) {
+                    		since = "rise of Maya"
+                    		sinceYears = 2600 - bc
+                	} else if (bc > 2300) {
+                    		since = "extinct of mammoths"
+                    		sinceYears = 2500 - bc
+                	} else if (bc > 1800) {
+                    		since = "rise of Akkadian Empire"
+                    		sinceYears = 2300 - bc
+                	} else if (bc > 1175) {
+                    		since = "first alphabetic writing"
+                    		sinceYears = 1800 - bc
+                	} else if (bc > 1400) {
+                    		since = "rise of Olmec civilization"
+                    		sinceYears = 1400 - bc
+                	} else if (bc > 800) {
+                    		since = "end of bronze age"
+                    		sinceYears = 1175 - bc
+                	} else if (bc > 753) {
+                    		since = "rise of Greek city-states"
+                    		sinceYears = 800 - bc
+                	} else if (bc > 653) {
+                    		since = "rise of Rome"
+                    		sinceYears = 753 - bc
+                	} else if (bc > 539) {
+                    		since = "rise of Persian Empire"
+                    		sinceYears = 653 - bc
+                	} else if (bc > 356) {
+                    		since = "fall of Babylonian Empire"
+                    		sinceYears = 539 - bc
+                	} else if (bc > 200) {
+                    		since = "birth of Alexander the Great"
+                    		sinceYears = 356 - bc
+                	} else if (bc > 4) {
+                    		since = "the first paper"
+                    		sinceYears = 200 - bc
+                	} else {
+                    		since = "birth of Jesus Christ"
+                    		sinceYears = 4 - bc
+                	}
+                	var message = "<br>If you end the non-stop writing of your full antimatter amount with 3 digits per second, you would start it in "+getFullExpansion(Math.floor(bc))+" BC."+(since?"<br>(around "+getFullExpansion(Math.ceil(sinceYears))+" years since the "+since+")":"")
+            } else {
+                	var message = "<br>If you start writing 3 digits of your full antimatter amount a second down after you were born as American,<br> you would "
+                	if (years>79.3) message+="become a ghost for "+((years-79.3) / years * 100).toFixed(3)+"% of this session."
+                	else message+="waste "+(years / 0.793).toFixed(3)+"% of your average life."
+	    }
+            document.getElementById("infoScale").innerHTML = message
+	}
+	else if (player.money.gt(new Decimal("1e100000"))) document.getElementById("infoScale").innerHTML = "<br>If you wrote 3 numbers a second, it would take you <br>" + timeDisplay(player.money.log10()*10/3) + "<br> to write down your antimatter amount."
+        else scienceNumberDisplay()
+}
+
+
 function updateDimensions() {
 	if (document.getElementById("antimatterdimensions").style.display == "block" && document.getElementById("dimensions").style.display == "block") {
-        	var shown
-        	for (let tier = 8; tier > 0; tier--) {
-			shown = shown || canBuyDimension(tier)
-           		var name = TIER_NAMES[tier];
-            		if (shown) {
-				document.getElementById(tier+"Row").style.display = ""
-                		document.getElementById("D"+tier).childNodes[0].nodeValue = DISPLAY_NAMES[tier] + " Dimension x" + formatValue(player.options.notation, getDimensionFinalMultiplier(tier), 2, 1)
-                		document.getElementById("A"+tier).textContent = getDimensionDescription(tier)
-            		}
-       		}
-
-		setAndMaybeShow("mp10d",player.aarexModifications.newGameMult,"'Multiplier per 10 dimensions: '+shorten(getDimensionPowerMultiplier(\"non-random\"))+'x'")
-
-		dimShiftDisplay()
-		tickspeedBoostDisplay()
-		galaxyReqDisplay()
-		intergalacticDisplay()
+        	dimensionTabDisplay()
     	}
-
 	tickspeedDisplay()
 	paradoxDimDisplay()
-	
     	if (document.getElementById("dimensions").style.display == "block" && document.getElementById("metadimensions").style.display == "block") updateMetaDimensions()
     	if (document.getElementById("dimensions").style.display == "block" && document.getElementById("emperordimensions").style.display == "block") updateEmperorDimensions()
     	if (document.getElementById("quantumtab").style.display == "block") updateQuantumTabs()
     	if (document.getElementById("ghostify").style.display == "block") updateGhostifyTabs()
 
     	if (document.getElementById("stats").style.display == "block" && document.getElementById("statistics").style.display == "block") {
-        
-	mainStatsDisplay()
-        paradoxSacDisplay()
-	galaxySacDisplay()
-	bestInfinityDisplay()
-	bestEternityDisplay()
-	bestQuantumDisplay()
-	bestGhostifyDisplay()
-	ng3p51Display()
-	dilationStatsDisplay()
+		mainStatsDisplay()
+        	paradoxSacDisplay()
+		galaxySacDisplay()
+		bestInfinityDisplay()
+		bestEternityDisplay()
+		bestQuantumDisplay()
+		bestGhostifyDisplay()
+		ng3p51Display()
+		dilationStatsDisplay()
+		infoScaleDisplay()
+	}
 
-        if (player.aarexModifications.hideRepresentation) document.getElementById("infoScale").textContent=""
-        else if (player.money.gt(Decimal.pow(10, 3 * 86400 * 365.2425 * 79.3 / 10))) {
-            var years = player.money.log10() / 3 / 86400 / 365.2425
-            var todayYear = new Date().getFullYear() || 2020
-            if (years>=1e9) var message = "<br>If you end the non-stop writing of your full antimatter amount with 3 digits per second, you would start it "+(years/1e9).toFixed(2)+" GYA."
-            else if (years>=1e7) var message = "<br>If you end the non-stop writing of your full antimatter amount with 3 digits per second, you would start it "+(years/1e6).toFixed(2)+" MYA."
-            else if (years>=todayYear) {
-                var bc = years-todayYear+1
-                var since
-                var sinceYears
-                if (bc > 5332e3) {}
-                else if (bc > 35e5) {
-                    since = "start of Pliocene epoch"
-                    sinceYears = 5332e3 - bc
-                } else if (bc > 258e4) {
-                    since = "birthdate of Lucy (typical Australopithicus afarensis female)"
-                    sinceYears = 35e5 - bc
-                } else if (bc > 781e3) {
-                    since = "Quaternary period"
-                    sinceYears = 258e4 - bc
-                } else if (bc > 315e3) {
-                    since = "Calabrian age"
-                    sinceYears = 781e3 - bc
-                } else if (bc > 25e4) {
-                    since = "Homo sapiens"
-                    sinceYears = 315e3 - bc
-                } else if (bc > 195e3) {
-                    since = "Homo neanderthalensis"
-                    sinceYears = 25e4 - bc
-                } else if (bc > 16e4) {
-                    since = "emergence of anatomically modern humans"
-                    sinceYears = 195e3 - bc
-                } else if (bc > 125e3) {
-                    since = "Homo sapiens idaltu"
-                    sinceYears = 16e4 - bc
-                } else if (bc > 7e4) {
-                    since = "peak of Eemian interglacial period"
-                    sinceYears = 125e3 - bc
-                } else if (bc > 67e3) {
-                    since = "earliest abstract/symbolic art"
-                    sinceYears = 7e4 - bc
-                } else if (bc > 5e4) {
-                    since = "Upper Paleolithic"
-                    sinceYears = 67e3 - bc
-                } else if (bc > 45e3) {
-                    since = "Late Stone Age"
-                    sinceYears = 5e4 - bc
-                } else if (bc > 4e4) {
-                    since = "European early modern humans"
-                    sinceYears = 45e3 - bc
-                } else if (bc > 35e3) {
-                    since = "first human settlement"
-                    sinceYears = 4e4 - bc
-                } else if (bc > 33e3) {
-                    since = "oldest known figurative art"
-                    sinceYears = 35e3 - bc
-                } else if (bc > 31e3) {
-                    since = "oldest known domesticated dog"
-                    sinceYears = 33e3 - bc
-                } else if (bc > 29e3) {
-                    since = "Last Glacial Maximum"
-                    sinceYears = 31e3 - bc
-                } else if (bc > 28e3) {
-                    since = "oldest ovens"
-                    sinceYears = 29e3 - bc
-                } else if (bc > 25e3) {
-                    since = "oldest known twisted rope"
-                    sinceYears = 28e3 - bc
-                } else if (bc > 2e4) {
-                    since = "oldest human permanent settlement (hamlet considering built of rocks and of mammoth bones)"
-                    sinceYears = 25e3 - bc
-                } else if (bc > 16e3) {
-                    since = "rise of Kerberan culture"
-                    sinceYears = 2e4 - bc
-                } else if (bc > 15e3) {
-                    since = "colonization of North America"
-                    sinceYears = 16e3 - bc
-                } else if (bc > 14e3) {
-                    since = "domestication of the pig"
-                    sinceYears = 15e3 - bc
-                } else if (bc > 11600) {
-                    since = "prehistoric warfare"
-                    sinceYears = 14e3 - bc
-                } else if (bc > 1e4) {
-                    since = "Holocene"
-                    sinceYears = 11600 - bc
-                } else if (bc > 8e3) {
-                    since = "death of other human breeds"
-                    sinceYears = 1e4 - bc
-                } else if (bc > 6e3) {
-                    since = "agricultural revolution"
-                    sinceYears = 8e3 - bc
-                } else if (bc > 5e3) {
-                    since = "farmers arrived in Europe"
-                    sinceYears = 6e3 - bc
-                } else if (bc > 4e3) {
-                    since = "first metal tools"
-                    sinceYears = 5e3 - bc
-                } else if (bc > 3200) {
-                    since = "first horse"
-                    sinceYears = 4e3 - bc
-                } else if (bc > 3e3) {
-                    since = "Sumerian cuneiform writing system"
-                    sinceYears = 3200 - bc
-                } else if (bc > 2600) {
-                    since = "union of Egypt"
-                    sinceYears = 3e3 - bc
-                } else if (bc > 2500) {
-                    since = "rise of Maya"
-                    sinceYears = 2600 - bc
-                } else if (bc > 2300) {
-                    since = "extinct of mammoths"
-                    sinceYears = 2500 - bc
-                } else if (bc > 1800) {
-                    since = "rise of Akkadian Empire"
-                    sinceYears = 2300 - bc
-                } else if (bc > 1175) {
-                    since = "first alphabetic writing"
-                    sinceYears = 1800 - bc
-                } else if (bc > 1400) {
-                    since = "rise of Olmec civilization"
-                    sinceYears = 1400 - bc
-                } else if (bc > 800) {
-                    since = "end of bronze age"
-                    sinceYears = 1175 - bc
-                } else if (bc > 753) {
-                    since = "rise of Greek city-states"
-                    sinceYears = 800 - bc
-                } else if (bc > 653) {
-                    since = "rise of Rome"
-                    sinceYears = 753 - bc
-                } else if (bc > 539) {
-                    since = "rise of Persian Empire"
-                    sinceYears = 653 - bc
-                } else if (bc > 356) {
-                    since = "fall of Babylonian Empire"
-                    sinceYears = 539 - bc
-                } else if (bc > 200) {
-                    since = "birth of Alexander the Great"
-                    sinceYears = 356 - bc
-                } else if (bc > 4) {
-                    since = "the first paper"
-                    sinceYears = 200 - bc
-                } else {
-                    since = "birth of Jesus Christ"
-                    sinceYears = 4 - bc
-                }
-                var message = "<br>If you end the non-stop writing of your full antimatter amount with 3 digits per second, you would start it in "+getFullExpansion(Math.floor(bc))+" BC."+(since?"<br>(around "+getFullExpansion(Math.ceil(sinceYears))+" years since the "+since+")":"")
-            } else {
-                var message = "<br>If you start writing 3 digits of your full antimatter amount a second down after you were born as American,<br> you would "
-                if (years>79.3) message+="become a ghost for "+((years-79.3) / years * 100).toFixed(3)+"% of this session."
-                else message+="waste "+(years / 0.793).toFixed(3)+"% of your average life."
-            }
-            document.getElementById("infoScale").innerHTML = message
-        } else if (player.money.gt(new Decimal("1e100000"))) document.getElementById("infoScale").innerHTML = "<br>If you wrote 3 numbers a second, it would take you <br>" + timeDisplay(player.money.log10()*10/3) + "<br> to write down your antimatter amount."
-        else scienceNumberDisplay()
-    }
-
-    if (document.getElementById("infinity").style.display == "block") {
-        if (document.getElementById("preinf").style.display == "block") {
-        	preBreakUpgradeDisplay()
-        } else if (document.getElementById("postinf").style.display == "block" && document.getElementById("breaktable").style.display == "inline-block") {
-            if (player.infinityUpgrades.includes("totalMult")) document.getElementById("postinfi11").className = "infinistorebtnbought"
+    	if (document.getElementById("infinity").style.display == "block") {
+        	if (document.getElementById("preinf").style.display == "block") {
+        		preBreakUpgradeDisplay()
+        	} else if (document.getElementById("postinf").style.display == "block" && document.getElementById("breaktable").style.display == "inline-block") {
+	if (player.infinityUpgrades.includes("totalMult")) document.getElementById("postinfi11").className = "infinistorebtnbought"
             else if (player.infinityPoints.gte(1e4)) document.getElementById("postinfi11").className = "infinistorebtn1"
             else document.getElementById("postinfi11").className = "infinistorebtnlocked"
             if (player.infinityUpgrades.includes("currentMult")) document.getElementById("postinfi21").className = "infinistorebtnbought"
