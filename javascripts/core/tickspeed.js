@@ -7,13 +7,13 @@ function getTickSpeedMultiplier() {
 
 function initialGalaxies() {
 	let g=player.galaxies
-	if (tmp.ngp3&&!tmp.be) {
-		g=Math.max(g-player.quantum.electrons.sacGals,0)
-		g*=Math.max(Math.min(10-(player.quantum.electrons.amount+g*getELCMult())/16857,1),0)
+	if (tmp.ngp3 && !tmp.be) {
+		g = Math.max(g-player.quantum.electrons.sacGals,0)
+		g *= Math.max(Math.min(10-(player.quantum.electrons.amount+g*getELCMult())/16857,1),0)
 		if (hasBosonicUpg(14)) g=Math.max(Math.min(player.galaxies,tmp.blu[14]),g)
 	}
 	if (tmp.rg4) g*=0.4
-	if ((inNC(15)||player.currentChallenge=="postc1")&&player.aarexModifications.ngmX==3) g=0
+	if ((inNC(15) || player.currentChallenge=="postc1") && player.aarexModifications.ngmX == 3) g=0
 	return g
 }
 
@@ -22,10 +22,11 @@ function getGalaxyPower(ng, bi, noDil) {
 	if (player.boughtDims) replGalEff = Math.log10(player.replicanti.limit.log(2))/Math.log10(2)/10
 	else if (ECTimesCompleted("eterc8") > 0) replGalEff = getECReward(8)
 	if (player.masterystudies && player.masterystudies.includes("t344")) replGalEff *= getMTSMult(344)
+	
 	let extraReplGalPower = 0
-	if (player.timestudy.studies.includes(133)) extraReplGalPower += player.replicanti.galaxies/2
+	if (player.timestudy.studies.includes(133)) extraReplGalPower += player.replicanti.galaxies*0.5
 	if (player.timestudy.studies.includes(132)) extraReplGalPower += player.replicanti.galaxies*0.4
-	extraReplGalPower += extraReplGalaxies
+	extraReplGalPower += extraReplGalaxies // extraReplGalaxies is a constant
 	
 	let otherGalPower = player.replicanti.galaxies
 	if (player.masterystudies ? player.masterystudies.includes("t342") : false) otherGalPower = (otherGalPower + extraReplGalPower) * replGalEff
@@ -35,7 +36,7 @@ function getGalaxyPower(ng, bi, noDil) {
 
 	let galaxyPower = ng
 	if (!tmp.be) galaxyPower = Math.max(ng-(bi?2:0),0)+otherGalPower
-	if ((inNC(7)||inQC(4))&&player.galacticSacrifice) galaxyPower *= galaxyPower
+	if ((inNC(7) || inQC(4) ) && player.galacticSacrifice) galaxyPower *= galaxyPower
 	return galaxyPower
 }
 
@@ -55,7 +56,7 @@ function getGalaxyEff(bi) {
 			let x=tmp.cp
 			if (x < 0) x = 1
 			if (x>4&&player.tickspeedBoosts != undefined) x=Math.sqrt(x-1)+2
-			eff *= .07*(x)
+			eff += .07*(x)
 		}
 	}
 	if (player.tickspeedBoosts !== undefined && (inNC(5) || player.currentChallenge == "postcngm3_3")) eff *= 0.75
@@ -142,11 +143,11 @@ function getPostC3Base() {
 
 function getPostC3Exp() {
 	let x=1
-	if (player.galacticSacrifice!==undefined) {
+	if (player.galacticSacrifice !== undefined) {
 		let g=getGalaxyPower(0,false,true)
-		if (g<7) return 1+g/5
-		let y=5
-		let z=.5
+		if (g < 7) return 1+g/5
+		let y = 5
+		let z = .5
 		if (tmp.ec>29) {
 			if (player.currentEternityChall=="" || player.currentEternityChall=="eterc12") {
 				z=.9
