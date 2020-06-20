@@ -51,7 +51,7 @@ function getGalaxyEff(bi) {
 			let x=tmp.cp
 			if (x < 0) x = 1
 			if (x>4&&player.tickspeedBoosts != undefined) x=Math.sqrt(x-1)+2
-			eff *= .07*(x)
+			eff += .07*(x)
 		}
 	}
 	if (player.tickspeedBoosts !== undefined && (inNC(5) || player.currentChallenge == "postcngm3_3")) eff *= 0.75
