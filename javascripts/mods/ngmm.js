@@ -291,7 +291,7 @@ function galacticUpgradeButtonTypeDisplay () {
 }
 
 //v1.295
-function resetTotalBought() {
+function resetTotalBought() { //uhh what does this do?
 	if (player.galacticSacrifice) return {}
 }
 
@@ -306,7 +306,7 @@ function productAllTotalBought () {
 }
 
 function productAllTotalBought1 () {
-	return Math.pow(Decimal.max(productAllTotalBought(),10).log10(),2);
+	return Math.pow( Decimal.max(productAllTotalBought(),10).log10() ,2);
 }
 
 function productAllDims1(){
@@ -442,7 +442,9 @@ document.getElementById("postinfi63").onclick = function() {
 }
 
 function getB60Mult() {
-	return Decimal.pow(getEternitied()>0?2.5:3,player.galaxies-95).max(1)
+	let gal = player.galaxies
+	if (gal >= 295 && getEternitied()>0) return Decimal.pow(3,200).times(Decimal.pow(2.5,gal-295))
+	return Decimal.pow(3,gal-95).max(1)
 }
 
 //v2.3
@@ -465,15 +467,14 @@ let galMults = {
 		let z = getG11Divider()
 		
 		//define y
-		let y = 2
-		if (x > 99) y=Math.pow(Math.log(x),Math.log(x)/z)+14
-		else if (x > 4) y=Math.sqrt(x+5)+4
-		else y=x+2
-		
+		let y = 2 // it'll get overwritten no matter what
+		if (x > 99) y = Math.pow(Math.log(x),Math.log(x)/z)+14
+		else if (x > 4) y = Math.sqrt(x+5)+4
+		else y = x + 2
+
 		//softcap y
-		if (y > 1000) y=Math.sqrt(1000*y)
-		if (y > 1e4) y=Math.pow(1e8*y,1/3)
-		
+		if (y > 1000) y = Math.sqrt(1000*y)
+		if (y > 1e4) y = Math.pow(1e8*y,1/3)
 		return Decimal.pow(10, Math.min(y, 2e4));
 	},
 	u31: function() {
@@ -566,7 +567,7 @@ function getGSoffset(offset=0) {
 function getG11Infinities() {
 	let x = getInfinitied()
 	let e = getEternitied()
-	if (e == 0 && x > 1e6) x = Math.min(Math.pow(x * 1e12, 1/3), 1e7) // the 1e6 cap is bad, dont add it back
+	if (e == 0 && x > 1e6) x = Math.min(Math.pow(x * 1e12, 1/3), 1e7)
 	if (e > 0 && x < 1e8 && tmp.cp > 0) x += 2e6
 	if (player.infinityUpgrades.includes("postinfi61")) x += 1e7
 	if (player.infinityUpgrades.includes("postinfi61") && player.galacticSacrifice.upgrades.length > 9) x += player.galacticSacrifice.upgrades.length * 1e7
