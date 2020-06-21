@@ -1166,63 +1166,63 @@ function updateNeutrinoBoostsTemp(){
 	}
 	if (player.ghostify.neutrinos.boosts >= 2){ 
 		let nb2neutrinos = Math.pow(nt[0].add(1).log10(),2)+Math.pow(nt[1].add(1).log10(),2)+Math.pow(nt[2].add(1).log10(),2)
-		let nb2 = Math.pow(nb2neutrinos,0.25)*1.5
-		if (nb2>121) nb2 = Math.pow(4+Math.log2(nb2+7),2)
+		let nb2 = Math.pow(nb2neutrinos, .25) * 1.5
+		if (nb2>121) nb2 = Math.pow(4 + Math.log2(nb2 + 7), 2)
 		tmp.nb[1] = nb2 
 	}
 	if (player.ghostify.neutrinos.boosts >= 3) {
-		let nb3exp = .25
-		//if (tmp.newNGP3E) nb3exp = .275 
 		let nb3Neutrinos = Math.pow(Math.log10(Math.max(nt[0].max(1).log10()-5,1))/Math.log10(5),2)+Math.pow(Math.log10(Math.max(nt[1].max(1).log10()-5,1))/Math.log10(5),2)+Math.pow(Math.log10(Math.max(nt[2].max(1).log10()-5,1))/Math.log10(5),2)
-		let nb3 = Math.pow(nb3Neutrinos/3,nb3exp)+3
-		if (nb3 > 6) nb3 = 3+Math.log2(nb3+2)
+		let nb3 = Math.pow(nb3Neutrinos / 3, .25) + 3
+		if (!tmp.ngp3l && nb3 > 6) nb3 = 3 + Math.log2(nb3 + 2)
 		tmp.nb[2] = nb3
 	}
 	if (player.ghostify.neutrinos.boosts >= 4) {//this is the infinite time buff
 		var nb4neutrinos = Math.pow(nt[0].add(1).log10(),2)+Math.pow(nt[1].add(1).log10(),2)+Math.pow(nt[2].add(1).log10(),2)
-		var nb4 = Math.pow(nb4neutrinos,0.25)*0.07+1
-		if (nb4 > 10) nb4 = 6+Math.log2(nb4+6)
-		if (nb4 > 16) nb4 = 12+Math.log2(nb4)
+		var nb4 = Math.pow(nb4neutrinos, .25) * 0.07 + 1
+		if (nb4 > 10) nb4 = 6 + Math.log2(nb4 + 6)
+		if (!tmp.ngp3l && nb4 > 16) nb4 = 12 + Math.log2(nb4)
 		tmp.nb[3] = nb4
 	}
 	if (player.ghostify.neutrinos.boosts >= 5) {
 		var nb5neutrinos = nt[0].max(1).log10()+nt[1].max(1).log10()+nt[2].max(1).log10()
-		tmp.nb[4] = Math.min(nb5neutrinos/33,1)
+		tmp.nb[4] = Math.min(nb5neutrinos / 33, 1)
 	}
 	if (player.ghostify.neutrinos.boosts >= 6) {
 		var nb6neutrinos = Math.pow(nt[0].add(1).log10(),2)+Math.pow(nt[1].add(1).log10(),2)+Math.pow(nt[2].add(1).log10(),2)
 		var nb6exp1 = .25
 		if (tmp.newNGP3E) nb6exp1 = .255
-		let nb6 = Math.pow( Math.pow(nb6neutrinos,nb6exp1)*0.525+1 ,tmp.be?0.5:1)
-		if (nb6 > 40) nb6 = 4 + Math.pow(Math.log2(nb6+24),2)
+		let nb6 = Math.pow(Math.pow(nb6neutrinos, nb6exp1) * 0.525 + 1, tmp.be ? 0.5 : 1)
+		if (!tmp.ngp3l && nb6 > 40) nb6 = 4 + Math.pow(Math.log2(nb6 + 24), 2)
 		tmp.nb[5] = nb6
 	}
 	if (player.ghostify.neutrinos.boosts >= 7) {
 		let nb7exp = .5
 		if (tmp.newNGP3E) nb7exp = .6
 		let nb7neutrinos = nt[0].add(1).log10()+nt[1].add(1).log10()+nt[2].add(1).log10()
-		let nb7 = Math.pow( Math.log10(1+nb7neutrinos) , nb7exp)*2.35
-		if (nb7 > 4) nb7 = 2*Math.log2(nb7)
-		if (nb7 > 5) nb7 = 2 + Math.log2(nb7+3)
+		let nb7 = Math.pow(Math.log10(1 + nb7neutrinos), nb7exp)*2.35
+		if (!tmp.ngp3l) {
+			if (nb7 > 4) nb7 = 2 * Math.log2(nb7)
+			if (nb7 > 5) nb7 = 2 + Math.log2(nb7 + 3)
+		}
 		tmp.nb[6] = nb7
 	}
 	if (player.ghostify.neutrinos.boosts >= 8) {
 		let nb8neutrinos = Math.pow(nt[0].add(1).log10(),2)+Math.pow(nt[1].add(1).log10(),2)+Math.pow(nt[2].add(1).log10(),2)
 		let nb8exp = .25
 		if (tmp.newNGP3E) nb8exp = .26
-		var nb8 = Math.pow(nb8neutrinos,nb8exp)/10+1
-		if (nb8 > 11) nb8 = 7+Math.log2(nb8+5)
+		var nb8 = Math.pow(nb8neutrinos, nb8exp) / 10 + 1
+		if (nb8 > 11) nb8 = 7 + Math.log2(nb8 + 5)
 		tmp.nb[7] = nb8
 	}
 	if (player.ghostify.neutrinos.boosts >= 9) {
 		var nb9 = (nt[0].add(1).log10()+nt[1].add(1).log10()+nt[2].add(1).log10())/10
-		if (nb9 > 1000) nb9 = Math.pow(Math.log2(nb9+24),3)
-		if (nb9 > 4096) nb9 = Math.pow(Math.log2(nb9)+4,3)
+		if (!tmp.ngp3l && nb9 > 1000) nb9 = Math.pow(Math.log2(nb9 + 24), 3)
+		if (nb9 > 4096) nb9 = Math.pow(Math.log2(nb9) + 4, 3)
 		tmp.nb[8] = nb9
 	}
 	if (player.ghostify.neutrinos.boosts >= 10) {
 		let nb10neutrinos = nt[0].add(1).log10()+nt[1].add(1).log10()+nt[2].add(1).log10()
-		let nb10 = Math.max(nb10neutrinos-3e3,0)/75e4
+		let nb10 = Math.max(nb10neutrinos - 3e3, 0) / 75e4
 		tmp.nb[9] = nb10
 	}
 }
