@@ -1157,78 +1157,89 @@ function updateGPhTemp(){
 function updateNeutrinoBoostsTemp(){
 	var nt=[]
 	for (var g=0;g<3;g++) nt[g] = player.ghostify.neutrinos[(["electron","mu","tau"])[g]]
-	if (tmp.qu.nanofield.rewards<16) tmp.ns = tmp.ns.times(player.ghostify.milestones?6:3)
-	if (player.ghostify.neutrinos.boosts>=1){ 
+	if (tmp.qu.nanofield.rewards < 16) tmp.ns = tmp.ns.times(player.ghostify.milestones?6:3)
+	if (player.ghostify.neutrinos.boosts >= 1){ 
 		let nb1mult = .75
 		if (tmp.newNGP3E) nb1mult = .8
 		let nb1neutrinos = nt[0].add(1).log10()+nt[1].add(1).log10()+nt[2].add(1).log10()
-		tmp.nb[0]=Math.log10(1+nb1neutrinos)*nb1mult
+		tmp.nb[0] = Math.log10(1+nb1neutrinos)*nb1mult
 	}
-	if (player.ghostify.neutrinos.boosts>=2){ 
+	if (player.ghostify.neutrinos.boosts >= 2){ 
 		let nb2neutrinos = Math.pow(nt[0].add(1).log10(),2)+Math.pow(nt[1].add(1).log10(),2)+Math.pow(nt[2].add(1).log10(),2)
-		tmp.nb[1]=Math.pow(nb2neutrinos,0.25)*1.5
+		let nb2 = Math.pow(nb2neutrinos,0.25)*1.5
+		if (nb2>121) = Math.pow(4+Math.log2(nb2+7),2)
+		tmp.nb[1] = nb2 
 	}
-	if (player.ghostify.neutrinos.boosts>=3) {
+	if (player.ghostify.neutrinos.boosts >= 3) {
 		let nb3exp = .25
 		//if (tmp.newNGP3E) nb3exp = .275 
-		tmp.nb[2]=Math.pow(Math.pow(Math.log10(Math.max(nt[0].max(1).log10()-5,1))/Math.log10(5),2)+Math.pow(Math.log10(Math.max(nt[1].max(1).log10()-5,1))/Math.log10(5),2)+Math.pow(Math.log10(Math.max(nt[2].max(1).log10()-5,1))/Math.log10(5),2),nb3exp)/Math.pow(3,nb3exp)+3
+		let nb3Neutrinos = Math.pow(Math.log10(Math.max(nt[0].max(1).log10()-5,1))/Math.log10(5),2)+Math.pow(Math.log10(Math.max(nt[1].max(1).log10()-5,1))/Math.log10(5),2)+Math.pow(Math.log10(Math.max(nt[2].max(1).log10()-5,1))/Math.log10(5),2)
+		let nb3 = Math.pow(nb3Neutrinos/3,nb3exp)+3
+		if (nb3 > 6) nb3 = 3+Math.log2(nb3+2)
+		tmp.nb[2] = nb3
 	}
-	if (player.ghostify.neutrinos.boosts>=4) {//this is the infinite time buff
+	if (player.ghostify.neutrinos.boosts >= 4) {//this is the infinite time buff
 		var nb4neutrinos = Math.pow(nt[0].add(1).log10(),2)+Math.pow(nt[1].add(1).log10(),2)+Math.pow(nt[2].add(1).log10(),2)
-		var nb4=Math.pow(nb4neutrinos,0.25)*0.07+1
-		if (nb4 > 10) nb4=6+Math.log2(nb4+6)
-		if (nb4 > 16) nb4=12+Math.log2(nb4)
-		tmp.nb[3]=nb4
+		var nb4 = Math.pow(nb4neutrinos,0.25)*0.07+1
+		if (nb4 > 10) nb4 = 6+Math.log2(nb4+6)
+		if (nb4 > 16) nb4 = 12+Math.log2(nb4)
+		tmp.nb[3] = nb4
 	}
-	if (player.ghostify.neutrinos.boosts>=5) {
+	if (player.ghostify.neutrinos.boosts >= 5) {
 		var nb5neutrinos = nt[0].max(1).log10()+nt[1].max(1).log10()+nt[2].max(1).log10()
-		tmp.nb[4]=Math.min(nb5neutrinos/33,1)
+		tmp.nb[4] = Math.min(nb5neutrinos/33,1)
 	}
-	if (player.ghostify.neutrinos.boosts>=6) {
+	if (player.ghostify.neutrinos.boosts >= 6) {
 		var nb6neutrinos = Math.pow(nt[0].add(1).log10(),2)+Math.pow(nt[1].add(1).log10(),2)+Math.pow(nt[2].add(1).log10(),2)
 		var nb6exp1 = .25
-		//if (tmp.newNGP3E) nb6exp1 = .3
-		tmp.nb[5] = Math.pow( Math.pow(nb6neutrinos,nb6exp1)*0.525+1 ,tmp.be?0.5:1)
+		if (tmp.newNGP3E) nb6exp1 = .255
+		let nb6 = Math.pow( Math.pow(nb6neutrinos,nb6exp1)*0.525+1 ,tmp.be?0.5:1)
+		if (nb6 > 40) nb6 = 4 + Math.pow(Math.log2(nb6+24),2)
+		tmp.nb[5] = nb6
 	}
-	if (player.ghostify.neutrinos.boosts>=7) {
+	if (player.ghostify.neutrinos.boosts >= 7) {
 		let nb7exp = .5
 		if (tmp.newNGP3E) nb7exp = .6
 		let nb7neutrinos = nt[0].add(1).log10()+nt[1].add(1).log10()+nt[2].add(1).log10()
 		let nb7 = Math.pow( Math.log10(1+nb7neutrinos) , nb7exp)*2.35
-		if (nb7>4) nb7 = 2*Math.log2(nb7)
+		if (nb7 > 4) nb7 = 2*Math.log2(nb7)
+		if (nb7 > 5) nb7 = 2 + Math.log2(nb7+3)
 		tmp.nb[6] = nb7
 	}
-	if (player.ghostify.neutrinos.boosts>=8) {
+	if (player.ghostify.neutrinos.boosts >= 8) {
 		let nb8neutrinos = Math.pow(nt[0].add(1).log10(),2)+Math.pow(nt[1].add(1).log10(),2)+Math.pow(nt[2].add(1).log10(),2)
 		let nb8exp = .25
 		if (tmp.newNGP3E) nb8exp = .26
 		var nb8 = Math.pow(nb8neutrinos,nb8exp)/10+1
-		if (nb8 > 11) nb8=7+Math.log2(nb8+5)
-		tmp.nb[7]=nb8
+		if (nb8 > 11) nb8 = 7+Math.log2(nb8+5)
+		tmp.nb[7] = nb8
 	}
-	if (player.ghostify.neutrinos.boosts>=9) {
+	if (player.ghostify.neutrinos.boosts >= 9) {
 		var nb9 = (nt[0].add(1).log10()+nt[1].add(1).log10()+nt[2].add(1).log10())/10
-		if (nb9 > 4096) nb9=Math.pow(Math.log2(nb9)+4,3)
-		tmp.nb[8]=nb9
+		if (nb9 > 1000) nb9 = Math.pow(Math.log2(nb9+24),3)
+		if (nb9 > 4096) nb9 = Math.pow(Math.log2(nb9)+4,3)
+		tmp.nb[8] = nb9
 	}
-	if (player.ghostify.neutrinos.boosts>=10) {
-		tmp.nb[9] = Math.max(nt[0].add(1).log10()+nt[1].add(1).log10()+nt[2].add(1).log10()-3e3,0)/75e4
+	if (player.ghostify.neutrinos.boosts >= 10) {
+		let nb10neutrinos = nt[0].add(1).log10()+nt[1].add(1).log10()+nt[2].add(1).log10()
+		let nb10 = Math.max(nb10neutrinos-3e3,0)/75e4
+		tmp.nb[9] = nb10
 	}
 }
 
 function updateNeutrinoUpgradesTemp(){
-	tmp.nu[0]=Math.max(110-(tmp.qu.bigRip.active?0:player.meta.resets),0) //NU1
-	tmp.nu[1]=Math.pow(Math.max(tmp.qu.colorPowers.b.log10()/250+1,1),2) //NU3
+	tmp.nu[0] = Math.max(110-(tmp.qu.bigRip.active?0:player.meta.resets),0) //NU1
+	tmp.nu[1] = Math.pow(Math.max(tmp.qu.colorPowers.b.log10()/250+1,1),2) //NU3
 	let nu4base = 20
 	if (tmp.newNGP3E) nu4base = 50
 	tmp.nu[2] = Decimal.pow(nu4base,Math.pow(Math.max(-getTickspeed().div(1e3).log10()/4e13-4,0),1/4)) //NU4
 	var nu7 = tmp.qu.colorPowers.g.add(1).log10()/400
-	if (nu7 > 40) nu7=Math.sqrt(nu7*10)+20
+	if (nu7 > 40) nu7 = Math.sqrt(nu7*10)+20
 	tmp.nu[3] = Decimal.pow(10,nu7) //NU7
-	tmp.nu[4] = { //NU12 (Normal and free galaxy effects)
+	tmp.nu[4] = { //NU12 
 		normal: Math.sqrt(player.galaxies*.0035+1),
 		free: player.dilation.freeGalaxies*.035+1,
-		replicated: Math.sqrt(getTotalRG())*(tmp.ngp3l?.035:.0175)+1 //NU12 (Replicated galaxy effect)
+		replicated: Math.sqrt(getTotalRG())*(tmp.ngp3l?.035:.0175)+1 //NU12 
 	}
 }
 
@@ -1237,32 +1248,32 @@ function updateD14Temp(){
 	if (ghostified && player.ghostify.neutrinos.boosts > 7) exp *= tmp.nb[7]
 	let log = player.infinityPoints.max(1).log10() * exp
 	if (log > 3e8) log = Math.pow(log / 3e8, 0.75) * 3e8
-	tmp.bru[0]=Decimal.pow(10, log) //BRU1
-	tmp.bru[1]=Decimal.pow(2,getTotalRG()) //BRU8
+	tmp.bru[0] = Decimal.pow(10, log) //BRU1
+	tmp.bru[1] = Decimal.pow(2,getTotalRG()) //BRU8
 	if (!hasNU(11)) tmp.bru[1]=tmp.bru[1].min(Number.MAX_VALUE)
-	var ret=Math.min(tmp.qu.bigRip.spaceShards.div(3e18).add(1).log10()/3,0.4)
-	tmp.bru[2]=Math.sqrt(tmp.qu.bigRip.spaceShards.div(3e15).add(1).log10()*ret+1) //BRU14
+	var ret = Math.min(tmp.qu.bigRip.spaceShards.div(3e18).add(1).log10()/3,0.4)
+	tmp.bru[2] = Math.sqrt(tmp.qu.bigRip.spaceShards.div(3e15).add(1).log10()*ret+1) //BRU14
 	if (!tmp.qu.bigRip.active) {
-		tmp.bru[0]=1
-		tmp.bru[1]=1
+		tmp.bru[0] = 1
+		tmp.bru[1] = 1
 	}
 }
 
 function updateInfiniteTimeTemp(){
 	var x=(3-player.tickspeed.log10())*0.000005
-	if (ghostified&&player.ghostify.neutrinos.boosts>3) x*=tmp.nb[3]
-	if (tmp.be&&!player.dilation.active&&tmp.qu.breakEternity.upgrades.includes(8)) x*=getBreakUpgMult(8)
+	if (ghostified && player.ghostify.neutrinos.boosts>3) x *= tmp.nb[3]
+	if (tmp.be && !player.dilation.active&&tmp.qu.breakEternity.upgrades.includes(8)) x *= getBreakUpgMult(8)
 	if (tmp.be) {
-		if (x>100) x=Math.pow(x*100,0.5)
+		if (x>100) x = Math.pow(x*100,0.5)
 	} else {
-		if (x>12e8) x=Math.pow(x*144e10,1/3)
-		else if (x>12e4) x=Math.pow(x*12e4,0.5)
+		if (x>12e8) x = Math.pow(x*144e10,1/3)
+		else if (x>12e4) x = Math.pow(x*12e4,0.5)
 	}
 	if (player.aarexModifications.ngudpV) {
-		if (x>1e8) x=Math.pow(1e8*x,.5)
-		if (x>1e9) x=Math.pow(1+Math.log10(x),9)
-		if (tmp.be&&x>1e7) x=Math.pow(93+Math.log10(x),3.5)
-		if (player.dilation.active&&x>1e5) x=Math.pow(1e20*x,.2)
+		if (x > 1e8) x = Math.pow(1e8*x,.5)
+		if (x > 1e9) x = Math.pow(1+Math.log10(x),9)
+		if (tmp.be && x > 1e7) x = Math.pow(93+Math.log10(x),3.5)
+		if (player.dilation.active && x > 1e5) x = Math.pow(1e20*x,.2)
 	}
 	tmp.it=Decimal.pow(10,x)
 }
@@ -1359,41 +1370,41 @@ function updateTemp() {
 }
 
 function showTab(tabName, init) {
-    if (tabName == 'quantumtab' && !player.masterystudies) {
-        alert("Wait! The owner of NG++, dan-simon, have abandoned the development! However, this is not a win. You need to reach real Infinite antimatter to win! (it's impossible)")
-        return
-    }
-    //iterate over all elements in div_tab class. Hide everything that's not tabName and show tabName
-    var tabs = document.getElementsByClassName("tab");
-    var tab;
-    var oldTab
-    for (var i = 0; i < tabs.length; i++) {
-        tab = tabs.item(i);
-        if (tab.style.display == 'block') oldTab = tab.id
-        if (tab.id === tabName) {
-            tab.style.display = 'block';
-        } else {
-            tab.style.display = 'none';
-        }
-    }
-    if (oldTab !== tabName) {
-        player.aarexModifications.tabsSave.tabMain = tabName
+    	if (tabName == 'quantumtab' && !player.masterystudies) {
+        	alert("Wait! The owner of NG++, dan-simon, have abandoned the development! However, this is not a win. You need to reach real Infinite antimatter to win! (it's impossible)")
+        	return
+    	}
+    	//iterate over all elements in div_tab class. Hide everything that's not tabName and show tabName
+    	var tabs = document.getElementsByClassName("tab");
+    	var tab;
+    	var oldTab
+    	for (var i = 0; i < tabs.length; i++) {
+        	tab = tabs.item(i);
+        	if (tab.style.display == 'block') oldTab = tab.id
+        	if (tab.id === tabName) {
+        		tab.style.display = 'block';
+        	} else {
+            		tab.style.display = 'none';
+		}
+	}
+    	if (oldTab !== tabName) {
+        	player.aarexModifications.tabsSave.tabMain = tabName
 		if ((document.getElementById("antimatterdimensions").style.display != "none" || document.getElementById("metadimensions").style.display != "none") && player.aarexModifications.progressBar && tabName == "dimensions") document.getElementById("progress").style.display = "block";
 		else document.getElementById("progress").style.display = "none"
 		if ((document.getElementById("timestudies").style.display != "none" || document.getElementById("ers_timestudies").style.display != "none" || document.getElementById("masterystudies").style.display != "none") && tabName=="eternitystore") document.getElementById("TTbuttons").style.display = "block";
 		else document.getElementById("TTbuttons").style.display = "none"
-        if (tabName=="eternitystore") {
-            if (document.getElementById('timestudies') !== "none" || document.getElementById('masterystudies') !== "none" || document.getElementById('dilation') !== "none" || document.getElementById("blackhole") !== "none") resizeCanvas()
-            if (document.getElementById("dilation") !== "none") requestAnimationFrame(drawAnimations)
-            if (document.getElementById("blackhole") !== "none") requestAnimationFrame(drawBlackhole)
-            if (document.getElementById("autoEternity").style.display === "block") loadAP()
-        }
-        if (tabName=="quantumtab") {
-            if (document.getElementById('uquarks') !== "none") resizeCanvas()
-            if (document.getElementById("uquarks") !== "none") requestAnimationFrame(drawQuarkAnimation)
-        }
-    }
-    if (!init) closeToolTip();
+		if (tabName=="eternitystore") {
+            		if (document.getElementById('timestudies') !== "none" || document.getElementById('masterystudies') !== "none" || document.getElementById('dilation') !== "none" || document.getElementById("blackhole") !== "none") resizeCanvas()
+            		if (document.getElementById("dilation") !== "none") requestAnimationFrame(drawAnimations)
+            		if (document.getElementById("blackhole") !== "none") requestAnimationFrame(drawBlackhole)
+            		if (document.getElementById("autoEternity").style.display === "block") loadAP()
+		}
+        	if (tabName=="quantumtab") {
+            		if (document.getElementById('uquarks') !== "none") resizeCanvas()
+            		if (document.getElementById("uquarks") !== "none") requestAnimationFrame(drawQuarkAnimation)
+		}
+	}
+    	if (!init) closeToolTip();
 }
 
 
@@ -1877,9 +1888,9 @@ function getNGUDTGain(){
 }
 
 function getDilTimeGainPerSecond() {
-	let tp=player.dilation.tachyonParticles
-	let exp=GUBought("br3")?1.1:1
-	if (ghostified&&player.ghostify.ghostlyPhotons.unl) exp*=tmp.le[0]
+	let tp = player.dilation.tachyonParticles
+	let exp = GUBought("br3")?1.1:1
+	if (ghostified && player.ghostify.ghostlyPhotons.unl) exp*=tmp.le[0]
 	let gain = tp.pow(exp).times(Decimal.pow(2, getDilUpgPower(1)))
 	if (player.exdilation != undefined) {
 		gain = gain.times( getNGUDTGain() )
