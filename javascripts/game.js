@@ -1167,7 +1167,7 @@ function updateNeutrinoBoostsTemp(){
 	if (player.ghostify.neutrinos.boosts >= 2){ 
 		let nb2neutrinos = Math.pow(nt[0].add(1).log10(),2)+Math.pow(nt[1].add(1).log10(),2)+Math.pow(nt[2].add(1).log10(),2)
 		let nb2 = Math.pow(nb2neutrinos,0.25)*1.5
-		if (nb2>121) = Math.pow(4+Math.log2(nb2+7),2)
+		if (nb2>121) nb2 = Math.pow(4+Math.log2(nb2+7),2)
 		tmp.nb[1] = nb2 
 	}
 	if (player.ghostify.neutrinos.boosts >= 3) {
