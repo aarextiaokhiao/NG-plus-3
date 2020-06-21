@@ -3128,10 +3128,10 @@ document.getElementById("offlineProd").onclick = function() {
 	}
 }
 
+//MORE DISPLAY STUFF
 
-function updateInfCosts() {
-    if (document.getElementById("replicantis").style.display == "block" && document.getElementById("infinity").style.display == "block") {
-        let replGalOver = 0
+function replicantiDispllay(){
+	let replGalOver = 0
         if (player.timestudy.studies.includes(131)) replGalOver += Math.floor(player.replicanti.gal / 2)
         document.getElementById("replicantiamount").textContent = shortenDimensions(player.replicanti.amount)
         document.getElementById("replicantimult").textContent = shorten(getIDReplMult())
@@ -3145,10 +3145,10 @@ function updateInfCosts() {
         document.getElementById("replicantimax").className = (player.infinityPoints.gte(getRGCost())) ? "storebtn" : "unavailablebtn"
         document.getElementById("replicantireset").className = (player.replicanti.galaxies < getMaxRG() && player.replicanti.amount.gte(getReplicantiLimit())) ? "storebtn" : "unavailablebtn"
         document.getElementById("replicantiunlock").className = (player.infinityPoints.gte(player.galacticSacrifice!=undefined&&player.tickspeedBoosts==undefined?1e80:1e140)) ? "storebtn" : "unavailablebtn"
-    }
+}
 
-    if (document.getElementById("timestudies").style.display == "block" && document.getElementById("eternitystore").style.display == "block") {
-        document.getElementById("11desc").textContent = "Currently: "+shortenMoney(tsMults[11]())+"x"
+function initialTimeStudyDisplay(){
+	document.getElementById("11desc").textContent = "Currently: "+shortenMoney(tsMults[11]())+"x"
         document.getElementById("32desc").textContent = "You gain "+getFullExpansion(tsMults[32]())+"x more infinitied stat (based on dimension boosts)"
         document.getElementById("51desc").textContent = "You gain "+shortenCosts(player.aarexModifications.newGameExpVersion?1e30:1e15)+"x more IP"
         document.getElementById("71desc").textContent = "Currently: "+shortenMoney(calcTotalSacrificeBoost().pow(0.25).max(1).min("1e210000"))+"x"
@@ -3171,8 +3171,10 @@ function updateInfCosts() {
         document.getElementById("212desc").textContent = "Currently: "+((tsMults[212]()-1)*100).toFixed(2)+"%"
         document.getElementById("214desc").textContent = "Currently: "+shortenMoney(((calcTotalSacrificeBoost().pow(8)).min("1e46000").times(calcTotalSacrificeBoost().pow(1.1)).div(calcTotalSacrificeBoost())).max(1).min(new Decimal("1e125000")))+"x"
         document.getElementById("metaCost").textContent = shortenCosts(getMetaUnlCost());
+}
 
-        var ec1Mult=player.aarexModifications.newGameExpVersion?1e3:2e4
+function eternityChallengeUnlockDisplay(){
+	var ec1Mult=player.aarexModifications.newGameExpVersion?1e3:2e4
         if (player.etercreq !== 1) document.getElementById("ec1unl").innerHTML = "Eternity Challenge 1<span>Requirement: "+(ECTimesCompleted("eterc1")+1)*ec1Mult+" Eternities<span>Cost: 30 Time Theorems"
         else document.getElementById("ec1unl").innerHTML = "Eternity Challenge 1<span>Cost: 30 Time Theorems"
         if (player.etercreq !== 2) document.getElementById("ec2unl").innerHTML = "Eternity Challenge 2<span>Requirement: "+(1300+(ECTimesCompleted("eterc2")*150))+" Tickspeed upgrades gained from time dimensions<span>Cost: 35 Time Theorems"
@@ -3196,18 +3198,29 @@ function updateInfCosts() {
 
         document.getElementById("ec11unl").innerHTML = "Eternity Challenge 11<span>Requirement: Use only the Normal Dimension path<span>Cost: 1 Time Theorem"
         document.getElementById("ec12unl").innerHTML = "Eternity Challenge 12<span>Requirement: Use only the Time Dimension path<span>Cost: 1 Time Theorem"
+}
 
-        document.getElementById("dilstudy1").innerHTML = "Unlock time dilation"+(player.dilation.studies.includes(1)?"":"<span>Requirement: 5 EC11 and EC12 completions and "+getFullExpansion(getDilationTotalTTReq())+" total theorems")+"<span>Cost: "+getFullExpansion(5e3)+" Time Theorems"
+function mainTimeStudyDisplay(){
+	initialTimeStudyDisplay()
+	eternityChallengeUnlockDisplay()
+	document.getElementById("dilstudy1").innerHTML = "Unlock time dilation"+(player.dilation.studies.includes(1)?"":"<span>Requirement: 5 EC11 and EC12 completions and "+getFullExpansion(getDilationTotalTTReq())+" total theorems")+"<span>Cost: "+getFullExpansion(5e3)+" Time Theorems"
+	if (tmp.ngp3) {
+		var ts232display = tmp.ts232*100-100
+		document.getElementById("221desc").textContent = "Currently: "+shorten(Decimal.pow(1.0025, player.resets))+"x"
+		document.getElementById("227desc").textContent = "Currently: "+shorten(Math.pow(calcTotalSacrificeBoost().max(10).log10(), 10))+"x"
+		document.getElementById("231desc").textContent = "Currently: "+shorten(Decimal.pow(Math.max(player.resets, 1), 0.3))+"x more power"
+		document.getElementById("232desc").textContent = "Currently: "+(ts232display>=999.95?getFullExpansion(Math.floor(ts232display)):ts232display.toFixed(1))+"%"
+	}
+}
 
-        if (tmp.ngp3) {
-            var ts232display = tmp.ts232*100-100
-            document.getElementById("221desc").textContent = "Currently: "+shorten(Decimal.pow(1.0025, player.resets))+"x"
-            document.getElementById("227desc").textContent = "Currently: "+shorten(Math.pow(calcTotalSacrificeBoost().max(10).log10(), 10))+"x"
-            document.getElementById("231desc").textContent = "Currently: "+shorten(Decimal.pow(Math.max(player.resets, 1), 0.3))+"x more power"
-            document.getElementById("232desc").textContent = "Currently: "+(ts232display>=999.95?getFullExpansion(Math.floor(ts232display)):ts232display.toFixed(1))+"%"
-        }
-    }
-    if (document.getElementById("ers_timestudies").style.display == "block" && document.getElementById("eternitystore").style.display == "block") updateERSTTDesc()
+function updateInfCosts() {
+    	if (document.getElementById("replicantis").style.display == "block" && document.getElementById("infinity").style.display == "block") {
+        	replicantiDispllay()
+    	}
+    	if (document.getElementById("timestudies").style.display == "block" && document.getElementById("eternitystore").style.display == "block") {
+		mainTimeStudyDisplay()
+    	}
+	if (document.getElementById("ers_timestudies").style.display == "block" && document.getElementById("eternitystore").style.display == "block") updateERSTTDesc()
 }
 
 function toggleProductionTab() {
@@ -3242,19 +3255,19 @@ function getReplMult(next) {
 		if (player.achievements.includes('r108')) exp *= 1.09;
 	}
 	let replmult = Decimal.max(player.replicanti.amount.log(2),1).pow(exp)
-    if (player.timestudy.studies.includes(21)) replmult = replmult.plus(Decimal.pow(player.replicanti.amount, 0.032))
-    if (player.timestudy.studies.includes(102)) replmult = replmult.times(Decimal.pow(5, player.replicanti.galaxies))
+    	if (player.timestudy.studies.includes(21)) replmult = replmult.plus(Decimal.pow(player.replicanti.amount, 0.032))
+    	if (player.timestudy.studies.includes(102)) replmult = replmult.times(Decimal.pow(5, player.replicanti.galaxies))
 	return replmult;
 }
 
 function upgradeReplicantiChance() {
-    if (player.infinityPoints.gte(player.replicanti.chanceCost) && isChanceAffordable() && player.eterc8repl !== 0) {
-        player.infinityPoints = player.infinityPoints.minus(player.replicanti.chanceCost)
-        player.replicanti.chanceCost = player.replicanti.chanceCost.times(1e15)
-        player.replicanti.chance = Math.round(player.replicanti.chance*100+1)/100
-        if (player.currentEternityChall == "eterc8") player.eterc8repl-=1
-        document.getElementById("eterc8repl").textContent = "You have "+player.eterc8repl+" purchases left."
-    }
+    	if (player.infinityPoints.gte(player.replicanti.chanceCost) && isChanceAffordable() && player.eterc8repl !== 0) {
+        	player.infinityPoints = player.infinityPoints.minus(player.replicanti.chanceCost)
+        	player.replicanti.chanceCost = player.replicanti.chanceCost.times(1e15)
+        	player.replicanti.chance = Math.round(player.replicanti.chance*100+1)/100
+        	if (player.currentEternityChall == "eterc8") player.eterc8repl-=1
+        	document.getElementById("eterc8repl").textContent = "You have "+player.eterc8repl+" purchases left."
+    	}
 }
 
 function isChanceAffordable() {
@@ -3262,15 +3275,15 @@ function isChanceAffordable() {
 }
 
 function upgradeReplicantiInterval() {
-    if (player.infinityPoints.gte(player.replicanti.intervalCost) && isIntervalAffordable() && player.eterc8repl !== 0) {
-        player.infinityPoints = player.infinityPoints.minus(player.replicanti.intervalCost)
-        player.replicanti.interval *= 0.9
-        if (player.replicanti.interval < 1) player.replicanti.intervalCost = Decimal.pow("1e800",1/player.replicanti.interval)
-        else player.replicanti.intervalCost = player.replicanti.intervalCost.times(1e10)
-        if (!isIntervalAffordable()) player.replicanti.interval = (player.timestudy.studies.includes(22) || player.boughtDims ? 1 : 50)
-        if (player.currentEternityChall == "eterc8") player.eterc8repl-=1
-        document.getElementById("eterc8repl").textContent = "You have "+player.eterc8repl+" purchases left."
-    }
+    	if (player.infinityPoints.gte(player.replicanti.intervalCost) && isIntervalAffordable() && player.eterc8repl !== 0) {
+        	player.infinityPoints = player.infinityPoints.minus(player.replicanti.intervalCost)
+        	player.replicanti.interval *= 0.9
+        	if (player.replicanti.interval < 1) player.replicanti.intervalCost = Decimal.pow("1e800",1/player.replicanti.interval)
+        	else player.replicanti.intervalCost = player.replicanti.intervalCost.times(1e10)
+        	if (!isIntervalAffordable()) player.replicanti.interval = (player.timestudy.studies.includes(22) || player.boughtDims ? 1 : 50)
+        	if (player.currentEternityChall == "eterc8") player.eterc8repl-=1
+        	document.getElementById("eterc8repl").textContent = "You have "+player.eterc8repl+" purchases left."
+    	}
 }
 
 function getReplicantiLimit() {
@@ -3405,21 +3418,21 @@ function getTotalRG() {
 }
 
 function updateMilestones() {
-    var moreUnlocked = tmp.ngp3 && (player.dilation.upgrades.includes("ngpp3") || quantumed)
-    var milestoneRequirements = [1, 2, 3, 4, 5, 7, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 20, 25, 30, 40, 50, 60, 80, 100, 1e9, 2e10, 4e11, 1e13]
-    for (i=0; i<(moreUnlocked?28:24); i++) {
-        var name = "reward" + i;
-        if (i > 23) document.getElementById("milestone" + i).textContent = shortenMoney(milestoneRequirements[i]) + " Eternities:"
-        if (getEternitied() >= milestoneRequirements[i]) {
-            document.getElementById(name).className = "milestonereward"
-        } else {
-            document.getElementById(name).className = "milestonerewardlocked"
-        }
-    }
-    document.getElementById("mdmilestonesrow1a").style.display = moreUnlocked ? "" : "none"
-    document.getElementById("mdmilestonesrow1b").style.display = moreUnlocked ? "" : "none"
-    document.getElementById("mdmilestonesrow2a").style.display = moreUnlocked ? "" : "none"
-    document.getElementById("mdmilestonesrow2b").style.display = moreUnlocked ? "" : "none"
+    	var moreUnlocked = tmp.ngp3 && (player.dilation.upgrades.includes("ngpp3") || quantumed)
+    	var milestoneRequirements = [1, 2, 3, 4, 5, 7, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 20, 25, 30, 40, 50, 60, 80, 100, 1e9, 2e10, 4e11, 1e13]
+    	for (i=0; i<(moreUnlocked?28:24); i++) {
+        	var name = "reward" + i;
+        	if (i > 23) document.getElementById("milestone" + i).textContent = shortenMoney(milestoneRequirements[i]) + " Eternities:"
+        	if (getEternitied() >= milestoneRequirements[i]) {
+			document.getElementById(name).className = "milestonereward"
+		} else {
+			document.getElementById(name).className = "milestonerewardlocked"
+        	}
+	}
+    	document.getElementById("mdmilestonesrow1a").style.display = moreUnlocked ? "" : "none"
+    	document.getElementById("mdmilestonesrow1b").style.display = moreUnlocked ? "" : "none"
+    	document.getElementById("mdmilestonesrow2a").style.display = moreUnlocked ? "" : "none"
+    	document.getElementById("mdmilestonesrow2b").style.display = moreUnlocked ? "" : "none"
 }
 
 function replicantiGalaxyAutoToggle() {
@@ -3445,100 +3458,96 @@ function infMultAutoToggle() {
 
 
 function toggleCrunchMode(freeze) {
-    if (player.autoCrunchMode == "amount") {
-        player.autoCrunchMode = "time"
-        document.getElementById("togglecrunchmode").textContent = "Auto crunch mode: time"
-        document.getElementById("limittext").textContent = "Seconds between crunches:"
-    } else if (player.autoCrunchMode == "time"){
-        player.autoCrunchMode = "relative"
-        document.getElementById("togglecrunchmode").textContent = "Auto crunch mode: X times last crunch"
-        document.getElementById("limittext").textContent = "X times last crunch:"
-    } else if (player.autoCrunchMode == "relative" && player.boughtDims){
-        player.autoCrunchMode = "replicanti"
-        document.getElementById("togglecrunchmode").innerHTML = "Auto crunch mode: replicated galaxies"
-        document.getElementById("limittext").innerHTML = "Replicanti galaxies needed for crunch:"
-        document.getElementById("maxReplicantiCrunchSwitchDiv").style.display = 'inline'
-    } else {
-        player.autoCrunchMode = "amount"
-        document.getElementById("togglecrunchmode").textContent = "Auto crunch mode: amount"
-        document.getElementById("limittext").textContent = "Amount of IP to wait until reset:"
-        document.getElementById("maxReplicantiCrunchSwitchDiv").style.display = 'none'
-        if (!freeze&&player.autobuyers[11].priority.toString().toLowerCase()=="max") {
-            player.autobuyers[11].priority = new Decimal(1)
-            document.getElementById("priority12").value=1
-        }
-    }
+    	if (player.autoCrunchMode == "amount") {
+        	player.autoCrunchMode = "time"
+        	document.getElementById("togglecrunchmode").textContent = "Auto crunch mode: time"
+        	document.getElementById("limittext").textContent = "Seconds between crunches:"
+    	} else if (player.autoCrunchMode == "time"){
+        	player.autoCrunchMode = "relative"
+        	document.getElementById("togglecrunchmode").textContent = "Auto crunch mode: X times last crunch"
+        	document.getElementById("limittext").textContent = "X times last crunch:"
+    	} else if (player.autoCrunchMode == "relative" && player.boughtDims){
+        	player.autoCrunchMode = "replicanti"
+        	document.getElementById("togglecrunchmode").innerHTML = "Auto crunch mode: replicated galaxies"
+        	document.getElementById("limittext").innerHTML = "Replicanti galaxies needed for crunch:"
+        	document.getElementById("maxReplicantiCrunchSwitchDiv").style.display = 'inline'
+    	} else {
+        	player.autoCrunchMode = "amount"
+        	document.getElementById("togglecrunchmode").textContent = "Auto crunch mode: amount"
+        	document.getElementById("limittext").textContent = "Amount of IP to wait until reset:"
+        	document.getElementById("maxReplicantiCrunchSwitchDiv").style.display = 'none'
+        	if (!freeze&&player.autobuyers[11].priority.toString().toLowerCase()=="max") {
+			player.autobuyers[11].priority = new Decimal(1)
+            		document.getElementById("priority12").value=1
+		}
+	}
 }
 
 function toggleEternityConf() {
-    player.options.eternityconfirm = !player.options.eternityconfirm
-    document.getElementById("eternityconf").textContent = "Eternity confirmation: O" + (player.options.eternityconfirm ? "N" : "FF")
+    	player.options.eternityconfirm = !player.options.eternityconfirm
+    	document.getElementById("eternityconf").textContent = "Eternity confirmation: O" + (player.options.eternityconfirm ? "N" : "FF")
 }
 
 function toggleDilaConf() {
-    player.aarexModifications.dilationConf = !player.aarexModifications.dilationConf
-    document.getElementById("dilationConfirmBtn").textContent = "Dilation confirmation: O" + (player.aarexModifications.dilationConf ? "N" : "FF")
+    	player.aarexModifications.dilationConf = !player.aarexModifications.dilationConf
+    	document.getElementById("dilationConfirmBtn").textContent = "Dilation confirmation: O" + (player.aarexModifications.dilationConf ? "N" : "FF")
 }
 
 
 function toggleReplAuto(i) {
-    if (i == "chance") {
-        if (player.replicanti.auto[0]) {
-            player.replicanti.auto[0] = false
-            document.getElementById("replauto1").textContent = "Auto: OFF"
-        } else {
-            player.replicanti.auto[0] = true
-            document.getElementById("replauto1").textContent = "Auto: ON"
-        }
-    } else if (i == "interval") {
-        if (player.replicanti.auto[1]) {
-            player.replicanti.auto[1] = false
-            document.getElementById("replauto2").textContent = "Auto: OFF"
-        } else {
-            player.replicanti.auto[1] = true
-            document.getElementById("replauto2").textContent = "Auto: ON"
-        }
-    } else if (i == "galaxy") {
-        if (player.replicanti.auto[2]) {
-            player.replicanti.auto[2] = false
-            document.getElementById("replauto3").textContent = "Auto: OFF"
-        } else {
-            player.replicanti.auto[2] = true
-            document.getElementById("replauto3").textContent = "Auto: ON"
-        }
-    }
+    	if (i == "chance") {
+        	if (player.replicanti.auto[0]) {
+			player.replicanti.auto[0] = false
+            		document.getElementById("replauto1").textContent = "Auto: OFF"
+		} else {
+            		player.replicanti.auto[0] = true
+            		document.getElementById("replauto1").textContent = "Auto: ON"
+		}
+	} else if (i == "interval") {
+		if (player.replicanti.auto[1]) {
+            		player.replicanti.auto[1] = false
+            		document.getElementById("replauto2").textContent = "Auto: OFF"
+		} else {
+			player.replicanti.auto[1] = true
+			document.getElementById("replauto2").textContent = "Auto: ON"
+		}
+	} else if (i == "galaxy") {
+		if (player.replicanti.auto[2]) {
+			player.replicanti.auto[2] = false
+			document.getElementById("replauto3").textContent = "Auto: OFF"
+		} else {
+			player.replicanti.auto[2] = true
+			document.getElementById("replauto3").textContent = "Auto: ON"
+		}
+	}
 }
 
 
-
-
-
-
 buyAutobuyer = function(id) {
-    if (player.infinityUpgradesRespecced != undefined && player.autobuyers[id].interval == 100 && id > 8) {
-        if (player.autobuyers[id].bulkBought || player.infinityPoints.lt(1e4) || id > 10) return
-        player.infinityPoints = player.infinityPoints.sub(1e4)
-        player.autobuyers[id].bulkBought = true
-        updateAutobuyers()
-        return
-    }
-    if ((player.aarexModifications.ngmX>3&&id!=11?player.galacticSacrifice.galaxyPoints:player.infinityPoints).lt(player.autobuyers[id].cost)) return false;
-    if (player.autobuyers[id].bulk >= 1e100) return false;
-    if (player.aarexModifications.ngmX>3&&id!=11) player.galacticSacrifice.galaxyPoints = player.galacticSacrifice.galaxyPoints.minus(player.autobuyers[id].cost)
-    else player.infinityPoints = player.infinityPoints.minus(player.autobuyers[id].cost)
-    if (player.autobuyers[id].interval <= 100) {
-        player.autobuyers[id].bulk = Math.min(player.autobuyers[id].bulk * 2, 1e100);
-        player.autobuyers[id].cost = Math.ceil(2.4*player.autobuyers[id].cost);
-        var b1 = true;
-	    for (let i=0;i<8;i++) {
-            if (player.autobuyers[i].bulk < 512) b1 = false;
-        }
-        if (b1) giveAchievement("Bulked up");
-    } else {
-        player.autobuyers[id].interval = Math.max(player.autobuyers[id].interval*0.6, 100);
-        if (player.autobuyers[id].interval > 120) player.autobuyers[id].cost *= 2; //if your last purchase wont be very strong, dont double the cost
-    }
-    updateAutobuyers();
+   	if (player.infinityUpgradesRespecced != undefined && player.autobuyers[id].interval == 100 && id > 8) {
+        	if (player.autobuyers[id].bulkBought || player.infinityPoints.lt(1e4) || id > 10) return
+        	player.infinityPoints = player.infinityPoints.sub(1e4)
+        	player.autobuyers[id].bulkBought = true
+        	updateAutobuyers()
+        	return
+	}
+    	if ((player.aarexModifications.ngmX>3&&id!=11?player.galacticSacrifice.galaxyPoints:player.infinityPoints).lt(player.autobuyers[id].cost)) return false;
+    	if (player.autobuyers[id].bulk >= 1e100) return false;
+    	if (player.aarexModifications.ngmX>3&&id!=11) player.galacticSacrifice.galaxyPoints = player.galacticSacrifice.galaxyPoints.minus(player.autobuyers[id].cost)
+    	else player.infinityPoints = player.infinityPoints.minus(player.autobuyers[id].cost)
+    	if (player.autobuyers[id].interval <= 100) {
+        	player.autobuyers[id].bulk = Math.min(player.autobuyers[id].bulk * 2, 1e100);
+        	player.autobuyers[id].cost = Math.ceil(2.4*player.autobuyers[id].cost);
+        	var b1 = true;
+		for (let i=0;i<8;i++) {
+			if (player.autobuyers[i].bulk < 512) b1 = false;
+		}
+		if (b1) giveAchievement("Bulked up");
+	} else {
+		player.autobuyers[id].interval = Math.max(player.autobuyers[id].interval*0.6, 100);
+		if (player.autobuyers[id].interval > 120) player.autobuyers[id].cost *= 2; //if your last purchase wont be very strong, dont double the cost
+	}
+    	updateAutobuyers();
 }
 
 document.getElementById("buyerBtn1").onclick = function () {
