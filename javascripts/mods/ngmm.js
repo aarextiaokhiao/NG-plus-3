@@ -566,7 +566,7 @@ function getGSoffset(offset=0) {
 function getG11Infinities() {
 	let x = getInfinitied()
 	let e = getEternitied()
-	if (e == 0 && x > 1e6) x = tmp.ngp3l ? 1e6 : Math.min(Math.pow(x * 1e12, 1/3), 1e7)
+	if (e == 0 && x > 1e6) x = Math.min(Math.pow(x * 1e12, 1/3), 1e7) // the 1e6 cap is bad, dont add it back
 	if (e > 0 && x < 1e8 && tmp.cp > 0) x += 2e6
 	if (player.infinityUpgrades.includes("postinfi61")) x += 1e7
 	if (player.infinityUpgrades.includes("postinfi61") && player.galacticSacrifice.upgrades.length > 9) x += player.galacticSacrifice.upgrades.length * 1e7
