@@ -238,11 +238,11 @@ function reduceDimCosts(upg) {
 function galacticUpgradeSpanDisplay () {
 	document.getElementById("galaxyPoints").innerHTML = "You have <span class='GPAmount'>"+shortenDimensions(player.galacticSacrifice.galaxyPoints)+"</span> Galaxy point"+(player.galacticSacrifice.galaxyPoints.eq(1)?".":"s.")
 	document.getElementById('galcost33').innerHTML = shortenCosts(galCosts[33])
-	if (player.tickspeedBoosts!=undefined) {
+	if (player.tickspeedBoosts != undefined) {
 		document.getElementById('galcost24').innerHTML = shortenCosts(1e3)
 		document.getElementById('galcost34').innerHTML = shortenCosts(1e17)
 	}
-	if (player.aarexModifications.ngmX>3) {
+	if (player.aarexModifications.ngmX > 3) {
 		document.getElementById('galcost25').innerHTML = shortenCosts(1e3)
 		document.getElementById('galcost35').innerHTML = shortenCosts(2e3)
 	}
@@ -291,7 +291,7 @@ function resetTotalBought() { //uhh what does this do?
 	if (player.galacticSacrifice) return {}
 }
 
-function productAllTotalBought () {
+function productAllTotalBought() {
 	var ret = 1;
 	var mult = getProductBoughtMult()
 	for (i = 1; i <= 8; i++) {
@@ -301,7 +301,7 @@ function productAllTotalBought () {
 	return ret;
 }
 
-function productAllTotalBought1 () {
+function productAllTotalBought1() {
 	return Math.pow( Decimal.max(productAllTotalBought(),10).log10() ,2);
 }
 
@@ -310,7 +310,7 @@ function productAllDims1(){
 	for (i = 1; i <= 8; i++) {
 		ret = ret.add(Math.max(player[TIER_NAMES[i] + "Amount"].max(1).log10(),0));
 	}
-	return ret.min(1)
+	return ret.max(1)
 }
 
 document.getElementById("challenge13").onclick = function () {
