@@ -8657,7 +8657,7 @@ function gameLoop(diff) {
         	player.meta.bestAntimatter = player.meta.bestAntimatter.max(player.meta.antimatter)
         	if (tmp.ngp3) {
 			player.meta.bestOverQuantums = player.meta.bestOverQuantums.max(player.meta.antimatter)
-			player.meta.bestOverGhostifies = player.meta.bestOverGhostifies.max(player.meta.antimatter)]
+			player.meta.bestOverGhostifies = player.meta.bestOverGhostifies.max(player.meta.antimatter)
 		}
 	}
 	var step = inQC(4) || player.pSac!=undefined ? 2 : 1
