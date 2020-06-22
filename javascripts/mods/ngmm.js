@@ -385,14 +385,14 @@ document.getElementById("postinfi04").onclick = function() {
 
 //v1.41
 function galIP(){
-    let gal = player.galaxies
-    let rg = player.replicanti.galaxies
-    if (player.timestudy.studies.includes(132)) rg *= 1.4
-    if (player.timestudy.studies.includes(133)) rg *= 1.5
-    if (player.achievements.includes("r122")) gal += 100*rg 
-    if (gal<5) return gal
-    if (gal<50) return 2+Math.pow(5+gal,0.6)
-    return Math.min(Math.pow(gal,.4)+7,155)
+    	let gal = player.galaxies
+    	let rg = player.replicanti.galaxies
+    	if (player.timestudy.studies.includes(132)) rg *= 1.4
+    	if (player.timestudy.studies.includes(133)) rg *= 1.5
+    	if (player.achievements.includes("r122")) gal += 100*rg 
+    	if (gal<5) return gal
+    	if (gal<50) return 2+Math.pow(5+gal,0.6)
+    	return Math.min(Math.pow(gal,.4)+7,155)
 }
 
 //v1.5
@@ -471,7 +471,9 @@ let galMults = {
 		if (x > 99) y = Math.pow(Math.log(x),Math.log(x)/z)+14
 		else if (x > 4) y = Math.sqrt(x+5)+4
 		else y = x + 2
-
+		
+		if (player.achievements.includes("r82")) y += 30
+		
 		//softcap y
 		if (y > 1000) y = Math.sqrt(1000*y)
 		if (y > 1e4) y = Math.pow(1e8*y,1/3)
@@ -509,6 +511,7 @@ let galMults = {
 			if (player.currentEternityChall === "") exp *= Math.pow(Math.log(player.resets+3), 2)
 			else exp *= Math.pow(Math.log(player.resets+3), 0.5)
 		}
+		if (player.achievements.includes("r81") && player.currentEternityChall === "") exp += 7
 		return player.galacticSacrifice.galaxyPoints.div(5).plus(1).pow(exp)
 	},
 	u23: function() {
