@@ -19,6 +19,10 @@ function getGSAmount(offset=0) {
 	return ret.floor()
 }
 
+function getGPGain(offset = 0){
+	return getGSAmount(offset)
+}
+
 function getGPMultipliers(){
 	let ret = new Decimal(1)
 	if (player.achievements.includes("r23") && player.tickspeedBoosts !== undefined) {
@@ -34,7 +38,6 @@ function getGPMultipliers(){
 	}
 	if (player.achievements.includes("r62")&&player.tickspeedBoosts==undefined) ret = ret.times(player.infinityPoints.max(10).log10())
 	return ret
-
 }
 
 function getGSGalaxies(){
@@ -314,7 +317,7 @@ function productAllDims1(){
 	for (i = 1; i <= 8; i++) {
 		ret = ret.add(Math.max(player[TIER_NAMES[i] + "Amount"].max(1).log10(),0));
 	}
-	return ret.min(1)
+	return ret.max(1)
 }
 
 document.getElementById("challenge13").onclick = function () {
