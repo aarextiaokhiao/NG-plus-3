@@ -1,4 +1,4 @@
-function getGSAmount(offset=0) {
+function getGSAmount(offset=0) { 
 	if (isEmptiness) return new Decimal(0)
 	let galaxies = getGSGalaxies() + offset
 	let y = getGSGalaxyExp(galaxies)
@@ -238,11 +238,11 @@ function reduceDimCosts(upg) {
 function galacticUpgradeSpanDisplay () {
 	document.getElementById("galaxyPoints").innerHTML = "You have <span class='GPAmount'>"+shortenDimensions(player.galacticSacrifice.galaxyPoints)+"</span> Galaxy point"+(player.galacticSacrifice.galaxyPoints.eq(1)?".":"s.")
 	document.getElementById('galcost33').innerHTML = shortenCosts(galCosts[33])
-	if (player.tickspeedBoosts!=undefined) {
+	if (player.tickspeedBoosts != undefined) {
 		document.getElementById('galcost24').innerHTML = shortenCosts(1e3)
 		document.getElementById('galcost34').innerHTML = shortenCosts(1e17)
 	}
-	if (player.aarexModifications.ngmX>3) {
+	if (player.aarexModifications.ngmX > 3) {
 		document.getElementById('galcost25').innerHTML = shortenCosts(1e3)
 		document.getElementById('galcost35').innerHTML = shortenCosts(2e3)
 	}
@@ -287,11 +287,11 @@ function galacticUpgradeButtonTypeDisplay () {
 }
 
 //v1.295
-function resetTotalBought() {
+function resetTotalBought() { //uhh what does this do?
 	if (player.galacticSacrifice) return {}
 }
 
-function productAllTotalBought () {
+function productAllTotalBought() {
 	var ret = 1;
 	var mult = getProductBoughtMult()
 	for (i = 1; i <= 8; i++) {
@@ -301,8 +301,8 @@ function productAllTotalBought () {
 	return ret;
 }
 
-function productAllTotalBought1 () {
-	return Math.pow(Decimal.max(productAllTotalBought(),10).log10(),2);
+function productAllTotalBought1() {
+	return Math.pow( Decimal.max(productAllTotalBought(),10).log10() ,2);
 }
 
 function productAllDims1(){
@@ -310,7 +310,7 @@ function productAllDims1(){
 	for (i = 1; i <= 8; i++) {
 		ret = ret.add(Math.max(player[TIER_NAMES[i] + "Amount"].max(1).log10(),0));
 	}
-	return ret.min(1)
+	return ret.max(1)
 }
 
 document.getElementById("challenge13").onclick = function () {
@@ -438,7 +438,9 @@ document.getElementById("postinfi63").onclick = function() {
 }
 
 function getB60Mult() {
-	return Decimal.pow(getEternitied()>0?2.5:3,player.galaxies-95).max(1)
+	let gal = player.galaxies
+	if (gal >= 295 && getEternitied()>0) return Decimal.pow(3,200).times(Decimal.pow(2.5,gal-295))
+	return Decimal.pow(3,gal-95).max(1)
 }
 
 //v2.3
@@ -460,12 +462,15 @@ let galMults = {
 		let x=getG11Infinities()
 		let z=getG11Divider()
 		//define y
-		if (x>99) y=Math.pow(Math.log(x),Math.log(x)/z)+14
-		else if (x>4) y=Math.sqrt(x+5)+4
-		else y=x+2
+		let y = 2 // it'll get overwritten no matter what
+		if (x > 99) y = Math.pow(Math.log(x),Math.log(x)/z)+14
+		else if (x > 4) y = Math.sqrt(x+5)+4
+		else y = x + 2
+		if (player.achievements.includes("r82")) y += 30
+		
 		//softcap y
-		if (y>1000) y=Math.sqrt(1000*y)
-		if (y>1e4) y=Math.pow(1e8*y,1/3)
+		if (y > 1000) y = Math.sqrt(1000*y)
+		if (y > 1e4) y = Math.pow(1e8*y,1/3)
 		return Decimal.pow(10, Math.min(y, 2e4));
 	},
 	u31: function() {
@@ -498,6 +503,7 @@ let galMults = {
 			if (player.currentEternityChall === "") exp *= Math.pow(Math.log(player.resets+3), 2)
 			else exp *= Math.pow(Math.log(player.resets+3), 0.5)
 		}
+		if (player.achievements.includes("r81") && player.currentEternityChall === "") exp += 7
 		return player.galacticSacrifice.galaxyPoints.div(5).plus(1).pow(exp)
 	},
 	u23: function() {
@@ -553,21 +559,23 @@ function getGSoffset(offset=0) {
 
 function getG11Infinities(){
 	let x = getInfinitied()
-	if (x>1e6 && getEternitied() == 0) x = 1e6
-	if (tmp.cp>0&&getEternitied()>0&&getInfinitied() < 1e8) x+=2e6
+	let e = getEternitied()
+	if (e == 0 && x > 1e6) x = Math.min(Math.pow(x * 1e12, 1/3), 1e7)
+	if (e > 0 && x < 1e8 && tmp.cp > 0) x += 2e6
 	if (player.infinityUpgrades.includes("postinfi61")) x += 1e7
-	if (player.infinityUpgrades.includes("postinfi61") && player.galacticSacrifice.upgrades.length>9) x+=player.galacticSacrifice.upgrades.length*1e7
-	x+=1e10*tmp.ec
-	if (x>1e8) x=Math.pow(1e8*x,.5)
+	if (player.infinityUpgrades.includes("postinfi61") && player.galacticSacrifice.upgrades.length > 9) x += player.galacticSacrifice.upgrades.length * 1e7
+	x += tmp.ec * 1e10
+	if (x > 1e8) x = Math.sqrt(x * 1e8)
 	return x
 }
 
 function getG11Divider(){
 	let z = 10
-	if (tmp.cp>0&&player.challenges.includes("postcngmm_1")) z-=(tmp.cp+6)/4
-	if (tmp.cp>6) z+=0.085*tmp.cp-0.31
+	let c = tmp.cp //challenge completed
+	if (c > 0 && player.challenges.includes("postcngmm_1")) z-=(c+6)/4
+	if (c > 6) z+=0.085*c-0.31
 	if (player.infinityUpgrades.includes("postinfi61")) z -= .1
-	z-=Math.pow(tmp.ec,0.3)/10
+	z -= Math.pow(tmp.ec,0.3)/10
 	if (getEternitied()>0) z-=0.5
 	if (z<6) z=Math.pow(1296*z,.2)
 	return z
