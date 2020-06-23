@@ -1,4 +1,4 @@
-function getGSAmount(offset=0) {
+function getGSAmount(offset=0) { 
 	if (isEmptiness) return new Decimal(0)
 	let galaxies = getGSGalaxies() + offset
 	let y = getGSGalaxyExp(galaxies)
@@ -298,7 +298,7 @@ function resetTotalBought() { //uhh what does this do?
 	if (player.galacticSacrifice) return {}
 }
 
-function productAllTotalBought () {
+function productAllTotalBought() {
 	var ret = 1;
 	var mult = getProductBoughtMult()
 	for (i = 1; i <= 8; i++) {
@@ -308,7 +308,7 @@ function productAllTotalBought () {
 	return ret;
 }
 
-function productAllTotalBought1 () {
+function productAllTotalBought1() {
 	return Math.pow( Decimal.max(productAllTotalBought(),10).log10() ,2);
 }
 
@@ -474,7 +474,6 @@ let galMults = {
 		if (x > 99) y = Math.pow(Math.log(x),Math.log(x)/z)+14
 		else if (x > 4) y = Math.sqrt(x+5)+4
 		else y = x + 2
-		
 		if (player.achievements.includes("r82")) y += 30
 		
 		//softcap y
