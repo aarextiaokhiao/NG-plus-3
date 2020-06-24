@@ -145,7 +145,7 @@ function getInfBuy10Mult(tier) {
 }
 
 function buyManyInfinityDimension(tier) {
-  if (player.pSac !== undefined) buyIDwithAM(tier)
+  if (player.pSac !== undefined) buyIDwithAM(tier, true)
   if (player.eterc8ids <= 0 && player.currentEternityChall == "eterc8") return false
   var dim = player["infinityDimension"+tier]
   var cost = getIDCost(tier)
