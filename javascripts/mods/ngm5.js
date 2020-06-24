@@ -2,10 +2,10 @@
 var idBaseCosts = [null, 10, 100, 1e10, 1e20, 1e140, 1e200, 1e250, 1e280]
 var idCostMults = [null, 10, 100, 1e10, 1e20, 1e140, 1e200, 1e250, 1e280]
 
-function buyIDwithAM(t) {
+function buyIDwithAM(t, auto) { // t is the dimension number, auto is either true or false.
 	let d=player["infinityDimension"+t]
 	let c=d.costAM
-	if (getAmount(1)<1) {
+	if (getAmount(1)<1 && !auto) {
 		alert("You need to have at least 1 First Dimension to be able to buy Infinity Dimensions.")
 		return
 	}
