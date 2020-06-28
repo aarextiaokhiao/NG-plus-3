@@ -333,8 +333,9 @@ newsArray = [//always true
 ["aarex has retired back to his cave after apeasing the masses with the higgs boson", false, "am180"],
 ["We launched a mission rocket to land on a ghostly moon.", false, "am181"],
 ["BREAKING NEWS! After the killing of a antimatter person, antimatter people started protesting!", false, "am182"],
-["Antimatter people protests have been extremely intensified!", false, "am183"]
-/*NEXT ID: am184*/
+["Antimatter people protests have been extremely intensified!", false, "am183"],
+['"Reformatting the whole code feels like I have to restart the test branch." ~ Aarex', false, "am184"]
+/*NEXT ID: am185*/
 ];}
 
 document.addEventListener("visibilitychange", function() {if (!document.hidden) {scrollNextMessage();}}, false);
