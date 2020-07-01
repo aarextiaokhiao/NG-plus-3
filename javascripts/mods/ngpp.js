@@ -593,7 +593,7 @@ let quarkGain = function () {
 		let logBoostExp = tmp.ngp3l ? 2 : 1.5
 		if (log > logBoost) log = Math.pow(log / logBoost, logBoostExp) * logBoost
 		if (log > 738 && !hasNU(8)) log = Math.sqrt(log * 738)
-		if (!tmp.ngp3l) log += Math.pow(Math.max(player.eternityPoints.log10()/1e6-1,0),.7)
+		if (!tmp.ngp3l) log += Math.pow(Math.max(player.eternityPoints.log10() / 1e6 - 1, 0), tmp.newNGP3E ? .6 : .7)
 
 		let dlog = Math.log10(log)
 		let start = 4 //Starts at e10k.
