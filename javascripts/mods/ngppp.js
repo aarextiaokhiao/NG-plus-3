@@ -3016,6 +3016,7 @@ function ghostifyReset(implode, gain, amount, force) {
 	updateMasteryStudyButtons()
 
 	//Quantum
+	if (!tmp.ngp3l) tmp.qu.quarkEnergy = new Decimal(0)
 	tmp.qu.qcsMods.current=[]
 	tmp.qu.replicants.amount = new Decimal(0)
 	tmp.qu.replicants.requirement = new Decimal("1e3000000")

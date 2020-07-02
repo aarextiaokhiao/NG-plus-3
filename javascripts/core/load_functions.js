@@ -2604,6 +2604,7 @@ function transformSaveToDecimal() {
           tmp.qu.tod.b.quarks = new Decimal(tmp.qu.tod.b.quarks)
           tmp.qu.tod.b.spin = new Decimal(tmp.qu.tod.b.spin)
       }
+	  if (!tmp.ngp3l && tmp.qu) tmp.qu.quarkEnergy = new Decimal(tmp.qu.quarkEnergy)
   }
   if (player.ghostify) {
       player.dilation.bestTPOverGhostifies = Decimal.max(player.dilation.bestTPOverGhostifies, player.dilation.bestTP)

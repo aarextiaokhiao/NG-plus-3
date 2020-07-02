@@ -4694,7 +4694,7 @@
 					</tr><tr style="vertical-align: 0">
 						<td></td>
 						<td>
-							<button class='gluonupgrade unavailablebtn' id='colorDimPowerUpg' style='width:210px' onclick='upgradeColorDimPower()'>Upgrade all these boosts above<br>Cost: <span id="colorDimPowerUpgCost">0</span> QK</button><br>
+							<button class='gluonupgrade unavailablebtn' id='colorDimPowerUpg' style='width:210px' onclick='upgradeColorDimPower()'>Upgrade all these boosts above<br>Level: <span id="colorDimPowerUpgLevel">0</span><br>Cost: <span id="colorDimPowerUpgCost">0</span> QK</button><br>
 							<button class="storebtn" onclick='maxQuarkMult()' style='width:210px'>Max buy the upgrade above</button>
 						</td>
 						<td></td>
@@ -4710,9 +4710,9 @@
 				</tr><tr id="gluonCharger1">
 					<td colspan=6>You have <span id="quarkEnergy" style="font-size:35px">0.0</span> quark energy, which allows you to generate up to <span id="quarkEnergyGluons" style="font-size:25px">0</span> gluons.</td>
 				</tr><tr id="gluonCharger2">
-					<td colspan=2><button class="gluonupgrade rg" id="generateRGGluons">Generate <span id="generateRGGluonsAmount">0</span> red-green gluons from red quarks</button></td>
-					<td colspan=2><button class="gluonupgrade gb" id="generateGBGluons">Generate <span id="generateGBGluonsAmount">0</span> green-blue gluons from green quarks</button></td>
-					<td colspan=2><button class="gluonupgrade br" id="generateBRGluons">Generate <span id="generateBRGluonsAmount">0</span> blue-red gluons from blue quarks</button></td>
+					<td colspan=2><button class="gluonupgrade rg" id="generateRGGluons" onclick="generateGluons('rg')">Generate <span id="generateRGGluonsAmount">0</span> red-green gluons from red quarks</button></td>
+					<td colspan=2><button class="gluonupgrade gb" id="generateGBGluons" onclick="generateGluons('gb')">Generate <span id="generateGBGluonsAmount">0</span> green-blue gluons from green quarks</button></td>
+					<td colspan=2><button class="gluonupgrade br" id="generateBRGluons" onclick="generateGluons('br')">Generate <span id="generateBRGluonsAmount">0</span> blue-red gluons from blue quarks</button></td>
 				</tr><tr>
 					<td><button id='rgupg1' onclick='buyGluonUpg("rg",1)'>Remote Antimatter Galaxy cost scaling is approximately 2x slower.<br>Cost: 1 RG gluons</button></td>
 					<td><button id='rgupg2' onclick='buyGluonUpg("rg",2)'>Galaxies are more effective based on your free galaxies.<br><span id='rgupg2current'></span><br>Cost: 2 RG gluons</button></td>
