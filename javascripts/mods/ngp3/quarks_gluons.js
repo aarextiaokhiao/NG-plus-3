@@ -226,7 +226,7 @@ function updateColorPowers(log) {
 	//Blue
 	var bLog=log.b
 	if (tmp.ngp3l) bLog=Math.sqrt(bLog)
-	else bLog=Math.sqrt(log.b+1)-1
+	else bLog=Math.sqrt(log.b+1.5)-1.5
 
 	let softcapStartLog=tmp.ngp3l?Math.log10(1300):3
 	let softcapPower=1
@@ -262,7 +262,7 @@ function getColorDimPowerBase(color, log) {
 }
 
 function getColorDimPowerUpgradeCost() {
-	return Decimal.pow(3, tmp.qu.colorDimPower || 0)
+	return Decimal.pow(5, tmp.qu.colorDimPower || 0).times(3)
 }
 
 function upgradeColorDimPower() {
@@ -275,6 +275,22 @@ function upgradeColorDimPower() {
 }
 
 //Gluons
+function gainQuarkEnergy(ma_old, ma_new) {
+	if (!ma_new.gte(ma_old)) return
+	tmp.qu.quarkEnergy = tmp.qu.quarkEnergy.add(getQuarkEnergyGain(ma_new).sub(getQuarkEnergyGain(ma_old)).times(getQuarkEnergyGainMult()))
+}
+
+function getQuarkEnergyGain(ma) {
+	let x = (ma.log10() - Math.log10(Number.MAX_VALUE) * 1.4) / 280
+	if (x < 0) x = -Math.pow(-x, 1.5)
+	else x = Math.pow(x, 1.5)
+	return Decimal.pow(10, x)
+}
+
+function getQuarkEnergyGainMult() {
+	return 0.75
+}
+
 function generateGluons(mix) {
 	let firstColor = mix[0]
 	let toConsume = tmp.qu.usedQuarks[firstColor].min(tmp.qu.quarkEnergy.floor())
@@ -282,6 +298,7 @@ function generateGluons(mix) {
 	tmp.qu.usedQuarks[firstColor] = tmp.qu.usedQuarks[firstColor].sub(toConsume).round()
 	tmp.qu.quarkEnergy = tmp.qu.quarkEnergy.sub(toConsume)
 	tmp.qu.gluons[mix] = tmp.qu.gluons[mix].add(toConsume).round()
+	updateColorCharge()
 	updateGluonsTabOnUpdate()
 }
 
@@ -358,6 +375,16 @@ function maxQuarkMult() {
 	updateGluonsTabOnUpdate("spend")
 }
 
+function getGB1Effect() {
+	if (tmp.ngp3l) return 1-Math.min(Decimal.log10(getTickSpeedMultiplier()),0)
+	return Decimal.div(1, getTickSpeedMultiplier()).log10() / 100 + 1
+}
+
+function getBR1Effect() {
+	if (tmp.ngp3l) return player.dilation.dilatedTime.add(1).log10()+1
+	return Math.sqrt(player.dilation.dilatedTime.add(10).log10()) / 2
+}
+
 function getGU8Effect(type) {
 	return Math.pow(tmp.qu.gluons[type].div("1e565").add(1).log10()*0.505+1, 1.5)
 }
@@ -390,8 +417,8 @@ function updateQuarksTab(tab) {
 }
 
 function updateGluonsTab() {
-	document.getElementById("gbupg1current").textContent="Currently: "+shortenMoney(1-Math.min(Decimal.log10(getTickSpeedMultiplier()),0))+"x"
-	document.getElementById("brupg1current").textContent="Currently: "+shortenMoney(player.dilation.dilatedTime.add(1).log10()+1)+"x"
+	document.getElementById("gbupg1current").textContent="Currently: "+shortenMoney(getGB1Effect())+"x"
+	document.getElementById("brupg1current").textContent="Currently: "+shortenMoney(getBR1Effect())+"x"
 	document.getElementById("rgupg2current").textContent="Currently: "+(Math.pow(player.dilation.freeGalaxies/5e3+1,0.25)*100-100).toFixed(1)+"%"
 	document.getElementById("brupg2current").textContent="Currently: "+shortenMoney(Decimal.pow(2.2, Math.pow(calcTotalSacrificeBoost().log10()/1e6, 0.25)))+"x"
 	document.getElementById("brupg4current").textContent="Currently: "+shortenMoney(Decimal.pow(getDimensionPowerMultiplier(hasNU(13) && "no-rg4"), 0.0003).max(1))+"x"

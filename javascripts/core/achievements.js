@@ -307,7 +307,7 @@ function giveAchievement(name, noUpdate) {
 		if (player.meta==undefined&&(player.exdilation==undefined||(ngppAchId!=13&&ngppAchId!=18))) return
 	}
 
-	if (allAchievementNums[name].split("ng3p")[1]&&player.masterystudies!==undefined) return false
+	if (allAchievementNums[name].split("ng3p")[1]&&!tmp.ngp3) return false
 
 	if (player.boughtDims) {
 		var r=allAchievementNums[name].split("r")[1]

@@ -22,7 +22,7 @@ var masteryStudies = {
 		},
 		14: function() {
 			let comps = ECTimesCompleted("eterc14")
-			return 255e5 + (tmp.ngp3l ? 9e5 : (2e6 + 2e6 * comps)) * comps
+			return 255e5 + (tmp.ngp3l ? 9e5 : (4e6 + 2e6 * comps)) * comps
 		}
 	},
 	ecReqsStored: {},

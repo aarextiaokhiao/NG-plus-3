@@ -1844,7 +1844,7 @@ function getDilPower() {
 	if (tmp.ngp3) {
 		if (player.achievements.includes("ng3p11") && !tmp.ngp3l) ret = ret.times(Math.max(getTotalRG() / 125, 1))
 		if (player.masterystudies.includes("t264")) ret = ret.times(getMTSMult(264))
-		if (GUBought("br1")) ret = ret.times(player.dilation.dilatedTime.add(1).log10()+1)
+		if (GUBought("br1")) ret = ret.times(getBR1Effect())
 		if (player.masterystudies.includes("t341")) ret = ret.times(getMTSMult(341))
 	}
 	return ret
@@ -6951,7 +6951,7 @@ var ecExpData = {
 		eterc11: 200,
 		eterc12: 12000,
 		eterc13: 1000000,
-		eterc14: 320000,
+		eterc14: 800000,
 		eterc1_ngmm: 400,
 		eterc2_ngmm: 250,
 		eterc3_ngmm: 100,
@@ -8503,84 +8503,101 @@ function gameLoop(diff) {
 		}
 		if (isAutoGhostActive(15)) if (tmp.qu.bigRip.active&&getGHPGain().gte(player.ghostify.automatorGhosts[15].a)) ghostify(true)
 	}
-    	if (tmp.ngp3) {
-        	var colorShorthands=["r","g","b"]
+
+	//Ghostify
+	if (ghostified) {
+		//Bosonic Lab
+		if (player.ghostify.wzb.unl) {
+			var data=tmp.bl
+			var wattGained=Math.max(getBosonicWattGain(),data.watt)
+			data.speed=Math.max(Math.min(wattGained+(data.watt-data.speed)*2,wattGained),data.speed)
+			data.watt=wattGained
+			if (data.speed>0) {
+				var limitDiff=Math.min(diff/10,data.speed*14400)
+				bosonicTick((data.speed-limitDiff/28800)*limitDiff)
+				data.speed=Math.max(data.speed-limitDiff/14400,0)
+			}
+		}
+
+		//Ghostly Photons
+		if (player.ghostify.ghostlyPhotons.unl) {
+			var data=player.ghostify.ghostlyPhotons
+			var type=tmp.qu.bigRip.active?"amount":"darkMatter"
+			data[type]=data[type].add(getGPHProduction().times(diff/10))
+			data.ghostlyRays=data.ghostlyRays.add(getGHRProduction().times(diff/10)).min(getGHRCap())
+			for (var c=0;c<8;c++) if (data.ghostlyRays.gte(getLightThreshold(c))) data.lights[c]+=Math.floor(data.ghostlyRays.div(getLightThreshold(c)).log(tmp.lti[c])+1)
+			data.maxRed=Math.max(data.lights[0],data.maxRed)
+		}
+	}
+
+	//Quantum
+	if (tmp.ngp3 && quantumed) {
+		var colorShorthands=["r","g","b"]
+
+		//Color Powers
 		for (var c=0;c<3;c++) tmp.qu.colorPowers[colorShorthands[c]]=tmp.qu.colorPowers[colorShorthands[c]].add(getColorPowerProduction(colorShorthands[c]).times(diff/10))
 		updateColorPowers()
-
-		if (player.ghostify.wzb.unl) {
-            		var data=tmp.bl
-            		var wattGained=Math.max(getBosonicWattGain(),data.watt)
-            		data.speed=Math.max(Math.min(wattGained+(data.watt-data.speed)*2,wattGained),data.speed)
-            		data.watt=wattGained
-			if (data.speed>0) {
-                		var limitDiff=Math.min(diff/10,data.speed*14400)
-                		bosonicTick((data.speed-limitDiff/28800)*limitDiff)
-                		data.speed=Math.max(data.speed-limitDiff/14400,0)
+		//Nanofield
+		if (player.masterystudies.includes("d12")) {
+			var AErate = getQuarkAntienergyProduction()
+			var toAddAE = AErate.times(diff/10).min(getQuarkChargeProductionCap().sub(tmp.qu.nanofield.antienergy))
+			if (tmp.qu.nanofield.producingCharge) {
+				var rate = getQuarkChargeProduction()
+				var loss = getQuarkLossProduction()
+				var toSub = loss.times(diff/10).min(tmp.qu.replicants.quarks)
+				if (toSub.eq(0)) {
+					tmp.qu.nanofield.producingCharge = false
+					document.getElementById("produceQuarkCharge").innerHTML="Start production of preon charge.<br>(You will not get preons when you do this.)"
+				} else {
+					tmp.qu.replicants.quarks = tmp.qu.replicants.quarks.sub(toSub)
+					tmp.qu.nanofield.charge = tmp.qu.nanofield.charge.add(toSub.div(loss).times(rate))
+				}
 			}
-		}
-		if (player.ghostify.ghostlyPhotons.unl) {
-            		var data=player.ghostify.ghostlyPhotons
-            		var type=tmp.qu.bigRip.active?"amount":"darkMatter"
-            		data[type]=data[type].add(getGPHProduction().times(diff/10))
-            		data.ghostlyRays=data.ghostlyRays.add(getGHRProduction().times(diff/10)).min(getGHRCap())
-            		for (var c=0;c<8;c++) if (data.ghostlyRays.gte(getLightThreshold(c))) data.lights[c]+=Math.floor(data.ghostlyRays.div(getLightThreshold(c)).log(tmp.lti[c])+1)
-            		data.maxRed=Math.max(data.lights[0],data.maxRed)
-		}
-		if (tmp.qu.nanofield.producingCharge) {
-            		var rate = getQuarkChargeProduction()
-            		var loss = getQuarkLossProduction()
-            		var toSub = loss.times(diff/10).min(tmp.qu.replicants.quarks)
-            		if (toSub.eq(0)) {
-				tmp.qu.nanofield.producingCharge = false
-				document.getElementById("produceQuarkCharge").innerHTML="Start production of preon charge.<br>(You will not get preons when you do this.)"
-			} else {
-                		tmp.qu.replicants.quarks = tmp.qu.replicants.quarks.sub(toSub)
-                		tmp.qu.nanofield.charge = tmp.qu.nanofield.charge.add(toSub.div(loss).times(rate))
+			if (toAddAE.gt(0)) {
+				tmp.qu.nanofield.antienergy = tmp.qu.nanofield.antienergy.add(toAddAE).min(getQuarkChargeProductionCap())
+				tmp.qu.nanofield.energy = tmp.qu.nanofield.energy.add(toAddAE.div(AErate).times(getQuarkEnergyProduction()))
+				if (tmp.qu.nanofield.energy.gte(tmp.qu.nanofield.powerThreshold) && tmp.qu.nanofield.power < 15) {
+					var toAdd = Math.min(Math.floor(tmp.qu.nanofield.energy.div(tmp.qu.nanofield.powerThreshold).log(4) / tmp.ppti + 1), 15 - tmp.qu.nanofield.power)
+					tmp.qu.nanofield.power += toAdd
+					tmp.qu.nanofield.powerThreshold = tmp.qu.nanofield.powerThreshold.times(Decimal.pow(4, toAdd * tmp.ppti))
+				}
+				if (tmp.qu.nanofield.energy.gte(tmp.qu.nanofield.powerThreshold) && tmp.qu.nanofield.power > 14) {
+					var b = tmp.qu.nanofield.power - 13.5
+					var toAdd = Math.floor(Math.sqrt(b * b + 2 * tmp.qu.nanofield.energy.div(tmp.qu.nanofield.powerThreshold).log(4) / tmp.ppti) - b + 1)
+					tmp.qu.nanofield.power += toAdd
+					tmp.qu.nanofield.powerThreshold = tmp.qu.nanofield.powerThreshold.times(Decimal.pow(4, (0.5 * toAdd * toAdd + b * toAdd) * tmp.ppti))
+				}
+				tmp.qu.nanofield.rewards = Math.max(tmp.qu.nanofield.rewards, tmp.qu.nanofield.power)
+				if (!tmp.qu.nanofield.apgWoke && tmp.qu.nanofield.rewards >= tmp.apgw) {
+					tmp.qu.nanofield.apgWoke = tmp.apgw
+					$.notify("You reached " + getFullExpansion(tmp.apgw) + " rewards... The Anti-Preontius has woken up and took over the Nanoverse! Be careful!")
+					showTab("quantumtab")
+					showQuantumTab("nanofield")
+					showNFTab("antipreon")
+				}
 			}
-		}
-		var AErate = getQuarkAntienergyProduction()
-        	var toAddAE = AErate.times(diff/10).min(getQuarkChargeProductionCap().sub(tmp.qu.nanofield.antienergy))
-        	if (toAddAE.gt(0)) {
-            		tmp.qu.nanofield.antienergy = tmp.qu.nanofield.antienergy.add(toAddAE).min(getQuarkChargeProductionCap())
-            		tmp.qu.nanofield.energy = tmp.qu.nanofield.energy.add(toAddAE.div(AErate).times(getQuarkEnergyProduction()))
-            		if (tmp.qu.nanofield.energy.gte(tmp.qu.nanofield.powerThreshold) && tmp.qu.nanofield.power < 15) {
-				var toAdd = Math.min(Math.floor(tmp.qu.nanofield.energy.div(tmp.qu.nanofield.powerThreshold).log(4) / tmp.ppti + 1), 15 - tmp.qu.nanofield.power)
-                		tmp.qu.nanofield.power += toAdd
-                		tmp.qu.nanofield.powerThreshold = tmp.qu.nanofield.powerThreshold.times(Decimal.pow(4, toAdd * tmp.ppti))
-			}
-			if (tmp.qu.nanofield.energy.gte(tmp.qu.nanofield.powerThreshold) && tmp.qu.nanofield.power > 14) {
-				var b = tmp.qu.nanofield.power - 13.5
-				var toAdd = Math.floor(Math.sqrt(b * b + 2 * tmp.qu.nanofield.energy.div(tmp.qu.nanofield.powerThreshold).log(4) / tmp.ppti) - b + 1)
-				tmp.qu.nanofield.power += toAdd
-				tmp.qu.nanofield.powerThreshold = tmp.qu.nanofield.powerThreshold.times(Decimal.pow(4, (0.5 * toAdd * toAdd + b * toAdd) * tmp.ppti))
-			}
-			tmp.qu.nanofield.rewards = Math.max(tmp.qu.nanofield.rewards, tmp.qu.nanofield.power)
-			if (!tmp.qu.nanofield.apgWoke && tmp.qu.nanofield.rewards >= tmp.apgw) {
-				tmp.qu.nanofield.apgWoke = tmp.apgw
-                		$.notify("You reached " + getFullExpansion(tmp.apgw) + " rewards... The Anti-Preontius has woken up and took over the Nanoverse! Be careful!")
-                		showTab("quantumtab")
-                		showQuantumTab("nanofield")
-                		showNFTab("antipreon")
-			}
-		}
-		var colorShorthands=["r","g","b"]
-        	for (var c=0;c<3;c++) {
-			var shorthand=colorShorthands[c]
-            		var branch=tmp.qu.tod[shorthand]
-            		var decayRate=getDecayRate(shorthand)
-            		var decayPower=getRDPower(shorthand)
-
-            		var mult=Decimal.pow(2,decayPower)
-            		var power=Decimal.div(branch.quarks.gt(mult)?branch.quarks.div(mult).log(2)+1:branch.quarks.div(mult),decayRate)
-            		var decayed=power.min(diff/10)
-            		power=power.sub(decayed).times(decayRate)
-
-            		var sProd=getQuarkSpinProduction(shorthand)
-            		branch.quarks=power.gt(1)?Decimal.pow(2,power-1).times(mult):power.times(mult)
-            		branch.spin=branch.spin.add(sProd.times(decayed))
 		}
 
+		//Tree of Decay
+		if (player.masterystudies.includes("d13")) {
+			for (var c=0;c<3;c++) {
+				var shorthand=colorShorthands[c]
+				var branch=tmp.qu.tod[shorthand]
+				var decayRate=getDecayRate(shorthand)
+				var decayPower=getRDPower(shorthand)
+
+				var mult=Decimal.pow(2,decayPower)
+				var power=Decimal.div(branch.quarks.gt(mult)?branch.quarks.div(mult).log(2)+1:branch.quarks.div(mult),decayRate)
+				var decayed=power.min(diff/10)
+				power=power.sub(decayed).times(decayRate)
+
+				var sProd=getQuarkSpinProduction(shorthand)
+				branch.quarks=power.gt(1)?Decimal.pow(2,power-1).times(mult):power.times(mult)
+				branch.spin=branch.spin.add(sProd.times(decayed))
+			}
+		}
+
+		//Emperor Dimensions
 		if (player.masterystudies.includes("d11")) {
 			for (dim=8;dim>1;dim--) {
 				var promote = hasNU(2) ? 1/0 : getWorkerAmount(dim-2)
@@ -8604,6 +8621,7 @@ function gameLoop(diff) {
 			}
 		}
 
+		//Replicants
 		if (player.masterystudies.includes("d10")) {
 			tmp.qu.replicants.eggonProgress = tmp.qu.replicants.eggonProgress.add(tmp.twr.times(getEmperorDimensionMultiplier(1)).times(diff/200))
 			var toAdd = tmp.qu.replicants.eggonProgress.floor()
@@ -8641,21 +8659,23 @@ function gameLoop(diff) {
 
 			if (!tmp.qu.nanofield.producingCharge) tmp.qu.replicants.quarks = tmp.qu.replicants.quarks.add(getGatherRate().total.max(0).times(diff/10))
 		}
-	}
-	if (speedrunMilestonesReached>5) {
-        	tmp.qu.metaAutobuyerWait+=diff
-        	var speed=speedrunMilestonesReached>20?10/3:10
-        	if (tmp.qu.metaAutobuyerWait>speed) {
-            		tmp.qu.metaAutobuyerWait=tmp.qu.metaAutobuyerWait%speed
-            		doAutoMetaTick()
+
+		if (speedrunMilestonesReached>5) {
+			tmp.qu.metaAutobuyerWait+=diff
+			var speed=speedrunMilestonesReached>20?10/3:10
+			if (tmp.qu.metaAutobuyerWait>speed) {
+				tmp.qu.metaAutobuyerWait=tmp.qu.metaAutobuyerWait%speed
+				doAutoMetaTick()
+			}
 		}
 	}
-    	if (player.meta) {
+	if (player.meta) {
 		QC4Reward = getQCReward(4)
-        	player.meta.antimatter = player.meta.antimatter.plus(getMetaDimensionProduction(1).times(diff/10))
-        	if (inQC(4)) player.meta.antimatter = player.meta.antimatter.plus(getMetaDimensionProduction(1).times(diff/10))
-        	player.meta.bestAntimatter = player.meta.bestAntimatter.max(player.meta.antimatter)
-        	if (tmp.ngp3) {
+		player.meta.antimatter = player.meta.antimatter.plus(getMetaDimensionProduction(1).times(diff/10))
+		if (inQC(4)) player.meta.antimatter = player.meta.antimatter.plus(getMetaDimensionProduction(1).times(diff/10))
+		if (tmp.ngp3 && !tmp.ngp3l && inQC(0)) gainQuarkEnergy(player.meta.bestAntimatter, player.meta.antimatter)
+		player.meta.bestAntimatter = player.meta.bestAntimatter.max(player.meta.antimatter)
+		if (tmp.ngp3) {
 			player.meta.bestOverQuantums = player.meta.bestOverQuantums.max(player.meta.antimatter)
 			player.meta.bestOverGhostifies = player.meta.bestOverGhostifies.max(player.meta.antimatter)
 		}
@@ -8787,7 +8807,7 @@ function gameLoop(diff) {
     	if (player.timestudy.studies.includes(62)) interval /= tsMults[62]()
     	if (player.replicanti.amount.gt(Number.MAX_VALUE)||player.timestudy.studies.includes(133)) interval *= 10
     	if (player.timestudy.studies.includes(213)) interval /= tsMults[213]()
-    	if (GUBought("gb1")) interval /= 1-Decimal.min(getTickSpeedMultiplier(),1).log10()
+    	if (GUBought("gb1")) interval /= getGB1Effect()
     	if (player.replicanti.amount.lt(Number.MAX_VALUE) && player.achievements.includes("r134")) interval /= 2
     	if (isBigRipUpgradeActive(4)) interval /= 10
     	if (player.replicanti.amount.gt(Number.MAX_VALUE)) interval = player.boughtDims ? Math.pow(player.achievements.includes("r107")?Math.max(player.replicanti.amount.log(2)/1024,1):1, -.25) : Decimal.pow(replSpeeds.inc, Math.max(player.replicanti.amount.log10() - replSpeeds.exp, 0)/replSpeeds.exp).times(interval)
@@ -8833,7 +8853,7 @@ function gameLoop(diff) {
         }
     }
     if (player.replicanti.amount.gt(0)) replicantiTicks += player.options.updateRate
-    if (tmp.ngp3) if (player.masterystudies.includes("d10") && tmp.qu.autoOptions.replicantiReset && player.replicanti.amount.gt(tmp.qu.replicants.requirement)) replicantReset()
+    if (tmp.ngp3 && player.masterystudies.includes("d10") && tmp.qu.autoOptions.replicantiReset && player.replicanti.amount.gt(tmp.qu.replicants.requirement)) replicantReset()
 
     if (current == Decimal.ln(Number.MAX_VALUE) && player.thisInfinityTime < 600*30) giveAchievement("Is this safe?");
     if (player.replicanti.galaxies >= 10 && player.thisInfinityTime < 150) giveAchievement("The swarm");

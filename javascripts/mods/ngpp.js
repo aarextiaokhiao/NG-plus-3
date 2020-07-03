@@ -57,7 +57,7 @@ function getMetaDimensionGlobalMultiplier() {
 		ret = ret.times(getQCReward(3))
 		ret = ret.times(getQCReward(6))
 		//Achievement Rewards
-		if (player.achievements.includes("ng3p13") && !tmp.ngp3l) ret = ret.times(Decimal.pow(2, Math.pow(Decimal.plus(quantumWorth, 1).log10(), 0.75)))
+		if (player.achievements.includes("ng3p13") && !tmp.ngp3l) ret = ret.times(Decimal.pow(8, Math.pow(Decimal.plus(quantumWorth, 1).log10(), 0.75)))
 	}
 	
 	return ret
@@ -593,7 +593,7 @@ let quarkGain = function () {
 		let logBoostExp = tmp.ngp3l ? 2 : 1.5
 		if (log > logBoost) log = Math.pow(log / logBoost, logBoostExp) * logBoost
 		if (log > 738 && !hasNU(8)) log = Math.sqrt(log * 738)
-		if (!tmp.ngp3l) log += Math.pow(Math.max(player.eternityPoints.log10() / 1e6 - 1, 0), tmp.newNGP3E ? .6 : .7)
+		if (!tmp.ngp3l) log += Math.pow(Math.max(player.eternityPoints.log10() / 1e6, 1), tmp.newNGP3E ? .6 : .7) - 1
 
 		let dlog = Math.log10(log)
 		let start = 4 //Starts at e10k.
