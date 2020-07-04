@@ -335,7 +335,8 @@ newsArray = [//always true
 ["BREAKING NEWS! After the killing of a antimatter person, antimatter people started protesting!", false, "am182"],
 ["Antimatter people protests have been extremely intensified!", false, "am183"],
 ['"Reformatting the whole code feels like I have to restart the test branch." ~ Aarex', false, "am184"],
-['The further meta you reach, the further power tower you go.', false, "am185"]
+['The further meta you reach, the further power tower you go.', false, "am185"],
+['Later, I will finally implement original ideas from future NG+3 updates.', "tmp.ngp3", "am186"]
 /*NEXT ID: am186*/
 ];}
 
