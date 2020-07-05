@@ -1116,8 +1116,11 @@ function updateWZBosonsTemp(){
 	var wpl=player.ghostify.wzb.wpb.add(1).log10()
 	var wnl=player.ghostify.wzb.wnb.add(1).log10()
 	tmp.wzbs=new Decimal(1) //W & Z Bosons speed
-	tmp.wbt=Decimal.pow(3,Math.max(wpl*(player.ghostify.wzb.wpb.sub(player.ghostify.wzb.wnb.min(player.ghostify.wzb.wpb))).div(player.ghostify.wzb.wpb.max(1)).toNumber(),0)) //W Bosons boost to extract time
-	tmp.wbo=Decimal.pow(10,Math.max(wpl*(player.ghostify.wzb.wpb.sub(player.ghostify.wzb.wnb.min(player.ghostify.wzb.wpb))).div(player.ghostify.wzb.wpb.max(1)).toNumber(),0)) //W Bosons boost to Z Neutrino oscillation requirement
+	
+	var bosonsExp = wpl*(player.ghostify.wzb.wpb.sub(player.ghostify.wzb.wnb.min(player.ghostify.wzb.wpb))).div(player.ghostify.wzb.wpb.max(1)).toNumber()
+	tmp.wbt=Decimal.pow(tmp.newNGP3E?6:3,Math.max(bosonsExp,0)) //W Bosons boost to extract time
+	tmp.wbo=Decimal.pow(10,Math.max(bosonsExp,0)) //W Bosons boost to Z Neutrino oscillation requirement
+	
 	tmp.wbp=player.ghostify.wzb.wpb.add(player.ghostify.wzb.wnb).div(100).max(1).pow(1/3).sub(1) //W Bosons boost to Bosonic Antimatter production
 	tmp.zbs=player.ghostify.wzb.zb.div(10).add(1).sqrt() //Z Bosons boost to W Quark decay speed and W- to W+ conversion speed
 	if (tmp.zbs.gt(1e4)) tmp.zbs=tmp.zbs.times(1e4).sqrt()
@@ -1126,31 +1129,69 @@ function updateWZBosonsTemp(){
 }
 
 function updateGPhTemp(){
-	let lePower=getLightEmpowermentBoost()
+	let lePower = getLightEmpowermentBoost()
 	for (var c=6;c>-1;c--) {
-		var x=player.ghostify.ghostlyPhotons.lights[c]
-		if (c<1) x=(player.ghostify.ghostlyPhotons.maxRed+x*2)/3
-		tmp.ls[c]=x*(Math.sqrt(c>5?1:tmp.ls[c+1]+1)+lePower)
+		var x = player.ghostify.ghostlyPhotons.lights[c]
+		if (c == 0) x = (player.ghostify.ghostlyPhotons.maxRed+x*2)/3
+		tmp.ls[c] = x * ( Math.sqrt(c>5?1:tmp.ls[c+1]+1)+lePower )
 	}
-	tmp.ls[7]=player.ghostify.ghostlyPhotons.lights[0]*(Math.sqrt(tmp.ls[1]+1)+lePower) //Other red Light boosts than 0 LE
-	tmp.le[0]=Math.pow(tmp.ls[0],1/4)*.15+1
-	if (tmp.le[0]>1.5) tmp.le[0]=Math.log10(tmp.le[0]*20/3)*1.5
-	tmp.le[1]=tmp.ls[1]>64?Math.log10(tmp.ls[1]/64)+14:tmp.ls[1]>8?Math.sqrt(tmp.ls[1])+6:tmp.ls[1]+1 //Orange light
-	tmp.le[2]=Math.sqrt(tmp.ls[2]>60?(Math.log10(tmp.ls[2]/6)+2)/3*Math.sqrt(1200):tmp.ls[2]>20?Math.sqrt(tmp.ls[2]*20):tmp.ls[2])*45e3 //Yellow light
-	tmp.le[3]=tmp.ngp3l?(tmp.ls[3]>8?Math.log10(tmp.ls[3]/8)+Math.sqrt(12)+1:Math.sqrt(tmp.ls[3]*1.5)+1):1 //Green light
-	tmp.le[4]=Math.log10(Math.sqrt(tmp.ls[4]*2)+1)*5/4 //Blue light
-	tmp.le[5]=Decimal.pow(10,tmp.ls[5]>25?Math.sqrt(tmp.ls[5]*1e3+37500):tmp.ls[5]*10) //Indigo light
-	tmp.le[6]=Math.pow(player.postC3Reward.log10()*tmp.ls[6],1/3)*2 //Violet light
-	if (tmp.le[6]>15e3) tmp.le[6]=Math.pow(tmp.le[6]/15e3,.6)*15e3
-	tmp.le[6]=Decimal.pow(10,tmp.le[6])
-	if (player.ghostify.ghostlyPhotons.enpowerments) tmp.le[7]={effect:Math.log10(tmp.ls[3]+1)*300} //Green light (LE#1)
-	if (player.ghostify.ghostlyPhotons.enpowerments>1) tmp.le[8]=Math.log10(tmp.ls[4]*10+1)/4+1 //Blue light (LE#2)
-	if (player.ghostify.ghostlyPhotons.enpowerments>2) tmp.le[9]=Math.pow(tmp.ls[7]+1,.1)*2-1 //Red light (LE#3)
-	tmp.bru[3]=Decimal.pow(tmp.qu.bigRip.spaceShards.div(1e140).add(1).log10()+1,Math.max(tmp.qu.bigRip.spaceShards.div(1e140).add(1).log10()/10,1)) //BRU18
-	tmp.bru[4]=Decimal.pow(10,Math.sqrt(player.timeShards.add(1).log10())/80) //BRU19
-	tmp.nu[5]=Decimal.pow(player.ghostify.ghostParticles.add(1).log10(),Math.pow(tmp.qu.colorPowers.r.add(tmp.qu.colorPowers.g).add(tmp.qu.colorPowers.b).add(1).log10(),1/3)*0.8+1).max(1) //NU14
-	tmp.nu[6]=Decimal.pow(2,(tmp.qu.nanofield.rewards>90?Math.sqrt(90*tmp.qu.nanofield.rewards):tmp.qu.nanofield.rewards)/2.5) //NU15
-	if (hasNU(15)) tmp.ns=tmp.ns.times(tmp.nu[6])
+	tmp.ls[7] = player.ghostify.ghostlyPhotons.lights[0]*(Math.sqrt(tmp.ls[1]+1)+lePower) //Other red Light boosts than 0 LE
+	
+	var light0multiplier = tmp.newNGP3E?.155:.15
+	var lighteffect0 = Math.pow(tmp.ls[0],1/4)*light0multiplier+1
+	if (lighteffect0 > 1.5 && !tmp.newNGP3E) lighteffect0 = Math.log10(lighteffect0*20/3)*1.5
+	if (lighteffect0 > 1.8) lighteffect0 = 1.8*Math.log10(1+5*lighteffect0)
+	if (lighteffect0 > 2) lighteffect0 = 1+Math.log2(lighteffect0)
+	
+	tmp.le[0] = lighteffect0
+	
+	tmp.le[1] = tmp.ls[1] > 64 ? Math.log10(tmp.ls[1]/64)+14:tmp.ls[1]>8?Math.sqrt(tmp.ls[1])+6 : tmp.ls[1]+1 //Orange light
+	
+	var lighteffect2 = 0 //changed later no matter what
+	if (tmp.ls[2] > 60 && !tmp.newNGP3E){
+		lighteffect2 = (Math.log10(tmp.ls[2]/6)+2)/3*Math.sqrt(1200)
+	} else {
+		lighteffect2 = tmp.ls[2]>20 ? Math.sqrt(tmp.ls[2]*20) : tmp.ls[2]
+	}
+	if (lighteffect2 > 70) lighteffect2 = 6+Math.pow(Math.log2(lighteffect2-6)+2 , 2)
+	if (lighteffect2 > 100) lighteffect2 = 4 + 6 * Math.pow( Math.log10(lighteffect2) ,4)
+	tmp.le[2] = Math.sqrt(lighteffect2) * 45e3 //Yellow light
+	
+	tmp.le[3] = tmp.ngp3l?(tmp.ls[3]>8?Math.log10(tmp.ls[3]/8)+Math.sqrt(12)+1:Math.sqrt(tmp.ls[3]*1.5)+1):1 //Green light
+	
+	var light4mult = tmp.newNGP3E?1.3:5/4
+	var lighteffect4 = Math.log10(Math.sqrt(tmp.ls[4]*2)+1)*light4mult //Blue light
+	if (lighteffect4>2.5) lighteffect4 = 1.5+Math.log10(4*lighteffect4)
+	tmp.le[4] = lighteffect4
+	
+	var loglighteffect5 = tmp.ls[5] > 25 ? Math.sqrt(tmp.ls[5]*10+375) : tmp.ls[5]
+	loglighteffect5 *= tmp.newNGP3E?20:10
+	if (loglighteffect5 > 1024) loglighteffect5 = Math.pow(1+Math.log10(loglighteffect5-24),5)
+	tmp.le[5] = Decimal.pow(10,loglighteffect5) //Indigo light
+	
+	var lightexp6 = tmp.newNGP3E?.36:1/3
+	var loglighteffect6 = Math.pow(player.postC3Reward.log10()*tmp.ls[6],tmp.newNGP3E)*2 //Violet light
+	if (loglighteffect6 > 15e3) loglighteffect6 = Math.pow(loglighteffect6/15e3,.6)*15e3
+	if (loglighteffect6 > 22222) loglighteffect6 = 11111*Math.log10(77778+loglighteffect6)*2/5
+	tmp.le[6] = Decimal.pow(10 , loglighteffect6)
+	
+	if (player.ghostify.ghostlyPhotons.enpowerments > 0) tmp.le[7] = {effect:Math.log10(tmp.ls[3]+1)*300} //Green light (LE#1)
+	if (player.ghostify.ghostlyPhotons.enpowerments > 1) tmp.le[8] = Math.log10(tmp.ls[4]*10+1)/4+1 //Blue light (LE#2)
+	if (player.ghostify.ghostlyPhotons.enpowerments > 2) tmp.le[9] = Math.pow(tmp.ls[7]+1,.1)*2-1 //Red light (LE#3)
+	
+	var bigRipUpg18base = 1+tmp.qu.bigRip.spaceShards.div(1e140).add(1).log10()
+	var bigRipUpg18exp = Math.max(tmp.qu.bigRip.spaceShards.div(1e140).add(1).log10()/10,1)
+	if (bigRipUpg18base > 10 && tmp.newNGP3E) bigRipUpg18base *= Math.log10(bigRipUpg18base)
+	if (bigRipUpg18exp > 16) bigRipUpg18exp = Math.pow(Math.log2(bigRipUpg18exp),2)
+	tmp.bru[3] = Decimal.pow(bigRipUpg18base,bigRipUpg18exp) //BRU18
+	
+	var bigRipUpg19exp = Math.sqrt(player.timeShards.add(1).log10())/(tmp.newNGP3E?60:80)
+	if (bigRipUpg19exp > 5) bigRipUpg19exp = 4 + Math.log10(2*bigRipUpg19exp)
+	tmp.bru[4] = Decimal.pow(10,bigRipUpg19exp) //BRU19
+	
+	tmp.nu[5] = Decimal.pow(player.ghostify.ghostParticles.add(1).log10(),Math.pow(tmp.qu.colorPowers.r.add(tmp.qu.colorPowers.g).add(tmp.qu.colorPowers.b).add(1).log10(),1/3)*0.8+1).max(1) //NU14
+	tmp.nu[6] = Decimal.pow(2,(tmp.qu.nanofield.rewards>90?Math.sqrt(90*tmp.qu.nanofield.rewards):tmp.qu.nanofield.rewards)/2.5) //NU15
+	if (hasNU(15)) tmp.ns = tmp.ns.times(tmp.nu[6])
 	tmp.ppti/=tmp.le[1]
 }
 
