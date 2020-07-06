@@ -7882,10 +7882,7 @@ function setAndMaybeShow(elementName, condition, contents) {
 	}
 }
 
-let autoSaveSeconds=0
-setInterval(function() {
-	updateTemp()
-
+function runAutoSave(){
 	if (player.aarexModifications.autoSave) {
 		autoSaveSeconds++
 		if (autoSaveSeconds >= getAutoSaveInterval()) {
@@ -7893,7 +7890,9 @@ setInterval(function() {
 			autoSaveSeconds=0
 		}
 	}
+}
 
+function cantHoldInfinitiesCheck(){
 	if (getDimensionFinalMultiplier(1).gte(new Decimal("1e308")) &&
         getDimensionFinalMultiplier(2).gte(new Decimal("1e308")) &&
         getDimensionFinalMultiplier(3).gte(new Decimal("1e308")) &&
@@ -7902,19 +7901,20 @@ setInterval(function() {
         getDimensionFinalMultiplier(6).gte(new Decimal("1e308")) &&
         getDimensionFinalMultiplier(7).gte(new Decimal("1e308")) &&
         getDimensionFinalMultiplier(8).gte(new Decimal("1e308"))) giveAchievement("Can't hold all these infinities")
+}
 
-    	if (getDimensionFinalMultiplier(1).lt(getDimensionFinalMultiplier(2)) &&
+function antitablesHaveTurnedCheck(){
+	if (getDimensionFinalMultiplier(1).lt(getDimensionFinalMultiplier(2)) &&
         getDimensionFinalMultiplier(2).lt(getDimensionFinalMultiplier(3)) &&
         getDimensionFinalMultiplier(3).lt(getDimensionFinalMultiplier(4)) &&
         getDimensionFinalMultiplier(4).lt(getDimensionFinalMultiplier(5)) &&
         getDimensionFinalMultiplier(5).lt(getDimensionFinalMultiplier(6)) &&
         getDimensionFinalMultiplier(6).lt(getDimensionFinalMultiplier(7)) &&
         getDimensionFinalMultiplier(7).lt(getDimensionFinalMultiplier(8))) giveAchievement("How the antitables have turned")
+}
 
-    	if (player.infinitied > 0 || player.infinityPoints.gt(0) || player.infinityUpgrades.length > 0 || getEternitied() > 0 || quantumed) document.getElementById("infinityPoints2").style.display = "inline-block"
-    	else document.getElementById("infinityPoints2").style.display = "none"
-
-    	if (blink && !player.achievements.includes("r78")) {
+function updateBlinkOfAnEye(){
+	if (blink && !player.achievements.includes("r78")) {
         	document.getElementById("Blink of an eye").style.display = "none"
         	blink = false
     	}
@@ -7922,6 +7922,21 @@ setInterval(function() {
         	document.getElementById("Blink of an eye").style.display = "block"
         	blink = true
     	}
+}
+
+let autoSaveSeconds=0
+setInterval(function() {
+	updateTemp()
+	
+	runAutoSave()
+	cantHoldInfinitiesCheck()
+	antitablesHaveTurnedCheck()
+	updateBlinkOfAnEye()
+
+    	
+
+    	if (player.infinitied > 0 || player.infinityPoints.gt(0) || player.infinityUpgrades.length > 0 || getEternitied() > 0 || quantumed) document.getElementById("infinityPoints2").style.display = "inline-block"
+    	else document.getElementById("infinityPoints2").style.display = "none"
 
 	if (player.postChallUnlocked > 0 || Object.keys(player.eternityChalls).length > 0 || player.eternityChallUnlocked !== 0 || quantumed) document.getElementById("challTabButtons").style.display = "table"
 
@@ -8608,6 +8623,9 @@ function gameLoop(diff) {
 					var toAdd = Math.floor(Math.sqrt(b * b + 2 * tmp.qu.nanofield.energy.div(tmp.qu.nanofield.powerThreshold).log(4) / tmp.ppti) - b + 1)
 					tmp.qu.nanofield.power += toAdd
 					tmp.qu.nanofield.powerThreshold = tmp.qu.nanofield.powerThreshold.times(Decimal.pow(4, (0.5 * toAdd * toAdd + b * toAdd) * tmp.ppti))
+					if (tmp.qu.nanofield.power > 124) tmp.qu.nanofield.powerThreshold = tmp.qu.nanofield.powerThreshold.times(Decimal.pow(4,tmp.qu.nanofield.power-124))
+					if (tmp.qu.nanofield.power > 149) tmp.qu.nanofield.powerThreshold = tmp.qu.nanofield.powerThreshold.times( Decimal.pow(1.1, -100+Math.pow(tmp.qu.nanofield.power-140, 2) ) )
+					//uhh this should be collapsed into a single function i.e. multiple rewards at once
 				}
 				tmp.qu.nanofield.rewards = Math.max(tmp.qu.nanofield.rewards, tmp.qu.nanofield.power)
 				if (!tmp.qu.nanofield.apgWoke && tmp.qu.nanofield.rewards >= tmp.apgw) {
