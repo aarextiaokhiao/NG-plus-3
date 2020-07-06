@@ -3611,19 +3611,39 @@ function getGPHProduction() {
 }
 
 function getGHRProduction() {
-	return player.ghostify.ghostlyPhotons.amount.sqrt().div(2)
+	var log = player.ghostify.ghostlyPhotons.amount.sqrt().div(2).log10()
+	if (log>25) log = Math.pow(Math.log2(log+7),2)
+	if (log>35) log = 3+Math.pow(Math.log10(65+log),5)
+	return Decimal.pow(10,log)
 }
 
 function getGHRCap() {
-	return player.ghostify.ghostlyPhotons.darkMatter.pow(0.4).times(1e3)
+	var log = player.ghostify.ghostlyPhotons.darkMatter.pow(0.4).times(1e3).log10()
+	if (log>32) log = Math.pow(Math.log2(log)-1,2)*2
+	return Decimal.pow(10,log)
 }
 
 function getLightThreshold(l) {
-	return Decimal.pow(tmp.lti[l],player.ghostify.ghostlyPhotons.lights[l]).times(tmp.lt[l])
+	var actuallvl = player.ghostify.ghostlyPhotons.lights[l]
+	var lvl = player.ghostify.ghostlyPhotons.lights[l]
+	var log57 = Math.log(7)/Math.log(5)
+	if (lvl>100) lvl += Math.floor(Math.pow(lvl-95,log57))
+	var expsclaing = 0
+	if (actuallvl>200) expsclaing = Math.floor(Math.pow(1.1,actuallvl-180))
+	//lvl += expscaling
+	//abv is commented out on purpose
+	return Decimal.pow(tmp.lti[l],lvl).times(tmp.lt[l])
+	//add a quadratic scaling at 100
 }
 
 function getLightEmpowermentReq() {
-	return Math.floor(player.ghostify.ghostlyPhotons.enpowerments*2.4+1)
+	var linear = player.ghostify.ghostlyPhotons.enpowerments*2.4
+	var quadratic = Math.pow(Math.max(0,player.ghostify.ghostlyPhotons.enpowerments-13),2)/3
+	//starts at the 15th LE
+	var exponential = Math.pow(1.2,player.ghostify.ghostlyPhotons.enpowerments-20)-1
+	//starts at the 20th LE, first cost bump at 21st LE
+	exponential = Math.max(exponential,0)
+	return Math.floor(linear+1+quadratic+exponential)
 }
 
 function lightEmpowerment() {
