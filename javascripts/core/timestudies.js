@@ -816,6 +816,7 @@ let tsMults = {
 		if (bigRipped && log > 900) log = Math.sqrt(log * 900)
 		else if (player.aarexModifications.newGameExpVersion) log = Math.min(log, 25000) // buff to NG+++^
 		else if (player.galacticSacrifice === undefined) log = Math.min(log, 2500)
+		if (log<0) log = 0
 		return Decimal.pow(10, log)
 	},
 	32: function() {
