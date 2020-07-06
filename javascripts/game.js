@@ -9208,6 +9208,41 @@ function preBreakProgess(){
 	return Math.min((Decimal.log10(player.money.plus(1)) / Decimal.log10(getLimit()) * 100), 100).toFixed(2) + "%"
 }
 
+function infDimProgress(){
+        document.getElementById("progressbar").style.width = percentage
+	document.getElementById("progresspercent").textContent = percentage
+	document.getElementById("progresspercent").setAttribute('ach-tooltip',"Percentage to next dimension unlock")
+	return Math.min(player.money.e / getNewInfReq().money.e * 100, 100).toFixed(2) + "%"
+}
+
+function currentEChallengeProgress(){
+	document.getElementById("progressbar").style.width = percentage
+	document.getElementById("progresspercent").textContent = percentage
+	document.getElementById("progresspercent").setAttribute('ach-tooltip',"Percentage to Eternity Challenge goal")
+	return Math.min(Decimal.log10(player.infinityPoints.plus(1)) / player.eternityChallGoal.log10() * 100, 100).toFixed(2) + "%"
+}
+
+function preEternityProgress(){
+        document.getElementById("progressbar").style.width = percentage
+        document.getElementById("progresspercent").textContent = percentage
+	document.getElementById("progresspercent").setAttribute('ach-tooltip',"Percentage to Eternity")
+	return Math.min(Decimal.log10(player.infinityPoints.plus(1)) / Decimal.log10(Number.MAX_VALUE)  * 100, 100).toFixed(2) + "%"
+}
+
+function r128Progress(){
+        document.getElementById("progressbar").style.width = percentage
+        document.getElementById("progresspercent").textContent = percentage
+	document.getElementById("progresspercent").setAttribute('ach-tooltip','Percentage to "What do I have to do to get rid of you"')
+	return (Decimal.log10(player.infinityPoints.plus(1)) / 220).toFixed(2) + "%"
+}
+
+function r138Progress(){
+        document.getElementById("progressbar").style.width = percentage
+        document.getElementById("progresspercent").textContent = percentage
+        document.getElementById("progresspercent").setAttribute('ach-tooltip','Percentage to "That is what I have to do to get rid of you."')
+	return Math.min(Decimal.log10(player.infinityPoints.plus(1)) / 200, 100).toFixed(2) + "%"
+}
+
 function gameLoop(diff) {
     	var thisUpdate = new Date().getTime();
     	if (thisUpdate - player.lastUpdate >= 21600000) giveAchievement("Don't you dare to sleep")
@@ -9269,9 +9304,6 @@ function gameLoop(diff) {
 	IPMultBuyUpdating()
     	replicantiApproxDisplayUpdating()
 	quantumGhostButtonDisplayUpdating()
-    	
-
-    	
     
 	updateMoney();
     	updateCoinPerSec();
@@ -9287,7 +9319,6 @@ function gameLoop(diff) {
     	checkPain()
 	checkSupersanic()
 	tickspeedButtonDisplay()
-
     	updateCosts()
 	
     	if (player.dilation.studies.includes(1)) player.dilation.dilatedTime = player.dilation.dilatedTime.plus(getDilTimeGainPerSecond().times(diff/10))
@@ -9316,30 +9347,15 @@ function gameLoop(diff) {
         } else if (!player.break) {
             var percentage = preBreakProgess()
         } else if (player.infDimensionsUnlocked.includes(false)) {
-            var percentage = Math.min(player.money.e / getNewInfReq().money.e * 100, 100).toFixed(2) + "%"
-            document.getElementById("progressbar").style.width = percentage
-            document.getElementById("progresspercent").textContent = percentage
-            document.getElementById("progresspercent").setAttribute('ach-tooltip',"Percentage to next dimension unlock")
+            var percentage = infDimProgress()
         } else if (player.currentEternityChall !== '' && player.infinityPoints.lt(player.eternityChallGoal.pow(2))) {
-            var percentage = Math.min(Decimal.log10(player.infinityPoints.plus(1)) / player.eternityChallGoal.log10() * 100, 100).toFixed(2) + "%"
-            document.getElementById("progressbar").style.width = percentage
-            document.getElementById("progresspercent").textContent = percentage
-            document.getElementById("progresspercent").setAttribute('ach-tooltip',"Percentage to Eternity Challenge goal")
+            var percentage = currentEChallengeProgress()
         } else if (player.infinityPoints.lt(Number.MAX_VALUE) || player.eternities == 0) {
-            var percentage = Math.min(Decimal.log10(player.infinityPoints.plus(1)) / Decimal.log10(Number.MAX_VALUE)  * 100, 100).toFixed(2) + "%"
-            document.getElementById("progressbar").style.width = percentage
-            document.getElementById("progresspercent").textContent = percentage
-            document.getElementById("progresspercent").setAttribute('ach-tooltip',"Percentage to Eternity")
+            var percentage = preEternityProgress()
         } else if (player.achievements.includes('r127') && !player.achievements.includes('r128') && player.timestudy.studies.length == 0) {
-            var percentage = (Decimal.log10(player.infinityPoints.plus(1)) / 220).toFixed(2) + "%"
-            document.getElementById("progressbar").style.width = percentage
-            document.getElementById("progresspercent").textContent = percentage
-            document.getElementById("progresspercent").setAttribute('ach-tooltip','Percentage to "What do I have to do to get rid of you"')
+            var percentage = r128Progress()
         } else if (player.dilation.studies.includes(5) && player.dilation.active && !player.achievements.includes('r138') && player.timestudy.studies.length == 0) {
-            var percentage = Math.min(Decimal.log10(player.infinityPoints.plus(1)) / 200, 100).toFixed(2) + "%"
-            document.getElementById("progressbar").style.width = percentage
-            document.getElementById("progresspercent").textContent = percentage
-            document.getElementById("progresspercent").setAttribute('ach-tooltip','Percentage to "That is what I have to do to get rid of you."')
+            var percentage = r138Progress()
         } else if (player.dilation.active && player.dilation.totalTachyonParticles.gte(getDilGain())) {
             var percentage = (getDilGain().log10() / player.dilation.totalTachyonParticles.log10()).toFixed(2) + "%"
             document.getElementById("progressbar").style.width = percentage
