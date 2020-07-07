@@ -9089,9 +9089,9 @@ function runRandomReplicanti(){
 function notContinuousReplicantiUpdating(){
 	var replSpeeds = getReplSpeed()
 	var current = player.replicanti.amount.ln()
+	var ts273Mult = getMTSMult(273)
 	var chance = Decimal.pow(player.replicanti.chance, ts273Mult.toNumber())
     	var interval = getReplicantiFinalInterval()
-	var ts273Mult = getMTSMult(273)
 
 	if (interval <= replicantiTicks && player.replicanti.unl) {
 		if (player.replicanti.amount.lte(100)) {
