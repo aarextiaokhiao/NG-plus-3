@@ -9217,7 +9217,7 @@ function replicantiApproxDisplayUpdating(){
 		"Approximately "+ timeDisplay(Math.max((Math.log(Number.MAX_VALUE) - current) / est.toNumber(), 0)*10) + " Until Infinite Replicanti"
 }
  
-function quantumGhostButtonDisplayUpdating(){
+function quantumGhostButtonDisplayUpdating(diff){
 	var currentQKmin = new Decimal(0)
     	var currentGHPmin = new Decimal(0)
     	if (quantumed && isQuantumReached()) {
@@ -9733,7 +9733,7 @@ function gameLoop(diff) {
     	replicantiIncreaseAndDisplayUpdating(diff)
 	IPMultBuyUpdating()
     	replicantiApproxDisplayUpdating()
-	quantumGhostButtonDisplayUpdating()
+	quantumGhostButtonDisplayUpdating(diff)
     
 	updateMoney();
     	updateCoinPerSec();
