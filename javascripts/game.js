@@ -9120,6 +9120,9 @@ function continuousReplicantiUpdating(diff){
 	var chance = Decimal.pow(player.replicanti.chance, ts273Mult.toNumber())
     	var interval = getReplicantiFinalInterval()
 	
+	var frequency = 0
+    	if (chance.gte("1e9999998")) frequency = ts273Mult.times(Math.log10(player.replicanti.chance+1)/Math.log10(2))
+	
 	var est = Decimal.div((frequency ? frequency.times(Math.log10(2)/Math.log10(Math.E) * 1e3) : Decimal.add(chance, 1).log(Math.E) * 1e3), interval)
 	
 	if (player.timestudy.studies.includes(192) && est.toNumber() > 0 && est.toNumber() < 1/0) player.replicanti.amount = Decimal.pow(Math.E, current +Math.log((diff*est/10) * (Math.log10(replSpeeds.inc)/replSpeeds.exp)+1) / (Math.log10(replSpeeds.inc)/replSpeeds.exp))
