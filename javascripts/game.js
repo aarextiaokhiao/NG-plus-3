@@ -9197,6 +9197,19 @@ function IPMultBuyUpdating(){
 }
 
 function replicantiApproxDisplayUpdating(){
+	var ts273Mult = getMTSMult(273)
+    	var chance = Decimal.pow(player.replicanti.chance, ts273Mult.toNumber())
+    	var interval = getReplicantiFinalInterval()
+	
+    	var frequency = 0
+    	if (chance.gte("1e9999998")) frequency = ts273Mult.times(Math.log10(player.replicanti.chance+1)/Math.log10(2))
+	let replSpeeds = getReplSpeed()
+	
+    	var est = Decimal.div((frequency ? frequency.times(Math.log10(2)/Math.log10(Math.E) * 1e3) : Decimal.add(chance, 1).log(Math.E) * 1e3), interval)
+    	var estLog10 = est.times(Math.log10(Math.E))
+
+   	var current = player.replicanti.amount.ln()
+	
 	document.getElementById("replicantiapprox").innerHTML = tmp.ngp3 && player.dilation.upgrades.includes("ngpp1") && player.timestudy.studies.includes(192) && player.replicanti.amount.gte(Number.MAX_VALUE) && (!player.aarexModifications.nguspV || player.aarexModifications.nguepV) ? 
 		"Replicanti increases by " + (estLog10 < Math.log10(2) ? "x2.00 per " + timeDisplayShort(Math.log10(2) / estLog10 * 10) : (estLog10.gte(1e4) ? shorten(estLog10) + " OoMs" : "x" + shorten(Decimal.pow(10, estLog10.toNumber()))) + " per second") + ".<br>" +
 		"Replicate interval slows down by " + replSpeeds.inc.toFixed(3) + "x per " + getFullExpansion(Math.floor(replSpeeds.exp)) + " OoMs.<br>" +
