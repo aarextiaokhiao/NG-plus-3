@@ -8120,6 +8120,7 @@ function checkEPReqAchieve(){
 }
 
 function checkIPReqAchieve(){
+	var ableToGetRid2 = player.timestudy.studies.length < 1 && player.dilation.active 
 	if (player.infinityPoints.gte(new Decimal("1e22000")) && checkEmpty) giveAchievement("What do I have to do to get rid of you")
 	if (player.infinityPoints.gte(1e100) && player.firstAmount.equals(0) && player.infinitied == 0 && player.resets <= 4 && player.galaxies <= 1 && player.replicanti.galaxies == 0) giveAchievement("Like feasting on a behind")
 	if (player.infinityPoints.gte('9.99999e999')) giveAchievement("This achievement doesn't exist II");
@@ -8175,6 +8176,7 @@ function checkTickspeedReqAchieve(){
 }
 
 function checkOtherPreNGp3Achieve(){
+	var ableToGetRid2 = player.timestudy.studies.length < 1 && player.dilation.active 
 	if (player.why >= 1e6) giveAchievement("Should we tell them about buy max...")
 	if (player.exdilation!==undefined) {
 		let ableToGetRid3 = ableToGetRid2 && player.dilation.upgrades.length === 0 && player.dilation.rebuyables[1] === 0 && player.dilation.rebuyables[2] === 0 && player.dilation.rebuyables[3] === 0
@@ -9027,6 +9029,8 @@ function notContinuousReplicantiUpdating(){
 	var current = player.replicanti.amount.ln()
 	var chance = Decimal.pow(player.replicanti.chance, ts273Mult.toNumber())
     	var interval = getReplicantiFinalInterval()
+	var ts273Mult = getMTSMult(273)
+
 	if (interval <= replicantiTicks && player.replicanti.unl) {
 		if (player.replicanti.amount.lte(100)) {
 			runRandomReplicanti()
@@ -9050,6 +9054,7 @@ function notContinuousReplicantiUpdating(){
 }
 
 function continuousReplicantiUpdating(diff){
+	var ts273Mult = getMTSMult(273)
 	var replSpeeds = getReplSpeed()
 	var current = player.replicanti.amount.ln()
 	var chance = Decimal.pow(player.replicanti.chance, ts273Mult.toNumber())
