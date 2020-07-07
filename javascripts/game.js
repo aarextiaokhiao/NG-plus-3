@@ -8121,6 +8121,9 @@ function checkEPReqAchieve(){
 
 function checkIPReqAchieve(){
 	var ableToGetRid2 = player.timestudy.studies.length < 1 && player.dilation.active 
+	if (tmp.ngp3) for (id=0;id<player.masterystudies.length;id++) {
+		if (player.masterystudies[id].split("t")[1]) ableToGetRid2 = false
+    	}
 	if (player.infinityPoints.gte(new Decimal("1e22000")) && checkEmpty) giveAchievement("What do I have to do to get rid of you")
 	if (player.infinityPoints.gte(1e100) && player.firstAmount.equals(0) && player.infinitied == 0 && player.resets <= 4 && player.galaxies <= 1 && player.replicanti.galaxies == 0) giveAchievement("Like feasting on a behind")
 	if (player.infinityPoints.gte('9.99999e999')) giveAchievement("This achievement doesn't exist II");
@@ -8177,6 +8180,9 @@ function checkTickspeedReqAchieve(){
 
 function checkOtherPreNGp3Achieve(){
 	var ableToGetRid2 = player.timestudy.studies.length < 1 && player.dilation.active 
+	if (tmp.ngp3) for (id=0;id<player.masterystudies.length;id++) {
+		if (player.masterystudies[id].split("t")[1]) ableToGetRid2 = false
+    	}
 	if (player.why >= 1e6) giveAchievement("Should we tell them about buy max...")
 	if (player.exdilation!==undefined) {
 		let ableToGetRid3 = ableToGetRid2 && player.dilation.upgrades.length === 0 && player.dilation.rebuyables[1] === 0 && player.dilation.rebuyables[2] === 0 && player.dilation.rebuyables[3] === 0
@@ -8191,19 +8197,195 @@ function checkOtherPreNGp3Achieve(){
 	if (Math.random() < 0.00001) giveAchievement("Do you feel lucky? Well do ya punk?")
 }
 
-let autoSaveSeconds=0
-setInterval(function() {
-	updateTemp()
-	
-	runAutoSave()
-	cantHoldInfinitiesCheck()
-	antitablesHaveTurnedCheck()
-	updateBlinkOfAnEye()
-	infPoints2Display()
-	updateChallTabDisplay()
-	eterPoints2Display()
+function ngP3AchieveCheck(){
+	let checkEmpty = player.timestudy.studies.length < 1
+	if (tmp.ngp3) for (id=0;id<player.masterystudies.length;id++) {
+		if (player.masterystudies[id].split("t")[1]) checkEmpty = false
+    	}
+	let ableToGetRid2 = checkEmpty && player.dilation.active
+	let ableToGetRid3 = ableToGetRid2 && tmp.qu.electrons.amount == 0	
+	let ableToGetRid4 = ableToGetRid2 && inQC(2)
+	let ableToGetRid5 = ableToGetRid4 && player.dontWant
+	let ableToGetRid6 = ableToGetRid2 && inQC(6) && inQC(8)
+	let noTree = false
+	let minUQ = getMinimumUnstableQuarks()
+	for (var u=1;u<9;u++) {
+		if (tmp.qu.tod.upgrades[u]) break
+		else noTree = true
+	}
+	if (player.meta.antimatter.gte(Number.MAX_VALUE)) giveAchievement("I don't have enough fuel!")
+	if (player.galaxies>899&&!player.dilation.studies.includes(1)) giveAchievement("No more tax fraud!")
+	if (player.money.gte(getOldAgeRequirement())) giveAchievement("Old age")
+	if (player.infinityPoints.e>=4e5&&ableToGetRid3) giveAchievement("I already got rid of you...")
+	if (player.meta.resets == 8) if (player.meta.antimatter.e>1499) giveAchievement("We are not going squared.")
+	if (player.eightBought>=4e6&&getTotalRG()+player.dilation.freeGalaxies<1) giveAchievement("Intergalactic")
+	if (player.old&&player.meta.antimatter.e>1699) giveAchievement("Old memories come true")
+	if (player.infinityPoints.e>=354e3&&ableToGetRid4) giveAchievement("Seriously, I already got rid of you.")
+	if (player.meta.antimatter.e>332&&player.meta[2].amount.eq(0)&&player.meta.resets<1) giveAchievement("ERROR 500: INTERNAL DIMENSION ERROR")
+	if (player.money.e>=788e11&&tmp.qu.pairedChallenges.completed<1) giveAchievement("The truth of anti-challenged")
+	if (player.money.e>=62e10&&player.currentEternityChall=="eterc11") giveAchievement("I can’t get my multipliers higher!")
+	if (player.replicanti.amount.e>=2e6&&player.dilation.tachyonParticles.eq(0)) giveAchievement("No dilation means no production.")
+	if (player.infinityPoints.gte(Decimal.pow(Number.MAX_VALUE, 1000))&&ableToGetRid5) giveAchievement("I don't want you to live anymore.")
+	if (player.dilation.dilatedTime.e>410&&tmp.qu.notrelative) giveAchievement("Time is not relative")
+	if (!player.achievements.includes("ng3p42")) {
+		for (d=2;d<9;d++) {
+			if (player[TIER_NAMES[d]+"Amount"].gt(0) || player["infinityDimension"+d].amount.gt(0) || player["timeDimension"+d].amount.gt(0) || player.meta[d].amount.gt(0)) break
+			else if (player.money.e>16e11&&d>7) giveAchievement("ERROR 404: DIMENSIONS NOT FOUND")
+		}
+	}
+	if (player.money.e>=8e6&&inQC(6)&&inQC(8)) giveAchievement("Impossible expectations")
+	if (player.timestudy.theorem>11e6&&tmp.qu.wasted) giveAchievement("Studies are wasted")
+	if (tmp.qu.replicants.requirement.gte("1e12500000")) giveAchievement("Stop blocking me!")
+	if (player.infinityPoints.gte(Decimal.pow(10, 275e3))&&ableToGetRid6) giveAchievement("Are you currently dying?")
+	if (tmp.qu.nanofield.rewards>20&&noTree) giveAchievement("But I don't want to grind!")
+	if (player.replicanti.amount.e >= (player.aarexModifications.ngudpV ? 268435456 : 36e6)) giveAchievement("Will it be enough?")
+	if (tmp.qu.bigRip.active) {
+		let ableToGetRid7 = ableToGetRid2 && player.epmult.eq(1)
+		let ableToGetRid8 = ableToGetRid7 && !tmp.qu.breakEternity.did
+		let ableToGetRid9 = ableToGetRid8 && noTree
+		let ableToGetRid10 = ableToGetRid9 && inQCModifier("ad")
+		if (player.currentEternityChall == "eterc7" && player.galaxies == 1 && player.money.e >= 8e7) giveAchievement("Time Immunity")
+		if (!player.timestudy.studies.includes(11) && player.timeShards.e > 214) giveAchievement("You're not really smart.")
+		if (ableToGetRid7 && player.infinityPoints.e >= 35e4) giveAchievement("And so your life?")
+		if (tmp.qu.breakEternity.eternalMatter.gte(9.999999e99)) giveAchievement("This achievement doesn't exist 4")
+		if (ableToGetRid8 && player.infinityPoints.e >= 95e4) giveAchievement("Please answer me why you are dying.")
+		if (ableToGetRid9 && player.infinityPoints.e >= 18e5) giveAchievement("Aren't you already dead?")
+		if (ableToGetRid10 && player.infinityPoints.e >= 22.5e3) giveAchievement("I give up.")
+	}
+	if (tmp.qu.bigRip.spaceShards.e>32&&!tmp.qu.breakEternity.did) giveAchievement("Finite Time")
+	if (minUQ.quarks.e>=1e12&&minUQ.decays>=2&&!tmp.qu.bigRip.times) giveAchievement("Weak Decay")		
+	if (nG(getInfinitied(), Number.MAX_VALUE)) giveAchievement("Meta-Infinity confirmed?")
+	if (nG(getEternitied(), Number.MAX_VALUE)) giveAchievement("Everlasting Eternities")
+	if (player.options.secrets && player.options.secrets.ghostlyNews && !player.options.newsHidden) giveAchievement("Two tickers")
+}
 
-    	var postBreak = getEternitied()!=0||(player.infinityPoints.gte(Number.MAX_VALUE)&&player.infDimensionsUnlocked[7])||player.break
+function updateNGpp17Reward(){
+	document.getElementById('epmultauto').style.display=player.achievements.includes("ngpp17")?"":"none"
+	for (i=1;i<9;i++) document.getElementById("td"+i+'auto').style.visibility=player.achievements.includes("ngpp17")?"visible":"hidden"
+	document.getElementById('togglealltimedims').style.visibility=player.achievements.includes("ngpp17")?"visible":"hidden"
+}
+
+function updateNGpp16Reward(){
+	document.getElementById('replicantibulkmodetoggle').style.display=player.achievements.includes("ngpp16")?"inline-block":"none"
+}
+
+function notifyQuantumMilestones(){
+	if (speedrunMilestonesReached>notifyId) {
+		$.notify("You have unlocked "+timeDisplayShort(speedrunMilestones[notifyId]*36e3)+" speedrun milestone! "+(["You now start with 20,000 eternities when going quantum","You unlocked time theorem autobuyer","You now start with all Eternity Challenges completed and\neternity upgrades bought","You now start with dilation unlocked","You unlocked a new option for eternity autobuyer","You now start with all dilation studies and\nnon-rebuyable dilation upgrades before Meta Dimensions unlocked except passive TT gen upgrade","You unlocked first meta dimension autobuyer","You unlocked second meta dimension autobuyer","You unlocked third meta dimension autobuyer","You unlocked fourth meta dimension autobuyer","You unlocked fifth meta dimension autobuyer and you now keep time studies and passive TT gen upgrade","You unlocked sixth meta dimension autobuyer","You unlocked seventh meta dimension autobuyer","You unlocked eighth meta dimension autobuyer and\nall non-rebuyable dilation upgrades","You unlocked meta-dimension boost autobuyer","You now keep all time studies in mastery studies","You can now buy Meta Dimensions without buying the previous dimension","You now start with "+shortenCosts(1e13)+" eternities","You now start with "+shortenCosts(1e25)+" meta-antimatter on reset","You can now turn on automatic replicated galaxies anytime","You made rebuyable dilation upgrade and Meta Dimension autobuyers 3x faster","You now start with "+shortenCosts(1e100)+" dilated time on quantum and dilated time does not reset until quantum","You unlocked quantum autobuyer","You now keep replicanti on eternity","You unlocked manual mode for eternity autobuyer and sacrifice galaxy autobuyer","Your rebuyable dilation upgrade autobuyer now can buy max all upgrades","You now can buy max meta-dimension boosts and start with 4 meta-dimension boosts","For now on, you can gain banked infinities based on your post-crunch infinitied stat"])[notifyId]+".","success")
+		notifyId++
+    	}
+}
+
+function notifyGhostifyMilestones(){
+	if (player.ghostify.milestones>notifyId2) {
+		$.notify("You became a ghost in at most "+getFullExpansion(tmp.bm[notifyId2])+" quantumed stat! "+(["You now start with all Speedrun Milestones and all "+shorten(Number.MAX_VALUE)+" QK features unlocked, all Paired Challenges completed, all Big Rip upgrades bought, Nanofield is 2x faster until you reach 16 rewards, and you get quarks based on your best MA this quantum", "For now on, colored quarks do not cancel, you keep your gluon upgrades, you can quick Big Rip, and completing an Eternity Challenge doesn't respec your time studies.", "You now keep your Electron upgrades", "For now on, Quantuming doesn't reset your Tachyon particles unless you are in a QC, unstabilizing quarks doesn't lose your colored quarks, and you start with 5 of 1st upgrades of each Branch", "For now on, Quantuming doesn't reset your Meta-Dimension Boosts unless you are in a QC or you are going to undo Big Rip", "For now on, Quantuming doesn't reset your normal replicants unless you are in a QC or you are going to undo Big Rip", "You now start with 10 worker replicants and Ghostifying now doesn't reset Neutrinos.", "You are now gaining ^0.5 amount of quarks, ^0.5 amount of gluons, and 1% of Space Shards you will gain per second.", "You now start with 10 of Second Emperor Dimensions"+(player.aarexModifications.ngudpV?" and for now on, start Big Rips with 3rd row of Eternity upgrades":""), "You now start with 10 of Fourth Emperor Dimensions", "You now start with 10 of Sixth Emperor Dimensions", "You now start with 10 of Eighth Emperor Dimensions", "You now start with first 16 Nanofield rewards", "You now start with "+shortenCosts(1e25)+" quark spins and Branches are 10x faster", "You now start with Break Eternity unlocked and all Break Eternity upgrades bought", "For now on, you gain 1% of quarks you will gain per second and you keep your Tachyon particles on Quantum and Ghostify if you didn't Big Rip."])[notifyId2]+".","success")
+		notifyId2++
+	}
+}
+
+function dilationStuffABTick(){
+	var canAutoUpgs = canAutoDilUpgs()
+	document.getElementById('dilUpgsauto').style.display = canAutoUpgs ? "" : "none"
+	document.getElementById('distribEx').style.display = player.achievements.includes("ngud14") && player.aarexModifications.nguspV !== undefined ? "" : "none"
+	if (canAutoUpgs && player.autoEterOptions.dilUpgs) autoBuyDilUpgs()
+
+	document.getElementById("dilationTabbtn").style.display = (player.dilation.studies.includes(1)) ? "table-cell" : "none"
+	document.getElementById("blackHoleTabbtn").style.display = player.dilation.studies.includes(1) && player.exdilation != undefined ? "table-cell" : "none"
+	updateDilationUpgradeButtons()
+}
+
+function doBosonsUnlockStuff(){
+	player.ghostify.wzb.unl=true
+        player.ghostify.wzb.unlReal=true
+        $.notify("Congratulations! You have unlocked Bosonic Lab!", "success")
+	giveAchievement("Even Ghostlier than before")
+	updateTemp()
+	updateNeutrinoBoosts()
+	updateBLUnlocks()
+}
+
+function doPhotonsUnlockStuff(){
+	player.ghostify.ghostlyPhotons.unl=true
+        $.notify("Congratulations! You have unlocked Ghostly Photons!", "success")
+	giveAchievement("Progressing as a Ghost")
+	updateTemp()
+	updateQuantumChallenges()
+	updateBreakEternity()
+	updateGPHUnlocks()
+}
+
+function ALLACHIEVECHECK(){
+	//PRE NG+3 ACHIEVEMENTS ONLY!!!
+	checkIPReqAchieve() //IP Req
+	checkEPReqAchieve() //EP Req
+	checkReplicantiBasedReqAchieve() //Replicanti based Req
+	checkResetCountReqAchieve() //Reset Count Req
+	checkMatterAMNDReqAchieve() //AM/ND/Matter Req
+	checkInfPowerReqAchieve() //IPo Req
+	checkTickspeedReqAchieve() //Tickspeed/tick upgs based
+	checkOtherPreNGp3Achieve() //Other
+	
+	if (tmp.ngp3) ngP3AchieveCheck()
+}
+
+function doBreakEternityUnlockStuff(){
+	tmp.qu.breakEternity.unlocked = true
+	$.notify("Congratulations! You have unlocked Break Eternity!", "success")
+        updateBreakEternity()
+}
+
+function doNGP4UnlockStuff(){
+	$.notify("Congratulations! You unlocked NG+4!", "success")
+	metaSave.ngp4=true
+	checkForExpertMode()
+	localStorage.setItem(metaSaveId,btoa(JSON.stringify(metaSave)))
+}
+
+function doGhostifyUnlockStuff(){
+	player.ghostify.reached = true
+	if (document.getElementById("welcome").style.display != "flex") document.getElementById("welcome").style.display = "flex"
+	else player.aarexModifications.popUpId = ""
+	document.getElementById("welcomeMessage").innerHTML = "You are almost there for a supreme completion! However, completing this turns you to a ghost instead. This allows you to pass big rip universes and unlock new stuff! However, you need to lose everything too. Therefore, this is the sixth layer of NG+3."
+}
+
+function doReachAMGoalStuff(){
+	if (document.getElementById("welcome").style.display != "flex") document.getElementById("welcome").style.display = "flex"
+	else player.aarexModifications.popUpId = ""
+	document.getElementById("welcomeMessage").innerHTML="You reached the antimatter goal ("+shorten(Decimal.pow(10, getQCGoal()))+"), but you didn't reach the meta-antimatter goal yet! Get "+shorten(Decimal.pow(Number.MAX_VALUE, 1.45))+" meta-antimatter"+(tmp.qu.bigRip.active?" and then you can become a ghost!":" and then go quantum to complete your challenge!")
+	tmp.qu.nonMAGoalReached.push(chall)
+}
+
+function doQuantumUnlockStuff(){
+	tmp.qu.reached = true
+        if (document.getElementById("welcome").style.display != "flex") document.getElementById("welcome").style.display = "flex"
+	else player.aarexModifications.popUpId = ""
+	document.getElementById("welcomeMessage").innerHTML = "Congratulations! You reached " + shorten(getQuantumReq()) + " MA and then completed EC14 for the first time! You unlocked the fifth layer called Quantum! It comes after Dimension Boost, Antimatter Galaxy, Big Crunch, and Eternity. This allows you to get gigantic numbers!"
+}
+
+function doNGP3UnlockStuff(){
+	var chall=getCurrentQCData()
+	if (chall.length<2) chall=chall[0]
+	else if (chall[0]>chall[1]) chall=chall[1]*10+chall[0]
+	else chall=chall[0]*10+chall[1]
+	if (!tmp.qu.reached && isQuantumReached()) doQuantumUnlockStuff()
+	if (chall && player.money.gt(Decimal.pow(10, getQCGoal())) && player.meta.bestAntimatter.lt(Decimal.pow(Number.MAX_VALUE, 1.45)) && !tmp.qu.nonMAGoalReached.includes(chall)) {
+		doReachAMGoalStuff()
+	}
+	if (!player.ghostify.reached && tmp.qu.bigRip.active) if (tmp.qu.bigRip.bestThisRun.gte(Decimal.pow(10, getQCGoal()))) {
+		doGhostifyUnlockStuff()
+	}
+	var notInEasierMode = !player.aarexModifications.newGameMult&&!player.aarexModifications.newGameExpVersion&&!player.aarexModifications.ngudpV&&!player.aarexModifications.ngumuV&&!player.aarexModifications.nguepV&&!player.aarexModifications.aau&&
+	if (player.masterystudies && (player.masterystudies.includes("d14")||player.achievements.includes("ng3p51")) && !metaSave.ngp4 && notInEasierMode) {
+		doNGP4UnlockStuff()
+	}
+        if (player.eternityPoints.gte("1e1215") && tmp.qu.bigRip.active && !tmp.qu.breakEternity.unlocked) doBreakEternityUnlockStuff()
+        if (player.money.gte(Decimal.pow(10,6e9))&&tmp.qu.bigRip.active&&!player.ghostify.ghostlyPhotons.unl) doPhotonsUnlockStuff()
+	let max=getMaximumUnstableQuarks()
+        if (max.quarks.log10() > 1e10 && max.decays >= 5 && !player.ghostify.wzb.unl) doBosonsUnlockStuff()
+}
+
+function updateResetTierButtons(){
+	var postBreak = getEternitied()!=0||(player.infinityPoints.gte(Number.MAX_VALUE)&&player.infDimensionsUnlocked[7])||player.break
     	var preQuantumEnd = quantumed
     	var canBigRip = false
 	if (tmp.ngp3 && inQC(0)) {
@@ -8226,9 +8408,6 @@ setInterval(function() {
 	} else document.getElementById("galaxyPoints2").style.display="none"
     	document.getElementById("sacpos").className = preQuantumEnd?"sacpos":postBreak?"quantumpos":"eterpos"
 
-	eternityBtnDisplayType()
-	updateQuarkDisplay()
-
     	document.getElementById("bigcrunch").parentElement.style.top = haveBlock2 ? "259px" : haveBlock ? "139px" : "19px"
     	document.getElementById("quantumBlock").style.display = haveBlock ? "" : "none"
     	document.getElementById("quantumBlock").style.height = haveBlock2 ? "240px" : "120px"
@@ -8249,134 +8428,19 @@ setInterval(function() {
         	if (showQuantumed) document.getElementById("quantumedBMAmount").textContent = getFullExpansion(tmp.qu.times)
     	}
 	document.getElementById("ghostifybtn").style.display = showQuantumBtn && bigRipped ? "" : "none"
+}
 
-    	if (order) for (var i=0; i<order.length; i++) document.getElementById(order[i]+"goal").textContent = "Goal: "+shortenCosts(getGoal(order[i]))
+function updateOrderGoals(){
+	if (order) for (var i=0; i<order.length; i++) document.getElementById(order[i]+"goal").textContent = "Goal: "+shortenCosts(getGoal(order[i]))
+}
 
-    	if (player.replicanti.galaxybuyer === undefined || player.boughtDims) document.getElementById("replicantiresettoggle").style.display = "none"
+function updateReplicantiGalaxyToggels(){
+	if (player.replicanti.galaxybuyer === undefined || player.boughtDims) document.getElementById("replicantiresettoggle").style.display = "none"
     	else document.getElementById("replicantiresettoggle").style.display = "inline-block"
-	
-	ABTypeDisplay()
-    	replicantiShopDisplay()
-    	bendTimeCheck()
-	dimboostABTypeDisplay()
-    	IDABDisplayCorrection()
-   	replicantiShopABDisplay()
-	replicantiShopABRun()
-	primaryStatsDisplayResetLayers()
-    	crunchAnimationBtn()
-	TPAnimationBtn()
-    	runIDBuyersTick()
-	doAutoEterTick()
-	ECCompletionsDisplay()
-	ECchallengePortionDisplay()
-    	updateECUnlockButtons()
-	EC8PurchasesDisplay()
- 	failedEC12Check()
-	bankedInfinityDisplay()
+}
 
-    	
-
-    	let checkEmpty = player.timestudy.studies.length < 1
-    	if (player.boughtDims) checkEmpty = checkEmpty && player.timestudy.theorem == getTotalTT(player)
-    	if (tmp.ngp3) for (id=0;id<player.masterystudies.length;id++) {
-		if (player.masterystudies[id].split("t")[1]) checkEmpty = false
-    	}
-
-	let ableToGetRid2 = checkEmpty && player.dilation.active
-	
-	//PRE NG+3 ACHIEVEMENTS ONLY!!!
-	checkIPReqAchieve() //IP Req
-	checkEPReqAchieve() //EP Req
-	checkReplicantiBasedReqAchieve() //Replicanti based Req
-	checkResetCountReqAchieve() //Reset Count Req
-	checkMatterAMNDReqAchieve() //AM/ND/Matter Req
-	checkInfPowerReqAchieve() //IPo Req
-	checkTickspeedReqAchieve() //Tickspeed/tick upgs based
-	checkOtherPreNGp3Achieve() //Other
-	
-	
+function doPerSecondNGP3Stuff(){
 	if (tmp.ngp3) {
-		let ableToGetRid3 = ableToGetRid2 && tmp.qu.electrons.amount == 0
-		let ableToGetRid4 = ableToGetRid2 && inQC(2)
-		let ableToGetRid5 = ableToGetRid4 && player.dontWant
-		let ableToGetRid6 = ableToGetRid2 && inQC(6) && inQC(8)
-		let noTree = false
-		let minUQ = getMinimumUnstableQuarks()
-		for (var u=1;u<9;u++) {
-			if (tmp.qu.tod.upgrades[u]) break
-			else noTree = true
-		}
-		if (player.meta.antimatter.gte(Number.MAX_VALUE)) giveAchievement("I don't have enough fuel!")
-		if (player.galaxies>899&&!player.dilation.studies.includes(1)) giveAchievement("No more tax fraud!")
-		if (player.money.gte(getOldAgeRequirement())) giveAchievement("Old age")
-		if (player.infinityPoints.e>=4e5&&ableToGetRid3) giveAchievement("I already got rid of you...")
-		if (player.meta.resets == 8) if (player.meta.antimatter.e>1499) giveAchievement("We are not going squared.")
-		if (player.eightBought>=4e6&&getTotalRG()+player.dilation.freeGalaxies<1) giveAchievement("Intergalactic")
-		if (player.old&&player.meta.antimatter.e>1699) giveAchievement("Old memories come true")
-		if (player.infinityPoints.e>=354e3&&ableToGetRid4) giveAchievement("Seriously, I already got rid of you.")
-		if (player.meta.antimatter.e>332&&player.meta[2].amount.eq(0)&&player.meta.resets<1) giveAchievement("ERROR 500: INTERNAL DIMENSION ERROR")
-		if (player.money.e>=788e11&&tmp.qu.pairedChallenges.completed<1) giveAchievement("The truth of anti-challenged")
-		if (player.money.e>=62e10&&player.currentEternityChall=="eterc11") giveAchievement("I can’t get my multipliers higher!")
-		if (player.replicanti.amount.e>=2e6&&player.dilation.tachyonParticles.eq(0)) giveAchievement("No dilation means no production.")
-		if (player.infinityPoints.gte(Decimal.pow(Number.MAX_VALUE, 1000))&&ableToGetRid5) giveAchievement("I don't want you to live anymore.")
-		if (player.dilation.dilatedTime.e>410&&tmp.qu.notrelative) giveAchievement("Time is not relative")
-		if (!player.achievements.includes("ng3p42")) {
-			for (d=2;d<9;d++) {
-				if (player[TIER_NAMES[d]+"Amount"].gt(0) || player["infinityDimension"+d].amount.gt(0) || player["timeDimension"+d].amount.gt(0) || player.meta[d].amount.gt(0)) break
-				else if (player.money.e>16e11&&d>7) giveAchievement("ERROR 404: DIMENSIONS NOT FOUND")
-			}
-		}
-		if (player.money.e>=8e6&&inQC(6)&&inQC(8)) giveAchievement("Impossible expectations")
-		if (player.timestudy.theorem>11e6&&tmp.qu.wasted) giveAchievement("Studies are wasted")
-		if (tmp.qu.replicants.requirement.gte("1e12500000")) giveAchievement("Stop blocking me!")
-		if (player.infinityPoints.gte(Decimal.pow(10, 275e3))&&ableToGetRid6) giveAchievement("Are you currently dying?")
-		if (tmp.qu.nanofield.rewards>20&&noTree) giveAchievement("But I don't want to grind!")
-		if (player.replicanti.amount.e >= (player.aarexModifications.ngudpV ? 268435456 : 36e6)) giveAchievement("Will it be enough?")
-		if (tmp.qu.bigRip.active) {
-			let ableToGetRid7 = ableToGetRid2 && player.epmult.eq(1)
-			let ableToGetRid8 = ableToGetRid7 && !tmp.qu.breakEternity.did
-			let ableToGetRid9 = ableToGetRid8 && noTree
-			let ableToGetRid10 = ableToGetRid9 && inQCModifier("ad")
-			if (player.currentEternityChall == "eterc7" && player.galaxies == 1 && player.money.e >= 8e7) giveAchievement("Time Immunity")
-			if (!player.timestudy.studies.includes(11) && player.timeShards.e > 214) giveAchievement("You're not really smart.")
-			if (ableToGetRid7 && player.infinityPoints.e >= 35e4) giveAchievement("And so your life?")
-			if (tmp.qu.breakEternity.eternalMatter.gte(9.999999e99)) giveAchievement("This achievement doesn't exist 4")
-			if (ableToGetRid8 && player.infinityPoints.e >= 95e4) giveAchievement("Please answer me why you are dying.")
-			if (ableToGetRid9 && player.infinityPoints.e >= 18e5) giveAchievement("Aren't you already dead?")
-			if (ableToGetRid10 && player.infinityPoints.e >= 22.5e3) giveAchievement("I give up.")
-		}
-		if (tmp.qu.bigRip.spaceShards.e>32&&!tmp.qu.breakEternity.did) giveAchievement("Finite Time")
-		if (minUQ.quarks.e>=1e12&&minUQ.decays>=2&&!tmp.qu.bigRip.times) giveAchievement("Weak Decay")
-		if (nG(getInfinitied(), Number.MAX_VALUE)) giveAchievement("Meta-Infinity confirmed?")
-		if (nG(getEternitied(), Number.MAX_VALUE)) giveAchievement("Everlasting Eternities")
-		if (player.options.secrets && player.options.secrets.ghostlyNews && !player.options.newsHidden) giveAchievement("Two tickers")
-	}
-
-	var canAutoUpgs = canAutoDilUpgs()
-	document.getElementById('dilUpgsauto').style.display = canAutoUpgs ? "" : "none"
-	document.getElementById('distribEx').style.display = player.achievements.includes("ngud14") && player.aarexModifications.nguspV !== undefined ? "" : "none"
-	if (canAutoUpgs && player.autoEterOptions.dilUpgs) autoBuyDilUpgs()
-
-	document.getElementById("dilationTabbtn").style.display = (player.dilation.studies.includes(1)) ? "table-cell" : "none"
-	document.getElementById("blackHoleTabbtn").style.display = player.dilation.studies.includes(1) && player.exdilation != undefined ? "table-cell" : "none"
-	updateDilationUpgradeButtons()
-
-	document.getElementById('epmultauto').style.display=player.achievements.includes("ngpp17")?"":"none"
-	for (i=1;i<9;i++) document.getElementById("td"+i+'auto').style.visibility=player.achievements.includes("ngpp17")?"visible":"hidden"
-	document.getElementById('togglealltimedims').style.visibility=player.achievements.includes("ngpp17")?"visible":"hidden"
-	document.getElementById('replicantibulkmodetoggle').style.display=player.achievements.includes("ngpp16")?"inline-block":"none"
-
-    	if (speedrunMilestonesReached>notifyId) {
-		$.notify("You have unlocked "+timeDisplayShort(speedrunMilestones[notifyId]*36e3)+" speedrun milestone! "+(["You now start with 20,000 eternities when going quantum","You unlocked time theorem autobuyer","You now start with all Eternity Challenges completed and\neternity upgrades bought","You now start with dilation unlocked","You unlocked a new option for eternity autobuyer","You now start with all dilation studies and\nnon-rebuyable dilation upgrades before Meta Dimensions unlocked except passive TT gen upgrade","You unlocked first meta dimension autobuyer","You unlocked second meta dimension autobuyer","You unlocked third meta dimension autobuyer","You unlocked fourth meta dimension autobuyer","You unlocked fifth meta dimension autobuyer and you now keep time studies and passive TT gen upgrade","You unlocked sixth meta dimension autobuyer","You unlocked seventh meta dimension autobuyer","You unlocked eighth meta dimension autobuyer and\nall non-rebuyable dilation upgrades","You unlocked meta-dimension boost autobuyer","You now keep all time studies in mastery studies","You can now buy Meta Dimensions without buying the previous dimension","You now start with "+shortenCosts(1e13)+" eternities","You now start with "+shortenCosts(1e25)+" meta-antimatter on reset","You can now turn on automatic replicated galaxies anytime","You made rebuyable dilation upgrade and Meta Dimension autobuyers 3x faster","You now start with "+shortenCosts(1e100)+" dilated time on quantum and dilated time does not reset until quantum","You unlocked quantum autobuyer","You now keep replicanti on eternity","You unlocked manual mode for eternity autobuyer and sacrifice galaxy autobuyer","Your rebuyable dilation upgrade autobuyer now can buy max all upgrades","You now can buy max meta-dimension boosts and start with 4 meta-dimension boosts","For now on, you can gain banked infinities based on your post-crunch infinitied stat"])[notifyId]+".","success")
-		notifyId++
-    	}
-	if (tmp.ngp3) {
-		if (!tmp.qu.reached && isQuantumReached()) {
-            		tmp.qu.reached = true
-            		if (document.getElementById("welcome").style.display != "flex") document.getElementById("welcome").style.display = "flex"
-            		else player.aarexModifications.popUpId = ""
-			document.getElementById("welcomeMessage").innerHTML = "Congratulations! You reached " + shorten(getQuantumReq()) + " MA and then completed EC14 for the first time! You unlocked the fifth layer called Quantum! It comes after Dimension Boost, Antimatter Galaxy, Big Crunch, and Eternity. This allows you to get gigantic numbers!"
-		}
 		if (tmp.qu.autoECN!==undefined) {
 			justImported=true
             		if (tmp.qu.autoECN>12) buyMasteryStudy("ec",tmp.qu.autoECN,true)
@@ -8392,58 +8456,62 @@ setInterval(function() {
 		}
 		if (isAutoGhostActive(8)) buyMaxQuantumFood()
 		if (isAutoGhostActive(7)) maxQuarkMult()
-		var chall=getCurrentQCData()
-		if (chall.length<2) chall=chall[0]
-		else if (chall[0]>chall[1]) chall=chall[1]*10+chall[0]
-		else chall=chall[0]*10+chall[1]
-		if (chall && player.money.gt(Decimal.pow(10, getQCGoal())) && player.meta.bestAntimatter.lt(Decimal.pow(Number.MAX_VALUE, 1.45)) && !tmp.qu.nonMAGoalReached.includes(chall)) {
-			if (document.getElementById("welcome").style.display != "flex") document.getElementById("welcome").style.display = "flex"
-            		else player.aarexModifications.popUpId = ""
-            		document.getElementById("welcomeMessage").innerHTML="You reached the antimatter goal ("+shorten(Decimal.pow(10, getQCGoal()))+"), but you didn't reach the meta-antimatter goal yet! Get "+shorten(Decimal.pow(Number.MAX_VALUE, 1.45))+" meta-antimatter"+(tmp.qu.bigRip.active?" and then you can become a ghost!":" and then go quantum to complete your challenge!")
-            		tmp.qu.nonMAGoalReached.push(chall)
-		}
-		if (!player.ghostify.reached && tmp.qu.bigRip.active) if (tmp.qu.bigRip.bestThisRun.gte(Decimal.pow(10, getQCGoal()))) {
-			player.ghostify.reached = true
-			if (document.getElementById("welcome").style.display != "flex") document.getElementById("welcome").style.display = "flex"
-			else player.aarexModifications.popUpId = ""
-			document.getElementById("welcomeMessage").innerHTML = "You are almost there for a supreme completion! However, completing this turns you to a ghost instead. This allows you to pass big rip universes and unlock new stuff! However, you need to lose everything too. Therefore, this is the sixth layer of NG+3."
-		}
-		if (player.masterystudies&&(player.masterystudies.includes("d14")||player.achievements.includes("ng3p51"))&&!player.aarexModifications.newGameMult&&!player.aarexModifications.newGameExpVersion&&!player.aarexModifications.ngudpV&&!player.aarexModifications.ngumuV&&!player.aarexModifications.nguepV&&!player.aarexModifications.aau&&!metaSave.ngp4) {
-            		$.notify("Congratulations! You unlocked NG+4!", "success")
-			metaSave.ngp4=true
-			checkForExpertMode()
-			localStorage.setItem(metaSaveId,btoa(JSON.stringify(metaSave)))
-		}
-        	if (player.eternityPoints.gte("1e1215") && tmp.qu.bigRip.active && !tmp.qu.breakEternity.unlocked) {
-            		tmp.qu.breakEternity.unlocked = true
-            		$.notify("Congratulations! You have unlocked Break Eternity!", "success")
-            		updateBreakEternity()
-		}
-        	if (player.money.gte(Decimal.pow(10,6e9))&&tmp.qu.bigRip.active&&!player.ghostify.ghostlyPhotons.unl) {
-            		player.ghostify.ghostlyPhotons.unl=true
-            		$.notify("Congratulations! You have unlocked Ghostly Photons!", "success")
-            		giveAchievement("Progressing as a Ghost")
-            		updateTemp()
-            		updateQuantumChallenges()
-            		updateBreakEternity()
-            		updateGPHUnlocks()
-		}
-		let max=getMaximumUnstableQuarks()
-        	if (max.quarks.log10()>1e10&&max.decays>=5&&!player.ghostify.wzb.unl) {
-            		player.ghostify.wzb.unl=true
-            		player.ghostify.wzb.unlReal=true
-            		$.notify("Congratulations! You have unlocked Bosonic Lab!", "success")
-            		giveAchievement("Even Ghostlier than before")
-            		updateTemp()
-            		updateNeutrinoBoosts()
-            		updateBLUnlocks()
-		}
-		if (player.ghostify.milestones>notifyId2) {
-			$.notify("You became a ghost in at most "+getFullExpansion(tmp.bm[notifyId2])+" quantumed stat! "+(["You now start with all Speedrun Milestones and all "+shorten(Number.MAX_VALUE)+" QK features unlocked, all Paired Challenges completed, all Big Rip upgrades bought, Nanofield is 2x faster until you reach 16 rewards, and you get quarks based on your best MA this quantum", "For now on, colored quarks do not cancel, you keep your gluon upgrades, you can quick Big Rip, and completing an Eternity Challenge doesn't respec your time studies.", "You now keep your Electron upgrades", "For now on, Quantuming doesn't reset your Tachyon particles unless you are in a QC, unstabilizing quarks doesn't lose your colored quarks, and you start with 5 of 1st upgrades of each Branch", "For now on, Quantuming doesn't reset your Meta-Dimension Boosts unless you are in a QC or you are going to undo Big Rip", "For now on, Quantuming doesn't reset your normal replicants unless you are in a QC or you are going to undo Big Rip", "You now start with 10 worker replicants and Ghostifying now doesn't reset Neutrinos.", "You are now gaining ^0.5 amount of quarks, ^0.5 amount of gluons, and 1% of Space Shards you will gain per second.", "You now start with 10 of Second Emperor Dimensions"+(player.aarexModifications.ngudpV?" and for now on, start Big Rips with 3rd row of Eternity upgrades":""), "You now start with 10 of Fourth Emperor Dimensions", "You now start with 10 of Sixth Emperor Dimensions", "You now start with 10 of Eighth Emperor Dimensions", "You now start with first 16 Nanofield rewards", "You now start with "+shortenCosts(1e25)+" quark spins and Branches are 10x faster", "You now start with Break Eternity unlocked and all Break Eternity upgrades bought", "For now on, you gain 1% of quarks you will gain per second and you keep your Tachyon particles on Quantum and Ghostify if you didn't Big Rip."])[notifyId2]+".","success")
-			notifyId2++
-		}
+		doNGP3UnlockStuff()
+		notifyGhostifyMilestones()
 		if (tmp.qu.autoOptions.assignQK && player.ghostify.milestones > 7) assignAll() 
 	}
+}
+
+let autoSaveSeconds=0
+setInterval(function() {
+	updateTemp()
+	runAutoSave()
+	
+	//Achieve:
+	cantHoldInfinitiesCheck()
+	antitablesHaveTurnedCheck()
+	updateBlinkOfAnEye()
+	ALLACHIEVECHECK()
+	bendTimeCheck()
+	
+	// AB Stuff
+	updateReplicantiGalaxyToggels()
+	ABTypeDisplay()
+	dimboostABTypeDisplay()
+	IDABDisplayCorrection()
+	replicantiShopABDisplay()
+	replicantiShopABRun()
+	runIDBuyersTick()
+	doAutoEterTick()
+	dilationStuffABTick()
+	updateNGpp17Reward()
+	updateNGpp16Reward()
+	
+	// Button Displays
+	infPoints2Display()
+	eterPoints2Display()
+	updateResetTierButtons()
+	eternityBtnDisplayType()
+	updateQuarkDisplay()
+	primaryStatsDisplayResetLayers()
+    	crunchAnimationBtn()
+	TPAnimationBtn()
+	
+    	// EC Stuff
+	ECCompletionsDisplay()
+	ECchallengePortionDisplay()
+    	updateECUnlockButtons()
+	EC8PurchasesDisplay()
+ 	failedEC12Check()
+	
+	// Other 
+	replicantiShopDisplay()
+    	updateChallTabDisplay()
+	updateOrderGoals()
+	bankedInfinityDisplay()
+	doPerSecondNGP3Stuff()
+	notifyQuantumMilestones()
+	
 }, 1000)
 
 function fact(v) {
@@ -8841,17 +8909,9 @@ function quantumOverallUpdating(diff){
 	//Color Powers
 	for (var c=0;c<3;c++) tmp.qu.colorPowers[colorShorthands[c]]=tmp.qu.colorPowers[colorShorthands[c]].add(getColorPowerProduction(colorShorthands[c]).times(diff/10))
 	updateColorPowers()
-	
-	//Replicants
 	if (player.masterystudies.includes("d10")) replicantOverallUpdating(diff)
-	
-	//Emperor Dimensions
 	if (player.masterystudies.includes("d11")) emperorDimUpdating(diff)
-	
-	//Nanofield
 	if (player.masterystudies.includes("d12")) nanofieldUpdating(diff)
-	
-	//Tree of Decay
 	if (player.masterystudies.includes("d13")) treeOfDecayUpdating(diff)
 	
 	if (speedrunMilestonesReached>5) {
