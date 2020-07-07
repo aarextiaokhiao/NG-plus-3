@@ -8120,10 +8120,12 @@ function checkEPReqAchieve(){
 }
 
 function checkIPReqAchieve(){
-	var ableToGetRid2 = player.timestudy.studies.length < 1 && player.dilation.active 
+	var checkEmpty = player.timestudy.studies.length < 1
 	if (tmp.ngp3) for (id=0;id<player.masterystudies.length;id++) {
-		if (player.masterystudies[id].split("t")[1]) ableToGetRid2 = false
+		if (player.masterystudies[id].split("t")[1]) checkEmpty = false
     	}
+	var ableToGetRid2 = checkEmpty && player.dilation.active 
+	
 	if (player.infinityPoints.gte(new Decimal("1e22000")) && checkEmpty) giveAchievement("What do I have to do to get rid of you")
 	if (player.infinityPoints.gte(1e100) && player.firstAmount.equals(0) && player.infinitied == 0 && player.resets <= 4 && player.galaxies <= 1 && player.replicanti.galaxies == 0) giveAchievement("Like feasting on a behind")
 	if (player.infinityPoints.gte('9.99999e999')) giveAchievement("This achievement doesn't exist II");
