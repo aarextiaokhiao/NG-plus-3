@@ -8374,7 +8374,7 @@ function doNGP3UnlockStuff(){
 	if (!player.ghostify.reached && tmp.qu.bigRip.active) if (tmp.qu.bigRip.bestThisRun.gte(Decimal.pow(10, getQCGoal()))) {
 		doGhostifyUnlockStuff()
 	}
-	var notInEasierMode = !player.aarexModifications.newGameMult&&!player.aarexModifications.newGameExpVersion&&!player.aarexModifications.ngudpV&&!player.aarexModifications.ngumuV&&!player.aarexModifications.nguepV&&!player.aarexModifications.aau&&
+	var notInEasierMode = !player.aarexModifications.newGameMult&&!player.aarexModifications.newGameExpVersion&&!player.aarexModifications.ngudpV&&!player.aarexModifications.ngumuV&&!player.aarexModifications.nguepV&&!player.aarexModifications.aau
 	if (player.masterystudies && (player.masterystudies.includes("d14")||player.achievements.includes("ng3p51")) && !metaSave.ngp4 && notInEasierMode) {
 		doNGP4UnlockStuff()
 	}
