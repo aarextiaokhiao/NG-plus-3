@@ -338,6 +338,7 @@ function giveAchievement(name, noUpdate) {
 	}
 	if (name == "Twice in the row") document.getElementById('toggleautoquantummode').style.display=""
 	if (name == "Stop blocking me!") document.getElementById('autoReset').style.display=""
+	if (name == "To the new dimension!") tmp.qu.bigRip.bestGals = 1
 	if (name == "Quantum doesn't take so long") {
 		updateAutobuyers()
 		updateAutoEterMode()
