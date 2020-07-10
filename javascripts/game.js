@@ -3866,7 +3866,8 @@ var modFullNames = {
   ngmu: "NG*",
   ngumu: "NGUd*'",
   ngex: "Expert Mode",
-  aau: "AAU"
+  aau: "AAU",
+  ngprw: "NG+ Reworked"
 }
 var modSubNames = {
   ngp: ["OFF", "ON", "NG++++"],
@@ -8330,6 +8331,10 @@ function ALLACHIEVECHECK(){
 	if (tmp.ngp3) ngP3AchieveCheck()
 }
 
+function inEasierMode() {
+	return player.aarexModifications.newGameMult || player.aarexModifications.newGameExpVersion || player.aarexModifications.ngudpV || player.aarexModifications.ngumuV || player.aarexModifications.nguepV || player.aarexModifications.aau
+}
+
 function doBreakEternityUnlockStuff(){
 	tmp.qu.breakEternity.unlocked = true
 	$.notify("Congratulations! You have unlocked Break Eternity!", "success")
@@ -8376,14 +8381,12 @@ function doNGP3UnlockStuff(){
 	if (!player.ghostify.reached && tmp.qu.bigRip.active) if (tmp.qu.bigRip.bestThisRun.gte(Decimal.pow(10, getQCGoal()))) {
 		doGhostifyUnlockStuff()
 	}
-	var notInEasierMode = !player.aarexModifications.newGameMult&&!player.aarexModifications.newGameExpVersion&&!player.aarexModifications.ngudpV&&!player.aarexModifications.ngumuV&&!player.aarexModifications.nguepV&&!player.aarexModifications.aau
-	if (player.masterystudies && (player.masterystudies.includes("d14")||player.achievements.includes("ng3p51")) && !metaSave.ngp4 && notInEasierMode) {
-		doNGP4UnlockStuff()
-	}
-        if (player.eternityPoints.gte("1e1215") && tmp.qu.bigRip.active && !tmp.qu.breakEternity.unlocked) doBreakEternityUnlockStuff()
-        if (player.money.gte(Decimal.pow(10,6e9))&&tmp.qu.bigRip.active&&!player.ghostify.ghostlyPhotons.unl) doPhotonsUnlockStuff()
-	let max=getMaximumUnstableQuarks()
-        if (max.quarks.log10() > 1e10 && max.decays >= 5 && !player.ghostify.wzb.unl) doBosonsUnlockStuff()
+	var inEasierModeCheck = !inEasierMode()
+	if (player.masterystudies && (player.masterystudies.includes("d14")||player.achievements.includes("ng3p51")) && !metaSave.ngp4 && !inEasierModeCheck) doNGP4UnlockStuff()
+	if (player.eternityPoints.gte("1e1215") && tmp.qu.bigRip.active && !tmp.qu.breakEternity.unlocked) doBreakEternityUnlockStuff()
+	if (player.money.gte(Decimal.pow(10,6e9))&&tmp.qu.bigRip.active&&!player.ghostify.ghostlyPhotons.unl) doPhotonsUnlockStuff()
+	let max = getMaximumUnstableQuarks()
+	if (max.quarks.log10() > 1e10 && max.decays >= 5 && !player.ghostify.wzb.unl) doBosonsUnlockStuff()
 }
 
 function updateResetTierButtons(){
