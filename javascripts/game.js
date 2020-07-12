@@ -9488,6 +9488,8 @@ function gainTPProgress(){
 }
 
 function ngpp13Progress(){
+	var gepLog = gainedEternityPoints().log2()
+	var goal = Math.pow(2,Math.ceil(Math.log10(gepLog) / Math.log10(2)))
 	goal = Decimal.sub("1e40000", player.eternityPoints).log2()
     	var percentage = Math.min(gepLog / goal * 100, 100).toFixed(2) + "%"
     	document.getElementById("progressbar").style.width = percentage
@@ -9496,6 +9498,8 @@ function ngpp13Progress(){
 }
 
 function r127Progress(){
+	var gepLog = gainedEternityPoints().log2()
+	var goal = Math.pow(2,Math.ceil(Math.log10(gepLog) / Math.log10(2)))
 	goal = Decimal.sub(Number.MAX_VALUE, player.eternityPoints).log2()
     	var percentage = Math.min(gepLog / goal * 100, 100).toFixed(2) + "%"
     	document.getElementById("progressbar").style.width = percentage
