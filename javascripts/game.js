@@ -9127,8 +9127,12 @@ function getReplicantiFinalInterval(){
 	return interval
 }
 
-function runRandomReplicanti(){
-	var temp = player.replicanti.amount
+function runRandomReplicanti(chance){
+	if (chance.gt(1)) {
+		player.replicanti.amount = player.replicanti.amount.times(2)
+		return
+	}
+	chance = chance.toNumber()
         for (var i=0; temp.gt(i); i++) {
 		if (chance > Math.random()) player.replicanti.amount = player.replicanti.amount.plus(1)
 	}
@@ -9139,13 +9143,13 @@ function notContinuousReplicantiUpdating(){
 	var current = player.replicanti.amount.ln()
 	var ts273Mult = getMTSMult(273)
 	var chance = Decimal.pow(player.replicanti.chance, ts273Mult.toNumber())
-    	var interval = getReplicantiFinalInterval()
+	var interval = getReplicantiFinalInterval()
 
 	if (interval <= replicantiTicks && player.replicanti.unl) {
 		if (player.replicanti.amount.lte(100)) {
-			runRandomReplicanti()
+			runRandomReplicanti(chance) //chance should be a decimal
 		} else if (player.replicanti.amount.lt(getReplicantiLimit())) {
-                	var temp = Decimal.round(player.replicanti.amount.dividedBy(100))
+			var temp = Decimal.round(player.replicanti.amount.dividedBy(100))
                 	if (Math.round(chance) !== 1) {
                     		let counter = 0
                     		for (var i=0; i<100; i++) {
