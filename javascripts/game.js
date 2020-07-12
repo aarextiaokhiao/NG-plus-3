@@ -1137,16 +1137,19 @@ function updateGPhTemp(){
 	}
 	tmp.ls[7] = player.ghostify.ghostlyPhotons.lights[0]*(Math.sqrt(tmp.ls[1]+1)+lePower) //Other red Light boosts than 0 LE
 	
+	
+	//RED
 	var light0multiplier = tmp.newNGP3E?.155:.15
 	var lighteffect0 = Math.pow(tmp.ls[0],1/4)*light0multiplier+1
 	if (lighteffect0 > 1.5 && !tmp.newNGP3E) lighteffect0 = Math.log10(lighteffect0*20/3)*1.5
 	if (lighteffect0 > 1.8) lighteffect0 = 1.8*Math.log10(1+5*lighteffect0)
 	if (lighteffect0 > 2) lighteffect0 = 1+Math.log2(lighteffect0)
-	
 	tmp.le[0] = lighteffect0
 	
-	tmp.le[1] = tmp.ls[1] > 64 ? Math.log10(tmp.ls[1]/64)+14:tmp.ls[1]>8?Math.sqrt(tmp.ls[1])+6 : tmp.ls[1]+1 //Orange light
+	//ORANGE
+	tmp.le[1] = tmp.ls[1] > 64 ? Math.log10(tmp.ls[1]/64)+14:tmp.ls[1]>8?Math.sqrt(tmp.ls[1])+6 : tmp.ls[1]+1 
 	
+	//YELLOW
 	var lighteffect2 = 0 //changed later no matter what
 	if (tmp.ls[2] > 60 && !tmp.newNGP3E){
 		lighteffect2 = (Math.log10(tmp.ls[2]/6)+2)/3*Math.sqrt(1200)
@@ -1155,29 +1158,35 @@ function updateGPhTemp(){
 	}
 	if (lighteffect2 > 70) lighteffect2 = 6+Math.pow(Math.log2(lighteffect2-6)+2 , 2)
 	if (lighteffect2 > 100) lighteffect2 = 4 + 6 * Math.pow( Math.log10(lighteffect2) ,4)
-	tmp.le[2] = Math.sqrt(lighteffect2) * 45e3 //Yellow light
+	tmp.le[2] = Math.sqrt(lighteffect2) * 45e3 
 	
-	tmp.le[3] = tmp.ngp3l?(tmp.ls[3]>8?Math.log10(tmp.ls[3]/8)+Math.sqrt(12)+1:Math.sqrt(tmp.ls[3]*1.5)+1):1 //Green light
+	//GREEN
+	tmp.le[3] = tmp.ngp3l?(tmp.ls[3]>8?Math.log10(tmp.ls[3]/8)+Math.sqrt(12)+1:Math.sqrt(tmp.ls[3]*1.5)+1):1 
 	
+	//BLUE
 	var light4mult = tmp.newNGP3E?1.3:5/4
-	var lighteffect4 = Math.log10(Math.sqrt(tmp.ls[4]*2)+1)*light4mult //Blue light
+	var lighteffect4 = Math.log10(Math.sqrt(tmp.ls[4]*2)+1)*light4mult 
 	if (lighteffect4>2.5) lighteffect4 = 1.5+Math.log10(4*lighteffect4)
 	tmp.le[4] = lighteffect4
 	
+	//INDIGO
 	var loglighteffect5 = tmp.ls[5] > 25 ? Math.sqrt(tmp.ls[5]*10+375) : tmp.ls[5]
 	loglighteffect5 *= tmp.newNGP3E?20:10
 	if (loglighteffect5 > 1024) loglighteffect5 = Math.pow(1+Math.log10(loglighteffect5-24),5)
-	tmp.le[5] = Decimal.pow(10,loglighteffect5) //Indigo light
+	tmp.le[5] = Decimal.pow(10,loglighteffect5) 
 	
+	//VIOLET
 	var lightexp6 = tmp.newNGP3E?.36:1/3
-	var loglighteffect6 = Math.pow(player.postC3Reward.log10()*tmp.ls[6],tmp.newNGP3E)*2 //Violet light
+	var loglighteffect6 = Math.pow(player.postC3Reward.log10()*tmp.ls[6],tmp.newNGP3E)*2 
 	if (loglighteffect6 > 15e3) loglighteffect6 = Math.pow(loglighteffect6/15e3,.6)*15e3
 	if (loglighteffect6 > 22222) loglighteffect6 = 11111*Math.log10(77778+loglighteffect6)*2/5
 	tmp.le[6] = Decimal.pow(10 , loglighteffect6)
 	
+	//EMPOWERMENTS BONUSES
 	if (player.ghostify.ghostlyPhotons.enpowerments > 0) tmp.le[7] = {effect:Math.log10(tmp.ls[3]+1)*300} //Green light (LE#1)
 	if (player.ghostify.ghostlyPhotons.enpowerments > 1) tmp.le[8] = Math.log10(tmp.ls[4]*10+1)/4+1 //Blue light (LE#2)
 	if (player.ghostify.ghostlyPhotons.enpowerments > 2) tmp.le[9] = Math.pow(tmp.ls[7]+1,.1)*2-1 //Red light (LE#3)
+	
 	
 	var bigRipUpg18base = 1+tmp.qu.bigRip.spaceShards.div(1e140).add(1).log10()
 	var bigRipUpg18exp = Math.max(tmp.qu.bigRip.spaceShards.div(1e140).add(1).log10()/10,1)
@@ -1320,29 +1329,48 @@ function updateInfiniteTimeTemp(){
 }
 
 function updateIntergalacticTemp(){
-	if (tmp.ngp3) {
-		x = player.galaxies
-		if (!tmp.qu.bigRip.active && player.ghostify.ghostlyPhotons.enpowerments>2) x *= tmp.le[9]
-		if (tmp.be && player.dilation.active && tmp.qu.breakEternity.upgrades.includes(10)) x *= getBreakUpgMult(10)
-		if (!tmp.ngp3l) x += tmp.aeg
-		tmp.igg = x
+	if (!tmp.ngp3) return
+	x = player.galaxies
+	if (!tmp.qu.bigRip.active && player.ghostify.ghostlyPhotons.enpowerments>2) x *= tmp.le[9]
+	if (tmp.be && player.dilation.active && tmp.qu.breakEternity.upgrades.includes(10)) x *= getBreakUpgMult(10)
+	if (!tmp.ngp3l) x += tmp.aeg
+	tmp.igg = x
 
-		var igLog = Math.pow(x, Math.min(Math.sqrt(Math.log10(Math.max(x, 1))) * 2, 2.5)) //Log10 of reward
-		tmp.igs = 0 //Intergalactic Scaling
-		if (!tmp.ngp3l && tmp.qu.bigRip.active && igLog > 1e9) { //Distant
-			igLog = Math.pow(igLog * 1e3, .75)
-			tmp.igs = 1
-		}
-		if ((player.aarexModifications.ngudpV || !tmp.ngp3l) && igLog > 1e15) { //Remote
-			igLog = Math.pow(10 + 6 * Math.log10(igLog), 7.5)
-			tmp.igs = 2
-		}
-		if (player.aarexModifications.ngudpV && igLog > 1e16) { //Ghostly
-			igLog = Math.pow(84 + Math.log10(igLog), 8)
-			tmp.igs = 3
-		}
-		tmp.ig = Decimal.pow(10, igLog)
+	var igLog = Math.pow(x, Math.min(Math.sqrt(Math.log10(Math.max(x, 1))) * 2, 2.5)) //Log10 of reward
+	tmp.igs = 0 //Intergalactic Scaling ; used in the display text
+	if (!tmp.ngp3l && tmp.qu.bigRip.active && igLog > 1e9) { //Distant
+		igLog = Math.pow(igLog * 1e3, .75)
+		tmp.igs = 1
 	}
+	if ((player.aarexModifications.ngudpV || !tmp.ngp3l) && igLog > 1e15) { //Remote
+		igLog = Math.pow(10 + 6 * Math.log10(igLog), 7.5)
+		tmp.igs = 2
+	}
+	if (player.aarexModifications.ngudpV && igLog > 1e16) { //Ghostly
+		igLog = Math.pow(84 + Math.log10(igLog), 8)
+		tmp.igs = 3
+	}
+	
+	var scalingStrength = 5
+	
+	if (igLog > 1e20 && scalingStrength > 4){
+		igLog = Math.pow(5*Math.log10(igLog),10) //derivative is .217142 at 1e20
+	}
+	if (igLog > 1e21 && scalingStrength > 3){ // this is the really strong one :) it becomes stupid tough scaling with derivative less than .01 at 32e21  
+		igLog = 1e21*Math.pow(igLog/1e21,.2) // derivative is .2 at 1e21
+	}
+	if (igLog > 1e22 && scalingStrength > 2){
+		igLog = Math.pow(12+4*Math.log10(igLog),11) //derivative is .191029 at 1e22
+	}
+	if (igLog > 1e23 && scalingStrength > 1){
+		igLog = 1e23*Math.pow(igLog/1e23,.1) // derivative is .1 at 1e23
+	}
+	if (igLog > 1e24 && scalingStrength > 0){
+		igLog = Math.pow(Math.pow(Math.log10(igLog),2)+424 ,8) //derivative is .142 at 1e24
+	}
+	
+	tmp.ig = Decimal.pow(10, igLog)
+	
 }
 
 function updateTemp() {
@@ -1412,7 +1440,7 @@ function updateTemp() {
 
 function showTab(tabName, init) {
     	if (tabName == 'quantumtab' && !player.masterystudies) {
-        	alert("Wait! The owner of NG++, dan-simon, have abandoned the development! However, this is not a win. You need to reach real Infinite antimatter to win! (it's impossible)")
+        	alert("Wait! The owner of NG++, dan-simon, have abandoned the development! However, this is not the end. You need to really reach Infinite antimatter to win! (it's impossible)")
         	return
     	}
     	//iterate over all elements in div_tab class. Hide everything that's not tabName and show tabName
@@ -1449,8 +1477,6 @@ function showTab(tabName, init) {
 }
 
 
-
-
 function updateMoney() {
 	document.getElementById("coinAmount").textContent = shortenMoney(player.money)
 	var element2 = document.getElementById("matter");
@@ -1481,6 +1507,10 @@ var clickedAntimatter
 function onAntimatterClick() {
 	clickedAntimatter++
 	if (!tmp.ngp3l && clickedAntimatter >= 10) giveAchievement("This is NOT a clicker game!")
+}
+
+function getInfinitiedStat(){
+	return getInfinitied()
 }
 
 function getInfinitied() {
@@ -1904,8 +1934,13 @@ function getDil3Power() {
 	return ret
 }
 
+function getDilationTPFormulaExp(disable){
+	return getDilExp(disable)
+}
+
 function getDilExp(disable) {
 	let ret = 1.5
+	if (player.aarexModifications.newGameExpVersion) ret += .001
 	if (player.meta !== undefined && !player.aarexModifications.nguspV) ret += getDilUpgPower(4) / 4
 	if (tmp.ngp3) {
 		if ((!tmp.qu.bigRip.active || tmp.qu.bigRip.upgrades.includes(11)) && player.masterystudies.includes("d13") && disable != "TU3") ret += getTreeUpgradeEffect(2)
@@ -1928,6 +1963,10 @@ function getNGUDTGain(){
 	return gain
 }
 
+function getDilatedTimeGainPerSecond(){
+	return getDilTimeGainPerSecond()
+}
+
 function getDilTimeGainPerSecond() {
 	let tp = player.dilation.tachyonParticles
 	let exp = GUBought("br3")?1.1:1
@@ -1941,7 +1980,7 @@ function getDilTimeGainPerSecond() {
 	if (player.dilation.upgrades.includes('ngpp2') && player.aarexModifications.newGameExpVersion) {
 		let e = new Decimal(getEternitied())
 		gain = gain.times(e.max(10).log10()).times(Math.pow(e.max(1e7).log10()-6,3))
-		if (e.gt(1e15)) gain = gain.times(Math.sqrt(e.log10())) // this comes into play at the grind right before quantum
+		if (e.gt(5e14)) gain = gain.times(Math.sqrt(e.log10())) // this comes into play at the grind right before quantum
 	}
 	if (player.dilation.upgrades.includes('ngpp6')) gain = gain.times(getDil17Bonus())
 	if (player.dilation.upgrades.includes('ngusp3')) gain = gain.times(getD22Bonus())
@@ -1960,6 +1999,12 @@ function getDilTimeGainPerSecond() {
 	if (hasBosonicUpg(15)) gain = gain.times(tmp.blu[15].dt)
 	if (tmp.newNGP3E && player.achievements.includes("r138") && gain.lt(1e100)) gain = gain.times(3)
 	if (!tmp.ngp3l && (tmp.ngp3 || tmp.newNGP3E) && player.achievements.includes("ngpp13")) gain = gain.times(2)
+	
+	//var lgain = gain.log10()
+	//if (lgain > 2500) lgain = 2500*Math.pow(lgain/2500,.9)
+	//if (lgain > 3000) lgain = 3000*Math.pow(lgain/3000,.9)
+	//return Decimal.pow(10,lgain)
+	
 	return gain;
 }
 
