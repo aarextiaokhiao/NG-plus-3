@@ -3350,7 +3350,7 @@ function getReplMult(next) {
 function upgradeReplicantiChance() {
     	if (player.infinityPoints.gte(player.replicanti.chanceCost) && isChanceAffordable() && player.eterc8repl !== 0) {
         	player.infinityPoints = player.infinityPoints.minus(player.replicanti.chanceCost)
-        	player.replicanti.chanceCost = player.replicanti.chanceCost.times(1e15)
+		if (player.ghostify.milestones < 11) player.replicanti.chanceCost = player.replicanti.chanceCost.times(1e15)
         	player.replicanti.chance = Math.round(player.replicanti.chance*100+1)/100
         	if (player.currentEternityChall == "eterc8") player.eterc8repl-=1
         	document.getElementById("eterc8repl").textContent = "You have "+player.eterc8repl+" purchases left."
@@ -8326,7 +8326,7 @@ function notifyQuantumMilestones(){
 
 function notifyGhostifyMilestones(){
 	if (player.ghostify.milestones>notifyId2) {
-		$.notify("You became a ghost in at most "+getFullExpansion(tmp.bm[notifyId2])+" quantumed stat! "+(["You now start with all Speedrun Milestones and all "+shorten(Number.MAX_VALUE)+" QK features unlocked, all Paired Challenges completed, all Big Rip upgrades bought, Nanofield is 2x faster until you reach 16 rewards, and you get quarks based on your best MA this quantum", "For now on, colored quarks do not cancel, you keep your gluon upgrades, you can quick Big Rip, and completing an Eternity Challenge doesn't respec your time studies.", "You now keep your Electron upgrades", "For now on, Quantuming doesn't reset your Tachyon particles unless you are in a QC, unstabilizing quarks doesn't lose your colored quarks, and you start with 5 of 1st upgrades of each Branch", "For now on, Quantuming doesn't reset your Meta-Dimension Boosts unless you are in a QC or you are going to undo Big Rip", "For now on, Quantuming doesn't reset your normal replicants unless you are in a QC or you are going to undo Big Rip", "You now start with 10 worker replicants and Ghostifying now doesn't reset Neutrinos.", "You are now gaining ^0.5 amount of quarks, ^0.5 amount of gluons, and 1% of Space Shards you will gain per second.", "You now start with 10 of Second Emperor Dimensions"+(player.aarexModifications.ngudpV?" and for now on, start Big Rips with 3rd row of Eternity upgrades":""), "You now start with 10 of Fourth Emperor Dimensions", "You now start with 10 of Sixth Emperor Dimensions", "You now start with 10 of Eighth Emperor Dimensions", "You now start with first 16 Nanofield rewards", "You now start with "+shortenCosts(1e25)+" quark spins and Branches are 10x faster", "You now start with Break Eternity unlocked and all Break Eternity upgrades bought", "For now on, you gain 1% of quarks you will gain per second and you keep your Tachyon particles on Quantum and Ghostify if you didn't Big Rip."])[notifyId2]+".","success")
+		$.notify("You became a ghost in at most "+getFullExpansion(tmp.bm[notifyId2])+" quantumed stat! "+(["You now start with all Speedrun Milestones and all "+shorten(Number.MAX_VALUE)+" QK features unlocked, all Paired Challenges completed, all Big Rip upgrades bought, Nanofield is 2x faster until you reach 16 rewards, and you get quarks based on your best MA this quantum", "For now on, colored quarks do not cancel, you keep your gluon upgrades, you can quick Big Rip, and completing an Eternity Challenge doesn't respec your time studies.", "You now keep your Electron upgrades", "For now on, Quantuming doesn't reset your Tachyon particles unless you are in a QC, unstabilizing quarks doesn't lose your colored quarks, and you start with 5 of 1st upgrades of each Branch", "For now on, Quantuming doesn't reset your Meta-Dimension Boosts unless you are in a QC or you are going to undo Big Rip", "For now on, Quantuming doesn't reset your normal replicants unless you are in a QC or you are going to undo Big Rip", "You now start with 10 worker replicants and Ghostifying now doesn't reset Neutrinos.", "You are now gaining ^0.5 amount of quarks, ^0.5 amount of gluons, and 1% of Space Shards you will gain per second.", "You now start with 10 of Second Emperor Dimensions"+(player.aarexModifications.ngudpV?" and for now on, start Big Rips with 3rd row of Eternity upgrades":""), "You now start with 10 of Fourth Emperor Dimensions", "You now start with 10 of Sixth Emperor Dimensions and the IP multiplier no longer costs IP", "You now start with 10 of Eighth Emperor Dimensions", "You now start with first 16 Nanofield rewards", "You now start with "+shortenCosts(1e25)+" quark spins and Branches are 10x faster", "You now start with Break Eternity unlocked and all Break Eternity upgrades bought", "For now on, you gain 1% of quarks you will gain per second and you keep your Tachyon particles on Quantum and Ghostify if you didn't Big Rip."])[notifyId2]+".","success")
 		notifyId2++
 	}
 }
@@ -9240,27 +9240,27 @@ function IPMultBuyUpdating(){
 		var dif = Math.floor(player.infinityPoints.div(player.infMultCost).log(player.aarexModifications.newGameExpVersion?4:10)) + 1
 		if (dif > 0) {
 			player.infMult = player.infMult.times(Decimal.pow(getIPMultPower(), dif))
-            		player.infMultCost = player.infMultCost.times(Decimal.pow(ipMultCostIncrease, dif))
-            		player.infinityPoints = player.infinityPoints.minus(player.infMultCost.dividedBy(player.aarexModifications.newGameExpVersion?4:10).min(player.infinityPoints))
-            		if (player.autobuyers[11].priority !== undefined && player.autobuyers[11].priority !== null && player.autoCrunchMode == "amount") player.autobuyers[11].priority = Decimal.times(player.autobuyers[11].priority, Decimal.pow(getIPMultPower(), dif));
-            		if (player.autoCrunchMode == "amount") document.getElementById("priority12").value = formatValue("Scientific", player.autobuyers[11].priority, 2, 0);
+			player.infMultCost = player.infMultCost.times(Decimal.pow(ipMultCostIncrease, dif))
+			if (player.ghostify.milestones < 11) player.infinityPoints = player.infinityPoints.minus(player.infMultCost.dividedBy(player.aarexModifications.newGameExpVersion?4:10).min(player.infinityPoints))
+			if (player.autobuyers[11].priority !== undefined && player.autobuyers[11].priority !== null && player.autoCrunchMode == "amount") player.autobuyers[11].priority = Decimal.times(player.autobuyers[11].priority, Decimal.pow(getIPMultPower(), dif));
+			if (player.autoCrunchMode == "amount") document.getElementById("priority12").value = formatValue("Scientific", player.autobuyers[11].priority, 2, 0);
 		}
 	}
 }
 
 function replicantiApproxDisplayUpdating(){
 	var ts273Mult = getMTSMult(273)
-    	var chance = Decimal.pow(player.replicanti.chance, ts273Mult.toNumber())
-    	var interval = getReplicantiFinalInterval()
+	var chance = Decimal.pow(player.replicanti.chance, ts273Mult.toNumber())
+	var interval = getReplicantiFinalInterval()
 	
-    	var frequency = 0
-    	if (chance.gte("1e9999998")) frequency = ts273Mult.times(Math.log10(player.replicanti.chance+1)/Math.log10(2))
+	var frequency = 0
+	if (chance.gte("1e9999998")) frequency = ts273Mult.times(Math.log10(player.replicanti.chance+1)/Math.log10(2))
 	let replSpeeds = getReplSpeed()
 	
-    	var est = Decimal.div((frequency ? frequency.times(Math.log10(2)/Math.log10(Math.E) * 1e3) : Decimal.add(chance, 1).log(Math.E) * 1e3), interval)
-    	var estLog10 = est.times(Math.log10(Math.E))
-
-   	var current = player.replicanti.amount.ln()
+	var est = Decimal.div((frequency ? frequency.times(Math.log10(2)/Math.log10(Math.E) * 1e3) : Decimal.add(chance, 1).log(Math.E) * 1e3), interval)
+	var estLog10 = est.times(Math.log10(Math.E))
+	
+	var current = player.replicanti.amount.ln()
 	
 	document.getElementById("replicantiapprox").innerHTML = tmp.ngp3 && player.dilation.upgrades.includes("ngpp1") && player.timestudy.studies.includes(192) && player.replicanti.amount.gte(Number.MAX_VALUE) && (!player.aarexModifications.nguspV || player.aarexModifications.nguepV) ? 
 		"Replicanti increases by " + (estLog10 < Math.log10(2) ? "x2.00 per " + timeDisplayShort(Math.log10(2) / estLog10 * 10) : (estLog10.gte(1e4) ? shorten(estLog10) + " OoMs" : "x" + shorten(Decimal.pow(10, estLog10.toNumber()))) + " per second") + ".<br>" +
