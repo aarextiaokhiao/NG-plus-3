@@ -3349,8 +3349,10 @@ function getReplMult(next) {
 
 function upgradeReplicantiChance() {
     	if (player.infinityPoints.gte(player.replicanti.chanceCost) && isChanceAffordable() && player.eterc8repl !== 0) {
-        	player.infinityPoints = player.infinityPoints.minus(player.replicanti.chanceCost)
-		if (player.ghostify.milestones < 11) player.replicanti.chanceCost = player.replicanti.chanceCost.times(1e15)
+		player.replicanti.chanceCost = player.replicanti.chanceCost.times(1e15)
+		if (ghostified) {
+			if (player.ghostify.milestones < 11) player.infinityPoints = player.infinityPoints.minus(player.replicanti.chanceCost)
+		} else player.infinityPoints = player.infinityPoints.minus(player.replicanti.chanceCost)
         	player.replicanti.chance = Math.round(player.replicanti.chance*100+1)/100
         	if (player.currentEternityChall == "eterc8") player.eterc8repl-=1
         	document.getElementById("eterc8repl").textContent = "You have "+player.eterc8repl+" purchases left."
@@ -9241,7 +9243,10 @@ function IPMultBuyUpdating(){
 		if (dif > 0) {
 			player.infMult = player.infMult.times(Decimal.pow(getIPMultPower(), dif))
 			player.infMultCost = player.infMultCost.times(Decimal.pow(ipMultCostIncrease, dif))
-			if (player.ghostify.milestones < 11) player.infinityPoints = player.infinityPoints.minus(player.infMultCost.dividedBy(player.aarexModifications.newGameExpVersion?4:10).min(player.infinityPoints))
+			if (ghostified) {
+				if (player.ghostify.milestones < 11) player.infinityPoints = player.infinityPoints.minus(player.infMultCost.dividedBy(player.aarexModifications.newGameExpVersion?4:10).min(player.infinityPoints))
+			}
+			else player.infinityPoints = player.infinityPoints.minus(player.infMultCost.dividedBy(player.aarexModifications.newGameExpVersion?4:10).min(player.infinityPoints))
 			if (player.autobuyers[11].priority !== undefined && player.autobuyers[11].priority !== null && player.autoCrunchMode == "amount") player.autobuyers[11].priority = Decimal.times(player.autobuyers[11].priority, Decimal.pow(getIPMultPower(), dif));
 			if (player.autoCrunchMode == "amount") document.getElementById("priority12").value = formatValue("Scientific", player.autobuyers[11].priority, 2, 0);
 		}
