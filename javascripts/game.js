@@ -9134,6 +9134,7 @@ function runRandomReplicanti(chance){
 		player.replicanti.amount = player.replicanti.amount.times(2)
 		return
 	}
+	var temp = player.replicanti.amount
 	chance = chance.toNumber()
         for (var i=0; temp.gt(i); i++) {
 		if (chance > Math.random()) player.replicanti.amount = player.replicanti.amount.plus(1)
