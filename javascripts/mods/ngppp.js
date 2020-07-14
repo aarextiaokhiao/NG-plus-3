@@ -1369,22 +1369,38 @@ function getTreeUpgradeLevel(upg) {
 
 function getTreeUpgradeEffect(upg) {
 	let lvl=getTreeUpgradeLevel(upg)*tmp.tue
-	if (upg==1) return Math.floor(lvl * 30)
+	if (upg==1) {
+		if (lvl >= 500) lvl = 500*Math.pow(lvl/500,.9)
+		return Math.floor(lvl * 30)
+	}
 	if (upg==2) {
 		if (lvl > 64) lvl = (lvl + 128) / 3
 		return lvl * 0.25
 	}
 	if (upg==3) {
 		if (lvl<1) return 1
+		if (lvl > 1234) lvl += (lvl-1234)/3
 		let power=0
-		for (var upg=1;upg<9;upg++) power+=getTreeUpgradeLevel(upg)
+		for (var upg=1;upg<9;upg++) power += getTreeUpgradeLevel(upg)
 		return Decimal.pow(2,Math.sqrt(Math.sqrt(Math.max(lvl*3-2,0)) * Math.max(power-10,0)))
 	}
 	if (upg==4) return Math.sqrt(1 + Math.log10(lvl * 0.5 + 1) * 0.1)
-	if (upg==5) return Math.pow(Math.log10(player.meta.bestOverQuantums.add(1).log10()+1)/5+1,Math.sqrt(lvl))
-	if (upg==6) return Decimal.pow(2, lvl)
-	if (upg==7) return Decimal.pow(player.replicanti.amount.max(1).log10()+1, 0.25*lvl)
-	if (upg==8) return Math.log10(Decimal.add(player.meta.bestAntimatter,1).log10()+1)/4*Math.sqrt(lvl)
+	if (upg==5) {
+		if (lvl > 500) lvl += Math.sqrt(lvl+125)-25
+		return Math.pow(Math.log10(player.meta.bestOverQuantums.add(1).log10()+1)/5+1,Math.sqrt(lvl))
+	}
+	if (upg==6) {
+		//if (lvl > 200) lvl -= lvl/50 -4 
+		return Decimal.pow(2, lvl)
+	}
+	if (upg==7) {
+		if (lvl > 100) lvl -= Math.sqrt(lvl)-10
+		return Decimal.pow(player.replicanti.amount.max(1).log10()+1, 0.25*lvl)
+	}
+	if (upg==8) {
+		if (lvl > 1111) lvl = 1111 + (lvl-1111)/2
+		return Math.log10(Decimal.add(player.meta.bestAntimatter,1).log10()+1)/4*Math.sqrt(lvl)
+	}
 	return 0
 }
 
