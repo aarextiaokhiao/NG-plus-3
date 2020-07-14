@@ -1,4 +1,4 @@
-function setupText() {
+function setupText() { //why in the world is this in ngppp not game????
 	var pu=document.getElementById("pUpgs")
 	for (r=1;r<=puSizes.y;r++) {
 		row=pu.insertRow(r-1)
@@ -246,150 +246,163 @@ function showQuantumTab(tabName) {
 }
 
 
+function updateElectronsTab() {
+	document.getElementById("normalGalaxies").textContent=getFullExpansion(player.galaxies)
+	document.getElementById("sacrificeGal").className="gluonupgrade "+((player.galaxies>tmp.qu.electrons.sacGals&&inQC(0))?"stor":"unavailabl")+"ebtn"
+	document.getElementById("sacrificeGals").textContent=getFullExpansion(Math.max(player.galaxies-tmp.qu.electrons.sacGals,0))
+	document.getElementById("electronsGain").textContent=getFullExpansion(Math.floor(Math.max(player.galaxies-tmp.qu.electrons.sacGals,0)*getELCMult()))
+	for (u=1;u<5;u++) document.getElementById("electronupg"+u).className="gluonupgrade "+(canBuyElectronUpg(u)?"stor":"unavailabl")+"ebtn"
+	if (tmp.qu.autoOptions.sacrifice) updateElectronsEffect()
+}
+
+function updateReplicantsTab(){
+	document.getElementById("replicantiAmount2").textContent=shortenDimensions(player.replicanti.amount)
+	document.getElementById("replicantReset").className=player.replicanti.amount.lt(tmp.qu.replicants.requirement)?"unavailablebtn":"storebtn"
+	document.getElementById("replicantReset").innerHTML="Reset replicanti amount for a replicant.<br>(requires "+shortenCosts(tmp.qu.replicants.requirement)+" replicanti)"
+	document.getElementById("replicantAmount").textContent=shortenDimensions(tmp.qu.replicants.amount)
+	document.getElementById("workerReplAmount").textContent=shortenDimensions(tmp.twr)
+	document.getElementById("babyReplAmount").textContent=shortenDimensions(tmp.qu.replicants.babies)
+
+	var gatherRateData=getGatherRate()
+	document.getElementById("normalReplGatherRate").textContent=shortenDimensions(gatherRateData.normal)
+	document.getElementById("workerReplGatherRate").textContent=shortenDimensions(gatherRateData.workersTotal)
+	document.getElementById("babyReplGatherRate").textContent=shortenDimensions(gatherRateData.babies)
+	document.getElementById("gatherRate").textContent=tmp.qu.nanofield.producingCharge?'-'+shortenDimensions(getQuarkLossProduction())+'/s':'+'+shortenDimensions(gatherRateData.total)+'/s'
+
+	document.getElementById("gatheredQuarks").textContent=shortenDimensions(tmp.qu.replicants.quarks.floor())
+	document.getElementById("quarkTranslation").textContent=getFullExpansion(Math.round(tmp.pe*100))
+
+	var eggonRate = tmp.twr.times(getEmperorDimensionMultiplier(1)).times(3)
+	if (eggonRate.lt(30)) {
+		document.getElementById("eggonRate").textContent=shortenDimensions(eggonRate)
+		document.getElementById("eggonRateTimeframe").textContent="minute"
+	} else {
+		document.getElementById("eggonRate").textContent=shortenMoney(eggonRate.div(60))
+		document.getElementById("eggonRateTimeframe").textContent="second"
+	}
+	document.getElementById("feedNormal").className=(canFeedReplicant(1)?"stor":"unavailabl")+"ebtn"
+	document.getElementById("workerProgress").textContent=Math.round(tmp.eds[1].progress.toNumber()*100)+"%"
+
+	if (!hasNU(2)) {
+		document.getElementById("eggonAmount").textContent=shortenDimensions(tmp.qu.replicants.eggons)
+		document.getElementById("hatchProgress").textContent=Math.round(tmp.qu.replicants.babyProgress.toNumber()*100)+"%"
+	}
+	var growupRate = tmp.twr.times(player.achievements.includes("ng3p35")?1.5:0.15)
+	if (tmp.qu.replicants.babies.eq(0)) growupRate = growupRate.min(eggonRate)
+	if (growupRate.lt(30)) {
+		document.getElementById("growupRate").textContent=shortenDimensions(growupRate)
+		document.getElementById("growupRateUnit").textContent="minute"
+	} else {
+		document.getElementById("growupRate").textContent=shortenMoney(growupRate.div(60))
+		document.getElementById("growupRateUnit").textContent="second"
+	}
+	document.getElementById("growupProgress").textContent=Math.round(tmp.qu.replicants.ageProgress.toNumber()*100)+"%"
+	
+	document.getElementById("reduceHatchSpeed").innerHTML="Hatch speed: "+hatchSpeedDisplay()+" -> "+hatchSpeedDisplay(true)+"<br>Cost: "+shortenDimensions(tmp.qu.replicants.hatchSpeedCost)+" for all 3 gluons"
+	if (player.ghostify.milestones>7) updateReplicants("display")
+}
+
+function updateNanoverseTab(){
+	var rewards = tmp.qu.nanofield.rewards
+	document.getElementById("quarksNanofield").textContent=shortenDimensions(tmp.qu.replicants.quarks)		
+	document.getElementById("quarkCharge").textContent=shortenMoney(tmp.qu.nanofield.charge)
+	document.getElementById("quarkChargeRate").textContent=shortenDimensions(getQuarkChargeProduction())
+	document.getElementById("quarkLoss").textContent=shortenDimensions(getQuarkLossProduction())
+	document.getElementById("preonEnergy").textContent=shortenMoney(tmp.qu.nanofield.energy)
+	document.getElementById("quarkEnergyRate").textContent=shortenMoney(getQuarkEnergyProduction())
+	document.getElementById("quarkPower").textContent=getFullExpansion(tmp.qu.nanofield.power)
+	document.getElementById("quarkPowerThreshold").textContent=shortenMoney(tmp.qu.nanofield.powerThreshold)
+	document.getElementById("quarkAntienergy").textContent=shortenMoney(tmp.qu.nanofield.antienergy)
+	document.getElementById("quarkAntienergyRate").textContent=shortenMoney(getQuarkAntienergyProduction())
+	document.getElementById("quarkChargeProductionCap").textContent=shortenMoney(getQuarkChargeProductionCap())
+	document.getElementById("rewards").textContent=getFullExpansion(rewards)
+
+	for (var reward=1; reward<9; reward++) {
+		document.getElementById("nfReward" + reward).className = reward > rewards ? "nfRewardlocked" : "nfReward"
+		document.getElementById("nfRewardHeader" + reward).textContent = (rewards % 8 + 1 == reward ? "Next" : DISPLAY_NAMES[reward]) + " reward"
+		document.getElementById("nfRewardTier" + reward).textContent = "Tier " + getFullExpansion(Math.ceil((rewards + 1 - reward) / 8)) + " / Power: " + getNanofieldRewardTier(reward, rewards).toFixed(1)
+	}
+	document.getElementById("nfReward1").textContent = hasBosonicUpg(21) ? "Dimension Supersonic scaling starts " + getFullExpansion(getNanofieldRewardEffect(1, "supersonic")) + " later." :
+		"Hatch speed is " + shortenDimensions(getNanofieldRewardEffect(1, "speed")) + "x faster."
+	document.getElementById("nfReward2").textContent = "Meta-antimatter effect power is increased by ^" + getNanofieldRewardEffect(2).toFixed(1) + "."
+	document.getElementById("nfReward3").textContent = "Free galaxy gain is increased by " + (getNanofieldRewardEffect(3)*100-100).toFixed(1) + "%."
+	document.getElementById("nfReward4").textContent = "Dilated time boost to Meta Dimensions is increased to ^" + getNanofieldRewardEffect(4).toFixed(3) + "."
+	document.getElementById("nfReward5").textContent = "While dilated, Normal Dimension multipliers and tickspeed are raised to the power of " + getNanofieldRewardEffect(5).toFixed(2) + "."
+	document.getElementById("nfReward6").textContent = "Meta-dimension boost power is increased to " + getNanofieldRewardEffect(6).toFixed(2) + "x."
+	document.getElementById("nfReward7").textContent = (hasBosonicUpg(22) ? "You gain " + shorten(getNanofieldRewardEffect(7, "neutrinos")) + "x more neutrinos" :
+		"Remote galaxy cost scaling starts " + getFullExpansion(getNanofieldRewardEffect(7, "remote")) + " later") +
+		" and the production of preon charge is " + shortenMoney(getNanofieldRewardEffect(7, "charge")) + "x faster."
+	document.getElementById("nfReward8").textContent = "Add " + getNanofieldRewardEffect(8, "per-10").toFixed(2) + "x to multiplier per ten dimensions before getting affected by electrons and the production of preon energy is " + shortenMoney(getNanofieldRewardEffect(8, "energy")) + "x faster."
+
+	document.getElementById("ns").textContent = ghostified || tmp.ns.neq(1) ? "Nanofield speed multiplier is currently "+shorten(tmp.ns)+"x." : ""
+}
+
+function updateNanofieldAntipreon(){
+	var rewards = tmp.qu.nanofield.rewards
+	document.getElementById("rewards_AP").textContent = getFullExpansion(rewards)
+	document.getElementById("rewards_wake").textContent = getFullExpansion(tmp.apgw)
+	document.getElementById("sleepy").style.display=tmp.qu.nanofield.apgWoke?"none":""
+	document.getElementById("woke").style.display=tmp.qu.nanofield.apgWoke?"":"none"
+}
+
+function updateNanofieldTab(){
+	if (document.getElementById("nanoverse").style.display == "block") updateNanoverseTab()
+	if (document.getElementById("antipreon").style.display == "block") updateNanofieldAntipreon()
+}
+
+function updateTreeOfDecayTab(){
+	var branchNum
+	var colors=["red","green","blue"]
+	var shorthands=["r","g","b"]
+	if (document.getElementById("redBranch").style.display == "block") branchNum=1
+	if (document.getElementById("greenBranch").style.display == "block") branchNum=2
+	if (document.getElementById("blueBranch").style.display == "block") branchNum=3
+	for (var c=0;c<3;c++) {
+		var color=colors[c]
+		var shorthand=shorthands[c]
+		var branch=tmp.qu.tod[shorthand]
+		var name=color+" "+getUQName(shorthand)+" quarks"
+		var rate=getDecayRate(shorthand)
+		var linear=Decimal.pow(2,getRDPower(shorthand))
+		document.getElementById(color+"UnstableGain").className=tmp.qu.usedQuarks[shorthand].gt(0)&&getUnstableGain(shorthand).gt(branch.quarks)?"storebtn":"unavailablebtn"
+		document.getElementById(color+"UnstableGain").textContent="Gain "+shortenMoney(getUnstableGain(shorthand))+" "+name+(player.ghostify.milestones>3?".":", but lose all your "+color+" quarks.")
+		document.getElementById(color+"QuarkSpin").textContent=shortenMoney(branch.spin)
+		document.getElementById(color+"UnstableQuarks").textContent=shortenMoney(branch.quarks)
+		document.getElementById(color+"QuarksDecayRate").textContent=branch.quarks.lt(linear)&&rate.lt(1)?"You are losing "+shorten(linear.times(rate))+" "+name+" per second":"Their half-life is "+timeDisplayShort(Decimal.div(10,rate),true,2)+(linear.eq(1)?"":" until their amount reaches "+shorten(linear))
+		document.getElementById(color+"QuarksDecayTime").textContent=timeDisplayShort(Decimal.div(10,rate).times(branch.quarks.gt(linear)?branch.quarks.div(linear).log(2)+1:branch.quarks.div(linear)))
+		let ret=getQuarkSpinProduction(shorthand)
+		document.getElementById(color+"QuarkSpinProduction").textContent="+"+shortenMoney(ret)+"/s"
+		if (branchNum==c+1) {
+			var decays=getRadioactiveDecays(shorthand)
+			var power=Math.floor(getBU1Power(shorthand)/120+1)			
+			document.getElementById(color+"UpgPow1").textContent=decays||power>1?shorten(Decimal.pow(2,(1+decays*.1)/power)):2
+			document.getElementById(color+"UpgSpeed1").textContent=decays>2||power>1?shorten(Decimal.pow(2,Math.max(.8+decays*.1,1)/power)):2
+			for (var u=1;u<4;u++) document.getElementById(color+"upg"+u).className="gluonupgrade "+(branch.spin.lt(getBranchUpgCost(shorthand,u))?"unavailablebtn":shorthand)
+			if (ghostified) document.getElementById(shorthand+"RadioactiveDecay").className="gluonupgrade "+(branch.quarks.lt(Decimal.pow(10,Math.pow(2,50)))?"unavailablebtn":shorthand)
+		}
+	} //for loop
+	if (!branchNum) {
+		for (var u=1;u<9;u++) {
+			var lvl=getTreeUpgradeLevel(u)
+			document.getElementById("treeupg"+u).className="gluonupgrade "+(canBuyTreeUpg(u)?shorthands[getTreeUpgradeLevel(u)%3]:"unavailablebtn")
+			document.getElementById("treeupg"+u+"current").textContent=getTreeUpgradeEffectDesc(u)
+			document.getElementById("treeupg"+u+"lvl").textContent=getFullExpansion(lvl)+(tmp.tue>1?" -> "+getFullExpansion(Math.floor(lvl*tmp.tue)):"")
+			document.getElementById("treeupg"+u+"cost").textContent=shortenMoney(getTreeUpgradeCost(u))+" "+colors[lvl%3]
+		}
+		setAndMaybeShow("treeUpgradeEff",ghostified,'"Tree upgrade efficiency: "+(tmp.tue*100).toFixed(1)+"%"')
+	}
+	document.getElementById("todspeed").textContent = todspeed !== 1 ? "ToD speed multiplier is currently "+shorten(todspeed)+"x." : ""
+}
+
 var quantumTabs = {
 	tabIds: ["uquarks", "gluons", "electrons", "replicants", "nanofield", "tod"],
 	update: {
 		uquarks: updateQuarksTab,
 		gluons: updateGluonsTab,
-		electrons: function() {
-			document.getElementById("normalGalaxies").textContent=getFullExpansion(player.galaxies)
-			document.getElementById("sacrificeGal").className="gluonupgrade "+((player.galaxies>tmp.qu.electrons.sacGals&&inQC(0))?"stor":"unavailabl")+"ebtn"
-			document.getElementById("sacrificeGals").textContent=getFullExpansion(Math.max(player.galaxies-tmp.qu.electrons.sacGals,0))
-			document.getElementById("electronsGain").textContent=getFullExpansion(Math.floor(Math.max(player.galaxies-tmp.qu.electrons.sacGals,0)*getELCMult()))
-			for (u=1;u<5;u++) document.getElementById("electronupg"+u).className="gluonupgrade "+(canBuyElectronUpg(u)?"stor":"unavailabl")+"ebtn"
-			if (tmp.qu.autoOptions.sacrifice) updateElectronsEffect()
-		},
-		replicants: function() {
-			document.getElementById("replicantiAmount2").textContent=shortenDimensions(player.replicanti.amount)
-			document.getElementById("replicantReset").className=player.replicanti.amount.lt(tmp.qu.replicants.requirement)?"unavailablebtn":"storebtn"
-			document.getElementById("replicantReset").innerHTML="Reset replicanti amount for a replicant.<br>(requires "+shortenCosts(tmp.qu.replicants.requirement)+" replicanti)"
-			document.getElementById("replicantAmount").textContent=shortenDimensions(tmp.qu.replicants.amount)
-			document.getElementById("workerReplAmount").textContent=shortenDimensions(tmp.twr)
-			document.getElementById("babyReplAmount").textContent=shortenDimensions(tmp.qu.replicants.babies)
-
-			var gatherRateData=getGatherRate()
-			document.getElementById("normalReplGatherRate").textContent=shortenDimensions(gatherRateData.normal)
-			document.getElementById("workerReplGatherRate").textContent=shortenDimensions(gatherRateData.workersTotal)
-			document.getElementById("babyReplGatherRate").textContent=shortenDimensions(gatherRateData.babies)
-			document.getElementById("gatherRate").textContent=tmp.qu.nanofield.producingCharge?'-'+shortenDimensions(getQuarkLossProduction())+'/s':'+'+shortenDimensions(gatherRateData.total)+'/s'
-
-			document.getElementById("gatheredQuarks").textContent=shortenDimensions(tmp.qu.replicants.quarks.floor())
-			document.getElementById("quarkTranslation").textContent=getFullExpansion(Math.round(tmp.pe*100))
-
-			var eggonRate = tmp.twr.times(getEmperorDimensionMultiplier(1)).times(3)
-			if (eggonRate.lt(30)) {
-				document.getElementById("eggonRate").textContent=shortenDimensions(eggonRate)
-				document.getElementById("eggonRateTimeframe").textContent="minute"
-			} else {
-				document.getElementById("eggonRate").textContent=shortenMoney(eggonRate.div(60))
-				document.getElementById("eggonRateTimeframe").textContent="second"
-			}
-			document.getElementById("feedNormal").className=(canFeedReplicant(1)?"stor":"unavailabl")+"ebtn"
-			document.getElementById("workerProgress").textContent=Math.round(tmp.eds[1].progress.toNumber()*100)+"%"
-
-			if (!hasNU(2)) {
-				document.getElementById("eggonAmount").textContent=shortenDimensions(tmp.qu.replicants.eggons)
-				document.getElementById("hatchProgress").textContent=Math.round(tmp.qu.replicants.babyProgress.toNumber()*100)+"%"
-			}
-			var growupRate = tmp.twr.times(player.achievements.includes("ng3p35")?1.5:0.15)
-			if (tmp.qu.replicants.babies.eq(0)) growupRate = growupRate.min(eggonRate)
-			if (growupRate.lt(30)) {
-				document.getElementById("growupRate").textContent=shortenDimensions(growupRate)
-				document.getElementById("growupRateUnit").textContent="minute"
-			} else {
-				document.getElementById("growupRate").textContent=shortenMoney(growupRate.div(60))
-				document.getElementById("growupRateUnit").textContent="second"
-			}
-			document.getElementById("growupProgress").textContent=Math.round(tmp.qu.replicants.ageProgress.toNumber()*100)+"%"
-
-			document.getElementById("reduceHatchSpeed").innerHTML="Hatch speed: "+hatchSpeedDisplay()+" -> "+hatchSpeedDisplay(true)+"<br>Cost: "+shortenDimensions(tmp.qu.replicants.hatchSpeedCost)+" for all 3 gluons"
-			if (player.ghostify.milestones>7) updateReplicants("display")
-		},
-		nanofield: function() {
-			var rewards = tmp.qu.nanofield.rewards
-			if (document.getElementById("nanoverse").style.display == "block") {
-				document.getElementById("quarksNanofield").textContent=shortenDimensions(tmp.qu.replicants.quarks)
-				document.getElementById("quarkCharge").textContent=shortenMoney(tmp.qu.nanofield.charge)
-				document.getElementById("quarkChargeRate").textContent=shortenDimensions(getQuarkChargeProduction())
-				document.getElementById("quarkLoss").textContent=shortenDimensions(getQuarkLossProduction())
-				document.getElementById("preonEnergy").textContent=shortenMoney(tmp.qu.nanofield.energy)
-				document.getElementById("quarkEnergyRate").textContent=shortenMoney(getQuarkEnergyProduction())
-				document.getElementById("quarkPower").textContent=getFullExpansion(tmp.qu.nanofield.power)
-				document.getElementById("quarkPowerThreshold").textContent=shortenMoney(tmp.qu.nanofield.powerThreshold)
-				document.getElementById("quarkAntienergy").textContent=shortenMoney(tmp.qu.nanofield.antienergy)
-				document.getElementById("quarkAntienergyRate").textContent=shortenMoney(getQuarkAntienergyProduction())
-				document.getElementById("quarkChargeProductionCap").textContent=shortenMoney(getQuarkChargeProductionCap())
-				document.getElementById("rewards").textContent=getFullExpansion(rewards)
-
-				for (var reward=1; reward<9; reward++) {
-					document.getElementById("nfReward" + reward).className = reward > rewards ? "nfRewardlocked" : "nfReward"
-					document.getElementById("nfRewardHeader" + reward).textContent = (rewards % 8 + 1 == reward ? "Next" : DISPLAY_NAMES[reward]) + " reward"
-					document.getElementById("nfRewardTier" + reward).textContent = "Tier " + getFullExpansion(Math.ceil((rewards + 1 - reward) / 8)) + " / Power: " + getNanofieldRewardTier(reward, rewards).toFixed(1)
-				}
-				document.getElementById("nfReward1").textContent = hasBosonicUpg(21) ? "Dimension Supersonic scaling starts " + getFullExpansion(getNanofieldRewardEffect(1, "supersonic")) + " later." :
-					"Hatch speed is " + shortenDimensions(getNanofieldRewardEffect(1, "speed")) + "x faster."
-				document.getElementById("nfReward2").textContent = "Meta-antimatter effect power is increased by ^" + getNanofieldRewardEffect(2).toFixed(1) + "."
-				document.getElementById("nfReward3").textContent = "Free galaxy gain is increased by " + (getNanofieldRewardEffect(3)*100-100).toFixed(1) + "%."
-				document.getElementById("nfReward4").textContent = "Dilated time boost to Meta Dimensions is increased to ^" + getNanofieldRewardEffect(4).toFixed(3) + "."
-				document.getElementById("nfReward5").textContent = "While dilated, Normal Dimension multipliers and tickspeed are raised to the power of " + getNanofieldRewardEffect(5).toFixed(2) + "."
-				document.getElementById("nfReward6").textContent = "Meta-dimension boost power is increased to " + getNanofieldRewardEffect(6).toFixed(2) + "x."
-				document.getElementById("nfReward7").textContent = (hasBosonicUpg(22) ? "You gain " + shorten(getNanofieldRewardEffect(7, "neutrinos")) + "x more neutrinos" :
-					"Remote galaxy cost scaling starts " + getFullExpansion(getNanofieldRewardEffect(7, "remote")) + " later") +
-					" and the production of preon charge is " + shortenMoney(getNanofieldRewardEffect(7, "charge")) + "x faster."
-				document.getElementById("nfReward8").textContent = "Add " + getNanofieldRewardEffect(8, "per-10").toFixed(2) + "x to multiplier per ten dimensions before getting affected by electrons and the production of preon energy is " + shortenMoney(getNanofieldRewardEffect(8, "energy")) + "x faster."
-
-				document.getElementById("ns").textContent = ghostified || tmp.ns.neq(1) ? "Nanofield speed multiplier is currently "+shorten(tmp.ns)+"x." : ""
-			}
-			if (document.getElementById("antipreon").style.display == "block") {
-				document.getElementById("rewards_AP").textContent = getFullExpansion(rewards)
-				document.getElementById("rewards_wake").textContent = getFullExpansion(tmp.apgw)
-				document.getElementById("sleepy").style.display=tmp.qu.nanofield.apgWoke?"none":""
-				document.getElementById("woke").style.display=tmp.qu.nanofield.apgWoke?"":"none"
-			}
-		},
-		tod: function() {
-			var branchNum
-			var colors=["red","green","blue"]
-			var shorthands=["r","g","b"]
-			if (document.getElementById("redBranch").style.display == "block") branchNum=1
-			if (document.getElementById("greenBranch").style.display == "block") branchNum=2
-			if (document.getElementById("blueBranch").style.display == "block") branchNum=3
-			for (var c=0;c<3;c++) {
-				var color=colors[c]
-				var shorthand=shorthands[c]
-				var branch=tmp.qu.tod[shorthand]
-				var name=color+" "+getUQName(shorthand)+" quarks"
-				var rate=getDecayRate(shorthand)
-				var linear=Decimal.pow(2,getRDPower(shorthand))
-				document.getElementById(color+"UnstableGain").className=tmp.qu.usedQuarks[shorthand].gt(0)&&getUnstableGain(shorthand).gt(branch.quarks)?"storebtn":"unavailablebtn"
-				document.getElementById(color+"UnstableGain").textContent="Gain "+shortenMoney(getUnstableGain(shorthand))+" "+name+(player.ghostify.milestones>3?".":", but lose all your "+color+" quarks.")
-				document.getElementById(color+"QuarkSpin").textContent=shortenMoney(branch.spin)
-				document.getElementById(color+"UnstableQuarks").textContent=shortenMoney(branch.quarks)
-				document.getElementById(color+"QuarksDecayRate").textContent=branch.quarks.lt(linear)&&rate.lt(1)?"You are losing "+shorten(linear.times(rate))+" "+name+" per second":"Their half-life is "+timeDisplayShort(Decimal.div(10,rate),true,2)+(linear.eq(1)?"":" until their amount reaches "+shorten(linear))
-				document.getElementById(color+"QuarksDecayTime").textContent=timeDisplayShort(Decimal.div(10,rate).times(branch.quarks.gt(linear)?branch.quarks.div(linear).log(2)+1:branch.quarks.div(linear)))
-				let ret=getQuarkSpinProduction(shorthand)
-				document.getElementById(color+"QuarkSpinProduction").textContent="+"+shortenMoney(ret)+"/s"
-				if (branchNum==c+1) {
-					var decays=getRadioactiveDecays(shorthand)
-					var power=Math.floor(getBU1Power(shorthand)/120+1)
-					document.getElementById(color+"UpgPow1").textContent=decays||power>1?shorten(Decimal.pow(2,(1+decays*.1)/power)):2
-					document.getElementById(color+"UpgSpeed1").textContent=decays>2||power>1?shorten(Decimal.pow(2,Math.max(.8+decays*.1,1)/power)):2
-					for (var u=1;u<4;u++) document.getElementById(color+"upg"+u).className="gluonupgrade "+(branch.spin.lt(getBranchUpgCost(shorthand,u))?"unavailablebtn":shorthand)
-					if (ghostified) document.getElementById(shorthand+"RadioactiveDecay").className="gluonupgrade "+(branch.quarks.lt(Decimal.pow(10,Math.pow(2,50)))?"unavailablebtn":shorthand)
-				}
-			}
-			if (!branchNum) {
-				for (var u=1;u<9;u++) {
-					var lvl=getTreeUpgradeLevel(u)
-					document.getElementById("treeupg"+u).className="gluonupgrade "+(canBuyTreeUpg(u)?shorthands[getTreeUpgradeLevel(u)%3]:"unavailablebtn")
-					document.getElementById("treeupg"+u+"current").textContent=getTreeUpgradeEffectDesc(u)
-					document.getElementById("treeupg"+u+"lvl").textContent=getFullExpansion(lvl)+(tmp.tue>1?" -> "+getFullExpansion(Math.floor(lvl*tmp.tue)):"")
-					document.getElementById("treeupg"+u+"cost").textContent=shortenMoney(getTreeUpgradeCost(u))+" "+colors[lvl%3]
-				}
-				setAndMaybeShow("treeUpgradeEff",ghostified,'"Tree upgrade efficiency: "+(tmp.tue*100).toFixed(1)+"%"')
-			}
-			document.getElementById("todspeed").textContent = todspeed !== 1 ? "ToD speed multiplier is currently "+shorten(todspeed)+"x." : ""
-		}
+		electrons: updateElectronsTab,
+		replicants: updateReplicantsTab,
+		nanofield: updateNanofieldTab,
+		tod: updateTreeOfDecayTab
 	}
 }
 
