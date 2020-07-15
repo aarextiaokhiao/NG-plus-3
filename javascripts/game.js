@@ -1118,12 +1118,15 @@ function updateWZBosonsTemp(){
 	tmp.wzbs=new Decimal(1) //W & Z Bosons speed
 	
 	var bosonsExp = wpl*(player.ghostify.wzb.wpb.sub(player.ghostify.wzb.wnb.min(player.ghostify.wzb.wpb))).div(player.ghostify.wzb.wpb.max(1)).toNumber()
-	tmp.wbt=Decimal.pow(tmp.newNGP3E?6:3,Math.max(bosonsExp,0)) //W Bosons boost to extract time
+	tmp.wbt=Decimal.pow(tmp.newNGP3E?5:3,Math.max(bosonsExp,0)) //W Bosons boost to extract time
+	if (tmp.wbt.gt(1e8)) tmp.wbt = Decimal.pow(2+tmp.wbt.log10(),8)
 	tmp.wbo=Decimal.pow(10,Math.max(bosonsExp,0)) //W Bosons boost to Z Neutrino oscillation requirement
 	
 	tmp.wbp=player.ghostify.wzb.wpb.add(player.ghostify.wzb.wnb).div(100).max(1).pow(1/3).sub(1) //W Bosons boost to Bosonic Antimatter production
-	tmp.zbs=player.ghostify.wzb.zb.div(10).add(1).sqrt() //Z Bosons boost to W Quark decay speed and W- to W+ conversion speed
-	if (tmp.zbs.gt(1e4)) tmp.zbs=tmp.zbs.times(1e4).sqrt()
+	var zbslog = player.ghostify.wzb.zb.div(10).add(1).sqrt().log10()
+	if (zbslog > 4) zbslog = 2+zbslog/2
+	if (zbslog > 8) zbslog = 2*Math.log2(zbslog)+2
+	tmp.zbs = Decimal.pow(10,zbslog)
 	tmp.dppg=new Decimal(1)
 	tmp.bEn[21]=getEnchantEffect(21) //BU21 recalculation
 }
