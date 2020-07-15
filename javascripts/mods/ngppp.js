@@ -2332,7 +2332,7 @@ function getBreakUpgMult(id) {
 	}
 	if (id == 9) {
 		var effect = tmp.qu.breakEternity.eternalMatter.div("1e335").add(1).pow(0.05*Math.log10(4))
-		if (player.aarexModifications.ngudpV && effect.gte(Decimal.pow(10,100))) effect = Decimal.pow(Decimal.log10(effect),50)
+		if (effect.gte(Decimal.pow(10,100))) effect = Decimal.pow(Decimal.log10(effect),50)
 		return effect.toNumber()
 	}
 	if (id == 10) return Math.max(Math.log10(player.eternityPoints.add(1).log10()+1)-1,1)
@@ -2484,7 +2484,7 @@ function ghostifyReset(implode, gain, amount, force) {
 		thisInfinityTime: 0,
 		resets: 0,
 		dbPower: player.dbPower,
-        tdBoosts: resetTDBoosts(),
+        	tdBoosts: resetTDBoosts(),
 		tickspeedBoosts: player.tickspeedBoosts !== undefined ? 16 : undefined,
 		galaxies: 0,
 		galacticSacrifice: resetGalacticSacrifice(),
@@ -3202,166 +3202,217 @@ function showGhostifyTab(tabName) {
 	closeToolTip()
 }
 
+function updateNeutrinoBoostDisplay(){
+	if (player.ghostify.neutrinos.boosts) {
+		document.getElementById("preNeutrinoBoost1").textContent=getDilExp("neutrinos").toFixed(2)
+		document.getElementById("neutrinoBoost1").textContent=getDilExp().toFixed(2)
+	}
+	if (player.ghostify.neutrinos.boosts>1) {
+		document.getElementById("preNeutrinoBoost2").textContent="^"+shorten(getMTSMult(273, "pn"))
+		document.getElementById("neutrinoBoost2").textContent="^"+shorten(getMTSMult(273))
+		document.getElementById("preNeutrinoBoost2Exp").textContent=getMTSMult(273, ["pn", "intensity"]).toFixed(2)
+		document.getElementById("neutrinoBoost2Exp").textContent=getMTSMult(273, "intensity").toFixed(2)
+	}
+	if (player.ghostify.neutrinos.boosts>2) document.getElementById("neutrinoBoost3").textContent=tmp.nb[2].toFixed(2)
+	if (player.ghostify.neutrinos.boosts>3) document.getElementById("neutrinoBoost4").textContent=(tmp.nb[3]*100-100).toFixed(1)
+	if (player.ghostify.neutrinos.boosts>4) document.getElementById("neutrinoBoost5").textContent=(tmp.nb[4]*100).toFixed(1)
+	if (player.ghostify.neutrinos.boosts>5) document.getElementById("neutrinoBoost6").textContent=tmp.nb[5]<10.995?(tmp.nb[5]*100-100).toFixed(1):getFullExpansion(Math.floor(tmp.nb[5]*100-100))
+	if (player.ghostify.neutrinos.boosts>6) {
+		document.getElementById("neutrinoBoost7").textContent=(tmp.nb[6]*100).toFixed(1)
+		document.getElementById("preNeutrinoBoost7Eff").textContent=(getTreeUpgradeEfficiency("noNB")*100).toFixed(1)
+		document.getElementById("neutrinoBoost7Eff").textContent=(getTreeUpgradeEfficiency("br")*100).toFixed(1)
+	}
+	if (player.ghostify.neutrinos.boosts>7) document.getElementById("neutrinoBoost8").textContent=(tmp.nb[7]*100-100).toFixed(1)
+	if (player.ghostify.neutrinos.boosts>8) document.getElementById("neutrinoBoost9").textContent=shorten(tmp.nb[8])
+	if (player.ghostify.neutrinos.boosts>9) document.getElementById("neutrinoBoost10").textContent=tmp.nb[9].toFixed(4)
+}
+
+function updateNeutrinoAmountDisplay(){
+	document.getElementById("electronNeutrinos").textContent=shortenDimensions(player.ghostify.neutrinos.electron)
+	document.getElementById("muonNeutrinos").textContent=shortenDimensions(player.ghostify.neutrinos.mu)
+	document.getElementById("tauNeutrinos").textContent=shortenDimensions(player.ghostify.neutrinos.tau)
+}
+
+function updateNeutrinoUpgradeDisplay(){
+	document.getElementById("neutrinoUpg1Pow").textContent=tmp.nu[0]
+	document.getElementById("neutrinoUpg3Pow").textContent=shorten(tmp.nu[1])
+	document.getElementById("neutrinoUpg4Pow").textContent=shorten(tmp.nu[2])
+	if (player.ghostify.times>4) document.getElementById("neutrinoUpg7Pow").textContent=shorten(tmp.nu[3])
+	if (player.ghostify.times>9) document.getElementById("neutrinoUpg12").setAttribute('ach-tooltip',
+		"Normal galaxy effect: "+shorten(tmp.nu[4].normal)+"x to quark spin production, "+
+		"Replicated galaxy effect: "+shorten(tmp.nu[4].replicated)+"x to EC14 reward, "+
+		"Free galaxy effect: "+shorten(tmp.nu[4].free)+"x to IC3 reward"
+	)
+	if (player.ghostify.ghostlyPhotons.unl) {
+		document.getElementById("neutrinoUpg14Pow").textContent=shorten(tmp.nu[5])
+		document.getElementById("neutrinoUpg15Pow").textContent=shorten(tmp.nu[6])
+	}
+	for (var u=1;u<16;u++) {
+		var e=false
+		if (u>12) e=player.ghostify.ghostlyPhotons.unl
+		else e=player.ghostify.times+3>u||u<5
+		if (e) {
+			if (hasNU(u)) document.getElementById("neutrinoUpg" + u).className = "gluonupgradebought neutrinoupg"
+			else if (sum.gte(tmp.nuc[u])) document.getElementById("neutrinoUpg" + u).className = "gluonupgrade neutrinoupg"
+			else document.getElementById("neutrinoUpg" + u).className = "gluonupgrade unavailablebtn"
+		}
+	}
+}
+
+function updateNeutrinosTab(){
+	var generations = ["electron", "Muon", "Tau"]
+	var neutrinoGain = getNeutrinoGain()
+	var sum = player.ghostify.neutrinos.electron.add(player.ghostify.neutrinos.mu).add(player.ghostify.neutrinos.tau).round()
+	document.getElementById("neutrinosGain").textContent="You gain " + shortenDimensions(neutrinoGain) + " " + generations[player.ghostify.neutrinos.generationGain - 1] + " neutrino" + (neutrinoGain.eq(1) ? "" : "s") + " each time you get 1 normal galaxy."
+	setAndMaybeShow("neutrinosGainGhostify",player.achievements.includes("ng3p68"),'"You gain "+shortenDimensions(Decimal.times(\''+neutrinoGain.toString()+'\',tmp.qu.bigRip.bestGals*2e3))+" of all neutrinos each time you become a ghost 1x time."')
+	
+	updateNeutrinoAmountDisplay()
+	updateNeutrinoBoostDisplay()
+	updateNeutrinoUpgradeDisplay()
+	
+	if (player.ghostify.ghostParticles.gte(tmp.nbc[player.ghostify.neutrinos.boosts])) document.getElementById("neutrinoUnlock").className = "gluonupgrade neutrinoupg"
+	else document.getElementById("neutrinoUnlock").className = "gluonupgrade unavailablebtn"
+	if (player.ghostify.ghostParticles.gte(Decimal.pow(4,player.ghostify.neutrinos.multPower-1).times(2))) document.getElementById("neutrinoMultUpg").className = "gluonupgrade neutrinoupg"
+	else document.getElementById("neutrinoMultUpg").className = "gluonupgrade unavailablebtn"
+	if (sum.gte(getGHPMultCost())) document.getElementById("ghpMultUpg").className = "gluonupgrade neutrinoupg"
+	else document.getElementById("ghpMultUpg").className = "gluonupgrade unavailablebtn"
+}
+
+function updateRaysPhotonsDisplay(){
+	var gphData=player.ghostify.ghostlyPhotons
+	document.getElementById("dtGPH").textContent=shorten(player.dilation.dilatedTime)
+	document.getElementById("gphProduction").textContent=shorten(getGPHProduction())
+	document.getElementById("gphProduction").className=(tmp.qu.bigRip.active?"gph":"dm")+"Amount"
+	document.getElementById("gphProductionType").textContent=tmp.qu.bigRip.active?"Ghostly Photons":"Dark Matter"
+	document.getElementById("gph").textContent=shortenMoney(gphData.amount)
+	document.getElementById("dm").textContent=shortenMoney(gphData.darkMatter)
+	document.getElementById("ghrProduction").textContent=shortenMoney(getGHRProduction())
+	document.getElementById("ghrCap").textContent=shortenMoney(getGHRCap())
+	document.getElementById("ghr").textContent=shortenMoney(gphData.ghostlyRays)
+}
+
+function updateLightBoostDisplay(){
+	document.getElementById("lightMax1").textContent=getFullExpansion(gphData.maxRed)
+	document.getElementById("lightBoost1").textContent=tmp.le[0].toFixed(3)
+	document.getElementById("lightBoost2").textContent=tmp.le[1].toFixed(2)
+	document.getElementById("lightBoost3").textContent=getFullExpansion(Math.floor(tmp.le[2]))
+	document.getElementById("lightBoost4").textContent=(tmp.le[3]*100-100).toFixed(1)
+	document.getElementById("lightBoost5").textContent=(tmp.le[4]*100).toFixed(1)+(hasBosonicUpg(11)?"+"+(tmp.blu[11]*100).toFixed(1):"")
+	document.getElementById("lightBoost6").textContent=shorten(tmp.le[5])
+	document.getElementById("lightBoost7").textContent=shorten(tmp.le[6])
+}
+
+function updateLightThresholdStrengthDisplay(){
+	var gphData=player.ghostify.ghostlyPhotons
+	for (var c=0;c<8;c++) {
+		document.getElementById("light"+(c+1)).textContent=getFullExpansion(gphData.lights[c])
+		document.getElementById("lightThreshold"+(c+1)).textContent=shorten(getLightThreshold(c))
+		if (c>0) document.getElementById("lightStrength"+c).textContent=(Math.sqrt(c>6?1:tmp.ls[c]+1)+lePower).toFixed(2)
+	}
+}
+
+function updateLEmpowermentPrimary(){
+	var gphData=player.ghostify.ghostlyPhotons
+	var lePower=getLightEmpowermentBoost()
+	document.getElementById("lightEmpowerment").className="gluonupgrade "+(gphData.lights[7]>=getLightEmpowermentReq()?"gph":"unavailablebtn")
+	document.getElementById("lightEmpowermentReq").textContent=getFullExpansion(getLightEmpowermentReq())
+	document.getElementById("lightEmpowerments").textContent=getFullExpansion(gphData.enpowerments)
+	document.getElementById("lightEmpowermentsEffect").textContent=lePower.toFixed(2)
+}
+
+function updateLEmpowermentBoosts(){
+	var gphData=player.ghostify.ghostlyPhotons
+	for (var e=1;e<4;e++) {
+		if (gphData.enpowerments>=e) {
+			if (e==1) {
+				document.getElementById("leBoost1").textContent=getFullExpansion(Math.floor(tmp.le[7].effect))
+				document.getElementById("leBoost1Total").textContent=getFullExpansion(Math.floor(tmp.le[7].total))
+			}
+			if (e==2) document.getElementById("leBoost2").textContent=(tmp.le[8]*100-100).toFixed(1)
+			if (e==3) document.getElementById("leBoost3").textContent=tmp.le[9].toFixed(2)
+		}
+		document.getElementById("le"+e).style.display=e>gphData.enpowerments?"none":""
+	}
+}
+
+function updatePhotonsTab(){
+	updateRaysPhotonsDisplay()
+	updateLightThresholdStrengthDisplay()
+	updateLightBoostDisplay()
+	updateLEmpowermentPrimary()
+	updateLEmpowermentBoosts()
+}
+
+function updateBosonExtractorTab(){
+	let data=tmp.bl
+	let speed=data.speed*(data.battery.gt(0)?data.odSpeed:1)
+	let time=getExtractTime().div(speed)
+	if (data.extracting) document.getElementById("extract").textContent="Extracting"+(time.lt(0.1)?"":" ("+data.extractProgress.times(100).toFixed(1)+"%)")
+	else document.getElementById("extract").textContent="Extract"
+	if (time.lt(0.1)) document.getElementById("extractTime").textContent="This would automatically take "+shorten(Decimal.div(1,time))+" runes per second."
+	else if (data.extracting) document.getElementById("extractTime").textContent=shorten(time.times(Decimal.sub(1,data.extractProgress)))+" seconds left to extract."
+	else document.getElementById("extractTime").textContent="This will take "+shorten(time)+" seconds."
+	updateEnchantDescs()
+}
+
+function updateWZBosonsTab(){
+	let data=tmp.bl
+	let speed=data.speed*(data.battery.gt(0)?data.odSpeed:1)
+	let lSpeed=tmp.wzbs.times(speed)
+	let data2=player.ghostify.wzb
+	let show0=data2.dPUse==1&&lSpeed.times(getAntiPreonLoss()).div(aplScalings[1]).times(tmp.zbs).gte(10)
+	let gainSpeed=getOscillateGainSpeed()
+	let r
+	if (!data2.dPUse) r=lSpeed.times(getAntiPreonProduction())
+	else r=lSpeed.times(getAntiPreonLoss())
+	//document.getElementById("wzbSpeed").textContent="Current W & Z Bosons speed: "+shorten(tmp.wzbs)+"x (w/ Bosonic Speed: "+shorten(lSpeed)+"x)"
+	document.getElementById("ap").textContent=shorten(data2.dP)
+	document.getElementById("apProduction").textContent=(data2.dPUse?"-":"+")+shorten(r)+"/s"
+	document.getElementById("apUse").textContent=data2.dPUse==0?"":"You are currently consuming Anti-Preons to "+(["","decay W Quark","oscillate Z Neutrino","convert W- to W+ Bosons"])[data2.dPUse]+"."
+	document.getElementById("wQkType").textContent=data2.wQkUp?"up":"down"
+	document.getElementById("wQkProgress").textContent=data2.wQkProgress.times(100).toFixed(1)+"% to turn W Quark to a"+(data2.wQkUp?" down":"n up")+" quark."
+	document.getElementById("wQk").className=show0?"zero":data2.wQkUp?"up":"down"
+	document.getElementById("wQkSymbol").textContent=show0?"0":data2.wQkUp?"+":"−"
+	document.getElementById("wpb").textContent=shortenDimensions(data2.wpb)
+	document.getElementById("wnb").textContent=shortenDimensions(data2.wnb)
+	document.getElementById("wbTime").textContent=shorten(tmp.wbt)
+	document.getElementById("wbOscillate").textContent=shorten(tmp.wbo)
+	document.getElementById("wbProduction").textContent=shorten(tmp.wbp)
+	document.getElementById("zNeGen").textContent=(["electron","Mu","Tau"])[data2.zNeGen-1]
+	document.getElementById("zNeProgress").textContent=data2.zNeProgress.times(100).toFixed(1)+"% to oscillate Z Neutrino to "+(["Mu","Tau","electron"])[data2.zNeGen-1]+"."
+	document.getElementById("zNeReq").textContent="Oscillate progress gain speed is currently "+(gainSpeed.gt(1)?shorten(gainSpeed):"1 / "+shorten(Decimal.div(1,gainSpeed)))+"x."
+	document.getElementById("zNe").className=(["electron","mu","tau"])[data2.zNeGen-1]
+	document.getElementById("zNeSymbol").textContent=(["e","μ","τ"])[data2.zNeGen-1]
+	document.getElementById("zb").textContent=shortenDimensions(data2.zb)
+	document.getElementById("zbGain").textContent="You will gain "+shortenDimensions(data2.zNeReq.pow(0.75))+" Z Bosons on next oscillation."
+	document.getElementById("zbSpeed").textContent=shorten(tmp.zbs)
+}
+
+function updateBosonicLabTab(){
+	let data=tmp.bl
+	let speed=data.speed*(data.battery.gt(0)?data.odSpeed:1)
+	document.getElementById("bWatt").textContent=shorten(data.watt)
+	document.getElementById("bSpeed").textContent=data.speed.toFixed(2)
+	document.getElementById("bTotalSpeed").textContent=shorten(speed)
+	document.getElementById("bTicks").textContent=shorten(data.ticks)
+	document.getElementById("bAM").textContent=shorten(data.am)
+	document.getElementById("bAMProduction").textContent="+"+shorten(getBosonicAMProduction().times(speed))+"/s"
+	document.getElementById("bBt").textContent=shorten(data.battery)
+	document.getElementById("bBtProduction").textContent="-"+shorten(getBosonicBatteryLoss().times(data.speed))+"/s"
+	document.getElementById("odSpeed").textContent=(data.battery.gt(0)?data.odSpeed:1).toFixed(2)+"x"
+	document.getElementById("odSpeedWBBt").style.display=data.battery.eq(0)&&data.odSpeed>1?"":"none"
+	document.getElementById("odSpeedWBBt").textContent=" ("+data.odSpeed.toFixed(2)+"x if you have Bosonic Battery)"
+	for (var g=1;g<=br.limit;g++) document.getElementById("bRune"+g).textContent=shortenDimensions(data.glyphs[g-1])
+	if (document.getElementById("bextab").style.display=="block") updateBosonExtractorTab()
+	if (document.getElementById("butab").style.display=="block") updateBosonicUpgradeDescs()
+	if (document.getElementById("wzbtab").style.display=="block") updateWZBosonsTab()
+}
+
 function updateGhostifyTabs() {
-	if (document.getElementById("neutrinos").style.display=="block") {
-		var generations = ["electron", "Muon", "Tau"]
-		var neutrinoGain = getNeutrinoGain()
-		var sum = player.ghostify.neutrinos.electron.add(player.ghostify.neutrinos.mu).add(player.ghostify.neutrinos.tau).round()
-		document.getElementById("neutrinosGain").textContent="You gain " + shortenDimensions(neutrinoGain) + " " + generations[player.ghostify.neutrinos.generationGain - 1] + " neutrino" + (neutrinoGain.eq(1) ? "" : "s") + " each time you get 1 normal galaxy."
-		setAndMaybeShow("neutrinosGainGhostify",player.achievements.includes("ng3p68"),'"You gain "+shortenDimensions(Decimal.times(\''+neutrinoGain.toString()+'\',tmp.qu.bigRip.bestGals*2e3))+" of all neutrinos each time you become a ghost 1x time."')
-		document.getElementById("electronNeutrinos").textContent=shortenDimensions(player.ghostify.neutrinos.electron)
-		document.getElementById("muonNeutrinos").textContent=shortenDimensions(player.ghostify.neutrinos.mu)
-		document.getElementById("tauNeutrinos").textContent=shortenDimensions(player.ghostify.neutrinos.tau)
-		if (player.ghostify.neutrinos.boosts) {
-			document.getElementById("preNeutrinoBoost1").textContent=getDilExp("neutrinos").toFixed(2)
-			document.getElementById("neutrinoBoost1").textContent=getDilExp().toFixed(2)
-		}
-		if (player.ghostify.neutrinos.boosts>1) {
-			document.getElementById("preNeutrinoBoost2").textContent="^"+shorten(getMTSMult(273, "pn"))
-			document.getElementById("neutrinoBoost2").textContent="^"+shorten(getMTSMult(273))
-			document.getElementById("preNeutrinoBoost2Exp").textContent=getMTSMult(273, ["pn", "intensity"]).toFixed(2)
-			document.getElementById("neutrinoBoost2Exp").textContent=getMTSMult(273, "intensity").toFixed(2)
-		}
-		if (player.ghostify.neutrinos.boosts>2) document.getElementById("neutrinoBoost3").textContent=tmp.nb[2].toFixed(2)
-		if (player.ghostify.neutrinos.boosts>3) document.getElementById("neutrinoBoost4").textContent=(tmp.nb[3]*100-100).toFixed(1)
-		if (player.ghostify.neutrinos.boosts>4) document.getElementById("neutrinoBoost5").textContent=(tmp.nb[4]*100).toFixed(1)
-		if (player.ghostify.neutrinos.boosts>5) document.getElementById("neutrinoBoost6").textContent=tmp.nb[5]<10.995?(tmp.nb[5]*100-100).toFixed(1):getFullExpansion(Math.floor(tmp.nb[5]*100-100))
-		if (player.ghostify.neutrinos.boosts>6) {
-			document.getElementById("neutrinoBoost7").textContent=(tmp.nb[6]*100).toFixed(1)
-			document.getElementById("preNeutrinoBoost7Eff").textContent=(getTreeUpgradeEfficiency("noNB")*100).toFixed(1)
-			document.getElementById("neutrinoBoost7Eff").textContent=(getTreeUpgradeEfficiency("br")*100).toFixed(1)
-		}
-		if (player.ghostify.neutrinos.boosts>7) document.getElementById("neutrinoBoost8").textContent=(tmp.nb[7]*100-100).toFixed(1)
-		if (player.ghostify.neutrinos.boosts>8) document.getElementById("neutrinoBoost9").textContent=shorten(tmp.nb[8])
-		if (player.ghostify.neutrinos.boosts>9) document.getElementById("neutrinoBoost10").textContent=tmp.nb[9].toFixed(4)
-		document.getElementById("neutrinoUpg1Pow").textContent=tmp.nu[0]
-		document.getElementById("neutrinoUpg3Pow").textContent=shorten(tmp.nu[1])
-		document.getElementById("neutrinoUpg4Pow").textContent=shorten(tmp.nu[2])
-		if (player.ghostify.times>4) document.getElementById("neutrinoUpg7Pow").textContent=shorten(tmp.nu[3])
-		if (player.ghostify.times>9) document.getElementById("neutrinoUpg12").setAttribute('ach-tooltip',
-			"Normal galaxy effect: "+shorten(tmp.nu[4].normal)+"x to quark spin production, "+
-			"Replicated galaxy effect: "+shorten(tmp.nu[4].replicated)+"x to EC14 reward, "+
-			"Free galaxy effect: "+shorten(tmp.nu[4].free)+"x to IC3 reward"
-		)
-		if (player.ghostify.ghostlyPhotons.unl) {
-			document.getElementById("neutrinoUpg14Pow").textContent=shorten(tmp.nu[5])
-			document.getElementById("neutrinoUpg15Pow").textContent=shorten(tmp.nu[6])
-		}
-		for (var u=1;u<16;u++) {
-			var e=false
-			if (u>12) e=player.ghostify.ghostlyPhotons.unl
-			else e=player.ghostify.times+3>u||u<5
-			if (e) {
-				if (hasNU(u)) document.getElementById("neutrinoUpg" + u).className = "gluonupgradebought neutrinoupg"
-				else if (sum.gte(tmp.nuc[u])) document.getElementById("neutrinoUpg" + u).className = "gluonupgrade neutrinoupg"
-				else document.getElementById("neutrinoUpg" + u).className = "gluonupgrade unavailablebtn"
-			}
-		}
-		if (player.ghostify.ghostParticles.gte(tmp.nbc[player.ghostify.neutrinos.boosts])) document.getElementById("neutrinoUnlock").className = "gluonupgrade neutrinoupg"
-		else document.getElementById("neutrinoUnlock").className = "gluonupgrade unavailablebtn"
-		if (player.ghostify.ghostParticles.gte(Decimal.pow(4,player.ghostify.neutrinos.multPower-1).times(2))) document.getElementById("neutrinoMultUpg").className = "gluonupgrade neutrinoupg"
-		else document.getElementById("neutrinoMultUpg").className = "gluonupgrade unavailablebtn"
-		if (sum.gte(getGHPMultCost())) document.getElementById("ghpMultUpg").className = "gluonupgrade neutrinoupg"
-		else document.getElementById("ghpMultUpg").className = "gluonupgrade unavailablebtn"
-	}
+	if (document.getElementById("neutrinos").style.display=="block") updateNeutrinosTab()
 	if (document.getElementById("automaticghosts").style.display=="block") if (player.ghostify.milestones>7) updateQuantumWorth("display")
-	if (document.getElementById("gphtab").style.display=="block"&&player.ghostify.ghostlyPhotons.unl) {
-		var gphData=player.ghostify.ghostlyPhotons
-		var lePower=getLightEmpowermentBoost()
-		document.getElementById("dtGPH").textContent=shorten(player.dilation.dilatedTime)
-		document.getElementById("gphProduction").textContent=shorten(getGPHProduction())
-		document.getElementById("gphProduction").className=(tmp.qu.bigRip.active?"gph":"dm")+"Amount"
-		document.getElementById("gphProductionType").textContent=tmp.qu.bigRip.active?"Ghostly Photons":"Dark Matter"
-		document.getElementById("gph").textContent=shortenMoney(gphData.amount)
-		document.getElementById("dm").textContent=shortenMoney(gphData.darkMatter)
-		document.getElementById("ghrProduction").textContent=shortenMoney(getGHRProduction())
-		document.getElementById("ghrCap").textContent=shortenMoney(getGHRCap())
-		document.getElementById("ghr").textContent=shortenMoney(gphData.ghostlyRays)
-		for (var c=0;c<8;c++) {
-			document.getElementById("light"+(c+1)).textContent=getFullExpansion(gphData.lights[c])
-			document.getElementById("lightThreshold"+(c+1)).textContent=shorten(getLightThreshold(c))
-			if (c>0) document.getElementById("lightStrength"+c).textContent=(Math.sqrt(c>6?1:tmp.ls[c]+1)+lePower).toFixed(2)
-		}
-		document.getElementById("lightMax1").textContent=getFullExpansion(gphData.maxRed)
-		document.getElementById("lightBoost1").textContent=tmp.le[0].toFixed(3)
-		document.getElementById("lightBoost2").textContent=tmp.le[1].toFixed(2)
-		document.getElementById("lightBoost3").textContent=getFullExpansion(Math.floor(tmp.le[2]))
-		document.getElementById("lightBoost4").textContent=(tmp.le[3]*100-100).toFixed(1)
-		document.getElementById("lightBoost5").textContent=(tmp.le[4]*100).toFixed(1)+(hasBosonicUpg(11)?"+"+(tmp.blu[11]*100).toFixed(1):"")
-		document.getElementById("lightBoost6").textContent=shorten(tmp.le[5])
-		document.getElementById("lightBoost7").textContent=shorten(tmp.le[6])
-		document.getElementById("lightEmpowerment").className="gluonupgrade "+(gphData.lights[7]>=getLightEmpowermentReq()?"gph":"unavailablebtn")
-		document.getElementById("lightEmpowermentReq").textContent=getFullExpansion(getLightEmpowermentReq())
-		document.getElementById("lightEmpowerments").textContent=getFullExpansion(gphData.enpowerments)
-		document.getElementById("lightEmpowermentsEffect").textContent=lePower.toFixed(2)
-		for (var e=1;e<4;e++) {
-			if (gphData.enpowerments>=e) {
-				if (e==1) {
-					document.getElementById("leBoost1").textContent=getFullExpansion(Math.floor(tmp.le[7].effect))
-					document.getElementById("leBoost1Total").textContent=getFullExpansion(Math.floor(tmp.le[7].total))
-				}
-				if (e==2) document.getElementById("leBoost2").textContent=(tmp.le[8]*100-100).toFixed(1)
-				if (e==3) document.getElementById("leBoost3").textContent=tmp.le[9].toFixed(2)
-			}
-			document.getElementById("le"+e).style.display=e>gphData.enpowerments?"none":""
-		}
-	}
-	if (document.getElementById("bltab").style.display=="block"&&player.ghostify.wzb.unl) {
-		let data=tmp.bl
-		let speed=data.speed*(data.battery.gt(0)?data.odSpeed:1)
-		document.getElementById("bWatt").textContent=shorten(data.watt)
-		document.getElementById("bSpeed").textContent=data.speed.toFixed(2)
-		document.getElementById("bTotalSpeed").textContent=shorten(speed)
-		document.getElementById("bTicks").textContent=shorten(data.ticks)
-		document.getElementById("bAM").textContent=shorten(data.am)
-		document.getElementById("bAMProduction").textContent="+"+shorten(getBosonicAMProduction().times(speed))+"/s"
-		document.getElementById("bBt").textContent=shorten(data.battery)
-		document.getElementById("bBtProduction").textContent="-"+shorten(getBosonicBatteryLoss().times(data.speed))+"/s"
-		document.getElementById("odSpeed").textContent=(data.battery.gt(0)?data.odSpeed:1).toFixed(2)+"x"
-		document.getElementById("odSpeedWBBt").style.display=data.battery.eq(0)&&data.odSpeed>1?"":"none"
-		document.getElementById("odSpeedWBBt").textContent=" ("+data.odSpeed.toFixed(2)+"x if you have Bosonic Battery)"
-		for (var g=1;g<=br.limit;g++) document.getElementById("bRune"+g).textContent=shortenDimensions(data.glyphs[g-1])
-		if (document.getElementById("bextab").style.display=="block") {
-			let time=getExtractTime().div(speed)
-			if (data.extracting) document.getElementById("extract").textContent="Extracting"+(time.lt(0.1)?"":" ("+data.extractProgress.times(100).toFixed(1)+"%)")
-			else document.getElementById("extract").textContent="Extract"
-			if (time.lt(0.1)) document.getElementById("extractTime").textContent="This would automatically take "+shorten(Decimal.div(1,time))+" runes per second."
-			else if (data.extracting) document.getElementById("extractTime").textContent=shorten(time.times(Decimal.sub(1,data.extractProgress)))+" seconds left to extract."
-			else document.getElementById("extractTime").textContent="This will take "+shorten(time)+" seconds."
-			updateEnchantDescs()
-		}
-		if (document.getElementById("butab").style.display=="block") updateBosonicUpgradeDescs()
-		if (document.getElementById("wzbtab").style.display=="block") {
-			let lSpeed=tmp.wzbs.times(speed)
-			let data2=player.ghostify.wzb
-			let show0=data2.dPUse==1&&lSpeed.times(getAntiPreonLoss()).div(aplScalings[1]).times(tmp.zbs).gte(10)
-			let gainSpeed=getOscillateGainSpeed()
-			let r
-			if (!data2.dPUse) r=lSpeed.times(getAntiPreonProduction())
-			else r=lSpeed.times(getAntiPreonLoss())
-			//document.getElementById("wzbSpeed").textContent="Current W & Z Bosons speed: "+shorten(tmp.wzbs)+"x (w/ Bosonic Speed: "+shorten(lSpeed)+"x)"
-			document.getElementById("ap").textContent=shorten(data2.dP)
-			document.getElementById("apProduction").textContent=(data2.dPUse?"-":"+")+shorten(r)+"/s"
-			document.getElementById("apUse").textContent=data2.dPUse==0?"":"You are currently consuming Anti-Preons to "+(["","decay W Quark","oscillate Z Neutrino","convert W- to W+ Bosons"])[data2.dPUse]+"."
-			document.getElementById("wQkType").textContent=data2.wQkUp?"up":"down"
-			document.getElementById("wQkProgress").textContent=data2.wQkProgress.times(100).toFixed(1)+"% to turn W Quark to a"+(data2.wQkUp?" down":"n up")+" quark."
-			document.getElementById("wQk").className=show0?"zero":data2.wQkUp?"up":"down"
-			document.getElementById("wQkSymbol").textContent=show0?"0":data2.wQkUp?"+":"−"
-			document.getElementById("wpb").textContent=shortenDimensions(data2.wpb)
-			document.getElementById("wnb").textContent=shortenDimensions(data2.wnb)
-			document.getElementById("wbTime").textContent=shorten(tmp.wbt)
-			document.getElementById("wbOscillate").textContent=shorten(tmp.wbo)
-			document.getElementById("wbProduction").textContent=shorten(tmp.wbp)
-			document.getElementById("zNeGen").textContent=(["electron","Mu","Tau"])[data2.zNeGen-1]
-			document.getElementById("zNeProgress").textContent=data2.zNeProgress.times(100).toFixed(1)+"% to oscillate Z Neutrino to "+(["Mu","Tau","electron"])[data2.zNeGen-1]+"."
-			document.getElementById("zNeReq").textContent="Oscillate progress gain speed is currently "+(gainSpeed.gt(1)?shorten(gainSpeed):"1 / "+shorten(Decimal.div(1,gainSpeed)))+"x."
-			document.getElementById("zNe").className=(["electron","mu","tau"])[data2.zNeGen-1]
-			document.getElementById("zNeSymbol").textContent=(["e","μ","τ"])[data2.zNeGen-1]
-			document.getElementById("zb").textContent=shortenDimensions(data2.zb)
-			document.getElementById("zbGain").textContent="You will gain "+shortenDimensions(data2.zNeReq.pow(0.75))+" Z Bosons on next oscillation."
-			document.getElementById("zbSpeed").textContent=shorten(tmp.zbs)
-		}
-	}
+	if (document.getElementById("gphtab").style.display=="block"&&player.ghostify.ghostlyPhotons.unl) updatePhotonsTab()
+	if (document.getElementById("bltab").style.display=="block"&&player.ghostify.wzb.unl) updateBosonicLabTab()
 }
 
 function onNotationChangeNeutrinos() {
@@ -3656,22 +3707,20 @@ function getLightThreshold(l) {
 	var actuallvl = player.ghostify.ghostlyPhotons.lights[l]
 	var lvl = player.ghostify.ghostlyPhotons.lights[l]
 	var log57 = Math.log(7)/Math.log(5)
-	if (lvl>100) lvl += Math.floor(Math.pow(lvl-95,log57))
+	if (lvl > 100) lvl += Math.floor(Math.pow(lvl-95,log57))-7
 	var expsclaing = 0
 	if (actuallvl>200) expsclaing = Math.floor(Math.pow(1.1,actuallvl-180))
 	//lvl += expscaling
 	//abv is commented out on purpose
 	return Decimal.pow(tmp.lti[l],lvl).times(tmp.lt[l])
-	//add a quadratic scaling at 100
 }
 
 function getLightEmpowermentReq() {
 	var linear = player.ghostify.ghostlyPhotons.enpowerments*2.4
 	var quadratic = Math.pow(Math.max(0,player.ghostify.ghostlyPhotons.enpowerments-13),2)/3
 	//starts at the 15th LE
-	var exponential = Math.pow(1.2,player.ghostify.ghostlyPhotons.enpowerments-20)-1
+	var exponential = Math.pow(1.2,Math.max(0,player.ghostify.ghostlyPhotons.enpowerments-20))-1
 	//starts at the 20th LE, first cost bump at 21st LE
-	exponential = Math.max(exponential,0)
 	return Math.floor(linear+1+quadratic+exponential)
 }
 
@@ -3827,7 +3876,7 @@ var qcm={
 	},
 	descs:{
 		ad:"You always have no Tachyon particles. You can dilate time, but you can't gain Tachyon particles.",
-		sm:"You can't have normal time studies and more than 20 normal mastery studies."
+		sm:"You can't have normal time studies or more than 20 normal mastery studies."
 	},
 	on:[]
 }
