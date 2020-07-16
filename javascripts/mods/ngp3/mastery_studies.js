@@ -716,8 +716,9 @@ function getMTSMult(id, uses = "") {
 		let y=Decimal.pow(Math.max(x/1e4,1),Math.max(x/1e4+Math.log10(x)/2,1))
 		if (tmp.newNGP3E) y = y.times(y.plus(9).log10())
 		exp = y.log10()
-		if (exp > 400) exp = 400*Math.pow(exp/400,.4)
-		if (exp > 500) exp = 500*Math.pow(exp/500,.3)
+		if (exp > 100) exp = 100*Math.pow(exp/100,.9)
+		if (exp > 300) exp = 300*Math.pow(exp/300,.7)
+		if (exp > 500) exp = 500*Math.pow(exp/500,.5)
 		return Decimal.pow(10,exp)
 	}
 }
