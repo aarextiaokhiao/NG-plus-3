@@ -353,6 +353,57 @@ function getMasteryStudyCostMult(id) {
 	return (tmp.ngp3l&&masteryStudies.costs.time_mults_legacy[id])||masteryStudies.costs.time_mults[id]||1
 }
 
+function buyingD7Changes(){
+	showTab("quantumtab")
+	showQuantumTab("electrons")
+	updateElectrons()
+}
+
+function buyingDilStudyForQC(){
+	showTab("challenges")
+	showChallengesTab("quantumchallenges")
+	updateQuantumChallenges()
+}
+
+function buyingDilStudyReplicant(){
+	showTab("quantumtab")
+	showQuantumTab("replicants")
+	document.getElementById("timestudy322").style.display=""
+	updateReplicants()
+}
+
+function buyingDilStudyED(){
+	showTab("dimensions")
+	showDimTab("emperordimensions")
+	document.getElementById("timestudy361").style.display=""
+	document.getElementById("timestudy362").style.display=""
+	document.getElementById("edtabbtn").style.display=""
+	updateReplicants()
+}
+
+function buyingDilStudyNanofield(){
+	showTab("quantumtab")
+	showQuantumTab("nanofield")
+	document.getElementById("nanofieldtabbtn").style.display = ""
+}
+
+function buyingDilStudyToD(){
+	showTab("quantumtab")
+	showQuantumTab("tod")
+	updateColorCharge()
+	updateTODStuff()
+}
+
+function buyingDilationStudy(id){
+	if (id==7) buyingD7Changes()
+	if (id==8||id==9||id==14) buyingDilStudyForQC()
+	if (id == 9) updateGluons()
+	if (id==10) buyingDilStudyReplicant()
+	if (id==11) buyingDilStudyED()
+	if (id==12) buyingDilStudyNanofield()
+	if (id==13) buyingDilStudyToD()
+}
+
 function buyMasteryStudy(type, id, quick=false) {
 	if (quick) setMasteryStudyCost(id,type)
 	if (canBuyMasteryStudy(type, id)) {
@@ -387,44 +438,7 @@ function buyMasteryStudy(type, id, quick=false) {
 			}
 			if (id==383) updateColorCharge()
 		}
-		if (type=="d") {
-			if (id==7) {
-				showTab("quantumtab")
-				showQuantumTab("electrons")
-				updateElectrons()
-			}
-			if (id==8||id==9||id==14) {
-				showTab("challenges")
-				showChallengesTab("quantumchallenges")
-				updateQuantumChallenges()
-				if (id==9) updateGluons()
-			}
-			if (id==10) {
-				showTab("quantumtab")
-				showQuantumTab("replicants")
-				document.getElementById("timestudy322").style.display=""
-				updateReplicants()
-			}
-			if (id==11) {
-				showTab("dimensions")
-				showDimTab("emperordimensions")
-				document.getElementById("timestudy361").style.display=""
-				document.getElementById("timestudy362").style.display=""
-				document.getElementById("edtabbtn").style.display=""
-				updateReplicants()
-			}
-			if (id==12) {
-				showTab("quantumtab")
-				showQuantumTab("nanofield")
-				document.getElementById("nanofieldtabbtn").style.display = ""
-			}
-			if (id==13) {
-				showTab("quantumtab")
-				showQuantumTab("tod")
-				updateColorCharge()
-				updateTODStuff()
-			}
-		}
+		if (type=="d") buyingDilationStudy(id)
 		if (!quick) {
 			if (type=="t") {
 				if (id==302) fillAll()
@@ -580,10 +594,21 @@ function drawMasteryTree() {
 	}
 }
 
+function getMasteryStudyMultiplier(id, uses = ""){
+	return getMTSMult(id, uses)
+}
+
 function getMTSMult(id, uses = "") {
-	if (id==251) return Math.floor(player.resets/3e3)
-	if (id==252) return Math.floor(player.dilation.freeGalaxies/7)
+	if (id==251) {
+		if (player.ghostify.neutrinos.upgrades.includes(6)) return 0
+		return Math.floor(player.resets/3e3)
+	}
+	if (id==252) {
+		if (player.ghostify.neutrinos.upgrades.includes(6)) return 0
+		return Math.floor(player.dilation.freeGalaxies/7)
+	}
 	if (id==253) {
+		if (player.ghostify.neutrinos.upgrades.includes(6)) return 0
 		if (tmp.ngp3l) return Math.floor(extraReplGalaxies/9)*20
 		return Math.floor(getTotalRG()/4)
 	}
@@ -595,8 +620,9 @@ function getMTSMult(id, uses = "") {
 			r = Math.max(player.resets / 5e4 - 10, 1)
 			exp = Math.sqrt(Math.max(player.resets/1e5 - 5.5, 1))
 		}
+		if (r > 1e4) r = Math.pow(6+Math.log10(r),4)
 		if (player.aarexModifications.newGameExpVersion) exp *= 2
-		if (exp == 1) return r
+		if (exp == 1) return r // why is this here, use Decimals
 		return Decimal.pow(r, exp)
 	}
 	if (id==263) {
@@ -627,15 +653,27 @@ function getMTSMult(id, uses = "") {
 		if (log>110) log=Math.sqrt(log*27.5)+55
 		if (log>1e3&&player.aarexModifications.ngudpV!==undefined) log=Math.pow(7+Math.log10(log),3)
 		if (player.aarexModifications.newGameExpVersion) log += Math.pow(Math.log10(log+10),4)-1
+		if (log > 1500) log = (Math.pow(Math.log10(log*6.6+100),5)-24 )+500
 		return Decimal.pow(10,log)
 	}
 	if (id==332) return Math.max(player.galaxies, 1)
-	if (id==341) return Decimal.pow(tmp.newNGP3E?4:2,Math.sqrt(tmp.qu.replicants.quarks.add(1).log10()))
-	if (id==344) return Math.pow(tmp.qu.replicants.quarks.div(1e7).add(1).log10(),tmp.newNGP3E?.3:.25)*0.17+1
+	if (id==341) {
+		var exp = Math.sqrt(tmp.qu.replicants.quarks.add(1).log10())
+		if (exp > 150) exp = 150*Math.pow(exp/150,.5)
+		if (exp > 200) exp = 200*Math.pow(exp/200,.5)
+		return Decimal.pow(tmp.newNGP3E?3:2,exp)
+	}
+	if (id==344) {
+		var ret = Math.pow(tmp.qu.replicants.quarks.div(1e7).add(1).log10(),tmp.newNGP3E?.3:.25)*0.17+1
+		if (ret > 3) ret = 1+Math.log2(ret+1)
+		if (ret > 4) ret = 3 + Math.log10(ret+6)
+		return ret
+	}
 	if (id==351) {
-		let log=player.timeShards.max(1).log10()*14e-7
-		if (log>1e4) log=Math.pow(log*Math.pow(10,36),.1)
-		return Decimal.pow(tmp.newNGP3E?14:10,log)
+		let log = player.timeShards.max(1).log10()*14e-7
+		if (log > 1e4) log = Math.pow(log*Math.pow(10,36),.1)
+		if (log > 2e4) log = 2*Math.pow(Math.log10(5*log)+5,4)
+		return Decimal.pow(tmp.newNGP3E?12:10,log)
 	}
 	if (id==361) return player.dilation.tachyonParticles.max(1).pow(0.01824033924212366)
 	if (id==371) return Math.pow(extraReplGalaxies+1,player.aarexModifications.newGameExpVersion?.5:.3)
@@ -645,8 +683,13 @@ function getMTSMult(id, uses = "") {
 	if (id==382) return player.eightAmount.max(1).pow(Math.PI)
 	if (id==383) {
 		if (tmp.ngp3l) return Decimal.pow(3200,Math.pow(tmp.qu.colorPowers.b.add(1).log10(),0.25))
-		if (tmp.newNGP3E) return Decimal.pow(2, Math.sqrt(player.meta.antimatter.add(1).log10()) * Math.pow(getCPLog("b"), 1/5))
-		return Decimal.pow(2, Math.sqrt(player.meta.antimatter.add(1).log10()) * Math.pow(getCPLog("b"), 4/21))
+		var blueExp = 4/21
+		if (tmp.newNGP3E) blueExp = 1/5
+		var bluePortion = Math.pow(getCPLog("b"), blueExp)
+		var MAportion = Math.sqrt(player.meta.antimatter.add(1).log10())
+		var exp = MAportion * bluePortion * Math.log10(2)
+		
+		return Decimal.pow(10,exp)
 	}
 	if (id==391) return player.meta.antimatter.max(1).pow(8e-4)
 	if (id==392) return Decimal.pow(tmp.newNGP3E?1.7:1.6,Math.sqrt(tmp.qu.replicants.quarks.add(1).log10()))
@@ -656,17 +699,26 @@ function getMTSMult(id, uses = "") {
 		if (log>5) log=Math.log10(log*2)*5
 		return Decimal.pow(tmp.newNGP3E?12:10,log)
 	}
-	if (id==411) return tmp.tra.div(1e24).add(1).pow(0.2)
+	if (id==411) {
+		var exp = tmp.tra.div(1e24).add(1).pow(0.2).log10()
+		
+		//if (exp > 700) exp = 700*Math.pow(exp/700,.5)
+		return Decimal.pow(10,exp)
+	}
 	if (id==421) {
 		let ret=Math.pow(Math.max(-getTickspeed().log10()/1e13-0.75,1),4)
-		if (ret>100) ret=Math.sqrt(ret*100)
+		if (ret > 100 ) ret = Math.sqrt(ret*100)
+		if (ret > 1e10) ret = Math.pow(Math.log10(ret),10)
 		return ret
 	}
 	if (id==431) {
 		let x=player.dilation.freeGalaxies+tmp.eg431
 		let y=Decimal.pow(Math.max(x/1e4,1),Math.max(x/1e4+Math.log10(x)/2,1))
-		if (tmp.newNGP3E) return y.times(y.plus(9).log10())
-		return y
+		if (tmp.newNGP3E) y = y.times(y.plus(9).log10())
+		exp = y.log10()
+		if (exp > 400) exp = 400*Math.pow(exp/400,.4)
+		if (exp > 500) exp = 500*Math.pow(exp/500,.3)
+		return Decimal.pow(10,exp)
 	}
 }
 
