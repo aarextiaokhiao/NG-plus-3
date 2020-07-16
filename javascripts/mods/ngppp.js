@@ -4022,9 +4022,14 @@ function bosonicTick(diff) {
 }
 
 function getBosonicAMProduction() {
-	let r=Decimal.pow(10,player.money.max(1).log10()/15e15-3) //Antimatter part
-	r=r.times(tmp.wbp) //W Bosons part
-	return r
+	let r=player.money.max(1).log10()/15e15-3 //Antimatter part
+	if (r>100) r = Math.pow(Math.log2(r+28)+3,2) // maybe remove if too strong
+	//if (r>200) r = 200*Math.pow(r/200,.5)
+	if (r > 10000) /* 10^4 */ r = Math.pow(Math.log10(r)+6,4) // very strong :)
+	if (false && r > 10**4) r = 1e4*Math.pow(r/1e4,.5)
+	if (r > 10**10) r = Math.pow(Math.log10(r),10)
+	
+	return Decimal.pow(10,r).times(tmp.wbp)
 }
 
 function showBLTab(tabName) {
