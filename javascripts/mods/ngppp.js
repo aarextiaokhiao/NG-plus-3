@@ -3247,6 +3247,7 @@ function updateNeutrinoUpgradeDisplay(){
 		document.getElementById("neutrinoUpg14Pow").textContent=shorten(tmp.nu[5])
 		document.getElementById("neutrinoUpg15Pow").textContent=shorten(tmp.nu[6])
 	}
+	var sum = player.ghostify.neutrinos.electron.add(player.ghostify.neutrinos.mu).add(player.ghostify.neutrinos.tau).round()
 	for (var u=1;u<16;u++) {
 		var e=false
 		if (u>12) e=player.ghostify.ghostlyPhotons.unl
