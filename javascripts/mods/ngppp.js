@@ -3293,6 +3293,7 @@ function updateRaysPhotonsDisplay(){
 }
 
 function updateLightBoostDisplay(){
+	var gphData=player.ghostify.ghostlyPhotons
 	document.getElementById("lightMax1").textContent=getFullExpansion(gphData.maxRed)
 	document.getElementById("lightBoost1").textContent=tmp.le[0].toFixed(3)
 	document.getElementById("lightBoost2").textContent=tmp.le[1].toFixed(2)
@@ -3305,6 +3306,7 @@ function updateLightBoostDisplay(){
 
 function updateLightThresholdStrengthDisplay(){
 	var gphData=player.ghostify.ghostlyPhotons
+	var lePower=getLightEmpowermentBoost()
 	for (var c=0;c<8;c++) {
 		document.getElementById("light"+(c+1)).textContent=getFullExpansion(gphData.lights[c])
 		document.getElementById("lightThreshold"+(c+1)).textContent=shorten(getLightThreshold(c))
