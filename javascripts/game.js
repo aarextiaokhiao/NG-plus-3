@@ -1180,7 +1180,7 @@ function updateGPhTemp(){
 	
 	//VIOLET
 	var lightexp6 = tmp.newNGP3E?.36:1/3
-	var loglighteffect6 = Math.pow(player.postC3Reward.log10()*tmp.ls[6],tmp.newNGP3E)*2 
+	var loglighteffect6 = Math.pow(player.postC3Reward.log10()*tmp.ls[6],lightexp6)*2 
 	if (loglighteffect6 > 15e3) loglighteffect6 = Math.pow(loglighteffect6/15e3,.6)*15e3
 	if (loglighteffect6 > 22222) loglighteffect6 = 11111*Math.log10(77778+loglighteffect6)*2/5
 	tmp.le[6] = Decimal.pow(10 , loglighteffect6)
