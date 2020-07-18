@@ -397,7 +397,7 @@ function buyingDilStudyToD(){
 function buyingDilationStudy(id){
 	if (id==7) buyingD7Changes()
 	if (id==8||id==9||id==14) buyingDilStudyForQC()
-	if (id == 9) updateGluons()
+	if (id == 9) updateGluonsTabOnUpdate()
 	if (id==10) buyingDilStudyReplicant()
 	if (id==11) buyingDilStudyED()
 	if (id==12) buyingDilStudyNanofield()
