@@ -144,7 +144,7 @@ var masteryStudies = {
 			return tmp.ngp3l?"Preon effect is 25% stronger.":"Further reduce the softcap of preon boost."
 		},
 		421: "Tickspeed boosts preon energy production.",
-		431: "Branches are faster based on your free galaxies."
+		431: "DT production and branches are faster based on your free galaxies."
 	},
 	hasStudyEffect: [251, 252, 253, 262, 263, 264, 273, 281, 282, 301, 303, 322, 332, 341, 344, 351, 361, 371, 372, 373, 381, 382, 383, 391, 392, 393, 401, 411, 421, 431],
 	studyEffectDisplays: {
@@ -716,9 +716,11 @@ function getMTSMult(id, uses = "") {
 		let y=Decimal.pow(Math.max(x/1e4,1),Math.max(x/1e4+Math.log10(x)/2,1))
 		if (tmp.newNGP3E) y = y.times(y.plus(9).log10())
 		exp = y.log10()
-		if (exp > 100) exp = 100*Math.pow(exp/100,.9)
-		if (exp > 300) exp = 300*Math.pow(exp/300,.7)
-		if (exp > 500) exp = 500*Math.pow(exp/500,.5)
+		if (!tmp.ngp3l) {
+			if (exp > 100) exp = 100*Math.pow(exp/100,.9)
+			if (exp > 300) exp = 300*Math.pow(exp/300,.7)
+			if (exp > 500) exp = 500*Math.pow(exp/500,.5)
+		}
 		return Decimal.pow(10,exp)
 	}
 }

@@ -1353,25 +1353,31 @@ function updateIntergalacticTemp(){
 		igLog = Math.pow(84 + Math.log10(igLog), 8)
 		tmp.igs = 3
 	}
-	
-	var scalingStrength = 5
-	
-	if (igLog > 1e20 && scalingStrength > 4){
-		igLog = Math.pow(5*Math.log10(igLog),10) //derivative is .217142 at 1e20
+
+	if (!tmp.ngp3l) { //Ethereal
+		var scalingStrength = 5
+		if (igLog > 1e20 && scalingStrength > 4){
+			igLog = Math.pow(5*Math.log10(igLog),10) //derivative is .217142 at 1e20
+			tmp.igs = 8
+		}
+		if (igLog > 1e21 && scalingStrength > 3){ // this is the really strong one :) it becomes stupid tough scaling with derivative less than .01 at 32e21  
+			igLog = 1e21*Math.pow(igLog/1e21,.2) // derivative is .2 at 1e21
+			tmp.igs = 7
+		}
+		if (igLog > 1e22 && scalingStrength > 2){
+			igLog = Math.pow(12+4*Math.log10(igLog),11) //derivative is .191029 at 1e22
+			tmp.igs = 6
+		}
+		if (igLog > 1e23 && scalingStrength > 1){
+			igLog = 1e23*Math.pow(igLog/1e23,.1) // derivative is .1 at 1e23
+			tmp.igs = 5
+		}
+		if (igLog > 1e24 && scalingStrength > 0){
+			igLog = Math.pow(Math.pow(Math.log10(igLog),2)+424 ,8) //derivative is .142 at 1e24
+			tmp.igs = 4
+		}
 	}
-	if (igLog > 1e21 && scalingStrength > 3){ // this is the really strong one :) it becomes stupid tough scaling with derivative less than .01 at 32e21  
-		igLog = 1e21*Math.pow(igLog/1e21,.2) // derivative is .2 at 1e21
-	}
-	if (igLog > 1e22 && scalingStrength > 2){
-		igLog = Math.pow(12+4*Math.log10(igLog),11) //derivative is .191029 at 1e22
-	}
-	if (igLog > 1e23 && scalingStrength > 1){
-		igLog = 1e23*Math.pow(igLog/1e23,.1) // derivative is .1 at 1e23
-	}
-	if (igLog > 1e24 && scalingStrength > 0){
-		igLog = Math.pow(Math.pow(Math.log10(igLog),2)+424 ,8) //derivative is .142 at 1e24
-	}
-	
+
 	tmp.ig = Decimal.pow(10, igLog)
 	
 }
@@ -2048,7 +2054,7 @@ function intergalacticDisplay(){
 	var shiftRequirement = getShiftRequirement(0);
 	if (player.achievements.includes("ng3p37") && shiftRequirement.tier > 7) {
 		document.getElementById("intergalacticLabel").parentElement.style.display = ""
-		document.getElementById("intergalacticLabel").innerHTML = (["", "Distant ", "Remote ", "Ghostly "])[tmp.igs] + 'Intergalactic Boost ' + (player.dilation.active || player.galacticSacrifice != undefined ? " (estimated)" : "") + " (" + getFullExpansion(player.galaxies) + (Math.floor(tmp.igg - player.galaxies) > 0 ? " + " + getFullExpansion(Math.floor(tmp.igg - player.galaxies)) : "") + "): " + shorten(dilates(tmp.ig).pow(player.dilation.active?getNanofieldRewardEffect(5):1)) + 'x to Eighth Dimensions'
+		document.getElementById("intergalacticLabel").innerHTML = (["", "Distant ", "Remote ", "Ghostly ", "Ethereal I ", "Ethereal II ", "Ethereal III ", "Ethereal IV ", "Ethereal V "])[tmp.igs] + 'Intergalactic Boost ' + (player.dilation.active || player.galacticSacrifice != undefined ? " (estimated)" : "") + " (" + getFullExpansion(player.galaxies) + (Math.floor(tmp.igg - player.galaxies) > 0 ? " + " + getFullExpansion(Math.floor(tmp.igg - player.galaxies)) : "") + "): " + shorten(dilates(tmp.ig).pow(player.dilation.active?getNanofieldRewardEffect(5):1)) + 'x to Eighth Dimensions'
 	} else document.getElementById("intergalacticLabel").parentElement.style.display = "none"
 }
 
