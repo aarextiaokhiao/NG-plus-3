@@ -9773,7 +9773,7 @@ function gameLoop(diff) {
 	passiveIPupdating(diff)
 	passiveInfinitiesUpdating(diff)
 	requiredInfinityUpdating(diff)
-	normalChallPowerUpdating()
+	normalChallPowerUpdating(diff)
 	passiveIPperMUpdating(diff)
     	incrementTimesUpdating(diffStat)
 	dimensionButtonDisplayUpdating()
