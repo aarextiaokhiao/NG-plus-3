@@ -714,7 +714,7 @@ function doQuantumProgress() {
 		document.getElementById("progresspercent").textContent = percentage
 		document.getElementById("progresspercent").setAttribute('ach-tooltip',"Percentage to "+shortenDimensions(Decimal.pow(2,goal))+" GHP gain")
 	} else if (id == 7) {
-		var percentage = Math.min(tmp.qu.bigRip.bestThisRun.max(1).log10() / 6025e4, 100).toFixed(2) + "%"
+		var percentage = Math.min(tmp.qu.bigRip.bestThisRun.max(1).log10() / 6000e4, 100).toFixed(2) + "%"
 		document.getElementById("progressbar").style.width = percentage
 		document.getElementById("progresspercent").textContent = percentage
 		document.getElementById("progresspercent").setAttribute('ach-tooltip',"Percentage to Ghostly Photons")
