@@ -1144,9 +1144,12 @@ function updateGPhTemp(){
 	//RED
 	var light0multiplier = tmp.newNGP3E?.155:.15
 	var lighteffect0 = Math.pow(tmp.ls[0],1/4)*light0multiplier+1
-	if (lighteffect0 > 1.5 && !tmp.newNGP3E) lighteffect0 = Math.log10(lighteffect0*20/3)*1.5
-	if (lighteffect0 > 1.8) lighteffect0 = 1.8*Math.log10(1+5*lighteffect0)
-	if (lighteffect0 > 2) lighteffect0 = 1+Math.log2(lighteffect0)
+	
+	var scaling = 4
+	if (lighteffect0 > 1.5 && !tmp.newNGP3E && scaling >= 4) lighteffect0 = Math.log10(lighteffect0*20/3)*1.5
+	if (lighteffect0 > 1.8 && scaling >= 3) lighteffect0 = 1.8*Math.log10(1+5*lighteffect0)
+	if (lighteffect0 > 2 && scaling >= 2) lighteffect0 = 1+Math.log2(lighteffect0)
+	//if (lighteffect0 > something && scaling >= 1) lighteffect0 = softcapped
 	tmp.le[0] = lighteffect0
 	
 	//ORANGE
@@ -1181,14 +1184,43 @@ function updateGPhTemp(){
 	//VIOLET
 	var lightexp6 = tmp.newNGP3E?.36:1/3
 	var loglighteffect6 = Math.pow(player.postC3Reward.log10()*tmp.ls[6],lightexp6)*2 
-	if (loglighteffect6 > 15e3) loglighteffect6 = Math.pow(loglighteffect6/15e3,.6)*15e3
-	if (loglighteffect6 > 22222) loglighteffect6 = 11111*Math.log10(77778+loglighteffect6)*2/5
+	if (loglighteffect6 > 15e3) loglighteffect6 = 15e3*Math.pow(loglighteffect6/15e3,.6)
+	if (loglighteffect6 > 22222) loglighteffect6 = 11111*Math.log10(77778+loglighteffect6)*2/5 // deriv is .019
 	tmp.le[6] = Decimal.pow(10 , loglighteffect6)
 	
 	//EMPOWERMENTS BONUSES
-	if (player.ghostify.ghostlyPhotons.enpowerments > 0) tmp.le[7] = {effect:Math.log10(tmp.ls[3]+1)*300} //Green light (LE#1)
-	if (player.ghostify.ghostlyPhotons.enpowerments > 1) tmp.le[8] = Math.log10(tmp.ls[4]*10+1)/4+1 //Blue light (LE#2)
-	if (player.ghostify.ghostlyPhotons.enpowerments > 2) tmp.le[9] = Math.pow(tmp.ls[7]+1,.1)*2-1 //Red light (LE#3)
+	if (player.ghostify.ghostlyPhotons.enpowerments > 0) { //Green light (LE#1)
+		var le1exp = 1
+		if (tmp.newNGP3E){
+			le1exp += .2
+			if (player.ghostify.ghostlyPhotons.unl) le1exp += .05 
+			if (player.ghostify.wzb.unl) le1exp += .05 //+.05 for each of the new mechanics
+		}
+		var le1mult = tmp.newNGP3E?444:300
+		var eff = Math.pow(Math.log10(tmp.ls[3]+1),le1exp)*le1mult
+		
+		var scaling = 3
+		if (eff > 2000 && scaling >= 3) eff = 2000*Math.pow(eff/2000,.9)
+		if (eff > 2500 && scaling >= 2) eff = Math.pow(10*Math.log10(eff*40),2)
+		if (eff > 3000 && scaling >= 1) eff = 3*Math.pow(6+Math.log10(eff + 7000),3) //derivative at 3000 of .039
+		tmp.le[7] = {effect:eff} 
+	}
+	if (player.ghostify.ghostlyPhotons.enpowerments > 1) { //Blue light (LE#2)
+		var eff = Math.log10(tmp.ls[4]*10+1)/4+1 
+		//if (eff > 1) eff = 1
+		//do we want to cap it so the max is 100% reduction?
+		tmp.le[8] = eff
+	}
+	if (player.ghostify.ghostlyPhotons.enpowerments > 2) { //Red light (LE#3)
+		var eff = Math.pow(tmp.ls[7]+1,.1)*2-1 
+		
+		var scaling = 4
+		if (eff > 4 && scaling >= 4) eff = Math.log2(eff)+2
+		if (eff > 5 && scaling >= 3) eff = Math.log2(eff-1)+3
+		//if (eff > something && scaling >= 2) eff = softcapped
+		//if (eff > something && scaling >= 1) eff = softcapped
+		tmp.le[9] = eff
+	}
 	
 	
 	var bigRipUpg18base = 1+tmp.qu.bigRip.spaceShards.div(1e140).add(1).log10()
@@ -1198,7 +1230,8 @@ function updateGPhTemp(){
 	tmp.bru[3] = Decimal.pow(bigRipUpg18base,bigRipUpg18exp) //BRU18
 	
 	var bigRipUpg19exp = Math.sqrt(player.timeShards.add(1).log10())/(tmp.newNGP3E?60:80)
-	if (bigRipUpg19exp > 5) bigRipUpg19exp = 4 + Math.log10(2*bigRipUpg19exp)
+	if (bigRipUpg19exp > 5 && !tmp.newNGP3E) bigRipUpg19exp = 4 + Math.log10(2*bigRipUpg19exp)
+	if (bigRipUpg19exp > 8)  bigRipUpg19exp = Math.log2(bigRipUpg19exp)*3-1
 	tmp.bru[4] = Decimal.pow(10,bigRipUpg19exp) //BRU19
 	
 	tmp.nu[5] = Decimal.pow(player.ghostify.ghostParticles.add(1).log10(),Math.pow(tmp.qu.colorPowers.r.add(tmp.qu.colorPowers.g).add(tmp.qu.colorPowers.b).add(1).log10(),1/3)*0.8+1).max(1) //NU14
