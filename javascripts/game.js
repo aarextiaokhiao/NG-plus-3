@@ -4762,20 +4762,17 @@ document.getElementById("newsbtn").onclick = function(force) {
 
 
 function resetDimensions() {
-    	var tiers = [ null, "first", "second", "third", "fourth", "fifth", "sixth", "seventh", "eight" ];
-    	for (i = 1; i <= 8; i++) {
-        	player[tiers[i] + "Amount"] = new Decimal(0)
-        	player[tiers[i] + "Pow"] = new Decimal(1)
-    	}
-    	player.firstCost = new Decimal(10)
-    	player.secondCost = new Decimal(100)
-    	player.thirdCost = new Decimal(10000)
-    	player.fourthCost = new Decimal(1e6)
-    	player.fifthCost = new Decimal(1e9)
-    	player.sixthCost = new Decimal(1e13)
-    	player.seventhCost = new Decimal(1e18)
-    	player.eightCost = new Decimal(1e24)
-    	player.eightPow = new Decimal(player.chall11Pow)
+	var costs=[10,100,1e4,1e6,1e9,1e13,1e18,1e24]
+	var costMults=[1e3,1e4,1e5,1e6,1e8,1e10,1e12,1e15]
+	if (inNC(10)||player.currentChallenge == "postc1") costs=[10,100,100,500,2500,2e4,2e5,4e6]
+	if (inNC(10)) costMults=[1e3,5e3,1e4,12e3,18e3,26e3,32e3,42e3]
+	for (var d=1;d<9;d++) {
+		var name=TIER_NAMES[d]
+		player[name+"Amount"]=new Decimal(0)
+		player[name+"Bought"]=0
+		player[name+"Cost"]=new Decimal(costs[d-1])
+	}
+	player.eightPow = new Decimal(player.chall11Pow)
 }
 
 function getSacrificeBoost(){
