@@ -986,7 +986,7 @@ function updatePCCompletions() {
 
 //v1.99874
 function getQCReward(num) {
-	if (QCIntensity(num) < 1) return 1
+	if (QCIntensity(num) == 0) return num == 5 ? 0:1
 	if (num == 1) return Decimal.pow(10, Math.pow(getDimensionFinalMultiplier(1).times(getDimensionFinalMultiplier(2)).max(1).log10(), QCIntensity(1)>1?0.275:0.25)/200)
 	if (num == 2) return 1.2 + QCIntensity(2) * 0.2
 	if (num == 3) {
