@@ -4683,10 +4683,10 @@ function openNotationOptions() {
 
 function switchOption(notation,id) {
 	if (notation=="scientific") {
-		var value=parseFloat(document.getElementById(id).value)
-		if (isNaN(value)) return
-		if (value%1!=0) return
 		if (id=="significantDigits") {
+			var value=parseFloat(document.getElementById(id).value)
+			if (isNaN(value)) return
+			if (value%1!=0) return
 			if (value<0||value>10) return
 			if (value==0) player.options.scientific.significantDigits=undefined
 			else player.options.scientific.significantDigits=value
