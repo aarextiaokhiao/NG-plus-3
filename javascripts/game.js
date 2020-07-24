@@ -1131,6 +1131,19 @@ function updateWZBosonsTemp(){
 	tmp.bEn[21]=getEnchantEffect(21) //BU21 recalculation
 }
 
+function updatePhotonsUnlockedBRUpgrades(){
+	var bigRipUpg18base = 1+tmp.qu.bigRip.spaceShards.div(1e140).add(1).log10()
+	var bigRipUpg18exp = Math.max(tmp.qu.bigRip.spaceShards.div(1e140).add(1).log10()/10,1)
+	if (bigRipUpg18base > 10 && tmp.newNGP3E) bigRipUpg18base *= Math.log10(bigRipUpg18base)
+	if (bigRipUpg18exp > 16) bigRipUpg18exp = Math.pow(Math.log2(bigRipUpg18exp),2)
+	tmp.bru[3] = Decimal.pow(bigRipUpg18base,bigRipUpg18exp) //BRU18
+	
+	var bigRipUpg19exp = Math.sqrt(player.timeShards.add(1).log10())/(tmp.newNGP3E?60:80)
+	if (bigRipUpg19exp > 5 && !tmp.newNGP3E) bigRipUpg19exp = 4 + Math.log10(2*bigRipUpg19exp)
+	if (bigRipUpg19exp > 8)  bigRipUpg19exp = Math.log2(bigRipUpg19exp)*3-1
+	tmp.bru[4] = Decimal.pow(10,bigRipUpg19exp) //BRU19
+}
+
 function updateGPhTemp(){
 	let lePower = getLightEmpowermentBoost()
 	for (var c=6;c>-1;c--) {
@@ -1193,16 +1206,18 @@ function updateGPhTemp(){
 		var le1exp = 1
 		if (tmp.newNGP3E){
 			le1exp += .2
-			if (player.ghostify.ghostlyPhotons.unl) le1exp += .05 
-			if (player.ghostify.wzb.unl) le1exp += .05 //+.05 for each of the new mechanics
+			if (player.ghostify.ghostlyPhotons.unl) le1exp += .15
+			if (player.ghostify.wzb.unl) le1exp += .15 
 		}
-		var le1mult = tmp.newNGP3E?444:300
+		var le1mult = tmp.newNGP3E?600:300
 		var eff = Math.pow(Math.log10(tmp.ls[3]+1),le1exp)*le1mult
 		
 		var scaling = 3
+		//if (scaling > 2 && tmp.newNGP3E) scaling = 2
+		
 		if (eff > 2000 && scaling >= 3) eff = 2000*Math.pow(eff/2000,.9)
 		if (eff > 2500 && scaling >= 2) eff = Math.pow(10*Math.log10(eff*40),2)
-		if (eff > 3000 && scaling >= 1) eff = 3*Math.pow(6+Math.log10(eff + 7000),3) //derivative at 3000 of .039
+		if (eff > 3000 && scaling >= 1) eff = 3*Math.pow(6+Math.log10(eff + 7000),3) //derivative at 3000 is .039
 		tmp.le[7] = {effect:eff} 
 	}
 	if (player.ghostify.ghostlyPhotons.enpowerments > 1) { //Blue light (LE#2)
@@ -1222,23 +1237,16 @@ function updateGPhTemp(){
 		tmp.le[9] = eff
 	}
 	
+	updatePhotonsUnlockedBRUpgrades()
 	
-	var bigRipUpg18base = 1+tmp.qu.bigRip.spaceShards.div(1e140).add(1).log10()
-	var bigRipUpg18exp = Math.max(tmp.qu.bigRip.spaceShards.div(1e140).add(1).log10()/10,1)
-	if (bigRipUpg18base > 10 && tmp.newNGP3E) bigRipUpg18base *= Math.log10(bigRipUpg18base)
-	if (bigRipUpg18exp > 16) bigRipUpg18exp = Math.pow(Math.log2(bigRipUpg18exp),2)
-	tmp.bru[3] = Decimal.pow(bigRipUpg18base,bigRipUpg18exp) //BRU18
-	
-	var bigRipUpg19exp = Math.sqrt(player.timeShards.add(1).log10())/(tmp.newNGP3E?60:80)
-	if (bigRipUpg19exp > 5 && !tmp.newNGP3E) bigRipUpg19exp = 4 + Math.log10(2*bigRipUpg19exp)
-	if (bigRipUpg19exp > 8)  bigRipUpg19exp = Math.log2(bigRipUpg19exp)*3-1
-	tmp.bru[4] = Decimal.pow(10,bigRipUpg19exp) //BRU19
 	
 	tmp.nu[5] = Decimal.pow(player.ghostify.ghostParticles.add(1).log10(),Math.pow(tmp.qu.colorPowers.r.add(tmp.qu.colorPowers.g).add(tmp.qu.colorPowers.b).add(1).log10(),1/3)*0.8+1).max(1) //NU14
 	tmp.nu[6] = Decimal.pow(2,(tmp.qu.nanofield.rewards>90?Math.sqrt(90*tmp.qu.nanofield.rewards):tmp.qu.nanofield.rewards)/2.5) //NU15
 	if (hasNU(15)) tmp.ns = tmp.ns.times(tmp.nu[6])
 	tmp.ppti/=tmp.le[1]
 }
+
+
 
 function updateNeutrinoBoostsTemp(){
 	var nt=[]
