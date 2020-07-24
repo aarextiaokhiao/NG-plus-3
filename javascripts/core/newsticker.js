@@ -330,14 +330,15 @@ newsArray = [//always true
 ["People who read at least 350 news tickers are really unlikely to be ghosts.", "player.newsArray.length >= 350", "am177"],
 ["You are a no-life news reader.", "player.newsArray.length >= 400", "am178"],
 ["Is not called matter dimensions for that?", "tmp.ngp3 && tmp.qu.bigRip.active", "am179"],
-["aarex has retired back to his cave after apeasing the masses with the higgs boson", false, "am180"],
-["We launched a mission rocket to land on a ghostly moon.", false, "am181"],
-["BREAKING NEWS! After the killing of a antimatter person, antimatter people started protesting!", false, "am182"],
-["Antimatter people protests have been extremely intensified!", false, "am183"],
-['"Reformatting the whole code feels like I have to restart the test branch." ~ Aarex', false, "am184"],
-['The further meta you reach, the further power tower you go.', false, "am185"],
+["aarex has retired back to his cave after apeasing the masses with the higgs boson", true, "am180"],
+["We launched a mission rocket to land on a ghostly moon.", true, "am181"],
+["BREAKING NEWS! After the killing of a antimatter person, antimatter people started protesting!", true, "am182"],
+["Antimatter people protests have been extremely intensified!", true, "am183"],
+['"Reformatting the whole code feels like I have to restart the test branch." ~ Aarex', true, "am184"],
+['The further meta you reach, the further power tower you go.', true, "am185"],
 ['Later, I will finally implement original ideas from future NG+3 updates.', "tmp.ngp3", "am186"],
-['Also later, I will implement ideas that have different gameplay than other mechanics.', "tmp.ngp3", "am187"]
+['Also later, I will implement ideas that have different gameplay than other mechanics.', "tmp.ngp3", "am187"],
+["This news ticker has been softcapped so you can't read the re-.", true, "am188"]
 /*NEXT ID: am186*/
 ];}
 
