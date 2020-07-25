@@ -1,3 +1,74 @@
+function getR84or73Mult(){
+	var mult = new Decimal(1)
+	if (player.achievements.includes("r84")) mult = player.money.pow(player.galacticSacrifice?0.0002:0.00004).plus(1);
+	else if (player.achievements.includes("r73")) mult = player.money.pow(player.galacticSacrifice?0.0001:0.00002).plus(1);
+	
+	var log = mult.log10()
+	if (log > 1e12) log = 1e12*Math.pow(log/1e12,.7)
+	if (log > 1e13) log = 1000*Math.pow(Math.log10(log)-3,10)
+	if (log > 1e14) log = 1e14*Math.pow(log/1e14,.3)
+	
+	if (log < 0) log = 0
+	return Decimal.pow(10,log)
+}
+
+function getNormalDimensionVanillaAchievementBonus(tier){
+	var mult = new Decimal(1)
+	if (tier == 1) {
+		if (player.achievements.includes("r28")) mult = mult.times(1.1);
+		if (player.achievements.includes("r31")) mult = mult.times(1.05);
+		if (player.achievements.includes("r71")) mult = mult.times(player.galacticSacrifice?909:3);
+		if (player.achievements.includes("r68")) mult = mult.times(player.galacticSacrifice?5:1.5);
+		if (player.galacticSacrifice) if (player.achievements.includes("r64")) mult = mult.times(1e6);
+	}
+	if (tier == 8 && player.achievements.includes("r23")) mult = mult.times(1.1);
+	else if (player.achievements.includes("r34")) mult = mult.times(player.galacticSacrifice?2:1.02);
+	if (tier <= 4 && player.achievements.includes("r43")) mult = mult.times(1.25);
+	if (player.galacticSacrifice && player.achievements.includes("r31")) mult = mult.times(productAllTotalBought1());
+	if (player.achievements.includes("r48")) mult = mult.times(1.1);
+	if (player.achievements.includes("r72")) mult = mult.times(player.galacticSacrifice?10:1.1); // tbd
+	if (player.galacticSacrifice && player.tickspeedBoosts == undefined && player.achievements.includes("r46")) mult = mult.times(productAllDims1());
+	if (player.achievements.includes("r74") && player.currentChallenge != "") mult = mult.times(player.galacticSacrifice?40:1.4);
+	if (player.achievements.includes("r77")) mult = mult.times(1+tier/(player.galacticSacrifice?10:100));
+	if (!player.galacticSacrifice) {
+		if (player.achievements.includes("r56") && player.thisInfinityTime < 1800) mult = mult.times(3600/(player.thisInfinityTime+1800));
+		if (player.achievements.includes("r78") && player.thisInfinityTime < 3) mult = mult.times(3.3/(player.thisInfinityTime+0.3));
+		if (player.achievements.includes("r65") && player.currentChallenge != "" && player.thisInfinityTime < 1800) mult = mult.times(Math.max(2400/(player.thisInfinityTime+600), 1))
+		if (player.achievements.includes("r91") && player.thisInfinityTime < 50) mult = mult.times(Math.max(301-player.thisInfinityTime*6, 1))
+		if (player.achievements.includes("r92") && player.thisInfinityTime < 600) mult = mult.times(Math.max(101-player.thisInfinityTime/6, 1));
+	}
+	if (player.boughtDims&&player.achievements.includes("r98")) mult = mult.times(player.infinityDimension8.amount.max(1))
+	mult = mult.times(getR84or73Mult())
+	return mult
+}
+
+function getNormalDimensionVanillaTimeStudyBonus(tier){
+	var mult = new Decimal(1)
+	if (player.timestudy.studies.includes(71) && tier !== 8) mult = mult.times(calcTotalSacrificeBoost().pow(0.25).min("1e210000"));
+	if (player.timestudy.studies.includes(91)) mult = mult.times(Decimal.pow(10, Math.min(player.thisEternity, 18000)/60));
+	let useHigherNDReplMult = !player.dilation.active ? false : !player.masterystudies ? false : player.masterystudies.includes("t323")
+	if (!useHigherNDReplMult) mult = mult.times(tmp.nrm)
+	if (player.timestudy.studies.includes(161)) mult = mult.times(Decimal.pow(10,(player.galacticSacrifice?6660:616)*(player.aarexModifications.newGameExpVersion?5:1)))
+	if (player.timestudy.studies.includes(234) && tier == 1) mult = mult.times(calcTotalSacrificeBoost())
+	if (player.timestudy.studies.includes(193)) mult = mult.times(Decimal.pow(1.03, getEternitied()).min("1e13000"))
+	if (tier == 8 && player.timestudy.studies.includes(214)) mult = mult.times((calcTotalSacrificeBoost().pow(8)).min("1e46000").times(calcTotalSacrificeBoost().pow(1.1).min(new Decimal("1e125000"))))
+	return mult
+}
+
+function getNormalDimensionGalaxyUpgradesBonus(tier){
+	var mult = new Decimal(1)
+	if (!player.galacticSacrifice) return mult
+	
+	if (player.galacticSacrifice.upgrades.includes(12)) mult = mult.times(galMults.u12())
+	if (player.pSac !== undefined) if (tier==2) mult = mult.pow(puMults[13](hasPU(13, true, true)))
+	if (player.galacticSacrifice.upgrades.includes(13) && ((!inNC(14) && player.currentChallenge != "postcngm3_3") || player.tickspeedBoosts == undefined || player.aarexModifications.ngmX > 3) && player.currentChallenge != "postcngm3_4") mult = mult.times(galMults.u13())
+	if (player.galacticSacrifice.upgrades.includes(15)) mult = mult.times(galMults.u15())
+	if (player.galacticSacrifice.upgrades.includes(35)) mult = mult.times(galMults.u35())
+	if (player.challenges.includes("postc4")) mult = mult.pow(1.05);
+	if (player.galacticSacrifice.upgrades.includes(31)) mult = mult.pow(galMults.u31());
+	return mult
+}
+
 function getDimensionFinalMultiplier(tier) {
 	let mult = player[TIER_NAMES[tier] + 'Pow']
 
@@ -7,8 +78,6 @@ function getDimensionFinalMultiplier(tier) {
 		if (tier == 4) mult = mult.pow(1.4)
 		if (tier == 2) mult = mult.pow(1.7)
 	}
-
-	mult = mult.times(player.achPow)
 
 	if (player.currentEternityChall != "eterc9" && (player.tickspeedBoosts == undefined || player.currentChallenge != "postc2")) mult = mult.times(getInfinityPowerEffect())
 
@@ -21,44 +90,15 @@ function getDimensionFinalMultiplier(tier) {
 	let timeAndDimMult = timeMult()
 	if (hasInfinityMult(tier)) timeAndDimMult = dimMults().times(timeAndDimMult)
 	if (!player.challenges.includes("postcngmm_1")&&player.currentChallenge!="postcngmm_1") mult = mult.times(timeAndDimMult)
-	if (tier == 1) {
-		if (player.infinityUpgrades.includes("unspentBonus")) mult = mult.times(unspentBonus);
-		if (player.achievements.includes("r28")) mult = mult.times(1.1);
-		if (player.achievements.includes("r31")) mult = mult.times(1.05);
-		if (player.achievements.includes("r71")) mult = mult.times(player.galacticSacrifice?909:3);
-		if (player.achievements.includes("r68")) mult = mult.times(player.galacticSacrifice?5:1.5);
-		if (player.galacticSacrifice) if (player.achievements.includes("r64")) mult = mult.times(1e6);
-	}
-
-	if (tier == 8 && player.achievements.includes("r23")) mult = mult.times(1.1);
-	else if (player.achievements.includes("r34")) mult = mult.times(player.galacticSacrifice?2:1.02);
-	if (tier <= 4 && player.achievements.includes("r43")) mult = mult.times(1.25);
-	if (player.galacticSacrifice&&player.achievements.includes("r31")) mult = mult.times(productAllTotalBought1());
-	if (player.achievements.includes("r48")) mult = mult.times(1.1);
-	if (player.achievements.includes("r72")) mult = mult.times(player.galacticSacrifice?10:1.1); // tbd
-	if (player.galacticSacrifice&&player.tickspeedBoosts==undefined&&player.achievements.includes("r46")) mult = mult.times(productAllDims1());
-	if (player.achievements.includes("r74") && player.currentChallenge != "") mult = mult.times(player.galacticSacrifice?40:1.4);
-	if (player.achievements.includes("r77")) mult = mult.times(1+tier/(player.galacticSacrifice?10:100));
-	if (!player.galacticSacrifice) {
-		if (player.achievements.includes("r56") && player.thisInfinityTime < 1800) mult = mult.times(3600/(player.thisInfinityTime+1800));
-		if (player.achievements.includes("r78") && player.thisInfinityTime < 3) mult = mult.times(3.3/(player.thisInfinityTime+0.3));
-		if (player.achievements.includes("r65") && player.currentChallenge != "" && player.thisInfinityTime < 1800) mult = mult.times(Math.max(2400/(player.thisInfinityTime+600), 1))
-		if (player.achievements.includes("r91") && player.thisInfinityTime < 50) mult = mult.times(Math.max(301-player.thisInfinityTime*6, 1))
-		if (player.achievements.includes("r92") && player.thisInfinityTime < 600) mult = mult.times(Math.max(101-player.thisInfinityTime/6, 1));
-	}
-	if (player.boughtDims&&player.achievements.includes("r98")) mult = mult.times(player.infinityDimension8.amount.max(1))
-	if (player.achievements.includes("r84")) mult = mult.times(player.money.pow(player.galacticSacrifice?0.0002:0.00004).plus(1));
-	else if (player.achievements.includes("r73")) mult = mult.times(player.money.pow(player.galacticSacrifice?0.0001:0.00002).plus(1));
-
-
-	if (player.timestudy.studies.includes(71) && tier !== 8) mult = mult.times(calcTotalSacrificeBoost().pow(0.25).min("1e210000"));
-	if (player.timestudy.studies.includes(91)) mult = mult.times(Decimal.pow(10, Math.min(player.thisEternity, 18000)/60));
-	let useHigherNDReplMult = !player.dilation.active ? false : !player.masterystudies ? false : player.masterystudies.includes("t323")
-	if (!useHigherNDReplMult) mult = mult.times(tmp.nrm)
-	if (player.timestudy.studies.includes(161)) mult = mult.times(Decimal.pow(10,(player.galacticSacrifice?6660:616)*(player.aarexModifications.newGameExpVersion?5:1)))
-	if (player.timestudy.studies.includes(234) && tier == 1) mult = mult.times(calcTotalSacrificeBoost())
+	if (tier == 1 && player.infinityUpgrades.includes("unspentBonus")) mult = mult.times(unspentBonus);
+	
+	mult = mult.times(getNormalDimensionVanillaAchievementBonus(tier))
+	mult = mult.times(player.achPow)
+	mult = mult.times(getNormalDimensionVanillaTimeStudyBonus(tier))
+	mult = mult.times(getNormalDimensionGalaxyUpgradesBonus(tier))
 
 	mult = mult.times(player.postC3Reward)
+	if (player.challenges.includes("postc4") && player.galacticSacrifice === undefined) mult = mult.pow(1.05);
 	if (player.challenges.includes("postc8") && tier < 8 && tier > 1) mult = mult.times(mult18);
 
 	if (isADSCRunning() || (player.galacticSacrifice && player.currentChallenge === "postc1")) mult = mult.times(productAllTotalBought());
@@ -68,21 +108,14 @@ function getDimensionFinalMultiplier(tier) {
 	}
 
 	if (player.currentChallenge == "postc4" && player.postC4Tier != tier && player.tickspeedBoosts == undefined) mult = mult.pow(0.25)
-	if (player.challenges.includes("postc4") && player.galacticSacrifice === undefined) mult = mult.pow(1.05);
+	
+	
 	if (player.currentEternityChall == "eterc10") mult = mult.times(ec10bonus)
-	if (player.timestudy.studies.includes(193)) mult = mult.times(Decimal.pow(1.03, getEternitied()).min("1e13000"))
-	if (tier == 8 && player.timestudy.studies.includes(214)) mult = mult.times((calcTotalSacrificeBoost().pow(8)).min("1e46000").times(calcTotalSacrificeBoost().pow(1.1).min(new Decimal("1e125000"))))
+	
+	
 	if (tier == 8 && player.achievements.includes("ng3p27")) mult = mult.times(tmp.ig)
 		
-	if (player.galacticSacrifice) {
-		if (player.galacticSacrifice.upgrades.includes(12)) mult = mult.times(galMults.u12())
-		if (player.pSac !== undefined) if (tier==2) mult = mult.pow(puMults[13](hasPU(13, true, true)))
-		if (player.galacticSacrifice.upgrades.includes(13) && ((!inNC(14) && player.currentChallenge != "postcngm3_3") || player.tickspeedBoosts == undefined || player.aarexModifications.ngmX > 3) && player.currentChallenge != "postcngm3_4") mult = mult.times(galMults.u13())
-		if (player.galacticSacrifice.upgrades.includes(15)) mult = mult.times(galMults.u15())
-		if (player.galacticSacrifice.upgrades.includes(35)) mult = mult.times(galMults.u35())
-		if (player.challenges.includes("postc4")) mult = mult.pow(1.05);
-		if (player.galacticSacrifice.upgrades.includes(31)) mult = mult.pow(galMults.u31());
-	}
+	
 
 	mult = dilates(mult.max(1), 2)
 	if (player.challenges.includes("postcngmm_1")||player.currentChallenge=="postcngmm_1") mult = mult.times(timeAndDimMult)
