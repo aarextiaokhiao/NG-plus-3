@@ -245,6 +245,7 @@ function updateColorPowers(log) {
 
 function updateColorDimPowers(log) {
 	if (tmp.ngp3l) return
+	if (log == undefined) log = getCPLogs()
 	
 	var rexp = Math.sqrt(player.money.add(1).log10()) * Math.pow(getColorDimPowerBase("r", log), 4/7) * (inQC(6) ? 1 : 35)
 	var gexp = Math.sqrt(player.infinityPower.add(1).log10()) * Math.pow(getColorDimPowerBase("g", log), 4/7) * 5
@@ -264,6 +265,7 @@ function updateColorDimPowers(log) {
 }
 
 function getColorDimPowerBase(color, log) {
+	if (log == undefined) log = getCPLogs()
 	let ret = Math.pow(log[color], 3/5)
 	ret *= Math.pow((tmp.qu.colorDimPower || 0) + 1, 2/5)
 	return ret
