@@ -2100,11 +2100,16 @@ function getDilExp(disable) {
 
 function getDilGain() {
 	if (inQCModifier("ad")) return new Decimal(0)
-    	return Decimal.pow(Decimal.log10(player.money) / 400, getDilExp()).times(getDilPower());
+	if (player.money.lt(10)) return new Decimal(0)
+	var log = Math.log10(player.money.log10()/400)*getDilExp()+getDilPower().log10()
+	if (log > 500) log = 500*(( (log/500)**.8 -1)/.8+1)
+	if (log > 700) log = 700*(( (log/700)**.5 -1)/.5+1)
+	
+	return Decimal.pow(10,log).floor()
 }
 
 function getNGUDTGain(){
-	gain = new Decimal(1)
+	var gain = new Decimal(1)
 	gain = gain.times(getBlackholePowerEffect())
 	if (player.eternityUpgrades.includes(7)) gain = gain.times(1 + Math.log10(Math.max(1, player.money.log(10))) / 40)
 	if (player.eternityUpgrades.includes(8)) gain = gain.times(1 + Math.log10(Math.max(1, player.infinityPoints.log(10))) / 20)
@@ -7857,6 +7862,7 @@ function buyDilationUpgrade(pos, max, isId) {
 }
 
 function getPassiveTTGen() {
+	if (player.dilation.tachyonParticles.gt(Decimal.pow(10,3300))) return 1e200
 	let r=getTTGenPart(player.dilation.tachyonParticles)
 	if (player.achievements.includes("ng3p18")&&!tmp.qu.bigRip.active) r+=getTTGenPart(player.dilation.bestTP)/50
 	if (tmp.ngex) r*=.8
