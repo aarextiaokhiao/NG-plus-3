@@ -598,131 +598,228 @@ function getMasteryStudyMultiplier(id, uses = ""){
 	return getMTSMult(id, uses)
 }
 
+function getMS251Effect(){
+	if (player.ghostify.neutrinos.upgrades.includes(6)) return 0
+	return Math.floor(player.resets/3e3)
+}
+
+function getMS252Effect(){
+	if (player.ghostify.neutrinos.upgrades.includes(6)) return 0
+	return Math.floor(player.dilation.freeGalaxies/7)
+}
+
+function getMS253Effect(){
+	if (player.ghostify.neutrinos.upgrades.includes(6)) return 0
+	if (tmp.ngp3l) return Math.floor(extraReplGalaxies/9)*20
+	return Math.floor(getTotalRG()/4)
+}
+
+function getMS262Effect(){
+	let r = 1
+	let exp = 1
+	if (tmp.ngp3l) r = Math.max(player.resets / 15e3 - 19, 1)
+	else {
+		r = Math.max(player.resets / 5e4 - 10, 1)
+		exp = Math.sqrt(Math.max(player.resets/1e5 - 5.5, 1))
+	}
+	if (r > 1e4) r = Math.pow(6+Math.log10(r),4)
+	if (player.aarexModifications.newGameExpVersion) exp *= 2
+	return Decimal.pow(r, exp)
+}
+
+function getMS263Effect(){
+	let x=player.meta.resets
+	if (!tmp.ngp3l) x=x*(x+10)/60
+	return x+1
+}
+
+function getMS264Effect(){
+	let r = 1
+	if (tmp.ngp3l) r = Math.pow(player.galaxies + 1, 0.25) * 2
+	else r = player.galaxies / 100 + 1
+	if (player.aarexModifications.newGameExpVersion) return r * r
+	return r
+}
+
+function getMS273Effect(uses){
+	var intensity = 0
+	if (player.masterystudies !== undefined && (player.masterystudies.includes("t273") || uses.includes("ms"))) intensity = 5
+	if (ghostified && player.ghostify.neutrinos.boosts > 1 && !uses.includes("pn")) intensity += tmp.nb[1]
+	if (uses.includes("intensity")) return intensity
+	return Decimal.max(Math.log10(player.replicanti.chance + 1), 1).pow(intensity)
+}
+
+function getMS281Effect(){
+	return Decimal.pow(10,Math.pow(tmp.rm.max(1).log10(),0.25)/10*(tmp.newNGP3E?2:1))
+}
+
+function getMS282Effect(){
+	return Decimal.pow(10,Math.pow(tmp.rm.max(1).log10(),0.25)/15*(tmp.newNGP3E?2:1))
+}
+
+function getMS301Effect(){
+	return Math.floor(extraReplGalaxies/4.15)
+}
+
+function getMS303Effect(){
+	return Decimal.pow(4.7,Math.pow(Math.log10(Math.max(player.galaxies,1)),1.5))
+}
+
+function getMS322Effect(){
+	let log = Math.sqrt(Math.max(3-getTickspeed().log10(),0))/2e4
+	if (log > 110) log = Math.sqrt(log*27.5)+55
+	if (log > 1e3 && player.aarexModifications.ngudpV !== undefined) log = Math.pow(7+Math.log10(log),3)
+	if (player.aarexModifications.newGameExpVersion) log += Math.pow(Math.log10(log+10),4)-1
+	if (log > 1500) log = (Math.pow(Math.log10(log*6.6+100),5)-24 )+500
+	return Decimal.pow(10, log)
+}
+
+function getMS332Effect(){
+	return Math.max(player.galaxies, 1)
+}
+
+function getMS341Effect(){
+	var exp = Math.sqrt(tmp.qu.replicants.quarks.add(1).log10())
+	if (exp > 150) exp = 150*Math.pow(exp/150,.5)
+	if (exp > 200) exp = 200*Math.pow(exp/200,.5)
+	return Decimal.pow(tmp.newNGP3E?3:2,exp)
+}
+
+function getMS344Effect(){
+	var ret = Math.pow(tmp.qu.replicants.quarks.div(1e7).add(1).log10(),tmp.newNGP3E?.3:.25)*0.17+1
+	if (ret > 3) ret = 1+Math.log2(ret+1)
+	if (ret > 4) ret = 3 + Math.log10(ret+6)
+	return ret
+}
+
+function getMS351Effect(){
+	let log = player.timeShards.max(1).log10()*14e-7
+	if (log > 1e4) log = Math.pow(log*Math.pow(10,36),.1)
+	if (log > 2e4) log = 2*Math.pow(Math.log10(5*log)+5,4)
+	return Decimal.pow(tmp.newNGP3E?12:10,log)
+}
+
+function getMS361Effect(){
+	return player.dilation.tachyonParticles.max(1).pow(0.01824033924212366)
+}
+
+function getMS371Effect(){
+	return Math.pow(extraReplGalaxies+1,player.aarexModifications.newGameExpVersion?.5:.3)
+}
+
+function getMS372Effect(){
+	return Math.sqrt(player.timeShards.add(1).log10())/20+1
+}
+
+function getMS373Effect(){
+	return Math.pow(player.galaxies+1,0.55)
+}
+
+function getMS381Effect(){
+	return Decimal.min(getTickSpeedMultiplier(), 1).log10() / -135 + 1
+}
+
+function getMS382Effect(){
+	return player.eightAmount.max(1).pow(Math.PI)
+}
+
+function getMS383Effect(){
+	if (tmp.ngp3l) return Decimal.pow(3200,Math.pow(tmp.qu.colorPowers.b.add(1).log10(),0.25))
+	var blueExp = 4/21
+	if (tmp.newNGP3E) blueExp = 1/5
+	var bluePortion = Math.pow(getCPLog("b"), blueExp)
+	var MAportion = Math.sqrt(player.meta.antimatter.add(1).log10())
+	var exp = MAportion * bluePortion * Math.log10(2)
+		
+	return Decimal.pow(10,exp)
+}
+
+function getMS391Effect(){
+	return player.meta.antimatter.max(1).pow(8e-4)
+}
+
+function getMS392Effect(){
+	return Decimal.pow(tmp.newNGP3E?1.7:1.6,Math.sqrt(tmp.qu.replicants.quarks.add(1).log10()))
+}
+
+function getMS393Effect(){
+	return Decimal.pow(4e5,Math.sqrt(tmp.twr.add(1).log10()))
+}
+
+function getMS401Effect(){
+	let log=tmp.qu.replicants.quarks.div(1e28).add(1).log10()*0.2
+	if (log>5) log=Math.log10(log*2)*5
+	return Decimal.pow(tmp.newNGP3E?12:10,log)
+}
+
+function getMS411Effect(){
+	var exp = tmp.tra.div(1e24).add(1).pow(0.2).log10()
+	if (tmp.newNGP3E && exp > 1) exp += 3*Math.log10(exp)
+	if (exp > 700) exp = 700*Math.pow(exp/700,.5)
+	return Decimal.pow(10,exp)
+}
+
+function getMS421Effect(){
+	let ret=Math.pow(Math.max(-getTickspeed().log10()/1e13-0.75,1),4)
+	if (ret > 100 ) ret = Math.sqrt(ret*100)
+	if (ret > 1e10) ret = Math.pow(Math.log10(ret),10)
+	return ret
+}
+
+function getMS431Effect(){
+	var gals=player.dilation.freeGalaxies+tmp.eg431
+	
+	var effectBase = Math.max(gals/1e4,1)
+	if (effectBase > 10 && tmp.newNGP3E) effectBase *= Math.log10(effectBase)
+	
+	var effectExp = Math.max(gals/1e4+Math.log10(gals)/2,1)
+	if (effectExp > 10 && tmp.newNGP3E) effectExp *= Math.log10(effectExp)
+		
+	let eff=Decimal.pow(effectBase,effectExp)
+	if (tmp.newNGP3E) eff = eff.times(eff.plus(9).log10())
+		
+	var log = eff.log10()
+	if (!tmp.ngp3l) {
+		var scaling = 3
+		
+		if (log > 100 && scaling >= 3) log = 100*Math.pow(log/100,.9)
+		if (log > 300 && scaling >= 2) log = 300*Math.pow(log/300,.7)
+		if (log > 500 && scaling >= 1) log = 500*Math.pow(log/500,.5)
+	}
+	return Decimal.pow(10,log)
+}
+
 function getMTSMult(id, uses = "") {
-	if (id==251) {
-		if (player.ghostify.neutrinos.upgrades.includes(6)) return 0
-		return Math.floor(player.resets/3e3)
-	}
-	if (id==252) {
-		if (player.ghostify.neutrinos.upgrades.includes(6)) return 0
-		return Math.floor(player.dilation.freeGalaxies/7)
-	}
-	if (id==253) {
-		if (player.ghostify.neutrinos.upgrades.includes(6)) return 0
-		if (tmp.ngp3l) return Math.floor(extraReplGalaxies/9)*20
-		return Math.floor(getTotalRG()/4)
-	}
-	if (id==262) {
-		let r = 1
-		let exp = 1
-		if (tmp.ngp3l) r = Math.max(player.resets / 15e3 - 19, 1)
-		else {
-			r = Math.max(player.resets / 5e4 - 10, 1)
-			exp = Math.sqrt(Math.max(player.resets/1e5 - 5.5, 1))
-		}
-		if (r > 1e4) r = Math.pow(6+Math.log10(r),4)
-		if (player.aarexModifications.newGameExpVersion) exp *= 2
-		if (exp == 1) return r // why is this here, use Decimals
-		return Decimal.pow(r, exp)
-	}
-	if (id==263) {
-		let x=player.meta.resets
-		if (!tmp.ngp3l) x=x*(x+10)/60
-		return x+1
-	}
-	if (id==264) {
-		let r = 1
-		if (tmp.ngp3l) r = Math.pow(player.galaxies + 1, 0.25) * 2
-		else r = player.galaxies / 100 + 1
-		if (player.aarexModifications.newGameExpVersion) return r * r
-		return r
-	}
-	if (id==273) {
-		var intensity = 0
-		if (player.masterystudies !== undefined && (player.masterystudies.includes("t273") || uses.includes("ms"))) intensity = 5
-		if (ghostified && player.ghostify.neutrinos.boosts > 1 && !uses.includes("pn")) intensity += tmp.nb[1]
-		if (uses.includes("intensity")) return intensity
-		return Decimal.max(Math.log10(player.replicanti.chance + 1), 1).pow(intensity)
-	}
-	if (id==281) return Decimal.pow(10,Math.pow(tmp.rm.max(1).log10(),0.25)/10*(tmp.newNGP3E?2:1))
-	if (id==282) return Decimal.pow(10,Math.pow(tmp.rm.max(1).log10(),0.25)/15*(tmp.newNGP3E?2:1))
-	if (id==301) return Math.floor(extraReplGalaxies/4.15)
-	if (id==303) return Decimal.pow(4.7,Math.pow(Math.log10(Math.max(player.galaxies,1)),1.5))
-	if (id==322) {
-		let log = Math.sqrt(Math.max(3-getTickspeed().log10(),0))/2e4
-		if (log>110) log=Math.sqrt(log*27.5)+55
-		if (log>1e3&&player.aarexModifications.ngudpV!==undefined) log=Math.pow(7+Math.log10(log),3)
-		if (player.aarexModifications.newGameExpVersion) log += Math.pow(Math.log10(log+10),4)-1
-		if (log > 1500) log = (Math.pow(Math.log10(log*6.6+100),5)-24 )+500
-		return Decimal.pow(10,log)
-	}
-	if (id==332) return Math.max(player.galaxies, 1)
-	if (id==341) {
-		var exp = Math.sqrt(tmp.qu.replicants.quarks.add(1).log10())
-		if (exp > 150) exp = 150*Math.pow(exp/150,.5)
-		if (exp > 200) exp = 200*Math.pow(exp/200,.5)
-		return Decimal.pow(tmp.newNGP3E?3:2,exp)
-	}
-	if (id==344) {
-		var ret = Math.pow(tmp.qu.replicants.quarks.div(1e7).add(1).log10(),tmp.newNGP3E?.3:.25)*0.17+1
-		if (ret > 3) ret = 1+Math.log2(ret+1)
-		if (ret > 4) ret = 3 + Math.log10(ret+6)
-		return ret
-	}
-	if (id==351) {
-		let log = player.timeShards.max(1).log10()*14e-7
-		if (log > 1e4) log = Math.pow(log*Math.pow(10,36),.1)
-		if (log > 2e4) log = 2*Math.pow(Math.log10(5*log)+5,4)
-		return Decimal.pow(tmp.newNGP3E?12:10,log)
-	}
-	if (id==361) return player.dilation.tachyonParticles.max(1).pow(0.01824033924212366)
-	if (id==371) return Math.pow(extraReplGalaxies+1,player.aarexModifications.newGameExpVersion?.5:.3)
-	if (id==372) return Math.sqrt(player.timeShards.add(1).log10())/20+1
-	if (id==373) return Math.pow(player.galaxies+1,0.55)
-	if (id==381) return Decimal.min(getTickSpeedMultiplier(), 1).log10() / -135 + 1
-	if (id==382) return player.eightAmount.max(1).pow(Math.PI)
-	if (id==383) {
-		if (tmp.ngp3l) return Decimal.pow(3200,Math.pow(tmp.qu.colorPowers.b.add(1).log10(),0.25))
-		var blueExp = 4/21
-		if (tmp.newNGP3E) blueExp = 1/5
-		var bluePortion = Math.pow(getCPLog("b"), blueExp)
-		var MAportion = Math.sqrt(player.meta.antimatter.add(1).log10())
-		var exp = MAportion * bluePortion * Math.log10(2)
-		
-		return Decimal.pow(10,exp)
-	}
-	if (id==391) return player.meta.antimatter.max(1).pow(8e-4)
-	if (id==392) return Decimal.pow(tmp.newNGP3E?1.7:1.6,Math.sqrt(tmp.qu.replicants.quarks.add(1).log10()))
-	if (id==393) return Decimal.pow(4e5,Math.sqrt(tmp.twr.add(1).log10()))
-	if (id==401) {
-		let log=tmp.qu.replicants.quarks.div(1e28).add(1).log10()*0.2
-		if (log>5) log=Math.log10(log*2)*5
-		return Decimal.pow(tmp.newNGP3E?12:10,log)
-	}
-	if (id==411) {
-		var exp = tmp.tra.div(1e24).add(1).pow(0.2).log10()
-		
-		//if (exp > 700) exp = 700*Math.pow(exp/700,.5)
-		return Decimal.pow(10,exp)
-	}
-	if (id==421) {
-		let ret=Math.pow(Math.max(-getTickspeed().log10()/1e13-0.75,1),4)
-		if (ret > 100 ) ret = Math.sqrt(ret*100)
-		if (ret > 1e10) ret = Math.pow(Math.log10(ret),10)
-		return ret
-	}
-	if (id==431) {
-		let x=player.dilation.freeGalaxies+tmp.eg431
-		let y=Decimal.pow(Math.max(x/1e4,1),Math.max(x/1e4+Math.log10(x)/2,1))
-		if (tmp.newNGP3E) y = y.times(y.plus(9).log10())
-		exp = y.log10()
-		if (!tmp.ngp3l) {
-			if (exp > 100) exp = 100*Math.pow(exp/100,.9)
-			if (exp > 300) exp = 300*Math.pow(exp/300,.7)
-			if (exp > 500) exp = 500*Math.pow(exp/500,.5)
-		}
-		return Decimal.pow(10,exp)
-	}
+	if (id==251) return getMS251Effect()
+	if (id==252) return getMS252Effect()
+	if (id==253) return getMS253Effect()
+	if (id==262) return getMS262Effect()
+	if (id==263) return getMS263Effect()
+	if (id==264) return getMS264Effect()
+	if (id==273) return getMS273Effect(uses)
+	if (id==281) return getMS281Effect()
+	if (id==282) return getMS282Effect()
+	if (id==301) return getMS301Effect()
+	if (id==303) return getMS303Effect()
+	if (id==322) return getMS322Effect()
+	if (id==332) return getMS332Effect()
+	if (id==341) return getMS341Effect()
+	if (id==344) return getMS344Effect()
+	if (id==351) return getMS351Effect()
+	if (id==361) return getMS361Effect()
+	if (id==371) return getMS371Effect()
+	if (id==372) return getMS372Effect()
+	if (id==373) return getMS373Effect()
+	if (id==381) return getMS381Effect()
+	if (id==382) return getMS382Effect()
+	if (id==383) return getMS383Effect()
+	if (id==391) return getMS391Effect()
+	if (id==392) return getMS392Effect()
+	if (id==393) return getMS393Effect()
+	if (id==401) return getMS401Effect()
+	if (id==411) return getMS411Effect()
+	if (id==421) return getMS421Effect()
+	if (id==431) return getMS431Effect()
 }
 
 
