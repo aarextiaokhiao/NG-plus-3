@@ -182,10 +182,10 @@ colorBoosts={
 }
 
 function getCPLog(c) {
-	x=Decimal.add(tmp.qu.colorPowers[c],1).log10()
-	if (x>1024&&player.aarexModifications.ngudpV&&!player.aarexModifications.nguepV) {
-		if (player.aarexModifications.ngumuV) x=Math.sqrt(x)*32
-		else x=Math.pow(x,.9)*2
+	var x = Decimal.add(tmp.qu.colorPowers[c],1).log10()
+	if (x > 1024 && player.aarexModifications.ngudpV && !player.aarexModifications.nguepV) {
+		if (player.aarexModifications.ngumuV) x = Math.sqrt(x)*32
+		else x = Math.pow(x,.9)*2
 	}
 	return x
 }
@@ -245,9 +245,6 @@ function updateColorPowers(log) {
 
 function updateColorDimPowers(log) {
 	if (tmp.ngp3l) return
-
-	//Logs
-	if (log == undefined) log = getCPLogs()
 	
 	var rexp = Math.sqrt(player.money.add(1).log10()) * Math.pow(getColorDimPowerBase("r", log), 4/7) * (inQC(6) ? 1 : 35)
 	var gexp = Math.sqrt(player.infinityPower.add(1).log10()) * Math.pow(getColorDimPowerBase("g", log), 4/7) * 5
@@ -267,7 +264,6 @@ function updateColorDimPowers(log) {
 }
 
 function getColorDimPowerBase(color, log) {
-	if (log == undefined) log = getCPLogs()
 	let ret = Math.pow(log[color], 3/5)
 	ret *= Math.pow((tmp.qu.colorDimPower || 0) + 1, 2/5)
 	return ret
@@ -285,6 +281,12 @@ function upgradeColorDimPower() {
 	updateQuantumWorth()
 	updateQuarksTabOnUpdate()
 }
+
+//function maxUpgradeColorDimPower(){
+//	var currCost = getColorDimPowerUpgradeCost()
+//	var quarks = tmp.qu.quarks
+//	var tobuy = 
+//}
 
 //Gluons
 function gainQuarkEnergy(ma_old, ma_new) {
