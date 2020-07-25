@@ -56,7 +56,6 @@ function getNormalDimensionVanillaTimeStudyBonus(tier){
 }
 
 function getNormalDimensionGalaxyUpgradesBonus(tier,mult){
-	var mult = new Decimal(1)
 	if (!player.galacticSacrifice) return mult
 	
 	if (player.galacticSacrifice.upgrades.includes(12)) mult = mult.times(galMults.u12())
@@ -141,6 +140,7 @@ function getDimensionFinalMultiplier(tier) {
 
 	if (mult.gt(10)) mult = dilates(mult.max(1), 1)
 	if (player.dilation.upgrades.includes(6)) mult = mult.times(player.dilation.dilatedTime.max(1).pow(308))
+	let useHigherNDReplMult = !player.dilation.active ? false : !player.masterystudies ? false : player.masterystudies.includes("t323")
 	if (useHigherNDReplMult) mult = mult.times(tmp.nrm)
 	if (quantumed && !tmp.ngp3l) mult = mult.times(colorBoosts.dim.r)
 	if (tmp.ngp3 && player.dilation.active) mult = mult.pow(getNanofieldRewardEffect(5))
