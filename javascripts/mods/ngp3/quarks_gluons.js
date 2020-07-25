@@ -282,11 +282,22 @@ function upgradeColorDimPower() {
 	updateQuarksTabOnUpdate()
 }
 
-//function maxUpgradeColorDimPower(){
-//	var currCost = getColorDimPowerUpgradeCost()
-//	var quarks = tmp.qu.quarks
-//	var tobuy = 
-//}
+function maxUpgradeColorDimPower(){
+	var currCost = getColorDimPowerUpgradeCost()
+	var quarks = tmp.qu.quarks
+	if (!quarks.gte(currCost)) return
+	var log105 = Math.log10(5)
+	
+	var tobuy = Math.floor(quarks.times(4).plus(currCost).log10()/log105-1)
+	//log_5(4*totalquarks+currentcost)-1
+	var costToBuy = Decimal.pow(5,tobuy).minus(1).div(4).times(currCost)
+	
+	tmp.qu.colorDimPower = (tmp.qu.colorDimPower || 0) + tobuy
+	tmp.qu.quarks = quarks.sub(costToBuy).round()
+	updateQuantumWorth()
+	updateQuarksTabOnUpdate()
+	upgradeColorDimPower() //in case there are some rounding issues, we will check and buy one more (if possible)
+}
 
 //Gluons
 function gainQuarkEnergy(ma_old, ma_new) {
