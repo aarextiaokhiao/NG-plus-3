@@ -492,13 +492,18 @@ function sacrificeGalaxy(auto=false) {
 
 function getMPTExp(mod) {
 	if (!inQC(0)) return 1
-	var a = tmp.qu.electrons.amount
+	var amount = tmp.qu.electrons.amount
 	var s = 149840
 	if (player.ghostify.ghostlyPhotons.unl) s += tmp.le[2]
-	if (a>37460+s) a = Math.sqrt((a-s)*37460)+s
-	if (tmp.rg4 && mod != "no-rg4") a *= 0.7
-	if (player.masterystudies !== undefined && player.masterystudies.includes("d13") && mod != "noTree") a *= getTreeUpgradeEffect(4)
-	return a+1
+	
+	if (amount > 37460 + s) amount = Math.sqrt((amount-s)*37460)+s
+	if (tmp.rg4 && mod != "no-rg4") amount *= 0.7
+	if (player.masterystudies !== undefined && player.masterystudies.includes("d13") && mod != "noTree") amount *= getTreeUpgradeEffect(4)
+	
+	if (amount > 5e5) amount = 5e5*Math.pow(amount/5e5,.5)
+	if (amount > 1e6) amount = 1e6*Math.pow(amount/1e6,.3)
+	if (amount > 2e6) amount = 2e6*Math.pow(amount/2e6,.2)
+	return amount+1
 }
 
 //v1.8
