@@ -55,7 +55,7 @@ function getNormalDimensionVanillaTimeStudyBonus(tier){
 	return mult
 }
 
-function getNormalDimensionGalaxyUpgradesBonus(tier){
+function getNormalDimensionGalaxyUpgradesBonus(tier,mult){
 	var mult = new Decimal(1)
 	if (!player.galacticSacrifice) return mult
 	
@@ -66,6 +66,31 @@ function getNormalDimensionGalaxyUpgradesBonus(tier){
 	if (player.galacticSacrifice.upgrades.includes(35)) mult = mult.times(galMults.u35())
 	if (player.challenges.includes("postc4")) mult = mult.pow(1.05);
 	if (player.galacticSacrifice.upgrades.includes(31)) mult = mult.pow(galMults.u31());
+	return mult
+}
+
+function getAfterDefaultDilationLayerAchBonus(tier){
+	mult = new Decimal(1)
+	if (player.challenges.includes("postcngmm_1")||player.currentChallenge=="postcngmm_1") mult = mult.times(timeAndDimMult)
+	if (player.galacticSacrifice) {
+		if (player.achievements.includes("r56") && player.thisInfinityTime < 1800) mult = mult.times(3600/(player.thisInfinityTime+1800));
+		if (player.achievements.includes("r78") && player.thisInfinityTime < 3) mult = mult.times(3.3/(player.thisInfinityTime+0.3));
+		if (player.achievements.includes("r65") && player.currentChallenge != "" && player.thisInfinityTime < 1800) mult = mult.times(Math.max(2400/(player.thisInfinityTime+600), 1))
+		if (player.achievements.includes("r91") && player.thisInfinityTime < 50) mult = mult.times(Math.max(301-player.thisInfinityTime*6, 1))
+		if (player.achievements.includes("r92") && player.thisInfinityTime < 600) mult = mult.times(Math.max(101-player.thisInfinityTime/6, 1));
+		if (player.currentChallenge == "postc6" || inQC(6)) mult = mult.dividedBy(player.matter.max(1))
+		if (player.currentChallenge == "postc8" || inQC(6)) mult = mult.times(player.postC8Mult)
+	}
+	return mult
+}
+
+function getPostBreakInfNDMult(){
+	mult = new Decimal(1)
+	if (player.infinityUpgrades.includes("totalMult")) mult = mult.times(totalMult)
+	if (player.infinityUpgrades.includes("currentMult")) mult = mult.times(currentMult)
+	if (player.infinityUpgrades.includes("infinitiedMult")) mult = mult.times(infinitiedMult)
+	if (player.infinityUpgrades.includes("achievementMult")) mult = mult.times(achievementMult)
+	if (player.infinityUpgrades.includes("challengeMult")) mult = mult.times(worstChallengeBonus)
 	return mult
 }
 
@@ -81,21 +106,17 @@ function getDimensionFinalMultiplier(tier) {
 
 	if (player.currentEternityChall != "eterc9" && (player.tickspeedBoosts == undefined || player.currentChallenge != "postc2")) mult = mult.times(getInfinityPowerEffect())
 
-	if (player.infinityUpgrades.includes("totalMult")) mult = mult.times(totalMult)
-	if (player.infinityUpgrades.includes("currentMult")) mult = mult.times(currentMult)
-	if (player.infinityUpgrades.includes("infinitiedMult")) mult = mult.times(infinitiedMult)
-	if (player.infinityUpgrades.includes("achievementMult")) mult = mult.times(achievementMult)
-	if (player.infinityUpgrades.includes("challengeMult")) mult = mult.times(worstChallengeBonus)
+	mult = mult.times(getPostBreakInfNDMult())
 
 	let timeAndDimMult = timeMult()
 	if (hasInfinityMult(tier)) timeAndDimMult = dimMults().times(timeAndDimMult)
 	if (!player.challenges.includes("postcngmm_1")&&player.currentChallenge!="postcngmm_1") mult = mult.times(timeAndDimMult)
-	if (tier == 1 && player.infinityUpgrades.includes("unspentBonus")) mult = mult.times(unspentBonus);
 	
+	if (tier == 1 && player.infinityUpgrades.includes("unspentBonus")) mult = mult.times(unspentBonus);
 	mult = mult.times(getNormalDimensionVanillaAchievementBonus(tier))
 	mult = mult.times(player.achPow)
 	mult = mult.times(getNormalDimensionVanillaTimeStudyBonus(tier))
-	mult = mult.times(getNormalDimensionGalaxyUpgradesBonus(tier))
+	mult = getNormalDimensionGalaxyUpgradesBonus(tier,mult)
 
 	mult = mult.times(player.postC3Reward)
 	if (player.challenges.includes("postc4") && player.galacticSacrifice === undefined) mult = mult.pow(1.05);
@@ -109,28 +130,16 @@ function getDimensionFinalMultiplier(tier) {
 
 	if (player.currentChallenge == "postc4" && player.postC4Tier != tier && player.tickspeedBoosts == undefined) mult = mult.pow(0.25)
 	
-	
 	if (player.currentEternityChall == "eterc10") mult = mult.times(ec10bonus)
 	
-	
-	if (tier == 8 && player.achievements.includes("ng3p27")) mult = mult.times(tmp.ig)
-		
-	
+	if (tier == 8 && player.achievements.includes("ng3p27")) mult = mult.times(tmp.ig)	
 
-	mult = dilates(mult.max(1), 2)
-	if (player.challenges.includes("postcngmm_1")||player.currentChallenge=="postcngmm_1") mult = mult.times(timeAndDimMult)
-	if (player.galacticSacrifice) {
-		if (player.achievements.includes("r56") && player.thisInfinityTime < 1800) mult = mult.times(3600/(player.thisInfinityTime+1800));
-		if (player.achievements.includes("r78") && player.thisInfinityTime < 3) mult = mult.times(3.3/(player.thisInfinityTime+0.3));
-		if (player.achievements.includes("r65") && player.currentChallenge != "" && player.thisInfinityTime < 1800) mult = mult.times(Math.max(2400/(player.thisInfinityTime+600), 1))
-		if (player.achievements.includes("r91") && player.thisInfinityTime < 50) mult = mult.times(Math.max(301-player.thisInfinityTime*6, 1))
-		if (player.achievements.includes("r92") && player.thisInfinityTime < 600) mult = mult.times(Math.max(101-player.thisInfinityTime/6, 1));
-		if (player.currentChallenge == "postc6" || inQC(6)) mult = mult.dividedBy(player.matter.max(1))
-		if (player.currentChallenge == "postc8" || inQC(6)) mult = mult.times(player.postC8Mult)
-	}
+	
+	if (mult.gt(10)) mult = dilates(mult.max(1), 2)
+	mult = mult.times(getAfterDefaultDilationLayerAchBonus(tier))
 	if (player.currentChallenge == "postc4" && player.tickspeedBoosts != undefined) mult = mult.sqrt()
 
-	mult = dilates(mult.max(1), 1)
+	if (mult.gt(10)) mult = dilates(mult.max(1), 1)
 	if (player.dilation.upgrades.includes(6)) mult = mult.times(player.dilation.dilatedTime.max(1).pow(308))
 	if (useHigherNDReplMult) mult = mult.times(tmp.nrm)
 	if (quantumed && !tmp.ngp3l) mult = mult.times(colorBoosts.dim.r)
