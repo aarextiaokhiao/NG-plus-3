@@ -290,7 +290,8 @@ function maxUpgradeColorDimPower(){
 	
 	var tobuy = Math.floor(quarks.times(4).plus(currCost).log10()/log105-1)
 	//log_5(4*totalquarks+currentcost)-1
-	var costToBuy = Decimal.pow(5,tobuy).minus(1).div(4).times(currCost)
+	var costToBuy = Decimal.pow(5,tobuy).minus(1).div(4).times(currCost).min(Decimal.pow(2,1024)) 
+	//only costs quarks if you have less than e308 of them
 	
 	tmp.qu.colorDimPower = (tmp.qu.colorDimPower || 0) + tobuy
 	tmp.qu.quarks = quarks.sub(costToBuy).round()
