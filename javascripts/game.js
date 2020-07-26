@@ -1075,6 +1075,27 @@ document.getElementById("theme").onclick = function () {
 	document.getElementById('thememenu').style.display="flex"
 }
 
+function doWeakerPowerReductionSoftcapNumber(num,start,exp){
+	if (num <start || num < 1) return num
+	return start*(( (num/start)**exp -1)/exp+1)
+}
+
+function doWeakerPowerReductionSoftcapDecimal(num,start,exp){
+	if (num.lt(start) || num.lt(1)) return num
+	return start.times( num.div(start).pow(exp).minus(1).div(exp).plus(1) )
+}
+
+function doStrongerPowerReductionSoftcapNumber(num,start,exp){
+	if (num <start || num < 1) return num
+	return start*((num/start)**exp)
+}
+
+function doStrongerPowerReductionSoftcapDecimal(num,start,exp){
+	if (num.lt(start) || num.lt(1)) return num
+	return start.times(num.div(start).pow(exp))
+}
+
+
 let kongIPMult = 1
 let kongDimMult = 1
 let kongAllDimMult = 1
