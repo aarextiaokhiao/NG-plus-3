@@ -165,7 +165,7 @@ function updateTimeDimensions() {
 				document.getElementById("timeRow"+tier).style.display = "table-row"
 				document.getElementById("timeD"+tier).textContent = DISPLAY_NAMES[tier] + " Time Dimension x" + shortenMoney(getTimeDimensionPower(tier));
 				document.getElementById("timeAmount"+tier).textContent = getTimeDimensionDescription(tier);
-				document.getElementById("timeMax"+tier).textContent = "Cost: " + shortenDimensions(player["timeDimension"+tier].cost) + (player.aarexModifications.ngmX>3?"":" EP")
+				document.getElementById("timeMax"+tier).textContent = (quantumed ? '':"Cost: ") + shortenDimensions(player["timeDimension"+tier].cost) + (player.aarexModifications.ngmX>3?"":" EP")
 				if (getOrSubResourceTD(tier).gte(player["timeDimension"+tier].cost)) document.getElementById("timeMax"+tier).className = "storebtn"
 			else document.getElementById("timeMax"+tier).className = "unavailablebtn"
 			} else document.getElementById("timeRow"+tier).style.display = "none"
