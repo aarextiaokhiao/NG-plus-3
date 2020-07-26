@@ -28,6 +28,21 @@ dev.giveAllNGAchievements = function() {
 	updateAchievements()
 }
 
+dev.giveNeutrinos = function(n){
+	player.ghostify.neutrinos.electron = player.ghostify.neutrinos.electron.plus(Decimal.pow(10,n))
+	player.ghostify.neutrinos.mu       = player.ghostify.neutrinos.mu.plus(Decimal.pow(10,n))
+	player.ghostify.neutrinos.tau      = player.ghostify.neutrinos.tau.plus(Decimal.pow(10,n))
+}
+
+dev.giveAllEmpowerments = function(){
+	var i =0
+	while (player.ghostify.ghostlyPhotons.lights[7] >= getLightEmpowermentReq()){
+		player.ghostify.ghostlyPhotons.enpowerments ++
+		i ++
+		if (i > 100) return
+	}
+}
+
 dev.doubleEverything = function() {
     Object.keys(player).forEach( function(key) {
         if (typeof player[key] === "number") player[key] *= 2;
