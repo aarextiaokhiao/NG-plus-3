@@ -1,14 +1,17 @@
 //infinity dimensions
 
+function getInfinityDimensionFinalMultiplier(tier){
+	return DimensionPower(tier)
+}
+
 function getInfinityDimensionMultiplier(tier){
-	return player["infinityDimension"+tier].power
+	return DimensionPower(tier)
 }
 
 function DimensionDescription(tier) {
 	if (tier > (inQC(4) || player.pSac!=undefined ? 6 : 7) && (ECTimesCompleted("eterc7") === 0 || player.timeDimension1.amount.eq(0) || tier == 7) && player.currentEternityChall != "eterc7") return getFullExpansion(Math.round(player["infinityDimension"+tier].amount.toNumber()));
 	else return shortenDimensions(player['infinityDimension'+tier].amount)+' (+' + formatValue(player.options.notation, DimensionRateOfChange(tier), 2, 2) + dimDescEnd;
 }
-
 
 function DimensionRateOfChange(tier) {
 	var toGain = DimensionProduction(tier+((inQC(4)||player.pSac!==undefined)&&tier<8?2:1))
@@ -20,9 +23,6 @@ function DimensionRateOfChange(tier) {
 	} else var change  = toGain.times(tier>7?1:10).dividedBy(current);
 	return change;
 }
-
-
-
 
 function updateInfinityDimensions() {
 	if (document.getElementById("infinitydimensions").style.display == "block" && document.getElementById("dimensions").style.display == "block") {
