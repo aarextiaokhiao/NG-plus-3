@@ -71,6 +71,19 @@ function getInfDimPathIDMult(tier){
 	return mult
 }
 
+function getStartingIDPower(tier){
+	var dim = player["infinityDimension"+tier]
+	var mult = dim.power
+	if (mult.gt(1)){
+		var log = mult.log10()
+		log = doWeakerPowerReductionSoftcapNumber(log,1e15,.9)
+		log = doWeakerPowerReductionSoftcapNumber(log,1e16,.8)
+		log = doWeakerPowerReductionSoftcapNumber(log,1e17,.7)
+		mult = Decimal.pow(10,log)
+	}
+	return mult
+}
+
 function DimensionPower(tier) {
   	var dim = player["infinityDimension"+tier]
   	if (player.currentEternityChall == "eterc2" || player.currentEternityChall == "eterc10" || player.currentEternityChall == "eterc13") return new Decimal(0)
@@ -78,12 +91,7 @@ function DimensionPower(tier) {
   	if (player.currentEternityChall=='eterc14') return getIDReplMult()
   	if (inQC(3)) return getExtraDimensionBoostPower()
   	
-	var mult = dim.power
-	if (mult.gt(1)){
-		var log = mult.log10()
-		if (log > 1e15) log = 1e15*(( (log/1e15)**.9 -1)/.9+1)// keep the derivative the same initally , but should easily be softcapped 		
-		mult = Decimal.pow(10,log)
-	}
+	var mult = getStartingIDPower(tier)
 	
   	mult = mult.times(infDimPow)
 
@@ -115,9 +123,6 @@ function DimensionPower(tier) {
   	if (quantumed && !tmp.ngp3l) mult = mult.times(colorBoosts.dim.g)
   	return mult
 }
-
-
-
 
 function resetInfDimensions() {
 	for (var t=1;t<9;t++) {
