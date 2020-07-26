@@ -817,6 +817,10 @@ let tsMults = {
 		else if (player.aarexModifications.newGameExpVersion) log = Math.min(log, 25000) // buff to NG+++^
 		else if (player.galacticSacrifice === undefined) log = Math.min(log, 2500)
 		if (log<0) log = 0
+		
+		if (log > 1e5) log = Math.pow(2*Math.log10(log),5)
+		if (log > 15e4) log = 5e4*Math.pow(log/15e4+8,.5)
+		if (log > 2e4) log = 2e4*Math.pow(log/2e4,.2)
 		return Decimal.pow(10, log)
 	},
 	32: function() {
