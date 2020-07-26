@@ -111,9 +111,13 @@ function getGalaxyTickSpeedMultiplier() {
 	
 	var neglogeffect = (Math.log10(perGalaxy)*(galaxies-linearGalaxies)+Math.log10(baseMultiplier))*-1
 	if (tmp.be){
-		if (neglogeffect > 1e4) neglogeffect = 1e4*(( (neglogeffect/1e4)**.7 -1)/.7+1)
-		if (neglogeffect > 2e4) neglogeffect = 2e4*(( (neglogeffect/2e4)**.5 -1)/.5+1)
-		if (neglogeffect > 4e4) neglogeffect = 4e4*(( (neglogeffect/4e4)**.3 -1)/.3+1)
+		var scaling = 6
+		if (scaling >= 6) neglogeffect = doWeakerPowerReductionSoftcapNumber(neglogeffect,10e3,.6)
+		if (scaling >= 5) neglogeffect = doWeakerPowerReductionSoftcapNumber(neglogeffect,14e3,.5)
+		if (scaling >= 4) neglogeffect = doWeakerPowerReductionSoftcapNumber(neglogeffect,18e3,.4)
+		if (scaling >= 3) neglogeffect = doWeakerPowerReductionSoftcapNumber(neglogeffect,22e3,.3)
+		if (scaling >= 2) neglogeffect = doWeakerPowerReductionSoftcapNumber(neglogeffect,26e3,.2)
+		if (scaling >= 1) neglogeffect = doWeakerPowerReductionSoftcapNumber(neglogeffect,30e3,.1)
 	}
 	return Decimal.pow(10,-1*neglogeffect)
 }
@@ -131,7 +135,7 @@ function getPostC3Base() {
 	if (player.tickspeedBoosts != undefined) perGalaxy = 0.002
 	if (inQC(2)) perGalaxy = 0
 	if (tmp.ngp3 ? tmp.qu.bigRip.active : false) {
-		if (ghostified&&player.ghostify.neutrinos.boosts>8) perGalaxy*=tmp.nb[8]
+		if (ghostified && player.ghostify.neutrinos.boosts>8) perGalaxy*=tmp.nb[8]
 		if (hasNU(12)) perGalaxy*=tmp.nu[4].free
 	}
 	if (!player.galacticSacrifice) return player.galaxies*perGalaxy+1.05
