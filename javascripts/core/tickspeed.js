@@ -108,7 +108,13 @@ function getGalaxyTickSpeedMultiplier() {
 		}
 	}
 	let perGalaxy = player.infinityUpgradesRespecced != undefined ? 0.98 : 0.965
-	return Decimal.pow(perGalaxy, galaxies-linearGalaxies).times(baseMultiplier)
+	
+	var neglogeffect = (Math.log10(perGalaxy)*(galaxies-linearGalaxies)+Math.log10(baseMultiplier))*-1
+	if (tmp.be){
+		if (neglogeffect > 1e4) neglogeffect = Math.pow(Math.log10(neglogeffect)*25,2)
+		if (neglogeffect > 2e4) neglogeffect = 1e4*Math.pow(3+neglogeffect/2e4,.5)
+	}
+	return Decimal.pow(10,-1*neglogeffect)
 }
 
 function getPostC3Mult() {
@@ -138,6 +144,7 @@ function getPostC3Base() {
 	if (inNC(6, 1) || player.currentChallenge == "postc1") ret -= player.aarexModifications.ngmX > 3 ? 0.02 : 0.05
 	else if (player.aarexModifications.ngmX == 3) ret -= 0.03
 	if (hasPU(33)) ret += puMults[33]()
+	if (tmp.be && ret > 1e8) ret = Math.pow(Math.log10(ret)+2,8)
 	return ret
 }
 
