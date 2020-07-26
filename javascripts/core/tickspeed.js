@@ -77,7 +77,7 @@ function getPostGalaxyEff() {
 	return ret
 }
 
-function getGalaxyTickSpeedMultiplier() {
+function getUnsoftcappedGalaxyTickSpeedMultiplier(){
 	let g = initialGalaxies()
 	if ((player.currentChallenge == "postc3" || isIC3Trapped()) && !tmp.be) {
 		if (player.currentChallenge=="postcngmm_3" || player.challenges.includes("postcngmm_3")) return Decimal.pow(player.tickspeedBoosts != undefined ? 0.9995 : 0.998, getGalaxyPower(g) * getGalaxyEff(true))
@@ -109,7 +109,12 @@ function getGalaxyTickSpeedMultiplier() {
 	}
 	let perGalaxy = player.infinityUpgradesRespecced != undefined ? 0.98 : 0.965
 	
-	var neglogeffect = (Math.log10(perGalaxy)*(galaxies-linearGalaxies)+Math.log10(baseMultiplier))*-1
+	var logeffect = Math.log10(perGalaxy)*(galaxies-linearGalaxies)+Math.log10(baseMultiplier)
+	return Decimal.pow(10,logeffect)
+}
+
+function getGalaxyTickSpeedMultiplier() {
+	var neglogeffect = getUnsoftcappedGalaxyTickSpeedMultiplier().log10()*-1
 	if (tmp.be){
 		var scaling = 6
 		if (scaling >= 6) neglogeffect = doWeakerPowerReductionSoftcapNumber(neglogeffect,10e3,.6)
@@ -118,6 +123,14 @@ function getGalaxyTickSpeedMultiplier() {
 		if (scaling >= 3) neglogeffect = doWeakerPowerReductionSoftcapNumber(neglogeffect,22e3,.3)
 		if (scaling >= 2) neglogeffect = doWeakerPowerReductionSoftcapNumber(neglogeffect,26e3,.2)
 		if (scaling >= 1) neglogeffect = doWeakerPowerReductionSoftcapNumber(neglogeffect,30e3,.1)
+	} else {
+		var scaling = 6
+		if (scaling >= 6) neglogeffect = doWeakerPowerReductionSoftcapNumber(neglogeffect,1e6,.95)
+		if (scaling >= 5) neglogeffect = doWeakerPowerReductionSoftcapNumber(neglogeffect,2e6,.90)
+		if (scaling >= 4) neglogeffect = doWeakerPowerReductionSoftcapNumber(neglogeffect,4e6,.85)
+		if (scaling >= 3) neglogeffect = doWeakerPowerReductionSoftcapNumber(neglogeffect,8e6,.80)
+		if (scaling >= 2) neglogeffect = doWeakerPowerReductionSoftcapNumber(neglogeffect,1e7,.75)
+		if (scaling >= 1) neglogeffect = doWeakerPowerReductionSoftcapNumber(neglogeffect,2e7,.70)
 	}
 	return Decimal.pow(10,-1*neglogeffect)
 }
