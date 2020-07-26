@@ -2262,16 +2262,20 @@ function breakEternity() {
 function getEMGain() {
 	let log=player.timeShards.div(1e9).log10()*0.25
 	if (log>15) log=Math.sqrt(log*15)
-	if (player.aarexModifications.ngudpV !== undefined) {
-		let log2log=Math.log10(log)/Math.log10(2)
-		let start=9 //Starts at e512.
-		if (player.aarexModifications.nguepV !== undefined) start=11 //Starts at e2,048.
-		if (log2log>start) {
-			let capped=Math.min(Math.floor(Math.log10(Math.max(log2log+2-start,1))/Math.log10(2)),20-start)
-			log2log=(log2log-Math.pow(2,capped)-start+2)/Math.pow(2,capped)+capped+start-1
-			log=Math.pow(2,log2log)
-		}
+	
+	let log2log=Math.log10(log)/Math.log10(2)
+	let start=9 //Starts at e512.
+	if (player.aarexModifications.nguepV !== undefined) start=10 //Starts at e1024
+	if (log2log>start) {
+		let capped=Math.min(Math.floor(Math.log10(Math.max(log2log+2-start,1))/Math.log10(2)),20-start)
+		log2log=(log2log-Math.pow(2,capped)-start+2)/Math.pow(2,capped)+capped+start-1
+		log=Math.pow(2,log2log)
 	}
+	
+	var scaling = 3
+	if (log > 1500 && scaling >= 3) log = 375*Math.log10(6*log+1000)
+	if (log > 2222 && scaling >= 2) log = 2222*Math.pow(log/2222,.3)
+	
 	return Decimal.pow(10,log).floor()
 }
 
@@ -2293,54 +2297,81 @@ function buyBreakUpg(id) {
 	document.getElementById("eternalMatter").textContent = shortenDimensions(tmp.qu.breakEternity.eternalMatter)
 }
 
+function getBreakEterUpg1Mult(){
+	var log1 = player.eternityPoints.div("1e1280").add(1).log10()
+	var log2 = tmp.qu.breakEternity.eternalMatter.times(10).max(1).log10()
+	return Decimal.pow(10, Math.pow(log1, 1/3) * 0.5 + Math.pow(log2, 1/3)).max(1)
+}
+
+function getBreakEterUpg2Mult(){
+	var log = player.eternityPoints.div("1e1290").add(1).log10()
+	return Math.pow(Math.log10(log + 1) * 1.6 + 1, player.currentEternityChall == "eterc10" ? 1 : 2)
+}
+
+function getBreakEterUpg3Mult(){
+	var log = player.eternityPoints.div("1e1370").add(1).log10()
+	if (!tmp.be && hasBosonicUpg(24)) log /= 2e6
+	var exp = Math.pow(log, 1/3) * 0.5
+	if (exp > 150) exp = 150 * Math.pow(exp/150,.5)
+	return Decimal.pow(10, exp)
+}
+
+function getBreakEterUpg4Mult(){
+	var log1 = player.eternityPoints.div("1e1860").add(1).log10()
+	var log2 = tmp.qu.bigRip.spaceShards.div("7e19").add(1).log10()
+	var exp = Math.pow(log1, 1/3) + Math.pow(log2, 1/3) * 8
+	if (exp > 333) exp = 111*Math.log10(3*exp+1)
+	return Decimal.pow(10, exp)
+}
+
+function getBreakEterUpg5Mult(){
+	var log1 = player.eternityPoints.div("1e2230").add(1).log10()
+	var log2 = player.timeShards.div(1e90).add(1).log10()
+	var log = Math.pow(log1, 1/3) + Math.pow(log2, 1/3)
+	if (log > 100 && player.aarexModifications.ngudpV) log = Math.log10(log)*50
+	if (log > 999) log = 333*Math.log10(log+1)
+	return Decimal.pow(1e4, log)
+}
+
+function getBreakEterUpg6Mult(){
+	var log1 = player.eternityPoints.div("1e4900").add(1).log10()
+	var log2 = tmp.qu.breakEternity.eternalMatter.div(1e45).add(1).log10()
+	if (!tmp.be && hasBosonicUpg(24)) log1 /= 2e6
+	var exp = Math.pow(log1, 1/3) / 1.7 + Math.pow(log2, 1/3) * 2
+	if (exp > 200) exp = 50*Math.log10(50*exp)
+	return Decimal.pow(10, exp)
+}
+
+function getBreakEterUpg8Mult(){
+	var effect=Math.log10(player.dilation.tachyonParticles.div(1e200).add(1).log10()/100+1)*3+1
+	if (effect > 2.2 && player.aarexModifications.ngudpV!==undefined) effect = 1.2 + Math.log10(effect+7.8)
+	if (effect > 3) effect = 1+Math.log2(effect+1)
+	if (effect > 10/3) effect = 7/3+Math.log10(3*effect)
+	return effect
+}
+
+function getBreakEterUpg9Mult(){
+	var effect = tmp.qu.breakEternity.eternalMatter.div("1e335").add(1).pow(0.05*Math.log10(4))
+	if (effect.gte(Decimal.pow(10,18))) effect = Decimal.pow(effect.log10()*5+10,9)
+	if (effect.gte(Decimal.pow(10,100))) effect = Decimal.pow(Decimal.log10(effect),50)
+	return effect.toNumber()
+}
+
+function getBreakEterUpg10Mult(){
+	return Math.max(Math.log10(player.eternityPoints.add(1).log10()+1)-1,1)
+}
+
 function getBreakUpgMult(id) {
-	if (id == 1) {
-		var log1 = player.eternityPoints.div("1e1280").add(1).log10()
-		var log2 = tmp.qu.breakEternity.eternalMatter.times(10).max(1).log10()
-		return Decimal.pow(10, Math.pow(log1, 1/3) * 0.5 + Math.pow(log2, 1/3)).max(1)
-	}
-	if (id == 2) {
-		var log = player.eternityPoints.div("1e1290").add(1).log10()
-		return Math.pow(Math.log10(log + 1) * 1.6 + 1, player.currentEternityChall == "eterc10" ? 1 : 2)
-	}
-	if (id == 3) {
-		var log = player.eternityPoints.div("1e1370").add(1).log10()
-		if (!tmp.be && hasBosonicUpg(24)) log /= 2e6
-		return Decimal.pow(10, Math.pow(log, 1/3) * 0.5)
-	}
-	if (id == 4) {
-		var log1 = player.eternityPoints.div("1e1860").add(1).log10()
-		var log2 = tmp.qu.bigRip.spaceShards.div("7e19").add(1).log10()
-		return Decimal.pow(10, Math.pow(log1, 1/3) + Math.pow(log2, 1/3) * 8)
-	}
-	if (id == 5) {
-		var log1 = player.eternityPoints.div("1e2230").add(1).log10()
-		var log2 = player.timeShards.div(1e90).add(1).log10()
-		var log = Math.pow(log1, 1/3) + Math.pow(log2, 1/3)
-		if (log>100&&player.aarexModifications.ngudpV) log = Math.log10(log)*50
-		return Decimal.pow(1e4, log)
-	}
-	if (id == 6) {
-		var log1 = player.eternityPoints.div("1e4900").add(1).log10()
-		var log2 = tmp.qu.breakEternity.eternalMatter.div(1e45).add(1).log10()
-		if (!tmp.be && hasBosonicUpg(24)) log1 /= 2e6
-		return Decimal.pow(10, Math.pow(log1, 1/3) / 1.7 + Math.pow(log2, 1/3) * 2)
-	}
+	if (id == 1) return getBreakEterUpg1Mult()
+	if (id == 2) return getBreakEterUpg2Mult()
+	if (id == 3) return getBreakEterUpg3Mult()
+	if (id == 4) return getBreakEterUpg4Mult()
+	if (id == 5) return getBreakEterUpg5Mult()
+	if (id == 6) return getBreakEterUpg6Mult()
 	if (id == 7) return Decimal.pow(1e9, tmp.qu.breakEternity.epMultPower)
-	if (id == 8) {
-		var effect=Math.log10(player.dilation.tachyonParticles.div(1e200).add(1).log10()/100+1)*3+1
-		if (effect>2.2&&player.aarexModifications.ngudpV!==undefined) {
-			effect=1.2+Math.log10(effect+7.8)
-			if (player.aarexModifications.nguepV===undefined) effect=1.2+Math.log10(effect+7.8)
-		}
-		return effect
-	}
-	if (id == 9) {
-		var effect = tmp.qu.breakEternity.eternalMatter.div("1e335").add(1).pow(0.05*Math.log10(4))
-		if (effect.gte(Decimal.pow(10,100))) effect = Decimal.pow(Decimal.log10(effect),50)
-		return effect.toNumber()
-	}
-	if (id == 10) return Math.max(Math.log10(player.eternityPoints.add(1).log10()+1)-1,1)
+	if (id == 8) return getBreakEterUpg8Mult()
+	if (id == 9) return getBreakEterUpg9Mult()
+	if (id == 10) return getBreakEterUpg10Mult()
 }
 
 function maxBuyBEEPMult() {
