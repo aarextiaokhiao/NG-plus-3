@@ -111,8 +111,9 @@ function getGalaxyTickSpeedMultiplier() {
 	
 	var neglogeffect = (Math.log10(perGalaxy)*(galaxies-linearGalaxies)+Math.log10(baseMultiplier))*-1
 	if (tmp.be){
-		if (neglogeffect > 1e4) neglogeffect = Math.pow(Math.log10(neglogeffect)*25,2)
-		if (neglogeffect > 2e4) neglogeffect = 1e4*Math.pow(3+neglogeffect/2e4,.5)
+		if (neglogeffect > 1e4) neglogeffect = 1e4*(( (neglogeffect/1e4)**.7 -1)/.7+1)
+		if (neglogeffect > 2e4) neglogeffect = 2e4*(( (neglogeffect/2e4)**.5 -1)/.5+1)
+		if (neglogeffect > 4e4) neglogeffect = 4e4*(( (neglogeffect/4e4)**.3 -1)/.3+1)
 	}
 	return Decimal.pow(10,-1*neglogeffect)
 }
