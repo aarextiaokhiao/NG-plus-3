@@ -353,7 +353,7 @@ function getDil17Bonus() {
 	return Math.sqrt(player.meta.bestAntimatter.max(1).log10())/(player.masterystudies?1:2);
 }
 
-function updateMetaDimensions () {
+function updateOverallMetaDimensionsStuff(){
 	document.getElementById("metaAntimatterAmount").textContent = shortenMoney(player.meta.antimatter)
 	document.getElementById("metaAntimatterBest").textContent = shortenMoney(player.meta.bestAntimatter)
 	document.getElementById("bestAntimatterQuantum").textContent = player.masterystudies && quantumed ? "Your best" + (ghostified ? "" : "-ever") + " meta-antimatter" + (ghostified ? " in this Ghostify" : "") + " was " + shortenMoney(player.meta.bestOverQuantums) + "." : ""
@@ -361,6 +361,10 @@ function updateMetaDimensions () {
 	setAndMaybeShow("bestMAOverGhostifies", ghostified, '"Your best-ever meta-antimatter was " + shortenMoney(player.meta.bestOverGhostifies) + "."')
 	document.getElementById("metaAntimatterEffect").textContent = shortenMoney(getExtraDimensionBoostPower())
 	document.getElementById("metaAntimatterPerSec").textContent = 'You are getting ' + shortenDimensions(getMetaDimensionProduction(1)) + ' meta-antimatter per second.'
+}
+
+function updateMetaDimensions () {
+	updateOverallMetaDimensionsStuff()
 	let showDim = false
 	let useTwo = player.options.notation=="Logarithm" ? 2 : 0
 	for (let tier = 8; tier > 0; tier--) {
@@ -371,7 +375,7 @@ function updateMetaDimensions () {
 			document.getElementById("meta" + tier + "Amount").textContent = getMetaDimensionDescription(tier)
 			document.getElementById("meta"+tier).textContent = speedrunMilestonesReached > tier+5 ? "Auto: O"+(player.autoEterOptions["md"+tier] ? "N" : "FF") : "Cost: " + formatValue(player.options.notation, player.meta[tier].cost, useTwo, 0) + " MA"
 			document.getElementById('meta' + tier).className = speedrunMilestonesReached > tier+5 ? "storebtn" : canAffordMetaDimension(player.meta[tier].cost) ? 'storebtn' : 'unavailablebtn'
-			document.getElementById("metaMax"+tier).textContent = (speedrunMilestonesReached > tier+5 ? (shiftDown ? "Singles" : "Cost") : "Until 10") + ": " + formatValue(player.options.notation, ((shiftDown && speedrunMilestonesReached > tier+5) ? player.meta[tier].cost : getMetaMaxCost(tier)), useTwo, 0) + " MA"
+			document.getElementById("metaMax"+tier).textContent = (speedrunMilestonesReached > tier+5 ? (shiftDown ? "Singles" : ghostified ? "":"Cost") : "Until 10") + ": " + formatValue(player.options.notation, ((shiftDown && speedrunMilestonesReached > tier+5) ? player.meta[tier].cost : getMetaMaxCost(tier)), useTwo, 0) + " MA"
 			document.getElementById('metaMax' + tier).className = canAffordMetaDimension((shiftDown && speedrunMilestonesReached > tier+5) ? player.meta[tier].cost : getMetaMaxCost(tier)) ? 'storebtn' : 'unavailablebtn'
 		}
 	}
@@ -398,7 +402,7 @@ function updateMetaDimensions () {
 		message += "gain " + shortenDimensions(QS) + " quark" + (QS.lt(2) ? "" : "s") + " for boosts"
 	} else message += "get a boost"
 	document.getElementById("quantum").textContent = message
-    if (document.getElementById("quantum").className !== newClassName) document.getElementById("quantum").className = newClassName
+	if (document.getElementById("quantum").className !== newClassName) document.getElementById("quantum").className = newClassName
 }
 
 // v2.2
