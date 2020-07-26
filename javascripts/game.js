@@ -2977,12 +2977,12 @@ function updateCosts() {
 			var cost = player[TIER_NAMES[i] + "Cost"]
 			var resource = getOrSubResource(i)
 			document.getElementById('B'+i).className = cost.lte(resource) ? 'storebtn' : 'unavailablebtn'
-			document.getElementById('B'+i).textContent = 'Cost: ' + shortenPreInfCosts(cost)
+			document.getElementById('B'+i).textContent = (quantumed ? '':'Cost: ') + shortenPreInfCosts(cost)
 			document.getElementById('M'+i).className = cost.times(10 - dimBought(i)).lte(resource) ? 'storebtn' : 'unavailablebtn'
-			document.getElementById('M'+i).textContent = 'Until 10, Cost: ' + shortenPreInfCosts(cost.times(10 - dimBought(i)));
+			document.getElementById('M'+i).textContent = (quantumed ? '':'Until 10, Cost: ') + shortenPreInfCosts(cost.times(10 - dimBought(i)));
 		}
 		if (document.getElementById("infinitydimensions").style.display == "block" && player.infDimensionsUnlocked[i-1]) {
-			document.getElementById("infMax"+i).textContent = "Cost: " + (player.pSac !== undefined ? shortenDimensions(player["infinityDimension"+i].costAM) : shortenInfDimCosts(getIDCost(i)) + " IP")
+			document.getElementById("infMax"+i).textContent = (quantumed ? '':"Cost: ") + (player.pSac !== undefined ? shortenDimensions(player["infinityDimension"+i].costAM) : shortenInfDimCosts(getIDCost(i)) + " IP")
 			if (player.pSac !== undefined ? player.money.gte(player["infinityDimension"+i].costAM) : player.infinityPoints.gte(getIDCost(i))) document.getElementById("infMax"+i).className = "storebtn"
 			else document.getElementById("infMax"+i).className = "unavailablebtn"
 		}
