@@ -1286,7 +1286,10 @@ function updateNeutBoost1Temp(nt){
 function updateNeutBoost2Temp(nt){
 	let nb2neutrinos = Math.pow(nt[0].add(1).log10(),2)+Math.pow(nt[1].add(1).log10(),2)+Math.pow(nt[2].add(1).log10(),2)
 	let nb2 = Math.pow(nb2neutrinos, .25) * 1.5
-	if (nb2>121) nb2 = Math.pow(4 + Math.log2(nb2 + 7), 2)
+	if (nb2 > 121) nb2 = Math.pow(4 + Math.log2(nb2 + 7), 2)
+	if (nb2 > 130) nb2 = 130*Math.pow(nb2/130,.5)
+	if (nb2 > 135) nb2 = 135*Math.pow(nb2/135,.3)
+	if (nb2 > 140) nb2 = 140*Math.pow(nb2/140,.2)
 	tmp.nb[1] = nb2 
 }
 
@@ -1301,7 +1304,8 @@ function updateNeutBoost4Temp(nt){
 	var nb4neutrinos = Math.pow(nt[0].add(1).log10(),2)+Math.pow(nt[1].add(1).log10(),2)+Math.pow(nt[2].add(1).log10(),2)
 	var nb4 = Math.pow(nb4neutrinos, .25) * 0.07 + 1
 	if (nb4 > 10) nb4 = 6 + Math.log2(nb4 + 6)
-	if (!tmp.ngp3l && nb4 > 16) nb4 = 12 + Math.log2(nb4)
+	if (nb4 > 12) nb4 = 12*Math.pow(nb4/12,.3)
+	if (nb4 > 16) nb4 = 12 + Math.log2(nb4)
 	tmp.nb[3] = nb4
 }
 
@@ -1336,13 +1340,16 @@ function updateNeutBoost8Temp(nt){
 	let nb8exp = .25
 	if (tmp.newNGP3E) nb8exp = .26
 	var nb8 = Math.pow(nb8neutrinos, nb8exp) / 10 + 1
+	if (nb8 > 10) nb8 = 10*Math.log10(nb8)
 	if (nb8 > 11) nb8 = 7 + Math.log2(nb8 + 5)
+	if (nb8 > 12) nb8 = 10 + Math.log10(nb8+88) //.004 derivative (this causes a big part of the inflation)
 	tmp.nb[7] = nb8
 }
 
 function updateNeutBoost9Temp(nt){
 	var nb9 = (nt[0].add(1).log10()+nt[1].add(1).log10()+nt[2].add(1).log10())/10
 	if (!tmp.ngp3l && nb9 > 1000) nb9 = Math.pow(Math.log2(nb9 + 24), 3)
+	if (nb9 > 1200) nb9 = 400*Math.log10(nb9-200)
 	if (nb9 > 4096) nb9 = Math.pow(Math.log2(nb9) + 4, 3)
 	tmp.nb[8] = nb9
 }
