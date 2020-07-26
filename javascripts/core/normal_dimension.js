@@ -70,6 +70,8 @@ function getNormalDimensionGalaxyUpgradesBonus(tier,mult){
 
 function getAfterDefaultDilationLayerAchBonus(tier){
 	mult = new Decimal(1)
+	let timeAndDimMult = timeMult()
+	if (hasInfinityMult(tier)) timeAndDimMult = dimMults().times(timeAndDimMult)
 	if (player.challenges.includes("postcngmm_1")||player.currentChallenge=="postcngmm_1") mult = mult.times(timeAndDimMult)
 	if (player.galacticSacrifice) {
 		if (player.achievements.includes("r56") && player.thisInfinityTime < 1800) mult = mult.times(3600/(player.thisInfinityTime+1800));
