@@ -114,6 +114,8 @@ function getUnsoftcappedGalaxyTickSpeedMultiplier(){
 }
 
 function getGalaxyTickSpeedMultiplier() {
+	var start = getUnsoftcappedGalaxyTickSpeedMultiplier()
+	if (typeof(start) == "number") return start
 	var neglogeffect = getUnsoftcappedGalaxyTickSpeedMultiplier().log10()*-1
 	if (tmp.be){
 		var scaling = 6
