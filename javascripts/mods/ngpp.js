@@ -596,6 +596,14 @@ function isQuantumReached() {
 	return player.money.log10()>=getQCGoal()&&(player.meta.antimatter.max(player.achievements.includes("ng3p76")?player.meta.bestOverQuantums:0).gte(getQuantumReq()))&&(!player.masterystudies||ECTimesCompleted("eterc14"))&&quarkGain().gt(0)
 }
 
+function getQuarkGain(){
+	return quarkGain()
+}
+
+function getQKGain(){
+	return quarkGain()
+}
+
 let quarkGain = function () {
 	let ma = player.meta.antimatter.max(1)
 	if (tmp.ngp3) {
@@ -608,6 +616,7 @@ let quarkGain = function () {
 		if (log > logBoost) log = Math.pow(log / logBoost, logBoostExp) * logBoost
 		if (log > 738 && !hasNU(8)) log = Math.sqrt(log * 738)
 		if (!tmp.ngp3l) log += Math.pow(Math.max(player.eternityPoints.log10() / 1e6, 1), tmp.newNGP3E ? .6 : .7) - 1
+		log += player.quantum.bigRip.spaceShards.plus(1).log10()
 
 		let dlog = Math.log10(log)
 		let start = 4 //Starts at e10k.
