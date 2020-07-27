@@ -20,23 +20,94 @@ var forceHardReset = false;
 var player
 var metaSave = null
 var modes = {}
+
+function doNGMinusNewPlayer(){
+	player.achievements.push("r22")
+        player.achievements.push("r85")
+        player.aarexModifications.newGameMinusVersion = 2.2
+}
+
+function doNGPlusOneNewPlayer(){
+	player.money=new Decimal(1e25)
+        player.infinitiedBank=1e6
+        player.infinityUpgrades=["timeMult", "dimMult", "timeMult2", "unspentBonus", "27Mult", "18Mult", "36Mult", "resetMult", "passiveGen", "45Mult", "resetBoost", "galaxyBoost"]
+        player.infMult=16
+        player.dimensionMultDecrease=2
+        player.tickSpeedMultDecrease=1.65
+        player.eternities=100
+        player.challenges=challengesCompletedOnEternity()
+        player.replicanti.unl=true
+        player.replicanti.amount=new Decimal(1)
+        for (ec=1;ec<13;ec++) player.eternityChalls['eterc'+ec]=5
+        player.eternityChalls.eterc1=1
+        player.eternityChalls.eterc4=1
+        player.eternityChalls.eterc10=1
+        player.dilation.studies=[1]
+        player.achievements.push("r77")
+        player.achievements.push("r78")
+        player.achievements.push("r85")
+        player.achievements.push("r93")
+        player.achievements.push("r95")
+        player.achievements.push("r102")
+        player.achievements.push("r131")
+        player.aarexModifications.newGamePlusVersion=2
+}
+
+function doNGPlusTwoNewPlayer(){
+	player.aarexModifications.newGamePlusPlusVersion = 2.90142
+        player.autoEterMode = "amount"
+        player.dilation.rebuyables[4] = 0
+        player.meta = {resets: 0, antimatter: 10, bestAntimatter: 10}
+        for (dim=1;dim<9;dim++) player.meta[dim] = {amount: 0, bought: 0, cost: initCost[dim]}
+        player.autoEterOptions = {epmult:false}
+        for (dim=1;dim<9;dim++) player.autoEterOptions["td"+dim] = false
+        player.galaxyMaxBulk = false
+        player.quantum = {
+		times: 0,
+		time: 0,
+		best: 9999999999,
+		last10: [[600*60*24*31, 0], [600*60*24*31, 0], [600*60*24*31, 0], [600*60*24*31, 0], [600*60*24*31, 0], [600*60*24*31, 0], [600*60*24*31, 0], [600*60*24*31, 0], [600*60*24*31, 0], [600*60*24*31, 0]],
+		quarks: 0,
+		producedGluons: 0,
+		realGluons: 0,
+		bosons: {
+			'w+': 0,
+			'w-': 0,
+			'z0': 0
+		},
+		neutronstar: {
+			quarks: 0,
+			metaAntimatter: 0,
+			dilatedTime: 0
+		},
+		rebuyables: {
+			1: 0,
+			2: 0
+		},
+		upgrades: []
+	}
+        player.aarexModifications.quantumConf = true
+        tmp.qu=player.quantum
+}
+
 function updateNewPlayer(reseted) {
-    if (reseted) {
-        var modesChosen = {
-            ngm: player.aarexModifications.newGameMinusVersion !== undefined,
-            ngp: player.aarexModifications.ngp4V !== undefined ? 2 : player.aarexModifications.newGamePlusVersion !== undefined ? 1 : 0,
-            arrows: player.aarexModifications.newGameExpVersion !== undefined,
-            ngpp: player.meta == undefined ? false : player.aarexModifications.ngp3lV ? 3 : tmp.ngp3 ? 2 : 1,
-            ngmm: player.aarexModifications.ngmX ? player.aarexModifications.ngmX - 1 : player.galacticSacrifice !== undefined ? 1 : 0,
-            rs: player.infinityUpgradesRespecced != undefined ? 2 : player.boughtDims !== undefined,
-            ngud: player.aarexModifications.nguspV !== undefined ? 3 : player.aarexModifications.ngudpV !== undefined ? 2 : player.exdilation !== undefined ? 1 : 0,
-            nguep: player.aarexModifications.nguepV !== undefined,
-            ngmu: player.aarexModifications.newGameMult === 1,
-            ngumu: player.aarexModifications.ngumuV !== undefined,
-            ngex: player.aarexModifications.ngexV !== undefined,
-            aau: player.aarexModifications.aau !== undefined
-        }
-    } else var modesChosen = modes
+	if (reseted) {
+		var modesChosen = {
+			ngm: player.aarexModifications.newGameMinusVersion !== undefined,
+			ngp: player.aarexModifications.ngp4V !== undefined ? 2 : player.aarexModifications.newGamePlusVersion !== undefined ? 1 : 0,
+			arrows: player.aarexModifications.newGameExpVersion !== undefined,
+			ngpp: player.meta == undefined ? false : player.aarexModifications.ngp3lV ? 3 : tmp.ngp3 ? 2 : 1,
+			ngmm: player.aarexModifications.ngmX ? player.aarexModifications.ngmX - 1 : player.galacticSacrifice !== undefined ? 1 : 0,
+			rs: player.infinityUpgradesRespecced != undefined ? 2 : player.boughtDims !== undefined,
+			ngud: player.aarexModifications.nguspV !== undefined ? 3 : player.aarexModifications.ngudpV !== undefined ? 2 : player.exdilation !== undefined ? 1 : 0,
+			nguep: player.aarexModifications.nguepV !== undefined,
+			ngmu: player.aarexModifications.newGameMult === 1,
+			ngumu: player.aarexModifications.ngumuV !== undefined,
+			ngex: player.aarexModifications.ngexV !== undefined,
+			aau: player.aarexModifications.aau !== undefined
+		}
+	} 
+	else var modesChosen = modes
     player = {
         money: new Decimal(modesChosen.ngmm>2?200:modesChosen.ngp>1?20:10),
         tickSpeedCost: new Decimal(1000),
@@ -334,73 +405,10 @@ function updateNewPlayer(reseted) {
             breakInfinity: false
         }
     }
-    if (modesChosen.ngm) {
-        player.achievements.push("r22")
-        player.achievements.push("r85")
-        player.aarexModifications.newGameMinusVersion = 2.2
-    }
-    if (modesChosen.ngp) {
-        player.money=new Decimal(1e25)
-        player.infinitiedBank=1e6
-        player.infinityUpgrades=["timeMult", "dimMult", "timeMult2", "unspentBonus", "27Mult", "18Mult", "36Mult", "resetMult", "passiveGen", "45Mult", "resetBoost", "galaxyBoost"]
-        player.infMult=16
-        player.dimensionMultDecrease=2
-        player.tickSpeedMultDecrease=1.65
-        player.eternities=100
-        player.challenges=challengesCompletedOnEternity()
-        player.replicanti.unl=true
-        player.replicanti.amount=new Decimal(1)
-        for (ec=1;ec<13;ec++) player.eternityChalls['eterc'+ec]=5
-        player.eternityChalls.eterc1=1
-        player.eternityChalls.eterc4=1
-        player.eternityChalls.eterc10=1
-        player.dilation.studies=[1]
-        player.achievements.push("r77")
-        player.achievements.push("r78")
-        player.achievements.push("r85")
-        player.achievements.push("r93")
-        player.achievements.push("r95")
-        player.achievements.push("r102")
-        player.achievements.push("r131")
-        player.aarexModifications.newGamePlusVersion=2
-    }
-    if (modesChosen.ngpp) {
-        player.aarexModifications.newGamePlusPlusVersion = 2.90142
-        player.autoEterMode = "amount"
-        player.dilation.rebuyables[4] = 0
-        player.meta = {resets: 0, antimatter: 10, bestAntimatter: 10}
-        for (dim=1;dim<9;dim++) player.meta[dim] = {amount: 0, bought: 0, cost: initCost[dim]}
-        player.autoEterOptions = {epmult:false}
-        for (dim=1;dim<9;dim++) player.autoEterOptions["td"+dim] = false
-        player.galaxyMaxBulk = false
-        player.quantum = {
-            times: 0,
-            time: 0,
-            best: 9999999999,
-            last10: [[600*60*24*31, 0], [600*60*24*31, 0], [600*60*24*31, 0], [600*60*24*31, 0], [600*60*24*31, 0], [600*60*24*31, 0], [600*60*24*31, 0], [600*60*24*31, 0], [600*60*24*31, 0], [600*60*24*31, 0]],
-            quarks: 0,
-            producedGluons: 0,
-            realGluons: 0,
-            bosons: {
-                'w+': 0,
-                'w-': 0,
-                'z0': 0
-            },
-            neutronstar: {
-                quarks: 0,
-                metaAntimatter: 0,
-                dilatedTime: 0
-            },
-            rebuyables: {
-                1: 0,
-                2: 0
-            },
-            upgrades: []
-        }
-        player.aarexModifications.quantumConf = true
-        tmp.qu=player.quantum
-    }
-    if (modesChosen.ngmm) {
+	if (modesChosen.ngm) doNGMinusNewPlayer()
+	if (modesChosen.ngp) doNGPlusOneNewPlayer()
+	if (modesChosen.ngpp) doNGPlusTwoNewPlayer()
+	if (modesChosen.ngmm) {
         player.aarexModifications.newGameMinusMinusVersion = 2.41
         player.galacticSacrifice = {}
         player.galacticSacrifice = resetGalacticSacrifice()
@@ -417,6 +425,7 @@ function updateNewPlayer(reseted) {
     }
     if (modesChosen.ngpp>1) {
         player.aarexModifications.newGame3PlusVersion = 2.21
+	document.getElementById("quantumison").checked = false
         player.respecMastery=false
         player.dbPower = 1
         player.dilation.times = 0
@@ -759,7 +768,7 @@ function updateNewPlayer(reseted) {
 		player.aarexModifications.aau=1
 		dev.giveAllAchievements(true)
 	}
-    player.infDimensionsUnlocked=resetInfDimUnlocked()
+	player.infDimensionsUnlocked=resetInfDimUnlocked()
 }
 updateNewPlayer()
 
