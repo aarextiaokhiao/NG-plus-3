@@ -8779,7 +8779,8 @@ setInterval(function() {
 	bankedInfinityDisplay()
 	doPerSecondNGP3Stuff()
 	notifyQuantumMilestones()
-	
+	updateColorCharge()
+	updateQuantumWorth()
 }, 1000)
 
 function fact(v) {
