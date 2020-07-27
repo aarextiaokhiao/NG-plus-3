@@ -10090,13 +10090,13 @@ function gameLoop(diff) {
 	}
 	
 	thisQuantumTimeUpdating()
+	var s = shortenDimensions(player.infinityPoints)
+	document.getElementById("infinityPoints1").innerHTML = "You have <span class=\"IPAmount1\">"+s+"</span> Infinity points."
+	document.getElementById("infinityPoints2").innerHTML = "You have <span class=\"IPAmount2\">"+s+"</span> Infinity points."
 
-    	document.getElementById("infinityPoints1").innerHTML = "You have <span class=\"IPAmount1\">"+shortenDimensions(player.infinityPoints)+"</span> Infinity points."
-    	document.getElementById("infinityPoints2").innerHTML = "You have <span class=\"IPAmount2\">"+shortenDimensions(player.infinityPoints)+"</span> Infinity points."
+	if (document.getElementById("loadmenu").style.display == "block") changeSaveDesc(metaSave.current, savePlacement)
 
-    	if (document.getElementById("loadmenu").style.display == "block") changeSaveDesc(metaSave.current, savePlacement)
-
-    	player.lastUpdate = thisUpdate;
+	player.lastUpdate = thisUpdate;
 }
 
 function simulateTime(seconds, real, id) {
