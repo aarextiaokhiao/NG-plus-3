@@ -1452,8 +1452,8 @@ function updateBigRipUpgrade8(){
 
 function updateBigRipUpgrade14(){
 	if (!tmp.qu.bigRip.active) {
+		tmp.bru[2] = 1
 		return
-		tmp.bru[0] = 1
 	}
 	var ret = Math.min(tmp.qu.bigRip.spaceShards.div(3e18).add(1).log10()/3,0.4)
 	var val = Math.sqrt(tmp.qu.bigRip.spaceShards.div(3e15).add(1).log10()*ret+1)
