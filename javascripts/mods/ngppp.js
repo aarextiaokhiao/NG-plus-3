@@ -1314,7 +1314,6 @@ function unstableQuarks(branch) {
 	if (tmp.qu.usedQuarks[branch].eq(0)||getUnstableGain(branch).lte(tmp.qu.tod[branch].quarks)) return
 	tmp.qu.tod[branch].quarks=tmp.qu.tod[branch].quarks.max(getUnstableGain(branch))
 	if (player.ghostify.milestones<4) tmp.qu.usedQuarks[branch]=new Decimal(0)
-	updateQuantumWorth()
 }
 
 function getDecayRate(branch) {
