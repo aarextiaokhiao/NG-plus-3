@@ -287,7 +287,7 @@ function updateReplicantsTab(){
 		document.getElementById("eggonAmount").textContent=shortenDimensions(tmp.qu.replicants.eggons)
 		document.getElementById("hatchProgress").textContent=Math.round(tmp.qu.replicants.babyProgress.toNumber()*100)+"%"
 	}
-	var growupRate = tmp.twr.times(player.achievements.includes("ng3p35")?1.5:0.15)
+	var growupRate = tmp.twr.times(player.achievements.includes("ng3p35")?3:0.3).times(getSpinToReplicantiSpeed())
 	if (tmp.qu.replicants.babies.eq(0)) growupRate = growupRate.min(eggonRate)
 	if (growupRate.lt(30)) {
 		document.getElementById("growupRate").textContent=shortenDimensions(growupRate)
