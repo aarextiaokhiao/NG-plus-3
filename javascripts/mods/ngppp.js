@@ -1338,17 +1338,25 @@ function getDecayRate(branch) {
 	return ret.min(Math.pow(2,40)).times(todspeed)
 }
 
+function getMilestone14SpinMult(){
+	var totalSpin = player.quantum.tod.r.spin.plus(player.quantum.tod.b.spin).plus(player.quantum.tod.g.spin)
+	var logSpin = totalSpin.log10()
+	if (logSpin <= 25) return 10
+	return Math.pow(logSpin,2)/625*10
+}
+
 function getQuarkSpinProduction(branch) {
-	let ret=Decimal.pow(2,getBU1Power(branch)*(1+getRadioactiveDecays(branch)/10)).times(getTreeUpgradeEffect(3)).times(getTreeUpgradeEffect(5))
-	if (player.masterystudies.includes("t431")) ret=ret.times(getMTSMult(431))
-	if (player.ghostify.milestones>13) ret=ret.times(10)
+	let ret = Decimal.pow(2,getBU1Power(branch)*(1+getRadioactiveDecays(branch)/10)).times(getTreeUpgradeEffect(3)).times(getTreeUpgradeEffect(5))
+	if (player.masterystudies.includes("t431")) ret = ret.times(getMTSMult(431))
+	if (player.ghostify.milestones > 13) ret = ret.times(getMilestone14SpinMult())
+	ret = ret.times(Decimal.pow(1.1,player.quantum.nanofield.rewards))
 	if (hasNU(4)) ret=ret.times(tmp.nu[2].pow(2))
 	if (tmp.qu.bigRip.active) {
-		if (isBigRipUpgradeActive(18)) ret=ret.times(tmp.bru[3])
-		if (isBigRipUpgradeActive(19)) ret=ret.times(tmp.bru[4])
-		if (hasNU(12)) ret=ret.times(tmp.nu[4].normal)
+		if (isBigRipUpgradeActive(18)) ret = ret.times(tmp.bru[3])
+		if (isBigRipUpgradeActive(19)) ret = ret.times(tmp.bru[4])
+		if (hasNU(12)) ret = ret.times(tmp.nu[4].normal)
 	}
-	ret=ret.times(todspeed)
+	ret = ret.times(todspeed)
 	return ret
 }
 
