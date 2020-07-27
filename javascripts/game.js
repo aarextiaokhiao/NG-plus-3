@@ -9105,8 +9105,18 @@ function emperorDimUpdating(diff){
 	}
 }
 
+function getSpinToReplicantiSpeed(){
+	// log10(green spins) * log10(blue spins) *log10(red spins) 
+	var r = player.quantum.tod.r.spin.plus(10).log10()
+	var g = player.quantum.tod.g.spin.plus(10).log10()
+	var b = player.quantum.tod.b.spin.plus(10).log10()
+	return r*g*b
+}
+
 function replicantEggonUpdating(diff){
-	tmp.qu.replicants.eggonProgress = tmp.qu.replicants.eggonProgress.add(tmp.twr.times(getEmperorDimensionMultiplier(1)).times(diff/200))
+	var newBabies = tmp.twr.times(getEmperorDimensionMultiplier(1)).times(getSpinToReplicantiSpeed()).times(diff/200)
+	if (player.achievements.includes("ng3p35")) newBabies = newBabies.times(10)
+	tmp.qu.replicants.eggonProgress = tmp.qu.replicants.eggonProgress.add(newBabies)
 	var toAdd = tmp.qu.replicants.eggonProgress.floor()
 	if (toAdd.gt(0)) {
 		if (toAdd.gt(tmp.qu.replicants.eggonProgress)) tmp.qu.replicants.eggonProgress = new Decimal(0)
