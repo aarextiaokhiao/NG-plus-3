@@ -757,7 +757,7 @@ function getMS391Effect(){
 }
 
 function getMS392Effect(){
-	return Decimal.pow(tmp.newNGP3E?1.7:1.6,Math.sqrt(tmp.qu.replicants.quarks.add(1).log10()))
+	return Decimal.pow(tmp.newNGP3E?1.7:1.6, Math.sqrt(tmp.qu.replicants.quarks.add(1).log10()) ).plus(tmp.ngp3l ? 0 : 1)
 }
 
 function getMS393Effect(){
