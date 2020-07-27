@@ -620,7 +620,9 @@ function getQCtotalTime(){
 function getQCtoQKEffect(){
 	if (tmp.ngp3l) return 1
 	var time = getQCtotalTime()
-	return 1+192*3600*10/time
+	var ret = 1+192*3600*10/time
+	if (ret > 999) ret = 333*Math.log10(ret+1)
+	return ret
 }
 
 let quarkGain = function () {
