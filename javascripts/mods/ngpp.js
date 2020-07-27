@@ -639,7 +639,7 @@ let quarkGain = function () {
 	if (log > 738 && !hasNU(8)) log = Math.sqrt(log * 738)
 	if (!tmp.ngp3l) log += Math.pow(Math.max(player.eternityPoints.log10() / 1e6, 1), tmp.newNGP3E ? .6 : .7) - 1
 	if (!tmp.ngp3l) log += player.quantum.bigRip.spaceShards.plus(1).log10()
-	log += Math.log10(getQCtoQKEffect()
+	log += Math.log10(getQCtoQKEffect())
 
 	var dlog = Math.log10(log)
 	let start = 4 //Starts at e10k.
