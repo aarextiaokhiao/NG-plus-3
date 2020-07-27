@@ -2160,7 +2160,7 @@ function getSpaceShardsGain() {
 	return ret
 }
 
-let bigRipUpgCosts = [0, 2, 3, 5, 20, 30, 45, 60, 150, 300, 2000, 3e9, 3e14, 1e17, 3e18, 3e20, 5e22, 1e33, 1e145, 1e150, 1e160]
+let bigRipUpgCosts = [0, 2, 3, 5, 20, 30, 45, 60, 150, 300, 2000, 1e9, 3e14, 1e17, 3e18, 3e20, 5e22, 1e32, 1e145, 1e150, 1e160]
 function buyBigRipUpg(id) {
 	if (tmp.qu.bigRip.spaceShards.lt(bigRipUpgCosts[id])||tmp.qu.bigRip.upgrades.includes(id)) return
 	tmp.qu.bigRip.spaceShards=tmp.qu.bigRip.spaceShards.sub(bigRipUpgCosts[id])
