@@ -450,7 +450,7 @@ function buyMasteryStudy(type, id, quick=false) {
 				var isone = ((inQC(5)||inQC(7))&&focusOn!="linear")||(((inNC(13)&&player.tickspeedBoosts==undefined)||player.currentChallenge=="postc1"||player.currentChallenge=="postcngm3_1")&&player.galacticSacrifice!=undefined)
 				if (isone) {
 					for (var i = 1; i<9; i++) {
-						player[tiers[i] + "Pow"] = player[tiers[i] + "Pow"].times(Decimal.pow(10,430*player[tiers[i] + "Bought"]/10)
+						player[tiers[i] + "Pow"] = player[tiers[i] + "Pow"].times(Decimal.pow(10,430*player[tiers[i] + "Bought"]/10))
 					}
 				}
 			}
