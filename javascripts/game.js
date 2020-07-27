@@ -9300,7 +9300,14 @@ function bigCrunchButtonUpdating(){
 
             		var currentIPmin = gainedInfinityPoints().dividedBy(player.thisInfinityTime/600)
             		if (currentIPmin.gt(IPminpeak)) IPminpeak = currentIPmin
-			document.getElementById("postInfinityButton").innerHTML = "<b>"+(IPminpeak.gt("1e30000003") && (player.options.theme != "Aarex's Modifications" || player.options.notation=="Morse code" || player.options.notation=='Spazzy') ? "Gain " : "Big Crunch for ")+shortenDimensions(gainedInfinityPoints())+" Infinity points.</b>" + (IPminpeak.gt("1e100000") && (player.options.theme != "Aarex's Modifications" || player.options.notation=="Morse code" || player.options.notation=='Spazzy') ? "" : "<br>"+shortenDimensions(currentIPmin) + " IP/min"+"<br>Peaked at "+shortenDimensions(IPminpeak)+" IP/min")
+			if (IPminpeak.l > 1e9) document.getElementById("postInfinityButton").innerHTML = "Big Crunch"
+			else {
+				var notationPart = player.options.theme != "Aarex's Modifications" || player.options.notation=="Morse code" || player.options.notation=='Spazzy'
+				var IPminpart = ""
+				if (IPminpeak.l > 1e5 && notationPart) IPminpart = "<br>"+shortenDimensions(currentIPmin) + " IP/min"+"<br>Peaked at "+shortenDimensions(IPminpeak)+" IP/min"
+			
+				document.getElementById("postInfinityButton").innerHTML = "<b>"+(IPminpeak.l > 3e7 && notationPart ? "Gain " : "Big Crunch for ")+shortenDimensions(gainedInfinityPoints())+" Infinity points.</b>" + IPminpart
+			}
 		}
 	}
 }
