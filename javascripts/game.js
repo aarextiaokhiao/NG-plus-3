@@ -8626,7 +8626,7 @@ function doNGP3UnlockStuff(){
 	}
 	var inEasierModeCheck = !inEasierMode()
 	if (player.masterystudies && (player.masterystudies.includes("d14")||player.achievements.includes("ng3p51")) && !metaSave.ngp4 && !inEasierModeCheck) doNGP4UnlockStuff()
-	if (player.eternityPoints.gte("1e1215") && tmp.qu.bigRip.active && !tmp.qu.breakEternity.unlocked) doBreakEternityUnlockStuff()
+	if (player.eternityPoints.gte("1e1200") && tmp.qu.bigRip.active && !tmp.qu.breakEternity.unlocked) doBreakEternityUnlockStuff()
 	if (player.money.gte(Decimal.pow(10,6e9))&&tmp.qu.bigRip.active&&!player.ghostify.ghostlyPhotons.unl) doPhotonsUnlockStuff()
 	let max = getMaximumUnstableQuarks()
 	if (max.quarks.log10() > 1e10 && max.decays >= 5 && !player.ghostify.wzb.unl) doBosonsUnlockStuff()
