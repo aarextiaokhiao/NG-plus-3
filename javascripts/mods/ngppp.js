@@ -3734,7 +3734,9 @@ function getGPHProduction() {
 	if (tmp.qu.bigRip.active) var ret=player.dilation.dilatedTime.div("1e480")
 	else var ret=player.dilation.dilatedTime.div("1e930")
 	if (ret.gt(1)) ret=ret.pow(0.02)
-	return ret
+	var fromIP = 0
+	if (player.ghostify.ghostlyPhotons.unl) fromIP = Math.log10(1+player.infinityPoints.plus(1).log10())
+	return ret.plus(fromIP)
 }
 
 function getGHRProduction() {
