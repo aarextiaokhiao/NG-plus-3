@@ -8696,27 +8696,38 @@ function updateReplicantiGalaxyToggels(){
     	else document.getElementById("replicantiresettoggle").style.display = "inline-block"
 }
 
+function givePerSecondNeuts(){
+	if (!player.achievements.includes("ng3p75")) return
+	var mult = 1 //in case you want to buff in the future
+	var n = getNeutrinoGain().times(mult)
+	player.ghostify.neutrinos.electron = player.ghostify.neutrinos.electron.plus(n)
+	player.ghostify.neutrinos.mu       = player.ghostify.neutrinos.mu.plus(n)
+	player.ghostify.neutrinos.tau      = player.ghostify.neutrinos.tau.plus(n)
+}
+
+
 function doPerSecondNGP3Stuff(){
-	if (tmp.ngp3) {
-		if (tmp.qu.autoECN!==undefined) {
-			justImported=true
-            		if (tmp.qu.autoECN>12) buyMasteryStudy("ec",tmp.qu.autoECN,true)
-            		else document.getElementById("ec"+tmp.qu.autoECN+"unl").onclick()
-			justImported=false
-		}
-		if (isAutoGhostActive(14)) maxBuyBEEPMult()
-        	if (isAutoGhostActive(4)&&player.ghostify.automatorGhosts[4].mode=="t") rotateAutoUnstable()
-        	if (isAutoGhostActive(10)) maxBuyLimit()
-        	if (isAutoGhostActive(9)&&tmp.qu.replicants.quantumFood>0) for (d=1;d<9;d++) if (canFeedReplicant(d)&&(d==tmp.qu.replicants.limitDim||(!tmp.eds[d+1].perm&&tmp.eds[d].workers.lt(11)))) {
-			feedReplicant(d, true)
-			break
-		}
-		if (isAutoGhostActive(8)) buyMaxQuantumFood()
-		if (isAutoGhostActive(7)) maxQuarkMult()
-		doNGP3UnlockStuff()
-		notifyGhostifyMilestones()
-		if (tmp.qu.autoOptions.assignQK && player.ghostify.milestones > 7) assignAll() 
+	if (!tmp.ngp3) return
+	
+	if (tmp.qu.autoECN!==undefined) {
+		justImported=true
+            	if (tmp.qu.autoECN>12) buyMasteryStudy("ec",tmp.qu.autoECN,true)
+            	else document.getElementById("ec"+tmp.qu.autoECN+"unl").onclick()
+		justImported=false
 	}
+	if (isAutoGhostActive(14)) maxBuyBEEPMult()
+        if (isAutoGhostActive(4)&&player.ghostify.automatorGhosts[4].mode=="t") rotateAutoUnstable()
+        if (isAutoGhostActive(10)) maxBuyLimit()
+        if (isAutoGhostActive(9)&&tmp.qu.replicants.quantumFood>0) for (d=1;d<9;d++) if (canFeedReplicant(d)&&(d==tmp.qu.replicants.limitDim||(!tmp.eds[d+1].perm&&tmp.eds[d].workers.lt(11)))) {
+		feedReplicant(d, true)
+		break
+	}
+	if (isAutoGhostActive(8)) buyMaxQuantumFood()
+	if (isAutoGhostActive(7)) maxQuarkMult()
+	doNGP3UnlockStuff()
+	notifyGhostifyMilestones()
+	if (tmp.qu.autoOptions.assignQK && player.ghostify.milestones > 7) assignAll() 
+	givePerSecondNeuts()
 }
 
 let autoSaveSeconds=0
