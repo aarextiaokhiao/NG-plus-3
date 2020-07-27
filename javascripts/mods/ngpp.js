@@ -1002,7 +1002,7 @@ function quantumReset(force, auto, challid, bigRip, implode=false) {
 		eternitiesBank: tmp.ngp3 ? nA(player.eternitiesBank, bankedEterGain) : undefined,
 		thisEternity: 0,
 		bestEternity: headstart ? player.bestEternity : 9999999999,
-		eternityUpgrades: isRewardEnabled(3) && !bigRip ? [1,2,3,4,5,6] : [],
+		eternityUpgrades: isRewardEnabled(3) && (!bigRip || player.quantum.bigRip.upgrades.includes(12)) ? [1,2,3,4,5,6] : [],
 		epmult: new Decimal(1),
 		epmultCost: new Decimal(500),
 		infDimensionsUnlocked: resetInfDimUnlocked(),
