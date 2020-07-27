@@ -1475,11 +1475,11 @@ function updateBigRipUpgradesTemp(){
 function updateInfiniteTimeTemp(){
 	var x=(3-player.tickspeed.log10())*0.000005
 	if (ghostified && player.ghostify.neutrinos.boosts>3) x *= tmp.nb[3]
-	if (tmp.be && !player.dilation.active&&tmp.qu.breakEternity.upgrades.includes(8)) x *= getBreakUpgMult(8)
+	if (tmp.be && !player.dilation.active && tmp.qu.breakEternity.upgrades.includes(8)) x *= getBreakUpgMult(8)
 	if (tmp.be) {
 		if (x>100) x = Math.pow(x*100,0.5)
 	} else {
-		if (x>12e8) x = Math.pow(x*144e10,1/3)
+		if (x>12e5) x = Math.pow(x*144e10,1/3)//i think this should start at 12e5, not sure tho
 		else if (x>12e4) x = Math.pow(x*12e4,0.5)
 	}
 	if (player.aarexModifications.ngudpV) {
@@ -1488,6 +1488,20 @@ function updateInfiniteTimeTemp(){
 		if (tmp.be && x > 1e7) x = Math.pow(93+Math.log10(x),3.5)
 		if (player.dilation.active && x > 1e5) x = Math.pow(1e20*x,.2)
 	}
+	if (tmp.be){
+		var scaling = 5
+		if (scaling >= 5) x = doWeakerPowerReductionSoftcapNumber(x,50e3,.9)
+		if (scaling >= 4) x = doWeakerPowerReductionSoftcapNumber(x,55e3,.7)
+		if (scaling >= 3) x = doWeakerPowerReductionSoftcapNumber(x,60e3,.5)
+		if (scaling >= 2) x = doWeakerPowerReductionSoftcapNumber(x,65e3,.3)
+		if (scaling >= 1) x = doWeakerPowerReductionSoftcapNumber(x,70e3,.1)
+	} else {
+		var scaling = 3
+		if (scaling >= 3) x = doWeakerPowerReductionSoftcapNumber(x,20e7,.7)
+		if (scaling >= 2) x = doWeakerPowerReductionSoftcapNumber(x,25e7,.5)
+		if (scaling >= 1) x = doWeakerPowerReductionSoftcapNumber(x,30e7,.3)
+	}
+	
 	tmp.it=Decimal.pow(10,x)
 }
 
@@ -1537,6 +1551,7 @@ function updateIntergalacticTemp(){
 			tmp.igs = 4
 		}
 	}
+	
 
 	tmp.ig = Decimal.pow(10, igLog)
 }
