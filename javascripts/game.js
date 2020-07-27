@@ -1452,8 +1452,8 @@ function updateBigRipUpgrade14(){
 	tmp.bru[2] = val //BRU14
 }
 
-function upgdateBigRipUpgrade1(){
-	let exp = tmp.qu.bigRip.upgrades.includes(17) ? 2.9 : 1
+function updateBigRipUpgrade1(){
+	let exp = tmp.qu.bigRip.upgrades.includes(17) ? (ghostified ? 3: 2.9) : 1
 	if (ghostified && player.ghostify.neutrinos.boosts > 7) exp *= tmp.nb[7]
 	let log = player.infinityPoints.max(1).log10() * exp
 	
@@ -1467,7 +1467,7 @@ function upgdateBigRipUpgrade1(){
 }
 
 function updateBigRipUpgradesTemp(){
-	upgdateBigRipUpgrade1()
+	updateBigRipUpgrade1()
 	updateBigRipUpgrade8()
 	updateBigRipUpgrade14()
 }
@@ -9791,6 +9791,7 @@ function bigRipUpgradeUpdating(){
 	var bru15effect = getBigRipUpg15Effect()
 	document.getElementById("bigripupg15current").textContent=bru15effect < 999.995 ? bru15effect.toFixed(2) : getFullExpansion(Math.round(bru15effect))
 	document.getElementById("bigripupg16current").textContent=shorten(player.dilation.dilatedTime.div(1e100).pow(0.155).max(1))
+	document.getElementById("bigripupg17current").textContent=ghostified?3:2.9
 	if (player.ghostify.ghostlyPhotons.unl) {
 		document.getElementById("bigripupg18current").textContent=shorten(tmp.bru[3])
 		document.getElementById("bigripupg19current").textContent=shorten(tmp.bru[4])
