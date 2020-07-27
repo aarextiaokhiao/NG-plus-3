@@ -604,31 +604,50 @@ function getQKGain(){
 	return quarkGain()
 }
 
+function getQCtotalTime(){
+	var temp = 0
+	var count = 0
+	for (i=1; i <= 8; i++){
+		if (tmp.qu.challengeRecords[i]) {
+			temp += tmp.qu.challengeRecords[i]
+			count ++
+		}
+	}
+	if (count < 8) return Infinity
+	return temp
+}
+
+function getQCtoQKEffect(){
+	if (tmp.ngp3l) return 1
+	var time = getQCtotalTime()
+	return 1+192*3600*10/time
+}
+
 let quarkGain = function () {
 	let ma = player.meta.antimatter.max(1)
-	if (tmp.ngp3) {
-		if (!tmp.qu.times&&!player.ghostify.milestones) return new Decimal(1)
-		if (player.ghostify.milestones) ma = player.meta.bestAntimatter.max(1)
+	if (!tmp.ngp3) return Decimal.pow(10, ma.log(10) / Math.log10(Number.MAX_VALUE) - 1).times(quarkMult()).floor();
+	
+	if (!tmp.qu.times&&!player.ghostify.milestones) return new Decimal(1)
+	if (player.ghostify.milestones) ma = player.meta.bestAntimatter.max(1)
 
-		let log = (ma.log10() - 379.4) / (player.achievements.includes("ng3p63") ? 279.8 : 280)
-		let logBoost = tmp.ngp3l ? 1.2 : 2
-		let logBoostExp = tmp.ngp3l ? 2 : 1.5
-		if (log > logBoost) log = Math.pow(log / logBoost, logBoostExp) * logBoost
-		if (log > 738 && !hasNU(8)) log = Math.sqrt(log * 738)
-		if (!tmp.ngp3l) log += Math.pow(Math.max(player.eternityPoints.log10() / 1e6, 1), tmp.newNGP3E ? .6 : .7) - 1
-		log += player.quantum.bigRip.spaceShards.plus(1).log10()
+	let log = (ma.log10() - 379.4) / (player.achievements.includes("ng3p63") ? 279.8 : 280)
+	let logBoost = tmp.ngp3l ? 1.2 : 2
+	let logBoostExp = tmp.ngp3l ? 2 : 1.5
+	if (log > logBoost) log = Math.pow(log / logBoost, logBoostExp) * logBoost
+	if (log > 738 && !hasNU(8)) log = Math.sqrt(log * 738)
+	if (!tmp.ngp3l) log += Math.pow(Math.max(player.eternityPoints.log10() / 1e6, 1), tmp.newNGP3E ? .6 : .7) - 1
+	if (!tmp.ngp3l) log += player.quantum.bigRip.spaceShards.plus(1).log10()
+	log += Math.log10(getQCtoQKEffect()
 
-		let dlog = Math.log10(log)
-		let start = 4 //Starts at e10k.
-		if (player.aarexModifications.ngumuV) start++ //Starts at e100k.
-		if ((player.aarexModifications.ngumuV||player.aarexModifications.nguepV)&&dlog>start) {
-			let capped=Math.floor(Math.log10(Math.max(dlog-2,1))/Math.log10(2))
-			dlog=(dlog-Math.pow(2,capped)-2)/Math.pow(2,capped)+capped+3
-			log=Math.pow(10,dlog)
-		}
-		return Decimal.pow(10, log).times(Decimal.pow(2, tmp.qu.multPower.total)).floor()
+	var dlog = Math.log10(log)
+	let start = 4 //Starts at e10k.
+	if (player.aarexModifications.ngumuV) start++ //Starts at e100k.
+	if ((player.aarexModifications.ngumuV||player.aarexModifications.nguepV)&&dlog>start) {
+		let capped=Math.floor(Math.log10(Math.max(dlog-2,1))/Math.log10(2))
+		dlog=(dlog-Math.pow(2,capped)-2)/Math.pow(2,capped)+capped+3
+		log=Math.pow(10,dlog)
 	}
-	return Decimal.pow(10, ma.log(10) / Math.log10(Number.MAX_VALUE) - 1).times(quarkMult()).floor();
+	return Decimal.pow(10, log).times(Decimal.pow(2, tmp.qu.multPower.total)).floor()
 }
 
 let quarkMult = function () {
