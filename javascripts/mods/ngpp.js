@@ -998,7 +998,7 @@ function quantumReset(force, auto, challid, bigRip, implode=false) {
 		postC4Tier: 0,
 		postC3Reward: new Decimal(1),
 		eternityPoints: new Decimal(0),
-		eternities: headstart ? player.eternities : bigRip ? (tmp.qu.bigRip.upgrades.includes(2) ? 1e5 : 0) : speedrunMilestonesReached > 17 ? 1e13 : oheHeadstart ? 2e4 : 0,
+		eternities: headstart ? player.eternities : bigRip ? (tmp.qu.bigRip.upgrades.includes(2) ? 1e5 : 0) : speedrunMilestonesReached > 17 ? 1e13 : oheHeadstart ? 2e4 : player.achievements.includes("ng3p12") ? Math.max(Math.floor(720*3600*10/player.quantum.best),10000) : 0,
 		eternitiesBank: tmp.ngp3 ? nA(player.eternitiesBank, bankedEterGain) : undefined,
 		thisEternity: 0,
 		bestEternity: headstart ? player.bestEternity : 9999999999,
