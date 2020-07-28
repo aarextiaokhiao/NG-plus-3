@@ -3011,7 +3011,8 @@ function updateCosts() {
 			else document.getElementById("infMax"+i).className = "unavailablebtn"
 		}
 	}
-	document.getElementById("tickSpeed").textContent = 'Cost: ' + shortenPreInfCosts(player.tickSpeedCost);
+	var costPart = quantumed ? '':' Cost:'
+	document.getElementById("tickSpeed").textContent = costPart + shortenPreInfCosts(player.tickSpeedCost);
 }
 
 function floatText(id, text, leftOffset = 150) {
