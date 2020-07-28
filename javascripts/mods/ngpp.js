@@ -978,7 +978,7 @@ function quantumReset(force, auto, challid, bigRip, implode=false) {
 		thisInfinityTime: 0,
 		resets: keepABnICs ? 4 : 0,
 		dbPower: player.dbPower,
-        tdBoosts: resetTDBoosts(),
+		tdBoosts: resetTDBoosts(),
 		tickspeedBoosts: player.tickspeedBoosts !== undefined ? (keepABnICs ? 16 : 0) : undefined,
 		galaxies: keepABnICs ? 1 : 0,
 		galacticSacrifice: resetGalacticSacrifice(),
@@ -1369,7 +1369,7 @@ function quantumReset(force, auto, challid, bigRip, implode=false) {
 			if (tmp.qu.autoOptions.assignQK) assignAll(true)
 			if (ghostified) player.ghostify.neutrinos.generationGain=player.ghostify.neutrinos.generationGain%3+1
 			if (isAutoGhostActive(4)&&player.ghostify.automatorGhosts[4].mode!="t") rotateAutoUnstable()
-		}
+		}//bounds if (!force)
 		tmp.qu.pairedChallenges.current=0
 		if (challid==0) {
 			tmp.qu.electrons.amount=0
@@ -1383,7 +1383,7 @@ function quantumReset(force, auto, challid, bigRip, implode=false) {
 		}
 		if ((!challid && player.ghostify.milestones < 6) || bigRip != tmp.qu.bigRip.active) tmp.qu.replicants.amount = new Decimal(0)
 		tmp.qu.replicants.requirement = new Decimal("1e3000000")
-		tmp.qu.replicants.quarks = new Decimal(0)
+		tmp.qu.replicants.quarks = (!(challid > 0 )&& player.achievements.includes("ng3p45")) ? tmp.qu.replicants.quarks.pow(2/3) : new Decimal(0)
 		tmp.qu.replicants.eggonProgress = new Decimal(0)
 		tmp.qu.replicants.eggons = new Decimal(0)
 		tmp.qu.replicants.babyProgress = new Decimal(0)
@@ -1391,8 +1391,13 @@ function quantumReset(force, auto, challid, bigRip, implode=false) {
 		tmp.qu.replicants.growupProgress = new Decimal(0)
 		for (d=1;d<9;d++) {
 			if (d>7||tmp.eds[d].perm<10) tmp.qu.replicants.quantumFood+=Math.round(tmp.eds[d].progress.toNumber()*3)%3
-			tmp.eds[d].workers=new Decimal(tmp.eds[d].perm)
-			tmp.eds[d].progress=new Decimal(0)
+			if (d != 1 || !player.achievements.includes("ng3p46") || challid > 0){
+				tmp.eds[d].workers=new Decimal(tmp.eds[d].perm)
+				tmp.eds[d].progress=new Decimal(0)
+			} else {
+				tmp.eds[d].workers = tmp.eds[d].workers.pow(1/3)
+				tmp.eds[d].progress = new Decimal(0)
+			}
 		}
 		tmp.qu.nanofield.charge = new Decimal(0)
 		tmp.qu.nanofield.energy = new Decimal(0)
