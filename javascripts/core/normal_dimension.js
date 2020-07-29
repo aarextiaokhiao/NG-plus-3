@@ -154,6 +154,8 @@ function getDimensionFinalMultiplier(tier) {
 function getDimensionDescription(tier) {
 	var name = TIER_NAMES[tier];
 	if (tier > Math.min(inQC(1) ? 1 : player.currentEternityChall == "eterc3" ? 3 : inNC(4) || player.currentChallenge == "postc1" || player.pSac != undefined ? 5 : 7, player.resets + 3) - (inNC(7) || player.currentChallenge == "postcngm3_3" || inQC(4) || player.pSac !== undefined ? 1 : 0)) return getFullExpansion(inNC(11) ? getAmount(tier) : player[name + 'Bought']) + ' (' + dimBought(tier) + ')';
+	else if (player.money.l > 1e9) return shortenND(player[name + 'Amount'])
+	else if (player.money.l > 1e6) return shortenND(player[name + 'Amount']) + '  (+' + formatValue(player.options.notation, getDimensionRateOfChange(tier), 2, 2) + dimDescEnd;
 	else return shortenND(player[name + 'Amount']) + ' (' + dimBought(tier) + ')  (+' + formatValue(player.options.notation, getDimensionRateOfChange(tier), 2, 2) + dimDescEnd;
 }
 
