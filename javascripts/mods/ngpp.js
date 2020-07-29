@@ -31,6 +31,9 @@ function getMetaDimensionMultiplier(tier) {
 	
 	//Achievements:
 	if (tier == 1 && player.achievements.includes("ng3p17") && !tmp.ngp3l) ret = ret.times(Math.log10(player.totalmoney.log10()))
+	if (tier == 8 && player.achievements.includes("ng3p22")) ret = ret.times(1+Math.pow(player.meta[1].amount.plus(1).log10()/10),2)
+	if (tier == 1 && player.achievements.includes("ng3p31")) ret = ret.times(player.meta.antimatter.plus(1).pow(.001))
+	if (player.achievements.includes("ng3p57")) ret = ret.times(1+player.timeShards.plus(1).log10())
 	
 	ret = dilates(dilates(ret.max(1), 2), "meta")
 	if (player.dilation.upgrades.includes("ngmm8")) ret = ret.pow(getDil71Mult())
@@ -640,6 +643,7 @@ let quarkGain = function () {
 	if (!tmp.ngp3l) log += Math.pow(Math.max(player.eternityPoints.log10() / 1e6, 1), tmp.newNGP3E ? .6 : .7) - 1
 	if (!tmp.ngp3l) log += player.quantum.bigRip.spaceShards.plus(1).log10()
 	log += Math.log10(getQCtoQKEffect())
+	if (player.achievements.includes("ng3p65") && !tmp.ngp3l) log += Math.pow(player.ghostify.ghostlyPhotons.enpowerments,2)
 
 	var dlog = Math.log10(log)
 	let start = 4 //Starts at e10k.
