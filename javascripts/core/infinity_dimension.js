@@ -10,6 +10,7 @@ function getInfinityDimensionMultiplier(tier){
 
 function DimensionDescription(tier) {
 	if (tier > (inQC(4) || player.pSac!=undefined ? 6 : 7) && (ECTimesCompleted("eterc7") === 0 || player.timeDimension1.amount.eq(0) || tier == 7) && player.currentEternityChall != "eterc7") return getFullExpansion(Math.round(player["infinityDimension"+tier].amount.toNumber()));
+	else if (player.infinityPower.l > 1e7) return shortenDimensions(player['infinityDimension'+tier].amount)
 	else return shortenDimensions(player['infinityDimension'+tier].amount)+' (+' + formatValue(player.options.notation, DimensionRateOfChange(tier), 2, 2) + dimDescEnd;
 }
 
