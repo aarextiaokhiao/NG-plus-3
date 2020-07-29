@@ -535,15 +535,15 @@ function updateElectrons(retroactive) {
 function getElectronUpgCost(u) {
 	var amount=tmp.qu.electrons.rebuyables[u-1]
 	var baseCost=([0,82,153,638,26])[u]+Math.pow(amount*Math.max(amount-1,1)+1,u<2?1:2)
-	if (u>3) return baseCost
-	if (u<2) return Math.pow(10,baseCost)
+	if (u > 3) return baseCost
+	if (u < 2) return Math.pow(10,baseCost)
 	return Decimal.pow(10,baseCost)
 }
 
 function buyElectronUpg(u) {
 	if (!canBuyElectronUpg(u)) return
 	var cost=getElectronUpgCost(u)
-	if (u>3) {
+	if (u > 3 && !(!tmp.ngp3l && player.achievements.includes("ng3p64"))) {
 		player.meta.resets-=cost
 		player.meta.antimatter=new Decimal(100)
 		clearMetaDimensions()
@@ -1349,6 +1349,7 @@ function getQuarkSpinProduction(branch) {
 	if (player.ghostify.milestones > 13) ret = ret.times(getMilestone14SpinMult())
 	ret = ret.times(Decimal.pow(1.1,player.quantum.nanofield.rewards))
 	if (hasNU(4)) ret=ret.times(tmp.nu[2].pow(2))
+	if (player.achievements.includes("ng3p74")) ret = ret.times(1+player.quantum.tod[branch].decays)
 	if (tmp.qu.bigRip.active) {
 		if (isBigRipUpgradeActive(18)) ret = ret.times(tmp.bru[3])
 		if (isBigRipUpgradeActive(19)) ret = ret.times(tmp.bru[4])
