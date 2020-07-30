@@ -218,7 +218,8 @@ var softcap_funcs = {
 			if (derv) x = (x - 1) / pow + 1
 			x *= start
 			return x
-		}
+		} 
+		return x
 	},
 	pow_decimal: function(x, start, pow, derv) {
 		if (x.gt(start)) {
@@ -227,10 +228,12 @@ var softcap_funcs = {
 			x = x.times(start)
 			return x
 		}
+		return x
 	},
 	log: function(x, pow, mul = 1, add = 0) {
 		var x2 = Math.pow(Math.log10(x) * mul + add, pow)
 		if (x > x2) return x2
+		return x
 	}
 }
 
