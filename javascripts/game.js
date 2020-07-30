@@ -1141,9 +1141,9 @@ let tmp = {
 	rg4: false,
 	pct: "",
 	ns: 1,
-	bru: [],
+	bru: {},
 	be: false,
-	beu: [],
+	beu: {},
 	bm: [200,175,150,100,50,40,30,25,20,15,10,5,4,3,2,1],
 	nb: [],
 	nbc: [1,2,4,6,15,50,1e3,1e14,1e35,"1e900"],
@@ -1184,19 +1184,6 @@ function updateWZBosonsTemp(){
 	tmp.zbs = Decimal.pow(10,zbslog)
 	tmp.dppg=new Decimal(1)
 	tmp.bEn[21]=getEnchantEffect(21) //BU21 recalculation
-}
-
-function updatePhotonsUnlockedBRUpgrades(){
-	var bigRipUpg18base = 1+tmp.qu.bigRip.spaceShards.div(1e140).add(1).log10()
-	var bigRipUpg18exp = Math.max(tmp.qu.bigRip.spaceShards.div(1e140).add(1).log10()/10,1)
-	if (bigRipUpg18base > 10 && tmp.newNGP3E) bigRipUpg18base *= Math.log10(bigRipUpg18base)
-	if (bigRipUpg18exp > 16) bigRipUpg18exp = Math.pow(Math.log2(bigRipUpg18exp),2)
-	tmp.bru[3] = Decimal.pow(bigRipUpg18base,bigRipUpg18exp) //BRU18
-	
-	var bigRipUpg19exp = Math.sqrt(player.timeShards.add(1).log10())/(tmp.newNGP3E?60:80)
-	if (bigRipUpg19exp > 5 && !tmp.newNGP3E) bigRipUpg19exp = 4 + Math.log10(2*bigRipUpg19exp)
-	if (bigRipUpg19exp > 8)  bigRipUpg19exp = Math.log2(bigRipUpg19exp)*3-1
-	tmp.bru[4] = Decimal.pow(10,bigRipUpg19exp) //BRU19
 }
 
 function updateRedLightBoostTemp(){
@@ -1466,40 +1453,6 @@ function updateNeutrinoUpgradesTemp(){
 	updateNU12Temp()
 }
 
-function updateBigRipUpgrade8(){
-	if (!tmp.qu.bigRip.active) {
-		tmp.bru[1] = 1
-		return
-	}
-	tmp.bru[1] = Decimal.pow(2,getTotalRG()) //BRU8
-	if (!hasNU(11)) tmp.bru[1]=tmp.bru[1].min(Number.MAX_VALUE)
-}
-
-function updateBigRipUpgrade14(){
-	if (!tmp.qu.bigRip.active) {
-		tmp.bru[2] = 1
-		return
-	}
-	var ret = Math.min(tmp.qu.bigRip.spaceShards.div(3e18).add(1).log10()/3,0.4)
-	var val = Math.sqrt(tmp.qu.bigRip.spaceShards.div(3e15).add(1).log10()*ret+1)
-	if (val > 12) val = 10+Math.log10(4+8*val)
-	tmp.bru[2] = val //BRU14
-}
-
-function updateBigRipUpgrade1(){
-	let exp = tmp.qu.bigRip.upgrades.includes(17) ? (ghostified ? 3: 2.9) : 1
-	if (ghostified && player.ghostify.neutrinos.boosts > 7) exp *= tmp.nb[7]
-	let log = player.infinityPoints.max(1).log10() * exp
-	if (!tmp.ngp3l) log = softcap(log, "bru1_log")
-	tmp.bru[0] = Decimal.pow(10, log) //BRU1
-}
-
-function updateBigRipUpgradesTemp(){
-	updateBigRipUpgrade1()
-	updateBigRipUpgrade8()
-	updateBigRipUpgrade14()
-}
-
 function updateInfiniteTimeTemp(){
 	var x = (3 - player.tickspeed.log10()) * 0.000005
 	if (ghostified && player.ghostify.neutrinos.boosts>3) x *= tmp.nb[3]
@@ -1609,9 +1562,10 @@ function updateTemp() {
 			updateNeutrinoUpgradesTemp()
 			if (tmp.qu.nanofield.rewards < 16) tmp.ns = tmp.ns.times(player.ghostify.milestones?6:3)
 		}
+		if (tmp.qu.breakEternity.unlocked) updateBreakEternityUpgradesTemp()
 		if (player.masterystudies.includes("d14")) updateBigRipUpgradesTemp()
 		if (tmp.qu.bigRip.active) {
-			if (!player.dilation.active&&tmp.qu.bigRip.upgrades.includes(14)) tmp.nrm=tmp.nrm.pow(tmp.bru[2])
+			if (!player.dilation.active&&tmp.qu.bigRip.upgrades.includes(14)) tmp.nrm=tmp.nrm.pow(tmp.bru[14])
 			if (tmp.nrm.log10() > 1e9) tmp.nrm = Decimal.pow(10,1e9*Math.pow(tmp.nrm.log10()/1e9,2/3))
 		}
 		if (player.masterystudies.includes("d10")) tmp.edgm = getEmperorDimensionGlobalMultiplier() //Update global multiplier of all Emperor Dimensions
@@ -2062,7 +2016,7 @@ function getDistantScalingStart() {
 	var n = 100+getECReward(5)
 	if (player.timestudy.studies.includes(223)) n += 7
 	if (player.timestudy.studies.includes(224)) n += Math.floor(player.resets/2000)
-	if (tmp.ngp3) if (tmp.qu.bigRip.active && tmp.qu.bigRip.upgrades.includes(15)) n += getBigRipUpg15Effect()
+	if (tmp.ngp3) if (tmp.qu.bigRip.active && tmp.qu.bigRip.upgrades.includes(15)) n += tmp.bru[15]
 	if (player.dilation.upgrades.includes("ngmm11")) n += 25
 
 	if (tmp.grd.galaxies >= tmp.grd.darkStart) {
@@ -4454,7 +4408,7 @@ function gainedEternityPoints() {
 	if (tmp.ngp3) {
 		if (tmp.qu.bigRip.active) {
 			if (isBigRipUpgradeActive(5)) ret = ret.times(tmp.qu.bigRip.spaceShards.max(1))
-			if (isBigRipUpgradeActive(8)) ret = ret.times(tmp.bru[1])
+			if (isBigRipUpgradeActive(8)) ret = ret.times(tmp.bru[8])
 		}
 		if (tmp.be) ret = ret.times(getBreakUpgMult(7))
 	}
@@ -9882,16 +9836,16 @@ function bigRipUpgradeUpdating(){
 			document.getElementById("bigripupg"+u+"cost").textContent = shortenDimensions(new Decimal(bigRipUpgCosts[u]))
 		}
 	}
-	document.getElementById("bigripupg1current").textContent=shortenDimensions(tmp.bru[0])
-	document.getElementById("bigripupg8current").textContent=shortenDimensions(tmp.bru[1])+(Decimal.gte(tmp.bru[1],Number.MAX_VALUE)&&!hasNU(11)?"x (cap)":"x")
-	document.getElementById("bigripupg14current").textContent=tmp.bru[2].toFixed(2)
-	var bru15effect = getBigRipUpg15Effect()
+	document.getElementById("bigripupg1current").textContent=shortenDimensions(tmp.bru[1])
+	document.getElementById("bigripupg8current").textContent=shortenDimensions(tmp.bru[8])+(Decimal.gte(tmp.bru[8],Number.MAX_VALUE)&&!hasNU(11)?"x (cap)":"x")
+	document.getElementById("bigripupg14current").textContent=tmp.bru[14].toFixed(2)
+	var bru15effect = tmp.bru[15]
 	document.getElementById("bigripupg15current").textContent=bru15effect < 999.995 ? bru15effect.toFixed(2) : getFullExpansion(Math.round(bru15effect))
-	document.getElementById("bigripupg16current").textContent=shorten(player.dilation.dilatedTime.div(1e100).pow(0.155).max(1))
+	document.getElementById("bigripupg16current").textContent=shorten(tmp.bru[16])
 	document.getElementById("bigripupg17current").textContent=ghostified?3:2.9
 	if (player.ghostify.ghostlyPhotons.unl) {
-		document.getElementById("bigripupg18current").textContent=shorten(tmp.bru[3])
-		document.getElementById("bigripupg19current").textContent=shorten(tmp.bru[4])
+		document.getElementById("bigripupg18current").textContent=shorten(tmp.bru[18])
+		document.getElementById("bigripupg19current").textContent=shorten(tmp.bru[19])
 	}
 }
 

@@ -146,7 +146,7 @@ function getDimensionFinalMultiplier(tier) {
 	if (useHigherNDReplMult) mult = mult.times(tmp.nrm)
 	if (quantumed && !tmp.ngp3l) mult = mult.times(colorBoosts.dim.r)
 	if (tmp.ngp3 && player.dilation.active) mult = mult.pow(getNanofieldRewardEffect(5))
-	if (isBigRipUpgradeActive(1)) mult = mult.times(tmp.bru[0])
+	if (isBigRipUpgradeActive(1)) mult = mult.times(tmp.bru[1])
 
 	return mult
 }

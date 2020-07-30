@@ -1332,7 +1332,7 @@ function getDecayRate(branch) {
 	if (player.masterystudies.includes("t431")) ret = ret.times(getMTSMult(431))
 	if (player.ghostify.milestones>13) ret = ret.times(10)
 	if (hasNU(4)) ret = ret.times(tmp.nu[2])
-	if (tmp.qu.bigRip.active && isBigRipUpgradeActive(19)) ret = ret.times(tmp.bru[4])
+	if (tmp.qu.bigRip.active && isBigRipUpgradeActive(19)) ret = ret.times(tmp.bru[19])
 	return ret.min(Math.pow(2,40)).times(todspeed)
 }
 
@@ -1351,8 +1351,8 @@ function getQuarkSpinProduction(branch) {
 	if (hasNU(4)) ret=ret.times(tmp.nu[2].pow(2))
 	if (player.achievements.includes("ng3p74")) if (player.quantum.tod[branch].decays) ret = ret.times(1+player.quantum.tod[branch].decays)
 	if (tmp.qu.bigRip.active) {
-		if (isBigRipUpgradeActive(18)) ret = ret.times(tmp.bru[3])
-		if (isBigRipUpgradeActive(19)) ret = ret.times(tmp.bru[4])
+		if (isBigRipUpgradeActive(18)) ret = ret.times(tmp.bru[18])
+		if (isBigRipUpgradeActive(19)) ret = ret.times(tmp.bru[19])
 		if (hasNU(12)) ret = ret.times(tmp.nu[4].normal)
 	}
 	ret = ret.times(todspeed)
@@ -2304,73 +2304,82 @@ function buyBreakUpg(id) {
 	document.getElementById("eternalMatter").textContent = shortenDimensions(tmp.qu.breakEternity.eternalMatter)
 }
 
-function getBreakEterUpg1Mult(){
-	var log1 = player.eternityPoints.div("1e1280").add(1).log10()
-	var log2 = tmp.qu.breakEternity.eternalMatter.times(10).max(1).log10()
-	return Decimal.pow(10, Math.pow(log1, 1/3) * 0.5 + Math.pow(log2, 1/3)).max(1)
-}
+function updateBreakEternityUpgradesTemp() {
+	//Setup
+	var ep = player.eternityPoints
+	var ts = player.timeShards
+	var ss = tmp.qu.bigRip.spaceShards
+	var em = tmp.qu.breakEternity.eternalMatter
+	var nerfUpgs = !tmp.be && hasBosonicUpg(24)
 
-function getBreakEterUpg2Mult(){
-	var log = player.eternityPoints.div("1e1290").add(1).log10()
-	return Math.pow(Math.log10(log + 1) * 1.6 + 1, player.currentEternityChall == "eterc10" ? 1 : 2)
-}
+	//Upgrade 1
+	var log1 = ep.div("1e1280").add(1).log10()
+	var log2 = em.times(10).max(1).log10()
+	tmp.beu[1] = Decimal.pow(10, Math.pow(log1, 1/3) * 0.5 + Math.pow(log2, 1/3)).max(1)
 
-function getBreakEterUpg3Mult(){
-	var log = player.eternityPoints.div("1e1370").add(1).log10()
-	if (!tmp.be && hasBosonicUpg(24)) log /= 2e6
+	//Upgrade 2
+	var log = ep.div("1e1290").add(1).log10()
+	tmp.beu[2] = Math.pow(Math.log10(log + 1) * 1.6 + 1, player.currentEternityChall == "eterc10" ? 1 : 2)
+
+	//Upgrade 3
+	var log = ep.div("1e1370").add(1).log10()
+	if (nerfUpgs) log /= 2e6
 	var exp = Math.pow(log, 1/3) * 0.5
-	if (exp > 150) exp = 150 * Math.pow(exp/150,.5)
-	return Decimal.pow(10, exp)
-}
+	if (!tmp.ngp3l) exp = softcap(exp, "beu3_log")
+	tmp.beu[3] = Decimal.pow(10, exp)
 
-function getBreakEterUpg4Mult(){
-	var log1 = player.eternityPoints.div("1e1860").add(1).log10()
-	var log2 = tmp.qu.bigRip.spaceShards.div("7e19").add(1).log10()
+	//Upgrade 4
+	var log1 = ep.div("1e1860").add(1).log10()
+	var log2 = ss.div("7e19").add(1).log10()
 	var exp = Math.pow(log1, 1/3) + Math.pow(log2, 1/3) * 8
-	if (exp > 333) exp = 111*Math.log10(3*exp+1)
-	return Decimal.pow(10, exp)
-}
+	if (!tmp.ngp3l && exp > 333) exp = 111 * Math.log10(3 * exp + 1)
+	tmp.beu[4] = Decimal.pow(10, exp)
 
-function getBreakEterUpg5Mult(){
-	var log1 = player.eternityPoints.div("1e2230").add(1).log10()
-	var log2 = player.timeShards.div(1e90).add(1).log10()
-	var log = Math.pow(log1, 1/3) + Math.pow(log2, 1/3)
-	if (log > 100 && player.aarexModifications.ngudpV) log = Math.log10(log)*50
-	if (log > 999) log = 333*Math.log10(log+1)
-	return Decimal.pow(1e4, log)
-}
+	//Upgrade 5
+	var log1 = ep.div("1e2230").add(1).log10()
+	var log2 = ts.div(1e90).add(1).log10()
+	var exp = Math.pow(log1, 1/3) + Math.pow(log2, 1/3)
+	if (player.aarexModifications.ngudpV && exp > 100) exp = Math.log10(exp) * 50
+	if (!tmp.ngp3l && exp > 999) exp = 333 * Math.log10(exp + 1)
+	exp *= 4
+	tmp.beu[5] = Decimal.pow(10, exp)
 
-function getBreakEterUpg6Mult(){
-	var log1 = player.eternityPoints.div("1e4900").add(1).log10()
-	var log2 = tmp.qu.breakEternity.eternalMatter.div(1e45).add(1).log10()
-	if (!tmp.be && hasBosonicUpg(24)) log1 /= 2e6
+	//Upgrade 6
+	var log1 = ep.div("1e4900").add(1).log10()
+	var log2 = em.div(1e45).add(1).log10()
+	if (nerfUpgs) log1 /= 2e6
 	var exp = Math.pow(log1, 1/3) / 1.7 + Math.pow(log2, 1/3) * 2
-	if (exp > 200) exp = 50*Math.log10(50*exp)
-	return Decimal.pow(10, exp)
-}
+	if (!tmp.ngp3l && exp > 200) exp = 50 * Math.log10(50 * exp)
+	tmp.beu[6] = Decimal.pow(10, exp)
 
-function getBreakEterUpg8Mult(){
-	var effect=Math.log10(player.dilation.tachyonParticles.div(1e200).add(1).log10()/100+1)*3+1
-	if (effect > 2.2 && player.aarexModifications.ngudpV!==undefined) effect = 1.2 + Math.log10(effect+7.8)
-	if (effect > 3) effect = 1+Math.log2(effect+1)
-	if (effect > 10/3) effect = 7/3+Math.log10(3*effect)
-	return effect
-}
+	//Upgrade 7: EP Mult
+	tmp.beu[7] = Decimal.pow(1e9, tmp.qu.breakEternity.epMultPower)
 
-function getBreakEterUpg9Mult(){
-	var effect = tmp.qu.breakEternity.eternalMatter.div("1e335").add(1).pow(0.05*Math.log10(4))
-	if (effect.gte(Decimal.pow(10,18))) effect = Decimal.pow(effect.log10()*5+10,9)
-	if (effect.gte(Decimal.pow(10,100))) effect = Decimal.pow(Decimal.log10(effect),50)
-	return effect.toNumber()
-}
+	if (player.ghostify.wzb.unl) {
+		//Upgrade 8
+		var x = Math.log10(player.dilation.tachyonParticles.div(1e200).add(1).log10() / 100 + 1) * 3 + 1
+		if (player.aarexModifications.ngudpV && x > 2.2) x = 1.2 + Math.log10(x + 7.8)
+		if (!tmp.ngp3l) {
+			if (x > 3) x = 1 + Math.log2(x + 1)
+			if (x > 10/3) x = 7/3 + Math.log10(3 * x)
+		}
+		tmp.beu[8] = x
 
-function getBreakEterUpg10Mult(){
-	return Math.max(Math.log10(player.eternityPoints.add(1).log10()+1)-1,1)
+		//Upgrade 9
+		var x = em.div("1e335").add(1).pow(0.05 * Math.log10(4))
+		if (!tmp.ngp3l) {
+			if (x.gte(Decimal.pow(10,18))) x = Decimal.pow(x.log10() * 5 + 10, 9)
+			if (x.gte(Decimal.pow(10,100))) x = Decimal.pow(x.log10(), 50)
+		}
+		tmp.beu[9] = x.toNumber()
+
+		//Upgrade 10
+		tmp.beu[10] = Math.max(Math.log10(ep.add(1).log10() + 1) - 1, 1)
+	}
 }
 
 function getBreakUpgMult(id) {
-	if (id == 7) return Decimal.pow(1e9, tmp.qu.breakEternity.epMultPower)
-	return eval("getBreakEterUpg" + id + "Mult")()
+	return tmp.beu[id]
 }
 
 function maxBuyBEEPMult() {
@@ -4542,8 +4551,61 @@ function getTreeUpgradeEfficiency(mod) {
 	return r
 }
 
-function getBigRipUpg15Effect() {
+function updateBRU1Temp() {
+	let exp = tmp.qu.bigRip.upgrades.includes(17) ? (ghostified ? 3: 2.9) : 1
+	if (ghostified && player.ghostify.neutrinos.boosts > 7) exp *= tmp.nb[7]
+	let log = player.infinityPoints.max(1).log10() * exp
+	if (!tmp.ngp3l) log = softcap(log, "bru1_log")
+	tmp.bru[1] = Decimal.pow(10, log) //BRU1
+}
+
+function updateBRU8Temp() {
+	if (!tmp.qu.bigRip.active) {
+		tmp.bru[8] = 1
+		return
+	}
+	tmp.bru[8] = Decimal.pow(2,getTotalRG()) //BRU8
+	if (!hasNU(11)) tmp.bru[8]=tmp.bru[8].min(Number.MAX_VALUE)
+}
+
+function updateBRU14Temp() {
+	if (!tmp.qu.bigRip.active) {
+		tmp.bru[14] = 1
+		return
+	}
+	var ret = Math.min(tmp.qu.bigRip.spaceShards.div(3e18).add(1).log10()/3,0.4)
+	var val = Math.sqrt(tmp.qu.bigRip.spaceShards.div(3e15).add(1).log10()*ret+1)
+	if (val > 12) val = 10+Math.log10(4+8*val)
+	tmp.bru[14] = val //BRU14
+}
+
+function updateBRU15Temp() {
 	let r = Math.sqrt(player.eternityPoints.add(1).log10()) * 3.55
 	if (r > 1e4 && !tmp.ngp3l) r = Math.sqrt(r * 1e4)
-	return r
+	tmp.bru[15] = r
+}
+
+function updateBRU16Temp() {
+	tmp.bru[16] = player.dilation.dilatedTime.div(1e100).pow(0.155).max(1)
+}
+
+function updateBigRipUpgradesTemp(){
+	updateBRU1Temp()
+	updateBRU8Temp()
+	updateBRU14Temp()
+	updateBRU15Temp()
+	updateBRU16Temp()
+}
+
+function updatePhotonsUnlockedBRUpgrades(){
+	var bigRipUpg18base = 1+tmp.qu.bigRip.spaceShards.div(1e140).add(1).log10()
+	var bigRipUpg18exp = Math.max(tmp.qu.bigRip.spaceShards.div(1e140).add(1).log10()/10,1)
+	if (bigRipUpg18base > 10 && tmp.newNGP3E) bigRipUpg18base *= Math.log10(bigRipUpg18base)
+	if (bigRipUpg18exp > 16) bigRipUpg18exp = Math.pow(Math.log2(bigRipUpg18exp),2)
+	tmp.bru[18] = Decimal.pow(bigRipUpg18base,bigRipUpg18exp) //BRU18
+	
+	var bigRipUpg19exp = Math.sqrt(player.timeShards.add(1).log10())/(tmp.newNGP3E?60:80)
+	if (bigRipUpg19exp > 5 && !tmp.newNGP3E) bigRipUpg19exp = 4 + Math.log10(2*bigRipUpg19exp)
+	if (bigRipUpg19exp > 8)  bigRipUpg19exp = Math.log2(bigRipUpg19exp)*3-1
+	tmp.bru[19] = Decimal.pow(10,bigRipUpg19exp) //BRU19
 }

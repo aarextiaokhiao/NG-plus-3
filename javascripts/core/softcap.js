@@ -130,6 +130,13 @@ var softcap_data = {
 			add: -1
 		}
 	},
+	beu3_log: {
+		1: {
+			func: "pow",
+			start: 150,
+			pow: 0.5
+		}
+	},
 	inf_time_log_1: {
 		1: {
 			func: "pow",
@@ -246,13 +253,11 @@ function do_softcap(x, data, num) {
 	return softcap_funcs[func](x, data[vars[0]], data[vars[1]], data[vars[2]])
 }
 
-function softcap(x, id, raw) {
+function softcap(x, id) {
 	var data = softcap_data[id]
-	if (player.aarexModifications.newGame3PlusVersion) {
-		if (!raw && tmp.qu.bigRip.active) {
-			var big_rip_data = softcap_data[id + "_big_rip"]
-			if (big_rip_data !== undefined) data = big_rip_data
-		}
+	if (tmp.ngp3 && tmp.qu.bigRip.active) {
+		var big_rip_data = softcap_data[id + "_big_rip"]
+		if (big_rip_data !== undefined) data = big_rip_data
 	}
 
 	var sc = 1
