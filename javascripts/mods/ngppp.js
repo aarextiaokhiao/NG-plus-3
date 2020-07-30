@@ -350,6 +350,10 @@ function updateNanofieldTab(){
 	if (document.getElementById("antipreon").style.display == "block") updateNanofieldAntipreon()
 }
 
+function getLogTotalSpin(){
+	return player.quantum.tod.r.spin.plus(player.quantum.tod.b.spin).plus(player.quantum.tod.g.spin).log10()
+}
+
 function updateTreeOfDecayTab(){
 	var branchNum
 	var colors=["red","green","blue"]
@@ -382,12 +386,14 @@ function updateTreeOfDecayTab(){
 		}
 	} //for loop
 	if (!branchNum) {
+		var start = getLogTotalSpin() > 500 ? "":"Cost: "
+		var end = getLogTotalSpin() > 500 ? "": " quark spin"
 		for (var u=1;u<9;u++) {
 			var lvl=getTreeUpgradeLevel(u)
 			document.getElementById("treeupg"+u).className="gluonupgrade "+(canBuyTreeUpg(u)?shorthands[getTreeUpgradeLevel(u)%3]:"unavailablebtn")
 			document.getElementById("treeupg"+u+"current").textContent=getTreeUpgradeEffectDesc(u)
 			document.getElementById("treeupg"+u+"lvl").textContent=getFullExpansion(lvl)+(tmp.tue>1?" -> "+getFullExpansion(Math.floor(lvl*tmp.tue)):"")
-			document.getElementById("treeupg"+u+"cost").textContent=shortenMoney(getTreeUpgradeCost(u))+" "+colors[lvl%3]
+			document.getElementById("treeupg"+u+"cost").textContent=start+shortenMoney(getTreeUpgradeCost(u))+" "+colors[lvl%3]+end
 		}
 		setAndMaybeShow("treeUpgradeEff",ghostified,'"Tree upgrade efficiency: "+(tmp.tue*100).toFixed(1)+"%"')
 	}
