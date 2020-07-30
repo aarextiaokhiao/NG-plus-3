@@ -90,326 +90,8 @@ function doNGPlusTwoNewPlayer(){
         tmp.qu=player.quantum
 }
 
-function updateNewPlayer(reseted) {
-	if (reseted) {
-		var modesChosen = {
-			ngm: player.aarexModifications.newGameMinusVersion !== undefined,
-			ngp: player.aarexModifications.ngp4V !== undefined ? 2 : player.aarexModifications.newGamePlusVersion !== undefined ? 1 : 0,
-			arrows: player.aarexModifications.newGameExpVersion !== undefined,
-			ngpp: player.meta == undefined ? false : player.aarexModifications.ngp3lV ? 3 : tmp.ngp3 ? 2 : 1,
-			ngmm: player.aarexModifications.ngmX ? player.aarexModifications.ngmX - 1 : player.galacticSacrifice !== undefined ? 1 : 0,
-			rs: player.infinityUpgradesRespecced != undefined ? 2 : player.boughtDims !== undefined,
-			ngud: player.aarexModifications.nguspV !== undefined ? 3 : player.aarexModifications.ngudpV !== undefined ? 2 : player.exdilation !== undefined ? 1 : 0,
-			nguep: player.aarexModifications.nguepV !== undefined,
-			ngmu: player.aarexModifications.newGameMult === 1,
-			ngumu: player.aarexModifications.ngumuV !== undefined,
-			ngex: player.aarexModifications.ngexV !== undefined,
-			aau: player.aarexModifications.aau !== undefined
-		}
-	} 
-	else var modesChosen = modes
-    player = {
-        money: new Decimal(modesChosen.ngmm>2?200:modesChosen.ngp>1?20:10),
-        tickSpeedCost: new Decimal(1000),
-        tickspeed: new Decimal(modesChosen.ngp>1?500:1000),
-        firstCost: new Decimal(10),
-        secondCost: new Decimal(100),
-        thirdCost: new Decimal(10000),
-        fourthCost: new Decimal(1000000),
-        fifthCost: new Decimal(1e9),
-        sixthCost: new Decimal(1e13),
-        seventhCost: new Decimal(1e18),
-        eightCost: new Decimal(1e24),
-        firstAmount: new Decimal(0),
-        secondAmount: new Decimal(0),
-        thirdAmount: new Decimal(0),
-        fourthAmount: new Decimal(0),
-        firstBought: modesChosen.ngm ? 5 : 0,
-        secondBought: 0,
-        thirdBought: 0,
-        fourthBought: 0,
-        fifthAmount: new Decimal(0),
-        sixthAmount: new Decimal(0),
-        seventhAmount: new Decimal(0),
-        eightAmount: new Decimal(0),
-        fifthBought: 0,
-        sixthBought: 0,
-        seventhBought: 0,
-        eightBought: 0,
-        firstPow: new Decimal(modesChosen.ngm ? 0.1 : 1),
-        secondPow: new Decimal(1),
-        thirdPow: new Decimal(1),
-        fourthPow: new Decimal(1),
-        fifthPow: new Decimal(1),
-        sixthPow: new Decimal(1),
-        seventhPow: new Decimal(1),
-        eightPow: new Decimal(1),
-        sacrificed: new Decimal(0),
-        achievements: [],
-        infinityUpgrades: [],
-        challenges: [],
-        currentChallenge: "",
-        infinityPoints: new Decimal(0),
-        infinitied: modesChosen.ngm ? 990 : modesChosen.ngp%2>0 ? 1 : 0,
-        infinitiedBank: modesChosen.ngm ? -1000 : 0,
-        totalTimePlayed: 0,
-        bestInfinityTime: 9999999999,
-        thisInfinityTime: 0,
-        resets: 0,
-        galaxies: modesChosen.ngm ? -1 : 0,
-        totalmoney: new Decimal(0),
-        achPow: 1,
-        newsArray: [],
-        interval: null,
-        lastUpdate: new Date().getTime(),
-        autobuyers: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12],
-        costMultipliers: [new Decimal(1e3), new Decimal(1e4), new Decimal(1e5), new Decimal(1e6), new Decimal(1e8), new Decimal(1e10), new Decimal(1e12), new Decimal(1e15)],
-        tickspeedMultiplier: new Decimal(10),
-        chall2Pow: 1,
-        chall3Pow: new Decimal(0.01),
-        matter: new Decimal(0),
-        chall11Pow: new Decimal(1),
-        partInfinityPoint: modesChosen.ngm ? -1e300 : 0,
-        partInfinitied: modesChosen.ngm ? -1e8 : 0,
-        break: false,
-        challengeTimes: [600*60*24*31, 600*60*24*31, 600*60*24*31, 600*60*24*31, 600*60*24*31, 600*60*24*31, 600*60*24*31, 600*60*24*31, 600*60*24*31, 600*60*24*31, 600*60*24*31],
-        infchallengeTimes: [600*60*24*31, 600*60*24*31, 600*60*24*31, 600*60*24*31, 600*60*24*31, 600*60*24*31, 600*60*24*31, 600*60*24*31],
-        lastTenRuns: [[600*60*24*31, 0], [600*60*24*31, 0], [600*60*24*31, 0], [600*60*24*31, 0], [600*60*24*31, 0], [600*60*24*31, 0], [600*60*24*31, 0], [600*60*24*31, 0], [600*60*24*31, 0], [600*60*24*31, 0]],
-        lastTenEternities: [[600*60*24*31, 0], [600*60*24*31, 0], [600*60*24*31, 0], [600*60*24*31, 0], [600*60*24*31, 0], [600*60*24*31, 0], [600*60*24*31, 0], [600*60*24*31, 0], [600*60*24*31, 0], [600*60*24*31, 0]],
-        infMult: new Decimal(modesChosen.ngm ? 0.5 : 1),
-        infMultCost: new Decimal(modesChosen.ngm ? 30 : 10),
-        tickSpeedMultDecrease: 10,
-        tickSpeedMultDecreaseCost: 3e6,
-        dimensionMultDecrease: modesChosen.ngm ? 11 : 10,
-        dimensionMultDecreaseCost: 1e8,
-        overXGalaxies: 10,
-        version: 10,
-        infDimensionsUnlocked: [],
-        infinityPower: new Decimal(1),
-        spreadingCancer: modesChosen.ngm ? -9990 : 0,
-        postChallUnlocked: 0,
-        postC4Tier: 0,
-        postC3Reward: new Decimal(1),
-        postC8Mult: new Decimal(1),
-        eternityPoints: new Decimal(0),
-        eternities: modesChosen.ngm ? -20 : 0,
-        thisEternity: 0,
-        bestEternity: 9999999999,
-        eternityUpgrades: [],
-        epmult: new Decimal(1),
-        epmultCost: new Decimal(500),
-        infinityDimension1 : {
-            cost: new Decimal(1e8),
-            amount: new Decimal(0),
-            bought: 0,
-            power: new Decimal(1),
-            baseAmount: 0
-        },
-        infinityDimension2 : {
-            cost: new Decimal(1e9),
-            amount: new Decimal(0),
-            bought: 0,
-            power: new Decimal(1),
-            baseAmount: 0
-        },
-        infinityDimension3 : {
-            cost: new Decimal(1e10),
-            amount: new Decimal(0),
-            bought: 0,
-            power: new Decimal(1),
-            baseAmount: 0
-        },
-        infinityDimension4 : {
-            cost: new Decimal(1e20),
-            amount: new Decimal(0),
-            bought: 0,
-            power: new Decimal(modesChosen.ngm ? 0.0000125 : 1),
-            baseAmount: 0
-        },
-        infinityDimension5 : {
-            cost: new Decimal(1e140),
-            amount: new Decimal(0),
-            bought: 0,
-            power: new Decimal(modesChosen.ngm ? 0.01 : 1),
-            baseAmount: 0
-        },
-        infinityDimension6 : {
-            cost: new Decimal(1e200),
-            amount: new Decimal(0),
-            bought: 0,
-            power: new Decimal(modesChosen.ngm ? 0.015 : 1),
-            baseAmount: 0
-        },
-        infinityDimension7 : {
-            cost: new Decimal(1e250),
-            amount: new Decimal(0),
-            bought: 0,
-            power: new Decimal(modesChosen.ngm ? 0.01 : 1),
-            baseAmount: 0
-        },
-        infinityDimension8 : {
-            cost: new Decimal(1e280),
-            amount: new Decimal(0),
-            bought: 0,
-            power: new Decimal(modesChosen.ngm ? 0.01 : 1),
-            baseAmount: 0
-        },
-        infDimBuyers: [false, false, false, false, false, false, false, false],
-        timeShards: new Decimal(0),
-        tickThreshold: new Decimal(1),
-        totalTickGained: 0,
-        timeDimension1: {
-            cost: new Decimal(1),
-            amount: new Decimal(0),
-            power: new Decimal(modesChosen.ngm ? 0.01 : 1),
-            bought: 0
-        },
-        timeDimension2: {
-            cost: new Decimal(5),
-            amount: new Decimal(0),
-            power: new Decimal(modesChosen.ngm ? 0.03 : 1),
-            bought: 0
-        },
-        timeDimension3: {
-            cost: new Decimal(100),
-            amount: new Decimal(0),
-            power: new Decimal(modesChosen.ngm ? 0.025 : 1),
-            bought: 0
-        },
-        timeDimension4: {
-            cost: new Decimal(1000),
-            amount: new Decimal(0),
-            power: new Decimal(modesChosen.ngm ? 0.02 : 1),
-            bought: 0
-        },
-        timeDimension5: {
-            cost: new Decimal("1e2350"),
-            amount: new Decimal(0),
-            power: new Decimal(modesChosen.ngm ? 1e-5 : 1),
-            bought: 0
-        },
-        timeDimension6: {
-            cost: new Decimal("1e2650"),
-            amount: new Decimal(0),
-            power: new Decimal(modesChosen.ngm ? 5e-6 : 1),
-            bought: 0
-        },
-        timeDimension7: {
-            cost: new Decimal("1e3000"),
-            amount: new Decimal(0),
-            power: new Decimal(modesChosen.ngm ? 3e-6 : 1),
-            bought: 0
-        },
-        timeDimension8: {
-            cost: new Decimal("1e3350"),
-            amount: new Decimal(0),
-            power: new Decimal(modesChosen.ngm ? 2e-6 : 1),
-            bought: 0
-        },
-        offlineProd: 0,
-        offlineProdCost: modesChosen.ngm ? 5e11 : 1e7,
-        challengeTarget: 0,
-        autoSacrifice: 1,
-        replicanti: {
-            amount: new Decimal(0),
-            unl: false,
-            chance: 0.01,
-            chanceCost: new Decimal(modesChosen.ngmm?1e90:1e150),
-            interval: modesChosen.ngm ? 5000 : 1000,
-            intervalCost: new Decimal(modesChosen.ngmm?1e80:modesChosen.rs==1?1e150:1e140),
-            gal: 0,
-            galaxies: 0,
-            galCost: new Decimal(modesChosen.ngmm?1e110:1e170),
-            auto: [false, false, false]
-        },
-        timestudy: {
-            theorem: modesChosen.ngm ? -6 : 0,
-            amcost: new Decimal("1e20000"),
-            ipcost: new Decimal(modesChosen.ngm ? 1e-13 : 1),
-            epcost: new Decimal(1),
-            studies: [],
-        },
-        eternityChalls: modesChosen.ngm ? {eterc1:-6} : {},
-        eternityChallGoal: new Decimal(Number.MAX_VALUE),
-        currentEternityChall: "",
-        eternityChallUnlocked: 0,
-        etercreq: 0,
-        autoIP: new Decimal(0),
-        autoTime: 1e300,
-        infMultBuyer: false,
-        autoCrunchMode: "amount",
-        respec: false,
-        eternityBuyer: {
-            limit: new Decimal(0),
-            isOn: false
-        },
-        eterc8ids: 50,
-        eterc8repl: 40,
-        dimlife: true,
-        dead: true,
-        dilation: {
-            studies: [],
-            active: false,
-            tachyonParticles: new Decimal(0),
-            dilatedTime: new Decimal(0),
-            totalTachyonParticles: new Decimal(modesChosen.ngm ? 2000 :0),
-            nextThreshold: new Decimal(1000),
-            freeGalaxies: 0,
-            upgrades: [],
-            rebuyables: {
-                1: 0,
-                2: modesChosen.ngm ? 1 : 0,
-                3: 0,
-            }
-        },
-        why: 0,
-        shameLevel: 0,
-        options: {
-            newsHidden: true,
-            notation: "Scientific",
-            scientific: false,
-            challConf: true,
-            sacrificeConfirmation: true,
-            retryChallenge: false,
-            bulkOn: true,
-            cloud: true,
-            hotkeys: true,
-            theme: undefined,
-            secretThemeKey: 0,
-            eternityconfirm: true,
-            commas: "Commas",
-            updateRate: 50,
-            hideProductionTab: false,
-            chart: {
-                updateRate: 1000,
-                duration: 10,
-                warning: 0,
-            },
-            animations: {
-                floatingText: true,
-                bigCrunch: true,
-                eternity: true,
-                tachyonParticles: true,
-            }
-        },
-        aarexModifications: {
-            dilationConf: false,
-            offlineProgress: true,
-            autoSave: true,
-            progressBar: true,
-            logRateChange: false,
-            hideProductionTab: false,
-            eternityChallRecords: {},
-            popUpId: 0,
-            tabsSave: {on: false},
-            breakInfinity: false
-        }
-    }
-	if (modesChosen.ngm) doNGMinusNewPlayer()
-	if (modesChosen.ngp) doNGPlusOneNewPlayer()
-	if (modesChosen.ngpp) doNGPlusTwoNewPlayer()
-	if (modesChosen.ngmm) {
-        player.aarexModifications.newGameMinusMinusVersion = 2.41
+function doNGMinusTwoNewPlayer(){
+	player.aarexModifications.newGameMinusMinusVersion = 2.41
         player.galacticSacrifice = {}
         player.galacticSacrifice = resetGalacticSacrifice()
         player.totalBoughtDims = {}
@@ -422,9 +104,10 @@ function updateNewPlayer(reseted) {
         player.infchallengeTimes.push(600*60*24*31)
         player.infchallengeTimes.push(600*60*24*31)
         player.options.gSacrificeConfirmation = true
-    }
-    if (modesChosen.ngpp>1) {
-        player.aarexModifications.newGame3PlusVersion = 2.21
+}
+
+function doNGPlusThreeNewPlayer(){
+	player.aarexModifications.newGame3PlusVersion = 2.21
 	document.getElementById("quantumison").checked = false
         player.respecMastery=false
         player.dbPower = 1
@@ -435,19 +118,19 @@ function updateNewPlayer(reseted) {
         player.options.animations.quarks = true
         player.meta.bestOverQuantums = 0
         tmp.qu.usedQuarks = {
-            r: 0,
-            g: 0,
-            b: 0
+		r: 0,
+		g: 0,
+		b: 0
         }
         tmp.qu.colorPowers = {
-            r: 0,
-            g: 0,
-            b: 0
+		r: 0,
+		g: 0,
+		b: 0
         }
-        tmp.qu.gluons = {
-            rg: 0,
-            gb: 0,
-            br: 0
+	tmp.qu.gluons = {
+		rg: 0,
+		gb: 0,
+		br: 0
         }
         player.eternityBuyer.dilationMode = false
         player.eternityBuyer.statBeforeDilation = 0
@@ -459,16 +142,16 @@ function updateNewPlayer(reseted) {
         player.eternityBuyer.ifAD = false
         player.eternityBuyer.presets = {on: false, autoDil: false, selected: -1, selectNext: 0, left: 1, order: []}
         tmp.qu.autobuyer = {
-            enabled: false,
-            limit: 1,
-            mode: "amount",
-            peakTime: 0
+		enabled: false,
+		limit: 1,
+		mode: "amount",
+		peakTime: 0
         }
         tmp.qu.electrons = {
-            amount: 0,
-            sacGals: 0,
-            mult: 2,
-            rebuyables: [0,0,0,0]
+		amount: 0,
+		sacGals: 0,
+		mult: 2,
+		rebuyables: [0,0,0,0]
         }
         tmp.qu.disabledRewards = {}
         tmp.qu.metaAutobuyerWait = 0
@@ -479,12 +162,12 @@ function updateNewPlayer(reseted) {
         tmp.qu.nonMAGoalReached = []
         tmp.qu.challengeRecords = {}
         tmp.qu.pairedChallenges = {
-            order: {},
-            current: 0,
-            completed: 0,
-            fastest: {},
-            pc68best: 0,
-            respec: false
+		order: {},
+		current: 0,
+		completed: 0,
+		fastest: {},
+		pc68best: 0,
+		respec: false
         }
         tmp.qu.qcsNoDil = {}
         tmp.qu.qcsMods = {current:[]}
@@ -492,155 +175,157 @@ function updateNewPlayer(reseted) {
         player.old = true
         tmp.qu.autoOptions = {}
         tmp.qu.replicants = {
-            amount: 0,
-            requirement: "1e3000000",
-            quarks: 0,
-            quantumFood: 0,
-            quantumFoodCost: 2e46,
-            limit: 1,
-            limitDim: 1,
-            limitCost: 1e49,
-            eggonProgress: 0,
-            eggons: 0,
-            hatchSpeed: 20,
-            hatchSpeedCost: 1e49,
-            babyProgress: 0,
-            babies: 0,
-            ageProgress: 0
+		amount: 0,
+		requirement: "1e3000000",
+		quarks: 0,
+		quantumFood: 0,
+		quantumFoodCost: 2e46,
+		limit: 1,
+		limitDim: 1,
+		limitCost: 1e49,
+		eggonProgress: 0,
+		eggons: 0,
+		hatchSpeed: 20,
+		hatchSpeedCost: 1e49,
+		babyProgress: 0,
+		babies: 0,
+		ageProgress: 0
         }
         tmp.qu.emperorDimensions = {}
         for (d=1;d<9;d++) tmp.qu.emperorDimensions[d] = {workers: 0, progress: 0, perm: 0}
         player.dontWant = false
         tmp.qu.nanofield = {
-            charge: 0,
-            energy: 0,
-            antienergy: 0,
-            power: 0,
-            powerThreshold: 50,
-            rewards: 0,
-            producingCharge: false
+		charge: 0,
+		energy: 0,
+		antienergy: 0,
+		power: 0,
+		powerThreshold: 50,
+		rewards: 0,
+		producingCharge: false
         }
         tmp.qu.autoAssign = false
         tmp.qu.reachedInfQK = false
         tmp.qu.assignAllRatios = {
-            r: 1,
-            g: 1,
-            b: 1
+		r: 1,
+		g: 1,
+		b: 1
         }
         tmp.qu.notrelative = false
         tmp.qu.wasted = false
         tmp.qu.tod = {
-            r: {
-                quarks: 0,
-                spin: 0,
-                upgrades: {}
-            },
-            g: {
-                quarks: 0,
-                spin: 0,
-                upgrades: {}
-            },
-            b: {
-                quarks: 0,
-                spin: 0,
-                upgrades: {}
-            },
-            upgrades: {}
+		r: {
+			quarks: 0,
+			spin: 0,
+			upgrades: {}
+		},
+		g: {
+			quarks: 0,
+			spin: 0,
+			upgrades: {}
+		},
+		b: {
+			quarks: 0,
+			spin: 0,
+			upgrades: {}
+		},
+		upgrades: {}
         }
         tmp.qu.bigRip = {
-            active: false,
-            conf: true,
-            times: 0,
-            bestThisRun: 0,
-            totalAntimatter: 0,
-            savedAutobuyersNoBR: {},
-            savedAutobuyersBR: {},
-            spaceShards: 0,
-            upgrades: []
+		active: false,
+		conf: true,
+		times: 0,
+		bestThisRun: 0,
+		totalAntimatter: 0,
+		savedAutobuyersNoBR: {},
+		savedAutobuyersBR: {},
+		spaceShards: 0,
+		upgrades: []
         }
         tmp.qu.breakEternity = {
-            unlocked: false,
-            break: false,
-            eternalMatter: 0,
-            upgrades: [],
-            epMultPower: 0
+		unlocked: false,
+		break: false,
+		eternalMatter: 0,
+		upgrades: [],
+		epMultPower: 0
         }
         player.dilation.bestTPOverGhostifies = 0
         player.meta.bestOverGhostifies = 0
         player.ghostify = {
-            reached: false,
-            times: 0,
-            time: 0,
-            best: 9999999999,
-            last10: [[600*60*24*31, 0], [600*60*24*31, 0], [600*60*24*31, 0], [600*60*24*31, 0], [600*60*24*31, 0], [600*60*24*31, 0], [600*60*24*31, 0], [600*60*24*31, 0], [600*60*24*31, 0], [600*60*24*31, 0]],
-            milestones: 0,
-            disabledRewards: {},
-            ghostParticles: 0,
-            multPower: 1,
-            neutrinos: {
-                electron: 0,
-                mu: 0,
-                tau: 0,
-                generationGain: 1,
-                boosts: 0,
-                multPower: 1,
-                upgrades: []
-            },
-            automatorGhosts: setupAutomaticGhostsData(),
-            ghostlyPhotons: {
-                unl: false,
-                amount: 0,
-                ghostlyRays: 0,
-                darkMatter: 0,
-                lights: [0,0,0,0,0,0,0,0],
-                maxRed: 0,
-                enpowerments: 0
-            },
-            bl: {
-                watt: 0,
-                speed: 1,
-                ticks: 0,
-                am: 0,
-                typeToExtract: 1,
-                extracting: false,
-                extractProgress: 0,
-                autoExtract: 0,
-                glyphs: [],
-                enchants: {},
-                usedEnchants: [],
-                upgrades: [],
-                battery: 0,
-                odSpeed: 1
-            },
-            wzb: {
-                unl: false,
-                dP: 0,
-                dPUse: 0,
-                wQkUp: true,
-                wQkProgress: 0,
-                zNeGen: 1,
-                zNeProgress: 0,
-                zNeReq: 1,
-                wpb: 0,
-                wnb: 0,
-                zb: 0
-            }
-        }
+            	reached: false,
+            	times: 0,
+            	time: 0,
+            	best: 9999999999,
+           	last10: [[600*60*24*31, 0], [600*60*24*31, 0], [600*60*24*31, 0], [600*60*24*31, 0], [600*60*24*31, 0], [600*60*24*31, 0], [600*60*24*31, 0], [600*60*24*31, 0], [600*60*24*31, 0], [600*60*24*31, 0]],
+            	milestones: 0,
+            	disabledRewards: {},
+            	ghostParticles: 0,
+            	multPower: 1,
+            	neutrinos: {
+                	electron: 0,
+                	mu: 0,
+                	tau: 0,
+                	generationGain: 1,
+                	boosts: 0,
+                	multPower: 1,
+                	upgrades: []
+		},
+		automatorGhosts: setupAutomaticGhostsData(),
+		ghostlyPhotons: {
+                	unl: false,
+                	amount: 0,
+                	ghostlyRays: 0,
+                	darkMatter: 0,
+                	lights: [0,0,0,0,0,0,0,0],
+                	maxRed: 0,
+                	enpowerments: 0
+		},
+            	bl: {
+                	watt: 0,
+                	speed: 1,
+                	ticks: 0,
+                	am: 0,
+                	typeToExtract: 1,
+                	extracting: false,
+                	extractProgress: 0,
+                	autoExtract: 0,
+                	glyphs: [],
+                	enchants: {},
+                	usedEnchants: [],
+                	upgrades: [],
+                	battery: 0,
+                	odSpeed: 1
+		},
+		wzb: {
+                	unl: false,
+                	dP: 0,
+                	dPUse: 0,
+                	wQkUp: true,
+                	wQkProgress: 0,
+                	zNeGen: 1,
+                	zNeProgress: 0,
+                	zNeReq: 1,
+                	wpb: 0,
+                	wnb: 0,
+                	zb: 0
+		}
+	}
         tmp.bl=player.ghostify.bl
         for (var g=1;g<br.names.length;g++) tmp.bl.glyphs.push(0)
         player.options.animations.ghostify = true
         player.aarexModifications.ghostifyConf = true
-    }
-    if (modesChosen.rs==1) {
-        player.aarexModifications.ersVersion = 1.02
+}
+
+function doEternityRespeccedNewPlayer(){
+	player.aarexModifications.ersVersion = 1.02
         player.boughtDims = []
         player.replicanti.limit = Number.MAX_VALUE
         player.replicanti.newLimit = Number.MAX_VALUE
         player.timestudy.ers_studies = [null, 0, 0, 0, 0, 0, 0]
         player.timestudy.studyGroupsUnlocked = 0
-    }
-    if (modesChosen.ngmm>1) {
-        player.aarexModifications.newGame3MinusVersion = 3.201
+}
+
+function doNGMinusThreeNewPlayer(){
+	player.aarexModifications.newGame3MinusVersion = 3.201
         player.aarexModifications.ngmX=3
         player.tickspeedBoosts = 0
         player.autobuyers[13]=14
@@ -650,59 +335,63 @@ function updateNewPlayer(reseted) {
         player.infchallengeTimes.push(600*60*24*31)
         player.infchallengeTimes.push(600*60*24*31)
         player.overXGalaxiesTickspeedBoost=10
-    }
-    if (modesChosen.arrows) {
-        player.aarexModifications.newGameExpVersion = 1.11
+}
+
+function doNGEXPNewPlayer(){
+	player.aarexModifications.newGameExpVersion = 1.11
         for (u=1;u<5;u++) player.infinityUpgrades.push("skipReset"+(u>3?"Galaxy":u))
         player.resets=4
-    }
-    if (modesChosen.ngud) {
-        player.aarexModifications.newGameUpdateVersion = 1.1
+}
+
+function doNGUDNewPlayer(){
+	player.aarexModifications.newGameUpdateVersion = 1.1
         player.exdilation = {
-            unspent: 0,
-            spent: {
-                1: 0,
-                2: 0,
-                3: 0
-            },
-            times: 0
+            	unspent: 0,
+            	spent: {
+                	1: 0,
+                	2: 0,
+                	3: 0
+            	},
+            	times: 0
         }
         player.blackhole = {
-            unl: false,
-            upgrades: {dilatedTime: 0, bankedInfinities: 0, replicanti: 0, total: 0},
-            power: 0
+            	unl: false,
+            	upgrades: {dilatedTime: 0, bankedInfinities: 0, replicanti: 0, total: 0},
+            	power: 0
         }
         for (var d=1;d<5;d++) player["blackholeDimension"+d] = {
-            cost: blackholeDimStartCosts[d],
-            amount: 0,
-            power: 1,
-            bought: 0
+            	cost: blackholeDimStartCosts[d],
+            	amount: 0,
+            	power: 1,
+            	bought: 0
         }
         player.options.animations.blackHole = true
         player.options.exdilationconfirm = true
-    }
-    if (modesChosen.rs==2) {
-        player.aarexModifications.irsVersion = 1.1
+}
+
+function doInfinityRespeccedNewPlayer(){
+	player.aarexModifications.irsVersion = 1.1
         player.infinityUpgradesRespecced = {1: 0, 3: 0, 4: 0, 5: 0, 6: 0}
         player.singularity = {
-            unlocked: false,
-            upgraded: 0,
-            sacrificed: 0,
-            singularityPower: 0,
-            darkMatter: 0
+            	unlocked: false,
+            	upgraded: 0,
+            	sacrificed: 0,
+            	singularityPower: 0,
+            	darkMatter: 0
         }
         player.dimtechs = {
-            unlocked: false,
-            discounts: 0,
-            tickUpgrades: 0,
-            respec: false
+            	unlocked: false,
+            	discounts: 0,
+            	tickUpgrades: 0,
+            	respec: false
         }
         for (dim=1;dim<9;dim++) player.dimtechs["dim"+dim+"Upgrades"] = 0
         player.setsUnlocked = 0
         player.infMultCost = 1
-    }
-    if (modesChosen.ngp>1) {
-        player.eternities=1e13
+}
+
+function doNGPlusFourPlayer(){
+	player.eternities=1e13
         for (var c=13;c<15;c++) player.eternityChalls["eterc"+c]=5
         player.dilation.studies=[1,2,3,4,5,6]
         player.dilation.dilatedTime=1e100
@@ -727,44 +416,380 @@ function updateNewPlayer(reseted) {
         player.achievements.push("ng3p37")
         player.achievements.push("ng3p47")
         player.aarexModifications.ngp4V=1
-    }
-    if (modesChosen.ngud==2) player.aarexModifications.ngudpV=1.12
-    if (modesChosen.ngud==3) {
-        for (var d=5;d<9;d++) player["blackholeDimension"+d] = {
-            cost: blackholeDimStartCosts[d],
-            amount: 0,
-            power: 1,
-            bought: 0
+}
+
+function doNGUDSemiprimePlayer(){
+	for (var d=5;d<9;d++) player["blackholeDimension"+d] = {
+            	cost: blackholeDimStartCosts[d],
+            	amount: 0,
+            	power: 1,
+            	bought: 0
         }
         player.aarexModifications.nguspV=1
-    }
-    if (modesChosen.nguep) player.aarexModifications.nguepV=1.03
-    if (modesChosen.ngmm>2) {
-        player.aarexModifications.newGame4MinusVersion=2.111
+}
+
+function doNGMinusFourPlayer(){
+	player.aarexModifications.newGame4MinusVersion=2.111
         player.aarexModifications.ngmX=4
         player.tdBoosts=0
         player.challengeTimes.push(600*60*24*31)
         player.autobuyers.push(15)
         resetTDs()
         reduceDimCosts()
-    }
-    if (modesChosen.ngmm>3) {
-        player.aarexModifications.ngm5V=0.52
+}
+
+function doNGMinusFivePlayer(){
+	player.aarexModifications.ngm5V=0.52
         player.aarexModifications.ngmX=5
         resetPSac()
         resetIDs_ngm5()
-    }
-	if (modesChosen.ngmu) {
-		player.aarexModifications.newGameMult=1
-		player.infMult=256
-		player.eternities=100
-		player.replicanti.unl=true
-		player.replicanti.amount=new Decimal(1)
+}
+
+function doNGMultipliedPlayer(){
+	player.aarexModifications.newGameMult=1
+	player.infMult=256
+	player.eternities=100
+	player.replicanti.unl=true
+	player.replicanti.amount=new Decimal(1)
+}
+
+function updateNewPlayer(reseted) {
+	if (reseted) {
+		var modesChosen = {
+			ngm: player.aarexModifications.newGameMinusVersion !== undefined,
+			ngp: player.aarexModifications.ngp4V !== undefined ? 2 : player.aarexModifications.newGamePlusVersion !== undefined ? 1 : 0,
+			arrows: player.aarexModifications.newGameExpVersion !== undefined,
+			ngpp: player.meta == undefined ? false : player.aarexModifications.ngp3lV ? 3 : tmp.ngp3 ? 2 : 1,
+			ngmm: player.aarexModifications.ngmX ? player.aarexModifications.ngmX - 1 : player.galacticSacrifice !== undefined ? 1 : 0,
+			rs: player.infinityUpgradesRespecced != undefined ? 2 : player.boughtDims !== undefined,
+			ngud: player.aarexModifications.nguspV !== undefined ? 3 : player.aarexModifications.ngudpV !== undefined ? 2 : player.exdilation !== undefined ? 1 : 0,
+			nguep: player.aarexModifications.nguepV !== undefined,
+			ngmu: player.aarexModifications.newGameMult === 1,
+			ngumu: player.aarexModifications.ngumuV !== undefined,
+			ngex: player.aarexModifications.ngexV !== undefined,
+			aau: player.aarexModifications.aau !== undefined
+		}
+	} 
+	else var modesChosen = modes
+	player = {
+        	money: new Decimal(modesChosen.ngmm>2?200:modesChosen.ngp>1?20:10),
+        	tickSpeedCost: new Decimal(1000),
+        	tickspeed: new Decimal(modesChosen.ngp>1?500:1000),
+        	firstCost: new Decimal(10),
+        	secondCost: new Decimal(100),
+        	thirdCost: new Decimal(10000),
+        	fourthCost: new Decimal(1000000),
+        	fifthCost: new Decimal(1e9),
+        	sixthCost: new Decimal(1e13),
+        	seventhCost: new Decimal(1e18),
+        	eightCost: new Decimal(1e24),
+		
+        	firstAmount: new Decimal(0),
+        	secondAmount: new Decimal(0),
+        	thirdAmount: new Decimal(0),
+        	fourthAmount: new Decimal(0),
+        	firstBought: modesChosen.ngm ? 5 : 0,
+        	secondBought: 0,
+        	thirdBought: 0,
+        	fourthBought: 0,
+        	fifthAmount: new Decimal(0),
+        	sixthAmount: new Decimal(0),
+        	seventhAmount: new Decimal(0),
+        	eightAmount: new Decimal(0),
+        	fifthBought: 0,
+        	sixthBought: 0,
+        	seventhBought: 0,
+        	eightBought: 0,
+        	firstPow: new Decimal(modesChosen.ngm ? 0.1 : 1),
+        	secondPow: new Decimal(1),
+        	thirdPow: new Decimal(1),
+        	fourthPow: new Decimal(1),
+        	fifthPow: new Decimal(1),
+        	sixthPow: new Decimal(1),
+        	seventhPow: new Decimal(1),
+        	eightPow: new Decimal(1),
+        	sacrificed: new Decimal(0),
+        	achievements: [],
+        	infinityUpgrades: [],
+        	challenges: [],
+        	currentChallenge: "",
+        	infinityPoints: new Decimal(0),
+        	infinitied: modesChosen.ngm ? 990 : modesChosen.ngp%2>0 ? 1 : 0,
+        	infinitiedBank: modesChosen.ngm ? -1000 : 0,
+        	totalTimePlayed: 0,
+        	bestInfinityTime: 9999999999,
+        	thisInfinityTime: 0,
+        	resets: 0,
+        	galaxies: modesChosen.ngm ? -1 : 0,
+        	totalmoney: new Decimal(0),
+        	achPow: 1,
+        	newsArray: [],
+        	interval: null,
+        	lastUpdate: new Date().getTime(),
+        	autobuyers: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12],
+        	costMultipliers: [new Decimal(1e3), new Decimal(1e4), new Decimal(1e5), new Decimal(1e6), new Decimal(1e8), new Decimal(1e10), new Decimal(1e12), new Decimal(1e15)],
+        	tickspeedMultiplier: new Decimal(10),
+        	chall2Pow: 1,
+        	chall3Pow: new Decimal(0.01),
+        	matter: new Decimal(0),
+        	chall11Pow: new Decimal(1),
+        	partInfinityPoint: modesChosen.ngm ? -1e300 : 0,
+        	partInfinitied: modesChosen.ngm ? -1e8 : 0,
+        	break: false,
+        	challengeTimes: [600*60*24*31, 600*60*24*31, 600*60*24*31, 600*60*24*31, 600*60*24*31, 600*60*24*31, 600*60*24*31, 600*60*24*31, 600*60*24*31, 600*60*24*31, 600*60*24*31],
+        	infchallengeTimes: [600*60*24*31, 600*60*24*31, 600*60*24*31, 600*60*24*31, 600*60*24*31, 600*60*24*31, 600*60*24*31, 600*60*24*31],
+        	lastTenRuns: [[600*60*24*31, 0], [600*60*24*31, 0], [600*60*24*31, 0], [600*60*24*31, 0], [600*60*24*31, 0], [600*60*24*31, 0], [600*60*24*31, 0], [600*60*24*31, 0], [600*60*24*31, 0], [600*60*24*31, 0]],
+        	lastTenEternities: [[600*60*24*31, 0], [600*60*24*31, 0], [600*60*24*31, 0], [600*60*24*31, 0], [600*60*24*31, 0], [600*60*24*31, 0], [600*60*24*31, 0], [600*60*24*31, 0], [600*60*24*31, 0], [600*60*24*31, 0]],
+        	infMult: new Decimal(modesChosen.ngm ? 0.5 : 1),
+        	infMultCost: new Decimal(modesChosen.ngm ? 30 : 10),
+        	tickSpeedMultDecrease: 10,
+        	tickSpeedMultDecreaseCost: 3e6,
+        	dimensionMultDecrease: modesChosen.ngm ? 11 : 10,
+        	dimensionMultDecreaseCost: 1e8,
+        	overXGalaxies: 10,
+        	version: 10,
+        	infDimensionsUnlocked: [],
+        	infinityPower: new Decimal(1),
+        	spreadingCancer: modesChosen.ngm ? -9990 : 0,
+        	postChallUnlocked: 0,
+        	postC4Tier: 0,
+        	postC3Reward: new Decimal(1),
+        	postC8Mult: new Decimal(1),
+        	eternityPoints: new Decimal(0),
+        	eternities: modesChosen.ngm ? -20 : 0,
+        	thisEternity: 0,
+        	bestEternity: 9999999999,
+        	eternityUpgrades: [],
+        	epmult: new Decimal(1),
+        	epmultCost: new Decimal(500),
+        	infinityDimension1 : {
+            		cost: new Decimal(1e8),
+            		amount: new Decimal(0),
+            		bought: 0,
+            		power: new Decimal(1),
+            		baseAmount: 0
+        	},
+        	infinityDimension2 : {
+            		cost: new Decimal(1e9),
+            		amount: new Decimal(0),
+            		bought: 0,
+            		power: new Decimal(1),
+            		baseAmount: 0
+        	},
+        	infinityDimension3 : {
+            		cost: new Decimal(1e10),
+            		amount: new Decimal(0),
+            		bought: 0,
+            		power: new Decimal(1),
+            		baseAmount: 0
+        	},
+        	infinityDimension4 : {
+            		cost: new Decimal(1e20),
+            		amount: new Decimal(0),
+            		bought: 0,
+            		power: new Decimal(modesChosen.ngm ? 0.0000125 : 1),
+            		baseAmount: 0
+        	},
+        	infinityDimension5 : {
+            		cost: new Decimal(1e140),
+            		amount: new Decimal(0),
+            		bought: 0,
+            		power: new Decimal(modesChosen.ngm ? 0.01 : 1),
+            		baseAmount: 0
+        	},
+        	infinityDimension6 : {
+            		cost: new Decimal(1e200),
+            		amount: new Decimal(0),
+            		bought: 0,
+            		power: new Decimal(modesChosen.ngm ? 0.015 : 1),
+            		baseAmount: 0
+        	},
+        	infinityDimension7 : {
+            		cost: new Decimal(1e250),
+            		amount: new Decimal(0),
+            		bought: 0,
+            		power: new Decimal(modesChosen.ngm ? 0.01 : 1),
+            		baseAmount: 0
+        	},
+        	infinityDimension8 : {
+            		cost: new Decimal(1e280),
+            		amount: new Decimal(0),
+            		bought: 0,
+            		power: new Decimal(modesChosen.ngm ? 0.01 : 1),
+            		baseAmount: 0
+        	},
+        	infDimBuyers: [false, false, false, false, false, false, false, false],
+        	timeShards: new Decimal(0),
+        	tickThreshold: new Decimal(1),
+        	totalTickGained: 0,
+        	timeDimension1: {
+            		cost: new Decimal(1),
+            		amount: new Decimal(0),
+            		power: new Decimal(modesChosen.ngm ? 0.01 : 1),
+            		bought: 0
+        	},
+        	timeDimension2: {
+            		cost: new Decimal(5),
+            		amount: new Decimal(0),
+            		power: new Decimal(modesChosen.ngm ? 0.03 : 1),
+            		bought: 0
+        	},
+        	timeDimension3: {
+            		cost: new Decimal(100),
+            		amount: new Decimal(0),
+            		power: new Decimal(modesChosen.ngm ? 0.025 : 1),
+            		bought: 0
+        	},
+        	timeDimension4: {
+            		cost: new Decimal(1000),
+            		amount: new Decimal(0),
+            		power: new Decimal(modesChosen.ngm ? 0.02 : 1),
+            		bought: 0
+        	},
+        	timeDimension5: {
+            		cost: new Decimal("1e2350"),
+            		amount: new Decimal(0),
+            		power: new Decimal(modesChosen.ngm ? 1e-5 : 1),
+           		bought: 0
+        	},
+        	timeDimension6: {
+            		cost: new Decimal("1e2650"),
+            		amount: new Decimal(0),
+            		power: new Decimal(modesChosen.ngm ? 5e-6 : 1),
+            		bought: 0
+        	},
+        	timeDimension7: {
+            		cost: new Decimal("1e3000"),
+            		amount: new Decimal(0),
+            		power: new Decimal(modesChosen.ngm ? 3e-6 : 1),
+            		bought: 0
+        	},
+        	timeDimension8: {
+            		cost: new Decimal("1e3350"),
+            		amount: new Decimal(0),
+            		power: new Decimal(modesChosen.ngm ? 2e-6 : 1),
+            		bought: 0
+        	},
+        	offlineProd: 0,
+        	offlineProdCost: modesChosen.ngm ? 5e11 : 1e7,
+        	challengeTarget: 0,
+        	autoSacrifice: 1,
+        	replicanti: {
+            		amount: new Decimal(0),
+            		unl: false,
+            		chance: 0.01,
+            		chanceCost: new Decimal(modesChosen.ngmm?1e90:1e150),
+            		interval: modesChosen.ngm ? 5000 : 1000,
+            		intervalCost: new Decimal(modesChosen.ngmm?1e80:modesChosen.rs==1?1e150:1e140),
+            		gal: 0,
+            		galaxies: 0,
+            		galCost: new Decimal(modesChosen.ngmm?1e110:1e170),
+            		auto: [false, false, false]
+        	},
+        	timestudy: {
+            		theorem: modesChosen.ngm ? -6 : 0,
+            		amcost: new Decimal("1e20000"),
+            		ipcost: new Decimal(modesChosen.ngm ? 1e-13 : 1),
+            		epcost: new Decimal(1),
+            		studies: [],
+        	},
+        	eternityChalls: modesChosen.ngm ? {eterc1:-6} : {},
+        	eternityChallGoal: new Decimal(Number.MAX_VALUE),
+        	currentEternityChall: "",
+        	eternityChallUnlocked: 0,
+        	etercreq: 0,
+        	autoIP: new Decimal(0),
+        	autoTime: 1e300,
+        	infMultBuyer: false,
+        	autoCrunchMode: "amount",
+        	respec: false,
+        	eternityBuyer: {
+        	    	limit: new Decimal(0),
+            		isOn: false
+        	},
+        	eterc8ids: 50,
+        	eterc8repl: 40,
+        	dimlife: true,
+        	dead: true,
+        	dilation: {
+            		studies: [],
+            		active: false,
+            		tachyonParticles: new Decimal(0),
+            		dilatedTime: new Decimal(0),
+            		totalTachyonParticles: new Decimal(modesChosen.ngm ? 2000 :0),
+            		nextThreshold: new Decimal(1000),
+            		freeGalaxies: 0,
+            		upgrades: [],
+            		rebuyables: {
+                		1: 0,
+                		2: modesChosen.ngm ? 1 : 0,
+                		3: 0,
+			}
+		},
+        	why: 0,
+        	shameLevel: 0,
+		options: {
+            		newsHidden: true,
+            		notation: "Scientific",
+            		scientific: false,
+            		challConf: true,
+            		sacrificeConfirmation: true,
+            		retryChallenge: false,
+            		bulkOn: true,
+            		cloud: true,
+            		hotkeys: true,
+            		theme: undefined,
+            		secretThemeKey: 0,
+            		eternityconfirm: true,
+            		commas: "Commas",
+            		updateRate: 50,
+            		hideProductionTab: false,
+			chart: {
+                		updateRate: 1000,
+                		duration: 10,
+                		warning: 0,
+			},
+            		animations: {
+                		floatingText: true,
+                		bigCrunch: true,
+                		eternity: true,
+                		tachyonParticles: true,
+			}
+		},
+        	aarexModifications: {
+            		dilationConf: false,
+            		offlineProgress: true,
+            		autoSave: true,
+            		progressBar: true,
+            		logRateChange: false,
+            		hideProductionTab: false,
+            		eternityChallRecords: {},
+            		popUpId: 0,
+            		tabsSave: {on: false},
+           		breakInfinity: false
+		}
 	}
-    if (modesChosen.ngumu) player.aarexModifications.ngumuV=1.03
-    if (modesChosen.ngpp==3) player.aarexModifications.ngp3lV=1
-    if (modesChosen.ngex) player.aarexModifications.ngexV=0.1
-    if (modesChosen.aau) {
+	if (modesChosen.ngm) doNGMinusNewPlayer()
+	if (modesChosen.ngp) doNGPlusOneNewPlayer()
+	if (modesChosen.ngpp) doNGPlusTwoNewPlayer()
+	if (modesChosen.ngmm) doNGMinusTwoNewPlayer()
+	if (modesChosen.ngpp>1) doNGPlusThreeNewPlayer()
+    	if (modesChosen.rs==1) doEternityRespeccedNewPlayer()
+    	if (modesChosen.ngmm>1) doNGMinusThreeNewPlayer()
+	if (modesChosen.arrows) doNGEXPNewPlayer()
+	if (modesChosen.ngud) doNGUDNewPlayer()
+	if (modesChosen.rs==2) doInfinityRespeccedNewPlayer()
+	if (modesChosen.ngp>1) doNGPlusFourPlayer()
+	if (modesChosen.ngud==2) player.aarexModifications.ngudpV=1.12
+	if (modesChosen.ngud==3) doNGUDSemiprimePlayer()
+	if (modesChosen.nguep) player.aarexModifications.nguepV=1.03
+	if (modesChosen.ngmm>2) doNGMinusFourPlayer()
+    	if (modesChosen.ngmm>3) doNGMinusFivePlayer()
+	if (modesChosen.ngmu) doNGMultipliedPlayer()
+	if (modesChosen.ngumu) player.aarexModifications.ngumuV=1.03
+	if (modesChosen.ngpp==3) player.aarexModifications.ngp3lV=1
+	if (modesChosen.ngex) player.aarexModifications.ngexV=0.1
+	if (modesChosen.aau) {
 		player.aarexModifications.aau=1
 		dev.giveAllAchievements(true)
 	}
