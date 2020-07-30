@@ -818,16 +818,10 @@ let tsMults = {
 		else if (player.galacticSacrifice === undefined) log = Math.min(log, 2500)
 		if (log<0) log = 0
 		
-		if (!bigRipped) return Decimal.pow(10, log)
-		
-		var scaling = 6
-		
-		if (scaling >= 6 && log > 1e5) log = Math.pow(2*Math.log10(log),5)
-		if (scaling >= 5) doWeakerPowerReductionSoftcapNumber(log,11e4,.5)
-		if (scaling >= 4) doWeakerPowerReductionSoftcapNumber(log,13e4,.4)
-		if (scaling >= 3) doWeakerPowerReductionSoftcapNumber(log,16e4,.3)
-		if (scaling >= 2) doWeakerPowerReductionSoftcapNumber(log,20e4,.2)
-		if (scaling >= 1) doWeakerPowerReductionSoftcapNumber(log,25e4,.1)
+		if (tmp.ngp3l || !bigRipped) return Decimal.pow(10, log)
+
+		if (log > 1e5) log = Math.pow(2 * Math.log10(log), 5)
+		log = softcap(log, "ts11_log")
 		
 		return Decimal.pow(10, log)
 	},

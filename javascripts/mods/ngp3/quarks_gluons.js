@@ -251,13 +251,14 @@ function updateColorDimPowers(log) {
 	var gexp = Math.sqrt(player.infinityPower.add(1).log10()) * Math.pow(getColorDimPowerBase("g", log), 4/7) * 5
 	var bexp = Math.sqrt(player.timeShards.add(1).log10()) * Math.pow(getColorDimPowerBase("b", log), 8/21)
 	
-	if (rexp > 1e12) rexp = 1e12*Math.pow(rexp/1e12,.5)
-	if (gexp > 1e9) gexp  = 1e9 *Math.pow(gexp/1e9 ,.5)
-	if (bexp > 1e6) bexp  = 1e6 *Math.pow(bexp/1e6 ,.5)
-	
-	if (rexp > 1e15) rexp = 1e15*Math.pow(rexp/1e15,.5)
-	if (gexp > 1e12) gexp = 1e12*Math.pow(gexp/1e12,.5)
-	if (bexp > 1e9)  bexp = 1e9 *Math.pow(bexp/1e9 ,.5)
+	if (rexp > 1e12) rexp = Math.sqrt(rexp * 1e12)
+	if (rexp > 1e15) rexp = Math.sqrt(rexp * 1e15)
+
+	if (gexp > 1e9) gexp = Math.sqrt(gexp * 1e9)
+	if (gexp > 1e12) gexp = Math.sqrt(gexp * 1e12)
+
+	if (bexp > 1e6) bexp = Math.sqrt(bexp * 1e6)
+	if (bexp > 1e9) bexp = Math.sqrt(bexp * 1e9)
 
 	colorBoosts.dim.r = Decimal.pow(10, rexp)
 	colorBoosts.dim.g = Decimal.pow(10, gexp)

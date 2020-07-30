@@ -65,7 +65,7 @@ function getTotalIDEUMult(){
 
 function getInfDimPathIDMult(tier){
 	var mult = new Decimal(1)
-	if (player.timestudy.studies.includes(72) && tier == 4) mult = mult.times(calcTotalSacrificeBoost().pow(0.04).max(1).min("1e30000"))
+	if (player.timestudy.studies.includes(72) && tier == 4) mult = mult.times(tmp.sacPow.pow(0.04).max(1).min("1e30000"))
 	if (player.timestudy.studies.includes(82)) mult = mult.times(Decimal.pow(1.0000109,Math.pow(player.resets,2)).min(player.meta==undefined?1/0:'1e80000'))
 	if (player.timestudy.studies.includes(92)) mult = mult.times(Decimal.pow(2, 600/Math.max(player.bestEternity, 20)))
 	if (player.timestudy.studies.includes(162)) mult = mult.times(Decimal.pow(10,(player.galacticSacrifice?234:11)*(player.aarexModifications.newGameExpVersion?5:1)))
@@ -209,15 +209,20 @@ function buyMaxInfDims(tier) {
 	buyManyInfinityDimension(tier)
 }
 
+function updateInfinityPowerEffects() {
+	tmp.infPowExp = getInfinityPowerEffectExp()
+	tmp.infPow = getInfinityPowerEffect()
+}
+
 function getInfinityPowerEffect() {
 	if (player.currentEternityChall == "eterc9") return Decimal.pow(Math.max(player.infinityPower.log2(),1),player.galacticSacrifice==undefined?4:30).max(1)
 	let log = player.infinityPower.max(1).log10()
-	log *= getInfinityPowerEffectPower()
+	log *= tmp.infPowExp 
 	if (log > 10 && player.pSac !== undefined) log = Math.pow(log * 200 - 1e3, 1/3)
 	return Decimal.pow(10, log)
 }
 
-function getInfinityPowerEffectPower() {
+function getInfinityPowerEffectExp() {
 	let x=7
 	if (player.galacticSacrifice!=undefined) {
 		x=Math.pow(player.galaxies,0.7)

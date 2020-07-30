@@ -43,7 +43,7 @@ function getERTDAchMults(){
 
 function calcNGM2atleastTDPreVPostDilMultiplier(tier){
 	var ret2 = new Decimal(1)
-	if (player.currentEternityChall == "eterc9") ret2 = ret2.times(getInfinityPowerEffect())
+	if (player.currentEternityChall == "eterc9") ret2 = ret2.times(tmp.infPow)
 	if (ECTimesCompleted("eterc1") !== 0) ret2 = ret2.times(getECReward(1))
 	if (player.eternityUpgrades.includes(4)) ret2 = ret2.times(player.achPow)
 	if (player.eternityUpgrades.includes(5)) ret2 = ret2.times(Math.max(player.timestudy.theorem, 1))
@@ -54,12 +54,12 @@ function calcNGM2atleastTDPreVPostDilMultiplier(tier){
 
 function calcVanillaTSTDMult(tier){
 	var ret = new Decimal(1)
-	if (player.timestudy.studies.includes(73) && tier == 3) ret = ret.times(calcTotalSacrificeBoost().pow(0.005).min(new Decimal("1e1300")))
+	if (player.timestudy.studies.includes(73) && tier == 3) ret = ret.times(tmp.sacPow.pow(0.005).min(new Decimal("1e1300")))
 	if (player.timestudy.studies.includes(93)) ret = ret.times(Decimal.pow(player.totalTickGained, 0.25).max(1))
 	if (player.timestudy.studies.includes(103)) ret = ret.times(Math.max(player.replicanti.galaxies, 1))
 	if (player.timestudy.studies.includes(151)) ret = ret.times(1e4)
 	if (player.timestudy.studies.includes(221)) ret = ret.times(Decimal.pow(1.0025, player.resets))
-	if (player.timestudy.studies.includes(227) && tier == 4) ret = ret.times(Math.pow(calcTotalSacrificeBoost().max(10).log10(), 10))
+	if (player.timestudy.studies.includes(227) && tier == 4) ret = ret.times(Math.pow(tmp.sacPow.max(10).log10(), 10))
 	return ret
 }
 

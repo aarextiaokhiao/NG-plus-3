@@ -44,14 +44,14 @@ function getNormalDimensionVanillaAchievementBonus(tier){
 
 function getNormalDimensionVanillaTimeStudyBonus(tier){
 	var mult = new Decimal(1)
-	if (player.timestudy.studies.includes(71) && tier !== 8) mult = mult.times(calcTotalSacrificeBoost().pow(0.25).min("1e210000"));
+	if (player.timestudy.studies.includes(71) && tier !== 8) mult = mult.times(tmp.sacPow.pow(0.25).min("1e210000"));
 	if (player.timestudy.studies.includes(91)) mult = mult.times(Decimal.pow(10, Math.min(player.thisEternity, 18000)/60));
 	let useHigherNDReplMult = !player.dilation.active ? false : !player.masterystudies ? false : player.masterystudies.includes("t323")
 	if (!useHigherNDReplMult) mult = mult.times(tmp.nrm)
 	if (player.timestudy.studies.includes(161)) mult = mult.times(Decimal.pow(10,(player.galacticSacrifice?6660:616)*(player.aarexModifications.newGameExpVersion?5:1)))
-	if (player.timestudy.studies.includes(234) && tier == 1) mult = mult.times(calcTotalSacrificeBoost())
+	if (player.timestudy.studies.includes(234) && tier == 1) mult = mult.times(tmp.sacPow)
 	if (player.timestudy.studies.includes(193)) mult = mult.times(Decimal.pow(1.03, getEternitied()).min("1e13000"))
-	if (tier == 8 && player.timestudy.studies.includes(214)) mult = mult.times((calcTotalSacrificeBoost().pow(8)).min("1e46000").times(calcTotalSacrificeBoost().pow(1.1).min(new Decimal("1e125000"))))
+	if (tier == 8 && player.timestudy.studies.includes(214)) mult = mult.times((tmp.sacPow.pow(8)).min("1e46000").times(tmp.sacPow.pow(1.1).min(new Decimal("1e125000"))))
 	return mult
 }
 
@@ -98,14 +98,14 @@ function getPostBreakInfNDMult(){
 function getDimensionFinalMultiplier(tier) {
 	let mult = player[TIER_NAMES[tier] + 'Pow']
 
-	if (player.currentChallenge == "postcngm3_2") return getInfinityPowerEffect()
-	if (player.currentEternityChall == "eterc11") return getInfinityPowerEffect().times(Decimal.pow(getDimensionBoostPower(), player.resets - tier + 1).max(1))
+	if (player.currentChallenge == "postcngm3_2") return tmp.infPow
+	if (player.currentEternityChall == "eterc11") return tmp.infPow.times(Decimal.pow(getDimensionBoostPower(), player.resets - tier + 1).max(1))
 	if ((inNC(7) || player.currentChallenge == "postcngm3_3") && !player.galacticSacrifice) {
 		if (tier == 4) mult = mult.pow(1.4)
 		if (tier == 2) mult = mult.pow(1.7)
 	}
 
-	if (player.currentEternityChall != "eterc9" && (player.tickspeedBoosts == undefined || player.currentChallenge != "postc2")) mult = mult.times(getInfinityPowerEffect())
+	if (player.currentEternityChall != "eterc9" && (player.tickspeedBoosts == undefined || player.currentChallenge != "postc2")) mult = mult.times(tmp.infPow)
 
 	mult = mult.times(getPostBreakInfNDMult())
 
@@ -418,6 +418,7 @@ function buyBulkDimension(tier, bulk, auto) {
 		if (failsafe > 149) break
 		stopped = false
 	}
+	var b = getDimensionPowerMultiplier(tier)
 	while (!stopped) {
 		stopped = true
 		let mi = getDimensionCostMultiplierIncrease()
@@ -436,13 +437,13 @@ function buyBulkDimension(tier, bulk, auto) {
 		}
 		player[name + "Amount"] = player[name + "Amount"].add(toBuy*10)
 		recordBought(name, toBuy*10)
-		player[name + "Pow"] = player[name + "Pow"].times(Decimal.pow(getDimensionPowerMultiplier(tier), toBuy))
+		player[name + "Pow"] = player[name + "Pow"].times(Decimal.pow(b, toBuy))
 		player[name + "Cost"] = newCost.times(newMult)
 		player.costMultipliers[tier-1] = newMult.times(mi)
 		bought += toBuy
 		reduceMatter(toBuy*10)
 	}
-	if (!auto) floatText("D"+tier, "x" + shortenMoney(Decimal.pow(getDimensionPowerMultiplier(tier), bought)))
+	if (!auto) floatText("D"+tier, "x" + shortenMoney(Decimal.pow(b, bought)))
 	onBuyDimension(tier)
 }
 

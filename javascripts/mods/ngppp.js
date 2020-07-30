@@ -2369,16 +2369,8 @@ function getBreakEterUpg10Mult(){
 }
 
 function getBreakUpgMult(id) {
-	if (id == 1) return getBreakEterUpg1Mult()
-	if (id == 2) return getBreakEterUpg2Mult()
-	if (id == 3) return getBreakEterUpg3Mult()
-	if (id == 4) return getBreakEterUpg4Mult()
-	if (id == 5) return getBreakEterUpg5Mult()
-	if (id == 6) return getBreakEterUpg6Mult()
 	if (id == 7) return Decimal.pow(1e9, tmp.qu.breakEternity.epMultPower)
-	if (id == 8) return getBreakEterUpg8Mult()
-	if (id == 9) return getBreakEterUpg9Mult()
-	if (id == 10) return getBreakEterUpg10Mult()
+	return eval("getBreakEterUpg" + id + "Mult")()
 }
 
 function maxBuyBEEPMult() {
