@@ -1,9 +1,7 @@
 //Quantum worth
 var quantumWorth
 function updateQuantumWorth(mode) {
-	if (!player.aarexModifications.newGame3PlusVersion) {
-	return
-	}
+	if (!tmp.ngp3) return
 	if (player.ghostify.milestones<8) {
 		if (mode!="notation") mode=undefined
 	} else if (mode=="notation") return

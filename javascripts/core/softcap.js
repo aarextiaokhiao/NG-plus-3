@@ -155,8 +155,7 @@ var softcap_data = {
 		1: {
 			func: "pow",
 			start: 100,
-			pow: 0.5,
-			derv: true
+			pow: 0.5
 		}
 	},
 	inf_time_log_2: {
