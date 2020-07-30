@@ -2116,13 +2116,18 @@ function getDilExp(disable) {
 	return ret
 }
 
+function getTotalTPGain(){
+	return getDilGain()
+}
+
+function getTotalTachyonParticleGain(){
+	return getDilGain()
+}
+
 function getDilGain() {
 	if (inQCModifier("ad")) return new Decimal(0)
 	if (player.money.lt(10)) return new Decimal(0)
 	var log = Math.log10(player.money.log10()/400)*getDilExp()+getDilPower().log10()
-	if (log > 500) log = 500*(( (log/500)**.8 -1)/.8+1)
-	if (log > 700) log = 700*(( (log/700)**.5 -1)/.5+1)
-	
 	return Decimal.pow(10,log).floor()
 }
 
