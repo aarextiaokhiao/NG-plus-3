@@ -31,7 +31,7 @@ function getMetaDimensionMultiplier(tier) {
 	
 	//Achievements:
 	if (tier == 1 && player.achievements.includes("ng3p17") && !tmp.ngp3l) ret = ret.times(Math.log10(player.totalmoney.log10()))
-	if (tier == 8 && player.achievements.includes("ng3p22")) ret = ret.times(1+Math.pow(player.meta[1].amount.plus(1).log10()/10),2)
+	if (tier == 8 && player.achievements.includes("ng3p22")) ret = ret.times(1+Math.pow(player.meta[1].amount.plus(1).log10()/10,2))
 	if (tier == 1 && player.achievements.includes("ng3p31")) ret = ret.times(player.meta.antimatter.plus(1).pow(.001))
 	if (player.achievements.includes("ng3p57")) ret = ret.times(1+player.timeShards.plus(1).log10())
 	
@@ -88,8 +88,8 @@ function getMetaBoostPower() {
 }
 
 function getMetaDimensionDescription(tier) {
-  if (tier > Math.min(7, player.meta.resets + 3) - (inQC(4) ? 1 : 0)) return getFullExpansion(player.meta[tier].bought) + ' (' + dimMetaBought(tier) + ')';
-  else return shortenDimensions(player.meta[tier].amount) + ' (' + dimMetaBought(tier) + ')  (+' + formatValue(player.options.notation, getMetaDimensionRateOfChange(tier), 2, 2) + dimDescEnd;
+	if (tier > Math.min(7, player.meta.resets + 3) - (inQC(4) ? 1 : 0)) return getFullExpansion(player.meta[tier].bought) + ' (' + dimMetaBought(tier) + ')';
+	else return shortenDimensions(player.meta[tier].amount) + ' (' + dimMetaBought(tier) + ')  (+' + formatValue(player.options.notation, getMetaDimensionRateOfChange(tier), 2, 2) + dimDescEnd;
 }
 
 function getMetaDimensionRateOfChange(tier) {
