@@ -9550,7 +9550,7 @@ function doEternityButtonDisplayUpdating(diff){
 
 function doQuantumButtonDisplayUpdating(diff){
 	var currentQKmin = new Decimal(0)
-    	var currentGHPmin = new Decimal(0)
+    	
     	if (quantumed && isQuantumReached()) {
         	var bigRipped = !tmp.ngp3 ? false : tmp.qu.bigRip.active
         	if (!bigRipped) {
@@ -9560,13 +9560,6 @@ function doQuantumButtonDisplayUpdating(diff){
                 		QKminpeakValue = quarkGain()
                 		tmp.qu.autobuyer.peakTime = 0
 			} else tmp.qu.autobuyer.peakTime += diff / 10
-		}
-		if (ghostified && bigRipped) {
-            		currentGHPmin = getGHPGain().dividedBy(player.ghostify.time/600)
-           		 if (currentGHPmin.gt(GHPminpeak)) {
-				 GHPminpeak = currentGHPmin
-               			 GHPminpeakValue = getGHPGain()
-			 }
 		}
 	}
 	
@@ -9586,6 +9579,14 @@ function doQuantumButtonDisplayUpdating(diff){
 }
 
 function doGhostifyButtonDisplayUpdating(diff){
+	var currentGHPmin = new Decimal(0)
+	if (ghostified && bigRipped) {
+            	currentGHPmin = getGHPGain().dividedBy(player.ghostify.time/600)
+		if (currentGHPmin.gt(GHPminpeak)) {
+			GHPminpeak = currentGHPmin
+			GHPminpeakValue = getGHPGain()
+		}
+	}
 	var ghostifyGains = []
     	if (ghostified) ghostifyGains.push(shortenDimensions(getGHPGain()) + " Ghost Particles")
     	if (ghostified && player.achievements.includes("ng3p78")) ghostifyGains.push(shortenDimensions(Decimal.times(6e3 * tmp.qu.bigRip.bestGals, getGhostifiedGain()).times(getNeutrinoGain())) + " Neutrinos")
