@@ -1349,7 +1349,7 @@ function getQuarkSpinProduction(branch) {
 	if (player.ghostify.milestones > 13) ret = ret.times(getMilestone14SpinMult())
 	ret = ret.times(Decimal.pow(1.1,player.quantum.nanofield.rewards))
 	if (hasNU(4)) ret=ret.times(tmp.nu[2].pow(2))
-	if (player.achievements.includes("ng3p74")) ret = ret.times(1+player.quantum.tod[branch].decays)
+	if (player.achievements.includes("ng3p74")) if (player.quantum.tod[branch].decays) ret = ret.times(1+player.quantum.tod[branch].decays)
 	if (tmp.qu.bigRip.active) {
 		if (isBigRipUpgradeActive(18)) ret = ret.times(tmp.bru[3])
 		if (isBigRipUpgradeActive(19)) ret = ret.times(tmp.bru[4])
