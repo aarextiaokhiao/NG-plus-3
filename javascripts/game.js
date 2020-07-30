@@ -1457,15 +1457,7 @@ function updateInfiniteTimeTemp(){
 	var x = (3 - player.tickspeed.log10()) * 0.000005
 	if (ghostified && player.ghostify.neutrinos.boosts>3) x *= tmp.nb[3]
 	if (tmp.be && !player.dilation.active && tmp.qu.breakEternity.upgrades.includes(8)) x *= getBreakUpgMult(8)
-	if (tmp.be) {
-		if (x>100) x = Math.pow(x*100,0.5)
-	} else {
-		if (x>12e8) x = Math.pow(x*144e10,1/3) // should start at 12e8
-		else if (x>12e4) x = Math.pow(x*12e4,0.5)
-	}
-	//x = softcap(x, "inf_time_log_1")
-	// ok to fix this 1) in big rip derv should be false
-	// 2) (i dont think this is easy) you dont run both softcaps outside of big rip, so better to just leave it in this funciton
+	x = softcap(x, "inf_time_log_1")
 	if (player.aarexModifications.ngudpV) {
 		if (x > 1e8) x = Math.pow(1e8 * x, .5)
 		if (x > 1e9) x = Math.pow(1 + Math.log10(x), 9)

@@ -141,14 +141,12 @@ var softcap_data = {
 		1: {
 			func: "pow",
 			start: 12e4,
-			pow: 0.5,
-			derv: true
+			pow: 0.5
 		},
 		2: {
 			func: "pow",
-			start: 12e5,
-			pow: 1/3,
-			derv: true
+			start: 12e6,
+			pow: 2/3
 		}
 	},
 	inf_time_log_1_big_rip: {
