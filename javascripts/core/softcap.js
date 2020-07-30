@@ -248,9 +248,11 @@ function do_softcap(x, data, num) {
 
 function softcap(x, id, raw) {
 	var data = softcap_data[id]
-	if (!raw && tmp.qu.bigRip.active) {
-		var big_rip_data = softcap_data[id + "_big_rip"]
-		if (big_rip_data !== undefined) data = big_rip_data
+	if (player.aarexModifications.newGame3PlusVersion) {
+		if (!raw && tmp.qu.bigRip.active) {
+			var big_rip_data = softcap_data[id + "_big_rip"]
+			if (big_rip_data !== undefined) data = big_rip_data
+		}
 	}
 
 	var sc = 1
