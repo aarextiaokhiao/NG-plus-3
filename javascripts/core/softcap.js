@@ -131,7 +131,7 @@ var softcap_data = {
 			func: "pow",
 			start: 1e9,
 			pow: 0.2,
-			dev: false
+			derv: false
 		}
 	},
 	inf_time_log_2_big_rip: {
