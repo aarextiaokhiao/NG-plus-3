@@ -225,23 +225,23 @@ function getMetaCostScalingStart() {
 }
 
 function getMetaMaxCost(tier) {
-  return player.meta[tier].cost.times(10 - dimMetaBought(tier));
+	return player.meta[tier].cost.times(10 - dimMetaBought(tier));
 }
 
 function metaBuyManyDimension(tier) {
-    var cost = getMetaMaxCost(tier);
-    if (!canBuyMetaDimension(tier)) {
-        return false;
-    }
-    if (!canAffordMetaDimension(cost)) {
-        return false;
-    }
-    player.meta.antimatter = player.meta.antimatter.minus(cost);
-    player.meta[tier].amount = player.meta[tier].amount.plus(10 - dimMetaBought(tier));
-    player.meta[tier].bought += 10 - dimMetaBought(tier)
-    player.meta[tier].cost = getMetaCost(tier, player.meta[tier].bought/10)
-    if (tier>7) giveAchievement("And still no ninth dimension...")
-    return true;
+	var cost = getMetaMaxCost(tier);
+	if (!canBuyMetaDimension(tier)) {
+		return false;
+	}
+	if (!canAffordMetaDimension(cost)) {
+		return false;
+	}
+	player.meta.antimatter = player.meta.antimatter.minus(cost);
+	player.meta[tier].amount = player.meta[tier].amount.plus(10 - dimMetaBought(tier));
+	player.meta[tier].bought += 10 - dimMetaBought(tier)
+	player.meta[tier].cost = getMetaCost(tier, player.meta[tier].bought/10)
+	if (tier>7) giveAchievement("And still no ninth dimension...")
+	return true;
 }
 
 function buyMaxMetaDimension(tier) {
@@ -280,7 +280,7 @@ function buyMaxMetaDimension(tier) {
 }
 
 function canAffordMetaDimension(cost) {
-    return cost.lte(player.meta.antimatter);
+	return cost.lte(player.meta.antimatter);
 }
 
 for (let i = 1; i <= 8; i++) {
@@ -304,11 +304,11 @@ for (let i = 1; i <= 8; i++) {
 }
 
 document.getElementById("metaMaxAll").onclick = function () {
-    for (let i = 1; i <= 8; i++) buyMaxMetaDimension(i)
+	for (let i = 1; i <= 8; i++) buyMaxMetaDimension(i)
 }
 
 document.getElementById("metaSoftReset").onclick = function () {
-    metaBoost();
+	metaBoost();
 }
 
 function getMetaDimensionProduction(tier) {
@@ -650,7 +650,10 @@ let quarkGain = function () {
 		if (tmp.newNGP3E) exp += 0.1
 		if (player.achievements.includes("ng3p28")) exp *= 1.01
 
-		log += Math.pow(Math.max(player.eternityPoints.log10() / 1e6, 1), exp) - 1 //maybe softcap this at e5?
+		var EPBonus = Math.pow(Math.max(player.eternityPoints.log10() / 1e6, 1), exp) - 1
+		if (EPBonus > 5e5) EPBonus = 5e5 * Math.sqrt(EPBonus / 5e5)
+		
+		log += EPBonus 
 		log += Math.log10(getQCtoQKEffect())
 		log += player.quantum.bigRip.spaceShards.plus(1).log10()
 		if (player.achievements.includes("ng3p65")) log += Math.pow(player.ghostify.ghostlyPhotons.enpowerments, 2)
@@ -658,7 +661,7 @@ let quarkGain = function () {
 
 	var dlog = Math.log10(log)
 	let start = 4 //Starts at e10k.
-	if ((player.aarexModifications.ngumuV||player.aarexModifications.nguepV)&&dlog>start) {
+	if ((player.aarexModifications.ngumuV || player.aarexModifications.nguepV) && dlog > start) {
 		let capped=Math.floor(Math.log10(Math.max(dlog-2,1))/Math.log10(2))
 		dlog=(dlog-Math.pow(2,capped)-2)/Math.pow(2,capped)+capped+3
 		log=Math.pow(10,dlog)
