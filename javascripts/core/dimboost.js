@@ -96,7 +96,7 @@ function softReset(bulk, tier=1) {
 		}
 	}
 	hideDimensions()
-	updateTickSpeed()
+	tmp.tickUpdate = true;
 	if (!player.achievements.includes("r111")) setInitialMoney()
 }
 
