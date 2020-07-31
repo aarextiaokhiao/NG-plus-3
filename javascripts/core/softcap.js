@@ -9,6 +9,11 @@ var softcap_data = {
 			func: "pow",
 			start: 1e7,
 			pow: 0.75
+		},
+		3: {
+			func: "pow",
+			start: 1e8,
+			pow: 0.75
 		}
 	},
 	ts_reduce_log_big_rip: {
@@ -107,7 +112,7 @@ var softcap_data = {
 		1: {
 			func: "pow",
 			start: 24e7,
-			pow: 3/4,
+			pow: .75,
 			derv: true
 		},
 		2: {
@@ -121,6 +126,12 @@ var softcap_data = {
 			start: 3e8,
 			pow: 0.3,
 			derv: true
+		},
+		4:{
+			func: "pow",
+			start: 1e9,
+			pow: 0.2,
+			dev: false
 		}
 	},
 	inf_time_log_2_big_rip: {
