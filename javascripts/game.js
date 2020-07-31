@@ -1555,7 +1555,7 @@ function updateNeutBoost5Temp(nt){
 function updateNeutBoost6Temp(nt){
 	var nb6neutrinos = Math.pow(nt[0].add(1).log10(),2)+Math.pow(nt[1].add(1).log10(),2)+Math.pow(nt[2].add(1).log10(),2)
 	var nb6exp1 = .25
-	if (tmp.newNGP3E) nb6exp1 = .255
+	if (tmp.newNGP3E) nb6exp1 = .26
 	let nb6 = Math.pow(Math.pow(nb6neutrinos, nb6exp1) * 0.525 + 1, tmp.be ? 0.5 : 1)
 	tmp.nb[5] = nb6
 }
@@ -1575,7 +1575,7 @@ function updateNeutBoost7Temp(nt){
 function updateNeutBoost8Temp(nt){
 	let nb8neutrinos = Math.pow(nt[0].add(1).log10(),2)+Math.pow(nt[1].add(1).log10(),2)+Math.pow(nt[2].add(1).log10(),2)
 	let nb8exp = .25
-	if (tmp.newNGP3E) nb8exp = .26
+	if (tmp.newNGP3E) nb8exp = .27
 	var nb8 = Math.pow(nb8neutrinos, nb8exp) / 10 + 1
 	if (nb8 > 11) nb8 = 7 + Math.log2(nb8 + 5)
 	tmp.nb[7] = nb8
