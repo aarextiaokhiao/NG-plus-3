@@ -609,9 +609,10 @@ function updateQuantumChallenges() {
 		}
 	}
 	if (player.masterystudies.includes("d14")) {
+		var max=getMaxBigRipUpgrades()
 		document.getElementById("spaceShards").textContent = shortenDimensions(tmp.qu.bigRip.spaceShards)
-		for (var u=18;u<20;u++) document.getElementById("bigripupg"+u).parentElement.style.display=player.ghostify.ghostlyPhotons.unl?"":"none"
-		for (var u=1;u<(player.ghostify.ghostlyPhotons.unl?20:18);u++) {
+		for (var u=18;u<=20;u++) document.getElementById("bigripupg"+u).parentElement.style.display=u>max?"none":""
+		for (var u=1;u<=max;u++) {
 			document.getElementById("bigripupg"+u).className = tmp.qu.bigRip.upgrades.includes(u) ? "gluonupgradebought bigrip" + (isBigRipUpgradeActive(u, true) ? "" : "off") : tmp.qu.bigRip.spaceShards.lt(bigRipUpgCosts[u]) ? "gluonupgrade unavailablebtn" : "gluonupgrade bigrip"
 			document.getElementById("bigripupg"+u+"cost").textContent = shortenDimensions(new Decimal(bigRipUpgCosts[u]))
 		}
@@ -2165,8 +2166,12 @@ function getSpaceShardsGain() {
 	return ret
 }
 
-let bigRipUpgCosts = [0, 2, 3, 5, 20, 30, 45, 60, 150, 300, 2000, 1e9, 3e14, 1e17, 3e18, 3e20, 5e22, 1e32, 1e145, 1e150, 1e160]
+let bigRipUpgCosts = [0, 2, 3, 5, 20, 30, 45, 60, 150, 300, 2000, 1e9, 3e14, 1e17, 3e18, 3e20, 5e22, 1e32, 1e145, 1e150, Number.MAX_VALUE]
 function buyBigRipUpg(id) {
+	if (id == 20) {
+		alert("This upgrade isn't implemented yet. Please be patient.")
+		return
+	}
 	if (tmp.qu.bigRip.spaceShards.lt(bigRipUpgCosts[id])||tmp.qu.bigRip.upgrades.includes(id)) return
 	tmp.qu.bigRip.spaceShards=tmp.qu.bigRip.spaceShards.sub(bigRipUpgCosts[id])
 	if (player.ghostify.milestones < 8) tmp.qu.bigRip.spaceShards=tmp.qu.bigRip.spaceShards.round()
@@ -2177,7 +2182,7 @@ function buyBigRipUpg(id) {
 		tmp.qu.bigRip.upgrades.push(9)
 		if (tmp.qu.bigRip.active) tweakBigRip(9, true)
 	}
-	for (var u=1;u<18;u++) document.getElementById("bigripupg"+u).className = tmp.qu.bigRip.upgrades.includes(u) ? "gluonupgradebought bigrip" + (isBigRipUpgradeActive(u, true) ? "" : "off") : tmp.qu.bigRip.spaceShards.lt(bigRipUpgCosts[u]) ? "gluonupgrade unavailablebtn" : "gluonupgrade bigrip"
+	for (var u=1;u<=getMaxBigRipUpgrades();u++) document.getElementById("bigripupg"+u).className = tmp.qu.bigRip.upgrades.includes(u) ? "gluonupgradebought bigrip" + (isBigRipUpgradeActive(u, true) ? "" : "off") : tmp.qu.bigRip.spaceShards.lt(bigRipUpgCosts[u]) ? "gluonupgrade unavailablebtn" : "gluonupgrade bigrip"
 }
 
 function tweakBigRip(id, reset) {
@@ -3367,9 +3372,10 @@ function updateLightThresholdStrengthDisplay(){
 function updateLEmpowermentPrimary(){
 	var gphData=player.ghostify.ghostlyPhotons
 	var lePower=getLightEmpowermentBoost()
-	document.getElementById("lightEmpowerment").className="gluonupgrade "+(gphData.lights[7]>=getLightEmpowermentReq()?"gph":"unavailablebtn")
-	document.getElementById("lightEmpowermentReq").textContent=getFullExpansion(getLightEmpowermentReq())
+	document.getElementById("lightEmpowerment").className="gluonupgrade "+(gphData.lights[7]>=tmp.leReq?"gph":"unavailablebtn")
+	document.getElementById("lightEmpowermentReq").textContent=getFullExpansion(tmp.leReq)
 	document.getElementById("lightEmpowerments").textContent=getFullExpansion(gphData.enpowerments)
+	document.getElementById("lightEmpowermentScaling").textContent=getGalaxyScaleName(tmp.leReqScale)+"Light Empowerments"
 	document.getElementById("lightEmpowermentsEffect").textContent=lePower.toFixed(2)
 }
 
@@ -3770,17 +3776,30 @@ function getLightThreshold(l) {
 	return Decimal.pow(tmp.lti[l],lvl).times(tmp.lt[l])
 }
 
-function getLightEmpowermentReq() {
-	var linear = player.ghostify.ghostlyPhotons.enpowerments*2.4
-	var quadratic = Math.pow(Math.max(0,player.ghostify.ghostlyPhotons.enpowerments-13),2)/3
-	//starts at the 15th LE
-	var exponential = Math.pow(1.2,Math.max(0,player.ghostify.ghostlyPhotons.enpowerments-20))-1
-	//starts at the 20th LE, first cost bump at 21st LE
-	return Math.floor(linear+1+quadratic+exponential)
+function getLightEmpowermentReq(le) {
+	if (le === undefined) le = player.ghostify.ghostlyPhotons.enpowerments
+	let x = le * 2.4 + 1
+	let scale = 0
+	if (!tmp.ngp3l) {
+		if (le > 13) {
+			x += Math.pow(le - 13, 2) / 3
+			scale = 1
+		}
+		if (le > 20) {
+			x += Math.pow(1.2, le - 20) - 1
+			scale = 2
+		}
+	}
+	tmp.leReqScale = scale
+	return Math.floor(x)
+}
+
+function updateLightEmpowermentReq() {
+	tmp.leReq = getLightEmpowermentReq()
 }
 
 function lightEmpowerment() {
-	if (!(player.ghostify.ghostlyPhotons.lights[7]>=getLightEmpowermentReq())) return
+	if (!(player.ghostify.ghostlyPhotons.lights[7]>=tmp.leReq)) return
 	if (!player.aarexModifications.leNoConf && !confirm("You will become a ghost, but Ghostly Photons will be reset. You will gain 1 Light Empowerment from this. Are you sure you want to proceed?")) return
 	ghostify(false, true)
 	player.ghostify.ghostlyPhotons.amount=new Decimal(0)
@@ -4614,4 +4633,9 @@ function updatePhotonsUnlockedBRUpgrades(){
 	if (bigRipUpg19exp > 5 && !tmp.newNGP3E) bigRipUpg19exp = 4 + Math.log10(2*bigRipUpg19exp)
 	if (bigRipUpg19exp > 8)  bigRipUpg19exp = Math.log2(bigRipUpg19exp)*3-1
 	tmp.bru[19] = Decimal.pow(10,bigRipUpg19exp) //BRU19
+}
+
+function getMaxBigRipUpgrades() {
+	if (player.ghostify.ghostlyPhotons.unl) return tmp.ngp3l ? 19 : 20
+	return 18
 }

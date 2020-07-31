@@ -181,7 +181,7 @@ function buyTickSpeed() {
 	if (inNC(2) || player.currentChallenge == "postc1") player.chall2Pow = 0
 	reduceMatter(1)
 	if (!tmp.be) {
-		player.tickspeed = player.tickspeed.times(getTickSpeedMultiplier())
+		player.tickspeed = player.tickspeed.times(tmp.tsReduce)
 		if (player.challenges.includes("postc3") || player.currentChallenge == "postc3" || isIC3Trapped()) player.postC3Reward = player.postC3Reward.times(getPostC3Mult())
 	}
 	player.postC8Mult = new Decimal(1)
@@ -244,14 +244,14 @@ function buyMaxTickSpeed() {
 		getOrSubResource(1, Decimal.pow(10, toBuy).sub(1).div(9).times(cost))
 		reduceMatter(toBuy)
 		if (!tmp.be || player.currentEternityChall == "eterc10") {
-			player.tickspeed = Decimal.pow(getTickSpeedMultiplier(), toBuy).times(player.tickspeed)
+			player.tickspeed = Decimal.pow(tmp.tsReduce, toBuy).times(player.tickspeed)
 			if (player.challenges.includes("postc3") || player.currentChallenge == "postc3" || isIC3Trapped()) player.postC3Reward = player.postC3Reward.times(Decimal.pow(getPostC3Mult(), toBuy))
 		}
 		player.tickSpeedCost = player.tickSpeedCost.times(Decimal.pow(10, toBuy))
 		player.postC8Mult = new Decimal(1)
 		if (costIncreaseActive(player.tickSpeedCost)) player.tickspeedMultiplier = player.tickspeedMultiplier.times(getTickSpeedCostMultiplierIncrease())
 	}
-	var mult = getTickSpeedMultiplier()
+	var mult = tmp.tsReduce
 	if (inNC(2) || player.currentChallenge == "postc1" || player.pSac !== undefined) player.chall2Pow = 0
 	if (cannotUsePostInfTickSpeed()) {
 		while (player.money.gt(player.tickSpeedCost) && (player.tickSpeedCost.lt(Number.MAX_VALUE) || player.tickSpeedMultDecrease > 2 || (player.currentChallenge == "postc5" && player.tickspeedBoosts == undefined))) {

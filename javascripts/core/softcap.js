@@ -3,76 +3,24 @@ var softcap_data = {
 		1: {
 			func: "pow",
 			start: 1e6,
-			pow: 0.95,
-			derv: true
+			pow: 0.75
 		},
 		2: {
 			func: "pow",
-			start: 2e6,
-			pow: 0.9,
-			derv: true
-		},
-		3: {
-			func: "pow",
-			start: 4e6,
-			pow: 0.85,
-			derv: true
-		},
-		4: {
-			func: "pow",
-			start: 8e6,
-			pow: 0.8,
-			derv: true
-		},
-		5: {
-			func: "pow",
 			start: 1e7,
-			pow: 0.75,
-			derv: true
-		},
-		6: {
-			func: "pow",
-			start: 2e7,
-			pow: 0.7,
-			derv: true
+			pow: 0.75
 		}
 	},
 	ts_reduce_log_big_rip: {
 		1: {
 			func: "pow",
 			start: 1e4,
-			pow: 0.6,
-			derv: true
+			pow: 0.75
 		},
 		2: {
 			func: "pow",
-			start: 14e3,
-			pow: 0.5,
-			derv: true
-		},
-		3: {
-			func: "pow",
-			start: 18e3,
-			pow: 0.4,
-			derv: true
-		},
-		4: {
-			func: "pow",
-			start: 22e3,
-			pow: 0.3,
-			derv: true
-		},
-		5: {
-			func: "pow",
-			start: 26e3,
-			pow: 0.2,
-			derv: true
-		},
-		6: {
-			func: "pow",
-			start: 3e4,
-			pow: 0.1,
-			derv: true
+			start: 1e5,
+			pow: 0.75
 		}
 	},
 	ts11_log_big_rip: {
@@ -110,22 +58,18 @@ var softcap_data = {
 	bru1_log: {
 		1: {
 			func: "pow",
-			start: 3e8,
 			pow: 0.75
 		},
 		2: {
 			func: "log",
-			start: 1e10,
 			pow: 10
 		},
 		3: {
 			func: "pow",
-			start: 3e10,
 			pow: 0.5
 		},
 		4: {
 			func: "log",
-			start: 1e11,
 			pow: 11,
 			add: -1
 		}
@@ -159,8 +103,8 @@ var softcap_data = {
 	inf_time_log_2: {
 		1: {
 			func: "pow",
-			start: 20e7,
-			pow: 0.7,
+			start: 24e7,
+			pow: 3/4,
 			derv: true
 		},
 		2: {
@@ -171,7 +115,7 @@ var softcap_data = {
 		},
 		3: {
 			func: "pow",
-			start: 30e7,
+			start: 3e8,
 			pow: 0.3,
 			derv: true
 		}
@@ -179,7 +123,7 @@ var softcap_data = {
 	inf_time_log_2_big_rip: {
 		1: {
 			func: "pow",
-			start: 50e3,
+			start: 5e4,
 			pow: 0.9,
 			derv: true
 		},
@@ -191,7 +135,7 @@ var softcap_data = {
 		},
 		3: {
 			func: "pow",
-			start: 60e3,
+			start: 6e4,
 			pow: 0.5,
 			derv: true
 		},
@@ -203,9 +147,30 @@ var softcap_data = {
 		},
 		5: {
 			func: "pow",
-			start: 70e3,
+			start: 7e4,
 			pow: 0.1,
 			derv: true
+		}
+	},
+	ig_log_high: {
+		1: {
+			func: "log",
+			pow: 10,
+			mul: 5
+		},
+		2: {
+			func: "pow",
+			pow: 0.2
+		},
+		3: {
+			func: "log",
+			pow: 11,
+			mul: 4,
+			add: 12
+		},
+		4: {
+			func: "pow",
+			pow: 0.1
 		}
 	}
 }
@@ -234,7 +199,7 @@ var softcap_funcs = {
 		}
 		return x
 	},
-	log: function(x, pow, mul = 1, add = 0) {
+	log: function(x, pow = 1, mul = 1, add = 0) {
 		var x2 = Math.pow(Math.log10(x) * mul + add, pow)
 		if (x > x2) return x2
 		return x

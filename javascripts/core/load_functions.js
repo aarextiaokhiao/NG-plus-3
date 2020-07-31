@@ -1269,6 +1269,8 @@ if (player.version < 5) {
           player.aarexModifications.ngp3lV = 1
           tmp.ngp3l = true
       }
+	  var oldBRUpg20Bought = tmp.qu.bigRip.upgrades.pop()
+      if (oldBRUpg20Bought != 20) tmp.qu.bigRip.upgrades.push(oldBRUpg20Bought)
       player.aarexModifications.newGame3PlusVersion = 2.21
   }
   if (player.aarexModifications.newGameMinusMinusVersion === undefined && !player.meta) {

@@ -35,12 +35,16 @@ dev.giveNeutrinos = function(n){
 }
 
 dev.giveAllEmpowerments = function(){
-	var i =0
-	while (player.ghostify.ghostlyPhotons.lights[7] >= getLightEmpowermentReq()){
-		player.ghostify.ghostlyPhotons.enpowerments ++
-		i ++
-		if (i > 100) return
+	var uv = player.ghostify.ghostlyPhotons.lights[7]
+	var le = player.ghostify.ghostlyPhotons.enpowerments
+	var x = 1
+	var y = 0
+	while (uv >= getLightEmpowermentReq(le + x * 2 - 1)) x *= 2
+	while (x >= 1) {
+		if (uv >= getLightEmpowermentReq(le + x + y - 1)) y += x
+		x /= 2
 	}
+	player.ghostify.ghostlyPhotons.enpowerments += y
 }
 
 dev.doubleEverything = function() {

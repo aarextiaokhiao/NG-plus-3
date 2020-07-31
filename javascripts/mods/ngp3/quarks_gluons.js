@@ -233,10 +233,10 @@ function updateColorPowers(log) {
 	let softcapPower=1
 	if (player.ghostify.ghostlyPhotons.unl) softcapPower+=tmp.le[4]
 	if (hasBosonicUpg(11)) softcapPower+=tmp.blu[11]
-	if (log>softcapStartLog) {
-		log=Decimal.pow(log/softcapStartLog,softcapPower/2).times(softcapStartLog)
-		if (log.lt(100)) bLog=bLog.toNumber()
-		else log=Math.min(log.toNumber(),log.log10()*(40+10*log.sub(90).log10()))
+	if (bLog>softcapStartLog) {
+		bLog=Decimal.pow(bLog/softcapStartLog,softcapPower/2).times(softcapStartLog)
+		if (bLog.lt(100)) bLog=bLog.toNumber()
+		else bLog=Math.min(bLog.toNumber(),bLog.log10()*(40+10*bLog.sub(90).log10()))
 	}
 	colorBoosts.b=Decimal.pow(10,bLog)
 
