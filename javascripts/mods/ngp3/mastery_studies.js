@@ -670,30 +670,30 @@ function getMS273Effect(uses){
 }
 
 function getMS281Effect(){
-	return Decimal.pow(10,Math.pow(tmp.rm.max(1).log10(),0.25)/10*(tmp.newNGP3E?2:1))
+	return Decimal.pow(10, Math.pow(tmp.rm.max(1).log10(), 0.25) / 10 * (tmp.newNGP3E ? 2 : 1))
 }
 
 function getMS282Effect(){
-	return Decimal.pow(10,Math.pow(tmp.rm.max(1).log10(),0.25)/15*(tmp.newNGP3E?2:1))
+	return Decimal.pow(10, Math.pow(tmp.rm.max(1).log10(), 0.25) / 15 * (tmp.newNGP3E ? 2 : 1))
 }
 
 function getMS301Effect(){
-	return Math.floor(extraReplGalaxies/4.15)
+	return Math.floor(extraReplGalaxies / 4.15)
 }
 
 function getMS303Effect(){
-	return Decimal.pow(4.7,Math.pow(Math.log10(Math.max(player.galaxies,1)),1.5))
+	return Decimal.pow(4.7, Math.pow(Math.log10(Math.max(player.galaxies, 1)), 1.5))
 }
 
 function getMS322Effect(){
 	let log = Math.sqrt(Math.max(3-getTickspeed().log10(),0))/2e4
-	if (log > 110) log = Math.sqrt(log*27.5)+55
-	if (log > 1e3 && player.aarexModifications.ngudpV !== undefined) log = Math.pow(7+Math.log10(log),3)
-	if (player.aarexModifications.newGameExpVersion) log += Math.pow(Math.log10(log+10),4) - 1
+	if (log > 110) log = Math.sqrt(log * 27.5) + 55
+	if (log > 1e3 && player.aarexModifications.ngudpV !== undefined) log = Math.pow(7 + Math.log10(log), 3)
+	if (player.aarexModifications.newGameExpVersion) log += Math.pow(Math.log10(log + 10), 4) - 1
 	
-	if (log > 1500) log = 1500*Math.pow(log/1500,.8)
-	if (log > 2000) log = 2000*Math.pow(log/2000,.5)
-	if (log > 2500) log = 2500*Math.pow(log/2500,.2)
+	if (log > 1500) log = 1500 * Math.pow(log / 1500, .8)
+	if (log > 2000) log = 2000 * Math.pow(log / 2000, .5)
+	if (log > 2500) log = 2500 * Math.pow(log / 2500, .2)
 	//these are also required very much--more DT is more tickspeed is more DT
 	return Decimal.pow(10, log)
 }
@@ -704,19 +704,23 @@ function getMS332Effect(){
 
 function getMS341Effect(){
 	var exp = Math.sqrt(tmp.qu.replicants.quarks.add(1).log10())
-	if (exp > 150) exp = 150*Math.pow(exp/150,.5)
-	if (exp > 200) exp = 200*Math.pow(exp/200,.5)
-	return Decimal.pow(tmp.newNGP3E?3:2,exp)
+	if (exp > 150) exp = 150 * Math.pow(exp / 150, .5)
+	if (exp > 200) exp = 200 * Math.pow(exp / 200, .5)
+	return Decimal.pow(tmp.newNGP3E ? 3 : 2, exp)
 }
 
 function getMS344Effect(){
-	return Math.pow(tmp.qu.replicants.quarks.div(1e7).add(1).log10(), tmp.newNGP3E ? 0.3 : 0.25) * 0.17 + 1
+	var ret = Math.pow(tmp.qu.replicants.quarks.div(1e7).add(1).log10(), tmp.newNGP3E ? 0.3 : 0.25) * 0.17 + 1
+	if (tmp.ngp3l) return ret
+	if (ret > 3) ret = 1 + Math.log2(ret + 1)
+	if (ret > 4) ret = 3 + Math.log10(ret + 6)
+	return ret
 }
 
-function getMS351Effect(){
+function getMS351Effect(){ //maybe use softcap.js
 	let log = player.timeShards.max(1).log10()*14e-7
 	if (log > 1e4) log = Math.pow(log / 1e4, tmp.ngp3l ? 0.1 : 0.75) * 1e4
-	if (!tmp.ngp3l && log > 2e4) log = 2*Math.pow(Math.log10(5*log)+5,4)
+	if (!tmp.ngp3l && log > 2e4) log = 2 * Math.pow(Math.log10(5 * log) + 5 ,4)
 	return Decimal.pow(tmp.newNGP3E ? 12 : 10, log)
 }
 
@@ -746,15 +750,16 @@ function getMS382Effect(){
 
 function getMS383Effect(){
 	if (tmp.ngp3l) return Decimal.pow(3200,Math.pow(tmp.qu.colorPowers.b.add(1).log10(),0.25))
+	
 	var blueExp = 4/21
 	if (tmp.newNGP3E) blueExp = 1/5
 	var bluePortion = Math.pow(getCPLog("b"), blueExp)
-	var MAportion = Math.sqrt(player.meta.antimatter.add(1).log10())
+	var MAportion = Math.sqrt(player.meta.antimatter.add(10).log10())
 	var exp = MAportion * bluePortion * Math.log10(2)
 	
 	if (!tmp.ngp3l){
-		if (exp > 1000) exp = Math.pow(exp, .5) * 1000
-		if (exp > 2000) exp = Math.pow(exp, .2) * 2000
+		if (exp > 1000) exp = Math.pow(exp / 1000, .6) * 1000
+		if (exp > 2000) exp = Math.pow(exp / 2000, .4) * 2000
 	}
 
 	return Decimal.pow(10, exp)
@@ -775,14 +780,12 @@ function getMS393Effect(){
 function getMS401Effect(){
 	let log=tmp.qu.replicants.quarks.div(1e28).add(1).log10()*0.2
 	if (log > 5) log = Math.log10(log * 2) * 5
-	return Decimal.pow(tmp.newNGP3E?12:10,log)
+	return Decimal.pow(tmp.newNGP3E ? 12 : 10, log)
 }
 
 function getMS411Effect(){
 	var exp = tmp.tra.div(1e24).add(1).pow(0.2).log10()
-	if (tmp.newNGP3E) {
-		exp += Math.pow((exp + 9) * 3, 1/3) * Math.log10(exp + 1)
-	}
+	if (tmp.newNGP3E) exp += Math.pow((exp + 9) * 3, .2) * Math.log10(exp + 1)
 	return Decimal.pow(10, exp)
 }
 
