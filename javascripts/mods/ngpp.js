@@ -645,7 +645,7 @@ let quarkGain = function () {
 	if (log > 738 && !hasNU(8)) log = Math.sqrt(log * 738)
 	if (!tmp.ngp3l) {
 		let exp = 0.6
-		if (tmp.newNGP3E) exp += 0.7
+		if (tmp.newNGP3E) exp += 0.1
 		if (player.achievements.includes("ng3p28")) exp *= 1.01
 
 		log += Math.pow(Math.max(player.eternityPoints.log10() / 1e6, 1), exp) - 1
