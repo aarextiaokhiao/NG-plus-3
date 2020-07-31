@@ -32,7 +32,7 @@ function getMetaDimensionMultiplier(tier) {
 	//Achievements:
 	if (tier == 8 && player.achievements.includes("ng3p22")) ret = ret.times(1+Math.pow(player.meta[1].amount.plus(1).log10()/10,2))
 	if (tier == 1 && player.achievements.includes("ng3p31")) ret = ret.times(player.meta.antimatter.plus(1).pow(.001))
-	if (!tmp.ngp3l && tier == 1 && player.achievements.includes("ng3p17")) ret = ret.times(Math.log10(player.totalmoney.log10()))
+	if (!tmp.ngp3l && tier == 1 && player.achievements.includes("ng3p17")) ret = ret.times(Math.max(1,Math.log10(player.totalmoney.plus(10).log10())))
 	
 	ret = dilates(dilates(ret.max(1), 2), "meta")
 	if (player.dilation.upgrades.includes("ngmm8")) ret = ret.pow(getDil71Mult())
@@ -60,7 +60,9 @@ function getMetaDimensionGlobalMultiplier() {
 		ret = ret.times(getQCReward(6))
 		//Achievement Rewards
 		if (!tmp.ngp3l) {
-			if (player.achievements.includes("ng3p13")) ret = ret.times(Decimal.pow(8, Math.pow(Decimal.plus(quantumWorth, 1).log10(), 0.75)))
+			var ng3p13exp = Math.pow(Decimal.plus(quantumWorth, 1).log10(), 0.75)
+			if (ng3p13exp > 1000) ng3p13exp = Math.pow(7+Math.log10(ng3p13exp),3)
+			if (player.achievements.includes("ng3p13")) ret = ret.times(Decimal.pow(8, ng3p13exp))
 			if (player.achievements.includes("ng3p57")) ret = ret.times(1 + player.timeShards.plus(1).log10())
 		}
 	}
@@ -84,7 +86,7 @@ function getMetaBoostPower() {
 	if (tmp.ngp3) {
 		if (player.masterystudies.includes("d12")) r = getNanofieldRewardEffect(6)
 		if (player.masterystudies.includes("t312")) exp = 1.045
-		if (!tmp.ngp3l && player.achievements.includes("ng3p26")) exp *= Math.sqrt(Math.max(player.meta.resets / 75 + 0.25, 1))
+		if (!tmp.ngp3l && player.achievements.includes("ng3p26")) exp *= Math.log10(9+Math.max(player.meta.resets / 75 + 0.25, 1))
 	}
 	if (player.achievements.includes("ngpp14")) r *= 1.01
 	return Math.pow(r, exp)
@@ -648,7 +650,7 @@ let quarkGain = function () {
 		if (tmp.newNGP3E) exp += 0.1
 		if (player.achievements.includes("ng3p28")) exp *= 1.01
 
-		log += Math.pow(Math.max(player.eternityPoints.log10() / 1e6, 1), exp) - 1
+		log += Math.pow(Math.max(player.eternityPoints.log10() / 1e6, 1), exp) - 1 //maybe softcap this at e5?
 		log += Math.log10(getQCtoQKEffect())
 		log += player.quantum.bigRip.spaceShards.plus(1).log10()
 		if (player.achievements.includes("ng3p65")) log += Math.pow(player.ghostify.ghostlyPhotons.enpowerments, 2)
@@ -656,7 +658,6 @@ let quarkGain = function () {
 
 	var dlog = Math.log10(log)
 	let start = 4 //Starts at e10k.
-	if (player.aarexModifications.ngumuV) start++ //Starts at e100k.
 	if ((player.aarexModifications.ngumuV||player.aarexModifications.nguepV)&&dlog>start) {
 		let capped=Math.floor(Math.log10(Math.max(dlog-2,1))/Math.log10(2))
 		dlog=(dlog-Math.pow(2,capped)-2)/Math.pow(2,capped)+capped+3
