@@ -417,7 +417,8 @@ function getBR1Effect() {
 
 function getRG3Effect() {
 	let exp = 1
-	if (!tmp.ngp3l && player.achievements.includes("ng3p24")) exp += player.meta.resets
+	if (!tmp.ngp3l && player.achievements.includes("ng3p24")) exp += Math.sqrt(player.meta.resets)
+	if (exp > 36) exp = 6*Math.sqrt(exp)
 	return Decimal.pow(player.resets, exp)
 }
 
