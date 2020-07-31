@@ -2384,7 +2384,8 @@ br {
 	min-width:25%;
 	width:25%;
 	max-width:25%;
-	text-align:center
+	text-align:center;
+	vertical-align:0
 }
 
 .gluonupgrade.gph {
@@ -2401,24 +2402,64 @@ br {
 	cursor: pointer
 }
 
+td.red {
+	background: rgba(191, 0, 0, 0.25)
+}
+
 .orange {
 	color: #bf5f00
+}
+
+td.orange {
+	background: rgba(191, 95, 0, 0.25)
 }
 
 .yellow {
 	color: #bfbf00
 }
 
+td.yellow {
+	background: rgba(191, 191, 0, 0.25)
+}
+
+td.green {
+	background: rgba(0, 191, 0, 0.25)
+}
+
+td.blue {
+	background: rgba(0, 0, 191, 0.25)
+}
+
 .indigo {
 	color: #2f00bf
+}
+
+td.indigo {
+	background: rgba(47, 0, 191, 0.25)
 }
 
 .violet {
 	color: #5f00bf
 }
 
+td.violet {
+	background: rgba(95, 0, 191, 0.25)
+}
+
 .uv {
 	color: #8f00bf
+}
+
+td.uv {
+	background: rgba(143, 0, 191, 0.25)
+}
+
+.lEp {
+	color: #bfaf5f
+}
+
+td.lEp {
+	background: rgba(191, 175, 95, 0.25)
 }
 
 #bRunes {

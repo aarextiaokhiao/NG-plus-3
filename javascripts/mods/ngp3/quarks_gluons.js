@@ -415,6 +415,12 @@ function getBR1Effect() {
 	return Math.sqrt(player.dilation.dilatedTime.add(10).log10()) / 2
 }
 
+function getRG3Effect() {
+	let exp = 1
+	if (!tmp.ngp3l && player.achievements.includes("ng3p24")) exp += player.meta.resets
+	return Decimal.pow(player.resets, exp)
+}
+
 function getGU8Effect(type) {
 	return Math.pow(tmp.qu.gluons[type].div("1e565").add(1).log10()*0.505+1, 1.5)
 }
@@ -450,7 +456,8 @@ function updateGluonsTab() {
 	document.getElementById("gbupg1current").textContent="Currently: "+shortenMoney(getGB1Effect())+"x"
 	document.getElementById("brupg1current").textContent="Currently: "+shortenMoney(getBR1Effect())+"x"
 	document.getElementById("rgupg2current").textContent="Currently: "+(Math.pow(player.dilation.freeGalaxies/5e3+1,0.25)*100-100).toFixed(1)+"%"
-	document.getElementById("brupg2current").textContent="Currently: "+shortenMoney(Decimal.pow(2.2, Math.pow(calcTotalSacrificeBoost().log10()/1e6, 0.25)))+"x"
+	document.getElementById("brupg2current").textContent="Currently: "+shortenMoney(Decimal.pow(2.2, Math.pow(tmp.sacPow.log10()/1e6, 0.25)))+"x"
+	document.getElementById("rgupg3current").textContent="Currently: "+shorten(getRG3Effect())+"x"
 	document.getElementById("brupg4current").textContent="Currently: "+shortenMoney(Decimal.pow(getDimensionPowerMultiplier(hasNU(13) && "no-rg4"), 0.0003).max(1))+"x"
 	if (player.masterystudies.includes("d9")) {
 		document.getElementById("gbupg5current").textContent="Currently: "+(Math.sqrt(player.replicanti.galaxies)/5.5).toFixed(1)+"%"

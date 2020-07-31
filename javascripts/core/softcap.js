@@ -27,8 +27,7 @@ var softcap_data = {
 		1: {
 			func: "pow",
 			start: 11e4,
-			pow: 0.5,
-			derv: true
+			pow: 0.5
 		},
 		2: {
 			func: "pow",
@@ -58,18 +57,22 @@ var softcap_data = {
 	bru1_log: {
 		1: {
 			func: "pow",
+			start: 3e8,
 			pow: 0.75
 		},
 		2: {
 			func: "log",
+			start: 1e10,
 			pow: 10
 		},
 		3: {
 			func: "pow",
+			start: 3e10,
 			pow: 0.5
 		},
 		4: {
 			func: "log",
+			start: 1e11,
 			pow: 11,
 			add: -1
 		}
@@ -160,6 +163,7 @@ var softcap_data = {
 		},
 		2: {
 			func: "pow",
+			start: 1e21,
 			pow: 0.2
 		},
 		3: {
@@ -170,6 +174,7 @@ var softcap_data = {
 		},
 		4: {
 			func: "pow",
+			start: 1e23,
 			pow: 0.1
 		}
 	}
@@ -215,7 +220,7 @@ function do_softcap(x, data, num) {
 	return softcap_funcs[func](x, data[vars[0]], data[vars[1]], data[vars[2]])
 }
 
-function softcap(x, id) {
+function softcap(x, id, max = 1/0) {
 	var data = softcap_data[id]
 	if (tmp.ngp3 && tmp.qu.bigRip.active) {
 		var big_rip_data = softcap_data[id + "_big_rip"]
@@ -224,7 +229,7 @@ function softcap(x, id) {
 
 	var sc = 1
 	var stopped
-	while (!stopped) {
+	while (!stopped && sc <= max) {
 		var y = do_softcap(x, data, sc)
 		if (y !== undefined) {
 			x = y

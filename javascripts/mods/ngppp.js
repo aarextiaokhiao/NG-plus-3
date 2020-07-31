@@ -1,225 +1,3 @@
-function setupText() { //why in the world is this in ngppp not game????
-	var pu=document.getElementById("pUpgs")
-	for (r=1;r<=puSizes.y;r++) {
-		row=pu.insertRow(r-1)
-		for (c=1;c<=puSizes.x;c++) {
-			var col=row.insertCell(c-1)
-			var id=(r*10+c)
-			col.innerHTML="<button id='pu"+id+"' class='infinistorebtn1' onclick='buyPU("+id+","+(r<2)+")'>"+(typeof(puDescs[id])=="function"?"<span id='pud"+id+"'></span>":puDescs[id]||"???")+(puMults[id]?"<br>Currently: <span id='pue"+id+"'></span>":"")+"<br><span id='puc"+id+"'></span></button>"
-		}
-	}
-	var iut=document.getElementById("preinfupgrades")
-	for (r=1;r<5;r++) {
-		row=iut.insertRow(r-1)
-		for (c=1;c<5;c++) {
-			var col=row.insertCell(c-1)
-			col.innerHTML="<button id='infi"+(c*10+r)+"' class='infinistorebtn"+c+"'></button>"
-		}
-	}
-	document.getElementById("infi14").innerHTML="Decrease the number of Dimensions needed for Dimensional Boosts and galaxies by 9<br>Cost: 1 IP"
-	document.getElementById("infi24").innerHTML="Antimatter Galaxies are twice as effective<br>Cost: 2 IP"
-	document.getElementById("infi11").onclick = function () {
-		buyInfinityUpgrade("timeMult",1);
-	}
-	document.getElementById("infi21").onclick = function () {
-		buyInfinityUpgrade("dimMult",1);
-	}
-	document.getElementById("infi12").onclick = function () {
-		if (player.infinityUpgrades.includes("timeMult")) buyInfinityUpgrade("18Mult",1);
-	}
-	document.getElementById("infi22").onclick = function () {
-		if (player.infinityUpgrades.includes("dimMult")) buyInfinityUpgrade("27Mult",1);
-	}
-	document.getElementById("infi13").onclick = function () {
-		if (player.infinityUpgrades.includes("18Mult")) buyInfinityUpgrade("36Mult",1);
-	}
-	document.getElementById("infi23").onclick = function () {
-		if (player.infinityUpgrades.includes("27Mult")) buyInfinityUpgrade("45Mult",1);
-	}
-	document.getElementById("infi14").onclick = function () {
-		if (player.infinityUpgrades.includes("36Mult")) buyInfinityUpgrade("resetBoost",1);
-	}
-	document.getElementById("infi24").onclick = function () {
-		if (player.infinityUpgrades.includes("45Mult")) buyInfinityUpgrade("galaxyBoost",2);
-	}
-	document.getElementById("infi31").onclick = function() {
-		buyInfinityUpgrade("timeMult2",3);
-	}
-	document.getElementById("infi32").onclick = function() {
-		if (player.infinityUpgrades.includes("timeMult2")) buyInfinityUpgrade("unspentBonus",5);
-	}
-	document.getElementById("infi33").onclick = function() {
-		if (player.infinityUpgrades.includes("unspentBonus")) buyInfinityUpgrade("resetMult",7);
-	}
-	document.getElementById("infi34").onclick = function() {
-		if (player.infinityUpgrades.includes("resetMult")) buyInfinityUpgrade("passiveGen",10);
-	}
-	document.getElementById("infi41").onclick = function() {
-		buyInfinityUpgrade("skipReset1",20);
-	}
-	document.getElementById("infi42").onclick = function() {
-		if (player.infinityUpgrades.includes("skipReset1")) buyInfinityUpgrade("skipReset2", 40)
-	}
-	document.getElementById("infi43").onclick = function() {
-		if (player.infinityUpgrades.includes("skipReset2")) buyInfinityUpgrade("skipReset3", 80)
-	}
-	document.getElementById("infi44").onclick = function() {
-		if (player.infinityUpgrades.includes("skipReset3")) buyInfinityUpgrade("skipResetGalaxy", 500)
-	}
-	var pcct = document.getElementById("pccompletionstable")
-	var row = pcct.insertRow(0)
-	for (c=0;c<9;c++) {
-		var col = row.insertCell(c)
-		if (c>0) col.textContent = "#" + c
-	}
-	for (r=1;r<9;r++) {
-		row = pcct.insertRow(r)
-		for (c=0;c<9;c++) {
-			var col = row.insertCell(c)
-			if (c<1) col.textContent = "#" + r
-			else if (c==r) {
-				col.id = "qcC" + r
-			} else col.id = "pc" + r + c
-		}
-	}
-	var ndsDiv = document.getElementById("parent")
-	var pdsDiv = document.getElementById("pdTable")
-	var edsDiv = document.getElementById("empDimTable")
-	for (d=1;d<9;d++) {
-		var row=ndsDiv.insertRow(d-1)
-		row.id=d+"Row"
-		row.style["font-size"]="15px"
-		var html='<td class="rel" id="D'+d+'" align="right" width="32%"> </td>'
-		html+='<td id="A'+d+'"></td>'
-		html+='<td align="right" width="10%"><button id="B'+d+'" style="color:black; height: 25px; font-size: 10px; width: 135px" class="storebtn" onclick="buyOneDimension('+d+')"></button></td>'
-		html+='<td align="right" width="10%"><button id="M'+d+'" style="color:black; width:210px; height: 25px; font-size: 10px" class="storebtn" onclick="buyManyDimension('+d+')"></button></td>'
-		row.innerHTML=html
-		
-		var row=pdsDiv.insertRow(d-1)
-		row.id="pR"+d
-		row.style["font-size"]="16px"
-		var html='<td id="pD'+d+'" width="41%">'+DISPLAY_NAMES[d]+' Paradox Dimension x1</td>'
-		html+='<td id="pA'+d+'">0 (0)</td>'
-		html+='<td align="right" width="10%"><button id="pB'+d+'" style="color:black; width:195px; height:30px" class="storebtn" align="right" onclick="buyPD('+d+')">Cost: ??? Px</button></td></tr>'
-		row.innerHTML=html
-		
-		var row=edsDiv.insertRow(d-1)
-		row.id="empRow"+d
-		row.style["font-size"]="15px"
-		var html='<td id="empD'+d+'" width="41%">'+DISPLAY_NAMES[d]+' Emperor Dimension x1</td>'
-		html+='<td id="empAmount'+d+'"></td>'
-		html+='<td><span class="empQuarks" id="empQuarks'+d+'">0</span> preons/s</td>'
-		html+='<td align="right" width="2.5%"><button id="empFeedMax'+d+'" style="color:black; width:70px; font-size:10px" class="storebtn" align="right" onclick="feedReplicant('+d+', true)">Max</button></td>'
-		html+='<td align="right" width="7.5%"><button id="empFeed'+d+'" style="color:black; width:195px; height:25px; font-size:10px" class="storebtn" align="right" onclick="feedReplicant('+d+')">Feed (0%)</button></td>'
-		row.innerHTML=html
-	}
-	for (var c=0;c<3;c++) {
-		var color=(["red","green","blue"])[c]
-		var shorthand=(["r","g","b"])[c]
-		var branchUpgrades=["Gain <span id='"+color+"UpgPow1'></span>x "+color+" quark spins, but "+color+" quarks decay <span id='"+color+"UpgSpeed1'></span>x faster.","The gain of "+color+" <span id='"+color+"UpgName2'></span> quarks is multiplied by x and then raised to the power of x.",(["Red","Green","Blue"])[c]+" <span id='"+color+"UpgName3'></span> quarks decay 4x slower."]
-
-		var html='You have <span class="'+color+'" id="'+color+'QuarksToD" style="font-size: 35px">0</span> '+color+' quarks.<br>'
-		html+='<button class="storebtn" id="'+color+'UnstableGain" style="width: 240px; height: 80px" onclick="unstableQuarks(\''+shorthand+'\')"></button><br>'
-		html+='You have <span class="'+color+'" id="'+color+'QuarkSpin" style="font-size: 35px">0.0</span> '+color+' quark spin.'
-		html+='<span class="'+color+'" id="'+color+'QuarkSpinProduction" style="font-size: 25px">+0/s</span><br>'
-		html+="You have <span class='"+color+"' id='"+color+"UnstableQuarks' style='font-size: 35px'>0</span> "+color+" <span id='"+shorthand+"UQName'></span> quarks.<br>"
-		html+="<span id='"+color+"QuarksDecayRate'></span>.<br>"
-		html+="They will last <span id='"+color+"QuarksDecayTime'></span>."
-		document.getElementById("todRow").insertCell(c).innerHTML=html
-		document.getElementById("todRow").cells[c].className=shorthand+"qC"
-		
-		html="<table class='table' align='center' style='margin: auto'><tr>"
-		for (var u=1;u<4;u++) html+="<td style='vertical-align: 0'><button class='gluonupgrade unavailablebtn' id='"+color+"upg"+u+"' onclick='buyBranchUpg(\""+shorthand+"\", "+u+")'"+(u<3?" style='font-size:10px'":"")+">"+branchUpgrades[u-1]+"<br>Currently: <span id='"+color+"upg"+u+"current'>1</span>x<br>Cost: <span id='"+color+"upg"+u+"cost'>?</span> "+color+" quark spin</button>"+(u==2?"<br><button class='storebtn' style='width: 190px' onclick='maxBranchUpg(\""+shorthand+"\")'>Max all upgrades</button><br><button class='storebtn' style='width: 190px; font-size:10px' onclick='maxBranchUpg(\""+shorthand+"\", true)'>Max 2nd and 3rd upgrades</button>":"")+"</td>"
-		html+="</tr></tr><td></td><td><button class='gluonupgrade unavailablebtn' id='"+shorthand+"RadioactiveDecay' style='font-size:10px' onclick='radioactiveDecay(\""+shorthand+"\")'>Reset to make 1st upgrades stronger, but nerf this branch.<br><span id='"+shorthand+"RDReq'></span><br>Radioactive Decays: <span id='"+shorthand+"RDLvl'></span></button></td><td></td>"
-		html+="</tr></table>"
-		document.getElementById(color+"Branch").innerHTML=html
-	}
-	//Nanofield
-	var nfRewards=document.getElementById("nfRewards")
-	var row=0
-	for (var r=1;r<=8;r+=2) {
-		nfRewards.insertRow(row).innerHTML = 
-			"<td id='nfRewardHeader"+r+"' class='milestoneText'></td>" +
-			"<td id='nfRewardHeader"+(r+1)+"' class='milestoneText'></td>"
-		row++
-		nfRewards.insertRow(row).innerHTML = 
-			"<td id='nfRewardTier"+r+"' class='milestoneTextSmall'></td>" +
-			"<td id='nfRewardTier"+(r+1)+"' class='milestoneTextSmall'></td>"
-		row++
-		nfRewards.insertRow(row).innerHTML = 
-			"<td><button class='nfRewardlocked' id='nfReward"+r+"'></button></td>" +
-			"<td><button class='nfRewardlocked' id='nfReward"+(r+1)+"'></button></td>"
-		row++
-	}
-	document.getElementById("nfReward7").style["font-size"]="10px"
-	document.getElementById("nfReward8").style["font-size"]="10px"
-	//Quantum Challenge modifiers
-	var modDiv=""
-	for (var m=0;m<qcm.modifiers.length;m++) {
-		var id=qcm.modifiers[m]
-		modDiv+=' <button id="qcm_'+id+'" onclick="toggleQCModifier(\''+id+'\')">'+(qcm.names[id]||"???")+'</button>'
-	}
-	document.getElementById("modifiers").innerHTML=modDiv
-	var modDiv='<button class="storebtn" id="qcms_normal" onclick="showQCModifierStats(\'\')">Normal</button>'
-	for (var m=0;m<qcm.modifiers.length;m++) {
-		var id=qcm.modifiers[m]
-		modDiv+=' <button class="storebtn" id="qcms_'+id+'" onclick="showQCModifierStats(\''+id+'\')">'+(qcm.names[id]||"???")+'</button>'
-	}
-	document.getElementById("modifiersStats").innerHTML=modDiv
-	//Brave Milestones
-	for (var m=1;m<17;m++) document.getElementById("braveMilestone"+m).textContent=getFullExpansion(tmp.bm[m-1])+"x quantumed"
-	//Bosonic Extractor
-	var ben=document.getElementById("enchants")
-	for (var g2=2;g2<=br.limit;g2++) {
-		var row=ben.insertRow(g2-2)
-		row.id="bEnRow"+(g2-1)
-		for (var g1=1;g1<g2;g1++) {
-			var col=row.insertCell(g1-1)
-			var id=(g1*10+g2)
-			col.innerHTML="<button id='bEn"+id+"' class='gluonupgrade unavailablebtn' style='font-size: 9px' onclick='takeEnchantAction("+id+")'>"+(bEn.descs[id]||"???")+"<br>"+
-			"Currently: <span id='bEnEffect"+id+"'>???</span><br>"+
-			"<span id='bEnLvl"+id+"'></span><br>"+
-			"<span id='bEnOn"+id+"'></span><br>"+
-			"Cost: <span id='bEnG1Cost"+id+"'></span> <div class='bRune' type='"+g1+"'></div> & <span id='bEnG2Cost"+id+"'></span> <div class='bRune' type='"+g2+"'></div></button><br>"
-		}
-	}
-	var toeDiv=""
-	for (var g=1;g<=br.limit;g++) toeDiv+=' <button id="typeToExtract'+g+'" class="storebtn" onclick="changeTypeToExtract('+g+')" style="width: 25px; font-size: 12px"><div class="bRune" type="'+g+'"></div></button>'
-	document.getElementById("typeToExtract").innerHTML=toeDiv
-	//Bosonic Upgrades
-	var buTable=document.getElementById("bUpgs")
-	for (r=1;r<=bu.rows;r++) {
-		var row=buTable.insertRow(r-1)
-		row.id="bUpgRow"+r
-		for (c=1;c<6;c++) {
-			var col=row.insertCell(c-1)
-			var id=(r*10+c)
-			col.innerHTML="<button id='bUpg"+id+"' class='gluonupgrade unavailablebtn' style='font-size: 9px' onclick='buyBosonicUpgrade("+id+")'>"+(bu.descs[id]||"???")+"<br>"+
-			(bu.effects[id]!==undefined?"Currently: <span id='bUpgEffect"+id+"'>0</span><br>":"")+
-			"Cost: <span id='bUpgCost"+id+"'></span> Bosonic Antimatter<br>"+
-			"Requires: <span id='bUpgG1Req"+id+"'></span> <div class='bRune' type='"+bu.reqData[id][2]+"'></div> & <span id='bUpgG2Req"+id+"'></span> <div class='bRune' type='"+bu.reqData[id][4]+"'></div></button>"
-		}
-	}
-	//Bosonic Runes
-	var brTable=document.getElementById("bRunes")
-	for (var g=1;g<=br.limit;g++) {
-		var width=100/br.limit
-		var col=brTable.rows[0].insertCell(g-1)
-		col.id="bRuneCol"+g
-		col.innerHTML='<div class="bRune" type="'+g+'"></div>: <span id="bRune'+g+'"></span>'
-		col.style="min-width:"+width+"%;width:"+width+"%;max-width:"+width+"%"
-	}
-	var glyphs=document.getElementsByClassName("bRune")
-	for (var g=0;g<glyphs.length;g++) {
-		var glyph=glyphs[g]
-		var type=glyph.getAttribute("type")
-		if (type>0&&type<=br.limit) {
-			glyph.className="bRune "+br.names[type]
-			glyph.setAttribute("ach-tooltip",br.names[type]+" Bosonic Rune")
-		}
-	}
-}
-
 //v1.5
 function showQuantumTab(tabName) {
 	//iterate over all elements in div_tab class. Hide everything that's not tabName and show tabName
@@ -397,7 +175,7 @@ function updateTreeOfDecayTab(){
 		}
 		setAndMaybeShow("treeUpgradeEff",ghostified,'"Tree upgrade efficiency: "+(tmp.tue*100).toFixed(1)+"%"')
 	}
-	document.getElementById("todspeed").textContent = todspeed !== 1 ? "ToD speed multiplier is currently "+shorten(todspeed)+"x." : ""
+	document.getElementById("todspeed").textContent = "Branch speed: " + (todspeed == 1 ? "" : shorten(tmp.branchSpeed) + " * " + shorten(todspeed) + " = ") + shorten(getBranchFinalSpeed()) + "x"
 }
 
 var quantumTabs = {
@@ -1323,6 +1101,22 @@ function unstableQuarks(branch) {
 	if (player.ghostify.milestones<4) tmp.qu.usedQuarks[branch]=new Decimal(0)
 }
 
+function getBranchSpeed() {
+	let x = Decimal.times(getTreeUpgradeEffect(3), getTreeUpgradeEffect(5))
+	if (player.masterystudies.includes("t431")) x = x.times(getMTSMult(431))
+	if (tmp.qu.bigRip.active && isBigRipUpgradeActive(19)) x = x.times(tmp.bru[19])
+	if (hasNU(4)) x = x.times(tmp.nu[2])
+	if (!tmp.ngp3l) {
+		if (player.achievements.includes("ng3p58")) x = x.times(Math.sqrt(player.meta.resets + 1))
+		if (player.ghostify.milestones >= 14) x = x.times(getMilestone14SpinMult())
+	}
+	return x
+}
+
+function getBranchFinalSpeed() {
+	return tmp.branchSpeed.times(todspeed)
+}
+
 function getDecayRate(branch) {
 	let ret = Decimal.pow(2,getBU1Power(branch)*Math.max(getRadioactiveDecays(branch)*.1+.8,1)-getBranchUpgLevel(branch,3)*2-getRDPower(branch)-4)
 	if (branch=="r") {
@@ -1334,12 +1128,7 @@ function getDecayRate(branch) {
 	if (branch=="b") {
 		if (GUBought("br8")) ret = ret.div(getGU8Effect("br"))
 	}
-	ret = ret.times(getTreeUpgradeEffect(3))
-	ret = ret.times(getTreeUpgradeEffect(5))
-	if (player.masterystudies.includes("t431")) ret = ret.times(getMTSMult(431))
-	if (player.ghostify.milestones>13) ret = ret.times(10)
-	if (hasNU(4)) ret = ret.times(tmp.nu[2])
-	if (tmp.qu.bigRip.active && isBigRipUpgradeActive(19)) ret = ret.times(tmp.bru[19])
+	ret = ret.times(getBranchFinalSpeed())
 	return ret.min(Math.pow(2,40)).times(todspeed)
 }
 
@@ -1351,17 +1140,15 @@ function getMilestone14SpinMult(){
 }
 
 function getQuarkSpinProduction(branch) {
-	let ret = Decimal.pow(2,getBU1Power(branch)*(1+getRadioactiveDecays(branch)/10)).times(getTreeUpgradeEffect(3)).times(getTreeUpgradeEffect(5))
-	if (player.masterystudies.includes("t431")) ret = ret.times(getMTSMult(431))
-	if (player.ghostify.milestones > 13) ret = ret.times(getMilestone14SpinMult())
-	ret = ret.times(Decimal.pow(1.1,player.quantum.nanofield.rewards))
-	if (hasNU(4)) ret=ret.times(tmp.nu[2].pow(2))
+	let ret = Decimal.pow(2,getBU1Power(branch)*(1+getRadioactiveDecays(branch)/10)).times(getBranchFinalSpeed())
+	if (hasNU(4)) ret=ret.times(tmp.nu[2])
 	if (player.achievements.includes("ng3p74")) if (player.quantum.tod[branch].decays) ret = ret.times(1+player.quantum.tod[branch].decays)
 	if (tmp.qu.bigRip.active) {
 		if (isBigRipUpgradeActive(18)) ret = ret.times(tmp.bru[18])
 		if (isBigRipUpgradeActive(19)) ret = ret.times(tmp.bru[19])
 		if (hasNU(12)) ret = ret.times(tmp.nu[4].normal)
 	}
+	if (!tmp.ngp3l) ret = ret.times(Decimal.pow(1.1, player.quantum.nanofield.rewards - 12))
 	ret = ret.times(todspeed)
 	return ret
 }
@@ -1410,8 +1197,7 @@ function getTreeUpgradeEffect(upg) {
 		return lvl * 0.25
 	}
 	if (upg==3) {
-		if (lvl<1) return 1
-		if (lvl > 1234) lvl += (lvl-1234)/3
+		if (lvl < 1) return 1
 		let power=0
 		for (var upg=1;upg<9;upg++) power += getTreeUpgradeLevel(upg)
 		return Decimal.pow(2,Math.sqrt(Math.sqrt(Math.max(lvl*3-2,0)) * Math.max(power-10,0)))
@@ -2159,7 +1945,6 @@ function getSpaceShardsGain() {
 			log4log=(log4log-Math.pow(2,capped)-start+2)/Math.pow(2,capped)+capped+start-1
 			log=Math.pow(4,log4log)
 		}
-		if (log>Math.pow(2,20)) log=Math.pow(Math.log2(log)+12,4)
 		ret=Decimal.pow(10,log)
 	}
 	if (isNaN(ret.e)) return new Decimal(0)
@@ -2290,10 +2075,6 @@ function getEMGain() {
 		log=Math.pow(2,log2log)
 	}
 	
-	var scaling = 3
-	if (log > 1500 && scaling >= 3) log = 375*Math.log10(6*log+1000)
-	if (log > 2222 && scaling >= 2) log = 2222*Math.pow(log/2222,.3)
-	
 	return Decimal.pow(10,log).floor()
 }
 
@@ -2366,7 +2147,7 @@ function updateBreakEternityUpgradesTemp() {
 	//Upgrade 7: EP Mult
 	tmp.beu[7] = Decimal.pow(1e9, tmp.qu.breakEternity.epMultPower)
 
-	if (player.ghostify.wzb.unl) {
+	if (player.ghostify.ghostlyPhotons.unl) {
 		//Upgrade 8
 		var x = Math.log10(player.dilation.tachyonParticles.div(1e200).add(1).log10() / 100 + 1) * 3 + 1
 		if (player.aarexModifications.ngudpV && x > 2.2) x = 1.2 + Math.log10(x + 7.8)
@@ -3006,7 +2787,7 @@ function ghostifyReset(implode, gain, amount, force) {
 	document.getElementById("tickLabel").style.visibility = "hidden"
 	document.getElementById("tickSpeedAmount").style.visibility = "hidden"
 	hideDimensions()
-	updateTickSpeed()
+	tmp.tickUpdate = true
 
 	//Infinity
 	if (player.achievements.includes("r85")) player.infMult = player.infMult.times(4)
@@ -3365,7 +3146,7 @@ function updateLightThresholdStrengthDisplay(){
 	for (var c=0;c<8;c++) {
 		document.getElementById("light"+(c+1)).textContent=getFullExpansion(gphData.lights[c])
 		document.getElementById("lightThreshold"+(c+1)).textContent=shorten(getLightThreshold(c))
-		if (c>0) document.getElementById("lightStrength"+c).textContent=(Math.sqrt(c>6?1:tmp.ls[c]+1)+lePower).toFixed(2)
+		if (c>0) document.getElementById("lightStrength"+c).textContent=shorten(Math.sqrt(c>6?1:tmp.ls[c]+1)+lePower)
 	}
 }
 
@@ -3376,7 +3157,7 @@ function updateLEmpowermentPrimary(){
 	document.getElementById("lightEmpowermentReq").textContent=getFullExpansion(tmp.leReq)
 	document.getElementById("lightEmpowerments").textContent=getFullExpansion(gphData.enpowerments)
 	document.getElementById("lightEmpowermentScaling").textContent=getGalaxyScaleName(tmp.leReqScale)+"Light Empowerments"
-	document.getElementById("lightEmpowermentsEffect").textContent=lePower.toFixed(2)
+	document.getElementById("lightEmpowermentsEffect").textContent=shorten(lePower)
 }
 
 function updateLEmpowermentBoosts(){
@@ -3765,15 +3546,7 @@ function getGHRCap() {
 }
 
 function getLightThreshold(l) {
-	var actuallvl = player.ghostify.ghostlyPhotons.lights[l]
-	var lvl = player.ghostify.ghostlyPhotons.lights[l]
-	var log57 = Math.log(7)/Math.log(5)
-	if (lvl > 100) lvl += Math.floor(Math.pow(lvl-95,log57))-7
-	var expsclaing = 0
-	if (actuallvl>200) expsclaing = Math.floor(Math.pow(1.1,actuallvl-180))
-	//lvl += expscaling
-	//abv is commented out on purpose
-	return Decimal.pow(tmp.lti[l],lvl).times(tmp.lt[l])
+	return Decimal.pow(tmp.lti[l],player.ghostify.ghostlyPhotons.lights[l]).times(tmp.lt[l])
 }
 
 function getLightEmpowermentReq(le) {
@@ -4558,6 +4331,16 @@ function getOldAgeRequirement() {
 	return Decimal.pow(10, 3 * 86400 * 365.2425 * year)
 }
 
+function getNanofieldSpeed() {
+	let x = 1
+	if (ghostified) x *= tmp.qu.nanofield.rewards < 16 ? 6 : 3
+	if (hasNU(15)) x *= tmp.nu[6]
+	if (!tmp.ngp3l) {
+		if (player.achievements.includes("ng3p78")) x *= Math.sqrt(getTreeUpgradeLevel(8) * tmp.tue + 1)
+	}
+	return x
+}
+
 function getNanofieldRewardTier(reward, rewards) {
 	let x = Math.ceil((rewards - reward + 1) / 8)
 	let apgw = tmp.apgw
@@ -4571,24 +4354,25 @@ function getNanofieldRewardTier(reward, rewards) {
 
 function getTreeUpgradeEfficiency(mod) {
 	let r=1
-	if (player.ghostify.neutrinos.boosts>6&&(tmp.qu.bigRip.active||mod=="br")&&mod!="noNB") r+=tmp.nb[6]
-	if (player.achievements.includes("ng3p62")&&tmp.qu.bigRip.active&&!tmp.be&&!tmp.ngp3l) r+=0.5
+	if (player.ghostify.neutrinos.boosts > 6 && (tmp.qu.bigRip.active || mod=="br") && mod != "noNB") r += tmp.nb[6]
+	if (!tmp.ngp3l && player.achievements.includes("ng3p62") && !tmp.qu.bigRip.active) r += 0.1
 	return r
 }
 
 function updateBRU1Temp() {
-	let exp = tmp.qu.bigRip.upgrades.includes(17) ? (ghostified ? 3: 2.9) : 1
+	tmp.bru[1] = 1
+	if (!tmp.qu.bigRip.active) return
+	let exp = 1
+	if (tmp.qu.bigRip.upgrades.includes(17)) exp = tmp.bru[17]
 	if (ghostified && player.ghostify.neutrinos.boosts > 7) exp *= tmp.nb[7]
-	let log = player.infinityPoints.max(1).log10() * exp
-	if (!tmp.ngp3l) log = softcap(log, "bru1_log")
-	tmp.bru[1] = Decimal.pow(10, log) //BRU1
+	exp *= player.infinityPoints.max(1).log10()
+	exp = softcap(exp, "bru1_log", tmp.ngp3l ? 1 : 2)
+	tmp.bru[1] = Decimal.pow(10, exp) //BRU1
 }
 
 function updateBRU8Temp() {
-	if (!tmp.qu.bigRip.active) {
-		tmp.bru[8] = 1
-		return
-	}
+	tmp.bru[8] = 1
+	if (!tmp.qu.bigRip.active) return
 	tmp.bru[8] = Decimal.pow(2,getTotalRG()) //BRU8
 	if (!hasNU(11)) tmp.bru[8]=tmp.bru[8].min(Number.MAX_VALUE)
 }
@@ -4614,7 +4398,12 @@ function updateBRU16Temp() {
 	tmp.bru[16] = player.dilation.dilatedTime.div(1e100).pow(0.155).max(1)
 }
 
+function updateBRU17Temp() {
+	tmp.bru[17] = !tmp.ngp3l && ghostified ? 3 : 2.9
+}
+
 function updateBigRipUpgradesTemp(){
+	updateBRU17Temp()
 	updateBRU1Temp()
 	updateBRU8Temp()
 	updateBRU14Temp()

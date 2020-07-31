@@ -402,7 +402,6 @@ if (player.version < 5) {
       player.aarexModifications.popUpId = 0
   }
   if (player.aarexModifications.tabsSave === undefined) player.aarexModifications.tabsSave = {on: false}
-  if (player.aarexModifications.performanceTicks === undefined) player.aarexModifications.performanceTicks = false
   if (player.aarexModifications.noFooter == undefined) player.aarexModifications.noFooter = player.options.theme == "Aarex's Modifications" || player.options.theme == "Aarex's Mods II"
   if (player.masterystudies !== undefined && player.aarexModifications.newGame3PlusVersion === undefined) {
 	  forceHardReset = true
@@ -421,9 +420,8 @@ if (player.version < 5) {
   tmp.newNGP3E=player.aarexModifications.newGameExpVersion!==undefined&&!tmp.ngp3l
   setNonlegacyStuff()
 
-  slider.min=player.aarexModifications.performanceTicks?0:33
   transformSaveToDecimal();
-  updateTickSpeed();
+  tmp.tickUpdate = true;
   updateAchievements();
   updateCheckBoxes();
   toggleChallengeRetry()
@@ -1728,7 +1726,7 @@ if (player.version < 5) {
   document.getElementById("progressBarBtn").textContent = (player.aarexModifications.progressBar?"Hide":"Show")+" progress bar"
   document.getElementById("toggleLogRateChange").textContent = "Logarithm rate: O"+(player.aarexModifications.logRateChange?"N":"FF")
   document.getElementById("tabsSave").textContent = "Saved tabs: O"+(player.aarexModifications.tabsSave.on?"N":"FF")
-  document.getElementById("performanceTicks").textContent = "Performance ticks: O"+(player.aarexModifications.performanceTicks?"N":"FF")
+  updatePerformanceTicks()
   dimDescEnd = (player.aarexModifications.logRateChange?" OoM":"%")+"/s)"
 
   document.getElementById("maxHighestTD").parentElement.parentElement.style.display = player.aarexModifications.ngmX > 3 ? "" : "none"

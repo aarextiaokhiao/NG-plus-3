@@ -187,7 +187,7 @@ function buyTickSpeed() {
 	player.postC8Mult = new Decimal(1)
 	if (inNC(14) && player.tickspeedBoosts == undefined) player.tickBoughtThisInf.current++
 	player.why = player.why + 1
-	updateTickSpeed()
+	tmp.tickUpdate = true
 	return true
 }
 
@@ -271,7 +271,7 @@ function buyMaxTickSpeed() {
 		buyMaxPostInfTickSpeed(mult);
 	}
 
-	updateTickSpeed()
+	tmp.tickUpdate = true
 }
 
 function getTickspeed() {
@@ -284,7 +284,7 @@ function getTickspeed() {
 	return player.tickspeed
 }
 
-function updateTickSpeed() {
+function updateTickspeed() {
 	var showTickspeed = player.tickspeed.lt(1e3) || (player.currentChallenge != "postc3" && !isIC3Trapped()) || player.currentChallenge == "postcngmm_3" || (player.challenges.includes("postcngmm_3") && player.tickspeedBoosts === undefined) || tmp.be
 	var label = ""
 	if (showTickspeed) {

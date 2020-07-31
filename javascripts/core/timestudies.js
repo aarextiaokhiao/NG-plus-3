@@ -819,9 +819,7 @@ let tsMults = {
 		if (log<0) log = 0
 		
 		if (tmp.ngp3l || !bigRipped) return Decimal.pow(10, log)
-
-		if (log > 1e5) log = Math.pow(2 * Math.log10(log), 5)
-		log = softcap(log, "ts11_log")
+		log = softcap(log, "ts11_log_big_rip", 1)
 		
 		return Decimal.pow(10, log)
 	},

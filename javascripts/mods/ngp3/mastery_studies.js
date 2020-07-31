@@ -133,7 +133,9 @@ var masteryStudies = {
 		373: "You get more preons based on your galaxies.",
 		381: "Hatch speed is faster based on your tickspeed reduction multiplier.",
 		382: "Eighth Dimensions boost Meta Dimensions.",
-		383: "Blue power boosts Meta Dimensions.",
+		383: function() {
+			return "Blue power " + (tmp.ngp3l ? "boosts" : " and meta-antimatter boost") + " Meta Dimensions."
+		},
 		391: "Hatch speed is faster based on your meta-antimatter.",
 		392: "Preons boost all Emperor Dimensions.",
 		393: "Workers boost Meta Dimensions.",
@@ -688,7 +690,7 @@ function getMS322Effect(){
 	if (log > 110) log = Math.sqrt(log*27.5)+55
 	if (log > 1e3 && player.aarexModifications.ngudpV !== undefined) log = Math.pow(7+Math.log10(log),3)
 	if (player.aarexModifications.newGameExpVersion) log += Math.pow(Math.log10(log+10),4)-1
-	if (log > 1500) log = (Math.pow(Math.log10(log*6.6+100),5)-24 )+500
+	if (tmp.newNGP3E && log > 1500) log = (Math.pow(Math.log10(log*6.6+100),5)-24)+500
 	return Decimal.pow(10, log)
 }
 
@@ -704,17 +706,14 @@ function getMS341Effect(){
 }
 
 function getMS344Effect(){
-	var ret = Math.pow(tmp.qu.replicants.quarks.div(1e7).add(1).log10(),tmp.newNGP3E?.3:.25)*0.17+1
-	if (ret > 3) ret = 1+Math.log2(ret+1)
-	if (ret > 4) ret = 3 + Math.log10(ret+6)
-	return ret
+	return Math.pow(tmp.qu.replicants.quarks.div(1e7).add(1).log10(), tmp.newNGP3E ? 0.3 : 0.25) * 0.17 + 1
 }
 
 function getMS351Effect(){
 	let log = player.timeShards.max(1).log10()*14e-7
-	if (log > 1e4) log = Math.pow(log*Math.pow(10,36),.1)
-	if (log > 2e4) log = 2*Math.pow(Math.log10(5*log)+5,4)
-	return Decimal.pow(tmp.newNGP3E?12:10,log)
+	if (log > 1e4) log = Math.pow(log / 1e4, tmp.ngp3l ? 0.1 : 0.75) * 1e4
+	if (!tmp.ngp3l && log > 2e4) log = 2*Math.pow(Math.log10(5*log)+5,4)
+	return Decimal.pow(tmp.newNGP3E ? 12 : 10, log)
 }
 
 function getMS361Effect(){
@@ -748,8 +747,8 @@ function getMS383Effect(){
 	var bluePortion = Math.pow(getCPLog("b"), blueExp)
 	var MAportion = Math.sqrt(player.meta.antimatter.add(1).log10())
 	var exp = MAportion * bluePortion * Math.log10(2)
-		
-	return Decimal.pow(10,exp)
+
+	return Decimal.pow(10, exp)
 }
 
 function getMS391Effect(){
@@ -757,7 +756,7 @@ function getMS391Effect(){
 }
 
 function getMS392Effect(){
-	return Decimal.pow(tmp.newNGP3E?1.7:1.6, Math.sqrt(tmp.qu.replicants.quarks.add(1).log10()) ).plus(tmp.ngp3l ? 0 : 1)
+	return Decimal.pow(tmp.newNGP3E ? 1.7 : 1.6, Math.sqrt(tmp.qu.replicants.quarks.add(1).log10())).plus(tmp.ngp3l ? 0 : 1)
 }
 
 function getMS393Effect(){
@@ -772,72 +771,37 @@ function getMS401Effect(){
 
 function getMS411Effect(){
 	var exp = tmp.tra.div(1e24).add(1).pow(0.2).log10()
-	if (tmp.newNGP3E && exp > 1) exp += 3*Math.log10(exp)
-	if (exp > 700) exp = 700*Math.pow(exp/700,.5)
-	return Decimal.pow(10,exp)
+	if (tmp.newNGP3E) {
+		exp += Math.pow((exp + 9) * 3, 1/3) * Math.log10(exp + 1)
+		if (exp > 700) exp = Math.sqrt(exp * 700)
+	}
+	return Decimal.pow(10, exp)
 }
 
 function getMS421Effect(){
-	let ret=Math.pow(Math.max(-getTickspeed().log10()/1e13-0.75,1),4)
-	if (ret > 100 ) ret = Math.sqrt(ret*100)
-	if (ret > 1e10) ret = Math.pow(Math.log10(ret),10)
+	let ret = Math.pow(Math.max(-getTickspeed().log10() / 1e13 - 0.75, 1), 4)
+	if (ret > 100) ret = Math.sqrt(ret * 100)
 	return ret
 }
 
 function getMS431Effect(){
-	var gals=player.dilation.freeGalaxies+tmp.eg431
-	
-	var effectBase = Math.max(gals/1e4,1)
+	var gals = player.dilation.freeGalaxies + tmp.eg431
+	if (!tmp.ngp3l && gals >= 1e6) gals = Math.pow(gals * 1e3, 2/3)
+
+	var effectBase = Math.max(gals / 1e4, 1)
 	if (effectBase > 10 && tmp.newNGP3E) effectBase *= Math.log10(effectBase)
-	
-	var effectExp = Math.max(gals/1e4+Math.log10(gals)/2,1)
+
+	var effectExp = Math.max(gals / 1e4 + Math.log10(gals) / 2, 1)
 	if (effectExp > 10 && tmp.newNGP3E) effectExp *= Math.log10(effectExp)
-		
-	let eff=Decimal.pow(effectBase,effectExp)
+
+	let eff = Decimal.pow(effectBase, effectExp)
 	if (tmp.newNGP3E) eff = eff.times(eff.plus(9).log10())
-		
-	var log = eff.log10()
-	if (!tmp.ngp3l) {
-		var scaling = 3
-		
-		if (log > 100 && scaling >= 3) log = 100*Math.pow(log/100,.9)
-		if (log > 300 && scaling >= 2) log = 300*Math.pow(log/300,.7)
-		if (log > 500 && scaling >= 1) log = 500*Math.pow(log/500,.5)
-	}
-	return Decimal.pow(10,log)
+
+	return eff
 }
 
 function getMTSMult(id, uses = "") {
-	if (id==251) return getMS251Effect()
-	if (id==252) return getMS252Effect()
-	if (id==253) return getMS253Effect()
-	if (id==262) return getMS262Effect()
-	if (id==263) return getMS263Effect()
-	if (id==264) return getMS264Effect()
-	if (id==273) return getMS273Effect(uses)
-	if (id==281) return getMS281Effect()
-	if (id==282) return getMS282Effect()
-	if (id==301) return getMS301Effect()
-	if (id==303) return getMS303Effect()
-	if (id==322) return getMS322Effect()
-	if (id==332) return getMS332Effect()
-	if (id==341) return getMS341Effect()
-	if (id==344) return getMS344Effect()
-	if (id==351) return getMS351Effect()
-	if (id==361) return getMS361Effect()
-	if (id==371) return getMS371Effect()
-	if (id==372) return getMS372Effect()
-	if (id==373) return getMS373Effect()
-	if (id==381) return getMS381Effect()
-	if (id==382) return getMS382Effect()
-	if (id==383) return getMS383Effect()
-	if (id==391) return getMS391Effect()
-	if (id==392) return getMS392Effect()
-	if (id==393) return getMS393Effect()
-	if (id==401) return getMS401Effect()
-	if (id==411) return getMS411Effect()
-	if (id==421) return getMS421Effect()
-	if (id==431) return getMS431Effect()
+	return eval("getMS" + id + "Effect")(uses)
 }
 
 

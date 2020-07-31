@@ -24,16 +24,15 @@ function getMetaDimensionMultiplier(tier) {
 	ret = ret.times(Decimal.pow(getMetaBoostPower(), Math.max(player.meta.resets + 1 - tier, 0)))
 	ret = ret.times(tmp.mdgm) //Global multiplier of all Meta Dimensions
 	//Quantum upgrades
-	if (GUBought("rg3")&&tier<2) ret = ret.times(player.resets)
-	
+	if (tier == 1 && GUBought("rg3")) ret = ret.times(getRG3Effect())
+
 	//QC Rewards:
 	if (tier%2>0) ret = ret.times(QC4Reward)
 	
 	//Achievements:
-	if (tier == 1 && player.achievements.includes("ng3p17") && !tmp.ngp3l) ret = ret.times(Math.log10(player.totalmoney.log10()))
 	if (tier == 8 && player.achievements.includes("ng3p22")) ret = ret.times(1+Math.pow(player.meta[1].amount.plus(1).log10()/10,2))
 	if (tier == 1 && player.achievements.includes("ng3p31")) ret = ret.times(player.meta.antimatter.plus(1).pow(.001))
-	if (player.achievements.includes("ng3p57")) ret = ret.times(1+player.timeShards.plus(1).log10())
+	if (!tmp.ngp3l && tier == 1 && player.achievements.includes("ng3p17")) ret = ret.times(Math.log10(player.totalmoney.log10()))
 	
 	ret = dilates(dilates(ret.max(1), 2), "meta")
 	if (player.dilation.upgrades.includes("ngmm8")) ret = ret.pow(getDil71Mult())
@@ -60,7 +59,10 @@ function getMetaDimensionGlobalMultiplier() {
 		ret = ret.times(getQCReward(3))
 		ret = ret.times(getQCReward(6))
 		//Achievement Rewards
-		if (player.achievements.includes("ng3p13") && !tmp.ngp3l) ret = ret.times(Decimal.pow(8, Math.pow(Decimal.plus(quantumWorth, 1).log10(), 0.75)))
+		if (!tmp.ngp3l) {
+			if (player.achievements.includes("ng3p13")) ret = ret.times(Decimal.pow(8, Math.pow(Decimal.plus(quantumWorth, 1).log10(), 0.75)))
+			if (player.achievements.includes("ng3p57")) ret = ret.times(1 + player.timeShards.plus(1).log10())
+		}
 	}
 	
 	return ret
@@ -82,6 +84,7 @@ function getMetaBoostPower() {
 	if (tmp.ngp3) {
 		if (player.masterystudies.includes("d12")) r = getNanofieldRewardEffect(6)
 		if (player.masterystudies.includes("t312")) exp = 1.045
+		if (!tmp.ngp3l && player.achievements.includes("ng3p26")) exp *= Math.sqrt(Math.max(player.meta.resets / 75 + 0.25, 1))
 	}
 	if (player.achievements.includes("ngpp14")) r *= 1.01
 	return Math.pow(r, exp)
@@ -632,7 +635,7 @@ let quarkGain = function () {
 	let ma = player.meta.antimatter.max(1)
 	if (!tmp.ngp3) return Decimal.pow(10, ma.log(10) / Math.log10(Number.MAX_VALUE) - 1).times(quarkMult()).floor();
 	
-	if (!tmp.qu.times&&!player.ghostify.milestones) return new Decimal(1)
+	if (!tmp.qu.times && !player.ghostify.milestones) return new Decimal(1)
 	if (player.ghostify.milestones) ma = player.meta.bestAntimatter.max(1)
 
 	let log = (ma.log10() - 379.4) / (player.achievements.includes("ng3p63") ? 279.8 : 280)
@@ -640,10 +643,16 @@ let quarkGain = function () {
 	let logBoostExp = tmp.ngp3l ? 2 : 1.5
 	if (log > logBoost) log = Math.pow(log / logBoost, logBoostExp) * logBoost
 	if (log > 738 && !hasNU(8)) log = Math.sqrt(log * 738)
-	if (!tmp.ngp3l) log += Math.pow(Math.max(player.eternityPoints.log10() / 1e6, 1), tmp.newNGP3E ? .6 : .7) - 1
-	if (!tmp.ngp3l) log += player.quantum.bigRip.spaceShards.plus(1).log10()
-	log += Math.log10(getQCtoQKEffect())
-	if (player.achievements.includes("ng3p65") && !tmp.ngp3l) log += Math.pow(player.ghostify.ghostlyPhotons.enpowerments,2)
+	if (!tmp.ngp3l) {
+		let exp = 0.6
+		if (tmp.newNGP3E) exp += 0.7
+		if (player.achievements.includes("ng3p28")) exp *= 1.01
+
+		log += Math.pow(Math.max(player.eternityPoints.log10() / 1e6, 1), exp) - 1
+		log += Math.log10(getQCtoQKEffect())
+		log += player.quantum.bigRip.spaceShards.plus(1).log10()
+		if (player.achievements.includes("ng3p65")) log += Math.pow(player.ghostify.ghostlyPhotons.enpowerments, 2)
+	}
 
 	var dlog = Math.log10(log)
 	let start = 4 //Starts at e10k.
@@ -1547,7 +1556,7 @@ function quantumReset(force, auto, challid, bigRip, implode=false) {
 	updateEternityUpgrades()
 	document.getElementById("totaltickgained").textContent = "You've gained "+player.totalTickGained.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")+" tickspeed upgrades."
 	hideDimensions()
-	updateTickSpeed();
+	tmp.tickUpdate = true
 	playerInfinityUpgradesOnEternity()
 	document.getElementById("eternityPoints2").innerHTML = "You have <span class=\"EPAmount2\">"+shortenDimensions(player.eternityPoints)+"</span> Eternity point"+((player.eternityPoints.eq(1)) ? "." : "s.")
 	document.getElementById("epmult").innerHTML = "You gain 5 times more EP<p>Currently: 1x<p>Cost: 500 EP"
