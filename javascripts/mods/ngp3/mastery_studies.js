@@ -225,59 +225,59 @@ function convertMasteryStudyIdToDisplay(x) {
 
 function updateMasteryStudyCosts() {
 	var oldBought=masteryStudies.bought
-	masteryStudies.latestBoughtRow=0
-	masteryStudies.costMult=1
-	masteryStudies.bought=0
-	masteryStudies.ttSpent=0
-	for (id=0;id<player.masterystudies.length;id++) {
-		var t=player.masterystudies[id].split("t")[1]
+	masteryStudies.latestBoughtRow = 0
+	masteryStudies.costMult = 1
+	masteryStudies.bought = 0
+	masteryStudies.ttSpent = 0
+	for (id = 0; id<player.masterystudies.length; id++) {
+		var t = player.masterystudies[id].split("t")[1]
 		if (t) {
-			setMasteryStudyCost(t,"t")
-			masteryStudies.ttSpent+=masteryStudies.costs.time[t]
-			masteryStudies.costMult*=getMasteryStudyCostMult(t)
-			masteryStudies.latestBoughtRow=Math.max(masteryStudies.latestBoughtRow,Math.floor(t/10))
+			setMasteryStudyCost(t, "t")
+			masteryStudies.ttSpent += masteryStudies.costs.time[t]
+			masteryStudies.costMult *= getMasteryStudyCostMult(t)
+			masteryStudies.latestBoughtRow = Math.max(masteryStudies.latestBoughtRow,Math.floor(t/10))
 			masteryStudies.bought++
 		}
 	}
-	for (id=0;id<masteryStudies.timeStudies.length;id++) {
-		var name=masteryStudies.timeStudies[id]
+	for (id=0; id < masteryStudies.timeStudies.length; id++) {
+		var name = masteryStudies.timeStudies[id]
 		if (!masteryStudies.unlocked.includes(name)) break
 		if (!player.masterystudies.includes("t"+name)) setMasteryStudyCost(name,"t")
 	}
-	for (id=13;id<=masteryStudies.ecsUpTo;id++) {
+	for (id = 13; id <= masteryStudies.ecsUpTo; id++) {
 		if (!masteryStudies.unlocked.includes("ec"+id)) break
 		setMasteryStudyCost(id,"ec")
-		masteryStudies.ecReqsStored[id]=masteryStudies.ecReqs[id]()
+		masteryStudies.ecReqsStored[id] = masteryStudies.ecReqs[id]()
 	}
-	for (id=7;id<=masteryStudies.unlocksUpTo;id++) {
+	for (id = 7; id <= masteryStudies.unlocksUpTo; id++) {
 		if (!masteryStudies.unlocked.includes("d"+id)) break
 		setMasteryStudyCost(id,"d")
 	}
-	if (oldBought!=masteryStudies.bought) updateSpentableMasteryStudies()
-	if (player.eternityChallUnlocked>12) masteryStudies.ttSpent+=masteryStudies.costs.ec[player.eternityChallUnlocked]
-	if (masteryStudies.bought>=48) giveAchievement("The Theory of Ultimate Studies")
+	if (oldBought != masteryStudies.bought) updateSpentableMasteryStudies()
+	if (player.eternityChallUnlocked > 12) masteryStudies.ttSpent+=masteryStudies.costs.ec[player.eternityChallUnlocked]
+	if (masteryStudies.bought >= 48) giveAchievement("The Theory of Ultimate Studies")
 	updateMasteryStudyTextDisplay()
 }
 
 function setupMasteryStudies() {
-	masteryStudies.studies=[241]
-	var map=masteryStudies.studies
+	masteryStudies.studies = [241]
+	var map = masteryStudies.studies
 	var part
-	var pos=0
+	var pos = 0
 	while (true) {
-		var id=map[pos]
+		var id = map[pos]
 		if (!id) {
 			if (!part) break
 			map.push(part)
-			id=part
-			part=""
+			id = part
+			part = ""
 		}
-		if (typeof(id)=="number") masteryStudies.timeStudies.push(id)
-		var paths=getMasteryStudyConnections(id)
-		if (paths!==undefined) for (var x=0;x<paths.length;x++) {
-			var y=paths[x]
+		if (typeof(id) == "number") masteryStudies.timeStudies.push(id)
+		var paths = getMasteryStudyConnections(id)
+		if (paths! == undefined) for (var x = 0; x < paths.length; x++) {
+			var y = paths[x]
 			if (!map.includes(y)) {
-				if (y.toString()[0]=="d") part=y
+				if (y.toString()[0] == "d") part = y
 				else map.push(y)
 			}
 		}
@@ -287,11 +287,11 @@ function setupMasteryStudies() {
 
 function setupMasteryStudiesHTML() {
 	setupMasteryStudies()
-	for (id=0;id<masteryStudies.timeStudies.length;id++) {
-		var name=masteryStudies.timeStudies[id]
-		var html="<span id='ts"+name+"Desc'></span>"
-		if (masteryStudies.hasStudyEffect.includes(name)) html+="<br>Currently: <span id='ts"+name+"Current'></span>"
-		html+="<br>Cost: <span id='ts"+name+"Cost'></span> Time Theorems"
+	for (id = 0; id < masteryStudies.timeStudies.length; id++) {
+		var name = masteryStudies.timeStudies[id]
+		var html = "<span id='ts"+name+"Desc'></span>"
+		if (masteryStudies.hasStudyEffect.includes(name)) html += "<br>Currently: <span id='ts"+name+"Current'></span>"
+		html += "<br>Cost: <span id='ts"+name+"Cost'></span> Time Theorems"
 		document.getElementById("timestudy"+name).innerHTML=html
 	}
 }
@@ -304,41 +304,41 @@ function updateUnlockedMasteryStudies() {
 	var unl=true
 	var rowNum=0
 	masteryStudies.unlocked=[]
-	for (var x=0;x<masteryStudies.studies.length;x++) {
-		var id=masteryStudies.studies[x]
-		var divid=convertMasteryStudyIdToDisplay(id)
-		if (Math.floor(id/10)>rowNum) {
-			rowNum=Math.floor(id/10)
-			if (masteryStudies.allUnlocks["r"+rowNum]&&!masteryStudies.allUnlocks["r"+rowNum]()) unl=false
-			document.getElementById(divid).parentElement.parentElement.parentElement.parentElement.style=unl?"":"display: none !important"
+	for (var x = 0; x < masteryStudies.studies.length; x++) {
+		var id = masteryStudies.studies[x]
+		var divid = convertMasteryStudyIdToDisplay(id)
+		if (Math.floor(id / 10) > rowNum) {
+			rowNum = Math.floor(id / 10)
+			if (masteryStudies.allUnlocks["r"+rowNum] && !masteryStudies.allUnlocks["r"+rowNum]()) unl = false
+			document.getElementById(divid).parentElement.parentElement.parentElement.parentElement.style = unl ? "" : "display: none !important"
 			if (unl) masteryStudies.unlocked.push("r"+rowNum)
-		} else if (divid[0]=="d") document.getElementById(divid).parentElement.parentElement.parentElement.parentElement.style=unl?"":"display: none !important"
-		if (masteryStudies.allUnlocks[id]&&!masteryStudies.allUnlocks[id]()) unl=false
-		document.getElementById(divid).style.visibility=unl?"":"hidden"
+		} else if (divid[0] == "d") document.getElementById(divid).parentElement.parentElement.parentElement.parentElement.style = unl ? "" : "display: none !important"
+		if (masteryStudies.allUnlocks[id]&&!masteryStudies.allUnlocks[id]()) unl = false
+		document.getElementById(divid).style.visibility = unl ? "" : "hidden"
 		if (unl) masteryStudies.unlocked.push(id)
 	}
 }
 
 function updateSpentableMasteryStudies() {
-	masteryStudies.spentable=[]
+	masteryStudies.spentable = []
 	addSpentableMasteryStudies(241)
 }
 
 function addSpentableMasteryStudies(x) {
-	var map=[x]
+	var map = [x]
 	var part
-	var pos=0
+	var pos = 0
 	while (true) {
-		var id=map[pos]
+		var id = map[pos]
 		if (!id) break
-		var isNum=typeof(id)=="number"
-		var ecId=!isNum&&id.split("ec")[1]
-		var canAdd=false
-		if (ecId) canAdd=ECTimesCompleted("eterc"+ecId)
-		else canAdd=player.masterystudies.includes(isNum?"t"+id:id)
-		if (masteryStudies.unlocked.includes(id)&&!masteryStudies.spentable.includes(id)) masteryStudies.spentable.push(id)
+		var isNum=typeof(id) == "number"
+		var ecId = !isNum&&id.split("ec")[1]
+		var canAdd = false
+		if (ecId) canAdd = ECTimesCompleted("eterc"+ecId)
+		else canAdd = player.masterystudies.includes(isNum?"t"+id:id)
+		if (masteryStudies.unlocked.includes(id) && !masteryStudies.spentable.includes(id)) masteryStudies.spentable.push(id)
 		if (canAdd) {
-			var paths=getMasteryStudyConnections(id)
+			var paths = getMasteryStudyConnections(id)
 			if (paths) for (var x=0;x<paths.length;x++) map.push(paths[x])
 		}
 		pos++
@@ -346,13 +346,13 @@ function addSpentableMasteryStudies(x) {
 }
 
 function setMasteryStudyCost(id,type) {
-	let d=masteryStudies.initCosts
-	let type2=masteryStudies.types[type]
-	masteryStudies.costs[type2][id]=((tmp.ngp3l&&d[type2+"_legacy"][id])||d[type2][id]||0)*(type=="d"?1:masteryStudies.costMult)
+	let d = masteryStudies.initCosts
+	let type2 = masteryStudies.types[type]
+	masteryStudies.costs[type2][id] = ((tmp.ngp3l && d[type2+"_legacy"][id])||d[type2][id]||0) * (type == "d" ? 1 : masteryStudies.costMult)
 }
 
 function getMasteryStudyCostMult(id) {
-	return (tmp.ngp3l&&masteryStudies.costs.time_mults_legacy[id])||masteryStudies.costs.time_mults[id]||1
+	return (tmp.ngp3l && masteryStudies.costs.time_mults_legacy[id]) || masteryStudies.costs.time_mults[id] || 1
 }
 
 function buyingD7Changes(){
@@ -397,39 +397,39 @@ function buyingDilStudyToD(){
 }
 
 function buyingDilationStudy(id){
-	if (id==7) buyingD7Changes()
-	if (id==8||id==9||id==14) buyingDilStudyForQC()
+	if (id == 7) buyingD7Changes()
+	if (id == 8 || id == 9 || id == 14) buyingDilStudyForQC()
 	if (id == 9) updateGluonsTabOnUpdate()
-	if (id==10) buyingDilStudyReplicant()
-	if (id==11) buyingDilStudyED()
-	if (id==12) buyingDilStudyNanofield()
-	if (id==13) buyingDilStudyToD()
+	if (id == 10) buyingDilStudyReplicant()
+	if (id == 11) buyingDilStudyED()
+	if (id == 12) buyingDilStudyNanofield()
+	if (id == 13) buyingDilStudyToD()
 }
 
 function buyMasteryStudy(type, id, quick=false) {
 	if (quick) setMasteryStudyCost(id,type)
 	if (canBuyMasteryStudy(type, id)) {
-		player.timestudy.theorem-=masteryStudies.costs[masteryStudies.types[type]][id]
-		if (type=='ec') {
-			player.eternityChallUnlocked=id
-			player.etercreq=id
+		player.timestudy.theorem -= masteryStudies.costs[masteryStudies.types[type]][id]
+		if (type == 'ec') {
+			player.eternityChallUnlocked = id
+			player.etercreq = id
 			updateEternityChallenges()
 			delete tmp.qu.autoECN
-		} else player.masterystudies.push(type+id)
-		if (type=="t") {
+		} else player.masterystudies.push(type + id)
+		if (type == "t") {
 			addSpentableMasteryStudies(id)
 			if (id == 302) maybeShowFillAll()
 			if (quick) {
-				masteryStudies.costMult*=getMasteryStudyCostMult(id)
-				masteryStudies.latestBoughtRow=Math.max(masteryStudies.latestBoughtRow,Math.floor(id/10))
+				masteryStudies.costMult *= getMasteryStudyCostMult(id)
+				masteryStudies.latestBoughtRow = Math.max(masteryStudies.latestBoughtRow, Math.floor(id / 10))
 			}
 			if (id == 241 && !GUBought("gb3")) {
-				var otherMults=1
-				if (player.achievements.includes("r85")) otherMults*=4
-				if (player.achievements.includes("r93")) otherMults*=4
-				var old=getIPMultPower()
-				ipMultPower=2.2
-				player.infMult=player.infMult.div(otherMults).pow(Math.log10(getIPMultPower())/Math.log10(old)).times(otherMults)
+				var otherMults = 1
+				if (player.achievements.includes("r85")) otherMults *= 4
+				if (player.achievements.includes("r93")) otherMults *= 4
+				var old = getIPMultPower()
+				ipMultPower = 2.2
+				player.infMult = player.infMult.div(otherMults).pow(Math.log10(getIPMultPower()) / Math.log10(old)).times(otherMults)
 			}
 			if (id == 251 || id == 252 || id == 253 || id == 301){
 				player.galaxies = 1
@@ -438,11 +438,11 @@ function buyMasteryStudy(type, id, quick=false) {
 				player.resets = 4
 			}
 			if (id == 266 && player.replicanti.gal > 399) {
-				var gal=player.replicanti.gal
-				player.replicanti.gal=0
-				player.replicanti.galCost=new Decimal(player.galacticSacrifice!=undefined?1e110:1e170)
-				player.replicanti.galCost=getRGCost(gal)
-				player.replicanti.gal=gal
+				var gal = player.replicanti.gal
+				player.replicanti.gal = 0
+				player.replicanti.galCost = new Decimal(player.galacticSacrifice!=undefined?1e110:1e170)
+				player.replicanti.galCost = getRGCost(gal)
+				player.replicanti.gal = gal
 			}
 			if (id == 312){
 				player.meta.resets = 4
@@ -452,7 +452,7 @@ function buyMasteryStudy(type, id, quick=false) {
 				var isone = ((inQC(5)||inQC(7))&&focusOn!="linear")||(((inNC(13)&&player.tickspeedBoosts==undefined)||player.currentChallenge=="postc1"||player.currentChallenge=="postcngm3_1")&&player.galacticSacrifice!=undefined)
 				if (isone) {
 					for (var i = 1; i<9; i++) {
-						player[tiers[i] + "Pow"] = player[tiers[i] + "Pow"].times(Decimal.pow(10,430*player[tiers[i] + "Bought"]/10))
+						player[tiers[i] + "Pow"] = player[tiers[i] + "Pow"].times(Decimal.pow(10, 430 * player[tiers[i] + "Bought"]/10))
 					}
 				}
 			}
@@ -460,13 +460,13 @@ function buyMasteryStudy(type, id, quick=false) {
 		}
 		if (type=="d") buyingDilationStudy(id)
 		if (!quick) {
-			if (type=="t") {
-				if (id==302) fillAll()
+			if (type == "t") {
+				if (id == 302) fillAll()
 				masteryStudies.bought++
-			} else if (type=="ec") {
+			} else if (type == "ec") {
 				showTab("challenges")
 				showChallengesTab("eternitychallenges")
-			} else if (type=="d") {
+			} else if (type == "d") {
 				updateUnlockedMasteryStudies()
 				updateSpentableMasteryStudies()
 			}
@@ -478,107 +478,107 @@ function buyMasteryStudy(type, id, quick=false) {
 }
 
 function canBuyMasteryStudy(type, id) {
-	if (type=='t') {
-		if (inQCModifier("sm")&&masteryStudies.bought>=20) return false
-		if (player.timestudy.theorem<masteryStudies.costs.time[id]||player.masterystudies.includes('t'+id)||player.eternityChallUnlocked>12||!masteryStudies.timeStudies.includes(id)) return false
-		if (masteryStudies.latestBoughtRow>Math.floor(id/10)) return false
+	if (type == 't') {
+		if (inQCModifier("sm") && masteryStudies.bought >= 20) return false
+		if (player.timestudy.theorem < masteryStudies.costs.time[id] || player.masterystudies.includes('t' + id) || player.eternityChallUnlocked > 12 || !masteryStudies.timeStudies.includes(id)) return false
+		if (masteryStudies.latestBoughtRow > Math.floor(id / 10)) return false
 		if (!masteryStudies.spentable.includes(id)) return false
-	} else if (type=='d') {
-		if (player.timestudy.theorem<masteryStudies.costs.dil[id]||player.masterystudies.includes('d'+id)) return false
+	} else if (type == 'd') {
+		if (player.timestudy.theorem < masteryStudies.costs.dil[id] || player.masterystudies.includes('d' + id)) return false
 		if (!ghostified && !(masteryStudies.unlockReqConditions[id] && masteryStudies.unlockReqConditions[id]())) return false
-		if (!masteryStudies.spentable.includes("d"+id)) return false
+		if (!masteryStudies.spentable.includes("d" + id)) return false
 	} else {
-		if (player.timestudy.theorem<masteryStudies.costs.ec[id]||player.eternityChallUnlocked) return false
-		if (!masteryStudies.spentable.includes("ec"+id)) return false
-		if (player.etercreq==id) return true
-		if (id==13) return player.resets>=masteryStudies.ecReqsStored[13]
-		return Math.round(player.replicanti.chance*100)>=masteryStudies.ecReqsStored[14]
+		if (player.timestudy.theorem < masteryStudies.costs.ec[id] || player.eternityChallUnlocked) return false
+		if (!masteryStudies.spentable.includes("ec" + id)) return false
+		if (player.etercreq == id) return true
+		if (id == 13) return player.resets >= masteryStudies.ecReqsStored[13]
+		return Math.round(player.replicanti.chance * 100) >= masteryStudies.ecReqsStored[14]
 	}
 	return true
 }
 	
 function updateMasteryStudyButtons() {
 	if (!tmp.ngp3) return
-	for (id=0;id<masteryStudies.timeStudies.length;id++) {
-		var name=masteryStudies.timeStudies[id]
-		var div=document.getElementById("timestudy"+name)
+	for (id=0; id < masteryStudies.timeStudies.length; id++) {
+		var name = masteryStudies.timeStudies[id]
+		var div = document.getElementById("timestudy" + name)
 		if (!masteryStudies.unlocked.includes(name)) break
-		if (player.masterystudies.includes("t"+name)) div.className="timestudybought"
-		else if (canBuyMasteryStudy('t', name)) div.className="timestudy"
-		else div.className="timestudylocked"
+		if (player.masterystudies.includes("t" + name)) div.className = "timestudybought"
+		else if (canBuyMasteryStudy('t', name)) div.className = "timestudy"
+		else div.className = "timestudylocked"
 		if (masteryStudies.hasStudyEffect.includes(name)) {
-			var mult=getMTSMult(name, "ms")
-			document.getElementById("ts"+name+"Current").textContent=(masteryStudies.studyEffectDisplays[name]?masteryStudies.studyEffectDisplays[name](mult):shorten(mult)+"x")
+			var mult = getMTSMult(name, "ms")
+			document.getElementById("ts"+name+"Current").textContent = (masteryStudies.studyEffectDisplays[name] ? masteryStudies.studyEffectDisplays[name](mult) : shorten(mult) + "x")
 		}
 	}
-	for (id=13;id<=masteryStudies.ecsUpTo;id++) {
-		var div=document.getElementById("ec"+id+"unl")
+	for (id = 13; id <= masteryStudies.ecsUpTo; id++) {
+		var div = document.getElementById("ec"+id+"unl")
 		if (!masteryStudies.unlocked.includes("ec"+id)) break
-		if (player.eternityChallUnlocked==id) div.className="eternitychallengestudybought"
-		else if (canBuyMasteryStudy('ec', id)) div.className="eternitychallengestudy"
-		else div.className="timestudylocked"
+		if (player.eternityChallUnlocked == id) div.className = "eternitychallengestudybought"
+		else if (canBuyMasteryStudy('ec', id)) div.className = "eternitychallengestudy"
+		else div.className = "timestudylocked"
 	}
-	for (id=7;id<=masteryStudies.unlocksUpTo;id++) {
-		var div=document.getElementById("dilstudy"+id)
+	for (id = 7; id <= masteryStudies.unlocksUpTo; id++) {
+		var div = document.getElementById("dilstudy"+id)
 		if (!masteryStudies.unlocked.includes("d"+id)) break
-		if (player.masterystudies.includes("d"+id)) div.className="dilationupgbought"
-		else if (canBuyMasteryStudy('d', id)) div.className="dilationupg"
-		else div.className="timestudylocked"
+		if (player.masterystudies.includes("d"+id)) div.className = "dilationupgbought"
+		else if (canBuyMasteryStudy('d', id)) div.className = "dilationupg"
+		else div.className = "timestudylocked"
 	}
 }
 
 function updateMasteryStudyTextDisplay() {
 	if (!player.masterystudies) return
-	document.getElementById("costmult").textContent=shorten(masteryStudies.costMult)
-	document.getElementById("totalmsbought").textContent=masteryStudies.bought
-	document.getElementById("totalttspent").textContent=shortenDimensions(masteryStudies.ttSpent)
-	for (id=0;id<masteryStudies.timeStudies.length;id++) {
-		var name=masteryStudies.timeStudies[id]
+	document.getElementById("costmult").textContent = shorten(masteryStudies.costMult)
+	document.getElementById("totalmsbought").textContent = masteryStudies.bought
+	document.getElementById("totalttspent").textContent = shortenDimensions(masteryStudies.ttSpent)
+	for (id = 0; id < masteryStudies.timeStudies.length; id++) {
+		var name = masteryStudies.timeStudies[id]
 		if (!masteryStudies.unlocked.includes(name)) break
-		document.getElementById("ts"+name+"Cost").textContent=shorten(masteryStudies.costs.time[name])
+		document.getElementById("ts" + name + "Cost").textContent = shorten(masteryStudies.costs.time[name])
 	}
-	for (id=13;id<=masteryStudies.ecsUpTo;id++) {
+	for (id = 13; id <= masteryStudies.ecsUpTo; id++) {
 		if (!masteryStudies.unlocked.includes("ec"+id)) break
-		document.getElementById("ec"+id+"Cost").textContent="Cost: "+shorten(masteryStudies.costs.ec[id])+" Time Theorems"
-		document.getElementById("ec"+id+"Req").style.display=player.etercreq==id?"none":"block"
-		document.getElementById("ec"+id+"Req").textContent="Requirement: "+masteryStudies.ecReqDisplays[id]()
+		document.getElementById("ec" + id + "Cost").textContent = "Cost: " + shorten(masteryStudies.costs.ec[id]) + " Time Theorems"
+		document.getElementById("ec" + id + "Req").style.display = player.etercreq == id ? "none" : "block"
+		document.getElementById("ec" + id + "Req").textContent = "Requirement: " + masteryStudies.ecReqDisplays[id]()
 	}
-	for (id=7;id<=masteryStudies.unlocksUpTo;id++) {
+	for (id = 7; id <= masteryStudies.unlocksUpTo; id++) {
 		if (!masteryStudies.unlocked.includes("d"+id)) break
-		var req=masteryStudies.unlockReqDisplays[id]&&masteryStudies.unlockReqDisplays[id]()
-		document.getElementById("ds"+id+"Cost").textContent="Cost: "+shorten(masteryStudies.costs.dil[id])+" Time Theorems"
-		if (req) document.getElementById("ds"+id+"Req").innerHTML=ghostified||!req?"":"<br>Requirement: "+req
+		var req = masteryStudies.unlockReqDisplays[id]&&masteryStudies.unlockReqDisplays[id]()
+		document.getElementById("ds"+id+"Cost").textContent = "Cost: " + shorten(masteryStudies.costs.dil[id]) + " Time Theorems"
+		if (req) document.getElementById("ds"+id+"Req").innerHTML = ghostified || !req ? "" : "<br>Requirement: " + req
 	}
 	if (quantumed) document.getElementById("321effect").textContent=shortenCosts(new Decimal("1e430"))
 }
 
 var occupied
 function drawMasteryBranch(id1, id2) {
-	var type1=id1.split("ec")[1]?"c":id1.split("dil")[1]?"d":id1.split("time")[1]?"t":undefined
-	var type2=id2.split("ec")[1]?"c":id2.split("dil")[1]?"d":id2.split("time")[1]?"t":undefined
-	var start=document.getElementById(id1).getBoundingClientRect();
-	var end=document.getElementById(id2).getBoundingClientRect();
-	var x1=start.left + (start.width / 2) + (document.documentElement.scrollLeft || document.body.scrollLeft);
-	var y1=start.top + (start.height / 2) + (document.documentElement.scrollTop || document.body.scrollTop);
-	var x2=end.left + (end.width / 2) + (document.documentElement.scrollLeft || document.body.scrollLeft);
-	var y2=end.top + (end.height / 2) + (document.documentElement.scrollTop || document.body.scrollTop);
-	msctx.lineWidth=15;
+	var type1 = id1.split("ec")[1] ? "c" : id1.split("dil")[1] ? "d" : id1.split("time")[1] ? "t" : undefined
+	var type2 = id2.split("ec")[1] ? "c" : id2.split("dil")[1] ? "d" : id2.split("time")[1] ? "t" : undefined
+	var start = document.getElementById(id1).getBoundingClientRect();
+	var end = document.getElementById(id2).getBoundingClientRect();
+	var x1 = start.left + (start.width / 2) + (document.documentElement.scrollLeft || document.body.scrollLeft);
+	var y1 = start.top + (start.height / 2) + (document.documentElement.scrollTop || document.body.scrollTop);
+	var x2 = end.left + (end.width / 2) + (document.documentElement.scrollLeft || document.body.scrollLeft);
+	var y2 = end.top + (end.height / 2) + (document.documentElement.scrollTop || document.body.scrollTop);
+	msctx.lineWidth = 15;
 	msctx.beginPath();
-	var drawBoughtLine=true
-	if (type1=="t"||type1=="d") drawBoughtLine=player.masterystudies.includes(type1+id1.split("study")[1])
-	if (type2=="t"||type2=="d") drawBoughtLine=drawBoughtLine&&player.masterystudies.includes(type2+id2.split("study")[1])
-	if (type2=="c") drawBoughtLine=drawBoughtLine&&player.eternityChallUnlocked==id2.slice(2,4)
+	var drawBoughtLine = true
+	if (type1 == "t" || type1 == "d") drawBoughtLine = player.masterystudies.includes(type1+id1.split("study")[1])
+	if (type2 == "t" || type2 == "d") drawBoughtLine = drawBoughtLine && player.masterystudies.includes(type2 + id2.split("study")[1])
+	if (type2 == "c") drawBoughtLine = drawBoughtLine && player.eternityChallUnlocked == id2.slice(2,4)
 	if (drawBoughtLine) {
-		if (type2=="d" && player.options.theme == "Aarex's Modifications") {
-			msctx.strokeStyle=parseInt(id2.split("study")[1])<8?"#D2E500":parseInt(id2.split("study")[1])>9?"#333333":"#009900";
-		} else if (type2=="c") {
-			msctx.strokeStyle="#490066";
+		if (type2 == "d" && player.options.theme == "Aarex's Modifications") {
+			msctx.strokeStyle = parseInt(id2.split("study")[1]) < 8 ? "#D2E500" : parseInt(id2.split("study")[1]) > 9 ? "#333333" : "#009900";
+		} else if (type2 == "c") {
+			msctx.strokeStyle = "#490066";
 		} else {
-			msctx.strokeStyle="#000000";
+			msctx.strokeStyle = "#000000";
 		}
-	} else if (type2=="d" && player.options.theme == "Aarex's Modifications") {
-		msctx.strokeStyle=parseInt(id2.split("study")[1])<8?"#697200":parseInt(id2.split("study")[1])>11?"#727272":parseInt(id2.split("study")[1])>9?"#262626":"#006600";
-	} else msctx.strokeStyle="#444";
+	} else if (type2 == "d" && player.options.theme == "Aarex's Modifications") {
+		msctx.strokeStyle = parseInt(id2.split("study")[1]) < 8 ? "#697200" : parseInt(id2.split("study")[1]) > 11 ? "#727272" : parseInt(id2.split("study")[1]) > 9 ? "#262626" : "#006600";
+	} else msctx.strokeStyle = "#444";
 	msctx.moveTo(x1, y1);
 	msctx.lineTo(x2, y2);
 	msctx.stroke();
@@ -606,11 +606,11 @@ function drawMasteryTree() {
 	if (document.getElementById("eternitystore").style.display === "none" || document.getElementById("masterystudies").style.display === "none" || player.masterystudies === undefined) return
 	occupied=[]
 	drawMasteryBranch("back", "timestudy241")
-	for (var x=0;x<masteryStudies.studies.length;x++) {
-		var id=masteryStudies.studies[x]
-		var paths=getMasteryStudyConnections(id)
+	for (var x = 0; x < masteryStudies.studies.length; x++) {
+		var id = masteryStudies.studies[x]
+		var paths = getMasteryStudyConnections(id)
 		if (!masteryStudies.unlocked.includes(id)) return
-		if (paths) for (var y=0;y<paths.length;y++) if (masteryStudies.unlocked.includes(paths[y])) drawMasteryBranch(convertMasteryStudyIdToDisplay(id), convertMasteryStudyIdToDisplay(paths[y]))
+		if (paths) for (var y = 0; y < paths.length; y++) if (masteryStudies.unlocked.includes(paths[y])) drawMasteryBranch(convertMasteryStudyIdToDisplay(id), convertMasteryStudyIdToDisplay(paths[y]))
 	}
 }
 
@@ -620,17 +620,17 @@ function getMasteryStudyMultiplier(id, uses = ""){
 
 function getMS251Effect(){
 	if (player.ghostify.neutrinos.upgrades.includes(6)) return 0
-	return Math.floor(player.resets/3e3)
+	return Math.floor(player.resets / 3e3)
 }
 
 function getMS252Effect(){
 	if (player.ghostify.neutrinos.upgrades.includes(6)) return 0
-	return Math.floor(player.dilation.freeGalaxies/7)
+	return Math.floor(player.dilation.freeGalaxies / 7)
 }
 
 function getMS253Effect(){
 	if (player.ghostify.neutrinos.upgrades.includes(6)) return 0
-	if (tmp.ngp3l) return Math.floor(extraReplGalaxies/9)*20
+	if (tmp.ngp3l) return Math.floor(extraReplGalaxies / 9) * 20
 	return Math.floor(getTotalRG()/4)
 }
 
@@ -640,17 +640,17 @@ function getMS262Effect(){
 	if (tmp.ngp3l) r = Math.max(player.resets / 15e3 - 19, 1)
 	else {
 		r = Math.max(player.resets / 5e4 - 10, 1)
-		exp = Math.sqrt(Math.max(player.resets/1e5 - 5.5, 1))
+		exp = Math.sqrt(Math.max(player.resets / 1e5 - 5.5, 1))
 	}
-	if (r > 1e4) r = Math.pow(6+Math.log10(r),4)
+	if (r > 1e4) r = Math.pow(6 + Math.log10(r), 4)
 	if (player.aarexModifications.newGameExpVersion) exp *= 2
 	return Decimal.pow(r, exp)
 }
 
 function getMS263Effect(){
-	let x=player.meta.resets
-	if (!tmp.ngp3l) x=x*(x+10)/60
-	return x+1
+	let x = player.meta.resets
+	if (!tmp.ngp3l) x = x * (x + 10) / 60
+	return x + 1
 }
 
 function getMS264Effect(){
@@ -775,7 +775,7 @@ function getMS392Effect(){
 }
 
 function getMS393Effect(){
-	return Decimal.pow(4e5,Math.sqrt(tmp.twr.add(1).log10()))
+	return Decimal.pow(4e5, Math.sqrt(tmp.twr.add(1).log10()))
 }
 
 function getMS401Effect(){
@@ -812,13 +812,13 @@ function getMS431Effect(){
 	var log = eff.log10()
 	
 	if (!tmp.ngp3l) { //THIS IS NECESSARY: more free gals-> bigger mult->more DT->more free gals SUPER SUPER important
-		if (log > 100) log = 100*Math.pow(log/100,.9)
-		if (log > 300) log = 300*Math.pow(log/300,.7)
-		if (log > 500) log = 500*Math.pow(log/500,.5)
-		if (log > 1000) log = Math.pow(7+Math.log10(log),3)
+		if (log > 100) log = 100 * Math.pow(log / 100, .9)
+		if (log > 300) log = 300 * Math.pow(log / 300, .7)
+		if (log > 500) log = 500 * Math.pow(log / 500, .5)
+		if (log > 1000) log = Math.pow(7 + Math.log10(log), 3)
 	}
 
-	return Decimal.pow(10,log)
+	return Decimal.pow(10, log)
 }
 
 function getMTSMult(id, uses = "") {
@@ -837,3 +837,7 @@ function recordUpDown(x) {
 	upDown.times++
 	if (upDown.times>=200) giveAchievement("Up and Down and Up and Down...")
 }
+
+
+
+
