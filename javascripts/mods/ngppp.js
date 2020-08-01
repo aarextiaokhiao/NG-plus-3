@@ -25,45 +25,45 @@ function showQuantumTab(tabName) {
 
 
 function updateElectronsTab() {
-	document.getElementById("normalGalaxies").textContent=getFullExpansion(player.galaxies)
-	document.getElementById("sacrificeGal").className="gluonupgrade "+((player.galaxies>tmp.qu.electrons.sacGals&&inQC(0))?"stor":"unavailabl")+"ebtn"
-	document.getElementById("sacrificeGals").textContent=getFullExpansion(Math.max(player.galaxies-tmp.qu.electrons.sacGals,0))
-	document.getElementById("electronsGain").textContent=getFullExpansion(Math.floor(Math.max(player.galaxies-tmp.qu.electrons.sacGals,0)*getELCMult()))
-	for (u=1;u<5;u++) document.getElementById("electronupg"+u).className="gluonupgrade "+(canBuyElectronUpg(u)?"stor":"unavailabl")+"ebtn"
+	document.getElementById("normalGalaxies").textContent = getFullExpansion(player.galaxies)
+	document.getElementById("sacrificeGal").className = "gluonupgrade " + ((player.galaxies > tmp.qu.electrons.sacGals && inQC(0)) ? "stor" : "unavailabl") + "ebtn"
+	document.getElementById("sacrificeGals").textContent = getFullExpansion(Math.max(player.galaxies-tmp.qu.electrons.sacGals, 0))
+	document.getElementById("electronsGain").textContent = getFullExpansion(Math.floor(Math.max(player.galaxies-tmp.qu.electrons.sacGals, 0) * getELCMult()))
+	for (var u = 1; u < 5; u++) document.getElementById("electronupg" + u).className = "gluonupgrade " + (canBuyElectronUpg(u) ? "stor" : "unavailabl") + "ebtn"
 	if (tmp.qu.autoOptions.sacrifice) updateElectronsEffect()
 }
 
 function updateReplicantsTab(){
-	document.getElementById("replicantiAmount2").textContent=shortenDimensions(player.replicanti.amount)
-	document.getElementById("replicantReset").className=player.replicanti.amount.lt(tmp.qu.replicants.requirement)?"unavailablebtn":"storebtn"
-	document.getElementById("replicantReset").innerHTML="Reset replicanti amount for a replicant.<br>(requires "+shortenCosts(tmp.qu.replicants.requirement)+" replicanti)"
-	document.getElementById("replicantAmount").textContent=shortenDimensions(tmp.qu.replicants.amount)
-	document.getElementById("workerReplAmount").textContent=shortenDimensions(tmp.twr)
-	document.getElementById("babyReplAmount").textContent=shortenDimensions(tmp.qu.replicants.babies)
+	document.getElementById("replicantiAmount2").textContent = shortenDimensions(player.replicanti.amount)
+	document.getElementById("replicantReset").className = player.replicanti.amount.lt(tmp.qu.replicants.requirement) ? "unavailablebtn" : "storebtn"
+	document.getElementById("replicantReset").innerHTML = "Reset replicanti amount for a replicant.<br>(requires " + shortenCosts(tmp.qu.replicants.requirement) + " replicanti)"
+	document.getElementById("replicantAmount").textContent = shortenDimensions(tmp.qu.replicants.amount)
+	document.getElementById("workerReplAmount").textContent = shortenDimensions(tmp.twr)
+	document.getElementById("babyReplAmount").textContent = shortenDimensions(tmp.qu.replicants.babies)
 
-	var gatherRateData=getGatherRate()
-	document.getElementById("normalReplGatherRate").textContent=shortenDimensions(gatherRateData.normal)
-	document.getElementById("workerReplGatherRate").textContent=shortenDimensions(gatherRateData.workersTotal)
-	document.getElementById("babyReplGatherRate").textContent=shortenDimensions(gatherRateData.babies)
-	document.getElementById("gatherRate").textContent=tmp.qu.nanofield.producingCharge?'-'+shortenDimensions(getQuarkLossProduction())+'/s':'+'+shortenDimensions(gatherRateData.total)+'/s'
+	var gatherRateData = getGatherRate()
+	document.getElementById("normalReplGatherRate").textContent = shortenDimensions(gatherRateData.normal)
+	document.getElementById("workerReplGatherRate").textContent = shortenDimensions(gatherRateData.workersTotal)
+	document.getElementById("babyReplGatherRate").textContent = shortenDimensions(gatherRateData.babies)
+	document.getElementById("gatherRate").textContent = tmp.qu.nanofield.producingCharge ? '-' + shortenDimensions(getQuarkLossProduction()) + '/s' : '+' + shortenDimensions(gatherRateData.total) + '/s'
 
-	document.getElementById("gatheredQuarks").textContent=shortenDimensions(tmp.qu.replicants.quarks.floor())
-	document.getElementById("quarkTranslation").textContent=getFullExpansion(Math.round(tmp.pe*100))
+	document.getElementById("gatheredQuarks").textContent = shortenDimensions(tmp.qu.replicants.quarks.floor())
+	document.getElementById("quarkTranslation").textContent = getFullExpansion(Math.round(tmp.pe * 100))
 
 	var eggonRate = tmp.twr.times(getEmperorDimensionMultiplier(1)).times(3)
 	if (eggonRate.lt(30)) {
-		document.getElementById("eggonRate").textContent=shortenDimensions(eggonRate)
-		document.getElementById("eggonRateTimeframe").textContent="minute"
+		document.getElementById("eggonRate").textContent = shortenDimensions(eggonRate)
+		document.getElementById("eggonRateTimeframe").textContent = "minute"
 	} else {
-		document.getElementById("eggonRate").textContent=shortenMoney(eggonRate.div(60))
-		document.getElementById("eggonRateTimeframe").textContent="second"
+		document.getElementById("eggonRate").textContent = shortenMoney(eggonRate.div(60))
+		document.getElementById("eggonRateTimeframe").textContent = "second"
 	}
-	document.getElementById("feedNormal").className=(canFeedReplicant(1)?"stor":"unavailabl")+"ebtn"
-	document.getElementById("workerProgress").textContent=Math.round(tmp.eds[1].progress.toNumber()*100)+"%"
+	document.getElementById("feedNormal").className = (canFeedReplicant(1) ? "stor" : "unavailabl") + "ebtn"
+	document.getElementById("workerProgress").textContent = Math.round(tmp.eds[1].progress.toNumber() * 100) + "%"
 
 	if (!hasNU(2)) {
-		document.getElementById("eggonAmount").textContent=shortenDimensions(tmp.qu.replicants.eggons)
-		document.getElementById("hatchProgress").textContent=Math.round(tmp.qu.replicants.babyProgress.toNumber()*100)+"%"
+		document.getElementById("eggonAmount").textContent = shortenDimensions(tmp.qu.replicants.eggons)
+		document.getElementById("hatchProgress").textContent = Math.round(tmp.qu.replicants.babyProgress.toNumber()*100)+"%"
 	}
 	var growupRate = tmp.twr.times(player.achievements.includes("ng3p35")?3:0.3).times(getSpinToReplicantiSpeed())
 	if (tmp.qu.replicants.babies.eq(0)) growupRate = growupRate.min(eggonRate)
