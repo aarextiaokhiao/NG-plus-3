@@ -274,7 +274,7 @@ function setupMasteryStudies() {
 		}
 		if (typeof(id) == "number") masteryStudies.timeStudies.push(id)
 		var paths = getMasteryStudyConnections(id)
-		if (paths! == undefined) for (var x = 0; x < paths.length; x++) {
+		if (paths !== undefined) for (var x = 0; x < paths.length; x++) {
 			var y = paths[x]
 			if (!map.includes(y)) {
 				if (y.toString()[0] == "d") part = y
