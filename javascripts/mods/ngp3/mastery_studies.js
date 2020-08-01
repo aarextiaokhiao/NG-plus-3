@@ -678,6 +678,7 @@ function getMS282Effect(){
 }
 
 function getMS301Effect(){
+	if (player.ghostify.neutrinos.upgrades.includes(6)) return 0
 	return Math.floor(extraReplGalaxies / 4.15)
 }
 
