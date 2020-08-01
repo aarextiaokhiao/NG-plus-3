@@ -4248,8 +4248,8 @@ var bu={
 			var div = 8e3
 			var add = 1
 			if (tmp.newNGP3E){
-				div = 1e3
-				add = 2
+				div = 4e3
+				add = 1.5
 			}
 			return Math.sqrt(tmp.qu.electrons.amount + 1) / div + add
 		}
