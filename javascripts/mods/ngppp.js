@@ -4209,14 +4209,21 @@ var bu={
 	},
 	effects:{
 		11: function() {
-			let l=tmp.bl.am.add(1).log10()
-			return Math.pow(l,0.5-0.25*l/(l+3))/4
+			let l = tmp.bl.am.add(1).log10()
+			if (tmp.newNGP3E) l += l / 2 + Math.sqrt(l)
+			return Math.pow(l, 0.5 - 0.25 * l / (l + 3)) / 4
 		},
 		12: function() {
 			return (colorBoosts.g+tmp.pe-1)*7e-4
 		},
 		13: function() {
-			return Math.max(Math.sqrt(getRadioactiveDecays('r')+getRadioactiveDecays('g')+getRadioactiveDecays('b'))/3+.6,1)
+			var decays = getRadioactiveDecays('r') + getRadioactiveDecays('g') + getRadioactiveDecays('b')
+			var div = 3
+			if (tmp.newNGP3E){
+				decays += Math.sqrt(decays) + decays / 3
+				div = 2
+			}
+			return Math.max(Math.sqrt(decays) / 3 + .6, 1)
 		},
 		14: function() {
 			let x = Math.pow(Math.max(player.dilation.freeGalaxies / 20 - 1800, 0), 1.5)
@@ -4228,8 +4235,9 @@ var bu={
 		},
 		15: function() {
 			let gLog = Decimal.max(player.ghostify.times,1).log10()
+			if (tmp.newNGP3E) gLog += 2 * Math.sqrt(gLog)
 			return {
-				dt: Decimal.pow(10,2*gLog+3*gLog/(gLog/20+1)),
+				dt: Decimal.pow(10, 2 * gLog + 3 * gLog / (gLog / 20 + 1)),
 				gh: player.dilation.dilatedTime.div("1e1520").add(1).pow(.05)
 			}
 		},
@@ -4237,38 +4245,44 @@ var bu={
 			return player.meta.antimatter.add(1).pow(0.06)
 		},
 		25: function() {
-			return Math.sqrt(tmp.qu.electrons.amount+1)/8e3+1
+			var div = 8e3
+			var add = 1
+			if (tmp.newNGP3E){
+				div = 1e3
+				add = 2
+			}
+			return Math.sqrt(tmp.qu.electrons.amount + 1) / div + add
 		}
 	}
 }
 
 //Bosonic Overdrive
 function getBosonicBatteryLoss() {
-	if (tmp.bl.odSpeed==1) return new Decimal(0)
-	return Decimal.pow(10,tmp.bl.odSpeed*2-3)
+	if (tmp.bl.odSpeed == 1) return new Decimal(0)
+	return Decimal.pow(10, tmp.bl.odSpeed * 2 - 3)
 }
 
 function changeOverdriveSpeed() {
-	tmp.bl.odSpeed=document.getElementById("odSlider").value/50*4+1
+	tmp.bl.odSpeed = document.getElementById("odSlider").value / 50 * 4 + 1
 }
 
 //W & Z Bosons
 function getAntiPreonProduction() {
-	let r=new Decimal(0.1)
-	if (tmp.bl.usedEnchants.includes(13)) r=r.times(tmp.bEn[13])
+	let r = new Decimal(0.1)
+	if (tmp.bl.usedEnchants.includes(13)) r = r.times(tmp.bEn[13])
 	return r
 }
 
 var aplScalings={
-	0:0,
-	1:8,
-	2:32,
-	3:16
+	0: 0,
+	1: 8,
+	2: 32,
+	3: 16
 }
 
 function getAntiPreonLoss() {
-	let r=new Decimal(0.05)
-	if (tmp.bl.usedEnchants.includes(13)) r=r.times(tmp.bEn[13])
+	let r = new Decimal(0.05)
+	if (tmp.bl.usedEnchants.includes(13)) r = r.times(tmp.bEn[13])
 	return r
 }
 
@@ -4277,9 +4291,9 @@ function useAntiPreon(id) {
 }
 
 function getOscillateGainSpeed() {
-	let r=tmp.wbo
-	if (tmp.bl.usedEnchants.includes(23)) r=r.times(tmp.bEn[23])
-	return Decimal.div(r,player.ghostify.wzb.zNeReq)
+	let r = tmp.wbo
+	if (tmp.bl.usedEnchants.includes(23)) r = r.times(tmp.bEn[23])
+	return Decimal.div(r, player.ghostify.wzb.zNeReq)
 }
 
 //Anti-Preontius' Lair
@@ -4290,31 +4304,31 @@ function getAntiPreonGhostWake() {
 //v2.21: NG+3.1
 function setNonlegacyStuff() {
 	//Bosonic Runes/Extractor/Enchants
-	if (!br.maxLimit) br.maxLimit=br.limit
-	br.limit=tmp.ngp3l?3:br.maxLimit
+	if (!br.maxLimit) br.maxLimit = br.limit
+	br.limit = tmp.ngp3l ? 3 : br.maxLimit
 	
 	//Bosonic Upgrades
-	if (!bu.maxRows) bu.maxRows=bu.rows
-	bu.rows=tmp.ngp3l?2:bu.maxRows
+	if (!bu.maxRows) bu.maxRows = bu.rows
+	bu.rows = tmp.ngp3l ? 2 : bu.maxRows
 }
 
 function displayNonlegacyStuff() {
 	//QC Modifiers
-	for (var m=1;m<qcm.modifiers.length;m++) document.getElementById("qcm_"+qcm.modifiers[m]).style.display=tmp.ngp3l?"none":""
+	for (var m = 1; m < qcm.modifiers.length; m++) document.getElementById("qcm_" + qcm.modifiers[m]).style.display = tmp.ngp3l ? "none" : ""
 
 	//Bosonic Runes/Extractor/Enchants
-	var width=100/br.limit
-	for (var r=1;r<=br.maxLimit;r++) {
-		document.getElementById("bRune"+r).style="min-width:"+width+"%;width:"+width+"%;max-width:"+width+"%"
-		if (r>3) {
-			document.getElementById("bRuneCol"+r).style.display=tmp.ngp3l?"none":""
-			document.getElementById("typeToExtract"+r).style.display=tmp.ngp3l?"none":""
-			document.getElementById("bEnRow"+(r-1)).style.display=tmp.ngp3l?"none":""
+	var width = 100 / br.limit
+	for (var r = 1; r <= br.maxLimit; r++) {
+		document.getElementById("bRune" + r).style = "min-width:" + width + "%;width:" + width + "%;max-width:" + width + "%"
+		if (r > 3) {
+			document.getElementById("bRuneCol" + r).style.display = tmp.ngp3l ? "none" : ""
+			document.getElementById("typeToExtract" + r).style.display = tmp.ngp3l ? "none" : ""
+			document.getElementById("bEnRow" + (r - 1)).style.display = tmp.ngp3l ? "none" : ""
 		}
 	}
 	
 	//Bosonic Upgrades
-	for (var r=3;r<=bu.maxRows;r++) document.getElementById("bUpgRow"+r).style.display=tmp.ngp3l?"none":""
+	for (var r = 3; r <= bu.maxRows; r++) document.getElementById("bUpgRow" + r).style.display = tmp.ngp3l ? "none":""
 }
 
 function exitLegacy() {
@@ -4374,7 +4388,7 @@ function updateBRU8Temp() {
 	tmp.bru[8] = 1
 	if (!tmp.qu.bigRip.active) return
 	tmp.bru[8] = Decimal.pow(2,getTotalRG()) //BRU8
-	if (!hasNU(11)) tmp.bru[8]=tmp.bru[8].min(Number.MAX_VALUE)
+	if (!hasNU(11)) tmp.bru[8] = tmp.bru[8].min(Number.MAX_VALUE)
 }
 
 function updateBRU14Temp() {
@@ -4403,28 +4417,31 @@ function updateBRU17Temp() {
 }
 
 function updateBigRipUpgradesTemp(){
-	updateBRU17Temp()
 	updateBRU1Temp()
 	updateBRU8Temp()
 	updateBRU14Temp()
 	updateBRU15Temp()
 	updateBRU16Temp()
+	updateBRU17Temp()
 }
 
 function updatePhotonsUnlockedBRUpgrades(){
-	var bigRipUpg18base = 1+tmp.qu.bigRip.spaceShards.div(1e140).add(1).log10()
-	var bigRipUpg18exp = Math.max(tmp.qu.bigRip.spaceShards.div(1e140).add(1).log10()/10,1)
+	var bigRipUpg18base = 1 + tmp.qu.bigRip.spaceShards.div(1e140).add(1).log10()
+	var bigRipUpg18exp = Math.max(tmp.qu.bigRip.spaceShards.div(1e140).add(1).log10() / 10, 1)
 	if (bigRipUpg18base > 10 && tmp.newNGP3E) bigRipUpg18base *= Math.log10(bigRipUpg18base)
-	if (bigRipUpg18exp > 16) bigRipUpg18exp = Math.pow(Math.log2(bigRipUpg18exp),2)
-	tmp.bru[18] = Decimal.pow(bigRipUpg18base,bigRipUpg18exp) //BRU18
+	if (bigRipUpg18exp > 16) bigRipUpg18exp = Math.pow(Math.log2(bigRipUpg18exp), 2)
+	tmp.bru[18] = Decimal.pow(bigRipUpg18base, bigRipUpg18exp) //BRU18
 	
-	var bigRipUpg19exp = Math.sqrt(player.timeShards.add(1).log10())/(tmp.newNGP3E?60:80)
-	if (bigRipUpg19exp > 5 && !tmp.newNGP3E) bigRipUpg19exp = 4 + Math.log10(2*bigRipUpg19exp)
-	if (bigRipUpg19exp > 8)  bigRipUpg19exp = Math.log2(bigRipUpg19exp)*3-1
+	var bigRipUpg19exp = Math.sqrt(player.timeShards.add(1).log10()) / (tmp.newNGP3E ? 60 : 80)
+	if (bigRipUpg19exp > 5 && !tmp.newNGP3E) bigRipUpg19exp = 4 + Math.log10(2 * bigRipUpg19exp)
+	if (bigRipUpg19exp > 8)  bigRipUpg19exp = Math.log2(bigRipUpg19exp) * 3 - 1
 	tmp.bru[19] = Decimal.pow(10,bigRipUpg19exp) //BRU19
 }
 
 function getMaxBigRipUpgrades() {
 	if (player.ghostify.ghostlyPhotons.unl) return tmp.ngp3l ? 19 : 20
-	return 18
+	return 18 //shouldnt this be just 17?
 }
+
+
+
