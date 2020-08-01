@@ -4,7 +4,7 @@ function getEmperorDimensionMultiplier(dim) {
 	ret = tmp.edgm //Global multiplier of all Emperor Dimensions
 	if (hasNU(7) && dim % 2 == 1) ret = ret.times(tmp.nu[3])
 	//player.quantum.emperorDimensions[8].perm-10 
-	if (dim == 8) ret = ret.times(Decimal.pow(1.05,Math.sqrt(player.quantum.emperorDimensions[8].perm-8)))
+	if (dim == 8) ret = ret.times(Decimal.pow(1.05, Math.sqrt(player.quantum.emperorDimensions[8].perm - 8)))
 	return dilates(ret, 1)
 }
 
@@ -19,12 +19,12 @@ function getEmperorDimensionGlobalMultiplier() {
 
 function getEmperorDimensionRateOfChange(dim) {
 	if (!canFeedReplicant(dim, true)) return 0
-	let toGain = getEmperorDimensionMultiplier(dim+1).times(tmp.eds[dim+1].workers).div(20)
+	let toGain = getEmperorDimensionMultiplier(dim + 1).times(tmp.eds[dim + 1].workers).div(20)
 
 	var current = tmp.eds[dim].workers.add(tmp.eds[dim].progress).max(1)
 	if (player.aarexModifications.logRateChange) {
 		var change = current.add(toGain).log10()-current.log10()
-		if (change<0||isNaN(change)) change = 0
+		if (change < 0 || isNaN(change)) change = 0
 	} else var change = toGain.times(10).dividedBy(current)
 
 	return change
