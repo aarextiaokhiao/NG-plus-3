@@ -1759,7 +1759,7 @@ function updateTemp() {
 		tmp.mpte=getMPTExp()
 	} else tmp.be=false
 	tmp.sacPow = calcTotalSacrificeBoost()
-	if (tmp.ngp3 && player.masterystudies.includes("d8")) updateQCRewardsTemp()
+	updateQCRewardsTemp()
 
 	if (player.meta !== undefined) tmp.mdgm = getMetaDimensionGlobalMultiplier() //Update global multiplier of all Meta Dimensions
 	tmp.mptb=getMPTBase()
