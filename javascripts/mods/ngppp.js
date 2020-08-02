@@ -3261,7 +3261,7 @@ function updateBosonicLabTab(){
 	let data=tmp.bl
 	let speed=data.speed*(data.battery.gt(0)?data.odSpeed:1)
 	document.getElementById("bWatt").textContent=shorten(data.watt)
-	document.getElementById("bSpeed").textContent=data.speed.toFixed(2)
+	document.getElementById("bSpeed").textContent=shorten(data.speed)
 	document.getElementById("bTotalSpeed").textContent=shorten(speed)
 	document.getElementById("bTicks").textContent=shorten(data.ticks)
 	document.getElementById("bAM").textContent=shorten(data.am)
@@ -3318,7 +3318,7 @@ function buyNeutrinoUpg(id) {
 function updateNeutrinoBoosts() {
 	for (var b=1;b<=10;b++) document.getElementById("neutrinoBoost"+(b%3==1?"Row"+(b+2)/3:"Cell"+b)).style.display=player.ghostify.neutrinos.boosts>=b?"":"none"
 	document.getElementById("neutrinoUnlock").style.display=player.ghostify.neutrinos.boosts>=getMaxUnlockedNeutrinoBoosts()?"none":""
-	document.getElementById("neutrinoUnlockCost").textContent=shortenDimensions(tmp.nbc[player.ghostify.neutrinos.boosts])
+	document.getElementById("neutrinoUnlockCost").textContent=shortenDimensions(new Decimal(tmp.nbc[player.ghostify.neutrinos.boosts]))
 }
 
 function unlockNeutrinoBoost() {
@@ -3556,21 +3556,16 @@ function getGPHProduction() {
 	if (tmp.qu.bigRip.active) var ret=player.dilation.dilatedTime.div("1e480")
 	else var ret=player.dilation.dilatedTime.div("1e930")
 	if (ret.gt(1)) ret=ret.pow(0.02)
-	var fromIP = 0
-	if (player.ghostify.ghostlyPhotons.unl) fromIP = Math.log10(1+player.infinityPoints.plus(1).log10())
-	return ret.plus(fromIP)
+	return ret
 }
 
 function getGHRProduction() {
 	var log = player.ghostify.ghostlyPhotons.amount.sqrt().div(2).log10()
-	if (log>25) log = Math.pow(Math.log2(log+7),2)
-	if (log>35) log = 3+Math.pow(Math.log10(65+log),5)
 	return Decimal.pow(10,log)
 }
 
 function getGHRCap() {
 	var log = player.ghostify.ghostlyPhotons.darkMatter.pow(0.4).times(1e3).log10()
-	if (log>32) log = Math.pow(Math.log2(log)-1,2)*2
 	return Decimal.pow(10,log)
 }
 
@@ -4446,12 +4441,12 @@ function updateBRU17Temp() {
 }
 
 function updateBigRipUpgradesTemp(){
+	updateBRU17Temp()
 	updateBRU1Temp()
 	updateBRU8Temp()
 	updateBRU14Temp()
 	updateBRU15Temp()
 	updateBRU16Temp()
-	updateBRU17Temp()
 }
 
 function updatePhotonsUnlockedBRUpgrades(){

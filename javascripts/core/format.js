@@ -127,13 +127,20 @@ function timePadEnd(value) {
 }
 function getTimeAbbreviation(seconds) {
 	var data = {second: seconds}
-	for (var d=5; d>-1; d--) {
+	for (var d = 5; d >= 0; d--) {
 		var division = timeDivisions[d]
 		data[division] = Math.floor(data.second / timeValues[division])
 		data.second -= data[division] * timeValues[division]
 	}
-	if (data.year > 99) return getFullExpansion(data.year) + " years"
-	if (data.year > 9) return data.year + " years, " + data.month + "m"
+	if (data.year >= 100) {	
+		if (player.options.commas === "Commas") {
+			if (data.year >= 1e12) return formatValue("Standard", data.year, 3, 3) + " years"
+		} else {
+			if (data.year >= 1e5) return formatValue(player.options.commas, data.year, 3, 3) + " years"
+		}
+		return getFullExpansion(data.year) + " years"
+	}
+	if (data.year >= 10) return data.year + " years, " + data.month + "m"
 	if (data.year) return data.year + " year" + (data.year == 1 ? "" : "s") + ", " + data.month + "m & " + data.week + "w"
 	if (data.month) return data.month + " month" + (data.month == 1 ? "" : "s") + ", " + data.week + "w & " + data.day + "d"
 	if (data.week) return data.week + " week" + (data.week == 1 ? "" : "s") + ", " + data.day + " day" + (data.day == 1 ? "" : "s") + " & " + data.hour + "h"
@@ -362,13 +369,13 @@ function formatValue(notation, value, places, placesUnder1000, noInf) {
             return matissa+getAASAbbreviation(Math.floor(power/3)-1)
         }
         if (notation === "Time") {
-            if (power>=3e9+3) return getTimeAbbreviation(power/3)
-            matissa = (matissa*Math.pow(10,power%3)).toFixed(Math.max(places-power%3,0))
-            if (parseFloat(matissa)==1e3) {
+            if (power >= 3e9 + 3) return getTimeAbbreviation(power / 3)
+            matissa = (matissa*Math.pow(10, power % 3)).toFixed(Math.max(places - power % 3,0))
+            if (parseFloat(matissa) == 1e3) {
                 matissa = (1).toFixed(places)
-                power+=3
+                power += 3
             }
-            return matissa+" "+getTimeAbbreviation(Math.floor(power/3))
+            return matissa + " " + getTimeAbbreviation(Math.floor(power / 3))
         }
         if (matissa >= 1000) {
             matissa /= 1000;

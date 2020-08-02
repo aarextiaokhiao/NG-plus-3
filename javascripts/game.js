@@ -3125,7 +3125,7 @@ function toggleTabsSave() {
 }
 
 function updatePerformanceTicks() {
-	if (player.aarexModifications.performanceTicks) document.getElementById("updaterateslider").min=0
+	if (player.aarexModifications.performanceTicks) document.getElementById("updaterateslider").min=1
 	else {
 		slider.min=33
 		if (player.options.updateRate<33) {
@@ -8741,8 +8741,7 @@ function dilationStuffABTick(){
 
 function doBosonsUnlockStuff(){
 	player.ghostify.wzb.unl=true
-        player.ghostify.wzb.unlReal=true
-        $.notify("Congratulations! You have unlocked Bosonic Lab!", "success")
+	$.notify("Congratulations! You have unlocked Bosonic Lab!", "success")
 	giveAchievement("Even Ghostlier than before")
 	updateTemp()
 	updateNeutrinoBoosts()
@@ -8751,7 +8750,7 @@ function doBosonsUnlockStuff(){
 
 function doPhotonsUnlockStuff(){
 	player.ghostify.ghostlyPhotons.unl=true
-        $.notify("Congratulations! You have unlocked Ghostly Photons!", "success")
+	$.notify("Congratulations! You have unlocked Ghostly Photons!", "success")
 	giveAchievement("Progressing as a Ghost")
 	updateTemp()
 	updateQuantumChallenges()
