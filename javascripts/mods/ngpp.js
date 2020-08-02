@@ -214,7 +214,7 @@ function metaBuyOneDimension(tier) {
 }
 
 function getMetaCost(tier, boughtTen) {
-	let cost=initCost[tier].times(costMults[tier].pow(boughtTen))
+	let cost = Decimal.times(initCost[tier], costMults[tier].pow(boughtTen))
 	let scalingStart=Math.ceil(Decimal.div(getMetaCostScalingStart(), initCost[tier]).log(costMults[tier]))
 	if (boughtTen>=scalingStart) cost=cost.times(Decimal.pow(10,(boughtTen-scalingStart+1)*(boughtTen-scalingStart+2)/2))
 	return cost
