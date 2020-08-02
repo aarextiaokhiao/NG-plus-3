@@ -3265,7 +3265,8 @@ function updateBosonicLabTab(){
 	document.getElementById("bTotalSpeed").textContent=shorten(speed)
 	document.getElementById("bTicks").textContent=shorten(data.ticks)
 	document.getElementById("bAM").textContent=shorten(data.am)
-	document.getElementById("bAMProduction").textContent="+"+shorten(getBosonicAMProduction().times(speed))+"/s"
+	document.getElementById("bAMProduction").textContent="+"+shorten(getBosonicAMFinalProduction().times(speed))+"/s"
+	document.getElementById("bAMProductionReduced").style.display = !tmp.ngp3l && data.am.gt(getHiggsRequirement()) ? "" : "none"
 	document.getElementById("bBt").textContent=shorten(data.battery)
 	document.getElementById("bBtProduction").textContent="-"+shorten(getBosonicBatteryLoss().times(data.speed))+"/s"
 	document.getElementById("odSpeed").textContent=(data.battery.gt(0)?data.odSpeed:1).toFixed(2)+"x"
@@ -3275,6 +3276,16 @@ function updateBosonicLabTab(){
 	if (document.getElementById("bextab").style.display=="block") updateBosonExtractorTab()
 	if (document.getElementById("butab").style.display=="block") updateBosonicUpgradeDescs()
 	if (document.getElementById("wzbtab").style.display=="block") updateWZBosonsTab()
+	if (!tmp.ngp3l) {
+		if (tmp.hb.unl) {
+			var req = getHiggsRequirement()
+			document.getElementById("hb").textContent = getFullExpansion(tmp.hb.higgs)
+			document.getElementById("hbReset").className = "gluonupgrade " + (tmp.bl.am.gte(req) ? "hb" : "unavailablebtn")
+			document.getElementById("hbResetReq").textContent = shorten(req)
+			document.getElementById("hbResetGain").textContent = getFullExpansion(getHiggsGain())
+			if (document.getElementById("hbTab").style.display=="block") updateHiggsTab()
+		}
+	}
 }
 
 function updateGhostifyTabs() {
@@ -3889,12 +3900,36 @@ function bosonicTick(diff) {
 	}
 	
 	//Bosonic Antimatter production
-	data.am=data.am.add(getBosonicAMProduction().times(diff))
+	var newBA = data.am
+	var baAdded = getBosonicAMProduction().times(diff)
+	if (tmp.ngp3l) newBA = data.am.add(baAdded)
+	else {
+		var dimReturned = newBA.gt(tmp.badm.start)
+		if (!dimReturned) {
+			newBA = data.am.add(baAdded)
+			if (newBA.gt(tmp.badm.start)) {
+				newBA = newBA.div(tmp.badm.start)
+				newBA = newBA.sub(-tmp.badm.offset).ln() / Math.log(tmp.badm.base) + tmp.badm.offset2
+				newBA = tmp.badm.start.times(newBA)
+			}
+		} else if (tmp.badm.postDim <= Number.MAX_VALUE) {
+			newBA = tmp.badm.preDim.add(baAdded.div(tmp.badm.start))
+			newBA = newBA.sub(-tmp.badm.offset).ln() / Math.log(tmp.badm.base) + tmp.badm.offset2
+			newBA = tmp.badm.start.times(newBA)
+		}
+	}
+	data.am = newBA
 }
 
 function getBosonicAMProduction() {
 	let r=player.money.max(1).log10()/15e15-3
 	return Decimal.pow(10,r).times(tmp.wbp)
+}
+
+function getBosonicAMFinalProduction() {
+	let r = getBosonicAMProduction()
+	if (tmp.bl.am.gt(tmp.badm.start)) r = r.div(tmp.badm.preDim)
+	return r
 }
 
 function showBLTab(tabName) {
@@ -4328,6 +4363,9 @@ function setNonlegacyStuff() {
 	//Bosonic Upgrades
 	if (!bu.maxRows) bu.maxRows = bu.rows
 	bu.rows = tmp.ngp3l ? 2 : bu.maxRows
+
+	//Further Stuff
+	document.getElementById("hbTabBtn").style.display = tmp.ngp3l ? "none" : ""
 }
 
 function displayNonlegacyStuff() {

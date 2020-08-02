@@ -1734,6 +1734,7 @@ function updateTemp() {
 	tmp.nrm=player.replicanti.amount.max(1)
 	tmp.rg4=false
 	if (tmp.ngp3) {
+		if (!tmp.ngp3l) updateBosonicAntimatterDimReturnsTemp()
 		tmp.apgw=tmp.qu.nanofield.apgWoke||getAntiPreonGhostWake()
 		tmp.ppti=1
 		if (player.ghostify.wzb.unl) updateWZBosonsTemp()
@@ -4195,7 +4196,10 @@ function changeSaveDesc(saveId, placement) {
 		var isSaveGhostified=temp.ghostify?temp.ghostify.times>0:false
 		var isSaveQuantumed=temp.quantum?temp.quantum.times>0:false
 		if (isSaveGhostified) {
-			if (temp.achievements.includes("ng3p81")) {
+			if (temp.achievements.includes("ng3p91")) {
+				var data=temp.ghostify.hb
+				msg+="Bosonic Antimatter: "+shorten(new Decimal(temp.ghostify.bl.am))+", Higgs Bosons: "+shortenDimensions(new Decimal(data.higgs))
+			} else if (temp.achievements.includes("ng3p81")) {
 				var data=temp.ghostify.wzb
 				msg+="Bosonic Antimatter: "+shorten(new Decimal(temp.ghostify.bl.am))+", W+ Bosons: "+shortenDimensions(new Decimal(data.wpb))+", W- Bosons: "+shortenDimensions(new Decimal(data.wnb))+", Z Bosons: "+shortenDimensions(new Decimal(data.zb))
 			} else if (temp.achievements.includes("ng3p71")) {
@@ -4969,6 +4973,7 @@ function onNotationChange() {
 		updateBosonicStuffCosts()
 		document.getElementById("gphUnl").textContent="To unlock Ghostly Photons, you need to get "+shortenCosts(Decimal.pow(10,6e9))+" antimatter while your universe is Big Ripped first."
 		document.getElementById("blUnl").textContent="To unlock Bosonic Lab, you need to get "+shortenCosts(Decimal.pow(10,1e10))+" ghostly unstable quarks first."
+		if (!tmp.ngp3l) document.getElementById("hbUnl").textContent="To unlock Higgs Bosons, you need to get " + shortenCosts(1e20) + " Bosonic Antimatter first."
 	}
 	document.getElementById("epmult").innerHTML = "You gain 5 times more EP<p>Currently: "+shortenDimensions(player.epmult)+"x<p>Cost: "+shortenDimensions(player.epmultCost)+" EP"
 	document.getElementById("achmultlabel").textContent = "Current achievement multiplier on each Dimension: " + shortenMoney(player.achPow) + "x"
@@ -8828,6 +8833,7 @@ function doNGP3UnlockStuff(){
 	if (player.money.gte(Decimal.pow(10,6e9))&&tmp.qu.bigRip.active&&!player.ghostify.ghostlyPhotons.unl) doPhotonsUnlockStuff()
 	let max = getMaximumUnstableQuarks()
 	if (max.quarks.log10() > 1e10 && max.decays >= 5 && !player.ghostify.wzb.unl) doBosonsUnlockStuff()
+    unlockHiggs()
 }
 
 function updateResetTierButtons(){
@@ -10960,4 +10966,3 @@ function switchDecimalMode() {
 		document.location.reload(true)
 	}
 }
-

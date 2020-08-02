@@ -1,5 +1,5 @@
 var inflationCheck = false
-var betaId = "3.1"
+var betaId = "Higgs-New"
 var prefix = betaId + "ds"
 var savePrefix = prefix + "AM_"
 var presetPrefix = prefix + "AM_ST_"
@@ -1964,6 +1964,10 @@ function onLoad(noOffline) {
       updateGPHUnlocks()
       updateBLUnlocks()
       updateBosonicStuffCosts()
+      if (!tmp.ngp3l) {
+		  document.getElementById("hbUnl").textContent="To unlock Higgs Bosons, you need to get " + shortenCosts(1e20) + " Bosonic Antimatter first."
+          updateHiggsUnlocks()
+      }
   }
   hideDimensions()
   updateChallenges()
@@ -2105,6 +2109,10 @@ function onLoad(noOffline) {
 }
 
 function setupNGP31Versions() {
+	if (player.aarexModifications.newGame3PlusVersion < 2.3 || player.ghostify.hb.amount !== undefined) {
+		player.ghostify.hb = setupHiggsSave()
+		player.aarexModifications.newGame3PlusVersion = 2.3
+	} else tmp.hb = player.ghostify.hb
 }
 
 function checkNGM(imported) {

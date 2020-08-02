@@ -2660,6 +2660,32 @@
 								<div id="I give up." class="achievement achievementlocked" style="background-image: url(images/174.png)"></div>
 							</td>
 						</tr>
+						<tr id="achRowng3p9">
+							<td>
+								<div id="The Holy Particle" class="achievement achievementlocked" style="background-image: url(images/175.png)" ach-tooltip="Get a Higgs Boson. Reward: Bosonic Enchants and Upgrades are 2x cheaper. (not implemented)"></div>
+							</td>
+							<td>
+								<div id="ng3p92" class="achievement achievementlocked" style="background-image: url(images/achhidden.png)"></div>
+							</td>
+							<td>
+								<div id="ng3p93" class="achievement achievementlocked" style="background-image: url(images/achhidden.png)"></div>
+							</td>
+							<td>
+								<div id="ng3p94" class="achievement achievementlocked" style="background-image: url(images/achhidden.png)"></div>
+							</td>
+							<td>
+								<div id="ng3p95" class="achievement achievementlocked" style="background-image: url(images/achhidden.png)"></div>
+							</td>
+							<td>
+								<div id="ng3p96" class="achievement achievementlocked" style="background-image: url(images/achhidden.png)"></div>
+							</td>
+							<td>
+								<div id="ng3p97" class="achievement achievementlocked" style="background-image: url(images/achhidden.png)"></div>
+							</td>
+							<td>
+								<div id="ng3p98" class="achievement achievementlocked" style="background-image: url(images/achhidden.png)"></div>
+							</td>
+						</tr>
 				</table>
 				<div id="nothingness">You completed all normal achievements! Congratulations!</div>
 			</div>
@@ -5286,13 +5312,21 @@
 							You have <span id="bWatt" style="font-size:35px"></span> Bosonic Watts.<br>Bosonic Speed: <span id="bSpeed" style="font-size:25px"></span>x<br>Bosonic Lab is currently running at <span id="bTotalSpeed" style="font-size:25px"></span>x.<br>You have played Bosonic Lab for <span id="bTicks"></span> ticks.
 						</td>
 						<td>
-							You have <span id="bAM" style="font-size:35px"></span> Bosonic Antimatter. <span id="bAMProduction" style="font-size:25px"></span>
+							You have <span id="bAM" style="font-size:35px"></span> Bosonic Antimatter. <span id="bAMProduction" style="font-size:25px"></span> <b class="warning" id="bAMProductionReduced">(reduced)<b>
 						</td>
 						<td>
 							You have <span id="bBt" style="font-size:35px"></span> Bosonic Battery. <span id="bBtProduction" style="font-size:25px"></span><br>
 							Overdrive Speed: <span id="odSpeed" style="font-size:25px"></span><span id="odSpeedWBBt"></span><br>
 							<input id="odSlider" style="width: 180px;" type="range" min="0" max="30" class="slider" oninput="changeOverdriveSpeed()">
 						</td>
+					</tr><tr id="bosonicResets">
+						<td>
+							You have <span class="yellow" id="hb" style="font-size:35px">0</span> Higgs Bosons.
+							<br>
+							<button class="gluonupgrade hb" id="hbReset" onclick="higgsReset()">Reset Bosonic Lab for <span id="hbResetGain">1</span> Higgs.<br>(Requires <span id="hbResetReq"></span> Bosonic Antimatter)</button>
+						</td>
+						<td></td>
+						<td></td>
 					</tr></table>
 					<b style="font-size: 35px">Bosonic Runes</b><br>
 					<table id="bRunes" align="center" style="margin: auto"><tr></tr></table>
@@ -5301,6 +5335,7 @@
 							<td><button class="secondarytabbtn" onclick="showBLTab('bextab')">Bosonic Extractor</button></td>
 							<td><button class="secondarytabbtn" onclick="showBLTab('butab')">Bosonic Upgrades</button></td>
 							<td><button class="secondarytabbtn" onclick="showBLTab('wzbtab')">W & Z Bosons</button></td>
+							<td><button id="hbTabBtn" class="secondarytabbtn" onclick="showBLTab('hbTab')">Higgs Bosons</button></td>
 						</tr>
 					</table>
 					<div id="bextab" class="bltab">
@@ -5347,6 +5382,38 @@
 								<div id="zNe"><span id="zNeSymbol"></span></div>
 							</td>
 						</tr></table>
+					</div>
+					<div id="hbTab" class="bltab">
+						<div id="hbUnl"></div>
+						<div id="hbMessage">
+							<b style="font-size: 35px">Congratulations, Bosonic Lab scientist!</b>
+							<br>
+							Your ghost scientists have dedicated you for making Bosonic Antimatter a new resource.
+							<br>
+							Maybe you will use it to make your new pocket universe.
+							<br>
+							But is Bosonic Antimatter enough? No.
+							<br><br>
+							Gihitus, the Holy Ghost of Higgs, wants you to complete the research of Higgs Bosons.
+							<br>
+							These bosons will give mass to particles.
+							<br>
+							You agreed with Gihitus.
+							<br>
+							You thought that Higgs Bosons are very powerful particles.
+							<br><br>
+							Will you realize that?
+						</div>
+						<div id="bAMDimReturn">
+							<b class="warning" style="font-size: 35px">Unfortunately...</b>
+							<br>
+							Your Bosonic Antimatter production <span id="bAMDimReturnPhrase1"></span> to decrease at <span class="warning" style="font-size: 25px" id="bAMDimReturnStart"></span>.
+							<br>
+							<b class="warning" id="bAMDimReturnDivide"></b>
+							<br>
+							<span id="bAMDimReturnPhrase2"></span>
+						</div>
+						<div id="hbDiv"></div>
 					</div>
 				</div>
 			</div>
@@ -5575,6 +5642,7 @@
 <script type="text/javascript" src="javascripts/mods/ngp3/mastery_studies.js"></script>
 <script type="text/javascript" src="javascripts/mods/ngp3/quarks_gluons.js"></script>
 <script type="text/javascript" src="javascripts/mods/ngp3/emperor_dimension.js"></script>
+<script type="text/javascript" src="javascripts/mods/ngp3/higgs_bosons.js"></script>
 <script type="text/javascript" src="javascripts/mods/ngp3/expert_mode.js"></script>
 <script type="text/javascript" src="javascripts/mods/ngmm.js?2"></script>
 <script type="text/javascript" src="javascripts/mods/ers.js?1"></script>
