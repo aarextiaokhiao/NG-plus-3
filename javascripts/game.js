@@ -1871,7 +1871,7 @@ function getInfinitiedGain() {
 function getEternitied() {
 	let banked = player.eternitiesBank
 	let total = player.eternities
-	if (banked !== 0 && (inQC(0) || hasNU(10))) total = nA(total, player.eternitiesBank)
+	if (banked !== undefined && (inQC(0) || hasNU(10))) total = nA(total, player.eternitiesBank)
 	return total
 }
 
