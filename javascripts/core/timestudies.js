@@ -528,7 +528,7 @@ function importStudyTree(input) {
 	if (player.boughtDims) {
 		let l = input.split('/');
 		for (let i = 1; i <= l.length; i++) {
-			for (let j = 0; j < +l[i - 1]; j++) {
+			for (let j = 0; j < l[i - 1]; j++) {
 				if (!buyTimeStudy(i)) break;
 			}
 		}
@@ -540,25 +540,25 @@ function importStudyTree(input) {
 		var laterDLStudies = []
 		var oldLength = player.timestudy.length
 		if (player.masterystudies) var oldLengthMS = player.masterystudies.length
-		for (i=0; i<studiesToBuy.length; i++) {
+		for (var i = 0; i < studiesToBuy.length; i++) {
 			var study=parseInt(studiesToBuy[i])
-			if ((study<120||study>150||(secondSplitPick<1||study%10==secondSplitPick))&&(study<220||study>240||earlyDLStudies.includes(study+(study%2>0?-1:1)))) {
-				if (study>120&&study<150) secondSplitPick=study%10
-				else if (study>220&&study<240) earlyDLStudies.push(study)
-				if (study>240) buyMasteryStudy("t", study, true)
+			if ((study < 120 || study > 150 || (secondSplitPick < 1 || study % 10 == secondSplitPick)) && (study < 220 || study > 240 || earlyDLStudies.includes(study + (study % 2 > 0 ? - 1 : 1)))) {
+				if (study > 120 && study < 150) secondSplitPick = study % 10
+				else if (study > 220 && study < 240) earlyDLStudies.push(study)
+				if (study > 240) buyMasteryStudy("t", study, true)
 				else buyTimeStudy(study, 0, true);
-			} else if (study<150) laterSecondSplits.push(study)
+			} else if (study < 150) laterSecondSplits.push(study)
 			else laterDLStudies.push(study)
 		}
-		for (i=0; i<laterSecondSplits.length; i++) buyTimeStudy(laterSecondSplits[i], 0, true)
-		for (i=0; i<laterDLStudies.length; i++) buyTimeStudy(laterDLStudies[i], 0, true)
-		var ec=parseInt(input.split("|")[1])
+		for (var i=0; i < laterSecondSplits.length; i++) buyTimeStudy(laterSecondSplits[i], 0, true)
+		for (var i=0; i < laterDLStudies.length; i++) buyTimeStudy(laterDLStudies[i], 0, true)
+		var ec = parseInt(input.split("|")[1])
 		if (ec > 0) {
 			justImported = true;
 			if (ec > 12) {
 				buyMasteryStudy("ec", ec, true)
-				changeMS=true
-			} else document.getElementById("ec"+parseInt(input.split("|")[1])+"unl").click();
+				changeMS = true
+			} else document.getElementById("ec" + parseInt(input.split("|")[1]) + "unl").click();
 			setTimeout(function(){ justImported = false; }, 100);
 		}
 		if (player.masterystudies.length > oldLengthMS) {
@@ -582,7 +582,7 @@ function new_preset(importing) {
 	} else if (player.boughtDims) {
 		let l = [];
 		for (let i = 1; i < 7; i++) {
-			if (i<5||getTotalTT(player)>59) {
+			if (i < 5 || getTotalTT(player) > 59) {
 				l.push(player.timestudy.ers_studies[i]);
 			}
 		}
@@ -590,21 +590,21 @@ function new_preset(importing) {
 	} else {
 		var mtsstudies=[]
 		if (player.masterystudies) {
-			for (id=0;id<player.masterystudies.length;id++) {
+			for (var id = 0; id < player.masterystudies.length; id++) {
 				var t = player.masterystudies[id].split("t")[1]
 				if (t) mtsstudies.push(t)
 			}
 		}
-		var input=player.timestudy.studies+(mtsstudies.length>0?","+mtsstudies:"")+"|"+player.eternityChallUnlocked
+		var input = player.timestudy.studies + (mtsstudies.length > 0 ? "," + mtsstudies : "") + "|" + player.eternityChallUnlocked
 	}
 	onImport = false
-	var placement=1
+	var placement = 1
 	while (poData.includes(placement)) placement++
-	presets[placement]={preset:input}
-	localStorage.setItem(btoa(presetPrefix+placement),btoa(JSON.stringify(presets[placement])))
+	presets[placement] = {preset:input}
+	localStorage.setItem(btoa(presetPrefix+placement), btoa(JSON.stringify(presets[placement])))
 	poData.push(placement)
-	latestRow=document.getElementById("presets").insertRow(loadedPresets)
-	latestRow.innerHTML=getPresetLayout(placement)
+	latestRow = document.getElementById("presets").insertRow(loadedPresets)
+	latestRow.innerHTML = getPresetLayout(placement)
 	loadedPresets++
 	changePresetTitle(placement, loadedPresets)
 	localStorage.setItem(metaSaveId,btoa(JSON.stringify(metaSave)))
@@ -620,7 +620,7 @@ function save_preset(id) {
 	if (player.boughtDims) {
 		let l = [];
 		for (let i = 1; i < 7; i++) {
-			if (i<5||getTotalTT(player)>59) {
+			if (i < 5 || getTotalTT(player) > 59) {
 				l.push(player.timestudy.ers_studies[i]);
 			}
 		}
@@ -628,14 +628,14 @@ function save_preset(id) {
 	} else {
 		var mtsstudies=[]
 		if (tmp.ngp3) {
-			for (mid=0;mid<player.masterystudies.length;mid++) {
+			for (var mid = 0; mid < player.masterystudies.length; mid++) {
 				var t = player.masterystudies[mid].split("t")[1]
 				if (t) mtsstudies.push(t)
 			}
 		}
-		presets[id].preset=player.timestudy.studies+(mtsstudies.length>0?","+mtsstudies:"")+"|"+player.eternityChallUnlocked
+		presets[id].preset = player.timestudy.studies + (mtsstudies.length > 0 ? "," + mtsstudies : "") + "|" + player.eternityChallUnlocked
 	}
-	localStorage.setItem(btoa(presetPrefix+id),btoa(JSON.stringify(presets[id])))
+	localStorage.setItem(btoa(presetPrefix + id), btoa(JSON.stringify(presets[id])))
 	$.notify("Preset saved", "info")
 }
 
@@ -654,50 +654,50 @@ function load_preset(id, reset) {
 }
 
 function delete_preset(presetId) {
-    if (!confirm("Do you really want to erase this preset? You will lose access if you do that!")) return
-    var alreadyDeleted=false
-    var newPresetsOrder=[]
-    for (id=0;id<poData.length;id++) {
-        if (alreadyDeleted) {
-            newPresetsOrder.push(poData[id])
-            changePresetTitle(poData[id], id)
-        } else if (poData[id]==presetId) {
-            delete presets[presetId]
-            localStorage.removeItem(btoa(presetPrefix+presetId))
-            alreadyDeleted=true
-            document.getElementById("presets").deleteRow(id)
-            loadedPresets--
-        } else newPresetsOrder.push(poData[id])
-    }
-    metaSave["presetsOrder"+(player.boughtDims?"_ers":"")]=newPresetsOrder
-    poData=newPresetsOrder
-    localStorage.setItem(metaSaveId,btoa(JSON.stringify(metaSave)))
-    $.notify("Preset deleted", "info")
+	if (!confirm("Do you really want to erase this preset? You will lose access if you do that!")) return
+	var alreadyDeleted = false
+	var newPresetsOrder = []
+	for (var id = 0; id < poData.length; id++) {
+		if (alreadyDeleted) {
+			newPresetsOrder.push(poData[id])
+			changePresetTitle(poData[id], id)
+		} else if (poData[id] == presetId) {
+			delete presets[presetId]
+			localStorage.removeItem(btoa(presetPrefix + presetId))
+			alreadyDeleted = true
+			document.getElementById("presets").deleteRow(id)
+			loadedPresets--
+		} else newPresetsOrder.push(poData[id])
+	}
+	metaSave["presetsOrder"+(player.boughtDims?"_ers":"")] = newPresetsOrder
+	poData = newPresetsOrder
+	localStorage.setItem(metaSaveId,btoa(JSON.stringify(metaSave)))
+	$.notify("Preset deleted", "info")
 }
 
 function rename_preset(id) {
-	presets[id].title=prompt("Input a new name of this preset. It is necessary to rename it into related names!")
-	localStorage.setItem(btoa(presetPrefix+id),btoa(JSON.stringify(presets[id])))
-	placement=1
-	while (poData[placement-1]!=id) placement++
+	presets[id].title = prompt("Input a new name of this preset. It is necessary to rename it into related names!")
+	localStorage.setItem(btoa(presetPrefix + id), btoa(JSON.stringify(presets[id])))
+	placement = 1
+	while (poData[placement-1] != id) placement++
 	changePresetTitle(id, placement)
 	$.notify("Preset renamed", "info")
 }
 
 function move_preset(id,offset) {
-	placement=0
-	while (poData[placement]!=id) placement++
-	if (offset<0) {
-		if (placement<-offset) return
-	} else if (placement>poData.length-offset-1) return
-	var temp=poData[placement]
-	poData[placement]=poData[placement+offset]
-	poData[placement+offset]=temp
-	document.getElementById("presets").rows[placement].innerHTML=getPresetLayout(poData[placement])
-	document.getElementById("presets").rows[placement+offset].innerHTML=getPresetLayout(id)
-	changePresetTitle(poData[placement],placement)
-	changePresetTitle(poData[placement+offset],placement+offset)
-	localStorage.setItem(metaSaveId,btoa(JSON.stringify(metaSave)))
+	placement = 0
+	while (poData[placement] != id) placement++
+	if (offset < 0) {
+		if (placement < -offset) return
+	} else if (placement > poData.length - offset - 1) return
+	var temp = poData[placement]
+	poData[placement] = poData[placement+offset]
+	poData[placement+offset] = temp
+	document.getElementById("presets").rows[placement].innerHTML = getPresetLayout(poData[placement])
+	document.getElementById("presets").rows[placement+offset].innerHTML = getPresetLayout(id)
+	changePresetTitle(poData[placement], placement)
+	changePresetTitle(poData[placement+offset], placement + offset)
+	localStorage.setItem(metaSaveId, btoa(JSON.stringify(metaSave)))
 }
 
 var loadedPresets=0
@@ -712,50 +712,50 @@ function openStudyPresets() {
 		if (onERS) presetPrefix = prefix+"ERS_ST_"
 		else presetPrefix = prefix+"AM_ST_"
 		loadedPresets = 0
-	} else if (saveOnNGP3!=onNGP3) {
-		onNGP3=saveOnNGP3
-		for (var p=0;p<loadedPresets;p++) {
-			document.getElementById("presets").rows[p].innerHTML=getPresetLayout(poData[p])
-			changePresetTitle(poData[p],p+1)
+	} else if (saveOnNGP3 != onNGP3) {
+		onNGP3 = saveOnNGP3
+		for (var p = 0; p < loadedPresets; p++) {
+			document.getElementById("presets").rows[p].innerHTML = getPresetLayout(poData[p])
+			changePresetTitle(poData[p], p + 1)
 		}
 	}
 	document.getElementById("presetsmenu").style.display = "block";
 	clearInterval(loadSavesIntervalId)
-	occupied=false
+	occupied = false
 	loadSavesIntervalId=setInterval(function(){
 		if (occupied) return
-		else occupied=true
-		if (loadedPresets==poData.length) {
+		else occupied = true
+		if (loadedPresets == poData.length) {
 			clearInterval(loadSavesIntervalId)
 			return
 		} else if (!onLoading) {
-			latestRow=document.getElementById("presets").insertRow(loadedPresets)
-			onLoading=true
+			latestRow = document.getElementById("presets").insertRow(loadedPresets)
+			onLoading = true
 		}
 		try {
-			var id=poData[loadedPresets]
-			latestRow.innerHTML=getPresetLayout(id)
+			var id = poData[loadedPresets]
+			latestRow.innerHTML = getPresetLayout(id)
 			changePresetTitle(id, loadedPresets+1)
 			loadedPresets++
-			onLoading=false
+			onLoading = false
 		} catch (_) {}
-		occupied=false
+		occupied = false
 	}, 0)
 }
 
 function getPresetLayout(id) {
-	return "<b id='preset_"+id+"_title'>Preset #"+(loadedPresets+1)+"</b><br><button class='storebtn' onclick='save_preset("+id+")'>Save</button><button class='storebtn' onclick='load_preset("+id+")'>Load</button>"+(onNGP3?"<button class='storebtn' style='font-size: 10px' onclick='load_preset("+id+", true)'>Eternity and Load</button>":"")+"<button class='storebtn' onclick='rename_preset("+id+")'>Rename</button><button class='storebtn' onclick='move_preset("+id+",-1)'>Move up</button><button class='storebtn' onclick='move_preset("+id+",1)'>Move down</button><button class='storebtn' onclick='delete_preset("+id+")'>Delete</button>"
+	return "<b id='preset_" + id + "_title'>Preset #" + (loadedPresets + 1) + "</b><br><button class='storebtn' onclick='save_preset(" + id + ")'>Save</button><button class='storebtn' onclick='load_preset(" + id + ")'>Load</button>" + (onNGP3 ? "<button class='storebtn' style='font-size: 10px' onclick='load_preset(" + id + ", true)'>Eternity and Load</button>" : "") + "<button class='storebtn' onclick='rename_preset(" + id + ")'>Rename</button><button class='storebtn' onclick='move_preset(" + id + ",-1)'>Move up</button><button class='storebtn' onclick='move_preset(" + id + ",1)'>Move down</button><button class='storebtn' onclick='delete_preset(" + id + ")'>Delete</button>"
 }
 
 function changePresetTitle(id, placement) {
-	if (presets[id]===undefined) {
-		var preset=localStorage.getItem(btoa(presetPrefix+id))
-		if (preset===null) {
-			presets[id]={preset:"|0",title:"Deleted preset #"+placement}
-			localStorage.setItem(btoa(presetPrefix+id),btoa(JSON.stringify(presets[id])))
-		} else presets[id]=JSON.parse(atob(preset))
+	if (presets[id] === undefined) {
+		var preset = localStorage.getItem(btoa(presetPrefix+id))
+		if (preset === null) {
+			presets[id] = {preset: "|0", title: "Deleted preset #" + placement}
+			localStorage.setItem(btoa(presetPrefix + id), btoa(JSON.stringify(presets[id])))
+		} else presets[id] = JSON.parse(atob(preset))
 	}
-	document.getElementById("preset_"+id+"_title").textContent=presets[id].title?presets[id].title:"Preset #"+placement
+	document.getElementById("preset_" + id + "_title").textContent = presets[id].title ? presets[id].title : "Preset #" + placement
 }
 
 //Time Study Effects
@@ -766,7 +766,7 @@ let tsMults = {
 		if (bigRipped && log > 900) log = Math.sqrt(log * 900)
 		else if (player.aarexModifications.newGameExpVersion) log = Math.min(log, 25000) // buff to NG+++^
 		else if (player.galacticSacrifice === undefined) log = Math.min(log, 2500)
-		if (log<0) log = 0
+		if (log < 0) log = 0
 		
 		if (tmp.ngp3l || !bigRipped) return Decimal.pow(10, log)
 		log = softcap(log, "ts11_log_big_rip", 1)
@@ -786,7 +786,7 @@ let tsMults = {
 		return player.aarexModifications.newGameExpVersion ? 100 : 10
 	},
 	62: function() {
-		let r=player.aarexModifications.newGameExpVersion ? 4 : 3
+		let r = player.aarexModifications.newGameExpVersion ? 4 : 3
 		if (tmp.ngex) r--
 		return r
 	},
