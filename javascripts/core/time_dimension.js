@@ -161,6 +161,7 @@ function getTimeDimensionDescription(tier) {
 
 function updateTimeDimensions() {
 	if (document.getElementById("timedimensions").style.display == "block" && document.getElementById("dimensions").style.display == "block") {
+		updateTimeShards()
 		for (let tier = 1; tier <= 8; ++tier) {
 			if (isTDUnlocked(tier)) {
 				document.getElementById("timeRow"+tier).style.display = "table-row"
@@ -180,6 +181,16 @@ function updateTimeDimensions() {
 			document.getElementById("tdResetBtn").className=(player["timeDimension"+req.tier].bought<req.amount)?"unavailablebtn":"storebtn"
 		} else document.getElementById("tdReset").style.display="none"
 	}
+}
+
+function updateTimeShards() {
+	let p=getTimeDimensionProduction(1)
+	if (player.pSac !== undefined) p=p.div(getEC12Mult())
+	document.getElementById("itmult").textContent=tmp.ngp3&&player.achievements.includes('r105')?'Your "Infinite Time" multiplier is currently '+shorten(tmp.it)+'x.':''
+	document.getElementById("timeShardAmount").textContent = shortenMoney(player.timeShards)
+	document.getElementById("tickThreshold").textContent = shortenMoney(player.tickThreshold)
+	if (player.currentEternityChall == "eterc7") document.getElementById("timeShardsPerSec").textContent = "You are getting "+shortenDimensions(p)+" Eighth Infinity Dimensions per second."
+	else document.getElementById("timeShardsPerSec").textContent = "You are getting "+shortenDimensions(p)+" Timeshards per second."
 }
 
 var timeDimCostMults = [[null, 3, 9, 27, 81, 243, 729, 2187, 6561], [null, 1.5, 2, 3, 20, 150, 1e5, 3e6, 1e8]]

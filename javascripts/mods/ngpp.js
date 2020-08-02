@@ -27,7 +27,7 @@ function getMetaDimensionMultiplier(tier) {
 	if (tier == 1 && GUBought("rg3")) ret = ret.times(getRG3Effect())
 
 	//QC Rewards:
-	if (tier%2>0) ret = ret.times(QC4Reward)
+	if (tier%2>0) ret = ret.times(tmp.qcRewards[4])
 	
 	//Achievements:
 	if (tier == 8 && player.achievements.includes("ng3p22")) ret = ret.times(1+Math.pow(player.meta[1].amount.plus(1).log10()/10,2))
@@ -56,8 +56,8 @@ function getMetaDimensionGlobalMultiplier() {
 		//Qunatum Upgrades
 		if (GUBought("br4")) ret = ret.times(Decimal.pow(getDimensionPowerMultiplier(), 0.0003).max(1))
 		//QC Rewards
-		ret = ret.times(getQCReward(3))
-		ret = ret.times(getQCReward(6))
+		ret = ret.times(tmp.qcRewards[3])
+		ret = ret.times(tmp.qcRewards[6])
 		//Achievement Rewards
 		if (!tmp.ngp3l) {
 			var ng3p13exp = Math.pow(Decimal.plus(quantumWorth, 1).log10(), 0.75)

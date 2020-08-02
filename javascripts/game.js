@@ -1637,7 +1637,7 @@ function updateNeutrinoUpgradesTemp(){
 }
 
 function updateInfiniteTimeTemp(){
-	var x = (3 - player.tickspeed.log10()) * 0.000005
+	var x = (3 - getTickspeed().log10()) * 0.000005
 	if (!tmp.ngp3l && player.achievements.includes("ng3p56")) x *= 1.03
 	if (ghostified && player.ghostify.neutrinos.boosts>3) x *= tmp.nb[3]
 	if (tmp.be && !player.dilation.active && tmp.qu.breakEternity.upgrades.includes(8)) x *= getBreakUpgMult(8)
@@ -1758,6 +1758,9 @@ function updateTemp() {
 		tmp.tue=getTreeUpgradeEfficiency()
 		tmp.mpte=getMPTExp()
 	} else tmp.be=false
+	tmp.sacPow = calcTotalSacrificeBoost()
+	if (tmp.ngp3 && player.masterystudies.includes("d8")) updateQCRewardsTemp()
+
 	if (player.meta !== undefined) tmp.mdgm = getMetaDimensionGlobalMultiplier() //Update global multiplier of all Meta Dimensions
 	tmp.mptb=getMPTBase()
 	
@@ -1768,15 +1771,12 @@ function updateTemp() {
 	tmp.rm=getReplMult()
 	if (!player.timestudy.studies.includes(101)) tmp.nrm=1
 	updateExtraReplGalaxies()
-
-	tmp.eu2b=1 //Eternity Upgrade #2 boost w/ "The cap is a million, not a trillion" reward
 	
-	updateTS232Temp()	
+	updateTS232Temp()
 	updateTS431ExtraGalTemp()
 	updateMatterSpeed()
 
 	tmp.tsReduce = getTickSpeedMultiplier()
-	tmp.sacPow = calcTotalSacrificeBoost()
 	updateInfinityPowerEffects()
 	if (player.replicanti.unl) updateReplicantiTemp()
 }
@@ -1869,8 +1869,9 @@ function getInfinitiedGain() {
 }
 
 function getEternitied() {
+	let banked = player.eternitiesBank
 	let total = player.eternities
-	if (player.eternitiesBank) if (inQC(0)||(hasNU(10)?tmp.qu.bigRip.active:false)) total = nA(total, player.eternitiesBank)
+	if (banked !== 0 && inQC(0)) total = nA(total, player.eternitiesBank)
 	return total
 }
 
@@ -2349,7 +2350,7 @@ function getDilTimeGainPerSecond() {
 		if (player.achievements.includes("ng3p41") && !tmp.ngp3l) gain = gain.times(Decimal.pow(4,Math.sqrt(player.quantum.nanofield.rewards)))
 		if (player.masterystudies.includes("t263")) gain = gain.times(getMTSMult(263))
 		if (player.masterystudies.includes("t281")) gain = gain.times(getMTSMult(281))
-		gain = gain.times(getQCReward(1))
+		gain = gain.times(tmp.qcRewards[1])
 		if (player.masterystudies.includes("t322")) gain = gain.times(getMTSMult(322))
 		if (player.masterystudies.includes("t341")) gain = gain.times(getMTSMult(341))
 		gain = gain.times(getTreeUpgradeEffect(7))
@@ -2438,44 +2439,42 @@ function dimensionTabDisplay(){
 
 function tickspeedDisplay(){
 	if (canBuyDimension(3) || player.currentEternityChall == "eterc9") {
-        	var tickmult = tmp.tsReduce
-        	var tickmultNum = tickmult.toNumber()
-        	var ticklabel
-        	var e = Math.floor(Math.log10(Math.round(1/tickmultNum)))
-        	if (isNaN(tickmultNum)) ticklabel = 'Break the tick interval by Infinite';
-        	else if (e >= 9) ticklabel = "Divide the tick interval by " + shortenDimensions(Decimal.recip(tickmult))
-        	else ticklabel = 'Reduce the tick interval by ' + ((1 - tickmultNum) * 100).toFixed(e) + '%'
-        	let ic3mult=getPostC3Mult()
-        	if (player.galacticSacrifice || player.currentChallenge == "postc3" || isIC3Trapped()) document.getElementById("tickLabel").innerHTML = ((isIC3Trapped() || player.currentChallenge == "postc3") && player.currentChallenge != "postcngmm_3" && !player.challenges.includes("postcngmm_3") && !tmp.be ? "M" : ticklabel + '<br>and m') + 'ultiply all dimensions by ' + (ic3mult>999.95?shorten(ic3mult):new Decimal(ic3mult).toNumber().toPrecision(4)) + '.'
-        	else document.getElementById("tickLabel").textContent = ticklabel + '.'
+		var tickmult = tmp.tsReduce
+		var tickmultNum = tickmult.toNumber()
+		var ticklabel
+		var e = Math.floor(Math.log10(Math.round(1/tickmultNum)))
+		if (isNaN(tickmultNum)) ticklabel = 'Break the tick interval by Infinite';
+		else if (e >= 9) ticklabel = "Divide the tick interval by " + shortenDimensions(Decimal.recip(tickmult))
+		else ticklabel = 'Reduce the tick interval by ' + ((1 - tickmultNum) * 100).toFixed(e) + '%'
+		let ic3mult=getPostC3Mult()
+		if (player.galacticSacrifice || player.currentChallenge == "postc3" || isIC3Trapped()) document.getElementById("tickLabel").innerHTML = ((isIC3Trapped() || player.currentChallenge == "postc3") && player.currentChallenge != "postcngmm_3" && !player.challenges.includes("postcngmm_3") && !tmp.be ? "M" : ticklabel + '<br>and m') + 'ultiply all dimensions by ' + (ic3mult>999.95?shorten(ic3mult):new Decimal(ic3mult).toNumber().toPrecision(4)) + '.'
+		else document.getElementById("tickLabel").textContent = ticklabel + '.'
 
-        	document.getElementById("tickSpeed").style.visibility = "visible";
-        	document.getElementById("tickSpeedMax").style.visibility = "visible";
-        	document.getElementById("tickLabel").style.visibility = "visible";
-        	document.getElementById("tickSpeedAmount").style.visibility = "visible";
-    	} else {
-        	document.getElementById("tickSpeed").style.visibility = "hidden";
-        	document.getElementById("tickSpeedMax").style.visibility = "hidden";
-        	document.getElementById("tickLabel").style.visibility = "hidden";
-        	document.getElementById("tickSpeedAmount").style.visibility = "hidden";
-    	}
+		document.getElementById("tickSpeed").style.visibility = "visible";
+		document.getElementById("tickSpeedMax").style.visibility = "visible";
+		document.getElementById("tickLabel").style.visibility = "visible";
+		document.getElementById("tickSpeedAmount").style.visibility = "visible";
+	} else {
+		document.getElementById("tickSpeed").style.visibility = "hidden";
+		document.getElementById("tickSpeedMax").style.visibility = "hidden";
+		document.getElementById("tickLabel").style.visibility = "hidden";
+		document.getElementById("tickSpeedAmount").style.visibility = "hidden";
+	}
 }
 
 function paradoxDimDisplay(){
-	if (document.getElementById("dimensions").style.display == "block" && document.getElementById("pdims").style.display == "block") {
-		document.getElementById("pPow").textContent = shortenMoney(player.pSac.dims.power)
-		document.getElementById("pPowProduction").textContent = "You are getting " + shortenDimensions(getPDProduction(1).div(getEC12Mult())) + " Paradox Power per second."
-		document.getElementById("pPowEffect").textContent = getFullExpansion(Math.floor(getExtraTime() * getEC12Mult()))
-		var shown
-		for (let t = 8; t > 0; t--) {
-			shown = shown || isDimUnlocked(t)
-			document.getElementById("pR"+t).style.display = shown ? "" : "none"
-			if (shown) {
-				document.getElementById("pD"+t).textContent = DISPLAY_NAMES[t] + " Paradox Dimension x" + shortenMoney(getPDPower(t))
-				document.getElementById("pB"+t).textContent = "Cost: " + shortenDimensions(player.pSac.dims[t].cost) + " Px"
-				document.getElementById("pB"+t).className = (player.pSac.px.gte(player.pSac.dims[t].cost) ? "stor" : "unavailabl") + "ebtn"
-				document.getElementById("pA"+t).textContent = getPDDesc(t)
-			}
+	document.getElementById("pPow").textContent = shortenMoney(player.pSac.dims.power)
+	document.getElementById("pPowProduction").textContent = "You are getting " + shortenDimensions(getPDProduction(1).div(getEC12Mult())) + " Paradox Power per second."
+	document.getElementById("pPowEffect").textContent = getFullExpansion(Math.floor(getExtraTime() * getEC12Mult()))
+	var shown
+	for (let t = 8; t > 0; t--) {
+		shown = shown || isDimUnlocked(t)
+		document.getElementById("pR"+t).style.display = shown ? "" : "none"
+		if (shown) {
+			document.getElementById("pD"+t).textContent = DISPLAY_NAMES[t] + " Paradox Dimension x" + shortenMoney(getPDPower(t))
+			document.getElementById("pB"+t).textContent = "Cost: " + shortenDimensions(player.pSac.dims[t].cost) + " Px"
+			document.getElementById("pB"+t).className = (player.pSac.px.gte(player.pSac.dims[t].cost) ? "stor" : "unavailabl") + "ebtn"
+			document.getElementById("pA"+t).textContent = getPDDesc(t)
 		}
 	}
 }
@@ -3015,21 +3014,18 @@ function INFINITYUPGRADESDisplay(){
 
 function eternityUpgradesDisplay(){
 	var eu2formula="(x/200)^log4(2x)"
-        if (player.boughtDims !== undefined) eu2formula = "x^log4(2x)"
-        else if (player.achievements.includes("ngpp15")) {
-        	eu2formula = "x^log10(x)^3.75"
-                if (tmp.eu2b!=1) eu2formula = "10^("+tmp.eu2b.toFixed(2)+"*log10(x))^4.75"
-            }
+	if (player.boughtDims !== undefined) eu2formula = "x^log4(2x)"
+	else if (player.achievements.includes("ngpp15")) eu2formula = "x^log10(x)^3.75"
 	document.getElementById("eter1").innerHTML = "Infinity Dimensions multiplier based on unspent EP (x+1)<br>Currently: "+shortenMoney(player.eternityPoints.plus(1))+"x<br>Cost: 5 EP"
-        document.getElementById("eter2").innerHTML = "Infinity Dimension multiplier based on eternities ("+eu2formula+")<br>Currently: "+shortenMoney(getEU2Mult())+"x<br>Cost: 10 EP"
-        document.getElementById("eter3").innerHTML = "Infinity Dimensions multiplier based on "+(player.boughtDims?"time shards (x/"+shortenCosts(1e12)+"+1)":"sum of Infinity Challenge times")+"<br>Currently: "+shortenMoney(getEU3Mult())+"x<br>Cost: "+shortenCosts(50e3)+" EP"
-        document.getElementById("eter4").innerHTML = "Your achievement bonus affects Time Dimensions"+"<br>Cost: "+shortenCosts(1e16)+" EP"
-        document.getElementById("eter5").innerHTML = "Time Dimensions are multiplied by your unspent time theorems"+"<br>Cost: "+shortenCosts(1e40)+" EP"
-        document.getElementById("eter6").innerHTML = "Time Dimensions are multiplied by days played"+"<br>Cost: "+shortenCosts(1e50)+" EP"
-        if (player.exdilation != undefined && player.dilation.studies.includes(1)) {
+	document.getElementById("eter2").innerHTML = "Infinity Dimension multiplier based on eternities ("+eu2formula+")<br>Currently: "+shortenMoney(getEU2Mult())+"x<br>Cost: 10 EP"
+	document.getElementById("eter3").innerHTML = "Infinity Dimensions multiplier based on "+(player.boughtDims?"time shards (x/"+shortenCosts(1e12)+"+1)":"sum of Infinity Challenge times")+"<br>Currently: "+shortenMoney(getEU3Mult())+"x<br>Cost: "+shortenCosts(50e3)+" EP"
+	document.getElementById("eter4").innerHTML = "Your achievement bonus affects Time Dimensions"+"<br>Cost: "+shortenCosts(1e16)+" EP"
+	document.getElementById("eter5").innerHTML = "Time Dimensions are multiplied by your unspent time theorems"+"<br>Cost: "+shortenCosts(1e40)+" EP"
+	document.getElementById("eter6").innerHTML = "Time Dimensions are multiplied by days played"+"<br>Cost: "+shortenCosts(1e50)+" EP"
+	if (player.exdilation != undefined && player.dilation.studies.includes(1)) {
 		document.getElementById("eter7").innerHTML = "Dilated time gain is boosted by antimatter<br>Currently: "+(1 + Math.log10(Math.max(1, player.money.log(10))) / 40).toFixed(3)+"x<br>Cost: "+shortenCosts(new Decimal("1e1500"))+" EP"
-                document.getElementById("eter8").innerHTML = "Dilated time gain is boosted by infinity points<br>Currently: "+(1 + Math.log10(Math.max(1, player.infinityPoints.log(10))) / 20).toFixed(3)+"x<br>Cost: "+shortenCosts(new Decimal("1e2000"))+" EP"
-                document.getElementById("eter9").innerHTML = "Dilated time gain is boosted by eternity points<br>Currently: "+(1 + Math.log10(Math.max(1, player.eternityPoints.log(10))) / 10).toFixed(3)+"x<br>Cost: "+shortenCosts(new Decimal("1e3000"))+" EP"
+		document.getElementById("eter8").innerHTML = "Dilated time gain is boosted by infinity points<br>Currently: "+(1 + Math.log10(Math.max(1, player.infinityPoints.log(10))) / 20).toFixed(3)+"x<br>Cost: "+shortenCosts(new Decimal("1e2000"))+" EP"
+		document.getElementById("eter9").innerHTML = "Dilated time gain is boosted by eternity points<br>Currently: "+(1 + Math.log10(Math.max(1, player.eternityPoints.log(10))) / 10).toFixed(3)+"x<br>Cost: "+shortenCosts(new Decimal("1e3000"))+" EP"
 	}
 }
 
@@ -3097,25 +3093,20 @@ function ETERNITYSTOREDisplay(){
 }
 
 function updateDimensions() {
-	if (document.getElementById("antimatterdimensions").style.display == "block" && document.getElementById("dimensions").style.display == "block") {
-        	dimensionTabDisplay()
-    	}
+	if (document.getElementById("dimensions").style.display == "block") {
+		if (document.getElementById("antimatterdimensions").style.display == "block") dimensionTabDisplay()
+		if (document.getElementById("infinitydimensions").style.display == "block") updateInfinityDimensions()
+		if (document.getElementById("timedimensions").style.display == "block") updateTimeDimensions()
+		if (document.getElementById("pdims").style.display == "block") paradoxDimDisplay()
+    	if (document.getElementById("metadimensions").style.display == "block") updateMetaDimensions()
+    	if (document.getElementById("emperordimensions").style.display == "block") updateEmperorDimensions()
+	}
 	tickspeedDisplay()
-	paradoxDimDisplay()
-    	if (document.getElementById("dimensions").style.display == "block" && document.getElementById("metadimensions").style.display == "block") updateMetaDimensions()
-    	if (document.getElementById("dimensions").style.display == "block" && document.getElementById("emperordimensions").style.display == "block") updateEmperorDimensions()
-    	if (document.getElementById("quantumtab").style.display == "block") updateQuantumTabs()
-    	if (document.getElementById("ghostify").style.display == "block") updateGhostifyTabs()
-
-    	if (document.getElementById("stats").style.display == "block" && document.getElementById("statistics").style.display == "block") {
-		STATSDisplay()
-	}
-    	if (document.getElementById("infinity").style.display == "block") {
-        	INFINITYUPGRADESDisplay()
-	}
-	if (document.getElementById("eternitystore").style.display == "block") {
-		ETERNITYSTOREDisplay()
-	}
+    if (document.getElementById("stats").style.display == "block" && document.getElementById("statistics").style.display == "block") STATSDisplay()
+   	if (document.getElementById("infinity").style.display == "block") INFINITYUPGRADESDisplay()
+	if (document.getElementById("eternitystore").style.display == "block") ETERNITYSTOREDisplay()
+   	if (document.getElementById("quantumtab").style.display == "block") updateQuantumTabs()
+   	if (document.getElementById("ghostify").style.display == "block") updateGhostifyTabs()
 }
 
 function hideDimensions() {
@@ -3153,22 +3144,18 @@ function togglePerformanceTicks() {
 }
 
 function updateCosts() {
-	if (document.getElementById("dimensions").style.display == "block") for (var i=1; i<9; i++) {
-		if (document.getElementById("antimatterdimensions").style.display == "block") {
+	var costPart = quantumed ? '' : 'Cost: '
+	if (document.getElementById("dimensions").style.display == "block" && document.getElementById("antimatterdimensions").style.display == "block") {
+		var until10CostPart = quantumed ? '' : 'Until 10, Cost: '
+		for (var i=1; i<9; i++) {
 			var cost = player[TIER_NAMES[i] + "Cost"]
 			var resource = getOrSubResource(i)
 			document.getElementById('B'+i).className = cost.lte(resource) ? 'storebtn' : 'unavailablebtn'
-			document.getElementById('B'+i).textContent = (quantumed ? '':'Cost: ') + shortenPreInfCosts(cost)
+			document.getElementById('B'+i).textContent = costPart + shortenPreInfCosts(cost)
 			document.getElementById('M'+i).className = cost.times(10 - dimBought(i)).lte(resource) ? 'storebtn' : 'unavailablebtn'
-			document.getElementById('M'+i).textContent = (quantumed ? '':'Until 10, Cost: ') + shortenPreInfCosts(cost.times(10 - dimBought(i)));
-		}
-		if (document.getElementById("infinitydimensions").style.display == "block" && player.infDimensionsUnlocked[i-1]) {
-			document.getElementById("infMax"+i).textContent = (quantumed ? '':"Cost: ") + (player.pSac !== undefined ? shortenDimensions(player["infinityDimension"+i].costAM) : shortenInfDimCosts(getIDCost(i)) + " IP")
-			if (player.pSac !== undefined ? player.money.gte(player["infinityDimension"+i].costAM) : player.infinityPoints.gte(getIDCost(i))) document.getElementById("infMax"+i).className = "storebtn"
-			else document.getElementById("infMax"+i).className = "unavailablebtn"
+			document.getElementById('M'+i).textContent = until10CostPart + shortenPreInfCosts(cost.times(10 - dimBought(i)));
 		}
 	}
-	var costPart = quantumed ? '':'Cost: '
 	document.getElementById("tickSpeed").textContent = costPart + shortenPreInfCosts(player.tickSpeedCost);
 }
 
@@ -3847,7 +3834,7 @@ function autoBuyRG() {
 function updateExtraReplGalaxies() {
 	let ts225Eff = 0
 	let ts226Eff = 0
-	let speed = getQCReward(8) * 2
+	let speed = tmp.qcRewards[8] * 2
 	if (player.timestudy.studies.includes(225)) {
 		ts225Eff = Math.floor(player.replicanti.amount.e / 1e3)
 		if (ts225Eff > 99) ts225Eff = Math.floor(Math.sqrt(0.25 + (ts225Eff - 99) * speed) + 98.5)
@@ -8230,7 +8217,7 @@ function getFreeGalaxyGainMult() {
 	let galaxyMult = player.dilation.upgrades.includes(4) ? 2 : 1
 	if (player.dilation.upgrades.includes("ngmm1")) galaxyMult *= 2
 	if (player.aarexModifications.ngudpV&&!player.aarexModifications.nguepV) galaxyMult /= 1.5
-	galaxyMult *= getQCReward(2)
+	galaxyMult *= tmp.qcRewards[2]
 	if (tmp.ngp3) if (player.masterystudies.includes("d12")) galaxyMult *= getNanofieldRewardEffect(3)
 	return galaxyMult
 }
@@ -8289,18 +8276,6 @@ function getReplSpeed() {
 	inc=inc+1
 	if (GUBought("gb2")) exp*=2
 	return {inc:inc,exp:exp}
-}
-
-function updateTimeShards() {
-    	if (document.getElementById("timedimensions").style.display == "block" && document.getElementById("dimensions").style.display == "block") {
-        	let p=getTimeDimensionProduction(1)
-        	if (player.pSac !== undefined) p=p.div(getEC12Mult())
-        	document.getElementById("itmult").textContent=tmp.ngp3&&player.achievements.includes('r105')?'Your "Infinite Time" multiplier is currently '+shorten(tmp.it)+'x.':''
-        	document.getElementById("timeShardAmount").textContent = shortenMoney(player.timeShards)
-        	document.getElementById("tickThreshold").textContent = shortenMoney(player.tickThreshold)
-        	if (player.currentEternityChall == "eterc7") document.getElementById("timeShardsPerSec").textContent = "You are getting "+shortenDimensions(p)+" Eighth Infinity Dimensions per second."
-        	else document.getElementById("timeShardsPerSec").textContent = "You are getting "+shortenDimensions(p)+" Timeshards per second."
-    	}
 }
 
 function updateDilation() {
@@ -9409,7 +9384,6 @@ function quantumOverallUpdating(diff){
 }
 
 function metaDimsUpdating(diff){
-	QC4Reward = getQCReward(4)
 	player.meta.antimatter = player.meta.antimatter.plus(getMetaDimensionProduction(1).times(diff/10))
 	if (inQC(4)) player.meta.antimatter = player.meta.antimatter.plus(getMetaDimensionProduction(1).times(diff/10))
 	if (tmp.ngp3 && !tmp.ngp3l && inQC(0)) gainQuarkEnergy(player.meta.bestAntimatter, player.meta.antimatter)
@@ -9422,20 +9396,14 @@ function metaDimsUpdating(diff){
 
 function infinityTimeMetaBlackHoleDimUpdating(diff){
 	var step = inQC(4) || player.pSac!=undefined ? 2 : 1
-    	var stepT = inNC(7) && player.aarexModifications.ngmX > 3 ? 2 : step
-    	for (let tier=1;tier<9;tier++) {
-		if (player.infDimensionsUnlocked[tier-1]) {
-            	document.getElementById("infRow"+tier).style.display = "inline-block"
-		} else {
-			document.getElementById("infRow"+tier).style.display = "none"
-		}
-
+	var stepT = inNC(7) && player.aarexModifications.ngmX > 3 ? 2 : step
+	for (let tier = 1 ; tier < 9; tier++) {
 		if (tier < 9 - step){
-            		player["infinityDimension"+tier].amount = player["infinityDimension"+tier].amount.plus(DimensionProduction(tier+step).times(diff/100))
-            		if (player.meta) player.meta[tier].amount = player.meta[tier].amount.plus(getMetaDimensionProduction(tier+step).times(diff/100))
+			player["infinityDimension"+tier].amount = player["infinityDimension"+tier].amount.plus(DimensionProduction(tier+step).times(diff/100))
+			if (player.meta) player.meta[tier].amount = player.meta[tier].amount.plus(getMetaDimensionProduction(tier+step).times(diff/100))
 		}
-        	if (tier < 9 - stepT) player["timeDimension"+tier].amount = player["timeDimension"+tier].amount.plus(getTimeDimensionProduction(tier+stepT).times(diff/100))
-        	if (player.exdilation != undefined) if (isBHDimUnlocked(tier+step)) player["blackholeDimension"+tier].amount = player["blackholeDimension"+tier].amount.plus(getBlackholeDimensionProduction(tier+step).times(diff/100))
+		if (tier < 9 - stepT) player["timeDimension"+tier].amount = player["timeDimension"+tier].amount.plus(getTimeDimensionProduction(tier+stepT).times(diff/100))
+		if (player.exdilation != undefined) if (isBHDimUnlocked(tier+step)) player["blackholeDimension"+tier].amount = player["blackholeDimension"+tier].amount.plus(getBlackholeDimensionProduction(tier+step).times(diff/100))
 	}
 }
 
@@ -9478,7 +9446,7 @@ function nonERFreeTickUpdating(){
 		else thresholdMult=1.25
 		if (player.aarexModifications.newGameMult) thresholdMult-=0.08
 	}
-	if (QCIntensity(7)) thresholdMult*=getQCReward(7)
+	if (QCIntensity(7)) thresholdMult*=tmp.qcRewards[7]
 	if (ghostified&&player.ghostify.neutrinos.boosts>9) thresholdMult-=tmp.nb[9]
 	if (thresholdMult<1.1) thresholdMult=1.05+0.05/(2.1-thresholdMult)
 	gain = Math.ceil(new Decimal(player.timeShards).dividedBy(player.tickThreshold).log10()/Math.log10(thresholdMult))
@@ -9633,9 +9601,10 @@ function IRsetsUnlockUpdating(){
 }
 
 function replicantiIncrease(diff) {
-	if (player.replicanti.unl && (diff > 5 || tmp.rep.chance.gt(1) || tmp.rep.interval < 50 || tmp.rep.est.gt(50) || player.timestudy.studies.includes(192))) continuousReplicantiUpdating(diff)
+	if (!player.replicanti.unl) return
+	if (diff > 5 || tmp.rep.chance.gt(1) || tmp.rep.interval < 50 || tmp.rep.est.gt(50) || player.timestudy.studies.includes(192)) continuousReplicantiUpdating(diff)
 	else notContinuousReplicantiUpdating()
-	if (player.replicanti.amount.gt(0)) replicantiTicks += player.options.updateRate
+	if (player.replicanti.amount.gt(0)) replicantiTicks += diff
 
 	if (tmp.ngp3 && player.masterystudies.includes("d10") && tmp.qu.autoOptions.replicantiReset && player.replicanti.amount.gt(tmp.qu.replicants.requirement)) replicantReset()
 	if (player.replicanti.galaxybuyer && canGetReplicatedGalaxy() && canAutoReplicatedGalaxy()) replicantiGalaxy()
@@ -10002,7 +9971,7 @@ function challengeOverallDisplayUpdating(){
 		    if (tmp.qu.autoOptions.sacrifice) document.getElementById("electronsAmount2").textContent="You have " + getFullExpansion(Math.round(tmp.qu.electrons.amount)) + " electrons."
 			for (var c=1;c<7;c++) {
 				if (c==5) document.getElementById("qc5reward").textContent = getDimensionPowerMultiplier("linear").toFixed(2)
-				else if (c!=2) document.getElementById("qc"+c+"reward").textContent = shorten(getQCReward(c))
+				else if (c!=2) document.getElementById("qc"+c+"reward").textContent = shorten(tmp.qcRewards[c])
 			}
 			if (player.masterystudies.includes("d14")) bigRipUpgradeUpdating() //big rip
 		}
@@ -10216,10 +10185,6 @@ function gameLoop(diff) {
 
 	updateDimensions()
 	updateInfCosts()
-	updateInfinityDimensions();
-	updateInfPower();
-	updateTimeDimensions()
-	updateTimeShards()
 
 	updateDilation()
 
@@ -10343,7 +10308,7 @@ function startInterval() {
 		var tickEnd = new Date().getTime()
 		var tickDiff = tickEnd - tickStart
 
-		tickWait = tickDiff * (player.aarexModifications.performanceTicks + 1)
+		tickWait = tickDiff * (player.aarexModifications.performanceTicks * 2)
 		tickWaitStart = tickEnd
 	}, player.options.updateRate);
 }

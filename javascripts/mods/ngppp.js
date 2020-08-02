@@ -403,10 +403,10 @@ function updateQuantumChallenges() {
 		document.getElementById(property + "cost").textContent = "Cost: " + getFullExpansion(quantumChallenges.costs[qc]) + " electrons"
 		document.getElementById(property + "goal").textContent = "Goal: " + shortenCosts(Decimal.pow(10, getQCGoal(qc))) + " antimatter"
 	}
-	document.getElementById("qc2reward").textContent = Math.round(getQCReward(2) * 100 - 100)
+	document.getElementById("qc2reward").textContent = Math.round(tmp.qcRewards[2] * 100 - 100)
 	document.getElementById("qc7desc").textContent = "Dimension and tickspeed cost multiplier increases are " + shorten(Number.MAX_VALUE) + "x. Multiplier per ten Dimensions and meta-Antimatter boost to Dimension Boosts are disabled."
-	document.getElementById("qc7reward").textContent = (100 - getQCReward(7) * 100).toFixed(2)
-	document.getElementById("qc8reward").textContent = getQCReward(8)
+	document.getElementById("qc7reward").textContent = (100 - tmp.qcRewards[7] * 100).toFixed(2)
+	document.getElementById("qc8reward").textContent = tmp.qcRewards[8]
 }
 
 function inQC(num) {
@@ -622,7 +622,7 @@ function respecMasteryToggle() {
 
 //v1.99861
 function getCurrentQCData() {
-	if (player.masterystudies == undefined) return []
+	if (!tmp.ngp3) return []
 	if (tmp.qu == undefined) return []
 	if (tmp.qu.challenge == undefined) return []
 	if (typeof(tmp.qu.challenge) == "number") return [tmp.qu.challenge]
@@ -776,24 +776,53 @@ function updatePCCompletions() {
 }
 
 //v1.99874
-function getQCReward(num) {
-	if (QCIntensity(num) == 0) return num == 5 ? 0:1
-	if (num == 1) return Decimal.pow(10, Math.pow(getDimensionFinalMultiplier(1).times(getDimensionFinalMultiplier(2)).max(1).log10(), QCIntensity(1) > 1 ? 0.275 : 0.25) / 200)
-	if (num == 2) return 1.2 + QCIntensity(2) * 0.2
-	if (num == 3) {
-		let log = Math.sqrt(Math.max(player.infinityPower.log10(), 0) / (QCIntensity(3) > 1 ? 2e8 : 1e9))
-		if (log > 1331) log = Math.pow(log * 121, 3/5)
-		return Decimal.pow(10, log)
-	}
-	if (num == 4) {
-		let mult = player.meta[2].amount.times(player.meta[4].amount).times(player.meta[6].amount).times(player.meta[8].amount).max(1)
-		if (QCIntensity(4) > 1) return mult.pow(1 / 75)
-		return Decimal.pow(10, Math.sqrt(mult.log10())/10)
-	}
-	if (num == 5) return Math.log10(1 + player.resets) * Math.pow(QCIntensity(5), 0.4)
-	if (num == 6) return player.achPow.pow(QCIntensity(6) > 1 ? 3 : 1)
-	if (num == 7) return Math.pow(0.975, QCIntensity(7))
-	if (num == 8) return QCIntensity(8) + 2
+function getQC1Reward(comps) {
+	if (comps == 0) return 1
+	return Decimal.pow(10, Math.pow(getDimensionFinalMultiplier(1).times(getDimensionFinalMultiplier(2)).max(1).log10(), [null, 0.25, 0.275][comps]) / 200)
+}
+
+function getQC2Reward(comps) {
+	if (comps == 0) return 1
+	return 1.2 + comps * 0.2
+}
+function getQC3Reward(comps) {
+	if (comps == 0) return 1
+	let log = Math.sqrt(Math.max(player.infinityPower.log10(), 0) / [null, 2e8, 1e9][comps])
+	if (log > 1331) log = Math.pow(log * 121, 3/5)
+
+	return Decimal.pow(10, log)
+}
+
+function getQC4Reward(comps) {
+	if (comps == 0) return 1
+	let mult = player.meta[2].amount.times(player.meta[4].amount).times(player.meta[6].amount).times(player.meta[8].amount).max(1)
+	if (comps >= 2) return mult.pow(1 / 75)
+	return Decimal.pow(10, Math.sqrt(mult.log10()) / 10)
+}
+
+function getQC5Reward(comps) {
+	if (comps == 0) return 0
+	return Math.log10(1 + player.resets) * Math.pow(comps, 0.4)
+}
+
+function getQC6Reward(comps) {
+	if (comps == 0) return 1
+	return player.achPow.pow(comps * 2 - 1)
+}
+
+function getQC7Reward(comps) {
+	if (comps == 0) return 1
+	return Math.pow(0.975, comps)
+}
+
+function getQC8Reward(comps) {
+	if (comps == 0) return 1
+	return comps + 2
+}
+
+function updateQCRewardsTemp() {
+	tmp.qcRewards = {}
+	for (var c = 1; c <= 8; c++) tmp.qcRewards[c] = eval("getQC" + c + "Reward")(QCIntensity(c))
 }
 
 function maybeShowFillAll() {
@@ -1440,8 +1469,8 @@ function radioactiveDecay(shorthand) {
 }
 
 function getRadioactiveDecays(shorthand) {
-	let data=tmp.qu.tod[shorthand]
-	return data.decays===undefined?0:data.decays
+	let data = tmp.qu.tod[shorthand]
+	return data.decays || 0
 }
 
 function openAfterEternity() {

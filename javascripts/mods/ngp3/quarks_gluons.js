@@ -406,8 +406,8 @@ function maxQuarkMult() {
 }
 
 function getGB1Effect() {
-	if (tmp.ngp3l) return 1-Math.min(Decimal.log10(getTickSpeedMultiplier()),0)
-	return Decimal.div(1, getTickSpeedMultiplier()).log10() / 100 + 1
+	if (tmp.ngp3l) return 1-Math.min(Decimal.log10(tmp.tsReduce),0)
+	return Decimal.div(1, tmp.tsReduce).log10() / 100 + 1
 }
 
 function getBR1Effect() {
@@ -416,9 +416,9 @@ function getBR1Effect() {
 }
 
 function getRG3Effect() {
-	let exp = 1
-	if (!tmp.ngp3l && player.achievements.includes("ng3p24")) exp += Math.sqrt(player.meta.resets)
-	if (exp > 36) exp = 6*Math.sqrt(exp)
+	if (tmp.ngp3l || !player.achievements.includes("ng3p24")) return player.resets
+	let exp = Math.sqrt(player.meta.resets)
+	if (exp > 36) exp = 6 * Math.sqrt(exp)
 	return Decimal.pow(player.resets, exp)
 }
 

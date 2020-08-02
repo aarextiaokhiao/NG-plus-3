@@ -742,7 +742,7 @@ function getMS373Effect(){
 }
 
 function getMS381Effect(){
-	return Decimal.min(getTickSpeedMultiplier(), 1).log10() / -135 + 1
+	return Decimal.min(tmp.tsReduce, 1).log10() / -135 + 1
 }
 
 function getMS382Effect(){

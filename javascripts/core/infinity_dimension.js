@@ -26,15 +26,19 @@ function DimensionRateOfChange(tier) {
 }
 
 function updateInfinityDimensions() {
-	if (document.getElementById("infinitydimensions").style.display == "block" && document.getElementById("dimensions").style.display == "block") {
+	if (document.getElementById("dimensions").style.display == "block" && document.getElementById("infinitydimensions").style.display == "block") {
+		updateInfPower()
 		for (let tier = 1; tier <= 8; ++tier) {
-			if (!player.infDimensionsUnlocked[tier-1]) {
-				break;
+			var unl = player.infDimensionsUnlocked[tier-1]
+			document.getElementById("infRow"+tier).style.display = unl ? "" : "none"
+			if (unl) {
+				document.getElementById("infD"+tier).textContent = DISPLAY_NAMES[tier] + " Infinity Dimension x" + shortenMoney(DimensionPower(tier));
+				document.getElementById("infAmount"+tier).textContent = DimensionDescription(tier);
+				document.getElementById("infMax"+tier).textContent = (quantumed ? '':"Cost: ") + (player.pSac !== undefined ? shortenDimensions(player["infinityDimension"+tier].costAM) : shortenInfDimCosts(getIDCost(tier)) + " IP")
+				if (player.pSac !== undefined ? player.money.gte(player["infinityDimension"+tier].costAM) : player.infinityPoints.gte(getIDCost(tier))) document.getElementById("infMax"+tier).className = "storebtn"
+				else document.getElementById("infMax"+tier).className = "unavailablebtn"
+				document.getElementById("infRow"+tier).style.visibility = "visible";
 			}
-			document.getElementById("infD"+tier).textContent = DISPLAY_NAMES[tier] + " Infinity Dimension x" + shortenMoney(DimensionPower(tier));
-			document.getElementById("infAmount"+tier).textContent = DimensionDescription(tier);
-			document.getElementById("infRow"+tier).style.display = "table-row";
-			document.getElementById("infRow"+tier).style.visibility = "visible";
 		}
 	}
 }
@@ -286,7 +290,7 @@ function getEU2Mult() {
 	var soft = 0
 	if (e > 1e5) soft = nS(e, cap)
 	var achReward = 1
-	if (player.achievements.includes("ngpp15")) achReward = Decimal.pow(10, Math.pow(Decimal.log10(e) * tmp.eu2b, 4.75))
+	if (player.achievements.includes("ngpp15")) achReward = Decimal.pow(10, Math.pow(Decimal.log10(e), 4.75))
 	return Decimal.pow(cap/200 + 1, Math.log(cap*2+1)/Math.log(4)).times(Decimal.div(soft,200).add(1).times(Decimal.times(soft,2).add(1).log(Math.E)/Math.log(4)).max(1)).max(achReward)
 }
 

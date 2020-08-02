@@ -182,13 +182,9 @@ function getDimensionRateOfChange(tier) {
 	return change;
 }
 
+let infToDimMultUpgs = [null, "18Mult", "27Mult", "36Mult", "45Mult", "45Mult", "36Mult", "27Mult", "18Mult"]
 function hasInfinityMult(tier) {
-	switch (tier) {
-		case 1: case 8: return player.infinityUpgrades.includes("18Mult");
-		case 2: case 7: return player.infinityUpgrades.includes("27Mult");
-		case 3: case 6: return player.infinityUpgrades.includes("36Mult");
-		case 4: case 5: return player.infinityUpgrades.includes("45Mult");
-	}
+	return player.infinityUpgrades.includes(infToDimMultUpgs[tier])
 }
 
 function multiplySameCosts(cost) {
@@ -221,11 +217,11 @@ function multiplyPC5Costs(cost, tier) {
 }
 	
 function canBuyDimension(tier) {
-	if (tmp.ri) return false;
+	if (tmp.ri) return false
 	if (tier > Math.min(player.resets + 4, inNC(4) || player.currentChallenge == "postc1" || player.pSac != undefined ? 6 : 8)) return false
-	if (tier > 1 && player[TIER_NAMES[tier - 1] + 'Amount'] == 0 && getEternitied() < 30) return false
+	if (tier > 1 && getAmount(tier - 1) == 0 && getEternitied() < 30) return false
 
-	return true;
+	return true
 }
 	
 function getDimensionPowerMultiplier(focusOn, debug) {
@@ -262,7 +258,7 @@ function getMPTBase(focusOn) {
 	if (player.galacticSacrifice !== undefined) if (player.galacticSacrifice.upgrades.includes(33) && ((!inNC(14) && player.currentChallenge != "postcngm3_3") || player.tickspeedBoosts == undefined || player.aarexModifications.ngmX > 3) && player.currentChallenge != "postcngm3_4") ret *= galMults.u33();
 	if (focusOn == "no-QC5") return ret
 	if (tmp.ngp3) {
-		ret += getQCReward(5)
+		ret += tmp.qcRewards[5]
 		if (player.masterystudies.includes("d12")) ret += getNanofieldRewardEffect(8, "per-10")
 	}
 	return ret
