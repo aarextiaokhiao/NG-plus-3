@@ -112,7 +112,7 @@ function updateNanoverseTab(){
 		" and the production of preon charge is " + shortenMoney(getNanofieldRewardEffect(7, "charge")) + "x faster."
 	document.getElementById("nfReward8").textContent = "Add " + getNanofieldRewardEffect(8, "per-10").toFixed(2) + "x to multiplier per ten dimensions before getting affected by electrons and the production of preon energy is " + shortenMoney(getNanofieldRewardEffect(8, "energy")) + "x faster."
 
-	document.getElementById("ns").textContent = ghostified || tmp.ns.neq(1) ? "Nanofield speed multiplier is currently "+shorten(tmp.ns)+"x." : ""
+	document.getElementById("ns").textContent = ghostified || nanospeed != 1 ? "Your Nanofield speed is currently " + (nanospeed == 1 ? "" : shorten(tmp.ns) + " * " + shorten(nanospeed) + " = ") + shorten(getNanofieldFinalSpeed()) + "x" : ""
 }
 
 function updateNanofieldAntipreon(){
@@ -978,7 +978,7 @@ function getQuarkChargeProduction(noSpeed) {
 	if (hasNU(3)) ret = ret.times(tmp.nu[1])
 	if (hasNU(7)) ret = ret.times(tmp.nu[3])
 	if (!noSpeed) {
-		ret = ret.times(tmp.ns)
+		ret = ret.times(getNanofieldFinalSpeed())
 		if (tmp.qu.nanofield.power > tmp.apgw) ret = ret.div(Decimal.pow(2, (tmp.qu.nanofield.power - tmp.apgw) / 2))
 	}
 	return ret
@@ -993,7 +993,7 @@ function getQuarkLossProduction() {
 	let ret = getQuarkChargeProduction(true).pow(4).times(4e25)
 	if (hasNU(3)) ret = ret.div(10)
 	if (tmp.qu.nanofield.power > tmp.apgw) ret = ret.pow((tmp.qu.nanofield.power-tmp.apgw) / 5 + 1)
-	ret = ret.times(tmp.ns)
+	ret = ret.times(getNanofieldFinalSpeed())
 	return ret
 }
 
@@ -1002,7 +1002,7 @@ function getQuarkEnergyProduction() {
 	if (player.masterystudies.includes("t411")) ret = ret.times(getMTSMult(411))
 	if (player.masterystudies.includes("t421")) ret = ret.times(getMTSMult(421))
 	ret = ret.times(getNanofieldRewardEffect(8, "energy"))
-	ret = ret.times(tmp.ns)
+	ret = ret.times(getNanofieldFinalSpeed())
 	return ret
 }
 
@@ -1010,7 +1010,7 @@ function getQuarkAntienergyProduction() {
 	let ret = tmp.qu.nanofield.charge.sqrt()
 	if (player.masterystudies.includes("t401")) ret = ret.div(getMTSMult(401))
 	if (tmp.qu.nanofield.power > tmp.apgw) ret = ret.times(Decimal.pow(2, (tmp.qu.nanofield.power - tmp.apgw) / 2))
-	ret = ret.times(tmp.ns)
+	ret = ret.times(getNanofieldFinalSpeed())
 	return ret
 }
 
@@ -3893,13 +3893,7 @@ function bosonicTick(diff) {
 }
 
 function getBosonicAMProduction() {
-	let r=player.money.max(1).log10()/15e15-3 //Antimatter part
-	if (r>100) r = Math.pow(Math.log2(r+28)+3,2) // maybe remove if too strong
-	//if (r>200) r = 200*Math.pow(r/200,.5)
-	if (r > 10000) /* 10^4 */ r = Math.pow(Math.log10(r)+6,4) // very strong :)
-	if (false && r > 10**4) r = 1e4*Math.pow(r/1e4,.5)
-	if (r > 10**10) r = Math.pow(Math.log10(r),10)
-	
+	let r=player.money.max(1).log10()/15e15-3
 	return Decimal.pow(10,r).times(tmp.wbp)
 }
 
@@ -4379,6 +4373,10 @@ function getNanofieldSpeed() {
 	return x
 }
 
+function getNanofieldFinalSpeed() {
+	return Decimal.times(tmp.ns, nanospeed)
+}
+
 function getNanofieldRewardTier(reward, rewards) {
 	let x = Math.ceil((rewards - reward + 1) / 8)
 	let apgw = tmp.apgw
@@ -4464,8 +4462,5 @@ function updatePhotonsUnlockedBRUpgrades(){
 
 function getMaxBigRipUpgrades() {
 	if (player.ghostify.ghostlyPhotons.unl) return tmp.ngp3l ? 19 : 20
-	return 18 //shouldnt this be just 17?
+	return 17
 }
-
-
-

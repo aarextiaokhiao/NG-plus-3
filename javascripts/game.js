@@ -674,7 +674,7 @@ function doNGMinusTwoNewPlayer(){
 }
 
 function doNGPlusThreeNewPlayer(){
-	player.aarexModifications.newGame3PlusVersion = 2.21
+	player.aarexModifications.newGame3PlusVersion = 2.21 //Keep that line forever due to NG+3.1 / NG+3L compatibility
 	document.getElementById("quantumison").checked = false
         player.respecMastery=false
         player.dbPower = 1
@@ -1871,7 +1871,7 @@ function getInfinitiedGain() {
 function getEternitied() {
 	let banked = player.eternitiesBank
 	let total = player.eternities
-	if (banked !== 0 && inQC(0)) total = nA(total, player.eternitiesBank)
+	if (banked !== 0 && (inQC(0) || hasNU(10))) total = nA(total, player.eternitiesBank)
 	return total
 }
 
@@ -4197,7 +4197,7 @@ function changeSaveDesc(saveId, placement) {
 		if (isSaveGhostified) {
 			if (temp.achievements.includes("ng3p81")) {
 				var data=temp.ghostify.wzb
-				msg+="Bosonic Antimatter: "+shorten(new Decimal(temp.ghostify.bl.am))+", W+ Bosons: "+shortenDimensions(new Decimal(temp.ghostify.wzb.wpb))+", W- Bosons: "+shortenDimensions(new Decimal(temp.ghostify.wzb.wnb))+", Z Bosons: "+shortenDimensions(new Decimal(temp.ghostify.wzb.zb))
+				msg+="Bosonic Antimatter: "+shorten(new Decimal(temp.ghostify.bl.am))+", W+ Bosons: "+shortenDimensions(new Decimal(data.wpb))+", W- Bosons: "+shortenDimensions(new Decimal(data.wnb))+", Z Bosons: "+shortenDimensions(new Decimal(data.zb))
 			} else if (temp.achievements.includes("ng3p71")) {
 				var data=temp.ghostify.ghostlyPhotons
 				var lights=0
@@ -10255,6 +10255,7 @@ function simulateTime(seconds, real, id) {
         	storage.dt = player.dilation.dilatedTime
         	storage.ec = tmp.qu.electrons.amount
         	storage.nr = tmp.qu.replicants.amount
+        	storage.bAm = tmp.bl.am
     	}
     	if (ticks > 1000 && !real) {
         	bonusDiff = (ticks - 1000) / 20;
@@ -10276,6 +10277,7 @@ function simulateTime(seconds, real, id) {
     	if (storage.dt) {
         	if (tmp.qu.electrons.amount>storage.ec) popupString+= ",<br> electrons increased by "+getFullExpansion(Math.round(tmp.qu.electrons.amount-storage.ec))
         	if (tmp.qu.replicants.amount.gt(storage.nr)) popupString+= ",<br> normal replicants increased "+shortenMoney(tmp.qu.replicants.amount.log10() - (Decimal.max(storage.nr, 1)).log10())+" orders of magnitude"
+    	    if (tmp.bl.am.gt(storage.ma)) popupString+= ",<br> Bosonic Antimatter increased "+shortenMoney(tmp.bl.am.log10() - (Decimal.max(storage.bAm, 1)).log10())+" orders of magnitude"
     	}
     	if (player.infinitied > playerStart.infinitied || player.eternities > playerStart.eternities) popupString+= ","
     	else popupString+= "."
