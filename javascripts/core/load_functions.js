@@ -6,544 +6,525 @@ var presetPrefix = prefix + "AM_ST_"
 var metaSaveId = betaId + "AD_aarexModifications"
 var notifyId = 0
 function onLoad(noOffline) {
-  tmp.qu=player.quantum
-  happyHalloween=false
-  clickedAntimatter=0
-  ghostifyDenied=0
-  if (player.totalmoney === undefined || isNaN(player.totalmoney)) player.totalmoney = player.money;
-  if (player.tickspeed === undefined) player.tickspeed = new Decimal(1000)
-  if (player.options === undefined) {
-      player.options = {
-          scientific: false,
-          animationOn: true
-      }
-  }
-  if (player.options.invert === true) player.options.theme = "Inverted"; player.options.invert = undefined;
-  if (player.options.notation === undefined) player.options.notation = "Standard"
-  if (player.options.challConf === undefined) player.options.challConf = false
-  if (player.options.scientific === undefined || typeof(player.options.scientific) == "boolean") player.options.scientific={significantDigits:undefined}
-  if (player.options.logarithm === undefined) player.options.logarithm={base:10}
-  if (player.options.tetration === undefined) player.options.tetration={base:2}
-  if (player.options.spazzy === undefined) player.options.spazzy={subNotation:"Scientific"}
-  if (player.options.aas === undefined) player.options.aas={useHyphen: false, useDe: false}
-  if (player.options.newsHidden === undefined) player.options.newsHidden = false;
-  if (player.options.sacrificeConfirmation === undefined) player.options.sacrificeConfirmation = true;
-  if (player.options.retryChallenge === undefined) player.options.retryChallenge = false;
-  if (player.options.bulkOn === undefined) player.options.bulkOn = true
-  if (player.options.cloud === undefined) player.options.cloud = true
-  if (player.options.hotkeys === undefined) player.options.hotkeys = true
-  if (player.options.eternityconfirm === undefined) player.options.eternityconfirm = true
-  if (player.options.themes === undefined) player.options.themes = "Normal"
-  if (player.options.secretThemeKey === undefined) player.options.secretThemeKey = 0
-  if (player.achievements === undefined) player.achievements = [];
-  if (player.sacrificed === undefined) player.sacrificed = new Decimal(0);
-  if (player.infinityUpgrades === undefined) player.infinityUpgrades = [];
-  if (player.infinityPoints === undefined) player.infinityPoints = new Decimal(0);
-  if (player.infinitied === undefined) player.infinitied = 0;
-  if (player.totalTimePlayed === undefined) player.totalTimePlayed = 0;
-  if (player.bestInfinityTime === undefined) player.bestInfinityTime = 9999999999;
-  if (player.thisInfinityTime === undefined) player.thisInfinityTime = 9999999999;
-  if (player.galaxies === undefined) player.galaxies = 0;
-  if (player.lastUpdate === undefined) player.lastUpdate = new Date().getTime();
-  if (player.achPow === undefined) player.achPow = 1;
-  if (player.newsArray === undefined) player.newsArray = [];
-  if (player.chall2Pow === undefined) player.chall2Pow = 1;
-  if (player.chall3Pow === undefined) player.chall3Pow = 0.01;
-  if (player.challenges === undefined) player.challenges = []
-  if (player.currentChallenge === undefined) player.currentChallenge = ""
-  if (player.infinitied > 0 && !player.challenges.includes("challenge1")) player.challenges.push("challenge1")
-  if (player.matter === undefined) player.matter = new Decimal(0)
-  if (player.autobuyers === undefined) player.autobuyers = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12]
-  if (player.costMultipliers === undefined) player.costMultipliers = [new Decimal(1e3), new Decimal(1e4), new Decimal(1e5), new Decimal(1e6), new Decimal(1e8), new Decimal(1e10), new Decimal(1e12), new Decimal(1e15)]
-  if (player.tickspeedMultiplier === undefined) player.tickspeedMultiplier = new Decimal(10)
-  if (player.partInfinityPoint === undefined) player.partInfinityPoint = 0
-  if (player.challengeTimes === undefined) player.challengeTimes = [600*60*24*31, 600*60*24*31, 600*60*24*31, 600*60*24*31, 600*60*24*31, 600*60*24*31, 600*60*24*31, 600*60*24*31, 600*60*24*31, 600*60*24*31, 600*60*24*31]
-  if (player.infchallengeTimes === undefined) player.infchallengeTimes = [600*60*24*31, 600*60*24*31, 600*60*24*31, 600*60*24*31, 600*60*24*31, 600*60*24*31, 600*60*24*31, 600*60*24*31]
-  if (player.lastTenRuns === undefined) player.lastTenRuns = [[600*60*24*31, 1], [600*60*24*31, 1], [600*60*24*31, 1], [600*60*24*31, 1], [600*60*24*31, 1], [600*60*24*31, 1], [600*60*24*31, 1], [600*60*24*31, 1], [600*60*24*31, 1], [600*60*24*31, 1]]
-  if (player.infMult === undefined) player.infMult = new Decimal(1)
-  if (player.infMultCost === undefined) player.infMultCost = new Decimal(100)
-  if (player.tickSpeedMultDecrease === undefined) player.tickSpeedMultDecrease = 10
-  if (player.tickSpeedMultDecreaseCost === undefined) player.tickSpeedMultDecreaseCost = 3e6
-  if (player.dimensionMultDecrease === undefined) player.dimensionMultDecrease = 10
-  if (player.dimensionMultDecreaseCost === undefined) player.dimensionMultDecreaseCost = 1e8
-  if (player.overXGalaxies === undefined) player.overXGalaxies = 10;
-  if (player.partInfinitied === undefined) player.partInfinitied = 0
-  if (player.spreadingCancer === undefined) player.spreadingCancer = 0
-  if (player.postC4Tier === undefined) player.postC4Tier = 0
-  if (player.postC3Reward === undefined) player.postC3Reward = new Decimal(1)
-  if (player.postC8Mult === undefined) player.postC8Mult = new Decimal(1)
-  if (player.offlineProd === undefined) player.offlineProd = 0
-  if (player.offlineProdCost === undefined) player.offlineProdCost = 1e7
-  if (player.autoSacrifice === undefined) player.autoSacrifice = 1
-  if (player.postChallUnlocked === undefined) player.postChallUnlocked = 0
-  if (player.infMultBuyer === undefined) player.infMultBuyer = false
-  if (player.autoCrunchMode === undefined) player.autoCrunchMode = "amount"
-  if (player.challengeTarget === undefined) {
-      player.challengeTarget = 0
-      if (player.currentChallenge != "") player.challengeTarget = Number.MAX_VALUE
-  }
-  if (player.lastTenEternities === undefined) player.lastTenEternities = [[600*60*24*31, 1], [600*60*24*31, 1], [600*60*24*31, 1], [600*60*24*31, 1], [600*60*24*31, 1], [600*60*24*31, 1], [600*60*24*31, 1], [600*60*24*31, 1], [600*60*24*31, 1], [600*60*24*31, 1]]
-  if (player.respec === undefined) player.respec = false
-  if (player.options.commas === undefined) player.options.commas = true
-  if (player.eternityChalls === undefined) player.eternityChalls = {}
-  if (player.eternityChallGoal === undefined) player.eternityChallGoal = new Decimal(Number.MAX_VALUE)
-  if (player.currentEternityChall === undefined) player.currentEternityChall = ""
-  if (player.eternityChallUnlocked === undefined) player.eternityChallUnlocked = 0
-  if (player.options.chart === undefined) player.options.chart = {}
-  if (player.options.chart.updateRate === undefined) player.options.chart.updateRate = 1000
-  if (player.options.chart.duration === undefined) player.options.chart.duration = 10
-  if (player.options.chart.warning === undefined) player.options.chart.warning = 0
-  if (player.options.chart.on === undefined) player.options.chart.on = false
-  if (player.options.chart.dips === undefined) player.options.chart.dips = true
-  if (player.etercreq === undefined) player.etercreq = 0
-  if (player.options.updateRate === undefined) player.options.updateRate = 50
-  if (player.eterc8ids === undefined) player.eterc8ids = 50
-  if (player.eterc8repl === undefined) player.eterc8repl = 40
-  if (player.infinitiedBank === undefined) player.infinitiedBank = 0
-  if (player.dimlife === undefined) player.dimlife = false
-  if (player.dead === undefined) player.dead = false
-  if (player.dilation === undefined) player.dilation = {}
-  if (player.dilation.studies === undefined) player.dilation.studies = []
-  if (player.dilation.active === undefined) player.dilation.active = false
-  if (player.dilation.tachyonParticles === undefined) player.dilation.tachyonParticles = new Decimal(0)
-  if (player.dilation.dilatedTime === undefined) player.dilation.dilatedTime = new Decimal(0)
-  if (player.dilation.totalTachyonParticles === undefined) player.dilation.totalTachyonParticles = new Decimal(0)
-  if (player.dilation.nextThreshold === undefined) player.dilation.nextThreshold = new Decimal(1000)
-  if (player.dilation.freeGalaxies === undefined) player.dilation.freeGalaxies = 0
-  if (player.dilation.upgrades === undefined) player.dilation.upgrades = []
-  if (player.dilation.rebuyables === undefined) player.dilation.rebuyables =  { 1: 0, 2: 0, 3: 0 }
-  if (player.timeDimension5 === undefined) player.timeDimension5 = {cost: new Decimal("1e2350"), amount: new Decimal(0), power: new Decimal(1), bought: 0 }
-  if (player.timeDimension6 === undefined) player.timeDimension6 = {cost: new Decimal("1e2650"), amount: new Decimal(0), power: new Decimal(1), bought: 0 }
-  if (player.timeDimension7 === undefined) player.timeDimension7 = {cost: new Decimal("1e3000"), amount: new Decimal(0), power: new Decimal(1), bought: 0 }
-  if (player.timeDimension8 === undefined) player.timeDimension8 = {cost: new Decimal("1e3350"), amount: new Decimal(0), power: new Decimal(1), bought: 0 }
-  if (player.why === undefined) player.why = 0
-  if (player.options.animations === undefined) player.options.animations = {floatingText: true, bigCrunch: true, eternity: true, tachyonParticles: true}
-  setTheme(player.options.theme);
+	tmp.qu = player.quantum
+	happyHalloween = false
+	clickedAntimatter = 0
+	ghostifyDenied = 0
+	if (player.totalmoney === undefined || isNaN(player.totalmoney)) player.totalmoney = player.money;
+	if (player.tickspeed === undefined) player.tickspeed = new Decimal(1000)
+	if (player.options === undefined) {
+		player.options = {
+			scientific: false,
+			animationOn: true
+		}
+	}
+	if (player.options.invert === true) player.options.theme = "Inverted"; player.options.invert = undefined;
+	if (player.options.notation === undefined) player.options.notation = "Standard"
+	if (player.options.challConf === undefined) player.options.challConf = false
+	if (player.options.scientific === undefined || typeof(player.options.scientific) == "boolean") player.options.scientific = {significantDigits: undefined}
+	if (player.options.logarithm === undefined) player.options.logarithm = {base: 10}
+	if (player.options.tetration === undefined) player.options.tetration = {base: 2}
+	if (player.options.spazzy === undefined) player.options.spazzy = {subNotation: "Scientific"}
+	if (player.options.aas === undefined) player.options.aas = {useHyphen: false, useDe: false}
+	if (player.options.newsHidden === undefined) player.options.newsHidden = false;
+	if (player.options.sacrificeConfirmation === undefined) player.options.sacrificeConfirmation = true;
+	if (player.options.retryChallenge === undefined) player.options.retryChallenge = false;
+	if (player.options.bulkOn === undefined) player.options.bulkOn = true
+	if (player.options.cloud === undefined) player.options.cloud = true
+	if (player.options.hotkeys === undefined) player.options.hotkeys = true
+	if (player.options.eternityconfirm === undefined) player.options.eternityconfirm = true
+	if (player.options.themes === undefined) player.options.themes = "Normal"
+	if (player.options.secretThemeKey === undefined) player.options.secretThemeKey = 0
+	if (player.achievements === undefined) player.achievements = [];
+	if (player.sacrificed === undefined) player.sacrificed = new Decimal(0);
+	if (player.infinityUpgrades === undefined) player.infinityUpgrades = [];
+	if (player.infinityPoints === undefined) player.infinityPoints = new Decimal(0);
+	if (player.infinitied === undefined) player.infinitied = 0;
+	if (player.totalTimePlayed === undefined) player.totalTimePlayed = 0;
+	if (player.bestInfinityTime === undefined) player.bestInfinityTime = 9999999999;
+	if (player.thisInfinityTime === undefined) player.thisInfinityTime = 9999999999;
+	if (player.galaxies === undefined) player.galaxies = 0;
+	if (player.lastUpdate === undefined) player.lastUpdate = new Date().getTime();
+	if (player.achPow === undefined) player.achPow = 1;
+	if (player.newsArray === undefined) player.newsArray = [];
+	if (player.chall2Pow === undefined) player.chall2Pow = 1;
+	if (player.chall3Pow === undefined) player.chall3Pow = 0.01;
+	if (player.challenges === undefined) player.challenges = []
+	if (player.currentChallenge === undefined) player.currentChallenge = ""
+	if (player.infinitied > 0 && !player.challenges.includes("challenge1")) player.challenges.push("challenge1")
+	if (player.matter === undefined) player.matter = new Decimal(0)
+	if (player.autobuyers === undefined) player.autobuyers = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12]
+	if (player.costMultipliers === undefined) player.costMultipliers = [new Decimal(1e3), new Decimal(1e4), new Decimal(1e5), new Decimal(1e6), new Decimal(1e8), new Decimal(1e10), new Decimal(1e12), new Decimal(1e15)]
+	if (player.tickspeedMultiplier === undefined) player.tickspeedMultiplier = new Decimal(10)
+	if (player.partInfinityPoint === undefined) player.partInfinityPoint = 0
+	if (player.challengeTimes === undefined) player.challengeTimes = [600*60*24*31, 600*60*24*31, 600*60*24*31, 600*60*24*31, 600*60*24*31, 600*60*24*31, 600*60*24*31, 600*60*24*31, 600*60*24*31, 600*60*24*31, 600*60*24*31]
+	if (player.infchallengeTimes === undefined) player.infchallengeTimes = [600*60*24*31, 600*60*24*31, 600*60*24*31, 600*60*24*31, 600*60*24*31, 600*60*24*31, 600*60*24*31, 600*60*24*31]
+	if (player.lastTenRuns === undefined) player.lastTenRuns = [[600*60*24*31, 1], [600*60*24*31, 1], [600*60*24*31, 1], [600*60*24*31, 1], [600*60*24*31, 1], [600*60*24*31, 1], [600*60*24*31, 1], [600*60*24*31, 1], [600*60*24*31, 1], [600*60*24*31, 1]]
+	if (player.infMult === undefined) player.infMult = new Decimal(1)
+	if (player.infMultCost === undefined) player.infMultCost = new Decimal(100)
+	if (player.tickSpeedMultDecrease === undefined) player.tickSpeedMultDecrease = 10
+	if (player.tickSpeedMultDecreaseCost === undefined) player.tickSpeedMultDecreaseCost = 3e6
+	if (player.dimensionMultDecrease === undefined) player.dimensionMultDecrease = 10
+	if (player.dimensionMultDecreaseCost === undefined) player.dimensionMultDecreaseCost = 1e8
+	if (player.overXGalaxies === undefined) player.overXGalaxies = 10;
+	if (player.partInfinitied === undefined) player.partInfinitied = 0
+	if (player.spreadingCancer === undefined) player.spreadingCancer = 0
+	if (player.postC4Tier === undefined) player.postC4Tier = 0
+	if (player.postC3Reward === undefined) player.postC3Reward = new Decimal(1)
+	if (player.postC8Mult === undefined) player.postC8Mult = new Decimal(1)
+	if (player.offlineProd === undefined) player.offlineProd = 0
+	if (player.offlineProdCost === undefined) player.offlineProdCost = 1e7
+	if (player.autoSacrifice === undefined) player.autoSacrifice = 1
+	if (player.postChallUnlocked === undefined) player.postChallUnlocked = 0
+	if (player.infMultBuyer === undefined) player.infMultBuyer = false
+	if (player.autoCrunchMode === undefined) player.autoCrunchMode = "amount"
+	if (player.challengeTarget === undefined) {
+		player.challengeTarget = 0
+		if (player.currentChallenge != "") player.challengeTarget = Number.MAX_VALUE
+	}
+	if (player.lastTenEternities === undefined) player.lastTenEternities = [[600*60*24*31, 1], [600*60*24*31, 1], [600*60*24*31, 1], [600*60*24*31, 1], [600*60*24*31, 1], [600*60*24*31, 1], [600*60*24*31, 1], [600*60*24*31, 1], [600*60*24*31, 1], [600*60*24*31, 1]]
+	if (player.respec === undefined) player.respec = false
+	if (player.options.commas === undefined) player.options.commas = true
+	if (player.eternityChalls === undefined) player.eternityChalls = {}
+	if (player.eternityChallGoal === undefined) player.eternityChallGoal = new Decimal(Number.MAX_VALUE)
+	if (player.currentEternityChall === undefined) player.currentEternityChall = ""
+	if (player.eternityChallUnlocked === undefined) player.eternityChallUnlocked = 0
+	if (player.options.chart === undefined) player.options.chart = {}
+	if (player.options.chart.updateRate === undefined) player.options.chart.updateRate = 1000
+	if (player.options.chart.duration === undefined) player.options.chart.duration = 10
+	if (player.options.chart.warning === undefined) player.options.chart.warning = 0
+	if (player.options.chart.on === undefined) player.options.chart.on = false
+	if (player.options.chart.dips === undefined) player.options.chart.dips = true
+	if (player.etercreq === undefined) player.etercreq = 0
+	if (player.options.updateRate === undefined) player.options.updateRate = 50
+	if (player.eterc8ids === undefined) player.eterc8ids = 50
+	if (player.eterc8repl === undefined) player.eterc8repl = 40
+	if (player.infinitiedBank === undefined) player.infinitiedBank = 0
+	if (player.dimlife === undefined) player.dimlife = false
+	if (player.dead === undefined) player.dead = false
+	if (player.dilation === undefined) player.dilation = {}
+	if (player.dilation.studies === undefined) player.dilation.studies = []
+	if (player.dilation.active === undefined) player.dilation.active = false
+	if (player.dilation.tachyonParticles === undefined) player.dilation.tachyonParticles = new Decimal(0)
+	if (player.dilation.dilatedTime === undefined) player.dilation.dilatedTime = new Decimal(0)
+	if (player.dilation.totalTachyonParticles === undefined) player.dilation.totalTachyonParticles = new Decimal(0)
+	if (player.dilation.nextThreshold === undefined) player.dilation.nextThreshold = new Decimal(1000)
+	if (player.dilation.freeGalaxies === undefined) player.dilation.freeGalaxies = 0
+	if (player.dilation.upgrades === undefined) player.dilation.upgrades = []
+	if (player.dilation.rebuyables === undefined) player.dilation.rebuyables =  { 1: 0, 2: 0, 3: 0 }
+	if (player.timeDimension5 === undefined) player.timeDimension5 = {cost: new Decimal("1e2350"), amount: new Decimal(0), power: new Decimal(1), bought: 0 }
+	if (player.timeDimension6 === undefined) player.timeDimension6 = {cost: new Decimal("1e2650"), amount: new Decimal(0), power: new Decimal(1), bought: 0 }
+	if (player.timeDimension7 === undefined) player.timeDimension7 = {cost: new Decimal("1e3000"), amount: new Decimal(0), power: new Decimal(1), bought: 0 }
+	if (player.timeDimension8 === undefined) player.timeDimension8 = {cost: new Decimal("1e3350"), amount: new Decimal(0), power: new Decimal(1), bought: 0 }
+	if (player.why === undefined) player.why = 0
+	if (player.options.animations === undefined) player.options.animations = {floatingText: true, bigCrunch: true, eternity: true, tachyonParticles: true}
+	setTheme(player.options.theme);
 
-  sliderText.textContent = "Update rate: " + player.options.updateRate + "ms";
-  slider.value = player.options.updateRate;
+	sliderText.textContent = "Update rate: " + player.options.updateRate + "ms";
+	slider.value = player.options.updateRate;
 
-  if (player.secondAmount !== 0) {
-      document.getElementById("tickSpeed").style.visibility = "visible";
-      document.getElementById("tickSpeedMax").style.visibility = "visible";
-      document.getElementById("tickLabel").style.visibility = "visible";
-      document.getElementById("tickSpeedAmount").style.visibility = "visible";
-  }
-  if (player.options.notation == "Mixed") player.options.notation = "Mixed scientific"
+	if (player.secondAmount !== 0) {
+		document.getElementById("tickSpeed").style.visibility = "visible";
+		document.getElementById("tickSpeedMax").style.visibility = "visible";
+		document.getElementById("tickLabel").style.visibility = "visible";
+		document.getElementById("tickSpeedAmount").style.visibility = "visible";
+	}
 
-  if (player.infinityPower === undefined) {
-      player.infinityPower = new Decimal(1)
-      player.infinityDimension1 = {
-          cost: new Decimal(1e8),
-          amount: new Decimal(0),
-          bought: 0,
-          power: new Decimal(1),
-          baseAmount: 0
-      }
-      player.infinityDimension2 = {
-          cost: new Decimal(1e9),
-          amount: new Decimal(0),
-          bought: 0,
-          power: new Decimal(1),
-          baseAmount: 0
-      }
-      player.infinityDimension3 = {
-          cost: new Decimal(1e10),
-          amount: new Decimal(0),
-          bought: 0,
-          power: new Decimal(1),
-          baseAmount: 0
-      }
-      player.infinityDimension4 = {
-          cost: new Decimal(1e20),
-          amount: new Decimal(0),
-          bought: 0,
-          power: new Decimal(1),
-          baseAmount: 0
-      }
-      player.infDimensionsUnlocked = [false, false, false, false]
-  }
+	if (player.options.notation == "Mixed") player.options.notation = "Mixed scientific"
 
-  if (player.timeShards === undefined) {
-      player.timeShards = new Decimal(0)
-      player.eternityPoints = new Decimal(0)
-      player.tickThreshold = new Decimal(1)
-      player.totalTickGained = 0
-      player.eternities = 0
-      player.timeDimension1 = {
-          cost: new Decimal(1),
-          amount: new Decimal(0),
-          power: new Decimal(1),
-          bought: 0
-      }
-      player.timeDimension2 = {
-          cost: new Decimal(5),
-          amount: new Decimal(0),
-          power: new Decimal(1),
-          bought: 0
-      }
-      player.timeDimension3 = {
-          cost: new Decimal(100),
-          amount: new Decimal(0),
-          power: new Decimal(1),
-          bought: 0
-      }
-      player.timeDimension4 = {
-          cost: new Decimal(1000),
-          amount: new Decimal(0),
-          power: new Decimal(1),
-          bought: 0
-      }
-  }
+	if (player.infinityPower === undefined) {
+		player.infinityPower = new Decimal(1)
+		player.infinityDimension1 = {
+			cost: new Decimal(1e8),
+			amount: new Decimal(0),
+			bought: 0,
+			power: new Decimal(1),
+			baseAmount: 0
+		}
+		player.infinityDimension2 = {
+			cost: new Decimal(1e9),
+			amount: new Decimal(0),
+			bought: 0,
+			power: new Decimal(1),
+			baseAmount: 0
+		}
+		player.infinityDimension3 = {
+			cost: new Decimal(1e10),
+			amount: new Decimal(0),
+			bought: 0,
+			power: new Decimal(1),
+			baseAmount: 0
+		}
+		player.infinityDimension4 = {
+			cost: new Decimal(1e20),
+			amount: new Decimal(0),
+			bought: 0,
+			power: new Decimal(1),
+			baseAmount: 0
+		}
+		player.infDimensionsUnlocked = [false, false, false, false]
+	}
 
-  if (player.infinityDimension1.baseAmount === undefined) {
-      player.infinityDimension1.baseAmount = 0;
-      player.infinityDimension2.baseAmount = 0;
-      player.infinityDimension3.baseAmount = 0;
-      player.infinityDimension4.baseAmount = 0;
+	if (player.timeShards === undefined) {
+		player.timeShards = new Decimal(0)
+		player.eternityPoints = new Decimal(0)
+		player.tickThreshold = new Decimal(1)
+		player.totalTickGained = 0
+		player.eternities = 0
+		player.timeDimension1 = {
+			cost: new Decimal(1),
+			amount: new Decimal(0),
+			power: new Decimal(1),
+			bought: 0
+		}
+		player.timeDimension2 = {
+			cost: new Decimal(5),
+			amount: new Decimal(0),
+			power: new Decimal(1),
+			bought: 0
+		}
+		player.timeDimension3 = {
+			cost: new Decimal(100),
+			amount: new Decimal(0),
+			power: new Decimal(1),
+			bought: 0
+		}
+		player.timeDimension4 = {
+			cost: new Decimal(1000),
+			amount: new Decimal(0),
+			power: new Decimal(1),
+			bought: 0
+		}
+	}
 
-      player.infinityDimension1.baseAmount = new Decimal(player.infinityDimension1.power).log(50).times(10).toNumber()
-      player.infinityDimension2.baseAmount = new Decimal(player.infinityDimension2.power).log(30).times(10).toNumber()
-      player.infinityDimension3.baseAmount = new Decimal(player.infinityDimension3.power).log(10).times(10).toNumber()
-      player.infinityDimension4.baseAmount = new Decimal(player.infinityDimension4.power).log(5).times(10).toNumber()
+	if (player.infinityDimension1.baseAmount === undefined) {
+		player.infinityDimension1.baseAmount = 0;
+		player.infinityDimension2.baseAmount = 0;
+		player.infinityDimension3.baseAmount = 0;
+		player.infinityDimension4.baseAmount = 0;
 
+		player.infinityDimension1.baseAmount = new Decimal(player.infinityDimension1.power).log(50).times(10).toNumber()
+		player.infinityDimension2.baseAmount = new Decimal(player.infinityDimension2.power).log(30).times(10).toNumber()
+		player.infinityDimension3.baseAmount = new Decimal(player.infinityDimension3.power).log(10).times(10).toNumber()
+		player.infinityDimension4.baseAmount = new Decimal(player.infinityDimension4.power).log(5).times(10).toNumber()
+	}
+	
+	if (player.autoIP === undefined) player.autoIP = new Decimal(0)
+	if (player.autoTime === undefined) player.autoTime = 1e300;
 
-  }
-  if (player.autoIP === undefined) player.autoIP = new Decimal(0)
-  if (player.autoTime === undefined) player.autoTime = 1e300;
+	if (player.matter === null) player.matter = new Decimal(0)
+	for (var i = 0; i < 12; i++) {
+		if (player.autobuyers[i] % 1 !== 0 && player.autobuyers[i].tier === undefined) {
+			player.autobuyers[i].tier = i + 1
+		}
+		if (player.autobuyers[i] % 1 !== 0 && player.autobuyers[i].target % 1 !== 0) {
+			player.autobuyers[i].target = i + 1
+			if (i == 8) player.autobuyers[i].target = 1
+		}
 
-  if (player.matter === null) player.matter = new Decimal(0)
-  for (var i=0; i<12; i++) {
-      if (player.autobuyers[i]%1 !== 0 && player.autobuyers[i].tier === undefined) {
-          player.autobuyers[i].tier = i+1
-      }
-      if (player.autobuyers[i]%1 !== 0 && player.autobuyers[i].target%1 !== 0) {
-          player.autobuyers[i].target = i+1
-          if (i == 8) player.autobuyers[i].target = 1
-      }
+		if (player.autobuyers[i]%1 !== 0 && (player.autobuyers[i].bulk === undefined || isNaN(player.autobuyers[i].bulk) || player.autobuyers[i].bulk === null)) {
+			player.autobuyers[i].bulk = 1
+		}
+	}
+	if (player.autobuyers[8].tier == 10) player.autobuyers[8].tier = 9
 
-      if (player.autobuyers[i]%1 !== 0 && (player.autobuyers[i].bulk === undefined || isNaN(player.autobuyers[i].bulk) || player.autobuyers[i].bulk === null)) {
-          player.autobuyers[i].bulk = 1
-      }
-  }
-  if (player.autobuyers[8].tier == 10) player.autobuyers[8].tier = 9
+	document.getElementById("totaltickgained").textContent = "You've gained " + getFullExpansion(player.totalTickGained) + " tickspeed upgrades."
 
-  document.getElementById("totaltickgained").textContent = "You've gained "+getFullExpansion(player.totalTickGained)+" tickspeed upgrades."
+	GPminpeak = new Decimal(0)
+	IPminpeak = new Decimal(0)
+	EPminpeakType = 'normal'
+	EPminpeak = new Decimal(0)
+	QKminpeak = new Decimal(0)
+	QKminpeakValue = new Decimal(0)
+	GHPminpeak = new Decimal(0)
+	GHPminpeakValue = new Decimal(0)
+	if (player.peakSpent) player.peakSpent = 0
+	if (typeof player.autobuyers[9].bulk !== "number") player.autobuyers[9].bulk = 1
 
-  GPminpeak = new Decimal(0)
-  IPminpeak = new Decimal(0)
-  EPminpeakType = 'normal'
-  EPminpeak = new Decimal(0)
-  QKminpeak = new Decimal(0)
-  QKminpeakValue = new Decimal(0)
-  GHPminpeak = new Decimal(0)
-  GHPminpeakValue = new Decimal(0)
-  if (player.peakSpent) player.peakSpent = 0
+	if (player.version === undefined) { // value will need to be adjusted when update goes live
+		for (var i = 0; i < player.autobuyers.length; i++) {
+			if (player.autobuyers[i]%1 !== 0) player.infinityPoints = player.infinityPoints + player.autobuyers[i].cost - 1
+		}
+		player.autobuyers = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12]
+		player.version = 1
+	}
+	if (player.version == 1) {
+		if (player.dimensionMultDecrease != 10) {
+			if (player.dimensionMultDecrease == 9) {
+				player.dimensionMultDecrease = 10
+				player.dimensionMultDecreaseCost = 1e8
+				player.infinityPoints = player.infinityPoints.plus(1e8)
+			}
+			if (player.dimensionMultDecrease == 8) {
+				player.dimensionMultDecrease = 10
+				player.dimensionMultDecreaseCost = 1e8
+				player.infinityPoints = player.infinityPoints.plus(2.1e9)
+			}
+			if (player.dimensionMultDecrease == 7) {
+				player.dimensionMultDecrease = 10
+				player.dimensionMultDecreaseCost = 1e8
+				player.infinityPoints = player.infinityPoints.plus(4.21e10)
+			}
+		}
+		player.version = 2
+	}
+	if (player.version < 5) {
+		player.newsArray = []
+		player.version = 5
+	}
 
-  if (typeof player.autobuyers[9].bulk !== "number") {
-      player.autobuyers[9].bulk = 1
-  }
+	if (player.infinityDimension5 === undefined) {
+		player.infDimensionsUnlocked.push(false)
+		player.infDimensionsUnlocked.push(false)
+		player.infinityDimension5 = {
+			cost: new Decimal(1e140),
+			amount: new Decimal(0),
+			bought: 0,
+			power: new Decimal(1),
+			baseAmount: 0
+		}
+		player.infinityDimension6 = {
+			cost: new Decimal(1e200),
+			amount: new Decimal(0),
+			bought: 0,
+			power: new Decimal(1),
+			baseAmount: 0
+		}
+		player.version = 6
+	}
 
-  if (player.version === undefined) { // value will need to be adjusted when update goes live
-      for (var i = 0; i < player.autobuyers.length; i++) {
-          if (player.autobuyers[i]%1 !== 0) player.infinityPoints = player.infinityPoints + player.autobuyers[i].cost - 1
-      }
-      player.autobuyers = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12]
-      player.version = 1
-  }
-  if (player.version == 1) {
-      if (player.dimensionMultDecrease != 10) {
-          if (player.dimensionMultDecrease == 9) {
-              player.dimensionMultDecrease = 10
-              player.dimensionMultDecreaseCost = 1e8
-              player.infinityPoints = player.infinityPoints.plus(1e8)
-          }
-          if (player.dimensionMultDecrease == 8) {
-              player.dimensionMultDecrease = 10
-              player.dimensionMultDecreaseCost = 1e8
-              player.infinityPoints = player.infinityPoints.plus(2.1e9)
-          }
-          if (player.dimensionMultDecrease == 7) {
-              player.dimensionMultDecrease = 10
-              player.dimensionMultDecreaseCost = 1e8
-              player.infinityPoints = player.infinityPoints.plus(4.21e10)
-          }
-      }
-      player.version = 2
-  }
-if (player.version < 5) {
-  player.newsArray = []
-  player.version = 5
-  }
+	if (player.infinityDimension7 == undefined) {
+		player.infDimensionsUnlocked.push(false)
+		player.infDimensionsUnlocked.push(false)
+		player.infinityDimension7 = {
+			cost: new Decimal(1e250),
+			amount: new Decimal(0),
+			bought: 0,
+			power: new Decimal(1),
+			baseAmount: 0
+		}
+		player.infinityDimension8 = {
+			cost: new Decimal(1e280),
+			amount: new Decimal(0),
+			bought: 0,
+			power: new Decimal(1),
+			baseAmount: 0
+		}
+	}
 
-  if (player.infinityDimension5 === undefined) {
-      player.infDimensionsUnlocked.push(false)
-      player.infDimensionsUnlocked.push(false)
-      player.infinityDimension5 = {
-          cost: new Decimal(1e140),
-          amount: new Decimal(0),
-          bought: 0,
-          power: new Decimal(1),
-          baseAmount: 0
-      }
-      player.infinityDimension6 = {
-          cost: new Decimal(1e200),
-          amount: new Decimal(0),
-          bought: 0,
-          power: new Decimal(1),
-          baseAmount: 0
-      }
-      player.version = 6
-  }
+	if (player.replicanti === undefined) {
+		player.replicanti = {
+			amount: new Decimal(0),
+			unl: false,
+			chance: 0.01,
+			chanceCost: new Decimal(1e150),
+			interval: 1000,
+			intervalCost: new Decimal(1e140),
+			gal: 0,
+			galaxies: 0,
+			galCost: new Decimal(1e170)
+		}
+	}
+	if (player.bestEternity === undefined) {
+		player.bestEternity = 9999999999
+		player.thisEternity = player.totalTimePlayed
+	}
+	if (player.timestudy === undefined) {
+		player.timestudy = {
+			theorem: 0,
+			amcost: new Decimal("1e20000"),
+			ipcost: new Decimal(1),
+			epcost: new Decimal(1),
+			studies: [],
+		}
+	}
 
-  if (player.infinityDimension7 == undefined) {
-      player.infDimensionsUnlocked.push(false)
-      player.infDimensionsUnlocked.push(false)
-      player.infinityDimension7 = {
-          cost: new Decimal(1e250),
-          amount: new Decimal(0),
-          bought: 0,
-          power: new Decimal(1),
-          baseAmount: 0
-      }
-      player.infinityDimension8 = {
-          cost: new Decimal(1e280),
-          amount: new Decimal(0),
-          bought: 0,
-          power: new Decimal(1),
-          baseAmount: 0
-      }
-  }
+	if (getEternitied() == 0) {
+		document.getElementById("eternityPoints2").style.display = "none";
+		document.getElementById("eternitystorebtn").style.display = "none";
+		document.getElementById("tdtabbtn").style.display = "none";
+	}
 
-  if (player.replicanti === undefined) {
-      player.replicanti = {
-          amount: new Decimal(0),
-          unl: false,
-          chance: 0.01,
-          chanceCost: new Decimal(1e150),
-          interval: 1000,
-          intervalCost: new Decimal(1e140),
-          gal: 0,
-          galaxies: 0,
-          galCost: new Decimal(1e170)
-      }
-  }
-  if (player.bestEternity === undefined) {
-      player.bestEternity = 9999999999
-      player.thisEternity = player.totalTimePlayed
-  }
-  if (player.timestudy === undefined) {
-      player.timestudy = {
-          theorem: 0,
-          amcost: new Decimal("1e20000"),
-          ipcost: new Decimal(1),
-          epcost: new Decimal(1),
-          studies: [],
-      }
-  }
+	if (player.eternityUpgrades === undefined) player.eternityUpgrades = []
 
+	if (player.infDimBuyers === undefined) player.infDimBuyers = [false, false, false, false, false, false, false, false]
 
-
-  if (getEternitied() == 0) {
-      document.getElementById("eternityPoints2").style.display = "none";
-      document.getElementById("eternitystorebtn").style.display = "none";
-      document.getElementById("tdtabbtn").style.display = "none";
-  }
-
-  if (player.eternityUpgrades === undefined) player.eternityUpgrades = []
-
-  if (player.infDimBuyers === undefined) player.infDimBuyers = [false, false, false, false, false, false, false, false]
-
-  if (player.replicanti.auto === undefined) player.replicanti.auto = [false, false, false]
-  if (player.eternityBuyer === undefined) {
-      player.eternityBuyer = {
-          limit: new Decimal(0),
-          isOn: false
-      }
-  }
+	if (player.replicanti.auto === undefined) player.replicanti.auto = [false, false, false]
+	if (player.eternityBuyer === undefined) {
+		player.eternityBuyer = {
+			limit: new Decimal(0),
+			isOn: false
+		}
+	}
   
-  if (typeof(player.options.commas) !== "string") {
-      if (player.options.commas) player.options.commas = "Commas"
-      else player.options.commas = player.options.notation
-  }
-  if (player.shameLevel === undefined) player.shameLevel = 0;
-    
-  if (player.aarexModifications === undefined) {
-      player.aarexModifications = {
-          breakInfinity: false
-      }
-      break_infinity_js = false
-  }
-  if (break_infinity_js!=player.aarexModifications.breakInfinity) {
-      save_game(true)
-      document.location.reload(true)
-      return
-  }
-  if (player.aarexModifications.dilationConf === undefined) {
-      player.aarexModifications.dilationConf = true
-  }
-  if (player.aarexModifications.offlineProgress === undefined) {
-      player.aarexModifications.offlineProgress = true
-  }
-  if (player.aarexModifications.autoSave === undefined) {
-      player.aarexModifications.autoSave = true
-  }
-  if (player.aarexModifications.progressBar === undefined) {
-      player.aarexModifications.progressBar = true
-  }
-  if (player.aarexModifications.logRateChange === undefined) {
-      player.aarexModifications.logRateChange = false
-  }
-  if (player.aarexModifications.hideProductionTab === undefined) {
-      player.aarexModifications.hideProductionTab = !(!player.boughtDims) && player.aarexModifications.ersVersion === undefined
-  }
-  if (player.aarexModifications.eternityChallRecords === undefined) player.aarexModifications.eternityChallRecords = {}
-  if (player.aarexModifications.popUpId === undefined) {
-      player.aarexModifications.popUpId = 0
-  }
-  if (player.aarexModifications.tabsSave === undefined) player.aarexModifications.tabsSave = {on: false}
-  if (player.aarexModifications.noFooter == undefined) player.aarexModifications.noFooter = player.options.theme == "Aarex's Modifications" || player.options.theme == "Aarex's Mods II"
-  if (player.masterystudies !== undefined && player.aarexModifications.newGame3PlusVersion === undefined) {
-	  forceHardReset = true
-	  reset_game()
-	  forceHardReset = false
-	  return
-  }
-  if (player.aarexModifications.newGamePlusPlusVersion == undefined && player.aarexModifications.newGame3PlusVersion != undefined) {
-      delete player.masterystudies
-      delete player.aarexModifications.newGame3PlusVersion
-  }
-  if (player.aarexModifications.newGame3PlusVersion>=2.2) tmp.bl=player.ghostify.bl
-  tmp.ngp3=player.masterystudies!==undefined
-  tmp.ngp3l=player.aarexModifications.ngp3lV!==undefined
-  tmp.ngex=player.aarexModifications.ngexV!==undefined
-  tmp.newNGP3E=player.aarexModifications.newGameExpVersion!==undefined&&!tmp.ngp3l
-  setNonlegacyStuff()
+	if (typeof(player.options.commas) !== "string") {
+		if (player.options.commas) player.options.commas = "Commas"
+		else player.options.commas = player.options.notation
+	}
+	if (player.shameLevel === undefined) player.shameLevel = 0;
+	if (player.aarexModifications === undefined) {
+		player.aarexModifications = {
+			breakInfinity: false
+		}
+		break_infinity_js = false
+	}
+	
+	if (break_infinity_js != player.aarexModifications.breakInfinity) {
+		save_game(true)
+		document.location.reload(true)
+		return
+	}
+	if (player.aarexModifications.dilationConf === undefined) player.aarexModifications.dilationConf = true
+	if (player.aarexModifications.offlineProgress === undefined)  player.aarexModifications.offlineProgress = true
+	if (player.aarexModifications.autoSave === undefined) player.aarexModifications.autoSave = true
+	if (player.aarexModifications.progressBar === undefined) player.aarexModifications.progressBar = true
+	if (player.aarexModifications.logRateChange === undefined) player.aarexModifications.logRateChange = false
+	if (player.aarexModifications.hideProductionTab === undefined) player.aarexModifications.hideProductionTab = !(!player.boughtDims) && player.aarexModifications.ersVersion === undefined
+	if (player.aarexModifications.eternityChallRecords === undefined) player.aarexModifications.eternityChallRecords = {}
+	if (player.aarexModifications.popUpId === undefined) player.aarexModifications.popUpId = 0
 
-  transformSaveToDecimal();
-  tmp.tickUpdate = true;
-  updateAchievements();
-  updateCheckBoxes();
-  toggleChallengeRetry()
-  toggleChallengeRetry()
-  toggleBulk()
-  toggleBulk()
+	if (player.aarexModifications.tabsSave === undefined) player.aarexModifications.tabsSave = {on: false}
+	if (player.aarexModifications.noFooter == undefined) player.aarexModifications.noFooter = player.options.theme == "Aarex's Modifications" || player.options.theme == "Aarex's Mods II"
+
+	if (player.masterystudies !== undefined && player.aarexModifications.newGame3PlusVersion === undefined) {
+		forceHardReset = true
+		reset_game()
+		forceHardReset = false
+		return
+	}
+	if (player.aarexModifications.newGamePlusPlusVersion == undefined && player.aarexModifications.newGame3PlusVersion != undefined) {
+		delete player.masterystudies
+		delete player.aarexModifications.newGame3PlusVersion
+	}
+	if (player.aarexModifications.newGame3PlusVersion>=2.2) tmp.bl=player.ghostify.bl
+	tmp.ngp3=player.masterystudies!==undefined
+	tmp.ngp3l=player.aarexModifications.ngp3lV!==undefined
+	tmp.ngex=player.aarexModifications.ngexV!==undefined
+	tmp.newNGP3E=player.aarexModifications.newGameExpVersion!==undefined&&!tmp.ngp3l
+	setNonlegacyStuff()
+
+	transformSaveToDecimal();
+	tmp.tickUpdate = true;
+	updateAchievements();
+	updateCheckBoxes();
+	toggleChallengeRetry()
+	toggleChallengeRetry()
+	toggleBulk()
+	toggleBulk()
  
-  document.getElementById("rename").innerHTML = "<p style='font-size:15px'>Rename</p>Name: "+(player.aarexModifications.save_name?player.aarexModifications.save_name:"Save #" + savePlacement)
-  document.getElementById("offlineProgress").textContent = "Offline progress: O"+(player.aarexModifications.offlineProgress?"N":"FF")
-  document.getElementById("autoSave").textContent = "Auto save: O"+(player.aarexModifications.autoSave?"N":"FF")
-  document.getElementById("autoSaveInterval").textContent = "Auto-save interval: " + getAutoSaveInterval() + "s"
-  document.getElementById("autoSaveIntervalSlider").value = getAutoSaveInterval()
+	document.getElementById("rename").innerHTML = "<p style='font-size:15px'>Rename</p>Name: "+(player.aarexModifications.save_name?player.aarexModifications.save_name:"Save #" + savePlacement)
+	document.getElementById("offlineProgress").textContent = "Offline progress: O"+(player.aarexModifications.offlineProgress?"N":"FF")
+	document.getElementById("autoSave").textContent = "Auto save: " + (player.aarexModifications.autoSave ? "ON" : ")FF")
+	document.getElementById("autoSaveInterval").textContent = "Auto-save interval: " + getAutoSaveInterval() + "s"
+	document.getElementById("autoSaveIntervalSlider").value = getAutoSaveInterval()
 
-  if (!player.replicanti.auto[0]) document.getElementById("replauto1").textContent = "Auto: OFF"
-  if (!player.replicanti.auto[1]) document.getElementById("replauto2").textContent = "Auto: OFF"
-  if (!player.replicanti.auto[2]) document.getElementById("replauto3").textContent = "Auto: OFF"
+	if (!player.replicanti.auto[0]) document.getElementById("replauto1").textContent = "Auto: OFF"
+	if (!player.replicanti.auto[1]) document.getElementById("replauto2").textContent = "Auto: OFF"
+	if (!player.replicanti.auto[2]) document.getElementById("replauto3").textContent = "Auto: OFF"
 
-  document.getElementById("automation_ng"+(player.aarexModifications.ngmX>3?"m4":"")+"_placement").appendChild(document.getElementById("autobuyers"))
-  if (player.aarexModifications.ngmX>3) document.getElementById("autobuyers").style.display="none"
-  document.getElementById("autobuyers").className=(player.aarexModifications.ngmX>3?"":"inf")+"tab"
-  document.getElementById("autobuyersbtn").style.display=player.aarexModifications.ngmX>3?"none":""
-  loadAutoBuyerSettings();
-  var updatedLTR = []
-  for (lastRun=0; lastRun<10 ; lastRun++) {
-      if (typeof(player.lastTenRuns[lastRun]) !== "number") if (player.lastTenRuns[lastRun][0] != 26784000 || player.lastTenRuns[lastRun][1].neq(1)) updatedLTR.push(player.lastTenRuns[lastRun])
-      if (player.lastTenEternities[lastRun][0] == 26784000 && player.lastTenEternities[lastRun][1].eq(1)) player.lastTenEternities[lastRun] = [26784000, new Decimal(0)]
-  }
-  for (a=updatedLTR.length;a<10;a++) updatedLTR.push([26784000, new Decimal(0)])
-  player.lastTenRuns = updatedLTR
-  updateLastTenRuns()
-  updateLastTenEternities()
+	document.getElementById("automation_ng" + (player.aarexModifications.ngmX > 3 ? "m4" : "") + "_placement").appendChild(document.getElementById("autobuyers"))
+	if (player.aarexModifications.ngmX > 3) document.getElementById("autobuyers").style.display="none"
+	document.getElementById("autobuyers").className=(player.aarexModifications.ngmX>3?"":"inf")+"tab"
+	document.getElementById("autobuyersbtn").style.display=player.aarexModifications.ngmX>3?"none":""
+	loadAutoBuyerSettings();
+	var updatedLTR = []
+	for (var lastRun = 0; lastRun < 10; lastRun++) {
+		if (typeof(player.lastTenRuns[lastRun]) !== "number") if (player.lastTenRuns[lastRun][0] != 26784000 || player.lastTenRuns[lastRun][1].neq(1)) updatedLTR.push(player.lastTenRuns[lastRun])
+		if (player.lastTenEternities[lastRun][0] == 26784000 && player.lastTenEternities[lastRun][1].eq(1)) player.lastTenEternities[lastRun] = [26784000, new Decimal(0)]
+	}
+	for (var a = updatedLTR.length; a < 10; a++) updatedLTR.push([26784000, new Decimal(0)])
+	player.lastTenRuns = updatedLTR
+	updateLastTenRuns()
+	updateLastTenEternities()
 
-  updateInfCosts()
+	updateInfCosts()
 
 
-  if (player.replicanti.unl == true) {
-      document.getElementById("replicantidiv").style.display="inline-block"
-      document.getElementById("replicantiunlock").style.display="none"
-  } else {
-      document.getElementById("replicantidiv").style.display="none"
-      document.getElementById("replicantiunlock").style.display="inline-block"
-  }
+	if (player.replicanti.unl == true) {
+		document.getElementById("replicantidiv").style.display="inline-block"
+		document.getElementById("replicantiunlock").style.display="none"
+	} else {
+		document.getElementById("replicantidiv").style.display="none"
+		document.getElementById("replicantiunlock").style.display="inline-block"
+	}
 
-  document.getElementById("break").textContent = (player.break ? "FIX" : "BREAK") + " INFINITY"
+	document.getElementById("break").textContent = (player.break ? "FIX" : "BREAK") + " INFINITY"
 
-  updateNotationOption()
+	updateNotationOption()
 
-  document.getElementById("floatingTextAnimBtn").textContent = "Floating text: " + ((player.options.animations.floatingText) ? "ON" : "OFF")
-  document.getElementById("bigCrunchAnimBtn").textContent = "Big crunch: " + (player.options.animations.bigCrunch === "always" ? "ALWAYS" : player.options.animations.bigCrunch ? "ON" : "OFF")
-  document.getElementById("tachyonParticleAnimBtn").textContent = "Tachyon particles: " + ((player.options.animations.tachyonParticles) ? "ON" : "OFF")
+	document.getElementById("floatingTextAnimBtn").textContent = "Floating text: " + ((player.options.animations.floatingText) ? "ON" : "OFF")
+	document.getElementById("bigCrunchAnimBtn").textContent = "Big crunch: " + (player.options.animations.bigCrunch === "always" ? "ALWAYS" : player.options.animations.bigCrunch ? "ON" : "OFF")
+	document.getElementById("tachyonParticleAnimBtn").textContent = "Tachyon particles: " + ((player.options.animations.tachyonParticles) ? "ON" : "OFF")
 
-  if (player.infinitied == 0 && getEternitied() == 0) document.getElementById("infinityPoints2").style.display = "none"
+	if (player.infinitied == 0 && getEternitied() == 0) document.getElementById("infinityPoints2").style.display = "none"
 
-  var inERS=!(!player.boughtDims)
+	var inERS=!(!player.boughtDims)
 
-  if (player.eternityChallUnlocked === null) player.eternityChallUnlocked = 0
-  if (player.eternityChallUnlocked !== 0) document.getElementById("eterc"+player.eternityChallUnlocked+"div").style.display = "inline-block"
+	if (player.eternityChallUnlocked === null) player.eternityChallUnlocked = 0
+	if (player.eternityChallUnlocked !== 0) document.getElementById("eterc"+player.eternityChallUnlocked+"div").style.display = "inline-block"
 
-  if (getEternitied()<1) document.getElementById("infmultbuyer").textContent="Max buy IP mult"
-  else document.getElementById("infmultbuyer").textContent="Autobuy IP mult O"+(player.infMultBuyer?"N":"FF")
+	if (getEternitied()<1) document.getElementById("infmultbuyer").textContent="Max buy IP mult"
+	else document.getElementById("infmultbuyer").textContent="Autobuy IP mult O"+(player.infMultBuyer?"N":"FF")
 
-  if (player.epmult === undefined || player.epmult == 0) {
-      player.epmult = new Decimal(1)
-      player.epmultCost = new Decimal(500)
-  }
+	if (player.epmult === undefined || player.epmult == 0) {
+		player.epmult = new Decimal(1)
+		player.epmultCost = new Decimal(500)
+	}
 
-  clearOldAchieves()
+	clearOldAchieves()
 
-  document.getElementById("epmult").innerHTML = "You gain 5 times more EP<p>Currently: "+shortenDimensions(player.epmult)+"x<p>Cost: "+shortenDimensions(player.epmultCost)+" EP"
+	document.getElementById("epmult").innerHTML = "You gain 5 times more EP<p>Currently: "+shortenDimensions(player.epmult)+"x<p>Cost: "+shortenDimensions(player.epmultCost)+" EP"
 
-  updateBoughtTimeStudies()
-  performedTS = false
+	updateBoughtTimeStudies()
+	performedTS = false
 
-  if (player.version > 7 && inERS && !player.aarexModifications.ersVersion) {
-	  player.version = 7
-  }
-  if (player.version < 9) {
-      player.version = 9
-      let achs = []
-      if (player.achievements.includes("r22")) {
-          achs.push("r35")
-          player.achievements.splice(player.achievements.indexOf("r22"), 1)
-      }
-      if (player.achievements.includes("r35")) {
-          achs.push("r76")
-          player.achievements.splice(player.achievements.indexOf("r35"), 1)
-      }
-      if (player.achievements.includes("r41")) {
-          achs.push("r22")
-          player.achievements.splice(player.achievements.indexOf("r41"), 1)
-      }
-      if (player.achievements.includes("r76")) {
-          achs.push("r41")
-          player.achievements.splice(player.achievements.indexOf("r76"), 1)
-      }
+	if (player.version > 7 && inERS && !player.aarexModifications.ersVersion) player.version = 7
+	if (player.version < 9) {
+		player.version = 9
+		let achs = []
+		if (player.achievements.includes("r22")) {
+			achs.push("r35")
+			player.achievements.splice(player.achievements.indexOf("r22"), 1)
+		}
+		if (player.achievements.includes("r35")) {
+			achs.push("r76")
+			player.achievements.splice(player.achievements.indexOf("r35"), 1)
+		}
+		if (player.achievements.includes("r41")) {
+			achs.push("r22")
+			player.achievements.splice(player.achievements.indexOf("r41"), 1)
+		}
+		if (player.achievements.includes("r76")) {
+			achs.push("r41")
+			player.achievements.splice(player.achievements.indexOf("r76"), 1)
+		}
 
-      for (var i=0; i<achs.length;i++) player.achievements.push(achs[i])
-      updateAchievements()
-      if (!inERS) player.replicanti.intervalCost = player.replicanti.intervalCost.dividedBy(1e20)
-  }
-  document.getElementById(inERS?"r22":"r35").appendChild(document.getElementById("Don't you dare to sleep"))
-  document.getElementById(inERS?"r35":"r76").appendChild(document.getElementById("One for each dimension"))
-  document.getElementById(inERS?"r41":"r22").appendChild(document.getElementById("Fake News"))
-  document.getElementById(inERS?"r76":"r41").appendChild(document.getElementById("Spreading Cancer"))
-  document.getElementById("Universal harmony").style["background-image"]="url(images/"+(player.masterystudies==undefined?104:"104-ngp3")+".png)"
-  document.getElementById("Infinite time").style["background-image"]="url(images/"+(inERS?79:69)+".png)"
+		for (var i = 0; i < achs.length;i++) player.achievements.push(achs[i])
+		updateAchievements()
+		if (!inERS) player.replicanti.intervalCost = player.replicanti.intervalCost.dividedBy(1e20)
+	}
+	document.getElementById(inERS?"r22":"r35").appendChild(document.getElementById("Don't you dare to sleep"))
+	document.getElementById(inERS?"r35":"r76").appendChild(document.getElementById("One for each dimension"))
+	document.getElementById(inERS?"r41":"r22").appendChild(document.getElementById("Fake News"))
+	document.getElementById(inERS?"r76":"r41").appendChild(document.getElementById("Spreading Cancer"))
+	document.getElementById("Universal harmony").style["background-image"]="url(images/"+(player.masterystudies==undefined?104:"104-ngp3")+".png)"
+	document.getElementById("Infinite time").style["background-image"]="url(images/"+(inERS?79:69)+".png)"
 
-  document.getElementById("ec12Mult").style.display = player.pSac !== undefined ? "" : "none"
+	document.getElementById("ec12Mult").style.display = player.pSac !== undefined ? "" : "none"
 
-  if (player.version < 9.5) {
-      player.version = 9.5
-      if (player.timestudy.studies.includes(191)) player.timestudy.theorem += 100
-  }
+	if (player.version < 9.5) {
+		player.version = 9.5
+		if (player.timestudy.studies.includes(191)) player.timestudy.theorem += 100
+	}
 
-  if (player.version < 10) {
-      player.version = 10
-      if (player.timestudy.studies.includes(72)) {
-          for (i=4; i<8; i++) {
-              player["infinityDimension"+i].amount = player["infinityDimension"+i].amount.div(calcTotalSacrificeBoost().pow(0.02))
-          }
-      }
-  }
+	if (player.version < 10) {
+		player.version = 10
+		if (player.timestudy.studies.includes(72)) {
+			for (i = 4; i < 8; i++) {
+				player["infinityDimension" + i].amount = player["infinityDimension" + i].amount.div(calcTotalSacrificeBoost().pow(0.02))
+			}
+		}
+	}
 
   if (player.aarexModifications.newGameMinusVersion === undefined && !player.boughtDims) {
       if (checkNGM() > 0) {
@@ -2135,24 +2116,24 @@ function checkNGM(imported) {
 
 var savePlacement
 function load_game(noOffline, init) {
-	if (!metaSave.saveOrder.includes(metaSave.current)) metaSave.current=metaSave.saveOrder[0]
-	var dimensionSave=get_save(metaSave.current)
-	infiniteDetected=false
+	if (!metaSave.saveOrder.includes(metaSave.current)) metaSave.current = metaSave.saveOrder[0]
+	var dimensionSave = get_save(metaSave.current)
+	infiniteDetected = false
 	if (dimensionSave!=null) {
 		if (dimensionSave.quantum !== undefined) if (dimensionSave.quantum.timeFluxPower !== undefined) dimensionSave = get_save(metaSave.current + "_af2019")
-		player=dimensionSave
+		player = dimensionSave
 		if (detectInfinite()) infiniteCheck=true
 	}
 	savePlacement=1
-	while (metaSave.saveOrder[savePlacement-1]!=metaSave.current) savePlacement++
-	if (break_infinity_js==null) {
+	while (metaSave.saveOrder[savePlacement - 1] != metaSave.current) savePlacement++
+	if (break_infinity_js == null) {
 		if (player.aarexModifications) break_infinity_js=player.aarexModifications.breakInfinity
 		if (break_infinity_js) Decimal = Decimal_BI
-		initCost = [null, new Decimal(10), new Decimal(1e2), new Decimal(1e4), new Decimal(1e6), new Decimal(1e9), new Decimal(1e13), new Decimal(1e18), new Decimal(1e24)]
-		costMults = [null, new Decimal(1e3), new Decimal(1e4), new Decimal(1e5), new Decimal(1e6), new Decimal(1e8), new Decimal(1e10), new Decimal(1e12), new Decimal(1e15)]
-		nextAt = {postc1:new Decimal("1e2000"),postc1_ngmm:new Decimal("1e3000"),postc1_ngm3:new Decimal("1e3760"),postc2:new Decimal("1e5000"),postc3:new Decimal("1e12000"),postc4:new Decimal("1e14000"),postc5:new Decimal("1e18000"),postc5_ngm3:new Decimal("1e21500"),postc6:new Decimal("1e20000"),postc6_ngm3:new Decimal("1e23000"),postc7:new Decimal("1e23000"),postc7_ngm3:new Decimal("1e26000"),postc8:new Decimal("1e28000"),postcngmm_1:new Decimal("1e750"),postcngmm_1_ngm3:new Decimal("1e1080"),postcngmm_2:new Decimal("1e1350"),postcngmm_3:new Decimal("1e2000"),postcngmm_3_ngm3:new Decimal("1e2650"),postcngm3_1:new Decimal("1e1560"),postcngm3_2:new Decimal("1e2085"),postcngm3_3:new Decimal("1e8140"),postcngm3_4:new Decimal("1e17000")}
-		goals = {postc1:new Decimal("1e850"),postc1_ngmm:new Decimal("1e650"),postc1_ngm3:new Decimal("1e375"),postc2:new Decimal("1e10500"),postc2_ngm3:new Decimal("1e4250"),postc3:new Decimal("1e5000"),postc4:new Decimal("1e13000"),postc4_ngm3:new Decimal("1e4210"),postc5:new Decimal("1e11111"),postc5_ngm3:new Decimal("7.77e7777"),postc6:new Decimal("2e22222"),postc7:new Decimal("1e10000"),postc7_ngmm:new Decimal("1e15000"),postc7_ngm3:new Decimal(1/0),postc8:new Decimal("1e27000"),postc8_ngm3:new Decimal(1/0),postcngmm_1:new Decimal("1e550"),postcngmm_1_ngm3:new Decimal("1e650"),postcngmm_2:new Decimal("1e950"),postcngmm_2_ngm3:new Decimal("1e1090"),postcngmm_3:new Decimal("1e1200"),postcngmm_3_ngm3:new Decimal("1e1230"),postcngm3_1:new Decimal("1e550"),postcngm3_2:new Decimal("1e610"),postcngm3_3:new Decimal("8.8888e888"),postcngm3_4:new Decimal("1e12345")}
-		setUnlocks = [Decimal.pow(Number.MAX_VALUE, 2.9)]
+		var initCost = [null, new Decimal(10), new Decimal(1e2), new Decimal(1e4), new Decimal(1e6), new Decimal(1e9), new Decimal(1e13), new Decimal(1e18), new Decimal(1e24)]
+		var costMults = [null, new Decimal(1e3), new Decimal(1e4), new Decimal(1e5), new Decimal(1e6), new Decimal(1e8), new Decimal(1e10), new Decimal(1e12), new Decimal(1e15)]
+		var nextAt = {postc1: new Decimal("1e2000"), postc1_ngmm: new Decimal("1e3000"),postc1_ngm3:new Decimal("1e3760"),postc2:new Decimal("1e5000"),postc3:new Decimal("1e12000"),postc4:new Decimal("1e14000"),postc5:new Decimal("1e18000"),postc5_ngm3:new Decimal("1e21500"),postc6:new Decimal("1e20000"),postc6_ngm3:new Decimal("1e23000"),postc7:new Decimal("1e23000"),postc7_ngm3:new Decimal("1e26000"),postc8:new Decimal("1e28000"),postcngmm_1:new Decimal("1e750"),postcngmm_1_ngm3:new Decimal("1e1080"),postcngmm_2:new Decimal("1e1350"),postcngmm_3:new Decimal("1e2000"),postcngmm_3_ngm3:new Decimal("1e2650"),postcngm3_1:new Decimal("1e1560"),postcngm3_2:new Decimal("1e2085"),postcngm3_3:new Decimal("1e8140"),postcngm3_4:new Decimal("1e17000")}
+		var goals = {postc1: new Decimal("1e850"), postc1_ngmm: new Decimal("1e650"),postc1_ngm3:new Decimal("1e375"),postc2:new Decimal("1e10500"),postc2_ngm3:new Decimal("1e4250"),postc3:new Decimal("1e5000"),postc4:new Decimal("1e13000"),postc4_ngm3:new Decimal("1e4210"),postc5:new Decimal("1e11111"),postc5_ngm3:new Decimal("7.77e7777"),postc6:new Decimal("2e22222"),postc7:new Decimal("1e10000"),postc7_ngmm:new Decimal("1e15000"),postc7_ngm3:new Decimal(1/0),postc8:new Decimal("1e27000"),postc8_ngm3:new Decimal(1/0),postcngmm_1:new Decimal("1e550"),postcngmm_1_ngm3:new Decimal("1e650"),postcngmm_2:new Decimal("1e950"),postcngmm_2_ngm3:new Decimal("1e1090"),postcngmm_3:new Decimal("1e1200"),postcngmm_3_ngm3:new Decimal("1e1230"),postcngm3_1:new Decimal("1e550"),postcngm3_2:new Decimal("1e610"),postcngm3_3:new Decimal("8.8888e888"),postcngm3_4:new Decimal("1e12345")}
+		var setUnlocks = [Decimal.pow(Number.MAX_VALUE, 2.9)]
 	}
 	if (infiniteCheck) exportInfiniteSave()
 	if (infiniteCheck || infiniteCheck2) {
@@ -2172,15 +2153,15 @@ function reload() {
 
 var noSave=false
 function save_game(silent) {
-  isInfiniteDetected()
-  if (!game_loaded || noSave || infiniteDetected) return
-  set_save(metaSave.current, player);
-  $.notify("Game saved", "info")
+	isInfiniteDetected()
+	if (!game_loaded || noSave || infiniteDetected) return
+	set_save(metaSave.current, player);
+	$.notify("Game saved", "info")
 }
 
 function toggleAutoSave() {
 	player.aarexModifications.autoSave = !player.aarexModifications.autoSave
-	document.getElementById("autoSave").textContent = "Auto save: O"+(player.aarexModifications.autoSave?"N":"FF")
+	document.getElementById("autoSave").textContent = "Auto save: " + (player.aarexModifications.autoSave ? "ON" : "OFF")
 	autoSaveSeconds = 0
 }
 
@@ -2195,7 +2176,7 @@ function getAutoSaveInterval() {
 }
 
 function overwrite_save(id) {
-	if (id==metaSave.current) {
+	if (id == metaSave.current) {
 		save_game()
 		return
 	}
