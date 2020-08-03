@@ -4,7 +4,7 @@ function getEmperorDimensionMultiplier(dim) {
 	ret = tmp.edgm //Global multiplier of all Emperor Dimensions
 	if (hasNU(7) && dim % 2 == 1) ret = ret.times(tmp.nu[3])
 	//player.quantum.emperorDimensions[8].perm-10 
-	if (dim == 8) ret = ret.times(Decimal.pow(1.05, Math.sqrt(player.quantum.emperorDimensions[8].perm - 8)))
+	if (!tmp.ngp3l && dim == 8) ret = ret.times(Decimal.pow(1.05, Math.sqrt(Math.max(0, player.quantum.emperorDimensions[8].perm - 8))))
 	return dilates(ret, 1)
 }
 

@@ -609,3 +609,9 @@ function getDil71Mult() {
 function getDil72Mult() {
 	return player.meta.bestAntimatter.max(1).log10() * 0+1
 }
+
+function getNewB60Mult(){
+	let gal = player.galaxies - 95
+	if (gal < 0) gal = 0
+	return Decimal.pow(10, 120 * gal)
+}

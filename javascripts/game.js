@@ -2985,7 +2985,7 @@ function breakNGm2UpgradeRow6Display(){
         if (player.infinityUpgrades.includes("postinfi63")) document.getElementById("postinfi63").className = "infinistorebtnbought"
         else if (player.infinityPoints.gte("1e2000")) document.getElementById("postinfi63").className = "infinistorebtn1"
         else document.getElementById("postinfi63").className = "infinistorebtnlocked"
-        document.getElementById("postinfi60").innerHTML = "You gain more "+(player.tickspeedBoosts==undefined?"Infinity":"Galaxy")+" Points based on your galaxies."+(player.tickspeedBoosts!=undefined?"":"<br>Currently: "+shorten(getB60Mult())+"x")+"<br>Cost: "+shortenCosts(1e50)+" IP"
+        document.getElementById("postinfi60").innerHTML = "You gain more " + (player.tickspeedBoosts != undefined ? "Galaxy Points" : tmp.ngp3l ? "Infinity Points" : "antimatter") + " based on your galaxies." + (player.tickspeedBoosts != undefined ? "" : "<br>Currently: " + shorten(getNewB60Mult()) + "x") + "<br>Cost: " + shortenCosts(1e50) + " IP"
         document.getElementById("postinfi61").innerHTML = "g11 formula is better.<br>Cost: "+shortenCosts(new Decimal("1e450"))+" IP"
         document.getElementById("postinfi62").innerHTML = "Dimension Boosts make g13 stronger.<br>Cost: "+shortenCosts(new Decimal("1e700"))+" IP"
         document.getElementById("postinfi63").innerHTML = "Unlock 2 new rows of Galaxy Points.<br>Cost: "+shortenCosts(new Decimal("1e2000"))+" IP"
@@ -3681,23 +3681,23 @@ function toggleRepresentation() {
 
 // Replicanti stuff
 function unlockReplicantis() {
-    if (player.infinityPoints.gte(player.galacticSacrifice!=undefined&&player.tickspeedBoosts==undefined?1e80:1e140)) {
-        document.getElementById("replicantidiv").style.display="inline-block"
-        document.getElementById("replicantiunlock").style.display="none"
-        player.replicanti.unl = true
-        player.replicanti.amount = new Decimal(1)
-        player.infinityPoints = player.infinityPoints.minus(player.galacticSacrifice!=undefined&&player.tickspeedBoosts==undefined?1e80:1e140)
-    }
+	if (player.infinityPoints.gte(player.galacticSacrifice!=undefined&&player.tickspeedBoosts==undefined?1e80:1e140)) {
+		document.getElementById("replicantidiv").style.display = "inline-block"
+		document.getElementById("replicantiunlock").style.display = "none"
+		player.replicanti.unl = true
+		player.replicanti.amount = new Decimal(1)
+		player.infinityPoints = player.infinityPoints.minus(player.galacticSacrifice != undefined && player.tickspeedBoosts == undefined ? 1e80 : 1e140)
+	}
 }
 
 function getReplMult(next) {
 	let exp = 2
-	if (player.galacticSacrifice !== undefined) exp = Math.pow(player.galaxies, .4)
+	if (player.galacticSacrifice !== undefined) exp = Math.max(2, Math.pow(player.galaxies, .4))
 	if (player.boughtDims) {
 		exp += (player.timestudy.ers_studies[3] + (next ? 1 : 0)) / 2
 		if (player.achievements.includes('r108')) exp *= 1.09;
 	}
-	let replmult = Decimal.max(player.replicanti.amount.log(2),1).pow(exp)
+	let replmult = Decimal.max(player.replicanti.amount.log(2), 1).pow(exp)
     	if (player.timestudy.studies.includes(21)) replmult = replmult.plus(Decimal.pow(player.replicanti.amount, 0.032))
     	if (player.timestudy.studies.includes(102)) replmult = replmult.times(Decimal.pow(5, player.replicanti.galaxies))
 	return replmult;
@@ -4554,6 +4554,10 @@ function onPostBreak() {
 	return (player.break && inNC(0)) || player.currentChallenge.includes("p")
 }
 
+function getIPGain(){
+	return gainedInfinityPoints()
+}
+
 function getInfinityPointGain(){
 	return gainedInfinityPoints()
 }
@@ -4579,7 +4583,7 @@ function gainedInfinityPoints(next) {
 		ret = ret.times(Decimal.pow(player.thisInfinityTime/10,player.timestudy.ers_studies[6]+(next==6?1:0)))
 	}
 	if (isBigRipUpgradeActive(4)) ret = ret.times(player.replicanti.amount.pow(0.34).max(1))
-	if (player.infinityUpgrades.includes("postinfi60")&&player.tickspeedBoosts==undefined) ret = ret.times(getB60Mult())
+	if (player.infinityUpgrades.includes("postinfi60") && player.tickspeedBoosts == undefined && tmp.ngp3l) ret = ret.times(getB60Mult())
 	return ret.floor()
 }
 
