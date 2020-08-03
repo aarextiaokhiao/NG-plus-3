@@ -63,39 +63,39 @@ function updateReplicantsTab(){
 
 	if (!hasNU(2)) {
 		document.getElementById("eggonAmount").textContent = shortenDimensions(tmp.qu.replicants.eggons)
-		document.getElementById("hatchProgress").textContent = Math.round(tmp.qu.replicants.babyProgress.toNumber()*100)+"%"
+		document.getElementById("hatchProgress").textContent = Math.round(tmp.qu.replicants.babyProgress.toNumber() * 100)+"%"
 	}
-	var growupRate = tmp.twr.times(player.achievements.includes("ng3p35")?3:0.3).times(getSpinToReplicantiSpeed())
+	var growupRate = tmp.twr.times(player.achievements.includes("ng3p35") ? 3 : 0.3).times(getSpinToReplicantiSpeed())
 	if (tmp.qu.replicants.babies.eq(0)) growupRate = growupRate.min(eggonRate)
 	if (growupRate.lt(30)) {
-		document.getElementById("growupRate").textContent=shortenDimensions(growupRate)
-		document.getElementById("growupRateUnit").textContent="minute"
+		document.getElementById("growupRate").textContent = shortenDimensions(growupRate)
+		document.getElementById("growupRateUnit").textContent = "minute"
 	} else {
-		document.getElementById("growupRate").textContent=shortenMoney(growupRate.div(60))
-		document.getElementById("growupRateUnit").textContent="second"
+		document.getElementById("growupRate").textContent = shortenMoney(growupRate.div(60))
+		document.getElementById("growupRateUnit").textContent = "second"
 	}
-	document.getElementById("growupProgress").textContent=Math.round(tmp.qu.replicants.ageProgress.toNumber()*100)+"%"
+	document.getElementById("growupProgress").textContent = Math.round(tmp.qu.replicants.ageProgress.toNumber() * 100) + "%"
 	
-	document.getElementById("reduceHatchSpeed").innerHTML="Hatch speed: "+hatchSpeedDisplay()+" -> "+hatchSpeedDisplay(true)+"<br>Cost: "+shortenDimensions(tmp.qu.replicants.hatchSpeedCost)+" for all 3 gluons"
-	if (player.ghostify.milestones>7) updateReplicants("display")
+	document.getElementById("reduceHatchSpeed").innerHTML = "Hatch speed: " + hatchSpeedDisplay() + " -> " + hatchSpeedDisplay(true) + "<br>Cost: " + shortenDimensions(tmp.qu.replicants.hatchSpeedCost) + " for all 3 gluons"
+	if (player.ghostify.milestones > 7) updateReplicants("display")
 }
 
 function updateNanoverseTab(){
 	var rewards = tmp.qu.nanofield.rewards
-	document.getElementById("quarksNanofield").textContent=shortenDimensions(tmp.qu.replicants.quarks)		
-	document.getElementById("quarkCharge").textContent=shortenMoney(tmp.qu.nanofield.charge)
-	document.getElementById("quarkChargeRate").textContent=shortenDimensions(getQuarkChargeProduction())
-	document.getElementById("quarkLoss").textContent=shortenDimensions(getQuarkLossProduction())
-	document.getElementById("preonEnergy").textContent=shortenMoney(tmp.qu.nanofield.energy)
-	document.getElementById("quarkEnergyRate").textContent=shortenMoney(getQuarkEnergyProduction())
-	document.getElementById("quarkPower").textContent=getFullExpansion(tmp.qu.nanofield.power)
-	document.getElementById("quarkPowerThreshold").textContent=shortenMoney(tmp.qu.nanofield.powerThreshold)
-	document.getElementById("quarkAntienergy").textContent=shortenMoney(tmp.qu.nanofield.antienergy)
-	document.getElementById("quarkAntienergyRate").textContent=shortenMoney(getQuarkAntienergyProduction())
-	document.getElementById("quarkChargeProductionCap").textContent=shortenMoney(getQuarkChargeProductionCap())
-	document.getElementById("rewards").textContent=getFullExpansion(rewards)
+	document.getElementById("quarksNanofield").textContent = shortenDimensions(tmp.qu.replicants.quarks)		
+	document.getElementById("quarkCharge").textContent = shortenMoney(tmp.qu.nanofield.charge)
+	document.getElementById("quarkChargeRate").textContent = shortenDimensions(getQuarkChargeProduction())
+	document.getElementById("quarkLoss").textContent = shortenDimensions(getQuarkLossProduction())
+	document.getElementById("preonEnergy").textContent = shortenMoney(tmp.qu.nanofield.energy)
+	document.getElementById("quarkEnergyRate").textContent = shortenMoney(getQuarkEnergyProduction())
+	document.getElementById("quarkPower").textContent = getFullExpansion(tmp.qu.nanofield.power)
+	document.getElementById("quarkPowerThreshold").textContent = shortenMoney(tmp.qu.nanofield.powerThreshold)
+	document.getElementById("quarkAntienergy").textContent = shortenMoney(tmp.qu.nanofield.antienergy)
+	document.getElementById("quarkAntienergyRate").textContent = shortenMoney(getQuarkAntienergyProduction())
+	document.getElementById("quarkChargeProductionCap").textContent = shortenMoney(getQuarkChargeProductionCap())
+	document.getElementById("rewards").textContent = getFullExpansion(rewards)
 
-	for (var reward=1; reward<9; reward++) {
+	for (var reward = 1; reward < 9; reward++) {
 		document.getElementById("nfReward" + reward).className = reward > rewards ? "nfRewardlocked" : "nfReward"
 		document.getElementById("nfRewardHeader" + reward).textContent = (rewards % 8 + 1 == reward ? "Next" : DISPLAY_NAMES[reward]) + " reward"
 		document.getElementById("nfRewardTier" + reward).textContent = "Tier " + getFullExpansion(Math.ceil((rewards + 1 - reward) / 8)) + " / Power: " + getNanofieldRewardTier(reward, rewards).toFixed(1)
@@ -103,7 +103,7 @@ function updateNanoverseTab(){
 	document.getElementById("nfReward1").textContent = hasBosonicUpg(21) ? "Dimension Supersonic scaling starts " + getFullExpansion(getNanofieldRewardEffect(1, "supersonic")) + " later." :
 		"Hatch speed is " + shortenDimensions(getNanofieldRewardEffect(1, "speed")) + "x faster."
 	document.getElementById("nfReward2").textContent = "Meta-antimatter effect power is increased by ^" + getNanofieldRewardEffect(2).toFixed(1) + "."
-	document.getElementById("nfReward3").textContent = "Free galaxy gain is increased by " + (getNanofieldRewardEffect(3)*100-100).toFixed(1) + "%."
+	document.getElementById("nfReward3").textContent = "Free galaxy gain is increased by " + (getNanofieldRewardEffect(3) * 100 - 100).toFixed(1) + "%."
 	document.getElementById("nfReward4").textContent = "Dilated time boost to Meta Dimensions is increased to ^" + getNanofieldRewardEffect(4).toFixed(3) + "."
 	document.getElementById("nfReward5").textContent = "While dilated, Normal Dimension multipliers and tickspeed are raised to the power of " + getNanofieldRewardEffect(5).toFixed(2) + "."
 	document.getElementById("nfReward6").textContent = "Meta-dimension boost power is increased to " + getNanofieldRewardEffect(6).toFixed(2) + "x."
@@ -119,8 +119,8 @@ function updateNanofieldAntipreon(){
 	var rewards = tmp.qu.nanofield.rewards
 	document.getElementById("rewards_AP").textContent = getFullExpansion(rewards)
 	document.getElementById("rewards_wake").textContent = getFullExpansion(tmp.apgw)
-	document.getElementById("sleepy").style.display = tmp.qu.nanofield.apgWoke?"none":""
-	document.getElementById("woke").style.display = tmp.qu.nanofield.apgWoke?"":"none"
+	document.getElementById("sleepy").style.display = tmp.qu.nanofield.apgWoke ? "none" : ""
+	document.getElementById("woke").style.display = tmp.qu.nanofield.apgWoke ? "" : "none"
 }
 
 function updateNanofieldTab(){
@@ -437,7 +437,10 @@ function getQCGoal(num) {
 	if (cs.includes(1) && cs.includes(3)) mult = 1.6
 	if (cs.includes(2) && cs.includes(6)) mult = 1.7
 	if (cs.includes(3) && cs.includes(7)) mult = 2.68
-	//if (cs.includes(3) && cs.includes(6)) mult = 3 to 5 idk
+	//if (cs.includes(3) && cs.includes(6)) mult = 3 to 5 idk yo aarex pls 
+	//hi
+	//hi
+	//hi 
 	return quantumChallenges.goals[c1] * quantumChallenges.goals[c2] / 1e11 * mult
 }
 
@@ -637,7 +640,7 @@ function updateBankedEter(updateHtml = true) {
 	if (player.achievements.includes("ng3p73")) bankedEterGain = nA(bankedEterGain, gainEternitiedStat())
 	bankedEterGain = nD(bankedEterGain, 20)
 	if (updateHtml) {
-		setAndMaybeShow("bankedEterGain", bankedEterGain>0, '"You will gain "+getFullExpansion(bankedEterGain)+" banked eternities on next quantum."')
+		setAndMaybeShow("bankedEterGain", bankedEterGain > 0, '"You will gain "+getFullExpansion(bankedEterGain)+" banked eternities on next quantum."')
 		setAndMaybeShow("eternitiedBank", player.eternitiesBank, '"You have "+getFullExpansion(player.eternitiesBank)+" banked eternities."')
 	}
 }
@@ -705,7 +708,7 @@ function updateQCTimes() {
 	var temp = 0
 	var tempcounter = 0
 	for (var i = 1; i < 9; i++) {
-		setAndMaybeShow("qctime" + i, tmp.qu.challengeRecords[i], '"Quantum Challenge '+i+' time record: "+timeDisplayShort(tmp.qu.challengeRecords['+i+'], false, 3)')
+		setAndMaybeShow("qctime" + i, tmp.qu.challengeRecords[i], '"Quantum Challenge ' + i + ' time record: "+timeDisplayShort(tmp.qu.challengeRecords[' + i + '], false, 3)')
 		if (tmp.qu.challengeRecords[i]) {
 			temp+=tmp.qu.challengeRecords[i]
 			tempcounter++
@@ -747,7 +750,7 @@ function updatePCCompletions() {
 		}
 		ranking += Math.sqrt(rankingPart)
 	}
-	ranking *= 100/56
+	ranking *= 100 / 56
 	if (ranking) document.getElementById("pccompletionsbtn").style.display = "inline-block"
 	if (tmp.pcc.normal >= 24) giveAchievement("The Challenging Day")
 	document.getElementById("pccranking").textContent = ranking.toFixed(1)
@@ -756,19 +759,19 @@ function updatePCCompletions() {
 	for (var m = 0; m < qcm.modifiers.length; m++) {
 		var id = qcm.modifiers[m]
 		var shownormal = tmp.qu.qcsMods[id] !== undefined || shownormal
-		document.getElementById("qcms_"+id).style.display=tmp.qu.qcsMods[id]!==undefined?"":"none"
+		document.getElementById("qcms_" + id).style.display = tmp.qu.qcsMods[id] !== undefined ? "" : "none"
 	}
-	document.getElementById("qcms_normal").style.display=shownormal?"":"none"
-	if (ranking>=75) {
+	document.getElementById("qcms_normal").style.display = shownormal ? "" : "none"
+	if (ranking >= 75) {
 		document.getElementById("modifiersdiv").style.display = ""
 		for (var m = 0; m < qcm.modifiers.length; m++) {
 			var id = qcm.modifiers[m]
 			if (ranking >= qcm.reqs[id] || !qcm.reqs[id]) {
-				document.getElementById("qcm_"+id).className = qcm.on.includes(id) ? "chosenbtn" : "storebtn"
-				document.getElementById("qcm_"+id).setAttribute('ach-tooltip', qcm.descs[id] || "???")
+				document.getElementById("qcm_" + id).className = qcm.on.includes(id) ? "chosenbtn" : "storebtn"
+				document.getElementById("qcm_" + id).setAttribute('ach-tooltip', qcm.descs[id] || "???")
 			} else {
-				document.getElementById("qcm_"+id).className = "unavailablebtn"
-				document.getElementById("qcm_"+id).setAttribute('ach-tooltip', 'Get '+qcm.reqs[id]+' Paired Challenges ranking to unlock this modifier. Ranking: '+ranking.toFixed(1))
+				document.getElementById("qcm_" + id).className = "unavailablebtn"
+				document.getElementById("qcm_" + id).setAttribute('ach-tooltip', 'Get '+qcm.reqs[id]+' Paired Challenges ranking to unlock this modifier. Ranking: ' + ranking.toFixed(1))
 			}
 		}
 	} else document.getElementById("modifiersdiv").style.display = "none"
@@ -888,9 +891,9 @@ function buyMaxQuantumFood() {
 }
 
 function canFeedReplicant(tier, auto) {
-	if (tmp.qu.replicants.quantumFood<1 && !auto) return false
+	if (tmp.qu.replicants.quantumFood < 1 && !auto) return false
 	if (tier > 1) {
-		if (tmp.eds[tier].workers.gte(tmp.eds[tier-1].workers)) return auto && hasNU(2)
+		if (tmp.eds[tier].workers.gte(tmp.eds[tier - 1].workers)) return auto && hasNU(2)
 		if (tmp.eds[tier - 1].workers.lte(10)) return false
 	} else {
 		if (tmp.eds[1].workers.gte(tmp.qu.replicants.amount)) return auto && hasNU(2)
@@ -933,9 +936,9 @@ function updateEmperorDimensions() {
 	let production = getGatherRate()
 	let mults = {}
 	let limitDim = tmp.qu.replicants.limitDim
-	document.getElementById("rgEDs").textContent=shortenDimensions(tmp.qu.gluons.rg)
-	document.getElementById("gbEDs").textContent=shortenDimensions(tmp.qu.gluons.gb)
-	document.getElementById("brEDs").textContent=shortenDimensions(tmp.qu.gluons.br)
+	document.getElementById("rgEDs").textContent = shortenDimensions(tmp.qu.gluons.rg)
+	document.getElementById("gbEDs").textContent = shortenDimensions(tmp.qu.gluons.gb)
+	document.getElementById("brEDs").textContent = shortenDimensions(tmp.qu.gluons.br)
 	document.getElementById("replicantAmountED").textContent=shortenDimensions(tmp.qu.replicants.amount)
 	for (var d = 1; d <= 8; d++) mults[d] = getEmperorDimensionMultiplier(d)
 	for (var d = 1; d <= 8; d++) {
@@ -943,9 +946,9 @@ function updateEmperorDimensions() {
 		else {
 			document.getElementById("empRow" + d).style.display = ""
 			document.getElementById("empD" + d).textContent = DISPLAY_NAMES[d] + " Emperor Dimension x" + formatValue(player.options.notation, mults[d], 2, 1)
-			document.getElementById("empAmount" + d).textContent = d<limitDim?shortenDimensions(tmp.eds[d].workers) + " (+" + shorten(getEmperorDimensionRateOfChange(d)) + dimDescEnd : getFullExpansion(tmp.eds[limitDim].perm)
+			document.getElementById("empAmount" + d).textContent = d < limitDim ? shortenDimensions(tmp.eds[d].workers) + " (+" + shorten(getEmperorDimensionRateOfChange(d)) + dimDescEnd : getFullExpansion(tmp.eds[limitDim].perm)
 			document.getElementById("empQuarks" + d).textContent = shorten(production.workers[d])
-			document.getElementById("empFeed" + d).className = (canFeedReplicant(d)?"stor":"unavailabl")+"ebtn"
+			document.getElementById("empFeed" + d).className = (canFeedReplicant(d) ? "stor" : "unavailabl") + "ebtn"
 			document.getElementById("empFeed" + d).textContent = "Feed (" + (d == limitDim || mults[d + 1].times(tmp.eds[d + 1].workers).div(20).lt(1e3) ? Math.round(tmp.eds[d].progress.toNumber() * 100) + "%, " : "") + getFullExpansion(tmp.eds[d].perm) + " kept)"
 			document.getElementById("empFeedMax" + d).className = (canFeedReplicant(d) ? "stor" : "unavailabl") + "ebtn"
 		}
@@ -1149,13 +1152,13 @@ function getBranchFinalSpeed() {
 
 function getDecayRate(branch) {
 	let ret = Decimal.pow(2, getBU1Power(branch)*Math.max(getRadioactiveDecays(branch) * .1 + .8, 1) - getBranchUpgLevel(branch, 3) * 2 - getRDPower(branch) - 4)
-	if (branch=="r") {
+	if (branch == "r") {
 		if (GUBought("rg8")) ret = ret.div(getGU8Effect("rg"))
 	}
-	if (branch=="g") {
+	if (branch == "g") {
 		if (GUBought("gb8")) ret = ret.div(getGU8Effect("gb"))
 	}
-	if (branch=="b") {
+	if (branch == "b") {
 		if (GUBought("br8")) ret = ret.div(getGU8Effect("br"))
 	}
 	ret = ret.times(getBranchFinalSpeed())
@@ -1166,7 +1169,7 @@ function getMilestone14SpinMult(){
 	var totalSpin = player.quantum.tod.r.spin.plus(player.quantum.tod.b.spin).plus(player.quantum.tod.g.spin)
 	var logSpin = totalSpin.log10()
 	if (logSpin <= 25) return 10
-	return Math.pow(logSpin,2) / 625 * 10
+	return Math.pow(logSpin, 2) / 625 * 10
 }
 
 function getQuarkSpinProduction(branch) {
@@ -1186,14 +1189,14 @@ function getQuarkSpinProduction(branch) {
 function getTreeUpgradeCost(upg,add) {
 	lvl = getTreeUpgradeLevel(upg)
 	if (add !== undefined) lvl += add
-	if (upg == 1) return Decimal.pow(2,lvl*2+Math.max(lvl-35,0)*(lvl-34)/2).times(50)
-	if (upg == 2) return Decimal.pow(4,lvl*(lvl+3)/2).times(600)
-	if (upg == 3) return Decimal.pow(32,lvl).times(3e9)
-	if (upg == 4) return Decimal.pow(2,lvl+Math.max(lvl-37,0)*(lvl-36)/2).times(1e12)
-	if (upg == 5) return Decimal.pow(2,lvl+Math.max(lvl-35,0)*(lvl-34)/2).times(4e12)
-	if (upg == 6) return Decimal.pow(4,lvl*(lvl+3)/2).times(6e22)
-	if (upg == 7) return Decimal.pow(16,lvl*lvl).times(4e22)
-	if (upg == 8) return Decimal.pow(2,lvl).times(3e23)
+	if (upg == 1) return Decimal.pow(2, lvl * 2 + Math.max(lvl - 35, 0) * (lvl - 34) / 2).times(50)
+	if (upg == 2) return Decimal.pow(4, lvl * (lvl + 3) / 2).times(600)
+	if (upg == 3) return Decimal.pow(32, lvl).times(3e9)
+	if (upg == 4) return Decimal.pow(2, lvl + Math.max(lvl - 37, 0) * (lvl - 36) / 2).times(1e12)
+	if (upg == 5) return Decimal.pow(2, lvl + Math.max(lvl - 35, 0) * (lvl - 34) / 2).times(4e12)
+	if (upg == 6) return Decimal.pow(4, lvl * (lvl + 3) / 2).times(6e22)
+	if (upg == 7) return Decimal.pow(16, lvl * lvl).times(4e22)
+	if (upg == 8) return Decimal.pow(2, lvl).times(3e23)
 	return 0
 }
 
@@ -1245,7 +1248,7 @@ function getTreeUpgradeEffect(upg) {
 		return Decimal.pow(player.replicanti.amount.max(1).log10() + 1, 0.25 * lvl)
 	}
 	if (upg == 8) {
-		if (lvl > 1111) lvl = 1111 + (lvl-1111)/2
+		if (lvl > 1111) lvl = 1111 + (lvl - 1111)/2
 		return Math.log10(Decimal.add(player.meta.bestAntimatter, 1).log10() + 1) / 4 * Math.sqrt(lvl)
 	}
 	return 0
@@ -1399,72 +1402,72 @@ function maxTreeUpg() {
 		}
 		if (newSpins[lvl % 3].gte(cost)) {
 			var increment = 1
-			while (newSpins[(lvl+increment - 1) % 3].gte(getTreeUpgradeCost(u,increment - 1))) increment *= 2
+			while (newSpins[(lvl + increment - 1) % 3].gte(getTreeUpgradeCost(u, increment - 1))) increment *= 2
 			var toBuy = 0
 			while (increment >= 1) {
-				if (newSpins[(lvl+toBuy+increment-1)%3].gte(getTreeUpgradeCost(u,toBuy+increment-1))) toBuy+=increment
+				if (newSpins[(lvl + toBuy + increment - 1) % 3].gte(getTreeUpgradeCost(u, toBuy + increment - 1))) toBuy += increment
 				increment /= 2
 			}
-			var cost=getTreeUpgradeCost(u,toBuy-1)
-			var toBuy2=toBuy
-			while (toBuy>0&&newSpins[(lvl+toBuy-1)%3].div(cost).lt(1e16)) {
-				if (newSpins[(lvl+toBuy-1)%3].gte(cost)) newSpins[(lvl+toBuy-1)%3]=newSpins[(lvl+toBuy-1)%3].sub(cost)
+			var cost = getTreeUpgradeCost(u, toBuy - 1)
+			var toBuy2 = toBuy
+			while (toBuy > 0 && newSpins[(lvl + toBuy - 1) % 3].div(cost).lt(1e16)) {
+				if (newSpins[(lvl + toBuy - 1) % 3].gte(cost)) newSpins[(lvl + toBuy - 1) % 3]=newSpins[(lvl + toBuy - 1) % 3].sub(cost)
 				else {
-					newSpins[(lvl+toBuy-1)%3]=todData[colors[(lvl+toBuy-1)%3]].spin.sub(cost)
+					newSpins[(lvl + toBuy - 1) % 3] = todData[colors[(lvl + toBuy - 1) % 3]].spin.sub(cost)
 					toBuy2--
 				}
 				toBuy--
-				cost=getTreeUpgradeCost(u,toBuy-1)
+				cost = getTreeUpgradeCost(u, toBuy - 1)
 			}
 			if (toBuy2) {
-				for (c=0;c<3;c++) todData[colors[c]].spin=isNaN(newSpins[c].e)?new Decimal(0):newSpins[c]
-				todData.upgrades[u]=toBuy2+(todData.upgrades[u]===undefined?0:todData.upgrades[u])
-				update=true
+				for (c = 0; c < 3; c++) todData[colors[c]].spin = isNaN(newSpins[c].e) ? new Decimal(0) : newSpins[c]
+				todData.upgrades[u] = toBuy2 + (todData.upgrades[u] === undefined ? 0 : todData.upgrades[u])
+				update = true
 			}
 		}
 	}
 }
 
 function maxBranchUpg(branch, weak) {
-	var colors={r:"red",g:"green",b:"blue"}
-	var bData=tmp.qu.tod[branch]
-	for (var u=(weak?2:1);u<4;u++) {
-		var oldLvl=getBranchUpgLevel(branch,u)
-		var scaleStart=branchUpgCostScales[u-1][1]
-		var cost=getBranchUpgCost(branch,u)
-		if (bData.spin.gte(cost)&&oldLvl<scaleStart) {
-			var costMult=Math.pow(2,u)
-			var toAdd=Math.min(Math.floor(bData.spin.div(cost).times(costMult-1).add(1).log(costMult)),scaleStart-oldLvl)
-			bData.spin=bData.spin.sub(Decimal.pow(costMult,toAdd).sub(1).div(costMult).times(cost).min(bData.spin))
-			if (bData.upgrades[u]===undefined) bData.upgrades[u]=0
-			bData.upgrades[u]+=toAdd
-			cost=getBranchUpgCost(branch,u)
+	var colors = {r: "red", g: "green", b: "blue"}
+	var bData = tmp.qu.tod[branch]
+	for (var u = (weak ? 2 : 1); u < 4; u++) {
+		var oldLvl = getBranchUpgLevel(branch, u)
+		var scaleStart = branchUpgCostScales[u - 1][1]
+		var cost = getBranchUpgCost(branch, u)
+		if (bData.spin.gte(cost) && oldLvl < scaleStart) {
+			var costMult = Math.pow(2, u)
+			var toAdd = Math.min(Math.floor(bData.spin.div(cost).times(costMult - 1).add(1).log(costMult)),scaleStart - oldLvl)
+			bData.spin = bData.spin.sub(Decimal.pow(costMult, toAdd).sub(1).div(costMult).times(cost).min(bData.spin))
+			if (bData.upgrades[u] === undefined) bData.upgrades[u] = 0
+			bData.upgrades[u] += toAdd
+			cost = getBranchUpgCost(branch, u)
 		}
-		if (bData.spin.gte(cost)&&bData.upgrades[u]>=scaleStart) {
-			var costMult=Math.pow(2,u+Math.max(3-u,1))
-			var toAdd=Math.floor(bData.spin.div(cost).times(costMult-1).add(1).log(costMult))
-			bData.spin=bData.spin.sub(Decimal.pow(costMult,toAdd).sub(1).div(costMult).times(cost).min(bData.spin))
-			if (bData.upgrades[u]===undefined) bData.upgrades[u]=0
-			bData.upgrades[u]+=toAdd
+		if (bData.spin.gte(cost) && bData.upgrades[u] >= scaleStart) {
+			var costMult = Math.pow(2, u + Math.max(3 - u, 1))
+			var toAdd = Math.floor(bData.spin.div(cost).times(costMult-1).add(1).log(costMult))
+			bData.spin = bData.spin.sub(Decimal.pow(costMult,toAdd).sub(1).div(costMult).times(cost).min(bData.spin))
+			if (bData.upgrades[u] === undefined) bData.upgrades[u] = 0
+			bData.upgrades[u] += toAdd
 		}
-		if (bData.upgrades[u]>oldLvl) {
-			document.getElementById(colors[branch]+"upg"+u+"current").textContent=shortenDimensions(Decimal.pow(u>2?4:2,bData.upgrades[u]))
-			document.getElementById(colors[branch]+"upg"+u+"cost").textContent=shortenMoney(getBranchUpgCost(branch,u))
+		if (bData.upgrades[u] > oldLvl) {
+			document.getElementById(colors[branch] + "upg" + u + "current").textContent=shortenDimensions(Decimal.pow(u > 2 ? 4 : 2, bData.upgrades[u]))
+			document.getElementById(colors[branch] + "upg" + u + "cost").textContent=shortenMoney(getBranchUpgCost(branch,u))
 		}
 	}
 }
 
 function radioactiveDecay(shorthand) {
-	let data=tmp.qu.tod[shorthand]
-	if (!data.quarks.gte(Decimal.pow(10,Math.pow(2,50)))) return
-	data.quarks=new Decimal(0)
-	data.spin=new Decimal(0)
-	data.upgrades={}
-	if (player.ghostify.milestones>3) data.upgrades[1]=5
-	data.decays=data.decays===undefined?1:data.decays+1
-	let sum=0
-    for (var c=0;c<3;c++) sum+=getRadioactiveDecays((['r','g','b'])[c])
-	if (sum>9) giveAchievement("Radioactive Decaying to the max!")
+	let data = tmp.qu.tod[shorthand]
+	if (!data.quarks.gte(Decimal.pow(10, Math.pow(2, 50)))) return
+	data.quarks = new Decimal(0)
+	data.spin = new Decimal(0)
+	data.upgrades = {}
+	if (player.ghostify.milestones > 3) data.upgrades[1] = 5
+	data.decays = data.decays === undefined ? 1 : data.decays + 1
+	let sum = 0
+	for (var c = 0; c < 3; c++) sum += getRadioactiveDecays((['r', 'g', 'b'])[c])
+	if (sum > 9) giveAchievement("Radioactive Decaying to the max!")
 	updateTODStuff()
 }
 
@@ -1479,27 +1482,27 @@ function openAfterEternity() {
 }
 
 function toggleABEter() {
-	document.getElementById("eternityison").checked=!player.eternityBuyer.isOn
+	document.getElementById("eternityison").checked = !player.eternityBuyer.isOn
 	updateAutobuyers()
 }
 
 function updateAutoEterValue() {
-	document.getElementById("priority13").value=document.getElementById("autoEterValue").value
+	document.getElementById("priority13").value = document.getElementById("autoEterValue").value
 	updatePriorities()
 }
 
 function toggleAutoEterIfAD() {
-	player.eternityBuyer.ifAD=!player.eternityBuyer.ifAD
-	document.getElementById("autoEterIfAD").textContent="Auto-eternity only if able to auto-dilate: O" + (player.eternityBuyer.ifAD ? "N" : "FF")
+	player.eternityBuyer.ifAD = !player.eternityBuyer.ifAD
+	document.getElementById("autoEterIfAD").textContent = "Auto-eternity only if able to auto-dilate: O" + (player.eternityBuyer.ifAD ? "N" : "FF")
 }
 
 function toggleAutoDil() {
-	document.getElementById("dilatedeternityison").checked=!player.eternityBuyer.dilationMode	
+	document.getElementById("dilatedeternityison").checked = !player.eternityBuyer.dilationMode	
 	updateAutobuyers()
 }
 
 function updateAutoDilValue() {
-	document.getElementById("prioritydil").value=document.getElementById("autoDilValue").value
+	document.getElementById("prioritydil").value = document.getElementById("autoDilValue").value
 	updatePriorities()
 }
 
@@ -1564,61 +1567,61 @@ function loadAP() {
 }
 
 function changeAPOptions(id, placement) {
-	if (id=="grind") {
-		let name="Unnamed grind preset"
-		let apData=player.eternityBuyer.presets.grind
-		if (apData.title!="") name=apData.title
-		document.getElementById("apnamegrind").textContent=name
-		document.getElementById("apdisablegrind").textContent=apData.on?"Disable":"Enable"
-		document.getElementById("apGrindSelected").textContent=player.eternityBuyer.presets.selected=="grind"?">>":""
-	} else if (id=="dil") {
-		let name="Unnamed Dilation preset"
-		let apData=player.eternityBuyer.presets.dil
-		if (apData.title!="") name=apData.title
-		document.getElementById("apnamedil").textContent=name
-		document.getElementById("apdisabledil").textContent=apData.on?"Disable":"Enable"
-		document.getElementById("apDilSelected").textContent=player.eternityBuyer.presets.selected=="dil"?">>":""
+	if (id == "grind") {
+		let name = "Unnamed grind preset"
+		let apData = player.eternityBuyer.presets.grind
+		if (apData.title!="") name = apData.title
+		document.getElementById("apnamegrind").textContent = name
+		document.getElementById("apdisablegrind").textContent = apData.on ? "Disable" : "Enable"
+		document.getElementById("apGrindSelected").textContent = player.eternityBuyer.presets.selected == "grind" ? ">>" : ""
+	} else if (id == "dil") {
+		let name = "Unnamed Dilation preset"
+		let apData = player.eternityBuyer.presets.dil
+		if (apData.title != "") name = apData.title
+		document.getElementById("apnamedil").textContent = name
+		document.getElementById("apdisabledil").textContent = apData.on ? "Disable" : "Enable"
+		document.getElementById("apDilSelected").textContent = player.eternityBuyer.presets.selected == "dil" ? ">>" : ""
 	} else {
-		let name="#"+(placement+1)
-		let pointer=""
-		let apData=player.eternityBuyer.presets[id]
-		if (apData.title!="") name=apData.title
-		document.getElementById("apname"+placement).textContent=name
-		document.getElementById("apeternities"+placement).value=apData.length
-		document.getElementById("apdisable"+placement).textContent=apData.on?"Disable":"Enable"
-		if (placement==player.eternityBuyer.presets.selected) pointer=">>"
-		else if (placement==player.eternityBuyer.presets.selectNext) pointer=">"
-		document.getElementById("apselected"+placement).textContent=pointer
+		let name = "#" + (placement + 1)
+		let pointer = ""
+		let apData = player.eternityBuyer.presets[id]
+		if (apData.title != "") name = apData.title
+		document.getElementById("apname" + placement).textContent = name
+		document.getElementById("apeternities" + placement).value = apData.length
+		document.getElementById("apdisable" + placement).textContent = apData.on ? "Disable" : "Enable"
+		if (placement == player.eternityBuyer.presets.selected) pointer = ">>"
+		else if (placement == player.eternityBuyer.presets.selectNext) pointer = ">"
+		document.getElementById("apselected" + placement).textContent = pointer
 	}
 }
 
 function changeAPEternities(id) {
-	let value=parseInt(document.getElementById("apeternities"+id).value)
-	if (!isNaN(value)) if (value>0) player.eternityBuyer.presets[player.eternityBuyer.presets.order[id]].length=value
+	let value = parseInt(document.getElementById("apeternities" + id).value)
+	if (!isNaN(value)) if (value > 0) player.eternityBuyer.presets[player.eternityBuyer.presets.order[id]].length = value
 }
 
 function createAP(importing, type) {
 	if (importing) {
-		onImport=true
-		var input=prompt()
-		if (input===null) return
-		onImport=false
+		onImport = true
+		var input = prompt()
+		if (input === null) return
+		onImport = false
 	} else {
 		var mtsstudies=[]
-		for (var id2=0;id2<player.masterystudies.length;id2++) {
+		for (var id2 = 0; id2 < player.masterystudies.length; id2++) {
 			var t = player.masterystudies[id2].split("t")[1]
 			if (t) mtsstudies.push(t)
 		}
-		var input=player.timestudy.studies+(mtsstudies.length>0?","+mtsstudies:"")+"|"+player.eternityChallUnlocked
+		var input = player.timestudy.studies + (mtsstudies.length > 0 ? "," + mtsstudies : "") + "|" + player.eternityChallUnlocked
 	}
-	var id=1
-	if (type) id=type
+	var id = 1
+	if (type) id = type
 	else {
 		while (player.eternityBuyer.presets.order.includes(id)) id++
 		player.eternityBuyer.presets.order.push(id)
 	}
-	player.eternityBuyer.presets[id]={title:"",preset:input,length:1,on:true}
-	if (type=="grind") {
+	player.eternityBuyer.presets[id] = {title: "", preset: input, length: 1, on: true}
+	if (type == "grind") {
 		document.getElementById("apGrind").innerHTML = '<b id="apnamegrind"></b><br>(Eternitying with <1% log(EP) gain selects this)<br><button class="storebtn" onclick="renameAP(\'grind\')">Rename</button> <button class="storebtn" onclick="replaceAP(\'grind\')">Replace</button> <button id="apdisablegrind" class="storebtn" onclick="disableAP(\'grind\')"></button>'
 		changeAPOptions('grind')
 		$.notify("Grind preset created", "info")
@@ -1627,131 +1630,131 @@ function createAP(importing, type) {
 		changeAPOptions('dil')
 		$.notify("Dilation preset created", "info")
 	} else {
-		if (loadedAPs+1==player.eternityBuyer.presets.order.length) {
-			let latestRow=document.getElementById("automatedPresets").insertRow(loadedAPs)
-			latestRow.innerHTML='<td id="apselected'+loadedAPs+'"></td><td><b id="apname'+loadedAPs+'"></b><br># of eternities: <input id="apeternities'+loadedAPs+'" type="text" onchange="changeAPEternities('+loadedAPs+')" value=2></input><button class="storebtn" onclick="selectNextAP('+loadedAPs+')">Select next</button> <button class="storebtn" onclick="moveAP('+loadedAPs+', -1)">Move up</button> <button class="storebtn" onclick="moveAP('+loadedAPs+', 1)">Move down</button> <button class="storebtn" onclick="renameAP('+loadedAPs+')">Rename</button> <button class="storebtn" onclick="replaceAP('+loadedAPs+')">Replace</button> <button id="apdisable'+loadedAPs+'" class="storebtn" onclick="disableAP('+loadedAPs+')"></button> <button class="storebtn"onclick="removeAP('+loadedAPs+')">Remove</button></td>'
-			changeAPOptions(id,loadedAPs)
+		if (loadedAPs + 1 == player.eternityBuyer.presets.order.length) {
+			let latestRow = document.getElementById("automatedPresets").insertRow(loadedAPs)
+			latestRow.innerHTML = '<td id="apselected'+loadedAPs+'"></td><td><b id="apname'+loadedAPs+'"></b><br># of eternities: <input id="apeternities'+loadedAPs+'" type="text" onchange="changeAPEternities('+loadedAPs+')" value=2></input><button class="storebtn" onclick="selectNextAP('+loadedAPs+')">Select next</button> <button class="storebtn" onclick="moveAP('+loadedAPs+', -1)">Move up</button> <button class="storebtn" onclick="moveAP('+loadedAPs+', 1)">Move down</button> <button class="storebtn" onclick="renameAP('+loadedAPs+')">Rename</button> <button class="storebtn" onclick="replaceAP('+loadedAPs+')">Replace</button> <button id="apdisable'+loadedAPs+'" class="storebtn" onclick="disableAP('+loadedAPs+')"></button> <button class="storebtn"onclick="removeAP('+loadedAPs+')">Remove</button></td>'
+			changeAPOptions(id, loadedAPs)
 			loadedAPs++
 		}
-		$.notify("Preset #"+player.eternityBuyer.presets.order.length+" created", "info")
+		$.notify("Preset #" + player.eternityBuyer.presets.order.length + " created", "info")
 	}
 }
 
 function selectNextAP(id) {
-	if (player.eternityBuyer.presets.selected==id) return
-	if (player.eternityBuyer.presets.selectNext==id) return
-	if (player.eternityBuyer.presets.selectNext>-1) document.getElementById("apselected"+player.eternityBuyer.presets.selectNext).textContent=""
-	document.getElementById("apselected"+id).textContent=">"
-	player.eternityBuyer.presets.selectNext=id
+	if (player.eternityBuyer.presets.selected == id) return
+	if (player.eternityBuyer.presets.selectNext == id) return
+	if (player.eternityBuyer.presets.selectNext >- 1) document.getElementById("apselected" + player.eternityBuyer.presets.selectNext).textContent = ""
+	document.getElementById("apselected" + id).textContent = ">"
+	player.eternityBuyer.presets.selectNext = id
 }
 
 function moveAP(id, offset) {
-	var apData=player.eternityBuyer.presets
-	var orderData=apData.order
-	if (offset>0) {
-		if (id+offset>=orderData.length) return
-	} else if (id+offset<0) return
-	var storedCell=orderData[id+offset]
-	orderData[id+offset]=orderData[id]
-	orderData[id]=storedCell
-	if (apData.selected==id) apData.selected=id+offset
-	else if (apData.selected==id+offset) apData.selected=id
-	if (apData.selectNext==id) apData.selectNext=id+offset
-	else if (apData.selectNext==id+offset) apData.selectNext=id
-	changeAPOptions(orderData[id],id)
-	changeAPOptions(orderData[id+offset],id+offset)
-	$.notify("Preset #"+(id+1)+" moved", "info")
+	var apData = player.eternityBuyer.presets
+	var orderData = apData.order
+	if (offset > 0) {
+		if (id + offset >= orderData.length) return
+	} else if (id + offset < 0) return
+	var storedCell = orderData[id + offset]
+	orderData[id + offset] = orderData[id]
+	orderData[id] = storedCell
+	if (apData.selected == id) apData.selected = id + offset
+	else if (apData.selected == id + offset) apData.selected = id
+	if (apData.selectNext == id) apData.selectNext = id + offset
+	else if (apData.selectNext == id + offset) apData.selectNext = id
+	changeAPOptions(orderData[id], id)
+	changeAPOptions(orderData[id + offset], id + offset)
+	$.notify("Preset #" + (id + 1) + " moved", "info")
 }
 
 function renameAP(id) {
-	onImport=true
-	var input=prompt()
-	if (input===null) return
-	onImport=false
-	if (id=="grind") {
-		player.eternityBuyer.presets.grind.title=input
+	onImport = true
+	var input = prompt()
+	if (input === null) return
+	onImport = false
+	if (id == "grind") {
+		player.eternityBuyer.presets.grind.title = input
 		changeAPOptions('grind')
 		$.notify("Grind preset renamed", "info")
-	} else if (id=="dil") {
-		player.eternityBuyer.presets.dil.title=input
+	} else if (id == "dil") {
+		player.eternityBuyer.presets.dil.title = input
 		changeAPOptions('dil')
 		$.notify("Dilation preset renamed", "info")
 	} else {
-		player.eternityBuyer.presets[player.eternityBuyer.presets.order[id]].title=input
+		player.eternityBuyer.presets[player.eternityBuyer.presets.order[id]].title = input
 		changeAPOptions(player.eternityBuyer.presets.order[id],id)
-		$.notify("Preset #"+(id+1)+" renamed", "info")
+		$.notify("Preset #" + (id + 1) + " renamed", "info")
 	}
 }
 
 function replaceAP(id) {
-	onImport=true
-	var input=prompt()
-	if (input===null) return
-	onImport=false
-	if (id=="grind") {
-		player.eternityBuyer.presets.grind.preset=input
+	onImport = true
+	var input = prompt()
+	if (input === null) return
+	onImport = false
+	if (id == "grind") {
+		player.eternityBuyer.presets.grind.preset = input
 		$.notify("Grind preset replaced", "info")
-	} else if (id=="dil") {
-		player.eternityBuyer.presets.dil.preset=input
+	} else if (id == "dil") {
+		player.eternityBuyer.presets.dil.preset = input
 		$.notify("Dilation preset replaced", "info")
 	} else {
-		player.eternityBuyer.presets[player.eternityBuyer.presets.order[id]].preset=input
-		$.notify("Preset #"+(id+1)+" replaced", "info")
+		player.eternityBuyer.presets[player.eternityBuyer.presets.order[id]].preset = input
+		$.notify("Preset #" + (id + 1) + " replaced", "info")
 	}
 }
 
 function disableAP(id) {
-	let apData=player.eternityBuyer.presets[typeof(id)=="number"?player.eternityBuyer.presets.order[id]:id]
-	apData.on=!apData.on
-	document.getElementById("apdisable"+id).textContent=apData.on?"Disable":"Enable"
+	let apData = player.eternityBuyer.presets[typeof(id) == "number" ? player.eternityBuyer.presets.order[id] : id]
+	apData.on = !apData.on
+	document.getElementById("apdisable" + id).textContent = apData.on ? "Disable" : "Enable"
 }
 
 function removeAP(id) {
-	var order=player.eternityBuyer.presets.order
-	var newOrder=[]
-	for (var i=0;i<order.length;i++) {
-		if (i==id) {
-            document.getElementById("automatedPresets").deleteRow(i)
+	var order = player.eternityBuyer.presets.order
+	var newOrder = []
+	for (var i = 0; i < order.length; i++) {
+		if (i == id) {
+			document.getElementById("automatedPresets").deleteRow(i)
 			loadedAPs--
-			if (player.eternityBuyer.presets.selected==i) player.eternityBuyer.presets.selected=-1
-			if (player.eternityBuyer.presets.selectNext==i&&i+1==order.length&&order.length>1) {
-				player.eternityBuyer.presets.selectNext=0
-				document.getElementById("apselected0").textContent=">"
+			if (player.eternityBuyer.presets.selected == i) player.eternityBuyer.presets.selected = -1
+			if (player.eternityBuyer.presets.selectNext == i && i + 1 == order.length && order.length > 1) {
+				player.eternityBuyer.presets.selectNext = 0
+				document.getElementById("apselected0").textContent = ">"
 			}
-			if (player.eternityBuyer.presets.selectNext>i) player.eternityBuyer.presets.selectNext--
-			if (player.eternityBuyer.presets.reselect==i) delete player.eternityBuyer.presets.reselect
+			if (player.eternityBuyer.presets.selectNext > i) player.eternityBuyer.presets.selectNext--
+			if (player.eternityBuyer.presets.reselect == i) delete player.eternityBuyer.presets.reselect
 			delete player.eternityBuyer.presets[order[i]]
 		} else newOrder.push(order[i])
-		if (i>id) {
-			let row=document.getElementById("automatedPresets").rows[i-1]
-			let j=i-1
-			row.innerHTML='<td id="apselected'+j+'"></td><td><b id="apname'+j+'"></b><br># of eternities: <input id="apeternities'+j+'" type="text" onchange="changeAPEternities('+j+')" value=2></input><button class="storebtn" onclick="selectNextAP('+j+')">Select next</button> <button class="storebtn" onclick="moveAP('+j+', -1)">Move up</button> <button class="storebtn" onclick="moveAP('+j+', 1)">Move down</button> <button class="storebtn" onclick="renameAP('+j+')">Rename</button> <button class="storebtn" onclick="replaceAP('+j+')">Replace</button> <button id="apdisable'+j+'" class="storebtn" onclick="disableAP('+j+')"></button> <button class="storebtn"onclick="removeAP('+j+')">Remove</button></td>'
-			changeAPOptions(order[i],j)
+		if (i > id) {
+			let row = document.getElementById("automatedPresets").rows[i - 1]
+			let j = i-1
+			row.innerHTML = '<td id="apselected' + j + '"></td><td><b id="apname' + j + '"></b><br># of eternities: <input id="apeternities' + j + '" type="text" onchange="changeAPEternities(' + j + ')" value=2></input><button class="storebtn" onclick="selectNextAP(' + j + ')">Select next</button> <button class="storebtn" onclick="moveAP(' + j + ', -1)">Move up</button> <button class="storebtn" onclick="moveAP(' + j + ', 1)">Move down</button> <button class="storebtn" onclick="renameAP('+j+')">Rename</button> <button class="storebtn" onclick="replaceAP('+j+')">Replace</button> <button id="apdisable'+j+'" class="storebtn" onclick="disableAP('+j+')"></button> <button class="storebtn"onclick="removeAP('+j+')">Remove</button></td>'
+			changeAPOptions(order[i], j)
 		}
 	}
 	player.eternityBuyer.presets.order=newOrder
-	$.notify("Preset #"+(id+1)+" removed", "info")
+	$.notify("Preset #" + (id + 1) + " removed", "info")
 }
 
 function bigRip(auto) {
-	if (!player.masterystudies.includes("d14")||tmp.qu.electrons.amount<62500||!inQC(0)) return
-	if (player.ghostify.milestones>1) {
-		tmp.qu.pairedChallenges.order={1:[1,2],2:[3,4],3:[5,7],4:[6,8]}
-		tmp.qu.pairedChallenges.completed=4
-		for (var c=1;c<9;c++) {
-			tmp.qu.electrons.mult+=(2-tmp.qu.challenges[c])*0.25
-			tmp.qu.challenges[c]=2
+	if (!player.masterystudies.includes("d14") || tmp.qu.electrons.amount < 62500 || !inQC(0)) return
+	if (player.ghostify.milestones > 1) {
+		tmp.qu.pairedChallenges.order = {1: [1, 2], 2: [3, 4], 3: [5, 7], 4:[6, 8]}
+		tmp.qu.pairedChallenges.completed = 4
+		for (var c = 1; c < 9; c++) {
+			tmp.qu.electrons.mult += (2 - tmp.qu.challenges[c]) * 0.25
+			tmp.qu.challenges[c] = 2
 		}
-		quantum(auto,true,12,true,true)
+		quantum(auto, true, 12, true, true)
 	} else {
-		for (var p=1;p<5;p++) {
-			var pcData=tmp.qu.pairedChallenges.order[p]
+		for (var p = 1; p < 5; p++) {
+			var pcData = tmp.qu.pairedChallenges.order[p]
 			if (pcData) {
-				var pc1=Math.min(pcData[0],pcData[1])
-				var pc2=Math.max(pcData[0],pcData[1])
-				if (pc1==6&&pc2==8) {
-					if (p-1>tmp.qu.pairedChallenges.completed) return
-					quantum(auto,true,p+8,true,true)
+				var pc1 = Math.min(pcData[0], pcData[1])
+				var pc2 = Math.max(pcData[0], pcData[1])
+				if (pc1 == 6 && pc2 == 8) {
+					if (p - 1 > tmp.qu.pairedChallenges.completed) return
+					quantum(auto, true, p + 8, true, true)
 				}
 			}
 		}
@@ -1767,7 +1770,7 @@ function switchAB() {
 	var bigRip = tmp.qu.bigRip.active
 	tmp.qu.bigRip["savedAutobuyers" + (bigRip ? "" : "No") + "BR"] = {}
 	var data = tmp.qu.bigRip["savedAutobuyers" + (bigRip ? "" : "No") + "BR"]
-	for (d=1;d<9;d++) if (player.autobuyers[d-1] % 1 !== 0) data["d"+d] = {
+	for (let d = 1; d < 9; d++) if (player.autobuyers[d-1] % 1 !== 0) data["d" + d] = {
 		priority: player.autobuyers[d-1].priority,
 		perTen: player.autobuyers[d-1].target > 10,
 		on: player.autobuyers[d-1].isOn,
@@ -1812,18 +1815,18 @@ function switchAB() {
 		on: player.eternityBuyer.isOn
 	}
 	data.eternity.presets.order = []
-	for (var i=0;i<player.eternityBuyer.presets.order.length;i++) {
-		var id=player.eternityBuyer.presets.order[i]
-		data.eternity.presets[id]=Object.assign({},player.eternityBuyer.presets[id])
+	for (var i = 0; i < player.eternityBuyer.presets.order.length; i++) {
+		var id = player.eternityBuyer.presets.order[i]
+		data.eternity.presets[id] = Object.assign({}, player.eternityBuyer.presets[id])
 		data.eternity.presets.order.push(id)
 	}
-	if (data.eternity.presets.dil!==undefined) data.eternity.presets.dil=Object.assign({},data.eternity.presets.dil)
-	if (data.eternity.presets.grind!==undefined) data.eternity.presets.grind=Object.assign({},data.eternity.presets.grind)
+	if (data.eternity.presets.dil !== undefined) data.eternity.presets.dil = Object.assign({}, data.eternity.presets.dil)
+	if (data.eternity.presets.grind !== undefined) data.eternity.presets.grind = Object.assign({}, data.eternity.presets.grind)
 	var data = tmp.qu.bigRip["savedAutobuyers" + (bigRip ? "No" : "") + "BR"]
-	for (var d=1;d<9;d++) if (data["d"+d]) player.autobuyers[d-1] = {
-		interval: player.autobuyers[d-1].interval,
-		cost: player.autobuyers[d-1].cost,
-		bulk: player.autobuyers[d-1].bulk,
+	for (var d = 1; d < 9; d++) if (data["d" + d]) player.autobuyers[d - 1] = {
+		interval: player.autobuyers[d - 1].interval,
+		cost: player.autobuyers[d - 1].cost,
+		bulk: player.autobuyers[d - 1].bulk,
 		priority: data["d"+d].priority,
 		tier: d,
 		target: d + (data["d"+d].perTen ? 10 : 0),
