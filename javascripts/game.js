@@ -3938,7 +3938,7 @@ function unlockReplicantis() {
 function getReplMult(next) {
     let exp = 2;
     if (player.galacticSacrifice !== undefined) {
-      exp = Math.pow(player.galaxies, .4);
+      exp = Math.max(2,Math.pow(player.galaxies, .4));
     }
     if (player.boughtDims) {
         exp += (player.timestudy.ers_studies[3] + (next ? 1 : 0)) / 2;
