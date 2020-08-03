@@ -2984,7 +2984,7 @@ function breakNGm2UpgradeRow6Display(){
         if (player.infinityUpgrades.includes("postinfi63")) document.getElementById("postinfi63").className = "infinistorebtnbought"
         else if (player.infinityPoints.gte("1e2000")) document.getElementById("postinfi63").className = "infinistorebtn1"
         else document.getElementById("postinfi63").className = "infinistorebtnlocked"
-        document.getElementById("postinfi60").innerHTML = "You gain more "+(player.tickspeedBoosts==undefined?"Infinity":"Galaxy")+" Points based on your galaxies."+(player.tickspeedBoosts!=undefined?"":"<br>Currently: "+shorten(getB60Mult())+"x")+"<br>Cost: "+shortenCosts(1e50)+" IP"
+        document.getElementById("postinfi60").innerHTML = "You gain more " + (player.tickspeedBoosts != undefined ? "Galaxy Points" : tmp.ngp3l ? "Infinity Points" : "antimatter") + " based on your galaxies." + (player.tickspeedBoosts != undefined ? "" : "<br>Currently: " + shorten(getNewB60Mult()) + "x") + "<br>Cost: " + shortenCosts(1e50) + " IP"
         document.getElementById("postinfi61").innerHTML = "g11 formula is better.<br>Cost: "+shortenCosts(new Decimal("1e450"))+" IP"
         document.getElementById("postinfi62").innerHTML = "Dimension Boosts make g13 stronger.<br>Cost: "+shortenCosts(new Decimal("1e700"))+" IP"
         document.getElementById("postinfi63").innerHTML = "Unlock 2 new rows of Galaxy Points.<br>Cost: "+shortenCosts(new Decimal("1e2000"))+" IP"
@@ -4550,6 +4550,10 @@ function onPostBreak() {
 	return (player.break && inNC(0)) || player.currentChallenge.includes("p")
 }
 
+function getIPGain(){
+	return gainedInfinityPoints()
+}
+
 function getInfinityPointGain(){
 	return gainedInfinityPoints()
 }
@@ -4575,7 +4579,7 @@ function gainedInfinityPoints(next) {
 		ret = ret.times(Decimal.pow(player.thisInfinityTime/10,player.timestudy.ers_studies[6]+(next==6?1:0)))
 	}
 	if (isBigRipUpgradeActive(4)) ret = ret.times(player.replicanti.amount.pow(0.34).max(1))
-	if (player.infinityUpgrades.includes("postinfi60")&&player.tickspeedBoosts==undefined) ret = ret.times(getB60Mult())
+	if (player.infinityUpgrades.includes("postinfi60") && player.tickspeedBoosts == undefined && tmp.ngp3l) ret = ret.times(getB60Mult())
 	return ret.floor()
 }
 
