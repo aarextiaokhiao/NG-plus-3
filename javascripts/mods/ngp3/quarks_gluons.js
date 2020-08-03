@@ -238,6 +238,7 @@ function updateColorPowers(log) {
 		if (bLog.lt(100)) bLog=bLog.toNumber()
 		else bLog=Math.min(bLog.toNumber(),bLog.log10()*(40+10*bLog.sub(90).log10()))
 	}
+	if (bLog < 0) bLog = 0
 	colorBoosts.b=Decimal.pow(10,bLog)
 
 	//Dimensions
