@@ -598,7 +598,7 @@ function getQuantumReq() {
 }
 
 function isQuantumReached() {
-	return player.money.log10() > =getQCGoal() && (player.meta.antimatter.max(player.achievements.includes("ng3p76") ? player.meta.bestOverQuantums : 0).gte(getQuantumReq())) && (!player.masterystudies || ECTimesCompleted("eterc14")) && quarkGain().gt(0)
+	return player.money.log10() >= getQCGoal() && (player.meta.antimatter.max(player.achievements.includes("ng3p76") ? player.meta.bestOverQuantums : 0).gte(getQuantumReq())) && (!player.masterystudies || ECTimesCompleted("eterc14")) && quarkGain().gt(0)
 }
 
 function getQuarkGain(){
