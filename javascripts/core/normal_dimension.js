@@ -265,6 +265,12 @@ function getMPTBase(focusOn) {
 	return ret
 }
 
+function getMPTExp(focusOn) {
+	let x = 1
+	if (tmp.ngp3 && player.masterystudies.includes("d7")) x = getElectronBoost(focusOn)
+	return x
+}
+
 function infUpg12Pow() {
 	if (player.tickspeedBoosts !== undefined) return 1.05 + .01 * Math.min(Math.max(player.infinitied, 0), 45)
 	if (player.galacticSacrifice) return 1.05 + .0025 * Math.min(Math.max(player.infinitied, 0), 60)

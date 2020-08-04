@@ -9,7 +9,7 @@ function initialGalaxies() {
 	let g=player.galaxies
 	if (tmp.ngp3 && !tmp.be) {
 		g = Math.max(g-player.quantum.electrons.sacGals,0)
-		g *= Math.max(Math.min(10-(player.quantum.electrons.amount+g*getELCMult())/16857,1),0)
+		g *= Math.max(Math.min(10-(player.quantum.electrons.amount+g*getElectronGainFinalMult())/16857,1),0)
 		if (hasBosonicUpg(14)) g=Math.max(Math.min(player.galaxies,tmp.blu[14]),g)
 	}
 	if (tmp.rg4) g*=0.4
@@ -299,6 +299,7 @@ function updateTickspeed() {
 		}
 	}
 	if (player.galacticSacrifice || player.currentChallenge == "postc3" || isIC3Trapped()) label = (showTickspeed ? label + ", Tickspeed m" : "M") + "ultiplier: " + formatValue(player.options.notation, player.postC3Reward, 2, 3)
+	if (gameSpeed != 1) label += ", Game speed: " + (gameSpeed < 1 ? shorten(1 / gameSpeed) + "x slower" : shorten(tmp.gameSpeed) + "x faster")
 	if (player.galacticSacrifice && player.tickspeedBoosts == undefined && inNC(14)) {
 		label += "<br>You have "+(308-player.tickBoughtThisInf.current)+" tickspeed purchases left."
 		document.getElementById("tickSpeedAmount").innerHTML = label

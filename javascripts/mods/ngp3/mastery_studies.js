@@ -431,12 +431,6 @@ function buyMasteryStudy(type, id, quick=false) {
 				ipMultPower = 2.2
 				player.infMult = player.infMult.div(otherMults).pow(Math.log10(getIPMultPower()) / Math.log10(old)).times(otherMults)
 			}
-			if (id == 251 || id == 252 || id == 253 || id == 301){
-				player.galaxies = 1
-			}
-			if (id == 261 || id == 331){
-				player.resets = 4
-			}
 			if (id == 266 && player.replicanti.gal > 399) {
 				var gal = player.replicanti.gal
 				player.replicanti.gal = 0
@@ -457,6 +451,14 @@ function buyMasteryStudy(type, id, quick=false) {
 				}
 			}
 			if (id == 383) updateColorCharge()
+			if (!tmp.ngp3l) {
+				if (!hasNU(6) && (id == 251 || id == 252 || id == 253 || id == 301)) {
+					player.galaxies = 1
+				}
+				if (!inQC(5) && (id == 261 || id == 331)) {
+					player.resets = 4
+				}
+			}
 		}
 		if (type=="d") buyingDilationStudy(id)
 		if (!quick) {
