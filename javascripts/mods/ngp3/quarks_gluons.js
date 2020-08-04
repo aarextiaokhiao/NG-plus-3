@@ -336,21 +336,21 @@ function generateGluons(mix) {
 GUCosts=[null, 1, 2, 4, 100, 7e15, 4e19, 3e28, "1e570"]
 
 function buyGluonUpg(color, id) {
-	var name=color+id
-	if (tmp.qu.upgrades.includes(name)||tmp.qu.gluons[color].lt(GUCosts[id])) return
+	var name = color + id
+	if (tmp.qu.upgrades.includes(name) || tmp.qu.gluons[color].plus(0.001).lt(GUCosts[id])) return
 	tmp.qu.upgrades.push(name)
-	tmp.qu.gluons[color]=tmp.qu.gluons[color].sub(GUCosts[id])
+	tmp.qu.gluons[color] = tmp.qu.gluons[color].sub(GUCosts[id])
 	updateGluonsTab("spend")
-	if (name=="gb3") {
-		var otherMults=1
-		if (player.achievements.includes("r85")) otherMults*=4
-		if (player.achievements.includes("r93")) otherMults*=4
-		var old=getIPMultPower()
-		ipMultPower=2.3
-		player.infMult=player.infMult.div(otherMults).pow(Math.log10(getIPMultPower())/Math.log10(old)).times(otherMults)
+	if (name == "gb3") {
+		var otherMults = 1
+		if (player.achievements.includes("r85")) otherMults *= 4
+		if (player.achievements.includes("r93")) otherMults *= 4
+		var old = getIPMultPower()
+		ipMultPower = 2.3
+		player.infMult = player.infMult.div(otherMults).pow(Math.log10(getIPMultPower()) / Math.log10(old)).times(otherMults)
 	}
-	if (name=="rg4" && !tmp.qu.autoOptions.sacrifice) updateElectronsEffect()
-	if (name=="gb4") player.tickSpeedMultDecrease=1.25
+	if (name == "rg4" && !tmp.qu.autoOptions.sacrifice) updateElectronsEffect()
+	if (name == "gb4") player.tickSpeedMultDecrease = 1.25
 	updateQuantumWorth()
 	updateGluonsTabOnUpdate()
 }
@@ -360,9 +360,9 @@ function GUBought(id) {
 }
 
 function buyQuarkMult(name) {
-	var cost=Decimal.pow(100,tmp.qu.multPower[name]+Math.max(tmp.qu.multPower[name]-467,0)).times(500)
+	var cost = Decimal.pow(100, tmp.qu.multPower[name] + Math.max(tmp.qu.multPower[name] - 467, 0)).times(500)
 	if (tmp.qu.gluons[name].lt(cost)) return
-	tmp.qu.gluons[name]=tmp.qu.gluons[name].sub(cost).round()
+	tmp.qu.gluons[name] = tmp.qu.gluons[name].sub(cost).round()
 	tmp.qu.multPower[name]++
 	tmp.qu.multPower.total++
 	updateGluonsTab("spend")
@@ -373,17 +373,17 @@ function buyQuarkMult(name) {
 }
 
 function maxQuarkMult() {
-	var names=["rg","gb","br"]
-	var bought=0
-	for (c=0;c<3;c++) {
-		var name=names[c]
-		var buying=true
+	var names = ["rg", "gb", "br"]
+	var bought = 0
+	for (let c = 0; c < 3; c++) {
+		var name = names[c]
+		var buying = true
 		while (buying) {
-			var cost=Decimal.pow(100,tmp.qu.multPower[name]+Math.max(tmp.qu.multPower[name]-467,0)).times(500)
-			if (tmp.qu.gluons[name].lt(cost)) buying=false
-			else if (tmp.qu.multPower[name]<468) {
-				var toBuy=Math.min(Math.floor(tmp.qu.gluons[name].div(cost).times(99).add(1).log(100)),468-tmp.qu.multPower[name])
-				var toSpend=Decimal.pow(100,toBuy).sub(1).div(99).times(cost)
+			var cost = Decimal.pow(100, tmp.qu.multPower[name] + Math.max(tmp.qu.multPower[name] - 467, 0)).times(500)
+			if (tmp.qu.gluons[name].lt(cost)) buying = false
+			else if (tmp.qu.multPower[name] < 468) {
+				var toBuy = Math.min(Math.floor(tmp.qu.gluons[name].div(cost).times(99).add(1).log(100)),468-tmp.qu.multPower[name])
+				var toSpend = Decimal.pow(100, toBuy).sub(1).div(99).times(cost)
 				if (toSpend.gt(tmp.qu.gluons[name])) tmp.qu.gluons[name]=new Decimal(0)
 				else tmp.qu.gluons[name]=tmp.qu.gluons[name].sub(toSpend).round()
 				tmp.qu.multPower[name]+=toBuy
