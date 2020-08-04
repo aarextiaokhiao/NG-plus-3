@@ -1238,8 +1238,8 @@ function quantumReset(force, auto, challid, bigRip, implode=false) {
 		shameLevel: player.shameLevel,
 		options: player.options,
 		meta: {
-			antimatter: getMetaAntimatterStart(true),
-			bestAntimatter: headstart ? player.meta.bestAntimatter : getMetaAntimatterStart(true),
+			antimatter: getMetaAntimatterStart(bigRip),
+			bestAntimatter: headstart ? player.meta.bestAntimatter : getMetaAntimatterStart(bigRip),
 			bestOverQuantums: player.meta.bestOverQuantums,
 			bestOverGhostifies: player.meta.bestOverGhostifies,
 			resets: isRewardEnabled(27) ? (!challid && player.ghostify.milestones > 4 && bigRip == tmp.qu.bigRip.active ? player.meta.resets : 4) : 0,
