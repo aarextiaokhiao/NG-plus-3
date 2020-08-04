@@ -8136,10 +8136,11 @@ function buyDilationUpgrade(pos, max, isId) {
 }
 
 function getPassiveTTGen() {
-	let r=getTTGenPart(player.dilation.tachyonParticles)
-	if (player.achievements.includes("ng3p18")&&!tmp.qu.bigRip.active) r+=getTTGenPart(player.dilation.bestTP)/50
-	if (tmp.ngex) r*=.8
-	r/=(ghostified?200:2e4)
+	if (player.dilation.tachyonParticles.l > 3333) return 1e202
+	let r = getTTGenPart(player.dilation.tachyonParticles)
+	if (player.achievements.includes("ng3p18") && !tmp.qu.bigRip.active) r += getTTGenPart(player.dilation.bestTP) / 50
+	if (tmp.ngex) r *= .8
+	r /= (player.achievements.includes("ng3p51") ? 200 : 2e4)
 	return r
 }
 
