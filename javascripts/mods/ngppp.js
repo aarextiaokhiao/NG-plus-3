@@ -23,16 +23,6 @@ function showQuantumTab(tabName) {
 	closeToolTip()
 }
 
-
-function updateElectronsTab() {
-	document.getElementById("normalGalaxies").textContent = getFullExpansion(player.galaxies)
-	document.getElementById("sacrificeGal").className = "gluonupgrade " + ((player.galaxies > tmp.qu.electrons.sacGals && inQC(0)) ? "stor" : "unavailabl") + "ebtn"
-	document.getElementById("sacrificeGals").textContent = getFullExpansion(Math.max(player.galaxies-tmp.qu.electrons.sacGals, 0))
-	document.getElementById("electronsGain").textContent = getFullExpansion(Math.floor(Math.max(player.galaxies-tmp.qu.electrons.sacGals, 0) * getELCMult()))
-	for (var u = 1; u < 5; u++) document.getElementById("electronupg" + u).className = "gluonupgrade " + (canBuyElectronUpg(u) ? "stor" : "unavailabl") + "ebtn"
-	if (tmp.qu.autoOptions.sacrifice) updateElectronsEffect()
-}
-
 function updateReplicantsTab(){
 	document.getElementById("replicantiAmount2").textContent = shortenDimensions(player.replicanti.amount)
 	document.getElementById("replicantReset").className = player.replicanti.amount.lt(tmp.qu.replicants.requirement) ? "unavailablebtn" : "storebtn"
@@ -264,32 +254,6 @@ function toggleAllMetaDims() {
 	document.getElementById("metaMaxAllDiv").style.display = turnOn && stop > 7 && speedrunMilestonesReached > 27 ? "none" : ""
 }
 
-function sacrificeGalaxy(auto = false) {
-	var amount = player.galaxies-tmp.qu.electrons.sacGals
-	if (amount < 1) return
-	if (player.options.sacrificeConfirmation && !auto) if (!confirm("You will perform a galaxy reset, but you will exchange all your galaxies to electrons which will give a boost to multiplier per ten dimensions.")) return
-	tmp.qu.electrons.sacGals = player.galaxies
-	tmp.qu.electrons.amount += getELCMult() * amount
-	if (!tmp.qu.autoOptions.sacrifice) updateElectronsEffect()
-	if (!auto) galaxyReset(0)
-}
-
-function getMPTExp(mod) {
-	if (!inQC(0)) return 1
-	var amount = tmp.qu.electrons.amount
-	var s = 149840
-	if (player.ghostify.ghostlyPhotons.unl) s += tmp.le[2]
-	
-	if (amount > 37460 + s) amount = Math.sqrt((amount-s) * 37460) + s
-	if (tmp.rg4 && mod != "no-rg4") amount *= 0.7
-	if (player.masterystudies !== undefined && player.masterystudies.includes("d13") && mod != "noTree") amount *= getTreeUpgradeEffect(4)
-	
-	if (amount > 5e5) amount = 5e5 * Math.pow(amount/5e5,.5)
-	if (amount > 1e6) amount = 1e6 * Math.pow(amount/1e6,.5)
-	if (amount > 2e6) amount = 2e6 * Math.pow(amount/2e6,.5)
-	return amount + 1
-}
-
 //v1.8
 function isRewardEnabled(id) {
 	if (!player.masterystudies) return false
@@ -299,45 +263,6 @@ function isRewardEnabled(id) {
 function disableReward(id) {
 	tmp.qu.disabledRewards[id] = !tmp.qu.disabledRewards[id]
 	document.getElementById("reward"+id+"disable").textContent = (id > 11 ? "10 seconds" : id > 4 ? "33.3 mins" : (id > 3 ? 4.5 : 6) + " hours") + " reward: " + (tmp.qu.disabledRewards[id] ? "OFF" : "ON")
-}
-
-function updateElectrons(retroactive) {
-	if (player.masterystudies ? !player.masterystudies.includes("d7") : true) {
-		document.getElementById("electronstabbtn").style.display = "none"
-		return
-	} else document.getElementById("electronstabbtn").style.display = ""
-	document.getElementById("electronsGainMult").textContent = getELCMult().toFixed(2)
-	if (retroactive) tmp.qu.electrons.amount = getELCMult() * tmp.qu.electrons.sacGals
-	if (!tmp.qu.autoOptions.sacrifice) updateElectronsEffect()
-	for (var u = 1; u < 5; u++) {
-		var cost = getElectronUpgCost(u)
-		document.getElementById("electronupg" + u).innerHTML = "Upgrade multiplier with " + ([null, "time theorems", "dilated time", "meta-antimatter", "meta-dimension boosts"])[u] + ".<br>Cost: " + (u > 3 ? getFullExpansion(getElectronUpgCost(u)) : shortenCosts(getElectronUpgCost(u))) + ([null, " TT", " DT", " MA", " MDB"])[u]
-	}
-}
-
-//v1.9
-function getElectronUpgCost(u) {
-	var amount = tmp.qu.electrons.rebuyables[u-1]
-	var baseCost = ([0,82,153,638,26])[u] + Math.pow(amount * Math.max(amount - 1, 1) + 1, u < 2 ? 1 : 2)
-	if (u > 3) return baseCost
-	if (u < 2) return Math.pow(10, baseCost)
-	return Decimal.pow(10, baseCost)
-}
-
-function buyElectronUpg(u) {
-	if (!canBuyElectronUpg(u)) return
-	var cost = getElectronUpgCost(u)
-	if (u > 3 && !(!tmp.ngp3l && player.achievements.includes("ng3p64"))) {
-		player.meta.resets -= cost
-		player.meta.antimatter = new Decimal(100)
-		clearMetaDimensions()
-		for (let i = 2; i <= 8; i++) if (!canBuyMetaDimension(i)) document.getElementById(i + "MetaRow").style.display = "none"
-	} else if (u > 2) player.meta.antimatter = player.meta.antimatter.sub(cost)
-	else if (u > 1) player.dilation.dilatedTime = player.dilation.dilatedTime.sub(cost)
-	else player.timestudy.theorem -= cost
-	tmp.qu.electrons.rebuyables[u - 1]++
-	tmp.qu.electrons.mult += 0.25
-	updateElectrons(!tmp.ngp3l)
 }
 
 //v1.9
@@ -1257,7 +1182,7 @@ function getTreeUpgradeEffect(upg) {
 function getTreeUpgradeEffectDesc(upg) {
 	if (upg == 1) return getFullExpansion(getTreeUpgradeEffect(upg))
 	if (upg == 2) return getDilExp("TU3").toFixed(2) + " -> " + getDilExp().toFixed(2)
-	if (upg == 4) return "^" + getFullExpansion(Math.round(getMPTExp("noTree"))) + " -> ^" + getFullExpansion(Math.round(tmp.mpte))
+	if (upg == 4) return "^" + getFullExpansion(Math.round(getElectronBoost("noTree"))) + " -> ^" + getFullExpansion(Math.round(tmp.mpte))
 	if (upg == 8) return getTreeUpgradeEffect(8).toFixed(2)
 	return shortenMoney(getTreeUpgradeEffect(upg))
 }
@@ -1297,27 +1222,9 @@ function autoECToggle() {
 	document.getElementById("autoEC").className = tmp.qu.autoEC ? "timestudybought" : "storebtn"
 }
 
-function getELCMult() {
-	let ret = tmp.qu.electrons.mult
-	if (hasNU(5)) ret *= 3
-	return ret
-}
-
 function toggleRG4Upg() {
 	tmp.qu.rg4 = !tmp.qu.rg4
 	document.getElementById('rg4toggle').textContent = "Toggle: " + (tmp.qu.rg4 ? "ON":"OFF")
-}
-
-function updateElectronsEffect() {
-	if (!tmp.qu.autoOptions.sacrifice) {
-		tmp.mpte = getMPTExp()
-		document.getElementById("electronsAmount2").textContent = "You have " + getFullExpansion(Math.round(tmp.qu.electrons.amount)) + " electrons."
-	}
-	document.getElementById("sacrificedGals").textContent = getFullExpansion(tmp.qu.electrons.sacGals)
-	document.getElementById("electronsAmount").textContent = getFullExpansion(Math.round(tmp.qu.electrons.amount))
-	document.getElementById("electronsTranslation").textContent = getFullExpansion(Math.round(tmp.mpte))
-	document.getElementById("electronsEffect").textContent = shorten(getDimensionPowerMultiplier("non-random"))
-	document.getElementById("linearPerTenMult").textContent = shorten(getDimensionPowerMultiplier("linear"))
 }
 
 function maxBuyLimit() {
@@ -2599,9 +2506,9 @@ function ghostifyReset(implode, gain, amount, force) {
 		why: player.why,
 		options: player.options,
 		meta: {
-			antimatter: new Decimal(100),
-			bestAntimatter: new Decimal(100),
-			bestOverQuantums: new Decimal(100),
+			antimatter: getMetaAntimatterStart(),
+			bestAntimatter: getMetaAntimatterStart(),
+			bestOverQuantums: getMetaAntimatterStart(),
 			bestOverGhostifies: player.meta.bestOverGhostifies,
 			resets: bm ? 4 : 0,
 			'1': {

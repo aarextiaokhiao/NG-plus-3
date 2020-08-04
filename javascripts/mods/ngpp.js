@@ -1,3 +1,10 @@
+function getMetaAntimatterStart(bigRip) {
+	let x = 10
+	if (speedrunMilestonesReached >= 19 && !bigRip) x = 1e25
+	else if (player.achievements.includes("ngpp12")) x = 100
+	return new Decimal(x)
+}
+
 function getDilationMetaDimensionMultiplier() {
 	let pow = 0.1
 	let div = 1e40
@@ -159,10 +166,10 @@ function metaBoost() {
 				if (player.meta.resets == req.scalingStart) req = getMetaShiftRequirement()
 			}
 			if (player.meta.resets >= req.scalingStart && player.meta.resets < 110) {
-				player.meta.resets=Math.min(player.meta.resets+Math.floor((player.meta[8].bought-req.amount)/(req.mult+1))+1,110)
+				player.meta.resets=Math.min(player.meta.resets + Math.floor((player.meta[8].bought - req.amount) / (req.mult + 1)) + 1,110)
 				if (player.meta.resets>109) req=getMetaShiftRequirement()
 			}
-			if (player.meta.resets > 109) player.meta.resets += Math.floor((player.meta[8].bought - req.amount) / req.mult)+1
+			if (player.meta.resets > 109) player.meta.resets += Math.floor((player.meta[8].bought - req.amount) / req.mult) + 1
 		} else {
 			if (player.meta.resets < req.scalingStart) {
 				player.meta.resets = Math.min(player.meta.resets + Math.floor((player.meta[8].bought - req.amount) / req.mult) + 1, req.scalingStart)
@@ -173,8 +180,8 @@ function metaBoost() {
 		if (inQC(4)) if (player.meta[8].bought >= getMetaShiftRequirement().amount) player.meta.resets++
 	} else player.meta.resets++
 	if (player.meta.resets >= 10) giveAchievement("Meta-boosting to the max")
-	player.meta.antimatter = new Decimal(speedrunMilestonesReached > 18 ? 1e25 : player.achievements.includes("ngpp12") ? 100 : 10) 
-	//maybe dont do this if for some achievement (underchallenged?)
+	if (!tmp.ngp3l && player.achievements.includes("ng3p72")) return
+	player.meta.antimatter = getMetaAntimatterStart()
 	clearMetaDimensions()
 	if (!tmp.ngp3 || !tmp.qu.bigRip.active) document.getElementById("quantumbtn").style.display="none"
 }
@@ -547,9 +554,8 @@ function quantum(auto, force, challid, bigRip = false, quick) {
 					var qc2st = Math.max(qc1, qc2)
 					if (qc1st != 6 || qc2st != 8) return
 					if (tmp.qu.bigRip.conf && !auto) if (!confirm("Big ripping the universe starts PC6+8 with only quantum stuff. However, only dilation upgrades boost dilation except upgrades that multiply TP gain until you buy the eleventh upgrade. NOTE: If you can beat PC6+8, you will earn a grand reward. You can give your Time Theorems and Time Studies back by undoing Big Rip.")) return
-				}
-				if (pc > 0) {
-					if (player.options.challConf || (tmp.qu.pairedChallenges.completions.length < 1 && !ghostified)) if (!confirm("You will start a Quantum Challenge, but you need to do 2 challenges at one. Completing it boosts the rewards of Quantum Challenges that you chose in this Paired Challenge.")) return
+				} else if (pc > 0) {
+					if (player.options.challConf || (tmp.qu.pairedChallenges.completions.length < 1 && !ghostified)) if (!confirm("You will start a Quantum Challenge, but you need to do 2 challenges at one. Completing it boosts the rewards of Quantum Challenges that you chose in this Paired Challenge. NOTE: You will keep electrons & sacrificed galaxies, but they don't work in this Challenge.")) return
 				} else if (player.options.challConf || (QCIntensity(1) == 0 && !ghostified)) if (!confirm("You will do a quantum reset but you will not gain quarks, and keep your electrons & sacrificed galaxies, and you can't buy electron upgrades. You have to reach the set goal of antimatter to complete this challenge. NOTE: Electrons and banked eternities do nothing in quantum challenges and your electrons and sacrificed galaxies do not reset until you end the challenge.")) return
 				tmp.qu.electrons.amount -= getQCCost(challid)
 				if (!quick) for (var m = 0; m < qcm.on.length; m++) if (ranking >= qcm.reqs[qcm.on[m]] || !qcm.reqs[qcm.on[m]]) tmp.qu.qcsMods.current.push(qcm.on[m])
@@ -1232,8 +1238,8 @@ function quantumReset(force, auto, challid, bigRip, implode=false) {
 		shameLevel: player.shameLevel,
 		options: player.options,
 		meta: {
-			antimatter: new Decimal(speedrunMilestonesReached > 18 && !bigRip ? 1e25 : 100),
-			bestAntimatter: headstart ? player.meta.bestAntimatter : new Decimal(speedrunMilestonesReached > 18 && !bigRip ? 1e25 : 100),
+			antimatter: getMetaAntimatterStart(true),
+			bestAntimatter: headstart ? player.meta.bestAntimatter : getMetaAntimatterStart(true),
 			bestOverQuantums: player.meta.bestOverQuantums,
 			bestOverGhostifies: player.meta.bestOverGhostifies,
 			resets: isRewardEnabled(27) ? (!challid && player.ghostify.milestones > 4 && bigRip == tmp.qu.bigRip.active ? player.meta.resets : 4) : 0,
@@ -1515,7 +1521,6 @@ function quantumReset(force, auto, challid, bigRip, implode=false) {
 	if (player.achievements.includes("r85")) player.infMult = player.infMult.times(4);
 	if (player.achievements.includes("r93")) player.infMult = player.infMult.times(4);
 	if (player.achievements.includes("r104")) player.infinityPoints = new Decimal(2e25);
-	if (player.achievements.includes("r142")) player.meta.antimatter = new Decimal(100);
 	resetInfDimensions();
 	updateChallenges();
 	updateNCVisuals()

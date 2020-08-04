@@ -20,65 +20,66 @@ var forceHardReset = false;
 var player
 var metaSave = null
 var modes = {}
+var gameSpeed = 1
 
 function setupHTMLAndData() {
 	var pu=document.getElementById("pUpgs")
-	for (r=1;r<=puSizes.y;r++) {
-		row=pu.insertRow(r-1)
-		for (c=1;c<=puSizes.x;c++) {
-			var col=row.insertCell(c-1)
-			var id=(r*10+c)
-			col.innerHTML="<button id='pu"+id+"' class='infinistorebtn1' onclick='buyPU("+id+","+(r<2)+")'>"+(typeof(puDescs[id])=="function"?"<span id='pud"+id+"'></span>":puDescs[id]||"???")+(puMults[id]?"<br>Currently: <span id='pue"+id+"'></span>":"")+"<br><span id='puc"+id+"'></span></button>"
+	for (let r = 1; r <= puSizes.y; r++) {
+		let row = pu.insertRow(r - 1)
+		for (let c = 1; c <= puSizes.x; c++) {
+			var col = row.insertCell(c - 1)
+			var id = (r * 10 + c)
+			col.innerHTML = "<button id='pu" + id + "' class='infinistorebtn1' onclick='buyPU("+id+","+(r<2)+")'>"+(typeof(puDescs[id])=="function"?"<span id='pud"+id+"'></span>":puDescs[id]||"???")+(puMults[id]?"<br>Currently: <span id='pue"+id+"'></span>":"")+"<br><span id='puc"+id+"'></span></button>"
 		}
 	}
 	var iut=document.getElementById("preinfupgrades")
-	for (r=1;r<5;r++) {
-		row=iut.insertRow(r-1)
-		for (c=1;c<5;c++) {
-			var col=row.insertCell(c-1)
-			col.innerHTML="<button id='infi"+(c*10+r)+"' class='infinistorebtn"+c+"'></button>"
+	for (let r = 1; r < 5; r++) {
+		let row = iut.insertRow(r - 1)
+		for (let c = 1; c < 5; c++) {
+			var col = row.insertCell(c - 1)
+			col.innerHTML = "<button id='infi" + (c * 10 + r) + "' class='infinistorebtn" + c + "'></button>"
 		}
 	}
-	document.getElementById("infi14").innerHTML="Decrease the number of Dimensions needed for Dimensional Boosts and galaxies by 9<br>Cost: 1 IP"
-	document.getElementById("infi24").innerHTML="Antimatter Galaxies are twice as effective<br>Cost: 2 IP"
+	document.getElementById("infi14").innerHTML = "Decrease the number of Dimensions needed for Dimensional Boosts and galaxies by 9<br>Cost: 1 IP"
+	document.getElementById("infi24").innerHTML = "Antimatter Galaxies are twice as effective<br>Cost: 2 IP"
 	document.getElementById("infi11").onclick = function () {
-		buyInfinityUpgrade("timeMult",1);
+		buyInfinityUpgrade("timeMult", 1);
 	}
 	document.getElementById("infi21").onclick = function () {
-		buyInfinityUpgrade("dimMult",1);
+		buyInfinityUpgrade("dimMult", 1);
 	}
 	document.getElementById("infi12").onclick = function () {
-		if (player.infinityUpgrades.includes("timeMult")) buyInfinityUpgrade("18Mult",1);
+		if (player.infinityUpgrades.includes("timeMult")) buyInfinityUpgrade("18Mult", 1);
 	}
 	document.getElementById("infi22").onclick = function () {
-		if (player.infinityUpgrades.includes("dimMult")) buyInfinityUpgrade("27Mult",1);
+		if (player.infinityUpgrades.includes("dimMult")) buyInfinityUpgrade("27Mult", 1);
 	}
 	document.getElementById("infi13").onclick = function () {
-		if (player.infinityUpgrades.includes("18Mult")) buyInfinityUpgrade("36Mult",1);
+		if (player.infinityUpgrades.includes("18Mult")) buyInfinityUpgrade("36Mult", 1);
 	}
 	document.getElementById("infi23").onclick = function () {
-		if (player.infinityUpgrades.includes("27Mult")) buyInfinityUpgrade("45Mult",1);
+		if (player.infinityUpgrades.includes("27Mult")) buyInfinityUpgrade("45Mult", 1);
 	}
 	document.getElementById("infi14").onclick = function () {
-		if (player.infinityUpgrades.includes("36Mult")) buyInfinityUpgrade("resetBoost",1);
+		if (player.infinityUpgrades.includes("36Mult")) buyInfinityUpgrade("resetBoost", 1);
 	}
 	document.getElementById("infi24").onclick = function () {
-		if (player.infinityUpgrades.includes("45Mult")) buyInfinityUpgrade("galaxyBoost",2);
+		if (player.infinityUpgrades.includes("45Mult")) buyInfinityUpgrade("galaxyBoost", 2);
 	}
 	document.getElementById("infi31").onclick = function() {
-		buyInfinityUpgrade("timeMult2",3);
+		buyInfinityUpgrade("timeMult2", 3);
 	}
 	document.getElementById("infi32").onclick = function() {
-		if (player.infinityUpgrades.includes("timeMult2")) buyInfinityUpgrade("unspentBonus",5);
+		if (player.infinityUpgrades.includes("timeMult2")) buyInfinityUpgrade("unspentBonus", 5);
 	}
 	document.getElementById("infi33").onclick = function() {
-		if (player.infinityUpgrades.includes("unspentBonus")) buyInfinityUpgrade("resetMult",7);
+		if (player.infinityUpgrades.includes("unspentBonus")) buyInfinityUpgrade("resetMult", 7);
 	}
 	document.getElementById("infi34").onclick = function() {
-		if (player.infinityUpgrades.includes("resetMult")) buyInfinityUpgrade("passiveGen",10);
+		if (player.infinityUpgrades.includes("resetMult")) buyInfinityUpgrade("passiveGen", 10);
 	}
 	document.getElementById("infi41").onclick = function() {
-		buyInfinityUpgrade("skipReset1",20);
+		buyInfinityUpgrade("skipReset1", 20);
 	}
 	document.getElementById("infi42").onclick = function() {
 		if (player.infinityUpgrades.includes("skipReset1")) buyInfinityUpgrade("skipReset2", 40)
@@ -91,18 +92,19 @@ function setupHTMLAndData() {
 	}
 	setupDilationUpgradeList()
 	setupMasteryStudiesHTML()
+	// PC Table
 	var pcct = document.getElementById("pccompletionstable")
 	var row = pcct.insertRow(0)
-	for (c=0;c<9;c++) {
+	for (let c = 0; c < 9; c++) {
 		var col = row.insertCell(c)
-		if (c>0) col.textContent = "#" + c
+		if (c > 0) col.textContent = "#" + c
 	}
-	for (r=1;r<9;r++) {
+	for (let r = 1; r < 9; r++) {
 		row = pcct.insertRow(r)
-		for (c=0;c<9;c++) {
+		for (let c = 0; c < 9; c++) {
 			var col = row.insertCell(c)
-			if (c<1) col.textContent = "#" + r
-			else if (c==r) {
+			if (c < 1) col.textContent = "#" + r
+			else if (c == r) {
 				col.id = "qcC" + r
 			} else col.id = "pc" + r + c
 		}
@@ -110,106 +112,106 @@ function setupHTMLAndData() {
 	var ndsDiv = document.getElementById("parent")
 	var pdsDiv = document.getElementById("pdTable")
 	var edsDiv = document.getElementById("empDimTable")
-	for (d=1;d<9;d++) {
-		var row=ndsDiv.insertRow(d-1)
-		row.id=d+"Row"
-		row.style["font-size"]="15px"
-		var html='<td class="rel" id="D'+d+'" align="right" width="32%"> </td>'
-		html+='<td id="A'+d+'"></td>'
-		html+='<td align="right" width="10%"><button id="B'+d+'" style="color:black; height: 25px; font-size: 10px; width: 135px" class="storebtn" onclick="buyOneDimension('+d+')"></button></td>'
-		html+='<td align="right" width="10%"><button id="M'+d+'" style="color:black; width:210px; height: 25px; font-size: 10px" class="storebtn" onclick="buyManyDimension('+d+')"></button></td>'
-		row.innerHTML=html
+	for (let d = 1; d < 9; d++) {
+		var row = ndsDiv.insertRow(d - 1)
+		row.id = d + "Row"
+		row.style["font-size"] = "15px"
+		var html = '<td class="rel" id="D' + d + '" align="right" width="32%"> </td>'
+		html += '<td id="A' + d + '"></td>'
+		html += '<td align="right" width="10%"><button id="B' + d + '" style="color:black; height: 25px; font-size: 10px; width: 135px" class="storebtn" onclick="buyOneDimension(' + d + ')"></button></td>'
+		html += '<td align="right" width="10%"><button id="M' + d + '" style="color:black; width:210px; height: 25px; font-size: 10px" class="storebtn" onclick="buyManyDimension(' + d + ')"></button></td>'
+		row.innerHTML = html
 		
 		var row=pdsDiv.insertRow(d-1)
-		row.id="pR"+d
-		row.style["font-size"]="16px"
-		var html='<td id="pD'+d+'" width="41%">'+DISPLAY_NAMES[d]+' Paradox Dimension x1</td>'
-		html+='<td id="pA'+d+'">0 (0)</td>'
-		html+='<td align="right" width="10%"><button id="pB'+d+'" style="color:black; width:195px; height:30px" class="storebtn" align="right" onclick="buyPD('+d+')">Cost: ??? Px</button></td></tr>'
-		row.innerHTML=html
+		row.id = "pR" + d
+		row.style["font-size"] = "16px"
+		var html = '<td id="pD' + d + '" width="41%">' + DISPLAY_NAMES[d] + ' Paradox Dimension x1</td>'
+		html += '<td id="pA' + d + '">0 (0)</td>'
+		html += '<td align="right" width="10%"><button id="pB'+d+'" style="color:black; width:195px; height:30px" class="storebtn" align="right" onclick="buyPD('+d+')">Cost: ??? Px</button></td></tr>'
+		row.innerHTML = html
 		
-		var row=edsDiv.insertRow(d-1)
-		row.id="empRow"+d
-		row.style["font-size"]="15px"
-		var html='<td id="empD'+d+'" width="41%">'+DISPLAY_NAMES[d]+' Emperor Dimension x1</td>'
-		html+='<td id="empAmount'+d+'"></td>'
-		html+='<td><span class="empQuarks" id="empQuarks'+d+'">0</span> preons/s</td>'
-		html+='<td align="right" width="2.5%"><button id="empFeedMax'+d+'" style="color:black; width:70px; font-size:10px" class="storebtn" align="right" onclick="feedReplicant('+d+', true)">Max</button></td>'
-		html+='<td align="right" width="7.5%"><button id="empFeed'+d+'" style="color:black; width:195px; height:25px; font-size:10px" class="storebtn" align="right" onclick="feedReplicant('+d+')">Feed (0%)</button></td>'
-		row.innerHTML=html
+		var row=edsDiv.insertRow(d - 1)
+		row.id = "empRow" + d
+		row.style["font-size"] = "15px"
+		var html = '<td id="empD' + d + '" width="41%">' + DISPLAY_NAMES[d] + ' Emperor Dimension x1</td>'
+		html += '<td id="empAmount' + d + '"></td>'
+		html += '<td><span class="empQuarks" id="empQuarks' + d + '">0</span> preons/s</td>'
+		html += '<td align="right" width="2.5%"><button id="empFeedMax' + d + '" style="color:black; width:70px; font-size:10px" class="storebtn" align="right" onclick="feedReplicant('+d+', true)">Max</button></td>'
+		html += '<td align="right" width="7.5%"><button id="empFeed' + d + '" style="color:black; width:195px; height:25px; font-size:10px" class="storebtn" align="right" onclick="feedReplicant('+d+')">Feed (0%)</button></td>'
+		row.innerHTML = html
 	}
-	for (var c=0;c<3;c++) {
-		var color=(["red","green","blue"])[c]
-		var shorthand=(["r","g","b"])[c]
-		var branchUpgrades=["Gain <span id='"+color+"UpgPow1'></span>x "+color+" quark spins, but "+color+" quarks decay <span id='"+color+"UpgSpeed1'></span>x faster.","The gain of "+color+" <span id='"+color+"UpgName2'></span> quarks is multiplied by x and then raised to the power of x.",(["Red","Green","Blue"])[c]+" <span id='"+color+"UpgName3'></span> quarks decay 4x slower."]
+	for (var c = 0; c < 3; c++) {
+		var color = (["red", "green", "blue"])[c]
+		var shorthand = (["r", "g", "b"])[c]
+		var branchUpgrades = ["Gain <span id='" + color + "UpgPow1'></span>x " + color + " quark spins, but " + color + " quarks decay <span id='" + color + "UpgSpeed1'></span>x faster.","The gain of " + color + " <span id='" + color + "UpgName2'></span> quarks is multiplied by x and then raised to the power of x.",(["Red", "Green", "Blue"])[c]+" <span id='" + color + "UpgName3'></span> quarks decay 4x slower."]
 
-		var html='You have <span class="'+color+'" id="'+color+'QuarksToD" style="font-size: 35px">0</span> '+color+' quarks.<br>'
-		html+='<button class="storebtn" id="'+color+'UnstableGain" style="width: 240px; height: 80px" onclick="unstableQuarks(\''+shorthand+'\')"></button><br>'
-		html+='You have <span class="'+color+'" id="'+color+'QuarkSpin" style="font-size: 35px">0.0</span> '+color+' quark spin.'
-		html+='<span class="'+color+'" id="'+color+'QuarkSpinProduction" style="font-size: 25px">+0/s</span><br>'
-		html+="You have <span class='"+color+"' id='"+color+"UnstableQuarks' style='font-size: 35px'>0</span> "+color+" <span id='"+shorthand+"UQName'></span> quarks.<br>"
-		html+="<span id='"+color+"QuarksDecayRate'></span>.<br>"
-		html+="They will last <span id='"+color+"QuarksDecayTime'></span>."
-		document.getElementById("todRow").insertCell(c).innerHTML=html
-		document.getElementById("todRow").cells[c].className=shorthand+"qC"
+		var html = 'You have <span class="' + color + '" id="' + color + 'QuarksToD" style="font-size: 35px">0</span> ' + color + ' quarks.<br>'
+		html += '<button class="storebtn" id="' + color + 'UnstableGain" style="width: 240px; height: 80px" onclick="unstableQuarks(\'' + shorthand + '\')"></button><br>'
+		html += 'You have <span class="' + color + '" id="' + color + 'QuarkSpin" style="font-size: 35px">0.0</span> ' + color + ' quark spin.'
+		html += '<span class="' + color + '" id="' + color + 'QuarkSpinProduction" style="font-size: 25px">+0/s</span><br>'
+		html += "You have <span class='" + color + "' id='" + color + "UnstableQuarks' style='font-size: 35px'>0</span> " + color + " <span id='" + shorthand + "UQName'></span> quarks.<br>"
+		html += "<span id='" + color + "QuarksDecayRate'></span>.<br>"
+		html += "They will last <span id='" + color + "QuarksDecayTime'></span>."
+		document.getElementById("todRow").insertCell(c).innerHTML = html
+		document.getElementById("todRow").cells[c].className = shorthand + "qC"
 		
-		html="<table class='table' align='center' style='margin: auto'><tr>"
-		for (var u=1;u<4;u++) html+="<td style='vertical-align: 0'><button class='gluonupgrade unavailablebtn' id='"+color+"upg"+u+"' onclick='buyBranchUpg(\""+shorthand+"\", "+u+")'"+(u<3?" style='font-size:10px'":"")+">"+branchUpgrades[u-1]+"<br>Currently: <span id='"+color+"upg"+u+"current'>1</span>x<br>Cost: <span id='"+color+"upg"+u+"cost'>?</span> "+color+" quark spin</button>"+(u==2?"<br><button class='storebtn' style='width: 190px' onclick='maxBranchUpg(\""+shorthand+"\")'>Max all upgrades</button><br><button class='storebtn' style='width: 190px; font-size:10px' onclick='maxBranchUpg(\""+shorthand+"\", true)'>Max 2nd and 3rd upgrades</button>":"")+"</td>"
-		html+="</tr></tr><td></td><td><button class='gluonupgrade unavailablebtn' id='"+shorthand+"RadioactiveDecay' style='font-size:10px' onclick='radioactiveDecay(\""+shorthand+"\")'>Reset to make 1st upgrades stronger, but nerf this branch.<br><span id='"+shorthand+"RDReq'></span><br>Radioactive Decays: <span id='"+shorthand+"RDLvl'></span></button></td><td></td>"
-		html+="</tr></table>"
-		document.getElementById(color+"Branch").innerHTML=html
+		html = "<table class='table' align='center' style='margin: auto'><tr>"
+		for (var u = 1; u < 4; u++) html += "<td style='vertical-align: 0'><button class='gluonupgrade unavailablebtn' id='"+color+"upg"+u+"' onclick='buyBranchUpg(\""+shorthand+"\", "+u+")'"+(u<3?" style='font-size:10px'":"")+">"+branchUpgrades[u-1]+"<br>Currently: <span id='"+color+"upg"+u+"current'>1</span>x<br>Cost: <span id='"+color+"upg"+u+"cost'>?</span> "+color+" quark spin</button>"+(u==2?"<br><button class='storebtn' style='width: 190px' onclick='maxBranchUpg(\""+shorthand+"\")'>Max all upgrades</button><br><button class='storebtn' style='width: 190px; font-size:10px' onclick='maxBranchUpg(\""+shorthand+"\", true)'>Max 2nd and 3rd upgrades</button>":"")+"</td>"
+		html += "</tr></tr><td></td><td><button class='gluonupgrade unavailablebtn' id='"+shorthand+"RadioactiveDecay' style='font-size:10px' onclick='radioactiveDecay(\""+shorthand+"\")'>Reset to make 1st upgrades stronger, but nerf this branch.<br><span id='"+shorthand+"RDReq'></span><br>Radioactive Decays: <span id='"+shorthand+"RDLvl'></span></button></td><td></td>"
+		html += "</tr></table>"
+		document.getElementById(color + "Branch").innerHTML = html
 	}
 	//Nanofield
-	var nfRewards=document.getElementById("nfRewards")
-	var row=0
-	for (var r=1;r<=8;r+=2) {
+	var nfRewards = document.getElementById("nfRewards")
+	var row = 0
+	for (var r = 1; r <= 8; r += 2) {
 		nfRewards.insertRow(row).innerHTML = 
-			"<td id='nfRewardHeader"+r+"' class='milestoneText'></td>" +
-			"<td id='nfRewardHeader"+(r+1)+"' class='milestoneText'></td>"
+			"<td id='nfRewardHeader" + r + "' class='milestoneText'></td>" +
+			"<td id='nfRewardHeader" + (r + 1) + "' class='milestoneText'></td>"
 		row++
 		nfRewards.insertRow(row).innerHTML = 
-			"<td id='nfRewardTier"+r+"' class='milestoneTextSmall'></td>" +
-			"<td id='nfRewardTier"+(r+1)+"' class='milestoneTextSmall'></td>"
+			"<td id='nfRewardTier" + r + "' class='milestoneTextSmall'></td>" +
+			"<td id='nfRewardTier" + (r + 1) + "' class='milestoneTextSmall'></td>"
 		row++
 		nfRewards.insertRow(row).innerHTML = 
-			"<td><button class='nfRewardlocked' id='nfReward"+r+"'></button></td>" +
-			"<td><button class='nfRewardlocked' id='nfReward"+(r+1)+"'></button></td>"
+			"<td><button class='nfRewardlocked' id='nfReward" + r + "'></button></td>" +
+			"<td><button class='nfRewardlocked' id='nfReward" + (r + 1) + "'></button></td>"
 		row++
 	}
-	document.getElementById("nfReward7").style["font-size"]="10px"
-	document.getElementById("nfReward8").style["font-size"]="10px"
+	document.getElementById("nfReward7").style["font-size"] = "10px"
+	document.getElementById("nfReward8").style["font-size"] = "10px"
 	//Quantum Challenge modifiers
-	var modDiv=""
-	for (var m=0;m<qcm.modifiers.length;m++) {
-		var id=qcm.modifiers[m]
-		modDiv+=' <button id="qcm_'+id+'" onclick="toggleQCModifier(\''+id+'\')">'+(qcm.names[id]||"???")+'</button>'
+	var modDiv = ""
+	for (var m = 0; m < qcm.modifiers.length; m++) {
+		var id = qcm.modifiers[m]
+		modDiv += ' <button id="qcm_' + id + '" onclick="toggleQCModifier(\'' + id + '\')">' + (qcm.names[id] || "???") + '</button>'
 	}
-	document.getElementById("modifiers").innerHTML=modDiv
-	var modDiv='<button class="storebtn" id="qcms_normal" onclick="showQCModifierStats(\'\')">Normal</button>'
-	for (var m=0;m<qcm.modifiers.length;m++) {
-		var id=qcm.modifiers[m]
-		modDiv+=' <button class="storebtn" id="qcms_'+id+'" onclick="showQCModifierStats(\''+id+'\')">'+(qcm.names[id]||"???")+'</button>'
+	document.getElementById("modifiers").innerHTML = modDiv
+	var modDiv = '<button class="storebtn" id="qcms_normal" onclick="showQCModifierStats(\'\')">Normal</button>'
+	for (var m = 0; m < qcm.modifiers.length; m++) {
+		var id = qcm.modifiers[m]
+		modDiv += ' <button class="storebtn" id="qcms_' + id + '" onclick="showQCModifierStats(\'' + id + '\')">'+(qcm.names[id] || "???")+'</button>'
 	}
 	document.getElementById("modifiersStats").innerHTML=modDiv
 	//Brave Milestones
-	for (var m=1;m<17;m++) document.getElementById("braveMilestone"+m).textContent=getFullExpansion(tmp.bm[m-1])+"x quantumed"
+	for (var m = 1; m < 17; m++) document.getElementById("braveMilestone" + m).textContent=getFullExpansion(tmp.bm[m - 1])+"x quantumed"
 	//Bosonic Extractor
-	var ben=document.getElementById("enchants")
-	for (var g2=2;g2<=br.limit;g2++) {
-		var row=ben.insertRow(g2-2)
-		row.id="bEnRow"+(g2-1)
-		for (var g1=1;g1<g2;g1++) {
-			var col=row.insertCell(g1-1)
-			var id=(g1*10+g2)
-			col.innerHTML="<button id='bEn"+id+"' class='gluonupgrade unavailablebtn' style='font-size: 9px' onclick='takeEnchantAction("+id+")'>"+(bEn.descs[id]||"???")+"<br>"+
-			"Currently: <span id='bEnEffect"+id+"'>???</span><br>"+
-			"<span id='bEnLvl"+id+"'></span><br>"+
-			"<span id='bEnOn"+id+"'></span><br>"+
-			"Cost: <span id='bEnG1Cost"+id+"'></span> <div class='bRune' type='"+g1+"'></div> & <span id='bEnG2Cost"+id+"'></span> <div class='bRune' type='"+g2+"'></div></button><br>"
+	var ben = document.getElementById("enchants")
+	for (var g2 = 2; g2 <= br.limit; g2++) {
+		var row = ben.insertRow(g2 - 2)
+		row.id = "bEnRow" + (g2 - 1)
+		for (var g1 = 1; g1 < g2; g1++) {
+			var col = row.insertCell(g1 - 1)
+			var id = (g1 * 10 + g2)
+			col.innerHTML = "<button id='bEn" + id + "' class='gluonupgrade unavailablebtn' style='font-size: 9px' onclick='takeEnchantAction("+id+")'>"+(bEn.descs[id]||"???")+"<br>"+
+			"Currently: <span id='bEnEffect" + id + "'>???</span><br>"+
+			"<span id='bEnLvl" + id + "'></span><br>" +
+			"<span id='bEnOn" + id + "'></span><br>" +
+			"Cost: <span id='bEnG1Cost" + id + "'></span> <div class='bRune' type='" + g1 + "'></div> & <span id='bEnG2Cost" + id + "'></span> <div class='bRune' type='"+g2+"'></div></button><br>"
 		}
 	}
-	var toeDiv=""
-	for (var g=1;g<=br.limit;g++) toeDiv+=' <button id="typeToExtract'+g+'" class="storebtn" onclick="changeTypeToExtract('+g+')" style="width: 25px; font-size: 12px"><div class="bRune" type="'+g+'"></div></button>'
+	var toeDiv = ""
+	for (var g = 1; g <= br.limit; g++) toeDiv += ' <button id="typeToExtract'+g+'" class="storebtn" onclick="changeTypeToExtract('+g+')" style="width: 25px; font-size: 12px"><div class="bRune" type="'+g+'"></div></button>'
 	document.getElementById("typeToExtract").innerHTML=toeDiv
 	//Bosonic Upgrades
 	setupBosonicUpgReqData()
@@ -1757,13 +1759,13 @@ function updateTemp() {
 		tmp.tra=getTotalReplicants()
 		tmp.rg4=tmp.qu.upgrades.includes("rg4")&&(tmp.qu.rg4||!tmp.ngp3l||inQC(1)||QCIntensity(1))
 		tmp.tue=getTreeUpgradeEfficiency()
-		tmp.mpte=getMPTExp()
 	} else tmp.be=false
 	tmp.sacPow = calcTotalSacrificeBoost()
 	updateQCRewardsTemp()
 
 	if (player.meta !== undefined) tmp.mdgm = getMetaDimensionGlobalMultiplier() //Update global multiplier of all Meta Dimensions
 	tmp.mptb=getMPTBase()
+	tmp.mpte=getMPTExp()
 	
 	updateInfiniteTimeTemp()
 	updateAntiElectronGalaxiesTemp()
@@ -1780,6 +1782,11 @@ function updateTemp() {
 	tmp.tsReduce = getTickSpeedMultiplier()
 	updateInfinityPowerEffects()
 	if (player.replicanti.unl) updateReplicantiTemp()
+
+	if (tmp.gameSpeed != gameSpeed) {
+		tmp.gameSpeed = gameSpeed
+		tmp.tickUpdate = true
+	}
 }
 
 function showTab(tabName, init) {
@@ -3360,7 +3367,7 @@ function glowText(id) {
 
 document.getElementById("maxall").onclick = function () {
 	if (tmp.ri) return false
-	if (player.currentChallenge !== 'challenge14') buyMaxTickSpeed()
+	if (player.currentChallenge !== 'challenge14' && player.aarexModifications.ngmX !== 2) buyMaxTickSpeed()
 	for (var tier=1; tier<9;tier++) buyBulkDimension(tier, 1/0)
 	if (player.aarexModifications.ngmX>3) buyMaxTimeDimensions()
 	if (player.pSac!=undefined) maxAllIDswithAM()
@@ -3581,7 +3588,7 @@ function replicantiDisplay() {
 			"Replicanti increases by " + (tmp.rep.est < Math.log10(2) ? "x2.00 per " + timeDisplayShort(Math.log10(2) / tmp.rep.est * 10) : (tmp.rep.est.gte(1e4) ? shorten(tmp.rep.est) + " OoMs" : "x" + shorten(Decimal.pow(10, tmp.rep.est.toNumber()))) + " per second") + ".<br>" +
 			"Replicate interval slows down by " + tmp.rep.speeds.inc.toFixed(3) + "x per " + getFullExpansion(Math.floor(tmp.rep.speeds.exp)) + " OoMs.<br>" +
 			"(2x slower per " + getFullExpansion(Math.floor(tmp.rep.speeds.exp * Math.log10(2) / Math.log10(tmp.rep.speeds.inc))) + " OoMs)" :
-			"Approximately "+ timeDisplay(Math.max((Math.log(Number.MAX_VALUE) - current) / est.toNumber(), 0)*10) + " Until Infinite Replicanti"
+			"Approximately "+ timeDisplay(Math.max((Math.log(Number.MAX_VALUE) - tmp.rep.ln) / tmp.rep.est.toNumber(), 0)*10) + " Until Infinite Replicanti"
 
 		document.getElementById("replicantichance").className = (player.infinityPoints.gte(player.replicanti.chanceCost) && isChanceAffordable()) ? "storebtn" : "unavailablebtn"
 		document.getElementById("replicantiinterval").className = (player.infinityPoints.gte(player.replicanti.intervalCost) && isIntervalAffordable()) ? "storebtn" : "unavailablebtn"
@@ -3704,31 +3711,31 @@ function getReplMult(next) {
 }
 
 function upgradeReplicantiChance() {
-    	if (player.infinityPoints.gte(player.replicanti.chanceCost) && isChanceAffordable() && player.eterc8repl !== 0) {
-		player.replicanti.chanceCost = player.replicanti.chanceCost.times(1e15)
-		if (ghostified) {
-			if (player.ghostify.milestones < 11) player.infinityPoints = player.infinityPoints.minus(player.replicanti.chanceCost)
-		} else player.infinityPoints = player.infinityPoints.minus(player.replicanti.chanceCost)
-        	player.replicanti.chance = Math.round(player.replicanti.chance*100+1)/100
-        	if (player.currentEternityChall == "eterc8") player.eterc8repl-=1
-        	document.getElementById("eterc8repl").textContent = "You have "+player.eterc8repl+" purchases left."
-    	}
+	if (player.infinityPoints.gte(player.replicanti.chanceCost) && isChanceAffordable() && player.eterc8repl !== 0) {
+	player.replicanti.chanceCost = player.replicanti.chanceCost.times(1e15)
+	if (ghostified) {
+		if (player.ghostify.milestones < 11) player.infinityPoints = player.infinityPoints.minus(player.replicanti.chanceCost)
+	} else player.infinityPoints = player.infinityPoints.minus(player.replicanti.chanceCost)
+		player.replicanti.chance = Math.round(player.replicanti.chance*100+1)/100
+		if (player.currentEternityChall == "eterc8") player.eterc8repl-=1
+		document.getElementById("eterc8repl").textContent = "You have "+player.eterc8repl+" purchases left."
+	}
 }
 
 function isChanceAffordable() {
-	return (tmp.ngp3 ? player.masterystudies.includes("t265") : false) || player.replicanti.chance < 1
+	return player.replicanti.chance < 1 || (tmp.ngp3 && player.masterystudies.includes("t265"))
 }
 
 function upgradeReplicantiInterval() {
-    	if (player.infinityPoints.gte(player.replicanti.intervalCost) && isIntervalAffordable() && player.eterc8repl !== 0) {
-        	player.infinityPoints = player.infinityPoints.minus(player.replicanti.intervalCost)
-        	player.replicanti.interval *= 0.9
-        	if (player.replicanti.interval < 1) player.replicanti.intervalCost = Decimal.pow("1e800",1/player.replicanti.interval)
-        	else player.replicanti.intervalCost = player.replicanti.intervalCost.times(1e10)
-        	if (!isIntervalAffordable()) player.replicanti.interval = (player.timestudy.studies.includes(22) || player.boughtDims ? 1 : 50)
-        	if (player.currentEternityChall == "eterc8") player.eterc8repl-=1
-        	document.getElementById("eterc8repl").textContent = "You have "+player.eterc8repl+" purchases left."
-    	}
+	if (player.infinityPoints.gte(player.replicanti.intervalCost) && isIntervalAffordable() && player.eterc8repl !== 0) {
+		player.infinityPoints = player.infinityPoints.minus(player.replicanti.intervalCost)
+		player.replicanti.interval *= 0.9
+		if (player.replicanti.interval < 1) player.replicanti.intervalCost = Decimal.pow("1e800",1/player.replicanti.interval)
+		else player.replicanti.intervalCost = player.replicanti.intervalCost.times(1e10)
+		if (!isIntervalAffordable()) player.replicanti.interval = (player.timestudy.studies.includes(22) || player.boughtDims ? 1 : 50)
+		if (player.currentEternityChall == "eterc8") player.eterc8repl-=1
+		document.getElementById("eterc8repl").textContent = "You have "+player.eterc8repl+" purchases left."
+	}
 }
 
 function getReplicantiLimit() {
@@ -4554,11 +4561,11 @@ function onPostBreak() {
 	return (player.break && inNC(0)) || player.currentChallenge.includes("p")
 }
 
-function getIPGain(){
+function getInfinityPointGain(){
 	return gainedInfinityPoints()
 }
 
-function getInfinityPointGain(){
+function getIPGain(){
 	return gainedInfinityPoints()
 }
 
@@ -4583,7 +4590,6 @@ function gainedInfinityPoints(next) {
 		ret = ret.times(Decimal.pow(player.thisInfinityTime/10,player.timestudy.ers_studies[6]+(next==6?1:0)))
 	}
 	if (isBigRipUpgradeActive(4)) ret = ret.times(player.replicanti.amount.pow(0.34).max(1))
-	if (player.infinityUpgrades.includes("postinfi60") && player.tickspeedBoosts == undefined && tmp.ngp3l) ret = ret.times(getB60Mult())
 	return ret.floor()
 }
 
@@ -4901,7 +4907,7 @@ function setAchieveTooltip() {
 
 	//ACHIEVEMENT ROW 20
 	finite.setAttribute('ach-tooltip', "Get "+shortenCosts(1e33)+" Space Shards without Breaking Eternity."+(tmp.ngp3l?"":" Reward: Outside of Big Rips, add the efficiency of Tree upgrades by 10%. In Big Rips, gain an small exponent boost to 8th Time Dimensions based on your current Ghostify time."))
-	really.setAttribute('ach-tooltip', "Undo the Big Rip with at least "+shortenCosts(Decimal.pow(10, 5000))+" matter." + (tmp.ngp3l?"":" Reward: Buying electron upgrades with meta dimension boosts don't spent meta dimension boosts anymore."))
+	really.setAttribute('ach-tooltip', "Undo the Big Rip with at least "+shortenCosts(Decimal.pow(10, 5000))+" matter." + (tmp.ngp3l?"":" Reward: Buying Electron upgrades don't consume Meta-Dimension Boosts anymore."))
 	willenough.setAttribute('ach-tooltip', "Reach "+shortenCosts(Decimal.pow(10,player.aarexModifications.ngudpV?268435456:36000000))+" replicanti."+(willenoughReward!=""?" Reward: "+willenoughReward+".":""))
 	oppose.setAttribute('ach-tooltip', "Become a ghost with at most 1x quantumed stat."+(tmp.ngp3l?"":" Reward: You gain more quarks based on your quantumed stat."))
 	pls.setAttribute('ach-tooltip', "Reach "+shortenCosts(Decimal.pow(10, 95e4))+" IP in Big Rip while dilated, with no EP multiplier upgrades, time studies, and Break Eternity. Reward: Each time you become a ghost, you gain "+shortenDimensions(2e3)+" galaxies worth of all generations of neutrinos, multiplied by your best-ever galaxy amount in all Big Rips.")
@@ -4912,7 +4918,7 @@ function setAchieveTooltip() {
 	bm14.setAttribute('ach-tooltip', "Reward: Start Ghostifies with "+shortenCosts(1e25)+" Quark Spins and Branches are faster based on spins (at least 10x).")
 
 	//ACHIEVEMENT ROW 21
-	uc.setAttribute('ach-tooltip', "Become a ghost with at least "+shortenCosts(Decimal.pow(10, 22e4))+" EP without starting Eternity Challenge 10 while Big Ripped.")
+	uc.setAttribute('ach-tooltip', "Become a ghost with at least "+shortenCosts(Decimal.pow(10, 22e4))+" EP without starting Eternity Challenge 10 while Big Ripped." + (tmp.ngp3l ? "" : " Reward: Meta-Dimension Boosts don't reset Meta Dimensions anymore."))
 	mi.setAttribute('ach-tooltip', "Get "+shorten(Number.MAX_VALUE)+" infinitied stat. Reward: You gain banked infinites and eternities when you either go quantum or Big Rip the universe without having to gain infinitied and eternitied.")
 	wd.setAttribute('ach-tooltip', "Get "+shortenCosts(Decimal.pow(10, 1e12))+" Infinity Unstable Quarks for each Branch without Big Ripping.")
 	arent.setAttribute('ach-tooltip', "Reach " + shortenCosts(Decimal.pow(10, 18e5)) + " IP while dilated and big ripped and without having studies, EP mult upgrades, Tree Upgrades, and Break Eternity." + (tmp.ngp3l ? "" : " Reward: Your Tree Upgrade 8 level speeds up Nanofield."))
@@ -8130,7 +8136,6 @@ function buyDilationUpgrade(pos, max, isId) {
 }
 
 function getPassiveTTGen() {
-	if (player.dilation.tachyonParticles.gt(Decimal.pow(10,3300))) return 1e200
 	let r=getTTGenPart(player.dilation.tachyonParticles)
 	if (player.achievements.includes("ng3p18")&&!tmp.qu.bigRip.active) r+=getTTGenPart(player.dilation.bestTP)/50
 	if (tmp.ngex) r*=.8
@@ -8500,10 +8505,12 @@ function TPAnimationBtn(){
 
 function replicantiShopABRun(){
 	if (getEternitied() >= 40 && player.replicanti.auto[0] && player.currentEternityChall !== "eterc8" && isChanceAffordable()) {
-        	var maxCost = (tmp.ngp3 ? player.masterystudies.includes("t265") : false) ? 1/0 : new Decimal("1e1620")
-        	var bought = Math.max(Math.floor(player.infinityPoints.min(maxCost).div(player.replicanti.chanceCost).log(1e15) + 1), 0)
-        	player.replicanti.chance = Math.round(player.replicanti.chance*100+bought)/100
-        	player.replicanti.chanceCost = player.replicanti.chanceCost.times(Decimal.pow(1e15, bought))
+		var chance = Math.round(player.replicanti.chance * 100)
+		var maxCost = (tmp.ngp3 ? player.masterystudies.includes("t265") : false) ? 1 / 0 : new Decimal("1e1620").div(player.aarexModifications.ngmX == 2 ? 1e60 : 1);
+		var bought = Math.max(Math.floor(player.infinityPoints.min(maxCost).div(player.replicanti.chanceCost).log(1e15) + 1), 0)
+		if (!tmp.ngp3 || !player.masterystudies.includes("t265")) bought = Math.min(bought, 100 - chance)
+		player.replicanti.chance = (chance + bought) / 100
+		player.replicanti.chanceCost = player.replicanti.chanceCost.times(Decimal.pow(1e15, bought))
 	}
 
 	if (getEternitied() >= 60 && player.replicanti.auto[1] && player.currentEternityChall !== "eterc8") {
@@ -8974,7 +8981,6 @@ setInterval(function() {
 	bankedInfinityDisplay()
 	doPerSecondNGP3Stuff()
 	notifyQuantumMilestones()
-	updateColorCharge()
 	updateQuantumWorth()
 }, 1000)
 
@@ -9023,7 +9029,7 @@ function checkMatter(diff){
             		player.matter=player.matter.times(Decimal.pow(tmp.mv, diff))
             		if (player.matter.gte(player.money)) player.pSac.dims.extraTime+=player.matter.div(player.money).log(tmp.mv)/10
 			player.matter=player.matter.min(player.money)
-		} else player.pSac.dims.extraTime+=diff/10
+		} else player.pSac.dims.extraTime+=diff
 		if (player.pSac.dims.extraTime>getExtraTime()) {
 			pxGain=getPxGain()
             		player.matter=new Decimal(1/0)
@@ -9077,7 +9083,7 @@ function passiveInfinitiesUpdating(diff){
 
 function infinityRespeccedDMUpdating(diff){
 	var prod = getDarkMatterPerSecond()
-        player.singularity.darkMatter = player.singularity.darkMatter.add(getDarkMatterPerSecond().times(diff/10))
+        player.singularity.darkMatter = player.singularity.darkMatter.add(getDarkMatterPerSecond().times(diff))
 	if (prod.gt(0)) tmp.tickUpdate = true
 	if (player.singularity.darkMatter.gte(getNextDiscounts())) {
 		player.dimtechs.discounts++
@@ -9105,14 +9111,14 @@ function changingDecimalSystemUpdating(){
 
 function incrementTimesUpdating(diffStat){
 	player.totalTimePlayed += diffStat
-    	if (tmp.ngp3) player.ghostify.time += diffStat
-    	if (player.meta) tmp.qu.time += diffStat
-    	if (player.currentEternityChall == "eterc12") diffStat /= 1e3
+	if (tmp.ngp3) player.ghostify.time += diffStat
+	if (player.meta) tmp.qu.time += diffStat
+	if (player.currentEternityChall == "eterc12") diffStat /= 1e3
 	player.thisEternity += diffStat
    	player.thisInfinityTime += diffStat
-    	if (player.galacticSacrifice) player.galacticSacrifice.time += diffStat
-    	if (player.pSac !== undefined) player.pSac.time += diffStat
-    	failsafeDilateTime = false
+	if (player.galacticSacrifice) player.galacticSacrifice.time += diffStat
+	if (player.pSac !== undefined) player.pSac.time += diffStat
+	failsafeDilateTime = false
 }
 
 function requiredInfinityUpdating(diff){
@@ -9121,11 +9127,11 @@ function requiredInfinityUpdating(diff){
 		
 		for (let tier = (inQC(1) ? 1 : player.currentEternityChall == "eterc3" ? 3 : (inNC(4) || player.currentChallenge == "postc1") ? 5 : 7) - (inNC(7) || player.currentChallenge == "postcngm3_3" || inQC(4) || player.pSac !== undefined ? 1 : 0); tier >= 1; --tier) {
 			var name = TIER_NAMES[tier];
-			player[name + 'Amount'] = player[name + 'Amount'].plus(getDimensionProductionPerSecond(tier + (inNC(7) || player.currentChallenge == "postcngm3_3" || inQC(4) || player.pSac !== undefined ? 2 : 1)).times(diff / 100));
+			player[name + 'Amount'] = player[name + 'Amount'].plus(getDimensionProductionPerSecond(tier + (inNC(7) || player.currentChallenge == "postcngm3_3" || inQC(4) || player.pSac !== undefined ? 2 : 1)).times(diff / 10));
 		}
 		if (player.masterystudies != undefined) if (player.firstAmount.gt(0)) player.dontWant = false
 
-        	var tempa = getDimensionProductionPerSecond(1).times(diff/10)
+        	var tempa = getDimensionProductionPerSecond(1).times(diff)
         	player.money = player.money.plus(tempa)
         	player.totalmoney = player.totalmoney.plus(tempa)
         	if (isInfiniteDetected()) return
@@ -9140,10 +9146,10 @@ function requiredInfinityUpdating(diff){
 
 function chall2PowerUpdating(diff){
 	var div = 1800 / puMults[11](hasPU(11, true, true))
-    	player.chall2Pow = Math.min(player.chall2Pow + diff/div, 1);
-    	if (player.currentChallenge == "postc2" || inQC(6)) {
-        	postC2Count++;
-        	if (postC2Count >= 8 || diff > 80) {
+    player.chall2Pow = Math.min(player.chall2Pow + diff / div, 1);
+    if (player.currentChallenge == "postc2" || inQC(6)) {
+       	postC2Count++;
+       	if (postC2Count >= 8 || diff > 80) {
 			sacrifice();
 			postC2Count = 0;
 		}
@@ -9161,10 +9167,10 @@ function normalChallPowerUpdating(diff){
 function incrementParadoxUpdating(diff){
 	if (player.pSac !== undefined) {
 		//Paradox Power
-		player.pSac.dims.power=player.pSac.dims.power.add(getPDProduction(1).times(diff/10))
+		player.pSac.dims.power=player.pSac.dims.power.add(getPDProduction(1).times(diff))
 		for (var t=1;t<7;t++) {
 			if (!isDimUnlocked(t+2)) break
-			player.pSac.dims[t].amount=player.pSac.dims[t].amount.add(getPDProduction(t+2).times(diff/10))
+			player.pSac.dims[t].amount=player.pSac.dims[t].amount.add(getPDProduction(t+2).times(diff))
 		}
 	}
 }
@@ -9209,7 +9215,7 @@ function WZBosonsUpdating(diff){
 	data.speed = Math.max(Math.min(wattGained+(data.watt-data.speed)*2,wattGained),data.speed)
 	data.watt = wattGained
 	if (data.speed > 0) {
-		var limitDiff = Math.min(diff/10,data.speed*14400)
+		var limitDiff = Math.min(diff,data.speed*14400)
 		bosonicTick((data.speed-limitDiff/28800)*limitDiff)
 		data.speed = Math.max(data.speed-limitDiff/14400,0)
 	}
@@ -9218,8 +9224,8 @@ function WZBosonsUpdating(diff){
 function ghostlyPhotonsUpdating(diff){
 	var data=player.ghostify.ghostlyPhotons
 	var type=tmp.qu.bigRip.active?"amount":"darkMatter"
-	data[type]=data[type].add(getGPHProduction().times(diff/10))
-	data.ghostlyRays=data.ghostlyRays.add(getGHRProduction().times(diff/10)).min(getGHRCap())
+	data[type]=data[type].add(getGPHProduction().times(diff))
+	data.ghostlyRays=data.ghostlyRays.add(getGHRProduction().times(diff)).min(getGHRCap())
 	for (var c=0;c<8;c++) if (data.ghostlyRays.gte(getLightThreshold(c))) data.lights[c]+=Math.floor(data.ghostlyRays.div(getLightThreshold(c)).log(tmp.lti[c])+1)
 	data.maxRed=Math.max(data.lights[0],data.maxRed)
 }
@@ -9227,7 +9233,7 @@ function ghostlyPhotonsUpdating(diff){
 function nanofieldProducingChargeUpdating(diff){
 	var rate = getQuarkChargeProduction()
 	var loss = getQuarkLossProduction()
-	var toSub = loss.times(diff/10).min(tmp.qu.replicants.quarks)
+	var toSub = loss.times(diff).min(tmp.qu.replicants.quarks)
 	if (toSub.eq(0)) {
 		tmp.qu.nanofield.producingCharge = false
 		document.getElementById("produceQuarkCharge").innerHTML="Start production of preon charge.<br>(You will not get preons when you do this.)"
@@ -9256,7 +9262,7 @@ function updateNextPreonEnergyThreshold(){
 
 function nanofieldUpdating(diff){
 	var AErate = getQuarkAntienergyProduction()
-	var toAddAE = AErate.times(diff/10).min(getQuarkChargeProductionCap().sub(tmp.qu.nanofield.antienergy))
+	var toAddAE = AErate.times(diff).min(getQuarkChargeProductionCap().sub(tmp.qu.nanofield.antienergy))
 	if (tmp.qu.nanofield.producingCharge) nanofieldProducingChargeUpdating(diff)
 	if (toAddAE.gt(0)) {
 		tmp.qu.nanofield.antienergy = tmp.qu.nanofield.antienergy.add(toAddAE).min(getQuarkChargeProductionCap())
@@ -9283,7 +9289,7 @@ function treeOfDecayUpdating(diff){
 				
 		var mult=Decimal.pow(2,decayPower)
 		var power=Decimal.div(branch.quarks.gt(mult)?branch.quarks.div(mult).log(2)+1:branch.quarks.div(mult),decayRate)
-		var decayed=power.min(diff/10)
+		var decayed=power.min(diff)
 		power=power.sub(decayed).times(decayRate)
 
 		var sProd=getQuarkSpinProduction(shorthand)
@@ -9369,13 +9375,13 @@ function replicantOverallUpdating(diff){
 	if (tmp.qu.replicants.eggons.lt(1)) tmp.qu.replicants.babyProgress = new Decimal(0)
 	replicantBabiesGrowingUpUpdating(diff)
 	if (tmp.qu.replicants.babies.lt(1)) tmp.qu.replicants.ageProgress = new Decimal(0)
-	if (!tmp.qu.nanofield.producingCharge) tmp.qu.replicants.quarks = tmp.qu.replicants.quarks.add(getGatherRate().total.max(0).times(diff/10))
+	if (!tmp.qu.nanofield.producingCharge) tmp.qu.replicants.quarks = tmp.qu.replicants.quarks.add(getGatherRate().total.max(0).times(diff))
 }
 
 function quantumOverallUpdating(diff){
 	var colorShorthands=["r","g","b"]
 	//Color Powers
-	for (var c=0;c<3;c++) tmp.qu.colorPowers[colorShorthands[c]]=tmp.qu.colorPowers[colorShorthands[c]].add(getColorPowerProduction(colorShorthands[c]).times(diff/10))
+	for (var c=0;c<3;c++) tmp.qu.colorPowers[colorShorthands[c]]=tmp.qu.colorPowers[colorShorthands[c]].add(getColorPowerProduction(colorShorthands[c]).times(diff))
 	updateColorPowers()
 	if (player.masterystudies.includes("d10")) replicantOverallUpdating(diff)
 	if (player.masterystudies.includes("d11")) emperorDimUpdating(diff)
@@ -9383,7 +9389,7 @@ function quantumOverallUpdating(diff){
 	if (player.masterystudies.includes("d13")) treeOfDecayUpdating(diff)
 	
 	if (speedrunMilestonesReached>5) {
-		tmp.qu.metaAutobuyerWait+=diff
+		tmp.qu.metaAutobuyerWait+=diff*10
 		var speed=speedrunMilestonesReached>20?10/3:10
 		if (tmp.qu.metaAutobuyerWait>speed) {
 			tmp.qu.metaAutobuyerWait=tmp.qu.metaAutobuyerWait%speed
@@ -9393,8 +9399,8 @@ function quantumOverallUpdating(diff){
 }
 
 function metaDimsUpdating(diff){
-	player.meta.antimatter = player.meta.antimatter.plus(getMetaDimensionProduction(1).times(diff/10))
-	if (inQC(4)) player.meta.antimatter = player.meta.antimatter.plus(getMetaDimensionProduction(1).times(diff/10))
+	player.meta.antimatter = player.meta.antimatter.plus(getMetaDimensionProduction(1).times(diff))
+	if (inQC(4)) player.meta.antimatter = player.meta.antimatter.plus(getMetaDimensionProduction(1).times(diff))
 	if (tmp.ngp3 && !tmp.ngp3l && inQC(0)) gainQuarkEnergy(player.meta.bestAntimatter, player.meta.antimatter)
 	player.meta.bestAntimatter = player.meta.bestAntimatter.max(player.meta.antimatter)
 	if (tmp.ngp3) {
@@ -9408,11 +9414,11 @@ function infinityTimeMetaBlackHoleDimUpdating(diff){
 	var stepT = inNC(7) && player.aarexModifications.ngmX > 3 ? 2 : step
 	for (let tier = 1 ; tier < 9; tier++) {
 		if (tier < 9 - step){
-			player["infinityDimension"+tier].amount = player["infinityDimension"+tier].amount.plus(DimensionProduction(tier+step).times(diff/100))
-			if (player.meta) player.meta[tier].amount = player.meta[tier].amount.plus(getMetaDimensionProduction(tier+step).times(diff/100))
+			player["infinityDimension"+tier].amount = player["infinityDimension"+tier].amount.plus(DimensionProduction(tier+step).times(diff / 10))
+			if (player.meta) player.meta[tier].amount = player.meta[tier].amount.plus(getMetaDimensionProduction(tier+step).times(diff / 10))
 		}
-		if (tier < 9 - stepT) player["timeDimension"+tier].amount = player["timeDimension"+tier].amount.plus(getTimeDimensionProduction(tier+stepT).times(diff/100))
-		if (player.exdilation != undefined) if (isBHDimUnlocked(tier+step)) player["blackholeDimension"+tier].amount = player["blackholeDimension"+tier].amount.plus(getBlackholeDimensionProduction(tier+step).times(diff/100))
+		if (tier < 9 - stepT) player["timeDimension"+tier].amount = player["timeDimension"+tier].amount.plus(getTimeDimensionProduction(tier+stepT).times(diff / 10))
+		if (player.exdilation != undefined) if (isBHDimUnlocked(tier+step)) player["blackholeDimension"+tier].amount = player["blackholeDimension"+tier].amount.plus(getBlackholeDimensionProduction(tier+step).times(diff / 10))
 	}
 }
 
@@ -9429,13 +9435,13 @@ function dimensionPageTabsUpdating(){
 }
 
 function otherDimsUpdating(diff){
-	if (player.currentEternityChall !== "eterc7") player.infinityPower = player.infinityPower.plus(DimensionProduction(1).times(diff/10))
-   	else if (!inNC(4) && player.currentChallenge !== "postc1") player.seventhAmount = player.seventhAmount.plus(DimensionProduction(1).times(diff/10))
+	if (player.currentEternityChall !== "eterc7") player.infinityPower = player.infinityPower.plus(DimensionProduction(1).times(diff))
+   	else if (!inNC(4) && player.currentChallenge !== "postc1") player.seventhAmount = player.seventhAmount.plus(DimensionProduction(1).times(diff))
 
-   	if (player.currentEternityChall == "eterc7") player.infinityDimension8.amount = player.infinityDimension8.amount.plus(getTimeDimensionProduction(1).times(diff/10))
+   	if (player.currentEternityChall == "eterc7") player.infinityDimension8.amount = player.infinityDimension8.amount.plus(getTimeDimensionProduction(1).times(diff))
    	else {
-		if (ECTimesCompleted("eterc7") > 0) player.infinityDimension8.amount = player.infinityDimension8.amount.plus(DimensionProduction(9).times(diff/10))
-		player.timeShards = player.timeShards.plus(getTimeDimensionProduction(1).times(diff/10)).max(getTimeDimensionProduction(1).times(0))
+		if (ECTimesCompleted("eterc7") > 0) player.infinityDimension8.amount = player.infinityDimension8.amount.plus(DimensionProduction(9).times(diff))
+		player.timeShards = player.timeShards.plus(getTimeDimensionProduction(1).times(diff)).max(getTimeDimensionProduction(1).times(0))
 	}
 }
 
@@ -9597,7 +9603,7 @@ function passiveIPperMUpdating(diff){
 }
 
 function giveBlackHolePowerUpdating(diff){
-	if (player.exdilation != undefined) player.blackhole.power = player.blackhole.power.plus(getBlackholeDimensionProduction(1).times(diff/10))
+	if (player.exdilation != undefined) player.blackhole.power = player.blackhole.power.plus(getBlackholeDimensionProduction(1).times(diff))
 }
 
 function freeTickspeedUpdating(){
@@ -9677,7 +9683,7 @@ function doQuantumButtonDisplayUpdating(diff){
 				QKminpeak = currentQKmin
                 		QKminpeakValue = quarkGain()
                 		tmp.qu.autobuyer.peakTime = 0
-			} else tmp.qu.autobuyer.peakTime += diff / 10
+			} else tmp.qu.autobuyer.peakTime += diff
 		}
 	}
 	
@@ -10063,13 +10069,13 @@ function galSacBtnUpdating(){
 }
 
 function IPonCrunchPassiveGain(diff){
-    	if (player.timestudy.studies.includes(181)) player.infinityPoints = player.infinityPoints.plus(gainedInfinityPoints().times(diff/1000))
+    	if (player.timestudy.studies.includes(181)) player.infinityPoints = player.infinityPoints.plus(gainedInfinityPoints().times(diff / 100))
 }
 
 function EPonEternityPassiveGain(diff){
 	if (tmp.ngp3) {
 		if (player.masterystudies.includes("t291")) {
-            		player.eternityPoints = player.eternityPoints.plus(gainedEternityPoints().times(diff/1000))
+            		player.eternityPoints = player.eternityPoints.plus(gainedEternityPoints().times(diff / 100))
             		document.getElementById("eternityPoints2").innerHTML = "You have <span class=\"EPAmount2\">"+shortenDimensions(player.eternityPoints)+"</span> Eternity points."
 		}
 	}
@@ -10094,19 +10100,19 @@ function setTachyonParticles(x) {
 }
 
 function passiveQuantumLevelStuff(diff){
-	if (tmp.qu.bigRip.active||hasBosonicUpg(24)) tmp.qu.bigRip.spaceShards=tmp.qu.bigRip.spaceShards.add(getSpaceShardsGain().times(diff/1e3))
+	if (tmp.qu.bigRip.active||hasBosonicUpg(24)) tmp.qu.bigRip.spaceShards=tmp.qu.bigRip.spaceShards.add(getSpaceShardsGain().times(diff / 100))
 	if (!tmp.qu.bigRip.active) {
-		tmp.qu.quarks=tmp.qu.quarks.add(quarkGain().sqrt().times(diff/10))
+		tmp.qu.quarks=tmp.qu.quarks.add(quarkGain().sqrt().times(diff))
                 var p=["rg","gb","br"]
                 for (var i=0;i<3;i++) {
 			var r=tmp.qu.usedQuarks[p[i][0]].min(tmp.qu.usedQuarks[p[i][1]])
 			if (player.achievements.includes("ng3p71")) r=r.div(100)
                     	else r=r.sqrt()
-			tmp.qu.gluons[p[i]]=tmp.qu.gluons[p[i]].add(r.times(diff/10))
+			tmp.qu.gluons[p[i]]=tmp.qu.gluons[p[i]].add(r.times(diff))
 		}
-		if (player.ghostify.milestones>15) tmp.qu.quarks=tmp.qu.quarks.add(quarkGain().times(diff/1e3))
+		if (player.ghostify.milestones>15) tmp.qu.quarks=tmp.qu.quarks.add(quarkGain().times(diff / 100))
 	}
-	if (tmp.be&&player.ghostify.milestones>14) tmp.qu.breakEternity.eternalMatter=tmp.qu.breakEternity.eternalMatter.add(getEMGain().times(diff/1e3))
+	if (tmp.be&&player.ghostify.milestones>14) tmp.qu.breakEternity.eternalMatter=tmp.qu.breakEternity.eternalMatter.add(getEMGain().times(diff / 100))
 	updateQuarkDisplay()
 	updateQuantumWorth("quick")
 }
@@ -10114,7 +10120,10 @@ function passiveQuantumLevelStuff(diff){
 function TTpassiveGain(diff){
 	if (player.dilation.upgrades.includes(10)) {
 		var speed = getPassiveTTGen()
-		player.timestudy.theorem += speed * (diff + Math.max(Math.min(player.achievements.includes("ng3p44") ? diff * 9 : 0, 3600 - player.timestudy.theorem / speed), 0)) / 10
+		var div = player.timestudy.theorem / speed
+		player.timestudy.theorem += diff * speed
+		if (div < 3600) player.timestudy.theorem += Math.min(diff * 9, 3600 - div) * speed
+		if (player.timestudy.theorem > 1e200) player.timestudy.theorem = 1e200
     }
 }
 
@@ -10128,7 +10137,7 @@ function updateInfinityTimes(){
 }
 
 function infUpgPassiveIPGain(diff){
-	if (diff > player.autoTime && !player.break) player.infinityPoints = player.infinityPoints.plus(player.autoIP.times(diff/player.autoTime))
+	if (diff > player.autoTime && !player.break) player.infinityPoints = player.infinityPoints.plus(player.autoIP.div(player.autoTime).times(diff))
 }
 
 function gameLoop(diff) {
@@ -10139,8 +10148,9 @@ function gameLoop(diff) {
 		var diff = Math.min(thisUpdate - player.lastUpdate, 21600000);
 	}
 
-	diff = Math.max(diff / 100, 0)
-	var diffStat = diff
+	diff = Math.max(diff / 1e3, 0)
+	if (gameSpeed != 1) diff = diff * gameSpeed
+	var diffStat = diff * 10
 	if (player.version === 12.2 && typeof player.shameLevel === 'number') diff *= Math.min(Math.pow(10, player.shameLevel), 1)
 	if (player.currentEternityChall === "eterc12" || player.pSac !== undefined) diff /= getEC12Mult()
 
@@ -10204,7 +10214,7 @@ function gameLoop(diff) {
 	tickspeedButtonDisplay()
 	updateCosts()
 
-	if (player.dilation.studies.includes(1)) player.dilation.dilatedTime = player.dilation.dilatedTime.plus(getDilTimeGainPerSecond().times(diff/10))
+	if (player.dilation.studies.includes(1)) player.dilation.dilatedTime = player.dilation.dilatedTime.plus(getDilTimeGainPerSecond().times(diff))
 	gainDilationGalaxies()
 
 	passiveGPGen(diff)

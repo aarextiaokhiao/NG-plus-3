@@ -92,7 +92,12 @@ function updateTheoremButtons() {
 		document.getElementById("theoremam").innerHTML = "Buy Time Theorems <br>Cost: " + shortenCosts(player.timestudy.amcost)
 		document.getElementById("theoremmax").innerHTML = (speedrunMilestonesReached > 2 && player.masterystudies) ? ("Auto max: "+(player.autoEterOptions.tt ? "ON" : "OFF")) : "Buy max Theorems"
 	}
-	document.getElementById("timetheorems").innerHTML = "You have <span style='display:inline' class=\"TheoremAmount\">" + (player.timestudy.theorem > 99999 ? shortenMoney(player.timestudy.theorem) : getFullExpansion(Math.floor(player.timestudy.theorem))) + "</span> Time Theorem"+ (player.timestudy.theorem == 1 ? "." : "s.")
+	var tt = player.timestudy.theorem
+	var html = "<span style='display:inline' class=\"TheoremAmount\">" + (tt >= 1e5 ? shortenMoney(tt) : getFullExpansion(Math.floor(tt))) + "</span> "
+	if (tt >= 1e100) html += " Time Theorems" + (player.timestudy.theorem == 1e200 ? " (cap)" : "")
+	else if (tt == 1) html = "You have " + html + " Time Theorem."
+	else html = "You have " + html + " Time Theorems."
+	document.getElementById("timetheorems").innerHTML = html
 }
 
 function buyTimeStudy(name, check, quickBuy) {

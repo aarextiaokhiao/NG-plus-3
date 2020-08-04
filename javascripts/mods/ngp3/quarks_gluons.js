@@ -183,10 +183,10 @@ colorBoosts={
 }
 
 function getCPLog(c) {
-	var x = Decimal.add(tmp.qu.colorPowers[c],1).log10()
+	var x = Decimal.add(tmp.qu.colorPowers[c], 1).log10()
 	if (x > 1024 && player.aarexModifications.ngudpV && !player.aarexModifications.nguepV) {
-		if (player.aarexModifications.ngumuV) x = Math.sqrt(x)*32
-		else x = Math.pow(x,.9)*2
+		if (player.aarexModifications.ngumuV) x = Math.sqrt(x) * 32
+		else x = Math.pow(x, .9) * 2
 	}
 	return x
 }
