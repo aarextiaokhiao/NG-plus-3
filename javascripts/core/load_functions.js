@@ -815,7 +815,7 @@ function onLoad(noOffline) {
                   }
               }
               tmp.bl=player.ghostify.bl
-              for (var g=1;g<=br.limit;g++) tmp.bl.glyphs.push(0)
+              for (var g=1;g<=br.maxLimit;g++) tmp.bl.glyphs.push(0)
               player.options.animations.ghostify = true
               player.aarexModifications.ghostifyConf = true
           }
@@ -1652,7 +1652,7 @@ function onLoad(noOffline) {
       if (player.ghostify.neutrinos.boosts==undefined||!player.ghostify.times) player.ghostify.neutrinos.boosts=0
       if (player.ghostify.ghostlyPhotons.maxRed==undefined) player.ghostify.ghostlyPhotons.maxRed=0
       if (player.ghostify.wzb.unl) giveAchievement("Even Ghostlier than before")
-      for (var g=tmp.bl.glyphs.length+1;g<=br.limit;g++) tmp.bl.glyphs.push(0)
+      for (var g=tmp.bl.glyphs.length+1;g<=br.maxLimit;g++) tmp.bl.glyphs.push(0)
       if (!tmp.bl.usedEnchants.length) tmp.bl.usedEnchants=[]
       if (player.ghostify.wzb.dPUse===undefined) {
           player.ghostify.wzb.dPUse=0
@@ -2622,9 +2622,9 @@ function transformSaveToDecimal() {
           tmp.bl.am=new Decimal(tmp.bl.am)
           tmp.bl.extractProgress=new Decimal(tmp.bl.extractProgress)
           tmp.bl.autoExtract=new Decimal(tmp.bl.autoExtract)
-          for (var t=0;t<=br.limit-1;t++) tmp.bl.glyphs[t]=new Decimal(tmp.bl.glyphs[t]||0)
+          for (var t=0;t<=br.maxLimit-1;t++) tmp.bl.glyphs[t]=new Decimal(tmp.bl.glyphs[t]||0)
           tmp.bl.battery=new Decimal(tmp.bl.battery)
-          for (var g2=2;g2<=br.limit;g2++) for (var g1=1;g1<g2;g1++) if (tmp.bl.enchants[g1*10+g2]!==undefined) tmp.bl.enchants[g1*10+g2]=new Decimal(tmp.bl.enchants[g1*10+g2])
+          for (var g2=2;g2<=br.maxLimit;g2++) for (var g1=1;g1<g2;g1++) if (tmp.bl.enchants[g1*10+g2]!==undefined) tmp.bl.enchants[g1*10+g2]=new Decimal(tmp.bl.enchants[g1*10+g2])
 
           player.ghostify.wzb.dP=new Decimal(player.ghostify.wzb.dP)
           player.ghostify.wzb.wQkProgress=new Decimal(player.ghostify.wzb.wQkProgress)

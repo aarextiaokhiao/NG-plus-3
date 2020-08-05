@@ -877,7 +877,7 @@ function doNGPlusThreeNewPlayer(){
 		}
 	}
         tmp.bl=player.ghostify.bl
-        for (var g=1;g<br.names.length;g++) tmp.bl.glyphs.push(0)
+        for (var g=1;g<br.maxLimit;g++) tmp.bl.glyphs.push(0)
         player.options.animations.ghostify = true
         player.aarexModifications.ghostifyConf = true
 }
