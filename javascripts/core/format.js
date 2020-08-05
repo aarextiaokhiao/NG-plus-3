@@ -413,7 +413,7 @@ function formatValue(notation, value, places, placesUnder1000, noInf) {
             if (power > 100000  && player.options.commas === "Commas") power = power.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".");
             return "1337 H4CK3R"
         }
-    } else if (Decimal.lt(value, 1000)) {
+    } else if (value !== undefined && Decimal.lt(value, 1000)) {
         return (value).toFixed(placesUnder1000);
     } else {
         return "Infinite";
