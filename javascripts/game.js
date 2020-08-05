@@ -197,7 +197,7 @@ function setupHTMLAndData() {
 	for (var m = 1; m < 17; m++) document.getElementById("braveMilestone" + m).textContent=getFullExpansion(tmp.bm[m - 1])+"x quantumed"
 	//Bosonic Extractor
 	var ben = document.getElementById("enchants")
-	for (var g2 = 2; g2 <= br.limit; g2++) {
+	for (var g2 = 2; g2 <= br.maxLimit; g2++) {
 		var row = ben.insertRow(g2 - 2)
 		row.id = "bEnRow" + (g2 - 1)
 		for (var g1 = 1; g1 < g2; g1++) {
@@ -211,12 +211,12 @@ function setupHTMLAndData() {
 		}
 	}
 	var toeDiv = ""
-	for (var g = 1; g <= br.limit; g++) toeDiv += ' <button id="typeToExtract'+g+'" class="storebtn" onclick="changeTypeToExtract('+g+')" style="width: 25px; font-size: 12px"><div class="bRune" type="'+g+'"></div></button>'
+	for (var g = 1; g <= br.maxLimit; g++) toeDiv += ' <button id="typeToExtract'+g+'" class="storebtn" onclick="changeTypeToExtract('+g+')" style="width: 25px; font-size: 12px"><div class="bRune" type="'+g+'"></div></button>'
 	document.getElementById("typeToExtract").innerHTML=toeDiv
 	//Bosonic Upgrades
 	setupBosonicUpgReqData()
 	var buTable=document.getElementById("bUpgs")
-	for (r=1;r<=bu.rows;r++) {
+	for (r=1;r<=bu.maxRows;r++) {
 		var row=buTable.insertRow(r-1)
 		row.id="bUpgRow"+r
 		for (c=1;c<6;c++) {
@@ -230,18 +230,16 @@ function setupHTMLAndData() {
 	}
 	//Bosonic Runes
 	var brTable=document.getElementById("bRunes")
-	for (var g=1;g<=br.limit;g++) {
-		var width=100/br.limit
+	for (var g=1;g<=br.maxLimit;g++) {
 		var col=brTable.rows[0].insertCell(g-1)
 		col.id="bRuneCol"+g
 		col.innerHTML='<div class="bRune" type="'+g+'"></div>: <span id="bRune'+g+'"></span>'
-		col.style="min-width:"+width+"%;width:"+width+"%;max-width:"+width+"%"
 	}
 	var glyphs=document.getElementsByClassName("bRune")
 	for (var g=0;g<glyphs.length;g++) {
 		var glyph=glyphs[g]
 		var type=glyph.getAttribute("type")
-		if (type>0&&type<=br.limit) {
+		if (type>0&&type<=br.maxLimit) {
 			glyph.className="bRune "+br.names[type]
 			glyph.setAttribute("ach-tooltip",br.names[type]+" Bosonic Rune")
 		}
@@ -1383,34 +1381,6 @@ let tmp = {
 	blu: {}
 }
 
-function updateWZBosonsTemp(){
-	for (var r=1;r<=bu.rows;r++) for (var c=1;c<6;c++) {
-		var id=r*10+c
-		if (bu.effects[id]!==undefined) tmp.blu[id]=bu.effects[id]()
-	}
-	for (var g2=2;g2<br.names.length;g2++) for (var g1=1;g1<g2;g1++) {
-		var id=g1*10+g2
-		tmp.bEnLvl[id]=tmp.bl.enchants[id]||new Decimal(0)
-		if (bEn.effects[id]!==undefined) tmp.bEn[id]=getEnchantEffect(id)
-	}
-	var wpl=player.ghostify.wzb.wpb.add(1).log10()
-	var wnl=player.ghostify.wzb.wnb.add(1).log10()
-	tmp.wzbs=new Decimal(1) //W & Z Bosons speed
-	
-	var bosonsExp = wpl*(player.ghostify.wzb.wpb.sub(player.ghostify.wzb.wnb.min(player.ghostify.wzb.wpb))).div(player.ghostify.wzb.wpb.max(1)).toNumber()
-	tmp.wbt=Decimal.pow(tmp.newNGP3E?5:3,Math.max(bosonsExp,0)) //W Bosons boost to extract time
-	if (tmp.wbt.gt(1e8)) tmp.wbt = Decimal.pow(2+tmp.wbt.log10(),8)
-	tmp.wbo=Decimal.pow(10,Math.max(bosonsExp,0)) //W Bosons boost to Z Neutrino oscillation requirement
-	
-	tmp.wbp=player.ghostify.wzb.wpb.add(player.ghostify.wzb.wnb).div(100).max(1).pow(1/3).sub(1) //W Bosons boost to Bosonic Antimatter production
-	var zbslog = player.ghostify.wzb.zb.div(10).add(1).sqrt().log10()
-	if (zbslog > 4) zbslog = 2+zbslog/2
-	if (zbslog > 8) zbslog = 2*Math.log2(zbslog)+2
-	tmp.zbs = Decimal.pow(10,zbslog)
-	tmp.dppg=new Decimal(1)
-	tmp.bEn[21]=getEnchantEffect(21) //BU21 recalculation
-}
-
 function updateRedLightBoostTemp(){
 	var light0multiplier = tmp.newNGP3E?.155:.15
 	var lighteffect0 = Math.pow(tmp.ls[0],1/4)*light0multiplier+1
@@ -1738,7 +1708,11 @@ function updateTemp() {
 	if (tmp.ngp3) {
 		tmp.apgw=tmp.qu.nanofield.apgWoke||getAntiPreonGhostWake()
 		tmp.ppti=1
-		if (player.ghostify.wzb.unl) updateWZBosonsTemp()
+		if (player.ghostify.wzb.unl) {
+			updateBosonicEnchantsTemp()
+			updateBosonicUpgradesTemp()
+			updateWZBosonsTemp()
+		}
 		if (player.ghostify.ghostlyPhotons.unl) updateGPhTemp()
 		if (ghostified) {
 			updateNeutrinoBoostsTemp()

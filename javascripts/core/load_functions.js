@@ -1609,6 +1609,7 @@ function onLoad(noOffline) {
   if (tmp.ngp3) ghostified = player.ghostify.times > 0
   if (player.meta !== undefined) quantumed = ghostified || tmp.qu.times > 0
   tmp.eds=tmp.qu&&tmp.qu.emperorDimensions
+  updateBosonicLimits()
   updateTemp()
   if (tmp.ngp3) {
 	  if (player.eternityBuyer.presets === undefined) player.eternityBuyer.presets = {on: false, autoDil: false, selected: -1, selectNext: 0, left: 1, order: []}
