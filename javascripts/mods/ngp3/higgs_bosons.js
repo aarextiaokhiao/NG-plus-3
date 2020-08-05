@@ -103,19 +103,6 @@ function addHiggs(x) {
 	tmp.hb.higgsUnspent += x
 }
 
-function updateBosonicAntimatterDimReturnsTemp() {
-	var data = {}
-	var req = getHiggsRequirement()
-	tmp.badm = data
-
-	data.start = getHiggsRequirement()
-	data.base = getHiggsRequirementMult()
-	data.offset = 1 / Math.log(data.base) - 1
-	data.offset2 = 1 - Math.log10(data.offset + 1) / Math.log10(data.base)
-	data.postDim = tmp.bl.am.div(data.start).toNumber()
-	data.preDim = Decimal.pow(data.base, data.postDim - data.offset2).add(-data.offset).max(1)
-}
-
 function updateHiggsTab() {
 	document.getElementById("bAMDimReturnPhrase1").textContent = tmp.bl.am.gte(tmp.badm.start) ? "started" : "will start"
 	document.getElementById("bAMDimReturnStart").textContent = shorten(tmp.badm.start)
