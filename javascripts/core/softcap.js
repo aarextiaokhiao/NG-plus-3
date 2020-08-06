@@ -1,4 +1,24 @@
 var softcap_data = {
+	dt_log: {
+		1: {
+			func: "pow",
+			start: 4e3,
+			pow: 0.6,
+			derv: true
+		},
+		2: {
+			func: "pow",
+			start: 5e3,
+			pow: 0.4,
+			derv: true
+		},
+		3: {
+			func: "pow",
+			start: 6e3,
+			pow: 0.2,
+			derv: true
+		}
+	},
 	ts_reduce_log: {
 		1: {
 			func: "pow",

@@ -40,7 +40,7 @@ function bosonicLabReset() {
 	tmp.bl = {
 		watt: new Decimal(0),
 		ticks: tmp.bl.ticks,
-		speed: 1,
+		speed: 0,
 		am: new Decimal(0),
 		typeToExtract: 1,
 		extracting: false,
@@ -53,7 +53,7 @@ function bosonicLabReset() {
 		battery: new Decimal(0),
 		odSpeed: tmp.bl.odSpeed
 	}
-	for (var g=1;g<=br.limit;g++) tmp.bl.glyphs.push(new Decimal(0))
+	for (var g=1;g<=br.maxLimit;g++) tmp.bl.glyphs.push(new Decimal(0))
 	player.ghostify.wzb = {
 		unl: true,
 		dP: new Decimal(0),
@@ -77,7 +77,11 @@ function higgsReset() {
 	addHiggs(getHiggsGain())
 	bosonicLabReset()
 	giveAchievement("The Holy Particle")
-	if (oldHiggs == 0) updateHiggsUnlocks()
+	if (oldHiggs == 0) {
+		updateHiggsUnlocks()
+		updateBosonicLimits()
+		updateBosonicStuffCosts()
+	}
 }
 
 function getHiggsRequirementBase() {

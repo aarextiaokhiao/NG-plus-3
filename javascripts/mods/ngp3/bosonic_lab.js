@@ -146,7 +146,7 @@ function updateBosonicLimits() {
 
 	//Bosonic Runes / Extractor / Enchants
 	br.limit = br.maxLimit
-	if (tmp.ngp3l) br.limit = 3
+	if (tmp.ngp3l || tmp.hb.higgs == 0) br.limit = 3
 	var width = 100 / br.limit
 	for (var r = 1; r <= br.maxLimit; r++) {
 		document.getElementById("bRune" + r).style = "min-width:" + width + "%;width:" + width + "%;max-width:" + width + "%"
@@ -160,12 +160,12 @@ function updateBosonicLimits() {
 
 	//Bosonic Upgrades
 	bu.rows = bu.maxRows
-	if (tmp.ngp3l) bu.rows = 2
+	if (tmp.ngp3l || tmp.hb.higgs == 0) bu.rows = 2
 	for (var r = 3; r <= bu.maxRows; r++) document.getElementById("bUpgRow" + r).style.display = bu.rows >= r ? "" : "none"
 
 	//Bosonic Enchants
 	bEn.limit = bEn.maxLimit
-	if (tmp.ngp3l) bEn.limit = 2
+	if (tmp.ngp3l || tmp.hb.higgs == 0) bEn.limit = 2
 }
 
 function showBLTab(tabName) {
@@ -221,15 +221,21 @@ function updateBosonicStuffCosts() {
 	for (var g2=2;g2<=br.limit;g2++) for (var g1=1;g1<g2;g1++) {
 		var id=g1*10+g2
 		var data=bEn.costs[id]
-		document.getElementById("bEnG1Cost"+id).textContent=(data!==undefined&&data[0]!==undefined&&shortenDimensions(data[0]))||"???"
-		document.getElementById("bEnG2Cost"+id).textContent=(data!==undefined&&data[1]!==undefined&&shortenDimensions(data[1]))||"???"
+		document.getElementById("bEnG1Cost"+id).textContent=(data!==undefined&&data[0]!==undefined&&shortenDimensions(getBosonicFinalCost(data[0])))||"???"
+		document.getElementById("bEnG2Cost"+id).textContent=(data!==undefined&&data[1]!==undefined&&shortenDimensions(getBosonicFinalCost(data[1])))||"???"
 	}
 	for (var r=1;r<=bu.rows;r++) for (var c=1;c<6;c++) {
 		var id=r*10+c
 		var data=bu.reqData[id]
-		document.getElementById("bUpgCost"+id).textContent=(data[0]!==undefined&&shorten(data[0]))||"???"
-		for (var g=1;g<3;g++) document.getElementById("bUpgG"+g+"Req"+id).textContent=(data[g*2-1]!==undefined&&shortenDimensions(new Decimal(data[g*2-1])))||"???"
+		document.getElementById("bUpgCost"+id).textContent=(data[0]!==undefined&&shorten(getBosonicFinalCost(data[0])))||"???"
+		for (var g=1;g<3;g++) document.getElementById("bUpgG"+g+"Req"+id).textContent=(data[g*2-1]!==undefined&&shortenDimensions(getBosonicFinalCost(data[g*2-1])))||"???"
 	}
+}
+
+function getBosonicFinalCost(x) {
+	x = new Decimal(x)
+	if (player.achievements.includes("ng3p91")) x = x.div(2)
+	return x
 }
 
 //Bosonic Extractor / Bosonic Runes
@@ -268,8 +274,8 @@ function canBuyEnchant(id) {
 	let g1=Math.floor(id/10)
 	let g2=id%10
 	if (costData===undefined) return
-	if (costData[0]===undefined||!data.glyphs[g1-1].gte(costData[0])) return
-	if (costData[1]===undefined||!data.glyphs[g2-1].gte(costData[1])) return
+	if (costData[0]===undefined||!data.glyphs[g1-1].gte(getBosonicFinalCost(costData[0]))) return
+	if (costData[1]===undefined||!data.glyphs[g2-1].gte(getBosonicFinalCost(costData[1]))) return
 	return true
 }
 
@@ -278,8 +284,9 @@ function getMaxEnchantLevelGain(id) {
 	let costData=bEn.costs[id]
 	let g1=Math.floor(id/10)
 	let g2=id%10
-	let lvl1=data.glyphs[g1-1].div(costData[0]).floor()
-	let lvl2=data.glyphs[g2-1].div(costData[1]).floor()
+	if (costData===undefined) return new Decimal(0)
+	let lvl1=data.glyphs[g1-1].div(getBosonicFinalCost(costData[0])).floor()
+	let lvl2=data.glyphs[g2-1].div(getBosonicFinalCost(costData[1])).floor()
 	return lvl1.min(lvl2)
 }
 
@@ -298,8 +305,8 @@ function takeEnchantAction(id) {
 		let g1=Math.floor(id/10)
 		let g2=id%10
 		if (!canBuyEnchant(id)) return
-		data.glyphs[g1-1]=data.glyphs[g1-1].sub(costData[0]).round()
-		data.glyphs[g2-1]=data.glyphs[g2-1].sub(costData[1]).round()
+		data.glyphs[g1-1]=data.glyphs[g1-1].sub(getBosonicFinalCost(costData[0])).round()
+		data.glyphs[g2-1]=data.glyphs[g2-1].sub(getBosonicFinalCost(costData[1])).round()
 		if (data.enchants[id]==undefined) data.enchants[id]=new Decimal(1)
 		else data.enchants[id]=data.enchants[id].add(1).round()
 	} else if (bEn.action=="max") {
@@ -308,8 +315,8 @@ function takeEnchantAction(id) {
 		let g1=Math.floor(id/10)
 		let g2=id%10
 		if (!canBuyEnchant(id)) return
-		data.glyphs[g1-1]=data.glyphs[g1-1].sub(lvl.times(costData[0]).min(data.glyphs[g1-1])).round()
-		data.glyphs[g2-1]=data.glyphs[g2-1].sub(lvl.times(costData[1]).min(data.glyphs[g2-1])).round()
+		data.glyphs[g1-1]=data.glyphs[g1-1].sub(lvl.times(getBosonicFinalCost(costData[0])).min(data.glyphs[g1-1])).round()
+		data.glyphs[g2-1]=data.glyphs[g2-1].sub(lvl.times(getBosonicFinalCost(costData[1])).min(data.glyphs[g2-1])).round()
 		if (data.enchants[id]==undefined) data.enchants[id]=new Decimal(lvl)
 		else data.enchants[id]=data.enchants[id].add(lvl).round()
 	} else if (bEn.action=="use") {
@@ -374,7 +381,7 @@ function updateEnchantDescs() {
 
 var br = {
 	names: [null, "Infinity", "Eternity", "Quantum", "Ghostly", "Ethereal", "Sixth", "Seventh", "Eighth", "Ninth"], //Current maximum limit of 9.
-	maxLimit: 3,
+	maxLimit: 4,
 	scalings: {
 		1: 60,
 		2: 120,
@@ -411,7 +418,7 @@ var bEn = {
 	},
 	action: "upgrade",
 	actions: ["upgrade", "max", "use"],
-	maxLimit: 2,
+	maxLimit: 4,
 	autoScalings:{
 		1: 1.5,
 		2: 3,
@@ -451,8 +458,8 @@ function setupBosonicUpgReqData() {
 function canBuyBosonicUpg(id) {
 	let rData=bu.reqData[id]
 	if (rData[0]===undefined||rData[1]===undefined||rData[3]===undefined) return
-	if (!tmp.bl.am.gte(rData[0])) return
-	for (var g=1;g<3;g++) if (!tmp.bl.glyphs[rData[g*2]-1].gte(rData[g*2-1])) return
+	if (!tmp.bl.am.gte(getBosonicFinalCost(rData[0]))) return
+	for (var g=1;g<3;g++) if (!tmp.bl.glyphs[rData[g*2]-1].gte(getBosonicFinalCost(rData[g*2-1]))) return
 	return true
 }
 
@@ -460,7 +467,7 @@ function buyBosonicUpgrade(id) {
 	if (tmp.bl.upgrades.includes(id)) return
 	if (!canBuyBosonicUpg(id)) return
 	tmp.bl.upgrades.push(id)
-	tmp.bl.am=tmp.bl.am.sub(bu.reqData[id][0])
+	tmp.bl.am=tmp.bl.am.sub(getBosonicFinalCost(bu.reqData[id][0]))
 	updateTemp()
 }
 
@@ -477,7 +484,7 @@ function updateBosonicUpgradeDescs() {
 }
 
 var bu = {
-	maxRows: 2,
+	maxRows: 4,
 	costs: {
 		11: {
 			am: 200,
@@ -541,13 +548,25 @@ var bu = {
 		22: "Replace seventh Nanofield reward with a boost to neutrino gain and preon charge.",
 		23: "Assigning gives more colored quarks based on your meta-antimatter.",
 		24: "You produce 1% of Space Shards on Big Rip per second, but Break Eternity upgrades are nerfed.",
-		25: "Electrons boost the per-ten Meta Dimensions multiplier."
+		25: "Electrons boost the per-ten Meta Dimensions multiplier.",
+		31: "Red power boosts the power of all Nanofield rewards.",
+		32: "Every 3rd Light Empowerment after LE7, unlock a new boost until LE25.",
+		33: "Higgs Bosons reduce the costs of all electron upgrades.",
+		34: "All types of galaxies boost each other.",
+		35: "Green power effect makes replicate interval increase slower.",
+		41: "Intergalactic and Infinite Time rewards boost each other.",
+		42: "The first Bosonic Upgrade is stronger.",
+		43: "Bosonic Antimatter adds the efficiency of Tree Upgrades.",
+		44: "Replicantis and Emperor Dimensions boost each other.",
+		45: "Dilated time weakens the Distant Antimatter Galaxies scaling."
 	},
 	effects: {
 		11: function() {
-			let l = tmp.bl.am.add(1).log10()
-			if (tmp.newNGP3E) l += l / 2 + Math.sqrt(l)
-			return Math.pow(l, 0.5 - 0.25 * l / (l + 3)) / 4
+			let x = tmp.bl.am.add(1).log10()
+			let exp = 0.5 - 0.25 * x / (x + 3)
+			if (hasBosonicUpg(42)) exp += 0.125
+			if (tmp.newNGP3E) x += x / 2 + Math.sqrt(x)
+			return Math.pow(x, exp) / 4
 		},
 		12: function() {
 			return (colorBoosts.g+tmp.pe-1)*7e-4
@@ -570,7 +589,7 @@ var bu = {
 			return Math.round(x)
 		},
 		15: function() {
-			let gLog = Decimal.max(player.ghostify.times,1).log10()
+			let gLog = Decimal.max(player.ghostify.times, 1).log10()
 			if (tmp.newNGP3E) gLog += 2 * Math.sqrt(gLog)
 			return {
 				dt: Decimal.pow(10, 2 * gLog + 3 * gLog / (gLog / 20 + 1)),
@@ -588,6 +607,36 @@ var bu = {
 				add = 1.5
 			}
 			return Math.sqrt(tmp.qu.electrons.amount + 1) / div + add
+		},
+		31: function() {
+			return Math.max(Math.log10(tmp.qu.colorPowers.r.add(1).log10() + 1) * 2 - 7.5, 1)
+		},
+		33: function() {
+			return tmp.hb.higgs / 100
+		},
+		34: function() {
+			return (Math.log10(player.galaxies + 1) + Math.log10(getTotalRG() + 1) + Math.log10(player.dilation.freeGalaxies + 1) + Math.log10(tmp.aeg + 1)) / 1e3 + 1
+		},
+		35: function() {
+			return Math.sqrt(colorBoosts.g + tmp.pe - 1) * 3
+		},
+		41: function(x) {
+			return {
+				ig: Decimal.pow(tmp.qu.bigRip.active ? 1e20 : 1.05, Math.pow(Decimal.max(tmp.it, 1).log10(), 2)),
+				it: Decimal.pow(tmp.qu.bigRip.active ? 1.01 : 5, Math.sqrt(Decimal.max(tmp.ig, 1).log10()))
+			}
+		},
+		43: function() {
+			return tmp.bl.am.add(1).log10() / 50
+		},
+		44: function(x) {
+			return {
+				rep: Math.sqrt(tmp.qu.replicants.quarks.add(1).log10()),
+				eds: Decimal.pow(10, player.replicanti.amount.log10() / 8e6)
+			}
+		},
+		45: function() {
+			return Math.pow(1.03, Math.sqrt(player.dilation.dilatedTime.add(1).log10()))
 		}
 	},
 	effectDescs: {
@@ -605,6 +654,30 @@ var bu = {
 		},
 		25: function(x) {
 			return "^" + x.toFixed(2)
+		},
+		31: function(x) {
+			return (x * 100 - 100).toFixed(1) + "% stronger"
+		},
+		33: function(x) {
+			return "-" + x.toFixed(2) + " levels worth"
+		},
+		34: function(x) {
+			return (x * 100 - 100).toFixed(2) + "% stronger"
+		},
+		35: function(x) {
+			return "+" + x.toFixed(1) + " OoMs"
+		},
+		41: function(x) {
+			return shorten(x.ig) + "x to Intergalactic, " + shorten(x.it) + "x to Infinite Time"
+		},
+		43: function(x) {
+			return "+" + (x * 100).toFixed(2) + "%"
+		},
+		44: function(x) {
+			return "+" + shorten(x.rep) + " OoMs to replicate interval increase, " + shorten(x.eds) + "x to all Emperor Dimensions"
+		},
+		45: function(x) {
+			return "/" + shorten(x) + " to efficiency"
 		}
 	}
 }

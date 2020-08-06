@@ -72,6 +72,7 @@ function updateReplicantsTab(){
 
 function updateNanoverseTab(){
 	var rewards = tmp.qu.nanofield.rewards
+	var reward5power = getNanofieldRewardTier(5, rewards)
 	document.getElementById("quarksNanofield").textContent = shortenDimensions(tmp.qu.replicants.quarks)		
 	document.getElementById("quarkCharge").textContent = shortenMoney(tmp.qu.nanofield.charge)
 	document.getElementById("quarkChargeRate").textContent = shortenDimensions(getQuarkChargeProduction())
@@ -88,14 +89,15 @@ function updateNanoverseTab(){
 	for (var reward = 1; reward < 9; reward++) {
 		document.getElementById("nfReward" + reward).className = reward > rewards ? "nfRewardlocked" : "nfReward"
 		document.getElementById("nfRewardHeader" + reward).textContent = (rewards % 8 + 1 == reward ? "Next" : DISPLAY_NAMES[reward]) + " reward"
-		document.getElementById("nfRewardTier" + reward).textContent = "Tier " + getFullExpansion(Math.ceil((rewards + 1 - reward) / 8)) + " / Power: " + getNanofieldRewardTier(reward, rewards).toFixed(1)
+		document.getElementById("nfRewardTier" + reward).textContent = "Tier " + getFullExpansion(Math.ceil((rewards + 1 - reward) / 8)) + " / Power: " + (reward == 5 ? reward5power : getNanofieldRewardTier(reward, rewards)).toFixed(1)
 	}
 	document.getElementById("nfReward1").textContent = hasBosonicUpg(21) ? "Dimension Supersonic scaling starts " + getFullExpansion(getNanofieldRewardEffect(1, "supersonic")) + " later." :
 		"Hatch speed is " + shortenDimensions(getNanofieldRewardEffect(1, "speed")) + "x faster."
 	document.getElementById("nfReward2").textContent = "Meta-antimatter effect power is increased by ^" + getNanofieldRewardEffect(2).toFixed(1) + "."
 	document.getElementById("nfReward3").textContent = "Free galaxy gain is increased by " + (getNanofieldRewardEffect(3) * 100 - 100).toFixed(1) + "%."
 	document.getElementById("nfReward4").textContent = "Dilated time boost to Meta Dimensions is increased to ^" + getNanofieldRewardEffect(4).toFixed(3) + "."
-	document.getElementById("nfReward5").textContent = "While dilated, Normal Dimension multipliers and tickspeed are raised to the power of " + getNanofieldRewardEffect(5).toFixed(2) + "."
+	document.getElementById("nfReward5").textContent = !tmp.ngp3l && reward5power > 15 ? "Light threshold increases " + getNanofieldRewardEffect(5, "light").toFixed(2) + "x slower." :
+		"While dilated, Normal Dimension multipliers and tickspeed are raised to the power of " + getNanofieldRewardEffect(5, "dil_exp").toFixed(2) + "."
 	document.getElementById("nfReward6").textContent = "Meta-dimension boost power is increased to " + getNanofieldRewardEffect(6).toFixed(2) + "x."
 	document.getElementById("nfReward7").textContent = (hasBosonicUpg(22) ? "You gain " + shorten(getNanofieldRewardEffect(7, "neutrinos")) + "x more neutrinos" :
 		"Remote galaxy cost scaling starts " + getFullExpansion(getNanofieldRewardEffect(7, "remote")) + " later") +
@@ -918,9 +920,12 @@ function startProduceQuarkCharge() {
 }
 
 function getQuarkLossProduction() {
-	let ret = getQuarkChargeProduction(true).pow(4).times(4e25)
+	let ret = getQuarkChargeProduction(true)
+	let retCube = ret.pow(3)
+	if (retCube.gte("1e180")) retCube = retCube.pow(Math.pow(180 / retCube.log10(), 2 / 3))
+	ret = ret.times(retCube).times(4e25)
 	if (hasNU(3)) ret = ret.div(10)
-	if (tmp.qu.nanofield.power > tmp.apgw) ret = ret.pow((tmp.qu.nanofield.power-tmp.apgw) / 5 + 1)
+	if (tmp.qu.nanofield.power > tmp.apgw) ret = ret.pow((tmp.qu.nanofield.power - tmp.apgw) / 5 + 1)
 	ret = ret.times(getNanofieldFinalSpeed())
 	return ret
 }
@@ -955,7 +960,13 @@ function getNanofieldRewardEffect(id, effect) {
 	if (id == 2) return tier * 6.8
 	if (id == 3) return 1 + Math.pow(tier, 0.83) * 0.039
 	if (id == 4) return 0.1 + Math.sqrt(tier) * 0.021
-	if (id == 5) return 1 + tier * 0.36
+	if (id == 5) {
+		if (effect == "dil_exp") {
+			if (!tmp.ngp3l && tier > 15) tier = Math.log10(tier - 5) * 15
+			return 1 + tier * 0.36
+		}
+		if (effect == "light") return Math.max(Math.sqrt(tier + 1) / 4, 1)
+	}
 	if (id == 6) return 3 + tier * 1.34
 	if (id == 7) {
 		if (effect == "remote") return tier * 2150
@@ -3054,74 +3065,6 @@ function updateNeutrinosTab(){
 	else document.getElementById("ghpMultUpg").className = "gluonupgrade unavailablebtn"
 }
 
-function updateRaysPhotonsDisplay(){
-	var gphData=player.ghostify.ghostlyPhotons
-	document.getElementById("dtGPH").textContent=shorten(player.dilation.dilatedTime)
-	document.getElementById("gphProduction").textContent=shorten(getGPHProduction())
-	document.getElementById("gphProduction").className=(tmp.qu.bigRip.active?"gph":"dm")+"Amount"
-	document.getElementById("gphProductionType").textContent=tmp.qu.bigRip.active?"Ghostly Photons":"Dark Matter"
-	document.getElementById("gph").textContent=shortenMoney(gphData.amount)
-	document.getElementById("dm").textContent=shortenMoney(gphData.darkMatter)
-	document.getElementById("ghrProduction").textContent=shortenMoney(getGHRProduction())
-	document.getElementById("ghrCap").textContent=shortenMoney(getGHRCap())
-	document.getElementById("ghr").textContent=shortenMoney(gphData.ghostlyRays)
-}
-
-function updateLightBoostDisplay(){
-	var gphData=player.ghostify.ghostlyPhotons
-	document.getElementById("lightMax1").textContent=getFullExpansion(gphData.maxRed)
-	document.getElementById("lightBoost1").textContent=tmp.le[0].toFixed(3)
-	document.getElementById("lightBoost2").textContent=tmp.le[1].toFixed(2)
-	document.getElementById("lightBoost3").textContent=getFullExpansion(Math.floor(tmp.le[2]))
-	document.getElementById("lightBoost4").textContent=(tmp.le[3]*100-100).toFixed(1)
-	document.getElementById("lightBoost5").textContent=(tmp.le[4]*100).toFixed(1)+(hasBosonicUpg(11)?"+"+(tmp.blu[11]*100).toFixed(1):"")
-	document.getElementById("lightBoost6").textContent=shorten(tmp.le[5])
-	document.getElementById("lightBoost7").textContent=shorten(tmp.le[6])
-}
-
-function updateLightThresholdStrengthDisplay(){
-	var gphData=player.ghostify.ghostlyPhotons
-	var lePower=getLightEmpowermentBoost()
-	for (var c=0;c<8;c++) {
-		document.getElementById("light"+(c+1)).textContent=getFullExpansion(gphData.lights[c])
-		document.getElementById("lightThreshold"+(c+1)).textContent=shorten(getLightThreshold(c))
-		if (c>0) document.getElementById("lightStrength"+c).textContent=shorten(Math.sqrt(c>6?1:tmp.ls[c]+1)+lePower)
-	}
-}
-
-function updateLEmpowermentPrimary(){
-	var gphData=player.ghostify.ghostlyPhotons
-	var lePower=getLightEmpowermentBoost()
-	document.getElementById("lightEmpowerment").className="gluonupgrade "+(gphData.lights[7]>=tmp.leReq?"gph":"unavailablebtn")
-	document.getElementById("lightEmpowermentReq").textContent=getFullExpansion(tmp.leReq)
-	document.getElementById("lightEmpowerments").textContent=getFullExpansion(gphData.enpowerments)
-	document.getElementById("lightEmpowermentScaling").textContent=getGalaxyScaleName(tmp.leReqScale)+"Light Empowerments"
-	document.getElementById("lightEmpowermentsEffect").textContent=shorten(lePower)
-}
-
-function updateLEmpowermentBoosts(){
-	var gphData=player.ghostify.ghostlyPhotons
-	for (var e=1;e<4;e++) {
-		if (gphData.enpowerments>=e) {
-			if (e==1) {
-				document.getElementById("leBoost1").textContent=getFullExpansion(Math.floor(tmp.le[7].effect))
-				document.getElementById("leBoost1Total").textContent=getFullExpansion(Math.floor(tmp.le[7].total))
-			}
-			if (e==2) document.getElementById("leBoost2").textContent=(tmp.le[8]*100-100).toFixed(1)
-			if (e==3) document.getElementById("leBoost3").textContent=tmp.le[9].toFixed(2)
-		}
-		document.getElementById("le"+e).style.display=e>gphData.enpowerments?"none":""
-	}
-}
-
-function updatePhotonsTab(){
-	updateRaysPhotonsDisplay()
-	updateLightThresholdStrengthDisplay()
-	updateLightBoostDisplay()
-	updateLEmpowermentPrimary()
-	updateLEmpowermentBoosts()
-}
-
 function updateGhostifyTabs() {
 	if (document.getElementById("neutrinos").style.display=="block") updateNeutrinosTab()
 	if (document.getElementById("automaticghosts").style.display=="block") if (player.ghostify.milestones>7) updateQuantumWorth("display")
@@ -3404,6 +3347,79 @@ function getGPHProduction() {
 	return ret
 }
 
+function updatePhotonsTab(){
+	updateRaysPhotonsDisplay()
+	updateLightThresholdStrengthDisplay()
+	updateLightBoostDisplay()
+	updateLEmpowermentPrimary()
+	updateLEmpowermentBoosts()
+}
+
+function updateRaysPhotonsDisplay(){
+	var gphData=player.ghostify.ghostlyPhotons
+	document.getElementById("dtGPH").textContent=shorten(player.dilation.dilatedTime)
+	document.getElementById("gphProduction").textContent=shorten(getGPHProduction())
+	document.getElementById("gphProduction").className=(tmp.qu.bigRip.active?"gph":"dm")+"Amount"
+	document.getElementById("gphProductionType").textContent=tmp.qu.bigRip.active?"Ghostly Photons":"Dark Matter"
+	document.getElementById("gph").textContent=shortenMoney(gphData.amount)
+	document.getElementById("dm").textContent=shortenMoney(gphData.darkMatter)
+	document.getElementById("ghrProduction").textContent=shortenMoney(getGHRProduction())
+	document.getElementById("ghrCap").textContent=shortenMoney(getGHRCap())
+	document.getElementById("ghr").textContent=shortenMoney(gphData.ghostlyRays)
+}
+
+function updateLightBoostDisplay(){
+	var gphData=player.ghostify.ghostlyPhotons
+	document.getElementById("lightMax1").textContent=getFullExpansion(gphData.maxRed)
+	document.getElementById("lightBoost1").textContent=tmp.le[0].toFixed(3)
+	document.getElementById("lightBoost2").textContent=tmp.le[1].toFixed(2)
+	document.getElementById("lightBoost3").textContent=getFullExpansion(Math.floor(tmp.le[2]))
+	document.getElementById("lightBoost4").textContent=(tmp.le[3]*100-100).toFixed(1)
+	document.getElementById("lightBoost5").textContent=(tmp.le[4]*100).toFixed(1)+(hasBosonicUpg(11)?"+"+(tmp.blu[11]*100).toFixed(1):"")
+	document.getElementById("lightBoost6").textContent=shorten(tmp.le[5])
+	document.getElementById("lightBoost7").textContent=shorten(tmp.le[6])
+}
+
+function updateLightThresholdStrengthDisplay(){
+	var gphData=player.ghostify.ghostlyPhotons
+	var lePower=getLightEmpowermentBoost()
+	for (var c=0;c<8;c++) {
+		document.getElementById("light"+(c+1)).textContent=getFullExpansion(gphData.lights[c])
+		document.getElementById("lightThreshold"+(c+1)).textContent=shorten(getLightThreshold(c))
+		if (c>0) document.getElementById("lightStrength"+c).textContent=shorten(tmp.ls[c-1])
+	}
+}
+
+function updateLEmpowermentPrimary(){
+	var gphData=player.ghostify.ghostlyPhotons
+	var lePower=getLightEmpowermentBoost()
+	document.getElementById("lightEmpowerment").className="gluonupgrade "+(gphData.lights[7]>=tmp.leReq?"gph":"unavailablebtn")
+	document.getElementById("lightEmpowermentReq").textContent=getFullExpansion(tmp.leReq)
+	document.getElementById("lightEmpowerments").textContent=getFullExpansion(gphData.enpowerments)
+	document.getElementById("lightEmpowermentScaling").textContent=getGalaxyScaleName(tmp.leReqScale)+"Light Empowerments"
+	document.getElementById("lightEmpowermentsEffect").textContent=shorten(lePower)
+}
+
+function updateLEmpowermentBoosts(){
+	var boosts = 0
+	for (var e = 1; e <= leBoosts.max; e++) {
+		var unlocked = isLEBoostUnlocked(e)
+		if (unlocked) boosts++
+		document.getElementById("le"+e).style.visibility = unlocked ? "visible" : "hidden"
+	}
+	if (boosts >= 1) {
+		document.getElementById("leBoost1").textContent = getFullExpansion(Math.floor(tmp.leBonus[1].effect))
+		document.getElementById("leBoost1Total").textContent = getFullExpansion(Math.floor(tmp.leBonus[1].total))
+	}
+	if (boosts >= 2) document.getElementById("leBoost2").textContent = (tmp.leBonus[2] * 100 - 100).toFixed(1)
+	if (boosts >= 3) document.getElementById("leBoost3").textContent = tmp.leBonus[3].toFixed(2)
+	if (boosts >= 5) document.getElementById("leBoost5").textContent = "(" + shorten(tmp.leBonus[5].mult) + "x+1)^" + tmp.leBonus[5].exp.toFixed(3)
+	if (boosts >= 6) document.getElementById("leBoost6").textContent = shorten(tmp.leBonus[6])
+	if (boosts >= 7) document.getElementById("leBoost7").textContent = (tmp.leBonus[7] * 100).toFixed(1)
+	if (boosts >= 8) document.getElementById("leBoost8").textContent = (tmp.leBonus[8] * 100).toFixed(1)
+	if (boosts >= 9) document.getElementById("leBoost9").textContent = tmp.leBonus[9].toFixed(2)
+}
+
 function getGHRProduction() {
 	var log = player.ghostify.ghostlyPhotons.amount.sqrt().div(2).log10()
 	return Decimal.pow(10,log)
@@ -3415,7 +3431,28 @@ function getGHRCap() {
 }
 
 function getLightThreshold(l) {
-	return Decimal.pow(tmp.lti[l],player.ghostify.ghostlyPhotons.lights[l]).times(tmp.lt[l])
+	return Decimal.pow(getLightThresholdIncrease(l), player.ghostify.ghostlyPhotons.lights[l]).times(tmp.lt[l])
+}
+
+function getLightThresholdIncrease(l) {
+	let x = tmp.lti[l]
+	if (!tmp.ngp3l) {
+		let y = 1 / getNanofieldRewardEffect(5, "light")
+		if (y < 1) x = Math.pow(x, y)
+	}
+	return x
+}
+
+function lightEmpowerment() {
+	if (!(player.ghostify.ghostlyPhotons.lights[7]>=tmp.leReq)) return
+	if (!player.aarexModifications.leNoConf && !confirm("You will become a ghost, but Ghostly Photons will be reset. You will gain 1 Light Empowerment from this. Are you sure you want to proceed?")) return
+	ghostify(false, true)
+	player.ghostify.ghostlyPhotons.amount=new Decimal(0)
+	player.ghostify.ghostlyPhotons.darkMatter=new Decimal(0)
+	player.ghostify.ghostlyPhotons.ghostlyRays=new Decimal(0)
+	player.ghostify.ghostlyPhotons.lights=[0,0,0,0,0,0,0,0]
+	if (!player.ghostify.ghostlyPhotons.enpowerments) document.getElementById("leConfirmBtn").style.display = "inline-block"
+	player.ghostify.ghostlyPhotons.enpowerments++
 }
 
 function getLightEmpowermentReq(le) {
@@ -3440,16 +3477,67 @@ function updateLightEmpowermentReq() {
 	tmp.leReq = getLightEmpowermentReq()
 }
 
-function lightEmpowerment() {
-	if (!(player.ghostify.ghostlyPhotons.lights[7]>=tmp.leReq)) return
-	if (!player.aarexModifications.leNoConf && !confirm("You will become a ghost, but Ghostly Photons will be reset. You will gain 1 Light Empowerment from this. Are you sure you want to proceed?")) return
-	ghostify(false, true)
-	player.ghostify.ghostlyPhotons.amount=new Decimal(0)
-	player.ghostify.ghostlyPhotons.darkMatter=new Decimal(0)
-	player.ghostify.ghostlyPhotons.ghostlyRays=new Decimal(0)
-	player.ghostify.ghostlyPhotons.lights=[0,0,0,0,0,0,0,0]
-	if (!player.ghostify.ghostlyPhotons.enpowerments) document.getElementById("leConfirmBtn").style.display = "inline-block"
-	player.ghostify.ghostlyPhotons.enpowerments++
+var leBoosts = {
+	reqs: [null, 1, 2, 3, 10, 13, 16, 19, 22, 25],
+	max: 9,
+	effects: [
+		null,
+		//Boost #1
+		function() {
+			var le1exp = 1
+			if (tmp.newNGP3E) {
+				le1exp += .2
+				if (player.ghostify.ghostlyPhotons.unl) le1exp += .15
+				if (player.ghostify.wzb.unl) le1exp += .15
+			}
+			var le1mult = tmp.newNGP3E ? 600 : 300
+			var eff = Math.pow(Math.log10(tmp.effL[3] + 1), le1exp) * le1mult
+			return eff
+		},
+		//Boost #2
+		function() {
+			return Math.log10(tmp.effL[4] * 10 + 1) / 4 + 1
+		},
+		//Boost #3
+		function() {
+			return Math.pow(tmp.effL[0].normal + 1, 0.1) * 2 - 1
+		},
+		//Boost #4
+		function() {
+			return tmp.leBonus[4]
+		},
+		//Boost #5
+		function() {
+			return {
+				exp: 0.8 - 0.3 / Math.sqrt(player.ghostify.ghostlyPhotons.enpowerments * tmp.blu[13] / 200 + 1),
+				mult: Math.sqrt(player.ghostify.ghostlyPhotons.enpowerments * tmp.blu[13] / 100 + 1),
+			}
+		},
+		//Boost #6
+		function() {
+			return Math.pow(1.5, Math.pow(tmp.effL[2] + 1, 0.25) - 1)
+		},
+		//Boost #7
+		function() {
+			return Math.pow(tmp.effL[5] / 150 + 1, 0.25)
+		},
+		//Boost #8
+		function() {
+			return Math.pow(tmp.effL[6] / 500 + 1, 0.125)
+		},
+		//Boost #9
+		function() {
+			return Math.log10(tmp.effL[1] / 100 + 1)
+		},
+	]
+}
+
+function isLEBoostUnlocked(x) {
+	if (!tmp.ngp3) return false
+	if (!ghostified) return false
+	if (!player.ghostify.ghostlyPhotons.unl) return false
+	if (x >= 4 && !hasBosonicUpg(32)) return false
+	return player.ghostify.ghostlyPhotons.enpowerments >= leBoosts.reqs[x]
 }
 
 //v2.2
@@ -3689,13 +3777,17 @@ function getNanofieldRewardTier(reward, rewards) {
 		x = Math.sqrt((x / 2 + sbsc / 2) * sbsc)
 		if (reward == (rewards - 1) % 8 + 1) x += 0.5
 	}
+	if (hasBosonicUpg(31)) x *= tmp.blu[31]
 	return x
 }
 
 function getTreeUpgradeEfficiency(mod) {
 	let r=1
-	if (player.ghostify.neutrinos.boosts > 6 && (tmp.qu.bigRip.active || mod=="br") && mod != "noNB") r += tmp.nb[6]
-	if (!tmp.ngp3l && player.achievements.includes("ng3p62") && !tmp.qu.bigRip.active) r += 0.1
+	if (player.ghostify.neutrinos.boosts > 6 && (tmp.qu.bigRip.active || mod == "br") && mod != "noNB") r += tmp.nb[6]
+	if (!tmp.ngp3l) {
+		if (player.achievements.includes("ng3p62") && !tmp.qu.bigRip.active) r += 0.1
+		if (hasBosonicUpg(43)) r += tmp.blu[43]
+	}
 	return r
 }
 

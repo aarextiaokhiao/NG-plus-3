@@ -1374,8 +1374,10 @@ let tmp = {
 	nuc: [null,1e6,1e7,1e8,2e8,5e8,2e9,5e9,75e8,1e10,7e12,1e18,1e55,1e125,1e160,1e280],
 	lt: [12800,16e4,48e4,16e5,6e6,5e7,24e7,125e7],
 	lti: [2,4,1.5,10,4,1e3,2.5,3],
+	effL: [0,0,0,0,0,0,0],
 	ls: [0,0,0,0,0,0,0],
 	le: [0,0,0,0,0,0,0],
+	leBonus: {},
 	bEnLvl: {},
 	bEn: {},
 	blu: {}
@@ -1383,85 +1385,72 @@ let tmp = {
 
 function updateRedLightBoostTemp(){
 	var light0multiplier = tmp.newNGP3E?.155:.15
-	var lighteffect0 = Math.pow(tmp.ls[0],1/4)*light0multiplier+1
+	var lighteffect0 = Math.pow(tmp.effL[0].best,1/4)*light0multiplier+1
 	
 	if (lighteffect0 > 1.5 && !tmp.newNGP3E) lighteffect0 = Math.log10(lighteffect0*20/3)*1.5
 	tmp.le[0] = lighteffect0
 }
 
 function updateOrangeLightBoostTemp(){
-	tmp.le[1] = tmp.ls[1] > 64 ? Math.log10(tmp.ls[1]/64)+14:tmp.ls[1]>8?Math.sqrt(tmp.ls[1])+6 : tmp.ls[1]+1 
+	tmp.le[1] = tmp.effL[1] > 64 ? Math.log10(tmp.effL[1]/64)+14:tmp.effL[1]>8?Math.sqrt(tmp.effL[1])+6 : tmp.effL[1]+1 
 	tmp.ppti /= tmp.le[1]
 }
 
 function updateYellowLightBoostTemp(){
 	var lighteffect2 = 0 //changed later no matter what
-	if (tmp.ls[2] > 60 && !tmp.newNGP3E){
-		lighteffect2 = (Math.log10(tmp.ls[2]/6)+2)/3*Math.sqrt(1200)
+	if (tmp.effL[2] > 60 && !tmp.newNGP3E){
+		lighteffect2 = (Math.log10(tmp.effL[2] / 6) + 2) / 3 * Math.sqrt(1200)
 	} else {
-		lighteffect2 = tmp.ls[2]>20 ? Math.sqrt(tmp.ls[2]*20) : tmp.ls[2]
+		lighteffect2 = tmp.effL[2] > 20 ? Math.sqrt(tmp.effL[2] * 20) : tmp.effL[2]
 	}
-	if (lighteffect2 > 70) lighteffect2 = 6+Math.pow(Math.log2(lighteffect2-6)+2 , 2)
-	if (lighteffect2 > 100) lighteffect2 = 4 + 6 * Math.pow( Math.log10(lighteffect2) ,4)
+	if (lighteffect2 > 70) lighteffect2 = 6 + Math.pow(Math.log2(lighteffect2 - 6)+2, 2)
+	if (lighteffect2 > 100) lighteffect2 = 4 + 6 * Math.pow(Math.log10(lighteffect2), 4)
 	tmp.le[2] = Math.sqrt(lighteffect2) * 45e3 
 }
 
 function updateGreenLightBoostTemp(){
-	tmp.le[3] = tmp.ngp3l?(tmp.ls[3]>8?Math.log10(tmp.ls[3]/8)+Math.sqrt(12)+1:Math.sqrt(tmp.ls[3]*1.5)+1):1 
+	tmp.le[3] = tmp.ngp3l?(tmp.effL[3]>8?Math.log10(tmp.effL[3]/8)+Math.sqrt(12)+1:Math.sqrt(tmp.effL[3]*1.5)+1):1 
 }
 
 function updateBlueLightBoostTemp(){
 	var light4mult = tmp.newNGP3E?1.3:5/4
-	var lighteffect4 = Math.log10(Math.sqrt(tmp.ls[4]*2)+1)*light4mult
+	var lighteffect4 = Math.log10(Math.sqrt(tmp.effL[4]*2)+1)*light4mult
 	tmp.le[4] = lighteffect4
 }
 
 function updateIndigoLightBoostTemp(){
-	var loglighteffect5 = tmp.ls[5] > 25 ? Math.sqrt(tmp.ls[5]*10+375) : tmp.ls[5]
-	loglighteffect5 *= tmp.newNGP3E?20:10
-	tmp.le[5] = Decimal.pow(10,loglighteffect5) 
+	var loglighteffect5 = tmp.effL[5] > 25 ? Math.sqrt(tmp.effL[5]*10+375) : tmp.effL[5]
+	loglighteffect5 *= tmp.newNGP3E ? 20 : 10
+	if (!tmp.ngp3l && loglighteffect5 > 729) loglighteffect5 = Math.pow(loglighteffect5 * 27, 2 / 3)
+	tmp.le[5] = Decimal.pow(10, loglighteffect5) 
 }
 
 function updateVioletLightBoostTemp(){
-	var lightexp6 = tmp.newNGP3E?.36:1/3
-	var loglighteffect6 = Math.pow(player.postC3Reward.log10()*tmp.ls[6],lightexp6)*2 
-	if (loglighteffect6 > 15e3) loglighteffect6 = 15e3*Math.pow(loglighteffect6/15e3,.6)
-	tmp.le[6] = Decimal.pow(10 , loglighteffect6)
+	var lightexp6 = tmp.newNGP3E ? .36 : 1/3
+	var loglighteffect6 = Math.pow(player.postC3Reward.log10() * tmp.effL[6], lightexp6) * 2 
+	if (loglighteffect6 > 15e3) loglighteffect6 = 15e3 * Math.pow(loglighteffect6 / 15e3, .6)
+	if (!tmp.ngp3l && loglighteffect6 > 1e5) loglighteffect6 = Math.pow(loglighteffect6 / 1e6, .6) * 1e6
+	tmp.le[6] = Decimal.pow(10, loglighteffect6)
 }
 
 function updateEffectiveLightAmountsTemp(){
 	let lePower = getLightEmpowermentBoost()
-	for (var c=6;c>-1;c--) {
+	let leBonus5Unl = isLEBoostUnlocked(5)
+	for (var c = 7; c >= 0; c--) {
 		var x = player.ghostify.ghostlyPhotons.lights[c]
-		if (c == 0) x = (player.ghostify.ghostlyPhotons.maxRed+x*2)/3
-		tmp.ls[c] = x * ( Math.sqrt(c>5?1:tmp.ls[c+1]+1)+lePower )
+		var y = lePower
+		if ((c == 6 && !isLEBoostUnlocked(4)) || c == 7) y += 1
+		else if (leBonus5Unl) y += Math.pow(tmp.effL[c + 1] * tmp.leBonus[5].mult + 1, tmp.leBonus[5].exp)
+		else y += Math.sqrt(tmp.effL[c + 1] + 1)
+		tmp.ls[c] = y
+		if (c == 0) {
+			tmp.effL[0] = {
+				normal: x * y, // Without best red Light
+				best: (player.ghostify.ghostlyPhotons.maxRed + x * 2) / 3 * y //With best red Light
+			}
+		} else tmp.effL[c] = x * y
 	}
-	tmp.ls[7] = player.ghostify.ghostlyPhotons.lights[0]*(Math.sqrt(tmp.ls[1]+1)+getLightEmpowermentBoost()) //Other red Light boosts than 0 LE
-}
-
-function updateLightEmpowermentBonus1Temp(){
-	if (!player.ghostify.ghostlyPhotons.enpowerments > 0) return
-	var le1exp = 1
-	if (tmp.newNGP3E){
-		le1exp += .2
-		if (player.ghostify.ghostlyPhotons.unl) le1exp += .15
-		if (player.ghostify.wzb.unl) le1exp += .15 
-	}
-	var le1mult = tmp.newNGP3E?600:300
-	var eff = Math.pow(Math.log10(tmp.ls[3]+1),le1exp)*le1mult
-	tmp.le[7] = {effect:eff} 
-}
-
-function updateLightEmpowermentBonus2Temp(){
-	if (!player.ghostify.ghostlyPhotons.enpowerments > 1) return 
-	var eff = Math.log10(tmp.ls[4]*10+1)/4+1
-	tmp.le[8] = eff
-}
-
-function updateLightEmpowermentBonus3Temp(){
-	if (!player.ghostify.ghostlyPhotons.enpowerments > 2) return 
-	var eff = Math.pow(tmp.ls[7]+1,.1)*2-1
-	tmp.le[9] = eff
+	tmp.leBonus[4] = tmp.ls[6]
 }
 
 function updateNU14Temp(){
@@ -1475,6 +1464,7 @@ function updateNU15Temp(){
 }
 
 function updateGPhTemp(){
+	if (isLEBoostUnlocked(5)) tmp.leBonus[5] = leBoosts.effects[5]()
 	updateLightEmpowermentReq()
 	updateEffectiveLightAmountsTemp()
 	updateRedLightBoostTemp()
@@ -1484,9 +1474,13 @@ function updateGPhTemp(){
 	updateBlueLightBoostTemp()
 	updateIndigoLightBoostTemp()
 	updateVioletLightBoostTemp()
-	updateLightEmpowermentBonus1Temp()
-	updateLightEmpowermentBonus2Temp()
-	updateLightEmpowermentBonus3Temp()
+	if (isLEBoostUnlocked(1)) tmp.leBonus[1] = {effect: leBoosts.effects[1]()}
+	for (var b = 2; b <= leBoosts.max; b++) {
+		if (b != 4 && b != 5 && isLEBoostUnlocked(b)) {
+			tmp.leBonus[b] = leBoosts.effects[b]()
+			if (b == 8) tmp.apgw += Math.floor(tmp.leBonus[9])
+		}
+	}
 	updatePhotonsUnlockedBRUpgrades()
 	updateNU14Temp()
 	updateNU15Temp()
@@ -1495,6 +1489,7 @@ function updateGPhTemp(){
 function updateNeutBoost1Temp(nt){
 	let nb1mult = .75
 	if (tmp.newNGP3E) nb1mult = .8
+	if (isLEBoostUnlocked(7)) nb1mult *= tmp.leBonus[7]
 	let nb1neutrinos = nt[0].add(1).log10()+nt[1].add(1).log10()+nt[2].add(1).log10()
 	tmp.nb[0] = Math.log10(1+nb1neutrinos)*nb1mult
 }
@@ -1525,7 +1520,7 @@ function updateNeutBoost5Temp(nt){
 }
 
 function updateNeutBoost6Temp(nt){
-	var nb6neutrinos = Math.pow(nt[0].add(1).log10(),2)+Math.pow(nt[1].add(1).log10(),2)+Math.pow(nt[2].add(1).log10(),2)
+	var nb6neutrinos = Math.pow(nt[0].add(1).log10(), 2) + Math.pow(nt[1].add(1).log10(), 2) + Math.pow(nt[2].add(1).log10(), 2)
 	var nb6exp1 = .25
 	if (tmp.newNGP3E) nb6exp1 = .26
 	let nb6 = Math.pow(Math.pow(nb6neutrinos, nb6exp1) * 0.525 + 1, tmp.be ? 0.5 : 1)
@@ -1556,6 +1551,7 @@ function updateNeutBoost8Temp(nt){
 function updateNeutBoost9Temp(nt){
 	var nb9 = (nt[0].add(1).log10()+nt[1].add(1).log10()+nt[2].add(1).log10())/10
 	if (tmp.ngp3l && nb9 > 4096) nb9 = Math.pow(Math.log2(nb9) + 4, 3)
+	if (isLEBoostUnlocked(9)) nb9 *= tmp.leBonus[7]
 	tmp.nb[8] = nb9
 }
 
@@ -1613,6 +1609,7 @@ function updateInfiniteTimeTemp(){
 	if (!tmp.ngp3l && player.achievements.includes("ng3p56")) x *= 1.03
 	if (ghostified && player.ghostify.neutrinos.boosts>3) x *= tmp.nb[3]
 	if (tmp.be && !player.dilation.active && tmp.qu.breakEternity.upgrades.includes(8)) x *= getBreakUpgMult(8)
+	if (isLEBoostUnlocked(8)) x *= tmp.leBonus[8]
 	x = softcap(x, "inf_time_log_1")
 	if (player.aarexModifications.ngudpV) {
 		if (x > 1e8) x = Math.pow(1e8 * x, .5)
@@ -1627,9 +1624,9 @@ function updateInfiniteTimeTemp(){
 function updateIntergalacticTemp(){
 	if (!tmp.ngp3) return
 	x = player.galaxies
-	if (!tmp.qu.bigRip.active && player.ghostify.ghostlyPhotons.enpowerments>2) x *= tmp.le[9]
+	if (isLEBoostUnlocked(3) && tmp.qu.bigRip.active) x *= tmp.leBonus[3]
 	if (tmp.be && player.dilation.active && tmp.qu.breakEternity.upgrades.includes(10)) x *= getBreakUpgMult(10)
-	if (!tmp.ngp3l) x += tmp.aeg
+	if (!tmp.ngp3l) x += tmp.effAeg
 	tmp.igg = x
 
 	var igLog = Math.pow(x, Math.min(Math.sqrt(Math.log10(Math.max(x, 1))) * 2, 2.5)) //Log10 of reward
@@ -1659,6 +1656,10 @@ function updateIntergalacticTemp(){
 function updateAntiElectronGalaxiesTemp(){
 	tmp.aeg = 0
 	if (hasBosonicUpg(14) && !tmp.qu.bigRip.active) tmp.aeg = Math.max(tmp.blu[14] - tmp.qu.electrons.sacGals, 0)
+	tmp.effAeg = tmp.aeg
+	if (tmp.aeg > 0) {
+		if (hasBosonicUpg(34)) tmp.effAeg *= tmp.blu[34]
+	}
 }
 
 function updateTS232Temp(){
@@ -1668,10 +1669,10 @@ function updateTS232Temp(){
 }
 
 function updateTS431ExtraGalTemp(){
-	tmp.eg431=tmp.aeg/10
-	if (tmp.ngp3 && player.ghostify.ghostlyPhotons.enpowerments) {
-		tmp.le[7].total=(colorBoosts.g+tmp.pe-1)*tmp.le[7].effect
-		tmp.eg431+=tmp.le[7].total
+	tmp.eg431=tmp.effAeg/10
+	if (isLEBoostUnlocked(1)) {
+		tmp.leBonus[1].total=(colorBoosts.g+tmp.pe-1)*tmp.leBonus[1].effect
+		tmp.eg431+=tmp.leBonus[1].total
 	}
 }
 
@@ -1744,6 +1745,11 @@ function updateTemp() {
 	updateInfiniteTimeTemp()
 	updateAntiElectronGalaxiesTemp()
 	updateIntergalacticTemp() // starts with if (tmp.ngp3)
+	if (hasBosonicUpg(41)) {
+		tmp.blu[41] = bu.effects[41]()
+		tmp.it = tmp.it.times(tmp.blu[41].it)
+		tmp.ig = tmp.ig.times(tmp.blu[41].ig)
+	}
 
 	tmp.rm=getReplMult()
 	if (!player.timestudy.studies.includes(101)) tmp.nrm=1
@@ -2122,7 +2128,7 @@ function getGalaxyRequirement(offset = 0, display) {
 		let ghostlySpeed = tmp.be ? 55 : 1
 		let div = 1e4
 		if (tmp.grd.galaxies >= 302500 / ghostlySpeed) {
-			if (player.ghostify.ghostlyPhotons.enpowerments > 1 && tmp.be) div *= tmp.le[8]
+			if (isLEBoostUnlocked(2) && tmp.be) div *= tmp.leBonus[2]
 			tmp.grd.speed = Math.pow(2, (tmp.grd.galaxies + 1 - 302500 / ghostlySpeed) * ghostlySpeed / div)
 			scaling = 5
 		}
@@ -2133,7 +2139,8 @@ function getGalaxyRequirement(offset = 0, display) {
 			if (GUBought("rg6")) speed *= 0.867
 			if (GUBought("gb6")) speed /= 1+Math.pow(player.infinityPower.max(1).log10(),0.25)/2810
 			if (GUBought("br6")) speed /= 1+player.meta.resets/340
-			if (ghostified) if (player.ghostify.neutrinos.boosts > 5) speed /= tmp.nb[5]
+			if (ghostified && player.ghostify.neutrinos.boosts > 5) speed /= tmp.nb[5]
+			if (hasBosonicUpg(45)) speed /= tmp.blu[45]
 			amount += getDistantAdd(tmp.grd.galaxies-distantStart+1)*speed
 			if (tmp.grd.galaxies>=distantStart*2.5&&player.galacticSacrifice!=undefined) {
 				// 5 times worse scaling
@@ -2324,7 +2331,6 @@ function getDilTimeGainPerSecond() {
 	if (player.exdilation != undefined) gain = gain.times(getNGUDTGain())
 	gain = gain.times(getEternityBoostToDT())
 	
-	
 	if (player.dilation.upgrades.includes('ngpp6')) gain = gain.times(getDil17Bonus())
 	if (player.dilation.upgrades.includes('ngusp3')) gain = gain.times(getD22Bonus())
 	if (tmp.ngp3 ? !tmp.qu.bigRip.active || tmp.qu.bigRip.upgrades.includes(11) : false) {
@@ -2345,13 +2351,9 @@ function getDilTimeGainPerSecond() {
 	if (!tmp.ngp3l && (tmp.ngp3 || tmp.newNGP3E) && player.achievements.includes("ngpp13")) gain = gain.times(2)
 	
 	var lgain = gain.log10()
-	if (tmp.be && lgain > 4000){
-		lgain = doWeakerPowerReductionSoftcapNumber(lgain, 4000, .6)
-		lgain = doWeakerPowerReductionSoftcapNumber(lgain, 5000, .4)
-		lgain = doWeakerPowerReductionSoftcapNumber(lgain, 6000, .2)
-	}
+	if (!tmp.ngp3l) lgain = softcap(lgain, "dt_log")
 	
-	return Decimal.pow(10,lgain)
+	return Decimal.pow(10, lgain)
 	
 }
 
@@ -2397,7 +2399,7 @@ function intergalacticDisplay(){
 	var shiftRequirement = getShiftRequirement(0);
 	if (player.achievements.includes("ng3p37") && shiftRequirement.tier > 7) {
 		document.getElementById("intergalacticLabel").parentElement.style.display = ""
-		document.getElementById("intergalacticLabel").innerHTML = getGalaxyScaleName(tmp.igs) + 'Intergalactic Boost ' + (player.dilation.active || player.galacticSacrifice != undefined ? " (estimated)" : "") + " (" + getFullExpansion(player.galaxies) + (Math.floor(tmp.igg - player.galaxies) > 0 ? " + " + getFullExpansion(Math.floor(tmp.igg - player.galaxies)) : "") + "): " + shorten(dilates(tmp.ig).pow(player.dilation.active?getNanofieldRewardEffect(5):1)) + 'x to Eighth Dimensions'
+		document.getElementById("intergalacticLabel").innerHTML = getGalaxyScaleName(tmp.igs) + 'Intergalactic Boost ' + (player.dilation.active || player.galacticSacrifice != undefined ? " (estimated)" : "") + " (" + getFullExpansion(player.galaxies) + (Math.floor(tmp.igg - player.galaxies) > 0 ? " + " + getFullExpansion(Math.floor(tmp.igg - player.galaxies)) : "") + "): " + shorten(dilates(tmp.ig).pow(player.dilation.active?getNanofieldRewardEffect(5, "dil_exp"):1)) + 'x to Eighth Dimensions'
 	} else document.getElementById("intergalacticLabel").parentElement.style.display = "none"
 }
 
@@ -8115,6 +8117,7 @@ function getPassiveTTGen() {
 	if (player.achievements.includes("ng3p18") && !tmp.qu.bigRip.active) r += getTTGenPart(player.dilation.bestTP) / 50
 	if (tmp.ngex) r *= .8
 	r /= (player.achievements.includes("ng3p51") ? 200 : 2e4)
+	if (isLEBoostUnlocked(6)) r *= tmp.leBonus[6]
 	return r
 }
 
@@ -8261,9 +8264,11 @@ function getReplSpeed() {
 		inc/=Math.min(x,200)
 		if (x>200) exp+=x/10-20
 	}
-	if (player.dilation.upgrades.includes("ngmm10")) exp+=player.dilation.upgrades.length*0
+	if (player.dilation.upgrades.includes("ngmm10")) exp += player.dilation.upgrades.length
 	inc=inc+1
-	if (GUBought("gb2")) exp*=2
+	if (GUBought("gb2")) exp *= 2
+	if (hasBosonicUpg(35)) exp += tmp.blu[35]
+	if (hasBosonicUpg(44)) exp += tmp.blu[44].rep
 	return {inc:inc,exp:exp}
 }
 
@@ -9201,7 +9206,7 @@ function ghostlyPhotonsUpdating(diff){
 	var type=tmp.qu.bigRip.active?"amount":"darkMatter"
 	data[type]=data[type].add(getGPHProduction().times(diff))
 	data.ghostlyRays=data.ghostlyRays.add(getGHRProduction().times(diff)).min(getGHRCap())
-	for (var c=0;c<8;c++) if (data.ghostlyRays.gte(getLightThreshold(c))) data.lights[c]+=Math.floor(data.ghostlyRays.div(getLightThreshold(c)).log(tmp.lti[c])+1)
+	for (var c=0;c<8;c++) if (data.ghostlyRays.gte(getLightThreshold(c))) data.lights[c]+=Math.floor(data.ghostlyRays.div(getLightThreshold(c)).log(getLightThresholdIncrease(c))+1)
 	data.maxRed=Math.max(data.lights[0],data.maxRed)
 }
 
@@ -10168,7 +10173,7 @@ function gameLoop(diff) {
 		updateTickspeed()
 		tmp.tickUpdate = false
 	}
-	replicantiIncrease(diff)
+	replicantiIncrease(diff * 10)
 	IPMultBuyUpdating()
 	doEternityButtonDisplayUpdating(diff)
 	doQuantumButtonDisplayUpdating(diff)	
