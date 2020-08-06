@@ -1429,7 +1429,7 @@ function updateVioletLightBoostTemp(){
 	var lightexp6 = tmp.newNGP3E ? .36 : 1/3
 	var loglighteffect6 = Math.pow(player.postC3Reward.log10() * tmp.effL[6], lightexp6) * 2 
 	if (loglighteffect6 > 15e3) loglighteffect6 = 15e3 * Math.pow(loglighteffect6 / 15e3, .6)
-	if (!tmp.ngp3l && loglighteffect6 > 1e5) loglighteffect6 = Math.pow(loglighteffect6 / 1e6, .6) * 1e6
+	if (!tmp.ngp3l && loglighteffect6 > 1e5) loglighteffect6 = Math.pow(loglighteffect6 / 1e5, .6) * 1e5
 	tmp.le[6] = Decimal.pow(10, loglighteffect6)
 }
 

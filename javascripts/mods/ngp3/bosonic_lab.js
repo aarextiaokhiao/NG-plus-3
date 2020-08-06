@@ -1,98 +1,98 @@
 //Bosonic Lab
 function updateBLUnlocks() {
-	let unl=player.ghostify.wzb.unl
-	document.getElementById("blUnl").style.display=unl?"none":""
-	document.getElementById("blDiv").style.display=unl?"":"none"
-	document.getElementById("nftabs").style.display=unl?"":"none"
+	let unl = player.ghostify.wzb.unl
+	document.getElementById("blUnl").style.display = unl ? "none" : ""
+	document.getElementById("blDiv").style.display = unl ? "" : "none"
+	document.getElementById("nftabs").style.display = unl ? "" : "none"
 }
 
 function getBosonicWattGain() {
-	return player.money.log10()/2e16-1.25
+	return player.money.log10() / 2e16 - 1.25
 }
 
 function bosonicTick(diff) {
 	let lDiff //Mechanic-local diff
 	let lData //Mechanic-local data
-	let data=tmp.bl
-	diff=new Decimal(diff)
+	let data = tmp.bl
+	diff = new Decimal(diff)
 	if (isNaN(diff.e)) return
-	if (data.odSpeed>1&&data.battery.gt(0)) {
-		var bBtL=getBosonicBatteryLoss()
-		var odDiff=diff.times(bBtL).min(data.battery)
-		var fasterDiff=odDiff.div(bBtL).times(data.odSpeed)
-		data.battery=data.battery.sub(diff.times(bBtL).min(data.battery))
-		diff=fasterDiff.add(diff.sub(odDiff.min(diff)))
+	if (data.odSpeed > 1 && data.battery.gt(0)) {
+		var bBtL = getBosonicBatteryLoss()
+		var odDiff = diff.times(bBtL).min(data.battery)
+		var fasterDiff = odDiff.div(bBtL).times(data.odSpeed)
+		data.battery = data.battery.sub(diff.times(bBtL).min(data.battery))
+		diff = fasterDiff.add(diff.sub(odDiff.min(diff)))
 	}
-	data.ticks=data.ticks.add(diff)
+	data.ticks = data.ticks.add(diff)
 	
 	//W & Z Bosons
 	let apDiff
 	let apSpeed
-	lDiff=diff.times(tmp.wzbs)
-	lData=player.ghostify.wzb
+	lDiff = diff.times(tmp.wzbs)
+	lData = player.ghostify.wzb
 	if (lData.dPUse) {
-		apDiff=lDiff.times(getAntiPreonLoss()).min(lData.dP).div(aplScalings[player.ghostify.wzb.dPUse])
+		apDiff = lDiff.times(getAntiPreonLoss()).min(lData.dP).div(aplScalings[player.ghostify.wzb.dPUse])
 		if (isNaN(apDiff.e)) apDiff=new Decimal(0)
-		if (lData.dPUse==1) {
-			lData.wQkProgress=lData.wQkProgress.add(apDiff.times(tmp.zbs))
+		if (lData.dPUse == 1) {
+			lData.wQkProgress = lData.wQkProgress.add(apDiff.times(tmp.zbs))
 			if (lData.wQkProgress.gt(1)) {
 				let toSub=lData.wQkProgress.floor()
-				lData.wpb=lData.wpb.add(toSub.add(lData.wQkUp?1:0).div(2).floor())
-				lData.wnb=lData.wnb.add(toSub.add(lData.wQkUp?0:1).div(2).floor())
-				if (toSub.mod(2).gt(0)) lData.wQkUp=!lData.wQkUp
-				lData.wQkProgress=lData.wQkProgress.sub(toSub.min(lData.wQkProgress))
-				data.battery=data.battery.add(toSub.div(1e6))
+				lData.wpb=lData.wpb.add(toSub.add(lData.wQkUp ? 1 : 0).div(2).floor())
+				lData.wnb=lData.wnb.add(toSub.add(lData.wQkUp ? 0 : 1).div(2).floor())
+				if (toSub.mod(2).gt(0)) lData.wQkUp = !lData.wQkUp
+				lData.wQkProgress = lData.wQkProgress.sub(toSub.min(lData.wQkProgress))
+				data.battery = data.battery.add(toSub.div(1e6))
 			}
 		}
-		if (lData.dPUse==2) {
-			lData.zNeProgress=lData.zNeProgress.add(apDiff.times(getOscillateGainSpeed()))
+		if (lData.dPUse == 2) {
+			lData.zNeProgress = lData.zNeProgress.add(apDiff.times(getOscillateGainSpeed()))
 			if (lData.zNeProgress.gte(1)) {
-				let oscillated=Math.floor(lData.zNeProgress.add(1).log(2))
-				lData.zb=lData.zb.add(Decimal.pow(Math.pow(2,0.75),oscillated).sub(1).div(Math.pow(2,0.75)-1).times(lData.zNeReq.pow(0.75)))
-				lData.zNeProgress=lData.zNeProgress.sub(Decimal.pow(2,oscillated).sub(1).min(lData.zNeProgress)).div(Decimal.pow(2,oscillated))
-				lData.zNeReq=lData.zNeReq.times(Decimal.pow(2,oscillated))
-				lData.zNeGen=(lData.zNeGen+oscillated-1)%3+1
+				let oscillated = Math.floor(lData.zNeProgress.add(1).log(2))
+				lData.zb = lData.zb.add(Decimal.pow(Math.pow(2, 0.75), oscillated).sub(1).div(Math.pow(2, 0.75)-1).times(lData.zNeReq.pow(0.75)))
+				lData.zNeProgress = lData.zNeProgress.sub(Decimal.pow(2,oscillated).sub(1).min(lData.zNeProgress)).div(Decimal.pow(2, oscillated))
+				lData.zNeReq = lData.zNeReq.times(Decimal.pow(2,oscillated))
+				lData.zNeGen = (lData.zNeGen+oscillated-1)%3+1
 			}
 		}
-		if (lData.dPUse==3) {
-			lData.wpb=lData.wpb.add(lData.wnb.min(apDiff).times(tmp.zbs))
-			lData.wnb=lData.wnb.sub(lData.wnb.min(apDiff).times(tmp.zbs))
+		if (lData.dPUse == 3) {
+			lData.wpb = lData.wpb.add(lData.wnb.min(apDiff).times(tmp.zbs))
+			lData.wnb = lData.wnb.sub(lData.wnb.min(apDiff).times(tmp.zbs))
 		}
-		lData.dP=lData.dP.sub(lDiff.times(getAntiPreonLoss()).min(lData.dP))
-		if (lData.dP.eq(0)) lData.dPUse=0
-	} else lData.dP=lData.dP.add(getAntiPreonProduction().times(lDiff))
-	lData.zNeReq=Decimal.pow(10,Math.sqrt(Math.max(Math.pow(lData.zNeReq.log10(),2)-lDiff/100,0)))
+		lData.dP = lData.dP.sub(lDiff.times(getAntiPreonLoss()).min(lData.dP))
+		if (lData.dP.eq(0)) lData.dPUse = 0
+	} else lData.dP = lData.dP.add(getAntiPreonProduction().times(lDiff))
+	lData.zNeReq=Decimal.pow(10, Math.sqrt(Math.max(Math.pow(lData.zNeReq.log10(),2) - lDiff / 100, 0)))
 	
 	//Bosonic Extractor
 	if (data.usedEnchants.includes(12)) {
-		data.autoExtract=data.autoExtract.add(diff.times(tmp.bEn[12]))
-		if (!data.extracting&&data.autoExtract.gte(1)) {
-			data.extracting=true
-			data.autoExtract=data.autoExtract.sub(1)
-			dynuta.times=0
+		data.autoExtract = data.autoExtract.add(diff.times(tmp.bEn[12]))
+		if (!data.extracting && data.autoExtract.gte(1)) {
+			data.extracting = true
+			data.autoExtract = data.autoExtract.sub(1)
+			dynuta.times = 0
 		}
-	} else data.autoExtract=new Decimal(1)
-	if (data.extracting) data.extractProgress=data.extractProgress.add(diff.div(getExtractTime()))
+	} else data.autoExtract = new Decimal(1)
+	if (data.extracting) data.extractProgress = data.extractProgress.add(diff.div(getExtractTime()))
 	if (data.extractProgress.gte(1)) {
-		var oldAuto=data.autoExtract.floor()
-		if (!data.usedEnchants.includes(12)) oldAuto=new Decimal(0)
-		var toAdd=data.extractProgress.min(oldAuto.add(1).round()).floor()
-		data.autoExtract=data.autoExtract.sub(toAdd.min(oldAuto))
-		data.glyphs[data.typeToExtract-1]=data.glyphs[data.typeToExtract-1].add(toAdd).round()
+		var oldAuto = data.autoExtract.floor()
+		if (!data.usedEnchants.includes(12)) oldAuto = new Decimal(0)
+		var toAdd = data.extractProgress.min(oldAuto.add(1).round()).floor()
+		data.autoExtract = data.autoExtract.sub(toAdd.min(oldAuto))
+		data.glyphs[data.typeToExtract - 1] = data.glyphs[data.typeToExtract - 1].add(toAdd).round()
 		if (dynuta.check) {
-			dynuta.check=false
+			dynuta.check = false
 			dynuta.times++
-			if (dynuta.times>=20) giveAchievement("Did you not understand the automation?")
+			if (dynuta.times >= 20) giveAchievement("Did you not understand the automation?")
 		}
-		if (data.usedEnchants.includes(12)&&oldAuto.add(1).round().gt(toAdd)) data.extractProgress=data.extractProgress.sub(toAdd.min(data.extractProgress))
+		if (data.usedEnchants.includes(12) && oldAuto.add(1).round().gt(toAdd)) data.extractProgress = data.extractProgress.sub(toAdd.min(data.extractProgress))
 		else {
-			data.extracting=false
-			data.extractProgress=new Decimal(0)
+			data.extracting = false
+			data.extractProgress = new Decimal(0)
 		}
 	}
-	if (data.extracting&&data.extractProgress.lt(1)) {
-		dynuta.check=false
-		dynuta.times=0
+	if (data.extracting && data.extractProgress.lt(1)) {
+		dynuta.check = false
+		dynuta.times = 0
 	}
 
 	//Bosonic Antimatter production
@@ -117,9 +117,17 @@ function bosonicTick(diff) {
 	data.am = newBA
 }
 
+function getBAMProduction(){
+	return getBosonicAMProduction()
+}
+
+function getBosonicAntiMatterProduction(){
+	return getBosonicAMProduction()
+}
+
 function getBosonicAMProduction() {
-	let r=player.money.max(1).log10()/15e15-3
-	return Decimal.pow(10,r).times(tmp.wbp)
+	let r = player.money.max(1).log10() / 15e15 - 3
+	return Decimal.pow(10, r).times(tmp.wbp)
 }
 
 function getBosonicAMFinalProduction() {
@@ -218,17 +226,17 @@ function updateBosonicLabTab(){
 }
 
 function updateBosonicStuffCosts() {
-	for (var g2=2;g2<=br.limit;g2++) for (var g1=1;g1<g2;g1++) {
-		var id=g1*10+g2
-		var data=bEn.costs[id]
-		document.getElementById("bEnG1Cost"+id).textContent=(data!==undefined&&data[0]!==undefined&&shortenDimensions(getBosonicFinalCost(data[0])))||"???"
-		document.getElementById("bEnG2Cost"+id).textContent=(data!==undefined&&data[1]!==undefined&&shortenDimensions(getBosonicFinalCost(data[1])))||"???"
+	for (var g2 = 2; g2 <= br.limit; g2++) for (var g1 = 1; g1 < g2; g1++) {
+		var id = g1 * 10 + g2
+		var data = bEn.costs[id]
+		document.getElementById("bEnG1Cost" + id).textContent = (data !== undefined && data[0] !== undefined && shortenDimensions(getBosonicFinalCost(data[0]))) || "???"
+		document.getElementById("bEnG2Cost" + id).textContent = (data !== undefined && data[1] !== undefined && shortenDimensions(getBosonicFinalCost(data[1]))) || "???"
 	}
-	for (var r=1;r<=bu.rows;r++) for (var c=1;c<6;c++) {
-		var id=r*10+c
-		var data=bu.reqData[id]
-		document.getElementById("bUpgCost"+id).textContent=(data[0]!==undefined&&shorten(getBosonicFinalCost(data[0])))||"???"
-		for (var g=1;g<3;g++) document.getElementById("bUpgG"+g+"Req"+id).textContent=(data[g*2-1]!==undefined&&shortenDimensions(getBosonicFinalCost(data[g*2-1])))||"???"
+	for (var r = 1; r <= bu.rows; r++) for (var c = 1; c < 6; c++) {
+		var id = r * 10 + c
+		var data = bu.reqData[id]
+		document.getElementById("bUpgCost" + id).textContent = (data[0] !== undefined && shorten(getBosonicFinalCost(data[0]))) || "???"
+		for (var g = 1; g < 3; g++) document.getElementById("bUpgG" + g + "Req" + id).textContent = (data[g * 2 - 1] !== undefined && shortenDimensions(getBosonicFinalCost(data[g * 2 - 1]))) || "???"
 	}
 }
 
@@ -240,93 +248,92 @@ function getBosonicFinalCost(x) {
 
 //Bosonic Extractor / Bosonic Runes
 let dynuta={
-	check:false,
-	times:0
+	check: false,
+	times: 0
 }
 function extract() {
-	let data=tmp.bl
+	let data = tmp.bl
 	if (data.extracting) return
-	dynuta.check=true
-	data.extracting=true
+	dynuta.check = true
+	data.extracting = true
 }
 
 function getExtractTime() {
-	let data=tmp.bl
-	let r=new Decimal(br.scalings[data.typeToExtract]||1/0)
-	r=r.div(tmp.wbt)
+	let data = tmp.bl
+	let r = new Decimal(br.scalings[data.typeToExtract] || 1/0)
+	r = r.div(tmp.wbt)
 	return r
 }
 
 function changeTypeToExtract(x) {
-	let data=tmp.bl
-	if (data.typeToExtract==x) return
-	document.getElementById("typeToExtract"+data.typeToExtract).className="storebtn"
-	document.getElementById("typeToExtract"+x).className="chosenbtn"
-	data.typeToExtract=x
-	data.extracting=false
-	data.extractProgress=new Decimal(0)
-	data.autoExtract=new Decimal(1)
+	let data = tmp.bl
+	if (data.typeToExtract == x) return
+	document.getElementById("typeToExtract" + data.typeToExtract).className = "storebtn"
+	document.getElementById("typeToExtract" + x).className = "chosenbtn"
+	data.typeToExtract = x
+	data.extracting = false
+	data.extractProgress = new Decimal(0)
+	data.autoExtract = new Decimal(1)
 }
 
 function canBuyEnchant(id) {
-	let data=tmp.bl
-	let costData=bEn.costs[id]
-	let g1=Math.floor(id/10)
-	let g2=id%10
-	if (costData===undefined) return
-	if (costData[0]===undefined||!data.glyphs[g1-1].gte(getBosonicFinalCost(costData[0]))) return
-	if (costData[1]===undefined||!data.glyphs[g2-1].gte(getBosonicFinalCost(costData[1]))) return
+	let data = tmp.bl
+	let costData = bEn.costs[id]
+	let g1 = Math.floor(id / 10)
+	let g2 = id % 10
+	if (costData === undefined) return
+	if (costData[0] === undefined || !data.glyphs[g1 - 1].gte(getBosonicFinalCost(costData[0]))) return
+	if (costData[1] === undefined || !data.glyphs[g2 - 1].gte(getBosonicFinalCost(costData[1]))) return
 	return true
 }
 
 function getMaxEnchantLevelGain(id) {
-	let data=tmp.bl
-	let costData=bEn.costs[id]
-	let g1=Math.floor(id/10)
-	let g2=id%10
-	if (costData===undefined) return new Decimal(0)
-	let lvl1=data.glyphs[g1-1].div(getBosonicFinalCost(costData[0])).floor()
-	let lvl2=data.glyphs[g2-1].div(getBosonicFinalCost(costData[1])).floor()
+	let data = tmp.bl
+	let costData = bEn.costs[id]
+	let g1 = Math.floor(id / 10)
+	let g2 = id % 10
+	let lvl1 = data.glyphs[g1 - 1].div(getBosonicFinalCost(costData[0])).floor()
+	let lvl2 = data.glyphs[g2 - 1].div(getBosonicFinalCost(costData[1])).floor()
 	return lvl1.min(lvl2)
 }
 
 function canUseEnchant(id) {
 	if (!tmp.bl.enchants[id]) return
-	if (bEn.limit==1) {
+	if (bEn.limit == 1) {
 		if (tmp.bl.usedEnchants.includes(id)) return
-	} else if (!tmp.bl.usedEnchants.includes(id)&&tmp.bl.usedEnchants.length>=bEn.limit) return
+	} else if (!tmp.bl.usedEnchants.includes(id) && tmp.bl.usedEnchants.length >= bEn.limit) return
 	return true
 }
 
 function takeEnchantAction(id) {
-	let data=tmp.bl
-	if (bEn.action=="upgrade") {
-		let costData=bEn.costs[id]
-		let g1=Math.floor(id/10)
-		let g2=id%10
+	let data = tmp.bl
+	if (bEn.action == "upgrade") {
+		let costData = bEn.costs[id]
+		let g1 = Math.floor(id / 10)
+		let g2 = id % 10
 		if (!canBuyEnchant(id)) return
-		data.glyphs[g1-1]=data.glyphs[g1-1].sub(getBosonicFinalCost(costData[0])).round()
-		data.glyphs[g2-1]=data.glyphs[g2-1].sub(getBosonicFinalCost(costData[1])).round()
-		if (data.enchants[id]==undefined) data.enchants[id]=new Decimal(1)
-		else data.enchants[id]=data.enchants[id].add(1).round()
-	} else if (bEn.action=="max") {
-		let lvl=getMaxEnchantLevelGain(id)
-		let costData=bEn.costs[id]
-		let g1=Math.floor(id/10)
-		let g2=id%10
+		data.glyphs[g1 - 1] = data.glyphs[g1 - 1].sub(getBosonicFinalCost(costData[0])).round()
+		data.glyphs[g2 - 1] = data.glyphs[g2 - 1].sub(getBosonicFinalCost(costData[1])).round()
+		if (data.enchants[id] == undefined) data.enchants[id] = new Decimal(1)
+		else data.enchants[id] = data.enchants[id].add(1).round()
+	} else if (bEn.action == "max") {
+		let lvl = getMaxEnchantLevelGain(id)
+		let costData = bEn.costs[id]
+		let g1 = Math.floor(id / 10)
+		let g2 = id % 10
 		if (!canBuyEnchant(id)) return
-		data.glyphs[g1-1]=data.glyphs[g1-1].sub(lvl.times(getBosonicFinalCost(costData[0])).min(data.glyphs[g1-1])).round()
-		data.glyphs[g2-1]=data.glyphs[g2-1].sub(lvl.times(getBosonicFinalCost(costData[1])).min(data.glyphs[g2-1])).round()
-		if (data.enchants[id]==undefined) data.enchants[id]=new Decimal(lvl)
-		else data.enchants[id]=data.enchants[id].add(lvl).round()
-	} else if (bEn.action=="use") {
+		data.glyphs[g1 - 1] = data.glyphs[g1 - 1].sub(lvl.times(getBosonicFinalCost(costData[0])).min(data.glyphs[g1 - 1])).round()
+		data.glyphs[g2 - 1] = data.glyphs[g2 - 1].sub(lvl.times(getBosonicFinalCost(costData[1])).min(data.glyphs[g2 - 1])).round()
+		if (data.enchants[id] == undefined) data.enchants[id] = new Decimal(lvl)
+		else data.enchants[id] = data.enchants[id].add(lvl).round()
+	} else if (bEn.action == "use") {
 		if (canUseEnchant(id)) {
-			if (bEn.limit==1) data.usedEnchants=[id]
+			if (bEn.limit == 1) data.usedEnchants = [id]
 			else {
 				if (data.usedEnchants.includes(id)) {
-					var newData=[]
-					for (var u=0;u<data.usedEnchants.length;u++) if (data.usedEnchants[u]!=id) newData.push(data.usedEnchants[u])
-					data.usedEnchants=newData
+					var newData = []
+					for (var u = 0; u < data.usedEnchants.length; u++) if (data.usedEnchants[u] != id) newData.push(data.usedEnchants[u])
+					data.usedEnchants = newData
 				} else data.usedEnchants.push(id)
 			}
 		}
@@ -334,7 +341,7 @@ function takeEnchantAction(id) {
 }
 
 function changeEnchantAction(id) {
-	bEn.action=bEn.actions[id-1]
+	bEn.action = bEn.actions[id - 1]
 }
 
 function getEnchantEffect(id, desc) {
@@ -358,25 +365,25 @@ function updateBosonExtractorTab(){
 }
 
 function updateEnchantDescs() {
-	let data=tmp.bl
-	for (var g2=2;g2<=br.limit;g2++) for (var g1=1;g1<g2;g1++) {
-		var id=g1*10+g2
-		if (bEn.action=="upgrade"||bEn.action=="max") document.getElementById("bEn"+id).className="gluonupgrade "+(canBuyEnchant(id)?"bl":"unavailablebtn")
-		else if (bEn.action=="use") document.getElementById("bEn"+id).className="gluonupgrade "+(canUseEnchant(id)?"storebtn":"unavailablebtn")
-		if (shiftDown) document.getElementById("bEnLvl"+id).textContent="Enchant id: "+id
-		else document.getElementById("bEnLvl"+id).textContent="Level: "+shortenDimensions(tmp.bEnLvl[id])
-		if (bEn.action=="max") document.getElementById("bEnOn"+id).textContent="+"+shortenDimensions(getMaxEnchantLevelGain(id))+" levels"
-		else document.getElementById("bEnOn"+id).textContent=data.usedEnchants.includes(id)?"Enabled":"Disabled"
-		if (tmp.bEn[id]!=undefined) {
-			let effect=getEnchantEffect(id,true)
-			if (id==12) {
-				effect=effect.times(data.speed*(data.battery.gt(0)?data.odSpeed:1))
-				if (effect.lt(1)&&effect.gt(0)) document.getElementById("bEnEffect"+id).textContent=effect.m.toFixed(2)+"/"+shortenCosts(Decimal.pow(10,-effect.e))+" seconds"
-				else document.getElementById("bEnEffect"+id).textContent=shorten(effect)+"/second"
-			} else document.getElementById("bEnEffect"+id).textContent=shorten(effect)+"x"	
+	let data = tmp.bl
+	for (var g2 = 2; g2 <= br.limit; g2++) for (var g1 = 1; g1 < g2; g1++) {
+		var id = g1 * 10 + g2
+		if (bEn.action == "upgrade" || bEn.action == "max") document.getElementById("bEn" + id).className = "gluonupgrade "  +(canBuyEnchant(id) ? "bl" : "unavailablebtn")
+		else if (bEn.action == "use") document.getElementById("bEn" + id).className = "gluonupgrade " + (canUseEnchant(id) ? "storebtn" : "unavailablebtn")
+		if (shiftDown) document.getElementById("bEnLvl" + id).textContent = "Enchant id: " + id
+		else document.getElementById("bEnLvl" + id).textContent = "Level: " + shortenDimensions(tmp.bEnLvl[id])
+		if (bEn.action == "max") document.getElementById("bEnOn"+id).textContent = "+" + shortenDimensions(getMaxEnchantLevelGain(id)) + " levels"
+		else document.getElementById("bEnOn" + id).textContent = data.usedEnchants.includes(id) ? "Enabled" : "Disabled"
+		if (tmp.bEn[id] != undefined) {
+			let effect = getEnchantEffect(id, true)
+			if (id == 12) {
+				effect = effect.times(data.speed * (data.battery.gt(0) ? data.odSpeed : 1))
+				if (effect.lt(1) && effect.gt(0)) document.getElementById("bEnEffect" + id).textContent = effect.m.toFixed(2) + "/" + shortenCosts(Decimal.pow(10, -effect.e)) + " seconds"
+				else document.getElementById("bEnEffect" + id).textContent = shorten(effect) + "/second"
+			} else document.getElementById("bEnEffect" + id).textContent = shorten(effect) + "x"	
 		}
 	}
-	document.getElementById("usedEnchants").textContent="You have used "+data.usedEnchants.length+" / "+bEn.limit+" Bosonic Enchants."
+	document.getElementById("usedEnchants").textContent = "You have used " + data.usedEnchants.length + " / " + bEn.limit + " Bosonic Enchants."
 }
 
 var br = {
@@ -410,7 +417,7 @@ var bEn = {
 			return Decimal.add(l, 1).sqrt()
 		},
 		23: function(l) {
-			let exp = Math.max(l.log10() + 1,0)/3
+			let exp = Math.max(l.log10() + 1, 0)/3
 			if (tmp.bl.am.gt(1e11)) exp *= tmp.bl.am.div(10).log10() / 10
 			if (exp > 5) exp = Math.sqrt(exp * 5)
 			return Decimal.pow(tmp.bl.am.add(10).log10(), exp)
@@ -438,28 +445,28 @@ function updateBosonicEnchantsTemp(){
 
 //Bosonic Upgrades
 function setupBosonicUpgReqData() {
-	for (var r=1;r<=bu.maxRows;r++) for (var c=1;c<6;c++) {
-		var id=r*10+c
-		var data=bu.costs[id]
-		var rData=[undefined,undefined,0,undefined,0]
+	for (var r = 1; r <= bu.maxRows; r++) for (var c = 1; c < 6; c++) {
+		var id = r * 10 + c
+		var data = bu.costs[id]
+		var rData = [undefined, undefined, 0, undefined, 0]
 		if (data) {
-			if (data.am!==undefined) rData[0]=data.am
-			var p=1
-			for (var g=1;g<=br.maxLimit;g++) if (data["g"+g]!==undefined) {
-				rData[p*2-1]=data["g"+g]
-				rData[p*2]=g
+			if (data.am !== undefined) rData[0] = data.am
+			var p = 1
+			for (var g = 1; g <= br.maxLimit; g++) if (data["g" + g] !== undefined) {
+				rData[p * 2 - 1] = data["g" + g]
+				rData[p * 2] = g
 				p++
 			}
 		}
-		bu.reqData[id]=rData
+		bu.reqData[id] = rData
 	}
 }
 
 function canBuyBosonicUpg(id) {
-	let rData=bu.reqData[id]
-	if (rData[0]===undefined||rData[1]===undefined||rData[3]===undefined) return
+	let rData = bu.reqData[id]
+	if (rData[0] === undefined || rData[1] === undefined || rData[3] === undefined) return
 	if (!tmp.bl.am.gte(getBosonicFinalCost(rData[0]))) return
-	for (var g=1;g<3;g++) if (!tmp.bl.glyphs[rData[g*2]-1].gte(getBosonicFinalCost(rData[g*2-1]))) return
+	for (var g = 1; g < 3; g++) if (!tmp.bl.glyphs[rData[g * 2] - 1].gte(getBosonicFinalCost(rData[g * 2 - 1]))) return
 	return true
 }
 
@@ -467,7 +474,7 @@ function buyBosonicUpgrade(id) {
 	if (tmp.bl.upgrades.includes(id)) return
 	if (!canBuyBosonicUpg(id)) return
 	tmp.bl.upgrades.push(id)
-	tmp.bl.am=tmp.bl.am.sub(getBosonicFinalCost(bu.reqData[id][0]))
+	tmp.bl.am = tmp.bl.am.sub(getBosonicFinalCost(bu.reqData[id][0]))
 	updateTemp()
 }
 
@@ -477,7 +484,7 @@ function hasBosonicUpg(id) {
 
 function updateBosonicUpgradeDescs() {
 	for (var r = 1; r <= bu.rows; r++) for (var c = 1; c <= 5; c++) {
-		var id = r*10 + c
+		var id = r * 10 + c
 		document.getElementById("bUpg" + id).className = tmp.bl.upgrades.includes(id) ? "gluonupgradebought bl" : canBuyBosonicUpg(id) ? "gluonupgrade bl" : "gluonupgrade unavailablebtn"
 		if (tmp.blu[id] !== undefined) document.getElementById("bUpgEffect"+id).textContent = (bu.effectDescs[id] !== undefined && bu.effectDescs[id](tmp.blu[id])) || shorten(tmp.blu[id]) + "x"
 	}
@@ -603,7 +610,7 @@ var bu = {
 			var div = 8e3
 			var add = 1
 			if (tmp.newNGP3E){
-				div = 4e3
+				div = 2e3
 				add = 1.5
 			}
 			return Math.sqrt(tmp.qu.electrons.amount + 1) / div + add
@@ -683,9 +690,9 @@ var bu = {
 }
 
 function updateBosonicUpgradesTemp(){
-	for (var r=1;r<=bu.rows;r++) for (var c=1;c<6;c++) {
-		var id=r*10+c
-		if (bu.effects[id]!==undefined) tmp.blu[id]=bu.effects[id]()
+	for (var r = 1; r <= bu.rows; r++) for (var c = 1; c < 6; c++) {
+		var id = r * 10 + c
+		if (bu.effects[id] !== undefined) tmp.blu[id] = bu.effects[id]()
 	}
 }
 
@@ -743,35 +750,35 @@ function updateWZBosonsTemp(){
 	tmp.zbs = Decimal.pow(10, zbslog)
 }
 
-function updateWZBosonsTab(){
-	let data=tmp.bl
-	let speed=data.speed*(data.battery.gt(0)?data.odSpeed:1)
-	let lSpeed=tmp.wzbs.times(speed)
-	let data2=player.ghostify.wzb
-	let show0=data2.dPUse==1&&lSpeed.times(getAntiPreonLoss()).div(aplScalings[1]).times(tmp.zbs).gte(10)
-	let gainSpeed=getOscillateGainSpeed()
+function updateWZBosonsTab() {
+	let data = tmp.bl
+	let speed = data.speed * (data.battery.gt(0) ? data.odSpeed : 1)
+	let lSpeed = tmp.wzbs.times(speed)
+	let data2 = player.ghostify.wzb
+	let show0 = data2.dPUse == 1 && lSpeed.times(getAntiPreonLoss()).div(aplScalings[1]).times(tmp.zbs).gte(10)
+	let gainSpeed = getOscillateGainSpeed()
 	let r
-	if (!data2.dPUse) r=lSpeed.times(getAntiPreonProduction())
-	else r=lSpeed.times(getAntiPreonLoss())
+	if (!data2.dPUse) r = lSpeed.times(getAntiPreonProduction())
+	else r = lSpeed.times(getAntiPreonLoss())
 	//document.getElementById("wzbSpeed").textContent="Current W & Z Bosons speed: "+shorten(tmp.wzbs)+"x (w/ Bosonic Speed: "+shorten(lSpeed)+"x)"
-	document.getElementById("ap").textContent=shorten(data2.dP)
-	document.getElementById("apProduction").textContent=(data2.dPUse?"-":"+")+shorten(r)+"/s"
-	document.getElementById("apUse").textContent=data2.dPUse==0?"":"You are currently consuming Anti-Preons to "+(["","decay W Quark","oscillate Z Neutrino","convert W- to W+ Bosons"])[data2.dPUse]+"."
-	document.getElementById("wQkType").textContent=data2.wQkUp?"up":"down"
-	document.getElementById("wQkProgress").textContent=data2.wQkProgress.times(100).toFixed(1)+"% to turn W Quark to a"+(data2.wQkUp?" down":"n up")+" quark."
-	document.getElementById("wQk").className=show0?"zero":data2.wQkUp?"up":"down"
-	document.getElementById("wQkSymbol").textContent=show0?"0":data2.wQkUp?"+":"−"
-	document.getElementById("wpb").textContent=shortenDimensions(data2.wpb)
-	document.getElementById("wnb").textContent=shortenDimensions(data2.wnb)
-	document.getElementById("wbTime").textContent=shorten(tmp.wbt)
-	document.getElementById("wbOscillate").textContent=shorten(tmp.wbo)
-	document.getElementById("wbProduction").textContent=shorten(tmp.wbp)
-	document.getElementById("zNeGen").textContent=(["electron","Mu","Tau"])[data2.zNeGen-1]
-	document.getElementById("zNeProgress").textContent=data2.zNeProgress.times(100).toFixed(1)+"% to oscillate Z Neutrino to "+(["Mu","Tau","electron"])[data2.zNeGen-1]+"."
-	document.getElementById("zNeReq").textContent="Oscillate progress gain speed is currently "+(gainSpeed.gt(1)?shorten(gainSpeed):"1 / "+shorten(Decimal.div(1,gainSpeed)))+"x."
-	document.getElementById("zNe").className=(["electron","mu","tau"])[data2.zNeGen-1]
-	document.getElementById("zNeSymbol").textContent=(["e","μ","τ"])[data2.zNeGen-1]
-	document.getElementById("zb").textContent=shortenDimensions(data2.zb)
-	document.getElementById("zbGain").textContent="You will gain "+shortenDimensions(data2.zNeReq.pow(0.75))+" Z Bosons on next oscillation."
-	document.getElementById("zbSpeed").textContent=shorten(tmp.zbs)
+	document.getElementById("ap").textContent = shorten(data2.dP)
+	document.getElementById("apProduction").textContent = (data2.dPUse ? "-" : "+") + shorten(r) + "/s"
+	document.getElementById("apUse").textContent = data2.dPUse == 0 ? "" : "You are currently consuming Anti-Preons to " + (["", "decay W Quark", "oscillate Z Neutrino", "convert W- to W+ Bosons"])[data2.dPUse] + "."
+	document.getElementById("wQkType").textContent = data2.wQkUp ? "up" : "down"
+	document.getElementById("wQkProgress").textContent = data2.wQkProgress.times(100).toFixed(1) + "% to turn W Quark to a" + (data2.wQkUp ? " down" : "n up")+" quark."
+	document.getElementById("wQk").className = show0 ? "zero" : data2.wQkUp ? "up" : "down"
+	document.getElementById("wQkSymbol").textContent = show0 ? "0" : data2.wQkUp ? "+" : "−"
+	document.getElementById("wpb").textContent = shortenDimensions(data2.wpb)
+	document.getElementById("wnb").textContent = shortenDimensions(data2.wnb)
+	document.getElementById("wbTime").textContent = shorten(tmp.wbt)
+	document.getElementById("wbOscillate").textContent = shorten(tmp.wbo)
+	document.getElementById("wbProduction").textContent = shorten(tmp.wbp)
+	document.getElementById("zNeGen").textContent = (["electron", "Mu", "Tau"])[data2.zNeGen - 1]
+	document.getElementById("zNeProgress").textContent = data2.zNeProgress.times(100).toFixed(1) + "% to oscillate Z Neutrino to " + (["Mu", "Tau", "electron"])[data2.zNeGen-1] + "."
+	document.getElementById("zNeReq").textContent = "Oscillate progress gain speed is currently " + (gainSpeed.gt(1) ? shorten(gainSpeed) : "1 / " + shorten(Decimal.div(1, gainSpeed))) + "x."
+	document.getElementById("zNe").className = (["electron","mu","tau"])[data2.zNeGen - 1]
+	document.getElementById("zNeSymbol").textContent = (["e", "μ", "τ"])[data2.zNeGen - 1]
+	document.getElementById("zb").textContent = shortenDimensions(data2.zb)
+	document.getElementById("zbGain").textContent = "You will gain " + shortenDimensions(data2.zNeReq.pow(0.75)) + " Z Bosons on next oscillation."
+	document.getElementById("zbSpeed").textContent = shorten(tmp.zbs)
 }
