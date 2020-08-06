@@ -135,7 +135,7 @@ function updateBosonicStuffCosts() {
 		var id = g1 * 10 + g2
 		var data = bEn.costs[id]
 		document.getElementById("bEnG1Cost" + id).textContent = (data !== undefined && data[0] !== undefined && shortenDimensions(data[0])) || "???"
-		document.getElementById("bEnG2Cost" + id).textContent = (data !== undefined && data[1] !== undefined && shortenDimensions(data[1])) | |"???"
+		document.getElementById("bEnG2Cost" + id).textContent = (data !== undefined && data[1] !== undefined && shortenDimensions(data[1])) || "???"
 	}
 	for (var r = 1; r <= bu.rows; r++) for (var c = 1; c < 6; c++) {
 		var id = r * 10 + c
