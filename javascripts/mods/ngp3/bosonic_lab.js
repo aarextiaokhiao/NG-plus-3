@@ -292,6 +292,7 @@ function getMaxEnchantLevelGain(id) {
 	let costData = bEn.costs[id]
 	let g1 = Math.floor(id / 10)
 	let g2 = id % 10
+	if (costData === undefined) return new Decimal(0)
 	let lvl1 = data.glyphs[g1 - 1].div(getBosonicFinalCost(costData[0])).floor()
 	let lvl2 = data.glyphs[g2 - 1].div(getBosonicFinalCost(costData[1])).floor()
 	return lvl1.min(lvl2)
