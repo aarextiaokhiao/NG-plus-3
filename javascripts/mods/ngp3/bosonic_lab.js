@@ -203,7 +203,7 @@ function updateBosonicLabTab(){
 	document.getElementById("bTicks").textContent=shorten(data.ticks)
 	document.getElementById("bAM").textContent=shorten(data.am)
 	document.getElementById("bAMProduction").textContent="+"+shorten(getBosonicAMFinalProduction().times(speed))+"/s"
-	document.getElementById("bAMProductionReduced").style.display = !tmp.ngp3l && data.am.gt(getHiggsRequirement()) ? "" : "none"
+	document.getElementById("bAMProductionReduced").style.display = !tmp.ngp3l && data.am.gt(tmp.badm.start) ? "" : "none"
 	document.getElementById("bBt").textContent=shorten(data.battery)
 	document.getElementById("bBtProduction").textContent="-"+shorten(getBosonicBatteryLoss().times(data.speed))+"/s"
 	document.getElementById("odSpeed").textContent=(data.battery.gt(0)?data.odSpeed:1).toFixed(2)+"x"
@@ -477,6 +477,7 @@ function buyBosonicUpgrade(id) {
 	tmp.bl.upgrades.push(id)
 	tmp.bl.am = tmp.bl.am.sub(getBosonicFinalCost(bu.reqData[id][0]))
 	updateTemp()
+	if (!tmp.ngp3l) delete tmp.hb.bosonicSemipowerment
 }
 
 function hasBosonicUpg(id) {
@@ -561,11 +562,11 @@ var bu = {
 		32: "Every 3rd Light Empowerment after LE7, unlock a new boost until LE25.",
 		33: "Higgs Bosons reduce the costs of all electron upgrades.",
 		34: "All types of galaxies boost each other.",
-		35: "Green power effect makes replicate interval increase slower.",
+		35: "Replicantis and Emperor Dimensions boost each other.",
 		41: "Intergalactic and Infinite Time rewards boost each other.",
 		42: "The first Bosonic Upgrade is stronger.",
-		43: "Bosonic Antimatter adds the efficiency of Tree Upgrades.",
-		44: "Replicantis and Emperor Dimensions boost each other.",
+		43: "Bosonic Antimatter boosts Tree Upgrades.",
+		44: "Green power effect makes replicate interval increase slower.",
 		45: "Dilated time weakens the Distant Antimatter Galaxies scaling."
 	},
 	effects: {
@@ -625,23 +626,23 @@ var bu = {
 		34: function() {
 			return (Math.log10(player.galaxies + 1) + Math.log10(getTotalRG() + 1) + Math.log10(player.dilation.freeGalaxies + 1) + Math.log10(tmp.aeg + 1)) / 1e3 + 1
 		},
-		35: function() {
-			return Math.sqrt(colorBoosts.g + tmp.pe - 1) * 3
+		35: function(x) {
+			return {
+				rep: Math.sqrt(tmp.qu.replicants.quarks.add(1).log10()),
+				eds: Decimal.pow(10, player.replicanti.amount.log10() / 1e7)
+			}
 		},
 		41: function(x) {
 			return {
-				ig: Decimal.pow(tmp.qu.bigRip.active ? 1e20 : 1.05, Math.pow(Decimal.max(tmp.it, 1).log10(), 2)),
+				ig: Decimal.pow(tmp.qu.bigRip.active ? 1e5 : 1.05, Math.pow(Decimal.max(tmp.it, 1).log10(), 2)),
 				it: Decimal.pow(tmp.qu.bigRip.active ? 1.01 : 5, Math.sqrt(Decimal.max(tmp.ig, 1).log10()))
 			}
 		},
 		43: function() {
-			return tmp.bl.am.add(1).log10() / 50
+			return Math.max(Math.sqrt(tmp.bl.am.add(1).log10()) / (tmp.qu.bigRip.active ? 40 : 16) + 1, 1)
 		},
-		44: function(x) {
-			return {
-				rep: Math.sqrt(tmp.qu.replicants.quarks.add(1).log10()),
-				eds: Decimal.pow(10, player.replicanti.amount.log10() / 8e6)
-			}
+		44: function() {
+			return Math.pow(Math.sqrt(colorBoosts.g + tmp.pe - 1), 1.5) * 0.75
 		},
 		45: function() {
 			return Math.pow(1.03, Math.sqrt(player.dilation.dilatedTime.add(1).log10()))
@@ -673,16 +674,16 @@ var bu = {
 			return (x * 100 - 100).toFixed(2) + "% stronger"
 		},
 		35: function(x) {
-			return "+" + x.toFixed(1) + " OoMs"
+			return "+" + shorten(x.rep) + " OoMs to replicate interval increase, " + shorten(x.eds) + "x to all Emperor Dimensions"
 		},
 		41: function(x) {
 			return shorten(x.ig) + "x to Intergalactic, " + shorten(x.it) + "x to Infinite Time"
 		},
 		43: function(x) {
-			return "+" + (x * 100).toFixed(2) + "%"
+			return (x * 100).toFixed(2) + "%"
 		},
 		44: function(x) {
-			return "+" + shorten(x.rep) + " OoMs to replicate interval increase, " + shorten(x.eds) + "x to all Emperor Dimensions"
+			return "+" + x.toFixed(1) + " OoMs"
 		},
 		45: function(x) {
 			return "/" + shorten(x) + " to efficiency"
@@ -746,7 +747,7 @@ function updateWZBosonsTemp(){
 	tmp.wbt = Decimal.pow(tmp.newNGP3E ? 5 : 3, bosonsExp) //W Bosons boost to extract time
 	tmp.wbo = Decimal.pow(10, Math.max(bosonsExp, 0)) //W Bosons boost to Z Neutrino oscillation requirement
 	
-	tmp.wbp=player.ghostify.wzb.wpb.add(player.ghostify.wzb.wnb).div(100).max(1).pow(1/3).sub(1) //W Bosons boost to Bosonic Antimatter production
+	tmp.wbp = player.ghostify.wzb.wpb.add(player.ghostify.wzb.wnb).div(100).max(1).pow(1 / 3).sub(1) //W Bosons boost to Bosonic Antimatter production
 	var zbslog = player.ghostify.wzb.zb.div(10).add(1).sqrt().log10()
 	tmp.zbs = Decimal.pow(10, zbslog)
 }

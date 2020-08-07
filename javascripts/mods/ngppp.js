@@ -343,12 +343,14 @@ function inQC(num) {
 }
 
 //v1.95?
-function getQCGoal(num) {
+function getQCGoal(num, bigRip) {
 	if (player.masterystudies == undefined) return 0
 	var c1 = 0
 	var c2 = 0
+	var mult = 1
+	if (player.achievements.includes("ng3p96") && !bigRip) mult = 0.95
 	if (num == undefined) {
-		var data=getCurrentQCData()
+		var data = getCurrentQCData()
 		if (data[0]) c1 = data[0]
 		if (data[1]) c2 = data[1]
 	} else if (num < 9) {
@@ -357,22 +359,19 @@ function getQCGoal(num) {
 		c1 = tmp.qu.pairedChallenges.order[num - 8][0]
 		c2 = tmp.qu.pairedChallenges.order[num - 8][1]
 	}
-	if (c1 == 0) return quantumChallenges.goals[0]
-	if (c2 == 0) return quantumChallenges.goals[c1]
+	if (c1 == 0) return quantumChallenges.goals[0] * mult
+	if (c2 == 0) return quantumChallenges.goals[c1] * mult
 	var cs = [c1, c2]
-	var mult = 1
-	if (cs.includes(1) && cs.includes(3)) mult = 1.6
-	if (cs.includes(2) && cs.includes(6)) mult = 1.7
-	if (cs.includes(3) && cs.includes(7)) mult = 2.68
-	//if (cs.includes(3) && cs.includes(6)) mult = 3 to 5 idk yo aarex pls 
-	//hi
-	//hi
-	//hi 
+	mult *= mult
+	if (cs.includes(1) && cs.includes(3)) mult *= 1.6
+	if (cs.includes(2) && cs.includes(6)) mult *= 1.7
+	if (cs.includes(3) && cs.includes(7)) mult *= 2.68
+	if (!tmp.ngp3l && cs.includes(3) && cs.includes(6)) mult *= 3
 	return quantumChallenges.goals[c1] * quantumChallenges.goals[c2] / 1e11 * mult
 }
 
 function QCIntensity(num) {
-	if (tmp.ngp3 && tmp.qu != undefined && tmp.qu.challenges != undefined) return tmp.qu.challenges[num] || 0
+	if (tmp.ngp3 && tmp.qu !== undefined && tmp.qu.challenges !== undefined) return tmp.qu.challenges[num] || 0
 	return 0
 }
 
@@ -703,56 +702,55 @@ function updatePCCompletions() {
 		}
 	} else document.getElementById("modifiersdiv").style.display = "none"
 	if (ranking >= 165) giveAchievement("Pulling an All-Nighter")
+	if (ranking >= 1/0) giveAchievement("Not-so-very-challenging")
 }
 
 //v1.99874
-function getQC1Reward(comps) {
-	if (comps == 0) return 1
-	return Decimal.pow(10, Math.pow(getDimensionFinalMultiplier(1).times(getDimensionFinalMultiplier(2)).max(1).log10(), [null, 0.25, 0.275][comps]) / 200)
-}
+let qcRewards = {
+	effects: {
+		1: function(comps) {
+			if (comps == 0) return 1
+			return Decimal.pow(10, Math.pow(getDimensionFinalMultiplier(1).times(getDimensionFinalMultiplier(2)).max(1).log10(), [null, 0.25, 0.275][comps]) / 200)
+		},
+		2: function(comps) {
+			if (comps == 0) return 1
+			return 1.2 + comps * 0.2
+		},
+		3: function(comps) {
+			if (comps == 0) return 1
+			let log = Math.sqrt(Math.max(player.infinityPower.log10(), 0) / [null, 2e8, 1e9][comps])
+			if (log > 1331) log = Math.pow(log * 121, 3/5)
 
-function getQC2Reward(comps) {
-	if (comps == 0) return 1
-	return 1.2 + comps * 0.2
-}
-function getQC3Reward(comps) {
-	if (comps == 0) return 1
-	let log = Math.sqrt(Math.max(player.infinityPower.log10(), 0) / [null, 2e8, 1e9][comps])
-	if (log > 1331) log = Math.pow(log * 121, 3/5)
-
-	return Decimal.pow(10, log)
-}
-
-function getQC4Reward(comps) {
-	if (comps == 0) return 1
-	let mult = player.meta[2].amount.times(player.meta[4].amount).times(player.meta[6].amount).times(player.meta[8].amount).max(1)
-	if (comps >= 2) return mult.pow(1 / 75)
-	return Decimal.pow(10, Math.sqrt(mult.log10()) / 10)
-}
-
-function getQC5Reward(comps) {
-	if (comps == 0) return 0
-	return Math.log10(1 + player.resets) * Math.pow(comps, 0.4)
-}
-
-function getQC6Reward(comps) {
-	if (comps == 0) return 1
-	return player.achPow.pow(comps * 2 - 1)
-}
-
-function getQC7Reward(comps) {
-	if (comps == 0) return 1
-	return Math.pow(0.975, comps)
-}
-
-function getQC8Reward(comps) {
-	if (comps == 0) return 1
-	return comps + 2
+			return Decimal.pow(10, log)
+		},
+		4: function(comps) {
+			if (comps == 0) return 1
+			let mult = player.meta[2].amount.times(player.meta[4].amount).times(player.meta[6].amount).times(player.meta[8].amount).max(1)
+			if (comps >= 2) return mult.pow(1 / 75)
+			return Decimal.pow(10, Math.sqrt(mult.log10()) / 10)
+		},
+		5: function(comps) {
+			if (comps == 0) return 0
+			return Math.log10(1 + player.resets) * Math.pow(comps, 0.4)
+		},
+		6: function(comps) {
+			if (comps == 0) return 1
+			return player.achPow.pow(comps * 2 - 1)
+		},
+		7: function(comps) {
+			if (comps == 0) return 1
+			return Math.pow(0.975, comps)
+		},
+		8: function(comps) {
+			if (comps == 0) return 1
+			return comps + 2
+		}
+	}
 }
 
 function updateQCRewardsTemp() {
 	tmp.qcRewards = {}
-	for (var c = 1; c <= 8; c++) tmp.qcRewards[c] = eval("getQC" + c + "Reward")(QCIntensity(c))
+	for (var c = 1; c <= 8; c++) tmp.qcRewards[c] = qcRewards.effects[c](QCIntensity(c))
 }
 
 function maybeShowFillAll() {
@@ -1025,8 +1023,8 @@ function updateTODStuff() {
 		var name = getUQName(shorthand)
 		document.getElementById(shorthand+"UQName").textContent = name
 		for (var b = 1; b < 4; b++) {
-			document.getElementById(color + "upg" + b + "current").textContent = shortenDimensions(Decimal.pow(b > 2 ? 4 : 2, b > 1 ? getBranchUpgLevel(shorthand, b) : getBU1Power(shorthand) * (1 + getRadioactiveDecays(shorthand) / 10)))
-			document.getElementById(color + "upg" + b + "cost").textContent = shortenMoney(getBranchUpgCost(shorthand,b))
+			document.getElementById(color + "upg" + b + "current").textContent = shortenDimensions(getBranchUpgMult(shorthand, b))
+			document.getElementById(color + "upg" + b + "cost").textContent = shortenMoney(getBranchUpgCost(shorthand, b))
 			if (b>1) document.getElementById(color+"UpgName"+b).textContent=name
 		}
 		if (ghostified) {
@@ -1068,6 +1066,7 @@ function unstableQuarks(branch) {
 	if (tmp.qu.usedQuarks[branch].eq(0) || getUnstableGain(branch).lte(tmp.qu.tod[branch].quarks)) return
 	tmp.qu.tod[branch].quarks = tmp.qu.tod[branch].quarks.max(getUnstableGain(branch))
 	if (player.ghostify.milestones < 4) tmp.qu.usedQuarks[branch] = new Decimal(0)
+	if (player.ghostify.reference > 0) player.ghostify.reference--
 }
 
 function getBranchSpeed() {
@@ -1087,7 +1086,7 @@ function getBranchFinalSpeed() {
 }
 
 function getDecayRate(branch) {
-	let ret = Decimal.pow(2, getBU1Power(branch)*Math.max(getRadioactiveDecays(branch) * .1 + .8, 1) - getBranchUpgLevel(branch, 3) * 2 - getRDPower(branch) - 4)
+	let ret = getBranchUpgMult(branch, 1).div(getBranchUpgMult(branch, 2)).div(Decimal.pow(2, getRDPower(branch) - 4))
 	if (branch == "r") {
 		if (GUBought("rg8")) ret = ret.div(getGU8Effect("rg"))
 	}
@@ -1109,7 +1108,7 @@ function getMilestone14SpinMult(){
 }
 
 function getQuarkSpinProduction(branch) {
-	let ret = Decimal.pow(2, getBU1Power(branch) * (1 + getRadioactiveDecays(branch) / 10)).times(getBranchFinalSpeed())
+	let ret = getBranchUpgMult(branch, 1).times(getBranchFinalSpeed())
 	if (hasNU(4)) ret = ret.times(tmp.nu[2])
 	if (player.achievements.includes("ng3p74")) if (player.quantum.tod[branch].decays) ret = ret.times(1 + player.quantum.tod[branch].decays)
 	if (tmp.qu.bigRip.active) {
@@ -2140,7 +2139,7 @@ function maxBuyBEEPMult() {
 function getGHPGain() {
 	if (!tmp.ngp3 || !tmp.qu.bigRip.active) return new Decimal(0)
 	if (!tmp.ngp3l && !ghostified) return new Decimal(1)
-	let log=(tmp.qu.bigRip.bestThisRun.log10()/getQCGoal()-1)
+	let log=(tmp.qu.bigRip.bestThisRun.log10()/getQCGoal(undefined,true)-1)
 	if (tmp.ngp3l) log*=2
 	else log+=(player.quantum.quarks.add(1).log10()-0)*0
 	if (log>1e4&&player.aarexModifications.ngudpV!=undefined) log=Math.sqrt(log*1e4)
@@ -2148,7 +2147,14 @@ function getGHPGain() {
 		if (log>2e4) log=Math.pow(4e8*log,1/3)
 		if (log>59049) log=Math.pow(Math.log10(log)/Math.log10(9)+4,5)
 	}
-	return Decimal.pow(10, log).times(Decimal.pow(2,player.ghostify.multPower-1)).floor()
+	return Decimal.pow(10, log).times(getGHPMult()).floor()
+}
+
+function getGHPMult() {
+	let x = Decimal.pow(2, player.ghostify.multPower - 1)
+	if (player.achievements.includes("ng3p93")) x = x.times(5)
+	if (player.achievements.includes("ng3p97")) x = x.times(Decimal.pow(player.ghostify.times + 1, 1/3))
+	return x
 }
 
 ghostified = false
@@ -2919,6 +2925,10 @@ function ghostifyReset(implode, gain, amount, force) {
 	player.ghostify.under=true
 	updateLastTenGhostifies()
 	updateBraveMilestones()
+	if (!tmp.ngp3l) {
+		player.ghostify.another = 10
+		player.ghostify.reference = 10
+	}
 }
 
 function toggleGhostifyConf() {
@@ -3011,6 +3021,7 @@ function updateNeutrinoBoostDisplay(){
 	if (player.ghostify.neutrinos.boosts>7) document.getElementById("neutrinoBoost8").textContent=(tmp.nb[7]*100-100).toFixed(1)
 	if (player.ghostify.neutrinos.boosts>8) document.getElementById("neutrinoBoost9").textContent=shorten(tmp.nb[8])
 	if (player.ghostify.neutrinos.boosts>9) document.getElementById("neutrinoBoost10").textContent=tmp.nb[9].toFixed(4)
+	if (player.ghostify.neutrinos.boosts>10) document.getElementById("neutrinoBoost11").textContent=shorten(tmp.nb[10])
 }
 
 function updateNeutrinoAmountDisplay(){
@@ -3104,7 +3115,7 @@ function buyNeutrinoUpg(id) {
 }
 
 function updateNeutrinoBoosts() {
-	for (var b=1;b<=10;b++) document.getElementById("neutrinoBoost"+(b%3==1?"Row"+(b+2)/3:"Cell"+b)).style.display=player.ghostify.neutrinos.boosts>=b?"":"none"
+	for (var b=1;b<=11;b++) document.getElementById("neutrinoBoost"+(b%3==1?"Row"+(b+2)/3:"Cell"+b)).style.display=player.ghostify.neutrinos.boosts>=b?"":"none"
 	document.getElementById("neutrinoUnlock").style.display=player.ghostify.neutrinos.boosts>=getMaxUnlockedNeutrinoBoosts()?"none":""
 	document.getElementById("neutrinoUnlockCost").textContent=shortenDimensions(new Decimal(tmp.nbc[player.ghostify.neutrinos.boosts]))
 }
@@ -3119,7 +3130,10 @@ function unlockNeutrinoBoost() {
 }
 
 function getMaxUnlockedNeutrinoBoosts() {
-	return player.ghostify.wzb.unl ? 10 : 9
+	let x = 9
+	if (player.ghostify.wzb.unl) x++
+	if (!tmp.ngp3l && tmp.hb.higgs > 0) x++
+	return x
 }
 
 function hasNU(id) {
@@ -3313,6 +3327,18 @@ function getBU1Power(branch) {
 	return s*120+(x-s*(s+1)*60)/(s+1)
 }
 
+function getBU2Power(branch) {
+	let x = getBranchUpgLevel(branch, 2)
+	if (player.achievements.includes("ng3p94")) x += getRadioactiveDecays(branch)
+	return x
+}
+
+function getBranchUpgMult(branch, upg) {
+	if (upg == 1) return Decimal.pow(2, getBU1Power(branch) * (getRadioactiveDecays(branch) / 10 + 1))
+	else if (upg == 2) return Decimal.pow(2, getBU2Power(branch))
+	else if (upg == 3) return Decimal.pow(4, getBranchUpgLevel(branch, 3))
+} 
+
 function subNeutrinos(sub) {
 	let neu=player.ghostify.neutrinos
 	let sum=neu.electron.add(neu.mu).add(neu.tau).round()
@@ -3382,7 +3408,6 @@ function updateLightBoostDisplay(){
 
 function updateLightThresholdStrengthDisplay(){
 	var gphData=player.ghostify.ghostlyPhotons
-	var lePower=getLightEmpowermentBoost()
 	for (var c=0;c<8;c++) {
 		document.getElementById("light"+(c+1)).textContent=getFullExpansion(gphData.lights[c])
 		document.getElementById("lightThreshold"+(c+1)).textContent=shorten(getLightThreshold(c))
@@ -3392,12 +3417,11 @@ function updateLightThresholdStrengthDisplay(){
 
 function updateLEmpowermentPrimary(){
 	var gphData=player.ghostify.ghostlyPhotons
-	var lePower=getLightEmpowermentBoost()
 	document.getElementById("lightEmpowerment").className="gluonupgrade "+(gphData.lights[7]>=tmp.leReq?"gph":"unavailablebtn")
 	document.getElementById("lightEmpowermentReq").textContent=getFullExpansion(tmp.leReq)
 	document.getElementById("lightEmpowerments").textContent=getFullExpansion(gphData.enpowerments)
 	document.getElementById("lightEmpowermentScaling").textContent=getGalaxyScaleName(tmp.leReqScale)+"Light Empowerments"
-	document.getElementById("lightEmpowermentsEffect").textContent=shorten(lePower)
+	document.getElementById("lightEmpowermentsEffect").textContent=shorten(tmp.leBoost)
 }
 
 function updateLEmpowermentBoosts(){
@@ -3422,12 +3446,14 @@ function updateLEmpowermentBoosts(){
 
 function getGHRProduction() {
 	var log = player.ghostify.ghostlyPhotons.amount.sqrt().div(2).log10()
-	return Decimal.pow(10,log)
+	if (player.ghostify.neutrinos.boosts >= 11) log += tmp.nb[10].log10()
+	return Decimal.pow(10, log)
 }
 
 function getGHRCap() {
 	var log = player.ghostify.ghostlyPhotons.darkMatter.pow(0.4).times(1e3).log10()
-	return Decimal.pow(10,log)
+	if (player.ghostify.neutrinos.boosts >= 11) log += tmp.nb[10].log10()
+	return Decimal.pow(10, log)
 }
 
 function getLightThreshold(l) {
@@ -3453,6 +3479,7 @@ function lightEmpowerment() {
 	player.ghostify.ghostlyPhotons.lights=[0,0,0,0,0,0,0,0]
 	if (!player.ghostify.ghostlyPhotons.enpowerments) document.getElementById("leConfirmBtn").style.display = "inline-block"
 	player.ghostify.ghostlyPhotons.enpowerments++
+	if (player.ghostify.ghostlyPhotons.empowerments>=25) giveAchievement("Bright as the Anti-Sun")
 }
 
 function getLightEmpowermentReq(le) {
@@ -3460,12 +3487,12 @@ function getLightEmpowermentReq(le) {
 	let x = le * 2.4 + 1
 	let scale = 0
 	if (!tmp.ngp3l) {
-		if (le > 13) {
-			x += Math.pow(le - 13, 2) / 3
+		if (le > 19) {
+			x += Math.pow(le - 19, 2) / 3
 			scale = 1
 		}
-		if (le > 20) {
-			x += Math.pow(1.2, le - 20) - 1
+		if (le > 49) {
+			x += Math.pow(1.2, le - 49) - 1
 			scale = 2
 		}
 	}
@@ -3484,13 +3511,16 @@ var leBoosts = {
 		null,
 		//Boost #1
 		function() {
-			var le1exp = 1
-			if (tmp.newNGP3E) {
-				le1exp += .2
+			var le1exp = 0.75
+			if (tmp.ngp3l) le1exp = 1
+			else if (tmp.newNGP3E) {
+				le1exp += 0.2
 				if (player.ghostify.ghostlyPhotons.unl) le1exp += .15
 				if (player.ghostify.wzb.unl) le1exp += .15
 			}
-			var le1mult = tmp.newNGP3E ? 600 : 300
+			var le1mult = 500
+			if (tmp.ngp3l) le1mult = 300
+			if (tmp.newNGP3E) le1mult *= 2
 			var eff = Math.pow(Math.log10(tmp.effL[3] + 1), le1exp) * le1mult
 			return eff
 		},
@@ -3509,13 +3539,13 @@ var leBoosts = {
 		//Boost #5
 		function() {
 			return {
-				exp: 0.8 - 0.3 / Math.sqrt(player.ghostify.ghostlyPhotons.enpowerments * tmp.blu[13] / 200 + 1),
-				mult: Math.sqrt(player.ghostify.ghostlyPhotons.enpowerments * tmp.blu[13] / 100 + 1),
+				exp: 0.8 - 0.3 / Math.sqrt(tmp.leBoost / 200 + 1),
+				mult: Math.sqrt(tmp.leBoost / 100 + 1),
 			}
 		},
 		//Boost #6
 		function() {
-			return Math.pow(1.5, Math.pow(tmp.effL[2] + 1, 0.25) - 1)
+			return Math.pow(3, Math.pow(tmp.effL[2] + 1, 0.25) - 1)
 		},
 		//Boost #7
 		function() {
@@ -3527,7 +3557,7 @@ var leBoosts = {
 		},
 		//Boost #9
 		function() {
-			return Math.log10(tmp.effL[1] / 100 + 1)
+			return Math.sqrt(tmp.effL[1] / 100 + 1) - 1
 		},
 	]
 }
@@ -3786,7 +3816,7 @@ function getTreeUpgradeEfficiency(mod) {
 	if (player.ghostify.neutrinos.boosts > 6 && (tmp.qu.bigRip.active || mod == "br") && mod != "noNB") r += tmp.nb[6]
 	if (!tmp.ngp3l) {
 		if (player.achievements.includes("ng3p62") && !tmp.qu.bigRip.active) r += 0.1
-		if (hasBosonicUpg(43)) r += tmp.blu[43]
+		if (hasBosonicUpg(43)) r *= tmp.blu[43]
 	}
 	return r
 }

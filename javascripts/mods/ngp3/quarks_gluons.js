@@ -68,6 +68,7 @@ function assignQuark(color) {
 	document.getElementById("quarks").innerHTML="You have <b class='QKAmount'>0</b> quarks."
 	if (!mult.eq(1)) updateQuantumWorth()
 	updateColorCharge()
+	if (player.ghostify.another > 0) player.ghostify.another--
 }
 
 function assignAll(auto) {
@@ -79,7 +80,10 @@ function assignAll(auto) {
 	if (oldQuarks.eq(0)) return
 	for (c=0;c<3;c++) {
 		var toAssign = oldQuarks.times(ratios[colors[c]]/sum).round()
-		tmp.qu.usedQuarks[colors[c]] = tmp.qu.usedQuarks[colors[c]].add(toAssign.times(mult)).round()
+		if (toAssign.gt(0)) {
+			tmp.qu.usedQuarks[colors[c]] = tmp.qu.usedQuarks[colors[c]].add(toAssign.times(mult)).round()
+			if (player.ghostify.another > 0) player.ghostify.another--
+		}
 	}
 	tmp.qu.quarks = tmp.qu.quarks.sub(oldQuarks).round()
 	if (tmp.qu.autoOptions.assignQKRotate) {

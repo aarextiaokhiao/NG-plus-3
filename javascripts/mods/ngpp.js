@@ -400,7 +400,7 @@ function updateMetaDimensions () {
 	} else {
 		document.getElementById("metaSoftReset").className = 'unavailablebtn'
 	}
-	var bigRipped = player.masterystudies !== undefined ? tmp.qu.bigRip.active : fals
+	var bigRipped = tmp.ngp3 && tmp.qu.bigRip.active
 	var req = getQuantumReq()
 	var reqGotten = isQuantumReached()
 	var newClassName = reqGotten ? (bigRipped && player.options.theme == "Aarex's Modifications" ? "" : "storebtn ") + (bigRipped ? "aarexmodsghostifybtn" : "") : 'unavailablebtn'
@@ -604,7 +604,7 @@ function getQuantumReq() {
 }
 
 function isQuantumReached() {
-	return player.money.log10() >= getQCGoal() && (player.meta.antimatter.max(player.achievements.includes("ng3p76") ? player.meta.bestOverQuantums : 0).gte(getQuantumReq())) && (!player.masterystudies || ECTimesCompleted("eterc14")) && quarkGain().gt(0)
+	return player.money.log10() >= getQCGoal() && (player.meta.antimatter.max(player.achievements.includes("ng3p76") ? player.meta.bestOverQuantums : 0).gte(getQuantumReq(undefined, tmp.ngp3 && tmp.qu.bigRip.active))) && (!player.masterystudies || ECTimesCompleted("eterc14")) && quarkGain().gt(0)
 }
 
 function getQuarkGain(){
@@ -638,7 +638,7 @@ function getQCtoQKEffect(){
 
 let quarkGain = function () {
 	let ma = player.meta.antimatter.max(1)
-	if (!tmp.ngp3) return Decimal.pow(10, ma.log(10) / Math.log10(Number.MAX_VALUE) - 1).times(quarkMult()).floor();
+	if (!tmp.ngp3) return Decimal.pow(10, ma.log(10) / Math.log10(Number.MAX_VALUE) - 1).floor()
 	
 	if (!tmp.qu.times && !player.ghostify.milestones) return new Decimal(1)
 	if (player.ghostify.milestones) ma = player.meta.bestAntimatter.max(1)
@@ -670,15 +670,14 @@ let quarkGain = function () {
 		dlog = (dlog - Math.pow(2, capped) - 2) / Math.pow(2, capped) + capped + 3
 		log = Math.pow(10, dlog)
 	}
-	return Decimal.pow(10, log).times(Decimal.pow(2, tmp.qu.multPower.total)).floor()
+
+	return Decimal.pow(10, log).times(getQuarkMult()).floor()
 }
 
-let quarkMult = function () {
-	let ret = Decimal.pow(2, tmp.qu.rebuyables[2]);
-	if (tmp.qu.upgrades.includes(4)) {
-		ret = ret.times(Decimal.pow(2, tmp.qu.realGluons / 1024));
-	}
-	return ret;
+let getQuarkMult = function () {
+	x = Decimal.pow(2, tmp.qu.multPower.total)
+	if (player.achievements.includes("ng3p93")) x = x.times(5)
+	return x
 }
 
 function toggleQuantumConf() {
@@ -731,7 +730,7 @@ function doQuantumProgress() {
 			var gg = getGHPGain()
 			if (player.meta.antimatter.lt(quantumReq)) id = 1
 			else if (!tmp.qu.breakEternity.unlocked) id = 4
-			else if (!ghostified || player.money.lt(getQCGoal()) || Decimal.lt(gg, 2)) id = 5
+			else if (!ghostified || player.money.lt(getQCGoal(undefined, true)) || Decimal.lt(gg, 2)) id = 5
 			else if (player.ghostify.neutrinos.boosts > 8 && hasNU(12) && !player.ghostify.ghostlyPhotons.unl) id = 7
 			else id = 6
 		} else if (inQC(0)) {
@@ -767,7 +766,7 @@ function doQuantumProgress() {
 		document.getElementById("progresspercent").textContent = percentage
 		document.getElementById("progresspercent").setAttribute('ach-tooltip','Eternity points percentage to Break Eternity')
 	} else if (id == 5) {
-		var percentage = Math.min(tmp.qu.bigRip.bestThisRun.max(1).log10() / getQCGoal() * 100, 100).toFixed(2) + "%"
+		var percentage = Math.min(tmp.qu.bigRip.bestThisRun.max(1).log10() / getQCGoal(undefined, true) * 100, 100).toFixed(2) + "%"
 		document.getElementById("progressbar").style.width = percentage
 		document.getElementById("progresspercent").textContent = percentage
 		document.getElementById("progresspercent").setAttribute('ach-tooltip','Percentage to Ghostify')

@@ -22,15 +22,10 @@ var softcap_data = {
 	ts_reduce_log: {
 		1: {
 			func: "pow",
-			start: 1e6,
-			pow: 0.75
-		},
-		2: {
-			func: "pow",
 			start: 1e7,
 			pow: 0.75
 		},
-		3: {
+		2: {
 			func: "pow",
 			start: 1e8,
 			pow: 0.75
@@ -76,6 +71,14 @@ var softcap_data = {
 			func: "pow",
 			start: 25e4,
 			pow: 0.1,
+			derv: true
+		}
+	},
+	ms322_log: {
+		1: {
+			func: "pow",
+			start: 500,
+			pow: 0.75,
 			derv: true
 		}
 	},
@@ -126,64 +129,18 @@ var softcap_data = {
 			func: "pow",
 			start: 100,
 			pow: 0.5
+		},
+		2: {
+			func: "pow",
+			start: 1e4,
+			pow: 0.4
 		}
 	},
 	inf_time_log_2: {
 		1: {
 			func: "pow",
-			start: 24e7,
-			pow: .75,
-			derv: true
-		},
-		2: {
-			func: "pow",
-			start: 25e7,
-			pow: 0.5,
-			derv: true
-		},
-		3: {
-			func: "pow",
-			start: 3e8,
-			pow: 0.3,
-			derv: true
-		},
-		4:{
-			func: "pow",
-			start: 1e9,
-			pow: 0.2,
-			derv: false
-		}
-	},
-	inf_time_log_2_big_rip: {
-		1: {
-			func: "pow",
-			start: 5e4,
-			pow: 0.9,
-			derv: true
-		},
-		2: {
-			func: "pow",
-			start: 55e3,
-			pow: 0.7,
-			derv: true
-		},
-		3: {
-			func: "pow",
-			start: 6e4,
-			pow: 0.5,
-			derv: true
-		},
-		4: {
-			func: "pow",
-			start: 65e3,
-			pow: 0.3,
-			derv: true
-		},
-		5: {
-			func: "pow",
-			start: 7e4,
-			pow: 0.1,
-			derv: true
+			start: 12e7,
+			pow: 0.6
 		}
 	},
 	ig_log_high: {

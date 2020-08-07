@@ -33,11 +33,11 @@ function doNGMatLeast4TDChanges(tier, ret){
 
 function getERTDAchMults(){
 	if (!player.boughtDims) return 1
-      	if (player.achievements.includes('r117')) {
-        	return 1 + Math.pow(Math.log(player.eternities), 1.5) / Math.log(100);
-      	} else if (player.achievements.includes('r102')) {
-        	return 1 + Math.log(player.eternities) / Math.log(100);
-      	}
+	if (player.achievements.includes('r117')) {
+		return 1 + Math.pow(Math.log(player.eternities), 1.5) / Math.log(100);
+	} else if (player.achievements.includes('r102')) {
+		return 1 + Math.log(player.eternities) / Math.log(100);
+	}
 	return 1
 }
 
@@ -81,8 +81,7 @@ function getTimeDimensionPower(tier) {
 	var ret2 = calcNGM2atleastTDPreVPostDilMultiplier(tier)
 	if (player.galacticSacrifice === undefined) ret = ret.times(ret2)
 	ret = ret.times(calcVanillaTSTDMult(tier))
-	
-  
+
 	if (ECTimesCompleted("eterc10") !== 0) ret = ret.times(getECReward(10))
 	if (player.achievements.includes("r128")) ret = ret.times(Math.max(player.timestudy.studies.length, 1))
 	if (player.galacticSacrifice !== undefined && player.galacticSacrifice.upgrades.includes(43)) ret = ret.times(galMults.u43())

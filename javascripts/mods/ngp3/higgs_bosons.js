@@ -67,6 +67,7 @@ function bosonicLabReset() {
 		wnb: new Decimal(0),
 		zb: new Decimal(0)
 	}
+	if (player.achievements.includes("ng3p92")) tmp.bl.upgrades.push(32)
 	ghostify(false, true)
 }
 
@@ -78,10 +79,12 @@ function higgsReset() {
 	bosonicLabReset()
 	giveAchievement("The Holy Particle")
 	if (oldHiggs == 0) {
+		updateNeutrinoBoosts()
 		updateHiggsUnlocks()
 		updateBosonicLimits()
 		updateBosonicStuffCosts()
 	}
+	tmp.hb.bosonicSemipowerment = true
 }
 
 function getHiggsRequirementBase() {
@@ -94,12 +97,18 @@ function getHiggsRequirementMult() {
 
 function getHiggsRequirement(higgs) {
 	if (higgs === undefined) higgs = tmp.hb.higgs
-	return getHiggsRequirementMult().pow(higgs).times(getHiggsRequirementBase())
+	let x = getHiggsRequirementMult().pow(higgs).times(getHiggsRequirementBase())
+	if (player.achievements.includes("ng3p95")) x = x.div(Math.log10(tmp.leBoost + 1) + 1)
+	return x
 }
 
 function getHiggsGain() {
 	if (tmp.hb.higgs == 0) return 1
 	return Math.round(tmp.bl.am.div(getHiggsRequirement()).floor().toNumber())
+}
+
+function updateHiggsTemp() {
+	//empty
 }
 
 function addHiggs(x) {

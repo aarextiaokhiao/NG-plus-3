@@ -182,13 +182,13 @@ const allAchievements = {
   ng3p87 : "The Deep Challenge",
   ng3p88 : "I give up.",
   ng3p91 : "The Holy Particle",
-  ng3p92 : "ng3p92",
-  ng3p93 : "ng3p93",
-  ng3p94 : "ng3p94",
-  ng3p95 : "ng3p95",
-  ng3p96 : "ng3p96",
-  ng3p97 : "ng3p97",
-  ng3p98 : "ng3p98",
+  ng3p92 : "Bright as the Anti-Sun",
+  ng3p93 : "Are these another...",
+  ng3p94 : "... references to EC8?",
+  ng3p95 : "Bosonic Semipowerment",
+  ng3p96 : "Not-so-very-challenging",
+  ng3p97 : "The Ghostliest Side",
+  ng3p98 : "Meta-Quintillion",
   s11 : "The first one's always free",
   s12 : "Just in case",
   s13 : "It pays to have respect",
@@ -353,6 +353,9 @@ function giveAchievement(name, noUpdate) {
 		loadAutoBuyerSettings()
 	}
 	if (name == "Kee-hee-hee!" && (player.achievements.includes("ng3p18") || player.achievements.includes("ng3p37"))) setAndMaybeShow('bestTPOverGhostifies',true,'"Your best-ever Tachyon particles was "+shorten(player.dilation.bestTPOverGhostifies)+"."')
+	if (name == "Bright as the Anti-Sun" && !tmp.bl.upgrades.includes(32)) tmp.bl.upgrades.push(32)
+	if (name == "... references to EC8?") updateTODStuff()
+	if (name == "Not-so-very-challenging") updateQuantumChallenges()
     if (!noUpdate) {
 		if (name == "A sound financial decision") localStorage.setItem(btoa("dsAM_asfd"),"")
 		else $.notify(name, "success");

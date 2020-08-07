@@ -1610,6 +1610,11 @@ function onLoad(noOffline) {
   if (player.meta !== undefined) quantumed = ghostified || tmp.qu.times > 0
   tmp.eds=tmp.qu&&tmp.qu.emperorDimensions
   updateBosonicLimits()
+  if (tmp.ngp3) {
+      setupMasteryStudies()
+      updateUnlockedMasteryStudies()
+      updateSpentableMasteryStudies()
+  }
   updateTemp()
   if (tmp.ngp3) {
 	  if (player.eternityBuyer.presets === undefined) player.eternityBuyer.presets = {on: false, autoDil: false, selected: -1, selectNext: 0, left: 1, order: []}
@@ -1892,6 +1897,8 @@ function onLoad(noOffline) {
       for (i=1;i<9;i++) document.getElementById("td"+i+'auto').textContent="Auto: O"+(player.autoEterOptions["td"+i]?"N":"FF")
   }
   document.getElementById('replicantibulkmodetoggle').textContent="Mode: "+(player.galaxyMaxBulk?"Max":"Singles")
+  document.getElementById('versionMod').textContent = tmp.ngp3l ? "NG+3: Legacy" : "New Game Plus 3"
+  document.getElementById('versionDesc').style.display = tmp.ngp3 ? "" : "none"
   document.getElementById('sacrificeAuto').style.display=speedrunMilestonesReached>24?"":"none"
   document.getElementById('toggleautoquantummode').style.display=(player.masterystudies?tmp.qu.reachedInfQK||player.achievements.includes("ng3p25"):false)?"":"none"
   var autoAssignUnl = tmp.ngp3 && (ghostified || tmp.qu.reachedInfQK)
@@ -1908,9 +1915,6 @@ function onLoad(noOffline) {
   }
   if (tmp.ngp3) {
       displayNonlegacyStuff()
-      setupMasteryStudies()
-      updateUnlockedMasteryStudies()
-      updateSpentableMasteryStudies()
       for (var i=0;i<masteryStudies.timeStudies.length;i++) {
           var t=masteryStudies.timeStudies[i]
           var d=masteryStudies.timeStudyDescs[t]
