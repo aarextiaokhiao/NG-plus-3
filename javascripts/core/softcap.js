@@ -78,8 +78,7 @@ var softcap_data = {
 		1: {
 			func: "pow",
 			start: 500,
-			pow: 0.75,
-			derv: true
+			pow: 0.75
 		}
 	},
 	bru1_log: {
@@ -185,7 +184,7 @@ var softcap_funcs = {
 	},
 	pow_decimal: function(x, start, pow, derv) {
 		if (x.gt(start)) {
-			x = x.div(start).pow(pow)
+			x = Decimal.div(x, start).pow(pow)
 			if (derv) x = x.sub(1).div(pow).add(1)
 			x = x.times(start)
 			return x

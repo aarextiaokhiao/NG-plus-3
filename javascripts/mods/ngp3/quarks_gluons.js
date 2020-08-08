@@ -17,10 +17,10 @@ function updateQuantumWorth(mode) {
 				document.getElementById("automaticCharge").textContent = automaticCharge.toFixed(2)
 				document.getElementById("automaticPower").textContent = player.ghostify.automatorGhosts.power.toFixed(2)
 			}
-			while (player.ghostify.automatorGhosts.power>=autoGhostRequirements[player.ghostify.automatorGhosts.ghosts-3]) {
+			while (player.ghostify.automatorGhosts.ghosts<getMaxAutoGhosts()&&player.ghostify.automatorGhosts.power>=autoGhostRequirements[player.ghostify.automatorGhosts.ghosts-3]) {
 				player.ghostify.automatorGhosts.ghosts++
 				document.getElementById("autoGhost"+player.ghostify.automatorGhosts.ghosts).style.display=""
-				if (player.ghostify.automatorGhosts.ghosts>14) document.getElementById("nextAutomatorGhost").parentElement.style.display="none"
+				if (player.ghostify.automatorGhosts.ghosts>=getMaxAutoGhosts()) document.getElementById("nextAutomatorGhost").parentElement.style.display="none"
 				else {
 					document.getElementById("automatorGhostsAmount").textContent=player.ghostify.automatorGhosts.ghosts
 					document.getElementById("nextAutomatorGhost").parentElement.style.display=""

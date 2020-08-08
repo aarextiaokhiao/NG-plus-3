@@ -1976,6 +1976,7 @@ function onLoad(noOffline) {
   }
   hideDimensions()
   updateChallenges()
+  updateInQCs()
   updateNCVisuals()
   updateChallengeTimes()
   checkForEndMe()
@@ -1998,6 +1999,7 @@ function onLoad(noOffline) {
   updateQCTimes()
   updatePCCompletions()
   maybeShowFillAll()
+  updateNanoRewardTemp()
   updateBreakEternity()
   updateLastTenGhostifies()
   onNotationChangeNeutrinos()

@@ -80,7 +80,7 @@ function getElectronUpgCost(u) {
 	base += ([null, 82, 153, 638, 26])[u]
 
 	if (u == 1) return Math.pow(10, base)
-	if (u == 4) return base
+	if (u == 4) return Math.max(Math.floor(base), 0)
 	return Decimal.pow(10, base)
 }
 
@@ -93,8 +93,8 @@ function getElectronUpgIncrease(u) {
 	return 0.25
 }
 
-function buyElectronUpg(u) {
-	if (!canBuyElectronUpg(u)) return
+function buyElectronUpg(u, quick) {
+	if (!canBuyElectronUpg(u)) return false
 	var cost = getElectronUpgCost(u)
 	if (u == 1) player.timestudy.theorem -= cost
 	else if (u == 2) player.dilation.dilatedTime = player.dilation.dilatedTime.sub(cost)
@@ -106,6 +106,7 @@ function buyElectronUpg(u) {
 		for (let i = 2; i <= 8; i++) if (!canBuyMetaDimension(i)) document.getElementById(i + "MetaRow").style.display = "none"
 	}
 	tmp.qu.electrons.rebuyables[u - 1]++
+	if (quick) return true
 	tmp.qu.electrons.mult += getElectronUpgIncrease(u)
 	updateElectrons(!tmp.ngp3l)
 }

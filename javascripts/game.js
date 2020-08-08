@@ -1362,6 +1362,7 @@ let tmp = {
 	rm: new Decimal(1),
 	it: 1,
 	rg4: false,
+	inQCs: [0],
 	pct: "",
 	ns: 1,
 	bru: {},
@@ -1392,7 +1393,7 @@ function updateRedLightBoostTemp(){
 }
 
 function updateOrangeLightBoostTemp(){
-	tmp.le[1] = tmp.effL[1] > 64 ? Math.log10(tmp.effL[1]/64)+14:tmp.effL[1]>8?Math.sqrt(tmp.effL[1])+6 : tmp.effL[1]+1 
+	tmp.le[1] = tmp.effL[1] > 64 ? Math.log10(tmp.effL[1] / 64) + 14 : tmp.effL[1] > 8 ? Math.sqrt(tmp.effL[1]) + 6 : tmp.effL[1] + 1
 	tmp.ppti /= tmp.le[1]
 }
 
@@ -1403,12 +1404,17 @@ function updateYellowLightBoostTemp(){
 	} else {
 		lighteffect2 = tmp.effL[2] > 20 ? Math.sqrt(tmp.effL[2] * 20) : tmp.effL[2]
 	}
-	tmp.le[2] = Math.sqrt(lighteffect2) * 45e3 
+	tmp.le[2] = Math.sqrt(lighteffect2) * 45e3
 }
 
 function updateGreenLightBoostTemp(){
-	tmp.le[3] = tmp.ngp3l ? (tmp.effL[3] > 8 ? Math.log10(tmp.effL[3] / 8)  +Math.sqrt(12) + 1 : Math.sqrt(tmp.effL[3] * 1.5) + 1) :
-		(Math.pow(tmp.effL[3] + 1, 0.125) - 1) / 3 + 1
+	var lighteffect3 = 1
+	if (tmp.ngp3l) lighteffect3 = tmp.effL[3] > 8 ? Math.log10(tmp.effL[3] / 8) + Math.sqrt(12) + 1 : Math.sqrt(tmp.effL[3] * 1.5) + 1
+	else {
+		lighteffect3 = (Math.pow(tmp.effL[3] + 1, 0.125) - 1) / 3 + 1
+		if (lighteffect3 > 1.5) lighteffect3 = Math.log10(lighteffect3 - 0.5) + 1.5
+	}
+	tmp.le[3] = lighteffect3
 }
 
 function updateBlueLightBoostTemp(){
@@ -1624,8 +1630,8 @@ function updateInfiniteTimeTemp() {
 			if (x > 1e8) x = Math.pow(1e8 * x, .5)
 			if (x > 1e9) x = Math.pow(1 + Math.log10(x), 9)
 			if (tmp.be && x > 1e7) x = Math.pow(93 + Math.log10(x), 3.5)
-			if (player.dilation.active && x > 1e5) x = Math.pow(1e20 * x, .2)
 		}
+		if ((!tmp.ngp3l || player.aarexModifications.ngudpV) && player.dilation.active && x > 1e5) x = Math.pow(1e20 * x, .2)
 		if (!tmp.ngp3l && !tmp.qu.bigRip.active) x = softcap(x, "inf_time_log_2")
 	}
 	tmp.it = Decimal.pow(10, x)
@@ -1704,7 +1710,7 @@ function updateReplicantiTemp() {
 	data.speeds = getReplSpeed()
 	data.interval = getReplicantiFinalInterval()
 
-	if (tmp.ngp3 && player.masterystudies.includes(273)) {
+	if (tmp.ngp3 && player.masterystudies.includes("t273")) {
 		data.chance = Decimal.pow(data.chance, tmp.mts[273])
 		data.freq = 0
 		if (data.chance.gte("1e9999998")) data.freq = tmp.mts[273].times(Math.log10(player.replicanti.chance + 1) / Math.log10(2))
@@ -1749,7 +1755,17 @@ function updateTemp() {
 		}
 		updateMasteryStudyTemp()
 		if (player.masterystudies.includes("d13")) tmp.branchSpeed = getBranchSpeed()
-		if (player.masterystudies.includes("d12")) tmp.ns = getNanofieldSpeed()
+		if (player.masterystudies.includes("d12")) {
+			var x = getNanoRewardPowerEff()
+			tmp.ns = getNanofieldSpeed()
+			if (tmp.nrPowerEff !== x) {
+				tmp.nrPowerEff = x
+				if (tmp.neUsed !== undefined) {
+					updateNanoRewardPowers()
+					updateNanoRewardEffects()
+				}
+			}
+		}
 		if (player.masterystudies.includes("d10")) tmp.edgm = getEmperorDimensionGlobalMultiplier() //Update global multiplier of all Emperor Dimensions
 		tmp.be=tmp.qu.bigRip.active&&tmp.qu.breakEternity.break
 		tmp.rg4=tmp.qu.upgrades.includes("rg4")&&(tmp.qu.rg4||!tmp.ngp3l||inQC(1)||QCIntensity(1))
@@ -2236,7 +2252,7 @@ function getRemoteScalingStart(galaxies) {
 	if (tmp.ngp3) {
 		for (var t=251;t<254;t++) if (player.masterystudies.includes("t"+t)) n += getMTSMult(t)
 		if (player.masterystudies.includes("t301")) n += getMTSMult(301)
-		if (player.masterystudies.includes("d12") && !hasBosonicUpg(22)) n += getNanofieldRewardEffect(7, "remote")
+		if (isNanoEffectUsed("remote_start")) n += tmp.nrEffects.remote_start
 		if (galaxies > 1/0 && !tmp.be) n -= galaxies - 1/0
 	}
 	return n
@@ -2312,8 +2328,12 @@ function getTotalTachyonParticleGain(){
 function getDilGain() {
 	if (inQCModifier("ad")) return new Decimal(0)
 	if (player.money.lt(10)) return new Decimal(0)
-	var log = Math.log10(player.money.log10()/400)*getDilExp()+getDilPower().log10()
-	return Decimal.pow(10,log).floor()
+	var log = Math.log10(player.money.log10() / 400) * getDilExp() + getDilPower().log10()
+	return Decimal.pow(10, log)
+}
+
+function getReqForTPGain() {
+	return Decimal.pow(10, player.dilation.totalTachyonParticles.div(getDilPower()).pow(1 / getDilExp()).toNumber() * 400)
 }
 
 function getNGUDTGain(){
@@ -3036,7 +3056,7 @@ function uponDilationDisplay(){
 	let gain = getDilGain()
         let msg = "Disable dilation"
         if (player.infinityPoints.lt(Number.MAX_VALUE)||inQCModifier("ad")) {}
-        else if (player.dilation.totalTachyonParticles.gt(gain)) msg += ".<br>Reach " + shortenMoney(Decimal.pow(10, player.dilation.totalTachyonParticles.div(getDilPower()).pow(1/getDilExp()).    toNumber() * 400)) + " antimatter to gain more Tachyon particles"
+        else if (player.dilation.totalTachyonParticles.gt(gain)) msg += ".<br>Reach " + shortenMoney(getReqForTPGain()) + " antimatter to gain more Tachyon particles"
         else msg += " for " + shortenMoney(gain.sub(player.dilation.totalTachyonParticles)) + " Tachyon particles"
         document.getElementById("enabledilation").innerHTML = msg + "."
 }
@@ -4934,7 +4954,7 @@ function setAchieveTooltip() {
 	let ghostliest = document.getElementById("The Ghostliest Side")
 	let metae18 = document.getElementById("Meta-Quintillion")
 
-	ghostliest.setAttribute('ach-tooltip', "Get " + shorten(Math.sqrt(Number.MAX_VALUE)) + " Ghostified stat. Reward: Ghostifies boost the gain of Ghost Particles at the reduced rate.")
+	ghostliest.setAttribute('ach-tooltip', "Get " + shorten(Math.pow(Number.MAX_VALUE, 1/4)) + " Ghostified stat. Reward: Ghostifies boost the gain of Ghost Particles at the reduced rate.")
 	metae18.setAttribute('ach-tooltip', "Get " + shortenCosts(Decimal.pow(10, 1e18)) + " antimatter. Reward: Distant Antimatter Galaxies scaling is 10% weaker.")
 }
 
@@ -8222,7 +8242,8 @@ function gainDilationGalaxies() {
 		let thresholdMult = inQC(5) ? Math.pow(10, 2.8) : !canBuyGalaxyThresholdUpg() ? 1.35 : 1.35 + 3.65 * Math.pow(0.8, getDilUpgPower(2))
 		if (hasBosonicUpg(12)) {
 			thresholdMult -= tmp.blu[12]
-			if (thresholdMult < 1.15) thresholdMult = 1.05 + 0.1 / (2.15 - thresholdMult)
+			if (!tmp.ngp3l && thresholdMult < 1.2) thresholdMult = 1.1 + 0.1 / Math.sqrt(2.2 - thresholdMult)
+			else if (thresholdMult < 1.15) thresholdMult = 1.05 + 0.1 / (2.15 - thresholdMult)
 		}
 		if (player.exdilation != undefined) thresholdMult -= Math.min(.1 * exDilationUpgradeStrength(2), 0.2)
 		if (thresholdMult < 1.15 && player.aarexModifications.nguspV !== undefined) thresholdMult = 1.05 + 0.1 / (2.15 - thresholdMult)
@@ -8240,7 +8261,7 @@ function getFreeGalaxyGainMult() {
 	if (player.dilation.upgrades.includes("ngmm1")) galaxyMult *= 2
 	if (player.aarexModifications.ngudpV&&!player.aarexModifications.nguepV) galaxyMult /= 1.5
 	galaxyMult *= tmp.qcRewards[2]
-	if (tmp.ngp3) if (player.masterystudies.includes("d12")) galaxyMult *= getNanofieldRewardEffect(3)
+	if (isNanoEffectUsed("dil_gal_gain")) galaxyMult *= tmp.nrEffects.dil_gal_gain
 	return galaxyMult
 }
 
@@ -8732,7 +8753,7 @@ function ngP3AchieveCheck(){
 		if (player.ghostify.another && tmp.qu.quarks.gte(1/0)) giveAchievement("Is these another...")
 		if (player.ghostify.reference && minUQ.decays >= 2) giveAchievement("... reference to EC8?")
 		if (tmp.hb.bosonicSemipowerment && player.ghostify.ghostlyPhotons.lights[7] >= tmp.leReq / 2) giveAchievement("Bosonic Semipowerment")
-		if (player.ghostify.times >= Math.sqrt(Number.MAX_VALUE)) giveAchievement("The Ghostliest Side")
+		if (player.ghostify.times >= Math.pow(Number.MAX_VALUE, 1/4)) giveAchievement("The Ghostliest Side")
 		if (player.money.e >= 1e18) giveAchievement("Meta-Quintillion")
 	}
 }
@@ -8844,7 +8865,7 @@ function doQuantumUnlockStuff(){
 }
 
 function doNGP3UnlockStuff(){
-	var chall=getCurrentQCData()
+	var chall=tmp.inQCs
 	if (chall.length<2) chall=chall[0]
 	else if (chall[0]>chall[1]) chall=chall[1]*10+chall[0]
 	else chall=chall[0]*10+chall[1]
@@ -9222,6 +9243,20 @@ function ghostifyAutomationUpdating(){
 			} else if (tmp.qu.time>=player.ghostify.automatorGhosts[13].t*10) bigRip(true)
 		}
 		if (isAutoGhostActive(15)) if (tmp.qu.bigRip.active&&getGHPGain().gte(player.ghostify.automatorGhosts[15].a)) ghostify(true)
+		if (isAutoGhostActive(16)) maxNeutrinoMult()
+		if (isAutoGhostActive(18)) {
+			var added = 0
+			var addedTotal = 0
+			for (var u = 1; u <= 4; u++) {
+				while (buyElectronUpg(u, true)) {
+					added++
+					addedTotal++
+				}
+				if (added > 0) tmp.qu.electrons.mult += added * getElectronUpgIncrease(u)
+			}
+			if (addedTotal > 0) updateElectrons(true)
+		}
+		if (isAutoGhostActive(20)) buyMaxBosonicUpgrades()
 	}
 	
 }
@@ -9285,13 +9320,16 @@ function nanofieldUpdating(diff){
 		tmp.qu.nanofield.antienergy = tmp.qu.nanofield.antienergy.add(toAddAE).min(getQuarkChargeProductionCap())
 		tmp.qu.nanofield.energy = tmp.qu.nanofield.energy.add(toAddAE.div(AErate).times(getQuarkEnergyProduction()))
 		updateNextPreonEnergyThreshold()
-		tmp.qu.nanofield.rewards = Math.max(tmp.qu.nanofield.rewards, tmp.qu.nanofield.power)
-		if (!tmp.qu.nanofield.apgWoke && tmp.qu.nanofield.rewards >= tmp.apgw) {
-			tmp.qu.nanofield.apgWoke = tmp.apgw
-			$.notify("You reached " + getFullExpansion(tmp.apgw) + " rewards... The Anti-Preontius has woken up and took over the Nanoverse! Be careful!")
-			showTab("quantumtab")
-			showQuantumTab("nanofield")
-			showNFTab("antipreon")
+		if (tmp.qu.nanofield.power > tmp.qu.nanofield.rewards) {
+			tmp.qu.nanofield.rewards = tmp.qu.nanofield.power
+			if (!tmp.qu.nanofield.apgWoke && tmp.qu.nanofield.rewards >= tmp.apgw) {
+				tmp.qu.nanofield.apgWoke = tmp.apgw
+				$.notify("You reached " + getFullExpansion(tmp.apgw) + " rewards... The Anti-Preontius has woken up and took over the Nanoverse! Be careful!")
+				showTab("quantumtab")
+				showQuantumTab("nanofield")
+				showNFTab("antipreon")
+			}
+			updateNanoRewardTemp()
 		}
 	}
 }
@@ -9588,8 +9626,9 @@ function runRandomReplicanti(chance){
 }
 
 function notContinuousReplicantiUpdating() {
-	var chance = tmp.rep.chance.toNumber()
+	var chance = tmp.rep.chance
 	var interval = tmp.rep.interval
+	if (typeof(chance) !== "number") chance = chance.toNumber()
 
 	if (interval <= replicantiTicks && player.replicanti.unl) {
 		if (player.replicanti.amount.lte(100)) runRandomReplicanti(chance) //chance should be a decimal
@@ -9668,7 +9707,7 @@ function doEternityButtonDisplayUpdating(diff){
     	if (document.getElementById("eternitybtn").style.display == "inline-block") {
         	document.getElementById("eternitybtnFlavor").textContent = (((!player.dilation.active&&gainedEternityPoints().lt(1e6))||player.eternities<1||player.currentEternityChall!==""||(player.options.theme=="Aarex's Modifications"&&player.options.notation!="Morse code"))
 									    ? ((player.currentEternityChall!=="" ? "Other challenges await..." : player.eternities>0 ? "" : "Other times await...") + " I need to become Eternal.") : "")
-		if (player.dilation.active && player.dilation.totalTachyonParticles.gte(getDilGain())) document.getElementById("eternitybtnEPGain").innerHTML = "Reach " + shortenMoney(Decimal.pow(10, player.dilation.totalTachyonParticles.div(getDilPower()).pow(1/getDilExp()).toNumber() * 400)) + " antimatter to gain more Tachyon Particles."
+		if (player.dilation.active && player.dilation.totalTachyonParticles.gte(getDilGain())) document.getElementById("eternitybtnEPGain").innerHTML = "Reach " + shortenMoney(getReqForTPGain()) + " antimatter to gain more Tachyon Particles."
 		else {
 			if ((EPminpeak.l < 9 && EPminpeakType == "logarithm") || (EPminpeakType == 'normal' && EPminpeak.l < 1e9)) {
             			document.getElementById("eternitybtnEPGain").innerHTML = ((player.eternities > 0 && (player.currentEternityChall==""||player.options.theme=="Aarex's Modifications"))
@@ -10101,7 +10140,7 @@ function EPonEternityPassiveGain(diff){
 function ngp3DilationUpdating(){
 	let gain = getDilGain()
 	if (player.galacticSacrifice !== undefined) player.dilation.bestIP = player.infinityPoints.max(player.dilation.bestIP)
-	if (player.masterystudies.includes("t292") && player.dilation.tachyonParticles.lt(gain)) setTachyonParticles(gain)
+	if (player.dilation.tachyonParticles.lt(gain) && player.masterystudies.includes("t292")) setTachyonParticles(gain)
 }
 
 function setTachyonParticles(x) {
@@ -10260,6 +10299,10 @@ function gameLoop(diff) {
 	
 	if (tmp.ngp3) {
 		if (player.dilation.active) ngp3DilationUpdating()
+		else if (isBigRipUpgradeActive(20)) {
+			let gain = getDilGain()
+			if (player.dilation.tachyonParticles.lt(gain)) setTachyonParticles(gain)
+		}
 		if (player.ghostify.milestones>7) passiveQuantumLevelStuff(diff)
 		if (player.masterystudies.includes('t291')) updateEternityUpgrades() // to fix the 5ep upg display
 		if (quantumed) quantumOverallUpdating(diff)

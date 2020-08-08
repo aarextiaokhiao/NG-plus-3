@@ -98,7 +98,6 @@ function getHiggsRequirementMult() {
 function getHiggsRequirement(higgs) {
 	if (higgs === undefined) higgs = tmp.hb.higgs
 	let x = getHiggsRequirementMult().pow(higgs).times(getHiggsRequirementBase())
-	if (player.achievements.includes("ng3p95")) x = x.div(Math.log10(tmp.leBoost + 1) + 1)
 	return x
 }
 

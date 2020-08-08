@@ -8,7 +8,7 @@ function getMetaAntimatterStart(bigRip) {
 function getDilationMetaDimensionMultiplier() {
 	let pow = 0.1
 	let div = 1e40
-	if (tmp.ngp3 && player.masterystudies.includes("d12")) pow = getNanofieldRewardEffect(4)
+	if (isNanoEffectUsed("dt_to_ma_exp")) pow = tmp.nrEffects.dt_to_ma_exp
 	if (player.aarexModifications.nguspV !== undefined) div = 1e50
 	if (player.aarexModifications.ngudpV && !player.aarexModifications.nguepV) {
 		let l = tmp.qu.colorPowers.b.plus(10).log10()
@@ -91,7 +91,7 @@ function getMetaBoostPower() {
 	let exp = 1
 	if (player.dilation.upgrades.includes("ngpp4")) r = getDil15Bonus()
 	if (tmp.ngp3) {
-		if (player.masterystudies.includes("d12")) r = getNanofieldRewardEffect(6)
+		if (isNanoEffectUsed("meta_boost_power")) r = tmp.nrEffects.meta_boost_power
 		if (player.masterystudies.includes("t312")) exp = 1.045
 		if (!tmp.ngp3l && player.achievements.includes("ng3p26")) exp *= Math.log10(9 + Math.max(player.meta.resets / 75 + 0.25, 1))
 	}
@@ -350,8 +350,8 @@ function getExtraDimensionBoostPowerExponent(ma) {
 	}
 	if (player.dilation.upgrades.includes("ngpp5")) power++
 	power += getECReward(13)
-	if (player.masterystudies != undefined) {
-		if (player.masterystudies.includes("d12")) power += getNanofieldRewardEffect(2)
+	if (tmp.ngp3) {
+		if (isNanoEffectUsed("ma_effect_exp")) power += tmp.nrEffects.ma_effect_exp
 		if (player.masterystudies.includes("d13")) power += getTreeUpgradeEffect(8)
 	}
 	return power
@@ -1338,7 +1338,7 @@ function quantumReset(force, auto, challid, bigRip, implode=false) {
 				g[p[c]] = g[p[c]].add(d[c]).round()
 				u[p[c][0]] = u[p[c][0]].sub(d[c]).round()
 			}
-			var qc = getCurrentQCData()
+			var qc = tmp.inQCs
 			var intensity = qc.length
 			var qc1 = qc[0]
 			var qc2 = qc[1]
@@ -1401,6 +1401,7 @@ function quantumReset(force, auto, challid, bigRip, implode=false) {
 			tmp.qu.challenge = tmp.qu.pairedChallenges.order[pc]
 			tmp.qu.pairedChallenges.current = pc
 		}
+		updateInQCs()
 		if ((!challid && player.ghostify.milestones < 6) || bigRip != tmp.qu.bigRip.active) tmp.qu.replicants.amount = new Decimal(0)
 		tmp.qu.replicants.requirement = new Decimal("1e3000000")
 		tmp.qu.replicants.quarks = (!(challid > 0 )&& player.achievements.includes("ng3p45")) ? tmp.qu.replicants.quarks.pow(2/3) : new Decimal(0)
@@ -1455,6 +1456,7 @@ function quantumReset(force, auto, challid, bigRip, implode=false) {
 		updateQCTimes()
 		updatePCCompletions()
 		updateReplicants()
+		updateNanoRewardTemp()
 		updateBreakEternity()
 		if (!oheHeadstart) {
 			player.eternityBuyer.dilationMode = false

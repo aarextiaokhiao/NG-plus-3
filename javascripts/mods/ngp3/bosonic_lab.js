@@ -471,13 +471,28 @@ function canBuyBosonicUpg(id) {
 	return true
 }
 
-function buyBosonicUpgrade(id) {
-	if (tmp.bl.upgrades.includes(id)) return
-	if (!canBuyBosonicUpg(id)) return
+function buyBosonicUpgrade(id, quick) {
+	if (tmp.bl.upgrades.includes(id)) return true
+	if (!canBuyBosonicUpg(id)) return false
 	tmp.bl.upgrades.push(id)
 	tmp.bl.am = tmp.bl.am.sub(getBosonicFinalCost(bu.reqData[id][0]))
-	updateTemp()
+	if (!quick) updateTemp()
+	if (id == 21 || id == 22) updateNanoRewardTemp()
 	if (!tmp.ngp3l) delete tmp.hb.bosonicSemipowerment
+	return true
+}
+
+function buyMaxBosonicUpgrades() {
+	var stopped = false
+	var oldLength = tmp.bl.upgrades.length
+	if (oldLength == bu.rows * 5) return
+	for (var r = 1; r <= bu.rows; r++) {
+		for (var c = 1; c <= 5; c++) {
+			var id = r * 10 + c
+			if (!buyBosonicUpgrade(id, true)) break
+		}
+	}
+	if (tmp.bl.upgrades.length > oldLength) updateTemp()
 }
 
 function hasBosonicUpg(id) {
@@ -544,6 +559,11 @@ var bu = {
 			am: 15e16,
 			g2: 75e6,
 			g3: 15e6,
+		},
+		31: {
+			am: 1e10,
+			g1: 1e6,
+			g4: 1,
 		}
 	},
 	reqData: {},
@@ -558,23 +578,26 @@ var bu = {
 		23: "Assigning gives more colored quarks based on your meta-antimatter.",
 		24: "You produce 1% of Space Shards on Big Rip per second, but Break Eternity upgrades are nerfed.",
 		25: "Electrons boost the per-ten Meta Dimensions multiplier.",
-		31: "Red power boosts the power of all Nanofield rewards.",
+		31: "Bosonic Antimatter boosts all Nanofield rewards.",
 		32: "Every 3rd Light Empowerment after LE7, unlock a new boost until LE25.",
 		33: "Higgs Bosons reduce the costs of all electron upgrades.",
 		34: "All types of galaxies boost each other.",
 		35: "Replicantis and Emperor Dimensions boost each other.",
 		41: "Intergalactic and Infinite Time rewards boost each other.",
-		42: "The first Bosonic Upgrade is stronger.",
-		43: "Bosonic Antimatter boosts Tree Upgrades.",
-		44: "Green power effect makes replicate interval increase slower.",
+		42: "Red power boosts the first Bosonic Upgrade.",
+		43: "Green power effect boosts Tree Upgrades.",
+		44: "Blue power makes replicate interval increase slower.",
 		45: "Dilated time weakens the Distant Antimatter Galaxies scaling."
 	},
 	effects: {
 		11: function() {
 			let x = tmp.bl.am.add(1).log10()
-			let exp = 0.5 - 0.25 * x / (x + 3)
-			if (hasBosonicUpg(42)) exp += 0.125
+			let y = 1
+			if (hasBosonicUpg(42)) y = bu.effects[42]()
+
+			let exp = 0.5 - 0.25 * x / (x + 3) / y
 			if (tmp.newNGP3E) x += x / 2 + Math.sqrt(x)
+			if (y > 1) x *= y
 			return Math.pow(x, exp) / 4
 		},
 		12: function() {
@@ -618,31 +641,34 @@ var bu = {
 			return Math.sqrt(tmp.qu.electrons.amount + 1) / div + add
 		},
 		31: function() {
-			return Math.max(Math.log10(tmp.qu.colorPowers.r.add(1).log10() + 1) * 2 - 7.5, 1)
+			return Math.pow(Math.log10(tmp.bl.am.add(1).log10() / 5 + 1) / 2 + 1, 2)
 		},
 		33: function() {
-			return tmp.hb.higgs / 100
+			return (Math.sqrt(tmp.hb.higgs + 1) - 1) / 6 + 1
 		},
 		34: function() {
-			return (Math.log10(player.galaxies + 1) + Math.log10(getTotalRG() + 1) + Math.log10(player.dilation.freeGalaxies + 1) + Math.log10(tmp.aeg + 1)) / 1e3 + 1
+			return (Math.pow(Math.log10(player.galaxies / 1e4 + 10) * Math.log10(getTotalRG() / 1e4 + 10) * Math.log10(player.dilation.freeGalaxies / 1e4 + 10) * Math.log10(tmp.aeg / 1e4 + 10), 1/8) - 1) / 5 + 1
 		},
-		35: function(x) {
+		35: function() {
 			return {
 				rep: Math.sqrt(tmp.qu.replicants.quarks.add(1).log10()),
-				eds: Decimal.pow(10, player.replicanti.amount.log10() / 1e7)
+				eds: Decimal.pow(10, player.replicanti.amount.log10() / 2e6)
 			}
 		},
-		41: function(x) {
+		41: function() {
 			return {
 				ig: Decimal.pow(tmp.qu.bigRip.active ? 1e5 : 1.05, Math.pow(Decimal.max(tmp.it, 1).log10(), 2)),
 				it: Decimal.pow(tmp.qu.bigRip.active ? 1.01 : 5, Math.sqrt(Decimal.max(tmp.ig, 1).log10()))
 			}
 		},
+		42: function() {
+			return Math.pow(tmp.qu.colorPowers.r.add(1).log10() / 2e4 + 1, 0.25)
+		},
 		43: function() {
-			return Math.max(Math.sqrt(tmp.bl.am.add(1).log10()) / (tmp.qu.bigRip.active ? 40 : 16) + 1, 1)
+			return Math.sqrt(colorBoosts.g + tmp.pe) / (tmp.qu.bigRip.active ? 100 : 40) + 1
 		},
 		44: function() {
-			return Math.pow(Math.sqrt(colorBoosts.g + tmp.pe - 1), 1.5) * 0.75
+			return Math.sqrt(tmp.qu.colorPowers.b.add(1).log10()) * 0.15
 		},
 		45: function() {
 			return Math.pow(1.03, Math.sqrt(player.dilation.dilatedTime.add(1).log10()))
@@ -678,6 +704,9 @@ var bu = {
 		},
 		41: function(x) {
 			return shorten(x.ig) + "x to Intergalactic, " + shorten(x.it) + "x to Infinite Time"
+		},
+		42: function(x) {
+			return (x * 100).toFixed(2) + "% to growth and softcap slowdown"
 		},
 		43: function(x) {
 			return (x * 100).toFixed(2) + "%"

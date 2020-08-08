@@ -551,6 +551,7 @@ function buyingDilStudyNanofield(){
 	showTab("quantumtab")
 	showQuantumTab("nanofield")
 	document.getElementById("nanofieldtabbtn").style.display = ""
+	updateNanoRewardTemp()
 }
 
 function buyingDilStudyToD(){

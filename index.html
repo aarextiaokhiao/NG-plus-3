@@ -1816,7 +1816,7 @@
 				<br>
 				(Update v2.3: The Higgs update)
 				<br>
-				<b class="warning">(Test server: Beta 0, Alpha 3)</b>
+				<b class="warning">(Test server: Beta 0, Alpha 4)</b>
 			</p>
 			<div id="footercontainer">
 				<table id="footer" style="display: table !important">
@@ -2685,7 +2685,7 @@
 								<div id="... references to EC8?" class="achievement achievementlocked" style="background-image: url(images/178.png)" ach-tooltip="Get at least 2 Radioactive Decays of every color with at most 10 gains of Unstable Quarks. Reward: Gain 1 level of Branch upgrade 2 per 1 Radioactive Decay."></div>
 							</td>
 							<td>
-								<div id="Bosonic Semipowerment" class="achievement achievementlocked" style="background-image: url(images/179.png)" ach-tooltip="Reach 50% of Light Empowerment requirement without buying Bosonic Upgrades, but after you get a Higgs. Reward: Light Empowerments reduce the requirement of Higgs Bosons."></div>
+								<div id="Bosonic Semipowerment" class="achievement achievementlocked" style="background-image: url(images/179.png)" ach-tooltip="Reach 50% of Light Empowerment requirement without buying Bosonic Upgrades, but after you get a Higgs. Reward: Light Empowerments are 1 ultraviolet Light cheaper."></div>
 							</td>
 							<td>
 								<div id="Not-so-very-challenging" class="achievement achievementlocked" style="background-image: url(images/180.png)" ach-tooltip="Get ??? Paired Challenges ranking. Reward: Quantum Challenges are 5% lower except for Big Rip."></div>
@@ -3789,7 +3789,7 @@
 							<td><button class='gluonupgrade unavailablebtn' id="bigripupg17" onclick='buyBigRipUpg(17)'>Make the first upgrade active again and <span id="bigripupg17current">2.9</span>x stronger.<br>Cost: <span id="bigripupg17cost"></span> Space Shards</button></td>
 							<td><button class='gluonupgrade unavailablebtn' id="bigripupg18" onclick='buyBigRipUpg(18)'>Space Shards boost quark spin productions.<br>Currently: <span id="bigripupg18current"></span>x<br>Cost: <span id="bigripupg18cost"></span> Space Shards</button></td>
 							<td><button class='gluonupgrade unavailablebtn' id="bigripupg19" onclick='buyBigRipUpg(19)'>Time Shards speed up Branches.<br>Currently: <span id="bigripupg19current"></span>x<br>Cost: <span id="bigripupg19cost"></span> Space Shards</button></td>
-							<td><button class='gluonupgrade unavailablebtn' id="bigripupg20" onclick='buyBigRipUpg(20)'>You gain Tachyon particles without dilating time, but at reduced rate.<br>Cost: <span id="bigripupg20cost"></span> Space Shards</button></td>
+							<td><button class='gluonupgrade unavailablebtn' id="bigripupg20" onclick='buyBigRipUpg(20)'>You gain Tachyon particles without dilating time.<br>Cost: <span id="bigripupg20cost"></span> Space Shards</button></td>
 						</tr>
 					</table>
 				</div>
@@ -5004,7 +5004,7 @@
 						<td id="neutrinoBoostCell3">They increase the limit of 14th dilation upgrade from 3.00x to <span class="neutrinos" id="neutrinoBoost3">3.00</span>x.</td>
 					</tr>
 					<tr class="neutrinoBoosts" id="neutrinoBoostRow2">
-						<td>They make Infinite time reward stronger by <span class="neutrinos" id="neutrinoBoost4">0.0</span>%.</td>
+						<td>They make Infinite Time reward stronger by <span class="neutrinos" id="neutrinoBoost4">0.0</span>%.</td>
 						<td id="neutrinoBoostCell5">They reduce the nerf to red power boost over 130% by <span class="neutrinos" id="neutrinoBoost5">100.0</span>%.</td>
 						<td id="neutrinoBoostCell6">They slow down Distant Antimatter Galaxies by <span class="neutrinos" id="neutrinoBoost6">0.0</span>%.<br>(Nerfed in Big Rip runs)</td>
 					</tr>
@@ -5158,6 +5158,43 @@
 							Power usage: 0.5<br>
 							Amount of GhP to wait until reset: <input id="autoGhost15a" onchange="changeAutoGhost('15a')"></input><br>
 							Is active: <input id="isAutoGhostOn15" type="checkbox" onchange="toggleAutoGhost(15)"></input>
+						</div></td>
+					</tr>
+					<tr>
+						<td id="autoGhost16"><div class="autoBuyerDiv" style="display:block">
+							<b>Auto-Neutrino Multi Ghost</b><br>
+							Power usage: 6<br>
+							Is active: <input id="isAutoGhostOn16" type="checkbox" onchange="toggleAutoGhost(16)"></input>
+						</div></td>
+						<td id="autoGhost17"><div class="autoBuyerDiv" style="display:block">
+							<b>Auto-Extractor Ghost</b><br>
+							(not implemented)<br>
+							Power usage: 3<br>
+							Is active: <input id="isAutoGhostOn17" type="checkbox" onchange="toggleAutoGhost(17)"></input>
+						</div></td>
+						<td id="autoGhost18"><div class="autoBuyerDiv" style="display:block">
+							<b>Auto-Electron Multi Ghost</b><br>
+							Power usage: 6<br>
+							Is active: <input id="isAutoGhostOn18" type="checkbox" onchange="toggleAutoGhost(18)"></input>
+						</div></td>
+					</tr>
+					<tr>
+						<td id="autoGhost19"><div class="autoBuyerDiv" style="display:block">
+							<b>Auto-Enchanter Ghost</b><br>
+							(not implemented)<br>
+							Power usage: 3<br>
+							Is active: <input id="isAutoGhostOn19" type="checkbox" onchange="toggleAutoGhost(19)"></input>
+						</div></td>
+						<td id="autoGhost20"><div class="autoBuyerDiv" style="display:block">
+							<b>Auto-Bosonic Upgrader Ghost</b><br>
+							Power usage: 9<br>
+							Is active: <input id="isAutoGhostOn20" type="checkbox" onchange="toggleAutoGhost(20)"></input>
+						</div></td>
+						<td id="autoGhost21"><div class="autoBuyerDiv" style="display:block">
+							<b>Auto-W & Z Boson Ghost</b><br>
+							(not implemented)<br>
+							Power usage: 3<br>
+							Is active: <input id="isAutoGhostOn21" type="checkbox" onchange="toggleAutoGhost(21)"></input>
 						</div></td>
 					</tr>
 				</table>

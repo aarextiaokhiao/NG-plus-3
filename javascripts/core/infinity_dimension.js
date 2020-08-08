@@ -223,7 +223,7 @@ function getInfinityPowerEffect() {
 	let log = player.infinityPower.max(1).log10()
 	log *= tmp.infPowExp 
 	if (log > 10 && player.pSac !== undefined) log = Math.pow(log * 200 - 1e3, 1/3)
-	return Decimal.pow(10, log)
+	return new Decimal(1)
 }
 
 function getInfinityPowerEffectExp() {
