@@ -13,10 +13,14 @@ function setupHiggsSave() {
 function unlockHiggs() {
 	if (tmp.hb.unl) return
 	if (!player.ghostify.wzb.unl) return
-	if (!tmp.bl.am.gte(getHiggsRequirement())) return
+	if (canUnlockHiggs()) return
 	$.notify("Congratulations! You have unlocked Higgs Bosons!", "success")
 	tmp.hb.unl = true
 	updateHiggsUnlocks()
+}
+
+function canUnlockHiggs() {
+	return player.money.gte(Decimal.pow(10, 2e17)) && tmp.bl.am.gte(getHiggsRequirement())
 }
 
 function updateHiggsUnlocks() {
@@ -26,6 +30,11 @@ function updateHiggsUnlocks() {
 	document.getElementById("bosonicResets").style.display = unl ? "" : "none"
 	document.getElementById("hbMessage").style.display = unl && !higgsGot ? "" : "none"
 	document.getElementById("bAMDimReturn").style.display = unl ? "" : "none"
+	if (!unl) updateHiggsUnlockDisplay()
+}
+
+function updateHiggsUnlockDisplay() {
+	document.getElementById("hbUnl").textContent = "To unlock Higgs Bosons, you need to get " + shortenCosts(Decimal.pow(10, 2e17)) + " antimatter and " + shortenCosts(getHiggsRequirement()) + " Bosonic Antimatter first."
 }
 
 function bosonicLabReset() {

@@ -1730,7 +1730,6 @@ function updateTemp() {
 		tmp.ppti=1
 		if (!tmp.ngp3l) {
 			if (tmp.hb.unl) updateHiggsTemp()
-			if (player.ghostify.wzb.unl) updateBosonicAMDimReturnsTemp()
 		}
 		if (player.ghostify.wzb.unl) {
 			updateBosonicEnchantsTemp()
@@ -5007,9 +5006,9 @@ function onNotationChange() {
 		updateBreakEternity()
 		onNotationChangeNeutrinos()
 		updateBosonicStuffCosts()
-		document.getElementById("gphUnl").textContent="To unlock Ghostly Photons, you need to get "+shortenCosts(Decimal.pow(10,6e9))+" antimatter while your universe is Big Ripped first."
-		document.getElementById("blUnl").textContent="To unlock Bosonic Lab, you need to get "+shortenCosts(Decimal.pow(10,1e10))+" ghostly unstable quarks first."
-		if (!tmp.ngp3l) document.getElementById("hbUnl").textContent="To unlock Higgs Bosons, you need to get " + shortenCosts(1e20) + " Bosonic Antimatter first."
+		if (!player.ghostify.ghostlyPhotons.unl) document.getElementById("gphUnl").textContent="To unlock Ghostly Photons, you need to get "+shortenCosts(Decimal.pow(10,6e9))+" antimatter while your universe is Big Ripped first."
+		else if (!player.ghostify.wzb.unl) updateBLUnlockDisplay()
+		else if (!tmp.ngp3l && !tmp.hb.unl) unlockHiggsUnlockDisplay()
 	}
 	document.getElementById("epmult").innerHTML = "You gain 5 times more EP<p>Currently: "+shortenDimensions(player.epmult)+"x<p>Cost: "+shortenDimensions(player.epmultCost)+" EP"
 	document.getElementById("achmultlabel").textContent = "Current achievement multiplier on each Dimension: " + shortenMoney(player.achPow) + "x"
@@ -8793,7 +8792,7 @@ function dilationStuffABTick(){
 	updateDilationUpgradeButtons()
 }
 
-function doBosonsUnlockStuff(){
+function doBosonsUnlockStuff() {
 	player.ghostify.wzb.unl=true
 	$.notify("Congratulations! You have unlocked Bosonic Lab!", "success")
 	giveAchievement("Even Ghostlier than before")
@@ -8880,8 +8879,7 @@ function doNGP3UnlockStuff(){
 	if (player.masterystudies && (player.masterystudies.includes("d14")||player.achievements.includes("ng3p51")) && !metaSave.ngp4 && !inEasierModeCheck) doNGP4UnlockStuff()
 	if (player.eternityPoints.gte("1e1200") && tmp.qu.bigRip.active && !tmp.qu.breakEternity.unlocked) doBreakEternityUnlockStuff()
 	if (player.money.gte(Decimal.pow(10,6e9))&&tmp.qu.bigRip.active&&!player.ghostify.ghostlyPhotons.unl) doPhotonsUnlockStuff()
-	let max = getMaximumUnstableQuarks()
-	if (max.quarks.log10() > 1e10 && max.decays >= 5 && !player.ghostify.wzb.unl) doBosonsUnlockStuff()
+	if (canUnlockBosonicLab() && !player.ghostify.wzb.unl) doBosonsUnlockStuff()
     unlockHiggs()
 }
 

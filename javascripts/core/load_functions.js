@@ -1656,7 +1656,10 @@ function onLoad(noOffline) {
       if (tmp.qu.bigRip.bestGals==undefined) tmp.qu.bigRip.bestGals=0
       if (player.ghostify.neutrinos.boosts==undefined||!player.ghostify.times) player.ghostify.neutrinos.boosts=0
       if (player.ghostify.ghostlyPhotons.maxRed==undefined) player.ghostify.ghostlyPhotons.maxRed=0
-      if (player.ghostify.wzb.unl) giveAchievement("Even Ghostlier than before")
+      if (player.ghostify.wzb.unl) {
+          giveAchievement("Even Ghostlier than before")
+          if (!tmp.ngp3l) updateBosonicAMDimReturnsTemp()
+      }
       for (var g=tmp.bl.glyphs.length+1;g<=br.maxLimit;g++) tmp.bl.glyphs.push(0)
       if (!tmp.bl.usedEnchants.length) tmp.bl.usedEnchants=[]
       if (player.ghostify.wzb.dPUse===undefined) {
@@ -1953,7 +1956,7 @@ function onLoad(noOffline) {
       }
       document.getElementById("gphUnl").textContent="To unlock Ghostly Photons, you need to get "+shortenCosts(Decimal.pow(10,6e9))+" antimatter while your universe is Big Ripped first."
       document.getElementById("lightBoost4Type").textContent=tmp.ngp3l?"preon":"total green power"
-      document.getElementById("blUnl").textContent="To unlock Bosonic Lab, you need to get "+shortenCosts(Decimal.pow(10,1e10))+" ghostly unstable quarks first."
+      updateBLUnlockDisplay()
       document.getElementById("bpc68").textContent=shortenMoney(tmp.qu.pairedChallenges.pc68best)
       document.getElementById("odSlider").value=Math.round((tmp.bl.odSpeed-1)/4*50)
       for (var g=1;g<=br.limit;g++) document.getElementById("typeToExtract"+g).className=tmp.bl.typeToExtract==g?"chosenbtn":"storebtn"

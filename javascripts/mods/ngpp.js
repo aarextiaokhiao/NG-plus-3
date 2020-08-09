@@ -664,8 +664,7 @@ let quarkGain = function () {
 
 	var dlog = Math.log10(log)
 	let start = 4 //Starts at e10k.
-	if (!tmp.ngp3l) start++
-	if ((player.aarexModifications.ngumuV || player.aarexModifications.nguepV || (tmp.ngp3 && !tmp.ngp3l)) && dlog > start) {
+	if ((player.aarexModifications.ngumuV || player.aarexModifications.nguepV) && dlog > start) {
 		let capped = Math.floor(Math.log10(Math.max(dlog - 2, 1)) / Math.log10(2))
 		dlog = (dlog - Math.pow(2, capped) - 2) / Math.pow(2, capped) + capped + 3
 		log = Math.pow(10, dlog)

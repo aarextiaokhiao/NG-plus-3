@@ -1,9 +1,19 @@
 //Bosonic Lab
+function canUnlockBosonicLab() {
+	let max = getMaximumUnstableQuarks()
+	return (max.decays > 5 || max.quarks.e >= (tmp.ngp3l ? 1e10 : 5e10)) && (tmp.ngp3l || player.ghostify.ghostlyPhotons.enpowerments >= 3)
+}
+
 function updateBLUnlocks() {
 	let unl = player.ghostify.wzb.unl
 	document.getElementById("blUnl").style.display = unl ? "none" : ""
 	document.getElementById("blDiv").style.display = unl ? "" : "none"
 	document.getElementById("nftabs").style.display = unl ? "" : "none"
+	if (!unl) updateBLUnlockDisplay()
+}
+
+function updateBLUnlockDisplay() {
+	document.getElementById("blUnl").textContent = "To unlock Bosonic Lab, you need to get " + shortenCosts(Decimal.pow(10, tmp.ngp3l ? 1e10 : 5e10)) + " Ghostly Unstable Quarks" + (tmp.ngp3l ? "" : " and 3 Light Empowerments") + " first."
 }
 
 function getBosonicWattGain() {
@@ -98,19 +108,16 @@ function bosonicTick(diff) {
 	//Bosonic Antimatter production
 	var newBA = data.am
 	var baAdded = getBosonicAMProduction().times(diff)
-	if (tmp.ngp3l) newBA = data.am.add(baAdded)
+	if (tmp.ngp3l) newBA = newBA.add(baAdded)
 	else {
-		var dimReturned = newBA.gt(tmp.badm.start)
-		if (!dimReturned) {
-			newBA = data.am.add(baAdded)
-			if (newBA.gt(tmp.badm.start)) {
-				newBA = newBA.div(tmp.badm.start)
-				newBA = newBA.sub(-tmp.badm.offset).ln() / Math.log(tmp.badm.base) + tmp.badm.offset2
-				newBA = tmp.badm.start.times(newBA)
-			}
-		} else if (tmp.badm.postDim <= Number.MAX_VALUE) {
-			newBA = tmp.badm.preDim.add(baAdded.div(tmp.badm.start))
+		if (data.am.gt(tmp.badm.start) && tmp.badm.postDim <= Number.MAX_VALUE) data.am = tmp.badm.preDim.times(tmp.badm.start)
+		updateBosonicAMDimReturnsTemp()
+		newBA = data.am.add(baAdded)
+		if (newBA.gt(tmp.badm.start)) {
+			newBA = newBA.div(tmp.badm.start)
+			tmp.badm.preDim = newBA
 			newBA = newBA.sub(-tmp.badm.offset).ln() / Math.log(tmp.badm.base) + tmp.badm.offset2
+			tmp.badm.postDim = newBA
 			newBA = tmp.badm.start.times(newBA)
 		}
 	}
@@ -406,7 +413,10 @@ var bEn = {
 	descs: {
 		12: "You automatically extract Bosonic Runes.",
 		13: "Speed up the production and use of Anti-Preons.",
-		23: "Bosonic Antimatter boosts oscillate speed."
+		23: "Bosonic Antimatter boosts oscillate speed.",
+		14: "Reduce the requirement of Higgs.",
+		24: "You gain more Bosonic Battery.",
+		34: "Boost all Particles of Higgs Field."
 	},
 	effects: {
 		12: function(l) {
@@ -634,11 +644,12 @@ var bu = {
 		25: function() {
 			var div = 8e3
 			var add = 1
+			var exp = 0.6
 			if (tmp.newNGP3E){
 				div = 2e3
 				add = 1.5
-			}
-			return Math.sqrt(tmp.qu.electrons.amount + 1) / div + add
+			} else if (tmp.ngp3l) exp = 0.5
+			return Math.pow(tmp.qu.electrons.amount + 1, exp) / div + add
 		},
 		31: function() {
 			return Math.pow(Math.log10(tmp.bl.am.add(1).log10() / 5 + 1) / 2 + 1, 2)
@@ -651,8 +662,8 @@ var bu = {
 		},
 		35: function() {
 			return {
-				rep: Math.sqrt(tmp.qu.replicants.quarks.add(1).log10()),
-				eds: Decimal.pow(10, player.replicanti.amount.log10() / 2e6)
+				rep: Math.pow(tmp.qu.replicants.quarks.add(1).log10(), 1/3) * 2,
+				eds: Decimal.pow(10, Math.pow(player.replicanti.amount.log10(), 2/3) / 15e3)
 			}
 		},
 		41: function() {
@@ -671,7 +682,7 @@ var bu = {
 			return Math.sqrt(tmp.qu.colorPowers.b.add(1).log10()) * 0.15
 		},
 		45: function() {
-			return Math.pow(1.03, Math.sqrt(player.dilation.dilatedTime.add(1).log10()))
+			return player.dilation.dilatedTime.add(1).pow(1 / 2e3).toNumber()
 		}
 	},
 	effectDescs: {

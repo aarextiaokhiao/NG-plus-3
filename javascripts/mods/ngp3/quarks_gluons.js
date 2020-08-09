@@ -450,7 +450,7 @@ function updateQuarksTab(tab) {
 		var assortAmount=getAssortAmount()
 		if (!tmp.ngp3l) {
 			var colors=['r','g','b']
-			document.getElementById("assort_amount").textContent=shortenDimensions(assortAmount)
+			document.getElementById("assort_amount").textContent=shortenDimensions(assortAmount.times(getQuarkAssignMult()))
 			for (c=0;c<3;c++) if (colorCharge[colors[c]].div(colorCharge.qwBonus).lte(1e16)) document.getElementById(colors[c]+"PowerRate").textContent="+"+shorten(getColorPowerProduction(colors[c]))+"/s"
 		}
 		document.getElementById("assignAllButton").className=(assortAmount.lt(1)?"unavailabl":"stor")+"ebtn"
@@ -523,7 +523,7 @@ function updateQuarksTabOnUpdate(mode) {
 		document.getElementById("greenAssign").className=canAssign?"storebtn":"unavailablebtn"
 		document.getElementById("blueAssign").className=canAssign?"storebtn":"unavailablebtn"
 	} else {
-		document.getElementById("assort_amount").textContent=shortenDimensions(assortAmount)
+		document.getElementById("assort_amount").textContent=shortenDimensions(assortAmount.times(getQuarkAssignMult()))
 		document.getElementById("redAssort").className=canAssign?"storebtn":"unavailablebtn"
 		document.getElementById("greenAssort").className=canAssign?"storebtn":"unavailablebtn"
 		document.getElementById("blueAssort").className=canAssign?"storebtn":"unavailablebtn"
