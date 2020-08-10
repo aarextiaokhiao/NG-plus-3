@@ -51,7 +51,7 @@ function bosonicLabReset() {
 		ticks: tmp.bl.ticks,
 		speed: 0,
 		am: new Decimal(0),
-		typeToExtract: 1,
+		typeToExtract: tmp.bl.typeToExtract,
 		extracting: false,
 		extractProgress: new Decimal(0),
 		autoExtract: new Decimal(0),

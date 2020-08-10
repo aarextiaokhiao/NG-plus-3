@@ -532,11 +532,11 @@ quantumed = false
 function quantum(auto, force, challid, bigRip = false, quick) {
     if (player.masterystudies !== undefined) if (!auto && !force && tmp.qu.bigRip.active) force = true
 	if (!(isQuantumReached()||force)||implosionCheck) return
-	var headstart = player.aarexModifications.newGamePlusVersion > 0 && !player.masterystudies
-	if (player.aarexModifications.quantumConf&&!(auto||force)) if (!confirm(player.masterystudies?"Quantum will reset everything eternity resets, and "+(headstart?"also some other things like dilation":"also time studies, eternity challenges, dilation, "+(player.masterystudies?"meta dimensions, and mastery studies":"and meta dimensions"))+". You will gain a quark and unlock various upgrades.":"But wait! Quantum will erases almost everything that you have and rewards nothing! However, this is not a win. You need to reach real Infinite antimatter to win! (it's impossible)")) return
+	var headstart = player.aarexModifications.newGamePlusVersion > 0 && !tmp.ngp3
+	if (player.aarexModifications.quantumConf&&!(auto||force)) if (!confirm(player.masterystudies?"Quantum will reset everything eternity resets, and "+(headstart?"also some other things like dilation":"also time studies, eternity challenges, dilation, "+(tmp.ngp3?"meta dimensions, and mastery studies":"and meta dimensions"))+". You will gain a quark and unlock various upgrades.":"But wait! Quantum will erases almost everything that you have and rewards nothing! However, this is not a win. You need to reach real Infinite antimatter to win! (it's impossible)")) return
 	if (!quantumed) if (!confirm("Are you sure you want to do that? You will lose everything you have!")) return
 	var pc=challid-8
-	if (player.masterystudies) {
+	if (tmp.ngp3) {
 		tmp.preQCMods=tmp.qu.qcsMods.current
 		tmp.qu.qcsMods.current=[]
 		if (challid > 0) {

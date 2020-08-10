@@ -603,7 +603,7 @@ var bu = {
 		11: function() {
 			let x = tmp.bl.am.add(1).log10()
 			let y = 1
-			if (hasBosonicUpg(42)) y = bu.effects[42]()
+			if (hasBosonicUpg(42)) y = tmp.blu[42]
 
 			let exp = 0.5 - 0.25 * x / (x + 3) / y
 			if (tmp.newNGP3E) x += x / 2 + Math.sqrt(x)
@@ -611,7 +611,7 @@ var bu = {
 			return Math.pow(x, exp) / 4
 		},
 		12: function() {
-			return (colorBoosts.g+tmp.pe-1)*7e-4
+			return (colorBoosts.g + tmp.pe - 1) * 7e-4
 		},
 		13: function() {
 			var decays = getRadioactiveDecays('r') + getRadioactiveDecays('g') + getRadioactiveDecays('b')
@@ -732,7 +732,7 @@ var bu = {
 }
 
 function updateBosonicUpgradesTemp(){
-	for (var r = 1; r <= bu.rows; r++) for (var c = 1; c < 6; c++) {
+	for (var r = bu.rows; r >= 1; r--) for (var c = 1; c < 6; c++) {
 		var id = r * 10 + c
 		if (bu.effects[id] !== undefined) tmp.blu[id] = bu.effects[id]()
 	}

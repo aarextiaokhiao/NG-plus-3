@@ -260,10 +260,10 @@ var quantumChallenges={
 	goals:[0,665e7,768e8,4525e7,5325e7,1344e7,561e6,6254e7,2925e7]
 }
 
-var assigned
+var assigned = []
 var pcFocus = 0
 function updateQuantumChallenges() {
-	if (player.masterystudies ? !player.masterystudies.includes("d8") : true) {
+	if (!tmp.ngp3 || !player.masterystudies.includes("d8")) {
 		document.getElementById("qctabbtn").style.display = "none"
 		return
 	} else document.getElementById("qctabbtn").style.display = ""
