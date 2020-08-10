@@ -410,7 +410,7 @@ function buyBulkDimension(tier, bulk, auto) {
 		bought += toBuy
 		reduceMatter(toBuy * 10)
 	}
-	let stopped = false
+	let stopped = !costIncreaseActive(player[name + "Cost"])
 	let failsafe = 0
 	while (!canQuickBuyDim(tier)) {
 		stopped = true
