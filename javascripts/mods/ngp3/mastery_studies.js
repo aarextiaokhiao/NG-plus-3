@@ -129,7 +129,7 @@ var masteryStudies = {
 		},
 		273: function(uses){
 			var intensity = 5
-			if (ghostified && player.ghostify.neutrinos.boosts > 1 && !uses.includes("pn")) intensity += tmp.nb[1]
+			if (ghostified && player.ghostify.neutrinos.boosts > 1 && !uses.includes("pn")) intensity += tmp.nb[2]
 			if (uses.includes("intensity")) return intensity
 			return Decimal.max(Math.log10(player.replicanti.chance + 1), 1).pow(intensity)
 		},

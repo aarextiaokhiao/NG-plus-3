@@ -38,13 +38,12 @@ function bosonicTick(diff) {
 	//W & Z Bosons
 	let apDiff
 	let apSpeed
-	lDiff = diff.times(tmp.wzbs)
 	lData = player.ghostify.wzb
 	if (lData.dPUse) {
-		apDiff = lDiff.times(getAntiPreonLoss()).min(lData.dP).div(aplScalings[player.ghostify.wzb.dPUse])
+		apDiff = diff.times(getAntiPreonLoss()).min(lData.dP).div(aplScalings[player.ghostify.wzb.dPUse])
 		if (isNaN(apDiff.e)) apDiff=new Decimal(0)
 		if (lData.dPUse == 1) {
-			lData.wQkProgress = lData.wQkProgress.add(apDiff.times(tmp.zbs))
+			lData.wQkProgress = lData.wQkProgress.add(apDiff.times(tmp.wzb.zbs))
 			if (lData.wQkProgress.gt(1)) {
 				let toSub=lData.wQkProgress.floor()
 				lData.wpb=lData.wpb.add(toSub.add(lData.wQkUp ? 1 : 0).div(2).floor())
@@ -65,13 +64,13 @@ function bosonicTick(diff) {
 			}
 		}
 		if (lData.dPUse == 3) {
-			lData.wpb = lData.wpb.add(lData.wnb.min(apDiff).times(tmp.zbs))
-			lData.wnb = lData.wnb.sub(lData.wnb.min(apDiff).times(tmp.zbs))
+			lData.wpb = lData.wpb.add(lData.wnb.min(apDiff).times(tmp.wzb.zbs))
+			lData.wnb = lData.wnb.sub(lData.wnb.min(apDiff).times(tmp.wzb.zbs))
 		}
-		lData.dP = lData.dP.sub(lDiff.times(getAntiPreonLoss()).min(lData.dP))
+		lData.dP = lData.dP.sub(diff.times(getAntiPreonLoss()).min(lData.dP))
 		if (lData.dP.eq(0)) lData.dPUse = 0
-	} else lData.dP = lData.dP.add(getAntiPreonProduction().times(lDiff))
-	lData.zNeReq=Decimal.pow(10, Math.sqrt(Math.max(Math.pow(lData.zNeReq.log10(),2) - lDiff / 100, 0)))
+	} else lData.dP = lData.dP.add(getAntiPreonProduction().times(diff))
+	lData.zNeReq=Decimal.pow(10, Math.sqrt(Math.max(Math.pow(lData.zNeReq.log10(),2) - diff / 100, 0)))
 	
 	//Bosonic Extractor
 	if (data.usedEnchants.includes(12)) {
@@ -110,7 +109,7 @@ function bosonicTick(diff) {
 	var baAdded = getBosonicAMProduction().times(diff)
 	if (tmp.ngp3l) newBA = newBA.add(baAdded)
 	else {
-		if (data.am.gt(tmp.badm.start) && tmp.badm.postDim <= Number.MAX_VALUE) data.am = tmp.badm.preDim.times(tmp.badm.start)
+		if (tmp.badm.start !== undefined && data.am.gt(tmp.badm.start) && tmp.badm.postDim <= Number.MAX_VALUE) data.am = tmp.badm.preDim.times(tmp.badm.start)
 		updateBosonicAMDimReturnsTemp()
 		newBA = data.am.add(baAdded)
 		if (newBA.gt(tmp.badm.start)) {
@@ -134,7 +133,7 @@ function getBosonicAntiMatterProduction(){
 
 function getBosonicAMProduction() {
 	let r = player.money.max(1).log10() / 15e15 - 3
-	return Decimal.pow(10, r).times(tmp.wbp)
+	return Decimal.pow(10, r).times(tmp.wzb.wbp)
 }
 
 function getBosonicAMFinalProduction() {
@@ -145,8 +144,11 @@ function getBosonicAMFinalProduction() {
 
 function updateBosonicAMDimReturnsTemp() {
 	var data = {}
-	var req = getHiggsRequirement()
 	tmp.badm = data
+
+	if (!tmp.ngp3) return
+	if (tmp.ngp3l) return
+	if (!player.ghostify.wzb.unl) return
 
 	data.start = getHiggsRequirement()
 	data.base = getHiggsRequirementMult()
@@ -253,6 +255,27 @@ function getBosonicFinalCost(x) {
 	return x
 }
 
+function updateBosonicLabTemp() {
+	tmp.bEn = {}
+	tmp.blu = {}
+	tmp.wzb = {}
+	tmp.hbTmp = {}
+	//tmp.gvTmp = {}
+	//tmp.x17Tmp = {}
+
+	if (!tmp.ngp3) return 
+	if (!player.ghostify.wzb.unl) return 
+
+	updateBosonicEnchantsTemp()
+	updateBosonicUpgradesTemp()
+	updateWZBosonsTemp()
+	if (!tmp.ngp3l) {
+		if (tmp.hb.unl) updateHiggsTemp()
+		// if (tmp.gv.unl) updateGravitonsTemp()
+		// if (tmp.x17.unl) updateX17Temp()
+	}
+}
+
 //Bosonic Extractor / Bosonic Runes
 let dynuta={
 	check: false,
@@ -268,7 +291,7 @@ function extract() {
 function getExtractTime() {
 	let data = tmp.bl
 	let r = new Decimal(br.scalings[data.typeToExtract] || 1/0)
-	r = r.div(tmp.wbt)
+	r = r.div(tmp.wzb.wbt)
 	return r
 }
 
@@ -379,7 +402,7 @@ function updateEnchantDescs() {
 		if (bEn.action == "upgrade" || bEn.action == "max") document.getElementById("bEn" + id).className = "gluonupgrade "  +(canBuyEnchant(id) ? "bl" : "unavailablebtn")
 		else if (bEn.action == "use") document.getElementById("bEn" + id).className = "gluonupgrade " + (canUseEnchant(id) ? "storebtn" : "unavailablebtn")
 		if (shiftDown) document.getElementById("bEnLvl" + id).textContent = "Enchant id: " + id
-		else document.getElementById("bEnLvl" + id).textContent = "Level: " + shortenDimensions(tmp.bEnLvl[id])
+		else document.getElementById("bEnLvl" + id).textContent = "Level: " + shortenDimensions(tmp.bEn.lvl[id])
 		if (bEn.action == "max") document.getElementById("bEnOn"+id).textContent = "+" + shortenDimensions(getMaxEnchantLevelGain(id)) + " levels"
 		else document.getElementById("bEnOn" + id).textContent = data.usedEnchants.includes(id) ? "Enabled" : "Disabled"
 		if (tmp.bEn[id] != undefined) {
@@ -447,9 +470,10 @@ var bEn = {
 }
 
 function updateBosonicEnchantsTemp(){
+	tmp.bEn.lvl = {}
 	for (var g2 = 2; g2 <= br.limit; g2++) for (var g1 = 1; g1 < g2; g1++) {
 		var id = g1 * 10 + g2
-		tmp.bEnLvl[id] = tmp.bl.enchants[id] || new Decimal(0)
+		tmp.bEn.lvl[id] = tmp.bl.enchants[id] || new Decimal(0)
 		if (bEn.effects[id] !== undefined) tmp.bEn[id] = getEnchantEffect(id)
 	}
 }
@@ -488,6 +512,7 @@ function buyBosonicUpgrade(id, quick) {
 	tmp.bl.am = tmp.bl.am.sub(getBosonicFinalCost(bu.reqData[id][0]))
 	if (!quick) updateTemp()
 	if (id == 21 || id == 22) updateNanoRewardTemp()
+	if (id == 32) tmp.updateLights = true
 	if (!tmp.ngp3l) delete tmp.hb.bosonicSemipowerment
 	return true
 }
@@ -773,54 +798,53 @@ function useAntiPreon(id) {
 }
 
 function getOscillateGainSpeed() {
-	let r = tmp.wbo
+	let r = tmp.wzb.wbo
 	if (tmp.bl.usedEnchants.includes(23)) r = r.times(tmp.bEn[23])
 	return Decimal.div(r, player.ghostify.wzb.zNeReq)
 }
 
 function updateWZBosonsTemp(){
+	var data = tmp.wzb
 	var wpl = player.ghostify.wzb.wpb.add(1).log10()
 	var wnl = player.ghostify.wzb.wnb.add(1).log10()
-	tmp.wzbs = new Decimal(1) //W & Z Bosons speed
 
 	var bosonsExp = Math.max(wpl * (player.ghostify.wzb.wpb.sub(player.ghostify.wzb.wnb.min(player.ghostify.wzb.wpb))).div(player.ghostify.wzb.wpb.max(1)).toNumber(), 0)
-	tmp.wbt = Decimal.pow(tmp.newNGP3E ? 5 : 3, bosonsExp) //W Bosons boost to extract time
-	tmp.wbo = Decimal.pow(10, Math.max(bosonsExp, 0)) //W Bosons boost to Z Neutrino oscillation requirement
-	
-	tmp.wbp = player.ghostify.wzb.wpb.add(player.ghostify.wzb.wnb).div(100).max(1).pow(1 / 3).sub(1) //W Bosons boost to Bosonic Antimatter production
+	data.wbt = Decimal.pow(tmp.newNGP3E ? 5 : 3, bosonsExp) //W Bosons boost to extract time
+	data.wbo = Decimal.pow(10, Math.max(bosonsExp, 0)) //W Bosons boost to Z Neutrino oscillation requirement
+	data.wbp = player.ghostify.wzb.wpb.add(player.ghostify.wzb.wnb).div(100).max(1).pow(1 / 3).sub(1) //W Bosons boost to Bosonic Antimatter production
+
 	var zbslog = player.ghostify.wzb.zb.div(10).add(1).sqrt().log10()
-	tmp.zbs = Decimal.pow(10, zbslog)
+	data.zbs = Decimal.pow(10, zbslog) //Z Bosons boost to W Quark
 }
 
 function updateWZBosonsTab() {
 	let data = tmp.bl
+	let data2 = tmp.wzb
+	let data3 = player.ghostify.wzb
 	let speed = data.speed * (data.battery.gt(0) ? data.odSpeed : 1)
-	let lSpeed = tmp.wzbs.times(speed)
-	let data2 = player.ghostify.wzb
-	let show0 = data2.dPUse == 1 && lSpeed.times(getAntiPreonLoss()).div(aplScalings[1]).times(tmp.zbs).gte(10)
+	let show0 = data2.dPUse == 1 && getAntiPreonLoss().times(speed).div(aplScalings[1]).times(tmp.wzb.zbs).gte(10)
 	let gainSpeed = getOscillateGainSpeed()
 	let r
-	if (!data2.dPUse) r = lSpeed.times(getAntiPreonProduction())
-	else r = lSpeed.times(getAntiPreonLoss())
-	//document.getElementById("wzbSpeed").textContent="Current W & Z Bosons speed: "+shorten(tmp.wzbs)+"x (w/ Bosonic Speed: "+shorten(lSpeed)+"x)"
-	document.getElementById("ap").textContent = shorten(data2.dP)
-	document.getElementById("apProduction").textContent = (data2.dPUse ? "-" : "+") + shorten(r) + "/s"
-	document.getElementById("apUse").textContent = data2.dPUse == 0 ? "" : "You are currently consuming Anti-Preons to " + (["", "decay W Quark", "oscillate Z Neutrino", "convert W- to W+ Bosons"])[data2.dPUse] + "."
-	document.getElementById("wQkType").textContent = data2.wQkUp ? "up" : "down"
-	document.getElementById("wQkProgress").textContent = data2.wQkProgress.times(100).toFixed(1) + "% to turn W Quark to a" + (data2.wQkUp ? " down" : "n up")+" quark."
-	document.getElementById("wQk").className = show0 ? "zero" : data2.wQkUp ? "up" : "down"
-	document.getElementById("wQkSymbol").textContent = show0 ? "0" : data2.wQkUp ? "+" : "−"
-	document.getElementById("wpb").textContent = shortenDimensions(data2.wpb)
-	document.getElementById("wnb").textContent = shortenDimensions(data2.wnb)
-	document.getElementById("wbTime").textContent = shorten(tmp.wbt)
-	document.getElementById("wbOscillate").textContent = shorten(tmp.wbo)
-	document.getElementById("wbProduction").textContent = shorten(tmp.wbp)
-	document.getElementById("zNeGen").textContent = (["electron", "Mu", "Tau"])[data2.zNeGen - 1]
-	document.getElementById("zNeProgress").textContent = data2.zNeProgress.times(100).toFixed(1) + "% to oscillate Z Neutrino to " + (["Mu", "Tau", "electron"])[data2.zNeGen-1] + "."
+	if (!data2.dPUse) r = getAntiPreonProduction().times(speed)
+	else r = getAntiPreonLoss().times(speed)
+	document.getElementById("ap").textContent = shorten(data3.dP)
+	document.getElementById("apProduction").textContent = (data3.dPUse ? "-" : "+") + shorten(r) + "/s"
+	document.getElementById("apUse").textContent = data3.dPUse == 0 ? "" : "You are currently consuming Anti-Preons to " + (["", "decay W Quark", "oscillate Z Neutrino", "convert W- to W+ Bosons"])[data3.dPUse] + "."
+	document.getElementById("wQkType").textContent = data3.wQkUp ? "up" : "down"
+	document.getElementById("wQkProgress").textContent = data3.wQkProgress.times(100).toFixed(1) + "% to turn W Quark to a" + (data3.wQkUp ? " down" : "n up")+" quark."
+	document.getElementById("wQk").className = show0 ? "zero" : data3.wQkUp ? "up" : "down"
+	document.getElementById("wQkSymbol").textContent = show0 ? "0" : data3.wQkUp ? "+" : "−"
+	document.getElementById("wpb").textContent = shortenDimensions(data3.wpb)
+	document.getElementById("wnb").textContent = shortenDimensions(data3.wnb)
+	document.getElementById("wbTime").textContent = shorten(data2.wbt)
+	document.getElementById("wbOscillate").textContent = shorten(data2.wbo)
+	document.getElementById("wbProduction").textContent = shorten(data2.wbp)
+	document.getElementById("zNeGen").textContent = (["electron", "Mu", "Tau"])[data3.zNeGen - 1]
+	document.getElementById("zNeProgress").textContent = data3.zNeProgress.times(100).toFixed(1) + "% to oscillate Z Neutrino to " + (["Mu", "Tau", "electron"])[data3.zNeGen-1] + "."
 	document.getElementById("zNeReq").textContent = "Oscillate progress gain speed is currently " + (gainSpeed.gt(1) ? shorten(gainSpeed) : "1 / " + shorten(Decimal.div(1, gainSpeed))) + "x."
-	document.getElementById("zNe").className = (["electron","mu","tau"])[data2.zNeGen - 1]
-	document.getElementById("zNeSymbol").textContent = (["e", "μ", "τ"])[data2.zNeGen - 1]
-	document.getElementById("zb").textContent = shortenDimensions(data2.zb)
-	document.getElementById("zbGain").textContent = "You will gain " + shortenDimensions(data2.zNeReq.pow(0.75)) + " Z Bosons on next oscillation."
-	document.getElementById("zbSpeed").textContent = shorten(tmp.zbs)
+	document.getElementById("zNe").className = (["electron","mu","tau"])[data3.zNeGen - 1]
+	document.getElementById("zNeSymbol").textContent = (["e", "μ", "τ"])[data3.zNeGen - 1]
+	document.getElementById("zb").textContent = shortenDimensions(data3.zb)
+	document.getElementById("zbGain").textContent = "You will gain " + shortenDimensions(data3.zNeReq.pow(0.75)) + " Z Bosons on next oscillation."
+	document.getElementById("zbSpeed").textContent = shorten(data2.zbs)
 }

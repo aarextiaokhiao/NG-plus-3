@@ -183,7 +183,7 @@ var softcap_funcs = {
 		return x
 	},
 	pow_decimal: function(x, start, pow, derv) {
-		if (x.gt(start)) {
+		if (Decimal.gt(x, start)) {
 			x = Decimal.div(x, start).pow(pow)
 			if (derv) x = x.sub(1).div(pow).add(1)
 			x = x.times(start)

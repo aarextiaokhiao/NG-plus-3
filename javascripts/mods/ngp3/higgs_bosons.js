@@ -13,7 +13,7 @@ function setupHiggsSave() {
 function unlockHiggs() {
 	if (tmp.hb.unl) return
 	if (!player.ghostify.wzb.unl) return
-	if (canUnlockHiggs()) return
+	if (!canUnlockHiggs()) return
 	$.notify("Congratulations! You have unlocked Higgs Bosons!", "success")
 	tmp.hb.unl = true
 	updateHiggsUnlocks()
@@ -46,6 +46,7 @@ function bosonicLabReset() {
 	player.ghostify.ghostlyPhotons.darkMatter=new Decimal(0)
 	player.ghostify.ghostlyPhotons.ghostlyRays=new Decimal(0)
 	player.ghostify.ghostlyPhotons.lights=[0,0,0,0,0,0,0,0]
+	tmp.updateLights = true
 	tmp.bl = {
 		watt: new Decimal(0),
 		ticks: tmp.bl.ticks,

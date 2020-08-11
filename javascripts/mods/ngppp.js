@@ -87,11 +87,12 @@ function updateNanoverseTab(){
 
 	for (var reward = 1; reward < 9; reward++) {
 		document.getElementById("nfReward" + reward).className = reward > rewards ? "nfRewardlocked" : "nfReward"
-		document.getElementById("nfReward" + reward).textContent = wordizeList(nanoRewards.effectsUsed[reward].map(x => nanoRewards.effectDisplays[x](tmp.nrEffects[x])), true) + "."
+		document.getElementById("nfReward" + reward).textContent = wordizeList(nanoRewards.effectsUsed[reward].map(x => nanoRewards.effectDisplays[x](tmp.nf.effects[x])), true) + "."
 		document.getElementById("nfRewardHeader" + reward).textContent = (rewards % 8 + 1 == reward ? "Next" : DISPLAY_NAMES[reward]) + " reward"
-		document.getElementById("nfRewardTier" + reward).textContent = "Tier " + getFullExpansion(Math.ceil((rewards + 1 - reward) / 8)) + " / Power: " + tmp.nrPowers[reward].toFixed(1)
+		document.getElementById("nfRewardTier" + reward).textContent = "Tier " + getFullExpansion(Math.ceil((rewards + 1 - reward) / 8)) + " / Power: " + tmp.nf.powers[reward].toFixed(1)
 	}
-	document.getElementById("nfReward5").textContent = (!tmp.ngp3l && tmp.nrPowers[5] > 15 ? nanoRewards.effectDisplays.light_threshold_speed(tmp.nrEffects.light_threshold_speed) : nanoRewards.effectDisplays.dil_effect_exp(tmp.nrEffects.dil_effect_exp)) + "."
+	document.getElementById("nfReward5").textContent = (!tmp.ngp3l && tmp.nf.powers[5] > 15 ? nanoRewards.effectDisplays.light_threshold_speed(tmp.nf.effects.light_threshold_speed) : nanoRewards.effectDisplays.dil_effect_exp(tmp.nf.effects.dil_effect_exp)) + "."
+	document.getElementById("ns").textContent = ghostified || nanospeed != 1 ? "Your Nanofield speed is currently " + (nanospeed == 1 ? "" : shorten(tmp.ns) + " * " + shorten(nanospeed) + " = ") + shorten(getNanofieldFinalSpeed()) + "x." : ""
 }
 
 function updateNanofieldAntipreon(){
@@ -107,8 +108,8 @@ function updateNanofieldTab(){
 	if (document.getElementById("antipreon").style.display == "block") updateNanofieldAntipreon()
 }
 
-function getLogTotalSpin(){
-	return player.quantum.tod.r.spin.plus(player.quantum.tod.b.spin).plus(player.quantum.tod.g.spin).log10()
+function getLogTotalSpin() {
+	return tmp.qu.tod.r.spin.plus(tmp.qu.tod.b.spin).plus(tmp.qu.tod.g.spin).add(1).log10()
 }
 
 function updateTreeOfDecayTab(){
@@ -840,7 +841,7 @@ function getHatchSpeed() {
 	if (player.masterystudies.includes("t381")) speed /= getMTSMult(381)
 	if (player.masterystudies.includes("t391")) speed /= getMTSMult(391)
 	if (player.masterystudies.includes("t402")) speed /= 30
-	if (isNanoEffectUsed("hatch_speed")) speed /= tmp.nrEffects.hatch_speed
+	if (isNanoEffectUsed("hatch_speed")) speed /= tmp.nf.effects.hatch_speed
 	return speed
 }
 
@@ -890,13 +891,11 @@ function maxReduceHatchSpeed() {
 
 function getQuarkChargeProduction(noSpeed) {
 	let ret = new Decimal(1)
-	if (isNanoEffectUsed("preon_charge")) ret = tmp.nrEffects.preon_charge
+	if (isNanoEffectUsed("preon_charge")) ret = tmp.nf.effects.preon_charge
 	if (hasNU(3)) ret = ret.times(tmp.nu[1])
 	if (hasNU(7)) ret = ret.times(tmp.nu[3])
-	if (!noSpeed) {
-		ret = ret.times(getNanofieldFinalSpeed())
-		if (tmp.qu.nanofield.power > tmp.apgw) ret = ret.div(Decimal.pow(2, (tmp.qu.nanofield.power - tmp.apgw) / 2))
-	}
+	if (tmp.qu.nanofield.power > tmp.apgw) ret = ret.div(Decimal.pow(2, (tmp.qu.nanofield.power - tmp.apgw) / 2))
+	if (!noSpeed) ret = ret.times(getNanofieldFinalSpeed())
 	return ret
 }
 
@@ -920,7 +919,7 @@ function getQuarkEnergyProduction() {
 	let ret = tmp.qu.nanofield.charge.sqrt()
 	if (player.masterystudies.includes("t411")) ret = ret.times(getMTSMult(411))
 	if (player.masterystudies.includes("t421")) ret = ret.times(getMTSMult(421))
-	if (isNanoEffectUsed("preon_energy")) ret = ret.times(tmp.nrEffects.preon_energy)
+	if (isNanoEffectUsed("preon_energy")) ret = ret.times(tmp.nf.effects.preon_energy)
 	ret = ret.times(getNanofieldFinalSpeed())
 	return ret
 }
@@ -1041,17 +1040,16 @@ var nanoRewards = {
 }
 
 function isNanoEffectUsed(x) {
-	return tmp.neUsed !== undefined &&  tmp.neUsed.includes(x)
+	return tmp.nf !== undefined && tmp.nf.rewardsUsed !== undefined && tmp.nf.rewardsUsed.includes(x)
 }
 
 function updateNanoEffectUsages() {
 	var data = []
-	tmp.neUsed = data
+	tmp.nf.rewardsUsed = data
 	nanoRewards.effectToReward = {}
 
 	//First reward
 	var data2 = [hasBosonicUpg(21) ? "supersonic_start" : "hatch_speed"]
-	data2 = ["supersonic_start"]
 	nanoRewards.effectsUsed[1] = data2
 
 	//Fifth reward
@@ -1075,33 +1073,29 @@ function updateNanoEffectUsages() {
 
 function updateNanoRewardPowers() {
 	var data = {}
-	var rewards = tmp.qu.nanofield.rewards
-	tmp.nrPowers = data
+	tmp.nf.powers = data
 
-	for (var x = 1; x <= 8; x++) data[x] = getNanoRewardPower(x, rewards)
+	for (var x = 1; x <= 8; x++) data[x] = getNanoRewardPower(x, tmp.nf.rewards)
 }
 
 function updateNanoRewardEffects() {
 	var data = {}
-	tmp.nrEffects = data
+	tmp.nf.effects = data
 
-	for (var e = 0; e < tmp.neUsed.length; e++) {
-		var effect = tmp.neUsed[e]
-		tmp.nrEffects[effect] = nanoRewards.effects[effect](tmp.nrPowers[nanoRewards.effectToReward[effect]])
+	for (var e = 0; e < tmp.nf.rewardsUsed.length; e++) {
+		var effect = tmp.nf.rewardsUsed[e]
+		tmp.nf.effects[effect] = nanoRewards.effects[effect](tmp.nf.powers[nanoRewards.effectToReward[effect]])
 	}
 }
 
 function updateNanoRewardTemp() {
-	tmp.neUsed = []
-	tmp.nrPowers = {}
-	tmp.nrEffects = {}
+	tmp.nf = {}
 
 	if (!tmp.ngp3) return
 	if (!player.masterystudies.includes("d11")) return
 
 	updateNanoEffectUsages()
-	updateNanoRewardPowers()
-	updateNanoRewardEffects()
+	//The rest is calculated by updateTemp().
 }
 
 function updateAutoQuantumMode() {
@@ -1228,8 +1222,7 @@ function getDecayRate(branch) {
 }
 
 function getMilestone14SpinMult(){
-	var totalSpin = player.quantum.tod.r.spin.plus(player.quantum.tod.b.spin).plus(player.quantum.tod.g.spin)
-	var logSpin = totalSpin.log10()
+	var logSpin = getLogTotalSpin()
 	if (logSpin <= 25) return 10
 	return Math.pow(logSpin, 2) / 625 * 10
 }
@@ -1237,7 +1230,7 @@ function getMilestone14SpinMult(){
 function getQuarkSpinProduction(branch) {
 	let ret = getBranchUpgMult(branch, 1).times(getBranchFinalSpeed())
 	if (hasNU(4)) ret = ret.times(tmp.nu[2])
-	if (player.achievements.includes("ng3p74")) if (player.quantum.tod[branch].decays) ret = ret.times(1 + player.quantum.tod[branch].decays)
+	if (player.achievements.includes("ng3p74")) if (tmp.qu.tod[branch].decays) ret = ret.times(1 + tmp.qu.tod[branch].decays)
 	if (tmp.qu.bigRip.active) {
 		if (isBigRipUpgradeActive(18)) ret = ret.times(tmp.bru[18])
 		if (isBigRipUpgradeActive(19)) ret = ret.times(tmp.bru[19])
@@ -3128,29 +3121,29 @@ function showGhostifyTab(tabName) {
 }
 
 function updateNeutrinoBoostDisplay(){
-	if (player.ghostify.neutrinos.boosts) {
+	if (player.ghostify.neutrinos.boosts>=1) {
 		document.getElementById("preNeutrinoBoost1").textContent=getDilExp("neutrinos").toFixed(2)
 		document.getElementById("neutrinoBoost1").textContent=getDilExp().toFixed(2)
 	}
-	if (player.ghostify.neutrinos.boosts>1) {
+	if (player.ghostify.neutrinos.boosts>=2) {
 		document.getElementById("preNeutrinoBoost2").textContent="^"+shorten(getMTSMult(273, "pn"))
 		document.getElementById("neutrinoBoost2").textContent="^"+shorten(getMTSMult(273))
 		document.getElementById("preNeutrinoBoost2Exp").textContent=getMTSMult(273, ["pn", "intensity"]).toFixed(2)
 		document.getElementById("neutrinoBoost2Exp").textContent=getMTSMult(273, "intensity").toFixed(2)
 	}
-	if (player.ghostify.neutrinos.boosts>2) document.getElementById("neutrinoBoost3").textContent=tmp.nb[2].toFixed(2)
-	if (player.ghostify.neutrinos.boosts>3) document.getElementById("neutrinoBoost4").textContent=(tmp.nb[3]*100-100).toFixed(1)
-	if (player.ghostify.neutrinos.boosts>4) document.getElementById("neutrinoBoost5").textContent=(tmp.nb[4]*100).toFixed(1)
-	if (player.ghostify.neutrinos.boosts>5) document.getElementById("neutrinoBoost6").textContent=tmp.nb[5]<10.995?(tmp.nb[5]*100-100).toFixed(1):getFullExpansion(Math.floor(tmp.nb[5]*100-100))
-	if (player.ghostify.neutrinos.boosts>6) {
-		document.getElementById("neutrinoBoost7").textContent=(tmp.nb[6]*100).toFixed(1)
+	if (player.ghostify.neutrinos.boosts>=3) document.getElementById("neutrinoBoost3").textContent=tmp.nb[3].toFixed(2)
+	if (player.ghostify.neutrinos.boosts>=4) document.getElementById("neutrinoBoost4").textContent=(tmp.nb[4]*100-100).toFixed(1)
+	if (player.ghostify.neutrinos.boosts>=5) document.getElementById("neutrinoBoost5").textContent=(tmp.nb[5]*100).toFixed(1)
+	if (player.ghostify.neutrinos.boosts>=6) document.getElementById("neutrinoBoost6").textContent=tmp.nb[6]<10.995?(tmp.nb[5]*100-100).toFixed(1):getFullExpansion(Math.floor(tmp.nb[6]*100-100))
+	if (player.ghostify.neutrinos.boosts>=7) {
+		document.getElementById("neutrinoBoost7").textContent=(tmp.nb[7]*100).toFixed(1)
 		document.getElementById("preNeutrinoBoost7Eff").textContent=(getTreeUpgradeEfficiency("noNB")*100).toFixed(1)
 		document.getElementById("neutrinoBoost7Eff").textContent=(getTreeUpgradeEfficiency("br")*100).toFixed(1)
 	}
-	if (player.ghostify.neutrinos.boosts>7) document.getElementById("neutrinoBoost8").textContent=(tmp.nb[7]*100-100).toFixed(1)
-	if (player.ghostify.neutrinos.boosts>8) document.getElementById("neutrinoBoost9").textContent=shorten(tmp.nb[8])
-	if (player.ghostify.neutrinos.boosts>9) document.getElementById("neutrinoBoost10").textContent=tmp.nb[9].toFixed(4)
-	if (player.ghostify.neutrinos.boosts>10) document.getElementById("neutrinoBoost11").textContent=shorten(tmp.nb[10])
+	if (player.ghostify.neutrinos.boosts>=8) document.getElementById("neutrinoBoost8").textContent=(tmp.nb[8]*100-100).toFixed(1)
+	if (player.ghostify.neutrinos.boosts>=9) document.getElementById("neutrinoBoost9").textContent=shorten(tmp.nb[9])
+	if (player.ghostify.neutrinos.boosts>=10) document.getElementById("neutrinoBoost10").textContent=tmp.nb[10].toFixed(4)
+	if (player.ghostify.neutrinos.boosts>=11) document.getElementById("neutrinoBoost11").textContent=shorten(tmp.nb[11])
 }
 
 function updateNeutrinoAmountDisplay(){
@@ -3226,7 +3219,7 @@ function getNeutrinoGain() {
 	let ret=Decimal.pow(5,player.ghostify.neutrinos.multPower-1)
 	if (player.ghostify.ghostlyPhotons.unl) ret=ret.times(tmp.le[5])
 	if (hasNU(14)) ret=ret.times(tmp.nu[5])
-	if (isNanoEffectUsed("neutrinos")) ret=ret.times(tmp.nrEffects.neutrinos)
+	if (isNanoEffectUsed("neutrinos")) ret=ret.times(tmp.nf.effects.neutrinos)
 	return ret
 }
 
@@ -3581,13 +3574,13 @@ function updateLEmpowermentBoosts(){
 
 function getGHRProduction() {
 	var log = player.ghostify.ghostlyPhotons.amount.sqrt().div(2).log10()
-	if (player.ghostify.neutrinos.boosts >= 11) log += tmp.nb[10].log10()
+	if (player.ghostify.neutrinos.boosts >= 11) log += tmp.nb[11].log10()
 	return Decimal.pow(10, log)
 }
 
 function getGHRCap() {
 	var log = player.ghostify.ghostlyPhotons.darkMatter.pow(0.4).times(1e3).log10()
-	if (player.ghostify.neutrinos.boosts >= 11) log += tmp.nb[10].log10()
+	if (player.ghostify.neutrinos.boosts >= 11) log += tmp.nb[11].log10()
 	return Decimal.pow(10, log)
 }
 
@@ -3598,7 +3591,7 @@ function getLightThreshold(l) {
 function getLightThresholdIncrease(l) {
 	let x = tmp.lti[l]
 	if (isNanoEffectUsed("light_threshold_speed")) {
-		let y = 1 / tmp.nrEffects.light_threshold_speed
+		let y = 1 / tmp.nf.effects.light_threshold_speed
 		if (y < 1) x = Math.pow(x, y)
 	}
 	return x
@@ -3924,10 +3917,8 @@ function getOldAgeRequirement() {
 function getNanofieldSpeed() {
 	let x = 1
 	if (ghostified) x *= tmp.qu.nanofield.rewards < 16 ? 6 : 3
-	if (hasNU(15)) x *= tmp.nu[6]
-	if (!tmp.ngp3l) {
-		if (player.achievements.includes("ng3p78")) x *= Math.sqrt(getTreeUpgradeLevel(8) * tmp.tue + 1)
-	}
+	if (!tmp.ngp3l && player.achievements.includes("ng3p78")) x *= Math.sqrt(getTreeUpgradeLevel(8) * tmp.tue + 1)
+	if (hasNU(15)) x = tmp.nu[6].times(x)
 	return x
 }
 
@@ -3943,7 +3934,7 @@ function getNanoRewardPower(reward, rewards) {
 		x = Math.sqrt((x / 2 + sbsc / 2) * sbsc)
 		if (reward == (rewards - 1) % 8 + 1) x += 0.5
 	}
-	return x * (tmp.nrPowerEff || 1)
+	return x * tmp.nf.powerEff
 }
 
 function getNanoRewardPowerEff() {
@@ -3967,7 +3958,7 @@ function updateBRU1Temp() {
 	if (!tmp.qu.bigRip.active) return
 	let exp = 1
 	if (tmp.qu.bigRip.upgrades.includes(17)) exp = tmp.bru[17]
-	if (ghostified && player.ghostify.neutrinos.boosts > 7) exp *= tmp.nb[7]
+	if (ghostified && player.ghostify.neutrinos.boosts > 7) exp *= tmp.nb[8]
 	exp *= player.infinityPoints.max(1).log10()
 	exp = softcap(exp, "bru1_log", tmp.ngp3l ? 1 : 2)
 	tmp.bru[1] = Decimal.pow(10, exp) //BRU1
@@ -4018,16 +4009,165 @@ function updatePhotonsUnlockedBRUpgrades(){
 	var bigRipUpg18base = 1 + tmp.qu.bigRip.spaceShards.div(1e140).add(1).log10()
 	var bigRipUpg18exp = Math.max(tmp.qu.bigRip.spaceShards.div(1e140).add(1).log10() / 10, 1)
 	if (bigRipUpg18base > 10 && tmp.newNGP3E) bigRipUpg18base *= Math.log10(bigRipUpg18base)
-	if (bigRipUpg18exp > 16) bigRipUpg18exp = Math.pow(Math.log2(bigRipUpg18exp), 2)
 	tmp.bru[18] = Decimal.pow(bigRipUpg18base, bigRipUpg18exp) //BRU18
 	
 	var bigRipUpg19exp = Math.sqrt(player.timeShards.add(1).log10()) / (tmp.newNGP3E ? 60 : 80)
-	if (bigRipUpg19exp > 5 && !tmp.newNGP3E) bigRipUpg19exp = 4 + Math.log10(2 * bigRipUpg19exp)
-	if (bigRipUpg19exp > 8)  bigRipUpg19exp = Math.log2(bigRipUpg19exp) * 3 - 1
-	tmp.bru[19] = Decimal.pow(10,bigRipUpg19exp) //BRU19
+	tmp.bru[19] = Decimal.pow(10, bigRipUpg19exp) //BRU19
 }
 
 function getMaxBigRipUpgrades() {
 	if (player.ghostify.ghostlyPhotons.unl) return tmp.ngp3l ? 19 : 20
 	return 17
+}
+
+var neutrinoBoosts = {
+	boosts: {
+		1: function(nt) {
+			let nb1mult = .75
+			if (tmp.newNGP3E) nb1mult = .8
+			if (isLEBoostUnlocked(7)) nb1mult *= tmp.leBonus[7]
+			let nb1neutrinos = nt[0].add(1).log10()+nt[1].add(1).log10()+nt[2].add(1).log10()
+			return Math.log10(1+nb1neutrinos)*nb1mult
+		},
+		2: function(nt) {
+			let nb2neutrinos = Math.pow(nt[0].add(1).log10(),2)+Math.pow(nt[1].add(1).log10(),2)+Math.pow(nt[2].add(1).log10(),2)
+			let nb2 = Math.pow(nb2neutrinos, .25) * 1.5
+			return nb2 
+		},
+		3: function(nt) {
+			if (tmp.ngp3l) { //NG+3L
+				let nb3Neutrinos = Math.pow(Math.log10(Math.max(nt[0].max(1).log10()-5,1))/Math.log10(5),2)+Math.pow(Math.log10(Math.max(nt[1].max(1).log10()-5,1))/Math.log10(5),2)+Math.pow(Math.log10(Math.max(nt[2].max(1).log10()-5,1))/Math.log10(5),2)
+				let nb3 = Math.pow(nb3Neutrinos / 3, .25) + 3
+				if (nb3 > 6) nb3 = 3 + Math.log2(nb3 + 2)
+				return nb3
+			} else { //NG+3
+				let nb3neutrinos = Math.sqrt(
+					Math.pow(nt[0].max(1).log10(), 2) +
+					Math.pow(nt[1].max(1).log10(), 2) +
+					Math.pow(nt[2].max(1).log10(), 2)
+				)
+				let nb3 = Math.sqrt(nb3neutrinos + 625) / 25
+				return nb3
+			}
+		},
+		4: function(nt) {
+			var nb4neutrinos = Math.pow(nt[0].add(1).log10(),2)+Math.pow(nt[1].add(1).log10(),2)+Math.pow(nt[2].add(1).log10(),2)
+			var nb4 = Math.pow(nb4neutrinos, .25) * 0.07 + 1
+			if (tmp.ngp3l && nb4 > 10) nb4 = 6 + Math.log2(nb4 + 6)
+			return nb4
+		},
+		5: function(nt) {
+			var nb5neutrinos = nt[0].max(1).log10()+nt[1].max(1).log10()+nt[2].max(1).log10()
+			return Math.min(nb5neutrinos / 33, 1)
+		},
+		6: function(nt) {
+			var nb6neutrinos = Math.pow(nt[0].add(1).log10(), 2) + Math.pow(nt[1].add(1).log10(), 2) + Math.pow(nt[2].add(1).log10(), 2)
+			var nb6exp1 = .25
+			if (tmp.newNGP3E) nb6exp1 = .26
+			let nb6 = Math.pow(Math.pow(nb6neutrinos, nb6exp1) * 0.525 + 1, tmp.be ? 0.5 : 1)
+			if (isLEBoostUnlocked(9)) nb6 *= tmp.leBonus[7]
+			return nb6
+		},
+		7: function(nt) {
+			let nb7exp = .5
+			if (tmp.newNGP3E) nb7exp = .6
+			let nb7neutrinos = nt[0].add(1).log10()+nt[1].add(1).log10()+nt[2].add(1).log10()
+			let nb7 = Math.pow(Math.log10(1 + nb7neutrinos), nb7exp)*2.35
+			if (!tmp.ngp3l) {
+				if (nb7 > 4) nb7 = 2 * Math.log2(nb7)
+				if (nb7 > 5) nb7 = 2 + Math.log2(nb7 + 3)
+			}
+			return nb7
+		},
+		8: function(nt) {
+			let nb8neutrinos = Math.pow(nt[0].add(1).log10(),2)+Math.pow(nt[1].add(1).log10(),2)+Math.pow(nt[2].add(1).log10(),2)
+			let nb8exp = .25
+			if (tmp.newNGP3E) nb8exp = .27
+			var nb8 = Math.pow(nb8neutrinos, nb8exp) / 10 + 1
+			if (nb8 > 11) nb8 = 7 + Math.log2(nb8 + 5)
+			return nb8
+		},
+		9: function(nt) {
+			var nb9 = (nt[0].add(1).log10()+nt[1].add(1).log10()+nt[2].add(1).log10())/10
+			if (tmp.ngp3l && nb9 > 4096) nb9 = Math.pow(Math.log2(nb9) + 4, 3)
+			if (isLEBoostUnlocked(9)) nb9 *= tmp.leBonus[7]
+			return nb9
+		},
+		10: function(nt) {
+			let nb10neutrinos = nt[0].add(1).log10()+nt[1].add(1).log10()+nt[2].add(1).log10()
+			let nb10 = Math.max(nb10neutrinos - 3e3, 0) / 75e4
+			if (!tmp.ngp3l && nb10 > 0.1) nb10 = Math.log10(nb10 * 100) / 10
+			return nb10
+		},
+		11: function(nt) {
+			let nb11neutrinos = nt[0].add(nt[1]).add(nt[2]).add(1).log10()
+			let nb11exp = Math.sqrt(nb11neutrinos)
+			let nb11 = Decimal.pow(1.15, nb11exp)
+			return nb11
+		}
+	}
+}
+
+function updateNeutrinoBoostsTemp() {
+	tmp.nb = {}
+
+	if (!tmp.ngp3) return
+	if (!ghostified) return
+
+	var nt = []
+	for (var g = 0; g < 3; g++) nt[g] = player.ghostify.neutrinos[(["electron","mu","tau"])[g]]
+	for (var nb = 1; nb <= player.ghostify.neutrinos.boosts; nb++) tmp.nb[nb] = neutrinoBoosts.boosts[nb](nt)
+}
+
+function updateNU1Temp(){
+	let x = 110
+	if (!tmp.qu.bigRip.active) x = Math.max(x - player.meta.resets, 0)
+	tmp.nu[0] = x
+}
+
+function updateNU3Temp(){
+	let log = tmp.qu.colorPowers.b.log10()
+	let exp = Math.max(log / 1e4 + 1, 2)
+	let x
+	if (exp > 2) x = Decimal.pow(Math.max(log / 250 + 1, 1), exp)
+	else x = Math.pow(Math.max(log / 250 + 1, 1), exp)
+	tmp.nu[1] = x
+}
+
+function updateNU4Temp(){
+	let nu4base = 50
+	if (tmp.ngp3l) nu4base = 20
+	tmp.nu[2] = Decimal.pow(nu4base, Math.pow(Math.max(-getTickspeed().div(1e3).log10() / 4e13 - 4, 0), 1/4))
+}
+
+function updateNU7Temp(){
+	var nu7 = tmp.qu.colorPowers.g.add(1).log10()/400
+	if (nu7 > 40) nu7 = Math.sqrt(nu7*10)+20
+	tmp.nu[3] = Decimal.pow(10,nu7) 
+}
+
+function updateNU12Temp(){
+	tmp.nu[4] = { 
+		normal: Math.sqrt(player.galaxies*.0035+1),
+		free: player.dilation.freeGalaxies*.035+1,
+		replicated: Math.sqrt(getTotalRG())*(tmp.ngp3l?.035:.0175)+1 //NU12 
+	}
+}
+
+function updateNU14Temp(){
+	var base = player.ghostify.ghostParticles.add(1).log10()
+	var colorsPortion = Math.pow(tmp.qu.colorPowers.r.add(tmp.qu.colorPowers.g).add(tmp.qu.colorPowers.b).add(1).log10(),1/3)
+	tmp.nu[5] = Decimal.pow(base, colorsPortion*0.8+1).max(1) //NU14
+}
+
+function updateNU15Temp(){
+	tmp.nu[6] = Decimal.pow(2,(tmp.qu.nanofield.rewards>90?Math.sqrt(90*tmp.qu.nanofield.rewards):tmp.qu.nanofield.rewards)/2.5) //NU15
+}
+
+function updateNeutrinoUpgradesTemp(){
+	updateNU1Temp()
+	updateNU3Temp()
+	updateNU4Temp()
+	updateNU7Temp()
+	updateNU12Temp()
 }

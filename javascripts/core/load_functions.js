@@ -1616,6 +1616,7 @@ function onLoad(noOffline) {
       updateSpentableMasteryStudies()
   }
   updateTemp()
+  updateBosonicAMDimReturnsTemp()
   if (tmp.ngp3) {
 	  if (player.eternityBuyer.presets === undefined) player.eternityBuyer.presets = {on: false, autoDil: false, selected: -1, selectNext: 0, left: 1, order: []}
       document.getElementById('prioritydil').value=player.eternityBuyer.dilationPerAmount
@@ -1656,10 +1657,7 @@ function onLoad(noOffline) {
       if (tmp.qu.bigRip.bestGals==undefined) tmp.qu.bigRip.bestGals=0
       if (player.ghostify.neutrinos.boosts==undefined||!player.ghostify.times) player.ghostify.neutrinos.boosts=0
       if (player.ghostify.ghostlyPhotons.maxRed==undefined) player.ghostify.ghostlyPhotons.maxRed=0
-      if (player.ghostify.wzb.unl) {
-          giveAchievement("Even Ghostlier than before")
-          if (!tmp.ngp3l) updateBosonicAMDimReturnsTemp()
-      }
+      if (player.ghostify.wzb.unl) giveAchievement("Even Ghostlier than before")
       for (var g=tmp.bl.glyphs.length+1;g<=br.maxLimit;g++) tmp.bl.glyphs.push(0)
       if (!tmp.bl.usedEnchants.length) tmp.bl.usedEnchants=[]
       if (player.ghostify.wzb.dPUse===undefined) {
@@ -1954,6 +1952,7 @@ function onLoad(noOffline) {
           if (u%3==1) document.getElementById("neutrinoUpg"+u).parentElement.parentElement.style.display=u>player.ghostify.times+2?"none":""
           else document.getElementById("neutrinoUpg"+u).style.display=u>player.ghostify.times+2?"none":""
       }
+      document.getElementById("neutrinoBoost3Effect").textContent = tmp.ngp3l ? "They increase the limit of 14th dilation upgrade from 3.00x to" : "They remove the limit of 14th dilation upgrade and then boost that upgrade by "
       document.getElementById("gphUnl").textContent="To unlock Ghostly Photons, you need to get "+shortenCosts(Decimal.pow(10,6e9))+" antimatter while your universe is Big Ripped first."
       document.getElementById("lightBoost4Type").textContent=tmp.ngp3l?"preon":"total green power"
       updateBLUnlockDisplay()
@@ -1969,6 +1968,7 @@ function onLoad(noOffline) {
       updateTODStuff()
       updateBraveMilestones()
       updateNeutrinoBoosts()
+      tmp.updateLights = true
       updateGPHUnlocks()
       updateBLUnlocks()
       updateBosonicStuffCosts()

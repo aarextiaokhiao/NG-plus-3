@@ -8,7 +8,7 @@ function getMetaAntimatterStart(bigRip) {
 function getDilationMetaDimensionMultiplier() {
 	let pow = 0.1
 	let div = 1e40
-	if (isNanoEffectUsed("dt_to_ma_exp")) pow = tmp.nrEffects.dt_to_ma_exp
+	if (isNanoEffectUsed("dt_to_ma_exp")) pow = tmp.nf.effects.dt_to_ma_exp
 	if (player.aarexModifications.nguspV !== undefined) div = 1e50
 	if (player.aarexModifications.ngudpV && !player.aarexModifications.nguepV) {
 		let l = tmp.qu.colorPowers.b.plus(10).log10()
@@ -91,7 +91,7 @@ function getMetaBoostPower() {
 	let exp = 1
 	if (player.dilation.upgrades.includes("ngpp4")) r = getDil15Bonus()
 	if (tmp.ngp3) {
-		if (isNanoEffectUsed("meta_boost_power")) r = tmp.nrEffects.meta_boost_power
+		if (isNanoEffectUsed("meta_boost_power")) r = tmp.nf.effects.meta_boost_power
 		if (player.masterystudies.includes("t312")) exp = 1.045
 		if (!tmp.ngp3l && player.achievements.includes("ng3p26")) exp *= Math.log10(9 + Math.max(player.meta.resets / 75 + 0.25, 1))
 	}
@@ -351,7 +351,7 @@ function getExtraDimensionBoostPowerExponent(ma) {
 	if (player.dilation.upgrades.includes("ngpp5")) power++
 	power += getECReward(13)
 	if (tmp.ngp3) {
-		if (isNanoEffectUsed("ma_effect_exp")) power += tmp.nrEffects.ma_effect_exp
+		if (isNanoEffectUsed("ma_effect_exp")) power += tmp.nf.effects.ma_effect_exp
 		if (player.masterystudies.includes("d13")) power += getTreeUpgradeEffect(8)
 	}
 	return power
@@ -472,10 +472,17 @@ function toggleAutoEterMode() {
 
 // v2.21
 function getDil15Bonus () {
+	let nb2unl = ghostified && player.ghostify.neutrinos.boosts >= 3
+	let x = 1
 	let max = 3
-	if (ghostified) if (player.ghostify.neutrinos.boosts > 2) max = tmp.nb[2]
-	if (player.aarexModifications.nguspV !== undefined) return Math.min(Math.max(player.dilation.dilatedTime.max(1).log10() / 10 - 6.25, 2), max)
-	return Math.min(Math.log10(player.dilation.dilatedTime.max(1e10).log(10)) + 1, max)
+	if (tmp.ngp3l) max = tmp.nb[3]
+	else {
+		x = tmp.nb[3]
+		max = 1/0
+	}
+	if (player.aarexModifications.nguspV !== undefined) x *= Math.min(Math.max(player.dilation.dilatedTime.max(1).log10() / 10 - 6.25, 2), max)
+	else x *= Math.min(Math.log10(player.dilation.dilatedTime.max(1e10).log(10)) + 1, max)
+	return x
 }
 
 // v2.3
@@ -1455,7 +1462,6 @@ function quantumReset(force, auto, challid, bigRip, implode=false) {
 		updateQCTimes()
 		updatePCCompletions()
 		updateReplicants()
-		updateNanoRewardTemp()
 		updateBreakEternity()
 		if (!oheHeadstart) {
 			player.eternityBuyer.dilationMode = false
