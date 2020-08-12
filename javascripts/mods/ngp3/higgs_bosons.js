@@ -78,6 +78,7 @@ function bosonicLabReset() {
 		zb: new Decimal(0)
 	}
 	if (player.achievements.includes("ng3p92")) tmp.bl.upgrades.push(32)
+	updateBosonicAMDimReturnsTemp()
 	ghostify(false, true)
 }
 
@@ -94,6 +95,12 @@ function higgsReset() {
 		updateBosonicLimits()
 		updateBosonicStuffCosts()
 	}
+	tmp.hb.bosonicSemipowerment = true
+}
+
+function restartHiggs() {
+	if (!confirm("This resets everything that Higgs resets. You won't gain anything. Are you sure to proceed?")) return
+	bosonicLabReset()
 	tmp.hb.bosonicSemipowerment = true
 }
 
@@ -116,13 +123,36 @@ function getHiggsGain() {
 	return Math.round(tmp.bl.am.div(getHiggsRequirement()).floor().toNumber())
 }
 
-function updateHiggsTemp() {
-	//empty
-}
-
 function addHiggs(x) {
 	tmp.hb.higgs += x
-	tmp.hb.higgsUnspent += x
+	updateUnspentHiggs()
+}
+
+function updateUnspentHiggs() {
+	tmp.hb.higgsUnspent = tmp.hb.higgs
+}
+
+
+function updateHiggsTemp() {
+	updateBosonicFactorTemp()
+}
+
+function updateBosonicFactorTemp() {
+	var data = {}
+	tmp.hbTmp.bFact = data
+
+	data.subFactA = tmp.bl.am.add(1).log10() + 1
+
+	data.subFactE = 1
+	if (tmp.bl.usedEnchants.includes(34)) data.subFactE = tmp.bEn[34]
+
+	data.subFactZ = player.ghostify.wzb.zb.add(1).log10() + 1
+
+	data.subFactH = tmp.hb.higgsUnspent / 20 + 1
+
+	data.total = data.subFactA * data.subFactE * data.subFactZ * data.subFactH
+
+	data.effect = Math.pow(data.total, 0.1)
 }
 
 function updateHiggsTab() {
@@ -130,4 +160,13 @@ function updateHiggsTab() {
 	document.getElementById("bAMDimReturnStart").textContent = shorten(tmp.badm.start)
 	document.getElementById("bAMDimReturnDivide").textContent = "Your Bosonic Antimatter production has been divided by " + shorten(tmp.badm.preDim) + " because of this!"
 	document.getElementById("bAMDimReturnPhrase2").textContent = tmp.hb.higgs > 0 ? "But, you have the power to get more Higgs Bosons if you go very far." : "So, you have to get one."
+
+	document.getElementById("hbUnspent").textContent = getFullExpansion(tmp.hb.higgsUnspent)
+
+	document.getElementById("subFactorA").textContent = shorten(tmp.hbTmp.bFact.subFactA)
+	document.getElementById("subFactorE").textContent = shorten(tmp.hbTmp.bFact.subFactE)
+	document.getElementById("subFactorZ").textContent = shorten(tmp.hbTmp.bFact.subFactZ)
+	document.getElementById("subFactorH").textContent = shorten(tmp.hbTmp.bFact.subFactH)
+	document.getElementById("bosonicFactor").textContent = shorten(tmp.hbTmp.bFact.total)
+	document.getElementById("bosonicFactorEffect").textContent = (tmp.hbTmp.bFact.effect * 100).toFixed(1)
 }

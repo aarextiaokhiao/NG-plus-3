@@ -179,20 +179,23 @@ function updateQuantumTabs() {
 
 //v1.79
 var speedrunMilestonesReached
-var speedrunMilestones = [12, 9, 6, 4.5, 3, 2, 1, 8/9, 7/9, 6/9, 5/9, 4/9, 3/9, 2/9, 1/9, 1/12, 1/15, 7/120, 1/20, 1/24, 1/30, 1/40, 1/60, 1/120, 1/180, 1/240, 1/360, 1/720]
+var speedrunMilestones = [null, 43200, 32400, 21600, 16200, 10800, 7200, 3600, 3200, 2800, 2400, 2000, 1600, 1200, 800, 400, 300, 240, 210, 180, 150, 120, 90, 60, 30, 20, 15, 10, 5]
 function updateSpeedruns() {
 	speedrunMilestonesReached = 0
-	if (player.masterystudies) {
-		for (var i = 0; i < 28; i++) {
-			if (tmp.qu.best > speedrunMilestones[i] * 36e3 && player.ghostify.milestones < 1) break
-			speedrunMilestonesReached++
+	if (tmp.ngp3) {
+		if (player.ghostify.milestones >= 1) speedrunMilestonesReached = 28
+		else {
+			for (var i = 1; i <= 28; i++) {
+				if (tmp.qu.best > speedrunMilestones[i] * 10) break
+				speedrunMilestonesReached++
+			}
 		}
-		document.getElementById('sacrificeAuto').style.display = speedrunMilestonesReached > 24 ? "" : "none"
-		for (var i = 1; i < 29; i++) document.getElementById("speedrunMilestone"+i).className = "achievement achievement" + (speedrunMilestonesReached >= i ? "un" : "") + "locked"
-		for (var i = 1; i < 5; i++) document.getElementById("speedrunRow"+i).className = speedrunMilestonesReached < ( i > 3 ? 28 : i * 8) ? "" : "completedrow"
-		if (speedrunMilestonesReached > 23) giveAchievement("And the winner is...")
-		if (speedrunMilestonesReached > 25) document.getElementById('rebuyupgmax').style.display = "none"
-		if (speedrunMilestonesReached > 27) {
+		document.getElementById('sacrificeAuto').style.display = speedrunMilestonesReached >= 25 ? "" : "none"
+		for (var i = 1; i <= 28; i++) document.getElementById("speedrunMilestone"+i).className = "achievement achievement" + (speedrunMilestonesReached >= i ? "un" : "") + "locked"
+		for (var i = 1; i <= 4; i++) document.getElementById("speedrunRow"+i).className = speedrunMilestonesReached < ( i > 3 ? 28 : i * 8) ? "" : "completedrow"
+		if (speedrunMilestonesReached >= 24) giveAchievement("And the winner is...")
+		if (speedrunMilestonesReached >= 26) document.getElementById('rebuyupgmax').style.display = "none"
+		if (speedrunMilestonesReached >= 28) {
 			giveAchievement("Special Relativity")
 			var removeMaxAll = false
 			for (var d = 1; d < 9; d++) {

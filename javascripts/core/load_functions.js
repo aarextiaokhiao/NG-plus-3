@@ -1975,6 +1975,7 @@ function onLoad(noOffline) {
       if (!tmp.ngp3l) {
 		  document.getElementById("hbUnl").textContent="To unlock Higgs Bosons, you need to get " + shortenCosts(1e20) + " Bosonic Antimatter first."
           updateHiggsUnlocks()
+          updateUnspentHiggs()
       }
   }
   hideDimensions()

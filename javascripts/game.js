@@ -1406,10 +1406,7 @@ function updateYellowLightBoostTemp(){
 function updateGreenLightBoostTemp(){
 	var lighteffect3 = 1
 	if (tmp.ngp3l) lighteffect3 = tmp.effL[3] > 8 ? Math.log10(tmp.effL[3] / 8) + Math.sqrt(12) + 1 : Math.sqrt(tmp.effL[3] * 1.5) + 1
-	else {
-		lighteffect3 = (Math.pow(tmp.effL[3] + 1, 0.125) - 1) / 3 + 1
-		if (lighteffect3 > 1.5) lighteffect3 = Math.log10(lighteffect3 - 0.5) + 1.5
-	}
+	else lighteffect3 = Math.log10(tmp.effL[3] + 1) / 5 + 1
 	tmp.le[3] = lighteffect3
 }
 
@@ -9106,6 +9103,7 @@ function ghostifyAutomationUpdating(){
 		}
 		if (isAutoGhostActive(15)) if (tmp.qu.bigRip.active&&getGHPGain().gte(player.ghostify.automatorGhosts[15].a)) ghostify(true)
 		if (isAutoGhostActive(16)) maxNeutrinoMult()
+		if (tmp.ngp3l) return
 		if (isAutoGhostActive(18)) {
 			var added = 0
 			var addedTotal = 0

@@ -166,7 +166,7 @@ function updateBosonicLimits() {
 	if (tmp.ngp3l || tmp.hb.higgs == 0) br.limit = 3
 	var width = 100 / br.limit
 	for (var r = 1; r <= br.maxLimit; r++) {
-		document.getElementById("bRune" + r).style = "min-width:" + width + "%;width:" + width + "%;max-width:" + width + "%"
+		document.getElementById("bRuneCol" + r).style = "min-width:" + width + "%;width:" + width + "%;max-width:" + width + "%"
 		if (r > 3) {
 			var shown = br.limit >= r
 			document.getElementById("bRuneCol" + r).style.display = shown ? "" : "none"
@@ -213,6 +213,7 @@ function updateBosonicLabTab(){
 	document.getElementById("bAM").textContent=shorten(data.am)
 	document.getElementById("bAMProduction").textContent="+"+shorten(getBosonicAMFinalProduction().times(speed))+"/s"
 	document.getElementById("bAMProductionReduced").style.display = !tmp.ngp3l && data.am.gt(tmp.badm.start) ? "" : "none"
+	document.getElementById("bAMProductionReduced").textContent = "(reduced by " + shorten(tmp.badm.preDim) + "x)"
 	document.getElementById("bBt").textContent=shorten(data.battery)
 	document.getElementById("bBtProduction").textContent="-"+shorten(getBosonicBatteryLoss().times(data.speed))+"/s"
 	document.getElementById("odSpeed").textContent=(data.battery.gt(0)?data.odSpeed:1).toFixed(2)+"x"
@@ -325,6 +326,8 @@ function getMaxEnchantLevelGain(id) {
 	if (costData === undefined) return new Decimal(0)
 	let lvl1 = data.glyphs[g1 - 1].div(getBosonicFinalCost(costData[0])).floor()
 	let lvl2 = data.glyphs[g2 - 1].div(getBosonicFinalCost(costData[1])).floor()
+	if (costData[0] == 0) lvl1 = 1/0
+	if (costData[1] == 0) lvl2 = 1/0
 	return lvl1.min(lvl2)
 }
 
@@ -431,7 +434,8 @@ var bEn = {
 	costs: {
 		12: [3,1],
 		13: [20,2],
-		23: [1e4,2e3]
+		23: [1e4,2e3],
+		34: [1,0]
 	},
 	descs: {
 		12: "You automatically extract Bosonic Runes.",
@@ -451,10 +455,13 @@ var bEn = {
 			return Decimal.add(l, 1).sqrt()
 		},
 		23: function(l) {
-			let exp = Math.max(l.log10() + 1, 0)/3
+			let exp = Math.max(l.log10() + 1, 0) / 3
 			if (tmp.bl.am.gt(1e11)) exp *= tmp.bl.am.div(10).log10() / 10
 			if (exp > 5) exp = Math.sqrt(exp * 5)
 			return Decimal.pow(tmp.bl.am.add(10).log10(), exp)
+		},
+		34: function(l) {
+			return l.add(1).log10() + 1
 		}
 	},
 	action: "upgrade",

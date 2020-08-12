@@ -1816,7 +1816,7 @@
 				<br>
 				(Update v2.3: The Higgs update)
 				<br>
-				<b class="warning">(Test server: Beta 0, Alpha 5)</b>
+				<b class="warning">(Test server: Beta 0, Alpha 6)</b>
 			</p>
 			<div id="footercontainer">
 				<table id="footer" style="display: table !important">
@@ -5242,7 +5242,7 @@
 							They increase your limit amount of Ghostly Rays to <span class="dmAmount" id="ghrCap"></span>.
 						</td>
 					</tr></table>
-					<table id="lights"><tr>
+					<table class="qtable_4col"><tr>
 						<td class="red">
 							You have <span id="light1" style="font-size:35px"></span> red Light.<br>
 							You have made a best amount of <span class="red" id="lightMax1"></span> red Light.
@@ -5415,35 +5415,39 @@
 					<div id="butab" class="bltab"><table class="table" id="bUpgs" align="center" style="margin: auto"></table></div>
 					<div id="wzbtab" class="bltab">
 						<!--<span id="wzbSpeed"></span>-->
-						<table class='qtable'><tr>
-							<td>
-								You have <span id="wpb" style="font-size:35px"></span> W+ Bosons and <span id="wnb" style="font-size:35px"></span> W- Bosons.<br>
-								Translated to <span id="wbTime" style="font-size:35px"></span>x faster extracting time, <span id="wbOscillate" style="font-size:35px"></span>x faster oscillate progression gain, <span id="wbProduction" style="font-size:35px"></span>x Bosonic Antimatter production speed.
-							</td>
-							<td></td>
-							<td>
-								You have <span id="zb" style="font-size:35px"></span> Z Bosons.<br>
-								Translated to <span id="zbSpeed" style="font-size:35px"></span>x faster decay speed of W Quark and faster conversion speed of W- to W+.
-							</td>
-						</tr><tr><td colspan=3>
-								You have <span id="ap" style="font-size:35px"></span> Anti-Preons. <span id="apProduction" style="font-size:25px"></span><br>
-								<span id="apUse"></span><br>
-								<button class="storebtn" style="width:150px" onclick="useAntiPreon(0)">Gain Anti-Preons</button> <button class="storebtn" onclick="useAntiPreon(1)">Decay W Quark</button> <button class="storebtn" style="width:150px" onclick="useAntiPreon(3)">Convert W- to W+</button> <button class="storebtn" style="width:180px" onclick="useAntiPreon(2)">Oscillate Z Neutrino</button>
-						</td></tr><tr>
-							<td>
-								W Quark is currently <span id="wQkType"></span>.<br>
-								<span id="wQkProgress"></span><br>
-								<div id="wQk"><span id="wQkSymbol"></span></div>
-							</td>
-							<td></td>
-							<td>
-								Z Neutrino is currently <span id="zNeGen">electron</span>.<br>
-								<span id="zNeProgress"></span><br>
-								<span id="zNeReq"></span><br>
-								<span id="zbGain"></span><br>
-								<div id="zNe"><span id="zNeSymbol"></span></div>
-							</td>
-						</tr></table>
+						<table class='qtable'>
+							<tr>
+								<td>
+									You have <span id="wpb" style="font-size:35px"></span> W+ Bosons and <span id="wnb" style="font-size:35px"></span> W- Bosons.<br>
+									Translated to <span id="wbTime" style="font-size:35px"></span>x faster extracting time, <span id="wbOscillate" style="font-size:35px"></span>x faster oscillate progression gain, <span id="wbProduction" style="font-size:35px"></span>x Bosonic Antimatter production speed.
+								</td>
+								<td></td>
+								<td>
+									You have <span id="zb" style="font-size:35px"></span> Z Bosons.<br>
+									Translated to <span id="zbSpeed" style="font-size:35px"></span>x faster decay speed of W Quark and faster conversion speed of W- to W+.
+								</td>
+							</tr>
+							<tr><td colspan=3>
+									You have <span id="ap" style="font-size:35px"></span> Anti-Preons. <span id="apProduction" style="font-size:25px"></span><br>
+									<span id="apUse"></span><br>
+									<button class="storebtn" style="width:150px" onclick="useAntiPreon(0)">Gain Anti-Preons</button> <button class="storebtn" onclick="useAntiPreon(1)">Decay W Quark</button> <button class="storebtn" style="width:150px" onclick="useAntiPreon(3)">Convert W- to W+</button> <button class="storebtn" style="width:180px" onclick="useAntiPreon(2)">Oscillate Z Neutrino</button>
+							</td></tr>
+							<tr>
+								<td>
+									W Quark is currently <span id="wQkType"></span>.<br>
+									<span id="wQkProgress"></span><br>
+									<div id="wQk"><span id="wQkSymbol"></span></div>
+								</td>
+								<td></td>
+								<td>
+									Z Neutrino is currently <span id="zNeGen">electron</span>.<br>
+									<span id="zNeProgress"></span><br>
+									<span id="zNeReq"></span><br>
+									<span id="zbGain"></span><br>
+									<div id="zNe"><span id="zNeSymbol"></span></div>
+								</td>
+							</tr>
+						</table>
 					</div>
 					<div id="hbTab" class="bltab">
 						<div id="hbUnl"></div>
@@ -5475,7 +5479,47 @@
 							<br>
 							<span id="bAMDimReturnPhrase2"></span>
 						</div>
-						<div id="hbDiv"></div>
+						<div id="hbDiv">
+							<br>
+							<button class="storebtn" onclick="restartHiggs()" style="width: 360px; height:30px">Restart this Higgs run, but gain nothing</button>
+							<br>
+							You have <span id="hbUnspent" style="font-size:35px">0</span> unspent Higgs Bosons.<br>
+							Your Bosonic Factor is currently <span id="bosonicFactor" style="font-size:25px">1.00</span>x, which boosts the strength of all Particles by <span id="bosonicFactorEffect" style="font-size:35px">100.0</span>%.
+							<table class="table" style="width: 100%">
+								<tr style="font-size: 16px">
+									<td width="40%" class="subFactorA">Subfactor A</td>
+									<td>(based on Bosonic Antimatter)</td>
+									<td><span class="subFactorA" id="subFactorA">1.00</span>x</td>
+									<td width="10%"></td>
+								</tr>
+								<tr style="font-size: 16px">
+									<td width="40%" class="subFactorE">Subfactor E</td>
+									<td>(based on Bosonic Enchants)</td>
+									<td><span class="subFactorE" id="subFactorE">1.00</span>x</td>
+									<td width="10%"></td>
+								</tr>
+								<tr style="font-size: 16px">
+									<td width="40%" class="subFactorZ">Subfactor Z</td>
+									<td>(based on Z Bosons)</td>
+									<td><span class="subFactorZ" id="subFactorZ">1.00</span>x</td>
+									<td width="10%"></td>
+								</tr>
+								<tr style="font-size: 16px">
+									<td width="40%" class="subFactorH">Subfactor H</td>
+									<td>(based on unspent Higgs)</td>
+									<td><span class="subFactorH" id="subFactorH">1.00</span>x</td>
+									<td width="10%"></td>
+								</tr>
+								<!--
+								<tr style="font-size: 16px">
+									<td width="40%">Subfactor Shift</td>
+									<td></td>
+									<td>Next: Gravitions & Subfactor G</td>
+									<td width="10%" style="text-align: right"><button style="color:black; width:195px; height:30px" class="unavailablebtn">Require: 200 Higgs</button></td>
+								</tr>
+								-->
+							</table>
+						</div>
 					</div>
 				</div>
 			</div>

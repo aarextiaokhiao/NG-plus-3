@@ -621,7 +621,7 @@ strong { color: #0072e5 }
 .orange {
 	color: #e57200
 }
-.yellow {
+.yellow, #hbUnspent, #bosonicFactorEffect {
 	color: #e5e500
 }
 .indigo {
@@ -714,6 +714,9 @@ strong { color: #0072e5 }
 #hbTabBtn:hover, .gluonupgrade.hb:hover {
 	border-color: #e5e500 !important;
 	box-shadow: 0px 0px 12px #e5e500, inset 0px 0px 24px #e5e500
+}
+#bosonicFactor {
+	color: #38cbea
 }
 .notifyjs-bootstrap-info {
     background-color: #0072e5;

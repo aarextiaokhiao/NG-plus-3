@@ -471,14 +471,15 @@ function toggleAutoEterMode() {
 }
 
 // v2.21
-function getDil15Bonus () {
-	let nb2unl = ghostified && player.ghostify.neutrinos.boosts >= 3
+function getDil15Bonus() {
 	let x = 1
 	let max = 3
-	if (tmp.ngp3l) max = tmp.nb[3]
-	else {
-		x = tmp.nb[3]
-		max = 1/0
+	if (ghostified && player.ghostify.neutrinos.boosts >= 3) {
+		if (tmp.ngp3l) max = tmp.nb[3]
+		else {
+			x = tmp.nb[3]
+			max = 1/0
+		}
 	}
 	if (player.aarexModifications.nguspV !== undefined) x *= Math.min(Math.max(player.dilation.dilatedTime.max(1).log10() / 10 - 6.25, 2), max)
 	else x *= Math.min(Math.log10(player.dilation.dilatedTime.max(1e10).log(10)) + 1, max)
