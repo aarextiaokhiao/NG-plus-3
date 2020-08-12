@@ -9102,8 +9102,8 @@ function ghostifyAutomationUpdating(){
 			} else if (tmp.qu.time>=player.ghostify.automatorGhosts[13].t*10) bigRip(true)
 		}
 		if (isAutoGhostActive(15)) if (tmp.qu.bigRip.active&&getGHPGain().gte(player.ghostify.automatorGhosts[15].a)) ghostify(true)
-		if (isAutoGhostActive(16)) maxNeutrinoMult()
 		if (tmp.ngp3l) return
+		if (isAutoGhostActive(16)) maxNeutrinoMult()
 		if (isAutoGhostActive(18)) {
 			var added = 0
 			var addedTotal = 0
