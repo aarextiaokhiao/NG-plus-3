@@ -11,6 +11,7 @@ function setupHiggsSave() {
 }
 
 function unlockHiggs() {
+	if (tmp.ngp3l) return //higgs isnt a thing in legacy mode
 	if (tmp.hb.unl) return
 	if (!player.ghostify.wzb.unl) return
 	if (!canUnlockHiggs()) return
@@ -63,7 +64,7 @@ function bosonicLabReset() {
 		battery: new Decimal(0),
 		odSpeed: tmp.bl.odSpeed
 	}
-	for (var g=1;g<=br.maxLimit;g++) tmp.bl.glyphs.push(new Decimal(0))
+	for (var g = 1; g <= br.maxLimit; g++) tmp.bl.glyphs.push(new Decimal(0))
 	player.ghostify.wzb = {
 		unl: true,
 		dP: new Decimal(0),
