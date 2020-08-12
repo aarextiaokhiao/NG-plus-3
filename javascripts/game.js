@@ -3586,14 +3586,13 @@ function getReplMult(next) {
 }
 
 function upgradeReplicantiChance() {
-	if (player.infinityPoints.gte(player.replicanti.chanceCost) && isChanceAffordable() && player.eterc8repl !== 0) {
-	player.replicanti.chanceCost = player.replicanti.chanceCost.times(1e15)
-	if (ghostified) {
-		if (player.ghostify.milestones < 11) player.infinityPoints = player.infinityPoints.minus(player.replicanti.chanceCost)
-	} else player.infinityPoints = player.infinityPoints.minus(player.replicanti.chanceCost)
+	if (player.infinityPoints.gte(player.replicanti.chanceCost) && isChanceAffordable() && player.eterc8repl > 0) {
+		if (ghostified) if (player.ghostify.milestones < 11) player.infinityPoints = player.infinityPoints.minus(player.replicanti.chanceCost)
+		else player.infinityPoints = player.infinityPoints.minus(player.replicanti.chanceCost)
 		player.replicanti.chance = Math.round(player.replicanti.chance*100+1)/100
 		if (player.currentEternityChall == "eterc8") player.eterc8repl-=1
 		document.getElementById("eterc8repl").textContent = "You have "+player.eterc8repl+" purchases left."
+		player.replicanti.chanceCost = player.replicanti.chanceCost.times(1e15)
 	}
 }
 
