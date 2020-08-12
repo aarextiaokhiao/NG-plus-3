@@ -9478,15 +9478,15 @@ function getReplicantiFinalInterval() {
 }
 
 function runRandomReplicanti(chance){
-	if (Decimal.gt(chance, 1)) {
+	if (Decimal.gte(chance, 1)) {
 		player.replicanti.amount = player.replicanti.amount.times(2)
 		return
 	}
 	var temp = player.replicanti.amount
-	chance = chance.toNumber()
+	if (typeof(chance) == "object") chance = chance.toNumber()
         for (var i = 0; temp.gt(i); i++) {
 		if (chance > Math.random()) player.replicanti.amount = player.replicanti.amount.plus(1)
-		if (i > 101) return
+		if (i >= 99) return
 	}
 }
 
