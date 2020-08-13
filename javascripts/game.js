@@ -7323,7 +7323,7 @@ var ecExpData = {
 		eterc12: 110000,
 		eterc13: 38500000,
 		eterc14: 1595000,
-		eterc1_ngmm: 2675,
+		eterc1_ngmm: 1800,
 		eterc2_ngmm: 1125,
 		eterc3_ngmm: 1025,
 		eterc4_ngmm: 4000,
@@ -7368,145 +7368,145 @@ var ecExpData = {
 	}
 }
 function getECGoal(x) {
-	let expInit=ecExpData.inits[x]
-	let expIncrease=ecExpData.increases[x]
-	let completions=ECTimesCompleted(x)
-	if (player.galacticSacrifice!=undefined) {
-		expInit=ecExpData.inits[x+"_ngmm"]||expInit
-		expIncrease=ecExpData.increases[x+"_ngmm"]||expIncrease
+	let expInit = ecExpData.inits[x]
+	let expIncrease = ecExpData.increases[x]
+	let completions = ECTimesCompleted(x)
+	if (player.galacticSacrifice != undefined) {
+		expInit = ecExpData.inits[x + "_ngmm"] || expInit
+		expIncrease = ecExpData.increases[x + "_ngmm"] || expIncrease
 	}
 	if (tmp.ngp3l) {
-		expInit=ecExpData.inits[x+"_legacy"]||expInit
-		expIncrease=ecExpData.increases[x+"_legacy"]||expIncrease
+		expInit = ecExpData.inits[x + "_legacy"] || expInit
+		expIncrease = ecExpData.increases[x + "_legacy"] || expIncrease
 	}
-	let exp=expInit+expIncrease*completions
-	if (x=="ec13"&&!tmp.ngp3l) exp+=600000*Math.max(completions-2,0)*(completions-3,0)
-	return Decimal.pow(10,exp)
+	let exp = expInit + expIncrease * completions
+	if (x == "ec13" && !tmp.ngp3l) exp += 600000 * Math.max(completions - 2, 0) * (completions - 3, 0)
+	return Decimal.pow(10, exp)
 }
 
 function getECReward(x) {
-	let m2=player.galacticSacrifice!==undefined
-	let c=ECTimesCompleted("eterc"+x)
-	if (x==1) return Math.pow(Math.max(player.thisEternity*10,1),(0.3+c*0.05)*(m2?4:1))
-	if (x==2) {
-		let r=player.infinityPower.pow((m2?4.5:1.5)/(700-c*100)).add(1)
-		if (m2) r=Decimal.pow(player.infinityPower.add(10).log10(),1000).times(r)
-		else r=r.min(1e100)
+	let m2 = player.galacticSacrifice !== undefined
+	let c=ECTimesCompleted("eterc" + x)
+	if (x == 1) return Math.pow(Math.max(player.thisEternity * 10, 1), (0.3 + c * 0.05) * (m2 ? 5 : 1))
+	if (x == 2) {
+		let r = player.infinityPower.pow((m2 ? 4.5 : 1.5) / (700 - c * 100)).add(1)
+		if (m2) r = Decimal.pow(player.infinityPower.add(10).log10(), 1000).times(r)
+		else r = r.min(1e100)
 		return r.max(1)
 	}
-	if (x==3) return c*0.8
-	if (x==4) return player.infinityPoints.max(1).pow((m2?.4:0.003)+c*(m2?.2:0.002)).min(m2?1/0:1e200)
-	if (x==5) return c*5
+	if (x==3) return c * 0.8
+	if (x==4) return player.infinityPoints.max(1).pow((m2 ? .4 : 0.003) + c * (m2 ? .2 : 0.002)).min(m2 ? 1/0 : 1e200)
+	if (x==5) return c * 5
 	if (x==8) {
-		let x=Math.log10(player.infinityPower.plus(1).log10()+1)
-		if (x>0) x=Math.pow(x,(m2?0.05:0.03)*c)
-		return Math.max(x,1)
+		let x = Math.log10(player.infinityPower.plus(1).log10() + 1)
+		if (x > 0) x=Math.pow(x, (m2 ? 0.05 : 0.03) * c)
+		return Math.max(x, 1)
 	}
 	if (x==9) {
 		let r=player.timeShards
-		if (r.gt(0)) r=r.pow(c/(m2?1:10))
-		if (m2) r=r.times(Decimal.pow(player.timeShards.max(10).log10(),500*c))
+		if (r.gt(0)) r = r.pow(c / (m2 ? 1 : 10))
+		if (m2) r = r.times(Decimal.pow(player.timeShards.max(10).log10(), 500 * c))
 		if (m2) return r.plus(1).min("1e10000")
 		if (!player.aarexModifications.newGameExpVersion) return r.plus(1).min("1e400")
 		if (r.lt("1e400")) return r.plus(1)
-		let log = Math.sqrt(r.log10()*400)
-		return Decimal.pow(10,Math.min(50000,log))	
+		let log = Math.sqrt(r.log10() * 400)
+		return Decimal.pow(10, Math.min(50000, log))	
 	}
-	if (x==10) return Decimal.pow(getInfinitied(),m2?2:.9).times(c*(m2?0.02:0.000002)).add(1).pow(player.timestudy.studies.includes(31)?4:1)
-	if (x==12) return 1-c*(m2?.06:0.008)
+	if (x==10) return Decimal.pow(getInfinitied(), m2 ? 2 : .9).times(c * (m2 ? 0.02 : 0.000002)).add(1).pow(player.timestudy.studies.includes(31) ? 4 : 1)
+	if (x==12) return 1 - c * (m2 ? .06 : 0.008)
 	if (x==13) {
 		var data={
-			main:[0,0.25,0.5,0.7,0.85,1],
-			legacy:[0,0.2,0.4,0.6,0.8,1]
+			main:[0, 0.25, 0.5, 0.7, 0.85, 1],
+			legacy:[0, 0.2, 0.4, 0.6, 0.8, 1]
 		}
-		var dataUsed=data[tmp.ngp3l?"legacy":"main"]
+		var dataUsed = data[tmp.ngp3l ? "legacy" : "main"]
 		return dataUsed[c]
 	}
 	if (x==14) return getIC3EffFromFreeUpgs()
 }
 
 function startEternityChallenge(n) {
-    if (player.currentEternityChall == "eterc"+n || parseInt(n) != player.eternityChallUnlocked) return
-    if (player.options.challConf) if (!confirm("You will start over with just your time studies, eternity upgrades and achievements. You need to reach a set IP with special conditions.")) return
+	if (player.currentEternityChall == "eterc"+n || parseInt(n) != player.eternityChallUnlocked) return
+	if (player.options.challConf) if (!confirm("You will start over with just your time studies, eternity upgrades and achievements. You need to reach a set IP with special conditions.")) return
 	if (ghostified && name == "eterc10") player.ghostify.under = false
-    var oldStat = getEternitied()
-    player.eternities = nA(player.eternities, gainEternitiedStat())
-    updateBankedEter()
-    if (player.tickspeedBoosts !== undefined) player.tickspeedBoosts = 0
-    if (player.achievements.includes("r104")) player.infinityPoints = new Decimal(2e25);
-    else player.infinityPoints = new Decimal(0);
-    player = {
-        money: new Decimal(10),
-        tickSpeedCost: new Decimal(1000),
-        tickspeed: new Decimal(player.aarexModifications.newGameExpVersion?500:1000),
-        tickBoughtThisInf: resetTickBoughtThisInf(),
-        firstCost: new Decimal(10),
-        secondCost: new Decimal(100),
-        thirdCost: new Decimal(10000),
-        fourthCost: new Decimal(1000000),
-        fifthCost: new Decimal(1e9),
-        sixthCost: new Decimal(1e13),
-        seventhCost: new Decimal(1e18),
-        eightCost: new Decimal(1e24),
-        firstAmount: new Decimal(0),
-        secondAmount: new Decimal(0),
-        thirdAmount: new Decimal(0),
-        fourthAmount: new Decimal(0),
-        firstBought: 0,
-        secondBought: 0,
-        thirdBought: 0,
-        fourthBought: 0,
-        fifthAmount: new Decimal(0),
-        sixthAmount: new Decimal(0),
-        seventhAmount: new Decimal(0),
-        eightAmount: new Decimal(0),
-        fifthBought: 0,
-        sixthBought: 0,
-        seventhBought: 0,
-        eightBought: 0,
-        firstPow: new Decimal(1),
-        secondPow: new Decimal(1),
-        thirdPow: new Decimal(1),
-        fourthPow: new Decimal(1),
-        fifthPow: new Decimal(1),
-        sixthPow: new Decimal(1),
-        seventhPow: new Decimal(1),
-        eightPow: new Decimal(1),
-        boughtDims: player.boughtDims,
-        totalBoughtDims: resetTotalBought(),
-        sacrificed: new Decimal(0),
-        achievements: player.achievements,
-        challenges: challengesCompletedOnEternity(),
-        currentChallenge: "",
-        infinityUpgrades: player.infinityUpgrades,
-        setsUnlocked: player.setsUnlocked,
-        infinityPoints: player.infinityPoints,
-        infinitied: 0,
-        infinitiedBank: player.infinitiedBank,
-        totalTimePlayed: player.totalTimePlayed,
-        bestInfinityTime: 9999999999,
-        thisInfinityTime: 0,
-        resets: (getEternitied() > 3) ? 4 : 0,
-        dbPower: player.dbPower,
-        tdBoosts: player.tdBoosts,
-        tickspeedBoosts: player.tickspeedBoosts,
-        galaxies: (getEternitied() > 3) ? 1 : 0,
-        pSac: player.pSac,
-        galacticSacrifice: resetGalacticSacrifice(true),
-        totalmoney: player.totalmoney,
-        interval: null,
-        lastUpdate: player.lastUpdate,
-        achPow: player.achPow,
-        autobuyers: getEternitied() > 1 ? player.autobuyers : [1,2,3,4,5,6,7,8,9,10,11,12],
-        partInfinityPoint: 0,
-        partInfinitied: 0,
-        break: player.break,
-        costMultipliers: [new Decimal(1e3), new Decimal(1e4), new Decimal(1e5), new Decimal(1e6), new Decimal(1e8), new Decimal(1e10), new Decimal(1e12), new Decimal(1e15)],
-        tickspeedMultiplier: new Decimal(10),
-        chall2Pow: 1,
-        chall3Pow: new Decimal(0.01),
-        newsArray: player.newsArray,
-        matter: new Decimal(0),
+	var oldStat = getEternitied()
+	player.eternities = nA(player.eternities, gainEternitiedStat())
+	updateBankedEter()
+	if (player.tickspeedBoosts !== undefined) player.tickspeedBoosts = 0
+	if (player.achievements.includes("r104")) player.infinityPoints = new Decimal(2e25);
+	else player.infinityPoints = new Decimal(0);
+	player = {
+		money: new Decimal(10),
+		tickSpeedCost: new Decimal(1000),
+		tickspeed: new Decimal(player.aarexModifications.newGameExpVersion?500:1000),
+		tickBoughtThisInf: resetTickBoughtThisInf(),
+		firstCost: new Decimal(10),
+		secondCost: new Decimal(100),
+		thirdCost: new Decimal(10000),
+		fourthCost: new Decimal(1000000),
+		fifthCost: new Decimal(1e9),
+		sixthCost: new Decimal(1e13),
+		seventhCost: new Decimal(1e18),
+		eightCost: new Decimal(1e24),
+		firstAmount: new Decimal(0),
+		secondAmount: new Decimal(0),
+		thirdAmount: new Decimal(0),
+		fourthAmount: new Decimal(0),
+		firstBought: 0,
+		secondBought: 0,
+		thirdBought: 0,
+		fourthBought: 0,
+		fifthAmount: new Decimal(0),
+		sixthAmount: new Decimal(0),
+		seventhAmount: new Decimal(0),
+		eightAmount: new Decimal(0),
+		fifthBought: 0,
+		sixthBought: 0,
+		seventhBought: 0,
+		eightBought: 0,
+		firstPow: new Decimal(1),
+		secondPow: new Decimal(1),
+		thirdPow: new Decimal(1),
+		fourthPow: new Decimal(1),
+		fifthPow: new Decimal(1),
+		sixthPow: new Decimal(1),
+		seventhPow: new Decimal(1),
+		eightPow: new Decimal(1),
+		boughtDims: player.boughtDims,
+		totalBoughtDims: resetTotalBought(),
+		sacrificed: new Decimal(0),
+		achievements: player.achievements,
+		challenges: challengesCompletedOnEternity(),
+		currentChallenge: "",
+		infinityUpgrades: player.infinityUpgrades,
+		setsUnlocked: player.setsUnlocked,
+		infinityPoints: player.infinityPoints,
+		infinitied: 0,
+		infinitiedBank: player.infinitiedBank,
+		totalTimePlayed: player.totalTimePlayed,
+		bestInfinityTime: 9999999999,
+		thisInfinityTime: 0,
+		resets: (getEternitied() > 3) ? 4 : 0,
+		dbPower: player.dbPower,
+		tdBoosts: player.tdBoosts,
+		tickspeedBoosts: player.tickspeedBoosts,
+		galaxies: (getEternitied() > 3) ? 1 : 0,
+		pSac: player.pSac,
+		galacticSacrifice: resetGalacticSacrifice(true),
+		totalmoney: player.totalmoney,
+		interval: null,
+		lastUpdate: player.lastUpdate,
+		achPow: player.achPow,
+		autobuyers: getEternitied() > 1 ? player.autobuyers : [1,2,3,4,5,6,7,8,9,10,11,12],
+		partInfinityPoint: 0,
+		partInfinitied: 0,
+		break: player.break,
+		costMultipliers: [new Decimal(1e3), new Decimal(1e4), new Decimal(1e5), new Decimal(1e6), new Decimal(1e8), new Decimal(1e10), new Decimal(1e12), new Decimal(1e15)],
+		tickspeedMultiplier: new Decimal(10),
+		chall2Pow: 1,
+		chall3Pow: new Decimal(0.01),
+		newsArray: player.newsArray,
+		matter: new Decimal(0),
         chall11Pow: new Decimal(1),
         challengeTimes: player.challengeTimes,
         infchallengeTimes: player.infchallengeTimes,
