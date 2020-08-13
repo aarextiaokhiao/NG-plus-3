@@ -1744,10 +1744,10 @@ function getInfinitied() {
 
 function getInfinitiedGain() {
 	let infGain=1
-	if (player.thisInfinityTime > 50 && player.achievements.includes("r87")) infGain=250
-	if (player.timestudy.studies.includes(32)) infGain*=tsMults[32]()
-	if (player.achievements.includes("r133") && player.meta) infGain=nM(player.dilation.dilatedTime.pow(.25).max(1),infGain)
-	return infGain
+	if (player.thisInfinityTime > 50 && player.achievements.includes("r87")) infGain = 250
+	if (player.timestudy.studies.includes(32)) infGain *= tsMults[32]()
+	if (player.achievements.includes("r133") && player.meta) infGain = nM(player.dilation.dilatedTime.pow(.25).max(1), infGain)
+	return nA(infGain, player.achievements.includes("r87") && player.galacticSacrifice ? 249 : 0)
 }
 
 function getEternitied() {
