@@ -6758,21 +6758,21 @@ function onChallengeFail() {
 }
 
 function startChallenge(name) {
-    if (name == "postc3" && isIC3Trapped()) return
-    if (name == "challenge7" && inQC(4)) return
-    if ((name == "postc2" || name == "postc6" || name == "postc7" || name == "postc8") && inQC(6)) return
-    if (name.includes("post")) {
-        if (player.postChallUnlocked < checkICID(name)) return
-        var target = getGoal(name)
-    } else var target = new Decimal(Number.MAX_VALUE)
-    if (player.options.challConf && name != "") if (!confirm("You will start over with just your infinity upgrades, and achievements. You need to reach " + (name.includes("post") ? "a set goal" : "infinity") + " with special conditions. NOTE: The rightmost infinity upgrade column doesn't work on challenges.")) return
-    if (player.tickspeedBoosts !== undefined) player.tickspeedBoosts = 0
-    if (name == "postc1" && player.currentEternityChall != "" && inQC(4) && inQC(6)) giveAchievement("The Ultimate Challenge")
-    player = {
-        money: new Decimal(10),
-        tickSpeedCost: new Decimal(1000),
-        tickBoughtThisInf: resetTickBoughtThisInf(),
-        firstCost: new Decimal(10),
+	if (name == "postc3" && isIC3Trapped()) return
+	if (name == "challenge7" && inQC(4)) return
+	if ((name == "postc2" || name == "postc6" || name == "postc7" || name == "postc8") && inQC(6)) return
+	if (name.includes("post")) {
+		if (player.postChallUnlocked < checkICID(name)) return
+		var target = getGoal(name)
+		} else var target = new Decimal(Number.MAX_VALUE)
+		if (player.options.challConf && name != "") if (!confirm("You will start over with just your infinity upgrades, and achievements. You need to reach " + (name.includes("post") ? "a set goal" : "infinity") + " with special conditions. NOTE: The rightmost infinity upgrade column doesn't work on challenges.")) return
+	if (player.tickspeedBoosts !== undefined) player.tickspeedBoosts = 0
+	if (name == "postc1" && player.currentEternityChall != "" && inQC(4) && inQC(6)) giveAchievement("The Ultimate Challenge")
+	player = {
+		money: new Decimal(10),
+		tickSpeedCost: new Decimal(1000),
+		tickBoughtThisInf: resetTickBoughtThisInf(),
+		firstCost: new Decimal(10),
         secondCost: new Decimal(100),
         thirdCost: new Decimal(10000),
         fourthCost: new Decimal(1000000),
@@ -6807,7 +6807,21 @@ function startChallenge(name) {
         boughtDims: player.boughtDims,
         totalBoughtDims: resetTotalBought(),
         sacrificed: new Decimal(0),
-      achievements: player.achievements,
+		thisInfinityTime: 0,
+		resets: 0,
+		galaxies: 0,
+		interval: null,
+		galacticSacrifice: newGalacticDataOnInfinity(),
+		costMultipliers: [new Decimal(1e3), new Decimal(1e4), new Decimal(1e5), new Decimal(1e6), new Decimal(1e8), new Decimal(1e10), new Decimal(1e12), new Decimal(1e15)],
+		tickspeedMultiplier: new Decimal(10),
+		chall2Pow: 1,
+		chall3Pow: new Decimal(0.01),
+		matter: new Decimal(0),
+		achievements: player.achievements,
+		chall11Pow: new Decimal(1),
+		postC4Tier: 1,
+		postC8Mult: new Decimal(1),
+		//above is everything that is changed
       challenges: player.challenges,
       currentChallenge: name,
       infinityUpgrades: player.infinityUpgrades,
@@ -6818,26 +6832,17 @@ function startChallenge(name) {
       infinitiedBank: player.infinitiedBank,
       totalTimePlayed: player.totalTimePlayed,
       bestInfinityTime: player.bestInfinityTime,
-      thisInfinityTime: 0,
-      resets: 0,
       dbPower: player.dbPower,
       tdBoosts: player.tdBoosts,
       tickspeedBoosts: player.tickspeedBoosts,
-      galaxies: 0,
       pSac: player.pSac,
-      galacticSacrifice: newGalacticDataOnInfinity(),
       totalmoney: player.totalmoney,
-      interval: null,
       lastUpdate: player.lastUpdate,
       achPow: player.achPow,
       autobuyers: player.autobuyers,
-      costMultipliers: [new Decimal(1e3), new Decimal(1e4), new Decimal(1e5), new Decimal(1e6), new Decimal(1e8), new Decimal(1e10), new Decimal(1e12), new Decimal(1e15)],
-      tickspeedMultiplier: new Decimal(10),
-      chall2Pow: 1,
-      chall3Pow: new Decimal(0.01),
-      matter: new Decimal(0),
+      
       newsArray: player.newsArray,
-      chall11Pow: new Decimal(1),
+      
       partInfinityPoint: player.partInfinityPoint,
       partInfinitied: player.partInfinitied,
       break: player.break,
@@ -6855,8 +6860,7 @@ function startChallenge(name) {
       dimPowerIncreaseCost: player.dimPowerIncreaseCost,
       version: player.version,
       postChallUnlocked: player.postChallUnlocked,
-      postC4Tier: 1,
-      postC8Mult: new Decimal(1),
+      
       overXGalaxies: player.overXGalaxies,
       overXGalaxiesTickspeedBoost: player.overXGalaxiesTickspeedBoost,
       singularity: player.singularity,
@@ -6941,63 +6945,63 @@ function startChallenge(name) {
       aarexModifications: player.aarexModifications
     };
 	if (inNC(10) || player.currentChallenge == "postc1") {
-        player.thirdCost = new Decimal(100)
-        player.fourthCost = new Decimal(500)
-        player.fifthCost = new Decimal(2500)
-        player.sixthCost = new Decimal(2e4)
-        player.seventhCost = new Decimal(2e5)
-        player.eightCost = new Decimal(4e6)
-    }
-    player.tdBoosts = resetTDBoosts()
-    resetPSac()
-    resetTDs()
-    reduceDimCosts()
-    if (player.currentChallenge == "postc1") player.costMultipliers = [new Decimal(1e3),new Decimal(5e3),new Decimal(1e4),new Decimal(1.2e4),new Decimal(1.8e4),new Decimal(2.6e4),new Decimal(3.2e4),new Decimal(4.2e4)];
-    if (player.currentChallenge == "postc2") {
-        player.eightAmount = new Decimal(1);
-        player.eightBought = 1;
-        player.resets = 4;
-    }
-    updateNCVisuals()
-
-    if (player.infinityUpgradesRespecced != undefined) {
-        player.singularity.darkMatter = new Decimal(0)
-        player.dimtechs.discounts = 0
-    }
-    updateSingularity()
-    updateDimTechs()
+		player.thirdCost = new Decimal(100)
+		player.fourthCost = new Decimal(500)
+		player.fifthCost = new Decimal(2500)
+		player.sixthCost = new Decimal(2e4)
+		player.seventhCost = new Decimal(2e5)
+		player.eightCost = new Decimal(4e6)
+	}
+	player.tdBoosts = resetTDBoosts()
+	resetPSac()
+	resetTDs()
+	reduceDimCosts()
+	if (player.currentChallenge == "postc1") player.costMultipliers = [new Decimal(1e3),new Decimal(5e3),new Decimal(1e4),new Decimal(1.2e4),new Decimal(1.8e4),new Decimal(2.6e4),new Decimal(3.2e4),new Decimal(4.2e4)];
+	if (player.currentChallenge == "postc2") {
+		player.eightAmount = new Decimal(1);
+		player.eightBought = 1;
+		player.resets = 4;
+	}
+	updateNCVisuals()
 	
-    if (player.replicanti.unl) player.replicanti.amount = new Decimal(1)
-    player.replicanti.galaxies = 0
+	if (player.infinityUpgradesRespecced != undefined) {
+		player.singularity.darkMatter = new Decimal(0)
+		player.dimtechs.discounts = 0
+	}
+	updateSingularity()
+	updateDimTechs()
+	
+	if (player.replicanti.unl) player.replicanti.amount = new Decimal(1)
+	player.replicanti.galaxies = 0
 
-    // even if we're in a challenge, apparently if it's challenge 2 we might have four resets anyway.
-    setInitialDimensionPower();
+	// even if we're in a challenge, apparently if it's challenge 2 we might have four resets anyway.
+	setInitialDimensionPower();
 
 
-    GPminpeak = new Decimal(0)
-    IPminpeak = new Decimal(0)
-    if (player.currentChallenge.includes("post")) {
+	GPminpeak = new Decimal(0)
+	IPminpeak = new Decimal(0)
+	if (player.currentChallenge.includes("post")) {
 		player.break = true
 		document.getElementById("break").innerHTML = "FIX INFINITY"
-    }
-    if (player.achievements.includes("r36")) player.tickspeed = player.tickspeed.times(0.98);
-    if (player.achievements.includes("r45")) player.tickspeed = player.tickspeed.times(0.98);
-    if (player.achievements.includes("r66")) player.tickspeed = player.tickspeed.times(0.98);
-    if (player.achievements.includes("r83")) player.tickspeed = player.tickspeed.times(Decimal.pow(0.95,player.galaxies));
+	}
+	if (player.achievements.includes("r36")) player.tickspeed = player.tickspeed.times(0.98);
+	if (player.achievements.includes("r45")) player.tickspeed = player.tickspeed.times(0.98);
+	if (player.achievements.includes("r66")) player.tickspeed = player.tickspeed.times(0.98);
+	if (player.achievements.includes("r83")) player.tickspeed = player.tickspeed.times(Decimal.pow(0.95,player.galaxies));
 
-    showTab('dimensions')
-    updateChallenges()
+	showTab('dimensions')
+	updateChallenges()
 	setInitialMoney()
 
-    if (player.infinitied >= 10) giveAchievement("That's a lot of infinites");
+	if (player.infinitied >= 10) giveAchievement("That's a lot of infinites");
 
-    resetInfDimensions();
-    hideDimensions()
-    tmp.tickUpdate = true;
+	resetInfDimensions();
+	hideDimensions()
+	tmp.tickUpdate = true;
 
-    skipResets()
-    if (player.currentChallenge.includes("post") && player.currentEternityChall !== "") giveAchievement("I wish I had gotten 7 eternities")
-    Marathon2 = 0;
+	skipResets()
+	if (player.currentChallenge.includes("post") && player.currentEternityChall !== "") giveAchievement("I wish I had gotten 7 eternities")
+	Marathon2 = 0;
 }
 
 function startNormalChallenge(x) {
@@ -7020,11 +7024,11 @@ function inNC(x, n) {
 }
 
 function getTotalNormalChallenges() {
-	let x=11
-	if (player.galacticSacrifice!==undefined) x+=2
-	else if (player.infinityUpgradesRespecced!==undefined) x++
-	if (player.tickspeedBoosts!==undefined) x++
-	if (player.aarexModifications.ngmX>3) x++
+	let x = 11
+	if (player.galacticSacrifice !== undefined) x += 2
+	else if (player.infinityUpgradesRespecced !== undefined) x++
+	if (player.tickspeedBoosts !== undefined) x++
+	if (player.aarexModifications.ngmX > 3) x++
 	return x
 }
 
