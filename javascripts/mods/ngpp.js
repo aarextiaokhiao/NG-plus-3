@@ -877,7 +877,7 @@ function quantumReset(force, auto, challid, bigRip, implode=false) {
 		if (!inQC(4)) if (player.meta.resets < 1) giveAchievement("Infinity Morals")
 		if (player.dilation.rebuyables[1] + player.dilation.rebuyables[2] + player.dilation.rebuyables[3] + player.dilation.rebuyables[4] < 1 && player.dilation.upgrades.length < 1) giveAchievement("Never make paradoxes!")
 		if (player.achievements.includes("ng3p73")) player.infinitiedBank=nA(player.infinitiedBank,gainBankedInf())
-	}
+	} //bounds the else statement to if (force)
 	var oheHeadstart = bigRip ? tmp.qu.bigRip.upgrades.includes(2) : speedrunMilestonesReached > 0
 	var keepABnICs = oheHeadstart || bigRip || player.achievements.includes("ng3p51")
 	var oldTime = tmp.qu.time
@@ -1010,8 +1010,9 @@ function quantumReset(force, auto, challid, bigRip, implode=false) {
 			var qc1 = qc[0]
 			var qc2 = qc[1]
 			if (intensity > 1) {
-				var qc1st = Math.min(qc1,qc2)
-				var qc2st = Math.max(qc1,qc2)
+				var qc1st = Math.min(qc1, qc2)
+				var qc2st = Math.max(qc1, qc2)
+				if (qc1st == qc2st) console.log("there is some issue, you have assigned a QC twice (QC" + qc1st + ")")
 				var pcid = qc1st * 10 + qc2st
 				if (tmp.qu.pairedChallenges.current > tmp.qu.pairedChallenges.completed) {
 					tmp.qu.challenges[qc1] = 2
@@ -1070,28 +1071,8 @@ function quantumReset(force, auto, challid, bigRip, implode=false) {
 		}
 		updateInQCs()
 		if ((!challid && player.ghostify.milestones < 6) || bigRip != tmp.qu.bigRip.active) tmp.qu.replicants.amount = new Decimal(0)
-		tmp.qu.replicants.requirement = new Decimal("1e3000000")
-		tmp.qu.replicants.quarks = (!(challid > 0 )&& player.achievements.includes("ng3p45")) ? tmp.qu.replicants.quarks.pow(2/3) : new Decimal(0)
-		tmp.qu.replicants.eggonProgress = new Decimal(0)
-		tmp.qu.replicants.eggons = new Decimal(0)
-		tmp.qu.replicants.babyProgress = new Decimal(0)
-		tmp.qu.replicants.babies = new Decimal(0)
-		tmp.qu.replicants.growupProgress = new Decimal(0)
-		for (let d = 1; d < 9; d++) {
-			if (d > 7 || tmp.eds[d].perm < 10) tmp.qu.replicants.quantumFood += Math.round(tmp.eds[d].progress.toNumber() * 3) % 3
-			if (d != 1 || !player.achievements.includes("ng3p46") || challid > 0){
-				tmp.eds[d].workers=new Decimal(tmp.eds[d].perm)
-				tmp.eds[d].progress=new Decimal(0)
-			} else {
-				tmp.eds[d].workers = tmp.eds[d].workers.pow(1/3)
-				tmp.eds[d].progress = new Decimal(0)
-			}
-		}
-		tmp.qu.nanofield.charge = new Decimal(0)
-		tmp.qu.nanofield.energy = new Decimal(0)
-		tmp.qu.nanofield.antienergy = new Decimal(0)
-		tmp.qu.nanofield.power = 0
-		tmp.qu.nanofield.powerThreshold = new Decimal(50)
+		replicantsResetOnQuantum(challid)
+		nanofieldResetOnQuantum()
 		player.eternityBuyer.tpUpgraded = false
 		player.eternityBuyer.slowStopped = false
 		if (tmp.qu.bigRip.active != bigRip) {
@@ -1166,7 +1147,7 @@ function quantumReset(force, auto, challid, bigRip, implode=false) {
 		document.getElementById("breakEternityTabbtn").style.display = bigRip || tmp.qu.breakEternity.unlocked ? "" : "none"
 		delete tmp.qu.autoECN
 	}
-	if (speedrunMilestonesReached<1&&!bigRip) {
+	if (speedrunMilestonesReached < 1 && !bigRip) {
 		document.getElementById("infmultbuyer").textContent = "Autobuy IP mult OFF"
 		document.getElementById("togglecrunchmode").textContent = "Auto crunch mode: amount"
 		document.getElementById("limittext").textContent = "Amount of IP to wait until reset:"
@@ -1222,8 +1203,9 @@ function quantumReset(force, auto, challid, bigRip, implode=false) {
 		document.getElementById("replicantiresettoggle").style.display = "none"
 		delete player.replicanti.galaxybuyer
 	}
-	document.getElementById("infinityPoints1").innerHTML = "You have <span class=\"IPAmount1\">" + shortenDimensions(player.infinityPoints) + "</span> Infinity points."
-	document.getElementById("infinityPoints2").innerHTML = "You have <span class=\"IPAmount2\">" + shortenDimensions(player.infinityPoints) + "</span> Infinity points."
+	var shortenedIP = shortenDimensions(player.infinityPoints)
+	document.getElementById("infinityPoints1").innerHTML = "You have <span class=\"IPAmount1\">" + shortenedIP + "</span> Infinity points."
+	document.getElementById("infinityPoints2").innerHTML = "You have <span class=\"IPAmount2\">" + shortenedIP + "</span> Infinity points."
 	document.getElementById("eternitybtn").style.display = player.infinityPoints.gte(player.eternityChallGoal) ? "inline-block" : "none"
 	document.getElementById("eternityPoints2").style.display = "inline-block"
 	document.getElementById("eternitystorebtn").style.display = "inline-block"
