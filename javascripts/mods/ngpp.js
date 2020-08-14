@@ -959,7 +959,7 @@ function quantumReset(force, auto, challid, bigRip, implode=false) {
 		tickSpeedCost: new Decimal(1000),
 		tickspeed: new Decimal(player.aarexModifications.newGameExpVersion ? 500 : 1000),
 		tickBoughtThisInf: resetTickBoughtThisInf(),
-		firstCost: new Decimal(10),
+		firstCost: new Decimal(10), 
 		secondCost: new Decimal(100),
 		thirdCost: new Decimal(10000),
 		fourthCost: new Decimal(1000000),
