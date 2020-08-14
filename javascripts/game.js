@@ -491,7 +491,7 @@ function updateNewPlayer(reseted) {
 		eternityChallUnlocked: 0,
 		etercreq: 0,
 		autoIP: new Decimal(0),
-		autoTime: 1e300,
+		autoTime: 1e300, 
 		infMultBuyer: false,
 		autoCrunchMode: "amount",
 		respec: false,
