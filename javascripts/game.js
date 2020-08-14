@@ -6237,28 +6237,6 @@ function onChallengeFail() {
 	if (failureCount > 9) giveAchievement("You're a failure")
 }
 
-function doNormalChallengeResetStuff(){
-	player.money = new Decimal(10)
-	player.tickSpeedCost = new Decimal(1000)
-	player.tickBoughtThisInf = resetTickBoughtThisInf()
-	completlyResetNormalDimensions()
-        player.totalBoughtDims = resetTotalBought()
-        player.sacrificed = new Decimal(0)
-	player.thisInfinityTime = 0
-	player.resets = 0
-	player.galaxies = 0
-	player.interval = null
-	player.galacticSacrifice = newGalacticDataOnInfinity()
-	player.costMultipliers = [new Decimal(1e3), new Decimal(1e4), new Decimal(1e5), new Decimal(1e6), new Decimal(1e8), new Decimal(1e10), new Decimal(1e12), new Decimal(1e15)]
-	player.tickspeedMultiplier= new Decimal(10)
-	player.chall2Pow = 1
-	player.chall3Pow = new Decimal(0.01)
-	player.matter = new Decimal(0)
-	player.chall11Pow = new Decimal(1)
-	player.postC4Tier = 1
-	player.postC8Mult = new Decimal(1)
-}
-
 function startChallenge(name) {
 	if (name == "postc3" && isIC3Trapped()) return
 	if (name == "challenge7" && inQC(4)) return
