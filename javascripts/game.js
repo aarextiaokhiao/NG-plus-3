@@ -6078,117 +6078,7 @@ function updateRespecButtons() {
 	document.getElementById("respecMastery2").className=className
 }
 
-function eternity(force, auto, presetLoad, dilated) {
-    	var id7unlocked = player.infDimensionsUnlocked[7]
-    	if (tmp.ngp3) if (tmp.qu.bigRip.active) id7unlocked = true
-	var canEternity = force || (player.infinityPoints.gte(Number.MAX_VALUE) && id7unlocked && (auto || !player.options.eternityconfirm || confirm("Eternity will reset everything except achievements and challenge records. You will also gain an Eternity point and unlock various upgrades.")))
-	if (!canEternity) return
-	if (force) player.currentEternityChall = "";
-        if (player.currentEternityChall !== "" && player.infinityPoints.lt(player.eternityChallGoal)) return false
-        if (player.thisEternity < player.bestEternity && !force) {
-		player.bestEternity = player.thisEternity
-		if (player.bestEternity < 300) giveAchievement("That wasn't an eternity");
-		if (player.bestEternity <= 0.01) giveAchievement("Less than or equal to 0.001");
-	}
-	if (player.thisEternity < 2) giveAchievement("Eternities are the new infinity")
-	if (player.currentEternityChall == "eterc6" && ECTimesCompleted("eterc6") < 5 && player.dimensionMultDecrease < 4) player.dimensionMultDecrease = Math.max(parseFloat((player.dimensionMultDecrease - 0.2).toFixed(1)),2)
-	if (!GUBought("gb4")) if ((player.currentEternityChall == "eterc11" || (player.currentEternityChall == "eterc12" && ghostified)) && ECTimesCompleted("eterc11") < 5) player.tickSpeedMultDecrease = Math.max(parseFloat((player.tickSpeedMultDecrease - 0.07).toFixed(2)), 1.65)
-	if (player.infinitied < 10 && !force && !player.boughtDims) giveAchievement("Do you really need a guide for this?");
-	if (Decimal.round(player.replicanti.amount) == 9) giveAchievement("We could afford 9");
-	if (player.dimlife && !force) giveAchievement("8 nobody got time for that")
-	if (player.dead && !force) giveAchievement("You're already dead.")
-	if (player.infinitied <= 1 && !force) giveAchievement("Do I really need to infinity")
-	if (gainedEternityPoints().gte("1e600") && player.thisEternity <= 600 && player.dilation.active && !force) giveAchievement("Now you're thinking with dilation!")
-	if (ghostified && player.currentEternityChall == "eterc11" && inQC(6) && inQC(8) && inQCModifier("ad") && player.infinityPoints.e >= 15500) giveAchievement("The Deep Challenge")
-	if (isEmptiness) {
-		showTab("dimensions")
-		isEmptiness = false
-		if (quantumed) document.getElementById("quantumtabbtn").style.display = "inline-block"
-		if (ghostified) document.getElementById("ghostifytabbtn").style.display = "inline-block"
-	}
-        temp = []
-        if (gainedEternityPoints().gte(player.eternityPoints) && player.eternityPoints.gte("1e1185") && (tmp.ngp3 ? player.dilation.active && tmp.qu.bigRip.active : false)) giveAchievement("Gonna go fast")
-        var oldEP = player.eternityPoints
-        player.eternityPoints = player.eternityPoints.plus(gainedEternityPoints())
-        var array = [player.thisEternity, gainedEternityPoints()]
-        if (player.dilation.active) array = [player.thisEternity, getDilGain().sub(player.dilation.totalTachyonParticles).max(0), "d2"]
-        else if (player.currentEternityChall != "") array.push(player.eternityChallUnlocked)
-        else if (tmp.be) {
-		tmp.qu.breakEternity.eternalMatter = tmp.qu.breakEternity.eternalMatter.add(getEMGain())
-		if (player.ghostify.milestones < 15) tmp.qu.breakEternity.eternalMatter = tmp.qu.breakEternity.eternalMatter.round()
-		array = [player.thisEternity, getEMGain(), "b"]
-		updateBreakEternity()
-        }
-        addEternityTime(array)
-        var forceRespec = false
-        if (player.currentEternityChall !== "") {
-		if (player.eternityChalls[player.currentEternityChall] === undefined) {
-			player.eternityChalls[player.currentEternityChall] = 1
-		} else if (player.eternityChalls[player.currentEternityChall] < 5) {
-			player.eternityChalls[player.currentEternityChall] += 1
-		}
-		else if (player.aarexModifications.eternityChallRecords[player.eternityChallUnlocked] === undefined) player.aarexModifications.eternityChallRecords[player.eternityChallUnlocked] = player.thisEternity
-		else player.aarexModifications.eternityChallRecords[player.eternityChallUnlocked] = Math.min(player.thisEternity, player.aarexModifications.eternityChallRecords[player.eternityChallUnlocked])
-		if (player.currentEternityChall === "eterc12" && player.achievements.includes("ng3p51")) {
-			if (player.eternityChalls.eterc11 === undefined) player.eternityChalls.eterc11 = 1
-			else if (player.eternityChalls.eterc11 < 5) player.eternityChalls.eterc11++
-		}
-		if (tmp.ngp3 ? tmp.qu.autoEC && player.eternityChalls[player.currentEternityChall] < 5 : false) {
-                if (player.etercreq > 12) player.timestudy.theorem += masterystudies.costs.ec[player.etercreq]
-                else player.timestudy.theorem += ([0,30,35,40,70,130,85,115,115,415,550,1,1])[player.etercreq]
-                player.eternityChallUnlocked = 0
-                tmp.qu.autoECN = player.etercreq
-		} else if (ghostified && player.ghostify.milestones > 1) {
-			if (player.etercreq > 12) player.timestudy.theorem += masterystudies.costs.ec[player.etercreq]
-			else player.timestudy.theorem += ([0, 30, 35, 40, 70, 130, 85, 115, 115, 415, 550, 1, 1])[player.etercreq]
-			player.eternityChallUnlocked = 0
-		} else forceRespec = true
-		player.etercreq = 0
-		if (Object.keys(player.eternityChalls).length >= 10) {
-			var eterchallscompletedtotal = 0;
-			for (i = 1; i < Object.keys(player.eternityChalls).length + 1; i++) {
-				eterchallscompletedtotal += player.eternityChalls["eterc" + i]
-			}
-			if (eterchallscompletedtotal >= 50 && !player.achievements.includes("r123")) {
-				giveAchievement("5 more eternities until the update");
-			}
-		}
-        } else if (tmp.ngp3) delete tmp.qu.autoECN
-        for (var i = 0; i < player.challenges.length; i++) {
-            if (!player.challenges[i].includes("post") && getEternitied() > 1) temp.push(player.challenges[i])
-        }
-        player.infinitiedBank = nA(player.infinitiedBank, gainBankedInf())
-        if (player.infinitiedBank > 5000000000) giveAchievement("No ethical consumption");
-        if (player.dilation.active && (!force || player.infinityPoints.gte(Number.MAX_VALUE))) {
-		let gain = getDilGain()
-		if (gain.gte(player.dilation.totalTachyonParticles)) {
-			if (player.dilation.totalTachyonParticles.gt(0) && gain.div(player.dilation.totalTachyonParticles).lt(2)) player.eternityBuyer.slowStopped = true
-			if (tmp.ngp3) player.dilation.times++
-			player.dilation.totalTachyonParticles = gain
-			setTachyonParticles(gain)
-		}
-	}
-        player.challenges = temp
-        if (tmp.ngp3 && player.dilation.studies.includes(1) && !force) if (player.eternityBuyer.isOn && player.eternityBuyer.dilationMode) {
-		if (player.eternityBuyer.dilMode == "amount" && !player.eternityBuyer.slowStopped) {
-			player.eternityBuyer.statBeforeDilation++
-			if (player.eternityBuyer.statBeforeDilation>=player.eternityBuyer.dilationPerAmount) {
-				startDilatedEternity(true)
-				return
-			}
-		}
-		if (player.eternityBuyer.dilMode=="upgrades"&&player.eternityBuyer.tpUpgraded) {
-			startDilatedEternity(true)
-			return
-		}
-	}
-        var oldStat = getEternitied()
-        player.eternities = nA(player.eternities, gainEternitiedStat())
-        updateBankedEter()
-        if (player.tickspeedBoosts !== undefined) player.tickspeedBoosts = 0
-        if (player.achievements.includes("r104")) player.infinityPoints = new Decimal(2e25);
-        else player.infinityPoints = new Decimal(0);
-        
+function doEternityResetStuff(){
 	player.money = new Decimal(10)
 	player.tickSpeedCost = new Decimal(1000)
 	player.tickspeed = new Decimal(player.aarexModifications.newGameExpVersion?500:1000)
@@ -6325,21 +6215,10 @@ function eternity(force, auto, presetLoad, dilated) {
 	player.offlineProdCost = getEternitied() > 19 ? player.offlineProdCost : 1e7
 	player.challengeTarget = 0
 	player.autoSacrifice = getEternitied() > 6 ? player.autoSacrifice : 1
-	player.replicanti = {
-                amount: speedrunMilestonesReached > 23 ? player.replicanti.amount : new Decimal(getEternitied() > 49 ? 1 : 0),
-                unl: getEternitied() > 49 ? true : false,
-                chance: player.replicanti.chance,
-                chanceCost: player.replicanti.chanceCost,
-                interval: player.replicanti.interval,
-                intervalCost: player.replicanti.intervalCost,
-                gal: player.replicanti.gal,
-                galCost: player.replicanti.galCost,
-                galaxies: 0,
-                galaxybuyer: (getEternitied() > 2) ? player.replicanti.galaxybuyer : undefined,
-                auto: player.replicanti.auto,
-                limit: player.replicanti.newLimit,
-                newLimit: player.replicanti.newLimit
-	}
+	player.replicanti.amount = speedrunMilestonesReached > 23 ? player.replicanti.amount : new Decimal(getEternitied() > 49 ? 1 : 0)
+	player.replicanti.unl = getEternitied() > 49
+	player.replicanti.galaxies = 0
+	player.replicanti.galaxybuyer = (getEternitied() > 2) ? player.replicanti.galaxybuyer : undefined
 	player.autoIP = new Decimal(0)
 	player.autoTime = 1e300
 	player.peakSpent = tmp.ngp3 ? 0 : undefined
@@ -6351,6 +6230,126 @@ function eternity(force, auto, presetLoad, dilated) {
 	player.currentEternityChall = ""
 	player.quantum = tmp.qu
 	player.dontWant = tmp.ngp3 ? true : undefined
+}
+
+function doCheckECCompletionStuff(){
+	var forceRespec = false
+        if (player.currentEternityChall !== "") {
+		if (player.eternityChalls[player.currentEternityChall] === undefined) {
+			player.eternityChalls[player.currentEternityChall] = 1
+		} else if (player.eternityChalls[player.currentEternityChall] < 5) {
+			player.eternityChalls[player.currentEternityChall] += 1
+		}
+		else if (player.aarexModifications.eternityChallRecords[player.eternityChallUnlocked] === undefined) player.aarexModifications.eternityChallRecords[player.eternityChallUnlocked] = player.thisEternity
+		else player.aarexModifications.eternityChallRecords[player.eternityChallUnlocked] = Math.min(player.thisEternity, player.aarexModifications.eternityChallRecords[player.eternityChallUnlocked])
+		if (player.currentEternityChall === "eterc12" && player.achievements.includes("ng3p51")) {
+			if (player.eternityChalls.eterc11 === undefined) player.eternityChalls.eterc11 = 1
+			else if (player.eternityChalls.eterc11 < 5) player.eternityChalls.eterc11++
+		}
+		if (tmp.ngp3 ? tmp.qu.autoEC && player.eternityChalls[player.currentEternityChall] < 5 : false) {
+                if (player.etercreq > 12) player.timestudy.theorem += masterystudies.costs.ec[player.etercreq]
+                else player.timestudy.theorem += ([0,30,35,40,70,130,85,115,115,415,550,1,1])[player.etercreq]
+                player.eternityChallUnlocked = 0
+                tmp.qu.autoECN = player.etercreq
+		} else if (ghostified && player.ghostify.milestones > 1) {
+			if (player.etercreq > 12) player.timestudy.theorem += masterystudies.costs.ec[player.etercreq]
+			else player.timestudy.theorem += ([0, 30, 35, 40, 70, 130, 85, 115, 115, 415, 550, 1, 1])[player.etercreq]
+			player.eternityChallUnlocked = 0
+		} else forceRespec = true
+		player.etercreq = 0
+		if (Object.keys(player.eternityChalls).length >= 10) {
+			var eterchallscompletedtotal = 0;
+			for (i = 1; i < Object.keys(player.eternityChalls).length + 1; i++) {
+				eterchallscompletedtotal += player.eternityChalls["eterc" + i]
+			}
+			if (eterchallscompletedtotal >= 50 && !player.achievements.includes("r123")) {
+				giveAchievement("5 more eternities until the update");
+			}
+		}
+        } else if (tmp.ngp3) delete tmp.qu.autoECN
+	return forceRespec
+}
+
+
+function eternity(force, auto, presetLoad, dilated) {
+    	var id7unlocked = player.infDimensionsUnlocked[7]
+    	if (tmp.ngp3) if (tmp.qu.bigRip.active) id7unlocked = true
+	var canEternity = force || (player.infinityPoints.gte(Number.MAX_VALUE) && id7unlocked && (auto || !player.options.eternityconfirm || confirm("Eternity will reset everything except achievements and challenge records. You will also gain an Eternity point and unlock various upgrades.")))
+	if (!canEternity) return
+	
+	if (force) player.currentEternityChall = "";
+        if (player.currentEternityChall !== "" && player.infinityPoints.lt(player.eternityChallGoal)) return false
+        if (player.thisEternity < player.bestEternity && !force) {
+		player.bestEternity = player.thisEternity
+		if (player.bestEternity < 300) giveAchievement("That wasn't an eternity");
+		if (player.bestEternity <= 0.01) giveAchievement("Less than or equal to 0.001");
+	}
+	if (player.thisEternity < 2) giveAchievement("Eternities are the new infinity")
+	if (player.currentEternityChall == "eterc6" && ECTimesCompleted("eterc6") < 5 && player.dimensionMultDecrease < 4) player.dimensionMultDecrease = Math.max(parseFloat((player.dimensionMultDecrease - 0.2).toFixed(1)),2)
+	if (!GUBought("gb4")) if ((player.currentEternityChall == "eterc11" || (player.currentEternityChall == "eterc12" && ghostified)) && ECTimesCompleted("eterc11") < 5) player.tickSpeedMultDecrease = Math.max(parseFloat((player.tickSpeedMultDecrease - 0.07).toFixed(2)), 1.65)
+	if (player.infinitied < 10 && !force && !player.boughtDims) giveAchievement("Do you really need a guide for this?");
+	if (Decimal.round(player.replicanti.amount) == 9) giveAchievement("We could afford 9");
+	if (player.dimlife && !force) giveAchievement("8 nobody got time for that")
+	if (player.dead && !force) giveAchievement("You're already dead.")
+	if (player.infinitied <= 1 && !force) giveAchievement("Do I really need to infinity")
+	if (gainedEternityPoints().gte("1e600") && player.thisEternity <= 600 && player.dilation.active && !force) giveAchievement("Now you're thinking with dilation!")
+	if (ghostified && player.currentEternityChall == "eterc11" && inQC(6) && inQC(8) && inQCModifier("ad") && player.infinityPoints.e >= 15500) giveAchievement("The Deep Challenge")
+	if (isEmptiness) {
+		showTab("dimensions")
+		isEmptiness = false
+		if (quantumed) document.getElementById("quantumtabbtn").style.display = "inline-block"
+		if (ghostified) document.getElementById("ghostifytabbtn").style.display = "inline-block"
+	}
+        temp = []
+        if (gainedEternityPoints().gte(player.eternityPoints) && player.eternityPoints.gte("1e1185") && (tmp.ngp3 ? player.dilation.active && tmp.qu.bigRip.active : false)) giveAchievement("Gonna go fast")
+        var oldEP = player.eternityPoints
+        player.eternityPoints = player.eternityPoints.plus(gainedEternityPoints())
+        var array = [player.thisEternity, gainedEternityPoints()]
+        if (player.dilation.active) array = [player.thisEternity, getDilGain().sub(player.dilation.totalTachyonParticles).max(0), "d2"]
+        else if (player.currentEternityChall != "") array.push(player.eternityChallUnlocked)
+        else if (tmp.be) {
+		tmp.qu.breakEternity.eternalMatter = tmp.qu.breakEternity.eternalMatter.add(getEMGain())
+		if (player.ghostify.milestones < 15) tmp.qu.breakEternity.eternalMatter = tmp.qu.breakEternity.eternalMatter.round()
+		array = [player.thisEternity, getEMGain(), "b"]
+		updateBreakEternity()
+        }
+        addEternityTime(array)
+	var forceRespec = doCheckECCompletionStuff()
+        for (var i = 0; i < player.challenges.length; i++) {
+		if (!player.challenges[i].includes("post") && getEternitied() > 1) temp.push(player.challenges[i])
+        }
+        player.infinitiedBank = nA(player.infinitiedBank, gainBankedInf())
+        if (player.infinitiedBank >= 5000000000 && !player.achievements.includes("r131")) giveAchievement("No ethical consumption");
+        if (player.dilation.active && (!force || player.infinityPoints.gte(Number.MAX_VALUE))) {
+		let gain = getDilGain()
+		if (gain.gte(player.dilation.totalTachyonParticles)) {
+			if (player.dilation.totalTachyonParticles.gt(0) && gain.div(player.dilation.totalTachyonParticles).lt(2)) player.eternityBuyer.slowStopped = true
+			if (tmp.ngp3) player.dilation.times++
+			player.dilation.totalTachyonParticles = gain
+			setTachyonParticles(gain)
+		}
+	}
+        player.challenges = temp
+        if (tmp.ngp3 && player.dilation.studies.includes(1) && !force) if (player.eternityBuyer.isOn && player.eternityBuyer.dilationMode) {
+		if (player.eternityBuyer.dilMode == "amount" && !player.eternityBuyer.slowStopped) {
+			player.eternityBuyer.statBeforeDilation++
+			if (player.eternityBuyer.statBeforeDilation >= player.eternityBuyer.dilationPerAmount) {
+				startDilatedEternity(true)
+				return
+			}
+		}
+		if (player.eternityBuyer.dilMode=="upgrades"&&player.eternityBuyer.tpUpgraded) {
+			startDilatedEternity(true)
+			return
+		}
+	}
+        var oldStat = getEternitied()
+        player.eternities = nA(player.eternities, gainEternitiedStat())
+        updateBankedEter()
+        if (player.tickspeedBoosts !== undefined) player.tickspeedBoosts = 0
+	player.infinityPoints = new Decimal(player.achievements.includes("r104") ? 2e25 : 0);
+
+	doEternityResetStuff()
 		
         if (player.galacticSacrifice && getEternitied() < 2) player.autobuyers[12] = 13
         if (player.tickspeedBoosts !== undefined && getEternitied() < 2) player.autobuyers[13] = 14
