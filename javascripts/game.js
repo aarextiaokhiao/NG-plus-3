@@ -6249,7 +6249,8 @@ function startChallenge(name) {
 	if (player.tickspeedBoosts !== undefined) player.tickspeedBoosts = 0
 	if (name == "postc1" && player.currentEternityChall != "" && inQC(4) && inQC(6)) giveAchievement("The Ultimate Challenge")
 	doNormalChallengeResetStuff()
-    
+    	player.currentChallenge = name
+	
 	if (inNC(10) || player.currentChallenge == "postc1") {
 		player.thirdCost = new Decimal(100)
 		player.fourthCost = new Decimal(500)
