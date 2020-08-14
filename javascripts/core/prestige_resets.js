@@ -1,4 +1,4 @@
-function completlyResetInfinityDimensions(){
+function completelyResetInfinityDimensions(){
 	player.infinityDimension1 = {
                 cost: new Decimal(1e8),
                 amount: new Decimal(0),
@@ -57,7 +57,7 @@ function completlyResetInfinityDimensions(){
 	}
 }
 
-function completlyResetNormalDimensions(){
+function completelyResetNormalDimensions(){
 	player.firstCost = new Decimal(10)
 	player.secondCost = new Decimal(100)
 	player.thirdCost = new Decimal(10000)
