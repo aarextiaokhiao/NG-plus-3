@@ -954,7 +954,18 @@ function quantumReset(force, auto, challid, bigRip, implode=false) {
 	var bigRipChanged = tmp.ngp3 && bigRip != player.quantum.bigRip.active
 	var turnSomeOn = !bigRip || player.quantum.bigRip.upgrades.includes(1)
 	if (player.aarexModifications.ngudpV) for (var d = 0; d < 4; d++) bhd[d]=Object.assign({}, player["blackholeDimension" + (d + 1)])
-	doQuantumResetStuff()
+	
+	doQuantumResetStuff(bigRip)
+	if (ghostified && bigRip) {
+		player.timeDimension8 = {
+			cost: timeDimCost(8, 1),
+			amount: new Decimal(1),
+			power: new Decimal(1),
+			bought: 1
+		}
+	}
+		
+		
 	player.money = onQuantumAM()
 	if (player.galacticSacrifice && !keepABnICs) player.autobuyers[12] = 13
 	if (player.tickspeedBoosts !== undefined && !keepABnICs) player.autobuyers[13] = 14
