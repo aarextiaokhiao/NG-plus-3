@@ -419,22 +419,31 @@ function updateReplicants(mode) {
 		} else document.getElementById("replicantstabbtn").style.display = ""
 	}
 	if (mode === undefined || mode === "display") {
-		document.getElementById("rgRepl").textContent = shortenDimensions(tmp.qu.gluons.rg)
-		document.getElementById("gbRepl").textContent = shortenDimensions(tmp.qu.gluons.gb)
-		document.getElementById("brRepl").textContent = shortenDimensions(tmp.qu.gluons.br)
+		
 
 		document.getElementById("quantumFoodAmount").textContent = getFullExpansion(tmp.qu.replicants.quantumFood)
-		document.getElementById("buyQuantumFood").innerHTML = "Buy 1 quantum food<br>Cost: " + shortenDimensions(tmp.qu.replicants.quantumFoodCost) + " for all 3 gluons"
+		document.getElementById("buyQuantumFood").innerHTML = "Buy 1 quantum food<br>Cost: " + shortenDimensions(tmp.qu.replicants.quantumFoodCost) + " of all 3 gluons"
 		document.getElementById("buyQuantumFood").className = "gluonupgrade " + (tmp.qu.gluons.rg.min(tmp.qu.gluons.gb).min(tmp.qu.gluons.br).lt(tmp.qu.replicants.quantumFoodCost) ? "unavailabl" : "stor") + "ebtn"
-		document.getElementById("breakLimit").innerHTML = "Limit of workers: " + getLimitMsg() + (isLimitUpgAffordable() ? " -> " + getNextLimitMsg() + "<br>Cost: " + shortenDimensions(tmp.qu.replicants.limitCost) + " for all 3 gluons" : "")
+		if (!tmp.qu.quarks.l > 1e5) document.getElementById("breakLimit").innerHTML = "Limit of workers: " + getLimitMsg() + (isLimitUpgAffordable() ? " -> " + getNextLimitMsg() + "<br>Cost: " + shortenDimensions(tmp.qu.replicants.limitCost) + " for all 3 gluons" : "")
 		document.getElementById("breakLimit").className = (tmp.qu.gluons.rg.min(tmp.qu.gluons.gb).min(tmp.qu.gluons.br).lt(tmp.qu.replicants.limitCost) || !isLimitUpgAffordable() ? "unavailabl" : "stor") + "ebtn"
 		document.getElementById("reduceHatchSpeed").className = (tmp.qu.gluons.rg.min(tmp.qu.gluons.gb).min(tmp.qu.gluons.br).lt(tmp.qu.replicants.hatchSpeedCost) ? "unavailabl" : "stor") + "ebtn"
 		if (player.masterystudies.includes('d11')) {
 			document.getElementById("quantumFoodAmountED").textContent = getFullExpansion(tmp.qu.replicants.quantumFood)
-			document.getElementById("buyQuantumFoodED").innerHTML = "Buy 1 quantum food<br>Cost: "+shortenDimensions(tmp.qu.replicants.quantumFoodCost)+" for all 3 gluons"
+			if (!tmp.qu.quarks.l > 1e5) document.getElementById("buyQuantumFoodED").innerHTML = "Buy 1 quantum food<br>Cost: "+shortenDimensions(tmp.qu.replicants.quantumFoodCost)+" for all 3 gluons"
 			document.getElementById("buyQuantumFoodED").className = "gluonupgrade " + (tmp.qu.gluons.rg.min(tmp.qu.gluons.gb).min(tmp.qu.gluons.br).lt(tmp.qu.replicants.quantumFoodCost) ? "unavailabl" : "stor") + "ebtn"
-			document.getElementById("breakLimitED").innerHTML = "Limit of workers: " + getLimitMsg() + (isLimitUpgAffordable() ? " -> " + getNextLimitMsg() + "<br>Cost: " + shortenDimensions(tmp.qu.replicants.limitCost) + " for all 3 gluons":"")
+			document.getElementById("breakLimitED").innerHTML = "Limit of workers: " + getLimitMsg() + (isLimitUpgAffordable() ? " -> " + getNextLimitMsg() + "<br>Cost: " + shortenDimensions(tmp.qu.replicants.limitCost) + " of all 3 gluons":"")
 			document.getElementById("breakLimitED").className = (tmp.qu.gluons.rg.min(tmp.qu.gluons.gb).min(tmp.qu.gluons.br).lt(tmp.qu.replicants.limitCost) || !isLimitUpgAffordable() ? "unavailabl" : "stor") + "ebtn"
+		}
+		if (tmp.qu.quarks.l > 1e5){
+			document.getElementById("buyQuantumFoodED").innerHTML = "Buy 1 quantum food"
+			document.getElementById("breakLimit").innerHTML = "Limit of workers: " + getLimitMsg()
+			document.getElementById("rgRepl").textContent = "lots of"
+			document.getElementById("gbRepl").textContent = "many"
+			document.getElementById("brRepl").textContent = "tons of"
+		} else {
+			document.getElementById("rgRepl").textContent = shortenDimensions(tmp.qu.gluons.rg)
+			document.getElementById("gbRepl").textContent = shortenDimensions(tmp.qu.gluons.gb)
+			document.getElementById("brRepl").textContent = shortenDimensions(tmp.qu.gluons.br)
 		}
 	}
 }
@@ -452,7 +461,7 @@ function getGatherRate() {
 	var data = {
 		normal: tmp.qu.replicants.amount.times(mult),
 		babies: tmp.qu.replicants.babies.times(mult).div(20),
-		workers: { }
+		workers: {}
 	}
 	data.total = data.normal.add(data.babies)
 	data.workersTotal = new Decimal(0)
