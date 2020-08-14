@@ -9,6 +9,34 @@ function onQuantumAM(){
 	return new Decimal(x)
 }
 
+function replicantsResetOnQuantum(challid){
+	tmp.qu.replicants.requirement = new Decimal("1e3000000")
+	tmp.qu.replicants.quarks = (!(challid > 0) && player.achievements.includes("ng3p45")) ? tmp.qu.replicants.quarks.pow(2/3) : new Decimal(0)
+	tmp.qu.replicants.eggonProgress = new Decimal(0)
+	tmp.qu.replicants.eggons = new Decimal(0)
+	tmp.qu.replicants.babyProgress = new Decimal(0)
+	tmp.qu.replicants.babies = new Decimal(0)
+	tmp.qu.replicants.growupProgress = new Decimal(0)
+	for (let d = 1; d <= 8; d++) {
+		if (d == 8 || tmp.eds[d].perm < 10) tmp.qu.replicants.quantumFood += Math.round(tmp.eds[d].progress.toNumber() * 3) % 3
+		if (d != 1 || !player.achievements.includes("ng3p46") || challid > 0){
+			tmp.eds[d].workers = new Decimal(tmp.eds[d].perm)
+			tmp.eds[d].progress = new Decimal(0)
+		} else {
+			tmp.eds[d].workers = tmp.eds[d].workers.pow(1/3)
+			tmp.eds[d].progress = new Decimal(0)
+		}
+	}
+}
+
+function nanofieldResetOnQuantum(){
+	tmp.qu.nanofield.charge = new Decimal(0)
+	tmp.qu.nanofield.energy = new Decimal(0)
+	tmp.qu.nanofield.antienergy = new Decimal(0)
+	tmp.qu.nanofield.power = 0
+	tmp.qu.nanofield.powerThreshold = new Decimal(50)
+}
+
 function doQuantumResetStuff(bigRip, challid){
 	var headstart = player.aarexModifications.newGamePlusVersion > 0 && !tmp.ngp3
 	var oheHeadstart = bigRip ? tmp.qu.bigRip.upgrades.includes(2) : speedrunMilestonesReached > 0
