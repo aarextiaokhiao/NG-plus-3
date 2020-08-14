@@ -114,7 +114,7 @@ function doCrunchResetStuff(){
 	player.money = new Decimal(10)
 	player.tickSpeedCost = new Decimal(1000)
 	player.tickBoughtThisInf = resetTickBoughtThisInf()
-	completlyResetNormalDimensions()
+	completelyResetNormalDimensions()
 	player.totalBoughtDims = resetTotalBought()
 	player.sacrificed = new Decimal(0)
 	player.bestInfinityTime = (player.currentEternityChall !== "eterc12") ? Math.min(player.bestInfinityTime, player.thisInfinityTime) : player.bestInfinityTime
@@ -137,7 +137,7 @@ function doEternityResetStuff(){
 	player.tickSpeedCost = new Decimal(1000)
 	player.tickspeed = new Decimal(player.aarexModifications.newGameExpVersion?500:1000)
 	player.tickBoughtThisInf = resetTickBoughtThisInf()
-	completlyResetNormalDimensions()
+	completelyResetNormalDimensions()
 	player.infinitied = 0
 	player.totalBoughtDims = resetTotalBought()
 	player.sacrificed = new Decimal(0)
@@ -173,7 +173,7 @@ function doEternityResetStuff(){
 	player.postC8Mult = new Decimal(1)
 	player.infDimensionsUnlocked = resetInfDimUnlocked()
 	player.infinityPower = new Decimal(1)
-	completlyResetInfinityDimensions()
+	completelyResetInfinityDimensions()
 	player.timeShards = new Decimal(0)
 	player.tickThreshold = new Decimal(1)
 	player.totalTickGained = 0
