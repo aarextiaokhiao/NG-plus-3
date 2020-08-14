@@ -221,6 +221,7 @@ function getDimboostCostIncrease () {
 
 function getSupersonicStart() {
 	if (inQC(5)) return 0
+	if (player.galacticSacrifice) return 1/0
 	let r = 56e4
 	if (player.aarexModifications.nguspV && !player.aarexModifications.nguepV) r = 1e5
 	if (tmp.ngp3) {
@@ -266,7 +267,7 @@ function skipResets() {
 }
 
 function getTotalResets() {
-	let r = player.resets+player.galaxies
+	let r = player.resets + player.galaxies
 	if (player.tickspeedBoosts) r += player.tickspeedBoosts
 	if (player.aarexModifications.ngmX > 3) r += player.tdBoosts
 	return r
