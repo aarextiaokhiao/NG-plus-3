@@ -193,13 +193,13 @@ function doQuantumResetStuff(bigRip, challid){
 		upgrades: {dilatedTime: 0, bankedInfinities: 0, replicanti: 0, total: 0},
 		power: new Decimal(0)
 	}: player.blackhole
-	doMetaDimensionsReset(bigRip, headstart)
+	doMetaDimensionsReset(bigRip, headstart, challid)
 	player.masterystudies = tmp.ngp3 ? (bigRip && !tmp.qu.bigRip.upgrades.includes(12) ? ["d7", "d8", "d9", "d10", "d11", "d12", "d13", "d14"] : speedrunMilestonesReached > 10 && isRewardEnabled(4) ? player.masterystudies : []) : undefined
 	player.old = tmp.ngp3 ? inQC(0) : undefined
 	player.dontWant = tmp.ngp3 || undefined
 }
 		
-function doMetaDimensionsReset(bigRip, headstart){
+function doMetaDimensionsReset(bigRip, headstart, challid){
 	player.meta = {
 		antimatter: getMetaAntimatterStart(bigRip),
 		bestAntimatter: headstart ? player.meta.bestAntimatter : getMetaAntimatterStart(bigRip),
