@@ -604,7 +604,7 @@ function getBreakEternityDataOnGhostify(nBEU){
 	}
 }
 
-function getQuantumOnGhostifyData(nBRU, nBEU){
+function getQuantumOnGhostifyData(bm, nBRU, nBEU){
 	return {
 		reached: true,
 		times: 0,
@@ -714,7 +714,7 @@ function doGhostifyResetStuff(implode, gain, amount, force, bulk, nBRU, nBEU){
 	var bm = player.ghostify.milestones
 	player.galacticSacrifice = resetGalacticSacrifice()
 	completelyResetNormalDimensions()
-	player.money = new Decimal(10)
+	player.money = onQuantumAM()
 	player.tickSpeedCost = new Decimal(1000)
 	player.tickspeed = new Decimal(player.aarexModifications.newGameExpVersion ? 500 : 1000)
 	player.tickBoughtThisInf = resetTickBoughtThisInf()
@@ -850,7 +850,7 @@ function doGhostifyResetStuff(implode, gain, amount, force, bulk, nBRU, nBEU){
 	/*function */ doMetaDimensionsReset(false, false, 0) //meta dimboosts are set on the next line
 	player.meta.resets = bm ? 4 : 0
 	player.masterystudies = bm ? player.masterystudies : []
-	player.quantum = getQuantumOnGhostifyData(nBRU, nBEU)
+	player.quantum = getQuantumOnGhostifyData(bm, nBRU, nBEU)
 	player.old = false
 	player.dontWant = true	
 }
