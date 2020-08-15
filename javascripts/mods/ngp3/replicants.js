@@ -302,4 +302,26 @@ function maxReduceHatchSpeed() {
 	updateReplicants()
 }
 
+function replicantReset() {
+	if (player.replicanti.amount.lt(tmp.qu.replicants.requirement)) return
+	if (!player.achievements.includes("ng3p47")) player.replicanti.amount = new Decimal(1)
+	tmp.qu.replicants.amount = tmp.qu.replicants.amount.add(1)
+	tmp.qu.replicants.requirement = tmp.qu.replicants.requirement.times("1e100000")
+}
+
+function breakLimit() {
+	if (tmp.qu.gluons.rg.min(tmp.qu.gluons.gb).min(tmp.qu.gluons.br).gte(tmp.qu.replicants.limitCost) && isLimitUpgAffordable()) {
+		tmp.qu.gluons.rg = tmp.qu.gluons.rg.sub(tmp.qu.replicants.limitCost)
+		tmp.qu.gluons.gb = tmp.qu.gluons.gb.sub(tmp.qu.replicants.limitCost)
+		tmp.qu.gluons.br = tmp.qu.gluons.br.sub(tmp.qu.replicants.limitCost)
+		tmp.qu.replicants.limit++
+		if (tmp.qu.replicants.limit > 10 && tmp.qu.replicants.limitDim < 8) {
+			tmp.qu.replicants.limit = 1
+			tmp.qu.replicants.limitDim++
+		}
+		if (tmp.qu.replicants.limit % 10 > 0) tmp.qu.replicants.limitCost = tmp.qu.replicants.limitCost.times(200)
+		updateGluonsTabOnUpdate("spend")
+		updateReplicants("spend")
+	}
+}
 
