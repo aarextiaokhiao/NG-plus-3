@@ -5785,6 +5785,7 @@ function bigCrunch(autoed) {
         if (player.tickspeedBoosts !== undefined) player.tickspeedBoosts = 0
         var g11MultShown = player.infinitied > 0 || player.eternities !== 0 || quantumed
         
+	
 	doCrunchResetStuff()
 	let infGain
         if (player.currentEternityChall == "eterc4") {
@@ -5795,7 +5796,7 @@ function bigCrunch(autoed) {
 		}
 	} else infGain = getInfinitiedGain()
 	player.infinitied = nA(player.infinitied, infGain)
-        if (player.bestInfinityTime <= 0.01) giveAchievement("Less than or equal to 0.001");
+        
 
         document.getElementById("challengeconfirmation").style.display = "inline-block"
         if (!player.options.retryChallenge) player.currentChallenge = ""
@@ -5823,7 +5824,7 @@ function bigCrunch(autoed) {
 
         if (speedrunMilestonesReached < 28 && (tmp.ngp3l || !player.achievements.includes("ng3p67"))) player.replicanti.galaxies = (player.timestudy.studies.includes(33)) ? Math.floor(player.replicanti.galaxies/2) :0
 
-        giveAchievement("To infinity!");
+        
         player.tdBoosts = resetTDBoosts()
         resetPSac()
         resetTDs()
@@ -5835,14 +5836,7 @@ function bigCrunch(autoed) {
         if (player.achievements.includes("r66")) player.tickspeed = player.tickspeed.times(0.98);
         if (player.achievements.includes("r83")) player.tickspeed = player.tickspeed.times(Decimal.pow(0.95,player.galaxies));
 
-        checkForEndMe()
-
-        if (player.infinitied >= 10) giveAchievement("That's a lot of infinites");
-        if (player.infinitied >= 1 && !player.challenges.includes("challenge1")) player.challenges.push("challenge1");
-
-        if (player.challenges.length > 1) giveAchievement("Daredevil")
-        if (player.challenges.length == getTotalNormalChallenges() + 1) giveAchievement("AntiChallenged")
-        if (player.challenges.length == getTotalNormalChallenges() + order.length + 1) giveAchievement("Anti-antichallenged")
+	checkSecondSetOnCrunchAchievements()
 
         updateAutobuyers();
         setInitialMoney()
