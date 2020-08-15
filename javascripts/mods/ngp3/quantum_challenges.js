@@ -240,3 +240,68 @@ function getQCCost(num) {
 	if (num > 8) return quantumChallenges.costs[tmp.qu.pairedChallenges.order[num - 8][0]] + quantumChallenges.costs[tmp.qu.pairedChallenges.order[num - 8][1]]
 	return quantumChallenges.costs[num]
 }
+
+function showQCModifierStats(id) {
+	tmp.pct=id
+	updatePCTable()
+}
+
+function updatePCTable() {
+	var data=tmp.qu.qcsMods[tmp.pct]
+	for (r=1;r<9;r++) for (c=1;c<9;c++) {
+		if (r!=c) {
+			var divid = "pc" + (r*10+c)
+			var pcid = r*10+c
+			if (r>c) pcid = c*10+r
+			if (tmp.pct=="") {
+				var comp = tmp.qu.pairedChallenges.completions[pcid]
+				if (comp !== undefined) {
+					document.getElementById(divid).textContent = "PC" + comp
+					document.getElementById(divid).className = (tmp.qu.qcsNoDil["pc" + pcid] ? "nd" : "pc" + comp) + "completed"
+					var achTooltip = 'Fastest time: ' + (tmp.qu.pairedChallenges.fastest[pcid] ? timeDisplayShort(tmp.qu.pairedChallenges.fastest[pcid]) : "N/A")
+					if (tmp.qu.qcsNoDil["pc" + pcid]) achTooltip += ", No dilation: PC" + tmp.qu.qcsNoDil["pc" + pcid]
+					document.getElementById(divid).setAttribute('ach-tooltip', achTooltip)
+					if (divid=="pc38") giveAchievement("Hardly marked")
+					if (divid=="pc68") giveAchievement("Big Rip isn't enough")
+				} else if (pcid == 68 && ghostified) {
+					document.getElementById(divid).textContent = "BR"
+					document.getElementById(divid).className = "brCompleted"
+					document.getElementById(divid).removeAttribute('ach-tooltip')
+					document.getElementById(divid).setAttribute('ach-tooltip', 'Fastest time from start of Ghostify: ' + timeDisplayShort(player.ghostify.best))
+				} else {
+					document.getElementById(divid).textContent = ""
+					document.getElementById(divid).className = ""
+					document.getElementById(divid).removeAttribute('ach-tooltip')
+				}
+			} else if (data&&data["pc" + pcid]) {
+				var comp = data["pc" + pcid]
+				document.getElementById(divid).textContent = "PC" + comp
+				document.getElementById(divid).className = "pc" + comp + "completed"
+				document.getElementById(divid).removeAttribute('ach-tooltip')
+			} else {
+				document.getElementById(divid).textContent = ""
+				document.getElementById(divid).className = ""
+				document.getElementById(divid).removeAttribute('ach-tooltip')
+			}
+		} else {
+			var divid="qcC"+r
+			if (tmp.pct==""||(data&&data["qc"+r])) {
+				document.getElementById(divid).textContent = "QC"+r
+				if (tmp.qu.qcsNoDil["qc"+r]&&tmp.pct=="") {
+					document.getElementById(divid).className = "ndcompleted"
+					document.getElementById(divid).setAttribute('ach-tooltip', "No dilation achieved!")
+				} else {
+					document.getElementById(divid).className = "pc1completed"
+					document.getElementById(divid).removeAttribute('ach-tooltip')
+				}
+			} else {
+				document.getElementById(divid).textContent = ""
+				document.getElementById(divid).className = ""
+				document.getElementById(divid).removeAttribute('ach-tooltip')
+			}
+		}
+	}
+	document.getElementById("upcc").textContent = (tmp.pct==""?"Unique PC completions":(qcm.names[tmp.pct]||"???"))+": "+(tmp.pcc.normal||0)+" / 28"
+	document.getElementById("udcc").style.display = tmp.pct==""?"block":"none"
+	document.getElementById("udcc").textContent="No dilation: "+(tmp.pcc.noDil||0)+" / 28"
+}
