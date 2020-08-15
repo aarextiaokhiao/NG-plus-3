@@ -535,3 +535,325 @@ function doEternityResetStuff(){
 	player.quantum = tmp.qu
 	player.dontWant = tmp.ngp3 ? true : undefined
 }
+
+function getReplicantsOnGhostifyData(){
+	return {
+		amount: new Decimal(0),
+		requirement: new Decimal("1e3000000"),
+		quarks: new Decimal(0),
+		quantumFood: 0,
+		quantumFoodCost: new Decimal(2e46),
+		limit: 1,
+		limitDim: 1,
+		limitCost: new Decimal(1e49),
+		eggonProgress: new Decimal(0),
+		eggons: new Decimal(0),
+		hatchSpeed: 20,
+		hatchSpeedCost: new Decimal(1e49),
+		babyProgress: new Decimal(0),
+		babies: new Decimal(0),
+		ageProgress: new Decimal(0)
+	}
+}
+
+function getToDOnGhostifyData(){
+	var bm = player.ghostify.milestones
+	return {
+		r: {
+			quarks: new Decimal(0),
+			spin: new Decimal(bm > 13 ? 1e25 : 0),
+			upgrades: {}
+		},
+		g: {
+			quarks: new Decimal(0),
+			spin: new Decimal(bm > 13 ? 1e25 : 0),
+			upgrades: {}
+		},
+		b: {
+			quarks: new Decimal(0),
+			spin: new Decimal(bm > 13 ? 1e25 : 0),
+			upgrades: {}
+		},
+		upgrades: {}
+	}
+}
+
+function getBigRipOnGhostifyData(nBRU){
+	var bm = player.ghostify.milestones
+	return {
+		active: false,
+		conf: tmp.qu.bigRip.conf,
+		times: 0,	
+		bestThisRun: new Decimal(0),
+		totalAntimatter: tmp.qu.bigRip.totalAntimatter,
+		bestGals: tmp.qu.bigRip.bestGals,
+		savedAutobuyersNoBR: tmp.qu.bigRip.savedAutobuyersNoBR,
+		savedAutobuyersBR: tmp.qu.bigRip.savedAutobuyersBR,
+		spaceShards: new Decimal(0),
+		upgrades: bm ? nBRU : []
+	}
+}
+
+function getBreakEternityDataOnGhostify(nBEU){
+	return {
+		unlocked: bm > 14,
+		break: bm > 14 ? tmp.qu.breakEternity.break : false,
+		eternalMatter: new Decimal(0),
+		upgrades: bm > 14 ? nBEU : [],
+		epMultPower: 0
+	}
+}
+
+function getQuantumOnGhostifyData(nBRU, nBEU){
+	return {
+		reached: true,
+		times: 0,
+		time: 0,
+		best: 9999999999,
+		last10: [[600*60*24*31, new Decimal(0)], [600*60*24*31, new Decimal(0)], [600*60*24*31, new Decimal(0)], [600*60*24*31, new Decimal(0)], [600*60*24*31, new Decimal(0)], [600*60*24*31, new Decimal(0)], [600*60*24*31, new Decimal(0)], [600*60*24*31, new Decimal(0)], [600*60*24*31, new Decimal(0)], [600*60*24*31, new Decimal(0)]],
+		autoEC: tmp.qu.autoEC,
+		disabledRewards: tmp.qu.disabledRewards,
+		metaAutobuyerWait: 0,
+		autobuyer: {
+			enabled: false,
+			limit: new Decimal(0),
+			mode: "amount",
+			peakTime: 0
+		},
+		autoOptions: {
+			assignQK: tmp.qu.autoOptions.assignQK,
+			assignQKRotate: tmp.qu.autoOptions.assignQKRotate,
+			sacrifice: bm ? tmp.qu.autoOptions.sacrifice : false,
+			replicantiReset: tmp.qu.autoOptions.replicantiReset
+		},
+		assortPercentage: tmp.qu.assortPercentage,
+		assignAllRatios: tmp.qu.assignAllRatios,
+		quarks: new Decimal(0),
+		usedQuarks: {
+			r: new Decimal(0),
+			g: new Decimal(0),
+			b: new Decimal(0)
+		},
+		colorPowers: {
+			r: new Decimal(0),
+			g: new Decimal(0),
+			b: new Decimal(0)
+		},
+		gluons: {
+			rg: new Decimal(0),
+			gb: new Decimal(0),
+			br: new Decimal(0)
+		},
+		multPower: {
+			rg: 0,
+			gb: 0,
+			br: 0,
+			total: 0
+		},
+		electrons: {
+			amount: 0,
+			sacGals: 0,
+			mult: bm > 2 ? tmp.qu.electrons.mult : bm ? 6 : 2,
+			rebuyables: bm > 2 ? tmp.qu.electrons.rebuyables : [0,0,0,0]
+		},
+		challenge: [],
+		challenges: {},
+		nonMAGoalReached: tmp.qu.nonMAGoalReached,
+		challengeRecords: {},
+		pairedChallenges: {
+			order: bm ? tmp.qu.pairedChallenges.order : {},
+			current: 0,
+			completed: bm ? 4 : 0,
+			completions: tmp.qu.pairedChallenges.completions,
+			fastest: tmp.qu.pairedChallenges.fastest,
+			pc68best: tmp.qu.pairedChallenges.pc68best,
+			respec: false
+		},
+		qcsNoDil: tmp.qu.qcsNoDil,
+		qcsMods: tmp.qu.qcsMods,
+		replicants: getReplicantsOnGhostifyData(),
+		emperorDimensions: {},
+		nanofield: {
+			charge: new Decimal(0),
+			energy: new Decimal(0),
+			antienergy: new Decimal(0),
+			power: 0,
+			powerThreshold: new Decimal(50),
+			rewards: bm>12?16:0,
+			producingCharge: false,
+			apgWoke: tmp.qu.nanofield.apgWoke
+		},
+		reachedInfQK: bm,
+		tod: getToDOnGhostifyData(),
+		bigRip: getBigRipOnGhostifyData(nBRU),
+		breakEternity: getBreakEternityDataOnGhostify(nBEU),
+		notrelative: true,
+		wasted: true,
+		producedGluons: 0,
+		realGluons: 0,
+		bosons: {
+			'w+': 0,
+			'w-': 0,
+			'z0': 0
+		},
+		neutronstar: {
+			quarks: 0,
+			metaAntimatter: 0,
+			dilatedTime: 0
+		},
+		rebuyables: {
+			1: 0,
+			2: 0
+		},
+		upgrades: bm > 1 ? tmp.qu.upgrades : [],
+		rg4: false
+	}
+}
+
+function doGhostifyResetStuff(implode, gain, amount, force, bulk, nBRU, nBEU){
+	var bm = player.ghostify.milestones
+	player.galacticSacrifice = resetGalacticSacrifice()
+	completelyResetNormalDimensions()
+	player.money = new Decimal(10)
+	player.tickSpeedCost = new Decimal(1000)
+	player.tickspeed = new Decimal(player.aarexModifications.newGameExpVersion ? 500 : 1000)
+	player.tickBoughtThisInf = resetTickBoughtThisInf()
+	player.totalBoughtDims = resetTotalBought()
+	player.sacrificed = new Decimal(0)
+	player.currentChallenge =  ""
+	player.setsUnlocked = 0
+	player.infinitied = 0
+	player.infinitiedBank = 0
+	player.bestInfinityTime = 9999999999
+	player.thisInfinityTime = 0
+	player.resets = 0
+        player.tdBoosts = resetTDBoosts()
+	player.tickspeedBoosts = player.tickspeedBoosts !== undefined ? 16 : undefined
+	player.galaxies = 0
+	player.interval = null
+	player.partInfinityPoint = 0
+	player.partInfinitied = 0
+	player.costMultipliers = [new Decimal(1e3), new Decimal(1e4), new Decimal(1e5), new Decimal(1e6), new Decimal(1e8), new Decimal(1e10), new Decimal(1e12), new Decimal(1e15)]
+	player.tickspeedMultiplier = new Decimal(10)
+	player.chall2Pow = 1
+	player.chall3Pow = new Decimal(0.01)
+	player.matter = new Decimal(0)
+	player.chall11Pow = new Decimal(1)
+	player.lastTenRuns = [[600*60*24*31, new Decimal(0)], [600*60*24*31, new Decimal(0)], [600*60*24*31, new Decimal(0)], [600*60*24*31, new Decimal(0)], [600*60*24*31, new Decimal(0)], [600*60*24*31, new Decimal(0)], [600*60*24*31, new Decimal(0)], [600*60*24*31, new Decimal(0)], [600*60*24*31, new Decimal(0)], [600*60*24*31, new Decimal(0)]]
+	player.lastTenEternities = [[600*60*24*31, new Decimal(0)], [600*60*24*31, new Decimal(0)], [600*60*24*31, new Decimal(0)], [600*60*24*31, new Decimal(0)], [600*60*24*31, new Decimal(0)], [600*60*24*31, new Decimal(0)], [600*60*24*31, new Decimal(0)], [600*60*24*31, new Decimal(0)], [600*60*24*31, new Decimal(0)], [600*60*24*31, new Decimal(0)]]
+	player.infMult = new Decimal(1)
+	player.infMultCost = new Decimal(10)
+	player.tickSpeedMultDecrease = Math.max(player.tickSpeedMultDecrease, bm > 1 ? 1.25 : 2)
+	player.postC4Tier = 1
+	player.postC8Mult = new Decimal(1)
+	player.overXGalaxiesTickspeedBoost = player.tickspeedBoosts == undefined ? player.overXGalaxiesTickspeedBoost : 0
+	player.postChallUnlocked = player.achievements.includes("r133") ? order.length : 0
+	player.postC4Tier = 0
+	player.postC3Reward = new Decimal(1)
+	player.eternityPoints = new Decimal(0)
+	player.eternities = bm ? 1e13 : 0
+	player.eternitiesBank = 0
+	player.thisEternity = 0
+	player.bestEternity = 9999999999
+	player.eternityUpgrades = bm ? [1, 2, 3, 4, 5, 6] : []
+	player.epmult = new Decimal(1)
+	player.epmultCost = new Decimal(500)
+	player.infDimensionsUnlocked = resetInfDimUnlocked()
+	player.infinityPower = new Decimal(1)
+	/* function */ completelyResetInfinityDimensions()
+	/* function */ completelyResetTimeDimensions()
+	player.infDimBuyers = bm ? player.infDimBuyers : [false, false, false, false, false, false, false, false]
+	player.timeShards = new Decimal(0)
+	player.tickThreshold = new Decimal(1)
+	player.totalTickGained = 0
+	player.challengeTarget = 0
+	player.replicanti = {
+		amount: new Decimal(bm ? 1 : 0),
+		unl: bm > 0,
+		chance: 0.01,
+		chanceCost: new Decimal(player.galacticSacrifice !== undefined ? 1e90 : 1e150),
+		interval: 1000,
+		intervalCost: new Decimal(player.galacticSacrifice !== undefined ? 1e80 : 1e140),
+		gal: 0,
+		galaxies: 0,
+		galCost: new Decimal(player.galacticSacrifice != undefined ? 1e110 : 1e170),
+		galaxybuyer: player.replicanti.galaxybuyer,
+		auto: bm ? player.replicanti.auto : [false, false, false]
+	}
+	player.timestudy = bm ? player.timestudy : {
+		theorem: 0,
+		amcost: new Decimal("1e20000"),
+		ipcost: new Decimal(1),
+		epcost: new Decimal(1),
+		studies: [],
+	}
+	player.eternityChalls = bm ? player.eternityChalls : {}
+	player.eternityChallGoal = new Decimal(Number.MAX_VALUE)
+	player.currentEternityChall = ""
+	player.etercreq = 0
+	player.autoIP = new Decimal(0)
+	player.autoTime = 1e300
+	player.infMultBuyer = bm ? player.infMultBuyer : false
+	player.autoEterMode = bm ? player.autoEterMode : "amount"
+	player.peakSpent = 0
+	player.respec = false
+	player.respecMastery = false
+	player.eternityBuyer = bm ? player.eternityBuyer : {
+		limit: new Decimal(0),
+		isOn: false,
+		dilationMode: false,
+		dilationPerAmount: player.eternityBuyer.dilationPerAmount,
+		dilMode: player.eternityBuyer.dilMode,
+		tpUpgraded: player.eternityBuyer.tpUpgraded,
+		slowStop: player.eternityBuyer.slowStop,
+		slowStopped: player.eternityBuyer.slowStopped,
+		ifAD: player.eternityBuyer.ifAD,
+		presets: player.eternityBuyer.presets
+	}
+	player.eterc8ids = 50
+	player.eterc8repl = 40
+	player.dimlife = true
+	player.dead = true
+	player.dilation = {
+		studies: bm ? player.dilation.studies : [],
+		active: false,
+		times: 0,
+		tachyonParticles: player.ghostify.milestones > 15 ? player.dilation.bestTPOverGhostifies : new Decimal(0),
+		dilatedTime: new Decimal(bm ? 1e100 : 0),
+		bestTPOverGhostifies: player.dilation.bestTPOverGhostifies,
+		nextThreshold: new Decimal(1000),
+		freeGalaxies: 0,
+		upgrades: bm ? player.dilation.upgrades : [],
+		autoUpgrades: bm ? player.dilation.autoUpgrades : player.aarexModifications.nguspV ? [] : undefined,
+		rebuyables: {
+			1: 0,
+			2: 0,
+			3: 0,
+			4: 0,
+		}
+	}
+	player.exdilation = player.exdilation != undefined ? {
+		unspent: new Decimal(0),
+		spent: {
+			1: new Decimal(0),
+			2: new Decimal(0),
+			3: new Decimal(0),
+			4: new Decimal(0)
+		},
+		times: 0
+	} : player.exdilation
+	player.blackhole = player.exdilation != undefined ? {
+		unl: bm > 0,
+		upgrades: {dilatedTime: 0, bankedInfinities: 0, replicanti: 0, total: 0},
+		power: new Decimal(0)
+	} : player.blackhole
+	/*function */ doMetaDimensionsReset(false, false, 0) //meta dimboosts are set on the next line
+	player.meta.resets = bm ? 4 : 0
+	player.masterystudies: bm ? player.masterystudies : []
+	player.quantum = getQuantumOnGhostifyData(nBRU, nBEU)
+	player.old = false
+	player.dontWant = true	
+}
+
+
+
