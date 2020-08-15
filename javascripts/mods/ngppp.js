@@ -804,7 +804,7 @@ function ghostifyReset(implode, gain, amount, force) {
 	if (player.eternityPoints.e>=375e3&&inQCModifier("ad")) giveAchievement("Overchallenged")
 	if (player.ghostify.best<=6) giveAchievement("Running through Big Rips")
 	player.ghostify.time = 0
-	doGhostifyResetStuff(implode, gain, amount, force, bulk)
+	doGhostifyResetStuff(implode, gain, amount, force, bulk, nBRU, nBEU)
 	
 		
 	tmp.qu = player.quantum
