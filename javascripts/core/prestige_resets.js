@@ -849,7 +849,7 @@ function doGhostifyResetStuff(implode, gain, amount, force, bulk, nBRU, nBEU){
 	} : player.blackhole
 	/*function */ doMetaDimensionsReset(false, false, 0) //meta dimboosts are set on the next line
 	player.meta.resets = bm ? 4 : 0
-	player.masterystudies: bm ? player.masterystudies : []
+	player.masterystudies = bm ? player.masterystudies : []
 	player.quantum = getQuantumOnGhostifyData(nBRU, nBEU)
 	player.old = false
 	player.dontWant = true	
