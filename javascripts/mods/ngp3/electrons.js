@@ -110,3 +110,11 @@ function buyElectronUpg(u, quick) {
 	tmp.qu.electrons.mult += getElectronUpgIncrease(u)
 	updateElectrons(!tmp.ngp3l)
 }
+
+function canBuyElectronUpg(id) {
+	if (!inQC(0)) return false
+	if (id > 3) return player.meta.resets >= getElectronUpgCost(4)
+	if (id > 2) return player.meta.antimatter.gte(getElectronUpgCost(3))
+	if (id > 1) return player.dilation.dilatedTime.gte(getElectronUpgCost(2))
+	return player.timestudy.theorem >= getElectronUpgCost(1)
+}

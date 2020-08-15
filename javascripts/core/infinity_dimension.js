@@ -8,6 +8,44 @@ function getInfinityDimensionMultiplier(tier){
 	return DimensionPower(tier)
 }
 
+function maxAllID() {
+	if (player.pSac !== undefined) maxAllIDswithAM()
+	for (var t = 1; t <= 8; t++) {
+		var dim = player["infinityDimension"+t]
+		var cost = getIDCost(t)
+		if (player.infDimensionsUnlocked[t - 1] && player.infinityPoints.gte(dim.cost)) {
+			var costMult = getIDCostMult(t)
+			if (player.infinityPoints.lt(Decimal.pow(10, 1e10))) {
+				var toBuy = Math.max(Math.floor(player.infinityPoints.div(9 - t).div(cost).times(costMult - 1).add(1).log(costMult)), 1)
+				var toSpend = Decimal.pow(costMult, toBuy).sub(1).div(costMult-1).times(cost).round()
+				if (toSpend.gt(player.infinityPoints)) player.infinityPoints = new Decimal(0)
+				else player.infinityPoints = player.infinityPoints.sub(toSpend)
+			} else var toBuy = Math.floor(player.infinityPoints.div(cost).log(costMult))
+			dim.amount = dim.amount.add(toBuy * 10)
+			dim.baseAmount += toBuy * 10
+			dim.power=dim.power.times(Decimal.pow(getInfBuy10Mult(t),toBuy))
+			dim.cost=dim.cost.times(Decimal.pow(costMult,toBuy))
+		}
+	}
+}
+
+function hideMaxIDButton(onLoad=false) {
+	if (!onLoad) if (!player.masterystudies) return
+	var hide = true
+	if (player.masterystudies && player.currentEterChall != "eterc8") {
+		hide = false
+		if (player.eternities > 17) {
+			for (var d = 0; d < 8; d++) {
+				if (player.infDimBuyers[d]) {
+					if (d > 6) hide = true
+				} else break
+			}
+		}
+	}
+	if (player.pSac !== undefined) hide = false
+	document.getElementById("maxAllID").style.display = hide ? "none" : ""
+}
+
 function DimensionDescription(tier) {
 	if (tier > (inQC(4) || player.pSac != undefined ? 6 : 7) && (ECTimesCompleted("eterc7") === 0 || player.timeDimension1.amount.eq(0) || tier == 7) && player.currentEternityChall != "eterc7") return getFullExpansion(Math.round(player["infinityDimension" + tier].amount.toNumber()));
 	else if (player.infinityPower.l > 1e7) return shortenDimensions(player['infinityDimension' + tier].amount)
