@@ -775,44 +775,7 @@ function denyGhostify() {
 	if (!tmp.ngp3l && ghostifyDenied >= 15) giveAchievement("You are supposed to become a ghost!")
 }
 
-function ghostifyReset(implode, gain, amount, force) {
-	var bulk = getGhostifiedGain()
-	if (!force) {
-		if (!tmp.ngp3l && tmp.qu.times >= 1e3 && player.ghostify.milestones >= 16) giveAchievement("Scared of ghosts?")
-		if (!implode) {
-			var gain = getGHPGain()
-			player.ghostify.ghostParticles = player.ghostify.ghostParticles.add(gain).round()
-		} else player.ghostify.ghostParticles = amount
-		for (var i=player.ghostify.last10.length-1; i>0; i--) player.ghostify.last10[i] = player.ghostify.last10[i-1]
-		player.ghostify.last10[0] = [player.ghostify.time, gain]
-		player.ghostify.times = nA(player.ghostify.times, bulk)
-		player.ghostify.best = Math.min(player.ghostify.best, player.ghostify.time)
-		while (tmp.qu.times<=tmp.bm[player.ghostify.milestones]) player.ghostify.milestones++
-	}
-	if (tmp.qu.bigRip.active) switchAB()
-	var bm = player.ghostify.milestones
-	var nBRU = []
-	var nBEU = []
-	for (var u=20;u>0;u--) {
-		if (nBRU.includes(u+1)||tmp.qu.bigRip.upgrades.includes(u)) nBRU.push(u)
-		if (u<11&&u!=7&&(nBEU.includes(u+1)||tmp.qu.breakEternity.upgrades.includes(u))) nBEU.push(u)
-	}
-	if (bm > 2) for (var c=1;c<9;c++) tmp.qu.electrons.mult += .5-QCIntensity(c)*.25
-	if (bm > 6 && !force && player.achievements.includes("ng3p68")) gainNeutrinos(Decimal.times(2e3 * tmp.qu.bigRip.bestGals, bulk), "all")
-	if (bm > 15) giveAchievement("I rather oppose the theory of everything")
-	if (player.eternityPoints.e>=22e4&&player.ghostify.under) giveAchievement("Underchallenged")
-	if (player.eternityPoints.e>=375e3&&inQCModifier("ad")) giveAchievement("Overchallenged")
-	if (player.ghostify.best<=6) giveAchievement("Running through Big Rips")
-	player.ghostify.time = 0
-	doGhostifyResetStuff(implode, gain, amount, force, bulk, nBRU, nBEU)
-	
-		
-	tmp.qu = player.quantum
-
-	//Before that...
-	updateInQCs()
-
-	//Pre-infinity
+function doPreInfinityGhostifyResetStuff(implode){
 	setInitialMoney()
 	setInitialDimensionPower()
 	GPminpeak = new Decimal(0)
@@ -823,12 +786,13 @@ function ghostifyReset(implode, gain, amount, force) {
 	document.getElementById("tickSpeedAmount").style.visibility = "hidden"
 	hideDimensions()
 	tmp.tickUpdate = true
+}
 
-	//Infinity
+function doInfinityGhostifyResetStuff(implode, bm){
 	if (player.achievements.includes("r85")) player.infMult = player.infMult.times(4)
 	if (player.achievements.includes("r93")) player.infMult = player.infMult.times(4)
 	if (player.achievements.includes("r104")) player.infinityPoints = new Decimal(2e25)
-	player.challenges=challengesCompletedOnEternity()
+	player.challenges = challengesCompletedOnEternity()
 	IPminpeak = new Decimal(0)
 	if (isEmptiness) {
 		showTab("dimensions")
@@ -836,9 +800,9 @@ function ghostifyReset(implode, gain, amount, force) {
 		document.getElementById("quantumtabbtn").style.display = "inline-block"
 		document.getElementById("ghostifytabbtn").style.display = "inline-block"
 	}
-	document.getElementById("infinityPoints1").innerHTML = "You have <span class=\"IPAmount1\">"+shortenDimensions(player.infinityPoints)+"</span> Infinity points."
-	document.getElementById("infinityPoints2").innerHTML = "You have <span class=\"IPAmount2\">"+shortenDimensions(player.infinityPoints)+"</span> Infinity points."
-	document.getElementById("infmultbuyer").textContent="Max buy IP mult"
+	document.getElementById("infinityPoints1").innerHTML = "You have <span class=\"IPAmount1\">" + shortenDimensions(player.infinityPoints) + "</span> Infinity points."
+	document.getElementById("infinityPoints2").innerHTML = "You have <span class=\"IPAmount2\">" + shortenDimensions(player.infinityPoints) + "</span> Infinity points."
+	document.getElementById("infmultbuyer").textContent = "Max buy IP mult"
 	if (implode) showChallengesTab("normalchallenges")
 	updateChallenges()
 	updateNCVisuals()
@@ -846,30 +810,22 @@ function ghostifyReset(implode, gain, amount, force) {
 	hideMaxIDButton()
 	if (!bm) {
 		ipMultPower = player.masterystudies.includes("t241") ? 2.2 : 2
-		player.autobuyers[9].bulk=Math.ceil(player.autobuyers[9].bulk)
-		document.getElementById("bulkDimboost").value=player.autobuyers[9].bulk
-		document.getElementById("replicantidiv").style.display="none"
-		document.getElementById("replicantiunlock").style.display="inline-block"
+		player.autobuyers[9].bulk = Math.ceil(player.autobuyers[9].bulk)
+		document.getElementById("bulkDimboost").value = player.autobuyers[9].bulk
+		document.getElementById("replicantidiv").style.display = "none"
+		document.getElementById("replicantiunlock").style.display = "inline-block"
 		document.getElementById("replicantiresettoggle").style.display = "none"
 		delete player.replicanti.galaxybuyer
 	}
 	updateLastTenRuns()
 	if ((document.getElementById("metadimensions").style.display == "block" && !bm) || implode) showDimTab("antimatterdimensions")
 	resetInfDimensions()
+}
 
-	//Eternity
-	EPminpeakType = 'normal'
-	EPminpeak = new Decimal(0)
-	if (bm) {
-		if (player.eternityChallUnlocked>12) player.timestudy.theorem+=masteryStudies.costs.ec[player.eternityChallUnlocked]
-		else player.timestudy.theorem+=([0,30,35,40,70,130,85,115,115,415,550,1,1])[player.eternityChallUnlocked]
-	} else performedTS=false
-	player.eternityChallUnlocked=0
-	player.dilation.bestTP = player.dilation.tachyonParticles
-	player.dilation.totalTachyonParticles = player.dilation.bestTP
-	if (player.exdilation!=undefined) {
-		if (player.eternityUpgrades.length) for (var u=7;u<10;u++) player.eternityUpgrades.push(u)
-		for (var d=1;d<(player.aarexModifications.nguspV?9:5);d++) player["blackholeDimension"+d] = {
+function doNGUpdateGhostifyResetStuff(){
+	if (player.exdilation != undefined) {
+		if (player.eternityUpgrades.length) for (var u = 7; u < 10; u++) player.eternityUpgrades.push(u)
+		for (var d = 1; d < (player.aarexModifications.nguspV ? 9 : 5); d++) player["blackholeDimension" + d] = {
 			cost: blackholeDimStartCosts[d],
 			amount: new Decimal(0),
 			power: new Decimal(1),
@@ -880,19 +836,36 @@ function ghostifyReset(implode, gain, amount, force) {
 			document.getElementById("blackholeunlock").style.display="inline-block"
 		}
 	}
-	if (player.achievements.includes("ng3p77")) {
+}
+
+function doTOUSOnGhostify(bm){
+	if (player.achievements.includes("ng3p77")) { //thry of ultimate studies
 		player.timestudy.studies=[]
 		player.masterystudies=[]
-		for (var t=0;t<all.length;t++) player.timestudy.studies.push(all[t])
-		for (var c=1;c<15;c++) player.eternityChalls["eterc"+c]=5
-		for (var t=0;t<masteryStudies.timeStudies.length;t++) player.masterystudies.push("t"+masteryStudies.timeStudies[t])
-		for (var d=1;d<7;d++) player.dilation.studies.push(d)
-		for (var d=7;d<15;d++) player.masterystudies.push("d"+d)
-		if (bm<2) {
-			player.dimensionMultDecrease=2
-			player.tickSpeedMultDecrease=1.65
+		for (var t = 0; t < all.length; t++) player.timestudy.studies.push(all[t])
+		for (var c = 1; c <= 14; c++) player.eternityChalls["eterc" + c] = 5
+		for (var t = 0; t < masteryStudies.timeStudies.length; t++) player.masterystudies.push("t" + masteryStudies.timeStudies[t])
+		for (var d = 1; d < 7; d++) player.dilation.studies.push(d)
+		for (var d = 7; d < 15; d++) player.masterystudies.push("d" + d)
+		if (bm < 2) {
+			player.dimensionMultDecrease = 2
+			player.tickSpeedMultDecrease = 1.65
 		}
 	}
+}
+
+function doEternityGhostifyResetStuff(implode, bm){
+	EPminpeakType = 'normal'
+	EPminpeak = new Decimal(0)
+	if (bm) {
+		if (player.eternityChallUnlocked > 12) player.timestudy.theorem += masteryStudies.costs.ec[player.eternityChallUnlocked]
+		else player.timestudy.theorem += ([0, 30, 35, 40, 70, 130, 85, 115, 115, 415, 550, 1, 1])[player.eternityChallUnlocked]
+	} else performedTS = false
+	player.eternityChallUnlocked = 0
+	player.dilation.bestTP = player.dilation.tachyonParticles
+	player.dilation.totalTachyonParticles = player.dilation.bestTP
+	doNGUpdateGhostifyResetStuff()
+	doTOUSOnGhostify(bm) //thry of ultimate studies
 	document.getElementById("eternitybtn").style.display = "none"
 	document.getElementById("eternityPoints2").innerHTML = "You have <span class=\"EPAmount2\">"+shortenDimensions(player.eternityPoints)+"</span> Eternity point"+((player.eternityPoints.eq(1)) ? "." : "s.")
 	document.getElementById("epmult").innerHTML = "You gain 5 times more EP<p>Currently: 1x<p>Cost: 500 EP"
@@ -914,10 +887,11 @@ function ghostifyReset(implode, gain, amount, force) {
 	}
 	updateMasteryStudyCosts()
 	updateMasteryStudyButtons()
+}
 
-	//Quantum
+function doQuantumGhostifyResetStuff(implode, bm){
 	if (!tmp.ngp3l) tmp.qu.quarkEnergy = new Decimal(0)
-	tmp.qu.qcsMods.current=[]
+	tmp.qu.qcsMods.current = []
 	tmp.qu.replicants.amount = new Decimal(0)
 	tmp.qu.replicants.requirement = new Decimal("1e3000000")
 	tmp.qu.replicants.quarks = new Decimal(0)
@@ -930,22 +904,22 @@ function ghostifyReset(implode, gain, amount, force) {
 	QKminpeak = new Decimal(0)
 	QKminpeakValue = new Decimal(0)
 	if (implode) showQuantumTab("uquarks")
-	var permUnlocks=[7,9,10,10,11,11,12,12]
-	for (var i=1;i<9;i++) {
-		var num=bm>=permUnlocks[i-1]?10:0
-		tmp.eds[i]={workers:new Decimal(num),progress:new Decimal(0),perm:num}
-		if (num>9) tmp.qu.replicants.limitDim=i
+	var permUnlocks = [7,9,10,10,11,11,12,12]
+	for (var i = 1; i < 9; i++) {
+		var num = bm >= permUnlocks[i - 1] ? 10 : 0
+		tmp.eds[i] = {workers: new Decimal(num), progress: new Decimal(0), perm: num}
+		if (num > 9) tmp.qu.replicants.limitDim = i
 	}
-	if (bm>6) {
-		tmp.qu.replicants.limit=10
-		tmp.qu.replicants.limitCost=Decimal.pow(200,tmp.qu.replicants.limitDim*9).times(1e49)
-		tmp.qu.replicants.quantumFoodCost=Decimal.pow(5,tmp.qu.replicants.limitDim*30).times(2e46)
+	if (bm > 6) {
+		tmp.qu.replicants.limit = 10
+		tmp.qu.replicants.limitCost = Decimal.pow(200, tmp.qu.replicants.limitDim * 9).times(1e49)
+		tmp.qu.replicants.quantumFoodCost = Decimal.pow(5, tmp.qu.replicants.limitDim * 30).times(2e46)
 	}
-	if (bm>3) {
-		var colors=['r','g','b']
-		for (var c=0;c<3;c++) tmp.qu.tod[colors[c]].upgrades[1]=5
+	if (bm > 3) {
+		var colors = ['r', 'g', 'b']
+		for (var c = 0; c < 3; c++) tmp.qu.tod[colors[c]].upgrades[1] = 5
 	}
-	if (bm) for (var i=1;i<9;i++) tmp.qu.challenges[i] = 2
+	if (bm) for (var i = 1; i < 9; i++) tmp.qu.challenges[i] = 2
 	else {
 		document.getElementById('rebuyupgauto').style.display="none"
 		document.getElementById('toggleallmetadims').style.display="none"
@@ -953,13 +927,13 @@ function ghostifyReset(implode, gain, amount, force) {
 		document.getElementById("autoBuyerQuantum").style.display="none"
 		document.getElementById('toggleautoquantummode').style.display="none"
 	}
-	if (!bm&&!player.achievements.includes("ng3p77")) {
+	if (!bm && !player.achievements.includes("ng3p77")) {
 		document.getElementById("electronstabbtn").style.display = "none"
 		document.getElementById("nanofieldtabbtn").style.display = "none"
 		document.getElementById("edtabbtn").style.display = "none"
 	}
-	if (tmp.ngp3l&&!bm) document.getElementById('rg4toggle').style.display=inQC(1)?"none":""
-	document.getElementById('bestTP').textContent="Your best Tachyon particles in this Ghostify was "+shorten(player.dilation.bestTP)+"."
+	if (tmp.ngp3l && !bm) document.getElementById('rg4toggle').style.display = inQC(1) ? "none" : ""
+	document.getElementById('bestTP').textContent = "Your best Tachyon particles in this Ghostify was " + shorten(player.dilation.bestTP) + "."
 	updateLastTenQuantums()
 	updateSpeedruns()
 	updateColorCharge()
@@ -974,8 +948,9 @@ function ghostifyReset(implode, gain, amount, force) {
 	updateNanoRewardTemp()
 	updateTODStuff()
 	updateBreakEternity()
-	
-	//Ghostify
+}
+
+function doGhostifyGhostifyResetStuff(){
 	GHPminpeak = new Decimal(0)
 	GHPminpeakValue = new Decimal(0)
 	document.getElementById("ghostifybtn").style.display = "none"
@@ -986,29 +961,69 @@ function ghostifyReset(implode, gain, amount, force) {
 		document.getElementById("ghostifyAnimBtn").style.display = "inline-block"
 		document.getElementById("ghostifyConfirmBtn").style.display = "inline-block"
 		giveAchievement("Kee-hee-hee!")
-	} else if (player.ghostify.times>2&&player.ghostify.times<11) {
-		$.notify("You unlocked "+(player.ghostify.times+2)+"th Neutrino upgrade!", "success")
-		if (player.ghostify.times%3>1) document.getElementById("neutrinoUpg"+(player.ghostify.times+2)).parentElement.parentElement.style.display=""
-		else document.getElementById("neutrinoUpg"+(player.ghostify.times+2)).style.display=""
+	} else if (player.ghostify.times > 2 && player.ghostify.times < 11) {
+		$.notify("You unlocked " + (player.ghostify.times+2) + "th Neutrino upgrade!", "success")
+		if (player.ghostify.times % 3 > 1) document.getElementById("neutrinoUpg" + (player.ghostify.times + 2)).parentElement.parentElement.style.display = ""
+		else document.getElementById("neutrinoUpg" + (player.ghostify.times + 2)).style.display = ""
 	}
 	document.getElementById("GHPAmount").textContent = shortenDimensions(player.ghostify.ghostParticles)
-	if (bm<7) {
-		player.ghostify.neutrinos.electron=new Decimal(0)
-		player.ghostify.neutrinos.mu=new Decimal(0)
-		player.ghostify.neutrinos.tau=new Decimal(0)
-		player.ghostify.neutrinos.generationGain=1
-	} else if (!force) player.ghostify.neutrinos.generationGain=player.ghostify.neutrinos.generationGain%3+1
-	player.ghostify.ghostlyPhotons.amount=new Decimal(0)
-	player.ghostify.ghostlyPhotons.darkMatter=new Decimal(0)
-	player.ghostify.ghostlyPhotons.ghostlyRays=new Decimal(0)
-	tmp.bl.watt=0
-	player.ghostify.under=true
+	if (bm < 7) {
+		player.ghostify.neutrinos.electron = new Decimal(0)
+		player.ghostify.neutrinos.mu = new Decimal(0)
+		player.ghostify.neutrinos.tau = new Decimal(0)
+		player.ghostify.neutrinos.generationGain = 1
+	} else if (!force) player.ghostify.neutrinos.generationGain = player.ghostify.neutrinos.generationGain % 3 + 1
+	player.ghostify.ghostlyPhotons.amount = new Decimal(0)
+	player.ghostify.ghostlyPhotons.darkMatter = new Decimal(0)
+	player.ghostify.ghostlyPhotons.ghostlyRays = new Decimal(0)
+	tmp.bl.watt = 0
+	player.ghostify.under = true
 	updateLastTenGhostifies()
 	updateBraveMilestones()
 	if (!tmp.ngp3l) {
 		player.ghostify.another = 10
 		player.ghostify.reference = 10
 	}
+}
+
+function ghostifyReset(implode, gain, amount, force) {
+	var bulk = getGhostifiedGain()
+	if (!force) {
+		if (!tmp.ngp3l && tmp.qu.times >= 1e3 && player.ghostify.milestones >= 16) giveAchievement("Scared of ghosts?")
+		if (!implode) {
+			var gain = getGHPGain()
+			player.ghostify.ghostParticles = player.ghostify.ghostParticles.add(gain).round()
+		} else player.ghostify.ghostParticles = amount
+		for (var i=player.ghostify.last10.length-1; i>0; i--) player.ghostify.last10[i] = player.ghostify.last10[i-1]
+		player.ghostify.last10[0] = [player.ghostify.time, gain]
+		player.ghostify.times = nA(player.ghostify.times, bulk)
+		player.ghostify.best = Math.min(player.ghostify.best, player.ghostify.time)
+		while (tmp.qu.times <= tmp.bm[player.ghostify.milestones]) player.ghostify.milestones++
+	}
+	if (tmp.qu.bigRip.active) switchAB()
+	var bm = player.ghostify.milestones
+	var nBRU = []
+	var nBEU = []
+	for (var u = 20; u > 0; u--) {
+		if (nBRU.includes(u + 1) || tmp.qu.bigRip.upgrades.includes(u)) nBRU.push(u)
+		if (u < 11 && u != 7 && (nBEU.includes(u + 1) || tmp.qu.breakEternity.upgrades.includes(u))) nBEU.push(u)
+	}
+	if (bm > 2) for (var c=1;c<9;c++) tmp.qu.electrons.mult += .5-QCIntensity(c)*.25
+	if (bm > 6 && !force && player.achievements.includes("ng3p68")) gainNeutrinos(Decimal.times(2e3 * tmp.qu.bigRip.bestGals, bulk), "all")
+	if (bm > 15) giveAchievement("I rather oppose the theory of everything")
+	if (player.eternityPoints.e>=22e4&&player.ghostify.under) giveAchievement("Underchallenged")
+	if (player.eternityPoints.e>=375e3&&inQCModifier("ad")) giveAchievement("Overchallenged")
+	if (player.ghostify.best<=6) giveAchievement("Running through Big Rips")
+	player.ghostify.time = 0
+	doGhostifyResetStuff(implode, gain, amount, force, bulk, nBRU, nBEU)
+	
+	tmp.qu = player.quantum
+	updateInQCs()
+	doPreInfinityGhostifyResetStuff()
+	doInfinityGhostifyResetStuff(implode, bm)
+	doEternityGhostifyResetStuff(implode, bm)	
+	doQuantumGhostifyResetStuff(implode, bm)
+	doGhostifyGhostifyResetStuff()
 
 	//After that...
 	resetUP()
@@ -1020,46 +1035,46 @@ function toggleGhostifyConf() {
 }
 
 function getGHPRate(num) {
-	if (num.lt(1/60)) return (num*1440).toFixed(1)+" GhP/day"
-	if (num.lt(1)) return (num*60).toFixed(1)+" GhP/hr"
-	return shorten(num)+" GhP/min"
+	if (num.lt(1 / 60)) return (num * 1440).toFixed(1) + " GhP/day"
+	if (num.lt(1)) return (num * 60).toFixed(1) + " GhP/hr"
+	return shorten(num) + " GhP/min"
 }
 
 var averageGHP = new Decimal(0)
 var bestGHP
 function updateLastTenGhostifies() {
 	if (player.masterystudies === undefined) return
-    var listed = 0
-    var tempTime = new Decimal(0)
-    var tempGHP = new Decimal(0)
-    for (var i=0; i<10; i++) {
-        if (player.ghostify.last10[i][1].gt(0)) {
-            var qkpm = player.ghostify.last10[i][1].dividedBy(player.ghostify.last10[i][0]/600)
-            var tempstring = shorten(qkpm) + " GhP/min"
-            if (qkpm<1) tempstring = shorten(qkpm*60) + " GhP/hour"
-            var msg = "The Ghostify " + (i == 0 ? '1 Ghostify' : (i+1) + ' Ghostifies') + " ago took " + timeDisplayShort(player.ghostify.last10[i][0], false, 3) + " and gave " + shortenDimensions(player.ghostify.last10[i][1]) +" GhP. "+ tempstring
-            document.getElementById("ghostifyrun"+(i+1)).textContent = msg
-            tempTime = tempTime.plus(player.ghostify.last10[i][0])
-            tempGHP = tempGHP.plus(player.ghostify.last10[i][1])
-            bestGHP = player.ghostify.last10[i][1].max(bestGHP)
-            listed++
-        } else document.getElementById("ghostifyrun"+(i+1)).textContent = ""
-    }
-    if (listed > 1) {
-        tempTime = tempTime.dividedBy(listed)
-        tempGHP = tempGHP.dividedBy(listed)
-        var qkpm = tempGHP.dividedBy(tempTime/600)
-        var tempstring = shorten(qkpm) + " GhP/min"
-        averageGHP = tempGHP
-        if (qkpm<1) tempstring = shorten(qkpm*60) + " GhP/hour"
-        document.getElementById("averageGhostifyRun").textContent = "Last " + listed + " Ghostifies average time: "+ timeDisplayShort(tempTime, false, 3)+" Average GhP gain: "+shortenDimensions(tempGHP)+" GhP. "+tempstring
-    } else document.getElementById("averageGhostifyRun").textContent = ""
+	var listed = 0
+	var tempTime = new Decimal(0)
+	var tempGHP = new Decimal(0)
+	for (var i=0; i<10; i++) {
+		if (player.ghostify.last10[i][1].gt(0)) {
+			var qkpm = player.ghostify.last10[i][1].dividedBy(player.ghostify.last10[i][0]/600)
+			var tempstring = shorten(qkpm) + " GhP/min"
+			if (qkpm<1) tempstring = shorten(qkpm*60) + " GhP/hour"
+			var msg = "The Ghostify " + (i == 0 ? '1 Ghostify' : (i+1) + ' Ghostifies') + " ago took " + timeDisplayShort(player.ghostify.last10[i][0], false, 3) + " and gave " + shortenDimensions(player.ghostify.last10[i][1]) +" GhP. "+ tempstring
+			document.getElementById("ghostifyrun"+(i+1)).textContent = msg
+			tempTime = tempTime.plus(player.ghostify.last10[i][0])
+			tempGHP = tempGHP.plus(player.ghostify.last10[i][1])
+			bestGHP = player.ghostify.last10[i][1].max(bestGHP)
+			listed++
+		} else document.getElementById("ghostifyrun"+(i+1)).textContent = ""
+	}
+	if (listed > 1) {
+		tempTime = tempTime.dividedBy(listed)
+		tempGHP = tempGHP.dividedBy(listed)
+		var qkpm = tempGHP.dividedBy(tempTime/600)
+		var tempstring = shorten(qkpm) + " GhP/min"
+		averageGHP = tempGHP
+		if (qkpm<1) tempstring = shorten(qkpm*60) + " GhP/hour"
+		document.getElementById("averageGhostifyRun").textContent = "Last " + listed + " Ghostifies average time: "+ timeDisplayShort(tempTime, false, 3)+" Average GhP gain: "+shortenDimensions(tempGHP)+" GhP. "+tempstring
+	} else document.getElementById("averageGhostifyRun").textContent = ""
 }
 
 function updateBraveMilestones() {
 	if (ghostified) {
-		for (var m=1;m<17;m++) document.getElementById("braveMilestone"+m).className="achievement achievement"+(player.ghostify.milestones<m?"":"un")+"locked"
-		for (var r=1;r<3;r++) document.getElementById("braveRow"+r).className=player.ghostify.milestones<r*8?"":"completedrow"
+		for (var m = 1; m < 17;m++) document.getElementById("braveMilestone" + m).className = "achievement achievement" + (player.ghostify.milestones < m ? "" : "un") + "locked"
+		for (var r = 1; r < 3; r++) document.getElementById("braveRow" + r).className = player.ghostify.milestones < r * 8 ? "" : "completedrow"
 	}
 }
 
@@ -1084,29 +1099,29 @@ function showGhostifyTab(tabName) {
 
 
 function updateGhostifyTabs() {
-	if (document.getElementById("neutrinos").style.display=="block") updateNeutrinosTab()
-	if (document.getElementById("automaticghosts").style.display=="block") if (player.ghostify.milestones>7) updateQuantumWorth("display")
-	if (document.getElementById("gphtab").style.display=="block"&&player.ghostify.ghostlyPhotons.unl) updatePhotonsTab()
-	if (document.getElementById("bltab").style.display=="block"&&player.ghostify.wzb.unl) updateBosonicLabTab()
+	if (document.getElementById("neutrinos").style.display == "block") updateNeutrinosTab()
+	if (document.getElementById("automaticghosts").style.display == "block") if (player.ghostify.milestones > 7) updateQuantumWorth("display")
+	if (document.getElementById("gphtab").style.display == "block" && player.ghostify.ghostlyPhotons.unl) updatePhotonsTab()
+	if (document.getElementById("bltab").style.display == "block" && player.ghostify.wzb.unl) updateBosonicLabTab()
 }
 
 function buyGHPMult() {
-	let sum=player.ghostify.neutrinos.electron.add(player.ghostify.neutrinos.mu).add(player.ghostify.neutrinos.tau).round()
-	let cost=getGHPMultCost()
+	let sum = player.ghostify.neutrinos.electron.add(player.ghostify.neutrinos.mu).add(player.ghostify.neutrinos.tau).round()
+	let cost = getGHPMultCost()
 	if (sum.lt(cost)) return
 	subNeutrinos(cost)
 	player.ghostify.multPower++
-	player.ghostify.automatorGhosts[15].a=player.ghostify.automatorGhosts[15].a.times(5)
-	document.getElementById("autoGhost15a").value=formatValue("Scientific", player.ghostify.automatorGhosts[15].a, 2, 1)
-	document.getElementById("ghpMult").textContent=shortenDimensions(Decimal.pow(2,player.ghostify.multPower-1))
-	document.getElementById("ghpMultUpgCost").textContent=shortenDimensions(getGHPMultCost())
+	player.ghostify.automatorGhosts[15].a = player.ghostify.automatorGhosts[15].a.times(5)
+	document.getElementById("autoGhost15a").value = formatValue("Scientific", player.ghostify.automatorGhosts[15].a, 2, 1)
+	document.getElementById("ghpMult").textContent = shortenDimensions(Decimal.pow(2,player.ghostify.multPower-1))
+	document.getElementById("ghpMultUpgCost").textContent = shortenDimensions(getGHPMultCost())
 }
 
 function maxGHPMult() {
-	let sum=player.ghostify.neutrinos.electron.add(player.ghostify.neutrinos.mu).add(player.ghostify.neutrinos.tau).round()
-	let cost=getGHPMultCost()
+	let sum = player.ghostify.neutrinos.electron.add(player.ghostify.neutrinos.mu).add(player.ghostify.neutrinos.tau).round()
+	let cost = getGHPMultCost()
 	if (sum.lt(cost)) return
-	if (player.ghostify.multPower<85) {
+	if (player.ghostify.multPower < 85) {
 		let toBuy=Math.min(Math.floor(sum.div(cost).times(24).add(1).log(25)),85-player.ghostify.multPower)
 		subNeutrinos(Decimal.pow(25,toBuy).sub(1).div(24).times(cost))
 		player.ghostify.multPower+=toBuy
