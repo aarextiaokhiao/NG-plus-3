@@ -402,3 +402,13 @@ function getMaximumUnstableQuarks() {
 	}
 	return r
 }
+
+function getTreeUpgradeEfficiency(mod) {
+	let r=1
+	if (player.ghostify.neutrinos.boosts > 6 && (tmp.qu.bigRip.active || mod == "br") && mod != "noNB") r += tmp.nb[6]
+	if (!tmp.ngp3l) {
+		if (player.achievements.includes("ng3p62") && !tmp.qu.bigRip.active) r += 0.1
+		if (hasBosonicUpg(43)) r *= tmp.blu[43]
+	}
+	return r
+}
