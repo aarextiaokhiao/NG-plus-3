@@ -152,3 +152,155 @@ function maxNeutrinoMult() {
 	document.getElementById("neutrinoMult").textContent=shortenDimensions(Decimal.pow(5,player.ghostify.neutrinos.multPower-1))
 	document.getElementById("neutrinoMultUpgCost").textContent=shortenDimensions(Decimal.pow(4,player.ghostify.neutrinos.multPower-1).times(2))
 }
+
+function updateNeutrinoBoostsTemp() {
+	tmp.nb = {}
+
+	if (!tmp.ngp3) return
+	if (!ghostified) return
+
+	var nt = []
+	for (var g = 0; g < 3; g++) nt[g] = player.ghostify.neutrinos[(["electron","mu","tau"])[g]]
+	for (var nb = 1; nb <= player.ghostify.neutrinos.boosts; nb++) tmp.nb[nb] = neutrinoBoosts.boosts[nb](nt)
+}
+
+function updateNU1Temp(){
+	let x = 110
+	if (!tmp.qu.bigRip.active) x = Math.max(x - player.meta.resets, 0)
+	tmp.nu[0] = x
+}
+
+function updateNU3Temp(){
+	let log = tmp.qu.colorPowers.b.log10()
+	let exp = Math.max(log / 1e4 + 1, 2)
+	let x
+	if (exp > 2) x = Decimal.pow(Math.max(log / 250 + 1, 1), exp)
+	else x = Math.pow(Math.max(log / 250 + 1, 1), exp)
+	tmp.nu[1] = x
+}
+
+function updateNU4Temp(){
+	let nu4base = 50
+	if (tmp.ngp3l) nu4base = 20
+	tmp.nu[2] = Decimal.pow(nu4base, Math.pow(Math.max(-getTickspeed().div(1e3).log10() / 4e13 - 4, 0), 1/4))
+}
+
+function updateNU7Temp(){
+	var nu7 = tmp.qu.colorPowers.g.add(1).log10()/400
+	if (nu7 > 40) nu7 = Math.sqrt(nu7*10)+20
+	tmp.nu[3] = Decimal.pow(10,nu7) 
+}
+
+function updateNU12Temp(){
+	tmp.nu[4] = { 
+		normal: Math.sqrt(player.galaxies*.0035+1),
+		free: player.dilation.freeGalaxies*.035+1,
+		replicated: Math.sqrt(getTotalRG())*(tmp.ngp3l?.035:.0175)+1 //NU12 
+	}
+}
+
+function updateNU14Temp(){
+	var base = player.ghostify.ghostParticles.add(1).log10()
+	var colorsPortion = Math.pow(tmp.qu.colorPowers.r.add(tmp.qu.colorPowers.g).add(tmp.qu.colorPowers.b).add(1).log10(),1/3)
+	tmp.nu[5] = Decimal.pow(base, colorsPortion*0.8+1).max(1) //NU14
+}
+
+function updateNU15Temp(){
+	tmp.nu[6] = Decimal.pow(2,(tmp.qu.nanofield.rewards>90?Math.sqrt(90*tmp.qu.nanofield.rewards):tmp.qu.nanofield.rewards)/2.5) //NU15
+}
+
+function updateNeutrinoUpgradesTemp(){
+	updateNU1Temp()
+	updateNU3Temp()
+	updateNU4Temp()
+	updateNU7Temp()
+	updateNU12Temp()
+}
+
+var neutrinoBoosts = {
+	boosts: {
+		1: function(nt) {
+			let nb1mult = .75
+			if (tmp.newNGP3E) nb1mult = .8
+			if (isLEBoostUnlocked(7)) nb1mult *= tmp.leBonus[7]
+			let nb1neutrinos = nt[0].add(1).log10()+nt[1].add(1).log10()+nt[2].add(1).log10()
+			return Math.log10(1+nb1neutrinos)*nb1mult
+		},
+		2: function(nt) {
+			let nb2neutrinos = Math.pow(nt[0].add(1).log10(),2)+Math.pow(nt[1].add(1).log10(),2)+Math.pow(nt[2].add(1).log10(),2)
+			let nb2 = Math.pow(nb2neutrinos, .25) * 1.5
+			return nb2 
+		},
+		3: function(nt) {
+			if (tmp.ngp3l) { //NG+3L
+				let nb3Neutrinos = Math.pow(Math.log10(Math.max(nt[0].max(1).log10()-5,1))/Math.log10(5),2)+Math.pow(Math.log10(Math.max(nt[1].max(1).log10()-5,1))/Math.log10(5),2)+Math.pow(Math.log10(Math.max(nt[2].max(1).log10()-5,1))/Math.log10(5),2)
+				let nb3 = Math.pow(nb3Neutrinos / 3, .25) + 3
+				if (nb3 > 6) nb3 = 3 + Math.log2(nb3 + 2)
+				return nb3
+			} else { //NG+3
+				let nb3neutrinos = Math.sqrt(
+					Math.pow(nt[0].max(1).log10(), 2) +
+					Math.pow(nt[1].max(1).log10(), 2) +
+					Math.pow(nt[2].max(1).log10(), 2)
+				)
+				let nb3 = Math.sqrt(nb3neutrinos + 625) / 25
+				return nb3
+			}
+		},
+		4: function(nt) {
+			var nb4neutrinos = Math.pow(nt[0].add(1).log10(),2)+Math.pow(nt[1].add(1).log10(),2)+Math.pow(nt[2].add(1).log10(),2)
+			var nb4 = Math.pow(nb4neutrinos, .25) * 0.07 + 1
+			if (tmp.ngp3l && nb4 > 10) nb4 = 6 + Math.log2(nb4 + 6)
+			return nb4
+		},
+		5: function(nt) {
+			var nb5neutrinos = nt[0].max(1).log10()+nt[1].max(1).log10()+nt[2].max(1).log10()
+			return Math.min(nb5neutrinos / 33, 1)
+		},
+		6: function(nt) {
+			var nb6neutrinos = Math.pow(nt[0].add(1).log10(), 2) + Math.pow(nt[1].add(1).log10(), 2) + Math.pow(nt[2].add(1).log10(), 2)
+			var nb6exp1 = .25
+			if (tmp.newNGP3E) nb6exp1 = .26
+			let nb6 = Math.pow(Math.pow(nb6neutrinos, nb6exp1) * 0.525 + 1, tmp.be ? 0.5 : 1)
+			if (isLEBoostUnlocked(9)) nb6 *= tmp.leBonus[7]
+			return nb6
+		},
+		7: function(nt) {
+			let nb7exp = .5
+			if (tmp.newNGP3E) nb7exp = .6
+			let nb7neutrinos = nt[0].add(1).log10()+nt[1].add(1).log10()+nt[2].add(1).log10()
+			let nb7 = Math.pow(Math.log10(1 + nb7neutrinos), nb7exp)*2.35
+			if (!tmp.ngp3l) {
+				if (nb7 > 4) nb7 = 2 * Math.log2(nb7)
+				if (nb7 > 5) nb7 = 2 + Math.log2(nb7 + 3)
+			}
+			return nb7
+		},
+		8: function(nt) {
+			let nb8neutrinos = Math.pow(nt[0].add(1).log10(),2)+Math.pow(nt[1].add(1).log10(),2)+Math.pow(nt[2].add(1).log10(),2)
+			let nb8exp = .25
+			if (tmp.newNGP3E) nb8exp = .27
+			var nb8 = Math.pow(nb8neutrinos, nb8exp) / 10 + 1
+			if (nb8 > 11) nb8 = 7 + Math.log2(nb8 + 5)
+			return nb8
+		},
+		9: function(nt) {
+			var nb9 = (nt[0].add(1).log10()+nt[1].add(1).log10()+nt[2].add(1).log10())/10
+			if (tmp.ngp3l && nb9 > 4096) nb9 = Math.pow(Math.log2(nb9) + 4, 3)
+			if (isLEBoostUnlocked(9)) nb9 *= tmp.leBonus[7]
+			return nb9
+		},
+		10: function(nt) {
+			let nb10neutrinos = nt[0].add(1).log10()+nt[1].add(1).log10()+nt[2].add(1).log10()
+			let nb10 = Math.max(nb10neutrinos - 3e3, 0) / 75e4
+			if (!tmp.ngp3l && nb10 > 0.1) nb10 = Math.log10(nb10 * 100) / 10
+			return nb10
+		},
+		11: function(nt) {
+			let nb11neutrinos = nt[0].add(nt[1]).add(nt[2]).add(1).log10()
+			let nb11exp = Math.sqrt(nb11neutrinos)
+			let nb11 = Decimal.pow(1.15, nb11exp)
+			return nb11
+		}
+	}
+}
