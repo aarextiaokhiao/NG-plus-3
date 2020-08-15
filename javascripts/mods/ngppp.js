@@ -7,7 +7,7 @@ function showQuantumTab(tabName) {
 	for (var i = 0; i < tabs.length; i++) {
 		tab = tabs.item(i);
 		if (tab.style.display == 'block') oldTab = tab.id
-		if (tab.id === tabName) {
+		if (tab.id === tabName) { 
 			tab.style.display = 'block';
 		} else {
 			tab.style.display = 'none';
