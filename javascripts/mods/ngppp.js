@@ -234,8 +234,6 @@ function toggleAutoQuantumContent(id) {
 	}
 }
 
-
-
 function replicantReset() {
 	if (player.replicanti.amount.lt(tmp.qu.replicants.requirement)) return
 	if (!player.achievements.includes("ng3p47")) player.replicanti.amount = new Decimal(1)
@@ -259,45 +257,6 @@ function breakLimit() {
 	}
 }
 
-//v1.9984
-function maxAllID() {
-	if (player.pSac !== undefined) maxAllIDswithAM()
-	for (var t = 1; t <= 8; t++) {
-		var dim = player["infinityDimension"+t]
-		var cost = getIDCost(t)
-		if (player.infDimensionsUnlocked[t - 1] && player.infinityPoints.gte(dim.cost)) {
-			var costMult = getIDCostMult(t)
-			if (player.infinityPoints.lt(Decimal.pow(10, 1e10))) {
-				var toBuy = Math.max(Math.floor(player.infinityPoints.div(9 - t).div(cost).times(costMult - 1).add(1).log(costMult)), 1)
-				var toSpend = Decimal.pow(costMult, toBuy).sub(1).div(costMult-1).times(cost).round()
-				if (toSpend.gt(player.infinityPoints)) player.infinityPoints = new Decimal(0)
-				else player.infinityPoints = player.infinityPoints.sub(toSpend)
-			} else var toBuy = Math.floor(player.infinityPoints.div(cost).log(costMult))
-			dim.amount = dim.amount.add(toBuy * 10)
-			dim.baseAmount += toBuy * 10
-			dim.power=dim.power.times(Decimal.pow(getInfBuy10Mult(t),toBuy))
-			dim.cost=dim.cost.times(Decimal.pow(costMult,toBuy))
-		}
-	}
-}
-
-function hideMaxIDButton(onLoad=false) {
-	if (!onLoad) if (!player.masterystudies) return
-	var hide = true
-	if (player.masterystudies && player.currentEterChall != "eterc8") {
-		hide = false
-		if (player.eternities > 17) {
-			for (var d = 0; d < 8; d++) {
-				if (player.infDimBuyers[d]) {
-					if (d > 6) hide = true
-				} else break
-			}
-		}
-	}
-	if (player.pSac !== undefined) hide = false
-	document.getElementById("maxAllID").style.display = hide ? "none" : ""
-}
-
 //v1.9986
 function respecMasteryToggle() {
 	player.respecMastery = !player.respecMastery
@@ -318,13 +277,6 @@ function updateBankedEter(updateHtml = true) {
 }
 
 //v1.99871
-function hatchSpeedDisplay(next) {
-	var speed = getHatchSpeed()
-	if (next) speed /= 1.1
-	if (speed < 1e-24) return shorten(1/speed) + "/s"
-	return timeDisplayShort(speed * 10, true, 1)
-}
-
 function fillAll() {
 	var oldLength = player.timestudy.studies.length
 	for (var t = 0; t < all.length; t++) buyTimeStudy(all[t], 0, true)
@@ -506,147 +458,7 @@ function maybeShowFillAll() {
 	document.getElementById("fillAll2").style.display = display
 }
 
-//v1.999
-function getTotalReplicants(data) {
-	if (data === undefined) return tmp.twr.add(tmp.qu.replicants.amount).round()
-	else return getTotalWorkers(data).add(data.quantum.replicants.amount).round()
-}
-
-function feedReplicant(tier, max) {
-	if (!canFeedReplicant(tier)) return
-	var toFeed = max ? Math.min(tmp.qu.replicants.quantumFood, tmp.qu.replicants.limitDim > tier ? Math.round(getWorkerAmount(tier - 1).toNumber() * 3) : Math.round((tmp.qu.replicants.limit - tmp.eds[tier].perm - tmp.eds[tier].progress.toNumber()) * 3)) : 1
-	if (tmp.qu.replicants.limitDim > tier) tmp.qu.replicants.quantumFoodCost = tmp.qu.replicants.quantumFoodCost.div(Decimal.pow(5, toFeed))
-	tmp.eds[tier].progress = tmp.eds[tier].progress.add(toFeed / 3)
-	if (tier < 8 || getWorkerAmount(tier + 1).eq(0)) tmp.eds[tier].progress = tmp.eds[tier].progress.times(3).round().div(3)
-	if (tmp.eds[tier].progress.gte(1)) {
-		var toAdd = tmp.eds[tier].progress.floor()
-		if (tier > 1) tmp.eds[tier-1].workers = tmp.eds[tier - 1].workers.sub(toAdd.min(tmp.eds[tier - 1].workers)).round()
-		else tmp.qu.replicants.amount = tmp.qu.replicants.amount.sub(toAdd.min(tmp.qu.replicants.amount)).round()
-		tmp.eds[tier].progress = tmp.eds[tier].progress.sub(tmp.eds[tier].progress.min(toAdd))
-		tmp.eds[tier].workers = tmp.eds[tier].workers.add(toAdd).round()
-		tmp.eds[tier].perm = Math.min(tmp.eds[tier].perm + Math.round(toAdd.toNumber()), tier > 7 ? 1/0 : 10)
-		if (tier == 2) giveAchievement("An ant office?")
-	}
-	tmp.qu.replicants.quantumFood -= toFeed
-	updateReplicants("spend")
-}
-
-function getWorkerAmount(tier) {
-	if (tier < 1) return tmp.qu.replicants.amount
-	if (tier > 8) return new Decimal(0)
-	return tmp.eds[tier].workers
-}
-
-function getTotalWorkers(data) {
-	if (data) {
-		if (data.quantum.emperorDimensions == undefined) return new Decimal(data.quantum.replicants.workers)
-		data = data.quantum.emperorDimensions
-	} else data = tmp.eds
-	var total = new Decimal(0)
-	for (var d = 1; d < 9; d++) total = total.add(data[d].workers)
-	return total.round()
-}
-
-function buyMaxQuantumFood() {
-	let minGluons = tmp.qu.gluons.rg.min(tmp.qu.gluons.gb).min(tmp.qu.gluons.br)
-	let toBuy = Math.floor(minGluons.div(tmp.qu.replicants.quantumFoodCost).times(4).add(1).log(5))
-	if (toBuy < 1) return
-	let toSpend = Decimal.pow(5, toBuy).minus(1).div(4).times(tmp.qu.replicants.quantumFoodCost)
-	tmp.qu.gluons.rg = tmp.qu.gluons.rg.sub(tmp.qu.gluons.rg.min(toSpend))
-	tmp.qu.gluons.gb = tmp.qu.gluons.gb.sub(tmp.qu.gluons.gb.min(toSpend))
-	tmp.qu.gluons.br = tmp.qu.gluons.br.sub(tmp.qu.gluons.br.min(toSpend))
-	tmp.qu.replicants.quantumFood += toBuy
-	tmp.qu.replicants.quantumFoodCost = tmp.qu.replicants.quantumFoodCost.times(Decimal.pow(5, toBuy))
-	updateGluonsTabOnUpdate("spend")
-	updateReplicants("spend")
-}
-
-function canFeedReplicant(tier, auto) {
-	if (tmp.qu.replicants.quantumFood < 1 && !auto) return false
-	if (tier > 1) {
-		if (tmp.eds[tier].workers.gte(tmp.eds[tier - 1].workers)) return auto && hasNU(2)
-		if (tmp.eds[tier - 1].workers.lte(10)) return false
-	} else {
-		if (tmp.eds[1].workers.gte(tmp.qu.replicants.amount)) return auto && hasNU(2)
-		if (tmp.qu.replicants.amount.eq(0)) return false
-	}
-	if (tier > tmp.qu.replicants.limitDim) return false
-	if (tier == tmp.qu.replicants.limitDim) return getWorkerAmount(tier).lt(tmp.qu.replicants.limit)
-	return true
-}
-
-function isLimitUpgAffordable() {
-	if (!player.masterystudies.includes("d11")) return tmp.qu.replicants.limit < 10
-	return true
-}
-
-function getLimitMsg() {
-	if (!player.masterystudies.includes("d11")) return tmp.qu.replicants.limit
-	return getFullExpansion(tmp.qu.replicants.limit) + " ED" + tmp.qu.replicants.limitDim + "s"
-}
-
-function getNextLimitMsg() {
-	if (!player.masterystudies.includes("d11")) return tmp.qu.replicants.limit+1
-	if (tmp.qu.replicants.limit > 9 && tmp.qu.replicants.limitDim < 8) return "1 ED" + (tmp.qu.replicants.limitDim + 1) + "s"
-	return getFullExpansion(tmp.qu.replicants.limit + 1) + " ED" + tmp.qu.replicants.limitDim + "s"
-}
-
-function getHatchSpeed() {
-	var speed = tmp.qu.replicants.hatchSpeed
-	if (player.masterystudies.includes("t361")) speed /= getMTSMult(361)
-	if (player.masterystudies.includes("t371")) speed /= getMTSMult(371)
-	if (player.masterystudies.includes("t372")) speed /= getMTSMult(372)
-	if (player.masterystudies.includes("t381")) speed /= getMTSMult(381)
-	if (player.masterystudies.includes("t391")) speed /= getMTSMult(391)
-	if (player.masterystudies.includes("t402")) speed /= 30
-	if (isNanoEffectUsed("hatch_speed")) speed /= tmp.nf.effects.hatch_speed
-	return speed
-}
-
-function updateEmperorDimensions() {
-	let production = getGatherRate()
-	let mults = {}
-	let limitDim = tmp.qu.replicants.limitDim
-	document.getElementById("rgEDs").textContent = shortenDimensions(tmp.qu.gluons.rg)
-	document.getElementById("gbEDs").textContent = shortenDimensions(tmp.qu.gluons.gb)
-	document.getElementById("brEDs").textContent = shortenDimensions(tmp.qu.gluons.br)
-	document.getElementById("replicantAmountED").textContent=shortenDimensions(tmp.qu.replicants.amount)
-	for (var d = 1; d <= 8; d++) mults[d] = getEmperorDimensionMultiplier(d)
-	for (var d = 1; d <= 8; d++) {
-		if (d > limitDim) document.getElementById("empRow" + d).style.display = "none"
-		else {
-			document.getElementById("empRow" + d).style.display = ""
-			document.getElementById("empD" + d).textContent = DISPLAY_NAMES[d] + " Emperor Dimension x" + formatValue(player.options.notation, mults[d], 2, 1)
-			document.getElementById("empAmount" + d).textContent = d < limitDim ? shortenDimensions(tmp.eds[d].workers) + " (+" + shorten(getEmperorDimensionRateOfChange(d)) + dimDescEnd : getFullExpansion(tmp.eds[limitDim].perm)
-			document.getElementById("empQuarks" + d).textContent = shorten(production.workers[d])
-			document.getElementById("empFeed" + d).className = (canFeedReplicant(d) ? "stor" : "unavailabl") + "ebtn"
-			document.getElementById("empFeed" + d).textContent = "Feed (" + (d == limitDim || mults[d + 1].times(tmp.eds[d + 1].workers).div(20).lt(1e3) ? Math.round(tmp.eds[d].progress.toNumber() * 100) + "%, " : "") + getFullExpansion(tmp.eds[d].perm) + " kept)"
-			document.getElementById("empFeedMax" + d).className = (canFeedReplicant(d) ? "stor" : "unavailabl") + "ebtn"
-		}
-	}
-	document.getElementById("totalWorkers").textContent = shortenDimensions(tmp.twr)
-	document.getElementById("totalQuarkProduction").textContent = shorten(production.workersTotal)
-	if (player.ghostify.milestones > 7) updateReplicants("display")
-}
-
 //v1.9995
-function maxReduceHatchSpeed() {
-	let minGluons = tmp.qu.gluons.rg.min(tmp.qu.gluons.gb).min(tmp.qu.gluons.br)
-	let toBuy = Math.floor(minGluons.div(tmp.qu.replicants.hatchSpeedCost).times(9).add(1).log10())
-	if (toBuy < 1) return
-	let toSpend = Decimal.pow(10, toBuy).minus(1).div(9).times(tmp.qu.replicants.hatchSpeedCost)
-	if (toSpend.gt(tmp.qu.gluons.rg)) tmp.qu.gluons.rg = new Decimal(0)
-	else tmp.qu.gluons.rg = tmp.qu.gluons.rg.sub(toSpend)
-	if (toSpend.gt(tmp.qu.gluons.gb)) tmp.qu.gluons.gb = new Decimal(0)
-	else tmp.qu.gluons.gb = tmp.qu.gluons.gb.sub(toSpend)
-	if (toSpend.gt(tmp.qu.gluons.br)) tmp.qu.gluons.br = new Decimal(0)
-	else tmp.qu.gluons.br = tmp.qu.gluons.br.sub(toSpend)
-	tmp.qu.replicants.hatchSpeed /= Math.pow(1.1, toBuy)
-	tmp.qu.replicants.hatchSpeedCost = tmp.qu.replicants.hatchSpeedCost.times(Decimal.pow(10, toBuy))
-	updateGluonsTabOnUpdate()
-	updateReplicants()
-}
-
 function getQuarkChargeProduction(noSpeed) {
 	let ret = new Decimal(1)
 	if (isNanoEffectUsed("preon_charge")) ret = tmp.nf.effects.preon_charge
