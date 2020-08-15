@@ -380,3 +380,25 @@ function getRadioactiveDecays(shorthand) {
 	let data = tmp.qu.tod[shorthand]
 	return data.decays || 0
 }
+
+function getMinimumUnstableQuarks() {
+	let r={quarks:new Decimal(1/0),decays:1/0}
+	let c=["r","g","b"]
+	for (var i=0;i<3;i++) {
+		let b=tmp.qu.tod[c[i]]
+		let d=b.decays||0
+		if (r.decays>d||(r.decays==d&&b.quarks.lte(r.quarks))) r={quarks:b.quarks,decays:d}
+	}
+	return r
+}
+
+function getMaximumUnstableQuarks() {
+	let r={quarks:new Decimal(0),decays:0}
+	let c=["r","g","b"]
+	for (var i=0;i<3;i++) {
+		let b=tmp.qu.tod[c[i]]
+		let d=b.decays||0
+		if (r.decays<d||(r.decays==d&&b.quarks.gte(r.quarks))) r={quarks:b.quarks,decays:d}
+	}
+	return r
+}
