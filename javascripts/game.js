@@ -1816,14 +1816,7 @@ function galaxyReset(bulk) {
 	if (player.tickspeedBoosts !== undefined) player.tickspeedBoosts = 0
 	doGalaxyResetStuff(bulk)
 
-	if (inNC(10) || player.currentChallenge == "postc1") {
-		player.thirdCost = new Decimal(100)
-		player.fourthCost = new Decimal(500)
-		player.fifthCost = new Decimal(2500)
-		player.sixthCost = new Decimal(2e4)
-		player.seventhCost = new Decimal(2e5)
-		player.eightCost = new Decimal(4e6)
-	}
+	NC10NDCostsOnReset()
 	if (player.pSac !== undefined) {
 		resetInfDimensions()
 		player.pSac.dims.extraTime = 0
@@ -6242,17 +6235,12 @@ function startChallenge(name) {
 	if (player.options.challConf && name != "") if (!confirm("You will start over with just your infinity upgrades, and achievements. You need to reach " + (name.includes("post") ? "a set goal" : "infinity") + " with special conditions. NOTE: The rightmost infinity upgrade column doesn't work on challenges.")) return
 	if (player.tickspeedBoosts !== undefined) player.tickspeedBoosts = 0
 	if (name == "postc1" && player.currentEternityChall != "" && inQC(4) && inQC(6)) giveAchievement("The Ultimate Challenge")
+	
 	doNormalChallengeResetStuff()
     	player.currentChallenge = name
+	player.challengeTarget = target
+	NC10NDCostsOnReset()
 	
-	if (inNC(10) || player.currentChallenge == "postc1") {
-		player.thirdCost = new Decimal(100)
-		player.fourthCost = new Decimal(500)
-		player.fifthCost = new Decimal(2500)
-		player.sixthCost = new Decimal(2e4)
-		player.seventhCost = new Decimal(2e5)
-		player.eightCost = new Decimal(4e6)
-	}
 	player.tdBoosts = resetTDBoosts()
 	resetPSac()
 	resetTDs()
