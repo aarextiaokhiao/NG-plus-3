@@ -424,7 +424,19 @@ function checkOnCrunchAchievements(){
         if (gainedInfinityPoints().gte(1e250) && player.thisInfinityTime <= 200) giveAchievement("I brake for nobody")
 }
 
+function checkSecondSetOnCrunchAchievements(){
+	checkForEndMe()
+	giveAchievement("To infinity!");
+        if (player.infinitied >= 10) giveAchievement("That's a lot of infinites");
+        if (player.infinitied >= 1 && !player.challenges.includes("challenge1")) player.challenges.push("challenge1");
+	if (player.bestInfinityTime <= 0.01) giveAchievement("Less than or equal to 0.001");
+        if (player.challenges.length > 1) giveAchievement("Daredevil")
+        if (player.challenges.length == getTotalNormalChallenges() + 1) giveAchievement("AntiChallenged")
+        if (player.challenges.length == getTotalNormalChallenges() + order.length + 1) giveAchievement("Anti-antichallenged")
+}
+
 function doCrunchResetStuff(){
+	player.galacticSacrifice = newGalacticDataOnInfinity()
 	player.money = new Decimal(10)
 	player.tickSpeedCost = new Decimal(1000)
 	player.tickBoughtThisInf = resetTickBoughtThisInf()
@@ -443,7 +455,6 @@ function doCrunchResetStuff(){
 	player.chall11Pow = new Decimal(1)
 	player.postC4Tier = 1
 	player.postC8Mult = new Decimal(1)
-	player.galacticSacrifice = newGalacticDataOnInfinity()
 	player.galaxies = 0
 }
 function doEternityResetStuff(){
