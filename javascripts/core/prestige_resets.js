@@ -9,6 +9,17 @@ function onQuantumAM(){
 	return new Decimal(x)
 }
 
+function NC10NDCostsOnReset(){
+	if (inNC(10) || player.currentChallenge == "postc1") {
+		player.thirdCost = new Decimal(100)
+		player.fourthCost = new Decimal(500)
+		player.fifthCost = new Decimal(2500)
+		player.sixthCost = new Decimal(2e4)
+		player.seventhCost = new Decimal(2e5)
+		player.eightCost = new Decimal(4e6)
+	}
+}
+
 function replicantsResetOnQuantum(challid){
 	tmp.qu.replicants.requirement = new Decimal("1e3000000")
 	tmp.qu.replicants.quarks = (!(challid > 0) && player.achievements.includes("ng3p45")) ? tmp.qu.replicants.quarks.pow(2/3) : new Decimal(0)
