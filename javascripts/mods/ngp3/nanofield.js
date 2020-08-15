@@ -244,3 +244,32 @@ function updateNanoRewardTemp() {
 	updateNanoEffectUsages()
 	//The rest is calculated by updateTemp().
 }
+
+function getNanofieldSpeed() {
+	let x = 1
+	if (ghostified) x *= tmp.qu.nanofield.rewards < 16 ? 6 : 3
+	if (!tmp.ngp3l && player.achievements.includes("ng3p78")) x *= Math.sqrt(getTreeUpgradeLevel(8) * tmp.tue + 1)
+	if (hasNU(15)) x = tmp.nu[6].times(x)
+	return x
+}
+
+function getNanofieldFinalSpeed() {
+	return Decimal.times(tmp.ns, nanospeed)
+}
+
+function getNanoRewardPower(reward, rewards) {
+	let x = Math.ceil((rewards - reward + 1) / 8)
+	let apgw = tmp.apgw
+	if (rewards >= apgw) {
+		let sbsc = Math.ceil((apgw - reward + 1) / 8)
+		x = Math.sqrt((x / 2 + sbsc / 2) * sbsc)
+		if (reward == (rewards - 1) % 8 + 1) x += 0.5
+	}
+	return x * tmp.nf.powerEff
+}
+
+function getNanoRewardPowerEff() {
+	let x = 1
+	if (hasBosonicUpg(31)) x *= tmp.blu[31]
+	return x
+}
