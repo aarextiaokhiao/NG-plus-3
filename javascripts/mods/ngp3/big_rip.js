@@ -285,3 +285,70 @@ function maxBuyBEEPMult() {
 	document.getElementById("breakUpg7Mult").textContent = shortenDimensions(getBreakUpgMult(7))
 	document.getElementById("breakUpg7Cost").textContent = shortenDimensions(getBreakUpgCost(7))
 }
+
+function updateBRU1Temp() {
+	tmp.bru[1] = 1
+	if (!tmp.qu.bigRip.active) return
+	let exp = 1
+	if (tmp.qu.bigRip.upgrades.includes(17)) exp = tmp.bru[17]
+	if (ghostified && player.ghostify.neutrinos.boosts > 7) exp *= tmp.nb[8]
+	exp *= player.infinityPoints.max(1).log10()
+	exp = softcap(exp, "bru1_log", tmp.ngp3l ? 1 : 2)
+	tmp.bru[1] = Decimal.pow(10, exp) //BRU1
+}
+
+function updateBRU8Temp() {
+	tmp.bru[8] = 1
+	if (!tmp.qu.bigRip.active) return
+	tmp.bru[8] = Decimal.pow(2,getTotalRG()) //BRU8
+	if (!hasNU(11)) tmp.bru[8] = tmp.bru[8].min(Number.MAX_VALUE)
+}
+
+function updateBRU14Temp() {
+	if (!tmp.qu.bigRip.active) {
+		tmp.bru[14] = 1
+		return
+	}
+	var ret = Math.min(tmp.qu.bigRip.spaceShards.div(3e18).add(1).log10()/3,0.4)
+	var val = Math.sqrt(tmp.qu.bigRip.spaceShards.div(3e15).add(1).log10()*ret+1)
+	if (val > 12) val = 10+Math.log10(4+8*val)
+	tmp.bru[14] = val //BRU14
+}
+
+function updateBRU15Temp() {
+	let r = Math.sqrt(player.eternityPoints.add(1).log10()) * 3.55
+	if (r > 1e4 && !tmp.ngp3l) r = Math.sqrt(r * 1e4)
+	tmp.bru[15] = r
+}
+
+function updateBRU16Temp() {
+	tmp.bru[16] = player.dilation.dilatedTime.div(1e100).pow(0.155).max(1)
+}
+
+function updateBRU17Temp() {
+	tmp.bru[17] = !tmp.ngp3l && ghostified ? 3 : 2.9
+}
+
+function updateBigRipUpgradesTemp(){
+	updateBRU17Temp()
+	updateBRU1Temp()
+	updateBRU8Temp()
+	updateBRU14Temp()
+	updateBRU15Temp()
+	updateBRU16Temp()
+}
+
+function updatePhotonsUnlockedBRUpgrades(){
+	var bigRipUpg18base = 1 + tmp.qu.bigRip.spaceShards.div(1e140).add(1).log10()
+	var bigRipUpg18exp = Math.max(tmp.qu.bigRip.spaceShards.div(1e140).add(1).log10() / 10, 1)
+	if (bigRipUpg18base > 10 && tmp.newNGP3E) bigRipUpg18base *= Math.log10(bigRipUpg18base)
+	tmp.bru[18] = Decimal.pow(bigRipUpg18base, bigRipUpg18exp) //BRU18
+	
+	var bigRipUpg19exp = Math.sqrt(player.timeShards.add(1).log10()) / (tmp.newNGP3E ? 60 : 80)
+	tmp.bru[19] = Decimal.pow(10, bigRipUpg19exp) //BRU19
+}
+
+function getMaxBigRipUpgrades() {
+	if (player.ghostify.ghostlyPhotons.unl) return tmp.ngp3l ? 19 : 20
+	return 17
+}
