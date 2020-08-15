@@ -305,3 +305,45 @@ function updatePCTable() {
 	document.getElementById("udcc").style.display = tmp.pct==""?"block":"none"
 	document.getElementById("udcc").textContent="No dilation: "+(tmp.pcc.noDil||0)+" / 28"
 }
+
+var qcm={
+	modifiers:["ad","sm"],
+	names:{
+		ad:"Anti-Dilation",
+		sm:"Supermastery"
+	},
+	reqs:{
+		ad:100,
+		sm:165
+	},
+	descs:{
+		ad:"You always have no Tachyon particles. You can dilate time, but you can't gain Tachyon particles.",
+		sm:"You can't have normal time studies or more than 20 normal mastery studies."
+	},
+	on:[]
+}
+
+function toggleQCModifier(id) {
+	if (!(ranking>=qcm.reqs[id])&&qcm.reqs[id]) return
+	if (qcm.on.includes(id)) {
+		let data=[]
+		for (var m=0;m<qcm.on.length;m++) if (qcm.on[m]!=id) data.push(qcm.on[m])
+		qcm.on=data
+	} else qcm.on.push(id)
+	document.getElementById("qcm_"+id).className=qcm.on.includes(id)?"chosenbtn":"storebtn"
+}
+
+function inQCModifier(id) {
+	if (player.masterystudies==undefined) return
+	return tmp.qu.qcsMods.current.includes(id)
+}
+
+function recordModifiedQC(id,num,mod) {
+	var data=tmp.qu.qcsMods[mod]
+	if (data===undefined) {
+		data={}
+		tmp.qu.qcsMods[mod]=data
+	}
+	if (data[id]===undefined) data[id]=num
+	else data[id]=Math.min(num,data[id])
+}
