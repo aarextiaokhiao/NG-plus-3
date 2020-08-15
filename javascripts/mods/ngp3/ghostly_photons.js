@@ -2,6 +2,12 @@ function updateLightEmpowermentReq() {
 	tmp.leReq = getLightEmpowermentReq()
 }
 
+function getLightEmpowermentBoost() {
+	let r=player.ghostify.ghostlyPhotons.enpowerments
+	if (hasBosonicUpg(13)) r*=tmp.blu[13]
+	return r
+}
+
 var leBoosts = {
 	reqs: [null, 1, 2, 3, 10, 13, 16, 19, 22, 25],
 	max: 9,
