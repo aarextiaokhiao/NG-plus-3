@@ -55,7 +55,7 @@ function updateReplicants(mode) {
 	}
 	if (mode === undefined || mode === "display") {
 		document.getElementById("quantumFoodAmount").textContent = getFullExpansion(tmp.qu.replicants.quantumFood)
-		document.getElementById("buyQuantumFood").innerHTML = "Buy 1 quantum food<br>Cost: " + shortenDimensions(tmp.qu.replicants.quantumFoodCost) + " of all 3 gluons"
+		if (!tmp.qu.quarks.l > 1e5) document.getElementById("buyQuantumFood").innerHTML = "Buy 1 quantum food<br>Cost: " + shortenDimensions(tmp.qu.replicants.quantumFoodCost) + " of all 3 gluons"
 		document.getElementById("buyQuantumFood").className = "gluonupgrade " + (tmp.qu.gluons.rg.min(tmp.qu.gluons.gb).min(tmp.qu.gluons.br).lt(tmp.qu.replicants.quantumFoodCost) ? "unavailabl" : "stor") + "ebtn"
 		if (!tmp.qu.quarks.l > 1e5) document.getElementById("breakLimit").innerHTML = "Limit of workers: " + getLimitMsg() + (isLimitUpgAffordable() ? " -> " + getNextLimitMsg() + "<br>Cost: " + shortenDimensions(tmp.qu.replicants.limitCost) + " for all 3 gluons" : "")
 		document.getElementById("breakLimit").className = (tmp.qu.gluons.rg.min(tmp.qu.gluons.gb).min(tmp.qu.gluons.br).lt(tmp.qu.replicants.limitCost) || !isLimitUpgAffordable() ? "unavailabl" : "stor") + "ebtn"
@@ -69,6 +69,7 @@ function updateReplicants(mode) {
 		}
 		if (tmp.qu.quarks.l > 1e5){
 			document.getElementById("buyQuantumFoodED").innerHTML = "Buy 1 quantum food"
+			document.getElementById("buyQuantumFood").innerHTML = "Buy 1 quantum food"
 			document.getElementById("breakLimit").innerHTML = "Limit of workers: " + getLimitMsg()
 			document.getElementById("breakLimitED").innerHTML = "Limit of workers: " + getLimitMsg()
 			document.getElementById("rgRepl").textContent = "lots of"
