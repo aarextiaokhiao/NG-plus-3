@@ -123,3 +123,16 @@ function reduceHatchSpeed() {
 		updateReplicants("spend")
 	}
 }
+
+function hatchSpeedDisplay(next) {
+	var speed = getHatchSpeed()
+	if (next) speed /= 1.1
+	if (speed < 1e-24) return shorten(1/speed) + "/s"
+	return timeDisplayShort(speed * 10, true, 1)
+}
+
+function getTotalReplicants(data) {
+	if (data === undefined) return tmp.twr.add(tmp.qu.replicants.amount).round()
+	else return getTotalWorkers(data).add(data.quantum.replicants.amount).round()
+}
+
