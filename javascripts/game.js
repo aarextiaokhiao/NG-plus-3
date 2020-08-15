@@ -9077,7 +9077,7 @@ function setTachyonParticles(x) {
 	if (!player.dilation.active) player.dilation.totalTachyonParticles = player.dilation.tachyonParticles
 	tmp.qu.notrelative = false
 	if (player.achievements.includes("ng3p18") || player.achievements.includes("ng3p37")) {
-		player.dilation.bestTP = player.dilation.bestTP.max(player.dilation.tachyonParticles)
+		player.dilation.bestTP = Decimal.max(player.dilation.bestTP || 0, player.dilation.tachyonParticles)
 		player.dilation.bestTPOverGhostifies = player.dilation.bestTPOverGhostifies.max(player.dilation.bestTP)
 		document.getElementById('bestTP').textContent="Your best"+(ghostified ? "" : " ever")+" Tachyon particles"+(ghostified ? " in this Ghostify" : "")+" was "+shorten(player.dilation.bestTP)+"."
 		setAndMaybeShow('bestTPOverGhostifies',ghostified,'"Your best-ever Tachyon particles was "+shorten(player.dilation.bestTPOverGhostifies)+"."')
