@@ -1,4 +1,4 @@
-//v1.5
+//v1.5 
 function showQuantumTab(tabName) {
 	//iterate over all elements in div_tab class. Hide everything that's not tabName and show tabName
 	var tabs = document.getElementsByClassName('quantumtab');
