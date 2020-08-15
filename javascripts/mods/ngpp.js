@@ -1165,8 +1165,7 @@ function quantumReset(force, auto, challid, bigRip, implode=false) {
 	if (player.achievements.includes("r36")) player.tickspeed = player.tickspeed.times(0.98);
 	if (player.achievements.includes("r45")) player.tickspeed = player.tickspeed.times(0.98);
 	if (player.infinitied >= 1 && !player.challenges.includes("challenge1")) player.challenges.push("challenge1");
-	updateAutobuyers();
-	setInitialMoney()
+	updateAutobuyers()
 	if (player.achievements.includes("r85")) player.infMult = player.infMult.times(4);
 	if (player.achievements.includes("r93")) player.infMult = player.infMult.times(4);
 	if (player.achievements.includes("r104")) player.infinityPoints = new Decimal(2e25);
@@ -1244,6 +1243,7 @@ function quantumReset(force, auto, challid, bigRip, implode=false) {
 	if ((bigRip ? !isBigRipUpgradeActive(2) : speedrunMilestonesReached < 2) && document.getElementById("eternitychallenges").style.display == "block") showChallengesTab("normalchallenges")
 	drawMasteryTree()
 	Marathon2 = 0;
+	setInitialMoney()
 	document.getElementById("quantumConfirmBtn").style.display = "inline-block"
 }
 
