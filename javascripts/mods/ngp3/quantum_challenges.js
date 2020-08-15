@@ -80,3 +80,163 @@ function updateInQCs() {
 		tmp.inQCs = data
 	}
 }
+
+function getQCGoal(num, bigRip) {
+	if (player.masterystudies == undefined) return 0
+	var c1 = 0
+	var c2 = 0
+	var mult = 1
+	if (player.achievements.includes("ng3p96") && !bigRip) mult = 0.95
+	if (num == undefined) {
+		var data = tmp.inQCs
+		if (data[0]) c1 = data[0]
+		if (data[1]) c2 = data[1]
+	} else if (num < 9) {
+		c1 = num
+	} else if (tmp.qu.pairedChallenges.order[num - 8]) {
+		c1 = tmp.qu.pairedChallenges.order[num - 8][0]
+		c2 = tmp.qu.pairedChallenges.order[num - 8][1]
+	}
+	if (c1 == 0) return quantumChallenges.goals[0] * mult
+	if (c2 == 0) return quantumChallenges.goals[c1] * mult
+	var cs = [c1, c2]
+	mult *= mult
+	if (cs.includes(1) && cs.includes(3)) mult *= 1.6
+	if (cs.includes(2) && cs.includes(6)) mult *= 1.7
+	if (cs.includes(3) && cs.includes(7)) mult *= 2.68
+	if (!tmp.ngp3l && cs.includes(3) && cs.includes(6)) mult *= 3
+	return quantumChallenges.goals[c1] * quantumChallenges.goals[c2] / 1e11 * mult
+}
+
+function QCIntensity(num) {
+	if (tmp.ngp3 && tmp.qu !== undefined && tmp.qu.challenges !== undefined) return tmp.qu.challenges[num] || 0
+	return 0
+}
+
+function updateQCTimes() {
+	document.getElementById("qcsbtn").style.display = "none"
+	if (!player.masterystudies) return
+	var temp = 0
+	var tempcounter = 0
+	for (var i = 1; i < 9; i++) {
+		setAndMaybeShow("qctime" + i, tmp.qu.challengeRecords[i], '"Quantum Challenge ' + i + ' time record: "+timeDisplayShort(tmp.qu.challengeRecords[' + i + '], false, 3)')
+		if (tmp.qu.challengeRecords[i]) {
+			temp+=tmp.qu.challengeRecords[i]
+			tempcounter++
+		}
+	}
+	if (tempcounter > 0) document.getElementById("qcsbtn").style.display = "inline-block"
+	setAndMaybeShow("qctimesum", tempcounter > 1, '"Sum of completed quantum challenge time records is "+timeDisplayShort('+temp+', false, 3)')
+}
+
+var ranking=0
+function updatePCCompletions() {
+	var shownormal = false
+	document.getElementById("pccompletionsbtn").style.display = "none"
+	if (!player.masterystudies) return
+	var ranking = 0
+	tmp.pcc = {} //PC Completion counters
+	for (var c1 = 2; c1 < 9; c1++) for (var c2 = 1; c2 < c1; c2++) {
+		var rankingPart = 0
+		if (tmp.qu.pairedChallenges.completions[c2 * 10 + c1]) {
+			rankingPart = 5 - tmp.qu.pairedChallenges.completions[c2 * 10 + c1]
+			tmp.pcc.normal = (tmp.pcc.normal || 0) + 1
+		} else if (c2 * 10 + c1 == 68 && ghostified) {
+			rankingPart = 0.5
+			tmp.pcc.normal = (tmp.pcc.normal || 0) + 1
+		}
+		if (tmp.qu.qcsNoDil["pc" + (c2 * 10 + c1)]) {
+			rankingPart += 5 - tmp.qu.qcsNoDil["pc" + ( c2 * 10 + c1)]
+			tmp.pcc.noDil = (tmp.pcc.noDil || 0) + 1
+		}
+		for (var m = 0; m < qcm.modifiers.length; m++) {
+			var id = qcm.modifiers[m]
+			var data = tmp.qu.qcsMods[id]
+			if (data && data["pc" + (c2 * 10 + c1)]) {
+				rankingPart += 5 - data["pc" + (c2 * 10 + c1)]
+				tmp.pcc[id] = (tmp.pcc[id] || 0) + 1
+				shownormal = true
+			}
+		}
+		ranking += Math.sqrt(rankingPart)
+	}
+	ranking *= 100 / 56
+	if (ranking) document.getElementById("pccompletionsbtn").style.display = "inline-block"
+	if (tmp.pcc.normal >= 24) giveAchievement("The Challenging Day")
+	document.getElementById("pccranking").textContent = ranking.toFixed(1)
+	document.getElementById("pccrankingMax").textContent = Math.sqrt(1e4 * (2 + qcm.modifiers.length)).toFixed(1)
+	updatePCTable()
+	for (var m = 0; m < qcm.modifiers.length; m++) {
+		var id = qcm.modifiers[m]
+		var shownormal = tmp.qu.qcsMods[id] !== undefined || shownormal
+		document.getElementById("qcms_" + id).style.display = tmp.qu.qcsMods[id] !== undefined ? "" : "none"
+	}
+	document.getElementById("qcms_normal").style.display = shownormal ? "" : "none"
+	if (ranking >= 75) {
+		document.getElementById("modifiersdiv").style.display = ""
+		for (var m = 0; m < qcm.modifiers.length; m++) {
+			var id = qcm.modifiers[m]
+			if (ranking >= qcm.reqs[id] || !qcm.reqs[id]) {
+				document.getElementById("qcm_" + id).className = qcm.on.includes(id) ? "chosenbtn" : "storebtn"
+				document.getElementById("qcm_" + id).setAttribute('ach-tooltip', qcm.descs[id] || "???")
+			} else {
+				document.getElementById("qcm_" + id).className = "unavailablebtn"
+				document.getElementById("qcm_" + id).setAttribute('ach-tooltip', 'Get '+qcm.reqs[id]+' Paired Challenges ranking to unlock this modifier. Ranking: ' + ranking.toFixed(1))
+			}
+		}
+	} else document.getElementById("modifiersdiv").style.display = "none"
+	if (ranking >= 165) giveAchievement("Pulling an All-Nighter")
+	if (ranking >= 1/0) giveAchievement("Not-so-very-challenging")
+}
+
+let qcRewards = {
+	effects: {
+		1: function(comps) {
+			if (comps == 0) return 1
+			return Decimal.pow(10, Math.pow(getDimensionFinalMultiplier(1).times(getDimensionFinalMultiplier(2)).max(1).log10(), [null, 0.25, 0.275][comps]) / 200)
+		},
+		2: function(comps) {
+			if (comps == 0) return 1
+			return 1.2 + comps * 0.2
+		},
+		3: function(comps) {
+			if (comps == 0) return 1
+			let log = Math.sqrt(Math.max(player.infinityPower.log10(), 0) / [null, 2e8, 1e9][comps])
+			if (log > 1331) log = Math.pow(log * 121, 3/5)
+
+			return Decimal.pow(10, log)
+		},
+		4: function(comps) {
+			if (comps == 0) return 1
+			let mult = player.meta[2].amount.times(player.meta[4].amount).times(player.meta[6].amount).times(player.meta[8].amount).max(1)
+			if (comps >= 2) return mult.pow(1 / 75)
+			return Decimal.pow(10, Math.sqrt(mult.log10()) / 10)
+		},
+		5: function(comps) {
+			if (comps == 0) return 0
+			return Math.log10(1 + player.resets) * Math.pow(comps, 0.4)
+		},
+		6: function(comps) {
+			if (comps == 0) return 1
+			return player.achPow.pow(comps * 2 - 1)
+		},
+		7: function(comps) {
+			if (comps == 0) return 1
+			return Math.pow(0.975, comps)
+		},
+		8: function(comps) {
+			if (comps == 0) return 1
+			return comps + 2
+		}
+	}
+}
+
+function updateQCRewardsTemp() {
+	tmp.qcRewards = {}
+	for (var c = 1; c <= 8; c++) tmp.qcRewards[c] = qcRewards.effects[c](QCIntensity(c))
+}
+
+function getQCCost(num) {
+	if (num > 8) return quantumChallenges.costs[tmp.qu.pairedChallenges.order[num - 8][0]] + quantumChallenges.costs[tmp.qu.pairedChallenges.order[num - 8][1]]
+	return quantumChallenges.costs[num]
+}
