@@ -950,7 +950,7 @@ function doQuantumGhostifyResetStuff(implode, bm){
 	updateBreakEternity()
 }
 
-function doGhostifyGhostifyResetStuff(bm){
+function doGhostifyGhostifyResetStuff(bm, force){
 	GHPminpeak = new Decimal(0)
 	GHPminpeakValue = new Decimal(0)
 	document.getElementById("ghostifybtn").style.display = "none"
@@ -1023,7 +1023,7 @@ function ghostifyReset(implode, gain, amount, force) {
 	doInfinityGhostifyResetStuff(implode, bm)
 	doEternityGhostifyResetStuff(implode, bm)	
 	doQuantumGhostifyResetStuff(implode, bm)
-	doGhostifyGhostifyResetStuff(bm)
+	doGhostifyGhostifyResetStuff(bm, force)
 
 	//After that...
 	resetUP()
