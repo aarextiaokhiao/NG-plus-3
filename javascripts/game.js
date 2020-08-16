@@ -8537,7 +8537,7 @@ function doEternityButtonDisplayUpdating(diff){
 									    ? ((player.currentEternityChall!=="" ? "Other challenges await..." : player.eternities>0 ? "" : "Other times await...") + " I need to become Eternal.") : "")
 		if (player.dilation.active && player.dilation.totalTachyonParticles.gte(getDilGain())) document.getElementById("eternitybtnEPGain").innerHTML = "Reach " + shortenMoney(getReqForTPGain()) + " antimatter to gain more Tachyon Particles."
 		else {
-			if ((EPminpeak.l < 9 && EPminpeakType == "logarithm") || (EPminpeakType == 'normal' && EPminpeak.l < 1e9)) {
+			if ((EPminpeak.lt(Decimal.pow(10,9)) && EPminpeakType == "logarithm") || (EPminpeakType == 'normal' && EPminpeak.lt(Decimal.pow(10, 1e9)))) {
 				document.getElementById("eternitybtnEPGain").innerHTML = ((player.eternities > 0 && (player.currentEternityChall==""||player.options.theme=="Aarex's Modifications"))
 											  ? "Gain <b>"+(player.dilation.active?shortenMoney(getDilGain().sub(player.dilation.totalTachyonParticles)):shortenDimensions(gainedEternityPoints()))+"</b> "+(player.dilation.active?"Tachyon particles.":tmp.be?"EP and <b>"+shortenDimensions(getEMGain())+"</b> Eternal Matter.":"Eternity points.") : "")
 			} else {
@@ -8562,8 +8562,8 @@ function doQuantumButtonDisplayUpdating(diff){
     	if (quantumed && isQuantumReached()) {
         	var bigRipped = !tmp.ngp3 ? false : tmp.qu.bigRip.active
         	if (!bigRipped) {
-            		currentQKmin = quarkGain().dividedBy(tmp.qu.time/600)
-            		if (currentQKmin.gt(QKminpeak) && player.meta.antimatter.gte(Decimal.pow(Number.MAX_VALUE,tmp.ngp3?1.2:1))) {
+            		currentQKmin = quarkGain().dividedBy(tmp.qu.time / 600)
+            		if (currentQKmin.gt(QKminpeak) && player.meta.antimatter.gte(Decimal.pow(Number.MAX_VALUE,tmp.ngp3 ? 1.2 : 1))) {
 				QKminpeak = currentQKmin
                 		QKminpeakValue = quarkGain()
                 		tmp.qu.autobuyer.peakTime = 0
@@ -8576,12 +8576,12 @@ function doQuantumButtonDisplayUpdating(diff){
     	if (tmp.ngp3) if (tmp.qu.bigRip.active) showGain = "SS"
     	document.getElementById("quantumbtnQKGain").textContent = showGain == "QK" ? "Gain "+shortenDimensions(quarkGain())+" quark"+(quarkGain().eq(1)?".":"s.") : ""
     	if (showGain == "SS") document.getElementById("quantumbtnQKGain").textContent = "Gain " + shortenDimensions(getSpaceShardsGain()) + " Space Shards."
-	if (showGain == "QK" && currentQKmin.l > 1e5) {
+	if (showGain == "QK" && currentQKmin.gt(Decimal.pow(10,1e5))) {
 		document.getElementById("quantumbtnRate").textContent = ''
 		document.getElementById("quantumbtnPeak").textContent = ''
 	} else {
     		document.getElementById("quantumbtnRate").textContent = showGain == "QK" ? shortenMoney(currentQKmin)+" QK/min" : ""
-    		var showQKPeakValue = QKminpeakValue.lt(1e30)||player.options.theme=="Aarex's Modifications"
+    		var showQKPeakValue = QKminpeakValue.lt(1e30) || player.options.theme=="Aarex's Modifications"
     		document.getElementById("quantumbtnPeak").textContent = showGain == "QK" ? (showQKPeakValue ? "" : "Peaked at ") + shortenMoney(QKminpeak)+" QK/min" + (showQKPeakValue ? " at " + shortenDimensions(QKminpeakValue) + " QK" : "") : ""
 	}
 }
@@ -8589,7 +8589,7 @@ function doQuantumButtonDisplayUpdating(diff){
 function doGhostifyButtonDisplayUpdating(diff){
 	var currentGHPmin = new Decimal(0)
 	if (ghostified && bigRipped) {
-            	currentGHPmin = getGHPGain().dividedBy(player.ghostify.time/600)
+            	currentGHPmin = getGHPGain().dividedBy(player.ghostify.time / 600)
 		if (currentGHPmin.gt(GHPminpeak)) {
 			GHPminpeak = currentGHPmin
 			GHPminpeakValue = getGHPGain()
@@ -8601,14 +8601,14 @@ function doGhostifyButtonDisplayUpdating(diff){
     	if (hasBosonicUpg(15)) ghostifyGains.push(getFullExpansion(getGhostifiedGain()) + " Ghostifies")
     	document.getElementById("ghostifybtnFlavor").textContent = ghostifyGains.length > 1 ? "" : (ghostifyGains.length ? "" : "This broken universe will be done... ") + "I need to become a ghost."
     	document.getElementById("GHPGain").textContent = ghostifyGains.length ? "Gain " + ghostifyGains[0] + (ghostifyGains.length > 2 ? ", " + ghostifyGains[1] + "," : "") + (ghostifyGains.length > 1 ? " and " + ghostifyGains[ghostifyGains.length-1] : "") + "." : ""
-    	var showGHPPeakValue = GHPminpeakValue.lt(1e6)||player.options.theme=="Aarex's Modifications"
+    	var showGHPPeakValue = GHPminpeakValue.lt(1e6) || player.options.theme=="Aarex's Modifications"
     	document.getElementById("GHPRate").textContent = ghostifyGains.length == 1 && showGHPPeakValue ? getGHPRate(currentGHPmin) : ""
     	document.getElementById("GHPPeak").textContent = ghostifyGains.length == 1 ? (showGHPPeakValue?"":"Peaked at ")+getGHPRate(GHPminpeak)+(showGHPPeakValue?" at "+shortenDimensions(GHPminpeakValue)+" GhP":"") : ""
 }
 
 function checkMarathon(){
 	if (getDimensionProductionPerSecond(1).gt(player.money) && !player.achievements.includes("r44")) {
-        	Marathon+=player.options.updateRate/1000;
+        	Marathon += player.options.updateRate/1000;
 		if (Marathon >= 30) giveAchievement("Over in 30 seconds");
 	} else {
 		Marathon = 0;
