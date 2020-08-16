@@ -2467,6 +2467,25 @@ function infoScaleDisplay(){
                 	var bc = years-todayYear+1
                 	var since
                 	var sinceYears
+			var dates = [5332e3, 35e5,  258e4, 781e3, 315e3, 
+				     25e4,   195e3, 16e4,  125e3, 7e4, 
+				     67e3,   5e4,   45e3,  4e4,   35e3, 
+				     33e3,   31e3,  29e3,  28e3,  2e4, 
+				     16e3,   15e3,  14e3,  11600, 1e4,
+				     8e3,    6e3,   5e3,   4e3,   3200,
+				     3000,   2600,  2500,  2300,  1800,
+				     1400,   1175,  800,   753,   653,
+				     539,    356,   200,   4,     0]
+			var events = ["start of Pliocene epoch", "birthdate of Lucy (typical Australopithicus afarensis female)", "Quaternary period", "Calabrian age", "Homo sapiens",
+				      "Homo neanderthalensis", "emergence of anatomically modern humans", "Homo sapiens idaltu", "peak of Eemian interglacial period", "earliest abstract/symbolic art",
+				      "Upper Paleolithic", "Late Stone Age", "European early modern humans", "first human settlement", "oldest known figurative art",
+				      "oldest known domesticated dog", "Last Glacial Maximum", "oldest ovens", "oldest known twisted rope", "oldest human permanent settlement (hamlet considering built of rocks and of mammoth bones)",
+				      "rise of Kerberan culture", "colonization of North America", "domestication of the pig", "prehistoric warfare", "Holocene",
+				      "death of other human breeds", "agricultural revolution", "farmers arrived in Europe", "first metal tools", "first horse",
+				      "Sumerian cuneiform writing system", "union of Egypt", "rise of Maya", "extinct of mammoths", "rise of Akkadian Empire",
+				      "first alphabetic writing", "rise of Olmec civilization", "end of bronze age", "rise of Greek city-states", "rise of Rome",
+				      "rise of Persian Empire", "fall of Babylonian Empire", "birth of Alexander the Great", "the first paper", "birth of Jesus Christ"]
+				      
                 	if (bc > 5332e3) {}
                 	else if (bc > 35e5) {
                     		since = "start of Pliocene epoch"
@@ -2573,10 +2592,10 @@ function infoScaleDisplay(){
                 	} else if (bc > 1800) {
                     		since = "rise of Akkadian Empire"
                     		sinceYears = 2300 - bc
-                	} else if (bc > 1175) {
+                	} else if (bc > 1400) {
                     		since = "first alphabetic writing"
                     		sinceYears = 1800 - bc
-                	} else if (bc > 1400) {
+                	} else if (bc > 1175) {
                     		since = "rise of Olmec civilization"
                     		sinceYears = 1400 - bc
                 	} else if (bc > 800) {
