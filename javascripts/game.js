@@ -2422,27 +2422,27 @@ function infinityUpgradesDisplay(){
         document.getElementById("infi22").innerHTML = "Second and Seventh Dimensions gain a multiplier based on infinitied stat<br>Currently: " + formatValue(player.options.notation, dimMults(), 1, 1) + "x<br>Cost: 1 IP"
         document.getElementById("infi23").innerHTML = "Fourth and Fifth Dimensions gain a multiplier based on infinitied stat<br>Currently: " + formatValue(player.options.notation, dimMults(), 1, 1) + "x<br>Cost: 1 IP"
         document.getElementById("infi31").innerHTML = "Normal dimensions gain a multiplier based on time spent in current infinity<br>Currently: " + shorten(infUpg13Pow()) + "x<br>Cost: 3 IP"
-	var infi32middle = player.infinityPoints.l < 1e10 ? "<br>Currently: " + formatValue(player.options.notation, getUnspentBonus(), 2, 2) + "x" : ""
+	var infi32middle = player.infinityPoints.lt(Decimal.pow(10,1e10)) ? "<br>Currently: " + formatValue(player.options.notation, getUnspentBonus(), 2, 2) + "x" : ""
         document.getElementById("infi32").innerHTML = "Multiplier for unspent Infinity Points on 1st Dimension" + infi32middle + "<br>Cost: 5 IP"
 }
 
 function preBreakUpgradeDisplay(){
 	if (canBuyIPMult()) document.getElementById("infiMult").className = "infinimultbtn"
         else document.getElementById("infiMult").className = "infinistorebtnlocked"
-	var infiMultEnding = player.infinityPoints.l < 1e10 ? "<br>currently: " + shorten(getIPMult()) + "x<br>Cost: " + shortenCosts(player.infMultCost) + " IP" : ""
+	var infiMultEnding = player.infinityPoints.lt(Decimal.pow(10,1e10)) ? "<br>currently: " + shorten(getIPMult()) + "x<br>Cost: " + shortenCosts(player.infMultCost) + " IP" : ""
         document.getElementById("infiMult").innerHTML = "Multiply infinity points from all sources by " + (Math.round(getIPMultPower() * 100) / 100) + infiMultEnding
         document.getElementById("nextset").textContent = ""
-        if (player.infinityUpgradesRespecced!=undefined) {
+        if (player.infinityUpgradesRespecced != undefined) {
 		infinityRespecedInfinityDisplay()
         } else {
            	infinityUpgradesDisplay()
                 if (player.galacticSacrifice) {
-                    	var base=player.tickspeedBoosts==undefined?2:1
-                    	if (player.aarexModifications.newGameExpVersion) base*=10
+                    	var base = player.tickspeedBoosts == undefined ? 2 : 1
+                    	if (player.aarexModifications.newGameExpVersion) base *= 10
                     	document.getElementById("infi21").innerHTML = "Increase the multiplier for buying 10 Dimensions based on infinitied stat<br>"+base+"x -> "+(infUpg12Pow()*base).toPrecision(4)+"x<br>Cost: 1 IP"
                     	document.getElementById("infi33").innerHTML = "Dimension boosts are stronger based on infinity points<br>Currently: " + (1.2 + 0.05 * player.infinityPoints.max(1).log(10)).toFixed(2) + "x<br>Cost: 7 IP"
                 }
-		var infi34Middle = player.infinityPoints.l < 1e10 ? "<br>Currently: " + shortenDimensions(getIPMult()) + " every " + timeDisplay(player.bestInfinityTime * 10) : ""
+		var infi34Middle = player.infinityPoints.lt(Decimal.pow(10,1e10)) ? "<br>Currently: " + shortenDimensions(getIPMult()) + " every " + timeDisplay(player.bestInfinityTime * 10) : ""
                 document.getElementById("infi34").innerHTML = "Infinity Point generation based on fastest infinity " + infi34Middle + "<br>Cost: 10 IP"
 	}
         document.getElementById("lockedset1").style.display = "none"
@@ -3222,18 +3222,18 @@ function replicantiDisplay() {
 		document.getElementById("replicantiamount").textContent = shortenDimensions(player.replicanti.amount)
 		document.getElementById("replicantimult").textContent = shorten(getIDReplMult())
 		
-		var chanceDisplayEnding = (isChanceAffordable() && player.infinityPoints.l < 1e10 ? "<br>+1% Cost: " + shortenCosts(player.replicanti.chanceCost) + " IP" : "")
+		var chanceDisplayEnding = (isChanceAffordable() && player.infinityPoints.lt(Decimal.pow(10,1e10)) ? "<br>+1% Cost: " + shortenCosts(player.replicanti.chanceCost) + " IP" : "")
 		document.getElementById("replicantichance").innerHTML = "Replicate "+(tmp.rep.freq?"amount: "+shorten(tmp.rep.freq)+"x":"chance: "+getFullExpansion(chance.gt(1e12)?chance:Math.round(chance.toNumber()))+"%") + chanceDisplayEnding
 		document.getElementById("replicantiinterval").innerHTML = "Interval: "+timeDisplayShort(Decimal.div(tmp.rep.interval, 100), true, 3) + (isIntervalAffordable() ? "<br>-> "+timeDisplayShort(Decimal.times(tmp.rep.interval, 9e-3), true, 3)+" Cost: "+shortenCosts(player.replicanti.intervalCost)+" IP" : "")
 		var replGalName = player.replicanti.gal < 3e3 ? "Max Replicanti galaxies" : (player.replicanti.gal < 58200 ? "Distant" : "Further") + " Replicated Galaxies"
-		var replGalCostPortion = player.infinityPoints.l < 1e10 ? "<br>+1 Cost: "+shortenCosts(getRGCost())+" IP" : ""
+		var replGalCostPortion = player.infinityPoints.lt(Decimal.pow(10,1e10)) ? "<br>+1 Cost: "+shortenCosts(getRGCost())+" IP" : ""
 		document.getElementById("replicantimax").innerHTML = replGalName + ": " + getFullExpansion(player.replicanti.gal) + (replGalOver > 1 ? "+" + getFullExpansion(replGalOver) : "") + replGalCostPortion
 		document.getElementById("replicantireset").innerHTML = (!tmp.ngp3l && player.achievements.includes("ng3p67") ? "Get " : player.achievements.includes("ngpp16") ? "Divide replicanti amount by " + shorten(Number.MAX_VALUE) + ", but get " : "Reset replicanti amount, but get ")+"1 free galaxy.<br>" + getFullExpansion(player.replicanti.galaxies) + (extraReplGalaxies ? "+" + getFullExpansion(extraReplGalaxies) : "") + " replicated galax" + (getTotalRG() == 1 ? "y" : "ies") + " created."
 		document.getElementById("replicantiapprox").innerHTML = tmp.ngp3 && player.dilation.upgrades.includes("ngpp1") && player.timestudy.studies.includes(192) && player.replicanti.amount.gte(Number.MAX_VALUE) && (!player.aarexModifications.nguspV || player.aarexModifications.nguepV) ? 
 			"Replicanti increases by " + (tmp.rep.est < Math.log10(2) ? "x2.00 per " + timeDisplayShort(Math.log10(2) / tmp.rep.est * 10) : (tmp.rep.est.gte(1e4) ? shorten(tmp.rep.est) + " OoMs" : "x" + shorten(Decimal.pow(10, tmp.rep.est.toNumber()))) + " per second") + ".<br>" +
 			"Replicate interval slows down by " + tmp.rep.speeds.inc.toFixed(3) + "x per " + getFullExpansion(Math.floor(tmp.rep.speeds.exp)) + " OoMs.<br>" +
 			"(2x slower per " + getFullExpansion(Math.floor(tmp.rep.speeds.exp * Math.log10(2) / Math.log10(tmp.rep.speeds.inc))) + " OoMs)" :
-			"Approximately "+ timeDisplay(Math.max((Math.log(Number.MAX_VALUE) - tmp.rep.ln) / tmp.rep.est.toNumber(), 0)*10) + " Until Infinite Replicanti"
+			"Approximately "+ timeDisplay(Math.max((Math.log(Number.MAX_VALUE) - tmp.rep.ln) / tmp.rep.est.toNumber(), 0) * 10) + " Until Infinite Replicanti"
 
 		document.getElementById("replicantichance").className = (player.infinityPoints.gte(player.replicanti.chanceCost) && isChanceAffordable()) ? "storebtn" : "unavailablebtn"
 		document.getElementById("replicantiinterval").className = (player.infinityPoints.gte(player.replicanti.intervalCost) && isIntervalAffordable()) ? "storebtn" : "unavailablebtn"
@@ -3247,28 +3247,28 @@ function replicantiDisplay() {
 }
 
 function initialTimeStudyDisplay(){
-	document.getElementById("11desc").textContent = "Currently: "+shortenMoney(tsMults[11]())+"x"
-        document.getElementById("32desc").textContent = "You gain "+getFullExpansion(tsMults[32]())+"x more infinitied stat (based on dimension boosts)"
-        document.getElementById("51desc").textContent = "You gain "+shortenCosts(player.aarexModifications.newGameExpVersion ? 1e30 : 1e15)+"x more IP"
-        document.getElementById("71desc").textContent = "Currently: "+shortenMoney(tmp.sacPow.pow(0.25).max(1).min("1e210000"))+"x"
-        document.getElementById("72desc").textContent = "Currently: "+shortenMoney(tmp.sacPow.pow(0.04).max(1).min("1e30000"))+"x"
-        document.getElementById("73desc").textContent = "Currently: "+shortenMoney(tmp.sacPow.pow(0.005).max(1).min("1e1300"))+"x"
-        document.getElementById("82desc").textContent = "Currently: "+shortenMoney(Decimal.pow(1.0000109, Decimal.pow(player.resets, 2)).min(player.meta==undefined?1/0:'1e80000'))+"x"
-        document.getElementById("91desc").textContent = "Currently: "+shortenMoney(Decimal.pow(10, Math.min(player.thisEternity, 18000)/60))+"x"
-        document.getElementById("92desc").textContent = "Currently: "+shortenMoney(Decimal.pow(2, 600/Math.max(player.bestEternity, 20)))+"x"
-        document.getElementById("93desc").textContent = "Currently: "+shortenMoney(Decimal.pow(player.totalTickGained, 0.25).max(1))+"x"
-        document.getElementById("121desc").textContent = "Currently: "+((253 - averageEp.dividedBy(player.epmult).dividedBy(10).min(248).max(3))/5).toFixed(1)+"x"
-        document.getElementById("123desc").textContent = "Currently: "+Math.sqrt(1.39*player.thisEternity/10).toFixed(1)+"x"
-        document.getElementById("141desc").textContent = "Currently: "+shortenMoney(new Decimal(1e45).dividedBy(Decimal.pow(15, Math.log(player.thisInfinityTime)*Math.pow(player.thisInfinityTime, 0.125))).max(1))+"x"
-        document.getElementById("142desc").textContent = "You gain "+shortenCosts(1e25)+"x more IP"
-        document.getElementById("143desc").textContent = "Currently: "+shortenMoney(Decimal.pow(15, Math.log(player.thisInfinityTime)*Math.pow(player.thisInfinityTime, 0.125)))+"x"
-        document.getElementById("151desc").textContent = shortenCosts(1e4)+"x multiplier on all Time dimensions"
-        document.getElementById("161desc").textContent = shortenCosts(Decimal.pow(10,(player.galacticSacrifice?6660:616)*(player.aarexModifications.newGameExpVersion?5:1)))+"x multiplier on all normal dimensions"
-        document.getElementById("162desc").textContent = shortenCosts(Decimal.pow(10,(player.galacticSacrifice?234:11)*(player.aarexModifications.newGameExpVersion?5:1)))+"x multiplier on all Infinity dimensions"
-        document.getElementById("192desc").textContent = "You can get beyond "+shortenMoney(Number.MAX_VALUE)+" replicantis, but the interval is increased the more you have"
-        document.getElementById("193desc").textContent = "Currently: "+shortenMoney(Decimal.pow(1.03, getEternitied()).min("1e13000"))+"x"
-        document.getElementById("212desc").textContent = "Currently: "+((tsMults[212]()-1)*100).toFixed(2)+"%"
-        document.getElementById("214desc").textContent = "Currently: "+shortenMoney(((tmp.sacPow.pow(8)).min("1e46000").times(tmp.sacPow.pow(1.1)).div(tmp.sacPow)).max(1).min(new Decimal("1e125000")))+"x"
+	document.getElementById("11desc").textContent = "Currently: " + shortenMoney(tsMults[11]()) + "x"
+        document.getElementById("32desc").textContent = "You gain " + getFullExpansion(tsMults[32]()) + "x more infinitied stat (based on dimension boosts)"
+        document.getElementById("51desc").textContent = "You gain " + shortenCosts(player.aarexModifications.newGameExpVersion ? 1e30 : 1e15) + "x more IP"
+        document.getElementById("71desc").textContent = "Currently: " + shortenMoney(tmp.sacPow.pow(0.25).max(1).min("1e210000")) + "x"
+        document.getElementById("72desc").textContent = "Currently: " + shortenMoney(tmp.sacPow.pow(0.04).max(1).min("1e30000")) + "x"
+        document.getElementById("73desc").textContent = "Currently: " + shortenMoney(tmp.sacPow.pow(0.005).max(1).min("1e1300")) + "x"
+        document.getElementById("82desc").textContent = "Currently: " + shortenMoney(Decimal.pow(1.0000109, Decimal.pow(player.resets, 2)).min(player.meta==undefined?1/0:'1e80000')) + "x"
+        document.getElementById("91desc").textContent = "Currently: " + shortenMoney(Decimal.pow(10, Math.min(player.thisEternity, 18000)/60)) + "x"
+        document.getElementById("92desc").textContent = "Currently: " + shortenMoney(Decimal.pow(2, 600/Math.max(player.bestEternity, 20))) + "x"
+        document.getElementById("93desc").textContent = "Currently: " +  shortenMoney(Decimal.pow(player.totalTickGained, 0.25).max(1)) + "x"
+        document.getElementById("121desc").textContent = "Currently: " + ((253 - averageEp.dividedBy(player.epmult).dividedBy(10).min(248).max(3))/5).toFixed(1) + "x"
+        document.getElementById("123desc").textContent = "Currently: " + Math.sqrt(1.39*player.thisEternity/10).toFixed(1) + "x"
+        document.getElementById("141desc").textContent = "Currently: " + shortenMoney(new Decimal(1e45).dividedBy(Decimal.pow(15, Math.log(player.thisInfinityTime)*Math.pow(player.thisInfinityTime, 0.125))).max(1)) + "x"
+        document.getElementById("142desc").textContent = "You gain " + shortenCosts(1e25) + "x more IP"
+        document.getElementById("143desc").textContent = "Currently: " + shortenMoney(Decimal.pow(15, Math.log(player.thisInfinityTime)*Math.pow(player.thisInfinityTime, 0.125))) + "x"
+        document.getElementById("151desc").textContent = shortenCosts(1e4) + "x multiplier on all Time dimensions"
+        document.getElementById("161desc").textContent = shortenCosts(Decimal.pow(10, (player.galacticSacrifice ? 6660 : 616) *  ( player.aarexModifications.newGameExpVersion ? 5 : 1))) + "x multiplier on all normal dimensions"
+        document.getElementById("162desc").textContent = shortenCosts(Decimal.pow(10, (player.galacticSacrifice ? 234 : 11) * (player.aarexModifications.newGameExpVersion ? 5 : 1))) + "x multiplier on all Infinity dimensions"
+        document.getElementById("192desc").textContent = "You can get beyond " + shortenMoney(Number.MAX_VALUE) + " replicantis, but the interval is increased the more you have"
+        document.getElementById("193desc").textContent = "Currently: " + shortenMoney(Decimal.pow(1.03, Decimal.min(1e7, getEternitied())).min("1e13000")) + "x"
+        document.getElementById("212desc").textContent = "Currently: " + ((tsMults[212]() - 1) * 100).toFixed(2) + "%"
+        document.getElementById("214desc").textContent = "Currently: " + shortenMoney(((tmp.sacPow.pow(8)).min("1e46000").times(tmp.sacPow.pow(1.1)).div(tmp.sacPow)).max(1).min(new Decimal("1e125000"))) + "x"
         document.getElementById("metaCost").textContent = shortenCosts(getMetaUnlCost());
 }
 
@@ -3302,9 +3302,9 @@ function eternityChallengeUnlockDisplay(){
 function mainTimeStudyDisplay(){
 	initialTimeStudyDisplay()
 	eternityChallengeUnlockDisplay()
-	document.getElementById("dilstudy1").innerHTML = "Unlock time dilation"+(player.dilation.studies.includes(1)?"":"<span>Requirement: 5 EC11 and EC12 completions and "+getFullExpansion(getDilationTotalTTReq())+" total theorems")+"<span>Cost: "+getFullExpansion(5e3)+" Time Theorems"
+	document.getElementById("dilstudy1").innerHTML = "Unlock time dilation" + (player.dilation.studies.includes(1) ? "" : "<span>Requirement: 5 EC11 and EC12 completions and " + getFullExpansion(getDilationTotalTTReq()) + " total theorems")+"<span>Cost: " + getFullExpansion(5e3) + " Time Theorems"
 	if (tmp.ngp3) {
-		var ts232display = tmp.ts232*100-100
+		var ts232display = tmp.ts232 * 100 - 100
 		document.getElementById("221desc").textContent = "Currently: "+shorten(Decimal.pow(1.0025, player.resets))+"x"
 		document.getElementById("227desc").textContent = "Currently: "+shorten(Math.pow(tmp.sacPow.max(10).log10(), 10))+"x"
 		document.getElementById("231desc").textContent = "Currently: "+shorten(Decimal.pow(Math.max(player.resets, 1), 0.3))+"x more power"
@@ -3359,9 +3359,9 @@ function upgradeReplicantiChance() {
 	if (player.infinityPoints.gte(player.replicanti.chanceCost) && isChanceAffordable() && player.eterc8repl > 0) {
 		if (ghostified) if (player.ghostify.milestones < 11) player.infinityPoints = player.infinityPoints.minus(player.replicanti.chanceCost)
 		else player.infinityPoints = player.infinityPoints.minus(player.replicanti.chanceCost)
-		player.replicanti.chance = Math.round(player.replicanti.chance*100+1)/100
-		if (player.currentEternityChall == "eterc8") player.eterc8repl-=1
-		document.getElementById("eterc8repl").textContent = "You have "+player.eterc8repl+" purchases left."
+		player.replicanti.chance = Math.round(player.replicanti.chance * 100 + 1) / 100
+		if (player.currentEternityChall == "eterc8") player.eterc8repl -= 1
+		document.getElementById("eterc8repl").textContent = "You have " + player.eterc8repl + " purchases left."
 		player.replicanti.chanceCost = player.replicanti.chanceCost.times(1e15)
 	}
 }
@@ -3392,7 +3392,7 @@ function isIntervalAffordable() {
 	return player.replicanti.interval > (player.timestudy.studies.includes(22) || player.boughtDims ? 1 : 50)
 }
 
-function getRGCost(offset=0, costChange) {
+function getRGCost(offset = 0, costChange) {
 	let ret = player.replicanti.galCost
 	if (offset > 0) {
 		if (inQC(5)) return player.replicanti.galCost.pow(Math.pow(1.2, offset))
@@ -3452,8 +3452,8 @@ function canAutoReplicatedGalaxy() {
 }
 
 function getMaxRG() {
-	let ret=player.replicanti.gal
-	if (player.timestudy.studies.includes(131)) ret+=Math.floor(ret*0.5)
+	let ret = player.replicanti.gal
+	if (player.timestudy.studies.includes(131)) ret += Math.floor(ret * 0.5)
 	return ret
 }
 
