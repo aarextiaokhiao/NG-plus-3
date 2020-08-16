@@ -6986,7 +6986,7 @@ function buyDilationUpgrade(pos, max, isId) {
 }
 
 function getPassiveTTGen() {
-	if (player.dilation.tachyonParticles.l > 3333) return 1e202
+	if (player.dilation.tachyonParticles.plus(player.dilation.bestTP).gt(Decimal.pow(10,3333))) return 1e202
 	let r = getTTGenPart(player.dilation.tachyonParticles)
 	if (player.achievements.includes("ng3p18") && !tmp.qu.bigRip.active) r += getTTGenPart(player.dilation.bestTP) / 50
 	if (tmp.ngex) r *= .8
@@ -6996,6 +6996,7 @@ function getPassiveTTGen() {
 }
 
 function getTTGenPart(x) {
+	if (!x) return new Decimal(0)
 	x = x.max(1).log10()
 	let y = player.aarexModifications.ngudpV && !player.aarexModifications.nguepV ? 73 : 80
 	if (x > y) x = Math.sqrt((x - y + 5) * 5) + y - 5
