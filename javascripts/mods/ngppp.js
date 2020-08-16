@@ -224,42 +224,6 @@ function toggleRG4Upg() {
 	document.getElementById('rg4toggle').textContent = "Toggle: " + (tmp.qu.rg4 ? "ON":"OFF")
 }
 
-function maxBuyLimit() {
-	var min=tmp.qu.gluons.rg.min(tmp.qu.gluons.gb).min(tmp.qu.gluons.br)
-	if (!min.gte(tmp.qu.replicants.limitCost) && isLimitUpgAffordable()) return
-	for (var i = 0; i < (player.masterystudies.includes("d11") ? 3 : 1); i++) {
-		if (i == 1) {
-			var toAdd = Math.floor(min.div(tmp.qu.replicants.limitCost).log(200) / 9)
-			if (toAdd) {
-				var toSpend = Decimal.pow(200, toAdd * 9).times(tmp.qu.replicants.limitCost)
-				tmp.qu.gluons.rg = tmp.qu.gluons.rg.sub(tmp.qu.gluons.rg.min(toSpend))
-				tmp.qu.gluons.gb = tmp.qu.gluons.gb.sub(tmp.qu.gluons.gb.min(toSpend))
-				tmp.qu.gluons.br = tmp.qu.gluons.br.sub(tmp.qu.gluons.br.min(toSpend))
-				tmp.qu.replicants.limitCost = tmp.qu.replicants.limitCost.times(Decimal.pow(200, toAdd * 9))
-				tmp.qu.replicants.limit += toAdd * 10
-			}
-		} else {
-			var limit = tmp.qu.replicants.limit
-			var toAdd = Math.max(Math.min(Math.floor(min.div(tmp.qu.replicants.limitCost).times(199).add(1).log(200)), 10 - limit % 10), 0)
-			var toSpend = Decimal.pow(200,toAdd).sub(1).div(199).round().times(tmp.qu.replicants.limitCost)
-			tmp.qu.gluons.rg = tmp.qu.gluons.rg.sub(tmp.qu.gluons.rg.min(toSpend))
-			tmp.qu.gluons.gb = tmp.qu.gluons.gb.sub(tmp.qu.gluons.gb.min(toSpend))
-			tmp.qu.gluons.br = tmp.qu.gluons.br.sub(tmp.qu.gluons.br.min(toSpend))
-			tmp.qu.replicants.limitCost = tmp.qu.replicants.limitCost.times(Decimal.pow(200, Math.max(Math.min(toAdd, 9 - limit % 10), 0)))
-			tmp.qu.replicants.limit += toAdd
-		}
-		var dimAdd = Math.max(Math.min(Math.ceil(tmp.qu.replicants.limit / 10 - 1), 8 - tmp.qu.replicants.limitDim), 0)
-		if (dimAdd > 0) {
-			tmp.qu.replicants.limit -= dimAdd * 10
-			tmp.qu.replicants.limitDim += dimAdd
-		}
-		min = tmp.qu.gluons.rg.min(tmp.qu.gluons.gb).min(tmp.qu.gluons.br)
-		if (!min.gte(tmp.qu.replicants.limitCost) && isLimitUpgAffordable()) break
-	}
-	updateGluonsTabOnUpdate()
-	updateReplicants()
-}
-
 var nanospeed = 1
 
 
