@@ -98,6 +98,7 @@ function getDimensionFinalMultiplier(tier) {
 	if (player.currentChallenge == "postc4" && player.tickspeedBoosts != undefined) mult = mult.sqrt()
 
 	mult = dilates(mult.max(1), 1)
+	if (tier == 1 && player.galacticSacrifice) mult = mult.times(getNewB60Mult())
 	if (player.dilation.upgrades.includes(6)) mult = mult.times(player.dilation.dilatedTime.max(1).pow(308))
 	if (useHigherNDReplMult) mult = mult.times(tmp.nrm)
 	if (player.masterystudies != undefined && player.dilation.active) mult = mult.pow(getNanofieldRewardEffect(5))
