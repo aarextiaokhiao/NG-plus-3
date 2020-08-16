@@ -160,12 +160,13 @@ function doQuantumResetStuff(bigRip, challid){
 	player.eterc8repl = 40
 	player.dimlife = true
 	player.dead = true
+	if (!player.dilation.bestTP) player.dilation.bestTP = player.dilation.tachyonParticles
 	player.dilation = {
 		studies: bigRip ? (tmp.qu.bigRip.upgrades.includes(12) ? [1,2,3,4,5,6] : tmp.qu.bigRip.upgrades.includes(10) ? [1] : []) : isRewardEnabled(4) ? (speedrunMilestonesReached > 5 ? [1,2,3,4,5,6] : [1]) : [],
 		active: false,
 		tachyonParticles: (((player.achievements.includes("ng3p37") && (!bigRip || tmp.qu.bigRip.upgrades.includes(11))) || player.achievements.includes("ng3p71")) && !inQCModifier("ad")) ? player.dilation.bestTP.pow((player.ghostify.milestones > 15 && (!bigRip || player.achievements.includes("ng3p71"))) || (!challid && player.ghostify.milestones > 3) ? 1 : 0.5) : new Decimal(0),
-		dilatedTime: new Decimal(speedrunMilestonesReached>21 && isRewardEnabled(4) && !inQCModifier("ad") && !bigRip?1e100:0),
-		bestTP: player.dilation.bestTP,
+		dilatedTime: new Decimal(speedrunMilestonesReached > 21 && isRewardEnabled(4) && !inQCModifier("ad") && !bigRip ? 1e100 : 0),
+		bestTP: Decimal.max(player.dilation.bestTP || 0, player.dilation.tachyonParticles),
 		bestTPOverGhostifies: player.dilation.bestTPOverGhostifies,
 		nextThreshold: new Decimal(1000),
 		freeGalaxies: 0,
@@ -594,7 +595,7 @@ function getBigRipOnGhostifyData(nBRU){
 	}
 }
 
-function getBreakEternityDataOnGhostify(nBEU){
+function getBreakEternityDataOnGhostify(nBEU, bm){
 	return {
 		unlocked: bm > 14,
 		break: bm > 14 ? tmp.qu.breakEternity.break : false,
@@ -686,7 +687,7 @@ function getQuantumOnGhostifyData(bm, nBRU, nBEU){
 		reachedInfQK: bm,
 		tod: getToDOnGhostifyData(),
 		bigRip: getBigRipOnGhostifyData(nBRU),
-		breakEternity: getBreakEternityDataOnGhostify(nBEU),
+		breakEternity: getBreakEternityDataOnGhostify(nBEU, bm),
 		notrelative: true,
 		wasted: true,
 		producedGluons: 0,
@@ -820,6 +821,7 @@ function doGhostifyResetStuff(implode, gain, amount, force, bulk, nBRU, nBEU){
 		times: 0,
 		tachyonParticles: player.ghostify.milestones > 15 ? player.dilation.bestTPOverGhostifies : new Decimal(0),
 		dilatedTime: new Decimal(bm ? 1e100 : 0),
+		bestTP: player.ghostify.milestones > 15 ? player.dilation.bestTPOverGhostifies : new Decimal(0),
 		bestTPOverGhostifies: player.dilation.bestTPOverGhostifies,
 		nextThreshold: new Decimal(1000),
 		freeGalaxies: 0,
