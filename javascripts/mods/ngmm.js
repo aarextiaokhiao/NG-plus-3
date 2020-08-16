@@ -437,6 +437,11 @@ document.getElementById("postinfi63").onclick = function() {
     buyInfinityUpgrade("postinfi63",new Decimal("1e2000"));
 }
 
+function getNewB60Mult(){
+	let gal = player.galaxies-95
+	return Decimal.pow(10,120*gal).max(1)
+}
+
 function getB60Mult() {
 	let gal = player.galaxies
 	if (gal >= 295 && getEternitied()>0) return Decimal.pow(3,200).times(Decimal.pow(2.5,gal-295))
