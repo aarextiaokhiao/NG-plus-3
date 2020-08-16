@@ -950,7 +950,7 @@ function doQuantumGhostifyResetStuff(implode, bm){
 	updateBreakEternity()
 }
 
-function doGhostifyGhostifyResetStuff(){
+function doGhostifyGhostifyResetStuff(bm){
 	GHPminpeak = new Decimal(0)
 	GHPminpeakValue = new Decimal(0)
 	document.getElementById("ghostifybtn").style.display = "none"
@@ -1008,7 +1008,7 @@ function ghostifyReset(implode, gain, amount, force) {
 		if (nBRU.includes(u + 1) || tmp.qu.bigRip.upgrades.includes(u)) nBRU.push(u)
 		if (u < 11 && u != 7 && (nBEU.includes(u + 1) || tmp.qu.breakEternity.upgrades.includes(u))) nBEU.push(u)
 	}
-	if (bm > 2) for (var c=1;c<9;c++) tmp.qu.electrons.mult += .5-QCIntensity(c)*.25
+	if (bm > 2) for (var c=1;c<9;c++) tmp.qu.electrons.mult += .5 - QCIntensity(c) * .25
 	if (bm > 6 && !force && player.achievements.includes("ng3p68")) gainNeutrinos(Decimal.times(2e3 * tmp.qu.bigRip.bestGals, bulk), "all")
 	if (bm > 15) giveAchievement("I rather oppose the theory of everything")
 	if (player.eternityPoints.e>=22e4&&player.ghostify.under) giveAchievement("Underchallenged")
@@ -1023,7 +1023,7 @@ function ghostifyReset(implode, gain, amount, force) {
 	doInfinityGhostifyResetStuff(implode, bm)
 	doEternityGhostifyResetStuff(implode, bm)	
 	doQuantumGhostifyResetStuff(implode, bm)
-	doGhostifyGhostifyResetStuff()
+	doGhostifyGhostifyResetStuff(bm)
 
 	//After that...
 	resetUP()
