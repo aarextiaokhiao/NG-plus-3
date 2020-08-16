@@ -4275,20 +4275,20 @@ function gainedEternityPoints() {
 
 
 function setAchieveTooltip() {
-    // Original Antimatter Dimensions achievements
-    let alot = document.getElementById("100 antimatter is a lot")
-    let ndial = document.getElementById("The 9th Dimension is a lie");
-    let apocAchieve = document.getElementById("Antimatter Apocalypse");
-    let gal = document.getElementById("You got past The Big Wall")
-    let doubleGal = document.getElementById("Double Galaxy");
-    let claustrophobic = document.getElementById("Claustrophobic");
-    let noPointAchieve = document.getElementById("There's no point in doing that");
-    let sanic = document.getElementById("Supersanic")
-    let forgotAchieve = document.getElementById("I forgot to nerf that")
-    let infinity = document.getElementById("To infinity!")
-    let nerf = document.getElementById("I forgot to nerf that")
-    let didnt = document.getElementById("You didn't need it anyway")
-    let fast = document.getElementById("That's fast!");
+	// Original Antimatter Dimensions achievements
+	let alot = document.getElementById("100 antimatter is a lot")
+	let ndial = document.getElementById("The 9th Dimension is a lie");
+	let apocAchieve = document.getElementById("Antimatter Apocalypse");
+	let gal = document.getElementById("You got past The Big Wall")
+	let doubleGal = document.getElementById("Double Galaxy");
+	let claustrophobic = document.getElementById("Claustrophobic");
+	let noPointAchieve = document.getElementById("There's no point in doing that");
+	let sanic = document.getElementById("Supersanic")
+	let forgotAchieve = document.getElementById("I forgot to nerf that")
+	let infinity = document.getElementById("To infinity!")
+	let nerf = document.getElementById("I forgot to nerf that")
+	let didnt = document.getElementById("You didn't need it anyway")
+	let fast = document.getElementById("That's fast!");
     let lot = document.getElementById("That's a lot of infinites");
     let cancer = document.getElementById("Spreading Cancer");
     let zero = document.getElementById("Zero Deaths");
@@ -4345,6 +4345,7 @@ function setAchieveTooltip() {
     let thecap = document.getElementById("The cap is a million, not a trillion")
     let neverenough = document.getElementById("It will never be enough")
     let harmony = document.getElementById("Universal harmony")
+    let twomillion = document.getElementById("2 MILLION INFINITIES")
     
 	let thisisReward = [] // for the achievement "This is what I have to do to get rid of you."
 	if (!tmp.ngp3l) {
@@ -4408,7 +4409,8 @@ function setAchieveTooltip() {
 	IPBelongs.setAttribute('ach-tooltip', "Big Crunch for "+shortenCosts(1e150)+" IP. Reward: Additional 4x multiplier to IP.")
 	reference.setAttribute('ach-tooltip', "Get a x"+shortenDimensions(Number.MAX_VALUE)+" multiplier in a single sacrifice. Reward: Sacrifices are stronger.")
 	spare.setAttribute('ach-tooltip', "Reach " +formatValue(player.options.notation, new Decimal("1e35000"), 0, 0)+" antimatter. Reward: Dimensions are more powerful the more unspent antimatter you have.");
-
+	twomillion.setAttribute('ach-tooltip', "Infinity 2000000 times. Reward: Infinities more than 5 seconds long give 250 infinitied stat" + (player.galacticSacrifice ? "and you gain an additive +249 infinites per crunch post multipliers" : "") + ".")
+	
 	//ACHIEVEMENT ROW 9
 	speed.setAttribute('ach-tooltip', "Big Crunch for "+shortenCosts(1e200)+" IP in 2 seconds or less. Reward: All dimensions are significantly stronger in the first 5 seconds of an Infinity.")
 	speed2.setAttribute('ach-tooltip', "Big Crunch for "+shortenCosts(1e250)+" IP in 20 seconds or less. Reward: All dimensions are significantly stronger in the first 60 seconds of an Infinity.")
@@ -5676,8 +5678,6 @@ function bigCrunch(autoed) {
         if (player.tickspeedBoosts !== undefined) player.tickspeedBoosts = 0
         var g11MultShown = player.infinitied > 0 || player.eternities !== 0 || quantumed
         
-	
-	doCrunchResetStuff()
 	let infGain
         if (player.currentEternityChall == "eterc4") {
 		infGain = 1
@@ -5687,7 +5687,7 @@ function bigCrunch(autoed) {
 		}
 	} else infGain = getInfinitiedGain()
 	player.infinitied = nA(player.infinitied, infGain)
-        
+	doCrunchResetStuff()
 
         document.getElementById("challengeconfirmation").style.display = "inline-block"
         if (!player.options.retryChallenge) player.currentChallenge = ""
