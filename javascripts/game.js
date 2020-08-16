@@ -5041,7 +5041,7 @@ function gainedInfinityPoints(next) {
     if (isBigRipUpgradeActive(4)) {
       ret = ret.times(player.replicanti.amount.pow(0.34).max(1));
     }
-    if (player.infinityUpgrades.includes("postinfi60") && player.tickspeedBoosts == undefined) {
+    if (player.infinityUpgrades.includes("postinfi60") && player.tickspeedBoosts == undefined && false) {
       ret = ret.times(getB60Mult());
     }
     return ret.floor();
