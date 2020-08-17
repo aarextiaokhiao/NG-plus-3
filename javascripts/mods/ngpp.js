@@ -8,7 +8,7 @@ function getMetaAntimatterStart(bigRip) {
 function getDilationMetaDimensionMultiplier() {
 	let pow = 0.1
 	let div = 1e40
-	if (isNanoEffectUsed("dt_to_ma_exp")) pow = tmp.nf.effects.dt_to_ma_exp
+	if (isNanoEffectUsed("dt_to_ma_exp")) if (tmp.nf.effects.dt_to_ma_exp) pow = tmp.nf.effects.dt_to_ma_exp //this is a quick fix, but we need to fix this bug
 	if (player.aarexModifications.nguspV !== undefined) div = 1e50
 	if (player.aarexModifications.ngudpV && !player.aarexModifications.nguepV) {
 		let l = tmp.qu.colorPowers.b.plus(10).log10()
