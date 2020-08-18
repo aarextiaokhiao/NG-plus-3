@@ -3,7 +3,7 @@ function canUnlockBosonicLab() {
 	let max = getMaximumUnstableQuarks()
 	return (max.decays > 5 || max.quarks.e >= (tmp.ngp3l ? 1e10 : 5e10)) && (tmp.ngp3l || player.ghostify.ghostlyPhotons.enpowerments >= 3)
 }
-
+  
 function updateBLUnlocks() {
 	let unl = player.ghostify.wzb.unl
 	document.getElementById("blUnl").style.display = unl ? "none" : ""
@@ -618,7 +618,7 @@ var bu = {
 		21: "Replace first Nanofield reward with a boost to slow down Dimension Supersonic scaling.",
 		22: "Replace seventh Nanofield reward with a boost to neutrino gain and preon charge.",
 		23: "Assigning gives more colored quarks based on your meta-antimatter.",
-		24: "You produce 1% of Space Shards on Big Rip per second, but Break Eternity upgrades are nerfed.",
+		24: "You produce 1% of Space Shards on Big Rip per second, but Break Eternity upgrades that boost space shard gain are nerfed.",
 		25: "Electrons boost the per-ten Meta Dimensions multiplier.",
 		31: "Bosonic Antimatter boosts all Nanofield rewards.",
 		32: "Every 3rd Light Empowerment after LE7, unlock a new boost until LE25.",
