@@ -412,3 +412,9 @@ function getTreeUpgradeEfficiency(mod) {
 	}
 	return r
 }
+
+function getRDPower(branch) {
+	let x=getRadioactiveDecays(branch)
+	let y=Math.max(x-5,0)
+	return x*25+(Math.pow(y,2)+y)*1.25
+}

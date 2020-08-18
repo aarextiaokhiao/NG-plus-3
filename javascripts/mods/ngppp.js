@@ -1211,15 +1211,15 @@ function changeAutoGhost(o) {
 function rotateAutoUnstable() {
 	var tg=player.ghostify.automatorGhosts[3].on
 	if (player.ghostify.automatorGhosts[4].rotate=="l") {
-		player.ghostify.automatorGhosts[3].on=player.ghostify.automatorGhosts[1].on
-		player.ghostify.automatorGhosts[1].on=player.ghostify.automatorGhosts[2].on
-		player.ghostify.automatorGhosts[2].on=tg
+		player.ghostify.automatorGhosts[3].on = player.ghostify.automatorGhosts[1].on
+		player.ghostify.automatorGhosts[1].on = player.ghostify.automatorGhosts[2].on
+		player.ghostify.automatorGhosts[2].on = tg
 	} else {
-		player.ghostify.automatorGhosts[3].on=player.ghostify.automatorGhosts[2].on
-		player.ghostify.automatorGhosts[2].on=player.ghostify.automatorGhosts[1].on
-		player.ghostify.automatorGhosts[1].on=tg
+		player.ghostify.automatorGhosts[3].on = player.ghostify.automatorGhosts[2].on
+		player.ghostify.automatorGhosts[2].on = player.ghostify.automatorGhosts[1].on
+		player.ghostify.automatorGhosts[1].on = tg
 	}
-	for (var g=1;g<4;g++) document.getElementById("isAutoGhostOn"+g).checked=player.ghostify.automatorGhosts[g].on
+	for (var g = 1; g < 4; g++) document.getElementById("isAutoGhostOn"+g).checked=player.ghostify.automatorGhosts[g].on
 }
 
 function getMaxAutoGhosts() {
@@ -1229,34 +1229,29 @@ function getMaxAutoGhosts() {
 //v2.1
 function startEC10() {
 	if (canUnlockEC(10, 550, 181)) {
-		justImported=true
+		justImported = true
 		document.getElementById("ec10unl").onclick()
-		justImported=false
+		justImported = false
 	}
 	startEternityChallenge(10)
 }
 
 function subNeutrinos(sub) {
-	let neu=player.ghostify.neutrinos
-	let sum=neu.electron.add(neu.mu).add(neu.tau).round()
-	let gen=["electron","mu","tau"]
-	for (g=0;g<3;g++) neu[gen[g]]=neu[gen[g]].sub(neu[gen[g]].div(sum).times(sub).min(neu[gen[g]])).round()
+	let neu = player.ghostify.neutrinos
+	let sum = neu.electron.add(neu.mu).add(neu.tau).round()
+	let gen = ["electron","mu","tau"]
+	for (g=0;g<3;g++) neu[gen[g]] = neu[gen[g]].sub(neu[gen[g]].div(sum).times(sub).min(neu[gen[g]])).round()
 }
 
 function getGHPMultCost(offset=0) {
 	let lvl=player.ghostify.multPower+offset
-	return Decimal.pow(5,lvl*2+Math.max(lvl-85,0)*(lvl-84)-1).times(25e8)
-}
+	return Decimal.pow(5, lvl * 2 + Math.max(lvl - 85, 0) * (lvl - 84) - 1).times(25e8)
 
-function getRDPower(branch) {
-	let x=getRadioactiveDecays(branch)
-	let y=Math.max(x-5,0)
-	return x*25+(Math.pow(y,2)+y)*1.25
 }
 
 //v2.2
 function canBuyGalaxyThresholdUpg() {
-	return !tmp.ngp3 || player.dilation.rebuyables[2]<60
+	return !tmp.ngp3 || player.dilation.rebuyables[2] < 60
 }
 
 function showNFTab(tabName) {
@@ -1278,8 +1273,8 @@ function showNFTab(tabName) {
 }
 
 function getGhostifiedGain() {
-	let r=1
-	if (hasBosonicUpg(15)) r=nN(tmp.blu[15].gh)
+	let r = 1
+	if (hasBosonicUpg(15)) r = nN(tmp.blu[15].gh)
 	return r
 }
 
@@ -1289,14 +1284,14 @@ function toggleLEConf() {
 }
 
 function gainNeutrinos(bulk,type) {
-	let gain=getNeutrinoGain().times(bulk)
-	let gens=["electron","mu","tau"]
-	if (type=="all") {
-		for (var g=0;g<3;g++) {
+	let gain = getNeutrinoGain().times(bulk)
+	let gens = ["electron","mu","tau"]
+	if (type == "all") {
+		for (var g = 0; g < 3; g++) {
 			var gen=gens[g]
 			player.ghostify.neutrinos[gen]=player.ghostify.neutrinos[gen].add(gain).round()
 		}
-	} else if (type=="gen") {
+	} else if (type == "gen") {
 		var gen=gens[player.ghostify.neutrinos.generationGain-1]
 		player.ghostify.neutrinos[gen]=player.ghostify.neutrinos[gen].add(gain).round()
 	}

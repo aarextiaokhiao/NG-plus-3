@@ -4411,8 +4411,8 @@ function setAchieveTooltip() {
 	IPBelongs.setAttribute('ach-tooltip', "Big Crunch for "+shortenCosts(1e150)+" IP. Reward: Additional 4x multiplier to IP.")
 	reference.setAttribute('ach-tooltip', "Get a x"+shortenDimensions(Number.MAX_VALUE)+" multiplier in a single sacrifice. Reward: Sacrifices are stronger.")
 	spare.setAttribute('ach-tooltip', "Reach " +formatValue(player.options.notation, new Decimal("1e35000"), 0, 0)+" antimatter. Reward: Dimensions are more powerful the more unspent antimatter you have.");
-	twomillion.setAttribute('ach-tooltip', "Infinity 2000000 times. Reward: Infinities more than 5 seconds long give 250 infinitied stat" + (player.galacticSacrifice ? "and you gain an additive +249 infinited stat per crunch post multipliers" : "") + ".")
-	hevipelledidnothing.setAttribute('ach-tooltip', "Beat Infinity Challenge 5 in 10 seconds or less" + (player.galacticSacrifice == undefined ? "" : "and boost g13 outside of eternity challenges") + ".")
+	twomillion.setAttribute('ach-tooltip', "Infinity 2000000 times. Reward: Infinities more than 5 seconds long give 250 infinitied stat" + (player.galacticSacrifice ? " and you gain an additive +249 infinited stat per crunch post multipliers" : "") + ".")
+	hevipelledidnothing.setAttribute('ach-tooltip', "Beat Infinity Challenge 5 in 10 seconds or less" + (player.galacticSacrifice == undefined ? "" : " Reward: Boost g13 outside of eternity challenges") + ".")
 
 	//ACHIEVEMENT ROW 9
 	speed.setAttribute('ach-tooltip', "Big Crunch for "+shortenCosts(1e200)+" IP in 2 seconds or less. Reward: All dimensions are significantly stronger in the first 5 seconds of an Infinity.")
@@ -4433,7 +4433,7 @@ function setAchieveTooltip() {
 	//ACHIEVEMENT ROW 11
 	over9000.setAttribute('ach-tooltip', "Get a total sacrifice multiplier of "+shortenCosts(new Decimal("1e9000"))+". Reward: Sacrifice doesn't reset your dimensions.")
 	dawg.setAttribute('ach-tooltip', "Have all your past 10 infinities be at least "+shortenMoney(Number.MAX_VALUE)+" times higher IP than the previous one. Reward: Your antimatter doesn't reset when buying a Dimension Boost or Galaxy.")
-	nobodygottime.setAttribute('ach-tooltip', "Eternity while only buying 8th Dimensions" + (player.galacticSacrifice == undefined ? "" : "and boost g13") + ".")
+	nobodygottime.setAttribute('ach-tooltip', "Eternity while only buying 8th Dimensions" + (player.galacticSacrifice == undefined ? "" : " Reward: Boost g13") + ".")
 
 	//ACHIEVEMENT ROW 12
 	infiniteIP.setAttribute('ach-tooltip', "Reach "+shortenCosts(new Decimal("1e30008"))+" IP." + (player.galacticSacrifice == undefined || player.tickspeedBoosts != undefined ? "" : " Reward: Your total galaxies boost Galaxy points gain more."))
