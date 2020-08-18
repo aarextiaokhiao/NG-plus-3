@@ -187,7 +187,7 @@ var nanoRewards = {
 }
 
 function isNanoEffectUsed(x) {
-	return tmp.nf !== undefined && tmp.nf.rewardsUsed !== undefined && tmp.nf.rewardsUsed.includes(x)
+	return tmp.nf !== undefined && tmp.nf.rewardsUsed !== undefined && tmp.nf.rewardsUsed.includes(x) && tmp.nf.effects !== undefined
 }
 
 function updateNanoEffectUsages() {
