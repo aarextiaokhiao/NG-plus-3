@@ -4346,6 +4346,8 @@ function setAchieveTooltip() {
 	let neverenough = document.getElementById("It will never be enough")
 	let harmony = document.getElementById("Universal harmony")
 	let twomillion = document.getElementById("2 Million Infinities")
+	let nobodygottime = document.getElementById("8 nobody got time for that")
+	let hevipelledidnothing = document.getElementById("Hevipelle did nothing wrong")
     
 	let thisisReward = [] // for the achievement "This is what I have to do to get rid of you."
 	if (!tmp.ngp3l) {
@@ -4391,7 +4393,7 @@ function setAchieveTooltip() {
 	is.setAttribute('ach-tooltip', "Complete the Tickspeed Autobuyer challenge in 3 minutes or less.  Reward: The multiplier per-10 dimensions "+(player.tickspeedBoosts!=undefined?"is boosted based on your best time of Tickspeed Autobuyer challenge.":player.galacticSacrifice?"is raised to the power of ^1.0666.":" is increased by 1%."))
 	limitBreak.setAttribute('ach-tooltip', "Break Infinity."+(player.galacticSacrifice&&player.tickspeedBoosts==undefined?" Reward: Gain a multiplier to IP based on galaxies.":""))
 
-    	//ACHIEVEMENT ROW 6
+    //ACHIEVEMENT ROW 6
 	potato2.setAttribute('ach-tooltip', "Get more than " + formatValue(player.options.notation, 1e58, 0, 0) + " ticks per second. Reward: Reduces starting tick interval by 2%.");
 	oh.setAttribute('ach-tooltip', "Reach "+shortenCosts(1e8)+" IP per minute."+(player.galacticSacrifice&&player.tickspeedBoosts==undefined?" Reward: Gain a multiplier to GP based on the logarithm of your IP.":""))
 	mil.setAttribute('ach-tooltip',"Reach "+shortenCosts(1e6)+" infinity power."+(player.galacticSacrifice?" Reward: First Dimensions are "+shortenCosts(1e6)+" times stronger.":""))
@@ -4410,7 +4412,8 @@ function setAchieveTooltip() {
 	reference.setAttribute('ach-tooltip', "Get a x"+shortenDimensions(Number.MAX_VALUE)+" multiplier in a single sacrifice. Reward: Sacrifices are stronger.")
 	spare.setAttribute('ach-tooltip', "Reach " +formatValue(player.options.notation, new Decimal("1e35000"), 0, 0)+" antimatter. Reward: Dimensions are more powerful the more unspent antimatter you have.");
 	twomillion.setAttribute('ach-tooltip', "Infinity 2000000 times. Reward: Infinities more than 5 seconds long give 250 infinitied stat" + (player.galacticSacrifice ? "and you gain an additive +249 infinited stat per crunch post multipliers" : "") + ".")
-	
+	hevipelledidnothing.setAttribute('ach-tooltip', "Beat Infinity Challenge 5 in 10 seconds or less" + (player.galacticSacrifice == undefined ? "" : "and boost g13 outside of eternity challenges") + ".")
+
 	//ACHIEVEMENT ROW 9
 	speed.setAttribute('ach-tooltip', "Big Crunch for "+shortenCosts(1e200)+" IP in 2 seconds or less. Reward: All dimensions are significantly stronger in the first 5 seconds of an Infinity.")
 	speed2.setAttribute('ach-tooltip', "Big Crunch for "+shortenCosts(1e250)+" IP in 20 seconds or less. Reward: All dimensions are significantly stronger in the first 60 seconds of an Infinity.")
@@ -4430,6 +4433,7 @@ function setAchieveTooltip() {
 	//ACHIEVEMENT ROW 11
 	over9000.setAttribute('ach-tooltip', "Get a total sacrifice multiplier of "+shortenCosts(new Decimal("1e9000"))+". Reward: Sacrifice doesn't reset your dimensions.")
 	dawg.setAttribute('ach-tooltip', "Have all your past 10 infinities be at least "+shortenMoney(Number.MAX_VALUE)+" times higher IP than the previous one. Reward: Your antimatter doesn't reset when buying a Dimension Boost or Galaxy.")
+	nobodygottime.setAttribute('ach-tooltip', "Eternity while only buying 8th Dimensions" + (player.galacticSacrifice == undefined ? "" : "and boost g13") + ".")
 
 	//ACHIEVEMENT ROW 12
 	infiniteIP.setAttribute('ach-tooltip', "Reach "+shortenCosts(new Decimal("1e30008"))+" IP." + (player.galacticSacrifice == undefined || player.tickspeedBoosts != undefined ? "" : " Reward: Your total galaxies boost Galaxy points gain more."))
