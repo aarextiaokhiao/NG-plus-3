@@ -508,7 +508,7 @@ let galMults = {
 		let exp = 3
 		if (player.infinityUpgrades.includes("postinfi62") && player.achievements.includes("r117")) {
 			if (player.currentEternityChall === "") exp *= Math.pow(.8 + Math.log(player.resets + 3), 2.08)
-			else exp *= Math.pow(.8 + Math.log(player.resets+3), 0.5)
+			else exp *= Math.pow(.8 + Math.log(player.resets+3) * (player.achievements.includes("r124") ? (7-player.bestEternity || 5) : 1), 0.5 + player.achievements.includes("r124") ? 0.5 : 0)
 		} else if (player.infinityUpgrades.includes("postinfi62")){
 			if (player.currentEternityChall === "") exp *= Math.pow(Math.log(player.resets + 3), 2)
 			else exp *= Math.pow(Math.log(player.resets + 3), 0.5)
