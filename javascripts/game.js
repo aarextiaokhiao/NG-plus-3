@@ -1573,7 +1573,8 @@ function updateReplicantiTemp() {
 }
 
 function updateTemp() {
-	tmp.ri = player.money.gte(getLimit()) && ((player.currentChallenge!=""&&player.money.gte(player.challengeTarget))||!onPostBreak())
+	if (player.money) tmp.ri = player.money.gte(getLimit()) && ((player.currentChallenge!=""&&player.money.gte(player.challengeTarget))||!onPostBreak())
+	else tmp.ri = false
 	tmp.nrm = 1
 	if (player.timestudy.studies.includes(101)) tmp.nrm = player.replicanti.amount.max(1)
 	tmp.rg4 = false
@@ -9380,7 +9381,7 @@ function autoBuyerTick() {
     	if (getEternitied() >= 100 && isEterBuyerOn()) autoEternityABTick()
 
 	if (player.autobuyers[11]%1 !== 0) {
-    		if (player.autobuyers[11].ticks*100 >= player.autobuyers[11].interval && player.money.gte(player.currentChallenge == "" ? getLimit() : player.challengeTarget)) {
+    		if (player.autobuyers[11].ticks*100 >= player.autobuyers[11].interval && player.money !== undefined && player.money.gte(player.currentChallenge == "" ? getLimit() : player.challengeTarget)) {
 			if (player.autobuyers[11].isOn) {
 				if ((!player.autobuyers[11].requireIPPeak || IPminpeak.gt(gainedInfinityPoints().div(player.thisInfinityTime/600))) && player.autobuyers[11].priority) {
 					if (player.autoCrunchMode == "amount") {
@@ -9829,6 +9830,7 @@ window.addEventListener('keydown', function(event) {
 
 function getUnspentBonus() {
 	x = player.infinityPoints
+	if (!x) return new Decimal(1)
 	if (player.galacticSacrifice) return x.pow(Math.max(Math.min(Math.pow(x.max(1).log(10), 1 / 3) * 3, 8), 1)).plus(1);
 	else return x.dividedBy(2).pow(1.5).plus(1)
 }
