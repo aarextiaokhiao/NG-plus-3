@@ -299,3 +299,18 @@ function buyMaxTimeDimension(tier, bulk) {
 function buyMaxTimeDimensions() {
 	for (var i = 1; i <= 8; i++) buyMaxTimeDimension(i)
 }
+
+function toggleAllTimeDims() {
+	var turnOn
+	var id = 1
+	while (id <= 8 && turnOn === undefined) {
+		if (!player.autoEterOptions["td" + id]) turnOn = true
+		else if (id > 7) turnOn = false
+		id++
+	}
+	for (id = 1; id <= 8; id++) {
+		player.autoEterOptions["td" + id] = turnOn
+		document.getElementById("td" + id + 'auto').textContent = "Auto: " + (turnOn ? "ON" : "OFF")
+	}
+	document.getElementById("maxTimeDimensions").style.display = turnOn ? "none" : ""
+}
