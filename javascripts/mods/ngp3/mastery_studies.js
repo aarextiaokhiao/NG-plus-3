@@ -219,6 +219,7 @@ var masteryStudies = {
 			return Decimal.pow(tmp.newNGP3E ? 1.7 : 1.6, Math.sqrt(tmp.qu.replicants.quarks.add(1).log10())).plus(tmp.ngp3l ? 0 : 1)
 		},
 		393: function(){
+			if (!tmp.twr) return new Decimal(1)
 			return Decimal.pow(4e5, Math.sqrt(tmp.twr.add(1).log10()))
 		},
 		401: function(){
