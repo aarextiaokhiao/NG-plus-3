@@ -228,6 +228,7 @@ var masteryStudies = {
 			return Decimal.pow(tmp.newNGP3E ? 12 : 10, log)
 		},
 		411: function(){
+			if (!tmp.tra) return new Decimal(1)
 			var exp = tmp.tra.div(1e24).add(1).pow(0.2).log10()
 			if (tmp.newNGP3E) exp += Math.pow((exp + 9) * 3, .2) * Math.log10(exp + 1)
 			return Decimal.pow(10, exp)
