@@ -72,7 +72,6 @@ function inQC(num) {
 
 function updateInQCs() {
 	tmp.inQCs = [0]
-
 	if (tmp.qu !== undefined && tmp.qu.challenge !== undefined) {
 		data = tmp.qu.challenge
 		if (typeof(data) == "number") data = [data]
@@ -242,13 +241,13 @@ function getQCCost(num) {
 }
 
 function showQCModifierStats(id) {
-	tmp.pct=id
+	tmp.pct = id
 	updatePCTable()
 }
 
 function updatePCTable() {
 	var data=tmp.qu.qcsMods[tmp.pct]
-	for (r=1;r<9;r++) for (c=1;c<9;c++) {
+	for (r = 1; r < 9; r++) for (c = 1; c < 9; c++) {
 		if (r!=c) {
 			var divid = "pc" + (r*10+c)
 			var pcid = r*10+c
@@ -307,43 +306,43 @@ function updatePCTable() {
 }
 
 var qcm={
-	modifiers:["ad","sm"],
+	modifiers:["ad", "sm"],
 	names:{
-		ad:"Anti-Dilation",
-		sm:"Supermastery"
+		ad: "Anti-Dilation",
+		sm: "Supermastery"
 	},
 	reqs:{
-		ad:100,
-		sm:165
+		ad: 100,
+		sm: 165
 	},
 	descs:{
-		ad:"You always have no Tachyon particles. You can dilate time, but you can't gain Tachyon particles.",
-		sm:"You can't have normal time studies or more than 20 normal mastery studies."
+		ad: "You always have no Tachyon particles. You can dilate time, but you can't gain Tachyon particles.",
+		sm: "You can't have normal time studies or more than 20 normal mastery studies."
 	},
-	on:[]
+	on: []
 }
 
 function toggleQCModifier(id) {
-	if (!(ranking>=qcm.reqs[id])&&qcm.reqs[id]) return
+	if (!(ranking >= qcm.reqs[id]) && qcm.reqs[id]) return
 	if (qcm.on.includes(id)) {
-		let data=[]
-		for (var m=0;m<qcm.on.length;m++) if (qcm.on[m]!=id) data.push(qcm.on[m])
+		let data = []
+		for (var m = 0; m < qcm.on.length; m++) if (qcm.on[m] != id) data.push(qcm.on[m])
 		qcm.on=data
 	} else qcm.on.push(id)
 	document.getElementById("qcm_"+id).className=qcm.on.includes(id)?"chosenbtn":"storebtn"
 }
 
 function inQCModifier(id) {
-	if (player.masterystudies==undefined) return
+	if (player.masterystudies == undefined) return
 	return tmp.qu.qcsMods.current.includes(id)
 }
 
-function recordModifiedQC(id,num,mod) {
-	var data=tmp.qu.qcsMods[mod]
-	if (data===undefined) {
-		data={}
-		tmp.qu.qcsMods[mod]=data
+function recordModifiedQC(id, num, mod) {
+	var data = tmp.qu.qcsMods[mod]
+	if (data === undefined) {
+		data = {}
+		tmp.qu.qcsMods[mod] = data
 	}
-	if (data[id]===undefined) data[id]=num
-	else data[id]=Math.min(num,data[id])
+	if (data[id] === undefined) data[id] = num
+	else data[id] = Math.min(num,data[id])
 }

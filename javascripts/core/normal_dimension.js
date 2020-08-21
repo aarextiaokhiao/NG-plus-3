@@ -5,7 +5,6 @@ function getR84or73Mult(){
 	
 	var log = mult.log10()
 	if (log > 1e12) log = 1e12 * Math.pow(log / 1e12, .7)
-	if (log > 1e13) log = 1000*Math.pow(Math.log10(log) - 3, 10)
 	if (log > 1e14) log = 1e14 * Math.pow(log / 1e14, .3)
 	
 	if (log < 0) log = 0

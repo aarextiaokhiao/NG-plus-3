@@ -393,18 +393,18 @@ function getMinimumUnstableQuarks() {
 }
 
 function getMaximumUnstableQuarks() {
-	let r={quarks:new Decimal(0),decays:0}
-	let c=["r","g","b"]
-	for (var i=0;i<3;i++) {
-		let b=tmp.qu.tod[c[i]]
-		let d=b.decays||0
-		if (r.decays<d||(r.decays==d&&b.quarks.gte(r.quarks))) r={quarks:b.quarks,decays:d}
+	let r = {quarks:new Decimal(0),decays:0}
+	let c = ["r","g","b"]
+	for (var i = 0; i < 3; i++) {
+		let b = tmp.qu.tod[c[i]]
+		let d = b.decays || 0
+		if (r.decays < d || (r.decays == d && b.quarks.gte(r.quarks))) r = {quarks: b.quarks, decays: d}
 	}
 	return r
 }
 
 function getTreeUpgradeEfficiency(mod) {
-	let r=1
+	let r = 1
 	if (player.ghostify.neutrinos.boosts > 6 && (tmp.qu.bigRip.active || mod == "br") && mod != "noNB") r += tmp.nb[6]
 	if (!tmp.ngp3l) {
 		if (player.achievements.includes("ng3p62") && !tmp.qu.bigRip.active) r += 0.1
@@ -414,7 +414,7 @@ function getTreeUpgradeEfficiency(mod) {
 }
 
 function getRDPower(branch) {
-	let x=getRadioactiveDecays(branch)
-	let y=Math.max(x-5,0)
-	return x*25+(Math.pow(y,2)+y)*1.25
+	let x = getRadioactiveDecays(branch)
+	let y = Math.max(x - 5, 0)
+	return x * 25 + (Math.pow(y, 2) + y) * 1.25
 }

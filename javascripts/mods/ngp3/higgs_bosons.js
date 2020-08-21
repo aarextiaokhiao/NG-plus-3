@@ -40,13 +40,13 @@ function updateHiggsUnlockDisplay() {
 
 function bosonicLabReset() {
 	delete tmp.qu.nanofield.apgWoke
-	player.ghostify.neutrinos.electron=new Decimal(0)
-	player.ghostify.neutrinos.mu=new Decimal(0)
-	player.ghostify.neutrinos.tau=new Decimal(0)
-	player.ghostify.ghostlyPhotons.amount=new Decimal(0)
-	player.ghostify.ghostlyPhotons.darkMatter=new Decimal(0)
-	player.ghostify.ghostlyPhotons.ghostlyRays=new Decimal(0)
-	player.ghostify.ghostlyPhotons.lights=[0,0,0,0,0,0,0,0]
+	player.ghostify.neutrinos.electron = new Decimal(0)
+	player.ghostify.neutrinos.mu = new Decimal(0)
+	player.ghostify.neutrinos.tau = new Decimal(0)
+	player.ghostify.ghostlyPhotons.amount = new Decimal(0)
+	player.ghostify.ghostlyPhotons.darkMatter = new Decimal(0)
+	player.ghostify.ghostlyPhotons.ghostlyRays = new Decimal(0)
+	player.ghostify.ghostlyPhotons.lights = [0,0,0,0,0,0,0,0]
 	tmp.updateLights = true
 	tmp.bl = {
 		watt: new Decimal(0),

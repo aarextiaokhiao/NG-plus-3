@@ -6575,8 +6575,7 @@ function getECReward(x) {
 	}
 	if (x == 9) {
 		let r=player.timeShards
-		if (r.gt(0)) r = r.pow(c / (m2 ? 1 : 10))
-		if (m2) r = r.times(Decimal.pow(player.timeShards.max(10).log10(), 500 * c))
+		if (r.gt(0)) r = r.pow(c / (m2 ? 2 : 10))
 		if (m2) return r.plus(1).min("1e10000")
 		if (!player.aarexModifications.newGameExpVersion) return r.plus(1).min("1e400")
 		if (r.lt("1e400")) return r.plus(1)

@@ -119,8 +119,6 @@ function isBigRipUpgradeActive(id, bigRipped) {
 	return tmp.qu.bigRip.upgrades.includes(id)
 }
 
-
-
 function updateBreakEternity() {
 	if (player.masterystudies === undefined) {
 		document.getElementById("breakEternityTabbtn").style.display = "none"
@@ -311,7 +309,7 @@ function updateBRU14Temp() {
 	}
 	var ret = Math.min(tmp.qu.bigRip.spaceShards.div(3e18).add(1).log10()/3,0.4)
 	var val = Math.sqrt(tmp.qu.bigRip.spaceShards.div(3e15).add(1).log10()*ret+1)
-	if (val > 12) val = 10+Math.log10(4+8*val)
+	if (val > 12) val = 10 + Math.log10(4 + 8 * val)
 	tmp.bru[14] = val //BRU14
 }
 

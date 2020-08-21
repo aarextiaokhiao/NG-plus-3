@@ -280,24 +280,23 @@ function clearOldAchieves(){
     var achieveKey;
     var values = Object.keys(allAchievements).map(function(e) { return allAchievements[e] });
     for (var i = 0; i < player.achievements.length; i++) {
-      if (values.indexOf(player.achievements[i]) !== -1 ) {  // does index[i] exist in allAchievements as a value?
-        toRemove.push(i); // mark it for removal
-        achieveKey = Object.keys(allAchievements).find(function(key){ return allAchievements[key] === player.achievements[i];});
-        if (!player.achievements.includes(achieveKey)) { // check if new key already exists as well
-            player.achievements.push(achieveKey); // if not... add it
+        if (values.indexOf(player.achievements[i]) !== -1 ) {  // does index[i] exist in allAchievements as a value?
+            toRemove.push(i); // mark it for removal
+            achieveKey = Object.keys(allAchievements).find(function(key){ return allAchievements[key] === player.achievements[i];});
+            if (!player.achievements.includes(achieveKey)) { // check if new key already exists as well
+                player.achievements.push(achieveKey); // if not... add it
+            }
+        } else if (allAchievements[player.achievements[i]] === undefined){
+            var r = player.achievements[i].indexOf("r")
+            if (r < 0) r = 0
+            else r=parseInt(player.achievements[i].split("r")[1])
+            if (r < 140) toRemove.push(i)
         }
-      } else if (allAchievements[player.achievements[i]] === undefined){
-        var r=player.achievements[i].indexOf("r")
-        if (r<0) r=0
-        else r=parseInt(player.achievements[i].split("r")[1])
-        if (r<140) toRemove.push(i)
-      }
     }
-
 
     toRemove.reverse();
     for (var i = 0; i < toRemove.length; i++) {
-      player.achievements.splice(toRemove[i], 1);
+        player.achievements.splice(toRemove[i], 1);
     }
 }
 
@@ -306,22 +305,22 @@ function giveAchievement(name, noUpdate) {
 
 	if (player.achievements.includes(allAchievementNums[name])) return false
 
-	var ngudAchId=allAchievementNums[name].split("ngud")[1]
-	if (ngudAchId!=undefined) if (player.exdilation==undefined) return
+	var ngudAchId = allAchievementNums[name].split("ngud")[1]
+	if (ngudAchId != undefined) if (player.exdilation == undefined) return
 
-	var ngppAchId=allAchievementNums[name].split("ngpp")[1]
-	if (ngppAchId!=undefined) {
-		ngppAchId=parseInt(ngppAchId)
-		if (player.meta==undefined&&(player.exdilation==undefined||(ngppAchId!=13&&ngppAchId!=18))) return
+	var ngppAchId = allAchievementNums[name].split("ngpp")[1]
+	if (ngppAchId != undefined) {
+		ngppAchId = parseInt(ngppAchId)
+		if (player.meta == undefined && (player.exdilation == undefined || (ngppAchId != 13 && ngppAchId != 18))) return
 	}
 
-	if (allAchievementNums[name].split("ng3p")[1]&&!tmp.ngp3) return false
+	if (allAchievementNums[name].split("ng3p")[1] && !tmp.ngp3) return false
 
 	if (player.boughtDims) {
-		var r=allAchievementNums[name].split("r")[1]
-		if (r<0) r=0
-		else r=parseInt(allAchievementNums[name].split("r")[1])
-		if (r==105||(r!=117&&r>110)) return false
+		var r = allAchievementNums[name].split("r")[1]
+		if (r < 0) r = 0
+		else r = parseInt(allAchievementNums[name].split("r")[1])
+		if (r == 105 || (r != 117 && r > 110)) return false
 	}
 
 	player.achievements.push(allAchievementNums[name])
@@ -333,19 +332,19 @@ function giveAchievement(name, noUpdate) {
 	if (name == "The swarm" && player.boughtDims) document.getElementById('replicantigalaxypowerdiv').style.display=""
 	if (name == "I told you already, time is relative" || name == "I'm so meta" || name == "To the new dimension!") updateHotkeys()
 	if (name == "GAS GAS GAS") {
-		for (i=1;i<9;i++) document.getElementById("td"+i+'auto').style.visibility="visible"
-		document.getElementById('togglealltimedims').style.display=""
-		document.getElementById('epmultauto').style.display=""
-		if (player.aarexModifications.ngudpV) document.getElementById("blackholeAuto").style.display=""
+		for (i = 1; i <= 8; i++) document.getElementById("td" + i + 'auto').style.visibility="visible"
+		document.getElementById('togglealltimedims').style.display = ""
+		document.getElementById('epmultauto').style.display = ""
+		if (player.aarexModifications.ngudpV) document.getElementById("blackholeAuto").style.display = ""
 	}
 	if (name == "It will never be enough") document.getElementById('replicantibulkmodetoggle').style.display="inline-block"
 	if (name == "I already got rid of you..." || name == "No dilation means no production.") {
 		player.dilation.bestTP = Decimal.max(player.dilation.tachyonParticles, player.dilation.bestTP)
-		document.getElementById('bestTP').style.display=""
-		document.getElementById('bestTP').textContent="Your best ever Tachyon particles was "+shorten(player.dilation.bestTP)+"."
+		document.getElementById('bestTP').style.display = ""
+		document.getElementById('bestTP').textContent = "Your best ever Tachyon particles was "+shorten(player.dilation.bestTP)+"."
 	}
-	if (name == "Twice in the row") document.getElementById('toggleautoquantummode').style.display=""
-	if (name == "Stop blocking me!") document.getElementById('autoReset').style.display=""
+	if (name == "Twice in the row") document.getElementById('toggleautoquantummode').style.display = ""
+	if (name == "Stop blocking me!") document.getElementById('autoReset').style.display = ""
 	if (name == "To the new dimension!") tmp.qu.bigRip.bestGals = 1
 	if (name == "Quantum doesn't take so long") {
 		updateAutobuyers()

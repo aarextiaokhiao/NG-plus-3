@@ -306,7 +306,7 @@ var masteryStudies = {
 		402: "Emperor Dimensions and hatch speed are faster by 30x.",
 		411: "The production of preon energy is faster based on your replicants.",
 		412: function() {
-			return tmp.ngp3l?"Preon effect is 25% stronger.":"Further reduce the softcap of preon boost."
+			return tmp.ngp3l ? "Preon effect is 25% stronger." : "Further reduce the softcap of preon boost."
 		},
 		421: "Tickspeed boosts preon energy production.",
 		431: "DT production and branches are faster based on your free galaxies."
@@ -380,14 +380,14 @@ function exitMasteryPortal() {
 }
 
 function convertMasteryStudyIdToDisplay(x) {
-	x=x.toString()
-	var ec=x.split("ec")[1]
-	var dil=x.split("d")[1]
-	return ec?"ec"+ec+"unl":dil?"dilstudy"+dil:"timestudy"+x
+	x = x.toString()
+	var ec = x.split("ec")[1]
+	var dil = x.split("d")[1]
+	return ec ? "ec" + ec + "unl" : dil ? "dilstudy" + dil : "timestudy" + x
 }
 
 function updateMasteryStudyCosts() {
-	var oldBought=masteryStudies.bought
+	var oldBought = masteryStudies.bought
 	masteryStudies.latestBoughtRow = 0
 	masteryStudies.costMult = 1
 	masteryStudies.bought = 0
@@ -402,7 +402,7 @@ function updateMasteryStudyCosts() {
 			masteryStudies.bought++
 		}
 	}
-	for (id=0; id < masteryStudies.timeStudies.length; id++) {
+	for (id = 0; id < masteryStudies.timeStudies.length; id++) {
 		var name = masteryStudies.timeStudies[id]
 		if (!masteryStudies.unlocked.includes(name)) break
 		if (!player.masterystudies.includes("t"+name)) setMasteryStudyCost(name,"t")
@@ -417,7 +417,7 @@ function updateMasteryStudyCosts() {
 		setMasteryStudyCost(id,"d")
 	}
 	if (oldBought != masteryStudies.bought) updateSpentableMasteryStudies()
-	if (player.eternityChallUnlocked > 12) masteryStudies.ttSpent+=masteryStudies.costs.ec[player.eternityChallUnlocked]
+	if (player.eternityChallUnlocked > 12) masteryStudies.ttSpent += masteryStudies.costs.ec[player.eternityChallUnlocked]
 	if (masteryStudies.bought >= 48) giveAchievement("The Theory of Ultimate Studies")
 	updateMasteryStudyTextDisplay()
 }
@@ -465,9 +465,9 @@ function getMasteryStudyConnections(id) {
 }
 
 function updateUnlockedMasteryStudies() {
-	var unl=true
-	var rowNum=0
-	masteryStudies.unlocked=[]
+	var unl = true
+	var rowNum = 0
+	masteryStudies.unlocked = []
 	for (var x = 0; x < masteryStudies.studies.length; x++) {
 		var id = masteryStudies.studies[x]
 		var divid = convertMasteryStudyIdToDisplay(id)
@@ -541,9 +541,9 @@ function buyingDilStudyReplicant(){
 function buyingDilStudyED(){
 	showTab("dimensions")
 	showDimTab("emperordimensions")
-	document.getElementById("timestudy361").style.display=""
-	document.getElementById("timestudy362").style.display=""
-	document.getElementById("edtabbtn").style.display=""
+	document.getElementById("timestudy361").style.display = ""
+	document.getElementById("timestudy362").style.display = ""
+	document.getElementById("edtabbtn").style.display = ""
 	updateReplicants()
 }
 
@@ -682,16 +682,16 @@ function updateMasteryStudyButtons() {
 		}
 	}
 	for (id = 13; id <= masteryStudies.ecsUpTo; id++) {
-		var div = document.getElementById("ec"+id+"unl")
-		if (!masteryStudies.unlocked.includes("ec"+id)) break
+		var div = document.getElementById("ec" + id + "unl")
+		if (!masteryStudies.unlocked.includes("ec" + id)) break
 		if (player.eternityChallUnlocked == id) div.className = "eternitychallengestudybought"
 		else if (canBuyMasteryStudy('ec', id)) div.className = "eternitychallengestudy"
 		else div.className = "timestudylocked"
 	}
 	for (id = 7; id <= masteryStudies.unlocksUpTo; id++) {
-		var div = document.getElementById("dilstudy"+id)
-		if (!masteryStudies.unlocked.includes("d"+id)) break
-		if (player.masterystudies.includes("d"+id)) div.className = "dilationupgbought"
+		var div = document.getElementById("dilstudy" + id)
+		if (!masteryStudies.unlocked.includes("d" + id)) break
+		if (player.masterystudies.includes("d" + id)) div.className = "dilationupgbought"
 		else if (canBuyMasteryStudy('d', id)) div.className = "dilationupg"
 		else div.className = "timestudylocked"
 	}
@@ -714,10 +714,10 @@ function updateMasteryStudyTextDisplay() {
 		document.getElementById("ec" + id + "Req").textContent = "Requirement: " + masteryStudies.ecReqDisplays[id]()
 	}
 	for (id = 7; id <= masteryStudies.unlocksUpTo; id++) {
-		if (!masteryStudies.unlocked.includes("d"+id)) break
+		if (!masteryStudies.unlocked.includes("d" + id)) break
 		var req = masteryStudies.unlockReqDisplays[id]&&masteryStudies.unlockReqDisplays[id]()
-		document.getElementById("ds"+id+"Cost").textContent = "Cost: " + shorten(masteryStudies.costs.dil[id]) + " Time Theorems"
-		if (req) document.getElementById("ds"+id+"Req").innerHTML = ghostified || !req ? "" : "<br>Requirement: " + req
+		document.getElementById("ds" + id + "Cost").textContent = "Cost: " + shorten(masteryStudies.costs.dil[id]) + " Time Theorems"
+		if (req) document.getElementById("ds" + id + "Req").innerHTML = ghostified || !req ? "" : "<br>Requirement: " + req
 	}
 	if (quantumed) document.getElementById("321effect").textContent=shortenCosts(new Decimal("1e430"))
 }

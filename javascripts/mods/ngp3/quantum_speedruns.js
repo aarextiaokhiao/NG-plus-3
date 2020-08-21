@@ -37,5 +37,5 @@ function isRewardEnabled(id) {
 
 function disableReward(id) {
 	tmp.qu.disabledRewards[id] = !tmp.qu.disabledRewards[id]
-	document.getElementById("reward"+id+"disable").textContent = (id > 11 ? "10 seconds" : id > 4 ? "33.3 mins" : (id > 3 ? 4.5 : 6) + " hours") + " reward: " + (tmp.qu.disabledRewards[id] ? "OFF" : "ON")
+	document.getElementById("reward" + id + "disable").textContent = (id > 11 ? "10 seconds" : id > 4 ? "33.3 mins" : (id > 3 ? 4.5 : 6) + " hours") + " reward: " + (tmp.qu.disabledRewards[id] ? "OFF" : "ON")
 }
