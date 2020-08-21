@@ -250,14 +250,34 @@ function doMetaDimensionsReset(bigRip, headstart, challid){
 	}
 }
 
+function doGalaxyResetStuff(bulk){
+	player.money = player.achievements.includes("r111") ? player.money : new Decimal(10)
+	player.tickSpeedCost = new Decimal(1000)
+	player.tickBoughtThisInf = updateTBTIonGalaxy()
+	completelyResetNormalDimensions()
+	player.sacrificed = new Decimal(0)
+	player.totalBoughtDims = resetTotalBought()
+	player.resets = player.achievements.includes("ng3p55") ? player.resets : 0
+	player.interval = null
+	player.tdBoosts = resetTDBoosts()
+	player.galaxies = player.galaxies + bulk
+	player.costMultipliers = [new Decimal(1e3), new Decimal(1e4), new Decimal(1e5), new Decimal(1e6), new Decimal(1e8), new Decimal(1e10), new Decimal(1e12), new Decimal(1e15)]
+	player.tickspeedMultiplier = new Decimal(10)
+	player.chall3Pow = new Decimal(0.01)
+	player.matter = new Decimal(0)
+	player.chall11Pow = new Decimal(1)
+	player.postC4Tier = 1
+	player.postC8Mult = new Decimal(1)
+}
+
 
 function doNormalChallengeResetStuff(){
 	player.money = new Decimal(10)
 	player.tickSpeedCost = new Decimal(1000)
 	player.tickBoughtThisInf = resetTickBoughtThisInf()
 	completelyResetNormalDimensions()
-        player.totalBoughtDims = resetTotalBought()
-        player.sacrificed = new Decimal(0)
+	player.totalBoughtDims = resetTotalBought()
+	player.sacrificed = new Decimal(0)
 	player.thisInfinityTime = 0
 	player.resets = 0
 	player.galaxies = 0
@@ -326,60 +346,60 @@ function completelyResetTimeDimensions(){
 
 function completelyResetInfinityDimensions(){
 	player.infinityDimension1 = {
-                cost: new Decimal(1e8),
-                amount: new Decimal(0),
-                bought: 0,
-                power: new Decimal(1),
-                baseAmount: 0
+		cost: new Decimal(1e8),
+		amount: new Decimal(0),
+		bought: 0,
+		power: new Decimal(1),
+		baseAmount: 0
 	}
 	player.infinityDimension2 = {
-                cost: new Decimal(1e9),
-                amount: new Decimal(0),
-                bought: 0,
-                power: new Decimal(1),
-                baseAmount: 0
+		cost: new Decimal(1e9),
+		amount: new Decimal(0),
+		bought: 0,
+		power: new Decimal(1),
+		baseAmount: 0
 	}
 	player.infinityDimension3 = {
-                cost: new Decimal(1e10),
-                amount: new Decimal(0),
-                bought: 0,
-                power: new Decimal(1),
-                baseAmount: 0
+		cost: new Decimal(1e10),
+		amount: new Decimal(0),
+		bought: 0,
+		power: new Decimal(1),
+		baseAmount: 0
 	}
 	player.infinityDimension4 = {
-                cost: new Decimal(1e20),
-                amount: new Decimal(0),
-                bought: 0,
-                power: new Decimal(1),
-                baseAmount: 0
+		cost: new Decimal(1e20),
+		amount: new Decimal(0),
+		bought: 0,
+		power: new Decimal(1),
+		baseAmount: 0
 	}
 	player.infinityDimension5 = {
-                cost: new Decimal(1e140),
-                amount: new Decimal(0),
-                bought: 0,
-                power: new Decimal(1),
-                baseAmount: 0
+		cost: new Decimal(1e140),
+		amount: new Decimal(0),
+		bought: 0,
+		power: new Decimal(1),
+		baseAmount: 0
 	}
 	player.infinityDimension6 = {
-                cost: new Decimal(1e200),
-                amount: new Decimal(0),
-                bought: 0,
-                power: new Decimal(1),
-                baseAmount: 0
+		cost: new Decimal(1e200),
+		amount: new Decimal(0),
+		bought: 0,
+		power: new Decimal(1),
+		baseAmount: 0
 	}
 	player.infinityDimension7 = {
-                cost: new Decimal(1e250),
-                amount: new Decimal(0),
-                bought: 0,
-                power: new Decimal(1),
-                baseAmount: 0
+		cost: new Decimal(1e250),
+		amount: new Decimal(0),
+		bought: 0,
+		power: new Decimal(1),
+		baseAmount: 0
 	}
 	player.infinityDimension8 = {
-                cost: new Decimal(1e280),
-                amount: new Decimal(0),
-                bought: 0,
-                power: new Decimal(1),
-                baseAmount: 0
+		cost: new Decimal(1e280),
+		amount: new Decimal(0),
+		bought: 0,
+		power: new Decimal(1),
+		baseAmount: 0
 	}
 }
 
@@ -420,31 +440,31 @@ function completelyResetNormalDimensions(){
 
 function checkOnCrunchAchievements(){
 	if (player.thisInfinityTime <= 72000) giveAchievement("That's fast!");
-        if (player.thisInfinityTime <= 6000) giveAchievement("That's faster!")
-        if (player.thisInfinityTime <= 600) giveAchievement("Forever isn't that long")
-        if (player.thisInfinityTime <= 2) giveAchievement("Blink of an eye")
-        if (player.eightAmount == 0) giveAchievement("You didn't need it anyway");
-        if (player.galaxies == 1) giveAchievement("Claustrophobic");
-        if (player.galaxies == 0 && player.resets == 0) giveAchievement("Zero Deaths")
-        if (inNC(2) && player.thisInfinityTime <= 1800) giveAchievement("Many Deaths")
-        if (inNC(11) && player.thisInfinityTime <= 1800) giveAchievement("Gift from the Gods")
-        if (inNC(5) && player.thisInfinityTime <= 1800) giveAchievement("Is this hell?")
-        if (inNC(3) && player.thisInfinityTime <= 100) giveAchievement("You did this again just for the achievement right?");
-        if (player.firstAmount == 1 && player.resets == 0 && player.galaxies == 0 && inNC(12)) giveAchievement("ERROR 909: Dimension not found")
+	if (player.thisInfinityTime <= 6000) giveAchievement("That's faster!")
+	if (player.thisInfinityTime <= 600) giveAchievement("Forever isn't that long")
+	if (player.thisInfinityTime <= 2) giveAchievement("Blink of an eye")
+	if (player.eightAmount == 0) giveAchievement("You didn't need it anyway");
+	if (player.galaxies == 1) giveAchievement("Claustrophobic");
+	if (player.galaxies == 0 && player.resets == 0) giveAchievement("Zero Deaths")
+	if (inNC(2) && player.thisInfinityTime <= 1800) giveAchievement("Many Deaths")
+	if (inNC(11) && player.thisInfinityTime <= 1800) giveAchievement("Gift from the Gods")
+	if (inNC(5) && player.thisInfinityTime <= 1800) giveAchievement("Is this hell?")
+	if (inNC(3) && player.thisInfinityTime <= 100) giveAchievement("You did this again just for the achievement right?");
+	if (player.firstAmount == 1 && player.resets == 0 && player.galaxies == 0 && inNC(12)) giveAchievement("ERROR 909: Dimension not found")
 	if (gainedInfinityPoints().gte(1e150)) giveAchievement("All your IP are belong to us")
-        if (gainedInfinityPoints().gte(1e200) && player.thisInfinityTime <= 20) giveAchievement("Ludicrous Speed")
-        if (gainedInfinityPoints().gte(1e250) && player.thisInfinityTime <= 200) giveAchievement("I brake for nobody")
+	if (gainedInfinityPoints().gte(1e200) && player.thisInfinityTime <= 20) giveAchievement("Ludicrous Speed")
+	if (gainedInfinityPoints().gte(1e250) && player.thisInfinityTime <= 200) giveAchievement("I brake for nobody")
 }
 
 function checkSecondSetOnCrunchAchievements(){
 	checkForEndMe()
 	giveAchievement("To infinity!");
-        if (player.infinitied >= 10) giveAchievement("That's a lot of infinites");
-        if (player.infinitied >= 1 && !player.challenges.includes("challenge1")) player.challenges.push("challenge1");
+	if (player.infinitied >= 10) giveAchievement("That's a lot of infinites");
+	if (player.infinitied >= 1 && !player.challenges.includes("challenge1")) player.challenges.push("challenge1");
 	if (player.bestInfinityTime <= 0.01) giveAchievement("Less than or equal to 0.001");
-        if (player.challenges.length > 1) giveAchievement("Daredevil")
-        if (player.challenges.length == getTotalNormalChallenges() + 1) giveAchievement("AntiChallenged")
-        if (player.challenges.length == getTotalNormalChallenges() + order.length + 1) giveAchievement("Anti-antichallenged")
+	if (player.challenges.length > 1) giveAchievement("Daredevil")
+	if (player.challenges.length == getTotalNormalChallenges() + 1) giveAchievement("AntiChallenged")
+	if (player.challenges.length == getTotalNormalChallenges() + order.length + 1) giveAchievement("Anti-antichallenged")
 }
 
 function doCrunchResetStuff(){
@@ -469,6 +489,7 @@ function doCrunchResetStuff(){
 	player.postC8Mult = new Decimal(1)
 	player.galaxies = 0
 }
+
 function doEternityResetStuff(){
 	player.money = new Decimal(10)
 	player.tickSpeedCost = new Decimal(1000)
@@ -728,7 +749,7 @@ function doGhostifyResetStuff(implode, gain, amount, force, bulk, nBRU, nBEU){
 	player.bestInfinityTime = 9999999999
 	player.thisInfinityTime = 0
 	player.resets = 0
-        player.tdBoosts = resetTDBoosts()
+	player.tdBoosts = resetTDBoosts()
 	player.tickspeedBoosts = player.tickspeedBoosts !== undefined ? 16 : undefined
 	player.galaxies = 0
 	player.interval = null
