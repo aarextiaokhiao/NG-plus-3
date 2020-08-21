@@ -622,14 +622,14 @@ function doNGPlusOneNewPlayer(){
 
 function doNGPlusTwoNewPlayer(){
 	player.aarexModifications.newGamePlusPlusVersion = 2.90142
-        player.autoEterMode = "amount"
-        player.dilation.rebuyables[4] = 0
-        player.meta = {resets: 0, antimatter: 10, bestAntimatter: 10}
-        for (dim=1;dim<9;dim++) player.meta[dim] = {amount: 0, bought: 0, cost: initCost[dim]}
-        player.autoEterOptions = {epmult:false}
-        for (dim=1;dim<9;dim++) player.autoEterOptions["td"+dim] = false
-        player.galaxyMaxBulk = false
-        player.quantum = {
+    player.autoEterMode = "amount"
+    player.dilation.rebuyables[4] = 0
+    player.meta = {resets: 0, antimatter: 10, bestAntimatter: 10}
+    for (dim = 1; dim < 9; dim++) player.meta[dim] = {amount: 0, bought: 0, cost: initCost[dim]}
+    player.autoEterOptions = {epmult:false}
+    for (dim = 1; dim < 9; dim++) player.autoEterOptions["td" + dim] = false
+    player.galaxyMaxBulk = false
+    player.quantum = {
 		times: 0,
 		time: 0,
 		best: 9999999999,
@@ -653,58 +653,58 @@ function doNGPlusTwoNewPlayer(){
 		},
 		upgrades: []
 	}
-        player.aarexModifications.quantumConf = true
-        tmp.qu=player.quantum
+    player.aarexModifications.quantumConf = true
+    tmp.qu=player.quantum
 }
 
 function doNGMinusTwoNewPlayer(){
 	player.aarexModifications.newGameMinusMinusVersion = 2.41
-        player.galacticSacrifice = {}
-        player.galacticSacrifice = resetGalacticSacrifice()
-        player.totalBoughtDims = {}
-        player.tickBoughtThisInf = resetTickBoughtThisInf()
-        player.challengeTimes.push(600*60*24*31)
-        player.challengeTimes.push(600*60*24*31)
-        player.autobuyers[12]=13
-        player.extraDimPowerIncrease = 0
-        player.dimPowerIncreaseCost = player.tickspeedBoosts==undefined?1e3:3e5
-        player.infchallengeTimes.push(600*60*24*31)
-        player.infchallengeTimes.push(600*60*24*31)
-        player.options.gSacrificeConfirmation = true
+	player.galacticSacrifice = {}
+    player.galacticSacrifice = resetGalacticSacrifice()
+    player.totalBoughtDims = {}
+    player.tickBoughtThisInf = resetTickBoughtThisInf()
+    player.challengeTimes.push(600*60*24*31)
+	player.challengeTimes.push(600*60*24*31)
+    player.autobuyers[12] = 13
+    player.extraDimPowerIncrease = 0
+    player.dimPowerIncreaseCost = player.tickspeedBoosts == undefined ? 1e3 : 3e5
+    player.infchallengeTimes.push(600*60*24*31)
+    player.infchallengeTimes.push(600*60*24*31)
+    player.options.gSacrificeConfirmation = true
 }
 
 function doNGPlusThreeNewPlayer(){
 	player.aarexModifications.newGame3PlusVersion = 2.21 //Keep that line forever due to NG+3.1 / NG+3L compatibility
 	document.getElementById("quantumison").checked = false
-        player.respecMastery=false
-        player.dbPower = 1
-        player.dilation.times = 0
-        player.peakSpent = 0
-        player.masterystudies = []
-        tmp.qu.reached = false
-        player.options.animations.quarks = true
-        player.meta.bestOverQuantums = 0
-        tmp.qu.usedQuarks = {
+    player.respecMastery=false
+    player.dbPower = 1
+    player.dilation.times = 0
+    player.peakSpent = 0
+    player.masterystudies = []
+    tmp.qu.reached = false
+    player.options.animations.quarks = true
+    player.meta.bestOverQuantums = 0
+    tmp.qu.usedQuarks = {
 		r: 0,
 		g: 0,
 		b: 0
-        }
-        tmp.qu.colorPowers = {
+    }
+    tmp.qu.colorPowers = {
 		r: 0,
 		g: 0,
 		b: 0
-        }
+    }
 	tmp.qu.gluons = {
 		rg: 0,
 		gb: 0,
 		br: 0
-        }
-        player.eternityBuyer.dilationMode = false
-        player.eternityBuyer.statBeforeDilation = 0
-        player.eternityBuyer.dilationPerAmount = 10
-        player.eternityBuyer.dilMode = "amount"
-        player.eternityBuyer.tpUpgraded = false
-        player.eternityBuyer.slowStop = false
+    }
+    player.eternityBuyer.dilationMode = false
+    player.eternityBuyer.statBeforeDilation = 0
+    player.eternityBuyer.dilationPerAmount = 10
+    player.eternityBuyer.dilMode = "amount"
+    player.eternityBuyer.tpUpgraded = false
+    player.eternityBuyer.slowStop = false
         player.eternityBuyer.slowStopped = false
         player.eternityBuyer.ifAD = false
         player.eternityBuyer.presets = {on: false, autoDil: false, selected: -1, selectNext: 0, left: 1, order: []}
@@ -7800,6 +7800,14 @@ function doPerSecondNGP3Stuff(){
 	givePerSecondNeuts()
 }
 
+function checkGluonRounding(){
+	if (!tmp.ngp3) return
+	if (player.ghostify.milestones > 7 || !quantumed) return
+	if (player.quantum.gluons.rg.lt(101)) player.quantum.gluons.rg = player.quantum.gluons.rg.round()
+	if (player.quantum.gluons.gb.lt(101)) player.quantum.gluons.gb = player.quantum.gluons.gb.round()
+	if (player.quantum.gluons.br.lt(101)) player.quantum.gluons.br = player.quantum.gluons.br.round()
+}
+
 let autoSaveSeconds=0
 setInterval(function() {
 	updateTemp()
@@ -7849,6 +7857,10 @@ setInterval(function() {
 	doPerSecondNGP3Stuff()
 	notifyQuantumMilestones()
 	updateQuantumWorth()
+
+	//Rounding errors
+	if (!tmp.ngp3 || !quantumed) if (player.infinityPoints.lt(100)) player.infinityPoints = player.infinityPoints.round()
+	checkGluonRounding()
 }, 1000)
 
 var postC2Count = 0;
