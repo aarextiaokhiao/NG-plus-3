@@ -58,18 +58,18 @@ function getGalaxyEff(bi) {
 	if (player.galacticSacrifice) {
 		if (player.achievements.includes("r83")) eff *= 1.05
 		if (player.achievements.includes("r45")) eff *= 1.02
-		if (player.infinityUpgrades.includes("postinfi51")) eff *= player.tickspeedBoosts!=undefined? 1.15 : 1.2
+		if (player.infinityUpgrades.includes("postinfi51")) eff *= player.tickspeedBoosts != undefined ? 1.15 : 1.2
 		if (tmp.cp && player.achievements.includes("r67")) {
-			let x=tmp.cp
+			let x = tmp.cp
 			if (x < 0) x = 1
-			if (x>4&&player.tickspeedBoosts != undefined) x=Math.sqrt(x-1)+2
-			eff += .07*(x)
+			if (x > 4 && player.tickspeedBoosts != undefined) x = Math.sqrt(x - 1) + 2
+			eff += .07 * x
 		}
 	}
 	if (player.tickspeedBoosts !== undefined && (inNC(5) || player.currentChallenge == "postcngm3_3")) eff *= 0.75
 	if (player.achievements.includes("ngpp8") && player.meta != undefined) eff *= 1.001;
 	if (player.timestudy.studies.includes(212)) eff *= tsMults[212]()
-	if (player.timestudy.studies.includes(232)&&bi) eff*=tmp.ts232
+	if (player.timestudy.studies.includes(232)&&bi) eff *= tmp.ts232
 
 	if (player.aarexModifications.nguspV !== undefined && player.dilation.active) eff *= exDilationBenefit() + 1
 	if (tmp.ngp3) eff *= colorBoosts.r
@@ -80,7 +80,7 @@ function getGalaxyEff(bi) {
 }
 
 function getPostGalaxyEff() {
-	let ret = player.tickspeedBoosts!=undefined? 1.1 : player.galacticSacrifice ? 1.7 : 1.5
+	let ret = player.tickspeedBoosts != undefined ? 1.1 : player.galacticSacrifice ? 1.7 : 1.5
 	if (player.aarexModifications.ngexV && !player.challenges.includes("postc5")) ret -= 0.05
 	return ret
 }
@@ -135,48 +135,48 @@ function getPostC3Base() {
 	if (player.tickspeedBoosts != undefined) perGalaxy = 0.002
 	if (inQC(2)) perGalaxy = 0
 	if (tmp.ngp3 ? tmp.qu.bigRip.active : false) {
-		if (ghostified && player.ghostify.neutrinos.boosts>8) perGalaxy*=tmp.nb[9]
-		if (hasNU(12)) perGalaxy*=tmp.nu[4].free
+		if (ghostified && player.ghostify.neutrinos.boosts>8) perGalaxy *= tmp.nb[9]
+		if (hasNU(12)) perGalaxy *= tmp.nu[4].free
 	}
-	if (!player.galacticSacrifice) return player.galaxies*perGalaxy+1.05
-	if (tmp.cp>1) {
-		if (player.tickspeedBoosts != undefined) perGalaxy *= tmp.cp/10+.9
-		else perGalaxy *= tmp.cp/5+.8
+	if (!player.galacticSacrifice) return player.galaxies * perGalaxy + 1.05
+	if (tmp.cp > 1) {
+		if (player.tickspeedBoosts != undefined) perGalaxy *= tmp.cp / 10 + .9
+		else perGalaxy *= tmp.cp / 5 + .8
 	}
 	var g=initialGalaxies()
 	perGalaxy *= getGalaxyEff()
-	let ret = getGalaxyPower(g)*perGalaxy+1.05
+	let ret = getGalaxyPower(g) * perGalaxy + 1.05
 	if (inNC(6, 1) || player.currentChallenge == "postc1") ret -= player.aarexModifications.ngmX > 3 ? 0.02 : 0.05
 	else if (player.aarexModifications.ngmX == 3) ret -= 0.03
 	if (hasPU(33)) ret += puMults[33]()
-	if (tmp.be && ret > 1e8) ret = Math.pow(Math.log10(ret)+2,8)
+	if (tmp.be && ret > 1e8) ret = Math.pow(Math.log10(ret) + 2, 8)
 	return ret
 }
 
 function getPostC3Exp() {
-	let x=1
+	let x = 1
 	if (player.galacticSacrifice !== undefined) {
-		let g=getGalaxyPower(0,false,true)
-		if (g < 7) return 1+g/5
+		let g = getGalaxyPower(0, false, true)
+		if (g < 7) return 1 + g / 5
 		let y = 5
 		let z = .5
-		if (tmp.ec>29) {
-			if (player.currentEternityChall=="" || player.currentEternityChall=="eterc12") {
-				z=.9
-				if (tmp.ec>53) y = 1.4-((tmp.ec-54)/15)
-				else if (tmp.ec>42) y=2
-				else if (tmp.ec>37) y=3.5
-			} else z=.6
+		if (tmp.ec > 29) {
+			if (player.currentEternityChall == "" || player.currentEternityChall == "eterc12") {
+				z = .9
+				if (tmp.ec > 53) y = 1.4 - ((tmp.ec - 54) / 15)
+				else if (tmp.ec > 42) y = 2
+				else if (tmp.ec > 37) y = 3.5
+			} else z = .6
 		}
-		x=2+Math.pow(g-5,z)/y
+		x = 2 + Math.pow(g - 5, z) / y
 	}
 	return x
 }
 
 function canBuyTickSpeed() {
-  if (player.currentEternityChall == "eterc9") return false
-  if (player.galacticSacrifice&&player.tickspeedBoosts==undefined&&inNC(14)&&player.tickBoughtThisInf.current>307) return false
-  return canBuyDimension(3);
+	if (player.currentEternityChall == "eterc9") return false
+	if (player.galacticSacrifice && player.tickspeedBoosts == undefined && inNC(14) && player.tickBoughtThisInf.current > 307) return false
+	return canBuyDimension(3);
 }
 
 function buyTickSpeed() {
@@ -206,7 +206,7 @@ document.getElementById("tickSpeed").onclick = function () {
 function getTickSpeedCostMultiplierIncrease() {
 	if (inQC(7)) return Number.MAX_VALUE
 	let ret = player.tickSpeedMultDecrease;
-	let exp = .9-.02*ECTimesCompleted("eterc11")
+	let exp = .9 - .02 * ECTimesCompleted("eterc11")
 	if (player.currentChallenge === 'postcngmm_2') ret = Math.pow(ret, .5)
 	else if (player.challenges.includes('postcngmm_2')) ret = Math.pow(ret, exp / (1 + Math.pow(player.galaxies, 0.7) / 10))
 	return ret
@@ -217,7 +217,7 @@ function buyMaxPostInfTickSpeed (mult) {
 	var a = Math.log10(Math.sqrt(mi))
 	var b = player.tickspeedMultiplier.dividedBy(Math.sqrt(mi)).log10()
 	var c = player.tickSpeedCost.dividedBy(player.money).log10()
-	var discriminant = Math.pow(b, 2) - (c *a* 4)
+	var discriminant = Math.pow(b, 2) - (c * a * 4)
 	if (discriminant < 0) return false
 	var buying = Math.floor((Math.sqrt(Math.pow(b, 2) - (c *a *4))-b)/(2 * a))+1
 	if (buying <= 0) return false

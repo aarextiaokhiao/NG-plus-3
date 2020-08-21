@@ -197,12 +197,8 @@ function dimMetaBought(tier) {
 
 function metaBuyOneDimension(tier) {
 	var cost = player.meta[tier].cost;
-	if (!canBuyMetaDimension(tier)) {
-		return false;
-	}
-	if (!canAffordMetaDimension(cost)) {
-		return false;
-	}
+	if (!canBuyMetaDimension(tier)) return false;
+	if (!canAffordMetaDimension(cost)) return false;
 	player.meta.antimatter = player.meta.antimatter.minus(cost);
 	player.meta[tier].amount = player.meta[tier].amount.plus(1);
 	player.meta[tier].bought++;
@@ -215,8 +211,8 @@ function metaBuyOneDimension(tier) {
 
 function getMetaCost(tier, boughtTen) {
 	let cost = Decimal.times(initCost[tier], costMults[tier].pow(boughtTen))
-	let scalingStart=Math.ceil(Decimal.div(getMetaCostScalingStart(), initCost[tier]).log(costMults[tier]))
-	if (boughtTen>=scalingStart) cost=cost.times(Decimal.pow(10, (boughtTen-scalingStart + 1) * (boughtTen-scalingStart + 2) / 2))
+	let scalingStart = Math.ceil(Decimal.div(getMetaCostScalingStart(), initCost[tier]).log(costMults[tier]))
+	if (boughtTen >= scalingStart) cost = cost.times(Decimal.pow(10, (boughtTen-scalingStart + 1) * (boughtTen-scalingStart + 2) / 2))
 	return cost
 }
 

@@ -31,14 +31,14 @@ function getD22Bonus() {
 }
 
 function distribEx() {
-	let unl=[]
+	let unl = []
 	for (var i = 1; i <= DIL_UPG_SIZES[0]; i++) if (isDilUpgUnlocked("r" + i)) unl.push(i)
 	let div = unl.length + 1
 	let toAdd = player.exdilation.unspent
 	for (var u = 0; u < div - 1; u++) toAdd = toAdd.add(player.exdilation.spent[unl[u]]||0)
 	toAdd = toAdd.div(div)
 	player.exdilation.unspent = toAdd
-	for (var u = 0;u < div - 1; u++) player.exdilation.spent[unl[u]] = toAdd
+	for (var u = 0; u < div - 1; u++) player.exdilation.spent[unl[u]] = toAdd
 	updateExdilation()
 }
 

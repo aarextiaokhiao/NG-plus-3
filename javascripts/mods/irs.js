@@ -11,7 +11,7 @@ function buyRepeatableInfinityUpgrade(id) {
 }
 
 function getInfUpgPow(id) {
-	var amt=player.infinityUpgradesRespecced[id]
+	var amt = player.infinityUpgradesRespecced[id]
 	if (id == 4) return amt * 30
 	if (id == 5) return 1 + amt * 0.17
 	if (id == 6) return amt * 20
