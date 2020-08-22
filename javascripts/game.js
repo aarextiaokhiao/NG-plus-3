@@ -8985,10 +8985,12 @@ function passiveQuantumLevelStuff(diff){
 }
 
 function TTpassiveGain(diff){
+	diff = diff / 10 
+	// ive been told its 10x too fast, can remove if so
 	if (player.dilation.upgrades.includes(10)) {
 		var speed = getPassiveTTGen()
 		var div = player.timestudy.theorem / speed
-		player.timestudy.theorem += diff * speed
+		player.timestudy.theorem += diff * speed  
 		if (div < 3600) player.timestudy.theorem += Math.min(diff * 9, 3600 - div) * speed
 		if (player.timestudy.theorem > 1e200) player.timestudy.theorem = 1e200
     }
