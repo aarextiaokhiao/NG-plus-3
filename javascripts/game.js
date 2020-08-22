@@ -8006,7 +8006,7 @@ function chall2PowerUpdating(diff){
 function normalChallPowerUpdating(diff){
 	if (player.currentChallenge == "postc8" || inQC(6)) player.postC8Mult = player.postC8Mult.times(Math.pow(0.000000046416, diff))
 
-	if (inNC(3) || player.matter.gte(1)) player.chall3Pow = player.chall3Pow.times(Decimal.pow(1.00038, diff));
+	if (inNC(3) || player.matter.gte(1)) player.chall3Pow = player.chall3Pow.times(Decimal.pow(1.00038, diff)).min(1e200);
     	
 	chall2PowerUpdating(diff)
 }
