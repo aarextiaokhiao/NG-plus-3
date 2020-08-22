@@ -173,13 +173,13 @@ function isIC3Trapped() {
 let galCosts = {
 	11: 1,
 	21: 1,
-	41: "1e1650",
+	41: "1e3800",
 	51: "1e5500",
 	22: 5,
-	42: "1e2300",
+	42: "1e4000",
 	52: "1e8000",
 	23: 100,
-	43: "1e3700",
+	43: "1e4200",
 	53: "1e25000",
 	14: 300,
 	24: 1e3,
@@ -254,9 +254,9 @@ function galacticUpgradeSpanDisplay () {
 		document.getElementById('galcost35').innerHTML = shortenCosts(2e3)
 	}
 	if (player.infinityUpgrades.includes("postinfi63")) {
-		document.getElementById("galcost41").innerHTML = shortenCosts(new Decimal("1e1650"))
-		document.getElementById("galcost42").innerHTML = shortenCosts(new Decimal("1e2300"))
-		document.getElementById("galcost43").innerHTML = shortenCosts(new Decimal("1e3700"))
+		document.getElementById("galcost41").innerHTML = shortenCosts(new Decimal("1e3800"))
+		document.getElementById("galcost42").innerHTML = shortenCosts(new Decimal("1e4000"))
+		document.getElementById("galcost43").innerHTML = shortenCosts(new Decimal("1e4200"))
 		document.getElementById("galcost51").innerHTML = shortenCosts(new Decimal("1e5500"))
 		document.getElementById("galcost52").innerHTML = shortenCosts(new Decimal("1e8000"))
 		document.getElementById("galcost53").innerHTML = shortenCosts(new Decimal("1e25000"))
