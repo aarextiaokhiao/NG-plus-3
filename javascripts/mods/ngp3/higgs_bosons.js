@@ -84,6 +84,7 @@ function bosonicLabReset() {
 }
 
 function higgsReset() {
+	if (tmp.ngp3l) return
 	var oldHiggs = tmp.hb.higgs
 	if (!tmp.bl.am.gte(getHiggsRequirement())) return
 	if (!player.aarexModifications.higgsNoConf && !confirm("You will exchange all your Bosonic Lab stuff for a Higgs Boson, but everything will also reset that Light Empowerments reset. Are you sure to proceed?")) return
