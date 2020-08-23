@@ -128,7 +128,7 @@ function getBranchFinalSpeed() {
 }
 
 function getDecayRate(branch) {
-	let ret = Decimal.pow(2, getBU1Power(branch) * Math.max((getRadioactiveDecays(branch) - 8) / 10, 1)).div(getBranchUpgMult(branch, 2)).div(Decimal.pow(2, getRDPower(branch) - 4))
+	let ret = Decimal.pow(2, getBU1Power(branch) * Math.max((getRadioactiveDecays(branch) - 8) / 10, 1)).div(getBranchUpgMult(branch, 3)).div(Decimal.pow(2, getRDPower(branch) - 4))
 	if (branch == "r") {
 		if (GUBought("rg8")) ret = ret.div(getGU8Effect("rg"))
 	}
@@ -418,3 +418,22 @@ function getRDPower(branch) {
 	let y = Math.max(x - 5, 0)
 	return x * 25 + (Math.pow(y, 2) + y) * 1.25
 }
+
+
+function getBU1Power(branch) {
+	let x = getBranchUpgLevel(branch,1)
+	let s = Math.floor(Math.sqrt(0.25 + 2 * x / 120) - 0.5)
+	return s * 120 + (x - s * (s + 1) * 60)/(s + 1)
+}
+
+function getBU2Power(branch) {
+	let x = getBranchUpgLevel(branch, 2)
+	if (player.achievements.includes("ng3p94")) x += getRadioactiveDecays(branch)
+	return x
+}
+
+function getBranchUpgMult(branch, upg) {
+	if (upg == 1) return Decimal.pow(2, getBU1Power(branch) * (getRadioactiveDecays(branch) / 10 + 1))
+	else if (upg == 2) return Decimal.pow(2, getBU2Power(branch))
+	else if (upg == 3) return Decimal.pow(4, getBranchUpgLevel(branch, 3))
+} 
