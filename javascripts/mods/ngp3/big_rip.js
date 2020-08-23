@@ -160,16 +160,15 @@ function breakEternity() {
 }
 
 function getEMGain() {
-	let log=player.timeShards.div(1e9).log10()*0.25
-	if (log>15) log=Math.sqrt(log*15)
+	let log = player.timeShards.div(1e9).log10() * 0.25
+	if (log>15) log = Math.sqrt(log * 15)
 	
-	let log2log=Math.log10(log)/Math.log10(2)
-	let start=9 //Starts at e512.
-	if (player.aarexModifications.nguepV !== undefined) start=10 //Starts at e1024
-	if (log2log>start) {
-		let capped=Math.min(Math.floor(Math.log10(Math.max(log2log+2-start,1))/Math.log10(2)),20-start)
-		log2log=(log2log-Math.pow(2,capped)-start+2)/Math.pow(2,capped)+capped+start-1
-		log=Math.pow(2,log2log)
+	let log2log = Math.log10(log) / Math.log10(2)
+	let start = 10 //Starts at e1024.
+	if (log2log > start) {
+		let capped = Math.min(Math.floor(Math.log10(Math.max(log2log + 2 - start, 1)) / Math.log10(2)), 20 - start)
+		log2log = (log2log - Math.pow(2, capped) - start + 2) / Math.pow(2, capped) + capped + start - 1
+		log = Math.pow(2, log2log)
 	}
 	
 	return Decimal.pow(10,log).floor()
@@ -178,7 +177,7 @@ function getEMGain() {
 var breakUpgCosts = [1, 1e3, 2e6, 2e11, 8e17, 1e45, null, 1e290, new Decimal("1e350"), new Decimal("1e375")]
 function getBreakUpgCost(id) {
 	if (id == 7) return Decimal.pow(2, tmp.qu.breakEternity.epMultPower).times(1e5)
-	return breakUpgCosts[id-1]
+	return breakUpgCosts[id - 1]
 }
 
 function buyBreakUpg(id) {

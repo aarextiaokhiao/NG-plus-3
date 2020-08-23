@@ -254,7 +254,7 @@ function updateBosonicStuffCosts() {
 function getBosonicFinalCost(x) {
 	x = new Decimal(x)
 	if (player.achievements.includes("ng3p91")) x = x.div(2)
-	return x
+	return x.ceil()
 }
 
 function updateBosonicLabTemp() {
