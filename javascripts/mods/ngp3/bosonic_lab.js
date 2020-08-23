@@ -138,6 +138,7 @@ function getBosonicAMProduction() {
 
 function getBosonicAMFinalProduction() {
 	let r = getBosonicAMProduction()
+	if (tmp.ngp3l) return r
 	if (tmp.bl.am.gt(tmp.badm.start)) r = r.div(tmp.badm.preDim)
 	return r
 }
