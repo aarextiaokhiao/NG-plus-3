@@ -426,7 +426,8 @@ var br = {
 	scalings: {
 		1: 60,
 		2: 120,
-		3: 600
+		3: 600,
+		4: 3000
 	}
 }
 
@@ -621,7 +622,7 @@ var bu = {
 		24: "You produce 1% of Space Shards on Big Rip per second, but Break Eternity upgrades that boost space shard gain are nerfed.",
 		25: "Electrons boost the per-ten Meta Dimensions multiplier.",
 		31: "Bosonic Antimatter boosts all Nanofield rewards.",
-		32: "Every 3rd Light Empowerment after LE7, unlock a new boost until LE25.",
+		32: "Unlock a new boost until every third LE from LE7 until LE25.",
 		33: "Higgs Bosons reduce the costs of all electron upgrades.",
 		34: "All types of galaxies boost each other.",
 		35: "Replicantis and Emperor Dimensions boost each other.",
@@ -687,7 +688,8 @@ var bu = {
 			return Math.pow(Math.log10(tmp.bl.am.add(1).log10() / 5 + 1) / 2 + 1, 2)
 		},
 		33: function() {
-			return (Math.sqrt(tmp.hb.higgs + 1) - 1) / 6 + 1
+			var div = tmp.newNGP3E ? 4 : 6
+			return (Math.sqrt(tmp.hb.higgs + 1) - 1) / div + 1
 		},
 		34: function() {
 			return (Math.pow(Math.log10(player.galaxies / 1e4 + 10) * Math.log10(getTotalRG() / 1e4 + 10) * Math.log10(player.dilation.freeGalaxies / 1e4 + 10) * Math.log10(tmp.aeg / 1e4 + 10), 1/8) - 1) / 5 + 1
@@ -711,10 +713,13 @@ var bu = {
 			return Math.sqrt(colorBoosts.g + tmp.pe) / (tmp.qu.bigRip.active ? 100 : 40) + 1
 		},
 		44: function() {
-			return Math.sqrt(tmp.qu.colorPowers.b.add(1).log10()) * 0.15
+			var exp = tmp.newNGP3E ? .55 : .5
+			return Math.pow(tmp.qu.colorPowers.b.add(1).log10(), exp) * 0.15
 		},
 		45: function() {
-			return player.dilation.dilatedTime.add(1).pow(1 / 2e3).toNumber()
+			var eff = player.dilation.dilatedTime.add(1).pow(.0005)
+			if (eff.gt(9)) eff = Decimal.pow(eff, .5).times(3)
+			return eff.toNumber()
 		}
 	},
 	effectDescs: {
@@ -787,7 +792,7 @@ function getAntiPreonProduction() {
 	return r
 }
 
-var aplScalings={
+var aplScalings = {
 	0: 0,
 	1: 8,
 	2: 32,
@@ -801,7 +806,7 @@ function getAntiPreonLoss() {
 }
 
 function useAntiPreon(id) {
-	player.ghostify.wzb.dPUse=id
+	player.ghostify.wzb.dPUse = id
 }
 
 function getOscillateGainSpeed() {
