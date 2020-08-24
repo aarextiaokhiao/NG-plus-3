@@ -50,7 +50,9 @@ function bosonicTick(diff) {
 				lData.wnb=lData.wnb.add(toSub.add(lData.wQkUp ? 0 : 1).div(2).floor())
 				if (toSub.mod(2).gt(0)) lData.wQkUp = !lData.wQkUp
 				lData.wQkProgress = lData.wQkProgress.sub(toSub.min(lData.wQkProgress))
-				data.battery = data.battery.add(toSub.div(1e6))
+				batteryMult = new Decimal(1)
+				if (data.usedEnchants.includes(33)) batteryMult = batteryMult.times(tmp.bEn[33])
+				data.battery = data.battery.add(toSub.div(1e6).times(batteryMult))
 			}
 		}
 		if (lData.dPUse == 2) {
@@ -456,7 +458,7 @@ var bEn = {
 		13: function(l) {
 			return Decimal.add(l, 1).sqrt()
 		},
-		14: function(l, type = ''){
+		14: function(l, type = '') {
 			if (type == "bUpgs") return Math.floor(Decimal.add(l, 9).log10())
 			return Decimal.add(l, 1).sqrt()
 		},
@@ -465,6 +467,9 @@ var bEn = {
 			if (tmp.bl.am.gt(1e11)) exp *= tmp.bl.am.div(10).log10() / 10
 			if (exp > 5) exp = Math.sqrt(exp * 5)
 			return Decimal.pow(tmp.bl.am.add(10).log10(), exp)
+		},
+		24: function(l) {
+			return Decimal.pow(Decimal.add(l, 10).log10(), 4)
 		},
 		34: function(l) {
 			return l.add(1).log10() + 1
