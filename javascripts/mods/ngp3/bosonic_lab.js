@@ -143,7 +143,9 @@ function getAchBAMMult(){
 function getBosonicAMProduction() {
 	let r = player.money.max(1).log10() / 15e15 - 3
 	var add = player.achievements.includes("ng3p98") ? Math.pow(player.ghostify.hb.higgsUnspent, 2) : 0
-	return Decimal.pow(10, r).times(tmp.wzb.wbp).times(getAchBAMMult()).plus(add)
+	var ret = Decimal.pow(10, r).times(tmp.wzb.wbp).times(getAchBAMMult()).plus(add)
+	//maybe softcap at e40 or e50?
+	return ret
 }
 
 function getBosonicAMFinalProduction() {
@@ -650,14 +652,29 @@ var bu = {
 		},
 		41: {
 			am: 2e33,
-			g2: 5e11,
-			g4: 1e7
+			g2: 5e10,
+			g4: 1e6
 		},
 		42: {
 			am: 2e40,
-			g3: 14e14,
-			g4: 1e10
-		} //more to come!
+			g3: 1e12,
+			g4: 1e7
+		},
+		43:{
+			am: 2e50,
+			g1: 4e13,
+			g3: 4e12
+		},
+		44:{
+			am: 2e65,
+			g1: 1e14,
+			g4: 1e8
+		},
+		45:{
+			am: 2e80,
+			g2: 2e14,
+			g4: 4e8
+		}
 	},
 	reqData: {},
 	descs: {
