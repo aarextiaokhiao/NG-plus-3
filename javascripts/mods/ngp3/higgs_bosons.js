@@ -48,6 +48,7 @@ function bosonicLabReset() {
 	player.ghostify.ghostlyPhotons.ghostlyRays = new Decimal(0)
 	player.ghostify.ghostlyPhotons.lights = [0,0,0,0,0,0,0,0]
 	tmp.updateLights = true
+	var startingEnchants = bEn.effects[14](tmp.bl.enchants[14] || 0, "bUpgs")
 	tmp.bl = {
 		watt: new Decimal(0),
 		ticks: tmp.bl.ticks,
@@ -64,6 +65,13 @@ function bosonicLabReset() {
 		battery: new Decimal(0),
 		odSpeed: tmp.bl.odSpeed
 	}
+	var order = [11, 12, 13, 15, 14, 21, 22, 23, 24, 25, 31, 32, 33, 34, 35, 41, 42, 43, 44, 45]
+	//tmp.bl.upgrades needs to be updated (also 12 needs to be added)
+	for (let i = 0; i < startingEnchants; i++){
+		if (i == 20) break
+		tmp.bl.upgrades.push(order[i])
+	}
+	if (!tmp.bl.upgrades.includes(32) && player.achievements.includes("ng3p92")) tmp.bl.upgrades.push(32)
 	for (var g = 1; g <= br.maxLimit; g++) tmp.bl.glyphs.push(new Decimal(0))
 	player.ghostify.wzb = {
 		unl: true,
@@ -107,7 +115,9 @@ function restartHiggs() {
 }
 
 function getHiggsRequirementBase() {
-	return new Decimal(1e20)
+	var div = new Decimal(1)
+	if (player.ghostify.wzb.usedEnchants.includes(14)) div = div.times(tmp.bEn[14] || 1)
+	return new Decimal(1e20).divided(div)
 }
 
 function getHiggsRequirementMult() {

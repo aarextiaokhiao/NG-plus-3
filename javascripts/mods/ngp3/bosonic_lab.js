@@ -443,7 +443,7 @@ var bEn = {
 		12: "You automatically extract Bosonic Runes.",
 		13: "Speed up the production and use of Anti-Preons.",
 		23: "Bosonic Antimatter boosts oscillate speed.",
-		14: "Reduce the requirement of Higgs.",
+		14: "Divide the requirement of Higgs and start with the first log10(levels+9) bosonic upgrades upon higgs reset even if inactive.",
 		24: "You gain more Bosonic Battery.",
 		34: "Boost all Particles of Higgs Field."
 	},
@@ -454,6 +454,10 @@ var bEn = {
 			return Decimal.pow(l, exp).div(bEn.autoScalings[tmp.bl.typeToExtract])
 		},
 		13: function(l) {
+			return Decimal.add(l, 1).sqrt()
+		},
+		14: function(l, type = ''){
+			if (type == "bUpgs") return Math.floor(Decimal.add(l, 9).log10())
 			return Decimal.add(l, 1).sqrt()
 		},
 		23: function(l) {
