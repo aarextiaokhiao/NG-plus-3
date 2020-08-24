@@ -643,10 +643,20 @@ var bu = {
 			g3: 5e8
 		},
 		35: {
-			am: 1e28,
+			am: 2e28,
 			g1: 5e10,
 			g4: 5e4
-		}
+		},
+		41: {
+			am: 2e33,
+			g2: 5e11,
+			g4: 1e7
+		},
+		42: {
+			am: 2e40,
+			g3: 14e14,
+			g4: 1e10
+		} //more to come!
 	},
 	reqData: {},
 	descs: {
@@ -680,7 +690,9 @@ var bu = {
 			let exp = 0.5 - 0.25 * x / (x + 3) / y
 			if (tmp.newNGP3E) x += x / 2 + Math.sqrt(x)
 			if (y > 1) x *= y
-			return Math.pow(x, exp) / 4
+			ret = Math.pow(x, exp) / 4
+			if (ret > 1) ret = 1 + Math.log10(ret)
+			return ret
 		},
 		12: function() {
 			return (colorBoosts.g + tmp.pe - 1) * 7e-4
@@ -705,9 +717,13 @@ var bu = {
 		15: function() {
 			let gLog = Decimal.max(player.ghostify.times, 1).log10()
 			if (tmp.newNGP3E) gLog += 2 * Math.sqrt(gLog)
+
+			let ghlog = player.dilation.dilatedTime.div("1e1520").add(1).pow(.05).log10()
+			if (ghlog > 308) ghlog = Math.sqrt(ghlog * 308)
+
 			return {
 				dt: Decimal.pow(10, 2 * gLog + 3 * gLog / (gLog / 20 + 1)),
-				gh: player.dilation.dilatedTime.div("1e1520").add(1).pow(.05)
+				gh: Decimal.pow(10, ghlog)
 			}
 		},
 		23: function() {
@@ -731,12 +747,14 @@ var bu = {
 			return (Math.sqrt(tmp.hb.higgs + 1) - 1) / div + 1
 		},
 		34: function() {
-			return (Math.pow(Math.log10(player.galaxies / 1e4 + 10) * Math.log10(getTotalRG() / 1e4 + 10) * Math.log10(player.dilation.freeGalaxies / 1e4 + 10) * Math.log10(tmp.aeg / 1e4 + 10), 1/8) - 1) / 5 + 1
+			var galPart = Math.log10(player.galaxies / 1e4 + 10) * Math.log10(getTotalRG() / 1e4 + 10) * Math.log10(player.dilation.freeGalaxies / 1e4 + 10) * Math.log10(tmp.aeg / 1e4 + 10)
+			var exp = tmp.newNGP3E ? 1/6 : 1/8
+			return (Math.pow(galPart, exp) - 1) / 5 + 1
 		},
 		35: function() {
 			return {
 				rep: Math.pow(tmp.qu.replicants.quarks.add(1).log10(), 1/3) * 2,
-				eds: Decimal.pow(10, Math.pow(player.replicanti.amount.log10(), 2/3) / 15e3)
+				eds: Decimal.pow(tmp.newNGP3E ? 10 : 20, Math.pow(player.replicanti.amount.log10(), 2/3) / 15e3)
 			}
 		},
 		41: function() {
@@ -746,7 +764,8 @@ var bu = {
 			}
 		},
 		42: function() {
-			return Math.pow(tmp.qu.colorPowers.r.add(1).log10() / 2e4 + 1, 0.25)
+			var exp = tmp.newNGP3E ? 1/3 : 1/4
+			return Math.pow(tmp.qu.colorPowers.r.add(1).log10() / 2e4 + 1, exp)
 		},
 		43: function() {
 			return Math.sqrt(colorBoosts.g + tmp.pe) / (tmp.qu.bigRip.active ? 100 : 40) + 1
