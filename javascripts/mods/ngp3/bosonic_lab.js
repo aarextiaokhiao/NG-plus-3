@@ -439,6 +439,8 @@ var bEn = {
 		12: [3,1],
 		13: [20,2],
 		23: [1e4,2e3],
+		14: [1e6, 2],
+		24: [1e6, 10]
 		34: [1,0]
 	},
 	descs: {
@@ -469,7 +471,7 @@ var bEn = {
 			return Decimal.pow(tmp.bl.am.add(10).log10(), exp)
 		},
 		24: function(l) {
-			return Decimal.pow(Decimal.add(l, 10).log10(), 4)
+			return Decimal.pow(Decimal.add(l, 100).log10(), 4).div(16)
 		},
 		34: function(l) {
 			return l.add(1).log10() + 1
