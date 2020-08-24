@@ -133,9 +133,16 @@ function getBosonicAntiMatterProduction(){
 	return getBosonicAMProduction()
 }
 
+function getAchBAMMult(){
+	if (!player.achievements.includes("ng3p91")) return 1
+	var exp = 1
+	if (tmp.bl.am.log10() > 10) exp = 10 / tmp.bl.am.log10()
+	return player.achPow.pow(exp)
+}
+
 function getBosonicAMProduction() {
 	let r = player.money.max(1).log10() / 15e15 - 3
-	return Decimal.pow(10, r).times(tmp.wzb.wbp)
+	return Decimal.pow(10, r).times(tmp.wzb.wbp).times(getAchBAMMult())
 }
 
 function getBosonicAMFinalProduction() {
