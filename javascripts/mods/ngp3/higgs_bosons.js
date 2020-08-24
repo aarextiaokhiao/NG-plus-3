@@ -86,9 +86,9 @@ function bosonicLabReset() {
 		wnb: new Decimal(0),
 		zb: new Decimal(0)
 	}
-	if (player.achievements.includes("ng3p92")) tmp.bl.upgrades.push(32)
 	updateBosonicAMDimReturnsTemp()
 	ghostify(false, true)
+	matchTempPlayerHiggs()
 }
 
 function higgsReset() {
@@ -106,12 +106,14 @@ function higgsReset() {
 		updateBosonicStuffCosts()
 	}
 	tmp.hb.bosonicSemipowerment = true
+	matchTempPlayerHiggs()
 }
 
 function restartHiggs() {
 	if (!confirm("This resets everything that Higgs resets. You won't gain anything. Are you sure to proceed?")) return
 	bosonicLabReset()
 	tmp.hb.bosonicSemipowerment = true
+	matchTempPlayerHiggs()
 }
 
 function getHiggsRequirementBase() {
@@ -144,9 +146,14 @@ function updateUnspentHiggs() {
 	tmp.hb.higgsUnspent = tmp.hb.higgs
 }
 
+function matchTempPlayerHiggs(){
+	player.ghostify.hb = tmp.hb
+	player.ghostify.bl = tmp.bl
+}
 
 function updateHiggsTemp() {
 	updateBosonicFactorTemp()
+	matchTempPlayerHiggs()
 }
 
 function updateBosonicFactorTemp() {
