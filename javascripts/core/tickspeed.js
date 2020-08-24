@@ -182,7 +182,7 @@ function canBuyTickSpeed() {
 function buyTickSpeed() {
 	if (!canBuyTickSpeed()) return false
 	if (player.tickSpeedCost.gt(player.money)) return false
-	player.money = player.money.minus(player.tickSpeedCost)
+	if (!quantumed) player.money = player.money.minus(player.tickSpeedCost)
 	if ((!inNC(5) && player.currentChallenge != "postc5") || player.tickspeedBoosts != undefined) player.tickSpeedCost = player.tickSpeedCost.times(player.tickspeedMultiplier)
 	else multiplySameCosts(player.tickSpeedCost)
 	if (costIncreaseActive(player.tickSpeedCost)) player.tickspeedMultiplier = player.tickspeedMultiplier.times(getTickSpeedCostMultiplierIncrease())
@@ -229,8 +229,10 @@ function buyMaxPostInfTickSpeed (mult) {
 	}
 	player.tickSpeedCost = player.tickSpeedCost.times(player.tickspeedMultiplier.pow(buying-1)).times(Decimal.pow(mi, (buying-1)*(buying-2)/2))
 	player.tickspeedMultiplier = player.tickspeedMultiplier.times(Decimal.pow(mi, buying-1))
-	if (player.money.gte(player.tickSpeedCost)) player.money = player.money.minus(player.tickSpeedCost)
-	else if (player.tickSpeedMultDecrease > 2) player.money = new Decimal(0)
+	if (!quantum){
+		if (player.money.gte(player.tickSpeedCost)) player.money = player.money.minus(player.tickSpeedCost)
+		else if (player.tickSpeedMultDecrease > 2) player.money = new Decimal(0)
+	}
 	player.tickSpeedCost = player.tickSpeedCost.times(player.tickspeedMultiplier)
 	player.tickspeedMultiplier = player.tickspeedMultiplier.times(mi)
 	player.postC8Mult = new Decimal(1)
