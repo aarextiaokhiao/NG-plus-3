@@ -919,7 +919,7 @@ function doEternityRespeccedNewPlayer(){
 }
 
 function doNGMinusThreeNewPlayer(){
-	player.aarexModifications.newGame3MinusVersion = 3.201
+	player.aarexModifications.newGame3MinusVersion = 3.202
 	player.aarexModifications.ngmX=3
 	player.tickspeedBoosts = 0
 	player.autobuyers[13] = 14
@@ -929,6 +929,9 @@ function doNGMinusThreeNewPlayer(){
 	player.infchallengeTimes.push(600*60*24*31)
 	player.infchallengeTimes.push(600*60*24*31)
 	player.overXGalaxiesTickspeedBoost=10
+	player.replicanti.chanceCost = Decimal.pow(10, 150)
+	player.replicanti.intervalCost = Decimal.pow(10, 140)
+	player.replicanti.galCost = Decimal.pow(10, 170)
 }
 
 function doNGEXPNewPlayer(){
@@ -4392,7 +4395,7 @@ function setAchieveTooltip() {
 	zerodeg.setAttribute('ach-tooltip', "Unlock the 8th Infinity Dimension."+(player.boughtDims?" Reward: Normal Dimensions are multiplied by the amount of 8th Infinity Dimensions you have.":""))
 
 	//ACHIEVEMENT ROW 10
-	costco.setAttribute('ach-tooltip', "Bulk buy 750 dimension boosts at once. Reward: Dimension boosts are "+(player.boughtDims?"cheaper based on EP.":"1% more powerful (to normal dims)."))
+	costco.setAttribute('ach-tooltip', "Bulk buy 750 dimension boosts at once. Reward: Dimension boosts are " + (player.boughtDims?"cheaper based on EP":"1% more powerful (to normal dims)") + (player.tickspeedBoosts != undefined ? " and g13 is boosted by the cube root of galaxies" : "") + ".")
 	mile.setAttribute('ach-tooltip', "Get "+(tmp.ngp3?"100 eternities milestone.":"all eternity milestones."))
 	swarm.setAttribute('ach-tooltip', "Get 10 replicanti galaxies in 15 seconds." + (player.boughtDims ? " Reward: Unlock the ability to control replicanti galaxy power." : ""))
 	inftime.setAttribute('ach-tooltip', player.boughtDims ? "Eternity without buying dimensions 1-7. Reward: Time Dimensions gain a multiplier based on the eighth root of eighth dimensions." : "Get 308 tickspeed upgrades (in one eternity) from Time Dimensions. Reward: Time dimensions are affected slightly more by tickspeed.")
@@ -6037,9 +6040,9 @@ function resetReplicantiUpgrades() {
 	player.replicanti.chance = keepPartial ? Math.min(player.replicanti.chance, 1) : 0.01
 	player.replicanti.interval = keepPartial ? Math.max(player.replicanti.interval, player.timestudy.studies.includes(22) ? 1 : 50) : 1000
 	player.replicanti.gal = 0
-	player.replicanti.chanceCost = Decimal.pow(1e15, player.replicanti.chance * 100).times(player.galacticSacrifice !== undefined ? 1e75 : 1e135)
-	player.replicanti.intervalCost = Decimal.pow(1e10, Math.round(Math.log10(1000 / player.replicanti.interval) / -Math.log10(0.9))).times(player.galacticSacrifice !== undefined ? 1e80 : player.boughtDims ? 1e150 : 1e140)
-	player.replicanti.galCost = new Decimal(player.galacticSacrifice != undefined ? 1e110 : 1e170)	
+	player.replicanti.chanceCost = Decimal.pow(1e15, player.replicanti.chance * 100).times((player.galacticSacrifice !== undefined && player.tickspeedBoosts == undefined) ? 1e75 : 1e135)
+	player.replicanti.intervalCost = Decimal.pow(1e10, Math.round(Math.log10(1000 / player.replicanti.interval) / -Math.log10(0.9))).times((player.galacticSacrifice !== undefined && player.tickspeedBoosts == undefined) ? 1e80 : player.boughtDims ? 1e150 : 1e140)
+	player.replicanti.galCost = new Decimal((player.galacticSacrifice !== undefined && player.tickspeedBoosts == undefined) ? 1e110 : 1e170)	
 }
 
 function challengesCompletedOnEternity(bigRip) {

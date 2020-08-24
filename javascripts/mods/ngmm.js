@@ -516,6 +516,7 @@ let galMults = {
 			if (player.currentEternityChall === "") exp *= Math.pow(Math.log(player.resets + 3), 2)
 			else exp *= Math.pow(Math.log(player.resets + 3), 0.5)
 		}
+		if (player.tickspeedBoosts != undefined && player.achievements.includes("r101")) exp *= Math.pow(Math.max(1, 2*player.galaxies), 1/3)
 		if (player.achievements.includes("r81") && player.currentEternityChall === "") exp += 7
 		return player.galacticSacrifice.galaxyPoints.div(5).plus(1).pow(exp)
 	},
