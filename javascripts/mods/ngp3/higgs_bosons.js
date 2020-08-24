@@ -6,27 +6,27 @@ function setupHiggsSave() {
 		particlesUnlocked: 0,
 		field: {}
 	}
-	tmp.hb = data
+	player.ghostify.hb = data
 	return data
 }
 
 function unlockHiggs() {
 	if (tmp.ngp3l) return //higgs isnt a thing in legacy mode
-	if (tmp.hb.unl) return
+	if (player.ghostify.hb.unl) return
 	if (!player.ghostify.wzb.unl) return
 	if (!canUnlockHiggs()) return
 	$.notify("Congratulations! You have unlocked Higgs Bosons!", "success")
-	tmp.hb.unl = true
+	player.ghostify.hb.unl = true
 	updateHiggsUnlocks()
 }
 
 function canUnlockHiggs() {
-	return player.money.gte(Decimal.pow(10, 2e17)) && tmp.bl.am.gte(getHiggsRequirement())
+	return player.money.gte(Decimal.pow(10, 2e17)) && player.ghostify.bl.am.gte(getHiggsRequirement()) && !tmp.ngp3l
 }
 
 function updateHiggsUnlocks() {
-	let unl = tmp.hb.unl
-	let higgsGot = tmp.hb.higgs > 0
+	let unl = player.ghostify.hb.unl
+	let higgsGot = player.ghostify.hb.higgs > 0
 	document.getElementById("hbUnl").style.display = unl ? "none" : ""
 	document.getElementById("bosonicResets").style.display = unl ? "" : "none"
 	document.getElementById("hbMessage").style.display = unl && !higgsGot ? "" : "none"
@@ -48,13 +48,13 @@ function bosonicLabReset() {
 	player.ghostify.ghostlyPhotons.ghostlyRays = new Decimal(0)
 	player.ghostify.ghostlyPhotons.lights = [0,0,0,0,0,0,0,0]
 	tmp.updateLights = true
-	var startingEnchants = bEn.effects[14](tmp.bl.enchants[14] || 0, "bUpgs")
-	tmp.bl = {
+	var startingEnchants = bEn.effects[14](player.ghostify.bl.enchants[14] || 0, "bUpgs")
+	player.ghostify.bl = {
 		watt: new Decimal(0),
-		ticks: tmp.bl.ticks,
+		ticks: player.ghostify.bl.ticks,
 		speed: 0,
 		am: new Decimal(0),
-		typeToExtract: tmp.bl.typeToExtract,
+		typeToExtract: player.ghostify.bl.typeToExtract,
 		extracting: false,
 		extractProgress: new Decimal(0),
 		autoExtract: new Decimal(0),
@@ -63,16 +63,16 @@ function bosonicLabReset() {
 		usedEnchants: [],
 		upgrades: [],
 		battery: new Decimal(0),
-		odSpeed: tmp.bl.odSpeed
+		odSpeed: player.ghostify.bl.odSpeed
 	}
 	var order = [11, 12, 13, 15, 14, 21, 22, 23, 24, 25, 31, 32, 33, 34, 35, 41, 42, 43, 44, 45]
 	//tmp.bl.upgrades needs to be updated (also 12 needs to be added)
 	for (let i = 0; i < startingEnchants; i++){
 		if (i == 20) break
-		tmp.bl.upgrades.push(order[i])
+		player.ghostify.bl.upgrades.push(order[i])
 	}
-	if (!tmp.bl.upgrades.includes(32) && player.achievements.includes("ng3p92")) tmp.bl.upgrades.push(32)
-	for (var g = 1; g <= br.maxLimit; g++) tmp.bl.glyphs.push(new Decimal(0))
+	if (!player.ghostify.bl.upgrades.includes(32) && player.achievements.includes("ng3p92")) player.ghostify.bl.upgrades.push(32)
+	for (var g = 1; g <= br.maxLimit; g++) player.ghostify.bl.glyphs.push(new Decimal(0))
 	player.ghostify.wzb = {
 		unl: true,
 		dP: new Decimal(0),
@@ -93,8 +93,8 @@ function bosonicLabReset() {
 
 function higgsReset() {
 	if (tmp.ngp3l) return
-	var oldHiggs = tmp.hb.higgs
-	if (!tmp.bl.am.gte(getHiggsRequirement())) return
+	var oldHiggs = player.ghostify.hb.higgs
+	if (!player.ghostify.bl.am.gte(getHiggsRequirement())) return
 	if (!player.aarexModifications.higgsNoConf && !confirm("You will exchange all your Bosonic Lab stuff for Higgs Bosons. Everything that Light Empowerments resets initally will be reset. Are you ready to proceed?")) return
 	addHiggs(getHiggsGain())
 	bosonicLabReset()
@@ -105,20 +105,20 @@ function higgsReset() {
 		updateBosonicLimits()
 		updateBosonicStuffCosts()
 	}
-	tmp.hb.bosonicSemipowerment = true
+	player.ghostify.hb.bosonicSemipowerment = true
 	matchTempPlayerHiggs()
 }
 
 function restartHiggs() {
 	if (!confirm("This resets everything that Higgs resets. You won't gain anything. Are you sure to proceed?")) return
 	bosonicLabReset()
-	tmp.hb.bosonicSemipowerment = true
+	player.ghostify.hb.bosonicSemipowerment = true
 	matchTempPlayerHiggs()
 }
 
 function getHiggsRequirementBase() {
 	var div = new Decimal(1)
-	if (tmp.bl.usedEnchants.includes(14)) div = div.times(tmp.bEn[14] || 1)
+	if (player.ghostify.bl.usedEnchants.includes(14)) div = div.times(player.ghostify.bEn[14] || 1)
 	return new Decimal(1e20).divide(div)
 }
 
@@ -127,28 +127,28 @@ function getHiggsRequirementMult() {
 }
 
 function getHiggsRequirement(higgs) {
-	if (higgs === undefined) higgs = tmp.hb.higgs
+	if (higgs === undefined) higgs = player.ghostify.hb.higgs
 	let x = getHiggsRequirementMult().pow(higgs).times(getHiggsRequirementBase())
 	return x
 }
 
 function getHiggsGain() {
-	if (tmp.hb.higgs == 0) return 1
-	return Math.round(tmp.bl.am.div(getHiggsRequirement()).floor().toNumber())
+	if (player.ghostify.hb.higgs == 0) return 1
+	return Math.round(player.ghostify.bl.am.div(getHiggsRequirement()).floor().toNumber())
 }
 
 function addHiggs(x) {
-	tmp.hb.higgs += x
+	player.ghostify.hb.higgs += x
 	updateUnspentHiggs()
 }
 
 function updateUnspentHiggs() {
-	tmp.hb.higgsUnspent = tmp.hb.higgs
+	player.ghostify.hb.higgsUnspent = player.ghostify.hb.higgs
 }
 
 function matchTempPlayerHiggs(){
-	player.ghostify.hb = tmp.hb
-	player.ghostify.bl = tmp.bl
+	tmp.hb = player.ghostify.hb
+	tmp.bl = player.ghostify.bl
 }
 
 function updateHiggsTemp() {
@@ -175,12 +175,12 @@ function updateBosonicFactorTemp() {
 }
 
 function updateHiggsTab() {
-	document.getElementById("bAMDimReturnPhrase1").textContent = tmp.bl.am.gte(tmp.badm.start) ? "started" : "will start"
+	document.getElementById("bAMDimReturnPhrase1").textContent = player.ghostify.bl.am.gte(tmp.badm.start) ? "started" : "will start"
 	document.getElementById("bAMDimReturnStart").textContent = shorten(tmp.badm.start)
 	document.getElementById("bAMDimReturnDivide").textContent = "Your Bosonic Antimatter production has been divided by " + shorten(tmp.badm.preDim) + " because of this!"
-	document.getElementById("bAMDimReturnPhrase2").textContent = tmp.hb.higgs > 0 ? "But, you have the power to get more Higgs Bosons if you go very far." : "So, you have to get one."
+	document.getElementById("bAMDimReturnPhrase2").textContent = player.ghostify.hb.higgs > 0 ? "But, you have the power to get more Higgs Bosons if you go very far." : "So, you have to get one."
 
-	document.getElementById("hbUnspent").textContent = getFullExpansion(tmp.hb.higgsUnspent)
+	document.getElementById("hbUnspent").textContent = getFullExpansion(player.ghostify.hb.higgsUnspent)
 
 	document.getElementById("subFactorA").textContent = shorten(tmp.hbTmp.bFact.subFactA)
 	document.getElementById("subFactorE").textContent = shorten(tmp.hbTmp.bFact.subFactE)

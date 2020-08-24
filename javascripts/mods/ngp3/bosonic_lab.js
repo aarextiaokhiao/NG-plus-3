@@ -23,7 +23,7 @@ function getBosonicWattGain() {
 function bosonicTick(diff) {
 	let lDiff //Mechanic-local diff
 	let lData //Mechanic-local data
-	let data = tmp.bl
+	let data = player.ghostify.bl
 	diff = new Decimal(diff)
 	if (isNaN(diff.e)) return
 	if (data.odSpeed > 1 && data.battery.gt(0)) {
@@ -136,7 +136,7 @@ function getBosonicAntiMatterProduction(){
 function getAchBAMMult(){
 	if (!player.achievements.includes("ng3p91")) return 1
 	var exp = 1
-	if (tmp.bl.am.log10() > 10) exp = 10 / tmp.bl.am.log10()
+	if (player.ghostify.bl.am.log10() > 10) exp = 10 / player.ghostify.bl.am.log10()
 	return player.achPow.pow(exp)
 }
 
@@ -149,7 +149,7 @@ function getBosonicAMProduction() {
 function getBosonicAMFinalProduction() {
 	let r = getBosonicAMProduction()
 	if (tmp.ngp3l) return r
-	if (tmp.bl.am.gt(tmp.badm.start)) r = r.div(tmp.badm.preDim)
+	if (player.ghostify.bl.am.gt(tmp.badm.start)) r = r.div(tmp.badm.preDim)
 	return r
 }
 
@@ -165,7 +165,7 @@ function updateBosonicAMDimReturnsTemp() {
 	data.base = getHiggsRequirementMult()
 	data.offset = 1 / Math.log(data.base) - 1
 	data.offset2 = 1 - Math.log10(data.offset + 1) / Math.log10(data.base)
-	data.postDim = tmp.bl.am.div(data.start).toNumber()
+	data.postDim = player.ghostify.bl.am.div(data.start).toNumber()
 	data.preDim = Decimal.pow(data.base, data.postDim - data.offset2).add(-data.offset).max(1)
 }
 
@@ -174,7 +174,7 @@ function updateBosonicLimits() {
 
 	//Bosonic Runes / Extractor / Enchants
 	br.limit = br.maxLimit
-	if (tmp.ngp3l || tmp.hb.higgs == 0) br.limit = 3
+	if (tmp.ngp3l || player.ghostify.hb.higgs == 0) br.limit = 3
 	var width = 100 / br.limit
 	for (var r = 1; r <= br.maxLimit; r++) {
 		document.getElementById("bRuneCol" + r).style = "min-width:" + width + "%;width:" + width + "%;max-width:" + width + "%"
@@ -188,12 +188,12 @@ function updateBosonicLimits() {
 
 	//Bosonic Upgrades
 	bu.rows = bu.maxRows
-	if (tmp.ngp3l || tmp.hb.higgs == 0) bu.rows = 2
+	if (tmp.ngp3l || player.ghostify.hb.higgs == 0) bu.rows = 2
 	for (var r = 3; r <= bu.maxRows; r++) document.getElementById("bUpgRow" + r).style.display = bu.rows >= r ? "" : "none"
 
 	//Bosonic Enchants
 	bEn.limit = bEn.maxLimit
-	if (tmp.ngp3l || tmp.hb.higgs == 0) bEn.limit = 2
+	if (tmp.ngp3l || player.ghostify.hb.higgs == 0) bEn.limit = 2
 }
 
 function showBLTab(tabName) {
@@ -215,7 +215,7 @@ function showBLTab(tabName) {
 }
 
 function updateBosonicLabTab(){
-	let data = tmp.bl
+	let data = player.ghostify.bl
 	let speed = data.speed * (data.battery.gt(0) ? data.odSpeed : 1)
 	document.getElementById("bWatt").textContent = shorten(data.watt)
 	document.getElementById("bSpeed").textContent = shorten(data.speed)
@@ -235,10 +235,10 @@ function updateBosonicLabTab(){
 	if (document.getElementById("butab").style.display=="block") updateBosonicUpgradeDescs()
 	if (document.getElementById("wzbtab").style.display=="block") updateWZBosonsTab()
 	if (!tmp.ngp3l) {
-		if (tmp.hb.unl) {
+		if (player.ghostify.hb.unl) {
 			var req = getHiggsRequirement()
-			document.getElementById("hb").textContent = getFullExpansion(tmp.hb.higgs)
-			document.getElementById("hbReset").className = "gluonupgrade " + (tmp.bl.am.gte(req) ? "hb" : "unavailablebtn")
+			document.getElementById("hb").textContent = getFullExpansion(player.ghostify.hb.higgs)
+			document.getElementById("hbReset").className = "gluonupgrade " + (player.ghostify.bl.am.gte(req) ? "hb" : "unavailablebtn")
 			document.getElementById("hbResetReq").textContent = shorten(req)
 			document.getElementById("hbResetGain").textContent = getFullExpansion(getHiggsGain())
 			if (document.getElementById("hbTab").style.display=="block") updateHiggsTab()
@@ -282,7 +282,7 @@ function updateBosonicLabTemp() {
 	updateBosonicUpgradesTemp()
 	updateWZBosonsTemp()
 	if (!tmp.ngp3l) {
-		if (tmp.hb.unl) updateHiggsTemp()
+		if (player.ghostify.hb.unl) updateHiggsTemp()
 		// if (tmp.gv.unl) updateGravitonsTemp()
 		// if (tmp.x17.unl) updateX17Temp()
 	}
@@ -294,21 +294,21 @@ let dynuta={
 	times: 0
 }
 function extract() {
-	let data = tmp.bl
+	let data = player.ghostify.bl
 	if (data.extracting) return
 	dynuta.check = true
 	data.extracting = true
 }
 
 function getExtractTime() {
-	let data = tmp.bl
+	let data = player.ghostify.bl
 	let r = new Decimal(br.scalings[data.typeToExtract] || 1/0)
 	r = r.div(tmp.wzb.wbt)
 	return r
 }
 
 function changeTypeToExtract(x) {
-	let data = tmp.bl
+	let data = player.ghostify.bl
 	if (data.typeToExtract == x) return
 	document.getElementById("typeToExtract" + data.typeToExtract).className = "storebtn"
 	document.getElementById("typeToExtract" + x).className = "chosenbtn"
@@ -319,7 +319,7 @@ function changeTypeToExtract(x) {
 }
 
 function canBuyEnchant(id) {
-	let data = tmp.bl
+	let data = player.ghostify.bl
 	let costData = bEn.costs[id]
 	let g1 = Math.floor(id / 10)
 	let g2 = id % 10
@@ -330,7 +330,7 @@ function canBuyEnchant(id) {
 }
 
 function getMaxEnchantLevelGain(id) {
-	let data = tmp.bl
+	let data = player.ghostify.bl
 	let costData = bEn.costs[id]
 	let g1 = Math.floor(id / 10)
 	let g2 = id % 10
@@ -343,15 +343,15 @@ function getMaxEnchantLevelGain(id) {
 }
 
 function canUseEnchant(id) {
-	if (!tmp.bl.enchants[id]) return
+	if (!player.ghostify.bl.enchants[id]) return
 	if (bEn.limit == 1) {
-		if (tmp.bl.usedEnchants.includes(id)) return
-	} else if (!tmp.bl.usedEnchants.includes(id) && tmp.bl.usedEnchants.length >= bEn.limit) return
+		if (player.ghostify.bl.usedEnchants.includes(id)) return
+	} else if (!player.ghostify.bl.usedEnchants.includes(id) && player.ghostify.bl.usedEnchants.length >= bEn.limit) return
 	return true
 }
 
 function takeEnchantAction(id) {
-	let data = tmp.bl
+	let data = player.ghostify.bl
 	if (bEn.action == "upgrade") {
 		let costData = bEn.costs[id]
 		let g1 = Math.floor(id / 10)
@@ -390,7 +390,7 @@ function changeEnchantAction(id) {
 }
 
 function getEnchantEffect(id, desc) {
-	let data = tmp.bl
+	let data = player.ghostify.bl
 	let l = new Decimal(0)
 	if (bEn.effects[id] === undefined) return
 	if (desc ? data.enchants[id] : data.usedEnchants.includes(id)) l = new Decimal(data.enchants[id])
@@ -398,7 +398,7 @@ function getEnchantEffect(id, desc) {
 }
 
 function updateBosonExtractorTab(){
-	let data = tmp.bl
+	let data = player.ghostify.bl
 	let speed = data.speed * (data.battery.gt(0) ? data.odSpeed : 1)
 	let time = getExtractTime().div(speed)
 	if (data.extracting) document.getElementById("extract").textContent = "Extracting" + (time.lt(0.1)?"":" ("+data.extractProgress.times(100).toFixed(1)+"%)")
@@ -410,7 +410,7 @@ function updateBosonExtractorTab(){
 }
 
 function updateEnchantDescs() {
-	let data = tmp.bl
+	let data = player.ghostify.bl
 	for (var g2 = 2; g2 <= br.limit; g2++) for (var g1 = 1; g1 < g2; g1++) {
 		var id = g1 * 10 + g2
 		if (bEn.action == "upgrade" || bEn.action == "max") document.getElementById("bEn" + id).className = "gluonupgrade "  +(canBuyEnchant(id) ? "bl" : "unavailablebtn")
@@ -463,7 +463,7 @@ var bEn = {
 		12: function(l) {
 			let exp = 0.75
 			if (l.gt(1e10)) exp /= Math.pow(l.log10() / 10, 1/3)
-			return Decimal.pow(l, exp).div(bEn.autoScalings[tmp.bl.typeToExtract])
+			return Decimal.pow(l, exp).div(bEn.autoScalings[player.ghostify.bl.typeToExtract])
 		},
 		13: function(l) {
 			return Decimal.add(l, 1).sqrt()
@@ -474,9 +474,9 @@ var bEn = {
 		},
 		23: function(l) {
 			let exp = Math.max(l.log10() + 1, 0) / 3
-			if (tmp.bl.am.gt(1e11)) exp *= tmp.bl.am.div(10).log10() / 10
+			if (player.ghostify.bl.am.gt(1e11)) exp *= player.ghostify.bl.am.div(10).log10() / 10
 			if (exp > 5) exp = Math.sqrt(exp * 5)
-			return Decimal.pow(tmp.bl.am.add(10).log10(), exp)
+			return Decimal.pow(player.ghostify.bl.am.add(10).log10(), exp)
 		},
 		24: function(l) {
 			return Decimal.pow(Decimal.add(l, 100).log10(), 4).div(16)
@@ -501,7 +501,7 @@ function updateBosonicEnchantsTemp(){
 	tmp.bEn.lvl = {}
 	for (var g2 = 2; g2 <= br.limit; g2++) for (var g1 = 1; g1 < g2; g1++) {
 		var id = g1 * 10 + g2
-		tmp.bEn.lvl[id] = tmp.bl.enchants[id] || new Decimal(0)
+		tmp.bEn.lvl[id] = player.ghostify.bl.enchants[id] || new Decimal(0)
 		if (bEn.effects[id] !== undefined) tmp.bEn[id] = getEnchantEffect(id)
 	}
 }
@@ -528,26 +528,26 @@ function setupBosonicUpgReqData() {
 function canBuyBosonicUpg(id) {
 	let rData = bu.reqData[id]
 	if (rData[0] === undefined || rData[1] === undefined || rData[3] === undefined) return
-	if (!tmp.bl.am.gte(getBosonicFinalCost(rData[0]))) return
-	for (var g = 1; g < 3; g++) if (!tmp.bl.glyphs[rData[g * 2] - 1].gte(getBosonicFinalCost(rData[g * 2 - 1]))) return
+	if (!player.ghostify.bl.am.gte(getBosonicFinalCost(rData[0]))) return
+	for (var g = 1; g < 3; g++) if (!player.ghostify.bl.glyphs[rData[g * 2] - 1].gte(getBosonicFinalCost(rData[g * 2 - 1]))) return
 	return true
 }
 
 function buyBosonicUpgrade(id, quick) {
-	if (tmp.bl.upgrades.includes(id)) return true
+	if (player.ghostify.bl.upgrades.includes(id)) return true
 	if (!canBuyBosonicUpg(id)) return false
-	tmp.bl.upgrades.push(id)
-	tmp.bl.am = tmp.bl.am.sub(getBosonicFinalCost(bu.reqData[id][0]))
+	player.ghostify.bl.upgrades.push(id)
+	player.ghostify.bl.am = player.ghostify.bl.am.sub(getBosonicFinalCost(bu.reqData[id][0]))
 	if (!quick) updateTemp()
 	if (id == 21 || id == 22) updateNanoRewardTemp()
 	if (id == 32) tmp.updateLights = true
-	if (!tmp.ngp3l) delete tmp.hb.bosonicSemipowerment
+	if (!tmp.ngp3l) delete player.ghostify.hb.bosonicSemipowerment
 	return true
 }
 
 function buyMaxBosonicUpgrades() {
 	var stopped = false
-	var oldLength = tmp.bl.upgrades.length
+	var oldLength = player.ghostify.bl.upgrades.length
 	if (oldLength == bu.rows * 5) return
 	for (var r = 1; r <= bu.rows; r++) {
 		for (var c = 1; c <= 5; c++) {
@@ -555,18 +555,18 @@ function buyMaxBosonicUpgrades() {
 			if (!buyBosonicUpgrade(id, true)) break
 		}
 	}
-	if (tmp.bl.upgrades.length > oldLength) updateTemp()
+	if (player.ghostify.bl.upgrades.length > oldLength) updateTemp()
 }
 
 function hasBosonicUpg(id) {
-	return ghostified && player.ghostify.wzb.unl && tmp.bl.upgrades.includes(id)
+	return ghostified && player.ghostify.wzb.unl && player.ghostify.bl.upgrades.includes(id)
 }
 
 function updateBosonicUpgradeDescs() {
 	for (var r = 1; r <= bu.rows; r++) for (var c = 1; c <= 5; c++) {
 		var id = r * 10 + c
-		document.getElementById("bUpg" + id).className = tmp.bl.upgrades.includes(id) ? "gluonupgradebought bl" : canBuyBosonicUpg(id) ? "gluonupgrade bl" : "gluonupgrade unavailablebtn"
-		if (tmp.blu[id] !== undefined) document.getElementById("bUpgEffect"+id).textContent = (bu.effectDescs[id] !== undefined && bu.effectDescs[id](tmp.blu[id])) || shorten(tmp.blu[id]) + "x"
+		document.getElementById("bUpg" + id).className = player.ghostify.bl.upgrades.includes(id) ? "gluonupgradebought bl" : canBuyBosonicUpg(id) ? "gluonupgrade bl" : "gluonupgrade unavailablebtn"
+		if (player.ghostify.blu[id] !== undefined) document.getElementById("bUpgEffect"+id).textContent = (bu.effectDescs[id] !== undefined && bu.effectDescs[id](tmp.blu[id])) || shorten(tmp.blu[id]) + "x"
 	}
 }
 
@@ -684,7 +684,7 @@ var bu = {
 	},
 	effects: {
 		11: function() {
-			let x = tmp.bl.am.add(1).log10()
+			let x = player.ghostify.bl.am.add(1).log10()
 			let y = 1
 			if (hasBosonicUpg(42)) y = tmp.blu[42]
 
@@ -741,11 +741,11 @@ var bu = {
 			return Math.pow(tmp.qu.electrons.amount + 1, exp) / div + add
 		},
 		31: function() {
-			return Math.pow(Math.log10(tmp.bl.am.add(1).log10() / 5 + 1) / 2 + 1, 2)
+			return Math.pow(Math.log10(player.ghostify.bl.am.add(1).log10() / 5 + 1) / 2 + 1, 2)
 		},
 		33: function() {
 			var div = tmp.newNGP3E ? 4 : 6
-			return (Math.sqrt(tmp.hb.higgs + 1) - 1) / div + 1
+			return (Math.sqrt(player.ghostify.hb.higgs + 1) - 1) / div + 1
 		},
 		34: function() {
 			var galPart = Math.log10(player.galaxies / 1e4 + 10) * Math.log10(getTotalRG() / 1e4 + 10) * Math.log10(player.dilation.freeGalaxies / 1e4 + 10) * Math.log10(tmp.aeg / 1e4 + 10)
@@ -836,18 +836,18 @@ function updateBosonicUpgradesTemp(){
 
 //Bosonic Overdrive
 function getBosonicBatteryLoss() {
-	if (tmp.bl.odSpeed == 1) return new Decimal(0)
-	return Decimal.pow(10, tmp.bl.odSpeed * 2 - 3)
+	if (player.ghostify.bl.odSpeed == 1) return new Decimal(0)
+	return Decimal.pow(10, player.ghostify.bl.odSpeed * 2 - 3)
 }
 
 function changeOverdriveSpeed() {
-	tmp.bl.odSpeed = document.getElementById("odSlider").value / 50 * 4 + 1
+	player.ghostify.bl.odSpeed = document.getElementById("odSlider").value / 50 * 4 + 1
 }
 
 //W & Z Bosons
 function getAntiPreonProduction() {
 	let r = new Decimal(0.1)
-	if (tmp.bl.usedEnchants.includes(13)) r = r.times(tmp.bEn[13])
+	if (player.ghostify.bl.usedEnchants.includes(13)) r = r.times(tmp.bEn[13])
 	return r
 }
 
@@ -860,7 +860,7 @@ var aplScalings = {
 
 function getAntiPreonLoss() {
 	let r = new Decimal(0.05)
-	if (tmp.bl.usedEnchants.includes(13)) r = r.times(tmp.bEn[13])
+	if (player.ghostify.bl.usedEnchants.includes(13)) r = r.times(tmp.bEn[13])
 	return r
 }
 
@@ -870,7 +870,7 @@ function useAntiPreon(id) {
 
 function getOscillateGainSpeed() {
 	let r = tmp.wzb.wbo
-	if (tmp.bl.usedEnchants.includes(23)) r = r.times(tmp.bEn[23])
+	if (player.ghostify.bl.usedEnchants.includes(23)) r = r.times(tmp.bEn[23])
 	return Decimal.div(r, player.ghostify.wzb.zNeReq)
 }
 
@@ -889,7 +889,7 @@ function updateWZBosonsTemp(){
 }
 
 function updateWZBosonsTab() {
-	let data = tmp.bl
+	let data = player.ghostify.bl
 	let data2 = tmp.wzb
 	let data3 = player.ghostify.wzb
 	let speed = data.speed * (data.battery.gt(0) ? data.odSpeed : 1)

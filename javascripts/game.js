@@ -904,7 +904,7 @@ function doNGPlusThreeNewPlayer(){
     player.meta.bestOverGhostifies = 0
     player.ghostify = getBrandNewGhostifyData()
     tmp.bl = player.ghostify.bl
-    for (var g = 1; g < br.maxLimit; g++) tmp.bl.glyphs.push(0)
+    for (var g = 1; g < br.maxLimit; g++) player.ghostify.bl.glyphs.push(0)
     player.options.animations.ghostify = true
     player.aarexModifications.ghostifyConf = true
 }
@@ -8074,7 +8074,7 @@ function ghostifyAutomationUpdating(){
 }
 
 function WZBosonsUpdating(diff){
-	var data = tmp.bl
+	var data = player.ghostify.bl
 	var wattGained = Math.max(getBosonicWattGain(),data.watt)
 	data.speed = Math.max(Math.min(wattGained+(data.watt-data.speed)*2,wattGained),data.speed)
 	data.watt = wattGained
@@ -9148,7 +9148,7 @@ function simulateTime(seconds, real, id) {
 		storage.dt = player.dilation.dilatedTime
 		storage.ec = tmp.qu.electrons.amount
 		storage.nr = tmp.qu.replicants.amount
-		storage.bAm = tmp.bl.am
+		storage.bAm = player.ghostify.bl.am
 	}
 	if (ticks > 1000 && !real) {
 		bonusDiff = (ticks - 1000) / 20;
@@ -9170,7 +9170,7 @@ function simulateTime(seconds, real, id) {
 	if (storage.dt) {
 		if (tmp.qu.electrons.amount>storage.ec) popupString+= ",<br> electrons increased by "+getFullExpansion(Math.round(tmp.qu.electrons.amount-storage.ec))
 		if (tmp.qu.replicants.amount.gt(storage.nr)) popupString+= ",<br> normal replicants increased "+shortenMoney(tmp.qu.replicants.amount.log10() - (Decimal.max(storage.nr, 1)).log10())+" orders of magnitude"
-		if (tmp.bl.am.gt(storage.ma)) popupString+= ",<br> Bosonic Antimatter increased "+shortenMoney(tmp.bl.am.log10() - (Decimal.max(storage.bAm, 1)).log10())+" orders of magnitude"
+		if (player.ghostify.bl.am.gt(storage.ma)) popupString+= ",<br> Bosonic Antimatter increased "+shortenMoney(player.ghostify.bl.am.log10() - (Decimal.max(storage.bAm, 1)).log10())+" orders of magnitude"
 	}
 	if (player.infinitied > playerStart.infinitied || player.eternities > playerStart.eternities) popupString+= ","
 	else popupString+= "."
