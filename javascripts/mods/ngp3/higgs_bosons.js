@@ -116,7 +116,7 @@ function restartHiggs() {
 
 function getHiggsRequirementBase() {
 	var div = new Decimal(1)
-	if (player.ghostify.wzb.usedEnchants.includes(14)) div = div.times(tmp.bEn[14] || 1)
+	if (tmp.bl.usedEnchants.includes(14)) div = div.times(tmp.bEn[14] || 1)
 	return new Decimal(1e20).divided(div)
 }
 
