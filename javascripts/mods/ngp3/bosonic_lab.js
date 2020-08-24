@@ -142,7 +142,8 @@ function getAchBAMMult(){
 
 function getBosonicAMProduction() {
 	let r = player.money.max(1).log10() / 15e15 - 3
-	return Decimal.pow(10, r).times(tmp.wzb.wbp).times(getAchBAMMult())
+	var add = player.achievements.includes("ng3p98") ? Math.pow(player.ghostify.hb.higgsUnspent, 2) : 0
+	return Decimal.pow(10, r).times(tmp.wzb.wbp).times(getAchBAMMult()).plus(add)
 }
 
 function getBosonicAMFinalProduction() {

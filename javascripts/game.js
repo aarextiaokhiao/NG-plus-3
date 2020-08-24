@@ -4557,8 +4557,9 @@ function setAchieveTooltip() {
 	let ghostliest = document.getElementById("The Ghostliest Side")
 	let metae18 = document.getElementById("Meta-Quintillion")
 
+	//ACHIEVEMENT ROW 23
 	ghostliest.setAttribute('ach-tooltip', "Get " + shorten(Math.pow(Number.MAX_VALUE, 1/4)) + " Ghostified stat. Reward: Ghostifies boost the gain of Ghost Particles at the reduced rate.")
-	metae18.setAttribute('ach-tooltip', "Get " + shortenCosts(Decimal.pow(10, 1e18)) + " antimatter. Reward: Distant Antimatter Galaxies scaling is 10% weaker.")
+	metae18.setAttribute('ach-tooltip', "Get " + shortenCosts(Decimal.pow(10, 1e18)) + " antimatter. Reward: Distant Antimatter Galaxies scaling is 10% weaker and Higgs bosons give linear production to bosonic antimatter.")
 }
 
 
