@@ -222,13 +222,16 @@ let quarkGain = function () {
 
 	var dlog = Math.log10(log)
 	let start = 4 //Starts at e10k.
-	if ((player.aarexModifications.ngumuV || player.aarexModifications.nguepV) && dlog > start) {
-		let capped = Math.floor(Math.log10(Math.max(dlog - 2, 1)) / Math.log10(2))
-		dlog = (dlog - Math.pow(2, capped) - 2) / Math.pow(2, capped) + capped + 3
+	if (!(player.aarexModifications.ngumuV || player.aarexModifications.nguepV)) start = 5
+	if (dlog > start) {
+		let capped = Math.floor(Math.log10(Math.max(dlog + 2 - start, 1)) / Math.log10(2))
+		dlog = (dlog - Math.pow(2, capped) + 2 - start) / Math.pow(2, capped) + capped - 1 + start
 		log = Math.pow(10, dlog)
 	}
 
-	return Decimal.pow(10, log).times(getQuarkMult()).floor()
+	log += getQuarkMult().log10()
+
+	return Decimal.pow(10, log).floor()
 }
 
 let getQuarkMult = function () {
