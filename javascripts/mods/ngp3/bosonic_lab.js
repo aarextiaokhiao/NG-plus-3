@@ -765,7 +765,7 @@ var bu = {
 		},
 		31: function() {
 			var ret = Math.pow(Math.log10(player.ghostify.bl.am.add(1).log10() / 5 + 1) / 2 + 1, 2)
-			for (var i = 3; i < 10; i++){
+			for (var i = 4; i < 10; i++){
 				if (ret > i / 2) ret = i / 2 + Math.log10(ret - i/2 + 1)
 				else break
 			}
