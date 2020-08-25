@@ -758,7 +758,12 @@ var bu = {
 			return Math.pow(tmp.qu.electrons.amount + 1, exp) / div + add
 		},
 		31: function() {
-			return Math.pow(Math.log10(player.ghostify.bl.am.add(1).log10() / 5 + 1) / 2 + 1, 2)
+			var ret = Math.pow(Math.log10(player.ghostify.bl.am.add(1).log10() / 5 + 1) / 2 + 1, 2)
+			for (var i = 3; i < 10; i++){
+				if (ret > i / 2) ret = i / 2 + Math.log10(ret - i/2 + 1)
+				else break
+			}
+			return ret
 		},
 		33: function() {
 			var div = tmp.newNGP3E ? 4 : 6
@@ -767,7 +772,12 @@ var bu = {
 		34: function() {
 			var galPart = Math.log10(player.galaxies / 1e4 + 10) * Math.log10(getTotalRG() / 1e4 + 10) * Math.log10(player.dilation.freeGalaxies / 1e4 + 10) * Math.log10(tmp.aeg / 1e4 + 10)
 			var exp = tmp.newNGP3E ? 1/6 : 1/8
-			return (Math.pow(galPart, exp) - 1) / 5 + 1
+			var ret = Math.pow(galPart, exp) - 1
+			for (var i = 2; i < 10; i++){
+				if (ret > i / 10) ret = i / 10 + Math.log10(ret - i/10 + 1)
+				else break
+			}
+			return ret / 5 + 1
 		},
 		35: function() {
 			return {
@@ -795,6 +805,9 @@ var bu = {
 		45: function() {
 			var eff = player.dilation.dilatedTime.add(1).pow(.0005)
 			if (eff.gt(9)) eff = Decimal.pow(eff, .5).times(3)
+			if (eff.gt(25)) eff = Decimal.pow(eff, .5).times(5)
+			if (eff.gt(49)) eff = Decimal.pow(eff, .5).times(7)
+			if (eff.gt(81)) eff = Decimal.pow(eff, .5).times(9)
 			return eff.toNumber()
 		}
 	},

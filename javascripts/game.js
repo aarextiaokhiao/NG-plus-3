@@ -1869,10 +1869,15 @@ function getGalaxyRequirement(offset = 0, display) {
 		tmp.grd.speed = 1
 		let ghostlySpeed = tmp.be ? 55 : 1
 		let div = 1e4
-		if (tmp.grd.galaxies >= 302500 / ghostlySpeed) {
+		let over = tmp.grd.galaxies / (302500 / ghostlySpeed)
+		if (over >= 1) {
+			if (over >= 3) {
+				div /= Math.pow(over, 6) / 729
+				scaling = 6
+			}
 			if (isLEBoostUnlocked(2) && tmp.be) div *= tmp.leBonus[2]
 			tmp.grd.speed = Math.pow(2, (tmp.grd.galaxies + 1 - 302500 / ghostlySpeed) * ghostlySpeed / div)
-			scaling = 5
+			scaling = Math.max(scaling, 5)
 		}
 
 		let distantStart = getDistantScalingStart()

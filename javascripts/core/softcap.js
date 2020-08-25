@@ -17,6 +17,21 @@ var softcap_data = {
 			start: 6e3,
 			pow: 0.2,
 			derv: true
+		},
+		4: {
+			func: "pow",
+			start: 8e3,
+			pow: 0.6
+		},
+		5: {
+			func: "pow",
+			start: 10e3,
+			pow: 0.4
+		},
+		6: {
+			func: "pow",
+			start: 12e3,
+			pow: 0.2
 		}
 	},
 	ts_reduce_log: {
@@ -27,8 +42,23 @@ var softcap_data = {
 		},
 		2: {
 			func: "pow",
+			start: 2e7,
+			pow: 0.70
+		},
+		3: {
+			func: "pow",
+			start: 4e7,
+			pow: 0.65
+		},
+		4: {
+			func: "pow",
+			start: 8e7,
+			pow: 0.60
+		},
+		5: {
+			func: "pow",
 			start: 1e8,
-			pow: 0.75
+			pow: 0.55
 		}
 	},
 	ts_reduce_log_big_rip: {
@@ -57,19 +87,19 @@ var softcap_data = {
 		},
 		3: {
 			func: "pow",
-			start: 16e4,
+			start: 15e4,
 			pow: 0.3,
 			derv: true
 		},
 		4: {
 			func: "pow",
-			start: 20e4,
+			start: 17e4,
 			pow: 0.2,
 			derv: true
 		},
 		5: {
 			func: "pow",
-			start: 25e4,
+			start: 19e4,
 			pow: 0.1,
 			derv: true
 		}
@@ -94,10 +124,15 @@ var softcap_data = {
 		},
 		3: {
 			func: "pow",
-			start: 3e10,
+			start: 2e10,
 			pow: 0.5
 		},
 		4: {
+			func: "pow",
+			start: 4e10,
+			pow: 0.7
+		},
+		5: {
 			func: "log",
 			start: 1e11,
 			pow: 11,
@@ -133,6 +168,12 @@ var softcap_data = {
 			func: "pow",
 			start: 1e4,
 			pow: 0.4
+		},
+		3: {
+			func: "pow",
+			start: 2e4,
+			pow: .7,
+			derv: true
 		}
 	},
 	inf_time_log_2: {
@@ -143,7 +184,7 @@ var softcap_data = {
 		}
 	},
 	ig_log_high: {
-		1: {
+		1: { //starts have effect at e20
 			func: "log",
 			pow: 10,
 			mul: 5
@@ -153,8 +194,8 @@ var softcap_data = {
 			start: 1e21,
 			pow: 0.2
 		},
-		3: {
-			func: "log",
+		3: { //starts have effect at e22
+			func: "log", 
 			pow: 11,
 			mul: 4,
 			add: 12
