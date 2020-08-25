@@ -50,9 +50,15 @@ function bosonicTick(diff) {
 				lData.wnb=lData.wnb.add(toSub.add(lData.wQkUp ? 0 : 1).div(2).floor())
 				if (toSub.mod(2).gt(0)) lData.wQkUp = !lData.wQkUp
 				lData.wQkProgress = lData.wQkProgress.sub(toSub.min(lData.wQkProgress))
-				batteryMult = new Decimal(1)
+				
+				let batteryMult = new Decimal(1)
 				if (data.usedEnchants.includes(33)) batteryMult = batteryMult.times(tmp.bEn[33])
-				data.battery = data.battery.add(toSub.div(1e6).times(batteryMult))
+				
+				let toAdd = toSub.div(1e6).times(batteryMult).div(diff)
+
+				if (toAdd.gt(1e3)) toAdd = Decimal.pow(toAdd.log10() + 7, 3) 
+
+				data.battery = data.battery.add(toAdd.times(diff))
 			}
 		}
 		if (lData.dPUse == 2) {
