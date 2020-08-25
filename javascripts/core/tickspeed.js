@@ -284,6 +284,17 @@ function buyMaxTickSpeed() {
 	tmp.tickUpdate = true
 }
 
+function getWorkingTickspeed(){
+	var log = -player.tickspeed.log10()
+	if (log > 1 && tmp.ngp3) {
+		log = doWeakerPowerReductionSoftcapNumber(log, 1e15, .9)
+		log = doWeakerPowerReductionSoftcapNumber(log, 1e16, .8)
+		log = doWeakerPowerReductionSoftcapNumber(log, 1e17, .7)
+	}
+	tick = Decimal.pow(10, -log)
+	return tick
+}
+
 function getTickspeed() {
 	if (player.infinityUpgradesRespecced != undefined) {
 		var ret = Decimal.div(1000, player.tickspeed)
@@ -291,7 +302,7 @@ function getTickspeed() {
 		if (player.singularity != undefined) ret = ret.times(getDarkMatterMult())
 		return Decimal.div(1000, ret)
 	}
-	return player.tickspeed
+	return getWorkingTickspeed()
 }
 
 function updateTickspeed() {
