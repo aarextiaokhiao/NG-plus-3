@@ -7558,7 +7558,7 @@ function ngP3AchieveCheck(){
 	if (!tmp.ngp3l) {
 		if (player.ghostify.another && tmp.qu.quarks.gte(1/0)) giveAchievement("Is these another...")
 		if (player.ghostify.reference && minUQ.decays >= 2) giveAchievement("... reference to EC8?")
-		if (tmp.hb.bosonicSemipowerment && player.ghostify.ghostlyPhotons.lights[7] >= tmp.leReq / 2) giveAchievement("Bosonic Semipowerment")
+		if (player.ghostify.hb.bosonicSemipowerment && player.ghostify.ghostlyPhotons.lights[7] >= tmp.leReq / 2) giveAchievement("Bosonic Semipowerment")
 		if (player.ghostify.times >= Math.pow(Number.MAX_VALUE, 1/4)) giveAchievement("The Ghostliest Side")
 		if (player.money.e >= 1e18) giveAchievement("Meta-Quintillion")
 	}

@@ -125,7 +125,7 @@ function unlockNeutrinoBoost() {
 function getMaxUnlockedNeutrinoBoosts() {
 	let x = 9
 	if (player.ghostify.wzb.unl) x++
-	if (!tmp.ngp3l && tmp.hb.higgs > 0) x++
+	if (!tmp.ngp3l && player.ghostify.hb.higgs > 0) x++
 	return x
 }
 
