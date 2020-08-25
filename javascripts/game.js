@@ -4206,6 +4206,7 @@ function gainedInfinityPoints(next) {
 		ret = ret.times(Decimal.pow(player.thisInfinityTime/10,player.timestudy.ers_studies[6]+(next==6?1:0)))
 	}
 	if (isBigRipUpgradeActive(4)) ret = ret.times(player.replicanti.amount.pow(0.34).max(1))
+	if (player.tickspeedBoosts != undefined && player.achievements.includes("r95") && player.eightAmount > 5000) ret = ret.times(Decimal.pow(player.eightAmount, 2))
 	return ret.floor()
 }
 
@@ -4320,6 +4321,7 @@ function setAchieveTooltip() {
 	let twomillion = document.getElementById("2 Million Infinities")
 	let nobodygottime = document.getElementById("8 nobody got time for that")
 	let hevipelledidnothing = document.getElementById("Hevipelle did nothing wrong")
+	let isthissafe = document.getElementById("Is this safe?")
     
 	let thisisReward = [] // for the achievement "This is what I have to do to get rid of you."
 	if (!tmp.ngp3l) {
@@ -4392,7 +4394,8 @@ function setAchieveTooltip() {
 	overdrive.setAttribute('ach-tooltip', "Big Crunch with " + shortenCosts(1e300) + " IP/min. Reward: Gain an additonal 4x multiplier to IP.")
 	minute.setAttribute('ach-tooltip', "Reach " + shortenCosts(1e260) + " infinity power. Reward: Double infinity power gain.")
 	hell.setAttribute('ach-tooltip', "Get the sum of Infinity Challenge times under 5 seconds." + (player.boughtDims ? " Reward: Sacrifice is again slightly stronger." : ""))
-	zerodeg.setAttribute('ach-tooltip', "Unlock the 8th Infinity Dimension."+(player.boughtDims?" Reward: Normal Dimensions are multiplied by the amount of 8th Infinity Dimensions you have.":""))
+	zerodeg.setAttribute('ach-tooltip', "Unlock the 8th Infinity Dimension."+(player.boughtDims?" Reward: Normal Dimensions are multiplied by the amount of 8th Infinity Dimensions you have.":"") + (player.tickspeedBoosts != undefined ? " Reward: Make 'Is this safe?' act as if there were twice as many replicanti galaxies." : ""))
+	isthissafe('ach-tooltip', "Gain Infinite replicanti in 30 minutes. Reward: Infinity doesn't reset your replicanti amount" + (player.tickspeedBoosts != undefined ? ", each replicanti galaxy multiplies GP gain by your eighth dimensions, and multiply IP by on the square of your eigth dimensions if you have more than 5000" : "") + ".")
 
 	//ACHIEVEMENT ROW 10
 	costco.setAttribute('ach-tooltip', "Bulk buy 750 dimension boosts at once. Reward: Dimension boosts are " + (player.boughtDims?"cheaper based on EP":"1% more powerful (to normal dims)") + (player.tickspeedBoosts != undefined ? " and g13 is boosted by the cube root of galaxies" : "") + ".")

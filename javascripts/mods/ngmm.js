@@ -16,6 +16,9 @@ function getGSAmount(offset=0) {
 	ret = ret.times(Decimal.pow(1 + getAmount(8) / div2, exp))
 	
 	if (!player.galacticSacrifice.chall) ret = ret.times(getGPMultipliers())
+	var rgs = player.replicanti.galaxies
+	if (player.achievements.includes("r98")) rgs *= 2
+	if (player.tickspeedBoosts != undefined && player.achievements.includes("r95")) ret = ret.times(Decimal.pow(Math.max(1, player.eightAmount), rgs))
 	return ret.floor()
 }
 
@@ -464,7 +467,12 @@ let R135 = Math.pow(Math.E + Math.PI + 0.56714 + 4.81047 + 0.78343 + 1.75793 + 2
 //v2.31
 let galMults = {
 	u11: function() {
-		if (player.tickspeedBoosts != undefined) return Decimal.pow(10, 2 + Math.min(4, getInfinitied()))
+		if (player.tickspeedBoosts != undefined) {
+			var l = 0
+			if (player.infinityUpgrades.includes("postinfi61")) l = Math.log10(getInfinitied() + 1)
+			if (l > 2) return Decimal.pow(10, l * Math.min(l, 6) * Math.min(l, 4))
+			return Decimal.pow(10, 2 + Math.min(4, getInfinitied()))
+		}
 		if (tmp.ec > 53) return Decimal.pow(10, 2e4)
 		let x = getG11Infinities()
 		let z = getG11Divider()
@@ -505,19 +513,7 @@ let galMults = {
 		return x.pow(exp).add(1)
 	},
 	u13: function() {
-		let exp = 3
-		if (player.infinityUpgrades.includes("postinfi62") && player.achievements.includes("r117")) {
-			if (player.currentEternityChall === "") exp *= Math.pow(.8 + Math.log(player.resets + 3), 2.08)
-			else if (player.currentEternityChall == "eterc9" || player.currentEternityChall == "eterc7" || player.currentEternityChall == "eterc6") {
-				exp *= Math.pow(.8 + Math.log(player.resets + 3) * (player.achievements.includes("r124") ? (8 - player.bestEternity || 6) : 1), 0.5 + player.achievements.includes("r124") ? 0.5 : 0)
-			}
-			else exp *= Math.pow(.8 + Math.log(player.resets+3), 0.5 + player.achievements.includes("r124") ? 0.1 : 0)
-		} else if (player.infinityUpgrades.includes("postinfi62")){
-			if (player.currentEternityChall === "") exp *= Math.pow(Math.log(player.resets + 3), 2)
-			else exp *= Math.pow(Math.log(player.resets + 3), 0.5)
-		}
-		if (player.tickspeedBoosts != undefined && player.achievements.includes("r101")) exp *= Math.pow(Math.max(1, 2*player.galaxies), 1/3)
-		if (player.achievements.includes("r81") && player.currentEternityChall === "") exp += 7
+		exp = calcG13Exp()
 		return player.galacticSacrifice.galaxyPoints.div(5).plus(1).pow(exp)
 	},
 	u23: function() {
@@ -619,3 +615,23 @@ function getNewB60Mult(){
 	if (gal < 0) gal = 0
 	return Decimal.pow(10, 120 * gal)
 }
+
+function calcG13Exp(){
+	let exp = 3
+	if (player.infinityUpgrades.includes("postinfi62") && player.achievements.includes("r117") && player.tickspeedBoosts == undefined) {
+		if (player.currentEternityChall === "") exp *= Math.pow(.8 + Math.log(player.resets + 3), 2.08)
+		else if (player.currentEternityChall == "eterc9" || player.currentEternityChall == "eterc7" || player.currentEternityChall == "eterc6") {
+			exp *= Math.pow(.8 + Math.log(player.resets + 3) * (player.achievements.includes("r124") ? (8 - player.bestEternity || 6) : 1), 0.5 + player.achievements.includes("r124") ? 0.5 : 0)
+		}
+		else exp *= Math.pow(.8 + Math.log(player.resets+3), 0.5 + player.achievements.includes("r124") ? 0.1 : 0)
+	} else if (player.infinityUpgrades.includes("postinfi62")){
+		if (player.currentEternityChall === "") exp *= Math.pow(Math.log(player.resets + 3), 2)
+		else exp *= Math.pow(Math.log(player.resets + 3), 0.5)
+	}
+	if (player.tickspeedBoosts != undefined && player.achievements.includes("r101")) exp *= Math.pow(Math.max(1, 2*player.galaxies), 1/3)
+	if (player.achievements.includes("r81") && player.currentEternityChall === "") exp += 7
+	if (player.tickspeedBoosts != undefined && exp > 100) exp = Math.sqrt(exp) * 10
+	if (player.tickspeedBoosts != undefined && player.achievements.includes("r117")) exp += Math.sqrt(exp)
+	return exp
+}
+
