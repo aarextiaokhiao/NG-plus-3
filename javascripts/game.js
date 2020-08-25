@@ -8338,7 +8338,7 @@ function nonERFreeTickUpdating(){
 		thresholdMult = player.timestudy.studies.includes(171) ? 1.1 : 1.15
 		if (player.tickspeedBoosts !== undefined) thresholdMult = player.timestudy.studies.includes(171) ? 1.03 : 1.05
 	} else if (player.timestudy.studies.includes(171)) {
-		else thresholdMult = 1.25
+		thresholdMult = 1.25
 		if (player.aarexModifications.newGameMult) thresholdMult -= 0.08
 	}
 	if (QCIntensity(7)) thresholdMult *= tmp.qcRewards[7]
