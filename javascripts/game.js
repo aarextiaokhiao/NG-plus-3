@@ -8332,22 +8332,26 @@ function ERFreeTickUpdating(){
 
 function nonERFreeTickUpdating(){
 	let gain;
-	let thresholdMult=1.33
-	if (player.galacticSacrifice!==undefined&&!(player.aarexModifications.ngmX>3)) thresholdMult=1.15
-	if (player.timestudy.studies.includes(171)) {
-		if (thresholdMult==1.15) thresholdMult=1.1
-		else thresholdMult=1.25
-		if (player.aarexModifications.newGameMult) thresholdMult-=0.08
+	let thresholdMult = 1.33
+	var easier = player.galacticSacrifice !== undefined && !(player.aarexModifications.ngmX > 3)
+	if (easier) {
+		thresholdMult = player.timestudy.studies.includes(171) ? 1.1 : 1.15
+		if (player.tickspeedBoosts !== undefined) thresholdMult = player.timestudy.studies.includes(171) ? 1.03 : 1.05
+	} else if (player.timestudy.studies.includes(171)) {
+		else thresholdMult = 1.25
+		if (player.aarexModifications.newGameMult) thresholdMult -= 0.08
 	}
-	if (QCIntensity(7)) thresholdMult*=tmp.qcRewards[7]
-	if (ghostified&&player.ghostify.neutrinos.boosts>9) thresholdMult-=tmp.nb[10]
-	if (thresholdMult<1.1) thresholdMult=1.05+0.05/(2.1-thresholdMult)
+	if (QCIntensity(7)) thresholdMult *= tmp.qcRewards[7]
+	if (ghostified && player.ghostify.neutrinos.boosts > 9) thresholdMult -= tmp.nb[10]
+	if (thresholdMult < 1.1 && player.galacticSacrifice == undefined) thresholdMult = 1.05 + 0.05 / (2.1 - thresholdMult)
+	if (thresholdMult < 1.01 && player.galacticSacrifice != undefined) thresholdMult = 1.005 + 0.005 / (2.01 - thresholdMult)
 	gain = Math.ceil(new Decimal(player.timeShards).dividedBy(player.tickThreshold).log10()/Math.log10(thresholdMult))
 	player.totalTickGained += gain
-	player.tickspeed = player.tickspeed.times(Decimal.pow(tmp.tsReduce,gain))
-	player.postC3Reward=Decimal.pow(getPostC3Mult(),gain*getIC3EffFromFreeUpgs()).times(player.postC3Reward)
-	player.tickThreshold = Decimal.pow(thresholdMult,player.totalTickGained).times(player.aarexModifications.ngmX>3?0.01:1)
-	document.getElementById("totaltickgained").textContent = "You've gained "+getFullExpansion(player.totalTickGained)+" tickspeed upgrades."
+	player.tickspeed = player.tickspeed.times(Decimal.pow(tmp.tsReduce, gain))
+	player.postC3Reward = Decimal.pow(getPostC3Mult(), gain * getIC3EffFromFreeUpgs()).times(player.postC3Reward)
+	var base = player.aarexModifications.ngmX > 3 ? 0.01 : (player.tickspeedBoosts != undefined ? .1 : 1)
+	player.tickThreshold = Decimal.pow(thresholdMult, player.totalTickGained).times(base)
+	document.getElementById("totaltickgained").textContent = "You've gained " + getFullExpansion(player.totalTickGained) + " tickspeed upgrades."
 	tmp.tickUpdate = true
 }
 
