@@ -2884,6 +2884,10 @@ function getNextAt(chall) {
 		var retNGM3 = nextAt[chall+"_ngm3"]
 		if (retNGM3) ret = retNGM3
 	}
+	if (player.aarexModifications.ngmX >= 4){
+		var retNGM4 = nextAt[chall+"_ngm4"]
+		if (retNGM4) ret = retNGM4
+	}
 	return ret
 }
 
@@ -4401,7 +4405,7 @@ function setAchieveTooltip() {
 	infchall.setAttribute('ach-tooltip', "Complete an Infinity Challenge."+(player.galacticSacrifice?" Reward: Galaxies and "+(player.tickspeedBoosts===undefined?"g11":"Tickspeed Boosts")+" are more effective based on IC's completed.":""))
 
 	//ACHIEVEMENT ROW 7
-	not.setAttribute('ach-tooltip',"Big Crunch with only a single first Dimension without Dimension Boosts, Shifts or Galaxies while in Automatic Galaxies Challenge. Reward: First Dimensions are "+(player.galacticSacrifice?909:3)+" times stronger.")
+	not.setAttribute('ach-tooltip',"Big Crunch with only a single first Dimension without Dimension Boosts, Shifts or Galaxies while in Automatic Galaxies Challenge. Reward: First Dimensions are "+(player.galacticSacrifice?909:3)+" times stronger" + (player.aarexModifications.ngmX >= 4 ? " and buff the more expensive break infinity upgrade based on infinites based on infinites" : "") + ".")
 	blink.setAttribute('ach-tooltip', "Big Crunch in under 200 milliseconds. Reward: Start with " + formatValue(player.options.notation, 2e25, 0, 0) + " antimatter, and all dimensions are stronger in the first 300 milliseconds of this Infinity.");
 	cant.setAttribute('ach-tooltip', "Get all Dimension multipliers over "+shortenCosts(1e308)+". Reward: All dimensions are 10"+(player.galacticSacrifice?"x":"%")+" stronger.")
 	newDim.setAttribute('ach-tooltip', "Unlock the 4th Infinity Dimension."+(player.boughtDims?"":" Reward: Your achievement bonus affects Infinity Dimensions."))
@@ -7814,6 +7818,10 @@ function checkGluonRounding(){
 	if (player.quantum.gluons.br.lt(101)) player.quantum.gluons.br = player.quantum.gluons.br.round()
 }
 
+function updateNGM2RewardDisplay(){
+	document.getElementById("postcngmm_1reward") = "Reward: Infinity upgrades based on time " + (player.aarexModifications.ngmX >= 4 ? "" : "or infinities ") + "are applied post-dilation. Also make the GP formula better based on galaxies."
+}
+
 let autoSaveSeconds=0
 setInterval(function() {
 	updateTemp()
@@ -7863,6 +7871,7 @@ setInterval(function() {
 	doPerSecondNGP3Stuff()
 	notifyQuantumMilestones()
 	updateQuantumWorth()
+	updateNGM2RewardDisplay()
 
 	//Rounding errors
 	if (!tmp.ngp3 || !quantumed) if (player.infinityPoints.lt(100)) player.infinityPoints = player.infinityPoints.round()

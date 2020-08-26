@@ -70,7 +70,7 @@ function getNormalDimensionGalaxyUpgradesBonus(tier,mult){
 function getAfterDefaultDilationLayerAchBonus(tier){
 	mult = new Decimal(1)
 	let timeAndDimMult = timeMult()
-	if (hasInfinityMult(tier)) timeAndDimMult = dimMults().times(timeAndDimMult)
+	if (hasInfinityMult(tier) && !(player.aarexModifications.ngmX >= 4)) timeAndDimMult = dimMults().times(timeAndDimMult)
 	if (player.challenges.includes("postcngmm_1")||player.currentChallenge=="postcngmm_1") mult = mult.times(timeAndDimMult)
 	if (player.galacticSacrifice) {
 		if (player.achievements.includes("r56") && player.thisInfinityTime < 1800) mult = mult.times(3600 / (player.thisInfinityTime + 1800));
@@ -109,7 +109,8 @@ function getDimensionFinalMultiplier(tier) {
 	mult = mult.times(getPostBreakInfNDMult())
 
 	let timeAndDimMult = timeMult()
-	if (hasInfinityMult(tier)) timeAndDimMult = dimMults().times(timeAndDimMult)
+	if (hasInfinityMult(tier) && !(player.aarexModifications.ngmX >= 4)) timeAndDimMult = dimMults().times(timeAndDimMult)
+	if (!(player.aarexModifications.ngmX >= 4)) mult = mult.times(dimMults())
 	if (!player.challenges.includes("postcngmm_1") && player.currentChallenge!="postcngmm_1") mult = mult.times(timeAndDimMult)
 	
 	if (tier == 1 && player.infinityUpgrades.includes("unspentBonus")) mult = mult.times(unspentBonus);
@@ -494,7 +495,10 @@ function getInfinitiedMult() {
 	var add = player.galacticSacrifice ? 0 : 1
 	var base = (player.galacticSacrifice ? 1 : 0) + Decimal.add(getInfinitied(), 1).log10() * (player.galacticSacrifice ? 100 : 10)
 	var exp = (player.galacticSacrifice ? 2 : 1) * (player.timestudy.studies.includes(31) ? 4 : 1)
-	if (player.aarexModifications.ngmX >= 4) exp *= 1 + Math.log10(getInfinitied() + 1) / 3
+	if (player.aarexModifications.ngmX >= 4) {
+		if ((player.currentChallenge == "postcngmm_1" || player.challenges.includes("postcngmm_1")) && !player.achievements.includes("r71")) exp += .2
+		else exp *= 1 + Math.log10(getInfinitied() + 1) / 3
+	}
 	return add + Math.pow(base, exp)
 }
 

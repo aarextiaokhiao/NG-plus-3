@@ -2160,8 +2160,36 @@ function load_game(noOffline, init) {
 		if (break_infinity_js) Decimal = Decimal_BI
 		initCost = [null, new Decimal(10), new Decimal(1e2), new Decimal(1e4), new Decimal(1e6), new Decimal(1e9), new Decimal(1e13), new Decimal(1e18), new Decimal(1e24)]
 		costMults = [null, new Decimal(1e3), new Decimal(1e4), new Decimal(1e5), new Decimal(1e6), new Decimal(1e8), new Decimal(1e10), new Decimal(1e12), new Decimal(1e15)]
-		nextAt = {postc1: new Decimal("1e2000"), postc1_ngmm: new Decimal("1e3000"),postc1_ngm3:new Decimal("1e3760"),postc2:new Decimal("1e5000"),postc3:new Decimal("1e12000"),postc4:new Decimal("1e14000"),postc5:new Decimal("1e18000"),postc5_ngm3:new Decimal("1e21500"),postc6:new Decimal("1e20000"),postc6_ngm3:new Decimal("1e23000"),postc7:new Decimal("1e23000"),postc7_ngm3:new Decimal("1e25500"),postc8:new Decimal("1e28000"),postc8_ngm3:new Decimal("1e39000"),postcngmm_1:new Decimal("1e750"),postcngmm_1_ngm3:new Decimal("1e1080"),postcngmm_2:new Decimal("1e1350"),postcngmm_3:new Decimal("1e2000"),postcngmm_3_ngm3:new Decimal("1e2650"),postcngm3_1:new Decimal("1e1560"),postcngm3_2:new Decimal("1e2085"),postcngm3_3:new Decimal("1e8140"),postcngm3_4:new Decimal("1e17000")}
-		goals = {postc1: new Decimal("1e850"), postc1_ngmm: new Decimal("1e650"),postc1_ngm3:new Decimal("1e375"),postc2:new Decimal("1e10500"),postc2_ngm3:new Decimal("1e4250"),postc3:new Decimal("1e5000"),postc4:new Decimal("1e13000"),postc4_ngm3:new Decimal("1e4210"),postc5:new Decimal("1e11111"),postc5_ngm3:new Decimal("7.77e7777"),postc6:new Decimal("2e22222"),postc7:new Decimal("1e10000"),postc7_ngmm:new Decimal("1e15000"),postc7_ngm3:new Decimal("1e5100"),postc8:new Decimal("1e27000"),postc8_ngm3:new Decimal("1e35000"),postcngmm_1:new Decimal("1e550"),postcngmm_1_ngm3:new Decimal("1e650"),postcngmm_2:new Decimal("1e950"),postcngmm_2_ngm3:new Decimal("1e1090"),postcngmm_3:new Decimal("1e1200"),postcngmm_3_ngm3:new Decimal("1e1230"),postcngm3_1:new Decimal("1e550"),postcngm3_2:new Decimal("1e610"),postcngm3_3:new Decimal("8.8888e888"),postcngm3_4:new Decimal("1e12345")}
+		nextAt = {postc1: new Decimal("1e2000"), postc1_ngmm: new Decimal("1e3000"), postc1_ngm3:new Decimal("1e3760"),
+                    postc2:new Decimal("1e5000"),
+                    postc3:new Decimal("1e12000"),
+                    postc4:new Decimal("1e14000"),
+                    postc5:new Decimal("1e18000"), postc5_ngm3:new Decimal("1e21500"),
+                    postc6:new Decimal("1e20000"), postc6_ngm3:new Decimal("1e23000"),
+                    postc7:new Decimal("1e23000"), postc7_ngm3:new Decimal("1e25500"),
+                    postc8:new Decimal("1e28000"), postc8_ngm3:new Decimal("1e39000"),
+                    postcngmm_1:new Decimal("1e750"),postcngmm_1_ngm3:new Decimal("1e1080"),
+                    postcngmm_2:new Decimal("1e1350"),
+                    postcngmm_3:new Decimal("1e2000"), postcngmm_3_ngm3:new Decimal("1e2650"),
+                    postcngm3_1:new Decimal("1e1560"),
+                    postcngm3_2:new Decimal("1e2085"),
+                    postcngm3_3:new Decimal("1e8140"),
+                    postcngm3_4:new Decimal("1e17000")}
+		goals = {postc1: new Decimal("1e850"), postc1_ngmm: new Decimal("1e650"), postc1_ngm3:new Decimal("1e375"),
+                    postc2:new Decimal("1e10500"), postc2_ngm3:new Decimal("1e4250"),
+                    postc3:new Decimal("1e5000"),
+                    postc4:new Decimal("1e13000"), postc4_ngm3:new Decimal("1e4210"),
+                    postc5:new Decimal("1e11111"), postc5_ngm3:new Decimal("7.77e7777"),
+                    postc6:new Decimal("2e22222"),
+                    postc7:new Decimal("1e10000"), postc7_ngmm:new Decimal("1e15000"), postc7_ngm3:new Decimal("1e5100"),
+                    postc8:new Decimal("1e27000"), postc8_ngm3:new Decimal("1e35000"), 
+                    postcngmm_1:new Decimal("1e550"), postcngmm_1_ngm3:new Decimal("1e650"), postcngmm_1_ngm4:new Decimal("1e950")
+                    postcngmm_2:new Decimal("1e950"), postcngmm_2_ngm3:new Decimal("1e1090"),
+                    postcngmm_3:new Decimal("1e1200"), postcngmm_3_ngm3:new Decimal("1e1230"),
+                    postcngm3_1:new Decimal("1e550"),
+                    postcngm3_2:new Decimal("1e610"),
+                    postcngm3_3:new Decimal("8.8888e888"),
+                    postcngm3_4:new Decimal("1e12345")}
 		setUnlocks = [Decimal.pow(Number.MAX_VALUE, 2.9)]
 	}
 	if (infiniteCheck) exportInfiniteSave()

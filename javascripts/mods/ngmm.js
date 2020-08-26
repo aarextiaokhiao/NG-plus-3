@@ -67,6 +67,7 @@ function getGSGalaxyExp(galaxies){
 		if (player.achievements.includes("r121") && player.tickspeedBoosts == undefined) y += 1e-5 * Math.pow(Math.max(galaxies - 500, 0), 4) 
 		y *= .08*(tmp.cp+14)
 		if (player.infinityUpgrades.includes("postinfi60") && player.tickspeedBoosts != undefined) y *= Math.log10(Math.max(galaxies - 50, 1)) * 2.5 + 1
+		if (player.aarexModifications.ngmX >= 4) y += .25 * Math.sqrt(y + (2.5 / 9 * galaxies))
 	}
 	if (player.achievements.includes("r121")) y *= Math.log(3+galaxies)
 	if (player.galacticSacrifice.upgrades.includes(52) && player.tickspeedBoosts == undefined) {
