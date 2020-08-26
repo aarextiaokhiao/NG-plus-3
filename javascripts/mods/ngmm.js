@@ -16,9 +16,12 @@ function getGSAmount(offset=0) {
 	ret = ret.times(Decimal.pow(1 + getAmount(8) / div2, exp))
 	
 	if (!player.galacticSacrifice.chall) ret = ret.times(getGPMultipliers())
+	if (player.galacticSacrifice.upgrades.includes(16) && player.tdBoosts) ret = ret.times(Math.max(player.tdBoosts, 1))
+
 	var rgs = player.replicanti.galaxies
 	if (player.achievements.includes("r98")) rgs *= 2
 	if (player.tickspeedBoosts != undefined && player.achievements.includes("r95")) ret = ret.times(Decimal.pow(Math.max(1, player.eightAmount), rgs))
+
 	return ret.floor()
 }
 
