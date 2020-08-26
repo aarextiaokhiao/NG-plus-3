@@ -57,7 +57,7 @@ function getNormalDimensionVanillaTimeStudyBonus(tier){
 function getNormalDimensionGalaxyUpgradesBonus(tier,mult){
 	if (!player.galacticSacrifice) return mult
 	
-	if (player.galacticSacrifice.upgrades.includes(12)) mult = mult.times(galMults.u12())
+	if (player.galacticSacrifice.upgrades.includes(12) && (!player.galacticSacrifice.upgrades.includes(42) || player.aarexModifications.ngmX < 4)) mult = mult.times(galMults.u12())
 	if (player.pSac !== undefined) if (tier == 2) mult = mult.pow(puMults[13](hasPU(13, true, true)))
 	if (player.galacticSacrifice.upgrades.includes(13) && ((!inNC(14) && player.currentChallenge != "postcngm3_3") || player.tickspeedBoosts == undefined || player.aarexModifications.ngmX > 3) && player.currentChallenge != "postcngm3_4") mult = mult.times(galMults.u13())
 	if (player.galacticSacrifice.upgrades.includes(15)) mult = mult.times(galMults.u15())
@@ -80,6 +80,7 @@ function getAfterDefaultDilationLayerAchBonus(tier){
 		if (player.achievements.includes("r92") && player.thisInfinityTime < 600) mult = mult.times(Math.max(101 - player.thisInfinityTime / 6, 1));
 		if (player.currentChallenge == "postc6" || inQC(6)) mult = mult.dividedBy(player.matter.max(1))
 		if (player.currentChallenge == "postc8" || inQC(6)) mult = mult.times(player.postC8Mult)
+		if (player.galacticSacrifice.upgrades.includes(12) && player.galacticSacrifice.upgrades.includes(42) && player.aarexModifications.ngmX >= 4) mult = mult.times(galMults.u12())
 	}
 	return mult
 }

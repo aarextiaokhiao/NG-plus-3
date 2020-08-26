@@ -207,6 +207,7 @@ function getDimboostCostIncrease () {
 	if (player.currentChallenge=="postcngmm_1") return ret
 	if (player.galacticSacrifice) {
 		if (player.galacticSacrifice.upgrades.includes(21)) ret -= 10
+		if (player.galacticSacrifice.upgrades.includes(43) && player.aarexModifications.ngmX >= 4) ret -= 1
 		if (player.infinityUpgrades.includes('dimboostCost')) ret -= 1
 		if (player.infinityUpgrades.includes("postinfi50")) ret -= 0.5
 	} else {

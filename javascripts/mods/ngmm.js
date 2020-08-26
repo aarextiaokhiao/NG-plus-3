@@ -17,6 +17,8 @@ function getGSAmount(offset=0) {
 	
 	if (!player.galacticSacrifice.chall) ret = ret.times(getGPMultipliers())
 	if (player.galacticSacrifice.upgrades.includes(16) && player.tdBoosts) ret = ret.times(Math.max(player.tdBoosts, 1))
+	if (player.galacticSacrifice.upgrades.includes(41) && player.aarexModifications.ngmX >= 4) ret = ret.times(Math.max(player.tickspeedBoosts, 1))
+	if (player.galacticSacrifice.upgrades.includes(43) && player.aarexModifications.ngmX >= 4) ret = ret.times(Math.max(player.resets, 1))
 
 	var rgs = player.replicanti.galaxies
 	if (player.achievements.includes("r98")) rgs *= 2
@@ -196,13 +198,24 @@ let galCosts = {
 	35: 2e3,
 	16: 1e16,
 	26: 1e18,
-	36: 1e22
+	36: 1e22,
+	"41ngm4": 1e23,
+	"42ngm4": 1e25,
+	"43ngm4": 1e28 //may be changed
+}
+
+function getGalaxyUpgradeCost(i){
+	if (player.aarexModifications.ngmX == 4){
+		if (galCosts[i+"ngm4"]) return new Decimal(galCosts[i+"ngm4"])
+	}
+	return galCosts[i]
 }
 
 function buyGalaxyUpgrade(i) {
-	if (player.galacticSacrifice.upgrades.includes(i) || !(Math.floor(i/10) < 2 || player.galacticSacrifice.upgrades.includes(i-10)) || player.galacticSacrifice.galaxyPoints.lt(galCosts[i])) return
+	var cost = getGalaxyUpgradeCost(i)
+	if (player.galacticSacrifice.upgrades.includes(i) || !(Math.floor(i/10) < 2 || player.galacticSacrifice.upgrades.includes(i-10)) || player.galacticSacrifice.galaxyPoints.lt(cost)) return
 	player.galacticSacrifice.upgrades.push(i)
-	player.galacticSacrifice.galaxyPoints = player.galacticSacrifice.galaxyPoints.sub(galCosts[i])
+	player.galacticSacrifice.galaxyPoints = player.galacticSacrifice.galaxyPoints.sub(cost)
 	if (i == 11) {
 		if (player.achievements.includes("r21")) {
 			for (var d = 1; d < 9; d++) {
@@ -213,11 +226,11 @@ function buyGalaxyUpgrade(i) {
 		}
 		reduceDimCosts(true)
 	}
-	if (i == 41) for (var tier = 1; tier < 9; tier++) {
+	if (i == 41 && player.aarexModifications.ngmX < 4) for (var tier = 1; tier < 9; tier++) {
 		let dim = player["infinityDimension" + tier]
 		dim.power = Decimal.pow(getInfBuy10Mult(tier), dim.baseAmount/10)
 	}
-	if (i == 42) for (var tier = 1; tier < 9; tier++) {
+	if (i == 42 && player.aarexModifications.ngmX < 4) for (var tier = 1; tier < 9; tier++) {
 		let dim = player["infinityDimension" + tier]
 		dim.cost = Decimal.pow(getIDCostMult(tier), dim.baseAmount / 10).times(infBaseCost[tier])
 	}
@@ -259,14 +272,15 @@ function galacticUpgradeSpanDisplay () {
 		document.getElementById('galcost24').innerHTML = shortenCosts(1e3)
 		document.getElementById('galcost34').innerHTML = shortenCosts(1e17)
 	}
-	if (player.aarexModifications.ngmX > 3) {
+	if (player.aarexModifications.ngmX >= 4) {
 		document.getElementById('galcost25').innerHTML = shortenCosts(1e3)
 		document.getElementById('galcost35').innerHTML = shortenCosts(2e3)
 		document.getElementById('galcost16').innerHTML = shortenCosts(1e16)
 		document.getElementById('galcost26').innerHTML = shortenCosts(1e18)
 		document.getElementById('galcost36').innerHTML = shortenCosts(1e22)
-	}
-	if (player.infinityUpgrades.includes("postinfi63")) {
+		document.getElementById('galcost41').innerHTML = shortenCosts(1e23)
+		document.getElementById('galcost42').innerHTML = shortenCosts(1e25)
+	} else if (player.infinityUpgrades.includes("postinfi63")) {
 		document.getElementById("galcost41").innerHTML = shortenCosts(new Decimal("1e3800"))
 		document.getElementById("galcost42").innerHTML = shortenCosts(new Decimal("1e4000"))
 		document.getElementById("galcost43").innerHTML = shortenCosts(new Decimal("1e4200"))
@@ -478,10 +492,11 @@ let R135 = Math.pow(Math.E + Math.PI + 0.56714 + 4.81047 + 0.78343 + 1.75793 + 2
 let galMults = {
 	u11: function() {
 		if (player.tickspeedBoosts != undefined) {
+			var exp = (player.aarexModifications.ngmX >= 4 && player.galacticSacrifice.upgrades.includes(41)) ? 2 : 1
 			var l = 0
 			if (player.infinityUpgrades.includes("postinfi61")) l = Math.log10(getInfinitied() + 1)
 			if (l > 2) return Decimal.pow(10, l * Math.min(l, 6) * Math.min(l, 4))
-			return Decimal.pow(10, 2 + Math.min(4, getInfinitied()))
+			return Decimal.pow(10, 2 + Math.min(4, getInfinitied())).pow(exp)
 		}
 		if (tmp.ec > 53) return Decimal.pow(10, 2e4)
 		let x = getG11Infinities()
@@ -510,7 +525,9 @@ let galMults = {
 		return Decimal.pow(10, x)
 	},
 	u12: function() {
-		return 2 * Math.pow(1 + player.galacticSacrifice.time / 600, 0.5)
+		var r = 2 * Math.pow(1 + player.galacticSacrifice.time / 600, 0.5)
+		if (player.aarexModifications.ngmX >= 4 && player.galacticSacrifice.upgrades.includes(42)) r = Math.pow(r, Math.min(4, Math.pow(r, 1/3)))
+		return r
 	},
 	u32: function() {
 		let x = player.totalmoney
@@ -565,7 +582,8 @@ let galMults = {
 
 let galConditions = {
 	r4: function() {
-		return player.infinityUpgrades.includes("postinfi63")
+		var unl = player.challenges.includes("postcngmm_1") || player.eternities > 0
+		return player.infinityUpgrades.includes("postinfi63") || (player.aarexModifications.ngmX >= 4 && unl)
 	},
 	r5: function() {
 		return player.infinityUpgrades.includes("postinfi63")

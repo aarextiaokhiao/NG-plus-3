@@ -7819,7 +7819,17 @@ function checkGluonRounding(){
 }
 
 function updateNGM2RewardDisplay(){
-	document.getElementById("postcngmm_1reward").textContent = "Reward: Infinity upgrades based on time " + (player.aarexModifications.ngmX >= 4 ? "" : "or infinities ") + "are applied post-dilation. Also make the GP formula better based on galaxies."
+	document.getElementById("postcngmm_1reward").innerHTML = "Reward: Infinity upgrades based on time " + (player.aarexModifications.ngmX >= 4 ? "" : "or infinities ") + "are applied post-dilation. Also make the GP formula better based on galaxies."
+}
+
+function updateGalaxyUpgradesDisplay(){
+	var text41 = player.aarexModifications.ngmX >= 4 ? "Square g11 and tickspeed boosts multiply GP gain." : "Galaxy points boost per-10 bought Infinity Dimensions multiplier."
+	document.getElementById("galaxy41").innerHTML = text41 + "<br>Cost: <span id='galcost41'></span> GP"
+	var text42 = player.aarexModifications.ngmX >= 4 ? "Buff g12 and make it post dilation." : "Eternity points reduce Infinity Dimension cost multipliers."
+	document.getElementById("galaxy42").innerHTML = text42 + "<br>Cost: <span id='galcost42'></span> GP"
+	var text43 = player.aarexModifications.ngmX >= 4 ? "Reduce dimboost cost multiplier by 1 and dimboosts multiply GP gain." : "Galaxy points boost Time Dimensions."
+	var curr43 = player.aarexModifications.ngmX >= 4 ? "" : "<br>Currently: <span id='galspan43'>?</span>x"
+	document.getElementById("galaxy43").innerHTML = text43 + curr43 + "<br>Cost: <span id='galcost43'></span> GP"
 }
 
 let autoSaveSeconds=0
@@ -7872,6 +7882,7 @@ setInterval(function() {
 	notifyQuantumMilestones()
 	updateQuantumWorth()
 	updateNGM2RewardDisplay()
+	updateGalaxyUpgradesDisplay()
 
 	//Rounding errors
 	if (!tmp.ngp3 || !quantumed) if (player.infinityPoints.lt(100)) player.infinityPoints = player.infinityPoints.round()
