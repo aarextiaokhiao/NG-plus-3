@@ -556,7 +556,9 @@ let galMults = {
 		for (var d = 1; d < 9; d++) {
 			r = Decimal.times(player["timeDimension" + d].bought / 6, p).max(1).times(r)
 		}
-		return r.pow(player.galacticSacrifice.upgrades.includes(36) ? 2 : 1)
+		r = r.pow(player.galacticSacrifice.upgrades.includes(36) ? 2 : 1)
+		if (r.gt(1e50)) r = Decimal.pow(2 * r.log10(), 25)
+		return r
 	}
 }
 
