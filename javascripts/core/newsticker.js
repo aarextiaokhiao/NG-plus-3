@@ -347,6 +347,7 @@ var scrollTimeouts = [];
 var nextMsgIndex;
 function scrollNextMessage() {
   //don't run if hidden to save performance
+  if (!player) return
   if (player.options.newsHidden) return false
   var s = document.getElementById('news');
   updateNewsArray();
