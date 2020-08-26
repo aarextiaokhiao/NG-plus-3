@@ -189,7 +189,10 @@ let galCosts = {
 	34: 1e17,
 	15: 1,
 	25: 1e3,
-	35: 2e3
+	35: 2e3,
+	16: 1e16,
+	26: 1e18,
+	36: 1e20
 }
 
 function buyGalaxyUpgrade(i) {
@@ -255,6 +258,9 @@ function galacticUpgradeSpanDisplay () {
 	if (player.aarexModifications.ngmX > 3) {
 		document.getElementById('galcost25').innerHTML = shortenCosts(1e3)
 		document.getElementById('galcost35').innerHTML = shortenCosts(2e3)
+		document.getElementById('galcost16').innerHTML = shortenCosts(1e16)
+		document.getElementById('galcost26').innerHTML = shortenCosts(1e18)
+		document.getElementById('galcost36').innerHTML = shortenCosts(1e20)
 	}
 	if (player.infinityUpgrades.includes("postinfi63")) {
 		document.getElementById("galcost41").innerHTML = shortenCosts(new Decimal("1e3800"))
@@ -268,11 +274,11 @@ function galacticUpgradeSpanDisplay () {
 
 function galacticUpgradeButtonTypeDisplay () {
 	let t = document.getElementById("galTable")
-	for (let i = 1; i < 6; i++) {
+	for (let i = 1; i <= 5; i++) { //5 rows
 		var r = t.rows[i-1]
 		if (!galConditions["r"+i] || galConditions["r"+i]()) {
 			r.style.display = ""
-			for (let j = 1; j < 6; j++) {
+			for (let j = 1; j <= 6; j++) { //6 columns
 				var c = r.cells[j-1]
 				if (!galConditions["c"+j] || galConditions["c"+j]()) {
 					c.style.display = ""
@@ -392,13 +398,13 @@ document.getElementById("postinfi04").onclick = function() {
 //v1.41
 function galIP(){
 	let gal = player.galaxies
-    	let rg = player.replicanti.galaxies
-    	if (player.timestudy.studies.includes(132)) rg *= 1.4
-    	if (player.timestudy.studies.includes(133)) rg *= 1.5
-    	if (player.achievements.includes("r122")) gal += 100*rg 
-    	if (gal < 5) return gal
-    	if (gal < 50) return 2 + Math.pow(5 + gal,0.6)
-    	return Math.min(Math.pow(gal, .4) + 7, 155)
+	let rg = player.replicanti.galaxies
+	if (player.timestudy.studies.includes(132)) rg *= 1.4
+	if (player.timestudy.studies.includes(133)) rg *= 1.5
+	if (player.achievements.includes("r122")) gal += 100*rg 
+	if (gal < 5) return gal
+	if (gal < 50) return 2 + Math.pow(5 + gal,0.6)
+	return Math.min(Math.pow(gal, .4) + 7, 155)
 }
 
 //v1.5
@@ -532,20 +538,20 @@ let galMults = {
 		return player.galacticSacrifice.galaxyPoints.pow(0.25).div(20).max(0.2)
 	},
 	u15: function() {
-		return Decimal.pow(10, getInfinitied() + 2).max(1).min(1e6)
+		return Decimal.pow(10, getInfinitied() + 2).max(1).min(1e6).pow(player.galacticSacrifice.upgrades.includes(16) ? 2 : 1)
 	},
 	u25: function() {
 		let r = Math.max(player.galacticSacrifice.galaxyPoints.log10() - 2, 1)
 		if (r > 2.5) r = Math.pow(r * 6.25, 1/3)
-		return r
+		return Math.pow(r, player.galacticSacrifice.upgrades.includes(26) ? 2 : 1)
 	},
 	u35: function() {
-		let r = 1
+		let r = new Decimal(1)
 		let p = getProductBoughtMult()
 		for (var d = 1; d < 9; d++) {
 			r = Decimal.times(player["timeDimension" + d].bought / 6, p).max(1).times(r)
 		}
-		return r
+		return r.pow(player.galacticSacrifice.upgrades.includes(36) ? 2 : 1)
 	}
 }
 
@@ -560,7 +566,10 @@ let galConditions = {
 		return player.tickspeedBoosts !== undefined
 	},
 	c5: function() {
-		return player.aarexModifications.ngmX > 3
+		return player.aarexModifications.ngmX >= 4
+	},
+	c6: function(){
+		return player.aarexModifications.ngmX >= 4 && player.totalmoney.log10() >= 666
 	}
 }
 

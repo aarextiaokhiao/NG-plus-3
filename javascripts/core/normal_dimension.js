@@ -491,7 +491,11 @@ function dimMults() {
 }
 
 function getInfinitiedMult() {
-	return (player.galacticSacrifice ? 0 : 1) + Math.pow((player.galacticSacrifice ? 1 : 0) + Decimal.add(getInfinitied(), 1).log10() * (player.galacticSacrifice ? 100 : 10), (player.galacticSacrifice ? 2 : 1) * (player.timestudy.studies.includes(31) ? 4 : 1))
+	var add = player.galacticSacrifice ? 0 : 1
+	var base = (player.galacticSacrifice ? 1 : 0) + Decimal.add(getInfinitied(), 1).log10() * (player.galacticSacrifice ? 100 : 10)
+	var exp = (player.galacticSacrifice ? 2 : 1) * (player.timestudy.studies.includes(31) ? 4 : 1)
+	if (player.aarexModifications.ngmX >= 4) exp *= 1 + Math.log10(getInfinitied() + 1) / 3
+	return add + Math.pow(base, exp)
 }
 
 function getDimensionProductionPerSecond(tier) {

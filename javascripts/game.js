@@ -2565,7 +2565,7 @@ function breakInfinityUpgradeDisplay(){
 	document.getElementById("postinfi21").innerHTML = "Power up all dimensions based on current antimatter<br>Currently: " + shorten(tmp.postinfi21) + "x<br>Cost: "+shortenCosts(5e4)+" IP"
 	if (player.tickSpeedMultDecrease > 2) document.getElementById("postinfi31").innerHTML = "Tickspeed cost multiplier increase <br>"+player.tickSpeedMultDecrease+"x -> "+(player.tickSpeedMultDecrease-1)+"x<br>Cost: "+shortenDimensions(player.tickSpeedMultDecreaseCost) +" IP"
 	else document.getElementById("postinfi31").innerHTML = "Tickspeed cost multiplier increase<br>"+player.tickSpeedMultDecrease.toFixed(player.tickSpeedMultDecrease<2?2:0)+"x"
-	document.getElementById("postinfi22").innerHTML = "Power up all dimensions based on achievements completed <br>Currently: "+shorten(achievementMult)+"x<br>Cost: "+shortenCosts(1e6)+" IP"
+	document.getElementById("postinfi22").innerHTML = "Power up all dimensions based on achievements completed " + (player.player.aarexModifications.ngmX >= 4 ? "and galaxy point upgrades purchased " : "") +  "<br>Currently: "+shorten(achievementMult)+"x<br>Cost: "+shortenCosts(1e6)+" IP"
 	document.getElementById("postinfi12").innerHTML = "Power up all dimensions based on amount infinitied <br>Currently: "+shorten(getInfinitiedMult())+"x<br>Cost: "+shortenCosts(1e5)+" IP"
 	if (player.timestudy.studies.includes(31)) document.getElementById("postinfi12").innerHTML = "Power up all dimensions based on amount infinitied <br>Currently: "+shortenMoney(getInfinitiedMult())+"x<br>Cost: "+shortenCosts(1e5)+" IP"
 	document.getElementById("postinfi41").innerHTML = "Makes galaxies "+Math.round(getPostGalaxyEff()*100-100)+"% stronger <br>Cost: "+shortenCosts(5e11)+" IP"
@@ -4380,7 +4380,7 @@ function setAchieveTooltip() {
 	lot.setAttribute('ach-tooltip', "Get at least 10 infinities."+(player.galacticSacrifice?" Reward: "+(player.tickspeedBoosts==undefined?"Start Infinities with galaxy points based on your infinities (x^2/100).":" Keep galaxy upgrades on infinity."):""));
 
 	//ACHIEVEMENT ROW 4
-	sanic.setAttribute('ach-tooltip', "Get over " + formatValue(player.options.notation, 1e63, 0, 0) + "antimatter.")
+	sanic.setAttribute('ach-tooltip', "Get over " + formatValue(player.options.notation, 1e63, 0, 0) + " antimatter" + (player.aarexModifications.ngmX >= 4 ? " and unlock new galaxy upgrades at " + formatValue(player.options.notation, 1e63, 0, 0) + " antimatter" : "") + ".")
 	cancer.setAttribute('ach-tooltip', "Buy ten Galaxies in total while using cancer notation."+(player.galacticSacrifice&&player.tickspeedBoosts==undefined?" Reward: Gain a multiplier to IP based on the number of galaxies bought in cancer notation.":""))
 	zero.setAttribute('ach-tooltip',"Big Crunch without Dimension shifts, boosts or galaxies in a challenge. Reward: Dimensions 1-4 are 25% stronger"+(player.galacticSacrifice&&player.tickspeedBoosts==undefined?" and you get 1.25x more IP.":"."))
 	potato.setAttribute('ach-tooltip', "Get more than " + formatValue(player.options.notation, 1e29, 0, 0) + " ticks per second. Reward: Reduce the starting tick interval by 2%.");
@@ -5444,6 +5444,7 @@ function updateHotkeys() {
 	if (!player.achievements.includes("r136")) html += ", D for dimension boost"
 	if (!player.achievements.includes("ng3p51")) {
 		if (player.tickspeedBoosts !== undefined) html += ", B for tickspeed boost"
+		if (player.aarexModifications.ngmX >= 4) html += ", N for time dimension boost"
 		html += ", G for galaxy"
 	}
 	html += ", C for crunch, A for toggle autobuyers, R for replicanti galaxies, E for eternity"
@@ -9788,6 +9789,10 @@ window.addEventListener('keydown', function(event) {
 			else document.getElementById("secondSoftReset").onclick()
 		break;
 
+		case 76: // N
+			if (player.aarexModifications.ngmX >= 4) tdBoost(1)
+		break;
+
 		case 77: // M
 			if (ndAutobuyersUsed<9||!player.challenges.includes("postc8")) document.getElementById("maxall").onclick()
 			if (player.dilation.studies.includes(6)) {
@@ -9861,6 +9866,7 @@ var QC4Reward
 
 function getAchievementMult(){
 	var ach = player.achievements.length
+	var gups = player.galacticSacrifice.upgrades.length
 	var minus = player.galacticSacrifice ? 10 : 30
 	var exp = player.galacticSacrifice ? 5 : 3
 	var div = 40
@@ -9868,6 +9874,8 @@ function getAchievementMult(){
 		minus = 0
 		exp = 10
 		div = 20
+		div -= Math.sqrt(gups)
+		if (gups > 15) exp += gups
 	}
 	return Math.max(Math.pow(ach - minus - getSecretAchAmount(), exp) / div, 1)
 }
