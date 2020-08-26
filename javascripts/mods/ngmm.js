@@ -280,10 +280,13 @@ function galacticUpgradeSpanDisplay () {
 		document.getElementById('galcost36').innerHTML = shortenCosts(1e22)
 		document.getElementById('galcost41').innerHTML = shortenCosts(1e23)
 		document.getElementById('galcost42').innerHTML = shortenCosts(1e25)
+		document.getElementById('galcost43').innerHTML = shortenCosts(1e28)
 	} else if (player.infinityUpgrades.includes("postinfi63")) {
 		document.getElementById("galcost41").innerHTML = shortenCosts(new Decimal("1e3800"))
 		document.getElementById("galcost42").innerHTML = shortenCosts(new Decimal("1e4000"))
 		document.getElementById("galcost43").innerHTML = shortenCosts(new Decimal("1e4200"))
+	}
+	if (player.infinityUpgrades.includes("postinfi63")) {
 		document.getElementById("galcost51").innerHTML = shortenCosts(new Decimal("1e5500"))
 		document.getElementById("galcost52").innerHTML = shortenCosts(new Decimal("1e8000"))
 		document.getElementById("galcost53").innerHTML = shortenCosts(new Decimal("1e25000"))
@@ -303,15 +306,17 @@ function galacticUpgradeButtonTypeDisplay () {
 					var e = document.getElementById('galaxy' + i + j);
 					if (player.galacticSacrifice.upgrades.includes(+(i + '' + j))) {
 						e.className = 'infinistorebtnbought'
-					} else if (player.galacticSacrifice.galaxyPoints.gte(galCosts[i + '' + j]) && (i === 1 || player.galacticSacrifice.upgrades.includes(+((i - 1) + '' + j)))) {
+					} else if (player.galacticSacrifice.galaxyPoints.gte(getGalaxyUpgradeCost(i + '' + j)) && (i === 1 || player.galacticSacrifice.upgrades.includes(+((i - 1) + '' + j)))) {
 						e.className = 'infinistorebtn' + ((j-1)%4+1);
 					} else {
 						e.className = 'infinistorebtnlocked'
 					}
 					if (galMults["u"+i+j] !== undefined) {
+						a = 0
 						if (i * 10 + j == 11 || i * 10 + j == 15) {
 							if (player.infinitied > 0 || player.eternities !== 0 || quantumed) document.getElementById('galspan' + i + j).textContent = shortenDimensions(galMults["u" + i + j]())
 						} else if (i * 10 + j == 31 || i * 10 + j == 25) document.getElementById("galspan" + i + j).textContent = galMults["u" + i + j]().toFixed(2)
+						else if (i * 10 + j == 43) a = 0
 						else document.getElementById("galspan" + i + j).textContent = shorten(galMults["u" + i + j]())
 					}
 				} else c.style.display = "none"
