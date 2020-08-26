@@ -240,7 +240,8 @@ function resetTimeDimensions() {
 
 function getOrSubResourceTD(tier, sub) {
 	if (sub == undefined) {
-		if (player.aarexModifications.ngmX > 3) return player.money.min(Number.MAX_VALUE)
+		var maxval = player.achievements.includes("r36") ? new Decimal(1/0) : new Decimal(Number.MAX_VALUE)
+		if (player.aarexModifications.ngmX > 3) return player.money.min(maxval)
 		return player.eternityPoints
 	} else {
 		if (player.aarexModifications.ngmX > 3) player.money = player.money.sub(player.money.min(sub))

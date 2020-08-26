@@ -10,7 +10,7 @@ function tdBoost(bulk) {
 	if (player["timeDimension" + req.tier].bought < req.amount) return
 	if (cantReset()) return
 	player.tdBoosts += bulk
-	softReset(player.achievements.includes("r26") && player.resets >= player.tdBoosts ? 0 : -player.resets)
+	if (!player.achievemenets.includes("r36")) softReset(player.achievements.includes("r26") && player.resets >= player.tdBoosts ? 0 : -player.resets)
 	player.tickBoughtThisInf = updateTBTIonGalaxy()
 }
 

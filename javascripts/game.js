@@ -1599,12 +1599,25 @@ function updateReplicantiTemp() {
 	data.estLog = data.est.times(Math.log10(Math.E))
 }
 
+function updatePostInfiTemp() {
+	var exp11 = player.galacticSacrifice ? 2 : 0.5
+	var exp21 = player.galacticSacrifice ? 2 : 0.5
+	if (player.aarexModifications.ngmX >= 4){
+		exp11 += player.totalmoney.plus(10).div(10).log10() / 1e4
+		exp21 += player.money.plus(10).div(10).log10() / 1e4
+	}
+	tmp.postinfi11 = Math.pow(player.totalmoney.plus(10).log10(), exp11)
+	tmp.postinfi21 = Math.pow(player.money.plus(10).log10(), exp21)
+}
+
 function updateTemp() {
 	if (player) {
 		if (player.money) tmp.ri = player.money.gte(getLimit()) && ((player.currentChallenge != "" && player.money.gte(player.challengeTarget)) || !onPostBreak())
 		else tmp.ri = false
+	} else {
+		tmp.ri = false
+		return
 	}
-	else tmp.ri = false
 	tmp.nrm = 1
 	if (player.timestudy.studies.includes(101)) tmp.nrm = player.replicanti.amount.max(1)
 	tmp.rg4 = false
@@ -1668,7 +1681,7 @@ function updateTemp() {
 	if (player.meta !== undefined) tmp.mdgm = getMetaDimensionGlobalMultiplier() //Update global multiplier of all Meta Dimensions
 	tmp.mptb=getMPTBase()
 	tmp.mpte=getMPTExp()
-	
+	updatePostInfiTemp()
 	updateInfiniteTimeTemp()
 	updateAntiElectronGalaxiesTemp()
 	updateIntergalacticTemp() // starts with if (tmp.ngp3)
@@ -1983,7 +1996,12 @@ function updateWorstChallengeTime() {
 
 function updateWorstChallengeBonus() {
 	updateWorstChallengeTime()
-	worstChallengeBonus = Decimal.max(Math.pow(3000 / Math.max(33e-6, worstChallengeTime * 0.1),player.galacticSacrifice ? 2 : 1), 1)
+	var exp = player.galacticSacrifice ? 2 : 1
+	var timeeff = Math.max(33e-6, worstChallengeTime * 0.1)
+	var base = player.aarexModifications.ngmX >= 4 ? 3e4 : 3e3
+	var eff = Decimal.max(Math.pow(base / timeeff, exp), 1)
+	if (player.aarexModifications.ngmX >= 4) eff = eff.times(Decimal.pow(eff.plus(10).log10(), 5)) 
+	worstChallengeBonus = eff
 }
 
 function sacrificeConf() {
@@ -2543,8 +2561,8 @@ function breakInfinityUpgradeDisplay(){
 	if (player.infinityUpgrades.includes("autoBuyerUpgrade")) document.getElementById("postinfi33").className = "infinistorebtnbought"
 	else if (player.infinityPoints.gte(1e15)) document.getElementById("postinfi33").className = "infinistorebtn1"
 	else document.getElementById("postinfi33").className = "infinistorebtnlocked"
-	document.getElementById("postinfi11").innerHTML = "Power up all dimensions based on total antimatter produced<br>Currently: "+shorten(Math.pow(player.totalmoney.e+1, player.galacticSacrifice?2:0.5))+"x<br>Cost: "+shortenCosts(1e4)+" IP"
-	document.getElementById("postinfi21").innerHTML = "Power up all dimensions based on current antimatter<br>Currently: "+shorten(Math.pow(player.money.e+1, player.galacticSacrifice?2:0.5))+"x<br>Cost: "+shortenCosts(5e4)+" IP"
+	document.getElementById("postinfi11").innerHTML = "Power up all dimensions based on total antimatter produced<br>Currently: " + shorten(tmp.postinfi11) + "x<br>Cost: "+shortenCosts(1e4)+" IP"
+	document.getElementById("postinfi21").innerHTML = "Power up all dimensions based on current antimatter<br>Currently: " + shorten(tmp.postinfi21) + "x<br>Cost: "+shortenCosts(5e4)+" IP"
 	if (player.tickSpeedMultDecrease > 2) document.getElementById("postinfi31").innerHTML = "Tickspeed cost multiplier increase <br>"+player.tickSpeedMultDecrease+"x -> "+(player.tickSpeedMultDecrease-1)+"x<br>Cost: "+shortenDimensions(player.tickSpeedMultDecreaseCost) +" IP"
 	else document.getElementById("postinfi31").innerHTML = "Tickspeed cost multiplier increase<br>"+player.tickSpeedMultDecrease.toFixed(player.tickSpeedMultDecrease<2?2:0)+"x"
 	document.getElementById("postinfi22").innerHTML = "Power up all dimensions based on achievements completed <br>Currently: "+shorten(achievementMult)+"x<br>Cost: "+shortenCosts(1e6)+" IP"
@@ -4355,7 +4373,7 @@ function setAchieveTooltip() {
 	infinity.setAttribute('ach-tooltip', "Big Crunch for the first time. Reward: Start with 100 antimatter"+(player.galacticSacrifice?" and always have at least 10x lower dimension costs.":"."));
 
 	//ACHIEVEMENT ROW 3
-	claustrophobic.setAttribute('ach-tooltip', "Big Crunch with just 1 Antimatter Galaxy. Reward: Reduce the starting tick interval by 2%"+(player.galacticSacrifice&&player.tickspeedBoosts==undefined?" and keep galaxy upgrades on infinity.":"."));
+	claustrophobic.setAttribute('ach-tooltip', "Big Crunch with just 1 Antimatter Galaxy. Reward: Reduce the starting tick interval by 2%" + (player.galacticSacrifice && player.tickspeedBoosts == undefined ? " and keep galaxy upgrades on infinity" : "") + (player.aarexModifications.ngmX >= 4 ? ", time dimension boosts do not reset anything, and you can buy time dimensions past infinite antimatter" : "") + "." );
 	nerf.setAttribute('ach-tooltip',"Get any dimension multiplier over "+shortenCosts(1e31)+". Reward: First Dimensions are 5% stronger.")
 	didnt.setAttribute('ach-tooltip',"Big Crunch without having any 8th Dimensions. Reward: Dimensions 1-7 are 2"+(player.galacticSacrifice?"x":"%")+" stronger.")
 	fast.setAttribute('ach-tooltip', "Big Crunch in under 2 hours. Reward: Start with "+shortenCosts(1e3)+" antimatter"+(player.galacticSacrifice?" and get a multiplier to galaxy points based on fastest infinity (5 hours / x, 10x softcap).":"."));
@@ -9840,11 +9858,25 @@ var unspentBonus = 1
 var mult18 = 1
 var ec10bonus = new Decimal(1)
 var QC4Reward
+
+function getAchievementMult(){
+	var ach = player.achievements.length
+	var minus = player.galacticSacrifice ? 10 : 30
+	var exp = player.galacticSacrifice ? 5 : 3
+	var div = 40
+	if (player.aarexModifications.ngmX >= 4) {
+		minus = 0
+		exp = 10
+		div = 20
+	}
+	return Math.max(Math.pow(ach - minus - getSecretAchAmount(), exp) / div, 1)
+}
+
 function updatePowers() {
-	totalMult = Math.pow(player.totalmoney.e+1, player.galacticSacrifice?2:0.5)
-	currentMult = Math.pow(player.money.e+1, player.galacticSacrifice?2:0.5)
+	totalMult = tmp.postinfi11
+	currentMult = tmp.postinfi21
 	infinitiedMult = getInfinitiedMult()
-	achievementMult = Math.max(Math.pow((player.achievements.length-(player.galacticSacrifice?10:30)-getSecretAchAmount()), player.galacticSacrifice?5:3)/40,1)
+	achievementMult = getAchievementMult()
 	unspentBonus = getUnspentBonus()
 	if (player.boughtDims) mult18 = getDimensionFinalMultiplier(1).max(1).times(getDimensionFinalMultiplier(8).max(1)).pow(0.02)
 	else mult18 = getDimensionFinalMultiplier(1).times(getDimensionFinalMultiplier(8)).pow(0.02)
