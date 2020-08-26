@@ -7819,7 +7819,7 @@ function checkGluonRounding(){
 }
 
 function updateNGM2RewardDisplay(){
-	document.getElementById("postcngmm_1reward") = "Reward: Infinity upgrades based on time " + (player.aarexModifications.ngmX >= 4 ? "" : "or infinities ") + "are applied post-dilation. Also make the GP formula better based on galaxies."
+	document.getElementById("postcngmm_1reward").textContent = "Reward: Infinity upgrades based on time " + (player.aarexModifications.ngmX >= 4 ? "" : "or infinities ") + "are applied post-dilation. Also make the GP formula better based on galaxies."
 }
 
 let autoSaveSeconds=0
