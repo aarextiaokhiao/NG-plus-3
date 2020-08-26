@@ -195,7 +195,7 @@ let galCosts = {
 	35: 2e3,
 	16: 1e16,
 	26: 1e18,
-	36: 1e20
+	36: 1e22
 }
 
 function buyGalaxyUpgrade(i) {
@@ -263,7 +263,7 @@ function galacticUpgradeSpanDisplay () {
 		document.getElementById('galcost35').innerHTML = shortenCosts(2e3)
 		document.getElementById('galcost16').innerHTML = shortenCosts(1e16)
 		document.getElementById('galcost26').innerHTML = shortenCosts(1e18)
-		document.getElementById('galcost36').innerHTML = shortenCosts(1e20)
+		document.getElementById('galcost36').innerHTML = shortenCosts(1e22)
 	}
 	if (player.infinityUpgrades.includes("postinfi63")) {
 		document.getElementById("galcost41").innerHTML = shortenCosts(new Decimal("1e3800"))
@@ -546,7 +546,9 @@ let galMults = {
 	u25: function() {
 		let r = Math.max(player.galacticSacrifice.galaxyPoints.log10() - 2, 1)
 		if (r > 2.5) r = Math.pow(r * 6.25, 1/3)
-		return Math.pow(r, player.galacticSacrifice.upgrades.includes(26) ? 2 : 1)
+		r =  Math.pow(r, player.galacticSacrifice.upgrades.includes(26) ? 2 : 1)
+		if (r > 10) r = 10 * Math.log10(r)
+		return r
 	},
 	u35: function() {
 		let r = new Decimal(1)
