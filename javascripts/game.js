@@ -7210,6 +7210,8 @@ function setAndMaybeShow(elementName, condition, contents) {
 }
 
 function runAutoSave(){
+	if (!player) return
+	if (!player.aarexModifications) return
 	if (player.aarexModifications.autoSave) {
 		autoSaveSeconds++
 		if (autoSaveSeconds >= getAutoSaveInterval()) {
