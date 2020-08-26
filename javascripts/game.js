@@ -1600,7 +1600,10 @@ function updateReplicantiTemp() {
 }
 
 function updateTemp() {
-	if (player.money) tmp.ri = player.money.gte(getLimit()) && ((player.currentChallenge!=""&&player.money.gte(player.challengeTarget))||!onPostBreak())
+	if (player) {
+		if (player.money) tmp.ri = player.money.gte(getLimit()) && ((player.currentChallenge != "" && player.money.gte(player.challengeTarget)) || !onPostBreak())
+		else tmp.ri = false
+	}
 	else tmp.ri = false
 	tmp.nrm = 1
 	if (player.timestudy.studies.includes(101)) tmp.nrm = player.replicanti.amount.max(1)

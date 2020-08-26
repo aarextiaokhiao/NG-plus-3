@@ -29,6 +29,7 @@ function doNGMatLeast4TDChanges(tier, ret){
 	if (player.galacticSacrifice.upgrades.includes(15)) ret = ret.times(galMults.u15())
 	if (player.pSac !== undefined) if (tier == 2) ret = ret.pow(puMults[13](hasPU(13, true, true))) //NG-5, not NG-4.
 	if (player.galacticSacrifice.upgrades.includes(31)) ret = ret.pow(galMults.u31())
+	return ret
 }
 
 function getERTDAchMults(){
