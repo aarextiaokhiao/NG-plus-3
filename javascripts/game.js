@@ -9866,7 +9866,7 @@ var QC4Reward
 
 function getAchievementMult(){
 	var ach = player.achievements.length
-	var gups = player.galacticSacrifice.upgrades.length
+	var gups = player.galacticSacrifice ? player.galacticSacrifice.upgrades.length : 0
 	var minus = player.galacticSacrifice ? 10 : 30
 	var exp = player.galacticSacrifice ? 5 : 3
 	var div = 40
