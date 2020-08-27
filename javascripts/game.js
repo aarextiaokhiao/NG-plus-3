@@ -2901,6 +2901,10 @@ function getGoal(chall) {
 		var retNGM3 = goals[chall+"_ngm3"]
 		if (retNGM3) ret = retNGM3
 	}
+	if (player.aarexModifications.ngmX >= 4){
+		var retNGM4 = goals[chall+"_ngm4"]
+		if (retNGM4) ret = retNGM4
+	}
 	return ret
 }
 
@@ -8694,7 +8698,7 @@ function passiveGPGen(diff){
 	let passiveGPGen = false
 	if (player.tickspeedBoosts !== undefined) passiveGPGen = player.achievements.includes("r56")
 	else if (player.galacticSacrifice !== undefined) passiveGPGen = !tmp.ngp3l && player.timestudy.studies.includes(181)
-	if (passiveGPGen) player.galacticSacrifice.galaxyPoints = player.galacticSacrifice.galaxyPoints.add(getGSAmount().times(diff / 1e3))
+	if (passiveGPGen) player.galacticSacrifice.galaxyPoints = player.galacticSacrifice.galaxyPoints.add(getGSAmount().times(diff / 100))
 }
 
 function paradoxSacDisplay(){

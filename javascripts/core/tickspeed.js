@@ -208,7 +208,11 @@ function getTickSpeedCostMultiplierIncrease() {
 	let ret = player.tickSpeedMultDecrease;
 	let exp = .9 - .02 * ECTimesCompleted("eterc11")
 	if (player.currentChallenge === 'postcngmm_2') ret = Math.pow(ret, .5)
-	else if (player.challenges.includes('postcngmm_2')) ret = Math.pow(ret, exp / (1 + Math.pow(player.galaxies, 0.7) / 10))
+	else if (player.challenges.includes('postcngmm_2')) {
+		var galeff = (1 + Math.pow(player.galaxies, 0.7) / 10)
+		if (player.aarexModifications.ngmX >= 4) galeff = Math.pow(galeff, .2)
+		ret = Math.pow(ret, exp / galeff)
+	}
 	return ret
 }
 

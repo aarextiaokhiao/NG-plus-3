@@ -19,6 +19,7 @@ function getGSAmount(offset=0) {
 	if (player.galacticSacrifice.upgrades.includes(16) && player.tdBoosts) ret = ret.times(Math.max(player.tdBoosts, 1))
 	if (player.galacticSacrifice.upgrades.includes(41) && player.aarexModifications.ngmX >= 4) ret = ret.times(Math.max(player.tickspeedBoosts, 1))
 	if (player.galacticSacrifice.upgrades.includes(43) && player.aarexModifications.ngmX >= 4) ret = ret.times(Math.max(player.resets, 1))
+	if (player.galacticSacrifice.upgrades.includes(45) && player.aarexModifications.ngmX >= 4) ret = ret.times(player.eightAmount.max(1))
 
 	var rgs = player.replicanti.galaxies
 	if (player.achievements.includes("r98")) rgs *= 2
@@ -201,7 +202,10 @@ let galCosts = {
 	36: 1e22,
 	"41ngm4": 1e23,
 	"42ngm4": 1e25,
-	"43ngm4": 1e28 //may be changed
+	"43ngm4": 1e28,
+	"44ngm4": 1e31,
+	"45ngm4": 1e34,
+	"46nmg4": 1e69 //nice, will change
 }
 
 function getGalaxyUpgradeCost(i){
@@ -267,29 +271,32 @@ function reduceDimCosts(upg) {
 
 function galacticUpgradeSpanDisplay () {
 	document.getElementById("galaxyPoints").innerHTML = "You have <span class='GPAmount'>"+shortenDimensions(player.galacticSacrifice.galaxyPoints)+"</span> Galaxy point"+(player.galacticSacrifice.galaxyPoints.eq(1)?".":"s.")
-	document.getElementById('galcost33').innerHTML = shortenCosts(galCosts[33])
+	document.getElementById('galcost33').innerHTML = shortenCosts(getGalaxyUpgradeCost(33))
 	if (player.tickspeedBoosts != undefined) {
-		document.getElementById('galcost24').innerHTML = shortenCosts(1e3)
-		document.getElementById('galcost34').innerHTML = shortenCosts(1e17)
+		document.getElementById('galcost24').textContent = shortenCosts(1e3)
+		document.getElementById('galcost34').textContent = shortenCosts(1e17)
 	}
 	if (player.aarexModifications.ngmX >= 4) {
-		document.getElementById('galcost25').innerHTML = shortenCosts(1e3)
-		document.getElementById('galcost35').innerHTML = shortenCosts(2e3)
-		document.getElementById('galcost16').innerHTML = shortenCosts(1e16)
-		document.getElementById('galcost26').innerHTML = shortenCosts(1e18)
-		document.getElementById('galcost36').innerHTML = shortenCosts(1e22)
-		document.getElementById('galcost41').innerHTML = shortenCosts(1e23)
-		document.getElementById('galcost42').innerHTML = shortenCosts(1e25)
-		document.getElementById('galcost43').innerHTML = shortenCosts(1e28)
+		document.getElementById('galcost25').textContent = shortenCosts(1e3)
+		document.getElementById('galcost35').textContent = shortenCosts(2e3)
+		document.getElementById('galcost16').textContent = shortenCosts(1e16)
+		document.getElementById('galcost26').textContent = shortenCosts(1e18)
+		document.getElementById('galcost36').textContent = shortenCosts(1e22)
+		document.getElementById('galcost41').textContent = shortenCosts(1e23)
+		document.getElementById('galcost42').textContent = shortenCosts(1e25)
+		document.getElementById('galcost43').textContent = shortenCosts(1e28)
+		document.getElementById('galcost44').textContent = shortenCosts(1e31)
+		document.getElementById('galcost45').textContent = shortenCosts(1e34)
+		document.getElementById('galcost46').textContent = shortenCosts(1e69) //may change
 	} else if (player.infinityUpgrades.includes("postinfi63")) {
-		document.getElementById("galcost41").innerHTML = shortenCosts(new Decimal("1e3800"))
-		document.getElementById("galcost42").innerHTML = shortenCosts(new Decimal("1e4000"))
-		document.getElementById("galcost43").innerHTML = shortenCosts(new Decimal("1e4200"))
+		document.getElementById("galcost41").textContent = shortenCosts(new Decimal("1e3800"))
+		document.getElementById("galcost42").textContent = shortenCosts(new Decimal("1e4000"))
+		document.getElementById("galcost43").textContent = shortenCosts(new Decimal("1e4200"))
 	}
 	if (player.infinityUpgrades.includes("postinfi63")) {
-		document.getElementById("galcost51").innerHTML = shortenCosts(new Decimal("1e5500"))
-		document.getElementById("galcost52").innerHTML = shortenCosts(new Decimal("1e8000"))
-		document.getElementById("galcost53").innerHTML = shortenCosts(new Decimal("1e25000"))
+		document.getElementById("galcost51").textContent = shortenCosts(new Decimal("1e5500"))
+		document.getElementById("galcost52").textContent = shortenCosts(new Decimal("1e8000"))
+		document.getElementById("galcost53").textContent = shortenCosts(new Decimal("1e25000"))
 	}
 }
 
@@ -316,7 +323,7 @@ function galacticUpgradeButtonTypeDisplay () {
 						if (i * 10 + j == 11 || i * 10 + j == 15) {
 							if (player.infinitied > 0 || player.eternities !== 0 || quantumed) document.getElementById('galspan' + i + j).textContent = shortenDimensions(galMults["u" + i + j]())
 						} else if (i * 10 + j == 31 || i * 10 + j == 25) document.getElementById("galspan" + i + j).textContent = galMults["u" + i + j]().toFixed(2)
-						else if (i * 10 + j == 43) a = 0
+						else if (i * 10 + j == 43 && player.aarexModifications.ngmX >= 4) a = 0
 						else document.getElementById("galspan" + i + j).textContent = shorten(galMults["u" + i + j]())
 					}
 				} else c.style.display = "none"
@@ -341,7 +348,7 @@ function productAllTotalBought() {
 }
 
 function productAllTotalBought1() {
-	return Math.pow( Decimal.max(productAllTotalBought(), 10).log10() ,2);
+	return Math.pow(Decimal.max(productAllTotalBought(), 10).log10() ,2);
 }
 
 function productAllDims1(){

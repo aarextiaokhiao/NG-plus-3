@@ -81,6 +81,7 @@ function getAfterDefaultDilationLayerAchBonus(tier){
 		if (player.currentChallenge == "postc6" || inQC(6)) mult = mult.dividedBy(player.matter.max(1))
 		if (player.currentChallenge == "postc8" || inQC(6)) mult = mult.times(player.postC8Mult)
 		if (player.galacticSacrifice.upgrades.includes(12) && player.galacticSacrifice.upgrades.includes(42) && player.aarexModifications.ngmX >= 4) mult = mult.times(galMults.u12())
+		if (player.galacticSacrifice.upgrades.includes(45) && player.aarexModifications.ngmX >= 4) mult = mult.times(player["timeDimension"+tier].amount.plus(10).log10())
 	}
 	return mult
 }
@@ -330,8 +331,13 @@ function getDimensionCostMultiplierIncrease() {
 	if (inQC(7)) return Number.MAX_VALUE
 	let ret = player.dimensionMultDecrease;
 	if (player.aarexModifications.ngmX > 3) ret = Math.pow(ret, 1.25)
-	if (player.currentChallenge === 'postcngmm_2') ret = Math.pow(ret, .5)
-	else if (player.challenges.includes('postcngmm_2')) ret = Math.pow(ret, .9)
+	if (player.currentChallenge === 'postcngmm_2') {
+		exp = player.aarexModifications.ngmX >= 4 ? .9 : .5
+		ret = Math.pow(ret, exp)
+	} else if (player.challenges.includes('postcngmm_2')) {
+		expcomp = player.aarexModifications.ngmX >= 4 ? .95 : .9
+		ret = Math.pow(ret, expcomp)
+	}
 	return ret;
 }
 

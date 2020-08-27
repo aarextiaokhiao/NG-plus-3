@@ -2184,7 +2184,7 @@ function load_game(noOffline, init) {
                     postc7:new Decimal("1e10000"), postc7_ngmm:new Decimal("1e15000"), postc7_ngm3:new Decimal("1e5100"),
                     postc8:new Decimal("1e27000"), postc8_ngm3:new Decimal("1e35000"), 
                     postcngmm_1:new Decimal("1e550"), postcngmm_1_ngm3:new Decimal("1e650"), postcngmm_1_ngm4:new Decimal("1e950"),
-                    postcngmm_2:new Decimal("1e950"), postcngmm_2_ngm3:new Decimal("1e1090"),
+                    postcngmm_2:new Decimal("1e950"), postcngmm_2_ngm3:new Decimal("1e1090"), postcngmm_2_ngm4:new Decimal("1e1200"),
                     postcngmm_3:new Decimal("1e1200"), postcngmm_3_ngm3:new Decimal("1e1230"),
                     postcngm3_1:new Decimal("1e550"),
                     postcngm3_2:new Decimal("1e610"),
