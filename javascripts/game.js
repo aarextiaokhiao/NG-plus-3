@@ -1975,7 +1975,10 @@ function getDistantAdd(x) {
 
 function getRemoteScalingStart(galaxies) {
 	var n = 800
-	if (player.aarexModifications.ngmX > 3) n = 6
+	if (player.aarexModifications.ngmX > 3) {
+		n = 6
+		if (player.challenges.includes("postcngm3_1")) n += tmp.cp / 2
+	}
 	else if (player.galacticSacrifice != undefined) n += 1e7
 	if (tmp.ngp3) {
 		for (var t = 251; t < 254; t++) if (player.masterystudies.includes("t" + t)) n += getMTSMult(t)
@@ -4356,6 +4359,7 @@ function setAchieveTooltip() {
 	let nobodygottime = document.getElementById("8 nobody got time for that")
 	let hevipelledidnothing = document.getElementById("Hevipelle did nothing wrong")
 	let isthissafe = document.getElementById("Is this safe?")
+	let begin = document.getElementById("A new beginning.")
     
 	let thisisReward = [] // for the achievement "This is what I have to do to get rid of you."
 	if (!tmp.ngp3l) {
@@ -4404,9 +4408,10 @@ function setAchieveTooltip() {
     //ACHIEVEMENT ROW 6
 	potato2.setAttribute('ach-tooltip', "Get more than " + formatValue(player.options.notation, 1e58, 0, 0) + " ticks per second. Reward: Reduces starting tick interval by 2%.");
 	oh.setAttribute('ach-tooltip', "Reach "+shortenCosts(1e8)+" IP per minute."+(player.galacticSacrifice&&player.tickspeedBoosts==undefined?" Reward: Gain a multiplier to GP based on the logarithm of your IP.":""))
-	mil.setAttribute('ach-tooltip',"Reach "+shortenCosts(1e6)+" infinity power."+(player.galacticSacrifice?" Reward: First Dimensions are "+shortenCosts(1e6)+" times stronger.":""))
+	mil.setAttribute('ach-tooltip',"Reach "+shortenCosts(1e6)+" infinity power." + (player.galacticSacrifice ? " Reward: First Dimensions are " + shortenCosts(1e6) + " times stronger":"") + (player.aarexModifications.ngmX >= 4 ? " and each IC boosts g32 by 2%." : "."))
 	right.setAttribute('ach-tooltip',"Complete the Third Dimension Autobuyer challenge in 10 seconds or less. Reward: First Dimensions are 5"+(player.galacticSacrifice?"x":"0%")+" stronger.")
 	infchall.setAttribute('ach-tooltip', "Complete an Infinity Challenge."+(player.galacticSacrifice?" Reward: Galaxies and "+(player.tickspeedBoosts===undefined?"g11":"Tickspeed Boosts")+" are more effective based on IC's completed.":""))
+	begin.setAttribute('ach-tooltip', "Begin generation of infinity power." + (player.aarexModifications.ngmX >= 4 ? " Reward: Each galaxy upgrade boosts g32 by 1%." : ""))
 
 	//ACHIEVEMENT ROW 7
 	not.setAttribute('ach-tooltip',"Big Crunch with only a single first Dimension without Dimension Boosts, Shifts or Galaxies while in Automatic Galaxies Challenge. Reward: First Dimensions are "+(player.galacticSacrifice?909:3)+" times stronger" + (player.aarexModifications.ngmX >= 4 ? " and buff the more expensive break infinity upgrade based on infinites based on infinites" : "") + ".")
@@ -7187,6 +7192,9 @@ function getNewInfReq() {
 			reqs[1] = new Decimal("1e2400")
 			reqs[2] = new Decimal("1e4000")
 		}
+		if (player.aarexModifications.ngmX >= 4){
+			reqs[0] = new Decimal("1e1777")
+		}
 	}
 	for (var tier = 0; tier < 7; tier++) if (!player.infDimensionsUnlocked[tier]) return {money: reqs[tier], tier: tier+1}
 	return {money: new Decimal("1e60000"), tier: 8}
@@ -7824,6 +7832,8 @@ function checkGluonRounding(){
 
 function updateNGM2RewardDisplay(){
 	document.getElementById("postcngmm_1reward").innerHTML = "Reward: Infinity upgrades based on time " + (player.aarexModifications.ngmX >= 4 ? "" : "or infinities ") + "are applied post-dilation. Also make the GP formula better based on galaxies."
+	document.getElementById("postcngm3_1description").innerHTML = "Multiplier per ten Dimensions is 1x, Dimension Boosts do nothing," + (player.aarexModifications.ngmX >= 4 ? " have a much lower time dimension cost limit," : "") + " and Tickspeed Boost effect softcap starts immediately."
+	document.getElementById("postcngm3_1reward").innerHTML = "Reward: Tickspeed boost effect softcap is softer" + (player.aarexModifications.ngmX >= 4 ? ", remote galaxy scaling starts .5 later and triple GP per IC completion" : "") + "."
 }
 
 function updateGalaxyUpgradesDisplay(){
@@ -7840,6 +7850,7 @@ let autoSaveSeconds=0
 setInterval(function() {
 	updateTemp()
 	runAutoSave()
+	if (!player) return
 
 	//Achieve:
 	cantHoldInfinitiesCheck()

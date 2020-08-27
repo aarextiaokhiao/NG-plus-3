@@ -20,6 +20,7 @@ function getGSAmount(offset=0) {
 	if (player.galacticSacrifice.upgrades.includes(41) && player.aarexModifications.ngmX >= 4) ret = ret.times(Math.max(player.tickspeedBoosts, 1))
 	if (player.galacticSacrifice.upgrades.includes(43) && player.aarexModifications.ngmX >= 4) ret = ret.times(Math.max(player.resets, 1))
 	if (player.galacticSacrifice.upgrades.includes(45) && player.aarexModifications.ngmX >= 4) ret = ret.times(player.eightAmount.max(1))
+	if (player.challenges.includes("postcngm3_1") && player.aarexModifications.ngmX >= 4) ret = ret.times(Decimal.pow(3, tmp.cp))
 
 	var rgs = player.replicanti.galaxies
 	if (player.achievements.includes("r98")) rgs *= 2
@@ -205,7 +206,7 @@ let galCosts = {
 	"43ngm4": 1e28,
 	"44ngm4": 1e31,
 	"45ngm4": 1e34,
-	"46nmg4": 1e69 //nice, will change
+	"46ngm4": 1e40 
 }
 
 function getGalaxyUpgradeCost(i){
@@ -287,7 +288,7 @@ function galacticUpgradeSpanDisplay () {
 		document.getElementById('galcost43').textContent = shortenCosts(1e28)
 		document.getElementById('galcost44').textContent = shortenCosts(1e31)
 		document.getElementById('galcost45').textContent = shortenCosts(1e34)
-		document.getElementById('galcost46').textContent = shortenCosts(1e69) //may change
+		document.getElementById('galcost46').textContent = shortenCosts(1e40) 
 	} else if (player.infinityUpgrades.includes("postinfi63")) {
 		document.getElementById("galcost41").textContent = shortenCosts(new Decimal("1e3800"))
 		document.getElementById("galcost42").textContent = shortenCosts(new Decimal("1e4000"))
@@ -545,6 +546,12 @@ let galMults = {
 		let x = player.totalmoney
 		let exp = .003
 		if (player.achievements.includes("r123")) exp = .005
+		if (player.aarexModifications.ngmX >= 4){
+			m = 1
+			if (player.achievements.includes("r63")) m += .01 * player.galacticSacrifice.upgrades.length
+			if (player.achievements.includes("r64")) m += .02 * tmp.cp
+			exp *= m
+		}
 		let l = Math.max(player.galacticSacrifice.galaxyPoints.log10() - 5e4, 0)
 		if (player.achievements.includes("r123")) exp += Math.min(.005, l / 2e8)
 		if (!player.break) x = x.min(Number.MAX_VALUE)

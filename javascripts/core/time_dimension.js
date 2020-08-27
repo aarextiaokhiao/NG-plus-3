@@ -28,7 +28,7 @@ function doNGMatLeast4TDChanges(tier, ret){
 	if (player.galacticSacrifice.upgrades.includes(13) && player.currentChallenge!="postngm3_4") ret = ret.times(galMults.u13())
 	if (player.galacticSacrifice.upgrades.includes(15)) ret = ret.times(galMults.u15())
 	if (player.pSac !== undefined) if (tier == 2) ret = ret.pow(puMults[13](hasPU(13, true, true))) //NG-5, not NG-4.
-	if (player.galacticSacrifice.upgrades.includes(44)) ret = ret.times(Decimal.pow(player[TIER_NAMES[3]+"Amount"].plus(10).log10(), 10))
+	if (player.galacticSacrifice.upgrades.includes(44)) ret = ret.times(Decimal.pow(player[TIER_NAMES[tier]+"Amount"].plus(10).log10(), Math.pow(11 - tier, 2)))
 	if (player.galacticSacrifice.upgrades.includes(31)) ret = ret.pow(galMults.u31())
 	return ret
 }
@@ -242,6 +242,7 @@ function resetTimeDimensions() {
 function getOrSubResourceTD(tier, sub) {
 	if (sub == undefined) {
 		var currmax = player.currentChallenge == "" ? new Decimal(1/0) : Decimal.pow(10, 1000)
+		if (player.currentChallenge == "postcngm3_1") currmax = new Decimal(1e60)
 		var maxval = player.achievements.includes("r36") ? currmax : new Decimal(Number.MAX_VALUE)
 		if (player.aarexModifications.ngmX > 3) return player.money.min(maxval)
 		return player.eternityPoints
