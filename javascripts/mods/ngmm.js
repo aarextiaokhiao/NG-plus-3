@@ -604,7 +604,7 @@ let galMults = {
 		r = r.pow(player.galacticSacrifice.upgrades.includes(36) ? 2 : 1)
 		if (r.gt(1e100)) r = Decimal.pow(r.log10(), 50)
 		return r
-	}
+	},
 	u46: function() {
 		var r = Math.pow(player.galacticSacrifice.galaxyPoints.plus(10).log10(), .2) - 1
 		if (r < 1) return 1
