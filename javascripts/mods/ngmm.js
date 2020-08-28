@@ -17,11 +17,13 @@ function getGSAmount(offset=0) {
 	
 	if (!player.galacticSacrifice.chall) ret = ret.times(getGPMultipliers())
 	if (player.galacticSacrifice.upgrades.includes(16) && player.tdBoosts) ret = ret.times(Math.max(player.tdBoosts, 1))
-	if (player.galacticSacrifice.upgrades.includes(41) && player.aarexModifications.ngmX >= 4) ret = ret.times(Math.max(player.tickspeedBoosts, 1))
-	if (player.galacticSacrifice.upgrades.includes(43) && player.aarexModifications.ngmX >= 4) ret = ret.times(Math.max(player.resets, 1))
-	if (player.galacticSacrifice.upgrades.includes(45) && player.aarexModifications.ngmX >= 4) ret = ret.times(player.eightAmount.max(1))
-	if (player.challenges.includes("postcngm3_1") && player.aarexModifications.ngmX >= 4) ret = ret.times(Decimal.pow(3, tmp.cp))
-
+	if (player.aarexModifications.ngmX >= 4) {
+		var e = player.galacticSacrifice.upgrades.includes(46) ? galMults["r46"]() : 1
+		if (player.galacticSacrifice.upgrades.includes(41) && player.aarexModifications.ngmX >= 4) ret = ret.times(Decimal.max(player.tickspeedBoosts, 1).pow(e))
+		if (player.galacticSacrifice.upgrades.includes(43) && player.aarexModifications.ngmX >= 4) ret = ret.times(Decimal.max(player.resets, 1).pow(e))
+		if (player.galacticSacrifice.upgrades.includes(45) && player.aarexModifications.ngmX >= 4) ret = ret.times(player.eightAmount.max(1).pow(e))
+		if (player.challenges.includes("postcngm3_1") && player.aarexModifications.ngmX >= 4) ret = ret.times(Decimal.pow(3, tmp.cp))
+	}
 	var rgs = player.replicanti.galaxies
 	if (player.achievements.includes("r98")) rgs *= 2
 	if (player.tickspeedBoosts != undefined && player.achievements.includes("r95")) ret = ret.times(Decimal.pow(Math.max(1, player.eightAmount), rgs))
@@ -325,6 +327,7 @@ function galacticUpgradeButtonTypeDisplay () {
 							if (player.infinitied > 0 || player.eternities !== 0 || quantumed) document.getElementById('galspan' + i + j).textContent = shortenDimensions(galMults["u" + i + j]())
 						} else if (i * 10 + j == 31 || i * 10 + j == 25) document.getElementById("galspan" + i + j).textContent = galMults["u" + i + j]().toFixed(2)
 						else if (i * 10 + j == 43 && player.aarexModifications.ngmX >= 4) a = 0
+						else if (i * 10 + j == 46 && player.aarexModifications.ngmX >= 4) document.getElementById("galspan46").textContent = shorten(galMults["u46"]() * 100 - 100)
 						else document.getElementById("galspan" + i + j).textContent = shorten(galMults["u" + i + j]())
 					}
 				} else c.style.display = "none"
@@ -505,7 +508,8 @@ let R135 = Math.pow(Math.E + Math.PI + 0.56714 + 4.81047 + 0.78343 + 1.75793 + 2
 let galMults = {
 	u11: function() {
 		if (player.tickspeedBoosts != undefined) {
-			var exp = (player.aarexModifications.ngmX >= 4 && player.galacticSacrifice.upgrades.includes(41)) ? 2 : 1
+			var e = player.galacticSacrifice.upgrades.includes(46) ? galMults["r46"]() : 1
+			var exp = (player.aarexModifications.ngmX >= 4 && player.galacticSacrifice.upgrades.includes(41)) ? 2 * e : 1
 			var l = 0
 			if (player.infinityUpgrades.includes("postinfi61")) l = Math.log10(getInfinitied() + 1)
 			if (l > 2) return Decimal.pow(10, l * Math.min(l, 6) * Math.min(l, 4))
@@ -539,7 +543,11 @@ let galMults = {
 	},
 	u12: function() {
 		var r = 2 * Math.pow(1 + player.galacticSacrifice.time / 600, 0.5)
-		if (player.aarexModifications.ngmX >= 4 && player.galacticSacrifice.upgrades.includes(42)) r = Math.pow(r, Math.min(4, Math.pow(r, 1/3)))
+		if (player.aarexModifications.ngmX >= 4 && player.galacticSacrifice.upgrades.includes(42)) {
+			m = player.galacticSacrifice.upgrades.includes(46) ? 10 : 4
+			r = Decimal.pow(r, Math.min(m, Math.pow(r, 1/3)))
+			if (player.galacticSacrifice.upgrades.includes(46)) r = Decimal.pow(r, Math.log10(10 + r)).plus(1e20)
+		}
 		return r
 	},
 	u32: function() {
@@ -595,6 +603,12 @@ let galMults = {
 		}
 		r = r.pow(player.galacticSacrifice.upgrades.includes(36) ? 2 : 1)
 		if (r.gt(1e100)) r = Decimal.pow(r.log10(), 50)
+		return r
+	}
+	u46: function() {
+		var r = Math.pow(player.galacticSacrifice.galaxyPoints.plus(10).log10(), .2) - 1
+		if (r < 1) return 1
+		if (r > 2) return 2
 		return r
 	}
 }

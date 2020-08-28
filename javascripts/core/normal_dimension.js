@@ -81,7 +81,10 @@ function getAfterDefaultDilationLayerAchBonus(tier){
 		if (player.currentChallenge == "postc6" || inQC(6)) mult = mult.dividedBy(player.matter.max(1))
 		if (player.currentChallenge == "postc8" || inQC(6)) mult = mult.times(player.postC8Mult)
 		if (player.galacticSacrifice.upgrades.includes(12) && player.galacticSacrifice.upgrades.includes(42) && player.aarexModifications.ngmX >= 4) mult = mult.times(galMults.u12())
-		if (player.galacticSacrifice.upgrades.includes(45) && player.aarexModifications.ngmX >= 4) mult = mult.times(player["timeDimension"+tier].amount.plus(10).log10())
+		if (player.galacticSacrifice.upgrades.includes(45) && player.aarexModifications.ngmX >= 4) {
+			var e = player.galacticSacrifice.upgrades.includes(46) ? galMults["r46"]() : 1
+			mult = mult.times(Math.pow(player["timeDimension" + tier].amount.plus(10).log10(), e))
+		}
 	}
 	return mult
 }
