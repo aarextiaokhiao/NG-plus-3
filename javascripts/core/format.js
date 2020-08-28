@@ -302,7 +302,7 @@ function formatValue(notation, value, places, placesUnder1000, noInf) {
         }
 
         if (notation === "Logarithm" || notation === 'Iroha' || (notation === "Mixed logarithm" && power > 32)) {
-            var base=player.options.logarithm.base
+            var base = Math.max(player.options.logarithm.base, 1.01)
             var prefix
             if (base==10) {
                 power=Decimal.log10(value)
