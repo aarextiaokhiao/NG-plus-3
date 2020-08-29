@@ -29,7 +29,7 @@ function doNGMatLeast4TDChanges(tier, ret){
 	if (player.galacticSacrifice.upgrades.includes(15)) ret = ret.times(galMults.u15())
 	if (player.pSac !== undefined) if (tier == 2) ret = ret.pow(puMults[13](hasPU(13, true, true))) //NG-5, not NG-4.
 	if (player.galacticSacrifice.upgrades.includes(44) && player.aarexModifications.ngmX >= 4) {
-		var e = player.galacticSacrifice.upgrades.includes(46) ? galMults["r46"]() : 1
+		var e = player.galacticSacrifice.upgrades.includes(46) ? galMults["u46"]() : 1
 		ret = ret.times(Decimal.pow(player[TIER_NAMES[tier]+"Amount"].plus(10).log10(), e * Math.pow(11 - tier, 2)))
 	}
 	if (player.galacticSacrifice.upgrades.includes(31)) ret = ret.pow(galMults.u31())

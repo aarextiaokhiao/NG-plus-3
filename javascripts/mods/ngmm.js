@@ -18,7 +18,7 @@ function getGSAmount(offset=0) {
 	if (!player.galacticSacrifice.chall) ret = ret.times(getGPMultipliers())
 	if (player.galacticSacrifice.upgrades.includes(16) && player.tdBoosts) ret = ret.times(Math.max(player.tdBoosts, 1))
 	if (player.aarexModifications.ngmX >= 4) {
-		var e = player.galacticSacrifice.upgrades.includes(46) ? galMults["r46"]() : 1
+		var e = player.galacticSacrifice.upgrades.includes(46) ? galMults["u46"]() : 1
 		if (player.galacticSacrifice.upgrades.includes(41) && player.aarexModifications.ngmX >= 4) ret = ret.times(Decimal.max(player.tickspeedBoosts, 1).pow(e))
 		if (player.galacticSacrifice.upgrades.includes(43) && player.aarexModifications.ngmX >= 4) ret = ret.times(Decimal.max(player.resets, 1).pow(e))
 		if (player.galacticSacrifice.upgrades.includes(45) && player.aarexModifications.ngmX >= 4) ret = ret.times(player.eightAmount.max(1).pow(e))
@@ -508,7 +508,7 @@ let R135 = Math.pow(Math.E + Math.PI + 0.56714 + 4.81047 + 0.78343 + 1.75793 + 2
 let galMults = {
 	u11: function() {
 		if (player.tickspeedBoosts != undefined) {
-			var e = player.galacticSacrifice.upgrades.includes(46) ? galMults["r46"]() : 1
+			var e = player.galacticSacrifice.upgrades.includes(46) ? galMults["u46"]() : 1
 			var exp = (player.aarexModifications.ngmX >= 4 && player.galacticSacrifice.upgrades.includes(41)) ? 2 * e : 1
 			var l = 0
 			if (player.infinityUpgrades.includes("postinfi61")) l = Math.log10(getInfinitied() + 1)

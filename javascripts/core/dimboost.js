@@ -208,7 +208,7 @@ function getDimboostCostIncrease () {
 	if (player.galacticSacrifice) {
 		if (player.galacticSacrifice.upgrades.includes(21)) ret -= 10
 		if (player.galacticSacrifice.upgrades.includes(43) && player.aarexModifications.ngmX >= 4) {
-			e = player.galacticSacrifice.upgrades.includes(46) ? galMults["r46"]() : 1
+			e = player.galacticSacrifice.upgrades.includes(46) ? galMults["u46"]() : 1
 			ret -= e
 		}
 		if (player.infinityUpgrades.includes('dimboostCost')) ret -= 1
