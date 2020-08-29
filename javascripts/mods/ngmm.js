@@ -548,6 +548,10 @@ let galMults = {
 			r = Decimal.pow(r, Math.min(m, Math.pow(r, 1/3)))
 			if (player.galacticSacrifice.upgrades.includes(46)) r = Decimal.pow(r, Math.log10(10 + r)).plus(1e20)
 		}
+		r = Decimal.add(r, 0)
+		if (r.gt(1e25)) r = r.div(1e25).pow(.5).times(1e25)
+		if (r.gt(1e30)) r = r.div(1e30).pow(.4).times(1e30)
+		if (r.gt(1e35)) r = r.div(1e35).pow(.3).times(1e35)
 		return r
 	},
 	u32: function() {
