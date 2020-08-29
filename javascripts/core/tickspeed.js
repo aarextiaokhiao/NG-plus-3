@@ -88,7 +88,11 @@ function getPostGalaxyEff() {
 function getGalaxyTickSpeedMultiplier() {
 	let g = initialGalaxies()
 	if ((player.currentChallenge == "postc3" || isIC3Trapped()) && !tmp.be) {
-		if (player.currentChallenge=="postcngmm_3" || player.challenges.includes("postcngmm_3")) return Decimal.pow(player.tickspeedBoosts != undefined ? 0.9995 : 0.998, getGalaxyPower(g) * getGalaxyEff(true))
+		if (player.currentChallenge == "postcngmm_3" || player.challenges.includes("postcngmm_3")) {
+			var base = player.tickspeedBoosts != undefined ? 0.9995 : 0.998
+			if (player.aarexModifications.ngmX >= 4 && player.challenges.includes("postcngmm_3")) base = .9998
+			return Decimal.pow(base, getGalaxyPower(g) * getGalaxyEff(true))
+		}
 		return 1
 	}
 	if (inQC(2)) return 0.89
