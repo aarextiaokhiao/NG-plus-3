@@ -2187,7 +2187,7 @@ function load_game(noOffline, init) {
                     postcngmm_2:new Decimal("1e950"), postcngmm_2_ngm3:new Decimal("1e1090"), postcngmm_2_ngm4:new Decimal("1e1200"),
                     postcngmm_3:new Decimal("1e1200"), postcngmm_3_ngm3:new Decimal("1e1230"), postcngmm_3_ngm4:new Decimal("1e1530"),
                     postcngm3_1:new Decimal("1e550"), postcngm3_1_ngm4:new Decimal("1e1210"),
-                    postcngm3_2:new Decimal("1e610"),
+                    postcngm3_2:new Decimal("1e610"), postcngm3_2_ngm4:new Decimal("1e750"),
                     postcngm3_3:new Decimal("8.8888e888"),
                     postcngm3_4:new Decimal("1e12345")}
 		setUnlocks = [Decimal.pow(Number.MAX_VALUE, 2.9)]
