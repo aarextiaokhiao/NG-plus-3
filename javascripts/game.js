@@ -2204,6 +2204,7 @@ function tickspeedDisplay(){
 		var e = Math.floor(Math.log10(Math.round(1/tickmultNum)))
 		if (isNaN(tickmultNum)) ticklabel = 'Break the tick interval by Infinite';
 		else if (e >= 9) ticklabel = "Divide the tick interval by " + shortenDimensions(Decimal.recip(tickmult))
+		else if (tickmultNum > .9) ticklabel = 'Reduce the tick interval by ' + shorten((1-tickmultNum)*100) + '%'
 		else ticklabel = 'Reduce the tick interval by ' + ((1 - tickmultNum) * 100).toFixed(e) + '%'
 		let ic3mult=getPostC3Mult()
 		if (player.galacticSacrifice || player.currentChallenge == "postc3" || isIC3Trapped()) document.getElementById("tickLabel").innerHTML = ((isIC3Trapped() || player.currentChallenge == "postc3") && player.currentChallenge != "postcngmm_3" && !player.challenges.includes("postcngmm_3") && !tmp.be ? "M" : ticklabel + '<br>and m') + 'ultiply all dimensions by ' + (ic3mult>999.95?shorten(ic3mult):new Decimal(ic3mult).toNumber().toPrecision(4)) + '.'
