@@ -843,7 +843,7 @@ var bu = {
 			return (x * 100 - 100).toFixed(2) + "% stronger"
 		},
 		35: function(x) {
-			return "+" + shorten(x.rep) + " OoMs to replicate interval increase, " + shorten(x.eds) + "x to all Emperor Dimensions"
+			return "+" + shorten(x.rep) + " OoMs to replicate interval increase, " + shorten(x.eds) + "x to all EDs"
 		},
 		41: function(x) {
 			return shorten(x.ig) + "x to Intergalactic, " + shorten(x.it) + "x to Infinite Time"
