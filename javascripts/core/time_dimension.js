@@ -244,7 +244,7 @@ function resetTimeDimensions() {
 
 function getOrSubResourceTD(tier, sub) {
 	if (sub == undefined) {
-		var currmax = player.currentChallenge == "" ? Decimal.pow(10, 3000) : Decimal.pow(10, 1000)
+		var currmax = player.currentChallenge == "" ? new Decimal(Number.MAX_VALUE).pow(10) : Decimal.pow(10, 1000)
 		if (player.currentChallenge == "postcngm3_1") currmax = new Decimal(1e60)
 		var maxval = player.achievements.includes("r36") ? currmax : new Decimal(Number.MAX_VALUE)
 		if (player.aarexModifications.ngmX > 3) return player.money.min(maxval)
