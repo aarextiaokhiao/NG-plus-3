@@ -245,14 +245,15 @@ function getBranchUpgCost(branch, upg) {
 	return Decimal.pow(2, lvl * upg + Math.max(lvl - scale[1], 0) * Math.max(3 - upg, 1)).times(scale[0])
 }
 
-function buyBranchUpg(branch,upg) {
+function buyBranchUpg(branch, upg) {
 	var colors = {r: "red", g: "green", b: "blue"}
 	var bData = tmp.qu.tod[branch]
 	if (bData.spin.lt(getBranchUpgCost(branch,upg))) return
 	bData.spin = bData.spin.sub(getBranchUpgCost(branch, upg))
 	if (bData.upgrades[upg] == undefined) bData.upgrades[upg] = 0
 	bData.upgrades[upg]++
-	document.getElementById(colors[branch] + "upg" + upg + "current").textContent = shortenDimensions(getBranchUpgMult(branch, upg))
+	var end = (upg == 3 && getBranchUpgLevel(branch, upg) > 1000) ? : " (softcapped)" : ""
+	document.getElementById(colors[branch] + "upg" + upg + "current").textContent = shortenDimensions(getBranchUpgMult(branch, upg)) + end
 	document.getElementById(colors[branch] + "upg" + upg + "cost").textContent = shortenMoney(getBranchUpgCost(branch, upg))
 }
 
@@ -356,7 +357,8 @@ function maxBranchUpg(branch, weak) {
 			bData.upgrades[u] += toAdd
 		}
 		if (bData.upgrades[u] > oldLvl) {
-			document.getElementById(colors[branch] + "upg" + u + "current").textContent=shortenDimensions(getBranchUpgMult(branch, u))
+			var end = (u == 3 && getBranchUpgLevel(branch, u) > 1000) ? : " (softcapped)" : ""
+			document.getElementById(colors[branch] + "upg" + u + "current").textContent=shortenDimensions(getBranchUpgMult(branch, u)) + end
 			document.getElementById(colors[branch] + "upg" + u + "cost").textContent=shortenMoney(getBranchUpgCost(branch, u))
 		}
 	}
