@@ -252,7 +252,7 @@ function buyBranchUpg(branch, upg) {
 	bData.spin = bData.spin.sub(getBranchUpgCost(branch, upg))
 	if (bData.upgrades[upg] == undefined) bData.upgrades[upg] = 0
 	bData.upgrades[upg]++
-	var end = (upg == 3 && getBranchUpgLevel(branch, upg) > 1000) ? : " (softcapped)" : ""
+	var end = (upg == 3 && getBranchUpgLevel(branch, upg) > 1000) ? " (softcapped)" : ""
 	document.getElementById(colors[branch] + "upg" + upg + "current").textContent = shortenDimensions(getBranchUpgMult(branch, upg)) + end
 	document.getElementById(colors[branch] + "upg" + upg + "cost").textContent = shortenMoney(getBranchUpgCost(branch, upg))
 }
