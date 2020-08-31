@@ -143,7 +143,7 @@ function setupHTMLAndData() {
 	for (var c = 0; c < 3; c++) {
 		var color = (["red", "green", "blue"])[c]
 		var shorthand = (["r", "g", "b"])[c]
-		var branchUpgrades = ["Gain <span id='" + color + "UpgPow1'></span>x " + color + " quark spins, but " + color + " quarks decay <span id='" + color + "UpgSpeed1'></span>x faster.","The gain of " + color + " <span id='" + color + "UpgName2'></span> quarks is multiplied by x and then raised to the power of x.",(["Red", "Green", "Blue"])[c]+" <span id='" + color + "UpgName3'></span> quarks decay 4x slower."]
+		var branchUpgrades = ["Gain <span id='" + color + "UpgPow1'></span>x " + color + " quark spins, but " + color + " quarks decay <span id='" + color + "UpgSpeed1'></span>x faster.","The gain of " + color + " <span id='" + color + "UpgName2'></span> quarks is multiplied by x and then raised to the power of x.",(["Red", "Green", "Blue"])[c]+" <span id='" + color + "UpgName3'></span> quarks decay 4x slower."] //might need to change this to just "slower" once we haev 1000+ upgrade 3's
 
 		var html = 'You have <span class="' + color + '" id="' + color + 'QuarksToD" style="font-size: 35px">0</span> ' + color + ' quarks.<br>'
 		html += '<button class="storebtn" id="' + color + 'UnstableGain" style="width: 240px; height: 80px" onclick="unstableQuarks(\'' + shorthand + '\')"></button><br>'
@@ -1524,11 +1524,20 @@ function updateIntergalacticTemp() {
 	if (!tmp.ngp3l) x += tmp.effAeg
 	tmp.igg = x
 
-	var igLog = Math.pow(x, Math.min(Math.sqrt(Math.log10(Math.max(x, 1))) * 2, 2.5)) //Log10 of reward
 	tmp.igs = 0 //Intergalactic Scaling ; used in the display text
-	if (!tmp.ngp3l && tmp.qu.bigRip.active && igLog > 1e9) { //Distant
-		igLog = Math.pow(igLog * 1e3, .75)
-		tmp.igs = 1
+	var igLog = Math.pow(x, Math.min(Math.sqrt(Math.log10(Math.max(x,1))) * 2, 2.5)) //Log10 of reward
+	
+	if (tmp.qu.bigRip.active && !tmp.ngp3l) {
+		if (igLog > 1e9) { //Distant
+			igLog = Math.pow(igLog * 1e3, .75)
+			tmp.igs = 1
+		}
+		if (igLog > 1e11) { //Further
+			igLog = Math.pow(Math.log10(igLog) - 1, 11)
+			tmp.igs = 2
+		}
+		tmp.ig = Decimal.pow(10, igLog)
+		return
 	}
 	if ((player.aarexModifications.ngudpV || !tmp.ngp3l) && igLog > 1e15) { //Further
 		igLog = Math.pow(10 + 6 * Math.log10(igLog), 7.5)

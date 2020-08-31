@@ -249,10 +249,10 @@ function buyBranchUpg(branch,upg) {
 	var colors = {r: "red", g: "green", b: "blue"}
 	var bData = tmp.qu.tod[branch]
 	if (bData.spin.lt(getBranchUpgCost(branch,upg))) return
-	bData.spin=bData.spin.sub(getBranchUpgCost(branch, upg))
+	bData.spin = bData.spin.sub(getBranchUpgCost(branch, upg))
 	if (bData.upgrades[upg] == undefined) bData.upgrades[upg] = 0
 	bData.upgrades[upg]++
-	document.getElementById(colors[branch] + "upg" + upg + "current").textContent = shortenDimensions(Decimal.pow(upg > 2 ? 4 : 2, upg > 1 ? getBranchUpgLevel(branch, upg) : getBU1Power(branch) * (1 + getRadioactiveDecays(branch) / 10)))
+	document.getElementById(colors[branch] + "upg" + upg + "current").textContent = shortenDimensions(getBranchUpgMult(branch, upg))
 	document.getElementById(colors[branch] + "upg" + upg + "cost").textContent = shortenMoney(getBranchUpgCost(branch, upg))
 }
 
@@ -356,8 +356,8 @@ function maxBranchUpg(branch, weak) {
 			bData.upgrades[u] += toAdd
 		}
 		if (bData.upgrades[u] > oldLvl) {
-			document.getElementById(colors[branch] + "upg" + u + "current").textContent=shortenDimensions(Decimal.pow(u > 2 ? 4 : 2, bData.upgrades[u]))
-			document.getElementById(colors[branch] + "upg" + u + "cost").textContent=shortenMoney(getBranchUpgCost(branch,u))
+			document.getElementById(colors[branch] + "upg" + u + "current").textContent=shortenDimensions(getBranchUpgMult(branch, u))
+			document.getElementById(colors[branch] + "upg" + u + "cost").textContent=shortenMoney(getBranchUpgCost(branch, u))
 		}
 	}
 }
@@ -435,5 +435,9 @@ function getBU2Power(branch) {
 function getBranchUpgMult(branch, upg) {
 	if (upg == 1) return Decimal.pow(2, getBU1Power(branch) * (getRadioactiveDecays(branch) / 10 + 1))
 	else if (upg == 2) return Decimal.pow(2, getBU2Power(branch))
-	else if (upg == 3) return Decimal.pow(4, getBranchUpgLevel(branch, 3))
+	else if (upg == 3) {
+		l = getBranchUpgLevel(branch, 3)
+		if (l > 1000) l = 1000 * Math.sqrt(l / 1000)
+		return Decimal.pow(4, l)
+	}
 } 
