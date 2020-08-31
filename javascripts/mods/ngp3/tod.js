@@ -357,7 +357,7 @@ function maxBranchUpg(branch, weak) {
 			bData.upgrades[u] += toAdd
 		}
 		if (bData.upgrades[u] > oldLvl) {
-			var end = (u == 3 && getBranchUpgLevel(branch, u) > 1000) ? : " (softcapped)" : ""
+			var end = (u == 3 && getBranchUpgLevel(branch, u) > 1000) ? " (softcapped)" : ""
 			document.getElementById(colors[branch] + "upg" + u + "current").textContent=shortenDimensions(getBranchUpgMult(branch, u)) + end
 			document.getElementById(colors[branch] + "upg" + u + "cost").textContent=shortenMoney(getBranchUpgCost(branch, u))
 		}
