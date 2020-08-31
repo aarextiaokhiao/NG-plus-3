@@ -192,7 +192,7 @@ function setupNanofieldHTMLandData(){
 
 function setupHTMLAndData() {
 	setupParadoxUpgrades()
-	setupInfUpgHTMLandData
+	setupInfUpgHTMLandData()
 	setupDilationUpgradeList()
 	setupMasteryStudiesHTML()
 	setupPCTableHTMLandData()
