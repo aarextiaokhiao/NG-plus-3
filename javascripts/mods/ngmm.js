@@ -568,11 +568,23 @@ let galMults = {
 		if (player.achievements.includes("r123")) exp += Math.min(.005, l / 2e8)
 		if (!player.break) x = x.min(Number.MAX_VALUE)
 		if (player.achievements.includes("r113")) exp += exp/60
+		if (exp > .01) exp = Math.log10(10000 * exp)/200
+		if (x.gt(1)){
+			y = x.log10()
+			if (y > 1e7) y = Math.pow(Math.log10(y) + 3, 7)
+			x = Decimal.pow(10, y)
+		}
 		return x.pow(exp).add(1)
 	},
 	u13: function() {
 		exp = calcG13Exp()
-		return player.galacticSacrifice.galaxyPoints.div(5).plus(1).pow(exp)
+		x = player.galacticSacrifice.galaxyPoints.div(5)
+		if (x.gt(1)){
+			y = x.log10()
+			if (y > 5e5) y = Math.sqrt(5e5*y)
+			x = Decimal.pow(10, y)
+		}
+		return x.plus(1).pow(exp)
 	},
 	u23: function() {
 		let x = player.galacticSacrifice.galaxyPoints.max(1).log10() * .75 + 1
