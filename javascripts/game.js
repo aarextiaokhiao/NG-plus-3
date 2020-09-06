@@ -9120,7 +9120,7 @@ function TTpassiveGain(diff){
 		var speed = getPassiveTTGen()
 		var div = player.timestudy.theorem / speed
 		player.timestudy.theorem += diff * speed  
-		if (div < 3600) player.timestudy.theorem += Math.min(diff * 9, 3600 - div) * speed
+		if (div < 3600 && player.achievements.includes("ng3p44")) player.timestudy.theorem += Math.min(diff * 9, 3600 - div) * speed
 		if (player.timestudy.theorem > 1e200) player.timestudy.theorem = 1e200
     }
 }
