@@ -84,9 +84,11 @@ function updateGPHUnlocks() {
 }
 
 function getGPHProduction() {
-	if (tmp.qu.bigRip.active) var ret = player.dilation.dilatedTime.div("1e480")
+	let b = tmp.qu.bigRip.active
+	if (b) var ret = player.dilation.dilatedTime.div("1e480")
 	else var ret = player.dilation.dilatedTime.div("1e930")
 	if (ret.gt(1)) ret = ret.pow(0.02)
+	if (b && ret.gt(Decimal.pow(2, 444))) ret = ret.div(Decimal.pow(2, 444)).sqrt().times(Decimal.pow(2, 444))
 	return ret
 }
 

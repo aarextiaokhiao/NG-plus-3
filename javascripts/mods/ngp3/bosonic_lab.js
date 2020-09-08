@@ -149,7 +149,7 @@ function getBosonicAMProduction() {
 	var ret = Decimal.pow(10, exp).times(tmp.wzb.wbp)
 	if (player.ghostify.bl.usedEnchants.includes(34)) ret = ret.times(tmp.bEn[34] || 1)
 	if (player.achievements.includes("ng3p91")) ret = ret.times(getAchBAMMult())
-	if (player.achievements.includes("ng3p98")) ret = ret.plus(Math.pow(player.ghostify.hb.higgsUnspent, 2))
+	if (player.achievements.includes("ng3p98")) ret = ret.plus(Math.pow(player.ghostify.hb.higgs, 2))
 	//maybe softcap at e40 or e50?
 	return ret
 }
