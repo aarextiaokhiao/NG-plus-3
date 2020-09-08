@@ -141,15 +141,15 @@ function getBosonicAntiMatterProduction(){
 
 function getAchBAMMult(){
 	if (!player.achievements.includes("ng3p91")) return 1
-	var exp = 1
-	if (player.ghostify.bl.am.log10() > 10) exp = 10 / player.ghostify.bl.am.log10()
-	return player.achPow.pow(exp)
+	return player.achPow.pow(0.2)
 }
 
 function getBosonicAMProduction() {
-	let r = player.money.max(1).log10() / 15e15 - 3
-	var add = player.achievements.includes("ng3p98") ? Math.pow(player.ghostify.hb.higgsUnspent, 2) : 0
-	var ret = Decimal.pow(10, r).times(tmp.wzb.wbp).times(getAchBAMMult()).plus(add)
+	var exp = player.money.max(1).log10() / 15e15 - 3
+	var ret = Decimal.pow(10, exp).times(tmp.wzb.wbp)
+	if (player.ghostify.bl.usedEnchants.includes(34)) ret = ret.times(tmp.bEn[34] || 1)
+	if (player.achievements.includes("ng3p91")) ret = ret.times(getAchBAMMult())
+	if (player.achievements.includes("ng3p98")) ret = ret.plus(Math.pow(player.ghostify.hb.higgsUnspent, 2))
 	//maybe softcap at e40 or e50?
 	return ret
 }
@@ -249,7 +249,6 @@ function updateBosonicLabTab(){
 			document.getElementById("hbReset").className = "gluonupgrade " + (player.ghostify.bl.am.gte(req) ? "hb" : "unavailablebtn")
 			document.getElementById("hbResetReq").textContent = shorten(req)
 			document.getElementById("hbResetGain").textContent = getFullExpansion(getHiggsGain())
-			if (document.getElementById("hbTab").style.display=="block") updateHiggsTab()
 		}
 	}
 }
@@ -290,7 +289,6 @@ function updateBosonicLabTemp() {
 	updateBosonicUpgradesTemp()
 	updateWZBosonsTemp()
 	if (!tmp.ngp3l) {
-		if (player.ghostify.hb.unl) updateHiggsTemp()
 		// if (tmp.gv.unl) updateGravitonsTemp()
 		// if (tmp.x17.unl) updateX17Temp()
 	}
@@ -423,18 +421,15 @@ function updateEnchantDescs() {
 		var id = g1 * 10 + g2
 		if (bEn.action == "upgrade" || bEn.action == "max") document.getElementById("bEn" + id).className = "gluonupgrade "  +(canBuyEnchant(id) ? "bl" : "unavailablebtn")
 		else if (bEn.action == "use") document.getElementById("bEn" + id).className = "gluonupgrade " + (canUseEnchant(id) ? "storebtn" : "unavailablebtn")
-		if (id == 14) document.getElementById("bEn14").style = "font-size: 7px"
+		if (id == 14) document.getElementById("bEn14").style = "font-size: 8px"
 		if (shiftDown) document.getElementById("bEnLvl" + id).textContent = "Enchant id: " + id
 		else document.getElementById("bEnLvl" + id).textContent = "Level: " + shortenDimensions(tmp.bEn.lvl[id])
 		if (bEn.action == "max") document.getElementById("bEnOn"+id).textContent = "+" + shortenDimensions(getMaxEnchantLevelGain(id)) + " levels"
 		else document.getElementById("bEnOn" + id).textContent = data.usedEnchants.includes(id) ? "Enabled" : "Disabled"
 		if (tmp.bEn[id] != undefined) {
 			let effect = getEnchantEffect(id, true)
-			if (id == 12) {
-				effect = effect.times(data.speed * (data.battery.gt(0) ? data.odSpeed : 1))
-				if (effect.lt(1) && effect.gt(0)) document.getElementById("bEnEffect" + id).textContent = effect.m.toFixed(2) + "/" + shortenCosts(Decimal.pow(10, -effect.e)) + " seconds"
-				else document.getElementById("bEnEffect" + id).textContent = shorten(effect) + "/second"
-			} else document.getElementById("bEnEffect" + id).textContent = shorten(effect) + "x"	
+			let effectDesc = bEn.effectDescs[id]
+			document.getElementById("bEnEffect" + id).textContent = effectDesc !== undefined ? effectDesc(effect) : shorten(effect) + "x"	
 		}
 	}
 	document.getElementById("usedEnchants").textContent = "You have used " + data.usedEnchants.length + " / " + bEn.limit + " Bosonic Enchants."
@@ -464,9 +459,9 @@ var bEn = {
 		12: "You automatically extract Bosonic Runes.",
 		13: "Speed up the production and use of Anti-Preons.",
 		23: "Bosonic Antimatter boosts oscillate speed.",
-		14: "Divide the requirement of Higgs and start with the first log10(levels+9) bosonic upgrades upon higgs reset even if inactive.",
+		14: "Divide the requirement of Higgs and start with some Bosonic Upgrades even it is inactive.",
 		24: "You gain more Bosonic Battery.",
-		34: "Boost all Particles of Higgs Field."
+		34: "Higgs Bosons produce more Bosonic Antimatter."
 	},
 	effects: {
 		12: function(l) {
@@ -477,9 +472,11 @@ var bEn = {
 		13: function(l) {
 			return Decimal.add(l, 1).sqrt()
 		},
-		14: function(l, type = '') {
-			if (type == "bUpgs") return Math.floor(Decimal.add(l, 9).log10())
-			return Decimal.add(l, 1).sqrt()
+		14: function(l) {
+			return {
+				bUpgs: Math.floor(Math.pow(Decimal.add(l, 9).log10(), 2/3)),
+				higgs: Decimal.add(l, 1).pow(0.4)
+			}
 		},
 		23: function(l) {
 			let exp = Math.max(l.log10() + 1, 0) / 3
@@ -491,7 +488,19 @@ var bEn = {
 			return Decimal.pow(Decimal.add(l, 100).log10(), 4).div(16)
 		},
 		34: function(l) {
-			return l.add(1).log10() + 1
+			return Decimal.pow(player.ghostify.hb.higgs / 20 + 1, l.add(1).log10() / 5)
+		}
+	},
+	effectDescs: {
+		12: function(x) {
+			var blData = player.ghostify.bl
+
+			x = x.times(blData.speed * (blData.battery.gt(0) ? blData.odSpeed : 1))
+			if (x.lt(1) && x.gt(0)) return x.m.toFixed(2) + "/" + shortenCosts(Decimal.pow(10, -x.e)) + " seconds"
+			return shorten(x) + "/second"
+		},
+		14: function(x) {
+			return "/" + shorten(x.higgs) + " to Higgs requirement, " + getFullExpansion(x.bUpgs) + " starting upgrades"
 		}
 	},
 	action: "upgrade",

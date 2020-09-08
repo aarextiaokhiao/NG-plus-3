@@ -719,7 +719,7 @@ button, div.storebtn {
 	transform: translate(-50%, 10%)
 }
 
-#hbTabBtn, .gluonupgrade.hb {
+.gluonupgrade.hb {
 	background: radial-gradient(#e5e500, transparent 50%, transparent 100%), radial-gradient(#727200, #727200, transparent 60%, transparent 100%), linear-gradient(transparent, #727200 50%, transparent 100%), radial-gradient(#3f3f00, #191919 50%, #3f3f00 100%);
 	background-position: center;
 	box-shadow: 0px 0px 0px transparent, inset 0px 0px 0px transparent, 1px 2px rgba(229,229,229,0.4);
@@ -728,12 +728,8 @@ button, div.storebtn {
 	animation: hb 5s ease infinite
 }
 
-#hbTabBtn:hover, .gluonupgrade.hb:hover {
+.gluonupgrade.hb:hover {
 	box-shadow: 0px 0px 12px #e5e500, inset 0px 0px 24px #e5e500, 1px 2px rgba(229,229,229,0.4)
-}
-
-#bosonicFactor {
-	color: #38cbea
 }
 
 @keyframes rg {

@@ -1309,9 +1309,6 @@ function setNonlegacyStuff() {
 function displayNonlegacyStuff() {
 	//QC Modifiers
 	for (var m = 1; m < qcm.modifiers.length; m++) document.getElementById("qcm_" + qcm.modifiers[m]).style.display = tmp.ngp3l ? "none" : ""
-
-	//Higgs Bosons
-	document.getElementById("hbTabBtn").style.display = tmp.ngp3l ? "none" : ""
 }
 
 function exitLegacy() {

@@ -1826,7 +1826,7 @@
 				<br>
 				(Update v2.3: The NG+3.1 & Higgs update)
 				<br>
-				<b class="warning">(Test server: Beta A1, Alpha 14)</b>
+				<b class="warning">(Test server: Pre-Release 1)</b>
 			</p>
 			<div id="footercontainer">
 				<table id="footer" style="display: table !important">
@@ -5407,30 +5407,27 @@
 							<input id="odSlider" style="width: 180px;" type="range" min="0" max="30" class="slider" oninput="changeOverdriveSpeed()">
 						</td>
 					</tr><tr id="bosonicResets">
-						<td>
+						<td colspan=3>
 							You have <span class="yellow" id="hb" style="font-size:35px">0</span> Higgs Bosons.
 							<br>
 							<button class="gluonupgrade hb" id="hbReset" onclick="higgsReset()">Reset Bosonic Lab for <span id="hbResetGain">1</span> Higgs.<br>(Requires <span id="hbResetReq"></span> Bosonic Antimatter)</button>
 						</td>
-						<td></td>
-						<td></td>
 					</tr></table>
+					<span id="nextParticle"></span>
 					<b style="font-size: 35px">Bosonic Runes</b><br>
 					<table id="bRunes" align="center" style="margin: auto"><tr></tr></table>
 					<table class="table" align="center" style="margin: auto">
 						<tr>
-							<td><button class="secondarytabbtn" onclick="showBLTab('bextab')">Bosonic Extractor</button></td>
+							<td><button class="secondarytabbtn" onclick="showBLTab('bextab')">Bosonic Enchants</button></td>
 							<td><button class="secondarytabbtn" onclick="showBLTab('butab')">Bosonic Upgrades</button></td>
 							<td><button class="secondarytabbtn" onclick="showBLTab('wzbtab')">W & Z Bosons</button></td>
-							<td><button id="hbTabBtn" class="secondarytabbtn" onclick="showBLTab('hbTab')">Higgs Bosons</button></td>
 						</tr>
 					</table>
 					<div id="bextab" class="bltab">
 						Type of Bosonic Rune to extract:<br>
 						<div id="typeToExtract"></div><br>
 						<button class="storebtn" id="extract" onclick="extract()" style="width: 180px"></button><br>
-						<span id="extractTime"></span><br>
-						<b style="font-size: 35px">Bosonic Enchants</b><br>
+						<span id="extractTime"></span><br><br>
 						<button class="storebtn" onclick="changeEnchantAction(1)" style="width: 150px">Upgrade enchants</button>
 						<button class="storebtn" onclick="changeEnchantAction(2)" style="width: 150px">Max enchants</button>
 						<button class="storebtn" onclick="changeEnchantAction(3)" style="width: 150px">Use enchants</button><br>
@@ -5473,78 +5470,6 @@
 								</td>
 							</tr>
 						</table>
-					</div>
-					<div id="hbTab" class="bltab">
-						<div id="hbUnl"></div>
-						<div id="hbMessage">
-							<b style="font-size: 35px">Congratulations, Bosonic Lab scientist!</b>
-							<br>
-							Your ghost scientists have dedicated you for making Bosonic Antimatter a new resource.
-							<br>
-							Maybe you will use it to make your new pocket universe.
-							<br>
-							But is Bosonic Antimatter enough? No.
-							<br><br>
-							Gihitus, the Holy Ghost of Higgs, wants you to complete the research of Higgs Bosons.
-							<br>
-							These bosons will give mass to particles.
-							<br>
-							You agreed with Gihitus.
-							<br>
-							You thought that Higgs Bosons are very powerful particles.
-							<br><br>
-							Will you realize that?
-						</div>
-						<div id="bAMDimReturn">
-							<b class="warning" style="font-size: 35px">Unfortunately...</b>
-							<br>
-							Your Bosonic Antimatter production <span id="bAMDimReturnPhrase1"></span> to decrease at <span class="warning" style="font-size: 25px" id="bAMDimReturnStart"></span>.
-							<br>
-							<b class="warning" id="bAMDimReturnDivide"></b>
-							<br>
-							<span id="bAMDimReturnPhrase2"></span>
-						</div>
-						<div id="hbDiv">
-							<br>
-							<button class="storebtn" onclick="restartHiggs()" style="width: 360px; height:30px">Restart this Higgs run, but gain nothing</button>
-							<br>
-							You have <span id="hbUnspent" style="font-size:35px">0</span> unspent Higgs Bosons.<br>
-							Your Bosonic Factor is currently <span id="bosonicFactor" style="font-size:25px">1.00</span>x, which boosts the strength of all Particles by <span id="bosonicFactorEffect" style="font-size:35px">100.0</span>%.
-							<table class="table" style="width: 100%">
-								<tr style="font-size: 16px">
-									<td width="40%" class="subFactorA">Subfactor A</td>
-									<td>(based on Bosonic Antimatter)</td>
-									<td><span class="subFactorA" id="subFactorA">1.00</span>x</td>
-									<td width="10%"></td>
-								</tr>
-								<tr style="font-size: 16px">
-									<td width="40%" class="subFactorE">Subfactor E</td>
-									<td>(based on Bosonic Enchants)</td>
-									<td><span class="subFactorE" id="subFactorE">1.00</span>x</td>
-									<td width="10%"></td>
-								</tr>
-								<tr style="font-size: 16px">
-									<td width="40%" class="subFactorZ">Subfactor Z</td>
-									<td>(based on Z Bosons)</td>
-									<td><span class="subFactorZ" id="subFactorZ">1.00</span>x</td>
-									<td width="10%"></td>
-								</tr>
-								<tr style="font-size: 16px">
-									<td width="40%" class="subFactorH">Subfactor H</td>
-									<td>(based on unspent Higgs)</td>
-									<td><span class="subFactorH" id="subFactorH">1.00</span>x</td>
-									<td width="10%"></td>
-								</tr>
-								<!--
-								<tr style="font-size: 16px">
-									<td width="40%">Subfactor Shift</td>
-									<td></td>
-									<td>Next: Gravitions & Subfactor G</td>
-									<td width="10%" style="text-align: right"><button style="color:black; width:195px; height:30px" class="unavailablebtn">Require: 200 Higgs</button></td>
-								</tr>
-								-->
-							</table>
-						</div>
 					</div>
 				</div>
 			</div>

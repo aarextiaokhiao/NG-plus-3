@@ -1979,9 +1979,8 @@ function onLoad(noOffline) {
       updateBLUnlocks()
       updateBosonicStuffCosts()
       if (!tmp.ngp3l) {
-		  document.getElementById("hbUnl").textContent="To unlock Higgs Bosons, you need to get " + shortenCosts(1e20) + " Bosonic Antimatter first."
+          document.getElementById("nextParticle").textContent = "To unlock the next particle (Higgs Bosons), you need to get " + shortenCosts(Decimal.pow(10, 2e17)) + " antimatter and " + shortenCosts(getHiggsRequirement()) + " Bosonic Antimatter first."
           updateHiggsUnlocks()
-          updateUnspentHiggs()
       }
   }
   hideDimensions()
@@ -2129,7 +2128,13 @@ function setupNGP31Versions() {
 	if (player.aarexModifications.newGame3PlusVersion < 2.3 || player.ghostify.hb.amount !== undefined) {
 		player.ghostify.hb = setupHiggsSave()
 		player.aarexModifications.newGame3PlusVersion = 2.3
-	} else tmp.hb = player.ghostify.hb
+	} else {
+		tmp.hb = player.ghostify.hb
+
+		delete tmp.hb.higgsUnspent
+		delete tmp.hb.particlesUnlocked
+		delete tmp.hb.field
+	}
 }
 
 function checkNGM(imported) {

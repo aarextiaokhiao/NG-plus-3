@@ -1,10 +1,7 @@
 function setupHiggsSave() {
 	let data = {
 		unl: false,
-		higgs: 0,
-		higgsUnspent: 0,
-		particlesUnlocked: 0,
-		field: {}
+		higgs: 0
 	}
 	player.ghostify.hb = data
 	return data
@@ -26,16 +23,13 @@ function canUnlockHiggs() {
 
 function updateHiggsUnlocks() {
 	let unl = player.ghostify.hb.unl
-	let higgsGot = player.ghostify.hb.higgs > 0
-	document.getElementById("hbUnl").style.display = unl ? "none" : ""
+	document.getElementById("nextParticle").style.display = unl ? "none" : ""
 	document.getElementById("bosonicResets").style.display = unl ? "" : "none"
-	document.getElementById("hbMessage").style.display = unl && !higgsGot ? "" : "none"
-	document.getElementById("bAMDimReturn").style.display = unl ? "" : "none"
 	if (!unl) updateHiggsUnlockDisplay()
 }
 
 function updateHiggsUnlockDisplay() {
-	document.getElementById("hbUnl").textContent = "To unlock Higgs Bosons, you need to get " + shortenCosts(Decimal.pow(10, 2e17)) + " antimatter and " + shortenCosts(getHiggsRequirement()) + " Bosonic Antimatter first."
+	document.getElementById("nextParticle").textContent = "To unlock the next particle (Higgs Bosons), you need to get " + shortenCosts(Decimal.pow(10, 2e17)) + " antimatter and " + shortenCosts(getHiggsRequirement()) + " Bosonic Antimatter first."
 }
 
 function bosonicLabReset() {
@@ -48,7 +42,7 @@ function bosonicLabReset() {
 	player.ghostify.ghostlyPhotons.ghostlyRays = new Decimal(0)
 	player.ghostify.ghostlyPhotons.lights = [0,0,0,0,0,0,0,0]
 	tmp.updateLights = true
-	var startingEnchants = bEn.effects[14](player.ghostify.bl.enchants[14] || 0, "bUpgs")
+	var startingEnchants = tmp.bEn[14].bUpgs
 	player.ghostify.bl = {
 		watt: new Decimal(0),
 		ticks: player.ghostify.bl.ticks,
@@ -118,7 +112,7 @@ function restartHiggs() {
 
 function getHiggsRequirementBase() {
 	var div = new Decimal(1)
-	if (player.ghostify.bl.usedEnchants.includes(14)) div = div.times(tmp.bEn[14] || 1)
+	if (player.ghostify.bl.usedEnchants.includes(14)) div = div.times(tmp.bEn[14].higgs || 1)
 	return new Decimal(1e20).divide(div)
 }
 
@@ -139,53 +133,9 @@ function getHiggsGain() {
 
 function addHiggs(x) {
 	player.ghostify.hb.higgs += x
-	updateUnspentHiggs()
-}
-
-function updateUnspentHiggs() {
-	player.ghostify.hb.higgsUnspent = player.ghostify.hb.higgs
 }
 
 function matchTempPlayerHiggs(){
 	tmp.hb = player.ghostify.hb
 	tmp.bl = player.ghostify.bl
-}
-
-function updateHiggsTemp() {
-	updateBosonicFactorTemp()
-	matchTempPlayerHiggs()
-}
-
-function updateBosonicFactorTemp() {
-	var data = {}
-	tmp.hbTmp.bFact = data
-
-	data.subFactA = tmp.bl.am.add(1).log10() + 1
-
-	data.subFactE = 1
-	if (tmp.bl.usedEnchants.includes(34)) data.subFactE = tmp.bEn[34]
-
-	data.subFactZ = player.ghostify.wzb.zb.add(1).log10() + 1
-
-	data.subFactH = tmp.hb.higgsUnspent / 20 + 1
-
-	data.total = data.subFactA * data.subFactE * data.subFactZ * data.subFactH
-
-	data.effect = Math.pow(data.total, 0.1)
-}
-
-function updateHiggsTab() {
-	document.getElementById("bAMDimReturnPhrase1").textContent = player.ghostify.bl.am.gte(tmp.badm.start) ? "started" : "will start"
-	document.getElementById("bAMDimReturnStart").textContent = shorten(tmp.badm.start)
-	document.getElementById("bAMDimReturnDivide").textContent = "Your Bosonic Antimatter production has been divided by " + shorten(tmp.badm.preDim) + " because of this!"
-	document.getElementById("bAMDimReturnPhrase2").textContent = player.ghostify.hb.higgs > 0 ? "But, you have the power to get more Higgs Bosons if you go very far." : "So, you have to get one."
-
-	document.getElementById("hbUnspent").textContent = getFullExpansion(player.ghostify.hb.higgsUnspent)
-
-	document.getElementById("subFactorA").textContent = shorten(tmp.hbTmp.bFact.subFactA)
-	document.getElementById("subFactorE").textContent = shorten(tmp.hbTmp.bFact.subFactE)
-	document.getElementById("subFactorZ").textContent = shorten(tmp.hbTmp.bFact.subFactZ)
-	document.getElementById("subFactorH").textContent = shorten(tmp.hbTmp.bFact.subFactH)
-	document.getElementById("bosonicFactor").textContent = shorten(tmp.hbTmp.bFact.total)
-	document.getElementById("bosonicFactorEffect").textContent = (tmp.hbTmp.bFact.effect * 100).toFixed(1)
 }
