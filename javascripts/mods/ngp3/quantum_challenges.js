@@ -161,6 +161,7 @@ function updatePCCompletions() {
 	}
 	ranking *= 100 / 56
 	if (ranking) document.getElementById("pccompletionsbtn").style.display = "inline-block"
+	if (ranking >= 190) giveAchievement("Not-so-very-challenging") 
 	if (tmp.pcc.normal >= 24) giveAchievement("The Challenging Day")
 	document.getElementById("pccranking").textContent = ranking.toFixed(1)
 	document.getElementById("pccrankingMax").textContent = Math.sqrt(1e4 * (2 + qcm.modifiers.length)).toFixed(1)

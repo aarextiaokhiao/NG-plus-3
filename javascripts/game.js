@@ -4553,6 +4553,7 @@ function setAchieveTooltip() {
 	let btco = document.getElementById("Back to Challenge One")
 	let tdc = document.getElementById("The Deep Challenge")
 	let igu = document.getElementById("I give up.")
+	let aretheseanother = document.getElementById("Are these another...")
 
 	let willenoughReward = [] // for the achievement "Will it be enough?"
 	if (!tmp.ngp3l) {
@@ -4636,6 +4637,7 @@ function setAchieveTooltip() {
 	//ACHIEVEMENT ROW 23
 	ghostliest.setAttribute('ach-tooltip', "Get " + shorten(Math.pow(Number.MAX_VALUE, 1/4)) + " Ghostified stat. Reward: Ghostifies boost the gain of Ghost Particles at the reduced rate.")
 	metae18.setAttribute('ach-tooltip', "Get " + shortenCosts(Decimal.pow(10, 1e18)) + " antimatter. Reward: Distant Antimatter Galaxies scaling is 10% weaker and Higgs bosons give linear production to bosonic antimatter.")
+	aretheseanother.setAttribute('ach-tooltip', "Reach " + shortenCosts(Decimal.pow(10, 66666)) + " Quarks. Reward: Gain 5x more Quarks and Ghost Particles.")
 }
 
 
@@ -7905,6 +7907,7 @@ setInterval(function() {
 	updateBlinkOfAnEye()
 	ALLACHIEVECHECK()
 	bendTimeCheck()
+	if (player.quantum.quarks.log10() >= 66666) giveAchievement("Are these another...")
 
 	// AB Stuff
 	updateReplicantiGalaxyToggels()
