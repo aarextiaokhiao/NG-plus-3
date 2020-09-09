@@ -7907,7 +7907,7 @@ setInterval(function() {
 	updateBlinkOfAnEye()
 	ALLACHIEVECHECK()
 	bendTimeCheck()
-	if (player.quantum.quarks.log10() >= 66666) giveAchievement("Are these another...")
+	if (player) if (player.quantum) if (player.quantum.quarks.log10() >= 66666) giveAchievement("Are these another...")
 
 	// AB Stuff
 	updateReplicantiGalaxyToggels()
