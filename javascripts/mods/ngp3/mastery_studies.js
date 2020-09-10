@@ -28,7 +28,7 @@ var masteryStudies = {
 	ecReqsStored: {},
 	ecReqDisplays: {
 		13: function() {
-			return getFullExpansion(masteryStudies.ecReqsStored[13]) + " dimension boosts"
+			return getFullExpansion(masteryStudies.ecReqsStored[13]) + " Dimension Boosts"
 		},
 		14: function() {
 			return getFullExpansion(masteryStudies.ecReqsStored[14]) + "% replicate chance"
@@ -266,33 +266,33 @@ var masteryStudies = {
 	},
 	timeStudyDescs: {
 		241: "The IP mult multiplies IP gain by 2.2x per upgrade.",
-		251: "Remote antimatter galaxies scaling starts 1 galaxy later per 3,000 dimension boosts.",
-		252: "Remote antimatter galaxies scaling starts 1 galaxy later per 7 free galaxies.",
+		251: "Remote galaxy scaling starts 1 galaxy later per 3,000 dimension boosts.",
+		252: "Remote galaxy scaling starts 1 galaxy later per 7 free galaxies.",
 		253: function() {
-			return "Remote antimatter galaxies scaling starts "+(tmp.ngp3l?"20 galaxies later per 9 extra replicated galaxies.":"1 galaxy later per 4 total replicated galaxies.")
+			return "Remote antimatter galaxy scaling starts "+(tmp.ngp3l?"20 galaxies later per 9 extra replicated galaxies.":"1 galaxy later per 4 total replicated galaxies.")
 		},
-		261: "Dimension boost costs scale by another 1 less.",
-		262: "Dimension boosts boost Meta Dimensions at reduced rate.",
+		261: "Dimension Boost costs scale by another 1 less.",
+		262: "Dimension Boosts boost Meta Dimensions at a reduced rate.",
 		263: "Meta-dimension boosts boost dilated time production.",
 		264: "Gain more tachyon particles based on your normal galaxies.",
 		265: "Replicate chance upgrades can go over 100%.",
 		266: "Reduce the post-400 max replicated galaxy cost scaling.",
-		271: "You can buy beyond 1ms interval upgrades but the cost starts to increase faster.",
-		272: "You can buy all time studies in all 3-way splits.",
+		271: "You can buy beyond 1ms interval upgrades, but the cost begins to increase faster.",
+		272: "You can buy all Time Studies in all 3-way splits.",
 		273: "Replicate chance boosts itself.",
-		281: "Replicanti multiplier boosts DT production at greatly reduced rate.",
-		282: "Replicanti multiplier boosts Meta Dimensions at greatly reduced rate.",
-		291: "You gain 1% of your EP gained on eternity each second.",
+		281: "Replicanti multiplier boosts DT production at a greatly reduced rate.",
+		282: "Replicanti multiplier boosts Meta Dimensions at a greatly reduced rate.",
+		291: "You gain 1% of your EP gained on Eternity per second.",
 		292: "You can gain tachyon particles without disabling dilation.",
 		301: "Remote cost scaling starts 1 galaxy later per 4.15 extra replicated galaxies.",
-		302: "You can buy all time studies before mastery portal.",
+		302: "You can buy all Time Studies before the mastery portal.",
 		303: "Meta Dimensions are stronger based on your galaxies.",
 		311: "Replicanti boost to all Infinity Dimensions is 17.3x stronger.",
 		312: "Meta-dimension boosts are 4.5% stronger and cost scale by 1 less.",
 		321: "Buff multiplier per 10 normal Dimensions to <span id='321effect'></span>x if it is 1x.",
 		322: "Tickspeed boosts DT production at greatly reduced rate.",
 		323: "Cancel dilation penalty for Normal Dimensions boost from replicanti.",
-		331: "Dimension Supersonic scaling starts 240,000 later and makes cost increases slower by 3 less.",
+		331: "Dimension Supersonic scaling starts 240,000 later, and cost increase is reduced by 3.",
 		332: "You gain replicanti faster based on your normal galaxies.",
 		341: "Preons boost dilated time production at reduced rate.",
 		342: "All replicated galaxies are stronger and use the same formula.",
@@ -315,7 +315,7 @@ var masteryStudies = {
 		392: "Preons boost all Emperor Dimensions.",
 		393: "Workers boost Meta Dimensions.",
 		401: "The production of preon anti-energy is slower based on your preons.",
-		402: "Emperor Dimensions and hatch speed are faster by 30x.",
+		402: "Emperor Dimensions and hatch speed are 30x faster.",
 		411: "The production of preon energy is faster based on your replicants.",
 		412: function() {
 			return tmp.ngp3l ? "Preon effect is 25% stronger." : "Further reduce the softcap of preon boost."

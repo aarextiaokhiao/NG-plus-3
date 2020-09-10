@@ -339,7 +339,7 @@ newsArray = [//always true
 ['Later, I will finally implement original ideas from future NG+3 updates.', "tmp.ngp3", "am186"],
 ['Also later, I will implement ideas that have different gameplay than other mechanics.', "tmp.ngp3", "am187"],
 ["This news ticker has been softcapped so you can't read the re-.", true, "am188"]
-/*NEXT ID: am186*/
+/*NEXT ID: am189*/
 ];}
 
 document.addEventListener("visibilitychange", function() {if (!document.hidden) {scrollNextMessage();}}, false);

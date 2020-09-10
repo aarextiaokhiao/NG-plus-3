@@ -104,7 +104,7 @@ function higgsReset() {
 }
 
 function restartHiggs() {
-	if (!confirm("This resets everything that Higgs resets. You won't gain anything. Are you sure to proceed?")) return
+	if (!confirm("Restarting will act as a Higgs reset, but you won't gain anything. Are you sure you want to restart?")) return
 	bosonicLabReset()
 	player.ghostify.hb.bosonicSemipowerment = true
 	matchTempPlayerHiggs()
