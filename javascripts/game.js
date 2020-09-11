@@ -2205,7 +2205,14 @@ function intergalacticDisplay(){
 	var shiftRequirement = getShiftRequirement(0);
 	if (player.achievements.includes("ng3p37") && shiftRequirement.tier > 7) {
 		document.getElementById("intergalacticLabel").parentElement.style.display = ""
-		document.getElementById("intergalacticLabel").innerHTML = getGalaxyScaleName(tmp.igs) + 'Intergalactic Boost ' + (player.dilation.active || player.galacticSacrifice != undefined ? " (estimated)" : "") + " (" + getFullExpansion(player.galaxies) + (Math.floor(tmp.igg - player.galaxies) > 0 ? " + " + getFullExpansion(Math.floor(tmp.igg - player.galaxies)) : "") + "): " + shorten(dilates(tmp.ig).pow(player.dilation.active?getNanofieldRewardEffect(5, "dil_exp"):1)) + 'x to Eighth Dimensions'
+		let nanopart = tmp.nf.effects["dil_effect_exp"] || 1
+		document.getElementById("intergalacticLabel").innerHTML = 
+			getGalaxyScaleName(tmp.igs) + 'Intergalactic Boost ' + 
+			(player.dilation.active || player.galacticSacrifice != undefined ? " (estimated)" : "") +
+			" (" + getFullExpansion(player.galaxies) + (Math.floor(tmp.igg - player.galaxies) > 0 ? " + " + 
+			getFullExpansion(Math.floor(tmp.igg - player.galaxies)) : "") + "): " + 
+			shorten(dilates(tmp.ig).pow(player.dilation.active ? tmp.nf.effects["dil_effect_exp"] : 1)) + 
+			'x to Eighth Dimensions'
 	} else document.getElementById("intergalacticLabel").parentElement.style.display = "none"
 }
 
