@@ -5873,12 +5873,12 @@ function doCheckECCompletionStuff(){
 			else if (player.eternityChalls.eterc11 < 5) player.eternityChalls.eterc11++
 		}
 		if (tmp.ngp3 ? tmp.qu.autoEC && player.eternityChalls[player.currentEternityChall] < 5 : false) {
-			if (player.etercreq > 12) player.timestudy.theorem += masterystudies.costs.ec[player.etercreq]
+			if (player.etercreq > 12) player.timestudy.theorem += masteryStudies.costs.ec[player.etercreq]
 			else player.timestudy.theorem += ([0,30,35,40,70,130,85,115,115,415,550,1,1])[player.etercreq]
 			player.eternityChallUnlocked = 0
 			tmp.qu.autoECN = player.etercreq
 		} else if (ghostified && player.ghostify.milestones > 1) {
-			if (player.etercreq > 12) player.timestudy.theorem += masterystudies.costs.ec[player.etercreq]
+			if (player.etercreq > 12) player.timestudy.theorem += masteryStudies.costs.ec[player.etercreq]
 			else player.timestudy.theorem += ([0, 30, 35, 40, 70, 130, 85, 115, 115, 415, 550, 1, 1])[player.etercreq]
 			player.eternityChallUnlocked = 0
 		} else forceRespec = true
