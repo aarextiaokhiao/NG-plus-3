@@ -104,7 +104,6 @@ function getUnstableGain(branch) {
 	return ret.times(Decimal.pow(2, getRDPower(branch) + 1)).min(Decimal.pow(10, Math.pow(2, 51)))
 }
 
-if (player) if (!player.unstableThisGhostify) player.unstableThisGhostify = 10
 
 function unstableQuarks(branch) {
 	if (tmp.qu.usedQuarks[branch].eq(0) || getUnstableGain(branch).lte(tmp.qu.tod[branch].quarks)) return
