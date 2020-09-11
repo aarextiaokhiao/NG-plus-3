@@ -2212,7 +2212,7 @@ function intergalacticDisplay(){
 			(player.dilation.active || player.galacticSacrifice != undefined ? " (estimated)" : "") +
 			" (" + getFullExpansion(player.galaxies) + (Math.floor(tmp.igg - player.galaxies) > 0 ? " + " + 
 			getFullExpansion(Math.floor(tmp.igg - player.galaxies)) : "") + "): " + 
-			shorten(dilates(tmp.ig).pow(player.dilation.active ? tmp.nf.effects["dil_effect_exp"] : 1)) + 
+			shorten(dilates(tmp.ig).pow(player.dilation.active ? nanopart : 1)) + 
 			'x to Eighth Dimensions'
 	} else document.getElementById("intergalacticLabel").parentElement.style.display = "none"
 }
