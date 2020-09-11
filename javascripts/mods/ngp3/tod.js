@@ -281,6 +281,7 @@ function unstableAll() {
 		if (tmp.qu.usedQuarks[colors[c]].gt(0) && getUnstableGain(colors[c]).gt(bData.quarks)) {
 			bData.quarks = bData.quarks.max(getUnstableGain(colors[c]))
 			if (player.ghostify.milestones < 4) tmp.qu.usedQuarks[colors[c]] = new Decimal(0)
+		}
 		player.unstableThisGhostify ++
 	}
 	updateColorCharge()
