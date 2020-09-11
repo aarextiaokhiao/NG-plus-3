@@ -906,7 +906,7 @@ function doNGPlusThreeNewPlayer(){
 	player.eternityBuyer.ifAD = false
 	player.eternityBuyer.presets = {on: false, autoDil: false, selected: -1, selectNext: 0, left: 1, order: []}
 	tmp.qu.autobuyer = {enabled: false, limit: 1, mode: "amount", peakTime: 0}
-	tmp.qu.electrons = getBrandNewElectronData()]
+	tmp.qu.electrons = getBrandNewElectronData()
 	tmp.qu.disabledRewards = {}
 	tmp.qu.metaAutobuyerWait = 0
 	tmp.qu.multPower = {rg : 0, gb : 0, br : 0, total : 0}
