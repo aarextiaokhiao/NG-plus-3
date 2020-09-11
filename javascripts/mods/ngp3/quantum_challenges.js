@@ -237,6 +237,7 @@ function updateQCRewardsTemp() {
 }
 
 function getQCCost(num) {
+	if (player.achievements.includes("ng3p55")) return 0
 	if (num > 8) return quantumChallenges.costs[tmp.qu.pairedChallenges.order[num - 8][0]] + quantumChallenges.costs[tmp.qu.pairedChallenges.order[num - 8][1]]
 	return quantumChallenges.costs[num]
 }
