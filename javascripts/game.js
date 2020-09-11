@@ -2205,7 +2205,8 @@ function intergalacticDisplay(){
 	var shiftRequirement = getShiftRequirement(0);
 	if (player.achievements.includes("ng3p37") && shiftRequirement.tier > 7) {
 		document.getElementById("intergalacticLabel").parentElement.style.display = ""
-		let nanopart = tmp.nf.effects["dil_effect_exp"] || 1
+		let nanopart = 1
+		if (isNanoEffectUsed("dil_effect_exp")) nanopart = tmp.nf.effects["dil_effect_exp"] || 1
 		document.getElementById("intergalacticLabel").innerHTML = 
 			getGalaxyScaleName(tmp.igs) + 'Intergalactic Boost ' + 
 			(player.dilation.active || player.galacticSacrifice != undefined ? " (estimated)" : "") +
