@@ -7643,13 +7643,22 @@ function ngP3AchieveCheck(){
 	if (nG(getInfinitied(), Number.MAX_VALUE)) giveAchievement("Meta-Infinity confirmed?")
 	if (nG(getEternitied(), Number.MAX_VALUE)) giveAchievement("Everlasting Eternities")
 	if (player.options.secrets && player.options.secrets.ghostlyNews && !player.options.newsHidden) giveAchievement("Two tickers")
-	if (!tmp.ngp3l) {
-		if (player.ghostify.another && tmp.qu.quarks.gte(1/0)) giveAchievement("Is these another...")
-		if (player.ghostify.reference && minUQ.decays >= 2) giveAchievement("... reference to EC8?")
-		if (player.ghostify.hb.bosonicSemipowerment && player.ghostify.ghostlyPhotons.lights[7] >= tmp.leReq / 2) giveAchievement("Bosonic Semipowerment")
-		if (player.ghostify.times >= Math.pow(Number.MAX_VALUE, 1/4)) giveAchievement("The Ghostliest Side")
-		if (player.money.e >= 1e18) giveAchievement("Meta-Quintillion")
+	if (tmp.ngp3l) return 
+	if (player.ghostify.another && tmp.qu.quarks.gte(1/0)) giveAchievement("Is these another...")
+	if (player.ghostify.reference && minUQ.decays >= 2) giveAchievement("... reference to EC8?")
+	if (player.ghostify.hb.bosonicSemipowerment && player.ghostify.ghostlyPhotons.lights[7] >= tmp.leReq / 2) giveAchievement("Bosonic Semipowerment")
+	if (player.ghostify.times >= Math.pow(Number.MAX_VALUE, 1/4)) giveAchievement("The Ghostliest Side")
+	if (player.money.e >= 1e18) giveAchievement("Meta-Quintillion")
+	branches = ['r','g','b']
+	twoDecays = true
+	for (i = 0; i < 3; i++){
+		if (!player.quantum.tod[branches[i]].decays) {
+			twoDecays = false
+			break
+		}
+		if (player.quantum.tod[branches[i]].decays < 2) twoDecays = false	
 	}
+	if (unstableThisGhostify <= 10 && twoDecays) giveAchievement("... references to EC8?")
 }
 
 function updateNGpp17Reward(){
