@@ -104,14 +104,15 @@ function getUnstableGain(branch) {
 	return ret.times(Decimal.pow(2, getRDPower(branch) + 1)).min(Decimal.pow(10, Math.pow(2, 51)))
 }
 
-var unstableThisGhostify = 0
+player.unstableThisGhostify = 10
 
 function unstableQuarks(branch) {
 	if (tmp.qu.usedQuarks[branch].eq(0) || getUnstableGain(branch).lte(tmp.qu.tod[branch].quarks)) return
 	tmp.qu.tod[branch].quarks = tmp.qu.tod[branch].quarks.max(getUnstableGain(branch))
 	if (player.ghostify.milestones < 4) tmp.qu.usedQuarks[branch] = new Decimal(0)
 	if (player.ghostify.reference > 0) player.ghostify.reference--
-	unstableThisGhostify ++
+	if (player.unstableThisGhostify) player.unstableThisGhostify ++
+	else player.unstableThisGhostify = 10
 }
 
 function getBranchSpeed() {

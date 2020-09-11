@@ -7658,7 +7658,7 @@ function ngP3AchieveCheck(){
 		}
 		if (player.quantum.tod[branches[i]].decays < 2) twoDecays = false	
 	}
-	if (unstableThisGhostify <= 10 && twoDecays) giveAchievement("... references to EC8?")
+	if (player.unstableThisGhostify) if (player.unstableThisGhostify <= 10 && twoDecays) giveAchievement("... references to EC8?")
 }
 
 function updateNGpp17Reward(){

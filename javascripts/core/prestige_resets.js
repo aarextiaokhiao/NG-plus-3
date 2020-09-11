@@ -876,7 +876,7 @@ function doGhostifyResetStuff(implode, gain, amount, force, bulk, nBRU, nBEU){
 	player.quantum = getQuantumOnGhostifyData(bm, nBRU, nBEU)
 	player.old = false
 	player.dontWant = true	
-	unstableThisGhostify = 0
+	player.unstableThisGhostify = 0
 }
 
 
