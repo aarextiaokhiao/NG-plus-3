@@ -91,7 +91,7 @@ function quantum(auto, force, challid, bigRip = false, quick) {
     if (player.masterystudies !== undefined) if (!auto && !force && tmp.qu.bigRip.active) force = true
 	if (!(isQuantumReached()||force)||implosionCheck) return
 	var headstart = player.aarexModifications.newGamePlusVersion > 0 && !tmp.ngp3
-	if (player.aarexModifications.quantumConf&&!(auto||force)) if (!confirm(player.masterystudies?"Quantum will reset everything eternity resets, and "+(headstart?"also some other things like dilation":"also time studies, eternity challenges, dilation, "+(tmp.ngp3?"meta dimensions, and mastery studies":"and meta dimensions"))+". You will gain a quark and unlock various upgrades.":"But wait! Quantum will erases almost everything that you have and rewards nothing! However, this is not a win. You need to reach real Infinite antimatter to win! (it's impossible)")) return
+	if (player.aarexModifications.quantumConf&&!(auto||force)) if (!confirm(player.masterystudies?"Quantum will reset everything Eternity resets, and "+(headstart?"other things like Dilation":"including Time Studies, Eternity Challenges, Dilation, "+(tmp.ngp3?"Meta Dimensions, and Mastery Studies":"and Meta Dimensions"))+". You will gain a quark and unlock various upgrades.":"WARNING! Quantum wasn't fully implemented in NG++, so if you go Quantum now, you will gain quarks, but they'll have no use.")) return
 	if (!quantumed) if (!confirm("Are you sure you want to do that? You will lose everything you have!")) return
 	var pc=challid-8
 	if (tmp.ngp3) {
@@ -222,7 +222,7 @@ let quarkGain = function () {
 	}
 
 	var dlog = Math.log10(log)
-	let start = 4 //Starts at e10k.
+	let start = 4 // Starts at e10k.
 	if (!(player.aarexModifications.ngumuV || player.aarexModifications.nguepV)) start = 5
 	if (dlog > start) {
 		let capped = Math.floor(Math.log10(Math.max(dlog + 2 - start, 1)) / Math.log10(2))
@@ -258,7 +258,7 @@ function updateLastTenQuantums() {
 			var qkpm = tmp.qu.last10[i][1].dividedBy(tmp.qu.last10[i][0] / 600)
 			var tempstring = shorten(qkpm) + " QK/min"
 			if (qkpm<1) tempstring = shorten(qkpm*60) + " QK/hour"
-			var msg = "The quantum " + (i == 0 ? '1 quantum' : (i+1) + ' quantums') + " ago took " + timeDisplayShort(tmp.qu.last10[i][0], false, 3)
+			var msg = "The quantum " + (i == 0 ? '1 quantum' : (i + 1) + ' quantums') + " ago took " + timeDisplayShort(tmp.qu.last10[i][0], false, 3)
 			if (tmp.qu.last10[i][2]) {
 				if (typeof(tmp.qu.last10[i][2]) == "number") " in Quantum Challenge " + tmp.qu.last10[i][2]
 				else msg += " in Paired Challenge " + tmp.qu.last10[i][2][0] + " (QC" + tmp.qu.last10[i][2][1][0] + "+" + tmp.qu.last10[i][2][1][1] + ")"
@@ -275,10 +275,10 @@ function updateLastTenQuantums() {
 		tempTime = tempTime.dividedBy(listed)
 		tempQK = tempQK.dividedBy(listed)
 		var qkpm = tempQK.dividedBy(tempTime / 600)
-		var tempstring = shorten(qkpm) + " QK/min"
+		var tempstring = "(" + shorten(qkpm) + " QK/min)"
 		averageQk = tempQK
-		if (qkpm<1) tempstring = shorten(qkpm*60) + " QK/hour"
-		document.getElementById("averageQuantumRun").textContent = "Last " + listed + " quantums average time: "+ timeDisplayShort(tempTime, false, 3) + " Average QK gain: " + shortenDimensions(tempQK) + " QK. " + tempstring
+		if (qkpm < 1) tempstring = shorten(qkpm * 60) + " QK/hour"
+		document.getElementById("averageQuantumRun").textContent = "Average time of the last " + listed + " Quantums: "+ timeDisplayShort(tempTime, false, 3) + " | Average QK gain: " + shortenDimensions(tempQK) + " QK. " + tempstring
 	} else document.getElementById("averageQuantumRun").textContent = ""
 }
 

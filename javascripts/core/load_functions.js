@@ -503,7 +503,7 @@ function onLoad(noOffline) {
 		updateAchievements()
 		if (!inERS) player.replicanti.intervalCost = player.replicanti.intervalCost.dividedBy(1e20)
 	}
-	document.getElementById(inERS?"r22":"r35").appendChild(document.getElementById("Don't you dare to sleep"))
+	document.getElementById(inERS?"r22":"r35").appendChild(document.getElementById("Don't you dare sleep"))
 	document.getElementById(inERS?"r35":"r76").appendChild(document.getElementById("One for each dimension"))
 	document.getElementById(inERS?"r41":"r22").appendChild(document.getElementById("Fake News"))
 	document.getElementById(inERS?"r76":"r41").appendChild(document.getElementById("Spreading Cancer"))
@@ -1863,7 +1863,7 @@ function onLoad(noOffline) {
   document.getElementById("replicantitabbtn").style.display=player.infinityUpgradesRespecced?"none":""
   document.getElementById("replicantiresettoggle").textContent="Auto galaxy "+(player.replicanti.galaxybuyer?"ON":"OFF")+(player.timestudy.studies.includes(131)&&speedrunMilestonesReached<20?" (disabled)":"")
   document.getElementById("41desc").textContent=tsMults[41]()
-  document.getElementById("42desc").textContent=player.galacticSacrifice?"Galaxy cost multiplier is reduced by "+Math.round(tsMults[42]()*15)+"/15x.":"Galaxy cost increases by only "+(60*tsMults[42]())+" 8ths instead of 60."
+  document.getElementById("42desc").textContent=player.galacticSacrifice?"Galaxy cost multiplier is reduced by "+Math.round(tsMults[42]()*15)+"/15x.":"Galaxy cost increases by "+(60*tsMults[42]())+" 8ths instead of 60."
   document.getElementById("61desc").innerHTML=tsMults[61]()
   document.getElementById("62desc").textContent=tsMults[62]()
   document.getElementById("81desc").textContent=player.galacticSacrifice?"is cubed":"becomes 10x"
