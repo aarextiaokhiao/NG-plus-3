@@ -121,8 +121,8 @@ function getBranchSpeed() {
 	if (hasNU(4)) x = x.times(tmp.nu[2])
 	if (!tmp.ngp3l) {
 		if (player.achievements.includes("ng3p58")) x = x.times(Math.sqrt(player.meta.resets + 1))
-		if (player.ghostify.milestones >= 14) x = x.times(getMilestone14SpinMult())
 	}
+	if (player.ghostify.milestones >= 14) x = x.times(getMilestone14SpinMult())
 	return x
 }
 
@@ -131,7 +131,7 @@ function getBranchFinalSpeed() {
 }
 
 function getDecayRate(branch) {
-	let ret = Decimal.pow(2, getBU1Power(branch) * Math.max((getRadioactiveDecays(branch) - 8) / 10, 1)).div(getBranchUpgMult(branch, 3)).div(Decimal.pow(2, getRDPower(branch) - 4))
+	let ret = Decimal.pow(2, getBU1Power(branch) * Math.max((getRadioactiveDecays(branch) - 8) / 10, 1)).div(getBranchUpgMult(branch, 3)).div(Decimal.pow(2, Math.max(getRDPower(branch) - 4)))
 	if (branch == "r") {
 		if (GUBought("rg8")) ret = ret.div(getGU8Effect("rg"))
 	}
@@ -147,7 +147,7 @@ function getDecayRate(branch) {
 
 function getMilestone14SpinMult(){
 	var logSpin = getLogTotalSpin()
-	if (logSpin <= 25) return 10
+	if (logSpin <= 25 || tmp.ngp3l) return 10
 	return Math.pow(logSpin, 2) / 625 * 10
 }
 
