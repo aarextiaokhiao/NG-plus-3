@@ -22,7 +22,7 @@ function NC10NDCostsOnReset(){
 
 function replicantsResetOnQuantum(challid){
 	tmp.qu.replicants.requirement = new Decimal("1e3000000")
-	tmp.qu.replicants.quarks = (!(challid > 0) && player.achievements.includes("ng3p45")) ? tmp.qu.replicants.quarks.pow(2/3) : new Decimal(0)
+	tmp.qu.replicants.quarks = (!(challid > 0) && player.achievements.includes("ng3p45") && !tmp.ngp3l) ? tmp.qu.replicants.quarks.pow(2/3) : new Decimal(0)
 	tmp.qu.replicants.eggonProgress = new Decimal(0)
 	tmp.qu.replicants.eggons = new Decimal(0)
 	tmp.qu.replicants.babyProgress = new Decimal(0)
@@ -30,7 +30,7 @@ function replicantsResetOnQuantum(challid){
 	tmp.qu.replicants.growupProgress = new Decimal(0)
 	for (let d = 1; d <= 8; d++) {
 		if (d == 8 || tmp.eds[d].perm < 10) tmp.qu.replicants.quantumFood += Math.round(tmp.eds[d].progress.toNumber() * 3) % 3
-		if (d != 1 || !player.achievements.includes("ng3p46") || challid > 0){
+		if (d != 1 || (!player.achievements.includes("ng3p46") && !tmp.ngp3l) || challid > 0) {
 			tmp.eds[d].workers = new Decimal(tmp.eds[d].perm)
 			tmp.eds[d].progress = new Decimal(0)
 		} else {
