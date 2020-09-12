@@ -1,7 +1,7 @@
 //Bosonic Lab
 function canUnlockBosonicLab() {
 	let max = getMaximumUnstableQuarks()
-	return (max.decays > 5 || max.quarks.e >= (tmp.ngp3l ? 1e10 : 5e10)) && (tmp.ngp3l || player.ghostify.ghostlyPhotons.enpowerments >= 3)
+	return (max.decays > 5 || max.quarks.e >= (tmp.ngp3l ? 1e10 : 5e10)) && max.decays > 4 && (tmp.ngp3l || player.ghostify.ghostlyPhotons.enpowerments >= 3)
 }
   
 function updateBLUnlocks() {
