@@ -269,7 +269,7 @@ var masteryStudies = {
 		251: "Remote galaxy scaling starts 1 galaxy later per 3,000 dimension boosts.",
 		252: "Remote galaxy scaling starts 1 galaxy later per 7 free galaxies.",
 		253: function() {
-			return "Remote antimatter galaxy scaling starts "+(tmp.ngp3l?"20 galaxies later per 9 extra replicated galaxies.":"1 galaxy later per 4 total replicated galaxies.")
+			return "Remote galaxy scaling starts "+(tmp.ngp3l?"20 galaxies later per 9 extra replicated galaxies.":"1 galaxy later per 4 total replicated galaxies.")
 		},
 		261: "Dimension Boost costs scale by another 1 less.",
 		262: "Dimension Boosts boost Meta Dimensions at a reduced rate.",
@@ -284,15 +284,15 @@ var masteryStudies = {
 		282: "Replicanti multiplier boosts Meta Dimensions at a greatly reduced rate.",
 		291: "You gain 1% of your EP gained on Eternity per second.",
 		292: "You can gain tachyon particles without disabling dilation.",
-		301: "Remote cost scaling starts 1 galaxy later per 4.15 extra replicated galaxies.",
+		301: "Remote galaxy scaling starts 1 galaxy later per 4.15 extra replicated galaxies.",
 		302: "You can buy all Time Studies before the mastery portal.",
 		303: "Meta Dimensions are stronger based on your galaxies.",
 		311: "Replicanti boost to all Infinity Dimensions is 17.3x stronger.",
 		312: "Meta-dimension boosts are 4.5% stronger and cost scale by 1 less.",
 		321: "Buff multiplier per 10 normal Dimensions to <span id='321effect'></span>x if it is 1x.",
 		322: "Tickspeed boosts DT production at greatly reduced rate.",
-		323: "Cancel dilation penalty for Normal Dimensions boost from replicanti.",
-		331: "Dimension Supersonic scaling starts 240,000 later, and cost increase is reduced by 3.",
+		323: "Cancel dilation penalty for the Normal Dimension boost from replicanti.",
+		331: "Dimension Supersonic scaling starts 240,000 later, and the cost increase is reduced by 3.",
 		332: "You gain replicanti faster based on your normal galaxies.",
 		341: "Preons boost dilated time production at reduced rate.",
 		342: "All replicated galaxies are stronger and use the same formula.",
@@ -301,7 +301,7 @@ var masteryStudies = {
 		351: "Time Shards boost all Meta Dimensions.",
 		361: "Hatch speed is faster based on your tachyon particles.",
 		362: function() {
-			return "Reduce the softcap for preon boost"+(player.aarexModifications.ngumuV?", but preons reduce the green power effect.":".")
+			return "Reduce the softcap for the preon boost"+(player.aarexModifications.ngumuV?", but preons reduce the green power effect.":".")
 		},
 		371: "Hatch speed is faster based on your extra replicated galaxies.",
 		372: "Hatch speed is faster based on your time shards.",

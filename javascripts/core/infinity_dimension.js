@@ -213,8 +213,8 @@ function getInfBuy10Mult(tier) {
 	return ret
 }
 
-function buyManyInfinityDimension(tier) {
-  	if (player.pSac !== undefined) buyIDwithAM(tier)
+function buyManyInfinityDimension(tier, auto) {
+  	if (player.pSac !== undefined) buyIDwithAM(tier, auto)
   	if (player.eterc8ids <= 0 && player.currentEternityChall == "eterc8") return false
   	var dim = player["infinityDimension" + tier]
   	var cost = getIDCost(tier)
@@ -234,7 +234,7 @@ function buyManyInfinityDimension(tier) {
 	return true
 }
 
-function buyMaxInfDims(tier) {
+function buyMaxInfDims(tier, auto) {
 	var dim = player["infinityDimension"+tier]
 	var cost = getIDCost(tier)
 	if (player.infinityPoints.lt(cost)) return false
@@ -248,7 +248,7 @@ function buyMaxInfDims(tier) {
 	dim.amount = dim.amount.plus(10 * toBuy);
 	dim.power = dim.power.times(Decimal.pow(getInfBuy10Mult(tier), toBuy))
 	dim.baseAmount += 10 * toBuy
-	buyManyInfinityDimension(tier)
+	buyManyInfinityDimension(tier, auto)
 }
 
 function updateInfinityPowerEffects() {

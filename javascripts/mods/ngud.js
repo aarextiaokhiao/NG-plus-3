@@ -272,7 +272,7 @@ function reverseDilation () {
 	if (!canReverseDilation()) return;
 	if (player.options.exdilationconfirm) if (!confirm('Reversing dilation will make you lose all your tachyon particles, ' +
 							   'dilated time, dilation upgrades, and blackhole power, but you will gain ex-dilation ' +
-							   'that makes repeatable upgrades more powerful. Are you sure you want to do this?')) return;
+							   'that makes repeatable upgrades more powerful and reduces the severity of dilation. Are you sure you want to do this?')) return;
 	var eterConf = player.options.eternityconfirm
 	player.options.eternityconfirm = false
 	eternity(true);
