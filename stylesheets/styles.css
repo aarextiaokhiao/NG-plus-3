@@ -1519,6 +1519,10 @@ button {
     font-size: 20px;
 }
 
+.milestoneTextSmall {
+    font-size: 15px;
+}
+
 #production {
     font-size: 12px;
 }
@@ -1960,15 +1964,24 @@ br {
     position: relative;
 }
 
-.qtable, #gluonupgrades, #lights {
+.qtable, .qtable_4col, #gluonupgrades {
 	width:100%
 }
 
 .qtable td {
-	min-width:33%;
-	width:33%;
-	max-width:33%;
-	text-align:center
+	min-width: 33%;
+	width: 33%;
+	max-width: 33%;
+	text-align: center;
+	vertical-align: 0
+}
+
+.qtable_4col td {
+	min-width: 25%;
+	width: 25%;
+	max-width: 25%;
+	text-align: center;
+	vertical-align: 0
 }
 
 .red { color: #bf0000 }
@@ -2118,7 +2131,7 @@ br {
 	color: #999999
 }
 
-.nanofieldreward {
+.nfReward {
 	background: black !important;
 	border: 1px solid #4c4c4c;
 	border-radius: 4px;
@@ -2133,7 +2146,7 @@ br {
 	transition-duration: 0.2s
 }
 
-.nanofieldrewardlocked {
+.nfRewardlocked {
     background: #A3A3A3;
     border: 1px solid #B84B5F;
 	border-radius: 4px;
@@ -2155,7 +2168,7 @@ br {
 	border: 1px solid #3f0000;
 	box-shadow: inset 0px 0px 5px 0px #7f0000;
 	text-shadow: 0px 0px 2px #1f0000, 0px 0px 2px #ff0000;
-	color: #7f0000
+	color: #bf0000
 }
 .gluonupgrade.g {
 	background-color: #001f00 !important;
@@ -2169,11 +2182,11 @@ br {
 	border: 1px solid #00003f;
 	box-shadow: inset 0px 0px 5px 0px #00007f;
 	text-shadow: 0px 0px 2px #00001f, 0px 0px 2px #0000ff;
-	color: #00009f
+	color: #0000ff
 }
 
 .gluonupgrade.r:hover {
-	background-color: #7f0000 !important;
+	background-color: #bf0000 !important;
 	border: 1px solid #3f0000;
 	box-shadow: inset 0px 0px 5px 0px #bf0000;
 	color: #1f0000;
@@ -2187,7 +2200,7 @@ br {
 	cursor: pointer
 }
 .gluonupgrade.b:hover {
-	background-color: #00007f !important;
+	background-color: #0000ff !important;
 	border: 1px solid #00003f;
 	box-shadow: inset 0px 0px 5px 0px #0000bf;
 	color: #00001f;
@@ -2376,13 +2389,6 @@ br {
 	width: 50px
 }
 
-#lights td {
-	min-width:25%;
-	width:25%;
-	max-width:25%;
-	text-align:center
-}
-
 .gluonupgrade.gph {
 	background: #ccc8b7 !important;
 	border: 1px solid #bfaf5f;
@@ -2397,24 +2403,64 @@ br {
 	cursor: pointer
 }
 
+td.red {
+	background: rgba(191, 0, 0, 0.25)
+}
+
 .orange {
 	color: #bf5f00
+}
+
+td.orange {
+	background: rgba(191, 95, 0, 0.25)
 }
 
 .yellow {
 	color: #bfbf00
 }
 
+td.yellow {
+	background: rgba(191, 191, 0, 0.25)
+}
+
+td.green {
+	background: rgba(0, 191, 0, 0.25)
+}
+
+td.blue {
+	background: rgba(0, 0, 191, 0.25)
+}
+
 .indigo {
 	color: #2f00bf
+}
+
+td.indigo {
+	background: rgba(47, 0, 191, 0.25)
 }
 
 .violet {
 	color: #5f00bf
 }
 
+td.violet {
+	background: rgba(95, 0, 191, 0.25)
+}
+
 .uv {
 	color: #8f00bf
+}
+
+td.uv {
+	background: rgba(143, 0, 191, 0.25)
+}
+
+.lEp {
+	color: #bfaf5f
+}
+
+td.lEp {
+	background: rgba(191, 175, 95, 0.25)
 }
 
 #bRunes {
@@ -2606,6 +2652,53 @@ br {
 
 .tau #zNeSymbol {
 	transform: translate(-50%, 0%)
+}
+
+.gluonupgrade.hb {
+	background: radial-gradient(#ffff00, transparent 50%, transparent 100%), radial-gradient(#7f7f00, #7f7f00, transparent 60%, transparent 100%), linear-gradient(transparent, #7f7f00 50%, transparent 100%), radial-gradient(#3f3f00, black 50%, #3f3f00 100%);
+	background-position: center;
+	border: 1px solid #7f7f7f;
+	color: white;
+	text-shadow: 0px 0px 3px #3f3f00, 0px 0px 6px #3f3f00;
+	animation: hb 5s ease infinite
+}
+
+.gluonupgrade.hb:hover {
+	border-color: #ffff00;
+	box-shadow: 0px 0px 12px #ffff00, inset 0px 0px 24px #ffff00;
+	cursor: pointer
+}
+
+.subFactorA {
+	color: #c73415
+}
+
+td.subFactorA {
+	background-color: rgba(199, 52, 21, 0.25)
+}
+
+.subFactorE {
+	color: #38cbea
+}
+
+td.subFactorE {
+	background-color: rgba(56, 203, 234, 0.25)
+}
+
+.subFactorZ {
+	color: #7f7f7f
+}
+
+td.subFactorZ {
+	background-color: rgba(127, 127, 127, 0.25)
+}
+
+.subFactorH {
+	color: #bfbf00
+}
+
+td.subFactorH {
+	background-color: rgba(191, 191, 0, 0.25)
 }
 
 #antipreon {
@@ -2821,27 +2914,27 @@ screen and (max-width: 480px) {
 }
 
 @keyframes rgupg {
-	0% {background-color: #1f0000; border: 1px solid #3f0000; box-shadow: inset 0px 0px 5px 0px #7f0000; color: #7f0000}
+	0% {background-color: #1f0000; border: 1px solid #3f0000; box-shadow: inset 0px 0px 5px 0px #7f0000; color: #bf0000}
 	25% {background-color: #1f1f00; border: 1px solid #3f3f00; box-shadow: inset 0px 0px 10px 0px #7f7f00; color: #7f7f00}
 	50% {background-color: #001f00; border: 1px solid #003f00; box-shadow: inset 0px 0px 20px 0px #007f00; color: #007f00}
 	75% {background-color: #1f1f00; border: 1px solid #3f3f00; box-shadow: inset 0px 0px 10px 0px #7f7f00; color: #7f7f00}
-	100% {background-color: #1f0000; border: 1px solid #3f0000; box-shadow: inset 0px 0px 5px 0px #7f0000; color: #7f0000}
+	100% {background-color: #1f0000; border: 1px solid #3f0000; box-shadow: inset 0px 0px 5px 0px #7f0000; color: #bf0000}
 }
 
 @keyframes gbupg {
 	0% {background-color: #001f00; border: 1px solid #003f00; box-shadow: inset 0px 0px 5px 0px #007f00; color: #007f00}
 	25% {background-color: #001f1f; border: 1px solid #003f3f; box-shadow: inset 0px 0px 5px 0px #007f7f; color: #007f7f}
-	50% {background-color: #00001f; border: 1px solid #00003f; box-shadow: inset 0px 0px 5px 0px #00007f; color: #00007f}
+	50% {background-color: #00001f; border: 1px solid #00003f; box-shadow: inset 0px 0px 5px 0px #00007f; color: #0000df}
 	75% {background-color: #001f1f; border: 1px solid #003f3f; box-shadow: inset 0px 0px 5px 0px #007f7f; color: #007f7f}
 	100% {background-color: #001f00; border: 1px solid #003f00; box-shadow: inset 0px 0px 5px 0px #007f00; color: #007f00}
 }
 
 @keyframes brupg {
-	0% {background-color: #00001f; border: 1px solid #00003f; box-shadow: inset 0px 0px 5px 0px #00007f; color: #00007f}
+	0% {background-color: #00001f; border: 1px solid #00003f; box-shadow: inset 0px 0px 5px 0px #00007f; color: #0000df}
 	25% {background-color: #1f001f; border: 1px solid #3f003f; box-shadow: inset 0px 0px 5px 0px #7f007f; color: #7f007f}
-	50% {background-color: #1f0000; border: 1px solid #3f0000; box-shadow: inset 0px 0px 5px 0px #7f0000; color: #7f0000}
+	50% {background-color: #1f0000; border: 1px solid #3f0000; box-shadow: inset 0px 0px 5px 0px #7f0000; color: #bf0000}
 	75% {background-color: #1f001f; border: 1px solid #3f003f; box-shadow: inset 0px 0px 5px 0px #7f007f; color: #7f007f}
-	100% {background-color: #00001f; border: 1px solid #00003f; box-shadow: inset 0px 0px 5px 0px #00007f; color: #00007f}
+	100% {background-color: #00001f; border: 1px solid #00003f; box-shadow: inset 0px 0px 5px 0px #00007f; color: #0000df}
 }
 
 @keyframes rgupghover {
@@ -2939,5 +3032,17 @@ screen and (max-width: 480px) {
 	}
 	100%{
 		top: 0px
+	}
+}
+
+@keyframes hb { 
+	0%{
+		background-size: 100% 100%, 100% 100%, 100% 100%, 100% 100%
+	}
+	50%{
+		background-size: 120% 120%, 110% 110%, 120% 120%, 80% 80%
+	}
+	100%{
+		background-size: 100% 100%, 100% 100%, 100% 100%, 100% 100%
 	}
 }

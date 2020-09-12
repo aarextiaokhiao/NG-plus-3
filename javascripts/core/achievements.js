@@ -19,7 +19,7 @@ const allAchievements = {
   r32 : "The Gods are pleased",
   r33 : "That's a lot of infinites",
   r34 : "You didn't need it anyway",
-  r35 : "Don't you dare to sleep",
+  r35 : "Don't you dare sleep",
   r36 : "Claustrophobic",
   r37 : "That's fast!",
   r38 : "I don't believe in Gods",
@@ -181,6 +181,14 @@ const allAchievements = {
   ng3p86 : "Back to Challenge One",
   ng3p87 : "The Deep Challenge",
   ng3p88 : "I give up.",
+  ng3p91 : "The Holy Particle",
+  ng3p92 : "Bright as the Anti-Sun",
+  ng3p93 : "Are these another...",
+  ng3p94 : "... references to EC8?",
+  ng3p95 : "Bosonic Semipowerment",
+  ng3p96 : "Not-so-very-challenging",
+  ng3p97 : "The Ghostliest Side",
+  ng3p98 : "Meta-Quintillion",
   s11 : "The first one's always free",
   s12 : "Just in case",
   s13 : "It pays to have respect",
@@ -212,7 +220,15 @@ const allAchievements = {
   ng3ps15 : "Boo!",
   ng3ps16 : "Up and Down and Up and Down...",
   ng3ps17 : "Did you not understand the automation?",
-  ng3ps18 : "The Ultimate Challenge"
+  ng3ps18 : "The Ultimate Challenge",
+  ng3ps21 : "The Forbidden Layer",
+  ng3ps22 : "400% Breaking News",
+  ng3ps23 : "keyboard broke?",
+  ng3ps24 : "Scared of ghosts?",
+  ng3ps25 : "This is NOT a clicker game!",
+  ng3ps26 : "Deny the afterlife",
+  ng3ps27 : "Revolution, when?",
+  ng3ps28 : "Prestige No-lifer"
 };
 const secretAchievementTooltips = {
 	s11 : "Click on this achievement.",
@@ -246,7 +262,15 @@ const secretAchievementTooltips = {
 	ng3ps15 : "You have a 1/1,000 chance of getting this achievement every time 'You became a ghost!' animation appears.",
 	ng3ps16 : 'Press the "Continue to mastery studies." button and the "Lead back to time studies." button 100 times each.',
 	ng3ps17 : "Manually extract 20 runes in the row, all in 1 game tick for each rune.",
-	ng3ps18 : "Be in 20 unique challenges at the same time."
+	ng3ps18 : "Be in 20 unique challenges at the same time.",
+	ng3ps21 : "Import Zombify, which is a cancelled layer.",
+	ng3ps22 : "Read 400 unique news tickers.",
+	ng3ps23 : "You have a 1/1,000,000 chance of getting this achievement every time you press a key.",
+	ng3ps24 : "Become a ghost with at least 1,000x quantumed stat after getting all Brave Milestones.",
+	ng3ps25 : "Click the antimatter display 10 times in a single session.",
+	ng3ps26 : "Deny the Ghostify confirmation 15 times in a single session.",
+	ng3ps27 : "Type 1776 on your keyboard.",
+	ng3ps28 : "Quantum 10,000 times."
 };
 const allAchievementNums = Object.invert(allAchievements)
 // to retrieve by value: Object.keys(allAchievements).find(key => allAchievements[key] === "L4D: Left 4 Dimensions");
@@ -256,24 +280,23 @@ function clearOldAchieves(){
     var achieveKey;
     var values = Object.keys(allAchievements).map(function(e) { return allAchievements[e] });
     for (var i = 0; i < player.achievements.length; i++) {
-      if (values.indexOf(player.achievements[i]) !== -1 ) {  // does index[i] exist in allAchievements as a value?
-        toRemove.push(i); // mark it for removal
-        achieveKey = Object.keys(allAchievements).find(function(key){ return allAchievements[key] === player.achievements[i];});
-        if (!player.achievements.includes(achieveKey)) { // check if new key already exists as well
-            player.achievements.push(achieveKey); // if not... add it
+        if (values.indexOf(player.achievements[i]) !== -1 ) {  // does index[i] exist in allAchievements as a value?
+            toRemove.push(i); // mark it for removal
+            achieveKey = Object.keys(allAchievements).find(function(key){ return allAchievements[key] === player.achievements[i];});
+            if (!player.achievements.includes(achieveKey)) { // check if new key already exists as well
+                player.achievements.push(achieveKey); // if not... add it
+            }
+        } else if (allAchievements[player.achievements[i]] === undefined){
+            var r = player.achievements[i].indexOf("r")
+            if (r < 0) r = 0
+            else r=parseInt(player.achievements[i].split("r")[1])
+            if (r < 140) toRemove.push(i)
         }
-      } else if (allAchievements[player.achievements[i]] === undefined){
-        var r=player.achievements[i].indexOf("r")
-        if (r<0) r=0
-        else r=parseInt(player.achievements[i].split("r")[1])
-        if (r<140) toRemove.push(i)
-      }
     }
-
 
     toRemove.reverse();
     for (var i = 0; i < toRemove.length; i++) {
-      player.achievements.splice(toRemove[i], 1);
+        player.achievements.splice(toRemove[i], 1);
     }
 }
 
@@ -282,22 +305,22 @@ function giveAchievement(name, noUpdate) {
 
 	if (player.achievements.includes(allAchievementNums[name])) return false
 
-	var ngudAchId=allAchievementNums[name].split("ngud")[1]
-	if (ngudAchId!=undefined) if (player.exdilation==undefined) return
+	var ngudAchId = allAchievementNums[name].split("ngud")[1]
+	if (ngudAchId != undefined) if (player.exdilation == undefined) return
 
-	var ngppAchId=allAchievementNums[name].split("ngpp")[1]
-	if (ngppAchId!=undefined) {
-		ngppAchId=parseInt(ngppAchId)
-		if (player.meta==undefined&&(player.exdilation==undefined||(ngppAchId!=13&&ngppAchId!=18))) return
+	var ngppAchId = allAchievementNums[name].split("ngpp")[1]
+	if (ngppAchId != undefined) {
+		ngppAchId = parseInt(ngppAchId)
+		if (player.meta == undefined && (player.exdilation == undefined || (ngppAchId != 13 && ngppAchId != 18))) return
 	}
 
-	if (allAchievementNums[name].split("ng3p")[1]&&!player.masterystudies) return false
+	if (allAchievementNums[name].split("ng3p")[1] && !tmp.ngp3) return false
 
 	if (player.boughtDims) {
-		var r=allAchievementNums[name].split("r")[1]
-		if (r<0) r=0
-		else r=parseInt(allAchievementNums[name].split("r")[1])
-		if (r==105||(r!=117&&r>110)) return false
+		var r = allAchievementNums[name].split("r")[1]
+		if (r < 0) r = 0
+		else r = parseInt(allAchievementNums[name].split("r")[1])
+		if (r == 105 || (r != 117 && r > 110)) return false
 	}
 
 	player.achievements.push(allAchievementNums[name])
@@ -309,25 +332,29 @@ function giveAchievement(name, noUpdate) {
 	if (name == "The swarm" && player.boughtDims) document.getElementById('replicantigalaxypowerdiv').style.display=""
 	if (name == "I told you already, time is relative" || name == "I'm so meta" || name == "To the new dimension!") updateHotkeys()
 	if (name == "GAS GAS GAS") {
-		for (i=1;i<9;i++) document.getElementById("td"+i+'auto').style.visibility="visible"
-		document.getElementById('togglealltimedims').style.display=""
-		document.getElementById('epmultauto').style.display=""
-		if (player.aarexModifications.ngudpV) document.getElementById("blackholeAuto").style.display=""
+		for (i = 1; i <= 8; i++) document.getElementById("td" + i + 'auto').style.visibility="visible"
+		document.getElementById('togglealltimedims').style.display = ""
+		document.getElementById('epmultauto').style.display = ""
+		if (player.aarexModifications.ngudpV) document.getElementById("blackholeAuto").style.display = ""
 	}
 	if (name == "It will never be enough") document.getElementById('replicantibulkmodetoggle').style.display="inline-block"
 	if (name == "I already got rid of you..." || name == "No dilation means no production.") {
 		player.dilation.bestTP = Decimal.max(player.dilation.tachyonParticles, player.dilation.bestTP)
-		document.getElementById('bestTP').style.display=""
-		document.getElementById('bestTP').textContent="Your best ever Tachyon particles was "+shorten(player.dilation.bestTP)+"."
+		document.getElementById('bestTP').style.display = ""
+		document.getElementById('bestTP').textContent = "Your best ever Tachyon particles was "+shorten(player.dilation.bestTP)+"."
 	}
-	if (name == "Twice in the row") document.getElementById('toggleautoquantummode').style.display=""
-	if (name == "Stop blocking me!") document.getElementById('autoReset').style.display=""
+	if (name == "Twice in the row") document.getElementById('toggleautoquantummode').style.display = ""
+	if (name == "Stop blocking me!") document.getElementById('autoReset').style.display = ""
+	if (name == "To the new dimension!") tmp.qu.bigRip.bestGals = 1
 	if (name == "Quantum doesn't take so long") {
 		updateAutobuyers()
 		updateAutoEterMode()
 		loadAutoBuyerSettings()
 	}
 	if (name == "Kee-hee-hee!" && (player.achievements.includes("ng3p18") || player.achievements.includes("ng3p37"))) setAndMaybeShow('bestTPOverGhostifies',true,'"Your best-ever Tachyon particles was "+shorten(player.dilation.bestTPOverGhostifies)+"."')
+	if (name == "Bright as the Anti-Sun" && !tmp.bl.upgrades.includes(32)) tmp.bl.upgrades.push(32)
+	if (name == "... references to EC8?") updateTODStuff()
+	if (name == "Not-so-very-challenging") updateQuantumChallenges()
     if (!noUpdate) {
 		if (name == "A sound financial decision") localStorage.setItem(btoa("dsAM_asfd"),"")
 		else $.notify(name, "success");
@@ -339,12 +366,15 @@ function updateAchievements() {
 	var amount = 0
 	var rowsShown = 0
 	var rowsNum = 0
-	for (var i=1; i<24; i++) {
+	for (var i=1; i<25; i++) {
 		var shown=true
 		var rowid=i
+		var rownum=i
 		if (i>15) {
 			shown=!(!player.masterystudies)
-			rowid="ng3p"+(i-15)
+			rownum=i-15
+			if (rownum>8) shown=shown&&!tmp.ngp3l
+			rowid="ng3p"+rownum
 		} else if (i>14) {
 			shown=player.meta!=undefined
 			rowid="ngpp1"
@@ -404,11 +434,12 @@ function updateAchievements() {
 
 	rowsShown = 0
 	rowsNum = 0
-	for (var i=1; i<document.getElementById("secretachievementtable").children[0].children.length+1; i++) {
+	for (var i=1; i<=document.getElementById("secretachievementtable").children[0].children.length; i++) {
 		var shown=true
 		var rowid="secretAchRow"+i
 		if (i>3) {
-			shown=player.masterystudies!==undefined
+			shown=tmp.ngp3
+			if (shown&&i>4) shown=!tmp.ngp3l
 			rowid="secretAchRowng3p"+(i-3)
 		}
 		var n = 0

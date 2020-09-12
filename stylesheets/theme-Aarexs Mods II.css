@@ -87,7 +87,7 @@ button, div.storebtn {
 	color: #0072e5 !important
 }
 
-.unavailablebtn, .infinistorebtnlocked, .lockedchallengesbtn, .newdimlocked, .timestudylocked, .milestonerewardlocked, .dilationupglocked, .dilationupgrebuyablelocked, .nanofieldrewardlocked {
+.unavailablebtn, .infinistorebtnlocked, .lockedchallengesbtn, .newdimlocked, .timestudylocked, .milestonerewardlocked, .dilationupglocked, .dilationupgrebuyablelocked, .nfRewardlocked, .eternitychallengestudylocked {
 	background-color: #999999 !important
 }
 
@@ -454,7 +454,7 @@ button, div.storebtn {
     background-color: #4c4c4c !important
 }
 
-#quantumFoodAmount, #workerProgress, #growupProgress, #quantumFoodAmountED, #quarkEnergy, #quarkEnergyRate, #quarkPower, #quarkPowerThreshold, #rewards, #rewards_AP {
+#quarkEnergy, #quantumFoodAmount, #workerProgress, #growupProgress, #quantumFoodAmountED, #preonEnergy, #quarkEnergyRate, #quarkPower, #quarkPowerThreshold, #rewards, #rewards_AP {
 	color: #39e539 !important
 }
 
@@ -470,7 +470,7 @@ button, div.storebtn {
 	background-color: #e59257 !important
 }
 
-#dilstudy12.dilationupgbought, #nanofieldtabbtn button, #produceQuarkCharge, .nanofieldreward {
+#dilstudy12.dilationupgbought, #nanofieldtabbtn button, #produceQuarkCharge, .nfReward {
 	background-color: #4c4c4c !important;
 	color: #e5e5e5 !important;
 	box-shadow: 1px 2px rgba(229,229,229,0.4);
@@ -615,7 +615,7 @@ button, div.storebtn {
 	color: #e57200
 }
 
-.yellow {
+.yellow, #hbUnspent, #bosonicFactorEffect {
 	color: #e5e500
 }
 
@@ -717,6 +717,19 @@ button, div.storebtn {
 
 .tau #zNeSymbol {
 	transform: translate(-50%, 10%)
+}
+
+.gluonupgrade.hb {
+	background: radial-gradient(#e5e500, transparent 50%, transparent 100%), radial-gradient(#727200, #727200, transparent 60%, transparent 100%), linear-gradient(transparent, #727200 50%, transparent 100%), radial-gradient(#3f3f00, #191919 50%, #3f3f00 100%);
+	background-position: center;
+	box-shadow: 0px 0px 0px transparent, inset 0px 0px 0px transparent, 1px 2px rgba(229,229,229,0.4);
+	color: #e5e5e5 !important;
+	text-shadow: 0px 0px 3px #3f3f00, 0px 0px 6px #3f3f00;
+	animation: hb 5s ease infinite
+}
+
+.gluonupgrade.hb:hover {
+	box-shadow: 0px 0px 12px #e5e500, inset 0px 0px 24px #e5e500, 1px 2px rgba(229,229,229,0.4)
 }
 
 @keyframes rg {

@@ -69,11 +69,11 @@ body {
     background-color: #00e500 !important;
     color: #191919 !important
 }
-.unavailablebtn, .infinistorebtnlocked, .newdimlocked, .milestonerewardlocked, .eternityupbtnlocked, .eternityttbtnlocked, .lockedchallengesbtn, .dilationupglocked, .dilationupgrebuyablelocked, .nanofieldrewardlocked, .gluonupgradebought.bigripoff {
+.unavailablebtn, .infinistorebtnlocked, .newdimlocked, .milestonerewardlocked, .eternityupbtnlocked, .eternityttbtnlocked, .lockedchallengesbtn, .dilationupglocked, .dilationupgrebuyablelocked, .nfRewardlocked, .gluonupgradebought.bigripoff {
     border-color: #e50000 !important;
     color: #e5e5e5 !important
 }
-.unavailablebtn:hover, .infinistorebtnlocked:hover, .newdimlocked:hover, .infinistorebtnbought:hover, .onchallengebtn:hover, .completedchallengesbtn:hover, .milestonerewardlocked:hover, .milestonereward:hover, .timestudylocked:hover, .eternityupbtnlocked:hover, .eternityttbtnlocked:hover, .eternitychallengestudylocked:hover, .lockedchallengesbtn:hover, .dilationupglocked:hover, .dilationupgbought:hover, .dilationupgrebuyablelocked:hover, .dilationupgrebuyablebought:hover, .upgbought:hover, .nanofieldrewardlocked:hover, .gluonupgradebought.bigripoff:hover {
+.unavailablebtn:hover, .infinistorebtnlocked:hover, .newdimlocked:hover, .infinistorebtnbought:hover, .onchallengebtn:hover, .completedchallengesbtn:hover, .milestonerewardlocked:hover, .milestonereward:hover, .timestudylocked:hover, .eternityupbtnlocked:hover, .eternityttbtnlocked:hover, .eternitychallengestudylocked:hover, .lockedchallengesbtn:hover, .dilationupglocked:hover, .dilationupgbought:hover, .dilationupgrebuyablelocked:hover, .dilationupgrebuyablebought:hover, .upgbought:hover, .nfRewardlocked:hover, .gluonupgradebought.bigripoff:hover {
     background-color: #191919 !important;
     color: #e5e5e5 !important
 }
@@ -467,7 +467,7 @@ strong { color: #0072e5 }
 #reduceHatchSpeed.storebtn { border: 2px solid #e5dab7 !important }
 #reduceHatchSpeed.storebtn:hover { background-color: #e5dab7 !important }
 #dilstudy12.dilationupg, #nanofieldtabbtn button { border: 2px solid #999999 !important }
-#produceQuarkCharge, .nanofieldreward { 
+#produceQuarkCharge, .nfReward { 
 	background-color: #191919 !important;
 	border: 1px solid #999999 !important;
 	text-shadow: none;
@@ -478,10 +478,10 @@ strong { color: #0072e5 }
 	color: #191919;
 	text-shadow: none
 }
-#quarkEnergy, #quarkEnergyRate, #quarkPowerThreshold { color: #72e500 !important }
+#quarkEnergy, #preonEnergy, #quarkEnergyRate, #quarkPowerThreshold { color: #72e500 !important }
 #quarkPower, #rewards, #rewards_AP { color: #ace572 !important }
 #quarkAntienergy, #quarkAntienergyRate, #quarkChargeProductionCap { color: #4c0099 !important }
-.nanofieldreward:hover { 
+.nfReward:hover { 
 	color: #e5e5e5 !important;
 	text-shadow: none
 }
@@ -621,7 +621,7 @@ strong { color: #0072e5 }
 .orange {
 	color: #e57200
 }
-.yellow {
+.yellow, #hbUnspent, #bosonicFactorEffect {
 	color: #e5e500
 }
 .indigo {
@@ -702,6 +702,18 @@ strong { color: #0072e5 }
 }
 .tau #zNeSymbol {
 	transform: translate(-50%, 10%)
+}
+.gluonupgrade.hb {
+	background: radial-gradient(#e5e500, transparent 50%, transparent 100%), radial-gradient(#727200, #727200, transparent 60%, transparent 100%), linear-gradient(transparent, #727200 50%, transparent 100%), radial-gradient(#3f3f00, #191919 50%, #3f3f00 100%);
+	background-position: center;
+	border-color: #727200 !important;
+	color: #e5e5e5 !important;
+	text-shadow: 0px 0px 3px #3f3f00, 0px 0px 6px #3f3f00;
+	animation: hb 5s ease infinite
+}
+.gluonupgrade.hb:hover {
+	border-color: #e5e500 !important;
+	box-shadow: 0px 0px 12px #e5e500, inset 0px 0px 24px #e5e500
 }
 .notifyjs-bootstrap-info {
     background-color: #0072e5;

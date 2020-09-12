@@ -52,3 +52,11 @@ body {
 .gluonupgrade.b {
 	color: #1f1fff
 }
+
+.gluonupgrade.r:hover {
+	background-color: #ff0000 !important
+}
+
+.gluonupgrade.b:hover {
+	background-color: #1f1fff !important
+}

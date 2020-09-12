@@ -36,17 +36,17 @@ function getTotalTickGained(next) {
 }
 
 function updateGalaxyControl() {
-	document.getElementById("galStrength").value=Math.log10(player.replicanti.newLimit.log(2))/Math.log10(2)/10
-	document.getElementById("replLimit").value=formatValue("Scientific", player.replicanti.newLimit, 2, 0)
+	document.getElementById("galStrength").value = Math.log10(player.replicanti.newLimit.log(2)) / Math.log10(2) / 10
+	document.getElementById("replLimit").value = formatValue("Scientific", player.replicanti.newLimit, 2, 0)
 }
 
 function setReplicantiNewGalaxyStrength() {
-	player.replicanti.newLimit=Decimal.pow(2,Math.pow(2,parseFloat(document.getElementById("galStrength").value)*10))
-	document.getElementById("replLimit").value=formatValue("Scientific", player.replicanti.newLimit, 2, 0)
+	player.replicanti.newLimit = Decimal.pow(2, Math.pow(2, parseFloat(document.getElementById("galStrength").value) * 10))
+	document.getElementById("replLimit").value = formatValue("Scientific", player.replicanti.newLimit, 2, 0)
 }
 
 function setReplicantiNewLimit() {
-	var value=fromValue(document.getElementById("replLimit").value)
-	if (!isNaN(break_infinity_js ? value : value.logarithm)) player.replicanti.newLimit=value
-	document.getElementById("galStrength").value=Math.log10(new Decimal(player.replicanti.newLimit).log(2))/Math.log10(2)/10
+	var value = fromValue(document.getElementById("replLimit").value)
+	if (!isNaN(break_infinity_js ? value : value.logarithm)) player.replicanti.newLimit = value
+	document.getElementById("galStrength").value = Math.log10(new Decimal(player.replicanti.newLimit).log(2)) / Math.log10(2) / 10
 }

@@ -1083,6 +1083,10 @@ strong { color: #0072e5 }
     color: #191919 !important
 }
 
+.gluonupgrade.hb:hover {
+    color: #ccc !important
+}
+
 .notifyjs-bootstrap-info {
     background-color: #00e5e5;
     font-family:'IBM Plex Mono', monospace;

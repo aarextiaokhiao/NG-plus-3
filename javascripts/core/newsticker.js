@@ -305,8 +305,41 @@ newsArray = [//always true
 ["ELECTRONS CONSUME YOUR STARS", "player.masterystudies !== undefined && player.masterystudies.includes('d7')", "am152"],
 ['"New game dammit" - GrayStillPlays', "player.masterystudies !== undefined", "am153"],
 ['"More zeroes dammit" - GrayStillPlays', "player.masterystudies !== undefined", "am154"],
-["i know your type. you're, uh, very determined, aren't you? you'll never give up, even if there's, uh... absolutely NO benefit to persevering whatsoever. if i can make that clear. no matter what, you'll just keep going. not out of any desire for good or evil... but just because you think you can. and because you \"can\"... ... you \"have to\". but now, you've reached the end. there is nothing left for you now. so, uh, in my personal opinion... the most \"determined\" thing you can do here? is to, uh, completely give up. and... well... do literally anything else.", "player.masterystudies !== undefined", "am155"]
-/*NEXT ID: am156*/
+["i know your type. you're, uh, very determined, aren't you? you'll never give up, even if there's, uh... absolutely NO benefit to persevering whatsoever. if i can make that clear. no matter what, you'll just keep going. not out of any desire for good or evil... but just because you think you can. and because you \"can\"... ... you \"have to\". but now, you've reached the end. there is nothing left for you now. so, uh, in my personal opinion... the most \"determined\" thing you can do here? is to, uh, completely give up. and... well... do literally anything else.", "player.masterystudies !== undefined", "am155"],
+["NG+3 has prestige layers, and onions have layers. Does this mean NG+3 is a prestige onion?", "player.newsArray.includes('am85')", "am156"],
+["First-time developer releases incremental game, gets mocked by Aarex for inflation", true, "am157"],
+["Click on the news message before this if you can travel back in time.", true, "am158"],
+["After Aarex's life, NG+Pi is now finally released!", "tmp.ngp3", "am159"],
+["The next hour is in 5 updates- Wait, it's not supposed to go like that?", true, "am160"],
+["The invasion of the battle replicants has been postponed indefinitely. Everyone, please remain calm!", "player.masterystudies && player.masterystudies.includes('d12')", "am161"],
+['"Onion was a mistake." ~ TheTastyPi, 2020', "player.newsArray.includes('am87') && player.newsArray.includes('am172')", "am162"],
+['"Egg is the new Onion" ~ I\'m sorry, 2020', "player.newsArray.includes('am82') && player.newsArray.includes('am172')", "am163"],
+["Anti-Coronavirus has been detected. Surprisingly, it only seems to be making more antimatter.", true, "am164"],
+["Are you getting tired for not being a ghost? Come into the Ghostify machine and see yourself! 308 Antimatter Drive, Dimensionverse", "ghostified", "am165"],
+["Statistics show that if every antimatter were 1.00e4 yoctometers cubed, the world would be gone. Shut up statistics page.", true, "am166"],
+["It's photons, not protons!", "ghostified && player.ghostify.ghostlyPhotons.unl", "am167"],
+["Why would you dilate a ghost", "ghostified", "am168"],
+["Can you buy max light empowerments?", "ghostified && player.ghostify.ghostlyPhotons.enpowerments >= 3", "am169"],
+["There is no 0x Brave Milestone because no one talks about it.", "ghostified", "am170"],
+["Meta-infinity was proven to be possible. We can now big crunch in our big crunches.", "player.break", "am171"],
+[":egg:", true, "am172"],
+["We reported that the Supreme Leader of Ninth Dimension, Nina, is dead. Or he became a ghost?", "player.resets >= 5 || player.galaxies > 0", "am173"],
+["1.7e308 people have realised that there is only 8 dimensions. They are on the hunt for the ninth.", "player.resets >= 5 || player.galaxies > 0", "am174"],
+["300 news messages and counting? Wow. You are so addicted.", "player.newsArray.length >= 300", "am175"],
+["You have read over meta^-1-Infinity unique news ticker messages! What a great milestone!", "player.newsArray.length > 308", "am176"],
+["People who read at least 350 news tickers are really unlikely to be ghosts.", "player.newsArray.length >= 350", "am177"],
+["You are a no-life news reader.", "player.newsArray.length >= 400", "am178"],
+["Is not called matter dimensions for that?", "tmp.ngp3 && tmp.qu.bigRip.active", "am179"],
+["aarex has retired back to his cave after apeasing the masses with the higgs boson", true, "am180"],
+["We launched a mission rocket to land on a ghostly moon.", true, "am181"],
+["BREAKING NEWS! After the killing of a antimatter person, antimatter people started protesting!", true, "am182"],
+["Antimatter people protests have been extremely intensified!", true, "am183"],
+['"Reformatting the whole code feels like I have to restart the test branch." ~ Aarex', true, "am184"],
+['The further meta you reach, the further power tower you go.', true, "am185"],
+['Later, I will finally implement original ideas from future NG+3 updates.', "tmp.ngp3", "am186"],
+['Also later, I will implement ideas that have different gameplay than other mechanics.', "tmp.ngp3", "am187"],
+["This news ticker has been softcapped so you can't read the re-.", true, "am188"]
+/*NEXT ID: am189*/
 ];}
 
 document.addEventListener("visibilitychange", function() {if (!document.hidden) {scrollNextMessage();}}, false);
@@ -314,6 +347,7 @@ var scrollTimeouts = [];
 var nextMsgIndex;
 function scrollNextMessage() {
   //don't run if hidden to save performance
+  if (!player) return
   if (player.options.newsHidden) return false
   var s = document.getElementById('news');
   updateNewsArray();
@@ -356,6 +390,7 @@ function scrollNextMessage() {
     if (!player.options.newsHidden && !player.newsArray.includes(newsArray[nextMsgIndex][2])) {
         player.newsArray.push(newsArray[nextMsgIndex][2]);
         if (player.newsArray.length>=50) giveAchievement("Fake News")
+        if (!tmp.ngp3l&&player.newsArray.length>=400) giveAchievement("400% Breaking News")
     }
 
 
@@ -409,30 +444,33 @@ ghostlyNewsArray = [//Ghostly news ticker messages
 ["Ghosts found a ghostly kind of Radioactive Decays!", "Math.max(Math.max(getRadioactiveDecays('r'), getRadioactiveDecays('g')), getRadioactiveDecays('b')) > 4", "gn30"],
 ["Ghosts discovered that some particles, including bosons, are ghostly!", true, "gn31"],
 ["Ghosts don't know how to write more news. They decided to stop it for today.", true, "gn32"],
-["The Anti-Preon Ghost is getting closer. He will destroy your Nanofield. Stay away from him.", "tmp.bl.upgrades.includes(13)", "gn33"],
-["WARNING! The Anti-Preon Ghost will control over your Nanofield! Be careful! Oh. Worker replicants are warned of that Ghost too.", "tmp.bl.upgrades.includes(21)", "gn34"],
+["The Anti-Preontius is getting closer. He will destroy your Nanofield. Stay away from him.", "tmp.bl.upgrades.includes(13)", "gn33"],
+["WARNING! The Anti-Preontius will control over your Nanofield! Be careful! Oh. Worker replicants are warned of that Ghost too.", "tmp.bl.upgrades.includes(21)", "gn34"],
 ["A ghost tried to take Anti-Preons out, but Bosonic Lab workers decided to ban them out because an Anti-Preon is a resource of Bosonic Lab.", "player.achievements.includes('ng3p81')", "gn35"],
 ["You got one ghostly particle, whatever that means.", "tmp.bl.upgrades.includes(21)", "gn36"],
 ['"Welcome, a new ghost, to the Ghostify layer! Kee-hee-hee!" - Aarex', true, "gn37"],
-["Can you buy max light empowerments?", "player.ghostify.ghostlyPhotons.enpowerments>2", "gn38"],
+["And then the guy turned himself into a pickle ghost. Funniest moment I've ever seen.", true, "gn38"],
 ["Wait a second. This new laboratory isn't anti-Nanofield...", "tmp.bl.upgrades.includes(21)", "gn39"],
-["There is no 0x Brave Milestone because no one talks about it.", true, "gn40"],
+['"ghosts arent scary" ~ Aaron Cook', true, "gn40"],
 ["There are actually no anti-ghosts because ghosts are made of ghostly matter.", true, "gn41"],
 ["Are we living in ghostly universe or anti-ghostly universe?", true, "gn42"],
 ["New matter discovered. Ghostly Matter! The scientists who discovered it were already dead.", true, "gn43"],
 ["Florida man attempts to write down his antimatter. When finishes, he finds out he's a ghost.", true, "gn44"],
-["It's photons, not protons!", true, "gn45"],
+["Do you know that ghosts came from Ghostify? Absolutely not.", true, "gn45"],
 ["Ghostly news company has become partners with us. They are made entirely of ghostly matter.", true, "gn46"],
-["Antimatter ghosts do not exist. Just like matter ghosts. But Ghostly Matter Ghosts do.", true, "gn47"]
+["Antimatter ghosts do not exist. Just like matter ghosts. But Ghostly Matter Ghosts do.", true, "gn47"],
 ["I am a ghost, and I will do science for all eternity!", true, "gn48"],
 ["Ghosts have created their own periodic tables. It looks pretty sophisticated, but the origin of this is unknown.", true, "gn49"],
 ["There's a ghost society somewhere in these universes. It seems they're talking to each other using strange communication.", true, "gn50"],
 ["Florida ghost breaks the universe, and goes beyond the limits.", true, "gn51"],
 ["You still read this news? I thought you wouldn't be interested in our news after reading it for so long...", true, "gn52"],
-["Meta-infinity was proven to be possible. We can now big crunch in our big crunches.", true, "gn53"],
+["Ghosts just accidentally discovered a new dark matter-force particle!", true, "gn53"],
 ["I wonder where all the news gets broadcasted from...", true, "gn54"],
 ["'now i know why i can't get access to the ghostly news!' - usavictor", true, "gn55"],
-["Ghostify is just Quantum but spooky.", true, "gn56"]
+["Ghostify is just Quantum but spooky.", true, "gn56"],
+["Void-Preontius, the Void Ultra-Omnipotent Ghost, decided to take over not only the Barrel... He took over the Barrel!", "tmp.qu.nanofield.apgWoke", "gn57"],
+["GHOST IS YOU", true, "gn58"],
+["Error 404: Ghost Matter not found", true, "gn59"]
 ];}
 
 var ghostlyNewsTickerCache = false

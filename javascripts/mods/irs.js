@@ -2,19 +2,19 @@ var setUnlocks
 var powAdds = [null, 0, null, 0, 4, 4, 4]
 function buyRepeatableInfinityUpgrade(id) {
 	if (player.infinityPoints.lt(Decimal.pow(10, player.infinityUpgradesRespecced[id] + powAdds[id]))) return
-	player.infinityPoints=player.infinityPoints.sub(Decimal.pow(10, player.infinityUpgradesRespecced[id] + powAdds[id]))
+	player.infinityPoints = player.infinityPoints.sub(Decimal.pow(10, player.infinityUpgradesRespecced[id] + powAdds[id]))
 	player.infinityUpgradesRespecced[id]++
-	if (id==1) {
-		player.tickspeed=player.tickspeed.times(Decimal.pow(getTickSpeedMultiplier(), 10))
+	if (id == 1) {
+		player.tickspeed = player.tickspeed.times(Decimal.pow(getTickSpeedMultiplier(), 10))
 		updateTickSpeed()
 	}
 }
 
 function getInfUpgPow(id) {
-	var amt=player.infinityUpgradesRespecced[id]
-	if (id==4) return amt*30
-	if (id==5) return 1+amt*0.17
-	if (id==6) return amt*20
+	var amt = player.infinityUpgradesRespecced[id]
+	if (id == 4) return amt * 30
+	if (id == 5) return 1 + amt * 0.17
+	if (id == 6) return amt * 20
 }
 
 //v1.1
@@ -86,7 +86,7 @@ function updateDimTechs() {
 		document.getElementById("dimtechsdiv").style.display = ""
 		var cost = getDimTechUpgradeCost()
 		var canBuy = player.infinityPoints.gte(cost)
-		for (dim=1;dim<9;dim++) {
+		for (var dim = 1; dim < 9; dim++) {
 			document.getElementById("dim" + dim + "techbtn").innerHTML = "Level " + getFullExpansion(player.dimtechs["dim" + dim + "Upgrades"]) + "<br>" + shortenDimensions(getDiscountMultiplier("dim" + dim)) + "x per discount upgrade" + "<br><br>Cost: " + shortenCosts(cost) + " IP"
 			document.getElementById("dim" + dim + "techbtn").className = canBuy ? "storebtn" : "unavailablebtn"
 		}
@@ -109,12 +109,12 @@ function unlockDimTechs() {
 }
 
 function getNextDiscounts() {
-	return Decimal.pow(2, player.dimtechs.discounts*(player.dimtechs.discounts+1)/4).times(1e22)
+	return Decimal.pow(2, player.dimtechs.discounts * (player.dimtechs.discounts + 1) / 4).times(1e22)
 }
 
 function getDimTechUpgradeCost() {
 	var total = 0
-	for (dim=1;dim<9;dim++) total += player.dimtechs["dim" + dim + "Upgrades"]
+	for (var dim = 1; dim < 9; dim++) total += player.dimtechs["dim" + dim + "Upgrades"]
 	total += player.dimtechs.tickUpgrades
 	return Decimal.pow(5, total).times(1e95)
 }

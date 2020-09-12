@@ -56,7 +56,7 @@ function showspoilers() {
 function updateSpoilers() {
 	var displayed = spoilers;
 	document.getElementById("ng3pguide").style.display=player.masterystudies||spoilers?"":"none"
-	for (i=37; i>0; i--) {
+	for (i=41; i>0; i--) {
 		if (i != 7) {
 			if (!displayed) {
 				if (i < 5) displayed = 1
@@ -86,7 +86,8 @@ function updateSpoilers() {
 						if (i == 32 && player.quantum) if (player.quantum.breakEternity) if (player.quantum.breakEternity.unlocked) displayed = 1
 						if (i == 36 && player.ghostify) if (player.ghostify.times > 0) displayed = 1
 						if (i == 37 && player.ghostify && player.ghostify.ghostlyPhotons) if (player.ghostify.ghostlyPhotons.unl) displayed = 1
-						if (i == 40 && player.ghostify && player.ghostify.wzb) if (player.ghostify.wzb.unl) displayed = 1
+						if (i == 40 && player.ghostify && player.ghostify.wzb && player.ghostify.wzb.unl) displayed = 1
+						if (i == 41 && player.ghostify && player.ghostify.hb && player.ghostify.hb.times) displayed = 1
 					}
 				}
 			}
