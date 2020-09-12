@@ -3982,7 +3982,7 @@ var modFullNames = {
 }
 var modSubNames = {
   ngp: ["OFF", "ON", "NG++++"],
-  ngpp: ["OFF", "ON", "NG+++", "NG+++ Legacy"],
+  ngpp: ["OFF", "ON", "NG+++"/*, "NG+++ Legacy"*/],
   arrows: ["Linear (↑⁰)", "Exponential (↑)"/*, "Tetrational (↑↑)"*/],
   ngmm: ["OFF", "ON", "NG---", "NG-4", "NG-5"],
   rs: ["NONE", "Eternity", "Infinity"],
