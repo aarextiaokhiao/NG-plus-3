@@ -629,12 +629,12 @@ function doNGMinusNewPlayer(){
 
 function doNGPlusOneNewPlayer(){
 	player.money = new Decimal(2e25)
-	player.infinitiedBank = 1e6
+	player.infinitiedBank = 5e9
 	player.infinityUpgrades = ["timeMult", "dimMult", "timeMult2", "unspentBonus", "27Mult", "18Mult", "36Mult", "resetMult", "passiveGen", "45Mult", "resetBoost", "galaxyBoost"]
-	player.infMult = 16
+	player.infMult = 2048
 	player.dimensionMultDecrease = 2
 	player.tickSpeedMultDecrease = 1.65
-	player.eternities = 100
+	player.eternities = 1012680
 	player.challenges = challengesCompletedOnEternity()
 	player.replicanti.unl = true
 	player.replicanti.amount = new Decimal(1)
@@ -643,13 +643,11 @@ function doNGPlusOneNewPlayer(){
 	player.eternityChalls.eterc4 = 1
 	player.eternityChalls.eterc10 = 1
 	player.dilation.studies = [1]
-	player.achievements.push("r77")
-	player.achievements.push("r78")
-	player.achievements.push("r85")
-	player.achievements.push("r93")
-	player.achievements.push("r95")
-	player.achievements.push("r102")
-	player.achievements.push("r131")
+	for (i = 1; i < 12; i++) { // get all achievements up to and including row 12
+		for (j = 1; j < 9; j++) {
+			player.achievements.push("r" + i + j)
+		}
+	}
 	player.aarexModifications.newGamePlusVersion = 2
 }
 
@@ -5566,10 +5564,10 @@ function updateLastTenRuns() {
 		tempTime = tempTime.dividedBy(listed)
 		tempIP = tempIP.dividedBy(listed)
 		var ippm = tempIP.dividedBy(tempTime/600)
-		var tempstring = shorten(ippm) + " IP/min"
+		var tempstring = "(" + shorten(ippm) + " IP/min"
 		averageIP = tempIP
-		if (ippm<1) tempstring = shorten(ippm*60) + " IP/hour"
-		document.getElementById("averagerun").textContent = "Last " + listed + " infinities average time: "+ timeDisplayShort(tempTime, false, 3)+" Average IP gain: "+shortenDimensions(tempIP)+" IP. "+tempstring
+		if (ippm < 1) tempstring = "(" + shorten(ippm * 60) + " IP/hour"
+		document.getElementById("averagerun").textContent = "Average time of the last " + listed + " Infinities: " + timeDisplayShort(tempTime, false, 3) + " | Average IP gain: " + shortenDimensions(tempIP) + " IP. " + tempstring
 		
 		if (tempBest.gte(1e8)) giveAchievement("Oh hey, you're still here");
 		if (tempBest.gte(1e300)) giveAchievement("MAXIMUM OVERDRIVE");
@@ -5624,10 +5622,10 @@ function updateLastTenEternities() {
 		tempTime = tempTime.dividedBy(listed)
 		tempEP = tempEP.dividedBy(listed)
 		var eppm = tempEP.dividedBy(tempTime/600)
-		var tempstring = shorten(eppm) + " EP/min"
+		var tempstring = "(" + shorten(eppm) + " EP/min"
 		averageEp = tempEP
-		if (eppm<1) tempstring = shorten(eppm*60) + " EP/hour"
-		document.getElementById("averageEternityRun").textContent = "Last " + listed + " eternities average time: "+ timeDisplayShort(tempTime, false, 3)+" Average EP gain: "+shortenDimensions(tempEP)+" EP. "+tempstring
+		if (eppm < 1) tempstring = "(" + shorten(eppm * 60) + " EP/hour"
+		document.getElementById("averageEternityRun").textContent = "Average time of the last " + listed + " Eternities: " + timeDisplayShort(tempTime, false, 3) + " | Average EP gain: " + shortenDimensions(tempEP) + " EP. " + tempstring
 	} else document.getElementById("averageEternityRun").textContent = ""
 }
 
