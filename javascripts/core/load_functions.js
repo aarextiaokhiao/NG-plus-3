@@ -1244,14 +1244,14 @@ function onLoad(noOffline) {
       tmp.bl=player.ghostify.bl
   }
   if (player.aarexModifications.newGame3PlusVersion < 2.21) {
-      if (prompt("Welcome to the NG+3.1 update! This update changes this mod significantly. It is recommended to migrate your save as NG+3.1 is the better rebalanced experience. but if you don't want to start playing NG+3.1 on this save yet, type 'legacy' on the input box. You can proceed to migrate later on.") == "legacy") {
-          alert("WARNING: There are some boosts that work the same as in NG+3.1, not in the Bosonic Update. Found one? Give feedback in the Discord server!")
+      if (prompt("Welcome to the NG+3.1 update! This update changes this mod significantly. It is recommended to migrate your save as NG+3.1 is the better rebalanced experience, but if you don't want to start playing NG+3.1 on this save yet, type 'legacy' on the input box. You can proceed to migrate later on.") == "legacy") {
+          alert("WARNING: There are some boosts that work the same as in NG+3.1, not in the Bosonic Update. Have any questions or suggestions about these changes? Give feedback in the Discord server!")
           player.aarexModifications.ngp3lV = 1
           tmp.ngp3l = true
       }
 	  var oldBRUpg20Bought = tmp.qu.bigRip.upgrades.pop()
       if (oldBRUpg20Bought != 20) tmp.qu.bigRip.upgrades.push(oldBRUpg20Bought)
-      player.aarexModifications.newGame3PlusVersion = 2.21 //Keep that line forever due to NG+3.1 / NG+3L compatibility
+      player.aarexModifications.newGame3PlusVersion = 2.21 // Keep that line forever due to NG+3.1 / NG+3L compatibility
   }
   if (tmp.ngp3 && !tmp.ngp3l) setupNGP31Versions()
   if (player.aarexModifications.newGameMinusMinusVersion === undefined && !player.meta) {
@@ -1583,7 +1583,7 @@ function onLoad(noOffline) {
   if (GUBought("gb3")) ipMultPower=2.3
   if (player.aarexModifications.newGameExpVersion !== undefined) ipMultCostIncrease=4
   else ipMultCostIncrease=10
-  document.getElementById("infiMult").innerHTML = "Multiply infinity points from all sources by "+ipMultPower+"<br>currently: "+shortenDimensions(getIPMult()) +"x<br>Cost: "+shortenCosts(player.infMultCost)+" IP"
+  document.getElementById("infiMult").innerHTML = "You gain " + ipMultPower + "x more IP.<br>Currently: "+shortenDimensions(getIPMult()) +"x<br>Cost: "+shortenCosts(player.infMultCost)+" IP"
 
   //updates TD costs to harsher scaling
   if (player.version < 12) {

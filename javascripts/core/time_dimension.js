@@ -48,11 +48,12 @@ function getERTDAchMults(){
 
 function calcNGM2atleastTDPreVPostDilMultiplier(tier){
 	var ret2 = new Decimal(1)
+	var ngPlus = (player.aarexModifications.newGamePlusVersion ? 103680000 : 0)
 	if (player.currentEternityChall == "eterc9") ret2 = ret2.times(tmp.infPow)
 	if (ECTimesCompleted("eterc1") !== 0) ret2 = ret2.times(getECReward(1))
 	if (player.eternityUpgrades.includes(4)) ret2 = ret2.times(player.achPow)
 	if (player.eternityUpgrades.includes(5)) ret2 = ret2.times(Math.max(player.timestudy.theorem, 1))
-	if (player.eternityUpgrades.includes(6)) ret2 = ret2.times(player.totalTimePlayed / 10 / 60 / 60 / 24)
+	if (player.eternityUpgrades.includes(6)) ret2 = ret2.times((player.totalTimePlayed + ngPlus) / 10 / 60 / 60 / 24)
 	if (tmp.ngex) ret2 = ret2.div(10 / tier)
 	return ret2
 }
