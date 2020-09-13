@@ -2100,11 +2100,16 @@ function getDilGain() {
 	if (inQCModifier("ad")) return new Decimal(0)
 	if (player.money.lt(10)) return new Decimal(0)
 	var log = Math.log10(player.money.log10() / 400) * getDilExp() + getDilPower().log10()
+	if (!tmp.be && player.quantum.bigRip.active) {
+		if (log > 100) log = Math.sqrt(100 * log)
+	}
 	return Decimal.pow(10, log)
 }
 
 function getReqForTPGain() {
-	return Decimal.pow(10, player.dilation.totalTachyonParticles.div(getDilPower()).pow(1 / getDilExp()).toNumber() * 400)
+	let tplog = player.dilation.totalTachyonParticles.log10()
+	if (tplog > 100 && !tmp.be && player.quantum.bigRip.active) tplog = Math.pow(tplog, 2) / 100
+	return Decimal.pow(10, Decimal.pow(10, tplog).div(getDilPower()).pow(1 / getDilExp()).toNumber() * 400)
 }
 
 function getNGUDTGain(){
