@@ -8311,6 +8311,7 @@ function getSpinToReplicantiSpeed(){
 }
 
 function replicantEggonUpdating(diff){
+	getGrowupRatePerMinute()
 	var newBabies = tmp.twr.times(getEmperorDimensionMultiplier(1)).times(getSpinToReplicantiSpeed()).times(diff/200)
 	if (player.achievements.includes("ng3p35")) newBabies = newBabies.times(10)
 	tmp.qu.replicants.eggonProgress = tmp.qu.replicants.eggonProgress.add(newBabies)
@@ -8338,7 +8339,7 @@ function replicantBabyHatchingUpdating(diff){
 
 function replicantBabiesGrowingUpUpdating(diff){
 	if (tmp.qu.replicants.babies.gt(0)&&tmp.tra.gt(0)) {
-		tmp.qu.replicants.ageProgress = tmp.qu.replicants.ageProgress.add(tmp.tra.times(diff/(player.achievements.includes("ng3p35")?400:4e3))).min(tmp.qu.replicants.babies)
+		tmp.qu.replicants.ageProgress = tmp.qu.replicants.ageProgress.add(getGrowupRatePerMinute().div(60).times(diff)).min(tmp.qu.replicants.babies)
 		var toAdd = tmp.qu.replicants.ageProgress.floor()
 		if (toAdd.gt(0)) {
 			if (toAdd.gt(tmp.qu.replicants.babies)) tmp.qu.replicants.babies = new Decimal(0)
