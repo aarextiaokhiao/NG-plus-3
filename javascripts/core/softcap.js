@@ -208,37 +208,37 @@ var softcap_data = {
 	},
 	bam: {
 		1: {
-			func: "pow_decimal",
+			func: "pow",
 			start: new Decimal(1e80),
 			pow: 0.9,
 			derv: true
 		},
 		2: {
-			func: "pow_decimal",
+			func: "pow",
 			start: new Decimal(1e90),
 			pow: 0.8,
 			derv: true
 		},
 		3: {
-			func: "pow_decimal",
+			func: "pow",
 			start: new Decimal(1e100),
 			pow: 0.7,
 			derv: true
 		},
 		4: {
-			func: "pow_decimal",
+			func: "pow",
 			start: new Decimal(1e110),
 			pow: 0.6,
 			derv: true
 		},
 		5: {
-			func: "pow_decimal",
+			func: "pow",
 			start: new Decimal(1e120),
 			pow: 0.5,
 			derv: true
 		},
 		6: {
-			func: "pow_decimal",
+			func: "pow",
 			start: new Decimal(1e130),
 			pow: 0.4,
 			derv: true
