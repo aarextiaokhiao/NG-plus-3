@@ -205,6 +205,44 @@ var softcap_data = {
 			start: 1e23,
 			pow: 0.1
 		}
+	},
+	bam: {
+		1: {
+			func: "pow_decimal",
+			start: new Decimal(1e80),
+			pow: 0.9,
+			derv: true
+		},
+		2: {
+			func: "pow_decimal",
+			start: new Decimal(1e90),
+			pow: 0.8,
+			derv: true
+		},
+		3: {
+			func: "pow_decimal",
+			start: new Decimal(1e100),
+			pow: 0.7,
+			derv: true
+		},
+		4: {
+			func: "pow_decimal",
+			start: new Decimal(1e110),
+			pow: 0.6,
+			derv: true
+		},
+		5: {
+			func: "pow_decimal",
+			start: new Decimal(1e120),
+			pow: 0.5,
+			derv: true
+		},
+		6: {
+			func: "pow_decimal",
+			start: new Decimal(1e130),
+			pow: 0.4,
+			derv: true
+		}
 	}
 }
 
@@ -216,7 +254,6 @@ var softcap_vars = {
 var softcap_funcs = {
 	pow: function(x, start, pow, derv) {
 		if (x > start) {
-			x = Math.pow(x / start, pow)
 			if (derv) x = (x - 1) / pow + 1
 			x *= start
 			return x
@@ -256,7 +293,7 @@ function softcap(x, id, max = 1/0) {
 	}
 
 	var sc = 1
-	var stopped
+	var stopped = false
 	while (!stopped && sc <= max) {
 		var y = do_softcap(x, data, sc)
 		if (y !== undefined) {

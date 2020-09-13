@@ -151,6 +151,7 @@ function getBosonicAMProduction() {
 	if (player.achievements.includes("ng3p91")) ret = ret.times(getAchBAMMult())
 	if (player.achievements.includes("ng3p98")) ret = ret.plus(Math.pow(player.ghostify.hb.higgs, 2))
 	//maybe softcap at e40 or e50?
+	ret = softcap(ret, "bam")
 	return ret
 }
 

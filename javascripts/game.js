@@ -8222,21 +8222,38 @@ function nanofieldProducingChargeUpdating(diff){
 	}
 }
 
+function getNanoRewardReq(additional){
+	return getNanoRewardReqFixed(additional - 1 + tmp.qu.nanofield.power)
+}
+
+function getNanoRewardReqFixed(n){
+	let redux = tmp.ppti
+	let x = new Decimal(50)
+	if (n >= 0)   x = x.times(Decimal.pow(4  , n))
+	if (n >= 15)  x = x.times(Decimal.pow(4  , (n - 15) * (0.5 * (n - 15) + 1.5))
+	if (n >= 125) x = x.times(Decimal.pow(4  , (0.5) * (n - 124) * (n - 123)))
+	if (n >= 150) x = x.times(Decimal.pow(1.1, (n-150)*(n-149)*(n-148)/6*2 + (n-150)*(n-149)/2*19))
+	if (n >= 160) x = x.times(Decimal.pow(1.3, (n-160)*(n-159)*(n-158)/6*2 + (n-160)*(n-159)/2*39))
+	if (n >= 170) x = x.times(Decimal.pow(1.6, (n-170)*(n-169)*(n-168)/6*2 + (n-170)*(n-169)/2*59))
+	if (n >= 180) x = x.times(Decimal.pow(2.0, (n-180)*(n-179)*(n-178)/6*2 + (n-180)*(n-179)/2*79))
+	return x.pow(tmp.ppti)
+}
+
 function updateNextPreonEnergyThreshold(){
-	if (tmp.qu.nanofield.energy.gte(tmp.qu.nanofield.powerThreshold) && tmp.qu.nanofield.power < 15) {
-		var toAdd = Math.min(Math.floor(tmp.qu.nanofield.energy.div(tmp.qu.nanofield.powerThreshold).log(4) / tmp.ppti + 1), 15 - tmp.qu.nanofield.power)
-		tmp.qu.nanofield.power += toAdd
-		tmp.qu.nanofield.powerThreshold = tmp.qu.nanofield.powerThreshold.times(Decimal.pow(4, toAdd * tmp.ppti))
+	let en = tmp.qu.nanofield.energy
+	let increment = 0.5
+	let toSkip = 0
+	var check = 0
+	while (en.gte(getNanoRewardReq(increment * 2))) {
+		increment *= 2
 	}
-	if (tmp.qu.nanofield.energy.gte(tmp.qu.nanofield.powerThreshold) && tmp.qu.nanofield.power > 14) {
-		var b = tmp.qu.nanofield.power - 13.5
-		var toAdd = Math.floor(Math.sqrt(b * b + 2 * tmp.qu.nanofield.energy.div(tmp.qu.nanofield.powerThreshold).log(4) / tmp.ppti) - b + 1)
-		tmp.qu.nanofield.power += toAdd
-		tmp.qu.nanofield.powerThreshold = tmp.qu.nanofield.powerThreshold.times(Decimal.pow(4, (0.5 * toAdd * toAdd + b * toAdd) * tmp.ppti))
-		if (tmp.qu.nanofield.power > 124) tmp.qu.nanofield.powerThreshold = tmp.qu.nanofield.powerThreshold.times(Decimal.pow(4,tmp.qu.nanofield.power - 124))
-		if (tmp.qu.nanofield.power > 149) tmp.qu.nanofield.powerThreshold = tmp.qu.nanofield.powerThreshold.times(Decimal.pow(1.1, -100 + Math.pow(tmp.qu.nanofield.power - 140, 2)))
-		//uhh this should be collapsed into a single function i.e. multiple rewards at once
+	while (increment >= 1) {
+		check = toSkip + increment
+		if (en.gte(getNanoRewardReq(check))) toSkip += increment
+		increment /= 2
 	}
+	tmp.qu.nanofield.power += toSkip
+	tmp.qu.nanofield.powerThreshold = getNanoRewardReq(0)
 }
 
 function nanofieldUpdating(diff){
