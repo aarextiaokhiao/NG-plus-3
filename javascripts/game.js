@@ -1886,7 +1886,13 @@ function galaxyReset(bulk) {
 }
 
 document.getElementById("secondSoftReset").onclick = function() {
-	var bool = !inNC(11) && player.currentChallenge != "postc1" && (player.currentChallenge != "postc5" || player.tickspeedBoosts == undefined) && player.currentChallenge != "postc7" && !((player.currentEternityChall == "eterc6" || inQC(6)) && !tmp.be) && !tmp.ri && !cantReset()
+	let ngm4 = player.aarexModifications.ngmX ? player.aarexModifications.ngmX >= 4 : false
+	let bool1 = !inNC(11) || ngm4
+	let bool2 = player.currentChallenge != "postc1"
+	let bool3 = player.currentChallenge != "postc5" || player.tickspeedBoosts == undefined
+	let bool4 = player.currentChallenge != "postc7"
+	let bool5 = (player.currentEternityChall == "eterc6" || inQC(6)) && !tmp.be
+	var bool = bool1 && bool2  && bool3 && bool4 && !bool5 && !tmp.ri && !cantReset()
 	if (getAmount(inNC(4) || player.pSac != undefined ? 6 : 8) >= getGalaxyRequirement() && bool) {
 		if ((getEternitied() >= 7 || player.autobuyers[10].bulkBought) && !shiftDown && (!inNC(14) || !(player.aarexModifications.ngmX > 3))) maxBuyGalaxies(true);
 		else galaxyReset(1)
