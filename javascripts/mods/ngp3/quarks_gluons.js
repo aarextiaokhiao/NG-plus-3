@@ -78,7 +78,7 @@ function assignAll(auto) {
 	var colors = ['r','g','b']
 	var mult = getQuarkAssignMult()
 	if (oldQuarks.lt(100)) {
-		$.notify("You can only use this feature if you will assign at least 100 quarks.")
+		if (!auto) $.notify("You can only use this feature if you will assign at least 100 quarks.")
 		return
 	}
 	for (c = 0; c < 3; c++) {
