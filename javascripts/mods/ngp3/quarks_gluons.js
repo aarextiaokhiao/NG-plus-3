@@ -77,7 +77,10 @@ function assignAll(auto) {
 	var oldQuarks = getAssortAmount()
 	var colors = ['r','g','b']
 	var mult = getQuarkAssignMult()
-	if (oldQuarks.eq(0)) return
+	if (oldQuarks.lt(100)) {
+		$.notify("You can only use this feature if you will assign at least 100 quarks.")
+		return
+	}
 	for (c = 0; c < 3; c++) {
 		var toAssign = oldQuarks.times(ratios[colors[c]]/sum).round()
 		if (toAssign.gt(0)) {
