@@ -8230,7 +8230,7 @@ function getNanoRewardReqFixed(n){
 	let redux = tmp.ppti
 	let x = new Decimal(50)
 	if (n >= 0)   x = x.times(Decimal.pow(4  , n))
-	if (n >= 15)  x = x.times(Decimal.pow(4  , (n - 15) * (0.5 * (n - 15) + 1.5))
+	if (n >= 15)  x = x.times(Decimal.pow(4  , (n - 15) * (0.5 * (n - 15) + 1.5)))
 	if (n >= 125) x = x.times(Decimal.pow(4  , (0.5) * (n - 124) * (n - 123)))
 	if (n >= 150) x = x.times(Decimal.pow(1.1, (n-150)*(n-149)*(n-148)/6*2 + (n-150)*(n-149)/2*19))
 	if (n >= 160) x = x.times(Decimal.pow(1.3, (n-160)*(n-159)*(n-158)/6*2 + (n-160)*(n-159)/2*39))
