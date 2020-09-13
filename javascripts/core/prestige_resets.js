@@ -462,9 +462,9 @@ function checkSecondSetOnCrunchAchievements(){
 	if (player.infinitied >= 10) giveAchievement("That's a lot of infinites");
 	if (player.infinitied >= 1 && !player.challenges.includes("challenge1")) player.challenges.push("challenge1");
 	if (player.bestInfinityTime <= 0.01) giveAchievement("Less than or equal to 0.001");
-	if (player.challenges.length > 1) giveAchievement("Daredevil")
-	if (player.challenges.length == getTotalNormalChallenges() + 1) giveAchievement("AntiChallenged")
-	if (player.challenges.length == getTotalNormalChallenges() + order.length + 1) giveAchievement("Anti-antichallenged")
+	if (player.challenges.length >= 2) giveAchievement("Daredevil")
+	if (player.challenges.length >= getTotalNormalChallenges() + 1) giveAchievement("AntiChallenged")
+	if (player.challenges.length >= getTotalNormalChallenges() + order.length + 1) giveAchievement("Anti-antichallenged")
 }
 
 function doCrunchResetStuff(){
