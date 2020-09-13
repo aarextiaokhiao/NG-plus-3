@@ -131,7 +131,7 @@ function getBranchFinalSpeed() {
 }
 
 function getDecayRate(branch) {
-	let ret = Decimal.pow(2, getBU1Power(branch) * Math.max((getRadioactiveDecays(branch) - 8) / 10, 1)).div(getBranchUpgMult(branch, 3)).div(Decimal.pow(2, Math.max(getRDPower(branch) - 4)))
+	let ret = Decimal.pow(2, getBU1Power(branch) * Math.max((getRadioactiveDecays(branch) - 8) / 10, 1)).div(getBranchUpgMult(branch, 3)).div(Decimal.pow(2, Math.max(0, getRDPower(branch) - 4)))
 	if (branch == "r") {
 		if (GUBought("rg8")) ret = ret.div(getGU8Effect("rg"))
 	}
