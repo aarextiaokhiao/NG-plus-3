@@ -3461,10 +3461,24 @@ function getRGCost(offset = 0, costChange) {
 						increase += (offset - Math.max(399 - player.replicanti.gal, 0)) * (1500 * (offset - Math.max(399 - player.replicanti.gal, 0) + Math.max(player.replicanti.gal, 399) * 2) - 1183500)
 						if (player.replicanti.gal + offset > 2998) increase += (offset - Math.max(2998 - player.replicanti.gal, 0)) * (5e3 * (offset - Math.max(2998 - player.replicanti.gal, 0) + Math.max(player.replicanti.gal, 2998) * 2) - 29935e3)
 						if (player.replicanti.gal + offset > 58198) increase += (offset - Math.max(58199 - player.replicanti.gal, 0)) * (1e6 * (offset - Math.max(58199 - player.replicanti.gal, 0) + Math.max(player.replicanti.gal, 58199) * 2) - 58199e6)
+						if (player.replicanti.gal + offset >= 200000) {
+							increase += 1e12 * (offset - Math.max(199999 - player.replicanti.gal, 0))
+							increase += (offset - Math.max(199999 - player.replicanti.gal, 0)) * (1e9 * (offset - Math.max(199999 - player.replicanti.gal, 0) + Math.max(player.replicanti.gal, 199999) * 2) - 199999e9)
+						}
+						if (player.replicanti.gal + offset >= 250000) increase += 1e13 * (offset - Math.max(249999 - player.replicanti.gal, 0))
+						if (player.replicanti.gal + offset >= 300000) increase += 1e14 * (offset - Math.max(299999 - player.replicanti.gal, 0))
+						if (player.replicanti.gal + offset >= 350000) increase += 1e15 * (offset - Math.max(349999 - player.replicanti.gal, 0))
 					} else for (var g = Math.max(player.replicanti.gal, 399); g < player.replicanti.gal + offset; g++) increase += 5 * Math.floor(Math.pow(1.2, g - 394))
 				}
 			}
 			ret = ret.times(Decimal.pow(10, increase))
+			if (tmp.ngp3) {
+				if (player.replicanti.gal + offset >= 400000) ret = ret.pow((player.replicanti.gal + offset) / 400000)
+				if (player.replicanti.gal + offset >= 450000) ret = ret.pow((player.replicanti.gal + offset) / 5000 - 89)
+				if (player.replicanti.gal + offset >= 500000) ret = ret.pow((player.replicanti.gal + offset) / 500 - 999)
+				if (player.replicanti.gal + offset >= 550000) ret = ret.pow((player.replicanti.gal + offset) / 100 - 5499)
+				if (player.replicanti.gal + offset >= 600000) ret = ret.pow((player.replicanti.gal + offset) / 50 - 11999)
+			}
 		}
 	}
 	if (player.timestudy.studies.includes(233) && !costChange) ret = ret.dividedBy(player.replicanti.amount.pow(0.3))
