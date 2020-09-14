@@ -2109,7 +2109,9 @@ function getDilGain() {
 
 
 function getReqForTPGain() {
-	return Decimal.pow(10, player.dilation.totalTachyonParticles.div(getDilPower()).pow(1 / getDilExp()).toNumber() * 400)
+	let tplog = player.dilation.totalTachyonParticles.log10()
+	if (tplog > 100 && !tmp.be && player.quantum.bigRip.active) tplog = Math.pow(tplog, 2) / 100
+	return Decimal.pow(10, Decimal.pow(10, tplog).div(getDilPower()).pow(1 / getDilExp()).toNumber() * 400)
 }
 
 function getNGUDTGain(){
