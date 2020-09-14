@@ -1676,7 +1676,6 @@ function onLoad(noOffline) {
       if (Decimal.eq(player.ghostify.wzb.zNeReq,0)) player.ghostify.wzb.zNeReq=1
       updateAutoGhosts(true)
   }
-  document.getElementById("exitLegacy").style.display = tmp.ngp3l ? "" : "none"
 
   if (player.options.commas == "Default") {
       player.options.commas == "AF2019";

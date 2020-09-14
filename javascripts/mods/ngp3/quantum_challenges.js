@@ -125,7 +125,7 @@ function updateQCTimes() {
 		}
 	}
 	if (tempcounter > 0) document.getElementById("qcsbtn").style.display = "inline-block"
-	setAndMaybeShow("qctimesum", tempcounter > 1, '"Sum of completed quantum challenge time records is "+timeDisplayShort('+temp+', false, 3)')
+	setAndMaybeShow("qctimesum", tempcounter > 1, '"The sum of your completed Quantum Challenge time records is "+timeDisplayShort('+temp+', false, 3)')
 }
 
 var ranking=0
@@ -134,7 +134,7 @@ function updatePCCompletions() {
 	document.getElementById("pccompletionsbtn").style.display = "none"
 	if (!player.masterystudies) return
 	var ranking = 0
-	tmp.pcc = {} //PC Completion counters
+	tmp.pcc = {} // PC Completion counters
 	for (var c1 = 2; c1 < 9; c1++) for (var c2 = 1; c2 < c1; c2++) {
 		var rankingPart = 0
 		if (tmp.qu.pairedChallenges.completions[c2 * 10 + c1]) {

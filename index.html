@@ -1777,7 +1777,7 @@
 					<tr>
 						<td><div class="storebtn" style="color:black; width: 198px; height: 55px; font-size:130%; text-align: center;"><b id="autoSaveInterval">Auto-save interval: 30s</b><input id="autoSaveIntervalSlider" style="width: 170px;" type="range" min="15" max="120" value="30" class="slider" oninput="changeAutoSaveInterval()"></div></td>
 						<td><div><button id="bugExport" onclick="bugExport()" class="storebtn" style="color:black; width:200px; height:55px; font-size:12px; display:none">Export "Infinite" bug save<br><b>(WARNING: This disappears when you reload the game!)</button></b></div></td>
-						<td><div><button id="exitLegacy" onclick="exitLegacy()" class="storebtn" style="color:black; width: 200px; height: 55px; font-size: 20px">Migrate to NG+3.1</button></div></td>
+						<td><div><button id="convertSave" onclick="convertSave(convert)" class="storebtn" style="color:black; width: 200px; height: 55px; font-size: 20px"></button></div></td>
 					</tr>
 				</table>
 			</div>
@@ -1888,8 +1888,8 @@
 					<div id="eternitied">You have eternitied x times.</div>
 					<div id="eternitiedBank"></div>
 					<div id="bankedEterGain"></div>
-					<div id="thiseternity">You have spent x in this eternity</div>
 					<div id="besteternity">Your fastest eternity is in x.</div>
+					<div id="thiseternity">You have spent x in this eternity</div>
 					<div id="dilated"></div>
 					<div id="exdilated"></div>
 					<br>
@@ -5721,6 +5721,7 @@
 <script type="text/javascript" src="javascripts/mods/ngm5.js"></script>
 <script type="text/javascript" src="javascripts/mods/ngusp.js"></script>
 <script type="text/javascript" src="javascripts/mods/ngprw.js"></script>
+<script type="text/javascript" src="javascripts/convert.js"></script>
 <script type="text/javascript" src="javascripts/game.js"></script>
 <script type="text/javascript" src="javascripts/sha512.js"></script>
 </body>
