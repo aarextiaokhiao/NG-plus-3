@@ -14,6 +14,7 @@ function unlockHiggs() {
 	if (!canUnlockHiggs()) return
 	$.notify("Congratulations! You have unlocked Higgs Bosons!", "success")
 	player.ghostify.hb.unl = true
+	giveAchievement("The Holy Particle")
 	updateHiggsUnlocks()
 }
 
