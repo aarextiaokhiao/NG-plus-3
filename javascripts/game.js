@@ -5687,147 +5687,52 @@ function canUnlockEC(idx, cost, study, study2) {
 	return false
 }
 
-function updateECUnlockButtons() {//for loop?
-	if (canUnlockEC(1, 30, 171)) document.getElementById("ec1unl").className = "eternitychallengestudy"
-	else document.getElementById("ec1unl").className = "eternitychallengestudylocked"
+function canUnlockECFromNum(n){
+	if (n == 1) return canUnlockEC(1, 30, 171)
+	if (n == 2) return canUnlockEC(2, 35, 171)
+	if (n == 3) return canUnlockEC(3, 40, 171)
+	if (n == 4) return canUnlockEC(4, 70, 143)
+	if (n == 5) return canUnlockEC(5, 130, 42)
+	if (n == 6) return canUnlockEC(6, 85, 121)
+	if (n == 7) return canUnlockEC(7, 115, 111)
+	if (n == 8) return canUnlockEC(8, 115, 123)
+	if (n == 9) return canUnlockEC(9, 415, 151)
+	if (n == 10) return canUnlockEC(10, 550, 181)
+	if (n == 11) return canUnlockEC(11, 1, 231, 232)
+	if (n == 12) return canUnlockEC(12, 1, 233, 234)
+	return false
+}
 
-	if (canUnlockEC(2, 35, 171)) document.getElementById("ec2unl").className = "eternitychallengestudy"
-	else document.getElementById("ec2unl").className = "eternitychallengestudylocked"
-
-	if (canUnlockEC(3, 40, 171)) document.getElementById("ec3unl").className = "eternitychallengestudy"
-	else document.getElementById("ec3unl").className = "eternitychallengestudylocked"
-	
-	if (canUnlockEC(4, 70, 143)) document.getElementById("ec4unl").className = "eternitychallengestudy"
-	else document.getElementById("ec4unl").className = "eternitychallengestudylocked"
-	
-	if (canUnlockEC(5, 130, 42)) document.getElementById("ec5unl").className = "eternitychallengestudy"
-	else document.getElementById("ec5unl").className = "eternitychallengestudylocked"
-	
-	if (canUnlockEC(6, 85, 121)) document.getElementById("ec6unl").className = "eternitychallengestudy"
-	else document.getElementById("ec6unl").className = "eternitychallengestudylocked"
-
-	if (canUnlockEC(7, 115, 111)) document.getElementById("ec7unl").className = "eternitychallengestudy"
-	else document.getElementById("ec7unl").className = "eternitychallengestudylocked"
-
-	if (canUnlockEC(8, 115, 123)) document.getElementById("ec8unl").className = "eternitychallengestudy"
-	else document.getElementById("ec8unl").className = "eternitychallengestudylocked"
-
-	if (canUnlockEC(9, 415, 151)) document.getElementById("ec9unl").className = "eternitychallengestudy"
-	else document.getElementById("ec9unl").className = "eternitychallengestudylocked"
-	
-	if (canUnlockEC(10, 550, 181)) document.getElementById("ec10unl").className = "eternitychallengestudy"
-	else document.getElementById("ec10unl").className = "eternitychallengestudylocked"
-	
-	if (canUnlockEC(11, 1, 231, 232)) document.getElementById("ec11unl").className = "eternitychallengestudy"
-	else document.getElementById("ec11unl").className = "eternitychallengestudylocked"
-	
-	if (canUnlockEC(12, 1, 233, 234)) document.getElementById("ec12unl").className = "eternitychallengestudy"
-	else document.getElementById("ec12unl").className = "eternitychallengestudylocked"
-	
+function updateECUnlockButtons() {
+	for (let ecnum = 1; ecnum <= 12; ecnum ++){
+		let s = "ec" + ecnum + "unl"
+		if (canUnlockECFromNum(1)) document.getElementById(s).className = "eternitychallengestudy"
+		else document.getElementById(s).className = "eternitychallengestudylocked"
+	}
 	if (player.eternityChallUnlocked !== 0) document.getElementById("ec" + player.eternityChallUnlocked + "unl").className = "eternitychallengestudybought"
 }
 
-document.getElementById("ec1unl").onclick = function() {
-	if (canUnlockEC(1, 30, 171)) {
-		unlockEChall(1)
-		player.timestudy.theorem -= 30
-		drawStudyTree()
-	}
-}
+var ECCosts = [null, 
+		30,  35,  40,
+		70,  130, 85,
+		115, 115, 415,
+		550, 1,   1]
 
-document.getElementById("ec2unl").onclick = function() {
-	if (canUnlockEC(2, 35, 171)) {
-		unlockEChall(2)
-		player.timestudy.theorem -= 35
-		drawStudyTree()
-	}
-}
-
-document.getElementById("ec3unl").onclick = function() {
-	if (canUnlockEC(3, 40, 171)) {
-		unlockEChall(3)
-		player.timestudy.theorem -= 40
-		drawStudyTree()
-	}
-}
-
-document.getElementById("ec4unl").onclick = function() {
-	if (canUnlockEC(4, 70, 143)) {
-		unlockEChall(4)
-		player.timestudy.theorem -= 70
-		drawStudyTree()
-	}
-}
-
-document.getElementById("ec5unl").onclick = function() {
-	if (canUnlockEC(5, 130, 42)) {
-		unlockEChall(5)
-		player.timestudy.theorem -= 130
-		drawStudyTree()
-	}
-}
-
-document.getElementById("ec6unl").onclick = function() {
-	if (canUnlockEC(6, 85, 121)) {
-		unlockEChall(6)
-		player.timestudy.theorem -= 85
-		drawStudyTree()
-	}
-}
-
-document.getElementById("ec7unl").onclick = function() {
-	if (canUnlockEC(7, 115, 111)) {
-		unlockEChall(7)
-		player.timestudy.theorem -= 115
-		drawStudyTree()
-	}
-}
-
-document.getElementById("ec8unl").onclick = function() {
-	if (canUnlockEC(8, 115, 123)) {
-		unlockEChall(8)
-		player.timestudy.theorem -= 115
-		drawStudyTree()
-	}
-}
-
-document.getElementById("ec9unl").onclick = function() {
-	if (canUnlockEC(9, 415, 151)) {
-		unlockEChall(9)
-		player.timestudy.theorem -= 415
-		drawStudyTree()
-	}
-}
-
-document.getElementById("ec10unl").onclick = function() {
-	if (canUnlockEC(10, 550, 181)) {
-		unlockEChall(10)
-		player.timestudy.theorem -= 550
-		drawStudyTree()
-	}
-}
-
-document.getElementById("ec11unl").onclick = function() {
-	if (canUnlockEC(11, 1, 231, 232)) {
-		unlockEChall(11)
-		player.timestudy.theorem -= 1
-		drawStudyTree()
-	}
-}
-
-document.getElementById("ec12unl").onclick = function() {
-	if (canUnlockEC(12, 1, 233, 234)) {
-		unlockEChall(12)
-		player.timestudy.theorem -= 1
-		drawStudyTree()
+for (let ecnum = 1; ecnum <= 12; ecnum ++){
+	document.getElementById("ec" + ecnum + "unl").onclick = function(){
+		if (canUnlockECFromNum(ecnum)) {
+			unlockEChall(ecnum)
+			player.timestudy.theorem -= ECCosts[ecnum]
+			drawStudyTree()
+		}
 	}
 }
 
 function getEC12TimeLimit() {
 	//In the multiple of 0.1 seconds
-	let r=10-2*ECTimesCompleted("eterc12")
-	if (tmp.ngex) r*=3.75
-	return Math.max(r,1)
+	let r = 10 - 2 * ECTimesCompleted("eterc12")
+	if (tmp.ngex) r *= 3.75
+	return Math.max(r , 1)
 }
 
 var ecExpData = {
@@ -8357,19 +8262,19 @@ function setTachyonParticles(x) {
 }
 
 function passiveQuantumLevelStuff(diff){
-	if (tmp.qu.bigRip.active||hasBosonicUpg(24)) tmp.qu.bigRip.spaceShards=tmp.qu.bigRip.spaceShards.add(getSpaceShardsGain().times(diff / 100))
+	if (tmp.qu.bigRip.active || hasBosonicUpg(24)) tmp.qu.bigRip.spaceShards = tmp.qu.bigRip.spaceShards.add(getSpaceShardsGain().times(diff / 100))
 	if (!tmp.qu.bigRip.active) {
-		tmp.qu.quarks=tmp.qu.quarks.add(quarkGain().sqrt().times(diff))
-		var p=["rg","gb","br"]
-		for (var i=0;i<3;i++) {
-			var r=tmp.qu.usedQuarks[p[i][0]].min(tmp.qu.usedQuarks[p[i][1]])
-			if (player.achievements.includes("ng3p71")) r=r.div(100)
-			else r=r.sqrt()
-			tmp.qu.gluons[p[i]]=tmp.qu.gluons[p[i]].add(r.times(diff))
+		tmp.qu.quarks = tmp.qu.quarks.add(quarkGain().sqrt().times(diff))
+		var p = ["rg","gb","br"]
+		for (var i = 0; i < 3; i++) {
+			var r = tmp.qu.usedQuarks[p[i][0]].min(tmp.qu.usedQuarks[p[i][1]])
+			if (player.achievements.includes("ng3p71")) r = r.div(100)
+			else r = r.sqrt()
+			tmp.qu.gluons[p[i]] = tmp.qu.gluons[p[i]].add(r.times(diff))
 		}
 		if (player.ghostify.milestones>15) tmp.qu.quarks=tmp.qu.quarks.add(quarkGain().times(diff / 100))
 	}
-	if (tmp.be&&player.ghostify.milestones>14) tmp.qu.breakEternity.eternalMatter=tmp.qu.breakEternity.eternalMatter.add(getEMGain().times(diff / 100))
+	if (tmp.be && player.ghostify.milestones>14) tmp.qu.breakEternity.eternalMatter=tmp.qu.breakEternity.eternalMatter.add(getEMGain().times(diff / 100))
 	updateQuarkDisplay()
 	updateQuantumWorth("quick")
 }
@@ -8826,50 +8731,6 @@ setInterval(function() {
 setInterval(function() {
 	if (player) if (player.infinityUpgrades.includes("autoBuyerUpgrade")) autoBuyerTick()
 }, 50)
-
-document.getElementById("challenge2").onclick = function () {
-	startNormalChallenge(2)
-}
-
-document.getElementById("challenge3").onclick = function () {
-	startNormalChallenge(3)
-}
-
-document.getElementById("challenge4").onclick = function () {
-	startNormalChallenge(4)
-}
-
-document.getElementById("challenge5").onclick = function () {
-	startNormalChallenge(5)
-}
-
-document.getElementById("challenge6").onclick = function () {
-	startNormalChallenge(6)
-}
-
-document.getElementById("challenge7").onclick = function () {
-	startNormalChallenge(7)
-}
-
-document.getElementById("challenge8").onclick = function () {
-	startNormalChallenge(8)
-}
-
-document.getElementById("challenge9").onclick = function () {
-	startNormalChallenge(9)
-}
-
-document.getElementById("challenge10").onclick = function () {
-	startNormalChallenge(10)
-}
-
-document.getElementById("challenge11").onclick = function () {
-	startNormalChallenge(11)
-}
-
-document.getElementById("challenge12").onclick = function () {
-	startNormalChallenge(12)
-}
 
 function isEterBuyerOn() {
 	if (!player.eternityBuyer.isOn) return
