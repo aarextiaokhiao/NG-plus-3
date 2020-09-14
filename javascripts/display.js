@@ -757,3 +757,109 @@ function eterPoints2Display(){
 	document.getElementById("eternityPoints2").innerHTML = "You have <span class=\"EPAmount2\">"+shortenDimensions(player.eternityPoints)+"</span> Eternity points."
 }
 
+function eternityBtnDisplayType(){
+	document.getElementById("eternitybtn").style.display = (player.infinityPoints.gte(player.eternityChallGoal) && (player.infDimensionsUnlocked[7] || getEternitied() > 24) && (!player.dilation.active || !inQCModifier("ad"))) ? "inline-block" : "none"
+}
+
+function dimboostABTypeDisplay(){
+	if (getEternitied() > 9 || player.autobuyers[9].bulkBought) document.getElementById("bulklabel").textContent = "Buy max dimboosts every X seconds:"
+	else document.getElementById("bulklabel").textContent = "Bulk DimBoost Amount:"
+}
+
+function IDABDisplayCorrection(){
+	if (getEternitied() > 10) {
+		for (var i=1;i<getEternitied()-9 && i < 9; i++) {
+			document.getElementById("infauto"+i).style.visibility = "visible"
+		}
+		document.getElementById("toggleallinfdims").style.visibility = "visible"
+	} else {
+		for (var i=1; i<9; i++) {
+			document.getElementById("infauto"+i).style.visibility = "hidden"
+		}
+		document.getElementById("toggleallinfdims").style.visibility = "hidden"
+	}
+}
+
+function replicantiShopABDisplay(){
+	if (getEternitied() >= 40) document.getElementById("replauto1").style.visibility = "visible"
+	else document.getElementById("replauto1").style.visibility = "hidden"
+	if (getEternitied() >= 60) document.getElementById("replauto2").style.visibility = "visible"
+	else document.getElementById("replauto2").style.visibility = "hidden"
+	if (getEternitied() >= 80) document.getElementById("replauto3").style.visibility = "visible"
+	else document.getElementById("replauto3").style.visibility = "hidden"
+}
+
+function primaryStatsDisplayResetLayers(){
+	if (getEternitied() == 0 && !quantumed) document.getElementById("pasteternities").style.display = "none"
+	else document.getElementById("pasteternities").style.display = "inline-block"
+	if (quantumed) document.getElementById("pastquantums").style.display = "inline-block"
+	else document.getElementById("pastquantums").style.display = "none"
+	if (ghostified) document.getElementById("pastghostifies").style.display = "inline-block"
+	else document.getElementById("pastghostifies").style.display = "none"
+	document.getElementById("pastinfs").style.display = player.infinitied > 0 || getEternitied() > 0 || quantumed ? "" : "none"
+	var showStats = player.challenges.length > 1 || player.infinitied > 0 || getEternitied() > 0 || quantumed ? "" : "none"
+	document.getElementById("brfilter").style.display = showStats
+	document.getElementById("statstabs").style.display = showStats
+	var display = player.aarexModifications.hideSecretAchs?"none":""
+	document.getElementById("achTabButtons").style.display=display
+	document.getElementById("secretachsbtn").style.display=display
+}
+
+function ECCompletionsDisplay(){
+	document.getElementById("eterc1completed").textContent = "Completed "+ECTimesCompleted("eterc1")+" times."
+	document.getElementById("eterc2completed").textContent = "Completed "+ECTimesCompleted("eterc2")+" times."
+	document.getElementById("eterc3completed").textContent = "Completed "+ECTimesCompleted("eterc3")+" times."
+	document.getElementById("eterc4completed").textContent = "Completed "+ECTimesCompleted("eterc4")+" times."
+	document.getElementById("eterc5completed").textContent = "Completed "+ECTimesCompleted("eterc5")+" times."
+	document.getElementById("eterc6completed").textContent = "Completed "+ECTimesCompleted("eterc6")+" times."
+	document.getElementById("eterc7completed").textContent = "Completed "+ECTimesCompleted("eterc7")+" times."
+	document.getElementById("eterc8completed").textContent = "Completed "+ECTimesCompleted("eterc8")+" times."
+	document.getElementById("eterc9completed").textContent = "Completed "+ECTimesCompleted("eterc9")+" times."
+	document.getElementById("eterc10completed").textContent = "Completed "+ECTimesCompleted("eterc10")+" times."
+	document.getElementById("eterc11completed").textContent = "Completed "+ECTimesCompleted("eterc11")+" times."
+	document.getElementById("eterc12completed").textContent = "Completed "+ECTimesCompleted("eterc12")+" times."
+	document.getElementById("eterc13completed").textContent = "Completed "+ECTimesCompleted("eterc13")+" times."
+	document.getElementById("eterc14completed").textContent = "Completed "+ECTimesCompleted("eterc14")+" times."
+}
+
+function ECchallengePortionDisplay(){
+	let ec12TimeLimit = Math.round(getEC12TimeLimit() * 10) / 100
+	for (var c=1;c<15;c++) document.getElementById("eterc"+c+"goal").textContent = "Goal: "+shortenCosts(getECGoal("eterc"+c))+" IP"+(c==12?" in "+ec12TimeLimit+" second"+(ec12TimeLimit==1?"":"s")+" or less.":c==4?" in "+Math.max((16-(ECTimesCompleted("eterc4")*4)),0)+" infinities or less.":"")
+}
+
+function EC8PurchasesDisplay(){
+	if (player.currentEternityChall == "eterc8") {
+		document.getElementById("eterc8repl").style.display = "block"
+		document.getElementById("eterc8ids").style.display = "block"
+		document.getElementById("eterc8repl").textContent = "You have "+player.eterc8repl+" purchases left."
+		document.getElementById("eterc8ids").textContent = "You have "+player.eterc8ids+" purchases left."
+	} else {
+		document.getElementById("eterc8repl").style.display = "none"
+		document.getElementById("eterc8ids").style.display = "none"
+	}
+}
+
+function bankedInfinityDisplay(){
+	document.getElementById("infinitiedBank").style.display = (player.infinitiedBank > 0) ? "block" : "none"
+	document.getElementById("infinitiedBank").textContent = "You have " + getFullExpansion(player.infinitiedBank) + " banked infinities."
+	var bankedInfGain=gainBankedInf()
+	document.getElementById("bankedInfGain").style.display = bankedInfGain>0 ? "block" : "none"
+	document.getElementById("bankedInfGain").textContent = "You will gain " + getFullExpansion(bankedInfGain) + " banked infinities on next Eternity."
+	if (player.achievements.includes("ng3p73")) updateBankedEter(true)
+}
+
+function updateNGM2RewardDisplay(){
+	document.getElementById("postcngmm_1reward").innerHTML = "Reward: Infinity upgrades based on time " + (player.aarexModifications.ngmX >= 4 ? "" : "or Infinities ") + "are applied post-dilation, and make the GP formula better based on galaxies."
+	document.getElementById("postcngm3_1description").innerHTML = "Multiplier per ten Dimensions is 1x, Dimension Boosts have no effect," + (player.aarexModifications.ngmX >= 4 ? " have a much lower time dimension cost limit," : "") + " and Tickspeed Boost effect softcap starts immediately."
+	document.getElementById("postcngm3_1reward").innerHTML = "Reward: Tickspeed boost effect softcap is softer" + (player.aarexModifications.ngmX >= 4 ? ", remote galaxy scaling starts .5 later and triple GP per IC completion" : "") + "."
+}
+
+function updateGalaxyUpgradesDisplay(){
+	var text41 = player.aarexModifications.ngmX >= 4 ? "Square g11, and tickspeed boosts multiply GP gain." : "Galaxy points boost per-10 bought Infinity Dimensions multiplier."
+	document.getElementById("galaxy41").innerHTML = text41 + "<br>Cost: <span id='galcost41'></span> GP"
+	var text42 = player.aarexModifications.ngmX >= 4 ? "Buff g12 and make it post dilation." : "Eternity points reduce Infinity Dimension cost multipliers."
+	document.getElementById("galaxy42").innerHTML = text42 + "<br>Cost: <span id='galcost42'></span> GP"
+	var text43 = player.aarexModifications.ngmX >= 4 ? "Reduce Dimension Boost cost multiplier by 1, and Dimension Boosts multiply GP gain." : "Galaxy points boost Time Dimensions."
+	var curr43 = player.aarexModifications.ngmX >= 4 ? "" : "<br>Currently: <span id='galspan43'>?</span>x"
+	document.getElementById("galaxy43").innerHTML = text43 + curr43 + "<br>Cost: <span id='galcost43'></span> GP"
+}
