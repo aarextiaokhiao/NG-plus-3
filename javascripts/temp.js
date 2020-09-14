@@ -230,6 +230,30 @@ function updatePostInfiTemp() {
 	tmp.postinfi21 = Math.pow(player.money.plus(10).log10(), exp21)
 }
 
+function updateGhostifyTempStuff(){
+	updateBosonicLabTemp()
+	tmp.apgw = tmp.qu.nanofield.apgWoke||getAntiPreonGhostWake()
+	tmp.ppti = 1
+	if (player.ghostify.ghostlyPhotons.unl) {
+		var x = getLightEmpowermentBoost()
+		var y = hasBosonicUpg(32)
+		if (tmp.leBoost !== x || tmp.hasBU32 !== y || tmp.updateLights) {
+			tmp.leBoost = x
+			tmp.hasBU32 = y
+			tmp.updateLights = false
+			updateFixedLightTemp()
+		}
+		updateIndigoLightBoostTemp()
+		updatePhotonsUnlockedBRUpgrades()
+		updateNU14Temp()
+		updateNU15Temp()
+	}
+	if (ghostified) {
+		updateNeutrinoUpgradesTemp()
+		updateNeutrinoBoostsTemp()
+	}
+}
+
 function updateTemp() {
 	if (player) {
 		if (player.money) tmp.ri = player.money.gte(getLimit()) && ((player.currentChallenge != "" && player.money.gte(player.challengeTarget)) || !onPostBreak())
@@ -241,30 +265,8 @@ function updateTemp() {
 	tmp.nrm = 1
 	if (player.timestudy.studies.includes(101)) tmp.nrm = player.replicanti.amount.max(1)
 	tmp.rg4 = false
-	updateBosonicLabTemp()
 	if (tmp.ngp3) {
-		tmp.apgw=tmp.qu.nanofield.apgWoke||getAntiPreonGhostWake()
-		tmp.ppti=1
-		if (player.ghostify.ghostlyPhotons.unl) {
-			var x = getLightEmpowermentBoost()
-			var y = hasBosonicUpg(32)
-			if (tmp.leBoost !== x || tmp.hasBU32 !== y || tmp.updateLights) {
-				tmp.leBoost = x
-				tmp.hasBU32 = y
-				tmp.updateLights = false
-				updateFixedLightTemp()
-			}
-			updateIndigoLightBoostTemp()
-			updatePhotonsUnlockedBRUpgrades()
-			updateNU14Temp()
-			updateNU15Temp()
-		}
-		if (ghostified) {
-			updateNeutrinoUpgradesTemp()
-		}
-	}
-	updateNeutrinoBoostsTemp()
-	if (tmp.ngp3) {
+		updateGhostifyTempStuff()
 		if (tmp.qu.breakEternity.unlocked) updateBreakEternityUpgradesTemp()
 		if (player.masterystudies.includes("d14")) updateBigRipUpgradesTemp()
 		if (tmp.nrm !== 1 && tmp.qu.bigRip.active) {
@@ -291,16 +293,16 @@ function updateTemp() {
 			}
 		}
 		if (player.masterystudies.includes("d10")) tmp.edgm = getEmperorDimensionGlobalMultiplier() //Update global multiplier of all Emperor Dimensions
-		tmp.be=tmp.qu.bigRip.active&&tmp.qu.breakEternity.break
-		tmp.rg4=tmp.qu.upgrades.includes("rg4")&&(tmp.qu.rg4 || !tmp.ngp3l || inQC(1) || QCIntensity(1))
-		tmp.tue=getTreeUpgradeEfficiency()
-	} else tmp.be=false
+		tmp.be = tmp.qu.bigRip.active&&tmp.qu.breakEternity.break
+		tmp.rg4 = tmp.qu.upgrades.includes("rg4")&&(tmp.qu.rg4 || !tmp.ngp3l || inQC(1) || QCIntensity(1))
+		tmp.tue = getTreeUpgradeEfficiency()
+	} else tmp.be = false
 	tmp.sacPow = calcTotalSacrificeBoost()
 	updateQCRewardsTemp()
 
 	if (player.meta !== undefined) tmp.mdgm = getMetaDimensionGlobalMultiplier() //Update global multiplier of all Meta Dimensions
-	tmp.mptb=getMPTBase()
-	tmp.mpte=getMPTExp()
+	tmp.mptb = getMPTBase()
+	tmp.mpte = getMPTExp()
 	updatePostInfiTemp()
 	updateInfiniteTimeTemp()
 	updateAntiElectronGalaxiesTemp()
