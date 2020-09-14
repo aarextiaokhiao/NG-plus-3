@@ -3430,7 +3430,11 @@ function upgradeReplicantiInterval() {
 	if (player.infinityPoints.gte(player.replicanti.intervalCost) && isIntervalAffordable() && player.eterc8repl !== 0) {
 		player.infinityPoints = player.infinityPoints.minus(player.replicanti.intervalCost)
 		player.replicanti.interval *= 0.9
-		if (player.replicanti.interval < 1) player.replicanti.intervalCost = Decimal.pow("1e800",1/player.replicanti.interval)
+		if (player.replicanti.interval < 1) {
+			let x = 1 / player.replicanti.interval
+			if (x > 1e10) x = Math.pow(x / 1e5, 2)
+			player.replicanti.intervalCost = Decimal.pow("1e800", x)
+		}
 		else player.replicanti.intervalCost = player.replicanti.intervalCost.times(1e10)
 		if (!isIntervalAffordable()) player.replicanti.interval = (player.timestudy.studies.includes(22) || player.boughtDims ? 1 : 50)
 		if (player.currentEternityChall == "eterc8") player.eterc8repl-=1
