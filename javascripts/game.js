@@ -4692,7 +4692,7 @@ function setAchieveTooltip() {
 	//ACHIEVEMENT ROW 23
 	ghostliest.setAttribute('ach-tooltip', "Get " + shorten(Math.pow(Number.MAX_VALUE, 1/4)) + " Ghostifies. Reward: Ghostifies boost the gain of Ghost Particles at the reduced rate.")
 	metae18.setAttribute('ach-tooltip', "Get " + shortenCosts(Decimal.pow(10, 1e18)) + " antimatter. Reward: Distant Antimatter Galaxies scaling is 10% weaker and Higgs bosons give linear production to bosonic antimatter.")
-	aretheseanother.setAttribute('ach-tooltip', "Reach " + shortenCosts(Decimal.pow(10, 66666)) + " Quarks. Reward: Gain 5x more Quarks and Ghost Particles.")
+	aretheseanother.setAttribute('ach-tooltip', "Reach " + shortenCosts(Decimal.pow(10, 66666)) + " Quarks. Reward: Gain 500x more Quarks and Ghost Particles.")
 }
 
 
@@ -8360,10 +8360,11 @@ function emperorDimUpdating(diff){
 
 function getSpinToReplicantiSpeed(){
 	// log10(green spins) * log10(blue spins) *log10(red spins) 
+	if (!player.achievements.includes("ng3p54")) return 1
 	var r = player.quantum.tod.r.spin.plus(10).log10()
 	var g = player.quantum.tod.g.spin.plus(10).log10()
 	var b = player.quantum.tod.b.spin.plus(10).log10()
-	return r*g*b
+	return r * g * b
 }
 
 function replicantEggonUpdating(diff){

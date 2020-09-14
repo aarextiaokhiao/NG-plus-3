@@ -237,7 +237,7 @@ let quarkGain = function () {
 
 let getQuarkMult = function () {
 	x = Decimal.pow(2, tmp.qu.multPower.total)
-	if (player.achievements.includes("ng3p93")) x = x.times(5)
+	if (player.achievements.includes("ng3p93")) x = x.times(500)
 	return x
 }
 
@@ -358,7 +358,7 @@ function checkUniversalHarmony() {
 }
 
 //v2.90142
-function quantumReset(force, auto, challid, bigRip, implode=false) {
+function quantumReset(force, auto, challid, bigRip, implode = false) {
 	var headstart = player.aarexModifications.newGamePlusVersion > 0 && !tmp.ngp3
 	var pc = challid - 8
 	if (implode && speedrunMilestonesReached < 1) {

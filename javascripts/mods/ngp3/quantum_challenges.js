@@ -133,7 +133,7 @@ function updatePCCompletions() {
 	var shownormal = false
 	document.getElementById("pccompletionsbtn").style.display = "none"
 	if (!player.masterystudies) return
-	var ranking = 0
+	var r = 0
 	tmp.pcc = {} // PC Completion counters
 	for (var c1 = 2; c1 < 9; c1++) for (var c2 = 1; c2 < c1; c2++) {
 		var rankingPart = 0
@@ -157,11 +157,11 @@ function updatePCCompletions() {
 				shownormal = true
 			}
 		}
-		ranking += Math.sqrt(rankingPart)
+		r += Math.sqrt(rankingPart)
 	}
-	ranking *= 100 / 56
-	if (ranking) document.getElementById("pccompletionsbtn").style.display = "inline-block"
-	document.getElementById("pccranking").textContent = ranking.toFixed(1)
+	r *= 100 / 56
+	if (r) document.getElementById("pccompletionsbtn").style.display = "inline-block"
+	document.getElementById("pccranking").textContent = r.toFixed(1)
 	document.getElementById("pccrankingMax").textContent = Math.sqrt(1e4 * (2 + qcm.modifiers.length)).toFixed(1)
 	updatePCTable()
 	for (var m = 0; m < qcm.modifiers.length; m++) {
@@ -170,11 +170,11 @@ function updatePCCompletions() {
 		document.getElementById("qcms_" + id).style.display = tmp.qu.qcsMods[id] !== undefined ? "" : "none"
 	}
 	document.getElementById("qcms_normal").style.display = shownormal ? "" : "none"
-	if (ranking >= 75) {
+	if (r >= 75) {
 		document.getElementById("modifiersdiv").style.display = ""
 		for (var m = 0; m < qcm.modifiers.length; m++) {
 			var id = qcm.modifiers[m]
-			if (ranking >= qcm.reqs[id] || !qcm.reqs[id]) {
+			if (r >= qcm.reqs[id] || !qcm.reqs[id]) {
 				document.getElementById("qcm_" + id).className = qcm.on.includes(id) ? "chosenbtn" : "storebtn"
 				document.getElementById("qcm_" + id).setAttribute('ach-tooltip', qcm.descs[id] || "???")
 			} else {
@@ -183,11 +183,11 @@ function updatePCCompletions() {
 			}
 		}
 	} else document.getElementById("modifiersdiv").style.display = "none"
-	if (ranking >= 165) giveAchievement("Pulling an All-Nighter")
-	if (ranking >= 190) giveAchievement("Not-so-very-challenging") 
+	
+	if (r >= 165) giveAchievement("Pulling an All-Nighter")
+	if (r >= 190) giveAchievement("Not-so-very-challenging") 
 	if (tmp.pcc.normal >= 24) giveAchievement("The Challenging Day")
-	if (ranking >= 1/0) giveAchievement("Not-so-very-challenging") 
-	// unavailable
+	ranking = r //its global
 }
 
 let qcRewards = {

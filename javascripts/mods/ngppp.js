@@ -696,7 +696,8 @@ function getGHPGain() {
 
 function getGHPMult() {
 	let x = Decimal.pow(2, player.ghostify.multPower - 1)
-	if (player.achievements.includes("ng3p93")) x = x.times(5)
+	if (player.achievements.includes("ng3p93")) x = x.times(500)
+	if (player.achievements.includes("ng3p83")) x = x.times(ranking + 1)
 	if (player.achievements.includes("ng3p97")) x = x.times(Decimal.pow(player.ghostify.times + 1, 1/3))
 	return x
 }
