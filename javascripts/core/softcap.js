@@ -32,7 +32,37 @@ var softcap_data = {
 			func: "pow",
 			start: 12e3,
 			pow: 0.2
-		}
+		},
+		7: {
+			func: "pow",
+			start: 14e4,
+			pow: .3,
+			derv: true
+		},
+		8: {
+			func: "pow",
+			start: 16e4,
+			pow: .2,
+			derv: true
+		},
+		9: {
+			func: "pow",
+			start: 18e4,
+			pow: .1,
+			derv: true
+		},
+		10: {
+			func: "pow",
+			start: 20e4,
+			pow: .05,
+			derv: true
+		},
+		11: {
+			func: "log",
+			//start: Math.pow(10, 4.4) about 25 118 
+			pow: 2.2,
+			mul: 100 / 4.4
+		} // also can remove these once we fix things
 	},
 	ts_reduce_log: {
 		1: {
@@ -271,6 +301,11 @@ var softcap_funcs = {
 	},
 	log: function(x, pow = 1, mul = 1, add = 0) {
 		var x2 = Math.pow(Math.log10(x) * mul + add, pow)
+		if (x > x2) return x2
+		return x
+	},
+	logshift: function (x, shift, pow, add = 0){
+		var x2 = Math.pow(Math.log10(x * shift), pow) + add
 		if (x > x2) return x2
 		return x
 	}
