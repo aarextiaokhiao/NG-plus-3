@@ -122,6 +122,9 @@ function getStartingIDPower(tier){
 		log = doWeakerPowerReductionSoftcapNumber(log, 1e15, .9)
 		log = doWeakerPowerReductionSoftcapNumber(log, 1e16, .8)
 		log = doWeakerPowerReductionSoftcapNumber(log, 1e17, .7)
+		log = doWeakerPowerReductionSoftcapNumber(log, 1e18, .6)
+		log = doWeakerPowerReductionSoftcapNumber(log, 1e19, .5)
+		log = doWeakerPowerReductionSoftcapNumber(log, 1e20, .4)
 		mult = Decimal.pow(10,log)
 	}
 	return mult
