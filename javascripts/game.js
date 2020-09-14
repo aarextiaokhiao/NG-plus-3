@@ -1983,7 +1983,7 @@ document.getElementById("offlineProd").onclick = function() {
 
 //MORE DISPLAY STUFF
 
-function updateInfCostsDisplay() {
+function updateInfCosts() {
 	if (document.getElementById("replicantis").style.display == "block" && document.getElementById("infinity").style.display == "block") replicantiDisplay()
 	if (document.getElementById("timestudies").style.display == "block" && document.getElementById("eternitystore").style.display == "block") mainTimeStudyDisplay()
 	if (document.getElementById("ers_timestudies").style.display == "block" && document.getElementById("eternitystore").style.display == "block") updateERSTTDesc()
@@ -3311,7 +3311,6 @@ function calcTotalSacrificeBoost(next) {
 	if (player.boughtDims) ret = ret.pow(1 + Math.log(1 + Math.log(1 + (player.timestudy.ers_studies[1] + (next ? 1 : 0))/ 5)))
 	return ret
 }
-
 
 function sacrifice(auto = false) {
 	if (player.eightAmount == 0) return false;
@@ -6735,7 +6734,7 @@ function gameLoop(diff) {
 	updateCoinPerSec();
 
 	updateDimensionsDisplay()
-	updateInfCostsDisplay()
+	updateInfCosts()
 
 	updateDilationDisplay()
 
