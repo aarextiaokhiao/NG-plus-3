@@ -3491,6 +3491,17 @@ function getRGCost(offset = 0, costChange) {
 				if (player.replicanti.gal + offset >= 500000) ret = ret.pow((player.replicanti.gal + offset) / 500 - 999)
 				if (player.replicanti.gal + offset >= 550000) ret = ret.pow((player.replicanti.gal + offset) / 100 - 5499)
 				if (player.replicanti.gal + offset >= 600000) ret = ret.pow((player.replicanti.gal + offset) / 50 - 11999)
+				if (player.replicanti.gal + offset >= 650000) ret = ret.pow((player.replicanti.gal + offset) / 10 - 64999)
+				if (player.replicanti.gal + offset >= 700000) ret = ret.pow((player.replicanti.gal + offset) / 5 - 139999)
+				if (player.replicanti.gal + offset >= 750000) ret = ret.pow((player.replicanti.gal + offset) / 1 - 749999)
+				if (player.replicanti.gal + offset >= 800000) ret = ret.pow(Math.pow(player.replicanti.gal + offset, 2) / 64e5    - 1e5 + 1)
+				if (player.replicanti.gal + offset >= 850000) ret = ret.pow(Math.pow(player.replicanti.gal + offset, 2) / 72.25e4 - 1e6 + 1)
+				if (player.replicanti.gal + offset >= 900000) ret = ret.pow(Math.pow(player.replicanti.gal + offset, 2) / 81e3    - 1e7 + 1)
+				if (player.replicanti.gal + offset >= 950000) ret = ret.pow(Math.pow(player.replicanti.gal + offset, 2) / 90.25e2 - 1e8 + 1)
+				if (player.replicanti.gal + offset >= 1e6)    ret = ret.pow(Decimal.pow(1.01, (player.replicanti.gal + offset) / 100 - 9900 ))
+				//yeah that scaling is rough, but you shouldnt be able to get more than about 1.72e6 RGs now
+				//also I checked, it just makes the cost Infinite which isnt an issue 
+				// and yeah these can be removed once we confirm its not them which causes inflation + bugs
 			}
 		}
 	}
