@@ -3478,15 +3478,16 @@ function getRGCost(offset = 0, costChange) {
 							increase += 1e12 * (offset - Math.max(199999 - player.replicanti.gal, 0))
 							increase += (offset - Math.max(199999 - player.replicanti.gal, 0)) * (1e9 * (offset - Math.max(199999 - player.replicanti.gal, 0) + Math.max(player.replicanti.gal, 199999) * 2) - 199999e9)
 						}
-						if (player.replicanti.gal + offset >= 250000) increase += 1e13 * (offset - Math.max(249999 - player.replicanti.gal, 0))
-						if (player.replicanti.gal + offset >= 300000) increase += 1e14 * (offset - Math.max(299999 - player.replicanti.gal, 0))
-						if (player.replicanti.gal + offset >= 350000) increase += 1e15 * (offset - Math.max(349999 - player.replicanti.gal, 0))
+						if (player.replicanti.gal + offset >= 250000) increase += 1e12 * (offset - Math.max(249999 - player.replicanti.gal, 0))
+						if (player.replicanti.gal + offset >= 300000) increase += 1e13 * (offset - Math.max(299999 - player.replicanti.gal, 0))
+						if (player.replicanti.gal + offset >= 350000) increase += 1e14 * (offset - Math.max(349999 - player.replicanti.gal, 0))
 					} else for (var g = Math.max(player.replicanti.gal, 399); g < player.replicanti.gal + offset; g++) increase += 5 * Math.floor(Math.pow(1.2, g - 394))
 				}
 			}
 			ret = ret.times(Decimal.pow(10, increase))
-			if (tmp.ngp3) {
+			if (tmp.ngp3 && !tmp.ngp3l) {
 				if (player.replicanti.gal + offset >= 400000) ret = ret.pow((player.replicanti.gal + offset) / 400000)
+				/*
 				if (player.replicanti.gal + offset >= 450000) ret = ret.pow((player.replicanti.gal + offset) / 5000 - 89)
 				if (player.replicanti.gal + offset >= 500000) ret = ret.pow((player.replicanti.gal + offset) / 500 - 999)
 				if (player.replicanti.gal + offset >= 550000) ret = ret.pow((player.replicanti.gal + offset) / 100 - 5499)
@@ -3501,7 +3502,7 @@ function getRGCost(offset = 0, costChange) {
 				if (player.replicanti.gal + offset >= 1e6)    ret = ret.pow(Decimal.pow(1.01, (player.replicanti.gal + offset) / 100 - 9900 ))
 				//yeah that scaling is rough, but you shouldnt be able to get more than about 1.72e6 RGs now
 				//also I checked, it just makes the cost Infinite which isnt an issue 
-				// and yeah these can be removed once we confirm its not them which causes inflation + bugs
+				// and yeah these can be removed once we confirm its not them which causes inflation + bugs */
 			}
 		}
 	}
@@ -8291,7 +8292,7 @@ function updateNextPreonEnergyThreshold(){
 		increment /= 2
 	}
 	tmp.qu.nanofield.power += toSkip
-	tmp.qu.nanofield.powerThreshold = getNanoRewardReq(0)
+	tmp.qu.nanofield.powerThreshold = getNanoRewardReq(1)
 }
 
 function nanofieldUpdating(diff){

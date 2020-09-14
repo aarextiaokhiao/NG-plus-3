@@ -1,6 +1,6 @@
 var quantumChallenges = {
-	costs:[0,16750,19100,21500,24050,25900,28900,31300,33600],
-	goals:[0,665e7,768e8,4525e7,5325e7,1344e7,561e6,6254e7,2925e7]
+	costs:[0, 16750, 19100, 21500,  24050,  25900,  28900, 31300,  33600],
+	goals:[0, 665e7, 768e8, 4525e7, 5325e7, 1344e7, 561e6, 6254e7, 2925e7]
 }
 
 var assigned = []
@@ -85,7 +85,7 @@ function getQCGoal(num, bigRip) {
 	var c1 = 0
 	var c2 = 0
 	var mult = 1
-	if (player.achievements.includes("ng3p96") && !bigRip) mult = 0.95
+	if (player.achievements.includes("ng3p96") && !bigRip) mult *= 0.95
 	if (num == undefined) {
 		var data = tmp.inQCs
 		if (data[0]) c1 = data[0]
@@ -161,8 +161,6 @@ function updatePCCompletions() {
 	}
 	ranking *= 100 / 56
 	if (ranking) document.getElementById("pccompletionsbtn").style.display = "inline-block"
-	if (ranking >= 190) giveAchievement("Not-so-very-challenging") 
-	if (tmp.pcc.normal >= 24) giveAchievement("The Challenging Day")
 	document.getElementById("pccranking").textContent = ranking.toFixed(1)
 	document.getElementById("pccrankingMax").textContent = Math.sqrt(1e4 * (2 + qcm.modifiers.length)).toFixed(1)
 	updatePCTable()
@@ -186,7 +184,10 @@ function updatePCCompletions() {
 		}
 	} else document.getElementById("modifiersdiv").style.display = "none"
 	if (ranking >= 165) giveAchievement("Pulling an All-Nighter")
-	if (ranking >= 1/0) giveAchievement("Not-so-very-challenging") // unavailable
+	if (ranking >= 190) giveAchievement("Not-so-very-challenging") 
+	if (tmp.pcc.normal >= 24) giveAchievement("The Challenging Day")
+	if (ranking >= 1/0) giveAchievement("Not-so-very-challenging") 
+	// unavailable
 }
 
 let qcRewards = {
@@ -250,11 +251,11 @@ function showQCModifierStats(id) {
 function updatePCTable() {
 	var data=tmp.qu.qcsMods[tmp.pct]
 	for (r = 1; r < 9; r++) for (c = 1; c < 9; c++) {
-		if (r!=c) {
-			var divid = "pc" + (r*10+c)
-			var pcid = r*10+c
-			if (r>c) pcid = c*10+r
-			if (tmp.pct=="") {
+		if (r != c) {
+			var divid = "pc" + (r * 10 + c)
+			var pcid = r * 10 + c
+			if (r > c) pcid = c * 10  +r
+			if (tmp.pct == "") {
 				var comp = tmp.qu.pairedChallenges.completions[pcid]
 				if (comp !== undefined) {
 					document.getElementById(divid).textContent = "PC" + comp
@@ -284,9 +285,9 @@ function updatePCTable() {
 				document.getElementById(divid).className = ""
 				document.getElementById(divid).removeAttribute('ach-tooltip')
 			}
-		} else {
-			var divid="qcC"+r
-			if (tmp.pct==""||(data&&data["qc"+r])) {
+		} else { // r == c
+			var divid = "qcC" + r
+			if (tmp.pct == "" || (data && data["qc" + r])) {
 				document.getElementById(divid).textContent = "QC"+r
 				if (tmp.qu.qcsNoDil["qc" + r] && tmp.pct == "") {
 					document.getElementById(divid).className = "ndcompleted"
