@@ -278,6 +278,7 @@ var softcap_vars = {
 var softcap_funcs = {
 	pow: function(x, start, pow, derv) {
 		if (x > start) {
+			x = Math.pow(x / start, pow)
 			if (derv) x = (x - 1) / pow + 1
 			x *= start
 			return x
