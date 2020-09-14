@@ -56,12 +56,6 @@ var softcap_data = {
 			start: 20e4,
 			pow: .05,
 			derv: true
-		},
-		11: {
-			func: "log",
-			//start: Math.pow(10, 4.4) about 25 118 
-			pow: 2.2,
-			mul: 100 / 4.4
 		} // also can remove these once we fix things
 	},
 	ts_reduce_log: {
