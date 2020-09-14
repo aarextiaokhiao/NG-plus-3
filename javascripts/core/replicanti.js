@@ -221,3 +221,21 @@ function replicantiGalaxyAutoToggle() {
 	player.replicanti.galaxybuyer=!player.replicanti.galaxybuyer
 	document.getElementById("replicantiresettoggle").textContent="Auto galaxy "+(player.replicanti.galaxybuyer?"ON":"OFF")+(!canAutoReplicatedGalaxy()?" (disabled)":"")
 }
+
+function getReplSpeed() {
+	let inc = .2
+	let exp = 308
+	if (player.dilation.upgrades.includes('ngpp1') && (!player.aarexModifications.nguspV || player.aarexModifications.nguepV)) {
+		let expDiv = 10
+		if (tmp.ngp3 && !tmp.ngp3l) expDiv = 9
+		let x = 1 + player.dilation.dilatedTime.max(1).log10() / expDiv
+		inc /= Math.min(x, 200)
+		if (x > 200) exp += x / 10 - 20
+	}
+	if (player.dilation.upgrades.includes("ngmm10")) exp += player.dilation.upgrades.length
+	inc = inc + 1
+	if (GUBought("gb2")) exp *= 2
+	if (hasBosonicUpg(35)) exp += tmp.blu[35].rep
+	if (hasBosonicUpg(44)) exp += tmp.blu[44]
+	return {inc: inc, exp: exp}
+}
