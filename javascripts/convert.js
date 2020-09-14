@@ -23,7 +23,7 @@ function eligibleConvert() {
 }
 function convertSave(conversion) {
 	if (conversion === "NG+3.1") {
-		if (!confirm("Upon migrating to NG+3.1, this save will no longer be able to be reverted back into NG+3L, and have all NG+3.1 changes taken into effect. It is recommended to export before doing so as this may cause issues! Are you sure want to migrate?"))
+		if (!confirm("Upon migrating to NG+3.1, this save will no longer be able to be reverted back into NG+3L, and have all NG+3.1 changes taken into effect. It is recommended to export before doing so as this may cause issues! Are you sure you want to migrate?"))
 			return;
 		clearInterval(gameLoopIntervalId);
 		delete player.aarexModifications.ngp3lV;

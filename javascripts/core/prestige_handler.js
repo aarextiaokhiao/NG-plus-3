@@ -10,8 +10,8 @@ let prestigeHandler = {
 		infinity: function() {
 			return player.money.gte(Number.MAX_VALUE) && player.break && player.currentChallenge == ""
 		},
-		eternity: function() {
-			return player.infinityPoints.gte(Number.MAX_VALUE)
+		eternity:
+			function() { return player.infinityPoints.gte(player.eternityChallGoal)
 		},
 		quantum: function() {
 			return player.meta.antimatter.gte(Decimal.pow(Number.MAX_VALUE, tmp.ngp3 ? 1.45 : 1)) && quarkGain().gt(0) && (!tmp.ngp3 || ECTimesCompleted("eterc14")) && player.money.log10() >= getQCGoal()

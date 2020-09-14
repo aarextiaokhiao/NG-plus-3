@@ -181,12 +181,12 @@ function updatePCCompletions() {
 				document.getElementById("qcm_" + id).setAttribute('ach-tooltip', qcm.descs[id] || "???")
 			} else {
 				document.getElementById("qcm_" + id).className = "unavailablebtn"
-				document.getElementById("qcm_" + id).setAttribute('ach-tooltip', 'Get '+qcm.reqs[id]+' Paired Challenges ranking to unlock this modifier. Ranking: ' + ranking.toFixed(1))
+				document.getElementById("qcm_" + id).setAttribute('ach-tooltip', 'Get ' + qcm.reqs[id] + ' Paired Challenges ranking to unlock this modifier. Ranking: ' + ranking.toFixed(1))
 			}
 		}
 	} else document.getElementById("modifiersdiv").style.display = "none"
 	if (ranking >= 165) giveAchievement("Pulling an All-Nighter")
-	if (ranking >= 1/0) giveAchievement("Not-so-very-challenging")
+	if (ranking >= 1/0) giveAchievement("Not-so-very-challenging") // unavailable
 }
 
 let qcRewards = {
@@ -288,7 +288,7 @@ function updatePCTable() {
 			var divid="qcC"+r
 			if (tmp.pct==""||(data&&data["qc"+r])) {
 				document.getElementById(divid).textContent = "QC"+r
-				if (tmp.qu.qcsNoDil["qc"+r]&&tmp.pct=="") {
+				if (tmp.qu.qcsNoDil["qc" + r] && tmp.pct == "") {
 					document.getElementById(divid).className = "ndcompleted"
 					document.getElementById(divid).setAttribute('ach-tooltip', "No dilation achieved!")
 				} else {
@@ -319,7 +319,7 @@ var qcm={
 	},
 	descs:{
 		ad: "You always have no Tachyon particles. You can dilate time, but you can't gain Tachyon particles.",
-		sm: "You can't have normal time studies or more than 20 normal mastery studies."
+		sm: "You can't have normal Time Studies, and can't have more than 20 normal Mastery Studies."
 	},
 	on: []
 }
