@@ -43,27 +43,27 @@ var softcap_data = {
 	ts_reduce_log: {
 		1: {
 			func: "pow",
-			start: 1e7,
+			start: 1e6,
 			pow: 0.75
 		},
 		2: {
 			func: "pow",
-			start: 2e7,
+			start: 2e6,
 			pow: 0.70
 		},
 		3: {
 			func: "pow",
-			start: 4e7,
+			start: 3e6,
 			pow: 0.65
 		},
 		4: {
 			func: "pow",
-			start: 6e7,
+			start: 4e6,
 			pow: 0.60
 		},
 		5: {
 			func: "pow",
-			start: 8e7,
+			start: 5e6,
 			pow: 0.55
 		}
 	},
@@ -75,38 +75,39 @@ var softcap_data = {
 		},
 		2: {
 			func: "pow",
-			start: 1e5,
-			pow: 0.75
+			start: 2e4,
+			pow: 0.65
 		}
 	},
 	ts11_log_big_rip: {
 		1: {
 			func: "pow",
 			start: 11e4,
-			pow: 0.5
+			pow: 0.8,
+			derv: true
 		},
 		2: {
 			func: "pow",
 			start: 13e4,
-			pow: 0.4,
+			pow: 0.7,
 			derv: true
 		},
 		3: {
 			func: "pow",
 			start: 15e4,
-			pow: 0.3,
+			pow: 0.6,
 			derv: true
 		},
 		4: {
 			func: "pow",
 			start: 17e4,
-			pow: 0.2,
+			pow: 0.5,
 			derv: true
 		},
 		5: {
 			func: "pow",
 			start: 19e4,
-			pow: 0.1,
+			pow: 0.4,
 			derv: true
 		}
 	},
@@ -114,7 +115,8 @@ var softcap_data = {
 		1: {
 			func: "pow",
 			start: 500,
-			pow: 0.75
+			pow: 0.75,
+			derv: true
 		}
 	},
 	bru1_log: {
@@ -131,12 +133,14 @@ var softcap_data = {
 		3: {
 			func: "pow",
 			start: 2e10,
-			pow: 0.5
+			pow: 0.5,
+			derv: true
 		},
 		4: {
 			func: "pow",
 			start: 4e10,
-			pow: 0.7
+			pow: 0.7,
+			derv: true
 		},
 		5: {
 			func: "log",
