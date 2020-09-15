@@ -264,37 +264,37 @@ var softcap_data = {
 		1:{
 			func: "pow",
 			start: 1e14,
-			pow: .90
+			pow: .90,
 			derv: true
 		},
 		2:{
 			func: "pow",
 			start: 1e15,
-			pow: .85
+			pow: .85,
 			derv: true
 		},
 		3:{
 			func: "pow",
 			start: 1e16,
-			pow: .80
+			pow: .80,
 			derv: true
 		},
 		4:{
 			func: "pow",
 			start: 1e17,
-			pow: .75
+			pow: .75,
 			derv: true
 		},
 		5:{
 			func: "pow",
 			start: 3e17,
-			pow: .70
+			pow: .70,
 			derv: true
 		},
 		6:{
 			func: "pow",
 			start: 1e18,
-			pow: .65
+			pow: .65,
 			derv: true
 		}
 	}
