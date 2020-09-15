@@ -5522,6 +5522,7 @@ setInterval(function() {
 	updateNGM2RewardDisplay()
 	updateGalaxyUpgradesDisplay()
 	updateTimeStudyButtons(false, true)
+	updateHotkeys()
 
 	//Rounding errors
 	if (!tmp.ngp3 || !quantumed) if (player.infinityPoints.lt(100)) player.infinityPoints = player.infinityPoints.round()
