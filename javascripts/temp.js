@@ -233,7 +233,7 @@ function updatePostInfiTemp() {
 function updateGhostifyTempStuff(){
 	updateBosonicLabTemp()
 	tmp.apgw = tmp.qu.nanofield.apgWoke||getAntiPreonGhostWake()
-	tmp.ppti = 1
+	tmp.ppti = 1 //preon power threshold increase
 	if (player.ghostify.ghostlyPhotons.unl) {
 		var x = getLightEmpowermentBoost()
 		var y = hasBosonicUpg(32)
