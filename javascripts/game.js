@@ -2127,11 +2127,38 @@ buyAutobuyer = function(id) {
 	updateAutobuyers();
 }
 
-for (var buynum = 1; buynum <= 8; buynum ++){
-	document.getElementById("buyerBtn" + buynum).onclick = function () { //make these a for loop?
-		buyAutobuyer(buynum - 1);
-	}
+document.getElementById("buyerBtn" + 1).onclick = function () { 
+	buyAutobuyer(1 - 1);
 }
+
+document.getElementById("buyerBtn" + 2).onclick = function () { 
+	buyAutobuyer(2 - 1);
+}
+
+document.getElementById("buyerBtn" + 3).onclick = function () { 
+	buyAutobuyer(3 - 1);
+}
+
+document.getElementById("buyerBtn" + 4).onclick = function () { 
+	buyAutobuyer(4 - 1);
+}
+
+document.getElementById("buyerBtn" + 5).onclick = function () { 
+	buyAutobuyer(5 - 1);
+}
+
+document.getElementById("buyerBtn" + 6).onclick = function () { 
+	buyAutobuyer(6 - 1);
+}
+
+document.getElementById("buyerBtn" + 7).onclick = function () { 
+	buyAutobuyer(7 - 1);
+}
+
+document.getElementById("buyerBtn" + 8).onclick = function () { 
+	buyAutobuyer(8 - 1);
+}
+
 
 document.getElementById("buyerBtnTickSpeed").onclick = function () {
 	buyAutobuyer(8);
