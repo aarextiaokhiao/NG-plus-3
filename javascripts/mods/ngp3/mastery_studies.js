@@ -289,7 +289,10 @@ var masteryStudies = {
 		303: "Meta Dimensions are stronger based on your galaxies.",
 		311: "Replicanti boost to all Infinity Dimensions is 17.3x stronger.",
 		312: "Meta-dimension boosts are 4.5% stronger and cost scale by 1 less.",
-		321: "Buff multiplier per 10 normal Dimensions to <span id='321effect'></span>x if it is 1x.",
+		321: function(){
+			s = (inQC(5) || inQC(7)) || (((inNC(13) && player.tickspeedBoosts == undefined) || player.currentChallenge == "postc1" || player.currentChallenge == "postcngm3_1") && player.galacticSacrifice != undefined)
+			return "Buff multiplier per 10 normal Dimensions to <span id='321effect'></span>x if it is 1x.<br>Currently:" +  s ? "active." : "inactive." 
+		},
 		322: "Tickspeed boosts DT production at greatly reduced rate.",
 		323: "Cancel dilation penalty for the Normal Dimension boost from replicanti.",
 		331: "Dimension Supersonic scaling starts 240,000 later, and the cost increase is reduced by 3.",

@@ -58,12 +58,12 @@ var softcap_data = {
 		},
 		4: {
 			func: "pow",
-			start: 8e7,
+			start: 6e7,
 			pow: 0.60
 		},
 		5: {
 			func: "pow",
-			start: 1e8,
+			start: 8e7,
 			pow: 0.55
 		}
 	},
@@ -187,6 +187,16 @@ var softcap_data = {
 			func: "pow",
 			start: 12e7,
 			pow: 0.6
+		},
+		2: {
+			func: "pow",
+			start: 16e7,
+			pow: 0.5
+		},
+		3: {
+			func: "pow",
+			start: 20e7,
+			pow: 0.4
 		}
 	},
 	ig_log_high: {
@@ -247,6 +257,44 @@ var softcap_data = {
 			func: "pow",
 			start: new Decimal(1e130),
 			pow: 0.4,
+			derv: true
+		}
+	},
+	idbase:{
+		1:{
+			func: "pow",
+			start: 1e14,
+			pow: .90
+			derv: true
+		},
+		2:{
+			func: "pow",
+			start: 1e15,
+			pow: .85
+			derv: true
+		},
+		3:{
+			func: "pow",
+			start: 1e16,
+			pow: .80
+			derv: true
+		},
+		4:{
+			func: "pow",
+			start: 1e17,
+			pow: .75
+			derv: true
+		},
+		5:{
+			func: "pow",
+			start: 3e17,
+			pow: .70
+			derv: true
+		},
+		6:{
+			func: "pow",
+			start: 1e18,
+			pow: .65
 			derv: true
 		}
 	}

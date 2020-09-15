@@ -119,12 +119,7 @@ function getStartingIDPower(tier){
 	var mult = dim.power
 	if (mult.gt(1)){
 		var log = mult.log10()
-		log = doWeakerPowerReductionSoftcapNumber(log, 1e15, .90)
-		log = doWeakerPowerReductionSoftcapNumber(log, 1e16, .80)
-		log = doWeakerPowerReductionSoftcapNumber(log, 1e17, .70)
-		log = doWeakerPowerReductionSoftcapNumber(log, 1e18, .65)
-		log = doWeakerPowerReductionSoftcapNumber(log, 1e19, .60)
-		log = doWeakerPowerReductionSoftcapNumber(log, 1e20, .55)
+		log = softcap(log, idbase)
 		mult = Decimal.pow(10,log)
 	}
 	return mult
