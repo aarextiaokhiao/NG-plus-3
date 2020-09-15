@@ -130,7 +130,7 @@ function updateInfiniteTimeTemp() {
 function updateIntergalacticTemp() {
 	if (!tmp.ngp3) return
 	x = player.galaxies
-	if (isLEBoostUnlocked(3) && tmp.qu.bigRip.active) x *= tmp.leBonus[3]
+	if (isLEBoostUnlocked(3) && !tmp.qu.bigRip.active) x *= tmp.leBonus[3]
 	if (tmp.be && player.dilation.active && tmp.qu.breakEternity.upgrades.includes(10)) x *= getBreakUpgMult(10)
 	if (!tmp.ngp3l) x += tmp.effAeg
 	tmp.igg = x
