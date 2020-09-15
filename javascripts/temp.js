@@ -31,7 +31,6 @@ function updateRedLightBoostTemp(){
 
 function updateOrangeLightBoostTemp(){
 	tmp.le[1] = tmp.effL[1] > 64 ? Math.log10(tmp.effL[1] / 64) + 14 : tmp.effL[1] > 8 ? Math.sqrt(tmp.effL[1]) + 6 : tmp.effL[1] + 1
-	tmp.ppti /= tmp.le[1]
 }
 
 function updateYellowLightBoostTemp(){
@@ -49,8 +48,8 @@ function updateGreenLightBoostTemp(){
 }
 
 function updateBlueLightBoostTemp(){
-	var light4mult = tmp.newNGP3E?1.3:5/4
-	var lighteffect4 = Math.log10(Math.sqrt(tmp.effL[4]*2)+1)*light4mult
+	var light4mult = tmp.newNGP3E ? 1.3 : 5/4
+	var lighteffect4 = Math.log10(Math.sqrt(tmp.effL[4] * 2) + 1) * light4mult
 	tmp.le[4] = lighteffect4
 }
 
@@ -230,10 +229,16 @@ function updatePostInfiTemp() {
 	tmp.postinfi21 = Math.pow(player.money.plus(10).log10(), exp21)
 }
 
+function updatePPTITemp(){
+	let x = 1
+	x /= tmp.le[1] || 1
+	tmp.ppti = x
+}
+
 function updateGhostifyTempStuff(){
 	updateBosonicLabTemp()
-	tmp.apgw = tmp.qu.nanofield.apgWoke||getAntiPreonGhostWake()
-	tmp.ppti = 1 //preon power threshold increase
+	tmp.apgw = tmp.qu.nanofield.apgWoke || getAntiPreonGhostWake()
+	updatePPTITemp() //preon power threshold increase
 	if (player.ghostify.ghostlyPhotons.unl) {
 		var x = getLightEmpowermentBoost()
 		var y = hasBosonicUpg(32)
@@ -294,7 +299,7 @@ function updateTemp() {
 		}
 		if (player.masterystudies.includes("d10")) tmp.edgm = getEmperorDimensionGlobalMultiplier() //Update global multiplier of all Emperor Dimensions
 		tmp.be = tmp.qu.bigRip.active&&tmp.qu.breakEternity.break
-		tmp.rg4 = tmp.qu.upgrades.includes("rg4")&&(tmp.qu.rg4 || !tmp.ngp3l || inQC(1) || QCIntensity(1))
+		tmp.rg4 = tmp.qu.upgrades.includes("rg4") && (tmp.qu.rg4 || !tmp.ngp3l || inQC(1) || QCIntensity(1))
 		tmp.tue = getTreeUpgradeEfficiency()
 	} else tmp.be = false
 	tmp.sacPow = calcTotalSacrificeBoost()

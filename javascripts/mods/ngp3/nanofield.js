@@ -253,7 +253,7 @@ function updateNanoRewardTemp() {
 
 function getNanofieldSpeedText(){
 	text = ""
-	if (ghostified) text += "Ghostify Bonus: " + shorten(tmp.qu.nanofield.rewards < 16 ? 6 : 3) + "x, "
+	if (ghostified) text += "Ghostify Bonus: " + shorten(tmp.qu.nanofield.rewards >= 16 ? 1 : (player.ghostify.milestone >= 1 ? 6 : 3)) + "x, "
 	if (!tmp.ngp3l && player.achievements.includes("ng3p78")) text += "'Aren't you already dead' reward: " +shorten(Math.sqrt(getTreeUpgradeLevel(8) * tmp.tue + 1)) + "x, "
 	if (hasNU(15)) text += "Neutrino upgrade 15: " + shorten(tmp.nu[6]) + "x, "
 	if (text == "") return "No multipliers currently"
@@ -262,7 +262,7 @@ function getNanofieldSpeedText(){
 
 function getNanofieldSpeed() {
 	let x = 1
-	if (ghostified) x *= tmp.qu.nanofield.rewards < 16 ? 6 : 3
+	if (ghostified) x *= tmp.qu.nanofield.rewards >= 16 ? 1 : (player.ghostify.milestone >= 1 ? 6 : 3)
 	if (!tmp.ngp3l && player.achievements.includes("ng3p78")) x *= Math.sqrt(getTreeUpgradeLevel(8) * tmp.tue + 1)
 	if (hasNU(15)) x = tmp.nu[6].times(x)
 	return x
@@ -302,8 +302,7 @@ function getNanoRewardReqFixed(n){
 	if (n >= 160) x = x.times(Decimal.pow(1.3, (n-160)*(n-159)*(n-158)/6*2 + (n-160)*(n-159)/2*39))
 	if (n >= 170) x = x.times(Decimal.pow(1.6, (n-170)*(n-169)*(n-168)/6*2 + (n-170)*(n-169)/2*59))
 	if (n >= 180) x = x.times(Decimal.pow(2.0, (n-180)*(n-179)*(n-178)/6*2 + (n-180)*(n-179)/2*79))
-	if (!tmp.le[1]) return x
-	return x.pow(1 / tmp.le[1])
+	return x.pow(tmp.ppti || 1)
 }
 
 function updateNextPreonEnergyThreshold(){
