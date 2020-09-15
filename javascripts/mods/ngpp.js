@@ -88,12 +88,12 @@ function replicantiGalaxyBulkModeToggle() {
 // v2.9
 quantumed = false
 function quantum(auto, force, challid, bigRip = false, quick) {
-    if (player.masterystudies !== undefined) if (!auto && !force && tmp.qu.bigRip.active) force = true
+	if (player.masterystudies !== undefined) if (!auto && !force && tmp.qu.bigRip.active) force = true
 	if (!(isQuantumReached()||force)||implosionCheck) return
 	var headstart = player.aarexModifications.newGamePlusVersion > 0 && !tmp.ngp3
 	if (player.aarexModifications.quantumConf&&!(auto||force)) if (!confirm(player.masterystudies?"Quantum will reset everything Eternity resets, and "+(headstart?"other things like Dilation":"including Time Studies, Eternity Challenges, Dilation, "+(tmp.ngp3?"Meta Dimensions, and Mastery Studies":"and Meta Dimensions"))+". You will gain a quark and unlock various upgrades.":"WARNING! Quantum wasn't fully implemented in NG++, so if you go Quantum now, you will gain quarks, but they'll have no use. Everything up to and including Eternity features will be reset.")) return
 	if (!quantumed) if (!confirm("Are you sure you want to do this? You will lose everything you have!")) return
-	var pc=challid-8
+	var pc = challid - 8
 	if (tmp.ngp3) {
 		tmp.preQCMods=tmp.qu.qcsMods.current
 		tmp.qu.qcsMods.current=[]
@@ -155,6 +155,7 @@ function quantum(auto, force, challid, bigRip = false, quick) {
 			implosionCheck = 0
 		},2000)
 	} else quantumReset(force, auto, challid, bigRip)
+	updateTemp()
 }
 
 function getQuantumReq() {
