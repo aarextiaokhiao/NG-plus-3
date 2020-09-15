@@ -7101,6 +7101,12 @@ setInterval(function() {
 	if (player) if (player.infinityUpgrades.includes("autoBuyerUpgrade")) autoBuyerTick()
 }, 50)
 
+for (let ncid = 2; ncid <= 12; ncid++){
+	document.getElementById("challenge" + ncid).onclick = function () {
+		startNormalChallenge(ncid)
+	}
+}
+
 function isEterBuyerOn() {
 	if (!player.eternityBuyer.isOn) return
 	if (!player.eternityBuyer.ifAD || player.dilation.active) return true
