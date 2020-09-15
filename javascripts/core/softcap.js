@@ -26,18 +26,7 @@ var softcap_data = {
 		5: {
 			func: "pow",
 			start: 10e3,
-			pow: 0.4
-		},
-		6: {
-			func: "pow",
-			start: 12e3,
-			pow: 0.2
-		},
-		7: {
-			func: "pow",
-			start: 2e4,
-			pow: .9,
-			derv: true
+			pow: 0.5
 		}
 	},
 	ts_reduce_log: {
