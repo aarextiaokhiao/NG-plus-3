@@ -9,6 +9,12 @@ function updateToDSpeedDisplay(){
 	document.getElementById("todspeed").textContent = t
 }
 
+function getTreeUpgradeEfficiencyDisplay(){
+	s = 'getTreeUpgradeEfficiencyText()'
+	if (!shiftDown) s = '"Tree upgrade efficiency: "+(tmp.tue*100).toFixed(1)+"%"'
+	return s
+}
+
 function updateTreeOfDecayTab(){
 	var branchNum
 	var colors = ["red", "green", "blue"]
@@ -51,6 +57,7 @@ function updateTreeOfDecayTab(){
 			document.getElementById("treeupg" + u + "cost").textContent = start + shortenMoney(getTreeUpgradeCost(u)) + " " + colors[lvl % 3] + end
 		}
 		setAndMaybeShow("treeUpgradeEff", ghostified, '"Tree upgrade efficiency: "+(tmp.tue*100).toFixed(1)+"%"')
+		// I want to make it getTreeUpgradeEfficiencyDisplay(), but that doesnt work, so leaveing it out for now
 	}
 	updateToDSpeedDisplay()
 }
@@ -130,7 +137,7 @@ function getBranchSpeedText(){
 	if (!tmp.ngp3l) if (player.achievements.includes("ng3p58")) if (player.meta.resets > 1) text += "'Are you currently dying?' reward: " + shorten (Math.sqrt(player.meta.resets + 1)) + "x, "
 	if (player.ghostify.milestones >= 14) text += "Brave Milestone 14: " + shorten(getMilestone14SpinMult()) + "x, "
 	if (todspeed) if (todspeed > 1) text += "ToD Speed: " + shorten(todspeed) + "x, "
-	if (text == "") return text
+	if (text == "") return "No multipliers currently"
 	return text.slice(0, text.length-2)
 }
 
@@ -429,9 +436,20 @@ function getMaximumUnstableQuarks() {
 	return r
 }
 
+function getTreeUpgradeEfficiencyText(){
+	let text = ""
+	if (player.ghostify.neutrinos.boosts >= 7) text += "Neutrino Boost 7: +" + shorten(tmp.nb[7]) + ", "
+	if (!tmp.ngp3l) {
+		if (player.achievements.includes("ng3p62") && !tmp.qu.bigRip.active) text += "Finite Time Reward: +10%, "
+		if (hasBosonicUpg(43)) text += "Bosonic Lab Upgrade 18: " + shorten(tmp.blu[43]) + "x, "
+	}
+	if (text == "") return "No multipliers currently"
+	return text.slice(0, text.length-2)
+}
+
 function getTreeUpgradeEfficiency(mod) {
 	let r = 1
-	if (player.ghostify.neutrinos.boosts > 6 && (tmp.qu.bigRip.active || mod == "br") && mod != "noNB") r += tmp.nb[6]
+	if (player.ghostify.neutrinos.boosts >= 7 && (tmp.qu.bigRip.active || mod == "br") && mod != "noNB") r += tmp.nb[7]
 	if (!tmp.ngp3l) {
 		if (player.achievements.includes("ng3p62") && !tmp.qu.bigRip.active) r += 0.1
 		if (hasBosonicUpg(43)) r *= tmp.blu[43]
