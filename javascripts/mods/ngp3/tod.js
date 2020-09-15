@@ -5,7 +5,7 @@ function getLogTotalSpin() {
 function updateToDSpeedDisplay(){
 	let t = ''
 	if (shiftDown) t = getBranchSpeedText()
-	else t = "Branch speed: " + (todspeed == 1 ? "" : shorten(tmp.branchSpeed) + " * " + shorten(todspeed) + " = ") + shorten(getBranchFinalSpeed()) + "x"
+	else t = "Branch speed: " + (todspeed == 1 ? "" : shorten(tmp.branchSpeed) + " * " + shorten(todspeed) + " = ") + shorten(getBranchFinalSpeed()) + "x" + " (hold shift for details)"
 	document.getElementById("todspeed").textContent = t
 }
 
@@ -123,14 +123,15 @@ function unstableQuarks(branch) {
 
 function getBranchSpeedText(){
 	let text = ""
-	if (getTreeUpgradeEffect(3).gt(1)) text += "Tree Upgrade 3: " + shorten(getTreeUpgradeEffect(3))
-	if (getTreeUpgradeEffect(5).gt(1)) text += "Tree Upgrade 5: " + shorten(getTreeUpgradeEffect(5))
-	if (player.masterystudies.includes("t431")) if (getMTSMult(431).gt(1)) text += "Mastery Study 431: " + shorten(getMTSMult(431))
-	if (hasNU(4)) if (tmp.nu[2].gt(1)) text += "Fourth Neutrino Upgrade: " + shorten(tmp.nu[2])
-	if (!tmp.ngp3l) if (player.achievements.includes("ng3p58")) if (player.meta.resets > 1) text += "\n'Are you currently dying?' Reward: " + shorten (Math.sqrt(player.meta.resets + 1))
-	if (player.ghostify.milestones >= 14) text += "Brave Milestone 14: " + shroten(getMilestone14SpinMult())
-	if (todspeed) if (todspeed > 1) text += "ToD Speed: " + shorten(todspeed)
-	return text
+	if (new Decimal(getTreeUpgradeEffect(3)).gt(1)) text += "Tree Upgrade 3: " + shorten(getTreeUpgradeEffect(3)) + "x, "
+	if (new Decimal(getTreeUpgradeEffect(5)).gt(1)) text += "Tree Upgrade 5: " + shorten(getTreeUpgradeEffect(5)) + "x, "
+	if (player.masterystudies.includes("t431")) if (getMTSMult(431).gt(1)) text += "Mastery Study 431: " + shorten(getMTSMult(431)) + "x, "
+	if (hasNU(4)) if (tmp.nu[2].gt(1)) text += "Fourth Neutrino Upgrade: " + shorten(tmp.nu[2]) + "x, "
+	if (!tmp.ngp3l) if (player.achievements.includes("ng3p58")) if (player.meta.resets > 1) text += "'Are you currently dying?' reward: " + shorten (Math.sqrt(player.meta.resets + 1)) + "x, "
+	if (player.ghostify.milestones >= 14) text += "Brave Milestone 14: " + shorten(getMilestone14SpinMult()) + "x, "
+	if (todspeed) if (todspeed > 1) text += "ToD Speed: " + shorten(todspeed) + "x, "
+	if (text == "") return text
+	return text.slice(0, text.length-2)
 }
 
 function getBranchSpeed() { // idea: when you hold shift you can see where the multipliers of branch speed are
