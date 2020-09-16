@@ -60,6 +60,10 @@ function updateQuantumChallenges() {
 		document.getElementById(property + "cost").textContent = "Cost: " + getFullExpansion(quantumChallenges.costs[qc]) + " electrons"
 		document.getElementById(property + "goal").textContent = "Goal: " + shortenCosts(Decimal.pow(10, getQCGoal(qc))) + " antimatter"
 	}
+	updateQCDisplaysSpecifics()
+}
+
+function updateQCDisplaysSpecifics(){
 	document.getElementById("qc2reward").textContent = Math.round(tmp.qcRewards[2] * 100 - 100)
 	document.getElementById("qc7desc").textContent = "Dimension and tickspeed cost multiplier increases are " + shorten(Number.MAX_VALUE) + "x. Multiplier per ten Dimensions and meta-Antimatter boost to Dimension Boosts are disabled."
 	document.getElementById("qc7reward").textContent = (100 - tmp.qcRewards[7] * 100).toFixed(2)

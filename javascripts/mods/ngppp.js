@@ -683,13 +683,15 @@ function switchAB() {
 function getGHPGain() {
 	if (!tmp.ngp3 || !tmp.qu.bigRip.active) return new Decimal(0)
 	if (!tmp.ngp3l && !ghostified) return new Decimal(1)
-	let log=(tmp.qu.bigRip.bestThisRun.log10()/getQCGoal(undefined,true)-1)
-	if (tmp.ngp3l) log*=2
-	else log+=(player.quantum.quarks.add(1).log10()-0)*0
-	if (log>1e4&&player.aarexModifications.ngudpV!=undefined) log=Math.sqrt(log*1e4)
-	if (player.aarexModifications.nguepV!=undefined) {
-		if (log>2e4) log=Math.pow(4e8*log,1/3)
-		if (log>59049) log=Math.pow(Math.log10(log)/Math.log10(9)+4,5)
+	let log = tmp.qu.bigRip.bestThisRun.log10() / getQCGoal(undefined,true) - 1
+	if (tmp.ngp3l) {
+		log *= 2
+	} else if (player.achievements.includes("ng3p58")) { 
+		//the square part of the formula maxes at e10, and gets weaker after ~e60 total
+		let x = Math.min(10, log)
+		y = player.ghostify.ghostParticles.plus(Decimal.pow(10, log)).plus(10).log10()
+		x = Math.min(x, 600 / y)
+		log += x
 	}
 	return Decimal.pow(10, log).times(getGHPMult()).floor()
 }
