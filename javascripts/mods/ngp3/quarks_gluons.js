@@ -60,11 +60,14 @@ function changeAssortPercentage(x) {
 
 function assignQuark(color) {
 	var usedQuarks = getAssortAmount()
-	if (usedQuarks.eq(0)) return
+	if (usedQuarks.eq(0)) {
+		$.notify("Make sure you are assigning at least one quark!")
+		return
+	}
 	if (tmp.ngp3l && color != "r" && tmp.qu.times < 2 && !ghostified) if (!confirm("It is strongly recommended to assign your first quarks to red. Are you sure you want to do that?")) return
 	var mult = getQuarkAssignMult()
 	tmp.qu.usedQuarks[color] = tmp.qu.usedQuarks[color].add(usedQuarks.times(mult)).round()
-	tmp.qu.quarks=tmp.qu.quarks.sub(usedQuarks)
+	tmp.qu.quarks = tmp.qu.quarks.sub(usedQuarks)
 	document.getElementById("quarks").innerHTML = "You have <b class='QKAmount'>0</b> quarks."
 	if (!mult.eq(1)) updateQuantumWorth()
 	updateColorCharge()
