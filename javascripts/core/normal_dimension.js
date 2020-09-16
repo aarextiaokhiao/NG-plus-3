@@ -251,7 +251,7 @@ function getMPTBase(focusOn) {
 	if (player.tickspeedBoosts !== undefined) ret = 1
 	if (player.aarexModifications.newGameExpVersion) ret *= 10
 	if (player.aarexModifications.newGameMult) ret *= 2.1
-	if (player.infinityUpgrades.includes('ret')) ret *= infUpg12Pow()
+	if (player.infinityUpgrades.includes("dimMult")) ret *= infUpg12Pow()
 	if ((inNC(9)||player.currentChallenge=="postc1")&&!focusOn) ret = Math.pow(10 / 0.30, Math.random()) * 0.30
 	if (player.achievements.includes("r58")) {
 		if (player.galacticSacrifice !== undefined) {
