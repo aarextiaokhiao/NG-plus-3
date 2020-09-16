@@ -268,6 +268,9 @@ function doGalaxyResetStuff(bulk){
 	player.chall11Pow = new Decimal(1)
 	player.postC4Tier = 1
 	player.postC8Mult = new Decimal(1)
+	for (tier = 1; tier <= 8; tier ++){
+		player[TIER_NAMES[tier] + 'Pow'] = getDimensionBoostPower().pow(Math.max(player.resets + 1 - tier, 0))
+	}
 }
 
 
