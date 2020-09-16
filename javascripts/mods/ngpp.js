@@ -208,18 +208,20 @@ let quarkGain = function () {
 	if (log > logBoost) log = Math.pow(log / logBoost, logBoostExp) * logBoost
 	if (log > 738 && !hasNU(8)) log = Math.sqrt(log * 738)
 	if (!tmp.ngp3l) {
-		let exp = 0.6
-		if (tmp.newNGP3E) exp += 0.05
-		if (player.achievements.includes("ng3p28")) exp *= 1.01
+		if (player.achievements.includes("ng3p16")) {
+			let exp = 0.6
+			if (tmp.newNGP3E) exp += 0.05
+			if (player.achievements.includes("ng3p28")) exp *= 1.01
 
-		var EPBonus = Math.pow(Math.max(player.eternityPoints.log10() / 1e6, 1), exp) - 1
-		if (EPBonus > 1e4) EPBonus = 1e4 * Math.sqrt(EPBonus / 1e4)
-		if (EPBonus > 1e5) EPBonus = 1e5 * Math.sqrt(EPBonus / 1e5)
-		
-		log += EPBonus 
-		log += Math.log10(getQCtoQKEffect())
-		log += player.quantum.bigRip.spaceShards.plus(1).log10()
-		if (player.achievements.includes("ng3p65")) log += player.ghostify.ghostlyPhotons.enpowerments * (Math.min(20, player.ghostify.ghostlyPhotons.enpowerments))
+			var EPBonus = Math.pow(Math.max(player.eternityPoints.log10() / 1e6, 1), exp) - 1
+			if (EPBonus > 1e4) EPBonus = 1e4 * Math.sqrt(EPBonus / 1e4)
+			if (EPBonus > 1e5) EPBonus = 1e5 * Math.sqrt(EPBonus / 1e5)
+			log += EPBonus 
+		}
+		if (player.achievements.includes("ng3p33")) log += Math.log10(getQCtoQKEffect())
+		if (player.achievements.includes("ng3p53")) log += player.quantum.bigRip.spaceShards.plus(1).log10()
+		if (player.achievements.includes("ng3p65")) log += getTotalRadioactiveDecays()
+		if (player.achievements.includes("ng3p85")) log += Math.pow(player.ghostify.ghostlyPhotons.enpowerments, 2) 
 	}
 
 	var dlog = Math.log10(log)

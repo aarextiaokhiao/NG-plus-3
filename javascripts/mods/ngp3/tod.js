@@ -410,6 +410,10 @@ function radioactiveDecay(shorthand) {
 	updateTODStuff()
 }
 
+function getTotalRadioactiveDecays(){
+	return getRadioactiveDecays('g') + getRadioactiveDecays('b') + getRadioactiveDecays('r')
+}
+
 function getRadioactiveDecays(shorthand) {
 	let data = tmp.qu.tod[shorthand]
 	return data.decays || 0

@@ -690,7 +690,7 @@ function getGHPGain() {
 		//the square part of the formula maxes at e10, and gets weaker after ~e60 total
 		let x = Math.min(10, log)
 		y = player.ghostify.ghostParticles.plus(Decimal.pow(10, log)).plus(10).log10()
-		x = Math.min(x, 600 / y)
+		if (!player.achievements.includes("ng3p84")) x = Math.min(x, 600 / y)
 		log += x
 	}
 	return Decimal.pow(10, log).times(getGHPMult()).floor()
