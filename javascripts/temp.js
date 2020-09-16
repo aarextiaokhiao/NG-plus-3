@@ -230,6 +230,10 @@ function updatePostInfiTemp() {
 }
 
 function updatePPTITemp(){
+	if (!player.ghostify.ghostlyPhotons.unl) {
+		tmp.ppti = 1
+		return
+	}
 	let x = 1
 	x /= tmp.le[1] || 1
 	tmp.ppti = x

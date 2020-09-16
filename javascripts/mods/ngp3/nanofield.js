@@ -302,6 +302,7 @@ function getNanoRewardReqFixed(n){
 	if (n >= 160) x = x.times(Decimal.pow(1.3, (n-160)*(n-159)*(n-158)/6*2 + (n-160)*(n-159)/2*39))
 	if (n >= 170) x = x.times(Decimal.pow(1.6, (n-170)*(n-169)*(n-168)/6*2 + (n-170)*(n-169)/2*59))
 	if (n >= 180) x = x.times(Decimal.pow(2.0, (n-180)*(n-179)*(n-178)/6*2 + (n-180)*(n-179)/2*79))
+	if (!player.ghostify.ghostlyPhotons.unl) return x
 	return x.pow(tmp.ppti || 1)
 }
 
