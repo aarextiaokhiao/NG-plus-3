@@ -264,15 +264,16 @@ function getInfinityPowerEffect() {
 
 function getInfinityPowerEffectExp() {
 	let x = 7
+	let galaxies = Math.max(player.galaxies, 0)
 	if (player.galacticSacrifice != undefined) {
-		x = Math.pow(player.galaxies, 0.7)
-		if (player.currentChallenge=="postcngm3_2" || (player.tickspeedBoosts != undefined && player.currentChallenge == "postc1")) {
+		x = Math.pow(galaxies, 0.7)
+		if (player.currentChallenge === "postcngm3_2" || (player.tickspeedBoosts != undefined && player.currentChallenge === "postc1")) {
 			if (player.aarexModifications.ngmX >= 4) {
-				x = Math.pow(player.galaxies, 1.25)
+				x = Math.pow(galaxies, 1.25)
 				if (x > 7) x += 1
-			} else x = player.galaxies
+			} else x = galaxies
 		}
-		else if (player.challenges.includes("postcngm3_2")) x = Math.pow(player.galaxies + (player.resets + player.tickspeedBoosts) / 30, 0.7)
+		else if (player.challenges.includes("postcngm3_2")) x = Math.pow(galaxies + (player.resets + player.tickspeedBoosts) / 30, 0.7)
 		x = Math.max(x , 7)
 	}
 	if (x > 100) x = 50 * Math.log10(x)
@@ -280,7 +281,6 @@ function getInfinityPowerEffectExp() {
 	if (player.dilation.upgrades.includes("ngmm5")) x += getDil44Mult()
 	return x
 }
-
 function switchAutoInf(tier) {
 	if (player.infDimBuyers[tier - 1]) {
 		player.infDimBuyers[tier - 1] = false
