@@ -102,6 +102,7 @@ function getPostBreakInfNDMult(){
 function getDimensionFinalMultiplier(tier) {
 	let mult = player[TIER_NAMES[tier] + 'Pow']
 
+	if (!tmp.infPow) updateInfinityPowerEffects()
 	if (player.currentChallenge == "postcngm3_2") return tmp.infPow.max(1e100)
 	if (player.currentEternityChall == "eterc11") return tmp.infPow.times(Decimal.pow(getDimensionBoostPower(), player.resets - tier + 1).max(1))
 	if ((inNC(7) || player.currentChallenge == "postcngm3_3") && !player.galacticSacrifice) {
