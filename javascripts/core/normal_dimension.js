@@ -237,7 +237,7 @@ function getDimensionPowerMultiplier(focusOn, debug) {
 	if (exp > 1) ret = Decimal.pow(ret, exp)
 	if (player.aarexModifications.newGameMult !== undefined) {
 		ret = Decimal.times(ret, Math.log10(player.resets + 1) + 1)
-		ret = Decimal.times(ret, Math.log10(player.galaxies + 1) * 5 + 1)
+		ret = Decimal.times(ret, Math.log10(Math.max(player.galaxies, 0) + 1) * 5 + 1)
 	}
 	return ret
 }
@@ -252,7 +252,7 @@ function getMPTBase(focusOn) {
 	if (player.aarexModifications.newGameExpVersion) ret *= 10
 	if (player.aarexModifications.newGameMult) ret *= 2.1
 	if (player.infinityUpgrades.includes("dimMult")) ret *= infUpg12Pow()
-	if ((inNC(9)||player.currentChallenge=="postc1")&&!focusOn) ret = Math.pow(10 / 0.30, Math.random()) * 0.30
+	if ((inNC(9) || player.currentChallenge === "postc1") && !focusOn) ret = Math.pow(10 / 0.30, Math.random()) * 0.30
 	if (player.achievements.includes("r58")) {
 		if (player.galacticSacrifice !== undefined) {
 			let exp = 1.0666
