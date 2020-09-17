@@ -2577,10 +2577,10 @@ function import_save(type) {
 			onLoad()
 			if (infiniteDetected) {
 				if (document.getElementById("welcome").style.display != "flex") document.getElementById("welcome").style.display = "flex"
-				document.getElementById("welcomeMessage").innerHTML = "Because you imported a save that has an Infinite bug in it, saving is disabled. Some functions are disabled to prevent further damage to your save. It is highly recommended that you report this occurrence to the #bugs_and_glitches channel on the Discord server so the bug can be looked into and fixed. You shouldn't try to modify or do anything with the save as it may result in undesirable effects, and will be hard reset after you switch saves or refresh the game."
+				document.getElementById("welcomeMessage").innerHTML = "Because you imported a save that has an Infinite bug in it, saving is disabled. Most functionality is disabled to prevent further damage. It is highly recommended that you report this occurrence to the #bugs_and_glitches channel on the Discord server, so the bug can be looked into and fixed. It is not recommended to modify the save as it may result in undesirable effects, and will be hard reset after you switch saves or refresh the game."
 			}
 			startInterval()
-		} else if (type=="new") {
+		} else if (type === "new") {
 			var newSaveId=1
 			while (metaSave.saveOrder.includes(newSaveId)) newSaveId++
 			metaSave.saveOrder.push(newSaveId)
@@ -2815,8 +2815,8 @@ function setAchieveTooltip() { //want: seperate this into a lot of different fun
 	//ACHIEVEMENT ROW 2
 	ndial.setAttribute('ach-tooltip', "Have exactly 99 Eighth Dimensions. Reward: Eighth Dimensions are 10% stronger"+(player.tickspeedBoosts==undefined?".":" and you gain more GP based on your Eighth Dimensions and your Tickspeed Boosts."));
 	apocAchieve.setAttribute('ach-tooltip', "Get over " + formatValue(player.options.notation, 1e80, 0, 0) + " antimatter.");
-	gal.setAttribute('ach-tooltip', 'Buy an Antimatter Galaxy. '+(player.aarexModifications.ngmX>3?"Reward: Upon a Time Dimension Boost, your Dimension Boosts don’t reset unless you have more Time Dimension Boosts than your Dimension Boosts.":''));
-	doubleGal.setAttribute('ach-tooltip', 'Buy 2 Antimatter Galaxies. '+(player.tickspeedBoosts!==undefined?"Reward: Upon a Tickspeed Boost, your Dimension Boosts"+(player.aarexModifications.ngmX>3?" and Time Dimension Boosts":"")+" don’t reset unless you have more Tickspeed Boosts than five times your Antimatter Galaxies minus eight.":'')+(player.aarexModifications.ngmX>3?" You start with 3 Time Dimension Boosts.":""));
+	gal.setAttribute('ach-tooltip', 'Buy an Antimatter Galaxy. '+(player.aarexModifications.ngmX > 3?"Reward: Upon a Time Dimension Boost, your Dimension Boosts don’t reset unless you have more Time Dimension Boosts than your Dimension Boosts.":''));
+	doubleGal.setAttribute('ach-tooltip', 'Buy 2 Antimatter Galaxies. '+(player.tickspeedBoosts !== undefined ? "Reward: Upon a Tickspeed Boost, your Dimension Boosts"+(player.aarexModifications.ngmX>3?" and Time Dimension Boosts":"")+" don’t reset unless you have more Tickspeed Boosts than five times your Antimatter Galaxies minus eight.":'')+(player.aarexModifications.ngmX>3?" You start with 3 Time Dimension Boosts.":""));
 	noPointAchieve.setAttribute('ach-tooltip', "Buy a single First Dimension when you have over " + formatValue(player.options.notation, 1e150, 0, 0) + " of them. Reward: First Dimensions are 10% stronger"+(player.tickspeedBoosts==undefined?".":" and you can max buy Dimension and Tickspeed Boosts."));
 	infinity.setAttribute('ach-tooltip', "Big Crunch for the first time. Reward: Start with 100 antimatter"+(player.galacticSacrifice?" and always have at least 10x lower dimension costs.":"."));
 
@@ -2829,16 +2829,16 @@ function setAchieveTooltip() { //want: seperate this into a lot of different fun
 
 	//ACHIEVEMENT ROW 4
 	sanic.setAttribute('ach-tooltip', "Get over " + formatValue(player.options.notation, 1e63, 0, 0) + " antimatter" + (player.aarexModifications.ngmX >= 4 ? " and unlock new galaxy upgrades at " + formatValue(player.options.notation, 1e666, 0, 0) + " antimatter" : "") + ".")
-	cancer.setAttribute('ach-tooltip', "Buy ten Galaxies in total while using cancer notation."+(player.galacticSacrifice && player.tickspeedBoosts==undefined?" Reward: Gain a multiplier to IP based on the number of galaxies bought in Cancer Notation.":""))
-	zero.setAttribute('ach-tooltip',"Big Crunch without Dimension shifts, boosts or galaxies in a challenge. Reward: Dimensions 1-4 are 25% stronger"+(player.galacticSacrifice && player.tickspeedBoosts == undefined ? " and you get 1.25x more IP" : "") + (player.aarexModifications.ngmX >= 4 ? " and gain more passive GP gain based on GP." : "."))
+	cancer.setAttribute('ach-tooltip', "Buy " + (!player.aarexModifications.newGameMinusVersion ? "ten" : "10,000") + " Galaxies in total while using Cancer notation."+(player.galacticSacrifice && player.tickspeedBoosts==undefined?" Reward: Gain a multiplier to IP based on the number of galaxies bought in Cancer Notation.":""))
+	zero.setAttribute('ach-tooltip',"Big Crunch without Dimension Shifts, Boosts or Galaxies in a challenge. Reward: Dimensions 1-4 are 25% stronger"+(player.galacticSacrifice && player.tickspeedBoosts == undefined ? " and you get 1.25x more IP" : "") + (player.aarexModifications.ngmX >= 4 ? " and gain more passive GP gain based on GP." : "."))
 	potato.setAttribute('ach-tooltip', "Get more than " + formatValue(player.options.notation, 1e29, 0, 0) + " ticks per second. Reward: Reduce the starting tick interval by 2%.");
 	dimensional.setAttribute('ach-tooltip', "Reach " + formatValue(player.options.notation, 1e12, 0, 0) + " of all Normal Dimensions, except for the 8th Dimension.");
-	anti.setAttribute('ach-tooltip', "Complete all the challenges. Reward: All dimensions are 10% stronger"+(player.galacticSacrifice && player.tickspeedBoosts==undefined?" and the tickspeed cost is also reduced based on dimension cost reduction.":"."))
+	anti.setAttribute('ach-tooltip', "Complete all the challenges. Reward: All Normal Dimensions are 10% stronger"+(player.galacticSacrifice && player.tickspeedBoosts==undefined?", and the tickspeed cost is also reduced based on your Dimension cost reduction." : "."))
 
 	//ACHIEVEMENT ROW 5
-	forever.setAttribute('ach-tooltip', "Big Crunch in 1 minute or less. Reward: Start with "+shortenCosts(1e10)+" antimatter"+(player.galacticSacrifice&&player.tickspeedBoosts==undefined?" and gain a multiplier to IP based on your best infinity time.":"."))
-	many.setAttribute('ach-tooltip', "Complete the Second Dimension Autobuyer challenge in 3 minutes or less. Reward: All dimensions are stronger in the first 3 minutes of an Infinity" + (player.tickspeedBoosts==undefined?".":", and you gain 1% of GP gained on Galactic Sacrifice per second."));
-	is.setAttribute('ach-tooltip', "Complete the Tickspeed Autobuyer challenge in 3 minutes or less.  Reward: The multiplier per-10 dimensions "+(player.tickspeedBoosts!=undefined?"is boosted based on your best time of Tickspeed Autobuyer challenge.":player.galacticSacrifice?"is raised to the power of ^1.0666.":" is increased by 1%."))
+	forever.setAttribute('ach-tooltip', "Big Crunch in 1 minute or less. Reward: Start with "+shortenCosts(1e10)+" antimatter" + (player.galacticSacrifice && player.tickspeedBoosts == undefined ? ", and gain a multiplier to IP based on your best Infinity time." : "."))
+	many.setAttribute('ach-tooltip', "Complete the Second Dimension Autobuyer challenge in 3 minutes or less. Reward: All Normal Dimensions are stronger in the first 3 minutes of an Infinity" + (player.tickspeedBoosts == undefined ? "." : ", and you gain 1% of GP gained on Galactic Sacrifice per second."));
+	is.setAttribute('ach-tooltip', "Complete the Tickspeed Autobuyer challenge in 3 minutes or less. Reward: The multiplier per-10 dimensions" + (player.tickspeedBoosts != undefined ? " is boosted based on your best time of the Tickspeed Autobuyer challenge." : player.galacticSacrifice ? " is raised to the power of ^1.0666.":" is 1% more powerful."))
 	limitBreak.setAttribute('ach-tooltip', "Break Infinity."+(player.galacticSacrifice&&player.tickspeedBoosts==undefined?" Reward: Gain a multiplier to IP based on galaxies.":""))
 	
 	//ACHIEVEMENT ROW 6
@@ -2857,7 +2857,7 @@ function setAchieveTooltip() { //want: seperate this into a lot of different fun
 	tables.setAttribute('ach-tooltip', "Get 8th Dimension multiplier to be highest, 7th Dimension multiplier second highest, etc. Reward: Each dimension gains a boost proportional to their tier (8th dimension gets 8"+(player.galacticSacrifice?"0":"")+"%, 7th gets 7"+(player.galacticSacrifice?"0":"")+"%, etc.)")
 
 	//ACHIEVEMENT ROW 8
-	IPBelongs.setAttribute('ach-tooltip', "Big Crunch for "+shortenCosts(1e150)+" IP. Reward: Gain an additional 4x multiplier to IP.")
+	IPBelongs.setAttribute('ach-tooltip', "Big Crunch for "+shortenCosts(1e150)+" IP. " + (!player.aarexModifications.newGameMinusVersion ? "Reward: Gain an additional 4x multiplier to IP." : ""))
 	reference.setAttribute('ach-tooltip', "Get a x"+shortenDimensions(Number.MAX_VALUE)+" multiplier in a single sacrifice. Reward: Sacrifices are stronger.")
 	spare.setAttribute('ach-tooltip', "Reach " +formatValue(player.options.notation, new Decimal("1e35000"), 0, 0)+" antimatter. Reward: Dimensions are more powerful the more unspent antimatter you have.");
 	twomillion.setAttribute('ach-tooltip', "Get 2,000,000 Infinities. Reward: Infinities longer than 5 seconds give 250 Infinities" + (player.galacticSacrifice ? ", and you gain an additive +249 Infinities per crunch post multipliers" : "") + ".")
