@@ -159,6 +159,7 @@ function ngP3AchieveCheck(){
 		if (ableToGetRid8 && player.infinityPoints.e >= 9.5e5) giveAchievement("Please answer me why you are dying.")
 		if (ableToGetRid9 && player.infinityPoints.e >= 1.8e6) giveAchievement("Aren't you already dead?")
 		if (ableToGetRid10 && player.infinityPoints.e >= 2.25e4) giveAchievement("I give up.")
+		if (player.matter.log10() > 5000) giveAchievement("Really?")
 	}
 	if (tmp.qu.bigRip.spaceShards.e>32&&!tmp.qu.breakEternity.did) giveAchievement("Finite Time")
 	if (minUQ.quarks.e>=1e12&&minUQ.decays>=2&&!tmp.qu.bigRip.times) giveAchievement("Weak Decay")		
