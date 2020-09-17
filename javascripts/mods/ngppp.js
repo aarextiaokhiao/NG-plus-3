@@ -684,6 +684,7 @@ function getGHPGain() {
 	if (!tmp.ngp3 || !tmp.qu.bigRip.active) return new Decimal(0)
 	if (!tmp.ngp3l && !ghostified) return new Decimal(1)
 	let log = tmp.qu.bigRip.bestThisRun.log10() / getQCGoal(undefined,true) - 1
+	if (log < 0) return new Decimal(0)
 	if (tmp.ngp3l) {
 		log *= 2
 	} else if (player.achievements.includes("ng3p58")) { 

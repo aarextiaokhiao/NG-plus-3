@@ -281,6 +281,7 @@ function getInfinityPowerEffectExp() {
 	if (player.dilation.upgrades.includes("ngmm5")) x += getDil44Mult()
 	return x
 }
+
 function switchAutoInf(tier) {
 	if (player.infDimBuyers[tier - 1]) {
 		player.infDimBuyers[tier - 1] = false
