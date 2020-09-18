@@ -2722,80 +2722,133 @@ function gainedEternityPoints() {
 
 function setAchieveTooltip() { //want: seperate this into a lot of different functions, one for each row
 	// Original Antimatter Dimensions achievements
+
+	// Row 1 (1/8)
+	//r11
 	let alot = document.getElementById("100 antimatter is a lot")
+	//r13
+	//r14
+	//r15
+	//r16
+	//r17
+	//r18
+
+	// Row 2 (6/8)
+	let infinity = document.getElementById("To infinity!")
+	//r22
 	let ndial = document.getElementById("The 9th Dimension is a lie");
 	let apocAchieve = document.getElementById("Antimatter Apocalypse");
+	//r25
 	let gal = document.getElementById("You got past The Big Wall")
 	let doubleGal = document.getElementById("Double Galaxy");
-	let claustrophobic = document.getElementById("Claustrophobic");
 	let noPointAchieve = document.getElementById("There's no point in doing that");
-	let sanic = document.getElementById("Supersanic")
-	let forgotAchieve = document.getElementById("I forgot to nerf that")
-	let infinity = document.getElementById("To infinity!")
+	
+	// Row 3 (5/8)
 	let nerf = document.getElementById("I forgot to nerf that")
-	let didnt = document.getElementById("You didn't need it anyway")
-	let fast = document.getElementById("That's fast!");
+	//r32
 	let lot = document.getElementById("That's a lot of infinites");
+	let didnt = document.getElementById("You didn't need it anyway")
+	//r35 
+	let claustrophobic = document.getElementById("Claustrophobic");
+	let fast = document.getElementById("That's fast!");
+	//r38
+
+	// Row 4 (6/8)
 	let cancer = document.getElementById("Spreading Cancer");
+	let sanic = document.getElementById("Supersanic")
 	let zero = document.getElementById("Zero Deaths");
+	//r44
 	let potato = document.getElementById("Faster than a potato")
-	let potato2 = document.getElementById("Faster than a squared potato")
-	let potato3 = document.getElementById("Faster than a potato^286078")
 	let dimensional = document.getElementById("Multidimensional")
+	//r47
 	let anti = document.getElementById("AntiChallenged")
+
+	// Row 5 (4/8)
+	let limitBreak = document.getElementById("Limit Break")
+	//r52
+	//r53
+	//r54
 	let forever = document.getElementById("Forever isn't that long")
 	let many = document.getElementById("Many Deaths")
+	//r57
 	let is = document.getElementById("Is this hell?")
-	let limitBreak = document.getElementById("Limit Break")
+
+	// Row 6 (6/8)
+	//r61
 	let oh = document.getElementById("Oh hey, you're still here")
+	let begin = document.getElementById("A new beginning.")
 	let mil = document.getElementById("1 million is a lot")
+	//r65
+	let potato2 = document.getElementById("Faster than a squared potato")
+	let infchall = document.getElementById("Infinitely Challenging")
 	let right = document.getElementById("You did this again just for the achievement right?")
+
+	// Row 7 (5/8)
 	let not = document.getElementById("ERROR 909: Dimension not found")
+	let cant = document.getElementById("Can't hold all these infinities")
+	//r73
+	//r74
+	let newDim = document.getElementById("NEW DIMENSIONS???")
+	//r76
+	let tables = document.getElementById("How the antitables have turned")
+	let blink = document.getElementById("Blink of an eye")
+
+	// Row 8 (5/8)
 	let IPBelongs = document.getElementById("All your IP are belong to us")
 	let reference = document.getElementById("Yet another infinity reference")
-	let infchall = document.getElementById("Infinitely Challenging")
-	let blink = document.getElementById("Blink of an eye")
-	let cant = document.getElementById("Can't hold all these infinities")
-	let newDim = document.getElementById("NEW DIMENSIONS???")
-	let tables = document.getElementById("How the antitables have turned")
 	let spare = document.getElementById("I got a few to spare")
+	let twomillion = document.getElementById("2 Million Infinities")
+	let hevipelledidnothing = document.getElementById("Hevipelle did nothing wrong")
+
+	// Row 9 (7/8)
 	let speed = document.getElementById("Ludicrous Speed")
 	let speed2 = document.getElementById("I brake for nobody")
 	let overdrive = document.getElementById("MAXIMUM OVERDRIVE")
 	let minute = document.getElementById("Minute of infinity")
 	let hell = document.getElementById("Yes. This is hell.")
 	let zerodeg = document.getElementById("0 degrees from infinity")
+	let isthissafe = document.getElementById("Is this safe?")
+
+	// Row 10 (6/8)
 	let costco = document.getElementById("Costco sells dimboosts now")
 	let mile = document.getElementById("This mile took an Eternity")
 	let inftime = document.getElementById("Infinite time")
 	let swarm = document.getElementById("The swarm")
 	let guide = document.getElementById("Do you really need a guide for this?")
 	let nine = document.getElementById("We could afford 9")
-	let infiniteIP = document.getElementById("Can you get infinite IP?")
-	let fiveMore = document.getElementById("5 more eternities until the update")
+
+	// Row 11 (3/8)
 	let over9000 = document.getElementById("IT'S OVER 9000")
 	let dawg = document.getElementById("Yo dawg, I heard you liked infinities...")
+	let nobodygottime = document.getElementById("8 nobody got time for that")
+
+	// Row 12 (7/8)
+	let infiniteIP = document.getElementById("Can you get infinite IP?")
+	let fiveMore = document.getElementById("5 more eternities until the update")
 	let eatass = document.getElementById("Like feasting on a behind")
 	let newI = document.getElementById("Eternities are the new infinity")
 	let layer = document.getElementById("But I wanted another prestige layer...")
 	let fkoff = document.getElementById("What do I have to do to get rid of you")
 	let minaj = document.getElementById("Popular music")
+
+	// Row 13 (5/8)
+	let potato3 = document.getElementById("Faster than a potato^286078")
 	let infstuff = document.getElementById("I never liked this infinity stuff anyway")
 	let when = document.getElementById("When will it be enough?")
 	let thinking = document.getElementById("Now you're thinking with dilation!")
 	let thisis = document.getElementById("This is what I have to do to get rid of you.")
+
+	// Row 13.5 (NGUD) (3/6)
 	let stillamil = document.getElementById("1 million is still a lot")
 	let out = document.getElementById("Finally I'm out of that channel")
 	let ridNGud = document.getElementById("I already got rid of you.")
+
+	// Row 14 (4/8)
 	let onlywar = document.getElementById("In the grim darkness of the far endgame")
 	let thecap = document.getElementById("The cap is a million, not a trillion")
 	let neverenough = document.getElementById("It will never be enough")
 	let harmony = document.getElementById("Universal harmony")
-	let twomillion = document.getElementById("2 Million Infinities")
-	let nobodygottime = document.getElementById("8 nobody got time for that")
-	let hevipelledidnothing = document.getElementById("Hevipelle did nothing wrong")
-	let isthissafe = document.getElementById("Is this safe?")
-	let begin = document.getElementById("A new beginning.")
+	
 
 	let thisisReward = [] // for the achievement "This is what I have to do to get rid of you."
 	if (!tmp.ngp3l) {
@@ -2805,8 +2858,8 @@ function setAchieveTooltip() { //want: seperate this into a lot of different fun
 	thisisReward = wordizeList(thisisReward, true)
 
 	let onlywarReward = [] // for the achievement "In the grim darkness of the far endgame"
-	if (!tmp.ngp3l&&(tmp.ngp3||tmp.newNGP3E)) onlywarReward.push("You get 2x more DT")
-	if (player.aarexModifications.nguspV!==undefined) onlywarReward.push("you can auto-buy dilation upgrades every second if you have at least "+shortenMoney(new Decimal('1e40000'))+" EP")
+	if (!tmp.ngp3l && (tmp.ngp3 || tmp.newNGP3E)) onlywarReward.push("You get 2x more DT")
+	if (player.aarexModifications.nguspV !== undefined) onlywarReward.push("you can auto-buy dilation upgrades every second if you have at least " + shortenMoney(new Decimal('1e40000')) + " EP")
 	onlywarReward = wordizeList(onlywarReward, true)
 
 	//ACHIEVEMENT ROW 1
@@ -2815,17 +2868,17 @@ function setAchieveTooltip() { //want: seperate this into a lot of different fun
 	//ACHIEVEMENT ROW 2
 	ndial.setAttribute('ach-tooltip', "Have exactly 99 Eighth Dimensions. Reward: Eighth Dimensions are 10% stronger"+(player.tickspeedBoosts==undefined?".":" and you gain more GP based on your Eighth Dimensions and your Tickspeed Boosts."));
 	apocAchieve.setAttribute('ach-tooltip', "Get over " + formatValue(player.options.notation, 1e80, 0, 0) + " antimatter.");
-	gal.setAttribute('ach-tooltip', 'Buy an Antimatter Galaxy. '+(player.aarexModifications.ngmX > 3?"Reward: Upon a Time Dimension Boost, your Dimension Boosts don’t reset unless you have more Time Dimension Boosts than your Dimension Boosts.":''));
-	doubleGal.setAttribute('ach-tooltip', 'Buy 2 Antimatter Galaxies. '+(player.tickspeedBoosts !== undefined ? "Reward: Upon a Tickspeed Boost, your Dimension Boosts"+(player.aarexModifications.ngmX>3?" and Time Dimension Boosts":"")+" don’t reset unless you have more Tickspeed Boosts than five times your Antimatter Galaxies minus eight.":'')+(player.aarexModifications.ngmX>3?" You start with 3 Time Dimension Boosts.":""));
-	noPointAchieve.setAttribute('ach-tooltip', "Buy a single First Dimension when you have over " + formatValue(player.options.notation, 1e150, 0, 0) + " of them. Reward: First Dimensions are 10% stronger"+(player.tickspeedBoosts==undefined?".":" and you can max buy Dimension and Tickspeed Boosts."));
-	infinity.setAttribute('ach-tooltip', "Big Crunch for the first time. Reward: Start with 100 antimatter"+(player.galacticSacrifice?" and always have at least 10x lower dimension costs.":"."));
+	gal.setAttribute('ach-tooltip', 'Buy an Antimatter Galaxy. ' + (player.aarexModifications.ngmX > 3 ? "Reward: Upon a Time Dimension Boost, your Dimension Boosts don’t reset unless you have more Time Dimension Boosts than your Dimension Boosts." : ''));
+	doubleGal.setAttribute('ach-tooltip', 'Buy 2 Antimatter Galaxies. ' + (player.tickspeedBoosts !== undefined ? "Reward: Upon a Tickspeed Boost, your Dimension Boosts" + (player.aarexModifications.ngmX > 3 ? " and Time Dimension Boosts" : "") + " don’t reset unless you have more Tickspeed Boosts than five times your Antimatter Galaxies minus eight." : '') + (player.aarexModifications.ngmX > 3 ? " You start with 3 Time Dimension Boosts." : ""));
+	noPointAchieve.setAttribute('ach-tooltip', "Buy a single First Dimension when you have over " + formatValue(player.options.notation, 1e150, 0, 0) + " of them. Reward: First Dimensions are 10% stronger" + (player.tickspeedBoosts == undefined ? "." : " and you can max buy Dimension and Tickspeed Boosts."));
+	infinity.setAttribute('ach-tooltip', "Big Crunch for the first time. Reward: Start with 100 antimatter" + (player.galacticSacrifice ? " and always have at least 10x lower dimension costs." : "."));
 
 	//ACHIEVEMENT ROW 3
 	claustrophobic.setAttribute('ach-tooltip', "Big Crunch with just 1 Antimatter Galaxy. Reward: Reduce the starting tick interval by 2%" + (player.galacticSacrifice && player.tickspeedBoosts == undefined ? " and keep galaxy upgrades on infinity" : "") + (player.aarexModifications.ngmX >= 4 ? ", Time Dimension Boosts do not reset anything, and you can buy Time Dimensions beyond " + shortenMoney(Number.MAX_VALUE) +" antimatter" : "") + "." );
-	nerf.setAttribute('ach-tooltip',"Get any dimension multiplier over "+shortenCosts(1e31)+". Reward: First Dimensions are 5% stronger.")
-	didnt.setAttribute('ach-tooltip',"Big Crunch without having any 8th Dimensions. Reward: Dimensions 1-7 are 2"+(player.galacticSacrifice?"x":"%")+" stronger.")
-	fast.setAttribute('ach-tooltip', "Big Crunch in under 2 hours. Reward: Start with "+shortenCosts(1e3)+" antimatter"+(player.galacticSacrifice?" and get a multiplier to galaxy points based on fastest infinity (5 hours / x, 10x softcap).":"."));
-	lot.setAttribute('ach-tooltip', "Get at least 10 Infinities."+(player.galacticSacrifice?" Reward: "+(player.tickspeedBoosts==undefined?"Start Infinities with galaxy points based on your infinities (x^2/100).":" Keep galaxy upgrades on infinity."):""));
+	nerf.setAttribute('ach-tooltip',"Get any dimension multiplier over " + shortenCosts(1e31) + ". Reward: First Dimensions are 5% stronger.")
+	didnt.setAttribute('ach-tooltip',"Big Crunch without having any 8th Dimensions. Reward: Dimensions 1-7 are 2" + (player.galacticSacrifice ? "x" : "%") + " stronger.")
+	fast.setAttribute('ach-tooltip', "Big Crunch in under 2 hours. Reward: Start with " + shortenCosts(1e3) + " antimatter" + (player.galacticSacrifice ? " and get a multiplier to galaxy points based on fastest infinity (5 hours / x, 10x softcap)." : "."));
+	lot.setAttribute('ach-tooltip', "Get at least 10 Infinities." + (player.galacticSacrifice ? " Reward: " + (player.tickspeedBoosts == undefined ? "Start Infinities with galaxy points based on your infinities (x^2/100)." : " Keep galaxy upgrades on infinity.") : ""));
 
 	//ACHIEVEMENT ROW 4
 	sanic.setAttribute('ach-tooltip', "Get over " + formatValue(player.options.notation, 1e63, 0, 0) + " antimatter" + (player.aarexModifications.ngmX >= 4 ? " and unlock new galaxy upgrades at " + formatValue(player.options.notation, 1e666, 0, 0) + " antimatter" : "") + ".")
@@ -2899,7 +2952,7 @@ function setAchieveTooltip() { //want: seperate this into a lot of different fun
 	infstuff.setAttribute('ach-tooltip', "Reach "+shortenCosts(new Decimal("1e140000"))+" IP without buying IDs or IP multipliers. Reward: You start eternities with all Infinity Challenges unlocked and completed"+(player.meta?", and your Infinity gain is multiplied by dilated time^(1/4).":"."))
 	when.setAttribute('ach-tooltip', "Reach "+shortenCosts( new Decimal(tmp.ngex?"1e15000":"1e20000"))+" replicanti. Reward: You gain replicanti 2 times faster under "+shortenMoney(Number.MAX_VALUE)+" replicanti.")
 	thinking.setAttribute('ach-tooltip', "Eternity for "+shortenCosts( new Decimal("1e600"))+" EP in 1 minute or less while dilated.")
-	thisis.setAttribute('ach-tooltip', "Reach "+shortenCosts(new Decimal('1e20000'))+" IP without any time studies while dilated."+(thisisReward!=""?" Reward: "+thisisReward+".":""))
+	thisis.setAttribute('ach-tooltip', "Reach "+shortenCosts(new Decimal('1e20000'))+" IP without any time studies while dilated."+(thisisReward != "" ? " Reward: " + thisisReward + "." : ""))
 
 	//NGUD ACHIEVEMENT ROW (13.5)
 	stillamil.setAttribute('ach-tooltip',"Reach "+shortenCosts(1e6)+" black hole power.")
@@ -2914,23 +2967,35 @@ function setAchieveTooltip() { //want: seperate this into a lot of different fun
 
 	if (!tmp.ngp3) return
 	// ng+3 achievements
+
+	// Row 15 (ng3p1)
 	let notenough = document.getElementById("I don't have enough fuel!")
 	let hadron = document.getElementById("Hadronization")
 	let old = document.getElementById("Old age")
-   	let rid = document.getElementById("I already got rid of you...")
-   	let tfms = document.getElementById("speedrunMilestone18")
+	let rid = document.getElementById("I already got rid of you...")
+	let winner = document.getElementById("And the winner is...")
+
+	// Quantum Speedruns (3/28)
+	let tfms = document.getElementById("speedrunMilestone18")
 	let tms = document.getElementById("speedrunMilestone19")
 	let tfms2 = document.getElementById("speedrunMilestone22")
+
+	// Row 16 (ng3p2)
 	let special = document.getElementById("Special Relativity")
 	let memories = document.getElementById("Old memories come true")
 	let squared = document.getElementById("We are not going squared.")
 	let morals = document.getElementById("Infinity Morals")
 	let seriously = document.getElementById("Seriously, I already got rid of you.")
+
+	// Row 17 (ng3p3)
 	let internal = document.getElementById("ERROR 500: INTERNAL DIMENSION ERROR")
 	let truth = document.getElementById("The truth of anti-challenged")
 	let cantGet = document.getElementById("I can’t get my multipliers higher!")
 	let noDil = document.getElementById("No dilation means no production.")
 	let dontWant = document.getElementById("I don't want you to live anymore.")
+	let noparadox = document.getElementById("Never make paradoxes!")
+
+	// Row 18 (ng3p4)
 	let notrelative = document.getElementById("Time is not relative")
 	let error404 = document.getElementById("ERROR 404: DIMENSIONS NOT FOUND")
 	let ie = document.getElementById("Impossible expectations")
@@ -2938,34 +3003,42 @@ function setAchieveTooltip() { //want: seperate this into a lot of different fun
 	let protonsDecay = document.getElementById("Do protons decay?")
 	let stop = document.getElementById("Stop blocking me!")
 	let dying = document.getElementById("Are you currently dying?")
+
+	// Row 19 (ng3p5)
 	let gofast = document.getElementById("Gonna go fast")
 	let immunity = document.getElementById("Time Immunity")
 	let notSmart = document.getElementById("You're not really smart.")
 	let soLife = document.getElementById("And so your life?")
 	let timeBreak = document.getElementById("Time Breaker")
+
+	// Row 20 (ng3p6)
+	let keeheehee = document.getElementById("Kee-hee-hee!")
 	let really = document.getElementById("Really?")
 	let grind = document.getElementById("But I don't want to grind!")
 	let finite = document.getElementById("Finite Time")
 	let oppose = document.getElementById("I rather oppose the theory of everything")
 	let willenough = document.getElementById("Will it be enough?")
 	let pls = document.getElementById("Please answer me why you are dying.")
+
+	// Brave Milestones (3/16)
 	let bm1 = document.getElementById("braveMilestone1")
 	let bm10 = document.getElementById("braveMilestone10")
 	let bm14 = document.getElementById("braveMilestone14")
+
+	// Row 21 (ng3p7)
 	let mi = document.getElementById("Meta-Infinity confirmed?")
 	let uc = document.getElementById("Underchallenged")
 	let wd = document.getElementById("Weak Decay")
 	let radioDecay = document.getElementById("Radioactive Decaying to the max!")
 	let arent = document.getElementById("Aren't you already dead?")
+
+	// Row 22 (ng3p8)
 	let ee = document.getElementById("Everlasting Eternities")
 	let oc = document.getElementById("Overchallenged")
 	let btco = document.getElementById("Back to Challenge One")
 	let tdc = document.getElementById("The Deep Challenge")
 	let igu = document.getElementById("I give up.")
-	let noparadox = document.getElementById("Never make paradoxes!")
 	let isnotenough = document.getElementById("Big Rip isn't enough") 
-	let winner = document.getElementById("And the winner is...")
-	let keeheehee = document.getElementById("Kee-hee-hee!")
 	let ghostierthanbefore = document.getElementById("Even Ghostlier than before")
 
 	let willenoughReward = [] // for the achievement "Will it be enough?"
@@ -3052,6 +3125,7 @@ function setAchieveTooltip() { //want: seperate this into a lot of different fun
 
 	if (tmp.ngp3l) return
 
+	// Row 23 (3/8)
 	let ghostliest = document.getElementById("The Ghostliest Side")
 	let metae18 = document.getElementById("Meta-Quintillion")
 	let aretheseanother = document.getElementById("Are these another...")
