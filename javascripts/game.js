@@ -22,6 +22,110 @@ var metaSave = null
 var modes = {}
 var gameSpeed = 1
 
+
+function setupAutobuyerHTMLandData(){
+	buyAutobuyer = function(id) {
+   		if (player.infinityUpgradesRespecced != undefined && player.autobuyers[id].interval == 100 && id > 8) {
+			if (player.autobuyers[id].bulkBought || player.infinityPoints.lt(1e4) || id > 10) return
+			player.infinityPoints = player.infinityPoints.sub(1e4)
+			player.autobuyers[id].bulkBought = true
+			updateAutobuyers()
+			return
+		}
+		if ((player.aarexModifications.ngmX>3&&id!=11?player.galacticSacrifice.galaxyPoints:player.infinityPoints).lt(player.autobuyers[id].cost)) return false;
+		if (player.autobuyers[id].bulk >= 1e100) return false;
+		if (player.aarexModifications.ngmX > 3 && id != 11) player.galacticSacrifice.galaxyPoints = player.galacticSacrifice.galaxyPoints.minus(player.autobuyers[id].cost)
+		else player.infinityPoints = player.infinityPoints.minus(player.autobuyers[id].cost)
+		if (player.autobuyers[id].interval <= 100) {
+			player.autobuyers[id].bulk = Math.min(player.autobuyers[id].bulk * 2, 1e100);
+			player.autobuyers[id].cost = Math.ceil(2.4*player.autobuyers[id].cost);
+			var b1 = true;
+			for (let i=0;i<8;i++) {
+				if (player.autobuyers[i].bulk < 512) b1 = false;
+			}
+			if (b1) giveAchievement("Bulked up");
+		} else {
+			player.autobuyers[id].interval = Math.max(player.autobuyers[id].interval * 0.6, 100);
+			if (player.autobuyers[id].interval > 120) player.autobuyers[id].cost *= 2; //if your last purchase wont be very strong, dont double the cost
+		}
+		updateAutobuyers();
+	}
+
+	document.getElementById("buyerBtn" + 1).onclick = function () { 
+		buyAutobuyer(1 - 1);
+	}
+
+	document.getElementById("buyerBtn" + 2).onclick = function () { 
+		buyAutobuyer(2 - 1);
+	}
+
+	document.getElementById("buyerBtn" + 3).onclick = function () { 
+		buyAutobuyer(3 - 1);
+	}
+
+	document.getElementById("buyerBtn" + 4).onclick = function () { 
+		buyAutobuyer(4 - 1);
+	}
+
+	document.getElementById("buyerBtn" + 5).onclick = function () { 
+		buyAutobuyer(5 - 1);
+	}
+
+	document.getElementById("buyerBtn" + 6).onclick = function () { 
+		buyAutobuyer(6 - 1);
+	}
+
+	document.getElementById("buyerBtn" + 7).onclick = function () { 
+		buyAutobuyer(7 - 1);
+	}
+
+	document.getElementById("buyerBtn" + 8).onclick = function () { 
+		buyAutobuyer(8 - 1);
+	}
+
+	document.getElementById("buyerBtnTickSpeed").onclick = function () {
+		buyAutobuyer(8);
+	}
+
+	document.getElementById("buyerBtnDimBoost").onclick = function () {
+		buyAutobuyer(9);
+	}
+
+	document.getElementById("buyerBtnGalaxies").onclick = function () {
+		buyAutobuyer(10);
+	}
+
+	document.getElementById("buyerBtnInf").onclick = function () {
+		buyAutobuyer(11);
+	}
+
+	toggleAutobuyerTarget = function(id) {
+		if (player.autobuyers[id-1].target == id) {
+			player.autobuyers[id-1].target = 10 + id
+			document.getElementById("toggleBtn" + id).textContent = "Buys until 10"
+		} else {
+			player.autobuyers[id-1].target = id
+			document.getElementById("toggleBtn" + id).textContent = "Buys singles"
+		}
+	}
+
+	for (let abnum = 1; abnum <= 8; abnum ++){
+		document.getElementById("toggleBtn" + abnum).onclick = function () {
+			toggleAutobuyerTarget(abnum)
+		}
+	}
+
+	document.getElementById("toggleBtnTickSpeed").onclick = function () {
+		if (player.autobuyers[8].target == 1) {
+			player.autobuyers[8].target = 10
+			document.getElementById("toggleBtnTickSpeed").textContent = "Buys max"
+		} else {
+			player.autobuyers[8].target = 1
+			document.getElementById("toggleBtnTickSpeed").textContent = "Buys singles"
+		}
+	}
+}
+
 function setupInfUpgHTMLandData(){
 	var iut = document.getElementById("preinfupgrades")
 	for (let r = 1; r < 5; r++) {
@@ -149,7 +253,9 @@ function setupToDHTMLandData(){
 	for (var c = 0; c < 3; c++) {
 		var color = (["red", "green", "blue"])[c]
 		var shorthand = (["r", "g", "b"])[c]
-		var branchUpgrades = ["Gain <span id='" + color + "UpgPow1'></span>x " + color + " quark spins, but " + color + " quarks decay <span id='" + color + "UpgSpeed1'></span>x faster.","The gain of " + color + " <span id='" + color + "UpgName2'></span> quarks is multiplied by x and then raised to the power of x.",(["Red", "Green", "Blue"])[c]+" <span id='" + color + "UpgName3'></span> quarks decay 4x slower."] //might need to change this to just "slower" once we haev 1000+ upgrade 3's
+		var branchUpgrades = ["Gain <span id='" + color + "UpgPow1'></span>x " + color + " quark spins, but " + color + " quarks decay <span id='" + color + "UpgSpeed1'></span>x faster.",
+				      "The gain of " + color + " <span id='" + color + "UpgName2'></span> quarks is multiplied by x and then raised to the power of x.",
+				      (["Red", "Green", "Blue"])[c]+" <span id='" + color + "UpgName3'></span> quarks decay<span id='" + color + "UpgEffDesc'> 4x</span> slower."] //might need to change this to just "slower" once we haev 1000+ upgrade 3's
 
 		var html = 'You have <span class="' + color + '" id="' + color + 'QuarksToD" style="font-size: 35px">0</span> ' + color + ' quarks.<br>'
 		html += '<button class="storebtn" id="' + color + 'UnstableGain" style="width: 240px; height: 80px" onclick="unstableQuarks(\'' + shorthand + '\')"></button><br>'
@@ -162,8 +268,12 @@ function setupToDHTMLandData(){
 		document.getElementById("todRow").cells[c].className = shorthand + "qC"
 		
 		html = "<table class='table' align='center' style='margin: auto'><tr>"
-		for (var u = 1; u < 4; u++) html += "<td style='vertical-align: 0'><button class='gluonupgrade unavailablebtn' id='"+color+"upg"+u+"' onclick='buyBranchUpg(\""+shorthand+"\", "+u+")'"+(u<3?" style='font-size:10px'":"")+">"+branchUpgrades[u-1]+"<br>Currently: <span id='"+color+"upg"+u+"current'>1</span>x<br>Cost: <span id='"+color+"upg"+u+"cost'>?</span> "+color+" quark spin</button>"+(u==2?"<br><button class='storebtn' style='width: 190px' onclick='maxBranchUpg(\""+shorthand+"\")'>Max all upgrades</button><br><button class='storebtn' style='width: 190px; font-size:10px' onclick='maxBranchUpg(\""+shorthand+"\", true)'>Max 2nd and 3rd upgrades</button>":"")+"</td>"
-		html += "</tr></tr><td></td><td><button class='gluonupgrade unavailablebtn' id='"+shorthand+"RadioactiveDecay' style='font-size:10px' onclick='radioactiveDecay(\""+shorthand+"\")'>Reset to make 1st upgrades stronger, but nerf this branch.<br><span id='"+shorthand+"RDReq'></span><br>Radioactive Decays: <span id='"+shorthand+"RDLvl'></span></button></td><td></td>"
+		for (var u = 1; u <= 3; u++) {
+			html += "<td style='vertical-align: 0'><button class='gluonupgrade unavailablebtn' id='"+color+"upg"+u+"' onclick='buyBranchUpg(\""+shorthand+"\", "+u+")' style='font-size:10px'>"+branchUpgrades[u-1]+"<br>" 
+			html += "Currently: <span id='"+color+"upg"+u+"current'>1</span>x<br><span id='"+color+"upg"+u+"cost'>?</span></button>"+(u==2?"<br><button class='storebtn' style='width: 190px' onclick='maxBranchUpg(\""+shorthand+"\")'>Max all upgrades</button>"
+			html += "<br><button class='storebtn' style='width: 190px; font-size:10px' onclick='maxBranchUpg(\""+shorthand+"\", true)'>Max 2nd and 3rd upgrades</button>":"")+"</td>"
+		}
+		html += "</tr></tr><td></td><td><button class='gluonupgrade unavailablebtn' id='"+shorthand+"RadioactiveDecay' style='font-size:9px' onclick='radioactiveDecay(\""+shorthand+"\")'>Reset to make 1st upgrades stronger, but nerf this branch.<br><span id='"+shorthand+"RDReq'></span><br>Radioactive Decays: <span id='"+shorthand+"RDLvl'></span></button></td><td></td>"
 		html += "</tr></table>"
 		document.getElementById(color + "Branch").innerHTML = html
 	}
@@ -232,34 +342,34 @@ function setupBosonicExtraction(){
 function setupBosonicUpgrades(){
 	setupBosonicUpgReqData()
 	var buTable=document.getElementById("bUpgs")
-	for (r=1;r<=bu.maxRows;r++) {
-		var row=buTable.insertRow(r-1)
-		row.id="bUpgRow"+r
-		for (c=1;c<6;c++) {
-			var col=row.insertCell(c-1)
-			var id=(r*10+c)
-			col.innerHTML="<button id='bUpg"+id+"' class='gluonupgrade unavailablebtn' style='font-size: 9px' onclick='buyBosonicUpgrade("+id+")'>"+(bu.descs[id]||"???")+"<br>"+
-			(bu.effects[id]!==undefined?"Currently: <span id='bUpgEffect"+id+"'>0</span><br>":"")+
-			"Cost: <span id='bUpgCost"+id+"'></span> Bosonic Antimatter<br>"+
-			"Requires: <span id='bUpgG1Req"+id+"'></span> <div class='bRune' type='"+bu.reqData[id][2]+"'></div> & <span id='bUpgG2Req"+id+"'></span> <div class='bRune' type='"+bu.reqData[id][4]+"'></div></button>"
+	for (r = 1; r <= bu.maxRows; r++) {
+		var row = buTable.insertRow(r - 1)
+		row.id = "bUpgRow" + r
+		for (c = 1; c < 6; c++) {
+			var col = row.insertCell(c - 1)
+			var id = (r * 10 + c)
+			col.innerHTML = "<button id='bUpg" + id + "' class='gluonupgrade unavailablebtn' style='font-size: 9px' onclick='buyBosonicUpgrade("+id+")'>"+(bu.descs[id]||"???")+"<br>"+
+			(bu.effects[id] !== undefined ? "Currently: <span id='bUpgEffect" + id + "'>0</span><br>" : "") +
+			"Cost: <span id='bUpgCost" + id + "'></span> Bosonic Antimatter<br>"+
+			"Requires: <span id='bUpgG1Req" + id + "'></span> <div class='bRune' type='"+bu.reqData[id][2]+"'></div> & <span id='bUpgG2Req"+id+"'></span> <div class='bRune' type='"+bu.reqData[id][4]+"'></div></button>"
 		}
 	}
 }
 
 function setupBosonicRunes(){
 	var brTable=document.getElementById("bRunes")
-	for (var g=1;g<=br.maxLimit;g++) {
-		var col=brTable.rows[0].insertCell(g-1)
-		col.id="bRuneCol"+g
-		col.innerHTML='<div class="bRune" type="'+g+'"></div>: <span id="bRune'+g+'"></span>'
+	for (var g = 1; g <= br.maxLimit; g++) {
+		var col = brTable.rows[0].insertCell(g - 1)
+		col.id = "bRuneCol" + g
+		col.innerHTML = '<div class="bRune" type="' + g + '"></div>: <span id="bRune' + g + '"></span>'
 	}
 	var glyphs=document.getElementsByClassName("bRune")
-	for (var g=0;g<glyphs.length;g++) {
-		var glyph=glyphs[g]
-		var type=glyph.getAttribute("type")
-		if (type>0&&type<=br.maxLimit) {
-			glyph.className="bRune "+br.names[type]
-			glyph.setAttribute("ach-tooltip",br.names[type]+" Bosonic Rune")
+	for (var g = 0 ; g < glyphs.length; g++) {
+		var glyph = glyphs[g]
+		var type = glyph.getAttribute("type")
+		if (type > 0 && type <= br.maxLimit) {
+			glyph.className = "bRune " + br.names[type]
+			glyph.setAttribute("ach-tooltip", br.names[type] + " Bosonic Rune")
 		}
 	}
 }
@@ -277,6 +387,7 @@ function setupHTMLAndData() {
 	setupBosonicExtraction()
 	setupBosonicUpgrades()
 	setupBosonicRunes()
+	setupAutobuyerHTMLandData()
 }
 
 function updateNewPlayer(reseted) {
@@ -2091,108 +2202,6 @@ function toggleReplAuto(i) {
 			player.replicanti.auto[2] = true
 			document.getElementById("replauto3").textContent = "Auto: ON"
 		}
-	}
-}
-
-buyAutobuyer = function(id) {
-   	if (player.infinityUpgradesRespecced != undefined && player.autobuyers[id].interval == 100 && id > 8) {
-		if (player.autobuyers[id].bulkBought || player.infinityPoints.lt(1e4) || id > 10) return
-		player.infinityPoints = player.infinityPoints.sub(1e4)
-		player.autobuyers[id].bulkBought = true
-		updateAutobuyers()
-		return
-	}
-	if ((player.aarexModifications.ngmX>3&&id!=11?player.galacticSacrifice.galaxyPoints:player.infinityPoints).lt(player.autobuyers[id].cost)) return false;
-	if (player.autobuyers[id].bulk >= 1e100) return false;
-	if (player.aarexModifications.ngmX > 3 && id != 11) player.galacticSacrifice.galaxyPoints = player.galacticSacrifice.galaxyPoints.minus(player.autobuyers[id].cost)
-	else player.infinityPoints = player.infinityPoints.minus(player.autobuyers[id].cost)
-	if (player.autobuyers[id].interval <= 100) {
-		player.autobuyers[id].bulk = Math.min(player.autobuyers[id].bulk * 2, 1e100);
-		player.autobuyers[id].cost = Math.ceil(2.4*player.autobuyers[id].cost);
-		var b1 = true;
-		for (let i=0;i<8;i++) {
-			if (player.autobuyers[i].bulk < 512) b1 = false;
-		}
-		if (b1) giveAchievement("Bulked up");
-	} else {
-		player.autobuyers[id].interval = Math.max(player.autobuyers[id].interval * 0.6, 100);
-		if (player.autobuyers[id].interval > 120) player.autobuyers[id].cost *= 2; //if your last purchase wont be very strong, dont double the cost
-	}
-	updateAutobuyers();
-}
-
-document.getElementById("buyerBtn" + 1).onclick = function () { 
-	buyAutobuyer(1 - 1);
-}
-
-document.getElementById("buyerBtn" + 2).onclick = function () { 
-	buyAutobuyer(2 - 1);
-}
-
-document.getElementById("buyerBtn" + 3).onclick = function () { 
-	buyAutobuyer(3 - 1);
-}
-
-document.getElementById("buyerBtn" + 4).onclick = function () { 
-	buyAutobuyer(4 - 1);
-}
-
-document.getElementById("buyerBtn" + 5).onclick = function () { 
-	buyAutobuyer(5 - 1);
-}
-
-document.getElementById("buyerBtn" + 6).onclick = function () { 
-	buyAutobuyer(6 - 1);
-}
-
-document.getElementById("buyerBtn" + 7).onclick = function () { 
-	buyAutobuyer(7 - 1);
-}
-
-document.getElementById("buyerBtn" + 8).onclick = function () { 
-	buyAutobuyer(8 - 1);
-}
-
-
-document.getElementById("buyerBtnTickSpeed").onclick = function () {
-	buyAutobuyer(8);
-}
-
-document.getElementById("buyerBtnDimBoost").onclick = function () {
-	buyAutobuyer(9);
-}
-
-document.getElementById("buyerBtnGalaxies").onclick = function () {
-	buyAutobuyer(10);
-}
-
-document.getElementById("buyerBtnInf").onclick = function () {
-	buyAutobuyer(11);
-}
-
-toggleAutobuyerTarget = function(id) {
-	if (player.autobuyers[id-1].target == id) {
-		player.autobuyers[id-1].target = 10 + id
-		document.getElementById("toggleBtn" + id).textContent = "Buys until 10"
-	} else {
-		player.autobuyers[id-1].target = id
-		document.getElementById("toggleBtn" + id).textContent = "Buys singles"
-	}
-}
-
-for (let abnum = 1; abnum <= 8; abnum ++){
-	document.getElementById("toggleBtn" + abnum).onclick = function () {
-		toggleAutobuyerTarget(abnum)
-	}
-}
-
-document.getElementById("toggleBtnTickSpeed").onclick = function () {
-	if (player.autobuyers[8].target == 1) {
-		player.autobuyers[8].target = 10
-		document.getElementById("toggleBtnTickSpeed").textContent = "Buys max"
-	} else {
-		player.autobuyers[8].target = 1
-		document.getElementById("toggleBtnTickSpeed").textContent = "Buys singles"
 	}
 }
 

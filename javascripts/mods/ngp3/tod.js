@@ -40,8 +40,12 @@ function updateTreeOfDecayTab(){
 		if (branchNum == c + 1) {
 			var decays = getRadioactiveDecays(shorthand)
 			var power = Math.floor(getBU1Power(shorthand) / 120 + 1)			
-			document.getElementById(color+"UpgPow1").textContent = decays || power > 1 ? shorten(Decimal.pow(2, (1 + decays * .1) / power)) : 2
-			document.getElementById(color+"UpgSpeed1").textContent = decays > 2 || power > 1 ? shorten(Decimal.pow(2, Math.max(.8 + decays * .1, 1) / power)) : 2
+			document.getElementById(color + "UpgPow1").textContent = decays || power > 1 ? shorten(Decimal.pow(2, (1 + decays * .1) / power)) : 2
+			document.getElementById(color + "UpgSpeed1").textContent = decays > 2 || power > 1 ? shorten(Decimal.pow(2, Math.max(.8 + decays * .1, 1) / power)) : 2
+			lvl = getBranchUpgLevel(shorthand, 3)
+			if (lvl >= 1000) eff = Decimal.pow(4, (Math.sqrt((lvl + 1)/1000) - Math.sqrt(lvl/1000)) * 1000).toFixed(2)
+			else eff = "4"
+			document.getElementById(color + "UpgEffDesc").textContent =  " " + eff + "x"
 			for (var u = 1; u < 4; u++) document.getElementById(color + "upg" + u).className = "gluonupgrade " + (branch.spin.lt(getBranchUpgCost(shorthand, u)) ? "unavailablebtn" : shorthand)
 			if (ghostified) document.getElementById(shorthand+"RadioactiveDecay").className = "gluonupgrade "  +(branch.quarks.lt(Decimal.pow(10, Math.pow(2, 50))) ? "unavailablebtn" : shorthand)
 		}
@@ -78,10 +82,13 @@ function updateTODStuff() {
 		var branch = tmp.qu.tod[shorthand]
 		var name = getUQName(shorthand)
 		document.getElementById(shorthand+"UQName").textContent = name
+		extra = branch.spin.log10() > 200
+		start = extra ? "" : "Cost: "
+		end = extra ? color : color + " quark spin"
 		for (var b = 1; b < 4; b++) {
 			document.getElementById(color + "upg" + b + "current").textContent = shortenDimensions(getBranchUpgMult(shorthand, b))
-			document.getElementById(color + "upg" + b + "cost").textContent = shortenMoney(getBranchUpgCost(shorthand, b))
-			if (b>1) document.getElementById(color+"UpgName"+b).textContent=name
+			document.getElementById(color + "upg" + b + "cost").textContent = start + shortenMoney(getBranchUpgCost(shorthand, b)) + end
+			if (b > 1) document.getElementById(color + "UpgName" + b).textContent=name
 		}
 		if (ghostified) {
 			document.getElementById(shorthand+"RadioactiveDecay").parentElement.parentElement.style.display = ""
@@ -298,9 +305,11 @@ function buyBranchUpg(branch, upg) {
 	bData.spin = bData.spin.sub(getBranchUpgCost(branch, upg))
 	if (bData.upgrades[upg] == undefined) bData.upgrades[upg] = 0
 	bData.upgrades[upg]++
-	var end = (upg == 3 && getBranchUpgLevel(branch, upg) > 1000) ? " (softcapped)" : ""
-	document.getElementById(colors[branch] + "upg" + upg + "current").textContent = shortenDimensions(getBranchUpgMult(branch, upg)) + end
-	document.getElementById(colors[branch] + "upg" + upg + "cost").textContent = shortenMoney(getBranchUpgCost(branch, upg))
+	extra = bData.spin.log10() > 200
+	start = extra ? "" : "Cost: "
+	end = extra ? color : color + " quark spin"
+	document.getElementById(colors[branch] + "upg" + upg + "current").textContent = shortenDimensions(getBranchUpgMult(branch, upg))
+	document.getElementById(colors[branch] + "upg" + upg + "cost").textContent = start + shortenMoney(getBranchUpgCost(branch, upg)) + end
 }
 
 function getBranchUpgLevel(branch,upg) {
@@ -404,9 +413,11 @@ function maxBranchUpg(branch, weak) {
 			bData.upgrades[u] += toAdd
 		}
 		if (bData.upgrades[u] > oldLvl) {
-			var end = (u == 3 && getBranchUpgLevel(branch, u) > 1000) ? " (softcapped)" : ""
-			document.getElementById(colors[branch] + "upg" + u + "current").textContent=shortenDimensions(getBranchUpgMult(branch, u)) + end
-			document.getElementById(colors[branch] + "upg" + u + "cost").textContent=shortenMoney(getBranchUpgCost(branch, u))
+			document.getElementById(colors[branch] + "upg" + u + "current").textContent=shortenDimensions(getBranchUpgMult(branch, u))
+			extra = bData.spin.log10() > 200
+			start = extra ? "" : "Cost: "
+			end = extra ? color : color + " quark spin"
+			document.getElementById(colors[branch] + "upg" + u + "cost").textContent = shortenMoney(getBranchUpgCost(branch, u))
 		}
 	}
 }
