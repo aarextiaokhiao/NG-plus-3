@@ -87,7 +87,7 @@ function updateTODStuff() {
 		end = extra ? color : color + " quark spin"
 		for (var b = 1; b < 4; b++) {
 			document.getElementById(color + "upg" + b + "current").textContent = shortenDimensions(getBranchUpgMult(shorthand, b))
-			document.getElementById(color + "upg" + b + "cost").textContent = start + shortenMoney(getBranchUpgCost(shorthand, b)) + end
+			document.getElementById(color + "upg" + b + "cost").textContent = start + shortenMoney(getBranchUpgCost(shorthand, b)) + " " + end
 			if (b > 1) document.getElementById(color + "UpgName" + b).textContent=name
 		}
 		if (ghostified) {
@@ -309,7 +309,7 @@ function buyBranchUpg(branch, upg) {
 	start = extra ? "" : "Cost: "
 	end = extra ? color : color + " quark spin"
 	document.getElementById(colors[branch] + "upg" + upg + "current").textContent = shortenDimensions(getBranchUpgMult(branch, upg))
-	document.getElementById(colors[branch] + "upg" + upg + "cost").textContent = start + shortenMoney(getBranchUpgCost(branch, upg)) + end
+	document.getElementById(colors[branch] + "upg" + upg + "cost").textContent = start + shortenMoney(getBranchUpgCost(branch, upg)) + " " + end
 }
 
 function getBranchUpgLevel(branch,upg) {
@@ -417,7 +417,7 @@ function maxBranchUpg(branch, weak) {
 			extra = bData.spin.log10() > 200
 			start = extra ? "" : "Cost: "
 			end = extra ? color : color + " quark spin"
-			document.getElementById(colors[branch] + "upg" + u + "cost").textContent = shortenMoney(getBranchUpgCost(branch, u))
+			document.getElementById(colors[branch] + "upg" + u + "cost").textContent = start + shortenMoney(getBranchUpgCost(branch, u)) + " " + end
 		}
 	}
 }
