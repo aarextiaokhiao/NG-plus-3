@@ -237,7 +237,7 @@ const secretAchievementTooltips = {
 	s14 : "Say something naughty.",
 	s15 : "Do a barrel roll.",
 	s16 : "Use Standard, Cancer, or Bracket notation for 10 minutes within more than 1 Eternity without refreshing.",
-	s17 : "Input the konami code.",
+	s17 : "Input the Konami code.",
 	s18 : "You have a 1/100,000 chance of getting this achievement every second.",
 	s21 : "Purchase the secret time study.",
 	s22 : "Buy one million Galaxies in total while using Cancer notation.",
@@ -248,7 +248,7 @@ const secretAchievementTooltips = {
 	s27 : "Get Infinite matter.",
 	s28 : "Don't act like you don't know what you did.",
 	s31 : "Set your update rate to 200ms.",
-	s32 : "Get a fastest infinity or eternity time of less than or equal to 0.001 seconds.",
+	s32 : "Get a fastest Infinity or Eternity time of less than or equal to 0.001 seconds.",
 	s33 : "Click on the donate link.",
 	s34 : "Respec with an empty study tree.",
 	s35 : "Buy single tickspeed 1,000,000 times.",
@@ -259,7 +259,7 @@ const secretAchievementTooltips = {
 	ng3ps12 : "Click on the news ticker that tells you to not click it.",
 	ng3ps13 : "Show 2 news tickers at once.",
 	ng3ps14 : "Unlock, or show the ghostly news ticker.",
-	ng3ps15 : "You have a 1/1,000 chance of getting this achievement every time 'You became a ghost!' animation appears.",
+	ng3ps15 : "You have a 1/1,000 chance of getting this achievement every time the 'You became a ghost!' animation appears.",
 	ng3ps16 : 'Press the "Continue to mastery studies." button and the "Lead back to time studies." button 100 times each.',
 	ng3ps17 : "Manually extract 20 runes in the row, all in 1 game tick for each rune.",
 	ng3ps18 : "Be in 20 unique challenges at the same time.",
@@ -289,7 +289,7 @@ function clearOldAchieves(){
         } else if (allAchievements[player.achievements[i]] === undefined){
             var r = player.achievements[i].indexOf("r")
             if (r < 0) r = 0
-            else r=parseInt(player.achievements[i].split("r")[1])
+            else r = parseInt(player.achievements[i].split("r")[1])
             if (r < 140) toRemove.push(i)
         }
     }
@@ -332,7 +332,7 @@ function giveAchievement(name, noUpdate) {
 	if (name == "The swarm" && player.boughtDims) document.getElementById('replicantigalaxypowerdiv').style.display=""
 	if (name == "I told you already, time is relative" || name == "I'm so meta" || name == "To the new dimension!") updateHotkeys()
 	if (name == "GAS GAS GAS") {
-		for (i = 1; i <= 8; i++) document.getElementById("td" + i + 'auto').style.visibility="visible"
+		for (i = 1; i <= 8; i++) document.getElementById("td" + i + 'auto').style.visibility = "visible"
 		document.getElementById('togglealltimedims').style.display = ""
 		document.getElementById('epmultauto').style.display = ""
 		if (player.aarexModifications.ngudpV) document.getElementById("blackholeAuto").style.display = ""
@@ -352,7 +352,7 @@ function giveAchievement(name, noUpdate) {
 		loadAutoBuyerSettings()
 	}
 	if (name == "Kee-hee-hee!" && (player.achievements.includes("ng3p18") || player.achievements.includes("ng3p37"))) {
-                setAndMaybeShow('bestTPOverGhostifies',true,'"Your best-ever Tachyon particles was "+shorten(player.dilation.bestTPOverGhostifies)+"."')
+                setAndMaybeShow('bestTPOverGhostifies', true, '"Your best-ever Tachyon particles was "+shorten(player.dilation.bestTPOverGhostifies)+"."')
                 if (!tmp.ngp3l) {
                         dev.giveAllNGAchievements()
                         for (let i = 1; i <= 8; i++){
@@ -386,43 +386,43 @@ function updateAchievements() {
 	var amount = 0
 	var rowsShown = 0
 	var rowsNum = 0
-	for (var i=1; i<25; i++) {
+	for (var i = 1; i < 25; i++) {
 		var shown=true
-		var rowid=i
-		var rownum=i
-		if (i>15) {
-			shown=!(!player.masterystudies)
-			rownum=i-15
-			if (rownum>8) shown=shown&&!tmp.ngp3l
-			rowid="ng3p"+rownum
-		} else if (i>14) {
-			shown=player.meta!=undefined
-			rowid="ngpp1"
-		} else if (i>13) {
-			shown=player.exdilation!=undefined
-			rowid="ngud1"
-		} else if (i>10) shown=!player.boughtDims
+		var rowid = i
+		var rownum = i
+		if (i > 15) {
+			shown =! (!player.masterystudies)
+			rownum = i - 15
+			if (rownum > 8) shown = shown && !tmp.ngp3l
+			rowid = "ng3p" + rownum
+		} else if (i > 14) {
+			shown = player.meta
+			rowid = "ngpp1"
+		} else if (i > 13) {
+			shown = player.exdilation
+			rowid = "ngud1"
+		} else if (i > 10) shown = !player.boughtDims
 		rowid="achRow" + rowid
 		var n = 0
 		if (shown) {
 			rowsNum++
 			var achNum = i * 10
-			for (var l=0; l<8; l++) {
+			for (var l = 0; l < 8; l++) {
 				achNum += 1;
-				var realAchNum=achNum
-				if (player.boughtDims) {
-					if (realAchNum==35) realAchNum=22
-					else if (realAchNum==76) realAchNum=35
-					else if (realAchNum==22) realAchNum=41
-					else if (realAchNum==41) realAchNum=76
+				var realAchNum = achNum
+				if (player.boughtDims) { // Eternity Respecced
+					if (realAchNum == 35) realAchNum = 22
+					else if (realAchNum == 76) realAchNum = 35
+					else if (realAchNum == 22) realAchNum = 41
+					else if (realAchNum == 41) realAchNum = 76
 				}
-				var achId="r"+achNum
-				if (achNum>160) achId="ng3p"+(achNum-150)
-				else if (achNum>150) achId="ngpp"+(achNum-140)
-				else if (achNum==145) achId="ngpp13"
-				else if (achNum==147) achId="ngpp18"
-				else if (achNum>140) achId="ngud"+(achNum-130)
-				var name=allAchievements[achId]
+				var achId = "r" + achNum
+				if (achNum > 160) achId="ng3p" + (achNum - 150)
+				else if (achNum > 150) achId = "ngpp" + (achNum - 140)
+				else if (achNum == 145) achId = "ngpp13"
+				else if (achNum == 147) achId = "ngpp18"
+				else if (achNum > 140) achId = "ngud" + (achNum - 130)
+				var name = allAchievements[achId]
 				if (player.achievements.includes(achId)) {
 					n++
 					document.getElementById(name).className = "achievementunlocked"
@@ -448,28 +448,29 @@ function updateAchievements() {
 			if (player.aarexModifications.showAchRowNums) numberelement.innerHTML = "Row #" + rowsNum + "<br>" + n + " / 8<br>(" + (n*12.5).toFixed(1) + "%)"
 		}
 	}
-	player.achPow = Decimal.pow(player.aarexModifications.newGameMinusMinusVersion ? 5 : 1.5, amount)
-	document.getElementById("achmultlabel").textContent = "Current achievement multiplier on each Dimension: " + shortenMoney(player.achPow) + "x"
+    player.achPow = Decimal.pow(player.aarexModifications.newGameMinusMinusVersion ? 5 : 1.5, amount)
+    document.getElementById("achmultlabel").textContent = "Current achievement multiplier on each " + achMultLabelUpdate() + " Dimension: " + shortenMoney(player.achPow) + "x"
+    metaAchMultLabelUpdate()
 	document.getElementById("nothingness").style.display = rowsShown ? "none" : ""
 
 	rowsShown = 0
 	rowsNum = 0
-	for (var i=1; i<=document.getElementById("secretachievementtable").children[0].children.length; i++) {
-		var shown=true
-		var rowid="secretAchRow"+i
-		if (i>3) {
-			shown=tmp.ngp3
-			if (shown&&i>4) shown=!tmp.ngp3l
-			rowid="secretAchRowng3p"+(i-3)
+	for (var i = 1; i <= document.getElementById("secretachievementtable").children[0].children.length; i++) {
+		var shown = true
+		var rowid = "secretAchRow" + i
+		if (i > 3) {
+			shown = tmp.ngp3
+			if (shown && i > 4) shown = !tmp.ngp3l
+			rowid = "secretAchRowng3p" + (i - 3)
 		}
 		var n = 0
 		if (shown) {
 			rowsNum++
 			var achNum = i * 10
-			for (var l=0; l<8; l++) {
+			for (var l = 0; l < 8; l++) {
 				achNum += 1;
-				var achId = "s"+achNum
-				if (achNum>40) achId = "ng3ps"+(achNum-30)
+				var achId = "s" + achNum
+				if (achNum > 40) achId = "ng3ps" + (achNum - 30)
 				var name = allAchievements[achId]
 				if (player.achievements.includes(achId)) {
 					n++
@@ -503,11 +504,11 @@ function updateAchievements() {
 
 function getSecretAchAmount() {
     var n = 0
-    for (var i=1; i<document.getElementById("secretachievementtable").children[0].children.length+1; i++) {
+    for (var i = 1; i <= document.getElementById("secretachievementtable").children[0].children.length; i++) {
         var achNum = i * 10
-        for (var l=0; l<8; l++) {
+        for (var l = 0; l < 8; l++) {
             achNum += 1;
-            if (player.achievements.includes("s"+achNum)) {
+            if (player.achievements.includes("s" + achNum)) {
                 n++
             }
         }
@@ -517,21 +518,40 @@ function getSecretAchAmount() {
 
 function toggleAchRowNums() {
 	// 0 == not visible, 1 == visible
-	player.aarexModifications.showAchRowNums=!player.aarexModifications.showAchRowNums
-	updateAchievements()
-	document.getElementById("showAchRowNums").textContent=(player.aarexModifications.showAchRowNums?"Hide":"Show")+" achievement row info"
+	player.aarexModifications.showAchRowNums = !player.aarexModifications.showAchRowNums;
+	updateAchievements();
+	document.getElementById("showAchRowNums").textContent = (player.aarexModifications.showAchRowNums ? "Hide" : "Show") + " achievement row info";
 }
 
 function toggleCompletedAchs() {
 	// 0 == visible, 1 == not visible
-	player.aarexModifications.hideCompletedAchs=!player.aarexModifications.hideCompletedAchs
-	updateAchievements()
-	document.getElementById("hideCompletedAchs").textContent=(player.aarexModifications.hideCompletedAchs?"Show":"Hide")+" completed achievement rows"
+	player.aarexModifications.hideCompletedAchs = !player.aarexModifications.hideCompletedAchs;
+	updateAchievements();
+	document.getElementById("hideCompletedAchs").textContent = (player.aarexModifications.hideCompletedAchs ? "Show" : "Hide") + " completed achievement rows";
 }
 
 function toggleSecretAchs() {
 	// 0 == visible, 1 == not visible
-	player.aarexModifications.hideSecretAchs=!player.aarexModifications.hideSecretAchs
-	if (document.getElementById("secretachievements").style.display == "block") showAchTab("normalachievements")
-	document.getElementById("hideSecretAchs").textContent=(player.aarexModifications.hideSecretAchs?"Show":"Hide")+" secret achievements"
+	player.aarexModifications.hideSecretAchs = !player.aarexModifications.hideSecretAchs;
+	if (document.getElementById("secretachievements").style.display == "block") showAchTab("normalachievements");
+	document.getElementById("hideSecretAchs").textContent = (player.aarexModifications.hideSecretAchs?"Show" : "Hide") + " secret achievements";
+}
+
+function achMultLabelUpdate() {
+        var label = "Normal"
+        if (player.achievements.includes("r75")) label += "/Infinity"
+        if (player.eternityUpgrades.includes(4)) label += "/Time"
+    return label
+}
+
+function metaAchMultLabelUpdate() {
+    if (!tmp.ngp3) {
+        document.getElementById("metaAchMultLabel").style.display = "none"
+        return
+    }
+    var metaMult = (tmp.qcRewards ? tmp.qcRewards[6] : 1)
+    if (tmp.qu.challenges[6] > 0) {
+        document.getElementById("metaAchMultLabel").style.display = "inline-block"
+        document.getElementById("metaAchMultLabel").textContent = "Achievement multiplier to Meta Dimensions: " + shorten(metaMult) + "x"
+    } else document.getElementById("metaAchMultLabel").style.display = "none"
 }

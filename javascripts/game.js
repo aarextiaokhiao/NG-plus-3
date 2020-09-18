@@ -1402,12 +1402,6 @@ function doStrongerPowerReductionSoftcapDecimal(num,start,exp){
 	return start.times(num.div(start).pow(exp))
 }
 
-
-let kongIPMult = 1
-let kongDimMult = 1
-let kongAllDimMult = 1
-let kongEPMult = 1
-
 function showTab(tabName, init) {
 	if (tabName == 'quantumtab' && !player.masterystudies) {
 		alert("Because Quantum was never fully developed due to the abandonment of development, you cannot access the Quantum tab in NG++. This is the definitive endgame.")
@@ -2703,13 +2697,13 @@ function getIPMult() {
 }
 
 function gainedEternityPoints() {
-	var ret = Decimal.pow(5, player.infinityPoints.plus(gainedInfinityPoints()).e/(player.achievements.includes("ng3p23")?307.8:308) -0.7).times(player.epmult).times(kongEPMult)
+	var ret = Decimal.pow(5, player.infinityPoints.plus(gainedInfinityPoints()).e / (player.achievements.includes("ng3p23") ? 307.8 : 308) - 0.7).times(player.epmult)
 	if (player.aarexModifications.newGameExpVersion) ret = ret.times(10)
 	if (player.timestudy.studies.includes(61)) ret = ret.times(tsMults[61]())
 	if (player.timestudy.studies.includes(121)) ret = ret.times(((253 - averageEp.dividedBy(player.epmult).dividedBy(10).min(248).max(3))/5)) //x300 if tryhard, ~x60 if not
 	else if (player.timestudy.studies.includes(122)) ret = ret.times(35)
 	else if (player.timestudy.studies.includes(123)) ret = ret.times(Math.sqrt(1.39*player.thisEternity/10))
-	if (player.galacticSacrifice!==undefined&&player.galacticSacrifice.upgrades.includes(51)) ret = ret.times(galMults.u51())
+	if (player.galacticSacrifice !== undefined && player.galacticSacrifice.upgrades.includes(51)) ret = ret.times(galMults.u51())
 	if (tmp.ngp3) {
 		if (player.quantum.bigRip.active) {
 			if (isBigRipUpgradeActive(5)) ret = ret.times(tmp.qu.bigRip.spaceShards.max(1))
@@ -2882,26 +2876,26 @@ function setAchieveTooltip() { //want: seperate this into a lot of different fun
 
 	let onlywarReward = [] // for the achievement "In the grim darkness of the far endgame"
 	if (!tmp.ngp3l && (tmp.ngp3 || tmp.newNGP3E)) onlywarReward.push("You get 2x more DT")
-	if (player.aarexModifications.nguspV !== undefined) onlywarReward.push("you can auto-buy dilation upgrades every second if you have at least " + shortenMoney(new Decimal('1e40000')) + " EP")
+	if (player.aarexModifications.nguspV !== undefined) onlywarReward.push("you can auto-buy Dilation upgrades every second if you have at least " + shortenMoney(new Decimal('1e40000')) + " EP")
 	onlywarReward = wordizeList(onlywarReward, true)
 
 	//ACHIEVEMENT ROW 1
-	alot.setAttribute('ach-tooltip', "Buy a single Second Dimension."+(player.aarexModifications.ngmX>3?" Reward: You gain 100x more Time Shards.":""))
+	alot.setAttribute('ach-tooltip', "Buy a single Second Dimension." + (player.aarexModifications.ngmX > 3 ? " Reward: You gain 100x more Time Shards." : ""))
 
 	//ACHIEVEMENT ROW 2
-	ndial.setAttribute('ach-tooltip', "Have exactly 99 Eighth Dimensions. Reward: Eighth Dimensions are 10% stronger"+(player.tickspeedBoosts==undefined?".":" and you gain more GP based on your Eighth Dimensions and your Tickspeed Boosts."));
+	ndial.setAttribute('ach-tooltip', "Have exactly 99 Eighth Dimensions. Reward: Eighth Dimensions are 10% stronger" + (player.tickspeedBoosts==undefined ? "." : " and you gain more GP based on your Eighth Dimensions and your Tickspeed Boosts."));
 	apocAchieve.setAttribute('ach-tooltip', "Get over " + formatValue(player.options.notation, 1e80, 0, 0) + " antimatter.");
 	gal.setAttribute('ach-tooltip', 'Buy an Antimatter Galaxy. ' + (player.aarexModifications.ngmX > 3 ? "Reward: Upon a Time Dimension Boost, your Dimension Boosts don’t reset unless you have more Time Dimension Boosts than your Dimension Boosts." : ''));
 	doubleGal.setAttribute('ach-tooltip', 'Buy 2 Antimatter Galaxies. ' + (player.tickspeedBoosts !== undefined ? "Reward: Upon a Tickspeed Boost, your Dimension Boosts" + (player.aarexModifications.ngmX > 3 ? " and Time Dimension Boosts" : "") + " don’t reset unless you have more Tickspeed Boosts than five times your Antimatter Galaxies minus eight." : '') + (player.aarexModifications.ngmX > 3 ? " You start with 3 Time Dimension Boosts." : ""));
 	noPointAchieve.setAttribute('ach-tooltip', "Buy a single First Dimension when you have over " + formatValue(player.options.notation, 1e150, 0, 0) + " of them. Reward: First Dimensions are 10% stronger" + (player.tickspeedBoosts == undefined ? "." : " and you can max buy Dimension and Tickspeed Boosts."));
-	infinity.setAttribute('ach-tooltip', "Big Crunch for the first time. Reward: Start with 100 antimatter" + (player.galacticSacrifice ? " and always have at least 10x lower dimension costs." : "."));
+	infinity.setAttribute('ach-tooltip', "Big Crunch for the first time. Reward: Start with 100 antimatter" + (player.galacticSacrifice ? ", and always have at least 10x lower Dimension costs." : "."));
 
 	//ACHIEVEMENT ROW 3
-	claustrophobic.setAttribute('ach-tooltip', "Big Crunch with just 1 Antimatter Galaxy. Reward: Reduce the starting tick interval by 2%" + (player.galacticSacrifice && player.tickspeedBoosts == undefined ? " and keep galaxy upgrades on infinity" : "") + (player.aarexModifications.ngmX >= 4 ? ", Time Dimension Boosts do not reset anything, and you can buy Time Dimensions beyond " + shortenMoney(Number.MAX_VALUE) +" antimatter" : "") + "." );
+	claustrophobic.setAttribute('ach-tooltip', "Big Crunch with just 1 Antimatter Galaxy. Reward: Reduce the starting tick interval by 2%" + (player.galacticSacrifice && player.tickspeedBoosts == undefined ? " and keep Galaxy upgrades on Infinity" : "") + (player.aarexModifications.ngmX >= 4 ? ", Time Dimension Boosts do not reset anything, and you can buy Time Dimensions beyond " + shortenMoney(Number.MAX_VALUE) +" antimatter" : "") + "." );
 	nerf.setAttribute('ach-tooltip',"Get any dimension multiplier over " + shortenCosts(1e31) + ". Reward: First Dimensions are 5% stronger.")
 	didnt.setAttribute('ach-tooltip',"Big Crunch without having any 8th Dimensions. Reward: Dimensions 1-7 are 2" + (player.galacticSacrifice ? "x" : "%") + " stronger.")
 	fast.setAttribute('ach-tooltip', "Big Crunch in under 2 hours. Reward: Start with " + shortenCosts(1e3) + " antimatter" + (player.galacticSacrifice ? " and get a multiplier to galaxy points based on fastest infinity (5 hours / x, 10x softcap)." : "."));
-	lot.setAttribute('ach-tooltip', "Get at least 10 Infinities." + (player.galacticSacrifice ? " Reward: " + (player.tickspeedBoosts == undefined ? "Start Infinities with galaxy points based on your infinities (x^2/100)." : " Keep galaxy upgrades on infinity.") : ""));
+	lot.setAttribute('ach-tooltip', "Get at least 10 Infinities." + (player.galacticSacrifice ? " Reward: " + (player.tickspeedBoosts == undefined ? "Start Infinities with Galaxy points based on your infinities (x^2/100)." : " Keep Galaxy upgrades on Infinity.") : ""));
 
 	//ACHIEVEMENT ROW 4
 	sanic.setAttribute('ach-tooltip', "Get over " + formatValue(player.options.notation, 1e63, 0, 0) + " antimatter" + (player.aarexModifications.ngmX >= 4 ? " and unlock new galaxy upgrades at " + formatValue(player.options.notation, 1e666, 0, 0) + " antimatter" : "") + ".")
@@ -2922,12 +2916,12 @@ function setAchieveTooltip() { //want: seperate this into a lot of different fun
 	oh.setAttribute('ach-tooltip', "Reach " + shortenCosts(1e8) + " IP per minute."+(player.galacticSacrifice&&player.tickspeedBoosts==undefined?" Reward: Gain a multiplier to GP based on the logarithm of your IP.":""))
 	mil.setAttribute('ach-tooltip',"Reach " + shortenCosts(1e6) + " infinity power." + (player.galacticSacrifice ? " Reward: First Dimensions are " + shortenCosts(1e6) + " times stronger":"") + (player.aarexModifications.ngmX >= 4 ? " and each IC boosts g32 by 2%." : "."))
 	right.setAttribute('ach-tooltip',"Complete the Third Dimension Autobuyer challenge in 10 seconds or less. Reward: First Dimensions are 5"+(player.galacticSacrifice?"x":"0%")+" stronger.")
-	infchall.setAttribute('ach-tooltip', "Complete an Infinity Challenge."+(player.galacticSacrifice?" Reward: Galaxies and "+(player.tickspeedBoosts===undefined?"g11":"Tickspeed Boosts")+" are more effective based on IC's completed.":""))
+	infchall.setAttribute('ach-tooltip', "Complete an Infinity Challenge."+(player.galacticSacrifice?" Reward: Galaxies and "+(player.tickspeedBoosts === undefined ? "g11 is" : "Tickspeed Boosts are") + " more effective based on IC's completed.":""))
 	begin.setAttribute('ach-tooltip', "Begin generation of infinity power." + (player.aarexModifications.ngmX >= 4 ? " Reward: Each galaxy upgrade boosts g32 by 1%." : ""))
 
 	//ACHIEVEMENT ROW 7
-	not.setAttribute('ach-tooltip',"Big Crunch with only a single First Dimension without Dimension Boosts, Shifts or Galaxies while in the Automatic Galaxies Challenge. Reward: First Dimensions are "+(player.galacticSacrifice?909:3)+" times stronger" + (player.aarexModifications.ngmX >= 4 ? ", and buff the more expensive Break Infinity upgrade based on Infinities to be more effective" : "") + ".")
-	blink.setAttribute('ach-tooltip', "Big Crunch in under 200 milliseconds. Reward: Start with " + formatValue(player.options.notation, 2e25, 0, 0) + " antimatter, and all dimensions are stronger in the first 300 milliseconds of this Infinity.");
+	not.setAttribute('ach-tooltip',"Big Crunch with only a single First Dimension without Dimension Boosts, Shifts or Galaxies while in the Automatic Galaxies Challenge. Reward: First Dimensions are " + (player.galacticSacrifice ? 909 : 3) + " times stronger" + (player.aarexModifications.ngmX >= 4 ? ", and buff the more expensive Break Infinity upgrade based on Infinities to be more effective" : "") + ".")
+	blink.setAttribute('ach-tooltip', "Big Crunch in under 200 milliseconds. Reward: Start with " + formatValue(player.options.notation, 2e25, 0, 0) + " antimatter, and all Normal Dimensions are stronger in the first 300 milliseconds of this Infinity.");
 	cant.setAttribute('ach-tooltip', "Get all Dimension multipliers over "+shortenCosts(1e308)+". Reward: All Normal Dimensions are 10"+(player.galacticSacrifice?"x":"%")+" stronger.")
 	newDim.setAttribute('ach-tooltip', "Unlock the 4th Infinity Dimension."+(player.boughtDims?"":" Reward: Your achievement bonus affects Infinity Dimensions."))
 	tables.setAttribute('ach-tooltip', "Get 8th Dimension multiplier to be highest, 7th Dimension multiplier second highest, etc. Reward: Each dimension gains a boost proportional to their tier (8th dimension gets 8"+(player.galacticSacrifice?"0":"")+"%, 7th gets 7"+(player.galacticSacrifice?"0":"")+"%, etc.)")
@@ -2950,7 +2944,7 @@ function setAchieveTooltip() { //want: seperate this into a lot of different fun
 
 	//ACHIEVEMENT ROW 10
 	costco.setAttribute('ach-tooltip', "Bulk buy 750 Dimension Boosts at once. Reward: Dimension Boosts are " + (player.boughtDims?"cheaper based on EP":"1% more powerful (to Normal Dimensions)") + (player.tickspeedBoosts != undefined ? " and g13 is boosted by the cube root of Galaxies" : "") + ".")
-	mile.setAttribute('ach-tooltip', "Get "+(tmp.ngp3?"the 100 Eternities milestone.":"all Eternity milestones."))
+	mile.setAttribute('ach-tooltip', "Get "+(tmp.ngp3 ? "the 100 Eternities milestone." : "all Eternity milestones."))
 	swarm.setAttribute('ach-tooltip', "Get 10 replicanti galaxies within the first 15 seconds of this Infinity." + (player.boughtDims ? " Reward: Unlock replicanti galaxy power control, and uncap replicanti chance and interval." : ""))
 	inftime.setAttribute('ach-tooltip', player.boughtDims ? "Eternity without buying dimensions 1-7. Reward: Time Dimensions gain a multiplier based on the eighth root of eighth dimensions." : "Get 308 tickspeed upgrades (in one eternity) from Time Dimensions. Reward: Time Dimensions are affected slightly more by tickspeed.")
 	guide.setAttribute('ach-tooltip', player.boughtDims ? "Reach " + shortenCosts(new Decimal("1e1000000")) + " replicanti. Reward: Replicanti increases faster the more you have." : "Eternity with less than 10 infinities.")
@@ -2959,26 +2953,26 @@ function setAchieveTooltip() { //want: seperate this into a lot of different fun
 	//ACHIEVEMENT ROW 11
 	over9000.setAttribute('ach-tooltip', "Get a total Sacrifice multiplier of "+shortenCosts(new Decimal("1e9000"))+". Reward: Sacrifice doesn't reset your dimensions.")
 	dawg.setAttribute('ach-tooltip', "Have all your past 10 Infinities be at least "+shortenMoney(Number.MAX_VALUE)+" times higher IP than the previous one. Reward: Your antimatter doesn't reset when buying a Dimension Boost or Galaxy.")
-	nobodygottime.setAttribute('ach-tooltip', "Eternity while only buying 8th Normal Dimensions. " + (player.galacticSacrifice == undefined ? "" : "Reward: Boost g13."))
+	nobodygottime.setAttribute('ach-tooltip', "Eternity while only buying 8th Normal Dimensions. " + (player.galacticSacrifice == undefined ? "" : "Reward: Boost g13 based on your Dimension Boosts and the square root of g13's effect."))
 
 	//ACHIEVEMENT ROW 12
 	infiniteIP.setAttribute('ach-tooltip', "Reach "+shortenCosts(new Decimal("1e30008"))+" IP." + (player.galacticSacrifice == undefined || (player.tickspeedBoosts != undefined) ? "" : " Reward: Your total galaxies boost Galaxy points gain."))
 	fiveMore.setAttribute('ach-tooltip', "Complete 50 unique Eternity Challenge tiers." + (player.galacticSacrifice !== undefined ? " Reward: Divide Infinity Dimension costs based on the multiplier of g11." : ""))
-	newI.setAttribute('ach-tooltip', "Eternity in under 200 milliseconds." + (player.galacticSacrifice !== undefined ? " Reward: The Dimension Boost effect to Galaxy points gain is buffed, and boost g13 based on your fastest Eternity time in Eternity Challenges." : "")) // by how much?
+	newI.setAttribute('ach-tooltip', "Eternity in under 200 milliseconds." + (player.galacticSacrifice !== undefined ? " Reward: The Dimension Boost effect to Galaxy points gain is buffed based on a specific value (~43 galaxies), and boost g13 based on your fastest Eternity time in Eternity Challenges." : "")) // by how much?
 	eatass.setAttribute('ach-tooltip', "Reach "+shortenCosts(1e100)+" IP without any infinities or first dimensions. Reward: Gain an IP multiplier based on time spent in this Infinity.")
 	layer.setAttribute('ach-tooltip', "Reach "+shortenMoney(Number.MAX_VALUE)+" EP." + (player.galacticSacrifice !== undefined ? " Reward: The Galaxy boost to Galaxy points gain is buffed." : "")) // by how much?
-	fkoff.setAttribute('ach-tooltip', "Reach "+shortenCosts(new Decimal("1e22000"))+" IP without any time studies. Reward: Time dimensions are multiplied by the number of studies you have.")
+	fkoff.setAttribute('ach-tooltip', "Reach "+shortenCosts(new Decimal("1e22000"))+" IP without any time studies. Reward: Gain a multiplier to Time Dimensions based on the amount of bought Time Studies.")
 	minaj.setAttribute('ach-tooltip', "Have 180 times more non-bonus replicanti galaxies than normal galaxies. Reward: Replicanti galaxies divide your replicanti by "+shortenMoney(Number.MAX_VALUE)+" instead of resetting them to 1.")
 
 	//ACHIEVEMENT ROW 13
-	potato3.setAttribute('ach-tooltip', "Get more than "+shortenCosts(new Decimal("1e8296262"))+" ticks per second." + (player.galacticSacrifice !== undefined ? " Reward: The Galaxy boost to Galaxy points gain is buffed further." : "")) // by how much?
-	infstuff.setAttribute('ach-tooltip', "Reach "+shortenCosts(new Decimal("1e140000"))+" IP without buying IDs or IP multipliers. Reward: You start eternities with all Infinity Challenges unlocked and completed"+(player.meta?", and your Infinity gain is multiplied by dilated time^(1/4).":"."))
+	potato3.setAttribute('ach-tooltip', "Get more than "+shortenCosts(new Decimal("1e8296262"))+" ticks per second." + (player.galacticSacrifice !== undefined ? " Reward: The Galaxy boost to Galaxy points gain is buffed based on a specific value (~663 galaxies)." : ""))
+	infstuff.setAttribute('ach-tooltip', "Reach "+shortenCosts(new Decimal("1e140000"))+" IP without buying IDs or IP multipliers. Reward: You start eternities with all Infinity Challenges unlocked and completed" + (player.meta ? ", and your Infinity gain is multiplied by dilated time^(1/4)." : "."))
 	when.setAttribute('ach-tooltip', "Reach "+shortenCosts( new Decimal(tmp.ngex?"1e15000":"1e20000"))+" replicanti. Reward: You gain replicanti 2 times faster under "+shortenMoney(Number.MAX_VALUE)+" replicanti.")
 	thinking.setAttribute('ach-tooltip', "Eternity for "+shortenCosts( new Decimal("1e600"))+" EP in 1 minute or less while dilated.")
 	thisis.setAttribute('ach-tooltip', "Reach "+shortenCosts(new Decimal('1e20000'))+" IP without any time studies while dilated."+(thisisReward != "" ? " Reward: " + thisisReward + "." : ""))
 
 	//NGUD ACHIEVEMENT ROW (13.5)
-	stillamil.setAttribute('ach-tooltip',"Reach "+shortenCosts(1e6)+" black hole power.")
+	stillamil.setAttribute('ach-tooltip', "Reach "+shortenCosts(1e6)+" black hole power.")
 	out.setAttribute('ach-tooltip',"Get more than "+shortenCosts(1e5)+" ex-dilation." + (player.aarexModifications.nguspV !== undefined ? " Reward: You can equally distribute ex-dilation to all repeatable dilation upgrades." : ""))
 	ridNGud.setAttribute('ach-tooltip', "Reach "+shortenCosts(new Decimal("1e20000"))+" IP without any time studies or dilation upgrades while dilated.")
 
@@ -3094,8 +3088,8 @@ function setAchieveTooltip() { //want: seperate this into a lot of different fun
 	notenough.setAttribute('ach-tooltip', "Reach " + shorten(Number.MAX_VALUE) + " meta-antimatter." + (tmp.ngp3l ? "" : " Reward: You produce more dilated time based on your normal galaxies, and gain more Tachyon particles based on your replicated galaxies."))
 	hadron.setAttribute('ach-tooltip', "Have colored quarks, but have no color charge." + (tmp.ngp3l ? "" : " Reward: Quantum worth boosts all Meta Dimensions."))
 	old.setAttribute('ach-tooltip', "Reach " + shortenCosts(getOldAgeRequirement()) + " antimatter." + (tmp.ngp3l ? "":" Reward: Get a multiplier to the 1st Meta Dimension based on total antimatter.") )
-	rid.setAttribute('ach-tooltip', "Reach " + shortenCosts(new Decimal("1e400000")) + " IP while dilated, without having time studies and electrons. Reward: Generate time theorems based on your best-ever tachyon particles.")
-	winner.setAttribute('ach-tooltip', "Quantum in under 30 seconds." + (tmp.ngp3l ? "" : " Reward: EP multiplies quark gain."))
+	rid.setAttribute('ach-tooltip', "Reach " + shortenCosts(new Decimal("1e400000")) + " IP while dilated, without having time studies and electrons. Reward: Generate Time Theorems based on your best-ever Tachyon particles.")
+	winner.setAttribute('ach-tooltip', "Quantum in under 30 seconds." + (tmp.ngp3l ? "" : " Reward: Your EP multiplies Quark gain."))
 
 	//ACHIEVEMENT ROW 16
 	special.setAttribute('ach-tooltip', "Quantum in under 5 seconds." + (tmp.ngp3l ? "" : " Reward: Start with all Infinity Dimensions unlocked if you have at least 25 eternities."))
@@ -3115,7 +3109,7 @@ function setAchieveTooltip() { //want: seperate this into a lot of different fun
 	cantGet.setAttribute('ach-tooltip', "Reach " + shortenCosts(Decimal.pow(10, 6.2e11))+" antimatter in Eternity Challenge 11.")
 	noDil.setAttribute('ach-tooltip', "Reach " + shortenCosts(Decimal.pow(10, 2e6))+" replicanti without having Tachyon particles. Reward: You start Quantums with the square root of your best TP as your Tachyon particle amount.")
 	dontWant.setAttribute('ach-tooltip', "Reach " + shorten(Decimal.pow(Number.MAX_VALUE, 1000))+" IP while dilated, in QC2, and without having studies and First Dimensions during your current Eternity.")
-	noparadox.setAttribute('ach-tooltip', "Quantum without any dilation upgrades." + (tmp.ngp3l ? "" : " Reward: Sum of quantum challenge best times boosts quark gain."))
+	noparadox.setAttribute('ach-tooltip', "Quantum without any dilation upgrades." + (tmp.ngp3l ? "" : " Reward: The sum of your best Quantum Challenge times boosts Quark gain."))
 
 	//ACHIEVEMENT ROW 18
 	notrelative.setAttribute('ach-tooltip', "Get " + shorten(Decimal.pow(10, 411))+" dilated time without gaining tachyon particles." + (tmp.ngp3l ? "" : " Reward: You gain more DT based on the amount of Nanofield rewards."))
@@ -3124,7 +3118,7 @@ function setAchieveTooltip() { //want: seperate this into a lot of different fun
 	wasted.setAttribute('ach-tooltip', "Get " + shorten(1.1e7) + " TT without having TT generation, keeping your previous TT, and respeccing studies. Reward: While you have less than 1 hour worth of TT production, you gain 10x as much TT.")
 	protonsDecay.setAttribute('ach-tooltip', "Unlock Tree of Decay." + (!tmp.ngp3l ? " Reward: You keep the two thirds power of your preons upon quantum when outside of a Quantum Challenge." : ""))
 	stop.setAttribute('ach-tooltip', "Get the replicanti reset requirement to "+shorten(Decimal.pow(10, 1.25e7))+". Reward: Getting a normal replicant manually doesn't reset your replicanti and can be automated.")
-	dying.setAttribute('ach-tooltip', "Reach " + shorten(Decimal.pow(10, 2.75e5))+" IP while dilated, in PC6+8, and without having studies." + (tmp.ngp3l ? "" : " Reward: Branches are faster based on your Meta-Dimension Boosts."))
+	dying.setAttribute('ach-tooltip', "Reach " + shorten(Decimal.pow(10, 2.75e5))+" IP while dilated, in PC6+8, and without having time studies." + (tmp.ngp3l ? "" : " Reward: Branches are faster based on your Meta-Dimension Boosts."))
 
 	//ACHIEVEMENT ROW 19
 	gofast.setAttribute('ach-tooltip', "Get "+shorten(Decimal.pow(10, 1185))+" EP first, and then square your EP by disabling dilation while Big Ripped." + (tmp.ngp3l ? "" : " Reward: Space shards multiply quark gain."))
@@ -3136,11 +3130,11 @@ function setAchieveTooltip() { //want: seperate this into a lot of different fun
 	//ACHIEVEMENT ROW 20
 	finite.setAttribute('ach-tooltip', "Get " + shortenCosts(1e33) + " Space Shards without Breaking Eternity within this Ghostify." + (tmp.ngp3l ? "" : " Reward: Outside of Big Rips, Tree Upgrades are 10% stronger. In Big Rips, 8th Time Dimensions gain an small exponent boost based on your current Ghostify time."))
 	really.setAttribute('ach-tooltip', "Reach " + shortenCosts(Decimal.pow(10, 5000)) + " matter in Big Rip." + (tmp.ngp3l ? "":" Reward: Buying Electron upgrades doesn't consume Meta-Dimension Boosts."))
-	grind.setAttribute('ach-tooltip', "Get the 21st Nanofield reward without having Tree Upgrades. " + (tmp.ngp3l ? "" : "Reward: Gain more quarks based on radioactive decays."))
+	grind.setAttribute('ach-tooltip', "Get the 21st Nanofield reward without having Tree Upgrades. " + (tmp.ngp3l ? "" : "Reward: Gain more Quarks based on Radioactive Decays."))
 	willenough.setAttribute('ach-tooltip', "Reach " + shortenCosts(Decimal.pow(10, player.aarexModifications.ngudpV ? 268435456 : 36000000))+" replicanti." + (willenoughReward != "" ? " Reward: " + willenoughReward + "." : ""))
-	oppose.setAttribute('ach-tooltip', "Become a ghost with at most 1x quantumed stat." + (tmp.ngp3l ? "" : " Reward: You gain more quarks based on your quantumed stat."))
+	oppose.setAttribute('ach-tooltip', "Become a ghost with at most 1x quantumed stat." + (tmp.ngp3l ? "" : " Reward: You gain more Quarks based on your quantumed stat."))
 	pls.setAttribute('ach-tooltip', "Reach " + shortenCosts(Decimal.pow(10, 9.5e5)) + " IP in Big Rip while dilated, with no EP multiplier upgrades, time studies, and Break Eternity within this Ghostify. Reward: Each time you become a ghost, you gain "+shortenDimensions(2e3)+" galaxies worth of generated neutrinos, multiplied by your best-ever galaxy amount across all Big Rips.")
-	keeheehee.setAttribute('ach-tooltip', "Become a ghost. Reward: Multiply eternitied stat gain by 100x (weakens as you have more), all quantum mechanic unlocks only require Time Theorems, assignation options are kept permanently, Nanofield is 3x faster until you reach 16 rewards, " + (tmp.ngp3l ? "" : " get all achievements from Quantum Challenges and earlier,") + " and start with 1 Eighth Time Dimension in Big Rips.")
+	keeheehee.setAttribute('ach-tooltip', "Become a ghost. Reward: Multiply Eternities gained by 100x (weakens as you have more), all quantum mechanic unlocks only require Time Theorems, assignation options are kept permanently, Nanofield is 3x faster until you reach 16 rewards, " + (tmp.ngp3l ? "" : " get all achievements prior to Paired Challenges, ") + "and start with 1 Eighth Time Dimension in Big Rips.")
 
 	//BRAVE MILESTONES
 	bm1.setAttribute('ach-tooltip', "Reward: Start Ghostifies with all Speedrun Milestones and all "+shorten(Number.MAX_VALUE)+" QK assignation features unlocked, all Paired Challenges completed, all Big Rip upgrades bought, Nanofield is 2x faster until you reach 16 rewards, and you get quarks based on your best MA this quantum.")
@@ -3155,11 +3149,11 @@ function setAchieveTooltip() { //want: seperate this into a lot of different fun
 	arent.setAttribute('ach-tooltip', "Reach " + shortenCosts(Decimal.pow(10, 1.8e6)) + " IP while dilated and Big Ripped and without having studies, EP mult upgrades, Tree Upgrades, and Break Eternity within this Ghostify." + (tmp.ngp3l ? "" : " Reward: Your 8th Tree Upgrade's level speeds up Nanofield."))
 
 	//ACHIEVEMENT ROW 22
-	ghostierthanbefore.setAttribute("ach-tooltip", "Unlock Bosonic Lab." + (tmp.ngp3l ? "" : " Reward: The meta-antimatter effect uses your best meta-antimatter in your current Ghostify instead of your best in the current Quantum and unlock all achievements prior to Ghostly Photons."))
-	ee.setAttribute('ach-tooltip', "Get "+shorten(Number.MAX_VALUE)+" eternities." + (tmp.ngp3l ? "" : " Reward: Boost quark gain by 10 per Light Empowerment squared"))
+	ghostierthanbefore.setAttribute("ach-tooltip", "Unlock Bosonic Lab." + (tmp.ngp3l ? "" : " Reward: The meta-antimatter effect uses your best meta-antimatter in your current Ghostify instead of your best in the current Quantum, and unlock all achievements prior to Ghostly Photons."))
+	ee.setAttribute('ach-tooltip', "Get "+shorten(Number.MAX_VALUE)+" eternities." + (tmp.ngp3l ? "" : " Reward: Boost quark gain by 10 per Light Empowerment squared."))
 	oc.setAttribute('ach-tooltip', "Become a ghost with at least "+shortenCosts(Decimal.pow(10, 3.75e5)) + " EP while Big Ripped with the Anti-Dilation modifier.")
 	btco.setAttribute('ach-tooltip', "Complete Paired Challenge 1 after getting "+shortenCosts(Decimal.pow(10, 1.65e9)) + " antimatter in Quantum Challenges 6 and 8.")
-	tdc.setAttribute('ach-tooltip', "Complete Eternity Challenge 11 with "+shortenCosts(Decimal.pow(10, 15500)) + " IP in a Paired Challenge with Quantum Challenges 6 and 8 combinations and Anti-Dilation modifier.")
+	tdc.setAttribute('ach-tooltip', "Complete Eternity Challenge 11 with "+shortenCosts(Decimal.pow(10, 15500)) + " IP in a Paired Challenge with the Quantum Challenges 6 and 8 combination and the Anti-Dilation modifier.")
 	igu.setAttribute('ach-tooltip', "Reach " + shortenCosts(Decimal.pow(10, 2.25e4)) + " IP while dilated and Big Ripped with Anti-Dilation modifier and without having studies, EP mult upgrades, Tree Upgrades, and Break Eternity within this Ghostify.")
 	isnotenough.setAttribute('ach-tooltip', "Complete a Paired Challenge with Quantum Challenges 6 and 8 combinations." + (tmp.ngp3l ? "" : " Reward: Remove the hardcap reduction of 'And so your life?'."))
 
@@ -3176,10 +3170,11 @@ function setAchieveTooltip() { //want: seperate this into a lot of different fun
 	let metae18 = document.getElementById("Meta-Quintillion")
 
 	//ACHIEVEMENT ROW 23
-	ghostliest.setAttribute('ach-tooltip', "Get " + shorten(Math.pow(Number.MAX_VALUE, 1/4)) + " Ghostifies. Reward: Ghostifies boost the gain of Ghost Particles at the reduced rate.")
-	metae18.setAttribute('ach-tooltip', "Get " + shortenCosts(Decimal.pow(10, 1e18)) + " antimatter. Reward: Distant Antimatter Galaxies scaling is 10% weaker and Higgs bosons give linear production to bosonic antimatter.")
+	ghostliest.setAttribute('ach-tooltip', "Get " + shorten(Math.pow(Number.MAX_VALUE, 1/4)) + " Ghostifies. Reward: Ghostifies boost the gain of Ghost Particles at a reduced rate.")
+	metae18.setAttribute('ach-tooltip', "Get " + shortenCosts(Decimal.pow(10, 1e18)) + " antimatter. Reward: Distant Antimatter Galaxies scaling is 10% weaker, and Higgs Bosons produce Bosonic Antimatter at a linear rate.")
 	aretheseanother.setAttribute('ach-tooltip', "Reach " + shortenCosts(Decimal.pow(10, 66666)) + " Quarks. Reward: Gain 500x more Quarks and Ghost Particles.")
 }
+
 
 
 //notation stuff
@@ -5198,7 +5193,7 @@ function startDilatedEternity(auto, shortcut) {
 	if (!player.dilation.studies.includes(1)) return
 	failsafeDilateTime = true
 	var onActive = player.dilation.active
-	if (!onActive && player.aarexModifications.dilationConf && !auto) if (!confirm("Dilating time will start a new eternity, and all of your Dimension/Infinity Dimension/Time Dimension multiplier's exponents and tickspeed multiplier's exponent will be reduced to ^ 0.75. If you can eternity while dilated, you'll be rewarded with tachyon particles based on your antimatter and tachyon particles.")) return
+	if (!onActive && player.aarexModifications.dilationConf && !auto) if (!confirm("Dilating time will start a new Eternity where all of your Normal/Infinity/Time Dimension multiplier's exponents and the Tickspeed multiplier's exponent will be reduced to ^ 0.75. If you can Eternity while dilated, you'll be rewarded with tachyon particles based on your antimatter and tachyon particles.")) return
 	giveAchievement("I told you already, time is relative")
 	if (tmp.ngp3) {
 		if (onActive) player.eternityBuyer.statBeforeDilation++
@@ -5475,7 +5470,7 @@ function doGhostifyUnlockStuff(){
 function doReachAMGoalStuff(chall){
 	if (document.getElementById("welcome").style.display != "flex") document.getElementById("welcome").style.display = "flex"
 	else player.aarexModifications.popUpId = ""
-	document.getElementById("welcomeMessage").innerHTML="You reached the antimatter goal ("+shorten(Decimal.pow(10, getQCGoal()))+"), but you didn't reach the meta-antimatter goal yet! Get " + shorten(Decimal.pow(Number.MAX_VALUE, 1.45)) + " meta-antimatter" + (player.quantum.bigRip.active ? " and then you can become a ghost!" : " and then go quantum to complete your challenge!")
+	document.getElementById("welcomeMessage").innerHTML = "You reached the antimatter goal (" + shorten(Decimal.pow(10, getQCGoal())) + "), but you didn't reach the meta-antimatter goal yet! Get " + shorten(getQuantumReq()) + " meta-antimatter" + (player.quantum.bigRip.active ? " and then you can become a ghost!" : " and then go Quantum to complete your challenge!")
 	tmp.qu.nonMAGoalReached.push(chall)
 }
 
@@ -5483,7 +5478,7 @@ function doQuantumUnlockStuff(){
 	tmp.qu.reached = true
 	if (document.getElementById("welcome").style.display != "flex") document.getElementById("welcome").style.display = "flex"
 	else player.aarexModifications.popUpId = ""
-	document.getElementById("welcomeMessage").innerHTML = "Congratulations! You reached " + shorten(getQuantumReq()) + " MA and then completed EC14 for the first time! This allows you to go Quantum (the 5th layer), giving you a quark in exchange for everything up to this point, which can be used to get more powerful upgrades. This allows you to get gigantic numbers!"
+	document.getElementById("welcomeMessage").innerHTML = "Congratulations! You reached " + shorten(getQuantumReq()) + " MA and completed EC14 for the first time! This allows you to go Quantum (the 5th layer), giving you a quark in exchange for everything up to this point, which can be used to get more powerful upgrades. This allows you to get gigantic numbers!"
 }
 
 function doNGP3UnlockStuff(){
@@ -5492,7 +5487,7 @@ function doNGP3UnlockStuff(){
 	else if (chall[0] > chall[1]) chall = chall[1] * 10 + chall[0]
 	else chall = chall[0] * 10 + chall[1]
 	if (!tmp.qu.reached && isQuantumReached()) doQuantumUnlockStuff()
-	if (chall && player.money.gt(Decimal.pow(10, getQCGoal())) && player.meta.bestAntimatter.lt(Decimal.pow(Number.MAX_VALUE, 1.45)) && !tmp.qu.nonMAGoalReached.includes(chall)) {
+	if (chall && player.money.gt(Decimal.pow(10, getQCGoal())) && player.meta.bestAntimatter.lt(getQuantumReq()) && !tmp.qu.nonMAGoalReached.includes(chall)) {
 		doReachAMGoalStuff(chall)
 	}
 	if (!player.ghostify.reached && tmp.qu.bigRip.active) if (tmp.qu.bigRip.bestThisRun.gte(Decimal.pow(10, getQCGoal(undefined, true)))) {
@@ -5501,7 +5496,7 @@ function doNGP3UnlockStuff(){
 	var inEasierModeCheck = !inEasierMode()
 	if (player.masterystudies && (player.masterystudies.includes("d14")||player.achievements.includes("ng3p51")) && !metaSave.ngp4 && !inEasierModeCheck) doNGP4UnlockStuff()
 	if (player.eternityPoints.gte("1e1200") && tmp.qu.bigRip.active && !tmp.qu.breakEternity.unlocked) doBreakEternityUnlockStuff()
-	if (player.money.gte(Decimal.pow(10,6e9)) && tmp.qu.bigRip.active && !player.ghostify.ghostlyPhotons.unl) doPhotonsUnlockStuff()
+	if (player.money.gte(Decimal.pow(10, 6e9)) && tmp.qu.bigRip.active && !player.ghostify.ghostlyPhotons.unl) doPhotonsUnlockStuff()
 	if (canUnlockBosonicLab() && !player.ghostify.wzb.unl) doBosonsUnlockStuff()
 	unlockHiggs()
 }
@@ -5614,6 +5609,7 @@ setInterval(function() {
 	updateBlinkOfAnEye()
 	ALLACHIEVECHECK()
 	bendTimeCheck()
+	metaAchMultLabelUpdate()
 
 	// AB Stuff
 	updateReplicantiGalaxyToggels()
@@ -5735,7 +5731,7 @@ function checkMatter(diff){
 function passiveIPupdating(diff){
 	if (player.infinityUpgrades.includes("passiveGen")) player.partInfinityPoint += diff / player.bestInfinityTime;
 	if (player.partInfinityPoint >= 100) {
-		player.infinityPoints = player.infinityPoints.plus(player.infMult.times(kongIPMult * (player.partInfinityPoint/10)));
+		player.infinityPoints = player.infinityPoints.plus(player.infMult.times(player.partInfinityPoint/10));
 		player.partInfinityPoint = 0;
 	}
 
@@ -6312,7 +6308,7 @@ function replicantiIncrease(diff) {
 	if (player.replicanti.galaxybuyer && canGetReplicatedGalaxy() && canAutoReplicatedGalaxy()) replicantiGalaxy()
 }
 
-function IPMultBuyUpdating(){
+function IPMultBuyUpdating() {
 	if (player.infMultBuyer && (!player.boughtDims || canBuyIPMult())) {
 		var dif = Math.floor(player.infinityPoints.div(player.infMultCost).log(player.aarexModifications.newGameExpVersion?4:10)) + 1
 		if (dif > 0) {
@@ -6731,8 +6727,13 @@ function newIDDisplayUpdating(){
 }
 
 function d8SacDisplay(){
+	if (calcTotalSacrificeBoost().lte(new Decimal("1e1000000000"))) {
 	document.getElementById("sacrifice").setAttribute('ach-tooltip', "Boost the 8th Dimension by " + formatValue(player.options.notation, calcSacrificeBoost(), 2, 2) + "x");
 	document.getElementById("sacrifice").textContent = "Dimensional Sacrifice ("+formatValue(player.options.notation, calcSacrificeBoost(), 2, 2)+"x)"
+	} else {
+	document.getElementById("sacrifice").setAttribute('ach-tooltip', "Boost the 8th Dimension");
+	document.getElementById("sacrifice").textContent = "Dimensional Sacrifice (Total: "+formatValue(player.options.notation, calcTotalSacrificeBoost(), 2, 2)+ "x)"
+	}
 }
 
 function pSacBtnUpdating(){

@@ -7,7 +7,8 @@ var infiniteDetected = false
 var infiniteCheck = false
 var infiniteCheck2 = false
 var infiniteSave
-function isInfiniteDetected() {
+
+function isInfiniteDetected() { // todo: make better infinite detection system
 	if (infiniteDetected) return
 	if (detectInfinite()) {
 		infiniteDetected = true

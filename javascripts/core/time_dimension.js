@@ -82,8 +82,7 @@ function getTimeDimensionPower(tier) {
 	
 	if (player.achievements.includes("r105")) ret = ret.times(tmp.it)
 	ret = ret.times(getERTDAchMults())
-	ret = ret.times(kongAllDimMult)
- 
+
 	var ret2 = calcNGM2atleastTDPreVPostDilMultiplier(tier)
 	if (player.galacticSacrifice === undefined) ret = ret.times(ret2)
 	ret = ret.times(calcVanillaTSTDMult(tier))
