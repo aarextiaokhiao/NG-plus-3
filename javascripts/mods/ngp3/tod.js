@@ -200,7 +200,10 @@ function getTreeUpgradeCost(upg,add) {
 	if (upg == 2) return Decimal.pow(4, lvl * (lvl + 3) / 2).times(600)
 	if (upg == 3) return Decimal.pow(32, lvl).times(3e9)
 	if (upg == 4) return Decimal.pow(2, lvl + Math.max(lvl - 37, 0) * (lvl - 36) / 2).times(1e12)
-	if (upg == 5) return Decimal.pow(2, lvl + Math.max(lvl - 35, 0) * (lvl - 34) / 2).times(4e12)
+	if (upg == 5) {
+		if (player.achievements.includes("ng3p87")) return Decimal.pow(2, lvl + Math.pow(Math.max(0, lvl - 50), 1.5)).times(4e12)
+		return Decimal.pow(2, lvl + Math.max(lvl - 35, 0) * (lvl - 34) / 2 + Math.pow(Math.max(0, lvl - 50), 1.5)).times(4e12)
+	}
 	if (upg == 6) return Decimal.pow(4, lvl * (lvl + 3) / 2).times(6e22)
 	if (upg == 7) return Decimal.pow(16, lvl * lvl).times(4e22)
 	if (upg == 8) return Decimal.pow(2, lvl).times(3e23)
@@ -226,36 +229,48 @@ function getTreeUpgradeLevel(upg) {
 	return tmp.qu.tod.upgrades[upg] || 0
 }
 
+function getEffectiveTreeUpgLevel(upg){
+	lvl = getTreeUpgradeLevel(upg) * tmp.tue
+	if (upg == 1) if (lvl >= 500) lvl = 500 * Math.pow(lvl / 500,.9)
+	if (upg == 2) if (lvl > 64) lvl = (lvl + 128) / 3
+	if (upg == 5) if (lvl > 500 && !player.achievements.includes("ng3p87")) lvl = Math.sqrt(lvl / 500) * 500
+	if (upg == 7) if (lvl > 100) lvl -= Math.sqrt(lvl) - 10
+	if (upg == 8) if (lvl > 1111) lvl = 1111 + (lvl - 1111) / 2
+	return lvl
+}
+
+function getTotalNumOfToDUpgrades(){
+	let power = 0
+	for (var upg = 1; upg < 9; upg++) power += getTreeUpgradeLevel(upg)
+	return power
+}
+
 function getTreeUpgradeEffect(upg) {
-	let lvl = getTreeUpgradeLevel(upg) * tmp.tue
+	let lvl = getEffectiveTreeUpgLevel(upg)
 	if (upg == 1) {
-		if (lvl >= 500) lvl = 500 * Math.pow(lvl / 500,.9)
 		return Math.floor(lvl * 30)
 	}
 	if (upg == 2) {
-		if (lvl > 64) lvl = (lvl + 128) / 3
 		return lvl * 0.25
 	}
 	if (upg == 3) {
-		if (lvl < 1) return 1
-		let power = 0
-		for (var upg = 1; upg < 9; upg++) power += getTreeUpgradeLevel(upg)
-		return Decimal.pow(2,Math.sqrt(Math.sqrt(Math.max(lvl * 3 - 2, 0)) * Math.max(power - 10, 0)))
+		return Decimal.pow(2, Math.sqrt(Math.sqrt(Math.max(lvl * 3 - 2, 0)) * Math.max(getTotalNumOfToDUpgrades() - 10, 0)))
 	}
-	if (upg == 4) return Math.sqrt(1 + Math.log10(lvl * 0.5 + 1) * 0.1)
+	if (upg == 4) {
+		return Math.sqrt(1 + Math.log10(lvl * 0.5 + 1) * 0.1)
+	}
 	if (upg == 5) {
-		if (lvl > 500) lvl += Math.sqrt(lvl + 125) - 25
-		return Math.pow(Math.log10(player.meta.bestOverQuantums.add(1).log10() + 1) / 5 + 1, Math.sqrt(lvl))
+		let MA = player.meta.bestOverQuantums
+		if (player.achievements.includes("ng3p87")) MA = MA.plus(player.meta.bestOverGhostifies)
+		return Math.pow(Math.log10(MA.add(1).log10() + 1) / 5 + 1, Math.sqrt(lvl))
 	}
 	if (upg == 6) {
 		return Decimal.pow(2, lvl)
 	}
 	if (upg == 7) {
-		if (lvl > 100) lvl -= Math.sqrt(lvl) - 10
 		return Decimal.pow(player.replicanti.amount.max(1).log10() + 1, 0.25 * lvl)
 	}
 	if (upg == 8) {
-		if (lvl > 1111) lvl = 1111 + (lvl - 1111) / 2
 		return Math.log10(Decimal.add(player.meta.bestAntimatter, 1).log10() + 1) / 4 * Math.sqrt(lvl)
 	}
 	return 0

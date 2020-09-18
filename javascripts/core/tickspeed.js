@@ -27,8 +27,8 @@ function getGalaxyPower(ng, bi, noDil) {
 	}
 	
 	let extraReplGalPower = 0
-	if (player.timestudy.studies.includes(133)) extraReplGalPower += player.replicanti.galaxies*0.5
-	if (player.timestudy.studies.includes(132)) extraReplGalPower += player.replicanti.galaxies*0.4
+	if (player.timestudy.studies.includes(133)) extraReplGalPower += player.replicanti.galaxies * 0.5
+	if (player.timestudy.studies.includes(132)) extraReplGalPower += player.replicanti.galaxies * 0.4
 	extraReplGalPower += extraReplGalaxies // extraReplGalaxies is a constant
 	
 	let otherGalPower = player.replicanti.galaxies
@@ -129,7 +129,7 @@ function getGalaxyTickSpeedMultiplier() {
 function getPostC3Mult() {
 	let base = getPostC3Base()
 	let exp = getPostC3Exp()
-	if (exp>1) return Decimal.pow(base,exp)
+	if (exp > 1) return Decimal.pow(base,exp)
 	return base
 }
 
@@ -220,7 +220,7 @@ function getTickSpeedCostMultiplierIncrease() {
 	return ret
 }
 
-function buyMaxPostInfTickSpeed (mult) {
+function buyMaxPostInfTickSpeed(mult) {
 	var mi = getTickSpeedCostMultiplierIncrease()
 	var a = Math.log10(Math.sqrt(mi))
 	var b = player.tickspeedMultiplier.dividedBy(Math.sqrt(mi)).log10()
@@ -246,7 +246,7 @@ function buyMaxPostInfTickSpeed (mult) {
 	player.postC8Mult = new Decimal(1)
 }
 
-function cannotUsePostInfTickSpeed () {
+function cannotUsePostInfTickSpeed() {
 	return ((inNC(5) || player.currentChallenge == "postc5") && player.tickspeedBoosts == undefined) || !costIncreaseActive(player.tickSpeedCost) || (player.tickSpeedMultDecrease > 2 && player.tickspeedMultiplier.lt(Number.MAX_SAFE_INTEGER));
 }
 
@@ -294,11 +294,7 @@ function buyMaxTickSpeed() {
 
 function getWorkingTickspeed(){
 	var log = -player.tickspeed.log10()
-	if (log > 1 && tmp.ngp3) {
-		log = doWeakerPowerReductionSoftcapNumber(log, 1e15, .9)
-		log = doWeakerPowerReductionSoftcapNumber(log, 1e16, .8)
-		log = doWeakerPowerReductionSoftcapNumber(log, 1e17, .7)
-	}
+	if (tmp.ngp3) log = softcap(log, "working_ts")
 	tick = Decimal.pow(10, -log)
 	return tick
 }

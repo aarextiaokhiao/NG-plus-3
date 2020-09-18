@@ -66,8 +66,8 @@ function checkResetCountReqAchieve(){
 function checkMatterAMNDReqAchieve(){
 	if (player.money.gte("9.9999e9999")) giveAchievement("This achievement doesn't exist")
 	if (player.money.gte("1e35000")) giveAchievement("I got a few to spare")
-	if (player.money >= 1e80) giveAchievement("Antimatter Apocalypse")
-	if (player.seventhAmount > 1e12) giveAchievement("Multidimensional");
+	if (player.money.gt(Decimal.pow(10, 80))) giveAchievement("Antimatter Apocalypse")
+	if (player.seventhAmount.gt(Decimal.pow(10, 12))) giveAchievement("Multidimensional");
 	if ((player.matter.gte(2.586e15) && player.currentChallenge == "postc6") || player.matter.gte(Number.MAX_VALUE)) giveAchievement("It's not called matter dimensions is it?")
 	if (dilates(player.firstPow, 2) >= 10e30) giveAchievement("I forgot to nerf that")
 }
