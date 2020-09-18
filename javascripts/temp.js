@@ -121,7 +121,7 @@ function updateInfiniteTimeTemp() {
 			if (tmp.be && x > 1e7) x = Math.pow(93 + Math.log10(x), 3.5)
 		}
 		if ((!tmp.ngp3l || player.aarexModifications.ngudpV) && player.dilation.active && x > 1e5) x = Math.pow(1e20 * x, .2)
-		if (!tmp.ngp3l && !tmp.qu.bigRip.active) x = softcap(x, "inf_time_log_2")
+		if (!tmp.ngp3l && !player.quantum.bigRip.active) x = softcap(x, "inf_time_log_2")
 	}
 	tmp.it = Decimal.pow(10, x)
 }
@@ -129,7 +129,7 @@ function updateInfiniteTimeTemp() {
 function updateIntergalacticTemp() {
 	if (!tmp.ngp3) return
 	x = player.galaxies
-	if (isLEBoostUnlocked(3) && !tmp.qu.bigRip.active) x *= tmp.leBonus[3]
+	if (isLEBoostUnlocked(3) && !player.quantum.bigRip.active) x *= tmp.leBonus[3]
 	if (tmp.be && player.dilation.active && tmp.qu.breakEternity.upgrades.includes(10)) x *= getBreakUpgMult(10)
 	if (!tmp.ngp3l) x += tmp.effAeg
 	tmp.igg = x
@@ -137,7 +137,7 @@ function updateIntergalacticTemp() {
 	tmp.igs = 0 //Intergalactic Scaling ; used in the display text
 	var igLog = Math.pow(x, Math.min(Math.sqrt(Math.log10(Math.max(x,1))) * 2, 2.5)) //Log10 of reward
 	
-	if (tmp.qu.bigRip.active && !tmp.ngp3l) {
+	if (player.quantum.bigRip.active && !tmp.ngp3l) {
 		if (igLog > 1e9) { //Distant
 			igLog = Math.pow(igLog * 1e3, .75)
 			tmp.igs = 1
@@ -169,7 +169,7 @@ function updateIntergalacticTemp() {
 
 function updateAntiElectronGalaxiesTemp(){
 	tmp.aeg = 0
-	if (hasBosonicUpg(14) && !tmp.qu.bigRip.active) tmp.aeg = Math.max(tmp.blu[14] - tmp.qu.electrons.sacGals, 0)
+	if (hasBosonicUpg(14) && !player.quantum.bigRip.active) tmp.aeg = Math.max(tmp.blu[14] - tmp.qu.electrons.sacGals, 0)
 	tmp.effAeg = tmp.aeg
 	if (tmp.aeg > 0) {
 		if (hasBosonicUpg(34)) tmp.effAeg *= tmp.blu[34]
@@ -278,7 +278,7 @@ function updateTemp() {
 		updateGhostifyTempStuff()
 		if (tmp.qu.breakEternity.unlocked) updateBreakEternityUpgradesTemp()
 		if (player.masterystudies.includes("d14")) updateBigRipUpgradesTemp()
-		if (tmp.nrm !== 1 && tmp.qu.bigRip.active) {
+		if (tmp.nrm !== 1 && player.quantum.bigRip.active) {
 			if (!player.dilation.active && tmp.qu.bigRip.upgrades.includes(14)) tmp.nrm = tmp.nrm.pow(tmp.bru[14])
 			if (tmp.nrm.log10() > 1e9) tmp.nrm = Decimal.pow(10, 1e9 * Math.pow(tmp.nrm.log10() / 1e9, 2/3))
 		}
@@ -302,7 +302,7 @@ function updateTemp() {
 			}
 		}
 		if (player.masterystudies.includes("d10")) tmp.edgm = getEmperorDimensionGlobalMultiplier() //Update global multiplier of all Emperor Dimensions
-		tmp.be = tmp.qu.bigRip.active&&tmp.qu.breakEternity.break
+		tmp.be = player.quantum.bigRip.active && tmp.qu.breakEternity.break
 		tmp.rg4 = tmp.qu.upgrades.includes("rg4") && (tmp.qu.rg4 || !tmp.ngp3l || inQC(1) || QCIntensity(1))
 		tmp.tue = getTreeUpgradeEfficiency()
 	} else tmp.be = false

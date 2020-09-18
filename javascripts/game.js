@@ -2711,7 +2711,7 @@ function gainedEternityPoints() {
 	else if (player.timestudy.studies.includes(123)) ret = ret.times(Math.sqrt(1.39*player.thisEternity/10))
 	if (player.galacticSacrifice!==undefined&&player.galacticSacrifice.upgrades.includes(51)) ret = ret.times(galMults.u51())
 	if (tmp.ngp3) {
-		if (tmp.qu.bigRip.active) {
+		if (player.quantum.bigRip.active) {
 			if (isBigRipUpgradeActive(5)) ret = ret.times(tmp.qu.bigRip.spaceShards.max(1))
 			if (isBigRipUpgradeActive(8)) ret = ret.times(tmp.bru[8])
 		}
@@ -4435,7 +4435,7 @@ function doCheckECCompletionStuff(){
 
 function eternity(force, auto, presetLoad, dilated) {
 	var id7unlocked = player.infDimensionsUnlocked[7]
-	if (tmp.ngp3) if (tmp.qu.bigRip.active) id7unlocked = true
+	if (tmp.ngp3) if (player.quantum.bigRip.active) id7unlocked = true
 	var canEternity = force || (player.infinityPoints.gte(Number.MAX_VALUE) && id7unlocked && (auto || !player.options.eternityconfirm || confirm("Eternity will reset everything except achievements and challenge records. You will also gain an Eternity point and unlock various upgrades.")))
 	if (!canEternity) return
 	
@@ -4463,7 +4463,7 @@ function eternity(force, auto, presetLoad, dilated) {
 		if (ghostified) document.getElementById("ghostifytabbtn").style.display = "inline-block"
 	}
 	temp = []
-	if (gainedEternityPoints().gte(player.eternityPoints) && player.eternityPoints.gte("1e1185") && (tmp.ngp3 ? player.dilation.active && tmp.qu.bigRip.active : false)) giveAchievement("Gonna go fast")
+	if (gainedEternityPoints().gte(player.eternityPoints) && player.eternityPoints.gte("1e1185") && (tmp.ngp3 ? player.dilation.active && player.quantum.bigRip.active : false)) giveAchievement("Gonna go fast")
 	var oldEP = player.eternityPoints
 	player.eternityPoints = player.eternityPoints.plus(gainedEternityPoints())
 	var array = [player.thisEternity, gainedEternityPoints()]
@@ -5475,7 +5475,7 @@ function doGhostifyUnlockStuff(){
 function doReachAMGoalStuff(chall){
 	if (document.getElementById("welcome").style.display != "flex") document.getElementById("welcome").style.display = "flex"
 	else player.aarexModifications.popUpId = ""
-	document.getElementById("welcomeMessage").innerHTML="You reached the antimatter goal ("+shorten(Decimal.pow(10, getQCGoal()))+"), but you didn't reach the meta-antimatter goal yet! Get "+shorten(Decimal.pow(Number.MAX_VALUE, 1.45))+" meta-antimatter"+(tmp.qu.bigRip.active?" and then you can become a ghost!":" and then go quantum to complete your challenge!")
+	document.getElementById("welcomeMessage").innerHTML="You reached the antimatter goal ("+shorten(Decimal.pow(10, getQCGoal()))+"), but you didn't reach the meta-antimatter goal yet! Get " + shorten(Decimal.pow(Number.MAX_VALUE, 1.45)) + " meta-antimatter" + (player.quantum.bigRip.active ? " and then you can become a ghost!" : " and then go quantum to complete your challenge!")
 	tmp.qu.nonMAGoalReached.push(chall)
 }
 
@@ -5501,7 +5501,7 @@ function doNGP3UnlockStuff(){
 	var inEasierModeCheck = !inEasierMode()
 	if (player.masterystudies && (player.masterystudies.includes("d14")||player.achievements.includes("ng3p51")) && !metaSave.ngp4 && !inEasierModeCheck) doNGP4UnlockStuff()
 	if (player.eternityPoints.gte("1e1200") && tmp.qu.bigRip.active && !tmp.qu.breakEternity.unlocked) doBreakEternityUnlockStuff()
-	if (player.money.gte(Decimal.pow(10,6e9))&&tmp.qu.bigRip.active&&!player.ghostify.ghostlyPhotons.unl) doPhotonsUnlockStuff()
+	if (player.money.gte(Decimal.pow(10,6e9)) && tmp.qu.bigRip.active && !player.ghostify.ghostlyPhotons.unl) doPhotonsUnlockStuff()
 	if (canUnlockBosonicLab() && !player.ghostify.wzb.unl) doBosonsUnlockStuff()
 	unlockHiggs()
 }
@@ -5882,7 +5882,7 @@ function ghostifyAutomationUpdating(){
 				if (tmp.qu.time>=player.ghostify.automatorGhosts[13].u*10) quantumReset(true,true,0,false)
 			} else if (tmp.qu.time>=player.ghostify.automatorGhosts[13].t*10) bigRip(true)
 		}
-		if (isAutoGhostActive(15)) if (tmp.qu.bigRip.active&&getGHPGain().gte(player.ghostify.automatorGhosts[15].a)) ghostify(true)
+		if (isAutoGhostActive(15)) if (tmp.qu.bigRip.active && getGHPGain().gte(player.ghostify.automatorGhosts[15].a)) ghostify(true)
 		if (tmp.ngp3l) return
 		if (isAutoGhostActive(16)) maxNeutrinoMult()
 		if (isAutoGhostActive(18)) {
@@ -6362,7 +6362,7 @@ function doEternityButtonDisplayUpdating(diff){
 function doQuantumButtonDisplayUpdating(diff){
 	var currentQKmin = new Decimal(0)
 	if (quantumed && isQuantumReached()) {
-		var bigRipped = !tmp.ngp3 ? false : tmp.qu.bigRip.active
+		var bigRipped = !tmp.ngp3 ? false : player.quantum.bigRip.active
 		if (!bigRipped) {
 			currentQKmin = quarkGain().dividedBy(tmp.qu.time / 600)
 			if (currentQKmin.gt(QKminpeak) && player.meta.antimatter.gte(Decimal.pow(Number.MAX_VALUE,tmp.ngp3 ? 1.2 : 1))) {
