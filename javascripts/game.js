@@ -2724,61 +2724,61 @@ function setAchieveTooltip() { //want: seperate this into a lot of different fun
 	// Original Antimatter Dimensions achievements
 
 	// Row 1 (1/8)
-	//r11
+	//r11/////
 	let alot = document.getElementById("100 antimatter is a lot")
-	//r13
-	//r14
-	//r15
-	//r16
-	//r17
-	//r18
+	//r13/////
+	//r14/////
+	//r15/////
+	//r16/////
+	//r17/////
+	//r18/////
 
 	// Row 2 (6/8)
 	let infinity = document.getElementById("To infinity!")
-	//r22
+	//r22/////
 	let ndial = document.getElementById("The 9th Dimension is a lie");
 	let apocAchieve = document.getElementById("Antimatter Apocalypse");
-	//r25
+	//r25/////
 	let gal = document.getElementById("You got past The Big Wall")
 	let doubleGal = document.getElementById("Double Galaxy");
 	let noPointAchieve = document.getElementById("There's no point in doing that");
 	
 	// Row 3 (5/8)
 	let nerf = document.getElementById("I forgot to nerf that")
-	//r32
+	//r32/////
 	let lot = document.getElementById("That's a lot of infinites");
 	let didnt = document.getElementById("You didn't need it anyway")
-	//r35 
+	//r35/////
 	let claustrophobic = document.getElementById("Claustrophobic");
 	let fast = document.getElementById("That's fast!");
-	//r38
+	//r38/////
 
 	// Row 4 (6/8)
 	let cancer = document.getElementById("Spreading Cancer");
 	let sanic = document.getElementById("Supersanic")
 	let zero = document.getElementById("Zero Deaths");
-	//r44
+	//r44/////
 	let potato = document.getElementById("Faster than a potato")
 	let dimensional = document.getElementById("Multidimensional")
-	//r47
+	//r47/////
 	let anti = document.getElementById("AntiChallenged")
 
 	// Row 5 (4/8)
 	let limitBreak = document.getElementById("Limit Break")
-	//r52
-	//r53
-	//r54
+	//r52/////
+	//r53/////
+	//r54/////
 	let forever = document.getElementById("Forever isn't that long")
 	let many = document.getElementById("Many Deaths")
-	//r57
+	//r57/////
 	let is = document.getElementById("Is this hell?")
 
 	// Row 6 (6/8)
-	//r61
+	//r61/////
 	let oh = document.getElementById("Oh hey, you're still here")
 	let begin = document.getElementById("A new beginning.")
 	let mil = document.getElementById("1 million is a lot")
-	//r65
+	//r65/////
 	let potato2 = document.getElementById("Faster than a squared potato")
 	let infchall = document.getElementById("Infinitely Challenging")
 	let right = document.getElementById("You did this again just for the achievement right?")
@@ -2786,67 +2786,90 @@ function setAchieveTooltip() { //want: seperate this into a lot of different fun
 	// Row 7 (5/8)
 	let not = document.getElementById("ERROR 909: Dimension not found")
 	let cant = document.getElementById("Can't hold all these infinities")
-	//r73
-	//r74
+	//r73/////
+	//r74/////
 	let newDim = document.getElementById("NEW DIMENSIONS???")
-	//r76
+	//r76/////
 	let tables = document.getElementById("How the antitables have turned")
 	let blink = document.getElementById("Blink of an eye")
 
 	// Row 8 (5/8)
-	let IPBelongs = document.getElementById("All your IP are belong to us")
-	let reference = document.getElementById("Yet another infinity reference")
-	let spare = document.getElementById("I got a few to spare")
-	let twomillion = document.getElementById("2 Million Infinities")
 	let hevipelledidnothing = document.getElementById("Hevipelle did nothing wrong")
+	//r82/////
+	//r83/////
+	let spare = document.getElementById("I got a few to spare")
+	let IPBelongs = document.getElementById("All your IP are belong to us")
+	//r86/////
+	let twomillion = document.getElementById("2 Million Infinities")
+	let reference = document.getElementById("Yet another infinity reference")
 
 	// Row 9 (7/8)
 	let speed = document.getElementById("Ludicrous Speed")
 	let speed2 = document.getElementById("I brake for nobody")
 	let overdrive = document.getElementById("MAXIMUM OVERDRIVE")
 	let minute = document.getElementById("Minute of infinity")
+	let isthissafe = document.getElementById("Is this safe?")
+	//r96/////
 	let hell = document.getElementById("Yes. This is hell.")
 	let zerodeg = document.getElementById("0 degrees from infinity")
-	let isthissafe = document.getElementById("Is this safe?")
+	
 
 	// Row 10 (6/8)
 	let costco = document.getElementById("Costco sells dimboosts now")
 	let mile = document.getElementById("This mile took an Eternity")
+	//r103/////
+	//r104/////
 	let inftime = document.getElementById("Infinite time")
 	let swarm = document.getElementById("The swarm")
 	let guide = document.getElementById("Do you really need a guide for this?")
 	let nine = document.getElementById("We could afford 9")
 
 	// Row 11 (3/8)
-	let over9000 = document.getElementById("IT'S OVER 9000")
 	let dawg = document.getElementById("Yo dawg, I heard you liked infinities...")
+	//r112/////
+	//r113/////
+	//r114/////
+	//r115/////
+	//r116/////
 	let nobodygottime = document.getElementById("8 nobody got time for that")
+	let over9000 = document.getElementById("IT'S OVER 9000")
 
 	// Row 12 (7/8)
 	let infiniteIP = document.getElementById("Can you get infinite IP?")
+	//r122/////
 	let fiveMore = document.getElementById("5 more eternities until the update")
-	let eatass = document.getElementById("Like feasting on a behind")
 	let newI = document.getElementById("Eternities are the new infinity")
+	let eatass = document.getElementById("Like feasting on a behind")
+	let minaj = document.getElementById("Popular music")
 	let layer = document.getElementById("But I wanted another prestige layer...")
 	let fkoff = document.getElementById("What do I have to do to get rid of you")
-	let minaj = document.getElementById("Popular music")
 
 	// Row 13 (5/8)
-	let potato3 = document.getElementById("Faster than a potato^286078")
+	//r131/////
+	//r132/////
 	let infstuff = document.getElementById("I never liked this infinity stuff anyway")
 	let when = document.getElementById("When will it be enough?")
+	let potato3 = document.getElementById("Faster than a potato^286078")
+	//r136/////
 	let thinking = document.getElementById("Now you're thinking with dilation!")
 	let thisis = document.getElementById("This is what I have to do to get rid of you.")
 
 	// Row 13.5 (NGUD) (3/6)
+	//ngud11/////
 	let stillamil = document.getElementById("1 million is still a lot")
+	//ngud13/////
 	let out = document.getElementById("Finally I'm out of that channel")
+	//ngud16/////
 	let ridNGud = document.getElementById("I already got rid of you.")
 
 	// Row 14 (4/8)
+	//ngpp11/////
+	//ngpp12/////
 	let onlywar = document.getElementById("In the grim darkness of the far endgame")
+	//ngpp14/////
 	let thecap = document.getElementById("The cap is a million, not a trillion")
 	let neverenough = document.getElementById("It will never be enough")
+	//ngpp17/////
 	let harmony = document.getElementById("Universal harmony")
 	
 
@@ -2968,9 +2991,12 @@ function setAchieveTooltip() { //want: seperate this into a lot of different fun
 	if (!tmp.ngp3) return
 	// ng+3 achievements
 
-	// Row 15 (ng3p1)
+	// Row 15 (ng3p1) (5/8)
 	let notenough = document.getElementById("I don't have enough fuel!")
+	//ng3p12/////
 	let hadron = document.getElementById("Hadronization")
+	//ng3p14/////
+	//ng3p15/////
 	let old = document.getElementById("Old age")
 	let rid = document.getElementById("I already got rid of you...")
 	let winner = document.getElementById("And the winner is...")
@@ -2980,42 +3006,52 @@ function setAchieveTooltip() { //want: seperate this into a lot of different fun
 	let tms = document.getElementById("speedrunMilestone19")
 	let tfms2 = document.getElementById("speedrunMilestone22")
 
-	// Row 16 (ng3p2)
+	// Row 16 (ng3p2) (5/8)
 	let special = document.getElementById("Special Relativity")
-	let memories = document.getElementById("Old memories come true")
 	let squared = document.getElementById("We are not going squared.")
+	//ng3p23/////
+	let memories = document.getElementById("Old memories come true")
+	//ng3p25/////
 	let morals = document.getElementById("Infinity Morals")
+	//ng3p27/////
 	let seriously = document.getElementById("Seriously, I already got rid of you.")
 
-	// Row 17 (ng3p3)
+	// Row 17 (ng3p3) (6/8)
 	let internal = document.getElementById("ERROR 500: INTERNAL DIMENSION ERROR")
 	let truth = document.getElementById("The truth of anti-challenged")
+	let noparadox = document.getElementById("Never make paradoxes!")
+	//ng3p34/////
+	//ng3p35/////
 	let cantGet = document.getElementById("I can’t get my multipliers higher!")
 	let noDil = document.getElementById("No dilation means no production.")
 	let dontWant = document.getElementById("I don't want you to live anymore.")
-	let noparadox = document.getElementById("Never make paradoxes!")
 
-	// Row 18 (ng3p4)
+	// Row 18 (ng3p4) (7/8)
 	let notrelative = document.getElementById("Time is not relative")
 	let error404 = document.getElementById("ERROR 404: DIMENSIONS NOT FOUND")
 	let ie = document.getElementById("Impossible expectations")
 	let wasted = document.getElementById("Studies are wasted")
 	let protonsDecay = document.getElementById("Do protons decay?")
+	//ng3p46/////
 	let stop = document.getElementById("Stop blocking me!")
 	let dying = document.getElementById("Are you currently dying?")
 
-	// Row 19 (ng3p5)
+	// Row 19 (ng3p5) (5/8)
+	//ng3p51/////
+	//ng3p52/////
 	let gofast = document.getElementById("Gonna go fast")
+	//ng3p54/////
+	let timeBreak = document.getElementById("Time Breaker")
 	let immunity = document.getElementById("Time Immunity")
 	let notSmart = document.getElementById("You're not really smart.")
 	let soLife = document.getElementById("And so your life?")
-	let timeBreak = document.getElementById("Time Breaker")
 
-	// Row 20 (ng3p6)
+	// Row 20 (ng3p6) (7/8)
 	let keeheehee = document.getElementById("Kee-hee-hee!")
+	let finite = document.getElementById("Finite Time")
+	//ng3p63/////
 	let really = document.getElementById("Really?")
 	let grind = document.getElementById("But I don't want to grind!")
-	let finite = document.getElementById("Finite Time")
 	let oppose = document.getElementById("I rather oppose the theory of everything")
 	let willenough = document.getElementById("Will it be enough?")
 	let pls = document.getElementById("Please answer me why you are dying.")
@@ -3025,21 +3061,25 @@ function setAchieveTooltip() { //want: seperate this into a lot of different fun
 	let bm10 = document.getElementById("braveMilestone10")
 	let bm14 = document.getElementById("braveMilestone14")
 
-	// Row 21 (ng3p7)
-	let mi = document.getElementById("Meta-Infinity confirmed?")
+	// Row 21 (ng3p7) (5/8)
+	//ng3p71/////
 	let uc = document.getElementById("Underchallenged")
+	let mi = document.getElementById("Meta-Infinity confirmed?")
 	let wd = document.getElementById("Weak Decay")
 	let radioDecay = document.getElementById("Radioactive Decaying to the max!")
+	//ng3p76/////
+	//ng3p77/////
 	let arent = document.getElementById("Aren't you already dead?")
 
-	// Row 22 (ng3p8)
-	let ee = document.getElementById("Everlasting Eternities")
+	// Row 22 (ng3p8) (7/8)
+	let ghostierthanbefore = document.getElementById("Even Ghostlier than before")
 	let oc = document.getElementById("Overchallenged")
+	//ng3p83/////
+	let isnotenough = document.getElementById("Big Rip isn't enough") 
+	let ee = document.getElementById("Everlasting Eternities")
 	let btco = document.getElementById("Back to Challenge One")
 	let tdc = document.getElementById("The Deep Challenge")
 	let igu = document.getElementById("I give up.")
-	let isnotenough = document.getElementById("Big Rip isn't enough") 
-	let ghostierthanbefore = document.getElementById("Even Ghostlier than before")
 
 	let willenoughReward = [] // for the achievement "Will it be enough?"
 	if (!tmp.ngp3l) {
@@ -3125,10 +3165,15 @@ function setAchieveTooltip() { //want: seperate this into a lot of different fun
 
 	if (tmp.ngp3l) return
 
-	// Row 23 (3/8)
+	// Row 23 (ng3p9) (3/8)
+	//ng3p91/////
+	//ng3p92/////
+	let aretheseanother = document.getElementById("Are these another...")
+	//ng3p94/////
+	//ng3p95/////
+	//ng3p96/////
 	let ghostliest = document.getElementById("The Ghostliest Side")
 	let metae18 = document.getElementById("Meta-Quintillion")
-	let aretheseanother = document.getElementById("Are these another...")
 
 	//ACHIEVEMENT ROW 23
 	ghostliest.setAttribute('ach-tooltip', "Get " + shorten(Math.pow(Number.MAX_VALUE, 1/4)) + " Ghostifies. Reward: Ghostifies boost the gain of Ghost Particles at the reduced rate.")
@@ -3138,12 +3183,17 @@ function setAchieveTooltip() { //want: seperate this into a lot of different fun
 
 
 //notation stuff
-var notationArray = ["Scientific","Engineering","Logarithm","Mixed scientific","Mixed engineering","Mixed logarithm","Letters","Standard","Emojis","Brackets","Infinity","Greek","Game percentages","Hexadecimal","Tetration","Hyperscientific","Psi","Morse code","Spazzy","Country Codes","Iroha","Symbols","Lines","Simplified Written","Time","Base-64","AF2019","AAS","AF5LN"]
+var notationArray = ["Scientific", "Engineering", "Logarithm", "Mixed scientific", 
+		     "Mixed engineering", "Mixed logarithm", "Letters", "Standard",
+		     "Emojis","Brackets", "Infinity", "Greek", "Game percentages", 
+		     "Hexadecimal", "Tetration", "Hyperscientific", "Psi", "Morse code",
+		     "Spazzy", "Country Codes", "Iroha", "Symbols", "Lines", 
+		     "Simplified Written", "Time", "Base-64", "AF2019", "AAS", "AF5LN"]
 
 function updateNotationOption() {
-	var notationMsg="Notation: "+(player.options.notation=="Emojis"?"Cancer":player.options.notation)
-	var commasMsg=(player.options.commas=="Emojis"?"Cancer":player.options.commas) + " on exponents"
-	document.getElementById("notation").innerHTML = "<p style='font-size:15px'>Notations</p>"+notationMsg+"<br>"+commasMsg
+	var notationMsg = "Notation: " + (player.options.notation == "Emojis" ? "Cancer" : player.options.notation)
+	var commasMsg = (player.options.commas == "Emojis" ? "Cancer" : player.options.commas) + " on exponents"
+	document.getElementById("notation").innerHTML = "<p style='font-size:15px'>Notations</p>" + notationMsg + "<br>" + commasMsg
 	document.getElementById("chosenNotation").textContent = player.options.notation=="AF5LN"?"Notation: Aarex's Funny 5-letter Notation":notationMsg
 	document.getElementById("chosenCommas").textContent = player.options.commas=="AF5LN"?"Aarex's Funny 5-letter Notation on exponents":commasMsg
 	
