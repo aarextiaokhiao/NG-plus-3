@@ -268,9 +268,6 @@ function doGalaxyResetStuff(bulk){
 	player.chall11Pow = new Decimal(1)
 	player.postC4Tier = 1
 	player.postC8Mult = new Decimal(1)
-	for (tier = 1; tier <= 8; tier ++){
-		player[TIER_NAMES[tier] + 'Pow'] = getDimensionBoostPower().pow(Math.max(player.resets + 1 - tier, 0))
-	}
 }
 
 
@@ -431,14 +428,6 @@ function completelyResetNormalDimensions(){
 	player.sixthBought = 0
 	player.seventhBought = 0
 	player.eightBought = 0
-	player.firstPow = new Decimal(1)
-	player.secondPow = new Decimal(1)
-	player.thirdPow = new Decimal(1)
-	player.fourthPow = new Decimal(1)
-	player.fifthPow = new Decimal(1)
-	player.sixthPow = new Decimal(1)
-	player.seventhPow = new Decimal(1)
-	player.eightPow = new Decimal(1)
 }
 
 function checkOnCrunchAchievements(){

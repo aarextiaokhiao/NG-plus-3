@@ -9,9 +9,9 @@ function updateToDSpeedDisplay(){
 	document.getElementById("todspeed").textContent = t
 }
 
-function getTreeUpgradeEfficiencyDisplay(){
-	s = 'getTreeUpgradeEfficiencyText()'
-	if (!shiftDown) s = '"Tree upgrade efficiency: "+(tmp.tue*100).toFixed(1)+"%"'
+function getTreeUpgradeEfficiencyDisplayText(){
+	s = getTreeUpgradeEfficiencyText()
+	if (!shiftDown) s = "Tree upgrade efficiency: "+(tmp.tue*100).toFixed(1)+"%"
 	return s
 }
 
@@ -60,6 +60,15 @@ function updateTreeOfDecayTab(){
 			document.getElementById("treeupg" + u + "lvl").textContent = getFullExpansion(lvl) + (tmp.tue > 1 ? " -> " + getFullExpansion(Math.floor(lvl * tmp.tue)) : "")
 			document.getElementById("treeupg" + u + "cost").textContent = start + shortenMoney(getTreeUpgradeCost(u)) + " " + colors[lvl % 3] + end
 		}
+		/*
+		if (ghostified){
+			document.getElementById("treeUpgradeEff").textContent = getTreeUpgradeEfficiencyDisplayText()
+			document.getElementById("treeUpgradeEff").style.display = ""
+		} else {
+			document.getElementById("treeUpgradeEff").style.display = "none"
+		} 
+		// This currently isnt working so hm....
+		*/
 		setAndMaybeShow("treeUpgradeEff", ghostified, '"Tree upgrade efficiency: "+(tmp.tue*100).toFixed(1)+"%"')
 		// I want to make it getTreeUpgradeEfficiencyDisplay(), but that doesnt work, so leaveing it out for now
 	}
@@ -416,7 +425,7 @@ function maxBranchUpg(branch, weak) {
 			document.getElementById(colors[branch] + "upg" + u + "current").textContent=shortenDimensions(getBranchUpgMult(branch, u))
 			extra = bData.spin.log10() > 200
 			start = extra ? "" : "Cost: "
-			end = extra ? color : color + " quark spin"
+			end = extra ? colors[branch] : colors[branch] + " quark spin"
 			document.getElementById(colors[branch] + "upg" + u + "cost").textContent = start + shortenMoney(getBranchUpgCost(branch, u)) + " " + end
 		}
 	}

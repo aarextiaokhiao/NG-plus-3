@@ -99,9 +99,17 @@ function getPostBreakInfNDMult(){
 	return mult
 }
 
-function getDimensionFinalMultiplier(tier) {
-	let mult = player[TIER_NAMES[tier] + 'Pow']
+function getStartingNDMult(tier){
+	let mPerTen = getDimensionPowerMultiplier()
+	let mPerDB = getDimensionBoostPower()
+	let dbMult = player.resets < tier ? new Decimal(1) : Decimal.pow(mPerDB, player.resets - tier + 1)
+	let mptMult = Decimal.pow(mPerTen, Math.floor(player[TIER_NAMES[tier]+"Bought"] / 10))
+	return mptMult.times(dbMult)
+}
 
+function getDimensionFinalMultiplier(tier) {
+	let mult = getStartingNDMult(tier)
+	
 	if (!tmp.infPow) updateInfinityPowerEffects()
 	if (player.currentChallenge == "postcngm3_2") return tmp.infPow.max(1e100)
 	if (player.currentEternityChall == "eterc11") return tmp.infPow.times(Decimal.pow(getDimensionBoostPower(), player.resets - tier + 1).max(1))
@@ -354,16 +362,14 @@ function buyOneDimension(tier) {
 	getOrSubResource(tier, cost)
 	player[name + "Amount"] = player[name + "Amount"].add(1)
 	recordBought(name, 1)
-	if (dimBought(tier) < 1) {
-		let b = getDimensionPowerMultiplier(tier)
-		player[name + "Pow"] = player[name + "Pow"].times(b)
+	if (dimBought(tier) == 0) {
 		if (player.currentChallenge == "postc5" && player.tickspeedBoosts == undefined) multiplyPC5Costs(player[name + 'Cost'], tier)
 		else if (inNC(5) && player.tickspeedBoosts == undefined) multiplySameCosts(player[name + 'Cost'])
 		else player[name + "Cost"] = player[name + "Cost"].times(getDimensionCostMultiplier(tier))
 		if (costIncreaseActive(player[name + "Cost"])) player.costMultipliers[tier - 1] = player.costMultipliers[tier - 1].times(getDimensionCostMultiplierIncrease())
 		floatText("D" + tier, "x" + shortenMoney(b))
 	}
-	if (tier < 2 && getAmount(1) >= 1e150) giveAchievement("There's no point in doing that")
+	if (tier == 1 && getAmount(1) >= 1e150) giveAchievement("There's no point in doing that")
 	if (getAmount(8) == 99) giveAchievement("The 9th Dimension is a lie");
 	onBuyDimension(tier)
 	reduceMatter(1)
@@ -380,8 +386,6 @@ function buyManyDimension(tier, quick) {
 	getOrSubResource(tier, cost)
 	player[name + "Amount"] = player[name + "Amount"].add(toBuy)
 	recordBought(name, toBuy)
-	let b = getDimensionPowerMultiplier(tier)
-	player[name + "Pow"] = player[name + "Pow"].times(b)
 	if (player.currentChallenge == "postc5" && player.tickspeedBoosts == undefined) multiplyPC5Costs(player[name + 'Cost'], tier)
 	else if (inNC(5) && player.tickspeedBoosts == undefined) multiplySameCosts(player[name + 'Cost'])
 	else player[name + "Cost"] = player[name + "Cost"].times(getDimensionCostMultiplier(tier))
@@ -415,7 +419,6 @@ function buyBulkDimension(tier, bulk, auto) {
 		getOrSubResource(tier, Decimal.pow(mult, toBuy).sub(1).div(mult-1).times(cost))
 		player[name + "Amount"] = player[name + "Amount"].add(toBuy * 10)
 		recordBought(name, toBuy*10)
-		player[name + "Pow"] = player[name + "Pow"].times(Decimal.pow(getDimensionPowerMultiplier(tier), toBuy))
 		player[name + "Cost"] = player[name + "Cost"].times(Decimal.pow(mult, toBuy))
 		if (costIncreaseActive(player[name + "Cost"])) player.costMultipliers[tier - 1] = player.costMultipliers[tier - 1].times(getDimensionCostMultiplierIncrease())
 		bought += toBuy
@@ -432,7 +435,6 @@ function buyBulkDimension(tier, bulk, auto) {
 		if (failsafe > 149) break
 		stopped = false
 	}
-	var b = getDimensionPowerMultiplier(tier)
 	while (!stopped) {
 		stopped = true
 		let mi = getDimensionCostMultiplierIncrease()
@@ -451,7 +453,6 @@ function buyBulkDimension(tier, bulk, auto) {
 		}
 		player[name + "Amount"] = player[name + "Amount"].add(toBuy * 10)
 		recordBought(name, toBuy * 10)
-		player[name + "Pow"] = player[name + "Pow"].times(Decimal.pow(b, toBuy))
 		player[name + "Cost"] = newCost.times(newMult)
 		player.costMultipliers[tier - 1] = newMult.times(mi)
 		bought += toBuy

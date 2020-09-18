@@ -32,15 +32,7 @@ function softReset(bulk, tier=1) {
 		skipResets()
 		player.matter = new Decimal(0)
 		player.postC8Mult = new Decimal(1)
-		if (player.currentEternityChall == 'eterc13') return
-		var temp = getDimensionBoostPower()
-		var temp2 = getDimensionPowerMultiplier()
-		if (player.dbPower != undefined && !isNaN(break_infinity_js ? player.dbPower : player.dbPower.logarithm)) for (var tier = 1; tier <= 8; tier++) {
-			var dimPow = player[TIER_NAMES[tier] + 'Pow'].div(player.dbPower.pow(Math.max(oldResets + 1 - tier,0)))
-			if (!inNC(9) && player.currentChallenge != "postc1") dimPow = Decimal.pow(temp2, Math.floor(player[TIER_NAMES[tier] + 'Bought'] / 10)).max(dimPow)
-			player[TIER_NAMES[tier] + 'Pow'] = temp.pow(Math.max(player.resets + 1 - tier, 0)).times(dimPow)
-		}
-		player.dbPower = temp
+		player.dbPower = getDimensionBoostPower()
 		return
 	}
 	var costs = [10, 100, 1e4, 1e6, 1e9, 1e13, 1e18, 1e24]
@@ -112,8 +104,6 @@ function setInitialMoney() {
 function setInitialDimensionPower() {
 	var dimensionBoostPower = getDimensionBoostPower()
 	if (tmp.ngp3 && getEternitied() >= 1e9 && player.dilation.upgrades.includes("ngpp6")) player.dbPower = dimensionBoostPower
-
-	for (var tier = 1; tier < 9; tier++) player[TIER_NAMES[tier] + 'Pow'] = dimensionBoostPower.pow(Math.max(player.resets + 1 - tier, 0))
 
 	var tickspeedPower = player.totalTickGained
 	if (player.infinityUpgradesRespecced!=undefined) tickspeedPower += player.infinityUpgradesRespecced[1] * 10
