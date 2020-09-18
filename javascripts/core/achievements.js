@@ -450,7 +450,6 @@ function updateAchievements() {
 	}
     player.achPow = Decimal.pow(player.aarexModifications.newGameMinusMinusVersion ? 5 : 1.5, amount)
     document.getElementById("achmultlabel").textContent = "Current achievement multiplier on each " + achMultLabelUpdate() + " Dimension: " + shortenMoney(player.achPow) + "x"
-    metaAchMultLabelUpdate()
 	document.getElementById("nothingness").style.display = rowsShown ? "none" : ""
 
 	rowsShown = 0

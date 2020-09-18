@@ -1661,19 +1661,19 @@ function onLoad(noOffline) {
           forceToQuantumAndRemove = true
           setTTAfterQuantum = 2e94
       }
-      if (tmp.qu.bigRip.bestGals==undefined) tmp.qu.bigRip.bestGals=0
-      if (player.ghostify.neutrinos.boosts==undefined||!player.ghostify.times) player.ghostify.neutrinos.boosts=0
-      if (player.ghostify.ghostlyPhotons.maxRed==undefined) player.ghostify.ghostlyPhotons.maxRed=0
+      if (tmp.qu.bigRip.bestGals == undefined) tmp.qu.bigRip.bestGals = 0
+      if (player.ghostify.neutrinos.boosts == undefined|| !player.ghostify.times) player.ghostify.neutrinos.boosts = 0
+      if (player.ghostify.ghostlyPhotons.maxRed == undefined) player.ghostify.ghostlyPhotons.maxRed = 0
       if (player.ghostify.wzb.unl) giveAchievement("Even Ghostlier than before")
-      for (var g=tmp.bl.glyphs.length+1;g<=br.maxLimit;g++) tmp.bl.glyphs.push(0)
+      for (var g = tmp.bl.glyphs.length + 1; g <= br.maxLimit; g++) tmp.bl.glyphs.push(0)
       if (!tmp.bl.usedEnchants.length) tmp.bl.usedEnchants=[]
-      if (player.ghostify.wzb.dPUse===undefined) {
-          player.ghostify.wzb.dPUse=0
-          player.ghostify.wzb.wQkUp=true
-          player.ghostify.wzb.zNeGen=1
+      if (player.ghostify.wzb.dPUse === undefined) {
+          player.ghostify.wzb.dPUse = 0
+          player.ghostify.wzb.wQkUp = true
+          player.ghostify.wzb.zNeGen = 1
       }
-      tmp.bl.odSpeed=Math.max(tmp.bl.odSpeed,1)
-      if (Decimal.eq(player.ghostify.wzb.zNeReq,0)) player.ghostify.wzb.zNeReq=1
+      tmp.bl.odSpeed = Math.max(tmp.bl.odSpeed, 1)
+      if (Decimal.eq(player.ghostify.wzb.zNeReq, 0)) player.ghostify.wzb.zNeReq = 1
       updateAutoGhosts(true)
   }
 
@@ -1686,7 +1686,7 @@ function onLoad(noOffline) {
       updateNotationOption();
   }
 
-  for (s=0;s<(player.boughtDims?4:3);s++) toggleCrunchMode(true)
+  for (s = 0; s < (player.boughtDims ? 4 : 3); s++) toggleCrunchMode(true)
   updateAutoEterMode()
 
   document.getElementById("confirmations").style.display = (player.resets > 4 || player.galaxies > 0 || (player.galacticSacrifice ? player.galacticSacrifice.times > 0 : false) || player.infinitied !== 0 || player.eternities !== 0 || quantumed) ? "inline-block" : "none"
@@ -1891,14 +1891,14 @@ function onLoad(noOffline) {
           document.getElementById("blackholeunlock").style.display="inline-block"
       }
   }
-  var suffix="NG"+(player.meta!=undefined?"pp":"ud")
-  document.getElementById("uhDiv"+suffix).appendChild(document.getElementById("Universal harmony"))
-  document.getElementById("feDiv"+suffix).appendChild(document.getElementById("In the grim darkness of the far endgame"))
-  document.getElementById("dil14desc").textContent=player.aarexModifications.nguspV?"You gain even more tachyon particles from the previous upgrade.":"The exponent of TP formula is better."
-  document.getElementById("dil52").style["font-size"]=player.masterystudies==undefined||player.aarexModifications.nguspV!==undefined?"10px":"9px"
-  document.getElementById("dil52formula").style.display=player.masterystudies==undefined||player.aarexModifications.nguspV!==undefined?"none":""
+  var suffix = "NG" + (player.meta != undefined ? "pp" : "ud")
+  document.getElementById("uhDiv" + suffix).appendChild(document.getElementById("Universal harmony"))
+  document.getElementById("feDiv" + suffix).appendChild(document.getElementById("In the grim darkness of the far endgame"))
+  document.getElementById("dil14desc").textContent = player.aarexModifications.nguspV ? "The TP multiplier upgrade is more powerful." : "Increase the exponent of the TP formula."
+  document.getElementById("dil52").style["font-size"] = player.masterystudies == undefined || player.aarexModifications.nguspV !== undefined ? "10px" : "9px"
+  document.getElementById("dil52formula").style.display = player.masterystudies == undefined || player.aarexModifications.nguspV !== undefined ? "none" : ""
   document.getElementById("exDilationDesc").innerHTML = player.aarexModifications.nguspV ? 'making galaxies <span id="exDilationBenefit" style="font-size:25px; color: black">0</span>% stronger in dilation.' : 'making dilation <span id="exDilationBenefit" style="font-size:25px; color: black">0</span>% less severe.'
-  document.getElementById("metaAntimatterEffectType").textContent=inQC(3)?"multiplier on all Infinity Dimensions":"extra multiplier per Dimension Boost"
+  document.getElementById("metaAntimatterEffectType").textContent=inQC(3) ? "multiplier on all Infinity Dimensions" : "extra multiplier per Dimension Boost"
   if (player.meta) {
       document.getElementById('epmultauto').textContent="Auto: O"+(player.autoEterOptions.epmult?"N":"FF")
       for (i=1;i<9;i++) document.getElementById("td"+i+'auto').textContent="Auto: O"+(player.autoEterOptions["td"+i]?"N":"FF")
