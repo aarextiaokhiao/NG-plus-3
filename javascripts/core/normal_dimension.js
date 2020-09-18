@@ -459,7 +459,7 @@ function buyBulkDimension(tier, bulk, auto) {
 		bought += toBuy
 		reduceMatter(toBuy * 10)
 	}
-	if (!auto) floatText("D" + tier, "x" + shortenMoney(Decimal.pow(b, bought)))
+	if (!auto) floatText("D" + tier, "x" + shortenMoney(Decimal.pow(getDimensionPowerMultiplier(), bought)))
 	onBuyDimension(tier)
 }
 
