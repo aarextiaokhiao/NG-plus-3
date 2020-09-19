@@ -3233,7 +3233,7 @@ function onNotationChange() {
 		updateBosonicStuffCosts()
 		if (!player.ghostify.ghostlyPhotons.unl) document.getElementById("gphUnl").textContent="To unlock Ghostly Photons, you need to get "+shortenCosts(Decimal.pow(10,6e9))+" antimatter while your universe is Big Ripped first."
 		else if (!player.ghostify.wzb.unl) updateBLUnlockDisplay()
-		else if (!tmp.ngp3l && !tmp.hb.unl) unlockHiggsUnlockDisplay()
+		else if (!tmp.ngp3l && !tmp.hb.unl) updateHiggsUnlockDisplay()
 	}
 	document.getElementById("epmult").innerHTML = "You gain 5 times more EP<p>Currently: "+shortenDimensions(player.epmult)+"x<p>Cost: "+shortenDimensions(player.epmultCost)+" EP"
 	document.getElementById("achmultlabel").textContent = "Current achievement multiplier on each Dimension: " + shortenMoney(player.achPow) + "x"
