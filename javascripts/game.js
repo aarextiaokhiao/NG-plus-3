@@ -4942,7 +4942,7 @@ function canUnlockECFromNum(n){
 function updateECUnlockButtons() {
 	for (let ecnum = 1; ecnum <= 12; ecnum ++){
 		let s = "ec" + ecnum + "unl"
-		if (canUnlockECFromNum(1)) document.getElementById(s).className = "eternitychallengestudy"
+		if (canUnlockECFromNum(ecnum)) document.getElementById(s).className = "eternitychallengestudy"
 		else document.getElementById(s).className = "eternitychallengestudylocked"
 	}
 	if (player.eternityChallUnlocked !== 0) document.getElementById("ec" + player.eternityChallUnlocked + "unl").className = "eternitychallengestudybought"
