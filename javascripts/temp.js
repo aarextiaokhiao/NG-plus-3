@@ -1,3 +1,78 @@
+function updateTemp() {
+	if (typeof player != "undefined") {
+		if (player.money) tmp.ri = player.money.gte(getLimit()) && ((player.currentChallenge != "" && player.money.gte(player.challengeTarget)) || !onPostBreak())
+		else tmp.ri = false
+	} else {
+		tmp.ri = false
+		return
+	}
+	tmp.nrm = 1
+	if (player.timestudy.studies.includes(101)) tmp.nrm = player.replicanti.amount.max(1)
+	tmp.rg4 = false
+	if (tmp.ngp3) {
+		updateGhostifyTempStuff()
+		if (tmp.qu.breakEternity.unlocked) updateBreakEternityUpgradesTemp()
+		if (player.masterystudies.includes("d14")) updateBigRipUpgradesTemp()
+		if (tmp.nrm !== 1 && player.quantum.bigRip.active) {
+			if (!player.dilation.active && tmp.qu.bigRip.upgrades.includes(14)) tmp.nrm = tmp.nrm.pow(tmp.bru[14])
+			if (tmp.nrm.log10() > 1e9) tmp.nrm = Decimal.pow(10, 1e9 * Math.pow(tmp.nrm.log10() / 1e9, 2/3))
+		}
+		if (player.masterystudies.includes("d13")) updateTS431ExtraGalTemp()
+		if (player.masterystudies.includes("d9")) {
+			tmp.twr = getTotalWorkers()
+			tmp.tra = getTotalReplicants()
+		}
+		updateMasteryStudyTemp()
+		if (player.masterystudies.includes("d13")) tmp.branchSpeed = getBranchSpeed()
+		if (player.masterystudies.includes("d12") && tmp.nf !== undefined && tmp.nf.rewardsUsed !== undefined) {
+			var x = getNanoRewardPowerEff()
+			var y = tmp.qu.nanofield.rewards
+			tmp.ns = getNanofieldSpeed()
+			if (tmp.nf.powerEff !== x || tmp.nf.rewards !== y) {
+				tmp.nf.powerEff = x
+				tmp.nf.rewards = y
+
+				updateNanoRewardPowers()
+				updateNanoRewardEffects()
+			}
+		}
+		if (player.masterystudies.includes("d10")) tmp.edgm = getEmperorDimensionGlobalMultiplier() //Update global multiplier of all Emperor Dimensions
+		tmp.be = player.quantum.bigRip.active && tmp.qu.breakEternity.break
+		tmp.rg4 = tmp.qu.upgrades.includes("rg4") && (tmp.qu.rg4 || !tmp.ngp3l || inQC(1) || QCIntensity(1))
+		tmp.tue = getTreeUpgradeEfficiency()
+	} else tmp.be = false
+	tmp.sacPow = calcTotalSacrificeBoost()
+	updateQCRewardsTemp()
+
+	if (player.meta !== undefined) tmp.mdgm = getMetaDimensionGlobalMultiplier() //Update global multiplier of all Meta Dimensions
+	tmp.mptb = getMPTBase()
+	tmp.mpte = getMPTExp()
+	updatePostInfiTemp()
+	updateInfiniteTimeTemp()
+	updateAntiElectronGalaxiesTemp()
+	updateIntergalacticTemp() // starts with if (tmp.ngp3)
+	if (hasBosonicUpg(41)) {
+		tmp.blu[41] = bu.effects[41]()
+		tmp.it = tmp.it.times(tmp.blu[41].it)
+		tmp.ig = tmp.ig.times(tmp.blu[41].ig)
+	}
+
+	tmp.rm = getReplMult()
+	updateExtraReplGalaxies()
+	
+	updateTS232Temp()
+	updateMatterSpeed()
+
+	tmp.tsReduce = getTickSpeedMultiplier()
+	updateInfinityPowerEffects()
+	if (player.replicanti.unl) updateReplicantiTemp()
+
+	if (tmp.gameSpeed != gameSpeed) {
+		tmp.gameSpeed = gameSpeed
+		tmp.tickUpdate = true
+	}
+}
+
 let tmp = {
 	nrm: new Decimal(1),
 	rm: new Decimal(1),
@@ -499,77 +574,104 @@ function updatePhotonsUnlockedBRUpgrades(){
 	tmp.bru[19] = Decimal.pow(10, bigRipUpg19exp) // BRU19
 }
 
-function updateTemp() {
-	if (player) {
-		if (player.money) tmp.ri = player.money.gte(getLimit()) && ((player.currentChallenge != "" && player.money.gte(player.challengeTarget)) || !onPostBreak())
-		else tmp.ri = false
-	} else {
-		tmp.ri = false
-		return
-	}
-	tmp.nrm = 1
-	if (player.timestudy.studies.includes(101)) tmp.nrm = player.replicanti.amount.max(1)
-	tmp.rg4 = false
-	if (tmp.ngp3) {
-		updateGhostifyTempStuff()
-		if (tmp.qu.breakEternity.unlocked) updateBreakEternityUpgradesTemp()
-		if (player.masterystudies.includes("d14")) updateBigRipUpgradesTemp()
-		if (tmp.nrm !== 1 && player.quantum.bigRip.active) {
-			if (!player.dilation.active && tmp.qu.bigRip.upgrades.includes(14)) tmp.nrm = tmp.nrm.pow(tmp.bru[14])
-			if (tmp.nrm.log10() > 1e9) tmp.nrm = Decimal.pow(10, 1e9 * Math.pow(tmp.nrm.log10() / 1e9, 2/3))
-		}
-		if (player.masterystudies.includes("d13")) updateTS431ExtraGalTemp()
-		if (player.masterystudies.includes("d9")) {
-			tmp.twr = getTotalWorkers()
-			tmp.tra = getTotalReplicants()
-		}
-		updateMasteryStudyTemp()
-		if (player.masterystudies.includes("d13")) tmp.branchSpeed = getBranchSpeed()
-		if (player.masterystudies.includes("d12") && tmp.nf !== undefined && tmp.nf.rewardsUsed !== undefined) {
-			var x = getNanoRewardPowerEff()
-			var y = tmp.qu.nanofield.rewards
-			tmp.ns = getNanofieldSpeed()
-			if (tmp.nf.powerEff !== x || tmp.nf.rewards !== y) {
-				tmp.nf.powerEff = x
-				tmp.nf.rewards = y
+function updateBosonicAMDimReturnsTemp() {
+	var data = {}
+	tmp.badm = data
 
-				updateNanoRewardPowers()
-				updateNanoRewardEffects()
-			}
-		}
-		if (player.masterystudies.includes("d10")) tmp.edgm = getEmperorDimensionGlobalMultiplier() //Update global multiplier of all Emperor Dimensions
-		tmp.be = player.quantum.bigRip.active && tmp.qu.breakEternity.break
-		tmp.rg4 = tmp.qu.upgrades.includes("rg4") && (tmp.qu.rg4 || !tmp.ngp3l || inQC(1) || QCIntensity(1))
-		tmp.tue = getTreeUpgradeEfficiency()
-	} else tmp.be = false
-	tmp.sacPow = calcTotalSacrificeBoost()
-	updateQCRewardsTemp()
+	if (!tmp.ngp3) return
+	if (tmp.ngp3l) return
+	if (!player.ghostify.wzb.unl) return
 
-	if (player.meta !== undefined) tmp.mdgm = getMetaDimensionGlobalMultiplier() //Update global multiplier of all Meta Dimensions
-	tmp.mptb = getMPTBase()
-	tmp.mpte = getMPTExp()
-	updatePostInfiTemp()
-	updateInfiniteTimeTemp()
-	updateAntiElectronGalaxiesTemp()
-	updateIntergalacticTemp() // starts with if (tmp.ngp3)
-	if (hasBosonicUpg(41)) {
-		tmp.blu[41] = bu.effects[41]()
-		tmp.it = tmp.it.times(tmp.blu[41].it)
-		tmp.ig = tmp.ig.times(tmp.blu[41].ig)
-	}
+	data.start = getHiggsRequirement()
+	data.base = getHiggsRequirementMult()
+	data.offset = 1 / Math.log(data.base) - 1
+	data.offset2 = 1 - Math.log10(data.offset + 1) / Math.log10(data.base)
+	data.postDim = player.ghostify.bl.am.div(data.start)
+	data.preDim = Decimal.pow(data.base,  Decimal.log(100, data.postDim) - data.offset2).add(-data.offset).max(1)
+}
 
-	tmp.rm = getReplMult()
-	updateExtraReplGalaxies()
-	
-	updateTS232Temp()
-	updateMatterSpeed()
-
-	tmp.tsReduce = getTickSpeedMultiplier()
-	updateInfinityPowerEffects()
-	if (player.replicanti.unl) updateReplicantiTemp()
-
-	if (tmp.gameSpeed != gameSpeed) {
-		tmp.gameSpeed = gameSpeed
-		tmp.tickUpdate = true
+function updateBosonicEnchantsTemp(){
+	tmp.bEn.lvl = {}
+	for (var g2 = 2; g2 <= br.limit; g2++) for (var g1 = 1; g1 < g2; g1++) {
+		var id = g1 * 10 + g2
+		tmp.bEn.lvl[id] = player.ghostify.bl.enchants[id] || new Decimal(0)
+		if (bEn.effects[id] !== undefined) tmp.bEn[id] = getEnchantEffect(id)
 	}
 }
+
+function updateBosonicUpgradesTemp(){
+	for (var r = bu.rows; r >= 1; r--) for (var c = 1; c < 6; c++) {
+		var id = r * 10 + c
+		if (bu.effects[id] !== undefined) tmp.blu[id] = bu.effects[id]()
+	}
+}
+
+function updateWZBosonsTemp(){
+	var data = tmp.wzb
+	var wpl = player.ghostify.wzb.wpb.add(1).log10()
+	var wnl = player.ghostify.wzb.wnb.add(1).log10()
+
+	var bosonsExp = Math.max(wpl * (player.ghostify.wzb.wpb.sub(player.ghostify.wzb.wnb.min(player.ghostify.wzb.wpb))).div(player.ghostify.wzb.wpb.max(1)).toNumber(), 0)
+	data.wbt = Decimal.pow(tmp.newNGP3E ? 5 : 3, bosonsExp) //W Bosons boost to extract time
+	data.wbo = Decimal.pow(10, Math.max(bosonsExp, 0)) //W Bosons boost to Z Neutrino oscillation requirement
+	data.wbp = player.ghostify.wzb.wpb.add(player.ghostify.wzb.wnb).div(100).max(1).pow(1 / 3).sub(1) //W Bosons boost to Bosonic Antimatter production
+
+	var zbslog = player.ghostify.wzb.zb.div(10).add(1).sqrt().log10()
+	data.zbs = Decimal.pow(10, zbslog) //Z Bosons boost to W Quark
+}
+
+function updateNanoEffectUsages() {
+	var data = []
+	tmp.nf.rewardsUsed = data
+	nanoRewards.effectToReward = {}
+
+	//First reward
+	var data2 = [hasBosonicUpg(21) ? "supersonic_start" : "hatch_speed"]
+	nanoRewards.effectsUsed[1] = data2
+
+	//Fifth reward
+	var data2 = ["dil_effect_exp"]
+	if (!tmp.ngp3l) data2.push("light_threshold_speed")
+	nanoRewards.effectsUsed[5] = data2
+
+	//Seventh reward
+	var data2 = [hasBosonicUpg(22) ? "neutrinos" : "remote_start", "preon_charge"]
+	nanoRewards.effectsUsed[7] = data2
+
+	//Used Nanofield rewards
+	for (var x = 1; x <= 8; x++) {
+		var rewards = nanoRewards.effectsUsed[x]
+		for (var r = 0; r < rewards.length; r++) {
+			data.push(rewards[r])
+			nanoRewards.effectToReward[rewards[r]] = x
+		}
+	}
+}
+
+function updateNanoRewardPowers() {
+	var data = {}
+	tmp.nf.powers = data
+
+	for (var x = 1; x <= 8; x++) data[x] = getNanoRewardPower(x, tmp.nf.rewards)
+}
+
+function updateNanoRewardEffects() {
+	var data = {}
+	tmp.nf.effects = data
+
+	for (var e = 0; e < tmp.nf.rewardsUsed.length; e++) {
+		var effect = tmp.nf.rewardsUsed[e]
+		tmp.nf.effects[effect] = nanoRewards.effects[effect](tmp.nf.powers[nanoRewards.effectToReward[effect]])
+	}
+}
+
+function updateNanoRewardTemp() {
+	tmp.nf = {}
+
+	if (!tmp.ngp3) return
+	if (!player.masterystudies.includes("d11")) return
+
+	updateNanoEffectUsages()
+	//The rest is calculated by updateTemp().
+}
+

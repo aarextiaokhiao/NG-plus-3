@@ -196,61 +196,6 @@ function isNanoEffectUsed(x) {
 	return tmp.nf !== undefined && tmp.nf.rewardsUsed !== undefined && tmp.nf.rewardsUsed.includes(x) && tmp.nf.effects !== undefined
 }
 
-function updateNanoEffectUsages() {
-	var data = []
-	tmp.nf.rewardsUsed = data
-	nanoRewards.effectToReward = {}
-
-	//First reward
-	var data2 = [hasBosonicUpg(21) ? "supersonic_start" : "hatch_speed"]
-	nanoRewards.effectsUsed[1] = data2
-
-	//Fifth reward
-	var data2 = ["dil_effect_exp"]
-	if (!tmp.ngp3l) data2.push("light_threshold_speed")
-	nanoRewards.effectsUsed[5] = data2
-
-	//Seventh reward
-	var data2 = [hasBosonicUpg(22) ? "neutrinos" : "remote_start", "preon_charge"]
-	nanoRewards.effectsUsed[7] = data2
-
-	//Used Nanofield rewards
-	for (var x = 1; x <= 8; x++) {
-		var rewards = nanoRewards.effectsUsed[x]
-		for (var r = 0; r < rewards.length; r++) {
-			data.push(rewards[r])
-			nanoRewards.effectToReward[rewards[r]] = x
-		}
-	}
-}
-
-function updateNanoRewardPowers() {
-	var data = {}
-	tmp.nf.powers = data
-
-	for (var x = 1; x <= 8; x++) data[x] = getNanoRewardPower(x, tmp.nf.rewards)
-}
-
-function updateNanoRewardEffects() {
-	var data = {}
-	tmp.nf.effects = data
-
-	for (var e = 0; e < tmp.nf.rewardsUsed.length; e++) {
-		var effect = tmp.nf.rewardsUsed[e]
-		tmp.nf.effects[effect] = nanoRewards.effects[effect](tmp.nf.powers[nanoRewards.effectToReward[effect]])
-	}
-}
-
-function updateNanoRewardTemp() {
-	tmp.nf = {}
-
-	if (!tmp.ngp3) return
-	if (!player.masterystudies.includes("d11")) return
-
-	updateNanoEffectUsages()
-	//The rest is calculated by updateTemp().
-}
-
 function getNanofieldSpeedText(){
 	text = ""
 	if (ghostified) text += "Ghostify Bonus: " + shorten(tmp.qu.nanofield.rewards >= 16 ? 1 : (player.ghostify.milestone >= 1 ? 6 : 3)) + "x, "

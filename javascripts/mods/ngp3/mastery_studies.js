@@ -465,10 +465,10 @@ function setupMasteryStudiesHTML() {
 	setupMasteryStudies()
 	for (id = 0; id < masteryStudies.timeStudies.length; id++) {
 		var name = masteryStudies.timeStudies[id]
-		var html = "<span id='ts"+name+"Desc'></span>"
-		if (masteryStudies.hasStudyEffect.includes(name)) html += "<br>Currently: <span id='ts"+name+"Current'></span>"
-		html += "<br>Cost: <span id='ts"+name+"Cost'></span> Time Theorems"
-		document.getElementById("timestudy"+name).innerHTML=html
+		var html = "<span id='ts" + name + "Desc'></span>"
+		if (masteryStudies.hasStudyEffect.includes(name)) html += "<br>Currently: <span id='ts" + name + "Current'></span>"
+		html += "<br>Cost: <span id='ts" + name + "Cost'></span> Time Theorems"
+		document.getElementById("timestudy" + name).innerHTML = html
 	}
 }
 
@@ -585,74 +585,73 @@ function buyingDilationStudy(id){
 
 function buyMasteryStudy(type, id, quick=false) {
 	if (quick) setMasteryStudyCost(id,type)
-	if (canBuyMasteryStudy(type, id)) {
-		player.timestudy.theorem -= masteryStudies.costs[masteryStudies.types[type]][id]
-		if (type == 'ec') {
-			player.eternityChallUnlocked = id
-			player.etercreq = id
-			updateEternityChallenges()
-			delete tmp.qu.autoECN
-		} else player.masterystudies.push(type + id)
+	if (!canBuyMasteryStudy(type, id)) return
+	player.timestudy.theorem -= masteryStudies.costs[masteryStudies.types[type]][id]
+	if (type == 'ec') {
+		player.eternityChallUnlocked = id
+		player.etercreq = id
+		updateEternityChallenges()
+		delete tmp.qu.autoECN
+	} else player.masterystudies.push(type + id)
+	if (type == "t") {
+		addSpentableMasteryStudies(id)
+		if (id == 302) maybeShowFillAll()
+		if (quick) {
+			masteryStudies.costMult *= getMasteryStudyCostMult(id)
+			masteryStudies.latestBoughtRow = Math.max(masteryStudies.latestBoughtRow, Math.floor(id / 10))
+		}
+		if (id == 241 && !GUBought("gb3")) {
+			var otherMults = 1
+			if (player.achievements.includes("r85")) otherMults *= 4
+			if (player.achievements.includes("r93")) otherMults *= 4
+			var old = getIPMultPower()
+			ipMultPower = 2.2
+			player.infMult = player.infMult.div(otherMults).pow(Math.log10(getIPMultPower()) / Math.log10(old)).times(otherMults)
+		}
+		if (id == 266 && player.replicanti.gal > 399) {
+			var gal = player.replicanti.gal
+			player.replicanti.gal = 0
+			player.replicanti.galCost = new Decimal(player.galacticSacrifice!=undefined?1e110:1e170)
+			player.replicanti.galCost = getRGCost(gal)
+			player.replicanti.gal = gal
+		}
+		if (id == 312){
+			player.meta.resets = 4
+		}
+		if (id == 321){
+			var tiers = [ null, "first", "second", "third", "fourth", "fifth", "sixth", "seventh", "eight" ]
+			var isone = ((inQC(5)||inQC(7))&&focusOn!="linear")||(((inNC(13)&&player.tickspeedBoosts==undefined)||player.currentChallenge=="postc1"||player.currentChallenge=="postcngm3_1")&&player.galacticSacrifice!=undefined)
+			if (isone) {
+				for (var i = 1; i<9; i++) {
+					player[tiers[i] + "Pow"] = player[tiers[i] + "Pow"].times(Decimal.pow(10, 430 * player[tiers[i] + "Bought"]/10))
+				}
+			}
+		}
+		if (id == 383) updateColorCharge()
+		if (!tmp.ngp3l) {
+			if (!hasNU(6) && (id == 251 || id == 252 || id == 253 || id == 301)) {
+				player.galaxies = 1
+			}
+			if (!inQC(5) && (id == 261 || id == 331)) {
+				player.resets = 4
+			}
+		}
+	}
+	if (type=="d") buyingDilationStudy(id)
+	if (!quick) {
 		if (type == "t") {
-			addSpentableMasteryStudies(id)
-			if (id == 302) maybeShowFillAll()
-			if (quick) {
-				masteryStudies.costMult *= getMasteryStudyCostMult(id)
-				masteryStudies.latestBoughtRow = Math.max(masteryStudies.latestBoughtRow, Math.floor(id / 10))
-			}
-			if (id == 241 && !GUBought("gb3")) {
-				var otherMults = 1
-				if (player.achievements.includes("r85")) otherMults *= 4
-				if (player.achievements.includes("r93")) otherMults *= 4
-				var old = getIPMultPower()
-				ipMultPower = 2.2
-				player.infMult = player.infMult.div(otherMults).pow(Math.log10(getIPMultPower()) / Math.log10(old)).times(otherMults)
-			}
-			if (id == 266 && player.replicanti.gal > 399) {
-				var gal = player.replicanti.gal
-				player.replicanti.gal = 0
-				player.replicanti.galCost = new Decimal(player.galacticSacrifice!=undefined?1e110:1e170)
-				player.replicanti.galCost = getRGCost(gal)
-				player.replicanti.gal = gal
-			}
-			if (id == 312){
-				player.meta.resets = 4
-			}
-			if (id == 321){
-				var tiers = [ null, "first", "second", "third", "fourth", "fifth", "sixth", "seventh", "eight" ]
-				var isone = ((inQC(5)||inQC(7))&&focusOn!="linear")||(((inNC(13)&&player.tickspeedBoosts==undefined)||player.currentChallenge=="postc1"||player.currentChallenge=="postcngm3_1")&&player.galacticSacrifice!=undefined)
-				if (isone) {
-					for (var i = 1; i<9; i++) {
-						player[tiers[i] + "Pow"] = player[tiers[i] + "Pow"].times(Decimal.pow(10, 430 * player[tiers[i] + "Bought"]/10))
-					}
-				}
-			}
-			if (id == 383) updateColorCharge()
-			if (!tmp.ngp3l) {
-				if (!hasNU(6) && (id == 251 || id == 252 || id == 253 || id == 301)) {
-					player.galaxies = 1
-				}
-				if (!inQC(5) && (id == 261 || id == 331)) {
-					player.resets = 4
-				}
-			}
+			if (id == 302) fillAll()
+			masteryStudies.bought++
+		} else if (type == "ec") {
+			showTab("challenges")
+			showChallengesTab("eternitychallenges")
+		} else if (type == "d") {
+			updateUnlockedMasteryStudies()
+			updateSpentableMasteryStudies()
 		}
-		if (type=="d") buyingDilationStudy(id)
-		if (!quick) {
-			if (type == "t") {
-				if (id == 302) fillAll()
-				masteryStudies.bought++
-			} else if (type == "ec") {
-				showTab("challenges")
-				showChallengesTab("eternitychallenges")
-			} else if (type == "d") {
-				updateUnlockedMasteryStudies()
-				updateSpentableMasteryStudies()
-			}
-			updateMasteryStudyCosts()
-			updateMasteryStudyButtons()
-			drawMasteryTree()
-		}
+		updateMasteryStudyCosts()
+		updateMasteryStudyButtons()
+		drawMasteryTree()
 	}
 }
 
@@ -814,7 +813,7 @@ function updateMasteryStudyTemp() {
 	}
 }
 
-var upDown={
+var upDown = {
 	point: 0,
 	times: 0
 }

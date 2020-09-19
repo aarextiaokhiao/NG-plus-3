@@ -162,22 +162,6 @@ function getBosonicAMFinalProduction() {
 	return r
 }
 
-function updateBosonicAMDimReturnsTemp() {
-	var data = {}
-	tmp.badm = data
-
-	if (!tmp.ngp3) return
-	if (tmp.ngp3l) return
-	if (!player.ghostify.wzb.unl) return
-
-	data.start = getHiggsRequirement()
-	data.base = getHiggsRequirementMult()
-	data.offset = 1 / Math.log(data.base) - 1
-	data.offset2 = 1 - Math.log10(data.offset + 1) / Math.log10(data.base)
-	data.postDim = player.ghostify.bl.am.div(data.start)
-	data.preDim = Decimal.pow(data.base,  Decimal.log(100, data.postDim) - data.offset2).add(-data.offset).max(1)
-}
-
 function updateBosonicLimits() {
 	if (!tmp.ngp3) return
 
@@ -513,15 +497,6 @@ var bEn = {
 		3: 12,
 		4: 1e6,
 		5: 1/0
-	}
-}
-
-function updateBosonicEnchantsTemp(){
-	tmp.bEn.lvl = {}
-	for (var g2 = 2; g2 <= br.limit; g2++) for (var g1 = 1; g1 < g2; g1++) {
-		var id = g1 * 10 + g2
-		tmp.bEn.lvl[id] = player.ghostify.bl.enchants[id] || new Decimal(0)
-		if (bEn.effects[id] !== undefined) tmp.bEn[id] = getEnchantEffect(id)
 	}
 }
 
@@ -874,13 +849,6 @@ var bu = {
 	}
 }
 
-function updateBosonicUpgradesTemp(){
-	for (var r = bu.rows; r >= 1; r--) for (var c = 1; c < 6; c++) {
-		var id = r * 10 + c
-		if (bu.effects[id] !== undefined) tmp.blu[id] = bu.effects[id]()
-	}
-}
-
 //Bosonic Overdrive
 function getBosonicBatteryLoss() {
 	if (player.ghostify.bl.odSpeed == 1) return new Decimal(0)
@@ -919,20 +887,6 @@ function getOscillateGainSpeed() {
 	let r = tmp.wzb.wbo
 	if (player.ghostify.bl.usedEnchants.includes(23)) r = r.times(tmp.bEn[23])
 	return Decimal.div(r, player.ghostify.wzb.zNeReq)
-}
-
-function updateWZBosonsTemp(){
-	var data = tmp.wzb
-	var wpl = player.ghostify.wzb.wpb.add(1).log10()
-	var wnl = player.ghostify.wzb.wnb.add(1).log10()
-
-	var bosonsExp = Math.max(wpl * (player.ghostify.wzb.wpb.sub(player.ghostify.wzb.wnb.min(player.ghostify.wzb.wpb))).div(player.ghostify.wzb.wpb.max(1)).toNumber(), 0)
-	data.wbt = Decimal.pow(tmp.newNGP3E ? 5 : 3, bosonsExp) //W Bosons boost to extract time
-	data.wbo = Decimal.pow(10, Math.max(bosonsExp, 0)) //W Bosons boost to Z Neutrino oscillation requirement
-	data.wbp = player.ghostify.wzb.wpb.add(player.ghostify.wzb.wnb).div(100).max(1).pow(1 / 3).sub(1) //W Bosons boost to Bosonic Antimatter production
-
-	var zbslog = player.ghostify.wzb.zb.div(10).add(1).sqrt().log10()
-	data.zbs = Decimal.pow(10, zbslog) //Z Bosons boost to W Quark
 }
 
 function updateWZBosonsTab() {
