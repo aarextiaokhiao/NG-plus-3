@@ -12,6 +12,7 @@ function updateConvertSave(convertMod) {
 	document.getElementById("convertSave").style.display = convert ? "" : "none";
 	document.getElementById("convertSave").textContent = conversionText;
 }
+
 function eligibleConvert() {
 	if (tmp.ngp3l) {
 		convert = "NG+3.1";
@@ -21,6 +22,7 @@ function eligibleConvert() {
 		convert = undefined;
 	return convert;
 }
+
 function convertSave(conversion) {
 	if (conversion === "NG+3.1") {
 		if (!confirm("Upon migrating to NG+3.1, this save will no longer be able to be reverted back into NG+3L, and have all NG+3.1 changes taken into effect. It is recommended to export before doing so as this may cause issues! Are you sure you want to migrate?"))

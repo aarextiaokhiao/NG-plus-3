@@ -392,7 +392,7 @@ function buyManyDimension(tier, quick) {
 	else player[name + "Cost"] = player[name + "Cost"].times(getDimensionCostMultiplier(tier))
 	if (costIncreaseActive(player[name + "Cost"])) player.costMultipliers[tier - 1] = player.costMultipliers[tier - 1].times(getDimensionCostMultiplierIncrease())
 	if (!quick) {
-		floatText("D" + tier, "x" + shortenMoney(b))
+		floatText("D" + tier, "x" + shortenMoney(getDimensionPowerMultiplier()))
 		onBuyDimension(tier)
 	}
 	reduceMatter(toBuy)

@@ -105,7 +105,7 @@ function getD8Exp(){
 		if (player.currentEternityChall == "") div += 12
 		else if (player.achievements.length > 90) div -= .1 * (player.achievements.length - 90)
 		let amt = getAmount(8) / div
-		if (amt > 1048576) amt = Math.pow(Math.log2(amt) / 5, 10) //1048576 = 2^20 = 4^10
+		if (amt > 1048576) amt = Math.pow(Math.log2(amt) / 5, 10) // 1048576 = 2^20 = 4^10
 		if (amt > 1024) amt = 24 + Math.pow(Math.log2(amt), 3)
 		exp += amt
 		if (logBestAM > 2.75e6) {
@@ -152,8 +152,8 @@ function galacticSacrifice(auto, force, chall) {
 		updateChallengeTimes()
 		updateAutobuyers()
 	}
-	GPminpeak=new Decimal(0)
-	player.galacticSacrifice.time=0
+	GPminpeak = new Decimal(0)
+	player.galacticSacrifice.time = 0
 	resetPSac()
 	galaxyReset(-player.galaxies)
 }
@@ -393,7 +393,7 @@ function upgradeSacAutobuyer() {
 	else player.infinityPoints = player.infinityPoints.sub(cost)
 	if (player.autoSacrifice.interval > 100) {
 		player.autoSacrifice.interval = Math.max(player.autoSacrifice.interval * 0.6, 100);
-		if (player.autoSacrifice.interval > 120) player.autoSacrifice.cost *= 2; //if your last purchase wont be very strong, dont double the cost
+		if (player.autoSacrifice.interval > 120) player.autoSacrifice.cost *= 2; // if your last purchase wont be very strong, dont double the cost
 	}
 	updateAutobuyers();
 }
@@ -425,7 +425,7 @@ document.getElementById("postinfi04").onclick = function() {
 		player.dimPowerIncreaseCost = new Decimal(player.tickspeedBoosts == undefined ? 1e3 : 3e5).times(Decimal.pow(4, Math.min(player.extraDimPowerIncrease, 15) + 1));
 		player.extraDimPowerIncrease += 1;
 		if (player.extraDimPowerIncrease > 15) player.dimPowerIncreaseCost = player.dimPowerIncreaseCost.times(Decimal.pow(Decimal.pow(4, 5), player.extraDimPowerIncrease - 15))
-		document.getElementById("postinfi04").innerHTML = "Further increase all dimension multipliers<br>x^" + galMults.u31().toFixed(2) + (player.extraDimPowerIncrease < 40 ? " -> x^" + ((galMults.u31() + 0.02).toFixed(2)) + "<br>Cost: " + shorten(player.dimPowerIncreaseCost) + " IP" : "")
+		document.getElementById("postinfi04").innerHTML = "Further increase all Dimension multipliers<br>x^" + galMults.u31().toFixed(2) + (player.extraDimPowerIncrease < 40 ? " -> x^" + ((galMults.u31() + 0.02).toFixed(2)) + "<br>Cost: " + shorten(player.dimPowerIncreaseCost) + " IP" : "")
 	}
 }
 
@@ -489,13 +489,13 @@ document.getElementById("postinfi63").onclick = function() {
 
 function getNewB60Mult(){
 	let gal = player.galaxies-95
-	return Decimal.pow(10,120*gal).max(1)
+	return Decimal.pow(10, (120 * gal)).max(1)
 }
 
 function getB60Mult() {
 	let gal = player.galaxies
 	if (gal >= 295 && getEternitied() > 0) return Decimal.pow(3,200).times(Decimal.pow(2.5,gal-295))
-	return Decimal.pow(3, gal-95).max(1)
+	return Decimal.pow(3, gal - 95).max(1)
 }
 
 //v2.3

@@ -37,9 +37,9 @@ function updateElectronsEffect() {
 }
 
 function sacrificeGalaxy(auto = false) {
-	var amount = player.galaxies-tmp.qu.electrons.sacGals
+	var amount = player.galaxies - tmp.qu.electrons.sacGals
 	if (amount < 1) return
-	if (player.options.sacrificeConfirmation && !auto) if (!confirm("You will perform a galaxy reset, but you will exchange all your galaxies to electrons which will give a boost to multiplier per ten dimensions.")) return
+	if (player.options.sacrificeConfirmation && !auto) if (!confirm("You will perform a Galaxy reset, but you will exchange all your galaxies to electrons, which will give a boost to your Multiplier per Ten Dimensions.")) return
 	tmp.qu.electrons.sacGals = player.galaxies
 	tmp.qu.electrons.amount += getElectronGainFinalMult() * amount
 	if (!tmp.qu.autoOptions.sacrifice) updateElectronsEffect()

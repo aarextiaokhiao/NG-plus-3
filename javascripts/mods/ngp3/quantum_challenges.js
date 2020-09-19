@@ -1,6 +1,6 @@
 var quantumChallenges = {
-	costs:[0, 16750, 19100, 21500,  24050,  25900,  28900, 31300,  33600],
-	goals:[0, 665e7, 768e8, 4525e7, 5325e7, 1344e7, 561e6, 6254e7, 2925e7]
+	costs:[0, 16750, 19100, 21500,  24050,  25900,  28900, 31300, 33600],
+	goals:[0, 6.65e9, 7.68e10, 4.525e10, 5.325e10, 1.344e10, 5.61e8, 6.254e10, 2.925e10]
 }
 
 var assigned = []
@@ -65,7 +65,7 @@ function updateQuantumChallenges() {
 
 function updateQCDisplaysSpecifics(){
 	document.getElementById("qc2reward").textContent = Math.round(tmp.qcRewards[2] * 100 - 100)
-	document.getElementById("qc7desc").textContent = "Dimension and tickspeed cost multiplier increases are " + shorten(Number.MAX_VALUE) + "x. Multiplier per ten Dimensions and meta-Antimatter boost to Dimension Boosts are disabled."
+	document.getElementById("qc7desc").textContent = "Dimension and Tickspeed cost multiplier increases are " + shorten(Number.MAX_VALUE) + "x. Multiplier per ten Dimensions and meta-Antimatter boost to Dimension Boosts are disabled."
 	document.getElementById("qc7reward").textContent = (100 - tmp.qcRewards[7] * 100).toFixed(2)
 	document.getElementById("qc8reward").textContent = tmp.qcRewards[8]
 }
@@ -129,7 +129,7 @@ function updateQCTimes() {
 		}
 	}
 	if (tempcounter > 0) document.getElementById("qcsbtn").style.display = "inline-block"
-	setAndMaybeShow("qctimesum", tempcounter > 1, '"The sum of your completed Quantum Challenge time records is "+timeDisplayShort('+temp+', false, 3)')
+	setAndMaybeShow("qctimesum", tempcounter > 1, '"The sum of your completed Quantum Challenge time records is "+timeDisplayShort(' + temp + ', false, 3)')
 }
 
 var ranking=0
@@ -191,7 +191,7 @@ function updatePCCompletions() {
 	if (r >= 165) giveAchievement("Pulling an All-Nighter")
 	if (r >= 190) giveAchievement("Not-so-very-challenging") 
 	if (tmp.pcc.normal >= 24) giveAchievement("The Challenging Day")
-	ranking = r //its global
+	ranking = r // its global
 }
 
 let qcRewards = {
@@ -307,9 +307,9 @@ function updatePCTable() {
 			}
 		}
 	}
-	document.getElementById("upcc").textContent = (tmp.pct==""?"Unique PC completions":(qcm.names[tmp.pct]||"???"))+": "+(tmp.pcc.normal||0)+" / 28"
-	document.getElementById("udcc").style.display = tmp.pct==""?"block":"none"
-	document.getElementById("udcc").textContent="No dilation: "+(tmp.pcc.noDil||0)+" / 28"
+	document.getElementById("upcc").textContent = (tmp.pct == "" ? "Unique PC completions" : (qcm.names[tmp.pct] || "???")) + ": " + (tmp.pcc.normal || 0) + " / 28"
+	document.getElementById("udcc").style.display = tmp.pct == "" ? "block" : "none"
+	document.getElementById("udcc").textContent="No dilation: " + (tmp.pcc.noDil || 0) + " / 28"
 }
 
 var qcm={
@@ -334,9 +334,9 @@ function toggleQCModifier(id) {
 	if (qcm.on.includes(id)) {
 		let data = []
 		for (var m = 0; m < qcm.on.length; m++) if (qcm.on[m] != id) data.push(qcm.on[m])
-		qcm.on=data
+		qcm.on = data
 	} else qcm.on.push(id)
-	document.getElementById("qcm_"+id).className=qcm.on.includes(id)?"chosenbtn":"storebtn"
+	document.getElementById("qcm_" + id).className=qcm.on.includes(id) ? "chosenbtn" : "storebtn"
 }
 
 function inQCModifier(id) {
@@ -351,5 +351,5 @@ function recordModifiedQC(id, num, mod) {
 		tmp.qu.qcsMods[mod] = data
 	}
 	if (data[id] === undefined) data[id] = num
-	else data[id] = Math.min(num,data[id])
+	else data[id] = Math.min(num, data[id])
 }

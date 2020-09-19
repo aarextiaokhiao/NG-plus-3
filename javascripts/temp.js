@@ -35,7 +35,7 @@ function updateOrangeLightBoostTemp(){
 }
 
 function updateYellowLightBoostTemp(){
-	var lighteffect2 = 0 //changed later no matter what
+	var lighteffect2 = 0 // changed later no matter what
 	if (tmp.effL[2] > 60 && !tmp.newNGP3E) lighteffect2 = (Math.log10(tmp.effL[2] / 6) + 2) / 3 * Math.sqrt(1200)
 	else lighteffect2 = tmp.effL[2] > 20 ? Math.sqrt(tmp.effL[2] * 20) : tmp.effL[2]
 	tmp.le[2] = Math.sqrt(lighteffect2) * 45e3

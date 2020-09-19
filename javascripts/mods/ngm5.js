@@ -11,7 +11,7 @@ function buyIDwithAM(t, auto) { // t is the dimension number, auto is either tru
 		}
 		return
 	}
-	if (!player.infDimensionsUnlocked[t-1]) return
+	if (!player.infDimensionsUnlocked[t - 1]) return
 	if (!player.money.gte(c)) return
 	player.money = player.money.sub(c)
 	d.costAM = d.costAM.times(idCostMults[t])
@@ -76,7 +76,7 @@ function canPSac() {
 
 function pSac(chall) {
 	if (!canPSac()) return
-	if (player.options.challConf&&chall) if (!confirm("You will Paradox Sacrifice without gaining anything. You need to Paradox Sacrifice with special conditions to complete this challenge.")) return
+	if (player.options.challConf && chall) if (!confirm("You will Paradox Sacrifice without gaining anything. You need to Paradox Sacrifice with special conditions to complete this challenge.")) return
 	pSacReset(false, chall)
 }
 
@@ -241,7 +241,7 @@ function updatePUMults() {
 			if (puMults[id]) {
 				if (id == 13) document.getElementById("pue13").textContent = "^" + puMults[13](hasPU(13, true, true)).toFixed(2)
 				else if (id==33) document.getElementById("pue33").textContent = "+" + puMults[33]().toFixed(4)
-				else document.getElementById("pue"+id).textContent = shorten(puMults[id](hasPU(id, true, r < 2))) + "x"
+				else document.getElementById("pue" + id).textContent = shorten(puMults[id](hasPU(id, true, r < 2))) + "x"
 			}
 		}
 	}
@@ -377,6 +377,6 @@ function haveExtraTime() {
 }
 
 function quickMReset() {
-	player.aarexModifications.quickReset=!player.aarexModifications.quickReset
-	document.getElementById("quickMReset").textContent = "Quick matter reset: O"+(player.aarexModifications.quickReset?"N":"FF")
+	player.aarexModifications.quickReset = !player.aarexModifications.quickReset
+	document.getElementById("quickMReset").textContent = "Quick matter reset: O" + (player.aarexModifications.quickReset ? "N" : "FF")
 }

@@ -27,7 +27,7 @@ function get_save(id) {
         var dimensionSave = localStorage.getItem(btoa('dsAM_ghostify_'+id))
         if (dimensionSave !== null) dimensionSave = JSON.parse(atob(dimensionSave, function(k, v) { return (v === Infinity) ? "Infinity" : v; }))
         return dimensionSave
-    } catch(e) { console.log("Fuck IE"); }
+    } catch(e) { console.log("An error happened"); }
 }
 
 function load_game() {

@@ -339,7 +339,10 @@ newsArray = [//always true
 ['Later, I will finally implement original ideas from future NG+3 updates.', "tmp.ngp3", "am186"],
 ['Also later, I will implement ideas that have different gameplay than other mechanics.', "tmp.ngp3", "am187"],
 ["This news ticker has been softcapped so you can't read the re-.", true, "am188"]
-/*NEXT ID: am189*/
+["After all, I do build up speed for 5 hours. But to answer that, we need to talk about parallel dimensions. And if you thought my other mechanics were complicated, just you wait. Ok, so Mario's antimatter is a floating point logarithm, but it's converted to sci notation when the game uses break_infinity.js. In other words, Mario's antimatter can basically be any logarithm number, but it's converted to sci notation between negative 9ee15, and positive 9ee15 inclusive. So, any fractional antimatter is truncated, and any numbers too big or too small will break break_infinity.js. Graphically, that means the antimatter you used for break_infinity.js is always inside of The Box, so if the antimatter's in The Box, then its logarithmica_lite.js value and the value used for break_infinity.js are the same. Albeit, maybe off by a single fraction due to the library switch. But if the antimatter leaves The Box, then its logarithmica_lite.js value and its break_infinity.js value will separate, since break_infinity.js will just break...", true, "am189"],
+["The next news ticker is sponsored by the anti-store. Get your daily anti-cinnamon toast crunch!", true, "am190"],
+["The photons wall seems to be gone, but there's only the bricks of it left. We should maybe do stuff with those bricks, except they might be made out of concentrated time, so that's a bad idea...", true, "am191"]
+/*NEXT ID: am192*/
 ];}
 
 document.addEventListener("visibilitychange", function() {if (!document.hidden) {scrollNextMessage();}}, false);
@@ -367,7 +370,7 @@ function scrollNextMessage() {
         if (newsArray[nextMsgIndex][2] == "am37") {
                 //coded by Naruyoko
                 var m = ""
-                for (var i=0;i<256;i++) m+=String.fromCharCode(Math.random()*95+32);
+                for (var i = 0; i < 256; i++) m += String.fromCharCode(Math.random() * 95 + 32);
         }
         s.textContent = m
         
@@ -499,22 +502,22 @@ function nextGhostlyNewsTickerMsg() {
 			newsText.style["transition-timing-function"] = "linear"
 			newsText.style["transition-duration"] = (duration / 100) + "s"
 			setTimeout(function() {
-				if (ghostlyNewsArray[ghostlyNewsIndex][2]=="gn32") {
-					tmp.blankedOut2=true
+				if (ghostlyNewsArray[ghostlyNewsIndex][2] == "gn32") {
+					tmp.blankedOut2 = true
 					setTimeout(function() {
-						ghostlyNewsTickerCache=false
+						ghostlyNewsTickerCache = false
 					}, 60e3)
-				} else ghostlyNewsTickerCache=false
+				} else ghostlyNewsTickerCache = false
 			}, duration * 10)
 		}, 2000)
 	}, 100)
 }
 
 function toggleGhostlyNews(force) {
-	player.options.secrets.ghostlyNews=!player.options.secrets.ghostlyNews
-	document.getElementById("ghostlyNewsTicker").style.height=(player.options.secrets.ghostlyNews?24:0)+"px"
-	document.getElementById("ghostlyNewsTickerBlock").style.height=(player.options.secrets.ghostlyNews?16:0)+"px"
-	document.getElementById("ghostlynewsbtn").textContent=(player.options.secrets.ghostlyNews?"Hide":"Show")+" ghostly news ticker"
+	player.options.secrets.ghostlyNews = !player.options.secrets.ghostlyNews
+	document.getElementById("ghostlyNewsTicker").style.height = (player.options.secrets.ghostlyNews ? 24 : 0)+"px"
+	document.getElementById("ghostlyNewsTickerBlock").style.height = (player.options.secrets.ghostlyNews ? 16 : 0)+"px"
+	document.getElementById("ghostlynewsbtn").textContent = (player.options.secrets.ghostlyNews ? "Hide" : "Show") + " ghostly news ticker"
 }
 
 document.getElementById("ghostlyNewsTicker").onclick = function () {

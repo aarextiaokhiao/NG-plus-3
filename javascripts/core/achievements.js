@@ -533,7 +533,7 @@ function toggleSecretAchs() {
 	// 0 == visible, 1 == not visible
 	player.aarexModifications.hideSecretAchs = !player.aarexModifications.hideSecretAchs;
 	if (document.getElementById("secretachievements").style.display == "block") showAchTab("normalachievements");
-	document.getElementById("hideSecretAchs").textContent = (player.aarexModifications.hideSecretAchs?"Show" : "Hide") + " secret achievements";
+	document.getElementById("hideSecretAchs").textContent = (player.aarexModifications.hideSecretAchs ? "Show" : "Hide") + " secret achievements";
 }
 
 function achMultLabelUpdate() {

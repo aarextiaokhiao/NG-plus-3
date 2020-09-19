@@ -1124,7 +1124,7 @@ function doInfinityRespeccedNewPlayer(){
 function doNGPlusFourPlayer(){
 	player.eternities = 1e13
 	for (var c = 13; c < 15; c++) player.eternityChalls["eterc" + c] = 5
-	player.dilation.studies = [1,2,3,4,5,6]
+	player.dilation.studies = [1, 2, 3, 4, 5, 6]
 	player.dilation.dilatedTime = 1e100
 	for (var u = 4; u < 11; u++) player.dilation.upgrades.push(u)
 	for (var u = 1; u < 7; u++) player.dilation.upgrades.push("ngpp" + u)
@@ -1163,7 +1163,7 @@ function doNGMinusFourPlayer(){
 	player.aarexModifications.newGame4MinusVersion = 2.111
 	player.aarexModifications.ngmX = 4
 	player.tdBoosts = 0
-	player.challengeTimes.push(600*60*24*31)
+	player.challengeTimes.push(600 * 60 * 24 * 31)
 	player.autobuyers.push(15)
 	resetTDs()
 	reduceDimCosts()
@@ -1178,8 +1178,8 @@ function doNGMinusFivePlayer(){
 
 function doNGMultipliedPlayer(){
 	player.aarexModifications.newGameMult = 1
-	player.infMult = 256
-	player.eternities = 100
+	player.infMult = 2048
+	player.eternities = 1012680
 	player.replicanti.unl = true
 	player.replicanti.amount = new Decimal(1)
 }
@@ -1951,7 +1951,10 @@ function buyEternityUpgrade(name, cost) {
 	if (player.eternityPoints.gte(cost) && !player.eternityUpgrades.includes(name)) {
 		player.eternityUpgrades.push(name)
 		player.eternityPoints = player.eternityPoints.minus(cost)
-		updateEternityUpgrades()
+		updateEternityUpgrades();
+		if (name == 4) {
+			achMultLabelUpdate(); // Eternity Upgrade 4 applies achievement multiplier to Time Dimensions
+		}
 	}
 }
 
@@ -2120,12 +2123,12 @@ function updateMilestones() {
 function infMultAutoToggle() {
 	if (getEternitied()<1) {
 		if (canBuyIPMult()) {
-			var toBuy=Math.max(Math.floor(player.infinityPoints.div(player.infMultCost).times(ipMultCostIncrease-1).plus(1).log(ipMultCostIncrease)),1)
-			var toSpend=Decimal.pow(ipMultCostIncrease,toBuy).sub(1).div(ipMultCostIncrease-1).times(player.infMultCost).round()
-			if (toSpend.gt(player.infinityPoints)) player.infinityPoints=new Decimal(0)
-			else player.infinityPoints=player.infinityPoints.sub(toSpend)
-			player.infMult=player.infMult.times(Decimal.pow(getIPMultPower(),toBuy))
-			player.infMultCost=player.infMultCost.times(Decimal.pow(ipMultCostIncrease,toBuy))
+			var toBuy = Math.max(Math.floor(player.infinityPoints.div(player.infMultCost).times(ipMultCostIncrease - 1).plus(1).log(ipMultCostIncrease)), 1)
+			var toSpend = Decimal.pow(ipMultCostIncrease, toBuy).sub(1).div(ipMultCostIncrease - 1).times(player.infMultCost).round()
+			if (toSpend.gt(player.infinityPoints)) player.infinityPoints = new Decimal(0)
+			else player.infinityPoints = player.infinityPoints.sub(toSpend)
+			player.infMult = player.infMult.times(Decimal.pow(getIPMultPower(), toBuy))
+			player.infMultCost = player.infMultCost.times(Decimal.pow(ipMultCostIncrease,toBuy))
 		}
 	} else {
 		player.infMultBuyer = !player.infMultBuyer
@@ -2347,7 +2350,7 @@ function changeSaveDesc(saveId, placement) {
 				}
 			} else if (temp.infinitied>(temp.aarexModifications.newGameMinusVersion?990:temp.aarexModifications.newGamePlusVersion?1:0)) msg+="Infinity points: "+shortenDimensions(new Decimal(temp.infinityPoints))+", Infinities: "+temp.infinitied.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")+", Challenge completions: "+temp.challenges.length
 			else if (temp.galacticSacrifice?temp.galacticSacrifice.times>0:false) msg+="Antimatter: "+shortenMoney(new Decimal(temp.money))+", Galaxy points: "+shortenDimensions(new Decimal(temp.galacticSacrifice.galaxyPoints))
-			else msg+="Antimatter: "+shortenMoney(new Decimal(temp.money))+", Dimension shifts/boosts: "+temp.resets+((temp.tickspeedBoosts != undefined ? (temp.resets > 0 || temp.tickspeedBoosts > 0 || temp.galaxies > 0 || temp.infinitied > 0 || temp.eternities != 0 || isSaveQuantumed) : false)?", Tickspeed boosts: "+getFullExpansion(temp.tickspeedBoosts):"")+", Galaxies: "+temp.galaxies
+			else msg+="Antimatter: "+shortenMoney(new Decimal(temp.money))+", Dimension Shifts/Boosts: "+temp.resets+((temp.tickspeedBoosts != undefined ? (temp.resets > 0 || temp.tickspeedBoosts > 0 || temp.galaxies > 0 || temp.infinitied > 0 || temp.eternities != 0 || isSaveQuantumed) : false)?", Tickspeed boosts: "+getFullExpansion(temp.tickspeedBoosts):"")+", Galaxies: "+temp.galaxies
 		}
 		player.break=originalBreak
 		player.options.notation=originalNotation
@@ -2378,7 +2381,7 @@ var modFullNames = {
 }
 var modSubNames = {
 	ngp: ["OFF", "ON", "NG++++"],
-	ngpp: ["OFF", "ON", "NG+++"/*, "NG+++ Legacy"*/], // creation of legacy is disabled
+	ngpp: ["OFF", "ON", "NG+++"/*, "NG+++ Legacy"*/], // creation of legacy is disabled, will be retired.
 	arrows: ["Linear (↑⁰)", "Exponential (↑)"/*, "Tetrational (↑↑)"*/],
 	ngmm: ["OFF", "ON", "NG---", "NG-4", "NG-5"],
 	rs: ["NONE", "Eternity", "Infinity"],
@@ -2451,10 +2454,10 @@ function toggle_mod(id) {
 		toggle_mod("ngud")
 	}
 
-	var ngp3ex=modes.ngex&&modes.ngpp
-	if (modes.ngp3ex!=ngp3ex) {
+	var ngp3ex = modes.ngex&& modes.ngpp
+	if (modes.ngp3ex != ngp3ex) {
 		if (ngp3ex) $.notify("A space crystal begins to collide with reality...")
-		modes.ngp3ex=ngp3ex
+		modes.ngp3ex = ngp3ex
 	}
 }
 
@@ -2486,7 +2489,7 @@ function showVisibilityMenu() {
 };
 
 function showNextModeMessage() {
-	if (ngModeMessages.length>0) {
+	if (ngModeMessages.length > 0) {
 		document.getElementById("welcome").style.display = "flex"
 		document.getElementById("welcomeMessage").innerHTML = ngModeMessages[ngModeMessages.length-1]
 		ngModeMessages.pop()
@@ -2660,8 +2663,8 @@ function gainedInfinityPoints(next) {
 	else if (player.achievements.includes("r103")) div = 307.8;
 	if (player.galacticSacrifice && player.tickspeedBoosts == undefined) div -= galIP()
 
-	if (player.infinityUpgradesRespecced == undefined) var ret = Decimal.pow(10, player.money.e/div -0.75).times(getIPMult())
-	else var ret = player.money.div(Number.MAX_VALUE).pow(2*(1-Math.log10(2))/Decimal.log10(Number.MAX_VALUE)).times(getIPMult())
+	if (player.infinityUpgradesRespecced == undefined) var ret = Decimal.pow(10, player.money.e / div - 0.75).times(getIPMult())
+	else var ret = player.money.div(Number.MAX_VALUE).pow(2 * (1 - Math.log10(2)) / Decimal.log10(Number.MAX_VALUE)).times(getIPMult())
 	if (player.timestudy.studies.includes(41)) ret = ret.times(Decimal.pow(tsMults[41](), player.galaxies + player.replicanti.galaxies))
 	if (player.timestudy.studies.includes(51)) ret = ret.times(player.aarexModifications.newGameExpVersion?1e30:1e15)
 	if (player.timestudy.studies.includes(141)) ret = ret.times(new Decimal(1e45).dividedBy(Decimal.pow(15, Math.log(player.thisInfinityTime+1)*Math.pow(player.thisInfinityTime+1, 0.125))).max(1))
@@ -2685,13 +2688,13 @@ function getIPMult() {
 		if (player.achievements.includes("r85")) mult = mult.times(4)
 		if (player.achievements.includes("r93")) mult = mult.times(4)
 		if (player.achievements.includes("r43")) mult = mult.times(1.25)
-		if (player.achievements.includes("r55")) mult = mult.times(Math.min(Math.log10(Math.max(6000/player.bestInfinityTime, 10)), 10))
+		if (player.achievements.includes("r55")) mult = mult.times(Math.min(Math.log10(Math.max(6000 / player.bestInfinityTime, 10)), 10))
 		if (player.achievements.includes("r41")) mult = mult.times(Math.pow(Math.log10(Math.max(player.spreadingCancer, 10)), .05))
 		if (player.achievements.includes("r51")) {
-			let galaxies = player.galaxies + player.replicanti.galaxies + player.dilation.freeGalaxies
+			let galaxies = Math.max((player.galaxies + player.replicanti.galaxies + player.dilation.freeGalaxies), 0) // just in case
 			if (galaxies < 5) mult = mult.times(Math.max(galaxies, 1))
-			else if (galaxies < 50) mult = mult.times(Decimal.pow(galaxies+5,0.5).plus(2))
-			else mult = mult.times(Decimal.pow(galaxies,0.3).plus(7))
+			else if (galaxies < 50) mult = mult.times(Decimal.pow(galaxies + 5, 0.5).plus(2))
+			else mult = mult.times(Decimal.pow(galaxies, 0.3).plus(7))
 		}
 	}
 	return mult;
@@ -3105,11 +3108,11 @@ function setAchieveTooltip() { //want: seperate this into a lot of different fun
 	tfms2.setAttribute('ach-tooltip', "Reward: Start with " + shortenCosts(1e100) + " dilated time, and dilated time only resets on Quantum.")
 
 	//ACHIEVEMENT ROW 17
-	internal.setAttribute('ach-tooltip', "Reach " + shortenCosts(new Decimal("1e333"))+" MA without having 2nd Meta Dimensions and Meta-Dimension Boosts." + (tmp.ngp3l?"":" Reward: 1st Meta Dimensions are stronger based on meta antimatter.") )
-	truth.setAttribute('ach-tooltip', "Reach " + shortenCosts(Decimal.pow(10, 7.88e13))+" antimatter without having completed any paired challenges.")
-	cantGet.setAttribute('ach-tooltip', "Reach " + shortenCosts(Decimal.pow(10, 6.2e11))+" antimatter in Eternity Challenge 11.")
-	noDil.setAttribute('ach-tooltip', "Reach " + shortenCosts(Decimal.pow(10, 2e6))+" replicanti without having Tachyon particles. Reward: You start Quantums with the square root of your best TP as your Tachyon particle amount.")
-	dontWant.setAttribute('ach-tooltip', "Reach " + shorten(Decimal.pow(Number.MAX_VALUE, 1000))+" IP while dilated, in QC2, and without having studies and First Dimensions during your current Eternity.")
+	internal.setAttribute('ach-tooltip', "Reach " + shortenCosts(new Decimal("1e333")) + " MA without having 2nd Meta Dimensions and Meta-Dimension Boosts." + (tmp.ngp3l?"":" Reward: 1st Meta Dimensions are stronger based on meta antimatter.") )
+	truth.setAttribute('ach-tooltip', "Reach " + shortenCosts(Decimal.pow(10, 7.88e13)) + " antimatter without having completed any paired challenges.")
+	cantGet.setAttribute('ach-tooltip', "Reach " + shortenCosts(Decimal.pow(10, 6.2e11)) + " antimatter in Eternity Challenge 11.")
+	noDil.setAttribute('ach-tooltip', "Reach " + shortenCosts(Decimal.pow(10, 2e6)) + " replicanti without having Tachyon particles. Reward: You start Quantums with the square root of your best TP as your Tachyon particle amount.")
+	dontWant.setAttribute('ach-tooltip', "Reach " + shorten(Decimal.pow(Number.MAX_VALUE, 1000)) + " IP while dilated, in QC2, and without having studies and First Dimensions during your current Eternity.")
 	noparadox.setAttribute('ach-tooltip', "Quantum without any dilation upgrades." + (tmp.ngp3l ? "" : " Reward: The sum of your best Quantum Challenge times boosts Quark gain."))
 
 	//ACHIEVEMENT ROW 18
@@ -3118,8 +3121,8 @@ function setAchieveTooltip() { //want: seperate this into a lot of different fun
 	ie.setAttribute('ach-tooltip', "Get " + shorten(Decimal.pow(10, 8e6)) + " antimatter in a paired challenge with the PC6+8 combination.")
 	wasted.setAttribute('ach-tooltip', "Get " + shorten(1.1e7) + " TT without having TT generation, keeping your previous TT, and respeccing studies. Reward: While you have less than 1 hour worth of TT production, you gain 10x as much TT.")
 	protonsDecay.setAttribute('ach-tooltip', "Unlock Tree of Decay." + (!tmp.ngp3l ? " Reward: You keep the two thirds power of your preons upon quantum when outside of a Quantum Challenge." : ""))
-	stop.setAttribute('ach-tooltip', "Get the replicanti reset requirement to "+shorten(Decimal.pow(10, 1.25e7))+". Reward: Getting a normal replicant manually doesn't reset your replicanti and can be automated.")
-	dying.setAttribute('ach-tooltip', "Reach " + shorten(Decimal.pow(10, 2.75e5))+" IP while dilated, in PC6+8, and without having time studies." + (tmp.ngp3l ? "" : " Reward: Branches are faster based on your Meta-Dimension Boosts."))
+	stop.setAttribute('ach-tooltip', "Get the replicanti reset requirement to " + shorten(Decimal.pow(10, 1.25e7)) + ". Reward: Getting a normal replicant manually doesn't reset your replicanti and can be automated.")
+	dying.setAttribute('ach-tooltip', "Reach " + shorten(Decimal.pow(10, 2.75e5)) + " IP while dilated, in PC6+8, and without having time studies." + (tmp.ngp3l ? "" : " Reward: Branches are faster based on your Meta-Dimension Boosts."))
 
 	//ACHIEVEMENT ROW 19
 	gofast.setAttribute('ach-tooltip', "Get "+shorten(Decimal.pow(10, 1185))+" EP first, and then square your EP by disabling dilation while Big Ripped." + (tmp.ngp3l ? "" : " Reward: Space shards multiply quark gain."))
@@ -3262,137 +3265,137 @@ var notationMenuDone = false
 document.getElementById("notation").onclick = function () {
 	closeToolTip()
 	if (!notationMenuDone) {
-		notationMenuDone=true
-		let notationsTable=document.getElementById("notationOptions")
-		let commasTable=document.getElementById("commasOptions")
-		let subTable=document.getElementById("subNotationOptions")
-		let selectList=""
+		notationMenuDone = true
+		let notationsTable = document.getElementById("notationOptions")
+		let commasTable = document.getElementById("commasOptions")
+		let subTable = document.getElementById("subNotationOptions")
+		let selectList = ""
 		
-		var row=commasTable.insertRow(0)
-		row.innerHTML="<button class='storebtn' style='width:160px; height: 40px' onclick='switchCommas(0)'>Commas on exponents</button>"
-		row=commasTable.insertRow(1)
-		row.innerHTML="<button class='storebtn' style='width:160px; height: 40px' onclick='switchCommas(1)'>Same notation on exponents</button>"
+		var row = commasTable.insertRow(0)
+		row.innerHTML = "<button class='storebtn' style='width:160px; height: 40px' onclick='switchCommas(0)'>Commas on exponents</button>"
+		row = commasTable.insertRow(1)
+		row.innerHTML = "<button class='storebtn' style='width:160px; height: 40px' onclick='switchCommas(1)'>Same notation on exponents</button>"
 		
-		for (n=0;n<notationArray.length;n++) {
-			var name=notationArray[n]=="Emojis"?"Cancer":notationArray[n]
-			row=notationsTable.insertRow(n)
-			row.innerHTML="<button class='storebtn' id='select"+name+"' style='width:160px; height: 40px' onclick='switchNotation("+n+")'>Select "+name+"</button>"
-			row=commasTable.insertRow(n+2)
-			row.innerHTML="<button class='storebtn' id='selectCommas"+name+"' style='width:160px; height: 40px' onclick='switchCommas("+(n+2)+")'>"+name+" on exponents</button>"
-			if (n>18) {
-				row=subTable.insertRow(n-1)
-				row.innerHTML="<button class='storebtn' id='selectSub"+name+"' style='width:160px; height: 40px' onclick='switchSubNotation("+n+")'>Select "+name+"</button>"
-			} else if (n<18) {
-				row=subTable.insertRow(n)
-				row.innerHTML="<button class='storebtn' style='width:160px; height: 40px' onclick='switchSubNotation("+n+")'>Select "+name+"</button>"	
+		for (n = 0; n < notationArray.length; n++) {
+			var name = notationArray[n] == "Emojis" ? "Cancer" : notationArray[n]
+			row = notationsTable.insertRow(n)
+			row.innerHTML = "<button class='storebtn' id='select" + name + "' style='width:160px; height: 40px' onclick='switchNotation(" + n + ")'>Select " + name + "</button>"
+			row = commasTable.insertRow(n + 2)
+			row.innerHTML="<button class='storebtn' id='selectCommas" + name + "' style='width:160px; height: 40px' onclick='switchCommas(" + (n + 2) + ")'>" + name + " on exponents</button>"
+			if (n > 18) {
+				row = subTable.insertRow(n - 1)
+				row.innerHTML="<button class='storebtn' id='selectSub" + name + "' style='width:160px; height: 40px' onclick='switchSubNotation(" + n + ")'>Select " + name + "</button>"
+			} else if (n < 18) {
+				row = subTable.insertRow(n)
+				row.innerHTML = "<button class='storebtn' style='width:160px; height: 40px' onclick='switchSubNotation(" + n + ")'>Select " + name + "</button>"	
 			}
 		}
-		document.getElementById("selectAAS").setAttribute("ach-tooltip","Select Aarex's Abbreviation System")
-		document.getElementById("selectCommasAAS").setAttribute("ach-tooltip","Aarex's Abbreviation System on exponents")
-		document.getElementById("selectAF5LN").setAttribute("ach-tooltip","Select Aarex's Funny 5-letter Notation")
-		document.getElementById("selectCommasAF5LN").setAttribute("ach-tooltip","Aarex's Funny 5-letter Notation on exponents")
+		document.getElementById("selectAAS").setAttribute("ach-tooltip", "Select Aarex's Abbreviation System")
+		document.getElementById("selectCommasAAS").setAttribute("ach-tooltip", "Aarex's Abbreviation System on exponents")
+		document.getElementById("selectAF5LN").setAttribute("ach-tooltip", "Select Aarex's Funny 5-letter Notation")
+		document.getElementById("selectCommasAF5LN").setAttribute("ach-tooltip", "Aarex's Funny 5-letter Notation on exponents")
 	}
-	document.getElementById("notationmenu").style.display="block"
+	document.getElementById("notationmenu").style.display = "block"
 };
 
 function openNotationOptions() {
-	if (document.getElementById("mainnotationoptions1").style.display=="") {
-		formatPsi(1,1)
-		document.getElementById("openpsioptions").textContent="Go back"
-		document.getElementById("mainnotationoptions1").style.display="none"
-		document.getElementById("mainnotationoptions2").style.display="none"
-		document.getElementById("notationoptions").style.display=""
+	if (document.getElementById("mainnotationoptions1").style.display == "") {
+		formatPsi(1, 1)
+		document.getElementById("openpsioptions").textContent = "Go back"
+		document.getElementById("mainnotationoptions1").style.display = "none"
+		document.getElementById("mainnotationoptions2").style.display = "none"
+		document.getElementById("notationoptions").style.display = ""
 		
-		document.getElementById("significantDigits").value=player.options.scientific.significantDigits?player.options.scientific.significantDigits:0
-		document.getElementById("logBase").value=player.options.logarithm.base
-		document.getElementById("tetrationBase").value=player.options.tetration.base
-		document.getElementById("maxLength").value=player.options.psi.chars
-		document.getElementById("maxArguments").value=Math.min(player.options.psi.args,4)
-		document.getElementById("maxLetters").value=player.options.psi.maxletters
-		document.getElementById("psiSide").textContent="Non-first arguments on "+(player.options.psi.side=="r"?"right":"left")+" side"
-		var letters=[null,'E','F','G','H']
-		document.getElementById("psiLetter").textContent=(player.options.psi.letter[0]?"Force "+letters[player.options.psi.letter[0]]:"Automatically choose letter")
-		document.getElementById("chosenSubNotation").textContent="Sub-notation: "+(player.options.spazzy.subNotation=="Emojis"?"Cancer":player.options.spazzy.subNotation)
-		document.getElementById("useHyphens").checked=player.options.aas.useHyphens
-		document.getElementById("useDe").checked=player.options.aas.useDe
+		document.getElementById("significantDigits").value = player.options.scientific.significantDigits ? player.options.scientific.significantDigits : 0
+		document.getElementById("logBase").value = player.options.logarithm.base
+		document.getElementById("tetrationBase").value = player.options.tetration.base
+		document.getElementById("maxLength").value = player.options.psi.chars
+		document.getElementById("maxArguments").value = Math.min(player.options.psi.args, 4)
+		document.getElementById("maxLetters").value = player.options.psi.maxletters
+		document.getElementById("psiSide").textContent = "Non-first arguments on " + (player.options.psi.side == "r" ? "right" : "left") + " side"
+		var letters = [null, 'E', 'F', 'G', 'H']
+		document.getElementById("psiLetter").textContent = (player.options.psi.letter[0] ? "Force " + letters[player.options.psi.letter[0]] : "Automatically choose letter")
+		document.getElementById("chosenSubNotation").textContent = "Sub-notation: " + (player.options.spazzy.subNotation == "Emojis" ? "Cancer" : player.options.spazzy.subNotation)
+		document.getElementById("useHyphens").checked = player.options.aas.useHyphens
+		document.getElementById("useDe").checked = player.options.aas.useDe
 	} else {
-		document.getElementById("openpsioptions").textContent="Notation options"
-		document.getElementById("mainnotationoptions1").style.display=""
-		document.getElementById("mainnotationoptions2").style.display=""
-		document.getElementById("notationoptions").style.display="none"
+		document.getElementById("openpsioptions").textContent = "Notation options"
+		document.getElementById("mainnotationoptions1").style.display = ""
+		document.getElementById("mainnotationoptions2").style.display = ""
+		document.getElementById("notationoptions").style.display = "none"
 	}
 }
 
 function switchOption(notation,id) {
-	if (notation=="scientific") {
-		if (id=="significantDigits") {
-			var value=parseFloat(document.getElementById(id).value)
+	if (notation == "scientific") {
+		if (id === "significantDigits") {
+			var value = parseFloat(document.getElementById(id).value)
 			if (isNaN(value)) return
-			if (value%1!=0) return
-			if (value<0||value>10) return
-			if (value==0) player.options.scientific.significantDigits=undefined
-			else player.options.scientific.significantDigits=value
+			if (value % 1 != 0) return
+			if (value < 0 || value > 10) return
+			if (value == 0) player.options.scientific.significantDigits = undefined
+			else player.options.scientific.significantDigits = value
 		}
-	} else if (notation=="logarithm") {
-		if (id=="base") {
+	} else if (notation === "logarithm") {
+		if (id == "base") {
 			var value=parseFloat(document.getElementById("logBase").value)
 		}
 		if (isNaN(value)) return
-		if (id=="base") {
-			if (value<=1||value>Number.MAX_VALUE) return
-			else player.options.logarithm.base=value
+		if (id == "base") {
+			if (value <= 1 || value > Number.MAX_VALUE) return
+			else player.options.logarithm.base = value
 		}
-	} else if (notation=="tetration") {
-		if (id=="base") {
+	} else if (notation === "tetration") {
+		if (id == "base") {
 			var value=parseFloat(document.getElementById("tetrationBase").value)
 		}
 		if (isNaN(value)) return
-		if (id=="base") {
-			if (value<1.6||value>Number.MAX_VALUE) return
-			else player.options.tetration.base=value
+		if (id === "base") {
+			if (value < 1.6 || value > Number.MAX_VALUE) return
+			else player.options.tetration.base = value
 		}
-	} else if (notation=="psi") {
-		if (id.slice(0,7)=="psiSide") {
-			player.options.psi.side=id.slice(7,8)
-			document.getElementById("psiSide").textContent="Non-first arguments on "+(player.options.psi.side=="r"?"right":"left")+" side"
+	} else if (notation === "psi") {
+		if (id.slice(0, 7) === "psiSide") {
+			player.options.psi.side = id.slice(7, 8)
+			document.getElementById("psiSide").textContent = "Non-first arguments on " + (player.options.psi.side === "r" ? "right" : "left") + " side"
 			return
 		}
-		if (id.slice(0,9)=="psiLetter") {
-			var letters={None:[],E:[1],F:[2],G:[3],H:[4]}
-			player.options.psi.letter=letters[id.slice(9,id.length)]
-			document.getElementById("psiLetter").textContent=(player.options.psi.letter[0]?"Force "+id.slice(9,id.length):"Automatically choose letter")
+		if (id.slice(0, 9) === "psiLetter") {
+			var letters = {None: [], E: [1], F: [2], G: [3], H: [4]}
+			player.options.psi.letter = letters[id.slice(9, id.length)]
+			document.getElementById("psiLetter").textContent = (player.options.psi.letter[0] ? "Force " + id.slice(9, id.length) : "Automatically choose letter")
 			return
 		}
-		var value=parseFloat(document.getElementById(id).value)
+		var value = parseFloat(document.getElementById(id).value)
 		if (isNaN(value)) return
-		if (value%1!=0) return
-		if (id=="maxLength") {
-			if (value<2||value>30) return
+		if (value % 1 != 0) return
+		if (id === "maxLength") {
+			if (value < 2 || value > 30) return
 			player.options.psi.chars=value
 		}
-		if (id=="maxArguments") {
-			if (value<1||value>6) return
+		if (id === "maxArguments") {
+			if (value < 1||value > 6) return
 			player.options.psi.args=value
 		}
-		if (id=="maxLetters") {
-			if (value<1||value>4) return
+		if (id === "maxLetters") {
+			if (value < 1 || value > 4) return
 			player.options.psi.maxletters=value
 		}
-	} else if (notation=="aas") player.options.aas[id]=document.getElementById(id).checked
+	} else if (notation === "aas") player.options.aas[id] = document.getElementById(id).checked
 	onNotationChange()
 }
 
 function switchSubNotation(id) {
 	if (player.options.spazzy.subNotation == notationArray[id]) return
 	player.options.spazzy.subNotation = notationArray[id]
-	document.getElementById("chosenSubNotation").textContent="Sub-notation: "+(player.options.spazzy.subNotation=="Emojis"?"Cancer":player.options.spazzy.subNotation)
+	document.getElementById("chosenSubNotation").textContent = "Sub-notation: " + (player.options.spazzy.subNotation == "Emojis" ? "Cancer" : player.options.spazzy.subNotation)
 	onNotationChange()
 }
 
 function showHideFooter(toggle) {
-	if (toggle) player.aarexModifications.noFooter=!player.aarexModifications.noFooter
-	document.getElementById("footerBtn").textContent = (player.aarexModifications.noFooter?"Show":"Hide")+" footer"
-	document.documentElement.style.setProperty('--footer', player.aarexModifications.noFooter?"none":"")
+	if (toggle) player.aarexModifications.noFooter = !player.aarexModifications.noFooter
+	document.getElementById("footerBtn").textContent = (player.aarexModifications.noFooter ? "Show" : "Hide") + " footer"
+	document.documentElement.style.setProperty('--footer', player.aarexModifications.noFooter ? "none" : "")
 }
 
 document.getElementById("newsbtn").onclick = function(force) {
@@ -6731,12 +6734,12 @@ function newIDDisplayUpdating(){
 }
 
 function d8SacDisplay(){
-	if (calcTotalSacrificeBoost().lte(new Decimal("1e1000000000"))) {
+	if (calcTotalSacrificeBoost().lte(Decimal.pow(10, 1e9))) {
 	document.getElementById("sacrifice").setAttribute('ach-tooltip', "Boost the 8th Dimension by " + formatValue(player.options.notation, calcSacrificeBoost(), 2, 2) + "x");
-	document.getElementById("sacrifice").textContent = "Dimensional Sacrifice ("+formatValue(player.options.notation, calcSacrificeBoost(), 2, 2)+"x)"
+	document.getElementById("sacrifice").textContent = "Dimensional Sacrifice (" + formatValue(player.options.notation, calcSacrificeBoost(), 2, 2) + "x)"
 	} else {
 	document.getElementById("sacrifice").setAttribute('ach-tooltip', "Boost the 8th Dimension");
-	document.getElementById("sacrifice").textContent = "Dimensional Sacrifice (Total: "+formatValue(player.options.notation, calcTotalSacrificeBoost(), 2, 2)+ "x)"
+	document.getElementById("sacrifice").textContent = "Dimensional Sacrifice (Total: " + formatValue(player.options.notation, calcTotalSacrificeBoost(), 2, 2) + "x)"
 	}
 }
 
@@ -6756,12 +6759,12 @@ function galSacBtnUpdating(){
 		if (getGSAmount().gt(0)) {
 			document.getElementById("gSacrifice").className = "storebtn"
 			document.getElementById("sacrificebtn").style.display = ""
-			var currentGPmin = getGSAmount().dividedBy(player.galacticSacrifice.time/600)
+			var currentGPmin = getGSAmount().dividedBy(player.galacticSacrifice.time / 600)
 			if (currentGPmin.gt(GPminpeak)) GPminpeak = currentGPmin
-			var notationOkay =  (GPminpeak.gt("1e300000")&&player.options.theme!="Aarex's Modifications")||player.options.notation=="Morse code"||player.options.notation=='Spazzy'
-			var notation2okay = (GPminpeak.gt("1e3000")&&player.options.theme != "Aarex's Modifications")||player.options.notation=="Morse code"||player.options.notation=='Spazzy'
-			document.getElementById("sacrificebtn").innerHTML = (notationOkay ? "Gain " : "Galactic Sacrifice for ")+shortenDimensions(getGSAmount()) + " Galaxy points."+
-				(notation2okay?"":"<br>"+shortenMoney(currentGPmin)+" GP/min"+"<br>Peaked at "+shortenMoney(GPminpeak)+" GP/min")
+			var notationOkay = (GPminpeak.gt("1e300000") && player.options.theme != "Aarex's Modifications") || player.options.notation == "Morse code" || player.options.notation == 'Spazzy'
+			var notation2okay = (GPminpeak.gt("1e3000") && player.options.theme != "Aarex's Modifications") || player.options.notation == "Morse code" || player.options.notation == 'Spazzy'
+			document.getElementById("sacrificebtn").innerHTML = (notationOkay ? "Gain " : "Galactic Sacrifice for ") + shortenDimensions(getGSAmount()) + " Galaxy points." +
+				(notation2okay ? "" : "<br>" + shortenMoney(currentGPmin) + " GP/min" + "<br>Peaked at " + shortenMoney(GPminpeak) + " GP/min")
 		} else document.getElementById("gSacrifice").className = "unavailablebtn"
 	}
 }
@@ -6792,8 +6795,8 @@ function setTachyonParticles(x) {
 	if (player.achievements.includes("ng3p18") || player.achievements.includes("ng3p37")) {
 		player.dilation.bestTP = Decimal.max(player.dilation.bestTP || 0, player.dilation.tachyonParticles)
 		player.dilation.bestTPOverGhostifies = player.dilation.bestTPOverGhostifies.max(player.dilation.bestTP)
-		document.getElementById('bestTP').textContent="Your best"+(ghostified ? "" : " ever")+" Tachyon particles"+(ghostified ? " in this Ghostify" : "")+" was "+shorten(player.dilation.bestTP)+"."
-		setAndMaybeShow('bestTPOverGhostifies',ghostified,'"Your best-ever Tachyon particles was "+shorten(player.dilation.bestTPOverGhostifies)+"."')
+		document.getElementById('bestTP').textContent = "Your best" + (ghostified ? "" : " ever")+" Tachyon particles" + (ghostified ? " in this Ghostify" : "") + " was " + shorten(player.dilation.bestTP) + "."
+		setAndMaybeShow('bestTPOverGhostifies', ghostified, '"Your best-ever Tachyon particles was "+shorten(player.dilation.bestTPOverGhostifies)+"."')
 	}
 }
 
@@ -6801,7 +6804,7 @@ function passiveQuantumLevelStuff(diff){
 	if (tmp.qu.bigRip.active || hasBosonicUpg(24)) tmp.qu.bigRip.spaceShards = tmp.qu.bigRip.spaceShards.add(getSpaceShardsGain().times(diff / 100))
 	if (!tmp.qu.bigRip.active) {
 		tmp.qu.quarks = tmp.qu.quarks.add(quarkGain().sqrt().times(diff))
-		var p = ["rg","gb","br"]
+		var p = ["rg", "gb", "br"]
 		for (var i = 0; i < 3; i++) {
 			var r = tmp.qu.usedQuarks[p[i][0]].min(tmp.qu.usedQuarks[p[i][1]])
 			if (player.achievements.includes("ng3p71")) r = r.div(100)
@@ -6951,8 +6954,8 @@ function gameLoop(diff) {
 		if (player.masterystudies.includes('t291')) updateEternityUpgrades() // to fix the 5ep upg display
 		if (quantumed) quantumOverallUpdating(diff)
 		if (ghostified) {
-			if (player.ghostify.wzb.unl) WZBosonsUpdating(diff) //Bosonic Lab
-			if (player.ghostify.ghostlyPhotons.unl) ghostlyPhotonsUpdating(diff)//Ghostly Photons
+			if (player.ghostify.wzb.unl) WZBosonsUpdating(diff) // Bosonic Lab
+			if (player.ghostify.ghostlyPhotons.unl) ghostlyPhotonsUpdating(diff) // Ghostly Photons
 		}
 	}
 

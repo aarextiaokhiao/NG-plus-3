@@ -105,7 +105,7 @@ function drawBlackhole(ts) {
 
 function canFeedBlackHole (i) {
 	if (i == 1) {
-		return Decimal.pow(10, player.blackhole.upgrades.dilatedTime+(player.aarexModifications.nguspV ? 18 : 20)).lte(player.dilation.dilatedTime)
+		return Decimal.pow(10, player.blackhole.upgrades.dilatedTime + (player.aarexModifications.nguspV ? 18 : 20)).lte(player.dilation.dilatedTime)
 	} else if (i == 2) {
 		return Decimal.pow(2, player.blackhole.upgrades.bankedInfinities).times(5e9).round().lte(player.infinitiedBank)
 	} else if (i == 3) {
@@ -142,7 +142,7 @@ function feedBlackHole(i, bulk) {
 	} else if (i == 3) {
 		let cost = Decimal.pow(10, 1e3 * player.blackhole.upgrades.replicanti + 2e4)
 		if (bulk) {
-			let toBuy = Math.floor(player.replicanti.amount.div(cost).log10()/1e3+1)
+			let toBuy = Math.floor(player.replicanti.amount.div(cost).log10() / 1e3 + 1)
 			let toSpend = Decimal.pow(10, 1e3 * toBuy - 1).times(cost)
 			player.replicanti.amount = player.replicanti.amount.minus(player.replicanti.amount.min(toSpend)).max(1)
 			player.blackhole.upgrades.replicanti += toBuy
@@ -193,11 +193,11 @@ function buyMaxBlackholeDimensions(){
 		if (dim.cost.log10() <= e){
 			let diff = e - dim.cost.log10()
 			let buying = Math.ceil(diff/blackholeDimCostMults[i].log10())
-			player.eternityPoints = player.eternityPoints.minus(player.eternityPoints.min(Decimal.pow(blackholeDimCostMults[i],buying-1).times(dim.cost)))
+			player.eternityPoints = player.eternityPoints.minus(player.eternityPoints.min(Decimal.pow(blackholeDimCostMults[i], buying - 1).times(dim.cost)))
 			dim.amount = dim.amount.plus(buying)
 			dim.bought += buying	
 			dim.cost = Decimal.pow(blackholeDimCostMults[i], dim.bought).times(blackholeDimStartCosts[i])
-			dim.power = dim.power.times(Decimal.pow(blackholeDimPowers[i],buying))
+			dim.power = dim.power.times(Decimal.pow(blackholeDimPowers[i], buying))
 			if (i > 3) giveAchievement("We couldn't afford 5")
 		}
 	}
@@ -261,7 +261,7 @@ function exDilationUpgradeStrength(x, add = 0) {
 		if (ret > 1) ret = Math.sqrt(ret)
 		return ret
 	}
-	ret = Math.max(ret.log10() + 1, 0)/10
+	ret = Math.max(ret.log10() + 1, 0) / 10
 	if (ret > .3) {
 		ret = .8 - Math.pow(Math.E, 2 * (.3 - ret)) / 2;
 	}
