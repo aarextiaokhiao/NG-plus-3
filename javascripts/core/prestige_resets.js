@@ -572,7 +572,7 @@ function getReplicantsOnGhostifyData(){
 
 function getToDOnGhostifyData(){
 	var bm = player.ghostify.milestones
-	return {
+	let ret = {
 		r: {
 			quarks: new Decimal(0),
 			spin: new Decimal(bm > 13 ? 1e25 : 0),
@@ -590,6 +590,10 @@ function getToDOnGhostifyData(){
 		},
 		upgrades: {}
 	}
+	if (player.quantum.tod.b.decays && player.achievements.includes("ng3p86")) ret.b.decays = Math.floor(player.quantum.tod.b.decays * .75)
+	if (player.quantum.tod.r.decays && player.achievements.includes("ng3p86")) ret.r.decays = Math.floor(player.quantum.tod.r.decays * .75)
+	if (player.quantum.tod.g.decays && player.achievements.includes("ng3p86")) ret.g.decays = Math.floor(player.quantum.tod.g.decays * .75)
+	return ret
 }
 
 function getBigRipOnGhostifyData(nBRU){

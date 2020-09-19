@@ -30,7 +30,8 @@ function updateRedLightBoostTemp(){
 }
 
 function updateOrangeLightBoostTemp(){
-	tmp.le[1] = tmp.effL[1] > 64 ? Math.log10(tmp.effL[1] / 64) + 14 : tmp.effL[1] > 8 ? Math.sqrt(tmp.effL[1]) + 6 : tmp.effL[1] + 1
+	if (tmp.effL[1] > 64) big = tmp.newNGP3E ? 10 + Math.pow(tmp.effL[1], 1/3) : Math.log10(tmp.effL[1] / 64) + 14
+	tmp.le[1] = tmp.effL[1] > 64 ? big : tmp.effL[1] > 8 ? Math.sqrt(tmp.effL[1]) + 6 : tmp.effL[1] + 1
 }
 
 function updateYellowLightBoostTemp(){

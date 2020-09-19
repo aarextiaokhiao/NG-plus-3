@@ -689,7 +689,7 @@ function getGHPGain() {
 		log *= 2
 	} else if (player.achievements.includes("ng3p58")) { 
 		//the square part of the formula maxes at e10, and gets weaker after ~e60 total
-		let x = Math.min(10, log)
+		let x = Math.min(7, log / 2) + Math.min(3, log / 2)
 		y = player.ghostify.ghostParticles.plus(Decimal.pow(10, log)).plus(10).log10()
 		if (!player.achievements.includes("ng3p84")) x = Math.min(x, 600 / y)
 		log += x

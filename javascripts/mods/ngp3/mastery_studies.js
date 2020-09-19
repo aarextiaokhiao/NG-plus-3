@@ -254,7 +254,7 @@ var masteryStudies = {
 			var log = eff.log10()
 
 			let log2log = Math.log10(log) / Math.log10(2)
-			let start = 8 //Starts at e256
+			let start = 9 //Starts at e512
 			if (log2log > start) {
 				let capped = Math.floor(Math.log10(Math.max(log2log + 2 - start, 1)) / Math.log10(2))
 				log2log = (log2log - Math.pow(2, capped) - start + 2) / Math.pow(2, capped) + capped + start - 1

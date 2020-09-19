@@ -1,7 +1,7 @@
 function getDilTimeGainPerSecond() {
 	let tp = player.dilation.tachyonParticles
 	let exp = getDTGainExp()
-	let gain = tp.pow(exp).times(Decimal.pow(2, getDilUpgPower(1)))
+	let gain = tp.pow(exp)
 	
 	if (player.exdilation != undefined) gain = gain.times(getNGUDTGain())
 	gain = gain.times(getEternityBoostToDT())
@@ -28,8 +28,7 @@ function getDilTimeGainPerSecond() {
 	var lgain = gain.log10()
 	if (!tmp.ngp3l) lgain = softcap(lgain, "dt_log")
 	
-	return Decimal.pow(10, lgain)
-	
+	return Decimal.pow(10, lgain).times(Decimal.pow(2, getDilUpgPower(1)))	
 }
 
 function getDTGainExp(){
