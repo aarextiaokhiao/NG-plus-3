@@ -316,7 +316,7 @@ function buyBranchUpg(branch, upg) {
 	bData.upgrades[upg]++
 	extra = bData.spin.log10() > 200
 	start = extra ? "" : "Cost: "
-	end = extra ? color : color + " quark spin"
+	end = extra ? colors[branch] : colors[branch] + " quark spin"
 	document.getElementById(colors[branch] + "upg" + upg + "current").textContent = shortenDimensions(getBranchUpgMult(branch, upg))
 	document.getElementById(colors[branch] + "upg" + upg + "cost").textContent = start + shortenMoney(getBranchUpgCost(branch, upg)) + " " + end
 }
