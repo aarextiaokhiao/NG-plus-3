@@ -2609,7 +2609,7 @@ function import_save(type) {
 }
 
 function reset_game() {
-	if (!forceHardReset) if (!confirm("Do you really want to erase all your progress?")) return
+	if (!forceHardReset) if (!confirm("Do you really want to erase all your progress in this save?")) return
 	clearInterval(gameLoopIntervalId)
 	infiniteDetected = false
 	updateNewPlayer(true)

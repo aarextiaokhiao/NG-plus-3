@@ -161,19 +161,20 @@ function ngP3AchieveCheck(){
 		if (ableToGetRid10 && player.infinityPoints.e >= 2.25e4) giveAchievement("I give up.")
 		if (player.matter.log10() > 5000) giveAchievement("Really?")
 	}
-	if (tmp.qu.bigRip.spaceShards.e>32&&!tmp.qu.breakEternity.did) giveAchievement("Finite Time")
-	if (minUQ.quarks.e>=1e12&&minUQ.decays>=2&&!tmp.qu.bigRip.times) giveAchievement("Weak Decay")		
+	if (tmp.qu.bigRip.spaceShards.e > 32 && !tmp.qu.breakEternity.did) giveAchievement("Finite Time")
+	if (minUQ.quarks.e >= 1e12 && minUQ.decays >=2 && !tmp.qu.bigRip.times) giveAchievement("Weak Decay")		
 	if (nG(getInfinitied(), Number.MAX_VALUE)) giveAchievement("Meta-Infinity confirmed?")
 	if (nG(getEternitied(), Number.MAX_VALUE)) giveAchievement("Everlasting Eternities")
 	if (player.options.secrets && player.options.secrets.ghostlyNews && !player.options.newsHidden) giveAchievement("Two tickers")
 	
-	if (tmp.ngp3l) return 
-	if (player.ghostify.another && tmp.qu.quarks.gte(1/0)) giveAchievement("Is these another...")
+	if (tmp.ngp3l) return // NG+3.1 achievements from this point on
+	
+	if (player.quantum.quarks.log10() >= 66666) giveAchievement("Are these another...")
 	if (player.ghostify.reference && minUQ.decays >= 2) giveAchievement("... references to EC8?")
 	if (player.ghostify.hb.bosonicSemipowerment && player.ghostify.ghostlyPhotons.lights[7] >= tmp.leReq / 2) giveAchievement("Bosonic Semipowerment")
 	if (player.ghostify.times >= Math.pow(Number.MAX_VALUE, 1/4)) giveAchievement("The Ghostliest Side")
 	if (player.money.e >= 1e18) giveAchievement("Meta-Quintillion")
-	branches = ['r','g','b']
+	branches = ['r', 'g', 'b']
 	twoDecays = true
 	for (i = 0; i < 3; i++){
 		if (!player.quantum.tod[branches[i]].decays) {
@@ -183,7 +184,6 @@ function ngP3AchieveCheck(){
 		if (player.quantum.tod[branches[i]].decays < 2) twoDecays = false	
 	}
 	if (player.unstableThisGhostify) if (player.unstableThisGhostify <= 10 && twoDecays) giveAchievement("... references to EC8?")
-	if (player.quantum.quarks.log10() >= 66666) giveAchievement("Are these another...")
 }
 
 function ALLACHIEVECHECK(){
