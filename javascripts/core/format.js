@@ -2,7 +2,7 @@ var FormatList = ['', 'K', 'M', 'B', 'T', 'Qa', 'Qt', 'Sx', 'Sp', 'Oc', 'No', 'D
 
 function letter(power, str) {
 	const len = str.length;
-    let ret = ''
+	let ret = ''
 	power = Math.floor(power / 3)
 	let skipped = Math.floor(Math.log10(power * (len - 1) + 1) / Math.log10(len)) - 7
 	if (skipped < 4) skipped = 0

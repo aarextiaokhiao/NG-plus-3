@@ -264,6 +264,241 @@ function updateGhostifyTempStuff(){
 	}
 }
 
+function updateNeutrinoBoostsTemp() {
+	tmp.nb = {}
+
+	if (!tmp.ngp3) return
+	if (!ghostified) return
+
+	var nt = []
+	for (var g = 0; g < 3; g++) nt[g] = player.ghostify.neutrinos[(["electron","mu","tau"])[g]]
+	for (var nb = 1; nb <= player.ghostify.neutrinos.boosts; nb++) tmp.nb[nb] = neutrinoBoosts.boosts[nb](nt)
+}
+
+function updateNU1Temp(){
+	let x = 110
+	if (!tmp.qu.bigRip.active) x = Math.max(x - player.meta.resets, 0)
+	tmp.nu[0] = x
+}
+
+function updateNU3Temp(){
+	let log = tmp.qu.colorPowers.b.log10()
+	let exp = Math.max(log / 1e4 + 1, 2)
+	let x
+	if (exp > 2) x = Decimal.pow(Math.max(log / 250 + 1, 1), exp)
+	else x = Math.pow(Math.max(log / 250 + 1, 1), exp)
+	tmp.nu[1] = x
+}
+
+function updateNU4Temp(){
+	let nu4base = 50
+	if (tmp.ngp3l) nu4base = 20
+	tmp.nu[2] = Decimal.pow(nu4base, Math.pow(Math.max(-getTickspeed().div(1e3).log10() / 4e13 - 4, 0), 1/4))
+}
+
+function updateNU7Temp(){
+	var nu7 = tmp.qu.colorPowers.g.add(1).log10()/400
+	if (nu7 > 40) nu7 = Math.sqrt(nu7*10)+20
+	tmp.nu[3] = Decimal.pow(10,nu7) 
+}
+
+function updateNU12Temp(){
+	tmp.nu[4] = { 
+		normal: Math.sqrt(player.galaxies * .0035 + 1),
+		free: player.dilation.freeGalaxies * .035 + 1,
+		replicated: Math.sqrt(getTotalRG()) * (tmp.ngp3l ? .035 : .0175) + 1 //NU12 
+	}
+}
+
+function updateNU14Temp(){
+	var base = player.ghostify.ghostParticles.add(1).log10()
+	var colorsPortion = Math.pow(tmp.qu.colorPowers.r.add(tmp.qu.colorPowers.g).add(tmp.qu.colorPowers.b).add(1).log10(),1/3)
+	tmp.nu[5] = Decimal.pow(base, colorsPortion * 0.8 + 1).max(1) //NU14
+}
+
+function updateNU15Temp(){
+	tmp.nu[6] = Decimal.pow(2,(tmp.qu.nanofield.rewards>90?Math.sqrt(90*tmp.qu.nanofield.rewards):tmp.qu.nanofield.rewards) / 2.5) 
+	//NU15
+}
+
+function updateNeutrinoUpgradesTemp(){
+	updateNU1Temp()
+	updateNU3Temp()
+	updateNU4Temp()
+	updateNU7Temp()
+	updateNU12Temp()
+}
+
+function updateBreakEternityUpgrade1Temp(){
+	var ep = player.eternityPoints
+	var em = tmp.qu.breakEternity.eternalMatter
+	var log1 = ep.div("1e1280").add(1).log10()
+	var log2 = em.times(10).max(1).log10()
+	tmp.beu[1] = Decimal.pow(10, Math.pow(log1, 1/3) * 0.5 + Math.pow(log2, 1/3)).max(1)
+}
+
+function updateBreakEternityUpgrade2Temp(){
+	var ep = player.eternityPoints
+	var log = ep.div("1e1290").add(1).log10()
+	tmp.beu[2] = Math.pow(Math.log10(log + 1) * 1.6 + 1, player.currentEternityChall == "eterc10" ? 1 : 2)
+}
+
+function updateBreakEternityUpgrade3Temp(){
+	var ep = player.eternityPoints
+	var nerfUpgs = !tmp.be && hasBosonicUpg(24)
+	var log = ep.div("1e1370").add(1).log10()
+	if (nerfUpgs) log /= 2e6
+	var exp = Math.pow(log, 1/3) * 0.5
+	if (!tmp.ngp3l) exp = softcap(exp, "beu3_log")
+	tmp.beu[3] = Decimal.pow(10, exp)
+}
+
+function updateBreakEternityUpgrade4Temp(){
+	var ep = player.eternityPoints
+	var ss = tmp.qu.bigRip.spaceShards
+	var log1 = ep.div("1e1860").add(1).log10()
+	var log2 = ss.div("7e19").add(1).log10()
+	var exp = Math.pow(log1, 1/3) + Math.pow(log2, 1/3) * 8
+	if (!tmp.ngp3l && exp > 333) exp = 111 * Math.log10(3 * exp + 1)
+	tmp.beu[4] = Decimal.pow(10, exp)
+}
+
+function updateBreakEternityUpgrade5Temp(){
+	var ep = player.eternityPoints
+	var ts = player.timeShards
+	var log1 = ep.div("1e2230").add(1).log10()
+	var log2 = ts.div(1e90).add(1).log10()
+	var exp = Math.pow(log1, 1/3) + Math.pow(log2, 1/3)
+	if (player.aarexModifications.ngudpV && exp > 100) exp = Math.log10(exp) * 50
+	if (!tmp.ngp3l && exp > 999) exp = 333 * Math.log10(exp + 1)
+	exp *= 4
+	tmp.beu[5] = Decimal.pow(10, exp)
+}
+
+function updateBreakEternityUpgrade6Temp(){
+	var ep = player.eternityPoints
+	var em = tmp.qu.breakEternity.eternalMatter
+	var nerfUpgs = !tmp.be && hasBosonicUpg(24)
+	var log1 = ep.div("1e4900").add(1).log10()
+	var log2 = em.div(1e45).add(1).log10()
+	if (nerfUpgs) log1 /= 2e6
+	var exp = Math.pow(log1, 1/3) / 1.7 + Math.pow(log2, 1/3) * 2
+	if (!tmp.ngp3l && exp > 200) exp = 50 * Math.log10(50 * exp)
+	tmp.beu[6] = Decimal.pow(10, exp)
+}
+
+function updateBreakEternityUpgrade8Temp(){
+	var x = Math.log10(player.dilation.tachyonParticles.div(1e200).add(1).log10() / 100 + 1) * 3 + 1
+	if (player.aarexModifications.ngudpV && x > 2.2) x = 1.2 + Math.log10(x + 7.8)
+	if (!tmp.ngp3l) {
+		if (x > 3) x = 1 + Math.log2(x + 1)
+		if (x > 10/3) x = 7/3 + Math.log10(3 * x)
+	}
+	tmp.beu[8] = x
+}
+
+function updateBreakEternityUpgrade9Temp(){
+	var em = tmp.qu.breakEternity.eternalMatter
+	var x = em.div("1e335").add(1).pow(0.05 * Math.log10(4))
+	if (!tmp.ngp3l) {
+		if (x.gte(Decimal.pow(10,18))) x = Decimal.pow(x.log10() * 5 + 10, 9)
+		if (x.gte(Decimal.pow(10,100))) x = Decimal.pow(x.log10(), 50)
+	}
+	tmp.beu[9] = x.toNumber()
+}
+
+function updateBreakEternityUpgrade10Temp(){
+	var ep = player.eternityPoints
+	tmp.beu[10] = Math.max(Math.log10(ep.add(1).log10() + 1) - 1, 1)
+}
+
+function updateBreakEternityUpgradesTemp() {
+	//Setup
+	var ep = player.eternityPoints
+	var ts = player.timeShards
+	var ss = tmp.qu.bigRip.spaceShards
+	var em = tmp.qu.breakEternity.eternalMatter
+	var nerfUpgs = !tmp.be && hasBosonicUpg(24)
+
+	updateBreakEternityUpgrade1Temp()
+	updateBreakEternityUpgrade2Temp()
+	updateBreakEternityUpgrade3Temp()
+	updateBreakEternityUpgrade4Temp()
+	updateBreakEternityUpgrade5Temp()
+	updateBreakEternityUpgrade6Temp()
+
+	//Upgrade 7: EP Mult
+	tmp.beu[7] = Decimal.pow(1e9, tmp.qu.breakEternity.epMultPower)
+
+	if (player.ghostify.ghostlyPhotons.unl) {
+		updateBreakEternityUpgrade8Temp()
+		updateBreakEternityUpgrade9Temp()
+		updateBreakEternityUpgrade10Temp()
+	}
+}
+
+function updateBRU1Temp() {
+	tmp.bru[1] = 1
+	if (!tmp.qu.bigRip.active) return
+	let exp = 1
+	if (tmp.qu.bigRip.upgrades.includes(17)) exp = tmp.bru[17]
+	if (ghostified && player.ghostify.neutrinos.boosts > 7) exp *= tmp.nb[8]
+	exp *= player.infinityPoints.max(1).log10()
+	exp = softcap(exp, "bru1_log", tmp.ngp3l ? 1 : 2)
+	tmp.bru[1] = Decimal.pow(10, exp) // BRU1
+}
+
+function updateBRU8Temp() {
+	tmp.bru[8] = 1
+	if (!tmp.qu.bigRip.active) return
+	tmp.bru[8] = Decimal.pow(2,getTotalRG()) // BRU8
+	if (!hasNU(11)) tmp.bru[8] = tmp.bru[8].min(Number.MAX_VALUE)
+}
+
+function updateBRU14Temp() {
+	if (!tmp.qu.bigRip.active) {
+		tmp.bru[14] = 1
+		return
+	}
+	var ret = Math.min(tmp.qu.bigRip.spaceShards.div(3e18).add(1).log10()/3,0.4)
+	var val = Math.sqrt(tmp.qu.bigRip.spaceShards.div(3e15).add(1).log10()*ret+1)
+	if (val > 12) val = 10 + Math.log10(4 + 8 * val)
+	tmp.bru[14] = val //BRU14
+}
+
+function updateBRU15Temp() {
+	let r = Math.sqrt(player.eternityPoints.add(1).log10()) * 3.55
+	if (r > 1e4 && !tmp.ngp3l) r = Math.sqrt(r * 1e4)
+	tmp.bru[15] = r
+}
+
+function updateBRU16Temp() {
+	tmp.bru[16] = player.dilation.dilatedTime.div(1e100).pow(0.155).max(1)
+}
+
+function updateBRU17Temp() {
+	tmp.bru[17] = !tmp.ngp3l && ghostified ? 3 : 2.9
+}
+
+function updateBigRipUpgradesTemp(){
+	updateBRU17Temp()
+	updateBRU1Temp()
+	updateBRU8Temp()
+	updateBRU14Temp()
+	updateBRU15Temp()
+	updateBRU16Temp()
+}
+
+function updatePhotonsUnlockedBRUpgrades(){
+	var bigRipUpg18base = 1 + tmp.qu.bigRip.spaceShards.div(1e140).add(1).log10()
+	var bigRipUpg18exp = Math.max(tmp.qu.bigRip.spaceShards.div(1e140).add(1).log10() / 10, 1)
+	if (bigRipUpg18base > 10 && tmp.newNGP3E) bigRipUpg18base *= Math.log10(bigRipUpg18base)
+	tmp.bru[18] = Decimal.pow(bigRipUpg18base, bigRipUpg18exp) // BRU18
+	
+	var bigRipUpg19exp = Math.sqrt(player.timeShards.add(1).log10()) / (tmp.newNGP3E ? 60 : 80)
+	tmp.bru[19] = Decimal.pow(10, bigRipUpg19exp) // BRU19
+}
+
 function updateTemp() {
 	if (player) {
 		if (player.money) tmp.ri = player.money.gte(getLimit()) && ((player.currentChallenge != "" && player.money.gte(player.challengeTarget)) || !onPostBreak())

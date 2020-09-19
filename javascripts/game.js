@@ -5738,6 +5738,7 @@ function checkMatter(diff){
 function passiveIPupdating(diff){
 	if (player.infinityUpgrades.includes("passiveGen")) player.partInfinityPoint += diff / player.bestInfinityTime * 10
 	else player.partInfinityPoint = 0
+	if (player.bestInfinityTime == 9999999999) player.partInfinityPoint = 0
 	let x = Math.floor(player.partInfinityPoint / 10)
 	player.partInfinityPoint -= x * 10
 	player.infinityPoints = player.infinityPoints.plus(getIPMult().times(x));

@@ -29,15 +29,14 @@ function getNormalDimensionVanillaAchievementBonus(tier){
 	if (player.galacticSacrifice && player.tickspeedBoosts == undefined && player.achievements.includes("r46")) mult = mult.times(productAllDims1());
 	if (player.achievements.includes("r74") && player.currentChallenge != "") mult = mult.times(player.galacticSacrifice ? 40 : 1.4);
 	if (player.achievements.includes("r77")) mult = mult.times(1 + tier / (player.galacticSacrifice ? 10 : 100));
-	if (!player.galacticSacrifice) {
-		if (player.achievements.includes("r56") && player.thisInfinityTime < 1800) mult = mult.times(3600 / (player.thisInfinityTime + 1800));
-		if (player.achievements.includes("r78") && player.thisInfinityTime < 3) mult = mult.times(3.3 / (player.thisInfinityTime + 0.3));
-		if (player.achievements.includes("r65") && player.currentChallenge != "" && player.thisInfinityTime < 1800) mult = mult.times(Math.max(2400 / (player.thisInfinityTime + 600), 1))
-		if (player.achievements.includes("r91") && player.thisInfinityTime < 50) mult = mult.times(Math.max(301 - player.thisInfinityTime * 6, 1))
-		if (player.achievements.includes("r92") && player.thisInfinityTime < 600) mult = mult.times(Math.max(101 - player.thisInfinityTime / 6, 1));
-	}
 	if (player.boughtDims && player.achievements.includes("r98")) mult = mult.times(player.infinityDimension8.amount.max(1))
 	mult = mult.times(getR84or73Mult())
+	if (player.galacticSacrifice) return mult
+	if (player.achievements.includes("r56") && player.thisInfinityTime < 1800) mult = mult.times(3600 / (player.thisInfinityTime + 1800));
+	if (player.achievements.includes("r78") && player.thisInfinityTime < 3) mult = mult.times(3.3 / (player.thisInfinityTime + 0.3));
+	if (player.achievements.includes("r65") && player.currentChallenge != "" && player.thisInfinityTime < 1800) mult = mult.times(Math.max(2400 / (player.thisInfinityTime + 600), 1))
+	if (player.achievements.includes("r91") && player.thisInfinityTime < 50) mult = mult.times(Math.max(301 - player.thisInfinityTime * 6, 1))
+	if (player.achievements.includes("r92") && player.thisInfinityTime < 600) mult = mult.times(Math.max(101 - player.thisInfinityTime / 6, 1));
 	return mult
 }
 
@@ -72,19 +71,18 @@ function getAfterDefaultDilationLayerAchBonus(tier){
 	let timeAndDimMult = timeMult()
 	if (hasInfinityMult(tier) && !(player.aarexModifications.ngmX >= 4)) timeAndDimMult = dimMults().times(timeAndDimMult)
 	if (player.challenges.includes("postcngmm_1")||player.currentChallenge=="postcngmm_1") mult = mult.times(timeAndDimMult)
-	if (player.galacticSacrifice) {
-		if (player.achievements.includes("r56") && player.thisInfinityTime < 1800) mult = mult.times(3600 / (player.thisInfinityTime + 1800));
-		if (player.achievements.includes("r78") && player.thisInfinityTime < 3) mult = mult.times(3.3 / (player.thisInfinityTime + 0.3));
-		if (player.achievements.includes("r65") && player.currentChallenge != "" && player.thisInfinityTime < 1800) mult = mult.times(Math.max(2400 / (player.thisInfinityTime + 600), 1))
-		if (player.achievements.includes("r91") && player.thisInfinityTime < 50) mult = mult.times(Math.max(301 - player.thisInfinityTime * 6, 1))
-		if (player.achievements.includes("r92") && player.thisInfinityTime < 600) mult = mult.times(Math.max(101 - player.thisInfinityTime / 6, 1));
-		if (player.currentChallenge == "postc6" || inQC(6)) mult = mult.dividedBy(player.matter.max(1))
-		if (player.currentChallenge == "postc8" || inQC(6)) mult = mult.times(player.postC8Mult)
-		if (player.galacticSacrifice.upgrades.includes(12) && player.galacticSacrifice.upgrades.includes(42) && player.aarexModifications.ngmX >= 4) mult = mult.times(galMults.u12())
-		if (player.galacticSacrifice.upgrades.includes(45) && player.aarexModifications.ngmX >= 4) {
-			var e = player.galacticSacrifice.upgrades.includes(46) ? galMults["u46"]() : 1
-			mult = mult.times(Math.pow(player["timeDimension" + tier].amount.plus(10).log10(), e))
-		}
+	if (!player.galacticSacrifice) return mult
+	if (player.achievements.includes("r56") && player.thisInfinityTime < 1800) mult = mult.times(3600 / (player.thisInfinityTime + 1800));
+	if (player.achievements.includes("r78") && player.thisInfinityTime < 3) mult = mult.times(3.3 / (player.thisInfinityTime + 0.3));
+	if (player.achievements.includes("r65") && player.currentChallenge != "" && player.thisInfinityTime < 1800) mult = mult.times(Math.max(2400 / (player.thisInfinityTime + 600), 1))
+	if (player.achievements.includes("r91") && player.thisInfinityTime < 50) mult = mult.times(Math.max(301 - player.thisInfinityTime * 6, 1))
+	if (player.achievements.includes("r92") && player.thisInfinityTime < 600) mult = mult.times(Math.max(101 - player.thisInfinityTime / 6, 1));
+	if (player.currentChallenge == "postc6" || inQC(6)) mult = mult.dividedBy(player.matter.max(1))
+	if (player.currentChallenge == "postc8" || inQC(6)) mult = mult.times(player.postC8Mult)
+	if (player.galacticSacrifice.upgrades.includes(12) && player.galacticSacrifice.upgrades.includes(42) && player.aarexModifications.ngmX >= 4) mult = mult.times(galMults.u12())
+	if (player.galacticSacrifice.upgrades.includes(45) && player.aarexModifications.ngmX >= 4) {
+		var e = player.galacticSacrifice.upgrades.includes(46) ? galMults["u46"]() : 1
+		mult = mult.times(Math.pow(player["timeDimension" + tier].amount.plus(10).log10(), e))
 	}
 	return mult
 }
@@ -176,9 +174,7 @@ function getDimensionDescription(tier) {
 }
 
 function getDimensionRateOfChange(tier) {
-	if (tier == 8 || (player.currentEternityChall == "eterc3" && tier > 3)) {
-		return 0;
-	}
+	if (tier == 8 || (player.currentEternityChall == "eterc3" && tier > 3)) return 0;
 
 	let toGain = getDimensionProductionPerSecond(tier + 1)
 	if (tier == 7 && player.currentEternityChall == "eterc7") toGain = DimensionProduction(1).times(10)
