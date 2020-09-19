@@ -501,13 +501,22 @@ function updateAchievements() {
 	document.getElementById("nothingnessSecret").style.display = rowsShown ? "none" : ""
 }
 
+function getNormalAchAmount(){
+    return player.achievements.length - getSecretAchAmount()
+}
+
 function getSecretAchAmount() {
     var n = 0
     for (var i = 1; i <= document.getElementById("secretachievementtable").children[0].children.length; i++) {
         var achNum = i * 10
-        for (var l = 0; l < 8; l++) {
-            achNum += 1;
+        if (i <= 3) for (var l = 0; l < 8; l++) {
+            achNum = i * 10 + l + 1
             if (player.achievements.includes("s" + achNum)) {
+                n++
+            }
+        } else for (var l = 0; l < 8; l++) {
+            achNum = i * 10 + l - 29
+            if (player.achievements.includes("ng3ps" + achNum)){
                 n++
             }
         }

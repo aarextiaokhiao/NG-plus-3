@@ -1,6 +1,9 @@
 function babyRateUpdating(){
 	var eggonRate = tmp.twr.times(getEmperorDimensionMultiplier(1)).times(3).div((player.achievements.includes("ng3p35")) ? 1 : 10).times(getSpinToReplicantiSpeed())
-	if (eggonRate.lt(30)) {
+	if (eggonRate.lt(3)){
+		document.getElementById("eggonRate").textContent = shortenDimensions(eggonRate.times(60))
+		document.getElementById("eggonRateTimeframe").textContent = "hour"
+	} else if (eggonRate.lt(30)) {
 		document.getElementById("eggonRate").textContent = shortenDimensions(eggonRate)
 		document.getElementById("eggonRateTimeframe").textContent = "minute"
 	} else {
@@ -18,7 +21,7 @@ function preonGatherRateUpdating(){
 }
 
 function getGrowupRatePerMinute(){
-	return tmp.twr.times(player.achievements.includes("ng3p35") ? 3 : 0.3).times(getSpinToReplicantiSpeed())
+	return tmp.twr.plus(tmp.qu.replicants.amount).times(player.achievements.includes("ng3p35") ? 3 : 0.3).times(getSpinToReplicantiSpeed())
 }
 
 function growupRateUpdating(){
