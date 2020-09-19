@@ -5736,16 +5736,11 @@ function checkMatter(diff){
 }
 
 function passiveIPupdating(diff){
-	if (player.infinityUpgrades.includes("passiveGen")) player.partInfinityPoint += diff / player.bestInfinityTime;
-	if (player.partInfinityPoint >= 100) {
-		player.infinityPoints = player.infinityPoints.plus(player.infMult.times(player.partInfinityPoint/10));
-		player.partInfinityPoint = 0;
-	}
-
-	if (player.partInfinityPoint >= 10) {
-		player.partInfinityPoint -= 10;
-		player.infinityPoints = player.infinityPoints.plus(getIPMult());
-	}
+	if (player.infinityUpgrades.includes("passiveGen")) player.partInfinityPoint += diff / player.bestInfinityTime * 10
+	else player.partInfinityPoint = 0
+	let x = Math.floor(player.partInfinityPoint / 10)
+	player.partInfinityPoint -= x * 10
+	player.infinityPoints = player.infinityPoints.plus(getIPMult().times(x));
 }
 
 function passiveInfinitiesUpdating(diff){
