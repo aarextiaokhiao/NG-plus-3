@@ -1547,7 +1547,7 @@ function showTab(tabName, init) {
 function updateMoney() {
 	document.getElementById("coinAmount").textContent = shortenMoney(player.money)
 	var element2 = document.getElementById("matter");
-	if (player.currentChallenge == "postc6" || inQC(6)) element2.textContent = "There is " + formatValue(player.options.notation, Decimal.pow(player.matter,20), 2, 1) + " matter."; //TODO
+	if (player.currentChallenge == "postc6" || inQC(6)) element2.textContent = "There is " + formatValue(player.options.notation, player.matter, 2, 1) + " matter."; //TODO
 	else if (inNC(12) || player.currentChallenge == "postc1" || player.pSac !== undefined) {
 		var txt = "There is " + formatValue(player.options.notation, player.matter, 2, 1) + " matter."
 		var extra = getExtraTime()
@@ -3118,7 +3118,7 @@ function setAchieveTooltip() { //want: seperate this into a lot of different fun
 	//ACHIEVEMENT ROW 18
 	notrelative.setAttribute('ach-tooltip', "Get " + shorten(Decimal.pow(10, 411))+" dilated time without gaining tachyon particles." + (tmp.ngp3l ? "" : " Reward: You gain more DT based on the amount of Nanofield rewards."))
 	error404.setAttribute('ach-tooltip', "Get " + shorten(Decimal.pow(10, 1.6e12))+" antimatter while having only the 1st Dimensions of each type of Dimension and at least 2 normal galaxies.")
-	ie.setAttribute('ach-tooltip', "Get " + shorten(Decimal.pow(10, 8e6)) + " antimatter in a paired challenge with the PC6+8 combination.")
+	ie.setAttribute('ach-tooltip', "Get " + shorten(Decimal.pow(10, 8e6)) + " antimatter in a paired challenge with the PC6+8 combination." + (tmp.ngp3l ? "" : " Reward: Automatically buy the Quark multiplier to dimensions every second."))
 	wasted.setAttribute('ach-tooltip', "Get " + shorten(1.1e7) + " TT without having TT generation, keeping your previous TT, and respeccing studies. Reward: While you have less than 1 hour worth of TT production, you gain 10x as much TT.")
 	protonsDecay.setAttribute('ach-tooltip', "Unlock Tree of Decay." + (!tmp.ngp3l ? " Reward: You keep the two thirds power of your preons upon quantum when outside of a Quantum Challenge." : ""))
 	stop.setAttribute('ach-tooltip', "Get the replicanti reset requirement to " + shorten(Decimal.pow(10, 1.25e7)) + ". Reward: Getting a normal replicant manually doesn't reset your replicanti and can be automated.")
@@ -5592,6 +5592,10 @@ function doPerSecondNGP3Stuff(){
 	doNGP3UnlockStuff()
 	notifyGhostifyMilestones()
 	if (tmp.qu.autoOptions.assignQK && player.ghostify.milestones > 7) assignAll(true) 
+	
+	if (tmp.ngp3l) return 
+
+	if (player.achievements.includes("ng3p43")) maxUpgradeColorDimPower()
 	givePerSecondNeuts()
 }
 

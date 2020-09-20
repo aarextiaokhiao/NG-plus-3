@@ -43,7 +43,8 @@ function updateTreeOfDecayTab(){
 			document.getElementById(color + "UpgPow1").textContent = decays || power > 1 ? shorten(Decimal.pow(2, (1 + decays * .1) / power)) : 2
 			document.getElementById(color + "UpgSpeed1").textContent = decays > 2 || power > 1 ? shorten(Decimal.pow(2, Math.max(.8 + decays * .1, 1) / power)) : 2
 			lvl = getBranchUpgLevel(shorthand, 3)
-			if (lvl >= 1000) eff = Decimal.pow(4, (Math.sqrt((lvl + 1)/1000) - Math.sqrt(lvl/1000)) * 1000).toFixed(2)
+			let s = getBranchUpg3SoftcapStart()
+			if (lvl >= s) eff = Decimal.pow(4, (Math.sqrt((lvl + 1) / s) - Math.sqrt(lvl / s)) * s).toFixed(2)
 			else eff = "4"
 			document.getElementById(color + "UpgEffDesc").textContent =  " " + eff + "x"
 			for (var u = 1; u < 4; u++) document.getElementById(color + "upg" + u).className = "gluonupgrade " + (branch.spin.lt(getBranchUpgCost(shorthand, u)) ? "unavailablebtn" : shorthand)
@@ -51,8 +52,8 @@ function updateTreeOfDecayTab(){
 		}
 	} //for loop
 	if (!branchNum) {
-		var start = getLogTotalSpin() > 500 ? "" : "Cost: "
-		var end = getLogTotalSpin() > 500 ? "" : " quark spin"
+		var start = getLogTotalSpin() > 200 ? "" : "Cost: "
+		var end = getLogTotalSpin() > 200 ? "" : " quark spin"
 		for (var u = 1; u <= 8; u++) {
 			var lvl = getTreeUpgradeLevel(u)
 			document.getElementById("treeupg" + u).className = "gluonupgrade " + (canBuyTreeUpg(u) ? shorthands[getTreeUpgradeLevel(u) % 3] : "unavailablebtn")
@@ -190,7 +191,7 @@ function getDecayRate(branch) {
 }
 
 function getMilestone14SpinMult(){
-	var logSpin = getLogTotalSpin()
+	var logSpin = getLogTotalSpin() - Math.log10(3) //so at e25 of each it is 10x, not slight over
 	if (logSpin <= 25 || tmp.ngp3l) return 10
 	return Math.pow(logSpin, 2) / 625 * 10
 }
@@ -528,12 +529,17 @@ function getBU2Power(branch) {
 	return x
 }
 
+function getBranchUpg3SoftcapStart(){
+	return 1000 //maybe later on we can have things buff this
+}
+
 function getBranchUpgMult(branch, upg) {
 	if (upg == 1) return Decimal.pow(2, getBU1Power(branch) * (getRadioactiveDecays(branch) / 10 + 1))
 	else if (upg == 2) return Decimal.pow(2, getBU2Power(branch))
 	else if (upg == 3) {
 		l = getBranchUpgLevel(branch, 3)
-		if (l > 1000) l = 1000 * Math.sqrt(l / 1000)
+		let s = getBranchUpg3SoftcapStart()
+		if (l > s) l = s * Math.sqrt(l / s)
 		return Decimal.pow(4, l)
 	}
 } 
