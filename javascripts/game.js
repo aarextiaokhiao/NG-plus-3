@@ -7429,11 +7429,11 @@ function initGame() {
 	game_loaded=true
 
 	//show one tab during init or they'll all start hidden
-	let tabsSaveData=player.aarexModifications.tabsSave
-	let tabsSave=tabsSaveData&&tabsSaveData.on
-	showTab((tabsSave&&tabsSaveData.tabMain)||"dimensions",true)
-	showOptionTab((tabsSave&&tabsSaveData.tabOptions)||"saving")
-	if (player.aarexModifications.progressBar&&document.getElementById("dimensions").style.display!="none") document.getElementById("progress").style.display = "block"
+	let tabsSaveData = player.aarexModifications.tabsSave
+	let tabsSave = tabsSaveData&&tabsSaveData.on
+	showTab((tabsSave && tabsSaveData.tabMain) || "dimensions",true)
+	showOptionTab((tabsSave && tabsSaveData.tabOptions) || "saving")
+	if (player.aarexModifications.progressBar && document.getElementById("dimensions").style.display != "none") document.getElementById("progress").style.display = "block"
 	else document.getElementById("progress").style.display = "none"
 	tmp.tickUpdate = true
 	updateAutobuyers()
@@ -7449,6 +7449,9 @@ function initGame() {
 	clearInterval(stuckTimeout)
 	//Check for Expert Mode
 	checkForExpertMode()
+	//Update temp twice to make sure all values are correct
+	updateTemp()
+	updateTemp()
 }
 
 window.addEventListener('keydown', function(event) {
