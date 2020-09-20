@@ -253,7 +253,7 @@ var softcap_data = {
 			derv: true
 		}
 	},
-	idbase:{
+	idbase: {
 		1: {
 			func: "pow",
 			start: 1e14,
@@ -291,7 +291,7 @@ var softcap_data = {
 			derv: true
 		}
 	},
-	working_ts:{
+	working_ts: {
 		1: {
 			func: "pow",
 			start: 1e15,
@@ -310,16 +310,47 @@ var softcap_data = {
 			pow: .8,
 			derv: true
 		}
+	},
+	bu45: {
+		1: {
+			func: "pow",
+			start: 9,
+			pow: .5
+		},
+		2: {
+			func: "pow",
+			start: 25,
+			pow: .5
+		},
+		3: {
+			func: "pow",
+			start: 49,
+			pow: .5
+		},
+		4: {
+			func: "pow",
+			start: 81,
+			pow: .5
+		},
+		5: {
+			func: "pow",
+			start: 121,
+			pow: .5
+		}
 	}
 }
 
 var softcap_vars = {
 	pow: ["start", "pow", "derv"],
-	log: ["pow", "mul", "add"]
+	log: ["pow", "mul", "add"],
+	logshift: ["shift", "pow", "add"]
 }
 
 var softcap_funcs = {
 	pow: function(x, start, pow, derv) {
+		if (typeof start == "function") start = start()
+		if (typeof pow == "function") pow = pow()
+		if (typeof derv == "function") derv = derv()
 		if (x > start) {
 			x = Math.pow(x / start, pow)
 			if (derv) x = (x - 1) / pow + 1
@@ -329,6 +360,9 @@ var softcap_funcs = {
 		return x
 	},
 	pow_decimal: function(x, start, pow, derv) {
+		if (typeof start == "function") start = start()
+		if (typeof pow == "function") pow = pow()
+		if (typeof derv == "function") derv = derv()
 		if (Decimal.gt(x, start)) {
 			x = Decimal.div(x, start).pow(pow)
 			if (derv) x = x.sub(1).div(pow).add(1)
@@ -338,11 +372,17 @@ var softcap_funcs = {
 		return x
 	},
 	log: function(x, pow = 1, mul = 1, add = 0) {
+		if (typeof pow == "function") pow = pow()
+		if (typeof mul == "function") mul = mul()
+		if (typeof add == "function") add = add()
 		var x2 = Math.pow(Math.log10(x) * mul + add, pow)
 		if (x > x2) return x2
 		return x
 	},
 	logshift: function (x, shift, pow, add = 0){
+		if (typeof pow == "function") pow = pow()
+		if (typeof shift == "function") shift = shift()
+		if (typeof add == "function") add = add()
 		var x2 = Math.pow(Math.log10(x * shift), pow) + add
 		if (x > x2) return x2
 		return x

@@ -20,6 +20,14 @@ function getBosonicWattGain() {
 	return player.money.log10() / 2e16 - 1.25
 }
 
+function getBatteryGainPerSecond(toSub){
+	let batteryMult = new Decimal(1)
+	if (player.ghostify.bl.usedEnchants.includes(24)) batteryMult = batteryMult.times(tmp.bEn[24])
+	let toAdd = toSub.div(1e6).times(batteryMult)
+	if (toAdd.gt(1e3)) toAdd = Decimal.pow(toAdd.log10() + 7, 3) 
+	return toAdd.div(10)
+}
+
 function bosonicTick(diff) {
 	let lDiff //Mechanic-local diff
 	let lData //Mechanic-local data
@@ -45,20 +53,16 @@ function bosonicTick(diff) {
 		if (lData.dPUse == 1) {
 			lData.wQkProgress = lData.wQkProgress.add(apDiff.times(tmp.wzb.zbs))
 			if (lData.wQkProgress.gt(1)) {
-				let toSub=lData.wQkProgress.floor()
-				lData.wpb=lData.wpb.add(toSub.add(lData.wQkUp ? 1 : 0).div(2).floor())
-				lData.wnb=lData.wnb.add(toSub.add(lData.wQkUp ? 0 : 1).div(2).floor())
+				let toSub = lData.wQkProgress.floor()
+				lData.wpb = lData.wpb.add(toSub.add(lData.wQkUp ? 1 : 0).div(2).floor())
+				lData.wnb = lData.wnb.add(toSub.add(lData.wQkUp ? 0 : 1).div(2).floor())
 				if (toSub.mod(2).gt(0)) lData.wQkUp = !lData.wQkUp
 				lData.wQkProgress = lData.wQkProgress.sub(toSub.min(lData.wQkProgress))
 				
-				let batteryMult = new Decimal(1)
-				if (data.usedEnchants.includes(33)) batteryMult = batteryMult.times(tmp.bEn[33])
-				
-				let toAdd = toSub.div(1e6).times(batteryMult).div(diff)
-
-				if (toAdd.gt(1e3)) toAdd = Decimal.pow(toAdd.log10() + 7, 3) 
+				let toAdd = getBatteryGainPerSecond(toSub)
 
 				data.battery = data.battery.add(toAdd.times(diff))
+				tmp.batteryGainLast = toAdd
 			}
 		}
 		if (lData.dPUse == 2) {
@@ -207,6 +211,14 @@ function showBLTab(tabName) {
 	closeToolTip()
 }
 
+function getEstimatedNetBatteryGain(){
+	let pos = (tmp.batteryGainLast || new Decimal(0)).times(1000)
+	if (player.ghostify.wzb.dPUse != 1) pos = new Decimal(0)
+	let neg = getBosonicBatteryLoss().times(player.ghostify.bl.speed)
+	if (pos.gte(neg)) return [true, pos.minus(neg)]
+	return [false, neg.minus(pos)]
+}
+
 function updateBosonicLabTab(){
 	let data = player.ghostify.bl
 	let speed = data.speed * (data.battery.gt(0) ? data.odSpeed : 1)
@@ -219,7 +231,10 @@ function updateBosonicLabTab(){
 	document.getElementById("bAMProductionReduced").style.display = !tmp.ngp3l && data.am.gt(tmp.badm.start) ? "" : "none"
 	document.getElementById("bAMProductionReduced").textContent = "(reduced by " + shorten(tmp.badm.preDim) + "x)"
 	document.getElementById("bBt").textContent = shorten(data.battery)
-	document.getElementById("bBtProduction").textContent = "-" + shorten(getBosonicBatteryLoss().times(data.speed)) + "/s"
+	let x = getEstimatedNetBatteryGain()
+	s = shorten(x[1]) + "/s"
+	if (!x[0]) s = "-" + s
+	document.getElementById("bBtProduction").textContent = s
 	document.getElementById("odSpeed").textContent=(data.battery.gt(0)?data.odSpeed:1).toFixed(2) + "x"
 	document.getElementById("odSpeedWBBt").style.display = data.battery.eq(0) && data.odSpeed > 1 ? "" : "none"
 	document.getElementById("odSpeedWBBt").textContent = " (" + data.odSpeed.toFixed(2) + "x if you have Bosonic Battery)"
@@ -460,7 +475,7 @@ var bEn = {
 		},
 		14: function(l) {
 			return {
-				bUpgs: Math.floor(Math.pow(Decimal.add(l, 9).log10(), 2/3)),
+				bUpgs: Math.floor(Decimal.add(l, 9).log10()),
 				higgs: Decimal.add(l, 1).pow(0.4)
 			}
 		},
@@ -797,10 +812,7 @@ var bu = {
 		},
 		45: function() {
 			var eff = player.dilation.dilatedTime.add(1).pow(.0005)
-			if (eff.gt(9)) eff = Decimal.pow(eff, .5).times(3)
-			if (eff.gt(25)) eff = Decimal.pow(eff, .5).times(5)
-			if (eff.gt(49)) eff = Decimal.pow(eff, .5).times(7)
-			if (eff.gt(81)) eff = Decimal.pow(eff, .5).times(9)
+			eff = softcap(eff, "bu45")
 			return eff.toNumber()
 		}
 	},
