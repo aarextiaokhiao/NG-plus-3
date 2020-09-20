@@ -322,11 +322,17 @@ function maxReduceHatchSpeed() {
 	updateReplicants()
 }
 
-function replicantReset() {
+function replicantReset(bulk = false) {
 	if (player.replicanti.amount.lt(tmp.qu.replicants.requirement)) return
 	if (!player.achievements.includes("ng3p47")) player.replicanti.amount = new Decimal(1)
-	tmp.qu.replicants.amount = tmp.qu.replicants.amount.add(1)
-	tmp.qu.replicants.requirement = tmp.qu.replicants.requirement.times("1e100000")
+	if ((player.achievements.includes("ng3p74") && !tmp.ngp3l) && bulk) {
+		let x = Math.floor(player.replicanti.amount.div(tmp.qu.replicants.requirement).log10() / 1e5) + 1
+		tmp.qu.replicants.amount = tmp.qu.replicants.amount.add(x)
+		tmp.qu.replicants.requirement = tmp.qu.replicants.requirement.times(Decimal.pow(10, x * 1e5)
+	} else {
+		tmp.qu.replicants.amount = tmp.qu.replicants.amount.add(1)
+		tmp.qu.replicants.requirement = tmp.qu.replicants.requirement.times(Decimal.pow(10, 1e5))
+	}
 }
 
 function breakLimit() {

@@ -451,7 +451,8 @@ var bEn = {
 	effects: {
 		12: function(l) {
 			let exp = 0.75
-			if (l.gt(1e10)) exp /= Math.pow(l.log10() / 10, 1/3)
+			if (l.gt(1e10)) exp *= Math.pow(l.log10() / 10, 1/3)
+			if (exp > .8) exp = Math.log10(exp * 12.5) * .8
 			return Decimal.pow(l, exp).div(bEn.autoScalings[player.ghostify.bl.typeToExtract])
 		},
 		13: function(l) {

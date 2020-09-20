@@ -352,17 +352,19 @@ function getUQName(shorthand) {
 	let ret = "unstable"
 	if (tmp.qu.tod[shorthand].decays !== undefined) {
 		let amt = tmp.qu.tod[shorthand].decays
-		if (amt < 50) {
+		if (amt < 55) {
 			if (amt > 4) ret = "ghostly" + (amt > 9 ? "^" + Math.floor(amt / 5) : "") + " " + ret
 			if (amt % 5) ret = (["radioactive", "infinity", "eternal", "quantum"])[amt % 5 - 1] + " " + ret
-		} else if (amt < 100) {
+		} else if (amt < 110) {
 			amt -= 50
 			if (amt > 4) ret = "disappearing" + (amt > 9 ? "^" + Math.floor(amt / 5) : "") + " " + ret
 			if (amt % 5) ret = (["radioactive", "infinity", "eternal", "quantum"])[amt % 5 - 1] + " " + ret
-		} else {
-			amt -= 100
+		} else if (amt < 165) {
+			amt -= 105
 			if (amt > 4) ret = "reappearing" + (amt > 9 ? "^" + Math.floor(amt / 5) : "") + " " + ret
 			if (amt % 5) ret = (["radioactive", "infinity", "eternal", "quantum"])[amt % 5 - 1] + " " + ret
+		} else {
+			ret = "unstable^" + amt
 		}
 	}
 	return ret
