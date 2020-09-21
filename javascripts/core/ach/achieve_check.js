@@ -60,7 +60,7 @@ function checkReplicantiBasedReqAchieve(){
 
 function checkResetCountReqAchieve(){
 	if (getEternitied() >= 1e12) giveAchievement("The cap is a million, not a trillion")
-	if (player.infinitied > 2e6) giveAchievement("2 Million Infinities")
+	if (player.infinitied >= 2e6) giveAchievement("2 Million Infinities")
 }
 
 function checkMatterAMNDReqAchieve(){
@@ -88,7 +88,7 @@ function checkTickspeedReqAchieve(){
 
 function checkOtherPreNGp3Achieve(){
 	var ableToGetRid2 = player.timestudy.studies.length < 1 && player.dilation.active 
-	if (tmp.ngp3) for (id=0;id<player.masterystudies.length;id++) {
+	if (tmp.ngp3) for (id = 0; id < player.masterystudies.length; id++) {
 		if (player.masterystudies[id].split("t")[1]) ableToGetRid2 = false
 	}
 	if (player.why >= 1e6) giveAchievement("Should we tell them about buy max...")
@@ -111,7 +111,7 @@ function checkOtherPreNGp3Achieve(){
 
 function ngP3AchieveCheck(){
 	let checkEmpty = player.timestudy.studies.length < 1
-	if (tmp.ngp3) for (id=0;id<player.masterystudies.length;id++) {
+	if (tmp.ngp3) for (id = 0; id < player.masterystudies.length; id++) {
 		if (player.masterystudies[id].split("t")[1]) checkEmpty = false
 	}
 	let ableToGetRid2 = checkEmpty && player.dilation.active

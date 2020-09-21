@@ -195,11 +195,34 @@ function getQCtoQKEffect(){
 	return ret
 }
 
-let quarkGain = function () {
+function getEPtoQKExp(){
+	let exp = 0.6
+	if (tmp.newNGP3E) exp += 0.05
+	if (player.achievements.includes("ng3p28")) exp *= 1.01
+	return exp
+}
+
+function getEPtoQKMult(){
+	var EPBonus = Math.pow(Math.max(player.eternityPoints.log10() / 1e6, 1), getEPtoQKExp()) - 1
+	EPBonus = softcap(EPBonus, "EPtoQK")
+	return EPBonus 
+}
+
+function getNGP3p1totalQKMult(){
+	let log = 0
+	if (player.achievements.includes("ng3p16")) log += getEPtoQKMult()
+	if (player.achievements.includes("ng3p33")) log += Math.log10(getQCtoQKEffect())
+	if (player.achievements.includes("ng3p53")) log += player.quantum.bigRip.spaceShards.plus(1).log10()
+	if (player.achievements.includes("ng3p65")) log += getTotalRadioactiveDecays()
+	if (player.achievements.includes("ng3p85")) log += Math.pow(player.ghostify.ghostlyPhotons.enpowerments, 2)
+	return log
+}
+
+function quarkGain() {
 	let ma = player.meta.antimatter.max(1)
 	if (!tmp.ngp3) return Decimal.pow(10, ma.log(10) / Math.log10(Number.MAX_VALUE) - 1).floor()
 	
-	if (!tmp.qu.times && !player.ghostify.milestones) return new Decimal(1)
+	if (!quantumed) return new Decimal(1)
 	if (player.ghostify.milestones) ma = player.meta.bestAntimatter.max(1)
 
 	let log = (ma.log10() - 379.4) / (player.achievements.includes("ng3p63") ? 279.8 : 280)
@@ -207,21 +230,7 @@ let quarkGain = function () {
 	let logBoostExp = tmp.ngp3l ? 2 : 1.5
 	if (log > logBoost) log = Math.pow(log / logBoost, logBoostExp) * logBoost
 	if (log > 738 && !hasNU(8)) log = Math.sqrt(log * 738)
-	if (!tmp.ngp3l) {
-		if (player.achievements.includes("ng3p16")) {
-			let exp = 0.6
-			if (tmp.newNGP3E) exp += 0.05
-			if (player.achievements.includes("ng3p28")) exp *= 1.01
-
-			var EPBonus = Math.pow(Math.max(player.eternityPoints.log10() / 1e6, 1), exp) - 1
-			EPBonus = softcap(EPBonus, "EPtoQK")
-			log += EPBonus 
-		}
-		if (player.achievements.includes("ng3p33")) log += Math.log10(getQCtoQKEffect())
-		if (player.achievements.includes("ng3p53")) log += player.quantum.bigRip.spaceShards.plus(1).log10()
-		if (player.achievements.includes("ng3p65")) log += getTotalRadioactiveDecays()
-		if (player.achievements.includes("ng3p85")) log += Math.pow(player.ghostify.ghostlyPhotons.enpowerments, 2) 
-	}
+	if (!tmp.ngp3l) log += getNGP3p1totalQKMult()
 
 	var dlog = Math.log10(log)
 	let start = 5
@@ -236,7 +245,7 @@ let quarkGain = function () {
 	return Decimal.pow(10, log).floor()
 }
 
-let getQuarkMult = function () {
+function getQuarkMult() {
 	x = Decimal.pow(2, tmp.qu.multPower.total)
 	if (player.achievements.includes("ng3p93")) x = x.times(500)
 	return x

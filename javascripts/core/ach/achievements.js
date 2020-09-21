@@ -549,7 +549,7 @@ function achMultLabelUpdate() {
         var label = "Normal"
         if (player.achievements.includes("r75")) label += "/Infinity"
         if (player.eternityUpgrades.includes(4)) label += "/Time"
-    return label
+        return label
 }
 
 function metaAchMultLabelUpdate() {

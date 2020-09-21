@@ -1,4 +1,4 @@
-function setAchieveTooltip() { //want: seperate this into a lot of different functions, one for each row
+function setPreNGP3AchievementTooltip(){
 	// Original Antimatter Dimensions achievements
 
 	// Row 1 (1/8)
@@ -265,8 +265,9 @@ function setAchieveTooltip() { //want: seperate this into a lot of different fun
 	thecap.setAttribute('ach-tooltip', "Get "+shortenDimensions(1e12)+" eternities. Reward: Eternity Upgrade 2 uses a better formula.")
 	neverenough.setAttribute('ach-tooltip', "Reach "+shortenCosts(new Decimal("1e100000"))+" replicanti. Reward: You unlock the option to buy the maximum Replicanti Galaxies available.")
 	harmony.setAttribute('ach-tooltip', player.meta?"Have at least 700 normal, replicanti, and free dilated galaxies. Reward: Galaxies are 0.1% stronger.":"Get the same amount (at least 300) of normal, replicanti, and free galaxies.")
+}
 
-	if (!tmp.ngp3) return
+function setPreNGP3p1AchievementTooltip(){
 	// ng+3 achievements
 
 	// Row 15 (ng3p1) (5/8)
@@ -440,9 +441,9 @@ function setAchieveTooltip() { //want: seperate this into a lot of different fun
 	tdc.setAttribute('ach-tooltip', "Complete Eternity Challenge 11 with "+shortenCosts(Decimal.pow(10, 15500)) + " IP in a Paired Challenge with the Quantum Challenges 6 and 8 combination and the Anti-Dilation modifier." + (tmp.ngp3l ? "" : " Reward: Remove the quadratic cost scaling and the level softcap of fifth Tree of Decay upgrade and make it based on best meta-antimatter over Ghostifies, instead of over quantums."))
 	igu.setAttribute('ach-tooltip', "Reach " + shortenCosts(Decimal.pow(10, 2.25e4)) + " IP while dilated and Big Ripped with Anti-Dilation modifier and without having studies, EP mult upgrades, Tree Upgrades, and Break Eternity within this Ghostify.")
 	isnotenough.setAttribute('ach-tooltip', "Complete a Paired Challenge with Quantum Challenges 6 and 8 combinations." + (tmp.ngp3l ? "" : " Reward: Remove the hardcap reduction of 'And so your life?'."))
+}
 
-	if (tmp.ngp3l) return
-
+function setNGP3p1AchievementTooltip(){
 	// Row 23 (ng3p9) (3/8)
 	//ng3p91/////
 	//ng3p92/////
@@ -457,4 +458,12 @@ function setAchieveTooltip() { //want: seperate this into a lot of different fun
 	ghostliest.setAttribute('ach-tooltip', "Get " + shorten(Math.pow(Number.MAX_VALUE, 1/4)) + " Ghostifies. Reward: Ghostifies boost the gain of Ghost Particles at a reduced rate.")
 	metae18.setAttribute('ach-tooltip', "Get " + shortenCosts(Decimal.pow(10, 1e18)) + " antimatter. Reward: Distant Antimatter Galaxies scaling is 10% weaker and Higgs Bosons produce Bosonic Antimatter at a linear rate.")
 	aretheseanother.setAttribute('ach-tooltip', "Reach " + shortenCosts(Decimal.pow(10, 66666)) + " Quarks. Reward: Gain 500x more Quarks and Ghost Particles.")
+}
+
+function setAchieveTooltip() { 
+	setPreNGP3AchievementTooltip()
+	if (!tmp.ngp3) return
+	setPreNGP3p1AchievementTooltip()
+	if (tmp.ngp3l) return
+	setNGP3p1AchievementTooltip()
 }
