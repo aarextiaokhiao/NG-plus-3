@@ -495,7 +495,7 @@ function getFreeGalaxyGainMult() {
 }
 
 function getFreeGalaxyThresholdStart(){
-	return new Deicmal(1000)
+	return new Decimal(1000)
 }
 
 function resetDilationGalaxies() {
