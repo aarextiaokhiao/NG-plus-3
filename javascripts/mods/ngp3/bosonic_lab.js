@@ -915,7 +915,7 @@ function updateWZBosonsTab() {
 	document.getElementById("ap").textContent = shorten(data3.dP)
 	document.getElementById("apProduction").textContent = (data3.dPUse ? "-" : "+") + shorten(r) + "/s"
 	document.getElementById("apUse").textContent = data3.dPUse == 0 ? "" : "You are currently consuming Anti-Preons to " + (["", "decay W Bosons", "oscillate Z Neutrinos", "convert W- to W+ Bosons"])[data3.dPUse] + "."
-	document.getElementById("wQkType").textContent = data3.wQkUp ? "up" : "down"
+	document.getElementById("wQkType").textContent = data3.wQkUp ? "positive" : "negative"
 	document.getElementById("wQkProgress").textContent = data3.wQkProgress.times(100).toFixed(1) + "% to turn W Boson to a" + (data3.wQkUp ? " down" : "n up")+" Boson."
 	document.getElementById("wQk").className = show0 ? "zero" : data3.wQkUp ? "up" : "down"
 	document.getElementById("wQkSymbol").textContent = show0 ? "0" : data3.wQkUp ? "+" : "−"
