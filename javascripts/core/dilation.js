@@ -1,3 +1,19 @@
+function getDTMultPostBRU11(){
+	let gain = new Decimal(1)
+	if (player.achievements.includes("ng3p11") && !tmp.ngp3l) gain = gain.times(Math.max(player.galaxies / 600 + 0.5, 1))
+	if (player.achievements.includes("ng3p41") && !tmp.ngp3l) gain = gain.times(Decimal.pow(4,Math.sqrt(player.quantum.nanofield.rewards)))
+	if (player.masterystudies.includes("t263")) gain = gain.times(getMTSMult(263))
+	if (player.masterystudies.includes("t281")) gain = gain.times(getMTSMult(281))
+	gain = gain.times(tmp.qcRewards[1])
+	if (player.masterystudies.includes("t322")) gain = gain.times(getMTSMult(322))
+	if (player.masterystudies.includes("t341")) gain = gain.times(getMTSMult(341))
+	gain = gain.times(getTreeUpgradeEffect(7))
+	gain = gain.times(colorBoosts.b)
+	if (GUBought("br2")) gain = gain.times(Decimal.pow(2.2, Math.pow(tmp.sacPow.max(1).log10()/1e6, 0.25)))
+	if (player.achievements.includes("r136") && !tmp.ngp3l) gain = gain.times(Math.max((player.replicanti.amount.log10()-2e4)/8e3+1,1))
+	return gain
+}
+
 function getDilTimeGainPerSecond() {
 	let tp = player.dilation.tachyonParticles
 	let exp = getDTGainExp()
@@ -8,18 +24,8 @@ function getDilTimeGainPerSecond() {
 	
 	if (player.dilation.upgrades.includes('ngpp6')) gain = gain.times(getDil17Bonus())
 	if (player.dilation.upgrades.includes('ngusp3')) gain = gain.times(getD22Bonus())
-	if (tmp.ngp3 ? !tmp.qu.bigRip.active || tmp.qu.bigRip.upgrades.includes(11) : false) {
-		if (player.achievements.includes("ng3p11") && !tmp.ngp3l) gain = gain.times(Math.max(player.galaxies / 600 + 0.5, 1))
-		if (player.achievements.includes("ng3p41") && !tmp.ngp3l) gain = gain.times(Decimal.pow(4,Math.sqrt(player.quantum.nanofield.rewards)))
-		if (player.masterystudies.includes("t263")) gain = gain.times(getMTSMult(263))
-		if (player.masterystudies.includes("t281")) gain = gain.times(getMTSMult(281))
-		gain = gain.times(tmp.qcRewards[1])
-		if (player.masterystudies.includes("t322")) gain = gain.times(getMTSMult(322))
-		if (player.masterystudies.includes("t341")) gain = gain.times(getMTSMult(341))
-		gain = gain.times(getTreeUpgradeEffect(7))
-		gain = gain.times(colorBoosts.b)
-		if (GUBought("br2")) gain = gain.times(Decimal.pow(2.2, Math.pow(tmp.sacPow.max(1).log10()/1e6, 0.25)))
-		if (!tmp.ngp3l) gain = gain.times(Math.max((player.replicanti.amount.log10()-2e4)/8e3+1,1))
+	if (tmp.ngp3 && (!tmp.qu.bigRip.active || tmp.qu.bigRip.upgrades.includes(11))) {
+		gain = gain.times(getDTMultPostBRU11())
 	}
 	if (hasBosonicUpg(15)) gain = gain.times(tmp.blu[15].dt)
 	if (tmp.newNGP3E && player.achievements.includes("r138") && gain.lt(1e100)) gain = gain.times(3).min(1e100)
@@ -27,8 +33,9 @@ function getDilTimeGainPerSecond() {
 	
 	var lgain = gain.log10()
 	if (!tmp.ngp3l) lgain = softcap(lgain, "dt_log")
+	gain = Decimal.pow(10, lgain)
 	
-	return Decimal.pow(10, lgain).times(Decimal.pow(2, getDilUpgPower(1)))	
+	return gain.times(Decimal.pow(2, getDilUpgPower(1)))	
 }
 
 function getDTGainExp(){
