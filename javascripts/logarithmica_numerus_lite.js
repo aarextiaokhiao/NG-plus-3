@@ -54,8 +54,7 @@
 				tmp.l=Number(v.slice(1,v.length))
 			} else {
 				var split=[v.slice(0,findE),v.slice(findE+1,v.length)]
-				if (split[0]==1) tmp.l=Number(split[1])
-				else tmp.l=Math.log10(split[0])+split[1]
+				tmp.l=Math.log10(split[0])+Number(split[1])
 			}
 			return tmp
 		}
