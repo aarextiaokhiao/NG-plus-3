@@ -4,11 +4,10 @@ function getR84or73Mult(){
 	else if (player.achievements.includes("r73")) mult = player.money.pow(player.galacticSacrifice?0.0001:0.00002).plus(1);
 	
 	var log = mult.log10()
-	if (log > 1e12) log = 1e12 * Math.pow(log / 1e12, .7)
-	if (log > 1e14) log = 1e14 * Math.pow(log / 1e14, .3)
+	if (log > 1e12) log = 1e12 * Math.pow(log / 1e12, .5)
 	
 	if (log < 0) log = 0
-	return Decimal.pow(10,log)
+	return Decimal.pow(10, log)
 }
 
 function getNormalDimensionVanillaAchievementBonus(tier){
@@ -290,7 +289,7 @@ function infUpg12Pow() {
 }
 	
 function clearDimensions(amount) {
-	var tiers = [ null, "first", "second", "third", "fourth", "fifth", "sixth", "seventh", "eight" ];
+	var tiers = [null, "first", "second", "third", "fourth", "fifth", "sixth", "seventh", "eight" ];
 	
 	for (var i = 1; i <= amount; i++) {
 		player[tiers[i] + "Amount"] = new Decimal(0)

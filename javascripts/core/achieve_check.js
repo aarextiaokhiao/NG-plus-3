@@ -103,6 +103,10 @@ function checkOtherPreNGp3Achieve(){
 	if (infchallengeTimes < 7.5) giveAchievement("Never again")
 	if (player.totalTimePlayed >= 10 * 60 * 60 * 24 * 8) giveAchievement("One for each dimension")
 	if (Math.random() < 0.00001) giveAchievement("Do you feel lucky? Well do ya punk?")
+	if (player.galaxies >= 50) giveAchievement("YOU CAN GET 50 GALAXIES!??")
+	if (player.galaxies >= 2) giveAchievement("Double Galaxy");
+	if (player.galaxies >= 1) giveAchievement("You got past The Big Wall");
+	if (player.galaxies >= 540 && player.replicanti.galaxies == 0) giveAchievement("Unique snowflakes")
 }
 
 function ngP3AchieveCheck(){

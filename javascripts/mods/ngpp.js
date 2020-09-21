@@ -214,8 +214,7 @@ let quarkGain = function () {
 			if (player.achievements.includes("ng3p28")) exp *= 1.01
 
 			var EPBonus = Math.pow(Math.max(player.eternityPoints.log10() / 1e6, 1), exp) - 1
-			if (EPBonus > 1e4) EPBonus = 1e4 * Math.sqrt(EPBonus / 1e4)
-			if (EPBonus > 1e5) EPBonus = 1e5 * Math.sqrt(EPBonus / 1e5)
+			EPBonus = softcap(EPBonus, "EPtoQK")
 			log += EPBonus 
 		}
 		if (player.achievements.includes("ng3p33")) log += Math.log10(getQCtoQKEffect())
@@ -569,6 +568,7 @@ function quantumReset(force, auto, challid, bigRip, implode = false) {
 				var qc1st = Math.min(qc1, qc2)
 				var qc2st = Math.max(qc1, qc2)
 				if (qc1st == qc2st) console.log("There is an issue, you have assigned a QC twice (QC" + qc1st + ")")
+				//them being the same should do something lol, not just this
 				var pcid = qc1st * 10 + qc2st
 				if (tmp.qu.pairedChallenges.current > tmp.qu.pairedChallenges.completed) {
 					tmp.qu.challenges[qc1] = 2
@@ -703,7 +703,7 @@ function quantumReset(force, auto, challid, bigRip, implode = false) {
 		if (!bigRip && !tmp.qu.breakEternity.unlocked && document.getElementById("breakEternity").style.display == "block") showEternityTab("timestudies", document.getElementById("eternitystore").style.display!="block")
 		document.getElementById("breakEternityTabbtn").style.display = bigRip || tmp.qu.breakEternity.unlocked ? "" : "none"
 		delete tmp.qu.autoECN
-	}
+	} // bounds if tmp.ngp3
 	if (speedrunMilestonesReached < 1 && !bigRip) {
 		document.getElementById("infmultbuyer").textContent = "Autobuy IP mult OFF"
 		document.getElementById("togglecrunchmode").textContent = "Auto crunch mode: amount"

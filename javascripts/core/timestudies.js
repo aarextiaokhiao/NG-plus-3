@@ -498,30 +498,26 @@ function exportStudyTree() {
 	} else {
 		var mtsstudies=[]
 		if (player.masterystudies) {
-			for (id=0;id<player.masterystudies.length;id++) {
-              var t = player.masterystudies[id].split("t")[1]
-              if (t) mtsstudies.push(t)
-          }
-      }
-      output.value = player.timestudy.studies + (mtsstudies.length > 0 ? "," + mtsstudies + "|" : "|") + player.eternityChallUnlocked;
-  }
-
-  output.onblur = function() {
-      parent.style.display = "none";
-  }
-
-  output.focus();
-  output.select();
-
-  try {
-      if (document.execCommand('copy')) {
-          $.notify("exported to clipboard", "info");
-          output.blur();
-          output.onblur();
-      }
-  } catch(ex) {
-      // well, we tried.
-  }
+			for (id = 0; id < player.masterystudies.length; id++) {
+				var t = player.masterystudies[id].split("t")[1]
+				if (t) mtsstudies.push(t)
+			}
+		}
+		output.value = player.timestudy.studies + (mtsstudies.length > 0 ? "," + mtsstudies + "|" : "|") + player.eternityChallUnlocked;
+	}
+	output.onblur = function() { parent.style.display = "none";}
+	output.focus();
+	output.select();
+	
+	try {
+		if (document.execCommand('copy')) {
+			$.notify("exported to clipboard", "info");
+			output.blur();
+			output.onblur();
+		}
+	} catch(ex) {
+		// well, we tried.
+	}
 };
 
 function importStudyTree(input) {

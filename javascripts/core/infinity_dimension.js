@@ -36,9 +36,8 @@ function hideMaxIDButton(onLoad=false) {
 		hide = false
 		if (player.eternities > 17) {
 			for (var d = 0; d < 8; d++) {
-				if (player.infDimBuyers[d]) {
-					if (d > 6) hide = true
-				} else break
+				if (player.infDimBuyers[d] && d > 6) hide = true
+				else break
 			}
 		}
 	}
@@ -120,7 +119,7 @@ function getStartingIDPower(tier){
 	if (mult.gt(1)){
 		var log = mult.log10()
 		log = softcap(log, "idbase")
-		mult = Decimal.pow(10,log)
+		mult = Decimal.pow(10, log)
 	}
 	return mult
 }
@@ -129,7 +128,7 @@ function DimensionPower(tier) {
   	var dim = player["infinityDimension" + tier]
   	if (player.currentEternityChall == "eterc2" || player.currentEternityChall == "eterc10" || player.currentEternityChall == "eterc13") return new Decimal(0)
   	if (player.currentEternityChall == "eterc11") return new Decimal(1)
-  	if (player.currentEternityChall=='eterc14') return getIDReplMult()
+  	if (player.currentEternityChall == 'eterc14') return getIDReplMult()
   	if (inQC(3)) return getExtraDimensionBoostPower()
   	
 	var mult = getStartingIDPower(tier)

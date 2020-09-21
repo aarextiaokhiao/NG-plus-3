@@ -337,6 +337,32 @@ var softcap_data = {
 			start: 121,
 			pow: .5
 		}
+	},
+	EPtoQK: {
+		1: {
+			func: "pow",
+			start: 1e3,
+			pow: .8,
+			derv: true
+		},
+		2: {
+			func: "pow",
+			start: 3e3,
+			pow: .7,
+			derv: true
+		},
+		3: {
+			func: "pow",
+			start: 1e4,
+			pow: .6,
+			derv: true
+		},
+		4: {
+			func: "pow",
+			start: 3e4,
+			pow: .5,
+			derv: true
+		}
 	}
 }
 

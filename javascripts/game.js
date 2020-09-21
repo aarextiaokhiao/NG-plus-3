@@ -1486,7 +1486,7 @@ document.getElementById("theme").onclick = function () {
 }
 
 function doWeakerPowerReductionSoftcapNumber(num,start,exp){
-	if (num <start || num < 1) return num
+	if (num < start || num < 1) return num
 	return start*(( (num/start)**exp -1)/exp+1)
 }
 
@@ -1496,7 +1496,7 @@ function doWeakerPowerReductionSoftcapDecimal(num,start,exp){
 }
 
 function doStrongerPowerReductionSoftcapNumber(num,start,exp){
-	if (num <start || num < 1) return num
+	if (num < start || num < 1) return num
 	return start*((num/start)**exp)
 }
 

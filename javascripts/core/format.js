@@ -16,15 +16,15 @@ function letter(power, str) {
 }
 
 function getAbbreviation(e) {
-    const prefixes = [
-    ['', 'U', 'D', 'T', 'Qa', 'Qt', 'Sx', 'Sp', 'O', 'N'],
-    ['', 'Dc', 'Vg', 'Tg', 'Qd', 'Qi', 'Se', 'St', 'Og', 'Nn'],
-    ['', 'Ce', 'Dn', 'Tc', 'Qe', 'Qu', 'Sc', 'Si', 'Oe', 'Ne']]
-    const prefixes2 = ['', 'MI', 'MC', 'NA']
+	const prefixes = [
+		['', 'U', 'D', 'T', 'Qa', 'Qt', 'Sx', 'Sp', 'O', 'N'],
+                ['', 'Dc', 'Vg', 'Tg', 'Qd', 'Qi', 'Se', 'St', 'Og', 'Nn'],
+                ['', 'Ce', 'Dn', 'Tc', 'Qe', 'Qu', 'Sc', 'Si', 'Oe', 'Ne']]
+        const prefixes2 = ['', 'MI', 'MC', 'NA']
 	var result = ''
-    e = Math.floor(e/3)-1;
+        e = Math.floor(e / 3)-1;
 	e2 = 0
-    while (e > 0) {		
+        while (e > 0) {		
 		var partE = e % 1000
 		if (partE > 0) {
 			if (partE == 1 && e2 > 0) var prefix = ""
@@ -59,7 +59,7 @@ function getShortAbbreviation(e) {
 	var log = Math.floor(Math.log10(id))
 	var step = Math.max(Math.floor(log / 3 - 3),0)
 	id = Math.round(id / Math.pow(10, Math.max(log - 9, 0))) * Math.pow(10, Math.max(log - 9, 0) % 3)
-    while (id > 0) {		
+        while (id > 0) {		
 		var partE = id % 1000
 		if (partE > 0) {
 			if (partE == 1 && step > 0) var prefix = ""

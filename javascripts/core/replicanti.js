@@ -37,19 +37,18 @@ function isChanceAffordable() {
 }
 
 function upgradeReplicantiInterval() {
-	if (player.infinityPoints.gte(player.replicanti.intervalCost) && isIntervalAffordable() && player.eterc8repl !== 0) {
-		player.infinityPoints = player.infinityPoints.minus(player.replicanti.intervalCost)
-		player.replicanti.interval *= 0.9
-		if (player.replicanti.interval < 1) {
-			let x = 1 / player.replicanti.interval
-			if (x > 1e10) x = Math.pow(x / 1e5, 2)
-			player.replicanti.intervalCost = Decimal.pow("1e800", x)
-		}
-		else player.replicanti.intervalCost = player.replicanti.intervalCost.times(1e10)
-		if (!isIntervalAffordable()) player.replicanti.interval = (player.timestudy.studies.includes(22) || player.boughtDims ? 1 : 50)
-		if (player.currentEternityChall == "eterc8") player.eterc8repl -= 1
-		document.getElementById("eterc8repl").textContent = "You have " + player.eterc8repl + " purchases left."
+	if (!(player.infinityPoints.gte(player.replicanti.intervalCost) && isIntervalAffordable() && player.eterc8repl !== 0)) return 
+	player.infinityPoints = player.infinityPoints.minus(player.replicanti.intervalCost)
+	player.replicanti.interval *= 0.9
+	if (player.replicanti.interval < 1) {
+		let x = 1 / player.replicanti.interval
+		if (x > 1e10) x = Math.pow(x / 1e5, 2)
+		player.replicanti.intervalCost = Decimal.pow("1e800", x)
 	}
+	else player.replicanti.intervalCost = player.replicanti.intervalCost.times(1e10)
+	if (!isIntervalAffordable()) player.replicanti.interval = (player.timestudy.studies.includes(22) || player.boughtDims ? 1 : 50)
+	if (player.currentEternityChall == "eterc8") player.eterc8repl -= 1
+	document.getElementById("eterc8repl").textContent = "You have " + player.eterc8repl + " purchases left."
 }
 
 function getReplicantiLimit() {
@@ -91,25 +90,6 @@ function getRGCost(offset = 0, costChange) {
 				}
 			}
 			ret = ret.times(Decimal.pow(10, increase))
-			if (tmp.ngp3 && !tmp.ngp3l) {
-				if (player.replicanti.gal + offset >= 400000) ret = ret.pow((player.replicanti.gal + offset) / 400000)
-				/*
-				if (player.replicanti.gal + offset >= 450000) ret = ret.pow((player.replicanti.gal + offset) / 5000 - 89)
-				if (player.replicanti.gal + offset >= 500000) ret = ret.pow((player.replicanti.gal + offset) / 500 - 999)
-				if (player.replicanti.gal + offset >= 550000) ret = ret.pow((player.replicanti.gal + offset) / 100 - 5499)
-				if (player.replicanti.gal + offset >= 600000) ret = ret.pow((player.replicanti.gal + offset) / 50 - 11999)
-				if (player.replicanti.gal + offset >= 650000) ret = ret.pow((player.replicanti.gal + offset) / 10 - 64999)
-				if (player.replicanti.gal + offset >= 700000) ret = ret.pow((player.replicanti.gal + offset) / 5 - 139999)
-				if (player.replicanti.gal + offset >= 750000) ret = ret.pow((player.replicanti.gal + offset) / 1 - 749999)
-				if (player.replicanti.gal + offset >= 800000) ret = ret.pow(Math.pow(player.replicanti.gal + offset, 2) / 64e5    - 1e5 + 1)
-				if (player.replicanti.gal + offset >= 850000) ret = ret.pow(Math.pow(player.replicanti.gal + offset, 2) / 72.25e4 - 1e6 + 1)
-				if (player.replicanti.gal + offset >= 900000) ret = ret.pow(Math.pow(player.replicanti.gal + offset, 2) / 81e3    - 1e7 + 1)
-				if (player.replicanti.gal + offset >= 950000) ret = ret.pow(Math.pow(player.replicanti.gal + offset, 2) / 90.25e2 - 1e8 + 1)
-				if (player.replicanti.gal + offset >= 1e6)    ret = ret.pow(Decimal.pow(1.01, (player.replicanti.gal + offset) / 100 - 9900 ))
-				//yeah that scaling is rough, but you shouldnt be able to get more than about 1.72e6 RGs now
-				//also I checked, it just makes the cost Infinite which isnt an issue 
-				// and yeah these can be removed once we confirm its not them which causes inflation + bugs */
-			}
 		}
 	}
 	if (player.timestudy.studies.includes(233) && !costChange) ret = ret.dividedBy(player.replicanti.amount.pow(0.3))
@@ -131,7 +111,7 @@ function upgradeReplicantiGalaxy() {
 
 var extraReplGalaxies = 0
 function replicantiGalaxy() {
-	var maxGal=getMaxRG()
+	var maxGal = getMaxRG()
 	if (!canGetReplicatedGalaxy()) return
 	if (player.galaxyMaxBulk) player.replicanti.galaxies=maxGal
 	else player.replicanti.galaxies++

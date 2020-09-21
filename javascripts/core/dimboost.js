@@ -36,11 +36,11 @@ function softReset(bulk, tier=1) {
 		return
 	}
 	var costs = [10, 100, 1e4, 1e6, 1e9, 1e13, 1e18, 1e24]
-	var costMults=[1e3, 1e4, 1e5, 1e6, 1e8, 1e10, 1e12, 1e15]
+	var costMults = [1e3, 1e4, 1e5, 1e6, 1e8, 1e10, 1e12, 1e15]
 	if (inNC(10) || player.currentChallenge == "postc1") costs = [10, 100, 100, 500, 2500, 2e4, 2e5, 4e6]
 	if (inNC(10)) costMults = [1e3, 5e3, 1e4, 12e3, 18e3, 26e3, 32e3, 42e3]
 	for (var d = 1; d < 9; d++) {
-		var name=TIER_NAMES[d]
+		var name = TIER_NAMES[d]
 		player[name + "Amount"] = new Decimal(0)
 		player[name + "Bought"] = 0
 		player[name + "Cost"] = new Decimal(costs[d - 1])
@@ -93,7 +93,7 @@ function softReset(bulk, tier=1) {
 function setInitialMoney() {
 	var x = 10
 	if (player.challenges.includes("challenge1")) x = 100
-	if (player.aarexModifications.ngmX>3) x = 200
+	if (player.aarexModifications.ngmX > 3) x = 200
 	if (player.achievements.includes("r37")) x = 1000
 	if (player.achievements.includes("r54")) x = 2e5
 	if (player.achievements.includes("r55")) x = 1e10
@@ -188,7 +188,7 @@ function getShiftRequirement(bulk) {
 	if (player.challenges.includes("postc5")) amount -= 1
 	if (player.infinityUpgradesRespecced != undefined) amount -= getInfUpgPow(4)
 
-	return {tier: tier, amount: amount, mult: mult };
+	return {tier: tier, amount: amount, mult: mult};
 }
 
 function getDimboostCostIncrease () {

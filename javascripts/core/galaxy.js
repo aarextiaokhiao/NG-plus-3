@@ -37,13 +37,8 @@ function galaxyReset(bulk) {
 			document.getElementById("gConfirmation").style.display = "inline-block"
 		}
 	}
-	if (player.galaxies >= 50 && !player.achievements.includes("r83")) giveAchievement("YOU CAN GET 50 GALAXIES!??")
-	if (player.galaxies >= 2 && !player.achievements.includes("r27")) giveAchievement("Double Galaxy");
-	if (player.galaxies >= 1 && !player.achievements.includes("r26")) giveAchievement("You got past The Big Wall");
 	if (!player.achievements.includes("r111")) setInitialMoney()
 	if (player.achievements.includes("r66")) player.tickspeed = player.tickspeed.times(0.98);
-	if (player.galaxies >= 540 && player.replicanti.galaxies == 0) giveAchievement("Unique snowflakes")
-	if (!player.achievements.includes("ngpp18")) checkUniversalHarmony()
 	if (tmp.ngp3 && bulk) {
 		if (tmp.qu.autoOptions.sacrifice) sacrificeGalaxy(6, true)
 		if (tmp.qu.bigRip.active) tmp.qu.bigRip.bestGals = Math.max(tmp.qu.bigRip.bestGals, player.galaxies)

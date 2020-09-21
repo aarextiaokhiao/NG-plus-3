@@ -138,6 +138,7 @@ function getEternityBoostToDT(){
 
 function dilates(x, m) {
 	let e = 1
+	let y = x
 	let a = false
 	if (player.dilation.active && m != 2 && (m != "meta" || !player.achievements.includes("ng3p63") || !inQC(0))) {
 		e *= dilationPowerStrength()
@@ -158,7 +159,7 @@ function dilates(x, m) {
 		if (m == "tick" && player.galacticSacrifice == undefined) x = x.div(1e3)
 		if (m == "tick" && x.lt(1)) x = Decimal.div(1, x)
 	}
-	return x.max(0)
+	return x.max(0).min(y) //it should never be a buff
 }
 
 function dilationPowerStrength() {
@@ -182,12 +183,12 @@ function dilationPowerStrength() {
 const DIL_UPGS = []
 const DIL_UPG_SIZES = [5, 7]
 const DIL_UPG_COSTS = {
-	  r1: [1e5, 10, 1/0],
-	  r2: [1e6, 100, 1/0],
-	  r3: [1e7, 20, 72],
-	  r4: [1e8, 1e4, 24],
-	  r4_ngmm: [1e30, 1e4, 18],
-	  r5: [1e16, 10, 1/0],
+	r1: [1e5, 10, 1/0],
+	r2: [1e6, 100, 1/0],
+	r3: [1e7, 20, 72],
+	r4: [1e8, 1e4, 24],
+	r4_ngmm: [1e30, 1e4, 18],
+	r5: [1e16, 10, 1/0],
 	  4: 5e6,
 	  5: 1e9,
 	  6: 5e7,
@@ -462,23 +463,26 @@ function updateDilationUpgradeCosts() {
 	}
 }
 
-function gainDilationGalaxies() {
-	if (player.dilation.dilatedTime.gte(player.dilation.nextThreshold)) {
-		let thresholdMult = inQC(5) ? Math.pow(10, 2.8) : !canBuyGalaxyThresholdUpg() ? 1.35 : 1.35 + 3.65 * Math.pow(0.8, getDilUpgPower(2))
-		if (hasBosonicUpg(12)) {
-			thresholdMult -= tmp.blu[12]
-			if (!tmp.ngp3l && thresholdMult < 1.2) thresholdMult = 1.1 + 0.1 / Math.sqrt(2.2 - thresholdMult)
-			else if (thresholdMult < 1.15) thresholdMult = 1.05 + 0.1 / (2.15 - thresholdMult)
-		}
-		if (player.exdilation != undefined) thresholdMult -= Math.min(.1 * exDilationUpgradeStrength(2), 0.2)
-		if (thresholdMult < 1.15 && player.aarexModifications.nguspV !== undefined) thresholdMult = 1.05 + 0.1 / (2.15 - thresholdMult)
-		let galaxyMult = getFreeGalaxyGainMult()
-		let thresholdGalaxies = player.dilation.freeGalaxies / galaxyMult
-		let timesGained = Math.floor(player.dilation.dilatedTime.div(player.dilation.nextThreshold).log(thresholdMult) + 1 + thresholdGalaxies)
-		player.dilation.freeGalaxies = timesGained * galaxyMult
-		player.dilation.nextThreshold = Decimal.pow(thresholdMult, timesGained - thresholdGalaxies).times(player.dilation.nextThreshold)
-		checkUniversalHarmony()
+function getFreeGalaxyThresholdIncrease(){
+	let thresholdMult = inQC(5) ? Math.pow(10, 2.8) : !canBuyGalaxyThresholdUpg() ? 1.35 : 1.35 + 3.65 * Math.pow(0.8, getDilUpgPower(2))
+	if (hasBosonicUpg(12)) {
+		thresholdMult -= tmp.blu[12]
+		if (!tmp.ngp3l && thresholdMult < 1.2) thresholdMult = 1.1 + 0.1 / Math.sqrt(2.2 - thresholdMult)
+		else if (thresholdMult < 1.15) thresholdMult = 1.05 + 0.1 / (2.15 - thresholdMult)
 	}
+	if (player.exdilation != undefined) thresholdMult -= Math.min(.1 * exDilationUpgradeStrength(2), 0.2)
+	if (thresholdMult < 1.15 && player.aarexModifications.nguspV !== undefined) thresholdMult = 1.05 + 0.1 / (2.15 - thresholdMult)
+	return thresholdMult
+}
+
+function gainDilationGalaxies() {
+	let thresholdMult = getFreeGalaxyThresholdIncrease()
+	let thresholdStart = getFreeGalaxyThresholdStart()
+	let galaxyMult = getFreeGalaxyGainMult()
+	let baseGain = Math.floor(player.dilation.dilatedTime.div(thresholdStart).log(thresholdMult) + 1)
+	if (baseGain < 0) baseGain = 0
+	player.dilation.freeGalaxies = baseGain * galaxyMult
+	player.dilation.nextThreshold = Decimal.pow(thresholdMult, baseGain).times(getFreeGalaxyThresholdStart())
 }
 
 function getFreeGalaxyGainMult() {
@@ -490,8 +494,12 @@ function getFreeGalaxyGainMult() {
 	return galaxyMult
 }
 
+function getFreeGalaxyThresholdStart(){
+	return new Deicmal(1000)
+}
+
 function resetDilationGalaxies() {
-	player.dilation.nextThreshold = new Decimal(1000)
+	player.dilation.nextThreshold = getFreeGalaxyThresholdStart()
 	player.dilation.freeGalaxies = 0
 	gainDilationGalaxies()
 }
