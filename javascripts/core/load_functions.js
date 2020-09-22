@@ -1731,7 +1731,7 @@ function updateVersionsONLOAD(){
 
 function doNGp3Init2(){
         ghostified = tmp.ngp3 && player.ghostify.times > 0 
-        quantumed = (ghostified || tmp.qu.times > 0) && player.meta !== undefined
+        quantumed = player.meta !== undefined && (ghostified || tmp.qu.times > 0)
         tmp.eds=tmp.qu&&tmp.qu.emperorDimensions
         updateBosonicLimits()
         if (tmp.ngp3) {
