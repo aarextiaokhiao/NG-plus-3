@@ -5,14 +5,9 @@ var savePrefix = prefix + "AM_"
 var presetPrefix = prefix + "AM_ST_"
 var metaSaveId = betaId + "AD_aarexModifications"
 var notifyId = 0
-function onLoad(noOffline) {
-	tmp.qu = player.quantum
-	happyHalloween = false
-	clickedAntimatter = 0
-	ghostifyDenied = 0
-	if (player.totalmoney === undefined || isNaN(player.totalmoney)) player.totalmoney = player.money;
-	if (player.tickspeed === undefined) player.tickspeed = new Decimal(1000)
-	if (player.options === undefined) {
+
+function setOptionsIfUndefined(){
+        if (player.options === undefined) {
 		player.options = {
 			scientific: false,
 			animationOn: true
@@ -35,7 +30,19 @@ function onLoad(noOffline) {
 	if (player.options.eternityconfirm === undefined) player.options.eternityconfirm = true
 	if (player.options.themes === undefined) player.options.themes = "Normal"
 	if (player.options.secretThemeKey === undefined) player.options.secretThemeKey = 0
-	if (player.achievements === undefined) player.achievements = [];
+        if (player.options.commas === undefined) player.options.commas = true
+        if (player.options.chart === undefined) player.options.chart = {}
+	if (player.options.chart.updateRate === undefined) player.options.chart.updateRate = 1000
+	if (player.options.chart.duration === undefined) player.options.chart.duration = 10
+	if (player.options.chart.warning === undefined) player.options.chart.warning = 0
+	if (player.options.chart.on === undefined) player.options.chart.on = false
+	if (player.options.chart.dips === undefined) player.options.chart.dips = true
+	if (player.options.animations === undefined) player.options.animations = {floatingText: true, bigCrunch: true, eternity: true, tachyonParticles: true}
+        if (player.options.notation == "Mixed") player.options.notation = "Mixed scientific"
+}
+
+function setPreBreakIfUndefined(){
+        if (player.achievements === undefined) player.achievements = [];
 	if (player.sacrificed === undefined) player.sacrificed = new Decimal(0);
 	if (player.infinityUpgrades === undefined) player.infinityUpgrades = [];
 	if (player.infinityPoints === undefined) player.infinityPoints = new Decimal(0);
@@ -60,7 +67,10 @@ function onLoad(noOffline) {
 	if (player.challengeTimes === undefined) player.challengeTimes = [600*60*24*31, 600*60*24*31, 600*60*24*31, 600*60*24*31, 600*60*24*31, 600*60*24*31, 600*60*24*31, 600*60*24*31, 600*60*24*31, 600*60*24*31, 600*60*24*31]
 	if (player.infchallengeTimes === undefined) player.infchallengeTimes = [600*60*24*31, 600*60*24*31, 600*60*24*31, 600*60*24*31, 600*60*24*31, 600*60*24*31, 600*60*24*31, 600*60*24*31]
 	if (player.lastTenRuns === undefined) player.lastTenRuns = [[600*60*24*31, 1], [600*60*24*31, 1], [600*60*24*31, 1], [600*60*24*31, 1], [600*60*24*31, 1], [600*60*24*31, 1], [600*60*24*31, 1], [600*60*24*31, 1], [600*60*24*31, 1], [600*60*24*31, 1]]
-	if (player.infMult === undefined) player.infMult = new Decimal(1)
+}
+
+function setPreEterIfUndefined(){
+        if (player.infMult === undefined) player.infMult = new Decimal(1)
 	if (player.infMultCost === undefined) player.infMultCost = new Decimal(100)
 	if (player.tickSpeedMultDecrease === undefined) player.tickSpeedMultDecrease = 10
 	if (player.tickSpeedMultDecreaseCost === undefined) player.tickSpeedMultDecreaseCost = 3e6
@@ -82,19 +92,15 @@ function onLoad(noOffline) {
 		player.challengeTarget = 0
 		if (player.currentChallenge != "") player.challengeTarget = Number.MAX_VALUE
 	}
-	if (player.lastTenEternities === undefined) player.lastTenEternities = [[600*60*24*31, 1], [600*60*24*31, 1], [600*60*24*31, 1], [600*60*24*31, 1], [600*60*24*31, 1], [600*60*24*31, 1], [600*60*24*31, 1], [600*60*24*31, 1], [600*60*24*31, 1], [600*60*24*31, 1]]
+}
+
+function setPreNGp3IfUndefined(){
+        if (player.lastTenEternities === undefined) player.lastTenEternities = [[600*60*24*31, 1], [600*60*24*31, 1], [600*60*24*31, 1], [600*60*24*31, 1], [600*60*24*31, 1], [600*60*24*31, 1], [600*60*24*31, 1], [600*60*24*31, 1], [600*60*24*31, 1], [600*60*24*31, 1]]
 	if (player.respec === undefined) player.respec = false
-	if (player.options.commas === undefined) player.options.commas = true
 	if (player.eternityChalls === undefined) player.eternityChalls = {}
 	if (player.eternityChallGoal === undefined) player.eternityChallGoal = new Decimal(Number.MAX_VALUE)
 	if (player.currentEternityChall === undefined) player.currentEternityChall = ""
 	if (player.eternityChallUnlocked === undefined) player.eternityChallUnlocked = 0
-	if (player.options.chart === undefined) player.options.chart = {}
-	if (player.options.chart.updateRate === undefined) player.options.chart.updateRate = 1000
-	if (player.options.chart.duration === undefined) player.options.chart.duration = 10
-	if (player.options.chart.warning === undefined) player.options.chart.warning = 0
-	if (player.options.chart.on === undefined) player.options.chart.on = false
-	if (player.options.chart.dips === undefined) player.options.chart.dips = true
 	if (player.etercreq === undefined) player.etercreq = 0
 	if (player.options.updateRate === undefined) player.options.updateRate = 50
 	if (player.eterc8ids === undefined) player.eterc8ids = 50
@@ -117,22 +123,19 @@ function onLoad(noOffline) {
 	if (player.timeDimension7 === undefined) player.timeDimension7 = {cost: new Decimal("1e3000"), amount: new Decimal(0), power: new Decimal(1), bought: 0 }
 	if (player.timeDimension8 === undefined) player.timeDimension8 = {cost: new Decimal("1e3350"), amount: new Decimal(0), power: new Decimal(1), bought: 0 }
 	if (player.why === undefined) player.why = 0
-	if (player.options.animations === undefined) player.options.animations = {floatingText: true, bigCrunch: true, eternity: true, tachyonParticles: true}
-	setTheme(player.options.theme);
+}
 
-	sliderText.textContent = "Update rate: " + player.options.updateRate + "ms";
-	slider.value = player.options.updateRate;
-
-	if (player.secondAmount !== 0) {
+function checkShowTS(){
+        if (player.secondAmount !== 0) {
 		document.getElementById("tickSpeed").style.visibility = "visible";
 		document.getElementById("tickSpeedMax").style.visibility = "visible";
 		document.getElementById("tickLabel").style.visibility = "visible";
 		document.getElementById("tickSpeedAmount").style.visibility = "visible";
 	}
+}
 
-	if (player.options.notation == "Mixed") player.options.notation = "Mixed scientific"
-
-	if (player.infinityPower === undefined) {
+function setIDIfUndefined(){
+        if (player.infinityPower === undefined) {
 		player.infinityPower = new Decimal(1)
 		player.infinityDimension1 = {
 			cost: new Decimal(1e8),
@@ -164,8 +167,59 @@ function onLoad(noOffline) {
 		}
 		player.infDimensionsUnlocked = [false, false, false, false]
 	}
+        if (player.infinityDimension1.baseAmount === undefined) {
+		player.infinityDimension1.baseAmount = 0;
+		player.infinityDimension2.baseAmount = 0;
+		player.infinityDimension3.baseAmount = 0;
+		player.infinityDimension4.baseAmount = 0;
 
-	if (player.timeShards === undefined) {
+		player.infinityDimension1.baseAmount = new Decimal(player.infinityDimension1.power).log(50).times(10).toNumber()
+		player.infinityDimension2.baseAmount = new Decimal(player.infinityDimension2.power).log(30).times(10).toNumber()
+		player.infinityDimension3.baseAmount = new Decimal(player.infinityDimension3.power).log(10).times(10).toNumber()
+		player.infinityDimension4.baseAmount = new Decimal(player.infinityDimension4.power).log(5).times(10).toNumber()
+	}
+
+        if (player.infinityDimension5 === undefined) {
+		player.infDimensionsUnlocked.push(false)
+		player.infDimensionsUnlocked.push(false)
+		player.infinityDimension5 = {
+			cost: new Decimal(1e140),
+			amount: new Decimal(0),
+			bought: 0,
+			power: new Decimal(1),
+			baseAmount: 0
+		}
+		player.infinityDimension6 = {
+			cost: new Decimal(1e200),
+			amount: new Decimal(0),
+			bought: 0,
+			power: new Decimal(1),
+			baseAmount: 0
+		}
+	}
+
+	if (player.infinityDimension7 == undefined) {
+		player.infDimensionsUnlocked.push(false)
+		player.infDimensionsUnlocked.push(false)
+		player.infinityDimension7 = {
+			cost: new Decimal(1e250),
+			amount: new Decimal(0),
+			bought: 0,
+			power: new Decimal(1),
+			baseAmount: 0
+		}
+		player.infinityDimension8 = {
+			cost: new Decimal(1e280),
+			amount: new Decimal(0),
+			bought: 0,
+			power: new Decimal(1),
+			baseAmount: 0
+		}
+	}
+}
+
+function setTD1to4IfUndefined(){
+        if (player.timeShards === undefined) {
 		player.timeShards = new Decimal(0)
 		player.eternityPoints = new Decimal(0)
 		player.tickThreshold = new Decimal(1)
@@ -196,22 +250,11 @@ function onLoad(noOffline) {
 			bought: 0
 		}
 	}
+}
 
-	if (player.infinityDimension1.baseAmount === undefined) {
-		player.infinityDimension1.baseAmount = 0;
-		player.infinityDimension2.baseAmount = 0;
-		player.infinityDimension3.baseAmount = 0;
-		player.infinityDimension4.baseAmount = 0;
-
-		player.infinityDimension1.baseAmount = new Decimal(player.infinityDimension1.power).log(50).times(10).toNumber()
-		player.infinityDimension2.baseAmount = new Decimal(player.infinityDimension2.power).log(30).times(10).toNumber()
-		player.infinityDimension3.baseAmount = new Decimal(player.infinityDimension3.power).log(10).times(10).toNumber()
-		player.infinityDimension4.baseAmount = new Decimal(player.infinityDimension4.power).log(5).times(10).toNumber()
-	}
-	
-	if (player.autoIP === undefined) player.autoIP = new Decimal(0)
+function setABIfUndefined(){
+        if (player.autoIP === undefined) player.autoIP = new Decimal(0)
 	if (player.autoTime === undefined) player.autoTime = 1e300;
-
 	if (player.matter === null) player.matter = new Decimal(0)
 	for (var i = 0; i < 12; i++) {
 		if (player.autobuyers[i] % 1 !== 0 && player.autobuyers[i].tier === undefined) {
@@ -227,10 +270,10 @@ function onLoad(noOffline) {
 		}
 	}
 	if (player.autobuyers[8].tier == 10) player.autobuyers[8].tier = 9
+}
 
-	document.getElementById("totaltickgained").textContent = "You've gained " + getFullExpansion(player.totalTickGained) + " tickspeed upgrades."
-
-	GPminpeak = new Decimal(0)
+function setPeakIfUndefined(){
+        GPminpeak = new Decimal(0)
 	IPminpeak = new Decimal(0)
 	EPminpeakType = 'normal'
 	EPminpeak = new Decimal(0)
@@ -239,9 +282,10 @@ function onLoad(noOffline) {
 	GHPminpeak = new Decimal(0)
 	GHPminpeakValue = new Decimal(0)
 	if (player.peakSpent) player.peakSpent = 0
-	if (typeof player.autobuyers[9].bulk !== "number") player.autobuyers[9].bulk = 1
+}
 
-	if (player.version === undefined) { // value will need to be adjusted when update goes live
+function dov1tov5(){
+        if (player.version === undefined) { 
 		for (var i = 0; i < player.autobuyers.length; i++) {
 			if (player.autobuyers[i]%1 !== 0) player.infinityPoints = player.infinityPoints + player.autobuyers[i].cost - 1
 		}
@@ -272,47 +316,10 @@ function onLoad(noOffline) {
 		player.newsArray = []
 		player.version = 5
 	}
+}
 
-	if (player.infinityDimension5 === undefined) {
-		player.infDimensionsUnlocked.push(false)
-		player.infDimensionsUnlocked.push(false)
-		player.infinityDimension5 = {
-			cost: new Decimal(1e140),
-			amount: new Decimal(0),
-			bought: 0,
-			power: new Decimal(1),
-			baseAmount: 0
-		}
-		player.infinityDimension6 = {
-			cost: new Decimal(1e200),
-			amount: new Decimal(0),
-			bought: 0,
-			power: new Decimal(1),
-			baseAmount: 0
-		}
-		player.version = 6
-	}
-
-	if (player.infinityDimension7 == undefined) {
-		player.infDimensionsUnlocked.push(false)
-		player.infDimensionsUnlocked.push(false)
-		player.infinityDimension7 = {
-			cost: new Decimal(1e250),
-			amount: new Decimal(0),
-			bought: 0,
-			power: new Decimal(1),
-			baseAmount: 0
-		}
-		player.infinityDimension8 = {
-			cost: new Decimal(1e280),
-			amount: new Decimal(0),
-			bought: 0,
-			power: new Decimal(1),
-			baseAmount: 0
-		}
-	}
-
-	if (player.replicanti === undefined) {
+function setReplTSIfUndefined(){
+        if (player.replicanti === undefined) {
 		player.replicanti = {
 			amount: new Decimal(0),
 			unl: false,
@@ -338,12 +345,34 @@ function onLoad(noOffline) {
 			studies: [],
 		}
 	}
-
-	if (getEternitied() == 0) {
+        if (getEternitied() == 0) {
 		document.getElementById("eternityPoints2").style.display = "none";
 		document.getElementById("eternitystorebtn").style.display = "none";
 		document.getElementById("tdtabbtn").style.display = "none";
 	}
+}
+
+function setEverythingPreNGp3onLoad(){
+        clickedAntimatter = 0
+        happyHalloween = false
+        if (player.totalmoney === undefined || isNaN(player.totalmoney)) player.totalmoney = player.money;
+	if (player.tickspeed === undefined) player.tickspeed = new Decimal(1000)
+	setOptionsIfUndefined()
+	setPreBreakIfUndefined()
+	setPreEterIfUndefined()
+        setPreNGp3IfUndefined()
+	setTheme(player.options.theme);
+	sliderText.textContent = "Update rate: " + player.options.updateRate + "ms";
+	slider.value = player.options.updateRate;
+        checkShowTS()
+        setIDIfUndefined()
+        setTD1to4IfUndefined()
+        setABIfUndefined()
+	document.getElementById("totaltickgained").textContent = "You've gained " + getFullExpansion(player.totalTickGained) + " tickspeed upgrades."
+        setPeakIfUndefined()
+	dov1tov5()
+	if (typeof player.autobuyers[9].bulk !== "number") player.autobuyers[9].bulk = 1
+        setReplTSIfUndefined()
 
 	if (player.eternityUpgrades === undefined) player.eternityUpgrades = []
 
@@ -362,7 +391,11 @@ function onLoad(noOffline) {
 		else player.options.commas = player.options.notation
 	}
 	if (player.shameLevel === undefined) player.shameLevel = 0;
-	if (player.aarexModifications === undefined) {
+        document.getElementById("break").textContent = (player.break ? "FIX" : "BREAK") + " INFINITY"
+}
+
+function setAarexModIfUndefined(){
+        if (player.aarexModifications === undefined) {
 		player.aarexModifications = {
 			breakInfinity: false
 		}
@@ -384,9 +417,10 @@ function onLoad(noOffline) {
 	if (player.aarexModifications.popUpId === undefined) player.aarexModifications.popUpId = 0
 
 	if (player.aarexModifications.tabsSave === undefined) player.aarexModifications.tabsSave = {on: false}
-	if (player.aarexModifications.noFooter == undefined) player.aarexModifications.noFooter = player.options.theme == "Aarex's Modifications" || player.options.theme == "Aarex's Mods II"
-
-	if (player.masterystudies !== undefined && player.aarexModifications.newGame3PlusVersion === undefined) {
+	if (player.aarexModifications.noFooter == undefined) {
+                player.aarexModifications.noFooter = player.options.theme == "Aarex's Modifications" || player.options.theme == "Aarex's Mods II"
+        }
+        if (player.masterystudies !== undefined && player.aarexModifications.newGame3PlusVersion === undefined) {
 		forceHardReset = true
 		reset_game()
 		forceHardReset = false
@@ -396,7 +430,10 @@ function onLoad(noOffline) {
 		delete player.masterystudies
 		delete player.aarexModifications.newGame3PlusVersion
 	}
-	if (player.aarexModifications.newGame3PlusVersion>=2.2) tmp.bl=player.ghostify.bl
+}
+
+function doNGp3Init1(){
+        if (player.aarexModifications.newGame3PlusVersion >= 2.2) tmp.bl = player.ghostify.bl
 	tmp.ngp3=player.masterystudies!==undefined
 	tmp.ngp3l=player.aarexModifications.ngp3lV!==undefined
 	tmp.ngex=player.aarexModifications.ngexV!==undefined
@@ -411,44 +448,19 @@ function onLoad(noOffline) {
 	toggleChallengeRetry()
 	toggleBulk()
 	toggleBulk()
- 
-	document.getElementById("rename").innerHTML = "<p style='font-size:15px'>Rename</p>Name: "+(player.aarexModifications.save_name?player.aarexModifications.save_name:"Save #" + savePlacement)
-	document.getElementById("offlineProgress").textContent = "Offline progress: O"+(player.aarexModifications.offlineProgress?"N":"FF")
-	document.getElementById("autoSave").textContent = "Auto save: " + (player.aarexModifications.autoSave ? "ON" : "OFF")
-	document.getElementById("autoSaveInterval").textContent = "Auto-save interval: " + getAutoSaveInterval() + "s"
-	document.getElementById("autoSaveIntervalSlider").value = getAutoSaveInterval()
+}
 
-	if (!player.replicanti.auto[0]) document.getElementById("replauto1").textContent = "Auto: OFF"
-	if (!player.replicanti.auto[1]) document.getElementById("replauto2").textContent = "Auto: OFF"
-	if (!player.replicanti.auto[2]) document.getElementById("replauto3").textContent = "Auto: OFF"
-
-	document.getElementById("automation_ng" + (player.aarexModifications.ngmX > 3 ? "m4" : "") + "_placement").appendChild(document.getElementById("autobuyers"))
-	if (player.aarexModifications.ngmX > 3) document.getElementById("autobuyers").style.display="none"
-	document.getElementById("autobuyers").className=(player.aarexModifications.ngmX>3?"":"inf")+"tab"
-	document.getElementById("autobuyersbtn").style.display=player.aarexModifications.ngmX>3?"none":""
-	loadAutoBuyerSettings();
-	var updatedLTR = []
-	for (var lastRun = 0; lastRun < 10; lastRun++) {
-		if (typeof(player.lastTenRuns[lastRun]) !== "number") if (player.lastTenRuns[lastRun][0] != 26784000 || player.lastTenRuns[lastRun][1].neq(1)) updatedLTR.push(player.lastTenRuns[lastRun])
-		if (player.lastTenEternities[lastRun][0] == 26784000 && player.lastTenEternities[lastRun][1].eq(1)) player.lastTenEternities[lastRun] = [26784000, new Decimal(0)]
-	}
-	for (var a = updatedLTR.length; a < 10; a++) updatedLTR.push([26784000, new Decimal(0)])
-	player.lastTenRuns = updatedLTR
-	updateLastTenRuns()
-	updateLastTenEternities()
-
-	updateInfCosts()
-
-
-	if (player.replicanti.unl == true) {
+function setSomeEterEraStuff(){
+        if (player.replicanti.unl == true) {
 		document.getElementById("replicantidiv").style.display="inline-block"
 		document.getElementById("replicantiunlock").style.display="none"
 	} else {
 		document.getElementById("replicantidiv").style.display="none"
 		document.getElementById("replicantiunlock").style.display="inline-block"
 	}
-
-	document.getElementById("break").textContent = (player.break ? "FIX" : "BREAK") + " INFINITY"
+        if (!player.replicanti.auto[0]) document.getElementById("replauto1").textContent = "Auto: OFF"
+	if (!player.replicanti.auto[1]) document.getElementById("replauto2").textContent = "Auto: OFF"
+	if (!player.replicanti.auto[2]) document.getElementById("replauto3").textContent = "Auto: OFF"
 
 	updateNotationOption()
 
@@ -470,15 +482,37 @@ function onLoad(noOffline) {
 		player.epmult = new Decimal(1)
 		player.epmultCost = new Decimal(500)
 	}
+}
 
-	clearOldAchieves()
+function setSaveStuffHTML(){
+        document.getElementById("rename").innerHTML = "<p style='font-size:15px'>Rename</p>Name: "+(player.aarexModifications.save_name?player.aarexModifications.save_name:"Save #" + savePlacement)
+	document.getElementById("offlineProgress").textContent = "Offline progress: O"+(player.aarexModifications.offlineProgress?"N":"FF")
+	document.getElementById("autoSave").textContent = "Auto save: " + (player.aarexModifications.autoSave ? "ON" : "OFF")
+	document.getElementById("autoSaveInterval").textContent = "Auto-save interval: " + getAutoSaveInterval() + "s"
+	document.getElementById("autoSaveIntervalSlider").value = getAutoSaveInterval()
+}
 
-	document.getElementById("epmult").innerHTML = "You gain 5 times more EP<p>Currently: "+shortenDimensions(player.epmult)+"x<p>Cost: "+shortenDimensions(player.epmultCost)+" EP"
+function setSomeEterEraStuff2(){
+        document.getElementById("automation_ng" + (player.aarexModifications.ngmX > 3 ? "m4" : "") + "_placement").appendChild(document.getElementById("autobuyers"))
+	if (player.aarexModifications.ngmX > 3) document.getElementById("autobuyers").style.display="none"
+	document.getElementById("autobuyers").className=(player.aarexModifications.ngmX>3?"":"inf")+"tab"
+	document.getElementById("autobuyersbtn").style.display=player.aarexModifications.ngmX>3?"none":""
+	loadAutoBuyerSettings();
+	var updatedLTR = []
+	for (var lastRun = 0; lastRun < 10; lastRun++) {
+		if (typeof(player.lastTenRuns[lastRun]) !== "number") if (player.lastTenRuns[lastRun][0] != 26784000 || player.lastTenRuns[lastRun][1].neq(1)) updatedLTR.push(player.lastTenRuns[lastRun])
+		if (player.lastTenEternities[lastRun][0] == 26784000 && player.lastTenEternities[lastRun][1].eq(1)) player.lastTenEternities[lastRun] = [26784000, new Decimal(0)]
+	}
+	for (var a = updatedLTR.length; a < 10; a++) updatedLTR.push([26784000, new Decimal(0)])
+	player.lastTenRuns = updatedLTR
+	updateLastTenRuns()
+	updateLastTenEternities()
 
-	updateBoughtTimeStudies()
-	performedTS = false
+	updateInfCosts()
+}
 
-	if (player.version > 7 && inERS && !player.aarexModifications.ersVersion) player.version = 7
+function dov7tov10(){
+        if (player.version > 7 && inERS && !player.aarexModifications.ersVersion) player.version = 7
 	if (player.version < 9) {
 		player.version = 9
 		let achs = []
@@ -525,310 +559,349 @@ function onLoad(noOffline) {
 			}
 		}
 	}
+}
 
-  if (player.aarexModifications.newGameMinusVersion === undefined && !player.boughtDims) {
-      if (checkNGM() > 0) {
-          player.aarexModifications.newGameMinusVersion = (player.aarexModifications.newGameMinusUpdate !== undefined ? player.aarexModifications.newGameMinusUpdate : player.newGameMinusUpdate === undefined ? checkNGM() : 1.1)
-          delete player.aarexModifications.newGameMinusUpdate
-          delete player.newGameMinusUpdate
-      }
-  }
-  if (player.aarexModifications.newGameMinusVersion < 1.1) {
-      player.totalTimePlayed+=1728000
-      player.timestudy.theorem+=1
-      player.timestudy.ipcost=Decimal.div(player.timestudy.ipcost,2)
-      if (player.eternityChalls.eterc1==undefined) player.eternityChalls.eterc1=-6
-      else player.eternityChalls.eterc1-=6
-      if (player.eternityChalls.eterc11==undefined) player.eternityChalls.eterc11=1
-      else if (player.eternityChalls.eterc11<5) player.eternityChalls.eterc11+=1
-      player.aarexModifications.newGameMinusVersion = 1.1
-  }
-  if (player.aarexModifications.newGameMinusVersion < 2) {
-      if (player.eternities == -20) {
-          player.infinitied += 991
-          player.offlineProdCost = Decimal.times(player.offlineProdCost, 5e4)
-      } player.infinitiedBank -= 996
-      player.spreadingCancer -= 9000
-      player.timeDimension1.power = player.timeDimension1.power.mul(2)
-      player.timestudy.theorem--
-      player.timestudy.ipcost = player.timestudy.ipcost.div(5e11)
-      player.dilation.nextThreshold.e = 6
-      player.dilation.totalTachyonParticles = new Decimal(500)
-      player.dilation.rebuyables[2] = 1
-      player.timeDimension5.power.e = -3
-      player.timeDimension6.power = new Decimal(0.0004)
-      player.timeDimension7.power.e = -4
-      player.timeDimension8.power = new Decimal(0.00004)
-  }
-  if (player.aarexModifications.newGameMinusVersion < 2.1) {
-      player.timeDimension1.power = player.timeDimension1.power.mul(8)
-      player.timeDimension4.power = player.timeDimension4.power.mul(4)
-      player.timestudy.theorem--
-      player.dilation.totalTachyonParticles = player.dilation.totalTachyonParticles.add(1500)
-  }
-  if (player.aarexModifications.newGameMinusVersion < 2.2) {
-      player.timestudy.theorem += 3;
-      const pow_div = [0,160,5/3,1,3,100,80,100/3,20];
-      for (i=1;i<=8;i++) player["timeDimension"+i].power = player["timeDimension"+i].power.div(pow_div[i]);
-      if (player.eternityChalls.eterc11 == 1) delete player.eternityChalls.eterc11
-      else player.eternityChalls.eterc11--
-      $.notify('Your NG- save has been updated due to few balancing issues.', 'info')
-  }
-  if (player.aarexModifications.newGamePlusVersion === undefined) if (player.eternities < 20 && ECTimesCompleted("eterc1") > 0) player.aarexModifications.newGamePlusVersion = 1
-  if (player.aarexModifications.newGamePlusPlusVersion === undefined && !player.masterystudies) { 
-      if (player.dilation.rebuyables[4] !== undefined) {
-          var migratedUpgrades = []
-          var v2_1check=player.version>13
-          for (id=5;id<(v2_1check?18:14);id++) if (player.dilation.upgrades.includes(id)) migratedUpgrades.push(id>16?10:(id>12&&v2_1check)?("ngpp"+(id-10)):(id%4<1)?("ngpp"+(id/4-1)):Math.floor(id/4)*3+id%4)
-          if (player.meta) {
-              for (dim=1;dim<9;dim++) {
-                  player.meta[dim].bought += player.meta[dim].tensBought * 10
-                  delete player.meta[dim].tensBought
-              }
-              if (player.autoEterMode) player.aarexModifications.newGamePlusPlusVersion = 2.2
-              else if (v2_1check) {
-                  player.version = 12.1
-                  player.aarexModifications.newGamePlusPlusVersion = 2.1
-              } else if (player.meta) player.aarexModifications.newGamePlusPlusVersion = 2
-          } else player.aarexModifications.newGamePlusPlusVersion = 1
-          var newAchievements=[]
-          var v2_3check=player.ep5xAutobuyer!==undefined
-          for (id=0;id<player.achievements.length;id++) {
-              r=player.achievements[id].split("r")[1]
-              newAchievements.push(r>138?"ngpp"+(r-130):player.achievements[id])
-              if (r>138) v2_3check=true
-          }
-          if (v2_3check) {
-              player.aarexModifications.newGamePlusVersion = 1
-              player.aarexModifications.newGamePlusPlusVersion = 2.3
-              player.autoEterOptions = {epmult:player.ep5xAutobuyer}
-              for (dim=1;dim<9;dim++) player.autoEterOptions["td"+dim] = player.timeDimensionAutobuyer
-              player.achievements=newAchievements
-              updateAchievements()
-              delete player.timeDimensionAutobuyer
-              delete player.ep5xAutobuyer
-          }
-          tmp.qu=player.quantum
-          if (tmp.qu) {
-              player.aarexModifications.newGamePlusPlusVersion = 2.901
-              tmp.qu.time = player.totalTimePlayed
-              tmp.qu.best = 9999999999
-              tmp.qu.last10 = [[600*60*24*31, 0], [600*60*24*31, 0], [600*60*24*31, 0], [600*60*24*31, 0], [600*60*24*31, 0], [600*60*24*31, 0], [600*60*24*31, 0], [600*60*24*31, 0], [600*60*24*31, 0], [600*60*24*31, 0]]
-              player.aarexModifications.quantumConf = true
-          }
-          player.aarexModifications.newGamePlusVersion = 1
-          if (confirm("Do you want to migrate your NG++ save into new NG+++ mode?")) {
-              player.aarexModifications.newGame3PlusVersion = 2.3
-              player.respecMastery=false
-              player.dbPower = 1
-              player.dilation.times = 0
-              player.peakSpent = 0
-              player.masterystudies = []
-              tmp.qu.reached = false
-              player.meta.bestOverQuantums = player.meta.bestAntimatter
-              player.options.animations.quarks = true
-              tmp.qu.usedQuarks = {
-                  r: 0,
-                  g: 0,
-                  b: 0
-              }
-              tmp.qu.colorPowers = {
-                  r: 0,
-                  g: 0,
-                  b: 0
-              }
-              tmp.qu.gluons = {
-                  rg: 0,
-                  gb: 0,
-                  br: 0
-              }
-              player.eternityBuyer.dilationMode = false
-              player.eternityBuyer.statBeforeDilation = 0
-              player.eternityBuyer.dilationPerAmount = 10
-              player.eternityBuyer.dilMode = "amount"
-              player.eternityBuyer.tpUpgraded = false
-              player.eternityBuyer.slowStop = false
-              player.eternityBuyer.slowStopped = false
-              player.eternityBuyer.ifAD = false
-              tmp.qu.autobuyer = {
-                  enabled: false,
-                  limit: 1,
-                  mode: "amount",
-                  peakTime: 0
-              }
-              tmp.qu.electrons = {
-                  amount: 0,
-                  sacGals: 0,
-                  mult: 2,
-                  rebuyables: [0,0,0,0]
-              }
-              tmp.qu.disabledRewards = {}
-              tmp.qu.metaAutobuyerWait = 0
-              tmp.qu.multPower = {rg:0,gb:0,br:0,total:0}
-              tmp.qu.challenge = []
-              tmp.qu.challenges = {}
-              tmp.qu.nonMAGoalReached = []
-              tmp.qu.challengeRecords = {}
-              tmp.qu.pairedChallenges = {
-                  order: {},
-                  current: 0,
-                  completed: 0,
-                  completions: {},
-                  fastest: {},
-                  pc68best: 0,
-                  respec: false
-              }
-              tmp.qu.qcsNoDil = {}
-              tmp.qu.qcsMods = {current:[]}
-              player.dilation.bestTP = 0
-              player.old = false
-              tmp.qu.autoOptions = {}
-              tmp.qu.replicants = {
-                  amount: 0,
-                  requirement: "1e3000000",
-                  quarks: 0,
-                  quantumFood: 0,
-                  quantumFoodCost: 2e46,
-                  limit: 1,
-                  limitDim: 1,
-                  limitCost: 1e49,
-                  eggonProgress: 0,
-                  eggons: 0,
-                  hatchSpeed: 20,
-                  hatchSpeedCost: 1e49,
-                  babyProgress: 0,
-                  babies: 0,
-                  ageProgress: 0
-              }
-              tmp.qu.emperorDimensions = {}
-              for (d=1;d<9;d++) tmp.qu.emperorDimensions[d] = {workers: 0, progress: 0, perm: 0}
-              tmp.qu.nanofield = {
-                 charge: 0,
-                 energy: 0,
-                 antienergy: 0,
-                 power: 0,
-                 powerThreshold: 50,
-                 rewards: 0,
-                 producingCharge: false
-              }
-              tmp.qu.reachedInfQK = false
-              tmp.qu.assignAllRatios = {
-                  r: 1,
-                  g: 1,
-                  b: 1
-              }
-              tmp.qu.notrelative = false
-              tmp.qu.wasted = false
-              tmp.qu.tod = {
-                  r: {
-                      quarks: 0,
-                      spin: 0,
-                      upgrades: {}
-                  },
-                  g: {
-                      quarks: 0,
-                      spin: 0,
-                      upgrades: {}
-                  },
-                  b: {
-                      quarks: 0,
-                      spin: 0,
-                      upgrades: {}
-                  },
-                  upgrades: {}
-              }
-              tmp.qu.bigRip = {
-                  active: false,
-                  conf: true,
-                  times: 0,
-                  bestThisRun: 0,
-                  totalAntimatter: 0,
-                  bestGals: 0,
-                  savedAutobuyersNoBR: {},
-                  savedAutobuyersBR: {},
-                  spaceShards: 0,
-                  upgrades: []
-              }
-              tmp.qu.breakEternity = {
-                  unlocked: false,
-                  break: false,
-                  eternalMatter: 0,
-                  upgrades: [],
-                  epMultPower: 0
-              }
-              player.ghostify = {
-                  reached: false,
-                  times: 0,
-                  time: player.totalTimePlayed,
-                  best: 9999999999,
-                  last10: [[600*60*24*31, 0], [600*60*24*31, 0], [600*60*24*31, 0], [600*60*24*31, 0], [600*60*24*31, 0], [600*60*24*31, 0], [600*60*24*31, 0], [600*60*24*31, 0], [600*60*24*31, 0], [600*60*24*31, 0]],
-                  milestones: 0,
-                  disabledRewards: {},
-                  ghostParticles: 0,
-                  multPower: 1,
-                  neutrinos: {
-                      electron: 0,
-                      mu: 0,
-                      tau: 0,
-                      generationGain: 1,
-                      multPower: 1,
-                      upgrades: []
-                  },
-                  automatorGhosts: setupAutomaticGhostsData(),
-                  ghostlyPhotons: {
-                      unl: false,
-                      amount: 0,
-                      ghostlyRays: 0,
-                      darkMatter: 0,
-                      lights: [0,0,0,0,0,0,0,0],
-                      maxRed: 0,
-                      enpowerments: 0
-                  },
-                  bl: {
-                      watt: 0,
-                      speed: 1,
-                      ticks: 0,
-                      am: 0,
-                      typeToExtract: 1,
-                      extracting: false,
-                      extractProgress: 0,
-                      autoExtract: 0,
-                      glyphs: [],
-                      enchants: {},
-                      usedEnchants: [],
-                      upgrades: [],
-                      battery: 0,
-                      odSpeed: 1
-                  },
-                  wzb: {
-                      unl: false,
-                      dP: 0,
-                      dPUse: 0,
-                      wQkUp: true,
-                      wQkProgress: 0,
-                      zNeGen: 1,
-                      zNeProgress: 1,
-                      zNeReq: 1,
-                      wpb: 0,
-                      wnb: 0,
-                      zb: 0
-                  }
-              }
-              tmp.bl=player.ghostify.bl
-              for (var g=1;g<=br.maxLimit;g++) tmp.bl.glyphs.push(0)
-              player.options.animations.ghostify = true
-              player.aarexModifications.ghostifyConf = true
-          }
-          player.dilation.upgrades=migratedUpgrades
-          resetDilationGalaxies()
-      }
-  } else if (player.dilation.rebuyables[4] == null) {
-      delete player.aarexModifications.meta
-      delete player.aarexModifications.autoEterMode
-      delete player.aarexModifications.autoEterOptions
-      delete tmp.qu
+function doNGM1Versions(){
+        if (player.aarexModifications.newGameMinusVersion === undefined && !player.boughtDims) {
+                if (checkNGM() > 0) {
+                        player.aarexModifications.newGameMinusVersion = (player.aarexModifications.newGameMinusUpdate !== undefined ? player.aarexModifications.newGameMinusUpdate : player.newGameMinusUpdate === undefined ? checkNGM() : 1.1)
+                        delete player.aarexModifications.newGameMinusUpdate
+                        delete player.newGameMinusUpdate
+                }
+        }
+        if (player.aarexModifications.newGameMinusVersion < 1.1) {
+                player.totalTimePlayed+=1728000
+                player.timestudy.theorem+=1
+                player.timestudy.ipcost=Decimal.div(player.timestudy.ipcost,2)
+                if (player.eternityChalls.eterc1==undefined) player.eternityChalls.eterc1=-6
+                else player.eternityChalls.eterc1-=6
+                if (player.eternityChalls.eterc11==undefined) player.eternityChalls.eterc11=1
+                else if (player.eternityChalls.eterc11<5) player.eternityChalls.eterc11+=1
+                player.aarexModifications.newGameMinusVersion = 1.1
+        }
+        if (player.aarexModifications.newGameMinusVersion < 2) {
+                if (player.eternities == -20) {
+                        player.infinitied += 991
+                        player.offlineProdCost = Decimal.times(player.offlineProdCost, 5e4)
+                } player.infinitiedBank -= 996
+                player.spreadingCancer -= 9000
+                player.timeDimension1.power = player.timeDimension1.power.mul(2)
+                player.timestudy.theorem--
+                player.timestudy.ipcost = player.timestudy.ipcost.div(5e11)
+                player.dilation.nextThreshold.e = 6
+                player.dilation.totalTachyonParticles = new Decimal(500)
+                player.dilation.rebuyables[2] = 1
+                player.timeDimension5.power = Decimal.pow(10, -3)
+                player.timeDimension6.power = new Decimal(0.0004)
+                player.timeDimension7.power = Decimal.pow(10, -4)
+                player.timeDimension8.power = new Decimal(0.00004)
+        }
+        if (player.aarexModifications.newGameMinusVersion < 2.1) {
+                player.timeDimension1.power = player.timeDimension1.power.mul(8)
+                player.timeDimension4.power = player.timeDimension4.power.mul(4)
+                player.timestudy.theorem--
+                player.dilation.totalTachyonParticles = player.dilation.totalTachyonParticles.add(1500)
+        }
+        if (player.aarexModifications.newGameMinusVersion < 2.2) {
+                player.timestudy.theorem += 3;
+                const pow_div = [0,160,5/3,1,3,100,80,100/3,20];
+                for (i=1;i<=8;i++) player["timeDimension"+i].power = player["timeDimension"+i].power.div(pow_div[i]);
+                if (player.eternityChalls.eterc11 == 1) delete player.eternityChalls.eterc11
+                else player.eternityChalls.eterc11--
+                $.notify('Your NG- save has been updated due to few balancing issues.', 'info')
+        }
+}
 
-  }
+
+
+function doNGP3NewPlayerStuff(){
+        player.aarexModifications.newGame3PlusVersion = 2.3
+        player.respecMastery=false
+        player.dbPower = 1
+        player.dilation.times = 0
+        player.peakSpent = 0
+        player.masterystudies = []
+        tmp.qu.reached = false
+        player.meta.bestOverQuantums = player.meta.bestAntimatter
+        player.options.animations.quarks = true
+        tmp.qu.usedQuarks = {
+                r: 0,
+                g: 0,
+                b: 0
+        }
+        tmp.qu.colorPowers = {
+                r: 0,
+                g: 0,
+                b: 0
+        }
+        tmp.qu.gluons = {
+                rg: 0,
+                gb: 0,
+                br: 0
+        }
+        player.eternityBuyer.dilationMode = false
+        player.eternityBuyer.statBeforeDilation = 0
+        player.eternityBuyer.dilationPerAmount = 10
+        player.eternityBuyer.dilMode = "amount"
+        player.eternityBuyer.tpUpgraded = false
+        player.eternityBuyer.slowStop = false
+        player.eternityBuyer.slowStopped = false
+        player.eternityBuyer.ifAD = false
+        tmp.qu.autobuyer = {
+                enabled: false,
+                limit: 1,
+                mode: "amount",
+                peakTime: 0
+                }
+        tmp.qu.electrons = {
+                amount: 0,
+                sacGals: 0,
+                mult: 2,
+                rebuyables: [0,0,0,0]
+        }
+        tmp.qu.disabledRewards = {}
+        tmp.qu.metaAutobuyerWait = 0
+        tmp.qu.multPower = {rg:0,gb:0,br:0,total:0}
+        tmp.qu.challenge = []
+        tmp.qu.challenges = {}
+        tmp.qu.nonMAGoalReached = []
+        tmp.qu.challengeRecords = {}
+        tmp.qu.pairedChallenges = {
+                order: {},
+                current: 0,
+                completed: 0,
+                completions: {},
+                fastest: {},
+                pc68best: 0,
+                respec: false
+        }
+        tmp.qu.qcsNoDil = {}
+        tmp.qu.qcsMods = {current:[]}
+        player.dilation.bestTP = 0
+        player.old = false
+        tmp.qu.autoOptions = {}
+        tmp.qu.replicants = {
+                amount: 0,
+                requirement: "1e3000000",
+                quarks: 0,
+                quantumFood: 0,
+                quantumFoodCost: 2e46,
+                limit: 1,
+                limitDim: 1,
+                limitCost: 1e49,
+                eggonProgress: 0,
+                eggons: 0,
+                hatchSpeed: 20,
+                hatchSpeedCost: 1e49,
+                babyProgress: 0,
+                babies: 0,
+                ageProgress: 0
+        }
+        tmp.qu.emperorDimensions = {}
+        for (d=1;d<9;d++) tmp.qu.emperorDimensions[d] = {workers: 0, progress: 0, perm: 0}
+        tmp.qu.nanofield = {
+                charge: 0,
+                energy: 0,
+                antienergy: 0,
+                power: 0,
+                powerThreshold: 50,
+                rewards: 0,
+                producingCharge: false
+        }
+        tmp.qu.reachedInfQK = false
+        tmp.qu.assignAllRatios = {
+                r: 1,
+                g: 1,
+                b: 1
+        }
+        tmp.qu.notrelative = false
+        tmp.qu.wasted = false
+        tmp.qu.tod = {
+                r: {
+                        quarks: 0,
+                        spin: 0,
+                        upgrades: {}
+                },
+                g: {
+                        quarks: 0,
+                        spin: 0,
+                        upgrades: {}
+                },
+                b: {
+                        quarks: 0,
+                        spin: 0,
+                        upgrades: {}
+                },
+                upgrades: {}
+        }
+        tmp.qu.bigRip = {
+                active: false,
+                conf: true,
+                times: 0,
+                bestThisRun: 0,
+                totalAntimatter: 0,
+                bestGals: 0,
+                savedAutobuyersNoBR: {},
+                savedAutobuyersBR: {},
+                spaceShards: 0,
+                upgrades: []
+        }
+        tmp.qu.breakEternity = {
+                unlocked: false,
+                break: false,
+                eternalMatter: 0,
+                upgrades: [],
+                epMultPower: 0
+        }
+        player.ghostify = getGhostifyOnNewNGP3Data()
+        tmp.bl=player.ghostify.bl
+        for (var g=1;g<=br.maxLimit;g++) tmp.bl.glyphs.push(0)
+        player.options.animations.ghostify = true
+        player.aarexModifications.ghostifyConf = true
+}
+
+function getGhostifyOnNewNGP3Data(){
+        return {
+                reached: false,
+                times: 0,
+                time: player.totalTimePlayed,
+                best: 9999999999,
+                last10: [[600*60*24*31, 0], [600*60*24*31, 0], [600*60*24*31, 0], [600*60*24*31, 0], [600*60*24*31, 0], [600*60*24*31, 0], [600*60*24*31, 0], [600*60*24*31, 0], [600*60*24*31, 0], [600*60*24*31, 0]],
+                milestones: 0,
+                disabledRewards: {},
+                ghostParticles: 0,
+                multPower: 1,
+                neutrinos: {
+                        electron: 0,
+                        mu: 0,
+                        tau: 0,
+                        generationGain: 1,
+                        multPower: 1,
+                        upgrades: []
+                },
+                automatorGhosts: setupAutomaticGhostsData(),
+                ghostlyPhotons: {
+                        unl: false,
+                        amount: 0,
+                        ghostlyRays: 0,
+                        darkMatter: 0,
+                        lights: [0,0,0,0,0,0,0,0],
+                        maxRed: 0,
+                        enpowerments: 0
+                },
+                bl: {
+                        watt: 0,
+                        speed: 1,
+                        ticks: 0,
+                        am: 0,
+                        typeToExtract: 1,
+                        extracting: false,
+                        extractProgress: 0,
+                        autoExtract: 0,
+                        glyphs: [],
+                        enchants: {},
+                        usedEnchants: [],
+                        upgrades: [],
+                        battery: 0,
+                        odSpeed: 1
+                },
+                wzb: {
+                        unl: false,
+                        dP: 0,
+                        dPUse: 0,
+                        wQkUp: true,
+                        wQkProgress: 0,
+                        zNeGen: 1,
+                        zNeProgress: 1,
+                        zNeReq: 1,
+                        wpb: 0,
+                        wnb: 0,
+                        zb: 0
+                }
+        }
+}
+
+function doInitNGp2NOT3Stuff(){
+        if (player.aarexModifications.newGamePlusPlusVersion === undefined && !player.masterystudies) { 
+		if (player.dilation.rebuyables[4] !== undefined) {
+                        var migratedUpgrades = []
+                        var v2_1check=player.version>13
+                        for (id=5;id<(v2_1check?18:14);id++) if (player.dilation.upgrades.includes(id)) migratedUpgrades.push(id>16?10:(id>12&&v2_1check)?("ngpp"+(id-10)):(id%4<1)?("ngpp"+(id/4-1)):Math.floor(id/4)*3+id%4)
+                        if (player.meta) {
+                                for (dim=1;dim<9;dim++) {
+                                        player.meta[dim].bought += player.meta[dim].tensBought * 10
+                                        delete player.meta[dim].tensBought
+                                }
+                                if (player.autoEterMode) player.aarexModifications.newGamePlusPlusVersion = 2.2
+                                else if (v2_1check) {
+                                        player.version = 12.1
+                                        player.aarexModifications.newGamePlusPlusVersion = 2.1
+                                } else if (player.meta) player.aarexModifications.newGamePlusPlusVersion = 2
+                        } else player.aarexModifications.newGamePlusPlusVersion = 1
+                        var newAchievements=[]
+                        var v2_3check=player.ep5xAutobuyer!==undefined
+                        for (id=0;id<player.achievements.length;id++) {
+                                r=player.achievements[id].split("r")[1]
+                                newAchievements.push(r>138?"ngpp"+(r-130):player.achievements[id])
+                                if (r>138) v2_3check=true
+                        }
+                        if (v2_3check) {
+                                player.aarexModifications.newGamePlusVersion = 1
+                                player.aarexModifications.newGamePlusPlusVersion = 2.3
+                                player.autoEterOptions = {epmult:player.ep5xAutobuyer}
+                                for (dim=1;dim<9;dim++) player.autoEterOptions["td"+dim] = player.timeDimensionAutobuyer
+                                player.achievements=newAchievements
+                                updateAchievements()
+                                delete player.timeDimensionAutobuyer
+                                delete player.ep5xAutobuyer
+                        }
+                        tmp.qu=player.quantum
+                        if (tmp.qu) {
+                                player.aarexModifications.newGamePlusPlusVersion = 2.901
+                                tmp.qu.time = player.totalTimePlayed
+                                tmp.qu.best = 9999999999
+                                tmp.qu.last10 = [[600*60*24*31, 0], [600*60*24*31, 0], [600*60*24*31, 0], [600*60*24*31, 0], [600*60*24*31, 0], [600*60*24*31, 0], [600*60*24*31, 0], [600*60*24*31, 0], [600*60*24*31, 0], [600*60*24*31, 0]]
+                                player.aarexModifications.quantumConf = true
+                        }
+                        player.aarexModifications.newGamePlusVersion = 1
+                        if (confirm("Do you want to migrate your NG++ save into new NG+++ mode?")) {
+                                doNGP3NewPlayerStuff()
+                        }
+                        player.dilation.upgrades=migratedUpgrades
+                        resetDilationGalaxies()
+                }
+        } else if (player.dilation.rebuyables[4] == null) {
+                delete player.aarexModifications.meta
+                delete player.aarexModifications.autoEterMode
+                delete player.aarexModifications.autoEterOptions
+                delete tmp.qu
+        }
+}
+
+function onLoad(noOffline) {
+	tmp.qu = player.quantum
+	ghostifyDenied = 0
+	setEverythingPreNGp3onLoad()
+        setAarexModIfUndefined()
+	doNGp3Init1()
+        setSaveStuffHTML()
+
+
+	setSomeEterEraStuff2()
+        setSomeEterEraStuff()
+
+	clearOldAchieves()
+
+	document.getElementById("epmult").innerHTML = "You gain 5 times more EP<p>Currently: "+shortenDimensions(player.epmult)+"x<p>Cost: "+shortenDimensions(player.epmultCost)+" EP"
+
+	updateBoughtTimeStudies()
+	performedTS = false
+
+	dov7tov10()
+	doNGM1Versions()
+	if (player.aarexModifications.newGamePlusVersion === undefined) if (player.eternities < 20 && ECTimesCompleted("eterc1") > 0) player.aarexModifications.newGamePlusVersion = 1
+	doInitNGp2NOT3Stuff()
+        
   if (player.aarexModifications.newGamePlusPlusVersion < 2) {
       for (dim=1;dim<5;dim++) {
           var dim = player["timeDimension" + dim]
