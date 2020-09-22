@@ -27,8 +27,7 @@ function getGalaxyScaleName(x) {
 }
 
 function intergalacticDisplay(){
-	var shiftRequirement = getShiftRequirement(0);
-	if (player.achievements.includes("ng3p37") && shiftRequirement.tier > 7) {
+	if (player.achievements.includes("ng3p27") && getShiftRequirement(0).tier == 8) {
 		document.getElementById("intergalacticLabel").parentElement.style.display = ""
 		let nanopart = 1
 		if (isNanoEffectUsed("dil_effect_exp")) nanopart = tmp.nf.effects["dil_effect_exp"] || 1

@@ -130,7 +130,7 @@ function ngP3AchieveCheck(){
 	if (player.money.gte(getOldAgeRequirement())) giveAchievement("Old age")
 	if (player.infinityPoints.log10() >= 4e5 && ableToGetRid3) giveAchievement("I already got rid of you...")
 	if (player.meta.resets == 8) if (player.meta.antimatter.e >= 1500) giveAchievement("We are not going squared.")
-	if (player.eightBought >= 4e6 && getTotalRG() + player.dilation.freeGalaxies<1) giveAchievement("Intergalactic")
+	if (player.eightBought >= 4e6 && (getTotalRG() + player.dilation.freeGalaxies) < 1) giveAchievement("Intergalactic")
 	if (player.old && player.meta.antimatter.e>1699) giveAchievement("Old memories come true")
 	if (player.infinityPoints.e >= 3.54e5 && ableToGetRid4) giveAchievement("Seriously, I already got rid of you.")
 	if (player.meta.antimatter.e > 332 && player.meta[2].amount.eq(0) && player.meta.resets == 0) giveAchievement("ERROR 500: INTERNAL DIMENSION ERROR")
