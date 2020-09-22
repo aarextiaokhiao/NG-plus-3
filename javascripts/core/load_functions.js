@@ -470,8 +470,6 @@ function setSomeEterEraStuff(){
 
 	if (player.infinitied == 0 && getEternitied() == 0) document.getElementById("infinityPoints2").style.display = "none"
 
-	var inERS=!(!player.boughtDims)
-
 	if (player.eternityChallUnlocked === null) player.eternityChallUnlocked = 0
 	if (player.eternityChallUnlocked !== 0) document.getElementById("eterc"+player.eternityChallUnlocked+"div").style.display = "inline-block"
 
@@ -512,6 +510,7 @@ function setSomeEterEraStuff2(){
 }
 
 function dov7tov10(){
+        var inERS=!(!player.boughtDims)
         if (player.version > 7 && inERS && !player.aarexModifications.ersVersion) player.version = 7
 	if (player.version < 9) {
 		player.version = 9
