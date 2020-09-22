@@ -3016,7 +3016,6 @@ function sacrifice(auto = false) {
 	if (inNC(11) && (tmp.sacPow.gte(maxPower) || player.chall11Pow.gte(maxPower))) return false
 	if (!auto) floatText("D8", "x" + shortenMoney(sacGain))
 	if (calcSacrificeBoost().gte(Number.MAX_VALUE)) giveAchievement("Yet another infinity reference");
-	player.eightPow = player.eightPow.times(sacGain)
 	player.sacrificed = player.sacrificed.plus(player.firstAmount);
 	if (!inNC(11)) {
 		if ((inNC(7) || player.currentChallenge == "postcngm3_3" || player.pSac !== undefined) && !player.achievements.includes("r118")) clearDimensions(6);

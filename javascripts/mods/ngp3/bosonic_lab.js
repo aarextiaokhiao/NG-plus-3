@@ -474,8 +474,10 @@ var bEn = {
 			return Decimal.add(l, 1).sqrt()
 		},
 		14: function(l) {
+			bu = Decimal.add(l, 9).log10()
+			if (bu > 15) bu = Math.sqrt(bu * 15)
 			return {
-				bUpgs: Math.floor(Decimal.add(l, 9).log10()),
+				bUpgs: Math.floor(bu),
 				higgs: Decimal.add(l, 1).pow(0.4)
 			}
 		},
