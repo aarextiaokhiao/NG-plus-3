@@ -208,7 +208,6 @@ let qcRewards = {
 		},
 		3: function(comps) {
 			if (comps == 0) return 1
-			let exp 
 			let ipow = player.infinityPower.plus(1).log10()
 			let log = Math.sqrt(ipow / 2e8) 
 			if (comps >= 2) log += Math.pow(ipow / 1e9, 4/9 + comps/9)
