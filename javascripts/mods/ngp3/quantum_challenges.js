@@ -198,7 +198,9 @@ let qcRewards = {
 	effects: {
 		1: function(comps) {
 			if (comps == 0) return 1
-			return Decimal.pow(10, Math.pow(getDimensionFinalMultiplier(1).times(getDimensionFinalMultiplier(2)).max(1).log10(), [null, 0.25, 0.275][comps]) / 200)
+			let base = getDimensionFinalMultiplier(1).times(getDimensionFinalMultiplier(2)).max(1).log10()
+			let exp = 0.225 + comps * .025
+			return Decimal.pow(10, Math.pow(base, exp) / 200)
 		},
 		2: function(comps) {
 			if (comps == 0) return 1
@@ -206,16 +208,20 @@ let qcRewards = {
 		},
 		3: function(comps) {
 			if (comps == 0) return 1
-			let log = Math.sqrt(Math.max(player.infinityPower.log10(), 0) / [null, 2e8, 1e9][comps])
-			if (log > 1331) log = Math.pow(log * 121, 3/5)
-
+			let exp 
+			let ipow = player.infinityPower.plus(1).log10()
+			let log = Math.sqrt(ipow / 2e8) 
+			if (comps >= 2) log += Math.pow(ipow / 1e9, 4/9 + comps/9)
+			
+			log = softcap(log, "qc3reward")
 			return Decimal.pow(10, log)
 		},
 		4: function(comps) {
 			if (comps == 0) return 1
 			let mult = player.meta[2].amount.times(player.meta[4].amount).times(player.meta[6].amount).times(player.meta[8].amount).max(1)
-			if (comps >= 2) return mult.pow(1 / 75)
-			return Decimal.pow(10, Math.sqrt(mult.log10()) / 10)
+			if (comps <= 1) return Decimal.pow(10 * comps, Math.sqrt(mult.log10()) / 10)
+			return mult.pow(comps / 150)
+			
 		},
 		5: function(comps) {
 			if (comps == 0) return 0

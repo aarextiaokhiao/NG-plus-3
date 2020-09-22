@@ -5718,10 +5718,8 @@ function bigCrunchButtonUpdating(){
 			if (currentIPmin.gt(IPminpeak)) IPminpeak = currentIPmin
 			if (IPminpeak.log10() > 1e9) document.getElementById("postInfinityButton").innerHTML = "Big Crunch"
 			else {
-				var notationPart = player.options.theme != "Aarex's Modifications" || player.options.notation == "Morse code" || player.options.notation == 'Spazzy'
-				var IPminpart = ""
-
-				document.getElementById("postInfinityButton").innerHTML = "<b>"+(IPminpeak.log10() > 3e7 && notationPart ? "Gain " : "Big Crunch for ")+shortenDimensions(gainedInfinityPoints())+" Infinity points.</b>" + IPminpart
+				var IPminpart = IPminpeak.log10() > 1e5 "" : "<br>" + shortenDimensions(currentIPmin) + " IP/min" + "<br>Peaked at " + shortenDimensions(IPminpeak) + " IP/min"
+				document.getElementById("postInfinityButton").innerHTML = "<b>" + (IPminpeak.log10() > 3e5 ? "Gain " : "Big Crunch for ") + shortenDimensions(gainedInfinityPoints()) + " Infinity points.</b>" + IPminpart
 			}
 		}
 	}
@@ -5738,91 +5736,26 @@ function eternityButtonUpdating(){
 }
 
 function nextICUnlockUpdating(){
-	var nextUnlock=getNextAt(order[player.postChallUnlocked])
-	if (nextUnlock===undefined) document.getElementById("nextchall").textContent = " "
+	var nextUnlock = getNextAt(order[player.postChallUnlocked])
+	if (nextUnlock == undefined) document.getElementById("nextchall").textContent = " "
 	else if (!player.achievements.includes("r133")) {
 		document.getElementById("nextchall").textContent = "Next challenge unlocks at "+ shortenCosts(nextUnlock) + " antimatter."
-		while (player.money.gte(nextUnlock)&&nextUnlock!==undefined) {
+		while (player.money.gte(nextUnlock) && nextUnlock != undefined) {
 			if (getEternitied() > 6) {
 				player.challenges.push(order[player.postChallUnlocked])
-				if (order[player.postChallUnlocked]=="postc1") for (var i=0;i<player.challenges.length;i++) if (player.challenges[i].split("postc")[1]) infDimPow *= player.galacticSacrifice ? 2 : 1.3
+				if (order[player.postChallUnlocked] == "postc1") for (var i = 0; i < player.challenges.length; i++) if (player.challenges[i].split("postc")[1]) infDimPow *= player.galacticSacrifice ? 2 : 1.3
 				tmp.cp++
 			}
 			player.postChallUnlocked++
-			nextUnlock=getNextAt(order[player.postChallUnlocked])
+			nextUnlock = getNextAt(order[player.postChallUnlocked])
 			updateChallenges()
 		}
-		if (getEternitied()>6&&player.postChallUnlocked>7) {
-			ndAutobuyersUsed=0
-			for (i=0;i<9;i++) if (player.autobuyers[i]%1!==0&&player.autobuyers[i].isOn) ndAutobuyersUsed++
-			document.getElementById("maxall").style.display=ndAutobuyersUsed>8&&player.challenges.includes("postc8")?"none":""
+		if (getEternitied() > 6 && player.postChallUnlocked >= 8) {
+			ndAutobuyersUsed = 0
+			for (i = 0; i <= 8; i++) if (player.autobuyers[i] % 1 !== 0 && player.autobuyers[i].isOn) ndAutobuyersUsed++
+			document.getElementById("maxall").style.display = ndAutobuyersUsed > 8 && player.challenges.includes("postc8") ? "none" : ""
 		}
 	}
-}
-
-function getReplicantiInterval() {
-	let interval = player.replicanti.interval
-	if (player.aarexModifications.ngexV) interval *= .8
-	if (player.timestudy.studies.includes(62)) interval /= tsMults[62]()
-	if (player.replicanti.amount.gt(Number.MAX_VALUE)||player.timestudy.studies.includes(133)) interval *= 10
-	if (player.timestudy.studies.includes(213)) interval /= tsMults[213]()
-	if (GUBought("gb1")) interval /= getGB1Effect()
-	if (player.replicanti.amount.lt(Number.MAX_VALUE) && player.achievements.includes("r134")) interval /= 2
-	if (isBigRipUpgradeActive(4)) interval /= 10
-
-	interval = new Decimal(interval)
-	if (player.exdilation != undefined) interval = interval.div(getBlackholePowerEffect().pow(1/3))
-	if (player.dilation.upgrades.includes('ngpp1') && player.aarexModifications.nguspV && !player.aarexModifications.nguepV) interval = interval.div(player.dilation.dilatedTime.max(1).pow(0.05))
-	if (player.dilation.upgrades.includes("ngmm9")) interval = interval.div(getDil72Mult())
-	if (tmp.ngp3) if (player.masterystudies.includes("t332")) interval = interval.div(getMTSMult(332))
-	return interval
-}
-
-function getReplicantiFinalInterval() {
-	let x = getReplicantiInterval()
-	if (player.replicanti.amount.gt(Number.MAX_VALUE)) x = player.boughtDims ? Math.pow(player.achievements.includes("r107") ? Math.max(player.replicanti.amount.log(2)/1024,1) : 1, -.25) * x.toNumber() : Decimal.pow(tmp.rep.speeds.inc, Math.max(player.replicanti.amount.log10() - tmp.rep.speeds.exp, 0)/tmp.rep.speeds.exp).times(x)
-	return x
-}
-
-function runRandomReplicanti(chance){
-	if (Decimal.gte(chance, 1)) {
-		player.replicanti.amount = player.replicanti.amount.times(2)
-		return
-	}
-	var temp = player.replicanti.amount
-	if (typeof(chance) == "object") chance = chance.toNumber()
-	for (var i = 0; temp.gt(i); i++) {
-		if (chance > Math.random()) player.replicanti.amount = player.replicanti.amount.plus(1)
-		if (i >= 99) return
-	}
-}
-
-function notContinuousReplicantiUpdating() {
-	var chance = tmp.rep.chance
-	var interval = Decimal.div(tmp.rep.interval, 100)
-	if (typeof(chance) !== "number") chance = chance.toNumber()
-
-	if (interval <= replicantiTicks && player.replicanti.unl) {
-		if (player.replicanti.amount.lte(100)) runRandomReplicanti(chance) //chance should be a decimal
-		else if (player.replicanti.amount.lt(getReplicantiLimit())) {
-			var temp = Decimal.round(player.replicanti.amount.dividedBy(100))
-			if (chance < 1) {
-				let counter = 0
-				for (var i=0; i<100; i++) if (chance > Math.random()) counter++;
-				player.replicanti.amount = temp.times(counter).plus(player.replicanti.amount)
-				counter = 0
-			} else player.replicanti.amount = player.replicanti.amount.times(2)
-			if (!player.timestudy.studies.includes(192)) player.replicanti.amount = player.replicanti.amount.min(getReplicantiLimit())
-		}
-		replicantiTicks -= interval
-	}
-}
-
-function continuousReplicantiUpdating(diff){
-	if (player.timestudy.studies.includes(192) && tmp.rep.est.toNumber() > 0 && tmp.rep.est.toNumber() < 1/0) player.replicanti.amount = Decimal.pow(Math.E, tmp.rep.ln +Math.log((diff*tmp.rep.est/10) * (Math.log10(tmp.rep.speeds.inc)/tmp.rep.speeds.exp)+1) / (Math.log10(tmp.rep.speeds.inc)/tmp.rep.speeds.exp))
-	else if (player.timestudy.studies.includes(192)) player.replicanti.amount = Decimal.pow(Math.E, tmp.rep.ln + tmp.rep.est.times(diff * Math.log10(tmp.rep.speeds.inc) / tmp.rep.speeds.exp / 10).add(1).log(Math.E) / (Math.log10(tmp.rep.speeds.inc)/tmp.rep.speeds.exp))
-	else player.replicanti.amount = Decimal.pow(Math.E, tmp.rep.ln +(diff*tmp.rep.est/10)).min(getReplicantiLimit())
-	replicantiTicks = 0
 }
 
 function passiveIPperMUpdating(diff){

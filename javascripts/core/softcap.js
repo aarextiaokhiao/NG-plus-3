@@ -21,51 +21,60 @@ var softcap_data = {
 		4: {
 			func: "pow",
 			start: 8e3,
-			pow: 0.6
+			pow: 0.6,
+			derv: false
 		},
 		5: {
 			func: "pow",
 			start: 10e3,
-			pow: 0.5
+			pow: 0.5,
+			derv: false
 		}
 	},
 	ts_reduce_log: {
 		1: {
 			func: "pow",
 			start: 1e6,
-			pow: 0.75
+			pow: 0.75,
+			derv: false
 		},
 		2: {
 			func: "pow",
 			start: 2e6,
-			pow: 0.70
+			pow: 0.70,
+			derv: false
 		},
 		3: {
 			func: "pow",
 			start: 3e6,
-			pow: 0.65
+			pow: 0.65,
+			derv: false
 		},
 		4: {
 			func: "pow",
 			start: 4e6,
-			pow: 0.60
+			pow: 0.60,
+			derv: false
 		},
 		5: {
 			func: "pow",
 			start: 5e6,
-			pow: 0.55
+			pow: 0.55,
+			derv: false
 		}
 	},
 	ts_reduce_log_big_rip: {
 		1: {
 			func: "pow",
 			start: 1e4,
-			pow: 0.75
+			pow: 0.75,
+			derv: false
 		},
 		2: {
 			func: "pow",
 			start: 2e4,
-			pow: 0.65
+			pow: 0.65,
+			derv: false
 		}
 	},
 	ts11_log_big_rip: {
@@ -112,7 +121,8 @@ var softcap_data = {
 		1: {
 			func: "pow",
 			start: 3e8,
-			pow: 0.75
+			pow: 0.75,
+			derv: false
 		},
 		2: {
 			func: "log",
@@ -142,31 +152,36 @@ var softcap_data = {
 		1: {
 			func: "pow",
 			start: 150,
-			pow: 0.5
+			pow: 0.5,
+			derv: false
 		}
 	},
 	inf_time_log_1: {
 		1: {
 			func: "pow",
 			start: 12e4,
-			pow: 0.5
+			pow: 0.5,
+			derv: false
 		},
 		2: {
 			func: "pow",
 			start: 12e6,
-			pow: 2/3
+			pow: 2/3,
+			derv: false
 		}
 	},
 	inf_time_log_1_big_rip: {
 		1: {
 			func: "pow",
 			start: 100,
-			pow: 0.5
+			pow: 0.5,
+			derv: false
 		},
 		2: {
 			func: "pow",
 			start: 1e4,
-			pow: 0.4
+			pow: 0.4,
+			derv: false
 		},
 		3: {
 			func: "pow",
@@ -179,32 +194,38 @@ var softcap_data = {
 		1: {
 			func: "pow",
 			start: 12e7,
-			pow: 0.6
+			pow: 0.6,
+			derv: false
 		},
 		2: {
 			func: "pow",
 			start: 16e7,
-			pow: 0.5
+			pow: 0.5,
+			derv: false
 		},
 		3: {
 			func: "pow",
 			start: 20e7,
-			pow: 0.4
+			pow: 0.4,
+			derv: false
 		}
 	},
 	ig_log_high: {
-		1: { //starts have effect at e20
+		1: { 
 			func: "log",
+			start: 1e20,
 			pow: 10,
 			mul: 5
 		},
 		2: {
 			func: "pow",
 			start: 1e21,
-			pow: 0.2
+			pow: 0.2,
+			derv: false
 		},
-		3: { //starts have effect at e22
+		3: { 
 			func: "log", 
+			start: 1e22,
 			pow: 11,
 			mul: 4,
 			add: 12
@@ -212,7 +233,8 @@ var softcap_data = {
 		4: {
 			func: "pow",
 			start: 1e23,
-			pow: 0.1
+			pow: 0.1,
+			derv: false
 		}
 	},
 	bam: {
@@ -315,27 +337,32 @@ var softcap_data = {
 		1: {
 			func: "pow",
 			start: 9,
-			pow: .5
+			pow: .5,
+			derv: false
 		},
 		2: {
 			func: "pow",
 			start: 25,
-			pow: .5
+			pow: .5,
+			derv: false
 		},
 		3: {
 			func: "pow",
 			start: 49,
-			pow: .5
+			pow: .5,
+			derv: false
 		},
 		4: {
 			func: "pow",
 			start: 81,
-			pow: .5
+			pow: .5,
+			derv: false
 		},
 		5: {
 			func: "pow",
 			start: 121,
-			pow: .5
+			pow: .5,
+			derv: false
 		}
 	},
 	EPtoQK: {
@@ -363,6 +390,20 @@ var softcap_data = {
 			pow: .5,
 			derv: true
 		}
+	},
+	qc3reward: {
+		1: {
+			func: "pow",
+			start: 1331,
+			pow: .5,
+			derv: false
+		}, 
+		2: {
+			func: "log",
+			start: 4096,
+			mul: 4 / Math.log10(8), /* log2(4096)=12, so 4/3s that is 16 and 16**3 = 4096 */
+			pow: 3
+		}
 	}
 }
 
@@ -373,7 +414,7 @@ var softcap_vars = {
 }
 
 var softcap_funcs = {
-	pow: function(x, start, pow, derv) {
+	pow: function(x, start, pow, derv = false) {
 		if (typeof start == "function") start = start()
 		if (typeof pow == "function") pow = pow()
 		if (typeof derv == "function") derv = derv()
@@ -385,7 +426,7 @@ var softcap_funcs = {
 		} 
 		return x
 	},
-	pow_decimal: function(x, start, pow, derv) {
+	pow_decimal: function(x, start, pow, derv = false) {
 		if (typeof start == "function") start = start()
 		if (typeof pow == "function") pow = pow()
 		if (typeof derv == "function") derv = derv()
@@ -402,16 +443,14 @@ var softcap_funcs = {
 		if (typeof mul == "function") mul = mul()
 		if (typeof add == "function") add = add()
 		var x2 = Math.pow(Math.log10(x) * mul + add, pow)
-		if (x > x2) return x2
-		return x
+		return Math.min(x, x2)
 	},
 	logshift: function (x, shift, pow, add = 0){
 		if (typeof pow == "function") pow = pow()
 		if (typeof shift == "function") shift = shift()
 		if (typeof add == "function") add = add()
 		var x2 = Math.pow(Math.log10(x * shift), pow) + add
-		if (x > x2) return x2
-		return x
+		return Math.min(x, x2)
 	}
 }
 
@@ -419,6 +458,7 @@ function do_softcap(x, data, num) {
 	var data = data[num]
 	if (data === undefined) return
 	var func = data.func
+	if (func == "log" && data["start"]) if (x < data["start"]) return x
 	var vars = softcap_vars[func]
 	if (x + 0 != x) func += "_decimal"
 	return softcap_funcs[func](x, data[vars[0]], data[vars[1]], data[vars[2]])
