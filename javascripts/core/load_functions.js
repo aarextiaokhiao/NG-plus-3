@@ -5,6 +5,7 @@ var savePrefix = prefix + "AM_"
 var presetPrefix = prefix + "AM_ST_"
 var metaSaveId = betaId + "AD_aarexModifications"
 var notifyId = 0
+var forceToQuantumAndRemove = false
 
 function setOptionsIfUndefined(){
         if (player.options === undefined) {
@@ -1090,7 +1091,7 @@ function doNGp3v199tov19995(){
                         tmp.qu.pairedChallenges.completions[Math.min(c1, c2) * 10 + Math.max(c1, c2)] = c
                 }
         }
-        var forceToQuantumAndRemove=false
+
         if (player.masterystudies ? player.aarexModifications.newGame3PlusVersion < 1.999 || (tmp.qu.emperorDimensions ? tmp.qu.emperorDimensions[1] == undefined : false) : false) { 
                 var oldLength=player.masterystudies.length
                 var newMS=[]
@@ -1103,7 +1104,7 @@ function doNGp3v199tov19995(){
                         }
                 }
                 player.masterystudies=newMS
-                if (oldLength > newMS.length) forceToQuantumAndRemove=true
+                if (oldLength > newMS.length) forceToQuantumAndRemove = true
                 tmp.qu.replicants.quantumFoodCost = Decimal.times(tmp.qu.replicants.quantumFoodCost, 2)
                 tmp.qu.replicants.limitDim=1
                 tmp.qu.emperorDimensions = {}
