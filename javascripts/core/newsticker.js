@@ -100,14 +100,6 @@ newsArray = [//always true
 ["Antimatter is like internet. If you're reading this, you can't have enough of it.",  true, "a98"],
 ["Antimatter has made time travel possible and I'm here to make the past great again. - 2nd President of the World",  true, "a99"],
 ["Please insert Disc -1 to continue playing  Antimatter Dimensions ™.", true, "a100"], 
-["Lore - coming soon ™", true, "a101"], //uhh this has the same tag as the next one pls fix
-/*
-MESSED UP TAGS PLS FIX
-
-
-*/ 
-
-
 ["I was a part of antimatter like you once. But then I got matter in my knee.", true, "a101"], 
 ["Antimatter... antimatter never changes... until you get to quantum physics of antimatter, but we don't have enough tachyon particles for that.", true, "a102"],
 ["There is no war in Antimatter Dimensions. Here we are safe. Here we are free.", true, "a103"], 
@@ -146,10 +138,7 @@ MESSED UP TAGS PLS FIX
 ["AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAntimatter Dimensions was made by some dude from Finland", true, "a136"],
 ['The Holy trinity of Hevipelle, Antimatter, Infinity Points, and Eternity Points. These 3 resources let us access Hevi’s gift, Time Theorems. And with these Time Theorems, we reach out to Hevi, and call, “Hevi, bless us on this fine day!” And Hevi does. He give us the blessing of Time Studies. These Time Studies were blessings so powerful, Hevi restricted their power. He said, “ I will give you a choice of three paths” and then humanity chose. The short, cheap route of Normal Dimensions, giving instant gratification, the powerful choice of Infinity Dimensions, which were a fast, middle ground path, or Time Dimension, the long wait, and struggle, of humanity. Then, as humanity chose, a crack broke the earth. A serpent snaked out and sneered to humanity, “I will offer the powerful choice of a ninth dimension! I am Slabdrill, lord of all Unhevi. Humanity rose and said “ Begone Slabdrill! We want none of your foul Heresy!” And Hevi rose as well, and smote Slabdrill with his godlike power. As Slabdrill’s corpse fell into the earth, he cried “ this will not be the last of me! Hevi will betr-“ and he fell in the Abyss of matter. Hevi gifted humanity with Eternity upgrades, which boosted infinity dimensions and time dimensions. And Hevi gave humanity his greatest gift . EP multipliers. He said, these will multiply all EP gained by 5, but their cost will increase 25 times. Use them wisely. And Humanity journeyed off with their new power, as Slabdrill’s words echoed in their heads.', true, "a137"],
 ["We have updated our Antimatter Privacy Policy.", true, "a138"],
-  
-// Patreon ones
-["Is this a jojo reference?", true, "pat1"],
-
+["Lore - coming soon ™", true, "a139"],
 //basic (pre-inf)
 ["You just made your 1,000,000,000,000,000 antimatter. This one tastes like chicken", "player.money.e == 15", "b1"],
 ["Nerf the galaxies please.", "player.galaxies == 2 || player.infinitied > 0", "b2"],

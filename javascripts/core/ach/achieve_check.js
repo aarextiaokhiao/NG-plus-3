@@ -19,6 +19,16 @@ function antitablesHaveTurnedCheck(){
 	getDimensionFinalMultiplier(7).lt(getDimensionFinalMultiplier(8))) giveAchievement("How the antitables have turned")
 }
 
+function checkUniversalHarmony() {
+	if (player.achievements.includes("ngpp18")) return
+	if (player.meta != undefined) {
+		if (player.galaxies < 700 || player.replicanti.galaxies + extraReplGalaxies < 700 || player.dilation.freeGalaxies < 700) return
+	} else if (player.exdilation != undefined) {
+		if (player.galaxies != player.replicanti.galaxies || player.galaxies != player.dilation.freeGalaxies || player.galaxies < 300) return
+	} else return
+	giveAchievement("Universal harmony")
+}
+
 function checkEPReqAchieve(){
 	if (player.eternityPoints.gte(Number.MAX_VALUE)) giveAchievement("But I wanted another prestige layer...")
 	if (player.eternityPoints.gte("1e40000")) giveAchievement("In the grim darkness of the far endgame")

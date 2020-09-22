@@ -8,6 +8,11 @@ function unlockReplicantis() {
 	}
 }
 
+function replicantiGalaxyBulkModeToggle() {
+	player.galaxyMaxBulk = !player.galaxyMaxBulk
+	document.getElementById('replicantibulkmodetoggle').textContent = "Mode: " + (player.galaxyMaxBulk ? "Max" : "Singles")
+}
+
 function getReplMult(next) {
 	let exp = 2
 	if (player.galacticSacrifice !== undefined) exp = Math.max(2, Math.pow(player.galaxies, .4))

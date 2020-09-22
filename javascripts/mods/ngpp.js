@@ -1,90 +1,3 @@
-// v2.2
-function updateAutoEterMode() {
-	var modeText = ""
-	var modeCond = ""
-	document.getElementById("priority13").disabled = false
-	document.getElementById("autoEterValue").disabled = false
-	if (player.autoEterMode == "time") {
-		modeText = "time"
-		modeCond = "Seconds between eternities:"
-	} else if (player.autoEterMode == "relative") {
-		modeText = "X times last eternity"
-		modeCond = modeText + ":"
-	} else if (player.autoEterMode == "relativebest") {
-		modeText = "X times best of last 10"
-		modeCond = modeText + " eternities:"
-	} else if (player.autoEterMode == "replicanti") {
-		modeText = "replicanti"
-		modeCond = "Amount of replicanti to wait until reset:"
-	} else if (player.autoEterMode == "peak") {
-		modeText = "peak"
-		modeCond = "Seconds to wait after latest peak gain:"
-	} else if (player.autoEterMode == "eternitied") {
-		modeText = "X times eternitied"
-		modeCond = modeText + ":"
-	} else if (player.autoEterMode == "manual") {
-		modeText = "dilate only"
-		modeCond = "Does nothing to eternity"
-		document.getElementById("priority13").disabled = true
-		document.getElementById("autoEterValue").disabled = true
-	} else {
-		modeText = "amount"
-		modeCond = "Amount of EP to wait until reset:"
-	}
-	document.getElementById("toggleautoetermode").textContent = "Auto eternity mode: " + modeText
-	document.getElementById("eterlimittext").textContent = modeCond
-	if (player.achievements.includes("ng3p52")) {
-		document.getElementById("autoEterMode").textContent = "Mode: " + modeText
-		document.getElementById("autoEterCond").textContent = modeCond
-	}
-}
-
-function toggleAutoEterMode() {
-	if (player.autoEterMode == "amount") player.autoEterMode = "time"
-	else if (player.autoEterMode == "time") player.autoEterMode = "relative"
-	else if (player.autoEterMode == "relative") player.autoEterMode = "relativebest"
-	else if (player.autoEterMode == "relativebest" && player.dilation.upgrades.includes("ngpp3") && getEternitied() >= 4e11 && player.aarexModifications.newGame3PlusVersion) player.autoEterMode = "replicanti"
-	else if (player.autoEterMode == "replicanti" && getEternitied() >= 1e13) player.autoEterMode = "peak"
-	else if (player.autoEterMode == "peak" && player.achievements.includes("ng3p51")) player.autoEterMode = "eternitied"
-	else if ((player.autoEterMode == "peak" || player.autoEterMode == "eternitied") && speedrunMilestonesReached > 24) player.autoEterMode = "manual"
-	else if (player.autoEterMode) player.autoEterMode = "amount"
-	updateAutoEterMode()
-}
-
-// v2.3
-function toggleAutoEter(id) {
-	player.autoEterOptions[id] = !player.autoEterOptions[id]
-	document.getElementById(id + 'auto').textContent = (id == "dilUpgs" ? "Auto-buy dilation upgrades" : (id == "rebuyupg" ? "Rebuyable upgrade a" : id == "metaboost" ? "Meta-boost a" : "A") + "uto") + ": " + (player.autoEterOptions[id] ? "ON" : "OFF")
-	if (id.slice(0,2) == "td") {
-		var removeMaxAll = false
-		for (var d = 1; d < 9; d++) {
-			if (player.autoEterOptions["td" + d]) {
-				if (d > 7) removeMaxAll = true
-			} else break
-		}
-		document.getElementById("maxTimeDimensions").style.display = removeMaxAll ? "none" : ""
-	}
-}
-
-function doAutoEterTick() {
-	if (!player.meta) return
-	if (player.achievements.includes("ngpp17")) {
-		if (player.masterystudies == undefined || tmp.be || !tmp.qu.bigRip.active) for (var d = 1; d < 9; d++) if (player.autoEterOptions["td" + d]) buyMaxTimeDimension(d)
-		if (player.autoEterOptions.epmult) buyMaxEPMult()
-		if (player.autoEterOptions.blackhole) {
-			buyMaxBlackholeDimensions()
-			feedBlackholeMax()
-		}
-	}
-	if (player.autoEterOptions.tt && !player.dilation.upgrades.includes(10) && speedrunMilestonesReached > 1) maxTheorems()
-}
-
-// v2.301
-function replicantiGalaxyBulkModeToggle() {
-	player.galaxyMaxBulk = !player.galaxyMaxBulk
-	document.getElementById('replicantibulkmodetoggle').textContent = "Mode: " + (player.galaxyMaxBulk ? "Max" : "Singles")
-}
-
 // v2.9
 quantumed = false
 function quantum(auto, force, challid, bigRip = false, quick) {
@@ -354,17 +267,6 @@ function doQuantumProgress() {
 		document.getElementById("progresspercent").textContent = percentage
 		document.getElementById("progresspercent").setAttribute('ach-tooltip', "Percentage to Ghostly Photons")
 	}
-}
-
-//v2.90141
-function checkUniversalHarmony() {
-	if (player.achievements.includes("ngpp18")) return
-	if (player.meta != undefined) {
-		if (player.galaxies < 700 || player.replicanti.galaxies + extraReplGalaxies < 700 || player.dilation.freeGalaxies < 700) return
-	} else if (player.exdilation != undefined) {
-		if (player.galaxies != player.replicanti.galaxies || player.galaxies != player.dilation.freeGalaxies || player.galaxies < 300) return
-	} else return
-	giveAchievement("Universal harmony")
 }
 
 //v2.90142

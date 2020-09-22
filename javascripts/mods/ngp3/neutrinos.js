@@ -240,3 +240,24 @@ var neutrinoBoosts = {
 		}
 	}
 }
+
+function gainNeutrinos(bulk,type) {
+	let gain = getNeutrinoGain().times(bulk)
+	let gens = ["electron", "mu", "tau"]
+	if (type == "all") {
+		for (var g = 0; g < 3; g++) {
+			var gen = gens[g]
+			player.ghostify.neutrinos[gen] = player.ghostify.neutrinos[gen].add(gain).round()
+		}
+	} else if (type == "gen") {
+		var gen = gens[player.ghostify.neutrinos.generationGain - 1]
+		player.ghostify.neutrinos[gen] = player.ghostify.neutrinos[gen].add(gain).round()
+	}
+}
+
+function subNeutrinos(sub) {
+	let neu = player.ghostify.neutrinos
+	let sum = neu.electron.add(neu.mu).add(neu.tau).round()
+	let gen = ["electron", "mu", "tau"]
+	for (g = 0; g < 3; g++) neu[gen[g]] = neu[gen[g]].sub(neu[gen[g]].div(sum).times(sub).min(neu[gen[g]])).round()
+}
