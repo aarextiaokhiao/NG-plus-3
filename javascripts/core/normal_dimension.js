@@ -106,7 +106,7 @@ function getStartingNDMult(tier){
 
 function getDimensionFinalMultiplier(tier) {
 	let mult = getStartingNDMult(tier)
-	if (tier == 8) mult = mult.times(calcSacrificeBoost())
+	if (tier == 8) mult = mult.times(getTotalSacrificeBoost())
 	
 	if (player.aarexModifications.newGameMinusVersion !== undefined) mult = mult.times(.1)
 	if (!tmp.infPow) updateInfinityPowerEffects()

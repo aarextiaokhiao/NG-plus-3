@@ -886,7 +886,7 @@ function doInitNGp2NOT3Stuff(){
         }
 }
 
-function doNGP2v2tov2301(){
+function doNGP2v2tov2302(){
         if (player.aarexModifications.newGamePlusPlusVersion < 2) {
                 for (dim=1;dim<5;dim++) {
                         var dim = player["timeDimension" + dim]
@@ -908,7 +908,6 @@ function doNGP2v2tov2301(){
                 var autoEterOptions={epmult:player.autoEterOptions?player.autoEterOptions.epMult===true:false}
                 for (dim=1;dim<9;dim++) if (player.autoEterOptions===undefined?true:player.autoEterOptions["td"+dim]) autoEterOptions["td"+dim]=false
                 player.autoEterOptions=autoEterOptions
-                player.aarexModifications.newGamePlusPlusVersion = 2.3
         }
         if (player.aarexModifications.newGamePlusPlusVersion < 2.301) {
                 var metaAchCheck = player.dilation.studies.includes(6)
@@ -918,6 +917,12 @@ function doNGP2v2tov2301(){
                 if (noD9AchCheck||metaBoostCheck) giveAchievement("Meta-boosting to the max")
                 if (metaAchCheck||noD9AchCheck||metaBoostCheck) giveAchievement("I'm so meta")
                 player.galaxyMaxBulk = false
+        }
+        if (player.aarexModifications.newGamePlusPlusVersion < 2.302){
+                for (let i = 1; i <= 8; i++){
+                        delete player[TIER_NAMES[i]+"Pow"]
+                }
+                player.aarexModifications.newGamePlusPlusVersion = 2.302
         }
 }
 
@@ -1707,7 +1712,7 @@ function updateVersionsONLOAD(){
 	doNGM1Versions()
 	if (player.aarexModifications.newGamePlusVersion === undefined) if (player.eternities < 20 && ECTimesCompleted("eterc1") > 0) player.aarexModifications.newGamePlusVersion = 1
 	doInitNGp2NOT3Stuff()
-        doNGP2v2tov2301()
+        doNGP2v2tov2302()
         doQuantumRestore()
         doNGp3v15tov199()
         doNGp3v199tov19995()
