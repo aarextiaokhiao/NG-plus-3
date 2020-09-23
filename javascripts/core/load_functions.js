@@ -2173,6 +2173,7 @@ function onLoad(noOffline) {
 	performedTS = false
         updateVersionsONLOAD()
         transformSaveToDecimal()
+        updateInQCs()
 	doNGp3Init2()
         for (s = 0; s < (player.boughtDims ? 4 : 3); s++) toggleCrunchMode(true)
         updateAutoEterMode()
@@ -2195,7 +2196,6 @@ function onLoad(noOffline) {
         if (tmp.ngp3) updateNGp3DisplayStuff()
         hideDimensions()
         updateChallenges()
-        updateInQCs()
         updateNCVisuals()
         updateChallengeTimes()
         checkForEndMe()
@@ -2290,6 +2290,8 @@ function onLoad(noOffline) {
         } else if (player.aarexModifications.popUpId!="STD") showNextModeMessage()
         document.getElementById("ghostlyNewsTicker").style.height=((player.options.secrets!==undefined?player.options.secrets.ghostlyNews:false)?24:0)+"px"
         document.getElementById("ghostlyNewsTickerBlock").style.height=((player.options.secrets!==undefined?player.options.secrets.ghostlyNews:false)?16:0)+"px"
+        updateTemp()
+        updateTemp()
 }
 
 
