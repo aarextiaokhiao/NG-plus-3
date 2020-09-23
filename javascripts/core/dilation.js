@@ -488,7 +488,8 @@ function gainDilationGalaxies() {
 	let galaxyMult = getFreeGalaxyGainMult()
 	let baseGain = Math.floor(player.dilation.dilatedTime.div(thresholdStart).log(thresholdMult) + 1)
 	if (baseGain < 0) baseGain = 0
-	player.dilation.freeGalaxies = baseGain * galaxyMult
+	let old = Math.round(player.dilation.freeGalaxies / galaxyMult)
+	player.dilation.freeGalaxies = Math.max(baseGain, old) * galaxyMult
 	player.dilation.nextThreshold = Decimal.pow(thresholdMult, baseGain).times(getFreeGalaxyThresholdStart())
 }
 

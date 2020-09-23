@@ -5285,16 +5285,12 @@ function passiveIPupdating(diff){
 }
 
 function passiveInfinitiesUpdating(diff){
-	if (typeof(player.infinitied) == "number") {
-		if (player.infinityUpgrades.includes("infinitiedGeneration") && player.currentEternityChall !== "eterc4") player.partInfinitied += diff / player.bestInfinityTime;
-		if (player.partInfinitied >= 50) {
-			player.infinitied += Math.floor(player.partInfinitied / 5)
-			player.partInfinitied = 0;
-		}
-		if (player.partInfinitied >= 5) {
-			player.partInfinitied -= 5;
-			player.infinitied ++;
-		}
+	if (typeof(player.infinitied) != "number") return 
+	if (player.infinityUpgrades.includes("infinitiedGeneration") && player.currentEternityChall !== "eterc4") player.partInfinitied += diff / player.bestInfinityTime;
+	if (player.partInfinitied >= 1/2) {
+		let x = Math.floor(player.partInfinitied*2)
+		player.partInfinitied -= x/2
+		player.infinitied += x;
 	}
 }
 
