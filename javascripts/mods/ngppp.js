@@ -522,6 +522,7 @@ function ghostify(auto, force) {
 			implosionCheck=0
 		}, seconds * 1000)
 	} else ghostifyReset(false, 0, 0, force)
+	updateAutoQuantumMode()
 }
 
 var ghostifyDenied

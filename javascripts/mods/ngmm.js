@@ -10,7 +10,7 @@ function getGSAmount(offset=0) {
 	let exp = getD8Exp()
 	let div2 = 50
 	if (player.achievements.includes("r102")) div2 = 10
-	if (player.totalmoney.log10() > 2e6) div2 /= Math.log(player.totalmoney.log10()) // Math.log(e) = 1
+	if (player.totalmoney.log10() > 2e6) div2 /= Math.log(player.totalmoney.log10()) 
 	
 	let ret = Decimal.pow(galaxies, y).times(Decimal.pow(Math.max(0, resetMult), z)).max(0)
 	ret = ret.times(Decimal.pow(1 + getAmount(8) / div2, exp))
