@@ -152,7 +152,7 @@ function getBranchSpeedText(){
 	if (player.masterystudies.includes("t431")) if (getMTSMult(431).gt(1)) text += "Mastery Study 431: " + shorten(getMTSMult(431)) + "x, "
 	if (tmp.qu.bigRip.active && isBigRipUpgradeActive(19)) text += "19th Big Rip upgrade: " + shorten(tmp.bru[19]) + "x, "
 	if (hasNU(4)) if (tmp.nu[2].gt(1)) text += "Fourth Neutrino Upgrade: " + shorten(tmp.nu[2]) + "x, "
-	if (!tmp.ngp3l) if (player.achievements.includes("ng3p58")) if (player.meta.resets > 1) text += "'Are you currently dying?' reward: " + shorten (Math.sqrt(player.meta.resets + 1)) + "x, "
+	if (!tmp.ngp3l) if (player.achievements.includes("ng3p48")) if (player.meta.resets > 1) text += "'Are you currently dying?' reward: " + shorten (Math.sqrt(player.meta.resets + 1)) + "x, "
 	if (player.ghostify.milestones >= 14) text += "Brave Milestone 14: " + shorten(getMilestone14SpinMult()) + "x, "
 	if (todspeed) if (todspeed > 1) text += "ToD Speed: " + shorten(todspeed) + "x, "
 	if (text == "") return "No multipliers currently"
@@ -165,7 +165,7 @@ function getBranchSpeed() { // idea: when you hold shift you can see where the m
 	if (tmp.qu.bigRip.active && isBigRipUpgradeActive(19)) x = x.times(tmp.bru[19])
 	if (hasNU(4)) x = x.times(tmp.nu[2])
 	if (!tmp.ngp3l) {
-		if (player.achievements.includes("ng3p58")) x = x.times(Math.sqrt(player.meta.resets + 1))
+		if (player.achievements.includes("ng3p48")) x = x.times(Math.sqrt(player.meta.resets + 1))
 	}
 	if (player.ghostify.milestones >= 14) x = x.times(getMilestone14SpinMult())
 	return x
