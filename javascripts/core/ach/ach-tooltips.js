@@ -497,10 +497,10 @@ function setR23Tooltip(){
 	//ACHIEVEMENT ROW 23
 	ghostliest.setAttribute('ach-tooltip', "Get " + shorten(Math.pow(Number.MAX_VALUE, 1/4)) + " Ghostifies. Reward: Ghostifies boost the gain of Ghost Particles at a reduced rate.")
 	metae18.setAttribute('ach-tooltip', "Get " + shortenCosts(Decimal.pow(10, 1e18)) + " antimatter. Reward: Distant Antimatter Galaxies scaling is 10% weaker and Higgs Bosons produce Bosonic Antimatter at a linear rate.")
-	aretheseanother.setAttribute('ach-tooltip', "Reach " + shortenCosts(Decimal.pow(10, 66666)) + " Quarks. Reward: Gain 500x more Quarks and Ghost Particles.")
+	aretheseanother.setAttribute('ach-tooltip', "Reach " + shortenCosts(Decimal.pow(10, 55555)) + " Quarks. Reward: Gain 500x more Quarks and Ghost Particles.")
 }
 
-function setPreNGP3AchievementTooltip(){
+function setPreNGP3AchievementTooltip() {
 	setR1Tooltip()
 	setR2Tooltip()
 	setR3Tooltip()
@@ -518,7 +518,7 @@ function setPreNGP3AchievementTooltip(){
 	setR14Tooltip()
 }
 
-function setPreNGP3p1AchievementTooltip(){
+function setPreNGP3p1AchievementTooltip() {
 	// ng+3 achievements
 	setBMTooltip()
 	setQSRTooltip()

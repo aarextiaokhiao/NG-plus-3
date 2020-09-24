@@ -8,7 +8,9 @@ function setupHiggsSave() {
 }
 
 function unlockHiggs() {
-	if (tmp.ngp3l) return //higgs isnt a thing in legacy mode
+	if (tmp.ngp3l) { // higgs isn't a thing in legacy mode
+		return
+	} 
 	if (player.ghostify.hb.unl) return
 	if (!player.ghostify.wzb.unl) return
 	if (!canUnlockHiggs()) return
@@ -22,6 +24,11 @@ function canUnlockHiggs() {
 }
 
 function updateHiggsUnlocks() {
+	if (tmp.ngp3l) {
+		document.getElementById("nextParticle").style.display = "none"
+		document.getElementById("bosonicResets").style.display = "none"
+		return
+	}
 	let unl = player.ghostify.hb.unl
 	document.getElementById("nextParticle").style.display = unl ? "none" : ""
 	document.getElementById("bosonicResets").style.display = unl ? "" : "none"

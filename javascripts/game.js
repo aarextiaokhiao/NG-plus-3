@@ -4631,7 +4631,7 @@ function doNGP3UnlockStuff(){
 	if (player.eternityPoints.gte("1e1200") && tmp.qu.bigRip.active && !tmp.qu.breakEternity.unlocked) doBreakEternityUnlockStuff()
 	if (player.money.gte(Decimal.pow(10, 6e9)) && tmp.qu.bigRip.active && !player.ghostify.ghostlyPhotons.unl) doPhotonsUnlockStuff()
 	if (canUnlockBosonicLab() && !player.ghostify.wzb.unl) doBosonsUnlockStuff()
-	unlockHiggs()
+	if (!tmp.ng3l) unlockHiggs()
 }
 
 function updateResetTierButtons(){
