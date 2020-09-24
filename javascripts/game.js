@@ -4740,7 +4740,7 @@ function doPerSecondNGP3Stuff(){
 	
 	if (tmp.ngp3l) return 
 
-	if (player.achievements.includes("ng3p43")) maxUpgradeColorDimPower()
+	if (player.achievements.includes("ng3p43")) if (player.ghostify.milestones >= 8) maxUpgradeColorDimPower()
 	givePerSecondNeuts()
 }
 
