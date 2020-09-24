@@ -10,7 +10,7 @@ function getDTMultPostBRU11(){
 	gain = gain.times(getTreeUpgradeEffect(7))
 	gain = gain.times(colorBoosts.b)
 	if (GUBought("br2")) gain = gain.times(Decimal.pow(2.2, Math.pow(tmp.sacPow.max(1).log10()/1e6, 0.25)))
-	if (player.achievements.includes("r136") && !tmp.ngp3l) gain = gain.times(Math.max((player.replicanti.amount.log10()-2e4)/8e3+1,1))
+	if (player.achievements.includes("r137") && !tmp.ngp3l) gain = gain.times(Math.max((player.replicanti.amount.log10()-2e4)/8e3+1,1))
 	return gain
 }
 
