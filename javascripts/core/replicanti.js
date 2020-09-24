@@ -289,3 +289,31 @@ function continuousReplicantiUpdating(diff){
 	else player.replicanti.amount = Decimal.pow(Math.E, tmp.rep.ln +(diff*tmp.rep.est/10)).min(getReplicantiLimit())
 	replicantiTicks = 0
 }
+
+function toggleReplAuto(i) {
+	if (i == "chance") {
+		if (player.replicanti.auto[0]) {
+			player.replicanti.auto[0] = false
+			document.getElementById("replauto1").textContent = "Auto: OFF"
+		} else {
+			player.replicanti.auto[0] = true
+			document.getElementById("replauto1").textContent = "Auto: ON"
+		}
+	} else if (i == "interval") {
+		if (player.replicanti.auto[1]) {
+			player.replicanti.auto[1] = false
+			document.getElementById("replauto2").textContent = "Auto: OFF"
+		} else {
+			player.replicanti.auto[1] = true
+			document.getElementById("replauto2").textContent = "Auto: ON"
+		}
+	} else if (i == "galaxy") {
+		if (player.replicanti.auto[2]) {
+			player.replicanti.auto[2] = false
+			document.getElementById("replauto3").textContent = "Auto: OFF"
+		} else {
+			player.replicanti.auto[2] = true
+			document.getElementById("replauto3").textContent = "Auto: ON"
+		}
+	}
+}

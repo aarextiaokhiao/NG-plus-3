@@ -511,3 +511,26 @@ function resetDilationGalaxies() {
 	player.dilation.freeGalaxies = 0
 	gainDilationGalaxies()
 }
+
+var failsafeDilateTime = false
+function startDilatedEternity(auto, shortcut) {
+	if (shortcut && player.dilation.active) return
+	if (failsafeDilateTime) return
+	if (!player.dilation.studies.includes(1)) return
+	failsafeDilateTime = true
+	var onActive = player.dilation.active
+	if (!onActive && player.aarexModifications.dilationConf && !auto) if (!confirm("Dilating time will start a new Eternity where all of your Normal/Infinity/Time Dimension multiplier's exponents and the Tickspeed multiplier's exponent will be reduced to ^ 0.75. If you can Eternity while dilated, you'll be rewarded with tachyon particles based on your antimatter and tachyon particles.")) return
+	giveAchievement("I told you already, time is relative")
+	if (tmp.ngp3) {
+		if (onActive) player.eternityBuyer.statBeforeDilation++
+		else player.eternityBuyer.statBeforeDilation = 0
+		player.eternityBuyer.tpUpgraded = false
+	}
+	eternity(true, true, undefined, true)
+	if (!onActive) player.dilation.active = true;
+	resetUP()
+	if (tmp.ngp3 && quantumed) {
+		updateColorCharge()
+		updateColorDimPowers()
+	}
+}
