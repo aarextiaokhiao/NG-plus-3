@@ -3544,19 +3544,6 @@ function addTime(array) {
 
 var infchallengeTimes = 999999999
 
-function checkForEndMe() {
-	var temp = 0
-	for (var i=0; i<getTotalNormalChallenges(); i++) {
-		temp += player.challengeTimes[i]
-	}
-	if (temp <= 1800) giveAchievement("Not-so-challenging")
-	if (temp <= 50) giveAchievement("End me")
-	var temp2 = 0
-	for (var i = 0; i < order.length; i++) temp2 += player.infchallengeTimes[i]
-	infchallengeTimes = temp2
-	if (temp2 <= 66.6) giveAchievement("Yes. This is hell.")
-}
-
 function getLimit() {
 	if (player.infinityUpgradesRespecced == undefined || player.currentChallenge != "") return Number.MAX_VALUE
 	return Decimal.pow(Number.MAX_VALUE, 1 + player.infinityUpgradesRespecced[3] / 2)
@@ -3648,16 +3635,6 @@ function doAfterResetCrunchStuff(g11MultShown){
 	updateNCVisuals()
 	updateChallengeTimes()
 	updateLastTenRuns()
-}
-
-function checkYoDawg(){
-	if (!player.achievements.includes("r111") && player.lastTenRuns[9][1].neq(0)) {
-		var n = 0;
-		for (i = 0; i < 9; i++) {
-			if (player.lastTenRuns[i][1].gte(player.lastTenRuns[i+1][1].times(Number.MAX_VALUE))) n++
-		}
-		if (n == 9) giveAchievement("Yo dawg, I heard you liked infinities...")
-	}
 }
 
 function doCrunchInfinitiesGain(){
@@ -4455,55 +4432,6 @@ function quickReset() {
 	softReset(0)
 }
 
-function updateInfPower() {
-	document.getElementById("infPowAmount").textContent = shortenMoney(player.infinityPower)
-	if (player.galacticSacrifice && player.pSac == undefined) document.getElementById("infPowEffectPower").textContent = tmp.infPowExp.toFixed(2)
-	document.getElementById("infDimMultAmount").textContent = shortenMoney(tmp.infPow)
-	if (player.currentEternityChall == "eterc7") document.getElementById("infPowPerSec").textContent = "You are getting " +shortenDimensions(DimensionProduction(1))+" Seventh Dimensions per second."
-	else {
-		let r = DimensionProduction(1)
-		if (player.pSac != undefined) r = r.div(getEC12Mult())
-		document.getElementById("infPowPerSec").textContent = "You are getting " + shortenDimensions(r) + " Infinity Power per second."
-	}
-}
-
-function updateDilationDisplay() {
-	if (document.getElementById("dilation").style.display == "block" && document.getElementById("eternitystore").style.display == "block") {
-		document.getElementById("tachyonParticleAmount").textContent = shortenMoney(player.dilation.tachyonParticles)
-		document.getElementById("dilatedTimeAmount").textContent = shortenMoney(player.dilation.dilatedTime)
-		document.getElementById("dilatedTimePerSecond").textContent = "+" + shortenMoney(getDilTimeGainPerSecond()) + "/s"
-		document.getElementById("galaxyThreshold").textContent = shortenMoney(player.dilation.nextThreshold)
-		document.getElementById("dilatedGalaxies").textContent = getFullExpansion(Math.floor(player.dilation.freeGalaxies))
-	}
-}
-
-function getNewInfReq() {
-	let reqs = [new Decimal("1e1100"), new Decimal("1e1900"), new Decimal("1e2400"), new Decimal("1e10500"), new Decimal("1e30000"), new Decimal("1e45000"), new Decimal("1e54000")]
-	if (player.galacticSacrifice !== undefined) {
-		if (player.tickspeedBoosts === undefined) {
-			reqs[1] = new Decimal("1e1500")
-			reqs[3] = new Decimal("1e9600")
-		} else {
-			reqs[0] = new Decimal("1e1800")
-			reqs[1] = new Decimal("1e2400")
-			reqs[2] = new Decimal("1e4000")
-		}
-		if (player.aarexModifications.ngmX >= 4){
-			reqs[0] = new Decimal("1e1777")
-		}
-	}
-	for (var tier = 0; tier < 7; tier++) if (!player.infDimensionsUnlocked[tier]) return {money: reqs[tier], tier: tier+1}
-	return {money: new Decimal("1e60000"), tier: 8}
-}
-
-function newDimension() {
-	var req = getNewInfReq()
-	if (player.money.lt(req.money)) return
-	player.infDimensionsUnlocked[req.tier-1] = true
-	if (req.tier == 4) giveAchievement("NEW DIMENSIONS???")
-	if (req.tier == 8) giveAchievement("0 degrees from infinity")
-}
-
 var blink = true
 var nextAt
 var goals
@@ -4560,10 +4488,6 @@ function canQuickBigRip() {
 		}
 	}
 	return x
-}
-
-function bendTimeCheck(){
-	if (tmp.tsReduce < 0.001) giveAchievement("Do you even bend time bro?")
 }
 
 function runIDBuyersTick(){
@@ -5020,26 +4944,24 @@ function incrementTimesUpdating(diffStat){
 }
 
 function requiredInfinityUpdating(diff){
-	if (!tmp.ri) {
-		if (player.infinityUpgradesRespecced != undefined) infinityRespeccedDMUpdating(diff)
+	if (tmp.ri) return
+	if (player.infinityUpgradesRespecced != undefined) infinityRespeccedDMUpdating(diff)
 		
-		for (let tier = (inQC(1) ? 1 : player.currentEternityChall == "eterc3" ? 3 : (inNC(4) || player.currentChallenge == "postc1") ? 5 : 7) - (inNC(7) || player.currentChallenge == "postcngm3_3" || inQC(4) || player.pSac !== undefined ? 1 : 0); tier >= 1; --tier) {
-			var name = TIER_NAMES[tier];
-			player[name + 'Amount'] = player[name + 'Amount'].plus(getDimensionProductionPerSecond(tier + (inNC(7) || player.currentChallenge == "postcngm3_3" || inQC(4) || player.pSac !== undefined ? 2 : 1)).times(diff / 10));
-		}
-		if (player.masterystudies != undefined) if (player.firstAmount.gt(0)) player.dontWant = false
-
-		var tempa = getDimensionProductionPerSecond(1).times(diff)
-		player.money = player.money.plus(tempa)
-		player.totalmoney = player.totalmoney.plus(tempa)
-		if (isInfiniteDetected()) return
-		if (tmp.ngp3 && tmp.qu.bigRip.active) {
-			tmp.qu.bigRip.totalAntimatter = tmp.qu.bigRip.totalAntimatter.add(tempa)
-			tmp.qu.bigRip.bestThisRun = tmp.qu.bigRip.bestThisRun.max(player.money)
-		}
-		if (player.totalmoney.gt("1e9000000000000000")) changingDecimalSystemUpdating()
-		tmp.ri=player.money.gte(getLimit()) && ((player.currentChallenge != "" && player.money.gte(player.challengeTarget)) || !onPostBreak())
+	for (let tier = (inQC(1) ? 1 : player.currentEternityChall == "eterc3" ? 3 : (inNC(4) || player.currentChallenge == "postc1") ? 5 : 7) - (inNC(7) || player.currentChallenge == "postcngm3_3" || inQC(4) || player.pSac !== undefined ? 1 : 0); tier >= 1; --tier) {
+		var name = TIER_NAMES[tier];
+		player[name + 'Amount'] = player[name + 'Amount'].plus(getDimensionProductionPerSecond(tier + (inNC(7) || player.currentChallenge == "postcngm3_3" || inQC(4) || player.pSac !== undefined ? 2 : 1)).times(diff / 10));
 	}
+	if (player.masterystudies != undefined) if (player.firstAmount.gt(0)) player.dontWant = false
+	var tempa = getDimensionProductionPerSecond(1).times(diff)
+	player.money = player.money.plus(tempa)	
+	player.totalmoney = player.totalmoney.plus(tempa)
+	if (isInfiniteDetected()) return
+	if (tmp.ngp3 && tmp.qu.bigRip.active) {
+		tmp.qu.bigRip.totalAntimatter = tmp.qu.bigRip.totalAntimatter.add(tempa)
+		tmp.qu.bigRip.bestThisRun = tmp.qu.bigRip.bestThisRun.max(player.money)
+	}
+	if (player.totalmoney.gt("1e9000000000000000")) changingDecimalSystemUpdating()
+	tmp.ri=player.money.gte(getLimit()) && ((player.currentChallenge != "" && player.money.gte(player.challengeTarget)) || !onPostBreak())
 }
 
 function chall2PowerUpdating(diff){
@@ -5118,8 +5040,7 @@ function ghostifyAutomationUpdating(){
 			if (addedTotal > 0) updateElectrons(true)
 		}
 		if (isAutoGhostActive(20)) buyMaxBosonicUpgrades()
-	}
-	
+	} 
 }
 
 function WZBosonsUpdating(diff){
@@ -5222,15 +5143,6 @@ function emperorDimUpdating(diff){
 		}
 		if (!canFeedReplicant(dim-1,true)) tmp.eds[dim-1].progress = new Decimal(0)
 	}
-}
-
-function getSpinToReplicantiSpeed(){
-	// log10(green spins) * log10(blue spins) *log10(red spins) 
-	if (!player.achievements.includes("ng3p54")) return 1
-	var r = player.quantum.tod.r.spin.plus(10).log10()
-	var g = player.quantum.tod.g.spin.plus(10).log10()
-	var b = player.quantum.tod.b.spin.plus(10).log10()
-	return r * g * b
 }
 
 function replicantEggonUpdating(diff){
@@ -5561,35 +5473,6 @@ function doGhostifyButtonDisplayUpdating(diff){
 	document.getElementById("GHPPeak").textContent = ghostifyGains.length == 1 ? (showGHPPeakValue?"":"Peaked at ")+getGHPRate(GHPminpeak)+(showGHPPeakValue?" at "+shortenDimensions(GHPminpeakValue)+" GhP":"") : ""
 }
 
-function checkMarathon(){
-	if (getDimensionProductionPerSecond(1).gt(player.money) && !player.achievements.includes("r44")) {
-		Marathon += player.options.updateRate/1000;
-		if (Marathon >= 30) giveAchievement("Over in 30 seconds");
-	} else {
-		Marathon = 0;
-	}
-}
-
-function checkMarathon2(){
-	if (DimensionProduction(1).gt(player.infinityPower) && player.currentEternityChall != "eterc7" && !player.achievements.includes("r113")) {
-		Marathon2+=player.options.updateRate/1000;
-		if (Marathon2 >= 60) giveAchievement("Long lasting relationship");
-	} else {
-		Marathon2 = 0;
-	}
-}
-
-function checkPain(){
-	if (player.eternities >= 1 && (player.options.notation == "Standard" || player.options.notation == "Emojis" || player.options.notation == "Brackets")) {
-		painTimer += player.options.updateRate/1000;
-		if (painTimer >= 600) giveAchievement("Do you enjoy pain?");
-	}
-}
-
-function checkSupersanic(){
-	if (player.money.gt(Math.pow(10,63))) giveAchievement("Supersanic");
-}
-
 function tickspeedButtonDisplay(){
 	if (player.tickSpeedCost.gt(player.money)) {
 		document.getElementById("tickSpeed").className = 'unavailablebtn';
@@ -5761,28 +5644,27 @@ function preQuantumNormalProgress(){
 }
 
 function progressBarUpdating(){
-	if (player.aarexModifications.progressBar) {
-		document.getElementById("progressbar").className=""
-		if (document.getElementById("metadimensions").style.display == "block") doQuantumProgress() 
-		else if (player.currentChallenge !== "") {
-			currentChallengeProgress()
-		} else if (!player.break) {
-			preBreakProgess()
-		} else if (player.infDimensionsUnlocked.includes(false)) {
-			infDimProgress()
-		} else if (player.currentEternityChall !== '' && player.infinityPoints.lt(player.eternityChallGoal.pow(2))) {
-			currentEChallengeProgress()
-		} else if (player.infinityPoints.lt(Number.MAX_VALUE) || player.eternities == 0) {
-			preEternityProgress()
-		} else if (player.achievements.includes('r127') && !player.achievements.includes('r128') && player.timestudy.studies.length == 0) {
-			r128Progress()
-		} else if (player.dilation.studies.includes(5) && player.dilation.active && !player.achievements.includes('r138') && player.timestudy.studies.length == 0) {
-			r138Progress()
-		} else if (player.dilation.active && player.dilation.totalTachyonParticles.gte(getDilGain())) {
-			gainTPProgress()
-		} else if ((!inQC(0) || gainedEternityPoints().gte(Decimal.pow(2,1048576))) && player.meta) doQuantumProgress()
-		else preQuantumNormalProgress()
-	}
+	if (!player.aarexModifications.progressBar) return
+	document.getElementById("progressbar").className=""
+	if (document.getElementById("metadimensions").style.display == "block") doQuantumProgress() 
+	else if (player.currentChallenge !== "") {
+		currentChallengeProgress()
+	} else if (!player.break) {
+		preBreakProgess()
+	} else if (player.infDimensionsUnlocked.includes(false)) {
+		infDimProgress()
+	} else if (player.currentEternityChall !== '' && player.infinityPoints.lt(player.eternityChallGoal.pow(2))) {
+		currentEChallengeProgress()
+	} else if (player.infinityPoints.lt(Number.MAX_VALUE) || player.eternities == 0) {
+		preEternityProgress()
+	} else if (player.achievements.includes('r127') && !player.achievements.includes('r128') && player.timestudy.studies.length == 0) {
+		r128Progress()
+	} else if (player.dilation.studies.includes(5) && player.dilation.active && !player.achievements.includes('r138') && player.timestudy.studies.length == 0) {
+		r138Progress()
+	} else if (player.dilation.active && player.dilation.totalTachyonParticles.gte(getDilGain())) {
+		gainTPProgress()
+	} else if ((!inQC(0) || gainedEternityPoints().gte(Decimal.pow(2,1048576))) && player.meta) doQuantumProgress()
+	else preQuantumNormalProgress()
 }
 
 function ECRewardDisplayUpdating(){
@@ -5885,11 +5767,11 @@ function newIDDisplayUpdating(){
 
 function d8SacDisplay(){
 	if (calcTotalSacrificeBoost().lte(Decimal.pow(10, 1e9))) {
-	document.getElementById("sacrifice").setAttribute('ach-tooltip', "Boost the 8th Dimension by " + formatValue(player.options.notation, calcSacrificeBoost(), 2, 2) + "x");
-	document.getElementById("sacrifice").textContent = "Dimensional Sacrifice (" + formatValue(player.options.notation, calcSacrificeBoost(), 2, 2) + "x)"
+		document.getElementById("sacrifice").setAttribute('ach-tooltip', "Boost the 8th Dimension by " + formatValue(player.options.notation, calcSacrificeBoost(), 2, 2) + "x");
+		document.getElementById("sacrifice").textContent = "Dimensional Sacrifice (" + formatValue(player.options.notation, calcSacrificeBoost(), 2, 2) + "x)"
 	} else {
-	document.getElementById("sacrifice").setAttribute('ach-tooltip', "Boost the 8th Dimension");
-	document.getElementById("sacrifice").textContent = "Dimensional Sacrifice (Total: " + formatValue(player.options.notation, calcTotalSacrificeBoost(), 2, 2) + "x)"
+		document.getElementById("sacrifice").setAttribute('ach-tooltip', "Boost the 8th Dimension");
+		document.getElementById("sacrifice").textContent = "Dimensional Sacrifice (Total: " + formatValue(player.options.notation, calcTotalSacrificeBoost(), 2, 2) + "x)"
 	}
 }
 
@@ -6718,27 +6600,27 @@ window.addEventListener('keydown', function(event) {
 	}
 }, false);
 
-  window.addEventListener('keyup', function(event) {
-    if (event.keyCode === 70) {
-        $.notify("Paying respects", "info")
-        giveAchievement("It pays to have respect")
-    }
-	if (!tmp.ngp3l && Math.random() <= 1e-6) giveAchievement("keyboard broke?")
-    if (!player.options.hotkeys || controlDown === true || document.activeElement.type === "text") return false
-    switch (event.keyCode) {
-        case 67: // C
-            bigCrunch()
-        break;
+window.addEventListener('keyup', function(event) {
+	if (event.keyCode === 70) {
+		$.notify("Paying respects", "info")
+		giveAchievement("It pays to have respect")
+	}
+		if (!tmp.ngp3l && Math.random() <= 1e-6) giveAchievement("keyboard broke?")
+	if (!player.options.hotkeys || controlDown === true || document.activeElement.type === "text") return false
+	switch (event.keyCode) {
+		case 67: // C
+		bigCrunch()
+		break;
 
-        case 69: // E, also, nice.
-        document.getElementById("eternitybtn").onclick();
-        break;
-	
-        case 81: // Q, for quantum.
-        if (player.meta) quantum(false,false,0)
-        break;
-    }
-  }, false);
+		case 69: // E, also, nice.
+		document.getElementById("eternitybtn").onclick();
+		break;
+		
+		case 81: // Q, for quantum.
+		if (player.meta) quantum(false,false,0)
+		break;
+	}
+}, false);
 
 
 function getUnspentBonus() {

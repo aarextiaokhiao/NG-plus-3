@@ -19,6 +19,62 @@ function antitablesHaveTurnedCheck(){
 	getDimensionFinalMultiplier(7).lt(getDimensionFinalMultiplier(8))) giveAchievement("How the antitables have turned")
 }
 
+function bendTimeCheck(){
+	if (tmp.tsReduce < 0.001) giveAchievement("Do you even bend time bro?")
+}
+
+function checkMarathon(){
+	if (getDimensionProductionPerSecond(1).gt(player.money) && !player.achievements.includes("r44")) {
+		Marathon += player.options.updateRate/1000;
+		if (Marathon >= 30) giveAchievement("Over in 30 seconds");
+	} else {
+		Marathon = 0;
+	}
+}
+
+function checkMarathon2(){
+	if (DimensionProduction(1).gt(player.infinityPower) && player.currentEternityChall != "eterc7" && !player.achievements.includes("r113")) {
+		Marathon2+=player.options.updateRate/1000;
+		if (Marathon2 >= 60) giveAchievement("Long lasting relationship");
+	} else {
+		Marathon2 = 0;
+	}
+}
+
+function checkPain(){
+	if (player.eternities >= 1 && (player.options.notation == "Standard" || player.options.notation == "Emojis" || player.options.notation == "Brackets")) {
+		painTimer += player.options.updateRate/1000;
+		if (painTimer >= 600) giveAchievement("Do you enjoy pain?");
+	}
+}
+
+function checkSupersanic(){
+	if (player.money.gt(Math.pow(10,63))) giveAchievement("Supersanic");
+}
+
+function checkForEndMe() {
+	var temp = 0
+	for (var i=0; i<getTotalNormalChallenges(); i++) {
+		temp += player.challengeTimes[i]
+	}
+	if (temp <= 1800) giveAchievement("Not-so-challenging")
+	if (temp <= 50) giveAchievement("End me")
+	var temp2 = 0
+	for (var i = 0; i < order.length; i++) temp2 += player.infchallengeTimes[i]
+	infchallengeTimes = temp2
+	if (temp2 <= 66.6) giveAchievement("Yes. This is hell.")
+}
+
+function checkYoDawg(){
+	if (!player.achievements.includes("r111") && player.lastTenRuns[9][1].neq(0)) {
+		var n = 0;
+		for (i = 0; i < 9; i++) {
+			if (player.lastTenRuns[i][1].gte(player.lastTenRuns[i+1][1].times(Number.MAX_VALUE))) n++
+		}
+		if (n == 9) giveAchievement("Yo dawg, I heard you liked infinities...")
+	}
+}
+
 function checkUniversalHarmony() {
 	if (player.achievements.includes("ngpp18")) return
 	if (player.meta != undefined) {
@@ -94,6 +150,14 @@ function checkTickspeedReqAchieve(){
 	if (player.tickspeed.e < -8296262) giveAchievement("Faster than a potato^286078")
 	if (player.totalTickGained >= 308) giveAchievement("Infinite time");
 	if (player.totalTickGained>=1e6) giveAchievement("GAS GAS GAS")
+}
+
+function newDimension() {
+	var req = getNewInfReq()
+	if (player.money.lt(req.money)) return
+	player.infDimensionsUnlocked[req.tier-1] = true
+	if (req.tier == 4) giveAchievement("NEW DIMENSIONS???")
+	if (req.tier == 8) giveAchievement("0 degrees from infinity")
 }
 
 function checkOtherPreNGp3Achieve(){

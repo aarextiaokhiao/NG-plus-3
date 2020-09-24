@@ -387,3 +387,12 @@ function maxBuyLimit() {
 	updateReplicants()
 }
 
+function getSpinToReplicantiSpeed(){
+	// log10(green spins) * log10(blue spins) *log10(red spins) 
+	if (!player.achievements.includes("ng3p54")) return 1
+	var r = player.quantum.tod.r.spin.plus(10).log10()
+	var g = player.quantum.tod.g.spin.plus(10).log10()
+	var b = player.quantum.tod.b.spin.plus(10).log10()
+	return r * g * b
+}
+

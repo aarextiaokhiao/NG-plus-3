@@ -14,7 +14,7 @@ function getDTMultPostBRU11(){
 	return gain
 }
 
-function getDilTimeGainPerSecond() {
+function getBaseDTProduction(){
 	let tp = player.dilation.tachyonParticles
 	let exp = getDTGainExp()
 	let gain = tp.pow(exp)
@@ -30,6 +30,11 @@ function getDilTimeGainPerSecond() {
 	if (hasBosonicUpg(15)) gain = gain.times(tmp.blu[15].dt)
 	if (tmp.newNGP3E && player.achievements.includes("r138") && gain.lt(1e100)) gain = gain.times(3).min(1e100)
 	if (!tmp.ngp3l && (tmp.ngp3 || tmp.newNGP3E) && player.achievements.includes("ngpp13")) gain = gain.times(2)
+	return gain
+}
+
+function getDilTimeGainPerSecond() {
+	let gain = getBaseDTProduction()
 	
 	var lgain = gain.log10()
 	if (!tmp.ngp3l) lgain = softcap(lgain, "dt_log")
@@ -532,5 +537,15 @@ function startDilatedEternity(auto, shortcut) {
 	if (tmp.ngp3 && quantumed) {
 		updateColorCharge()
 		updateColorDimPowers()
+	}
+}
+
+function updateDilationDisplay() {
+	if (document.getElementById("dilation").style.display == "block" && document.getElementById("eternitystore").style.display == "block") {
+		document.getElementById("tachyonParticleAmount").textContent = shortenMoney(player.dilation.tachyonParticles)
+		document.getElementById("dilatedTimeAmount").textContent = shortenMoney(player.dilation.dilatedTime)
+		document.getElementById("dilatedTimePerSecond").textContent = "+" + shortenMoney(getDilTimeGainPerSecond()) + "/s"
+		document.getElementById("galaxyThreshold").textContent = shortenMoney(player.dilation.nextThreshold)
+		document.getElementById("dilatedGalaxies").textContent = getFullExpansion(Math.floor(player.dilation.freeGalaxies))
 	}
 }

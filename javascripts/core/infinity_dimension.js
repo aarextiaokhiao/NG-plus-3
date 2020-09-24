@@ -341,5 +341,34 @@ function getEU3Mult() {
 	return Decimal.pow(2, 300 / Math.max(infchallengeTimes, 6.1))
 }
 
+function updateInfPower() {
+	document.getElementById("infPowAmount").textContent = shortenMoney(player.infinityPower)
+	if (player.galacticSacrifice && player.pSac == undefined) document.getElementById("infPowEffectPower").textContent = tmp.infPowExp.toFixed(2)
+	document.getElementById("infDimMultAmount").textContent = shortenMoney(tmp.infPow)
+	if (player.currentEternityChall == "eterc7") document.getElementById("infPowPerSec").textContent = "You are getting " +shortenDimensions(DimensionProduction(1))+" Seventh Dimensions per second."
+	else {
+		let r = DimensionProduction(1)
+		if (player.pSac != undefined) r = r.div(getEC12Mult())
+		document.getElementById("infPowPerSec").textContent = "You are getting " + shortenDimensions(r) + " Infinity Power per second."
+	}
+}
 
+function getNewInfReq() {
+	let reqs = [new Decimal("1e1100"), new Decimal("1e1900"), new Decimal("1e2400"), new Decimal("1e10500"), new Decimal("1e30000"), new Decimal("1e45000"), new Decimal("1e54000")]
+	if (player.galacticSacrifice !== undefined) {
+		if (player.tickspeedBoosts === undefined) {
+			reqs[1] = new Decimal("1e1500")
+			reqs[3] = new Decimal("1e9600")
+		} else {
+			reqs[0] = new Decimal("1e1800")
+			reqs[1] = new Decimal("1e2400")
+			reqs[2] = new Decimal("1e4000")
+		}
+		if (player.aarexModifications.ngmX >= 4){
+			reqs[0] = new Decimal("1e1777")
+		}
+	}
+	for (var tier = 0; tier < 7; tier++) if (!player.infDimensionsUnlocked[tier]) return {money: reqs[tier], tier: tier+1}
+	return {money: new Decimal("1e60000"), tier: 8}
+}
 
