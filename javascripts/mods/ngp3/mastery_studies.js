@@ -430,7 +430,6 @@ function updateMasteryStudyCosts() {
 	}
 	if (oldBought != masteryStudies.bought) updateSpentableMasteryStudies()
 	if (player.eternityChallUnlocked > 12) masteryStudies.ttSpent += masteryStudies.costs.ec[player.eternityChallUnlocked]
-	if (masteryStudies.bought >= 48) giveAchievement("The Theory of Ultimate Studies")
 	updateMasteryStudyTextDisplay()
 }
 

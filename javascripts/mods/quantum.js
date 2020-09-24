@@ -458,7 +458,6 @@ function quantumReset(force, auto, challid, bigRip, implode = false) {
 		}
 	}
 	if (tmp.ngp3) {
-		giveAchievement("Sub-atomic")
 		ipMultPower = GUBought("gb3") ? 2.3 : player.masterystudies.includes("t241") ? 2.2 : 2
 		player.dilation.times = 0
 		if (!force) {

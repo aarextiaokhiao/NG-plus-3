@@ -11,7 +11,6 @@ function breakInfinity() {
 	} else {
 		player.break = true
 		document.getElementById("break").textContent = "FIX INFINITY"
-		giveAchievement("Limit Break")
 	}
 	if (player.galacticSacrifice) if (player.eternities==0&&player.infinityPoints.lt(Number.MAX_VALUE)&&!quantumed) {
 		document.getElementById("quantumBlock").style.display=player.break?"":"none"
@@ -198,8 +197,6 @@ function startChallenge(name) {
 	showTab('dimensions')
 	updateChallenges()
 	setInitialMoney()
-
-	if (player.infinitied >= 10) giveAchievement("That's a lot of infinites");
 
 	resetInfDimensions();
 	hideDimensions()

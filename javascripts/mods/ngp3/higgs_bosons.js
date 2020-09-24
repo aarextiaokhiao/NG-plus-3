@@ -14,7 +14,6 @@ function unlockHiggs() {
 	if (!canUnlockHiggs()) return
 	$.notify("Congratulations! You have unlocked Higgs Bosons!", "success")
 	player.ghostify.hb.unl = true
-	giveAchievement("The Holy Particle")
 	updateHiggsUnlocks()
 }
 
@@ -93,7 +92,6 @@ function higgsReset() {
 	if (!player.aarexModifications.higgsNoConf && !confirm("You will exchange all your Bosonic Lab stuff for Higgs Bosons. Everything that Light Empowerments resets initally will be reset. Are you ready to proceed?")) return
 	addHiggs(getHiggsGain())
 	bosonicLabReset()
-	giveAchievement("The Holy Particle")
 	if (oldHiggs == 0) {
 		updateNeutrinoBoosts()
 		updateHiggsUnlocks()

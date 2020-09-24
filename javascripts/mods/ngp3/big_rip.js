@@ -145,7 +145,6 @@ function breakEternity() {
 	tmp.qu.breakEternity.break = !tmp.qu.breakEternity.break
 	tmp.qu.breakEternity.did = true
 	document.getElementById("breakEternityBtn").textContent = (tmp.qu.breakEternity.break ? "FIX" : "BREAK") + " ETERNITY"
-	giveAchievement("Time Breaker")
 	if (tmp.qu.bigRip.active) {
 		tmp.be = tmp.qu.breakEternity.break
 		updateTemp()

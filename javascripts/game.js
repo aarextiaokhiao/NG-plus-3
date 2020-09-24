@@ -2882,7 +2882,6 @@ function sacrifice(auto = false) {
 	var maxPower = player.galacticSacrifice ? "1e8888" : Number.MAX_VALUE
 	if (inNC(11) && (tmp.sacPow.gte(maxPower) || player.chall11Pow.gte(maxPower))) return false
 	if (!auto) floatText("D8", "x" + shortenMoney(sacGain))
-	if (calcSacrificeBoost().gte(Number.MAX_VALUE)) giveAchievement("Yet another infinity reference");
 	player.sacrificed = player.sacrificed.plus(player.firstAmount);
 	if (!inNC(11)) {
 		if ((inNC(7) || player.currentChallenge == "postcngm3_3" || player.pSac !== undefined) && !player.achievements.includes("r118")) clearDimensions(6);
@@ -2893,8 +2892,6 @@ function sacrifice(auto = false) {
 		player.money = new Decimal(100)
 	}
 	tmp.sacPow = tmp.sacPow.times(sacGain)
-	if (tmp.sacPow >= 600) giveAchievement("The Gods are pleased");
-	if (tmp.sacPow.gte("1e9000") && !inNC(11)) giveAchievement("IT'S OVER 9000");
 }
 
 document.getElementById("sacrifice").onclick = function () {
@@ -3691,7 +3688,6 @@ function bigCrunch(autoed) {
 		if (ghostified) document.getElementById("ghostifytabbtn").style.display = "inline-block"
 	}
 	if (player.currentChallenge != "" && !player.challenges.includes(player.currentChallenge)) player.challenges.push(player.currentChallenge);
-	if (player.currentChallenge.includes("post")) giveAchievement("Infinitely Challenging");
 	if (player.currentChallenge == "postc8") giveAchievement("Anti-antichallenged");
 	var add = getIPMult()
 	if ((player.break && player.currentChallenge == "") || player.infinityUpgradesRespecced != undefined) add = gainedInfinityPoints()
@@ -3757,15 +3753,6 @@ function doCheckECCompletionStuff(){
 			player.eternityChallUnlocked = 0
 		} else forceRespec = true
 		player.etercreq = 0
-		if (Object.keys(player.eternityChalls).length >= 10) {
-			var eterchallscompletedtotal = 0;
-			for (i = 1; i < Object.keys(player.eternityChalls).length + 1; i++) {
-				eterchallscompletedtotal += player.eternityChalls["eterc" + i]
-			}
-			if (eterchallscompletedtotal >= 50 && !player.achievements.includes("r123")) {
-				giveAchievement("5 more eternities until the update");
-			}
-		}
 	} else if (tmp.ngp3) delete tmp.qu.autoECN
 	return forceRespec
 }
@@ -3779,11 +3766,7 @@ function eternity(force, auto, presetLoad, dilated) {
 	
 	if (force) player.currentEternityChall = "";
 	if (player.currentEternityChall !== "" && player.infinityPoints.lt(player.eternityChallGoal)) return false
-	if (player.thisEternity < player.bestEternity && !force) {
-		player.bestEternity = player.thisEternity
-		if (player.bestEternity < 300) giveAchievement("That wasn't an eternity");
-		if (player.bestEternity <= 0.01) giveAchievement("Less than or equal to 0.001");
-	}
+	if (player.thisEternity < player.bestEternity && !force) player.bestEternity = player.thisEternity
 	if (player.thisEternity < 2) giveAchievement("Eternities are the new infinity")
 	if (player.currentEternityChall == "eterc6" && ECTimesCompleted("eterc6") < 5 && player.dimensionMultDecrease < 4) player.dimensionMultDecrease = Math.max(parseFloat((player.dimensionMultDecrease - 0.2).toFixed(1)),2)
 	if (!GUBought("gb4")) if ((player.currentEternityChall == "eterc11" || (player.currentEternityChall == "eterc12" && ghostified)) && ECTimesCompleted("eterc11") < 5) player.tickSpeedMultDecrease = Math.max(parseFloat((player.tickSpeedMultDecrease - 0.07).toFixed(2)), 1.65)
@@ -3820,7 +3803,6 @@ function eternity(force, auto, presetLoad, dilated) {
 	}
 	player.challenges = temp
 	player.infinitiedBank = nA(player.infinitiedBank, gainBankedInf())
-	if (player.infinitiedBank >= 5000000000 && !player.achievements.includes("r131")) giveAchievement("No ethical consumption");
 	if (player.dilation.active && (!force || player.infinityPoints.gte(Number.MAX_VALUE))) {
 		let gain = getDilGain()
 		if (gain.gte(player.dilation.totalTachyonParticles)) {
@@ -3917,8 +3899,7 @@ function eternity(force, auto, presetLoad, dilated) {
 	if (typeof(presetLoad) == "string") importStudyTree(presetLoad)
 	if (player.respec) respecToggle()
 	if (player.respecMastery) respecMasteryToggle()
-	if (!player.achievements.includes("r96")) giveAchievement("Time is relative")
-	if (getEternitied() >= 100 && !player.achievements.includes("r102")) giveAchievement("This mile took an Eternity");
+	giveAchievement("Time is relative")
 	if (player.replicanti.unl && speedrunMilestonesReached < 22) player.replicanti.amount = new Decimal(1)
 	player.replicanti.galaxies = 0
 	extraReplGalaxies = 0

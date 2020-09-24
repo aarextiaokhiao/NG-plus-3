@@ -22,8 +22,6 @@ function galaxyReset(bulk) {
 	setInitialDimensionPower();
 	
 	if (player.options.notation == "Emojis") player.spreadingCancer += bulk
-	if (player.spreadingCancer >= 10 && !player.achievements.includes("r41")) giveAchievement("Spreading Cancer")
-	if (player.spreadingCancer >= 1000000) giveAchievement("Cancer = Spread")
 	if (player.achievements.includes("r36")) player.tickspeed = player.tickspeed.times(0.98);
 	if (player.achievements.includes("r45")) player.tickspeed = player.tickspeed.times(0.98);
 	if (player.achievements.includes("r83")) player.tickspeed = player.tickspeed.times(Decimal.pow(0.95, player.galaxies));

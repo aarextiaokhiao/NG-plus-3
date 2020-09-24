@@ -188,9 +188,6 @@ function updatePCCompletions() {
 		}
 	} else document.getElementById("modifiersdiv").style.display = "none"
 	
-	if (r >= 165) giveAchievement("Pulling an All-Nighter")
-	if (r >= 190) giveAchievement("Not-so-very-challenging") 
-	if (tmp.pcc.normal >= 24) giveAchievement("The Challenging Day")
 	ranking = r // its global
 }
 

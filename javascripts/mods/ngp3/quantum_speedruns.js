@@ -14,10 +14,8 @@ function updateSpeedruns() {
 	document.getElementById('sacrificeAuto').style.display = speedrunMilestonesReached >= 25 ? "" : "none"
 	for (var i = 1; i <= 28; i++) document.getElementById("speedrunMilestone"+i).className = "achievement achievement" + (speedrunMilestonesReached >= i ? "un" : "") + "locked"
 	for (var i = 1; i <= 4; i++) document.getElementById("speedrunRow"+i).className = speedrunMilestonesReached < ( i > 3 ? 28 : i * 8) ? "" : "completedrow"
-	if (speedrunMilestonesReached >= 24) giveAchievement("And the winner is...")
 	if (speedrunMilestonesReached >= 26) document.getElementById('rebuyupgmax').style.display = "none"
 	if (speedrunMilestonesReached >= 28) {
-		giveAchievement("Special Relativity")
 		var removeMaxAll = false
 		for (var d = 1; d < 9; d++) {
 			if (player.autoEterOptions["md" + d]) {
@@ -26,7 +24,6 @@ function updateSpeedruns() {
 		}
 		document.getElementById("metaMaxAllDiv").style.display = removeMaxAll ? "none" : ""
 	}
-	if (tmp.qu.best <= 10) giveAchievement("Quantum doesn't take so long")
 }
 
 function isRewardEnabled(id) {

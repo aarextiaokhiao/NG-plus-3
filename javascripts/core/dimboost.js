@@ -26,7 +26,6 @@ function softReset(bulk, tier=1) {
 	var oldResets = player.resets
 	player.resets += bulk;
 	if (player.masterystudies) if (player.resets > 4) player.old = false
-	if (player.resets >= 10) giveAchievement("Boosting to the max");
 	if (inNC(14) && player.tickspeedBoosts == undefined) player.tickBoughtThisInf.pastResets.push({resets: player.resets, bought: player.tickBoughtThisInf.current})
 	if (tmp.ngp3 && getEternitied() >= 1e9 && player.dilation.upgrades.includes("ngpp6") && tier < 2) {
 		skipResets()

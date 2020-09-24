@@ -82,7 +82,7 @@ function updateTODStuff() {
 		return
 	} else {
 		document.getElementById("todtabbtn").style.display = ""
-		giveAchievement("Do protons decay?")
+		
 	}
 	var colors = ["red", "green", "blue"]
 	var shorthands = ["r", "g", "b"]
@@ -454,9 +454,9 @@ function radioactiveDecay(shorthand) {
 	data.decays = data.decays === undefined ? 1 : data.decays + 1
 	let sum = 0
 	for (var c = 0; c < 3; c++) sum += getRadioactiveDecays((['r', 'g', 'b'])[c])
-	if (sum > 9) giveAchievement("Radioactive Decaying to the max!")
 	updateTODStuff()
 }
+
 
 function getTotalRadioactiveDecays(){
 	return getRadioactiveDecays('g') + getRadioactiveDecays('b') + getRadioactiveDecays('r')

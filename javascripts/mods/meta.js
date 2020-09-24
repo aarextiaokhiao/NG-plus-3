@@ -179,7 +179,6 @@ function metaBoost() {
 		}
 		if (inQC(4)) if (player.meta[8].bought >= getMetaShiftRequirement().amount) player.meta.resets++
 	} else player.meta.resets++
-	if (player.meta.resets >= 10) giveAchievement("Meta-boosting to the max")
 	if (!tmp.ngp3l && player.achievements.includes("ng3p72")) return
 	player.meta.antimatter = getMetaAntimatterStart()
 	clearMetaDimensions()
