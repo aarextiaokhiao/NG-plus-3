@@ -188,7 +188,7 @@ function checkOtherPreNGp3Achieve(){
 	if (player.spreadingCancer >= 1000000) giveAchievement("Cancer = Spread")
 	if (player.infinitied >= 10) giveAchievement("That's a lot of infinites");
 	if (player.break) giveAchievement("Limit Break")
-	if (player.meta.resets >= 10) giveAchievement("Meta-boosting to the max")
+	if (player.meta) if (player.meta.resets >= 10) giveAchievement("Meta-boosting to the max")
 	if (tmp.sacPow >= 600) giveAchievement("The Gods are pleased");
 	if (tmp.sacPow.gte(Number.MAX_VALUE)) giveAchievement("Yet another infinity reference")
 	if (tmp.sacPow.gte(Decimal.pow(10, 9000)) && !inNC(11)) giveAchievement("IT'S OVER 9000")
