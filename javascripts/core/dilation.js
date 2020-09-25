@@ -110,7 +110,7 @@ function getDilGain() {
 		return new Decimal(0)
 	}
 	var log = Math.log10(player.money.log10() / 400) * getDilExp() + getDilPower().log10()
-	if (!tmp.be && player.quantum.bigRip.active) {
+	if (tmp.ngp3) if (!tmp.be && player.quantum.bigRip.active) {
 		if (log > 100) log = Math.sqrt(100 * log)
 	}
 	return Decimal.pow(10, log)
