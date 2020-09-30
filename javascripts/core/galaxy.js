@@ -135,12 +135,11 @@ function getGalaxyReqMultiplier() {
 	if (player.currentChallenge == "postcngmm_1") return 60
 	let ret = 60
 	if (player.galacticSacrifice !== undefined) if (player.galacticSacrifice.upgrades.includes(22)) ret -= 30
-	else if (player.timestudy.studies.includes(42)) ret *= tsMults[42]()
 	if (inNC(4)) ret = 90
 	if (player.infinityUpgrades.includes("galCost")) ret -= 5
 	if (player.infinityUpgrades.includes("postinfi52") && player.tickspeedBoosts == undefined) ret -= 3
 	if (player.dilation.upgrades.includes("ngmm12")) ret -= 10
-	if (player.galacticSacrifice !== undefined && player.timestudy.studies.includes(42)) ret *= tsMults[42]()
+	if (player.timestudy.studies.includes(42)) ret *= tsMults[42]()
 	return ret
 }
 
