@@ -329,6 +329,7 @@ function updateGhostifyTempStuff(){
 			updateFixedLightTemp()
 		}
 		updateIndigoLightBoostTemp()
+		updateVioletLightBoostTemp()
 		updatePhotonsUnlockedBRUpgrades()
 		updateNU14Temp()
 		updateNU15Temp()
