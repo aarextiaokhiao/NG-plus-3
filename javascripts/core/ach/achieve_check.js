@@ -286,7 +286,7 @@ function ngP3AchieveCheck(){
 
 	if (player.ghostify.hb.higgs >= 1) giveAchievement("The Holy Particle")
 	if (player.ghostify.ghostlyPhotons.enpowerments >= 25) giveAchievement("Bright as the Anti-Sun")
-	if (player.quantum.quarks.log10() >= 55555) giveAchievement("Are these another...")
+	if (player.quantum.quarks.log10() >= 40000) giveAchievement("Are these another...")
 	if (player.ghostify.reference && minUQ.decays >= 2) giveAchievement("... references to EC8?")
 	if (player.ghostify.hb.bosonicSemipowerment && player.ghostify.ghostlyPhotons.lights[7] >= tmp.leReq / 2) giveAchievement("Bosonic Semipowerment")
 	if (player.ghostify.times >= Math.pow(Number.MAX_VALUE, 1/4)) giveAchievement("The Ghostliest Side")
