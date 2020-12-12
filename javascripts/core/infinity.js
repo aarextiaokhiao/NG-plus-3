@@ -1,5 +1,5 @@
 function canBreakInfinity() {
-	if (player.aarexModifications.ngexV) return player.challenges.length == getTotalNormalChallenges() + 1
+	if (player.aarexModifications.ngexV) return player.challenges.length >= getTotalNormalChallenges() + 1
 	return player.autobuyers[11] % 1 != 0 && player.autobuyers[11].interval <= 100
 }
 
@@ -12,7 +12,7 @@ function breakInfinity() {
 		player.break = true
 		document.getElementById("break").textContent = "FIX INFINITY"
 	}
-	if (player.galacticSacrifice) if (player.eternities==0&&player.infinityPoints.lt(Number.MAX_VALUE)&&!quantumed) {
+	if (player.galacticSacrifice) if (player.eternities == 0 && player.infinityPoints.lt(Number.MAX_VALUE) && !quantumed) {
 		document.getElementById("quantumBlock").style.display=player.break?"":"none"
 		document.getElementById("sacpos").className=player.break?"quantumpos":"eterpos"
 		document.getElementById("galaxyPoints2").className=player.break?"QK":"EP"
@@ -77,7 +77,7 @@ function getIPMult() {
 function toggleCrunchMode(freeze) {
 	if (player.autoCrunchMode == "amount") {
 		player.autoCrunchMode = "time"
-		document.getElementById("togglecrunchmode").textContent = "Auto crunch mode: time"
+		document.getElementById("togglecrunchmode").textContent = "Auto crunch mode: Time"
 		document.getElementById("limittext").textContent = "Seconds between crunches:"
 	} else if (player.autoCrunchMode == "time"){
 		player.autoCrunchMode = "relative"
@@ -85,7 +85,7 @@ function toggleCrunchMode(freeze) {
 		document.getElementById("limittext").textContent = "X times last crunch:"
 	} else if (player.autoCrunchMode == "relative" && player.boughtDims){
 		player.autoCrunchMode = "replicanti"
-		document.getElementById("togglecrunchmode").innerHTML = "Auto crunch mode: replicated galaxies"
+		document.getElementById("togglecrunchmode").innerHTML = "Auto crunch mode: Replicated Galaxies"
 		document.getElementById("limittext").innerHTML = "Replicanti galaxies needed for crunch:"
 		document.getElementById("maxReplicantiCrunchSwitchDiv").style.display = 'inline'
 	} else {
@@ -130,9 +130,9 @@ function updateLastTenRuns() {
 		tempTime = tempTime.dividedBy(listed)
 		tempIP = tempIP.dividedBy(listed)
 		var ippm = tempIP.dividedBy(tempTime/600)
-		var tempstring = "(" + shorten(ippm) + " IP/min"
+		var tempstring = "(" + shorten(ippm) + " IP/min)"
 		averageIP = tempIP
-		if (ippm < 1) tempstring = "(" + shorten(ippm * 60) + " IP/hour"
+		if (ippm < 1) tempstring = "(" + shorten(ippm * 60) + " IP/hour)"
 		document.getElementById("averagerun").textContent = "Average time of the last " + listed + " Infinities: " + timeDisplayShort(tempTime, false, 3) + " | Average IP gain: " + shortenDimensions(tempIP) + " IP. " + tempstring
 		
 		if (tempBest.gte(1e8)) giveAchievement("Oh hey, you're still here");
