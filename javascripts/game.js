@@ -3517,9 +3517,9 @@ function updateLastTenEternities() {
 		tempTime = tempTime.dividedBy(listed)
 		tempEP = tempEP.dividedBy(listed)
 		var eppm = tempEP.dividedBy(tempTime/600)
-		var tempstring = "(" + shorten(eppm) + " EP/min"
+		var tempstring = "(" + shorten(eppm) + " EP/min)"
 		averageEp = tempEP
-		if (eppm < 1) tempstring = "(" + shorten(eppm * 60) + " EP/hour"
+		if (eppm < 1) tempstring = "(" + shorten(eppm * 60) + " EP/hour)"
 		document.getElementById("averageEternityRun").textContent = "Average time of the last " + listed + " Eternities: " + timeDisplayShort(tempTime, false, 3) + " | Average EP gain: " + shortenDimensions(tempEP) + " EP. " + tempstring
 	} else document.getElementById("averageEternityRun").textContent = ""
 }
