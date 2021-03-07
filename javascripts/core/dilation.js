@@ -39,7 +39,7 @@ function getDilTimeGainPerSecond() {
 	var lgain = gain.log10()
 	if (!tmp.ngp3l) lgain = softcap(lgain, "dt_log")
 	gain = Decimal.pow(10, lgain)
-	gain = gain.times(Decimal.pow(2, getDilUpgPower(1))).pow(player.reality.upgrades.includes(4)?1.5:1)
+	if (player.reality) gain = gain.times(Decimal.pow(2, getDilUpgPower(1))).pow(player.reality.upgrades.includes(4)?1.5:1)
 	if (gain.gte(1e20)) gain = gain.div(1e20).pow(0.5).mul(1e20)
 	
 	return gain
