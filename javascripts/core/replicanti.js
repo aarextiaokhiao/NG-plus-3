@@ -77,7 +77,7 @@ function getRGCost(offset = 0, costChange) {
 			if (player.replicanti.gal + offset > 99) increase += (offset - Math.max(99 - player.replicanti.gal, 0)) * (25 * (offset - Math.max(99 - player.replicanti.gal, 0) + Math.max(player.replicanti.gal, 99) * 2) - 4725)
 			if (player.replicanti.gal + offset > 399) {
 				if (player.exdilation != undefined) for (var g = Math.max(player.replicanti.gal, 399); g < player.replicanti.gal + offset; g++) increase += Math.pow(g - 389, 2)
-				if (player.meta != undefined) {
+				if (player.meta != undefined || player.reality != undefined) {
 					var isReduced = false
 					if (player.masterystudies != undefined) if (player.masterystudies.includes("t266")) isReduced = true
 					if (isReduced) {
@@ -129,7 +129,7 @@ function canGetReplicatedGalaxy() {
 }
 
 function canAutoReplicatedGalaxy() {
-	return speedrunMilestonesReached >= 20 || !player.timestudy.studies.includes(131)
+	return speedrunMilestonesReached >= 20 || !player.timestudy.studies.includes(131) || player.dilation.upgrades.includes(11)
 }
 
 function getMaxRG() {

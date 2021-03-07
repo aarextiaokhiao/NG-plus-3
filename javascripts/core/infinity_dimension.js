@@ -263,6 +263,9 @@ function getInfinityPowerEffect() {
 
 function getInfinityPowerEffectExp() {
 	let x = 7
+	if (player.reality != undefined) {
+		if (player.reality.upgrades.includes(1)) x = 10
+	}
 	let galaxies = Math.max(player.galaxies, 0)
 	if (player.galacticSacrifice != undefined) {
 		x = Math.pow(galaxies, 0.7)

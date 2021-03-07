@@ -665,13 +665,6 @@ button {
     font-size: 11px;
 }
 
-
-
-.eternitybtn:hover {
-    color: #511568;
-    background: white;
-}
-
 #paradoxbtn {
 	background: radial-gradient(#7f007f, #ff00ff);
 	border: 2px solid #ff00ff;
@@ -775,6 +768,129 @@ button {
     background: white;
 }
 
+.realitytabbtn {
+    color: #FF8A33;
+    background: black;
+    border: 2px solid #FF8A33;
+    font-weight: bold;
+    border-radius: 4px;
+    transition-duration: 0.2s;
+    cursor: pointer;
+}
+
+.realitytabbtn:hover {
+    color: #FF6D00;
+    background: white;
+}
+
+.realitybtn {
+    border-radius: 4px;
+    transition-duration: 0.2s;
+    cursor: pointer;
+    position: absolute;
+    font-family: Typewriter;
+    color: #FF8A33;
+    background: black;
+    border: 2px solid #FF8A33;
+    cursor: pointer;
+    font-size: 11px;
+}
+
+.realitybtn:hover {
+    color: #FF6D00;
+    background: white;
+}
+
+#realitybtn {
+	cursor: pointer;
+	position: absolute;
+	transform: translate(-50%, 0);
+	top: 40px;
+	width: 210px;
+	height: 70px;
+}
+
+.RPAmount {
+    font-weight: bold;
+}
+
+.RK {
+	position:absolute;
+	right:50%;
+	transform:translate(150px,0);
+	width:300px;
+	font-size:12px;
+}
+
+.realityupbtn {
+    color: #FF8A33;
+    background: black;
+    font-weight: bold;
+    font-size: 10px;
+    border: 1px solid #FF8A33;
+    width: 190px;
+    height: 90px;
+    transition-duration: 0.2s;
+    cursor: pointer;
+    border-radius: 4px;
+    font-family: Typewriter;
+}
+
+.realityupbtn:hover {
+    color: #FF6D00;
+    background: white;
+}
+
+.realityupbtnlocked {
+    color: #181818;
+    background: #5F5F5F;
+    font-weight: bold;
+    font-size: 10px;
+    border: 1px solid #FF8A33;
+    width: 190px;
+    height: 90px;
+    transition-duration: 0.2s;
+    border-radius: 4px;
+    font-family: Typewriter;
+    cursor: pointer;
+}
+
+.realityupbtnlocked:hover {
+    background: #737373;
+}
+
+.realityupbtnbought {
+    color: #FF6D00;
+    background: #5AC467;
+    font-weight: bold;
+    font-size: 10px;
+    border: 1px solid #FF8A33;
+    width: 190px;
+    height: 90px;
+    transition-duration: 0.2s;
+    border-radius: 4px;
+    font-family: Typewriter;
+}
+
+.gainrpmilestone {
+    color: #181818;
+    background: #5F5F5F;
+    font-weight: bold;
+    font-size: 12px;
+    border: 1px solid #FF8A33;
+    width: 250px;
+    height: 175px;
+    transition-duration: 0.2s;
+    border-radius: 4px;
+    font-family: Typewriter;
+    text-align: center;
+}
+
+.gainrpmilestone.unlocked {
+    background: #FF8A33;
+    border: 1px solid black;
+}
+
 .quantumbtn {
     color: #32c832;
     background: #0a640a;
@@ -820,7 +936,8 @@ button {
 .achievement {
 	font-size: 10px !important;
 	color: #ffffff !important;
-	text-shadow: 0px 0px 1px #000000, 0px 0px 1px #000000, 0px 0px 1px #000000
+	text-shadow: 0px 0px 1px #000000, 0px 0px 1px #000000, 0px 0px 1px #000000;
+    background-size: contain;
 }
 
 .achievementhidden {

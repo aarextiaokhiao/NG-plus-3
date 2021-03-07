@@ -657,6 +657,7 @@ function updateDimensionsDisplay() {
 	if (document.getElementById("stats").style.display == "block" && document.getElementById("statistics").style.display == "block") STATSDisplay()
    	if (document.getElementById("infinity").style.display == "block") INFINITYUPGRADESDisplay()
 	if (document.getElementById("eternitystore").style.display == "block") ETERNITYSTOREDisplay()
+	if (document.getElementById("reality").style.display == "block") REALITYDisplay()
    	if (document.getElementById("quantumtab").style.display == "block") updateQuantumTabs()
    	if (document.getElementById("ghostify").style.display == "block") updateGhostifyTabs()
 }

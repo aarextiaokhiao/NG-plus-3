@@ -87,6 +87,8 @@ function getTimeDimensionPower(tier) {
 	if (player.galacticSacrifice === undefined) ret = ret.times(ret2)
 	ret = ret.times(calcVanillaTSTDMult(tier))
 
+	if (player.reality) ret = ret.times(REALITY.exp.effect())
+
 	if (ECTimesCompleted("eterc10") !== 0) ret = ret.times(getECReward(10))
 	if (player.achievements.includes("r128")) ret = ret.times(Math.max(player.timestudy.studies.length, 1))
 	if (player.galacticSacrifice !== undefined && player.galacticSacrifice.upgrades.includes(43)) ret = ret.times(galMults.u43())

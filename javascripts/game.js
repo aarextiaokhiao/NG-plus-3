@@ -404,7 +404,8 @@ function updateNewPlayer(reseted) {
 			ngmu: player.aarexModifications.newGameMult === 1,
 			ngumu: player.aarexModifications.ngumuV !== undefined,
 			ngex: player.aarexModifications.ngexV !== undefined,
-			aau: player.aarexModifications.aau !== undefined
+			aau: player.aarexModifications.aau !== undefined,
+			ngr: player.aarexModifications.ngr !== undefined,
 		}
 	} 
 	else var modesChosen = modes
@@ -721,7 +722,35 @@ function updateNewPlayer(reseted) {
 		player.aarexModifications.aau = 1
 		dev.giveAllAchievements(true)
 	}
+	if (modesChosen.ngr) doNGRealityNewPlayer()
 	player.infDimensionsUnlocked = resetInfDimUnlocked()
+}
+
+function doNGRealityNewPlayer() {
+	player.aarexModifications.ngrV = 0.1
+	player.aarexModifications.tabsSave.tabReality = 'realityupgrades'
+	player.autoEterOptions = {
+		epmult: false,
+	}
+	player.galaxyMaxBulk = false
+	player.reality = getRealityData()
+}
+
+function getRealityData() {
+	return {
+		points: new Decimal(0),
+		shards: new Decimal(0),
+		bestPoints: new Decimal(0),
+		bestPointsGained: new Decimal(0),
+		times: 0,
+		time: 0,
+		bestTime: 9999999999,
+		upgrades: [],
+		exp: {
+			amount: new Decimal(1),
+			buys: {},
+		},
+	}
 }
 
 function doNGMinusNewPlayer(){
@@ -2322,7 +2351,8 @@ var modFullNames = {
 	ngumu: "NGUd*'",
 	ngex: "Expert Mode",
 	aau: "AAU",
-	ngprw: "NG+ Reworked"
+	ngprw: "NG+ Reworked",
+	ngr: "NG+ Reality"
 }
 var modSubNames = {
 	ngp: ["OFF", "ON", "NG++++"],
@@ -2331,10 +2361,12 @@ var modSubNames = {
 	ngmm: ["OFF", "ON", "NG---", "NG-4", "NG-5"],
 	rs: ["NONE", "Eternity", "Infinity"],
 	ngud: ["OFF", "ON", "Prime (')", "Semiprime (S')"/*, "Semiprime.1 (S'.1)"*/],
-	nguep: ["Linear' (↑⁰')", "Exponential' (↑')"/*, "Tetrational' (↑↑')"*/]/*,
+	nguep: ["Linear' (↑⁰')", "Exponential' (↑')"/*, "Tetrational' (↑↑')"*/],
+	ngr: ["OFF", "ON"]/*,
 	ngmu: ["OFF", "ON", "NG**", "NG***"],
 	ngumu: ["OFF", "ON", "NGUd**'", "NGUd***'"],
-	ngex: ["OFF", "ON", "DEATH MODE 💀"]*/ // modes that aren't even made yet
+	ngex: ["OFF", "ON", "DEATH MODE 💀"]*/ // modes that aren't even made yet,
+	
 }
 function toggle_mod(id) {
 	hasSubMod = Object.keys(modSubNames).includes(id)
@@ -2346,6 +2378,8 @@ function toggle_mod(id) {
 	else if (id == "arrows" && subMode == 2 && modes.rs) subMode = 0
 	modes[id] = subMode
 	// Update displays
+	let txt_r = ['rs', 'arrows', 'ngpp', 'ngmm', 'ngm', 'ngud', 'ngmu', 'ngumu', 'ngex', 'ngprw']
+
 	document.getElementById(id+"Btn").textContent=`${modFullNames[id]}: ${hasSubMod?modSubNames[id][subMode] : subMode ? "ON" : "OFF"}`
 	if (id=="ngex"&&subMode) {
 		modes.ngp=0
@@ -2397,6 +2431,19 @@ function toggle_mod(id) {
 	if ((id=="ngumu"||id=="nguep")&&!(modes.ngud>1)&&subMode) {
 		modes.ngud=1
 		toggle_mod("ngud")
+	}
+	if (id=='ngr') {
+		modes.ngr = 1
+
+		for (let i = 0; i < txt_r.length; i++) {
+			modes[txt_r[i]] = 0
+			if (modSubNames[txt_r[i]] != undefined) document.getElementById(txt_r[i]+"Btn").textContent = modFullNames[txt_r[i]]+": "+modSubNames[txt_r[i]][0]
+			else document.getElementById(txt_r[i]+"Btn").textContent = modFullNames[txt_r[i]]+": OFF"
+		}
+	}
+	for (let i = 0; i < txt_r.length; i++) if (id==txt_r[i]) {
+		modes.ngr = 0
+		document.getElementById("ngrBtn").textContent = "NG+ Reality: OFF"
 	}
 
 	var ngp3ex = modes.ngex&& modes.ngpp
@@ -2570,6 +2617,9 @@ function reset_game() {
 
 function gainedEternityPoints() {
 	var ret = Decimal.pow(5, player.infinityPoints.plus(gainedInfinityPoints()).e / (player.achievements.includes("ng3p23") ? 307.8 : 308) - 0.7).times(player.epmult)
+	if (player.reality) {
+		if (player.reality.upgrades.includes(2)) ret = ret.times(REALITY.upgs[2].effect())
+	}
 	if (player.aarexModifications.newGameExpVersion) ret = ret.times(10)
 	if (player.timestudy.studies.includes(61)) ret = ret.times(tsMults[61]())
 	if (player.timestudy.studies.includes(121)) ret = ret.times(((253 - averageEp.dividedBy(player.epmult).dividedBy(10).min(248).max(3))/5)) //x300 if tryhard, ~x60 if not
@@ -3894,7 +3944,7 @@ function eternity(force, auto, presetLoad, dilated) {
 			}
 		}
 	}
-	if (player.respec || player.respecMastery || forceRespec) respecTimeStudies(forceRespec, presetLoad)
+	if (player.respec || player.respecMastery || forceRespec) respecTimeStudies(player.achievements.includes('ngr11')?player.respec:forceRespec, presetLoad)
 	if (typeof(presetLoad) == "string") importStudyTree(presetLoad)
 	if (player.respec) respecToggle()
 	if (player.respecMastery) respecMasteryToggle()
@@ -3930,6 +3980,7 @@ function eternity(force, auto, presetLoad, dilated) {
 	updateEterChallengeTimes()
 	updateLastTenRuns()
 	updateLastTenEternities()
+	updateReality()
 	if (!player.achievements.includes("r133")) {
 		var infchalls = Array.from(document.getElementsByClassName('infchallengediv'))
 		for (var i = 0; i < 8; i++) infchalls[i].style.display = "none"
@@ -4516,13 +4567,13 @@ function failedEC12Check(){
 }
 
 function updateNGpp17Reward(){
-	document.getElementById('epmultauto').style.display=player.achievements.includes("ngpp17")?"":"none"
+	document.getElementById('epmultauto').style.display=(player.achievements.includes("ngpp17") || player.achievements.includes("ngr11"))?"":"none"
 	for (i=1;i<9;i++) document.getElementById("td"+i+'auto').style.visibility=player.achievements.includes("ngpp17")?"visible":"hidden"
 	document.getElementById('togglealltimedims').style.visibility=player.achievements.includes("ngpp17")?"visible":"hidden"
 }
 
 function updateNGpp16Reward(){
-	document.getElementById('replicantibulkmodetoggle').style.display=player.achievements.includes("ngpp16")?"inline-block":"none"
+	document.getElementById('replicantibulkmodetoggle').style.display=(player.achievements.includes("ngpp16") || player.achievements.includes('ngr11'))?"inline-block":"none"
 }
 
 function notifyQuantumMilestones(){
@@ -4918,6 +4969,7 @@ function incrementTimesUpdating(diffStat){
 	if (player.currentEternityChall == "eterc12") diffStat /= 1e3
 	player.thisEternity += diffStat
    	player.thisInfinityTime += diffStat
+	if (player.reality) player.reality.time += diffStat
 	if (player.galacticSacrifice) player.galacticSacrifice.time += diffStat
 	if (player.pSac) player.pSac.time += diffStat
 	failsafeDilateTime = false
@@ -5803,7 +5855,7 @@ function ngp3DilationUpdating(){
 function setTachyonParticles(x) {
 	player.dilation.tachyonParticles = new Decimal(x)
 	if (!player.dilation.active) player.dilation.totalTachyonParticles = player.dilation.tachyonParticles
-	tmp.qu.notrelative = false
+	if (tmp.qu) tmp.qu.notrelative = false
 	if (player.achievements.includes("ng3p18") || player.achievements.includes("ng3p37")) {
 		player.dilation.bestTP = Decimal.max(player.dilation.bestTP || 0, player.dilation.tachyonParticles)
 		player.dilation.bestTPOverGhostifies = player.dilation.bestTPOverGhostifies.max(player.dilation.bestTP)
@@ -5888,6 +5940,7 @@ function gameLoop(diff) {
 	giveBlackHolePowerUpdating(diff)
 	freeTickspeedUpdating()
 	IPonCrunchPassiveGain(diff)
+	ExponentialPassiveGain(diff)
 	EPonEternityPassiveGain(diff)
 	TTpassiveGain(diff)
 
@@ -6388,6 +6441,22 @@ function showEternityTab(tabName, init) {
 		if (tabName === "autoEternity" && document.getElementById("eternitystore").style.display === "block") loadAP()
 	}
 	closeToolTip()
+}
+
+function showRealityTab(tabName, init) {
+	var tabs = document.getElementsByClassName('realitytab');
+	var tab;
+	var oldTab
+	for (var i = 0; i < tabs.length; i++) {
+		tab = tabs.item(i);
+		if (tab.style.display == 'block') oldTab = tab.id
+		if (tab.id === tabName) {
+			tab.style.display = 'block';
+		} else {
+			tab.style.display = 'none';
+		}
+	}
+	player.aarexModifications.tabsSave.tabReality = tabName
 }
 
 function showAchTab(tabName) {

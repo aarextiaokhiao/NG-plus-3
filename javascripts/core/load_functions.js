@@ -2148,6 +2148,7 @@ function updateNGModeMessage(){
         if (player.aarexModifications.aau) ngModeMessages.push("You have applied the AAU 'mod', made by Apeirogon. This will unbalance many areas of the game, as you get all achievements available in your save. It is not recommended to choose this 'mod' for this reason, unless you want fast gameplay.")
         if (inflationCheck) ngModeMessages = ["I'm terribly sorry, but it seems there has been an inflation problem in your save, which is why this save file has been reset."]
         if (infiniteCheck) ngModeMessages = ["I'm terribly sorry, but there has been an Infinite bug detected within your save file, which is why said save file will get reset. Luckily, you can export your save before this reset. Thanks! :)"]
+        if (player.aarexModifications.ngrV) ngModeMessages = ["Welcome to NG+ Reality, created by MrRedShark77."]
         if (forceToQuantumAndRemove) {
                 quantum(false, true, 0)
                 ngModeMessages = ["Due to balancing changes, you are forced to quantum and reset your TT and your best TP, but you are given  " + shorten(setTTAfterQuantum) + " TT as compensation."]
@@ -2162,6 +2163,7 @@ function onLoad(noOffline) {
 	tmp.qu = player.quantum
 	ghostifyDenied = 0
 	setEverythingPreNGp3onLoad()
+        setRealityIfUndefined()
         setAarexModIfUndefined()
 	doNGp3Init1()
         setSaveStuffHTML()
@@ -2228,6 +2230,8 @@ function onLoad(noOffline) {
         updateLastTenGhostifies()
         onNotationChangeNeutrinos()
         setAchieveTooltip()
+        updateReality()
+        showRealityTab('realityupgrades')
         if (player.boughtDims) {
                 if (document.getElementById("timestudies").style.display=="block") showEternityTab("ers_timestudies",true)
                 updateGalaxyControl()
@@ -2927,6 +2931,7 @@ function transformSaveToDecimal() {
         conToDeciLateEter()
         conToDeciMS()
         conToDeciGhostify()
+        conToDeciReality()
 }
 
 

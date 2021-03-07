@@ -39,8 +39,10 @@ function getDilTimeGainPerSecond() {
 	var lgain = gain.log10()
 	if (!tmp.ngp3l) lgain = softcap(lgain, "dt_log")
 	gain = Decimal.pow(10, lgain)
+	gain = gain.times(Decimal.pow(2, getDilUpgPower(1))).pow(player.reality.upgrades.includes(4)?1.5:1)
+	if (gain.gte(1e20)) gain = gain.div(1e20).pow(0.5).mul(1e20)
 	
-	return gain.times(Decimal.pow(2, getDilUpgPower(1)))	
+	return gain
 }
 
 function getDTGainExp(){
@@ -193,7 +195,7 @@ function dilationPowerStrength() {
  */
 
 const DIL_UPGS = []
-const DIL_UPG_SIZES = [5, 7]
+const DIL_UPG_SIZES = [5, 8]
 const DIL_UPG_COSTS = {
 	r1: [1e5, 10, 1/0],
 	r2: [1e6, 100, 1/0],
@@ -208,6 +210,7 @@ const DIL_UPG_COSTS = {
 	  8: 1e10,
 	  9: 1e11,
 	  10: 1e15,
+	  11: 1e16,
 	  ngud1: 1e20,
 	  ngud2: 1e25,
 	  ngpp1: 1e20,
@@ -265,7 +268,8 @@ const DIL_UPG_POS_IDS = {
 	51: "ngpp3", 52: "ngpp4", 53: "ngpp5",  55: "ngmm7",  54: "ngpp6",
 	71: "ngmm8", 72: "ngmm9", 73: "ngmm10", 74: "ngmm11", 75: "ngmm12",
 	41: 10,      42: "ngmm3", 43: "ngmm4",  44: "ngmm5",  45: "ngmm6",
-	61: "ngud1", 62: "ngud2", 63: "ngusp1", 64: "ngusp2", 65: "ngusp3"
+	61: "ngud1", 62: "ngud2", 63: "ngusp1", 64: "ngusp2", 65: "ngusp3",
+	81: 11,
 }
 
 const DIL_UPG_ID_POS = {}
@@ -319,6 +323,9 @@ function isDilUpgUnlocked(id) {
 		if (id != "ngusp1") r = r && player.dilation.studies.includes(6)
 		return r
 	}
+	if (player.reality) {
+		if (id = '81') return true
+	} else return false
 	return true
 }
 
@@ -453,6 +460,9 @@ function updateDilationUpgradeButtons() {
 			document.getElementById("dil71desc").textContent = "Currently: ^" + shortenMoney(getDil71Mult())
 			document.getElementById("dil72desc").textContent = "Currently: " + shortenMoney(getDil72Mult()) + "x"
 		}
+	}
+	if (player.reality != undefined) {
+		
 	}
 }
 

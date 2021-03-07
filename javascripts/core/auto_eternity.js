@@ -65,6 +65,7 @@ function toggleAutoEter(id) {
 }
 
 function doAutoEterTick() {
+	if (player.reality) if (player.autoEterOptions.epmult && player.achievements.includes("ngr11")) buyMaxEPMult()
 	if (!player.meta) return
 	if (player.achievements.includes("ngpp17")) {
 		if (player.masterystudies == undefined || tmp.be || !tmp.qu.bigRip.active) for (var d = 1; d < 9; d++) if (player.autoEterOptions["td" + d]) buyMaxTimeDimension(d)

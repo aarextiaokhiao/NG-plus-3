@@ -228,7 +228,15 @@ const allAchievements = {
   ng3ps25 : "This is NOT a clicker game!",
   ng3ps26 : "Deny the afterlife",
   ng3ps27 : "Revolution, when?",
-  ng3ps28 : "Prestige No-lifer"
+  ng3ps28 : "Prestige No-lifer",
+  ngr11: 'Time is realistic',
+  ngr12: 'I not really buy time, because i had bad day',
+  ngr13: 'Finally pass first row',
+  ngr14: 'Placeholder',
+  ngr15: 'Placeholder',
+  ngr16: 'Placeholder',
+  ngr17: 'Placeholder',
+  ngr18: 'Placeholder',
 };
 const secretAchievementTooltips = {
 	s11 : "Click on this achievement.",
@@ -386,11 +394,16 @@ function updateAchievements() {
 	var amount = 0
 	var rowsShown = 0
 	var rowsNum = 0
-	for (var i = 1; i < 25; i++) {
+	for (var i = 1; i < 26; i++) {
 		var shown=true
 		var rowid = i
 		var rownum = i
-		if (i > 15) {
+        if (i > 24) {
+            shown = player.reality != undefined
+            rownum = i - 24
+            rowid = "ngr" + rownum
+        }
+		else if (i > 15) {
 			shown =! (!player.masterystudies)
 			rownum = i - 15
 			if (rownum > 8) shown = shown && !tmp.ngp3l
@@ -417,7 +430,8 @@ function updateAchievements() {
 					else if (realAchNum == 41) realAchNum = 76
 				}
 				var achId = "r" + achNum
-				if (achNum > 160) achId="ng3p" + (achNum - 150)
+                if (achNum > 250) achId="ngr" + (achNum - 240)
+				else if (achNum > 160) achId="ng3p" + (achNum - 150)
 				else if (achNum > 150) achId = "ngpp" + (achNum - 140)
 				else if (achNum == 145) achId = "ngpp13"
 				else if (achNum == 147) achId = "ngpp18"

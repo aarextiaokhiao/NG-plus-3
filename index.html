@@ -46,6 +46,13 @@
 			<div class="EP" id="galaxyPoints2">You have <span class='GPAmount'>0</span> Galaxy points.</div>
 			<span id="sacpos" class="eterpos"><button id="sacrificebtn" class="storebtn" onclick="galacticSacrifice()"></button></span>
 		</div>
+		<div style="position: relative" id="realityBlock2">
+			<div class="RK" id="realityPoints1">You have <span class='RPAmount'>0</span> Reality points and<br><span class='RPAmount'>0</span> Reality shards.</div>
+			<button id="realitybtn" class="realitybtn" onclick="reality()">
+				<div style="font-weight:bold" id="realirtbtnFlavor"></div>
+				<div id="realitybtnRPGain"></div>
+			</button>
+		</div>
 		<div style="position: relative">
 			<div class="QK">
 				<div id="quarks"></div>
@@ -72,6 +79,7 @@
 			</button>
 		</div>
 		<div id='quantumBlock' style='height:120px'></div>
+		<div id='realityBlock' style='height:120px'></div>
 		<div id="matter"></div>
 		<div id="chall13Mult"></div>
 		<div id="c14Resets"></div>
@@ -103,7 +111,8 @@
 			<button id="galaxybtn" style="font-family: Typewriter; font-size: 20px; display: none" onclick='showTab("galaxy")'>Galaxy</button>
 			<button id="infinitybtn" style="font-family: Typewriter; font-size: 20px; display: none" class="infinitybtn" onclick="showTab('infinity')">Infinity</button>
 			<button id="eternitystorebtn" style="font-family: Typewriter; font-size: 20px; display: none" class="eternitytabbtn" onclick="showTab('eternitystore')">Eternity</button>
-			<button id="quantumtabbtn" style="font-family: Typewriter; font-size: 20px; display: none" class="quantumbtn" onclick='showTab("quantumtab")'>Quantum</button>
+			<button id="realitystorebtn" style="font-family: Typewriter; font-size: 20px; display: none;" class="realitytabbtn" onclick="showTab('reality')">Reality</button>
+			<button id="quantumtabbtn" style="font-family: Typewriter; font-size: 20px; display: none;" class="quantumbtn" onclick='showTab("quantumtab")'>Quantum</button>
 			<button id="ghostifytabbtn" style="font-family: Typewriter; font-size: 20px" class="ghostifybtn" onclick='showTab("ghostify")'>Ghostify</button>
 		</div>
 		<div id="emptiness" class="tab" style="font-size: 150%">
@@ -972,6 +981,13 @@
 						</td>
 						<td>
 							<button id="dil65" onclick="buyDilationUpgrade(65)" style='font-size:10px'>You gain more dilated time based on your meta-antimatter.<br><span id="dil65desc"></span><br><span id="dil65cost"></span></button>
+						</td>
+					</tr>
+				</table>
+				<table>
+					<tr>
+						<td>
+							<button id="dil81" onclick="buyDilationUpgrade(81)">Unlock the ability to pick all the study paths from the second split.<br><span id="dil81cost"></span></button>
 						</td>
 					</tr>
 				</table>
@@ -2704,6 +2720,32 @@
 							</td>
 							<td>
 								<div id="Meta-Quintillion" class="achievement achievementlocked" style="background-image: url(images/182.png)"></div>
+							</td>
+						</tr>
+						<tr id="achRowngr1">
+							<td>
+								<div id="Time is realistic" class="achievement achievementlocked" style="background-image: url(images/183.png)" ach-tooltip="Go Real. Reward: Start Realities with 20000 eternities, keep Time Studies on EC completion, unlock RG max button and unlock auto EP mult."><br></div>
+							</td>
+							<td>
+								<div id="I not really buy time, because i had bad day" class="achievement achievementlocked" style="background-image: url(images/184.png)" ach-tooltip="Reality without buying 5-8th Time Dimensions. Reward: Start Realities with all Time Dimensions unlocked."><br></div>
+							</td>
+							<td>
+								<div id="Finally pass first row" class="achievement achievementlocked" style="background-image: url(images/185.png)" ach-tooltip="Purchase all Reality upgrades in first row."><br></div>
+							</td>
+							<td>
+								<div id="Placeholder" class="achievement achievementlocked" style="background-image: url(images/186.png)" ach-tooltip="Placeholder."><br></div>
+							</td>
+							<td>
+								<div id="Placeholder" class="achievement achievementlocked" style="background-image: url(images/187.png)" ach-tooltip="Placeholder."><br></div>
+							</td>
+							<td>
+								<div id="Placeholder" class="achievement achievementlocked" style="background-image: url(images/188.png)" ach-tooltip="Placeholder."><br></div>
+							</td>
+							<td>
+								<div id="Placeholder" class="achievement achievementlocked" style="background-image: url(images/189.png)" ach-tooltip="Placeholder."><br></div>
+							</td>
+							<td>
+								<div id="Placeholder" class="achievement achievementlocked" style="background-image: url(images/190.png)" ach-tooltip="Placeholder."><br></div>
 							</td>
 						</tr>
 				</table>
@@ -4656,6 +4698,58 @@
 				</div>
 		</div>
 		</div>
+		<div id="reality" class="tab" align="center" style="display: none">
+			<table class="table" align="center" style="margin: auto">
+				<tr>
+					<td><button class="secondarytabbtn" onclick="showRealityTab('realityupgrades')">Reality upgrades</button></td>
+					<td><button class="secondarytabbtn" onclick="showRealityTab('gainrpmilestones')">Gain RP milestones</button></td>
+					<td><button class="secondarytabbtn" id="rexp" onclick="showRealityTab('exponential')">Exponential</button></td>
+				</tr>
+			</table><br>
+			<div class="realitytab" id="realityupgrades" style="font-size: 15px">
+				<table class="table" style="margin: 0 auto">
+					<tr>
+						<td>
+							<button id="real1" class="realityupbtn" onclick="buyRealityUpgrade(1)"></button>
+						</td>
+						<td>
+							<button id="real2" class="realityupbtn" onclick="buyRealityUpgrade(2)"></button>
+						</td>
+						<td>
+							<button id="real3" class="realityupbtn" onclick="buyRealityUpgrade(3)"></button>
+						</td>
+						<td>
+							<button id="real4" class="realityupbtn" onclick="buyRealityUpgrade(4)"></button>
+						</td>
+					</tr>
+				</table>
+			</div><div class="realitytab" id="gainrpmilestones" style="font-size: 15px">
+				<table>
+					<tr>
+						<td>
+							<div class="gainrpmilestone" id="gainrp1">
+								<div style="font-size: 15px">1e60000 EP before Realities<br><br></div>
+								Keep EC completions on Reality.
+							</div>
+						</td>
+						<td>
+							<div class="gainrpmilestone" id="gainrp2">
+								<div style="font-size: 15px">1e80000 EP before Realities<br><br></div>
+								Start with Time Dilation unlocked and 1000 TP. Unlock 2nd row Reality upgrades <i>(not presented)</i>.
+							</div>
+						</td>
+					</tr>
+				</table>
+			</div><div class="realitytab" id="exponential" style="font-size: 15px">
+				You have <span id="expamount" style="font-size: 23px; color: black;">x</span> exponential, which multiples Time Dimensions by <span id="expeffect" style="font-size: 23px; color: black;">x</span><br>
+				(x<span id="expgain" style="font-size: 23px; color: black;">x</span>/s)<br><br>
+				<div>
+					<button class="storebtn" id="expmult" onclick="upgradeMultipler()" style="width:180px; height: 50px; font-size: 10px">Multiplier: x1<br>-> x2 Costs: 69420 RP</button>
+					<button class="storebtn" id="exppen" onclick="upgradePenalty()" style="width:180px; height: 50px; font-size: 10px">Penalty: ^1<br>-> ^0.95 Costs: 69420 RP</button>
+				</div>
+				
+			</div>
+		</div>
 		<div class='tab' id='quantumtab'>
 			<table class="table" align="center" style="margin: auto">
 				<tr>
@@ -5534,6 +5628,7 @@
 			<button class="storebtn longbtn" id='rsBtn' style="font-size: 15px" onclick="toggle_mod('rs')" style="display: inline">Respecced: NONE</button>
 			<button class="storebtn longbtn" id='ngexBtn' style="font-size: 15px" onclick="toggle_mod('ngex')" style="display: inline">Expert Mode: OFF</button>
 			<button class="storebtn longbtn" id='ngprwBtn' style="font-size: 15px" onclick="toggle_mod('ngprw')" style="display: inline">NG+ Reworked: OFF</button>
+			<button class="storebtn longbtn" id='ngrBtn' style="font-size: 15px" onclick="toggle_mod('ngr')" style="display: inline">NG+ Reality: OFF</button>
 			<br>
 			Reset Mode #<input id='ngpLayer' type="number" onchange="changeNGPLayer()" min=0 value=0>
 		</div>
@@ -5729,6 +5824,7 @@
 <script type="text/javascript" src="javascripts/mods/ngm5.js"></script>
 <script type="text/javascript" src="javascripts/mods/ngusp.js"></script>
 <script type="text/javascript" src="javascripts/mods/ngprw.js"></script>
+<script type="text/javascript" src="javascripts/mods/reality.js"></script>
 <script type="text/javascript" src="javascripts/convert.js"></script>
 <script type="text/javascript" src="javascripts/display.js"></script>
 <script type="text/javascript" src="javascripts/temp.js"></script>
