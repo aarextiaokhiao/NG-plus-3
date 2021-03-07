@@ -399,6 +399,11 @@ function respecTimeStudies(force, presetLoad) {
 			
 		}
 	}
+	if (player.eternityChallUnlocked > 0) {
+		var ECCosts = [0, 30, 35, 40, 70, 130, 85, 115, 115, 415, 550, 1, 1]
+		player.timestudy.theorem += ECCosts[player.eternityChallUnlocked]
+		player.eternityChallUnlocked = 0
+	}
 
 	if (respecMastery) {
 		var respecedMS = []
