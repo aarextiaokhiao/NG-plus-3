@@ -312,7 +312,7 @@ const REALITY = {
         },
     },
     milestones_req: {
-        can(x) { return player.reality.bestPointsGained.gte(REALITY.milestones_req[x]) },
+        can(x) { return player.reality ? player.reality.bestPointsGained.gte(REALITY.milestones_req[x]) : false },
         1: new Decimal('1e60000'),
         2: new Decimal('1e80000'),
         3: new Decimal('1e100000'),
