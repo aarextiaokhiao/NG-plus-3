@@ -39,7 +39,11 @@ function getDilTimeGainPerSecond() {
 	var lgain = gain.log10()
 	if (!tmp.ngp3l) lgain = softcap(lgain, "dt_log")
 	gain = Decimal.pow(10, lgain)
-	if (player.reality) gain = gain.times(Decimal.pow(2, getDilUpgPower(1))).pow(player.reality.upgrades.includes(4)?1.5:1)
+	if (player.reality) {
+		if (player.dilation.upgrades.includes(12)) gain = gain.times(REALITY.dilations_eff[82]())
+
+		gain = gain.times(Decimal.pow(2, getDilUpgPower(1))).pow(player.reality.upgrades.includes(4)?1.5:1)
+	}
 	if (gain.gte(1e20)) gain = gain.div(1e20).pow(0.5).mul(1e20)
 	
 	return gain
@@ -211,6 +215,7 @@ const DIL_UPG_COSTS = {
 	  9: 1e11,
 	  10: 1e15,
 	  11: 1e16,
+	  12: 1e26,
 	  ngud1: 1e20,
 	  ngud2: 1e25,
 	  ngpp1: 1e20,
@@ -269,7 +274,7 @@ const DIL_UPG_POS_IDS = {
 	71: "ngmm8", 72: "ngmm9", 73: "ngmm10", 74: "ngmm11", 75: "ngmm12",
 	41: 10,      42: "ngmm3", 43: "ngmm4",  44: "ngmm5",  45: "ngmm6",
 	61: "ngud1", 62: "ngud2", 63: "ngusp1", 64: "ngusp2", 65: "ngusp3",
-	81: 11,
+	81: 11, 82: 12,
 }
 
 const DIL_UPG_ID_POS = {}
@@ -325,6 +330,7 @@ function isDilUpgUnlocked(id) {
 	}
 	if (player.reality) {
 		if (id = '81') return true
+		if (id = '82') return REALITY.milestones_req.can(2)
 	} else return false
 	return true
 }
@@ -462,7 +468,7 @@ function updateDilationUpgradeButtons() {
 		}
 	}
 	if (player.reality != undefined) {
-		
+		document.getElementById("dil82desc").textContent = "Currently: " + shortenMoney(REALITY.dilations_eff[82]()) + "x"
 	}
 }
 

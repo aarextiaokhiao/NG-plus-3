@@ -734,6 +734,7 @@ function doNGRealityNewPlayer() {
 	}
 	player.galaxyMaxBulk = false
 	player.reality = getRealityData()
+	for (let x = 1; x < 9; x++) player.autoEterOptions['td'+x] = false
 }
 
 function getRealityData() {
@@ -750,6 +751,7 @@ function getRealityData() {
 			amount: new Decimal(1),
 			buys: {},
 		},
+		conf: false,
 	}
 }
 
@@ -2633,6 +2635,9 @@ function gainedEternityPoints() {
 		}
 		if (tmp.be) ret = ret.times(getBreakUpgMult(7))
 	}
+	if (player.reality) {
+		if (player.achievements.includes('ngr14')) ret = ret.pow(1.01)
+	}
 	return ret.floor()
 }
 
@@ -3597,7 +3602,7 @@ function getLimit() {
 
 function doCrunchReplicantiAutobuy(){
 	if (getEternitied() >= 40 && player.replicanti.auto[0] && player.currentEternityChall !== "eterc8" && isChanceAffordable()) {
-		var bought = Math.min(Math.max(Math.floor(player.infinityPoints.div(player.replicanti.chanceCost).log(1e15) + 1), 0), tmp.ngp3&&player.masterystudies.includes("t265")?1/0:100-Math.round(player.replicanti.chance*100))
+		var bought = Math.min(Math.max(Math.floor(player.infinityPoints.div(player.replicanti.chanceCost).log(1e15) + 1), 0), ((tmp.ngp3&&player.masterystudies.includes("t265")) || (player.reality && player.reality.upgrades.includes(5)))?1/0:100-Math.round(player.replicanti.chance*100))
 		player.replicanti.chance = Math.round(player.replicanti.chance*100+bought)/100
 		player.replicanti.chanceCost = player.replicanti.chanceCost.times(Decimal.pow(1e15, bought))
 	}
@@ -3836,6 +3841,7 @@ function eternity(force, auto, presetLoad, dilated) {
 	if (gainedEternityPoints().gte(player.eternityPoints) && player.eternityPoints.gte("1e1185") && (tmp.ngp3 ? player.dilation.active && player.quantum.bigRip.active : false)) giveAchievement("Gonna go fast")
 	var oldEP = player.eternityPoints
 	player.eternityPoints = player.eternityPoints.plus(gainedEternityPoints())
+	if (player.eternityPoints.gte('9.99e99999')) giveAchievement("This achievement doesn't exist 3")
 	var array = [player.thisEternity, gainedEternityPoints()]
 	if (player.dilation.active) array = [player.thisEternity, getDilGain().sub(player.dilation.totalTachyonParticles).max(0), "d2"]
 	else if (player.currentEternityChall != "") array.push(player.eternityChallUnlocked)
@@ -4068,6 +4074,7 @@ function gainBankedInf() {
 	let numerator = player.infinitied
 	if (speedrunMilestonesReached > 27 || player.achievements.includes("ng3p73")) numerator = nA(getInfinitiedGain(), player.infinitied)
 	let frac = 0.05
+	if (player.reality) if (REALITY.milestones_req.can(5)) numerator = nA(getInfinitiedGain(), player.infinitied)
 	if (player.timestudy.studies.includes(191)) ret = nM(numerator, frac)
 	if (player.achievements.includes("r131")) ret = nA(nM(numerator, frac), ret)
 	if (player.exdilation != undefined) ret = nM(ret, getBlackholePowerEffect().pow(1/3))
@@ -4545,9 +4552,9 @@ function TPAnimationBtn(){
 function replicantiShopABRun(){
 	if (getEternitied() >= 40 && player.replicanti.auto[0] && player.currentEternityChall !== "eterc8" && isChanceAffordable()) {
 		var chance = Math.round(player.replicanti.chance * 100)
-		var maxCost = (tmp.ngp3 ? player.masterystudies.includes("t265") : false) ? 1 / 0 : new Decimal("1e1620").div(player.aarexModifications.ngmX == 2 ? 1e60 : 1);
+		var maxCost = ((tmp.ngp3 ? player.masterystudies.includes("t265") : false) || (player.reality ? player.reality.upgrades.includes(5) : false)) ? 1 / 0 : new Decimal("1e1620").div(player.aarexModifications.ngmX == 2 ? 1e60 : 1);
 		var bought = Math.max(Math.floor(player.infinityPoints.min(maxCost).div(player.replicanti.chanceCost).log(1e15) + 1), 0)
-		if (!tmp.ngp3 || !player.masterystudies.includes("t265")) bought = Math.min(bought, 100 - chance)
+		if ((!tmp.ngp3 || !player.masterystudies.includes("t265")) && (!player.reality || !player.reality.upgrades.includes(5))) bought = Math.min(bought, 100 - chance)
 		player.replicanti.chance = (chance + bought) / 100
 		player.replicanti.chanceCost = player.replicanti.chanceCost.times(Decimal.pow(1e15, bought))
 	}
@@ -4568,8 +4575,8 @@ function failedEC12Check(){
 
 function updateNGpp17Reward(){
 	document.getElementById('epmultauto').style.display=(player.achievements.includes("ngpp17") || player.achievements.includes("ngr11"))?"":"none"
-	for (i=1;i<9;i++) document.getElementById("td"+i+'auto').style.visibility=player.achievements.includes("ngpp17")?"visible":"hidden"
-	document.getElementById('togglealltimedims').style.visibility=player.achievements.includes("ngpp17")?"visible":"hidden"
+	for (i=1;i<9;i++) document.getElementById("td"+i+'auto').style.visibility=(player.achievements.includes("ngpp17") || REALITY.milestones_req.can(3))?"visible":"hidden"
+	document.getElementById('togglealltimedims').style.visibility=(player.achievements.includes("ngpp17") || REALITY.milestones_req.can(3))?"visible":"hidden"
 }
 
 function updateNGpp16Reward(){
@@ -5835,14 +5842,16 @@ function galSacBtnUpdating(){
 
 function IPonCrunchPassiveGain(diff){
 	if (player.timestudy.studies.includes(181)) player.infinityPoints = player.infinityPoints.plus(gainedInfinityPoints().times(diff / 100))
+	if (player.reality) if (REALITY.milestones_req.can(5)) player.infinitiedBank = nA(player.infinitiedBank, Math.floor(gainBankedInf() * diff))
 }
 
 function EPonEternityPassiveGain(diff){
-	if (tmp.ngp3) {
-		if (player.masterystudies.includes("t291")) {
-			player.eternityPoints = player.eternityPoints.plus(gainedEternityPoints().times(diff / 100))
-			document.getElementById("eternityPoints2").innerHTML = "You have <span class=\"EPAmount2\">"+shortenDimensions(player.eternityPoints)+"</span> Eternity points."
-		}
+	if (tmp.ngp3) gained = player.masterystudies.includes("t291")
+	if (player.reality) gained = REALITY.milestones_req.can(5)
+	if (gained) {
+		player.eternityPoints = player.eternityPoints.plus(gainedEternityPoints().times(diff / 100))
+		document.getElementById("eternityPoints2").innerHTML = "You have <span class=\"EPAmount2\">"+shortenDimensions(player.eternityPoints)+"</span> Eternity points."
+		if (player.reality) gainRealityUpdate()
 	}
 }
 

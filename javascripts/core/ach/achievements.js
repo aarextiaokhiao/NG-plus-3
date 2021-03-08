@@ -232,10 +232,10 @@ const allAchievements = {
   ngr11: 'Time is realistic',
   ngr12: 'I not really buy time, because i had bad day',
   ngr13: 'Finally pass first row',
-  ngr14: 'Placeholder',
-  ngr15: 'Placeholder',
-  ngr16: 'Placeholder',
-  ngr17: 'Placeholder',
+  ngr14: "This achievement doesn't exist 3.3",
+  ngr15: '10^^3',
+  ngr16: 'Mini-replicanti',
+  ngr17: 'Reality go brrr',
   ngr18: 'Placeholder',
 };
 const secretAchievementTooltips = {

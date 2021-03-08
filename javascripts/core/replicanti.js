@@ -38,7 +38,7 @@ function upgradeReplicantiChance() {
 }
 
 function isChanceAffordable() {
-	return player.replicanti.chance < 1 || (tmp.ngp3 && player.masterystudies.includes("t265"))
+	return player.replicanti.chance < 1 || ((tmp.ngp3 && player.masterystudies.includes("t265")) || (player.reality && player.reality.upgrades.includes(5)))
 }
 
 function upgradeReplicantiInterval() {
@@ -236,6 +236,9 @@ function getReplicantiInterval() {
 	if (isBigRipUpgradeActive(4)) interval /= 10
 
 	interval = new Decimal(interval)
+	if (player.reality) {
+		if (player.reality.upgrades.includes(7)) interval = interval.div(REALITY.upgs[7].effect())
+	}
 	if (player.exdilation != undefined) interval = interval.div(getBlackholePowerEffect().pow(1/3))
 	if (player.dilation.upgrades.includes('ngpp1') && player.aarexModifications.nguspV && !player.aarexModifications.nguepV) interval = interval.div(player.dilation.dilatedTime.max(1).pow(0.05))
 	if (player.dilation.upgrades.includes("ngmm9")) interval = interval.div(getDil72Mult())

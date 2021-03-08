@@ -989,6 +989,9 @@
 						<td>
 							<button id="dil81" onclick="buyDilationUpgrade(81)">Unlock the ability to pick all the study paths from the second split.<br><span id="dil81cost"></span></button>
 						</td>
+						<td>
+							<button id="dil82" onclick="buyDilationUpgrade(82)">Gain more Dilated time based on unspent Time theorems.<br><span id="dil82desc"></span><br><span id="dil82cost"></span></button>
+						</td>
 					</tr>
 				</table>
 				<div>
@@ -2733,16 +2736,16 @@
 								<div id="Finally pass first row" class="achievement achievementlocked" style="background-image: url(images/185.png)" ach-tooltip="Purchase all Reality upgrades in first row."><br></div>
 							</td>
 							<td>
-								<div id="Placeholder" class="achievement achievementlocked" style="background-image: url(images/186.png)" ach-tooltip="Placeholder."><br></div>
+								<div id="This achievement doesn't exist 3.3" class="achievement achievementlocked" style="background-image: url(images/186.png)" ach-tooltip="Gain 9.99e99999 EP. Reward: Multiples EP gain based on unspent EP."><br></div>
 							</td>
 							<td>
-								<div id="Placeholder" class="achievement achievementlocked" style="background-image: url(images/187.png)" ach-tooltip="Placeholder."><br></div>
+								<div id="10^^3" class="achievement achievementlocked" style="background-image: url(images/187.png)" ach-tooltip="Get 1e10,000,000,000 antmatter."><br></div>
 							</td>
 							<td>
-								<div id="Placeholder" class="achievement achievementlocked" style="background-image: url(images/188.png)" ach-tooltip="Placeholder."><br></div>
+								<div id="Mini-replicanti" class="achievement achievementlocked" style="background-image: url(images/188.png)" ach-tooltip="Gain 1e20 exponential. Reward: Gain exponential 2 times faster."><br></div>
 							</td>
 							<td>
-								<div id="Placeholder" class="achievement achievementlocked" style="background-image: url(images/189.png)" ach-tooltip="Placeholder."><br></div>
+								<div id="Reality go brrr" class="achievement achievementlocked" style="background-image: url(images/189.png)" ach-tooltip="Reality under 30 second. Reward: Start Realities with 1e5000 EP."><br></div>
 							</td>
 							<td>
 								<div id="Placeholder" class="achievement achievementlocked" style="background-image: url(images/190.png)" ach-tooltip="Placeholder."><br></div>
@@ -4722,6 +4725,20 @@
 							<button id="real4" class="realityupbtn" onclick="buyRealityUpgrade(4)"></button>
 						</td>
 					</tr>
+					<tr>
+						<td>
+							<button id="real5" class="realityupbtn" onclick="buyRealityUpgrade(5)"></button>
+						</td>
+						<td>
+							<button id="real6" class="realityupbtn" onclick="buyRealityUpgrade(6)"></button>
+						</td>
+						<td>
+							<button id="real7" class="realityupbtn" onclick="buyRealityUpgrade(7)"></button>
+						</td>
+						<td>
+							<button id="real8" class="realityupbtn" onclick="buyRealityUpgrade(8)"></button>
+						</td>
+					</tr>
 				</table>
 			</div><div class="realitytab" id="gainrpmilestones" style="font-size: 15px">
 				<table>
@@ -4735,7 +4752,25 @@
 						<td>
 							<div class="gainrpmilestone" id="gainrp2">
 								<div style="font-size: 15px">1e80000 EP before Realities<br><br></div>
-								Start with Time Dilation unlocked and 1000 TP. Unlock 2nd row Reality upgrades <i>(not presented)</i>.
+								Start Realities with Time Dilation unlocked and 1000 TP. Unlock 2nd row Reality upgrades and new Dilation upgrades.
+							</div>
+						</td>
+						<td>
+							<div class="gainrpmilestone" id="gainrp3">
+								<div style="font-size: 15px">1e100000 EP before Realities<br><br></div>
+								Keep all Time Dilation upgrades and Eternity upgrades bought on Reality. Unlock Time Dimensions autobuyer.
+							</div>
+						</td>
+						<td>
+							<div class="gainrpmilestone" id="gainrp4">
+								<div style="font-size: 15px">1e200000 EP before Realities<br><br></div>
+								Keep all Time studies upgrades on Reality. Unlock new Time studies and Reality upgrades <i>(not presented)</i>.
+							</div>
+						</td>
+						<td>
+							<div class="gainrpmilestone" id="gainrp5">
+								<div style="font-size: 15px">1e600000 EP before Realities<br><br></div>
+								You gain 1% of your EP gained on Eternity each second, and gain banked infinities based on your post-crunch infinitied stat
 							</div>
 						</td>
 					</tr>
@@ -5673,6 +5708,7 @@
 			<button id="gSacConfirmBtn" onclick='gSacrificeConf()' class="storebtn" style="width: 200px; height: 55px; font-size: 15px" style="display: inline"></button>
 			<button id="challengeconfirmation" class="storebtn" style="width: 200px; height: 55px; font-size: 15px" style="display: inline"></button>
 			<button id="eternityconf" onclick='toggleEternityConf()' class="storebtn" style="width: 200px; height: 55px; font-size: 15px" style="display: inline"></button>
+			<button id="realityconf" onclick='toggleRealityConf()' class="storebtn" style="width: 200px; height: 55px; font-size: 15px" style="display: inline"></button>
 			<button id="dilationConfirmBtn" class="storebtn" onclick="toggleDilaConf()" style="width: 200px; height: 55px; font-size: 15px" style="display: inline"></button>
 			<button id="exdilationConfirmBtn" class="storebtn" onclick="toggleExdilaConf()" style="width: 200px; height: 55px; font-size: 15px" style="display: inline"></button>
 			<button id="quantumConfirmBtn" class="storebtn" onclick="toggleQuantumConf()" style="width: 200px; height: 55px; font-size: 15px" style="display: inline"></button>
