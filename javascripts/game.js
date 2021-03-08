@@ -5846,6 +5846,7 @@ function IPonCrunchPassiveGain(diff){
 }
 
 function EPonEternityPassiveGain(diff){
+	let gained = false
 	if (tmp.ngp3) gained = player.masterystudies.includes("t291")
 	if (player.reality) gained = REALITY.milestones_req.can(5)
 	if (gained) {
