@@ -2241,7 +2241,7 @@ function onLoad(noOffline) {
         setAndMaybeShow('bestTPOverGhostifies',(player.achievements.includes("ng3p18") || player.achievements.includes("ng3p37")) && ghostified,'"Your best-ever Tachyon particles was "+shorten(player.dilation.bestTPOverGhostifies)+"."')
         document.getElementById('dilationmode').style.display=speedrunMilestonesReached>4?"":"none"
         document.getElementById('rebuyupgmax').style.display=speedrunMilestonesReached<26&&player.masterystudies?"":"none"
-        document.getElementById('rebuyupgauto').style.display=speedrunMilestonesReached>6?"":"none"
+        document.getElementById('rebuyupgauto').style.display=(speedrunMilestonesReached>6 || REALITY.milestones_req.can(6))?"":"none"
         document.getElementById('toggleallmetadims').style.display=speedrunMilestonesReached>7?"":"none"
         document.getElementById('metaboostauto').style.display=speedrunMilestonesReached>14?"":"none"
         document.getElementById("autoBuyerQuantum").style.display=speedrunMilestonesReached>22?"":"none"

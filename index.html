@@ -138,9 +138,11 @@
 				<tr>
 					<td><button class="storebtn" onclick="exportStudyTree()" style="width:150px; height: 40px; font-size: 10px; margin: auto">Export tree</button><td>
 					<td><button class="storebtn" onclick="respecToggle()" id="respec" style="width:150px; height: 40px; font-size: 10px; margin: auto">Respec time studies on next Eternity</button><td>
+					<td><button class="storebtn" onclick="respecRealityToggle()" id="respecReality" style="width:150px; height: 40px; font-size: 10px; margin: auto">Respec reality studies on next Reality</button></td>
 					<td><button class="storebtn" onclick="importStudyTree()" style="width:150px; height: 40px; font-size: 10px; margin: auto">Import tree</button><td>
 				</tr>
 				<button class="storebtn" onclick="respecMasteryToggle()" id="respecMastery" style="width:150px; height: 40px; font-size: 10px; margin: auto">Respec mastery studies on next Eternity</button>
+				
 				<button class="storebtn" onclick="fillAll()" id="fillAll" style="width:150px; height: 40px; font-size: 10px; margin: auto">Buy all time studies</button>
 				<table class="table" id="studytable">
 					<tr>
@@ -342,11 +344,33 @@
 				<table class="table" id="studytable">
 					<tr>
 						<td><button class="timestudylocked" id="dilstudy6" onclick="buyDilationStudy(6, getMetaUnlCost())">Unlock Meta Dimensions<span>Cost: <span id="metaCost" style="display: inline;">1e24</span> Time Theorems</button></td>
+						<td><button class="realstudylocked" id="realstudy11">Good luck<span>Cost: <span id="realstudycost11" style="display: inline;">1e20</span></button></td>
 					</tr>
 				</table>
 				<table class="table" id="studytable">
 					<tr>
 						<td><button class="dilationupg" id="masteryportal" onclick="enterMasteryPortal()"></button></td>
+						<td><button class="realstudylocked" id="realstudy21">Unlock the ability to pick all time studies before reality studies.<span>Cost: <span id="realstudycost21" style="display: inline;">2e20</span></button></td>
+						<td><button class="realstudylocked" id="realstudy22" style="font-size: 0.6rem;">Max replicanti galaxy upgrade cost is rooted based on EP.<span id="realstudydesc22"></span><span>Cost: <span id="realstudycost22" style="display: inline;">2e20</span></button></td>
+					</tr>
+				</table>
+				<table>
+					<tr>
+						<td><button class="realstudylocked" id="realstudy31" style="font-size: 0.6rem;">Replicanti effect are raised based on Exponential.<span id="realstudydesc31"></span><span>Cost: <span id="realstudycost31" style="display: inline;"></span></button></td>
+						<td><button class="realstudylocked" id="realstudy32">Replicanti chance are raised by ^10.<span>Cost: <span id="realstudycost32" style="display: inline;"></span></button></td>
+						<td><button class="realstudylocked" id="realstudy33">Galaxies are 15% stronger.<span>Cost: <span id="realstudycost33" style="display: inline;"></span></button></td>
+						<td><button class="realstudylocked" id="realstudy34">Sacrifice scales 25% stronger.<span>Cost: <span id="realstudycost34" style="display: inline;"></span></button></td>
+					</tr>
+				</table>
+				<table>
+					<tr>
+						<td><button class="realstudylocked" id="realstudy41">Exponential grows x4 faster.<span>Cost: <span id="realstudycost41" style="display: inline;"></span></button></td>
+						<td><button class="realstudylocked" id="realstudy42">Galaxies are 1% more stronger for each 100 total non-free RGs.<span>Cost: <span id="realstudycost42" style="display: inline;"></span></button></td>
+					</tr>
+				</table>
+				<table>
+					<tr>
+						<td><button class="realstudylocked" id="realstudy51">Unlock the Reality Challenges <i>(not presented)</i>.<span>Cost: <span id="realstudycost51" style="display: inline;"></span></button></td>
 					</tr>
 				</table>
 				<div style="height: 60px;"></div>
@@ -2748,7 +2772,7 @@
 								<div id="Reality go brrr" class="achievement achievementlocked" style="background-image: url(images/189.png)" ach-tooltip="Reality under 30 second. Reward: Start Realities with 1e5000 EP."><br></div>
 							</td>
 							<td>
-								<div id="Placeholder" class="achievement achievementlocked" style="background-image: url(images/190.png)" ach-tooltip="Placeholder."><br></div>
+								<div id="Non-Free Tickspeed & Non-Free Multiplier" class="achievement achievementlocked" style="background-image: url(images/190.png)" ach-tooltip="Reality without buying Infinity & Time Dimensions."><br></div>
 							</td>
 						</tr>
 				</table>
@@ -4760,23 +4784,32 @@
 								<div style="font-size: 15px">1e100000 EP before Realities<br><br></div>
 								Keep all Time Dilation upgrades and Eternity upgrades bought on Reality. Unlock Time Dimensions autobuyer.
 							</div>
-						</td>
+						</td>		
+					</tr>
+					<tr>
 						<td>
 							<div class="gainrpmilestone" id="gainrp4">
 								<div style="font-size: 15px">1e200000 EP before Realities<br><br></div>
-								Keep all Time studies upgrades on Reality. Unlock new Time studies and Reality upgrades <i>(not presented)</i>.
+								Keep all Time studies upgrades on Reality. Unlock new Time studies, which called Reality Studies (down from Dilation Studies).
 							</div>
 						</td>
 						<td>
 							<div class="gainrpmilestone" id="gainrp5">
 								<div style="font-size: 15px">1e600000 EP before Realities<br><br></div>
-								You gain 1% of your EP gained on Eternity each second, and gain banked infinities based on your post-crunch infinitied stat
+								You gain 1% of your EP gained on Eternity each second, and gain banked infinities based on your post-crunch infinitied stat.
+							</div>
+						</td>
+						<td>
+							<div class="gainrpmilestone" id="gainrp6">
+								<div style="font-size: 15px">1e800000 EP before Realities<br><br></div>
+								Unlock Auto buying Dilation rebuyables.
 							</div>
 						</td>
 					</tr>
 				</table>
 			</div><div class="realitytab" id="exponential" style="font-size: 15px">
 				You have <span id="expamount" style="font-size: 23px; color: black;">x</span> exponential, which multiples Time Dimensions by <span id="expeffect" style="font-size: 23px; color: black;">x</span><br>
+				<div id="expbeyond">Beyond 1e1000 exponential, will increase penality to <span id="expbeyondeff" style="font-size: 23px; color: black;">x</span>.</div><br>
 				(x<span id="expgain" style="font-size: 23px; color: black;">x</span>/s)<br><br>
 				<div>
 					<button class="storebtn" id="expmult" onclick="upgradeMultipler()" style="width:180px; height: 50px; font-size: 10px">Multiplier: x1<br>-> x2 Costs: 69420 RP</button>
@@ -5861,6 +5894,7 @@
 <script type="text/javascript" src="javascripts/mods/ngusp.js"></script>
 <script type="text/javascript" src="javascripts/mods/ngprw.js"></script>
 <script type="text/javascript" src="javascripts/mods/reality.js"></script>
+<script type="text/javascript" src="javascripts/mods/reality_studies.js"></script>
 <script type="text/javascript" src="javascripts/convert.js"></script>
 <script type="text/javascript" src="javascripts/display.js"></script>
 <script type="text/javascript" src="javascripts/temp.js"></script>

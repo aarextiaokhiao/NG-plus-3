@@ -628,7 +628,10 @@ function breakEternityDisplay(){
 
 function ETERNITYSTOREDisplay(){
 	if (document.getElementById("TTbuttons").style.display == "block") updateTheoremButtons()
-	if (document.getElementById("timestudies").style.display == "block" || document.getElementById("ers_timestudies").style.display == "block") updateTimeStudyButtons()
+	if (document.getElementById("timestudies").style.display == "block" || document.getElementById("ers_timestudies").style.display == "block") {
+		updateTimeStudyButtons()
+		displayRealStudies()
+	}
 	if (document.getElementById("masterystudies").style.display == "block") updateMasteryStudyButtons()
 	if (document.getElementById("eternityupgrades").style.display == "block") eternityUpgradesDisplay()
 	if (document.getElementById("dilation").style.display == "block") mainDilationDisplay()

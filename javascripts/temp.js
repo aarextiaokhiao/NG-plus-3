@@ -289,6 +289,7 @@ function updateReplicantiTemp() {
 		data.freq = 0
 		if (data.chance.gte("1e9999998")) data.freq = tmp.mts[273].times(Math.log10(player.replicanti.chance + 1) / Math.log10(2))
 	}
+	if (player.reality) if (player.reality.studies.includes(32)) data.chance = Decimal.pow(data.chance, 10)
 
 	data.est = Decimal.div((data.freq ? data.freq.times(Math.log10(2) / Math.log10(Math.E) * 1e3) : Decimal.add(data.chance, 1).log(Math.E) * 1e3), data.interval)
 	data.estLog = data.est.times(Math.log10(Math.E))

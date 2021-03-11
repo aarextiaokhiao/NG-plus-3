@@ -76,6 +76,8 @@ function getGalaxyEff(bi) {
 	if (GUBought("rg2")) eff *= Math.pow(player.dilation.freeGalaxies/5e3 + 1, 0.25)
 	if (tmp.rg4) eff *= 1.5
 	if (hasBosonicUpg(34)) eff *= tmp.blu[34]
+	if (player.reality) if (player.reality.studies.includes(33)) eff *= 1.15
+	if (player.reality) if (player.reality.studies.includes(42)) eff *= RStudies[42].eff()
 	return eff
 }
 

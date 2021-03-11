@@ -77,7 +77,7 @@ function getRGCost(offset = 0, costChange) {
 			if (player.replicanti.gal + offset > 99) increase += (offset - Math.max(99 - player.replicanti.gal, 0)) * (25 * (offset - Math.max(99 - player.replicanti.gal, 0) + Math.max(player.replicanti.gal, 99) * 2) - 4725)
 			if (player.replicanti.gal + offset > 399) {
 				if (player.exdilation != undefined) for (var g = Math.max(player.replicanti.gal, 399); g < player.replicanti.gal + offset; g++) increase += Math.pow(g - 389, 2)
-				if (player.meta != undefined || player.reality != undefined) {
+				if ((player.meta != undefined) || (player.reality != undefined)) {
 					var isReduced = false
 					if (player.masterystudies != undefined) if (player.masterystudies.includes("t266")) isReduced = true
 					if (isReduced) {
@@ -97,7 +97,10 @@ function getRGCost(offset = 0, costChange) {
 			ret = ret.times(Decimal.pow(10, increase))
 		}
 	}
-	if (player.timestudy.studies.includes(233) && !costChange) ret = ret.dividedBy(player.replicanti.amount.pow(0.3))
+	if ((player.timestudy.studies.includes(233) && !costChange)) ret = ret.dividedBy(player.replicanti.amount.pow(0.3))
+	if (player.reality) {
+		if (player.reality.studies.includes(22)) ret = ret.root(RStudies[22].eff())
+	}
 	return ret
 }
 

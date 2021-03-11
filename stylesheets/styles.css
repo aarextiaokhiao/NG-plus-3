@@ -810,6 +810,63 @@ button {
 	height: 70px;
 }
 
+.realstudy {
+    color: #FF8A33;
+    background: black;
+    border: 1px solid #FF8A33;
+    font-weight: bold;
+    font-family: Typewriter;
+    width: 170px;
+    height: 80px;
+    transition-duration: 0.2s;
+    cursor: pointer;
+    border-radius: 4px;
+    font-size: 0.65rem;
+    vertical-align: top;
+    margin:7px;
+    animation: realstudyGlowIn 7s infinite;
+}
+
+.realstudy:hover {
+    color: #DADADA;
+    background: #793400;
+}
+
+.realstudylocked {
+    color: #181818;
+    background: #5F5F5F;
+    font-weight: bold;
+    font-family: Typewriter;
+    border: 1px solid #793400;
+    width: 170px;
+    height: 80px;
+    transition-duration: 0.2s;
+    border-radius: 4px;
+    font-size: 0.65rem;
+    vertical-align: top;
+    margin:7px;
+}
+
+.realstudylocked:hover {
+    color: #1D1D1D;
+    background: #660000;
+}
+
+.realstudybought {
+    color: #1E0D00;
+    background: #0BD251;
+    font-weight: bold;
+    font-family: Typewriter;
+    border: 1px solid #793400;
+    width: 170px;
+    height: 80px;
+    transition-duration: 0.2s;
+    border-radius: 4px;
+    font-size: 0.65rem;
+    vertical-align: top;
+    margin:7px;
+}
+
 .RPAmount {
     font-weight: bold;
 }
@@ -1644,7 +1701,7 @@ button {
     font-size: 12px;
 }
 
-.wideRow .timestudy, .wideRow .timestudylocked, .wideRow .timestudybought {
+.wideRow .timestudy, .wideRow .timestudylocked, .wideRow .timestudybought, .wideRow .realstudy, .wideRow .realstudylocked, .wideRow .realstudybought {
 	margin: 1px;
 	width: 120px;
 	font-size: 0.55rem;
@@ -2911,6 +2968,12 @@ screen and (max-width: 480px) {
     0%  {box-shadow: inset 0px 0px 3px 0px #b341e0;}
     50% {box-shadow: inset 0px 0px 15px 0px #b341e0;}
     100%  {box-shadow: inset 0px 0px 3px 0px #b341e0;}
+}
+
+@keyframes realstudyGlowIn {
+    0%  {box-shadow: inset 0px 0px 3px 0px #FF8A33;}
+    50% {box-shadow: inset 0px 0px 15px 0px #FF8A33;}
+    100%  {box-shadow: inset 0px 0px 3px 0px #FF8A33;}
 }
 
 @keyframes normalDimStudyGlowIn {

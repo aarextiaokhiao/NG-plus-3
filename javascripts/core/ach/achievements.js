@@ -236,7 +236,7 @@ const allAchievements = {
   ngr15: '10^^3',
   ngr16: 'Mini-replicanti',
   ngr17: 'Reality go brrr',
-  ngr18: 'Placeholder',
+  ngr18: 'Non-Free Tickspeed & Non-Free Multiplier',
 };
 const secretAchievementTooltips = {
 	s11 : "Click on this achievement.",

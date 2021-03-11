@@ -72,6 +72,7 @@ function getDilPower() {
 		if (GUBought("br1")) ret = ret.times(getBR1Effect())
 		if (player.masterystudies.includes("t341")) ret = ret.times(getMTSMult(341))
 	}
+	if (player.reality) if (player.reality.times > 0) ret = ret.times(100)
 	return ret
 }
 

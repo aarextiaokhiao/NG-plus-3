@@ -731,6 +731,7 @@ function doNGRealityNewPlayer() {
 	player.aarexModifications.tabsSave.tabReality = 'realityupgrades'
 	player.autoEterOptions = {
 		epmult: false,
+		rebuyupg: false,
 	}
 	player.galaxyMaxBulk = false
 	player.reality = getRealityData()
@@ -752,6 +753,8 @@ function getRealityData() {
 			buys: {},
 		},
 		conf: false,
+		studies: [],
+		respec: false,
 	}
 }
 
@@ -2891,6 +2894,7 @@ function calcSacrificeBoost() {
 		if (player.timestudy.studies.includes(228)) pow = 0.013
 		else if (player.achievements.includes("r97") && player.boughtDims) pow = 0.012
 		else if (player.achievements.includes("r88")) pow = 0.011
+		if (player.reality) if (player.reality.studies.includes(34)) pow *= 1.25
 		ret = player.firstAmount.div(player.sacrificed.max(1)).pow(pow).max(1)
 	} else if (!inNC(11)) {
 		pow = 2
@@ -2916,6 +2920,7 @@ function calcTotalSacrificeBoost(next) {
 		if (player.timestudy.studies.includes(228)) pow = 0.013
 		else if (player.achievements.includes("r97") && player.boughtDims) pow = 0.012
 		else if (player.achievements.includes("r88")) pow = 0.011
+		if (player.reality) if (player.reality.studies.includes(34)) pow *= 1.25
 		ret = player.sacrificed.pow(pow).max(1)
 	} else if (!inNC(11)) {
 		pow = 2
@@ -3780,6 +3785,9 @@ function updateRespecButtons() {
 	className = player.respecMastery ? "timestudybought" : "storebtn"
 	document.getElementById("respecMastery").className = className
 	document.getElementById("respecMastery2").className = className
+
+	className = player.reality.respec ? "realstudybought" : "storebtn"
+	document.getElementById("respecReality").className = className
 }
 
 function doCheckECCompletionStuff(){
@@ -4845,6 +4853,7 @@ setInterval(function() {
 	updateNGM2RewardDisplay()
 	updateGalaxyUpgradesDisplay()
 	updateTimeStudyButtons(false, true)
+	updateRealStudies()
 	updateHotkeys()
 	updateQCDisplaysSpecifics()
 
@@ -5852,7 +5861,10 @@ function EPonEternityPassiveGain(diff){
 	if (gained) {
 		player.eternityPoints = player.eternityPoints.plus(gainedEternityPoints().times(diff / 100))
 		document.getElementById("eternityPoints2").innerHTML = "You have <span class=\"EPAmount2\">"+shortenDimensions(player.eternityPoints)+"</span> Eternity points."
-		if (player.reality) gainRealityUpdate()
+		if (player.reality) {
+			realityGainDisplay()
+			gainRealityUpdate()
+		}
 	}
 }
 
@@ -6018,6 +6030,7 @@ function gameLoop(diff) {
 	updateConvertSave(eligibleConvert())
 
 	if (isNaN(player.totalmoney)) player.totalmoney = new Decimal(10)
+	if (player.reality) if (player.autoEterOptions.rebuyupg) maxAllDilUpgs()
 	
 	if (tmp.ngp3) {
 		if (player.dilation.active) ngp3DilationUpdating()

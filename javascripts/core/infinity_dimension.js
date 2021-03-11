@@ -324,6 +324,7 @@ var infDimPow = 1
 
 function getIDReplMult() {
 	if (player.masterystudies) if (player.masterystudies.includes('t311')) return tmp.rm.pow(17.3)
+	if (player.reality) if (player.reality.studies.includes(31)) return tmp.rm.pow(RStudies[31].eff())
 	return tmp.rm
 }
 

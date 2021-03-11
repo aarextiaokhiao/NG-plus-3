@@ -149,7 +149,7 @@ function maxAllDilUpgs() {
 				}
 			} else if (id == "r2") {
 				if (canBuyGalaxyThresholdUpg()) {
-					if (speedrunMilestonesReached > 21) {
+					if (speedrunMilestonesReached > 21 || (player.reality ? REALITY.milestones_req.can(6) : false)) {
 						var cost = Decimal.pow(10,player.dilation.rebuyables[2] * 2 + 6)
 						if (player.dilation.dilatedTime.gte(cost)) {
 							var toBuy = Math.min(Math.floor(player.dilation.dilatedTime.div(cost).times(99).add(1).log(100)), 60 - player.dilation.rebuyables[2])
@@ -823,7 +823,7 @@ function getGHPMultCost(offset=0) {
 
 //v2.2
 function canBuyGalaxyThresholdUpg() {
-	return !tmp.ngp3 || player.dilation.rebuyables[2] < 60
+	return !tmp.ngp3 || player.dilation.rebuyables[2] < 60 || (player.reality ? REALITY.milestones_req.can(6) : false)
 }
 
 function showNFTab(tabName) {
