@@ -176,6 +176,7 @@ function assignShard(x) {
 }
 
 function updateShardBooster() {
+    if (!player.reality) return
     let assort = [10, 25, 50, 100]
     for (let x = 0; x < assort.length; x++) {
         document.getElementById('sbap_'+assort[x]).className = (player.reality.sb.sort == assort[x]) ? 'chosenbtn2' : 'storebtn'
