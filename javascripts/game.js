@@ -3797,6 +3797,7 @@ function updateRespecButtons() {
 	document.getElementById("respecMastery").className = className
 	document.getElementById("respecMastery2").className = className
 
+	if (!player.reality) return
 	className = player.reality.respec ? "realstudybought" : "storebtn"
 	document.getElementById("respecReality").className = className
 }
