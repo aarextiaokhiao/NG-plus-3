@@ -56,7 +56,7 @@ function setRealityIfUndefined() {
     if (p_real.bestPointsGained === undefined) p_real.bestPointsGained = data.bestPointsGained
     if (p_real.exp === undefined) p_real.exp = {}
     if (p_real.sb === undefined) p_real.sb = {}
-    if (p_real.conf === undefined) p_real.conf = false
+    if (p_real.conf === undefined) p_real.conf = true
     if (p_real.respec === undefined) p_real.respec = false
     if (p_real.studies === undefined) p_real.studies = []
 

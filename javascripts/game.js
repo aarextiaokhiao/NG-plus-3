@@ -757,7 +757,7 @@ function getRealityData() {
 			amount: new Decimal(1),
 			buys: {},
 		},
-		conf: false,
+		conf: true,
 		studies: [],
 		respec: false,
 		sb: {
