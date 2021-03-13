@@ -41,9 +41,9 @@ function getDilTimeGainPerSecond() {
 	gain = Decimal.pow(10, lgain)
 	if (player.reality) {
 		if (player.dilation.upgrades.includes(12)) gain = gain.times(REALITY.dilations_eff[82]())
-
-		gain = gain.times(Decimal.pow(2, getDilUpgPower(1))).pow(player.reality.upgrades.includes(4)?1.5:1)
+		gain = gain.mul(SBEff[3]())
 	}
+	gain = gain.times(Decimal.pow(2, getDilUpgPower(1))).pow(player.reality?(player.reality.upgrades.includes(4)?1.5:1):1)
 	if (gain.gte(1e20)) gain = gain.div(1e20).pow(0.5).mul(1e20)
 	
 	return gain
@@ -419,6 +419,7 @@ function getPassiveTTGen() {
 	if (tmp.ngex) r *= .8
 	r /= (player.achievements.includes("ng3p51") ? 200 : 2e4)
 	if (isLEBoostUnlocked(6)) r *= tmp.leBonus[6]
+	if (player.reality) if (r > 1e40) r = (r/1e40)**0.25*1e40
 	return r
 }
 

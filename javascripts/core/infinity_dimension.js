@@ -161,6 +161,8 @@ function DimensionPower(tier) {
 
   	mult = dilates(mult, 1)
   	if (quantumed && !tmp.ngp3l) mult = mult.times(colorBoosts.dim.g)
+
+	if (player.reality) mult = mult.times(SBEff[2]())
   	return mult
 }
 

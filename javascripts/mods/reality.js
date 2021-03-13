@@ -10,6 +10,7 @@ function updateReality() {
     tabRealityUpdate()
     gainRealityUpdate()
     updateRealStudies()
+    updateShardBooster()
 
     document.getElementById('respecReality').style.display = REALITY.milestones_req.can(4) ? '' : 'none'
 
@@ -18,6 +19,7 @@ function updateReality() {
 
 function tabRealityUpdate() {
     document.getElementById('rexp').style.display = (player.reality.upgrades.includes(3)) ? "inline-block" : 'none'
+    document.getElementById('rsboost').style.display = (player.reality.sb.unl) ? "inline-block" : 'none'
 }
 
 function gainRealityUpdate() {
@@ -45,6 +47,7 @@ function setRealityIfUndefined() {
 
     if (p_real.points === undefined) p_real.points = data.points
     if (p_real.shards === undefined) p_real.shards = data.shards
+    if (p_real.bestShards === undefined) p_real.bestShards = data.bestShards
     if (p_real.times === undefined) p_real.times = data.times
     if (p_real.time === undefined) p_real.time = data.time
     if (p_real.bestTime === undefined) p_real.bestTime = data.bestTime
@@ -52,6 +55,7 @@ function setRealityIfUndefined() {
     if (p_real.bestPoints === undefined) p_real.bestPoints = data.bestPoints
     if (p_real.bestPointsGained === undefined) p_real.bestPointsGained = data.bestPointsGained
     if (p_real.exp === undefined) p_real.exp = {}
+    if (p_real.sb === undefined) p_real.sb = {}
     if (p_real.conf === undefined) p_real.conf = false
     if (p_real.respec === undefined) p_real.respec = false
     if (p_real.studies === undefined) p_real.studies = []
@@ -60,6 +64,13 @@ function setRealityIfUndefined() {
     if (p_exp.amount === undefined) p_exp.amount = data.exp.amount
     if (p_exp.buys === undefined) p_exp.buys = data.exp.buys
 
+    let p_sb = p_real.sb
+    if (p_sb.unl === undefined) p_sb.unl = false
+    if (p_sb.resources === undefined) p_sb.resources = {}
+    for (let x = 1; x < 4; x++) if (p_sb.resources[x] === undefined) p_sb.resources[x] = new Decimal(0)
+    if (p_sb.boosters === undefined) p_sb.boosters = {}
+    for (let x = 1; x < 4; x++) if (p_sb.boosters[x] === undefined) p_sb.boosters[x] = new Decimal(0)
+    if (p_sb.sort === undefined) p_sb.sort = data.sb.sort
 
     if (player.autoEterOptions === undefined) player.autoEterOptions = {}
     let p_autoE = player.autoEterOptions
@@ -75,14 +86,19 @@ function conToDeciReality() {
     if (player.reality) {
         player.reality.points = new Decimal(player.reality.points)
         player.reality.shards = new Decimal(player.reality.shards)
+        player.reality.bestShards = new Decimal(player.reality.bestShards)
         player.reality.bestPoints = new Decimal(player.reality.bestPoints)
         player.reality.bestPointsGained = new Decimal(player.reality.bestPointsGained)
         player.reality.exp.amount = new Decimal(player.reality.exp.amount)
+        for (let x = 1; x < 4; x++) {
+            player.reality.sb.resources[x] = new Decimal(player.reality.sb.resources[x])
+            player.reality.sb.boosters[x] = new Decimal(player.reality.sb.boosters[x])
+        }
     }
 }
 
 function realUpgsDisplay() {
-    for (let x = 1; x <= 8; x++) {
+    for (let x = 1; x <= 9; x++) {
         let upg = REALITY.upgs[x]
         document.getElementById('real'+x).innerHTML = upg.desc
         +(upg.effDesc?("<br>Currently: "+upg.effDesc()):'')+
@@ -107,7 +123,85 @@ function REALITYDisplay() {
     document.getElementById('epmultauto').textContent="Auto: O"+(player.autoEterOptions.epmult?"N":"FF")
     if (document.getElementById("realityupgrades").style.display == "block") realUpgsDisplay()
     if (document.getElementById("exponential").style.display == "block") exponentialDisplay()
+    if (document.getElementById("shardbooster").style.display == "block") shardBoosterDisplay()
 }
+
+//Shard Booster
+function shardBoosterDisplay() {
+    document.getElementById('sbbest').innerHTML = shortenDimensions(player.reality.bestShards)
+    document.getElementById('sbamount').innerHTML = shortenDimensions(getShardBooster())
+    document.getElementById('sbreq').innerHTML = shortenDimensions(getShardBoosterRequirement())
+    document.getElementById('sbunspent').innerHTML = shortenDimensions(getUnspentSB())
+
+    for (let x = 1; x < 4; x++) {
+        document.getElementById('sb'+x).innerHTML = shortenDimensions(player.reality.sb.boosters[x])
+        document.getElementById('sbe'+x).innerHTML = shortenDimensions(SBEff[x]())
+        document.getElementById('sb'+x+'p').innerHTML = shortenDimensions(player.reality.sb.resources[x])+' (+'+shortenDimensions(getPartsGain(x))+'/s)'
+    }
+}
+
+function changeShardAssortPercentage(x) {
+    player.reality.sb.sort = x
+    updateShardBooster()
+}
+
+function getShardBooster() {
+    let exp = player.reality.studies.includes(81)?2.5:3
+    return player.reality.bestShards.root(exp).floor()
+}
+
+function getShardBoosterRequirement() {
+    let exp = player.reality.studies.includes(81)?2.5:3
+    return getShardBooster().add(1).pow(exp).floor()
+}
+
+function getUnspentSB() {
+    let sb = getShardBooster()
+    for (let x = 1; x < 4; x++) sb = sb.minus(player.reality.sb.boosters[x])
+    return sb.ceil()
+}
+
+function getPartsGain(x) {
+    let ret = player.reality.sb.boosters[x].pow(5)
+    if (x == 1 && player.reality.studies.includes(83)) ret = ret.mul(RStudies[83].eff())
+    return ret
+}
+
+function assignShard(x) {
+    if (getUnspentSB().gte(1)) {
+        let gain = getUnspentSB().mul(player.reality.sb.sort/100).ceil()
+        player.reality.sb.boosters[x] = player.reality.sb.boosters[x].add(gain).ceil()
+        updateShardBooster()
+    }
+}
+
+function updateShardBooster() {
+    let assort = [10, 25, 50, 100]
+    for (let x = 0; x < assort.length; x++) {
+        document.getElementById('sbap_'+assort[x]).className = (player.reality.sb.sort == assort[x]) ? 'chosenbtn2' : 'storebtn'
+    }
+    for (let x = 1; x < 4; x++) document.getElementById('sba'+x).className = (getUnspentSB().lt(1)) ? 'unavailablebtn' : 'storebtn'
+}
+
+function SPartsPassiveGain(dt) {
+    if (player.reality) for (let x = 1; x < 4; x++) player.reality.sb.resources[x] = player.reality.sb.resources[x].add(getPartsGain(x).mul(dt))
+}
+
+const SBEff = {
+    1() {
+        let eff = player.reality.sb.resources[1].max(1).pow(100)
+        return eff
+    },
+    2() {
+        let eff = player.reality.sb.resources[2].max(1).pow(500000)
+        return eff
+    },
+    3() {
+        let eff = player.reality.sb.resources[3].max(1).pow(2)
+        return eff
+    },
+}
+
 
 function realityGainDisplay() {
     document.getElementById('realirtbtnFlavor').innerHTML = (player.reality.times > 0)?"":"I'm tired of these games..... I need to become Real";
@@ -115,7 +209,7 @@ function realityGainDisplay() {
 }
 
 function updateRealityUpgrades() {
-    for (let x = 1; x <= 8; x++) {
+    for (let x = 1; x <= 9; x++) {
         document.getElementById("real"+x).className = (player.reality.upgrades.includes(x)) ? "realityupbtnbought" : (REALITY.upgs[x].can()) ? "realityupbtn" : "realityupbtnlocked"
         document.getElementById("real"+x).style.visibility = (REALITY.upgs[x].unl()) ? 'visible' : 'invisible'
     }
@@ -158,6 +252,16 @@ function ExponentialPassiveGain(dt) {
     }
 }
 
+function RealityShardsPassiveGain(dt) {
+    if (player.reality) {
+        if (player.reality.upgrades.includes(9)) {
+            player.reality.shards = player.reality.shards.add(REALITY.upgs[9].effect().div(60).mul(dt))
+            if (player.reality.shards.gt(player.reality.bestShards)) player.reality.bestShards = player.reality.shards
+            document.getElementById('realityPoints1').innerHTML = `You have <span class='RPAmount'>${shortenDimensions(player.reality.points)}</span> Reality points and<br><span class='RPAmount'>${shortenDimensions(player.reality.shards)}</span> Reality shards.`
+        }
+    }
+}
+
 function upgradeMultipler() {
     if (REALITY.exp.mult.can()) {
         player.reality.points = player.reality.points.sub(REALITY.exp.mult.cost())
@@ -193,12 +297,16 @@ function reality() {
         player.reality.shards = player.reality.shards.add(REALITY.shards())
 
         if (player.reality.respec) {
-            player.reality.studies = []
+            let keep = [61]
+            let save = []
+            for (let x = 0; x < keep.length; x++) if (player.reality.studies.includes(keep[x])) save.push(keep[x])
+            player.reality.studies = save
             player.reality.respec = false
         }
 
         if (player.eternityPoints.gt(player.reality.bestPointsGained)) player.reality.bestPointsGained = player.eternityPoints
         if (player.reality.points.gt(player.reality.bestPoints)) player.reality.bestPoints = player.reality.points
+        if (player.reality.shards.gt(player.reality.bestShards)) player.reality.bestShards = player.reality.shards
         player.reality.times += 1
         if (player.reality.time < player.reality.bestTime) player.reality.bestTime = player.reality.time
         if (player.reality.bestTime < 300) giveAchievement("Reality go brrr")
@@ -209,6 +317,7 @@ function reality() {
         player.reality.exp.amount = new Decimal(1)
         
         eternity(true, true)
+        if (!player.reality.studies.includes(71)) player.replicanti.gal = 0
         
         respecTimeStudies(!REALITY.milestones_req.can(4))
         if (!REALITY.milestones_req.can(1)) player.eternityChalls = {}
@@ -320,6 +429,8 @@ const REALITY = {
     shards() {
         let gain = new Decimal(1)
         if (player.reality.upgrades.includes(6)) gain = gain.times(REALITY.upgs[6].effect())
+        if (player.reality.studies.includes(72)) gain = gain.times(10)
+        if (player.reality.studies.includes(81)) gain = gain.mul(RStudies[81].eff())
         return gain.floor()
     },
     canReset() {
@@ -367,7 +478,6 @@ const REALITY = {
             can() { return player.reality.shards.gte(this.cost()) },
             effect() {
                 let eff = player.replicanti.amount.pow(.25)
-                if (eff.gte('1e100000')) eff = eff.div('1e100000').pow(.5).mul('1e100000')
                 return eff
             },
             effDesc(x=this.effect()) { return shortenMoney(x)+'x' }
@@ -423,6 +533,17 @@ const REALITY = {
             },
             effDesc(x=this.effect()) { return shortenMoney(x)+'x' }
         },
+        9: {
+            desc: 'Generate 10% of RS based on fastest Reality.',
+            unl() { return player.reality.sb.unl },
+            cost() { return new Decimal(200) },
+            can() { return player.reality.shards.gte(this.cost()) && player.reality.upgrades.includes(4) },
+            effect() {
+                let eff = REALITY.shards().mul(1/player.reality.bestTime).mul(60)
+                return eff
+            },
+            effDesc(x=this.effect()) { return shortenMoney(x)+'/min' }
+        },
     },
     exp: {
         gain() {
@@ -454,6 +575,7 @@ const REALITY = {
                 let base = new Decimal(2)
                 if (player.achievements.includes('ngr16')) base = base.times(2)
                 if (player.reality.studies.includes(41)) base = base.times(4)
+                if (player.reality.studies.includes(73) && player.reality.exp.amount.gte('1e1000')) base = base.times(2)
                 if (player.reality.upgrades.includes(8)) base = base.times(REALITY.upgs[8].effect())
                 let eff = Decimal.pow(base, x)
                 return eff

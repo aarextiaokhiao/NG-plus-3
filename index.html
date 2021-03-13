@@ -370,7 +370,28 @@
 				</table>
 				<table>
 					<tr>
-						<td><button class="realstudylocked" id="realstudy51">Unlock the Reality Challenges <i>(not presented)</i>.<span>Cost: <span id="realstudycost51" style="display: inline;"></span></button></td>
+						<td><button class="realstudylocked" id="realstudy51">Keep max replicanti galaxies bought on Eternity.<span>Cost: <span id="realstudycost51" style="display: inline;"></span></button></td>
+					</tr>
+				</table>
+				<table>
+					<tr>
+						<td><button class="realstudylocked" id="realstudy61">Unlock Shard Booster. <i>(Can't respec this)</i><span>Cost: <span id="realstudycost61" style="display: inline;"></span></button></td>
+					</tr>
+				</table>
+				<table>
+					<tr>
+						<td><button class="realstudylocked" id="realstudy71">Upgrade reality study 51 from Eternity to Reality.<span>Cost: <span id="realstudycost71" style="display: inline;"></span></button></td>
+						<td><button class="realstudylocked" id="realstudy72">Gain x10 more Reality Shards.<span>Cost: <span id="realstudycost72" style="display: inline;"></span></button></td>
+						<td><button class="realstudylocked" id="realstudy73">Exponential grows x2 faster beyond 1e1000.<span>Cost: <span id="realstudycost73" style="display: inline;"></span></button></td>
+						<td><button class="realstudylocked" id="realstudy74" style="font-size: 0.6rem;">Gain more Shard Parts based on unspent Reality Points.<span id="realstudydesc74"></span><span>Cost: <span id="realstudycost74" style="display: inline;"></span></button></td>
+						<td><button class="realstudylocked" id="realstudy75" style="font-size: 0.6rem;">Raise replicanti chance based on total shard boosters.<span id="realstudydesc75"></span><span>Cost: <span id="realstudycost75" style="display: inline;"></span></button></td>
+					</tr>
+				</table>
+				<table>
+					<tr>
+						<td><button class="realstudylocked" id="realstudy81" style="font-size: 0.6rem;">Gain more Reality Shards based on total shard boosters.<span id="realstudydesc81"></span><span>Cost: <span id="realstudycost81" style="display: inline;"></span></button></td>
+						<td><button class="realstudylocked" id="realstudy82">The best Reality Shards requirement for the next shard booster is reduced.<span>Cost: <span id="realstudycost82" style="display: inline;"></span></button></td>
+						<td><button class="realstudylocked" id="realstudy83" style="font-size: 0.6rem;">Infinity parts boost Normal parts gain.<span id="realstudydesc83"></span><span>Cost: <span id="realstudycost83" style="display: inline;"></span></button></td>
 					</tr>
 				</table>
 				<div style="height: 60px;"></div>
@@ -4731,6 +4752,7 @@
 					<td><button class="secondarytabbtn" onclick="showRealityTab('realityupgrades')">Reality upgrades</button></td>
 					<td><button class="secondarytabbtn" onclick="showRealityTab('gainrpmilestones')">Gain RP milestones</button></td>
 					<td><button class="secondarytabbtn" id="rexp" onclick="showRealityTab('exponential')">Exponential</button></td>
+					<td><button class="secondarytabbtn" id="rsboost" onclick="showRealityTab('shardbooster')">Shard Booster</button></td>
 				</tr>
 			</table><br>
 			<div class="realitytab" id="realityupgrades" style="font-size: 15px">
@@ -4761,6 +4783,11 @@
 						</td>
 						<td>
 							<button id="real8" class="realityupbtn" onclick="buyRealityUpgrade(8)"></button>
+						</td>
+					</tr>
+					<tr>
+						<td>
+							<button id="real9" class="realityupbtn" onclick="buyRealityUpgrade(9)"></button>
 						</td>
 					</tr>
 				</table>
@@ -4816,6 +4843,36 @@
 					<button class="storebtn" id="exppen" onclick="upgradePenalty()" style="width:180px; height: 50px; font-size: 10px">Penalty: ^1<br>-> ^0.95 Costs: 69420 RP</button>
 				</div>
 				
+			</div><div class="realitytab" id="shardbooster">
+				You have <span id="sbbest" style="color: black;">x</span> best Reality shards.<br>
+				You have <span id="sbamount" style="font-size: 23px; color: black;">x</span> Shard Boosters. Next at <span id="sbreq" style="font-size: 23px; color: black;">x</span> RS.<br>
+				You have <span id="sbunspent" style="color: black;">x</span> unspent shard boosters.<br><br>
+				<div id="assortSettings">
+					<button class='storebtn' id="sbap_10" style="width:50px" onclick="changeShardAssortPercentage(10)">10%</button>
+					<button class='storebtn' id="sbap_25" style="width:50px" onclick="changeShardAssortPercentage(25)">25%</button>
+					<button class='storebtn' id="sbap_50" style="width:50px" onclick="changeShardAssortPercentage(50)">50%</button>
+					<button class='storebtn' id="sbap_100" style="width:50px" onclick="changeShardAssortPercentage(100)">100%</button>
+				</div>
+				<br>
+				<table style="font-size: 15px">
+					<tr style="vertical-align: top;">
+						<td class="sbooster">
+							<button class='storebtn' id='sba1' onclick="assignShard(1)">Assort</button><br>
+							You have <span id="sb1" style="font-size: 23px; color: black;">x</span> Normal Boosters.<br>
+							You have <span id="sb1p" style="color: black;">x</span> Normal parts.<br>Translated to <span id="sbe1" style="font-size: 23px; color: black;">x</span>x extra multiplier per Dimension Boost.
+						</td>
+						<td class="sbooster">
+							<button class='storebtn' id='sba2' onclick="assignShard(2)">Assort</button><br>
+							You have <span id="sb2" style="font-size: 23px; color: black;">x</span> Infinity Boosters.<br>
+							You have <span id="sb2p" style="color: black;">x</span> Infinity parts.<br>Translated to <span id="sbe2" style="font-size: 23px; color: black;">x</span>x to all Infinity Dimensions.
+						</td>
+						<td class="sbooster">
+							<button class='storebtn' id='sba3' onclick="assignShard(3)">Assort</button><br>
+							You have <span id="sb3" style="font-size: 23px; color: black;">x</span> Time Boosters.<br>
+							You have <span id="sb3p" style="color: black;">x</span> Time parts.<br>Translated to <span id="sbe3" style="font-size: 23px; color: black;">x</span>x to dilated time gain.
+						</td>
+					</tr>
+				</table>
 			</div>
 		</div>
 		<div class='tab' id='quantumtab'>

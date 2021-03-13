@@ -736,12 +736,17 @@ function doNGRealityNewPlayer() {
 	player.galaxyMaxBulk = false
 	player.reality = getRealityData()
 	for (let x = 1; x < 9; x++) player.autoEterOptions['td'+x] = false
+	for (let x = 1; x < 4; x++) {
+		player.reality.sb.resources[x] = new Decimal(0)
+		player.reality.sb.boosters[x] = new Decimal(0)
+	}
 }
 
 function getRealityData() {
 	return {
 		points: new Decimal(0),
 		shards: new Decimal(0),
+		bestShards: new Decimal(0),
 		bestPoints: new Decimal(0),
 		bestPointsGained: new Decimal(0),
 		times: 0,
@@ -755,6 +760,12 @@ function getRealityData() {
 		conf: false,
 		studies: [],
 		respec: false,
+		sb: {
+			unl: false,
+			resources: {},
+			boosters: {},
+			sort: 10,
+		}
 	}
 }
 
@@ -4051,7 +4062,7 @@ function resetReplicantiUpgrades() {
 	let keepPartial = tmp.ngp3 && player.dilation.upgrades.includes("ngpp3") && getEternitied() >= 2e10
 	player.replicanti.chance = keepPartial ? Math.min(player.replicanti.chance, 1) : 0.01
 	player.replicanti.interval = keepPartial ? Math.max(player.replicanti.interval, player.timestudy.studies.includes(22) ? 1 : 50) : 1000
-	player.replicanti.gal = 0
+	if (player.reality ? !player.reality.studies.includes(51) : true) player.replicanti.gal = 0
 	player.replicanti.chanceCost = Decimal.pow(1e15, player.replicanti.chance * 100).times((player.galacticSacrifice !== undefined && player.tickspeedBoosts == undefined) ? 1e75 : 1e135)
 	player.replicanti.intervalCost = Decimal.pow(1e10, Math.round(Math.log10(1000 / player.replicanti.interval) / -Math.log10(0.9))).times((player.galacticSacrifice !== undefined && player.tickspeedBoosts == undefined) ? 1e80 : player.boughtDims ? 1e150 : 1e140)
 	player.replicanti.galCost = new Decimal((player.galacticSacrifice !== undefined && player.tickspeedBoosts == undefined) ? 1e110 : 1e170)	
@@ -4854,6 +4865,7 @@ setInterval(function() {
 	updateGalaxyUpgradesDisplay()
 	updateTimeStudyButtons(false, true)
 	updateRealStudies()
+	updateShardBooster()
 	updateHotkeys()
 	updateQCDisplaysSpecifics()
 
@@ -5963,6 +5975,8 @@ function gameLoop(diff) {
 	freeTickspeedUpdating()
 	IPonCrunchPassiveGain(diff)
 	ExponentialPassiveGain(diff)
+	RealityShardsPassiveGain(diff)
+	SPartsPassiveGain(diff)
 	EPonEternityPassiveGain(diff)
 	TTpassiveGain(diff)
 
