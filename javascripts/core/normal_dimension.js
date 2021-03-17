@@ -111,7 +111,7 @@ function getDimensionFinalMultiplier(tier) {
 	if (player.aarexModifications.newGameMinusVersion !== undefined) mult = mult.times(.1)
 	if (!tmp.infPow) updateInfinityPowerEffects()
 	if (player.currentChallenge == "postcngm3_2") return tmp.infPow.max(1e100)
-	if (player.currentEternityChall == "eterc11") return tmp.infPow.times(Decimal.pow(getDimensionBoostPower(), player.resets - tier + 1).max(1))
+	if (player.currentEternityChall == "eterc11" || RChals.in(2)) return tmp.infPow.times(Decimal.pow(getDimensionBoostPower(), player.resets - tier + 1).max(1))
 	if ((inNC(7) || player.currentChallenge == "postcngm3_3") && !player.galacticSacrifice) {
 		if (tier == 4) mult = mult.pow(1.4)
 		if (tier == 2) mult = mult.pow(1.7)
@@ -167,17 +167,17 @@ function getDimensionFinalMultiplier(tier) {
 
 function getDimensionDescription(tier) {
 	var name = TIER_NAMES[tier];
-	if (tier > Math.min(inQC(1) ? 1 : player.currentEternityChall == "eterc3" ? 3 : inNC(4) || player.currentChallenge == "postc1" || player.pSac != undefined ? 5 : 7, player.resets + 3) - (inNC(7) || player.currentChallenge == "postcngm3_3" || inQC(4) || player.pSac !== undefined ? 1 : 0)) return getFullExpansion(inNC(11) ? getAmount(tier) : player[name + 'Bought']) + ' (' + dimBought(tier) + ')';
+	if (tier > Math.min(inQC(1) ? 1 : (player.currentEternityChall == "eterc3") ? 3 : inNC(4) || player.currentChallenge == "postc1" || player.pSac != undefined ? 5 : 7, player.resets + 3) - (inNC(7) || player.currentChallenge == "postcngm3_3" || inQC(4) || player.pSac !== undefined ? 1 : 0)) return getFullExpansion(inNC(11) ? getAmount(tier) : player[name + 'Bought']) + ' (' + dimBought(tier) + ')';
 	else if (player.money.l > 1e9) return shortenND(player[name + 'Amount'])
 	else if (player.money.l > 1e6) return shortenND(player[name + 'Amount']) + '  (+' + formatValue(player.options.notation, getDimensionRateOfChange(tier), 2, 2) + dimDescEnd;
 	else return shortenND(player[name + 'Amount']) + ' (' + dimBought(tier) + ')  (+' + formatValue(player.options.notation, getDimensionRateOfChange(tier), 2, 2) + dimDescEnd;
 }
 
 function getDimensionRateOfChange(tier) {
-	if (tier == 8 || (player.currentEternityChall == "eterc3" && tier > 3)) return 0;
+	if (tier == 8 || ((player.currentEternityChall == "eterc3") && tier > 3)) return 0;
 
 	let toGain = getDimensionProductionPerSecond(tier + 1)
-	if (tier == 7 && player.currentEternityChall == "eterc7") toGain = DimensionProduction(1).times(10)
+	if (tier == 7 && (player.currentEternityChall == "eterc7")) toGain = DimensionProduction(1).times(10)
 
 	var name = TIER_NAMES[tier];
 	if (inNC(7) || player.currentChallenge == "postcngm3_3" || inQC(4) || player.pSac !== undefined) {

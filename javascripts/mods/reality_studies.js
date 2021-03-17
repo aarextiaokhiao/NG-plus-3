@@ -8,6 +8,11 @@ function buyRealStudy(name) {
             showRealityTab('shardbooster')
             showTab('reality')
         }
+        if (name == 91 && !player.reality.chal.unl) {
+            player.reality.chal.unl = true
+            showChallengesTab('realitychallenges')
+            showTab('challenges')
+        }
         tabRealityUpdate()
     }
 }
@@ -15,6 +20,7 @@ function buyRealStudy(name) {
 function canBuyRealStudy(name) {
     let and = (name == 51)
 	let bought = (name == 11) ? (player.dilation.studies.includes(5)) : canBuyRealStudyBranch(name, and)
+    if (name == 91) bought = player.money.gte('1e200000000000')
     return ((player.timestudy.theorem >= RStudies[name].cost()) && bought && !player.reality.studies.includes(name))
 }
 
@@ -148,6 +154,36 @@ const RStudies = {
         },
         effDesc(x=this.eff()) { return shortenMoney(x)+'x' }
     },
+    91: {
+        cost() { return 1e44 },
+    },
+    101: {
+        cost() { return 1e45 },
+        eff() {
+            let eff = getShardBooster().max(0).pow(2)
+            return eff
+        },
+        effDesc(x=this.eff()) { return shortenMoney(x)+'x' }
+    },
+    102: {
+        cost() { return 1e48 },
+        eff() {
+            let eff = Decimal.pow(player.reality.points.max(1).log(10), 2.5)
+            return eff
+        },
+        effDesc(x=this.eff()) { return shortenMoney(x)+'x' }
+    },
+    103: {
+        cost() { return player.reality.studies.includes(104) ? 1e53 : 1e52 },
+    },
+    104: {
+        cost() { return player.reality.studies.includes(103) ? 1e53 : 1e52 },
+        eff() {
+            let eff = Math.floor(player.dilation.freeGalaxies/5)
+            return eff
+        },
+        effDesc(x=this.eff()) { return shortenDimensions(x)+' galaxies later' }
+    },
 }
 
 const RSBranch = {
@@ -158,9 +194,11 @@ const RSBranch = {
     61: [51],
     71: [72], 72: [73], 73: [61], 74: [73], 75: [74],
     81: [72], 82: [73], 83: [74],
+    91: [82],
+    101: [91], 102: [101], 103: [102], 104: [102],
 }
 
-const RSRows = 8
+const RSRows = 10
 
 var all_real = []
 

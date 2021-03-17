@@ -27,7 +27,7 @@ function getDilationMetaDimensionMultiplier() {
 }
 
 function getMetaDimensionMultiplier(tier) {
-	if (player.currentEternityChall === "eterc11") return new Decimal(1)
+	if (player.currentEternityChall === "eterc11" || RChals.in(2)) return new Decimal(1)
 	let ret = Decimal.pow(getPerTenMetaPower(), Math.floor(player.meta[tier].bought / 10))
 	ret = ret.times(Decimal.pow(getMetaBoostPower(), Math.max(player.meta.resets + 1 - tier, 0)))
 	ret = ret.times(tmp.mdgm) //Global multiplier of all Meta Dimensions

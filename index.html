@@ -394,6 +394,21 @@
 						<td><button class="realstudylocked" id="realstudy83" style="font-size: 0.6rem;">Infinity parts boost Normal parts gain.<span id="realstudydesc83"></span><span>Cost: <span id="realstudycost83" style="display: inline;"></span></button></td>
 					</tr>
 				</table>
+				<table>
+					<tr>
+						<td><button class="realstudylocked" id="realstudy91" style="font-size: 0.6rem;">Unlock Reality Challenge. <i>(Can't respec this)</i><span>Require: e200,000,000,000 antimatter<span>Cost: <span id="realstudycost91" style="display: inline;"></span></button></td>
+					</tr>
+				</table>
+				<table>
+					<tr>
+						<td><button class="realstudylocked" id="realstudy101" style="font-size: 0.6rem;">Total shard boosters boost parts gain.<span id="realstudydesc101"></span><span>Cost: <span id="realstudycost101" style="display: inline;"></span></button></td>
+						<td><button class="realstudylocked" id="realstudy102" style="font-size: 0.6rem;">Gain more RS based on unspent RP.<span id="realstudydesc102"></span><span>Cost: <span id="realstudycost102" style="display: inline;"></span></button></td>
+						<td>
+							<button class="realstudylocked" id="realstudy103">Max replicanti galaxies are 12.5% effective.<span>Cost: <span id="realstudycost103" style="display: inline;"></span></button><br>
+							<button class="realstudylocked" id="realstudy104" style="font-size: 0.55rem;">Galaxy cost scaling starts galaxies later based on total gained galaxies from dilated time.<span id="realstudydesc104"></span><span>Cost: <span id="realstudycost104" style="display: inline;"></span></button>
+						</td>
+					</tr>
+				</table>
 				<div style="height: 60px;"></div>
 				<div>
 					<table id="footer">
@@ -2960,10 +2975,46 @@
 					<td><button class="secondarytabbtn" onclick="showChallengesTab('normalchallenges')">Challenges</button></td>
 					<td><button class="secondarytabbtn" onclick="showChallengesTab('breakchallenges')">Infinity Challenges</button></td>
 					<td><button id="eterctabbtn" class="secondarytabbtn" onclick="showChallengesTab('eternitychallenges')">Eternity Challenges</button></td>
+					<td><button id="realctabbtn" class="secondarytabbtn" onclick="showChallengesTab('realitychallenges')">Reality Challenges</button></td>
 					<td><button id="qctabbtn" class="secondarytabbtn" onclick="showChallengesTab('quantumchallenges')">Quantum Challenges</button></td>
 				</tr>
 			</table>
 			<div id="nextchall"></div>
+			<div id="realitychallenges" class="challengeTab">
+				<div id="realcnext">Reach x antimatter to unlock Reality Challenge y.</div>
+				<table class="table" style="margin: 0 auto">
+					<tr>
+						<td>
+							<div class="realchallengediv" id="realc1div" style="height: 140px;">
+								<span>Infinity & Time dimensions are disabled. (like in EC1 & EC2)</span>
+								<br>
+								<br>
+								<div class="outer">
+									<button id="realc1" class="challengesbtn" onclick="startRealityChallenge(1)">Start</button>
+									<br>
+									<span id="realc1completed">Have 0 completions.</span><br>
+									<span id="realc1goal" >Goal: idk lol antimatter</span><br>
+									Reward: All Infinity & Time Dimension multipliers are raised based on this completions. <span id="realc1reward"></span>
+								</div>
+							</div>
+						</td>
+						<td>
+							<div class="realchallengediv" id="realc2div" style="height: 140px;">
+								<span>You trapped in Eternity Challenges 5, 6 & 11.</span>
+								<br>
+								<br>
+								<div class="outer">
+									<button id="realc2" class="challengesbtn" onclick="startRealityChallenge(2)">Start</button>
+									<br>
+									<span id="realc2completed">Have 0 completions.</span><br>
+									<span id="realc2goal" >Goal: idk lol antimatter</span><br>
+									Reward: Root the dimension, tickspeed cost multiplier increase. <span id="realc2reward"></span>
+								</div>
+							</div>
+						</td>
+					</tr>
+				</table>
+			</div>
 			<div id="normalchallenges" class="challengeTab">
 				<table class="table" style="margin: 0 auto">
 					<tr>
@@ -4830,6 +4881,14 @@
 							<div class="gainrpmilestone" id="gainrp6">
 								<div style="font-size: 15px">1e800000 EP before Realities<br><br></div>
 								Unlock Auto buying Dilation rebuyables.
+							</div>
+						</td>
+					</tr>
+					<tr>
+						<td>
+							<div class="gainrpmilestone" id="gainrp7">
+								<div style="font-size: 15px">e1000000 EP before Realities<br><br></div>
+								Keep Tachyon particles on Reality.
 							</div>
 						</td>
 					</tr>

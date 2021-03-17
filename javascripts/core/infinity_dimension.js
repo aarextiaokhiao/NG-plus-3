@@ -126,8 +126,8 @@ function getStartingIDPower(tier){
 
 function DimensionPower(tier) {
   	var dim = player["infinityDimension" + tier]
-  	if (player.currentEternityChall == "eterc2" || player.currentEternityChall == "eterc10" || player.currentEternityChall == "eterc13") return new Decimal(0)
-  	if (player.currentEternityChall == "eterc11") return new Decimal(1)
+  	if (player.currentEternityChall == "eterc2" || player.currentEternityChall == "eterc10" || player.currentEternityChall == "eterc13" || RChals.in(1)) return new Decimal(0)
+  	if (player.currentEternityChall == "eterc11" || RChals.in(2)) return new Decimal(1)
   	if (player.currentEternityChall == 'eterc14') return getIDReplMult()
   	if (inQC(3)) return getExtraDimensionBoostPower()
   	
@@ -163,6 +163,7 @@ function DimensionPower(tier) {
   	if (quantumed && !tmp.ngp3l) mult = mult.times(colorBoosts.dim.g)
 
 	if (player.reality) mult = mult.times(SBEff[2]())
+	if (player.reality) if (RChals.getCompletions(1)>0) mult = mult.pow(RChals.reward[1].eff())
   	return mult
 }
 

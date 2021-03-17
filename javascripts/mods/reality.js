@@ -11,6 +11,7 @@ function updateReality() {
     gainRealityUpdate()
     updateRealStudies()
     updateShardBooster()
+    updateRealityChals()
 
     document.getElementById('respecReality').style.display = REALITY.milestones_req.can(4) ? '' : 'none'
 
@@ -20,6 +21,7 @@ function updateReality() {
 function tabRealityUpdate() {
     document.getElementById('rexp').style.display = (player.reality.upgrades.includes(3)) ? "inline-block" : 'none'
     document.getElementById('rsboost').style.display = (player.reality.sb.unl) ? "inline-block" : 'none'
+    document.getElementById("realctabbtn").style.display = player.reality.chal.unl?"inline-block":"none"
 }
 
 function gainRealityUpdate() {
@@ -31,7 +33,7 @@ function gainRealityUpdate() {
         document.getElementById('realityBlock').style.height = '0px'
     }
     document.getElementById("realitystorebtn").style.display = (player.reality.times > 0) ? "inline-block" : 'none'
-    document.getElementById('realitybtn').style.display = (REALITY.canReset() && !player.dilation.active) ? '' : 'none'
+    document.getElementById('realitybtn').style.display = ((RChals.in(0))?(REALITY.canReset() && !player.dilation.active):(player.money.gte(RChals.getGoal(player.reality.chal.active)) && RChals.gainCompletions(player.reality.chal.active)+RChals.getCompletions(player.reality.chal.active) >= 1)) ? '' : 'none'
     document.getElementById('realityconf').style.display = (player.reality.times > 0) ? 'inline' : 'none'
 }
 
@@ -56,6 +58,7 @@ function setRealityIfUndefined() {
     if (p_real.bestPointsGained === undefined) p_real.bestPointsGained = data.bestPointsGained
     if (p_real.exp === undefined) p_real.exp = {}
     if (p_real.sb === undefined) p_real.sb = {}
+    if (p_real.chal === undefined) p_real.chal = {}
     if (p_real.conf === undefined) p_real.conf = true
     if (p_real.respec === undefined) p_real.respec = false
     if (p_real.studies === undefined) p_real.studies = []
@@ -71,6 +74,12 @@ function setRealityIfUndefined() {
     if (p_sb.boosters === undefined) p_sb.boosters = {}
     for (let x = 1; x < 4; x++) if (p_sb.boosters[x] === undefined) p_sb.boosters[x] = new Decimal(0)
     if (p_sb.sort === undefined) p_sb.sort = data.sb.sort
+
+    let p_chal = p_real.chal
+    if (p_chal.unls === undefined) p_chal.unls = 0
+    if (p_chal.active === undefined) p_chal.active = 0
+    if (p_chal.completions === undefined) p_chal.completions = {}
+    if (p_chal.unl === undefined) p_chal.unl = false
 
     if (player.autoEterOptions === undefined) player.autoEterOptions = {}
     let p_autoE = player.autoEterOptions
@@ -164,6 +173,7 @@ function getUnspentSB() {
 function getPartsGain(x) {
     let ret = player.reality.sb.boosters[x].pow(5)
     if (x == 1 && player.reality.studies.includes(83)) ret = ret.mul(RStudies[83].eff())
+    if (player.reality.studies.includes(101)) ret = ret.mul(RStudies[101].eff())
     return ret
 }
 
@@ -203,10 +213,86 @@ const SBEff = {
     },
 }
 
+//Reality Challenges
+const RChals = {
+    getCompletions(x) { return player.reality.chal.completions[x]?player.reality.chal.completions[x]:0 },
+    getGoal(x, c=this.getCompletions(x)) {
+        let formula = (c**2+c)/2+1
+        return this.startGoal[x].pow(formula/2)
+    },
+    gainCompletions(x=player.reality.chal.active) {
+        if (x==0) return 0
+        return ((1+8*(player.money.max(0).log(this.startGoal[x].pow(0.5))-1))**0.5-1)/2-this.getCompletions(x)
+    },
+    startGoal: {
+        1: new Decimal('1e5000000000'),
+        2: new Decimal('1e55000000'),
+    },
+    unl: {
+        1() { return new Decimal('1e200000000000') },
+        2() { return new Decimal('1e300000000000') },
+    },
+    reward: {
+        1: {
+            eff() {
+                let eff = 1+.05*RChals.getCompletions(1)
+                return eff
+            },
+            desc(x=this.eff()) { return '^'+longMoney(x) },
+        },
+        2: {
+            eff() {
+                let eff = 1+.25*RChals.getCompletions(2)
+                return eff
+            },
+            desc(x=this.eff()) { return '√'+longMoney(x) },
+        },
+    },
+    in(x) { return player.reality?(player.reality.chal.active == x):false },
+}
+
+function realityChalsDisplay() {
+    document.getElementById('realcnext').innerHTML = RChals.unl[player.reality.chal.unls+1]?`Reach ${shortenCosts(RChals.unl[player.reality.chal.unls+1]())} antimatter to unlock Reality Challenge ${RChals.unl[player.reality.chal.unls+1]}`:''
+    for (let x = 1; x <= 2; x++) {
+        document.getElementById('realc'+x).innerHTML = RChals.in(x)?'Running':'Start'
+        document.getElementById('realc'+x+'completed').innerHTML = 'Have '+longMoney(RChals.getCompletions(x))+' completions.'
+        document.getElementById('realc'+x+'goal').innerHTML = 'Goal: '+shortenCosts(RChals.getGoal(x).max(RChals.startGoal[x]))+' antimatter'
+        if (RChals.reward[x]) document.getElementById('realc'+x+'reward').innerHTML = 'Currently: '+RChals.reward[x].desc()
+    }
+}
+
+function checkUnlRealityChals() {
+    if (!player.reality) return
+    if (!player.reality.chal.unl) return
+    for (let x = 1; x <= 2; x++) if (player.money.gte(RChals.unl[x]()) && x > player.reality.chal.unls) {
+        player.reality.chal.unls = x
+        $.notify("You unlocked Reality Challenge "+x+'!', "success")
+        updateRealityChals()
+    }
+}
+
+function updateRealityChals() {
+    player.tickSpeedMultDecrease = (2 - 0.07 * ECTimesCompleted("eterc11"))**(1/RChals.reward[2].eff())
+    player.dimensionMultDecrease = (3 - 0.2 * ECTimesCompleted("eterc6"))**(1/RChals.reward[2].eff())
+    for (let x = 1; x <= 2; x++) {
+        document.getElementById('realc'+x+'div').style.display = (x <= player.reality.chal.unls)?'':'none'
+        document.getElementById('realc'+x).className = RChals.in(x)?'onchallengebtn':'challengesbtn'
+    }
+}
+
+function startRealityChallenge(x) {
+    if (!RChals.in(0)) return
+    if (player.options.challConf) if (!confirm("You will start over with just your reality features and achievements. You need to reach a set antimatter goal with special conditions.")) return
+    reality(true)
+    player.reality.chal.active = x
+    updateRealityChals()
+}
+
 
 function realityGainDisplay() {
     document.getElementById('realirtbtnFlavor').innerHTML = (player.reality.times > 0)?"":"I'm tired of these games..... I need to become Real";
-    document.getElementById('realitybtnRPGain').innerHTML = (player.reality.times > 0)?`Gain <b>${shortenDimensions(REALITY.points())}</b> Reality points and <b>${shortenDimensions(REALITY.shards())}</b> Reality shards.`:"";
+    if (RChals.in(0)) document.getElementById('realitybtnRPGain').innerHTML = (player.reality.times > 0)?`Gain <b>${shortenDimensions(REALITY.points())}</b> Reality points and <b>${shortenDimensions(REALITY.shards())}</b> Reality shards.`:"";
+    else document.getElementById('realitybtnRPGain').innerHTML = `Beat Reality challenge for <b>+${longMoney(RChals.gainCompletions())}</b> completions.`
 }
 
 function updateRealityUpgrades() {
@@ -220,7 +306,7 @@ function updateRealityUpgrades() {
 }
 
 function updateGainRPMilestones() {
-    for (let x = 1; x <= 6; x++) {
+    for (let x = 1; x <= 7; x++) {
         document.getElementById("gainrp"+x).className = (REALITY.milestones_req.can(x)) ? "gainrpmilestone unlocked" : "gainrpmilestone"
     }
 }
@@ -283,8 +369,15 @@ function upgradePenalty() {
     }
 }
 
-function reality() {
-    if (REALITY.canReset()) if (player.reality.conf?confirm('Reality will reset everything except achievements and challenge records. You will also gain an Reality point, Reality shards and unlock various upgrades.'):true) {
+function reality(chal = false) {
+    if (REALITY.canReset() || !RChals.in(0)) if (player.reality.conf?confirm('Reality will reset everything except achievements and challenge records. You will also gain an Reality point, Reality shards and unlock various upgrades.'):true) {
+        if (!RChals.in(0)) {
+            if (player.money.gte(RChals.getGoal(player.reality.chal.active))) {
+                if (player.reality.chal.completions[player.reality.chal.active] === undefined) player.reality.chal.completions[player.reality.chal.active] = 0
+                player.reality.chal.completions[player.reality.chal.active] += RChals.gainCompletions()
+            }
+            player.reality.chal.active = 0
+        }
         giveAchievement("Time is realistic")
         let havent = true
         for (let x = 5; x <= 8; x++) if (player['timeDimension'+x].bought > 0) {
@@ -298,7 +391,7 @@ function reality() {
         player.reality.shards = player.reality.shards.add(REALITY.shards())
 
         if (player.reality.respec) {
-            let keep = [61]
+            let keep = [61, 91]
             let save = []
             for (let x = 0; x < keep.length; x++) if (player.reality.studies.includes(keep[x])) save.push(keep[x])
             player.reality.studies = save
@@ -318,26 +411,32 @@ function reality() {
         player.reality.exp.amount = new Decimal(1)
         
         eternity(true, true)
-        if (!player.reality.studies.includes(71)) player.replicanti.gal = 0
+        if (!player.reality.studies.includes(71) || chal) player.replicanti.gal = 0
         
-        respecTimeStudies(!REALITY.milestones_req.can(4))
+        respecTimeStudies(!REALITY.milestones_req.can(4) || chal)
         if (!REALITY.milestones_req.can(1)) player.eternityChalls = {}
         player.eternityChallUnlocked = 0
         player.currentEternityChall = ""
-        if (!REALITY.milestones_req.can(3)) player.eternityUpgrades = []
+        if (!REALITY.milestones_req.can(3) || chal) player.eternityUpgrades = []
         player.epmult = new Decimal(1)
         player.epmultCost = new Decimal(500)
         player.dilation.studies = []
-        if (REALITY.milestones_req.can(2)) player.dilation.studies = [1]
+        if (REALITY.milestones_req.can(2) || chal) player.dilation.studies = [1]
         if (player.achievements.includes('ngr12')) player.dilation.studies.push(2,3,4,5)
-        player.dilation.tachyonParticles = new Decimal(0)
-        player.dilation.totalTachyonParticles = new Decimal(0)
-        if (REALITY.milestones_req.can(2)) {
+        if (!REALITY.milestones_req.can(7)) {
+            player.dilation.tachyonParticles = new Decimal(0)
+            player.dilation.totalTachyonParticles = new Decimal(0)
+            if (REALITY.milestones_req.can(2)) {
+                player.dilation.tachyonParticles = new Decimal(1e3)
+                player.dilation.totalTachyonParticles = new Decimal(1e3)
+            }
+        }
+        if (chal && REALITY.milestones_req.can(2)) {
             player.dilation.tachyonParticles = new Decimal(1e3)
             player.dilation.totalTachyonParticles = new Decimal(1e3)
         }
         player.dilation.dilatedTime = new Decimal(0)
-        if (!REALITY.milestones_req.can(3)) player.dilation.upgrades = []
+        if (!REALITY.milestones_req.can(3) || chal) player.dilation.upgrades = []
         player.dilation.freeGalaxies = 0
         player.dilation.rebuyables = {1: 0, 2: 0, 3: 0}
         player.dilation.active = false
@@ -424,6 +523,7 @@ const REALITY = {
         let gain = Decimal.pow(5, new Decimal(new Decimal(player.eternityPoints).max(1).log('1e10000')).sub(1)).div(5).pow(1/2)
         if (gain.lt(1)) return new Decimal(0)
         if (gain.gte(1e10)) gain = gain.div(1e10).pow(.4).mul(1e10)
+        if (gain.gte(1e100)) gain = gain.div(1e100).pow(1/3).mul(1e100)
 
         return gain.floor()
     },
@@ -432,6 +532,7 @@ const REALITY = {
         if (player.reality.upgrades.includes(6)) gain = gain.times(REALITY.upgs[6].effect())
         if (player.reality.studies.includes(72)) gain = gain.times(10)
         if (player.reality.studies.includes(81)) gain = gain.mul(RStudies[81].eff())
+        if (player.reality.studies.includes(102)) gain = gain.mul(RStudies[102].eff())
         return gain.floor()
     },
     canReset() {
@@ -451,6 +552,7 @@ const REALITY = {
         4: new Decimal('1e200000'),
         5: new Decimal('1e600000'),
         6: new Decimal('1e800000'),
+        7: new Decimal('1e1000000'),
     },
     upgs: {
         /*

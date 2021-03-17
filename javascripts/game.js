@@ -765,6 +765,12 @@ function getRealityData() {
 			resources: {},
 			boosters: {},
 			sort: 10,
+		},
+		chal: {
+			unl: false,
+			unls: 0,
+			active: 0,
+			completions: {},
 		}
 	}
 }
@@ -4117,6 +4123,7 @@ function exitChallenge() {
 		return
 	}
 	if (tmp.ngp3) if (!inQC(0)) quantum(false, true, 0)
+	if (!RChals.in(0)) reality()
 }
 
 function onChallengeFail() {
@@ -4866,6 +4873,7 @@ setInterval(function() {
 	updateGalaxyUpgradesDisplay()
 	updateTimeStudyButtons(false, true)
 	updateRealStudies()
+	checkUnlRealityChals()
 	updateShardBooster()
 	updateHotkeys()
 	updateQCDisplaysSpecifics()
@@ -5008,7 +5016,7 @@ function requiredInfinityUpdating(diff){
 	if (tmp.ri) return
 	if (player.infinityUpgradesRespecced != undefined) infinityRespeccedDMUpdating(diff)
 		
-	for (let tier = (inQC(1) ? 1 : player.currentEternityChall == "eterc3" ? 3 : (inNC(4) || player.currentChallenge == "postc1") ? 5 : 7) - (inNC(7) || player.currentChallenge == "postcngm3_3" || inQC(4) || player.pSac !== undefined ? 1 : 0); tier >= 1; --tier) {
+	for (let tier = (inQC(1) ? 1 : (player.currentEternityChall == "eterc3") ? 3 : (inNC(4) || player.currentChallenge == "postc1") ? 5 : 7) - (inNC(7) || player.currentChallenge == "postcngm3_3" || inQC(4) || player.pSac !== undefined ? 1 : 0); tier >= 1; --tier) {
 		var name = TIER_NAMES[tier];
 		player[name + 'Amount'] = player[name + 'Amount'].plus(getDimensionProductionPerSecond(tier + (inNC(7) || player.currentChallenge == "postcngm3_3" || inQC(4) || player.pSac !== undefined ? 2 : 1)).times(diff / 10));
 	}
@@ -5770,6 +5778,7 @@ function bigRipUpgradeUpdating(){
 
 function challengeOverallDisplayUpdating(){
 	if (document.getElementById("challenges").style.display == "block") {
+		if (document.getElementById('realitychallenges').style.display == 'block') realityChalsDisplay()
 		if (document.getElementById("eternitychallenges").style.display == "block") ECRewardDisplayUpdating()
 		if (document.getElementById("quantumchallenges").style.display == "block") {
 			if (tmp.qu.autoOptions.sacrifice) document.getElementById("electronsAmount2").textContent="You have " + getFullExpansion(Math.round(tmp.qu.electrons.amount)) + " electrons."
@@ -6193,7 +6202,7 @@ function dimBoolean() {
 
 
 function maxBuyGalaxies(manual) {
-	if ((inNC(11) || player.currentEternityChall == "eterc6" || player.currentChallenge == "postc1" || (player.currentChallenge == "postc5" && player.tickspeedBoosts != undefined) || player.currentChallenge == "postc7" || inQC(6)) && !tmp.be) return
+	if ((inNC(11) || player.currentEternityChall == "eterc6" || RChals.in(2) || player.currentChallenge == "postc1" || (player.currentChallenge == "postc5" && player.tickspeedBoosts != undefined) || player.currentChallenge == "postc7" || inQC(6)) && !tmp.be) return
 	if (player.autobuyers[10].priority > player.galaxies || manual) {
 		let amount=getAmount(inNC(4)||player.pSac!=undefined?6:8)
 		let increment=0.5

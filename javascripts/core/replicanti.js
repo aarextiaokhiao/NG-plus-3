@@ -72,7 +72,7 @@ function getRGCost(offset = 0, costChange) {
 		if (inQC(5)) return player.replicanti.galCost.pow(Math.pow(1.2, offset))
 		else {
 			let increase = 0
-			if (player.currentEternityChall == "eterc6") increase = offset * ((offset + player.replicanti.gal * 2) + 3)
+			if (player.currentEternityChall == "eterc6" || RChals.in(2)) increase = offset * ((offset + player.replicanti.gal * 2) + 3)
 			else increase = offset * (2.5 * (offset + player.replicanti.gal * 2) + 22.5)
 			if (player.replicanti.gal + offset > 99) increase += (offset - Math.max(99 - player.replicanti.gal, 0)) * (25 * (offset - Math.max(99 - player.replicanti.gal, 0) + Math.max(player.replicanti.gal, 99) * 2) - 4725)
 			if (player.replicanti.gal + offset > 399) {
@@ -137,6 +137,7 @@ function canAutoReplicatedGalaxy() {
 
 function getMaxRG() {
 	let ret = player.replicanti.gal
+	if (player.reality) if (player.reality.studies.includes(103)) ret += Math.floor(ret * 0.125)
 	if (player.timestudy.studies.includes(131)) ret += Math.floor(ret * 0.5)
 	return ret
 }

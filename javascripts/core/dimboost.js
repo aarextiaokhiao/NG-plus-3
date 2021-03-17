@@ -143,7 +143,7 @@ function maxBuyDimBoosts(manual) {
 	if (player.autobuyers[9].priority >= getAmount(tier) || player.galaxies >= player.overXGalaxies || getShiftRequirement(0).tier < tier || manual) {
 		var bought = Math.min(getAmount(getShiftRequirement(0).tier), (player.galaxies >= player.overXGalaxies || manual) ? 1/0 : player.autobuyers[9].priority)
 		var r
-		if (player.currentEternityChall == "eterc5") {
+		if (player.currentEternityChall == "eterc5" || RChals.in(2)) {
 			r = 1
 			while (bought >= getShiftRequirement(r).amount) r++
 		} else {
@@ -177,7 +177,7 @@ function getShiftRequirement(bulk) {
 	if (player.aarexModifications.ngmX > 3 && player.pSac == undefined) amount = 10
 	if (tier == maxTier) amount += Math.max(resetNum + (player.galacticSacrifice && player.tickspeedBoosts === undefined && player.galacticSacrifice.upgrades.includes(21) ? 2 : 4) - maxTier, 0) * mult
 	var costStart = getSupersonicStart()
-	if (player.currentEternityChall == "eterc5") {
+	if (player.currentEternityChall == "eterc5" || RChals.in(2)) {
 		amount += Math.pow(resetNum, 3) + resetNum
 	} else if (resetNum >= costStart) {
 		var multInc = getSupersonicMultIncrease()
