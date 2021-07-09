@@ -623,7 +623,7 @@ function doNGM1Versions(){
 
 
 function doNGP3NewPlayerStuff(){
-        player.aarexModifications.newGame3PlusVersion = 2.3
+        player.aarexModifications.newGame3PlusVersion = 2.301
         player.respecMastery=false
         player.dbPower = 1
         player.dilation.times = 0
@@ -2077,7 +2077,7 @@ function setSomeQuantumAutomationDisplay(){
                 for (i=1;i<9;i++) document.getElementById("td"+i+'auto').textContent="Auto: O"+(player.autoEterOptions["td"+i]?"N":"FF")
         }
         document.getElementById('replicantibulkmodetoggle').textContent="Mode: "+(player.galaxyMaxBulk?"Max":"Singles")
-        document.getElementById('versionMod').textContent = tmp.ngp3l ? "NG+3: Legacy" : "New Game Plus 3"
+        document.getElementById('versionMod').textContent = tmp.ngp3l ? "NG+3: Legacy" : "NG+3.1"
         document.getElementById('versionDesc').style.display = tmp.ngp3 ? "" : "none"
         document.getElementById('sacrificeAuto').style.display=speedrunMilestonesReached>24?"":"none"
         document.getElementById('toggleautoquantummode').style.display=(player.masterystudies?tmp.qu.reachedInfQK||player.achievements.includes("ng3p25"):false)?"":"none"
@@ -2292,7 +2292,20 @@ function onLoad(noOffline) {
                 infiniteCheck = false
                 closeToolTip()
                 showNextModeMessage()
-        } else if (player.aarexModifications.popUpId!="STD") showNextModeMessage()
+        } else if (tmp.ngp3) {
+			document.getElementById("welcome").style.display = "flex"
+			document.getElementById("welcomeMessage").innerHTML =
+				"<b style='font-size: 15px'>Regretting NG+3</b>" +
+				"<br>" +
+				"Hello. Aarex's here. I am here to inform you that there won't be updates of NG+3.1 anymore. Look how boring NG+3 is? That's not good anymore." +
+				"<br><br>" +
+				"Fortunately, I am currently working on NG+3R, as a rewrite to the entire game." +
+				"<br>" +
+				'<a href="http://raw.githack.com/aarextiaokhiao/IvarK.github.io/v3.0-Respecced/" target="_newtab">Play NG+3 Respecced</a> <b class="warning">(GO PLAY HERE INSTEAD)</b>' +
+				"<br>" +
+				"<br>" +
+				'<b class="warning">WARNING!</b> You will no longer play NG+3 when this rewrite recieves enough updates. You will be automatically redirected into NG+3R soon!'
+        } else showNextModeMessage()
         document.getElementById("ghostlyNewsTicker").style.height=((player.options.secrets!==undefined?player.options.secrets.ghostlyNews:false)?24:0)+"px"
         document.getElementById("ghostlyNewsTickerBlock").style.height=((player.options.secrets!==undefined?player.options.secrets.ghostlyNews:false)?16:0)+"px"
         updateTemp()
