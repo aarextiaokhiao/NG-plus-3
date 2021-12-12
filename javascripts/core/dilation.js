@@ -18,10 +18,14 @@ function getBaseDTProduction(){
 	let tp = player.dilation.tachyonParticles
 	let exp = getDTGainExp()
 	let gain = tp.pow(exp)
+	if (NGP3andVanillaCheck()) {
+		if (player.achievements.includes("r132")) gain = gain.times(Math.max(Math.pow(player.galaxies, 0.04), 1))
+		if (player.achievements.includes("r137") && player.dilation.active) gain = gain.times(2)
+	}
 	
 	if (player.exdilation != undefined) gain = gain.times(getNGUDTGain())
 	gain = gain.times(getEternityBoostToDT())
-	
+
 	if (player.dilation.upgrades.includes('ngpp6')) gain = gain.times(getDil17Bonus())
 	if (player.dilation.upgrades.includes('ngusp3')) gain = gain.times(getD22Bonus())
 	if (tmp.ngp3 && (!tmp.qu.bigRip.active || tmp.qu.bigRip.upgrades.includes(11))) {
@@ -59,6 +63,10 @@ function getEternitiesAndDTBoostExp() {
 
 function getDilPower() {
 	var ret = Decimal.pow(getDil3Power(), getDilUpgPower(3))
+	if (NGP3andVanillaCheck()) {
+		if (player.achievements.includes("r132")) ret = ret.times(Math.max(Math.pow(player.galaxies, 0.04), 1))
+	}
+
 	if (player.dilation.upgrades.includes("ngud1")) ret = getD18Bonus().times(ret)
 	if (tmp.ngp3) {
 		if (player.achievements.includes("ng3p11") && !tmp.ngp3l) ret = ret.times(Math.max(getTotalRG() / 125, 1))
@@ -410,10 +418,16 @@ function getPassiveTTGen() {
 
 function getTTGenPart(x) {
 	if (!x) return new Decimal(0)
-	x = x.max(1).log10()
-	let y = player.aarexModifications.ngudpV && !player.aarexModifications.nguepV ? 73 : 80
-	if (x > y) x = Math.sqrt((x - y + 5) * 5) + y - 5
-	return Math.pow(10,x)
+	if (NGP3andVanillaCheck()) {
+		if (player.achievements.includes("r137") && player.dilation.active) x = x.times(2)
+	}
+	if (tmp.ngp3) {
+		x = x.max(1).log10()
+		let y = player.aarexModifications.ngudpV && !player.aarexModifications.nguepV ? 73 : 80
+		if (x > y) x = Math.sqrt((x - y + 5) * 5) + y - 5
+		x = Math.pow(10, x)
+	}
+	return x
 }
 
 function updateDilationUpgradeButtons() {

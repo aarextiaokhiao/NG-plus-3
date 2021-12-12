@@ -875,4 +875,7 @@ function getOldAgeRequirement() {
 	return Decimal.pow(10, 3 * 86400 * 365.2425 * year)
 }
 
-
+//v2.302
+function NGP3andVanillaCheck() {
+	return (tmp.ngp3 && !tmp.ngp3l) || !player.aarexModifications.newGamePlusPlusVersion
+}
