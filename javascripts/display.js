@@ -627,7 +627,7 @@ function breakEternityDisplay(){
 }
 
 function ETERNITYSTOREDisplay(){
-	document.getElementById("breakEternityTabbtn").style.display = player.ghostify.gravitons.unl ? "" : "none"
+	document.getElementById("breakDilationTabbtn").style.display = player.ghostify.gravitons.unl ? "" : "none"
 
 	if (document.getElementById("TTbuttons").style.display == "block") updateTheoremButtons()
 	if (document.getElementById("timestudies").style.display == "block" || document.getElementById("ers_timestudies").style.display == "block") updateTimeStudyButtons()
