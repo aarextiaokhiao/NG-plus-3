@@ -79,7 +79,7 @@ const GRAVITON_UPGS = [
     */
 ]
 
-function hasGravUpg(x) { return player.ghostify.gravitons.upgs.includes(x) }
+function hasGravUpg(x) { return player.ghostify ? player.ghostify.gravitons.upgs.includes(x) : false }
 
 function buyGravitonUpg(x) {
     if (player.ghostify.gravitons.amount.gte(GRAVITON_UPGS[x].cost) && !player.ghostify.gravitons.upgs.includes(x)) {

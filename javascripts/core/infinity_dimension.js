@@ -284,7 +284,7 @@ function getPreInfinityPowerEffectExp() {
 
 function getInfinityPowerEffectExp() {
 	let x = tmp.infPrePowExp
-	if (player.ghostify.neutrinos.boosts >= 12) x = tmp.nb[12]
+	if (player.ghostify) if (player.ghostify.neutrinos.boosts >= 12) x = tmp.nb[12]
 	return x
 }
 

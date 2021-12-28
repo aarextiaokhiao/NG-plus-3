@@ -63,8 +63,10 @@ function getBrandNewGravitonsData() {
 }
 
 function conToDeciPostNGP3() {
-    if (player.ghostify.gravitons===undefined) player.ghostify.gravitons={}
-    player.ghostify.gravitons = deepUndefinedAndDecimal(player.ghostify.gravitons, getBrandNewGravitonsData())
+    if (player.ghostify) {
+        if (player.ghostify.gravitons===undefined) player.ghostify.gravitons={}
+        player.ghostify.gravitons = deepUndefinedAndDecimal(player.ghostify.gravitons, getBrandNewGravitonsData())
+    }
 }
 
 function postNGp3AchsCheck() {
