@@ -228,9 +228,9 @@ function setR12Tooltip(){
 }
 
 function setR13Tooltip(){
-	// Row 13 (5/8)
+	// Row 13 (6/8)
 	//r131/////
-	//r132/////
+	let unique = document.getElementById("Unique snowflakes")
 	let infstuff = document.getElementById("I never liked this infinity stuff anyway")
 	let when = document.getElementById("When will it be enough?")
 	let potato3 = document.getElementById("Faster than a potato^286078")
@@ -238,18 +238,24 @@ function setR13Tooltip(){
 	let thinking = document.getElementById("Now you're thinking with dilation!")
 	let thisis = document.getElementById("This is what I have to do to get rid of you.")
 
+	let thinkingReward = [] // for the achievement "This is what I have to do to get rid of you."
+	if (tmp.ngp3 && !tmp.ngp3l) thinkingReward.push("multiply dilated time gain based on replicanti")
+	if (NGP3andVanillaCheck()) thinkingReward.push("gain 2x more DT and TT while dilated")
+	thinkingReward = wordizeList(thinkingReward, true)
+
 	let thisisReward = [] // for the achievement "This is what I have to do to get rid of you."
 	if (!tmp.ngp3l) {
 		if (player.galacticSacrifice!==undefined) thisisReward.push("g23 is more effective based on your best IP in dilation")
-		if (tmp.newNGP3E) thisisReward.push("You gain 3x more DT while you produce less than "+shortenCosts(1e100)+" DT/second")
+		if (tmp.newNGP3E) thisisReward.push("you gain 3x more DT while you produce less than "+shortenCosts(1e100)+" DT/second")
 	}
 	thisisReward = wordizeList(thisisReward, true)
 
 	//ACHIEVEMENT ROW 13
+	unique.setAttribute('ach-tooltip', "Have 540 galaxies without having any Replicated galaxies." + (NGP3andVanillaCheck() ? " Reward: Gain a multiplier to Tachyon Particle and Dilated Time gain based on Antimatter Galaxies." : ""))
 	potato3.setAttribute('ach-tooltip', "Get more than "+shortenCosts(new Decimal("1e8296262"))+" ticks per second." + (player.galacticSacrifice !== undefined ? " Reward: The Galaxy boost to Galaxy points gain is buffed based on a specific value (~663 galaxies)." : ""))
 	infstuff.setAttribute('ach-tooltip', "Reach "+shortenCosts(new Decimal("1e140000"))+" IP without buying IDs or IP multipliers. Reward: You start eternities with all Infinity Challenges unlocked and completed" + (player.meta ? ", and your Infinity gain is multiplied by dilated time^(1/4)." : "."))
 	when.setAttribute('ach-tooltip', "Reach "+shortenCosts( new Decimal(tmp.ngex?"1e15000":"1e20000"))+" replicanti. Reward: You gain replicanti 2 times faster under " + shortenMoney(Number.MAX_VALUE) + " replicanti.")
-	thinking.setAttribute('ach-tooltip', "Eternity for " + shortenCosts( new Decimal("1e600")) + " EP in 1 minute or less while dilated." + (tmp.ngp3l ? "" : " Reward: Multiply dilated time gain based on replicanti."))
+	thinking.setAttribute('ach-tooltip', "Eternity for " + shortenCosts( new Decimal("1e600")) + " EP in 1 minute or less while dilated." + (thinking != "" ? " Reward: " + thinkingReward + "." : ""))
 	thisis.setAttribute('ach-tooltip', "Reach "+shortenCosts(new Decimal('1e20000'))+" IP without any time studies while dilated."+(thisisReward != "" ? " Reward: " + thisisReward + "." : ""))
 }
 
@@ -539,5 +545,8 @@ function setNGP3p1AchievementTooltip(){
 function setAchieveTooltip() { 
 	setPreNGP3AchievementTooltip()
 	if (tmp.ngp3) setPreNGP3p1AchievementTooltip()
-	if (!tmp.ngp3l) setNGP3p1AchievementTooltip()
+	if (!tmp.ngp3l) {
+		setNGP3p1AchievementTooltip()
+		setPostR23Tooltip()
+	}
 }

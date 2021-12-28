@@ -18,10 +18,14 @@ function getBaseDTProduction(){
 	let tp = player.dilation.tachyonParticles
 	let exp = getDTGainExp()
 	let gain = tp.pow(exp)
+	if (NGP3andVanillaCheck()) {
+		if (player.achievements.includes("r132")) gain = gain.times(Math.max(Math.pow(player.galaxies, 0.04), 1))
+		if (player.achievements.includes("r137") && player.dilation.active) gain = gain.times(2)
+	}
 	
 	if (player.exdilation != undefined) gain = gain.times(getNGUDTGain())
 	gain = gain.times(getEternityBoostToDT())
-	
+
 	if (player.dilation.upgrades.includes('ngpp6')) gain = gain.times(getDil17Bonus())
 	if (player.dilation.upgrades.includes('ngusp3')) gain = gain.times(getD22Bonus())
 	if (tmp.ngp3 && (!tmp.qu.bigRip.active || tmp.qu.bigRip.upgrades.includes(11))) {
@@ -39,14 +43,8 @@ function getDilTimeGainPerSecond() {
 	var lgain = gain.log10()
 	if (!tmp.ngp3l) lgain = softcap(lgain, "dt_log")
 	gain = Decimal.pow(10, lgain)
-	if (player.reality) {
-		if (player.dilation.upgrades.includes(12)) gain = gain.times(REALITY.dilations_eff[82]())
-		gain = gain.mul(SBEff[3]())
-	}
-	gain = gain.times(Decimal.pow(2, getDilUpgPower(1))).pow(player.reality?(player.reality.upgrades.includes(4)?1.5:1):1)
-	if (gain.gte(1e20)) gain = gain.div(1e20).pow(0.5).mul(1e20)
 	
-	return gain
+	return gain.times(Decimal.pow(2, getDilUpgPower(1)))	
 }
 
 function getDTGainExp(){
@@ -65,6 +63,10 @@ function getEternitiesAndDTBoostExp() {
 
 function getDilPower() {
 	var ret = Decimal.pow(getDil3Power(), getDilUpgPower(3))
+	if (NGP3andVanillaCheck()) {
+		if (player.achievements.includes("r132")) ret = ret.times(Math.max(Math.pow(player.galaxies, 0.04), 1))
+	}
+
 	if (player.dilation.upgrades.includes("ngud1")) ret = getD18Bonus().times(ret)
 	if (tmp.ngp3) {
 		if (player.achievements.includes("ng3p11") && !tmp.ngp3l) ret = ret.times(Math.max(getTotalRG() / 125, 1))
@@ -72,7 +74,6 @@ function getDilPower() {
 		if (GUBought("br1")) ret = ret.times(getBR1Effect())
 		if (player.masterystudies.includes("t341")) ret = ret.times(getMTSMult(341))
 	}
-	if (player.reality) if (player.reality.times > 0) ret = ret.times(100)
 	return ret
 }
 
@@ -200,7 +201,7 @@ function dilationPowerStrength() {
  */
 
 const DIL_UPGS = []
-const DIL_UPG_SIZES = [5, 8]
+const DIL_UPG_SIZES = [5, 7]
 const DIL_UPG_COSTS = {
 	r1: [1e5, 10, 1/0],
 	r2: [1e6, 100, 1/0],
@@ -215,8 +216,6 @@ const DIL_UPG_COSTS = {
 	  8: 1e10,
 	  9: 1e11,
 	  10: 1e15,
-	  11: 1e16,
-	  12: 1e26,
 	  ngud1: 1e20,
 	  ngud2: 1e25,
 	  ngpp1: 1e20,
@@ -274,8 +273,7 @@ const DIL_UPG_POS_IDS = {
 	51: "ngpp3", 52: "ngpp4", 53: "ngpp5",  55: "ngmm7",  54: "ngpp6",
 	71: "ngmm8", 72: "ngmm9", 73: "ngmm10", 74: "ngmm11", 75: "ngmm12",
 	41: 10,      42: "ngmm3", 43: "ngmm4",  44: "ngmm5",  45: "ngmm6",
-	61: "ngud1", 62: "ngud2", 63: "ngusp1", 64: "ngusp2", 65: "ngusp3",
-	81: 11, 82: 12,
+	61: "ngud1", 62: "ngud2", 63: "ngusp1", 64: "ngusp2", 65: "ngusp3"
 }
 
 const DIL_UPG_ID_POS = {}
@@ -329,10 +327,6 @@ function isDilUpgUnlocked(id) {
 		if (id != "ngusp1") r = r && player.dilation.studies.includes(6)
 		return r
 	}
-	if (player.reality) {
-		if (id = '81') return true
-		if (id = '82') return REALITY.milestones_req.can(2)
-	} else return false
 	return true
 }
 
@@ -419,16 +413,21 @@ function getPassiveTTGen() {
 	if (tmp.ngex) r *= .8
 	r /= (player.achievements.includes("ng3p51") ? 200 : 2e4)
 	if (isLEBoostUnlocked(6)) r *= tmp.leBonus[6]
-	if (player.reality) if (r > 1e40) r = (r/1e40)**0.25*1e40
 	return r
 }
 
 function getTTGenPart(x) {
 	if (!x) return new Decimal(0)
-	x = x.max(1).log10()
-	let y = player.aarexModifications.ngudpV && !player.aarexModifications.nguepV ? 73 : 80
-	if (x > y) x = Math.sqrt((x - y + 5) * 5) + y - 5
-	return Math.pow(10,x)
+	if (NGP3andVanillaCheck()) {
+		if (player.achievements.includes("r137") && player.dilation.active) x = x.times(2)
+	}
+	if (tmp.ngp3) {
+		x = x.max(1).log10()
+		let y = player.aarexModifications.ngudpV && !player.aarexModifications.nguepV ? 73 : 80
+		if (x > y) x = Math.sqrt((x - y + 5) * 5) + y - 5
+		x = Math.pow(10, x)
+	}
+	return x
 }
 
 function updateDilationUpgradeButtons() {
@@ -468,9 +467,6 @@ function updateDilationUpgradeButtons() {
 			document.getElementById("dil71desc").textContent = "Currently: ^" + shortenMoney(getDil71Mult())
 			document.getElementById("dil72desc").textContent = "Currently: " + shortenMoney(getDil72Mult()) + "x"
 		}
-	}
-	if (player.reality != undefined) {
-		document.getElementById("dil82desc").textContent = "Currently: " + shortenMoney(REALITY.dilations_eff[82]()) + "x"
 	}
 }
 

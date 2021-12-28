@@ -94,24 +94,19 @@ function bosonicLabReset() {
 
 function higgsReset() {
 	if (tmp.ngp3l) return
-	var oldHiggs = player.ghostify.hb.higgs
-	if (!player.ghostify.bl.am.gte(getHiggsRequirement())) return
-	if (!player.aarexModifications.higgsNoConf && !confirm("You will exchange all your Bosonic Lab stuff for Higgs Bosons. Everything that Light Empowerments resets initally will be reset. Are you ready to proceed?")) return
-	addHiggs(getHiggsGain())
-	bosonicLabReset()
-	if (oldHiggs == 0) {
-		updateNeutrinoBoosts()
-		updateHiggsUnlocks()
-		updateBosonicLimits()
-		updateBosonicStuffCosts()
+	if (!player.achievements.includes("ng3p102")) {
+		var oldHiggs = player.ghostify.hb.higgs
+		if (!player.ghostify.bl.am.gte(getHiggsRequirement())) return
+		if (!player.aarexModifications.higgsNoConf && !confirm("You will exchange all your Bosonic Lab stuff for Higgs Bosons. Everything that Light Empowerments resets initally will be reset. Are you ready to proceed?")) return
 	}
-	player.ghostify.hb.bosonicSemipowerment = true
-	matchTempPlayerHiggs()
-}
-
-function restartHiggs() {
-	if (!confirm("Restarting will act as a Higgs reset, but you won't gain anything. Are you sure you want to restart?")) return
-	bosonicLabReset()
+	addHiggs(getHiggsGain())
+	if (!player.achievements.includes("ng3p102")) bosonicLabReset()
+	if (oldHiggs == 0) {
+			updateNeutrinoBoosts()
+			updateHiggsUnlocks()
+			updateBosonicLimits()
+			updateBosonicStuffCosts()
+		}
 	player.ghostify.hb.bosonicSemipowerment = true
 	matchTempPlayerHiggs()
 }

@@ -100,26 +100,18 @@ function drawAnimations(ts){
 
 function drawTreeBranch(num1, num2) {
     if (document.getElementById("timestudies").style.display === "none") return
-    var name1 = 0
-    var name2 = 0
-    if (num1.includes("realstudy")) {
-        name1 = parseInt(num1.split("y")[1]);
-    } else name1 = parseInt(num1);
+    var name1 = parseInt(num1);
     var isECName = false;
     var isDilStudyName = false;
-    var isRealStudyName = false;
     if (num2.includes("ec")) {
         var a = num2.split("c")[1];
-        name2 = parseInt(a.split("u")[0]);
-        isECName = true;
+        var name2 = parseInt(a.split("u")[0]);
+        var isECName = true;
     } else if (num2.includes("dilstudy")) {
-        isDilStudyName = true;
-        name2 = parseInt(num2.split("y")[1]);
-    } else if (num2.includes("realstudy")) {
-        isRealStudyName = true;
-        name2 = parseInt(num2.split("y")[1]);
+        var isDilStudyName = true;
+        var name2 = parseInt(num2.split("y")[1]);
     } else {
-        name2 = parseInt(num2)
+        var name2 = parseInt(num2)
     }
     var start = document.getElementById(num1).getBoundingClientRect();
     var end = document.getElementById(num2).getBoundingClientRect();
@@ -129,14 +121,9 @@ function drawTreeBranch(num1, num2) {
     var y2 = end.top + (end.height / 2) + (document.documentElement.scrollTop || document.body.scrollTop);
     ctx.lineWidth=15;
     ctx.beginPath();
-    if ((player.timestudy.studies.includes(name1) && player.timestudy.studies.includes(name2) && !isECName)
-     || (player.timestudy.studies.includes(name1) && (player.eternityChallUnlocked === name2 && isECName))
-      || (player.dilation.studies.includes(name2-1) && (player.dilation.studies.includes(name2) && isDilStudyName))
-      || (isRealStudyName && player.reality.studies.includes(name2) && player.reality.studies.includes(name1))) {
+    if ((player.timestudy.studies.includes(name1) && player.timestudy.studies.includes(name2) && !isECName) || (player.timestudy.studies.includes(name1) && (player.eternityChallUnlocked === name2 && isECName)) || (player.dilation.studies.includes(name2-1) && (player.dilation.studies.includes(name2) && isDilStudyName))) {
         if (name2 == 6 && isDilStudyName && (player.options.theme == "Aarex's Modifications" || player.options.theme == "Aarex's Mods II")) {
             ctx.strokeStyle="#00E5E5";
-        } else if (isRealStudyName) {
-            ctx.strokeStyle="#EF6B06";
         } else if (name2 < 20 && isECName) {
             ctx.strokeStyle="#490066";
         } else if (name2 < 20) {
@@ -159,8 +146,6 @@ function drawTreeBranch(num1, num2) {
     } else {
         if (name2 == 6 && isDilStudyName && (player.options.theme == "Aarex's Modifications" || player.options.theme == "Aarex's Mods II")) {
             ctx.strokeStyle="#007272";
-        } else if (isRealStudyName) {
-            ctx.strokeStyle="#684022";
         } else if (name2 < 20) {
             ctx.strokeStyle="#4b3753";
         } else if (name2 == 71 || name2 == 81 || name2 == 91 || name2 == 101 || name1 == 101) {
@@ -277,56 +262,33 @@ function drawStudyTree() {
     drawTreeBranch("dilstudy2", "dilstudy3")
     drawTreeBranch("dilstudy3", "dilstudy4")
     drawTreeBranch("dilstudy4", "dilstudy5")
-    if (player.reality ? REALITY.milestones_req.can(4) : false) {
-        drawTreeBranch("dilstudy5", "realstudy11")
-        for (let r = 2; r <= RSRows; r++) {
-            for (let c = 1; c <= 10; c++) {
-                let id = r*10+c
-                if (RSBranch[id]) for (let x = 0; x < RSBranch[id].length; x++) drawTreeBranch("realstudy"+RSBranch[id][x], "realstudy"+id)
-            }
-        }
-    }
     if (player.meta) drawTreeBranch("dilstudy5", "dilstudy6")
     if (player.masterystudies) drawTreeBranch("dilstudy6", "masteryportal")
-    if (shiftDown) {
-        if (document.getElementById("eternitystore").style.display !== "none" && document.getElementById("timestudies").style.display !== "none") {
-            for (i=0; i<all.length; i++) {
-                var start = document.getElementById(all[i]).getBoundingClientRect();
-                var x1 = start.left + (start.width / 2) + (document.documentElement.scrollLeft || document.body.scrollLeft);
-                var y1 = start.top + (start.height / 2) + (document.documentElement.scrollTop || document.body.scrollTop);
-                ctx.fillStyle = 'white';
-                ctx.strokeStyle = 'black';
-                ctx.lineWidth = 3;
-                ctx.font = "15px Typewriter";
-                if (document.getElementById(all[i]).className.split(" ")[1] !== undefined || all[i] > 220) {
-                    var tempName = document.getElementById(all[i]).className.split(" ")[1];
-                    var name;
-                    if (all[i] == 222 || all[i] == 223 || all[i] == 226 || all[i] == 227 || all[i] == 232 || all[i] == 233) name = "dark"
-                    else if (all[i] == 221 || all[i] == 224 || all[i] == 225 || all[i] == 228 || all[i] == 231 || all[i] == 234) name = "light"
-                    else if (tempName.includes("normaldimstudy")) name = "normal dims"
-                    else if (tempName.includes("infdimstudy")) name = "infinity dims"
-                    else if (tempName.includes("timedimstudy")) name = "time dims"
-                    else if (tempName.includes("activestudy")) name = "active"
-                    else if (tempName.includes("passivestudy")) name = "passive"
-                    else if (tempName.includes("idlestudy")) name = "idle"
-                    ctx.strokeText(all[i]+" "+name, x1 - start.width / 2, y1 - start.height / 2 - 1);
-                    ctx.fillText(all[i]+" "+name, x1 - start.width / 2, y1 - start.height / 2 - 1);
-                } else {
-                    ctx.strokeText(all[i], x1 - start.width / 2, y1 - start.height / 2 - 1);
-                    ctx.fillText(all[i], x1 - start.width / 2, y1 - start.height / 2 - 1);
-                }
-            }
-            for (i=0; i < all_real.length; i++) {
-                var start = document.getElementById('realstudy'+all_real[i]).getBoundingClientRect();
-                var x1 = start.left + (start.width / 2) + (document.documentElement.scrollLeft || document.body.scrollLeft);
-                var y1 = start.top + (start.height / 2) + (document.documentElement.scrollTop || document.body.scrollTop);
-                ctx.fillStyle = 'white';
-                ctx.strokeStyle = 'black';
-                ctx.lineWidth = 3;
-                ctx.font = "15px Typewriter";
-
-                ctx.strokeText(all_real[i]+' reality', x1 - start.width / 2, y1 - start.height / 2 - 1);
-                ctx.fillText(all_real[i]+' reality', x1 - start.width / 2, y1 - start.height / 2 - 1);
+    if (shiftDown && document.getElementById("eternitystore").style.display !== "none" && document.getElementById("timestudies").style.display !== "none") {
+        for (i=0; i<all.length; i++) {
+            var start = document.getElementById(all[i]).getBoundingClientRect();
+            var x1 = start.left + (start.width / 2) + (document.documentElement.scrollLeft || document.body.scrollLeft);
+            var y1 = start.top + (start.height / 2) + (document.documentElement.scrollTop || document.body.scrollTop);
+            ctx.fillStyle = 'white';
+            ctx.strokeStyle = 'black';
+            ctx.lineWidth = 3;
+            ctx.font = "15px Typewriter";
+            if (document.getElementById(all[i]).className.split(" ")[1] !== undefined || all[i] > 220) {
+                var tempName = document.getElementById(all[i]).className.split(" ")[1];
+                var name;
+                if (all[i] == 222 || all[i] == 223 || all[i] == 226 || all[i] == 227 || all[i] == 232 || all[i] == 233) name = "dark"
+                else if (all[i] == 221 || all[i] == 224 || all[i] == 225 || all[i] == 228 || all[i] == 231 || all[i] == 234) name = "light"
+                else if (tempName.includes("normaldimstudy")) name = "normal dims"
+                else if (tempName.includes("infdimstudy")) name = "infinity dims"
+                else if (tempName.includes("timedimstudy")) name = "time dims"
+                else if (tempName.includes("activestudy")) name = "active"
+                else if (tempName.includes("passivestudy")) name = "passive"
+                else if (tempName.includes("idlestudy")) name = "idle"
+                ctx.strokeText(all[i]+" "+name, x1 - start.width / 2, y1 - start.height / 2 - 1);
+                ctx.fillText(all[i]+" "+name, x1 - start.width / 2, y1 - start.height / 2 - 1);
+            } else {
+                ctx.strokeText(all[i], x1 - start.width / 2, y1 - start.height / 2 - 1);
+                ctx.fillText(all[i], x1 - start.width / 2, y1 - start.height / 2 - 1);
             }
         }
     }

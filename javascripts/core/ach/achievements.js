@@ -229,14 +229,15 @@ const allAchievements = {
   ng3ps26 : "Deny the afterlife",
   ng3ps27 : "Revolution, when?",
   ng3ps28 : "Prestige No-lifer",
-  ngr11: 'Time is realistic',
-  ngr12: 'I not really buy time, because i had bad day',
-  ngr13: 'Finally pass first row',
-  ngr14: "This achievement doesn't exist 3.3",
-  ngr15: '10^^3',
-  ngr16: 'Mini-replicanti',
-  ngr17: 'Reality go brrr',
-  ngr18: 'Non-Free Tickspeed & Non-Free Multiplier',
+
+  ng3p101 : `The Layer of Recreation`,
+  ng3p102 : `Biggest Mistake`,
+  ng3p103 : `Double Quintillion`,
+  ng3p104 : `This achievement doesn't exist 5`,
+  ng3p105 : `When Infinity Replicanti`,
+  ng3p106 : `Not again?`,
+  ng3p107 : `Mega Boo!`,
+  ng3p108 : `Breaking Eternity is Fixed`,
 };
 const secretAchievementTooltips = {
 	s11 : "Click on this achievement.",
@@ -398,12 +399,7 @@ function updateAchievements() {
 		var shown=true
 		var rowid = i
 		var rownum = i
-        if (i > 24) {
-            shown = player.reality != undefined
-            rownum = i - 24
-            rowid = "ngr" + rownum
-        }
-		else if (i > 15) {
+		if (i > 15) {
 			shown =! (!player.masterystudies)
 			rownum = i - 15
 			if (rownum > 8) shown = shown && !tmp.ngp3l
@@ -430,18 +426,18 @@ function updateAchievements() {
 					else if (realAchNum == 41) realAchNum = 76
 				}
 				var achId = "r" + achNum
-                if (achNum > 250) achId="ngr" + (achNum - 240)
-				else if (achNum > 160) achId="ng3p" + (achNum - 150)
+				if (achNum > 160) achId="ng3p" + (achNum - 150)
 				else if (achNum > 150) achId = "ngpp" + (achNum - 140)
 				else if (achNum == 145) achId = "ngpp13"
 				else if (achNum == 147) achId = "ngpp18"
 				else if (achNum > 140) achId = "ngud" + (achNum - 130)
 				var name = allAchievements[achId]
+                if (!document.getElementById(name)) continue
 				if (player.achievements.includes(achId)) {
 					n++
-					document.getElementById(name).className = "achievementunlocked"
+					document.getElementById(name).className = "achievement achievementunlocked"
 				} else {
-					document.getElementById(name).className = "achievementlocked"
+					document.getElementById(name).className = "achievement achievementlocked"
 				}
 			}
 			if (n == 8) {

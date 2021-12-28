@@ -448,7 +448,6 @@ function doNGp3Init1(){
 	tmp.ngex=player.aarexModifications.ngexV!==undefined
 	tmp.newNGP3E=player.aarexModifications.newGameExpVersion!==undefined&&!tmp.ngp3l
 	setNonlegacyStuff()
-
 	transformSaveToDecimal();
 	tmp.tickUpdate = true;
 	updateAchievements();
@@ -623,7 +622,7 @@ function doNGM1Versions(){
 
 
 function doNGP3NewPlayerStuff(){
-        player.aarexModifications.newGame3PlusVersion = 2.3
+        player.aarexModifications.newGame3PlusVersion = 2.302
         player.respecMastery=false
         player.dbPower = 1
         player.dilation.times = 0
@@ -2061,6 +2060,8 @@ function updateNGp3DisplayStuff(){
                 document.getElementById("nextParticle").textContent = "To unlock the next particle (Higgs Bosons), you need to get " + shortenCosts(Decimal.pow(10, 2e17)) + " antimatter and " + shortenCosts(getHiggsRequirement()) + " Bosonic Antimatter first."
         }
         updateHiggsUnlocks()
+
+        updateGravitonsTab()
 }
 
 function setSomeQuantumAutomationDisplay(){
@@ -2072,12 +2073,12 @@ function setSomeQuantumAutomationDisplay(){
         document.getElementById("dil52formula").style.display = player.masterystudies == undefined || player.aarexModifications.nguspV !== undefined ? "none" : ""
         document.getElementById("exDilationDesc").innerHTML = player.aarexModifications.nguspV ? 'making galaxies <span id="exDilationBenefit" style="font-size:25px; color: black">0</span>% stronger in dilation.' : 'making dilation <span id="exDilationBenefit" style="font-size:25px; color: black">0</span>% less severe.'
         document.getElementById("metaAntimatterEffectType").textContent=inQC(3) ? "multiplier on all Infinity Dimensions" : "extra multiplier per Dimension Boost"
-        if (player.meta || player.reality) {
+        if (player.meta) {
                 document.getElementById('epmultauto').textContent="Auto: O"+(player.autoEterOptions.epmult?"N":"FF")
                 for (i=1;i<9;i++) document.getElementById("td"+i+'auto').textContent="Auto: O"+(player.autoEterOptions["td"+i]?"N":"FF")
         }
         document.getElementById('replicantibulkmodetoggle').textContent="Mode: "+(player.galaxyMaxBulk?"Max":"Singles")
-        document.getElementById('versionMod').textContent = tmp.ngp3l ? "NG+3: Legacy" : "New Game Plus 3"
+        document.getElementById('versionMod').textContent = tmp.ngp3l ? "NG+3: Legacy" : "NG+3.1"
         document.getElementById('versionDesc').style.display = tmp.ngp3 ? "" : "none"
         document.getElementById('sacrificeAuto').style.display=speedrunMilestonesReached>24?"":"none"
         document.getElementById('toggleautoquantummode').style.display=(player.masterystudies?tmp.qu.reachedInfQK||player.achievements.includes("ng3p25"):false)?"":"none"
@@ -2148,7 +2149,6 @@ function updateNGModeMessage(){
         if (player.aarexModifications.aau) ngModeMessages.push("You have applied the AAU 'mod', made by Apeirogon. This will unbalance many areas of the game, as you get all achievements available in your save. It is not recommended to choose this 'mod' for this reason, unless you want fast gameplay.")
         if (inflationCheck) ngModeMessages = ["I'm terribly sorry, but it seems there has been an inflation problem in your save, which is why this save file has been reset."]
         if (infiniteCheck) ngModeMessages = ["I'm terribly sorry, but there has been an Infinite bug detected within your save file, which is why said save file will get reset. Luckily, you can export your save before this reset. Thanks! :)"]
-        if (player.aarexModifications.ngrV) ngModeMessages = ["Welcome to NG+ Reality, created by MrRedShark77."]
         if (forceToQuantumAndRemove) {
                 quantum(false, true, 0)
                 ngModeMessages = ["Due to balancing changes, you are forced to quantum and reset your TT and your best TP, but you are given  " + shorten(setTTAfterQuantum) + " TT as compensation."]
@@ -2163,7 +2163,6 @@ function onLoad(noOffline) {
 	tmp.qu = player.quantum
 	ghostifyDenied = 0
 	setEverythingPreNGp3onLoad()
-        setRealityIfUndefined()
         setAarexModIfUndefined()
 	doNGp3Init1()
         setSaveStuffHTML()
@@ -2230,8 +2229,6 @@ function onLoad(noOffline) {
         updateLastTenGhostifies()
         onNotationChangeNeutrinos()
         setAchieveTooltip()
-        updateReality()
-        showRealityTab('realityupgrades')
         if (player.boughtDims) {
                 if (document.getElementById("timestudies").style.display=="block") showEternityTab("ers_timestudies",true)
                 updateGalaxyControl()
@@ -2241,7 +2238,7 @@ function onLoad(noOffline) {
         setAndMaybeShow('bestTPOverGhostifies',(player.achievements.includes("ng3p18") || player.achievements.includes("ng3p37")) && ghostified,'"Your best-ever Tachyon particles was "+shorten(player.dilation.bestTPOverGhostifies)+"."')
         document.getElementById('dilationmode').style.display=speedrunMilestonesReached>4?"":"none"
         document.getElementById('rebuyupgmax').style.display=speedrunMilestonesReached<26&&player.masterystudies?"":"none"
-        document.getElementById('rebuyupgauto').style.display=(speedrunMilestonesReached>6 || REALITY.milestones_req.can(6))?"":"none"
+        document.getElementById('rebuyupgauto').style.display=speedrunMilestonesReached>6?"":"none"
         document.getElementById('toggleallmetadims').style.display=speedrunMilestonesReached>7?"":"none"
         document.getElementById('metaboostauto').style.display=speedrunMilestonesReached>14?"":"none"
         document.getElementById("autoBuyerQuantum").style.display=speedrunMilestonesReached>22?"":"none"
@@ -2296,7 +2293,7 @@ function onLoad(noOffline) {
                 infiniteCheck = false
                 closeToolTip()
                 showNextModeMessage()
-        } else if (player.aarexModifications.popUpId!="STD") showNextModeMessage()
+        }  else showNextModeMessage()
         document.getElementById("ghostlyNewsTicker").style.height=((player.options.secrets!==undefined?player.options.secrets.ghostlyNews:false)?24:0)+"px"
         document.getElementById("ghostlyNewsTickerBlock").style.height=((player.options.secrets!==undefined?player.options.secrets.ghostlyNews:false)?16:0)+"px"
         updateTemp()
@@ -2923,7 +2920,22 @@ function conToDeciGhostify(){
         }
 }
 
+function deepUndefinedAndDecimal(obj, data) {
+        if (obj == null) return data
+        for (let x = 0; x < Object.keys(data).length; x++) {
+            let k = Object.keys(data)[x]
+            if (obj[k] === null) continue
+            if (obj[k] === undefined) obj[k] = data[k]
+            else {
+                if (Object.getPrototypeOf(data[k]).constructor.name == "Decimal") obj[k] = new Decimal(obj[k])
+                else if (typeof obj[k] == 'object') deepUndefinedAndDecimal(obj[k], data[k])
+            }
+        }
+        return obj
+}
+
 function transformSaveToDecimal() {
+
         conToDeciPreEter()
         player.eternities = nP(player.eternities)
         if (player.eternitiesBank !== undefined) player.eternitiesBank = nP(player.eternitiesBank)
@@ -2931,7 +2943,8 @@ function transformSaveToDecimal() {
         conToDeciLateEter()
         conToDeciMS()
         conToDeciGhostify()
-        conToDeciReality()
+
+        conToDeciPostNGP3()
 }
 
 

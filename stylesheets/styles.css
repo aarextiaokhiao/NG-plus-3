@@ -665,6 +665,13 @@ button {
     font-size: 11px;
 }
 
+
+
+.eternitybtn:hover {
+    color: #511568;
+    background: white;
+}
+
 #paradoxbtn {
 	background: radial-gradient(#7f007f, #ff00ff);
 	border: 2px solid #ff00ff;
@@ -768,221 +775,6 @@ button {
     background: white;
 }
 
-.realitytabbtn {
-    color: #FF8A33;
-    background: black;
-    border: 2px solid #FF8A33;
-    font-weight: bold;
-    border-radius: 4px;
-    transition-duration: 0.2s;
-    cursor: pointer;
-}
-
-.realitytabbtn:hover {
-    color: #FF6D00;
-    background: white;
-}
-
-.realitybtn {
-    border-radius: 4px;
-    transition-duration: 0.2s;
-    cursor: pointer;
-    position: absolute;
-    font-family: Typewriter;
-    color: #FF8A33;
-    background: black;
-    border: 2px solid #FF8A33;
-    cursor: pointer;
-    font-size: 11px;
-}
-
-.realitybtn:hover {
-    color: #FF6D00;
-    background: white;
-}
-
-#realitybtn {
-	cursor: pointer;
-	position: absolute;
-	transform: translate(-50%, 0);
-	top: 40px;
-	width: 210px;
-	height: 70px;
-}
-
-.realstudy {
-    color: #FF8A33;
-    background: black;
-    border: 1px solid #FF8A33;
-    font-weight: bold;
-    font-family: Typewriter;
-    width: 170px;
-    height: 80px;
-    transition-duration: 0.2s;
-    cursor: pointer;
-    border-radius: 4px;
-    font-size: 0.65rem;
-    vertical-align: top;
-    margin:7px;
-    animation: realstudyGlowIn 7s infinite;
-}
-
-.realstudy:hover {
-    color: #DADADA;
-    background: #793400;
-}
-
-.realstudylocked {
-    color: #181818;
-    background: #5F5F5F;
-    font-weight: bold;
-    font-family: Typewriter;
-    border: 1px solid #793400;
-    width: 170px;
-    height: 80px;
-    transition-duration: 0.2s;
-    border-radius: 4px;
-    font-size: 0.65rem;
-    vertical-align: top;
-    margin:7px;
-}
-
-.realstudylocked:hover {
-    color: #1D1D1D;
-    background: #660000;
-}
-
-.realstudybought {
-    color: #1E0D00;
-    background: #0BD251;
-    font-weight: bold;
-    font-family: Typewriter;
-    border: 1px solid #793400;
-    width: 170px;
-    height: 80px;
-    transition-duration: 0.2s;
-    border-radius: 4px;
-    font-size: 0.65rem;
-    vertical-align: top;
-    margin:7px;
-}
-
-.RPAmount {
-    font-weight: bold;
-}
-
-.RK {
-	position:absolute;
-	right:50%;
-	transform:translate(150px,0);
-	width:300px;
-	font-size:12px;
-}
-
-.realityupbtn {
-    color: #FF8A33;
-    background: black;
-    font-weight: bold;
-    font-size: 10px;
-    border: 1px solid #FF8A33;
-    width: 190px;
-    height: 90px;
-    transition-duration: 0.2s;
-    cursor: pointer;
-    border-radius: 4px;
-    font-family: Typewriter;
-}
-
-.realityupbtn:hover {
-    color: #FF6D00;
-    background: white;
-}
-
-.realityupbtnlocked {
-    color: #181818;
-    background: #5F5F5F;
-    font-weight: bold;
-    font-size: 10px;
-    border: 1px solid #FF8A33;
-    width: 190px;
-    height: 90px;
-    transition-duration: 0.2s;
-    border-radius: 4px;
-    font-family: Typewriter;
-    cursor: pointer;
-}
-
-.realityupbtnlocked:hover {
-    background: #737373;
-}
-
-.realityupbtnbought {
-    color: #FF6D00;
-    background: #5AC467;
-    font-weight: bold;
-    font-size: 10px;
-    border: 1px solid #FF8A33;
-    width: 190px;
-    height: 90px;
-    transition-duration: 0.2s;
-    border-radius: 4px;
-    font-family: Typewriter;
-}
-
-.sbooster {
-    width: 30%;
-    text-align: center;
-}
-
-.realchallengediv {
-    display:table;
-    text-align:center;
-    width: 350px;
-    height: 105px;
-    color: #FF8A33;
-    background: black;
-    font-weight: bold;
-    font-family: Typewriter;
-    border: 3px solid #FF8A33;
-    border-radius: 10px;
-    font-size: 80%;
-    transition-duration: 0.2s;
-    padding: 2px;
-    margin: 3px 8px;
-    position: relative;
-}
-
-.chosenbtn2 {
-    width: 120px;
-	height: 25px;
-	background: #3A7F42;
-	border: 1px solid #127A20;
-	border-radius: 4px;
-	font-size: 13px;
-	font-weight: bold;
-    font-family: Typewriter;
-	transition-duration: 0.2s
-}
-
-.gainrpmilestone {
-    color: #181818;
-    background: #5F5F5F;
-    font-weight: bold;
-    font-size: 12px;
-    border: 1px solid #FF8A33;
-    width: 250px;
-    height: 175px;
-    transition-duration: 0.2s;
-    border-radius: 4px;
-    font-family: Typewriter;
-    text-align: center;
-}
-
-.gainrpmilestone.unlocked {
-    background: #FF8A33;
-    border: 1px solid black;
-}
-
 .quantumbtn {
     color: #32c832;
     background: #0a640a;
@@ -1028,8 +820,7 @@ button {
 .achievement {
 	font-size: 10px !important;
 	color: #ffffff !important;
-	text-shadow: 0px 0px 1px #000000, 0px 0px 1px #000000, 0px 0px 1px #000000;
-    background-size: contain;
+	text-shadow: 0px 0px 1px #000000, 0px 0px 1px #000000, 0px 0px 1px #000000
 }
 
 .achievementhidden {
@@ -1064,7 +855,6 @@ button {
 .achievementunlocked {
     border: 2px solid #127A20;
     background: #5AC467;
-    color: black;
     width: 104px;
     height: 104px;
     border-radius: 8px;
@@ -1736,7 +1526,7 @@ button {
     font-size: 12px;
 }
 
-.wideRow .timestudy, .wideRow .timestudylocked, .wideRow .timestudybought, .wideRow .realstudy, .wideRow .realstudylocked, .wideRow .realstudybought {
+.wideRow .timestudy, .wideRow .timestudylocked, .wideRow .timestudybought {
 	margin: 1px;
 	width: 120px;
 	font-size: 0.55rem;
@@ -1877,13 +1667,14 @@ button {
 }
 
 [ach-tooltip]:before {
+    font-weight: normal;
     position: absolute;
     bottom: 100%;
     left: 50%;
     margin-bottom: 5px;
-    margin-left: -80px;
+    margin-left: -150px;
     padding: 7px;
-    width: 160px;
+    width: 300px;
     -webkit-border-radius: 3px;
     -moz-border-radius: 3px;
     border-radius: 3px;
@@ -2927,6 +2718,58 @@ td.subFactorH {
 	color: #bf0000
 }
 
+.h1 {
+    font-size: 35px;
+    color: black;
+}
+
+.h2 {
+    font-size: 25px;
+    color: black;
+}
+
+.gravitonupg {
+    color: #3359FF;
+    background: black;
+    border: 1px solid #3359FF;
+    box-shadow: inset 0px 0px 20px 0px #3359FF;
+
+    font-family: Typewriter;
+    font-weight: bold;
+    width: 210px;
+    height: 100px;
+    transition-duration: 0.2s;
+    border-radius: 4px;
+    font-size: 10px;
+    cursor: pointer;
+}
+
+.gravitonupg:not(.upg_locked):not(.upg_bought):hover {
+    color: white;
+    background: #3359FF;
+}
+
+.upg_locked {
+    color: #000000;
+    background: #A3A3A3;
+    border: 1px solid #B84B5F;
+    box-shadow: none;
+
+    cursor: default;
+}
+
+.upg_locked:hover {
+    color: #000000;
+    background: #B84B5F;
+}
+
+.gravitonupg.upg_bought {
+    color: white;
+    background: #0C143A;
+
+    cursor: default;
+}
+
 @media print,
 screen and (max-width: 960px) {
     div.wrapper {
@@ -3003,12 +2846,6 @@ screen and (max-width: 480px) {
     0%  {box-shadow: inset 0px 0px 3px 0px #b341e0;}
     50% {box-shadow: inset 0px 0px 15px 0px #b341e0;}
     100%  {box-shadow: inset 0px 0px 3px 0px #b341e0;}
-}
-
-@keyframes realstudyGlowIn {
-    0%  {box-shadow: inset 0px 0px 3px 0px #FF8A33;}
-    50% {box-shadow: inset 0px 0px 15px 0px #FF8A33;}
-    100%  {box-shadow: inset 0px 0px 3px 0px #FF8A33;}
 }
 
 @keyframes normalDimStudyGlowIn {

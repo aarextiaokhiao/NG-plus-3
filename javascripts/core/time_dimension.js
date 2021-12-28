@@ -9,6 +9,7 @@ function getBreakEternityTDMult(tier){
 	if (tier == 6 && player.ghostify.ghostlyPhotons.unl) ret = ret.times(tmp.le[6])
 	if (tier == 7 && tmp.qu.bigRip.upgrades.includes(16)) ret = ret.times(tmp.bru[16])
 	if (tier == 8 && player.achievements.includes("ng3p62") && !tmp.ngp3l) ret = ret.pow(Math.log10(player.ghostify.time/10+1)/100+1)
+	if (hasGravUpg(9)) ret = ret.pow(1.25)
 	if (ret.lt(0)) ret = new Decimal(0)
 	return dilates(ret)
 }
@@ -70,7 +71,7 @@ function calcVanillaTSTDMult(tier){
 }
 
 function getTimeDimensionPower(tier) {
-	if (player.currentEternityChall == "eterc11" || RChals.in(2)) return new Decimal(1)
+	if (player.currentEternityChall == "eterc11") return new Decimal(1)
 	if (tmp.be) return getBreakEternityTDMult(tier)
 	var dim = player["timeDimension" + tier]
 	var ret = dim.power.pow(player.boughtDims ? 1 : 2)
@@ -87,8 +88,6 @@ function getTimeDimensionPower(tier) {
 	if (player.galacticSacrifice === undefined) ret = ret.times(ret2)
 	ret = ret.times(calcVanillaTSTDMult(tier))
 
-	if (player.reality) ret = ret.times(REALITY.exp.effect())
-
 	if (ECTimesCompleted("eterc10") !== 0) ret = ret.times(getECReward(10))
 	if (player.achievements.includes("r128")) ret = ret.times(Math.max(player.timestudy.studies.length, 1))
 	if (player.galacticSacrifice !== undefined && player.galacticSacrifice.upgrades.includes(43)) ret = ret.times(galMults.u43())
@@ -103,15 +102,15 @@ function getTimeDimensionPower(tier) {
 	if (player.dilation.upgrades.includes("ngmm2") && player.dilation.upgrades.includes(5) && player.replicanti.amount.gt(1)) ret = ret.times(tmp.rm.pow(0.1))
 	if (player.dilation.upgrades.includes("ngmm8")) ret = ret.pow(getDil71Mult())
 
-	if (player.reality) if (RChals.getCompletions(1)>0) ret = ret.pow(RChals.reward[1].eff())
+	if (hasGravUpg(9)) ret = ret.pow(1.25)
 
 	return ret
 }
 
 function getTimeDimensionProduction(tier) {
-  	if (player.currentEternityChall == "eterc1" || player.currentEternityChall == "eterc10" || (!tmp.be && inQC(8)) || RChals.in(1)) return new Decimal(0)
+  	if (player.currentEternityChall == "eterc1" || player.currentEternityChall == "eterc10" || (!tmp.be && inQC(8))) return new Decimal(0)
   	var dim = player["timeDimension" + tier]
-  	if (player.currentEternityChall == "eterc11" || RChals.in(2)) return dim.amount
+  	if (player.currentEternityChall == "eterc11") return dim.amount
   	var ret = dim.amount
   	if (inQC(4) && tier == 1) ret = ret.plus(player.timeDimension2.amount.floor())
   	ret = ret.times(getTimeDimensionPower(tier))
@@ -119,7 +118,7 @@ function getTimeDimensionProduction(tier) {
   	if (player.currentEternityChall == "eterc7") ret = dilates(ret.dividedBy(player.tickspeed.dividedBy(1000)))
   	if (player.aarexModifications.ngmX>3&&(tier>1||!player.achievements.includes("r12"))) ret = ret.div(100)
   	if (player.aarexModifications.ngexV) ret = ret.div(10 / tier)
-  	if (player.currentEternityChall == "eterc1" || RChals.in(1)) return new Decimal(0)
+  	if (player.currentEternityChall == "eterc1") return new Decimal(0)
   	return ret
 }
 

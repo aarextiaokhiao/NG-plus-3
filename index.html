@@ -46,13 +46,6 @@
 			<div class="EP" id="galaxyPoints2">You have <span class='GPAmount'>0</span> Galaxy points.</div>
 			<span id="sacpos" class="eterpos"><button id="sacrificebtn" class="storebtn" onclick="galacticSacrifice()"></button></span>
 		</div>
-		<div style="position: relative" id="realityBlock2">
-			<div class="RK" id="realityPoints1">You have <span class='RPAmount'>0</span> Reality points and<br><span class='RPAmount'>0</span> Reality shards.</div>
-			<button id="realitybtn" class="realitybtn" onclick="reality()">
-				<div style="font-weight:bold" id="realirtbtnFlavor"></div>
-				<div id="realitybtnRPGain"></div>
-			</button>
-		</div>
 		<div style="position: relative">
 			<div class="QK">
 				<div id="quarks"></div>
@@ -79,7 +72,6 @@
 			</button>
 		</div>
 		<div id='quantumBlock' style='height:120px'></div>
-		<div id='realityBlock' style='height:120px'></div>
 		<div id="matter"></div>
 		<div id="chall13Mult"></div>
 		<div id="c14Resets"></div>
@@ -111,8 +103,7 @@
 			<button id="galaxybtn" style="font-family: Typewriter; font-size: 20px; display: none" onclick='showTab("galaxy")'>Galaxy</button>
 			<button id="infinitybtn" style="font-family: Typewriter; font-size: 20px; display: none" class="infinitybtn" onclick="showTab('infinity')">Infinity</button>
 			<button id="eternitystorebtn" style="font-family: Typewriter; font-size: 20px; display: none" class="eternitytabbtn" onclick="showTab('eternitystore')">Eternity</button>
-			<button id="realitystorebtn" style="font-family: Typewriter; font-size: 20px; display: none;" class="realitytabbtn" onclick="showTab('reality')">Reality</button>
-			<button id="quantumtabbtn" style="font-family: Typewriter; font-size: 20px; display: none;" class="quantumbtn" onclick='showTab("quantumtab")'>Quantum</button>
+			<button id="quantumtabbtn" style="font-family: Typewriter; font-size: 20px; display: none" class="quantumbtn" onclick='showTab("quantumtab")'>Quantum</button>
 			<button id="ghostifytabbtn" style="font-family: Typewriter; font-size: 20px" class="ghostifybtn" onclick='showTab("ghostify")'>Ghostify</button>
 		</div>
 		<div id="emptiness" class="tab" style="font-size: 150%">
@@ -130,6 +121,7 @@
 					<td id="dilationTabbtn"><button class="secondarytabbtn" onclick="showEternityTab('dilation')">Time Dilation</button></td>
 					<td id="blackHoleTabbtn"><button class="secondarytabbtn" onclick="showEternityTab('blackhole')">Black hole</button></td>
 					<td id="breakEternityTabbtn"><button class="secondarytabbtn" onclick="showEternityTab('breakEternity')">Break Eternity</button></td>
+					<td id="breakDilationTabbtn"><button class="secondarytabbtn" onclick="showEternityTab('breakDilation')">Break Dilation</button></td>
 					<td id="autoEternityTabbtn"><button class="secondarytabbtn" onclick="showEternityTab('autoEternity')">Auto-Eternity</button></td>
 				</tr>
 			</table>
@@ -138,11 +130,9 @@
 				<tr>
 					<td><button class="storebtn" onclick="exportStudyTree()" style="width:150px; height: 40px; font-size: 10px; margin: auto">Export tree</button><td>
 					<td><button class="storebtn" onclick="respecToggle()" id="respec" style="width:150px; height: 40px; font-size: 10px; margin: auto">Respec time studies on next Eternity</button><td>
-					<td><button class="storebtn" onclick="respecRealityToggle()" id="respecReality" style="width:150px; height: 40px; font-size: 10px; margin: auto">Respec reality studies on next Reality</button></td>
 					<td><button class="storebtn" onclick="importStudyTree()" style="width:150px; height: 40px; font-size: 10px; margin: auto">Import tree</button><td>
 				</tr>
 				<button class="storebtn" onclick="respecMasteryToggle()" id="respecMastery" style="width:150px; height: 40px; font-size: 10px; margin: auto">Respec mastery studies on next Eternity</button>
-				
 				<button class="storebtn" onclick="fillAll()" id="fillAll" style="width:150px; height: 40px; font-size: 10px; margin: auto">Buy all time studies</button>
 				<table class="table" id="studytable">
 					<tr>
@@ -344,69 +334,11 @@
 				<table class="table" id="studytable">
 					<tr>
 						<td><button class="timestudylocked" id="dilstudy6" onclick="buyDilationStudy(6, getMetaUnlCost())">Unlock Meta Dimensions<span>Cost: <span id="metaCost" style="display: inline;">1e24</span> Time Theorems</button></td>
-						<td><button class="realstudylocked" id="realstudy11">Good luck<span>Cost: <span id="realstudycost11" style="display: inline;">1e20</span></button></td>
 					</tr>
 				</table>
 				<table class="table" id="studytable">
 					<tr>
 						<td><button class="dilationupg" id="masteryportal" onclick="enterMasteryPortal()"></button></td>
-						<td><button class="realstudylocked" id="realstudy21">Unlock the ability to pick all time studies before reality studies.<span>Cost: <span id="realstudycost21" style="display: inline;">2e20</span></button></td>
-						<td><button class="realstudylocked" id="realstudy22" style="font-size: 0.6rem;">Max replicanti galaxy upgrade cost is rooted based on EP.<span id="realstudydesc22"></span><span>Cost: <span id="realstudycost22" style="display: inline;">2e20</span></button></td>
-					</tr>
-				</table>
-				<table>
-					<tr>
-						<td><button class="realstudylocked" id="realstudy31" style="font-size: 0.6rem;">Replicanti effect are raised based on Exponential.<span id="realstudydesc31"></span><span>Cost: <span id="realstudycost31" style="display: inline;"></span></button></td>
-						<td><button class="realstudylocked" id="realstudy32">Replicanti chance are raised by ^10.<span>Cost: <span id="realstudycost32" style="display: inline;"></span></button></td>
-						<td><button class="realstudylocked" id="realstudy33">Galaxies are 15% stronger.<span>Cost: <span id="realstudycost33" style="display: inline;"></span></button></td>
-						<td><button class="realstudylocked" id="realstudy34">Sacrifice scales 25% stronger.<span>Cost: <span id="realstudycost34" style="display: inline;"></span></button></td>
-					</tr>
-				</table>
-				<table>
-					<tr>
-						<td><button class="realstudylocked" id="realstudy41">Exponential grows x4 faster.<span>Cost: <span id="realstudycost41" style="display: inline;"></span></button></td>
-						<td><button class="realstudylocked" id="realstudy42">Galaxies are 1% more stronger for each 100 total non-free RGs.<span>Cost: <span id="realstudycost42" style="display: inline;"></span></button></td>
-					</tr>
-				</table>
-				<table>
-					<tr>
-						<td><button class="realstudylocked" id="realstudy51">Keep max replicanti galaxies bought on Eternity.<span>Cost: <span id="realstudycost51" style="display: inline;"></span></button></td>
-					</tr>
-				</table>
-				<table>
-					<tr>
-						<td><button class="realstudylocked" id="realstudy61">Unlock Shard Booster. <i>(Can't respec this)</i><span>Cost: <span id="realstudycost61" style="display: inline;"></span></button></td>
-					</tr>
-				</table>
-				<table>
-					<tr>
-						<td><button class="realstudylocked" id="realstudy71">Upgrade reality study 51 from Eternity to Reality.<span>Cost: <span id="realstudycost71" style="display: inline;"></span></button></td>
-						<td><button class="realstudylocked" id="realstudy72">Gain x10 more Reality Shards.<span>Cost: <span id="realstudycost72" style="display: inline;"></span></button></td>
-						<td><button class="realstudylocked" id="realstudy73">Exponential grows x2 faster beyond 1e1000.<span>Cost: <span id="realstudycost73" style="display: inline;"></span></button></td>
-						<td><button class="realstudylocked" id="realstudy74" style="font-size: 0.6rem;">Gain more Shard Parts based on unspent Reality Points.<span id="realstudydesc74"></span><span>Cost: <span id="realstudycost74" style="display: inline;"></span></button></td>
-						<td><button class="realstudylocked" id="realstudy75" style="font-size: 0.6rem;">Raise replicanti chance based on total shard boosters.<span id="realstudydesc75"></span><span>Cost: <span id="realstudycost75" style="display: inline;"></span></button></td>
-					</tr>
-				</table>
-				<table>
-					<tr>
-						<td><button class="realstudylocked" id="realstudy81" style="font-size: 0.6rem;">Gain more Reality Shards based on total shard boosters.<span id="realstudydesc81"></span><span>Cost: <span id="realstudycost81" style="display: inline;"></span></button></td>
-						<td><button class="realstudylocked" id="realstudy82">The best Reality Shards requirement for the next shard booster is reduced.<span>Cost: <span id="realstudycost82" style="display: inline;"></span></button></td>
-						<td><button class="realstudylocked" id="realstudy83" style="font-size: 0.6rem;">Infinity parts boost Normal parts gain.<span id="realstudydesc83"></span><span>Cost: <span id="realstudycost83" style="display: inline;"></span></button></td>
-					</tr>
-				</table>
-				<table>
-					<tr>
-						<td><button class="realstudylocked" id="realstudy91" style="font-size: 0.6rem;">Unlock Reality Challenge. <i>(Can't respec this)</i><span>Require: e200,000,000,000 antimatter<span>Cost: <span id="realstudycost91" style="display: inline;"></span></button></td>
-					</tr>
-				</table>
-				<table>
-					<tr>
-						<td><button class="realstudylocked" id="realstudy101" style="font-size: 0.6rem;">Total shard boosters boost parts gain.<span id="realstudydesc101"></span><span>Cost: <span id="realstudycost101" style="display: inline;"></span></button></td>
-						<td><button class="realstudylocked" id="realstudy102" style="font-size: 0.6rem;">Gain more RS based on unspent RP.<span id="realstudydesc102"></span><span>Cost: <span id="realstudycost102" style="display: inline;"></span></button></td>
-						<td>
-							<button class="realstudylocked" id="realstudy103">Max replicanti galaxies are 12.5% effective.<span>Cost: <span id="realstudycost103" style="display: inline;"></span></button><br>
-							<button class="realstudylocked" id="realstudy104" style="font-size: 0.55rem;">Galaxy cost scaling starts galaxies later based on total gained galaxies from dilated time.<span id="realstudydesc104"></span><span>Cost: <span id="realstudycost104" style="display: inline;"></span></button>
-						</td>
 					</tr>
 				</table>
 				<div style="height: 60px;"></div>
@@ -415,10 +347,11 @@
 						<tr>
 							<td>
 								<div style="text-align:center">
+									<a href="http://raw.githack.com/aarextiaokhiao/IvarK.github.io/v3.0-Respecced/" target="_newtab">NG+3R</a> |-|
 									<a href="howto.html" target="_newtab">How to play</a> |
 									<a href="about.html" target="_newtab">About</a> |
 									<a href="donate.html" onclick="giveAchievement('A sound financial decision')" target="_newtab">Donate</a> |
-									<a href="http://discord.gg/h9mDese" target="_newtab">Discord</a>
+									<a href="http://discord.gg/KsjcgskgTj" target="_newtab">Discord</a>
 								</div>
 							</td>
 						</tr>
@@ -476,10 +409,11 @@
 						<tr>
 							<td>
 								<div style="text-align:center">
+									<a href="http://raw.githack.com/aarextiaokhiao/IvarK.github.io/v3.0-Respecced/" target="_newtab">NG+3R</a> |-|
 									<a href="howto.html" target="_newtab">How to play</a> |
 									<a href="about.html" target="_newtab">About</a> |
 									<a href="donate.html" onclick="giveAchievement('A sound financial decision')" target="_newtab">Donate</a> |
-									<a href="http://discord.gg/h9mDese" target="_newtab">Discord</a>
+									<a href="http://discord.gg/KsjcgskgTj" target="_newtab">Discord</a>
 								</div>
 							</td>
 						</tr>
@@ -664,10 +598,11 @@
 						<tr>
 							<td>
 								<div style="text-align:center">
+									<a href="http://raw.githack.com/aarextiaokhiao/IvarK.github.io/v3.0-Respecced/" target="_newtab">NG+3R</a> |-|
 									<a href="howto.html" target="_newtab">How to play</a> |
 									<a href="about.html" target="_newtab">About</a> |
 									<a href="donate.html" onclick="giveAchievement('A sound financial decision')" target="_newtab">Donate</a> |
-									<a href="http://discord.gg/h9mDese" target="_newtab">Discord</a>
+									<a href="http://discord.gg/KsjcgskgTj" target="_newtab">Discord</a>
 								</div>
 							</td>
 						</tr>
@@ -729,10 +664,11 @@
 						<tr>
 							<td>
 								<div style="text-align:center">
+									<a href="http://raw.githack.com/aarextiaokhiao/IvarK.github.io/v3.0-Respecced/" target="_newtab">NG+3R</a> |-|
 									<a href="howto.html" target="_newtab">How to play</a> |
 									<a href="about.html" target="_newtab">About</a> |
 									<a href="donate.html" onclick="giveAchievement('A sound financial decision')" target="_newtab">Donate</a> |
-									<a href="http://discord.gg/h9mDese" target="_newtab">Discord</a>
+									<a href="http://discord.gg/KsjcgskgTj" target="_newtab">Discord</a>
 								</div>
 							</td>
 						</tr>
@@ -859,10 +795,11 @@
 						<tr>
 							<td>
 								<div style="text-align:center">
+									<a href="http://raw.githack.com/aarextiaokhiao/IvarK.github.io/v3.0-Respecced/" target="_newtab">NG+3R</a> |-|
 									<a href="howto.html" target="_newtab">How to play</a> |
 									<a href="about.html" target="_newtab">About</a> |
 									<a href="donate.html" onclick="giveAchievement('A sound financial decision')" target="_newtab">Donate</a> |
-									<a href="http://discord.gg/h9mDese" target="_newtab">Discord</a>
+									<a href="http://discord.gg/KsjcgskgTj" target="_newtab">Discord</a>
 								</div>
 							</td>
 						</tr>
@@ -1044,25 +981,16 @@
 						</td>
 					</tr>
 				</table>
-				<table>
-					<tr>
-						<td>
-							<button id="dil81" onclick="buyDilationUpgrade(81)">Unlock the ability to pick all the study paths from the second split.<br><span id="dil81cost"></span></button>
-						</td>
-						<td>
-							<button id="dil82" onclick="buyDilationUpgrade(82)">Gain more Dilated time based on unspent Time theorems.<br><span id="dil82desc"></span><br><span id="dil82cost"></span></button>
-						</td>
-					</tr>
-				</table>
 				<div>
 					<table id="footer">
 						<tr>
 							<td>
 								<div style="text-align:center">
+									<a href="http://raw.githack.com/aarextiaokhiao/IvarK.github.io/v3.0-Respecced/" target="_newtab">NG+3R</a> |-|
 									<a href="howto.html" target="_newtab">How to play</a> |
 									<a href="about.html" target="_newtab">About</a> |
 									<a href="donate.html" onclick="giveAchievement('A sound financial decision')" target="_newtab">Donate</a> |
-									<a href="http://discord.gg/h9mDese" target="_newtab">Discord</a>
+									<a href="http://discord.gg/KsjcgskgTj" target="_newtab">Discord</a>
 								</div>
 							</td>
 						</tr>
@@ -1140,15 +1068,19 @@
 						<tr>
 							<td>
 								<div style="text-align:center">
+									<a href="http://raw.githack.com/aarextiaokhiao/IvarK.github.io/v3.0-Respecced/" target="_newtab">NG+3R</a> |-|
 									<a href="howto.html" target="_newtab">How to play</a> |
 									<a href="about.html" target="_newtab">About</a> |
 									<a href="donate.html" onclick="giveAchievement('A sound financial decision')" target="_newtab">Donate</a> |
-									<a href="http://discord.gg/h9mDese" target="_newtab">Discord</a>
+									<a href="http://discord.gg/KsjcgskgTj" target="_newtab">Discord</a>
 								</div>
 							</td>
 						</tr>
 					</table>
 				</div>
+			</div>
+			<div class="eternitytab" id="breakDilation" style="font-size: 11px">
+				<div id="bdUnl"></div>
 			</div>
 			<div class="eternitytab" id="blackhole" style="font-size: 11px">
 				<br>
@@ -1249,10 +1181,11 @@
 						<tr>
 							<td>
 								<div style="text-align:center">
+									<a href="http://raw.githack.com/aarextiaokhiao/IvarK.github.io/v3.0-Respecced/" target="_newtab">NG+3R</a> |-|
 									<a href="howto.html" target="_newtab">How to play</a> |
 									<a href="about.html" target="_newtab">About</a> |
 									<a href="donate.html" onclick="giveAchievement('A sound financial decision')" target="_newtab">Donate</a> |
-									<a href="http://discord.gg/h9mDese" target="_newtab">Discord</a>
+									<a href="http://discord.gg/KsjcgskgTj" target="_newtab">Discord</a>
 								</div>
 							</td>
 						</tr>
@@ -1309,10 +1242,11 @@
 						<tr>
 							<td>
 								<div style="text-align:center">
+									<a href="http://raw.githack.com/aarextiaokhiao/IvarK.github.io/v3.0-Respecced/" target="_newtab">NG+3R</a> |-|
 									<a href="howto.html" target="_newtab">How to play</a> |
 									<a href="about.html" target="_newtab">About</a> |
 									<a href="donate.html" onclick="giveAchievement('A sound financial decision')" target="_newtab">Donate</a> |
-									<a href="http://discord.gg/h9mDese" target="_newtab">Discord</a>
+									<a href="http://discord.gg/KsjcgskgTj" target="_newtab">Discord</a>
 								</div>
 							</td>
 						</tr>
@@ -1818,10 +1752,11 @@
 					<tr>
 						<td>
 							<div style="text-align:center">
+								<a href="http://raw.githack.com/aarextiaokhiao/IvarK.github.io/v3.0-Respecced/" target="_newtab">NG+3R</a> |-|
 								<a href="howto.html" target="_newtab">How to play</a> |
 								<a href="about.html" target="_newtab">About</a> |
 								<a href="donate.html" onclick="giveAchievement('A sound financial decision')" target="_newtab">Donate</a> |
-								<a href="http://discord.gg/h9mDese" target="_newtab">Discord</a>
+								<a href="http://discord.gg/KsjcgskgTj" target="_newtab">Discord</a>
 							</div>
 						</td>
 					</tr>
@@ -1900,20 +1835,21 @@
 			<p id='versionDesc'>
 				You are playing <span id='versionMod'></span>.
 				<br>
-				Created by Aarex with help from pg132 and usavictor.
-				<br>
-				<br>
-				(Update v2.3: The NG+3.1 & Higgs update)
+				Created by Aarex with help from pg132 and usavictor, MrRedShark77.
+				<br><br>
+				(Update v2.4: No, more updates!)
+				<br><br>
 			</p>
 			<div id="footercontainer">
 				<table id="footer" style="display: table !important">
 					<tr>
 						<td>
 							<div style="text-align:center">
+								<a href="http://raw.githack.com/aarextiaokhiao/IvarK.github.io/v3.0-Respecced/" target="_newtab">NG+3R</a> |-|
 								<a href="howto.html" target="_newtab">How to play</a> |
 								<a href="about.html" target="_newtab">About</a> |
 								<a href="donate.html" onclick="giveAchievement('A sound financial decision')" target="_newtab">Donate</a> |
-								<a href="http://discord.gg/h9mDese" target="_newtab">Discord</a>
+								<a href="http://discord.gg/KsjcgskgTj" target="_newtab">Discord</a>
 							</div>
 						</td>
 					</tr>
@@ -2142,10 +2078,11 @@
 					<tr>
 						<td>
 							<div style="text-align:center">
+								<a href="http://raw.githack.com/aarextiaokhiao/IvarK.github.io/v3.0-Respecced/" target="_newtab">NG+3R</a> |-|
 								<a href="howto.html" target="_newtab">How to play</a> |
 								<a href="about.html" target="_newtab">About</a> |
 								<a href="donate.html" onclick="giveAchievement('A sound financial decision')" target="_newtab">Donate</a> |
-								<a href="http://discord.gg/h9mDese" target="_newtab">Discord</a>
+								<a href="http://discord.gg/KsjcgskgTj" target="_newtab">Discord</a>
 							</div>
 						</td>
 					</tr>
@@ -2162,7 +2099,7 @@
 			<div id="normalachievements" class="achtab">
 				<div id="achmultlabel" style="font-size: 140%">Current achievement multiplier on each Dimension: 1x</div>
 				<div id="metaAchMultLabel" style="font-size: 140%">Achievement multiplier to Meta Dimensions: 1x</div>
-				<table id="achievementtable" style="margin: auto">
+				<table id="achievementtable" style="margin: auto; font-weight: bold;">
 					<tr id="achRow1">
 						<td>
 							<div id="You gotta start somewhere" class="achievement achievementlocked" style="background-image: url(images/1.png)" ach-tooltip="Buy a single First Dimension."><br></div>
@@ -2480,7 +2417,7 @@
 								<div id="No ethical consumption" class="achievement achievementlocked" style="background-image: url(images/89.png)" ach-tooltip="Get 5 billion banked infinities. Reward: You permanently bank 5% of your Infinities when you Eternity."><br></div>
 							</td>
 							<td>
-								<div id="Unique snowflakes" class="achievement achievementlocked" style="background-image: url(images/90.png)" ach-tooltip="Have 540 galaxies without having any Replicated galaxies."><br></div>
+								<div id="Unique snowflakes" class="achievement achievementlocked" style="background-image: url(images/90.png)"><br></div>
 							</td>
 							<td>
 								<div id="I never liked this infinity stuff anyway" class="achievement achievementlocked" style="background-image: url(images/91.png)" ach-tooltip="Reach 1e140,000 IP without buying IDs or IP multipliers."><br></div>
@@ -2784,31 +2721,31 @@
 							<td>
 								<div id="Meta-Quintillion" class="achievement achievementlocked" style="background-image: url(images/182.png)"></div>
 							</td>
-						</tr>
-						<tr id="achRowngr1">
+						</tr><tr id="achRowng3p10">
 							<td>
-								<div id="Time is realistic" class="achievement achievementlocked" style="background-image: url(images/183.png)" ach-tooltip="Go Real. Reward: Start Realities with 20000 eternities, keep Time Studies on EC completion, unlock RG max button and unlock auto EP mult."><br></div>
-							</td>
-							<td>
-								<div id="I not really buy time, because i had bad day" class="achievement achievementlocked" style="background-image: url(images/184.png)" ach-tooltip="Reality without buying 5-8th Time Dimensions. Reward: Start Realities with all Time Dimensions unlocked."><br></div>
-							</td>
-							<td>
-								<div id="Finally pass first row" class="achievement achievementlocked" style="background-image: url(images/185.png)" ach-tooltip="Purchase all Reality upgrades in first row."><br></div>
-							</td>
-							<td>
-								<div id="This achievement doesn't exist 3.3" class="achievement achievementlocked" style="background-image: url(images/186.png)" ach-tooltip="Gain 9.99e99999 EP. Reward: Multiples EP gain based on unspent EP."><br></div>
-							</td>
-							<td>
-								<div id="10^^3" class="achievement achievementlocked" style="background-image: url(images/187.png)" ach-tooltip="Get 1e10,000,000,000 antmatter."><br></div>
-							</td>
-							<td>
-								<div id="Mini-replicanti" class="achievement achievementlocked" style="background-image: url(images/188.png)" ach-tooltip="Gain 1e20 exponential. Reward: Gain exponential 2 times faster."><br></div>
-							</td>
-							<td>
-								<div id="Reality go brrr" class="achievement achievementlocked" style="background-image: url(images/189.png)" ach-tooltip="Reality under 30 second. Reward: Start Realities with 1e5000 EP."><br></div>
-							</td>
-							<td>
-								<div id="Non-Free Tickspeed & Non-Free Multiplier" class="achievement achievementlocked" style="background-image: url(images/190.png)" ach-tooltip="Reality without buying Infinity & Time Dimensions."><br></div>
+								<div id="The Layer of Recreation" class="achievement achievementlocked" style="background-image: url(images/none.png)"
+								ach-tooltip="Placeholder.">The Layer of Recreation</div>
+							</td><td>
+								<div id="Biggest Mistake" class="achievement achievementlocked" style="background-image: url(images/none.png)"
+								ach-tooltip="Get 50 Higgs Bosons. Reward: Higgs Bosons no longer resets anything.">Biggest Mistake</div>
+							</td><td>
+								<div id="Double Quintillion" class="achievement achievementlocked" style="background-image: url(images/none.png)"
+								ach-tooltip="Placeholder.">Double Quintillion</div>
+							</td><td>
+								<div id="This achievement doesn't exist 5" class="achievement achievementlocked" style="background-image: url(images/none.png)"
+								ach-tooltip="Placeholder.">Этого достижения не существует 5</div>
+							</td><td>
+								<div id="When Infinity Replicanti" class="achievement achievementlocked" style="background-image: url(images/none.png)"
+								ach-tooltip="Placeholder.">When Infinity Replicanti</div>
+							</td><td>
+								<div id="Not again?" class="achievement achievementlocked" style="background-image: url(images/none.png)"
+								ach-tooltip="Placeholder.">Not again?</div>
+							</td><td>
+								<div id="Mega Boo!" class="achievement achievementlocked" style="background-image: url(images/none.png)"
+								ach-tooltip="Placeholder.">Mega Boo!</div>
+							</td><td>
+								<div id="Breaking Eternity is Fixed" class="achievement achievementlocked" style="background-image: url(images/none.png)"
+								ach-tooltip="Placeholder.">Breaking Eternity is Fixed</div>
 							</td>
 						</tr>
 				</table>
@@ -2954,10 +2891,11 @@
 					<tr>
 						<td>
 							<div style="text-align:center">
+								<a href="http://raw.githack.com/aarextiaokhiao/IvarK.github.io/v3.0-Respecced/" target="_newtab">NG+3R</a> |-|
 								<a href="howto.html" target="_newtab">How to play</a> |
 								<a href="about.html" target="_newtab">About</a> |
 								<a href="donate.html" onclick="giveAchievement('A sound financial decision')" target="_newtab">Donate</a> |
-								<a href="http://discord.gg/h9mDese" target="_newtab">Discord</a>
+								<a href="http://discord.gg/KsjcgskgTj" target="_newtab">Discord</a>
 							</div>
 						</td>
 					</tr>
@@ -2975,46 +2913,10 @@
 					<td><button class="secondarytabbtn" onclick="showChallengesTab('normalchallenges')">Challenges</button></td>
 					<td><button class="secondarytabbtn" onclick="showChallengesTab('breakchallenges')">Infinity Challenges</button></td>
 					<td><button id="eterctabbtn" class="secondarytabbtn" onclick="showChallengesTab('eternitychallenges')">Eternity Challenges</button></td>
-					<td><button id="realctabbtn" class="secondarytabbtn" onclick="showChallengesTab('realitychallenges')">Reality Challenges</button></td>
 					<td><button id="qctabbtn" class="secondarytabbtn" onclick="showChallengesTab('quantumchallenges')">Quantum Challenges</button></td>
 				</tr>
 			</table>
 			<div id="nextchall"></div>
-			<div id="realitychallenges" class="challengeTab">
-				<div id="realcnext">Reach x antimatter to unlock Reality Challenge y.</div>
-				<table class="table" style="margin: 0 auto">
-					<tr>
-						<td>
-							<div class="realchallengediv" id="realc1div" style="height: 140px;">
-								<span>Infinity & Time dimensions are disabled. (like in EC1 & EC2)</span>
-								<br>
-								<br>
-								<div class="outer">
-									<button id="realc1" class="challengesbtn" onclick="startRealityChallenge(1)">Start</button>
-									<br>
-									<span id="realc1completed">Have 0 completions.</span><br>
-									<span id="realc1goal" >Goal: idk lol antimatter</span><br>
-									Reward: All Infinity & Time Dimension multipliers are raised based on this completions. <span id="realc1reward"></span>
-								</div>
-							</div>
-						</td>
-						<td>
-							<div class="realchallengediv" id="realc2div" style="height: 140px;">
-								<span>You trapped in Eternity Challenges 5, 6 & 11.</span>
-								<br>
-								<br>
-								<div class="outer">
-									<button id="realc2" class="challengesbtn" onclick="startRealityChallenge(2)">Start</button>
-									<br>
-									<span id="realc2completed">Have 0 completions.</span><br>
-									<span id="realc2goal" >Goal: idk lol antimatter</span><br>
-									Reward: Root the dimension, tickspeed cost multiplier increase. <span id="realc2reward"></span>
-								</div>
-							</div>
-						</td>
-					</tr>
-				</table>
-			</div>
 			<div id="normalchallenges" class="challengeTab">
 				<table class="table" style="margin: 0 auto">
 					<tr>
@@ -3949,10 +3851,11 @@
 				<tr>
 					<td>
 						<div style="text-align:center">
+							<a href="http://raw.githack.com/aarextiaokhiao/IvarK.github.io/v3.0-Respecced/" target="_newtab">NG+3R</a> |-|
 							<a href="howto.html" target="_newtab">How to play</a> |
 							<a href="about.html" target="_newtab">About</a> |
 							<a href="donate.html" onclick="giveAchievement('A sound financial decision')" target="_newtab">Donate</a> |
-							<a href="http://discord.gg/h9mDese" target="_newtab">Discord</a>
+							<a href="http://discord.gg/KsjcgskgTj" target="_newtab">Discord</a>
 						</div>
 					</td>
 				</tr>
@@ -4073,10 +3976,11 @@
 					<tr>
 						<td>
 							<div style="text-align:center">
+								<a href="http://raw.githack.com/aarextiaokhiao/IvarK.github.io/v3.0-Respecced/" target="_newtab">NG+3R</a> |-|
 								<a href="howto.html" target="_newtab">How to play</a> |
 								<a href="about.html" target="_newtab">About</a> |
-									<a href="donate.html" onclick="giveAchievement('A sound financial decision')" target="_newtab">Donate</a> |
-								<a href="http://discord.gg/h9mDese" target="_newtab">Discord</a>
+								<a href="donate.html" onclick="giveAchievement('A sound financial decision')" target="_newtab">Donate</a> |
+								<a href="http://discord.gg/KsjcgskgTj" target="_newtab">Discord</a>
 							</div>
 						</td>
 					</tr>
@@ -4132,10 +4036,11 @@
 					<tr>
 						<td>
 							<div style="text-align:center">
+								<a href="http://raw.githack.com/aarextiaokhiao/IvarK.github.io/v3.0-Respecced/" target="_newtab">NG+3R</a> |-|
 								<a href="howto.html" target="_newtab">How to play</a> |
 								<a href="about.html" target="_newtab">About</a> |
-									<a href="donate.html" onclick="giveAchievement('A sound financial decision')" target="_newtab">Donate</a> |
-								<a href="http://discord.gg/h9mDese" target="_newtab">Discord</a>
+								<a href="donate.html" onclick="giveAchievement('A sound financial decision')" target="_newtab">Donate</a> |
+								<a href="http://discord.gg/KsjcgskgTj" target="_newtab">Discord</a>
 							</div>
 						</td>
 					</tr>
@@ -4525,10 +4430,11 @@
 					<tr>
 						<td>
 							<div style="text-align:center">
+								<a href="http://raw.githack.com/aarextiaokhiao/IvarK.github.io/v3.0-Respecced/" target="_newtab">NG+3R</a> |-|
 								<a href="howto.html" target="_newtab">How to play</a> |
 								<a href="about.html" target="_newtab">About</a> |
-									<a href="donate.html" onclick="giveAchievement('A sound financial decision')" target="_newtab">Donate</a> |
-								<a href="http://discord.gg/h9mDese" target="_newtab">Discord</a>
+								<a href="donate.html" onclick="giveAchievement('A sound financial decision')" target="_newtab">Donate</a> |
+								<a href="http://discord.gg/KsjcgskgTj" target="_newtab">Discord</a>
 							</div>
 						</td>
 					</tr>
@@ -4639,10 +4545,11 @@
 						<tr>
 							<td>
 								<div style="text-align:center">
+									<a href="http://raw.githack.com/aarextiaokhiao/IvarK.github.io/v3.0-Respecced/" target="_newtab">NG+3R</a> |-|
 									<a href="howto.html" target="_newtab">How to play</a> |
 									<a href="about.html" target="_newtab">About</a> |
 									<a href="donate.html" onclick="giveAchievement('A sound financial decision')" target="_newtab">Donate</a> |
-									<a href="http://discord.gg/h9mDese" target="_newtab">Discord</a>
+									<a href="http://discord.gg/KsjcgskgTj" target="_newtab">Discord</a>
 								</div>
 							</td>
 						</tr>
@@ -4682,11 +4589,11 @@
 						<tr>
 							<td>
 								<div style="text-align:center">
+									<a href="http://raw.githack.com/aarextiaokhiao/IvarK.github.io/v3.0-Respecced/" target="_newtab">NG+3R</a> |-|
 									<a href="howto.html" target="_newtab">How to play</a> |
 									<a href="about.html" target="_newtab">About</a> |
 									<a href="donate.html" onclick="giveAchievement('A sound financial decision')" target="_newtab">Donate</a> |
-									<a href="http://discord.gg/h9mDese" target="_newtab">Discord</a>
-				
+									<a href="http://discord.gg/KsjcgskgTj" target="_newtab">Discord</a>
 								</div>
 							</td>
 						</tr>
@@ -4709,11 +4616,11 @@
 						<tr>
 							<td>
 								<div style="text-align:center">
+									<a href="http://raw.githack.com/aarextiaokhiao/IvarK.github.io/v3.0-Respecced/" target="_newtab">NG+3R</a> |-|
 									<a href="howto.html" target="_newtab">How to play</a> |
 									<a href="about.html" target="_newtab">About</a> |
 									<a href="donate.html" onclick="giveAchievement('A sound financial decision')" target="_newtab">Donate</a> |
-									<a href="http://discord.gg/h9mDese" target="_newtab">Discord</a>
-				
+									<a href="http://discord.gg/KsjcgskgTj" target="_newtab">Discord</a>
 								</div>
 							</td>
 						</tr>
@@ -4786,153 +4693,17 @@
 						<tr>
 							<td>
 								<div style="text-align:center">
+									<a href="http://raw.githack.com/aarextiaokhiao/IvarK.github.io/v3.0-Respecced/" target="_newtab">NG+3R</a> |-|
 									<a href="howto.html" target="_newtab">How to play</a> |
 									<a href="about.html" target="_newtab">About</a> |
 									<a href="donate.html" onclick="giveAchievement('A sound financial decision')" target="_newtab">Donate</a> |
-									<a href="http://discord.gg/h9mDese" target="_newtab">Discord</a>
+									<a href="http://discord.gg/KsjcgskgTj" target="_newtab">Discord</a>
 								</div>
 							</td>
 						</tr>
 					</table>
 				</div>
 		</div>
-		</div>
-		<div id="reality" class="tab" align="center" style="display: none">
-			<table class="table" align="center" style="margin: auto">
-				<tr>
-					<td><button class="secondarytabbtn" onclick="showRealityTab('realityupgrades')">Reality upgrades</button></td>
-					<td><button class="secondarytabbtn" onclick="showRealityTab('gainrpmilestones')">Gain RP milestones</button></td>
-					<td><button class="secondarytabbtn" id="rexp" onclick="showRealityTab('exponential')">Exponential</button></td>
-					<td><button class="secondarytabbtn" id="rsboost" onclick="showRealityTab('shardbooster')">Shard Booster</button></td>
-				</tr>
-			</table><br>
-			<div class="realitytab" id="realityupgrades" style="font-size: 15px">
-				<table class="table" style="margin: 0 auto">
-					<tr>
-						<td>
-							<button id="real1" class="realityupbtn" onclick="buyRealityUpgrade(1)"></button>
-						</td>
-						<td>
-							<button id="real2" class="realityupbtn" onclick="buyRealityUpgrade(2)"></button>
-						</td>
-						<td>
-							<button id="real3" class="realityupbtn" onclick="buyRealityUpgrade(3)"></button>
-						</td>
-						<td>
-							<button id="real4" class="realityupbtn" onclick="buyRealityUpgrade(4)"></button>
-						</td>
-					</tr>
-					<tr>
-						<td>
-							<button id="real5" class="realityupbtn" onclick="buyRealityUpgrade(5)"></button>
-						</td>
-						<td>
-							<button id="real6" class="realityupbtn" onclick="buyRealityUpgrade(6)"></button>
-						</td>
-						<td>
-							<button id="real7" class="realityupbtn" onclick="buyRealityUpgrade(7)"></button>
-						</td>
-						<td>
-							<button id="real8" class="realityupbtn" onclick="buyRealityUpgrade(8)"></button>
-						</td>
-					</tr>
-					<tr>
-						<td>
-							<button id="real9" class="realityupbtn" onclick="buyRealityUpgrade(9)"></button>
-						</td>
-					</tr>
-				</table>
-			</div><div class="realitytab" id="gainrpmilestones" style="font-size: 15px">
-				<table>
-					<tr>
-						<td>
-							<div class="gainrpmilestone" id="gainrp1">
-								<div style="font-size: 15px">1e60000 EP before Realities<br><br></div>
-								Keep EC completions on Reality.
-							</div>
-						</td>
-						<td>
-							<div class="gainrpmilestone" id="gainrp2">
-								<div style="font-size: 15px">1e80000 EP before Realities<br><br></div>
-								Start Realities with Time Dilation unlocked and 1000 TP. Unlock 2nd row Reality upgrades and new Dilation upgrades.
-							</div>
-						</td>
-						<td>
-							<div class="gainrpmilestone" id="gainrp3">
-								<div style="font-size: 15px">1e100000 EP before Realities<br><br></div>
-								Keep all Time Dilation upgrades and Eternity upgrades bought on Reality. Unlock Time Dimensions autobuyer.
-							</div>
-						</td>		
-					</tr>
-					<tr>
-						<td>
-							<div class="gainrpmilestone" id="gainrp4">
-								<div style="font-size: 15px">1e200000 EP before Realities<br><br></div>
-								Keep all Time studies upgrades on Reality. Unlock new Time studies, which called Reality Studies (down from Dilation Studies).
-							</div>
-						</td>
-						<td>
-							<div class="gainrpmilestone" id="gainrp5">
-								<div style="font-size: 15px">1e600000 EP before Realities<br><br></div>
-								You gain 1% of your EP gained on Eternity each second, and gain banked infinities based on your post-crunch infinitied stat.
-							</div>
-						</td>
-						<td>
-							<div class="gainrpmilestone" id="gainrp6">
-								<div style="font-size: 15px">1e800000 EP before Realities<br><br></div>
-								Unlock Auto buying Dilation rebuyables.
-							</div>
-						</td>
-					</tr>
-					<tr>
-						<td>
-							<div class="gainrpmilestone" id="gainrp7">
-								<div style="font-size: 15px">e1000000 EP before Realities<br><br></div>
-								Keep Tachyon particles on Reality.
-							</div>
-						</td>
-					</tr>
-				</table>
-			</div><div class="realitytab" id="exponential" style="font-size: 15px">
-				You have <span id="expamount" style="font-size: 23px; color: black;">x</span> exponential, which multiples Time Dimensions by <span id="expeffect" style="font-size: 23px; color: black;">x</span><br>
-				<div id="expbeyond">Beyond 1e1000 exponential, will increase penality to <span id="expbeyondeff" style="font-size: 23px; color: black;">x</span>.</div><br>
-				(x<span id="expgain" style="font-size: 23px; color: black;">x</span>/s)<br><br>
-				<div>
-					<button class="storebtn" id="expmult" onclick="upgradeMultipler()" style="width:180px; height: 50px; font-size: 10px">Multiplier: x1<br>-> x2 Costs: 69420 RP</button>
-					<button class="storebtn" id="exppen" onclick="upgradePenalty()" style="width:180px; height: 50px; font-size: 10px">Penalty: ^1<br>-> ^0.95 Costs: 69420 RP</button>
-				</div>
-				
-			</div><div class="realitytab" id="shardbooster">
-				You have <span id="sbbest" style="color: black;">x</span> best Reality shards.<br>
-				You have <span id="sbamount" style="font-size: 23px; color: black;">x</span> Shard Boosters. Next at <span id="sbreq" style="font-size: 23px; color: black;">x</span> RS.<br>
-				You have <span id="sbunspent" style="color: black;">x</span> unspent shard boosters.<br><br>
-				<div id="assortSettings">
-					<button class='storebtn' id="sbap_10" style="width:50px" onclick="changeShardAssortPercentage(10)">10%</button>
-					<button class='storebtn' id="sbap_25" style="width:50px" onclick="changeShardAssortPercentage(25)">25%</button>
-					<button class='storebtn' id="sbap_50" style="width:50px" onclick="changeShardAssortPercentage(50)">50%</button>
-					<button class='storebtn' id="sbap_100" style="width:50px" onclick="changeShardAssortPercentage(100)">100%</button>
-				</div>
-				<br>
-				<table style="font-size: 15px">
-					<tr style="vertical-align: top;">
-						<td class="sbooster">
-							<button class='storebtn' id='sba1' onclick="assignShard(1)">Assort</button><br>
-							You have <span id="sb1" style="font-size: 23px; color: black;">x</span> Normal Boosters.<br>
-							You have <span id="sb1p" style="color: black;">x</span> Normal parts.<br>Translated to <span id="sbe1" style="font-size: 23px; color: black;">x</span>x extra multiplier per Dimension Boost.
-						</td>
-						<td class="sbooster">
-							<button class='storebtn' id='sba2' onclick="assignShard(2)">Assort</button><br>
-							You have <span id="sb2" style="font-size: 23px; color: black;">x</span> Infinity Boosters.<br>
-							You have <span id="sb2p" style="color: black;">x</span> Infinity parts.<br>Translated to <span id="sbe2" style="font-size: 23px; color: black;">x</span>x to all Infinity Dimensions.
-						</td>
-						<td class="sbooster">
-							<button class='storebtn' id='sba3' onclick="assignShard(3)">Assort</button><br>
-							You have <span id="sb3" style="font-size: 23px; color: black;">x</span> Time Boosters.<br>
-							You have <span id="sb3p" style="color: black;">x</span> Time parts.<br>Translated to <span id="sbe3" style="font-size: 23px; color: black;">x</span>x to dilated time gain.
-						</td>
-					</tr>
-				</table>
-			</div>
 		</div>
 		<div class='tab' id='quantumtab'>
 			<table class="table" align="center" style="margin: auto">
@@ -5271,10 +5042,11 @@
 					<tr>
 						<td>
 							<div style="text-align:center">
+								<a href="http://raw.githack.com/aarextiaokhiao/IvarK.github.io/v3.0-Respecced/" target="_newtab">NG+3R</a> |-|
 								<a href="howto.html" target="_newtab">How to play</a> |
 								<a href="about.html" target="_newtab">About</a> |
 								<a href="donate.html" onclick="giveAchievement('A sound financial decision')" target="_newtab">Donate</a>  |
-								<a href="http://discord.gg/h9mDese" target="_newtab">Discord</a>
+								<a href="http://discord.gg/KsjcgskgTj" target="_newtab">Discord</a>
 							</div>
 						</td>
 					</tr>
@@ -5289,6 +5061,7 @@
 					<td><button class="secondarytabbtn" onclick="showGhostifyTab('bravemilestones')">Brave Milestones</button></td>
 					<td id="gphtabbtn"><button class="secondarytabbtn" onclick="showGhostifyTab('gphtab')">Ghostly Photons</button></td>
 					<td id="bltabbtn"><button class="secondarytabbtn" onclick="showGhostifyTab('bltab')">Bosonic Lab</button></td>
+					<td id="gravtabbtn"><button class="secondarytabbtn" onclick="showGhostifyTab('gravtab')">Gravitons</button></td>
 				</tr>
 			</table>
 			<div id="neutrinos" class="ghostifytab">
@@ -5318,7 +5091,7 @@
 					<tr class="neutrinoBoosts" id="neutrinoBoostRow4">
 						<td>They decrease free tickspeed upgrade threshold by -<span class="neutrinos" id="neutrinoBoost10"></span>.</td>
 						<td id="neutrinoBoostCell11">They boost the production and cap of Ghostly Rays by <span class="neutrinos" id="neutrinoBoost11">1.00</span>x.</td>
-						<td></td>
+						<td id="neutrinoBoostCell12">They increase Infinity Powers formula exponent from <span id="preNeutrinoBoost12">7</span> to <span class="neutrinos" id="neutrinoBoost12">7</span>.</td>
 					</tr>
 					<tr>
 						<td><button id="neutrinoUnlock" class="gluonupgrade unavailablebtn" onclick="unlockNeutrinoBoost()">Unlock a new boost based on your neutrinos.<br>Cost: <span id="neutrinoUnlockCost">2</span> GhP</button></td>
@@ -5349,6 +5122,9 @@
 						<td><button class="gluonupgrade unavailablebtn" id="neutrinoUpg13" onclick="buyNeutrinoUpg(13)">100 RG upgrade doesn't nerf the 100 BR upgrade.<br>Cost: <span id="neutrinoUpg13Cost"></span> of any neutrinos</button></td>
 						<td><button class="gluonupgrade unavailablebtn" id="neutrinoUpg14" onclick="buyNeutrinoUpg(14)" style="font-size: 10px">Gain more neutrinos based on your GhP and color powers.<br>Currently: <span id="neutrinoUpg14Pow"></span>x<br>Cost: <span id="neutrinoUpg14Cost"></span> of any neutrinos</button></td>
 						<td><button class="gluonupgrade unavailablebtn" id="neutrinoUpg15" onclick="buyNeutrinoUpg(15)">Your Nanofield rewards speed up Nanofield.<br>Currently: <span id="neutrinoUpg15Pow"></span>x<br>Cost: <span id="neutrinoUpg15Cost"></span> of any neutrinos</button></td>
+					</tr><tr id="gravRow">
+						<td><button class="gluonupgrade unavailablebtn" id="neutrinoUpg16" onclick="buyNeutrinoUpg(16)" style="font-size: 10px">Ghostifies boosts Gravitons gain. Gravitons effect base is increased by 1.<br>Currently: <span id="neutrinoUpg16Pow"></span>x<br>Cost: <span id="neutrinoUpg16Cost"></span> of any neutrinos</button></td>
+						<td><button class="gluonupgrade unavailablebtn" id="neutrinoUpg17" onclick="buyNeutrinoUpg(17)">Free Nanofield rewards also makes the Anti-Preon Ghost wake 1/3 later.<br>Cost: <span id="neutrinoUpg17Cost"></span> of any neutrinos</button></td>
 					</tr>
 				</table>
 			</div>
@@ -5381,8 +5157,6 @@
 							Power usage: 1<br>
 							Is active: <input id="isAutoGhostOn3" type="checkbox" onchange="toggleAutoGhost(3)"></input>
 						</div></td>
-					</tr>
-					<tr>
 						<td id="autoGhost4"><div class="autoBuyerDiv" style="display:block">
 							<b>Auto-Unstabilize Rotate Ghost</b><br>
 							Power usage: 1<br>
@@ -5396,14 +5170,14 @@
 							Power usage: 2<br>
 							Is active: <input id="isAutoGhostOn5" type="checkbox" onchange="toggleAutoGhost(5)"></input>
 						</div></td>
+					</tr>
+					<tr>
 						<td id="autoGhost6"><div class="autoBuyerDiv" style="display:block">
 							<b>Auto-Tree Upgrade Ghost</b><br>
 							(buys if possible)<br>
 							Power usage: 2<br>
 							Is active: <input id="isAutoGhostOn6" type="checkbox" onchange="toggleAutoGhost(6)"></input>
 						</div></td>
-					</tr>
-					<tr>
 						<td id="autoGhost7"><div class="autoBuyerDiv" style="display:block">
 							<b>Auto-QK Multi Upgrade Ghost</b><br>
 							(buys if possible)<br>
@@ -5422,14 +5196,14 @@
 							Power usage: 0.5<br>
 							Is active: <input id="isAutoGhostOn9" type="checkbox" onchange="toggleAutoGhost(9)"></input>
 						</div></td>
-					</tr>
-					<tr>
 						<td id="autoGhost10"><div class="autoBuyerDiv" style="display:block">
 							<b>Auto-Limit Upgrade Ghost</b><br>
 							(buys if possible)<br>
 							Power usage: 1<br>
 							Is active: <input id="isAutoGhostOn10" type="checkbox" onchange="toggleAutoGhost(10)"></input>
 						</div></td>
+					</tr>
+					<tr>
 						<td id="autoGhost11"><div class="autoBuyerDiv" style="display:block">
 							<b>Auto-Preon Generate Ghost</b><br>
 							Power usage: 0.5<br>
@@ -5442,8 +5216,6 @@
 							Power usage: 0.5<br>
 							Is active: <input id="isAutoGhostOn12" type="checkbox" onchange="toggleAutoGhost(12)"></input>
 						</div></td>
-					</tr>
-					<tr>
 						<td id="autoGhost13"><div class="autoBuyerDiv" style="display:block">
 							<b>Auto-Big Rip Ghost</b><br>
 							Power usage: 0.5<br>
@@ -5470,8 +5242,9 @@
 						</div></td>
 						<td id="autoGhost17"><div class="autoBuyerDiv" style="display:block">
 							<b>Auto-Extractor Ghost</b><br>
-							(not implemented)<br>
 							Power usage: 3<br>
+							This also changes runes at a complete extraction on <span id="autoGhost17c">1</span>s after last change<br>
+							or change immediately at X seconds remaining for extracting: <input id="autoGhost17a" onchange="changeAutoGhost('17s')"></input><br>
 							Is active: <input id="isAutoGhostOn17" type="checkbox" onchange="toggleAutoGhost(17)"></input>
 						</div></td>
 						<td id="autoGhost18"><div class="autoBuyerDiv" style="display:block">
@@ -5479,11 +5252,9 @@
 							Power usage: 6<br>
 							Is active: <input id="isAutoGhostOn18" type="checkbox" onchange="toggleAutoGhost(18)"></input>
 						</div></td>
-					</tr>
-					<tr>
 						<td id="autoGhost19"><div class="autoBuyerDiv" style="display:block">
 							<b>Auto-Enchanter Ghost</b><br>
-							(not implemented)<br>
+							(doesn't consume your Bosonic Runes, enchant every 2 seconds)<br>
 							Power usage: 3<br>
 							Is active: <input id="isAutoGhostOn19" type="checkbox" onchange="toggleAutoGhost(19)"></input>
 						</div></td>
@@ -5492,11 +5263,17 @@
 							Power usage: 9<br>
 							Is active: <input id="isAutoGhostOn20" type="checkbox" onchange="toggleAutoGhost(20)"></input>
 						</div></td>
+					</tr>
+					<tr>
 						<td id="autoGhost21"><div class="autoBuyerDiv" style="display:block">
 							<b>Auto-W & Z Boson Ghost</b><br>
-							(not implemented)<br>
 							Power usage: 3<br>
 							Is active: <input id="isAutoGhostOn21" type="checkbox" onchange="toggleAutoGhost(21)"></input>
+						</div></td>
+						<td id="autoGhost22"><div class="autoBuyerDiv" style="display:block">
+							<b>Auto-Light Empowerments Ghost</b><br>
+							Power usage: 3<br>
+							Is active: <input id="isAutoGhostOn22" type="checkbox" onchange="toggleAutoGhost(22)"></input>
 						</div></td>
 					</tr>
 				</table>
@@ -5750,15 +5527,24 @@
 					</div>
 				</div>
 			</div>
+			<div id="gravtab" class="ghostifytab">
+				<div id="gravUnl"></div>
+				<div id="gravDiv">
+					You have <span id="gravAmt" class="h1">0</span> (+<span id="gravGain">0</span>/s) Graviton.<br>
+					Your best Graviton was <span id="gravBest" class="h2">0</span>. Raised to the power of <span id="gravPow" class="h2">2</span>, translated to <span id="gravEff" class="h2">1</span>x extra multiplier per Meta-Dimension Boost.<br>
+					<table id="gravUpgsTable" style="margin: 0 auto"></table>
+				</div>
+			</div>
 			<div id="footercontainer">
 				<table id="footer">
 					<tr>
 						<td>
 							<div style="text-align:center">
+								<a href="http://raw.githack.com/aarextiaokhiao/IvarK.github.io/v3.0-Respecced/" target="_newtab">NG+3R</a> |-|
 								<a href="howto.html" target="_newtab">How to play</a> |
 								<a href="about.html" target="_newtab">About</a> |
 								<a href="donate.html" onclick="giveAchievement('A sound financial decision')" target="_newtab">Donate</a> |
-								<a href="http://discord.gg/h9mDese" target="_newtab">Discord</a>
+								<a href="http://discord.gg/KsjcgskgTj" target="_newtab">Discord</a>
 							</div>
 						</td>
 					</tr>
@@ -5812,7 +5598,6 @@
 			<button class="storebtn longbtn" id='rsBtn' style="font-size: 15px" onclick="toggle_mod('rs')" style="display: inline">Respecced: NONE</button>
 			<button class="storebtn longbtn" id='ngexBtn' style="font-size: 15px" onclick="toggle_mod('ngex')" style="display: inline">Expert Mode: OFF</button>
 			<button class="storebtn longbtn" id='ngprwBtn' style="font-size: 15px" onclick="toggle_mod('ngprw')" style="display: inline">NG+ Reworked: OFF</button>
-			<button class="storebtn longbtn" id='ngrBtn' style="font-size: 15px" onclick="toggle_mod('ngr')" style="display: inline">NG+ Reality: OFF</button>
 			<br>
 			Reset Mode #<input id='ngpLayer' type="number" onchange="changeNGPLayer()" min=0 value=0>
 		</div>
@@ -5857,7 +5642,6 @@
 			<button id="gSacConfirmBtn" onclick='gSacrificeConf()' class="storebtn" style="width: 200px; height: 55px; font-size: 15px" style="display: inline"></button>
 			<button id="challengeconfirmation" class="storebtn" style="width: 200px; height: 55px; font-size: 15px" style="display: inline"></button>
 			<button id="eternityconf" onclick='toggleEternityConf()' class="storebtn" style="width: 200px; height: 55px; font-size: 15px" style="display: inline"></button>
-			<button id="realityconf" onclick='toggleRealityConf()' class="storebtn" style="width: 200px; height: 55px; font-size: 15px" style="display: inline"></button>
 			<button id="dilationConfirmBtn" class="storebtn" onclick="toggleDilaConf()" style="width: 200px; height: 55px; font-size: 15px" style="display: inline"></button>
 			<button id="exdilationConfirmBtn" class="storebtn" onclick="toggleExdilaConf()" style="width: 200px; height: 55px; font-size: 15px" style="display: inline"></button>
 			<button id="quantumConfirmBtn" class="storebtn" onclick="toggleQuantumConf()" style="width: 200px; height: 55px; font-size: 15px" style="display: inline"></button>
@@ -5983,6 +5767,11 @@
 <script type="text/javascript" src="javascripts/core/ach/achieve_check.js"></script>
 <script type="text/javascript" src="javascripts/core/ach/achievements.js"></script>
 <script type="text/javascript" src="javascripts/core/ach/ach-tooltips.js"></script>
+
+<script type="text/javascript" src="javascripts/mods/pngp3/bd.js"></script>
+<script type="text/javascript" src="javascripts/mods/pngp3/gravitons.js"></script>
+<script type="text/javascript" src="javascripts/mods/pngp3/main.js"></script>
+
 <script type="text/javascript" src="javascripts/mods/ngp3/big_rip.js"></script>
 <script type="text/javascript" src="javascripts/mods/ngp3/bosonic_lab.js"></script>
 <script type="text/javascript" src="javascripts/mods/ngp3/electrons.js"></script>
@@ -5997,6 +5786,9 @@
 <script type="text/javascript" src="javascripts/mods/ngp3/quarks_gluons.js"></script>
 <script type="text/javascript" src="javascripts/mods/ngp3/replicants.js"></script>
 <script type="text/javascript" src="javascripts/mods/ngp3/tod.js"></script>
+
+
+
 <script type="text/javascript" src="javascripts/mods/ers.js"></script>
 <script type="text/javascript" src="javascripts/mods/meta.js"></script>
 <script type="text/javascript" src="javascripts/mods/quantum.js"></script>
@@ -6009,8 +5801,6 @@
 <script type="text/javascript" src="javascripts/mods/ngm5.js"></script>
 <script type="text/javascript" src="javascripts/mods/ngusp.js"></script>
 <script type="text/javascript" src="javascripts/mods/ngprw.js"></script>
-<script type="text/javascript" src="javascripts/mods/reality.js"></script>
-<script type="text/javascript" src="javascripts/mods/reality_studies.js"></script>
 <script type="text/javascript" src="javascripts/convert.js"></script>
 <script type="text/javascript" src="javascripts/display.js"></script>
 <script type="text/javascript" src="javascripts/temp.js"></script>

@@ -47,7 +47,7 @@ function sacrificeGalaxy(auto = false) {
 }
 
 function getElectronBoost(mod) {
-	if (!inQC(0)) return 1
+	if (!inQC(0) && !hasGravUpg(5)) return 1
 	var amount = tmp.qu.electrons.amount
 	var s = 149840
 	if (player.ghostify.ghostlyPhotons.unl) s += tmp.le[2]
@@ -55,7 +55,9 @@ function getElectronBoost(mod) {
 	if (amount > 37460 + s) amount = Math.sqrt((amount-s) * 37460) + s
 	if (tmp.rg4 && mod != "no-rg4") amount *= 0.7
 	if (player.masterystudies !== undefined && player.masterystudies.includes("d13") && mod != "noTree") amount *= getTreeUpgradeEffect(4)
-	return amount + 1
+	amount += 1
+	if (!inQC(0) && hasGravUpg(5)) amount **= 0.5
+	return amount
 }
 
 function getElectronGainMult() {

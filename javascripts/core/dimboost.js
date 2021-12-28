@@ -11,17 +11,13 @@ function getDimensionBoostPower(next, focusOn) {
 	if (player.galacticSacrifice && player.galacticSacrifice.upgrades.includes(23) && ((!inNC(14) && player.currentChallenge != "postcngm3_3") || player.tickspeedBoosts == undefined || player.aarexModifications.ngmX > 3) && player.currentChallenge != "postcngm3_4") ret *= galMults.u23()
 	if (player.infinityUpgrades.includes("resetMult") && player.galacticSacrifice) ret *= 1.2 + 0.05 * player.infinityPoints.max(1).log(10)
 	if (!player.boughtDims && player.achievements.includes("r101")) ret = ret * 1.01
-	if (player.timestudy.studies.includes(83)) ret = Decimal.pow(1.0004, player.totalTickGained).times(ret);
+	if (player.timestudy.studies.includes(83)) ret = Decimal.pow(1.0004, player.totalTickGained).min(player.meta ? 1/0 : 1e30).times(ret);
 	if (player.timestudy.studies.includes(231)) ret = Decimal.pow(Math.max(player.resets, 1), 0.3).times(ret)
 	if (player.galacticSacrifice) {
 		if (player.currentChallenge == "postc7" || inQC(6) || player.timestudy.studies.includes(81)) ret = Math.pow(ret , 3)
 		else if (player.challenges.includes("postc7")) ret = Math.pow(ret,2)
 	}
 	if (player.dilation.studies.includes(6) && player.currentEternityChall != "eterc14" && !inQC(3) && !inQC(7)) ret = getExtraDimensionBoostPower().times(ret)
-	if (player.reality) {
-		if (player.reality.studies.includes(32)) ret = Decimal.times(ret, 1.25)
-		ret = Decimal.times(ret, SBEff[1]())
-	}
 	return new Decimal(ret)
 }
 
@@ -143,7 +139,7 @@ function maxBuyDimBoosts(manual) {
 	if (player.autobuyers[9].priority >= getAmount(tier) || player.galaxies >= player.overXGalaxies || getShiftRequirement(0).tier < tier || manual) {
 		var bought = Math.min(getAmount(getShiftRequirement(0).tier), (player.galaxies >= player.overXGalaxies || manual) ? 1/0 : player.autobuyers[9].priority)
 		var r
-		if (player.currentEternityChall == "eterc5" || RChals.in(2)) {
+		if (player.currentEternityChall == "eterc5") {
 			r = 1
 			while (bought >= getShiftRequirement(r).amount) r++
 		} else {
@@ -177,7 +173,7 @@ function getShiftRequirement(bulk) {
 	if (player.aarexModifications.ngmX > 3 && player.pSac == undefined) amount = 10
 	if (tier == maxTier) amount += Math.max(resetNum + (player.galacticSacrifice && player.tickspeedBoosts === undefined && player.galacticSacrifice.upgrades.includes(21) ? 2 : 4) - maxTier, 0) * mult
 	var costStart = getSupersonicStart()
-	if (player.currentEternityChall == "eterc5" || RChals.in(2)) {
+	if (player.currentEternityChall == "eterc5") {
 		amount += Math.pow(resetNum, 3) + resetNum
 	} else if (resetNum >= costStart) {
 		var multInc = getSupersonicMultIncrease()

@@ -52,7 +52,7 @@ document.getElementById("secondSoftReset").onclick = function() {
 	let bool2 = player.currentChallenge != "postc1"
 	let bool3 = player.currentChallenge != "postc5" || player.tickspeedBoosts == undefined
 	let bool4 = player.currentChallenge != "postc7"
-	let bool5 = (player.currentEternityChall == "eterc6" || inQC(6) || RChals.in(2)) && !tmp.be
+	let bool5 = (player.currentEternityChall == "eterc6" || inQC(6)) && !tmp.be
 	var bool = bool1 && bool2  && bool3 && bool4 && !bool5 && !tmp.ri && !cantReset()
 	if (getAmount(inNC(4) || player.pSac != undefined ? 6 : 8) >= getGalaxyRequirement() && bool) {
 		if ((getEternitied() >= 7 || player.autobuyers[10].bulkBought) && !shiftDown && (!inNC(14) || !(player.aarexModifications.ngmX > 3))) maxBuyGalaxies(true);
@@ -144,11 +144,10 @@ function getGalaxyReqMultiplier() {
 }
 
 function getDistantScalingStart() {
-	if (player.currentEternityChall == "eterc5" || RChals.in(2)) return 0
+	if (player.currentEternityChall == "eterc5") return 0
 	var n = 100 + getECReward(5)
 	if (player.timestudy.studies.includes(223)) n += 7
 	if (player.timestudy.studies.includes(224)) n += Math.floor(player.resets/2000)
-	if (player.reality) if (player.reality.studies.includes(104)) n += RStudies[104].eff()
 	if (tmp.ngp3) if (tmp.qu.bigRip.active && tmp.qu.bigRip.upgrades.includes(15)) n += tmp.bru[15]
 	if (player.dilation.upgrades.includes("ngmm11")) n += 25
 

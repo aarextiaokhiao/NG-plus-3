@@ -6,6 +6,8 @@ function getNanospeedText(){
 
 function updateNanoverseTab(){
 	var rewards = tmp.qu.nanofield.rewards
+	var free = tmp.nanofield_free_rewards
+	var total = rewards + free
 	document.getElementById("quarksNanofield").textContent = shortenDimensions(tmp.qu.replicants.quarks)		
 	document.getElementById("quarkCharge").textContent = shortenMoney(tmp.qu.nanofield.charge)
 	document.getElementById("quarkChargeRate").textContent = shortenDimensions(getQuarkChargeProduction())
@@ -17,13 +19,13 @@ function updateNanoverseTab(){
 	document.getElementById("quarkAntienergy").textContent = shortenMoney(tmp.qu.nanofield.antienergy)
 	document.getElementById("quarkAntienergyRate").textContent = shortenMoney(getQuarkAntienergyProduction())
 	document.getElementById("quarkChargeProductionCap").textContent = shortenMoney(getQuarkChargeProductionCap())
-	document.getElementById("rewards").textContent = getFullExpansion(rewards)
+	document.getElementById("rewards").textContent = getFullExpansion(rewards)+(free>=1?" + "+getFullExpansion(free):"")
 
 	for (var reward = 1; reward < 9; reward++) {
-		document.getElementById("nfReward" + reward).className = reward > rewards ? "nfRewardlocked" : "nfReward"
+		document.getElementById("nfReward" + reward).className = reward > total ? "nfRewardlocked" : "nfReward"
 		document.getElementById("nfReward" + reward).textContent = wordizeList(nanoRewards.effectsUsed[reward].map(x => nanoRewards.effectDisplays[x](tmp.nf.effects[x])), true) + "."
-		document.getElementById("nfRewardHeader" + reward).textContent = (rewards % 8 + 1 == reward ? "Next" : DISPLAY_NAMES[reward]) + " reward"
-		document.getElementById("nfRewardTier" + reward).textContent = "Tier " + getFullExpansion(Math.ceil((rewards + 1 - reward) / 8)) + " / Power: " + tmp.nf.powers[reward].toFixed(1)
+		document.getElementById("nfRewardHeader" + reward).textContent = (total % 8 + 1 == reward ? "Next" : DISPLAY_NAMES[reward]) + " reward"
+		document.getElementById("nfRewardTier" + reward).textContent = "Tier " + getFullExpansion(Math.ceil((total + 1 - reward) / 8)) + " / Power: " + tmp.nf.powers[reward].toFixed(1)
 	}
 	document.getElementById("nfReward5").textContent = (!tmp.ngp3l && tmp.nf.powers[5] > 15 ? nanoRewards.effectDisplays.light_threshold_speed(tmp.nf.effects.light_threshold_speed) : nanoRewards.effectDisplays.dil_effect_exp(tmp.nf.effects.dil_effect_exp)) + "."
 	document.getElementById("ns").textContent = getNanospeedText()
@@ -49,6 +51,7 @@ function getQuarkChargeProduction(noSpeed) {
 	if (hasNU(7)) ret = ret.times(tmp.nu[3])
 	if (tmp.qu.nanofield.power > tmp.apgw) ret = ret.div(Decimal.pow(2, (tmp.qu.nanofield.power - tmp.apgw) / 2))
 	if (!noSpeed) ret = ret.times(getNanofieldFinalSpeed())
+	if (hasGravUpg(4)) ret = ret.mul(tmp.gravitons.upg_eff[4])
 	return ret
 }
 

@@ -470,7 +470,7 @@ function breakInfinityUpgradeDisplay(){
 	document.getElementById("postinfi23").innerHTML = "Unlock the option to bulk buy Dimension" + (player.tickspeedBoosts == undefined ? "" : " and Tickspeed") + " Boosts <br>Cost: " + shortenCosts(player.tickspeedBoosts != undefined ? 2e4 : player.galacticSacrifice ? 5e6 : 5e9) + " IP"
 	document.getElementById("postinfi33").innerHTML = "Autobuyers work twice as fast <br>Cost: " + shortenCosts(1e15) + " IP"
 	if (player.dimensionMultDecrease > 3) document.getElementById("postinfi42").innerHTML = "Decrease the Dimension cost multiplier increase post-e308<br>" + player.dimensionMultDecrease + "x -> " + (player.dimensionMultDecrease - 1) + "x<br>Cost: " + shortenCosts(player.dimensionMultDecreaseCost) +" IP"
-	else document.getElementById("postinfi42").innerHTML = "Dimension cost multiplier increase<br>"+player.dimensionMultDecrease.toFixed((ECTimesCompleted("eterc6") % 5 > 0 || RChals.getCompletions(2) > 0) ? 2 : 0) + "x"
+	else document.getElementById("postinfi42").innerHTML = "Dimension cost multiplier increase<br>"+player.dimensionMultDecrease.toFixed(ECTimesCompleted("eterc6") % 5 > 0 ? 1 : 0) + "x"
 	document.getElementById("offlineProd").innerHTML = "Generate " + player.offlineProd + "% > " + Math.max(Math.max(5, player.offlineProd + 5), Math.min(50, player.offlineProd + 5)) + "% of your best IP/min from the last 10 Infinities, works offline<br>Currently: " + shortenMoney(bestRunIppm.times(player.offlineProd / 100)) + "IP/min<br> Cost: " + shortenCosts(player.offlineProdCost) + " IP"
 	if (player.offlineProd == 50) document.getElementById("offlineProd").innerHTML = "Generate " + player.offlineProd + "% of your best IP/min from the last 10 Infinities, works offline<br>Currently: " + shortenMoney(bestRunIppm.times(player.offlineProd / 100)) + " IP/min"
 }
@@ -627,11 +627,10 @@ function breakEternityDisplay(){
 }
 
 function ETERNITYSTOREDisplay(){
+	document.getElementById("breakEternityTabbtn").style.display = player.ghostify.gravitons.unl ? "" : "none"
+
 	if (document.getElementById("TTbuttons").style.display == "block") updateTheoremButtons()
-	if (document.getElementById("timestudies").style.display == "block" || document.getElementById("ers_timestudies").style.display == "block") {
-		updateTimeStudyButtons()
-		displayRealStudies()
-	}
+	if (document.getElementById("timestudies").style.display == "block" || document.getElementById("ers_timestudies").style.display == "block") updateTimeStudyButtons()
 	if (document.getElementById("masterystudies").style.display == "block") updateMasteryStudyButtons()
 	if (document.getElementById("eternityupgrades").style.display == "block") eternityUpgradesDisplay()
 	if (document.getElementById("dilation").style.display == "block") mainDilationDisplay()
@@ -645,6 +644,7 @@ function ETERNITYSTOREDisplay(){
 	if (document.getElementById("breakEternity").style.display == "block") {
 		breakEternityDisplay()
 	}
+	if (document.getElementById("breakDilation").style.display == "block") updateBDTab()
 }
 
 function updateDimensionsDisplay() {
@@ -660,7 +660,6 @@ function updateDimensionsDisplay() {
 	if (document.getElementById("stats").style.display == "block" && document.getElementById("statistics").style.display == "block") STATSDisplay()
    	if (document.getElementById("infinity").style.display == "block") INFINITYUPGRADESDisplay()
 	if (document.getElementById("eternitystore").style.display == "block") ETERNITYSTOREDisplay()
-	if (document.getElementById("reality").style.display == "block") REALITYDisplay()
    	if (document.getElementById("quantumtab").style.display == "block") updateQuantumTabs()
    	if (document.getElementById("ghostify").style.display == "block") updateGhostifyTabs()
 }
@@ -673,7 +672,7 @@ function replicantiDisplay() {
 		document.getElementById("replicantimult").textContent = shorten(getIDReplMult())
 		
 		var chanceDisplayEnding = (isChanceAffordable() && player.infinityPoints.lt(Decimal.pow(10,1e10)) ? "<br>+1% Cost: " + shortenCosts(player.replicanti.chanceCost) + " IP" : "")
-		document.getElementById("replicantichance").innerHTML = "Replicate "+((tmp.rep.freq)?"amount: "+shorten(tmp.rep.freq)+"x":"chance: "+getFullExpansion(chance.gt(1e12)?chance:Math.round(chance.toNumber()))+"%") + chanceDisplayEnding
+		document.getElementById("replicantichance").innerHTML = "Replicate "+(tmp.rep.freq?"amount: "+shorten(tmp.rep.freq)+"x":"chance: "+getFullExpansion(chance.gt(1e12)?chance:Math.round(chance.toNumber()))+"%") + chanceDisplayEnding
 		document.getElementById("replicantiinterval").innerHTML = "Interval: "+timeDisplayShort(Decimal.div(tmp.rep.interval, 100), true, 3) + (isIntervalAffordable() ? "<br>-> "+timeDisplayShort(Decimal.times(tmp.rep.interval, 9e-3), true, 3)+" Cost: "+shortenCosts(player.replicanti.intervalCost)+" IP" : "")
 		var replGalName = player.replicanti.gal < 3e3 ? "Max Replicanti Galaxies" : (player.replicanti.gal < 58200 ? "Distant" : "Further") + " Replicanti Galaxies"
 		var replGalCostPortion = player.infinityPoints.lt(Decimal.pow(10, 1e10)) ? "<br>+1 Cost: " + shortenCosts(getRGCost()) + " IP" : ""

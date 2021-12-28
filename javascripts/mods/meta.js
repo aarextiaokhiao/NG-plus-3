@@ -27,7 +27,7 @@ function getDilationMetaDimensionMultiplier() {
 }
 
 function getMetaDimensionMultiplier(tier) {
-	if (player.currentEternityChall === "eterc11" || RChals.in(2)) return new Decimal(1)
+	if (player.currentEternityChall === "eterc11") return new Decimal(1)
 	let ret = Decimal.pow(getPerTenMetaPower(), Math.floor(player.meta[tier].bought / 10))
 	ret = ret.times(Decimal.pow(getMetaBoostPower(), Math.max(player.meta.resets + 1 - tier, 0)))
 	ret = ret.times(tmp.mdgm) //Global multiplier of all Meta Dimensions
@@ -97,7 +97,10 @@ function getMetaBoostPower() {
 		if (!tmp.ngp3l && player.achievements.includes("ng3p26")) exp *= Math.log10(9 + Math.max(player.meta.resets / 75 + 0.25, 1))
 	}
 	if (player.achievements.includes("ngpp14")) r *= 1.01
-	return Math.pow(r, exp)
+
+	let eff = Decimal.pow(r, exp)
+	if (player.ghostify.gravitons.unl) eff = eff.mul(tmp.gravitons.eff)
+	return eff
 }
 
 function getMetaDimensionDescription(tier) {

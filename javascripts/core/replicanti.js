@@ -38,7 +38,7 @@ function upgradeReplicantiChance() {
 }
 
 function isChanceAffordable() {
-	return player.replicanti.chance < 1 || ((tmp.ngp3 && player.masterystudies.includes("t265")) || (player.reality && player.reality.upgrades.includes(5)))
+	return player.replicanti.chance < 1 || (tmp.ngp3 && player.masterystudies.includes("t265"))
 }
 
 function upgradeReplicantiInterval() {
@@ -72,12 +72,12 @@ function getRGCost(offset = 0, costChange) {
 		if (inQC(5)) return player.replicanti.galCost.pow(Math.pow(1.2, offset))
 		else {
 			let increase = 0
-			if (player.currentEternityChall == "eterc6" || RChals.in(2)) increase = offset * ((offset + player.replicanti.gal * 2) + 3)
+			if (player.currentEternityChall == "eterc6") increase = offset * ((offset + player.replicanti.gal * 2) + 3)
 			else increase = offset * (2.5 * (offset + player.replicanti.gal * 2) + 22.5)
 			if (player.replicanti.gal + offset > 99) increase += (offset - Math.max(99 - player.replicanti.gal, 0)) * (25 * (offset - Math.max(99 - player.replicanti.gal, 0) + Math.max(player.replicanti.gal, 99) * 2) - 4725)
 			if (player.replicanti.gal + offset > 399) {
 				if (player.exdilation != undefined) for (var g = Math.max(player.replicanti.gal, 399); g < player.replicanti.gal + offset; g++) increase += Math.pow(g - 389, 2)
-				if ((player.meta != undefined) || (player.reality != undefined)) {
+				if (player.meta != undefined) {
 					var isReduced = false
 					if (player.masterystudies != undefined) if (player.masterystudies.includes("t266")) isReduced = true
 					if (isReduced) {
@@ -97,10 +97,7 @@ function getRGCost(offset = 0, costChange) {
 			ret = ret.times(Decimal.pow(10, increase))
 		}
 	}
-	if ((player.timestudy.studies.includes(233) && !costChange)) ret = ret.dividedBy(player.replicanti.amount.pow(0.3))
-	if (player.reality) {
-		if (player.reality.studies.includes(22)) ret = ret.root(RStudies[22].eff())
-	}
+	if (player.timestudy.studies.includes(233) && !costChange) ret = ret.dividedBy(player.replicanti.amount.pow(0.3))
 	return ret
 }
 
@@ -132,12 +129,11 @@ function canGetReplicatedGalaxy() {
 }
 
 function canAutoReplicatedGalaxy() {
-	return speedrunMilestonesReached >= 20 || !player.timestudy.studies.includes(131) || player.dilation.upgrades.includes(11)
+	return speedrunMilestonesReached >= 20 || !player.timestudy.studies.includes(131)
 }
 
 function getMaxRG() {
 	let ret = player.replicanti.gal
-	if (player.reality) if (player.reality.studies.includes(103)) ret += Math.floor(ret * 0.125)
 	if (player.timestudy.studies.includes(131)) ret += Math.floor(ret * 0.5)
 	return ret
 }
@@ -240,9 +236,6 @@ function getReplicantiInterval() {
 	if (isBigRipUpgradeActive(4)) interval /= 10
 
 	interval = new Decimal(interval)
-	if (player.reality) {
-		if (player.reality.upgrades.includes(7)) interval = interval.div(REALITY.upgs[7].effect())
-	}
 	if (player.exdilation != undefined) interval = interval.div(getBlackholePowerEffect().pow(1/3))
 	if (player.dilation.upgrades.includes('ngpp1') && player.aarexModifications.nguspV && !player.aarexModifications.nguepV) interval = interval.div(player.dilation.dilatedTime.max(1).pow(0.05))
 	if (player.dilation.upgrades.includes("ngmm9")) interval = interval.div(getDil72Mult())

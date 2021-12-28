@@ -168,8 +168,11 @@ function getEMGain() {
 		log2log = (log2log - Math.pow(2, capped) - start + 2) / Math.pow(2, capped) + capped + start - 1
 		log = Math.pow(2, log2log)
 	}
+
+	let x = Decimal.pow(10, log)
+	if (player.achievements.includes("ng3p104")) x = x.pow(1.1)
 	
-	return Decimal.pow(10, log).floor()
+	return x.floor()
 }
 
 var breakUpgCosts = [1, 1e3, 2e6, 2e11, 8e17, 1e45, null, 1e290, new Decimal("1e350"), new Decimal("1e375")]

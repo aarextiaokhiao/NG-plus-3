@@ -110,6 +110,7 @@ function bosonicTick(diff) {
 			data.extracting = false
 			data.extractProgress = new Decimal(0)
 		}
+		player.ghostify.automatorGhosts[17].oc = true
 	}
 	if (data.extracting && data.extractProgress.lt(1)) {
 		dynuta.check = false
@@ -322,6 +323,8 @@ function changeTypeToExtract(x) {
 	data.extracting = false
 	data.extractProgress = new Decimal(0)
 	data.autoExtract = new Decimal(1)
+
+	player.ghostify.automatorGhosts[17].t = 0
 }
 
 function canBuyEnchant(id) {
@@ -333,6 +336,10 @@ function canBuyEnchant(id) {
 	if (costData[0] === undefined || !data.glyphs[g1 - 1].gte(getBosonicFinalCost(costData[0]))) return
 	if (costData[1] === undefined || !data.glyphs[g2 - 1].gte(getBosonicFinalCost(costData[1]))) return
 	return true
+}
+
+function isEnchantUsed(x) {
+	return tmp.bEn !== undefined && tmp.bEn[x] !== undefined && tmp.bl.usedEnchants.includes(x)
 }
 
 function getMaxEnchantLevelGain(id) {
@@ -508,14 +515,17 @@ var bEn = {
 	},
 	action: "upgrade",
 	actions: ["upgrade", "max", "use"],
-	maxLimit: 4,
+	maxLimit: 5,
 	autoScalings:{
 		1: 1.5,
 		2: 3,
 		3: 12,
 		4: 1e6,
 		5: 1/0
-	}
+	},
+	onBuy(id) {
+		
+	},
 }
 
 //Bosonic Upgrades
@@ -537,6 +547,30 @@ function setupBosonicUpgReqData() {
 	}
 }
 
+function getRemainingExtractTime() {
+	let data = player.ghostify.bl
+	let x = getExtractTime().div(data.speed)
+	if (data.extracting) x = x.times(Decimal.sub(1, data.extractProgress))
+	return x
+}
+
+function autoMaxEnchant(id) {
+	if (!canBuyEnchant(id)) return
+
+	let data = player.ghostify.bl
+	let costData = bEn.costs[id]
+	let g1 = Math.floor(id / 10)
+	let g2 = id % 10
+	let toAdd = getMaxEnchantLevelGain(id)
+	if (data.enchants[id] == undefined) data.enchants[id] = new Decimal(toAdd)
+	else data.enchants[id] = data.enchants[id].add(toAdd).round()
+	bEn.onBuy(id)
+}
+
+function autoMaxAllEnchants() {
+	for (let g2 = 2; g2 <= br.limit; g2++) for (let g1 = 1; g1 < g2; g1++) autoMaxEnchant(g1 * 10 + g2)
+}
+
 function canBuyBosonicUpg(id) {
 	let rData = bu.reqData[id]
 	if (rData[0] === undefined || rData[1] === undefined || rData[3] === undefined) return
@@ -546,6 +580,7 @@ function canBuyBosonicUpg(id) {
 }
 
 function buyBosonicUpgrade(id, quick) {
+	if (player.ghostify.gravitons.upgs.includes(3)?true:id<50)
 	if (player.ghostify.bl.upgrades.includes(id)) return true
 	if (!canBuyBosonicUpg(id)) return false
 	player.ghostify.bl.upgrades.push(id)
@@ -577,13 +612,14 @@ function hasBosonicUpg(id) {
 function updateBosonicUpgradeDescs() {
 	for (var r = 1; r <= bu.rows; r++) for (var c = 1; c <= 5; c++) {
 		var id = r * 10 + c
+		document.getElementById("bUpg" + id).style.display = (player.ghostify.gravitons.upgs.includes(3)?true:r<5)?"":"none"
 		document.getElementById("bUpg" + id).className = player.ghostify.bl.upgrades.includes(id) ? "gluonupgradebought bl" : canBuyBosonicUpg(id) ? "gluonupgrade bl" : "gluonupgrade unavailablebtn"
 		if (tmp.blu[id] !== undefined) document.getElementById("bUpgEffect"+id).textContent = (bu.effectDescs[id] !== undefined && bu.effectDescs[id](tmp.blu[id])) || shorten(tmp.blu[id]) + "x"
 	}
 }
 
 var bu = {
-	maxRows: 4,
+	maxRows: 5,
 	costs: {
 		11: {
 			am: 200,
@@ -684,7 +720,22 @@ var bu = {
 			am: 2e80,
 			g2: 2e14,
 			g4: 4e8
-		}
+		},
+		51:{
+			am: 2e110,
+			g3: 2e30,
+			g4: 2e25
+		},
+		52:{
+			am: 2e115,
+			g1: 2e35,
+			g2: 2e35
+		},
+		53:{
+			am: 2e140,
+			g2: 2e90,
+			g4: 2e80
+		},
 	},
 	reqData: {},
 	descs: {
@@ -707,7 +758,10 @@ var bu = {
 		42: "Red power boosts the first Bosonic Upgrade.",
 		43: "Green power effect boosts Tree Upgrades.",
 		44: "Blue power makes replicate interval increase slower.",
-		45: "Dilated time weakens the Distant Antimatter Galaxies scaling."
+		45: "Dilated time weakens the Distant Antimatter Galaxies scaling.",
+		51: "Distant Light Empowerments scaling is 15% weaker.",
+		52: "Higgs Bosons boosts Gravitons gain.",
+		53: "Graviton's effect exponent is increased by Nanofield rewards.",
 	},
 	effects: {
 		11: function() {
@@ -816,7 +870,15 @@ var bu = {
 			var eff = player.dilation.dilatedTime.add(1).pow(.0005)
 			eff = softcap(eff, "bu45")
 			return eff.toNumber()
-		}
+		},
+		52: function() {
+			var eff = E(1.1).pow(player.ghostify.hb.higgs)
+			return eff
+		},
+		53: function() {
+			var eff = player.quantum.nanofield.rewards**(1/3)/10
+			return eff
+		},
 	},
 	effectDescs: {
 		11: function(x) {
@@ -860,7 +922,13 @@ var bu = {
 		},
 		45: function(x) {
 			return "/" + shorten(x) + " to efficiency"
-		}
+		},
+		52: function(x) {
+			return shorten(x) + "x"
+		},
+		53: function(x) {
+			return "+"+shorten(x)
+		},
 	}
 }
 

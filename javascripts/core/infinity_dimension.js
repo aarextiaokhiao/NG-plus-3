@@ -126,8 +126,8 @@ function getStartingIDPower(tier){
 
 function DimensionPower(tier) {
   	var dim = player["infinityDimension" + tier]
-  	if (player.currentEternityChall == "eterc2" || player.currentEternityChall == "eterc10" || player.currentEternityChall == "eterc13" || RChals.in(1)) return new Decimal(0)
-  	if (player.currentEternityChall == "eterc11" || RChals.in(2)) return new Decimal(1)
+  	if (player.currentEternityChall == "eterc2" || player.currentEternityChall == "eterc10" || player.currentEternityChall == "eterc13") return new Decimal(0)
+  	if (player.currentEternityChall == "eterc11") return new Decimal(1)
   	if (player.currentEternityChall == 'eterc14') return getIDReplMult()
   	if (inQC(3)) return getExtraDimensionBoostPower()
   	
@@ -161,9 +161,6 @@ function DimensionPower(tier) {
 
   	mult = dilates(mult, 1)
   	if (quantumed && !tmp.ngp3l) mult = mult.times(colorBoosts.dim.g)
-
-	if (player.reality) mult = mult.times(SBEff[2]())
-	if (player.reality) if (RChals.getCompletions(1)>0) mult = mult.pow(RChals.reward[1].eff())
   	return mult
 }
 
@@ -252,6 +249,7 @@ function buyMaxInfDims(tier, auto) {
 }
 
 function updateInfinityPowerEffects() {
+	tmp.infPrePowExp = getPreInfinityPowerEffectExp()
 	tmp.infPowExp = getInfinityPowerEffectExp()
 	tmp.infPow = getInfinityPowerEffect()
 }
@@ -264,11 +262,8 @@ function getInfinityPowerEffect() {
 	return Decimal.pow(10, log)
 }
 
-function getInfinityPowerEffectExp() {
+function getPreInfinityPowerEffectExp() {
 	let x = 7
-	if (player.reality != undefined) {
-		if (player.reality.upgrades.includes(1)) x = 10
-	}
 	let galaxies = Math.max(player.galaxies, 0)
 	if (player.galacticSacrifice != undefined) {
 		x = Math.pow(galaxies, 0.7)
@@ -284,6 +279,12 @@ function getInfinityPowerEffectExp() {
 	if (x > 100) x = 50 * Math.log10(x)
 	if (hasPU(34)) x *= puMults[34]()
 	if (player.dilation.upgrades.includes("ngmm5")) x += getDil44Mult()
+	return x
+}
+
+function getInfinityPowerEffectExp() {
+	let x = tmp.infPrePowExp
+	if (player.ghostify.neutrinos.boosts >= 12) x = tmp.nb[12]
 	return x
 }
 
@@ -327,7 +328,6 @@ var infDimPow = 1
 
 function getIDReplMult() {
 	if (player.masterystudies) if (player.masterystudies.includes('t311')) return tmp.rm.pow(17.3)
-	if (player.reality) if (player.reality.studies.includes(31)) return tmp.rm.pow(RStudies[31].eff())
 	return tmp.rm
 }
 

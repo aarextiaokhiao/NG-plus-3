@@ -693,10 +693,6 @@ shortenMoney = function (money) {
   return formatValue(player.options.notation, money, 2, 1);
 };
 
-longMoney = function (money) {
-    return formatValue(player.options.notation, money, 2, 3);
-};
-
 shortenND = function (money) {
 	return formatValue(player.options.notation, money, 2, player.aarexModifications.ngmX > 3 ? Math.min(Math.max(3 - money.exponent, 0), 3) : 0)
 }

@@ -13,6 +13,9 @@
 }*/
 
 
+function E(x) { return new Decimal(x) }
+
+
 var Autobuyer = function Autobuyer(target) {
     this.target = target
     this.cost = 1
