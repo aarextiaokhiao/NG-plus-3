@@ -987,7 +987,7 @@ function getBrandNewGhostifyData(){
 		ghostlyPhotons: getBrandNewPhotonsData(),
 		bl: getBrandNewBosonicLabData(),
 		wzb: getBrandNewWZBosonsData(),
-		graviton: getBrandNewGravitonData(),
+		graviton: getBrandNewGravitonsData(),
 	}
 }
 
