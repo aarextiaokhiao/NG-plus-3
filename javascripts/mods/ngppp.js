@@ -642,10 +642,13 @@ function showGhostifyTab(tabName) {
 }
 
 function updateGhostifyTabs() {
+	document.getElementById("gravtabbtn").style.display = player.ghostify.hb.unl ? "" : "none"
+
 	if (document.getElementById("neutrinos").style.display == "block") updateNeutrinosTab()
 	if (document.getElementById("automaticghosts").style.display == "block") if (player.ghostify.milestones > 7) updateQuantumWorth("display")
 	if (document.getElementById("gphtab").style.display == "block" && player.ghostify.ghostlyPhotons.unl) updatePhotonsTab()
 	if (document.getElementById("bltab").style.display == "block" && player.ghostify.wzb.unl) updateBosonicLabTab()
+	if (document.getElementById("gravtab").style.display == "block") updateGravitonsTab()
 }
 
 function buyGHPMult() {
@@ -705,12 +708,14 @@ function setupAutomaticGhostsData() {
 	data[11].lw = 1
 	data[11].cw = 1
 	data[15].a = 1
+	data[17].a = 60
+	data[17].t = 0
 	return data
 }
 
-var autoGhostRequirements=[2,4,4,4.5,5,5,6,6.5,7,7,7.5,8,20,24,28,32,36,40]
+var autoGhostRequirements=[2,4,4,4.5,5,5,6,6.5,7,7,7.5,8,20,24,28,32,36,40,45]
 var powerConsumed
-var powerConsumptions=[0,1,1,1,1,2,2,0.5,0.5,0.5,1,0.5,0.5,0.5,0.5,0.5,6,3,6,3,9,3]
+var powerConsumptions=[0,1,1,1,1,2,2,0.5,0.5,0.5,1,0.5,0.5,0.5,0.5,0.5,6,3,6,3,9,3,3]
 function updateAutoGhosts(load) {
 	var data = player.ghostify.automatorGhosts
 	if (load) {
@@ -743,6 +748,7 @@ function updateAutoGhosts(load) {
 		document.getElementById("autoGhost13t").value = data[13].t
 		document.getElementById("autoGhost13u").value = data[13].u
 		document.getElementById("autoGhost15a").value = formatValue("Scientific", data[15].a, 2, 1)
+		document.getElementById("autoGhost17a").value = data[17].a || 60
 	}
 	document.getElementById("consumedPower").textContent = powerConsumed.toFixed(2)
 	isAutoGhostsSafe = data.power >= powerConsumed
@@ -784,6 +790,9 @@ function changeAutoGhost(o) {
 	} else if (o == "15a") {
 		var num = fromValue(document.getElementById("autoGhost15a").value)
 		if (!isNaN(break_infinity_js ? num : num.l)) player.ghostify.automatorGhosts[15].a = num
+	} else if (o == "17a") {
+		var num = fromValue(document.getElementById("autoGhost17a").value)
+		if (!isNaN(break_infinity_js ? num : num.l)) player.ghostify.automatorGhosts[17].a = num
 	}
 }
 
@@ -802,7 +811,7 @@ function rotateAutoUnstable() {
 }
 
 function getMaxAutoGhosts() {
-	return tmp.ngp3l ? 15 : 21
+	return tmp.ngp3l ? 15 : 22
 }
 
 //v2.1
@@ -857,7 +866,9 @@ function toggleLEConf() {
 
 //Anti-Preontius' Lair
 function getAntiPreonGhostWake() {
-	return 104
+	let x = 104
+	if (hasNU(17)) x += tmp.nanofield_free_rewards/3
+	return Math.floor(x)
 }
 
 //v2.21: NG+3.1

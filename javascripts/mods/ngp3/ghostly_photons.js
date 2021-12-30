@@ -89,6 +89,7 @@ function getGPHProduction() {
 	else var ret = player.dilation.dilatedTime.div("1e930")
 	if (ret.gt(1)) ret = ret.pow(0.02)
 	if (b && ret.gt(Decimal.pow(2, 444))) ret = ret.div(Decimal.pow(2, 444)).sqrt().times(Decimal.pow(2, 444))
+	if (hasGravUpg(3)) ret = ret.mul(tmp.gravitons.upg_eff[3])
 	return ret
 }
 
@@ -128,7 +129,7 @@ function updateLightBoostDisplay(){
 function updateLightThresholdStrengthDisplay(){
 	var gphData=player.ghostify.ghostlyPhotons
 	for (var c = 0; c < 8; c++) {
-		document.getElementById("light" + (c + 1)).textContent = getFullExpansion(gphData.lights[c])
+		document.getElementById("light" + (c + 1)).textContent = getFullExpansion(gphData.lights[c])+(tmp.free_lights>0?" + "+getFullExpansion(tmp.free_lights):"")
 		document.getElementById("lightThreshold" + (c + 1)).textContent = shorten(getLightThreshold(c))
 		if (c > 0) document.getElementById("lightStrength" + c).textContent = shorten(tmp.ls[c-1])
 	}
@@ -176,7 +177,9 @@ function getGHRCap() {
 }
 
 function getLightThreshold(l) {
-	return Decimal.pow(getLightThresholdIncrease(l), player.ghostify.ghostlyPhotons.lights[l]).times(tmp.lt[l])
+	let x = Decimal.pow(getLightThresholdIncrease(l), player.ghostify.ghostlyPhotons.lights[l]).times(tmp.lt[l])
+	if (hasGravUpg(1)) x = x.div(tmp.gravitons.upg_eff[1])
+	return x
 }
 
 function getLightThresholdIncrease(l) {
@@ -188,11 +191,14 @@ function getLightThresholdIncrease(l) {
 	return x
 }
 
-function lightEmpowerment() {
+function lightEmpowerment(auto=false) {
 	if (!(player.ghostify.ghostlyPhotons.lights[7] >= tmp.leReq)) return
-	if (!player.aarexModifications.leNoConf && !confirm("You will become a ghost, but Ghostly Photons will be reset. You will gain 1 Light Empowerment from this. Are you sure you want to proceed?")) return
-	if (!player.ghostify.ghostlyPhotons.enpowerments) document.getElementById("leConfirmBtn").style.display = "inline-block"
+	if (!player.achievements.includes("ng3p101") && !auto) {
+		if (!player.aarexModifications.leNoConf && !confirm("You will become a ghost, but Ghostly Photons will be reset. You will gain 1 Light Empowerment from this. Are you sure you want to proceed?")) return
+		if (!player.ghostify.ghostlyPhotons.enpowerments) document.getElementById("leConfirmBtn").style.display = "inline-block"
+	}
 	player.ghostify.ghostlyPhotons.enpowerments++
+	if (player.achievements.includes("ng3p101")) return
 	ghostify(false, true)
 	if (player.achievements.includes("ng3p91")) return
 	player.ghostify.ghostlyPhotons.amount = new Decimal(0)
@@ -207,7 +213,7 @@ function getLightEmpowermentReq(le) {
 	let scale = 0
 	if (!tmp.ngp3l) {
 		if (le > 19) {
-			x += Math.pow(le - 19, 2) / 3
+			x += Math.pow(le - 19, 2*(hasBosonicUpg(51)?0.85:1)) / 3
 			scale = 1
 		}
 		if (le > 49) {

@@ -448,7 +448,6 @@ function doNGp3Init1(){
 	tmp.ngex=player.aarexModifications.ngexV!==undefined
 	tmp.newNGP3E=player.aarexModifications.newGameExpVersion!==undefined&&!tmp.ngp3l
 	setNonlegacyStuff()
-
 	transformSaveToDecimal();
 	tmp.tickUpdate = true;
 	updateAchievements();
@@ -2061,6 +2060,8 @@ function updateNGp3DisplayStuff(){
                 document.getElementById("nextParticle").textContent = "To unlock the next particle (Higgs Bosons), you need to get " + shortenCosts(Decimal.pow(10, 2e17)) + " antimatter and " + shortenCosts(getHiggsRequirement()) + " Bosonic Antimatter first."
         }
         updateHiggsUnlocks()
+
+        updateGravitonsTab()
 }
 
 function setSomeQuantumAutomationDisplay(){
@@ -2292,20 +2293,7 @@ function onLoad(noOffline) {
                 infiniteCheck = false
                 closeToolTip()
                 showNextModeMessage()
-        } else if (tmp.ngp3) {
-			document.getElementById("welcome").style.display = "flex"
-			document.getElementById("welcomeMessage").innerHTML =
-				"<b style='font-size: 15px'>Regretting NG+3</b>" +
-				"<br>" +
-				"Hello. Aarex's here. I am here to inform you that there won't be updates of NG+3.1 anymore, except vanilla updates. Look how boring NG+3 is? That's not good anymore." +
-				"<br><br>" +
-				"Fortunately, I am currently working on NG+3R, as a rewrite." +
-				"<br>" +
-				'<a href="http://raw.githack.com/aarextiaokhiao/IvarK.github.io/v3.0-Respecced/" target="_newtab">Play NG+3 Respecced</a> <b class="warning">(GO PLAY HERE INSTEAD)</b>' +
-				"<br>" +
-				"<br>" +
-				'<b class="warning">WARNING!</b> You will be automatically redirected into NG+3R soon, when NG+3R got updated enough!'
-        } else showNextModeMessage()
+        }  else showNextModeMessage()
         document.getElementById("ghostlyNewsTicker").style.height=((player.options.secrets!==undefined?player.options.secrets.ghostlyNews:false)?24:0)+"px"
         document.getElementById("ghostlyNewsTickerBlock").style.height=((player.options.secrets!==undefined?player.options.secrets.ghostlyNews:false)?16:0)+"px"
         updateTemp()
@@ -2932,7 +2920,22 @@ function conToDeciGhostify(){
         }
 }
 
+function deepUndefinedAndDecimal(obj, data) {
+        if (obj == null) return data
+        for (let x = 0; x < Object.keys(data).length; x++) {
+            let k = Object.keys(data)[x]
+            if (obj[k] === null) continue
+            if (obj[k] === undefined) obj[k] = data[k]
+            else {
+                if (Object.getPrototypeOf(data[k]).constructor.name == "Decimal") obj[k] = new Decimal(obj[k])
+                else if (typeof obj[k] == 'object') deepUndefinedAndDecimal(obj[k], data[k])
+            }
+        }
+        return obj
+}
+
 function transformSaveToDecimal() {
+
         conToDeciPreEter()
         player.eternities = nP(player.eternities)
         if (player.eternitiesBank !== undefined) player.eternitiesBank = nP(player.eternitiesBank)
@@ -2940,6 +2943,8 @@ function transformSaveToDecimal() {
         conToDeciLateEter()
         conToDeciMS()
         conToDeciGhostify()
+
+        conToDeciPostNGP3()
 }
 
 

@@ -545,5 +545,8 @@ function setNGP3p1AchievementTooltip(){
 function setAchieveTooltip() { 
 	setPreNGP3AchievementTooltip()
 	if (tmp.ngp3) setPreNGP3p1AchievementTooltip()
-	if (!tmp.ngp3l) setNGP3p1AchievementTooltip()
+	if (!tmp.ngp3l) {
+		setNGP3p1AchievementTooltip()
+		setPostR23Tooltip()
+	}
 }

@@ -249,6 +249,7 @@ function buyMaxInfDims(tier, auto) {
 }
 
 function updateInfinityPowerEffects() {
+	tmp.infPrePowExp = getPreInfinityPowerEffectExp()
 	tmp.infPowExp = getInfinityPowerEffectExp()
 	tmp.infPow = getInfinityPowerEffect()
 }
@@ -261,7 +262,7 @@ function getInfinityPowerEffect() {
 	return Decimal.pow(10, log)
 }
 
-function getInfinityPowerEffectExp() {
+function getPreInfinityPowerEffectExp() {
 	let x = 7
 	let galaxies = Math.max(player.galaxies, 0)
 	if (player.galacticSacrifice != undefined) {
@@ -278,6 +279,12 @@ function getInfinityPowerEffectExp() {
 	if (x > 100) x = 50 * Math.log10(x)
 	if (hasPU(34)) x *= puMults[34]()
 	if (player.dilation.upgrades.includes("ngmm5")) x += getDil44Mult()
+	return x
+}
+
+function getInfinityPowerEffectExp() {
+	let x = tmp.infPrePowExp
+	if (player.ghostify) if (player.ghostify.neutrinos.boosts >= 12) x = tmp.nb[12]
 	return x
 }
 

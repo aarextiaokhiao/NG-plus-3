@@ -97,7 +97,10 @@ function getMetaBoostPower() {
 		if (!tmp.ngp3l && player.achievements.includes("ng3p26")) exp *= Math.log10(9 + Math.max(player.meta.resets / 75 + 0.25, 1))
 	}
 	if (player.achievements.includes("ngpp14")) r *= 1.01
-	return Math.pow(r, exp)
+
+	let eff = Decimal.pow(r, exp)
+	if (player.ghostify.gravitons.unl) eff = eff.mul(tmp.gravitons.eff)
+	return eff
 }
 
 function getMetaDimensionDescription(tier) {

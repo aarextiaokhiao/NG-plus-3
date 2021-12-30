@@ -10,6 +10,7 @@ function updateTemp() {
 	if (player.timestudy.studies.includes(101)) tmp.nrm = player.replicanti.amount.max(1)
 	tmp.rg4 = false
 	if (tmp.ngp3) {
+		updatePostNGp3TempStuff()
 		updateGhostifyTempStuff()
 		if (tmp.qu.breakEternity.unlocked) updateBreakEternityUpgradesTemp()
 		if (player.masterystudies.includes("d14")) updateBigRipUpgradesTemp()
@@ -26,7 +27,7 @@ function updateTemp() {
 		if (player.masterystudies.includes("d13")) tmp.branchSpeed = getBranchSpeed()
 		if (player.masterystudies.includes("d12") && tmp.nf !== undefined && tmp.nf.rewardsUsed !== undefined) {
 			var x = getNanoRewardPowerEff()
-			var y = tmp.qu.nanofield.rewards
+			var y = tmp.qu.nanofield.rewards+tmp.nanofield_free_rewards
 			tmp.ns = getNanofieldSpeed()
 			if (tmp.nf.powerEff !== x || tmp.nf.rewards !== y) {
 				tmp.nf.powerEff = x
@@ -85,15 +86,21 @@ let tmp = {
 	be: false,
 	beu: {},
 	bm: [200,175,150,100,50,40,30,25,20,15,10,5,4,3,2,1],
-	nbc: [1,2,4,6,15,50,1e3,1e14,1e35,"1e900","1e3000"],
+	nbc: [1,2,4,6,15,50,1e3,1e14,1e35,"1e900","1e3000","1e4500"],
 	nu: [],
-	nuc: [null,1e6,1e7,1e8,2e8,5e8,2e9,5e9,75e8,1e10,7e12,1e18,1e55,1e125,1e160,1e280],
+	nuc: [null,1e6,1e7,1e8,2e8,5e8,2e9,5e9,75e8,1e10,7e12,1e18,1e55,1e125,1e160,1e280,"e10000","e13000"],
 	lt: [12800,16e4,48e4,16e5,6e6,5e7,24e7,125e7],
 	lti: [2,4,1.5,10,4,1e3,2.5,3],
 	effL: [0,0,0,0,0,0,0],
 	ls: [0,0,0,0,0,0,0],
 	le: [0,0,0,0,0,0,0],
-	leBonus: {}
+	leBonus: {},
+	nanofield_free_rewards: 0,
+	free_lights: 0,
+
+	gravitons: {
+		upg_eff: [],
+	},
 }
 
 function updateRedLightBoostTemp(){
@@ -147,7 +154,7 @@ function updateVioletLightBoostTemp(){
 function updateEffectiveLightAmountsTemp(){
 	let leBonus5Unl = isLEBoostUnlocked(5)
 	for (var c = 7; c >= 0; c--) {
-		var x = player.ghostify.ghostlyPhotons.lights[c]
+		var x = player.ghostify.ghostlyPhotons.lights[c]+tmp.free_lights
 		var y = tmp.leBoost
 		if ((c == 6 && !isLEBoostUnlocked(4)) || c == 7) y += 1
 		else if (leBonus5Unl) y += Math.pow(tmp.effL[c + 1] * tmp.leBonus[5].mult + 1, tmp.leBonus[5].exp)
@@ -317,11 +324,12 @@ function updatePPTITemp(){
 
 function updateGhostifyTempStuff(){
 	updateBosonicLabTemp()
-	tmp.apgw = tmp.qu.nanofield.apgWoke || getAntiPreonGhostWake()
+	tmp.apgw = getAntiPreonGhostWake()
 	updatePPTITemp() //preon power threshold increase
 	if (player.ghostify.ghostlyPhotons.unl) {
 		var x = getLightEmpowermentBoost()
 		var y = hasBosonicUpg(32)
+		tmp.free_lights = hasGravUpg(7)?player.ghostify.ghostlyPhotons.enpowerments:0
 		if (tmp.leBoost !== x || tmp.hasBU32 !== y || tmp.updateLights) {
 			tmp.leBoost = x
 			tmp.hasBU32 = y
@@ -396,6 +404,12 @@ function updateNU15Temp(){
 	tmp.nu[6] = Decimal.pow(2,(tmp.qu.nanofield.rewards>90?Math.sqrt(90*tmp.qu.nanofield.rewards):tmp.qu.nanofield.rewards) / 2.5) 
 	//NU15
 }
+
+function updateNU16Temp(){
+	tmp.nu[7] = (E(player.ghostify.times).log10()+1)**1.5
+}
+
+
 
 function updateNeutrinoUpgradesTemp(){
 	updateNU1Temp()
@@ -615,6 +629,7 @@ function updateWZBosonsTemp(){
 	var bosonsExp = Math.max(wpl * (player.ghostify.wzb.wpb.sub(player.ghostify.wzb.wnb.min(player.ghostify.wzb.wpb))).div(player.ghostify.wzb.wpb.max(1)).toNumber(), 0)
 	data.wbt = Decimal.pow(tmp.newNGP3E ? 5 : 3, bosonsExp) //W Bosons boost to extract time
 	data.wbo = Decimal.pow(10, Math.max(bosonsExp, 0)) //W Bosons boost to Z Neutrino oscillation requirement
+	if (hasGravUpg(8)) data.wbo = data.wbo.mul(tmp.gravitons.upg_eff[8])
 	data.wbp = player.ghostify.wzb.wpb.add(player.ghostify.wzb.wnb).div(100).max(1).pow(1 / 3).sub(1) //W Bosons boost to Bosonic Antimatter production
 
 	var zbslog = player.ghostify.wzb.zb.div(10).add(1).sqrt().log10()

@@ -228,7 +228,16 @@ const allAchievements = {
   ng3ps25 : "This is NOT a clicker game!",
   ng3ps26 : "Deny the afterlife",
   ng3ps27 : "Revolution, when?",
-  ng3ps28 : "Prestige No-lifer"
+  ng3ps28 : "Prestige No-lifer",
+
+  ng3p101 : `The Layer of Recreation`,
+  ng3p102 : `Biggest Mistake`,
+  ng3p103 : `Double Quintillion`,
+  ng3p104 : `This achievement doesn't exist 5`,
+  ng3p105 : `When Infinity Replicanti`,
+  ng3p106 : `Not again?`,
+  ng3p107 : `Mega Boo!`,
+  ng3p108 : `Breaking Eternity is Fixed`,
 };
 const secretAchievementTooltips = {
 	s11 : "Click on this achievement.",
@@ -386,7 +395,7 @@ function updateAchievements() {
 	var amount = 0
 	var rowsShown = 0
 	var rowsNum = 0
-	for (var i = 1; i < 25; i++) {
+	for (var i = 1; i < 26; i++) {
 		var shown=true
 		var rowid = i
 		var rownum = i
@@ -423,11 +432,12 @@ function updateAchievements() {
 				else if (achNum == 147) achId = "ngpp18"
 				else if (achNum > 140) achId = "ngud" + (achNum - 130)
 				var name = allAchievements[achId]
+                if (!document.getElementById(name)) continue
 				if (player.achievements.includes(achId)) {
 					n++
-					document.getElementById(name).className = "achievementunlocked"
+					document.getElementById(name).className = "achievement achievementunlocked"
 				} else {
-					document.getElementById(name).className = "achievementlocked"
+					document.getElementById(name).className = "achievement achievementlocked"
 				}
 			}
 			if (n == 8) {

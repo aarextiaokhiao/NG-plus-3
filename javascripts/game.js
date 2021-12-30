@@ -282,18 +282,24 @@ function setupToDHTMLandData(){
 function setupNanofieldHTMLandData(){
 	var nfRewards = document.getElementById("nfRewards")
 	var row = 0
-	for (var r = 1; r <= 8; r += 2) {
+	for (var r = 1; r <= 5; r += 4) {
 		nfRewards.insertRow(row).innerHTML = 
 			"<td id='nfRewardHeader" + r + "' class='milestoneText'></td>" +
-			"<td id='nfRewardHeader" + (r + 1) + "' class='milestoneText'></td>"
+			"<td id='nfRewardHeader" + (r + 1) + "' class='milestoneText'></td>"+
+			"<td id='nfRewardHeader" + (r + 2) + "' class='milestoneText'></td>"+
+			"<td id='nfRewardHeader" + (r + 3) + "' class='milestoneText'></td>"
 		row++
 		nfRewards.insertRow(row).innerHTML = 
 			"<td id='nfRewardTier" + r + "' class='milestoneTextSmall'></td>" +
-			"<td id='nfRewardTier" + (r + 1) + "' class='milestoneTextSmall'></td>"
+			"<td id='nfRewardTier" + (r + 1) + "' class='milestoneTextSmall'></td>"+
+			"<td id='nfRewardTier" + (r + 2) + "' class='milestoneTextSmall'></td>"+
+			"<td id='nfRewardTier" + (r + 3) + "' class='milestoneTextSmall'></td>"
 		row++
 		nfRewards.insertRow(row).innerHTML = 
 			"<td><button class='nfRewardlocked' id='nfReward" + r + "'></button></td>" +
-			"<td><button class='nfRewardlocked' id='nfReward" + (r + 1) + "'></button></td>"
+			"<td><button class='nfRewardlocked' id='nfReward" + (r + 1) + "'></button></td>"+
+			"<td><button class='nfRewardlocked' id='nfReward" + (r + 2) + "'></button></td>"+
+			"<td><button class='nfRewardlocked' id='nfReward" + (r + 3) + "'></button></td>"
 		row++
 	}
 	document.getElementById("nfReward7").style["font-size"] = "10px"
@@ -388,6 +394,8 @@ function setupHTMLAndData() {
 	setupBosonicUpgrades()
 	setupBosonicRunes()
 	setupAutobuyerHTMLandData()
+
+	setupPostNGp3HTML()
 }
 
 function updateNewPlayer(reseted) {
@@ -978,7 +986,8 @@ function getBrandNewGhostifyData(){
 		automatorGhosts: setupAutomaticGhostsData(),
 		ghostlyPhotons: getBrandNewPhotonsData(),
 		bl: getBrandNewBosonicLabData(),
-		wzb: getBrandNewWZBosonsData()
+		wzb: getBrandNewWZBosonsData(),
+		graviton: getBrandNewGravitonsData(),
 	}
 }
 
@@ -4631,6 +4640,8 @@ function doNGP3UnlockStuff(){
 	if (player.money.gte(Decimal.pow(10, 6e9)) && tmp.qu.bigRip.active && !player.ghostify.ghostlyPhotons.unl) doPhotonsUnlockStuff()
 	if (canUnlockBosonicLab() && !player.ghostify.wzb.unl) doBosonsUnlockStuff()
 	if (!tmp.ng3l) unlockHiggs()
+
+	doPostNGP3UnlockStuff()
 }
 
 function updateResetTierButtons(){
@@ -4981,7 +4992,7 @@ function dimensionButtonDisplayUpdating(){
 	document.getElementById("mdtabbtn").style.display = player.dilation.studies.includes(6) ? "" : "none"
 }
 
-function ghostifyAutomationUpdating(){
+function ghostifyAutomationUpdating(diff){
 	if (ghostified && isAutoGhostsSafe) {
 		var colorShorthands=["r", "g", "b"]
 		for (var c = 1; c <= 3; c++) {
@@ -4997,7 +5008,7 @@ function ghostifyAutomationUpdating(){
 		if (isAutoGhostActive(11)) {
 			var ag=player.ghostify.automatorGhosts[11]
 			var preonGenerate=tmp.qu.replicants.quarks.div(getGatherRate().total).gte(ag.pw)&&tmp.qu.replicants.quarks.div(getQuarkLossProduction()).gte(ag.lw)&&tmp.qu.nanofield.charge.div(ag.cw).lt(1)
-			if (tmp.qu.nanofield.producingCharge!=preonGenerate) startProduceQuarkCharge()
+			if (tmp.qu.nanofield.producingCharge!=preonGenerate && !player.ghostify.gravitons.upgs.includes(4)) startProduceQuarkCharge()
 		}
 		if (isAutoGhostActive(13)) {
 			if (tmp.qu.bigRip.active) {
@@ -5020,11 +5031,45 @@ function ghostifyAutomationUpdating(){
 			if (addedTotal > 0) updateElectrons(true)
 		}
 		if (isAutoGhostActive(20)) buyMaxBosonicUpgrades()
+		if (player.ghostify.wzb.unl) {
+			if (isAutoGhostActive(17)) {
+				let ag = player.ghostify.automatorGhosts[17]
+	
+				let change = getRemainingExtractTime().gte(ag.s || 60)
+				if (!change) change = ag.oc && ag.t >= 1 / 10
+				if (change) changeTypeToExtract(tmp.bl.typeToExtract % br.limit + 1)
+	
+				if (!tmp.bl.extracting) extract()
+			}
+			if (isAutoGhostActive(21)) {
+				let data = player.ghostify.wzb
+				let hasWNB = data.wnb.gt(0)
+	
+				if (data.dPUse == 0 && data.dP.gt(0)) useAntiPreon(hasWNB ? 3 : 1)
+				if (data.dPUse == 1) useAntiPreon(hasWNB ? 3 : 2)
+				if (data.dPUse == 2) useAntiPreon(1)
+				if (data.dPUse == 3 && !hasWNB) useAntiPreon(2)
+			}
+		}
+		if (isAutoGhostActive(19)) {
+			let ag = player.ghostify.automatorGhosts[19]
+			let perSec = 5
+			ag.t = (ag.t || 0) + diff * perSec
+			let times = Math.floor(ag.t)
+			if (times > 0) {
+				autoMaxAllEnchants()
+				ag.t = ag.t - times
+			}
+		}
+		if (isAutoGhostActive(22)) {
+			lightEmpowerment(true)
+		}
 	} 
 }
 
 function WZBosonsUpdating(diff){
 	var data = player.ghostify.bl
+	player.ghostify.automatorGhosts[17].t += diff
 	var wattGained = Math.max(getBosonicWattGain(), data.watt)
 	data.speed = Math.max(Math.min(wattGained + (data.watt - data.speed) * 2, wattGained), data.speed)
 	data.watt = wattGained
@@ -5053,25 +5098,32 @@ function nanofieldProducingChargeUpdating(diff){
 	var rate = getQuarkChargeProduction()
 	var loss = getQuarkLossProduction()
 	var toSub = loss.times(diff).min(tmp.qu.replicants.quarks)
-	if (toSub.eq(0)) {
+	if (toSub.eq(0) && !player.ghostify.gravitons.upgs.includes(4)) {
 		tmp.qu.nanofield.producingCharge = false
 		document.getElementById("produceQuarkCharge").innerHTML="Start production of preon charge.<br>(You will not get preons when you do this.)"
 	} else {
+		let chGain = hasGravUpg(4) ? toSub : toSub.div(loss).times(rate)
 		tmp.qu.replicants.quarks = tmp.qu.replicants.quarks.sub(toSub)
-		tmp.qu.nanofield.charge = tmp.qu.nanofield.charge.add(toSub.div(loss).times(rate))
+		tmp.qu.nanofield.charge = tmp.qu.nanofield.charge.add(chGain)
 	}
 }
 
 function nanofieldUpdating(diff){
 	var AErate = getQuarkAntienergyProduction()
 	var toAddAE = AErate.times(diff).min(getQuarkChargeProductionCap().sub(tmp.qu.nanofield.antienergy))
-	if (tmp.qu.nanofield.producingCharge) nanofieldProducingChargeUpdating(diff)
+	let dkc = false
+	if (player.aarexModifications.ngp5V === undefined) dkc = false
+	else dkc = player.ghostify.gravitons.upgs.includes(4)
+	if (tmp.qu.nanofield.producingCharge || dkc) nanofieldProducingChargeUpdating(diff)
 	if (toAddAE.gt(0)) {
 		tmp.qu.nanofield.antienergy = tmp.qu.nanofield.antienergy.add(toAddAE).min(getQuarkChargeProductionCap())
 		tmp.qu.nanofield.energy = tmp.qu.nanofield.energy.add(toAddAE.div(AErate).times(getQuarkEnergyProduction()))
+		tmp.nanofield_free_rewards = 0
+		if (hasGravUpg(6)) tmp.nanofield_free_rewards += tmp.gravitons.upg_eff[6]||0
 		updateNextPreonEnergyThreshold()
 		if (tmp.qu.nanofield.power > tmp.qu.nanofield.rewards) {
 			tmp.qu.nanofield.rewards = tmp.qu.nanofield.power
+			
 			if (!tmp.qu.nanofield.apgWoke && tmp.qu.nanofield.rewards >= tmp.apgw) {
 				tmp.qu.nanofield.apgWoke = tmp.apgw
 				$.notify("You reached " + getFullExpansion(tmp.apgw) + " rewards... The Anti-Preontius has woken up and took over the Nanoverse! Be careful!")
@@ -5171,7 +5223,7 @@ function replicantOverallUpdating(diff){
 	if (tmp.qu.replicants.eggons.lt(1)) tmp.qu.replicants.babyProgress = new Decimal(0)
 	replicantBabiesGrowingUpUpdating(diff)
 	if (tmp.qu.replicants.babies.lt(1)) tmp.qu.replicants.ageProgress = new Decimal(0)
-	if (!tmp.qu.nanofield.producingCharge) tmp.qu.replicants.quarks = tmp.qu.replicants.quarks.add(getGatherRate().total.max(0).times(diff))
+	if (!tmp.qu.nanofield.producingCharge || player.ghostify.gravitons.upgs.includes(4)) tmp.qu.replicants.quarks = tmp.qu.replicants.quarks.add(getGatherRate().total.max(0).times(diff))
 }
 
 function quantumOverallUpdating(diff){
@@ -5813,6 +5865,14 @@ function setTachyonParticles(x) {
 }
 
 function passiveQuantumLevelStuff(diff){
+	if (tmp.qu.bigRip.active && player.achievements.includes("ng3p107")) {
+		player.ghostify.ghostParticles = player.ghostify.ghostParticles.add(getGHPGain().times(diff))
+		player.ghostify.times = nA(player.ghostify.times, E(getGhostifiedGain()).mul(diff))
+		let ngain = getNeutrinoGain()
+		player.ghostify.neutrinos.electron = player.ghostify.neutrinos.electron.add(ngain.mul(diff))
+		player.ghostify.neutrinos.mu = player.ghostify.neutrinos.mu.add(ngain.mul(diff))
+		player.ghostify.neutrinos.tau = player.ghostify.neutrinos.tau.add(ngain.mul(diff))
+	}
 	if (tmp.qu.bigRip.active || hasBosonicUpg(24)) tmp.qu.bigRip.spaceShards = tmp.qu.bigRip.spaceShards.add(getSpaceShardsGain().times(diff / 100))
 	if (!tmp.qu.bigRip.active) {
 		tmp.qu.quarks = tmp.qu.quarks.add(quarkGain().sqrt().times(diff))
@@ -5880,7 +5940,7 @@ function gameLoop(diff) {
 	passiveIPperMUpdating(diff)
 	incrementTimesUpdating(diffStat)
 	dimensionButtonDisplayUpdating()
-	ghostifyAutomationUpdating()
+	ghostifyAutomationUpdating(diff)
 
 	if (player.meta) metaDimsUpdating(diff)
 	infinityTimeMetaBlackHoleDimUpdating(diff) //production of those dims
@@ -5969,6 +6029,7 @@ function gameLoop(diff) {
 			if (player.ghostify.wzb.unl) WZBosonsUpdating(diff) // Bosonic Lab
 			if (player.ghostify.ghostlyPhotons.unl) ghostlyPhotonsUpdating(diff) // Ghostly Photons
 		}
+		postNGp3Updating(diff)
 	}
 
 	thisQuantumTimeUpdating()

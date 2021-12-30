@@ -855,7 +855,6 @@ button {
 .achievementunlocked {
     border: 2px solid #127A20;
     background: #5AC467;
-    color: black;
     width: 104px;
     height: 104px;
     border-radius: 8px;
@@ -1668,13 +1667,14 @@ button {
 }
 
 [ach-tooltip]:before {
+    font-weight: normal;
     position: absolute;
     bottom: 100%;
     left: 50%;
     margin-bottom: 5px;
-    margin-left: -80px;
+    margin-left: -150px;
     padding: 7px;
-    width: 160px;
+    width: 300px;
     -webkit-border-radius: 3px;
     -moz-border-radius: 3px;
     border-radius: 3px;
@@ -2716,6 +2716,58 @@ td.subFactorH {
 
 #apgInfo .warning {
 	color: #bf0000
+}
+
+.h1 {
+    font-size: 35px;
+    color: black;
+}
+
+.h2 {
+    font-size: 25px;
+    color: black;
+}
+
+.gravitonupg {
+    color: #3359FF;
+    background: black;
+    border: 1px solid #3359FF;
+    box-shadow: inset 0px 0px 20px 0px #3359FF;
+
+    font-family: Typewriter;
+    font-weight: bold;
+    width: 210px;
+    height: 100px;
+    transition-duration: 0.2s;
+    border-radius: 4px;
+    font-size: 10px;
+    cursor: pointer;
+}
+
+.gravitonupg:not(.upg_locked):not(.upg_bought):hover {
+    color: white;
+    background: #3359FF;
+}
+
+.upg_locked {
+    color: #000000;
+    background: #A3A3A3;
+    border: 1px solid #B84B5F;
+    box-shadow: none;
+
+    cursor: default;
+}
+
+.upg_locked:hover {
+    color: #000000;
+    background: #B84B5F;
+}
+
+.gravitonupg.upg_bought {
+    color: white;
+    background: #0C143A;
+
+    cursor: default;
 }
 
 @media print,

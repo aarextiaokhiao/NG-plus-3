@@ -292,6 +292,8 @@ function ngP3AchieveCheck(){
 	if (player.ghostify.times >= Math.pow(Number.MAX_VALUE, 1/4)) giveAchievement("The Ghostliest Side")
 	if (player.money.log10() >= 1e18) giveAchievement("Meta-Quintillion")
 	if (player.unstableThisGhostify <= 10 && getTwoDecaysBool()) giveAchievement("... references to EC8?")
+
+	postNGp3AchsCheck()
 }
 
 function ALLACHIEVECHECK(){
