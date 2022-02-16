@@ -988,6 +988,7 @@ function getBrandNewGhostifyData(){
 		bl: getBrandNewBosonicLabData(),
 		wzb: getBrandNewWZBosonsData(),
 		graviton: getBrandNewGravitonsData(),
+		breakDilation: getBrandNewBDData(),
 	}
 }
 
@@ -5103,7 +5104,7 @@ function nanofieldProducingChargeUpdating(diff){
 		document.getElementById("produceQuarkCharge").innerHTML="Start production of preon charge.<br>(You will not get preons when you do this.)"
 	} else {
 		let chGain = hasGravUpg(4) ? toSub : toSub.div(loss).times(rate)
-		tmp.qu.replicants.quarks = tmp.qu.replicants.quarks.sub(toSub)
+		if (!hasBDUpg(3)) tmp.qu.replicants.quarks = tmp.qu.replicants.quarks.sub(toSub)
 		tmp.qu.nanofield.charge = tmp.qu.nanofield.charge.add(chGain)
 	}
 }
@@ -5208,8 +5209,10 @@ function replicantBabiesGrowingUpUpdating(diff){
 		tmp.qu.replicants.ageProgress = tmp.qu.replicants.ageProgress.add(getGrowupRatePerMinute().div(60).times(diff)).min(tmp.qu.replicants.babies)
 		var toAdd = tmp.qu.replicants.ageProgress.floor()
 		if (toAdd.gt(0)) {
-			if (toAdd.gt(tmp.qu.replicants.babies)) tmp.qu.replicants.babies = new Decimal(0)
-			else tmp.qu.replicants.babies = tmp.qu.replicants.babies.sub(toAdd).round()
+			if (!hasBDUpg(3)) {
+				if (toAdd.gt(tmp.qu.replicants.babies)) tmp.qu.replicants.babies = new Decimal(0)
+				else tmp.qu.replicants.babies = tmp.qu.replicants.babies.sub(toAdd).round()
+			}
 			if (toAdd.gt(tmp.qu.replicants.ageProgress)) tmp.qu.replicants.ageProgress = new Decimal(0)
 			else tmp.qu.replicants.ageProgress = tmp.qu.replicants.ageProgress.sub(toAdd)
 			tmp.qu.replicants.amount = tmp.qu.replicants.amount.add(toAdd).round()

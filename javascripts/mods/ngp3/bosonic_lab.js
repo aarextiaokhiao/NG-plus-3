@@ -613,7 +613,7 @@ function updateBosonicUpgradeDescs() {
 	for (var r = 1; r <= bu.rows; r++) for (var c = 1; c <= 5; c++) {
 		var id = r * 10 + c
 		document.getElementById("bUpg" + id).style.display = (player.ghostify.gravitons.upgs.includes(3)?true:r<5)?"":"none"
-		document.getElementById("bUpg" + id).className = player.ghostify.bl.upgrades.includes(id) ? "gluonupgradebought bl" : canBuyBosonicUpg(id) ? "gluonupgrade bl" : "gluonupgrade unavailablebtn"
+		document.getElementById("bUpg" + id).className = player.ghostify.bl.upgrades.includes(id) ? "gluonupgradebought bl" : canBuyBosonicUpg(id) ? "gluonupgrade bl" : "gluonupgrade unavailablebtn bllocked"
 		if (tmp.blu[id] !== undefined) document.getElementById("bUpgEffect"+id).textContent = (bu.effectDescs[id] !== undefined && bu.effectDescs[id](tmp.blu[id])) || shorten(tmp.blu[id]) + "x"
 	}
 }
@@ -736,6 +736,11 @@ var bu = {
 			g2: 2e90,
 			g4: 2e80
 		},
+		54:{
+			am: 2e155,
+			g2: 2e120,
+			g3: 2e120
+		},
 	},
 	reqData: {},
 	descs: {
@@ -762,6 +767,7 @@ var bu = {
 		51: "Distant Light Empowerments scaling is 15% weaker.",
 		52: "Higgs Bosons boosts Gravitons gain.",
 		53: "Graviton's effect exponent is increased by Nanofield rewards.",
+		54: "Graviton upgrades 1-2 are stronger based on Light Empowerments. Graviton upgrade 8 is twice effective for light empowerements.",
 	},
 	effects: {
 		11: function() {
@@ -879,6 +885,10 @@ var bu = {
 			var eff = player.quantum.nanofield.rewards**(1/3)/10
 			return eff
 		},
+		54() {
+			let x = player.ghostify.ghostlyPhotons.enpowerments**0.6/10+1
+			return x
+		},
 	},
 	effectDescs: {
 		11: function(x) {
@@ -928,6 +938,9 @@ var bu = {
 		},
 		53: function(x) {
 			return "+"+shorten(x)
+		},
+		54: function(x) {
+			return ((x-1) * 100).toFixed(2)+"% stronger"
 		},
 	}
 }

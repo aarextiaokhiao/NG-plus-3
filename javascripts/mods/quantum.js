@@ -432,6 +432,7 @@ function quantumReset(force, auto, challid, bigRip, implode = false) {
 	}
 		
 	player.money = onQuantumAM()
+	player.resets = tmp.qu.breakEternity.upgrades.includes(11)?5:4
 	if (player.galacticSacrifice && !keepABnICs) player.autobuyers[12] = 13
 	if (player.tickspeedBoosts !== undefined && !keepABnICs) player.autobuyers[13] = 14
 	player.challenges = challengesCompletedOnEternity(bigRip)

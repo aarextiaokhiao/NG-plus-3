@@ -614,10 +614,10 @@ function mainDilationDisplay(){
 
 function breakEternityDisplay(){
 	document.getElementById("eternalMatter").textContent = shortenDimensions(tmp.qu.breakEternity.eternalMatter)
-	for (var u = 1; u < (player.ghostify.ghostlyPhotons.unl ? 11 : 8); u++) {
+	for (var u = 1; u < getBEUnls(); u++) {
 		document.getElementById("breakUpg" + u).className = (tmp.qu.breakEternity.upgrades.includes(u) && u != 7) ? "eternityupbtnbought" : tmp.qu.breakEternity.eternalMatter.gte(getBreakUpgCost(u)) ? "eternityupbtn" : "eternityupbtnlocked"
 		if (u == 8) document.getElementById("breakUpg8Mult").textContent = (getBreakUpgMult(8) * 100 - 100).toFixed(1)
-		else if (u != 7) document.getElementById("breakUpg" + u + "Mult").textContent = shortenMoney(getBreakUpgMult(u))
+		else if (u != 7 && document.getElementById("breakUpg" + u + "Mult")) document.getElementById("breakUpg" + u + "Mult").textContent = shortenMoney(getBreakUpgMult(u))
 	}
 	if (tmp.qu.bigRip.active) {
 		document.getElementById("eterShortcutEM").textContent=shortenDimensions(tmp.qu.breakEternity.eternalMatter)

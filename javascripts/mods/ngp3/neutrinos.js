@@ -99,6 +99,7 @@ function getNeutrinoGain() {
 	if (player.ghostify.ghostlyPhotons.unl) ret = ret.times(tmp.le[5])
 	if (hasNU(14)) ret = ret.times(tmp.nu[5])
 	if (isNanoEffectUsed("neutrinos")) ret = ret.times(tmp.nf.effects.neutrinos)
+	ret = doStrongerPowerReductionSoftcapDecimal(ret, E("e45000"), 0.25)
 	return ret
 }
 

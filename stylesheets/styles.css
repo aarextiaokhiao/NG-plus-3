@@ -2558,13 +2558,15 @@ td.lEp {
 	border: 1px solid transparent;
 	color: white;
 	text-shadow: 0px 0px 3px black, 0px 0px 6px white;
-	animation: bl 5s linear infinite
+	animation: bl 5s linear infinite;
+    width: 210px;
+    height: 110px;
 }
 
 .gluonupgrade.bl:hover {
 	box-shadow: inset 0px 0px 24px #38cbea;
 	border-color: #38cbea;
-	cursor: pointer
+	cursor: pointer;
 }
 
 .gluonupgradebought.bl {
@@ -2573,7 +2575,14 @@ td.lEp {
 	border: 1px solid transparent;
 	color: black;
 	text-shadow: 0px 0px 3px black, 0px 0px 6px white;
-	animation: bl 5s linear infinite
+	animation: bl 5s linear infinite;
+    width: 210px;
+    height: 110px;
+}
+
+.unavailablebtn.bllocked {
+    width: 210px;
+    height: 110px;
 }
 
 #wQk {
@@ -2766,8 +2775,65 @@ td.subFactorH {
 .gravitonupg.upg_bought {
     color: white;
     background: #0C143A;
+}
 
-    cursor: default;
+.upg_bought {
+    cursor: default !important;
+}
+
+.bd_btn {
+    color: #45EBFF;
+    background: black;
+    font-weight: bold;
+    font-size: 0.7rem;
+    border: 2px solid #45EBFF;
+    width: 190px;
+    height: 90px;
+    transition-duration: 0.2s;
+    cursor: pointer;
+    border-radius: 4px;
+    font-family: Typewriter;
+    animation: bd_btnGlow 10s infinite;
+}
+
+.bd_btn:hover,
+.bd_btnUpg:not(.upg_locked):not(.upg_bought):hover {
+    color: #45EBFF;
+    background: white;
+}
+
+.bd_btnUpg {
+    font-weight: bold;
+    font-size: 0.6rem;
+    width: 210px;
+    height: 100px;
+    transition-duration: 0.2s;
+    cursor: pointer;
+    border-radius: 4px;
+    font-family: Typewriter;
+    vertical-align: top;
+    margin:7px;
+}
+
+.bd_btnUpg:not(.upg_locked) {
+    animation: bd_btnGlow 10s infinite;
+    border: 1px solid #45EBFF;
+    color: #45EBFF;
+    background: black;
+}
+
+.bd_btnUpg.upg_bought {
+    color: black;
+    background: #45EBFF;
+    border: 1px solid black;
+}
+
+@keyframes bd_btnGlow {
+    0%  {box-shadow: inset 5px 0px 20px #45EBFF;}
+    25% {box-shadow: inset 0px 5px 20px #45EBFF;}
+    50% {box-shadow: inset -5px 0px 20px #45EBFF;}
+    75% {box-shadow: inset 0px -5px 20px #45EBFF;}
+    100% {box-shadow: inset 5px 0px 20px #45EBFF;}
 }
 
 @media print,

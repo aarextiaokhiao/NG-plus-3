@@ -1,4 +1,5 @@
 function updatePostNGp3TempStuff() {
+    updateBDTemp()
     updateNU16Temp()
     updateGravitonsTemp()
 }
@@ -6,10 +7,16 @@ function updatePostNGp3TempStuff() {
 function postNGp3Updating(dt) {
     player.ghostify.gravitons.amount = player.ghostify.gravitons.amount.add(tmp.gravitons.gain.mul(dt))
     player.ghostify.gravitons.best = player.ghostify.gravitons.amount.max(player.ghostify.gravitons.best)
+
+    if (player.ghostify.breakDilation.break) {
+        setTachyonParticles(player.dilation.tachyonParticles.max(getDilGain()));
+        player.ghostify.breakDilation.cr = player.ghostify.breakDilation.cr.add(tmp.bd.crGain.mul(dt))
+    }
 }
 
 function setupPostNGp3HTML() {
     setupGravitonUpgradesHTML()
+    setupBDUpgradesHTML()
 }
 
 function updateGravitonsTab() {
@@ -27,7 +34,7 @@ function updateGravitonsTab() {
         for (let x = 0; x < GRAVITON_UPGS.length; x++) {
             let name = "gravUpg"+x
             let upg = GRAVITON_UPGS[x]
-            let unl = upg.unl ? upg.unl() : true
+            let unl = (upg.unl ? upg.unl() : true) && x < tmp.gravitons.unls
     
             document.getElementById(name+"_div").style.visibility = unl ? "visible" : "hidden"
             if (unl) {
@@ -39,18 +46,21 @@ function updateGravitonsTab() {
     }
 }
 
-function updateBDTab() {
-    document.getElementById("bdUnl").textContent="To unlock Break Dilation, you need to get "+shortenCosts(Decimal.pow(10,4e12))+" antimatter while Big Ripped. (coming soon)"
-}
-
 function doGravitonsUnlockStuff(){
 	player.ghostify.gravitons.unl=true
 	$.notify("Congratulations! You have unlocked Gravitons!", "success")
 	updateTemp()
 }
 
+function doBDUnlockStuff(){
+	player.ghostify.breakDilation.unl=true
+	$.notify("Congratulations! You have unlocked Break Dilation!", "success")
+	updateTemp()
+}
+
 function doPostNGP3UnlockStuff() {
     if (player.ghostify.hb.unl && !player.ghostify.gravitons.unl && player.money.gte("e1e18")) doGravitonsUnlockStuff()
+    if (player.ghostify.gravitons.unl && !player.ghostify.breakDilation.unl && tmp.qu.bigRip.active && player.money.gte("e4e12")) doBDUnlockStuff()
 }
 
 function getBrandNewGravitonsData() {
@@ -62,8 +72,19 @@ function getBrandNewGravitonsData() {
 	}
 }
 
+function getBrandNewBDData() {
+	return {
+		unl: false,
+        break: false,
+        cr: new Decimal(0),
+        upgs: [],
+	}
+}
+
 function conToDeciPostNGP3() {
     if (player.ghostify) {
+        if (player.ghostify.breakDilation===undefined) player.ghostify.breakDilation={}
+        player.ghostify.breakDilation = deepUndefinedAndDecimal(player.ghostify.breakDilation, getBrandNewBDData())
         if (player.ghostify.gravitons===undefined) player.ghostify.gravitons={}
         player.ghostify.gravitons = deepUndefinedAndDecimal(player.ghostify.gravitons, getBrandNewGravitonsData())
     }
@@ -79,6 +100,8 @@ function postNGp3AchsCheck() {
     if (player.ghostify.ghostParticles.gte("e6000")) giveAchievement(allAchievements.ng3p107)
     if (player.money.gte("e1e11") && player.quantum.bigRip.active && !player.quantum.breakEternity.break && player.quantum.breakEternity.eternalMatter.lte(0)) giveAchievement(allAchievements.ng3p108)
 
+    if (player.totalTickGained >= 8e10) giveAchievement(allAchievements.ng3p112)
+    if (tmp.qu.nanofield.rewards >= 200) giveAchievement(allAchievements.ng3p113)
 }
 
 function setPostR23Tooltip() {

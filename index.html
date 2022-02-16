@@ -1043,6 +1043,11 @@
 								<button id="breakUpg10" class="eternityupbtnlocked" onclick="buyBreakUpg(10)">Eternity Points multiply the normal galaxy amount in "Intergalactic" in Dilation runs.<br>Currently: <span id="breakUpg10Mult">???</span>x<br>Cost: <span id="breakUpg10Cost"></span> Eternal Matter</button>
 							</td>
 						</tr>
+						<tr id="breakUpgR4">
+							<td>
+								<button id="breakUpg11" class="eternityupbtnlocked" onclick="buyBreakUpg(11)">In Big Rip, start with sacrifice unlocked, and sacrifice boost time dimensions at a reduced rate.<br>Currently: <span id="breakUpg11Mult">???</span>x<br>Cost: <span id="breakUpg11Cost"></span> Eternal Matter</button>
+							</td>
+						</tr>
 						<tr id="breakUpgRS">
 							<td>
 								<button class="eternityupbtn" onclick="eternity()">Eternal Matter: <span id="eterShortcutEM"></span><br>Start a normal Eternity run.</button>
@@ -1081,6 +1086,16 @@
 			</div>
 			<div class="eternitytab" id="breakDilation" style="font-size: 11px">
 				<div id="bdUnl"></div>
+				<div id="bdDiv">
+					<div>You have <span id="bd_tp">0</span> tachyon particles.</div><br>
+					<button id="breakDilationBtn" class="bd_btn" onclick="breakDilation()"
+					ach-tooltip="Breaking Dilation allow you gain tachyon particles without dilating time.
+					However, you gain Cherenkov Radiations based on your TP, which divides your DT gain.
+					Fixing Dilation will reset Cherenkov Radiations & TP, perform to Ghostify reset.">Break Dilation.</button>
+					<br><br>
+					You have <span id="crAmt" class="h2">0</span> (+<span id="crGain">0</span>/s) Cherenkov Radiation. Which divides DT gain by <span id="crEff" class="h2">0</span><br>
+					<table id="bdUpgsTable" style="margin: 0 auto"></table>
+				</div>
 			</div>
 			<div class="eternitytab" id="blackhole" style="font-size: 11px">
 				<br>
@@ -1837,7 +1852,7 @@
 				<br>
 				Created by Aarex with help from pg132 and usavictor, MrRedShark77.
 				<br><br>
-				(Update v2.4: No, more updates!)
+				(Update v2.4.1: Break Dilation Update)
 				<br><br>
 			</p>
 			<div id="footercontainer">
@@ -2746,6 +2761,32 @@
 							</td><td>
 								<div id="Breaking Eternity is Fixed" class="achievement achievementlocked" style="background-image: url(images/none.png)"
 								ach-tooltip="Placeholder.">Breaking Eternity is Fixed</div>
+							</td>
+						</tr><tr id="achRowng3p11">
+							<td>
+								<div id="Baby Age" class="achievement achievementlocked" style="background-image: url(images/none.png)"
+								ach-tooltip="Break Dilation. Reward: Unlock new Graviton & Break Eternity upgrades.">Baby Age</div>
+							</td><td>
+								<div id="Scammed Tickspeed" class="achievement achievementlocked" style="background-image: url(images/none.png)"
+								ach-tooltip="Get 80,000,000,000 tickspeed upgrades from time shards.">Scammed Tickspeed</div>
+							</td><td>
+								<div id="Microfield" class="achievement achievementlocked" style="background-image: url(images/none.png)"
+								ach-tooltip="Get 200 Nanofield rewards. Reward: Reduce preon power threshold by 50%">Microfield</div>
+							</td><td>
+								<div id="none" class="achievement achievementlocked" style="background-image: url(images/none.png)"
+								></div>
+							</td><td>
+								<div id="none" class="achievement achievementlocked" style="background-image: url(images/none.png)"
+								></div>
+							</td><td>
+								<div id="none" class="achievement achievementlocked" style="background-image: url(images/none.png)"
+								></div>
+							</td><td>
+								<div id="none" class="achievement achievementlocked" style="background-image: url(images/none.png)"
+								></div>
+							</td><td>
+								<div id="none" class="achievement achievementlocked" style="background-image: url(images/none.png)"
+								></div>
 							</td>
 						</tr>
 				</table>

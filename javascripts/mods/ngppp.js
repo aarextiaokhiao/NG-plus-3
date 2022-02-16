@@ -481,7 +481,9 @@ function getGHPGain() {
 		if (!player.achievements.includes("ng3p84")) x = Math.min(x, 600 / y)
 		log += x
 	}
-	return Decimal.pow(10, log).times(getGHPMult()).floor()
+	let x = Decimal.pow(10, log).times(getGHPMult())
+	//x = doStrongerPowerReductionSoftcapDecimal(x,E("e30000"),0.5)
+	return x.floor()
 }
 
 function getGHPMult() {
@@ -551,7 +553,7 @@ function ghostifyReset(implode, gain, amount, force) {
 	var nBEU = []
 	for (var u = 20; u > 0; u--) {
 		if (nBRU.includes(u + 1) || tmp.qu.bigRip.upgrades.includes(u)) nBRU.push(u)
-		if (u < 11 && u != 7 && (nBEU.includes(u + 1) || tmp.qu.breakEternity.upgrades.includes(u))) nBEU.push(u)
+		if (u < 12 && u != 7 && (nBEU.includes(u + 1) || tmp.qu.breakEternity.upgrades.includes(u))) nBEU.push(u)
 	}
 	if (bm > 2) for (var c=1;c<9;c++) tmp.qu.electrons.mult += .5 - QCIntensity(c) * .25
 	if (bm > 6 && !force && player.achievements.includes("ng3p68")) gainNeutrinos(Decimal.times(2e3 * tmp.qu.bigRip.bestGals, bulk), "all")

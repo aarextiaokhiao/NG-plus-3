@@ -129,16 +129,24 @@ function updateBreakEternity() {
 		document.getElementById("breakEternityShop").style.display = ""
 		document.getElementById("breakEternityNoBigRip").style.display = tmp.qu.bigRip.active ? "none" : ""
 		document.getElementById("breakEternityBtn").textContent = (tmp.qu.breakEternity.break ? "FIX" : "BREAK") + " ETERNITY"
-		for (var u = 1; u < (player.ghostify.ghostlyPhotons.unl ? 11 : 8); u++) document.getElementById("breakUpg" + u + "Cost").textContent = shortenDimensions(getBreakUpgCost(u))
+		for (var u = 1; u < getBEUnls(); u++) document.getElementById("breakUpg" + u + "Cost").textContent = shortenDimensions(getBreakUpgCost(u))
 		document.getElementById("breakUpg7MultIncrease").textContent = shortenDimensions(1e9)
 		document.getElementById("breakUpg7Mult").textContent = shortenDimensions(getBreakUpgMult(7))
 		document.getElementById("breakUpgRS").style.display = tmp.qu.bigRip.active ? "" : "none"
+		document.getElementById("breakUpgR4").style.display = player.ghostify.breakDilation.unl ? "" : "none"
 	} else {
 		document.getElementById("breakEternityReq").style.display = ""
 		document.getElementById("breakEternityReq").textContent = "You need to get " + shorten(new Decimal("1e1200")) + " EP before you can Break Eternity."
 		document.getElementById("breakEternityNoBigRip").style.display = "none"
 		document.getElementById("breakEternityShop").style.display = "none"
 	}
+}
+
+function getBEUnls() {
+	let x = 8
+	if (player.ghostify.ghostlyPhotons.unl) x += 3
+	if (player.ghostify.breakDilation.unl) x += 1
+	return x
 }
 
 function breakEternity() {
@@ -164,8 +172,13 @@ function getEMGain() {
 	let log2log = Math.log10(log) / Math.log10(2)
 	let start = 10 //Starts at e1024.
 	if (log2log > start) {
-		let capped = Math.min(Math.floor(Math.log10(Math.max(log2log + 2 - start, 1)) / Math.log10(2)), 20 - start)
-		log2log = (log2log - Math.pow(2, capped) - start + 2) / Math.pow(2, capped) + capped + start - 1
+		if (hasBDUpg(3)) {
+			let exp = 1.5
+			log2log = (log2log*start**(exp-1))**(1/exp)
+		} else {
+			let capped = Math.min(Math.floor(Math.log10(Math.max(log2log + 2 - start, 1)) / Math.log10(2)), 20 - start)
+			log2log = (log2log - Math.pow(2, capped) - start + 2) / Math.pow(2, capped) + capped + start - 1
+		}
 		log = Math.pow(2, log2log)
 	}
 
@@ -175,7 +188,7 @@ function getEMGain() {
 	return x.floor()
 }
 
-var breakUpgCosts = [1, 1e3, 2e6, 2e11, 8e17, 1e45, null, 1e290, new Decimal("1e350"), new Decimal("1e375")]
+var breakUpgCosts = [1, 1e3, 2e6, 2e11, 8e17, 1e45, null, 1e290, new Decimal("1e350"), new Decimal("1e375"), new Decimal("e1450")]
 function getBreakUpgCost(id) {
 	if (id == 7) return Decimal.pow(2, tmp.qu.breakEternity.epMultPower).times(1e5)
 	return breakUpgCosts[id - 1]

@@ -101,6 +101,10 @@ let tmp = {
 	gravitons: {
 		upg_eff: [],
 	},
+	bd: {
+		unls: 0,
+		upg_eff: [],
+	},
 }
 
 function updateRedLightBoostTemp(){
@@ -319,6 +323,7 @@ function updatePPTITemp(){
 	}
 	let x = 1
 	x /= tmp.le[1] || 1
+	if (player.achievements.includes("ng3p113")) x /= 2
 	tmp.ppti = x
 }
 
@@ -330,6 +335,7 @@ function updateGhostifyTempStuff(){
 		var x = getLightEmpowermentBoost()
 		var y = hasBosonicUpg(32)
 		tmp.free_lights = hasGravUpg(7)?player.ghostify.ghostlyPhotons.enpowerments:0
+		if (hasBosonicUpg(54)) tmp.free_lights*=2
 		if (tmp.leBoost !== x || tmp.hasBU32 !== y || tmp.updateLights) {
 			tmp.leBoost = x
 			tmp.hasBU32 = y
@@ -502,6 +508,11 @@ function updateBreakEternityUpgrade10Temp(){
 	tmp.beu[10] = Math.max(Math.log10(ep.add(1).log10() + 1) - 1, 1)
 }
 
+function updateBreakEternityUpgrade11Temp(){
+	var s = tmp.sacPow||E(1)
+	tmp.beu[11] = Decimal.pow(10,s.e**0.3)
+}
+
 function updateBreakEternityUpgradesTemp() {
 	//Setup
 	var ep = player.eternityPoints
@@ -524,6 +535,10 @@ function updateBreakEternityUpgradesTemp() {
 		updateBreakEternityUpgrade8Temp()
 		updateBreakEternityUpgrade9Temp()
 		updateBreakEternityUpgrade10Temp()
+	}
+
+	if (player.ghostify.breakDilation.unl) {
+		updateBreakEternityUpgrade11Temp()
 	}
 }
 

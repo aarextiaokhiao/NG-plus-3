@@ -177,7 +177,7 @@ function doQuantumResetStuff(bigRip, challid){
 			2: 0,
 			3: 0,
 			4: 0,
-		}
+		},
 	}
 	player.exdilation = player.exdilation != undefined ? {
 		unspent: new Decimal(0),
@@ -698,7 +698,7 @@ function getQuantumOnGhostifyData(bm, nBRU, nBEU){
 			power: 0,
 			powerThreshold: new Decimal(50),
 			rewards: bm>12?16:0,
-			producingCharge: false,
+			producingCharge: player.ghostify.gravitons.upgs.includes(4)?player.quantum.nanofield.producingCharge:false,
 			apgWoke: tmp.qu.nanofield.apgWoke
 		},
 		reachedInfQK: bm,

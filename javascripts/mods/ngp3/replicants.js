@@ -17,7 +17,7 @@ function preonGatherRateUpdating(){
 	document.getElementById("normalReplGatherRate").textContent = shortenDimensions(gatherRateData.normal)
 	document.getElementById("workerReplGatherRate").textContent = shortenDimensions(gatherRateData.workersTotal)
 	document.getElementById("babyReplGatherRate").textContent = shortenDimensions(gatherRateData.babies)
-	document.getElementById("gatherRate").textContent = tmp.qu.nanofield.producingCharge ? '-' + shortenDimensions(getQuarkLossProduction()) + '/s' : '+' + shortenDimensions(gatherRateData.total) + '/s'
+	document.getElementById("gatherRate").textContent = tmp.qu.nanofield.producingCharge && !hasBDUpg(3) ? '-' + shortenDimensions(getQuarkLossProduction()) + '/s' : '+' + shortenDimensions(gatherRateData.total) + '/s'
 }
 
 function getGrowupRatePerMinute(){

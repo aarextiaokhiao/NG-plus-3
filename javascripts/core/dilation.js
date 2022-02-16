@@ -34,6 +34,7 @@ function getBaseDTProduction(){
 	if (hasBosonicUpg(15)) gain = gain.times(tmp.blu[15].dt)
 	if (tmp.newNGP3E && player.achievements.includes("r138") && gain.lt(1e100)) gain = gain.times(3).min(1e100)
 	if (!tmp.ngp3l && (tmp.ngp3 || tmp.newNGP3E) && player.achievements.includes("ngpp13")) gain = gain.times(2)
+
 	return gain
 }
 
@@ -43,6 +44,8 @@ function getDilTimeGainPerSecond() {
 	var lgain = gain.log10()
 	if (!tmp.ngp3l) lgain = softcap(lgain, "dt_log")
 	gain = Decimal.pow(10, lgain)
+
+	if (tmp.ngp3) if (player.ghostify.breakDilation.break) gain = gain.div(tmp.bd.crEff)
 	
 	return gain.times(Decimal.pow(2, getDilUpgPower(1)))	
 }
@@ -73,6 +76,7 @@ function getDilPower() {
 		if (player.masterystudies.includes("t264")) ret = ret.times(getMTSMult(264))
 		if (GUBought("br1")) ret = ret.times(getBR1Effect())
 		if (player.masterystudies.includes("t341")) ret = ret.times(getMTSMult(341))
+		if (hasBDUpg(0)) ret = ret.mul(tmp.bd.upg_eff[0])
 	}
 	return ret
 }

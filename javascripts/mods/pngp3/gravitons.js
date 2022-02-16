@@ -4,6 +4,7 @@ const GRAVITON_UPGS = [
         cost: E(300),
         eff() {
             let x = E(-player.tickspeed.log10()).max(1).root(10)
+            if (hasBosonicUpg(54) && tmp.blu) x = x.pow(tmp.blu[54])
             return x
         },
         effDesc(x) { return shorten(x)+"x" },
@@ -12,6 +13,7 @@ const GRAVITON_UPGS = [
         cost: E(1.5e4),
         eff() {
             let x = player.ghostify.gravitons.best.add(1).pow(1.5)
+            if (hasBosonicUpg(54) && tmp.blu) x = x.pow(tmp.blu[54])
             return x
         },
         effDesc(x) { return shorten(x)+"x cheaper" },
@@ -64,6 +66,14 @@ const GRAVITON_UPGS = [
     },{
         desc: "Time Dimensions powers are 25% stronger.",
         cost: E(2.5e18),
+    },{
+        desc: "Cherenkov Radiation add base from Graviton's effect.",
+        cost: E(1e20),
+        eff() {
+            let x = player.ghostify.breakDilation.cr.add(1).log10()**0.75/10
+            return x
+        },
+        effDesc(x) { return "+"+shorten(x) },
     },
     
     /*
@@ -78,6 +88,12 @@ const GRAVITON_UPGS = [
     },
     */
 ]
+
+function getGravUpgUnls() {
+    let x = 10
+    if (player.ghostify.breakDilation.unl) x += 1
+    return x
+}
 
 function hasGravUpg(x) { return player.ghostify ? player.ghostify.gravitons.upgs.includes(x) : false }
 
@@ -109,6 +125,8 @@ function setupGravitonUpgradesHTML() {
 }
 
 function updateGravitonsTemp() {
+    tmp.gravitons.unls = getGravUpgUnls()
+
     for (let x = 0; x < GRAVITON_UPGS.length; x++) if (GRAVITON_UPGS[x].eff) tmp.gravitons.upg_eff[x] = GRAVITON_UPGS[x].eff()
 
     tmp.gravitons.gain = new Decimal(0)
@@ -122,5 +140,6 @@ function updateGravitonsTemp() {
     tmp.gravitons.powEff = E(2)
     if (hasNU(16)) tmp.gravitons.powEff = tmp.gravitons.powEff.add(1)
     if (hasBosonicUpg(53) && tmp.blu) tmp.gravitons.powEff = tmp.gravitons.powEff.add(tmp.blu[53])
+    if (hasGravUpg(10)) tmp.gravitons.powEff = tmp.gravitons.powEff.add(tmp.gravitons.upg_eff[10])
     tmp.gravitons.eff = player.ghostify.gravitons.best.add(1).pow(tmp.gravitons.powEff)
 }

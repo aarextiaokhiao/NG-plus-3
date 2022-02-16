@@ -238,6 +238,9 @@ const allAchievements = {
   ng3p106 : `Not again?`,
   ng3p107 : `Mega Boo!`,
   ng3p108 : `Breaking Eternity is Fixed`,
+  ng3p111 : `Baby Age`,
+  ng3p112 : `Scammed Tickspeed`,
+  ng3p113 : `Microfield`,
 };
 const secretAchievementTooltips = {
 	s11 : "Click on this achievement.",
@@ -395,7 +398,7 @@ function updateAchievements() {
 	var amount = 0
 	var rowsShown = 0
 	var rowsNum = 0
-	for (var i = 1; i < 26; i++) {
+	for (var i = 1; i < 27; i++) {
 		var shown=true
 		var rowid = i
 		var rownum = i
