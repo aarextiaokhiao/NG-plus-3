@@ -12,7 +12,7 @@ const GRAVITON_UPGS = [
         desc: "Light threshold is cheaper based on your best Graviton.",
         cost: E(1.5e4),
         eff() {
-            let x = player.ghostify.gravitons.best.add(1).pow(1.5)
+            let x = ghSave.gravitons.best.add(1).pow(1.5)
             if (hasBosonicUpg(54) && tmp.blu) x = x.pow(tmp.blu[54])
             return x
         },
@@ -24,7 +24,7 @@ const GRAVITON_UPGS = [
         desc: "Ghostly Photons & Dark Matters gains are boosted by Higgs Bosons. Unlock more Bosonic Upgrades.",
         cost: E(1e6),
         eff() {
-            let x = E(1.5).pow(player.ghostify.hb.higgs)
+            let x = E(1.5).pow(ghSave.hb.higgs)
             return x
         },
         effDesc(x) { return shorten(x)+"x" },
@@ -32,7 +32,7 @@ const GRAVITON_UPGS = [
         desc: "Nanofield does not need to be active to gain Preon Charge, and you gain more Preon Charge based on your GHP.",
         cost: E(1e7),
         eff() {
-            let x = player.ghostify.ghostParticles.add(1).root(50)
+            let x = ghSave.ghostParticles.add(1).root(50)
             return x
         },
         effDesc(x) { return shorten(x)+"x" },
@@ -43,7 +43,7 @@ const GRAVITON_UPGS = [
         desc: "Best Gravitons adds free Nanofield rewards at a reduced rate.",
         cost: E(1e12),
         eff() {
-            let x = Math.floor(player.ghostify.gravitons.best.add(1).log(1.5))
+            let x = Math.floor(ghSave.gravitons.best.add(1).log(1.5))
             return x
         },
         effDesc(x) { return "+"+getFullExpansion(x) },
@@ -51,7 +51,7 @@ const GRAVITON_UPGS = [
         desc: "Best Gravitons boosts themselves. Light Empowerments adds each free Lights.",
         cost: E(1e13),
         eff() {
-            let x = player.ghostify.gravitons.best.add(1).root(4)
+            let x = ghSave.gravitons.best.add(1).root(4)
             return x
         },
         effDesc(x) { return shorten(x)+"x" },
@@ -59,7 +59,7 @@ const GRAVITON_UPGS = [
         desc: "Best Gravitons boosts oscillate progression gain.",
         cost: E(1e17),
         eff() {
-            let x = player.ghostify.gravitons.best.add(1).pow(2)
+            let x = ghSave.gravitons.best.add(1).pow(2)
             return x
         },
         effDesc(x) { return shorten(x)+"x" },
@@ -70,7 +70,7 @@ const GRAVITON_UPGS = [
         desc: "Cherenkov Radiation add base from Graviton's effect.",
         cost: E(1e20),
         eff() {
-            let x = player.ghostify.breakDilation.cr.add(1).log10()**0.75/10
+            let x = ghSave.breakDilation.cr.add(1).log10()**0.75/10
             return x
         },
         effDesc(x) { return "+"+shorten(x) },
@@ -91,16 +91,16 @@ const GRAVITON_UPGS = [
 
 function getGravUpgUnls() {
     let x = 10
-    if (player.ghostify.breakDilation.unl) x += 1
+    if (ghSave.breakDilation.unl) x += 1
     return x
 }
 
-function hasGravUpg(x) { return player.ghostify ? player.ghostify.gravitons.upgs.includes(x) : false }
+function hasGravUpg(x) { return ghSave ? ghSave.gravitons.upgs.includes(x) : false }
 
 function buyGravitonUpg(x) {
-    if (player.ghostify.gravitons.amount.gte(GRAVITON_UPGS[x].cost) && !player.ghostify.gravitons.upgs.includes(x)) {
-        player.ghostify.gravitons.amount = player.ghostify.gravitons.amount.sub(GRAVITON_UPGS[x].cost)
-        player.ghostify.gravitons.upgs.push(x)
+    if (ghSave.gravitons.amount.gte(GRAVITON_UPGS[x].cost) && !ghSave.gravitons.upgs.includes(x)) {
+        ghSave.gravitons.amount = ghSave.gravitons.amount.sub(GRAVITON_UPGS[x].cost)
+        ghSave.gravitons.upgs.push(x)
     }
 }
 
@@ -129,8 +129,8 @@ function updateGravitonsTemp() {
 
     for (let x = 0; x < GRAVITON_UPGS.length; x++) if (GRAVITON_UPGS[x].eff) tmp.gravitons.upg_eff[x] = GRAVITON_UPGS[x].eff()
 
-    tmp.gravitons.gain = new Decimal(0)
-    if (player.ghostify.gravitons.unl) tmp.gravitons.gain = tmp.gravitons.gain.add(1)
+    tmp.gravitons.gain = E(0)
+    if (ghSave.gravitons.unl) tmp.gravitons.gain = tmp.gravitons.gain.add(1)
     if (hasGravUpg(0)) tmp.gravitons.gain = tmp.gravitons.gain.mul(tmp.gravitons.upg_eff[0])
     if (hasGravUpg(2)) tmp.gravitons.gain = tmp.gravitons.gain.mul(tmp.bl.speed)
     if (hasGravUpg(7)) tmp.gravitons.gain = tmp.gravitons.gain.mul(tmp.gravitons.upg_eff[7])
@@ -141,5 +141,5 @@ function updateGravitonsTemp() {
     if (hasNU(16)) tmp.gravitons.powEff = tmp.gravitons.powEff.add(1)
     if (hasBosonicUpg(53) && tmp.blu) tmp.gravitons.powEff = tmp.gravitons.powEff.add(tmp.blu[53])
     if (hasGravUpg(10)) tmp.gravitons.powEff = tmp.gravitons.powEff.add(tmp.gravitons.upg_eff[10])
-    tmp.gravitons.eff = player.ghostify.gravitons.best.add(1).pow(tmp.gravitons.powEff)
+    tmp.gravitons.eff = ghSave.gravitons.best.add(1).pow(tmp.gravitons.powEff)
 }

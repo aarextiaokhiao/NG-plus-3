@@ -80,9 +80,9 @@ dev.fixSave = function() {
 	challengeMult = 1
 	unspentBonus = 1
 	infDimPow = 1
-	postc8Mult = new Decimal(0)
-	mult18 = new Decimal(1)
-	ec10bonus = new Decimal(1)
+	postc8Mult = E(0)
+	mult18 = E(1)
+	ec10bonus = E(1)
 	player = save_data;
 	save_game();
 	load_game();
@@ -138,13 +138,13 @@ dev.updateCosts = function() {
 	for (var i = 1; i < 9; i++) {
 		var dim = player["timeDimension"+i]
 		if (dim.cost.gte(Number.MAX_VALUE)) {
-			dim.cost = Decimal.pow(timeDimCostMults[i]*1.5, dim.bought).times(timeDimStartCosts[i])
+			dim.cost = E_pow(timeDimCostMults[i]*1.5, dim.bought).times(timeDimStartCosts[i])
 		}
 		if (dim.cost.gte("1e1300")) {
-			dim.cost = Decimal.pow(timeDimCostMults[i]*2.2, dim.bought).times(timeDimStartCosts[i])
+			dim.cost = E_pow(timeDimCostMults[i]*2.2, dim.bought).times(timeDimStartCosts[i])
 		}
 		if (i > 4) {
-			dim.cost = Decimal.pow(timeDimCostMults[i]*100, dim.bought).times(timeDimStartCosts[i])
+			dim.cost = E_pow(timeDimCostMults[i]*100, dim.bought).times(timeDimStartCosts[i])
 		}
 	}
 }
@@ -154,57 +154,57 @@ dev.testTDCosts = function() {
 		var timeDimStartCosts = [null, 1, 5, 100, 1000, "1e2350", "1e2650", "1e2900", "1e3300"]
 		var dim = player["timeDimension"+i]
 		if (dim.cost.gte(Number.MAX_VALUE)) {
-			dim.cost = Decimal.pow(timeDimCostMults[i]*1.5, dim.bought).times(timeDimStartCosts[i])
+			dim.cost = E_pow(timeDimCostMults[i]*1.5, dim.bought).times(timeDimStartCosts[i])
 		}
 		if (dim.cost.gte("1e1300")) {
-			dim.cost = Decimal.pow(timeDimCostMults[i]*2.2, dim.bought).times(timeDimStartCosts[i])
+			dim.cost = E_pow(timeDimCostMults[i]*2.2, dim.bought).times(timeDimStartCosts[i])
 		}
 		if (i > 4) {
-			dim.cost = Decimal.pow(timeDimCostMults[i]*100, dim.bought).times(timeDimStartCosts[i])
+			dim.cost = E_pow(timeDimCostMults[i]*100, dim.bought).times(timeDimStartCosts[i])
 		}
 	}
 }
 
 dev.giveQuantumStuff = function(n){
-	player.quantum.usedQuarks.r = player.quantum.usedQuarks.r.plus(Decimal.pow(10,n+1))
-	player.quantum.usedQuarks.b = player.quantum.usedQuarks.b.plus(Decimal.pow(10,n+1))
-	player.quantum.usedQuarks.g = player.quantum.usedQuarks.g.plus(Decimal.pow(10,n+1))
-	player.quantum.gluons.rg = player.quantum.gluons.rg.plus(Decimal.pow(10,n))
-	player.quantum.gluons.gb = player.quantum.gluons.gb.plus(Decimal.pow(10,n))
-	player.quantum.gluons.br = player.quantum.gluons.br.plus(Decimal.pow(10,n))
-	player.quantum.colorPowers.r = player.quantum.colorPowers.r.plus(Decimal.pow(10,n+2))
-	player.quantum.colorPowers.b = player.quantum.colorPowers.b.plus(Decimal.pow(10,n+2))
-	player.quantum.colorPowers.g = player.quantum.colorPowers.g.plus(Decimal.pow(10,n+2))
+	quSave.usedQuarks.r = quSave.usedQuarks.r.plus(pow10(n+1))
+	quSave.usedQuarks.b = quSave.usedQuarks.b.plus(pow10(n+1))
+	quSave.usedQuarks.g = quSave.usedQuarks.g.plus(pow10(n+1))
+	quSave.gluons.rg = quSave.gluons.rg.plus(pow10(n))
+	quSave.gluons.gb = quSave.gluons.gb.plus(pow10(n))
+	quSave.gluons.br = quSave.gluons.br.plus(pow10(n))
+	quSave.colorPowers.r = quSave.colorPowers.r.plus(pow10(n+2))
+	quSave.colorPowers.b = quSave.colorPowers.b.plus(pow10(n+2))
+	quSave.colorPowers.g = quSave.colorPowers.g.plus(pow10(n+2))
 }
 
 dev.addReward = function(){
-	player.quantum.nanofield.rewards += 1
+	nfSave.rewards += 1
 }
 
 dev.setReward = function(n){
-	player.quantum.nanofield.rewards = n
+	nfSave.rewards = n
 }
 
 dev.addSpin = function(n){
-	player.quantum.tod.r.spin = player.quantum.tod.r.spin.plus(Decimal.pow(10,n))
-	player.quantum.tod.b.spin = player.quantum.tod.b.spin.plus(Decimal.pow(10,n))
-	player.quantum.tod.g.spin = player.quantum.tod.g.spin.plus(Decimal.pow(10,n))
+	todSave.r.spin = todSave.r.spin.plus(pow10(n))
+	todSave.b.spin = todSave.b.spin.plus(pow10(n))
+	todSave.g.spin = todSave.g.spin.plus(pow10(n))
 }
 
 dev.addGHP = function(n){
-	player.ghostify.ghostParticles = player.ghostify.ghostParticles.plus(Decimal.pow(10,n))
+	ghSave.ghostParticles = ghSave.ghostParticles.plus(pow10(n))
 }
 
 dev.setNeut = function(n){
-	player.ghostify.neutrinos.electron = Decimal.pow(10,n)
-	player.ghostify.neutrinos.mu = Decimal.pow(10,n)
-	player.ghostify.neutrinos.tau = Decimal.pow(10,n)
+	ghSave.neutrinos.electron = pow10(n)
+	ghSave.neutrinos.mu = pow10(n)
+	ghSave.neutrinos.tau = pow10(n)
 }
 
 dev.addNeut = function(n){
-	player.ghostify.neutrinos.electron = player.ghostify.neutrinos.electron.plus(Decimal.pow(10,n))
-	player.ghostify.neutrinos.mu = player.ghostify.neutrinos.mu.plus(Decimal.pow(10,n))
-	player.ghostify.neutrinos.tau = player.ghostify.neutrinos.tau.plus(Decimal.pow(10,n))
+	ghSave.neutrinos.electron = ghSave.neutrinos.electron.plus(pow10(n))
+	ghSave.neutrinos.mu = ghSave.neutrinos.mu.plus(pow10(n))
+	ghSave.neutrinos.tau = ghSave.neutrinos.tau.plus(pow10(n))
 }
 
 dev.giveNeutrinos = function(n){
@@ -216,8 +216,8 @@ dev.addNeutrinos = function(n){
 }
 
 dev.giveAllEmpowerments = function(){
-	var uv = player.ghostify.ghostlyPhotons.lights[7]
-	var le = player.ghostify.ghostlyPhotons.enpowerments
+	var uv = ghSave.ghostlyPhotons.lights[7]
+	var le = ghSave.ghostlyPhotons.enpowerments
 	var x = 1
 	var y = 0
 	while (uv >= getLightEmpowermentReq(le + x * 2 - 1)) x *= 2
@@ -225,7 +225,7 @@ dev.giveAllEmpowerments = function(){
 		if (uv >= getLightEmpowermentReq(le + x + y - 1)) y += x
 		x /= 2
 	}
-	player.ghostify.ghostlyPhotons.enpowerments += y
+	ghSave.ghostlyPhotons.enpowerments += y
 }
 
 

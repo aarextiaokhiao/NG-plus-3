@@ -15,22 +15,22 @@ function tdBoost(bulk) {
 }
 
 function resetTDBoosts() {
-	if (player.aarexModifications.ngmX > 3) return player.achievements.includes("r27") && player.currentChallenge == "" ? 3 : 0
+	if (aarMod.ngmX > 3) return player.achievements.includes("r27") && player.currentChallenge == "" ? 3 : 0
 }
 
 function resetTDs() {
 	var bp=getDimensionBoostPower()
-	if (player.aarexModifications.ngmX > 3) {
+	if (aarMod.ngmX > 3) {
 		for (var d = 1; d <= 8; d++) {
 			var dim = player["timeDimension" + d]
-			dim.amount = new Decimal(0)
+			dim.amount = E(0)
 			dim.bought = 0
-			dim.cost = new Decimal(timeDimStartCosts[1][d])
+			dim.cost = E(timeDimStartCosts[1][d])
 			dim.power = bp.pow((player.tdBoosts - d + 1) / 2).max(1)
 		}
-		player.timeShards = new Decimal(0)
+		player.timeShards = E(0)
 		player.totalTickGained = 0
-		player.tickThreshold = new Decimal(0.01)
+		player.tickThreshold = E(0.01)
 		document.getElementById("totaltickgained").textContent = "You've gained " + getFullExpansion(player.totalTickGained) + " tickspeed upgrades."
 	}
 }
@@ -46,7 +46,7 @@ function autoTDBoostBoolean() {
 	if (!player.autobuyers[14].isOn) return false
 	if (player.autobuyers[14].ticks * 100 < player.autobuyers[14].interval) return false
 	if (amount < req.amount) return false
-	if (player.aarexModifications.ngmX > 3 && inNC(14)) return false
+	if (aarMod.ngmX > 3 && inNC(14)) return false
 	if (player.autobuyers[14].overXGals <= player.galaxies) return true
 	if (player.autobuyers[14].priority < req.amount) return false
 	return true
@@ -54,7 +54,7 @@ function autoTDBoostBoolean() {
 
 //v2.11
 function cantReset() {
-	return player.aarexModifications.ngmX > 3 && inNC(14) && getTotalResets() > 9
+	return aarMod.ngmX > 3 && inNC(14) && getTotalResets() > 9
 }
 
 document.getElementById("buyerBtnTDBoost").onclick = function () {
@@ -62,6 +62,6 @@ document.getElementById("buyerBtnTDBoost").onclick = function () {
 }
 
 function maxHighestTD() {
-	player.aarexModifications.maxHighestTD=!player.aarexModifications.maxHighestTD
-	document.getElementById("maxHighestTD").textContent = "Buy Max the highest tier of Time Dimensions: O"+(player.aarexModifications.maxHighestTD?"N":"FF")
+	aarMod.maxHighestTD=!aarMod.maxHighestTD
+	document.getElementById("maxHighestTD").textContent = "Buy Max the highest tier of Time Dimensions: O"+(aarMod.maxHighestTD?"N":"FF")
 }

@@ -39,22 +39,22 @@ var masteryStudies = {
 			return tmp.ngp3l || quantumWorth.gte(50)
 		},
 		8: function() {
-			return tmp.qu.electrons.amount >= 16750
+			return quSave.electrons.amount >= 16750
 		},
 		9: function() {
 			return QCIntensity(8) >= 1
 		},
 		10: function() {
-			return tmp.qu.pairedChallenges.completed == 4
+			return quSave.pairedChallenges.completed == 4
 		},
 		11: function() {
-			return tmp.eds[1].perm == 10
+			return EDsave[1].perm == 10
 		},
 		12: function() {
-			return tmp.eds[8].perm >= 10
+			return EDsave[8].perm >= 10
 		},
 		13: function() {
-			return tmp.qu.nanofield.rewards >= 16
+			return nfSave.rewards >= 16
 		},
 		14: function() {
 			return player.achievements.includes("ng3p34")
@@ -91,15 +91,15 @@ var masteryStudies = {
 	timeStudies: [],
 	timeStudyEffects: {
 		251: function(){
-			if (player.ghostify.neutrinos.upgrades.includes(6)) return 0
+			if (ghSave.neutrinos.upgrades.includes(6)) return 0
 			return Math.floor(player.resets / 3e3)
 		},
 		252: function(){
-			if (player.ghostify.neutrinos.upgrades.includes(6)) return 0
+			if (ghSave.neutrinos.upgrades.includes(6)) return 0
 			return Math.floor(player.dilation.freeGalaxies / 7)
 		},
 		253: function(){
-			if (player.ghostify.neutrinos.upgrades.includes(6)) return 0
+			if (ghSave.neutrinos.upgrades.includes(6)) return 0
 			if (tmp.ngp3l) return Math.floor(extraReplGalaxies / 9) * 20
 			return Math.floor(getTotalRG()/4)
 		},
@@ -112,8 +112,8 @@ var masteryStudies = {
 				exp = Math.sqrt(Math.max(player.resets / 1e5 - 5.5, 1))
 			}
 			if (r > 1e4) r = Math.pow(6 + Math.log10(r), 4)
-			if (player.aarexModifications.newGameExpVersion) exp *= 2
-			return Decimal.pow(r, exp)
+			if (aarMod.newGameExpVersion) exp *= 2
+			return E_pow(r, exp)
 		},
 		263: function(){
 			let x = player.meta.resets
@@ -124,49 +124,49 @@ var masteryStudies = {
 			let r = 1
 			if (tmp.ngp3l) r = Math.pow(player.galaxies + 1, 0.25) * 2
 			else r = player.galaxies / 100 + 1
-			if (player.aarexModifications.newGameExpVersion) return Math.pow(r, 2)
+			if (aarMod.newGameExpVersion) return Math.pow(r, 2)
 			return r
 		},
 		273: function(uses){
 			var intensity = 5
-			if (ghostified && player.ghostify.neutrinos.boosts > 1 && !uses.includes("pn")) intensity += tmp.nb[2]
+			if (ghostified && ghSave.neutrinos.boosts > 1 && !uses.includes("pn")) intensity += tmp.nb[2]
 			if (uses.includes("intensity")) return intensity
 			return Decimal.max(Math.log10(player.replicanti.chance + 1), 1).pow(intensity)
 		},
 		281: function(){
-			return Decimal.pow(10, Math.pow(tmp.rm.max(1).log10(), 0.25) / 10 * (tmp.newNGP3E ? 2 : 1))
+			return pow10(Math.pow(tmp.rm.max(1).log10(), 0.25) / 10 * (tmp.newNGP3E ? 2 : 1))
 		},
 		282: function(){
-			return Decimal.pow(10, Math.pow(tmp.rm.max(1).log10(), 0.25) / 15 * (tmp.newNGP3E ? 2 : 1))
+			return pow10(Math.pow(tmp.rm.max(1).log10(), 0.25) / 15 * (tmp.newNGP3E ? 2 : 1))
 		},
 		301: function(){
-			if (player.ghostify.neutrinos.upgrades.includes(6)) return 0
+			if (ghSave.neutrinos.upgrades.includes(6)) return 0
 			return Math.floor(extraReplGalaxies / 4.15)
 		},
 		303: function(){
-			return Decimal.pow(4.7, Math.pow(Math.log10(Math.max(player.galaxies, 1)), 1.5))
+			return E_pow(4.7, Math.pow(Math.log10(Math.max(player.galaxies, 1)), 1.5))
 		},
 		322: function(){
 			let log = Math.sqrt(Math.max(3-getTickspeed().log10(),0))/2e4
 			if (log > 110) log = Math.sqrt(log * 27.5) + 55
-			if (log > 1e3 && player.aarexModifications.ngudpV !== undefined) log = Math.pow(7 + Math.log10(log), 3)
-			if (player.aarexModifications.newGameExpVersion) log += Math.pow(Math.log10(log + 10), 4) - 1
+			if (log > 1e3 && aarMod.ngudpV !== undefined) log = Math.pow(7 + Math.log10(log), 3)
+			if (aarMod.newGameExpVersion) log += Math.pow(Math.log10(log + 10), 4) - 1
 
 			if (!tmp.ngp3l) log = softcap(log, "ms322_log")
 			//these are also required very much--more DT is more tickspeed is more DT
-			return Decimal.pow(10, log)
+			return pow10(log)
 		},
 		332: function(){
 			return Math.max(player.galaxies, 1)
 		},
 		341: function(){
-			var exp = Math.sqrt(tmp.qu.replicants.quarks.add(1).log10())
+			var exp = Math.sqrt(quSave.replicants.quarks.add(1).log10())
 			if (exp > 150) exp = 150 * Math.pow(exp / 150, .5)
 			if (exp > 200) exp = 200 * Math.pow(exp / 200, .5)
-			return Decimal.pow(tmp.newNGP3E ? 3 : 2, exp)
+			return E_pow(tmp.newNGP3E ? 3 : 2, exp)
 		},
 		344: function(){
-			var ret = Math.pow(tmp.qu.replicants.quarks.div(1e7).add(1).log10(), tmp.newNGP3E ? 0.3 : 0.25) * 0.17 + 1
+			var ret = Math.pow(quSave.replicants.quarks.div(1e7).add(1).log10(), tmp.newNGP3E ? 0.3 : 0.25) * 0.17 + 1
 			if (tmp.ngp3l) return ret
 			if (ret > 3) ret = 1 + Math.log2(ret + 1)
 			if (ret > 4) ret = 3 + Math.log10(ret + 6)
@@ -176,13 +176,13 @@ var masteryStudies = {
 			let log = player.timeShards.max(1).log10()*14e-7
 			if (log > 1e4) log = Math.pow(log / 1e4, tmp.ngp3l ? 0.1 : 0.75) * 1e4
 			if (!tmp.ngp3l && log > 2e4) log = 2 * Math.pow(Math.log10(5 * log) + 5 ,4)
-			return Decimal.pow(tmp.newNGP3E ? 12 : 10, log)
+			return E_pow(tmp.newNGP3E ? 12 : 10, log)
 		},
 		361: function(){
 			return player.dilation.tachyonParticles.max(1).pow(0.01824033924212366)
 		},
 		371: function(){
-			return Math.pow(extraReplGalaxies+1,player.aarexModifications.newGameExpVersion?.5:.3)
+			return Math.pow(extraReplGalaxies+1,aarMod.newGameExpVersion?.5:.3)
 		},
 		372: function(){
 			return Math.sqrt(player.timeShards.add(1).log10())/20+1
@@ -197,7 +197,7 @@ var masteryStudies = {
 			return player.eightAmount.max(1).pow(Math.PI)
 		},
 		383: function(){
-			if (tmp.ngp3l) return Decimal.pow(3200,Math.pow(tmp.qu.colorPowers.b.add(1).log10(),0.25))
+			if (tmp.ngp3l) return E_pow(3200,Math.pow(quSave.colorPowers.b.add(1).log10(),0.25))
 			
 			var blueExp = 4/21
 			if (tmp.newNGP3E) blueExp = 1/5
@@ -210,28 +210,28 @@ var masteryStudies = {
 				if (exp > 2000) exp = Math.pow(exp / 2000, .4) * 2000
 			}
 
-			return Decimal.pow(10, exp)
+			return pow10(exp)
 		},
 		391: function(){
 			return player.meta.antimatter.max(1).pow(8e-4)
 		},
 		392: function(){
-			return Decimal.pow(tmp.newNGP3E ? 1.7 : 1.6, Math.sqrt(tmp.qu.replicants.quarks.add(1).log10())).plus(tmp.ngp3l ? 0 : 1)
+			return E_pow(tmp.newNGP3E ? 1.7 : 1.6, Math.sqrt(quSave.replicants.quarks.add(1).log10())).plus(tmp.ngp3l ? 0 : 1)
 		},
 		393: function(){
-			if (!tmp.twr) return new Decimal(1)
-			return Decimal.pow(4e5, Math.sqrt(tmp.twr.add(1).log10()))
+			if (!tmp.twr) return E(1)
+			return E_pow(4e5, Math.sqrt(tmp.twr.add(1).log10()))
 		},
 		401: function(){
-			let log=tmp.qu.replicants.quarks.div(1e28).add(1).log10()*0.2
+			let log=quSave.replicants.quarks.div(1e28).add(1).log10()*0.2
 			if (log > 5) log = Math.log10(log * 2) * 5
-			return Decimal.pow(tmp.newNGP3E ? 12 : 10, log)
+			return E_pow(tmp.newNGP3E ? 12 : 10, log)
 		},
 		411: function(){
-			if (!tmp.tra) return new Decimal(1)
+			if (!tmp.tra) return E(1)
 			var exp = tmp.tra.div(1e24).add(1).pow(0.2).log10()
 			if (tmp.newNGP3E) exp += Math.pow((exp + 9) * 3, .2) * Math.log10(exp + 1)
-			return Decimal.pow(10, exp)
+			return pow10(exp)
 		},
 		421: function(){
 			let ret = Math.pow(Math.max(-getTickspeed().log10() / 1e13 - 0.75, 1), 4)
@@ -248,7 +248,7 @@ var masteryStudies = {
 			var effectExp = Math.max(gals / 1e4 + Math.log10(gals) / 2, 1)
 			if (effectExp > 10 && tmp.newNGP3E) effectExp *= Math.log10(effectExp)
 
-			var eff = Decimal.pow(effectBase, effectExp)
+			var eff = E_pow(effectBase, effectExp)
 			if (tmp.newNGP3E) eff = eff.times(eff.plus(9).log10())
 
 			var log = eff.log10()
@@ -261,7 +261,7 @@ var masteryStudies = {
 				log = Math.pow(2, log2log)
 			}
 
-			return Decimal.pow(10, log)
+			return pow10(log)
 		}
 	},
 	timeStudyDescs: {
@@ -301,7 +301,7 @@ var masteryStudies = {
 		351: "Time Shards boost all Meta Dimensions.",
 		361: "Hatch speed is faster based on your tachyon particles.",
 		362: function() {
-			return "Reduce the softcap for the preon boost"+(player.aarexModifications.ngumuV?", but preons reduce the green power effect.":".")
+			return "Reduce the softcap for the preon boost"+(aarMod.ngumuV?", but preons reduce the green power effect.":".")
 		},
 		371: "Hatch speed is faster based on your extra replicated galaxies.",
 		372: "Hatch speed is faster based on your time shards.",
@@ -590,7 +590,7 @@ function buyMasteryStudy(type, id, quick=false) {
 		player.eternityChallUnlocked = id
 		player.etercreq = id
 		updateEternityChallenges()
-		delete tmp.qu.autoECN
+		delete quSave.autoECN
 	} else player.masterystudies.push(type + id)
 	if (type == "t") {
 		addSpentableMasteryStudies(id)
@@ -610,7 +610,7 @@ function buyMasteryStudy(type, id, quick=false) {
 		if (id == 266 && player.replicanti.gal > 399) {
 			var gal = player.replicanti.gal
 			player.replicanti.gal = 0
-			player.replicanti.galCost = new Decimal(player.galacticSacrifice!=undefined?1e110:1e170)
+			player.replicanti.galCost = E(player.galacticSacrifice!=undefined?1e110:1e170)
 			player.replicanti.galCost = getRGCost(gal)
 			player.replicanti.gal = gal
 		}
@@ -622,7 +622,7 @@ function buyMasteryStudy(type, id, quick=false) {
 			var isone = ((inQC(5)||inQC(7))&&focusOn!="linear")||(((inNC(13)&&player.tickspeedBoosts==undefined)||player.currentChallenge=="postc1"||player.currentChallenge=="postcngm3_1")&&player.galacticSacrifice!=undefined)
 			if (isone) {
 				for (var i = 1; i<9; i++) {
-					player[tiers[i] + "Pow"] = player[tiers[i] + "Pow"].times(Decimal.pow(10, 430 * player[tiers[i] + "Bought"]/10))
+					player[tiers[i] + "Pow"] = player[tiers[i] + "Pow"].times(pow10(430 * player[tiers[i] + "Bought"]/10))
 				}
 			}
 		}
@@ -729,7 +729,7 @@ function updateMasteryStudyTextDisplay() {
 		document.getElementById("ds" + id + "Cost").textContent = "Cost: " + shorten(masteryStudies.costs.dil[id]) + " Time Theorems"
 		if (req) document.getElementById("ds" + id + "Req").innerHTML = ghostified || !req ? "" : "<br>Requirement: " + req
 	}
-	if (quantumed) document.getElementById("321effect").textContent=shortenCosts(new Decimal("1e430"))
+	if (quantumed) document.getElementById("321effect").textContent=shortenCosts(E("1e430"))
 }
 
 var occupied

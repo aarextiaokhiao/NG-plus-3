@@ -12,7 +12,7 @@ function getMaxNGPlusLayer() {
 }
 
 function checkForNextNGPLayer() {
-	return player.aarexModifications.ngpReworked == getMaxNGPlusLayer() && player.eternityPoints.gte("1e4000") && !inEasierMode()
+	return aarMod.ngpReworked == getMaxNGPlusLayer() && player.eternityPoints.gte("1e4000") && !inEasierMode()
 }
 
 function unlockNextNGPLayer() {

@@ -14,7 +14,7 @@ function showQuantumTab(tabName) {
 		}
 	}
 	if (oldTab != tabName) {
-		player.aarexModifications.tabsSave.tabQuantum = tabName
+		aarMod.tabsSave.tabQuantum = tabName
 		if (tabName == "uquarks" && document.getElementById("quantumtab").style.display !== "none") {
 			resizeCanvas()
 			requestAnimationFrame(drawQuarkAnimation)
@@ -82,8 +82,8 @@ function toggleAllMetaDims() {
 
 //v1.997
 function respecTogglePC() {
-	tmp.qu.pairedChallenges.respec = !tmp.qu.pairedChallenges.respec
-	document.getElementById("respecPC").className = tmp.qu.pairedChallenges.respec ? "quantumbtn" : "storebtn"
+	quSave.pairedChallenges.respec = !quSave.pairedChallenges.respec
+	document.getElementById("respecPC").className = quSave.pairedChallenges.respec ? "quantumbtn" : "storebtn"
 }
 
 //v1.99799
@@ -94,10 +94,10 @@ function respecOptions() {
 
 //v1.998
 function toggleAutoQuantumContent(id) {
-	tmp.qu.autoOptions[id]=!tmp.qu.autoOptions[id]
+	quSave.autoOptions[id]=!quSave.autoOptions[id]
 	if (id=='sacrifice') {
-		document.getElementById('sacrificeAuto').textContent = "Auto: " + (tmp.qu.autoOptions.sacrifice ? "ON" : "OFF")
-		if (tmp.qu.autoOptions.sacrifice) sacrificeGalaxy(6)
+		document.getElementById('sacrificeAuto').textContent = "Auto: " + (quSave.autoOptions.sacrifice ? "ON" : "OFF")
+		if (quSave.autoOptions.sacrifice) sacrificeGalaxy(6)
 	}
 }
 
@@ -139,10 +139,10 @@ function maxAllDilUpgs() {
 		var id = "r" + MAX_DIL_UPG_PRIORITIES[i]
 		if (isDilUpgUnlocked(id)) {
 			if (id == "r1") {	
-				var cost = Decimal.pow(10, player.dilation.rebuyables[1] + 5)
+				var cost = pow10(player.dilation.rebuyables[1] + 5)
 				if (player.dilation.dilatedTime.gte(cost)) {
 					var toBuy = Math.floor(player.dilation.dilatedTime.div(cost).times(9).add(1).log10())
-					var toSpend = Decimal.pow(10, toBuy).sub(1).div(9).times(cost)
+					var toSpend = pow10(toBuy).sub(1).div(9).times(cost)
 					player.dilation.dilatedTime = player.dilation.dilatedTime.sub(player.dilation.dilatedTime.min(cost))
 					player.dilation.rebuyables[1] += toBuy
 					update = true
@@ -150,10 +150,10 @@ function maxAllDilUpgs() {
 			} else if (id == "r2") {
 				if (canBuyGalaxyThresholdUpg()) {
 					if (speedrunMilestonesReached > 21) {
-						var cost = Decimal.pow(10,player.dilation.rebuyables[2] * 2 + 6)
+						var cost = pow10(player.dilation.rebuyables[2] * 2 + 6)
 						if (player.dilation.dilatedTime.gte(cost)) {
 							var toBuy = Math.min(Math.floor(player.dilation.dilatedTime.div(cost).times(99).add(1).log(100)), 60 - player.dilation.rebuyables[2])
-							var toSpend = Decimal.pow(100,toBuy).sub(1).div(99).times(cost)
+							var toSpend = E_pow(100,toBuy).sub(1).div(99).times(cost)
 							player.dilation.dilatedTime = player.dilation.dilatedTime.sub(player.dilation.dilatedTime.min(cost))
 							player.dilation.rebuyables[2] += toBuy
 							resetDilationGalaxies()
@@ -180,48 +180,48 @@ function maybeShowFillAll() {
 
 //v1.9995
 function updateAutoQuantumMode() {
-	if (tmp.qu.autobuyer.mode == "amount") {
+	if (quSave.autobuyer.mode == "amount") {
 		document.getElementById("toggleautoquantummode").textContent = "Auto quantum mode: amount"
 		document.getElementById("autoquantumtext").textContent = "Amount of QK to wait until reset:"
-	} else if (tmp.qu.autobuyer.mode == "relative") {
+	} else if (quSave.autobuyer.mode == "relative") {
 		document.getElementById("toggleautoquantummode").textContent = "Auto quantum mode: X times last quantum"
 		document.getElementById("autoquantumtext").textContent = "X times last quantum:"
-	} else if (tmp.qu.autobuyer.mode == "time") {
+	} else if (quSave.autobuyer.mode == "time") {
 		document.getElementById("toggleautoquantummode").textContent = "Auto quantum mode: time"
 		document.getElementById("autoquantumtext").textContent = "Seconds between quantums:"
-	} else if (tmp.qu.autobuyer.mode == "peak") {
+	} else if (quSave.autobuyer.mode == "peak") {
 		document.getElementById("toggleautoquantummode").textContent = "Auto quantum mode: peak"
 		document.getElementById("autoquantumtext").textContent = "Seconds to wait after latest peak gain:"
-	} else if (tmp.qu.autobuyer.mode == "dilation") {
+	} else if (quSave.autobuyer.mode == "dilation") {
 		document.getElementById("toggleautoquantummode").textContent = "Auto quantum mode: # of dilated"
 		document.getElementById("autoquantumtext").textContent = "Wait until # of dilated stat:"
 	}
 }
 
 function toggleAutoQuantumMode() {
-	if (tmp.qu.reachedInfQK && tmp.qu.autobuyer.mode == "amount") tmp.qu.autobuyer.mode = "relative"
-	else if (tmp.qu.autobuyer.mode == "relative") tmp.qu.autobuyer.mode = "time"
-	else if (tmp.qu.autobuyer.mode == "time") tmp.qu.autobuyer.mode = "peak"
-	else if (player.achievements.includes("ng3p25") && tmp.qu.autobuyer.mode != "dilation") tmp.qu.autobuyer.mode = "dilation"
-	else tmp.qu.autobuyer.mode = "amount"
+	if (quSave.reachedInfQK && quSave.autobuyer.mode == "amount") quSave.autobuyer.mode = "relative"
+	else if (quSave.autobuyer.mode == "relative") quSave.autobuyer.mode = "time"
+	else if (quSave.autobuyer.mode == "time") quSave.autobuyer.mode = "peak"
+	else if (player.achievements.includes("ng3p25") && quSave.autobuyer.mode != "dilation") quSave.autobuyer.mode = "dilation"
+	else quSave.autobuyer.mode = "amount"
 	updateAutoQuantumMode()
 }
 
 //v1.9997
 function toggleAutoReset() {
-	tmp.qu.autoOptions.replicantiReset = !tmp.qu.autoOptions.replicantiReset
-	document.getElementById('autoReset').textContent = "Auto: " + (tmp.qu.autoOptions.replicantiReset ? "ON" : "OFF")
+	quSave.autoOptions.replicantiReset = !quSave.autoOptions.replicantiReset
+	document.getElementById('autoReset').textContent = "Auto: " + (quSave.autoOptions.replicantiReset ? "ON" : "OFF")
 }
 
 //v2
 function autoECToggle() {
-	tmp.qu.autoEC = !tmp.qu.autoEC
-	document.getElementById("autoEC").className = tmp.qu.autoEC ? "timestudybought" : "storebtn"
+	quSave.autoEC = !quSave.autoEC
+	document.getElementById("autoEC").className = quSave.autoEC ? "timestudybought" : "storebtn"
 }
 
 function toggleRG4Upg() {
-	tmp.qu.rg4 = !tmp.qu.rg4
-	document.getElementById('rg4toggle').textContent = "Toggle: " + (tmp.qu.rg4 ? "ON":"OFF")
+	quSave.rg4 = !quSave.rg4
+	document.getElementById('rg4toggle').textContent = "Toggle: " + (quSave.rg4 ? "ON":"OFF")
 }
 
 var nanospeed = 1
@@ -275,23 +275,23 @@ function toggleAPs() {
 }
 
 function bigRip(auto) {
-	if (!player.masterystudies.includes("d14") || tmp.qu.electrons.amount < 62500 || !inQC(0)) return
-	if (player.ghostify.milestones > 1) {
-		tmp.qu.pairedChallenges.order = {1: [1, 2], 2: [3, 4], 3: [5, 7], 4:[6, 8]}
-		tmp.qu.pairedChallenges.completed = 4
+	if (!player.masterystudies.includes("d14") || quSave.electrons.amount < 62500 || !inQC(0)) return
+	if (ghSave.milestones > 1) {
+		quSave.pairedChallenges.order = {1: [1, 2], 2: [3, 4], 3: [5, 7], 4:[6, 8]}
+		quSave.pairedChallenges.completed = 4
 		for (var c = 1; c < 9; c++) {
-			tmp.qu.electrons.mult += (2 - tmp.qu.challenges[c]) * 0.25
-			tmp.qu.challenges[c] = 2
+			quSave.electrons.mult += (2 - quSave.challenges[c]) * 0.25
+			quSave.challenges[c] = 2
 		}
 		quantum(auto, true, 12, true, true)
 	} else {
 		for (var p = 1; p < 5; p++) {
-			var pcData = tmp.qu.pairedChallenges.order[p]
+			var pcData = quSave.pairedChallenges.order[p]
 			if (pcData) {
 				var pc1 = Math.min(pcData[0], pcData[1])
 				var pc2 = Math.max(pcData[0], pcData[1])
 				if (pc1 == 6 && pc2 == 8) {
-					if (p - 1 > tmp.qu.pairedChallenges.completed) return
+					if (p - 1 > quSave.pairedChallenges.completed) return
 					quantum(auto, true, p + 8, true, true)
 				}
 			}
@@ -300,14 +300,14 @@ function bigRip(auto) {
 }
 
 function toggleBigRipConf() {
-	tmp.qu.bigRip.conf = !tmp.qu.bigRip.conf
-	document.getElementById("bigRipConfirmBtn").textContent = "Big Rip confirmation: O" + (tmp.qu.bigRip.conf ? "N" : "FF")
+	brSave.conf = !brSave.conf
+	document.getElementById("bigRipConfirmBtn").textContent = "Big Rip confirmation: O" + (brSave.conf ? "N" : "FF")
 }
 
 function switchAB() {
-	var bigRip = tmp.qu.bigRip.active
-	tmp.qu.bigRip["savedAutobuyers" + (bigRip ? "" : "No") + "BR"] = {}
-	var data = tmp.qu.bigRip["savedAutobuyers" + (bigRip ? "" : "No") + "BR"]
+	var bigRip = brSave && brSave.active
+	brSave["savedAutobuyers" + (bigRip ? "" : "No") + "BR"] = {}
+	var data = brSave["savedAutobuyers" + (bigRip ? "" : "No") + "BR"]
 	for (let d = 1; d < 9; d++) if (player.autobuyers[d-1] % 1 !== 0) data["d" + d] = {
 		priority: player.autobuyers[d-1].priority,
 		perTen: player.autobuyers[d-1].target > 10,
@@ -336,7 +336,7 @@ function switchAB() {
 	}
 	if (player.autobuyers[11] % 1 !== 0) data.crunch = {
 		mode: player.autoCrunchMode,
-		amount: new Decimal(player.autobuyers[11].priority),
+		amount: E(player.autobuyers[11].priority),
 		on: player.autobuyers[11].isOn
 	}
 	data.eternity = {
@@ -360,7 +360,7 @@ function switchAB() {
 	}
 	if (data.eternity.presets.dil !== undefined) data.eternity.presets.dil = Object.assign({}, data.eternity.presets.dil)
 	if (data.eternity.presets.grind !== undefined) data.eternity.presets.grind = Object.assign({}, data.eternity.presets.grind)
-	var data = tmp.qu.bigRip["savedAutobuyers" + (bigRip ? "No" : "") + "BR"]
+	var data = brSave["savedAutobuyers" + (bigRip ? "No" : "") + "BR"]
 	for (var d = 1; d < 9; d++) if (data["d" + d]) player.autobuyers[d - 1] = {
 		interval: player.autobuyers[d - 1].interval,
 		cost: player.autobuyers[d - 1].cost,
@@ -422,7 +422,7 @@ function switchAB() {
 			interval: player.autobuyers[11].interval,
 			cost: player.autobuyers[11].cost,
 			bulk: 1,
-			priority: new Decimal(data.crunch.amount),
+			priority: E(data.crunch.amount),
 			tier: 1,
 			target: 12,
 			ticks: 0,
@@ -451,7 +451,7 @@ function switchAB() {
 		if (player.eternityBuyer.presets.left === undefined) player.eternityBuyer.presets.left = 1
 		player.autoEterMode = data.eternity.mode
 	}
-	tmp.qu.bigRip["savedAutobuyers" + (bigRip ? "No" : "") + "BR"] = {}
+	brSave["savedAutobuyers" + (bigRip ? "No" : "") + "BR"] = {}
 	updateCheckBoxes()
 	loadAutoBuyerSettings()
 	if (player.autoCrunchMode == "amount") {
@@ -468,36 +468,36 @@ function switchAB() {
 }
 
 function getGHPGain() {
-	if (!tmp.ngp3 || !tmp.qu.bigRip.active) return new Decimal(0)
-	if (!tmp.ngp3l && !ghostified) return new Decimal(1)
-	let log = tmp.qu.bigRip.bestThisRun.log10() / getQCGoal(undefined,true) - 1
-	if (log < 0) return new Decimal(0)
+	if (!tmp.ngp3 || !brSave.active) return E(0)
+	if (!tmp.ngp3l && !ghostified) return E(1)
+	let log = brSave && brSave.bestThisRun.log10() / getQCGoal(undefined,true) - 1
+	if (log < 0) return E(0)
 	if (tmp.ngp3l) {
 		log *= 2
 	} else if (player.achievements.includes("ng3p58")) { 
 		//the square part of the formula maxes at e10, and gets weaker after ~e60 total
 		let x = Math.min(7, log / 2) + Math.min(3, log / 2)
-		y = player.ghostify.ghostParticles.plus(Decimal.pow(10, log)).plus(10).log10()
+		y = ghSave.ghostParticles.plus(pow10(log)).plus(10).log10()
 		if (!player.achievements.includes("ng3p84")) x = Math.min(x, 600 / y)
 		log += x
 	}
-	let x = Decimal.pow(10, log).times(getGHPMult())
+	let x = pow10(log).times(getGHPMult())
 	//x = doStrongerPowerReductionSoftcapDecimal(x,E("e30000"),0.5)
 	return x.floor()
 }
 
 function getGHPMult() {
-	let x = Decimal.pow(2, player.ghostify.multPower - 1)
+	let x = pow2(ghSave.multPower - 1)
 	if (player.achievements.includes("ng3p93")) x = x.times(500)
 	if (player.achievements.includes("ng3p83")) x = x.times(ranking + 1)
-	if (player.achievements.includes("ng3p97")) x = x.times(Decimal.pow(player.ghostify.times + 1, 1/3))
+	if (player.achievements.includes("ng3p97")) x = x.times(E_pow(ghSave.times + 1, 1/3))
 	return x
 }
 
 ghostified = false
 function ghostify(auto, force) {
-	if (!force&&(!isQuantumReached()||!tmp.qu.bigRip.active||implosionCheck)) return
-	if (!auto && !force && player.aarexModifications.ghostifyConf && !confirm("Becoming a ghost resets everything Quantum resets, and also resets your banked stats, best TP & MA, quarks, gluons, electrons, Quantum Challenges, Replicants, Nanofield, and Tree of Decay to gain a Ghost Particle. Are you ready for this?")) {
+	if (!force&&(!isQuantumReached()||!brSave.active||implosionCheck)) return
+	if (!auto && !force && aarMod.ghostifyConf && !confirm("Becoming a ghost resets everything Quantum resets, and also resets your banked stats, best TP & MA, quarks, gluons, electrons, Quantum Challenges, Replicants, Nanofield, and Tree of Decay to gain a Ghost Particle. Are you ready for this?")) {
 		denyGhostify()
 		return
 	}
@@ -508,7 +508,7 @@ function ghostify(auto, force) {
 	var implode = player.options.animations.ghostify && !force
 	if (implode) {
 		var gain = getGHPGain()
-		var amount = player.ghostify.ghostParticles.add(gain).round()
+		var amount = ghSave.ghostParticles.add(gain).round()
 		var seconds = ghostified ? 4 : 10
 		implosionCheck=1
 		dev.ghostify(gain, amount, seconds)
@@ -536,35 +536,35 @@ function denyGhostify() {
 function ghostifyReset(implode, gain, amount, force) {
 	var bulk = getGhostifiedGain()
 	if (!force) {
-		if (!tmp.ngp3l && tmp.qu.times >= 1e3 && player.ghostify.milestones >= 16) giveAchievement("Scared of ghosts?")
+		if (!tmp.ngp3l && quSave.times >= 1e3 && ghSave.milestones >= 16) giveAchievement("Scared of ghosts?")
 		if (!implode) {
 			var gain = getGHPGain()
-			player.ghostify.ghostParticles = player.ghostify.ghostParticles.add(gain).round()
-		} else player.ghostify.ghostParticles = amount
-		for (var i=player.ghostify.last10.length-1; i>0; i--) player.ghostify.last10[i] = player.ghostify.last10[i-1]
-		player.ghostify.last10[0] = [player.ghostify.time, gain]
-		player.ghostify.times = nA(player.ghostify.times, bulk)
-		player.ghostify.best = Math.min(player.ghostify.best, player.ghostify.time)
-		while (tmp.qu.times <= tmp.bm[player.ghostify.milestones]) player.ghostify.milestones++
+			ghSave.ghostParticles = ghSave.ghostParticles.add(gain).round()
+		} else ghSave.ghostParticles = amount
+		for (var i=ghSave.last10.length-1; i>0; i--) ghSave.last10[i] = ghSave.last10[i-1]
+		ghSave.last10[0] = [ghSave.time, gain]
+		ghSave.times = nA(ghSave.times, bulk)
+		ghSave.best = Math.min(ghSave.best, ghSave.time)
+		while (quSave.times <= tmp.bm[ghSave.milestones]) ghSave.milestones++
 	}
-	if (tmp.qu.bigRip.active) switchAB()
-	var bm = player.ghostify.milestones
+	if (brSave.active) switchAB()
+	var bm = ghSave.milestones
 	var nBRU = []
 	var nBEU = []
 	for (var u = 20; u > 0; u--) {
-		if (nBRU.includes(u + 1) || tmp.qu.bigRip.upgrades.includes(u)) nBRU.push(u)
-		if (u < 12 && u != 7 && (nBEU.includes(u + 1) || tmp.qu.breakEternity.upgrades.includes(u))) nBEU.push(u)
+		if (nBRU.includes(u + 1) || brSave.upgrades.includes(u)) nBRU.push(u)
+		if (u < 12 && u != 7 && (nBEU.includes(u + 1) || beSave.upgrades.includes(u))) nBEU.push(u)
 	}
-	if (bm > 2) for (var c=1;c<9;c++) tmp.qu.electrons.mult += .5 - QCIntensity(c) * .25
-	if (bm > 6 && !force && player.achievements.includes("ng3p68")) gainNeutrinos(Decimal.times(2e3 * tmp.qu.bigRip.bestGals, bulk), "all")
+	if (bm > 2) for (var c=1;c<9;c++) quSave.electrons.mult += .5 - QCIntensity(c) * .25
+	if (bm > 6 && !force && player.achievements.includes("ng3p68")) gainNeutrinos(Decimal.times(2e3 * brSave.bestGals, bulk), "all")
 	if (bm > 15) giveAchievement("I rather oppose the theory of everything")
-	if (player.eternityPoints.e>=22e4&&player.ghostify.under) giveAchievement("Underchallenged")
+	if (player.eternityPoints.e>=22e4&&ghSave.under) giveAchievement("Underchallenged")
 	if (player.eternityPoints.e>=375e3&&inQCModifier("ad")) giveAchievement("Overchallenged")
-	if (player.ghostify.best<=6) giveAchievement("Running through Big Rips")
-	player.ghostify.time = 0
+	if (ghSave.best<=6) giveAchievement("Running through Big Rips")
+	ghSave.time = 0
 	doGhostifyResetStuff(implode, gain, amount, force, bulk, nBRU, nBEU)
 	
-	tmp.qu = player.quantum
+	quSave = player.quantum
 	updateInQCs()
 	doPreInfinityGhostifyResetStuff()
 	doInfinityGhostifyResetStuff(implode, bm)
@@ -577,8 +577,8 @@ function ghostifyReset(implode, gain, amount, force) {
 }
 
 function toggleGhostifyConf() {
-	player.aarexModifications.ghostifyConf = !player.aarexModifications.ghostifyConf
-	document.getElementById("ghostifyConfirmBtn").textContent = "Ghostify confirmation: O" + (player.aarexModifications.ghostifyConf ? "N" : "FF")
+	aarMod.ghostifyConf = !aarMod.ghostifyConf
+	document.getElementById("ghostifyConfirmBtn").textContent = "Ghostify confirmation: O" + (aarMod.ghostifyConf ? "N" : "FF")
 }
 
 function getGHPRate(num) {
@@ -587,23 +587,23 @@ function getGHPRate(num) {
 	return shorten(num) + " GhP/min"
 }
 
-var averageGHP = new Decimal(0)
+var averageGHP = E(0)
 var bestGHP
 function updateLastTenGhostifies() {
 	if (player.masterystudies === undefined) return
 	var listed = 0
-	var tempTime = new Decimal(0)
-	var tempGHP = new Decimal(0)
+	var tempTime = E(0)
+	var tempGHP = E(0)
 	for (var i=0; i<10; i++) {
-		if (player.ghostify.last10[i][1].gt(0)) {
-			var qkpm = player.ghostify.last10[i][1].dividedBy(player.ghostify.last10[i][0]/600)
+		if (ghSave.last10[i][1].gt(0)) {
+			var qkpm = ghSave.last10[i][1].dividedBy(ghSave.last10[i][0]/600)
 			var tempstring = shorten(qkpm) + " GhP/min"
 			if (qkpm<1) tempstring = shorten(qkpm*60) + " GhP/hour"
-			var msg = "The Ghostify " + (i == 0 ? '1 Ghostify' : (i+1) + ' Ghostifies') + " ago took " + timeDisplayShort(player.ghostify.last10[i][0], false, 3) + " and gave " + shortenDimensions(player.ghostify.last10[i][1]) +" GhP. "+ tempstring
+			var msg = "The Ghostify " + (i == 0 ? '1 Ghostify' : (i+1) + ' Ghostifies') + " ago took " + timeDisplayShort(ghSave.last10[i][0], false, 3) + " and gave " + shortenDimensions(ghSave.last10[i][1]) +" GhP. "+ tempstring
 			document.getElementById("ghostifyrun"+(i+1)).textContent = msg
-			tempTime = tempTime.plus(player.ghostify.last10[i][0])
-			tempGHP = tempGHP.plus(player.ghostify.last10[i][1])
-			bestGHP = player.ghostify.last10[i][1].max(bestGHP)
+			tempTime = tempTime.plus(ghSave.last10[i][0])
+			tempGHP = tempGHP.plus(ghSave.last10[i][1])
+			bestGHP = ghSave.last10[i][1].max(bestGHP)
 			listed++
 		} else document.getElementById("ghostifyrun"+(i+1)).textContent = ""
 	}
@@ -620,8 +620,8 @@ function updateLastTenGhostifies() {
 
 function updateBraveMilestones() {
 	if (ghostified) {
-		for (var m = 1; m < 17;m++) document.getElementById("braveMilestone" + m).className = "achievement achievement" + (player.ghostify.milestones < m ? "" : "un") + "locked"
-		for (var r = 1; r < 3; r++) document.getElementById("braveRow" + r).className = player.ghostify.milestones < r * 8 ? "" : "completedrow"
+		for (var m = 1; m < 17;m++) document.getElementById("braveMilestone" + m).className = "achievement achievement" + (ghSave.milestones < m ? "" : "un") + "locked"
+		for (var r = 1; r < 3; r++) document.getElementById("braveRow" + r).className = ghSave.milestones < r * 8 ? "" : "completedrow"
 	}
 }
 
@@ -639,46 +639,46 @@ function showGhostifyTab(tabName) {
 			tab.style.display = 'none';
 		}
 	}
-	if (oldTab !== tabName) player.aarexModifications.tabsSave.tabGhostify = tabName
+	if (oldTab !== tabName) aarMod.tabsSave.tabGhostify = tabName
 	closeToolTip()
 }
 
 function updateGhostifyTabs() {
-	document.getElementById("gravtabbtn").style.display = player.ghostify.hb.unl ? "" : "none"
+	document.getElementById("gravtabbtn").style.display = ghSave.hb.unl ? "" : "none"
 
 	if (document.getElementById("neutrinos").style.display == "block") updateNeutrinosTab()
-	if (document.getElementById("automaticghosts").style.display == "block") if (player.ghostify.milestones > 7) updateQuantumWorth("display")
-	if (document.getElementById("gphtab").style.display == "block" && player.ghostify.ghostlyPhotons.unl) updatePhotonsTab()
-	if (document.getElementById("bltab").style.display == "block" && player.ghostify.wzb.unl) updateBosonicLabTab()
+	if (document.getElementById("automaticghosts").style.display == "block") if (ghSave.milestones > 7) updateQuantumWorth("display")
+	if (document.getElementById("gphtab").style.display == "block" && ghSave.ghostlyPhotons.unl) updatePhotonsTab()
+	if (document.getElementById("bltab").style.display == "block" && ghSave.wzb.unl) updateBosonicLabTab()
 	if (document.getElementById("gravtab").style.display == "block") updateGravitonsTab()
 }
 
 function buyGHPMult() {
-	let sum = player.ghostify.neutrinos.electron.add(player.ghostify.neutrinos.mu).add(player.ghostify.neutrinos.tau).round()
+	let sum = ghSave.neutrinos.electron.add(ghSave.neutrinos.mu).add(ghSave.neutrinos.tau).round()
 	let cost = getGHPMultCost()
 	if (sum.lt(cost)) return
 	subNeutrinos(cost)
-	player.ghostify.multPower++
-	player.ghostify.automatorGhosts[15].a = player.ghostify.automatorGhosts[15].a.times(5)
-	document.getElementById("autoGhost15a").value = formatValue("Scientific", player.ghostify.automatorGhosts[15].a, 2, 1)
-	document.getElementById("ghpMult").textContent = shortenDimensions(Decimal.pow(2,player.ghostify.multPower-1))
+	ghSave.multPower++
+	ghSave.automatorGhosts[15].a = ghSave.automatorGhosts[15].a.times(5)
+	document.getElementById("autoGhost15a").value = formatValue("Scientific", ghSave.automatorGhosts[15].a, 2, 1)
+	document.getElementById("ghpMult").textContent = shortenDimensions(pow2(ghSave.multPower-1))
 	document.getElementById("ghpMultUpgCost").textContent = shortenDimensions(getGHPMultCost())
 }
 
 function maxGHPMult() {
-	let sum = player.ghostify.neutrinos.electron.add(player.ghostify.neutrinos.mu).add(player.ghostify.neutrinos.tau).round()
+	let sum = ghSave.neutrinos.electron.add(ghSave.neutrinos.mu).add(ghSave.neutrinos.tau).round()
 	let cost = getGHPMultCost()
 	if (sum.lt(cost)) return
-	if (player.ghostify.multPower < 85) {
-		let toBuy=Math.min(Math.floor(sum.div(cost).times(24).add(1).log(25)),85-player.ghostify.multPower)
-		subNeutrinos(Decimal.pow(25,toBuy).sub(1).div(24).times(cost))
-		player.ghostify.multPower+=toBuy
-		player.ghostify.automatorGhosts[15].a=player.ghostify.automatorGhosts[15].a.times(Decimal.pow(5,toBuy))
-		document.getElementById("autoGhost15a").value=formatValue("Scientific", player.ghostify.automatorGhosts[15].a, 2, 1)
+	if (ghSave.multPower < 85) {
+		let toBuy=Math.min(Math.floor(sum.div(cost).times(24).add(1).log(25)),85-ghSave.multPower)
+		subNeutrinos(E_pow(25,toBuy).sub(1).div(24).times(cost))
+		ghSave.multPower+=toBuy
+		ghSave.automatorGhosts[15].a=ghSave.automatorGhosts[15].a.times(E_pow(5,toBuy))
+		document.getElementById("autoGhost15a").value=formatValue("Scientific", ghSave.automatorGhosts[15].a, 2, 1)
 		cost=getGHPMultCost()
 	}
-	if (player.ghostify.multPower>84) {
-		let b=player.ghostify.multPower*2-167
+	if (ghSave.multPower>84) {
+		let b=ghSave.multPower*2-167
 		let x=Math.floor((-b+Math.sqrt(b*b+4*sum.div(cost).log(5)))/2)+1
 		if (x) {
 			let toBuy=x
@@ -694,10 +694,10 @@ function maxGHPMult() {
 				x--
 			}
 			subNeutrinos(toSpend)
-			player.ghostify.multPower+=toBuy
+			ghSave.multPower+=toBuy
 		}
 	}
-	document.getElementById("ghpMult").textContent=shortenDimensions(Decimal.pow(2,player.ghostify.multPower-1))
+	document.getElementById("ghpMult").textContent=shortenDimensions(pow2(ghSave.multPower-1))
 	document.getElementById("ghpMultUpgCost").textContent=shortenDimensions(getGHPMultCost())
 }
 
@@ -719,7 +719,7 @@ var autoGhostRequirements=[2,4,4,4.5,5,5,6,6.5,7,7,7.5,8,20,24,28,32,36,40,45]
 var powerConsumed
 var powerConsumptions=[0,1,1,1,1,2,2,0.5,0.5,0.5,1,0.5,0.5,0.5,0.5,0.5,6,3,6,3,9,3,3]
 function updateAutoGhosts(load) {
-	var data = player.ghostify.automatorGhosts
+	var data = ghSave.automatorGhosts
 	if (load) {
 		for (var x = 1; x <= getMaxAutoGhosts(); x++) if (data[x] === undefined) data[x] = {on: false}
 		if (data.ghosts >= getMaxAutoGhosts()) document.getElementById("nextAutomatorGhost").parentElement.style.display="none"
@@ -758,58 +758,58 @@ function updateAutoGhosts(load) {
 }
 
 function toggleAutoGhost(id) {
-	player.ghostify.automatorGhosts[id].on = document.getElementById("isAutoGhostOn" + id).checked
+	ghSave.automatorGhosts[id].on = document.getElementById("isAutoGhostOn" + id).checked
 	updateAutoGhosts()
 }
 
 function isAutoGhostActive(id) {
 	if (!ghostified) return
-	return player.ghostify.automatorGhosts[id].on
+	return ghSave.automatorGhosts[id].on
 }
 
 function changeAutoGhost(o) {
 	if (o == "4m") {
-		player.ghostify.automatorGhosts[4].mode = player.ghostify.automatorGhosts[4].mode == "t" ? "q" : "t"
-		document.getElementById("autoGhostMod4").textContent = "Every " + (player.ghostify.automatorGhosts[4].mode == "t" ? "second" : "Quantum")
+		ghSave.automatorGhosts[4].mode = ghSave.automatorGhosts[4].mode == "t" ? "q" : "t"
+		document.getElementById("autoGhostMod4").textContent = "Every " + (ghSave.automatorGhosts[4].mode == "t" ? "second" : "Quantum")
 	} else if (o == "4r") {
-		player.ghostify.automatorGhosts[4].rotate = player.ghostify.automatorGhosts[4].rotate == "l" ? "r" : "l"
-		document.getElementById("autoGhostRotate4").textContent = player.ghostify.automatorGhosts[4].rotate == "l" ? "Left" : "Right"
+		ghSave.automatorGhosts[4].rotate = ghSave.automatorGhosts[4].rotate == "l" ? "r" : "l"
+		document.getElementById("autoGhostRotate4").textContent = ghSave.automatorGhosts[4].rotate == "l" ? "Left" : "Right"
 	} else if (o == "11pw") {
 		var num = parseFloat(document.getElementById("autoGhost11pw").value)
-		if (!isNaN(num) && num > 0) player.ghostify.automatorGhosts[11].pw = num
+		if (!isNaN(num) && num > 0) ghSave.automatorGhosts[11].pw = num
 	} else if (o == "11lw") {
 		var num = parseFloat(document.getElementById("autoGhost11lw").value)
-		if (!isNaN(num) && num > 0) player.ghostify.automatorGhosts[11].lw = num
+		if (!isNaN(num) && num > 0) ghSave.automatorGhosts[11].lw = num
 	} else if (o == "11cw") {
 		var num = parseFloat(document.getElementById("autoGhost11cw").value)
-		if (!isNaN(num) && num > 0) player.ghostify.automatorGhosts[11].cw = num
+		if (!isNaN(num) && num > 0) ghSave.automatorGhosts[11].cw = num
 	} else if (o == "13t") {
 		var num = parseFloat(document.getElementById("autoGhost13t").value)
-		if (!isNaN(num) && num >= 0) player.ghostify.automatorGhosts[13].t = num
+		if (!isNaN(num) && num >= 0) ghSave.automatorGhosts[13].t = num
 	} else if (o == "13u") {
 		var num = parseFloat(document.getElementById("autoGhost13u").value)
-		if (!isNaN(num) && num > 0) player.ghostify.automatorGhosts[13].u = num
+		if (!isNaN(num) && num > 0) ghSave.automatorGhosts[13].u = num
 	} else if (o == "15a") {
 		var num = fromValue(document.getElementById("autoGhost15a").value)
-		if (!isNaN(break_infinity_js ? num : num.l)) player.ghostify.automatorGhosts[15].a = num
+		if (!isNaN(break_infinity_js ? num : num.l)) ghSave.automatorGhosts[15].a = num
 	} else if (o == "17a") {
 		var num = fromValue(document.getElementById("autoGhost17a").value)
-		if (!isNaN(break_infinity_js ? num : num.l)) player.ghostify.automatorGhosts[17].a = num
+		if (!isNaN(break_infinity_js ? num : num.l)) ghSave.automatorGhosts[17].a = num
 	}
 }
 
 function rotateAutoUnstable() {
-	var tg=player.ghostify.automatorGhosts[3].on
-	if (player.ghostify.automatorGhosts[4].rotate=="l") {
-		player.ghostify.automatorGhosts[3].on = player.ghostify.automatorGhosts[1].on
-		player.ghostify.automatorGhosts[1].on = player.ghostify.automatorGhosts[2].on
-		player.ghostify.automatorGhosts[2].on = tg
+	var tg=ghSave.automatorGhosts[3].on
+	if (ghSave.automatorGhosts[4].rotate=="l") {
+		ghSave.automatorGhosts[3].on = ghSave.automatorGhosts[1].on
+		ghSave.automatorGhosts[1].on = ghSave.automatorGhosts[2].on
+		ghSave.automatorGhosts[2].on = tg
 	} else {
-		player.ghostify.automatorGhosts[3].on = player.ghostify.automatorGhosts[2].on
-		player.ghostify.automatorGhosts[2].on = player.ghostify.automatorGhosts[1].on
-		player.ghostify.automatorGhosts[1].on = tg
+		ghSave.automatorGhosts[3].on = ghSave.automatorGhosts[2].on
+		ghSave.automatorGhosts[2].on = ghSave.automatorGhosts[1].on
+		ghSave.automatorGhosts[1].on = tg
 	}
-	for (var g = 1; g < 4; g++) document.getElementById("isAutoGhostOn" + g).checked = player.ghostify.automatorGhosts[g].on
+	for (var g = 1; g < 4; g++) document.getElementById("isAutoGhostOn" + g).checked = ghSave.automatorGhosts[g].on
 }
 
 function getMaxAutoGhosts() {
@@ -827,8 +827,8 @@ function startEC10() {
 }
 
 function getGHPMultCost(offset=0) {
-	let lvl=player.ghostify.multPower+offset
-	return Decimal.pow(5, lvl * 2 + Math.max(lvl - 85, 0) * (lvl - 84) - 1).times(25e8)
+	let lvl=ghSave.multPower+offset
+	return E_pow(5, lvl * 2 + Math.max(lvl - 85, 0) * (lvl - 84) - 1).times(25e8)
 
 }
 
@@ -851,7 +851,7 @@ function showNFTab(tabName) {
 			tab.style.display = 'none';
 		}
 	}
-	if (oldTab !== tabName) player.aarexModifications.tabsSave.tabNF = tabName
+	if (oldTab !== tabName) aarMod.tabsSave.tabNF = tabName
 	closeToolTip()
 }
 
@@ -862,8 +862,8 @@ function getGhostifiedGain() {
 }
 
 function toggleLEConf() {
-	player.aarexModifications.leNoConf = !player.aarexModifications.leNoConf
-	document.getElementById("leConfirmBtn").textContent = "Light Empowerment confirmation: O" + (player.aarexModifications.leNoConf ? "FF" : "N")
+	aarMod.leNoConf = !aarMod.leNoConf
+	document.getElementById("leConfirmBtn").textContent = "Light Empowerment confirmation: O" + (aarMod.leNoConf ? "FF" : "N")
 }
 
 //Anti-Preontius' Lair
@@ -885,10 +885,10 @@ function displayNonlegacyStuff() {
 function getOldAgeRequirement() {
 	let year = new Date().getFullYear() || 2020
 	if (tmp.ngp3l) year = 2019
-	return Decimal.pow(10, 3 * 86400 * 365.2425 * year)
+	return pow10(3 * 86400 * 365.2425 * year)
 }
 
 //v2.302
 function NGP3andVanillaCheck() {
-	return (tmp.ngp3 && !tmp.ngp3l) || !player.aarexModifications.newGamePlusPlusVersion
+	return (tmp.ngp3 && !tmp.ngp3l) || !aarMod.newGamePlusPlusVersion
 }

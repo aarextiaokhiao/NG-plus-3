@@ -3,7 +3,7 @@ function updateLightEmpowermentReq() {
 }
 
 function getLightEmpowermentBoost() {
-	let r = player.ghostify.ghostlyPhotons.enpowerments
+	let r = ghSave.ghostlyPhotons.enpowerments
 	if (hasBosonicUpg(13)) r *= tmp.blu[13]
 	return r
 }
@@ -19,8 +19,8 @@ var leBoosts = {
 			if (tmp.ngp3l) le1exp = 1
 			else if (tmp.newNGP3E) {
 				le1exp += 0.2
-				if (player.ghostify.ghostlyPhotons.unl) le1exp += .15
-				if (player.ghostify.wzb.unl) le1exp += .15
+				if (ghSave.ghostlyPhotons.unl) le1exp += .15
+				if (ghSave.wzb.unl) le1exp += .15
 			}
 			var le1mult = 500
 			if (tmp.ngp3l) le1mult = 300
@@ -69,13 +69,13 @@ var leBoosts = {
 function isLEBoostUnlocked(x) {
 	if (!tmp.ngp3) return false
 	if (!ghostified) return false
-	if (!player.ghostify.ghostlyPhotons.unl) return false
+	if (!ghSave.ghostlyPhotons.unl) return false
 	if (x >= 4 && !hasBosonicUpg(32)) return false
-	return player.ghostify.ghostlyPhotons.enpowerments >= leBoosts.reqs[x]
+	return ghSave.ghostlyPhotons.enpowerments >= leBoosts.reqs[x]
 }
 
 function updateGPHUnlocks() {
-	let unl = player.ghostify.ghostlyPhotons.unl
+	let unl = ghSave.ghostlyPhotons.unl
 	document.getElementById("gphUnl").style.display = unl ? "none" : ""
 	document.getElementById("gphDiv").style.display = unl ? "" : "none"
 	document.getElementById("gphRow").style.display = unl ? "" : "none"
@@ -84,11 +84,11 @@ function updateGPHUnlocks() {
 }
 
 function getGPHProduction() {
-	let b = tmp.qu.bigRip.active
+	let b = brSave && brSave.active
 	if (b) var ret = player.dilation.dilatedTime.div("1e480")
 	else var ret = player.dilation.dilatedTime.div("1e930")
 	if (ret.gt(1)) ret = ret.pow(0.02)
-	if (b && ret.gt(Decimal.pow(2, 444))) ret = ret.div(Decimal.pow(2, 444)).sqrt().times(Decimal.pow(2, 444))
+	if (b && ret.gt(pow2(444))) ret = ret.div(pow2(444)).sqrt().times(pow2(444))
 	if (hasGravUpg(3)) ret = ret.mul(tmp.gravitons.upg_eff[3])
 	return ret
 }
@@ -102,11 +102,11 @@ function updatePhotonsTab(){
 }
 
 function updateRaysPhotonsDisplay(){
-	var gphData = player.ghostify.ghostlyPhotons
+	var gphData = ghSave.ghostlyPhotons
 	document.getElementById("dtGPH").textContent = shorten(player.dilation.dilatedTime)
 	document.getElementById("gphProduction").textContent = shorten(getGPHProduction())
-	document.getElementById("gphProduction").className = (tmp.qu.bigRip.active ? "gph" : "dm") + "Amount"
-	document.getElementById("gphProductionType").textContent = tmp.qu.bigRip.active ? "Ghostly Photons" : "Dark Matter"
+	document.getElementById("gphProduction").className = (brSave.active ? "gph" : "dm") + "Amount"
+	document.getElementById("gphProductionType").textContent = brSave && brSave.active ? "Ghostly Photons" : "Dark Matter"
 	document.getElementById("gph").textContent = shortenMoney(gphData.amount)
 	document.getElementById("dm").textContent = shortenMoney(gphData.darkMatter)
 	document.getElementById("ghrProduction").textContent = shortenMoney(getGHRProduction())
@@ -115,7 +115,7 @@ function updateRaysPhotonsDisplay(){
 }
 
 function updateLightBoostDisplay(){
-	var gphData = player.ghostify.ghostlyPhotons
+	var gphData = ghSave.ghostlyPhotons
 	document.getElementById("lightMax1").textContent = getFullExpansion(gphData.maxRed)
 	document.getElementById("lightBoost1").textContent = tmp.le[0].toFixed(3)
 	document.getElementById("lightBoost2").textContent = tmp.le[1].toFixed(2)
@@ -127,7 +127,7 @@ function updateLightBoostDisplay(){
 }
 
 function updateLightThresholdStrengthDisplay(){
-	var gphData=player.ghostify.ghostlyPhotons
+	var gphData=ghSave.ghostlyPhotons
 	for (var c = 0; c < 8; c++) {
 		document.getElementById("light" + (c + 1)).textContent = getFullExpansion(gphData.lights[c])+(tmp.free_lights>0?" + "+getFullExpansion(tmp.free_lights):"")
 		document.getElementById("lightThreshold" + (c + 1)).textContent = shorten(getLightThreshold(c))
@@ -136,7 +136,7 @@ function updateLightThresholdStrengthDisplay(){
 }
 
 function updateLEmpowermentPrimary(){
-	var gphData = player.ghostify.ghostlyPhotons
+	var gphData = ghSave.ghostlyPhotons
 	document.getElementById("lightEmpowerment").className = "gluonupgrade "+(gphData.lights[7] >= tmp.leReq ? "gph" : "unavailablebtn")
 	document.getElementById("lightEmpowermentReq").textContent = getFullExpansion(tmp.leReq)
 	document.getElementById("lightEmpowerments").textContent = getFullExpansion(gphData.enpowerments)
@@ -165,19 +165,19 @@ function updateLEmpowermentBoosts(){
 }
 
 function getGHRProduction() {
-	var log = player.ghostify.ghostlyPhotons.amount.sqrt().div(2).log10()
-	if (player.ghostify.neutrinos.boosts >= 11) log += tmp.nb[11].log10()
-	return Decimal.pow(10, log)
+	var log = ghSave.ghostlyPhotons.amount.sqrt().div(2).log10()
+	if (ghSave.neutrinos.boosts >= 11) log += tmp.nb[11].log10()
+	return pow10(log)
 }
 
 function getGHRCap() {
-	var log = player.ghostify.ghostlyPhotons.darkMatter.pow(0.4).times(1e3).log10()
-	if (player.ghostify.neutrinos.boosts >= 11) log += tmp.nb[11].log10()
-	return Decimal.pow(10, log)
+	var log = ghSave.ghostlyPhotons.darkMatter.pow(0.4).times(1e3).log10()
+	if (ghSave.neutrinos.boosts >= 11) log += tmp.nb[11].log10()
+	return pow10(log)
 }
 
 function getLightThreshold(l) {
-	let x = Decimal.pow(getLightThresholdIncrease(l), player.ghostify.ghostlyPhotons.lights[l]).times(tmp.lt[l])
+	let x = E_pow(getLightThresholdIncrease(l), ghSave.ghostlyPhotons.lights[l]).times(tmp.lt[l])
 	if (hasGravUpg(1)) x = x.div(tmp.gravitons.upg_eff[1])
 	return x
 }
@@ -192,23 +192,23 @@ function getLightThresholdIncrease(l) {
 }
 
 function lightEmpowerment(auto=false) {
-	if (!(player.ghostify.ghostlyPhotons.lights[7] >= tmp.leReq)) return
+	if (!(ghSave.ghostlyPhotons.lights[7] >= tmp.leReq)) return
 	if (!player.achievements.includes("ng3p101") && !auto) {
-		if (!player.aarexModifications.leNoConf && !confirm("You will become a ghost, but Ghostly Photons will be reset. You will gain 1 Light Empowerment from this. Are you sure you want to proceed?")) return
-		if (!player.ghostify.ghostlyPhotons.enpowerments) document.getElementById("leConfirmBtn").style.display = "inline-block"
+		if (!aarMod.leNoConf && !confirm("You will become a ghost, but Ghostly Photons will be reset. You will gain 1 Light Empowerment from this. Are you sure you want to proceed?")) return
+		if (!ghSave.ghostlyPhotons.enpowerments) document.getElementById("leConfirmBtn").style.display = "inline-block"
 	}
-	player.ghostify.ghostlyPhotons.enpowerments++
+	ghSave.ghostlyPhotons.enpowerments++
 	if (player.achievements.includes("ng3p101")) return
 	ghostify(false, true)
 	if (player.achievements.includes("ng3p91")) return
-	player.ghostify.ghostlyPhotons.amount = new Decimal(0)
-	player.ghostify.ghostlyPhotons.darkMatter = new Decimal(0)
-	player.ghostify.ghostlyPhotons.ghostlyRays = new Decimal(0)
-	player.ghostify.ghostlyPhotons.lights = [0,0,0,0,0,0,0,0]
+	ghSave.ghostlyPhotons.amount = E(0)
+	ghSave.ghostlyPhotons.darkMatter = E(0)
+	ghSave.ghostlyPhotons.ghostlyRays = E(0)
+	ghSave.ghostlyPhotons.lights = [0,0,0,0,0,0,0,0]
 }
 
 function getLightEmpowermentReq(le) {
-	if (le === undefined) le = player.ghostify.ghostlyPhotons.enpowerments
+	if (le === undefined) le = ghSave.ghostlyPhotons.enpowerments
 	let x = le * 2.4 + 1
 	let scale = 0
 	if (!tmp.ngp3l) {

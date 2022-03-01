@@ -1,11 +1,11 @@
 var setUnlocks
 var powAdds = [null, 0, null, 0, 4, 4, 4]
 function buyRepeatableInfinityUpgrade(id) {
-	if (player.infinityPoints.lt(Decimal.pow(10, player.infinityUpgradesRespecced[id] + powAdds[id]))) return
-	player.infinityPoints = player.infinityPoints.sub(Decimal.pow(10, player.infinityUpgradesRespecced[id] + powAdds[id]))
+	if (player.infinityPoints.lt(pow10(player.infinityUpgradesRespecced[id] + powAdds[id]))) return
+	player.infinityPoints = player.infinityPoints.sub(pow10(player.infinityUpgradesRespecced[id] + powAdds[id]))
 	player.infinityUpgradesRespecced[id]++
 	if (id == 1) {
-		player.tickspeed = player.tickspeed.times(Decimal.pow(getTickSpeedMultiplier(), 10))
+		player.tickspeed = player.tickspeed.times(E_pow(getTickSpeedMultiplier(), 10))
 		updateTickSpeed()
 	}
 }
@@ -27,7 +27,7 @@ function updateSingularity() {
 		document.getElementById("singularityunlock").style.display = "none"
 		document.getElementById("singularitydiv").style.display = ""
 		document.getElementById("sacrificedIP").textContent = shortenDimensions(player.singularity.sacrificed)
-		document.getElementById("nextUpgrade").textContent = shortenCosts(Decimal.pow(10, player.singularity.upgraded * 2 + 32))
+		document.getElementById("nextUpgrade").textContent = shortenCosts(pow10(player.singularity.upgraded * 2 + 32))
 		document.getElementById("sacrificeIP").className = gainedSingularityPower().eq(0) ? "unavailablebtn" : "storebtn"
 		document.getElementById("singularityPowerGain").textContent = shortenDimensions(gainedSingularityPower())
 		document.getElementById("singularityPower").textContent = shortenDimensions(player.singularity.singularityPower)
@@ -56,13 +56,13 @@ function sacrificeIP() {
 	if (gainedSingularityPower().eq(0)) return
 	player.singularity.singularityPower = player.singularity.singularityPower.add(gainedSingularityPower())
 	player.singularity.sacrificed = player.singularity.sacrificed.add(player.infinityPoints)
-	player.infinityPoints = new Decimal(0)
-	player.singularity.upgraded += Math.floor(player.singularity.sacrificed.div(Decimal.pow(10, player.singularity.upgraded * 2 + 30)).log(100))
+	player.infinityPoints = E(0)
+	player.singularity.upgraded += Math.floor(player.singularity.sacrificed.div(pow10(player.singularity.upgraded * 2 + 30)).log(100))
 	updateSingularity()
 }
 
 function getDarkMatterPerSecond() {
-	return player.singularity.singularityPower.times(Decimal.pow(2, player.singularity.upgraded))
+	return player.singularity.singularityPower.times(pow2(player.singularity.upgraded))
 }
 
 function getDarkMatterMult() {
@@ -109,14 +109,14 @@ function unlockDimTechs() {
 }
 
 function getNextDiscounts() {
-	return Decimal.pow(2, player.dimtechs.discounts * (player.dimtechs.discounts + 1) / 4).times(1e22)
+	return pow2(player.dimtechs.discounts * (player.dimtechs.discounts + 1) / 4).times(1e22)
 }
 
 function getDimTechUpgradeCost() {
 	var total = 0
 	for (var dim = 1; dim < 9; dim++) total += player.dimtechs["dim" + dim + "Upgrades"]
 	total += player.dimtechs.tickUpgrades
-	return Decimal.pow(5, total).times(1e95)
+	return E_pow(5, total).times(1e95)
 }
 
 function buyDimTech(dim, tick) {
@@ -126,13 +126,13 @@ function buyDimTech(dim, tick) {
 	player.infinityPoints = player.infinityPoints.sub(getDimTechUpgradeCost())
 	var oldMultiplier = getDiscountMultiplier(name)
 	player.dimtechs[name + "Upgrades"]++
-	if (tick) player.tickSpeedCost = player.tickSpeedCost.div(Decimal.pow(getDiscountMultiplier(name).div(oldMultiplier), player.dimtechs.discounts))
-	else player[TIER_NAMES[dim] + "Cost"] = player[TIER_NAMES[dim] + "Cost"].div(Decimal.pow(getDiscountMultiplier(name).div(oldMultiplier), player.dimtechs.discounts))
+	if (tick) player.tickSpeedCost = player.tickSpeedCost.div(E_pow(getDiscountMultiplier(name).div(oldMultiplier), player.dimtechs.discounts))
+	else player[TIER_NAMES[dim] + "Cost"] = player[TIER_NAMES[dim] + "Cost"].div(E_pow(getDiscountMultiplier(name).div(oldMultiplier), player.dimtechs.discounts))
 	updateDimTechs()
 }
 
 function getDiscountMultiplier(id) {
-	return Decimal.pow(1e38, Math.sqrt(player.dimtechs[id + "Upgrades"]))
+	return E_pow(1e38, Math.sqrt(player.dimtechs[id + "Upgrades"]))
 }
 
 function respecDimTechs() {

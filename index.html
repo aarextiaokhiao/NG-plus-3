@@ -3,10 +3,11 @@
 <html>
 
 <head>
-	<title>Antimatter Dimensions</title>
+	<title id="z">AD: Post-NG+3R</title>
 	<link rel="icon" type="image/png" href="icon.png">
-	<meta name="Antimatter Dimensions" content="A game about huge numbers and watching them go up." charset="utf-8"/>
+	<meta name="AD: Post-NG+3R" content="A mod for rewritting MrRedShark77's Post-NG+3." charset="utf-8"/>
 	<script type="text/javascript" src="javascripts/jquery-3.2.1.min.js"></script>
+	<script type="text/javascript" src="javascripts/core/helper.js"></script>
 	<script type="text/javascript" src="javascripts/notify.js"></script>
 	<link rel="stylesheet" type="text/css" href="stylesheets/styles.css?12">
 	<link href="https://fonts.googleapis.com/css?family=Inconsolata" rel="stylesheet">
@@ -19,6 +20,7 @@
 <body id="body" style="height: 95vh; " onload="initGame()">
 	<div id='ghostlyNewsTicker'><span id='ghostlyNewsTickerText'></span></div>
 	<div style="display:none;position:fixed;left:0;top:0"><textarea id="output" style="color:black; width: 200px; height: 55px;"></textarea></div>
+	<div id="bg" style="display: none"></div>
 	<div id="container" class="container" style="color:#4F5957; font-family: Typewriter; text-align:center; font-size: 11px; display:none">
 		<div id='ghostlyNewsTickerBlock'></div>
 		<div id='game' style='display:none'>
@@ -1796,7 +1798,7 @@
 					<tr>
 						<td><div><button id="exportbtn" class="storebtn" onclick='export_save()' style="color:black; width: 200px; height: 55px; font-size: 20px">Export</button></div></td>
 						<td><div><button id="importbtn" class="storebtn" onclick='import_save("current")' style="color:black; width: 200px; height: 55px; font-size: 20px">Import</button></div></td>
-						<td><div><button onclick='reload()' class="storebtn" style="color:black; width: 200px; height: 55px; font-size: 15px">Reload w/o offline progress</button></div></td>
+						<td><div><button onclick='reload()' class="storebtn" id="reload" style="color:black; width: 200px; height: 55px; font-size: 8px"><p style="font-size: 20px">Rollback</p>(to last save point)</button></div></td>
 					</tr>
 					<tr>
 						<td><div><button id="autoSave" onclick='toggleAutoSave()' class="storebtn" style="color:black; width: 200px; height: 55px; font-size: 20px"></button></div></td>
@@ -1829,7 +1831,7 @@
 					</tr>
 					<tr>
 						<td><div><button id="retry" onclick="toggleChallengeRetry()" class="storebtn" style="color:black; width: 200px; height: 55px; font-size:120%"></button></div></td>
-						<td><div><button id="decimalMode" onclick="switchDecimalMode()" class="storebtn" style="color:black; width: 200px; height: 55px"></button></div></td>
+						<td></td>
 						<td><div><button id="performanceTicks" onclick="togglePerformanceTicks()" class="storebtn" style="color:black; width: 200px; height: 55px"></button></div></td>
 					</tr>
 					<tr>
@@ -1852,7 +1854,7 @@
 				<br>
 				Created by Aarex with help from pg132 and usavictor, MrRedShark77.
 				<br><br>
-				(Update v2.4.1: Break Dilation Update)
+				(Update v2.4.1.1: Gravitional Relativity)
 				<br><br>
 			</p>
 			<div id="footercontainer">
@@ -4093,6 +4095,9 @@
 			<br>
 			<button class="storebtn" id="toggleautobuyers" style="font-size: 100%; width: 150px; height: 40px; margin: 3px" onclick="toggleAutoBuyers()">Enable/disable autobuyers</button>
 			<button class="storebtn" id="togglebulk" style="font-size: 100%; width: 150px; height: 40px;margin: 3px" onclick="toggleBulk()">Disable bulk buy</button>
+			<button class="storebtn" id="togglebuymax" style="font-size: 100%; width: 150px; height: 40px;margin: 3px" onclick="toggleAllABBulks()">Toggle "buy max" to all</button>
+			<button class="storebtn" id="maxAutobuyerUpgrades" style="font-size: 100%; width: 150px; height: 40px;margin: 3px" onclick="maxAutobuyerUpgrades()">Max autobuyer upgrades</button>
+			<br>
 			<button class="storebtn" id="togglecrunchmode" style="font-size: 100%; width: 150px; height: 40px;margin: 3px; display: none" onclick="toggleCrunchMode()">Auto crunch mode: amount</button>
 			<button class="storebtn" id="toggleautoetermode" style="font-size: 100%; width: 150px; height: 40px;margin: 3px; display: none" onclick="toggleAutoEterMode()">Auto eternity mode: amount</button>
 			<button class="storebtn" id="aftereternity" style="font-size: 100%; width: 150px; height: 40px;margin: 3px; display: none" onclick="openAfterEternity()">After-eternity automation</button>
@@ -5574,6 +5579,7 @@
 					You have <span id="gravAmt" class="h1">0</span> (+<span id="gravGain">0</span>/s) Graviton.<br>
 					Your best Graviton was <span id="gravBest" class="h2">0</span>. Raised to the power of <span id="gravPow" class="h2">2</span>, translated to <span id="gravEff" class="h2">1</span>x extra multiplier per Meta-Dimension Boost.<br>
 					<table id="gravUpgsTable" style="margin: 0 auto"></table>
+					<b class="warning" style="font-size: 24px">This will be rewritten soon!</b>
 				</div>
 			</div>
 			<div id="footercontainer">
@@ -5755,6 +5761,7 @@
 				<button class='storebtn' onclick="setTheme('Inverted Metro')" style='width: 240px'>Select Inverted Metro</button>
 				<button class='storebtn' onclick="setTheme('Aarex\'s Modifications')" style='width: 240px'>Select Aarex's Modifications</button>
 				<button class='storebtn' onclick="setTheme('Aarex\'s Mods II')" style='width: 240px'>Select Aarex's Mods II</button>
+				<button class='storebtn' onclick="setTheme('Aarex\'s Mods Tribus')" style='width: 240px'>Select Aarex's Mods: Tribus</button>
 				<button class='storebtn' onclick="setTheme('Star Stream')" style='width: 240px'>Select Star Stream (by YYK)</button>
 				<button class='storebtn' onclick="setTheme('Void')" style='width: 240px'>Select Void (by Soul147)</button>
 			</div>

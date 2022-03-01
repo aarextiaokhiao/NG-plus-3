@@ -16,7 +16,7 @@ function getTickThreshold(timeshards, num) {
 }
 
 function tickCost(x) {
-	return Decimal.pow(get_c(), x - 1).times(Decimal.pow(1.001, (x - 1) * (x - 2) / 2));
+	return E_pow(get_c(), x - 1).times(E_pow(1.001, (x - 1) * (x - 2) / 2));
 }
 
 function getTotalTickGained(next) {
@@ -41,12 +41,12 @@ function updateGalaxyControl() {
 }
 
 function setReplicantiNewGalaxyStrength() {
-	player.replicanti.newLimit = Decimal.pow(2, Math.pow(2, parseFloat(document.getElementById("galStrength").value) * 10))
+	player.replicanti.newLimit = pow2(Math.pow(2, parseFloat(document.getElementById("galStrength").value) * 10))
 	document.getElementById("replLimit").value = formatValue("Scientific", player.replicanti.newLimit, 2, 0)
 }
 
 function setReplicantiNewLimit() {
 	var value = fromValue(document.getElementById("replLimit").value)
 	if (!isNaN(break_infinity_js ? value : value.logarithm)) player.replicanti.newLimit = value
-	document.getElementById("galStrength").value = Math.log10(new Decimal(player.replicanti.newLimit).log(2)) / Math.log10(2) / 10
+	document.getElementById("galStrength").value = Math.log10(E(player.replicanti.newLimit).log(2)) / Math.log10(2) / 10
 }

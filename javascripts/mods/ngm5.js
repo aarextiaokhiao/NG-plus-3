@@ -31,12 +31,12 @@ function maxIDwithAM(t,bulk) {
 	if (!player.money.gte(c)) return
 	let tb = Math.floor(player.money.div(c).times(m - 1).add(1).log(m))
 	if (bulk) tb = Math.min(tb, bulk)
-	let ts=Decimal.pow(m, tb).sub(1).div(m - 1).times(c)
+	let ts=E_pow(m, tb).sub(1).div(m - 1).times(c)
 	player.money = player.money.sub(ts.min(player.money))
-	d.costAM = d.costAM.times(Decimal.pow(m, tb))
+	d.costAM = d.costAM.times(E_pow(m, tb))
 	d.bought += 10*tb
 	d.amount = d.amount.add(10 * tb)
-	d.power = d.power.times(Decimal.pow(3, tb))
+	d.power = d.power.times(E_pow(3, tb))
 	player.chall2Pow = 0
 	reduceMatter(tb)
 }
@@ -49,12 +49,12 @@ function resetIDs_ngm5() {
 	if (player.pSac == undefined) return
 	for (var t = 1; t < 9; t++) {
 		var d = player["infinityDimension" + t]
-		d.amount = new Decimal(d.baseAmount)
-		d.power = Decimal.pow(getInfBuy10Mult(t), d.baseAmount)
-		d.costAM = new Decimal(idBaseCosts[t])
+		d.amount = E(d.baseAmount)
+		d.power = E_pow(getInfBuy10Mult(t), d.baseAmount)
+		d.costAM = E(idBaseCosts[t])
 		d.boughtAM = 0
 	}
-	player.infinityPower = new Decimal(1)
+	player.infinityPower = E(1)
 }
 
 //Global Dimension unlocks
@@ -88,7 +88,7 @@ function pSacReset(force, chall, pxGain) {
 		if (!force) player.infDimensionsUnlocked[1]=true
 	}
 	player.pSac.time = 0
-	PXminpeak = new Decimal(0)
+	PXminpeak = E(0)
 	resetPDs()
 	updateParadoxUpgrades()
 	galaxyReset(-player.galaxies)
@@ -124,7 +124,7 @@ let puMults = {
 		return player.timeShards.add(1).pow(0.1)
 	},
 	31: function() {
-		return Decimal.pow(10, player.galacticSacrifice.times + 10).min(1e15)
+		return pow10(player.galacticSacrifice.times + 10).min(1e15)
 	},
 	32: function() {
 		return getInfinityPowerEffect()
@@ -179,7 +179,7 @@ let puCosts = {
 		return Math.pow(4, l + 4)
 	},
 	14: function(l) {
-		return Decimal.pow(3,Math.pow(2, l) - 1)
+		return E_pow(3,Math.pow(2, l) - 1)
 	},
 	21: 256,
 	22: 8,
@@ -218,7 +218,7 @@ function getPUCost(x,r,l) {
 }
 
 function hasPU(x,r,nq) {
-	let e = player.pSac != undefined && !(nq && player.aarexModifications.quickReset)
+	let e = player.pSac != undefined && !(nq && aarMod.quickReset)
 	if (r) return (e && player.pSac.rebuyables[x]) || 0
 	return e && player.pSac.upgs.includes(x)
 }
@@ -258,7 +258,7 @@ function updatePUCosts() {
 
 //p21
 function reduceMatter(x) {
-	if (hasPU(21, false, true)) player.matter = player.matter.div(Decimal.pow(1.01, x))
+	if (hasPU(21, false, true)) player.matter = player.matter.div(E_pow(1.01, x))
 }
 
 //Paradox Challenges
@@ -291,12 +291,12 @@ function maxPDs() {
 		if (ps.px.gte(c)) {
 			var m = pdCostMults[d]
 			var tb = Math.floor(ps.px.div(c).times(m - 1).add(1).log(m))
-			var ts = Decimal.pow(m,tb).sub(1).div(m - 1).times(c)
+			var ts = E_pow(m,tb).sub(1).div(m - 1).times(c)
 			ps.px = ps.px.sub(ts.min(ps.px)).round()
 			ps.dims[d].bought += tb
 			ps.dims[d].amount = ps.dims[d].amount.add(tb)
-			ps.dims[d].cost = ps.dims[d].cost.times(Decimal.pow(m, tb))
-			ps.dims[d].power = ps.dims[d].power.times(Decimal.pow(2, tb))
+			ps.dims[d].cost = ps.dims[d].cost.times(E_pow(m, tb))
+			ps.dims[d].power = ps.dims[d].power.times(pow2(tb))
 			upd=true
 		}
 	}
@@ -330,7 +330,7 @@ function getPDDesc(d) {
 function getPDRate(d) {
 	let toGain = getPDProduction(d + 2).div(getEC12Mult())
 	var current = player.pSac.dims[d].amount.max(1)
-	if (player.aarexModifications.logRateChange) {
+	if (aarMod.logRateChange) {
 		var change = current.add(toGain.div(10)).log10()-current.log10()
 		if (change < 0 || isNaN(change)) change = 0
 	} else var change = toGain.times(10).dividedBy(current)
@@ -339,10 +339,10 @@ function getPDRate(d) {
 
 function resetPDs(full) {
 	if (full) player.pSac.dims={}
-	player.pSac.dims.power = new Decimal(0)
+	player.pSac.dims.power = E(0)
 	player.pSac.dims.extraTime = 0
-	if (full) for (var d = 1; d < 9; d++) player.pSac.dims[d] = {cost: new Decimal(pdBaseCosts[d]), bought: 0, power: new Decimal(1)}
-	for (var d = 1; d < 9; d++) player.pSac.dims[d].amount = new Decimal(player.pSac.dims[d].bought)
+	if (full) for (var d = 1; d < 9; d++) player.pSac.dims[d] = {cost: E(pdBaseCosts[d]), bought: 0, power: E(1)}
+	for (var d = 1; d < 9; d++) player.pSac.dims[d].amount = E(player.pSac.dims[d].bought)
 }
 
 function getExtraTime() {
@@ -352,8 +352,8 @@ function getExtraTime() {
 
 //Paradox Layer Reset
 function resetPSac() {
-	if (player.aarexModifications.ngmX > 4) {
-		PXminpeak = new Decimal(0)
+	if (aarMod.ngmX > 4) {
+		PXminpeak = E(0)
 		let keepPU
 		player.pSac = {
 			time: 0,
@@ -361,7 +361,7 @@ function resetPSac() {
 			normalTimes: 0,
 			forcedTimes: 0,
 			lostResets: (player.pSac && player.pSac.lostResets) || 0,
-			px: new Decimal(0),
+			px: E(0),
 			upgs: keepPU ? player.pSac.upgs : [],
 			rebuyables: keepPU ? player.pSac.rebuyables : {}
 		}
@@ -373,10 +373,10 @@ function resetPSac() {
 
 //v0.51
 function haveExtraTime() {
-	return player.pSac !== undefined && !player.aarexModifications.quickReset
+	return player.pSac !== undefined && !aarMod.quickReset
 }
 
 function quickMReset() {
-	player.aarexModifications.quickReset = !player.aarexModifications.quickReset
-	document.getElementById("quickMReset").textContent = "Quick matter reset: O" + (player.aarexModifications.quickReset ? "N" : "FF")
+	aarMod.quickReset = !aarMod.quickReset
+	document.getElementById("quickMReset").textContent = "Quick matter reset: O" + (aarMod.quickReset ? "N" : "FF")
 }

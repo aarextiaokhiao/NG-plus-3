@@ -1,7 +1,7 @@
 function getDTMultPostBRU11(){
-	let gain = new Decimal(1)
+	let gain = E(1)
 	if (player.achievements.includes("ng3p11") && !tmp.ngp3l) gain = gain.times(Math.max(player.galaxies / 600 + 0.5, 1))
-	if (player.achievements.includes("ng3p41") && !tmp.ngp3l) gain = gain.times(Decimal.pow(4,Math.sqrt(player.quantum.nanofield.rewards)))
+	if (player.achievements.includes("ng3p41") && !tmp.ngp3l) gain = gain.times(E_pow(4,Math.sqrt(nfSave.rewards)))
 	if (player.masterystudies.includes("t263")) gain = gain.times(getMTSMult(263))
 	if (player.masterystudies.includes("t281")) gain = gain.times(getMTSMult(281))
 	gain = gain.times(tmp.qcRewards[1])
@@ -9,7 +9,7 @@ function getDTMultPostBRU11(){
 	if (player.masterystudies.includes("t341")) gain = gain.times(getMTSMult(341))
 	gain = gain.times(getTreeUpgradeEffect(7))
 	gain = gain.times(colorBoosts.b)
-	if (GUBought("br2")) gain = gain.times(Decimal.pow(2.2, Math.pow(tmp.sacPow.max(1).log10()/1e6, 0.25)))
+	if (GUBought("br2")) gain = gain.times(E_pow(2.2, Math.pow(tmp.sacPow.max(1).log10()/1e6, 0.25)))
 	if (player.achievements.includes("r137") && !tmp.ngp3l) gain = gain.times(Math.max((player.replicanti.amount.log10()-2e4)/8e3+1,1))
 	return gain
 }
@@ -28,7 +28,7 @@ function getBaseDTProduction(){
 
 	if (player.dilation.upgrades.includes('ngpp6')) gain = gain.times(getDil17Bonus())
 	if (player.dilation.upgrades.includes('ngusp3')) gain = gain.times(getD22Bonus())
-	if (tmp.ngp3 && (!tmp.qu.bigRip.active || tmp.qu.bigRip.upgrades.includes(11))) {
+	if (tmp.ngp3 && (!brSave.active || brSave.upgrades.includes(11))) {
 		gain = gain.times(getDTMultPostBRU11())
 	}
 	if (hasBosonicUpg(15)) gain = gain.times(tmp.blu[15].dt)
@@ -43,29 +43,29 @@ function getDilTimeGainPerSecond() {
 	
 	var lgain = gain.log10()
 	if (!tmp.ngp3l) lgain = softcap(lgain, "dt_log")
-	gain = Decimal.pow(10, lgain)
+	gain = pow10(lgain)
 
-	if (tmp.ngp3) if (player.ghostify.breakDilation.break) gain = gain.div(tmp.bd.crEff)
+	if (tmp.ngp3) if (ghSave.breakDilation.break) gain = gain.div(tmp.bd.crEff)
 	
-	return gain.times(Decimal.pow(2, getDilUpgPower(1)))	
+	return gain.times(pow2(getDilUpgPower(1)))	
 }
 
 function getDTGainExp(){
 	let exp = GUBought("br3") ? 1.1 : 1
-	if (ghostified && player.ghostify.ghostlyPhotons.unl) exp *= tmp.le[0]
+	if (ghostified && ghSave.ghostlyPhotons.unl) exp *= tmp.le[0]
 	return exp
 }
 
 function getEternitiesAndDTBoostExp() {
 	let exp = 0
-	if (player.dilation.upgrades.includes('ngpp2')) exp += player.aarexModifications.ngudpV ? .2 : .1
+	if (player.dilation.upgrades.includes('ngpp2')) exp += aarMod.ngudpV ? .2 : .1
 	if (player.dilation.upgrades.includes('ngud2')) exp += .1
 	if (player.dilation.upgrades.includes('ngmm3')) exp += .1
 	return exp
 }
 
 function getDilPower() {
-	var ret = Decimal.pow(getDil3Power(), getDilUpgPower(3))
+	var ret = E_pow(getDil3Power(), getDilUpgPower(3))
 	if (NGP3andVanillaCheck()) {
 		if (player.achievements.includes("r132")) ret = ret.times(Math.max(Math.pow(player.galaxies, 0.04), 1))
 	}
@@ -83,14 +83,14 @@ function getDilPower() {
 
 function getDilUpgPower(x) {
 	let r = player.dilation.rebuyables[x] || 0
-	if (player.aarexModifications.nguspV) r += exDilationUpgradeStrength(x)
-	else if (player.exdilation != undefined && !player.aarexModifications.ngudpV) r *= exDilationUpgradeStrength(x)
+	if (aarMod.nguspV) r += exDilationUpgradeStrength(x)
+	else if (player.exdilation != undefined && !aarMod.ngudpV) r *= exDilationUpgradeStrength(x)
 	return r
 }
 
 function getDil3Power() {
 	let ret = 3
-	if (player.aarexModifications.nguspV) ret += getDilUpgPower(4) / 2
+	if (aarMod.nguspV) ret += getDilUpgPower(4) / 2
 	return ret
 }
 
@@ -100,11 +100,11 @@ function getDilationTPFormulaExp(disable){
 
 function getDilExp(disable) {
 	let ret = 1.5
-	if (player.aarexModifications.newGameExpVersion) ret += .001
-	if (player.meta !== undefined && !player.aarexModifications.nguspV) ret += getDilUpgPower(4) / 4
+	if (aarMod.newGameExpVersion) ret += .001
+	if (player.meta !== undefined && !aarMod.nguspV) ret += getDilUpgPower(4) / 4
 	if (tmp.ngp3) {
-		if ((!tmp.qu.bigRip.active || tmp.qu.bigRip.upgrades.includes(11)) && player.masterystudies.includes("d13") && disable != "TU3") ret += getTreeUpgradeEffect(2)
-		if (ghostified && player.ghostify.neutrinos.boosts && disable != "neutrinos") ret += tmp.nb[1]
+		if ((!brSave.active || brSave.upgrades.includes(11)) && player.masterystudies.includes("d13") && disable != "TU3") ret += getTreeUpgradeEffect(2)
+		if (ghostified && ghSave.neutrinos.boosts && disable != "neutrinos") ret += tmp.nb[1]
 	}
 	return ret
 }
@@ -119,24 +119,24 @@ function getTotalTachyonParticleGain(){
 
 function getDilGain() {
 	if (inQCModifier("ad") || player.money.lt(10)) {
-		return new Decimal(0)
+		return E(0)
 	}
 	var log = Math.log10(player.money.log10() / 400) * getDilExp() + getDilPower().log10()
-	if (tmp.ngp3) if (!tmp.be && player.quantum.bigRip.active) {
+	if (tmp.ngp3) if (!tmp.be && brSave.active) {
 		if (log > 100) log = Math.sqrt(100 * log)
 	}
-	return Decimal.pow(10, log)
+	return pow10(log)
 }
 
 
 function getReqForTPGain() {
 	let tplog = player.dilation.totalTachyonParticles.log10()
-	if (tplog > 100 && !tmp.be && player.quantum.bigRip.active) tplog = Math.pow(tplog, 2) / 100
-	return Decimal.pow(10, Decimal.pow(10, tplog).div(getDilPower()).pow(1 / getDilExp()).toNumber() * 400)
+	if (tplog > 100 && !tmp.be && brSave.active) tplog = Math.pow(tplog, 2) / 100
+	return pow10(pow10(tplog).div(getDilPower()).pow(1 / getDilExp()).toNumber() * 400)
 }
 
 function getNGUDTGain(){
-	var gain = new Decimal(1)
+	var gain = E(1)
 	gain = gain.times(getBlackholePowerEffect())
 	if (player.eternityUpgrades.includes(7)) gain = gain.times(1 + Math.log10(Math.max(1, player.money.log(10))) / 40)
 	if (player.eternityUpgrades.includes(8)) gain = gain.times(1 + Math.log10(Math.max(1, player.infinityPoints.log(10))) / 20)
@@ -149,11 +149,11 @@ function getDilatedTimeGainPerSecond(){
 }
 
 function getEternityBoostToDT(){
-	var gain = new Decimal(1)
+	var gain = E(1)
 	let eterExp = getEternitiesAndDTBoostExp()
 	if (eterExp > 0) gain = gain.times(Decimal.max(getEternitied(), 1).pow(eterExp))
-	if (player.dilation.upgrades.includes('ngpp2') && player.aarexModifications.newGameExpVersion) {
-		let e = new Decimal(getEternitied())
+	if (player.dilation.upgrades.includes('ngpp2') && aarMod.newGameExpVersion) {
+		let e = E(getEternitied())
 		gain = gain.times(e.max(10).log10()).times(Math.pow(e.max(1e7).log10()-6,3))
 		if (e.gt(5e14)) gain = gain.times(Math.sqrt(e.log10())) // this comes into play at the grind right before quantum
 	}
@@ -166,8 +166,8 @@ function dilates(x, m) {
 	let a = false
 	if (player.dilation.active && m != 2 && (m != "meta" || !player.achievements.includes("ng3p63") || !inQC(0))) {
 		e *= dilationPowerStrength()
-		if (player.aarexModifications.newGameMult) e = 0.9 + Math.min((player.dilation.dilatedTime.add(1).log10()) / 1000, 0.05)
-		if (player.exdilation != undefined && !player.aarexModifications.ngudpV && !player.aarexModifications.nguspV) e += exDilationBenefit() * (1-e)
+		if (aarMod.newGameMult) e = 0.9 + Math.min((player.dilation.dilatedTime.add(1).log10()) / 1000, 0.05)
+		if (player.exdilation != undefined && !aarMod.ngudpV && !aarMod.nguspV) e += exDilationBenefit() * (1-e)
 		if (player.dilation.upgrades.includes(9)) e *= 1.05
 		if (player.dilation.rebuyables[5]) e += 0.0025 * (1 - 1 / Math.pow(player.dilation.rebuyables[5] + 1 , 1 / 3))
 		a = true
@@ -179,7 +179,7 @@ function dilates(x, m) {
 	if (a) {
 		if (m != "tick") x = x.max(1)
 		else if (player.galacticSacrifice == undefined) x = x.times(1e3)
-		if (x.gt(10) || !(player.aarexModifications.ngmX > 3)) x = Decimal.pow(10, Math.pow(x.log10(), e))
+		if (x.gt(10) || !(aarMod.ngmX > 3)) x = pow10(Math.pow(x.log10(), e))
 		if (m == "tick" && player.galacticSacrifice == undefined) x = x.div(1e3)
 		if (m == "tick" && x.lt(1)) x = Decimal.div(1, x)
 	}
@@ -188,7 +188,7 @@ function dilates(x, m) {
 
 function dilationPowerStrength() {
 	let pow = 0.75
-	if (player.aarexModifications.ngmX>3) pow = 0.7
+	if (aarMod.ngmX>3) pow = 0.7
 	return pow;
 }
 
@@ -323,11 +323,11 @@ function isDilUpgUnlocked(id) {
 	}
 	if (id.split("ngud")[1]) {
 		let r = player.exdilation !== undefined
-		if (id == "ngud2") r = r && player.aarexModifications.nguspV === undefined
+		if (id == "ngud2") r = r && aarMod.nguspV === undefined
 		return r
 	}
 	if (id.split("ngusp")[1]) {
-		let r = player.aarexModifications.nguspV !== undefined
+		let r = aarMod.nguspV !== undefined
 		if (id != "ngusp1") r = r && player.dilation.studies.includes(6)
 		return r
 	}
@@ -341,7 +341,7 @@ function getDilUpgCost(id) {
 	let ngpp = id.split("ngpp")[1]
 	if (ngpp) {
 		ngpp = parseInt(ngpp)
-		if (ngpp >= 3 && player.aarexModifications.nguspV !== undefined) cost = DIL_UPG_COSTS[id + "_usp"]
+		if (ngpp >= 3 && aarMod.nguspV !== undefined) cost = DIL_UPG_COSTS[id + "_usp"]
 	}
 	return cost
 }
@@ -350,13 +350,13 @@ function getRebuyableDilUpgCost(id) {
 	var costGroup = DIL_UPG_COSTS["r"+id]
 	if (id == 4 && player.galacticSacrifice !== undefined && !tmp.ngp3l) costGroup = DIL_UPG_COSTS.r4_ngmm
 	var amount = player.dilation.rebuyables[id] || 0
-	let cost = new Decimal(costGroup[0]).times(Decimal.pow(costGroup[1],amount))
-	if (player.aarexModifications.nguspV) {
+	let cost = E(costGroup[0]).times(E_pow(costGroup[1],amount))
+	if (aarMod.nguspV) {
 		if (id > 3) cost = cost.times(1e7)
-		if (id > 2 && cost.gte(1e25)) cost = Decimal.pow(10, Math.pow(cost.log10() / 2.5 - 5, 2))
+		if (id > 2 && cost.gte(1e25)) cost = pow10(Math.pow(cost.log10() / 2.5 - 5, 2))
 	} else if (id > 2) {
-		if (player.meta != undefined && amount >= costGroup[2]) return cost.times(Decimal.pow(costGroup[1], (amount - costGroup[2] + 1) * (amount - costGroup[2] + 2)/4))
-		if (player.exdilation != undefined && !player.aarexModifications.ngudpV && cost.gt(1e30)) cost = cost.div(1e30).pow(cost.log(1e30)).times(1e30)
+		if (player.meta != undefined && amount >= costGroup[2]) return cost.times(E_pow(costGroup[1], (amount - costGroup[2] + 1) * (amount - costGroup[2] + 2)/4))
+		if (player.exdilation != undefined && !aarMod.ngudpV && cost.gt(1e30)) cost = cost.div(1e30).pow(cost.log(1e30)).times(1e30)
 	}
 	return cost
 }
@@ -377,7 +377,7 @@ function buyDilationUpgrade(pos, max, isId) {
 		player.dilation.rebuyables[id[1]] = (player.dilation.rebuyables[id[1]] || 0) + 1
 		
 		if (id[1] == 2) {
-			if (speedrunMilestonesReached < 22) player.dilation.dilatedTime = new Decimal(0)
+			if (speedrunMilestonesReached < 22) player.dilation.dilatedTime = E(0)
 			resetDilationGalaxies()
 		}
 		if (id[1] >= 3) player.eternityBuyer.tpUpgraded = true
@@ -387,12 +387,12 @@ function buyDilationUpgrade(pos, max, isId) {
 
 		player.dilation.dilatedTime = player.dilation.dilatedTime.sub(cost)
 		player.dilation.upgrades.push(id)
-		if (player.aarexModifications.nguspV !== undefined && !player.dilation.autoUpgrades.includes(id)) player.dilation.autoUpgrades.push(id)
+		if (aarMod.nguspV !== undefined && !player.dilation.autoUpgrades.includes(id)) player.dilation.autoUpgrades.push(id)
 		if (id == 4 || id == "ngmm1") player.dilation.freeGalaxies *= 2 // Double the current galaxies
-		if (id == 10 && tmp.ngp3) tmp.qu.wasted = false
+		if (id == 10 && tmp.ngp3) quSave.wasted = false
 		if (id == "ngpp3" && tmp.ngp3) {
 			updateMilestones()
-			if (getEternitied() >= 1e9) player.dbPower = new Decimal(getDimensionBoostPower())
+			if (getEternitied() >= 1e9) player.dbPower = E(getDimensionBoostPower())
 		}
 		if (id == "ngpp6" && tmp.ngp3) {
 			document.getElementById("masterystudyunlock").style.display=""
@@ -411,9 +411,9 @@ function buyDilationUpgrade(pos, max, isId) {
 }
 
 function getPassiveTTGen() {
-	if (player.dilation.tachyonParticles.plus(player.dilation.bestTP).gt(Decimal.pow(10, 3333))) return 1e202
+	if (player.dilation.tachyonParticles.plus(player.dilation.bestTP).gt(pow10(3333))) return 1e202
 	let r = getTTGenPart(player.dilation.tachyonParticles)
-	if (player.achievements.includes("ng3p18") && !tmp.qu.bigRip.active) r += getTTGenPart(player.dilation.bestTP) / 50
+	if (player.achievements.includes("ng3p18") && !brSave.active) r += getTTGenPart(player.dilation.bestTP) / 50
 	if (tmp.ngex) r *= .8
 	r /= (player.achievements.includes("ng3p51") ? 200 : 2e4)
 	if (isLEBoostUnlocked(6)) r *= tmp.leBonus[6]
@@ -421,13 +421,13 @@ function getPassiveTTGen() {
 }
 
 function getTTGenPart(x) {
-	if (!x) return new Decimal(0)
+	if (!x) return E(0)
 	if (NGP3andVanillaCheck()) {
 		if (player.achievements.includes("r137") && player.dilation.active) x = x.times(2)
 	}
 	if (tmp.ngp3) {
 		x = x.max(1).log10()
-		let y = player.aarexModifications.ngudpV && !player.aarexModifications.nguepV ? 73 : 80
+		let y = aarMod.ngudpV && !aarMod.nguepV ? 73 : 80
 		if (x > y) x = Math.sqrt((x - y + 5) * 5) + y - 5
 		x = Math.pow(10, x)
 	}
@@ -482,7 +482,7 @@ function updateDilationUpgradeCost(pos, id) {
 		else r = shortenCosts(r)
 		document.getElementById("dil" + pos + "cost").textContent = "Cost: " + r + " dilated time"
 	}
-	if (id == "ngud1") document.getElementById("dil61oom").textContent = shortenCosts(new Decimal("1e1000"))
+	if (id == "ngud1") document.getElementById("dil61oom").textContent = shortenCosts(E("1e1000"))
 }
 
 function updateDilationUpgradeCosts() {
@@ -501,7 +501,7 @@ function getFreeGalaxyThresholdIncrease(){
 		else if (thresholdMult < 1.15) thresholdMult = 1.05 + 0.1 / (2.15 - thresholdMult)
 	}
 	if (player.exdilation != undefined) thresholdMult -= Math.min(.1 * exDilationUpgradeStrength(2), 0.2)
-	if (thresholdMult < 1.15 && player.aarexModifications.nguspV !== undefined) thresholdMult = 1.05 + 0.1 / (2.15 - thresholdMult)
+	if (thresholdMult < 1.15 && aarMod.nguspV !== undefined) thresholdMult = 1.05 + 0.1 / (2.15 - thresholdMult)
 	return thresholdMult
 }
 
@@ -513,20 +513,20 @@ function gainDilationGalaxies() {
 	if (baseGain < 0) baseGain = 0
 	let old = Math.round(player.dilation.freeGalaxies / galaxyMult)
 	player.dilation.freeGalaxies = Math.max(baseGain, old) * galaxyMult
-	player.dilation.nextThreshold = Decimal.pow(thresholdMult, baseGain).times(getFreeGalaxyThresholdStart())
+	player.dilation.nextThreshold = E_pow(thresholdMult, baseGain).times(getFreeGalaxyThresholdStart())
 }
 
 function getFreeGalaxyGainMult() {
 	let galaxyMult = player.dilation.upgrades.includes(4) ? 2 : 1
 	if (player.dilation.upgrades.includes("ngmm1")) galaxyMult *= 2
-	if (player.aarexModifications.ngudpV && !player.aarexModifications.nguepV) galaxyMult /= 1.5
+	if (aarMod.ngudpV && !aarMod.nguepV) galaxyMult /= 1.5
 	galaxyMult *= tmp.qcRewards[2]
 	if (isNanoEffectUsed("dil_gal_gain")) galaxyMult *= tmp.nf.effects.dil_gal_gain
 	return galaxyMult
 }
 
 function getFreeGalaxyThresholdStart(){
-	return new Decimal(1000)
+	return E(1000)
 }
 
 function resetDilationGalaxies() {
@@ -542,7 +542,7 @@ function startDilatedEternity(auto, shortcut) {
 	if (!player.dilation.studies.includes(1)) return
 	failsafeDilateTime = true
 	var onActive = player.dilation.active
-	if (!onActive && player.aarexModifications.dilationConf && !auto) if (!confirm("Dilating time will start a new Eternity where all of your Normal/Infinity/Time Dimension multiplier's exponents and the Tickspeed multiplier's exponent will be reduced to ^ 0.75. If you can Eternity while dilated, you'll be rewarded with tachyon particles based on your antimatter and tachyon particles.")) return
+	if (!onActive && aarMod.dilationConf && !auto) if (!confirm("Dilating time will start a new Eternity where all of your Normal/Infinity/Time Dimension multiplier's exponents and the Tickspeed multiplier's exponent will be reduced to ^ 0.75. If you can Eternity while dilated, you'll be rewarded with tachyon particles based on your antimatter and tachyon particles.")) return
 	if (tmp.ngp3) {
 		if (onActive) player.eternityBuyer.statBeforeDilation++
 		else player.eternityBuyer.statBeforeDilation = 0

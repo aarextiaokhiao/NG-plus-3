@@ -1,5 +1,5 @@
 function canBreakInfinity() {
-	if (player.aarexModifications.ngexV) return player.challenges.length >= getTotalNormalChallenges() + 1
+	if (aarMod.ngexV) return player.challenges.length >= getTotalNormalChallenges() + 1
 	return player.autobuyers[11] % 1 != 0 && player.autobuyers[11].interval <= 100
 }
 
@@ -37,22 +37,22 @@ function gainedInfinityPoints(next) {
 	else if (player.achievements.includes("r103")) div = 307.8;
 	if (player.galacticSacrifice && player.tickspeedBoosts == undefined) div -= galIP()
 
-	if (player.infinityUpgradesRespecced == undefined) var ret = Decimal.pow(10, player.money.e / div - 0.75).times(getIPMult())
+	if (player.infinityUpgradesRespecced == undefined) var ret = pow10(player.money.e / div - 0.75).times(getIPMult())
 	else var ret = player.money.div(Number.MAX_VALUE).pow(2 * (1 - Math.log10(2)) / Decimal.log10(Number.MAX_VALUE)).times(getIPMult())
-	if (player.timestudy.studies.includes(41)) ret = ret.times(Decimal.pow(tsMults[41](), player.galaxies + player.replicanti.galaxies))
-	if (player.timestudy.studies.includes(51)) ret = ret.times(player.aarexModifications.newGameExpVersion?1e30:1e15)
-	if (player.timestudy.studies.includes(141)) ret = ret.times(new Decimal(1e45).dividedBy(Decimal.pow(15, Math.log(player.thisInfinityTime+1)*Math.pow(player.thisInfinityTime+1, 0.125))).max(1))
+	if (player.timestudy.studies.includes(41)) ret = ret.times(E_pow(tsMults[41](), player.galaxies + player.replicanti.galaxies))
+	if (player.timestudy.studies.includes(51)) ret = ret.times(aarMod.newGameExpVersion?1e30:1e15)
+	if (player.timestudy.studies.includes(141)) ret = ret.times(E(1e45).dividedBy(E_pow(15, Math.log(player.thisInfinityTime+1)*Math.pow(player.thisInfinityTime+1, 0.125))).max(1))
 	if (player.timestudy.studies.includes(142)) ret = ret.times(1e25)
-	if (player.timestudy.studies.includes(143)) ret = ret.times(Decimal.pow(15, Math.log(player.thisInfinityTime+1)*Math.pow(player.thisInfinityTime+1, 0.125)))
+	if (player.timestudy.studies.includes(143)) ret = ret.times(E_pow(15, Math.log(player.thisInfinityTime+1)*Math.pow(player.thisInfinityTime+1, 0.125)))
 	if (player.achievements.includes("r116")) ret = ret.times(Decimal.add(getInfinitied(), 1).pow(Math.log10(2)))
-	if (player.achievements.includes("r125")) ret = ret.times(Decimal.pow(2, Math.log(player.thisInfinityTime+1)*Math.pow(player.thisInfinityTime+1, 0.11)))
+	if (player.achievements.includes("r125")) ret = ret.times(pow2(Math.log(player.thisInfinityTime+1)*Math.pow(player.thisInfinityTime+1, 0.11)))
 	if (player.dilation.upgrades.includes(7)) ret = ret.times(player.dilation.dilatedTime.max(1).pow(1000))
 	if (player.boughtDims) {
-		ret = ret.times(Decimal.pow(Math.max(1e4/player.thisInfinityTime),player.timestudy.ers_studies[5]+(next==5?1:0)))
-		ret = ret.times(Decimal.pow(player.thisInfinityTime/10,player.timestudy.ers_studies[6]+(next==6?1:0)))
+		ret = ret.times(E_pow(Math.max(1e4/player.thisInfinityTime),player.timestudy.ers_studies[5]+(next==5?1:0)))
+		ret = ret.times(E_pow(player.thisInfinityTime/10,player.timestudy.ers_studies[6]+(next==6?1:0)))
 	}
 	if (isBigRipUpgradeActive(4)) ret = ret.times(player.replicanti.amount.pow(0.34).max(1))
-	if (player.tickspeedBoosts != undefined && player.achievements.includes("r95") && player.eightAmount > 5000) ret = ret.times(Decimal.pow(player.eightAmount, 2))
+	if (player.tickspeedBoosts != undefined && player.achievements.includes("r95") && player.eightAmount > 5000) ret = ret.times(E_pow(player.eightAmount, 2))
 	return ret.floor()
 }
 
@@ -67,8 +67,8 @@ function getIPMult() {
 		if (player.achievements.includes("r51")) {
 			let galaxies = Math.max((player.galaxies + player.replicanti.galaxies + player.dilation.freeGalaxies), 0) // just in case
 			if (galaxies < 5) mult = mult.times(Math.max(galaxies, 1))
-			else if (galaxies < 50) mult = mult.times(Decimal.pow(galaxies + 5, 0.5).plus(2))
-			else mult = mult.times(Decimal.pow(galaxies, 0.3).plus(7))
+			else if (galaxies < 50) mult = mult.times(E_pow(galaxies + 5, 0.5).plus(2))
+			else mult = mult.times(E_pow(galaxies, 0.3).plus(7))
 		}
 	}
 	return mult;
@@ -94,19 +94,19 @@ function toggleCrunchMode(freeze) {
 		document.getElementById("limittext").textContent = "Amount of IP to wait until reset:"
 		document.getElementById("maxReplicantiCrunchSwitchDiv").style.display = 'none'
 		if (!freeze&&player.autobuyers[11].priority.toString().toLowerCase()=="max") {
-			player.autobuyers[11].priority = new Decimal(1)
+			player.autobuyers[11].priority = E(1)
 			document.getElementById("priority12").value=1
 		}
 	}
 }
 
-var bestRunIppm = new Decimal(0)
+var bestRunIppm = E(0)
 function updateLastTenRuns() {
 	var listed = 0
 	var tempBest = 0
-	var tempTime = new Decimal(0)
-	var tempIP = new Decimal(0)
-	bestRunIppm = new Decimal(0)
+	var tempTime = E(0)
+	var tempIP = E(0)
+	bestRunIppm = E(0)
 	for (var i=0; i<10; i++) {
 		if (player.lastTenRuns[i][1].gt(0)) {
 			var ippm = player.lastTenRuns[i][1].dividedBy(player.lastTenRuns[i][0]/600)
@@ -148,7 +148,7 @@ function startChallenge(name) {
 	if (name.includes("post")) {
 		if (player.postChallUnlocked < checkICID(name)) return
 		var target = getGoal(name)
-	} else var target = new Decimal(Number.MAX_VALUE)
+	} else var target = E(Number.MAX_VALUE)
 	if (player.options.challConf && name != "") if (!confirm("You will start over with just your Infinity upgrades, and achievements. You need to reach " + (name.includes("post") ? "a set goal" : "infinity") + " with special conditions. The 4th Infinity upgrade column doesn't work on challenges.")) return
 	if (player.tickspeedBoosts != undefined) player.tickspeedBoosts = 0
 	if (name == "postc1" && player.currentEternityChall != "" && inQC(4) && inQC(6)) giveAchievement("The Ultimate Challenge")
@@ -162,29 +162,29 @@ function startChallenge(name) {
 	resetPSac()
 	resetTDs()
 	reduceDimCosts()
-	if (player.currentChallenge == "postc1") player.costMultipliers = [new Decimal(1e3), new Decimal(5e3), new Decimal(1e4), new Decimal(1.2e4), new Decimal(1.8e4), new Decimal(2.6e4), new Decimal(3.2e4), new Decimal(4.2e4)];
+	if (player.currentChallenge == "postc1") player.costMultipliers = [E(1e3), E(5e3), E(1e4), E(1.2e4), E(1.8e4), E(2.6e4), E(3.2e4), E(4.2e4)];
 	if (player.currentChallenge == "postc2") {
-		player.eightAmount = new Decimal(1);
+		player.eightAmount = E(1);
 		player.eightBought = 1;
 		player.resets = 4;
 	}
 	updateNCVisuals()
 	
 	if (player.infinityUpgradesRespecced != undefined) {
-		player.singularity.darkMatter = new Decimal(0)
+		player.singularity.darkMatter = E(0)
 		player.dimtechs.discounts = 0
 	}
 	updateSingularity()
 	updateDimTechs()
 	
-	if (player.replicanti.unl) player.replicanti.amount = new Decimal(1)
+	if (player.replicanti.unl) player.replicanti.amount = E(1)
 	player.replicanti.galaxies = 0
 
 	// even if we're in a challenge, apparently if it's challenge 2 we might have four resets anyway.
 	setInitialDimensionPower();
 
-	GPminpeak = new Decimal(0)
-	IPminpeak = new Decimal(0)
+	GPminpeak = E(0)
+	IPminpeak = E(0)
 	if (player.currentChallenge.includes("post")) {
 		player.break = true
 		document.getElementById("break").innerHTML = "FIX INFINITY"
@@ -192,7 +192,7 @@ function startChallenge(name) {
 	if (player.achievements.includes("r36")) player.tickspeed = player.tickspeed.times(0.98);
 	if (player.achievements.includes("r45")) player.tickspeed = player.tickspeed.times(0.98);
 	if (player.achievements.includes("r66")) player.tickspeed = player.tickspeed.times(0.98);
-	if (player.achievements.includes("r83")) player.tickspeed = player.tickspeed.times(Decimal.pow(0.95, player.galaxies));
+	if (player.achievements.includes("r83")) player.tickspeed = player.tickspeed.times(E_pow(0.95, player.galaxies));
 
 	showTab('dimensions')
 	updateChallenges()
@@ -212,18 +212,18 @@ function startNormalChallenge(x) {
 		if (player.infinitied < 1 && player.eternities < 1 && !quantumed) return
 		startChallenge("challenge7", Number.MAX_VALUE)
 	}
-	if (player.aarexModifications.ngmX > 3) galacticSacrifice(false, true, x)
+	if (aarMod.ngmX > 3) galacticSacrifice(false, true, x)
 	else startChallenge("challenge" + x, Number.MAX_VALUE)
 }
 
 function inNC(x, n) {
 	if (x == 6) {
-		if (n == 1 && player.aarexModifications.ngexV && (player.currentChallenge == "" || player.currentChallenge.indexOf("postc") == 0) && player.currentChallenge != "postc1") return true
-		if (n == 1 && player.aarexModifications.ngexV && player.currentChallenge == "challenge6") return false
-		if (n == 2 && !player.aarexModifications.ngexV) return false
+		if (n == 1 && aarMod.ngexV && (player.currentChallenge == "" || player.currentChallenge.indexOf("postc") == 0) && player.currentChallenge != "postc1") return true
+		if (n == 1 && aarMod.ngexV && player.currentChallenge == "challenge6") return false
+		if (n == 2 && !aarMod.ngexV) return false
 	}
-	if (x == 0) return player.currentChallenge == "" && (!(player.aarexModifications.ngmX > 3) || !player.galacticSacrifice.chall) && inPxC(0)
-	return player.currentChallenge == "challenge" + x || (player.aarexModifications.ngmX > 3 && player.galacticSacrifice.chall == x) || inPxC(x)
+	if (x == 0) return player.currentChallenge == "" && (!(aarMod.ngmX > 3) || !player.galacticSacrifice.chall) && inPxC(0)
+	return player.currentChallenge == "challenge" + x || (aarMod.ngmX > 3 && player.galacticSacrifice.chall == x) || inPxC(x)
 }
 
 function getTotalNormalChallenges() {
@@ -231,7 +231,7 @@ function getTotalNormalChallenges() {
 	if (player.galacticSacrifice) x += 2
 	else if (player.infinityUpgradesRespecced) x++
 	if (player.tickspeedBoosts != undefined) x++
-	if (player.aarexModifications.ngmX > 3) x++
+	if (aarMod.ngmX > 3) x++
 	return x
 }
 
@@ -250,7 +250,7 @@ function updateNCVisuals() {
 	if (isADSCRunning()) document.getElementById("chall13Mult").style.display = "block"
 	else document.getElementById("chall13Mult").style.display = "none"
 
-	if (inNC(14) && player.aarexModifications.ngmX > 3) document.getElementById("c14Resets").style.display = "block"
+	if (inNC(14) && aarMod.ngmX > 3) document.getElementById("c14Resets").style.display = "block"
 	else document.getElementById("c14Resets").style.display = "none"
 
 	if (inNC(6, 2) || inNC(9) || inNC(12) || ((inNC(5) || inNC(14) || chall == "postc4" || chall == "postc5") && player.tickspeedBoosts == undefined) || player.pSac || chall == "postc1" || chall == "postc6" || chall == "postc8") document.getElementById("quickReset").style.display = "inline-block"

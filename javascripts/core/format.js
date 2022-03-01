@@ -166,7 +166,7 @@ function formatValue(notation, value, places, placesUnder1000, noInf) {
         }
         if (notation === "Hexadecimal" || notation === "Base-64") {
             var base = notation === "Hexadecimal" ? 16 : 64
-            value = Decimal.pow(value, 1 / Math.log10(base))
+            value = E_pow(value, 1 / Math.log10(base))
             var mantissa = Math.pow(value.m, Math.log10(base))
             var power = value.e
             if (mantissa > base - Math.pow(base, -2) / 2) {
@@ -190,7 +190,7 @@ function formatValue(notation, value, places, placesUnder1000, noInf) {
             }
         }
         if (notation === "Spazzy") {
-            value = new Decimal(value)
+            value = E(value)
             var log = value.log10()
             var sin = Math.sin(log)
             var cos = Math.cos(log)
@@ -202,7 +202,7 @@ function formatValue(notation, value, places, placesUnder1000, noInf) {
             return result
         }
         if (notation === "AF5LN") {
-            value = new Decimal(value)
+            value = E(value)
             var progress = Math.round(Math.log10(value.add(1).log10() + 1)/Math.log10(Number.MAX_VALUE) * 11881375)
             var uppercased = "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
             var result = ""
@@ -213,7 +213,7 @@ function formatValue(notation, value, places, placesUnder1000, noInf) {
             return result
         }
         if (notation === "Hyperscientific") {
-            value = new Decimal(value)
+            value = E(value)
             var e
             var f
             if (value.gt("1e10000000000")) {
@@ -308,7 +308,7 @@ function formatValue(notation, value, places, placesUnder1000, noInf) {
                 power = Decimal.log10(value)
                 prefix = "e"
             } else {
-                power = new Decimal(value).log(base)
+                power = E(value).log(base)
                 if (base >= 1e15) var prefix = formatValue("Scientific", base, 2, 0)
                 else if (base >= 1e3) var prefix = formatValue("Standard", base, 2, 0)
                 else prefix = base
@@ -353,7 +353,7 @@ function formatValue(notation, value, places, placesUnder1000, noInf) {
           else if (base >= 1e3) var prefix = formatValue("Standard", base, 2, 0)
           else var prefix = base
           while (value > 1) {
-            value = new Decimal(value).log(base)
+            value = E(value).log(base)
             count++;
           }
           return prefix + "⇈" + (value + count).toFixed(Math.max(places, 0, Math.min(count-1, 4)));
@@ -383,7 +383,7 @@ function formatValue(notation, value, places, placesUnder1000, noInf) {
         }
         places = Math.min(places, 14 - Math.floor(Math.log10(power)))
         if (places >= 0) {
-            matissa = (matissa * Decimal.pow(10, power % 3)).toFixed(places)
+            matissa = (matissa * pow10(power % 3)).toFixed(places)
             if (matissa >= 1e3) {
                 power += 3
                 places = Math.min(places, 14 - Math.floor(Math.log10(power)))
@@ -628,7 +628,7 @@ let iroha_special = 'いろはにほへとちりぬるをわかよたれそつ�
 
 function iroha (n, depth) {
   if (!break_infinity_js) if (n instanceof Decimal) n = n.toString()
-  n = new Decimal_BI(n);
+  n = E_BI(n);
   if (isNaN(n.e)) {
     return '今';
   }
@@ -677,7 +677,7 @@ shortenCosts = function (money) {
 };
 
 shortenPreInfCosts = function (money) {
-    if (money.exponent<0) return Math.round(money.mantissa) + " / " + formatValue(player.options.notation, Decimal.pow(10, -money.exponent), 0, 0)
+    if (money.exponent<0) return Math.round(money.mantissa) + " / " + formatValue(player.options.notation, pow10(-money.exponent), 0, 0)
 	return formatValue(player.options.notation, money, (money.mantissa>1&&money.exponent>308)?2:0, 0);
 };
 
@@ -694,7 +694,7 @@ shortenMoney = function (money) {
 };
 
 shortenND = function (money) {
-	return formatValue(player.options.notation, money, 2, player.aarexModifications.ngmX > 3 ? Math.min(Math.max(3 - money.exponent, 0), 3) : 0)
+	return formatValue(player.options.notation, money, 2, aarMod.ngmX > 3 ? Math.min(Math.max(3 - money.exponent, 0), 3) : 0)
 }
 
 

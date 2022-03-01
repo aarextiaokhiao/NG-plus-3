@@ -3,7 +3,7 @@ const BD_UPGS = [
         desc: "Cherenkov Radiation boost TP gain.",
         cost: E(1e5),
         eff() {
-            let c = player.ghostify.breakDilation.cr
+            let c = ghSave.breakDilation.cr
             let x = c.add(1).pow(c.add(1).log10()**0.5)
             return x
         },
@@ -20,7 +20,7 @@ const BD_UPGS = [
         desc: "Graviton will reduce Cherenkov Radiation’s effect.",
         cost: E(1e9),
         eff() {
-            let x = player.ghostify.gravitons.amount.add(1).pow(2)
+            let x = ghSave.gravitons.amount.add(1).pow(2)
             return x
         },
         effDesc(x) { return "/"+shorten(x) },
@@ -44,24 +44,24 @@ const BD_UPGS = [
 
 function breakDilation() {
     giveAchievement(allAchievements.ng3p111)
-    if (player.ghostify.breakDilation.break) {
-        player.ghostify.breakDilation.cr = E(0)
+    if (ghSave.breakDilation.break) {
+        ghSave.breakDilation.cr = E(0)
 
         fixDilationReset()
     }
-    player.ghostify.breakDilation.break = !player.ghostify.breakDilation.break
+    ghSave.breakDilation.break = !ghSave.breakDilation.break
 }
 
 function fixDilationReset() {
     ghostifyReset(false, 0, 0, true)
-    player.dilation.tachyonParticles = new Decimal(0);
-    player.dilation.bestTP = new Decimal(0);
-    player.dilation.bestTPOverGhostifies = new Decimal(0);
+    player.dilation.tachyonParticles = E(0);
+    player.dilation.bestTP = E(0);
+    player.dilation.bestTPOverGhostifies = E(0);
 }
 
 function getCRGain() {
     let x = E(0)
-    if (!player.ghostify.breakDilation.break) return x
+    if (!ghSave.breakDilation.break) return x
     x = player.dilation.tachyonParticles.max(0).root(100).div(1e12)
 
     if (hasBDUpg(1)) x = x.mul(tmp.bd.upg_eff[1])
@@ -70,19 +70,19 @@ function getCRGain() {
 
 function getCREffect() {
     let x = E(1)
-    if (!player.ghostify.breakDilation.break || tmp.qu.bigRip.active) return x
-    x = player.ghostify.breakDilation.cr.add(1).pow(10)
+    if (!ghSave.breakDilation.break || brSave.active) return x
+    x = ghSave.breakDilation.cr.add(1).pow(10)
 
     if (hasBDUpg(2)) x = x.div(tmp.bd.upg_eff[2])
     return x
 }
 
-function hasBDUpg(x) { return player.ghostify ? player.ghostify.breakDilation.upgs.includes(x) : false }
+function hasBDUpg(x) { return ghSave ? ghSave.breakDilation.upgs.includes(x) : false }
 
 function buyBDUpg(x) {
-    if (player.ghostify.breakDilation.cr.gte(BD_UPGS[x].cost) && !player.ghostify.breakDilation.upgs.includes(x)) {
-        player.ghostify.breakDilation.cr = player.ghostify.breakDilation.cr.sub(BD_UPGS[x].cost)
-        player.ghostify.breakDilation.upgs.push(x)
+    if (ghSave.breakDilation.cr.gte(BD_UPGS[x].cost) && !ghSave.breakDilation.upgs.includes(x)) {
+        ghSave.breakDilation.cr = ghSave.breakDilation.cr.sub(BD_UPGS[x].cost)
+        ghSave.breakDilation.upgs.push(x)
     }
 }
 
@@ -114,14 +114,14 @@ function updateBDTemp() {
 }
 
 function updateBDTab() {
-    document.getElementById("bdUnl").style.display = player.ghostify.breakDilation.unl ? "none" : ""
-    document.getElementById("bdUnl").textContent="To unlock Break Dilation, you need to get "+shortenCosts(Decimal.pow(10,4e12))+" antimatter while Big Ripped. (coming soon)"
-    document.getElementById("bdDiv").style.display = player.ghostify.breakDilation.unl ? "" : "none"
+    document.getElementById("bdUnl").style.display = ghSave.breakDilation.unl ? "none" : ""
+    document.getElementById("bdUnl").textContent="To unlock Break Dilation, you need to get "+shortenCosts(pow10(4e12))+" antimatter while Big Ripped. (coming soon)"
+    document.getElementById("bdDiv").style.display = ghSave.breakDilation.unl ? "" : "none"
 
-    if (player.ghostify.breakDilation.unl) {
+    if (ghSave.breakDilation.unl) {
         document.getElementById("bd_tp").textContent = shortenMoney(player.dilation.tachyonParticles)
-        document.getElementById("breakDilationBtn").textContent = (player.ghostify.breakDilation.break?"Fix":"Break")+" Dilation"
-        document.getElementById("crAmt").textContent = shorten(player.ghostify.breakDilation.cr)
+        document.getElementById("breakDilationBtn").textContent = (ghSave.breakDilation.break?"Fix":"Break")+" Dilation"
+        document.getElementById("crAmt").textContent = shorten(ghSave.breakDilation.cr)
         document.getElementById("crGain").textContent = shorten(tmp.bd.crGain)
         document.getElementById("crEff").textContent = shorten(tmp.bd.crEff)
 
@@ -132,7 +132,7 @@ function updateBDTab() {
     
             document.getElementById(name+"_div").style.visibility = unl ? "visible" : "hidden"
             if (unl) {
-                document.getElementById(name+"_div").className = "bd_btnUpg "+(player.ghostify.breakDilation.upgs.includes(x)?"upg_bought":player.ghostify.breakDilation.cr.gte(upg.cost)?"":"upg_locked")
+                document.getElementById(name+"_div").className = "bd_btnUpg "+(ghSave.breakDilation.upgs.includes(x)?"upg_bought":ghSave.breakDilation.cr.gte(upg.cost)?"":"upg_locked")
                 document.getElementById(name+"_cost").innerHTML = shorten(upg.cost)
                 if (upg.effDesc) document.getElementById(name+"_eff").innerHTML = upg.effDesc(tmp.bd.upg_eff[x])
             }

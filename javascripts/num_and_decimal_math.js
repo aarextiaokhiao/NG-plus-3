@@ -1,6 +1,6 @@
 function nP(a) {
 	if (typeof(a)=="number") return a
-	return new Decimal(a)
+	return E(a)
 }
 
 function nN(a) {

@@ -15,16 +15,16 @@ function maxAllID() {
 		var cost = getIDCost(t)
 		if (player.infDimensionsUnlocked[t - 1] && player.infinityPoints.gte(dim.cost)) {
 			var costMult = getIDCostMult(t)
-			if (player.infinityPoints.lt(Decimal.pow(10, 1e10))) {
+			if (player.infinityPoints.lt(pow10(1e10))) {
 				var toBuy = Math.max(Math.floor(player.infinityPoints.div(9 - t).div(cost).times(costMult - 1).add(1).log(costMult)), 1)
-				var toSpend = Decimal.pow(costMult, toBuy).sub(1).div(costMult-1).times(cost).round()
-				if (toSpend.gt(player.infinityPoints)) player.infinityPoints = new Decimal(0)
+				var toSpend = E_pow(costMult, toBuy).sub(1).div(costMult-1).times(cost).round()
+				if (toSpend.gt(player.infinityPoints)) player.infinityPoints = E(0)
 				else player.infinityPoints = player.infinityPoints.sub(toSpend)
 			} else var toBuy = Math.floor(player.infinityPoints.div(cost).log(costMult))
 			dim.amount = dim.amount.add(toBuy * 10)
 			dim.baseAmount += toBuy * 10
-			dim.power=dim.power.times(Decimal.pow(getInfBuy10Mult(t),toBuy))
-			dim.cost=dim.cost.times(Decimal.pow(costMult,toBuy))
+			dim.power=dim.power.times(E_pow(getInfBuy10Mult(t),toBuy))
+			dim.cost=dim.cost.times(E_pow(costMult,toBuy))
 		}
 	}
 }
@@ -55,7 +55,7 @@ function DimensionRateOfChange(tier) {
 	var toGain = DimensionProduction(tier + ((inQC(4) || player.pSac !== undefined) && tier < 8 ? 2 : 1))
 	if (player.pSac !== undefined) toGain = toGain.div(getEC12Mult())
 	var current = Decimal.max(player["infinityDimension"+tier].amount, 1);
-	if (player.aarexModifications.logRateChange) {
+	if (aarMod.logRateChange) {
 		var change = current.add(toGain.div(10)).log10()-current.log10()
 		if (change < 0 || isNaN(change)) change = 0
 	} else var change  = toGain.times(tier > 7 ? 1 : 10).dividedBy(current);
@@ -81,15 +81,15 @@ function updateInfinityDimensions() {
 }
 
 function DimensionProduction(tier) {
-	if (inQC(8)) return new Decimal(0)
+	if (inQC(8)) return E(0)
 	if (tier == 9) return getTimeDimensionProduction(1).pow(ECTimesCompleted("eterc7") * 0.2).max(1).minus(1)
 	var dim = player["infinityDimension" + tier]
 	var ret = dim.amount
 	if (inQC(4) && tier == 1) ret = ret.plus(player.infinityDimension2.amount.floor())
-	if (player.tickspeedBoosts !== undefined && player.currentChallenge == "postc2") return new Decimal(0)
+	if (player.tickspeedBoosts !== undefined && player.currentChallenge == "postc2") return E(0)
 	if (player.currentEternityChall == "eterc11") return ret
 	if (player.currentEternityChall == "eterc7") ret = dilates(ret.dividedBy(player.tickspeed.dividedBy(1000)))
-	if (player.aarexModifications.ngmX > 3) ret = ret.div(100)
+	if (aarMod.ngmX > 3) ret = ret.div(100)
 	ret = ret.times(DimensionPower(tier))
 	if (player.pSac!=undefined) ret = ret.times(player.chall2Pow)
 	if (player.challenges.includes("postc6") && !inQC(3)) return ret.times(Decimal.div(1000, dilates(player.tickspeed)).pow(0.0005))
@@ -97,7 +97,7 @@ function DimensionProduction(tier) {
 }
 
 function getTotalIDEUMult(){
-	var mult = new Decimal(1)
+	var mult = E(1)
 	if (player.eternityUpgrades.includes(1)) mult = mult.times(player.eternityPoints.plus(1))
 	if (player.eternityUpgrades.includes(2)) mult = mult.times(getEU2Mult())
 	if (player.eternityUpgrades.includes(3)) mult = mult.times(getEU3Mult())
@@ -105,11 +105,11 @@ function getTotalIDEUMult(){
 }
 
 function getInfDimPathIDMult(tier){
-	var mult = new Decimal(1)
+	var mult = E(1)
 	if (player.timestudy.studies.includes(72) && tier == 4) mult = mult.times(tmp.sacPow.pow(0.04).max(1).min("1e30000"))
-	if (player.timestudy.studies.includes(82)) mult = mult.times(Decimal.pow(1.0000109, Math.pow(player.resets, 2)).min(player.meta == undefined ? 1 / 0 : '1e80000'))
-	if (player.timestudy.studies.includes(92)) mult = mult.times(Decimal.pow(2, 600 / Math.max(player.bestEternity, 20)))
-	if (player.timestudy.studies.includes(162)) mult = mult.times(Decimal.pow(10, (player.galacticSacrifice ? 234 : 11) * (player.aarexModifications.newGameExpVersion ? 5 : 1)))
+	if (player.timestudy.studies.includes(82)) mult = mult.times(E_pow(1.0000109, Math.pow(player.resets, 2)).min(player.meta == undefined ? 1 / 0 : '1e80000'))
+	if (player.timestudy.studies.includes(92)) mult = mult.times(pow2(600 / Math.max(player.bestEternity, 20)))
+	if (player.timestudy.studies.includes(162)) mult = mult.times(pow10((player.galacticSacrifice ? 234 : 11) * (aarMod.newGameExpVersion ? 5 : 1)))
 	return mult
 }
 
@@ -119,15 +119,15 @@ function getStartingIDPower(tier){
 	if (mult.gt(1)){
 		var log = mult.log10()
 		log = softcap(log, "idbase")
-		mult = Decimal.pow(10, log)
+		mult = pow10(log)
 	}
 	return mult
 }
 
 function DimensionPower(tier) {
   	var dim = player["infinityDimension" + tier]
-  	if (player.currentEternityChall == "eterc2" || player.currentEternityChall == "eterc10" || player.currentEternityChall == "eterc13") return new Decimal(0)
-  	if (player.currentEternityChall == "eterc11") return new Decimal(1)
+  	if (player.currentEternityChall == "eterc2" || player.currentEternityChall == "eterc10" || player.currentEternityChall == "eterc13") return E(0)
+  	if (player.currentEternityChall == "eterc11") return E(1)
   	if (player.currentEternityChall == 'eterc14') return getIDReplMult()
   	if (inQC(3)) return getExtraDimensionBoostPower()
   	
@@ -149,7 +149,7 @@ function DimensionPower(tier) {
 	if (ECTimesCompleted("eterc2") !== 0 && tier == 1) mult = mult.times(getECReward(2))
   	if (ECTimesCompleted("eterc4") !== 0) mult = mult.times(getECReward(4))
 
-  	var ec9 = new Decimal(1)
+  	var ec9 = E(1)
   	if (ECTimesCompleted("eterc9") !== 0) ec9 = getECReward(9)
   	if (player.galacticSacrifice === undefined) mult = mult.times(ec9)
 
@@ -166,9 +166,9 @@ function DimensionPower(tier) {
 
 function resetInfDimensions() {
 	for (var t = 1; t < 9; t++) {
-		if (player.infDimensionsUnlocked[t - 1]) player["infinityDimension" + t].amount = new Decimal(player["infinityDimension" + t].baseAmount)
+		if (player.infDimensionsUnlocked[t - 1]) player["infinityDimension" + t].amount = E(player["infinityDimension" + t].baseAmount)
 	}
-	if (player.infDimensionsUnlocked[0]) player.infinityPower = new Decimal(0)
+	if (player.infDimensionsUnlocked[0]) player.infinityPower = E(0)
 	resetIDs_ngm5()
 }
 
@@ -196,7 +196,7 @@ function getIDCostMult(tier) {
 	if (player.infinityUpgrades.includes("postinfi53")) ret /= 50
 	if (player.galacticSacrifice.upgrades.includes(42)) ret /= 1 + 5 * Math.log10(player.eternityPoints.plus(1).log10() + 1)
 	let cap = .1
-	if (player.achPow.gte(Decimal.pow(5,11.9)) && tier > 1) {
+	if (player.achPow.gte(E_pow(5,11.9)) && tier > 1) {
 		cap = .02
 		ret /= Math.max(1, Math.log(player.totalmoney.log10())/10-.5)
 	}
@@ -218,7 +218,7 @@ function buyManyInfinityDimension(tier, auto) {
   	if (player.infinityPoints.lt(cost)) return false
   	if (!player.infDimensionsUnlocked[tier - 1]) return false
 	if (player.eterc8ids == 0) return false
-	if (player.infinityPoints.lt(Decimal.pow(10, 1e10))) player.infinityPoints = player.infinityPoints.minus(cost)
+	if (player.infinityPoints.lt(pow10(1e10))) player.infinityPoints = player.infinityPoints.minus(cost)
 	dim.amount = dim.amount.plus(10);
 	dim.cost = Decimal.round(dim.cost.times(getIDCostMult(tier)))
 	dim.power = dim.power.times(getInfBuy10Mult(tier))
@@ -227,7 +227,7 @@ function buyManyInfinityDimension(tier, auto) {
 	if (player.pSac != undefined) player.chall2Pow = 0
 	if (player.currentEternityChall == "eterc8") player.eterc8ids -= 1
 	document.getElementById("eterc8ids").textContent = "You have " + player.eterc8ids + " purchases left."
-	if (inQC(6)) player.postC8Mult = new Decimal(1)
+	if (inQC(6)) player.postC8Mult = E(1)
 	return true
 }
 
@@ -239,11 +239,11 @@ function buyMaxInfDims(tier, auto) {
 
 	var costMult = getIDCostMult(tier)
 	var toBuy = Math.floor(player.infinityPoints.div(cost).log10() / Math.log10(costMult))
-	dim.cost = dim.cost.times(Decimal.pow(costMult, toBuy-1))
-	if (player.infinityPoints.lt(Decimal.pow(10, 1e10))) player.infinityPoints = player.infinityPoints.minus(getIDCost(tier).min(player.infinityPoints))
+	dim.cost = dim.cost.times(E_pow(costMult, toBuy-1))
+	if (player.infinityPoints.lt(pow10(1e10))) player.infinityPoints = player.infinityPoints.minus(getIDCost(tier).min(player.infinityPoints))
 	dim.cost = dim.cost.times(costMult)
 	dim.amount = dim.amount.plus(10 * toBuy);
-	dim.power = dim.power.times(Decimal.pow(getInfBuy10Mult(tier), toBuy))
+	dim.power = dim.power.times(E_pow(getInfBuy10Mult(tier), toBuy))
 	dim.baseAmount += 10 * toBuy
 	buyManyInfinityDimension(tier, auto)
 }
@@ -255,11 +255,11 @@ function updateInfinityPowerEffects() {
 }
 
 function getInfinityPowerEffect() {
-	if (player.currentEternityChall == "eterc9") return Decimal.pow(Math.max(player.infinityPower.log2(), 1), player.galacticSacrifice == undefined ? 4 : 30).max(1)
+	if (player.currentEternityChall == "eterc9") return E_pow(Math.max(player.infinityPower.log2(), 1), player.galacticSacrifice == undefined ? 4 : 30).max(1)
 	let log = player.infinityPower.max(1).log10()
 	log *= tmp.infPowExp 
 	if (log > 10 && player.pSac !== undefined) log = Math.pow(log * 200 - 1e3, 1/3)
-	return Decimal.pow(10, log)
+	return pow10(log)
 }
 
 function getPreInfinityPowerEffectExp() {
@@ -268,7 +268,7 @@ function getPreInfinityPowerEffectExp() {
 	if (player.galacticSacrifice != undefined) {
 		x = Math.pow(galaxies, 0.7)
 		if (player.currentChallenge === "postcngm3_2" || (player.tickspeedBoosts != undefined && player.currentChallenge === "postc1")) {
-			if (player.aarexModifications.ngmX >= 4) {
+			if (aarMod.ngmX >= 4) {
 				x = Math.pow(galaxies, 1.25)
 				if (x > 7) x += 1
 			} else x = galaxies
@@ -284,7 +284,7 @@ function getPreInfinityPowerEffectExp() {
 
 function getInfinityPowerEffectExp() {
 	let x = tmp.infPrePowExp
-	if (player.ghostify) if (player.ghostify.neutrinos.boosts >= 12) x = tmp.nb[12]
+	if (ghSave) if (ghSave.neutrinos.boosts >= 12) x = tmp.nb[12]
 	return x
 }
 
@@ -334,18 +334,18 @@ function getIDReplMult() {
 function getEU2Mult() {
 	var e = nMx(getEternitied(), 0)
 	if (typeof(e) == "number" && isNaN(e)) e = 0
-	if (player.boughtDims) return Decimal.pow(e, Decimal.times(e,2).add(1).log(4))
+	if (player.boughtDims) return E_pow(e, Decimal.times(e,2).add(1).log(4))
 	var cap = nMn(e, 1e5)
 	var soft = 0
 	if (e > 1e5) soft = nS(e, cap)
 	var achReward = 1
-	if (player.achievements.includes("ngpp15")) achReward = Decimal.pow(10, Math.pow(Decimal.log10(e), 4.75))
-	return Decimal.pow(cap/200 + 1, Math.log(cap * 2 + 1) / Math.log(4)).times(Decimal.div(soft, 200).add(1).times(Decimal.times(soft, 2).add(1).log(4)).max(1)).max(achReward)
+	if (player.achievements.includes("ngpp15")) achReward = pow10(Math.pow(Decimal.log10(e), 4.75))
+	return E_pow(cap/200 + 1, Math.log(cap * 2 + 1) / Math.log(4)).times(Decimal.div(soft, 200).add(1).times(Decimal.times(soft, 2).add(1).log(4)).max(1)).max(achReward)
 }
 
 function getEU3Mult() {
 	if (player.boughtDims) return player.timeShards.div(1e12).plus(1)
-	return Decimal.pow(2, 300 / Math.max(infchallengeTimes, 6.1))
+	return pow2(300 / Math.max(infchallengeTimes, 6.1))
 }
 
 function updateInfPower() {
@@ -361,21 +361,21 @@ function updateInfPower() {
 }
 
 function getNewInfReq() {
-	let reqs = [new Decimal("1e1100"), new Decimal("1e1900"), new Decimal("1e2400"), new Decimal("1e10500"), new Decimal("1e30000"), new Decimal("1e45000"), new Decimal("1e54000")]
+	let reqs = [E("1e1100"), E("1e1900"), E("1e2400"), E("1e10500"), E("1e30000"), E("1e45000"), E("1e54000")]
 	if (player.galacticSacrifice !== undefined) {
 		if (player.tickspeedBoosts === undefined) {
-			reqs[1] = new Decimal("1e1500")
-			reqs[3] = new Decimal("1e9600")
+			reqs[1] = E("1e1500")
+			reqs[3] = E("1e9600")
 		} else {
-			reqs[0] = new Decimal("1e1800")
-			reqs[1] = new Decimal("1e2400")
-			reqs[2] = new Decimal("1e4000")
+			reqs[0] = E("1e1800")
+			reqs[1] = E("1e2400")
+			reqs[2] = E("1e4000")
 		}
-		if (player.aarexModifications.ngmX >= 4){
-			reqs[0] = new Decimal("1e1777")
+		if (aarMod.ngmX >= 4){
+			reqs[0] = E("1e1777")
 		}
 	}
 	for (var tier = 0; tier < 7; tier++) if (!player.infDimensionsUnlocked[tier]) return {money: reqs[tier], tier: tier+1}
-	return {money: new Decimal("1e60000"), tier: 8}
+	return {money: E("1e60000"), tier: 8}
 }
 

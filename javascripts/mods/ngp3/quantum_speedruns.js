@@ -4,10 +4,10 @@ var speedrunMilestones = [null, 43200, 32400, 21600, 16200, 10800, 7200, 3600, 3
 function updateSpeedruns() {
 	speedrunMilestonesReached = 0
 	if (!tmp.ngp3) return
-	if (player.ghostify.milestones >= 1) speedrunMilestonesReached = 28
+	if (ghSave.milestones >= 1) speedrunMilestonesReached = 28
 	else {
 		for (var i = 1; i <= 28; i++) {
-			if (tmp.qu.best > speedrunMilestones[i] * 10) break
+			if (quSave.best > speedrunMilestones[i] * 10) break
 			speedrunMilestonesReached++
 		}
 	}
@@ -28,10 +28,10 @@ function updateSpeedruns() {
 
 function isRewardEnabled(id) {
 	if (!player.masterystudies) return false
-	return speedrunMilestonesReached >= id && !tmp.qu.disabledRewards[id]
+	return speedrunMilestonesReached >= id && !quSave.disabledRewards[id]
 }
 
 function disableReward(id) {
-	tmp.qu.disabledRewards[id] = !tmp.qu.disabledRewards[id]
-	document.getElementById("reward" + id + "disable").textContent = (id > 11 ? "10 seconds" : id > 4 ? "33.3 mins" : (id > 3 ? 4.5 : 6) + " hours") + " reward: " + (tmp.qu.disabledRewards[id] ? "OFF" : "ON")
+	quSave.disabledRewards[id] = !quSave.disabledRewards[id]
+	document.getElementById("reward" + id + "disable").textContent = (id > 11 ? "10 seconds" : id > 4 ? "33.3 mins" : (id > 3 ? 4.5 : 6) + " hours") + " reward: " + (quSave.disabledRewards[id] ? "OFF" : "ON")
 }

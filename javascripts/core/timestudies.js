@@ -5,7 +5,7 @@ presets={}
 function buyWithAntimatter() {
 	if (player.money.gte(player.timestudy.amcost)) {
 		player.money = player.money.minus(player.timestudy.amcost)
-		player.timestudy.amcost = player.timestudy.amcost.times(new Decimal("1e20000"))
+		player.timestudy.amcost = player.timestudy.amcost.times(E("1e20000"))
 		player.timestudy.theorem += 1
 		updateTimeStudyButtons(true)
 		return true
@@ -38,30 +38,30 @@ function buyWithEP() {
 }
 
 function canBuyTTWithEP() {
-	return player.timeDimension1.bought || (player.masterystudies !== undefined && tmp.qu.bigRip.active)
+	return player.timeDimension1.bought || (player.masterystudies !== undefined && brSave.active)
 }
 
 function maxTheorems() {
 	var gainTT = Math.floor((player.money.log10() - player.timestudy.amcost.log10()) / 20000 + 1)
 	if (gainTT > 0) {
 		player.timestudy.theorem += gainTT
-		player.timestudy.amcost = player.timestudy.amcost.times(Decimal.pow("1e20000", gainTT))
+		player.timestudy.amcost = player.timestudy.amcost.times(E_pow("1e20000", gainTT))
 		player.money = player.money.sub(player.timestudy.amcost.div("1e20000"))
 	}
 	
 	gainTT = Math.floor((player.infinityPoints.log10() - player.timestudy.ipcost.log10()) / 100 + 1)
 	if (gainTT > 0) {
 		player.timestudy.theorem += gainTT
-		player.timestudy.ipcost = player.timestudy.ipcost.times(Decimal.pow("1e100", gainTT))
+		player.timestudy.ipcost = player.timestudy.ipcost.times(E_pow("1e100", gainTT))
 		player.infinityPoints = player.infinityPoints.sub(player.timestudy.ipcost.div("1e100"))
 	}
 	
 	gainTT = Math.floor(player.eternityPoints.div(player.timestudy.epcost).plus(1).log2())
 	if (gainTT > 0 && canBuyTTWithEP()) {
 		player.timestudy.theorem += gainTT
-		player.eternityPoints = player.eternityPoints.sub(Decimal.pow(2, gainTT).sub(1).times(player.timestudy.epcost))
-		if (!break_infinity_js && isNaN(player.eternityPoints.logarithm)) player.eternityPoints = new Decimal(0)
-		player.timestudy.epcost = player.timestudy.epcost.times(Decimal.pow(2, gainTT))
+		player.eternityPoints = player.eternityPoints.sub(pow2(gainTT).sub(1).times(player.timestudy.epcost))
+		if (!break_infinity_js && isNaN(player.eternityPoints.logarithm)) player.eternityPoints = E(0)
+		player.timestudy.epcost = player.timestudy.epcost.times(pow2(gainTT))
 	}
 	updateTimeStudyButtons(true)
 	updateEternityUpgrades()
@@ -376,7 +376,7 @@ function respecTimeStudies(force, presetLoad) {
 	if (player.masterystudies) {
 		respecMastery=player.respecMastery||force
 		gotAch=gotAch&&(respecMastery||player.masterystudies.length<1)
-		delete player.quantum.autoECN
+		delete quSave.autoECN
 	}
 	if (respecTime) {
 		if (player.boughtDims) {
@@ -392,7 +392,7 @@ function respecTimeStudies(force, presetLoad) {
 					gotAch=false
 				}
 			}
-			if (player.masterystudies) if (player.timestudy.studies.length>1) player.quantum.wasted = false
+			if (player.masterystudies) if (player.timestudy.studies.length>1) quSave.wasted = false
 			player.timestudy.studies = bru7activated ? [192] : []
 			var ECCosts = [null, 30, 35, 40, 70, 130, 85, 115, 115, 415, 550, 1, 1]
 			player.timestudy.theorem += ECCosts[player.eternityChallUnlocked]
@@ -409,7 +409,7 @@ function respecTimeStudies(force, presetLoad) {
 			if (d) respecedMS.push(player.masterystudies[id])
 		}
 		if (player.masterystudies.length > respecedMS.length) {
-			player.quantum.wasted = false
+			quSave.wasted = false
 			gotAch = false
 		}
 		player.masterystudies=respecedMS
@@ -643,7 +643,7 @@ function save_preset(id) {
 function load_preset(id, reset) {
 	if (reset) {
 		var id7unlocked = player.infDimensionsUnlocked[7]
-		if (player.masterystudies !== undefined) if (player.quantum.bigRip.active) id7unlocked = true
+		if (player.masterystudies !== undefined) if (brSave.active) id7unlocked = true
 		if (player.infinityPoints.lt(player.eternityChallGoal) || !id7unlocked) return
 		player.respec = true
 		player.respecMastery = true
@@ -762,33 +762,33 @@ function changePresetTitle(id, placement) {
 //Time Study Effects
 let tsMults = {
 	11: function() {
-		let bigRipped = tmp.ngp3 && tmp.qu.bigRip.active
+		let bigRipped = tmp.ngp3 && brSave.active
 		let log = -player.tickspeed.div(1e3).pow(0.005).times(0.95).plus(player.tickspeed.div(1e3).pow(0.0003).times(0.95)).log10()
 		if (bigRipped && log > 900) log = Math.sqrt(log * 900)
-		else if (player.aarexModifications.newGameExpVersion) log = Math.min(log, 25000) // buff to NG+++^
+		else if (aarMod.newGameExpVersion) log = Math.min(log, 25000) // buff to NG+++^
 		else if (player.galacticSacrifice === undefined) log = Math.min(log, 2500)
 		if (log < 0) log = 0
 		
-		if (player.galacticSacrifice) return Decimal.pow(10, log)
-		if (tmp.ngp3l || !bigRipped) return Decimal.pow(10, log)
+		if (player.galacticSacrifice) return pow10(log)
+		if (tmp.ngp3l || !bigRipped) return pow10(log)
 		log = softcap(log, "ts11_log_big_rip", 1)
 		
-		return Decimal.pow(10, log)
+		return pow10(log)
 	},
 	32: function() {
-		return Math.pow(Math.max(player.resets, 1), player.aarexModifications.newGameMult ? 4 : 1)
+		return Math.pow(Math.max(player.resets, 1), aarMod.newGameMult ? 4 : 1)
 	},
 	41: function() {
-		return player.aarexModifications.newGameExpVersion ? 1.5 : 1.2
+		return aarMod.newGameExpVersion ? 1.5 : 1.2
 	},
 	42: function() {
-		return (player.aarexModifications.newGameExpVersion ? 12 : 13) / 15
+		return (aarMod.newGameExpVersion ? 12 : 13) / 15
 	},
 	61: function() {
-		return player.aarexModifications.newGameExpVersion ? 100 : 10
+		return aarMod.newGameExpVersion ? 100 : 10
 	},
 	62: function() {
-		let r = player.aarexModifications.newGameExpVersion ? 4 : 3
+		let r = aarMod.newGameExpVersion ? 4 : 3
 		if (tmp.ngex) r--
 		return r
 	},
@@ -797,7 +797,7 @@ let tsMults = {
 	},
 	212: function() {
 		let r = player.timeShards.max(2).log2()
-		if (player.aarexModifications.newGameExpVersion) return Math.min(Math.pow(r, 0.006), 1.15)
+		if (aarMod.newGameExpVersion) return Math.min(Math.pow(r, 0.006), 1.15)
 		return Math.min(Math.pow(r, 0.005), 1.1)
 	},
 	213: function() {

@@ -240,37 +240,37 @@ var softcap_data = {
 	bam: {
 		1: {
 			func: "pow",
-			start: new Decimal(1e80),
+			start: E(1e80),
 			pow: 0.9,
 			derv: true
 		},
 		2: {
 			func: "pow",
-			start: new Decimal(1e90),
+			start: E(1e90),
 			pow: 0.8,
 			derv: true
 		},
 		3: {
 			func: "pow",
-			start: new Decimal(1e100),
+			start: E(1e100),
 			pow: 0.7,
 			derv: true
 		},
 		4: {
 			func: "pow",
-			start: new Decimal(1e110),
+			start: E(1e110),
 			pow: 0.6,
 			derv: true
 		},
 		5: {
 			func: "pow",
-			start: new Decimal(1e120),
+			start: E(1e120),
 			pow: 0.5,
 			derv: true
 		},
 		6: {
 			func: "pow",
-			start: new Decimal(1e130),
+			start: E(1e130),
 			pow: 0.4,
 			derv: true
 		}
@@ -466,7 +466,7 @@ function do_softcap(x, data, num) {
 
 function softcap(x, id, max = 1/0) {
 	var data = softcap_data[id]
-	if (tmp.ngp3 && tmp.qu.bigRip.active) {
+	if (brSave && brSave.active) {
 		var big_rip_data = softcap_data[id + "_big_rip"]
 		if (big_rip_data !== undefined) data = big_rip_data
 	}
