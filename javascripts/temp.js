@@ -258,9 +258,6 @@ function updateAntiElectronGalaxiesTemp(){
 	tmp.aeg = 0
 	if (hasBosonicUpg(14) && !brSave.active) tmp.aeg = Math.max(tmp.blu[14] - quSave.electrons.sacGals, 0)
 	tmp.effAeg = tmp.aeg
-	if (tmp.aeg > 0) {
-		if (hasBosonicUpg(34)) tmp.effAeg *= tmp.blu[34]
-	}
 }
 
 function updateTS232Temp() {
@@ -334,8 +331,7 @@ function updateGhostifyTempStuff(){
 	if (ghSave.ghostlyPhotons.unl) {
 		var x = getLightEmpowermentBoost()
 		var y = hasBosonicUpg(32)
-		tmp.free_lights = hasGravUpg(7)?ghSave.ghostlyPhotons.enpowerments:0
-		if (hasBosonicUpg(54)) tmp.free_lights*=2
+		tmp.free_lights = 0
 		if (tmp.leBoost !== x || tmp.hasBU32 !== y || tmp.updateLights) {
 			tmp.leBoost = x
 			tmp.hasBU32 = y
@@ -638,17 +634,24 @@ function updateBosonicUpgradesTemp(){
 
 function updateWZBosonsTemp(){
 	var data = tmp.wzb
-	var wpl = ghSave.wzb.wpb.add(1).log10()
-	var wnl = ghSave.wzb.wnb.add(1).log10()
+	var wpl = player.ghostify.wzb.wpb.add(1).log10()
+	var wnl = player.ghostify.wzb.wnb.add(1).log10()
 
-	var bosonsExp = Math.max(wpl * (ghSave.wzb.wpb.sub(ghSave.wzb.wnb.min(ghSave.wzb.wpb))).div(ghSave.wzb.wpb.max(1)).toNumber(), 0)
-	data.wbt = E_pow(tmp.newNGP3E ? 5 : 3, bosonsExp) //W Bosons boost to extract time
-	data.wbo = pow10(Math.max(bosonsExp, 0)) //W Bosons boost to Z Neutrino oscillation requirement
-	if (hasGravUpg(8)) data.wbo = data.wbo.mul(tmp.gravitons.upg_eff[8])
-	data.wbp = ghSave.wzb.wpb.add(ghSave.wzb.wnb).div(100).max(1).pow(1 / 3).sub(1) //W Bosons boost to Bosonic Antimatter production
+	var bosonsExp = Math.max(wpl * (player.ghostify.wzb.wpb.sub(player.ghostify.wzb.wnb.min(player.ghostify.wzb.wpb))).div(player.ghostify.wzb.wpb.max(1)).toNumber(), 0)
 
-	var zbslog = ghSave.wzb.zb.div(10).add(1).sqrt().log10()
-	data.zbs = pow10(zbslog) //Z Bosons boost to W Quark
+	data.wbt = Decimal.pow(4, bosonsExp)
+	//W Bosons boost to extract time
+	data.wbo = Decimal.pow(10, bosonsExp)
+	//W Bosons boost to Z Neutrino oscillation requirement
+	let div1 = tmp.newNGP3E ? 2 : 30
+	data.wbp = player.ghostify.wzb.wpb.add(player.ghostify.wzb.wnb).div(div1).max(1).pow(1 / 3).sub(1)
+	//W Bosons boost to Bosonic Antimatter production
+
+	let zLog = player.ghostify.wzb.zb.div(10).add(1).log10()
+	let zLogMult = 0.5
+	if (isEnchantUsed(15)) zLogMult = tmp.bEn[15]
+
+	data.zbs = Decimal.pow(10, zLog * zLogMult) //Z Bosons boost to W Quark
 }
 
 function updateNanoEffectUsages() {

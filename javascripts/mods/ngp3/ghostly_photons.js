@@ -89,7 +89,6 @@ function getGPHProduction() {
 	else var ret = player.dilation.dilatedTime.div("1e930")
 	if (ret.gt(1)) ret = ret.pow(0.02)
 	if (b && ret.gt(pow2(444))) ret = ret.div(pow2(444)).sqrt().times(pow2(444))
-	if (hasGravUpg(3)) ret = ret.mul(tmp.gravitons.upg_eff[3])
 	return ret
 }
 
@@ -138,6 +137,7 @@ function updateLightThresholdStrengthDisplay(){
 function updateLEmpowermentPrimary(){
 	var gphData = ghSave.ghostlyPhotons
 	document.getElementById("lightEmpowerment").className = "gluonupgrade "+(gphData.lights[7] >= tmp.leReq ? "gph" : "unavailablebtn")
+	document.getElementById("lightEmpowermentDesc").textContent = player.achievements.includes("ng3p101") ? "+1 Light Empowerment" : "Gain 1 Light Empowerment, but become a ghost and reset this mechanic."
 	document.getElementById("lightEmpowermentReq").textContent = getFullExpansion(tmp.leReq)
 	document.getElementById("lightEmpowerments").textContent = getFullExpansion(gphData.enpowerments)
 	document.getElementById("lightEmpowermentScaling").textContent = getGalaxyScaleName(tmp.leReqScale) + "Light Empowerments"
@@ -178,7 +178,6 @@ function getGHRCap() {
 
 function getLightThreshold(l) {
 	let x = E_pow(getLightThresholdIncrease(l), ghSave.ghostlyPhotons.lights[l]).times(tmp.lt[l])
-	if (hasGravUpg(1)) x = x.div(tmp.gravitons.upg_eff[1])
 	return x
 }
 
@@ -211,15 +210,9 @@ function getLightEmpowermentReq(le) {
 	if (le === undefined) le = ghSave.ghostlyPhotons.enpowerments
 	let x = le * 2.4 + 1
 	let scale = 0
-	if (!tmp.ngp3l) {
-		if (le > 19) {
-			x += Math.pow(le - 19, 2*(hasBosonicUpg(51)?0.85:1)) / 3
-			scale = 1
-		}
-		if (le > 49) {
-			x += Math.pow(1.2, le - 49) - 1
-			scale = 2
-		}
+	if (le > 19) {
+		x += Math.pow(le - 19, 2*(hasBosonicUpg(51)?0.85:1)) / 3
+		scale = 1
 	}
 	if (player.achievements.includes("ng3p95")) x--
 	tmp.leReqScale = scale

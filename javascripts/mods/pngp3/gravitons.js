@@ -1,145 +1,247 @@
-const GRAVITON_UPGS = [
-    {
-        desc: "Tickspeed affect Gravitons gain at a reduced rate.",
-        cost: E(300),
-        eff() {
-            let x = E(-player.tickspeed.log10()).max(1).root(10)
-            if (hasBosonicUpg(54) && tmp.blu) x = x.pow(tmp.blu[54])
-            return x
-        },
-        effDesc(x) { return shorten(x)+"x" },
-    },{
-        desc: "Light threshold is cheaper based on your best Graviton.",
-        cost: E(1.5e4),
-        eff() {
-            let x = ghSave.gravitons.best.add(1).pow(1.5)
-            if (hasBosonicUpg(54) && tmp.blu) x = x.pow(tmp.blu[54])
-            return x
-        },
-        effDesc(x) { return shorten(x)+"x cheaper" },
-    },{
-        desc: "Gravitons gain is multiplied by Bosonic speed.",
-        cost: E(5e4),
-    },{
-        desc: "Ghostly Photons & Dark Matters gains are boosted by Higgs Bosons. Unlock more Bosonic Upgrades.",
-        cost: E(1e6),
-        eff() {
-            let x = E(1.5).pow(ghSave.hb.higgs)
-            return x
-        },
-        effDesc(x) { return shorten(x)+"x" },
-    },{
-        desc: "Nanofield does not need to be active to gain Preon Charge, and you gain more Preon Charge based on your GHP.",
-        cost: E(1e7),
-        eff() {
-            let x = ghSave.ghostParticles.add(1).root(50)
-            return x
-        },
-        effDesc(x) { return shorten(x)+"x" },
-    },{
-        desc: "Get ^0.5 of Electrons translation while in any QCs, or Big Ripped.",
-        cost: E(1e8),
-    },{
-        desc: "Best Gravitons adds free Nanofield rewards at a reduced rate.",
-        cost: E(1e12),
-        eff() {
-            let x = Math.floor(ghSave.gravitons.best.add(1).log(1.5))
-            return x
-        },
-        effDesc(x) { return "+"+getFullExpansion(x) },
-    },{
-        desc: "Best Gravitons boosts themselves. Light Empowerments adds each free Lights.",
-        cost: E(1e13),
-        eff() {
-            let x = ghSave.gravitons.best.add(1).root(4)
-            return x
-        },
-        effDesc(x) { return shorten(x)+"x" },
-    },{
-        desc: "Best Gravitons boosts oscillate progression gain.",
-        cost: E(1e17),
-        eff() {
-            let x = ghSave.gravitons.best.add(1).pow(2)
-            return x
-        },
-        effDesc(x) { return shorten(x)+"x" },
-    },{
-        desc: "Time Dimensions powers are 25% stronger.",
-        cost: E(2.5e18),
-    },{
-        desc: "Cherenkov Radiation add base from Graviton's effect.",
-        cost: E(1e20),
-        eff() {
-            let x = ghSave.breakDilation.cr.add(1).log10()**0.75/10
-            return x
-        },
-        effDesc(x) { return "+"+shorten(x) },
-    },
-    
-    /*
-    {
-        desc: "Placeholder.",
-        cost: E(1/0),
-        eff() {
-            let x = E(1)
-            return x
-        },
-        effDesc(x) { return shorten(x)+"x" },
-    },
-    */
-]
-
-function getGravUpgUnls() {
-    let x = 10
-    if (ghSave.breakDilation.unl) x += 1
-    return x
+//Core
+function doGravitonsUnlockStuff(){
+	ghSave.gravitons.unl=true
+	$.notify("Congratulations! You have unlocked Gravitons!", "success")
+	updateTemp()
 }
 
-function hasGravUpg(x) { return ghSave ? ghSave.gravitons.upgs.includes(x) : false }
+function getBrandNewGravitonsData() {
+	return {
+		unl: false,
+        amount: E(0),
+        best: E(0),
 
-function buyGravitonUpg(x) {
-    if (ghSave.gravitons.amount.gte(GRAVITON_UPGS[x].cost) && !ghSave.gravitons.upgs.includes(x)) {
-        ghSave.gravitons.amount = ghSave.gravitons.amount.sub(GRAVITON_UPGS[x].cost)
-        ghSave.gravitons.upgs.push(x)
-    }
+        tog: 0,
+        dir: 0,
+		dist: 0,
+		cancel: 0
+	}
 }
 
-function setupGravitonUpgradesHTML() {
-    let new_table = document.getElementById("gravUpgsTable")
-    let inner = ""
-    for (let r = 0; r <= Math.floor((GRAVITON_UPGS.length-1)/6); r++) {
-        inner += "<tr>"
-        for (let c = 0; c < 6; c++) {
-            let id = r*6+c
-            let name = "gravUpg"+id
-            let upg = GRAVITON_UPGS[id]
-            if (upg) inner += `
-            <td><button id="${name}_div" class="gravitonupg" onclick="buyGravitonUpg(${id})">
-            ${upg.desc}<br>${upg.effDesc?`Currently: <span id="${name}_eff">X</span><br>`:""}Cost: <span id="${name}_cost">${shorten(upg.cost)}</span> Gravitons
-            </button></td>
-            `
-        }
-        inner += "</tr>"
-    }
-    new_table.innerHTML = inner
+let GRAV_BOOSTS = {
+	0: {
+		pos(x) {
+			return 1
+		},
+		neg(x) {
+			return 1
+		},
+
+		pos_disp(x) {
+			return "Meta-Dimension Boosts are " + shorten(x) + "x stronger"
+		},
+		neg_disp(x) {
+			return "Meta-Dimension Boosts scale " + shorten(x) + "x faster"
+		},
+	},
+	1: {
+		pos(x) {
+			return 1
+		},
+		neg(x) {
+			return 1
+		},
+
+		pos_disp(x) {
+			return "Tickspeed softcaps are " + shorten(x) + "x weaker"
+		},
+		neg_disp(x) {
+			return "Galaxy scalings start " + shorten(x) + "x earlier"
+		},
+	},
+	2: {
+		pos(x) {
+			return 0
+		},
+		neg(x) {
+			return 1
+		},
+
+		pos_disp(x) {
+			return "Gain " + shorten(x * 100) + "% of electrons within Big Rips"
+		},
+		neg_disp(x) {
+			return "Electrons are " + shorten(x) + "x weaker within Big Rips"
+		},
+	},
+	3: {
+		pos(x) {
+			return 1
+		},
+		neg(x) {
+			return 1
+		},
+
+		pos_disp(x) {
+			return "Nanofield scalings are " + shorten(x) + "x weaker"
+		},
+		neg_disp(x) {
+			return "Emperor Dimensions are ^" + shorten(x) + " slower"
+		},
+	},
+	4: {
+		pos(x) {
+			return 1
+		},
+		neg(x) {
+			return 1
+		},
+
+		pos_disp(x) {
+			return "Higgs scales " + shorten(x) + "x slower"
+		},
+		neg_disp(x) {
+			return "Bosonic Antimatter production is ^" + shorten(x)
+		},
+	},
+	5: {
+		pos(x) {
+			return 1
+		},
+		neg(x) {
+			return 1
+		},
+
+		pos_disp(x) {
+			return "Electron Upgrades scale ^" + shorten(x) + " slower"
+		},
+		neg_disp(x) {
+			return "Electrons are " + shorten(x) + "x weaker"
+		},
+	},
+	6: {
+		pos(x) {
+			return 1
+		},
+		neg(x) {
+			return 1
+		},
+
+		pos_disp(x) {
+			return "Light Empowerments are " + shorten(x) + "x cheaper"
+		},
+		neg_disp(x) {
+			return "All Lights scale " + shorten(x) + "x slower"
+		},
+	},
+	7: {
+		pos(x) {
+			return {e: 1, m: 1}
+		},
+		neg(x) {
+			return 1
+		},
+
+		pos_disp(x) {
+			return "GhP multiplier upgrades are ^" + shorten(x.e) + ", x" + shorten(x.m) + " stronger"
+		},
+		neg_disp(x) {
+			return "GhP gain is reduced to ^" + shorten(x)
+		},
+	},
 }
 
+//Functions
+function hasGrav(x) {
+	return tmp.ngp3 && tmp.gv && tmp.gv.core.on.includes(x)
+}
+
+function clickGv(x) {
+	if (ghSave.gravitons.dist == ghSave.gravitons.tog) return
+	if (!tmp.gv.core.can.includes(x)) return
+	if (tmp.gv.core.on.includes(x)) return
+
+	ghSave.gravitons.dist++
+	if (ghSave.gravitons.dist == 2) ghSave.gravitons.dir = x > 2 ? 1 : 0
+	updateGravitonsTemp()
+	bosonicLabReset()
+}
+
+function getGrav(x, type) {
+	return tmp.gv.core[x][type + "eff"]
+}
+
+function respecGv() {
+	if (!confirm("This will perform a Higgs reset. Are you sure?")) return
+	ghSave.gravitons.dist = 0
+	bosonicLabReset()
+}
+
+function upgGvReq() {
+	return Math.floor(Math.pow(ghSave.gravitons.cancel / 10 + 1, 1.5) * 45)
+}
+
+function upgGv() {
+	if (ghSave.hb.higgs < upgGvReq()) return
+	ghSave.gravitons.cancel++
+}
+
+//Temp
 function updateGravitonsTemp() {
-    tmp.gravitons.unls = getGravUpgUnls()
+	let data = {}
+	let save = ghSave && ghSave.gravitons
+	tmp.gv = data
+	if (!save || !save.unl) return
 
-    for (let x = 0; x < GRAVITON_UPGS.length; x++) if (GRAVITON_UPGS[x].eff) tmp.gravitons.upg_eff[x] = GRAVITON_UPGS[x].eff()
+	//gain
+    data.gain = Decimal.pow(player.money.add(1).log10() / 1e20 + 1, save.dist / 2).sub(1)
 
-    tmp.gravitons.gain = E(0)
-    if (ghSave.gravitons.unl) tmp.gravitons.gain = tmp.gravitons.gain.add(1)
-    if (hasGravUpg(0)) tmp.gravitons.gain = tmp.gravitons.gain.mul(tmp.gravitons.upg_eff[0])
-    if (hasGravUpg(2)) tmp.gravitons.gain = tmp.gravitons.gain.mul(tmp.bl.speed)
-    if (hasGravUpg(7)) tmp.gravitons.gain = tmp.gravitons.gain.mul(tmp.gravitons.upg_eff[7])
-    if (hasBosonicUpg(52) && tmp.blu) tmp.gravitons.gain = tmp.gravitons.gain.mul(tmp.blu[52])
-    if (hasNU(16)) tmp.gravitons.gain = tmp.gravitons.gain.mul(tmp.nu[7] || 1)
+	//the core
+	let core = {
+		on: [],
+		can: []
+	}
+	if (save.dist == 0) core.can = [0]
+	if (save.dist == 1) core.can = [1, 7]
+	if (save.dist >= 1) core.on.push(0)
+	if (save.dist > 1) {
+		core.can = [save.dir ? 8 - save.dist : save.dist + 1]
+		for (var i = 1; i < save.dist; i++) core.on.push(save.dir ? 8 - i : i)
+	}
+	let order = save.dir ? [0,7,6,5,4,3,2,1] : [0,1,2,3,4,5,6,7]
+	for (var i = 0; i < 8; i++) {
+		let smooth = true ? save.dist / 8 : 0
+		let pos = save.dist > i ? (save.dist - i) * (1 - smooth) + 8 * smooth : 0
+		let neg = Math.max(Math.sqrt(Math.max(save.dist - save.cancel, 0)) - Math.sqrt(i), 0)
+		core[order[i]] = {
+			p: pos,
+			n: neg,
+			p_eff: GRAV_BOOSTS[i].pos(pos),
+			n_eff: GRAV_BOOSTS[i].neg(neg),
+		}
+	}
+	data.core = core
 
-    tmp.gravitons.powEff = E(2)
-    if (hasNU(16)) tmp.gravitons.powEff = tmp.gravitons.powEff.add(1)
-    if (hasBosonicUpg(53) && tmp.blu) tmp.gravitons.powEff = tmp.gravitons.powEff.add(tmp.blu[53])
-    if (hasGravUpg(10)) tmp.gravitons.powEff = tmp.gravitons.powEff.add(tmp.gravitons.upg_eff[10])
-    tmp.gravitons.eff = ghSave.gravitons.best.add(1).pow(tmp.gravitons.powEff)
+	//gain toggles
+	data.bulk = Math.floor(Math.sqrt(save.amount.add(1).log(6))) + 1
+	data.next = E(6).pow(Math.pow(save.tog, 2)).sub(1)
+}
+
+//Displays
+function updateGravitonsTab() {
+    el("gravUnl").style.display = ghSave.gravitons.unl ? "none" : ""
+    el("gravUnl").textContent="To unlock Gravitons, you need to get "+shortenCosts(pow10(1e18))+" antimatter."
+    el("gravDiv").style.display = ghSave.gravitons.unl ? "" : "none"
+}
+
+function updateGravitonsTabOnTick() {
+    if (!ghSave.gravitons.unl) return
+
+	el("gravAmt").innerHTML = shortenMoney(ghSave.gravitons.amount)
+	el("gravGain").innerHTML = shorten(tmp.gv.gain)
+	el("gravBest").innerHTML = shortenMoney(ghSave.gravitons.best)
+	el("gravLeft").innerHTML = getFullExpansion(ghSave.gravitons.tog - ghSave.gravitons.dist) + " / " + ghSave.gravitons.tog
+	el("gravNext").innerHTML = shortenMoney(tmp.gv.next)
+
+	let can = ghSave.gravitons.tog > ghSave.gravitons.dist
+	for (var i = 0; i < 8; i++) {
+		let eff = tmp.gv.core[i]
+		el("gv_"+i).className = tmp.gv.core.on.includes(i) ? "chosenbtn gw" : can && tmp.gv.core.can.includes(i) ? "storebtn gw" : "unavailablebtn gw"
+		el("gv_"+i+"_data").innerHTML = "<b class='l_green'>+" + shortenMoney(eff.p) + "</b> / <b class='red'>-" + shortenMoney(eff.n) + "</b>"
+		el("gv_"+i+"_eff").innerHTML = "<span class='l_green'>Pros: " + GRAV_BOOSTS[i].pos_disp(eff.p_eff) + "</span><br>" +
+			"<span class='red'>Cons: " + GRAV_BOOSTS[i].neg_disp(eff.n_eff) + "</span>"
+	}
+
+	el("gv_upg").className = ghSave.hb.higgs >= upgGvReq() ? "gluonupgrade gw" : "unavailablebtn gw"
+	el("gv_upg_req").textContent = getFullExpansion(ghSave.hb.higgs) + " / " + getFullExpansion(upgGvReq())
 }

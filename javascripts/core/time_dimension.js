@@ -10,7 +10,6 @@ function getBreakEternityTDMult(tier){
 	if (tier == 7 && brSave.upgrades.includes(16)) ret = ret.times(tmp.bru[16])
 	if (beSave && beSave.upgrades.includes(11) && brSave.active) ret = ret.mul(tmp.beu[11]||1)
 	if (tier == 8 && player.achievements.includes("ng3p62") && !tmp.ngp3l) ret = ret.pow(Math.log10(ghSave.time/10+1)/100+1)
-	if (hasGravUpg(9)) ret = ret.pow(1.25)
 	if (ret.lt(0)) ret = E(0)
 	return dilates(ret)
 }
@@ -105,7 +104,6 @@ function getTimeDimensionPower(tier) {
 	
 
 	if (player.dilation.upgrades.includes("ngmm8")) ret = ret.pow(getDil71Mult())
-	if (hasGravUpg(9)) ret = ret.pow(1.25)
 
 	return ret
 }

@@ -94,13 +94,13 @@ function bosonicLabReset() {
 
 function higgsReset() {
 	if (tmp.ngp3l) return
-	if (!player.achievements.includes("ng3p102")) {
+	if (!player.achievements.includes("ng3p101")) {
 		var oldHiggs = ghSave.hb.higgs
 		if (!ghSave.bl.am.gte(getHiggsRequirement())) return
 		if (!aarMod.higgsNoConf && !confirm("You will exchange all your Bosonic Lab stuff for Higgs Bosons. Everything that Light Empowerments resets initally will be reset. Are you ready to proceed?")) return
 	}
 	addHiggs(getHiggsGain())
-	if (!player.achievements.includes("ng3p102")) bosonicLabReset()
+	if (!player.achievements.includes("ng3p101")) bosonicLabReset()
 	if (oldHiggs == 0) {
 			updateNeutrinoBoosts()
 			updateHiggsUnlocks()
@@ -129,7 +129,7 @@ function getHiggsRequirement(higgs) {
 
 function getHiggsGain() {
 	if (ghSave.hb.higgs == 0) return 1
-	return Math.round(ghSave.bl.am.div(getHiggsRequirement()).floor().toNumber())
+	return Math.floor(Math.max(ghSave.bl.am.div(getHiggsRequirement()).log(100)+1,0))
 }
 
 function addHiggs(x) {

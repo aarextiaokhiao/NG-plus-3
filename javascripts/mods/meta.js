@@ -99,7 +99,6 @@ function getMetaBoostPower() {
 	if (player.achievements.includes("ngpp14")) r *= 1.01
 
 	let eff = E_pow(r, exp)
-	if (ghSave.gravitons.unl) eff = eff.mul(tmp.gravitons.eff)
 	return eff
 }
 

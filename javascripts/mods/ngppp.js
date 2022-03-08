@@ -650,7 +650,7 @@ function updateGhostifyTabs() {
 	if (document.getElementById("automaticghosts").style.display == "block") if (ghSave.milestones > 7) updateQuantumWorth("display")
 	if (document.getElementById("gphtab").style.display == "block" && ghSave.ghostlyPhotons.unl) updatePhotonsTab()
 	if (document.getElementById("bltab").style.display == "block" && ghSave.wzb.unl) updateBosonicLabTab()
-	if (document.getElementById("gravtab").style.display == "block") updateGravitonsTab()
+	if (document.getElementById("gravtab").style.display == "block") updateGravitonsTabOnTick()
 }
 
 function buyGHPMult() {
@@ -745,12 +745,12 @@ function updateAutoGhosts(load) {
 		document.getElementById("autoGhostMod4").textContent = "Every " + (data[4].mode == "t" ? "second" : "Quantum")
 		document.getElementById("autoGhostRotate4").textContent = data[4].rotate == "l" ? "Left" : "Right"
 		document.getElementById("autoGhost11pw").value = data[11].pw
-		document.getElementById("autoGhost11lw").value = data[11].lw
 		document.getElementById("autoGhost11cw").value = data[11].cw
 		document.getElementById("autoGhost13t").value = data[13].t
 		document.getElementById("autoGhost13u").value = data[13].u
+		document.getElementById("autoGhost13o").value = data[13].o
 		document.getElementById("autoGhost15a").value = formatValue("Scientific", data[15].a, 2, 1)
-		document.getElementById("autoGhost17a").value = data[17].a || 60
+		document.getElementById("autoGhost17s").value = data[17].s || 60
 	}
 	document.getElementById("consumedPower").textContent = powerConsumed.toFixed(2)
 	isAutoGhostsSafe = data.power >= powerConsumed
@@ -777,9 +777,6 @@ function changeAutoGhost(o) {
 	} else if (o == "11pw") {
 		var num = parseFloat(document.getElementById("autoGhost11pw").value)
 		if (!isNaN(num) && num > 0) ghSave.automatorGhosts[11].pw = num
-	} else if (o == "11lw") {
-		var num = parseFloat(document.getElementById("autoGhost11lw").value)
-		if (!isNaN(num) && num > 0) ghSave.automatorGhosts[11].lw = num
 	} else if (o == "11cw") {
 		var num = parseFloat(document.getElementById("autoGhost11cw").value)
 		if (!isNaN(num) && num > 0) ghSave.automatorGhosts[11].cw = num
@@ -789,12 +786,15 @@ function changeAutoGhost(o) {
 	} else if (o == "13u") {
 		var num = parseFloat(document.getElementById("autoGhost13u").value)
 		if (!isNaN(num) && num > 0) ghSave.automatorGhosts[13].u = num
+	} else if (o == "13o") {
+		var num = parseInt(getEl("autoGhost13o").value)
+		if (!isNaN(num) && num >= 0) player.ghostify.automatorGhosts[13].o = num
 	} else if (o == "15a") {
 		var num = fromValue(document.getElementById("autoGhost15a").value)
 		if (!isNaN(break_infinity_js ? num : num.l)) ghSave.automatorGhosts[15].a = num
 	} else if (o == "17a") {
-		var num = fromValue(document.getElementById("autoGhost17a").value)
-		if (!isNaN(break_infinity_js ? num : num.l)) ghSave.automatorGhosts[17].a = num
+		var num = fromValue(document.getElementById("autoGhost17s").value)
+		if (!isNaN(break_infinity_js ? num : num.l)) ghSave.automatorGhosts[17].s = num
 	}
 }
 

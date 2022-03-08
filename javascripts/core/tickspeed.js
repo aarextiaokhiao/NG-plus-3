@@ -21,10 +21,7 @@ function getGalaxyPower(ng, bi, noDil) {
 	let replGalEff = 1
 	if (player.boughtDims) replGalEff = Math.log10(player.replicanti.limit.log(2)) / Math.log10(2)/10
 	else if (ECTimesCompleted("eterc8") > 0) replGalEff = getECReward(8)
-	if (tmp.ngp3) {
-		if (player.masterystudies.includes("t344")) replGalEff *= getMTSMult(344)
-		if (hasBosonicUpg(34)) replGalEff *= tmp.blu[34]
-	}
+	if (tmp.ngp3 && player.masterystudies.includes("t344")) replGalEff *= getMTSMult(344)
 	
 	let extraReplGalPower = 0
 	if (player.timestudy.studies.includes(133)) extraReplGalPower += player.replicanti.galaxies * 0.5
@@ -36,7 +33,6 @@ function getGalaxyPower(ng, bi, noDil) {
 	else otherGalPower += Math.min(player.replicanti.galaxies, player.replicanti.gal) * (replGalEff - 1) + extraReplGalPower
 	if (!noDil) {
 		let dilGals = Math.floor(player.dilation.freeGalaxies)
-		if (hasBosonicUpg(34)) dilGals *= tmp.blu[34]
 		otherGalPower += dilGals * ((player.masterystudies ? player.masterystudies.includes("t343") : false) ? replGalEff : 1)
 	}
 	otherGalPower += tmp.effAeg

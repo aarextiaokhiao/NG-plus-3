@@ -51,7 +51,6 @@ function getQuarkChargeProduction(noSpeed) {
 	if (hasNU(7)) ret = ret.times(tmp.nu[3])
 	if (nfSave.power > tmp.apgw) ret = ret.div(pow2((nfSave.power - tmp.apgw) / 2))
 	if (!noSpeed) ret = ret.times(getNanofieldFinalSpeed())
-	if (hasGravUpg(4)) ret = ret.mul(tmp.gravitons.upg_eff[4])
 	return ret
 }
 

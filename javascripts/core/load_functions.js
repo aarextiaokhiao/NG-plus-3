@@ -2055,8 +2055,6 @@ function updateNGp3DisplayStuff(){
                 document.getElementById("nextParticle").textContent = "To unlock the next particle (Higgs Bosons), you need to get " + shortenCosts(pow10(2e17)) + " antimatter and " + shortenCosts(getHiggsRequirement()) + " Bosonic Antimatter first."
         }
         updateHiggsUnlocks()
-
-        updateGravitonsTab()
 }
 
 function setSomeQuantumAutomationDisplay(){

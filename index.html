@@ -2741,10 +2741,10 @@
 						</tr><tr id="achRowng3p10">
 							<td>
 								<div id="The Layer of Recreation" class="achievement achievementlocked" style="background-image: url(images/none.png)"
-								ach-tooltip="Placeholder.">The Layer of Recreation</div>
+								ach-tooltip="Unlock Gravitons. Reward: Light Empowerments and Higgs no longer reset anything.">The Layer of Recreation</div>
 							</td><td>
 								<div id="Biggest Mistake" class="achievement achievementlocked" style="background-image: url(images/none.png)"
-								ach-tooltip="Get 50 Higgs Bosons. Reward: Higgs Bosons no longer resets anything.">Biggest Mistake</div>
+								ach-tooltip="Get 50 Higgs Bosons. Reward: Higgs requires 10x less.">Biggest Mistake</div>
 							</td><td>
 								<div id="Double Quintillion" class="achievement achievementlocked" style="background-image: url(images/none.png)"
 								ach-tooltip="Placeholder.">Double Quintillion</div>
@@ -5251,9 +5251,9 @@
 					</tr>
 					<tr>
 						<td id="autoGhost11"><div class="autoBuyerDiv" style="display:block">
-							<b>Auto-Preon Generate Ghost</b><br>
+							<b>Auto-Nanoreward Ghost</b><br>
 							Power usage: 0.5<br>
-							Start producing preon charge when you have <input id="autoGhost11pw" onchange="changeAutoGhost('11pw')"></input>s worth of preon production and <input id="autoGhost11lw" type="text" onchange="changeAutoGhost('11lw')"></input>s worth loss of preon loss, but stop producing preon charge when you have <input id="autoGhost11cw" type="text" onchange="changeAutoGhost('11cw')"></input>s worth of preon charge production.
+							Every <input id="autoGhost11pw" onchange="changeAutoGhost('11pw')"></input> seconds, producing preon charge for <input id="autoGhost11cw" type="text" onchange="changeAutoGhost('11cw')"></input> seconds.<br>
 							Is active: <input id="isAutoGhostOn11" type="checkbox" onchange="toggleAutoGhost(11)"></input>
 						</div></td>
 						<td id="autoGhost12"><div class="autoBuyerDiv" style="display:block">
@@ -5265,7 +5265,8 @@
 						<td id="autoGhost13"><div class="autoBuyerDiv" style="display:block">
 							<b>Auto-Big Rip Ghost</b><br>
 							Power usage: 0.5<br>
-							Big Rip in <input id="autoGhost13t" onchange="changeAutoGhost('13t')"></input> seconds after you go quantum and undo the Big Rip after <input id="autoGhost13u" onchange="changeAutoGhost('13u')"></input> seconds.<br>
+							Big Rip in <input id="autoGhost13t" onchange="changeAutoGhost('13t')"></input> seconds and undo after <input id="autoGhost13u" onchange="changeAutoGhost('13u')"></input> seconds.<br>
+							Stop after <input id="autoGhost13o" onchange="changeAutoGhost('13o')"></input> times.<br>(0 = always)<br>
 							Is active: <input id="isAutoGhostOn13" type="checkbox" onchange="toggleAutoGhost(13)"></input>
 						</div></td>
 						<td id="autoGhost14"><div class="autoBuyerDiv" style="display:block">
@@ -5289,8 +5290,8 @@
 						<td id="autoGhost17"><div class="autoBuyerDiv" style="display:block">
 							<b>Auto-Extractor Ghost</b><br>
 							Power usage: 3<br>
-							This also changes runes at a complete extraction on <span id="autoGhost17c">1</span>s after last change<br>
-							or change immediately at X seconds remaining for extracting: <input id="autoGhost17a" onchange="changeAutoGhost('17s')"></input><br>
+							This also changes runes at a complete extraction on 1s after last change<br>
+							or change immediately at X seconds remaining for extracting: <input id="autoGhost17s" onchange="changeAutoGhost('17s')"></input><br>
 							Is active: <input id="isAutoGhostOn17" type="checkbox" onchange="toggleAutoGhost(17)"></input>
 						</div></td>
 						<td id="autoGhost18"><div class="autoBuyerDiv" style="display:block">
@@ -5300,7 +5301,7 @@
 						</div></td>
 						<td id="autoGhost19"><div class="autoBuyerDiv" style="display:block">
 							<b>Auto-Enchanter Ghost</b><br>
-							(doesn't consume your Bosonic Runes, enchant every 2 seconds)<br>
+							(doesn't consume your Bosonic Runes, enchant 5 times per second)<br>
 							Power usage: 3<br>
 							Is active: <input id="isAutoGhostOn19" type="checkbox" onchange="toggleAutoGhost(19)"></input>
 						</div></td>
@@ -5477,7 +5478,7 @@
 						</td>
 					</tr><tr>
 						<td colspan=4>
-							<button class="gluonupgrade gph" id="lightEmpowerment" onclick="lightEmpowerment()">Gain 1 Light Empowerment, but become a ghost and reset this mechanic.<br>(requires <span id="lightEmpowermentReq"></span> ultraviolet light.)</button>
+							<button class="gluonupgrade gph" id="lightEmpowerment" onclick="lightEmpowerment()"><span id="lightEmpowermentDesc"></span><br>(requires <span id="lightEmpowermentReq"></span> ultraviolet)</button>
 						</td>
 					</tr><tr>
 						<td></td>
@@ -5499,7 +5500,7 @@
 							You have <span id="bWatt" style="font-size:35px"></span> Bosonic Watts.<br>Bosonic Speed: <span id="bSpeed" style="font-size:25px"></span>x<br>Bosonic Lab is currently running at <span id="bTotalSpeed" style="font-size:25px"></span>x.<br>You have played Bosonic Lab for <span id="bTicks"></span> ticks.
 						</td>
 						<td>
-							You have <span id="bAM" style="font-size:35px"></span> Bosonic Antimatter. <span id="bAMProduction" style="font-size:25px"></span> <b class="warning" id="bAMProductionReduced">(reduced)<b>
+							You have <span id="bAM" style="font-size:35px"></span> Bosonic Antimatter. <span id="bAMProduction" style="font-size:25px"></span>
 						</td>
 						<td>
 							You have <span id="bBt" style="font-size:35px"></span> Bosonic Battery. <span id="bBtProduction" style="font-size:25px"></span><br>
@@ -5510,7 +5511,7 @@
 						<td colspan=3>
 							You have <span class="yellow" id="hb" style="font-size:35px">0</span> Higgs Bosons.
 							<br>
-							<button class="gluonupgrade hb" id="hbReset" onclick="higgsReset()">Reset Bosonic Lab for <span id="hbResetGain">1</span> Higgs.<br>(Requires <span id="hbResetReq"></span> Bosonic Antimatter)</button>
+							<button class="gluonupgrade hb" id="hbReset" onclick="higgsReset()"><span id="hbResetDesc"></span><br>(Requires <span id="hbResetReq"></span> Bosonic Antimatter)</button>
 						</td>
 					</tr></table>
 					<span id="nextParticle"></span><br>
@@ -5576,10 +5577,27 @@
 			<div id="gravtab" class="ghostifytab">
 				<div id="gravUnl"></div>
 				<div id="gravDiv">
-					You have <span id="gravAmt" class="h1">0</span> (+<span id="gravGain">0</span>/s) Graviton.<br>
-					Your best Graviton was <span id="gravBest" class="h2">0</span>. Raised to the power of <span id="gravPow" class="h2">2</span>, translated to <span id="gravEff" class="h2">1</span>x extra multiplier per Meta-Dimension Boost.<br>
-					<table id="gravUpgsTable" style="margin: 0 auto"></table>
-					<b class="warning" style="font-size: 24px">This will be rewritten soon!</b>
+					<span style="font-size: 18px">You have <b id="gravAmt" class="gv" style="font-size: 24px">0</b> Gravitons.</span><br>
+					(+<span id="gravGain">0</span>/s, best of <span id="gravBest" class="gv">0</span>)<br><br>
+					You have <span id="gravLeft" class="gv"></span> activations left. (Next at <span id="gravNext"></span> Gravitons)<br>
+					<button class="storebtn" onclick="respecGv()">Respec</button>
+					<table style="margin: auto">
+						<tr>
+							<td><button class="storebtn gw" id="gv_0" onclick="clickGv(0)"><b id="gv_0_data"></b><br><span id="gv_0_eff"></span></button></td>
+							<td><button class="storebtn gw" id="gv_1" onclick="clickGv(1)"><b id="gv_1_data"></b><br><span id="gv_1_eff"></span></button></td>
+							<td><button class="storebtn gw" id="gv_2" onclick="clickGv(2)"><b id="gv_2_data"></b><br><span id="gv_2_eff"></span></button></td>
+						</tr>
+						<tr>
+							<td><button class="storebtn gw" id="gv_7" onclick="clickGv(7)"><b id="gv_7_data"></b><br><span id="gv_7_eff"></span></button></td>
+							<td><button class="gluonupgrade gw" id="gv_upg" onclick="upgGv()" style="font-size: 12px !important">Cancel the disadvantages.<br>Requirement: <span id="gv_upg_req"></span> Higgs</button></td>
+							<td><button class="storebtn gw" id="gv_3" onclick="clickGv(3)"><b id="gv_3_data"></b><br><span id="gv_3_eff"></span></button></td>
+						</tr>
+						<tr>
+							<td><button class="storebtn gw" id="gv_6" onclick="clickGv(6)"><b id="gv_6_data"></b><br><span id="gv_6_eff"></span></button></td>
+							<td><button class="storebtn gw" id="gv_5" onclick="clickGv(5)"><b id="gv_5_data"></b><br><span id="gv_5_eff"></span></button></td>
+							<td><button class="storebtn gw" id="gv_4" onclick="clickGv(4)"><b id="gv_4_data"></b><br><span id="gv_4_eff"></span></button></td>
+						</tr>
+					</table>
 				</div>
 			</div>
 			<div id="footercontainer">

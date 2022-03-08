@@ -1,5 +1,3 @@
-var FormatList = ['', 'K', 'M', 'B', 'T', 'Qa', 'Qt', 'Sx', 'Sp', 'Oc', 'No', 'Dc', 'UDc', 'DDc', 'TDc', 'QaDc', 'QtDc', 'SxDc', 'SpDc', 'ODc', 'NDc', 'Vg', 'UVg', 'DVg', 'TVg', 'QaVg', 'QtVg', 'SxVg', 'SpVg', 'OVg', 'NVg', 'Tg', 'UTg', 'DTg', 'TTg', 'QaTg', 'QtTg', 'SxTg', 'SpTg', 'OTg', 'NTg', 'Qd', 'UQd', 'DQd', 'TQd', 'QaQd', 'QtQd', 'SxQd', 'SpQd', 'OQd', 'NQd', 'Qi', 'UQi', 'DQi', 'TQi', 'QaQi', 'QtQi', 'SxQi', 'SpQi', 'OQi', 'NQi', 'Se', 'USe', 'DSe', 'TSe', 'QaSe', 'QtSe', 'SxSe', 'SpSe', 'OSe', 'NSe', 'St', 'USt', 'DSt', 'TSt', 'QaSt', 'QtSt', 'SxSt', 'SpSt', 'OSt', 'NSt', 'Og', 'UOg', 'DOg', 'TOg', 'QaOg', 'QtOg', 'SxOg', 'SpOg', 'OOg', 'NOg', 'Nn', 'UNn', 'DNn', 'TNn', 'QaNn', 'QtNn', 'SxNn', 'SpNn', 'ONn', 'NNn', 'Ce',];
-
 function letter(power, str) {
 	const len = str.length;
 	let ret = ''
@@ -15,102 +13,85 @@ function letter(power, str) {
 	return ret
 }
 
-function getAbbreviation(e) {
-	const prefixes = [
-		['', 'U', 'D', 'T', 'Qa', 'Qt', 'Sx', 'Sp', 'O', 'N'],
-                ['', 'Dc', 'Vg', 'Tg', 'Qd', 'Qi', 'Se', 'St', 'Og', 'Nn'],
-                ['', 'Ce', 'Dn', 'Tc', 'Qe', 'Qu', 'Sc', 'Si', 'Oe', 'Ne']]
-        const prefixes2 = ['', 'MI', 'MC', 'NA']
+var FormatList = ['', 'K', 'M', 'B', 'T', 'Qa', 'Qt', 'Sx', 'Sp', 'Oc', 'No', 'Dc', 'UDc', 'DDc', 'TDc', 'QaDc', 'QtDc', 'SxDc', 'SpDc', 'ODc', 'NDc', 'Vg', 'UVg', 'DVg', 'TVg', 'QaVg', 'QtVg', 'SxVg', 'SpVg', 'OVg', 'NVg', 'Tg', 'UTg', 'DTg', 'TTg', 'QaTg', 'QtTg', 'SxTg', 'SpTg', 'OTg', 'NTg', 'Qd', 'UQd', 'DQd', 'TQd', 'QaQd', 'QtQd', 'SxQd', 'SpQd', 'OQd', 'NQd', 'Qi', 'UQi', 'DQi', 'TQi', 'QaQi', 'QtQi', 'SxQi', 'SpQi', 'OQi', 'NQi', 'Se', 'USe', 'DSe', 'TSe', 'QaSe', 'QtSe', 'SxSe', 'SpSe', 'OSe', 'NSe', 'St', 'USt', 'DSt', 'TSt', 'QaSt', 'QtSt', 'SxSt', 'SpSt', 'OSt', 'NSt', 'Og', 'UOg', 'DOg', 'TOg', 'QaOg', 'QtOg', 'SxOg', 'SpOg', 'OOg', 'NOg', 'Nn', 'UNn', 'DNn', 'TNn', 'QaNn', 'QtNn', 'SxNn', 'SpNn', 'ONn', 'NNn', 'Ce',];
+
+function standardize(x, aas) {
+	if (!aas) x = x.toUpperCase()
+	return x
+}
+
+function getAbbreviation(e, aas) {
 	var result = ''
-        e = Math.floor(e / 3)-1;
+	e = Math.floor(e / 3) - 1;
 	e2 = 0
-        while (e > 0) {		
+	while (e > 0) {		
 		var partE = e % 1000
-		if (partE > 0) {
-			if (partE == 1 && e2 > 0) var prefix = ""
-			else var prefix = prefixes[0][partE % 10] + prefixes[1][Math.floor(partE / 10) % 10] + prefixes[2][Math.floor(partE / 100)]
-			if (result == "") result = prefix + prefixes2[e2]
-			else result = prefix + prefixes2[e2] + '-' + result
-		}
+		if (partE > 0) result = toTier1Abb(partE, e2, aas) + (result ? '-' + result : '')
 		e = Math.floor(e / 1000)
 		e2++
 	}
 	return result
 }
 
-function getShortAbbreviation(e) {
-	const prefixes = [
-	['', 'U', 'D', 'T', 'Qa', 'Qt', 'Sx', 'Sp', 'O', 'N'],
-	['', 'Dc', 'Vg', 'Tg', 'Qd', 'Qi', 'Se', 'St', 'Og', 'Nn'],
-	['', 'Ce', 'Dn', 'Tc', 'Qe', 'Qu', 'Sc', 'Si', 'Oe', 'Ne']]
-	const prefixes2 = ['', 'MI', 'MC', 'NA', 'PC', 'FM', 'AT', 'ZP', 'YC', 'XN', 
-	'VE', 'ME', 'DE', 'TE', 'TeE', 'PE', 'HE', 'HeE', 'OC', 'EC', 
-	'IS', 'MS', 'DS', 'TS', 'TeS', 'PS', 'HS', 'HeS', 'OS', 'ES', 
-	'TN', 'MTN', 'DTN', 'TTN', 'TeTN', 'PTN', 'HTN', 'HeTN', 'OTN', 'ETN', 
-	'TeC', 'MTeC', 'DTeC', 'TTeC', 'TeTeC', 'PTeC', 'HTeC', 'HeTeC', 'OTeC', 'ETeC', 
-	'PC', 'MPC', 'DPC', 'TPC', 'TePC', 'PPC', 'HPC', 'HePC', 'OPC', 'EPC', 
-	'HC', 'MHC', 'DHC', 'THC', 'TeHC', 'PHC', 'HHC', 'HeHC', 'OHC', 'EHC', 
-	'HeC', 'MHeC', 'DHeC', 'THeC', 'TeHeC', 'PHeC', 'HHeC', 'HeHeC', 'OHeC', 'EHeC', 
-	'OC', 'MOC', 'DOC', 'TOC', 'TeOC', 'POC', 'HOC', 'HeOC', 'OOC', 'EOC', 
-	'EC', 'MEC', 'DEC', 'TEC', 'TeEC', 'PEC', 'HEC', 'HeEC', 'OEC', 'EEC', 
-	'HT', 'MHT', 'DHT']
+function getShortAbbreviation(e, aas) {
 	var result = ''
 	var id = Math.floor(e / 3 - 1)
 	var log = Math.floor(Math.log10(id))
-	var step = Math.max(Math.floor(log / 3 - 3),0)
-	id = Math.round(id / Math.pow(10, Math.max(log - 9, 0))) * Math.pow(10, Math.max(log - 9, 0) % 3)
-        while (id > 0) {		
+	var step = Math.max(Math.floor(log / 3 - 2), 0)
+	id = Math.round(id / Math.pow(10, Math.max(log - 6, 0))) * Math.pow(10, Math.max(log - 6, 0) % 3)
+	while (id > 0) {		
 		var partE = id % 1000
-		if (partE > 0) {
-			if (partE == 1 && step > 0) var prefix = ""
-			else var prefix = prefixes[0][partE % 10] + prefixes[1][Math.floor(partE / 10) % 10] + prefixes[2][Math.floor(partE / 100)]
-			if (result == "") result = prefix + prefixes2[step]
-			else result = prefix + prefixes2[step] + '-' + result
-		}
-		id = Math.floor(id/1000)
+		if (partE > 0) result = toTier1Abb(partE, step, aas) + (result ? '-' + result : '')
+		id = Math.floor(id / 1000)
 		step++
 	}
 	return result
 }
 
-function getAASAbbreviation(x) {
-	if (x == 0) return "k"
-	if (x == 1) return "M"
-	if (x == 2) return "B"
-	if (x < 0) return "?"
-	const units = ["", "U", "D", "T", "Qa", "Qi", "Sx", "Sp", "Oc", "N"]
-	const tens = ["", player.options.aas.useDe ? "De" : "D", "Vg", "Tg", "Qg", "Qq", "Sg", "St", "Og", "Ng"]
-	const hundreds = ["", "Ce", "Dc", "Tc", "Qe", "Qu", "Se", "Su", "Oe", "Ne"]
-	const special = ["", "Mi", "Mc", "Na", "Pi", "Fe", "At", "Ze", "Yo", "Xn"]
-	const specialUnits = ["", "Me", player.options.aas.useDe ? "Du" : "De", "Te", "Tr", "Pe", "He", "Hp", "Ot", "En"]
-	const specialTens = ["", "Vc", "Ic", "Ti", "Tn", "Pc", "Hc", "Ht", "On", "Ec", "Ht"]
-	const log = Math.floor(Math.log10(x))
-	let result = ""
-	if (log > 8) {
-		var step = Math.floor(log / 3 - 3)
-		if (log > 29) step = Math.floor(log / 3 - 2)
-		x = Math.floor(x / Math.pow(10, step * 3 + log % 3)) * Math.pow(10, log % 3)
-	} else var step = 0
-	while (x > 0) {
-		var subResult = ""
-		var y = x % 1e3
-		if (y > 0) { 
-			if (y > 1 || step == 0) {
-				if (y % 100 == 2 && !player.options.aas.useDe) subResult = "Du" + hundreds[Math.floor(y / 100) % 10]
-				else subResult = units[y % 10] + tens[Math.floor(y / 10) % 10] + hundreds[Math.floor(y / 100) % 10]
-			}
-			var tier2 = special[step]
-			if (step > 9) tier2 = specialUnits[step % 10] + specialTens[Math.floor(step / 10)]
-			if (step > 10 && step < 20) tier2 = specialUnits[step % 10]
-			if (result != "" && player.options.aas.useHyphens) result = subResult + tier2 + "-" + result
-			else result = subResult + tier2 + result
-		}
-		x = Math.floor(x/1e3)
-		step++
-	}
-	if (log > 8) result += "s"
-	return result
+function toTier1Abb(t1, t2, aas) {
+	let prefixes = aas ? [
+		["", "U", "D", "T", "Qa", "Qi", "Sx", "Sp", "Oc", "N"],
+		["", "De", "Vg", "Tg", "Qg", "Qq", "Sg", "St", "Og", "Ng"],
+		["", "Ce", "Dc", "Tc", "Qe", "Qu", "Se", "Si", "Oe", "Ne"],
+	] : [
+		['', 'U', 'D', 'T', 'Qa', 'Qt', 'Sx', 'Sp', 'O', 'N'],
+		['', 'Dc', 'Vg', 'Tg', 'Qd', 'Qi', 'Se', 'St', 'Og', 'Nn'],
+		['', 'Ce', 'Dn', 'Tc', 'Qe', 'Qu', 'Sc', 'Si', 'Oe', 'Ne']
+	]
+	let o = t1 % 10
+	let t = Math.floor(t1 / 10) % 10
+	let h = Math.floor(t1 / 100) % 10
+
+	let r = ""
+	if (t1 > 1 || t2 == 0) r = prefixes[0][o] + prefixes[1][t] + prefixes[2][h]
+	r += toTier2Abb(t2, aas)
+
+	return r
 }
+
+function toTier2Abb(t2, aas) {
+	if (!t2) return ""
+
+	let abbs = [
+		["", "Mi", "Mc", "Na", aas ? "Pi" : "Pc", "At", "Zp", "Yc", "Xn"],
+		["", "Me", "Du", "Tre", "Te", "Pe", "He", "Hp", "Ot", "En"],
+		["", "", "Is", "Trc", "Tec", "Pec", "Hec", "Hpc", "Otc", "Enc"],
+		["", "Hec", "DHc", "TrH", "TeH", "PeH", "HeH", "HpH", "OtH", "EnH"]
+	]
+
+	let o = t2 % 10
+	let t = Math.floor(t2 / 10) % 10
+	let h = Math.floor(t2 / 100) % 10
+	let r = ''
+
+	if (t2 < 10) return abbs[0][t2]
+	if (t == 1 && o == 0) r += "Vec"
+	else r += abbs[1][o] + abbs[2][t]
+	r += abbs[3][h]
+
+	return standardize(r, aas)
+}
+
 
 var timeDivisions = ["minute", "hour", "day", "week", "month", "year"]
 var timeValues = {
@@ -359,15 +340,6 @@ function formatValue(notation, value, places, placesUnder1000, noInf) {
           return prefix + "⇈" + (value + count).toFixed(Math.max(places, 0, Math.min(count-1, 4)));
         }
 
-        if (notation === "AAS") {
-            if (power >= 3e9 + 3) return getAASAbbreviation(power / 3 - 1)
-            matissa = (matissa * Math.pow(10, power % 3)).toFixed(Math.max(places-power % 3, 0))
-            if (parseFloat(matissa) == 1e3) {
-                matissa = (1).toFixed(places)
-                power += 3
-            }
-            return matissa + getAASAbbreviation(Math.floor(power / 3) - 1)
-        }
         if (notation === "Time") {
             if (power >= 3e9 + 3) return getTimeAbbreviation(power / 3)
             matissa = (matissa * Math.pow(10, power % 3)).toFixed(Math.max(places - power % 3, 0))
@@ -392,11 +364,12 @@ function formatValue(notation, value, places, placesUnder1000, noInf) {
         }
         if (places < 0) matissa = ""
 
-        if (notation === "Standard" || notation === "Mixed scientific" || notation === "Mixed logarithm") {
-            if (power <= 303) return matissa + " " + FormatList[(power - (power % 3)) / 3];
-            else if (power > 3e11 + 2) return getShortAbbreviation(power) + "s";
-            else return matissa + " " + getAbbreviation(power);
-        } else if (notation === "Mixed engineering") {
+		if (notation === "Standard" || notation === "AAS" || notation === "Mixed scientific" || notation === "Mixed logarithm") {
+			let aas = notation === "AAS"
+			if (power <= 303) return matissa + " " + FormatList[(power - (power % 3)) / 3]
+			else if (power >= 3e9 + 3) return getShortAbbreviation(power, aas) + "s"
+			else return matissa + " " + getAbbreviation(power, aas)
+		} else if (notation === "Mixed engineering") {
             if (power <= 33) return matissa + " " + FormatList[(power - (power % 3)) / 3];
             else return (matissa + "e" + pow);
         } else if (notation === "Engineering") {

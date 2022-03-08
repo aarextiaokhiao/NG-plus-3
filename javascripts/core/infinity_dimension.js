@@ -116,11 +116,6 @@ function getInfDimPathIDMult(tier){
 function getStartingIDPower(tier){
 	var dim = player["infinityDimension" + tier]
 	var mult = dim.power
-	if (mult.gt(1)){
-		var log = mult.log10()
-		log = softcap(log, "idbase")
-		mult = pow10(log)
-	}
 	return mult
 }
 

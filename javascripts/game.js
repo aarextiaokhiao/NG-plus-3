@@ -24,34 +24,6 @@ var gameSpeed = 1
 
 
 function setupAutobuyerHTMLandData(){
-	buyAutobuyer = function(id, quick) {
-		if ((player.aarexModifications.ngmX>3 && id != 11 ? player.galacticSacrifice.galaxyPoints : player.infinityPoints).lt(player.autobuyers[id].cost)) return false
-
-		if (player.aarexModifications.ngmX>3 && id != 11) player.galacticSacrifice.galaxyPoints = player.galacticSacrifice.galaxyPoints.minus(player.autobuyers[id].cost)
-		else player.infinityPoints = player.infinityPoints.minus(player.autobuyers[id].cost)
-
-   		if (player.autobuyers[id].interval == 100) {
-			if (id > 8) {
-				if (!player.infinityUpgradesRespecced) return
-				if (player.autobuyers[id].bulkBought || player.infinityPoints.lt(1e4) || id > 10) return
-				player.infinityPoints = player.infinityPoints.sub(1e4)
-				player.autobuyers[id].bulkBought = true
-			} else {
-				if (player.autobuyers[id].bulk >= 1e100) return false
-		
-				player.autobuyers[id].bulk = Math.min(player.autobuyers[id].bulk * 2, 1e100);
-				player.autobuyers[id].cost = Math.ceil(2.4 * player.autobuyers[id].cost);
-			}
-		} else {
-			player.autobuyers[id].interval = Math.max(player.autobuyers[id].interval * getAutobuyerReduction(), 100);
-			if (player.autobuyers[id].interval > 120) player.autobuyers[id].cost *= 2; //if your last purchase wont be very strong, dont double the cost
-		}
-
-		if (!quick) updateAutobuyers()
-
-		return true
-	}
-
 	document.getElementById("buyerBtn" + 1).onclick = function () { 
 		buyAutobuyer(1 - 1);
 	}
@@ -98,16 +70,6 @@ function setupAutobuyerHTMLandData(){
 
 	document.getElementById("buyerBtnInf").onclick = function () {
 		buyAutobuyer(11);
-	}
-
-	toggleAutobuyerTarget = function(id) {
-		if (player.autobuyers[id-1].target == id) {
-			player.autobuyers[id-1].target = 10 + id
-			document.getElementById("toggleBtn" + id).textContent = "Buys until 10"
-		} else {
-			player.autobuyers[id-1].target = id
-			document.getElementById("toggleBtn" + id).textContent = "Buys singles"
-		}
 	}
 
 	for (let abnum = 1; abnum <= 8; abnum ++){
@@ -1568,7 +1530,7 @@ function showTab(tabName, init) {
 
 
 function updateMoney() {
-	el("z").textContent = shortenMoney(player.money) + " antimatter"
+	el("z").textContent = "AD: PNG+3R | " + shortenMoney(player.money) + (player.money.e >= 1e6 ? "" : " antimatter")
 	document.getElementById("coinAmount").textContent = shortenMoney(player.money)
 	var element2 = document.getElementById("matter");
 	if (player.currentChallenge == "postc6" || inQC(6)) element2.textContent = "There is " + formatValue(player.options.notation, player.matter, 2, 1) + " matter."; //TODO
@@ -4648,8 +4610,6 @@ function doNGP3UnlockStuff(){
 	if (player.money.gte(pow10(6e9)) && brSave.active && !ghSave.ghostlyPhotons.unl) doPhotonsUnlockStuff()
 	if (canUnlockBosonicLab() && !ghSave.wzb.unl) doBosonsUnlockStuff()
 	if (!tmp.ng3l) unlockHiggs()
-
-	doPostNGP3UnlockStuff()
 }
 
 function updateResetTierButtons(){
@@ -4715,7 +4675,12 @@ function givePerSecondNeuts(){
 
 function doPerSecondNGP3Stuff(){
 	if (!tmp.ngp3) return
-	
+
+	//Post-NG+3
+	doPostNGP3UnlockStuff()
+	updateGravitonsTab()
+
+	//NG+3
 	if (quSave.autoECN !== undefined) {
 		justImported = true
 		if (quSave.autoECN > 12) buyMasteryStudy("ec", quSave.autoECN,true)
@@ -4736,8 +4701,6 @@ function doPerSecondNGP3Stuff(){
 	doNGP3UnlockStuff()
 	notifyGhostifyMilestones()
 	if (quSave.autoOptions.assignQK && ghSave.milestones > 7) assignAll(true) 
-	
-	if (tmp.ngp3l) return 
 
 	if (player.achievements.includes("ng3p43")) if (ghSave.milestones >= 8) maxUpgradeColorDimPower()
 	givePerSecondNeuts()
@@ -4987,78 +4950,92 @@ function dimensionButtonDisplayUpdating(){
 }
 
 function ghostifyAutomationUpdating(diff){
-	if (ghostified && isAutoGhostsSafe) {
-		var colorShorthands=["r", "g", "b"]
-		for (var c = 1; c <= 3; c++) {
-			var shorthand=colorShorthands[c - 1]
-			if (isAutoGhostActive(c) && quSave.usedQuarks[shorthand].gt(0) && todSave[shorthand].quarks.eq(0)) unstableQuarks(shorthand)
-			if (isAutoGhostActive(12) && getUnstableGain(shorthand).max(todSave[shorthand].quarks).gte(pow10(Math.pow(2, 50)))) {
+	if (!ghostified) return
+	if (!isAutoGhostsSafe) return
+
+	//Ghostify Layer
+	if (player.ghostify.wzb.unl) {
+		if (isAutoGhostActive(17)) {
+			let ag = player.ghostify.automatorGhosts[17]
+
+			let change = getRemainingExtractTime().gte(ag.s || 60)
+			if (!change) change = ag.oc && ag.t >= 1 / (hasAch("ng3p103") ? 10 : 1)
+			if (change) changeTypeToExtract(tmp.bl.typeToExtract % br.limit + 1)
+
+			if (!tmp.bl.extracting) extract()
+		}
+		if (isAutoGhostActive(21)) {
+			let data = player.ghostify.wzb
+			let hasWNB = data.wnb.gt(0)
+
+			if (data.dPUse == 0 && data.dP.gt(0)) useAntiPreon(hasWNB ? 3 : 1)
+			if (data.dPUse == 1) useAntiPreon(hasWNB ? 3 : 2)
+			if (data.dPUse == 2) useAntiPreon(1)
+			if (data.dPUse == 3 && !hasWNB) useAntiPreon(2)
+		}
+	}
+	if (isAutoGhostActive(19)) {
+		let ag = player.ghostify.automatorGhosts[19]
+		let perSec = 5
+		ag.t = (ag.t || 0) + diff * perSec
+		let times = Math.floor(ag.t)
+		if (times > 0) {
+			let max = times
+			if (isEnchantUsed(35)) max = tmp.bEn[35].times(max)
+			autoMaxAllEnchants(max)
+			ag.t = ag.t - times
+		}
+	}
+	if (isAutoGhostActive(22)) {
+		lightEmpowerment(true)
+	}
+	if (isAutoGhostActive(15)) if ((hasNU(16) || inBigRip()) && getGHPGain().gte(player.ghostify.automatorGhosts[15].a)) ghostify(true)
+
+	//Quantum Layer
+	if (!tmp.quUnl) return
+
+	let limit = player.ghostify.automatorGhosts[13].o || 1 / 0
+	if (player.masterystudies.includes("d13") && isAutoGhostActive(13)) {
+		if (tmp.qu.bigRip.active) {
+			if (tmp.qu.time >= player.ghostify.automatorGhosts[13].u * 10 && tmp.qu.bigRip.times <= limit) quantumReset(true, true)
+		} else if (tmp.qu.time >= player.ghostify.automatorGhosts[13].t * 10 && tmp.qu.bigRip.times < limit) bigRip(true)
+	}
+
+	if (!tmp.quUnl) return
+	if (AUTO_QC.auto.on) {
+		if (tmp.inQCs.length != 2) AUTO_QC.next()
+		else if (isQuantumReached()) {
+			$.notify("QCs " + tmp.inQCs[0] + " and " + tmp.inQCs[1] + " has been automatically completed by Auto-Challenge Sweeper Ghost!", "success")
+			tmp.preQCMods = tmp.qu.qcsMods.current
+			onQCCompletion(tmp.inQCs, player.money, tmp.qu.time, player.dilation.times)
+			AUTO_QC.next()
+		} else if (tmp.qu.time > AUTO_QC.auto.time * 10) AUTO_QC.next()
+	}
+
+	if (!tmp.quActive) return
+	if (player.masterystudies.includes("d12")) {
+		let colorShorthands = ["r", "g", "b"]
+		for (let c = 1; c <= 3; c++) {
+			let shorthand = colorShorthands[c - 1]
+			if (isAutoGhostActive(c) && tmp.qu.usedQuarks[shorthand].gt(0) && tmp.qu.tod[shorthand].quarks.eq(0)) unstableQuarks(shorthand)
+			if (isAutoGhostActive(12) && getUnstableGain(shorthand).max(tmp.qu.tod[shorthand].quarks).gte(Decimal.pow(10, Math.pow(2, 50)))) {
 				unstableQuarks(shorthand)
 				radioactiveDecay(shorthand)
 			}
 			if (isAutoGhostActive(5)) maxBranchUpg(shorthand)
 		}
 		if (isAutoGhostActive(6)) maxTreeUpg()
-		if (isAutoGhostActive(11)) {
-			var ag=ghSave.automatorGhosts[11]
-			var preonGenerate=quSave.replicants.quarks.div(getGatherRate().total).gte(ag.pw)&&quSave.replicants.quarks.div(getQuarkLossProduction()).gte(ag.lw)&&nfSave.charge.div(ag.cw).lt(1)
-			if (nfSave.producingCharge!=preonGenerate && !ghSave.gravitons.upgs.includes(4)) startProduceQuarkCharge()
+	}
+	if (player.masterystudies.includes("d11") && isAutoGhostActive(11)) {
+		let ag = player.ghostify.automatorGhosts[11]
+		ag.t = (ag.t || 0) + diff
+
+		let start = tmp.qu.nanofield.producingCharge ? ag.t <= ag.cw : ag.t >= ag.pw
+		if (tmp.qu.nanofield.producingCharge != start) {
+			startProduceQuarkCharge()
+			if (start) ag.t = 0
 		}
-		if (isAutoGhostActive(13)) {
-			if (brSave.active) {
-				if (quSave.time>=ghSave.automatorGhosts[13].u*10) quantumReset(true,true,0,false)
-			} else if (quSave.time>=ghSave.automatorGhosts[13].t*10) bigRip(true)
-		}
-		if (isAutoGhostActive(15)) if (brSave.active && getGHPGain().gte(ghSave.automatorGhosts[15].a)) ghostify(true)
-		if (tmp.ngp3l) return
-		if (isAutoGhostActive(16)) maxNeutrinoMult()
-		if (isAutoGhostActive(18)) {
-			var added = 0
-			var addedTotal = 0
-			for (var u = 1; u <= 4; u++) {
-				while (buyElectronUpg(u, true)) {
-					added++
-					addedTotal++
-				}
-				if (added > 0) quSave.electrons.mult += added * getElectronUpgIncrease(u)
-			}
-			if (addedTotal > 0) updateElectrons(true)
-		}
-		if (isAutoGhostActive(20)) buyMaxBosonicUpgrades()
-		if (ghSave.wzb.unl) {
-			if (isAutoGhostActive(17)) {
-				let ag = ghSave.automatorGhosts[17]
-	
-				let change = getRemainingExtractTime().gte(ag.s || 60)
-				if (!change) change = ag.oc && ag.t >= 1 / 10
-				if (change) changeTypeToExtract(tmp.bl.typeToExtract % br.limit + 1)
-	
-				if (!tmp.bl.extracting) extract()
-			}
-			if (isAutoGhostActive(21)) {
-				let data = ghSave.wzb
-				let hasWNB = data.wnb.gt(0)
-	
-				if (data.dPUse == 0 && data.dP.gt(0)) useAntiPreon(hasWNB ? 3 : 1)
-				if (data.dPUse == 1) useAntiPreon(hasWNB ? 3 : 2)
-				if (data.dPUse == 2) useAntiPreon(1)
-				if (data.dPUse == 3 && !hasWNB) useAntiPreon(2)
-			}
-		}
-		if (isAutoGhostActive(19)) {
-			let ag = ghSave.automatorGhosts[19]
-			let perSec = 5
-			ag.t = (ag.t || 0) + diff * perSec
-			let times = Math.floor(ag.t)
-			if (times > 0) {
-				autoMaxAllEnchants()
-				ag.t = ag.t - times
-			}
-		}
-		if (isAutoGhostActive(22)) {
-			lightEmpowerment(true)
-		}
-	} 
+	}
 }
 
 function WZBosonsUpdating(diff){
@@ -5092,11 +5069,11 @@ function nanofieldProducingChargeUpdating(diff){
 	var rate = getQuarkChargeProduction()
 	var loss = getQuarkLossProduction()
 	var toSub = loss.times(diff).min(quSave.replicants.quarks)
-	if (toSub.eq(0) && !ghSave.gravitons.upgs.includes(4)) {
+	if (toSub.eq(0)) {
 		nfSave.producingCharge = false
 		document.getElementById("produceQuarkCharge").innerHTML="Start production of preon charge.<br>(You will not get preons when you do this.)"
 	} else {
-		let chGain = hasGravUpg(4) ? toSub : toSub.div(loss).times(rate)
+		let chGain = toSub.div(loss).times(rate)
 		if (!hasBDUpg(3)) quSave.replicants.quarks = quSave.replicants.quarks.sub(toSub)
 		nfSave.charge = nfSave.charge.add(chGain)
 	}
@@ -5105,15 +5082,11 @@ function nanofieldProducingChargeUpdating(diff){
 function nanofieldUpdating(diff){
 	var AErate = getQuarkAntienergyProduction()
 	var toAddAE = AErate.times(diff).min(getQuarkChargeProductionCap().sub(nfSave.antienergy))
-	let dkc = false
-	if (aarMod.ngp5V === undefined) dkc = false
-	else dkc = ghSave.gravitons.upgs.includes(4)
-	if (nfSave.producingCharge || dkc) nanofieldProducingChargeUpdating(diff)
+	if (nfSave.producingCharge) nanofieldProducingChargeUpdating(diff)
 	if (toAddAE.gt(0)) {
 		nfSave.antienergy = nfSave.antienergy.add(toAddAE).min(getQuarkChargeProductionCap())
 		nfSave.energy = nfSave.energy.add(toAddAE.div(AErate).times(getQuarkEnergyProduction()))
 		tmp.nanofield_free_rewards = 0
-		if (hasGravUpg(6)) tmp.nanofield_free_rewards += tmp.gravitons.upg_eff[6]||0
 		updateNextPreonEnergyThreshold()
 		if (nfSave.power > nfSave.rewards) {
 			nfSave.rewards = nfSave.power
@@ -5219,7 +5192,7 @@ function replicantOverallUpdating(diff){
 	if (quSave.replicants.eggons.lt(1)) quSave.replicants.babyProgress = E(0)
 	replicantBabiesGrowingUpUpdating(diff)
 	if (quSave.replicants.babies.lt(1)) quSave.replicants.ageProgress = E(0)
-	if (!nfSave.producingCharge || ghSave.gravitons.upgs.includes(4)) quSave.replicants.quarks = quSave.replicants.quarks.add(getGatherRate().total.max(0).times(diff))
+	if (!nfSave.producingCharge) quSave.replicants.quarks = quSave.replicants.quarks.add(getGatherRate().total.max(0).times(diff))
 }
 
 function quantumOverallUpdating(diff){

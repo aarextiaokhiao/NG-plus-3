@@ -698,7 +698,7 @@ function getQuantumOnGhostifyData(bm, nBRU, nBEU){
 			power: 0,
 			powerThreshold: E(50),
 			rewards: bm>12?16:0,
-			producingCharge: ghSave.gravitons.upgs.includes(4)?nfSave.producingCharge:false,
+			producingCharge: false,
 			apgWoke: nfSave.apgWoke
 		},
 		reachedInfQK: bm,
