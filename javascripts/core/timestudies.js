@@ -69,35 +69,35 @@ function maxTheorems() {
 
 function updateTheoremButtons() {
 	if (player.dilation.upgrades.includes(10)) {
-		document.getElementById("theoremmax").style.display = "none"
-		document.getElementById("theoremam").style.display = "none"
-		document.getElementById("theoremip").style.display = "none"
-		document.getElementById("theoremep").style.display = "none"
-		document.getElementById("timetheorems").style.bottom = "0"
-		document.getElementById("presetsbtn").style.bottom = "-3px"
-		document.getElementById("theorembuybackground").style.bottom = "-80px"
+		el("theoremmax").style.display = "none"
+		el("theoremam").style.display = "none"
+		el("theoremip").style.display = "none"
+		el("theoremep").style.display = "none"
+		el("timetheorems").style.bottom = "0"
+		el("presetsbtn").style.bottom = "-3px"
+		el("theorembuybackground").style.bottom = "-80px"
 	} else {
-		document.getElementById("theoremmax").style.display = ""
-		document.getElementById("theoremam").style.display = ""
-		document.getElementById("theoremip").style.display = ""
-		document.getElementById("theoremep").style.display = ""
-		document.getElementById("timetheorems").style.bottom = "80px"
-		document.getElementById("presetsbtn").style.bottom = "77px"
-		document.getElementById("theorembuybackground").style.bottom = "0"
-		document.getElementById("theoremam").className = player.money.gte(player.timestudy.amcost) ? "timetheorembtn" : "timetheorembtnlocked"
-		document.getElementById("theoremip").className = player.infinityPoints.gte(player.timestudy.ipcost) ? "timetheorembtn" : "timetheorembtnlocked"
-		document.getElementById("theoremep").className = player.eternityPoints.gte(player.timestudy.epcost) ? "timetheorembtn" : "timetheorembtnlocked"
-		document.getElementById("theoremep").innerHTML = "Buy Time Theorems <br>Cost: " + shortenDimensions(player.timestudy.epcost) + " EP"
-		document.getElementById("theoremip").innerHTML = "Buy Time Theorems <br>Cost: " + shortenCosts(player.timestudy.ipcost) + " IP"
-		document.getElementById("theoremam").innerHTML = "Buy Time Theorems <br>Cost: " + shortenCosts(player.timestudy.amcost)
-		document.getElementById("theoremmax").innerHTML = (speedrunMilestonesReached > 2 && player.masterystudies) ? ("Auto max: "+(player.autoEterOptions.tt ? "ON" : "OFF")) : "Buy max Theorems"
+		el("theoremmax").style.display = ""
+		el("theoremam").style.display = ""
+		el("theoremip").style.display = ""
+		el("theoremep").style.display = ""
+		el("timetheorems").style.bottom = "80px"
+		el("presetsbtn").style.bottom = "77px"
+		el("theorembuybackground").style.bottom = "0"
+		el("theoremam").className = player.money.gte(player.timestudy.amcost) ? "timetheorembtn" : "timetheorembtnlocked"
+		el("theoremip").className = player.infinityPoints.gte(player.timestudy.ipcost) ? "timetheorembtn" : "timetheorembtnlocked"
+		el("theoremep").className = player.eternityPoints.gte(player.timestudy.epcost) ? "timetheorembtn" : "timetheorembtnlocked"
+		el("theoremep").innerHTML = "Buy Time Theorems <br>Cost: " + shortenDimensions(player.timestudy.epcost) + " EP"
+		el("theoremip").innerHTML = "Buy Time Theorems <br>Cost: " + shortenCosts(player.timestudy.ipcost) + " IP"
+		el("theoremam").innerHTML = "Buy Time Theorems <br>Cost: " + shortenCosts(player.timestudy.amcost)
+		el("theoremmax").innerHTML = (speedrunMilestonesReached > 2 && player.masterystudies) ? ("Auto max: "+(player.autoEterOptions.tt ? "ON" : "OFF")) : "Buy max Theorems"
 	}
 	var tt = player.timestudy.theorem
 	var html = "<span style='display:inline' class=\"TheoremAmount\">" + (tt >= 1e5 ? shortenMoney(tt) : getFullExpansion(Math.floor(tt))) + "</span> "
 	if (tt >= 1e100) html += " Time Theorems" + (player.timestudy.theorem == 1e200 ? " (cap)" : "")
 	else if (tt == 1) html = "You have " + html + " Time Theorem."
 	else html = "You have " + html + " Time Theorems."
-	document.getElementById("timetheorems").innerHTML = html
+	el("timetheorems").innerHTML = html
 }
 
 function buyTimeStudy(name, check, quickBuy) {
@@ -113,27 +113,27 @@ function buyTimeStudy(name, check, quickBuy) {
 		player.timestudy.studies.push(name)
 		player.timestudy.theorem -= cost
 		if (name == 71 || name == 81 || name == 91 || name == 101) {
-			document.getElementById(name).className = "timestudybought normaldimstudy"
+			el(name).className = "timestudybought normaldimstudy"
 		} else if (name == 72 || name == 82 || name == 92 || name == 102) {
-			document.getElementById(name).className = "timestudybought infdimstudy"
+			el(name).className = "timestudybought infdimstudy"
 		} else if (name == 73 || name == 83 || name == 93 || name == 103) {
-			document.getElementById(name).className = "timestudybought timedimstudy"
+			el(name).className = "timestudybought timedimstudy"
 		} else if (name == 121 || name == 131 || name == 141) {
-			document.getElementById(name).className = "timestudybought activestudy"
+			el(name).className = "timestudybought activestudy"
 		} else if (name == 122 || name == 132 || name == 142) {
-			document.getElementById(name).className = "timestudybought passivestudy"
+			el(name).className = "timestudybought passivestudy"
 		} else if (name == 123 || name == 133 || name == 143) {
-			document.getElementById(name).className = "timestudybought idlestudy"
+			el(name).className = "timestudybought idlestudy"
 		} else if (name == 221 || name == 224 || name == 225 || name == 228 || name == 231 || name == 234) {
-			document.getElementById(name).className = "timestudybought darkstudy"
+			el(name).className = "timestudybought darkstudy"
 		} else if (name == 222 || name == 223 || name == 226 || name == 227 || name == 232 || name == 233) {
-			document.getElementById(name).className = "timestudybought lightstudy"
+			el(name).className = "timestudybought lightstudy"
 		} else {
-			document.getElementById(name).className = "timestudybought"
+			el(name).className = "timestudybought"
 		}
 		if (name == 131 && speedrunMilestonesReached < 20) {
-			if (player.replicanti.galaxybuyer) document.getElementById("replicantiresettoggle").textContent = "Auto galaxy ON (disabled)"
-			else document.getElementById("replicantiresettoggle").textContent = "Auto galaxy OFF (disabled)"
+			if (player.replicanti.galaxybuyer) el("replicantiresettoggle").textContent = "Auto galaxy ON (disabled)"
+			else el("replicantiresettoggle").textContent = "Auto galaxy OFF (disabled)"
 		}
 		if (quickBuy) return
 		updateTimeStudyButtons(true)
@@ -160,7 +160,7 @@ function buyDilationStudy(name, cost) {
 		}
 		player.dilation.studies.push(name)
 		player.timestudy.theorem -= cost
-		document.getElementById("dilstudy"+name).className = "dilationupgbought"
+		el("dilstudy"+name).className = "dilationupgbought"
 		updateTimeStudyButtons(true)
 		drawStudyTree()
 	}
@@ -252,14 +252,14 @@ function updateTimeStudyButtons(changed, forceupdate = false) {
 	performedTS = true
 	if (player.boughtDims) {
 		var locked = getTotalTT(player) < 60
-		document.getElementById("nextstudy").textContent = locked ? "Next time study set unlock at 60 total Time Theorems." : ""
-		document.getElementById("tsrow3").style.display = locked ? "none" : ""
+		el("nextstudy").textContent = locked ? "Next time study set unlock at 60 total Time Theorems." : ""
+		el("tsrow3").style.display = locked ? "none" : ""
 		for (var id = 1; id < (locked ? 5 : 7); id++) {
 			var b = player.timestudy.ers_studies[id]
 			var c = b + 1
-			document.getElementById("ts" + id + "bought").textContent = getFullExpansion(b)
-			document.getElementById("ts" + id + "cost").textContent = getFullExpansion(c)
-			document.getElementById("ts" + id).className = "eternityttbtn" + (player.timestudy.theorem < c ? "locked" : "")
+			el("ts" + id + "bought").textContent = getFullExpansion(b)
+			el("ts" + id + "cost").textContent = getFullExpansion(c)
+			el("ts" + id).className = "eternityttbtn" + (player.timestudy.theorem < c ? "locked" : "")
 		}
 		return
 	}
@@ -304,20 +304,20 @@ function updateTimeStudyButtons(changed, forceupdate = false) {
 					className = "timestudylocked"
 				}
 			}
-			document.getElementById(all[i]).className = className
+			el(all[i]).className = className
 		}
 	}
 
 	for (var i = 1; i < 7; i++) {
-		if (player.dilation.studies.includes(i)) document.getElementById("dilstudy"+i).className = "dilationupgbought"
-		else if (player.timestudy.theorem >= ([null, 5e3, 1e6, 1e7, 1e8, 1e9, 1e24])[i] && (player.dilation.studies.includes(i - 1) || (i < 2 && ECTimesCompleted("eterc11") > 4 && ECTimesCompleted("eterc12") > 4 && getTotalTT(player) >= 13e3))) document.getElementById("dilstudy" + i).className = "dilationupg"
-		else document.getElementById("dilstudy" + i).className = "timestudylocked"
+		if (player.dilation.studies.includes(i)) el("dilstudy"+i).className = "dilationupgbought"
+		else if (player.timestudy.theorem >= ([null, 5e3, 1e6, 1e7, 1e8, 1e9, 1e24])[i] && (player.dilation.studies.includes(i - 1) || (i < 2 && ECTimesCompleted("eterc11") > 4 && ECTimesCompleted("eterc12") > 4 && getTotalTT(player) >= 13e3))) el("dilstudy" + i).className = "dilationupg"
+		else el("dilstudy" + i).className = "timestudylocked"
 	}
-	document.getElementById("dilstudy6").style.display = player.meta ? "" : "none"
-	document.getElementById("masteryportal").style.display = player.masterystudies ? "" : "none"
+	el("dilstudy6").style.display = player.meta ? "" : "none"
+	el("masteryportal").style.display = player.masterystudies ? "" : "none"
 	if (tmp.ngp3) {
-		document.getElementById("masteryportal").innerHTML = player.dilation.upgrades.includes("ngpp6") ? "Mastery portal<span>Continue into mastery studies.</span>" : !player.dilation.studies.includes(1) ? "To be continued...." : "Mastery portal (" + (player.dilation.studies.includes(6) ? "66%: requires "+shortenCosts(1e100)+" dilated time upgrade)" : "33%: requires meta-dimensions)") 
-		document.getElementById("masteryportal").className = player.dilation.upgrades.includes("ngpp6") ? "dilationupg" : "timestudylocked"
+		el("masteryportal").innerHTML = player.dilation.upgrades.includes("ngpp6") ? "Mastery portal<span>Continue into mastery studies.</span>" : !player.dilation.studies.includes(1) ? "To be continued...." : "Mastery portal (" + (player.dilation.studies.includes(6) ? "66%: requires "+shortenCosts(1e100)+" dilated time upgrade)" : "33%: requires meta-dimensions)") 
+		el("masteryportal").className = player.dilation.upgrades.includes("ngpp6") ? "dilationupg" : "timestudylocked"
 	}
 }
 
@@ -327,23 +327,23 @@ function updateBoughtTimeStudies() {
 		if (typeof(num) != "number") num = parseInt(num)
 		if (!all.includes(num)) continue
 		if (num == 71 || num == 81 || num == 91 || num == 101) {
-			document.getElementById(num).className = "timestudybought normaldimstudy"
+			el(num).className = "timestudybought normaldimstudy"
 		} else if (num == 72 || num == 82 || num == 92 || num == 102) {
-			document.getElementById(num).className = "timestudybought infdimstudy"
+			el(num).className = "timestudybought infdimstudy"
 		} else if (num == 73 || num == 83 || num == 93 || num == 103) {
-			document.getElementById(num).className = "timestudybought timedimstudy"
+			el(num).className = "timestudybought timedimstudy"
 		} else if (num == 121 || num == 131 || num == 141) {
-			document.getElementById(num).className = "timestudybought activestudy"
+			el(num).className = "timestudybought activestudy"
 		} else if (num == 122 || num == 132 || num == 142) {
-			document.getElementById(num).className = "timestudybought passivestudy"
+			el(num).className = "timestudybought passivestudy"
 		} else if (num == 123 || num == 133 || num == 143) {
-			document.getElementById(num).className = "timestudybought idlestudy"
+			el(num).className = "timestudybought idlestudy"
 		} else if (num == 221 || num == 224 || num == 225 || num == 228 || num == 231 || num == 234) {
-			document.getElementById(num).className = "timestudybought darkstudy"
+			el(num).className = "timestudybought darkstudy"
 		} else if (num == 222 || num == 223 || num == 226 || num == 227 || num == 232 || num == 233) {
-			document.getElementById(num).className = "timestudybought lightstudy"
+			el(num).className = "timestudybought lightstudy"
 		} else {
-			document.getElementById(num).className = "timestudybought"
+			el(num).className = "timestudybought"
 		}
 	}	
 }
@@ -427,8 +427,8 @@ function respecTimeStudies(force, presetLoad) {
 	if (!presetLoad) updateTimeStudyButtons(true)
 	if (gotAch) giveAchievement("You do know how these work, right?")
 	if (!GUBought("gb3")) ipMultPower = 2
-	if (player.replicanti.galaxybuyer) document.getElementById("replicantiresettoggle").textContent = "Auto galaxy ON"
-	else document.getElementById("replicantiresettoggle").textContent = "Auto galaxy OFF"
+	if (player.replicanti.galaxybuyer) el("replicantiresettoggle").textContent = "Auto galaxy ON"
+	else el("replicantiresettoggle").textContent = "Auto galaxy OFF"
 }
 
 function respecUnbuyableTimeStudies() {
@@ -483,7 +483,7 @@ function importSpec () {
 }
 
 function exportStudyTree() {
-	let output = document.getElementById('output');
+	let output = el('output');
 	let parent = output.parentElement;
 
 	parent.style.display = "";
@@ -559,7 +559,7 @@ function importStudyTree(input) {
 			if (ec > 12) {
 				buyMasteryStudy("ec", ec, true)
 				changeMS = true
-			} else document.getElementById("ec" + parseInt(input.split("|")[1]) + "unl").click();
+			} else el("ec" + parseInt(input.split("|")[1]) + "unl").click();
 			setTimeout(function(){ justImported = false; }, 100);
 		}
 		if (player.masterystudies.length > oldLengthMS) {
@@ -604,7 +604,7 @@ function new_preset(importing) {
 	presets[placement] = {preset:input}
 	localStorage.setItem(btoa(presetPrefix+placement), btoa(JSON.stringify(presets[placement])))
 	poData.push(placement)
-	latestRow = document.getElementById("presets").insertRow(loadedPresets)
+	latestRow = el("presets").insertRow(loadedPresets)
 	latestRow.innerHTML = getPresetLayout(placement)
 	loadedPresets++
 	changePresetTitle(placement, loadedPresets)
@@ -666,7 +666,7 @@ function delete_preset(presetId) {
 			delete presets[presetId]
 			localStorage.removeItem(btoa(presetPrefix + presetId))
 			alreadyDeleted = true
-			document.getElementById("presets").deleteRow(id)
+			el("presets").deleteRow(id)
 			loadedPresets--
 		} else newPresetsOrder.push(poData[id])
 	}
@@ -694,8 +694,8 @@ function move_preset(id,offset) {
 	var temp = poData[placement]
 	poData[placement] = poData[placement+offset]
 	poData[placement+offset] = temp
-	document.getElementById("presets").rows[placement].innerHTML = getPresetLayout(poData[placement])
-	document.getElementById("presets").rows[placement+offset].innerHTML = getPresetLayout(id)
+	el("presets").rows[placement].innerHTML = getPresetLayout(poData[placement])
+	el("presets").rows[placement+offset].innerHTML = getPresetLayout(id)
 	changePresetTitle(poData[placement], placement)
 	changePresetTitle(poData[placement+offset], placement + offset)
 	localStorage.setItem(metaSaveId, btoa(JSON.stringify(metaSave)))
@@ -707,7 +707,7 @@ function openStudyPresets() {
 	let saveOnERS = !(!player.boughtDims)
 	let saveOnNGP3 = player.masterystudies !== undefined
 	if (saveOnERS != onERS) {
-		document.getElementById("presets").innerHTML=""
+		el("presets").innerHTML=""
 		presets = {}
 		onERS = saveOnERS
 		if (onERS) presetPrefix = prefix+"ERS_ST_"
@@ -716,11 +716,11 @@ function openStudyPresets() {
 	} else if (saveOnNGP3 != onNGP3) {
 		onNGP3 = saveOnNGP3
 		for (var p = 0; p < loadedPresets; p++) {
-			document.getElementById("presets").rows[p].innerHTML = getPresetLayout(poData[p])
+			el("presets").rows[p].innerHTML = getPresetLayout(poData[p])
 			changePresetTitle(poData[p], p + 1)
 		}
 	}
-	document.getElementById("presetsmenu").style.display = "block";
+	el("presetsmenu").style.display = "block";
 	clearInterval(loadSavesIntervalId)
 	occupied = false
 	loadSavesIntervalId=setInterval(function(){
@@ -730,7 +730,7 @@ function openStudyPresets() {
 			clearInterval(loadSavesIntervalId)
 			return
 		} else if (!onLoading) {
-			latestRow = document.getElementById("presets").insertRow(loadedPresets)
+			latestRow = el("presets").insertRow(loadedPresets)
 			onLoading = true
 		}
 		try {
@@ -756,7 +756,7 @@ function changePresetTitle(id, placement) {
 			localStorage.setItem(btoa(presetPrefix + id), btoa(JSON.stringify(presets[id])))
 		} else presets[id] = JSON.parse(atob(preset))
 	}
-	document.getElementById("preset_" + id + "_title").textContent = presets[id].title ? presets[id].title : "Preset #" + placement
+	el("preset_" + id + "_title").textContent = presets[id].title ? presets[id].title : "Preset #" + placement
 }
 
 //Time Study Effects

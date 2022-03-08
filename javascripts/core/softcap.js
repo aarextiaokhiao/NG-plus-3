@@ -1,36 +1,4 @@
 var softcap_data = {
-	dt_log: {
-		1: {
-			func: "pow",
-			start: 4e3,
-			pow: 0.6,
-			derv: true
-		},
-		2: {
-			func: "pow",
-			start: 5e3,
-			pow: 0.4,
-			derv: true
-		},
-		3: {
-			func: "pow",
-			start: 6e3,
-			pow: 0.2,
-			derv: true
-		},
-		4: {
-			func: "pow",
-			start: 8e3,
-			pow: 0.6,
-			derv: false
-		},
-		5: {
-			func: "pow",
-			start: 10e3,
-			pow: 0.5,
-			derv: false
-		}
-	},
 	ts_reduce_log: {
 		1: {
 			func: "pow",
@@ -210,68 +178,17 @@ var softcap_data = {
 			derv: false
 		}
 	},
-	ig_log_high: {
-		1: { 
-			func: "log",
-			start: 1e20,
-			pow: 10,
-			mul: 5
-		},
-		2: {
-			func: "pow",
-			start: 1e21,
-			pow: 0.2,
-			derv: false
-		},
-		3: { 
-			func: "log", 
-			start: 1e22,
-			pow: 11,
-			mul: 4,
-			add: 12
-		},
-		4: {
-			func: "pow",
-			start: 1e23,
-			pow: 0.1,
-			derv: false
-		}
-	},
 	bam: {
 		1: {
 			func: "pow",
 			start: E(1e80),
-			pow: 0.9,
+			pow: 0.8,
 			derv: true
 		},
 		2: {
 			func: "pow",
 			start: E(1e90),
-			pow: 0.8,
-			derv: true
-		},
-		3: {
-			func: "pow",
-			start: E(1e100),
 			pow: 0.7,
-			derv: true
-		},
-		4: {
-			func: "pow",
-			start: E(1e110),
-			pow: 0.6,
-			derv: true
-		},
-		5: {
-			func: "pow",
-			start: E(1e120),
-			pow: 0.5,
-			derv: true
-		},
-		6: {
-			func: "pow",
-			start: E(1e130),
-			pow: 0.4,
 			derv: true
 		}
 	},
@@ -301,38 +218,14 @@ var softcap_data = {
 			start: 1e3,
 			pow: .8,
 			derv: true
-		},
-		2: {
-			func: "pow",
-			start: 3e3,
-			pow: .7,
-			derv: true
-		},
-		3: {
-			func: "pow",
-			start: 1e4,
-			pow: .6,
-			derv: true
-		},
-		4: {
-			func: "pow",
-			start: 3e4,
-			pow: .5,
-			derv: true
 		}
 	},
 	qc3reward: {
 		1: {
 			func: "pow",
 			start: 1331,
-			pow: .5,
+			pow: 1/3,
 			derv: false
-		}, 
-		2: {
-			func: "log",
-			start: 4096,
-			mul: 4 / Math.log10(8), /* log2(4096)=12, so 4/3s that is 16 and 16**3 = 4096 */
-			pow: 3
 		}
 	}
 }

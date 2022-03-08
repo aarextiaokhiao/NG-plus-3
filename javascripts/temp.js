@@ -39,7 +39,7 @@ function updateTemp() {
 		}
 		if (player.masterystudies.includes("d10")) tmp.edgm = getEmperorDimensionGlobalMultiplier() //Update global multiplier of all Emperor Dimensions
 		tmp.be = brSave && brSave.active && beSave.break
-		tmp.rg4 = quSave.upgrades.includes("rg4") && (quSave.rg4 || !tmp.ngp3l || inQC(1) || QCIntensity(1))
+		tmp.rg4 = quSave.upgrades.includes("rg4")
 		tmp.tue = getTreeUpgradeEfficiency()
 	} else tmp.be = false
 	tmp.sacPow = calcTotalSacrificeBoost()
@@ -143,7 +143,7 @@ function updateBlueLightBoostTemp(){
 function updateIndigoLightBoostTemp(){
 	var loglighteffect5 = tmp.effL[5] > 25 ? Math.sqrt(tmp.effL[5]*10+375) : tmp.effL[5]
 	loglighteffect5 *= tmp.newNGP3E ? 20 : 10
-	if (!tmp.ngp3l && loglighteffect5 > 729) loglighteffect5 = Math.pow(loglighteffect5 * 27, 2 / 3)
+	if (loglighteffect5 > 729) loglighteffect5 = Math.pow(loglighteffect5 * 27, 2 / 3)
 	tmp.le[5] = pow10(loglighteffect5) 
 }
 
@@ -151,7 +151,6 @@ function updateVioletLightBoostTemp(){
 	var lightexp6 = tmp.newNGP3E ? .36 : 1/3
 	var loglighteffect6 = Math.pow(player.postC3Reward.log10() * tmp.effL[6], lightexp6) * 2 
 	if (loglighteffect6 > 15e3) loglighteffect6 = 15e3 * Math.pow(loglighteffect6 / 15e3, .6)
-	if (!tmp.ngp3l && loglighteffect6 > 5e4) loglighteffect6 = Math.sqrt(loglighteffect6 * 5e4)
 	tmp.le[6] = pow10(loglighteffect6)
 }
 
@@ -197,7 +196,7 @@ function updateFixedLightTemp() {
 function updateInfiniteTimeTemp() {
 	var x = (3 - getTickspeed().log10()) * 0.000005
 	if (tmp.ngp3) {
-		if (!tmp.ngp3l && player.achievements.includes("ng3p56")) x *= 1.03
+		if (hasAch("ng3p56")) x *= 1.03
 		if (ghostified && ghSave.neutrinos.boosts>3) x *= tmp.nb[4]
 		if (tmp.be && !player.dilation.active && beSave.upgrades.includes(8)) x *= getBreakUpgMult(8)
 		if (isLEBoostUnlocked(8)) x *= tmp.leBonus[8]
@@ -208,7 +207,7 @@ function updateInfiniteTimeTemp() {
 			if (tmp.be && x > 1e7) x = Math.pow(93 + Math.log10(x), 3.5)
 		}
 		if ((!tmp.ngp3l || aarMod.ngudpV) && player.dilation.active && x > 1e5) x = Math.pow(1e20 * x, .2)
-		if (!tmp.ngp3l && !brSave.active) x = softcap(x, "inf_time_log_2")
+		if (!brSave.active) x = softcap(x, "inf_time_log_2")
 	}
 	tmp.it = pow10(x)
 }
@@ -220,35 +219,12 @@ function updateIntergalacticTemp() {
 	if (tmp.be && player.dilation.active && beSave.upgrades.includes(10)) x *= getBreakUpgMult(10)
 	if (!tmp.ngp3l) x += tmp.effAeg
 	tmp.igg = x
-
 	tmp.igs = 0 //Intergalactic Scaling ; used in the display text
-	var igLog = Math.pow(x, Math.min(Math.sqrt(Math.log10(Math.max(x,1))) * 2, 2.5)) //Log10 of reward
-	
-	if (brSave.active && !tmp.ngp3l) {
-		if (igLog > 1e9) { //Distant
-			igLog = Math.pow(igLog * 1e3, .75)
-			tmp.igs = 1
-		}
-		if (igLog > 1e11) { //Further
-			igLog = Math.pow(Math.log10(igLog) - 1, 11)
-			tmp.igs = 2
-		}
-		tmp.ig = pow10(igLog)
-		return
-	}
-	if ((aarMod.ngudpV || !tmp.ngp3l) && igLog > 1e15) { //Further
-		igLog = Math.pow(10 + 6 * Math.log10(igLog), 7.5)
-		tmp.igs = 2
-	}
-	if (aarMod.ngudpV && igLog > 1e16) { //Remote
-		igLog = Math.pow(84 + Math.log10(igLog), 8)
-		tmp.igs = 3
-	}
 
-	if (!tmp.ngp3l && igLog > 1e20) { //Dark Matter or Ghostly or Ethereal
-		igLog = softcap(igLog, "ig_log_high")
-		tmp.igs = Math.min(Math.floor(Math.log10(igLog) - 16), 8)
-		if (igLog > 1e24) igLog = Math.pow(Math.pow(Math.log10(igLog), 2) + 424, 8)
+	var igLog = Math.pow(x, Math.min(Math.sqrt(Math.log10(Math.max(x,1))) * 2, 2.5)) //Log10 of reward
+	if (igLog > 1e15) { //Further
+		igLog = Math.pow(igLog * 1e9, 5 / 8)
+		tmp.igs = 1
 	}
 
 	tmp.ig = pow10(igLog)
@@ -320,7 +296,7 @@ function updatePPTITemp(){
 	}
 	let x = 1
 	x /= tmp.le[1] || 1
-	if (player.achievements.includes("ng3p113")) x /= 2
+	if (hasAch("ng3p113")) x /= 2
 	tmp.ppti = x
 }
 
@@ -451,7 +427,6 @@ function updateBreakEternityUpgrade4Temp(){
 	var log1 = ep.div("1e1860").add(1).log10()
 	var log2 = ss.div("7e19").add(1).log10()
 	var exp = Math.pow(log1, 1/3) + Math.pow(log2, 1/3) * 8
-	if (!tmp.ngp3l && exp > 333) exp = 111 * Math.log10(3 * exp + 1)
 	tmp.beu[4] = pow10(exp)
 }
 
@@ -462,7 +437,6 @@ function updateBreakEternityUpgrade5Temp(){
 	var log2 = ts.div(1e90).add(1).log10()
 	var exp = Math.pow(log1, 1/3) + Math.pow(log2, 1/3)
 	if (aarMod.ngudpV && exp > 100) exp = Math.log10(exp) * 50
-	if (!tmp.ngp3l && exp > 999) exp = 333 * Math.log10(exp + 1)
 	exp *= 4
 	tmp.beu[5] = pow10(exp)
 }
@@ -475,38 +449,24 @@ function updateBreakEternityUpgrade6Temp(){
 	var log2 = em.div(1e45).add(1).log10()
 	if (nerfUpgs) log1 /= 2e6
 	var exp = Math.pow(log1, 1/3) / 1.7 + Math.pow(log2, 1/3) * 2
-	if (!tmp.ngp3l && exp > 200) exp = 50 * Math.log10(50 * exp)
 	tmp.beu[6] = pow10(exp)
 }
 
 function updateBreakEternityUpgrade8Temp(){
 	var x = Math.log10(player.dilation.tachyonParticles.div(1e200).add(1).log10() / 100 + 1) * 3 + 1
 	if (aarMod.ngudpV && x > 2.2) x = 1.2 + Math.log10(x + 7.8)
-	if (!tmp.ngp3l) {
-		if (x > 3) x = 1 + Math.log2(x + 1)
-		if (x > 10/3) x = 7/3 + Math.log10(3 * x)
-	}
 	tmp.beu[8] = x
 }
 
 function updateBreakEternityUpgrade9Temp(){
 	var em = beSave.eternalMatter
 	var x = em.div("1e335").add(1).pow(0.05 * Math.log10(4))
-	if (!tmp.ngp3l) {
-		if (x.gte(pow10(18))) x = E_pow(x.log10() * 5 + 10, 9)
-		if (x.gte(pow10(100))) x = E_pow(x.log10(), 50)
-	}
 	tmp.beu[9] = x.toNumber()
 }
 
 function updateBreakEternityUpgrade10Temp(){
 	var ep = player.eternityPoints
 	tmp.beu[10] = Math.max(Math.log10(ep.add(1).log10() + 1) - 1, 1)
-}
-
-function updateBreakEternityUpgrade11Temp(){
-	var s = tmp.sacPow||E(1)
-	tmp.beu[11] = pow10(s.e**0.3)
 }
 
 function updateBreakEternityUpgradesTemp() {
@@ -569,7 +529,7 @@ function updateBRU14Temp() {
 
 function updateBRU15Temp() {
 	let r = Math.sqrt(player.eternityPoints.add(1).log10()) * 3.55
-	if (r > 1e4 && !tmp.ngp3l) r = Math.sqrt(r * 1e4)
+	if (r > 1e4) r = Math.sqrt(r * 1e4)
 	tmp.bru[15] = r
 }
 
@@ -578,7 +538,7 @@ function updateBRU16Temp() {
 }
 
 function updateBRU17Temp() {
-	tmp.bru[17] = !tmp.ngp3l && ghostified ? 3 : 2.9
+	tmp.bru[17] = ghostified ? 3 : 2.9
 }
 
 function updateBigRipUpgradesTemp(){

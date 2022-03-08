@@ -49,20 +49,54 @@ function getSpaceShardsGain() {
 	return ret.floor()
 }
 
+function updateBigRipTab() {
+	var max = getMaxBigRipUpgrades()
+	el("spaceShards").textContent = shortenDimensions(brSave.spaceShards)
+	for (var u = 18; u <= 20; u++) el("bigripupg" + u).parentElement.style.display = u > max ? "none" : ""
+	for (var u = 1; u <= max; u++) {
+		el("bigripupg" + u).className = brSave && brSave.upgrades.includes(u) ? "gluonupgradebought bigrip" + (isBigRipUpgradeActive(u, true) ? "" : "off") : brSave.spaceShards.lt(bigRipUpgCosts[u]) ? "gluonupgrade unavailablebtn" : "gluonupgrade bigrip"
+		el("bigripupg" + u + "cost").textContent = shortenDimensions(E(bigRipUpgCosts[u]))
+	}
+}
+
+function updateRipTabs() {
+	if (el("riptab").style.display == "block") updateBigRipTab()
+	if (el("breakEternity").style.display == "block") breakEternityDisplay()
+	if (el("breakDilation").style.display == "block") updateBDTab()
+}
+
+function showRipTab(tabName) {
+	//iterate over all elements in div_tab class. Hide everything that's not tabName and show tabName
+	var tabs = document.getElementsByClassName('riptab');
+	var tab;
+	var oldTab
+	for (var i = 0; i < tabs.length; i++) {
+		tab = tabs.item(i);
+		if (tab.style.display == 'block') oldTab = tab.id
+		if (tab.id === tabName) {
+			tab.style.display = 'block';
+		} else {
+			tab.style.display = 'none';
+		}
+	}
+	if (oldTab !== tabName) aarMod.tabsSave.tabRip = tabName
+	closeToolTip()
+}
+
 let bigRipUpgCosts = [0, 2, 3, 5, 20, 30, 45, 60, 150, 300, 2000, 1e9, 3e14, 1e17, 3e18, 3e20, 5e22, 1e32, 1e145, 1e150, Number.MAX_VALUE]
 function buyBigRipUpg(id) {
 	if (brSave.spaceShards.lt(bigRipUpgCosts[id]) || brSave.upgrades.includes(id)) return
 	brSave.spaceShards = brSave && brSave.spaceShards.sub(bigRipUpgCosts[id])
 	if (ghSave.milestones < 8) brSave.spaceShards=brSave.spaceShards.round()
 	brSave.upgrades.push(id)
-	document.getElementById("spaceShards").textContent = shortenDimensions(brSave.spaceShards)
+	el("spaceShards").textContent = shortenDimensions(brSave.spaceShards)
 	if (brSave.active) tweakBigRip(id, true)
 	if (id == 10 && !brSave.upgrades.includes(9)) {
 		brSave.upgrades.push(9)
 		if (brSave.active) tweakBigRip(9, true)
 	}
 	for (var u = 1; u <= getMaxBigRipUpgrades(); u++) {
-		document.getElementById("bigripupg" + u).className = brSave && brSave.upgrades.includes(u) ? "gluonupgradebought bigrip" + (isBigRipUpgradeActive(u, true) ? "" : "off") : brSave.spaceShards.lt(bigRipUpgCosts[u]) ? "gluonupgrade unavailablebtn" : "gluonupgrade bigrip"
+		el("bigripupg" + u).className = brSave && brSave.upgrades.includes(u) ? "gluonupgradebought bigrip" + (isBigRipUpgradeActive(u, true) ? "" : "off") : brSave.spaceShards.lt(bigRipUpgCosts[u]) ? "gluonupgrade unavailablebtn" : "gluonupgrade bigrip"
 	}
 }
 
@@ -119,26 +153,23 @@ function isBigRipUpgradeActive(id, bigRipped) {
 }
 
 function updateBreakEternity() {
-	if (player.masterystudies === undefined) {
-		document.getElementById("breakEternityTabbtn").style.display = "none"
-		return
-	}
-	document.getElementById("breakEternityTabbtn").style.display = brSave && brSave.active || beSave.unlocked ? "" : "none"
+	if (!tmp.ngp3) return
 	if (beSave && beSave.unlocked) {
-		document.getElementById("breakEternityReq").style.display = "none"
-		document.getElementById("breakEternityShop").style.display = ""
-		document.getElementById("breakEternityNoBigRip").style.display = brSave && brSave.active ? "none" : ""
-		document.getElementById("breakEternityBtn").textContent = (beSave.break ? "FIX" : "BREAK") + " ETERNITY"
-		for (var u = 1; u < getBEUnls(); u++) document.getElementById("breakUpg" + u + "Cost").textContent = shortenDimensions(getBreakUpgCost(u))
-		document.getElementById("breakUpg7MultIncrease").textContent = shortenDimensions(1e9)
-		document.getElementById("breakUpg7Mult").textContent = shortenDimensions(getBreakUpgMult(7))
-		document.getElementById("breakUpgRS").style.display = brSave && brSave.active ? "" : "none"
-		document.getElementById("breakUpgR4").style.display = ghSave.breakDilation.unl ? "" : "none"
+		el("breakEternityReq").style.display = "none"
+		el("breakEternityShop").style.display = ""
+		el("breakEternityNoBigRip").style.display = brSave && brSave.active ? "none" : ""
+		el("breakEternityBtn").style.display = brSave && brSave.active ? "" : "none"
+		el("breakEternityBtn").textContent = (beSave.break ? "FIX" : "BREAK") + " ETERNITY"
+		for (var u = 1; u < getBEUnls(); u++) el("breakUpg" + u + "Cost").textContent = shortenDimensions(getBreakUpgCost(u))
+		el("breakUpg7MultIncrease").textContent = shortenDimensions(1e9)
+		el("breakUpg7Mult").textContent = shortenDimensions(getBreakUpgMult(7))
+		el("breakUpgRS").style.display = brSave && brSave.active ? "" : "none"
+		el("breakUpgR4").style.display = ghSave.breakDilation.unl ? "" : "none"
 	} else {
-		document.getElementById("breakEternityReq").style.display = ""
-		document.getElementById("breakEternityReq").textContent = "You need to get " + shorten(E("1e1200")) + " EP before you can Break Eternity."
-		document.getElementById("breakEternityNoBigRip").style.display = "none"
-		document.getElementById("breakEternityShop").style.display = "none"
+		el("breakEternityReq").style.display = ""
+		el("breakEternityReq").textContent = "You need to get " + shorten(E("1e1200")) + " EP before you can Break Eternity."
+		el("breakEternityNoBigRip").style.display = "none"
+		el("breakEternityShop").style.display = "none"
 	}
 }
 
@@ -152,11 +183,11 @@ function getBEUnls() {
 function breakEternity() {
 	beSave.break = !beSave.break
 	beSave.did = true
-	document.getElementById("breakEternityBtn").textContent = (beSave.break ? "FIX" : "BREAK") + " ETERNITY"
+	el("breakEternityBtn").textContent = (beSave.break ? "FIX" : "BREAK") + " ETERNITY"
 	if (brSave.active) {
 		tmp.be = beSave.break
 		updateTemp()
-		if (!tmp.be && document.getElementById("timedimensions").style.display == "block") showDimTab("antimatterdimensions")
+		if (!tmp.be && el("timedimensions").style.display == "block") showDimTab("antimatterdimensions")
 	}
 	if (!player.dilation.active && isSmartPeakActivated) {
 		EPminpeakType = 'normal'
@@ -183,7 +214,7 @@ function getEMGain() {
 	}
 
 	let x = pow10(log)
-	if (player.achievements.includes("ng3p104")) x = x.pow(1.1)
+	if (hasAch("ng3p104")) x = x.pow(1.1)
 	
 	return x.floor()
 }
@@ -200,10 +231,10 @@ function buyBreakUpg(id) {
 	if (ghSave.milestones < 15) beSave.eternalMatter = beSave.eternalMatter.round()
 	if (id == 7) {
 		beSave.epMultPower++
-		document.getElementById("breakUpg7Mult").textContent = shortenDimensions(getBreakUpgMult(7))
-		document.getElementById("breakUpg7Cost").textContent = shortenDimensions(getBreakUpgCost(7))
+		el("breakUpg7Mult").textContent = shortenDimensions(getBreakUpgMult(7))
+		el("breakUpg7Cost").textContent = shortenDimensions(getBreakUpgCost(7))
 	} else beSave.upgrades.push(id)
-	document.getElementById("eternalMatter").textContent = shortenDimensions(beSave.eternalMatter)
+	el("eternalMatter").textContent = shortenDimensions(beSave.eternalMatter)
 }
 
 function getBreakUpgMult(id) {
@@ -218,9 +249,9 @@ function maxBuyBEEPMult() {
 	beSave.epMultPower += toBuy
 	beSave.eternalMatter = beSave.eternalMatter.sub(toSpend)
 	if (ghSave.milestones < 15) beSave.eternalMatter = beSave.eternalMatter.round()
-	document.getElementById("eternalMatter").textContent = shortenDimensions(beSave.eternalMatter)
-	document.getElementById("breakUpg7Mult").textContent = shortenDimensions(getBreakUpgMult(7))
-	document.getElementById("breakUpg7Cost").textContent = shortenDimensions(getBreakUpgCost(7))
+	el("eternalMatter").textContent = shortenDimensions(beSave.eternalMatter)
+	el("breakUpg7Mult").textContent = shortenDimensions(getBreakUpgMult(7))
+	el("breakUpg7Cost").textContent = shortenDimensions(getBreakUpgCost(7))
 }
 
 function getMaxBigRipUpgrades() {

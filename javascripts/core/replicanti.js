@@ -1,7 +1,7 @@
 function unlockReplicantis() {
 	if (player.infinityPoints.gte(player.galacticSacrifice!=undefined&&player.tickspeedBoosts==undefined?1e80:1e140)) {
-		document.getElementById("replicantidiv").style.display = "inline-block"
-		document.getElementById("replicantiunlock").style.display = "none"
+		el("replicantidiv").style.display = "inline-block"
+		el("replicantiunlock").style.display = "none"
 		player.replicanti.unl = true
 		player.replicanti.amount = E(1)
 		player.infinityPoints = player.infinityPoints.minus(player.galacticSacrifice != undefined && player.tickspeedBoosts == undefined ? 1e80 : 1e140)
@@ -10,7 +10,7 @@ function unlockReplicantis() {
 
 function replicantiGalaxyBulkModeToggle() {
 	player.galaxyMaxBulk = !player.galaxyMaxBulk
-	document.getElementById('replicantibulkmodetoggle').textContent = "Mode: " + (player.galaxyMaxBulk ? "Max" : "Singles")
+	el('replicantibulkmodetoggle').textContent = "Mode: " + (player.galaxyMaxBulk ? "Max" : "Singles")
 }
 
 function getReplMult(next) {
@@ -18,7 +18,7 @@ function getReplMult(next) {
 	if (player.galacticSacrifice !== undefined) exp = Math.max(2, Math.pow(player.galaxies, .4))
 	if (player.boughtDims) {
 		exp += (player.timestudy.ers_studies[3] + (next ? 1 : 0)) / 2
-		if (player.achievements.includes('r108')) exp *= 1.09;
+		if (hasAch('r108')) exp *= 1.09;
 	}
 	let replmult = Decimal.max(player.replicanti.amount.log(2), 1).pow(exp)
 	if (player.timestudy.studies.includes(21)) replmult = replmult.plus(E_pow(player.replicanti.amount, 0.032))
@@ -32,7 +32,7 @@ function upgradeReplicantiChance() {
 		else player.infinityPoints = player.infinityPoints.minus(player.replicanti.chanceCost)
 		player.replicanti.chance = Math.round(player.replicanti.chance * 100 + 1) / 100
 		if (player.currentEternityChall == "eterc8") player.eterc8repl -= 1
-		document.getElementById("eterc8repl").textContent = "You have " + player.eterc8repl + " purchases left."
+		el("eterc8repl").textContent = "You have " + player.eterc8repl + " purchases left."
 		player.replicanti.chanceCost = player.replicanti.chanceCost.times(1e15)
 	}
 }
@@ -53,7 +53,7 @@ function upgradeReplicantiInterval() {
 	else player.replicanti.intervalCost = player.replicanti.intervalCost.times(1e10)
 	if (!isIntervalAffordable()) player.replicanti.interval = (player.timestudy.studies.includes(22) || player.boughtDims ? 1 : 50)
 	if (player.currentEternityChall == "eterc8") player.eterc8repl -= 1
-	document.getElementById("eterc8repl").textContent = "You have " + player.eterc8repl + " purchases left."
+	el("eterc8repl").textContent = "You have " + player.eterc8repl + " purchases left."
 }
 
 function getReplicantiLimit() {
@@ -108,7 +108,7 @@ function upgradeReplicantiGalaxy() {
 		player.replicanti.galCost = getRGCost(1)
 		player.replicanti.gal += 1
 		if (player.currentEternityChall == "eterc8") player.eterc8repl -= 1
-		document.getElementById("eterc8repl").textContent = "You have "+player.eterc8repl+" purchases left."
+		el("eterc8repl").textContent = "You have "+player.eterc8repl+" purchases left."
 		return true
 	}
 	return false
@@ -120,7 +120,7 @@ function replicantiGalaxy() {
 	if (!canGetReplicatedGalaxy()) return
 	if (player.galaxyMaxBulk) player.replicanti.galaxies=maxGal
 	else player.replicanti.galaxies++
-	if (tmp.ngp3l||!player.achievements.includes("ng3p67")) player.replicanti.amount=Decimal.div(player.achievements.includes("r126")?player.replicanti.amount:1,Number.MAX_VALUE).max(1)
+	if (tmp.ngp3l||!hasAch("ng3p67")) player.replicanti.amount=Decimal.div(hasAch("r126")?player.replicanti.amount:1,Number.MAX_VALUE).max(1)
 	galaxyReset(0)
 }
 
@@ -181,17 +181,14 @@ function updateExtraReplGalaxies() {
 	if (tmp.ngp3) {
 		let expData={
 			normal: 1/3,
-			ts362: 0.4,
-			legacy: 0.25,
-			ts362legacy: 0.35
+			ts362: 0.4
 		}
-		let expVarName=(player.masterystudies.includes("t362")?"ts362":"")+(tmp.ngp3l?"legacy":"")
+		let expVarName=(player.masterystudies.includes("t362")?"ts362":"")
 		if (expVarName=="") expVarName="normal"
 		let exp=expData[expVarName]
-		if (!tmp.ngp3l&&player.masterystudies.includes("t412")) exp=.5
+		if (player.masterystudies.includes("t412")) exp=.5
 
-		tmp.pe=Math.pow(quSave.replicants.quarks.add(1).log10(),exp)
-		tmp.pe*=tmp.ngp3l?0.67*(player.masterystudies.includes("t412")?1.25:1):0.8
+		tmp.pe=Math.pow(quSave.replicants.quarks.add(1).log10(),exp)*0.8
 		if (ghSave.ghostlyPhotons.unl) tmp.pe*=tmp.le[3]
 		extraReplGalaxies*=colorBoosts.g+tmp.pe
 	}
@@ -204,7 +201,7 @@ function getTotalRG() {
 
 function replicantiGalaxyAutoToggle() {
 	player.replicanti.galaxybuyer=!player.replicanti.galaxybuyer
-	document.getElementById("replicantiresettoggle").textContent="Auto galaxy "+(player.replicanti.galaxybuyer?"ON":"OFF")+(!canAutoReplicatedGalaxy()?" (disabled)":"")
+	el("replicantiresettoggle").textContent="Auto galaxy "+(player.replicanti.galaxybuyer?"ON":"OFF")+(!canAutoReplicatedGalaxy()?" (disabled)":"")
 }
 
 function getReplSpeed() {
@@ -212,7 +209,7 @@ function getReplSpeed() {
 	let exp = 308
 	if (player.dilation.upgrades.includes('ngpp1') && (!aarMod.nguspV || aarMod.nguepV)) {
 		let expDiv = 10
-		if (tmp.ngp3 && !tmp.ngp3l) expDiv = 9
+		if (tmp.ngp3) expDiv = 9
 		let x = 1 + player.dilation.dilatedTime.max(1).log10() / expDiv
 		inc /= Math.min(x, 200)
 		if (x > 200) exp += x / 10 - 20
@@ -232,7 +229,7 @@ function getReplicantiInterval() {
 	if (player.replicanti.amount.gt(Number.MAX_VALUE)||player.timestudy.studies.includes(133)) interval *= 10
 	if (player.timestudy.studies.includes(213)) interval /= tsMults[213]()
 	if (GUBought("gb1")) interval /= getGB1Effect()
-	if (player.replicanti.amount.lt(Number.MAX_VALUE) && player.achievements.includes("r134")) interval /= 2
+	if (player.replicanti.amount.lt(Number.MAX_VALUE) && hasAch("r134")) interval /= 2
 	if (isBigRipUpgradeActive(4)) interval /= 10
 
 	interval = E(interval)
@@ -245,7 +242,7 @@ function getReplicantiInterval() {
 
 function getReplicantiFinalInterval() {
 	let x = getReplicantiInterval()
-	if (player.replicanti.amount.gt(Number.MAX_VALUE)) x = player.boughtDims ? Math.pow(player.achievements.includes("r107") ? Math.max(player.replicanti.amount.log(2)/1024,1) : 1, -.25) * x.toNumber() : E_pow(tmp.rep.speeds.inc, Math.max(player.replicanti.amount.log10() - tmp.rep.speeds.exp, 0)/tmp.rep.speeds.exp).times(x)
+	if (player.replicanti.amount.gt(Number.MAX_VALUE)) x = player.boughtDims ? Math.pow(hasAch("r107") ? Math.max(player.replicanti.amount.log(2)/1024,1) : 1, -.25) * x.toNumber() : E_pow(tmp.rep.speeds.inc, Math.max(player.replicanti.amount.log10() - tmp.rep.speeds.exp, 0)/tmp.rep.speeds.exp).times(x)
 	return x
 }
 
@@ -294,26 +291,26 @@ function toggleReplAuto(i) {
 	if (i == "chance") {
 		if (player.replicanti.auto[0]) {
 			player.replicanti.auto[0] = false
-			document.getElementById("replauto1").textContent = "Auto: OFF"
+			el("replauto1").textContent = "Auto: OFF"
 		} else {
 			player.replicanti.auto[0] = true
-			document.getElementById("replauto1").textContent = "Auto: ON"
+			el("replauto1").textContent = "Auto: ON"
 		}
 	} else if (i == "interval") {
 		if (player.replicanti.auto[1]) {
 			player.replicanti.auto[1] = false
-			document.getElementById("replauto2").textContent = "Auto: OFF"
+			el("replauto2").textContent = "Auto: OFF"
 		} else {
 			player.replicanti.auto[1] = true
-			document.getElementById("replauto2").textContent = "Auto: ON"
+			el("replauto2").textContent = "Auto: ON"
 		}
 	} else if (i == "galaxy") {
 		if (player.replicanti.auto[2]) {
 			player.replicanti.auto[2] = false
-			document.getElementById("replauto3").textContent = "Auto: OFF"
+			el("replauto3").textContent = "Auto: OFF"
 		} else {
 			player.replicanti.auto[2] = true
-			document.getElementById("replauto3").textContent = "Auto: ON"
+			el("replauto3").textContent = "Auto: ON"
 		}
 	}
 }

@@ -24,7 +24,7 @@ function bendTimeCheck(){
 }
 
 function checkMarathon(){
-	if (getDimensionProductionPerSecond(1).gt(player.money) && !player.achievements.includes("r44")) {
+	if (getDimensionProductionPerSecond(1).gt(player.money) && !hasAch("r44")) {
 		Marathon += player.options.updateRate/1000;
 		if (Marathon >= 30) giveAchievement("Over in 30 seconds");
 	} else {
@@ -33,7 +33,7 @@ function checkMarathon(){
 }
 
 function checkMarathon2(){
-	if (DimensionProduction(1).gt(player.infinityPower) && player.currentEternityChall != "eterc7" && !player.achievements.includes("r113")) {
+	if (DimensionProduction(1).gt(player.infinityPower) && player.currentEternityChall != "eterc7" && !hasAch("r113")) {
 		Marathon2+=player.options.updateRate/1000;
 		if (Marathon2 >= 60) giveAchievement("Long lasting relationship");
 	} else {
@@ -66,7 +66,7 @@ function checkForEndMe() {
 }
 
 function checkYoDawg(){
-	if (!player.achievements.includes("r111") && player.lastTenRuns[9][1].neq(0)) {
+	if (!hasAch("r111") && player.lastTenRuns[9][1].neq(0)) {
 		var n = 0;
 		for (i = 0; i < 9; i++) {
 			if (player.lastTenRuns[i][1].gte(player.lastTenRuns[i+1][1].times(Number.MAX_VALUE))) n++
@@ -76,7 +76,7 @@ function checkYoDawg(){
 }
 
 function checkUniversalHarmony() {
-	if (player.achievements.includes("ngpp18")) return
+	if (hasAch("ngpp18")) return
 	if (player.meta != undefined) {
 		if (player.galaxies < 700 || player.replicanti.galaxies + extraReplGalaxies < 700 || player.dilation.freeGalaxies < 700) return
 	} else if (player.exdilation != undefined) {
@@ -239,7 +239,7 @@ function ngP3AchieveCheck(){
 	if (player.replicanti.amount.log10() >= 2e6 && player.dilation.tachyonParticles.eq(0)) giveAchievement("No dilation means no production.")
 	if (player.infinityPoints.gte(E_pow(Number.MAX_VALUE, 1000)) && ableToGetRid5) giveAchievement("I don't want you to live anymore.")
 	if (player.dilation.dilatedTime.log10() >= 411 && quSave.notrelative) giveAchievement("Time is not relative")
-	if (!player.achievements.includes("ng3p42")) {
+	if (!hasAch("ng3p42")) {
 		for (d = 2; d < 9; d++) {
 			if (player[TIER_NAMES[d]+"Amount"].gt(0) || player["infinityDimension"+d].amount.gt(0) || player["timeDimension"+d].amount.gt(0) || player.meta[d].amount.gt(0)) break
 			else if (player.money.log10() >= 1.6e12 && d == 8) giveAchievement("ERROR 404: DIMENSIONS NOT FOUND")
@@ -281,8 +281,6 @@ function ngP3AchieveCheck(){
 	if (player.masterystudies.includes("d13")) giveAchievement("Do protons decay?")
 	if (getTotalRadioactiveDecays() >= 10) giveAchievement("Radioactive Decaying to the max!")
 	if (quantumed) giveAchievement("Sub-atomic")
-
-	if (tmp.ngp3l) return // NG+3.1 achievements from this point on
 
 	if (ghSave.hb.higgs >= 1) giveAchievement("The Holy Particle")
 	if (ghSave.ghostlyPhotons.enpowerments >= 25) giveAchievement("Bright as the Anti-Sun")

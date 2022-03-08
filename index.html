@@ -116,14 +116,12 @@
 		<div id="eternitystore" class="tab" style="font-size: 15px; margin: 0 auto; display: none" align="center">
 			<table class="table" align="center" style="margin: auto">
 				<tr>
-					<td><button class="secondarytabbtn" onclick="showEternityTab('timestudies')">Time studies</button></td>
-					<td id="masterystudyunlock"><button class="secondarytabbtn" onclick="showEternityTab('masterystudies')">Mastery studies</button></td>
-					<td><button class="secondarytabbtn" onclick="showEternityTab('eternityupgrades')">Eternity upgrades</button></td>
-					<td><button class="secondarytabbtn" onclick="showEternityTab('milestones')">Eternity milestones</button></td>
+					<td><button class="secondarytabbtn" onclick="showEternityTab('timestudies')">Time Studies</button></td>
+					<td id="masterystudyunlock"><button class="secondarytabbtn" onclick="showEternityTab('masterystudies')">Mastery Studies</button></td>
+					<td><button class="secondarytabbtn" onclick="showEternityTab('eternityupgrades')">Upgrades</button></td>
 					<td id="dilationTabbtn"><button class="secondarytabbtn" onclick="showEternityTab('dilation')">Time Dilation</button></td>
-					<td id="blackHoleTabbtn"><button class="secondarytabbtn" onclick="showEternityTab('blackhole')">Black hole</button></td>
-					<td id="breakEternityTabbtn"><button class="secondarytabbtn" onclick="showEternityTab('breakEternity')">Break Eternity</button></td>
-					<td id="breakDilationTabbtn"><button class="secondarytabbtn" onclick="showEternityTab('breakDilation')">Break Dilation</button></td>
+					<td id="blackHoleTabbtn"><button class="secondarytabbtn" onclick="showEternityTab('blackhole')">Black Hole</button></td>
+					<td><button class="secondarytabbtn" onclick="showEternityTab('milestones')">Milestones</button></td>
 					<td id="autoEternityTabbtn"><button class="secondarytabbtn" onclick="showEternityTab('autoEternity')">Auto-Eternity</button></td>
 				</tr>
 			</table>
@@ -999,106 +997,6 @@
 					</table>
 				</div>
 			</div>
-			<div class="eternitytab" id="breakEternity" style="font-size: 11px">
-				<div id="breakEternityReq"></div>
-				<div id="breakEternityNoBigRip">Break Eternity only works if you big rip the universe again.</div>
-				<div id="breakEternityShop">
-					You have <span id="eternalMatter" style="font-size:35px"></span> Eternal Matter.<br>
-					<table class="table" style="margin: 0 auto">
-						<tr>
-							<td></td>
-							<td>
-								<button id="breakEternityBtn" class="eternityupbtn" onclick="breakEternity()" ach-tooltip="Remove the disabilities of normal galaxies and Time Dimensions, but all TD boosts do not work except TS11, TS171, and 'Infinite Time' reward. You can gain Eternal Matter (based on your Time Shards) by Eternitying. Normal tickspeed upgrades do nothing if you are not in EC10. Normal galaxies don’t get cancelled, but its costs are way higher.">BREAK ETERNITY</button>
-							</td>
-							<td></td>
-						</tr>
-						<tr>
-							<td>
-								<button id="breakUpg1" class="eternityupbtnlocked" onclick="buyBreakUpg(1)">Boost the first 4 Time Dimensions based on your Eternity Points and Eternal Matter.<br>Currently: <span id="breakUpg1Mult">1.0</span>x<br>Cost: <span id="breakUpg1Cost"></span> Eternal Matter</button>
-							</td>
-							<td>
-								<button id="breakUpg2" class="eternityupbtnlocked" onclick="buyBreakUpg(2)">Divide the normal galaxy cost based on your Eternity Points.<br>Currently: <span id="breakUpg2Mult">1.0</span>x cheaper<br>Cost: <span id="breakUpg2Cost"></span> Eternal Matter</button>
-							</td>
-							<td>
-								<button id="breakUpg3" class="eternityupbtnlocked" onclick="buyBreakUpg(3)">You gain more Space Shards based on your Eternity Points.<br>Currently: <span id="breakUpg3Mult">1.0</span>x<br>Cost: <span id="breakUpg3Cost"></span> Eternal Matter</button>
-							</td>
-						</tr>
-						<tr>
-							<td>
-								<button id="breakUpg4" class="eternityupbtnlocked" onclick="buyBreakUpg(4)">Boost Time Dimensions 4 - 6 based on your Eternity Points and Space Shards.<br>Currently: <span id="breakUpg4Mult">1.0</span>x<br>Cost: <span id="breakUpg4Cost"></span> Eternal Matter</button>
-							</td>
-							<td>
-								<button id="breakUpg5" class="eternityupbtnlocked" onclick="buyBreakUpg(5)">Boost the tickspeed reduction based on your Eternity Points and Time Shards.<br>Currently: <span id="breakUpg5Mult">1.0</span>x<br>Cost: <span id="breakUpg5Cost"></span> Eternal Matter</button>
-							</td>
-							<td>
-								<button id="breakUpg6" class="eternityupbtnlocked" onclick="buyBreakUpg(6)">You gain more Space Shards based on your Eternity Points and Eternal Matter.<br>Currently: <span id="breakUpg6Mult">1.0</span>x<br>Cost: <span id="breakUpg6Cost"></span> Eternal Matter</button>
-							</td>
-						</tr>
-						<tr id="breakUpgR3">
-							<td>
-								<button id="breakUpg8" class="eternityupbtnlocked" onclick="buyBreakUpg(8)">The Infinite Time reward is stronger in non-Dilation runs based on your Tachyon Particles.<br>Currently: <span id="breakUpg8Mult">???</span>%<br>Cost: <span id="breakUpg8Cost"></span> Eternal Matter</button>
-							</td>
-							<td>
-								<button id="breakUpg9" class="eternityupbtnlocked" onclick="buyBreakUpg(9)">Divide the Normal Galaxy cost in Eternity Challenge 10 based on your Eternal Matter.<br>Currently: /<span id="breakUpg9Mult">???</span><br>Cost: <span id="breakUpg9Cost"></span> Eternal Matter</button>
-							</td>
-							<td>
-								<button id="breakUpg10" class="eternityupbtnlocked" onclick="buyBreakUpg(10)">Eternity Points multiply the normal galaxy amount in "Intergalactic" in Dilation runs.<br>Currently: <span id="breakUpg10Mult">???</span>x<br>Cost: <span id="breakUpg10Cost"></span> Eternal Matter</button>
-							</td>
-						</tr>
-						<tr id="breakUpgR4">
-							<td>
-								<button id="breakUpg11" class="eternityupbtnlocked" onclick="buyBreakUpg(11)">In Big Rip, start with sacrifice unlocked, and sacrifice boost time dimensions at a reduced rate.<br>Currently: <span id="breakUpg11Mult">???</span>x<br>Cost: <span id="breakUpg11Cost"></span> Eternal Matter</button>
-							</td>
-						</tr>
-						<tr id="breakUpgRS">
-							<td>
-								<button class="eternityupbtn" onclick="eternity()">Eternal Matter: <span id="eterShortcutEM"></span><br>Start a normal Eternity run.</button>
-							</td>
-							<td>
-								<button class="eternitychallengestudy" onclick="startEC10()" style="width: 190px; height: 90px; margin: 0">Eternity Points: <span id="eterShortcutEP"></span><br>Start Eternity Challenge 10.</button>
-							</td>
-							<td>
-								<button class="dilationupg" onclick="startDilatedEternity(false, true)" style="width: 190px; height: 90px; margin: 0">Tachyon particles: <span id="eterShortcutTP"></span><br>Dilate time.</button>
-							</td>
-						</tr>
-						<tr>
-							<td></td>
-							<td>
-								<button id="breakUpg7" class="eternityupbtnlocked" onclick="buyBreakUpg(7)">You gain <span id="breakUpg7MultIncrease"></span>x more Eternity Points.<br>Currently: <span id="breakUpg7Mult">1</span>x<br>Cost: <span id="breakUpg7Cost"></span> Eternal Matter</button><br><button class="storebtn" style="width: 190px" onclick="maxBuyBEEPMult()">Max EP mult</button>
-							</td>
-							<td></td>
-						</tr>
-					</table>
-				</div>
-				<div>
-					<table id="footer">
-						<tr>
-							<td>
-								<div style="text-align:center">
-									<a href="http://raw.githack.com/aarextiaokhiao/IvarK.github.io/v3.0-Respecced/" target="_newtab">NG+3R</a> |-|
-									<a href="howto.html" target="_newtab">How to play</a> |
-									<a href="about.html" target="_newtab">About</a> |
-									<a href="donate.html" onclick="giveAchievement('A sound financial decision')" target="_newtab">Donate</a> |
-									<a href="http://discord.gg/KsjcgskgTj" target="_newtab">Discord</a>
-								</div>
-							</td>
-						</tr>
-					</table>
-				</div>
-			</div>
-			<div class="eternitytab" id="breakDilation" style="font-size: 11px">
-				<div id="bdUnl"></div>
-				<div id="bdDiv">
-					<div>You have <span id="bd_tp">0</span> tachyon particles.</div><br>
-					<button id="breakDilationBtn" class="bd_btn" onclick="breakDilation()"
-					ach-tooltip="Breaking Dilation allow you gain tachyon particles without dilating time.
-					However, you gain Cherenkov Radiations based on your TP, which divides your DT gain.
-					Fixing Dilation will reset Cherenkov Radiations & TP, perform to Ghostify reset.">Break Dilation.</button>
-					<br><br>
-					You have <span id="crAmt" class="h2">0</span> (+<span id="crGain">0</span>/s) Cherenkov Radiation. Which divides DT gain by <span id="crEff" class="h2">0</span><br>
-					<table id="bdUpgsTable" style="margin: 0 auto"></table>
-				</div>
-			</div>
 			<div class="eternitytab" id="blackhole" style="font-size: 11px">
 				<br>
 				<button class="storebtn" id="blackholeunlock" onclick="unlockBlackhole()" style="width:200px; height: 80px">Unlock the black hole<br>Cost: 1e4000 EP</button>
@@ -1279,7 +1177,6 @@
 					<td id="tdtabbtn"><button class="secondarytabbtn" onclick="showDimTab('timedimensions')">Time Dimensions</button></td>
 					<td id="pdtabbtn"><button class="secondarytabbtn" onclick="showDimTab('pdims')">Paradox Dimensions</button></td>
 					<td id="mdtabbtn"><button class="secondarytabbtn" onclick="showDimTab('metadimensions')">Meta Dimensions</button></td>
-					<td id="edtabbtn"><button class="secondarytabbtn" onclick="showDimTab('emperordimensions')">Emperor Dimensions</button></td>
 					<td id="prodtabbtn"><button class="secondarytabbtn" onclick="showDimTab('production')">Production</button></td>
 				</tr>
 			</table>
@@ -1730,26 +1627,6 @@
 				</table>
 				<button id="metaboostauto" style="width:160px; height: 30px; font-size: 12px" onclick="toggleAutoEter('metaboost')" class="storebtn">Toggle all ON/OFF</button>
 				<button id="toggleallmetadims" style="width:300px; height: 30px; font-size: 12px" onclick="toggleAllMetaDims()" class="storebtn">Toggle all meta-dims autobuyer ON/OFF</button>
-			</div>
-			<div id="emperordimensions" class="dimtab">
-				You have <span class="rqC" id="rgEDs">1</span> red-green, <span class="gqC" id="gbEDs">1</span> green-blue, and <span class="bqC" id="brEDs">1</span> blue-red gluons.<br>
-				<div>
-					<p>You have <span id="replicantAmountED" style="font-size:35px; color: black">0</span> normal replicants.</p>
-				</div>
-				<p>You have <span id="quantumFoodAmountED">0</span> quantum food.</p>
-				<button class='gluonupgrade storebtn' id='buyQuantumFoodED' onclick='buyQuantumFood()' style="width: 210px"></button><br>
-				<button class='storebtn' id='buyMaxQuantumFoodED' onclick='buyMaxQuantumFood()' style="width: 210px">Buy maximum quantum food</button>
-				<table class="table" id="empDimTable">
-					<tr style="font-size: 15px">
-						<td>Total: </td>
-						<td id="totalWorkers"></td>
-						<td>
-							<span class="empQuarks" id="totalQuarkProduction"></span> preons/s
-						</td>
-					</tr>
-				</table>
-				<button id='breakLimitED' class='storebtn' style='width: 280px; height: 60px' onclick='breakLimit()'></button><br>
-				<button class='storebtn' style='width: 280px' onclick='maxBuyLimit()'>Max limit upgrades</button><br><br><br>
 			</div>
 			<div id="production" class="dimtab">
 				<b>seconds of history:</b>
@@ -2715,10 +2592,10 @@
 						</tr>
 						<tr id="achRowng3p9">
 							<td>
-								<div id="The Holy Particle" class="achievement achievementlocked" style="background-image: url(images/175.png)" ach-tooltip="Get a Higgs Boson. Reward: Bosonic Upgrades and Enchants are 2x cheaper, achievement power boosts bosonic antimatter production at a reduced rate and light empowerements no longer reset photons era resources."></div>
+								<div id="The Holy Particle" class="achievement achievementlocked" style="background-image: url(images/175.png)" ach-tooltip="Get a Higgs Boson. Reward: Bosonic Upgrades and Enchants are 5x cheaper, Achievement Power gives you more Bosonic Watts, and Light Empowerments no longer reset anything."></div>
 							</td>
 							<td>
-								<div id="Bright as the Anti-Sun" class="achievement achievementlocked" style="background-image: url(images/176.png)" ach-tooltip="Reach 25 Light Empowerments. Reward: You always have the 12th Bosonic Upgrade."></div>
+								<div id="Bright as the Anti-Sun" class="achievement achievementlocked" style="background-image: url(images/176.png)" ach-tooltip="Reach 25 Light Empowerments. Reward: You always have the 12th Bosonic Upgrade and start with 5 levels of first Bosonic Enchant."></div>
 							</td>
 							<td>
 								<div id="Are these another..." class="achievement achievementlocked" style="background-image: url(images/177.png)"></div>
@@ -2957,6 +2834,7 @@
 					<td><button class="secondarytabbtn" onclick="showChallengesTab('breakchallenges')">Infinity Challenges</button></td>
 					<td><button id="eterctabbtn" class="secondarytabbtn" onclick="showChallengesTab('eternitychallenges')">Eternity Challenges</button></td>
 					<td><button id="qctabbtn" class="secondarytabbtn" onclick="showChallengesTab('quantumchallenges')">Quantum Challenges</button></td>
+					<td><button id="pctabbtn" class="secondarytabbtn" onclick="showChallengesTab('pChalls')">Paired Challenges</button></td>
 				</tr>
 			</table>
 			<div id="nextchall"></div>
@@ -3658,10 +3536,6 @@
 				<div>Spend electrons to start quantum challenges.</div>
 				<div>If you are in a Quantum Challenge or have completed a Quantum Challenge the RG4 toggle will disappear and RG4 will be on.</div>
 				<div id='electronsAmount2'></div>
-				<div id="modifiersdiv">
-					<b style="font-size: 35px">Modifiers</b><br>
-					<div id="modifiers"></div>
-				</div>
 				<table class="table" style="margin: 0 auto">
 					<tr>
 						<td>
@@ -3784,8 +3658,14 @@
 						</td>
 					</tr>
 				</table>
+			</div>
+			<div id="pChalls" class="challengeTab">
+				<div id="modifiersdiv">
+					<b style="font-size: 15px">Modifiers</b><br>
+					<div id="modifiers"></div>
+				</div>
 				<button class="storebtn" onclick="respecTogglePC()" id="respecPC" style="width:150px; height: 40px; font-size: 10px; border-width: 1px; margin: auto">Respec paired challenges on next quantum</button>
-				<table class="table" id="pairedchallenges" style="margin: 0 auto">
+				<table class="table" style="margin: 0 auto">
 					<tr>
 						<td>
 							<div class="quantumchallengediv">
@@ -3851,44 +3731,6 @@
 						</td>
 					</tr>
 				</table>
-				<div id="bigrip">
-					To big rip the universe, you need to assign a PC with QC6 & 8 first.<br>
-					You have <span class="SSAmount" id="spaceShards" style="font-size:35px">0</span> Space Shards.
-					<table class="table" align="center" style="margin: auto">
-						<tr>
-							<td><button class='gluonupgrade unavailablebtn' id="bigripupg1" onclick='buyBigRipUpg(1)' style='font-size: 10px'>Infinity Points boost Normal Dimensions, but buying other upgrades except for the 2nd nullify it.<br>Currently: <span id="bigripupg1current">1.00</span>x<br>Cost: <span id="bigripupg1cost"></span> Space Shards</button></td>
-							<td><button class='gluonupgrade unavailablebtn' id="bigripupg2" onclick='buyBigRipUpg(2)'>Start with all ECs completed, and 100,000 eternities.<br>Cost: <span id="bigripupg2cost"></span> Space Shards</button></td>
-							<td><button class='gluonupgrade unavailablebtn' id="bigripupg3" onclick='buyBigRipUpg(3)'>Gain 5 Time Theorems.<br>Cost: <span id="bigripupg3cost"></span> Space Shards</button></td>
-							<td><button class='gluonupgrade unavailablebtn' id="bigripupg4" style='font-size: 10px' onclick='buyBigRipUpg(4)'>Replicantis multiply the gain of Infinity Points at a reduced rate, and replicates 10x faster.<br>Cost: <span id="bigripupg4cost"></span> Space Shards</button></td>
-						</tr>
-						<tr>
-							<td><button class='gluonupgrade unavailablebtn' id="bigripupg5" onclick='buyBigRipUpg(5)'>Gain 20 Time Theorems.<br>Cost: <span id="bigripupg5cost"></span> Space Shards</button></td>
-							<td><button class='gluonupgrade unavailablebtn' id="bigripupg6" onclick='buyBigRipUpg(6)'>Space Shards boost Eternity Point gain.<br>Cost: <span id="bigripupg6cost"></span> Space Shards</button></td>
-							<td><button class='gluonupgrade unavailablebtn' id="bigripupg7" onclick='buyBigRipUpg(7)'>You start with Time Study 192.<br>Cost: <span id="bigripupg7cost"></span> Space Shards</button></td>
-							<td><button class='gluonupgrade unavailablebtn' id="bigripupg8" onclick='buyBigRipUpg(8)' style='font-size: 10px'>Each replicated galaxy doubles your EP gain.<br>Currently: <span id="bigripupg8current"></span><br>Cost: <span id="bigripupg8cost"></span> Space Shards</button></td>
-						</tr>
-						<tr>
-							<td><button class='gluonupgrade unavailablebtn' id="bigripupg9" onclick='buyBigRipUpg(9)' style='font-size: 10px'>Gain 1,350 Time Theorems, but reset the study tree, and nullify upgrades 3 & 5 - 8.<br>Cost: <span id="bigripupg9cost"></span> Space Shards</button></td>
-							<td><button class='gluonupgrade unavailablebtn' id="bigripupg10" onclick='buyBigRipUpg(10)'>Start with dilation unlocked, but activate the 9th Big Rip upgrade.<br>Cost: <span id="bigripupg10cost"></span> Space Shards</button></td>
-							<td><button class='gluonupgrade unavailablebtn' id="bigripupg11" style='font-size: 10px' onclick='buyBigRipUpg(11)'>Start with Tachyon particles, but reset the study tree, all upgrades can boost dilation except your best TP, and nullify upgrade 4.<br>Cost: <span id="bigripupg11cost"></span> Space Shards</button></td>
-							<td><button class='gluonupgrade unavailablebtn' id="bigripupg12" style='font-size: 10px' onclick='buyBigRipUpg(12)'>You keep your time studies, dilation upgrades, eternity upgrades, and mastery studies.<br>Cost: <span id="bigripupg12cost"></span> Space Shards</button></td>
-						</tr>
-						<tr>
-							<td><button class='gluonupgrade unavailablebtn' id="bigripupg13" onclick='buyBigRipUpg(13)'>Replicantis boost Time Dimensions at a greatly reduced rate.<br>Cost: <span id="bigripupg13cost"></span> Space Shards</button></td>
-							<td><button class='gluonupgrade unavailablebtn' id="bigripupg14" style='font-size: 10px' onclick='buyBigRipUpg(14)'>TS101 is stronger based on your Space Shards while outside of dilation runs.<br>Currently: ^<span id="bigripupg14current">1.00</span><br>Cost: <span id="bigripupg14cost"></span> Space Shards</button></td>
-							<td><button class='gluonupgrade unavailablebtn' id="bigripupg15" style='font-size: 10px' onclick='buyBigRipUpg(15)'>Eternity Points make the Distant Antimatter Galaxies scaling start later.<br>Currently: +<span id="bigripupg15current">0</span><br>Cost: <span id="bigripupg15cost"></span> Space Shards</button></td>
-							<td><button class='gluonupgrade unavailablebtn' id="bigripupg16" style='font-size: 10px' onclick='buyBigRipUpg(16)'>Dilated time boosts the Seventh Time Dimension.<br>Currently: <span id="bigripupg16current">1.00</span>x<br>Cost: <span id="bigripupg16cost"></span> Space Shards</button></td>
-						</tr>
-					</table>
-					<table class="table" align="center" style="margin: auto">
-						<tr>
-							<td><button class='gluonupgrade unavailablebtn' id="bigripupg17" onclick='buyBigRipUpg(17)'>Reactivate the first upgrade, and make its effect <span id="bigripupg17current">3</span>x stronger.<br>Cost: <span id="bigripupg17cost"></span> Space Shards</button></td>
-							<td><button class='gluonupgrade unavailablebtn' id="bigripupg18" onclick='buyBigRipUpg(18)'>Space Shards boost quark spin production.<br>Currently: <span id="bigripupg18current"></span>x<br>Cost: <span id="bigripupg18cost"></span> Space Shards</button></td>
-							<td><button class='gluonupgrade unavailablebtn' id="bigripupg19" onclick='buyBigRipUpg(19)'>Time Shards speed up Branches.<br>Currently: <span id="bigripupg19current"></span>x<br>Cost: <span id="bigripupg19cost"></span> Space Shards</button></td>
-							<td><button class='gluonupgrade unavailablebtn' id="bigripupg20" onclick='buyBigRipUpg(20)'>In Big Rip, you gain Tachyon particles without dilating time.<br>Cost: <span id="bigripupg20cost"></span> Space Shards</button></td>
-						</tr>
-					</table>
-				</div>
 			</div>
 			<table id="footer">
 				<tr>
@@ -4037,14 +3879,14 @@
 				<br>
 			</div>
 			<tr>
-				<td><button class="secondarytabbtn" onclick="showInfTab('preinf')">Upgrades</button><td>
-				<td><button id="autobuyersbtn" class="secondarytabbtn" onclick="showInfTab('autobuyers')">Autobuyers</button><td>
-				<td><button id="postinfbtn" class="secondarytabbtn" onclick="showInfTab('postinf')" >Break Infinity</button><td>
-				<td><button id="replicantitabbtn" class="secondarytabbtn" onclick="showInfTab('replicantis')">Replicantis</button><td>
-				<td><button id="singularitytabbtn" class="secondarytabbtn" onclick="showInfTab('singularity')">Singularity</button><td>
-				<td><button id="dimtechstabbtn" class="secondarytabbtn" onclick="showInfTab('dimtechs')">Dim-techs</button><td>
+				<td><button class="secondarytabbtn" onclick="showIanttab('preinf')">Upgrades</button><td>
+				<td><button id="autobuyersbtn" class="secondarytabbtn" onclick="showIanttab('autobuyers')">Autobuyers</button><td>
+				<td><button id="postinfbtn" class="secondarytabbtn" onclick="showIanttab('postinf')" >Break Infinity</button><td>
+				<td><button id="replicantitabbtn" class="secondarytabbtn" onclick="showIanttab('replicantis')">Replicantis</button><td>
+				<td><button id="singularitytabbtn" class="secondarytabbtn" onclick="showIanttab('singularity')">Singularity</button><td>
+				<td><button id="dimtechstabbtn" class="secondarytabbtn" onclick="showIanttab('dimtechs')">Dim-techs</button><td>
 			</tr>
-			<div id="preinf" class="inftab">
+			<div id="preinf" class="ianttab">
 			<br>
 			<table id="preinfupgrades" class="table" style="margin: 0 auto"></table>
 			<div id='nextset'></div>
@@ -4091,7 +3933,7 @@
 			</div>
 		</div>
 		<div id="automation_ng_placement"></div>
-		<div id="autobuyers" class="inftab">
+		<div id="autobuyers" class="ianttab">
 			<br>
 			<button class="storebtn" id="toggleautobuyers" style="font-size: 100%; width: 150px; height: 40px; margin: 3px" onclick="toggleAutoBuyers()">Enable/disable autobuyers</button>
 			<button class="storebtn" id="togglebulk" style="font-size: 100%; width: 150px; height: 40px;margin: 3px" onclick="toggleBulk()">Disable bulk buy</button>
@@ -4487,7 +4329,7 @@
 				</table>
 			</div>
 		</div>
-		<div id="postinf" class="inftab" align="center">
+		<div id="postinf" class="ianttab" align="center">
 			<br>
 			<div id="abletobreak"></div>
 				<br>
@@ -4499,7 +4341,7 @@
 					</tr>
 				</table>
 				<br>
-				<table id="postinftable" class="table" style="margin: 0 auto; padding-left: 8px">
+				<table id="postianttable" class="table" style="margin: 0 auto; padding-left: 8px">
 					<tr>
 						<td>
 							<button id="postinfi01" class="infinistorebtn1"></button>
@@ -4602,7 +4444,7 @@
 					</table>
 				</div>
 		</div>
-		<div id="replicantis" class="inftab">
+		<div id="replicantis" class="ianttab">
 			<br>
 			<button class="storebtn" id="replicantiunlock" onclick="unlockReplicantis()" style="width:200px; height: 80px">Unlock Replicantis<br>Cost: 1e140 IP</button>
 			<div id="replicantidiv" style="display: none; width: 1000px">
@@ -4646,7 +4488,7 @@
 					</table>
 				</div>
 		</div>
-		<div id="singularity" class="inftab">
+		<div id="singularity" class="ianttab">
 			<br>
 			<button class="storebtn" id="singularityunlock" onclick="unlockSingularity()" style="width:200px; height: 80px">Unlock Singularity<br>Cost: <span id="singularityunlcost"></span> IP</button>
 			<div id="singularitydiv" style="display: none;">
@@ -4673,7 +4515,7 @@
 					</table>
 				</div>
 		</div>
-		<div id="dimtechs" class="inftab">
+		<div id="dimtechs" class="ianttab">
 			<br>
 			<button class="storebtn" id="dimtechsunlock" onclick="unlockDimTechs()" style="width:200px; height: 80px">Unlock Dim-techs<br>Cost: <span id="dimtechsunlcost"></span> IP</button>
 			<div id="dimtechsdiv" style="display: none;">
@@ -4756,11 +4598,11 @@
 				<tr>
 					<td><button class="secondarytabbtn" onclick="showQuantumTab('uquarks')">Quarks</button></td>
 					<td><button class="secondarytabbtn" onclick="showQuantumTab('gluons')">Gluons</button></td>
-					<td><button class="secondarytabbtn" onclick="showQuantumTab('speedruns')">Speedrun Milestones</button></td>
 					<td id='electronstabbtn'><button class="secondarytabbtn" onclick="showQuantumTab('electrons')">Electrons</button></td>
 					<td id='replicantstabbtn'><button class="secondarytabbtn" onclick="showQuantumTab('replicants')">Replicants</button></td>
-					<td id='nanofieldtabbtn'><button class="secondarytabbtn" onclick="showQuantumTab('nanofield')">Nanofield</button></td>
 					<td id='todtabbtn'><button class="secondarytabbtn" onclick="showQuantumTab('tod')">Tree of Decay</button></td>
+					<td id='riptabbtn'><button class="secondarytabbtn" onclick="showQuantumTab('bigrip')">Big Rip</button></td>
+					<td><button class="secondarytabbtn" onclick="showQuantumTab('speedruns')">Speedrun Milestones</button></td>
 				</tr>
 			</table>
 			<div class='quantumtab' id='uquarks'>
@@ -4802,7 +4644,7 @@
 					<button class='storebtn' id="autoAssign" onclick='toggleAutoAssign()'>Auto: OFF</button>
 					<button class='storebtn' id="autoAssignRotate" style="width:135px" onclick='rotateAutoAssign()'>Rotation: None</button>
 				</div>
-				<div id="assortSettings">
+				<div>
 					You will get <span id="assort_amount"></span> colored quarks when you assort quarks<br>
 					Assort percentage: <input id="assort_percentage" type="number" min=1 max=100 onchange="changeAssortPercentage()">%<br>
 					<button class='storebtn' id="assort_percentage_10" style="width:50px" onclick="changeAssortPercentage(10)">10%</button>
@@ -4810,7 +4652,7 @@
 					<button class='storebtn' id="assort_percentage_50" style="width:50px" onclick="changeAssortPercentage(50)">50%</button>
 					<button class='storebtn' id="assort_percentage_100" style="width:50px" onclick="changeAssortPercentage(100)">100%</button>
 				</div>
-				<div id="ratioSettings">
+				<div>
 					Ratios:<br>
 					R: <input id="ratio_r" type="number" min=0 onchange="changeRatio('r')"></input>
 					G: <input id="ratio_g" type="number" min=0 onchange="changeRatio('g')"></input>
@@ -4864,9 +4706,9 @@
 					<td class="rqC" colspan=2><p>You have <span id="rg" style="font-size:35px">0</span> red-green gluons.<br>You will gain <span id='rggain'>0</span> on next quantum,<br>but reduce your red quarks to <span id='rgnext'>0</span>.</p></td>
 					<td class="gqC" colspan=2><p>You have <span id="gb" style="font-size:35px">0</span> green-blue gluons.<br>You will gain <span id='gbgain'>0</span> on next quantum,<br>but reduce your green quarks to <span id='gbnext'>0</span>.</p></td>
 					<td class="bqC" colspan=2><p>You have <span id="br" style="font-size:35px">0</span> blue-red gluons.<br>You will gain <span id='brgain'>0</span> on next quantum,<br>but reduce your blue quarks to <span id='brnext'>0</span>.</p></td>
-				</tr><tr id="gluonCharger1">
+				</tr><tr>
 					<td colspan=6>You have <span id="quarkEnergy" style="font-size:35px">0.0</span> quark energy, which allows you to generate up to <span id="quarkEnergyGluons" style="font-size:25px">0</span> gluons.</td>
-				</tr><tr id="gluonCharger2">
+				</tr><tr>
 					<td colspan=2><button class="gluonupgrade rg" id="generateRGGluons" onclick="generateGluons('rg')">Generate <span id="generateRGGluonsAmount">0</span> red-green gluons from red quarks</button></td>
 					<td colspan=2><button class="gluonupgrade gb" id="generateGBGluons" onclick="generateGluons('gb')">Generate <span id="generateGBGluonsAmount">0</span> green-blue gluons from green quarks</button></td>
 					<td colspan=2><button class="gluonupgrade br" id="generateBRGluons" onclick="generateGluons('br')">Generate <span id="generateBRGluonsAmount">0</span> blue-red gluons from blue quarks</button></td>
@@ -4879,10 +4721,7 @@
 					<td><button id='brupg2' onclick='buyGluonUpg("br",2)'>Sacrifice boosts dilated time production.<br><span id='brupg2current'></span><br><span id='brupg1current'></span>Cost: 2 BR gluons</button></td>
 				</tr><tr>
 					<td><button id='rgupg3' onclick='buyGluonUpg("rg",3)'>Dimension boosts boost first Meta Dimensions.<br><span id='rgupg3current'></span><br>Cost: 4 RG gluons</button></td>
-					<td>
-						<button id='rgupg4' onclick='buyGluonUpg("rg",4)'>Galaxies are 50% stronger, but electrons are 30% weaker and normal galaxies are 60% weaker.<br>Cost: 100 RG gluons</button><br>
-						<button class="storebtn" id='rg4toggle' onclick='toggleRG4Upg()' style='width:142.5px; height:15px; font-size:9px'>Toggle: ON</button>
-					</td>
+					<td><button id='rgupg4' onclick='buyGluonUpg("rg",4)'>Galaxies are 50% stronger, but electrons are 30% weaker and normal galaxies are 60% weaker.<br>Cost: 100 RG gluons</button></td>
 					<td><button id='gbupg3' onclick='buyGluonUpg("gb",3)'>The IP mult multiplies IP gain by 2.3x per upgrade.<br>Cost: 4 GB gluons</button></td>
 					<td><button id='gbupg4' onclick='buyGluonUpg("gb",4)'>Massively decrease the tickspeed cost multiplier increase to 1.25x.<br>Cost: 100 GB gluons</button></td>
 					<td><button id='brupg3' onclick='buyGluonUpg("br",3)'>Tachyon particles slightly boost dilated time production.<br>Cost: 4 BR gluons</button></td>
@@ -4975,44 +4814,66 @@
 				</tr></table>
 			</div>
 			<div class='quantumtab' id='replicants'>
-				You have <span id="replicantiAmount2">1</span> replicantis.<br>
-				You have <span class="rqC" id="rgRepl">1</span> red-green, <span class="gqC" id="gbRepl">1</span> green-blue, and <span class="bqC" id="brRepl">1</span> blue-red gluons.<br>
-				<table class='qtable'><tr><td>
-					You have <span id="replicantAmount" style="font-size:35px">0</span> normal replicants.<br>
-					They are gathering <span id="normalReplGatherRate" style="font-size:25px">0</span> preons per second.<br>
-					<button class="storebtn" id="replicantReset" style="width: 220px; height: 60px; font-size: 11px" onclick='replicantReset()'></button><br><button class="storebtn" id="autoReset" style="width: 220px" onclick='toggleAutoReset()'></button>
-				</td><td>
-					You have <span id="workerReplAmount" style="font-size:35px">0</span> total worker replicants.<br>
-					They are gathering <span id="workerReplGatherRate" style="font-size:25px">0</span> preons per second and producing <span id="eggonRate" style="font-size:25px">0</span> <span id="workerReplWhat">eggons</span> per <span id="eggonRateTimeframe">minute</span>.<br>
-					Feed your normal replicant to become a worker. <span id="workerProgress" style="font-size:15px">0.0%</span><br>
-					<button class='storebtn' id='feedNormal' style='width: 280px' onclick="feedReplicant(1)">Feed one with quantum food</button><br>
-					<button id='breakLimit' class='storebtn' style='width: 280px; height: 60px' onclick='breakLimit()'></button><br>
-					<button class='storebtn' style='width: 280px' onclick='maxBuyLimit()'>Max limit upgrades</button>
-				</td><td>
-					You have <span id="babyReplAmount" style="font-size:35px">0</span> baby replicants.<br>
-					They are gathering <span id="babyReplGatherRate" style="font-size:25px">0</span> preons per second.<br>
-					They will become normal replicants at <span id="growupRate" style="font-size:15px"></span> per <span id="growupRateUnit"></span>. <span id="growupProgress" style="font-size:15px">0.0%</span>.<br>
-				</td></tr><tr><td>
-					You have <span id="gatheredQuarks" style="font-size:35px">0</span> preons. <span id="gatherRate" style="font-size:25px">+0/s</span><br>
-					Translated to +<span id="quarkTranslation" style="font-size:35px">0</span>% added to green power.</p>
-				</td><td>
-					You have <span id="quantumFoodAmount" style="font-size:35px">0</span> quantum food.<br>
-					<button class='gluonupgrade storebtn' id='buyQuantumFood' onclick='buyQuantumFood()'></button><br>
-					<button class='storebtn' id='buyMaxQuantumFood' onclick='buyMaxQuantumFood()' style="width: 210px">Buy maximum quantum food</button>
-				</td><td id="eggonsCell">
-					You have <span id="eggonAmount" style="font-size:35px">0</span> eggons. <span id="hatchProgress" style="font-size:15px">0.0%</span><br>
-					<button class='storebtn' id='reduceHatchSpeed' style='width: 240px; height: 80px' onclick='reduceHatchSpeed()'></button><br>
-					<button class='storebtn' id='maxReduceHatchSpeed' onclick='maxReduceHatchSpeed()' style="width: 240px">Max reduce the hatch speed</button>
-				</td></tr></table>
-			</div>
-			<div class='quantumtab' id='nanofield'>
-				<table id='nftabs' align="center" style="margin: auto">
+				<table id='antTabs' align="center" style="margin: auto">
 					<tr>
-						<td><button class="secondarytabbtn" onclick="showNFTab('nanoverse')">The Nanoverse</button></td>
-						<td><button class="secondarytabbtn" onclick="showNFTab('antipreon')"><span style="font-size:11px">Anti-Preontius' Lair</span></button></td>
+						<td><button class="secondarytabbtn" onclick="showAntTab('antcore')">Replicants</button></td>
+						<td id="edtabbtn"><button class="secondarytabbtn" onclick="showAntTab('emperordimensions')">Emperor Dimensions</button></td>
+						<td id="nanofieldtabbtn"><button class="secondarytabbtn" onclick="showAntTab('nanofield')">Nanofield</button></td>
+						<td id="aptabbtn"><button class="secondarytabbtn" onclick="showAntTab('antipreon')"><span style="font-size:11px">Anti-Preontius' Lair</span></button></td>
 					</tr>
 				</table>
-				<div class='nftab' id='nanoverse'>
+				<div class='anttab' id='antcore'>
+					You have <span id="replicantiAmount2">1</span> replicantis.<br>
+					You have <span class="rqC" id="rgRepl">1</span> red-green, <span class="gqC" id="gbRepl">1</span> green-blue, and <span class="bqC" id="brRepl">1</span> blue-red gluons.<br>
+					<table class='qtable'><tr><td>
+						You have <span id="replicantAmount" style="font-size:35px">0</span> normal replicants.<br>
+						They are gathering <span id="normalReplGatherRate" style="font-size:25px">0</span> preons per second.<br>
+						<button class="storebtn" id="replicantReset" style="width: 220px; height: 60px; font-size: 11px" onclick='replicantReset()'></button><br><button class="storebtn" id="autoReset" style="width: 220px" onclick='toggleAutoReset()'></button>
+					</td><td>
+						You have <span id="workerReplAmount" style="font-size:35px">0</span> total worker replicants.<br>
+						They are gathering <span id="workerReplGatherRate" style="font-size:25px">0</span> preons per second and producing <span id="eggonRate" style="font-size:25px">0</span> <span id="workerReplWhat">eggons</span> per <span id="eggonRateTimeframe">minute</span>.<br>
+						Feed your normal replicant to become a worker. <span id="workerProgress" style="font-size:15px">0.0%</span><br>
+						<button class='storebtn' id='feedNormal' style='width: 280px' onclick="feedReplicant(1)">Feed one with quantum food</button><br>
+						<button id='breakLimit' class='storebtn' style='width: 280px; height: 60px' onclick='breakLimit()'></button><br>
+						<button class='storebtn' style='width: 280px' onclick='maxBuyLimit()'>Max limit upgrades</button>
+					</td><td>
+						You have <span id="babyReplAmount" style="font-size:35px">0</span> baby replicants.<br>
+						They are gathering <span id="babyReplGatherRate" style="font-size:25px">0</span> preons per second.<br>
+						They will become normal replicants at <span id="growupRate" style="font-size:15px"></span> per <span id="growupRateUnit"></span>. <span id="growupProgress" style="font-size:15px">0.0%</span>.<br>
+					</td></tr><tr><td>
+						You have <span id="gatheredQuarks" style="font-size:35px">0</span> preons. <span id="gatherRate" style="font-size:25px">+0/s</span><br>
+						Translated to +<span id="quarkTranslation" style="font-size:35px">0</span>% added to green power.</p>
+					</td><td>
+						You have <span id="quantumFoodAmount" style="font-size:35px">0</span> quantum food.<br>
+						<button class='gluonupgrade storebtn' id='buyQuantumFood' onclick='buyQuantumFood()'></button><br>
+						<button class='storebtn' id='buyMaxQuantumFood' onclick='buyMaxQuantumFood()' style="width: 210px">Buy maximum quantum food</button>
+					</td><td id="eggonsCell">
+						You have <span id="eggonAmount" style="font-size:35px">0</span> eggons. <span id="hatchProgress" style="font-size:15px">0.0%</span><br>
+						<button class='storebtn' id='reduceHatchSpeed' style='width: 240px; height: 80px' onclick='reduceHatchSpeed()'></button><br>
+						<button class='storebtn' id='maxReduceHatchSpeed' onclick='maxReduceHatchSpeed()' style="width: 240px">Max reduce the hatch speed</button>
+					</td></tr></table>
+				</div>
+				<div class="anttab" id="emperordimensions">
+					You have <span class="rqC" id="rgEDs">1</span> red-green, <span class="gqC" id="gbEDs">1</span> green-blue, and <span class="bqC" id="brEDs">1</span> blue-red gluons.<br>
+					<div>
+						<p>You have <span id="replicantAmountED" style="font-size:35px; color: black">0</span> normal replicants.</p>
+					</div>
+					<p>You have <span id="quantumFoodAmountED">0</span> quantum food.</p>
+					<button class='gluonupgrade storebtn' id='buyQuantumFoodED' onclick='buyQuantumFood()' style="width: 210px"></button><br>
+					<button class='storebtn' id='buyMaxQuantumFoodED' onclick='buyMaxQuantumFood()' style="width: 210px">Buy maximum quantum food</button>
+					<table class="table" id="empDimTable">
+						<tr style="font-size: 15px">
+							<td>Total: </td>
+							<td id="totalWorkers"></td>
+							<td>
+								<span class="empQuarks" id="totalQuarkProduction"></span> preons/s
+							</td>
+						</tr>
+					</table>
+					<button id='breakLimitED' class='storebtn' style='width: 280px; height: 60px' onclick='breakLimit()'></button><br>
+					<button class='storebtn' style='width: 280px' onclick='maxBuyLimit()'>Max limit upgrades</button><br><br><br>
+				</div>
+				<div class='anttab' id='nanofield'>
 					You have <span id="quarksNanofield"></span> preons.<br>
 					<span id="ns"></span>
 					<table class="qtable"><tr><td>
@@ -5031,7 +4892,7 @@
 					<table class="table" align=center style="margin: auto" id="nfRewards"></table>
 					<br><br>
 				</div>
-				<div class='nftab' id='antipreon'>
+				<div class='anttab' id='antipreon'>
 					<div id="apgInfo">
 						You have <span id="rewards_AP" style="font-size:35px"></span> rewards.<br>
 						<span id="sleepy">
@@ -5083,6 +4944,140 @@
 				<br>
 				<br>
 			</div>
+			<div class='quantumtab' id="bigrip">
+				<table class="table" align="center" style="margin: auto">
+					<tr>
+						<td><button class="secondarytabbtn" onclick="showRipTab('riptab')">Upgrades</button></td>
+						<td id="breakEternityTabbtn"><button class="secondarytabbtn" onclick="showRipTab('breakEternity')">Break Eternity</button></td>
+						<td id="breakDilationTabbtn"><button class="secondarytabbtn" onclick="showRipTab('breakDilation')">Break Dilation</button></td>
+					</tr>
+				</table>
+				<div class="riptab" id="riptab">
+					To big rip the universe, you need to assign a PC with QC6 & 8 first.<br>
+					<button class="gluonupgrade bigrip" onclick="buyingDilStudyForQC()">Teleport to Quantum Challenges.</button><br>
+					You have <span class="SSAmount" id="spaceShards" style="font-size:35px">0</span> Space Shards.
+					<table class="table" align="center" style="margin: auto">
+						<tr>
+							<td><button class='gluonupgrade unavailablebtn' id="bigripupg1" onclick='buyBigRipUpg(1)' style='font-size: 10px'>Infinity Points boost Normal Dimensions, but buying other upgrades except for the 2nd nullify it.<br>Currently: <span id="bigripupg1current">1.00</span>x<br>Cost: <span id="bigripupg1cost"></span> Space Shards</button></td>
+							<td><button class='gluonupgrade unavailablebtn' id="bigripupg2" onclick='buyBigRipUpg(2)'>Start with all ECs completed, and 100,000 eternities.<br>Cost: <span id="bigripupg2cost"></span> Space Shards</button></td>
+							<td><button class='gluonupgrade unavailablebtn' id="bigripupg3" onclick='buyBigRipUpg(3)'>Gain 5 Time Theorems.<br>Cost: <span id="bigripupg3cost"></span> Space Shards</button></td>
+							<td><button class='gluonupgrade unavailablebtn' id="bigripupg4" style='font-size: 10px' onclick='buyBigRipUpg(4)'>Replicantis multiply the gain of Infinity Points at a reduced rate, and replicates 10x faster.<br>Cost: <span id="bigripupg4cost"></span> Space Shards</button></td>
+						</tr>
+						<tr>
+							<td><button class='gluonupgrade unavailablebtn' id="bigripupg5" onclick='buyBigRipUpg(5)'>Gain 20 Time Theorems.<br>Cost: <span id="bigripupg5cost"></span> Space Shards</button></td>
+							<td><button class='gluonupgrade unavailablebtn' id="bigripupg6" onclick='buyBigRipUpg(6)'>Space Shards boost Eternity Point gain.<br>Cost: <span id="bigripupg6cost"></span> Space Shards</button></td>
+							<td><button class='gluonupgrade unavailablebtn' id="bigripupg7" onclick='buyBigRipUpg(7)'>You start with Time Study 192.<br>Cost: <span id="bigripupg7cost"></span> Space Shards</button></td>
+							<td><button class='gluonupgrade unavailablebtn' id="bigripupg8" onclick='buyBigRipUpg(8)' style='font-size: 10px'>Each replicated galaxy doubles your EP gain.<br>Currently: <span id="bigripupg8current"></span><br>Cost: <span id="bigripupg8cost"></span> Space Shards</button></td>
+						</tr>
+						<tr>
+							<td><button class='gluonupgrade unavailablebtn' id="bigripupg9" onclick='buyBigRipUpg(9)' style='font-size: 10px'>Gain 1,350 Time Theorems, but reset the study tree, and nullify upgrades 3 & 5 - 8.<br>Cost: <span id="bigripupg9cost"></span> Space Shards</button></td>
+							<td><button class='gluonupgrade unavailablebtn' id="bigripupg10" onclick='buyBigRipUpg(10)'>Start with dilation unlocked, but activate the 9th Big Rip upgrade.<br>Cost: <span id="bigripupg10cost"></span> Space Shards</button></td>
+							<td><button class='gluonupgrade unavailablebtn' id="bigripupg11" style='font-size: 10px' onclick='buyBigRipUpg(11)'>Start with Tachyon particles, but reset the study tree, all upgrades can boost dilation except your best TP, and nullify upgrade 4.<br>Cost: <span id="bigripupg11cost"></span> Space Shards</button></td>
+							<td><button class='gluonupgrade unavailablebtn' id="bigripupg12" style='font-size: 10px' onclick='buyBigRipUpg(12)'>You keep your time studies, dilation upgrades, eternity upgrades, and mastery studies.<br>Cost: <span id="bigripupg12cost"></span> Space Shards</button></td>
+						</tr>
+						<tr>
+							<td><button class='gluonupgrade unavailablebtn' id="bigripupg13" onclick='buyBigRipUpg(13)'>Replicantis boost Time Dimensions at a greatly reduced rate.<br>Cost: <span id="bigripupg13cost"></span> Space Shards</button></td>
+							<td><button class='gluonupgrade unavailablebtn' id="bigripupg14" style='font-size: 10px' onclick='buyBigRipUpg(14)'>TS101 is stronger based on your Space Shards while outside of dilation runs.<br>Currently: ^<span id="bigripupg14current">1.00</span><br>Cost: <span id="bigripupg14cost"></span> Space Shards</button></td>
+							<td><button class='gluonupgrade unavailablebtn' id="bigripupg15" style='font-size: 10px' onclick='buyBigRipUpg(15)'>Eternity Points make the Distant Antimatter Galaxies scaling start later.<br>Currently: +<span id="bigripupg15current">0</span><br>Cost: <span id="bigripupg15cost"></span> Space Shards</button></td>
+							<td><button class='gluonupgrade unavailablebtn' id="bigripupg16" style='font-size: 10px' onclick='buyBigRipUpg(16)'>Dilated time boosts the Seventh Time Dimension.<br>Currently: <span id="bigripupg16current">1.00</span>x<br>Cost: <span id="bigripupg16cost"></span> Space Shards</button></td>
+						</tr>
+					</table>
+					<table class="table" align="center" style="margin: auto">
+						<tr>
+							<td><button class='gluonupgrade unavailablebtn' id="bigripupg17" onclick='buyBigRipUpg(17)'>Reactivate the first upgrade, and make its effect <span id="bigripupg17current">3</span>x stronger.<br>Cost: <span id="bigripupg17cost"></span> Space Shards</button></td>
+							<td><button class='gluonupgrade unavailablebtn' id="bigripupg18" onclick='buyBigRipUpg(18)'>Space Shards boost quark spin production.<br>Currently: <span id="bigripupg18current"></span>x<br>Cost: <span id="bigripupg18cost"></span> Space Shards</button></td>
+							<td><button class='gluonupgrade unavailablebtn' id="bigripupg19" onclick='buyBigRipUpg(19)'>Time Shards speed up Branches.<br>Currently: <span id="bigripupg19current"></span>x<br>Cost: <span id="bigripupg19cost"></span> Space Shards</button></td>
+							<td><button class='gluonupgrade unavailablebtn' id="bigripupg20" onclick='buyBigRipUpg(20)'>In Big Rip, you gain Tachyon particles without dilating time.<br>Cost: <span id="bigripupg20cost"></span> Space Shards</button></td>
+						</tr>
+					</table>
+				</div>
+				<div class="riptab" id="breakEternity" style="font-size: 11px">
+					<div id="breakEternityReq"></div>
+					<div id="breakEternityNoBigRip">Break Eternity only works if you big rip the universe again.</div>
+					<div id="breakEternityShop">
+						You have <span id="eternalMatter" style="font-size:35px"></span> Eternal Matter.<br>
+						<table class="table" style="margin: 0 auto">
+							<tr>
+								<td></td>
+								<td>
+									<button id="breakEternityBtn" class="eternityupbtn" onclick="breakEternity()" ach-tooltip="Remove the disabilities of normal galaxies and Time Dimensions, but all TD boosts do not work except TS11, TS171, and 'Infinite Time' reward. You can gain Eternal Matter (based on your Time Shards) by Eternitying. Normal tickspeed upgrades do nothing if you are not in EC10. Normal galaxies don’t get cancelled, but its costs are way higher.">BREAK ETERNITY</button>
+								</td>
+								<td></td>
+							</tr>
+							<tr>
+								<td>
+									<button id="breakUpg1" class="eternityupbtnlocked" onclick="buyBreakUpg(1)">Boost the first 4 Time Dimensions based on your Eternity Points and Eternal Matter.<br>Currently: <span id="breakUpg1Mult">1.0</span>x<br>Cost: <span id="breakUpg1Cost"></span> Eternal Matter</button>
+								</td>
+								<td>
+									<button id="breakUpg2" class="eternityupbtnlocked" onclick="buyBreakUpg(2)">Divide the normal galaxy cost based on your Eternity Points.<br>Currently: <span id="breakUpg2Mult">1.0</span>x cheaper<br>Cost: <span id="breakUpg2Cost"></span> Eternal Matter</button>
+								</td>
+								<td>
+									<button id="breakUpg3" class="eternityupbtnlocked" onclick="buyBreakUpg(3)">You gain more Space Shards based on your Eternity Points.<br>Currently: <span id="breakUpg3Mult">1.0</span>x<br>Cost: <span id="breakUpg3Cost"></span> Eternal Matter</button>
+								</td>
+							</tr>
+							<tr>
+								<td>
+									<button id="breakUpg4" class="eternityupbtnlocked" onclick="buyBreakUpg(4)">Boost Time Dimensions 4 - 6 based on your Eternity Points and Space Shards.<br>Currently: <span id="breakUpg4Mult">1.0</span>x<br>Cost: <span id="breakUpg4Cost"></span> Eternal Matter</button>
+								</td>
+								<td>
+									<button id="breakUpg5" class="eternityupbtnlocked" onclick="buyBreakUpg(5)">Boost the tickspeed reduction based on your Eternity Points and Time Shards.<br>Currently: <span id="breakUpg5Mult">1.0</span>x<br>Cost: <span id="breakUpg5Cost"></span> Eternal Matter</button>
+								</td>
+								<td>
+									<button id="breakUpg6" class="eternityupbtnlocked" onclick="buyBreakUpg(6)">You gain more Space Shards based on your Eternity Points and Eternal Matter.<br>Currently: <span id="breakUpg6Mult">1.0</span>x<br>Cost: <span id="breakUpg6Cost"></span> Eternal Matter</button>
+								</td>
+							</tr>
+							<tr id="breakUpgR3">
+								<td>
+									<button id="breakUpg8" class="eternityupbtnlocked" onclick="buyBreakUpg(8)">The Infinite Time reward is stronger in non-Dilation runs based on your Tachyon Particles.<br>Currently: <span id="breakUpg8Mult">???</span>%<br>Cost: <span id="breakUpg8Cost"></span> Eternal Matter</button>
+								</td>
+								<td>
+									<button id="breakUpg9" class="eternityupbtnlocked" onclick="buyBreakUpg(9)">Divide the Normal Galaxy cost in Eternity Challenge 10 based on your Eternal Matter.<br>Currently: /<span id="breakUpg9Mult">???</span><br>Cost: <span id="breakUpg9Cost"></span> Eternal Matter</button>
+								</td>
+								<td>
+									<button id="breakUpg10" class="eternityupbtnlocked" onclick="buyBreakUpg(10)">Eternity Points multiply the normal galaxy amount in "Intergalactic" in Dilation runs.<br>Currently: <span id="breakUpg10Mult">???</span>x<br>Cost: <span id="breakUpg10Cost"></span> Eternal Matter</button>
+								</td>
+							</tr>
+							<tr id="breakUpgR4">
+								<td>
+									<button id="breakUpg11" class="eternityupbtnlocked" onclick="buyBreakUpg(11)">In Big Rip, start with sacrifice unlocked, and sacrifice boost time dimensions at a reduced rate.<br>Currently: <span id="breakUpg11Mult">???</span>x<br>Cost: <span id="breakUpg11Cost"></span> Eternal Matter</button>
+								</td>
+							</tr>
+							<tr id="breakUpgRS">
+								<td>
+									<button class="eternityupbtn" onclick="eternity()">Eternal Matter: <span id="eterShortcutEM"></span><br>Start a normal Eternity run.</button>
+								</td>
+								<td>
+									<button class="eternitychallengestudy" onclick="startEC10()" style="width: 190px; height: 90px; margin: 0">Eternity Points: <span id="eterShortcutEP"></span><br>Start Eternity Challenge 10.</button>
+								</td>
+								<td>
+									<button class="dilationupg" onclick="startDilatedEternity(false, true)" style="width: 190px; height: 90px; margin: 0">Tachyon particles: <span id="eterShortcutTP"></span><br>Dilate time.</button>
+								</td>
+							</tr>
+							<tr>
+								<td></td>
+								<td>
+									<button id="breakUpg7" class="eternityupbtnlocked" onclick="buyBreakUpg(7)">You gain <span id="breakUpg7MultIncrease"></span>x more Eternity Points.<br>Currently: <span id="breakUpg7Mult">1</span>x<br>Cost: <span id="breakUpg7Cost"></span> Eternal Matter</button><br><button class="storebtn" style="width: 190px" onclick="maxBuyBEEPMult()">Max EP mult</button>
+								</td>
+								<td></td>
+							</tr>
+						</table>
+					</div>
+				</div>
+				<div class="riptab" id="breakDilation" style="font-size: 11px">
+					<button class="gluonupgrade bl" onclick="toBLTab()">Teleport to Bosonic Lab.</button><br>
+					<div id="bdUnl"></div>
+					<div id="bdDiv">
+						<div>You have <span id="bd_tp">0</span> tachyon particles.</div><br>
+						<button id="breakDilationBtn" class="bd_btn" onclick="breakDilation()"
+						ach-tooltip="Breaking Dilation allow you gain tachyon particles without dilating time.
+						However, you gain Cherenkov Radiations based on your TP, which divides your DT gain.
+						Fixing Dilation will reset Cherenkov Radiations & TP, perform to Ghostify reset.">Break Dilation.</button>
+						<br><br>
+						You have <span id="crAmt" class="h2">0</span> (+<span id="crGain">0</span>/s) Cherenkov Radiation. Which divides DT gain by <span id="crEff" class="h2">0</span><br>
+						<table id="bdUpgsTable" style="margin: 0 auto"></table>
+					</div>
+				</div>
+			</div>
 			<div id="footercontainer">
 				<table id="footer">
 					<tr>
@@ -5103,11 +5098,10 @@
 			<table class="table" align="center" style="margin: auto">
 				<tr>
 					<td><button class="secondarytabbtn" onclick="showGhostifyTab('neutrinos')">Neutrinos</button></td>
-					<td><button class="secondarytabbtn" onclick="showGhostifyTab('automaticghosts')">Automator Ghosts</button></td>
-					<td><button class="secondarytabbtn" onclick="showGhostifyTab('bravemilestones')">Brave Milestones</button></td>
 					<td id="gphtabbtn"><button class="secondarytabbtn" onclick="showGhostifyTab('gphtab')">Ghostly Photons</button></td>
 					<td id="bltabbtn"><button class="secondarytabbtn" onclick="showGhostifyTab('bltab')">Bosonic Lab</button></td>
-					<td id="gravtabbtn"><button class="secondarytabbtn" onclick="showGhostifyTab('gravtab')">Gravitons</button></td>
+					<td><button class="secondarytabbtn" onclick="showGhostifyTab('bravemilestones')">Brave Milestones</button></td>
+					<td><button class="secondarytabbtn" onclick="showGhostifyTab('automaticghosts')">Automator Ghosts</button></td>
 				</tr>
 			</table>
 			<div id="neutrinos" class="ghostifytab">
@@ -5290,7 +5284,7 @@
 						<td id="autoGhost17"><div class="autoBuyerDiv" style="display:block">
 							<b>Auto-Extractor Ghost</b><br>
 							Power usage: 3<br>
-							This also changes runes at a complete extraction on 1s after last change<br>
+							This also changes runes at a complete extraction on 2s after last change<br>
 							or change immediately at X seconds remaining for extracting: <input id="autoGhost17s" onchange="changeAutoGhost('17s')"></input><br>
 							Is active: <input id="isAutoGhostOn17" type="checkbox" onchange="toggleAutoGhost(17)"></input>
 						</div></td>
@@ -5301,7 +5295,7 @@
 						</div></td>
 						<td id="autoGhost19"><div class="autoBuyerDiv" style="display:block">
 							<b>Auto-Enchanter Ghost</b><br>
-							(doesn't consume your Bosonic Runes, enchant 5 times per second)<br>
+							(doesn't consume your Bosonic Runes, enchant per 2 seconds)<br>
 							Power usage: 3<br>
 							Is active: <input id="isAutoGhostOn19" type="checkbox" onchange="toggleAutoGhost(19)"></input>
 						</div></td>
@@ -5406,7 +5400,7 @@
 							They boost orange Light strength by <span class="yellow" id="lightStrength2" style="font-size:35px"></span>x and make electrons effect softcap starts <span class="yellow" id="lightBoost3" style="font-size:35px"></span> later.
 						</td>
 						<td>
-							They boost yellow Light strength by <span class="green" id="lightStrength3" style="font-size:35px"></span>x and boost <span id="lightBoost4Type">preon</span> boost by <span class="green" id="lightBoost4" style="font-size:35px"></span>%.
+							They boost yellow Light strength by <span class="green" id="lightStrength3" style="font-size:35px"></span>x and increase green power effect by <span class="green" id="lightBoost4" style="font-size:35px"></span>%.
 						</td>
 					</tr><tr>
 						<td id="le3">
@@ -5497,37 +5491,40 @@
 				<div id="blDiv">
 					<table class='qtable'><tr>
 						<td>
-							You have <span id="bWatt" style="font-size:35px"></span> Bosonic Watts.<br>Bosonic Speed: <span id="bSpeed" style="font-size:25px"></span>x<br>Bosonic Lab is currently running at <span id="bTotalSpeed" style="font-size:25px"></span>x.<br>You have played Bosonic Lab for <span id="bTicks"></span> ticks.
+							You have <span id="bWatt" style="font-size:25px"></span> Bosonic Watts.<br>Bosonic Speed: <span id="bSpeed" style="font-size:15px"></span>x<br>Bosonic Lab is currently running at <span id="bTotalSpeed" style="font-size:15px"></span>x.<br>You have played Bosonic Lab for <span id="bTicks"></span> ticks.
 						</td>
 						<td>
-							You have <span id="bAM" style="font-size:35px"></span> Bosonic Antimatter. <span id="bAMProduction" style="font-size:25px"></span>
+							You have <span id="bAM" style="font-size:25px"></span> Bosonic Antimatter. <span id="bAMProduction" style="font-size:15px"></span>
+							<br>
+							<div id="bosonicResets">
+								You have <span class="yellow" id="hb" style="font-size:25px">0</span> Higgs Bosons.
+								<br>
+								<button class="gluonupgrade hb" id="hbReset" onclick="higgsReset()"><span id="hbResetDesc"></span><br>(Requires <span id="hbResetReq"></span> Bosonic Antimatter)</button>
+							</div>
 						</td>
 						<td>
-							You have <span id="bBt" style="font-size:35px"></span> Bosonic Battery. <span id="bBtProduction" style="font-size:25px"></span><br>
+							You have <span id="bBt" style="font-size:25px"></span> Bosonic Battery. <span id="bBtProduction" style="font-size:15px"></span><br>
 							Overdrive Speed: <span id="odSpeed" style="font-size:25px"></span><span id="odSpeedWBBt"></span><br>
 							<input id="odSlider" style="width: 180px;" type="range" min="0" max="30" class="slider" oninput="changeOverdriveSpeed()">
 						</td>
-					</tr><tr id="bosonicResets">
-						<td colspan=3>
-							You have <span class="yellow" id="hb" style="font-size:35px">0</span> Higgs Bosons.
-							<br>
-							<button class="gluonupgrade hb" id="hbReset" onclick="higgsReset()"><span id="hbResetDesc"></span><br>(Requires <span id="hbResetReq"></span> Bosonic Antimatter)</button>
-						</td>
 					</tr></table>
 					<span id="nextParticle"></span><br>
-					<b style="font-size: 35px">Bosonic Runes</b><br>
-					<table id="bRunes" align="center" style="margin: auto"><tr></tr></table>
 					<table class="table" align="center" style="margin: auto">
 						<tr>
-							<td><button class="secondarytabbtn" onclick="showBLTab('bextab')">Bosonic Enchants</button></td>
-							<td><button class="secondarytabbtn" onclick="showBLTab('butab')">Bosonic Upgrades</button></td>
+							<td><button class="secondarytabbtn" onclick="showBLTab('bextab')">Enchants</button></td>
+							<td><button class="secondarytabbtn" onclick="showBLTab('butab')">Upgrades</button></td>
 							<td><button class="secondarytabbtn" onclick="showBLTab('wzbtab')">W & Z Bosons</button></td>
+							<td id="gravtabbtn"><button class="secondarytabbtn" onclick="showBLTab('gravtab')">Gravitons</button></td>
+							<td id="breakDilationTabbtn2"><button class="secondarytabbtn" onclick="toBDTab()">Break Dilation</button></td>
 						</tr>
 					</table>
+					<div id="bRunesDiv">
+						<b style="font-size: 20px">Bosonic Runes</b><br>
+						<table id="bRunes" align="center" style="margin: auto"><tr></tr></table>
+					</div>
 					<div id="bextab" class="bltab">
-						Type of Bosonic Rune to extract:<br>
-						<div id="typeToExtract"></div><br>
-						<button class="storebtn" id="extract" onclick="extract()" style="width: 180px"></button><br>
+						<span id="typeToExtract"></span>
+						<button class="storebtn" id="extract" onclick="extract()" style="width: 120px"></button><br>
 						<span id="extractTime"></span><br><br>
 						<button class="storebtn" onclick="changeEnchantAction(1)" style="width: 150px">Upgrade enchants</button>
 						<button class="storebtn" onclick="changeEnchantAction(2)" style="width: 150px">Max enchants</button>
@@ -5572,32 +5569,32 @@
 							</tr>
 						</table>
 					</div>
-				</div>
-			</div>
-			<div id="gravtab" class="ghostifytab">
-				<div id="gravUnl"></div>
-				<div id="gravDiv">
-					<span style="font-size: 18px">You have <b id="gravAmt" class="gv" style="font-size: 24px">0</b> Gravitons.</span><br>
-					(+<span id="gravGain">0</span>/s, best of <span id="gravBest" class="gv">0</span>)<br><br>
-					You have <span id="gravLeft" class="gv"></span> activations left. (Next at <span id="gravNext"></span> Gravitons)<br>
-					<button class="storebtn" onclick="respecGv()">Respec</button>
-					<table style="margin: auto">
-						<tr>
-							<td><button class="storebtn gw" id="gv_0" onclick="clickGv(0)"><b id="gv_0_data"></b><br><span id="gv_0_eff"></span></button></td>
-							<td><button class="storebtn gw" id="gv_1" onclick="clickGv(1)"><b id="gv_1_data"></b><br><span id="gv_1_eff"></span></button></td>
-							<td><button class="storebtn gw" id="gv_2" onclick="clickGv(2)"><b id="gv_2_data"></b><br><span id="gv_2_eff"></span></button></td>
-						</tr>
-						<tr>
-							<td><button class="storebtn gw" id="gv_7" onclick="clickGv(7)"><b id="gv_7_data"></b><br><span id="gv_7_eff"></span></button></td>
-							<td><button class="gluonupgrade gw" id="gv_upg" onclick="upgGv()" style="font-size: 12px !important">Cancel the disadvantages.<br>Requirement: <span id="gv_upg_req"></span> Higgs</button></td>
-							<td><button class="storebtn gw" id="gv_3" onclick="clickGv(3)"><b id="gv_3_data"></b><br><span id="gv_3_eff"></span></button></td>
-						</tr>
-						<tr>
-							<td><button class="storebtn gw" id="gv_6" onclick="clickGv(6)"><b id="gv_6_data"></b><br><span id="gv_6_eff"></span></button></td>
-							<td><button class="storebtn gw" id="gv_5" onclick="clickGv(5)"><b id="gv_5_data"></b><br><span id="gv_5_eff"></span></button></td>
-							<td><button class="storebtn gw" id="gv_4" onclick="clickGv(4)"><b id="gv_4_data"></b><br><span id="gv_4_eff"></span></button></td>
-						</tr>
-					</table>
+					<div id="gravtab" class="bltab">
+						<div id="gravUnl"></div>
+						<div id="gravDiv">
+							<span style="font-size: 18px">You have <b id="gravAmt" class="gv" style="font-size: 24px">0</b> Gravitons.</span><br>
+							(+<span id="gravGain">0</span>/s, best of <span id="gravBest" class="gv">0</span>)<br><br>
+							You have <span id="gravLeft" class="gv"></span> activations left. (Next at <span id="gravNext"></span> Gravitons)<br>
+							<button class="storebtn" onclick="respecGv()">Respec</button>
+							<table style="margin: auto">
+								<tr>
+									<td><button class="storebtn gw" id="gv_0" onclick="clickGv(0)"><b id="gv_0_data"></b><br><span id="gv_0_eff"></span></button></td>
+									<td><button class="storebtn gw" id="gv_1" onclick="clickGv(1)"><b id="gv_1_data"></b><br><span id="gv_1_eff"></span></button></td>
+									<td><button class="storebtn gw" id="gv_2" onclick="clickGv(2)"><b id="gv_2_data"></b><br><span id="gv_2_eff"></span></button></td>
+								</tr>
+								<tr>
+									<td><button class="storebtn gw" id="gv_7" onclick="clickGv(7)"><b id="gv_7_data"></b><br><span id="gv_7_eff"></span></button></td>
+									<td><button class="gluonupgrade gw" id="gv_upg" onclick="upgGv()" style="font-size: 12px !important">Cancel the disadvantages.<br>Requirement: <span id="gv_upg_req"></span> Higgs</button></td>
+									<td><button class="storebtn gw" id="gv_3" onclick="clickGv(3)"><b id="gv_3_data"></b><br><span id="gv_3_eff"></span></button></td>
+								</tr>
+								<tr>
+									<td><button class="storebtn gw" id="gv_6" onclick="clickGv(6)"><b id="gv_6_data"></b><br><span id="gv_6_eff"></span></button></td>
+									<td><button class="storebtn gw" id="gv_5" onclick="clickGv(5)"><b id="gv_5_data"></b><br><span id="gv_5_eff"></span></button></td>
+									<td><button class="storebtn gw" id="gv_4" onclick="clickGv(4)"><b id="gv_4_data"></b><br><span id="gv_4_eff"></span></button></td>
+								</tr>
+							</table>
+						</div>
+					</div>
 				</div>
 			</div>
 			<div id="footercontainer">

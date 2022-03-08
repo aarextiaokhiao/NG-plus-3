@@ -50,12 +50,12 @@ function getGalaxyEff(bi) {
 	if (player.infinityUpgrades.includes("galaxyBoost")) eff *= 2;
 	if (player.infinityUpgrades.includes("postGalaxy")) eff *= getPostGalaxyEff();
 	if (player.challenges.includes("postc5")) eff *= player.galacticSacrifice ? 1.15 : 1.1;
-	if (player.achievements.includes("r86")) eff *= player.galacticSacrifice ? 1.05 : 1.01
+	if (hasAch("r86")) eff *= player.galacticSacrifice ? 1.05 : 1.01
 	if (player.galacticSacrifice) {
-		if (player.achievements.includes("r83")) eff *= 1.05
-		if (player.achievements.includes("r45")) eff *= 1.02
+		if (hasAch("r83")) eff *= 1.05
+		if (hasAch("r45")) eff *= 1.02
 		if (player.infinityUpgrades.includes("postinfi51")) eff *= player.tickspeedBoosts != undefined ? 1.15 : 1.2
-		if (tmp.cp && player.achievements.includes("r67")) {
+		if (tmp.cp && hasAch("r67")) {
 			let x = tmp.cp
 			if (x < 0) x = 1
 			if (x > 4 && player.tickspeedBoosts != undefined) x = Math.sqrt(x - 1) + 2
@@ -63,7 +63,7 @@ function getGalaxyEff(bi) {
 		}
 	}
 	if (player.tickspeedBoosts !== undefined && (inNC(5) || player.currentChallenge == "postcngm3_3")) eff *= 0.75
-	if (player.achievements.includes("ngpp8") && player.meta != undefined) eff *= 1.001;
+	if (hasAch("ngpp8") && player.meta != undefined) eff *= 1.001;
 	if (player.timestudy.studies.includes(212)) eff *= tsMults[212]()
 	if (player.timestudy.studies.includes(232) && bi) eff *= tmp.ts232
 
@@ -118,7 +118,7 @@ function getGalaxyTickSpeedMultiplier() {
 	let perGalaxy = player.infinityUpgradesRespecced != undefined ? 0.98 : 0.965
 
 	var log = Math.log10(perGalaxy)*(galaxies-linearGalaxies)+Math.log10(baseMultiplier)
-	if (!tmp.ngp3l && log < 0) log = -softcap(-log, "ts_reduce_log")
+	if (log < 0) log = -softcap(-log, "ts_reduce_log")
 	return pow10(log)
 }
 
@@ -199,7 +199,7 @@ function buyTickSpeed() {
 	return true
 }
 
-document.getElementById("tickSpeed").onclick = function () {
+el("tickSpeed").onclick = function () {
 	buyTickSpeed()
 };
 
@@ -323,6 +323,6 @@ function updateTickspeed() {
 	if (gameSpeed != 1) label += ", Game speed: " + (gameSpeed < 1 ? shorten(1 / gameSpeed) + "x slower" : shorten(tmp.gameSpeed) + "x faster")
 	if (player.galacticSacrifice && player.tickspeedBoosts == undefined && inNC(14)) {
 		label += "<br>You have "+(308-player.tickBoughtThisInf.current)+" tickspeed purchases left."
-		document.getElementById("tickSpeedAmount").innerHTML = label
-	} else document.getElementById("tickSpeedAmount").textContent = label
+		el("tickSpeedAmount").innerHTML = label
+	} else el("tickSpeedAmount").textContent = label
 }

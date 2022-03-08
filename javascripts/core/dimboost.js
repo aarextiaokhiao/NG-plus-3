@@ -10,7 +10,7 @@ function getDimensionBoostPower(next, focusOn) {
 	if (player.boughtDims) ret += player.timestudy.ers_studies[4] + (next ? 1 : 0)
 	if (player.galacticSacrifice && player.galacticSacrifice.upgrades.includes(23) && ((!inNC(14) && player.currentChallenge != "postcngm3_3") || player.tickspeedBoosts == undefined || aarMod.ngmX > 3) && player.currentChallenge != "postcngm3_4") ret *= galMults.u23()
 	if (player.infinityUpgrades.includes("resetMult") && player.galacticSacrifice) ret *= 1.2 + 0.05 * player.infinityPoints.max(1).log(10)
-	if (!player.boughtDims && player.achievements.includes("r101")) ret = ret * 1.01
+	if (!player.boughtDims && hasAch("r101")) ret = ret * 1.01
 	if (player.timestudy.studies.includes(83)) ret = E_pow(1.0004, player.totalTickGained).min(player.meta ? 1/0 : 1e30).times(ret);
 	if (player.timestudy.studies.includes(231)) ret = E_pow(Math.max(player.resets, 1), 0.3).times(ret)
 	if (player.galacticSacrifice) {
@@ -68,35 +68,35 @@ function softReset(bulk, tier=1) {
 	}
 	setInitialDimensionPower();
 
-	if (player.achievements.includes("r36")) player.tickspeed = player.tickspeed.times(0.98);
-	if (player.achievements.includes("r45")) player.tickspeed = player.tickspeed.times(0.98);
-	if (player.achievements.includes("r66")) player.tickspeed = player.tickspeed.times(0.98);
-	if (player.achievements.includes("r83")) player.tickspeed = player.tickspeed.times(E_pow(0.95,player.galaxies));
+	if (hasAch("r36")) player.tickspeed = player.tickspeed.times(0.98);
+	if (hasAch("r45")) player.tickspeed = player.tickspeed.times(0.98);
+	if (hasAch("r66")) player.tickspeed = player.tickspeed.times(0.98);
+	if (hasAch("r83")) player.tickspeed = player.tickspeed.times(E_pow(0.95,player.galaxies));
 	divideTickspeedIC5()
 
 	if (player.resets > 4) {
-		document.getElementById("confirmation").style.display = "inline-block";
-		document.getElementById("sacrifice").style.display = "inline-block";
-		document.getElementById("confirmations").style.display = "inline-block";
-		document.getElementById("sacConfirmBtn").style.display = "inline-block";
+		el("confirmation").style.display = "inline-block";
+		el("sacrifice").style.display = "inline-block";
+		el("confirmations").style.display = "inline-block";
+		el("sacConfirmBtn").style.display = "inline-block";
 		if (player.galacticSacrifice && player.galaxies > 0) {
-			document.getElementById("gSacrifice").style.display = "inline-block"
-			document.getElementById("gConfirmation").style.display = "inline-block"
+			el("gSacrifice").style.display = "inline-block"
+			el("gConfirmation").style.display = "inline-block"
 		}
 	}
 	hideDimensions()
 	tmp.tickUpdate = true;
-	if (!player.achievements.includes("r111")) setInitialMoney()
+	if (!hasAch("r111")) setInitialMoney()
 }
 
 function setInitialMoney() {
 	var x = 10
 	if (player.challenges.includes("challenge1")) x = 100
 	if (aarMod.ngmX > 3) x = 200
-	if (player.achievements.includes("r37")) x = 1000
-	if (player.achievements.includes("r54")) x = 2e5
-	if (player.achievements.includes("r55")) x = 1e10
-	if (player.achievements.includes("r78")) x = 2e25
+	if (hasAch("r37")) x = 1000
+	if (hasAch("r54")) x = 2e5
+	if (hasAch("r55")) x = 1e10
+	if (hasAch("r78")) x = 2e25
 	player.money = E(x)
 }
 
@@ -122,7 +122,7 @@ function setInitialDimensionPower() {
 		if (ic3PowerTB > softCapStart) ic3PowerTB = Math.sqrt((ic3PowerTB - softCapStart) / frac + 1024) * 32 + softCapStart - 1024
 		if (inNC(15) || player.currentChallenge == "postc1" || player.currentChallenge == "postcngm3_3") ic3PowerTB *= aarMod.ngmX > 3 ? .2 : Math.max(player.galacticSacrifice.galaxyPoints.div(1e3).add(1).log(8),1)
 		else if (player.challenges.includes("postcngm3_3")) ic3PowerTB *= Math.max(Math.sqrt(player.galacticSacrifice.galaxyPoints.max(1).log10()) / 15 + .6, 1)
-		if (player.achievements.includes("r67")) {
+		if (hasAch("r67")) {
 			let x = tmp.cp
 			if (x > 4) x = Math.sqrt(x - 1) + 2
 			ic3PowerTB *= x * .15 + 1
@@ -205,7 +205,7 @@ function getDimboostCostIncrease () {
 	} else {
 		if (tmp.ngp3 && player.masterystudies.includes("t261")) ret -= 1
 		if (inNC(4)) ret += 5
-		if (player.boughtDims && player.achievements.includes('r101')) ret -= Math.min(8, Math.pow(player.eternityPoints.max(1).log(10), .25))
+		if (player.boughtDims && hasAch('r101')) ret -= Math.min(8, Math.pow(player.eternityPoints.max(1).log(10), .25))
 	}
 	if (player.timestudy.studies.includes(211)) ret -= tsMults[211]()
 	if (player.timestudy.studies.includes(222)) ret -= tsMults[222]()
@@ -231,14 +231,14 @@ function getSupersonicMultIncrease() {
 	return r
 }
 
-document.getElementById("softReset").onclick = function () {
+el("softReset").onclick = function () {
 	if (inQC(6)) return
 	if (cantReset()) return
 	var req = getShiftRequirement(0)
 	if (tmp.ri || getAmount(req.tier) < req.amount) return;
 	auto = false;
 	var pastResets = player.resets
-	if ((player.infinityUpgrades.includes("bulkBoost") || (player.achievements.includes("r28") && player.tickspeedBoosts !== undefined) || player.autobuyers[9].bulkBought) && player.resets > (inNC(4) || player.pSac != undefined ? 1 : 3) && (!inNC(14) || !(aarMod.ngmX > 3))) maxBuyDimBoosts(true);
+	if ((player.infinityUpgrades.includes("bulkBoost") || (hasAch("r28") && player.tickspeedBoosts !== undefined) || player.autobuyers[9].bulkBought) && player.resets > (inNC(4) || player.pSac != undefined ? 1 : 3) && (!inNC(14) || !(aarMod.ngmX > 3))) maxBuyDimBoosts(true);
 	else softReset(1)
 	if (player.resets <= pastResets) return
 	if (player.currentEternityChall=='eterc13') return

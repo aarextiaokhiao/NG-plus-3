@@ -44,9 +44,9 @@ function getBlackholePowerEffect() {
 
 function unlockBlackhole() {
 	if (player.eternityPoints.gte('1e4000')) {
-		document.getElementById("blackholediv").style.display = "inline-block"
-		document.getElementById("blackholeunlock").style.display = "none"
-		document.getElementById("blackHoleAnimBtn").style.display = "inline-block"
+		el("blackholediv").style.display = "inline-block"
+		el("blackholeunlock").style.display = "none"
+		el("blackHoleAnimBtn").style.display = "inline-block"
 		player.blackhole.unl = true
 		player.eternityPoints = player.eternityPoints.minus('1e4000')
 	}
@@ -66,32 +66,32 @@ function isBHDimUnlocked(t) {
 
 function updateBlackhole() {
 	drawBlackhole();
-	document.getElementById("blackholePowAmount").innerHTML = shortenMoney(player.blackhole.power);
-	document.getElementById("blackholePowPerSec").innerHTML = "You are getting " + shortenMoney(getBlackholeDimensionProduction(1)) + " black hole power per second.";
-	document.getElementById("DilMultAmount").innerHTML = formatValue(player.options.notation, getBlackholePowerEffect(), 2, 2)
-	document.getElementById("InfAndReplMultAmount").innerHTML = formatValue(player.options.notation, getBlackholePowerEffect().pow(1/3), 2, 2)
-	document.getElementById("blackholeDil").innerHTML = "Feed the black hole with dilated time<br>Cost: "+shortenCosts(pow10(player.blackhole.upgrades.dilatedTime+(aarMod.nguspV?18:20)))+" dilated time";
-	document.getElementById("blackholeInf").innerHTML = "Feed the black hole with banked infinities<br>Cost: "+formatValue(player.options.notation, pow2(player.blackhole.upgrades.bankedInfinities).times(5e9).round(), 1, 1)+" banked infinities";
-	document.getElementById("blackholeRepl").innerHTML = "Feed the black hole with replicanti<br>Cost: "+shortenCosts(E("1e20000").times(E_pow("1e1000", player.blackhole.upgrades.replicanti)))+" replicanti";
-	document.getElementById("blackholeDil").className = canFeedBlackHole(1) ? 'eternityupbtn' : 'eternityupbtnlocked';
-	document.getElementById("blackholeInf").className = canFeedBlackHole(2) ? 'eternityupbtn' : 'eternityupbtnlocked';
-	document.getElementById("blackholeRepl").className = canFeedBlackHole(3) ? 'eternityupbtn' : 'eternityupbtnlocked';
-	if (document.getElementById("blackhole").style.display == "block" && document.getElementById("eternitystore").style.display == "block") {
+	el("blackholePowAmount").innerHTML = shortenMoney(player.blackhole.power);
+	el("blackholePowPerSec").innerHTML = "You are getting " + shortenMoney(getBlackholeDimensionProduction(1)) + " black hole power per second.";
+	el("DilMultAmount").innerHTML = formatValue(player.options.notation, getBlackholePowerEffect(), 2, 2)
+	el("InfAndReplMultAmount").innerHTML = formatValue(player.options.notation, getBlackholePowerEffect().pow(1/3), 2, 2)
+	el("blackholeDil").innerHTML = "Feed the black hole with dilated time<br>Cost: "+shortenCosts(pow10(player.blackhole.upgrades.dilatedTime+(aarMod.nguspV?18:20)))+" dilated time";
+	el("blackholeInf").innerHTML = "Feed the black hole with banked infinities<br>Cost: "+formatValue(player.options.notation, pow2(player.blackhole.upgrades.bankedInfinities).times(5e9).round(), 1, 1)+" banked infinities";
+	el("blackholeRepl").innerHTML = "Feed the black hole with replicanti<br>Cost: "+shortenCosts(E("1e20000").times(E_pow("1e1000", player.blackhole.upgrades.replicanti)))+" replicanti";
+	el("blackholeDil").className = canFeedBlackHole(1) ? 'eternityupbtn' : 'eternityupbtnlocked';
+	el("blackholeInf").className = canFeedBlackHole(2) ? 'eternityupbtn' : 'eternityupbtnlocked';
+	el("blackholeRepl").className = canFeedBlackHole(3) ? 'eternityupbtn' : 'eternityupbtnlocked';
+	if (el("blackhole").style.display == "block" && el("eternitystore").style.display == "block") {
 		for (let tier = 1; tier < 9; ++tier) {
 			if (isBHDimUnlocked(tier)) {
-				document.getElementById("blackholeRow" + tier).style.display = ""
-				document.getElementById("blackholeD" + tier).textContent = DISPLAY_NAMES[tier] + " Black Hole Dimension x" + shortenMoney(getBlackholeDimensionPower(tier));
-				document.getElementById("blackholeAmount" + tier).textContent = getBlackholeDimensionDescription(tier);
-				document.getElementById("blackholeMax" + tier).textContent = "Cost: " + shortenCosts(player["blackholeDimension"+tier].cost) + " EP";
-				if (player.eternityPoints.gte(player["blackholeDimension" + tier].cost)) document.getElementById("blackholeMax"+tier).className = "storebtn"
-				else document.getElementById("blackholeMax"+tier).className = "unavailablebtn"
-			} else document.getElementById("blackholeRow"+tier).style.display="none"
+				el("blackholeRow" + tier).style.display = ""
+				el("blackholeD" + tier).textContent = DISPLAY_NAMES[tier] + " Black Hole Dimension x" + shortenMoney(getBlackholeDimensionPower(tier));
+				el("blackholeAmount" + tier).textContent = getBlackholeDimensionDescription(tier);
+				el("blackholeMax" + tier).textContent = "Cost: " + shortenCosts(player["blackholeDimension"+tier].cost) + " EP";
+				if (player.eternityPoints.gte(player["blackholeDimension" + tier].cost)) el("blackholeMax"+tier).className = "storebtn"
+				else el("blackholeMax"+tier).className = "unavailablebtn"
+			} else el("blackholeRow"+tier).style.display="none"
 		}
 	}
 }
 
 function drawBlackhole(ts) {
-	if (document.getElementById("eternitystore").style.display !== "none" && document.getElementById("blackhole").style.display !== "none" && player.options.animations.blackHole) {
+	if (el("eternitystore").style.display !== "none" && el("blackhole").style.display !== "none" && player.options.animations.blackHole) {
 		bhctx.clearRect(0, 0, canvas.width, canvas.height);
 		let radius = Math.max(player.blackhole.power.log(2), 0);
 		bhctx.beginPath()
@@ -177,7 +177,7 @@ function buyBlackholeDimension(tier) {
 
 function resetBlackhole() {
 	player.blackhole.power = E(0);
-	document.getElementById('blackHoleCanvas').getContext('2d').clearRect(0, 0, 400, 400);
+	el('blackHoleCanvas').getContext('2d').clearRect(0, 0, 400, 400);
 	for (var i = 1; i < 5; i++) {
 		var dim = player["blackholeDimension" + i]
 		dim.amount = E(dim.bought)
@@ -210,25 +210,25 @@ function canReverseDilation() {
 }
 
 function updateExdilation() {
-	document.getElementById("xdp").style.display = "none"
-	document.getElementById("xdrow").style.display = "none"
-	document.getElementById("exdilationConfirmBtn").style.display = "none"
+	el("xdp").style.display = "none"
+	el("xdrow").style.display = "none"
+	el("exdilationConfirmBtn").style.display = "none"
 	if (player.exdilation == undefined || aarMod.ngudpV) return
 	if (player.exdilation.times < 1 && !quantumed) return
-	document.getElementById("xdp").style.display = ""
-	document.getElementById("xdrow").style.display = ""
-	document.getElementById("exdilationConfirmBtn").style.display = "inline"
-	document.getElementById("exDilationAmount").textContent = shortenDimensions(player.exdilation.unspent)
-	document.getElementById("exDilationBenefit").textContent = (aarMod.nguspV ? exDilationBenefit() * 100 : exDilationBenefit() / 0.0075).toFixed(1)
+	el("xdp").style.display = ""
+	el("xdrow").style.display = ""
+	el("exdilationConfirmBtn").style.display = "inline"
+	el("exDilationAmount").textContent = shortenDimensions(player.exdilation.unspent)
+	el("exDilationBenefit").textContent = (aarMod.nguspV ? exDilationBenefit() * 100 : exDilationBenefit() / 0.0075).toFixed(1)
 	for (var i = 1; i <= DIL_UPG_SIZES[0]; i++) {
 		let unl = isDilUpgUnlocked("r" + i)
 		if (unl) {
-			document.getElementById("xd" + i).style.height = aarMod.nguspV ? "60px" : "50px"
-			document.getElementById("xd" + i).className = player.exdilation.unspent.eq(0) ? "dilationupgrebuyablelocked" : "dilationupgrebuyable";
-			if (aarMod.nguspV !== undefined) document.getElementById("xd" + i + "span").textContent = '+' + exDilationUpgradeStrength(i).toFixed(1) + ' free upgrades -> +' + exDilationUpgradeStrength(i,player.exdilation.unspent).toFixed(1)
-			else document.getElementById("xd" + i + "span").textContent = exDilationUpgradeStrength(i).toFixed(2) + 'x -> ' + exDilationUpgradeStrength(i,player.exdilation.unspent).toFixed(2) + 'x'
+			el("xd" + i).style.height = aarMod.nguspV ? "60px" : "50px"
+			el("xd" + i).className = player.exdilation.unspent.eq(0) ? "dilationupgrebuyablelocked" : "dilationupgrebuyable";
+			if (aarMod.nguspV !== undefined) el("xd" + i + "span").textContent = '+' + exDilationUpgradeStrength(i).toFixed(1) + ' free upgrades -> +' + exDilationUpgradeStrength(i,player.exdilation.unspent).toFixed(1)
+			else el("xd" + i + "span").textContent = exDilationUpgradeStrength(i).toFixed(2) + 'x -> ' + exDilationUpgradeStrength(i,player.exdilation.unspent).toFixed(2) + 'x'
 		}
-		document.getElementById("xd"+i).style.display = unl ? "" : "none"
+		el("xd"+i).style.display = unl ? "" : "none"
 	}
 }
 
@@ -308,7 +308,7 @@ function reverseDilation () {
 
 function toggleExdilaConf() {
 	player.options.exdilationconfirm = !player.options.exdilationconfirm
-	document.getElementById("exdilationConfirmBtn").textContent = "Reverse dilation confirmation: " + (player.options.exdilationconfirm ? "ON" : "OFF")
+	el("exdilationConfirmBtn").textContent = "Reverse dilation confirmation: " + (player.options.exdilationconfirm ? "ON" : "OFF")
 }
 
 function boostDilationUpgrade(x) {

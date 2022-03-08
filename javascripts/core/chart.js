@@ -1,6 +1,6 @@
 Chart.defaults.global.defaultFontColor = 'black';
 Chart.defaults.global.defaultFontFamily = 'Typewriter';
-var ctx2 = document.getElementById("normalDimChart").getContext('2d');
+var ctx2 = el("normalDimChart").getContext('2d');
 var normalDimChart = new Chart(ctx2, {
     type: 'line',
     data: {
@@ -57,10 +57,10 @@ var normalDimChart = new Chart(ctx2, {
 });
 
 function updateChartValues() {
-    player.options.chart.duration = Math.min(Math.max(parseInt(document.getElementById("chartDurationInput").value), 1), 300);
-    document.getElementById("chartDurationInput").value = player.options.chart.duration;
-    player.options.chart.updateRate = Math.min(Math.max(parseInt(document.getElementById("chartUpdateRateInput").value), 50), 10000);
-    document.getElementById("chartUpdateRateInput").value = player.options.chart.updateRate;
+    player.options.chart.duration = Math.min(Math.max(parseInt(el("chartDurationInput").value), 1), 300);
+    el("chartDurationInput").value = player.options.chart.duration;
+    player.options.chart.updateRate = Math.min(Math.max(parseInt(el("chartUpdateRateInput").value), 50), 10000);
+    el("chartUpdateRateInput").value = player.options.chart.updateRate;
     if (Number.isInteger(player.options.chart.updateRate) === false) {
         player.options.chart.updateRate = 1000;
     }
@@ -126,6 +126,6 @@ function addData(chart, label, data) {
         if (data < chart.data.datasets[0].data[chart.data.datasets[0].data.length-1] && !player.options.chart.dips) dataset.data.push(chart.data.datasets[0].data[chart.data.datasets[0].data.length-1]);
         else dataset.data.push(data);
     });
-    if (document.getElementById("antimatterdimensions").style.display == "block" && document.getElementById("production").style.display == "block") chart.update(100);
+    if (el("antimatterdimensions").style.display == "block" && el("production").style.display == "block") chart.update(100);
     else chart.update(0);
 }

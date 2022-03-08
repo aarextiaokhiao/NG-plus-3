@@ -732,6 +732,21 @@ button, div.storebtn {
 	box-shadow: 0px 0px 12px #e5e500, inset 0px 0px 24px #e5e500, 1px 2px rgba(229,229,229,0.4)
 }
 
+#gravtabbtn button {
+	background: linear-gradient(90deg, #3f5f7f, transparent, #3f5f7f), linear-gradient(black, transparent, black), linear-gradient(#003fbf, black, #003fbf) !important;
+    box-shadow: inset 0px 0px 20px 0px #003fbf, 1px 2px rgba(229,229,229,0.4);
+	background-position: center;
+	color: #bfcfff !important;
+	text-shadow: 0px 0px 3px #005f7f, 0px 0px 6px #005f7f;
+	animation: hb 5s ease infinite
+}
+
+#gravtabbtn button:hover {
+    box-shadow: inset 0px 0px 60px 0px #003fbf, 1px 2px rgba(229,229,229,0.4);
+	color: #003fbf !important;
+	text-shadow: 0px 0px 3px #003fbf, 0px 0px 6px #003fbf;
+}
+
 @keyframes rg {
 	0% {color: #e50000}
 	25% {color: #e5e500}

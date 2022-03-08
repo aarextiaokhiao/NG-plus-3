@@ -42,7 +42,7 @@ function hideMaxIDButton(onLoad=false) {
 		}
 	}
 	if (player.pSac !== undefined) hide = false
-	document.getElementById("maxAllID").style.display = hide ? "none" : ""
+	el("maxAllID").style.display = hide ? "none" : ""
 }
 
 function DimensionDescription(tier) {
@@ -63,18 +63,18 @@ function DimensionRateOfChange(tier) {
 }
 
 function updateInfinityDimensions() {
-	if (document.getElementById("dimensions").style.display == "block" && document.getElementById("infinitydimensions").style.display == "block") {
+	if (el("dimensions").style.display == "block" && el("infinitydimensions").style.display == "block") {
 		updateInfPower()
 		for (let tier = 1; tier <= 8; ++tier) {
 			var unl = player.infDimensionsUnlocked[tier-1]
-			document.getElementById("infRow" + tier).style.display = unl ? "" : "none"
+			el("infRow" + tier).style.display = unl ? "" : "none"
 			if (unl) {
-				document.getElementById("infD" + tier).textContent = DISPLAY_NAMES[tier] + " Infinity Dimension x" + shortenMoney(DimensionPower(tier));
-				document.getElementById("infAmount" + tier).textContent = DimensionDescription(tier);
-				document.getElementById("infMax" + tier).textContent = (quantumed ? '' : "Cost: ") + (player.pSac !== undefined ? shortenDimensions(player["infinityDimension" + tier].costAM) : shortenInfDimCosts(getIDCost(tier)) + " IP")
-				if (player.pSac !== undefined ? player.money.gte(player["infinityDimension"+tier].costAM) : player.infinityPoints.gte(getIDCost(tier))) document.getElementById("infMax"+tier).className = "storebtn"
-				else document.getElementById("infMax" + tier).className = "unavailablebtn"
-				document.getElementById("infRow" + tier).style.visibility = "visible";
+				el("infD" + tier).textContent = DISPLAY_NAMES[tier] + " Infinity Dimension x" + shortenMoney(DimensionPower(tier));
+				el("infAmount" + tier).textContent = DimensionDescription(tier);
+				el("infMax" + tier).textContent = (quantumed ? '' : "Cost: ") + (player.pSac !== undefined ? shortenDimensions(player["infinityDimension" + tier].costAM) : shortenInfDimCosts(getIDCost(tier)) + " IP")
+				if (player.pSac !== undefined ? player.money.gte(player["infinityDimension"+tier].costAM) : player.infinityPoints.gte(getIDCost(tier))) el("infMax"+tier).className = "storebtn"
+				else el("infMax" + tier).className = "unavailablebtn"
+				el("infRow" + tier).style.visibility = "visible";
 			}
 		}
 	}
@@ -133,9 +133,9 @@ function DimensionPower(tier) {
   	if (hasPU(31)) mult = mult.times(puMults[31]())
   	if (player.pSac !== undefined) if (tier==2) mult = mult.pow(puMults[13](hasPU(13, true, true)))
 
-  	if (player.achievements.includes("r94") && tier == 1) mult = mult.times(2);
-  	if (player.achievements.includes("r75") && !player.boughtDims) mult = mult.times(player.achPow);
-  	if (player.achievements.includes("r66") && player.galacticSacrifice !== undefined) mult = mult.times(Math.max(1, Math.abs(player.tickspeed.log10()) / 29))
+  	if (hasAch("r94") && tier == 1) mult = mult.times(2);
+  	if (hasAch("r75") && !player.boughtDims) mult = mult.times(player.achPow);
+  	if (hasAch("r66") && player.galacticSacrifice !== undefined) mult = mult.times(Math.max(1, Math.abs(player.tickspeed.log10()) / 29))
   	if (player.replicanti.unl && player.replicanti.amount.gt(1) && player.galacticSacrifice === undefined) mult = mult.times(getIDReplMult())
 
   	mult = mult.times(getInfDimPathIDMult(tier))
@@ -155,7 +155,7 @@ function DimensionPower(tier) {
   	if (player.galacticSacrifice !== undefined) mult = mult.times(ec9)
 
   	mult = dilates(mult, 1)
-  	if (quantumed && !tmp.ngp3l) mult = mult.times(colorBoosts.dim.g)
+  	if (quantumed) mult = mult.times(colorBoosts.dim.g)
   	return mult
 }
 
@@ -168,7 +168,7 @@ function resetInfDimensions() {
 }
 
 function resetInfDimUnlocked() {
-	let value = player != undefined && getEternitied() >= 25 && player.achievements.includes("ng3p21")
+	let value = player != undefined && getEternitied() >= 25 && hasAch("ng3p21")
 	let data = []
 	for (var d = 1; d <= 8; d++) data.push(value)
 	if (player != undefined && player.pSac != undefined) data[0] = true
@@ -180,7 +180,7 @@ var infPowerMults = [[null, 50, 30, 10, 5, 5, 5, 5, 5], [null, 500, 300, 100, 50
 var infBaseCost = [null, 1e8, 1e9, 1e10, 1e20, 1e140, 1e200, 1e250, 1e280]
 function getIDCost(tier) {
 	let ret = player["infinityDimension" + tier].cost
-	if (player.galacticSacrifice !== undefined && player.achievements.includes("r123")) ret = ret.div(galMults.u11())
+	if (player.galacticSacrifice !== undefined && hasAch("r123")) ret = ret.div(galMults.u11())
 	return ret
 }
 
@@ -221,7 +221,7 @@ function buyManyInfinityDimension(tier, auto) {
 
 	if (player.pSac != undefined) player.chall2Pow = 0
 	if (player.currentEternityChall == "eterc8") player.eterc8ids -= 1
-	document.getElementById("eterc8ids").textContent = "You have " + player.eterc8ids + " purchases left."
+	el("eterc8ids").textContent = "You have " + player.eterc8ids + " purchases left."
 	if (inQC(6)) player.postC8Mult = E(1)
 	return true
 }
@@ -286,10 +286,10 @@ function getInfinityPowerEffectExp() {
 function switchAutoInf(tier) {
 	if (player.infDimBuyers[tier - 1]) {
 		player.infDimBuyers[tier - 1] = false
-		document.getElementById("infauto"+tier).textContent = "Auto: OFF"
+		el("infauto"+tier).textContent = "Auto: OFF"
 	} else {
 		player.infDimBuyers[tier - 1] = true
-		document.getElementById("infauto"+tier).textContent = "Auto: ON"
+		el("infauto"+tier).textContent = "Auto: ON"
 	}
 	hideMaxIDButton()
 }
@@ -298,13 +298,13 @@ function toggleAllInfDims() {
 	if (player.infDimBuyers[0]) {
 		for (var i = 1; i <= 8; i++) {
 			player.infDimBuyers[i - 1] = false
-			document.getElementById("infauto" + i).textContent = "Auto: OFF"
+			el("infauto" + i).textContent = "Auto: OFF"
 		}
 	} else {
 		for (var i=1; i <= 8; i++) {
 			if (getEternitied() - 10 >= i) {
 				player.infDimBuyers[i - 1] = true
-				document.getElementById("infauto" + i).textContent = "Auto: ON"
+				el("infauto" + i).textContent = "Auto: ON"
 			}
 		}
 	}
@@ -313,8 +313,8 @@ function toggleAllInfDims() {
 
 function loadInfAutoBuyers() {
 	for (var i = 1; i <= 8; i++) {
-		if (player.infDimBuyers[i - 1]) document.getElementById("infauto" + i).textContent = "Auto: ON"
-		else document.getElementById("infauto" + i).textContent = "Auto: OFF"
+		if (player.infDimBuyers[i - 1]) el("infauto" + i).textContent = "Auto: ON"
+		else el("infauto" + i).textContent = "Auto: OFF"
 	}
 	hideMaxIDButton(true)
 }
@@ -334,7 +334,7 @@ function getEU2Mult() {
 	var soft = 0
 	if (e > 1e5) soft = nS(e, cap)
 	var achReward = 1
-	if (player.achievements.includes("ngpp15")) achReward = pow10(Math.pow(Decimal.log10(e), 4.75))
+	if (hasAch("ngpp15")) achReward = pow10(Math.pow(Decimal.log10(e), 4.75))
 	return E_pow(cap/200 + 1, Math.log(cap * 2 + 1) / Math.log(4)).times(Decimal.div(soft, 200).add(1).times(Decimal.times(soft, 2).add(1).log(4)).max(1)).max(achReward)
 }
 
@@ -344,14 +344,14 @@ function getEU3Mult() {
 }
 
 function updateInfPower() {
-	document.getElementById("infPowAmount").textContent = shortenMoney(player.infinityPower)
-	if (player.galacticSacrifice && player.pSac == undefined) document.getElementById("infPowEffectPower").textContent = tmp.infPowExp.toFixed(2)
-	document.getElementById("infDimMultAmount").textContent = shortenMoney(tmp.infPow)
-	if (player.currentEternityChall == "eterc7") document.getElementById("infPowPerSec").textContent = "You are getting " +shortenDimensions(DimensionProduction(1))+" Seventh Dimensions per second."
+	el("infPowAmount").textContent = shortenMoney(player.infinityPower)
+	if (player.galacticSacrifice && player.pSac == undefined) el("infPowEffectPower").textContent = tmp.infPowExp.toFixed(2)
+	el("infDimMultAmount").textContent = shortenMoney(tmp.infPow)
+	if (player.currentEternityChall == "eterc7") el("infPowPerSec").textContent = "You are getting " +shortenDimensions(DimensionProduction(1))+" Seventh Dimensions per second."
 	else {
 		let r = DimensionProduction(1)
 		if (player.pSac != undefined) r = r.div(getEC12Mult())
-		document.getElementById("infPowPerSec").textContent = "You are getting " + shortenDimensions(r) + " Infinity Power per second."
+		el("infPowPerSec").textContent = "You are getting " + shortenDimensions(r) + " Infinity Power per second."
 	}
 }
 

@@ -22,21 +22,21 @@ function galaxyReset(bulk) {
 	setInitialDimensionPower();
 	
 	if (player.options.notation == "Emojis") player.spreadingCancer += bulk
-	if (player.achievements.includes("r36")) player.tickspeed = player.tickspeed.times(0.98);
-	if (player.achievements.includes("r45")) player.tickspeed = player.tickspeed.times(0.98);
-	if (player.achievements.includes("r83")) player.tickspeed = player.tickspeed.times(E_pow(0.95, player.galaxies));
+	if (hasAch("r36")) player.tickspeed = player.tickspeed.times(0.98);
+	if (hasAch("r45")) player.tickspeed = player.tickspeed.times(0.98);
+	if (hasAch("r83")) player.tickspeed = player.tickspeed.times(E_pow(0.95, player.galaxies));
 	divideTickspeedIC5()
 
 	if (player.infinitied < 1 && player.eternities == 0 && !quantumed) {
-		document.getElementById("sacrifice").style.display = "none"
-		document.getElementById("confirmation").style.display = "none"
+		el("sacrifice").style.display = "none"
+		el("confirmation").style.display = "none"
 		if (player.galacticSacrifice && (player.galaxies > 0 || (player.galacticSacrifice ? player.galacticSacrifice.times > 0 : false))) {
-			document.getElementById("gSacrifice").style.display = "inline-block"
-			document.getElementById("gConfirmation").style.display = "inline-block"
+			el("gSacrifice").style.display = "inline-block"
+			el("gConfirmation").style.display = "inline-block"
 		}
 	}
-	if (!player.achievements.includes("r111")) setInitialMoney()
-	if (player.achievements.includes("r66")) player.tickspeed = player.tickspeed.times(0.98);
+	if (!hasAch("r111")) setInitialMoney()
+	if (hasAch("r66")) player.tickspeed = player.tickspeed.times(0.98);
 	if (tmp.ngp3 && bulk) {
 		if (quSave.autoOptions.sacrifice) sacrificeGalaxy(6, true)
 		if (brSave.active) brSave.bestGals = Math.max(brSave.bestGals, player.galaxies)
@@ -46,7 +46,7 @@ function galaxyReset(bulk) {
 	tmp.tickUpdate = true;
 }
 
-document.getElementById("secondSoftReset").onclick = function() {
+el("secondSoftReset").onclick = function() {
 	let ngm4 = aarMod.ngmX ? aarMod.ngmX >= 4 : false
 	let bool1 = !inNC(11) || ngm4
 	let bool2 = player.currentChallenge != "postc1"
@@ -100,7 +100,7 @@ function getGalaxyRequirement(offset = 0, display) {
 			if (GUBought("br6")) speed /= 1 + player.meta.resets / 340
 			if (ghostified && ghSave.neutrinos.boosts > 5) speed /= tmp.nb[6]
 			if (hasBosonicUpg(45)) speed /= tmp.blu[45]
-			if (player.achievements.includes("ng3p98")) speed *= 0.9
+			if (hasAch("ng3p98")) speed *= 0.9
 			amount += getDistantAdd(tmp.grd.galaxies-distantStart+1)*speed
 			if (tmp.grd.galaxies >= distantStart * 2.5 && player.galacticSacrifice != undefined) {
 				// 5 times worse scaling

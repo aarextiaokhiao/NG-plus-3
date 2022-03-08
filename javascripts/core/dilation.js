@@ -1,7 +1,7 @@
 function getDTMultPostBRU11(){
 	let gain = E(1)
-	if (player.achievements.includes("ng3p11") && !tmp.ngp3l) gain = gain.times(Math.max(player.galaxies / 600 + 0.5, 1))
-	if (player.achievements.includes("ng3p41") && !tmp.ngp3l) gain = gain.times(E_pow(4,Math.sqrt(nfSave.rewards)))
+	if (hasAch("ng3p11")) gain = gain.times(Math.max(player.galaxies / 600 + 0.5, 1))
+	if (hasAch("ng3p41")) gain = gain.times(E_pow(4,Math.sqrt(nfSave.rewards)))
 	if (player.masterystudies.includes("t263")) gain = gain.times(getMTSMult(263))
 	if (player.masterystudies.includes("t281")) gain = gain.times(getMTSMult(281))
 	gain = gain.times(tmp.qcRewards[1])
@@ -10,7 +10,7 @@ function getDTMultPostBRU11(){
 	gain = gain.times(getTreeUpgradeEffect(7))
 	gain = gain.times(colorBoosts.b)
 	if (GUBought("br2")) gain = gain.times(E_pow(2.2, Math.pow(tmp.sacPow.max(1).log10()/1e6, 0.25)))
-	if (player.achievements.includes("r137") && !tmp.ngp3l) gain = gain.times(Math.max((player.replicanti.amount.log10()-2e4)/8e3+1,1))
+	if (hasAch("r137")) gain = gain.times(Math.max((player.replicanti.amount.log10()-2e4)/8e3+1,1))
 	return gain
 }
 
@@ -19,8 +19,8 @@ function getBaseDTProduction(){
 	let exp = getDTGainExp()
 	let gain = tp.pow(exp)
 	if (NGP3andVanillaCheck()) {
-		if (player.achievements.includes("r132")) gain = gain.times(Math.max(Math.pow(player.galaxies, 0.04), 1))
-		if (player.achievements.includes("r137") && player.dilation.active) gain = gain.times(2)
+		if (hasAch("r132")) gain = gain.times(Math.max(Math.pow(player.galaxies, 0.04), 1))
+		if (hasAch("r137") && player.dilation.active) gain = gain.times(2)
 	}
 	
 	if (player.exdilation != undefined) gain = gain.times(getNGUDTGain())
@@ -32,21 +32,15 @@ function getBaseDTProduction(){
 		gain = gain.times(getDTMultPostBRU11())
 	}
 	if (hasBosonicUpg(15)) gain = gain.times(tmp.blu[15].dt)
-	if (tmp.newNGP3E && player.achievements.includes("r138") && gain.lt(1e100)) gain = gain.times(3).min(1e100)
-	if (!tmp.ngp3l && (tmp.ngp3 || tmp.newNGP3E) && player.achievements.includes("ngpp13")) gain = gain.times(2)
+	if (tmp.newNGP3E && hasAch("r138") && gain.lt(1e100)) gain = gain.times(3).min(1e100)
+	if ((tmp.ngp3 || tmp.newNGP3E) && hasAch("ngpp13")) gain = gain.times(2)
 
 	return gain
 }
 
 function getDilTimeGainPerSecond() {
 	let gain = getBaseDTProduction()
-	
-	var lgain = gain.log10()
-	if (!tmp.ngp3l) lgain = softcap(lgain, "dt_log")
-	gain = pow10(lgain)
-
-	if (tmp.ngp3) if (ghSave.breakDilation.break) gain = gain.div(tmp.bd.crEff)
-	
+	if (tmp.ngp3 && ghSave.breakDilation.break) gain = gain.div(tmp.bd.crEff)
 	return gain.times(pow2(getDilUpgPower(1)))	
 }
 
@@ -67,12 +61,12 @@ function getEternitiesAndDTBoostExp() {
 function getDilPower() {
 	var ret = E_pow(getDil3Power(), getDilUpgPower(3))
 	if (NGP3andVanillaCheck()) {
-		if (player.achievements.includes("r132")) ret = ret.times(Math.max(Math.pow(player.galaxies, 0.04), 1))
+		if (hasAch("r132")) ret = ret.times(Math.max(Math.pow(player.galaxies, 0.04), 1))
 	}
 
 	if (player.dilation.upgrades.includes("ngud1")) ret = getD18Bonus().times(ret)
 	if (tmp.ngp3) {
-		if (player.achievements.includes("ng3p11") && !tmp.ngp3l) ret = ret.times(Math.max(getTotalRG() / 125, 1))
+		if (hasAch("ng3p11")) ret = ret.times(Math.max(getTotalRG() / 125, 1))
 		if (player.masterystudies.includes("t264")) ret = ret.times(getMTSMult(264))
 		if (GUBought("br1")) ret = ret.times(getBR1Effect())
 		if (player.masterystudies.includes("t341")) ret = ret.times(getMTSMult(341))
@@ -164,7 +158,7 @@ function dilates(x, m) {
 	let e = 1
 	let y = x
 	let a = false
-	if (player.dilation.active && m != 2 && (m != "meta" || !player.achievements.includes("ng3p63") || !inQC(0))) {
+	if (player.dilation.active && m != 2 && (m != "meta" || !hasAch("ng3p63") || !inQC(0))) {
 		e *= dilationPowerStrength()
 		if (aarMod.newGameMult) e = 0.9 + Math.min((player.dilation.dilatedTime.add(1).log10()) / 1000, 0.05)
 		if (player.exdilation != undefined && !aarMod.ngudpV && !aarMod.nguspV) e += exDilationBenefit() * (1-e)
@@ -308,9 +302,9 @@ function isDilUpgUnlocked(id) {
 	let ngpp = id.split("ngpp")[1]
 	let ngmm = id.split("ngmm")[1]
 	if (id == "r4") return player.meta !== undefined
-	if (id == "r5") return player.galacticSacrifice !== undefined && !tmp.ngp3l
+	if (id == "r5") return player.galacticSacrifice !== undefined
 	if (ngmm) {
-		let r = player.galacticSacrifice !== undefined && !tmp.ngp3l
+		let r = player.galacticSacrifice !== undefined
 		if (ngmm == 6) r = r && player.meta !== undefined
 		if (ngmm >= 7) r = r && player.dilation.studies.includes(6)
 		return r
@@ -348,7 +342,7 @@ function getDilUpgCost(id) {
 
 function getRebuyableDilUpgCost(id) {
 	var costGroup = DIL_UPG_COSTS["r"+id]
-	if (id == 4 && player.galacticSacrifice !== undefined && !tmp.ngp3l) costGroup = DIL_UPG_COSTS.r4_ngmm
+	if (id == 4 && player.galacticSacrifice !== undefined) costGroup = DIL_UPG_COSTS.r4_ngmm
 	var amount = player.dilation.rebuyables[id] || 0
 	let cost = E(costGroup[0]).times(E_pow(costGroup[1],amount))
 	if (aarMod.nguspV) {
@@ -395,13 +389,13 @@ function buyDilationUpgrade(pos, max, isId) {
 			if (getEternitied() >= 1e9) player.dbPower = E(getDimensionBoostPower())
 		}
 		if (id == "ngpp6" && tmp.ngp3) {
-			document.getElementById("masterystudyunlock").style.display=""
-			document.getElementById("respecMastery").style.display = "block"
-			document.getElementById("respecMastery2").style.display = "block"
+			el("masterystudyunlock").style.display=""
+			el("respecMastery").style.display = "block"
+			el("respecMastery2").style.display = "block"
 			if (!quantumed) {
 				$.notify("Congratulations for unlocking Mastery Studies! You can either click the 'mastery studies' button\nor 'continue to mastery studies' button in the Time Studies menu.")
-				document.getElementById("welcomeMessage").innerHTML = "Congratulations for reaching the end-game of NG++. In NG+3, the game keeps going with a lot of new content starting at Mastery Studies. You can either click the 'Mastery studies' tab button or 'Continue to mastery studies' button in the Time Studies menu to access the new Mastery Studies available."
-				document.getElementById("welcome").style.display = "flex"
+				el("welcomeMessage").innerHTML = "Congratulations for reaching the end-game of NG++. In NG+3, the game keeps going with a lot of new content starting at Mastery Studies. You can either click the 'Mastery studies' tab button or 'Continue to mastery studies' button in the Time Studies menu to access the new Mastery Studies available."
+				el("welcome").style.display = "flex"
 			}
 		}
 	}
@@ -413,9 +407,9 @@ function buyDilationUpgrade(pos, max, isId) {
 function getPassiveTTGen() {
 	if (player.dilation.tachyonParticles.plus(player.dilation.bestTP).gt(pow10(3333))) return 1e202
 	let r = getTTGenPart(player.dilation.tachyonParticles)
-	if (player.achievements.includes("ng3p18") && !brSave.active) r += getTTGenPart(player.dilation.bestTP) / 50
+	if (hasAch("ng3p18") && !brSave.active) r += getTTGenPart(player.dilation.bestTP) / 50
 	if (tmp.ngex) r *= .8
-	r /= (player.achievements.includes("ng3p51") ? 200 : 2e4)
+	r /= (hasAch("ng3p51") ? 200 : 2e4)
 	if (isLEBoostUnlocked(6)) r *= tmp.leBonus[6]
 	return r
 }
@@ -423,7 +417,7 @@ function getPassiveTTGen() {
 function getTTGenPart(x) {
 	if (!x) return E(0)
 	if (NGP3andVanillaCheck()) {
-		if (player.achievements.includes("r137") && player.dilation.active) x = x.times(2)
+		if (hasAch("r137") && player.dilation.active) x = x.times(2)
 	}
 	if (tmp.ngp3) {
 		x = x.max(1).log10()
@@ -444,45 +438,45 @@ function updateDilationUpgradeButtons() {
 				DIL_UPG_UNLOCKED[id] = 1
 				updateDilationUpgradeCost(pos, id)
 			} else delete DIL_UPG_UNLOCKED[id]
-			document.getElementById("dil" + pos).parentElement.style.display = unl ? "" : "none"
+			el("dil" + pos).parentElement.style.display = unl ? "" : "none"
 		}
-		if (unl) document.getElementById("dil" + pos).className = player.dilation.upgrades.includes(id) || (id == "r2" && !canBuyGalaxyThresholdUpg()) ? "dilationupgbought" : player.dilation.dilatedTime.gte(getDilUpgCost(id)) ? "dilationupg" : "dilationupglocked"
+		if (unl) el("dil" + pos).className = player.dilation.upgrades.includes(id) || (id == "r2" && !canBuyGalaxyThresholdUpg()) ? "dilationupgbought" : player.dilation.dilatedTime.gte(getDilUpgCost(id)) ? "dilationupg" : "dilationupglocked"
 	}
 	var genSpeed = getPassiveTTGen()
 	var power = getDil3Power()
-	document.getElementById("dil13desc").textContent = power > 3 ? "Gain " + shorten(power) + "x more Tachyon Particles." : "Triple the amount of Tachyon Particles gained."
-	document.getElementById("dil31desc").textContent = "Currently: " + shortenMoney(player.dilation.dilatedTime.max(1).pow(1000).max(1)) + "x"
-	document.getElementById("dil41desc").textContent = "Currently: " + shortenMoney(player.achievements.includes("ng3p44") && player.timestudy.theorem / genSpeed < 3600 ? genSpeed * 10 : genSpeed)+"/s"
+	el("dil13desc").textContent = power > 3 ? "Gain " + shorten(power) + "x more Tachyon Particles." : "Triple the amount of Tachyon Particles gained."
+	el("dil31desc").textContent = "Currently: " + shortenMoney(player.dilation.dilatedTime.max(1).pow(1000).max(1)) + "x"
+	el("dil41desc").textContent = "Currently: " + shortenMoney(hasAch("ng3p44") && player.timestudy.theorem / genSpeed < 3600 ? genSpeed * 10 : genSpeed)+"/s"
 	if (player.dilation.studies.includes(6)) {
-		document.getElementById("dil51desc").textContent = "Currently: " + shortenMoney(getDil14Bonus()) + 'x';
-		document.getElementById("dil52desc").textContent = "Currently: " + shortenMoney(getDil15Bonus()) + 'x';
-		document.getElementById("dil54formula").textContent = "(log(x)^0.5" + (tmp.ngp3 ? ")" : "/2)")
-		document.getElementById("dil54desc").textContent = "Currently: " + shortenMoney(getDil17Bonus()) + 'x';
+		el("dil51desc").textContent = "Currently: " + shortenMoney(getDil14Bonus()) + 'x';
+		el("dil52desc").textContent = "Currently: " + shortenMoney(getDil15Bonus()) + 'x';
+		el("dil54formula").textContent = "(log(x)^0.5" + (tmp.ngp3 ? ")" : "/2)")
+		el("dil54desc").textContent = "Currently: " + shortenMoney(getDil17Bonus()) + 'x';
 	}
-	if (player.exdilation != undefined) document.getElementById("dil61desc").textContent = "Currently: "+shortenMoney(getD18Bonus())+"x"
+	if (player.exdilation != undefined) el("dil61desc").textContent = "Currently: "+shortenMoney(getD18Bonus())+"x"
 	if (isDilUpgUnlocked("ngusp2")) {
-		document.getElementById("dil64desc").textContent = "Currently: +" + shortenMoney(getD21Bonus()) + " to exponent before softcap"
-		document.getElementById("dil65desc").textContent = "Currently: " + shortenMoney(getD22Bonus()) + "x"
+		el("dil64desc").textContent = "Currently: +" + shortenMoney(getD21Bonus()) + " to exponent before softcap"
+		el("dil65desc").textContent = "Currently: " + shortenMoney(getD22Bonus()) + "x"
 	}
 	if (player.galacticSacrifice !== undefined) {
-		document.getElementById("dil44desc").textContent = "Currently: +" + shortenMoney(getDil44Mult())
-		document.getElementById("dil45desc").textContent = "Currently: " + shortenMoney(getDil45Mult()) + "x"
+		el("dil44desc").textContent = "Currently: +" + shortenMoney(getDil44Mult())
+		el("dil45desc").textContent = "Currently: " + shortenMoney(getDil45Mult()) + "x"
 		if (player.dilation.studies.includes(6)) {
-			document.getElementById("dil71desc").textContent = "Currently: ^" + shortenMoney(getDil71Mult())
-			document.getElementById("dil72desc").textContent = "Currently: " + shortenMoney(getDil72Mult()) + "x"
+			el("dil71desc").textContent = "Currently: ^" + shortenMoney(getDil71Mult())
+			el("dil72desc").textContent = "Currently: " + shortenMoney(getDil72Mult()) + "x"
 		}
 	}
 }
 
 function updateDilationUpgradeCost(pos, id) {
-	if (id == "r2" && !canBuyGalaxyThresholdUpg()) document.getElementById("dil" + pos + "cost").textContent = "Maxed out"
+	if (id == "r2" && !canBuyGalaxyThresholdUpg()) el("dil" + pos + "cost").textContent = "Maxed out"
 	else {
 		let r = getDilUpgCost(id)
 		if (id == "r3") r = formatValue(player.options.notation, getRebuyableDilUpgCost(3), 1, 1)
 		else r = shortenCosts(r)
-		document.getElementById("dil" + pos + "cost").textContent = "Cost: " + r + " dilated time"
+		el("dil" + pos + "cost").textContent = "Cost: " + r + " dilated time"
 	}
-	if (id == "ngud1") document.getElementById("dil61oom").textContent = shortenCosts(E("1e1000"))
+	if (id == "ngud1") el("dil61oom").textContent = shortenCosts(E("1e1000"))
 }
 
 function updateDilationUpgradeCosts() {
@@ -497,7 +491,7 @@ function getFreeGalaxyThresholdIncrease(){
 	let thresholdMult = inQC(5) ? Math.pow(10, 2.8) : !canBuyGalaxyThresholdUpg() ? 1.35 : 1.35 + 3.65 * Math.pow(0.8, getDilUpgPower(2))
 	if (hasBosonicUpg(12)) {
 		thresholdMult -= tmp.blu[12]
-		if (!tmp.ngp3l && thresholdMult < 1.2) thresholdMult = 1.1 + 0.1 / Math.sqrt(2.2 - thresholdMult)
+		if (thresholdMult < 1.2) thresholdMult = 1.1 + 0.1 / Math.sqrt(2.2 - thresholdMult)
 		else if (thresholdMult < 1.15) thresholdMult = 1.05 + 0.1 / (2.15 - thresholdMult)
 	}
 	if (player.exdilation != undefined) thresholdMult -= Math.min(.1 * exDilationUpgradeStrength(2), 0.2)
@@ -558,11 +552,11 @@ function startDilatedEternity(auto, shortcut) {
 }
 
 function updateDilationDisplay() {
-	if (document.getElementById("dilation").style.display == "block" && document.getElementById("eternitystore").style.display == "block") {
-		document.getElementById("tachyonParticleAmount").textContent = shortenMoney(player.dilation.tachyonParticles)
-		document.getElementById("dilatedTimeAmount").textContent = shortenMoney(player.dilation.dilatedTime)
-		document.getElementById("dilatedTimePerSecond").textContent = "+" + shortenMoney(getDilTimeGainPerSecond()) + "/s"
-		document.getElementById("galaxyThreshold").textContent = shortenMoney(player.dilation.nextThreshold)
-		document.getElementById("dilatedGalaxies").textContent = getFullExpansion(Math.floor(player.dilation.freeGalaxies))
+	if (el("dilation").style.display == "block" && el("eternitystore").style.display == "block") {
+		el("tachyonParticleAmount").textContent = shortenMoney(player.dilation.tachyonParticles)
+		el("dilatedTimeAmount").textContent = shortenMoney(player.dilation.dilatedTime)
+		el("dilatedTimePerSecond").textContent = "+" + shortenMoney(getDilTimeGainPerSecond()) + "/s"
+		el("galaxyThreshold").textContent = shortenMoney(player.dilation.nextThreshold)
+		el("dilatedGalaxies").textContent = getFullExpansion(Math.floor(player.dilation.freeGalaxies))
 	}
 }

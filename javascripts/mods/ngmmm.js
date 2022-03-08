@@ -10,8 +10,8 @@ function getTickspeedBoostRequirement(bulk = 1) {
 
 function tickspeedBoost(bulk) {
 	player.tickspeedBoosts += bulk
-	if (!player.achievements.includes("r27") || player.tickspeedBoosts >= 5 * player.galaxies - 8) player.tdBoosts = resetTDBoosts()
-	softReset(player.achievements.includes("r27") && 5 * player.galaxies - 8 > player.tickspeedBoosts ? 0 : -player.resets, true)
+	if (!hasAch("r27") || player.tickspeedBoosts >= 5 * player.galaxies - 8) player.tdBoosts = resetTDBoosts()
+	softReset(hasAch("r27") && 5 * player.galaxies - 8 > player.tickspeedBoosts ? 0 : -player.resets, true)
 	player.tickBoughtThisInf = updateTBTIonGalaxy()
 }
 
@@ -36,11 +36,11 @@ function isTickspeedBoostPossible() {
 	return player.resets > 4 || player.tickspeedBoosts > 0 || player.galaxies > 0 || player.galacticSacrifice.times > 0 || player.infinitied > 0 || player.eternities != 0 || quantumed
 }
 
-document.getElementById("challenge15").onclick = function () {
+el("challenge15").onclick = function () {
 	startNormalChallenge(15)
 }
 
-document.getElementById("buyerBtnTickspeedBoost").onclick = function () {
+el("buyerBtnTickspeedBoost").onclick = function () {
 	buyAutobuyer(13);
 }
 
@@ -65,7 +65,7 @@ function manualTickspeedBoost() {
 	let req=getTickspeedBoostRequirement()
 	let amount=getAmount(req.tier)
 	if (!(amount >= req.amount)) return
-	if ((player.infinityUpgrades.includes("bulkBoost") || player.achievements.includes("r28")) && (!inNC(14) || !(aarMod.ngmX > 3))) tickspeedBoost(Math.floor((amount - req.amount) / req.mult + 1))
+	if ((player.infinityUpgrades.includes("bulkBoost") || hasAch("r28")) && (!inNC(14) || !(aarMod.ngmX > 3))) tickspeedBoost(Math.floor((amount - req.amount) / req.mult + 1))
 	else tickspeedBoost(1)
 }
 

@@ -158,13 +158,13 @@ newsArray = [//always true
 ["Why is there no 9th dimension? Because 7 8 9.", "player.resets >= 5 || player.galaxies > 0", "b12"],
 ["The 9th dimension cannot exist because the Nein-speaking nazis died in WW2.", "player.resets >= 5 || player.galaxies > 0", "b14"],
 ["If you break the fourth wall... well, there's still the fifth, sixth, seventh, and eighth to get through before you encounter bad things, so you should be fine", "player.resets >= 5 || player.galaxies > 0", "b17"],
-["Conditions must be met for Hevipelle to sleep. First, it needs to be a blue moon. Second, a specific town in the arctic must have not seen light for a month. Third, he needs to release an AD update. And finally, no one on the discord can be on dimension 9. Only then can he rest, for up to 6 hours, before waking up forcefully to avoid getting the offline achievement.", (player.resets >= 5 || player.galaxies > 0) && player.achievements.includes("r22"), "b22"],
+["Conditions must be met for Hevipelle to sleep. First, it needs to be a blue moon. Second, a specific town in the arctic must have not seen light for a month. Third, he needs to release an AD update. And finally, no one on the discord can be on dimension 9. Only then can he rest, for up to 6 hours, before waking up forcefully to avoid getting the offline achievement.", (player.resets >= 5 || player.galaxies > 0) && hasAch("r22"), "b22"],
 ["If the 9th dimension is all evil, then is 3 the root of all evil?", "player.resets >= 5 || player.galaxies > 0", "b24"],
 //basic (post-inf pre-rep)
 ["I've got 1.79e308 problems, but none of them antimatters", "player.infinitied > 0 && !player.break", "b15"],
 ["Anti Emoji Movie a huge hit", "player.spreadingCancer >= 5", "b18"],
-["If this game was made by Valve, Zero Deaths would be impossible.", 'player.achievements.includes("r43")', "b19"],
-["Florida man attempts to get Zero Deaths on first run, is stopped by heat death of the universe.", 'player.achievements.includes("r43")', "b16"],
+["If this game was made by Valve, Zero Deaths would be impossible.", 'hasAch("r43")', "b19"],
+["Florida man attempts to get Zero Deaths on first run, is stopped by heat death of the universe.", 'hasAch("r43")', "b16"],
 ["Having done half the achievements isn't much of an achievement -Boo"," player.achievements.length >= 40", "b20"],
 //basic (post-rep)
 ["Thanos is gonna be super dissapointed when he shows up with a fully powered infinity gauntlet, and Hevi has a fully powered eternity gauntlet", "player.eternities > 0", "b23"],
@@ -208,7 +208,7 @@ newsArray = [//always true
 ["Just how lucky are you?", "Math.random() < 1e-11", "l9"],
 ["This news message is 1000000000000x rarer than all the others.", "Math.random() <= 1e-12", "l10"],
 //missable / pay req
-["How dare you actually get zero deaths on a first run?", 'player.achievements.includes("r43") && player.infinitied == 1 && player.eternities == 0', "s1"],
+["How dare you actually get zero deaths on a first run?", 'hasAch("r43") && player.infinitied == 1 && player.eternities == 0', "s1"],
 ["Legend says the ninth dimension is supposed to be found here, but I don't see anything.", "player.money.e >= 41900 && !player.replicanti.unl && player.eternities == 0", "s2"],
 //Aarex's Modifications
 ["A brave man tried NG- and NG-- modes at the same time, but he will be dead before he would complete this mode.", 'aarMod.newGameMinusVersion && player.galacticSacrifice', "am1"],
@@ -219,7 +219,7 @@ newsArray = [//always true
 ["Did you just do 4 modes at once? Impossible!", 'aarMod.newGameMinusVersion && player.galacticSacrifice && aarMod.newGamePlusVersion && player.meta', "am6"],
 ["You are a ghost now!", 'player.money.gt(pow10(3 * 86400 * 365.2425 * 79.3))', "am7"],
 ["another aarex masterpiece ~ Spanosa", true, "am8"],
-["In dan-simon's version, only this achievement was enough to break the game.", 'player.achievements.includes("ngpp7")', "am9"],
+["In dan-simon's version, only this achievement was enough to break the game.", 'hasAch("ngpp7")', "am9"],
 ["Is there meta-infinity?", '(player.meta ? player.meta.bestAntimatter.gte(Number.MAX_VALUE) : false)', "am10"],
 ["NG++-+- was confirmed.", 'player.masterystudies', "am11"],
 ["You wanted a prestige layer so here you go.", 'player.galacticSacrifice && player.eternities > (aarMod.newGameMinusVersion?-20:0)', "am12"],
@@ -227,7 +227,7 @@ newsArray = [//always true
 ["New updates are coming in a day, not 5 hours. Sorry, jokers!", true, "am14"],
 ["Whale complained that matter and antimatter are balanced and the universe would not be existed.", true, "am15"],
 ["Congratulations for beating Quantum! Now you need to big rip the universe to progress! >:)", "player.totalmoney.gte(pow10(32e14))", "am16"],
-["NEWS: THIS NEWS CHANNEL WAS SHUT DOWN FOR BEING DESTROYED.", "player.achievements.includes('r21')", "am17"],
+["NEWS: THIS NEWS CHANNEL WAS SHUT DOWN FOR BEING DESTROYED.", "hasAch('r21')", "am17"],
 ["hackers are coming", "player.newsArray.length >= 210", "am18"],
 ["Whale complained that Infinity Challenge 5 is not the hardest.", "player.masterystudies", "am19"],
 ["You are now a pre-historic ghost!", "player.money.gte(pow10(191140458264))", "am20"],
@@ -287,7 +287,7 @@ newsArray = [//always true
 ["Breaking news! News is broken!", true, "am76"],
 ["There are a lot of news tickers, how did you find this one?", true, "am77"],
 ["How are your few thousand electrons not annihilating the positrons that presumably are part of the e100,000,000,000's of antimatter you've built up?", "(player.masterystudies !== undefined ? player.masterystudies.includes('d7') : false)", "am78"],
-["The universe should have been destroyed long ago and is somehow still here", "player.achievements.includes('r51')", "am79"],
+["The universe should have been destroyed long ago and is somehow still here", "hasAch('r51')", "am79"],
 ["Skididdle skidadder, you are now antimatter", true, "am80"],
 ["Turn the 9 upside down, and you got 6. The square root of 9 is three, and three sixes make 666, the number of the beast. This number can symbolize hell, and some people believe hell is fake, while some believe hell is real. The 9th dimension is real and fake, but isn't. Also, A normal 9 and a 9 upside-down makes 69, and 69 is kind of a joke. The 9th dimension is a joke. But does that mean hell is a joke? No. Hell and the ninth dimension are two different things because 2+4=x, and the square root of x times two is your mom. That proves that hell and the ninth dimension are two different things. But what about the 10th dimension? F#ck the 10th dimension, we're not talking about it. Anyway, the 9th dimension was created by Slabdrill, and the 9th dimension is a joke, so does that mean Slabdrill is a joke? Yeah, no sh#t sherlock. Also, Slabdrill is one and the same as the 9th dimension, because Slabdrill is the lord of all Unhevi, which stands for \"UH\", and \"uh\" is the sound that the letter U makes, and U is the 21st letter in the alphabet, and 9+10=21, and 9 is an addend, making the 9th dimension connected to Slabdrill. So it is proven that the 9th dimension and Slabdrill are real or fake, and they are both a joke, depending on your opinion. I f#cking solved the question everyone wanted to know.", "(player.resets >= 5 || player.galaxies > 0)", "am81"],
 ["Onion", true, "am82"],
@@ -297,7 +297,7 @@ newsArray = [//always true
 ["The uprising of the onion is a compelling feat, that our scientists are experimenting on how the onion behaves as a term for a number. These onions somehow have the capability to surpass numbers beyond antimatter. We don't know why, or how.", "player.newsArray.includes('am85')", "am86"],
 ["We have reached Onion^^Onion, we have no idea how it happened, and all we know that it seems to be increasing at an ever-faster rate. It's Onion^^^Onion now and it's definitely larger than our antimatter amount. Oniologists have been studying these recent growth of onions and have yet to come to a conclusion on how these onions are growing so fast. Judging by the current rate of growth, it has been predicted by oniologists that the entire multiverse would be completely filled to the brim with onions by 2020.", "player.newsArray.includes('am86')", "am87"],
 ["Onionify: Coming in 2020 to NG+3. Make onions dominate antimatter with this prestige layer!", "player.newsArray.includes('am85')", "am88"],
-["Big rip will RIP your TT", "player.achievements.includes('ng3p51')", "am89"],
+["Big rip will RIP your TT", "hasAch('ng3p51')", "am89"],
 ["You are a ghost now! (for real because you soft-resetted this game beyond Quantums.)", 'ghostified', "am90"],
 ["SEVERE WEATHER WARNING - We have been informed of a severe meteorogical event. Matter is raining down from the sky. The Rift of the Ninth Dimension has opened. Do not go outside. Don't look at the sun. DON'T LOOK AT THE S-**;;;;; SERVERE WEATHER NOTICE - You must go outside. Look up at the sun. The warning has been lifted. Goodbye humanity.", true, "am91"],
 ["Can an antimatter can can a can of antimatter can all full of antimatter food that can destroy a can made out of antiantimatter?", true, "am92"],
@@ -334,7 +334,7 @@ newsArray = [//always true
 ["TIANAMEN SQUARE 6/4/1989 TIANAMEN SQUARE 6/4/1989 TIANAMEN SQUARE 6/4/1989", "new Date().getMonth() == 6 && new Date().getDate() == 4", "am123"],
 ["You chose poorly.", "quantumed && !ghostified ? quSave.times < 2 && quSave.usedQuarks.b.gt(0) : false", "am124"],
 ["Eternity Challenge 10 is confirmed to be a boost!", "ghostified && (ghSave.ghostlyPhotons.lights[0] > 3 || ghSave.ghostlyPhotons.enpowerments)", "am125"],
-["When will Trio Challenges be released?!", "player.achievements.includes('ng3p25')", "am126"],
+["When will Trio Challenges be released?!", "hasAch('ng3p25')", "am126"],
 ["Welcome to the hell of NG-.", "player.tickspeedBoosts !== undefined", "am127"],
 ["Start playing NG+3 instead. You are not doing your progress.", "aarMod.ngp4V", "am128"],
 ["If NGUd+ is a combination of NG+3 and NGUd, then why isn't NGUd' a combination of NG' and NGUd?", "aarMod.ngudpV", "am129"],
@@ -342,20 +342,20 @@ newsArray = [//always true
 ["Progressing as a Ghost...", "ghostified && ghSave.ghostlyPhotons.unl", "am131"],
 ["VROOOOOOM!!!", "player.infinityUpgrades.includes('postGalaxy')", "am132"],
 ["Quantum Challenges are not challenging enough.", "player.masterystudies !== undefined && player.masterystudies.includes('d9')", "am133"],
-["U is the new M", "player.achievements.includes('ng3p45')", "am134"],
+["U is the new M", "hasAch('ng3p45')", "am134"],
 ["Antimatter has just declared war on Matter. We are no longer safe. We are no longer free.", true, "am135"],
-["Which one looks different? Preons or anti-preons?", 'player.achievements.includes("ng3p81")', "am136"],
-['"Anti-preons are coming. They will destroy our Nanofield work. We are doomed." ~ Worker replicant #179,769,308.', 'player.achievements.includes("ng3p81")', "am137"],
+["Which one looks different? Preons or anti-preons?", 'hasAch("ng3p81")', "am136"],
+['"Anti-preons are coming. They will destroy our Nanofield work. We are doomed." ~ Worker replicant #179,769,308.', 'hasAch("ng3p81")', "am137"],
 ["GET A FREE PASS TO A GHOST TRANSFORMATION MACHINE NOW! IT IS TOTALLY WORTH IT!", 'ghostified', "am138"],
-['I told you "don\'t click that news" or else you will get a useless achievement.', "player.achievements.includes('ng3ps12')", "am139"],
+['I told you "don\'t click that news" or else you will get a useless achievement.', "hasAch('ng3ps12')", "am139"],
 ["Want to decay a quark multiple times? Be a Bosonic Lab scientist!", "ghostified && ghSave.ghostlyPhotons.enpowerments>3", "am140"],
 ['"Anti-preons destroyed our rewards by anti-Nanofield. We should take revenge and steal their rewards back." ~ Worker replicant #247,273,145.', 'ghostified && tmp.bl.upgrades.includes(24)', "am141"],
-["BOSONIC OVERDRIVE!!!", 'player.achievements.includes("ng3p81") && tmp.bl.odSpeed.gt(1) && tmp.bl.battery.gt(0)', "am142"],
+["BOSONIC OVERDRIVE!!!", 'hasAch("ng3p81") && tmp.bl.odSpeed.gt(1) && tmp.bl.battery.gt(0)', "am142"],
 ["If preons, Nanofield, and Anti-Preons exist, then why Anti-Nanofield doesn't exist?", 'ghostified && tmp.bl.upgrades.includes(24)', "am143"],
 ['Wait a second. I think I\'ve realized something. The main writer never says what broadcasting channel we\'re on. I was always curious what channel our news show is on, so I went into a top secret room the main writer never tells us to go in. And what I found...I found what channel we broadcasted on. It is "999". But channel 999 doesn\'t exist! And I also found some other things...at the bottom-right of the page, it says "Sponsored by Hevipelle". Who is Hevipelle? I\'ve never heard anyone named Hevipelle in the world. Does this mean...does this mean that Hevipelle is a nickname for someone? A...oh no. There\'s more text. A sentence says...it says..."Because the physics of the game "Antimatter Dimensions" does not allow for visuals, all thoughts, feelings, and actions made by any being are put into short news tickers. OH MY GOD I\'M IN A VIDEOGAME OH GOD THIS IS A NEWS TICKER F\*\*\* THIS DEVELOP-sifdweyfwytrwqe8723648765237869iyusdqwe-0))$#(&)QBTR&_(B)&30-b5q&)rfb)+B0R-98w#$)9b)({bew)#(5R[q)(t()qet){(q#*bT8bb &){rb&rqw#b %&r7#w&R&{07&&b#w$&b )r ({e[-(b reafbgu ({brdiuufertuyreuyyuyuefuyuyfiYUiuyEYUFiuyGUY087378578052}}}}}}},,,', true , "am144"],
 ["Hi, Billy Mays here for the Antimatter Dimensions game, the new easier way to waste time!", true, "am145"],
 ["When does the 0th dimension come out", true, "am146"],
-["I was in a wrong laboratory. Then I found a better laboratory that actually boosts for good.", "player.achievements.includes('ng3p81')", "am147"],
+["I was in a wrong laboratory. Then I found a better laboratory that actually boosts for good.", "hasAch('ng3p81')", "am147"],
 ["I was stuck in a grinding section. Thanks to gods, I can finally get out of here.", false, "am148"],
 ["The end is near...", "ghostified && tmp.bl.upgrades.includes(23)", "am149"],
 ["We have updated our Terms of Service to comply with COPPA Act.", true, "am150"],
@@ -412,13 +412,13 @@ function scrollNextMessage() {
         //don't run if hidden to save performance
         if (typeof (player) == "undefined") return
         if (player.options.newsHidden) return false
-        var s = document.getElementById('news');
+        var s = el('news');
         updateNewsArray();
         tmp.blankedOut = false
         
         //select a message at random
         try {
-                do {nextMsgIndex = Math.floor(Math.random() * newsArray.length)} while (!eval(newsArray[nextMsgIndex][1]) || (newsArray[nextMsgIndex][2].indexOf("am") > -1 && !player.achievements.includes("r22")))
+                do {nextMsgIndex = Math.floor(Math.random() * newsArray.length)} while (!eval(newsArray[nextMsgIndex][1]) || (newsArray[nextMsgIndex][2].indexOf("am") > -1 && !hasAch("r22")))
         } catch(e) {
                 console.log("Newsarray doesn't work at idx " + nextMsgIndex)
         }
@@ -452,7 +452,7 @@ function scrollNextMessage() {
                 if (!player.options.newsHidden && !player.newsArray.includes(newsArray[nextMsgIndex][2])) {
                         player.newsArray.push(newsArray[nextMsgIndex][2]);
                         if (player.newsArray.length>=50) giveAchievement("Fake News")
-                        if (!tmp.ngp3l&&player.newsArray.length>=400) giveAchievement("400% Breaking News")
+                        if (player.newsArray.length>=400) giveAchievement("400% Breaking News")
                 }
 
 
@@ -494,21 +494,21 @@ ghostlyNewsArray = [//Ghostly news ticker messages
 ["WARNING: Do not interact evil ghosts. They can scare you out.", true, "gn18"],
 ["Do you know that ghosts are proved to be undead?", true, "gn19"],
 ["I got Ghost Particles. I got Neutrinos. That makes me a ghost.", true, "gn20"],
-["Ghostly Photons can't emit light. They emit ghostly light!", "player.achievements.includes('ng3p71')", "gn21"],
+["Ghostly Photons can't emit light. They emit ghostly light!", "hasAch('ng3p71')", "gn21"],
 ["You got Light Empowerments? That means you have Ghostly Light inside of you! Kee-hee-hee!", "ghSave.ghostlyPhotons.enpowerments", "gn22"],
-["Ghosts can experiment and discover some Bosons.", "player.achievements.includes('ng3p81')", "gn23"],
-["Some ghosts were injured due to the annihilation of preons and anti-preons.", "player.achievements.includes('ng3p81')", "gn24"],
+["Ghosts can experiment and discover some Bosons.", "hasAch('ng3p81')", "gn23"],
+["Some ghosts were injured due to the annihilation of preons and anti-preons.", "hasAch('ng3p81')", "gn24"],
 ["A new study shows that ghosts can do extreme work.", true, "gn25"],
 ["A new evidence states that there is Bosonic Lab inside of their secret laboratory.", true, "gn26"],
 ["Ghosts have dominated some universes!", true, "gn27"],
 ["Boo! Kee-hee-hee!", "Math.random() <= 0.001", "gn28"],
-["An anti-preon ghost is discovered. He is evil to Nanofield. Don't ever observe him or else he will take over your Nanofield.", "player.achievements.includes('ng3p81')", "gn29"],
+["An anti-preon ghost is discovered. He is evil to Nanofield. Don't ever observe him or else he will take over your Nanofield.", "hasAch('ng3p81')", "gn29"],
 ["Ghosts found a ghostly kind of Radioactive Decays!", "Math.max(Math.max(getRadioactiveDecays('r'), getRadioactiveDecays('g')), getRadioactiveDecays('b')) > 4", "gn30"],
 ["Ghosts discovered that some particles, including bosons, are ghostly!", true, "gn31"],
 ["Ghosts don't know how to write more news. They decided to stop it for today.", true, "gn32"],
 ["The Anti-Preontius is getting closer. He will destroy your Nanofield. Stay away from him.", "tmp.bl.upgrades.includes(13)", "gn33"],
 ["WARNING! The Anti-Preontius will control over your Nanofield! Be careful! Oh. Worker replicants are warned of that Ghost too.", "tmp.bl.upgrades.includes(21)", "gn34"],
-["A ghost tried to take Anti-Preons out, but Bosonic Lab workers decided to ban them out because an Anti-Preon is a resource of Bosonic Lab.", "player.achievements.includes('ng3p81')", "gn35"],
+["A ghost tried to take Anti-Preons out, but Bosonic Lab workers decided to ban them out because an Anti-Preon is a resource of Bosonic Lab.", "hasAch('ng3p81')", "gn35"],
 ["You got one ghostly particle, whatever that means.", "tmp.bl.upgrades.includes(21)", "gn36"],
 ['"Welcome, a new ghost, to the Ghostify layer! Kee-hee-hee!" - Aarex', true, "gn37"],
 ["And then the guy turned himself into a pickle ghost. Funniest moment I've ever seen.", true, "gn38"],
@@ -547,7 +547,7 @@ function nextGhostlyNewsTickerMsg() {
 	} catch(e) {
 		console.log("Newsarray doesn't work at idx " + ghostlyNewsIndex)
 	}
-	var newsText = document.getElementById("ghostlyNewsTickerText")
+	var newsText = el("ghostlyNewsTickerText")
 	newsText.textContent = ghostlyNewsArray[ghostlyNewsIndex][0]
 	newsText.innerHTML = "<b>NEWS!</b> " + newsText.innerHTML
 	newsText.style.left = "100%"
@@ -575,11 +575,11 @@ function nextGhostlyNewsTickerMsg() {
 
 function toggleGhostlyNews(force) {
 	player.options.secrets.ghostlyNews = !player.options.secrets.ghostlyNews
-	document.getElementById("ghostlyNewsTicker").style.height = (player.options.secrets.ghostlyNews ? 24 : 0)+"px"
-	document.getElementById("ghostlyNewsTickerBlock").style.height = (player.options.secrets.ghostlyNews ? 16 : 0)+"px"
-	document.getElementById("ghostlynewsbtn").textContent = (player.options.secrets.ghostlyNews ? "Hide" : "Show") + " ghostly news ticker"
+	el("ghostlyNewsTicker").style.height = (player.options.secrets.ghostlyNews ? 24 : 0)+"px"
+	el("ghostlyNewsTickerBlock").style.height = (player.options.secrets.ghostlyNews ? 16 : 0)+"px"
+	el("ghostlynewsbtn").textContent = (player.options.secrets.ghostlyNews ? "Hide" : "Show") + " ghostly news ticker"
 }
 
-document.getElementById("ghostlyNewsTicker").onclick = function () {
+el("ghostlyNewsTicker").onclick = function () {
 	if (tmp.blankedOut2) giveAchievement("Blanked out")
 };

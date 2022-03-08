@@ -6,18 +6,20 @@ function canUnlockBosonicLab() {
   
 function updateBLUnlocks() {
 	let unl = ghSave.wzb.unl
-	document.getElementById("blUnl").style.display = unl ? "none" : ""
-	document.getElementById("blDiv").style.display = unl ? "" : "none"
-	document.getElementById("nftabs").style.display = unl ? "" : "none"
+	el("blUnl").style.display = unl ? "none" : ""
+	el("blDiv").style.display = unl ? "" : "none"
+	el("aptabbtn").style.display = unl ? "" : "none"
 	if (!unl) updateBLUnlockDisplay()
 }
 
 function updateBLUnlockDisplay() {
-	document.getElementById("blUnl").textContent = "To unlock Bosonic Lab, you need to get " + shortenCosts(pow10(5e10)) + " Ghostly Unstable Quarks and 3 Light Empowerments first."
+	el("blUnl").textContent = "To unlock Bosonic Lab, you need to get " + shortenCosts(pow10(5e10)) + " Ghostly Unstable Quarks and 3 Light Empowerments first."
 }
 
 function getBosonicWattGain() {
-	return player.money.log10() / 2e16 - 1.25
+	let r = player.money.log10() / 2e16 - 1.25
+	r *= getAchBWMult()
+	return r
 }
 
 function getBatteryGainPerSecond(toSub){
@@ -131,17 +133,16 @@ function getBosonicAntiMatterProduction(){
 	return getBosonicAMProduction()
 }
 
-function getAchBAMMult(){
-	if (!player.achievements.includes("ng3p91")) return 1
-	return player.achPow.pow(0.2)
+function getAchBWMult(){
+	if (!hasAch("ng3p91")) return 1
+	return player.achPow.div(E(1.5).pow(19)).toNumber()
 }
 
 function getBosonicAMProduction() {
 	var exp = player.money.max(1).log10() / 15e15 - 3
 	var ret = pow10(exp).times(tmp.wzb.wbp)
 	if (ghSave.bl.usedEnchants.includes(34)) ret = ret.times(tmp.bEn[34] || 1)
-	if (player.achievements.includes("ng3p91")) ret = ret.times(getAchBAMMult())
-	if (player.achievements.includes("ng3p98")) ret = ret.plus(Math.pow(ghSave.hb.higgs, 2))
+	if (hasAch("ng3p98")) ret = ret.plus(Math.pow(ghSave.hb.higgs, 2))
 	//maybe softcap at e40 or e50?
 	ret = softcap(ret, "bam")
 	return ret
@@ -163,12 +164,12 @@ function updateBosonicLimits() {
 	if (ghSave.hb.higgs == 0) br.limit = 3
 	var width = 100 / br.limit
 	for (var r = 1; r <= br.maxLimit; r++) {
-		document.getElementById("bRuneCol" + r).style = "min-width:" + width + "%;width:" + width + "%;max-width:" + width + "%"
+		el("bRuneCol" + r).style = "min-width:" + width + "%;width:" + width + "%;max-width:" + width + "%"
 		if (r > 3) {
 			var shown = br.limit >= r
-			document.getElementById("bRuneCol" + r).style.display = shown ? "" : "none"
-			document.getElementById("typeToExtract" + r).style.display = shown ? "" : "none"
-			document.getElementById("bEnRow" + (r - 1)).style.display = shown ? "" : "none"
+			el("bRuneCol" + r).style.display = shown ? "" : "none"
+			el("typeToExtract" + r).style.display = shown ? "" : "none"
+			el("bEnRow" + (r - 1)).style.display = shown ? "" : "none"
 		}
 	}
 
@@ -176,7 +177,7 @@ function updateBosonicLimits() {
 	bu.rows = bu.maxRows
 	if (!ghSave.gravitons.unl) bu.rows = 4
 	if (ghSave.hb.higgs == 0) bu.rows = 2
-	for (var r = 3; r <= bu.maxRows; r++) document.getElementById("bUpgRow" + r).style.display = bu.rows >= r ? "" : "none"
+	for (var r = 3; r <= bu.maxRows; r++) el("bUpgRow" + r).style.display = bu.rows >= r ? "" : "none"
 
 	//Bosonic Enchants
 	bEn.limit = bEn.maxLimit
@@ -198,7 +199,10 @@ function showBLTab(tabName) {
 			tab.style.display = 'none';
 		}
 	}
-	if (oldTab !== tabName) aarMod.tabsSave.tabBL = tabName
+	if (oldTab !== tabName) {
+		aarMod.tabsSave.tabBL = tabName
+		el("bRunesDiv").style.display = tabName == "bextab" || tabName == "butab" ? "" : "none"
+	}
 	closeToolTip()
 }
 
@@ -210,56 +214,62 @@ function getEstimatedNetBatteryGain(){
 	return [false, neg.minus(pos)]
 }
 
+function toBLTab() {
+	showTab("ghostify")
+	showGhostifyTab("bltab")
+}
+
 function updateBosonicLabTab(){
 	let data = ghSave.bl
 	let speed = data.speed * (data.battery.gt(0) ? data.odSpeed : 1)
-	document.getElementById("bWatt").textContent = shorten(data.watt)
-	document.getElementById("bSpeed").textContent = shorten(data.speed)
-	document.getElementById("bTotalSpeed").textContent = shorten(speed)
-	document.getElementById("bTicks").textContent = shorten(data.ticks)
-	document.getElementById("bAM").textContent = shorten(data.am)
-	document.getElementById("bAMProduction").textContent = "+" + shorten(getBosonicAMFinalProduction().times(speed)) + "/s"
-	document.getElementById("bBt").textContent = shorten(data.battery)
+	el("bWatt").textContent = shorten(data.watt)
+	el("bSpeed").textContent = shorten(data.speed)
+	el("bTotalSpeed").textContent = shorten(speed)
+	el("bTicks").textContent = shorten(data.ticks)
+	el("bAM").textContent = shorten(data.am)
+	el("bAMProduction").textContent = "+" + shorten(getBosonicAMFinalProduction().times(speed)) + "/s"
+	el("bBt").textContent = shorten(data.battery)
 	let x = getEstimatedNetBatteryGain()
 	s = shorten(x[1]) + "/s"
 	if (!x[0]) s = "-" + s
-	document.getElementById("bBtProduction").textContent = s
-	document.getElementById("odSpeed").textContent=(data.battery.gt(0)?data.odSpeed:1).toFixed(2) + "x"
-	document.getElementById("odSpeedWBBt").style.display = data.battery.eq(0) && data.odSpeed > 1 ? "" : "none"
-	document.getElementById("odSpeedWBBt").textContent = " (" + data.odSpeed.toFixed(2) + "x if you have Bosonic Battery)"
-	for (var g = 1;g <= br.limit; g++) document.getElementById("bRune"+g).textContent = shortenDimensions(data.glyphs[g-1])
-	if (document.getElementById("bextab").style.display=="block") updateBosonExtractorTab()
-	if (document.getElementById("butab").style.display=="block") updateBosonicUpgradeDescs()
-	if (document.getElementById("wzbtab").style.display=="block") updateWZBosonsTab()
-	if (!tmp.ngp3l) {
-		if (ghSave.hb.unl) {
-			var req = getHiggsRequirement()
-			document.getElementById("hb").textContent = getFullExpansion(ghSave.hb.higgs)
-			document.getElementById("hbReset").className = "gluonupgrade " + (ghSave.bl.am.gte(req) ? "hb" : "unavailablebtn")
-			document.getElementById("hbResetReq").textContent = shorten(req)
-			document.getElementById("hbResetDesc").textContent = player.achievements.includes("ng3p101") ? "+" + getFullExpansion(getHiggsGain()) + " Higgs" : "Reset Bosonic Lab to gain +" + getFullExpansion(getHiggsGain()) + " Higgs."
-		}
+	el("bBtProduction").textContent = s
+	el("odSpeed").textContent=(data.battery.gt(0)?data.odSpeed:1).toFixed(2) + "x"
+	el("odSpeedWBBt").style.display = data.battery.eq(0) && data.odSpeed > 1 ? "" : "none"
+	el("odSpeedWBBt").textContent = " (" + data.odSpeed.toFixed(2) + "x if you have Bosonic Battery)"
+	for (var g = 1;g <= br.limit; g++) el("bRune"+g).textContent = shortenDimensions(data.glyphs[g-1])
+
+	if (ghSave.hb.unl) {
+		var req = getHiggsRequirement()
+		el("hb").textContent = getFullExpansion(ghSave.hb.higgs)
+		el("hbReset").className = "gluonupgrade " + (ghSave.bl.am.gte(req) ? "hb" : "unavailablebtn")
+		el("hbResetReq").textContent = shorten(req)
+		el("hbResetDesc").textContent = hasAch("ng3p101") ? "+" + getFullExpansion(getHiggsGain()) + " Higgs" : "Reset Bosonic Lab to gain +" + getFullExpansion(getHiggsGain()) + " Higgs."
 	}
+
+	if (el("bextab").style.display=="block") updateBosonExtractorTab()
+	if (el("butab").style.display=="block") updateBosonicUpgradeDescs()
+	if (el("wzbtab").style.display=="block") updateWZBosonsTab()
+	if (el("gravtab").style.display == "block") updateGravitonsTabOnTick()
 }
 
 function updateBosonicStuffCosts() {
 	for (var g2 = 2; g2 <= br.limit; g2++) for (var g1 = 1; g1 < g2; g1++) {
 		var id = g1 * 10 + g2
 		var data = bEn.costs[id]
-		document.getElementById("bEnG1Cost" + id).textContent = (data !== undefined && data[0] !== undefined && shortenDimensions(getBosonicFinalCost(data[0]))) || "???"
-		document.getElementById("bEnG2Cost" + id).textContent = (data !== undefined && data[1] !== undefined && shortenDimensions(getBosonicFinalCost(data[1]))) || "???"
+		el("bEnG1Cost" + id).textContent = (data !== undefined && data[0] !== undefined && shortenDimensions(getBosonicFinalCost(data[0]))) || "???"
+		el("bEnG2Cost" + id).textContent = (data !== undefined && data[1] !== undefined && shortenDimensions(getBosonicFinalCost(data[1]))) || "???"
 	}
 	for (var r = 1; r <= bu.rows; r++) for (var c = 1; c < 6; c++) {
 		var id = r * 10 + c
 		var data = bu.reqData[id]
-		document.getElementById("bUpgCost" + id).textContent = (data[0] !== undefined && shorten(getBosonicFinalCost(data[0]))) || "???"
-		for (var g = 1; g < 3; g++) document.getElementById("bUpgG" + g + "Req" + id).textContent = (data[g * 2 - 1] !== undefined && shortenDimensions(getBosonicFinalCost(data[g * 2 - 1]))) || "???"
+		el("bUpgCost" + id).textContent = (data[0] !== undefined && shorten(getBosonicFinalCost(data[0]))) || "???"
+		for (var g = 1; g < 3; g++) el("bUpgG" + g + "Req" + id).textContent = (data[g * 2 - 1] !== undefined && shortenDimensions(getBosonicFinalCost(data[g * 2 - 1]))) || "???"
 	}
 }
 
 function getBosonicFinalCost(x) {
 	x = E(x)
-	if (player.achievements.includes("ng3p91")) x = x.div(2)
+	if (hasAch("ng3p91")) x = x.div(2)
 	return x.ceil()
 }
 
@@ -285,6 +295,7 @@ let dynuta={
 function extract() {
 	let data = ghSave.bl
 	if (data.extracting) return
+	player.ghostify.automatorGhosts[17].oc = false
 	dynuta.check = true
 	data.extracting = true
 }
@@ -299,8 +310,8 @@ function getExtractTime() {
 function changeTypeToExtract(x) {
 	let data = ghSave.bl
 	if (data.typeToExtract == x) return
-	document.getElementById("typeToExtract" + data.typeToExtract).className = "storebtn"
-	document.getElementById("typeToExtract" + x).className = "chosenbtn"
+	el("typeToExtract" + data.typeToExtract).className = "storebtn"
+	el("typeToExtract" + x).className = "chosenbtn"
 	data.typeToExtract = x
 	data.extracting = false
 	data.extractProgress = E(0)
@@ -396,11 +407,11 @@ function updateBosonExtractorTab(){
 	let data = ghSave.bl
 	let speed = data.speed * (data.battery.gt(0) ? data.odSpeed : 1)
 	let time = getExtractTime().div(speed)
-	if (data.extracting) document.getElementById("extract").textContent = "Extracting" + (time.lt(0.1)?"":" ("+data.extractProgress.times(100).toFixed(1)+"%)")
-	else document.getElementById("extract").textContent="Extract"
-	if (time.lt(0.1)) document.getElementById("extractTime").textContent="This would automatically take "+shorten(Decimal.div(1,time))+" runes per second."
-	else if (data.extracting) document.getElementById("extractTime").textContent=shorten(time.times(Decimal.sub(1,data.extractProgress)))+" seconds left to extract."
-	else document.getElementById("extractTime").textContent="This will take "+shorten(time)+" seconds."
+	if (data.extracting) el("extract").textContent = (time.lt(0.1)?"Extracting":" ("+data.extractProgress.times(100).toFixed(1)+"%)")
+	else el("extract").textContent="Extract"
+	if (time.lt(0.1)) el("extractTime").textContent="This would automatically take "+shorten(Decimal.div(1,time))+" runes per second."
+	else if (data.extracting) el("extractTime").textContent=shorten(time.times(Decimal.sub(1,data.extractProgress)))+" seconds left to extract."
+	else el("extractTime").textContent="This will take "+shorten(time)+" seconds."
 	updateEnchantDescs()
 }
 
@@ -408,30 +419,30 @@ function updateEnchantDescs() {
 	let data = ghSave.bl
 	for (var g2 = 2; g2 <= br.limit; g2++) for (var g1 = 1; g1 < g2; g1++) {
 		var id = g1 * 10 + g2
-		if (bEn.action == "upgrade" || bEn.action == "max") document.getElementById("bEn" + id).className = "gluonupgrade "  +(canBuyEnchant(id) ? "bl" : "unavailablebtn")
-		else if (bEn.action == "use") document.getElementById("bEn" + id).className = "gluonupgrade " + (canUseEnchant(id) ? "storebtn" : "unavailablebtn")
-		if (id == 14) document.getElementById("bEn14").style = "font-size: 8px"
-		if (shiftDown) document.getElementById("bEnLvl" + id).textContent = "Enchant id: " + id
-		else document.getElementById("bEnLvl" + id).textContent = "Level: " + shortenDimensions(tmp.bEn.lvl[id])
-		if (bEn.action == "max") document.getElementById("bEnOn"+id).textContent = "+" + shortenDimensions(getMaxEnchantLevelGain(id)) + " levels"
-		else document.getElementById("bEnOn" + id).textContent = data.usedEnchants.includes(id) ? "Enabled" : "Disabled"
+		if (bEn.action == "upgrade" || bEn.action == "max") el("bEn" + id).className = "gluonupgrade "  +(canBuyEnchant(id) ? "bl" : "unavailablebtn")
+		else if (bEn.action == "use") el("bEn" + id).className = "gluonupgrade " + (canUseEnchant(id) ? "storebtn" : "unavailablebtn")
+		if (id == 14) el("bEn14").style = "font-size: 8px"
+		if (shiftDown) el("bEnLvl" + id).textContent = "Enchant id: " + id
+		else el("bEnLvl" + id).textContent = "Level: " + shortenDimensions(tmp.bEn.lvl[id])
+		if (bEn.action == "max") el("bEnOn"+id).textContent = "+" + shortenDimensions(getMaxEnchantLevelGain(id)) + " levels"
+		else el("bEnOn" + id).textContent = data.usedEnchants.includes(id) ? "Enabled" : "Disabled"
 		if (tmp.bEn[id] != undefined) {
 			let effect = getEnchantEffect(id, true)
 			let effectDesc = bEn.effectDescs[id]
-			document.getElementById("bEnEffect" + id).textContent = effectDesc !== undefined ? effectDesc(effect) : shorten(effect) + "x"	
+			el("bEnEffect" + id).textContent = effectDesc !== undefined ? effectDesc(effect) : shorten(effect) + "x"	
 		}
 	}
-	document.getElementById("usedEnchants").textContent = "You have used " + data.usedEnchants.length + " / " + bEn.limit + " Bosonic Enchants."
+	el("usedEnchants").textContent = "You have used " + data.usedEnchants.length + " / " + bEn.limit + " Bosonic Enchants."
 }
 
 var br = {
 	names: [null, "Infinity", "Eternity", "Quantum", "Ghostly", "Ethereal", "Sixth", "Seventh", "Eighth", "Ninth"], //Current maximum limit of 9.
 	maxLimit: 5,
 	scalings: {
-		1: 60,
-		2: 120,
-		3: 600,
-		4: 6e7,
+		1: 10,
+		2: 20,
+		3: 100,
+		4: 5e7,
 		5: 1/0
 	}
 }
@@ -444,10 +455,10 @@ var bEn = {
 		14: [1e6, 2],
 		24: [1e6, 10],
 		34: [1,0],
-		15: [0,1],
-		25: [0,1],
-		35: [0,1],
-		45: [0,1]
+		15: [1/0,1],
+		25: [1/0,1],
+		35: [1/0,1],
+		45: [1/0,1]
 	},
 	descs: {
 		12: "You automatically extract Bosonic Runes.",
@@ -605,8 +616,8 @@ function hasBosonicUpg(id) {
 function updateBosonicUpgradeDescs() {
 	for (var r = 1; r <= bu.rows; r++) for (var c = 1; c <= 5; c++) {
 		var id = r * 10 + c
-		document.getElementById("bUpg" + id).className = ghSave.bl.upgrades.includes(id) ? "gluonupgradebought bl" : canBuyBosonicUpg(id) ? "gluonupgrade bl" : "gluonupgrade unavailablebtn bllocked"
-		if (tmp.blu[id] !== undefined) document.getElementById("bUpgEffect"+id).textContent = (bu.effectDescs[id] !== undefined && bu.effectDescs[id](tmp.blu[id])) || shorten(tmp.blu[id]) + "x"
+		el("bUpg" + id).className = ghSave.bl.upgrades.includes(id) ? "gluonupgradebought bl" : canBuyBosonicUpg(id) ? "gluonupgrade bl" : "gluonupgrade unavailablebtn bllocked"
+		if (tmp.blu[id] !== undefined) el("bUpgEffect"+id).textContent = (bu.effectDescs[id] !== undefined && bu.effectDescs[id](tmp.blu[id])) || shorten(tmp.blu[id]) + "x"
 	}
 }
 
@@ -699,17 +710,17 @@ var bu = {
 			g4: 1e7
 		},
 		43:{
-			am: 2e50,
+			am: 2e70,
 			g1: 4e13,
 			g3: 4e12
 		},
 		44:{
-			am: 2e65,
+			am: 2e80,
 			g1: 1e14,
 			g4: 1e8
 		},
 		45:{
-			am: 2e80,
+			am: 2e90,
 			g2: 2e14,
 			g4: 4e8
 		},
@@ -790,7 +801,7 @@ var bu = {
 			let x = Math.pow(Math.max(player.dilation.freeGalaxies / 20 - 1800, 0), 1.5)
 			let y = quSave.electrons.sacGals
 			let z = Math.max(y, player.galaxies)
-			if (!tmp.ngp3l && x > y) x = (x + y * 2) / 3
+			if (x > y) x = (x + y * 2) / 3
 			if (x > z) x = Math.pow((x - z + 1e5) * 1e10, 1/3) + z - 1e5
 			return Math.round(x)
 		},
@@ -833,8 +844,8 @@ var bu = {
 		},
 		34: function() {
 			var galPart = Math.log10(player.galaxies / 1e4 + 1) + Math.log10(getTotalRG() / 1e4 + 1) + Math.log10(player.dilation.freeGalaxies / 1e4 + 10) * Math.log10(tmp.aeg / 1e4 + 1)
-			var exp = tmp.newNGP3E ? 1/6 : 1/8
-			return Math.pow(galPart / 2 + 1, exp)
+			var exp = tmp.newNGP3E ? 1/3 : 1/4
+			return Math.pow(galPart / 5 + 1, exp)
 		},
 		35: function() {
 			return {
@@ -860,7 +871,7 @@ var bu = {
 			return Math.pow(quSave.colorPowers.b.add(1).log10(), exp) * 0.15
 		},
 		45: function() {
-			var eff = Math.sqrt(player.dilation.dilatedTime.add(1).log10() / 500 + 1)
+			var eff = player.dilation.dilatedTime.add(1).log10() / 500 + 1
 			return eff
 		},
 		52: function() {
@@ -938,12 +949,12 @@ function getBosonicBatteryLoss() {
 }
 
 function changeOverdriveSpeed() {
-	ghSave.bl.odSpeed = document.getElementById("odSlider").value / 50 * 4 + 1
+	ghSave.bl.odSpeed = el("odSlider").value / 50 * 4 + 1
 }
 
 //W & Z Bosons
 function getAntiPreonProduction() {
-	let r = E(0.1)
+	let r = E(0.2)
 	if (ghSave.bl.usedEnchants.includes(13)) r = r.times(tmp.bEn[13])
 	return r
 }
@@ -981,25 +992,25 @@ function updateWZBosonsTab() {
 	let r
 	if (!data2.dPUse) r = getAntiPreonProduction().times(speed)
 	else r = getAntiPreonLoss().times(speed)
-	document.getElementById("ap").textContent = shorten(data3.dP)
-	document.getElementById("apProduction").textContent = (data3.dPUse ? "-" : "+") + shorten(r) + "/s"
-	document.getElementById("apUse").textContent = data3.dPUse == 0 ? "" : "You are currently consuming Anti-Preons to " + (["", "decay W Bosons", "oscillate Z Bosons", "convert W- to W+ Bosons"])[data3.dPUse] + "."
-	document.getElementById("wQkType").textContent = data3.wQkUp ? "positive" : "negative"
-	document.getElementById("wQkProgress").textContent = data3.wQkProgress.times(100).toFixed(1) + "% to turn W Boson to a" + (data3.wQkUp ? " negative" : " positive")+" Boson."
-	document.getElementById("wQk").className = show0 ? "zero" : data3.wQkUp ? "up" : "down"
-	document.getElementById("wQkSymbol").textContent = show0 ? "0" : data3.wQkUp ? "+" : "−"
-	document.getElementById("wpb").textContent = shortenDimensions(data3.wpb)
-	document.getElementById("wnb").textContent = shortenDimensions(data3.wnb)
-	document.getElementById("wbTime").textContent = shorten(data2.wbt)
-	document.getElementById("wbOscillate").textContent = shorten(data2.wbo)
-	document.getElementById("wbProduction").textContent = shorten(data2.wbp)
-	document.getElementById("zNeGen").textContent = (["electron", "Mu", "Tau"])[data3.zNeGen - 1]
-	document.getElementById("zNeProgress").textContent = data3.zNeProgress.times(100).toFixed(1) + "% to oscillate Z Boson to " + (["Mu", "Tau", "electron"])[data3.zNeGen-1] + "."
-	document.getElementById("zNeReq").textContent = "Oscillate progress gain speed is currently " + (gainSpeed.gt(1) ? shorten(gainSpeed) : "1 / " + shorten(Decimal.div(1, gainSpeed))) + "x."
-	document.getElementById("zNe").className = (["electron","mu","tau"])[data3.zNeGen - 1]
-	document.getElementById("zNeSymbol").textContent = (["e", "μ", "τ"])[data3.zNeGen - 1]
-	document.getElementById("zb").textContent = shortenDimensions(data3.zb)
-	document.getElementById("zbGain").textContent = "You will gain " + shortenDimensions(data3.zNeReq.pow(0.75)) + " Z Bosons on next oscillation."
-	document.getElementById("zbSpeed").textContent = shorten(data2.zbs)
+	el("ap").textContent = shorten(data3.dP)
+	el("apProduction").textContent = (data3.dPUse ? "-" : "+") + shorten(r) + "/s"
+	el("apUse").textContent = data3.dPUse == 0 ? "" : "You are currently consuming Anti-Preons to " + (["", "decay W Bosons", "oscillate Z Bosons", "convert W- to W+ Bosons"])[data3.dPUse] + "."
+	el("wQkType").textContent = data3.wQkUp ? "positive" : "negative"
+	el("wQkProgress").textContent = data3.wQkProgress.times(100).toFixed(1) + "% to turn W Boson to a" + (data3.wQkUp ? " negative" : " positive")+" Boson."
+	el("wQk").className = show0 ? "zero" : data3.wQkUp ? "up" : "down"
+	el("wQkSymbol").textContent = show0 ? "0" : data3.wQkUp ? "+" : "−"
+	el("wpb").textContent = shortenDimensions(data3.wpb)
+	el("wnb").textContent = shortenDimensions(data3.wnb)
+	el("wbTime").textContent = shorten(data2.wbt)
+	el("wbOscillate").textContent = shorten(data2.wbo)
+	el("wbProduction").textContent = shorten(data2.wbp)
+	el("zNeGen").textContent = (["electron", "Mu", "Tau"])[data3.zNeGen - 1]
+	el("zNeProgress").textContent = data3.zNeProgress.times(100).toFixed(1) + "% to oscillate Z Boson to " + (["Mu", "Tau", "electron"])[data3.zNeGen-1] + "."
+	el("zNeReq").textContent = "Oscillate progress gain speed is currently " + (gainSpeed.gt(1) ? shorten(gainSpeed) : "1 / " + shorten(Decimal.div(1, gainSpeed))) + "x."
+	el("zNe").className = (["electron","mu","tau"])[data3.zNeGen - 1]
+	el("zNeSymbol").textContent = (["e", "μ", "τ"])[data3.zNeGen - 1]
+	el("zb").textContent = shortenDimensions(data3.zb)
+	el("zbGain").textContent = "You will gain " + shortenDimensions(data3.zNeReq.pow(0.75)) + " Z Bosons on next oscillation."
+	el("zbSpeed").textContent = shorten(data2.zbs)
 }
 

@@ -59,10 +59,10 @@ function buyAutobuyer(id, quick) {
 function toggleAutobuyerTarget(id) {
 	if (player.autobuyers[id-1].target == id) {
 		player.autobuyers[id-1].target = 10 + id
-		document.getElementById("toggleBtn" + id).textContent = "Buys until 10"
+		el("toggleBtn" + id).textContent = "Buys until 10"
 	} else {
 		player.autobuyers[id-1].target = id
-		document.getElementById("toggleBtn" + id).textContent = "Buys singles"
+		el("toggleBtn" + id).textContent = "Buys singles"
 	}
 }
 

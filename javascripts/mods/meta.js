@@ -2,7 +2,7 @@
 function getMetaAntimatterStart(bigRip) {
 	let x = 10
 	if (speedrunMilestonesReached >= 19 && !bigRip) x = 1e25
-	else if (player.achievements.includes("ngpp12")) x = 100
+	else if (hasAch("ngpp12")) x = 100
 	return E(x)
 }
 
@@ -38,9 +38,9 @@ function getMetaDimensionMultiplier(tier) {
 	if (tier % 2 > 0) ret = ret.times(tmp.qcRewards[4])
 	
 	//Achievements:
-	if (tier == 8 && player.achievements.includes("ng3p22")) ret = ret.times(1 + Math.pow(player.meta[1].amount.plus(1).log10() / 10, 2))
-	if (tier == 1 && player.achievements.includes("ng3p31")) ret = ret.times(player.meta.antimatter.plus(1).pow(.001))
-	if (!tmp.ngp3l && tier == 1 && player.achievements.includes("ng3p17")) ret = ret.times(Math.max(1,Math.log10(player.totalmoney.plus(10).log10())))
+	if (tier == 8 && hasAch("ng3p22")) ret = ret.times(1 + Math.pow(player.meta[1].amount.plus(1).log10() / 10, 2))
+	if (tier == 1 && hasAch("ng3p31")) ret = ret.times(player.meta.antimatter.plus(1).pow(.001))
+	if (tier == 1 && hasAch("ng3p17")) ret = ret.times(Math.max(1,Math.log10(player.totalmoney.plus(10).log10())))
 	
 	ret = dilates(dilates(ret.max(1), 2), "meta")
 	if (player.dilation.upgrades.includes("ngmm8")) ret = ret.pow(getDil71Mult())
@@ -50,7 +50,7 @@ function getMetaDimensionMultiplier(tier) {
 function getMetaDimensionGlobalMultiplier() {
 	let ret = getDilationMetaDimensionMultiplier()
 	if (player.dilation.upgrades.includes("ngpp3")) ret = ret.times(getDil14Bonus())
-	if (player.achievements.includes("ngpp12")) ret = ret.times(1.1)
+	if (hasAch("ngpp12")) ret = ret.times(1.1)
 	if (tmp.ngp3) {
 		//Mastery Study Boosts
 		if (player.masterystudies.includes("t262")) ret = ret.times(getMTSMult(262))
@@ -70,8 +70,8 @@ function getMetaDimensionGlobalMultiplier() {
 		if (!tmp.ngp3l) {
 			var ng3p13exp = Math.pow(Decimal.plus(quantumWorth, 1).log10(), 0.75)
 			if (ng3p13exp > 1000) ng3p13exp = Math.pow(7 + Math.log10(ng3p13exp), 3)
-			if (player.achievements.includes("ng3p13")) ret = ret.times(E_pow(8, ng3p13exp))
-			if (player.achievements.includes("ng3p57")) ret = ret.times(1 + player.timeShards.plus(1).log10())
+			if (hasAch("ng3p13")) ret = ret.times(E_pow(8, ng3p13exp))
+			if (hasAch("ng3p57")) ret = ret.times(1 + player.timeShards.plus(1).log10())
 		}
 	}
 	
@@ -94,9 +94,9 @@ function getMetaBoostPower() {
 	if (tmp.ngp3) {
 		if (isNanoEffectUsed("meta_boost_power")) r = tmp.nf.effects.meta_boost_power
 		if (player.masterystudies.includes("t312")) exp = 1.045
-		if (!tmp.ngp3l && player.achievements.includes("ng3p26")) exp *= Math.log10(9 + Math.max(player.meta.resets / 75 + 0.25, 1))
+		if (hasAch("ng3p26")) exp *= Math.log10(9 + Math.max(player.meta.resets / 75 + 0.25, 1))
 	}
-	if (player.achievements.includes("ngpp14")) r *= 1.01
+	if (hasAch("ngpp14")) r *= 1.01
 
 	let eff = E_pow(r, exp)
 	return eff
@@ -181,10 +181,10 @@ function metaBoost() {
 		}
 		if (inQC(4)) if (player.meta[8].bought >= getMetaShiftRequirement().amount) player.meta.resets++
 	} else player.meta.resets++
-	if (!tmp.ngp3l && player.achievements.includes("ng3p72")) return
+	if (hasAch("ng3p72")) return
 	player.meta.antimatter = getMetaAntimatterStart()
 	clearMetaDimensions()
-	if (!tmp.ngp3 || !brSave.active) document.getElementById("quantumbtn").style.display="none"
+	if (!tmp.ngp3 || !brSave.active) el("quantumbtn").style.display="none"
 }
 
 
@@ -281,7 +281,7 @@ function canAffordMetaDimension(cost) {
 }
 
 for (let i = 1; i <= 8; i++) {
-	document.getElementById("meta" + i).onclick = function () {
+	el("meta" + i).onclick = function () {
 		if (speedrunMilestonesReached > i + 5) player.autoEterOptions["md" + i] = !player.autoEterOptions["md" + i]
 		else metaBuyOneDimension(i);
 		if (speedrunMilestonesReached > 27) {
@@ -291,20 +291,20 @@ for (let i = 1; i <= 8; i++) {
 					if (d > 7) removeMaxAll = true
 				} else break
 			}
-			document.getElementById("metaMaxAllDiv").style.display = removeMaxAll ? "none" : ""
+			el("metaMaxAllDiv").style.display = removeMaxAll ? "none" : ""
 		}
 	}
-	document.getElementById("metaMax" + i).onclick = function () {
+	el("metaMax" + i).onclick = function () {
 		if (shiftDown && speedrunMilestonesReached > i + 5) metaBuyOneDimension(i)
 		else metaBuyManyDimension(i);
 	}
 }
 
-document.getElementById("metaMaxAll").onclick = function () {
+el("metaMaxAll").onclick = function () {
 	for (let i = 1; i <= 8; i++) buyMaxMetaDimension(i)
 }
 
-document.getElementById("metaSoftReset").onclick = function () {
+el("metaSoftReset").onclick = function () {
 	metaBoost();
 }
 
@@ -330,7 +330,7 @@ function getExtraDimensionBoostPower() {
 }
 
 function getExtraDimensionBoostPowerUse() {
-	if (!tmp.ngp3l && player.achievements.includes("ng3p71")) return player.meta.bestOverQuantums
+	if (hasAch("ng3p71")) return player.meta.bestOverQuantums
 	return player.meta.bestAntimatter
 }
 
@@ -342,7 +342,7 @@ function getExtraDimensionBoostPowerExponent(ma) {
 	let power = 8
 	if (inQC(3)) {
 		power = Math.pow(ma.log10() / 8, 2)
-		if (!tmp.ngp3l && power > 1e8) power = Math.pow(power * 1e6, 4/7)
+		if (power > 1e8) power = Math.pow(power * 1e6, 4/7)
 		return power
 	}
 	if (player.dilation.upgrades.includes("ngpp5")) power++
@@ -363,13 +363,13 @@ function getDil17Bonus() {
 }
 
 function updateOverallMetaDimensionsStuff(){
-	document.getElementById("metaAntimatterAmount").textContent = shortenMoney(player.meta.antimatter)
-	document.getElementById("metaAntimatterBest").textContent = shortenMoney(player.meta.bestAntimatter)
-	document.getElementById("bestAntimatterQuantum").textContent = player.masterystudies && quantumed ? "Your best" + (ghostified ? "" : "-ever") + " meta-antimatter" + (ghostified ? " in this Ghostify" : "") + " was " + shortenMoney(player.meta.bestOverQuantums) + "." : ""
-	document.getElementById("bestAntimatterTranslation").innerHTML = (tmp.ngp3 && aarMod.nguspV === undefined && player.currentEternityChall != "eterc14" && (inQC(3) || nfSave.rewards >= 2) && !inQC(7)) ? 'Raised to the power of <span id="metaAntimatterPower" style="font-size:35px; color: black">'+formatValue(player.options.notation, getExtraDimensionBoostPowerExponent(getExtraDimensionBoostPowerUse()), 2, 1)+'</span>, t' : "T"
+	el("metaAntimatterAmount").textContent = shortenMoney(player.meta.antimatter)
+	el("metaAntimatterBest").textContent = shortenMoney(player.meta.bestAntimatter)
+	el("bestAntimatterQuantum").textContent = player.masterystudies && quantumed ? "Your best" + (ghostified ? "" : "-ever") + " meta-antimatter" + (ghostified ? " in this Ghostify" : "") + " was " + shortenMoney(player.meta.bestOverQuantums) + "." : ""
+	el("bestAntimatterTranslation").innerHTML = (tmp.ngp3 && aarMod.nguspV === undefined && player.currentEternityChall != "eterc14" && (inQC(3) || nfSave.rewards >= 2) && !inQC(7)) ? 'Raised to the power of <span id="metaAntimatterPower" style="font-size:35px; color: black">'+formatValue(player.options.notation, getExtraDimensionBoostPowerExponent(getExtraDimensionBoostPowerUse()), 2, 1)+'</span>, t' : "T"
 	setAndMaybeShow("bestMAOverGhostifies", ghostified, '"Your best-ever meta-antimatter was " + shortenMoney(player.meta.bestOverGhostifies) + "."')
-	document.getElementById("metaAntimatterEffect").textContent = shortenMoney(getExtraDimensionBoostPower())
-	document.getElementById("metaAntimatterPerSec").textContent = 'You are getting ' + shortenDimensions(getMetaDimensionProduction(1)) + ' meta-antimatter per second.'
+	el("metaAntimatterEffect").textContent = shortenMoney(getExtraDimensionBoostPower())
+	el("metaAntimatterPerSec").textContent = 'You are getting ' + shortenDimensions(getMetaDimensionProduction(1)) + ' meta-antimatter per second.'
 }
 
 function updateMetaDimensions () {
@@ -378,31 +378,31 @@ function updateMetaDimensions () {
 	let useTwo = player.options.notation=="Logarithm" ? 2 : 0
 	for (let tier = 8; tier > 0; tier--) {
 		showDim = showDim || canBuyMetaDimension(tier)
-		document.getElementById(tier + "MetaRow").style.display = showDim ? "" : "none"
+		el(tier + "MetaRow").style.display = showDim ? "" : "none"
 		if (showDim) {
-			document.getElementById(tier + "MetaD").textContent = DISPLAY_NAMES[tier] + " Meta Dimension x" + formatValue(player.options.notation, getMetaDimensionMultiplier(tier), 2, 1)
-			document.getElementById("meta" + tier + "Amount").textContent = getMetaDimensionDescription(tier)
-			document.getElementById("meta" + tier).textContent = speedrunMilestonesReached > tier + 5 ? "Auto: " + (player.autoEterOptions["md" + tier] ? "ON" : "OFF") : "Cost: " + formatValue(player.options.notation, player.meta[tier].cost, useTwo, 0) + " MA"
-			document.getElementById('meta' + tier).className = speedrunMilestonesReached > tier + 5 ? "storebtn" : canAffordMetaDimension(player.meta[tier].cost) ? 'storebtn' : 'unavailablebtn'
-			document.getElementById("metaMax"+tier).textContent = (speedrunMilestonesReached > tier + 5 ? (shiftDown ? "Singles: " : ghostified ? "":"Cost: ") : "Until 10: ") + formatValue(player.options.notation, ((shiftDown && speedrunMilestonesReached > tier + 5) ? player.meta[tier].cost : getMetaMaxCost(tier)), useTwo, 0) + " MA"
-			document.getElementById('metaMax' + tier).className = canAffordMetaDimension((shiftDown && speedrunMilestonesReached > tier + 5) ? player.meta[tier].cost : getMetaMaxCost(tier)) ? 'storebtn' : 'unavailablebtn'
+			el(tier + "MetaD").textContent = DISPLAY_NAMES[tier] + " Meta Dimension x" + formatValue(player.options.notation, getMetaDimensionMultiplier(tier), 2, 1)
+			el("meta" + tier + "Amount").textContent = getMetaDimensionDescription(tier)
+			el("meta" + tier).textContent = speedrunMilestonesReached > tier + 5 ? "Auto: " + (player.autoEterOptions["md" + tier] ? "ON" : "OFF") : "Cost: " + formatValue(player.options.notation, player.meta[tier].cost, useTwo, 0) + " MA"
+			el('meta' + tier).className = speedrunMilestonesReached > tier + 5 ? "storebtn" : canAffordMetaDimension(player.meta[tier].cost) ? 'storebtn' : 'unavailablebtn'
+			el("metaMax"+tier).textContent = (speedrunMilestonesReached > tier + 5 ? (shiftDown ? "Singles: " : ghostified ? "":"Cost: ") : "Until 10: ") + formatValue(player.options.notation, ((shiftDown && speedrunMilestonesReached > tier + 5) ? player.meta[tier].cost : getMetaMaxCost(tier)), useTwo, 0) + " MA"
+			el('metaMax' + tier).className = canAffordMetaDimension((shiftDown && speedrunMilestonesReached > tier + 5) ? player.meta[tier].cost : getMetaMaxCost(tier)) ? 'storebtn' : 'unavailablebtn'
 		}
 	}
 	var isMetaShift = player.meta.resets < 4
 	var metaShiftRequirement = getMetaShiftRequirement()
-		document.getElementById("metaResetLabel").textContent = 'Meta-Dimension ' + (isMetaShift ? "Shift" : "Boost") + ' ('+ getFullExpansion(player.meta.resets) +'): requires ' + getFullExpansion(Math.floor(metaShiftRequirement.amount)) + " " + DISPLAY_NAMES[metaShiftRequirement.tier] + " Meta Dimensions"
-		document.getElementById("metaSoftReset").textContent = "Reset meta-dimensions for a " + (isMetaShift ? "new dimension" : "boost")
+		el("metaResetLabel").textContent = 'Meta-Dimension ' + (isMetaShift ? "Shift" : "Boost") + ' ('+ getFullExpansion(player.meta.resets) +'): requires ' + getFullExpansion(Math.floor(metaShiftRequirement.amount)) + " " + DISPLAY_NAMES[metaShiftRequirement.tier] + " Meta Dimensions"
+		el("metaSoftReset").textContent = "Reset meta-dimensions for a " + (isMetaShift ? "new dimension" : "boost")
 	if (player.meta[metaShiftRequirement.tier].bought >= metaShiftRequirement.amount) {
-		document.getElementById("metaSoftReset").className = 'storebtn'
+		el("metaSoftReset").className = 'storebtn'
 	} else {
-		document.getElementById("metaSoftReset").className = 'unavailablebtn'
+		el("metaSoftReset").className = 'unavailablebtn'
 	}
 	var bigRipped = tmp.ngp3 && brSave.active
 	var req = getQuantumReq()
 	var reqGotten = isQuantumReached()
 	var newClassName = reqGotten ? (bigRipped && player.options.theme == "Aarex's Modifications" ? "" : "storebtn ") + (bigRipped ? "aarexmodsghostifybtn" : "") : 'unavailablebtn'
 	var message = 'Lose all your previous progress, but '
-	document.getElementById("quantumResetLabel").textContent = (bigRipped ? 'Ghostify' : 'Quantum') + ': requires ' + shorten(req) + ' meta-antimatter ' + (!inQC(0) ? "and " + shortenCosts(pow10(getQCGoal())) + " antimatter" : player.masterystudies ? "and an EC14 completion" : "")
+	el("quantumResetLabel").textContent = (bigRipped ? 'Ghostify' : 'Quantum') + ': requires ' + shorten(req) + ' meta-antimatter ' + (!inQC(0) ? "and " + shortenCosts(pow10(getQCGoal())) + " antimatter" : player.masterystudies ? "and an EC14 completion" : "")
 	if (reqGotten && bigRipped && ghostified) {
 		var GS = getGHPGain()
 		message += "gain " + shortenDimensions(GS) + " Ghost Particle" + (GS.lt(2) ? "" : "s")
@@ -410,8 +410,8 @@ function updateMetaDimensions () {
 		var QS = quarkGain()
 		message += "gain " + shortenDimensions(QS) + " quark" + (QS.lt(2) ? "" : "s") + " for boosts"
 	} else message += "get a boost"
-	document.getElementById("quantum").textContent = message
-	if (document.getElementById("quantum").className !== newClassName) document.getElementById("quantum").className = newClassName
+	el("quantum").textContent = message
+	if (el("quantum").className !== newClassName) el("quantum").className = newClassName
 }
 
 function getDil15Bonus() {

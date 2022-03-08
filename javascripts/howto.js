@@ -62,12 +62,12 @@ function updateSpoilers() {
 				if (i < 5) displayed = 1
 				else if (player) {
 					if (i == 5 && player.resets > 4) displayed = 1
-					if (i == 9 && player.achievements.includes("r21")) displayed = 1
-					if (i == 10 && player.achievements.includes("r41")) displayed = 1
+					if (i == 9 && hasAch("r21")) displayed = 1
+					if (i == 10 && hasAch("r41")) displayed = 1
 					if (i == 11 && player.infDimensionsUnlocked[0]) displayed = 1
 					if (i == 12 && player.postChallUnlocked > 0) displayed = 1
 					if (i == 13 && player.replicanti.unlocked) displayed = 1
-					if (i == 17 && player.achievements.includes("r96")) displayed = 1
+					if (i == 17 && hasAch("r96")) displayed = 1
 					if (i == 18 && (player.eternityChallUnlocked > 0 || player.eternityChalls.eterc1)) displayed = 1
 					if (i == 19 && player.dilation.studies.includes(1)) displayed = 1
 					if (i == 20 && player.dilation.studies.includes(6)) displayed = 1

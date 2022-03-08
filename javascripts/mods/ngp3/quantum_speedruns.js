@@ -11,10 +11,10 @@ function updateSpeedruns() {
 			speedrunMilestonesReached++
 		}
 	}
-	document.getElementById('sacrificeAuto').style.display = speedrunMilestonesReached >= 25 ? "" : "none"
-	for (var i = 1; i <= 28; i++) document.getElementById("speedrunMilestone"+i).className = "achievement achievement" + (speedrunMilestonesReached >= i ? "un" : "") + "locked"
-	for (var i = 1; i <= 4; i++) document.getElementById("speedrunRow"+i).className = speedrunMilestonesReached < ( i > 3 ? 28 : i * 8) ? "" : "completedrow"
-	if (speedrunMilestonesReached >= 26) document.getElementById('rebuyupgmax').style.display = "none"
+	el('sacrificeAuto').style.display = speedrunMilestonesReached >= 25 ? "" : "none"
+	for (var i = 1; i <= 28; i++) el("speedrunMilestone"+i).className = "achievement achievement" + (speedrunMilestonesReached >= i ? "un" : "") + "locked"
+	for (var i = 1; i <= 4; i++) el("speedrunRow"+i).className = speedrunMilestonesReached < ( i > 3 ? 28 : i * 8) ? "" : "completedrow"
+	if (speedrunMilestonesReached >= 26) el('rebuyupgmax').style.display = "none"
 	if (speedrunMilestonesReached >= 28) {
 		var removeMaxAll = false
 		for (var d = 1; d < 9; d++) {
@@ -22,7 +22,7 @@ function updateSpeedruns() {
 				if (d > 7) removeMaxAll = true
 			} else break
 		}
-		document.getElementById("metaMaxAllDiv").style.display = removeMaxAll ? "none" : ""
+		el("metaMaxAllDiv").style.display = removeMaxAll ? "none" : ""
 	}
 }
 
@@ -33,5 +33,5 @@ function isRewardEnabled(id) {
 
 function disableReward(id) {
 	quSave.disabledRewards[id] = !quSave.disabledRewards[id]
-	document.getElementById("reward" + id + "disable").textContent = (id > 11 ? "10 seconds" : id > 4 ? "33.3 mins" : (id > 3 ? 4.5 : 6) + " hours") + " reward: " + (quSave.disabledRewards[id] ? "OFF" : "ON")
+	el("reward" + id + "disable").textContent = (id > 11 ? "10 seconds" : id > 4 ? "33.3 mins" : (id > 3 ? 4.5 : 6) + " hours") + " reward: " + (quSave.disabledRewards[id] ? "OFF" : "ON")
 }

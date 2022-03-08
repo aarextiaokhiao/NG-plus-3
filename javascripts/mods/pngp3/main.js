@@ -66,21 +66,26 @@ function postNGp3AchsCheck() {
 }
 
 function setPostR23Tooltip() {
-    a = document.getElementById("Mega Boo!")
+    a = el("Mega Boo!")
     a.setAttribute('ach-tooltip', "Get " + shorten(E("e6000")) + " Ghost Particles. Reward: Gain 100% of Ghost Particles, Ghostifies & Neutrions gained in Big Rip.")
 
-    a = document.getElementById("When Infinity Replicanti")
+    a = el("When Infinity Replicanti")
     a.setAttribute('ach-tooltip', "Get " + shorten(E(2).pow(1024)) + " of Replicate amount.")
 
-    a = document.getElementById("Not again?")
+    a = el("Not again?")
     a.setAttribute('ach-tooltip', "Get " + shorten(E(2).pow(1024)) + " Ghostifies.")
 
-    a = document.getElementById("Double Quintillion")
+    a = el("Double Quintillion")
     a.setAttribute('ach-tooltip', "Get " + shorten(E("e2e18")) + " antimatter.")
 
-    a = document.getElementById("Breaking Eternity is Fixed")
+    a = el("Breaking Eternity is Fixed")
     a.setAttribute('ach-tooltip', "Get " + shorten(E("e1e11")) + " antimatter while Big Ripped whithout Breaking Eternity.")
 
-    a = document.getElementById("This achievement doesn't exist 5")
+    a = el("This achievement doesn't exist 5")
     a.setAttribute('ach-tooltip', "Get " + shorten(E("9.99e999")) + " Eternal Matters. Reward: Eternal Matter boost its gain at a reduced rate.")
+}
+
+function updateBreakEternityUpgrade11Temp(){
+	var s = tmp.sacPow||E(1)
+	tmp.beu[11] = pow10(s.e**0.3)
 }

@@ -20,23 +20,23 @@ function unlockHiggs() {
 }
 
 function canUnlockHiggs() {
-	return player.money.gte(pow10(2e17)) && ghSave.bl.am.gte(getHiggsRequirement()) && !tmp.ngp3l
+	return player.money.gte(pow10(2e17)) && ghSave.bl.am.gte(getHiggsRequirement())
 }
 
 function updateHiggsUnlocks() {
 	if (tmp.ngp3l) {
-		document.getElementById("nextParticle").style.display = "none"
-		document.getElementById("bosonicResets").style.display = "none"
+		el("nextParticle").style.display = "none"
+		el("bosonicResets").style.display = "none"
 		return
 	}
 	let unl = ghSave.hb.unl
-	document.getElementById("nextParticle").style.display = unl ? "none" : ""
-	document.getElementById("bosonicResets").style.display = unl ? "" : "none"
+	el("nextParticle").style.display = unl ? "none" : ""
+	el("bosonicResets").style.display = unl ? "" : "none"
 	if (!unl) updateHiggsUnlockDisplay()
 }
 
 function updateHiggsUnlockDisplay() {
-	document.getElementById("nextParticle").textContent = "To unlock the next particle (Higgs Bosons), you need to get " + shortenCosts(pow10(2e17)) + " antimatter and " + shortenCosts(getHiggsRequirement()) + " Bosonic Antimatter first."
+	el("nextParticle").textContent = "To unlock the next particle (Higgs Bosons), you need to get " + shortenCosts(pow10(2e17)) + " antimatter and " + shortenCosts(getHiggsRequirement()) + " Bosonic Antimatter first."
 }
 
 function bosonicLabReset() {
@@ -61,19 +61,25 @@ function bosonicLabReset() {
 		autoExtract: E(0),
 		glyphs: [],
 		enchants: {},
-		usedEnchants: [],
+		usedEnchants: ghSave.bl.usedEnchants,
 		upgrades: [],
 		battery: E(0),
 		odSpeed: ghSave.bl.odSpeed
 	}
+	if (hasAch("ng3p92")) {
+		ghSave.bl.enchants[12] = E(1)
+		if (!ghSave.bl.usedEnchants.includes(12)) ghSave.bl.usedEnchants.push(12)
+	}
+
 	var order = [11, 12, 13, 15, 14, 21, 22, 23, 24, 25, 31, 32, 33, 34, 35, 41, 42, 43, 44, 45]
 	//tmp.bl.upgrades needs to be updated (also 12 needs to be added)
 	for (let i = 0; i < startingEnchants; i++){
 		if (i == 20) break
 		ghSave.bl.upgrades.push(order[i])
 	}
-	if (!ghSave.bl.upgrades.includes(32) && player.achievements.includes("ng3p92")) ghSave.bl.upgrades.push(32)
+	if (!ghSave.bl.upgrades.includes(32) && hasAch("ng3p92")) ghSave.bl.upgrades.push(32)
 	for (var g = 1; g <= br.maxLimit; g++) ghSave.bl.glyphs.push(E(0))
+
 	ghSave.wzb = {
 		unl: true,
 		dP: E(0),
@@ -94,13 +100,13 @@ function bosonicLabReset() {
 
 function higgsReset() {
 	if (tmp.ngp3l) return
-	if (!player.achievements.includes("ng3p101")) {
+	if (!hasAch("ng3p101")) {
 		var oldHiggs = ghSave.hb.higgs
 		if (!ghSave.bl.am.gte(getHiggsRequirement())) return
 		if (!aarMod.higgsNoConf && !confirm("You will exchange all your Bosonic Lab stuff for Higgs Bosons. Everything that Light Empowerments resets initally will be reset. Are you ready to proceed?")) return
 	}
 	addHiggs(getHiggsGain())
-	if (!player.achievements.includes("ng3p101")) bosonicLabReset()
+	if (!hasAch("ng3p101")) bosonicLabReset()
 	if (oldHiggs == 0) {
 			updateNeutrinoBoosts()
 			updateHiggsUnlocks()

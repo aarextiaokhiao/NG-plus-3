@@ -87,7 +87,7 @@ function buyBDUpg(x) {
 }
 
 function setupBDUpgradesHTML() {
-    let new_table = document.getElementById("bdUpgsTable")
+    let new_table = el("bdUpgsTable")
     let inner = ""
     for (let r = 0; r <= Math.floor((BD_UPGS.length-1)/6); r++) {
         inner += "<tr>"
@@ -113,28 +113,34 @@ function updateBDTemp() {
     tmp.bd.crEff = getCREffect()
 }
 
+function toBDTab() {
+	showTab("quantumtab")
+	showQuantumTab("bigrip")
+	showRipTab("breakDilation")
+}
+
 function updateBDTab() {
-    document.getElementById("bdUnl").style.display = ghSave.breakDilation.unl ? "none" : ""
-    document.getElementById("bdUnl").textContent="To unlock Break Dilation, you need to get "+shortenCosts(pow10(4e12))+" antimatter while Big Ripped. (coming soon)"
-    document.getElementById("bdDiv").style.display = ghSave.breakDilation.unl ? "" : "none"
+    el("bdUnl").style.display = ghSave.breakDilation.unl ? "none" : ""
+    el("bdUnl").textContent="To unlock Break Dilation, you need to get "+shortenCosts(pow10(4e12))+" antimatter while Big Ripped. (coming soon)"
+    el("bdDiv").style.display = ghSave.breakDilation.unl ? "" : "none"
 
     if (ghSave.breakDilation.unl) {
-        document.getElementById("bd_tp").textContent = shortenMoney(player.dilation.tachyonParticles)
-        document.getElementById("breakDilationBtn").textContent = (ghSave.breakDilation.break?"Fix":"Break")+" Dilation"
-        document.getElementById("crAmt").textContent = shorten(ghSave.breakDilation.cr)
-        document.getElementById("crGain").textContent = shorten(tmp.bd.crGain)
-        document.getElementById("crEff").textContent = shorten(tmp.bd.crEff)
+        el("bd_tp").textContent = shortenMoney(player.dilation.tachyonParticles)
+        el("breakDilationBtn").textContent = (ghSave.breakDilation.break?"Fix":"Break")+" Dilation"
+        el("crAmt").textContent = shorten(ghSave.breakDilation.cr)
+        el("crGain").textContent = shorten(tmp.bd.crGain)
+        el("crEff").textContent = shorten(tmp.bd.crEff)
 
         for (let x = 0; x < BD_UPGS.length; x++) {
             let name = "bdUpg"+x
             let upg = BD_UPGS[x]
             let unl = upg.unl ? upg.unl() : true
     
-            document.getElementById(name+"_div").style.visibility = unl ? "visible" : "hidden"
+            el(name+"_div").style.visibility = unl ? "visible" : "hidden"
             if (unl) {
-                document.getElementById(name+"_div").className = "bd_btnUpg "+(ghSave.breakDilation.upgs.includes(x)?"upg_bought":ghSave.breakDilation.cr.gte(upg.cost)?"":"upg_locked")
-                document.getElementById(name+"_cost").innerHTML = shorten(upg.cost)
-                if (upg.effDesc) document.getElementById(name+"_eff").innerHTML = upg.effDesc(tmp.bd.upg_eff[x])
+                el(name+"_div").className = "bd_btnUpg "+(ghSave.breakDilation.upgs.includes(x)?"upg_bought":ghSave.breakDilation.cr.gte(upg.cost)?"":"upg_locked")
+                el(name+"_cost").innerHTML = shorten(upg.cost)
+                if (upg.effDesc) el(name+"_eff").innerHTML = upg.effDesc(tmp.bd.upg_eff[x])
             }
         }
     }

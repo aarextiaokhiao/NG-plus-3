@@ -14,22 +14,22 @@ function updateQuantumWorth(mode) {
 			var automaticCharge = Math.max(Math.log10(quantumWorth.add(1).log10() / 150) / Math.log10(2), 0) + Math.max(brSave.spaceShards.add(1).log10() / 20 - 0.5, 0)
 			ghSave.automatorGhosts.power = Math.max(automaticCharge, ghSave.automatorGhosts.power)
 			if (mode != "quick") {
-				document.getElementById("automaticCharge").textContent = automaticCharge.toFixed(2)
-				document.getElementById("automaticPower").textContent = ghSave.automatorGhosts.power.toFixed(2)
+				el("automaticCharge").textContent = automaticCharge.toFixed(2)
+				el("automaticPower").textContent = ghSave.automatorGhosts.power.toFixed(2)
 			}
 			while (ghSave.automatorGhosts.ghosts<getMaxAutoGhosts()&&ghSave.automatorGhosts.power>=autoGhostRequirements[ghSave.automatorGhosts.ghosts-3]) {
 				ghSave.automatorGhosts.ghosts++
-				document.getElementById("autoGhost"+ghSave.automatorGhosts.ghosts).style.display=""
-				if (ghSave.automatorGhosts.ghosts>=getMaxAutoGhosts()) document.getElementById("nextAutomatorGhost").parentElement.style.display="none"
+				el("autoGhost"+ghSave.automatorGhosts.ghosts).style.display=""
+				if (ghSave.automatorGhosts.ghosts>=getMaxAutoGhosts()) el("nextAutomatorGhost").parentElement.style.display="none"
 				else {
-					document.getElementById("automatorGhostsAmount").textContent=ghSave.automatorGhosts.ghosts
-					document.getElementById("nextAutomatorGhost").parentElement.style.display=""
-					document.getElementById("nextAutomatorGhost").textContent=autoGhostRequirements[ghSave.automatorGhosts.ghosts-3].toFixed(1)
+					el("automatorGhostsAmount").textContent=ghSave.automatorGhosts.ghosts
+					el("nextAutomatorGhost").parentElement.style.display=""
+					el("nextAutomatorGhost").textContent=autoGhostRequirements[ghSave.automatorGhosts.ghosts-3].toFixed(1)
 				}
 			}
 		}
 	}
-	if (mode != "quick") for (var e=1;e<4;e++) document.getElementById("quantumWorth"+e).textContent = shortenDimensions(quantumWorth)
+	if (mode != "quick") for (var e=1;e<4;e++) el("quantumWorth"+e).textContent = shortenDimensions(quantumWorth)
 }
 
 //Quark Assertment Machine (Quark Assignation: NG+3L)
@@ -45,15 +45,15 @@ var assortDefaultPercentages = [10, 25, 50, 100]
 function updateAssortPercentage() {
 	if (tmp.ngp3l) return
 	let percentage = getAssortPercentage()
-	document.getElementById("assort_percentage").value = percentage
+	el("assort_percentage").value = percentage
 	for (var i = 0; i < assortDefaultPercentages.length; i++) {
 		var percentage2 = assortDefaultPercentages[i]
-		document.getElementById("assort_percentage_" + percentage2).className = percentage2 == percentage ? "chosenbtn" : "storebtn"
+		el("assort_percentage_" + percentage2).className = percentage2 == percentage ? "chosenbtn" : "storebtn"
 	}
 }
 
 function changeAssortPercentage(x) {
-	quSave.assortPercentage = Math.max(Math.min(parseFloat(x || document.getElementById("assort_percentage").value), 100), 0)
+	quSave.assortPercentage = Math.max(Math.min(parseFloat(x || el("assort_percentage").value), 100), 0)
 	updateAssortPercentage()
 	updateQuarksTabOnUpdate()
 }
@@ -68,7 +68,7 @@ function assignQuark(color) {
 	var mult = getQuarkAssignMult()
 	quSave.usedQuarks[color] = quSave.usedQuarks[color].add(usedQuarks.times(mult)).round()
 	quSave.quarks = quSave.quarks.sub(usedQuarks)
-	document.getElementById("quarks").innerHTML = "You have <b class='QKAmount'>0</b> quarks."
+	el("quarks").innerHTML = "You have <b class='QKAmount'>0</b> quarks."
 	if (!mult.eq(1)) updateQuantumWorth()
 	updateColorCharge()
 	if (ghSave.another > 0) ghSave.another--
@@ -105,7 +105,7 @@ function assignAll(auto) {
 			b: quSave.assignAllRatios.g
 		}
 		var colors = ['r','g','b']
-		for (c = 0; c < 3; c++) document.getElementById("ratio_" + colors[c]).value = quSave.assignAllRatios[colors[c]]
+		for (c = 0; c < 3; c++) el("ratio_" + colors[c]).value = quSave.assignAllRatios[colors[c]]
 	}
 	if (mult.gt(1)) updateQuantumWorth()
 	updateColorCharge()
@@ -118,16 +118,16 @@ function getQuarkAssignMult() {
 }
 
 function changeRatio(color) {
-	var value = parseFloat(document.getElementById("ratio_" + color).value)
+	var value = parseFloat(el("ratio_" + color).value)
 	if (value < 0 || isNaN(value)) {
-		document.getElementById("ratio_" + color).value = quSave.assignAllRatios[color]
+		el("ratio_" + color).value = quSave.assignAllRatios[color]
 		return
 	}
 	var sum = 0
 	var colors = ['r','g','b']
 	for (c = 0; c < 3; c++) sum += colors[c] == color ? value : quSave.assignAllRatios[colors[c]]
 	if (sum == 0 || sum == 1/0) {
-		document.getElementById("ratio_" + color).value = quSave.assignAllRatios[color]
+		el("ratio_" + color).value = quSave.assignAllRatios[color]
 		return
 	}
 	quSave.assignAllRatios[color] = value
@@ -135,13 +135,13 @@ function changeRatio(color) {
 
 function toggleAutoAssign() {
 	quSave.autoOptions.assignQK = !quSave.autoOptions.assignQK
-	document.getElementById('autoAssign').textContent="Auto: O"+(quSave.autoOptions.assignQK?"N":"FF")
+	el('autoAssign').textContent="Auto: O"+(quSave.autoOptions.assignQK?"N":"FF")
 	if (quSave.autoOptions.assignQK && quSave.quarks.gt(0)) assignAll(true)
 }
 
 function rotateAutoAssign() {
 	quSave.autoOptions.assignQKRotate=quSave.autoOptions.assignQKRotate?(quSave.autoOptions.assignQKRotate+1)%3:1
-	document.getElementById('autoAssignRotate').textContent="Rotation: "+(quSave.autoOptions.assignQKRotate>1?"Left":quSave.autoOptions.assignQKRotate?"Right":"None")
+	el('autoAssignRotate').textContent="Rotation: "+(quSave.autoOptions.assignQKRotate>1?"Left":quSave.autoOptions.assignQKRotate?"Right":"None")
 }
 
 //Color Charge
@@ -349,8 +349,8 @@ function buyGluonUpg(color, id) {
 	updateGluonsTab("spend")
 	if (name == "gb3") {
 		var otherMults = 1
-		if (player.achievements.includes("r85")) otherMults *= 4
-		if (player.achievements.includes("r93")) otherMults *= 4
+		if (hasAch("r85")) otherMults *= 4
+		if (hasAch("r93")) otherMults *= 4
 		var old = getIPMultPower()
 		ipMultPower = 2.3
 		player.infMult = player.infMult.div(otherMults).pow(Math.log10(getIPMultPower()) / Math.log10(old)).times(otherMults)
@@ -374,7 +374,7 @@ function buyQuarkMult(name) {
 	updateGluonsTab("spend")
 	if (quSave.autobuyer.mode === 'amount') {
 		quSave.autobuyer.limit = Decimal.times(quSave.autobuyer.limit, 2)
-		document.getElementById("priorityquantum").value = formatValue("Scientific", quSave.autobuyer.limit, 2, 0);
+		el("priorityquantum").value = formatValue("Scientific", quSave.autobuyer.limit, 2, 0);
 	}
 }
 
@@ -407,7 +407,7 @@ function maxQuarkMult() {
 	quSave.multPower.total += bought
 	if (quSave.autobuyer.mode === 'amount') {
 		quSave.autobuyer.limit = Decimal.times(quSave.autobuyer.limit, pow2(bought))
-		document.getElementById("priorityquantum").value = formatValue("Scientific", quSave.autobuyer.limit, 2, 0)
+		el("priorityquantum").value = formatValue("Scientific", quSave.autobuyer.limit, 2, 0)
 	}
 	updateGluonsTabOnUpdate("spend")
 }
@@ -423,7 +423,7 @@ function getBR1Effect() {
 }
 
 function getRG3Effect() {
-	if (tmp.ngp3l || !player.achievements.includes("ng3p24")) return player.resets
+	if (tmp.ngp3l || !hasAch("ng3p24")) return player.resets
 	let exp = Math.sqrt(player.meta.resets)
 	if (exp > 36) exp = 6 * Math.sqrt(exp)
 	return E_pow(player.resets, exp)
@@ -435,64 +435,64 @@ function getGU8Effect(type) {
 
 //Display
 function updateQuarksTab(tab) {
-	document.getElementById("redPower").textContent=shortenMoney(quSave.colorPowers.r)
-	document.getElementById("greenPower").textContent=shortenMoney(quSave.colorPowers.g)
-	document.getElementById("bluePower").textContent=shortenMoney(quSave.colorPowers.b)
-	document.getElementById("redTranslation").textContent=((colorBoosts.r-1)*100).toFixed(1)
+	el("redPower").textContent=shortenMoney(quSave.colorPowers.r)
+	el("greenPower").textContent=shortenMoney(quSave.colorPowers.g)
+	el("bluePower").textContent=shortenMoney(quSave.colorPowers.b)
+	el("redTranslation").textContent=((colorBoosts.r-1)*100).toFixed(1)
 	var msg = getFullExpansion(Math.round((colorBoosts.g-1)*100))+(tmp.pe>0?"+"+getFullExpansion(Math.round(tmp.pe*100)):"")
-	document.getElementById("greenTranslation").textContent=msg
-	document.getElementById("blueTranslation").textContent=shortenMoney(colorBoosts.b)
+	el("greenTranslation").textContent=msg
+	el("blueTranslation").textContent=shortenMoney(colorBoosts.b)
 	if (!tmp.ngp3l) {
-		document.getElementById("redDimTranslation").textContent=shortenMoney(colorBoosts.dim.r)
-		document.getElementById("greenDimTranslation").textContent=shortenMoney(colorBoosts.dim.g)
-		document.getElementById("blueDimTranslation").textContent=shortenMoney(colorBoosts.dim.b)
+		el("redDimTranslation").textContent=shortenMoney(colorBoosts.dim.r)
+		el("greenDimTranslation").textContent=shortenMoney(colorBoosts.dim.g)
+		el("blueDimTranslation").textContent=shortenMoney(colorBoosts.dim.b)
 	}
-	if (player.masterystudies.includes("t383")) document.getElementById("blueTranslationMD").textContent=shorten(getMTSMult(383))
+	if (player.masterystudies.includes("t383")) el("blueTranslationMD").textContent=shorten(getMTSMult(383))
 	if (ghSave.milestones>7) {
 		var assortAmount=getAssortAmount()
 		if (!tmp.ngp3l) {
 			var colors=['r','g','b']
-			document.getElementById("assort_amount").textContent = shortenDimensions(assortAmount.times(getQuarkAssignMult()))
-			for (c = 0; c < 3; c++) if (colorCharge[colors[c]].div(colorCharge.qwBonus).lte(1e16)) document.getElementById(colors[c]+"PowerRate").textContent="+"+shorten(getColorPowerProduction(colors[c]))+"/s"
+			el("assort_amount").textContent = shortenDimensions(assortAmount.times(getQuarkAssignMult()))
+			for (c = 0; c < 3; c++) if (colorCharge[colors[c]].div(colorCharge.qwBonus).lte(1e16)) el(colors[c]+"PowerRate").textContent="+"+shorten(getColorPowerProduction(colors[c]))+"/s"
 		}
-		document.getElementById("assignAllButton").className=(assortAmount.lt(1)?"unavailabl":"stor")+"ebtn"
+		el("assignAllButton").className=(assortAmount.lt(1)?"unavailabl":"stor")+"ebtn"
 		updateQuantumWorth("display")
 	}
 }
 
 function updateGluonsTab() {
-	document.getElementById("gbupg1current").textContent = "Currently: " + shortenMoney(getGB1Effect()) + "x"
-	document.getElementById("brupg1current").textContent = "Currently: " + shortenMoney(getBR1Effect()) + "x"
-	document.getElementById("rgupg2current").textContent = "Currently: " + (Math.pow(player.dilation.freeGalaxies / 5e3 + 1, 0.25) * 100 - 100).toFixed(1) + "%"
-	document.getElementById("brupg2current").textContent = "Currently: " + shortenMoney(E_pow(2.2, Math.pow(tmp.sacPow.log10() / 1e6, 0.25))) + "x"
-	document.getElementById("rgupg3current").textContent = "Currently: " + shorten(getRG3Effect()) + "x"
-	document.getElementById("brupg4current").textContent = "Currently: " + shortenMoney(E_pow(getDimensionPowerMultiplier(hasNU(13) && "no-rg4"), 0.0003).max(1)) + "x"
+	el("gbupg1current").textContent = "Currently: " + shortenMoney(getGB1Effect()) + "x"
+	el("brupg1current").textContent = "Currently: " + shortenMoney(getBR1Effect()) + "x"
+	el("rgupg2current").textContent = "Currently: " + (Math.pow(player.dilation.freeGalaxies / 5e3 + 1, 0.25) * 100 - 100).toFixed(1) + "%"
+	el("brupg2current").textContent = "Currently: " + shortenMoney(E_pow(2.2, Math.pow(tmp.sacPow.log10() / 1e6, 0.25))) + "x"
+	el("rgupg3current").textContent = "Currently: " + shorten(getRG3Effect()) + "x"
+	el("brupg4current").textContent = "Currently: " + shortenMoney(E_pow(getDimensionPowerMultiplier(hasNU(13) && "no-rg4"), 0.0003).max(1)) + "x"
 	if (player.masterystudies.includes("d9")) {
-		document.getElementById("gbupg5current").textContent = "Currently: " + (Math.sqrt(player.replicanti.galaxies) / 5.5).toFixed(1) + "%"
-		document.getElementById("brupg5current").textContent = "Currently: " + Math.min(Math.sqrt(player.dilation.tachyonParticles.max(1).log10())*1.3,14).toFixed(1) + "%"
-		document.getElementById("gbupg6current").textContent = "Currently: " + (100-100/(1 + Math.pow(player.infinityPower.plus(1).log10(),0.25)/2810)).toFixed(1) + "%"
-		document.getElementById("brupg6current").textContent = "Currently: " + (100-100/(1 + player.meta.resets/340)).toFixed(1) + "%"
-		document.getElementById("gbupg7current").textContent = "Currently: " + (100-100/(1 + Math.log10(1+player.infinityPoints.max(1).log10())/100)).toFixed(1) + "%"
-		document.getElementById("brupg7current").textContent = "Currently: " + (100-100/(1 + Math.log10(1+player.eternityPoints.max(1).log10())/80)).toFixed(1) + "%"
+		el("gbupg5current").textContent = "Currently: " + (Math.sqrt(player.replicanti.galaxies) / 5.5).toFixed(1) + "%"
+		el("brupg5current").textContent = "Currently: " + Math.min(Math.sqrt(player.dilation.tachyonParticles.max(1).log10())*1.3,14).toFixed(1) + "%"
+		el("gbupg6current").textContent = "Currently: " + (100-100/(1 + Math.pow(player.infinityPower.plus(1).log10(),0.25)/2810)).toFixed(1) + "%"
+		el("brupg6current").textContent = "Currently: " + (100-100/(1 + player.meta.resets/340)).toFixed(1) + "%"
+		el("gbupg7current").textContent = "Currently: " + (100-100/(1 + Math.log10(1+player.infinityPoints.max(1).log10())/100)).toFixed(1) + "%"
+		el("brupg7current").textContent = "Currently: " + (100-100/(1 + Math.log10(1+player.eternityPoints.max(1).log10())/80)).toFixed(1) + "%"
 	}
 	if (player.masterystudies.includes("d13")) {
-		document.getElementById("rgupg8current").textContent = "Currently: " + shorten(getGU8Effect("rg")) + "x"
-		document.getElementById("gbupg8current").textContent = "Currently: " + shorten(getGU8Effect("gb")) + "x"
-		document.getElementById("brupg8current").textContent = "Currently: " + shorten(getGU8Effect("br")) + "x"
+		el("rgupg8current").textContent = "Currently: " + shorten(getGU8Effect("rg")) + "x"
+		el("gbupg8current").textContent = "Currently: " + shorten(getGU8Effect("gb")) + "x"
+		el("brupg8current").textContent = "Currently: " + shorten(getGU8Effect("br")) + "x"
 	}
 	if (!tmp.ngp3l) {
 		let qkEnergy=quSave.quarkEnergy
 		let rgGain=qkEnergy.floor().min(quSave.usedQuarks.r)
 		let gbGain=qkEnergy.floor().min(quSave.usedQuarks.g)
 		let brGain=qkEnergy.floor().min(quSave.usedQuarks.b)
-		document.getElementById("quarkEnergy").textContent = shortenMoney(qkEnergy)
-		document.getElementById("quarkEnergyGluons").textContent = shortenDimensions(qkEnergy.floor())
-		document.getElementById("generateRGGluons").className = "gluonupgrade " + (rgGain.gt(0) ? "rg" : "unavailablebtn")
-		document.getElementById("generateRGGluonsAmount").textContent=shortenDimensions(rgGain)
-		document.getElementById("generateGBGluons").className = "gluonupgrade " + (gbGain.gt(0) ? "gb" : "unavailablebtn")
-		document.getElementById("generateGBGluonsAmount").textContent=shortenDimensions(gbGain)
-		document.getElementById("generateBRGluons").className = "gluonupgrade " + (brGain.gt(0) ? "br" : "unavailablebtn")
-		document.getElementById("generateBRGluonsAmount").textContent=shortenDimensions(brGain)
+		el("quarkEnergy").textContent = shortenMoney(qkEnergy)
+		el("quarkEnergyGluons").textContent = shortenDimensions(qkEnergy.floor())
+		el("generateRGGluons").className = "gluonupgrade " + (rgGain.gt(0) ? "rg" : "unavailablebtn")
+		el("generateRGGluonsAmount").textContent=shortenDimensions(rgGain)
+		el("generateGBGluons").className = "gluonupgrade " + (gbGain.gt(0) ? "gb" : "unavailablebtn")
+		el("generateGBGluonsAmount").textContent=shortenDimensions(gbGain)
+		el("generateBRGluons").className = "gluonupgrade " + (brGain.gt(0) ? "br" : "unavailablebtn")
+		el("generateBRGluonsAmount").textContent=shortenDimensions(brGain)
 	}
 	if (ghSave.milestones > 7) {
 		updateQuantumWorth("display")
@@ -503,35 +503,35 @@ function updateGluonsTab() {
 //Display: On load
 function updateQuarksTabOnUpdate(mode) {
 	var colors = ['r','g','b']
-	if (colorCharge.normal.charge.eq(0)) document.getElementById("colorCharge").innerHTML='neutral charge'
+	if (colorCharge.normal.charge.eq(0)) el("colorCharge").innerHTML='neutral charge'
 	else {
 		var color = colorShorthands[colorCharge.normal.color]
-		document.getElementById("colorCharge").innerHTML='<span class="'+color+'">'+color+'</span> charge of <span class="'+color+'" style="font-size:35px">' + shortenDimensions(colorCharge.normal.charge) + "</span>"
+		el("colorCharge").innerHTML='<span class="'+color+'">'+color+'</span> charge of <span class="'+color+'" style="font-size:35px">' + shortenDimensions(colorCharge.normal.charge) + "</span>"
 	}
-	for (c = 0; c < 3; c++) document.getElementById(colors[c]+"PowerRate").textContent="+"+shorten(getColorPowerProduction(colors[c]))+"/s"
+	for (c = 0; c < 3; c++) el(colors[c]+"PowerRate").textContent="+"+shorten(getColorPowerProduction(colors[c]))+"/s"
 
-	document.getElementById("redQuarks").textContent = shortenDimensions(quSave.usedQuarks.r)
-	document.getElementById("greenQuarks").textContent = shortenDimensions(quSave.usedQuarks.g)
-	document.getElementById("blueQuarks").textContent = shortenDimensions(quSave.usedQuarks.b)
-	document.getElementById("boost").style.display = player.dilation.active ? "" : "none"
+	el("redQuarks").textContent = shortenDimensions(quSave.usedQuarks.r)
+	el("greenQuarks").textContent = shortenDimensions(quSave.usedQuarks.g)
+	el("blueQuarks").textContent = shortenDimensions(quSave.usedQuarks.b)
+	el("boost").style.display = player.dilation.active ? "" : "none"
 
 	var assortAmount = getAssortAmount()
 	var canAssign = assortAmount.gt(0)
-	document.getElementById("quarkAssort").style.display = tmp.ngp3l ? "none" : ""
-	document.getElementById("quarkAssign").style.display = tmp.ngp3l ? "" : "none"
-	document.getElementById("colorDimTranslations").style.display = tmp.ngp3l ? "none" : ""
+	el("quarkAssort").style.display = tmp.ngp3l ? "none" : ""
+	el("quarkAssign").style.display = tmp.ngp3l ? "" : "none"
+	el("colorDimTranslations").style.display = tmp.ngp3l ? "none" : ""
 	if (tmp.ngp3l) {
-		document.getElementById("redAssign").className = canAssign ? "storebtn" : "unavailablebtn"
-		document.getElementById("greenAssign").className = canAssign ? "storebtn" : "unavailablebtn"
-		document.getElementById("blueAssign").className = canAssign ? "storebtn" : "unavailablebtn"
+		el("redAssign").className = canAssign ? "storebtn" : "unavailablebtn"
+		el("greenAssign").className = canAssign ? "storebtn" : "unavailablebtn"
+		el("blueAssign").className = canAssign ? "storebtn" : "unavailablebtn"
 	} else {
-		document.getElementById("assort_amount").textContent = shortenDimensions(assortAmount.times(getQuarkAssignMult()))
-		document.getElementById("redAssort").className = canAssign ? "storebtn" : "unavailablebtn"
-		document.getElementById("greenAssort").className = canAssign ? "storebtn" : "unavailablebtn"
-		document.getElementById("blueAssort").className = canAssign ? "storebtn" : "unavailablebtn"
-		document.getElementById("colorDimPowerUpgLevel").textContent = getFullExpansion((quSave.colorDimPower||0)+1)
-		document.getElementById("colorDimPowerUpgCost").textContent = shortenDimensions(getColorDimPowerUpgradeCost())
-		document.getElementById("colorDimPowerUpg").className = "gluonupgrade " + (quSave.quarks.gte(getColorDimPowerUpgradeCost()) ? "storebtn" : "unavailablebtn")
+		el("assort_amount").textContent = shortenDimensions(assortAmount.times(getQuarkAssignMult()))
+		el("redAssort").className = canAssign ? "storebtn" : "unavailablebtn"
+		el("greenAssort").className = canAssign ? "storebtn" : "unavailablebtn"
+		el("blueAssort").className = canAssign ? "storebtn" : "unavailablebtn"
+		el("colorDimPowerUpgLevel").textContent = getFullExpansion((quSave.colorDimPower||0)+1)
+		el("colorDimPowerUpgCost").textContent = shortenDimensions(getColorDimPowerUpgradeCost())
+		el("colorDimPowerUpg").className = "gluonupgrade " + (quSave.quarks.gte(getColorDimPowerUpgradeCost()) ? "storebtn" : "unavailablebtn")
 	}
 
 	var uq = quSave.usedQuarks
@@ -539,15 +539,15 @@ function updateQuarksTabOnUpdate(mode) {
 	for (var p = 0; p < 3; p++) {
 		var pair = (["rg", "gb", "br"])[p]
 		var diff = uq[pair[0]].min(uq[pair[1]])
-		document.getElementById(pair + "gain").textContent = shortenDimensions(diff)
-		document.getElementById(pair + "next").textContent = shortenDimensions(uq[pair[0]].sub(diff).round())
+		el(pair + "gain").textContent = shortenDimensions(diff)
+		el(pair + "next").textContent = shortenDimensions(uq[pair[0]].sub(diff).round())
 	}
-	document.getElementById("assignAllButton").className = canAssign ? "storebtn" : "unavailablebtn"
-	document.getElementById("bluePowerMDEffect").style.display = player.masterystudies.includes("t383") ? "" : "none"
+	el("assignAllButton").className = canAssign ? "storebtn" : "unavailablebtn"
+	el("bluePowerMDEffect").style.display = player.masterystudies.includes("t383") ? "" : "none"
 	if (player.masterystudies.includes("d13")) {
-		document.getElementById("redQuarksToD").textContent = shortenDimensions(quSave.usedQuarks.r)
-		document.getElementById("greenQuarksToD").textContent = shortenDimensions(quSave.usedQuarks.g)
-		document.getElementById("blueQuarksToD").textContent = shortenDimensions(quSave.usedQuarks.b)	
+		el("redQuarksToD").textContent = shortenDimensions(quSave.usedQuarks.r)
+		el("greenQuarksToD").textContent = shortenDimensions(quSave.usedQuarks.g)
+		el("blueQuarksToD").textContent = shortenDimensions(quSave.usedQuarks.b)	
 	}
 }
 
@@ -564,30 +564,30 @@ function updateGluonsTabOnUpdate(mode) {
 	var names = ["rg","gb","br"]
 	var sevenUpgrades = player.masterystudies.includes("d9")
 	var eightUpgrades = player.masterystudies.includes("d13")
-	if (mode == undefined) for (r = 3; r < 5; r++) document.getElementById("gupgrow" + r).style.display = sevenUpgrades ? "" : "none"
+	if (mode == undefined) for (r = 3; r < 5; r++) el("gupgrow" + r).style.display = sevenUpgrades ? "" : "none"
 	for (c = 0; c < 3; c++) {
 		if (mode==undefined) {
-			document.getElementById(names[c] + "upg7col").setAttribute("colspan", eightUpgrades ? 1 : 2)
-			document.getElementById(names[c] + "upg8col").style.display = eightUpgrades ? "" : "none"
+			el(names[c] + "upg7col").setAttribute("colspan", eightUpgrades ? 1 : 2)
+			el(names[c] + "upg8col").style.display = eightUpgrades ? "" : "none"
 		}
 		if (mode == undefined || mode == "display") {
 			var name = names[c]
-			document.getElementById(name).textContent = shortenDimensions(quSave.gluons[name])
+			el(name).textContent = shortenDimensions(quSave.gluons[name])
 			for (u = 1; u <= (eightUpgrades ? 8 : sevenUpgrades ? 7 : 4); u++) {
 				var upg = name + "upg" + u
-				if (u > 4) document.getElementById(upg + "cost").textContent = shortenMoney(E(GUCosts[u]))
-				if (quSave.upgrades.includes(name + u)) document.getElementById(upg).className="gluonupgradebought small "+name
-				else if (quSave.gluons[name].lt(GUCosts[u])) document.getElementById(upg).className="gluonupgrade small unavailablebtn"
-				else document.getElementById(upg).className="gluonupgrade small "+name
+				if (u > 4) el(upg + "cost").textContent = shortenMoney(E(GUCosts[u]))
+				if (quSave.upgrades.includes(name + u)) el(upg).className="gluonupgradebought small "+name
+				else if (quSave.gluons[name].lt(GUCosts[u])) el(upg).className="gluonupgrade small unavailablebtn"
+				else el(upg).className="gluonupgrade small "+name
 			}
 			var upg = name + "qk"
 			var cost = E_pow(100, quSave.multPower[name] + Math.max(quSave.multPower[name] - 467,0)).times(500)
-			document.getElementById(upg+"cost").textContent = shortenDimensions(cost)
-			if (quSave.gluons[name].lt(cost)) document.getElementById(upg+"btn").className = "gluonupgrade unavailablebtn"
-			else document.getElementById(upg + "btn").className = "gluonupgrade " + name
+			el(upg+"cost").textContent = shortenDimensions(cost)
+			if (quSave.gluons[name].lt(cost)) el(upg+"btn").className = "gluonupgrade unavailablebtn"
+			else el(upg + "btn").className = "gluonupgrade " + name
 		}
 	}
-	if (mode == undefined || mode == "display") document.getElementById("qkmultcurrent").textContent = shortenDimensions(pow2(quSave.multPower.total))
+	if (mode == undefined || mode == "display") el("qkmultcurrent").textContent = shortenDimensions(pow2(quSave.multPower.total))
 }
 
 //Quarks animation
@@ -602,7 +602,7 @@ function drawQuarkAnimation(ts){
 	centerY = canvas.height/2
 	maxDistance=Math.sqrt(Math.pow(centerX,2)+Math.pow(centerY,2))
 	code=player.options.theme=="Aarex's Modifications"?"e5":"99"
-	if (document.getElementById("quantumtab").style.display !== "none" && document.getElementById("uquarks").style.display !== "none" && player.options.animations.quarks) {
+	if (el("quantumtab").style.display !== "none" && el("uquarks").style.display !== "none" && player.options.animations.quarks) {
 		qkctx.clearRect(0, 0, canvas.width, canvas.height);
 		quarks.sum=quSave.colorPowers.r.max(1).log10()+quSave.colorPowers.g.max(1).log10()+quSave.colorPowers.b.max(1).log10()
 		quarks.amount=Math.ceil(Math.min(quarks.sum,200))

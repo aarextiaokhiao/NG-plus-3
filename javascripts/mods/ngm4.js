@@ -10,12 +10,12 @@ function tdBoost(bulk) {
 	if (player["timeDimension" + req.tier].bought < req.amount) return
 	if (cantReset()) return
 	player.tdBoosts += bulk
-	if (!player.achievements.includes("r36")) softReset(player.achievements.includes("r26") && player.resets >= player.tdBoosts ? 0 : -player.resets)
+	if (!hasAch("r36")) softReset(hasAch("r26") && player.resets >= player.tdBoosts ? 0 : -player.resets)
 	player.tickBoughtThisInf = updateTBTIonGalaxy()
 }
 
 function resetTDBoosts() {
-	if (aarMod.ngmX > 3) return player.achievements.includes("r27") && player.currentChallenge == "" ? 3 : 0
+	if (aarMod.ngmX > 3) return hasAch("r27") && player.currentChallenge == "" ? 3 : 0
 }
 
 function resetTDs() {
@@ -31,12 +31,12 @@ function resetTDs() {
 		player.timeShards = E(0)
 		player.totalTickGained = 0
 		player.tickThreshold = E(0.01)
-		document.getElementById("totaltickgained").textContent = "You've gained " + getFullExpansion(player.totalTickGained) + " tickspeed upgrades."
+		el("totaltickgained").textContent = "You've gained " + getFullExpansion(player.totalTickGained) + " tickspeed upgrades."
 	}
 }
 
 //v2.1
-document.getElementById("challenge16").onclick = function () {
+el("challenge16").onclick = function () {
 	startNormalChallenge(16)
 }
 
@@ -57,11 +57,11 @@ function cantReset() {
 	return aarMod.ngmX > 3 && inNC(14) && getTotalResets() > 9
 }
 
-document.getElementById("buyerBtnTDBoost").onclick = function () {
+el("buyerBtnTDBoost").onclick = function () {
 	buyAutobuyer(14)
 }
 
 function maxHighestTD() {
 	aarMod.maxHighestTD=!aarMod.maxHighestTD
-	document.getElementById("maxHighestTD").textContent = "Buy Max the highest tier of Time Dimensions: O"+(aarMod.maxHighestTD?"N":"FF")
+	el("maxHighestTD").textContent = "Buy Max the highest tier of Time Dimensions: O"+(aarMod.maxHighestTD?"N":"FF")
 }

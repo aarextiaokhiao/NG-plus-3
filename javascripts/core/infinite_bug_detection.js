@@ -15,10 +15,10 @@ function isInfiniteDetected() { // todo: make better infinite detection system
 		exportInfiniteSave()
 		reload()
 		infiniteDetected = false
-		if (document.getElementById("welcome").style.display != "flex") document.getElementById("welcome").style.display = "flex"
-		if (infiniteCheck2) document.getElementById("welcomeMessage").innerHTML = "I'm terribly sorry, but there has been an Infinite bug detected within your save file, which is why said save file will get reset. Luckily, you can export your save before this reset. Thanks! :)"
+		if (el("welcome").style.display != "flex") el("welcome").style.display = "flex"
+		if (infiniteCheck2) el("welcomeMessage").innerHTML = "I'm terribly sorry, but there has been an Infinite bug detected within your save file, which is why said save file will get reset. Luckily, you can export your save before this reset. Thanks! :)"
 		else {
-			document.getElementById("welcomeMessage").innerHTML = "I'm sorry, but you got an Infinite bug. Because of this, your save is reverted to your last saved progress. It is recommended to post how did you got this bug. Thanks! :)"
+			el("welcomeMessage").innerHTML = "I'm sorry, but you got an Infinite bug. Because of this, your save is reverted to your last saved progress. It is recommended to post how did you got this bug. Thanks! :)"
 			infiniteCheck2 = true
 		}
 		return true
@@ -27,12 +27,12 @@ function isInfiniteDetected() { // todo: make better infinite detection system
 
 function exportInfiniteSave() {
 	infiniteSave = btoa(JSON.stringify(player))
-	document.getElementById("bugExport").style.display = ""
+	el("bugExport").style.display = ""
 	bugExport()
 }
 
 function bugExport() {
-	let output = document.getElementById('output');
+	let output = el('output');
 	let parent = output.parentElement;
 
 	parent.style.display = "";

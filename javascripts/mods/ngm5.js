@@ -227,9 +227,9 @@ function updateParadoxUpgrades() {
 	for (var r = 1; r <= puSizes.y; r++) {
 		for (var c = 1; c <= puSizes.x; c++) {
 			var id = r * 10 + c
-			document.getElementById("pu" + id).className = hasPU(id, r < 2) == (r > 1 || puCaps[id] || 1/0) ? "pubought" : player.pSac.px.gte(getPUCost(id, r < 2, hasPU(id, true))) ? "pupg" : "infinistorebtnlocked"
-			document.getElementById("puc" + id).style.display = hasPU(id, true) >= puCaps[id] ? "none" : ""
-			if (typeof(puDescs[id]) == "function") document.getElementById("pud" + id).textContent = puDescs[id]()
+			el("pu" + id).className = hasPU(id, r < 2) == (r > 1 || puCaps[id] || 1/0) ? "pubought" : player.pSac.px.gte(getPUCost(id, r < 2, hasPU(id, true))) ? "pupg" : "infinistorebtnlocked"
+			el("puc" + id).style.display = hasPU(id, true) >= puCaps[id] ? "none" : ""
+			if (typeof(puDescs[id]) == "function") el("pud" + id).textContent = puDescs[id]()
 		}
 	}
 }
@@ -239,9 +239,9 @@ function updatePUMults() {
 		for (var c = 1; c <= puSizes.x; c++) {
 			var id = r * 10 + c
 			if (puMults[id]) {
-				if (id == 13) document.getElementById("pue13").textContent = "^" + puMults[13](hasPU(13, true, true)).toFixed(2)
-				else if (id==33) document.getElementById("pue33").textContent = "+" + puMults[33]().toFixed(4)
-				else document.getElementById("pue" + id).textContent = shorten(puMults[id](hasPU(id, true, r < 2))) + "x"
+				if (id == 13) el("pue13").textContent = "^" + puMults[13](hasPU(13, true, true)).toFixed(2)
+				else if (id==33) el("pue33").textContent = "+" + puMults[33]().toFixed(4)
+				else el("pue" + id).textContent = shorten(puMults[id](hasPU(id, true, r < 2))) + "x"
 			}
 		}
 	}
@@ -251,7 +251,7 @@ function updatePUCosts() {
 	for (var r = 1; r <= puSizes.y; r++) {
 		for (var c = 1; c <= puSizes.x; c++) {
 			var id = r * 10 + c
-			document.getElementById("puc" + id).textContent = "Cost: " + shortenDimensions(getPUCost(id, r < 2, hasPU(id, true))) + " Px"
+			el("puc" + id).textContent = "Cost: " + shortenDimensions(getPUCost(id, r < 2, hasPU(id, true))) + " Px"
 		}
 	}
 }
@@ -378,5 +378,5 @@ function haveExtraTime() {
 
 function quickMReset() {
 	aarMod.quickReset = !aarMod.quickReset
-	document.getElementById("quickMReset").textContent = "Quick matter reset: O" + (aarMod.quickReset ? "N" : "FF")
+	el("quickMReset").textContent = "Quick matter reset: O" + (aarMod.quickReset ? "N" : "FF")
 }

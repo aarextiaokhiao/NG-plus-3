@@ -20,23 +20,23 @@ function getInfUpgPow(id) {
 //v1.1
 function updateSingularity() {
 	if (player.infinityUpgradesRespecced == undefined) {
-		document.getElementById("singularitytabbtn").style.display = "none"
+		el("singularitytabbtn").style.display = "none"
 		return
-	} else document.getElementById("singularitytabbtn").style.display = ""
+	} else el("singularitytabbtn").style.display = ""
 	if (player.singularity.unlocked) {
-		document.getElementById("singularityunlock").style.display = "none"
-		document.getElementById("singularitydiv").style.display = ""
-		document.getElementById("sacrificedIP").textContent = shortenDimensions(player.singularity.sacrificed)
-		document.getElementById("nextUpgrade").textContent = shortenCosts(pow10(player.singularity.upgraded * 2 + 32))
-		document.getElementById("sacrificeIP").className = gainedSingularityPower().eq(0) ? "unavailablebtn" : "storebtn"
-		document.getElementById("singularityPowerGain").textContent = shortenDimensions(gainedSingularityPower())
-		document.getElementById("singularityPower").textContent = shortenDimensions(player.singularity.singularityPower)
-		document.getElementById("darkMatterPerSecond").textContent = shortenDimensions(getDarkMatterPerSecond())
+		el("singularityunlock").style.display = "none"
+		el("singularitydiv").style.display = ""
+		el("sacrificedIP").textContent = shortenDimensions(player.singularity.sacrificed)
+		el("nextUpgrade").textContent = shortenCosts(pow10(player.singularity.upgraded * 2 + 32))
+		el("sacrificeIP").className = gainedSingularityPower().eq(0) ? "unavailablebtn" : "storebtn"
+		el("singularityPowerGain").textContent = shortenDimensions(gainedSingularityPower())
+		el("singularityPower").textContent = shortenDimensions(player.singularity.singularityPower)
+		el("darkMatterPerSecond").textContent = shortenDimensions(getDarkMatterPerSecond())
 	} else {
-		document.getElementById("singularityunlock").style.display = ""
-		document.getElementById("singularitydiv").style.display = "none"
-		document.getElementById("singularityunlcost").textContent = shortenCosts(1e30)
-		document.getElementById("singularityunlock").className = player.infinityPoints.lt(1e30) ? "unavailablebtn" : "storebtn"
+		el("singularityunlock").style.display = ""
+		el("singularitydiv").style.display = "none"
+		el("singularityunlcost").textContent = shortenCosts(1e30)
+		el("singularityunlock").className = player.infinityPoints.lt(1e30) ? "unavailablebtn" : "storebtn"
 	}
 }
 
@@ -70,7 +70,7 @@ function getDarkMatterMult() {
 }
 
 //v1.2
-document.getElementById("challenge16").onclick = function () {
+el("challenge16").onclick = function () {
 	startChallenge("challenge16", Number.MAX_VALUE);
 }
 
@@ -78,26 +78,26 @@ function updateDimTechs() {
 	var shown = false
 	if (player.infinityUpgradesRespecced != undefined) shown = player.singularity.unlocked
 	if (!shown) {
-		document.getElementById("dimtechstabbtn").style.display = "none"
+		el("dimtechstabbtn").style.display = "none"
 		return
-	} else document.getElementById("dimtechstabbtn").style.display = ""
+	} else el("dimtechstabbtn").style.display = ""
 	if (player.dimtechs.unlocked) {
-		document.getElementById("dimtechsunlock").style.display = "none"
-		document.getElementById("dimtechsdiv").style.display = ""
+		el("dimtechsunlock").style.display = "none"
+		el("dimtechsdiv").style.display = ""
 		var cost = getDimTechUpgradeCost()
 		var canBuy = player.infinityPoints.gte(cost)
 		for (var dim = 1; dim < 9; dim++) {
-			document.getElementById("dim" + dim + "techbtn").innerHTML = "Level " + getFullExpansion(player.dimtechs["dim" + dim + "Upgrades"]) + "<br>" + shortenDimensions(getDiscountMultiplier("dim" + dim)) + "x per discount upgrade" + "<br><br>Cost: " + shortenCosts(cost) + " IP"
-			document.getElementById("dim" + dim + "techbtn").className = canBuy ? "storebtn" : "unavailablebtn"
+			el("dim" + dim + "techbtn").innerHTML = "Level " + getFullExpansion(player.dimtechs["dim" + dim + "Upgrades"]) + "<br>" + shortenDimensions(getDiscountMultiplier("dim" + dim)) + "x per discount upgrade" + "<br><br>Cost: " + shortenCosts(cost) + " IP"
+			el("dim" + dim + "techbtn").className = canBuy ? "storebtn" : "unavailablebtn"
 		}
-		document.getElementById("ticktechbtn").innerHTML = "Level " + getFullExpansion(player.dimtechs.tickUpgrades) + "<br>" + shortenDimensions(getDiscountMultiplier("tick")) + "x per discount upgrade" + "<br><br>Cost: " + shortenCosts(cost) + " IP"
-		document.getElementById("ticktechbtn").className = canBuy ? "storebtn" : "unavailablebtn"
-		document.getElementById("respecDimTechs").className = player.dimtechs.respec ? "respecbtn" : "storebtn"
+		el("ticktechbtn").innerHTML = "Level " + getFullExpansion(player.dimtechs.tickUpgrades) + "<br>" + shortenDimensions(getDiscountMultiplier("tick")) + "x per discount upgrade" + "<br><br>Cost: " + shortenCosts(cost) + " IP"
+		el("ticktechbtn").className = canBuy ? "storebtn" : "unavailablebtn"
+		el("respecDimTechs").className = player.dimtechs.respec ? "respecbtn" : "storebtn"
 	} else {
-		document.getElementById("dimtechsunlock").style.display = ""
-		document.getElementById("dimtechsdiv").style.display = "none"
-		document.getElementById("dimtechsunlcost").textContent = shortenCosts(1e95)
-		document.getElementById("dimtechsunlock").className = player.infinityPoints.lt(1e95) ? "unavailablebtn" : "storebtn"
+		el("dimtechsunlock").style.display = ""
+		el("dimtechsdiv").style.display = "none"
+		el("dimtechsunlcost").textContent = shortenCosts(1e95)
+		el("dimtechsunlock").className = player.infinityPoints.lt(1e95) ? "unavailablebtn" : "storebtn"
 	}
 }
 
@@ -137,5 +137,5 @@ function getDiscountMultiplier(id) {
 
 function respecDimTechs() {
 	player.dimtechs.respec = !player.dimtechs.respec
-	document.getElementById("respecDimTechs").className = player.dimtechs.respec ? "respecbtn" : "storebtn"
+	el("respecDimTechs").className = player.dimtechs.respec ? "respecbtn" : "storebtn"
 }

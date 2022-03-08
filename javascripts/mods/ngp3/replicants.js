@@ -1,103 +1,120 @@
 function babyRateUpdating(){
-	var eggonRate = tmp.twr.times(getEmperorDimensionMultiplier(1)).times(3).div((player.achievements.includes("ng3p35")) ? 1 : 10).times(getSpinToReplicantiSpeed())
+	var eggonRate = tmp.twr.times(getEmperorDimensionMultiplier(1)).times(3).div((hasAch("ng3p35")) ? 1 : 10).times(getSpinToReplicantiSpeed())
 	if (eggonRate.lt(3)){
-		document.getElementById("eggonRate").textContent = shortenDimensions(eggonRate.times(60))
-		document.getElementById("eggonRateTimeframe").textContent = "hour"
+		el("eggonRate").textContent = shortenDimensions(eggonRate.times(60))
+		el("eggonRateTimeframe").textContent = "hour"
 	} else if (eggonRate.lt(30)) {
-		document.getElementById("eggonRate").textContent = shortenDimensions(eggonRate)
-		document.getElementById("eggonRateTimeframe").textContent = "minute"
+		el("eggonRate").textContent = shortenDimensions(eggonRate)
+		el("eggonRateTimeframe").textContent = "minute"
 	} else {
-		document.getElementById("eggonRate").textContent = shortenMoney(eggonRate.div(60))
-		document.getElementById("eggonRateTimeframe").textContent = "second"
+		el("eggonRate").textContent = shortenMoney(eggonRate.div(60))
+		el("eggonRateTimeframe").textContent = "second"
 	}
 }
 
 function preonGatherRateUpdating(){
 	var gatherRateData = getGatherRate()
-	document.getElementById("normalReplGatherRate").textContent = shortenDimensions(gatherRateData.normal)
-	document.getElementById("workerReplGatherRate").textContent = shortenDimensions(gatherRateData.workersTotal)
-	document.getElementById("babyReplGatherRate").textContent = shortenDimensions(gatherRateData.babies)
-	document.getElementById("gatherRate").textContent = nfSave.producingCharge && !hasBDUpg(3) ? '-' + shortenDimensions(getQuarkLossProduction()) + '/s' : '+' + shortenDimensions(gatherRateData.total) + '/s'
+	el("normalReplGatherRate").textContent = shortenDimensions(gatherRateData.normal)
+	el("workerReplGatherRate").textContent = shortenDimensions(gatherRateData.workersTotal)
+	el("babyReplGatherRate").textContent = shortenDimensions(gatherRateData.babies)
+	el("gatherRate").textContent = nfSave.producingCharge && !hasBDUpg(3) ? '-' + shortenDimensions(getQuarkLossProduction()) + '/s' : '+' + shortenDimensions(gatherRateData.total) + '/s'
 }
 
 function getGrowupRatePerMinute(){
-	return tmp.twr.plus(quSave.replicants.amount).times(player.achievements.includes("ng3p35") ? 3 : 0.3).times(getSpinToReplicantiSpeed())
+	return tmp.twr.plus(quSave.replicants.amount).times(hasAch("ng3p35") ? 3 : 0.3).times(getSpinToReplicantiSpeed())
 }
 
 function growupRateUpdating(){
 	if (!hasNU(2)) {
-		document.getElementById("eggonAmount").textContent = shortenDimensions(quSave.replicants.eggons)
-		document.getElementById("hatchProgress").textContent = Math.round(quSave.replicants.babyProgress.toNumber() * 100)+"%"
+		el("eggonAmount").textContent = shortenDimensions(quSave.replicants.eggons)
+		el("hatchProgress").textContent = Math.round(quSave.replicants.babyProgress.toNumber() * 100)+"%"
 	}
 	var growupRate = getGrowupRatePerMinute()
 	if (quSave.replicants.babies.eq(0)) growupRate = growupRate.min(eggonRate)
 	if (growupRate.lt(30)) {
-		document.getElementById("growupRate").textContent = shortenDimensions(growupRate)
-		document.getElementById("growupRateUnit").textContent = "minute"
+		el("growupRate").textContent = shortenDimensions(growupRate)
+		el("growupRateUnit").textContent = "minute"
 	} else {
-		document.getElementById("growupRate").textContent = shortenMoney(growupRate.div(60))
-		document.getElementById("growupRateUnit").textContent = "second"
+		el("growupRate").textContent = shortenMoney(growupRate.div(60))
+		el("growupRateUnit").textContent = "second"
 	}
-	document.getElementById("growupProgress").textContent = Math.round(quSave.replicants.ageProgress.toNumber() * 100) + "%"
+	el("growupProgress").textContent = Math.round(quSave.replicants.ageProgress.toNumber() * 100) + "%"
 }
 
 function updateReplicantsTab(){
-	document.getElementById("replicantiAmount2").textContent = shortenDimensions(player.replicanti.amount)
-	document.getElementById("replicantReset").className = player.replicanti.amount.lt(quSave.replicants.requirement) ? "unavailablebtn" : "storebtn"
-	document.getElementById("replicantReset").innerHTML = "Reset replicanti amount for a replicant.<br>(requires " + shortenCosts(quSave.replicants.requirement) + " replicanti)"
-	document.getElementById("replicantAmount").textContent = shortenDimensions(quSave.replicants.amount)
-	document.getElementById("workerReplAmount").textContent = shortenDimensions(tmp.twr)
-	document.getElementById("babyReplAmount").textContent = shortenDimensions(quSave.replicants.babies)
+	for (var i = 0; i < antTabs.tabIds.length; i++) {
+		var id = antTabs.tabIds[i]
+		if (el(id).style.display == "block") antTabs.update[id]()
+	}
+}
+
+function updateReplicantsSubtab(){
+	el("replicantiAmount2").textContent = shortenDimensions(player.replicanti.amount)
+	el("replicantReset").className = player.replicanti.amount.lt(quSave.replicants.requirement) ? "unavailablebtn" : "storebtn"
+	el("replicantReset").innerHTML = "Reset replicanti amount for a replicant.<br>(requires " + shortenCosts(quSave.replicants.requirement) + " replicanti)"
+	el("replicantAmount").textContent = shortenDimensions(quSave.replicants.amount)
+	el("workerReplAmount").textContent = shortenDimensions(tmp.twr)
+	el("babyReplAmount").textContent = shortenDimensions(quSave.replicants.babies)
 
 	preonGatherRateUpdating()
 
-	document.getElementById("gatheredQuarks").textContent = shortenDimensions(quSave.replicants.quarks.floor())
-	document.getElementById("quarkTranslation").textContent = getFullExpansion(Math.round(tmp.pe * 100))
+	el("gatheredQuarks").textContent = shortenDimensions(quSave.replicants.quarks.floor())
+	el("quarkTranslation").textContent = getFullExpansion(Math.round(tmp.pe * 100))
 
 	babyRateUpdating()
-	document.getElementById("feedNormal").className = (canFeedReplicant(1) ? "stor" : "unavailabl") + "ebtn"
-	document.getElementById("workerProgress").textContent = Math.round(EDsave[1].progress.toNumber() * 100) + "%"
+	el("feedNormal").className = (canFeedReplicant(1) ? "stor" : "unavailabl") + "ebtn"
+	el("workerProgress").textContent = Math.round(EDsave[1].progress.toNumber() * 100) + "%"
 
 	growupRateUpdating()
 	
-	document.getElementById("reduceHatchSpeed").innerHTML = "Hatch speed: " + hatchSpeedDisplay() + " -> " + hatchSpeedDisplay(true) + "<br>Cost: " + shortenDimensions(quSave.replicants.hatchSpeedCost) + " for all 3 gluons"
+	el("reduceHatchSpeed").innerHTML = "Hatch speed: " + hatchSpeedDisplay() + " -> " + hatchSpeedDisplay(true) + "<br>Cost: " + shortenDimensions(quSave.replicants.hatchSpeedCost) + " for all 3 gluons"
 	if (ghSave.milestones > 7) updateReplicants("display")
+}
+
+var antTabs = {
+	tabIds: ["antcore", "emperordimensions", "nanofield", "antipreon"],
+	update: {
+		antcore: updateReplicantsSubtab,
+		emperordimensions: updateEmperorDimensions,
+		nanofield: updateNanoverseTab,
+		antipreon: updateNanofieldAntipreon
+	}
 }
 
 function updateReplicants(mode) {
 	if (player.masterystudies == undefined ? true : ghSave.milestones < 8) mode = undefined
 	if (mode === undefined) {
 		if (player.masterystudies ? !player.masterystudies.includes("d10") : true) {
-			document.getElementById("replicantstabbtn").style.display = "none"
+			el("replicantstabbtn").style.display = "none"
 			return
-		} else document.getElementById("replicantstabbtn").style.display = ""
+		} else el("replicantstabbtn").style.display = ""
 	}
 	if (mode === undefined || mode === "display") {
-		document.getElementById("quantumFoodAmount").textContent = getFullExpansion(quSave.replicants.quantumFood)
-		if (quSave.quarks.lt(pow10(1e5))) document.getElementById("buyQuantumFood").innerHTML = "Buy 1 quantum food<br>Cost: " + shortenDimensions(quSave.replicants.quantumFoodCost) + " of all 3 gluons"
-		document.getElementById("buyQuantumFood").className = "gluonupgrade " + (quSave.gluons.rg.min(quSave.gluons.gb).min(quSave.gluons.br).lt(quSave.replicants.quantumFoodCost) ? "unavailabl" : "stor") + "ebtn"
-		if (quSave.quarks.lt(pow10(1e5))) document.getElementById("breakLimit").innerHTML = "Limit of workers: " + getLimitMsg() + (isLimitUpgAffordable() ? " -> " + getNextLimitMsg() + "<br>Cost: " + shortenDimensions(quSave.replicants.limitCost) + " for all 3 gluons" : "")
-		document.getElementById("breakLimit").className = (quSave.gluons.rg.min(quSave.gluons.gb).min(quSave.gluons.br).lt(quSave.replicants.limitCost) || !isLimitUpgAffordable() ? "unavailabl" : "stor") + "ebtn"
-		document.getElementById("reduceHatchSpeed").className = (quSave.gluons.rg.min(quSave.gluons.gb).min(quSave.gluons.br).lt(quSave.replicants.hatchSpeedCost) ? "unavailabl" : "stor") + "ebtn"
+		el("quantumFoodAmount").textContent = getFullExpansion(quSave.replicants.quantumFood)
+		if (quSave.quarks.lt(pow10(1e5))) el("buyQuantumFood").innerHTML = "Buy 1 quantum food<br>Cost: " + shortenDimensions(quSave.replicants.quantumFoodCost) + " of all 3 gluons"
+		el("buyQuantumFood").className = "gluonupgrade " + (quSave.gluons.rg.min(quSave.gluons.gb).min(quSave.gluons.br).lt(quSave.replicants.quantumFoodCost) ? "unavailabl" : "stor") + "ebtn"
+		if (quSave.quarks.lt(pow10(1e5))) el("breakLimit").innerHTML = "Limit of workers: " + getLimitMsg() + (isLimitUpgAffordable() ? " -> " + getNextLimitMsg() + "<br>Cost: " + shortenDimensions(quSave.replicants.limitCost) + " for all 3 gluons" : "")
+		el("breakLimit").className = (quSave.gluons.rg.min(quSave.gluons.gb).min(quSave.gluons.br).lt(quSave.replicants.limitCost) || !isLimitUpgAffordable() ? "unavailabl" : "stor") + "ebtn"
+		el("reduceHatchSpeed").className = (quSave.gluons.rg.min(quSave.gluons.gb).min(quSave.gluons.br).lt(quSave.replicants.hatchSpeedCost) ? "unavailabl" : "stor") + "ebtn"
 		if (player.masterystudies.includes('d11')) {
-			document.getElementById("quantumFoodAmountED").textContent = getFullExpansion(quSave.replicants.quantumFood)
-			if (quSave.quarks.lt(pow10(1e5))) document.getElementById("buyQuantumFoodED").innerHTML = "Buy 1 quantum food<br>Cost: "+shortenDimensions(quSave.replicants.quantumFoodCost)+" for all 3 gluons"
-			document.getElementById("buyQuantumFoodED").className = "gluonupgrade " + (quSave.gluons.rg.min(quSave.gluons.gb).min(quSave.gluons.br).lt(quSave.replicants.quantumFoodCost) ? "unavailabl" : "stor") + "ebtn"
-			if (quSave.quarks.lt(pow10(1e5))) document.getElementById("breakLimitED").innerHTML = "Limit of workers: " + getLimitMsg() + (isLimitUpgAffordable() ? " -> " + getNextLimitMsg() + "<br>Cost: " + shortenDimensions(quSave.replicants.limitCost) + " of all 3 gluons":"")
-			document.getElementById("breakLimitED").className = (quSave.gluons.rg.min(quSave.gluons.gb).min(quSave.gluons.br).lt(quSave.replicants.limitCost) || !isLimitUpgAffordable() ? "unavailabl" : "stor") + "ebtn"
+			el("quantumFoodAmountED").textContent = getFullExpansion(quSave.replicants.quantumFood)
+			if (quSave.quarks.lt(pow10(1e5))) el("buyQuantumFoodED").innerHTML = "Buy 1 quantum food<br>Cost: "+shortenDimensions(quSave.replicants.quantumFoodCost)+" for all 3 gluons"
+			el("buyQuantumFoodED").className = "gluonupgrade " + (quSave.gluons.rg.min(quSave.gluons.gb).min(quSave.gluons.br).lt(quSave.replicants.quantumFoodCost) ? "unavailabl" : "stor") + "ebtn"
+			if (quSave.quarks.lt(pow10(1e5))) el("breakLimitED").innerHTML = "Limit of workers: " + getLimitMsg() + (isLimitUpgAffordable() ? " -> " + getNextLimitMsg() + "<br>Cost: " + shortenDimensions(quSave.replicants.limitCost) + " of all 3 gluons":"")
+			el("breakLimitED").className = (quSave.gluons.rg.min(quSave.gluons.gb).min(quSave.gluons.br).lt(quSave.replicants.limitCost) || !isLimitUpgAffordable() ? "unavailabl" : "stor") + "ebtn"
 		}
 		if (quSave.quarks.gte(pow10(1e5))){
-			document.getElementById("buyQuantumFoodED").innerHTML = "Buy 1 quantum food"
-			document.getElementById("buyQuantumFood").innerHTML = "Buy 1 quantum food"
-			document.getElementById("breakLimit").innerHTML = "Limit of workers: " + getLimitMsg()
-			document.getElementById("breakLimitED").innerHTML = "Limit of workers: " + getLimitMsg()
-			document.getElementById("rgRepl").textContent = "lots of"
-			document.getElementById("gbRepl").textContent = "many"
-			document.getElementById("brRepl").textContent = "tons of"
+			el("buyQuantumFoodED").innerHTML = "Buy 1 quantum food"
+			el("buyQuantumFood").innerHTML = "Buy 1 quantum food"
+			el("breakLimit").innerHTML = "Limit of workers: " + getLimitMsg()
+			el("breakLimitED").innerHTML = "Limit of workers: " + getLimitMsg()
+			el("rgRepl").textContent = "lots of"
+			el("gbRepl").textContent = "many"
+			el("brRepl").textContent = "tons of"
 		} else {
-			document.getElementById("rgRepl").textContent = shortenDimensions(quSave.gluons.rg)
-			document.getElementById("gbRepl").textContent = shortenDimensions(quSave.gluons.gb)
-			document.getElementById("brRepl").textContent = shortenDimensions(quSave.gluons.br)
+			el("rgRepl").textContent = shortenDimensions(quSave.gluons.rg)
+			el("gbRepl").textContent = shortenDimensions(quSave.gluons.gb)
+			el("brRepl").textContent = shortenDimensions(quSave.gluons.br)
 		}
 	}
 }
@@ -162,7 +179,7 @@ function getEmperorDimensionMultiplier(dim) {
 	ret = tmp.edgm //Global multiplier of all Emperor Dimensions
 	if (hasNU(7) && dim % 2 == 1) ret = ret.times(tmp.nu[3])
 	//quSave.emperorDimensions[8].perm-10 
-	if (!tmp.ngp3l && dim == 8) ret = ret.times(E_pow(1.05, Math.sqrt(Math.max(0, quSave.emperorDimensions[8].perm - 8))))
+	if (dim == 8) ret = ret.times(E_pow(1.05, Math.sqrt(Math.max(0, quSave.emperorDimensions[8].perm - 8))))
 	return dilates(ret, 1)
 }
 
@@ -283,25 +300,25 @@ function updateEmperorDimensions() {
 	let production = getGatherRate()
 	let mults = {}
 	let limitDim = quSave.replicants.limitDim
-	document.getElementById("rgEDs").textContent = shortenDimensions(quSave.gluons.rg)
-	document.getElementById("gbEDs").textContent = shortenDimensions(quSave.gluons.gb)
-	document.getElementById("brEDs").textContent = shortenDimensions(quSave.gluons.br)
-	document.getElementById("replicantAmountED").textContent=shortenDimensions(quSave.replicants.amount)
+	el("rgEDs").textContent = shortenDimensions(quSave.gluons.rg)
+	el("gbEDs").textContent = shortenDimensions(quSave.gluons.gb)
+	el("brEDs").textContent = shortenDimensions(quSave.gluons.br)
+	el("replicantAmountED").textContent=shortenDimensions(quSave.replicants.amount)
 	for (var d = 1; d <= 8; d++) mults[d] = getEmperorDimensionMultiplier(d)
 	for (var d = 1; d <= 8; d++) {
-		if (d > limitDim) document.getElementById("empRow" + d).style.display = "none"
+		if (d > limitDim) el("empRow" + d).style.display = "none"
 		else {
-			document.getElementById("empRow" + d).style.display = ""
-			document.getElementById("empD" + d).textContent = DISPLAY_NAMES[d] + " Emperor Dimension x" + formatValue(player.options.notation, mults[d], 2, 1)
-			document.getElementById("empAmount" + d).textContent = d < limitDim ? shortenDimensions(EDsave[d].workers) + " (+" + shorten(getEmperorDimensionRateOfChange(d)) + dimDescEnd : getFullExpansion(EDsave[limitDim].perm)
-			document.getElementById("empQuarks" + d).textContent = shorten(production.workers[d])
-			document.getElementById("empFeed" + d).className = (canFeedReplicant(d) ? "stor" : "unavailabl") + "ebtn"
-			document.getElementById("empFeed" + d).textContent = "Feed (" + (d == limitDim || mults[d + 1].times(EDsave[d + 1].workers).div(20).lt(1e3) ? Math.round(EDsave[d].progress.toNumber() * 100) + "%, " : "") + getFullExpansion(EDsave[d].perm) + " kept)"
-			document.getElementById("empFeedMax" + d).className = (canFeedReplicant(d) ? "stor" : "unavailabl") + "ebtn"
+			el("empRow" + d).style.display = ""
+			el("empD" + d).textContent = DISPLAY_NAMES[d] + " Emperor Dimension x" + formatValue(player.options.notation, mults[d], 2, 1)
+			el("empAmount" + d).textContent = d < limitDim ? shortenDimensions(EDsave[d].workers) + " (+" + shorten(getEmperorDimensionRateOfChange(d)) + dimDescEnd : getFullExpansion(EDsave[limitDim].perm)
+			el("empQuarks" + d).textContent = shorten(production.workers[d])
+			el("empFeed" + d).className = (canFeedReplicant(d) ? "stor" : "unavailabl") + "ebtn"
+			el("empFeed" + d).textContent = "Feed (" + (d == limitDim || mults[d + 1].times(EDsave[d + 1].workers).div(20).lt(1e3) ? Math.round(EDsave[d].progress.toNumber() * 100) + "%, " : "") + getFullExpansion(EDsave[d].perm) + " kept)"
+			el("empFeedMax" + d).className = (canFeedReplicant(d) ? "stor" : "unavailabl") + "ebtn"
 		}
 	}
-	document.getElementById("totalWorkers").textContent = shortenDimensions(tmp.twr)
-	document.getElementById("totalQuarkProduction").textContent = shorten(production.workersTotal)
+	el("totalWorkers").textContent = shortenDimensions(tmp.twr)
+	el("totalQuarkProduction").textContent = shorten(production.workersTotal)
 	if (ghSave.milestones > 7) updateReplicants("display")
 }
 
@@ -324,8 +341,8 @@ function maxReduceHatchSpeed() {
 
 function replicantReset(bulk = false) {
 	if (player.replicanti.amount.lt(quSave.replicants.requirement)) return
-	if (!player.achievements.includes("ng3p47")) player.replicanti.amount = E(1)
-	if ((player.achievements.includes("ng3p74") && !tmp.ngp3l) && bulk) {
+	if (!hasAch("ng3p47")) player.replicanti.amount = E(1)
+	if ((hasAch("ng3p74")) && bulk) {
 		let x = Math.floor(player.replicanti.amount.div(quSave.replicants.requirement).log10() / 1e5) + 1
 		quSave.replicants.amount = quSave.replicants.amount.add(x)
 		quSave.replicants.requirement = quSave.replicants.requirement.times(pow10(x * 1e5))
@@ -389,7 +406,7 @@ function maxBuyLimit() {
 
 function getSpinToReplicantiSpeed(){
 	// log10(green spins) * log10(blue spins) *log10(red spins) 
-	if (!player.achievements.includes("ng3p54")) return 1
+	if (!hasAch("ng3p54")) return 1
 	var r = todSave.r.spin.plus(10).log10()
 	var g = todSave.g.spin.plus(10).log10()
 	var b = todSave.b.spin.plus(10).log10()

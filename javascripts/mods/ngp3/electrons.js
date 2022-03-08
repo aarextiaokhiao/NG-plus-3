@@ -1,24 +1,24 @@
 function updateElectronsTab() {
-	document.getElementById("normalGalaxies").textContent = getFullExpansion(player.galaxies)
-	document.getElementById("sacrificeGal").className = "gluonupgrade " + ((player.galaxies > quSave.electrons.sacGals && inQC(0)) ? "stor" : "unavailabl") + "ebtn"
-	document.getElementById("sacrificeGals").textContent = getFullExpansion(Math.max(player.galaxies-quSave.electrons.sacGals, 0))
-	document.getElementById("electronsGain").textContent = getFullExpansion(Math.floor(Math.max(player.galaxies-quSave.electrons.sacGals, 0) * getElectronGainFinalMult()))
-	for (var u = 1; u < 5; u++) document.getElementById("electronupg" + u).className = "gluonupgrade " + (canBuyElectronUpg(u) ? "stor" : "unavailabl") + "ebtn"
+	el("normalGalaxies").textContent = getFullExpansion(player.galaxies)
+	el("sacrificeGal").className = "gluonupgrade " + ((player.galaxies > quSave.electrons.sacGals && inQC(0)) ? "stor" : "unavailabl") + "ebtn"
+	el("sacrificeGals").textContent = getFullExpansion(Math.max(player.galaxies-quSave.electrons.sacGals, 0))
+	el("electronsGain").textContent = getFullExpansion(Math.floor(Math.max(player.galaxies-quSave.electrons.sacGals, 0) * getElectronGainFinalMult()))
+	for (var u = 1; u < 5; u++) el("electronupg" + u).className = "gluonupgrade " + (canBuyElectronUpg(u) ? "stor" : "unavailabl") + "ebtn"
 	if (quSave.autoOptions.sacrifice) updateElectronsEffect()
 }
 
 function updateElectrons(retroactive) {
 	if (!tmp.ngp3 || !player.masterystudies.includes("d7")) {
-		document.getElementById("electronstabbtn").style.display = "none"
+		el("electronstabbtn").style.display = "none"
 		return
-	} else document.getElementById("electronstabbtn").style.display = ""
+	} else el("electronstabbtn").style.display = ""
 	var mult = getElectronGainFinalMult()
-	document.getElementById("electronsGainMult").textContent = mult.toFixed(2)
+	el("electronsGainMult").textContent = mult.toFixed(2)
 	if (retroactive) quSave.electrons.amount = getElectronGainFinalMult() * quSave.electrons.sacGals
 	if (!quSave.autoOptions.sacrifice) updateElectronsEffect()
 	for (var u = 1; u < 5; u++) {
 		var cost = getElectronUpgCost(u)
-		document.getElementById("electronupg" + u).innerHTML = "Increase the multiplier by " + (getElectronGainMult() * getElectronUpgIncrease(u)).toFixed(2) + "x.<br>" +
+		el("electronupg" + u).innerHTML = "Increase the multiplier by " + (getElectronGainMult() * getElectronUpgIncrease(u)).toFixed(2) + "x.<br>" +
 			"Level: " + getFullExpansion(quSave.electrons.rebuyables[u-1]) + "<br>" +
 			"Cost: " + ((u == 4 ? getFullExpansion : shortenCosts)(cost)) + " " + [null, "Time Theorems", "dilated time", "meta-antimatter", "Meta-Dimension Boosts"][u]
 	}
@@ -27,13 +27,13 @@ function updateElectrons(retroactive) {
 function updateElectronsEffect() {
 	if (!quSave.autoOptions.sacrifice) {
 		tmp.mpte = getElectronBoost()
-		document.getElementById("electronsAmount2").textContent = "You have " + getFullExpansion(Math.round(quSave.electrons.amount)) + " electrons."
+		el("electronsAmount2").textContent = "You have " + getFullExpansion(Math.round(quSave.electrons.amount)) + " electrons."
 	}
-	document.getElementById("sacrificedGals").textContent = getFullExpansion(quSave.electrons.sacGals)
-	document.getElementById("electronsAmount").textContent = getFullExpansion(Math.round(quSave.electrons.amount))
-	document.getElementById("electronsTranslation").textContent = getFullExpansion(Math.round(tmp.mpte))
-	document.getElementById("electronsEffect").textContent = shorten(getDimensionPowerMultiplier("non-random"))
-	document.getElementById("linearPerTenMult").textContent = shorten(getDimensionPowerMultiplier("linear"))
+	el("sacrificedGals").textContent = getFullExpansion(quSave.electrons.sacGals)
+	el("electronsAmount").textContent = getFullExpansion(Math.round(quSave.electrons.amount))
+	el("electronsTranslation").textContent = getFullExpansion(Math.round(tmp.mpte))
+	el("electronsEffect").textContent = shorten(getDimensionPowerMultiplier("non-random"))
+	el("linearPerTenMult").textContent = shorten(getDimensionPowerMultiplier("linear"))
 }
 
 function sacrificeGalaxy(auto = false) {
@@ -100,11 +100,11 @@ function buyElectronUpg(u, quick) {
 	if (u == 1) player.timestudy.theorem -= cost
 	else if (u == 2) player.dilation.dilatedTime = player.dilation.dilatedTime.sub(cost)
 	else if (u == 3) player.meta.antimatter = player.meta.antimatter.sub(cost)
-	else if (u == 4 && (tmp.ngp3l || !player.achievements.includes("ng3p64"))) {
+	else if (u == 4 && (tmp.ngp3l || !hasAch("ng3p64"))) {
 		player.meta.resets -= cost
 		player.meta.antimatter = getMetaAntimatterStart()
 		clearMetaDimensions()
-		for (let i = 2; i <= 8; i++) if (!canBuyMetaDimension(i)) document.getElementById(i + "MetaRow").style.display = "none"
+		for (let i = 2; i <= 8; i++) if (!canBuyMetaDimension(i)) el(i + "MetaRow").style.display = "none"
 	}
 	quSave.electrons.rebuyables[u - 1]++
 	if (quick) return true

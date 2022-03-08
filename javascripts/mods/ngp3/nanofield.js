@@ -8,40 +8,35 @@ function updateNanoverseTab(){
 	var rewards = nfSave.rewards
 	var free = tmp.nanofield_free_rewards
 	var total = rewards + free
-	document.getElementById("quarksNanofield").textContent = shortenDimensions(quSave.replicants.quarks)		
-	document.getElementById("quarkCharge").textContent = shortenMoney(nfSave.charge)
-	document.getElementById("quarkChargeRate").textContent = shortenDimensions(getQuarkChargeProduction())
-	document.getElementById("quarkLoss").textContent = shortenDimensions(getQuarkLossProduction())
-	document.getElementById("preonEnergy").textContent = shortenMoney(nfSave.energy)
-	document.getElementById("quarkEnergyRate").textContent = shortenMoney(getQuarkEnergyProduction())
-	document.getElementById("quarkPower").textContent = getFullExpansion(nfSave.power)
-	document.getElementById("quarkPowerThreshold").textContent = shortenMoney(nfSave.powerThreshold)
-	document.getElementById("quarkAntienergy").textContent = shortenMoney(nfSave.antienergy)
-	document.getElementById("quarkAntienergyRate").textContent = shortenMoney(getQuarkAntienergyProduction())
-	document.getElementById("quarkChargeProductionCap").textContent = shortenMoney(getQuarkChargeProductionCap())
-	document.getElementById("rewards").textContent = getFullExpansion(rewards)+(free>=1?" + "+getFullExpansion(free):"")
+	el("quarksNanofield").textContent = shortenDimensions(quSave.replicants.quarks)		
+	el("quarkCharge").textContent = shortenMoney(nfSave.charge)
+	el("quarkChargeRate").textContent = shortenDimensions(getQuarkChargeProduction())
+	el("quarkLoss").textContent = shortenDimensions(getQuarkLossProduction())
+	el("preonEnergy").textContent = shortenMoney(nfSave.energy)
+	el("quarkEnergyRate").textContent = shortenMoney(getQuarkEnergyProduction())
+	el("quarkPower").textContent = getFullExpansion(nfSave.power)
+	el("quarkPowerThreshold").textContent = shortenMoney(nfSave.powerThreshold)
+	el("quarkAntienergy").textContent = shortenMoney(nfSave.antienergy)
+	el("quarkAntienergyRate").textContent = shortenMoney(getQuarkAntienergyProduction())
+	el("quarkChargeProductionCap").textContent = shortenMoney(getQuarkChargeProductionCap())
+	el("rewards").textContent = getFullExpansion(rewards)+(free>=1?" + "+getFullExpansion(free):"")
 
 	for (var reward = 1; reward < 9; reward++) {
-		document.getElementById("nfReward" + reward).className = reward > total ? "nfRewardlocked" : "nfReward"
-		document.getElementById("nfReward" + reward).textContent = wordizeList(nanoRewards.effectsUsed[reward].map(x => nanoRewards.effectDisplays[x](tmp.nf.effects[x])), true) + "."
-		document.getElementById("nfRewardHeader" + reward).textContent = (total % 8 + 1 == reward ? "Next" : DISPLAY_NAMES[reward]) + " reward"
-		document.getElementById("nfRewardTier" + reward).textContent = "Tier " + getFullExpansion(Math.ceil((total + 1 - reward) / 8)) + " / Power: " + tmp.nf.powers[reward].toFixed(1)
+		el("nfReward" + reward).className = reward > total ? "nfRewardlocked" : "nfReward"
+		el("nfReward" + reward).textContent = wordizeList(nanoRewards.effectsUsed[reward].map(x => nanoRewards.effectDisplays[x](tmp.nf.effects[x])), true) + "."
+		el("nfRewardHeader" + reward).textContent = (total % 8 + 1 == reward ? "Next" : DISPLAY_NAMES[reward]) + " reward"
+		el("nfRewardTier" + reward).textContent = "Tier " + getFullExpansion(Math.ceil((total + 1 - reward) / 8)) + " / Power: " + tmp.nf.powers[reward].toFixed(1)
 	}
-	document.getElementById("nfReward5").textContent = (!tmp.ngp3l && tmp.nf.powers[5] > 15 ? nanoRewards.effectDisplays.light_threshold_speed(tmp.nf.effects.light_threshold_speed) : nanoRewards.effectDisplays.dil_effect_exp(tmp.nf.effects.dil_effect_exp)) + "."
-	document.getElementById("ns").textContent = getNanospeedText()
+	el("nfReward5").textContent = (tmp.nf.powers[5] > 15 ? nanoRewards.effectDisplays.light_threshold_speed(tmp.nf.effects.light_threshold_speed) : nanoRewards.effectDisplays.dil_effect_exp(tmp.nf.effects.dil_effect_exp)) + "."
+	el("ns").textContent = getNanospeedText()
 }
 
 function updateNanofieldAntipreon(){
 	var rewards = nfSave.rewards
-	document.getElementById("rewards_AP").textContent = getFullExpansion(rewards)
-	document.getElementById("rewards_wake").textContent = getFullExpansion(tmp.apgw)
-	document.getElementById("sleepy").style.display = nfSave.apgWoke ? "none" : ""
-	document.getElementById("woke").style.display = nfSave.apgWoke ? "" : "none"
-}
-
-function updateNanofieldTab(){
-	if (document.getElementById("nanoverse").style.display == "block") updateNanoverseTab()
-	if (document.getElementById("antipreon").style.display == "block") updateNanofieldAntipreon()
+	el("rewards_AP").textContent = getFullExpansion(rewards)
+	el("rewards_wake").textContent = getFullExpansion(tmp.apgw)
+	el("sleepy").style.display = nfSave.apgWoke ? "none" : ""
+	el("woke").style.display = nfSave.apgWoke ? "" : "none"
 }
 
 function getQuarkChargeProduction(noSpeed) {
@@ -56,7 +51,7 @@ function getQuarkChargeProduction(noSpeed) {
 
 function startProduceQuarkCharge() {
 	nfSave.producingCharge = !nfSave.producingCharge
-	document.getElementById("produceQuarkCharge").innerHTML = (nfSave.producingCharge ? "Stop" : "Start") + " production of preon charge." + (nfSave.producingCharge ? "" : "<br>(You will not get preons when you do this.)")
+	el("produceQuarkCharge").innerHTML = (nfSave.producingCharge ? "Stop" : "Start") + " production of preon charge." + (nfSave.producingCharge ? "" : "<br>(You will not get preons when you do this.)")
 }
 
 function getQuarkLossProduction() {
@@ -71,7 +66,7 @@ function getQuarkLossProduction() {
 }
 
 function getQuarkEnergyProduction() {
-	let ret = nfSave.charge.sqrt()
+	let ret = nfSave.charge.mul(5).sqrt()
 	if (player.masterystudies.includes("t411")) ret = ret.times(getMTSMult(411))
 	if (player.masterystudies.includes("t421")) ret = ret.times(getMTSMult(421))
 	if (isNanoEffectUsed("preon_energy")) ret = ret.times(tmp.nf.effects.preon_energy)
@@ -101,14 +96,14 @@ var nanoRewards = {
 		},
 		dil_gal_gain: function(x) {
 			x = Math.pow(x, 0.83) * 0.039
-			if (!tmp.ngp3l && x > 1/3) x = (Math.log10(x * 3) + 1) / 3
+			if (x > 1/3) x = (Math.log10(x * 3) + 1) / 3
 			return x + 1
 		},
 		dt_to_ma_exp: function(x) {
 			return Math.sqrt(x) * 0.021 + 1
 		},
 		dil_effect_exp: function(x) {
-			if (!tmp.ngp3l && x > 15) tier = Math.log10(x - 5) * 15
+			if (x > 15) tier = Math.log10(x - 5) * 15
 			return x * 0.36 + 1
 		},
 		meta_boost_power: function(x) {
@@ -201,7 +196,7 @@ function isNanoEffectUsed(x) {
 function getNanofieldSpeedText(){
 	text = ""
 	if (ghostified) text += "Ghostify Bonus: " + shorten(nfSave.rewards >= 16 ? 1 : (ghSave.milestone >= 1 ? 6 : 3)) + "x, "
-	if (!tmp.ngp3l && player.achievements.includes("ng3p78")) text += "'Aren't you already dead' reward: " +shorten(Math.sqrt(getTreeUpgradeLevel(8) * tmp.tue + 1)) + "x, "
+	if (hasAch("ng3p78")) text += "'Aren't you already dead' reward: " +shorten(Math.sqrt(getTreeUpgradeLevel(8) * tmp.tue + 1)) + "x, "
 	if (hasNU(15)) text += "Neutrino upgrade 15: " + shorten(tmp.nu[6]) + "x, "
 	if (text == "") return "No multipliers currently"
 	return text.slice(0, text.length-2)
@@ -210,7 +205,7 @@ function getNanofieldSpeedText(){
 function getNanofieldSpeed() {
 	let x = 1
 	if (ghostified) x *= nfSave.rewards >= 16 ? 1 : (ghSave.milestone >= 1 ? 6 : 3)
-	if (!tmp.ngp3l && player.achievements.includes("ng3p78")) x *= Math.sqrt(getTreeUpgradeLevel(8) * tmp.tue + 1)
+	if (hasAch("ng3p78")) x *= Math.sqrt(getTreeUpgradeLevel(8) * tmp.tue + 1)
 	if (hasNU(15)) x = tmp.nu[6].times(x)
 	return x
 }
@@ -243,7 +238,7 @@ function getNanoRewardReq(additional){
 function getActiveNanoScalings(){
 	ret = [true, true, true, true, true, true, true] 
 	//there are seven total scalings and they all start active
-	if (player.achievements.includes("ng3p82")) ret[2] = false 
+	if (hasAch("ng3p82")) ret[2] = false 
 	return ret
 }
 

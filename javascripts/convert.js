@@ -1,16 +1,13 @@
 function updateConvertSave(convertMod) {
 	var convert;
 	var conversionText;
-	if (convertMod === "NG+3.1") {
+	if (convertMod === "NG+3") {
 		convert = true;
-		conversionText = "Migrate to NG+3.1";
-	} else if (convertMod === "NG+3") {
-		convert = true;
-		conversionText = "Convert to NG+3";
+		conversionText = "Convert to Post-NG+3";
 	} else
 		convert = false;
-	document.getElementById("convertSave").style.display = convert ? "" : "none";
-	document.getElementById("convertSave").textContent = conversionText;
+	el("convertSave").style.display = convert ? "" : "none";
+	el("convertSave").textContent = conversionText;
 }
 
 function eligibleConvert() {
