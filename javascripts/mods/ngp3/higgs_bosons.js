@@ -14,29 +14,28 @@ function unlockHiggs() {
 	if (ghSave.hb.unl) return
 	if (!ghSave.wzb.unl) return
 	if (!canUnlockHiggs()) return
-	$.notify("Congratulations! You have unlocked Higgs Bosons!", "success")
+	$.notify("Congratulations! You have unlocked Higgs!", "success")
 	ghSave.hb.unl = true
-	updateHiggsUnlocks()
+	updateBLParticleUnlocks()
 }
 
 function canUnlockHiggs() {
 	return player.money.gte(pow10(2e17)) && ghSave.bl.am.gte(getHiggsRequirement())
 }
 
-function updateHiggsUnlocks() {
-	if (tmp.ngp3l) {
-		el("nextParticle").style.display = "none"
-		el("bosonicResets").style.display = "none"
-		return
-	}
-	let unl = ghSave.hb.unl
-	el("nextParticle").style.display = unl ? "none" : ""
-	el("bosonicResets").style.display = unl ? "" : "none"
-	if (!unl) updateHiggsUnlockDisplay()
+function updateBLParticleUnlocks() {
+	el("bosonicResets").style.display = ghSave.hb.unl ? "" : "none"
+	el("gravtabbtn").style.display = ghSave.gravitons.unl ? "" : "none"
+	el("breakDilationTabbtn").style.display = ghSave.gravitons.unl ? "" : "none"
+	el("breakDilationTabbtn2").style.display = ghSave.gravitons.unl ? "" : "none"
+	updateBLParticleDisplay()
 }
 
-function updateHiggsUnlockDisplay() {
-	el("nextParticle").textContent = "To unlock the next particle (Higgs Bosons), you need to get " + shortenCosts(pow10(2e17)) + " antimatter and " + shortenCosts(getHiggsRequirement()) + " Bosonic Antimatter first."
+function updateBLParticleDisplay() {
+	el("nextParticle").style.display = ""
+	if (!ghSave.hb.unl) el("nextParticle").textContent = "To unlock the next particle (Higgs), you need to get " + shortenCosts(pow10(2e17)) + " antimatter and " + shortenCosts(getHiggsRequirement()) + " Bosons first."
+	else if (!ghSave.gravitons.unl) el("nextParticle").textContent = "To unlock the next particle (Gravitons), you need to get " + shortenCosts(pow10(1e18)) + " antimatter."
+	else el("nextParticle").textContent = "To extend Higgs, you need to get ??? Higgs. [soon!]"
 }
 
 function bosonicLabReset() {
@@ -93,26 +92,24 @@ function bosonicLabReset() {
 		wnb: E(0),
 		zb: E(0)
 	}
-	updateBosonicAMDimReturnsTemp()
 	ghostify(false, true)
 	matchTempPlayerHiggs()
 }
 
 function higgsReset() {
-	if (tmp.ngp3l) return
-	if (!hasAch("ng3p101")) {
+	if (!hasAch("future")) {
 		var oldHiggs = ghSave.hb.higgs
 		if (!ghSave.bl.am.gte(getHiggsRequirement())) return
-		if (!aarMod.higgsNoConf && !confirm("You will exchange all your Bosonic Lab stuff for Higgs Bosons. Everything that Light Empowerments resets initally will be reset. Are you ready to proceed?")) return
+		if (!aarMod.higgsNoConf && !confirm("You will exchange all your Bosonic Lab stuff for Higgs. Everything that Light Empowerments resets initally will be reset. Are you ready to proceed?")) return
 	}
 	addHiggs(getHiggsGain())
-	if (!hasAch("ng3p101")) bosonicLabReset()
+	if (!hasAch("future")) bosonicLabReset()
 	if (oldHiggs == 0) {
-			updateNeutrinoBoosts()
-			updateHiggsUnlocks()
-			updateBosonicLimits()
-			updateBosonicStuffCosts()
-		}
+		updateNeutrinoBoosts()
+		updateBLParticleUnlocks()
+		updateBosonicLimits()
+		updateBosonicStuffCosts()
+	}
 	ghSave.hb.bosonicSemipowerment = true
 	matchTempPlayerHiggs()
 }
@@ -120,6 +117,7 @@ function higgsReset() {
 function getHiggsRequirementBase() {
 	var div = E(1)
 	if (ghSave.bl.usedEnchants.includes(14)) div = div.times(tmp.bEn[14].higgs || 1)
+	if (hasAch("ng3p102")) div = div.times(100)
 	return E(1e20).divide(div)
 }
 

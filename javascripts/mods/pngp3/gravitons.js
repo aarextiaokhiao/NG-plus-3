@@ -73,10 +73,10 @@ let GRAV_BOOSTS = {
 		},
 
 		pos_disp(x) {
-			return "Nanofield scalings are " + shorten(x) + "x weaker"
+			return "2nd Infinite Time softcap is " + shorten(x) + "x weaker"
 		},
 		neg_disp(x) {
-			return "Emperor Dimensions are ^" + shorten(x) + " slower"
+			return "Time Dimensions are reduced to ^" + shorten(x)
 		},
 	},
 	4: {
@@ -88,10 +88,10 @@ let GRAV_BOOSTS = {
 		},
 
 		pos_disp(x) {
-			return "Higgs scales " + shorten(x) + "x slower"
+			return "Bosons boosts Watts by " + shorten(x) + "x"
 		},
 		neg_disp(x) {
-			return "Bosonic Antimatter production is ^" + shorten(x)
+			return "Bosons production is ^" + shorten(x)
 		},
 	},
 	5: {
@@ -143,7 +143,7 @@ let GRAV_BOOSTS = {
 
 //Functions
 function hasGrav(x) {
-	return tmp.ngp3 && tmp.gv && tmp.gv.core.on.includes(x)
+	return tmp.ngp3 && tmp.gv && tmp.gv.core && tmp.gv.core.on.includes(x)
 }
 
 function clickGv(x) {
@@ -219,12 +219,6 @@ function updateGravitonsTemp() {
 
 //Displays
 function updateGravitonsTab() {
-    el("gravUnl").style.display = ghSave.gravitons.unl ? "none" : ""
-    el("gravUnl").textContent="To unlock Gravitons, you need to get "+shortenCosts(pow10(1e18))+" antimatter."
-    el("gravDiv").style.display = ghSave.gravitons.unl ? "" : "none"
-}
-
-function updateGravitonsTabOnTick() {
     if (!ghSave.gravitons.unl) return
 
 	el("gravAmt").innerHTML = shortenMoney(ghSave.gravitons.amount)

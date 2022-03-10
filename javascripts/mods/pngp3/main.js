@@ -1,6 +1,5 @@
 function updatePostNGp3TempStuff() {
     updateBDTemp()
-    updateNU16Temp()
     updateGravitonsTemp()
 }
 
@@ -53,7 +52,7 @@ function conToDeciPostNGP3() {
 
 function postNGp3AchsCheck() {
     if (ghSave.gravitons.unl) giveAchievement(allAchievements.ng3p101)
-    if (ghSave.hb.higgs >= 50) giveAchievement(allAchievements.ng3p102)
+    if (ghSave.hb.higgs >= 150) giveAchievement(allAchievements.ng3p102)
     if (player.money.gte("e2e18")) giveAchievement(allAchievements.ng3p103)
     if (beSave && beSave.eternalMatter.gte("9.99e999")) giveAchievement(allAchievements.ng3p104)
     if (tmp.rep && E(tmp.rep.freq).gte(E(2).pow(1024))) giveAchievement(allAchievements.ng3p105)
@@ -85,7 +84,20 @@ function setPostR23Tooltip() {
     a.setAttribute('ach-tooltip', "Get " + shorten(E("9.99e999")) + " Eternal Matters. Reward: Eternal Matter boost its gain at a reduced rate.")
 }
 
+
+function updateNU16Temp(){
+	tmp.nu[7] = (E(ghSave.times).log10()+1)**1.5
+}
+
 function updateBreakEternityUpgrade11Temp(){
 	var s = tmp.sacPow||E(1)
 	tmp.beu[11] = pow10(s.e**0.3)
+}
+
+//Respecced
+function adjustTSSoftcapPow(x) {
+	var f = 1
+	if (hasGrav(1)) f /= tmp.gv.core[1].p_eff
+	if (f < 1) x = (1 - f) + x * f
+	return x
 }

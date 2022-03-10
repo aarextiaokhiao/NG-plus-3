@@ -54,8 +54,30 @@ function updateBigRipTab() {
 	el("spaceShards").textContent = shortenDimensions(brSave.spaceShards)
 	for (var u = 18; u <= 20; u++) el("bigripupg" + u).parentElement.style.display = u > max ? "none" : ""
 	for (var u = 1; u <= max; u++) {
-		el("bigripupg" + u).className = brSave && brSave.upgrades.includes(u) ? "gluonupgradebought bigrip" + (isBigRipUpgradeActive(u, true) ? "" : "off") : brSave.spaceShards.lt(bigRipUpgCosts[u]) ? "gluonupgrade unavailablebtn" : "gluonupgrade bigrip"
+		el("bigripupg" + u).className = brSave && hasRipUpg(u) ? "gluonupgradebought bigrip" + (isBigRipUpgradeActive(u, true) ? "" : "off") : brSave.spaceShards.lt(bigRipUpgCosts[u]) ? "gluonupgrade unavailablebtn" : "gluonupgrade bigrip"
 		el("bigripupg" + u + "cost").textContent = shortenDimensions(E(bigRipUpgCosts[u]))
+	}
+	bigRipUpgradeUpdating()
+}
+
+function bigRipUpgradeUpdating(){
+	if (ghSave.milestones>7) {
+		el("spaceShards").textContent=shortenDimensions(brSave.spaceShards)
+		for (var u=1;u<=getMaxBigRipUpgrades();u++) {
+			el("bigripupg"+u).className = brSave && hasRipUpg(u) ? "gluonupgradebought bigrip" + (isBigRipUpgradeActive(u, true) ? "" : "off") : brSave.spaceShards.lt(bigRipUpgCosts[u]) ? "gluonupgrade unavailablebtn" : "gluonupgrade bigrip"
+			el("bigripupg"+u+"cost").textContent = shortenDimensions(E(bigRipUpgCosts[u]))
+		}
+	}
+	el("bigripupg1current").textContent=shortenDimensions(tmp.bru[1])
+	el("bigripupg8current").textContent=shortenDimensions(tmp.bru[8])+(Decimal.gte(tmp.bru[8],Number.MAX_VALUE)&&!hasNU(11)?"x (cap)":"x")
+	el("bigripupg14current").textContent=tmp.bru[14].toFixed(2)
+	var bru15effect = tmp.bru[15]
+	el("bigripupg15current").textContent=bru15effect < 999.995 ? bru15effect.toFixed(2) : getFullExpansion(Math.round(bru15effect))
+	el("bigripupg16current").textContent=shorten(tmp.bru[16])
+	el("bigripupg17current").textContent=tmp.bru[17]
+	if (ghSave.ghostlyPhotons.unl) {
+		el("bigripupg18current").textContent=shorten(tmp.bru[18])
+		el("bigripupg19current").textContent=shorten(tmp.bru[19])
 	}
 }
 
@@ -85,18 +107,18 @@ function showRipTab(tabName) {
 
 let bigRipUpgCosts = [0, 2, 3, 5, 20, 30, 45, 60, 150, 300, 2000, 1e9, 3e14, 1e17, 3e18, 3e20, 5e22, 1e32, 1e145, 1e150, Number.MAX_VALUE]
 function buyBigRipUpg(id) {
-	if (brSave.spaceShards.lt(bigRipUpgCosts[id]) || brSave.upgrades.includes(id)) return
+	if (brSave.spaceShards.lt(bigRipUpgCosts[id]) || hasRipUpg(id)) return
 	brSave.spaceShards = brSave && brSave.spaceShards.sub(bigRipUpgCosts[id])
 	if (ghSave.milestones < 8) brSave.spaceShards=brSave.spaceShards.round()
 	brSave.upgrades.push(id)
 	el("spaceShards").textContent = shortenDimensions(brSave.spaceShards)
 	if (brSave.active) tweakBigRip(id, true)
-	if (id == 10 && !brSave.upgrades.includes(9)) {
+	if (id == 10 && !hasRipUpg(9)) {
 		brSave.upgrades.push(9)
 		if (brSave.active) tweakBigRip(9, true)
 	}
 	for (var u = 1; u <= getMaxBigRipUpgrades(); u++) {
-		el("bigripupg" + u).className = brSave && brSave.upgrades.includes(u) ? "gluonupgradebought bigrip" + (isBigRipUpgradeActive(u, true) ? "" : "off") : brSave.spaceShards.lt(bigRipUpgCosts[u]) ? "gluonupgrade unavailablebtn" : "gluonupgrade bigrip"
+		el("bigripupg" + u).className = brSave && hasRipUpg(u) ? "gluonupgradebought bigrip" + (isBigRipUpgradeActive(u, true) ? "" : "off") : brSave.spaceShards.lt(bigRipUpgCosts[u]) ? "gluonupgrade unavailablebtn" : "gluonupgrade bigrip"
 	}
 }
 
@@ -106,7 +128,7 @@ function tweakBigRip(id, reset) {
 		player.eternities = Math.max(player.eternities, 1e5)
 		if (!reset) updateEternityChallenges()
 	}
-	if (!brSave.upgrades.includes(9)) {
+	if (!hasRipUpg(9)) {
 		if (id == 3) player.timestudy.theorem += 5
 		if (id == 5) player.timestudy.theorem += 20
 		if (id == 7 && !player.timestudy.studies.includes(192)) player.timestudy.studies.push(192)
@@ -119,7 +141,7 @@ function tweakBigRip(id, reset) {
 			epcost: E(1),
 			studies: []
 		}
-		if (!brSave.upgrades.includes(12)) player.timestudy.theorem += 1350
+		if (!hasRipUpg(12)) player.timestudy.theorem += 1350
 	}
 	if (id == 10) {
 		if (!player.dilation.studies.includes(1)) player.dilation.studies.push(1)
@@ -143,13 +165,17 @@ function tweakBigRip(id, reset) {
 	}
 }
 
+function hasRipUpg(x) {
+	return brSave.upgrades.includes(x)
+}
+
 function isBigRipUpgradeActive(id, bigRipped) {
 	if (player.masterystudies == undefined) return false
 	if (bigRipped === undefined ? !brSave.active : !bigRipped) return false
-	if (id == 1) if (!brSave.upgrades.includes(17)) for (var u = 3; u < 18; u++) if (brSave.upgrades.includes(u)) return false
-	if (id > 2 && id != 4 && id < 9) if (brSave.upgrades.includes(9) && (id != 8 || !hasNU(11))) return false
-	if (id == 4) if (brSave.upgrades.includes(11)) return false
-	return brSave.upgrades.includes(id)
+	if (id == 1) if (!hasRipUpg(17)) for (var u = 3; u < 18; u++) if (hasRipUpg(u)) return false
+	if (id > 2 && id != 4 && id < 9) if (hasRipUpg(9) && (id != 8 || !hasNU(11))) return false
+	if (id == 4) if (hasRipUpg(11)) return false
+	return hasRipUpg(id)
 }
 
 function updateBreakEternity() {

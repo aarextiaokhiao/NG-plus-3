@@ -3,47 +3,15 @@ var softcap_data = {
 		1: {
 			func: "pow",
 			start: 1e6,
-			pow: 0.75,
+			pow: () => adjustTSSoftcapPow(0.75),
 			derv: false
 		},
 		2: {
 			func: "pow",
 			start: 2e6,
-			pow: 0.70,
+			pow: () => adjustTSSoftcapPow(0.7),
 			derv: false
 		},
-		3: {
-			func: "pow",
-			start: 3e6,
-			pow: 0.65,
-			derv: false
-		},
-		4: {
-			func: "pow",
-			start: 4e6,
-			pow: 0.60,
-			derv: false
-		},
-		5: {
-			func: "pow",
-			start: 5e6,
-			pow: 0.55,
-			derv: false
-		}
-	},
-	ts_reduce_log_big_rip: {
-		1: {
-			func: "pow",
-			start: 1e4,
-			pow: 0.75,
-			derv: false
-		},
-		2: {
-			func: "pow",
-			start: 2e4,
-			pow: 0.65,
-			derv: false
-		}
 	},
 	ts11_log_big_rip: {
 		1: {
@@ -77,53 +45,6 @@ var softcap_data = {
 			derv: true
 		}
 	},
-	ms322_log: {
-		1: {
-			func: "pow",
-			start: 500,
-			pow: 0.75,
-			derv: true
-		}
-	},
-	bru1_log: {
-		1: {
-			func: "pow",
-			start: 3e8,
-			pow: 0.75,
-			derv: false
-		},
-		2: {
-			func: "log",
-			start: 1e10,
-			pow: 10
-		},
-		3: {
-			func: "pow",
-			start: 2e10,
-			pow: 0.5,
-			derv: true
-		},
-		4: {
-			func: "pow",
-			start: 4e10,
-			pow: 0.7,
-			derv: true
-		},
-		5: {
-			func: "log",
-			start: 1e11,
-			pow: 11,
-			add: -1
-		}
-	},
-	beu3_log: {
-		1: {
-			func: "pow",
-			start: 150,
-			pow: 0.5,
-			derv: false
-		}
-	},
 	inf_time_log_1: {
 		1: {
 			func: "pow",
@@ -143,38 +64,6 @@ var softcap_data = {
 			func: "pow",
 			start: 100,
 			pow: 0.5,
-			derv: false
-		},
-		2: {
-			func: "pow",
-			start: 1e4,
-			pow: 0.4,
-			derv: false
-		},
-		3: {
-			func: "pow",
-			start: 2e4,
-			pow: .7,
-			derv: true
-		}
-	},
-	inf_time_log_2: {
-		1: {
-			func: "pow",
-			start: 12e7,
-			pow: 0.6,
-			derv: false
-		},
-		2: {
-			func: "pow",
-			start: 16e7,
-			pow: 0.5,
-			derv: false
-		},
-		3: {
-			func: "pow",
-			start: 20e7,
-			pow: 0.4,
 			derv: false
 		}
 	},
@@ -196,27 +85,19 @@ var softcap_data = {
 		1: {
 			func: "pow",
 			start: 1e15,
-			pow: .9,
+			pow: () => adjustTSSoftcapPow(0.9),
 			derv: true
 		},
 		2: {
 			func: "pow",
 			start: 1e16,
-			pow: .85,
+			pow: () => adjustTSSoftcapPow(0.85),
 			derv: true
 		},
 		3: {
 			func: "pow",
 			start: 1e17,
-			pow: .8,
-			derv: true
-		}
-	},
-	EPtoQK: {
-		1: {
-			func: "pow",
-			start: 1e3,
-			pow: .8,
+			pow: () => adjustTSSoftcapPow(0.8),
 			derv: true
 		}
 	},

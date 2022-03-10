@@ -10,7 +10,7 @@ function updateNeutrinoBoostDisplay(){
 		el("neutrinoBoost2Exp").textContent = getMTSMult(273, "intensity").toFixed(2)
 	}
 	if (ghSave.neutrinos.boosts >= 3) el("neutrinoBoost3").textContent = tmp.nb[3].toFixed(2)
-	if (ghSave.neutrinos.boosts >= 4) el("neutrinoBoost4").textContent = (tmp.nb[4] * 100 - 100).toFixed(1)
+	if (ghSave.neutrinos.boosts >= 4) el("neutrinoBoost4").textContent = "^"+tmp.nb[4].toFixed(3)
 	if (ghSave.neutrinos.boosts >= 5) el("neutrinoBoost5").textContent = (tmp.nb[5] * 100).toFixed(1)
 	if (ghSave.neutrinos.boosts >= 6) el("neutrinoBoost6").textContent = tmp.nb[6] < 10.995 ? (tmp.nb[6] * 100 - 100).toFixed(1) : getFullExpansion(Math.floor(tmp.nb[6] * 100 - 100))
 	if (ghSave.neutrinos.boosts >= 7) {
@@ -20,12 +20,9 @@ function updateNeutrinoBoostDisplay(){
 	}
 	if (ghSave.neutrinos.boosts >= 8) el("neutrinoBoost8").textContent = (tmp.nb[8] * 100 - 100).toFixed(1)
 	if (ghSave.neutrinos.boosts >= 9) el("neutrinoBoost9").textContent = shorten(tmp.nb[9])
-	if (ghSave.neutrinos.boosts >= 10) el("neutrinoBoost10").textContent = tmp.nb[10].toFixed(4)
+	if (ghSave.neutrinos.boosts >= 10) el("neutrinoBoost10").textContent = "-"+tmp.nb[10].toFixed(4)+"x"
 	if (ghSave.neutrinos.boosts >= 11) el("neutrinoBoost11").textContent = shorten(tmp.nb[11])
-	if (ghSave.neutrinos.boosts >= 12) {
-		el("preNeutrinoBoost12").textContent = shorten(tmp.infPrePowExp)
-		el("neutrinoBoost12").textContent = shorten(tmp.nb[12])
-	}
+	if (ghSave.neutrinos.boosts >= 12) el("neutrinoBoost12").textContent = shorten(tmp.nb[12])
 }
 
 function updateNeutrinoAmountDisplay(){
@@ -178,25 +175,17 @@ var neutrinoBoosts = {
 			return nb2 
 		},
 		3: function(nt) {
-			if (tmp.ngp3l) { //NG+3L
-				let nb3Neutrinos = Math.pow(Math.log10(Math.max(nt[0].max(1).log10()-5,1))/Math.log10(5),2)+Math.pow(Math.log10(Math.max(nt[1].max(1).log10()-5,1))/Math.log10(5),2)+Math.pow(Math.log10(Math.max(nt[2].max(1).log10()-5,1))/Math.log10(5),2)
-				let nb3 = Math.pow(nb3Neutrinos / 3, .25) + 3
-				if (nb3 > 6) nb3 = 3 + Math.log2(nb3 + 2)
-				return nb3
-			} else { //NG+3
-				let nb3neutrinos = Math.sqrt(
-					Math.pow(nt[0].max(1).log10(), 2) +
-					Math.pow(nt[1].max(1).log10(), 2) +
-					Math.pow(nt[2].max(1).log10(), 2)
-				)
-				let nb3 = Math.sqrt(nb3neutrinos + 625) / 25
-				return nb3
-			}
+			let nb3neutrinos = Math.sqrt(
+				Math.pow(nt[0].max(1).log10(), 2) +
+				Math.pow(nt[1].max(1).log10(), 2) +
+				Math.pow(nt[2].max(1).log10(), 2)
+			)
+			let nb3 = Math.sqrt(nb3neutrinos + 625) / 25
+			return nb3
 		},
 		4: function(nt) {
 			var nb4neutrinos = Math.pow(nt[0].add(1).log10(),2)+Math.pow(nt[1].add(1).log10(),2)+Math.pow(nt[2].add(1).log10(),2)
-			var nb4 = Math.pow(nb4neutrinos, .25) * 0.07 + 1
-			if (tmp.ngp3l && nb4 > 10) nb4 = 6 + Math.log2(nb4 + 6)
+			var nb4 = Math.pow(Math.log10(nb4neutrinos*(brSave.active?1:0.07)+1)/4+1,brSave.active?1:0.5)
 			return nb4
 		},
 		5: function(nt) {
@@ -215,11 +204,8 @@ var neutrinoBoosts = {
 			let nb7exp = .5
 			if (tmp.newNGP3E) nb7exp = .6
 			let nb7neutrinos = nt[0].add(1).log10()+nt[1].add(1).log10()+nt[2].add(1).log10()
-			let nb7 = Math.pow(Math.log10(1 + nb7neutrinos), nb7exp)*2.35
-			if (!tmp.ngp3l) {
-				if (nb7 > 4) nb7 = 2 * Math.log2(nb7)
-				if (nb7 > 5) nb7 = 2 + Math.log2(nb7 + 3)
-			}
+			let nb7 = Math.pow(Math.log10(1 + nb7neutrinos), nb7exp) * 2.35
+			if (nb7 > 4) nb7 = 2 * Math.log2(nb7)
 			return nb7
 		},
 		8: function(nt) {
@@ -227,7 +213,7 @@ var neutrinoBoosts = {
 			let nb8exp = .25
 			if (tmp.newNGP3E) nb8exp = .27
 			var nb8 = Math.pow(nb8neutrinos, nb8exp) / 10 + 1
-			if (nb8 > 11) nb8 = 7 + Math.log2(nb8 + 5)
+			if (nb8 > 3) nb8 = 3
 			return nb8
 		},
 		9: function(nt) {
@@ -243,14 +229,15 @@ var neutrinoBoosts = {
 			return nb10
 		},
 		11: function(nt) {
-			let nb11neutrinos = nt[0].add(nt[1]).add(nt[2]).add(1).log10()
+			let nb11neutrinos = nt[0].add(1).log10()+nt[1].add(1).log10()+nt[2].add(1).log10()
 			let nb11exp = Math.sqrt(nb11neutrinos)
 			let nb11 = E_pow(1.15, nb11exp)
 			return nb11
 		},
 		12: function(nt) {
-			let nb = (Math.log10(nt[0].add(1).mul(nt[1].add(1)).mul(nt[2].add(1)).log10()+1)+1)**0.2
-			return nb*tmp.infPrePowExp
+			let nb12neutrinos = nt[0].add(1).log10()+nt[1].add(1).log10()+nt[2].add(1).log10()
+			let nb12 = 1
+			return nb12
 		},
 	}
 }

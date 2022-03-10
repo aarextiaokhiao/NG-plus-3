@@ -50,9 +50,9 @@ function nanofieldResetOnQuantum(){
 
 function doQuantumResetStuff(bigRip, challid){
 	var headstart = aarMod.newGamePlusVersion > 0 && !tmp.ngp3
-	var oheHeadstart = bigRip ? brSave.upgrades.includes(2) : speedrunMilestonesReached > 0
+	var oheHeadstart = bigRip ? hasRipUpg(2) : speedrunMilestonesReached > 0
 	var keepABnICs = oheHeadstart || bigRip || hasAch("ng3p51")
-	var turnSomeOn = !bigRip || brSave.upgrades.includes(1)
+	var turnSomeOn = !bigRip || hasRipUpg(1)
 	var bigRipChanged = tmp.ngp3 && bigRip != brSave && brSave.active
 	player.money = E(10)
 	player.tickSpeedCost = E(1000)
@@ -100,11 +100,11 @@ function doQuantumResetStuff(bigRip, challid){
 	player.postC4Tier = 0
 	player.postC3Reward = E(1)
 	player.eternityPoints = E(0)
-	player.eternities = headstart ? player.eternities : bigRip ? (brSave.upgrades.includes(2) ? 1e5 : 0) : speedrunMilestonesReached > 17 ? 1e13 : oheHeadstart ? 2e4 : hasAch("ng3p12") ? Math.max(Math.floor(720*3600*10/quSave.best),10000) : 0
+	player.eternities = headstart ? player.eternities : bigRip ? (hasRipUpg(2) ? 1e5 : 0) : speedrunMilestonesReached > 17 ? 1e13 : oheHeadstart ? 2e4 : hasAch("ng3p12") ? Math.max(Math.floor(720*3600*10/quSave.best),10000) : 0
 	player.eternitiesBank = tmp.ngp3 ? nA(player.eternitiesBank, bankedEterGain) : undefined
 	player.thisEternity = 0
 	player.bestEternity = headstart ? player.bestEternity : 9999999999
-	player.eternityUpgrades = isRewardEnabled(3) && (!bigRip || brSave.upgrades.includes(12)) ? [1,2,3,4,5,6] : []
+	player.eternityUpgrades = isRewardEnabled(3) && (!bigRip || hasRipUpg(12)) ? [1,2,3,4,5,6] : []
 	player.epmult = E(1)
 	player.epmultCost = E(500)
 	player.infDimensionsUnlocked = resetInfDimUnlocked()
@@ -132,7 +132,7 @@ function doQuantumResetStuff(bigRip, challid){
 		galaxybuyer: bigRipChanged ? turnSomeOn : oheHeadstart ? player.replicanti.galaxybuyer : undefined,
 		auto: bigRipChanged ? [turnSomeOn, turnSomeOn, turnSomeOn] : oheHeadstart ? player.replicanti.auto : [false, false, false]
 	}
-	player.timestudy = isRewardEnabled(11) && (!bigRip || brSave.upgrades.includes(12)) ? player.timestudy : {
+	player.timestudy = isRewardEnabled(11) && (!bigRip || hasRipUpg(12)) ? player.timestudy : {
 		theorem: 0,
 		amcost: E("1e20000"),
 		ipcost: E(1),
@@ -162,15 +162,15 @@ function doQuantumResetStuff(bigRip, challid){
 	player.dead = true
 	if (!player.dilation.bestTP) player.dilation.bestTP = player.dilation.tachyonParticles
 	player.dilation = {
-		studies: bigRip ? (brSave.upgrades.includes(12) ? [1,2,3,4,5,6] : brSave.upgrades.includes(10) ? [1] : []) : isRewardEnabled(4) ? (speedrunMilestonesReached > 5 ? [1,2,3,4,5,6] : [1]) : [],
+		studies: bigRip ? (hasRipUpg(12) ? [1,2,3,4,5,6] : hasRipUpg(10) ? [1] : []) : isRewardEnabled(4) ? (speedrunMilestonesReached > 5 ? [1,2,3,4,5,6] : [1]) : [],
 		active: false,
-		tachyonParticles: (((hasAch("ng3p37") && (!bigRip || brSave.upgrades.includes(11))) || hasAch("ng3p71")) && !inQCModifier("ad")) ? player.dilation.bestTP.pow((ghSave.milestones > 15 && (!bigRip || hasAch("ng3p71"))) || (!challid && ghSave.milestones > 3) ? 1 : 0.5) : E(0),
+		tachyonParticles: (((hasAch("ng3p37") && (!bigRip || hasRipUpg(11))) || hasAch("ng3p71")) && !inQCModifier("ad")) ? player.dilation.bestTP.pow((ghSave.milestones > 15 && (!bigRip || hasAch("ng3p71"))) || (!challid && ghSave.milestones > 3) ? 1 : 0.5) : E(0),
 		dilatedTime: E(speedrunMilestonesReached > 21 && isRewardEnabled(4) && !inQCModifier("ad") && !bigRip ? 1e100 : 0),
 		bestTP: Decimal.max(player.dilation.bestTP || 0, player.dilation.tachyonParticles),
 		bestTPOverGhostifies: player.dilation.bestTPOverGhostifies,
 		nextThreshold: E(1000),
 		freeGalaxies: 0,
-		upgrades: speedrunMilestonesReached > 5 && isRewardEnabled(4) && (!bigRip || brSave.upgrades.includes(12)) ? [4,5,6,7,8,9,"ngpp1","ngpp2"] : [],
+		upgrades: speedrunMilestonesReached > 5 && isRewardEnabled(4) && (!bigRip || hasRipUpg(12)) ? [4,5,6,7,8,9,"ngpp1","ngpp2"] : [],
 		autoUpgrades: [],
 		rebuyables: {
 			1: 0,
@@ -195,7 +195,7 @@ function doQuantumResetStuff(bigRip, challid){
 		power: E(0)
 	}: player.blackhole
 	doMetaDimensionsReset(bigRip, headstart, challid)
-	player.masterystudies = tmp.ngp3 ? (bigRip && !brSave.upgrades.includes(12) ? ["d7", "d8", "d9", "d10", "d11", "d12", "d13", "d14"] : speedrunMilestonesReached > 15 && isRewardEnabled(11) ? player.masterystudies : []) : undefined
+	player.masterystudies = tmp.ngp3 ? (bigRip && !hasRipUpg(12) ? ["d7", "d8", "d9", "d10", "d11", "d12", "d13", "d14"] : speedrunMilestonesReached > 15 && isRewardEnabled(11) ? player.masterystudies : []) : undefined
 	player.old = tmp.ngp3 ? inQC(0) : undefined
 	player.dontWant = tmp.ngp3 || undefined
 }

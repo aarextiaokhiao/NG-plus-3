@@ -2540,7 +2540,7 @@
 						</tr>
 						<tr id="achRowng3p7">
 							<td>
-								<div id="Progressing as a Ghost" class="achievement achievementlocked" style="background-image: url(images/159.png)" ach-tooltip="Unlock Ghostly Photons. Reward: You produce 1% of gluons gained on Quantum every second if you have the 8th Brave Milestone, and Tachyon Particles persist in Big Rip if you have the 16th Brave Milestone."></div>
+								<div id="Progressing as a Ghost" class="achievement achievementlocked" style="background-image: url(images/159.png)" ach-tooltip="Unlock Photons. Reward: You produce 1% of gluons gained on Quantum every second if you have the 8th Brave Milestone, and Tachyon Particles persist in Big Rip if you have the 16th Brave Milestone."></div>
 							</td>
 							<td>
 								<div id="Underchallenged" class="achievement achievementlocked" style="background-image: url(images/160.png)"></div>
@@ -2592,7 +2592,7 @@
 						</tr>
 						<tr id="achRowng3p9">
 							<td>
-								<div id="The Holy Particle" class="achievement achievementlocked" style="background-image: url(images/175.png)" ach-tooltip="Get a Higgs Boson. Reward: Bosonic Upgrades and Enchants are 5x cheaper, Achievement Power gives you more Bosonic Watts, and Light Empowerments no longer reset anything."></div>
+								<div id="The Holy Particle" class="achievement achievementlocked" style="background-image: url(images/175.png)" ach-tooltip="Get a Higgs Boson. Reward: Achievement Power gives you more Bosonic Watts and Light Empowerments don't reset Photons."></div>
 							</td>
 							<td>
 								<div id="Bright as the Anti-Sun" class="achievement achievementlocked" style="background-image: url(images/176.png)" ach-tooltip="Reach 25 Light Empowerments. Reward: You always have the 12th Bosonic Upgrade and start with 5 levels of first Bosonic Enchant."></div>
@@ -2604,7 +2604,7 @@
 								<div id="... references to EC8?" class="achievement achievementlocked" style="background-image: url(images/178.png)" ach-tooltip="Get at least 2 Radioactive Decays of every color with at most 10 gains of Unstable Quarks. Reward: Gain 1 level of Branch upgrade 2 per 1 Radioactive Decay."></div>
 							</td>
 							<td>
-								<div id="Bosonic Semipowerment" class="achievement achievementlocked" style="background-image: url(images/179.png)" ach-tooltip="Reach 50% of Light Empowerment requirement without buying Bosonic Upgrades, but after getting a Higgs Boson. Reward: Light Empowerments are 1 Ultraviolet Light cheaper."></div>
+								<div id="Bosonic Semipowerment" class="achievement achievementlocked" style="background-image: url(images/179.png)" ach-tooltip="Reach 50% of Light Empowerment requirement without buying Bosonic Upgrades. Reward: Light Empowerments are 1 cheaper."></div>
 							</td>
 							<td>
 								<div id="Not-so-very-challenging" class="achievement achievementlocked" style="background-image: url(images/180.png)" ach-tooltip="Get 190 Paired Challenges ranking. Reward: Quantum and Paired Challenge goals are decreased by 5%, except during Big Rip."></div>
@@ -2618,10 +2618,10 @@
 						</tr><tr id="achRowng3p10">
 							<td>
 								<div id="The Layer of Recreation" class="achievement achievementlocked" style="background-image: url(images/none.png)"
-								ach-tooltip="Unlock Gravitons. Reward: Light Empowerments and Higgs no longer reset anything.">The Layer of Recreation</div>
+								ach-tooltip="Unlock Gravitons. Reward: Light Empowerments no longer reset anything.">The Layer of Recreation</div>
 							</td><td>
 								<div id="Biggest Mistake" class="achievement achievementlocked" style="background-image: url(images/none.png)"
-								ach-tooltip="Get 50 Higgs Bosons. Reward: Higgs requires 10x less.">Biggest Mistake</div>
+								ach-tooltip="Get 150 Higgs. Reward: Higgs requires 100x less.">Biggest Mistake</div>
 							</td><td>
 								<div id="Double Quintillion" class="achievement achievementlocked" style="background-image: url(images/none.png)"
 								ach-tooltip="Placeholder.">Double Quintillion</div>
@@ -3879,14 +3879,14 @@
 				<br>
 			</div>
 			<tr>
-				<td><button class="secondarytabbtn" onclick="showIanttab('preinf')">Upgrades</button><td>
-				<td><button id="autobuyersbtn" class="secondarytabbtn" onclick="showIanttab('autobuyers')">Autobuyers</button><td>
-				<td><button id="postinfbtn" class="secondarytabbtn" onclick="showIanttab('postinf')" >Break Infinity</button><td>
-				<td><button id="replicantitabbtn" class="secondarytabbtn" onclick="showIanttab('replicantis')">Replicantis</button><td>
-				<td><button id="singularitytabbtn" class="secondarytabbtn" onclick="showIanttab('singularity')">Singularity</button><td>
-				<td><button id="dimtechstabbtn" class="secondarytabbtn" onclick="showIanttab('dimtechs')">Dim-techs</button><td>
+				<td><button class="secondarytabbtn" onclick="showInftab('preinf')">Upgrades</button><td>
+				<td><button id="autobuyersbtn" class="secondarytabbtn" onclick="showInftab('autobuyers')">Autobuyers</button><td>
+				<td><button id="postinfbtn" class="secondarytabbtn" onclick="showInftab('postinf')" >Break Infinity</button><td>
+				<td><button id="replicantitabbtn" class="secondarytabbtn" onclick="showInftab('replicantis')">Replicantis</button><td>
+				<td><button id="singularitytabbtn" class="secondarytabbtn" onclick="showInftab('singularity')">Singularity</button><td>
+				<td><button id="dimtechstabbtn" class="secondarytabbtn" onclick="showInftab('dimtechs')">Dim-techs</button><td>
 			</tr>
-			<div id="preinf" class="ianttab">
+			<div id="preinf" class="inftab">
 			<br>
 			<table id="preinfupgrades" class="table" style="margin: 0 auto"></table>
 			<div id='nextset'></div>
@@ -3933,7 +3933,7 @@
 			</div>
 		</div>
 		<div id="automation_ng_placement"></div>
-		<div id="autobuyers" class="ianttab">
+		<div id="autobuyers" class="inftab">
 			<br>
 			<button class="storebtn" id="toggleautobuyers" style="font-size: 100%; width: 150px; height: 40px; margin: 3px" onclick="toggleAutoBuyers()">Enable/disable autobuyers</button>
 			<button class="storebtn" id="togglebulk" style="font-size: 100%; width: 150px; height: 40px;margin: 3px" onclick="toggleBulk()">Disable bulk buy</button>
@@ -4329,7 +4329,7 @@
 				</table>
 			</div>
 		</div>
-		<div id="postinf" class="ianttab" align="center">
+		<div id="postinf" class="inftab" align="center">
 			<br>
 			<div id="abletobreak"></div>
 				<br>
@@ -4341,7 +4341,7 @@
 					</tr>
 				</table>
 				<br>
-				<table id="postianttable" class="table" style="margin: 0 auto; padding-left: 8px">
+				<table id="postinftable" class="table" style="margin: 0 auto; padding-left: 8px">
 					<tr>
 						<td>
 							<button id="postinfi01" class="infinistorebtn1"></button>
@@ -4444,7 +4444,7 @@
 					</table>
 				</div>
 		</div>
-		<div id="replicantis" class="ianttab">
+		<div id="replicantis" class="inftab">
 			<br>
 			<button class="storebtn" id="replicantiunlock" onclick="unlockReplicantis()" style="width:200px; height: 80px">Unlock Replicantis<br>Cost: 1e140 IP</button>
 			<div id="replicantidiv" style="display: none; width: 1000px">
@@ -4488,7 +4488,7 @@
 					</table>
 				</div>
 		</div>
-		<div id="singularity" class="ianttab">
+		<div id="singularity" class="inftab">
 			<br>
 			<button class="storebtn" id="singularityunlock" onclick="unlockSingularity()" style="width:200px; height: 80px">Unlock Singularity<br>Cost: <span id="singularityunlcost"></span> IP</button>
 			<div id="singularitydiv" style="display: none;">
@@ -4515,7 +4515,7 @@
 					</table>
 				</div>
 		</div>
-		<div id="dimtechs" class="ianttab">
+		<div id="dimtechs" class="inftab">
 			<br>
 			<button class="storebtn" id="dimtechsunlock" onclick="unlockDimTechs()" style="width:200px; height: 80px">Unlock Dim-techs<br>Cost: <span id="dimtechsunlcost"></span> IP</button>
 			<div id="dimtechsdiv" style="display: none;">
@@ -4720,18 +4720,18 @@
 					<td><button id='brupg1' onclick='buyGluonUpg("br",1)'>You gain more tachyon particles based on your dilated time.<br><span id='brupg1current'></span><br>Cost: 1 BR gluons</button></td>
 					<td><button id='brupg2' onclick='buyGluonUpg("br",2)'>Sacrifice boosts dilated time production.<br><span id='brupg2current'></span><br><span id='brupg1current'></span>Cost: 2 BR gluons</button></td>
 				</tr><tr>
-					<td><button id='rgupg3' onclick='buyGluonUpg("rg",3)'>Dimension boosts boost first Meta Dimensions.<br><span id='rgupg3current'></span><br>Cost: 4 RG gluons</button></td>
+					<td><button id='rgupg3' onclick='buyGluonUpg("rg",3)'>Dimension Boosts boost 1st Meta Dimensions.<br><span id='rgupg3current'></span><br>Cost: 4 RG gluons</button></td>
 					<td><button id='rgupg4' onclick='buyGluonUpg("rg",4)'>Galaxies are 50% stronger, but electrons are 30% weaker and normal galaxies are 60% weaker.<br>Cost: 100 RG gluons</button></td>
 					<td><button id='gbupg3' onclick='buyGluonUpg("gb",3)'>The IP mult multiplies IP gain by 2.3x per upgrade.<br>Cost: 4 GB gluons</button></td>
 					<td><button id='gbupg4' onclick='buyGluonUpg("gb",4)'>Massively decrease the tickspeed cost multiplier increase to 1.25x.<br>Cost: 100 GB gluons</button></td>
 					<td><button id='brupg3' onclick='buyGluonUpg("br",3)'>Tachyon particles slightly boost dilated time production.<br>Cost: 4 BR gluons</button></td>
 					<td><button id='brupg4' onclick='buyGluonUpg("br",4)'>Multiplier per ten dimensions boosts Meta Dimensions.<br><span id='brupg4current'></span><br>Cost: 100 BR gluons</button></td>
 				</tr><tr id='gupgrow3'>
-					<td><button id='rgupg5' onclick='buyGluonUpg("rg",5)'>Slow down the Dark Matter Galaxy cost scaling by 13%.<br>Cost: <span id='rgupg5cost'></span> RG gluons</button></td>
+					<td><button id='rgupg5' onclick='buyGluonUpg("rg",5)'>Gain 10x more Quarks.<br>Cost: <span id='rgupg5cost'></span> RG gluons</button></td>
 					<td><button id='rgupg6' onclick='buyGluonUpg("rg",6)'>Slow down the Distant Antimatter Galaxy cost scaling by 13.2%.<br>Cost: <span id='rgupg6cost'></span> RG gluons</button></td>
-					<td><button id='gbupg5' onclick='buyGluonUpg("gb",5)'>Normal replicated galaxies slow down the Dark Matter Galaxy cost scaling.<br><span id='gbupg5current'></span><br>Cost: <span id='gbupg5cost'></span> GB gluons</button></td>
-					<td><button id='gbupg6' onclick='buyGluonUpg("gb",6)'>Infinity power slows down the Distant Antimatter Galaxy cost scaling.<br><span id='gbupg6current'></span><br>Cost: <span id='gbupg6cost'></span> GB gluons</button></td>
-					<td><button id='brupg5' onclick='buyGluonUpg("br",5)'>Tachyon particles slow down the Dark Matter Galaxy cost scaling.<br><span id='brupg5current'></span><br>Cost: <span id='brupg5cost'></span> BR gluons</button></td>
+					<td><button id='gbupg5' onclick='buyGluonUpg("gb",5)'>[PLACEHOLDER]<br><span id='gbupg5current'></span><br>Cost: <span id='gbupg5cost'></span> GB gluons</button></td>
+					<td><button id='gbupg6' onclick='buyGluonUpg("gb",6)'>Infinity Power slows down the Distant Antimatter Galaxy cost scaling.<br><span id='gbupg6current'></span><br>Cost: <span id='gbupg6cost'></span> GB gluons</button></td>
+					<td><button id='brupg5' onclick='buyGluonUpg("br",5)'>[PLACEHOLDER]<br><span id='brupg5current'></span><br>Cost: <span id='brupg5cost'></span> BR gluons</button></td>
 					<td><button id='brupg6' onclick='buyGluonUpg("br",6)' style='font-size:8.5px'>Meta-Dimension Boosts slow down the Distant Antimatter Galaxy cost scaling.<br><span id='brupg6current'></span><br>Cost: <span id='brupg6cost'></span> BR gluons</button></td>
 				</tr><tr id='gupgrow4'>
 					<td id='rgupg7col' colspan=2><button id='rgupg7' onclick='buyGluonUpg("rg",7)'>Slow down the Remote Antimatter Galaxy scaling by 10%.<br>Cost: <span id='rgupg7cost'></span> RG gluons</button></td>
@@ -5098,7 +5098,7 @@
 			<table class="table" align="center" style="margin: auto">
 				<tr>
 					<td><button class="secondarytabbtn" onclick="showGhostifyTab('neutrinos')">Neutrinos</button></td>
-					<td id="gphtabbtn"><button class="secondarytabbtn" onclick="showGhostifyTab('gphtab')">Ghostly Photons</button></td>
+					<td id="gphtabbtn"><button class="secondarytabbtn" onclick="showGhostifyTab('gphtab')">Photons</button></td>
 					<td id="bltabbtn"><button class="secondarytabbtn" onclick="showGhostifyTab('bltab')">Bosonic Lab</button></td>
 					<td><button class="secondarytabbtn" onclick="showGhostifyTab('bravemilestones')">Brave Milestones</button></td>
 					<td><button class="secondarytabbtn" onclick="showGhostifyTab('automaticghosts')">Automator Ghosts</button></td>
@@ -5108,30 +5108,30 @@
 				<div id="neutrinosGain"></div>
 				<div id="neutrinosGainGhostify"></div>
 				<table class='qtable'>
-					<tr>
-						<td>You have <span class="neutrinos" id="electronNeutrinos">0</span> electron neutrinos.</td>
-						<td>You have <span class="neutrinos" id="muonNeutrinos">0</span> Muon neutrinos.</td>
-						<td>You have <span class="neutrinos" id="tauNeutrinos">0</span> Tau neutrinos.</td>
+					<tr style="font-size: 15px">
+						<td class="grey"><span class="neutrinos" id="electronNeutrinos">0</span> electron neutrinos</td>
+						<td class="grey"><span class="neutrinos" id="muonNeutrinos">0</span> Muon neutrinos</td>
+						<td class="grey"><span class="neutrinos" id="tauNeutrinos">0</span> Tau neutrinos</td>
 					</tr>
 					<tr class="neutrinoBoosts" id="neutrinoBoostRow1">
-						<td>They increase TP gain formula exponent from <span id="preNeutrinoBoost1"></span> to <span class="neutrinos" id="neutrinoBoost1">1.0</span>.</td>
-						<td id="neutrinoBoostCell2">They strengthen the effect of "replicate chance boosts itself" stronger from <span id="preNeutrinoBoost2"></span> to <span class="neutrinos" id="neutrinoBoost2">1.0</span>.<br>(The effect exponent is increased from <span id="preNeutrinoBoost2Exp"></span> to <span class="neutrinos" id="neutrinoBoost2Exp" style="font-size:25px"></span>)</td>
-						<td id="neutrinoBoostCell3"><span id="neutrinoBoost3Effect"></span> <span class="neutrinos" id="neutrinoBoost3">3.00</span>x.</td>
+						<td>Increase TP gain exponent to <span class="neutrinos" id="neutrinoBoost1">1.0</span>.<span style="font-size: 8px">(from <span id="preNeutrinoBoost1"></span>)</span></td>
+						<td id="neutrinoBoostCell2">Increase "replicate chance boosts itself" to <span class="neutrinos" id="neutrinoBoost2">1.0</span>.<br><span style="font-size: 8px">(from <span id="preNeutrinoBoost2"></span>, the exponent changed from <span id="preNeutrinoBoost2Exp"></span> to <span id="neutrinoBoost2Exp"></span>)</span></td>
+						<td id="neutrinoBoostCell3">Repeal the cap of Dilation upgrade 14 and increase it by <span class="neutrinos" id="neutrinoBoost3">3.00</span>x.</td>
 					</tr>
-					<tr class="neutrinoBoosts" id="neutrinoBoostRow2">
-						<td>They make Infinite Time reward stronger by <span class="neutrinos" id="neutrinoBoost4">0.0</span>%.</td>
-						<td id="neutrinoBoostCell5">They reduce the nerf to red power boost over 130% by <span class="neutrinos" id="neutrinoBoost5">100.0</span>%.</td>
-						<td id="neutrinoBoostCell6">They slow down Distant Antimatter Galaxies by <span class="neutrinos" id="neutrinoBoost6">0.0</span>%.<br>(Nerfed in Big Rip runs)</td>
+					<tr class="neutrinoBoosts2" id="neutrinoBoostRow2">
+						<td>Raise Infinite Time by <span class="neutrinos" id="neutrinoBoost4">0.0</span>.</td>
+						<td id="neutrinoBoostCell5">Red power softcap is <span class="neutrinos" id="neutrinoBoost5">100.0</span>% weaker.</td>
+						<td id="neutrinoBoostCell6">Distant Antimatter Galaxies scale <span class="neutrinos" id="neutrinoBoost6">0.0</span>% slower.<br><span style="font-size: 8px">(Nerfed in Big Rip runs)</span></td>
 					</tr>
 					<tr class="neutrinoBoosts" id="neutrinoBoostRow3">
-						<td>In Big Rips, they make Tree upgrades <span class="neutrinos" id="neutrinoBoost7">0.0</span>% more effective. (<span id="preNeutrinoBoost7Eff">100.0</span>% to <span class="neutrinos" id="neutrinoBoost7Eff" style="font-size:25px">100.0</span>%)</td>
-						<td id="neutrinoBoostCell8">In Big Rips, they make the first Big Rip upgrade <span class="neutrinos" id="neutrinoBoost8">0.0</span>% stronger.</td>
-						<td id="neutrinoBoostCell9">In Big Rips, they multiply the IC3 reward for each tickspeed purchase by <span class="neutrinos" id="neutrinoBoost9">1.00</span>x.</td>
+						<td>In Big Rips, strengthen Tree upgrades by <span class="neutrinos" id="neutrinoBoost7">0.0</span>%.<br><span style="font-size: 8px">(<span id="preNeutrinoBoost7Eff">100.0</span>% to <span id="neutrinoBoost7Eff">100.0</span>%)</span></td>
+						<td id="neutrinoBoostCell8">Strengthen the first Big Rip upgrade by <span class="neutrinos" id="neutrinoBoost8">0.0</span>%.</td>
+						<td id="neutrinoBoostCell9">In Big Rips, multiply IC3 base effect by <span class="neutrinos" id="neutrinoBoost9">1.00</span>x.</td>
 					</tr>
-					<tr class="neutrinoBoosts" id="neutrinoBoostRow4">
-						<td>They decrease free tickspeed upgrade threshold by -<span class="neutrinos" id="neutrinoBoost10"></span>.</td>
-						<td id="neutrinoBoostCell11">They boost the production and cap of Ghostly Rays by <span class="neutrinos" id="neutrinoBoost11">1.00</span>x.</td>
-						<td id="neutrinoBoostCell12">They increase Infinity Powers formula exponent from <span id="preNeutrinoBoost12">7</span> to <span class="neutrinos" id="neutrinoBoost12">7</span>.</td>
+					<tr class="neutrinoBoosts2" id="neutrinoBoostRow4">
+						<td>Decrease free tickspeed threshold by <span class="neutrinos" id="neutrinoBoost10"></span>.</td>
+						<td id="neutrinoBoostCell11">Increase the production and cap of Photonic Waves by <span class="neutrinos" id="neutrinoBoost11">1.00</span>x.</td>
+						<td id="neutrinoBoostCell12">Boost something by <span class="neutrinos" id="neutrinoBoost12"></span>.</td>
 					</tr>
 					<tr>
 						<td><button id="neutrinoUnlock" class="gluonupgrade unavailablebtn" onclick="unlockNeutrinoBoost()">Unlock a new boost based on your neutrinos.<br>Cost: <span id="neutrinoUnlockCost">2</span> GhP</button></td>
@@ -5295,7 +5295,7 @@
 						</div></td>
 						<td id="autoGhost19"><div class="autoBuyerDiv" style="display:block">
 							<b>Auto-Enchanter Ghost</b><br>
-							(doesn't consume your Bosonic Runes, enchant per 2 seconds)<br>
+							(doesn't consume your Hypotheses, enchant per 2 seconds)<br>
 							Power usage: 3<br>
 							Is active: <input id="isAutoGhostOn19" type="checkbox" onchange="toggleAutoGhost(19)"></input>
 						</div></td>
@@ -5348,18 +5348,18 @@
 				<div id="gphUnl"></div>
 				<div id="gphDiv">
 					You have <span id="dtGPH">0</span> dilated time.<br>
-					You are getting <span class="gphAmount" id="gphProduction">0</span> <span id="gphProductionType">Ghostly Photons</span> per second.<br>
+					You are getting <span class="gphAmount" id="gphProduction">0</span> <span id="gphProductionType">Photons</span> per second.<br>
 					<table class='qtable'><tr>
 						<td>
-							You have <span class="gphAmount" id="gph" style="font-size:35px"></span> Ghostly Photons.<br>
-							They increase your Ghostly Rays production to <span class="gphAmount" id="ghrProduction"></span> per second.
+							You have <span class="gphAmount" id="gph" style="font-size:35px"></span> Photons.<br>
+							They increase your Photonic Waves production to <span class="gphAmount" id="ghrProduction"></span> per second.
 						</td>
 						<td>
-							You have <span class="ghr" id="ghr" style="font-size:35px"></span> Ghostly Rays.
+							You have <span class="ghr" id="ghr" style="font-size:35px"></span> Photonic Waves.
 						</td>
 						<td>
 							You have <span class="dmAmount" id="dm" style="font-size:35px"></span> Dark Matter.<br>
-							They increase your limit amount of Ghostly Rays to <span class="dmAmount" id="ghrCap"></span>.
+							They increase your limit amount of Photonic Waves to <span class="dmAmount" id="ghrCap"></span>.
 						</td>
 					</tr></table>
 					<table class="qtable_4col"><tr>
@@ -5378,16 +5378,16 @@
 						</td>
 					</tr><tr>
 						<td>
-							Next Light at <span class="ghr" id="lightThreshold1"></span> Ghostly Rays.
+							Next Light at <span class="ghr" id="lightThreshold1"></span> Photonic Waves.
 						</td>
 						<td>
-							Next Light at <span class="ghr" id="lightThreshold2"></span> Ghostly Rays.
+							Next Light at <span class="ghr" id="lightThreshold2"></span> Photonic Waves.
 						</td>
 						<td>
-							Next Light at <span class="ghr" id="lightThreshold3"></span> Ghostly Rays.
+							Next Light at <span class="ghr" id="lightThreshold3"></span> Photonic Waves.
 						</td>
 						<td>
-							Next Light at <span class="ghr" id="lightThreshold4"></span> Ghostly Rays.
+							Next Light at <span class="ghr" id="lightThreshold4"></span> Photonic Waves.
 						</td>
 					</tr><tr>
 						<td>
@@ -5430,16 +5430,16 @@
 						</td>
 					</tr><tr>
 						<td>
-							Next Light at <span class="ghr" id="lightThreshold5"></span> Ghostly Rays.
+							Next Light at <span class="ghr" id="lightThreshold5"></span> Photonic Waves.
 						</td>
 						<td>
-							Next Light at <span class="ghr" id="lightThreshold6"></span> Ghostly Rays.
+							Next Light at <span class="ghr" id="lightThreshold6"></span> Photonic Waves.
 						</td>
 						<td>
-							Next Light at <span class="ghr" id="lightThreshold7"></span> Ghostly Rays.
+							Next Light at <span class="ghr" id="lightThreshold7"></span> Photonic Waves.
 						</td>
 						<td>
-							Next Light at <span class="ghr" id="lightThreshold8"></span> Ghostly Rays.
+							Next Light at <span class="ghr" id="lightThreshold8"></span> Photonic Waves.
 						</td>
 					</tr><tr>
 						<td>
@@ -5494,12 +5494,12 @@
 							You have <span id="bWatt" style="font-size:25px"></span> Bosonic Watts.<br>Bosonic Speed: <span id="bSpeed" style="font-size:15px"></span>x<br>Bosonic Lab is currently running at <span id="bTotalSpeed" style="font-size:15px"></span>x.<br>You have played Bosonic Lab for <span id="bTicks"></span> ticks.
 						</td>
 						<td>
-							You have <span id="bAM" style="font-size:25px"></span> Bosonic Antimatter. <span id="bAMProduction" style="font-size:15px"></span>
+							You have <span id="bAM" style="font-size:25px"></span> Bosons. <span id="bAMProduction" style="font-size:15px"></span>
 							<br>
 							<div id="bosonicResets">
-								You have <span class="yellow" id="hb" style="font-size:25px">0</span> Higgs Bosons.
+								You have <span class="yellow" id="hb" style="font-size:25px">0</span> Higgs.
 								<br>
-								<button class="gluonupgrade hb" id="hbReset" onclick="higgsReset()"><span id="hbResetDesc"></span><br>(Requires <span id="hbResetReq"></span> Bosonic Antimatter)</button>
+								<button class="gluonupgrade hb" id="hbReset" onclick="higgsReset()"><span id="hbResetDesc"></span><br>(Requires <span id="hbResetReq"></span> Bosons)</button>
 							</div>
 						</td>
 						<td>
@@ -5519,16 +5519,16 @@
 						</tr>
 					</table>
 					<div id="bRunesDiv">
-						<b style="font-size: 20px">Bosonic Runes</b><br>
+						<b style="font-size: 20px">Hypotheses</b><br>
 						<table id="bRunes" align="center" style="margin: auto"><tr></tr></table>
 					</div>
 					<div id="bextab" class="bltab">
 						<span id="typeToExtract"></span>
 						<button class="storebtn" id="extract" onclick="extract()" style="width: 120px"></button><br>
 						<span id="extractTime"></span><br><br>
-						<button class="storebtn" onclick="changeEnchantAction(1)" style="width: 150px">Upgrade enchants</button>
-						<button class="storebtn" onclick="changeEnchantAction(2)" style="width: 150px">Max enchants</button>
-						<button class="storebtn" onclick="changeEnchantAction(3)" style="width: 150px">Use enchants</button><br>
+						<button class="storebtn" onclick="changeEnchantAction(1)">Upgrade</button>
+						<button class="storebtn" onclick="changeEnchantAction(2)">Max</button>
+						<button class="storebtn" onclick="changeEnchantAction(3)">Toggle</button><br>
 						<span id="usedEnchants"></span><br>
 						<table class="table" id="enchants" align="center" style="margin: auto"></table>
 					</div>
@@ -5539,7 +5539,7 @@
 							<tr>
 								<td>
 									You have <span id="wpb" style="font-size:35px"></span> W+ Bosons and <span id="wnb" style="font-size:35px"></span> W- Bosons.<br>
-									Translated to <span id="wbTime" style="font-size:35px"></span>x faster extracting time, <span id="wbOscillate" style="font-size:35px"></span>x faster oscillate progression gain, <span id="wbProduction" style="font-size:35px"></span>x Bosonic Antimatter production speed.
+									Translated to <span id="wbTime" style="font-size:35px"></span>x faster extracting time, <span id="wbOscillate" style="font-size:35px"></span>x faster oscillate progression gain, <span id="wbProduction" style="font-size:35px"></span>x Bosons production speed.
 								</td>
 								<td></td>
 								<td>
@@ -5570,30 +5570,27 @@
 						</table>
 					</div>
 					<div id="gravtab" class="bltab">
-						<div id="gravUnl"></div>
-						<div id="gravDiv">
-							<span style="font-size: 18px">You have <b id="gravAmt" class="gv" style="font-size: 24px">0</b> Gravitons.</span><br>
-							(+<span id="gravGain">0</span>/s, best of <span id="gravBest" class="gv">0</span>)<br><br>
-							You have <span id="gravLeft" class="gv"></span> activations left. (Next at <span id="gravNext"></span> Gravitons)<br>
-							<button class="storebtn" onclick="respecGv()">Respec</button>
-							<table style="margin: auto">
-								<tr>
-									<td><button class="storebtn gw" id="gv_0" onclick="clickGv(0)"><b id="gv_0_data"></b><br><span id="gv_0_eff"></span></button></td>
-									<td><button class="storebtn gw" id="gv_1" onclick="clickGv(1)"><b id="gv_1_data"></b><br><span id="gv_1_eff"></span></button></td>
-									<td><button class="storebtn gw" id="gv_2" onclick="clickGv(2)"><b id="gv_2_data"></b><br><span id="gv_2_eff"></span></button></td>
-								</tr>
-								<tr>
-									<td><button class="storebtn gw" id="gv_7" onclick="clickGv(7)"><b id="gv_7_data"></b><br><span id="gv_7_eff"></span></button></td>
-									<td><button class="gluonupgrade gw" id="gv_upg" onclick="upgGv()" style="font-size: 12px !important">Cancel the disadvantages.<br>Requirement: <span id="gv_upg_req"></span> Higgs</button></td>
-									<td><button class="storebtn gw" id="gv_3" onclick="clickGv(3)"><b id="gv_3_data"></b><br><span id="gv_3_eff"></span></button></td>
-								</tr>
-								<tr>
-									<td><button class="storebtn gw" id="gv_6" onclick="clickGv(6)"><b id="gv_6_data"></b><br><span id="gv_6_eff"></span></button></td>
-									<td><button class="storebtn gw" id="gv_5" onclick="clickGv(5)"><b id="gv_5_data"></b><br><span id="gv_5_eff"></span></button></td>
-									<td><button class="storebtn gw" id="gv_4" onclick="clickGv(4)"><b id="gv_4_data"></b><br><span id="gv_4_eff"></span></button></td>
-								</tr>
-							</table>
-						</div>
+						<span style="font-size: 18px">You have <b id="gravAmt" class="gv" style="font-size: 24px">0</b> Gravitons.</span><br>
+						(+<span id="gravGain">0</span>/s, best of <span id="gravBest" class="gv">0</span>)<br><br>
+						You have <span id="gravLeft" class="gv"></span> activations left. (Next at <span id="gravNext"></span> Gravitons)<br>
+						<button class="storebtn" onclick="respecGv()">Respec</button>
+						<table style="margin: auto">
+							<tr>
+								<td><button class="storebtn gw" id="gv_0" onclick="clickGv(0)"><b id="gv_0_data"></b><br><span id="gv_0_eff"></span></button></td>
+								<td><button class="storebtn gw" id="gv_1" onclick="clickGv(1)"><b id="gv_1_data"></b><br><span id="gv_1_eff"></span></button></td>
+								<td><button class="storebtn gw" id="gv_2" onclick="clickGv(2)"><b id="gv_2_data"></b><br><span id="gv_2_eff"></span></button></td>
+							</tr>
+							<tr>
+								<td><button class="storebtn gw" id="gv_7" onclick="clickGv(7)"><b id="gv_7_data"></b><br><span id="gv_7_eff"></span></button></td>
+								<td><button class="gluonupgrade gw" id="gv_upg" onclick="upgGv()" style="font-size: 12px !important">Cancel the disadvantages.<br>Requirement: <span id="gv_upg_req"></span> Higgs</button></td>
+								<td><button class="storebtn gw" id="gv_3" onclick="clickGv(3)"><b id="gv_3_data"></b><br><span id="gv_3_eff"></span></button></td>
+							</tr>
+							<tr>
+								<td><button class="storebtn gw" id="gv_6" onclick="clickGv(6)"><b id="gv_6_data"></b><br><span id="gv_6_eff"></span></button></td>
+								<td><button class="storebtn gw" id="gv_5" onclick="clickGv(5)"><b id="gv_5_data"></b><br><span id="gv_5_eff"></span></button></td>
+								<td><button class="storebtn gw" id="gv_4" onclick="clickGv(4)"><b id="gv_4_data"></b><br><span id="gv_4_eff"></span></button></td>
+							</tr>
+						</table>
 					</div>
 				</div>
 			</div>

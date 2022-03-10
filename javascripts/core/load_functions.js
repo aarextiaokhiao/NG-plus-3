@@ -816,7 +816,7 @@ function getGhostifyOnNewNGP3Data(){
                         wQkProgress: 0,
                         zNeGen: 1,
                         zNeProgress: 1,
-                        zNeReq: 1,
+                        zNeReq: E(1),
                         wpb: 0,
                         wnb: 0,
                         zb: 0
@@ -1312,7 +1312,7 @@ function doNGp3v21tov221(){
                         wQkProgress: 0,
                         zNeGen: 1,
                         zNeProgress: 1,
-                        zNeReq: 1,
+                        zNeReq: E(1),
                         wpb: 0,
                         wnb: 0,
                         wb: 0
@@ -1741,7 +1741,6 @@ function doNGp3Init2(){
                 updateSpentableMasteryStudies()
         }
         updateTemp()
-        updateBosonicAMDimReturnsTemp()
         
         if (tmp.ngp3) {
                 if (player.eternityBuyer.presets === undefined) player.eternityBuyer.presets = {on: false, autoDil: false, selected: -1, selectNext: 0, left: 1, order: []}
@@ -1790,7 +1789,7 @@ function doNGp3Init2(){
                         ghSave.wzb.zNeGen = 1
                 }
                 tmp.bl.odSpeed = Math.max(tmp.bl.odSpeed, 1)
-                if (Decimal.eq(ghSave.wzb.zNeReq, 0)) ghSave.wzb.zNeReq = 1
+                if (Decimal.eq(ghSave.wzb.zNeReq, 0)) ghSave.wzb.zNeReq = E(1)
                 updateAutoGhosts(true)
         }
 }
@@ -2029,8 +2028,7 @@ function updateNGp3DisplayStuff(){
                 if (u%3==1) el("neutrinoUpg"+u).parentElement.parentElement.style.display=u>ghSave.times+2?"none":""
                 else el("neutrinoUpg"+u).style.display=u>ghSave.times+2?"none":""
         }
-        el("neutrinoBoost3Effect").textContent = tmp.ngp3l ? "They increase the limit of 14th dilation upgrade from 3.00x to" : "They remove the limit of 14th dilation upgrade and then boost that upgrade by "
-        el("gphUnl").textContent="To unlock Ghostly Photons, you need to get "+shortenCosts(pow10(6e9))+" antimatter while your universe is Big Ripped first."
+        el("gphUnl").textContent="To unlock Photons, you need to get "+shortenCosts(pow10(7.5e9))+" antimatter while your universe is Big Ripped first."
         updateBLUnlockDisplay()
         el("bpc68").textContent=shortenMoney(quSave.pairedChallenges.pc68best)
         el("odSlider").value=Math.round((tmp.bl.odSpeed-1)/4*50)
@@ -2049,9 +2047,9 @@ function updateNGp3DisplayStuff(){
         updateBLUnlocks()
         updateBosonicStuffCosts()
         if (!tmp.ngp3l) {
-                el("nextParticle").textContent = "To unlock the next particle (Higgs Bosons), you need to get " + shortenCosts(pow10(2e17)) + " antimatter and " + shortenCosts(getHiggsRequirement()) + " Bosonic Antimatter first."
+                el("nextParticle").textContent = "To unlock the next particle (Higgs), you need to get " + shortenCosts(pow10(2e17)) + " antimatter and " + shortenCosts(getHiggsRequirement()) + " Bosons first."
         }
-        updateHiggsUnlocks()
+        updateBLParticleUnlocks()
 }
 
 function setSomeQuantumAutomationDisplay(){
@@ -2265,7 +2263,7 @@ function onLoad(noOffline) {
         showStatsTab((tabsSave.on && tabsSave.tabStats) || 'stats')
         showAchTab((tabsSave.on && (tabsSave.tabAchs == 'normalachievements' || tabsSave.tabAchs == 'secretachievements') && tabsSave.tabAchs) || 'normalachievements')
         showChallengesTab((tabsSave.on && tabsSave.tabChalls) || 'normalchallenges')
-        showIanttab((tabsSave.on && tabsSave.tabInfinity) || 'preinf')
+        showInftab((tabsSave.on && tabsSave.tabInfinity) || 'preinf')
         showEternityTab((tabsSave.on && tabsSave.tabEternity) || 'timestudies', true)
         showQuantumTab((tabsSave.on && tabsSave.tabQuantum) || 'uquarks')
         showAntTab((tabsSave.on && tabsSave.tabAnt) || 'antcore')
@@ -2605,7 +2603,7 @@ function new_game(id) {
 	showStatsTab('stats')
 	showAchTab('normalachievements')
 	showChallengesTab('normalchallenges')
-	showIanttab('preinf')
+	showInftab('preinf')
 	showEternityTab('timestudies', true)
 	showQuantumTab('uquarks')
 	showBranchTab('red')
@@ -2898,23 +2896,25 @@ function conToDeciGhostify(){
                         ghSave.ghostlyPhotons.ghostlyRays=E(ghSave.ghostlyPhotons.ghostlyRays)
                         ghSave.ghostlyPhotons.darkMatter=E(ghSave.ghostlyPhotons.darkMatter)
                 }
-                if (tmp.bl && ghSave.wzb) {
-                        tmp.bl.ticks=E(tmp.bl.ticks)
-                        tmp.bl.am=E(tmp.bl.am)
-                        tmp.bl.extractProgress=E(tmp.bl.extractProgress)
-                        tmp.bl.autoExtract=E(tmp.bl.autoExtract)
-                        for (var t=0;t<=br.maxLimit-1;t++) tmp.bl.glyphs[t]=E(tmp.bl.glyphs[t]||0)
-                        tmp.bl.battery=E(tmp.bl.battery)
-                        for (var g2=2;g2<=br.maxLimit;g2++) for (var g1=1;g1<g2;g1++) if (tmp.bl.enchants[g1*10+g2]!==undefined) tmp.bl.enchants[g1*10+g2]=E(tmp.bl.enchants[g1*10+g2])
+				if (tmp.bl && ghSave.wzb) {
+					tmp.bl.watt=E(tmp.bl.watt)
+					tmp.bl.ticks=E(tmp.bl.ticks)
+					tmp.bl.speed=E(tmp.bl.speed)
+					tmp.bl.am=E(tmp.bl.am)
+					tmp.bl.extractProgress=E(tmp.bl.extractProgress)
+					tmp.bl.autoExtract=E(tmp.bl.autoExtract)
+					for (var t=0;t<=br.maxLimit-1;t++) tmp.bl.glyphs[t]=E(tmp.bl.glyphs[t]||0)
+					tmp.bl.battery=E(tmp.bl.battery)
+					for (var g2=2;g2<=br.maxLimit;g2++) for (var g1=1;g1<g2;g1++) if (tmp.bl.enchants[g1*10+g2]!==undefined) tmp.bl.enchants[g1*10+g2]=E(tmp.bl.enchants[g1*10+g2])
 
-                        ghSave.wzb.dP=E(ghSave.wzb.dP)
-                        ghSave.wzb.wQkProgress=E(ghSave.wzb.wQkProgress)
-                        ghSave.wzb.zNeProgress=E(ghSave.wzb.zNeProgress)
-                        ghSave.wzb.zNeReq=E(ghSave.wzb.zNeReq)
-                        ghSave.wzb.wpb=E(ghSave.wzb.wpb)
-                        ghSave.wzb.wnb=E(ghSave.wzb.wnb)
-                        ghSave.wzb.zb=E(ghSave.wzb.zb)
-                }
+					ghSave.wzb.dP=E(ghSave.wzb.dP)
+					ghSave.wzb.wQkProgress=E(ghSave.wzb.wQkProgress)
+					ghSave.wzb.zNeProgress=E(ghSave.wzb.zNeProgress)
+					ghSave.wzb.zNeReq=E(ghSave.wzb.zNeReq)
+					ghSave.wzb.wpb=E(ghSave.wzb.wpb)
+					ghSave.wzb.wnb=E(ghSave.wzb.wnb)
+					ghSave.wzb.zb=E(ghSave.wzb.zb)
+				}
         }
 }
 

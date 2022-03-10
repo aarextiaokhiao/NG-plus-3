@@ -72,7 +72,7 @@ function quantum(auto, force, challid, bigRip = false, quick) {
 }
 
 function getQuantumReq() {
-	return E_pow(Number.MAX_VALUE, tmp.ngp3l ? 1.45 : tmp.ngp3 ? 1.4 : 1)
+	return E_pow(Number.MAX_VALUE, tmp.ngp3 ? 1.4 : 1)
 }
 
 function isQuantumReached() {
@@ -111,18 +111,18 @@ function getQCtoQKEffect(){
 function getEPtoQKExp(){
 	let exp = 0.6
 	if (tmp.newNGP3E) exp += 0.05
-	if (hasAch("ng3p28")) exp *= 1.01
+	if (hasAch("ng3p28")) exp *= 1.05
 	return exp
 }
 
 function getEPtoQKMult(){
 	var EPBonus = Math.pow(Math.max(player.eternityPoints.log10() / 1e6, 1), getEPtoQKExp()) - 1
-	EPBonus = softcap(EPBonus, "EPtoQK")
 	return EPBonus 
 }
 
 function getNGP3p1totalQKMult(){
 	let log = 0
+	if (quSave.upgrades.includes("rg5")) log += 1
 	if (hasAch("ng3p16")) log += getEPtoQKMult()
 	if (hasAch("ng3p33")) log += Math.log10(getQCtoQKEffect())
 	if (hasAch("ng3p53")) log += brSave && brSave.spaceShards.plus(1).log10()
@@ -265,7 +265,7 @@ function doQuantumProgress() {
 		var percentage = Math.min(brSave.bestThisRun.max(1).log10() / 6000e4, 100).toFixed(2) + "%"
 		el("progressbar").style.width = percentage
 		el("progresspercent").textContent = percentage
-		el("progresspercent").setAttribute('ach-tooltip', "Percentage to Ghostly Photons")
+		el("progresspercent").setAttribute('ach-tooltip', "Percentage to Photons")
 	}
 }
 
@@ -277,7 +277,7 @@ function quantumReset(force, auto, challid, bigRip, implode = false) {
 		showTab("dimensions")
 		showDimTab("antimatterdimensions")
 		showChallengesTab("challenges")
-		showIanttab("preinf")
+		showInftab("preinf")
 		showEternityTab("timestudies", true)
 	}
 	if (!quantumed) {
@@ -343,7 +343,7 @@ function quantumReset(force, auto, challid, bigRip, implode = false) {
 		if (player.dilation.rebuyables[1] + player.dilation.rebuyables[2] + player.dilation.rebuyables[3] + player.dilation.rebuyables[4] < 1 && player.dilation.upgrades.length < 1) giveAchievement("Never make paradoxes!")
 		if (hasAch("ng3p73")) player.infinitiedBank = nA(player.infinitiedBank, gainBankedInf())
 	} //bounds the else statement to if (force)
-	var oheHeadstart = bigRip ? brSave.upgrades.includes(2) : speedrunMilestonesReached > 0
+	var oheHeadstart = bigRip ? hasRipUpg(2) : speedrunMilestonesReached > 0
 	var keepABnICs = oheHeadstart || bigRip || hasAch("ng3p51")
 	var oldTime = quSave.time
 	quSave.time = 0
@@ -366,7 +366,7 @@ function quantumReset(force, auto, challid, bigRip, implode = false) {
 			}
 		}
 		updateQuantumWorth()
-		if (bigRip && !brSave.upgrades.includes(12)) {
+		if (bigRip && !hasRipUpg(12)) {
 			brSave.storedTS={
 				tt: player.timestudy.theorem,
 				studies: player.timestudy.studies,
@@ -417,7 +417,7 @@ function quantumReset(force, auto, challid, bigRip, implode = false) {
 	var dilTimes = player.dilation.times
 	var bhd = []
 	var bigRipChanged = tmp.ngp3 && bigRip != brSave && brSave.active
-	var turnSomeOn = !bigRip || brSave.upgrades.includes(1)
+	var turnSomeOn = !bigRip || hasRipUpg(1)
 	if (aarMod.ngudpV) for (var d = 0; d < 4; d++) bhd[d]=Object.assign({}, player["blackholeDimension" + (d + 1)])
 	
 	doQuantumResetStuff(bigRip, challid)
@@ -436,7 +436,7 @@ function quantumReset(force, auto, challid, bigRip, implode = false) {
 	if (player.tickspeedBoosts !== undefined && !keepABnICs) player.autobuyers[13] = 14
 	player.challenges = challengesCompletedOnEternity(bigRip)
 	if (bigRip && ghSave.milestones > 9 && aarMod.ngudpV) for (var u = 7; u < 10; u++) player.eternityUpgrades.push(u)
-	if (isRewardEnabled(11) && (bigRip && !brSave.upgrades.includes(12))) {
+	if (isRewardEnabled(11) && (bigRip && !hasRipUpg(12))) {
 		if (player.eternityChallUnlocked > 12) player.timestudy.theorem += masteryStudies.costs.ec[player.eternityChallUnlocked]
 		else player.timestudy.theorem += ([0, 30, 35, 40, 70, 130, 85, 115, 115, 415, 550, 1, 1])[player.eternityChallUnlocked]
 	}
@@ -550,7 +550,7 @@ function quantumReset(force, auto, challid, bigRip, implode = false) {
 				giveAchievement("To the new dimension!")
 				if (beSave && beSave.break) beSave.did = true
 			} else {
-				if (!brSave.upgrades.includes(1) && oheHeadstart) {
+				if (!hasRipUpg(1) && oheHeadstart) {
 					player.infmultbuyer = true
 					for (var d=0;d<8;d++) player.infDimBuyers[d] = true
 				}
@@ -595,9 +595,9 @@ function quantumReset(force, auto, challid, bigRip, implode = false) {
 			el("qctabbtn").style.display = "none"
 			el("electronstabbtn").style.display = "none"
 		}
-		if (bigRip ? brSave.upgrades.includes(12) : isRewardEnabled(11)&&isRewardEnabled(4)) player.dilation.upgrades.push(10)
+		if (bigRip ? hasRipUpg(12) : isRewardEnabled(11)&&isRewardEnabled(4)) player.dilation.upgrades.push(10)
 		else quSave.wasted = (!isRewardEnabled(11) || bigRip) && brSave.storedTS === undefined
-		if (bigRip ? brSave.upgrades.includes(12) : speedrunMilestonesReached > 13 && isRewardEnabled(4)) {
+		if (bigRip ? hasRipUpg(12) : speedrunMilestonesReached > 13 && isRewardEnabled(4)) {
 			for (let i = (player.exdilation != undefined ? 1 : 3); i < 7; i++) if (i != 2 || !aarMod.ngudpV) player.dilation.upgrades.push((i > 2 ? "ngpp" : "ngud") + i)
 			if (aarMod.nguspV) {
 				for (var i = 1; i < 3; i++) player.dilation.upgrades.push("ngusp" + i)
@@ -684,8 +684,8 @@ function quantumReset(force, auto, challid, bigRip, implode = false) {
 	updateTimeStudyButtons()
 	updateDilationUpgradeCosts()
 	drawStudyTree()
-	if (!isRewardEnabled(4) || (bigRip ? !brSave.upgrades.includes(10) : false)) if (el("dilation").style.display=="block") showEternityTab("timestudies", el("eternitystore").style.display=="block")
-	el("masterystudyunlock").style.display = (bigRip ? !brSave.upgrades.includes(12) : speedrunMilestonesReached < 14 || !isRewardEnabled(4)) ? "none" : ""
+	if (!isRewardEnabled(4) || (bigRip ? !hasRipUpg(10) : false)) if (el("dilation").style.display=="block") showEternityTab("timestudies", el("eternitystore").style.display=="block")
+	el("masterystudyunlock").style.display = (bigRip ? !hasRipUpg(12) : speedrunMilestonesReached < 14 || !isRewardEnabled(4)) ? "none" : ""
 	if (speedrunMilestonesReached < 14 || !isRewardEnabled(4)) {
 		el("anttabs").style.display = "none"
 		el("nanofieldtabbtn").style.display = "none"

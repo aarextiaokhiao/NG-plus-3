@@ -15,7 +15,7 @@ function updateTemp() {
 		if (beSave && beSave.unlocked) updateBreakEternityUpgradesTemp()
 		if (player.masterystudies.includes("d14")) updateBigRipUpgradesTemp()
 		if (tmp.nrm !== 1 && brSave.active) {
-			if (!player.dilation.active && brSave.upgrades.includes(14)) tmp.nrm = tmp.nrm.pow(tmp.bru[14])
+			if (!player.dilation.active && hasRipUpg(14)) tmp.nrm = tmp.nrm.pow(tmp.bru[14])
 			if (tmp.nrm.log10() > 1e9) tmp.nrm = pow10(1e9 * Math.pow(tmp.nrm.log10() / 1e9, 2/3))
 		}
 		if (player.masterystudies.includes("d13")) updateTS431ExtraGalTemp()
@@ -86,10 +86,10 @@ let tmp = {
 	be: false,
 	beu: {},
 	bm: [200,175,150,100,50,40,30,25,20,15,10,5,4,3,2,1],
-	nbc: [1,2,4,6,15,50,1e3,1e14,1e35,"1e900","1e3000","1e4500"],
+	nbc: [1,2,4,6,15,50,1e3,1e14,1e35,"1e500","1e2500","1e4500"],
 	nu: [],
-	nuc: [null,1e6,1e7,1e8,2e8,5e8,2e9,5e9,75e8,1e10,7e12,1e18,1e55,1e125,1e160,1e280,"e10000","e13000"],
-	lt: [12800,16e4,48e4,16e5,6e6,5e7,24e7,125e7],
+	nuc: [null,1e6,1e7,1e8,2e8,5e8,2e9,5e9,75e8,1e10,7e12,1e18,1e55,1e100,1e150,1e280,"e10000","e13000"],
+	lt: [1e3,1e4,48e4,16e5,6e6,5e7,24e7,125e7],
 	lti: [2,4,1.5,10,4,1e3,2.5,3],
 	effL: [0,0,0,0,0,0,0],
 	ls: [0,0,0,0,0,0,0],
@@ -201,13 +201,6 @@ function updateInfiniteTimeTemp() {
 		if (tmp.be && !player.dilation.active && beSave.upgrades.includes(8)) x *= getBreakUpgMult(8)
 		if (isLEBoostUnlocked(8)) x *= tmp.leBonus[8]
 		x = softcap(x, "inf_time_log_1")
-		if (aarMod.ngudpV) {
-			if (x > 1e8) x = Math.pow(1e8 * x, .5)
-			if (x > 1e9) x = Math.pow(1 + Math.log10(x), 9)
-			if (tmp.be && x > 1e7) x = Math.pow(93 + Math.log10(x), 3.5)
-		}
-		if ((!tmp.ngp3l || aarMod.ngudpV) && player.dilation.active && x > 1e5) x = Math.pow(1e20 * x, .2)
-		if (!brSave.active) x = softcap(x, "inf_time_log_2")
 	}
 	tmp.it = pow10(x)
 }
@@ -383,12 +376,6 @@ function updateNU15Temp(){
 	//NU15
 }
 
-function updateNU16Temp(){
-	tmp.nu[7] = (E(ghSave.times).log10()+1)**1.5
-}
-
-
-
 function updateNeutrinoUpgradesTemp(){
 	updateNU1Temp()
 	updateNU3Temp()
@@ -417,7 +404,6 @@ function updateBreakEternityUpgrade3Temp(){
 	var log = ep.div("1e1370").add(1).log10()
 	if (nerfUpgs) log /= 2e6
 	var exp = Math.pow(log, 1/3) * 0.5
-	if (!tmp.ngp3l) exp = softcap(exp, "beu3_log")
 	tmp.beu[3] = pow10(exp)
 }
 
@@ -502,10 +488,9 @@ function updateBRU1Temp() {
 	tmp.bru[1] = 1
 	if (!brSave.active) return
 	let exp = 1
-	if (brSave.upgrades.includes(17)) exp = tmp.bru[17]
+	if (hasRipUpg(17)) exp = tmp.bru[17]
 	if (ghostified && ghSave.neutrinos.boosts > 7) exp *= tmp.nb[8]
 	exp *= player.infinityPoints.max(1).log10()
-	exp = softcap(exp, "bru1_log", tmp.ngp3l ? 1 : 2)
 	tmp.bru[1] = pow10(exp) // BRU1
 }
 
@@ -558,60 +543,6 @@ function updatePhotonsUnlockedBRUpgrades(){
 	
 	var bigRipUpg19exp = Math.sqrt(player.timeShards.add(1).log10()) / (tmp.newNGP3E ? 60 : 80)
 	tmp.bru[19] = pow10(bigRipUpg19exp) // BRU19
-}
-
-function updateBosonicAMDimReturnsTemp() {
-	var data = {}
-	tmp.badm = data
-
-	if (!tmp.ngp3) return
-	if (tmp.ngp3l) return
-	if (!ghSave.wzb.unl) return
-
-	data.start = getHiggsRequirement()
-	data.base = getHiggsRequirementMult()
-	data.offset = 1 / Math.log(data.base) - 1
-	data.offset2 = 1 - Math.log10(data.offset + 1) / Math.log10(data.base)
-	data.postDim = ghSave.bl.am.div(data.start)
-	data.preDim = E_pow(data.base,  Decimal.log(100, data.postDim) - data.offset2).add(-data.offset).max(1)
-}
-
-function updateBosonicEnchantsTemp(){
-	tmp.bEn.lvl = {}
-	for (var g2 = 2; g2 <= br.limit; g2++) for (var g1 = 1; g1 < g2; g1++) {
-		var id = g1 * 10 + g2
-		tmp.bEn.lvl[id] = ghSave.bl.enchants[id] || E(0)
-		if (bEn.effects[id] !== undefined) tmp.bEn[id] = getEnchantEffect(id)
-	}
-}
-
-function updateBosonicUpgradesTemp(){
-	for (var r = bu.rows; r >= 1; r--) for (var c = 1; c < 6; c++) {
-		var id = r * 10 + c
-		if (bu.effects[id] !== undefined) tmp.blu[id] = bu.effects[id]()
-	}
-}
-
-function updateWZBosonsTemp(){
-	var data = tmp.wzb
-	var wpl = player.ghostify.wzb.wpb.add(1).log10()
-	var wnl = player.ghostify.wzb.wnb.add(1).log10()
-
-	var bosonsExp = Math.max(wpl * (player.ghostify.wzb.wpb.sub(player.ghostify.wzb.wnb.min(player.ghostify.wzb.wpb))).div(player.ghostify.wzb.wpb.max(1)).toNumber(), 0)
-
-	data.wbt = Decimal.pow(4, bosonsExp)
-	//W Bosons boost to extract time
-	data.wbo = Decimal.pow(10, bosonsExp)
-	//W Bosons boost to Z Neutrino oscillation requirement
-	let div1 = tmp.newNGP3E ? 2 : 30
-	data.wbp = player.ghostify.wzb.wpb.add(player.ghostify.wzb.wnb).div(div1).max(1).pow(1 / 3).sub(1)
-	//W Bosons boost to Bosonic Antimatter production
-
-	let zLog = player.ghostify.wzb.zb.div(10).add(1).log10()
-	let zLogMult = 0.5
-	if (isEnchantUsed(15)) zLogMult = tmp.bEn[15]
-
-	data.zbs = Decimal.pow(10, zLog * zLogMult) //Z Bosons boost to W Quark
 }
 
 function updateNanoEffectUsages() {

@@ -28,7 +28,7 @@ function getBaseDTProduction(){
 
 	if (player.dilation.upgrades.includes('ngpp6')) gain = gain.times(getDil17Bonus())
 	if (player.dilation.upgrades.includes('ngusp3')) gain = gain.times(getD22Bonus())
-	if (tmp.ngp3 && (!brSave.active || brSave.upgrades.includes(11))) {
+	if (tmp.ngp3 && (!brSave.active || hasRipUpg(11))) {
 		gain = gain.times(getDTMultPostBRU11())
 	}
 	if (hasBosonicUpg(15)) gain = gain.times(tmp.blu[15].dt)
@@ -97,7 +97,7 @@ function getDilExp(disable) {
 	if (aarMod.newGameExpVersion) ret += .001
 	if (player.meta !== undefined && !aarMod.nguspV) ret += getDilUpgPower(4) / 4
 	if (tmp.ngp3) {
-		if ((!brSave.active || brSave.upgrades.includes(11)) && player.masterystudies.includes("d13") && disable != "TU3") ret += getTreeUpgradeEffect(2)
+		if ((!brSave.active || hasRipUpg(11)) && player.masterystudies.includes("d13") && disable != "TU3") ret += getTreeUpgradeEffect(2)
 		if (ghostified && ghSave.neutrinos.boosts && disable != "neutrinos") ret += tmp.nb[1]
 	}
 	return ret
@@ -489,11 +489,7 @@ function updateDilationUpgradeCosts() {
 
 function getFreeGalaxyThresholdIncrease(){
 	let thresholdMult = inQC(5) ? Math.pow(10, 2.8) : !canBuyGalaxyThresholdUpg() ? 1.35 : 1.35 + 3.65 * Math.pow(0.8, getDilUpgPower(2))
-	if (hasBosonicUpg(12)) {
-		thresholdMult -= tmp.blu[12]
-		if (thresholdMult < 1.2) thresholdMult = 1.1 + 0.1 / Math.sqrt(2.2 - thresholdMult)
-		else if (thresholdMult < 1.15) thresholdMult = 1.05 + 0.1 / (2.15 - thresholdMult)
-	}
+	if (hasBosonicUpg(12)) thresholdMult -= tmp.blu[12]
 	if (player.exdilation != undefined) thresholdMult -= Math.min(.1 * exDilationUpgradeStrength(2), 0.2)
 	if (thresholdMult < 1.15 && aarMod.nguspV !== undefined) thresholdMult = 1.05 + 0.1 / (2.15 - thresholdMult)
 	return thresholdMult

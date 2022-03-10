@@ -57,7 +57,7 @@ var leBoosts = {
 		},
 		//Boost #8
 		function() {
-			return Math.pow(tmp.effL[6] / 500 + 1, 0.125)
+			return Math.log10(tmp.effL[6] / 500 + 1) / 10 + 1
 		},
 		//Boost #9
 		function() {
@@ -85,10 +85,9 @@ function updateGPHUnlocks() {
 
 function getGPHProduction() {
 	let b = brSave && brSave.active
-	if (b) var ret = player.dilation.dilatedTime.div("1e480")
-	else var ret = player.dilation.dilatedTime.div("1e930")
-	if (ret.gt(1)) ret = ret.pow(0.02)
-	if (b && ret.gt(pow2(444))) ret = ret.div(pow2(444)).sqrt().times(pow2(444))
+	if (b) var ret = player.dilation.dilatedTime.div("1e450")
+	else var ret = player.dilation.dilatedTime.div("1e940")
+	if (ret.gt(1)) ret = ret.pow(b ? 0.02 : 0.025)
 	return ret
 }
 
@@ -105,7 +104,7 @@ function updateRaysPhotonsDisplay(){
 	el("dtGPH").textContent = shorten(player.dilation.dilatedTime)
 	el("gphProduction").textContent = shorten(getGPHProduction())
 	el("gphProduction").className = (brSave.active ? "gph" : "dm") + "Amount"
-	el("gphProductionType").textContent = brSave && brSave.active ? "Ghostly Photons" : "Dark Matter"
+	el("gphProductionType").textContent = brSave && brSave.active ? "Photons" : "Dark Matter"
 	el("gph").textContent = shortenMoney(gphData.amount)
 	el("dm").textContent = shortenMoney(gphData.darkMatter)
 	el("ghrProduction").textContent = shortenMoney(getGHRProduction())
@@ -193,7 +192,7 @@ function getLightThresholdIncrease(l) {
 function lightEmpowerment(auto=false) {
 	if (!(ghSave.ghostlyPhotons.lights[7] >= tmp.leReq)) return
 	if (!hasAch("ng3p101") && !auto) {
-		if (!aarMod.leNoConf && !confirm("You will become a ghost, but Ghostly Photons will be reset. You will gain 1 Light Empowerment from this. Are you sure you want to proceed?")) return
+		if (!aarMod.leNoConf && !confirm("You will become a ghost, but Photons will be reset. You will gain 1 Light Empowerment from this. Are you sure you want to proceed?")) return
 		if (!ghSave.ghostlyPhotons.enpowerments) el("leConfirmBtn").style.display = "inline-block"
 	}
 	ghSave.ghostlyPhotons.enpowerments++
@@ -211,7 +210,7 @@ function getLightEmpowermentReq(le) {
 	let x = le * 2.4 + 1
 	let scale = 0
 	if (le > 19) {
-		x += Math.pow(le - 19, 2*(hasBosonicUpg(51)?0.85:1)) / 3
+		x += Math.pow(le - 19, 2) / 3
 		scale = 1
 	}
 	if (hasAch("ng3p95")) x--

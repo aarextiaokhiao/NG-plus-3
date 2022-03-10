@@ -273,7 +273,7 @@ const secretAchievementTooltips = {
 	ng3ps14 : "Unlock, or show the ghostly news ticker.",
 	ng3ps15 : "You have a 1/1,000 chance of getting this achievement every time the 'You became a ghost!' animation appears.",
 	ng3ps16 : 'Press the "Continue to mastery studies." button and the "Lead back to time studies." button 100 times each.',
-	ng3ps17 : "Manually extract 20 runes in the row, all in 1 game tick for each rune.",
+	ng3ps17 : "Manually hypotheise 20 in the row, all in 1 game tick for each.",
 	ng3ps18 : "Be in 20 unique challenges at the same time.",
 	ng3ps21 : "Import Zombify, which is a cancelled layer.",
 	ng3ps22 : "Read 400 unique news tickers.",

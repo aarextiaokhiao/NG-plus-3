@@ -149,11 +149,7 @@ var masteryStudies = {
 		322: function(){
 			let log = Math.sqrt(Math.max(3-getTickspeed().log10(),0))/2e4
 			if (log > 110) log = Math.sqrt(log * 27.5) + 55
-			if (log > 1e3 && aarMod.ngudpV !== undefined) log = Math.pow(7 + Math.log10(log), 3)
 			if (aarMod.newGameExpVersion) log += Math.pow(Math.log10(log + 10), 4) - 1
-
-			if (!tmp.ngp3l) log = softcap(log, "ms322_log")
-			//these are also required very much--more DT is more tickspeed is more DT
 			return pow10(log)
 		},
 		332: function(){

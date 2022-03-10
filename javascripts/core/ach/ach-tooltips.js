@@ -459,7 +459,7 @@ function setR21Tooltip(){
 	//ACHIEVEMENT ROW 21
 	uc.setAttribute('ach-tooltip', "Become a ghost with at least "+shortenCosts(pow10(2.2e5))+" EP without starting Eternity Challenge 10 while Big Ripped. Reward: Meta-Dimension Boosts no longer reset Meta Dimensions.")
 	mi.setAttribute('ach-tooltip', "Get "+shorten(Number.MAX_VALUE)+" infinities. Reward: You gain banked infinites and eternities when going Quantum or Big Ripping the universe.")
-	wd.setAttribute('ach-tooltip', "Get "+shortenCosts(pow10(1e12))+" Infinity Unstable Quarks for each Branch without Big Ripping in this Ghostify. Reward: Normal replicant autobuyer buys max.")
+	wd.setAttribute('ach-tooltip', "Get "+shortenCosts(pow10(1e12))+" "+getUQNameFromDecays(2)+" quarks for each Branch without Big Ripping in this Ghostify. Reward: Normal replicant autobuyer buys max.")
 	radioDecay.setAttribute('ach-tooltip', "Get 10 total Radioactive Decays. Reward: You get 1 galaxy worth of generated neutrinos per second.")
 	arent.setAttribute('ach-tooltip', "Reach " + shortenCosts(pow10(1.8e6)) + " IP while dilated and Big Ripped and without having studies, EP mult upgrades, Tree Upgrades, and Break Eternity within this Ghostify. Reward: Your 8th Tree Upgrade's level speeds up Nanofield.")
 }
@@ -476,7 +476,7 @@ function setR22Tooltip(){
 	let igu = el("I give up.")
 
 	//ACHIEVEMENT ROW 22
-	ghostierthanbefore.setAttribute("ach-tooltip", "Unlock Bosonic Lab. Reward: The meta-antimatter effect uses your best meta-antimatter in your current Ghostify instead of your best in the current Quantum, and unlock all achievements prior to Ghostly Photons.")
+	ghostierthanbefore.setAttribute("ach-tooltip", "Unlock Bosonic Lab. Reward: The meta-antimatter effect uses your best meta-antimatter in your current Ghostify instead of your best in the current Quantum, and unlock all achievements prior to Photons.")
 	ee.setAttribute('ach-tooltip', "Get "+shorten(Number.MAX_VALUE)+" eternities. Reward: Boost quark gain by 10 per Light Empowerment squared.")
 	oc.setAttribute('ach-tooltip', "Become a ghost with at least "+shortenCosts(pow10(3.75e5)) + " EP while Big Ripped with the Anti-Dilation modifier. Reward: Remove the second nanofield reward scaling.")
 	btco.setAttribute('ach-tooltip', "Complete Paired Challenge 1 after getting "+shortenCosts(pow10(1.65e9)) + " antimatter in Quantum Challenges 6 and 8. Reward: Ghostifies only makes you lose 25% of your radiocative decays.")
@@ -498,7 +498,7 @@ function setR23Tooltip(){
 
 	//ACHIEVEMENT ROW 23
 	ghostliest.setAttribute('ach-tooltip', "Get " + shorten(Math.pow(Number.MAX_VALUE, 1/4)) + " Ghostifies. Reward: Ghostifies boost the gain of Ghost Particles at a reduced rate.")
-	metae18.setAttribute('ach-tooltip', "Get " + shortenCosts(pow10(1e18)) + " antimatter. Reward: Distant Antimatter Galaxies scaling is 10% weaker and Higgs Bosons produce Bosonic Antimatter at a linear rate.")
+	metae18.setAttribute('ach-tooltip', "Get " + shortenCosts(pow10(1e18)) + " antimatter. Reward: Distant Antimatter Galaxies scaling is 10% weaker and Higgs produce Bosons at a linear rate.")
 	aretheseanother.setAttribute('ach-tooltip', "Reach " + shortenCosts(pow10(40000)) + " Quarks. Reward: Gain 500x more Quarks and Ghost Particles.")
 }
 

@@ -80,16 +80,13 @@ function getGalaxyRequirement(offset = 0, display) {
 	if (!player.boughtDims) {
 		tmp.grd.speed = 1
 		let ghostlySpeed = tmp.be ? 55 : 1
+		if (hasGrav(1)) ghostlySpeed *= tmp.gv.core[1].n_eff
 		let div = 1e4
 		let over = tmp.grd.galaxies / (302500 / ghostlySpeed)
 		if (over >= 1) {
-			if (over >= 3) {
-				div /= Math.pow(over, 6) / 729
-				scaling = 6
-			}
 			if (isLEBoostUnlocked(2) && tmp.be) div *= tmp.leBonus[2]
 			tmp.grd.speed = Math.pow(2, (tmp.grd.galaxies + 1 - 302500 / ghostlySpeed) * ghostlySpeed / div)
-			scaling = Math.max(scaling, 5)
+			scaling = Math.max(scaling, 4)
 		}
 
 		let distantStart = getDistantScalingStart()
@@ -118,8 +115,6 @@ function getGalaxyRequirement(offset = 0, display) {
 			amount *= Math.pow(1 + (GUBought("rg1") ? 1 : 2) / (aarMod.ngmX > 3 ? 10 : 1e3), (tmp.grd.galaxies - remoteStart + 1) * speed2)
 			scaling = Math.max(scaling, 3)
 		}
-
-		if (tmp.grd.galaxies >= tmp.grd.darkStart) scaling = Math.max(scaling, 4)
 	}
 	amount = Math.ceil(amount)
 
@@ -148,16 +143,9 @@ function getDistantScalingStart() {
 	var n = 100 + getECReward(5)
 	if (player.timestudy.studies.includes(223)) n += 7
 	if (player.timestudy.studies.includes(224)) n += Math.floor(player.resets/2000)
-	if (tmp.ngp3) if (brSave.active && brSave.upgrades.includes(15)) n += tmp.bru[15]
+	if (tmp.ngp3) if (brSave.active && hasRipUpg(15)) n += tmp.bru[15]
 	if (player.dilation.upgrades.includes("ngmm11")) n += 25
-
-	if (tmp.grd.galaxies >= tmp.grd.darkStart) {
-		let push = 5 / tmp.grd.speed
-		if (GUBought("rg5")) push *= 1.13
-		if (GUBought("gb5")) push *= 1 + Math.sqrt(player.replicanti.galaxies) / 550
-		if (GUBought("br5")) push *= 1 + Math.min(Math.sqrt(player.dilation.tachyonParticles.max(1).log10()) * 0.013, 0.14)
-		n -= Math.ceil((tmp.grd.galaxies - tmp.grd.darkStart + 1) / push)
-	}
+	if (hasGrav(1)) n /= tmp.gv.core[1].n_eff
 
 	if (tmp.grd.speed == 1) return Math.max(n, 0)
 	return n
@@ -181,5 +169,6 @@ function getRemoteScalingStart(galaxies) {
 		if (isNanoEffectUsed("remote_start")) n += tmp.nf.effects.remote_start
 		if (galaxies > 1/0 && !tmp.be) n -= galaxies - 1/0 
 	}
+	if (hasGrav(1)) n /= tmp.gv.core[1].n_eff
 	return n
 }

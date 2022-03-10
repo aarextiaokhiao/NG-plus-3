@@ -353,7 +353,7 @@ var uq_names = {
 	standard(rds) {
 		let x = "unstable"
 		let roots_1 = ["", "radioactive", "infinity", "eternal", "quantum"]
-		let roots_2 = ["", "ghostly", "disappearing", "reappearing", "ethereal"]
+		let roots_2 = ["", "spectre", "disappearing", "reappearing", "ethereal"]
 
 		let a = rds % 5
 		if (a > 0) x = roots_1[a] + " " + x
@@ -371,7 +371,7 @@ var uq_names = {
 	abbreviated(rds) {
 		let x = ""
 		let roots_1 = ["", "r", "i", "e", "q"]
-		let roots_2 = ["", "g", "d", "ra", "er"]
+		let roots_2 = ["", "s", "d", "ra", "er"]
 
 		let a = rds % 5
 		if (a > 0) x = roots_1[a] + "."
@@ -392,7 +392,7 @@ var uq_names = {
 	scientific(rds) {
 		let x = "Rd"
 		let roots_1 = ["", "r", "i", "e", "q"]
-		let roots_2 = ["", "g", "d", "ra", "er"]
+		let roots_2 = ["", "s", "d", "ra", "er"]
 
 		let a = rds % 5
 		let b = Math.floor((rds - 5) / 50 + 1)

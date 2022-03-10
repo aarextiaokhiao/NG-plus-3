@@ -93,8 +93,10 @@ function getMetaBoostPower() {
 	if (player.dilation.upgrades.includes("ngpp4")) r = getDil15Bonus()
 	if (tmp.ngp3) {
 		if (isNanoEffectUsed("meta_boost_power")) r = tmp.nf.effects.meta_boost_power
+
 		if (player.masterystudies.includes("t312")) exp = 1.045
 		if (hasAch("ng3p26")) exp *= Math.log10(9 + Math.max(player.meta.resets / 75 + 0.25, 1))
+		if (hasGrav(0)) exp *= tmp.gv.core[0].p_eff
 	}
 	if (hasAch("ngpp14")) r *= 1.01
 
@@ -138,16 +140,19 @@ function getMetaShiftRequirement() {
 	var data = {tier: Math.min(8, mdb + 4), amount: 20}
 	var inQC4 = inQC(4)
 	data.mult = inQC4 ? 5.5 : 15
-	if (tmp.ngp3) if (player.masterystudies.includes("t312")) data.mult -= 1
+	if (tmp.ngp3) {
+		if (player.masterystudies.includes("t312")) data.mult -= 1
+		if (hasGrav(0)) data.mult *= tmp.gv.core[0].n_eff
+	}
 	data.amount += data.mult * Math.max(mdb - 4, 0)
-	if (tmp.ngp3) if (player.masterystudies.includes("d13")) data.amount -= getTreeUpgradeEffect(1)
+	if (tmp.ngp3 && player.masterystudies.includes("d13")) data.amount -= getTreeUpgradeEffect(1)
 	if (ghostified) if (hasNU(1)) data.amount -= tmp.nu[0]
 
 	data.scalingStart = inQC4 ? 55 : 15
 	if (player.meta.resets >= data.scalingStart) {
 		var multAdded = inQC4 ? 14.5 : 5
-		data.amount += multAdded * (mdb - data.scalingStart)
 		data.mult += multAdded
+		data.amount += multAdded * (mdb - data.scalingStart)
 	}
 	
 	return data
@@ -218,7 +223,7 @@ function getMetaCost(tier, boughtTen) {
 }
 
 function getMetaCostScalingStart() {
-	return tmp.ngp3l ? "1e1100" : "1e900"
+	return "1e900"
 }
 
 function getMetaMaxCost(tier) {

@@ -546,7 +546,7 @@ function ghostifyReset(implode, gain, amount, force) {
 	var nBRU = []
 	var nBEU = []
 	for (var u = 20; u > 0; u--) {
-		if (nBRU.includes(u + 1) || brSave.upgrades.includes(u)) nBRU.push(u)
+		if (nBRU.includes(u + 1) || hasRipUpg(u)) nBRU.push(u)
 		if (u < 12 && u != 7 && (nBEU.includes(u + 1) || beSave.upgrades.includes(u))) nBEU.push(u)
 	}
 	if (bm > 2) for (var c=1;c<9;c++) quSave.electrons.mult += .5 - QCIntensity(c) * .25
@@ -638,8 +638,6 @@ function showGhostifyTab(tabName) {
 }
 
 function updateGhostifyTabs() {
-	el("gravtabbtn").style.display = ghSave.hb.unl ? "" : "none"
-
 	if (el("neutrinos").style.display == "block") updateNeutrinosTab()
 	if (el("automaticghosts").style.display == "block") if (ghSave.milestones > 7) updateQuantumWorth("display")
 	if (el("gphtab").style.display == "block" && ghSave.ghostlyPhotons.unl) updatePhotonsTab()
@@ -876,8 +874,7 @@ function displayNonlegacyStuff() {
 }
 
 function getOldAgeRequirement() {
-	let year = new Date().getFullYear() || 2020
-	if (tmp.ngp3l) year = 2019
+	let year = new Date().getFullYear() || 2022
 	return pow10(3 * 86400 * 365.2425 * year)
 }
 

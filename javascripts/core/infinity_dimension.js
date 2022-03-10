@@ -279,7 +279,6 @@ function getPreInfinityPowerEffectExp() {
 
 function getInfinityPowerEffectExp() {
 	let x = tmp.infPrePowExp
-	if (ghSave) if (ghSave.neutrinos.boosts >= 12) x = tmp.nb[12]
 	return x
 }
 

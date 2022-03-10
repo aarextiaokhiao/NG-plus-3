@@ -319,7 +319,7 @@ function setupBosonicUpgrades(){
 			var id = (r * 10 + c)
 			col.innerHTML = "<button id='bUpg" + id + "' class='gluonupgrade unavailablebtn' style='font-size: 9px' onclick='buyBosonicUpgrade(" + id + ")'>" + (bu.descs[id] || "???") + "<br>" +
 			(bu.effects[id] !== undefined ? "Currently: <span id='bUpgEffect" + id + "'>0</span><br>" : "") +
-			"Cost: <span id='bUpgCost" + id + "'></span> Bosonic Antimatter<br>" +
+			"Cost: <span id='bUpgCost" + id + "'></span> Bosons<br>" +
 			"Requires: <span id='bUpgG1Req" + id + "'></span> <div class='bRune' type='" + bu.reqData[id][2] + "'></div> & <span id='bUpgG2Req" + id + "'></span> <div class='bRune' type='" + bu.reqData[id][4] + "'></div></button>"
 		}
 	}
@@ -338,7 +338,7 @@ function setupBosonicRunes(){
 		var type = glyph.getAttribute("type")
 		if (type > 0 && type <= br.maxLimit) {
 			glyph.className = "bRune " + br.names[type]
-			glyph.setAttribute("ach-tooltip", br.names[type] + " Bosonic Rune")
+			glyph.setAttribute("ach-tooltip", br.names[type] + " Hypothesis")
 		}
 	}
 }
@@ -937,7 +937,7 @@ function getBrandNewWZBosonsData(){
 		wQkProgress: 0,
 		zNeGen: 1,
 		zNeProgress: 0,
-		zNeReq: 1,
+        zNeReq: E(1),
 		wpb: 0,
 		wnb: 0,
 		zb: 0
@@ -2220,18 +2220,18 @@ function changeSaveDesc(saveId, placement) {
 		if (isSaveGhostified) {
 			if (temp.achievements.includes("ng3p101")) {
 				var data=temp.ghostify
-				msg+="Higgs Bosons: "+shortenDimensions(E(data.hb.higgs))+", Gravitons: "+shorten(E(data.gravitons.amount))
+				msg+="Higgs: "+shortenDimensions(E(data.hb.higgs))+", Gravitons: "+shorten(E(data.gravitons.amount))
 			} else if (temp.achievements.includes("ng3p91")) {
 				var data=temp.ghostify.hb
-				msg+="Bosonic Antimatter: "+shorten(E(temp.ghostify.bl.am))+", Higgs Bosons: "+shortenDimensions(E(data.higgs))
+				msg+="Bosons: "+shorten(E(temp.ghostify.bl.am))+", Higgs: "+shortenDimensions(E(data.higgs))
 			} else if (temp.achievements.includes("ng3p81")) {
 				var data=temp.ghostify.wzb
-				msg+="Bosonic Antimatter: "+shorten(E(temp.ghostify.bl.am))+", W+ Bosons: "+shortenDimensions(E(data.wpb))+", W- Bosons: "+shortenDimensions(E(data.wnb))+", Z Bosons: "+shortenDimensions(E(data.zb))
+				msg+="Bosons: "+shorten(E(temp.ghostify.bl.am))+", W+ Bosons: "+shortenDimensions(E(data.wpb))+", W- Bosons: "+shortenDimensions(E(data.wnb))+", Z Bosons: "+shortenDimensions(E(data.zb))
 			} else if (temp.achievements.includes("ng3p71")) {
 				var data=temp.ghostify.ghostlyPhotons
 				var lights=0
 				for (var l=0;l<8;l++) lights+=data.lights[l]
-				msg+="Ghostly Photons: "+shortenDimensions(E(data.amount))+", Dark Matter: "+shortenDimensions(E(data.darkMatter))+", Ghostly Rays: "+shortenDimensions(E(data.ghostlyRays))+", Lights: "+getFullExpansion(lights)+", Light Empowerments: "+getFullExpansion(data.enpowerments)
+				msg+="Photons: "+shortenDimensions(E(data.amount))+", Dark Matter: "+shortenDimensions(E(data.darkMatter))+", Photonic Waves: "+shortenDimensions(E(data.ghostlyRays))+", Lights: "+getFullExpansion(lights)+", Light Empowerments: "+getFullExpansion(data.enpowerments)
 			} else msg+="Ghost Particles: "+shortenDimensions(E(temp.ghostify.ghostParticles))+", Neutrinos: "+shortenDimensions(Decimal.add(temp.ghostify.neutrinos.electron, temp.ghostify.neutrinos.mu).add(temp.ghostify.neutrinos.tau).round())
 		} else if (isSaveQuantumed) {
 			if (!temp.masterystudies) msg+="Endgame of NG++"
@@ -2627,7 +2627,7 @@ function onNotationChange() {
 		updateBreakEternity()
 		onNotationChangeNeutrinos()
 		updateBosonicStuffCosts()
-		if (!ghSave.ghostlyPhotons.unl) el("gphUnl").textContent="To unlock Ghostly Photons, you need to get "+shortenCosts(pow10(6e9))+" antimatter while your universe is Big Ripped first."
+		if (!ghSave.ghostlyPhotons.unl) el("gphUnl").textContent="To unlock Photons, you need to get "+shortenCosts(pow10(7.5e9))+" antimatter while your universe is Big Ripped first."
 		else if (!ghSave.wzb.unl) updateBLUnlockDisplay()
 		else if (!tmp.hb.unl) updateHiggsUnlockDisplay()
 	}
@@ -3098,12 +3098,12 @@ function updateAutobuyers() {
     	}
 
     	if (canBreakInfinity()) {
-        	el("postianttable").style.display = "inline-block"
+        	el("postinftable").style.display = "inline-block"
         	el("breaktable").style.display = "inline-block"
         	el("abletobreak").style.display = "none"
 		el("break").style.display = "inline-block"
 	} else {
-        	el("postianttable").style.display = "none"
+        	el("postinftable").style.display = "none"
         	el("breaktable").style.display = "none"
 		el("abletobreak").textContent = "You need to " + (aarMod.ngexV ? "complete all Normal Challenges" : "get Automated Big Crunch interval to 0.1") + " to be able to break infinity"
 		el("abletobreak").style.display = "block"
@@ -4552,7 +4552,7 @@ function doBosonsUnlockStuff() {
 
 function doPhotonsUnlockStuff(){
 	ghSave.ghostlyPhotons.unl=true
-	$.notify("Congratulations! You have unlocked Ghostly Photons!", "success")
+	$.notify("Congratulations! You have unlocked Photons!", "success")
 	giveAchievement("Progressing as a Ghost")
 	updateTemp()
 	updateQuantumChallenges()
@@ -4609,7 +4609,7 @@ function doNGP3UnlockStuff(){
 	var inEasierModeCheck = !inEasierMode()
 	if (player.masterystudies && (player.masterystudies.includes("d14")||hasAch("ng3p51")) && !metaSave.ngp4 && !inEasierModeCheck) doNGP4UnlockStuff()
 	if (player.eternityPoints.gte("1e1200") && brSave.active && !beSave.unlocked) doBreakEternityUnlockStuff()
-	if (player.money.gte(pow10(6e9)) && brSave.active && !ghSave.ghostlyPhotons.unl) doPhotonsUnlockStuff()
+	if (player.money.gte(pow10(7.5e9)) && brSave.active && !ghSave.ghostlyPhotons.unl) doPhotonsUnlockStuff()
 	if (canUnlockBosonicLab() && !ghSave.wzb.unl) doBosonsUnlockStuff()
 	if (!tmp.ng3l) unlockHiggs()
 }
@@ -4680,7 +4680,6 @@ function doPerSecondNGP3Stuff(){
 
 	//Post-NG+3
 	doPostNGP3UnlockStuff()
-	updateGravitonsTab()
 
 	//NG+3
 	if (quSave.autoECN !== undefined) {
@@ -5027,15 +5026,19 @@ function ghostifyAutomationUpdating(diff){
 }
 
 function WZBosonsUpdating(diff){
-	var data = ghSave.bl
 	ghSave.automatorGhosts[17].t += diff
-	var wattGained = Math.max(getBosonicWattGain(), data.watt)
-	data.speed = Math.max(Math.min(wattGained + (data.watt - data.speed) * 2, wattGained), data.speed)
-	data.watt = wattGained
-	if (data.speed > 0) {
-		var limitDiff = Math.min(diff,data.speed * 14400)
-		bosonicTick((data.speed-limitDiff / 28800) * limitDiff)
-		data.speed = Math.max(data.speed-limitDiff/ 14400, 0)
+
+	var data = ghSave.bl
+	var wattGain = getBosonicWattGain()
+	if (wattGain.gt(data.watt)) {
+		if (wattGain.gt(data.speed)) data.speed = wattGain.sub(data.watt).times(10).add(data.speed).min(wattGain)
+		data.watt = wattGain
+	}
+
+	if (E(data.speed).gt(0)) {
+		var limitDiff = data.speed.times(14400).min(diff).toNumber()
+		bosonicTick(data.speed.sub(limitDiff / 28800).times(limitDiff))
+		data.speed = data.speed.max(limitDiff / 14400).sub(limitDiff / 14400)
 	}
 }
 
@@ -5258,9 +5261,8 @@ function ERFreeTickUpdating(){
 }
 
 function nonERFreeTickUpdating(){
-	let gain;
 	let thresholdMult = 1.33
-	var easier = player.galacticSacrifice && !(aarMod.ngmX > 3)
+	let easier = player.galacticSacrifice && !(aarMod.ngmX > 3)
 	if (easier) {
 		thresholdMult = player.timestudy.studies.includes(171) ? 1.1 : 1.15
 		if (player.tickspeedBoosts != undefined) thresholdMult = player.timestudy.studies.includes(171) ? 1.03 : 1.05
@@ -5270,9 +5272,10 @@ function nonERFreeTickUpdating(){
 	}
 	if (QCIntensity(7)) thresholdMult *= tmp.qcRewards[7]
 	if (ghostified && ghSave.neutrinos.boosts > 9) thresholdMult -= tmp.nb[10]
-	if (thresholdMult < 1.1 && player.galacticSacrifice == undefined) thresholdMult = 1.05 + 0.05 / (2.1 - thresholdMult)
+	if (thresholdMult < 1.1 && player.galacticSacrifice == undefined) thresholdMult = 1 + 0.1 / (2.1 - thresholdMult)
 	if (thresholdMult < 1.01 && player.galacticSacrifice) thresholdMult = 1.005 + 0.005 / (2.01 - thresholdMult)
-	gain = Math.ceil(E(player.timeShards).dividedBy(player.tickThreshold).log10()/Math.log10(thresholdMult))
+
+	let gain = Math.ceil(E(player.timeShards).dividedBy(player.tickThreshold).log10()/Math.log10(thresholdMult))
 	player.totalTickGained += gain
 	player.tickspeed = player.tickspeed.times(E_pow(tmp.tsReduce, gain))
 	player.postC3Reward = E_pow(getPostC3Mult(), gain * getIC3EffFromFreeUpgs()).times(player.postC3Reward)
@@ -5675,27 +5678,6 @@ function ECRewardDisplayUpdating(){
 	el("ec10span").textContent = shortenMoney(ec10bonus) + "x"
 }
 
-function bigRipUpgradeUpdating(){
-	if (ghSave.milestones>7) {
-		el("spaceShards").textContent=shortenDimensions(brSave.spaceShards)
-		for (var u=1;u<=getMaxBigRipUpgrades();u++) {
-			el("bigripupg"+u).className = brSave && brSave.upgrades.includes(u) ? "gluonupgradebought bigrip" + (isBigRipUpgradeActive(u, true) ? "" : "off") : brSave.spaceShards.lt(bigRipUpgCosts[u]) ? "gluonupgrade unavailablebtn" : "gluonupgrade bigrip"
-			el("bigripupg"+u+"cost").textContent = shortenDimensions(E(bigRipUpgCosts[u]))
-		}
-	}
-	el("bigripupg1current").textContent=shortenDimensions(tmp.bru[1])
-	el("bigripupg8current").textContent=shortenDimensions(tmp.bru[8])+(Decimal.gte(tmp.bru[8],Number.MAX_VALUE)&&!hasNU(11)?"x (cap)":"x")
-	el("bigripupg14current").textContent=tmp.bru[14].toFixed(2)
-	var bru15effect = tmp.bru[15]
-	el("bigripupg15current").textContent=bru15effect < 999.995 ? bru15effect.toFixed(2) : getFullExpansion(Math.round(bru15effect))
-	el("bigripupg16current").textContent=shorten(tmp.bru[16])
-	el("bigripupg17current").textContent=tmp.bru[17]
-	if (ghSave.ghostlyPhotons.unl) {
-		el("bigripupg18current").textContent=shorten(tmp.bru[18])
-		el("bigripupg19current").textContent=shorten(tmp.bru[19])
-	}
-}
-
 function challengeOverallDisplayUpdating(){
 	if (el("challenges").style.display == "block") {
 		if (el("eternitychallenges").style.display == "block") ECRewardDisplayUpdating()
@@ -5705,7 +5687,6 @@ function challengeOverallDisplayUpdating(){
 				if (c==5) el("qc5reward").textContent = getDimensionPowerMultiplier("linear").toFixed(2)
 				else if (c!=2) el("qc"+c+"reward").textContent = shorten(tmp.qcRewards[c])
 			}
-			if (player.masterystudies.includes("d14")) bigRipUpgradeUpdating() //big rip
 		}
 	}
 }
@@ -5984,7 +5965,7 @@ function gameLoop(diff) {
 		if (quantumed) quantumOverallUpdating(diff)
 		if (ghostified) {
 			if (ghSave.wzb.unl) WZBosonsUpdating(diff) // Bosonic Lab
-			if (ghSave.ghostlyPhotons.unl) ghostlyPhotonsUpdating(diff) // Ghostly Photons
+			if (ghSave.ghostlyPhotons.unl) ghostlyPhotonsUpdating(diff) // Photons
 		}
 		postNGp3Updating(diff)
 	}
@@ -6034,7 +6015,7 @@ function simulateTime(seconds, real, id) {
 	if (storage.dt) {
 		if (quSave.electrons.amount>storage.ec) popupString+= ",<br> electrons increased by "+getFullExpansion(Math.round(quSave.electrons.amount-storage.ec))
 		if (quSave.replicants.amount.gt(storage.nr)) popupString+= ",<br> normal replicants increased "+shortenMoney(quSave.replicants.amount.log10() - (Decimal.max(storage.nr, 1)).log10())+" orders of magnitude"
-		if (ghSave.bl.am.gt(storage.ma)) popupString+= ",<br> Bosonic Antimatter increased "+shortenMoney(ghSave.bl.am.log10() - (Decimal.max(storage.bAm, 1)).log10())+" orders of magnitude"
+		if (ghSave.bl.am.gt(storage.ma)) popupString+= ",<br> Bosons increased "+shortenMoney(ghSave.bl.am.log10() - (Decimal.max(storage.bAm, 1)).log10())+" orders of magnitude"
 	}
 	if (player.infinitied > playerStart.infinitied || player.eternities > playerStart.eternities) popupString+= ","
 	else popupString+= "."
@@ -6314,9 +6295,9 @@ function isEterBuyerOn() {
 	return (player.eternityBuyer.dilMode != "upgrades" && !player.eternityBuyer.slowStopped) || (player.eternityBuyer.dilMode == "upgrades" && player.eternityBuyer.tpUpgraded)
 }
 
-function showIanttab(tabName) {
+function showInftab(tabName) {
 	//iterate over all elements in div_tab class. Hide everything that's not tabName and show tabName
-	var tabs = document.getElementsByClassName('ianttab');
+	var tabs = document.getElementsByClassName('inftab');
 	var tab;
 	for (var i = 0; i < tabs.length; i++) {
 		tab = tabs.item(i);

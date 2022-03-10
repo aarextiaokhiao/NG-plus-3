@@ -2359,7 +2359,7 @@ br {
 }
 
 .neutrinos {
-	font-size: 35px
+	font-size: 25px
 }
 
 .gluonupgrade.neutrinoupg {
@@ -2378,15 +2378,19 @@ br {
 }
 
 .gluonupgradebought.neutrinoupg {
-	background: #bfbfbf !important;
-	border: 1px solid #7f7f7f;
-	box-shadow: inset 0px 0px 20px 0px #7f7f7f;
-	color: #3f3f3f;
-	text-shadow: 0px 0px 3px #3f3f3f, 0px 0px 6px #3f3f3f
+	background: #bfcfbf !important;
+	border: 1px solid #7f8f7f;
+	box-shadow: inset 0px 0px 20px 0px #afbfaf;
+	color: #3f7f3f;
+	text-shadow: 0px 0px 3px #3f7f3f
 }
 
-.neutrinoBoosts {
-	height: 90px
+.neutrinoBoosts, .neutrinoBoosts2 {
+	height: 60px
+}
+
+.neutrinoBoosts2 td {
+	background: rgba(0, 0, 0, 0.25)
 }
 
 #autoGhost11pw, #autoGhost11lw, #autoGhost11cw {
@@ -2463,6 +2467,14 @@ td.uv {
 	background: rgba(143, 0, 191, 0.25)
 }
 
+.grey {
+	color: #9f9f9f
+}
+
+td.grey {
+	background: rgba(159, 159, 159, 0.25)
+}
+
 .lEp {
 	color: #bfaf5f
 }
@@ -2488,12 +2500,12 @@ td.lEp {
 	display: inline-block
 }
 
-.bRune.Infinity {
+.bRune.Infinite {
 	background: #b67f33;
 	box-shadow: 0px 0px 12px #b67f33
 }
 
-.bRune.Eternity {
+.bRune.Eternal {
 	background: #b341e0;
 	box-shadow: 0px 0px 12px #b341e0
 }
@@ -2503,7 +2515,7 @@ td.lEp {
 	box-shadow: 0px 0px 12px #32c832
 }
 
-.bRune.Ghostly {
+.bRune.Spectre {
 	background: #e900ff;
 	box-shadow: 0px 0px 12px #6a00ff
 }
@@ -2513,7 +2525,7 @@ td.lEp {
 	box-shadow: 0px 0px 12px #002fbf
 }
 
-.bRune.Sixth {
+.bRune.Newtonian {
 	background: #26f4c1;
 	box-shadow: 0px 0px 12px #26f4c1
 }
