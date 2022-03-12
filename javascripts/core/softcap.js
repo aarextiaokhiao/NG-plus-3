@@ -73,12 +73,6 @@ var softcap_data = {
 			start: E(1e80),
 			pow: 0.8,
 			derv: true
-		},
-		2: {
-			func: "pow",
-			start: E(1e90),
-			pow: 0.7,
-			derv: true
 		}
 	},
 	working_ts: {
