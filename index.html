@@ -5491,22 +5491,27 @@
 				<div id="blDiv">
 					<table class='qtable'><tr>
 						<td>
-							You have <span id="bWatt" style="font-size:25px"></span> Bosonic Watts.<br>Bosonic Speed: <span id="bSpeed" style="font-size:15px"></span>x<br>Bosonic Lab is currently running at <span id="bTotalSpeed" style="font-size:15px"></span>x.<br>You have played Bosonic Lab for <span id="bTicks"></span> ticks.
+							<span id="bWatt" style="font-size:25px"></span> Bosonic Watts<br>
+							<span id="bSpeed" style="font-size:15px"></span>x Bosonic Speed
 						</td>
 						<td>
-							You have <span id="bAM" style="font-size:25px"></span> Bosons. <span id="bAMProduction" style="font-size:15px"></span>
-							<br>
-							<div id="bosonicResets">
-								You have <span class="yellow" id="hb" style="font-size:25px">0</span> Higgs.
-								<br>
-								<button class="gluonupgrade hb" id="hbReset" onclick="higgsReset()"><span id="hbResetDesc"></span><br>(Requires <span id="hbResetReq"></span> Bosons)</button>
-							</div>
-						</td>
-						<td>
-							You have <span id="bBt" style="font-size:25px"></span> Bosonic Battery. <span id="bBtProduction" style="font-size:15px"></span><br>
-							Overdrive Speed: <span id="odSpeed" style="font-size:25px"></span><span id="odSpeedWBBt"></span><br>
+							<span id="bBt" style="font-size:25px"></span> Bosonic Battery. <span id="bBtProduction" style="font-size:15px"></span><br>
+							Overdrive: <span id="odSpeed" style="font-size:25px"></span><span id="odSpeedWBBt"></span><br>
 							<input id="odSlider" style="width: 180px;" type="range" min="0" max="30" class="slider" oninput="changeOverdriveSpeed()">
 						</td>
+						<td>
+							(total: <span id="bTotalSpeed" style="font-size:15px"></span>x)<br>You have played Bosonic Lab for <span id="bTicks"></span> ticks.
+						</td>
+					<tr></tr>
+						<td>
+							<span id="bAM" style="font-size:25px"></span> Bosons <span id="bAMProduction" style="font-size:15px"></span>
+						</td>
+						<td id="bosonicResets">
+							<span class="yellow" id="hb" style="font-size:25px">0</span> Higgs
+							<br>
+							<button class="gluonupgrade hb" id="hbReset" onclick="higgsReset()"><span id="hbResetDesc"></span><br>(Requires <span id="hbResetReq"></span> Bosons)</button>
+						</td>
+						<td></td>
 					</tr></table>
 					<span id="nextParticle"></span><br>
 					<table class="table" align="center" style="margin: auto">
@@ -5536,22 +5541,29 @@
 					<div id="wzbtab" class="bltab">
 						<!--<span id="wzbSpeed"></span>-->
 						<table class='qtable'>
-							<tr>
-								<td>
-									You have <span id="wpb" style="font-size:35px"></span> W+ Bosons and <span id="wnb" style="font-size:35px"></span> W- Bosons.<br>
-									Translated to <span id="wbTime" style="font-size:35px"></span>x faster extracting time, <span id="wbOscillate" style="font-size:35px"></span>x faster oscillate progression gain, <span id="wbProduction" style="font-size:35px"></span>x Bosons production speed.
-								</td>
-								<td></td>
-								<td>
-									You have <span id="zb" style="font-size:35px"></span> Z Bosons.<br>
-									Translated to <span id="zbSpeed" style="font-size:35px"></span>x faster decay speed of W Boson and faster conversion speed of W- to W+.
-								</td>
-							</tr>
 							<tr><td colspan=3>
-									You have <span id="ap" style="font-size:35px"></span> Anti-Preons. <span id="apProduction" style="font-size:25px"></span><br>
+									<span id="ap" style="font-size:35px"></span> Anti-Preons. <span id="apProduction" style="font-size:25px"></span><br>
 									<span id="apUse"></span><br>
 									<button class="storebtn" style="width:150px" onclick="useAntiPreon(0)">Gain Anti-Preons</button> <button class="storebtn" onclick="useAntiPreon(1)">Decay W Boson</button> <button class="storebtn" style="width:150px" onclick="useAntiPreon(3)">Convert W- to W+</button> <button class="storebtn" style="width:180px" onclick="useAntiPreon(2)">Oscillate Z Boson</button>
 							</td></tr>
+							<tr>
+								<td>
+									<span id="wpb" style="font-size:35px"></span> W+ Bosons and <span id="wnb" style="font-size:35px"></span> W- Bosons
+								</td>
+								<td></td>
+								<td>
+									<span id="zb" style="font-size:35px"></span> Z Bosons
+								</td>
+							</tr>
+							<tr>
+								<td>
+									<span id="wbTime" style="font-size:35px"></span>x faster extracting time, <span id="wbOscillate" style="font-size:35px"></span>x faster oscillate progression gain, <span id="wbProduction" style="font-size:35px"></span>x Bosons production speed.
+								</td>
+								<td></td>
+								<td>
+									<span id="zbSpeed" style="font-size:35px"></span>x faster decay speed of W Boson and faster conversion speed of W- to W+.
+								</td>
+							</tr>
 							<tr>
 								<td>
 									W Boson is currently <span id="wQkType"></span>.<br>
