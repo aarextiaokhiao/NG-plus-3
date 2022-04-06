@@ -213,7 +213,6 @@ function updateBosonicLabTab(){
 	el("bWatt").textContent = shorten(data.watt)
 	el("bSpeed").textContent = shorten(data.speed)
 	el("bTotalSpeed").textContent = shorten(speed)
-	el("bTicks").textContent = shorten(data.ticks)
 	el("bAM").textContent = shorten(data.am)
 	el("bAMProduction").textContent = "+" + shorten(getBosonicAMProduction().times(speed)) + "/s"
 	el("bBt").textContent = shorten(data.battery)

@@ -185,6 +185,7 @@ function bestGhostifyDisplay(){
 		el("ghostified").textContent = "You have became a ghost and passed Big Ripped universes " + getFullExpansion(ghSave.times) + " times."
 		el("thisGhostify").textContent = "You have spent " + timeDisplay(ghSave.time) + " in this Ghostify."
 		el("bestGhostify").textContent = "Your fastest Ghostify is in " + timeDisplay(ghSave.best) + "."
+		el("bTicks").textContent = ghSave.wzb.unl ? "You have played Bosonic Lab for " + timeDisplay(ghSave.bl.ticks.mul(10).toNumber()) + ". (x" + shorten(getBosonicFinalSpeed()) + ")" : ""
 	}
 }
 
