@@ -198,7 +198,10 @@ function lightEmpowerment(auto=false) {
 	ghSave.ghostlyPhotons.enpowerments++
 	if (hasAch("ng3p101")) return
 	ghostify(false, true)
-	if (hasAch("ng3p91")) return
+	if (!hasAch("ng3p91")) resetLights()
+}
+
+function resetLights() {
 	ghSave.ghostlyPhotons.amount = E(0)
 	ghSave.ghostlyPhotons.darkMatter = E(0)
 	ghSave.ghostlyPhotons.ghostlyRays = E(0)

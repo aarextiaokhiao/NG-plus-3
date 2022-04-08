@@ -155,6 +155,7 @@ function clickGv(x) {
 	if (ghSave.gravitons.dist == 2) ghSave.gravitons.dir = x > 2 ? 1 : 0
 	updateGravitonsTemp()
 	bosonicLabReset()
+	resetLights()
 }
 
 function getGrav(x, type) {
