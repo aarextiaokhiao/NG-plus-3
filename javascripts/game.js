@@ -5120,7 +5120,7 @@ function emperorDimUpdating(diff){
 			EDsave[dim-1].progress = EDsave[dim-1].progress.add(EDsave[dim].workers.times(getEmperorDimensionMultiplier(dim)).times(diff/200)).min(promote)
 			var toAdd = EDsave[dim-1].progress.floor()
 			if (toAdd.gt(0)) {
-				if (!hasNU(2)) {
+				if (!hasAch("ng3p52")) {
 					if (dim>2 && toAdd.gt(getWorkerAmount(dim-2))) EDsave[dim-2].workers = E(0)
 					else if (dim>2) EDsave[dim-2].workers = EDsave[dim-2].workers.sub(toAdd).round()
 					else if (toAdd.gt(quSave.replicants.amount)) quSave.replicants.amount = E(0)
