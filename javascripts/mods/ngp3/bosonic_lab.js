@@ -870,28 +870,29 @@ var bu = {
 	},
 	effectDescs: {
 		11: function(x) {
-			return (x * 100).toFixed(1) + "%"
+			return "+" + (x * 100).toFixed(1) + "%"
 		},
 		12: function(x) {
 			return "-" + x.toFixed(5)
 		},
 		14: function(x) {
+			//To do: Add Antielectronic Galaxies in Big Rips, sometimes in Gravitons
 			return getFullExpansion(x) + (x > quSave.electrons.sacGals && !brSave.active ? " (+" + getFullExpansion(Math.max(x - quSave.electrons.sacGals, 0)) + " Antielectronic Galaxies)" : "")
 		},
 		15: function(x) {
-			return shorten(x.gh) + "x more Ghostifies & " + shorten(x.dt) + "x more DT"
+			return shorten(x.gh) + "x Ghostifies, " + shorten(x.dt) + "x DT"
 		},
 		25: function(x) {
 			return "^" + x.toFixed(2)
 		},
 		31: function(x) {
-			return (x * 100 - 100).toFixed(1) + "% stronger"
+			return shorten(x * 100 - 100) + "% stronger"
 		},
 		33: function(x) {
 			return "-" + x.toFixed(2) + " levels worth"
 		},
 		34: function(x) {
-			return (x * 100 - 100).toFixed(2) + "% stronger"
+			return shorten(x * 100 - 100) + "% stronger"
 		},
 		35: function(x) {
 			return "+" + shorten(x.rep) + " OoMs to replicate interval increase, " + shorten(x.eds) + "x to all EDs"
@@ -900,16 +901,16 @@ var bu = {
 			return shorten(x.ig) + "x to Intergalactic, " + shorten(x.it) + "x to Infinite Time"
 		},
 		42: function(x) {
-			return (x * 100).toFixed(2) + "% to growth and softcap slowdown"
+			return shorten(x * 100) + "% to growth and softcap slowdown"
 		},
 		43: function(x) {
-			return (x * 100).toFixed(2) + "%"
+			return shorten(x * 100) + "%"
 		},
 		44: function(x) {
 			return "+" + x.toFixed(1) + " OoMs"
 		},
 		45: function(x) {
-			return "/" + shorten(x) + " to efficiency"
+			return "/" + shorten(x)
 		},
 	}
 }

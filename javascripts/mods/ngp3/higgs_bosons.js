@@ -25,6 +25,7 @@ function canUnlockHiggs() {
 
 function updateBLParticleUnlocks() {
 	el("bosonicResets").style.display = ghSave.hb.unl ? "" : "none"
+	el("hftabbtn").style.display = ghSave.hb.higgs >= 80 ? "" : "none"
 	el("gravtabbtn").style.display = ghSave.gravitons.unl ? "" : "none"
 	el("breakDilationTabbtn").style.display = ghSave.gravitons.unl ? "" : "none"
 	el("breakDilationTabbtn2").style.display = ghSave.gravitons.unl ? "" : "none"
@@ -35,7 +36,8 @@ function updateBLParticleDisplay() {
 	el("nextParticle").style.display = ""
 	if (!ghSave.hb.unl) el("nextParticle").textContent = "To unlock the next particle (Higgs), you need to get " + shortenCosts(pow10(2e17)) + " antimatter and " + shortenCosts(getHiggsRequirement()) + " Bosons first."
 	else if (!ghSave.gravitons.unl) el("nextParticle").textContent = "To unlock the next particle (Gravitons), you need to get " + shortenCosts(pow10(1e18)) + " antimatter."
-	else el("nextParticle").textContent = "To extend Higgs, you need to get ??? Higgs. [soon!]"
+	else if (ghSave.hb.higgs < 80) el("nextParticle").textContent = "To extend Higgs, you need to get 80 Higgs. [soon!]"
+	else el("nextParticle").style.display = "none"
 }
 
 function bosonicLabReset() {

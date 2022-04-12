@@ -1,7 +1,8 @@
 //Core
 function doGravitonsUnlockStuff(){
 	ghSave.gravitons.unl=true
-	$.notify("Congratulations! You have unlocked Gravitons!", "success")
+	$.notify("Congratulations! You have unlocked Gravity Well!", "success")
+	updateBLParticleUnlocks()
 	updateTemp()
 }
 
