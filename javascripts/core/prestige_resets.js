@@ -1035,6 +1035,7 @@ function doQuantumGhostifyResetStuff(implode, bm){
 	if (!bm && !hasAch("ng3p77")) {
 		el("electronstabbtn").style.display = "none"
 		el("anttabs").style.display = "none"
+		el("edtabbtn_dim").style.display = "none"
 		el("nanofieldtabbtn").style.display = "none"
 		el("riptabbtn").style.display = "none"
 	}

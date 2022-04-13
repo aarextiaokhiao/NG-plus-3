@@ -186,12 +186,12 @@ button, div.storebtn {
     color: #191919 !important
 }
 
-#singularitytabbtn, #singularityunlock.storebtn, #sacrificeIP.storebtn, #blackHoleTabbtn button, #blackholeunlock.storebtn, #blackhole .eternityupbtn, #blackhole td:nth-child(3) .storebtn, #dilstudy10.dilationupgbought, #replicantstabbtn button, #replicantReset.storebtn, #breakLimit.storebtn, #dilstudy11.dilationupgbought, #edtabbtn button, #breakLimitED.storebtn {
+#singularitytabbtn, #singularityunlock.storebtn, #sacrificeIP.storebtn, #blackHoleTabbtn button, #blackholeunlock.storebtn, #blackhole .eternityupbtn, #blackhole td:nth-child(3) .storebtn, #dilstudy10.dilationupgbought, #replicantstabbtn button, #replicantReset.storebtn, #breakLimit.storebtn, #dilstudy11.dilationupgbought, #edtabbtn button, #edtabbtn_dim button, #breakLimitED.storebtn {
     background-color: #0c0c0c !important;
     color: #e5e5e5 !important
 }
 
-#singularitytabbtn:hover, #singularityunlock.storebtn:hover, #sacrificeIP.storebtn:hover, #blackHoleTabbtn button:hover, #blackholeunlock.storebtn:hover, #blackhole .eternityupbtn:hover, #blackhole td:nth-child(3) .storebtn:hover, #dilstudy10.dilationupg, #replicantstabbtn button:hover, #replicantReset.storebtn:hover, #breakLimit.storebtn:hover, #dilstudy11.dilationupg, #edtabbtn button:hover, #breakLimitED.storebtn:hover {
+#singularitytabbtn:hover, #singularityunlock.storebtn:hover, #sacrificeIP.storebtn:hover, #blackHoleTabbtn button:hover, #blackholeunlock.storebtn:hover, #blackhole .eternityupbtn:hover, #blackhole td:nth-child(3) .storebtn:hover, #dilstudy10.dilationupg, #replicantstabbtn button:hover, #replicantReset.storebtn:hover, #breakLimit.storebtn:hover, #dilstudy11.dilationupg, #edtabbtn button:hover, #edtabbtn_dim button:hover, #breakLimitED.storebtn:hover {
     background-color: #262626 !important;
     color: #e5e5e5 !important
 }

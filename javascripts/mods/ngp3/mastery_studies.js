@@ -552,12 +552,11 @@ function buyingDilStudyReplicant(){
 }
 
 function buyingDilStudyED(){
-	showTab("dimensions")
-	showQuantumTab("replicants")
-	showAntTab("emperordimensions")
+	teleportToEDs()
 	el("timestudy361").style.display = ""
 	el("timestudy362").style.display = ""
 	el("antTabs").style.display = ""
+	el("edtabbtn_dim").style.display = ""
 	updateReplicants()
 }
 

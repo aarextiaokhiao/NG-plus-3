@@ -296,6 +296,12 @@ function getHatchSpeed() {
 	return speed
 }
 
+function teleportToEDs() {
+	showTab("quantumtab")
+	showQuantumTab("replicants")
+	showAntTab("emperordimensions")
+}
+
 function updateEmperorDimensions() {
 	let production = getGatherRate()
 	let mults = {}

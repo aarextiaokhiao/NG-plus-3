@@ -2021,6 +2021,7 @@ function updateNGp3DisplayStuff(){
         el('autoAssignRotate').textContent="Rotation: "+(quSave.autoOptions.assignQKRotate>1?"Left":quSave.autoOptions.assignQKRotate?"Right":"None")
         el('autoReset').textContent="Auto: O"+(quSave.autoOptions.replicantiReset?"N":"FF")
         el("antTabs").style.display=player.masterystudies.includes("d11")?"":"none"
+        el("edtabbtn_dim").style.display=player.masterystudies.includes("d11")?"":"none"
         el("nanofieldtabbtn").style.display=player.masterystudies.includes("d12")?"":"none"
         el("riptabbtn").style.display=player.masterystudies.includes("d14")?"":"none"
         el("ghostifyAnimBtn").textContent="Ghostify: O"+(player.options.animations.ghostify?"N":"FF")

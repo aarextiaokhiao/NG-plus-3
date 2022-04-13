@@ -689,10 +689,10 @@ function quantumReset(force, auto, challid, bigRip, implode = false) {
 	if (speedrunMilestonesReached < 14 || !isRewardEnabled(4)) {
 		el("anttabs").style.display = "none"
 		el("nanofieldtabbtn").style.display = "none"
+		el("edtabbtn_dim").style.display = "none"
 		el("todtabbtn").style.display = "none"
 		el("riptabbtn").style.display = "none"
 		updateUnlockedMasteryStudies()
-		if (el("emperordimensions").style.display == "block") showDimTab("antimatterdimensions")
 		if (el("quantumchallenges").style.display == "block") showChallengesTab("normalchallenges")
 		if (el("electrons").style.display == "block" || el("replicants").style.display == "block" || el("nanofield").style.display == "block") showQuantumTab("uquarks")
 	}
