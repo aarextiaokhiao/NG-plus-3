@@ -89,7 +89,7 @@ let GRAV_BOOSTS = {
 		},
 
 		pos_disp(x) {
-			return "Bosons boosts Watts by " + shorten(x) + "x"
+			return "Bosons boost Bosonic Force by " + shorten(x) + "x" //Or Higgs raise Bosons, but decay at a logarithmic rate.
 		},
 		neg_disp(x) {
 			return "Bosons production is ^" + shorten(x)
