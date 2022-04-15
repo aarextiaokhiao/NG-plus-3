@@ -466,7 +466,7 @@ var bEn = {
 		26: "RG4 negative effects are reduced.",
 		36: "Cheapean Light Empowerments.",
 		46: "Reduce Bosonic Upgrade 1 slowdown.",
-		56: "Raise the Nanoreward scaling slowdowns.",
+		56: "Weaken the Nanoreward scalings.",
 	},
 	effects: {
 		12(l) {
