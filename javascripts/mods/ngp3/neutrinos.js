@@ -22,7 +22,7 @@ function updateNeutrinoBoostDisplay(){
 	if (ghSave.neutrinos.boosts >= 9) el("neutrinoBoost9").textContent = shorten(tmp.nb[9])
 	if (ghSave.neutrinos.boosts >= 10) el("neutrinoBoost10").textContent = "-"+tmp.nb[10].toFixed(4)+"x"
 	if (ghSave.neutrinos.boosts >= 11) el("neutrinoBoost11").textContent = shorten(tmp.nb[11])
-	if (ghSave.neutrinos.boosts >= 12) el("neutrinoBoost12").textContent = shorten(tmp.nb[12])
+	if (ghSave.neutrinos.boosts >= 12) el("neutrinoBoost12").textContent = shorten(tmp.nb[12])+"x"
 }
 
 function updateNeutrinoAmountDisplay(){
@@ -235,9 +235,10 @@ var neutrinoBoosts = {
 			return nb11
 		},
 		12: function(nt) {
+			let hb = ghSave.hb.higgs
 			let nb12neutrinos = nt[0].add(1).log10()+nt[1].add(1).log10()+nt[2].add(1).log10()
-			let nb12 = 1
-			return nb12
+			let nb12exp = hb / (Math.log10(hb * 2e5 / nb12neutrinos + 1) + 1)
+			return E(1.5).pow(nb12exp)
 		},
 	}
 }

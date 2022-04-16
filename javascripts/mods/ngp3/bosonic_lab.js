@@ -116,16 +116,12 @@ function bosonicTick(diff) {
 
 	//Bosons production
 	var newBA = data.am
-	var baAdded = getBosonicAMProduction().times(diff)
+	var baAdded = getBosonProduction().times(diff)
 	data.am = newBA.add(baAdded)
 }
 
-function getBAMProduction(){
-	return getBosonicAMProduction()
-}
-
-function getBosonicAntiMatterProduction(){
-	return getBosonicAMProduction()
+function getBosonicProduction() {
+	return getBosonProduction()
 }
 
 function getAchBWMult(){
@@ -133,10 +129,11 @@ function getAchBWMult(){
 	return player.achPow.div(E(1.5).pow(19)).toNumber()
 }
 
-function getBosonicAMProduction() {
+function getBosonProduction() {
 	var exp = Math.pow(player.money.max(1).log10() / 15e15 + 1, 0.8) - 4
 	var ret = pow10(exp).times(tmp.wzb.wbp)
 	if (ghSave.bl.usedEnchants.includes(34)) ret = ret.times(tmp.bEn[34] || 1)
+	if (ghSave.neutrinos.boosts >= 12) ret = ret.times(tmp.nb[12])
 	if (hasAch("ng3p98")) ret = ret.plus(Math.pow(ghSave.hb.higgs, 2))
 	//maybe softcap at e40 or e50?
 	ret = softcap(ret, "bam")
@@ -214,7 +211,7 @@ function updateBosonicLabTab(){
 	el("bSpeed").textContent = shorten(data.speed)
 	el("bTotalSpeed").textContent = shorten(speed)
 	el("bAM").textContent = shorten(data.am)
-	el("bAMProduction").textContent = "+" + shorten(getBosonicAMProduction().times(speed)) + "/s"
+	el("bAMProduction").textContent = "+" + shorten(getBosonProduction().times(speed)) + "/s"
 	el("bBt").textContent = shorten(data.battery)
 	let x = getEstimatedNetBatteryGain()
 	s = shorten(x[1]) + "/s"
