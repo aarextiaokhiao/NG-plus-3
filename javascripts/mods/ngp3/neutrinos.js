@@ -237,8 +237,8 @@ var neutrinoBoosts = {
 		12: function(nt) {
 			let hb = ghSave.hb.higgs
 			let nb12neutrinos = nt[0].add(1).log10()+nt[1].add(1).log10()+nt[2].add(1).log10()
-			let nb12exp = hb / (Math.log10(hb * 2e5 / nb12neutrinos + 1) + 1)
-			return E(1.5).pow(nb12exp)
+			let nb12exp = hb / (Math.log2(hb * 1e5 / nb12neutrinos + 1) + 1)
+			return E(3).pow(nb12exp)
 		},
 	}
 }
