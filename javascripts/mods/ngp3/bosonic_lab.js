@@ -461,7 +461,7 @@ var bEn = {
 		45: "Overdrive Speed boosts Gravitons.",
 		16: "Neutrino Boost 7 always work, but reduced.",
 		26: "RG4 negative effects are reduced.",
-		36: "Cheapean Light Empowerments.",
+		36: "Cheapen Light Empowerments.",
 		46: "Reduce Bosonic Upgrade 1 slowdown.",
 		56: "Weaken the Nanoreward scalings.",
 	},
