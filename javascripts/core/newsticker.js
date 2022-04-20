@@ -413,7 +413,8 @@ newsArray = [//always true
 ['In NG+3.1 everyone is a speed runner', "tmp.ngp3", "am209"],
 ["Coming soon: NG+3.2. ETA: We don't have a release date. There is a possibility that it takes infinite time.", "tmp.ngp3", "am210"],
 ["Pfft, screw Gravity Dimensions! *slide whistle effect*", "tmp.ngp3 && ghSave.gravitons.unl", "am211"],
-["The Anti-Grind Research Lab is currently looking for another exploit. The estimated amount of time will be about 7 months. Why can’t they just play the game normally? Nobody knows.", true, "am213"]
+["The Anti-Grind Research Lab is currently looking for another exploit. The estimated amount of time will be about 7 months. Why can’t they just play the game normally? Nobody knows.", true, "am213"],
+["The remanents of old Nanofield seems to be unusual... ~ Worker Replicant", true, "am214"]
 ];}
 
 document.addEventListener("visibilitychange", function() {if (!document.hidden) {scrollNextMessage();}}, false);
