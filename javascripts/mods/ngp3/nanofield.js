@@ -1,3 +1,4 @@
+// OLD
 function getNanospeedText(){
 	s = getNanofieldSpeedText()
 	if (!shiftDown) s = ghostified || nanospeed != 1 ? "Your Nanofield speed is currently " + (nanospeed == 1 ? "" : shorten(tmp.ns) + " * " + shorten(nanospeed) + " = ") + shorten(getNanofieldFinalSpeed()) + "x (hold shift for details)" : ""
@@ -273,3 +274,57 @@ function updateNextPreonEnergyThreshold(){
 	nfSave.power += toSkip
 	nfSave.powerThreshold = getNanoRewardReq(1)
 }
+
+// NEW | DIFFICULTY : MEDIUM
+let NF = {
+	setup() {
+		return {
+			reduce: 0,
+			charges: []
+		}
+	},
+
+	rows() {
+		let r = 3
+		return r
+	},
+	data: {
+		1: {
+			eff: (x) => 1,
+			desc: (x) => "Boost something by " + shorten(x) + "x",
+		},
+		2: {
+			eff: (x) => 1,
+			desc: (x) => "Boost something by " + shorten(x) + "x",
+		},
+		3: {
+			eff: (x) => 1,
+			desc: (x) => "Boost something by " + shorten(x) + "x",
+		},
+		4: {
+			eff: (x) => 1,
+			desc: (x) => "Boost something by " + shorten(x) + "x",
+		},
+		5: {
+			eff: (x) => 1,
+			desc: (x) => "Boost something by " + shorten(x) + "x",
+		},
+		6: {
+			eff: (x) => 1,
+			desc: (x) => "Boost something by " + shorten(x) + "x",
+		},
+		7: {
+			eff: (x) => 1,
+			desc: (x) => "Boost something by " + shorten(x) + "x",
+		},
+		8: {
+			eff: (x) => 1,
+			desc: (x) => "Boost something by " + shorten(x) + "x",
+		},
+		9: {
+			eff: (x) => 1,
+			desc: (x) => "Boost something by " + shorten(x) + "x",
+		},
+	}
+}
+let NANOFIELD = NF
