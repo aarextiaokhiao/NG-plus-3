@@ -564,7 +564,7 @@ function buyingDilStudyNanofield(){
 	showTab("quantumtab")
 	showQuantumTab("replicants")
 	showQuantumTab("nanofield")
-	el("nanofieldtabbtn").style.display = ""
+	NANOFIELD.shown()
 	updateNanoRewardTemp()
 }
 

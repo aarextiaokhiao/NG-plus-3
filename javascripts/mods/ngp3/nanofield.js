@@ -280,8 +280,13 @@ let NF = {
 	setup() {
 		return {
 			reduce: 0,
-			charges: []
+			charges: [ E(0), E(0), E(0), E(0), E(0), E(0), E(0), E(0), E(0) ],
+			directs: {}
 		}
+	},
+	shown() {
+		el("nanofieldtabbtn").style.display=player.masterystudies.includes("d12")?"":"none"
+		el("nftabbtn").style.display=player.masterystudies.includes("d12")?"":"none"
 	},
 
 	rows() {
