@@ -296,39 +296,39 @@ let NF = {
 	data: {
 		1: {
 			eff: (x) => 1,
-			desc: (x) => "Boost something by " + shorten(x) + "x",
+			desc: (x) => "Meta Dimension Boosts scale 0.00 slower.",
 		},
 		2: {
 			eff: (x) => 1,
-			desc: (x) => "Boost something by " + shorten(x) + "x",
+			desc: (x) => "Preons boost all color powers by 1.00x.",
 		},
 		3: {
 			eff: (x) => 1,
-			desc: (x) => "Boost something by " + shorten(x) + "x",
+			desc: (x) => "Dilated time gives ^1.00 boost to Meta Dimensions.",
 		},
 		4: {
 			eff: (x) => 1,
-			desc: (x) => "Boost something by " + shorten(x) + "x",
+			desc: (x) => "Electron softcap starts 0 later.",
 		},
 		5: {
 			eff: (x) => 1,
-			desc: (x) => "Boost something by " + shorten(x) + "x",
+			desc: (x) => "Emperor Dimensions produce 1.00x faster.",
 		},
 		6: {
 			eff: (x) => 1,
-			desc: (x) => "Boost something by " + shorten(x) + "x",
+			desc: (x) => "3x TP upgrade scales ^1.00 slower.",
 		},
 		7: {
 			eff: (x) => 1,
-			desc: (x) => "Boost something by " + shorten(x) + "x",
+			desc: (x) => "TP formula upgrade scales ^1.00 slower.",
 		},
 		8: {
 			eff: (x) => 1,
-			desc: (x) => "Boost something by " + shorten(x) + "x",
+			desc: (x) => "Replicantis boost dilated time by 1.00x.",
 		},
 		9: {
 			eff: (x) => 1,
-			desc: (x) => "Boost something by " + shorten(x) + "x",
+			desc: (x) => "Color power effects are 1.00x effective.",
 		},
 	}
 }
