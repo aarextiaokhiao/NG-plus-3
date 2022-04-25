@@ -363,7 +363,7 @@ var masteryStudies = {
 			return player.masterystudies.includes("d11") || ghostified
 		},
 		r40: function() {
-			return player.masterystudies.includes("d12") || ghostified
+			return NF.unl() || ghostified
 		},
 		r43: function() {
 			return player.masterystudies.includes("d13") || ghostified

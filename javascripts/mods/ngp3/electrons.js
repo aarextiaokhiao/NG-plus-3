@@ -49,7 +49,9 @@ function sacrificeGalaxy(auto = false) {
 function getElectronBoost(mod) {
 	if (!inQC(0)) return 1
 	var amount = quSave.electrons.amount
+
 	var s = 149840
+	if (NF.active(4)) s += NF.eff(4)
 	if (ghSave.ghostlyPhotons.unl) s += tmp.le[2]
 	
 	if (amount > 37460 + s) amount = Math.sqrt((amount-s) * 37460) + s

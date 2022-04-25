@@ -25,7 +25,7 @@ function updateTemp() {
 		}
 		updateMasteryStudyTemp()
 		if (player.masterystudies.includes("d13")) tmp.branchSpeed = getBranchSpeed()
-		if (player.masterystudies.includes("d12") && tmp.nf !== undefined && tmp.nf.rewardsUsed !== undefined) {
+		if (NF.unl() && tmp.nf !== undefined && tmp.nf.rewardsUsed !== undefined) {
 			var x = getNanoRewardPowerEff()
 			var y = nfSave.rewards+tmp.nanofield_free_rewards
 			tmp.ns = getNanofieldSpeed()

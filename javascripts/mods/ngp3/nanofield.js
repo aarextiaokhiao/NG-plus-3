@@ -277,6 +277,9 @@ function updateNextPreonEnergyThreshold(){
 
 // NEW | DIFFICULTY : MEDIUM
 let NF = {
+	unl() {
+		return player.masterystudies && player.masterystudies.includes("d12")
+	},
 	setup() {
 		return {
 			reduce: 0,
@@ -285,8 +288,15 @@ let NF = {
 		}
 	},
 	shown() {
-		el("nanofieldtabbtn").style.display=player.masterystudies.includes("d12")?"":"none"
-		el("nftabbtn").style.display=player.masterystudies.includes("d12")?"":"none"
+		el("nanofieldtabbtn").style.display=NF.unl()?"":"none"
+		el("nftabbtn").style.display=NF.unl()?"":"none"
+	},
+
+	active(x) {
+		return NF.unl() && NF.eff(x) !== undefined
+	},
+	eff(x) {
+		return tmp.nf && tmp.nf.new_eff && tmp.nf.new_eff[x]
 	},
 
 	rows() {
@@ -296,39 +306,39 @@ let NF = {
 	data: {
 		1: {
 			eff: (x) => 1,
-			desc: (x) => "Meta Dimension Boosts scale 0.00 slower.",
+			desc: (x) => "Meta Dimension Boost scaling starts " + shorten(x) + " later.",
 		},
 		2: {
 			eff: (x) => 1,
-			desc: (x) => "Preons boost all color powers by 1.00x.",
+			desc: (x) => "Preons boost all color powers by ^" + shorten(x) + ".",
 		},
 		3: {
-			eff: (x) => 1,
-			desc: (x) => "Dilated time gives ^1.00 boost to Meta Dimensions.",
+			eff: (x) => 0.1,
+			desc: (x) => "Dilated time gives ^" + shorten(x) + " boost to Meta Dimensions.",
 		},
 		4: {
 			eff: (x) => 1,
-			desc: (x) => "Electron softcap starts 0 later.",
+			desc: (x) => "Electron softcap starts " + shorten(x) + " later.",
 		},
 		5: {
 			eff: (x) => 1,
-			desc: (x) => "Emperor Dimensions produce 1.00x faster.",
+			desc: (x) => "Emperor Dimensions produce " + shorten(x) + "x faster.",
 		},
 		6: {
 			eff: (x) => 1,
-			desc: (x) => "3x TP upgrade scales ^1.00 slower.",
+			desc: (x) => "3x TP upgrade scales ^" + shorten(x) + " slower.", //not implemented
 		},
 		7: {
 			eff: (x) => 1,
-			desc: (x) => "TP formula upgrade scales ^1.00 slower.",
+			desc: (x) => "TP formula upgrade scales ^" + shorten(x) + " slower.", //not implemented
 		},
 		8: {
 			eff: (x) => 1,
-			desc: (x) => "Replicantis boost dilated time by 1.00x.",
+			desc: (x) => "Replicantis boost dilated time by " + shorten(x) + "x.",
 		},
 		9: {
 			eff: (x) => 1,
-			desc: (x) => "Color power effects are 1.00x effective.",
+			desc: (x) => "???",
 		},
 	}
 }

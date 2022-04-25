@@ -28,6 +28,7 @@ function getBaseDTProduction(){
 
 	if (player.dilation.upgrades.includes('ngpp6')) gain = gain.times(getDil17Bonus())
 	if (player.dilation.upgrades.includes('ngusp3')) gain = gain.times(getD22Bonus())
+	if (NF.active(8)) gain = gain.times(NF.eff(8))
 	if (tmp.ngp3 && (!brSave.active || hasRipUpg(11))) {
 		gain = gain.times(getDTMultPostBRU11())
 	}

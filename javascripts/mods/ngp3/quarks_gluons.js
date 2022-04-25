@@ -194,6 +194,7 @@ colorBoosts={
 
 function getCPLog(c) {
 	var x = Decimal.add(quSave.colorPowers[c], 1).log10()
+	if (NF.active(2)) x *= NF.eff(2)
 	return x
 }
 

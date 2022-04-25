@@ -5000,7 +5000,7 @@ function ghostifyAutomationUpdating(diff){
 			if (quSave.time >= player.ghostify.automatorGhosts[13].u * 10 && brSave.times <= limit) quantumReset(true, true)
 		} else if (quSave.time >= player.ghostify.automatorGhosts[13].t * 10 && brSave.times < limit) bigRip(true)
 	}
-	if (player.masterystudies.includes("d12")) {
+	if (NF.unl()) {
 		let colorShorthands = ["r", "g", "b"]
 		for (let c = 1; c <= 3; c++) {
 			let shorthand = colorShorthands[c - 1]
@@ -5193,7 +5193,7 @@ function quantumOverallUpdating(diff){
 	updateColorPowers()
 	if (player.masterystudies.includes("d10")) replicantOverallUpdating(diff)
 	if (player.masterystudies.includes("d11")) emperorDimUpdating(diff)
-	if (player.masterystudies.includes("d12")) nanofieldUpdating(diff)
+	if (NF.unl()) nanofieldUpdating(diff)
 	if (player.masterystudies.includes("d13")) treeOfDecayUpdating(diff)
 	
 	if (speedrunMilestonesReached>5) {

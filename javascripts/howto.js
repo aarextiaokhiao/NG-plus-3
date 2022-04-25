@@ -80,7 +80,7 @@ function updateSpoilers() {
 						if (i == 26 && player.masterystudies.includes("d9")) displayed = 1
 						if (i == 27 && player.masterystudies.includes("d10")) displayed = 1
 						if (i == 28 && player.masterystudies.includes("d11")) displayed = 1
-						if (i == 29 && player.masterystudies.includes("d12")) displayed = 1
+						if (i == 29 && NF.unl()) displayed = 1
 						if (i == 30 && player.masterystudies.includes("d13")) displayed = 1
 						if (i == 31 && player.masterystudies.includes("d14")) displayed = 1
 						if (i == 32 && player.quantum) if (player.quantum.breakEternity) if (player.quantum.breakEternity.unlocked) displayed = 1

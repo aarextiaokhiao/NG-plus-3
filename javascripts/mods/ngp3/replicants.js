@@ -178,7 +178,7 @@ function getEmperorDimensionMultiplier(dim) {
 	if (player.currentEternityChall == "eterc11") return ret
 	ret = tmp.edgm //Global multiplier of all Emperor Dimensions
 	if (hasNU(7) && dim % 2 == 1) ret = ret.times(tmp.nu[3])
-	//quSave.emperorDimensions[8].perm-10 
+	//quSave.emperorDimensions[8].perm-10
 	if (dim == 8) ret = ret.times(E_pow(1.05, Math.sqrt(Math.max(0, quSave.emperorDimensions[8].perm - 8))))
 	return dilates(ret, 1)
 }
@@ -188,6 +188,7 @@ function getEmperorDimensionGlobalMultiplier() {
 	if (player.masterystudies.includes("t392")) ret = getMTSMult(392)
 	if (player.masterystudies.includes("t402")) ret = ret.times(30)
 	if (player.masterystudies.includes("d13")) ret = ret.times(getTreeUpgradeEffect(6))
+	if (NF.active(5)) ret = ret.times(NF.eff(5))
 	if (hasBosonicUpg(35)) ret = ret.times(tmp.blu[35].eds)
 	return ret
 }

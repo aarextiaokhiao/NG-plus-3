@@ -304,7 +304,7 @@ newsArray = [//always true
 ["If Aarexese in Aarexese is English, then is English in Aarexese Aarexese?", true, "am93"],
 ["Aarexify is coming in an update after the next one.", true, "am94"],
 ["Wait, there's a co-developer?", 'player.masterystudies !== undefined', "am95"],
-["Having fun waiting?", '(player.masterystudies !== undefined ? player.masterystudies.includes("d12") && nfSave.rewards < 16 : false)', "am96"],
+["Having fun waiting?", '(player.masterystudies !== undefined ? NF.unl() && nfSave.rewards < 16 : false)', "am96"],
 ["Having fun destabilizing?", '(player.masterystudies !== undefined ? player.masterystudies.includes("d13") && !(GUBought("rg7") && GUBought("gb7") && GUBought("br7")) : false)', "am97"],
 ["In the next update, dilation will delete all of your EP.", 'player.masterystudies !== undefined', "am98"],
 ["If you start a new game of NG+3, does that make it NGNG+3?", 'player.masterystudies !== undefined', "am99"],
