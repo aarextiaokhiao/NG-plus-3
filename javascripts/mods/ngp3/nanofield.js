@@ -289,7 +289,7 @@ let NF = {
 	},
 	shown() {
 		el("nanofieldtabbtn").style.display=NF.unl()?"":"none"
-		el("nftabbtn").style.display=NF.unl()?"":"none"
+		el("nftabbtn").style.display=false?"":"none"
 	},
 
 	active(x) {
@@ -317,8 +317,8 @@ let NF = {
 			desc: (x) => "Dilated time gives ^" + shorten(x) + " boost to Meta Dimensions.",
 		},
 		4: {
-			eff: (x) => 1,
-			desc: (x) => "Electron softcap starts " + shorten(x) + " later.",
+			eff: (x) => Math.floor(x),
+			desc: (x) => "Electron softcap starts " + getFullExpansion(x) + " later.",
 		},
 		5: {
 			eff: (x) => 1,
@@ -338,7 +338,7 @@ let NF = {
 		},
 		9: {
 			eff: (x) => 1,
-			desc: (x) => "???",
+			desc: (x) => "Red power is ^" + shorten(x) + " stronger.",
 		},
 	}
 }

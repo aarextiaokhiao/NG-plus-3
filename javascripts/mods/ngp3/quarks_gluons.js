@@ -211,9 +211,17 @@ function updateColorPowers(log) {
 	if (log == undefined) log = getCPLogs()
 
 	//Red
-	colorBoosts.r=Math.pow(log.r,player.dilation.active?2/3:0.5)/10+1
-	if (colorBoosts.r>1.3) colorBoosts.r=Math.sqrt(colorBoosts.r*1.3)
-	if (colorBoosts.r>2.3&&(!player.dilation.active||getTreeUpgradeLevel(2)>7||ghostified)) colorBoosts.r=Math.pow(colorBoosts.r/2.3,0.5*(ghostified&&ghSave.neutrinos.boosts>4?1+tmp.nb[5]:1))*2.3
+	let div6 = 4
+	if (!player.dilation.active) div6--
+	if (NF.active(9)) div6 += NF.eff(9)
+
+	colorBoosts.r = Math.pow(log.r,div6 / 6) / 10 + 1
+	if (colorBoosts.r>1.3) colorBoosts.r = Math.sqrt(colorBoosts.r * 1.3)
+	if (colorBoosts.r>2.3 && (!player.dilation.active || getTreeUpgradeLevel(2) > 7 || ghostified)) {
+		let sc_exp = 0.5
+		if (ghostified && ghSave.neutrinos.boosts >= 5) sc_exp += tmp.nb[5] / 2
+		if (sc_exp < 1) colorBoosts.r = Math.pow(colorBoosts.r / 2.3, sc_exp) * 2.3
+	}
 
 	//Green
 	let m = 1
