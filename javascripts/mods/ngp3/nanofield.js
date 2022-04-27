@@ -141,40 +141,40 @@ var nanoRewards = {
 			return "eggons hatch " + shorten(x) + "x faster"
 		},
 		ma_effect_exp: function(x) {
-			return "meta-antimatter effect is buffed to ^" + x.toFixed(2)
+			return "meta-antimatter effect is ^" + x.toFixed(2)
 		},
 		dil_gal_gain: function(x) {
-			return "you gain " + (x * 100 - 100).toFixed(2) + "% more free galaxies"
+			return "gain " + (x * 100 - 100).toFixed(2) + "% more free galaxies"
 		},
 		dt_to_ma_exp: function(x) {
-			return "dilated time gives ^" + x.toFixed(3) + " boost to all Meta Dimensions"
+			return "dilated time gives ^" + x.toFixed(3) + " boost to Meta Dimensions"
 		},
 		dil_effect_exp: function(x) {
-			return "in dilation, Normal Dimension multipliers and Tickspeed are raised by ^" + x.toFixed(2)
+			return "in dilation, raise Normal Dimension multipliers and Tickspeed by ^" + x.toFixed(2)
 		},
 		meta_boost_power: function(x) {
-			return "each meta-Dimension Boost gives " + x.toFixed(2) + "x boost"
+			return "each Meta-Dimension Boost gives a " + x.toFixed(2) + "x boost"
 		},
 		remote_start: function(x) {
-			return "Remote Antimatter Galaxies scaling starts " + getFullExpansion(Math.floor(x)) + " later"
+			return "Remote Antimatter Galaxies start " + getFullExpansion(Math.floor(x)) + " later"
 		},
 		preon_charge: function(x) {
-			return "you produce " + shorten(x) + "x faster preon charge"
+			return "produce " + shorten(x) + "x more preon charge"
 		},
 		per_10_power: function(x) {
 			return "multiplier per ten dimensions is increased by " + x.toFixed(2) + "x before the electrons effect"
 		},
 		preon_energy: function(x) {
-			return "you produce " + shorten(x) + "x faster preon energy"
+			return "produce " + shorten(x) + "x more preon energy"
 		},
 		supersonic_start: function(x) {
-			return "Dimension Supersonic scaling starts " + getFullExpansion(Math.floor(x)) + " later"
+			return "Dimension Supersonic starts " + getFullExpansion(Math.floor(x)) + " later"
 		},
 		neutrinos: function(x) {
-			return "you gain " + shorten(x) + "x more neutrinos"
+			return "gain " + shorten(x) + "x more neutrinos"
 		},
 		light_threshold_speed: function(x) {
-			return "Light threshold increases " + x.toFixed(2) + "x slower"
+			return "Light threshold scales " + x.toFixed(2) + "x slower"
 		}
 	},
 	effectsUsed: {
