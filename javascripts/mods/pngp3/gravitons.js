@@ -194,7 +194,7 @@ function updateGravitonsTemp() {
 		can: []
 	}
 	if (save.dist == 0) core.can = [0]
-	if (save.dist == 1) core.can = [1, 7]
+	if (save.dist == 1) core.can = [1/*, 7*/] //TO-DO: Make adjacent rings start at any direction, and costs secondary activations.
 	if (save.dist >= 1) core.on.push(0)
 	if (save.dist > 1) {
 		core.can = [save.dir ? 8 - save.dist : save.dist + 1]
