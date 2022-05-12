@@ -22,10 +22,10 @@ function getBrandNewGravitonsData() {
 let GRAV_BOOSTS = {
 	0: {
 		pos(x) {
-			return 1
+			return Math.sqrt(x / 10 + 1)
 		},
 		neg(x) {
-			return 1
+			return Math.sqrt(x / 5 + 1)
 		},
 
 		pos_disp(x) {
@@ -37,10 +37,10 @@ let GRAV_BOOSTS = {
 	},
 	1: {
 		pos(x) {
-			return 1
+			return Math.sqrt(x / 10 + 1)
 		},
 		neg(x) {
-			return 1
+			return Math.sqrt(x / 10 + 1)
 		},
 
 		pos_disp(x) {
