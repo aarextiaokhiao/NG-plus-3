@@ -56,7 +56,7 @@ function conToDeciPostNGP3() {
 function postNGp3AchsCheck() {
     if (ghSave.gravitons.unl) giveAchievement(allAchievements.ng3p101)
     if (ghSave.hb.higgs >= 150) giveAchievement(allAchievements.ng3p102)
-    if (player.money.gte("e2e18")) giveAchievement(allAchievements.ng3p103)
+    //giveAchievement(allAchievements.ng3p103)
     if (beSave && beSave.eternalMatter.gte("9.99e999")) giveAchievement(allAchievements.ng3p104)
     if (tmp.rep && E(tmp.rep.freq).gte(E(2).pow(1024))) giveAchievement(allAchievements.ng3p105)
     if (E(ghSave.times).gte(E(2).pow(1024))) giveAchievement(allAchievements.ng3p106)
@@ -71,16 +71,13 @@ function setPostR23Tooltip() {
     a = el("Mega Boo!")
     a.setAttribute('ach-tooltip', "Get " + shorten(E("e6000")) + " Ghost Particles. Reward: Gain 100% of Ghost Particles, Ghostifies & Neutrions gained in Big Rip.")
 
-    a = el("When Infinity Replicanti")
+    a = el("Quantized Reproduction")
     a.setAttribute('ach-tooltip', "Get " + shorten(E(2).pow(1024)) + " of Replicate amount.")
 
-    a = el("Not again?")
+    a = el("Spectral Phasing")
     a.setAttribute('ach-tooltip', "Get " + shorten(E(2).pow(1024)) + " Ghostifies.")
 
-    a = el("Double Quintillion")
-    a.setAttribute('ach-tooltip', "Get " + shorten(E("e2e18")) + " antimatter.")
-
-    a = el("Breaking Eternity is Fixed")
+    a = el("Temporality")
     a.setAttribute('ach-tooltip', "Get " + shorten(E("e1e11")) + " antimatter while Big Ripped whithout Breaking Eternity.")
 
     a = el("This achievement doesn't exist 5")

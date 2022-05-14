@@ -221,8 +221,9 @@ function updateGravitonsTemp() {
 
 //Displays
 function updateGravitonsTab() {
-    if (!ghSave.gravitons.unl) return
+    return
 
+	/*
 	el("gravAmt").innerHTML = shortenMoney(ghSave.gravitons.amount)
 	el("gravGain").innerHTML = shorten(tmp.gv.gain)
 	el("gravBest").innerHTML = shortenMoney(ghSave.gravitons.best)
@@ -240,4 +241,5 @@ function updateGravitonsTab() {
 
 	el("gv_upg").className = ghSave.hb.higgs >= upgGvReq() ? "gluonupgrade gw" : "unavailablebtn gw"
 	el("gv_upg_req").textContent = getFullExpansion(ghSave.hb.higgs) + " / " + getFullExpansion(upgGvReq())
+	*/
 }

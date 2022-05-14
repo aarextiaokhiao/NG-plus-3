@@ -518,8 +518,8 @@ ghostlyNewsArray = [//Ghostly news ticker messages
 ["Ghosts found a ghostly kind of Radioactive Decays!", "Math.max(Math.max(getRadioactiveDecays('r'), getRadioactiveDecays('g')), getRadioactiveDecays('b')) > 4", "gn30"],
 ["Ghosts discovered that some particles, including bosons, are ghostly!", true, "gn31"],
 ["Ghosts don't know how to write more news. They decided to stop it for today.", true, "gn32"],
-["The Anti-Preontius is getting closer. He will destroy your Nanofield. Stay away from him.", "tmp.bl.upgrades.includes(13)", "gn33"],
-["WARNING! The Anti-Preontius will control over your Nanofield! Be careful! Oh. Worker replicants are warned of that Ghost too.", "tmp.bl.upgrades.includes(21)", "gn34"],
+["The Anti-Preonius is getting closer. He will destroy your Nanofield. Stay away from him.", "tmp.bl.upgrades.includes(13)", "gn33"],
+["WARNING! The Anti-Preonius will control over your Nanofield! Be careful! Oh. Worker replicants are warned of that Ghost too.", "tmp.bl.upgrades.includes(21)", "gn34"],
 ["A ghost tried to take Anti-Preons out, but Bosonic Lab workers decided to ban them out because an Anti-Preon is a resource of Bosonic Lab.", "hasAch('ng3p81')", "gn35"],
 ["You got one ghostly particle, whatever that means.", "tmp.bl.upgrades.includes(21)", "gn36"],
 ['"Welcome, a new ghost, to the Ghostify layer! Kee-hee-hee!" - Aarex', true, "gn37"],
@@ -542,7 +542,7 @@ ghostlyNewsArray = [//Ghostly news ticker messages
 ["I wonder where all the news gets broadcasted from...", true, "gn54"],
 ["'now i know why i can't get access to the ghostly news!' - usavictor", true, "gn55"],
 ["Ghostify is just Quantum but spooky.", true, "gn56"],
-["Void-Preontius, the Void Ultra-Omnipotent Ghost, decided to take over not only the Barrel... He took over the Barrel!", "nfSave.apgWoke", "gn57"],
+["Void-Preonius, the Void Ultra-Omnipotent Ghost, decided to take over not only the Barrel... He took over the Barrel!", "nfSave.apgWoke", "gn57"],
 ["GHOST IS YOU", true, "gn58"],
 ["Error 404: Ghost Matter not found", true, "gn59"]
 ];}

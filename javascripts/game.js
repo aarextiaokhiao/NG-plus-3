@@ -5084,7 +5084,7 @@ function nanofieldUpdating(diff){
 			
 			if (!nfSave.apgWoke && nfSave.rewards >= tmp.apgw) {
 				nfSave.apgWoke = tmp.apgw
-				$.notify("You reached " + getFullExpansion(tmp.apgw) + " rewards... The Anti-Preontius has woken up and took over the Nanoverse! Be careful!")
+				$.notify("You reached " + getFullExpansion(tmp.apgw) + " rewards... The Anti-Preonius has woken up and took over the Nanoverse! Be careful!")
 				showTab("quantumtab")
 				showQuantumTab("replicants")
 				showAntTab("antipreon")

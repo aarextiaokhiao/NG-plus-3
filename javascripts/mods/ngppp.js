@@ -857,7 +857,7 @@ function toggleLEConf() {
 	el("leConfirmBtn").textContent = "Light Empowerment confirmation: O" + (aarMod.leNoConf ? "FF" : "N")
 }
 
-//Anti-Preontius' Lair
+//Anti-Preonius' Lair
 function getAntiPreonGhostWake() {
 	let x = 104
 	if (hasNU(17)) x += tmp.nanofield_free_rewards/3

@@ -289,7 +289,6 @@ let NF = {
 	},
 	shown() {
 		el("nanofieldtabbtn").style.display=NF.unl()?"":"none"
-		el("nftabbtn").style.display=false?"":"none"
 	},
 
 	active(x) {
