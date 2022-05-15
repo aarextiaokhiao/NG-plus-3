@@ -97,7 +97,6 @@ function updateBreakEternityUpgrade11Temp(){
 //Respecced
 function adjustTSSoftcapPow(x) {
 	var f = 1
-	if (hasGrav(1)) f /= tmp.gv.core[1].p_eff
 	if (f < 1) x = (1 - f) + x * f
 	return x
 }

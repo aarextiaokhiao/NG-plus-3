@@ -144,7 +144,7 @@ let GRAV_BOOSTS = {
 
 //Functions
 function hasGrav(x) {
-	return tmp.ngp3 && tmp.gv && tmp.gv.core && tmp.gv.core.on.includes(x)
+	return false
 }
 
 function clickGv(x) {

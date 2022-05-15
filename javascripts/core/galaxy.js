@@ -80,7 +80,6 @@ function getGalaxyRequirement(offset = 0, display) {
 	if (!player.boughtDims) {
 		tmp.grd.speed = 1
 		let ghostlySpeed = tmp.be ? 55 : 1
-		if (hasGrav(1)) ghostlySpeed *= tmp.gv.core[1].n_eff
 		let div = 1e4
 		let over = tmp.grd.galaxies / (302500 / ghostlySpeed)
 		if (over >= 1) {
@@ -145,7 +144,6 @@ function getDistantScalingStart() {
 	if (player.timestudy.studies.includes(224)) n += Math.floor(player.resets/2000)
 	if (tmp.ngp3) if (brSave.active && hasRipUpg(15)) n += tmp.bru[15]
 	if (player.dilation.upgrades.includes("ngmm11")) n += 25
-	if (hasGrav(1)) n /= tmp.gv.core[1].n_eff
 
 	if (tmp.grd.speed == 1) return Math.max(n, 0)
 	return n
@@ -169,6 +167,5 @@ function getRemoteScalingStart(galaxies) {
 		if (isNanoEffectUsed("remote_start")) n += tmp.nf.effects.remote_start
 		if (galaxies > 1/0 && !tmp.be) n -= galaxies - 1/0 
 	}
-	if (hasGrav(1)) n /= tmp.gv.core[1].n_eff
 	return n
 }

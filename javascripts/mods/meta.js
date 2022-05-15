@@ -98,7 +98,6 @@ function getMetaBoostPower() {
 
 		if (player.masterystudies.includes("t312")) exp = 1.045
 		if (hasAch("ng3p26")) exp *= Math.log10(9 + Math.max(player.meta.resets / 75 + 0.25, 1))
-		if (hasGrav(0)) exp *= tmp.gv.core[0].p_eff
 	}
 	if (hasAch("ngpp14")) r *= 1.01
 
@@ -144,7 +143,6 @@ function getMetaShiftRequirement() {
 	data.mult = inQC4 ? 5.5 : 15
 	if (tmp.ngp3) {
 		if (player.masterystudies.includes("t312")) data.mult -= 1
-		if (hasGrav(0)) data.mult *= tmp.gv.core[0].n_eff
 	}
 	data.amount += data.mult * Math.max(mdb - 4, 0)
 	if (tmp.ngp3 && player.masterystudies.includes("d13")) data.amount -= getTreeUpgradeEffect(1)
