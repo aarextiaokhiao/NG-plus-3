@@ -402,7 +402,7 @@ function setR19Tooltip(){
 	immunity.setAttribute('ach-tooltip', "Get " + shorten(pow10(8e7)) + " antimatter with one normal galaxy while in Eternity Challenge 7 and big ripped. Reward: Infinite Time is 3% stronger.")
 	notSmart.setAttribute('ach-tooltip', "Get "+shorten(1e215)+" Time Shards without having Time Study 11 while Big Ripped. Reward: Meta Dimensions get a multiplier based on time shards.")
 	timeBreak.setAttribute('ach-tooltip', "Break Eternity. Reward: Galaxies don't reset Dimension Boosts, and Quantum Challenges now cost 0 electrons.")
-	soLife.setAttribute('ach-tooltip', "Reach " + shortenCosts(pow10(3.5e5)) + " IP in Big Rip while dilated, with no EP multiplier upgrades and time studies. Reward: Square the Ghost Particle gain, with a hardcap at " + shortenCosts(1e10) + "x, and the hardcap is further lowered if you have more than " + shortenCosts(1e60) + " Ghost Particles.")
+	soLife.setAttribute('ach-tooltip', "Reach " + shortenCosts(pow10(3.5e5)) + " IP in Big Rip while dilated, with no EP multiplier upgrades and time studies. Reward: Square the Elementary Particle gain, with a hardcap at " + shortenCosts(1e10) + "x, and the hardcap is further lowered if you have more than " + shortenCosts(1e60) + " Elementary Particles.")
 }
 
 function setR20Tooltip(){
@@ -424,12 +424,12 @@ function setR20Tooltip(){
 	willenoughReward = wordizeList(willenoughReward, true)
 
 	//ACHIEVEMENT ROW 20
-	finite.setAttribute('ach-tooltip', "Get " + shortenCosts(1e33) + " Space Shards without Breaking Eternity within this Ghostify. Reward: Outside of Big Rips, Tree Upgrades are 10% stronger. In Big Rips, 8th Time Dimensions gain an small exponent boost based on your current Ghostify time.")
+	finite.setAttribute('ach-tooltip', "Get " + shortenCosts(1e33) + " Space Shards without Breaking Eternity within this Fundamental. Reward: Outside of Big Rips, Tree Upgrades are 10% stronger. In Big Rips, 8th Time Dimensions gain an small exponent boost based on your current Fundamental time.")
 	really.setAttribute('ach-tooltip', "Reach " + shortenCosts(pow10(5000)) + " matter in Big Rip. Reward: Buying Electron upgrades doesn't consume Meta-Dimension Boosts.")
 	grind.setAttribute('ach-tooltip', "Get the 21st Nanofield reward without having Tree Upgrades. Reward: Gain more Quarks based on Radioactive Decays.")
 	willenough.setAttribute('ach-tooltip', "Reach " + shortenCosts(pow10(aarMod.ngudpV ? 268435456 : 36000000))+" replicanti." + (willenoughReward != "" ? " Reward: " + willenoughReward + "." : ""))
 	oppose.setAttribute('ach-tooltip', "Become a ghost with at most 1x quantumed stat. Reward: You gain more Quarks based on your quantumed stat.")
-	pls.setAttribute('ach-tooltip', "Reach " + shortenCosts(pow10(9.5e5)) + " IP in Big Rip while dilated, with no EP multiplier upgrades, time studies, and Break Eternity within this Ghostify. Reward: Each time you become a ghost, you gain "+shortenDimensions(2e3)+" galaxies worth of generated neutrinos, multiplied by your best-ever galaxy amount across all Big Rips.")
+	pls.setAttribute('ach-tooltip', "Reach " + shortenCosts(pow10(9.5e5)) + " IP in Big Rip while dilated, with no EP multiplier upgrades, time studies, and Break Eternity within this Fundamental. Reward: Each time you become a ghost, you gain "+shortenDimensions(2e3)+" galaxies worth of generated neutrinos, multiplied by your best-ever galaxy amount across all Big Rips.")
 	keeheehee.setAttribute('ach-tooltip', "Become a ghost. Reward: Multiply Eternities gained by 100x (weakens as you have more), all quantum mechanic unlocks only require Time Theorems, assignation options are kept permanently, Nanofield is 3x faster until you reach 16 rewards, get all achievements prior to Paired Challenges, and start with 1 Eighth Time Dimension in Big Rips.")
 }
 
@@ -440,9 +440,9 @@ function setBMTooltip(){
 	let bm14 = el("braveMilestone14")
 
 	//BRAVE MILESTONES
-	bm1.setAttribute('ach-tooltip', "Reward: Start Ghostifies with all Speedrun Milestones and all "+shorten(Number.MAX_VALUE)+" QK assignation features unlocked, all Paired Challenges completed, all Big Rip upgrades bought, Nanofield is 2x faster until you reach 16 rewards, and you get quarks based on your best MA this quantum.")
-	bm10.setAttribute('ach-tooltip', "Reward: Start Ghostifies with 10 Fourth Emperor Dimensions" + (aarMod.ngudpV ? ", and start Big Rips with the 3rd row of Eternity upgrades." : "."))
-	bm14.setAttribute('ach-tooltip', "Reward: Start Ghostifies with " + shortenCosts(1e25) + " Quark Spins and Branches are faster based on spins (at least 10x).")
+	bm1.setAttribute('ach-tooltip', "Reward: Start Fundaments with all Speedrun Milestones and all "+shorten(Number.MAX_VALUE)+" QK assignation features unlocked, all Paired Challenges completed, all Big Rip upgrades bought, Nanofield is 2x faster until you reach 16 rewards, and you get quarks based on your best MA this quantum.")
+	bm10.setAttribute('ach-tooltip', "Reward: Start Fundaments with 10 Fourth Emperor Dimensions" + (aarMod.ngudpV ? ", and start Big Rips with the 3rd row of Eternity upgrades." : "."))
+	bm14.setAttribute('ach-tooltip', "Reward: Start Fundaments with " + shortenCosts(1e25) + " Quark Spins and Branches are faster based on spins (at least 10x).")
 }
 
 function setR21Tooltip(){
@@ -459,9 +459,9 @@ function setR21Tooltip(){
 	//ACHIEVEMENT ROW 21
 	uc.setAttribute('ach-tooltip', "Become a ghost with at least "+shortenCosts(pow10(2.2e5))+" EP without starting Eternity Challenge 10 while Big Ripped. Reward: Meta-Dimension Boosts no longer reset Meta Dimensions.")
 	mi.setAttribute('ach-tooltip', "Get "+shorten(Number.MAX_VALUE)+" infinities. Reward: You gain banked infinites and eternities when going Quantum or Big Ripping the universe.")
-	wd.setAttribute('ach-tooltip', "Get "+shortenCosts(pow10(1e12))+" "+getUQNameFromDecays(2)+" quarks for each Branch without Big Ripping in this Ghostify. Reward: Normal replicant autobuyer buys max.")
+	wd.setAttribute('ach-tooltip', "Get "+shortenCosts(pow10(1e12))+" "+getUQNameFromDecays(2)+" quarks for each Branch without Big Ripping in this Fundamental. Reward: Normal replicant autobuyer buys max.")
 	radioDecay.setAttribute('ach-tooltip', "Get 10 total Radioactive Decays. Reward: You get 1 galaxy worth of generated neutrinos per second.")
-	arent.setAttribute('ach-tooltip', "Reach " + shortenCosts(pow10(1.8e6)) + " IP while dilated and Big Ripped and without having studies, EP mult upgrades, Tree Upgrades, and Break Eternity within this Ghostify. Reward: Your 8th Tree Upgrade's level speeds up Nanofield.")
+	arent.setAttribute('ach-tooltip', "Reach " + shortenCosts(pow10(1.8e6)) + " IP while dilated and Big Ripped and without having studies, EP mult upgrades, Tree Upgrades, and Break Eternity within this Fundamental. Reward: Your 8th Tree Upgrade's level speeds up Nanofield.")
 }
 
 function setR22Tooltip(){
@@ -476,12 +476,12 @@ function setR22Tooltip(){
 	let igu = el("I give up.")
 
 	//ACHIEVEMENT ROW 22
-	ghostierthanbefore.setAttribute("ach-tooltip", "Unlock Bosonic Lab. Reward: The meta-antimatter effect uses your best meta-antimatter in your current Ghostify instead of your best in the current Quantum, and unlock all achievements prior to Photons.")
+	ghostierthanbefore.setAttribute("ach-tooltip", "Unlock Bosonic Lab. Reward: The meta-antimatter effect uses your best meta-antimatter in your current Fundamental instead of your best in the current Quantum, and unlock all achievements prior to Photons.")
 	ee.setAttribute('ach-tooltip', "Get "+shorten(Number.MAX_VALUE)+" eternities. Reward: Boost quark gain by 10 per Light Empowerment squared.")
 	oc.setAttribute('ach-tooltip', "Become a ghost with at least "+shortenCosts(pow10(3.75e5)) + " EP while Big Ripped with the Anti-Dilation modifier. Reward: Remove the second nanofield reward scaling.")
-	btco.setAttribute('ach-tooltip', "Complete Paired Challenge 1 after getting "+shortenCosts(pow10(1.65e9)) + " antimatter in Quantum Challenges 6 and 8. Reward: Ghostifies only makes you lose 25% of your radiocative decays.")
-	tdc.setAttribute('ach-tooltip', "Complete Eternity Challenge 11 with "+shortenCosts(pow10(15500)) + " IP in a Paired Challenge with the Quantum Challenges 6 and 8 combination and the Anti-Dilation modifier. Reward: Remove the quadratic cost scaling and the level softcap of fifth Tree of Decay upgrade and make it based on best meta-antimatter over Ghostifies, instead of over quantums.")
-	igu.setAttribute('ach-tooltip', "Reach " + shortenCosts(pow10(2.25e4)) + " IP while dilated and Big Ripped with Anti-Dilation modifier and without having studies, EP mult upgrades, Tree Upgrades, and Break Eternity within this Ghostify.")
+	btco.setAttribute('ach-tooltip', "Complete Paired Challenge 1 after getting "+shortenCosts(pow10(1.65e9)) + " antimatter in Quantum Challenges 6 and 8. Reward: Fundaments only makes you lose 25% of your radiocative decays.")
+	tdc.setAttribute('ach-tooltip', "Complete Eternity Challenge 11 with "+shortenCosts(pow10(15500)) + " IP in a Paired Challenge with the Quantum Challenges 6 and 8 combination and the Anti-Dilation modifier. Reward: Remove the quadratic cost scaling and the level softcap of fifth Tree of Decay upgrade and make it based on best meta-antimatter over Fundaments, instead of over quantums.")
+	igu.setAttribute('ach-tooltip', "Reach " + shortenCosts(pow10(2.25e4)) + " IP while dilated and Big Ripped with Anti-Dilation modifier and without having studies, EP mult upgrades, Tree Upgrades, and Break Eternity within this Fundamental.")
 	isnotenough.setAttribute('ach-tooltip', "Complete a Paired Challenge with Quantum Challenges 6 and 8 combinations. Reward: Remove the hardcap reduction of 'And so your life?'.")
 }
 
@@ -497,9 +497,9 @@ function setR23Tooltip(){
 	let metae18 = el("Meta-Quintillion")
 
 	//ACHIEVEMENT ROW 23
-	ghostliest.setAttribute('ach-tooltip', "Get " + shorten(Math.pow(Number.MAX_VALUE, 1/4)) + " Ghostifies. Reward: Ghostifies boost the gain of Ghost Particles at a reduced rate.")
-	metae18.setAttribute('ach-tooltip', "Get " + shortenCosts(pow10(1e18)) + " antimatter. Reward: Distant Antimatter Galaxies scaling is 10% weaker and Higgs produce Bosons at a linear rate.")
-	aretheseanother.setAttribute('ach-tooltip', "Reach " + shortenCosts(pow10(40000)) + " Quarks. Reward: Gain 500x more Quarks and Ghost Particles.")
+	ghostliest.setAttribute('ach-tooltip', "Get " + shorten(Math.pow(Number.MAX_VALUE, 1/4)) + " Fundaments. Reward: Fundaments boost the gain of Elementary Particles at a reduced rate.")
+	metae18.setAttribute('ach-tooltip', "Get " + shortenCosts(pow10(1e18)) + " antimatter. Reward: Distant Antimatter Galaxies scaling is 10% weaker.")
+	aretheseanother.setAttribute('ach-tooltip', "Reach " + shortenCosts(pow10(40000)) + " Quarks. Reward: Gain 500x more Quarks and Elementary Particles.")
 }
 
 function setPreNGP3AchievementTooltip() {

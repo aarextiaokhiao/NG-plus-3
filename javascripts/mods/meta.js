@@ -411,7 +411,7 @@ function updateMetaDimensions () {
 	el("quantumResetLabel").textContent = (bigRipped ? 'Ghostify' : 'Quantum') + ': requires ' + shorten(req) + ' meta-antimatter ' + (!inQC(0) ? "and " + shortenCosts(pow10(getQCGoal())) + " antimatter" : player.masterystudies ? "and an EC14 completion" : "")
 	if (reqGotten && bigRipped && ghostified) {
 		var GS = getGHPGain()
-		message += "gain " + shortenDimensions(GS) + " Ghost Particle" + (GS.lt(2) ? "" : "s")
+		message += "gain " + shortenDimensions(GS) + " Elementary Particle" + (GS.lt(2) ? "" : "s")
 	} else if (reqGotten && !bigRipped && (quSave.times || ghSave.milestones)) {
 		var QS = quarkGain()
 		message += "gain " + shortenDimensions(QS) + " quark" + (QS.lt(2) ? "" : "s") + " for boosts"

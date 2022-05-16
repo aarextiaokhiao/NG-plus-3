@@ -2232,7 +2232,7 @@ function changeSaveDesc(saveId, placement) {
 				var lights=0
 				for (var l=0;l<8;l++) lights+=data.lights[l]
 				msg+="Photons: "+shortenDimensions(E(data.amount))+", Dark Matter: "+shortenDimensions(E(data.darkMatter))+", Photonic Waves: "+shortenDimensions(E(data.ghostlyRays))+", Lights: "+getFullExpansion(lights)+", Light Empowerments: "+getFullExpansion(data.enpowerments)
-			} else msg+="Ghost Particles: "+shortenDimensions(E(temp.ghostify.ghostParticles))+", Neutrinos: "+shortenDimensions(Decimal.add(temp.ghostify.neutrinos.electron, temp.ghostify.neutrinos.mu).add(temp.ghostify.neutrinos.tau).round())
+			} else msg+="Elementary Particles: "+shortenDimensions(E(temp.ghostify.ghostParticles))+", Neutrinos: "+shortenDimensions(Decimal.add(temp.ghostify.neutrinos.electron, temp.ghostify.neutrinos.mu).add(temp.ghostify.neutrinos.tau).round())
 		} else if (isSaveQuantumed) {
 			if (!temp.masterystudies) msg+="Endgame of NG++"
 			else if (temp.masterystudies.includes('d14')) msg+="Total antimatter in Big Rips: "+shortenDimensions(E(temp.quantum.bigRip.totalAntimatter))+", Space Shards: "+shortenDimensions(E(temp.quantum.bigRip.spaceShards))+(temp.achievements.includes("ng3p55")?", Eternal Matter: "+shortenDimensions(E(temp.quantum.breakEternity.eternalMatter)):"")
@@ -3424,7 +3424,7 @@ function updateHotkeys() {
 	if (hasAch("ngpp11")) html += ", shift+D to Meta-Dimension Boost"
 	if (player.meta) html += ", Q for quantum"
 	if (hasAch("ng3p45")) html += ", U for unstabilize all quarks"
-	if (hasAch("ng3p51")) html += ", B for Big Rip, G to become a ghost"
+	if (hasAch("ng3p51")) html += ", B for Big Rip, G to fundament"
 	html += "."
 	if (player.boughtDims) html += "<br>You can hold shift while buying time studies to buy all up until that point, see each study's number, and save study trees."
 	html += "<br>Hotkeys do not work while holding control."
@@ -4574,13 +4574,13 @@ function doGhostifyUnlockStuff(){
 	ghSave.reached = true
 	if (el("welcome").style.display != "flex") el("welcome").style.display = "flex"
 	else aarMod.popUpId = ""
-	el("welcomeMessage").innerHTML = "You are finally able to complete PC6+8 in Big Rip! However, because of the unstability of this universe, the only way to go further is to become a ghost. This allows you to pass Big Rip universes and unlock new stuff in Ghostify in exchange for everything that you have. Therefore, this is the sixth layer of NG+3."
+	el("welcomeMessage").innerHTML = "You are finally able to complete PC6+8 in Big Rip! However, because of the unstability of this universe, the only way to go further is to fundament. This allows to unlock new stuff in exchange for everything that you have."
 }
 
 function doReachAMGoalStuff(chall){
 	if (el("welcome").style.display != "flex") el("welcome").style.display = "flex"
 	else aarMod.popUpId = ""
-	el("welcomeMessage").innerHTML = "You reached the antimatter goal (" + shorten(pow10(getQCGoal())) + "), but you didn't reach the meta-antimatter goal yet! Get " + shorten(getQuantumReq()) + " meta-antimatter" + (brSave.active ? " and then you can become a ghost!" : " and then go Quantum to complete your challenge!")
+	el("welcomeMessage").innerHTML = "You reached the antimatter goal (" + shorten(pow10(getQCGoal())) + "), but you didn't reach the meta-antimatter goal yet! Get " + shorten(getQuantumReq()) + " meta-antimatter" + (brSave.active ? " and then you can fundament!" : " and then go Quantum to complete your challenge!")
 	quSave.nonMAGoalReached.push(chall)
 }
 
@@ -5455,14 +5455,14 @@ function doGhostifyButtonDisplayUpdating(diff){
 		}
 	}
 	var ghostifyGains = []
-	if (ghostified) ghostifyGains.push(shortenDimensions(getGHPGain()) + " Ghost Particles")
+	if (ghostified) ghostifyGains.push(shortenDimensions(getGHPGain()) + " Elementary Particles")
 	if (ghostified && hasAch("ng3p78")) ghostifyGains.push(shortenDimensions(Decimal.times(6e3 * brSave.bestGals, getGhostifiedGain()).times(getNeutrinoGain())) + " Neutrinos")
 	if (hasBosonicUpg(15)) ghostifyGains.push(getFullExpansion(getGhostifiedGain()) + " Ghostifies")
-	el("ghostifybtnFlavor").textContent = ghostifyGains.length > 1 ? "" : (ghostifyGains.length ? "" : "I need to ascend from this broken universe... ") + "I need to become a ghost."
+	el("ghostifybtnFlavor").textContent = ghostifyGains.length > 1 ? "" : (ghostifyGains.length ? "" : "I need to research further... ") + "I need to fundament"
 	el("GHPGain").textContent = ghostifyGains.length ? "Gain " + ghostifyGains[0] + (ghostifyGains.length > 2 ? ", " + ghostifyGains[1] + "," : "") + (ghostifyGains.length > 1 ? " and " + ghostifyGains[ghostifyGains.length-1] : "") + "." : ""
 	var showGHPPeakValue = GHPminpeakValue.lt(1e6) || player.options.theme=="Aarex's Modifications"
 	el("GHPRate").textContent = ghostifyGains.length == 1 && showGHPPeakValue ? getGHPRate(currentGHPmin) : ""
-	el("GHPPeak").textContent = ghostifyGains.length == 1 ? (showGHPPeakValue?"":"Peaked at ")+getGHPRate(GHPminpeak)+(showGHPPeakValue?" at "+shortenDimensions(GHPminpeakValue)+" GhP":"") : ""
+	el("GHPPeak").textContent = ghostifyGains.length == 1 ? (showGHPPeakValue?"":"Peaked at ")+getGHPRate(GHPminpeak)+(showGHPPeakValue?" at "+shortenDimensions(GHPminpeakValue)+" ElP":"") : ""
 }
 
 function tickspeedButtonDisplay(){

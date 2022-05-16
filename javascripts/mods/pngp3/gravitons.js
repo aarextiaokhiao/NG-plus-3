@@ -134,10 +134,10 @@ let GRAV_BOOSTS = {
 		},
 
 		pos_disp(x) {
-			return "GhP multiplier upgrades are ^" + shorten(x.e) + ", x" + shorten(x.m) + " stronger"
+			return "ElP multiplier upgrades are ^" + shorten(x.e) + ", x" + shorten(x.m) + " stronger"
 		},
 		neg_disp(x) {
-			return "GhP gain is reduced to ^" + shorten(x)
+			return "ElP gain is reduced to ^" + shorten(x)
 		},
 	},
 }

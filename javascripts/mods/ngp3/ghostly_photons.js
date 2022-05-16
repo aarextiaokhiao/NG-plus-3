@@ -136,7 +136,7 @@ function updateLightThresholdStrengthDisplay(){
 function updateLEmpowermentPrimary(){
 	var gphData = ghSave.ghostlyPhotons
 	el("lightEmpowerment").className = "gluonupgrade "+(gphData.lights[7] >= tmp.leReq ? "gph" : "unavailablebtn")
-	el("lightEmpowermentDesc").textContent = hasAch("ng3p101") ? "+1 Light Empowerment" : "Gain 1 Light Empowerment, but become a ghost and reset this mechanic."
+	el("lightEmpowermentDesc").textContent = hasAch("ng3p101") ? "+1 Light Empowerment" : "Reset Photons for +1 Light Empowerment"
 	el("lightEmpowermentReq").textContent = getFullExpansion(tmp.leReq)
 	el("lightEmpowerments").textContent = getFullExpansion(gphData.enpowerments)
 	el("lightEmpowermentScaling").textContent = getGalaxyScaleName(tmp.leReqScale) + "Light Empowerments"
@@ -192,7 +192,7 @@ function getLightThresholdIncrease(l) {
 function lightEmpowerment(auto=false) {
 	if (!(ghSave.ghostlyPhotons.lights[7] >= tmp.leReq)) return
 	if (!hasAch("ng3p101") && !auto) {
-		if (!aarMod.leNoConf && !confirm("You will become a ghost, but Photons will be reset. You will gain 1 Light Empowerment from this. Are you sure you want to proceed?")) return
+		if (!aarMod.leNoConf && !confirm("You will fundament, but Photons will be reset. You will gain 1 Light Empowerment from this. Are you sure you want to proceed?")) return
 		if (!ghSave.ghostlyPhotons.enpowerments) el("leConfirmBtn").style.display = "inline-block"
 	}
 	ghSave.ghostlyPhotons.enpowerments++

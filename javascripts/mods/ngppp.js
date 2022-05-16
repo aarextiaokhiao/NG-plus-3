@@ -491,7 +491,7 @@ function getGHPMult() {
 ghostified = false
 function ghostify(auto, force) {
 	if (!force&&(!isQuantumReached()||!brSave.active||implosionCheck)) return
-	if (!auto && !force && aarMod.ghostifyConf && !confirm("Becoming a ghost resets everything Quantum resets, and also resets your banked stats, best TP & MA, quarks, gluons, electrons, Quantum Challenges, Replicants, Nanofield, and Tree of Decay to gain a Ghost Particle. Are you ready for this?")) {
+	if (!auto && !force && aarMod.ghostifyConf && !confirm("Becoming a ghost resets everything Quantum resets, and also resets your banked stats, best TP & MA, quarks, gluons, electrons, Quantum Challenges, Replicants, Nanofield, and Tree of Decay to gain a Elementary Particle. Are you ready for this?")) {
 		denyGhostify()
 		return
 	}
@@ -576,9 +576,9 @@ function toggleGhostifyConf() {
 }
 
 function getGHPRate(num) {
-	if (num.lt(1 / 60)) return (num * 1440).toFixed(1) + " GhP/day"
-	if (num.lt(1)) return (num * 60).toFixed(1) + " GhP/hr"
-	return shorten(num) + " GhP/min"
+	if (num.lt(1 / 60)) return (num * 1440).toFixed(1) + " ElP/day"
+	if (num.lt(1)) return (num * 60).toFixed(1) + " ElP/hr"
+	return shorten(num) + " ElP/min"
 }
 
 var averageGHP = E(0)
@@ -591,9 +591,9 @@ function updateLastTenGhostifies() {
 	for (var i=0; i<10; i++) {
 		if (ghSave.last10[i][1].gt(0)) {
 			var qkpm = ghSave.last10[i][1].dividedBy(ghSave.last10[i][0]/600)
-			var tempstring = shorten(qkpm) + " GhP/min"
-			if (qkpm<1) tempstring = shorten(qkpm*60) + " GhP/hour"
-			var msg = "The Ghostify " + (i == 0 ? '1 Ghostify' : (i+1) + ' Ghostifies') + " ago took " + timeDisplayShort(ghSave.last10[i][0], false, 3) + " and gave " + shortenDimensions(ghSave.last10[i][1]) +" GhP. "+ tempstring
+			var tempstring = shorten(qkpm) + " ElP/min"
+			if (qkpm<1) tempstring = shorten(qkpm*60) + " ElP/hour"
+			var msg = "The Fundament " + (i+1) + " ago took " + timeDisplayShort(ghSave.last10[i][0], false, 3) + " and gave " + shortenDimensions(ghSave.last10[i][1]) +" ElP. "+ tempstring
 			el("ghostifyrun"+(i+1)).textContent = msg
 			tempTime = tempTime.plus(ghSave.last10[i][0])
 			tempGHP = tempGHP.plus(ghSave.last10[i][1])
@@ -605,10 +605,10 @@ function updateLastTenGhostifies() {
 		tempTime = tempTime.dividedBy(listed)
 		tempGHP = tempGHP.dividedBy(listed)
 		var qkpm = tempGHP.dividedBy(tempTime/600)
-		var tempstring = shorten(qkpm) + " GhP/min"
+		var tempstring = shorten(qkpm) + " ElP/min"
 		averageGHP = tempGHP
-		if (qkpm<1) tempstring = shorten(qkpm*60) + " GhP/hour"
-		el("averageGhostifyRun").textContent = "Last " + listed + " Ghostifies average time: "+ timeDisplayShort(tempTime, false, 3)+" Average GhP gain: "+shortenDimensions(tempGHP)+" GhP. "+tempstring
+		if (qkpm<1) tempstring = shorten(qkpm*60) + " ElP/hour"
+		el("averageGhostifyRun").textContent = "Last " + listed + " Fundaments average time: "+ timeDisplayShort(tempTime, false, 3)+" Average ElP gain: "+shortenDimensions(tempGHP)+" ElP. "+tempstring
 	} else el("averageGhostifyRun").textContent = ""
 }
 
@@ -669,24 +669,10 @@ function maxGHPMult() {
 		cost=getGHPMultCost()
 	}
 	if (ghSave.multPower>84) {
-		let b=ghSave.multPower*2-167
-		let x=Math.floor((-b+Math.sqrt(b*b+4*sum.div(cost).log(5)))/2)+1
-		if (x) {
-			let toBuy=x
-			let toSpend=0
-			while (x>0) {
-				cost=getGHPMultCost(x-1)
-				if (sum.div(cost).gt(1e16)) break
-				toSpend=cost.add(toSpend)
-				if (sum.lt(toSpend)) {
-					toSpend=cost
-					toBuy--
-				}
-				x--
-			}
-			subNeutrinos(toSpend)
-			ghSave.multPower+=toBuy
-		}
+		let toBuy=Math.floor(sum.div(cost).times(624).add(1).log(625))
+		subNeutrinos(E_pow(625,toBuy).sub(1).div(624).times(cost))
+		ghSave.multPower+=toBuy
+		ghSave.automatorGhosts[15].a=ghSave.automatorGhosts[15].a.times(E_pow(5,toBuy))
 	}
 	el("ghpMult").textContent=shortenDimensions(pow2(ghSave.multPower-1))
 	el("ghpMultUpgCost").textContent=shortenDimensions(getGHPMultCost())
@@ -819,7 +805,7 @@ function startEC10() {
 
 function getGHPMultCost(offset=0) {
 	let lvl=ghSave.multPower+offset
-	return E_pow(5, lvl * 2 + Math.max(lvl - 85, 0) * (lvl - 84) - 1).times(25e8)
+	return E_pow(5, lvl * 2 + Math.max(lvl - 85, 0) * 2 - 1).times(25e8)
 
 }
 

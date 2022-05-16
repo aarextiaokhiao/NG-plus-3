@@ -105,7 +105,7 @@ dev.ghostify = function(gain, amount, seconds=4) {
 	el("ghostifyani").style["transition-duration"] = (seconds / 4) + "s"
 	el("ghostifyanitext").style["transition-duration"] = (seconds / 8) + "s"
 	setTimeout(function() {
-		el("ghostifyanigained").innerHTML = ghostified ? "You now have <b>" + shortenDimensions(amount) + "</b> Ghost Particles. (+" + shortenDimensions(gain) + ")" : "Congratulations for beating a PC with QCs 6 & 8 combination!"
+		el("ghostifyanigained").innerHTML = ghostified ? "You now have <b>" + shortenDimensions(amount) + "</b> Elementary Particles. (+" + shortenDimensions(gain) + ")" : "Congratulations for beating a PC with QCs 6 & 8 combination!"
 		el("ghostifyanitext").style.left = "0%"
 		el("ghostifyanitext").style.opacity = 1
 	}, seconds * 250)

@@ -69,7 +69,7 @@ function postNGp3AchsCheck() {
 
 function setPostR23Tooltip() {
     a = el("Mega Boo!")
-    a.setAttribute('ach-tooltip', "Get " + shorten(E("e6000")) + " Ghost Particles. Reward: Gain 100% of Ghost Particles, Ghostifies & Neutrions gained in Big Rip.")
+    a.setAttribute('ach-tooltip', "Get " + shorten(E("e6000")) + " Elementary Particles. Reward: Gain 100% of Elementary Particles, Ghostifies & Neutrions gained in Big Rip.")
 
     a = el("Quantized Reproduction")
     a.setAttribute('ach-tooltip', "Get " + shorten(E(2).pow(1024)) + " of Replicate amount.")

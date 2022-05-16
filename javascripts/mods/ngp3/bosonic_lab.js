@@ -134,7 +134,6 @@ function getBosonProduction() {
 	var ret = pow10(exp).times(tmp.wzb.wbp)
 	if (ghSave.bl.usedEnchants.includes(34)) ret = ret.times(tmp.bEn[34] || 1)
 	if (ghSave.neutrinos.boosts >= 12) ret = ret.times(tmp.nb[12])
-	if (hasAch("ng3p98")) ret = ret.plus(Math.pow(ghSave.hb.higgs, 2))
 	//maybe softcap at e40 or e50?
 	ret = softcap(ret, "bam")
 	return ret
@@ -745,7 +744,7 @@ var bu = {
 		12: "Decrease the free galaxy threshold based on Green Power.",
 		13: "Radioactive Decays boost Light Empowerments.",
 		14: "Sacrificed galaxies cancel less based on your free galaxies.",
-		15: "Ghostifies and dilated time power up each other.",
+		15: "Fundaments and dilated time power up each other.",
 		21: "Replace first Nanofield reward with a boost to slow down Dimension Supersonic scaling.",
 		22: "Replace seventh Nanofield reward with a boost to neutrino gain and preon charge.",
 		23: "Assigning gives more colored quarks based on your meta-antimatter.",
@@ -877,7 +876,7 @@ var bu = {
 			return getFullExpansion(x) + (x > quSave.electrons.sacGals && !brSave.active ? " (+" + getFullExpansion(Math.max(x - quSave.electrons.sacGals, 0)) + " Antielectronic Galaxies)" : "")
 		},
 		15: function(x) {
-			return shorten(x.gh) + "x Ghostifies, " + shorten(x.dt) + "x DT"
+			return shorten(x.gh) + "x Fundaments, " + shorten(x.dt) + "x DT"
 		},
 		25: function(x) {
 			return "^" + x.toFixed(2)

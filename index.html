@@ -62,7 +62,7 @@
 		</div>
 		<div style="position: relative">
 			<div class="GHP" id="ghostparticles">
-				You have <span id='GHPAmount'>0</span> Ghost Particles.<br>
+				You have <span id='GHPAmount'>0</span> Elementary Particles.<br>
 				<div id="quantumedBM">Quantumed <span id='quantumedBMAmount'>0</span> times</div>
 			</div>
 			<button id="bigripbtn" class="bigripbtn" onclick="bigRip()">I want to complete the impossible challenge... I want to Big Rip the universe.</button>
@@ -106,7 +106,7 @@
 			<button id="infinitybtn" style="font-family: Typewriter; font-size: 20px; display: none" class="infinitybtn" onclick="showTab('infinity')">Infinity</button>
 			<button id="eternitystorebtn" style="font-family: Typewriter; font-size: 20px; display: none" class="eternitytabbtn" onclick="showTab('eternitystore')">Eternity</button>
 			<button id="quantumtabbtn" style="font-family: Typewriter; font-size: 20px; display: none" class="quantumbtn" onclick='showTab("quantumtab")'>Quantum</button>
-			<button id="ghostifytabbtn" style="font-family: Typewriter; font-size: 20px" class="ghostifybtn" onclick='showTab("ghostify")'>Ghostify</button>
+			<button id="ghostifytabbtn" style="font-family: Typewriter; font-size: 20px" class="ghostifybtn" onclick='showTab("ghostify")'>Fundament</button>
 		</div>
 		<div id="emptiness" class="tab" style="font-size: 150%">
 			<br>
@@ -1734,7 +1734,7 @@
 				<br><br>
 				(Update v2.4.1.1: Gravitional Relativity)
 				<br>
-				<b class="red">(Beta: 5/13/22 Build)</b>
+				<b class="red">(Beta: 5/15/22 Build)</b>
 				<br><br>
 			</p>
 			<div id="footercontainer">
@@ -1765,7 +1765,7 @@
 				<td><button class="secondarytabbtn" onclick="showStatsTab('lasttenruns')" id="pastinfs" style="display:none">Past Infinities</button><td>
 				<td><button class="secondarytabbtn" onclick="showStatsTab('lastteneternities')" id="pasteternities" >Past Eternities</button><td>
 				<td><button class="secondarytabbtn" onclick="showStatsTab('lasttenquantums')" id="pastquantums" >Past Quantums</button><td>
-				<td><button class="secondarytabbtn aarexmodsghostifybtn" onclick="showStatsTab('lasttenghostifies')" id="pastghostifies" >Past Ghostifies</button><td>
+				<td><button class="secondarytabbtn aarexmodsghostifybtn" onclick="showStatsTab('lasttenghostifies')" id="pastghostifies" >Past Fundaments</button><td>
 			</div>
 			<div id="stats" class="statstab">
 				<div id='brfilter'><br></div>
@@ -2559,10 +2559,10 @@
 								<div id="Radioactive Decaying to the max!" class="achievement achievementlocked" style="background-image: url(images/163.png)" ach-tooltip="Get 10 total Radioactive Decays. Reward: You get 1 galaxy worth of generated neutrinos per second."></div>
 							</td>
 							<td>
-								<div id="Running through Big Rips" class="achievement achievementlocked" style="background-image: url(images/164.png)" ach-tooltip="Become a ghost in 0.6 seconds. Reward: Going Quantum doesn't require meta-antimatter if you got the meta-antimatter requirement in your current Ghostify."></div>
+								<div id="Running through Big Rips" class="achievement achievementlocked" style="background-image: url(images/164.png)" ach-tooltip="Fundament in 0.6 seconds. Reward: Going Quantum doesn't require meta-antimatter if you got the meta-antimatter requirement in your current Ghostify."></div>
 							</td>
 							<td>
-								<div id="The Theory of Ultimate Studies" class="achievement achievementlocked" style="background-image: url(images/165.png)" ach-tooltip="Have at least 48 Mastery Studies. Reward: When you become a ghost, you start with all Eternity Challenges and all Time Studies bought."></div>
+								<div id="The Theory of Ultimate Studies" class="achievement achievementlocked" style="background-image: url(images/165.png)" ach-tooltip="Have at least 48 Mastery Studies. Reward: When you fundament, you start with all Eternity Challenges and all Time Studies bought."></div>
 							</td>
 							<td>
 								<div id="Aren't you already dead?" class="achievement achievementlocked" style="background-image: url(images/166.png)"></div>
@@ -4878,7 +4878,7 @@
 					<button class='storebtn' style='width: 280px' onclick='maxBuyLimit()'>Max limit upgrades</button><br><br><br>
 				</div>
 				<div class='anttab' id='nanofield'>
-					<b class="red">WARNING: This mechanic will be reworked soon!</b><br>
+					<!-- <b class="red">WARNING: This mechanic will be reworked soon!</b><br> -->
 					You have <span id="quarksNanofield"></span> preons.<br>
 					<span id="ns"></span>
 					<table class="qtable"><tr><td>
@@ -5139,9 +5139,9 @@
 						<td id="neutrinoBoostCell12">Higgs boost Bosons by <span class="neutrinos" id="neutrinoBoost12"></span>.</td>
 					</tr>
 					<tr>
-						<td><button id="neutrinoUnlock" class="gluonupgrade unavailablebtn" onclick="unlockNeutrinoBoost()">Unlock a new boost based on your neutrinos.<br>Cost: <span id="neutrinoUnlockCost">2</span> GhP</button></td>
-						<td><button id="neutrinoMultUpg" class="gluonupgrade unavailablebtn" onclick="buyNeutrinoMult()">You gain 5x more neutrinos.<br>Currently: <span id="neutrinoMult">1</span>x<br>Cost: <span id="neutrinoMultUpgCost">3</span> GhP</button><br><button class="storebtn" onclick='maxNeutrinoMult()' style='width:190px'>Max Neutrino mult</button></td>
-						<td><button id="ghpMultUpg" class="gluonupgrade unavailablebtn" onclick="buyGHPMult()">You gain 2x more GhP.<br>Currently: <span id="ghpMult"></span>x<br>Cost: <span id="ghpMultUpgCost"></span> of any neutrinos</button><br><button class="storebtn" onclick='maxGHPMult()' style='width:190px'>Max GhP mult</button></td>
+						<td><button id="neutrinoUnlock" class="gluonupgrade unavailablebtn" onclick="unlockNeutrinoBoost()">Unlock a new boost based on your neutrinos.<br>Cost: <span id="neutrinoUnlockCost">2</span> ElP</button></td>
+						<td><button id="neutrinoMultUpg" class="gluonupgrade unavailablebtn" onclick="buyNeutrinoMult()">You gain 5x more neutrinos.<br>Currently: <span id="neutrinoMult">1</span>x<br>Cost: <span id="neutrinoMultUpgCost">3</span> ElP</button><br><button class="storebtn" onclick='maxNeutrinoMult()' style='width:190px'>Max Neutrino mult</button></td>
+						<td><button id="ghpMultUpg" class="gluonupgrade unavailablebtn" onclick="buyGHPMult()">You gain 2x more ElP.<br>Currently: <span id="ghpMult"></span>x<br>Cost: <span id="ghpMultUpgCost"></span> of any neutrinos</button><br><button class="storebtn" onclick='maxGHPMult()' style='width:190px'>Max ElP mult</button></td>
 					</tr>
 					<tr>
 						<td><button class="gluonupgrade unavailablebtn" id="neutrinoUpg1" onclick="buyNeutrinoUpg(1)" style="font-size: 10px">Meta-Dimension Boosts cost cheaper.<br>Currently: -<span id="neutrinoUpg1Pow"></span><br>Cost: <span id="neutrinoUpg1Cost"></span> of any neutrinos</button></td>
@@ -5165,7 +5165,7 @@
 					</tr>
 					<tr id="gphRow">
 						<td><button class="gluonupgrade unavailablebtn" id="neutrinoUpg13" onclick="buyNeutrinoUpg(13)">100 RG upgrade doesn't nerf the 100 BR upgrade.<br>Cost: <span id="neutrinoUpg13Cost"></span> of any neutrinos</button></td>
-						<td><button class="gluonupgrade unavailablebtn" id="neutrinoUpg14" onclick="buyNeutrinoUpg(14)" style="font-size: 10px">Gain more neutrinos based on your GhP and color powers.<br>Currently: <span id="neutrinoUpg14Pow"></span>x<br>Cost: <span id="neutrinoUpg14Cost"></span> of any neutrinos</button></td>
+						<td><button class="gluonupgrade unavailablebtn" id="neutrinoUpg14" onclick="buyNeutrinoUpg(14)" style="font-size: 10px">Gain more neutrinos based on your ElP and color powers.<br>Currently: <span id="neutrinoUpg14Pow"></span>x<br>Cost: <span id="neutrinoUpg14Cost"></span> of any neutrinos</button></td>
 						<td><button class="gluonupgrade unavailablebtn" id="neutrinoUpg15" onclick="buyNeutrinoUpg(15)">Your Nanofield rewards speed up Nanofield.<br>Currently: <span id="neutrinoUpg15Pow"></span>x<br>Cost: <span id="neutrinoUpg15Cost"></span> of any neutrinos</button></td>
 					</tr><tr id="gravRow">
 						<td><button class="gluonupgrade unavailablebtn" id="neutrinoUpg16" onclick="buyNeutrinoUpg(16)" style="font-size: 10px">Ghostifies boosts Gravitons gain. Gravitons effect base is increased by 1.<br>Currently: <span id="neutrinoUpg16Pow"></span>x<br>Cost: <span id="neutrinoUpg16Cost"></span> of any neutrinos</button></td>
@@ -5276,7 +5276,7 @@
 						<td id="autoGhost15"><div class="autoBuyerDiv" style="display:block">
 							<b>Auto-Ghostify Ghost</b><br>
 							Power usage: 0.5<br>
-							Amount of GhP to wait until reset: <input id="autoGhost15a" onchange="changeAutoGhost('15a')"></input><br>
+							Amount of ElP to wait until reset: <input id="autoGhost15a" onchange="changeAutoGhost('15a')"></input><br>
 							Is active: <input id="isAutoGhostOn15" type="checkbox" onchange="toggleAutoGhost(15)"></input>
 						</div></td>
 					</tr>
@@ -5325,7 +5325,7 @@
 				</table>
 			</div>
 			<div id="bravemilestones" class="ghostifytab">
-				<div>Get # of quantumed stat at or below the requirement and then become a ghost for a reward!</div>
+				<div>Get # of quantumed stat at or below the requirement and then fundament for a reward!</div>
 				<table style="margin: auto">
 					<tr id="braveRow1">
 						<td><div id="braveMilestone1" class="achievement achievementlocked"></div></td>
@@ -5338,13 +5338,13 @@
 						<td><div id="braveMilestone8" class="achievement achievementlocked" ach-tooltip="Reward: You produce ^0.5 of quarks, ^0.5 of gluons and 1% of Space Shards gained on Quantum per second."></div></td>
 					</tr>
 					<tr id="braveRow2">
-						<td><div id="braveMilestone9" class="achievement achievementlocked" ach-tooltip="Reward: Start Ghostifies with 10 of each one of the first 2 Emperor Dimensions."></div></td>
-						<td><div id="braveMilestone10" class="achievement achievementlocked" ach-tooltip="Reward: Start Ghostifies with 10 of each one of the first 4 Emperor Dimensions."></div></td>
-						<td><div id="braveMilestone11" class="achievement achievementlocked" ach-tooltip="Reward: Start Ghostifies with 10 of each one of the first 6 Emperor Dimensions."></div></td>
-						<td><div id="braveMilestone12" class="achievement achievementlocked" ach-tooltip="Reward: Start Ghostifies with 10 of each Emperor Dimension."></div></td>
-						<td><div id="braveMilestone13" class="achievement achievementlocked" ach-tooltip="Reward: Start Ghostifies with 16 Nanofield rewards."></div></td>
+						<td><div id="braveMilestone9" class="achievement achievementlocked" ach-tooltip="Reward: Start Ghostifys with 10 of each one of the first 2 Emperor Dimensions."></div></td>
+						<td><div id="braveMilestone10" class="achievement achievementlocked" ach-tooltip="Reward: Start Ghostifys with 10 of each one of the first 4 Emperor Dimensions."></div></td>
+						<td><div id="braveMilestone11" class="achievement achievementlocked" ach-tooltip="Reward: Start Ghostifys with 10 of each one of the first 6 Emperor Dimensions."></div></td>
+						<td><div id="braveMilestone12" class="achievement achievementlocked" ach-tooltip="Reward: Start Ghostifys with 10 of each Emperor Dimension."></div></td>
+						<td><div id="braveMilestone13" class="achievement achievementlocked" ach-tooltip="Reward: Start Ghostifys with 16 Nanofield rewards."></div></td>
 						<td><div id="braveMilestone14" class="achievement achievementlocked"></div></td>
-						<td><div id="braveMilestone15" class="achievement achievementlocked" ach-tooltip="Reward: Start Ghostifies with Break Eternity unlocked, you keep Break Eternity upgrades, and you produce 1% of Eternal Matter gained on Eternity per second."></div></td>
+						<td><div id="braveMilestone15" class="achievement achievementlocked" ach-tooltip="Reward: Start Ghostifys with Break Eternity unlocked, you keep Break Eternity upgrades, and you produce 1% of Eternal Matter gained on Eternity per second."></div></td>
 						<td><div id="braveMilestone16" class="achievement achievementlocked" ach-tooltip="Reward: You produce 1% of quarks gained on Quantum per second, and you keep Tachyon particles except when Big Ripping an universe."></div></td>
 					</tr>
 				</table>
@@ -5352,7 +5352,7 @@
 			<div id="gphtab" class="ghostifytab">
 				<div id="gphUnl"></div>
 				<div id="gphDiv">
-					<b class="red">WARNING: This mechanic will be reworked soon!</b><br>
+					<!-- <b class="red">WARNING: This mechanic will be reworked soon!</b><br> -->
 					You have <span id="dtGPH">0</span> dilated time.<br>
 					You are getting <span class="gphAmount" id="gphProduction">0</span> <span id="gphProductionType">Photons</span> per second.<br>
 					<table class='qtable'><tr>
