@@ -1120,11 +1120,11 @@ function doNGPlusFourPlayer(){
 	quSave.electrons.mult = 6
 	for (var c = 1; c < 9; c++) quSave.challenges[c] = 2
 	quSave.pairedChallenges.completed = 4
-	nfSave.rewards = 19
+	quSave.nanofield.rewards = 19
 	quSave.reachedInfQK = true
-	todSave.r.spin = 1e25
-	todSave.g.spin = 1e25
-	todSave.b.spin = 1e25
+	quSave.tod.r.spin = 1e25
+	quSave.tod.g.spin = 1e25
+	quSave.tod.b.spin = 1e25
 	ghSave.milestones = 1
 	player.achievements.push("ng3p18")
 	player.achievements.push("ng3p28")
@@ -2194,7 +2194,7 @@ function changeSaveDesc(saveId, placement) {
 			if (!temp.aarexModifications.nguspV && !temp.aarexModifications.ngudpV && temp.meta) msg += "+"
 		} else if (temp.meta) msg += exp + "++" + (temp.masterystudies ? "+" : "")
 		else if (temp.aarexModifications.newGamePlusVersion) msg += exp + "+"
-		if (temp.masterystudies && !temp.aarexModifications.ngp4V) msg += ", The Post-Grand Run [No NG+4]"
+		if (temp.masterystudies && !temp.aarexModifications.ngp4V && temp.aarexModifications.newGamePlusVersion) msg += ", The Marathon [No NG+4]"
 		if (temp.aarexModifications.ngmX > 3) msg += "-" + temp.aarexModifications.ngmX
 		else if (temp.galacticSacrifice) msg += "--" + (temp.tickspeedBoosts != undefined ? "-" : "")
 		else if (temp.aarexModifications.newGameMinusVersion) msg += "-"
@@ -2203,9 +2203,8 @@ function changeSaveDesc(saveId, placement) {
 		else if (temp.singularity) msg = msg != "" || ex ? "IR" + msg : "Infinity Respecced"
 		else if (temp.masterystudies) msg = "Post-NG" + msg
 		else msg = "NG" + msg
-		if (ex) msg = msg == "NG" ? "Expert Mode" : msg + "Ex"
 		if (temp.galacticSacrifice&&temp.aarexModifications.newGameMinusVersion) msg += ", NG-"
-		if ((temp.exdilation || temp.meta) && !temp.aarexModifications.newGamePlusVersion) msg += ", no NG+ features"
+		if ((temp.exdilation || temp.meta) && !temp.aarexModifications.newGamePlusVersion) msg += ", The Grand Run [No NG+]"
 		msg = (msg == "NG" ? "" : msg + "<br>") + (isSaveCurrent ? "Selected<br>" : "Played for " + timeDisplayShort(temp.totalTimePlayed) + "<br>")
 		var originalBreak = player.break
 		var originalNotation = player.options.notation
@@ -2304,12 +2303,11 @@ var modFullNames = {
 	nguep: "NGUd↑'",
 	ngmu: "NG*",
 	ngumu: "NGUd*'",
-	ngex: "Expert Mode",
 	aau: "AAU",
 	ngprw: "NG+ Reworked"
 }
 var modSubNames = {
-	ngp: ["OFF", "ON", "NG++++"],
+	ngp: ["OFF", "ON", "NG+4"],
 	ngpp: ["OFF", "ON", "Post-NG+++"],
 	arrows: ["Linear (↑⁰)", "Exponential (↑)"/*, "Tetrational (↑↑)"*/],
 	ngmm: ["OFF", "ON", "NG---", "NG-4", "NG-5"],

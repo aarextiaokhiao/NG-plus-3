@@ -441,7 +441,6 @@ function setAarexModIfUndefined(){
 function doNGp3Init1(){
         if (aarMod.newGame3PlusVersion >= 2.2) tmp.bl = ghSave.bl
 	tmp.ngp3=player.masterystudies!==undefined
-	tmp.ngex=aarMod.ngexV!==undefined
 	tmp.newNGP3E=aarMod.newGameExpVersion!==undefined
 	setNonlegacyStuff()
 	transformSaveToDecimal();
@@ -2102,13 +2101,10 @@ function setReplAutoDisplay(){
 
 function updateNGModeMessage(){
         ngModeMessages=[]
-        if (aarMod.ngexV) ngModeMessages.push("Welcome to Expert Mode! This is a more difficult version of Antimatter Dimensions. Please note that this mod is in beta and may be unfinished. If you experience unbalancing, report it to #other_modifications in the Discord server. Good luck!")
         if (aarMod.newGameMult) ngModeMessages.push("Welcome to NG Multiplied, made by Despacit and Soul147! This mode adds many buffs which may break the game, similar to NG^.")
         if (aarMod.newGameExpVersion) ngModeMessages.push("Welcome to NG^, made by Naruyoko! This mode adds many buffs to features that can end up unbalancing the game significantly.")
         if (player.meta!==undefined||player.exdilation!==undefined) {
                 if (!aarMod.newGamePlusVersion) ngModeMessages.push("You have disabled NG+ features on NG++. This means you start off from the beginning of Antimatter Dimensions without any buffs, and with NG+3 enabled, it can be considered as The Grand Run. If you want to go for it, good luck.")
-                else if (!aarMod.ngp4V) ngModeMessages.push("You have disabled NG+4. This means you start off from the beginning of NG+++, and with Post-NG+3 enabled, it can be considered as The Post-Grand Run.")
-                if (aarMod.ngp4V) ngModeMessages.push("Welcome to NG+4 by Aarex and Soul147! This is a NG+ version of NG+3, starting you off with all features up to Big Rip unlocked.")
                 if (player.exdilation!==undefined) {
                 if (aarMod.nguspV) ngModeMessages.push("Welcome to NG Update Semiprime, made by Aarex! This is like NGUd', but with balancing changes implemented. Good luck! :)")
                 if (aarMod.ngumuV||aarMod.nguepV) {
@@ -2118,7 +2114,7 @@ function updateNGModeMessage(){
                 else if (aarMod.ngudpV) ngModeMessages.push("Welcome to NG Update Prime, made by pg132! NGUd' is like NGUd+, but you can't reverse dilation. Good luck for beating this mod. >:)")
                 else if (player.meta!==undefined) ngModeMessages.push("Welcome to NG Update+, a combination made by Soul147 (Sigma)! This is a combination of dan-simon's NG Update and Aarex's NG+++, which can end up unbalancing the game because of some mechanics.")
                 else ngModeMessages.push("Welcome to NG Update, made by dan-simon! In this mod, Black Hole and Ex-Dilation are available after the endgame of the vanilla Antimatter Dimensions.")
-                } else if (player.masterystudies&&!aarMod.ngp3lV&&!aarMod.ngp3mpV&&!aarMod.ngp4V) ngModeMessages.push("Welcome to NG+++ mode, the extension of dan-simon's NG++, made by Aarex! There is a lot of content in this mod, so good luck!")
+                } else if (player.masterystudies&&!aarMod.ngp3lV&&!aarMod.ngp3mpV) ngModeMessages.push("Welcome to Post-NG+3R, Aarex's fanmade rework to MrRedShark77's Post-NG+3; extending NG+2 and +3! " + (aarMod.ngp4V ? "If you haven't experienced NG+3 yet, do it without NG+4." : "You are now on the marathon of NG+3, I wish you dedication."))
                 else if (!aarMod.ngp4V) ngModeMessages.push("Welcome to NG++, made by dan-simon! In this mode, more Dilation upgrades and Meta Dimensions are added to push the endgame further. Disclaimer: This is not NG+3, there is no Quantum content available.")
         } else if (aarMod.newGamePlusVersion) ngModeMessages.push("Welcome to NG+ v2, made by usavictor and Aarex! You start with many things unlocked and given to you immediately to get through the early game faster.")
         if (player.infinityUpgradesRespecced) ngModeMessages.push('Welcome to Infinity Respecced, created by Aarex! In this mode, all of infinity upgrades are replaced with new upgrades except for the 2x IP mult, Break Infinity is removed, but there is new content in Infinity.')

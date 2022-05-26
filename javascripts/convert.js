@@ -3,7 +3,7 @@ function updateConvertSave(convertMod) {
 	var conversionText;
 	if (convertMod === "NG+3") {
 		convert = true;
-		conversionText = "Convert to Post-NG+3";
+		conversionText = "Convert to Post-NG+3R";
 	} else
 		convert = false;
 	el("convertSave").style.display = convert ? "" : "none";
