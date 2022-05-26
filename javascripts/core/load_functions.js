@@ -2292,19 +2292,6 @@ function onLoad(noOffline) {
                 infiniteCheck = false
                 closeToolTip()
                 showNextModeMessage()
-        } else if (tmp.ngp3) {
-			document.getElementById("welcome").style.display = "flex"
-			document.getElementById("welcomeMessage").innerHTML =
-				"<b style='font-size: 15px'>Regretting NG+3</b>" +
-				"<br>" +
-				"Hello. Aarex's here. I am here to inform you that there won't be updates of NG+3.1 anymore, except vanilla updates. Look how boring NG+3 is? That's not good anymore." +
-				"<br><br>" +
-				"Fortunately, I am currently working on NG+3R, as a rewrite." +
-				"<br>" +
-				'<a href="http://raw.githack.com/aarextiaokhiao/IvarK.github.io/v3.0-Respecced/" target="_newtab">Play NG+3 Respecced</a> <b class="warning">(GO PLAY HERE INSTEAD)</b>' +
-				"<br>" +
-				"<br>" +
-				'<b class="warning">WARNING!</b> You will be automatically redirected into NG+3R soon, when NG+3R got updated enough!'
         } else showNextModeMessage()
         document.getElementById("ghostlyNewsTicker").style.height=((player.options.secrets!==undefined?player.options.secrets.ghostlyNews:false)?24:0)+"px"
         document.getElementById("ghostlyNewsTickerBlock").style.height=((player.options.secrets!==undefined?player.options.secrets.ghostlyNews:false)?16:0)+"px"
