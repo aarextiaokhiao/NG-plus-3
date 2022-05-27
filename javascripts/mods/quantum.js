@@ -76,7 +76,7 @@ function getQuantumReq() {
 }
 
 function isQuantumReached() {
-	return player.money.log10() >= getQCGoal() && (player.meta.antimatter.max(hasAch("ng3p76") ? player.meta.bestOverQuantums : 0).gte(getQuantumReq(undefined, tmp.ngp3 && brSave.active))) && (!player.masterystudies || ECTimesCompleted("eterc14")) && quarkGain().gt(0)
+	return player.money.log10() >= getQCGoal() && (player.meta.antimatter.max(hasAch("ng3p76") ? player.meta.bestOverQuantums : 0).gte(getQuantumReq(undefined, tmp.ngp3 && brSave.active))) && (!player.masterystudies || ECComps("eterc14")) && quarkGain().gt(0)
 }
 
 function getQuarkGain(){
@@ -282,6 +282,7 @@ function quantumReset(force, auto, challid, bigRip, implode = false) {
 	}
 	if (!quantumed) {
 		quantumed=true
+		ngp3_feature_notify("qu")
 		el("quantumtabbtn").style.display=""
 		el("quarks").style.display=""
 		el("galaxyPoints2").className = "GP"

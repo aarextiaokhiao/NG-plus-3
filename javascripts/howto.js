@@ -84,10 +84,13 @@ function updateSpoilers() {
 						if (i == 30 && player.masterystudies.includes("d13")) displayed = 1
 						if (i == 31 && player.masterystudies.includes("d14")) displayed = 1
 						if (i == 32 && player.quantum) if (player.quantum.breakEternity) if (player.quantum.breakEternity.unlocked) displayed = 1
-						if (i == 36 && ghSave) if (ghSave.times > 0) displayed = 1
-						if (i == 37 && ghSave && ghSave.ghostlyPhotons) if (ghSave.ghostlyPhotons.unl) displayed = 1
-						if (i == 40 && ghSave && ghSave.wzb && ghSave.wzb.unl) displayed = 1
-						if (i == 41 && ghSave && ghSave.hb && ghSave.hb.times) displayed = 1
+					}
+					if (ghSave) {
+						if (i == 36 && ghSave.times > 0) displayed = 1
+						if (i == 37 && ghSave.ghostlyPhotons && ghSave.ghostlyPhotons.unl) displayed = 1
+						if (i == 38 && ghSave.wzb && ghSave.wzb.unl) displayed = 1
+						if (i == 39 && ghSave.gravitons && ghSave.gravitons.unl) displayed = 1
+						if (i == 40 && ghSave.breakDilation && ghSave.breakDilation.unl) displayed = 1
 					}
 				}
 			}

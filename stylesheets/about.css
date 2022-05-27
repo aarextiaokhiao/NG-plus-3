@@ -5,7 +5,48 @@
 
 body {
 	font-family: Typewriter;
-	color: rgb(79, 89, 87);
+	color: rgba(63, 63, 0, 0.75);
+	text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.125);
+}
+
+#bg {
+	position: fixed;
+	top: 0;
+	left: 0;
+	height: 100%;
+	width: 100%;
+	z-index: -1;
+	background: linear-gradient(#ffbf00, #00bfff)
+}
+
+h1 {
+	font-size: 72px;
+	background: #1f1f1f;
+	color: #efefef
+}
+
+#aarMod {
+	position: absolute;
+	width: 480px;
+	left: calc(50% - 240px);
+	font-size: 36px;
+	background: rgba(255, 255, 255, 0.75);
+	background: -webkit-linear-gradient(0deg, #ffdf00, #ffffff, #00dfff);
+	text-shadow: none;
+	-webkit-background-clip: text;
+	-webkit-text-fill-color: transparent;
+}
+
+h1, h2 {
+	margin-top: 0;
+	margin-bottom: 3px
+}
+
+.hr {
+	height: 2px;
+	width: 100%;
+	background: rgba(63, 63, 0, 0.625);
+	margin: 6px
 }
 
 .warning {

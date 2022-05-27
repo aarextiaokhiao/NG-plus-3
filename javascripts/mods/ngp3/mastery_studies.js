@@ -17,11 +17,11 @@ var masteryStudies = {
 	costMult: 1,
 	ecReqs: {
 		13: function() {
-			let comps = ECTimesCompleted("eterc13")
+			let comps = ECComps("eterc13")
 			return 728e3 + (tmp.ngp3l ? 6000 : (1500 + 3000 * comps)) * comps
 		},
 		14: function() {
-			let comps = ECTimesCompleted("eterc14")
+			let comps = ECComps("eterc14")
 			return 255e5 + (tmp.ngp3l ? 9e5 : (4e6 + 2e6 * comps)) * comps
 		}
 	},
@@ -74,7 +74,7 @@ var masteryStudies = {
 			return "Complete Paired Challenge 4"
 		},
 		11: function() {
-			return getFullExpansion(10) + " worker replicants"
+			return getFullExpansion(10) + " worker duplicants"
 		},
 		12: function() {
 			return getFullExpansion(10) + " Eighth Emperor Dimensions"
@@ -312,7 +312,7 @@ var masteryStudies = {
 		393: "Workers boost Meta Dimensions.",
 		401: "The production of preon anti-energy is slower based on your preons.",
 		402: "Emperor Dimensions and hatch speed are 30x faster.",
-		411: "The production of preon energy is faster based on your replicants.",
+		411: "The production of preon energy is faster based on your duplicants.",
 		412: function() {
 			return tmp.ngp3l ? "Preon effect is 25% stronger." : "Further reduce the softcap of preon boost."
 		},
@@ -505,7 +505,7 @@ function addSpentableMasteryStudies(x) {
 		var isNum=typeof(id) == "number"
 		var ecId = !isNum&&id.split("ec")[1]
 		var canAdd = false
-		if (ecId) canAdd = ECTimesCompleted("eterc"+ecId)
+		if (ecId) canAdd = ECComps("eterc"+ecId)
 		else canAdd = player.masterystudies.includes(isNum?"t"+id:id)
 		if (masteryStudies.unlocked.includes(id) && !masteryStudies.spentable.includes(id)) masteryStudies.spentable.push(id)
 		if (canAdd) {
@@ -540,7 +540,7 @@ function buyingDilStudyQC(){
 
 function buyingDilStudyPC(){
 	showTab("challenges")
-	showChallengesTab("pairedchallenges")
+	showChallengesTab("pChalls")
 	updateQuantumChallenges()
 }
 
@@ -593,6 +593,17 @@ function buyingDilationStudy(id){
 	if (id == 12) buyingDilStudyNanofield()
 	if (id == 13) buyingDilStudyToD()
 	if (id == 14) buyingDilStudyRip()
+}
+
+function buyingDilationStudyFirstTime(id){
+	if (id == 7) ngp3_feature_notify("el")
+	if (id == 8) ngp3_feature_notify("qc")
+	if (id == 9) ngp3_feature_notify("pc")
+	if (id == 10) ngp3_feature_notify("du")
+	if (id == 11) ngp3_feature_notify("ed")
+	if (id == 12) ngp3_feature_notify("nf")
+	if (id == 13) ngp3_feature_notify("tod")
+	if (id == 14) ngp3_feature_notify("br")
 }
 
 function buyMasteryStudy(type, id, quick=false) {
@@ -649,7 +660,10 @@ function buyMasteryStudy(type, id, quick=false) {
 			}
 		}
 	}
-	if (type=="d") buyingDilationStudy(id)
+	if (type=="d") {
+		buyingDilationStudy(id)
+		if (!ghostified) buyingDilationStudyFirstTime(id)
+	}
 	if (!quick) {
 		if (type == "t") {
 			if (id == 302) fillAll()

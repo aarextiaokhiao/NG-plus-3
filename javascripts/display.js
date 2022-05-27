@@ -471,7 +471,7 @@ function breakInfinityUpgradeDisplay(){
 	el("postinfi23").innerHTML = "Unlock the option to bulk buy Dimension" + (player.tickspeedBoosts == undefined ? "" : " and Tickspeed") + " Boosts <br>Cost: " + shortenCosts(player.tickspeedBoosts != undefined ? 2e4 : player.galacticSacrifice ? 5e6 : 5e9) + " IP"
 	el("postinfi33").innerHTML = "Autobuyers work twice as fast <br>Cost: " + shortenCosts(1e15) + " IP"
 	if (player.dimensionMultDecrease > 3) el("postinfi42").innerHTML = "Decrease the Dimension cost multiplier increase post-e308<br>" + player.dimensionMultDecrease + "x -> " + (player.dimensionMultDecrease - 1) + "x<br>Cost: " + shortenCosts(player.dimensionMultDecreaseCost) +" IP"
-	else el("postinfi42").innerHTML = "Dimension cost multiplier increase<br>"+player.dimensionMultDecrease.toFixed(ECTimesCompleted("eterc6") % 5 > 0 ? 1 : 0) + "x"
+	else el("postinfi42").innerHTML = "Dimension cost multiplier increase<br>"+player.dimensionMultDecrease.toFixed(ECComps("eterc6") % 5 > 0 ? 1 : 0) + "x"
 	el("offlineProd").innerHTML = "Generate " + player.offlineProd + "% > " + Math.max(Math.max(5, player.offlineProd + 5), Math.min(50, player.offlineProd + 5)) + "% of your best IP/min from the last 10 Infinities, works offline<br>Currently: " + shortenMoney(bestRunIppm.times(player.offlineProd / 100)) + "IP/min<br> Cost: " + shortenCosts(player.offlineProdCost) + " IP"
 	if (player.offlineProd == 50) el("offlineProd").innerHTML = "Generate " + player.offlineProd + "% of your best IP/min from the last 10 Infinities, works offline<br>Currently: " + shortenMoney(bestRunIppm.times(player.offlineProd / 100)) + " IP/min"
 }
@@ -717,25 +717,25 @@ function initialTimeStudyDisplay(){
 
 function eternityChallengeUnlockDisplay(){
 	var ec1Mult=aarMod.newGameExpVersion?1e3:2e4
-	if (player.etercreq !== 1) el("ec1unl").innerHTML = "Eternity Challenge 1<span>Requirement: "+(ECTimesCompleted("eterc1")+1)*ec1Mult+" Eternities<span>Cost: 30 Time Theorems"
+	if (player.etercreq !== 1) el("ec1unl").innerHTML = "Eternity Challenge 1<span>Requirement: "+(ECComps("eterc1")+1)*ec1Mult+" Eternities<span>Cost: 30 Time Theorems"
 	else el("ec1unl").innerHTML = "Eternity Challenge 1<span>Cost: 30 Time Theorems"
-	if (player.etercreq !== 2) el("ec2unl").innerHTML = "Eternity Challenge 2<span>Requirement: "+(1300+(ECTimesCompleted("eterc2")*150))+" Tickspeed upgrades gained from time dimensions<span>Cost: 35 Time Theorems"
+	if (player.etercreq !== 2) el("ec2unl").innerHTML = "Eternity Challenge 2<span>Requirement: "+(1300+(ECComps("eterc2")*150))+" Tickspeed upgrades gained from time dimensions<span>Cost: 35 Time Theorems"
 	else el("ec2unl").innerHTML = "Eternity Challenge 2<span>Cost: 35 Time Theorems"
-	if (player.etercreq !== 3) el("ec3unl").innerHTML = "Eternity Challenge 3<span>Requirement: "+(17300+(ECTimesCompleted("eterc3")*1250))+" 8th dimensions<span>Cost: 40 Time Theorems"
+	if (player.etercreq !== 3) el("ec3unl").innerHTML = "Eternity Challenge 3<span>Requirement: "+(17300+(ECComps("eterc3")*1250))+" 8th dimensions<span>Cost: 40 Time Theorems"
 	else el("ec3unl").innerHTML = "Eternity Challenge 3<span>Cost: 40 Time Theorems"
-	if (player.etercreq !== 4) el("ec4unl").innerHTML = "Eternity Challenge 4<span>Requirement: "+(1e8 + (ECTimesCompleted("eterc4")*5e7)).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")+" infinities<span>Cost: 70 Time Theorems"
+	if (player.etercreq !== 4) el("ec4unl").innerHTML = "Eternity Challenge 4<span>Requirement: "+(1e8 + (ECComps("eterc4")*5e7)).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")+" infinities<span>Cost: 70 Time Theorems"
 	else el("ec4unl").innerHTML = "Eternity Challenge 4<span>Cost: 70 Time Theorems"
-	if (player.etercreq !== 5) el("ec5unl").innerHTML = "Eternity Challenge 5<span>Requirement: "+(160+(ECTimesCompleted("eterc5")*14))+" galaxies<span>Cost: 130 Time Theorems"
+	if (player.etercreq !== 5) el("ec5unl").innerHTML = "Eternity Challenge 5<span>Requirement: "+(160+(ECComps("eterc5")*14))+" galaxies<span>Cost: 130 Time Theorems"
 	else el("ec5unl").innerHTML = "Eternity Challenge 5<span>Cost: 130 Time Theorems"
-	if (player.etercreq !== 6) el("ec6unl").innerHTML = "Eternity Challenge 6<span>Requirement: "+(40+(ECTimesCompleted("eterc6")*5))+" replicanti galaxies<span>Cost: 85 Time Theorems"
+	if (player.etercreq !== 6) el("ec6unl").innerHTML = "Eternity Challenge 6<span>Requirement: "+(40+(ECComps("eterc6")*5))+" replicanti galaxies<span>Cost: 85 Time Theorems"
 	else el("ec6unl").innerHTML = "Eternity Challenge 6<span>Cost: 85 Time Theorems"
-	if (player.etercreq !== 7) el("ec7unl").innerHTML = "Eternity Challenge 7<span>Requirement: "+shortenCosts(E("1e500000").times(E("1e300000").pow(ECTimesCompleted("eterc7"))))+" antimatter <span>Cost: 115 Time Theorems"
+	if (player.etercreq !== 7) el("ec7unl").innerHTML = "Eternity Challenge 7<span>Requirement: "+shortenCosts(E("1e500000").times(E("1e300000").pow(ECComps("eterc7"))))+" antimatter <span>Cost: 115 Time Theorems"
 	else el("ec7unl").innerHTML = "Eternity Challenge 7<span>Cost: 115 Time Theorems"
-	if (player.etercreq !== 8) el("ec8unl").innerHTML = "Eternity Challenge 8<span>Requirement: "+shortenCosts(E("1e4000").times(E("1e1000").pow(ECTimesCompleted("eterc8"))))+" IP <span>Cost: 115 Time Theorems"
+	if (player.etercreq !== 8) el("ec8unl").innerHTML = "Eternity Challenge 8<span>Requirement: "+shortenCosts(E("1e4000").times(E("1e1000").pow(ECComps("eterc8"))))+" IP <span>Cost: 115 Time Theorems"
 	else el("ec8unl").innerHTML = "Eternity Challenge 8<span>Cost: 115 Time Theorems"
-	if (player.etercreq !== 9) el("ec9unl").innerHTML = "Eternity Challenge 9<span>Requirement: "+shortenCosts(E("1e17500").times(E("1e2000").pow(ECTimesCompleted("eterc9"))))+" infinity power<span>Cost: 415 Time Theorems"
+	if (player.etercreq !== 9) el("ec9unl").innerHTML = "Eternity Challenge 9<span>Requirement: "+shortenCosts(E("1e17500").times(E("1e2000").pow(ECComps("eterc9"))))+" infinity power<span>Cost: 415 Time Theorems"
 	else el("ec9unl").innerHTML = "Eternity Challenge 9<span>Cost: 415 Time Theorems"
-	if (player.etercreq !== 10) el("ec10unl").innerHTML = "Eternity Challenge 10<span>Requirement: "+shortenCosts(E("1e100").times(E("1e20").pow(ECTimesCompleted("eterc10"))))+" EP<span>Cost: 550 Time Theorems"
+	if (player.etercreq !== 10) el("ec10unl").innerHTML = "Eternity Challenge 10<span>Requirement: "+shortenCosts(E("1e100").times(E("1e20").pow(ECComps("eterc10"))))+" EP<span>Cost: 550 Time Theorems"
 	else el("ec10unl").innerHTML = "Eternity Challenge 10<span>Cost: 550 Time Theorems"
 
 	el("ec11unl").innerHTML = "Eternity Challenge 11<span>Requirement: Use only the Normal Dimension path<span>Cost: 1 Time Theorem"
@@ -830,25 +830,25 @@ function primaryStatsDisplayResetLayers(){
 }
 
 function ECCompletionsDisplay(){
-	el("eterc1completed").textContent = "Completed "+ECTimesCompleted("eterc1")+" times."
-	el("eterc2completed").textContent = "Completed "+ECTimesCompleted("eterc2")+" times."
-	el("eterc3completed").textContent = "Completed "+ECTimesCompleted("eterc3")+" times."
-	el("eterc4completed").textContent = "Completed "+ECTimesCompleted("eterc4")+" times."
-	el("eterc5completed").textContent = "Completed "+ECTimesCompleted("eterc5")+" times."
-	el("eterc6completed").textContent = "Completed "+ECTimesCompleted("eterc6")+" times."
-	el("eterc7completed").textContent = "Completed "+ECTimesCompleted("eterc7")+" times."
-	el("eterc8completed").textContent = "Completed "+ECTimesCompleted("eterc8")+" times."
-	el("eterc9completed").textContent = "Completed "+ECTimesCompleted("eterc9")+" times."
-	el("eterc10completed").textContent = "Completed "+ECTimesCompleted("eterc10")+" times."
-	el("eterc11completed").textContent = "Completed "+ECTimesCompleted("eterc11")+" times."
-	el("eterc12completed").textContent = "Completed "+ECTimesCompleted("eterc12")+" times."
-	el("eterc13completed").textContent = "Completed "+ECTimesCompleted("eterc13")+" times."
-	el("eterc14completed").textContent = "Completed "+ECTimesCompleted("eterc14")+" times."
+	el("eterc1completed").textContent = "Completed "+ECComps("eterc1")+" times."
+	el("eterc2completed").textContent = "Completed "+ECComps("eterc2")+" times."
+	el("eterc3completed").textContent = "Completed "+ECComps("eterc3")+" times."
+	el("eterc4completed").textContent = "Completed "+ECComps("eterc4")+" times."
+	el("eterc5completed").textContent = "Completed "+ECComps("eterc5")+" times."
+	el("eterc6completed").textContent = "Completed "+ECComps("eterc6")+" times."
+	el("eterc7completed").textContent = "Completed "+ECComps("eterc7")+" times."
+	el("eterc8completed").textContent = "Completed "+ECComps("eterc8")+" times."
+	el("eterc9completed").textContent = "Completed "+ECComps("eterc9")+" times."
+	el("eterc10completed").textContent = "Completed "+ECComps("eterc10")+" times."
+	el("eterc11completed").textContent = "Completed "+ECComps("eterc11")+" times."
+	el("eterc12completed").textContent = "Completed "+ECComps("eterc12")+" times."
+	el("eterc13completed").textContent = "Completed "+ECComps("eterc13")+" times."
+	el("eterc14completed").textContent = "Completed "+ECComps("eterc14")+" times."
 }
 
 function ECchallengePortionDisplay(){
 	let ec12TimeLimit = Math.round(getEC12TimeLimit() * 10) / 100
-	for (var c=1;c<15;c++) el("eterc"+c+"goal").textContent = "Goal: "+shortenCosts(getECGoal("eterc"+c))+" IP"+(c==12?" in "+ec12TimeLimit+" second"+(ec12TimeLimit==1?"":"s")+" or less.":c==4?" in "+Math.max((16-(ECTimesCompleted("eterc4")*4)),0)+" infinities or less.":"")
+	for (var c=1;c<15;c++) el("eterc"+c+"goal").textContent = "Goal: "+shortenCosts(getECGoal("eterc"+c))+" IP"+(c==12?" in "+ec12TimeLimit+" second"+(ec12TimeLimit==1?"":"s")+" or less.":c==4?" in "+Math.max((16-(ECComps("eterc4")*4)),0)+" infinities or less.":"")
 }
 
 function EC8PurchasesDisplay(){

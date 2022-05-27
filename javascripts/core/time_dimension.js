@@ -51,7 +51,7 @@ function calcNGM2atleastTDPreVPostDilMultiplier(tier){
 	var ret2 = E(1)
 	var ngPlus = (aarMod.newGamePlusVersion ? 103680000 : 0)
 	if (player.currentEternityChall == "eterc9") ret2 = ret2.times(tmp.infPow)
-	if (ECTimesCompleted("eterc1") !== 0) ret2 = ret2.times(getECReward(1))
+	if (ECComps("eterc1") !== 0) ret2 = ret2.times(getECReward(1))
 	if (player.eternityUpgrades.includes(4)) ret2 = ret2.times(player.achPow)
 	if (player.eternityUpgrades.includes(5)) ret2 = ret2.times(Math.max(player.timestudy.theorem, 1))
 	if (player.eternityUpgrades.includes(6)) ret2 = ret2.times((player.totalTimePlayed + ngPlus) / 10 / 60 / 60 / 24)
@@ -88,7 +88,7 @@ function getTimeDimensionPower(tier) {
 	if (player.galacticSacrifice === undefined) ret = ret.times(ret2)
 	ret = ret.times(calcVanillaTSTDMult(tier))
 
-	if (ECTimesCompleted("eterc10") !== 0) ret = ret.times(getECReward(10))
+	if (ECComps("eterc10") !== 0) ret = ret.times(getECReward(10))
 	if (hasAch("r128")) ret = ret.times(Math.max(player.timestudy.studies.length, 1))
 	if (player.galacticSacrifice !== undefined && player.galacticSacrifice.upgrades.includes(43)) ret = ret.times(galMults.u43())
 	if (!player.dilation.upgrades.includes("ngmm2") && player.dilation.upgrades.includes(5) && player.replicanti.amount.gt(1)) ret = ret.times(tmp.rm.pow(0.1))
@@ -128,7 +128,7 @@ function getIC3EffFromFreeUpgs() {
 	if (tmp.ngp3) {
 		if (player.currentEternityChall=='eterc14') x = 5
 		else {
-			x = ECTimesCompleted("eterc14") * (tmp.ngp3l ? 2 : 4)
+			x = ECComps("eterc14") * (tmp.ngp3l ? 2 : 4)
 			if (hasNU(12)) if (brSave.active) x *= tmp.nu[4].replicated
 		}
 	}

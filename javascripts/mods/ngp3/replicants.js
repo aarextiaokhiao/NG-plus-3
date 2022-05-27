@@ -51,7 +51,7 @@ function updateReplicantsTab(){
 function updateReplicantsSubtab(){
 	el("replicantiAmount2").textContent = shortenDimensions(player.replicanti.amount)
 	el("replicantReset").className = player.replicanti.amount.lt(quSave.replicants.requirement) ? "unavailablebtn" : "storebtn"
-	el("replicantReset").innerHTML = "Reset replicanti amount for a replicant.<br>(requires " + shortenCosts(quSave.replicants.requirement) + " replicanti)"
+	el("replicantReset").innerHTML = "Reset replicantis for a duplicant.<br>(requires " + shortenCosts(quSave.replicants.requirement) + " replicanti)"
 	el("replicantAmount").textContent = shortenDimensions(quSave.replicants.amount)
 	el("workerReplAmount").textContent = shortenDimensions(tmp.twr)
 	el("babyReplAmount").textContent = shortenDimensions(quSave.replicants.babies)

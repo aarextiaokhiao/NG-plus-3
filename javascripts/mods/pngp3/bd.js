@@ -25,7 +25,7 @@ const BD_UPGS = [
         },
         effDesc(x) { return "/"+shorten(x) },
     },{
-        desc: "Eternal Matters gain 2nd softcap is weaker. Preons & baby replicants are no longer decreasing.",
+        desc: "Eternal Matters gain 2nd softcap is weaker. Preons & baby duplicants are no longer decreasing.",
         cost: E(1e10),
     },
 

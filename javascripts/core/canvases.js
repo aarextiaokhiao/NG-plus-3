@@ -53,7 +53,7 @@ function animationOnOff(name) {
     else if (name == "tachyonParticles") el("tachyonParticleAnimBtn").textContent = "Tachyon particles: " + ((player.options.animations.tachyonParticles) ? "ON" : "OFF")
     else if (name == "blackHole") el("blackHoleAnimBtn").textContent = "Black hole: " + ((player.options.animations.blackHole) ? "ON" : "OFF")
     else if (name == "quarks") el("quarksAnimBtn").textContent="Quarks: O"+(player.options.animations[name]?"N":"FF")
-    else if (name == "ghostify") el("ghostifyAnimBtn").textContent="Ghostify: O"+(player.options.animations[name]?"N":"FF")
+    else if (name == "ghostify") el("ghostifyAnimBtn").textContent="Fundament: O"+(player.options.animations[name]?"N":"FF")
 }
 
 function drawAnimations(ts){

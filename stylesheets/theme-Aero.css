@@ -1,0 +1,1869 @@
+* {
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", Helvetica, Arial, sans-serif !important;
+    letter-spacing: 0.5px;
+}
+* {
+    font-weight: normal !important;
+}
+#news, #container, #statistics, #galaxyPoints, #infinityPoints1, #timetheorems, .popup {
+    color: #fff9 !important;
+}
+
+body {
+    background: #070710;
+}
+
+/*======================
+  N E W S  T I C K E R
+======================*/
+
+#game {
+    padding: 0;
+    margin-bottom: 10px;
+    border: 1px solid #445;
+    background: linear-gradient(#112, #223);
+}
+
+/*========================
+  P R O G R E S S  B A R
+========================*/
+
+#progress {
+    border: 1px solid #445;
+    background: linear-gradient(#112, #223);
+    bottom: 40px;
+}
+#progressbar {
+    border: 1px solid #6c6;
+    margin: -1px;
+    background: linear-gradient(#5a5, #363);
+    font-size: 12px;
+    height: 18px;
+}
+.quantumProgress {
+    background: linear-gradient(#040, #010) !important;
+    box-shadow: inset 0 0 5px #7f73;
+    border: 1px solid #474 !important;
+}
+.ghostifyProgress {
+    background: linear-gradient(#516, #100) !important;
+    box-shadow: inset 0 0 5px #a4f3;
+    border: 1px solid #a4f !important;
+}
+
+/*=============
+  F O O T E R
+=============*/
+
+#footer {
+    text-shadow: 0 0 8px #0f0f10, 0 0 6px #0f0f10, 0 0 6px #0f0f10, 0 0 6px #0f0f10,
+        0 0 8px #0f0f10, 0 0 6px #0f0f10, 0 0 6px #0f0f10, 0 0 6px #0f0f10;
+}
+
+/*=============
+  I N P U T S
+=============*/
+
+.slider {
+    -webkit-appearance: none;
+    appearance: none;
+    border: 1px solid #445;
+    background: linear-gradient(#112, #223);
+    height: 4px;
+    border-radius: 4px;
+    overflow-x: visible;
+    overflow-y: visible;
+}
+.slider::-moz-range-thumb {
+    border: 1px solid #bbf;
+    background: linear-gradient(#99b, #77c);
+    box-shadow: 0 1px 5px #000;
+    border-radius: 50%;
+    width: 12px;
+    height: 12px;
+}
+.slider::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    appearance: none;
+    border: 1px solid #bbf;
+    background: linear-gradient(#99b, #77c);
+    box-shadow: 0 1px 5px #000;
+    border-radius: 50%;
+    width: 12px;
+    height: 12px;
+}
+input[type=text], input[type=number], input:not([type]) {
+    border: 1px solid #445;
+    background: linear-gradient(#112, #223);
+    border-radius: 4px;
+    color: #fff;
+}
+﻿
+* {
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", Helvetica, Arial, sans-serif !important;
+    letter-spacing: 0.5px;
+}
+* {
+    font-weight: normal !important;
+}
+#news, #container, #statistics, #galaxyPoints, #infinityPoints1, #timetheorems, .popup {
+    color: #fff9 !important;
+}
+
+body {
+    background: #070710;
+}
+
+/*======================
+  N E W S  T I C K E R
+======================*/
+
+#game {
+    padding: 0;
+    margin-bottom: 10px;
+    border: 1px solid #445;
+    background: linear-gradient(#112, #223);
+}
+
+/*========================
+  P R O G R E S S  B A R
+========================*/
+
+#progress {
+    border: 1px solid #445;
+    background: linear-gradient(#112, #223);
+    bottom: 40px;
+}
+#progressbar {
+    border: 1px solid #6c6;
+    margin: -1px;
+    background: linear-gradient(#5a5, #363);
+    font-size: 12px;
+    height: 18px;
+}
+.quantumProgress {
+    background: linear-gradient(#040, #010) !important;
+    box-shadow: inset 0 0 5px #7f73;
+    border: 1px solid #474 !important;
+}
+.ghostifyProgress {
+    background: linear-gradient(#516, #100) !important;
+    box-shadow: inset 0 0 5px #a4f3;
+    border: 1px solid #a4f !important;
+}
+
+/*=============
+  F O O T E R
+=============*/
+
+#footer {
+    text-shadow: 0 0 8px #0f0f10, 0 0 6px #0f0f10, 0 0 6px #0f0f10, 0 0 6px #0f0f10,
+        0 0 8px #0f0f10, 0 0 6px #0f0f10, 0 0 6px #0f0f10, 0 0 6px #0f0f10;
+}
+
+/*=============
+  I N P U T S
+=============*/
+
+.slider {
+    -webkit-appearance: none;
+    appearance: none;
+    border: 1px solid #445;
+    background: linear-gradient(#112, #223);
+    height: 4px;
+    border-radius: 4px;
+    overflow-x: visible;
+    overflow-y: visible;
+}
+.slider::-moz-range-thumb {
+    border: 1px solid #bbf;
+    background: linear-gradient(#99b, #77c);
+    box-shadow: 0 1px 5px #000;
+    border-radius: 50%;
+    width: 12px;
+    height: 12px;
+}
+.slider::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    appearance: none;
+    border: 1px solid #bbf;
+    background: linear-gradient(#99b, #77c);
+    box-shadow: 0 1px 5px #000;
+    border-radius: 50%;
+    width: 12px;
+    height: 12px;
+}
+input[type=text], input[type=number], input:not([type]) {
+    border: 1px solid #445;
+    background: linear-gradient(#112, #223);
+    border-radius: 4px;
+    color: #fff;
+}
+input::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    appearance: none;
+    margin: -1px -2px -2px 0;
+    width: 0px;
+    border-left: 0px solid #445;
+    background: 
+        conic-gradient(#0000 37.5%, #778 37.5% 62.5%, #0000 62.5%) no-repeat content-box,
+        conic-gradient(#778 12.5%, #0000 12.5% 87.5%, #778 87.5%) no-repeat content-box,
+        linear-gradient(#334, #223 50%, #334 50%, #223);
+    background-size: 8px 8px, 8px 8px, 100% 100%;
+    background-position: 2px calc(25% - 4px), 2px calc(75% + 4px), 0% 0%;
+    opacity: 1;
+    transition-duration: .5s !important;
+}
+input:hover::-webkit-inner-spin-button,
+input:focus::-webkit-inner-spin-button {
+    width: 12px;
+    border-left: 1px solid #445;
+    transition-duration: .1s !important;
+}
+
+input[type=checkbox] {
+    -webkit-appearance: none;
+    appearance: none;
+    border: 1px solid #778;
+    position: relative;
+    background: linear-gradient(#112, #223), linear-gradient(#556, #334);
+    background-repeat: no-repeat, no-repeat;
+    background-size: 10px 10px, 14px 14px;
+    background-position: 1px 1px, 0 0;
+    width: 14px !important;
+    height: 14px !important;
+    display: inline-block !important;
+    transform: translateY(5px);
+    text-align: center;
+}
+input[type=checkbox]::after {
+    content: "✓";
+    background: transparent;
+    color: #bbf0;
+    text-shadow: 0 0 4px #bbf, 0 0 8px #000;
+    position: absolute;
+    display: inline-block;
+    font-size: 0px;
+    top: 50%; bottom: 0%;
+    left: 50%;
+    transition-duration: .1s;
+    line-height: normal;
+    opacity: 1;
+    visibility: visible;
+    border: none;
+    margin: 0;
+}
+input[type=checkbox]:checked {
+    background: linear-gradient(#224, #336), linear-gradient(#55a, #448);
+    background-repeat: no-repeat, no-repeat;
+    background-size: 10px 10px, 14px 14px;
+    background-position: 1px 1px, 0 0;
+    border: 1px solid #77c;
+}
+input[type=checkbox]:checked::after {
+    color: #bbf;
+    font-size: 16px;
+    top: -5px !important;
+    left: 0 !important;
+}
+
+select {
+    background: linear-gradient(#556, #223) !important;
+    color: #fff9 !important;
+    border: 1px solid #778 !important;
+    border-radius: 4px;
+}
+option {
+    background-color: #334;
+}
+
+/*=====================
+  S C R O L L B A R S
+=====================*/
+
+::-webkit-scrollbar {
+    background: #112;
+    width: 18px;
+    height: 18px;
+    box-shadow: inset 0 0 10px #0007;
+    border: 1px solid #2241;
+}
+::-webkit-scrollbar-thumb {
+    background: linear-gradient(90deg, #556, #223) no-repeat content-box;
+    border: 2px solid transparent;
+    border-radius: 5px;
+    box-shadow: inset 0 0 0 1px #778;
+}
+::-webkit-scrollbar-thumb:horizontal {
+    background: linear-gradient(#556, #223) no-repeat content-box;
+}
+::-webkit-scrollbar-thumb:hover {
+    background: linear-gradient(90deg, #99b, #556) no-repeat content-box;
+    box-shadow: inset 0 0 0 1px #aac;
+}
+::-webkit-scrollbar-thumb:hover:horizontal {
+    background: linear-gradient(#99b, #557) no-repeat content-box;
+}
+::-webkit-scrollbar-button {
+    width: 18px;
+    height: 18px;
+    border: 2px solid transparent;
+    border-radius: 5px;
+    box-shadow: inset 0 0 0 1px #778;
+}
+::-webkit-scrollbar-button:hover {
+    box-shadow: inset 0 0 0 1px #aac;
+}
+::-webkit-scrollbar-button:vertical:decrement {
+    background: 
+        conic-gradient(#0000 37.5%, #778 37.5% 62.5%, #0000 62.5%) no-repeat content-box,
+        linear-gradient(90deg, #556, #223) no-repeat content-box;
+    background-size: 50% 50%, 100% 100%;
+    background-position: 50% 25%, 0% 0%;
+    border-bottom: none;
+    border-radius: 5px 5px 0 0;
+}
+::-webkit-scrollbar-button:vertical:decrement:hover {
+    background: 
+        conic-gradient(#0000 37.5%, #dde 37.5% 62.5%, #0000 62.5%) no-repeat content-box,
+        linear-gradient(90deg, #99b, #557) no-repeat content-box;
+    background-size: 50% 50%, 100% 100%;
+    background-position: 50% 25%, 0% 0%;
+}
+::-webkit-scrollbar-button:vertical:increment {
+    background: 
+        conic-gradient(#778 12.5%, #0000 12.5% 87.5%, #778 87.5%) no-repeat content-box,
+        linear-gradient(90deg, #556, #223) no-repeat content-box;
+    background-size: 50% 50%, 100% 100%;
+    background-position: 50% 75%, 0% 0%;
+    border-top: none;
+    border-radius: 0 0 5px 5px;
+}
+::-webkit-scrollbar-button:vertical:increment:hover {
+    background: 
+        conic-gradient(#dde 12.5%, #0000 12.5% 87.5%, #dde 87.5%) no-repeat content-box,
+        linear-gradient(90deg, #99b, #557) no-repeat content-box;
+    background-size: 50% 50%, 100% 100%;
+    background-position: 50% 75%, 0% 0%;
+}
+::-webkit-scrollbar-button:horizontal:decrement {
+    background: 
+        conic-gradient(#0000 12.5%, #778 12.5% 37.5%, #0000 37.5%) no-repeat content-box,
+        linear-gradient(#556, #223) no-repeat content-box;
+    background-size: 50% 50%, 100% 100%;
+    background-position: 25% 50%, 0% 0%;
+    border-right: none;
+    border-radius: 5px 0 0 5px;
+}
+::-webkit-scrollbar-button:horizontal:decrement:hover {
+    background: 
+        conic-gradient(#0000 12.5%, #dde 12.5% 37.5%, #0000 37.5%) no-repeat content-box,
+        linear-gradient(#99b, #557) no-repeat content-box;
+    background-size: 50% 50%, 100% 100%;
+    background-position: 25% 50%, 0% 0%;
+}
+::-webkit-scrollbar-button:horizontal:increment {
+    background: 
+        conic-gradient(#0000 62.5%, #778 62.5% 87.5%, #0000 87.5%) no-repeat content-box,
+        linear-gradient(#556, #223) no-repeat content-box;
+    background-size: 50% 50%, 100% 100%;
+    background-position: 75% 50%, 0% 0%;
+    border-left: none;
+    border-radius: 0 5px 5px 0;
+}
+::-webkit-scrollbar-button:horizontal:increment:hover {
+    background: 
+        conic-gradient(#0000 62.5%, #dde 62.5% 87.5%, #0000 87.5%) no-repeat content-box,
+        linear-gradient(#99b, #557) no-repeat content-box;
+    background-size: 50% 50%, 100% 100%;
+    background-position: 75% 50%, 0% 0%;
+}
+
+::-webkit-scrollbar-corner {
+    background: #070710;
+}
+
+/*===================
+  R E S O U R C E S
+===================*/
+
+#coinAmount {
+    color: #99c !important;
+    animation: antiGlow 25s linear infinite;
+}
+@keyframes antiGlow {
+    0% { text-shadow: 0 0 10px #f00 }
+    17% { text-shadow: 0 0 10px #ff0 }
+    33% { text-shadow: 0 0 10px #0f0 }
+    50% { text-shadow: 0 0 10px #0ff }
+    67% { text-shadow: 0 0 10px #00f }
+    83% { text-shadow: 0 0 10px #f0f }
+    100% { text-shadow: 0 0 10px #f00 }
+}
+.pxAmount {
+    color: #f8f;
+    text-shadow: 0 0 5px #f8f;
+}
+#pPow, #pPowEffect {
+    color: #070710 !important;
+    text-shadow: 0 0 5px #f8f, 0 0 5px #f8f;
+}
+.GPAmount {
+    color: #99f;
+    text-shadow: 0 0 5px #99f;
+}
+.IPAmount1, .IPAmount2 {
+    color: #fa7;
+    text-shadow: 0 0 5px #fa7;
+}
+#infPowAmount, #infPowEffectPower, #infDimMultAmount {
+    color: #070710 !important;
+    text-shadow: 0 0 5px #fa7, 0 0 5px #fa7;
+}
+.EPAmount1, .EPAmount2 {
+    color: #caf;
+    text-shadow: 0 0 5px #caf;
+}
+#timeShardAmount, #tickThreshold {
+    color: #7f7 !important;
+    text-shadow: 1px 1px #a7f;
+}
+#replicantiamount, #replicantimult, #replCond, #replCond1, #replCond2,
+#replCompress, #replCompressEff, #replDilater, #replDilaterEff, #qc5_eng, #qc5_eff {
+    animation: repAnim 15s ease-out infinite;
+}
+@keyframes repAnim {
+    from { 
+        color: #f70;
+        text-shadow: 0 0 #f70a, 0 0 #f70a;
+    }
+    25% { 
+        color: #f70;
+        text-shadow: 8px 8px 1px #f700, -8px -8px 1px #f700;
+    }
+    to { 
+        color: #f70;
+    }
+}
+#tachyonParticleAmount {
+    color: #0f0 !important;
+    text-shadow: 1px 1px 1px #070;
+}
+#dilatedTimeAmount, #dilatedTimePerSecond, #galaxyThreshold {
+    color: #0f7 !important;
+    text-shadow: 1px 1px 1px #074;
+}
+#dilatedGalaxies {
+    color: #0cc !important;
+    text-shadow: 1px 1px 1px #055;
+}
+#exDilationAmount, #exDilationBenefit {
+    color: #f0f !important;
+    text-shadow: 1px 1px 1px #707;
+}
+#blackholePowAmount, #DilMultAmount, #InfAndReplMultAmount {
+    color: #070710 !important;
+    text-shadow: 0 0 5px #caf, 0 0 5px #caf;
+}
+#metaAntimatterAmount, #metaAntimatterBest, #metaAntimatterPower, #metaAntimatterEffect {
+    color: #88e !important;
+    animation: antiGlow 25s linear infinite;
+}
+.QKAmount, .SSAmount {
+    color: #bf7;
+    text-shadow: 0 0 5px #bf7;
+}
+#rg {
+    border: none !important;
+    text-shadow: -1px 1px 2px #f00a, 1px -1px 2px #0f0a;
+    animation: rgAnim 5s ease-in-out infinite alternate;
+}
+#gb {
+    border: none !important;;
+    text-shadow: -1px 1px 2px #0f0a, 1px -1px 2px #00fa;
+    animation: gbAnim 5s ease-in-out infinite alternate;
+}
+#br {
+    border: none !important;
+    text-shadow: -1px 1px 2px #00fa, 1px -1px 2px #f00a;
+    animation: brAnim 5s ease-in-out infinite alternate;
+}
+#electronsAmount, #electronsTranslation, #electronsEffect {
+    color: #070710 !important;
+    text-shadow: 0 0 5px #7f7, 0 0 5px #7f7;
+}
+#replicantAmount, #workerReplAmount, #babyReplAmount, #replicantAmountED,
+#eggonRate {
+    animation: retAnim 15s ease-out infinite;
+}
+#gatheredQuarks, #gatherRate, #quarkTranslation, 
+#normalReplGatherRate, #workerReplGatherRate, #babyReplGatherRate,
+#quarkCharge {
+    color: #ccc !important;
+    text-shadow: 0 0 5px #ccc4;
+}
+@keyframes retAnim {
+    from { 
+        color: #7f7;
+        text-shadow: 0 0 #7f7a, 0 0 #7f7a;
+    }
+    25% { 
+        color: #7f7;
+        text-shadow: 8px 8px 1px #7f70, -8px -8px 1px #7f70;
+    }
+    to { 
+        color: #7f7;
+    }
+}
+#preonEnergy, #quarkPower, #quarkPowerThreshold {
+    color: #ccc !important;
+    text-shadow: 0 0 5px #f0f;
+}
+#quarkAntienergy, #quarkChargeProductionCap {
+    color: #ccc !important;
+    text-shadow: 0 0 5px #0f0;
+}
+#GHPAmount {
+    animation: ghostifytext 15s linear infinite;
+}
+.neutrinos {
+    color: #fff !important;
+    text-shadow: 0 0 5px #fff4;
+}
+#gph {
+    color: #7f7 !important;
+    animation: ghostifytext 15s linear infinite;
+}
+#ghr {
+    text-shadow: 2px -2px 2px #a4f4, -2px 2px 2px #f474 !important;
+    animation: ghostifytext 15s linear infinite;
+}
+#dm {
+    color: #070710 !important;
+    text-shadow: 0 0 5px #99c, 0 0 5px #99c;
+}
+#bWatt, #bSpeed, #bTotalSpeed {
+    color: #aa3 !important;
+    animation: ghostifytext 15s linear infinite;
+}
+#bAM, #bAMProduction {
+    animation: ghostifytext 15s linear infinite, antiGlow 25s linear infinite;
+}
+#bBt, #bBtProduction, #odSpeed {
+    color: #aa3;
+    animation: antiGlow 25s linear infinite;
+}
+#wpb, #wbTime, #wbOscillate {
+    animation: ghostifytext 15s linear infinite;
+    text-shadow: 0 0 5px #f0f !important;
+}
+#wnb {
+    animation: ghostifytext 15s linear infinite;
+    text-shadow: 0 0 5px #0f0 !important;
+}
+#wbProduction {
+    animation: ghostifytext 15s linear infinite, wbGlow 15s linear infinite alternate;
+}
+@keyframes wbGlow {
+    from {
+        text-shadow: 0 0 5px #f0f;
+    }
+    to {
+        text-shadow: 0 0 5px #0f0;
+    }
+}
+#zb, #zbSpeed {
+    animation: ghostifytext 15s linear infinite;
+    text-shadow: 0 0 5px #aaa !important;
+}
+#ap, #apProduction {
+    color: #222 !important;
+    text-shadow: 0 0 5px #ccc;
+}
+.bRune {
+    width: .8em;
+    height: .8em;
+    border-radius: 20%;
+}
+.bRune.Infinity {
+    background: #fa7;
+    box-shadow: inset 0 0 .5em #210;
+    border: 1px solid #fa7;
+}
+.bRune.Eternity {
+    background: #caf;
+    box-shadow: inset 0 0 .5em #102;
+    border: 1px solid #caf;
+}
+.bRune.Quantum {
+    background: #7f7;
+    box-shadow: inset 0 0 .5em #020;
+    border: 1px solid #7f7;
+}
+.bRune.Ghostly {
+    background: linear-gradient(#a4f, #f47);
+    box-shadow: inset 0 0 .5em #202;
+    border: 1px solid #a4f;
+}
+
+/*===============
+  B U T T O N S
+===============*/
+
+button {
+    transition-duration: .5s !important;
+    border-radius: 4px !important;
+}
+button:hover {
+    filter: brightness(2);
+    transition-duration: .1s !important;
+}
+button:hover:active {
+    filter: brightness(0.8) contrast(1.1);
+    transition-duration: 0s !important;
+}
+
+.tabbtn, 
+.secondarytabbtn {
+    background: linear-gradient(#448, #224) !important;
+    color: #fffc !important;
+    border: 1px solid #668 !important;
+}
+.tabbtn:hover, 
+.secondarytabbtn:hover {
+    box-shadow: 0 0 8px #77f7;
+}
+
+.storebtn, 
+.autobuyerbtn,
+.challengesbtn,
+.newdim {
+    background: linear-gradient(#556, #223) !important;
+    color: #fff9 !important;
+    border: 1px solid #778 !important;
+}
+.storebtn:hover, 
+.autobuyerbtn:hover,
+.challengesbtn:hover,
+newdim:hover {
+    box-shadow: 0 0 8px #ccf7;
+}
+
+.unavailablebtn, .unavailablebtn:hover,
+.lockedchallengesbtn, .newdimlocked, .newdimlocked:hover {
+    background: linear-gradient(#112, #112);
+    filter: none !important;
+    color: #fff4 !important;
+    border: 1px solid #778 !important;
+    transition-duration: .5s;
+}
+
+.onchallengebtn, .chosenbtn {
+    background: linear-gradient(#131, #131);
+    filter: none !important;
+    color: #7f7 !important;
+    border: 1px solid #7f7 !important;
+    transition-duration: .5s;
+}
+
+.completedchallengesbtn {
+    background: linear-gradient(#363, #131) !important;
+    color: #fff9 !important;
+    border: 1px solid #686 !important;
+}
+.completedchallengesbtn:hover {
+    box-shadow: 0 0 8px #6867;
+}
+
+.pupg {
+    background: linear-gradient(#636, #313) !important;
+    color: #f8f !important;
+    border: 1px solid #f8f !important;
+    text-shadow: 0 0 3px #000, 0 0 5px #f07;
+    box-shadow: inset 0 0 15px #f075;
+}
+.pupg:hover {
+    box-shadow: inset 0 0 15px #f075, 0 0 8px #f8f7;
+}
+#paradox .infinistorebtnlocked,
+#paradox .infinistorebtnlocked:hover {
+    background: linear-gradient(#101, #101) !important;
+    color: #f8f7 !important;
+    border: 1px solid #f8f !important;
+}
+.pubought,
+.pubought:hover {
+    background: linear-gradient(#747, #848) !important;
+    color: #f8f !important;
+    border: 1px solid #f8f !important;
+    filter: none !important;
+    box-shadow: inset 0 0 25px #f8f5, inset 0 0 15px #f075, 0 0 8px #f8f7;
+}
+
+#galaxy .infinistorebtn1, #galaxy .infinistorebtn2,
+#galaxy .infinistorebtn3, #galaxy .infinistorebtn4 {
+    background: linear-gradient(#336, #113) !important;
+    color: #99f !important;
+    border: 1px solid #99f !important;
+}
+#galaxy .infinistorebtn1:hover, #galaxy .infinistorebtn2:hover, 
+#galaxy .infinistorebtn3:hover, #galaxy .infinistorebtn4:hover {
+    box-shadow: 0 0 8px #99f7 !important;
+}
+#galaxy .infinistorebtnbought,
+#galaxy .infinistorebtnbought:hover,
+.galStonereward, .galStonereward:hover {
+    background: linear-gradient(#447, #558) !important;
+    color: #99f !important;
+    border: 1px solid #99f !important;
+    filter: none !important;
+    box-shadow: inset 0 0 25px #99f5, 0 0 8px #99f7;
+}
+#galaxy .infinistorebtnlocked,
+#galaxy .infinistorebtnlocked:hover,
+.galStonerewardlocked, .galStonerewardlocked:hover {
+    background: linear-gradient(#001, #001) !important;
+    color: #99f7 !important;
+    filter: none !important;
+    border: 1px solid #99f !important;
+}
+
+.infinistorebtn1, .infinistorebtn2,
+.infinistorebtn3, .infinistorebtn4, 
+.infinimultbtn, .infiniautobuyerbtn {
+    background: linear-gradient(#642, #321) !important;
+    color: #fa7 !important;
+    border: 1px solid #fa7 !important;
+}
+.infinistorebtn1:hover, .infinistorebtn2:hover, 
+.infinistorebtn3:hover, .infinistorebtn4:hover, 
+.infinimultbtn:hover, .inifiniautobuyerbtn:hover {
+    box-shadow: 0 0 8px #fa77 !important;
+}
+.infinistorebtnlocked,
+.infinistorebtnlocked:hover {
+    background: linear-gradient(#110, #110) !important;
+    color: #fa77 !important;
+    border: 1px solid #fa7 !important;
+    filter: none !important;
+}
+.infinistorebtnbought,
+.infinistorebtnbought:hover {
+    background: linear-gradient(#753, #864) !important;
+    color: #fa7 !important;
+    border: 1px solid #fa7 !important;
+    filter: none !important;
+    box-shadow: inset 0 0 25px #fa75, 0 0 8px #fa77;
+}
+
+.eternityupbtn {
+    background: linear-gradient(#426, #213) !important;
+    color: #caf !important;
+    border: 1px solid #caf !important;
+}
+.eternityupbtn:hover {
+    box-shadow: 0 0 8px #caf7 !important;
+}
+.eternityupbtnlocked, .eternityupbtnlocked:hover,
+.milestonerewardlocked, .milestonerewardlocked:hover {
+    background: linear-gradient(#101, #101) !important;
+    color: #caf7 !important;
+    border: 1px solid #caf !important;
+    filter: none !important;
+}
+.eternityupbtnbought, .eternityupbtnbought:hover,
+.milestonereward, .milestonereward:hover {
+    background: linear-gradient(#537, #648) !important;
+    color: #caf !important;
+    border: 1px solid #caf !important;
+    filter: none !important;
+    box-shadow: inset 0 0 25px #caf5, 0 0 8px #caf7;
+}
+
+.timetheorembtn {
+    background: linear-gradient(#204, #000) !important;
+    color: #caf !important;
+    border: 1px solid #657 !important;
+    box-shadow: inset 0 0 5px #caf3;
+}
+.timetheorembtn:hover {
+    box-shadow: inset 0 0 5px #caf3, 0 0 8px #caf7;
+}
+.timetheorembtnlocked {
+    background: linear-gradient(#000, #000) !important;
+    color: #caf7 !important;
+    border: 1px solid #657 !important;
+    filter: none !important;
+}
+
+.timestudy, #respec.timestudybought {
+    background: linear-gradient(#204, #000) !important;
+    color: #caf !important;
+    border: 1px solid #657 !important;
+    box-shadow: inset 0 0 5px #caf3;
+    animation: none;
+}
+.timestudy:hover, #respec.timestudybought:hover {
+    box-shadow: inset 0 0 5px #caf3, 0 0 8px #caf7;
+}
+.timestudybought:not(#respec), .timestudybought:not(#respec):hover {
+    background: linear-gradient(#102, #306);
+    color: #caf;
+    border: 1px solid #657;
+    filter: none !important;
+    box-shadow: inset 0 0 15px #caf5, 0 0 8px #caf7;
+}
+td .timestudy.normaldimstudy {
+    background: linear-gradient(#040, #000) !important;
+    color: #8c8 !important;
+    border: 1px solid #575 !important;
+    box-shadow: inset 0 0 25px #8c83;
+    animation: none;
+}
+td .timestudy.normaldimstudy:hover {
+    background: linear-gradient(#040, #000) !important;
+    color: #8c8 !important;
+    box-shadow: inset 0 0 25px #8c83, 0 0 8px #8c87;
+}
+td .timestudybought.normaldimstudy {
+    background: linear-gradient(#020, #060) !important;
+    color: #8c8 !important;
+    border: 1px solid #575 !important;
+    filter: none !important;
+    box-shadow: inset 0 0 25px #8c85, 0 0 8px #8c87 !important;
+}
+td .timestudy.infdimstudy {
+    background: linear-gradient(#420, #000) !important;
+    color: #fa7 !important;
+    border: 1px solid #765 !important;
+    box-shadow: inset 0 0 25px #fa73;
+    animation: none;
+}
+td .timestudy.infdimstudy:hover {
+    background: linear-gradient(#420, #000) !important;
+    color: #fa7 !important;
+    box-shadow: inset 0 0 25px #fa73, 0 0 8px #fa77;
+}
+td .timestudybought.infdimstudy {
+    background: linear-gradient(#210, #630) !important;
+    color: #fa7 !important;
+    border: 1px solid #765 !important;
+    filter: none !important;
+    box-shadow: inset 0 0 25px #fa75, 0 0 8px #fa77 !important;
+}
+td .timestudy.timedimstudy {
+    background: linear-gradient(#204, #000) !important;
+    color: #caf !important;
+    border: 1px solid #657 !important;
+    box-shadow: inset 0 0 25px #caf3;
+    animation: none;
+}
+td .timestudy.timedimstudy:hover {
+    background: linear-gradient(#204, #000) !important;
+    color: #caf !important;
+    box-shadow: inset 0 0 25px #caf3, 0 0 8px #caf7;
+}
+td .timestudybought.timedimstudy {
+    background: linear-gradient(#102, #306) !important;
+    color: #caf !important;
+    border: 1px solid #657 !important;
+    filter: none !important;
+    box-shadow: inset 0 0 25px #caf5, 0 0 8px #caf7 !important;
+}
+td .timestudy.activestudy {
+    background: linear-gradient(#400, #000) !important;
+    color: #f88 !important;
+    border: 1px solid #755 !important;
+    box-shadow: inset 0 0 25px #f883;
+    animation: none;
+}
+td .timestudy.activestudy:hover {
+    background: linear-gradient(#400, #000) !important;
+    color: #f88 !important;
+    box-shadow: inset 0 0 25px #f883, 0 0 8px #f887;
+}
+td .timestudybought.activestudy {
+    background: linear-gradient(#200, #600) !important;
+    color: #f88 !important;
+    border: 1px solid #755 !important;
+    filter: none !important;
+    box-shadow: inset 0 0 25px #f885, 0 0 8px #f887 !important;
+}
+td .timestudy.passivestudy {
+    background: linear-gradient(#404, #000) !important;
+    color: #f8f !important;
+    border: 1px solid #557 !important;
+    box-shadow: inset 0 0 25px #f8f3;
+    animation: none;
+}
+td .timestudy.passivestudy:hover {
+    background: linear-gradient(#404, #000) !important;
+    color: #f8f !important;
+    box-shadow: inset 0 0 25px #f8f3, 0 0 8px #f8f7;
+}
+td .timestudybought.passivestudy {
+    background: linear-gradient(#202, #606) !important;
+    color: #f8f !important;
+    border: 1px solid #557 !important;
+    filter: none !important;
+    box-shadow: inset 0 0 25px #f8f5, 0 0 8px #f8f7 !important;
+}
+td .timestudy.idlestudy {
+    background: linear-gradient(#004, #000) !important;
+    color: #88f !important;
+    border: 1px solid #557 !important;
+    box-shadow: inset 0 0 25px #88f3;
+    animation: none;
+}
+td .timestudy.idlestudy:hover {
+    background: linear-gradient(#004, #000) !important;
+    color: #88f !important;
+    box-shadow: inset 0 0 25px #88f3, 0 0 8px #88f7;
+}
+td .timestudybought.idlestudy {
+    background: linear-gradient(#002, #006) !important;
+    color: #88f !important;
+    border: 1px solid #557 !important;
+    filter: none !important;
+    box-shadow: inset 0 0 25px #88f5, 0 0 8px #88f7 !important;
+}
+td .timestudy.darkstudy {
+    background: linear-gradient(#222, #000) !important;
+    color: #ccc !important;
+    border: 1px solid #666 !important;
+    box-shadow: inset 0 0 25px #fff1;
+    animation: none;
+}
+td .timestudy.darkstudy:hover {
+    background: linear-gradient(#222, #000) !important;
+    color: #ccc !important;
+    border: 1px solid #666 !important;
+    box-shadow: inset 0 0 25px #fff1, 0 0 8px #ccc7;
+}
+td .timestudybought.darkstudy {
+    background: linear-gradient(#111, #333) !important;
+    color: #ccc !important;
+    border: 1px solid #666 !important;
+    filter: none !important;
+    box-shadow: inset 0 0 25px #fff2, 0 0 8px #ccc7 !important;
+}
+td .timestudy.lightstudy {
+    background: linear-gradient(#333, #000) !important;
+    color: #ccc !important;
+    border: 1px solid #666 !important;
+    box-shadow: inset 0 0 25px #fff3;
+    animation: none;
+}
+td .timestudy.lightstudy:hover {
+    background: linear-gradient(#333, #000) !important;
+    color: #ccc !important;
+    border: 1px solid #666 !important;
+    box-shadow: inset 0 0 25px #fff3, 0 0 8px #ccc7;
+}
+td .timestudybought.lightstudy {
+    background: linear-gradient(#222, #444) !important;
+    color: #ccc !important;
+    border: 1px solid #666 !important;
+    filter: none !important;
+    box-shadow: inset 0 0 25px #fff7, 0 0 8px #ccc7 !important;
+}
+td .timestudy.pos_study {
+    background: linear-gradient(#330, #000) !important;
+    color: #ff8 !important;
+    border: 1px solid #775 !important;
+    box-shadow: inset 0 0 25px #ff83;
+    animation: none;
+}
+td .timestudy.pos_study:hover {
+    background: linear-gradient(#330, #000) !important;
+    color: #ff8 !important;
+    box-shadow: inset 0 0 25px #ff83, 0 0 8px #ff87 !important;
+}
+td .timestudybought.pos_study {
+    background: linear-gradient(#220, #550) !important;
+    color: #ff8 !important;
+    border: 1px solid #775 !important;
+    filter: none !important;
+    box-shadow: inset 0 0 25px #ff85, 0 0 8px #ff87 !important;
+}
+.timestudylocked, .timestudylocked:hover {
+    background: linear-gradient(#000, #000) !important;
+    color: #caf7 !important;
+    border: 1px solid #657 !important;
+    filter: none !important;
+}
+
+.eternitychallengestudy {
+    background: linear-gradient(#666, #444) !important;
+    color: #caf !important;
+    border: 1px solid #caf !important;
+    filter: none !important;
+    box-shadow: inset 0 0 5px #0003;
+    text-shadow: 0 0 5px #000;
+    animation: none;
+}
+.eternitychallengestudy:hover {
+    filter: brightness(1.6) !important;
+    box-shadow: inset 0 0 5px #caf3, 0 0 8px #caf7;
+}
+.eternitychallengestudybought {
+    background: linear-gradient(#222, #333) !important;
+    color: #caf !important;
+    border: 1px solid #666 !important;
+    filter: none !important;
+    box-shadow: inset 0 0 25px #caf5, 0 0 8px #ccc7;
+}
+.eternitychallengestudylocked {
+    background: linear-gradient(#111, #111) !important;
+    color: #caf7 !important;
+    border: 1px solid #caf !important;
+    filter: none !important;
+}
+
+.dilationupg, .dilationbtn {
+    background: linear-gradient(#040, #020) !important;
+    color: #0f0 !important;
+    border: 1px solid #0f0 !important;
+    animation: none;
+}
+.dilationupg:hover, .dilationbtn:hover {
+    box-shadow: 0 0 8px #0f07 !important;
+}
+.dilationupglocked {
+    background: linear-gradient(#010, #010) !important;
+    color: #0f07 !important;
+    border: 1px solid #0f0 !important;
+    filter: none !important;
+}
+.dilationupgbought {
+    background: linear-gradient(#030, #060) !important;
+    color: #0f0 !important;
+    border: 1px solid #0f0 !important;
+    filter: none !important;
+    box-shadow: inset 0 0 25px #0f05, 0 0 8px #0f07;
+}
+.dilationupgrebuyable, #reversedilation.dilationbtn {
+    background: linear-gradient(#404, #202) !important;
+    color: #f0f !important;
+    border: 1px solid #f0f !important;
+    animation: none;
+}
+.dilationupgrebuyable:hover, #reversedilation.dilationbtn:hover {
+    box-shadow: 0 0 8px #f0f7 !important;
+}
+.dilationupgrebuyablelocked {
+    background: linear-gradient(#101, #101) !important;
+    color: #f0f7 !important;
+    border: 1px solid #f0f !important;
+    filter: none !important;
+}
+
+.qMs_toggle_on {
+    background: linear-gradient(#cdb, #9b7) !important;
+    color: #570;
+    border: 1px solid #9b7;
+    box-shadow: inset 0 0 25px #9f75, 0 0 8px #9f77;
+}
+.qMs_toggle_off {
+    background: linear-gradient(#dbb, #b77) !important;
+    color: #700;
+    border: 1px solid #b77;
+    box-shadow: inset 0 0 25px #f795, 0 0 8px #f797;
+}
+
+.gluonupgrade.storebtn {
+    background: linear-gradient(#342, #121) !important;
+    color: #9f7 !important;
+    border: 1px solid #9f7 !important;
+    box-shadow: inset 0 0 5px #9f73;
+    animation: none !important;
+}
+.gluonupgrade.storebtn:hover {
+    box-shadow: inset 0 0 5px #9f73, 0 0 8px #f9f7;
+}
+.gluonupgrade.unavailablebtn, .gluonupgrade.unavailablebtn:hover,
+.qMs_locked, .qMs_locked:hover {
+    background: linear-gradient(#010, #010) !important;
+    color: #9f77 !important;
+    border: 1px solid #9f7 !important;
+    filter: none !important;
+}
+.gluonupgradebought,
+.qMs_reward {
+    background: linear-gradient(#231, #363) !important;
+    color: #9f7;
+    border: 1px solid #9f7;
+    filter: none !important;
+    box-shadow: inset 0 0 25px #9f75, 0 0 8px #9f77;
+}
+
+.gluonupgrade.rg {
+    background: linear-gradient(45deg, #f003, #0f03), linear-gradient(#444, #111) !important;
+    box-shadow: inset 0 0 15px #ff73;
+    text-shadow: 0 0 5px #000;
+    animation: rgAnim 5s ease-in-out infinite alternate !important;
+}
+.gluonupgrade.rg:hover {
+    box-shadow: inset 0 0 15px #ff73, 0 0 8px #ff77;
+}
+.gluonupgradebought.rg {
+    background: linear-gradient(45deg, #f005, #0f05),linear-gradient(#222, #666) !important;
+    box-shadow: inset 0 0 15px #ff75, 0 0 8px #ff77;
+    text-shadow: 0 0 5px #000;
+    animation: rgAnim 5s ease-in-out infinite alternate !important;
+}
+@keyframes rgAnim {
+    from {
+        color: #f77;
+        border: 1px solid #f77;
+    }
+    to {
+        color: #7f7;
+        border: 1px solid #7f7;
+    }
+}
+.gluonupgrade.gb {
+    background: linear-gradient(45deg, #0f03, #00f3), linear-gradient(#444, #111) !important;
+    box-shadow: inset 0 0 15px #7ff3;
+    text-shadow: 0 0 5px #000;
+    animation: gbAnim 5s ease-in-out infinite alternate !important;
+}
+.gluonupgrade.gb:hover {
+    box-shadow: inset 0 0 15px #7ff3, 0 0 8px #7ff7;
+}
+.gluonupgradebought.gb {
+    background: linear-gradient(45deg, #0f05, #00f5), linear-gradient(#222, #666) !important;
+    box-shadow: inset 0 0 15px #7ff5, 0 0 8px #7ff7;
+    text-shadow: 0 0 5px #000;
+    animation: gbAnim 5s ease-in-out infinite alternate !important;
+}
+@keyframes gbAnim {
+    from {
+        color: #7f7;
+        border: 1px solid #7f7;
+    }
+    to {
+        color: #77f;
+        border: 1px solid #77f;
+    }
+}
+.gluonupgrade.br {
+    background: linear-gradient(45deg, #00f3, #f003), linear-gradient(#444, #111) !important;
+    box-shadow: inset 0 0 15px #f7f3;
+    text-shadow: 0 0 5px #000;
+    animation: brAnim 5s ease-in-out infinite alternate !important;
+}
+.gluonupgrade.br:hover {
+    box-shadow: inset 0 0 15px #f7f3, 0 0 8px #f7f7;
+}
+.gluonupgradebought.br {
+    background: linear-gradient(45deg, #00f5, #f005), linear-gradient(#222, #666) !important;
+    box-shadow: inset 0 0 15px #f7f5, 0 0 8px #f7f7;
+    text-shadow: 0 0 5px #000;
+    animation: brAnim 5s ease-in-out infinite alternate !important;
+}
+@keyframes brAnim {
+    from {
+        color: #77f;
+        border: 1px solid #77f;
+    }
+    to {
+        color: #f77;
+        border: 1px solid #f77;
+    }
+}
+
+.gluonupgrade.r {
+    background: linear-gradient(45deg, #f004, #f002), linear-gradient(#444, #111) !important;
+    color: #f77 !important;
+    border: 1px solid #f77 !important;
+    box-shadow: inset 0 0 15px #f773;
+    text-shadow: 0 0 5px #000;
+    animation: none !important;
+}
+.gluonupgrade.r:hover {
+    box-shadow: inset 0 0 15px #f773, 0 0 8px #f777;
+}
+.gluonupgradebought.r {
+    background: linear-gradient(45deg, #f006, #f003), linear-gradient(#222, #666) !important;
+    color: #f77 !important;
+    border: 1px solid #f77 !important;
+    box-shadow: inset 0 0 15px #f775, 0 0 8px #f777;
+    text-shadow: 0 0 5px #000;
+    animation: none !important;
+}
+.gluonupgrade.g {
+    background: linear-gradient(45deg, #0f04, #0f02), linear-gradient(#444, #111) !important;
+    color: #7f7 !important;
+    border: 1px solid #7f7 !important;
+    box-shadow: inset 0 0 15px #7f73;
+    text-shadow: 0 0 5px #000;
+    animation: none !important;
+}
+.gluonupgrade.g:hover {
+    box-shadow: inset 0 0 15px #7f73, 0 0 8px #7f77;
+}
+.gluonupgradebought.g {
+    background: linear-gradient(45deg, #0f06, #0f03), linear-gradient(#222, #666) !important;
+    color: #7f7 !important;
+    border: 1px solid #7f7 !important;
+    box-shadow: inset 0 0 15px #7f75, 0 0 8px #7f77;
+    text-shadow: 0 0 5px #000;
+    animation: none !important;
+}
+.gluonupgrade.b {
+    background: linear-gradient(45deg, #00f4, #00f2), linear-gradient(#444, #111) !important;
+    color: #77f !important;
+    border: 1px solid #77f !important;
+    box-shadow: inset 0 0 15px #77f3;
+    text-shadow: 0 0 5px #000;
+    animation: none !important;
+}
+.gluonupgrade.b:hover {
+    box-shadow: inset 0 0 15px #77f3, 0 0 8px #77f7;
+}
+.gluonupgradebought.b {
+    background: linear-gradient(45deg, #00f6, #00f3), linear-gradient(#222, #666) !important;
+    color: #77f !important;
+    border: 1px solid #77f !important;
+    box-shadow: inset 0 0 15px #77f5, 0 0 8px #77f7;
+    text-shadow: 0 0 5px #000;
+    animation: none !important;
+}
+.gluonupgrade.chosenbtn {
+    font-size: 12px;
+}
+
+.gluonupgrade.bigrip, .bigripbtn {
+    background: linear-gradient(#242, #121) !important;
+    color: #7f7 !important;
+    border: 1px solid #7f7 !important;
+    box-shadow: inset 0 0 25px #0007;
+    animation: none !important;
+}
+.gluonupgrade.bigrip:hover, .bigripbtn:hover {
+    background: linear-gradient(#242, #121) !important;
+    box-shadow: inset 0 0 25px #0007, 0 0 8px #7f77;
+}
+.gluonupgradebought.bigrip {
+    background: linear-gradient(#131, #363) !important;
+    color: #7f7 !important;
+    border: 1px solid #7f7 !important;
+    box-shadow: inset 0 0 15px #7f75, 0 0 8px #7f77;
+    animation: none !important;
+}
+.gluonupgradebought.bigripoff {
+    background: linear-gradient(#020, #242) !important;
+    color: #7f77 !important;
+    border: 1px solid #7f7 !important;
+    box-shadow: inset 0 0 15px #0007;
+    animation: none !important;
+}
+
+.gluonupgrade.neutrinoupg {
+    background: linear-gradient(#222, #000) !important;
+    color: #aaa !important;
+    border: 1px solid #aaa !important;
+    box-shadow: inset 0 0 15px #0003;
+    text-shadow: 0 0 2px #aaa7;
+    animation: none !important;
+}
+.gluonupgrade.neutrinoupg:hover {
+    background: linear-gradient(#222, #000) !important;
+    box-shadow: inset 0 0 15px #fff3, 0 0 8px #aaa7;
+}
+.gluonupgradebought.neutrinoupg {
+    background: linear-gradient(#000, #222) !important;
+    color: #aaa !important;
+    border: 1px solid #aaa !important;
+    box-shadow: inset 0 0 15px #fff5, 0 0 8px #fff7;
+    text-shadow: 0 0 2px #aaa7;
+    animation: none !important;
+}
+
+.gluonupgrade.gph {
+    background: linear-gradient(#cb5, #894) !important;
+    color: #000 !important;
+    border: 1px solid #fff !important;
+    box-shadow: inset 0 0 15px #0003;
+    text-shadow: 0 0 2px #0007;
+    animation: none !important;
+}
+.gluonupgrade.gph:hover {
+    text-shadow: 0 0 2px #000;
+    box-shadow: inset 0 0 15px #fff3, 0 0 8px #fff7;
+}
+
+.gluonupgrade.bl {
+    background: 
+        linear-gradient(#6164, #0000 50%, #6164 100%), 
+        linear-gradient(90deg, #0000, #c314 50%, #0000 100%),
+        linear-gradient(#222, #000) !important;
+    color: #fff !important;
+    border: 1px solid #fff !important;
+    box-shadow: inset 0 0 15px #0003;
+    text-shadow: 0 0 5px #fff2;
+    animation: none !important;
+}
+.gluonupgrade.bl:hover {
+    box-shadow: inset 0 0 15px #fff3, 0 0 8px #fff7;
+}
+.gluonupgradebought.bl {
+    background: 
+        linear-gradient(#6164, #0000 50%, #6164 100%), 
+        linear-gradient(90deg, #0000, #c314 50%, #0000 100%),
+        linear-gradient(#222, #444) !important;
+    color: #fff !important;
+    border: 1px solid #fff !important;
+    box-shadow: inset 0 0 15px #fff5, 0 0 8px #fff7;
+    text-shadow: 0 0 2px #aaa7;
+    animation: none !important;
+}
+
+.gluonupgrade.hb {
+	background:
+        linear-gradient(90deg, #0000, #ff02, #0000), 
+        linear-gradient(#550, #110) !important;
+    color: #fff !important;
+    border: 1px solid #fff !important;
+    box-shadow: inset 0 0 15px #0003;
+    text-shadow: 0 0 5px #000;
+    animation: none !important;
+}
+.gluonupgrade.hb:hover {
+    text-shadow: 0 0 5px #000, 0 0 5px #000;
+    box-shadow: inset 0 0 15px #fff3, 0 0 8px #fff7;
+}
+
+#produceQuarkCharge {
+    background: linear-gradient(#445, #222) !important;
+    color: #aab !important;
+    border: 1px solid aab !important;
+    animation: none;
+}
+#produceQuarkCharge:hover {
+    box-shadow: 0 0 8px #aab7;
+}
+.chosenbtn2 {
+    filter: none !important;
+}
+.nfReward {
+    background: linear-gradient(#555, #667) !important;
+    color: #aab !important;
+    border: 1px solid #aab !important;
+    box-shadow: inset 0 0 15px #aab5, 0 0 8px #aab7;
+    animation: none;
+    filter: none !important;
+}
+.nfRewardlocked {
+    background: linear-gradient(#111, #111) !important;
+    color: #aab7 !important;
+    border: 1px solid #aab !important;
+    filter: none !important;
+}
+
+/*===============================
+  M A I N  T A B  B U T T O N S
+===============================*/
+
+#dimensionsbtn, #dimensionsbtn ~ button {
+    margin-top: 4px;
+    /* for testing purposes */
+    //display: inline-block !important;
+}
+
+.acceleratebtn {
+    background: 
+        linear-gradient(#0007, #000), 
+        linear-gradient(90deg, #770 25%, #ff0 45%, #ff0 55%, #770 75%);
+    background-size: 100% 100%, 200% 100%;
+    color: #cc0 !important;
+    text-shadow: 0 0 3px #000, 0 0 5px #ff0 !important;
+    border: 1px solid #663 !important;
+    animation: 15s accel ease-in-out infinite !important;
+    box-shadow: inset 0 0 5px #cc03;
+}
+.acceleratebtn:hover {
+    box-shadow: inset 0 0 5px #cc03, 0 0 8px #cc07;
+}
+#accTabBtn {
+    position: relative;
+    overflow: hidden;
+}
+#accTabBtn::before {
+    content: "α";
+    top: -80px; left: 0; right: 0;
+    font-size: 6em;
+    font-weight: 100;
+    opacity: .1;
+    position: absolute;
+    transform: rotate(-20deg);
+}
+@keyframes accel {
+	0% {
+		background-position: 0% 0%, 0% 0%;
+	}
+	100% {
+		background-position: 0% 0%, 2000% 0%;
+	}
+}
+
+.paradoxbtn {
+    background: linear-gradient(#424, #000) !important;
+    color: #f8f !important;
+    border: 1px solid #557 !important;
+    box-shadow: inset 0 0 10px #f075;
+    text-shadow: 0 0 3px #000, 0 0 5px #f07;
+}
+.paradoxbtn:hover {
+    box-shadow: inset 0 0 10px #f075, 0 0 8px #88f7;
+}
+#paradoxbtn {
+    position: relative;
+    overflow: hidden;
+}
+#paradoxbtn::before {
+    content: "ξ";
+    top: -70px; left: 0; right: 0;
+    font-size: 6em;
+    font-weight: 100;
+    opacity: .1;
+    position: absolute;
+    transform: rotate(-20deg);
+}
+
+.galaxybtn {
+    background: 
+        linear-gradient(#114, #000) !important;
+    color: #99f !important;
+    border: 1px solid #557 !important;
+    box-shadow: inset 0 0 5px #99f3;
+}
+.galaxybtn:hover {
+    box-shadow: inset 0 0 5px #99f3, 0 0 8px #99f7;
+}
+#galaxybtn {
+    position: relative;
+    overflow: hidden;
+}
+#galaxybtn::before {
+    content: "γ";
+    top: -80px; left: 0; right: 0;
+    font-size: 6em;
+    font-weight: 100;
+    opacity: .1;
+    position: absolute;
+    transform: rotate(-20deg);
+}
+
+.infinitybtn,
+#bigcrunch,
+.postinfcrunch {
+    background: linear-gradient(#420, #000) !important;
+    color: #fa7 !important;
+    border: 1px solid #765 !important;
+    box-shadow: inset 0 0 5px #fa73;
+}
+.infinitybtn:hover,
+#bigcrunch:hover,
+.postinfcrunch:hover {
+    box-shadow: inset 0 0 5px #fa73, 0 0 8px #fa77;
+}
+#infinitybtn {
+    position: relative;
+    overflow: hidden;
+}
+#infinitybtn::before {
+    content: "∞";
+    top: -60px; left: 0; right: 0;
+    font-size: 6em;
+    font-weight: 100;
+    opacity: .1;
+    position: absolute;
+    transform: rotate(-20deg);
+}
+#repMajorBtn {
+    background: linear-gradient(#630, #310) !important;
+    border: 1px solid #754 !important;
+    color: #fa0 !important;
+    overflow: hidden;
+}
+
+.eternitybtn, .eternitytabbtn {
+    background: linear-gradient(#204, #000) !important;
+    color: #caf !important;
+    border: 1px solid #657 !important;
+    box-shadow: inset 0 0 5px #caf3;
+}
+.eternitybtn:hover, .eternitytabbtn:hover {
+    box-shadow: inset 0 0 5px #caf3, 0 0 8px #caf7;
+}
+#eternitystorebtn {
+    position: relative;
+    overflow: hidden;
+}
+#eternitystorebtn::before {
+    content: "Δ";
+    top: -60px; left: 0; right: 0;
+    font-size: 6em;
+    font-weight: 100;
+    opacity: .1;
+    position: absolute;
+    transform: rotate(-20deg);
+}
+
+.interrealitybtn {
+    background: linear-gradient(#000b, #000f), linear-gradient(90deg, #0f0, #39f) !important;
+    animation: irAnim 15s linear infinite alternate !important;
+    text-shadow: none !important;
+    box-shadow: inset 0 0 5px #7fc3;
+}
+.interrealitybtn:hover {
+    box-shadow: inset 0 0 5px #7fc3, 0 0 8px #7fc7;
+}
+#irTabBtn {
+    position: relative;
+    overflow: hidden;
+}
+#irTabBtn::before {
+    content: "δ";
+    top: -60px; left: 0; right: 0;
+    font-size: 6em;
+    font-weight: 100;
+    opacity: .1;
+    position: absolute;
+    transform: rotate(-20deg);
+}
+@keyframes irAnim {
+    from {
+        color: #7f7;
+        border: 1px solid #474;
+    }
+    to {
+        color: #7af;
+        border: 1px solid #357;
+    }
+}
+
+.singularitybtn {
+    background: linear-gradient(#444, #000) !important;
+    color: #ccc !important;
+    border: 1px solid #555;
+    box-shadow: inset 0 0 15px #000a, inset 0 0 5px #ccc7;
+}
+.singularitybtn:hover {
+    box-shadow: inset 0 0 15px #000a, inset 0 0 5px #ccc7, 0 0 8px #ccc7;
+}
+#sgTabBtn {
+    position: relative;
+    overflow: hidden;
+}
+#sgTabBtn::before {
+    content: "σ";
+    top: -65px; left: 0; right: 0;
+    font-size: 6em;
+    font-weight: 100;
+    opacity: .1;
+    position: absolute;
+    transform: rotate(-20deg);
+}
+
+.quantumbtn {
+    background: linear-gradient(#040, #000) !important;
+    color: #bf7 !important;
+    border: 1px solid #674 !important;
+    box-shadow: inset 0 0 5px #bf73;
+}
+.quantumbtn:hover {
+    box-shadow: inset 0 0 5px #bf73, 0 0 8px #bf77;
+}
+#quantumtabbtn {
+    position: relative;
+    overflow: hidden;
+}
+#quantumtabbtn::before {
+    content: "ᴨ";
+    top: -70px; left: 0; right: 0;
+    font-size: 6em;
+    font-weight: 100;
+    opacity: .1;
+    position: absolute;
+    transform: rotate(-20deg);
+}
+
+.ghostifybtn {
+    background: linear-gradient(#516, #100) !important;
+    color: #a4f !important;
+    text-shadow: 0 0 5px #a4f;
+    border: 1px solid #72f !important;
+    animation: ghostifytext 15s linear infinite !important;
+    box-shadow: inset 0 0 5px #7007;
+}
+.ghostifybtn:hover {
+    box-shadow: inset 0 0 5px #7007, 0 0 8px #7f77;
+}
+#ghostifytabbtn {
+    position: relative;
+    overflow: hidden;
+}
+#ghostifytabbtn::before {
+    content: "φ";
+    top: -70px; left: 0; right: 0;
+    font-size: 6em;
+    font-weight: 100;
+    opacity: .1;
+    position: absolute;
+    transform: rotate(-20deg);
+}
+#ghostifybtn > *, .ghostifyProgress #progresspercent {
+    animation: ghostifytext 15s linear infinite !important;
+}
+@keyframes ghostifytext { 
+	from {
+		color: #a4f;
+		text-shadow: 0px 0px 3px #000, 0px 0px 3px #fff7, 0px 0px 8px #a4f7;
+	}
+	50% {
+		color: #f47;
+		text-shadow: 0px 0px 3px #000, 0px 0px 6px #fff7, 0px 0px 8px #f477;
+	}
+	to {
+		color: #a4f;
+		text-shadow: 0px 0px 3px #000, 0px 0px 3px #fff7, 0px 0px 8px #a4f7;
+	}
+}
+
+.planckbtn {
+    background: 
+        linear-gradient(#340c, #000),
+        repeating-conic-gradient(#cf0 0% 25%, #000 0% 50%) 50% !important;
+    background-size: 100% 100%, 2.71828px 2.71828px !important;
+    color: #cf0 !important;
+    text-shadow: 0px 0px 3px #000, 0 0 8px #cf0 !important;
+    border: 1px solid #673 !important;
+    box-shadow: inset 0 0 10px #cf03;
+}
+.planckbtn:hover {
+    box-shadow: inset 0 0 10px #cf03, 0 0 8px #cf07;
+    background-size: 100% 100%, 2.71828px 2.71828px !important;
+}
+#plancktabbtn {
+    position: relative;
+    overflow: hidden;
+}
+#plancktabbtn::before {
+    content: "κ";
+    top: -80px; left: 0; right: 0;
+    font-size: 6em;
+    font-weight: 100;
+    opacity: .1;
+    position: absolute;
+    transform: rotate(-20deg);
+}
+
+/*=============
+  P O P U P S
+=============*/
+
+.popup, #theorembuybackground {
+    backdrop-filter: blur(10px);
+    background: #001c;
+    border: 1px solid #77fa;
+}
+
+#welcomeMessage b { 
+	font-weight: bold !important
+}
+
+/*=====================
+  C H A L L E N G E S
+=====================*/
+
+.challengediv {
+    background: #0000;
+    color: #fff9;
+    border: 1px solid #99c7;
+    border-radius: 5px;
+}
+.infchallengediv {
+    background: #0000;
+    color: #fff9;
+    border: 1px solid #fa77;
+    border-radius: 5px;
+}
+.eterchallengediv {
+    background: #0000;
+    color: #fff9;
+    border: 1px solid #caf7;
+    border-radius: 5px;
+}
+.quantumchallengediv {
+    background: #0000;
+    color: #fff9;
+    border: 1px solid #7f77;
+    border-radius: 5px;
+}
+
+/*=========================
+  A C H I E V E M E N T S
+=========================*/
+
+.achievementhidden, .achievementlocked {
+    background: #333;
+    box-shadow: inset 0 0 15px #333;
+    border: 1px solid #777;
+}
+.achievementunlocked{
+    background: #373;
+    box-shadow: inset 0 0 15px #373, 0 0 4px #7f7;
+    border: 1px solid #afa;
+}
+.completedrow {
+    background: #0000;
+}
+.completedrow .achievementunlocked {
+    background: #7f7;
+    box-shadow: inset 0 0 15px #373, 0 0 25px #7f7;
+}
+
+/*=================
+  S O F T C A P S
+=================*/
+
+.softcap_1 {
+    color: #886;
+    text-shadow: 1px 1px 1px #aa87, 0 0 5px #f007, 0 0 8px #000;
+}
+.softcap_2 {
+    color: #886;
+    text-shadow: 1px 1px 1px #aa87, 0 0 10px #f00c, 0 0 8px #300;
+}
+
+/*=============
+  T A B L E S
+=============*/
+
+.tab > table td {
+    padding: 5px 2px;
+}
+
+td.red {
+    background: linear-gradient(#f775, #f773)
+}
+td.orange {
+    background: linear-gradient(#fa75, #fa73)
+}
+td.yellow {
+    background: linear-gradient(#ff75, #ff73)
+}
+td.dark_yellow {
+    background: linear-gradient(#bb55, #bb53)
+}
+td.lime {
+    background: linear-gradient(#bf75, #bf73)
+}
+td.green {
+    background: linear-gradient(#7f75, #7f73)
+}
+td.cyan {
+    background: linear-gradient(#7ff5, #7ff3)
+}
+td.blue {
+    background: linear-gradient(#77f5, #77f3)
+}
+td.indigo {
+    background: linear-gradient(#97f5, #97f3)
+}
+td.violet {
+    background: linear-gradient(#c7f5, #c7f3)
+}
+td.uv, td.magenta {
+    background: linear-gradient(#f7f7, #f7f3)
+}
+
+td.red.light {
+    background: linear-gradient(#f777, #f775)
+}
+td.orange.light {
+    background: linear-gradient(#fa77, #fa75)
+}
+td.yellow.light {
+    background: linear-gradient(#ff77, #ff75)
+}
+td.dark_yellow.light {
+    background: linear-gradient(#bb57, #bb55)
+}
+td.lime.light {
+    background: linear-gradient(#bf77, #bf75)
+}
+td.green.light {
+    background: linear-gradient(#7f77, #7f75)
+}
+td.blue.light {
+    background: linear-gradient(#77f7, #77f5)
+}
+td.indigo.light {
+    background: linear-gradient(#97f7, #97f5)
+}
+td.violet.light {
+    background: linear-gradient(#c7f7, #c7f5)
+}
+td.uv.light {
+    background: linear-gradient(#f7f7, #f7f5)
+}
+
+#control tr:nth-child(1) td:nth-child(1) {
+    background: linear-gradient(#642, #431);
+    color: #fa7;
+}
+#control tr:nth-child(1) td:nth-child(2) {
+    background: linear-gradient(#426, #314);
+    color: #caf;
+}
+#control tr:nth-child(1) td:nth-child(3) {
+    background: linear-gradient(#363, #242);
+    color: #bf7;
+}
+#control tr:nth-child(3) td:nth-child(1) {
+    background: linear-gradient(#516, #301);
+    animation: ghostifytext 15s linear infinite;
+    text-shadow: none !important;
+}
+
+/*=============
+  C O L O R S
+=============*/
+
+.red {
+    color: #f77;
+}
+.orange {
+    color: #fa7;
+}
+.yellow {
+    color: #ff7;
+}
+.dark_yellow {
+    color: #bb5;
+}
+.lime {
+    color: #bf7;
+}
+.green {
+    color: #7f7;
+}
+.cyan {
+    color: #7ff;
+}
+.blue {
+    color: #77f;
+}
+.indigo {
+    color: #97f;
+}
+.violet {
+    color: #c7f;
+}
+.uv, .magenta {
+    color: #f7f;
+}

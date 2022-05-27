@@ -148,15 +148,17 @@ function getDilationTotalTTReq() {
 function buyDilationStudy(name, cost) {
 	if (player.timestudy.theorem >= cost && !player.dilation.studies.includes(name) && (player.dilation.studies.includes(name - 1) || name < 2)) {
 		if (name < 2) {
-			if (ECTimesCompleted("eterc11") + ECTimesCompleted("eterc12") < 10 || getTotalTT(player) < getDilationTotalTTReq()) return
+			if (ECComps("eterc11") + ECComps("eterc12") < 10 || getTotalTT(player) < getDilationTotalTTReq()) return
 			showEternityTab("dilation")
 			if (player.eternityUpgrades.length < 1) giveAchievement("Work harder.")
 			if (player.blackhole != undefined) updateEternityUpgrades()
 		} else if (name > 5) {
 			giveAchievement("I'm so meta")
-			showTab("dimensions")
-			showDimTab("metadimensions")
 			updateDilationUpgradeCosts()
+			if (quantumed || !tmp.ngp3) {
+				showTab("dimensions")
+				showDimTab("metadimensions")
+			} else ngp3_feature_notify("md")
 		}
 		player.dilation.studies.push(name)
 		player.timestudy.theorem -= cost
@@ -310,7 +312,7 @@ function updateTimeStudyButtons(changed, forceupdate = false) {
 
 	for (var i = 1; i < 7; i++) {
 		if (player.dilation.studies.includes(i)) el("dilstudy"+i).className = "dilationupgbought"
-		else if (player.timestudy.theorem >= ([null, 5e3, 1e6, 1e7, 1e8, 1e9, 1e24])[i] && (player.dilation.studies.includes(i - 1) || (i < 2 && ECTimesCompleted("eterc11") > 4 && ECTimesCompleted("eterc12") > 4 && getTotalTT(player) >= 13e3))) el("dilstudy" + i).className = "dilationupg"
+		else if (player.timestudy.theorem >= ([null, 5e3, 1e6, 1e7, 1e8, 1e9, 1e24])[i] && (player.dilation.studies.includes(i - 1) || (i < 2 && ECComps("eterc11") > 4 && ECComps("eterc12") > 4 && getTotalTT(player) >= 13e3))) el("dilstudy" + i).className = "dilationupg"
 		else el("dilstudy" + i).className = "timestudylocked"
 	}
 	el("dilstudy6").style.display = player.meta ? "" : "none"

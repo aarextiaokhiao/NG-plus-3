@@ -20,7 +20,7 @@ function initialGalaxies() {
 function getGalaxyPower(ng, bi, noDil) {
 	let replGalEff = 1
 	if (player.boughtDims) replGalEff = Math.log10(player.replicanti.limit.log(2)) / Math.log10(2)/10
-	else if (ECTimesCompleted("eterc8") > 0) replGalEff = getECReward(8)
+	else if (ECComps("eterc8") > 0) replGalEff = getECReward(8)
 	if (tmp.ngp3 && player.masterystudies.includes("t344")) replGalEff *= getMTSMult(344)
 	
 	let extraReplGalPower = 0
@@ -206,7 +206,7 @@ el("tickSpeed").onclick = function () {
 function getTickSpeedCostMultiplierIncrease() {
 	if (inQC(7)) return Number.MAX_VALUE
 	let ret = player.tickSpeedMultDecrease;
-	let exp = .9 - .02 * ECTimesCompleted("eterc11")
+	let exp = .9 - .02 * ECComps("eterc11")
 	if (player.currentChallenge === 'postcngmm_2') ret = Math.pow(ret, .5)
 	else if (player.challenges.includes('postcngmm_2')) {
 		var galeff = (1 + Math.pow(player.galaxies, 0.7) / 10)

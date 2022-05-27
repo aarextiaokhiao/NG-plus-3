@@ -1062,6 +1062,7 @@ function doGhostifyGhostifyResetStuff(bm, force){
 	el("ghostifybtn").style.display = "none"
 	if (!ghostified) {
 		ghostified = true
+		ngp3_feature_notify("gh")
 		el("ghostifytabbtn").style.display = "inline-block"
 		el("ghostparticles").style.display = ""
 		el("ghostifyAnimBtn").style.display = "inline-block"

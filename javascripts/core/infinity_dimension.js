@@ -46,7 +46,7 @@ function hideMaxIDButton(onLoad=false) {
 }
 
 function DimensionDescription(tier) {
-	if (tier > (inQC(4) || player.pSac != undefined ? 6 : 7) && (ECTimesCompleted("eterc7") === 0 || player.timeDimension1.amount.eq(0) || tier == 7) && player.currentEternityChall != "eterc7") return getFullExpansion(Math.round(player["infinityDimension" + tier].amount.toNumber()));
+	if (tier > (inQC(4) || player.pSac != undefined ? 6 : 7) && (ECComps("eterc7") === 0 || player.timeDimension1.amount.eq(0) || tier == 7) && player.currentEternityChall != "eterc7") return getFullExpansion(Math.round(player["infinityDimension" + tier].amount.toNumber()));
 	else if (player.infinityPower.l > 1e7) return shortenDimensions(player['infinityDimension' + tier].amount)
 	else return shortenDimensions(player['infinityDimension' + tier].amount) + ' (+' + formatValue(player.options.notation, DimensionRateOfChange(tier), 2, 2) + dimDescEnd;
 }
@@ -82,7 +82,7 @@ function updateInfinityDimensions() {
 
 function DimensionProduction(tier) {
 	if (inQC(8)) return E(0)
-	if (tier == 9) return getTimeDimensionProduction(1).pow(ECTimesCompleted("eterc7") * 0.2).max(1).minus(1)
+	if (tier == 9) return getTimeDimensionProduction(1).pow(ECComps("eterc7") * 0.2).max(1).minus(1)
 	var dim = player["infinityDimension" + tier]
 	var ret = dim.amount
 	if (inQC(4) && tier == 1) ret = ret.plus(player.infinityDimension2.amount.floor())
@@ -141,11 +141,11 @@ function DimensionPower(tier) {
   	mult = mult.times(getInfDimPathIDMult(tier))
 	mult = mult.times(getTotalIDEUMult())
 	
-	if (ECTimesCompleted("eterc2") !== 0 && tier == 1) mult = mult.times(getECReward(2))
-  	if (ECTimesCompleted("eterc4") !== 0) mult = mult.times(getECReward(4))
+	if (ECComps("eterc2") !== 0 && tier == 1) mult = mult.times(getECReward(2))
+  	if (ECComps("eterc4") !== 0) mult = mult.times(getECReward(4))
 
   	var ec9 = E(1)
-  	if (ECTimesCompleted("eterc9") !== 0) ec9 = getECReward(9)
+  	if (ECComps("eterc9") !== 0) ec9 = getECReward(9)
   	if (player.galacticSacrifice === undefined) mult = mult.times(ec9)
 
   	if (inQC(6)) mult = mult.times(player.postC8Mult).dividedBy(player.matter.max(1))
@@ -186,7 +186,7 @@ function getIDCost(tier) {
 
 function getIDCostMult(tier) {
 	let ret = infCostMults[tier]
-	if (ECTimesCompleted("eterc12")) ret = Math.pow(ret,getECReward(12))
+	if (ECComps("eterc12")) ret = Math.pow(ret,getECReward(12))
 	if (player.galacticSacrifice == undefined) return ret
 	if (player.infinityUpgrades.includes("postinfi53")) ret /= 50
 	if (player.galacticSacrifice.upgrades.includes(42)) ret /= 1 + 5 * Math.log10(player.eternityPoints.plus(1).log10() + 1)

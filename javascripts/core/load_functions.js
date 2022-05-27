@@ -16,12 +16,14 @@ function setOptionsIfUndefined(){
 	}
 	if (player.options.invert === true) player.options.theme = "Inverted"; player.options.invert = undefined;
 	if (player.options.notation === undefined) player.options.notation = "Standard"
-	if (player.options.challConf === undefined) player.options.challConf = false
 	if (player.options.scientific === undefined || typeof(player.options.scientific) == "boolean") player.options.scientific = {significantDigits: undefined}
+	if (player.options.challConf === undefined) player.options.challConf = false
 	if (player.options.logarithm === undefined) player.options.logarithm = {base: 10}
 	if (player.options.tetration === undefined) player.options.tetration = {base: 2}
+	if (player.options.hypersci === undefined) player.options.hypersci = {bump: 10}
 	if (player.options.spazzy === undefined) player.options.spazzy = {subNotation: "Scientific"}
-	if (player.options.aas === undefined) player.options.aas = {useHyphen: false, useDe: false}
+	if (player.options.standard === undefined) player.options.standard = { useMyr: false, useTam: false }
+	if (player.options.aas === undefined) player.options.aas = { useDe: false }
 	if (player.options.newsHidden === undefined) player.options.newsHidden = false;
 	if (player.options.sacrificeConfirmation === undefined) player.options.sacrificeConfirmation = true;
 	if (player.options.retryChallenge === undefined) player.options.retryChallenge = false;
@@ -486,7 +488,7 @@ function setSomeEterEraStuff(){
 }
 
 function setSaveStuffHTML(){
-        el("rename").innerHTML = "<p style='font-size:15px'>Rename</p>Name: "+(aarMod.save_name?aarMod.save_name:"Save #" + savePlacement)
+	el("save_name").textContent = "You are currently playing in " + (aarMod.save_name ? aarMod.save_name : "Save #" + savePlacement)
 	el("offlineProgress").textContent = "Offline progress: O"+(aarMod.offlineProgress?"N":"FF")
 	el("autoSave").textContent = "Auto save: " + (aarMod.autoSave ? "ON" : "OFF")
 	el("autoSaveInterval").textContent = "Auto-save interval: " + getAutoSaveInterval() + "s"
@@ -1400,7 +1402,7 @@ function doNGm2v11tov3(){
                 }
         }
         if (aarMod.newGameMinusMinusVersion < 1.24) {
-                if (ECTimesCompleted("eterc6")>0) {
+                if (ECComps("eterc6")>0) {
                         forceHardReset=true
                         inflationCheck=true
                         reset_game()
@@ -1705,7 +1707,7 @@ function dov12tov122(){
 function updateVersionsONLOAD(){
         dov7tov10()
 	doNGM1Versions()
-	if (aarMod.newGamePlusVersion === undefined) if (player.eternities < 20 && ECTimesCompleted("eterc1") > 0) aarMod.newGamePlusVersion = 1
+	if (aarMod.newGamePlusVersion === undefined) if (player.eternities < 20 && ECComps("eterc1") > 0) aarMod.newGamePlusVersion = 1
 	doInitNGp2NOT3Stuff()
         doNGP2v2tov2302()
         doQuantumRestore()
@@ -1999,7 +2001,6 @@ function updateNGp3DisplayStuff(){
                 el("ts"+t+"Desc").innerHTML=(typeof(d)=="function"?d():d)||"Unknown desc."
         }
         updateMasteryStudyCosts()
-        if (quantumed) giveAchievement("Sub-atomic")
         if (quSave.best<=10) giveAchievement("Quantum doesn't take so long")
         if (ghostified) giveAchievement("Kee-hee-hee!")
         el('reward3disable').textContent="6 hours reward: O"+(quSave.disabledRewards[3]?"FF":"N")
@@ -2223,7 +2224,7 @@ function onLoad(noOffline) {
                 updateGalaxyControl()
         } else if (el("ers_timestudies").style.display=="block") showEternityTab("timestudies",true)
         poData=metaSave["presetsOrder"+(player.boughtDims?"_ers":"")]
-        setAndMaybeShow('bestTP',hasAch("ng3p18") || hasAch("ng3p37"),'"Your best"+(ghostified ? "" : " ever")+" Tachyon particles"+(ghostified ? " in this Ghostify" : "")+" was "+shorten(player.dilation.bestTP)+"."')
+        setAndMaybeShow('bestTP',hasAch("ng3p18") || hasAch("ng3p37"),'"Your best"+(ghostified ? "" : " ever")+" Tachyon particles"+(ghostified ? " in this Fundament" : "")+" was "+shorten(player.dilation.bestTP)+"."')
         setAndMaybeShow('bestTPOverGhostifies',(hasAch("ng3p18") || hasAch("ng3p37")) && ghostified,'"Your best-ever Tachyon particles was "+shorten(player.dilation.bestTPOverGhostifies)+"."')
         el('dilationmode').style.display=speedrunMilestonesReached>4?"":"none"
         el('rebuyupgmax').style.display=speedrunMilestonesReached<26&&player.masterystudies?"":"none"
@@ -2334,26 +2335,32 @@ function checkNGM(imported) {
 	return 0
 }
 
-var savePlacement
-function load_game(noOffline, init) {
-	if (!metaSave.saveOrder.includes(metaSave.current)) metaSave.current = metaSave.saveOrder[0]
-	var dimensionSave = get_save(metaSave.current)
-	infiniteDetected = false
-	if (dimensionSave!=null) {
-		if (dimensionSave.quantum !== undefined) if (dimensionSave.quantum.timeFluxPower !== undefined) dimensionSave = get_save(metaSave.current + "_af2019")
-		player = dimensionSave
-		if (detectInfinite()) infiniteCheck=true
-	}
-	savePlacement=1
-	while (metaSave.saveOrder[savePlacement - 1] != metaSave.current) savePlacement++
-	if (infiniteCheck) exportInfiniteSave()
-	if (infiniteCheck || infiniteCheck2) {
-		updateNewPlayer("reset")
-		infiniteCheck2 = false
-	}
-	onLoad(noOffline)
-	startInterval()
-}
+/*
+STUFF
+STUFF
+STUFF
+STUFF
+STUFF
+STUFF
+STUFF
+STUFF
+STUFF
+STUFF
+STUFF
+STUFF
+STUFF
+STUFF
+STUFF
+
+
+
+
+Does transformSaveToDecimal() even do anything anymore
+we can just remove back compatibility right
+no one should have a AD save from back then
+I guess we shoudln't but ew its laggy, maybe a variable that says if we have done so
+*/
+
 function setup_data() {
 	if (break_infinity_js == null) {
 		break_infinity_js = false
@@ -2393,247 +2400,6 @@ function setup_data() {
 		setUnlocks = [E_pow(Number.MAX_VALUE, 2.9)]
 	}
 }
-
-function reload() {
-	clearInterval(gameLoopIntervalId)
-	updateNewPlayer()
-	closeToolTip()
-	load_game(true)
-}
-
-var noSave=false
-function save_game(silent) {
-	isInfiniteDetected()
-	if (!game_loaded || noSave || infiniteDetected) return
-	set_save(metaSave.current, player);
-	$.notify("Game saved", "info")
-}
-
-function toggleAutoSave() {
-	aarMod.autoSave = !aarMod.autoSave
-	el("autoSave").textContent = "Auto save: " + (aarMod.autoSave ? "ON" : "OFF")
-	autoSaveSeconds = 0
-}
-
-function changeAutoSaveInterval() {
-	aarMod.autoSaveInterval = el("autoSaveIntervalSlider").value
-	el("autoSaveInterval").textContent = "Auto-save interval: " + aarMod.autoSaveInterval + "s"
-	autoSaveSeconds = 0
-}
-
-function getAutoSaveInterval() {
-	return aarMod.autoSaveInterval || 30
-}
-
-function overwrite_save(id) {
-	if (id == metaSave.current) {
-		save_game()
-		return
-	}
-	var placement=1
-	while (metaSave.saveOrder[placement-1]!=id) placement++
-	if (!confirm("Are you really sure you want to overwrite save #"+placement+"? All progress in the current save will be overwritten with the new save!")) return
-	set_save(id, player)
-	$.notify("Save overwritten", "info")
-}
-
-function change_save(id) {
-	if (!game_loaded) {
-		metaSave.current=id
-		localStorage.setItem(metaSaveId, btoa(JSON.stringify(metaSave)))
-		document.location.reload(true)
-		return
-	}
-	save_game(true)
-	clearInterval(gameLoopIntervalId)
-	var oldId=metaSave.current
-	metaSave.current=id
-	changeSaveDesc(oldId, savePlacement)
-	updateNewPlayer()
-	infiniteCheck2 = false
-	closeToolTip()
-	load_game(shiftDown)
-	savePlacement=1
-	while (metaSave.saveOrder[savePlacement-1]!=id) savePlacement++
-	changeSaveDesc(metaSave.current, savePlacement)
-
-	$.notify("Save #"+savePlacement+" loaded", "info")
-	localStorage.setItem(metaSaveId,btoa(JSON.stringify(metaSave)))
-}
-
-function rename_save(id) {
-	if (metaSave.current != id && id !== undefined) {
-		var placement=1
-		while (metaSave.saveOrder[placement-1]!=id) placement++
-	}
-	var save_name = prompt("Input the new name of "+((metaSave.current == id || id === undefined) ? "your current save" : "save #" + placement)+". It's recommended to put the name of the mod as your save name. Leave blank to reset the save's name.")
-	if (save_name === null) return
-	if (metaSave.current == id || id === undefined) {
-		aarMod.save_name = save_name
-		el("rename").innerHTML = "<p style='font-size:15px'>Rename</p>Name: "+(aarMod.save_name?aarMod.save_name:"Save #" + savePlacement)
-	} else {
-		var temp_save = get_save(id)
-		if (!temp_save.aarexModifications) temp_save.aarexModifications={
-			dilationConf: false,
-			offlineProgress: true,
-			autoSave: true,
-			progressBar: true,
-			logRateChange: false,
-			hideProductionTab: true,
-			eternityChallRecords: {},
-			popUpId: 0,
-			tabsSave: {on: false},
-			breakInfinity: false
-        }
-		temp_save.aarexModifications.save_name = save_name
-	}
-	set_save(id, temp_save)
-	placement=1
-	while (metaSave.saveOrder[placement-1]!=id) placement++
-	changeSaveDesc(id, placement)
-	$.notify("Save #"+placement+" renamed", "info")
-}
-
-function export_save(id) {
-	var placement=1
-	if (!id) id=metaSave.current
-	while (metaSave.saveOrder[placement-1]!=id) placement++
-
-	let output = el('output')
-	let parent = output.parentElement
-
-	parent.style.display = ""
-	if (id == metaSave.current) output.value = btoa(JSON.stringify(player, function(k, v) { return (v === Infinity) ? "Infinity" : v }))
-	else output.value = localStorage.getItem(btoa(savePrefix+id))
-
-	output.onblur = function() {
-		parent.style.display = "none"
-	}
-
-	output.focus()
-	output.select()
-
-	try {
-		if (document.execCommand('copy')) {
-			$.notify("Exported save #"+placement+" to clipboard", "info")
-			output.blur()
-			output.onblur()
-		}
-	} catch(ex) {
-		// well, we tried.
-	}
-}
-
-function move(id,offset) {
-	placement=0
-	while (metaSave.saveOrder[placement]!=id) placement++
-	if (offset<0) {
-		if (placement<-offset) return
-	} else if (placement>metaSave.saveOrder.length-offset-1) return
-	var temp=metaSave.saveOrder[placement]
-	if (temp==metaSave.current) savePlacement+=offset
-	if (metaSave.saveOrder[placement+offset]==metaSave.current) savePlacement-=offset
-	metaSave.saveOrder[placement]=metaSave.saveOrder[placement+offset]
-	metaSave.saveOrder[placement+offset]=temp
-	el("saves").rows[placement].innerHTML=getSaveLayout(metaSave.saveOrder[placement])
-	el("saves").rows[placement+offset].innerHTML=getSaveLayout(id)
-	changeSaveDesc(metaSave.saveOrder[placement], placement+1)
-	changeSaveDesc(id, placement+offset+1)
-	localStorage.setItem(metaSaveId,btoa(JSON.stringify(metaSave)))
-}
-
-function delete_save(saveId) {
-	if (metaSave.saveOrder.length<2) {
-		reset_game()
-		return
-	} else if (!confirm("Do you really want to erase this save? All game data in this save will be deleted!")) return
-	var alreadyDeleted=false
-	var newSaveOrder=[]
-	for (orderId=0;orderId<metaSave.saveOrder.length;orderId++) {
-		if (alreadyDeleted) changeSaveDesc(metaSave.saveOrder[orderId], orderId)
-		if (metaSave.saveOrder[orderId]==saveId) {
-			localStorage.removeItem(btoa(savePrefix+saveId))
-			alreadyDeleted=true
-			el("saves").deleteRow(orderId)
-			if (savePlacement>orderId+1) savePlacement--
-			loadedSaves--
-		} else newSaveOrder.push(metaSave.saveOrder[orderId])
-	}
-	metaSave.saveOrder=newSaveOrder
-	if (metaSave.current==saveId) {
-		change_save(metaSave.saveOrder[0])
-		el("loadmenu").style.display="block"
-	} else localStorage.setItem(metaSaveId,btoa(JSON.stringify(metaSave)))
-	$.notify("Save deleted", "info")
-}
-
-var ngModeMessages=[]
-function new_game(id) {
-	if (modes.ngprw) {
-		alert("Coming soon...")
-		return
-	}
-
-	save_game(true)
-	clearInterval(gameLoopIntervalId)
-	updateNewPlayer()
-	infiniteCheck2 = false
-	var oldId=metaSave.current
-	metaSave.current=1
-	while (metaSave.saveOrder.includes(metaSave.current)) metaSave.current++
-	metaSave.saveOrder.push(metaSave.current)
-	localStorage.setItem(metaSaveId,btoa(JSON.stringify(metaSave)))
-	changeSaveDesc(oldId, savePlacement)
-	latestRow=el("saves").insertRow(loadedSaves)
-	latestRow.innerHTML=getSaveLayout(metaSave.current)
-	loadedSaves++
-	changeSaveDesc(metaSave.current, loadedSaves)
-	savePlacement=loadedSaves
-	closeToolTip()
-	onLoad()
-	startInterval()
-	
-	$.notify("Save created", "info")
-	localStorage.setItem(metaSaveId,btoa(JSON.stringify(metaSave)))
-	closeToolTip()
-	showDimTab('antimatterdimensions')
-	showStatsTab('stats')
-	showAchTab('normalachievements')
-	showChallengesTab('normalchallenges')
-	showInftab('preinf')
-	showEternityTab('timestudies', true)
-	showQuantumTab('uquarks')
-	showBranchTab('red')
-	showGhostifyTab('neutrinos')
-	showBLTab('bextab')
-}
-
-
-/*
-STUFF
-STUFF
-STUFF
-STUFF
-STUFF
-STUFF
-STUFF
-STUFF
-STUFF
-STUFF
-STUFF
-STUFF
-STUFF
-STUFF
-STUFF
-
-
-
-
-Does transformSaveToDecimal() even do anything anymore
-we can just remove back compatibility right
-no one should have a AD save from back then
-I guess we shoudln't but ew its laggy, maybe a variable that says if we have done so
-*/
 
 function conToDeciPreInf(){
         player.money = E(player.money)

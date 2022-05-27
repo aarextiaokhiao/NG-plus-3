@@ -491,7 +491,7 @@ function getGHPMult() {
 ghostified = false
 function ghostify(auto, force) {
 	if (!force&&(!isQuantumReached()||!brSave.active||implosionCheck)) return
-	if (!auto && !force && aarMod.ghostifyConf && !confirm("Becoming a ghost resets everything Quantum resets, and also resets your banked stats, best TP & MA, quarks, gluons, electrons, Quantum Challenges, Replicants, Nanofield, and Tree of Decay to gain a Elementary Particle. Are you ready for this?")) {
+	if (!auto && !force && aarMod.ghostifyConf && !confirm("Becoming a ghost resets everything Quantum resets, and also resets your banked stats, best TP & MA, quarks, gluons, electrons, Quantum Challenges, Duplicants, Nanofield, and Tree of Decay to gain a Elementary Particle. Are you ready for this?")) {
 		denyGhostify()
 		return
 	}
@@ -867,4 +867,186 @@ function getOldAgeRequirement() {
 //v2.302
 function NGP3andVanillaCheck() {
 	return (tmp.ngp3) || !aarMod.newGamePlusPlusVersion
+}
+
+// Gathered from NG+3R v0.7 - Fluctuate
+// Feature Notifications
+var ngp3Features = {
+	md: {
+		name: "Meta Dimensions",
+		next: "ms",
+		tab() {
+			showTab("dimensions")
+			showDimTab("metadimensions")
+		}
+	},
+	ms: {
+		name: "Mastery Studies",
+		threshold: () => "Get " + shortenInt(1e100) + " DT upgrade from Time Dilation",
+		next: "qu",
+		tab() {
+			showTab("eternitystore")
+			showEternityTab("masterystudies")
+		}
+	},
+	qu: {
+		name: "Quantum",
+		threshold: () => "Get " + shorten(getQuantumReq()) + " meta-Antimatter and complete Eternity Challenge 14",
+		next: "el",
+		tab() {
+			showTab("quantumtab")
+		}
+	},
+	el: {
+		name: "Electrons",
+		threshold: () => "Get " + shorten(50) + " Quantum Worth",
+		next: "qc",
+		tab() {
+			showTab("quantumtab")
+			showQuantumTab('electrons')
+		}
+	},
+	qc: {
+		name: "Quantum Challenges",
+		threshold: () => "Get " + getFullExpansion(16750) + " electrons",
+		next: "pc",
+		tab() {
+			showTab("challenges")
+			showChallengesTab("quantumchallenges")
+		}
+	},
+	pc: {
+		name: "Paired Challenges",
+		threshold: () => "Complete Quantum Challenge 8",
+		next: "du",
+		tab() {
+			showTab("challenges")
+			showChallengesTab("pChalls")
+		}
+	},
+	du: {
+		name: "Duplicants",
+		threshold: () => "Complete Paired Challenge 4",
+		next: "ed",
+		tab() {
+			showTab("quantumtab")
+			showQuantumTab('replicants')
+		}
+	},
+	ed: {
+		name: "Emperor Dimensions",
+		threshold: () => "Get " + getFullExpansion(10) + " worker duplicants",
+		next: "nf",
+		tab() {
+			teleportToEDs()
+		}
+	},
+	nf: {
+		name: "Nanofield",
+		threshold: () => "Get " + getFullExpansion(10) + " Eighth Emperor Dimensions",
+		next: "tod",
+		tab() {
+			showTab("quantumtab")
+			showQuantumTab('replicants')
+			showAntTab('nanofield')
+		}
+	},
+	tod: {
+		name: "Tree of Decay",
+		threshold: () => "Get " + getFullExpansion(16) + " Nanofield rewards",
+		next: "br",
+		tab() {
+			showTab("quantumtab")
+			showQuantumTab('tod')
+		}
+	},
+	br: {
+		name: "Big Rip",
+		threshold: () => "Get 'The Challenging Day' achievement",
+		next: "fu",
+		tab() {
+			showTab("quantumtab")
+			showQuantumTab('bigrip')
+		}
+	},
+	fu: {
+		name: "Fundament",
+		threshold: () => "Get " + shorten(getQuantumReq()) + " meta-Antimatter in Big Rip",
+		next: "ph",
+		tab() {
+			showTab("ghostify")
+		}
+	},
+	ph: {
+		name: "Photons",
+		threshold: () => "Get " + shortenCosts(pow10(6e9)) + " antimatter in Big Rip",
+		next: "bl",
+		tab() {
+			showTab("ghostify")
+			showGhostifyTab('gphtab')
+		}
+	},
+	bl: {
+		name: "Bosonic Lab",
+		threshold: () => "Get " + shortenCosts(pow10(5e10)) + " " + getUQNameFromDecays(5) + " quarks and 3 Light Empowerments",
+		next: "gw",
+		tab() {
+			showTab("ghostify")
+			showGhostifyTab('bltab')
+		}
+	},
+	gw: {
+		name: "Gravity Well",
+		threshold: () => "Get " + shortenCosts(pow10(1e18)) + " antimatter",
+		tab() {
+			showTab("ghostify")
+			showGhostifyTab('bltab')
+			showBLTab('gravtab')
+		}
+	},
+}
+
+function ngp3_feature_notify(k) {
+	ngp3Features[k].tab()
+	$.notify("Congratulations! You have unlocked " + ngp3Features[k].name + "!", "success")
+
+	el("ngp3_feature_ani").style.display = ""
+	el("ngp3_feature_ani_4").textContent = ngp3Features[k].name + " is now unlocked!"
+	setTimeout(function() {
+		el("ngp3_feature_ani_1").style.background = "transparent"
+		el("ngp3_feature_ani_2a").style.background = "transparent"
+		el("ngp3_feature_ani_2a").style.left = "0"
+		el("ngp3_feature_ani_2a").style.top = "0"
+		el("ngp3_feature_ani_2a").style.width = "100%"
+		el("ngp3_feature_ani_2a").style.height = "100%"
+		el("ngp3_feature_ani_2b").style.background = "transparent"
+		el("ngp3_feature_ani_2b").style.left = "0"
+		el("ngp3_feature_ani_2b").style.top = "0"
+		el("ngp3_feature_ani_2b").style.width = "100%"
+		el("ngp3_feature_ani_2b").style.height = "100%"
+		el("ngp3_feature_ani_3").style.right = "0"
+	}, 100)
+
+	setTimeout(function() {
+		el("ngp3_feature_ani").style.left = "150%"
+
+		var nxt = ngp3Features[k].next
+		$.notify(nxt ? ngp3Features[nxt].threshold() + " to unlock the next feature: " + ngp3Features[nxt].name + "!" : "Congratulations, you have reached the end-game for now...", "error")
+	}, 5000)
+	setTimeout(function() {
+		el("ngp3_feature_ani").style.display = "none"
+		el("ngp3_feature_ani").style.left = "0%"
+		el("ngp3_feature_ani_1").style.background = "white"
+		el("ngp3_feature_ani_2a").style.background = "#7fff00"
+		el("ngp3_feature_ani_2a").style.left = "50%"
+		el("ngp3_feature_ani_2a").style.top = "50%"
+		el("ngp3_feature_ani_2a").style.width = "0"
+		el("ngp3_feature_ani_2a").style.height = "0"
+		el("ngp3_feature_ani_2b").style.background = "#00ffff"
+		el("ngp3_feature_ani_2b").style.left = "50%"
+		el("ngp3_feature_ani_2b").style.top = "50%"
+		el("ngp3_feature_ani_2b").style.width = "0"
+		el("ngp3_feature_ani_2b").style.height = "0"
+		el("ngp3_feature_ani_3").style.right = "150%"
+	}, 6000)
 }

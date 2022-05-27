@@ -382,7 +382,7 @@ function setR18Tooltip(){
 	ie.setAttribute('ach-tooltip', "Get " + shorten(pow10(8e6)) + " antimatter in a paired challenge with the PC6+8 combination. Reward: Automatically buy the Quark multiplier to dimensions every second if you have the 8th brave milestone.")
 	wasted.setAttribute('ach-tooltip', "Get " + shorten(1.1e7) + " TT without having TT generation, keeping your previous TT, and respeccing studies. Reward: While you have less than 1 hour worth of TT production, you gain 10x as much TT.")
 	protonsDecay.setAttribute('ach-tooltip', "Unlock Tree of Decay. Reward: You keep the two thirds power of your preons upon quantum when outside of a Quantum Challenge.")
-	stop.setAttribute('ach-tooltip', "Get the replicanti reset requirement to " + shorten(pow10(1.25e7)) + ". Reward: Getting a normal replicant manually doesn't reset your replicanti and can be automated.")
+	stop.setAttribute('ach-tooltip', "Get the replicanti reset requirement to " + shorten(pow10(1.25e7)) + ". Reward: Getting a normal duplicant manually doesn't reset your replicanti and can be automated.")
 	dying.setAttribute('ach-tooltip', "Reach " + shorten(pow10(2.75e5)) + " IP while dilated, in PC6+8, and without having time studies. Reward: Branches are faster based on your Meta-Dimension Boosts.")
 }
 
@@ -459,7 +459,7 @@ function setR21Tooltip(){
 	//ACHIEVEMENT ROW 21
 	uc.setAttribute('ach-tooltip', "Become a ghost with at least "+shortenCosts(pow10(2.2e5))+" EP without starting Eternity Challenge 10 while Big Ripped. Reward: Meta-Dimension Boosts no longer reset Meta Dimensions.")
 	mi.setAttribute('ach-tooltip', "Get "+shorten(Number.MAX_VALUE)+" infinities. Reward: You gain banked infinites and eternities when going Quantum or Big Ripping the universe.")
-	wd.setAttribute('ach-tooltip', "Get "+shortenCosts(pow10(1e12))+" "+getUQNameFromDecays(2)+" quarks for each Branch without Big Ripping in this Fundamental. Reward: Normal replicant autobuyer buys max.")
+	wd.setAttribute('ach-tooltip', "Get "+shortenCosts(pow10(1e12))+" "+getUQNameFromDecays(2)+" quarks for each Branch without Big Ripping in this Fundamental. Reward: Normal duplicant autobuyer buys max.")
 	radioDecay.setAttribute('ach-tooltip', "Get 10 total Radioactive Decays. Reward: You get 1 galaxy worth of generated neutrinos per second.")
 	arent.setAttribute('ach-tooltip', "Reach " + shortenCosts(pow10(1.8e6)) + " IP while dilated and Big Ripped and without having studies, EP mult upgrades, Tree Upgrades, and Break Eternity within this Fundamental. Reward: Your 8th Tree Upgrade's level speeds up Nanofield.")
 }

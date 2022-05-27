@@ -3231,3 +3231,111 @@ screen and (max-width: 480px) {
 		color: #7fdfff;
 	}
 }
+
+/* NG+3 FEATURES */
+#ngp3_feature_ani {
+	position: fixed;
+	width: 100%;
+	height: 100%;
+	left: 0;
+	top: 0;
+	z-index: 3;
+	transition-duration: 0.5s
+}
+#ngp3_feature_ani_1 {
+	position: absolute;
+	background: white;
+	width: 100%;
+	height: 100%;
+	left: 0;
+	top: 0;
+	transition-duration: 0.5s
+}
+#ngp3_feature_ani_2a {
+	position: absolute;
+	background: #7fff00;
+	width: 0%;
+	height: 0%;
+	left: 50%;
+	top: 50%;
+	transition-duration: 1s
+}
+#ngp3_feature_ani_2b {
+	position: absolute;
+	background: #00ffff;
+	width: 0%;
+	height: 0%;
+	left: 50%;
+	top: 50%;
+	transition-duration: 2s
+}
+#ngp3_feature_ani_3 {
+	position: absolute;
+	background: linear-gradient(#9fff00, transparent), linear-gradient(90deg, #ff00df, #00dfff);
+	width: 100%;
+	height: 60px;
+	right: 150%;
+	top: calc(50% - 30px);
+	transition-duration: 1s;
+	animation: blink 2s linear infinite;
+}
+#ngp3_feature_ani_4 {
+	position: absolute;
+	width: 100%;
+	height: 30px;
+	top: 5px;
+    font-family: var(--font);
+	text-align: center;
+	font-size: 30px;
+    font-family: Typewriter;
+	animation: rainbow 4s linear infinite;
+}
+#ngp3_feature_ani_5 {
+	position: absolute;
+	width: 100%;
+	height: 100%;
+	left: 0;
+	top: 0;
+	background: linear-gradient(#9fff00, transparent)
+}
+@keyframes blink { 
+	0%{
+		box-shadow: 0px 0px 6px rgba(63, 255, 0, 0.75), 0px 0px 0px #7fff00, 0px 0px 0px #00ffff;
+	}
+	50%{
+		box-shadow: 0px 0px 6px rgba(63, 255, 0, 0.75), 0px 0px 60px #7fff00, 0px 0px 120px #00ffff;
+	}
+	100%{
+		box-shadow: 0px 0px 6px rgba(63, 255, 0, 0.75), 0px 0px 120px transparent, 0px 0px 240px transparent;
+	}
+}
+@keyframes rainbow { 
+	0%{
+		color: rgba(255, 63, 63, 0.75);
+		text-shadow: 0px 0px 6px rgba(255, 63, 63, 0.75);
+	}
+	16%{
+		color: rgba(255, 255, 63, 0.75);
+		text-shadow: 0px 0px 6px rgba(255, 255, 63, 0.75);
+	}
+	33%{
+		color: rgba(63, 255, 63, 0.75);
+		text-shadow: 0px 0px 6px rgba(63, 255, 63, 0.75);
+	}
+	50%{
+		color: rgba(63, 255, 255, 0.75);
+		text-shadow: 0px 0px 6px rgba(63, 255, 255, 0.75);
+	}
+	67%{
+		color: rgba(63, 63, 255, 0.75);
+		text-shadow: 0px 0px 6px rgba(63, 63, 255, 0.75);
+	}
+	83%{
+		color: rgba(255, 63, 255, 0.75);
+		text-shadow: 0px 0px 6px rgba(255, 63, 255, 0.75);
+	}
+	100%{
+		color: rgba(255, 63, 63, 0.75);
+		text-shadow: 0px 0px 6px rgba(255, 63, 63, 0.75);
+	}
+}

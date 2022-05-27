@@ -14,7 +14,7 @@ let prestigeHandler = {
 			function() { return player.infinityPoints.gte(player.eternityChallGoal)
 		},
 		quantum: function() {
-			return player.meta.antimatter.gte(E_pow(Number.MAX_VALUE, tmp.ngp3 ? 1.45 : 1)) && quarkGain().gt(0) && (!tmp.ngp3 || ECTimesCompleted("eterc14")) && player.money.log10() >= getQCGoal()
+			return player.meta.antimatter.gte(E_pow(Number.MAX_VALUE, tmp.ngp3 ? 1.45 : 1)) && quarkGain().gt(0) && (!tmp.ngp3 || ECComps("eterc14")) && player.money.log10() >= getQCGoal()
 				
 		},
 		ghostify: function() {

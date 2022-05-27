@@ -54,7 +54,7 @@ function conToDeciPostNGP3() {
 }
 
 function postNGp3AchsCheck() {
-    if (ghSave.gravitons.unl) giveAchievement(allAchievements.ng3p101)
+    //giveAchievement(allAchievements.ng3p101)
     if (ghSave.hb.higgs >= 150) giveAchievement(allAchievements.ng3p102)
     //giveAchievement(allAchievements.ng3p103)
     if (beSave && beSave.eternalMatter.gte("9.99e999")) giveAchievement(allAchievements.ng3p104)

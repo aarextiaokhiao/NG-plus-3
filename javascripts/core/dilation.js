@@ -394,6 +394,7 @@ function buyDilationUpgrade(pos, max, isId) {
 			el("respecMastery").style.display = "block"
 			el("respecMastery2").style.display = "block"
 			if (!quantumed) {
+				ngp3_feature_notify("ms")
 				$.notify("Congratulations for unlocking Mastery Studies! You can either click the 'mastery studies' button\nor 'continue to mastery studies' button in the Time Studies menu.")
 				el("welcomeMessage").innerHTML = "Congratulations for reaching the end-game of NG++. In NG+3, the game keeps going with a lot of new content starting at Mastery Studies. You can either click the 'Mastery studies' tab button or 'Continue to mastery studies' button in the Time Studies menu to access the new Mastery Studies available."
 				el("welcome").style.display = "flex"
