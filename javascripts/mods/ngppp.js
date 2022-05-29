@@ -998,10 +998,18 @@ var ngp3Features = {
 	gw: {
 		name: "Gravity Well",
 		threshold: () => "Get " + shortenCosts(pow10(1e18)) + " antimatter",
+		next: "bd",
 		tab() {
 			showTab("ghostify")
 			showGhostifyTab('bltab')
 			showBLTab('gravtab')
+		}
+	},
+	bd: {
+		name: "Break Dilation",
+		threshold: () => "Get " + shortenCosts(pow10(4e12)) + " antimatter in Big Rip",
+		tab() {
+			toBDTab()
 		}
 	},
 }

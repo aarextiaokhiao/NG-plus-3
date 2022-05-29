@@ -4,11 +4,11 @@ function updatePostNGp3TempStuff() {
 }
 
 function postNGp3Updating(dt) {
-	if (tmp.gv.core) {
+	/*if (tmp.gv.core) {
 		ghSave.gravitons.amount = ghSave.gravitons.amount.add(tmp.gv.gain.mul(dt))
 		ghSave.gravitons.best = ghSave.gravitons.amount.max(ghSave.gravitons.best)
 		ghSave.gravitons.tog = Math.max(ghSave.gravitons.tog, tmp.gv.bulk)
-	}
+	}*/
 
     if (ghSave.breakDilation.break) {
         setTachyonParticles(player.dilation.tachyonParticles.max(getDilGain()));
@@ -22,7 +22,7 @@ function setupPostNGp3HTML() {
 
 function doBDUnlockStuff(){
 	ghSave.breakDilation.unl=true
-	$.notify("Congratulations! You have unlocked Break Dilation!", "success")
+	ngp3_feature_notify("bd")
 	updateTemp()
 }
 

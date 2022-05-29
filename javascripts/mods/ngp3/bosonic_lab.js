@@ -142,7 +142,7 @@ function getBosonProduction() {
 function updateBosonicLimits() {
 	if (!tmp.ngp3) return
 
-	//Hypotheses / Extractor / Enchants
+	//Hypotheses / Theories
 	br.limit = br.maxLimit
 	if (!ghSave.gravitons.unl) br.limit = 4
 	if (ghSave.hb.higgs == 0) br.limit = 3
@@ -413,7 +413,7 @@ function updateEnchantDescs() {
 			el("bEnEffect" + id).textContent = effectDesc !== undefined ? effectDesc(effect) : shorten(effect) + "x"	
 		}
 	}
-	el("usedEnchants").textContent = "You have used " + data.usedEnchants.length + " / " + bEn.limit + " Enchants."
+	el("usedEnchants").textContent = "You have used " + data.usedEnchants.length + " / " + bEn.limit + " Theories."
 }
 
 var br = {

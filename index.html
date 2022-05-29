@@ -1738,7 +1738,7 @@
 				<br><br>
 				(Update v2.4.1R: Gravitional Relativity)
 				<br>
-				<b class="red">(Beta: 5/27/22 Build)</b>
+				<b class="red">(Beta: 5/28/22 Build)</b>
 				<br><br>
 			</p>
 			<div id="footercontainer">
@@ -5513,7 +5513,7 @@
 					<span id="nextParticle"></span><br>
 					<table class="table" align="center" style="margin: auto">
 						<tr>
-							<td><button class="secondarytabbtn" onclick="showBLTab('bextab')">Enchants</button></td>
+							<td><button class="secondarytabbtn" onclick="showBLTab('bextab')">Experiments</button></td>
 							<td><button class="secondarytabbtn" onclick="showBLTab('butab')">Upgrades</button></td>
 							<td><button class="secondarytabbtn" onclick="showBLTab('wzbtab')">W & Z Bosons</button></td>
 							<td id="hftabbtn"><button class="secondarytabbtn" onclick="showBLTab('hf')">Higgs Field</button></td>
@@ -5523,7 +5523,7 @@
 					</table>
 					<div id="bRunesDiv">
 						<b style="font-size: 20px">Hypotheses</b><br>
-						<table id="bRunes" align="center" style="margin: auto"><tr></tr></table>
+						<table id="bRunes" align="center"><tr></tr></table>
 					</div>
 					<div id="bextab" class="bltab">
 						<span id="typeToExtract"></span>
@@ -5538,43 +5538,38 @@
 					<div id="butab" class="bltab"><table class="table" id="bUpgs" align="center" style="margin: auto"></table></div>
 					<div id="wzbtab" class="bltab">
 						<!--<span id="wzbSpeed"></span>-->
-						<table class='qtable'>
-							<tr><td colspan=3>
-									<span id="ap" style="font-size:35px"></span> Anti-Preons. <span id="apProduction" style="font-size:25px"></span><br>
-									<span id="apUse"></span><br>
-									<button class="storebtn" style="width:150px" onclick="useAntiPreon(0)">Gain Anti-Preons</button> <button class="storebtn" onclick="useAntiPreon(1)">Decay W Boson</button> <button class="storebtn" style="width:150px" onclick="useAntiPreon(3)">Convert W- to W+</button> <button class="storebtn" style="width:180px" onclick="useAntiPreon(2)">Oscillate Z Boson</button>
-							</td></tr>
+						<span id="ap" style="font-size:35px"></span> Anti-Preons. <span id="apProduction" style="font-size:25px"></span><br>
+						<span id="apUse"></span><br>
+						<button class="storebtn" style="width:150px" onclick="useAntiPreon(0)">Gain Anti-Preons</button> <button class="storebtn" onclick="useAntiPreon(1)">Decay W Boson</button> <button class="storebtn" style="width:150px" onclick="useAntiPreon(3)">Convert W- to W+</button> <button class="storebtn" style="width:180px" onclick="useAntiPreon(2)">Oscillate Z Boson</button>
+						<table class="table_fix" align="center">
 							<tr>
 								<td>
 									<span id="wpb" style="font-size:35px"></span> W+ Bosons and <span id="wnb" style="font-size:35px"></span> W- Bosons
 								</td>
-								<td></td>
 								<td>
 									<span id="zb" style="font-size:35px"></span> Z Bosons
 								</td>
 							</tr>
 							<tr>
 								<td>
-									<span id="wbTime" style="font-size:35px"></span>x extracting speed, <span id="wbOscillate" style="font-size:35px"></span>x faster oscillation, <span id="wbProduction" style="font-size:35px"></span>x Bosons production.
+									<span id="wbTime" style="font-size:25px"></span>x experiment speed, <span id="wbOscillate" style="font-size:25px"></span>x faster oscillation, <span id="wbProduction" style="font-size:25px"></span>x Bosons production.
 								</td>
-								<td></td>
 								<td>
-									<span id="zbSpeed" style="font-size:35px"></span>x faster decay and conversion.
+									<span id="zbSpeed" style="font-size:25px"></span>x faster decay and conversion.
 								</td>
 							</tr>
 							<tr>
 								<td>
+									<div id="wQk"><span id="wQkSymbol"></span></div><br>
 									W Boson is currently <span id="wQkType"></span>.<br>
-									<span id="wQkProgress"></span><br>
-									<div id="wQk"><span id="wQkSymbol"></span></div>
+									<span id="wQkProgress"></span>
 								</td>
-								<td></td>
 								<td>
+									<div id="zNe"><span id="zNeSymbol"></span></div><br>
 									Z Boson is currently <span id="zNeGen">electron</span>.<br>
 									<span id="zNeProgress"></span><br>
 									<span id="zNeReq"></span><br>
-									<span id="zbGain"></span><br>
-									<div id="zNe"><span id="zNeSymbol"></span></div>
+									<span id="zbGain"></span>
 								</td>
 							</tr>
 						</table>
@@ -5588,6 +5583,7 @@
 						<br><br>
 						<button class="storebtn">Rollback</button>
 						<button class="storebtn">Exit</button>
+						<button class="storebtn">Replace</button>
 						<table style="margin: auto">
 							<tr>
 								<td><button class="storebtn gw" ach-tooltip="On entering this depth, some nerfs will be applied in a Gravity Well.">Enter Newtonian Depth 1</button></td>
