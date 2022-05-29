@@ -36,7 +36,6 @@ function updateBLParticleDisplay() {
 	el("nextParticle").style.display = ""
 	if (!ghSave.hb.unl) el("nextParticle").textContent = "To unlock the next particle (Higgs), you need to get " + shortenCosts(pow10(2e17)) + " antimatter and " + shortenCosts(getHiggsRequirement()) + " Bosons first."
 	else if (!ghSave.gravitons.unl) el("nextParticle").textContent = "To unlock the next particle (Gravitons), you need to get " + shortenCosts(pow10(1e18)) + " antimatter."
-	else if (ghSave.hb.higgs < 60) el("nextParticle").textContent = "To extend Higgs, you need to get 60 Higgs. [soon!]"
 	else el("nextParticle").style.display = "none"
 }
 
@@ -78,7 +77,7 @@ function bosonicLabReset() {
 		if (i == 20) break
 		ghSave.bl.upgrades.push(order[i])
 	}
-	if (!ghSave.bl.upgrades.includes(32) && hasAch("ng3p92")) ghSave.bl.upgrades.push(32)
+	if (!hasBU(32) && hasAch("ng3p92")) ghSave.bl.upgrades.push(32)
 	for (var g = 1; g <= br.maxLimit; g++) ghSave.bl.glyphs.push(E(0))
 
 	ghSave.wzb = {
@@ -102,7 +101,7 @@ function higgsReset() {
 	if (!hasAch("future")) {
 		var oldHiggs = ghSave.hb.higgs
 		if (!ghSave.bl.am.gte(getHiggsRequirement())) return
-		if (!aarMod.higgsNoConf && !confirm("You will exchange all your Bosonic Lab stuff for Higgs. Everything that Light Empowerments resets initally will be reset. Are you ready to proceed?")) return
+		if (!aarMod.higgsNoConf && !confirm("You will exchange all your Bosonic Lab stuff for Higgs. Everything that Spectral Ions resets initally will be reset. Are you ready to proceed?")) return
 	}
 	addHiggs(getHiggsGain())
 	if (!hasAch("future")) bosonicLabReset()

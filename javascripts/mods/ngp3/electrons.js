@@ -73,7 +73,7 @@ function getElectronGainFinalMult() {
 
 function getElectronUpgCost(u) {
 	var amount = quSave.electrons.rebuyables[u-1]
-	if (hasBosonicUpg(33)) amount -= tmp.blu[33]
+	if (hasBU(33)) amount -= tmp.blu[33]
 	var base = amount * Math.max(amount - 1, 1) + 1
 	var exp = getElectronUpgCostScalingExp(u)
 	if (exp != 1) {

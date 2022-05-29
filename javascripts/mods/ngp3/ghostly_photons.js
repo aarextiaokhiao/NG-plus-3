@@ -4,7 +4,7 @@ function updateLightEmpowermentReq() {
 
 function getLightEmpowermentBoost() {
 	let r = ghSave.ghostlyPhotons.enpowerments
-	if (hasBosonicUpg(13)) r *= tmp.blu[13]
+	if (hasBU(13)) r *= tmp.blu[13]
 	return r
 }
 
@@ -70,7 +70,7 @@ function isLEBoostUnlocked(x) {
 	if (!tmp.ngp3) return false
 	if (!ghostified) return false
 	if (!ghSave.ghostlyPhotons.unl) return false
-	if (x >= 4 && !hasBosonicUpg(32)) return false
+	if (x >= 4 && !hasBU(32)) return false
 	return ghSave.ghostlyPhotons.enpowerments >= leBoosts.reqs[x]
 }
 
@@ -102,10 +102,10 @@ function updatePhotonsTab(){
 function updateRaysPhotonsDisplay(){
 	var gphData = ghSave.ghostlyPhotons
 	el("dtGPH").textContent = shorten(player.dilation.dilatedTime)
-	el("gphProduction").textContent = shorten(getGPHProduction())
+	el("gphProduction").textContent = shorten(getGPHProduction()) + (brSave.active ? " Hz" : "")
 	el("gphProduction").className = (brSave.active ? "gph" : "dm") + "Amount"
-	el("gphProductionType").textContent = brSave && brSave.active ? "Photons" : "Dark Matter"
-	el("gph").textContent = shortenMoney(gphData.amount)
+	el("gphProductionType").textContent = brSave.active ? "frequency" : "Photons"
+	el("gph").textContent = shortenMoney(gphData.amount) + " Hz"
 	el("dm").textContent = shortenMoney(gphData.darkMatter)
 	el("ghrProduction").textContent = shortenMoney(getGHRProduction())
 	el("ghrCap").textContent = shortenMoney(getGHRCap())
@@ -119,7 +119,7 @@ function updateLightBoostDisplay(){
 	el("lightBoost2").textContent = tmp.le[1].toFixed(2)
 	el("lightBoost3").textContent = getFullExpansion(Math.floor(tmp.le[2]))
 	el("lightBoost4").textContent = (tmp.le[3] * 100 - 100).toFixed(1)
-	el("lightBoost5").textContent = (tmp.le[4] * 100).toFixed(1) + (hasBosonicUpg(11) ? "+" + (tmp.blu[11] * 100).toFixed(1) : "")
+	el("lightBoost5").textContent = (tmp.le[4] * 100).toFixed(1) + (hasBU(11) ? "+" + (tmp.blu[11] * 100).toFixed(1) : "")
 	el("lightBoost6").textContent = shorten(tmp.le[5])
 	el("lightBoost7").textContent = shorten(tmp.le[6])
 }
@@ -136,10 +136,10 @@ function updateLightThresholdStrengthDisplay(){
 function updateLEmpowermentPrimary(){
 	var gphData = ghSave.ghostlyPhotons
 	el("lightEmpowerment").className = "gluonupgrade "+(gphData.lights[7] >= tmp.leReq ? "gph" : "unavailablebtn")
-	el("lightEmpowermentDesc").textContent = hasAch("ng3p101") ? "+1 Light Empowerment" : "Reset Photons for +1 Light Empowerment"
+	el("lightEmpowermentDesc").textContent = hasAch("ng3p101") ? "+1 Spectral Ion" : "Reset Photons for +1 Spectral Ion"
 	el("lightEmpowermentReq").textContent = getFullExpansion(tmp.leReq)
 	el("lightEmpowerments").textContent = getFullExpansion(gphData.enpowerments)
-	el("lightEmpowermentScaling").textContent = getGalaxyScaleName(tmp.leReqScale) + "Light Empowerments"
+	el("lightEmpowermentScaling").textContent = getGalaxyScaleName(tmp.leReqScale) + "Spectral Ions"
 	el("lightEmpowermentsEffect").textContent = shorten(tmp.leBoost)
 }
 
@@ -192,7 +192,7 @@ function getLightThresholdIncrease(l) {
 function lightEmpowerment(auto=false) {
 	if (!(ghSave.ghostlyPhotons.lights[7] >= tmp.leReq)) return
 	if (!hasAch("ng3p101") && !auto) {
-		if (!aarMod.leNoConf && !confirm("You will fundament, but Photons will be reset. You will gain 1 Light Empowerment from this. Are you sure you want to proceed?")) return
+		if (!aarMod.leNoConf && !confirm("You will fundament, but Photons will be reset. You will gain 1 Spectral Ion from this. Are you sure you want to proceed?")) return
 		if (!ghSave.ghostlyPhotons.enpowerments) el("leConfirmBtn").style.display = "inline-block"
 	}
 	ghSave.ghostlyPhotons.enpowerments++

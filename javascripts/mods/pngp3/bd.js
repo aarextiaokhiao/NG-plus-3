@@ -121,7 +121,7 @@ function toBDTab() {
 
 function updateBDTab() {
     el("bdUnl").style.display = ghSave.breakDilation.unl ? "none" : ""
-    el("bdUnl").textContent="To unlock Break Dilation, you need to get "+shortenCosts(pow10(4e12))+" antimatter while Big Ripped. (coming soon)"
+    el("bdUnl").textContent = "To unlock Break Dilation, you need to get "+shortenCosts(pow10(4e12))+" antimatter while Big Ripped. (coming soon)"
     el("bdDiv").style.display = ghSave.breakDilation.unl ? "" : "none"
 
     if (ghSave.breakDilation.unl) {

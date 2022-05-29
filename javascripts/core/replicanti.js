@@ -217,8 +217,8 @@ function getReplSpeed() {
 	if (player.dilation.upgrades.includes("ngmm10")) exp += player.dilation.upgrades.length
 	inc = inc + 1
 	if (GUBought("gb2")) exp *= 2
-	if (hasBosonicUpg(35)) exp += tmp.blu[35].rep
-	if (hasBosonicUpg(44)) exp += tmp.blu[44]
+	if (hasBU(35)) exp += tmp.blu[35].rep
+	if (hasBU(44)) exp += tmp.blu[44]
 	return {inc: inc, exp: exp}
 }
 

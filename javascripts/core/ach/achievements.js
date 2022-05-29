@@ -381,7 +381,7 @@ function giveAchievement(name, noUpdate) {
 			if (!hasAch("ng3p6" + i)) player.achievements.push("ng3p6" + i)
 		}
 	}
-	if (name == "Bright as the Anti-Sun" && !tmp.bl.upgrades.includes(32)) tmp.bl.upgrades.push(32)
+	if (name == "Bright as the Anti-Sun" && !hasBU(32)) tmp.bl.upgrades.push(32)
 	if (name == "... references to EC8?") updateTODStuff()
 	if (name == "Not-so-very-challenging") updateQuantumChallenges()
         if (!noUpdate) {

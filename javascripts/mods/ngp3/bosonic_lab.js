@@ -13,7 +13,7 @@ function updateBLUnlocks() {
 }
 
 function updateBLUnlockDisplay() {
-	el("blUnl").textContent = "To unlock Bosonic Lab, you need to get " + shortenCosts(pow10(5e10)) + " " + getUQNameFromDecays(5) + " quarks and 3 Light Empowerments first."
+	el("blUnl").textContent = "To unlock Bosonic Lab, you need to get " + shortenCosts(pow10(5e10)) + " " + getUQNameFromDecays(5) + " quarks and 3 Spectral Ions first."
 }
 
 function getBosonicWattGain() {
@@ -460,7 +460,7 @@ var bEn = {
 		45: "Overdrive Speed boosts Gravitons.",
 		16: "Neutrino Boost 7 always work, but reduced.",
 		26: "RG4 negative effects are reduced.",
-		36: "Cheapen Light Empowerments.",
+		36: "Cheapen Spectral Ions.",
 		46: "Reduce Bosonic Upgrade 1 slowdown.",
 		56: "Weaken the Nanoreward scalings.",
 	},
@@ -598,7 +598,7 @@ function canBuyBosonicUpg(id) {
 }
 
 function buyBosonicUpgrade(id, quick) {
-	if (ghSave.bl.upgrades.includes(id)) return true
+	if (hasBU(id)) return true
 	if (!canBuyBosonicUpg(id)) return false
 	ghSave.bl.upgrades.push(id)
 	ghSave.bl.am = ghSave.bl.am.sub(getBosonicFinalCost(bu.reqData[id][0]))
@@ -622,14 +622,14 @@ function buyMaxBosonicUpgrades() {
 	if (ghSave.bl.upgrades.length > oldLength) updateTemp()
 }
 
-function hasBosonicUpg(id) {
-	return ghostified && ghSave.wzb.unl && ghSave.bl.upgrades.includes(id)
+function hasBU(x) {
+	return ghostified && ghSave.wzb.unl && (tmp.bl||ghSave.bl).upgrades.includes(x)
 }
 
 function updateBosonicUpgradeDescs() {
 	for (var r = 1; r <= bu.rows; r++) for (var c = 1; c <= 5; c++) {
 		var id = r * 10 + c
-		el("bUpg" + id).className = ghSave.bl.upgrades.includes(id) ? "gluonupgradebought bl" : canBuyBosonicUpg(id) ? "gluonupgrade bl" : "gluonupgrade unavailablebtn bllocked"
+		el("bUpg" + id).className = hasBU(id) ? "gluonupgradebought bl" : canBuyBosonicUpg(id) ? "gluonupgrade bl" : "gluonupgrade unavailablebtn bllocked"
 		if (tmp.blu[id] !== undefined) el("bUpgEffect"+id).textContent = (bu.effectDescs[id] !== undefined && bu.effectDescs[id](tmp.blu[id])) || shorten(tmp.blu[id]) + "x"
 	}
 }
@@ -742,13 +742,13 @@ var bu = {
 	descs: {
 		11: "Bosons increases blue Light effect.",
 		12: "Decrease the free galaxy threshold based on Green Power.",
-		13: "Radioactive Decays boost Light Empowerments.",
+		13: "Radioactive Decays boost Spectral Ions.",
 		14: "Sacrificed galaxies cancel less based on your free galaxies.",
 		15: "Fundaments and dilated time power up each other.",
 		21: "Replace first Nanofield reward with a boost to slow down Dimension Supersonic scaling.",
 		22: "Replace seventh Nanofield reward with a boost to neutrino gain and preon charge.",
 		23: "Assigning gives more colored quarks based on your meta-antimatter.",
-		24: "You generate 1% of Space Shards on Big Rip per second, but nerf Break Eternity upgrades.",
+		24: "Gain Space Shards outside of Big Rips, but reduce boosts to it.",
 		25: "Electrons boost the per-ten Meta Dimensions multiplier.",
 		31: "Bosons strengthen Nanofield.",
 		32: "Unlock a new boost for every 3rd LE from LE7 until LE25.",
@@ -766,8 +766,8 @@ var bu = {
 			let x = ghSave.bl.am.add(1).log10()
 			let g = 1
 			let sd = 1
-			if (hasBosonicUpg(42)) g = tmp.blu[42]
-			if (hasBosonicUpg(42)) sd = tmp.blu[42]
+			if (hasBU(42)) g = tmp.blu[42]
+			if (hasBU(42)) sd = tmp.blu[42]
 
 			let exp = 0.5 - 0.25 * x / (x + 3) / sd
 			if (g > 1) x *= g

@@ -1,7 +1,13 @@
 var player = {};
 
+//Do not remove.
+var betaId = "P"
+var prefix = betaId + "ds"
+var savePrefix = prefix + "AM_"
+var metaSaveId = betaId + "AD_aarexModifications"
+
 function changestate(n) {
-    var classes = document.getElementById('div'+n).classList
+    var classes = el('div'+n).classList
     if(classes.contains('hidden')){
 		classes.remove('hidden');
 	    classes.add('shown');
@@ -15,8 +21,8 @@ function changestate(n) {
 if (localStorage.getItem("howToSpoilers") !== null) var spoilers = parseInt(localStorage.getItem("howToSpoilers"))
 else var spoilers = 0
 
-if (spoilers === 0) document.getElementById("showspoilersbtn").innerHTML = "View: <br> Avoid spoilers"
-else document.getElementById("showspoilersbtn").innerHTML= "View: <br> Show spoilers"
+if (spoilers === 0) el("showspoilersbtn").innerHTML = "Show spoilers"
+else el("showspoilersbtn").innerHTML= "Avoid spoilers"
 
 function save() {
 	localStorage.setItem("howToSpoilers", spoilers)
@@ -24,14 +30,14 @@ function save() {
 
 function get_save(id) {
     try {
-        var dimensionSave = localStorage.getItem(btoa('dsAM_ghostify_'+id))
+        var dimensionSave = localStorage.getItem(btoa(savePrefix+id))
         if (dimensionSave !== null) dimensionSave = JSON.parse(atob(dimensionSave, function(k, v) { return (v === Infinity) ? "Infinity" : v; }))
         return dimensionSave
     } catch(e) { console.log("An error happened"); }
 }
 
 function load_game() {
-	metaSave = localStorage.getItem('AD_aarexModifications_ghostify')
+	metaSave = localStorage.getItem(metaSaveId)
 	if (metaSave == null) metaSave = {}
 	else metaSave = JSON.parse(atob(metaSave))
 	if (metaSave.current == undefined) {
@@ -39,15 +45,34 @@ function load_game() {
 		metaSave.saveOrder = [1]
 	}
 	player = get_save(metaSave.current)
+	ghSave = player.ghostify
 }
 
+document.getElementById("importbtn").onclick = function () {
+    var save_data = prompt("Input your save.");
+	save_data = JSON.parse(atob(save_data), function(k, v) { return (v === Infinity) ? "Infinity" : v; });
+	if (!save_data) {
+		alert('could not load the save..');
+		return;
+	}
+	player = save_data;
+	updateSpoilers()
+};
+
+//To avoid errors
+function hasAch(x) {
+	return player.achievements.includes(x)
+}
+
+//Spoilers
 function showspoilers() {
 	if (spoilers === 0) {
+		if (!confirm("This will reveal the content you haven't got! Are you sure?")) return
 		spoilers = 1;
-		document.getElementById("showspoilersbtn").innerHTML= "View: <br> Show spoilers"
+		el("showspoilersbtn").innerHTML= "Avoid spoilers"
 	} else {
 		spoilers = 0;
-		document.getElementById("showspoilersbtn").innerHTML = "View: <br> Avoid spoilers"
+		el("showspoilersbtn").innerHTML = "Show spoilers"
 	}
 	save()
 	updateSpoilers();
@@ -55,8 +80,9 @@ function showspoilers() {
 
 function updateSpoilers() {
 	var displayed = spoilers;
+	var max = 0
 	document.getElementById("ng3pguide").style.display=player.masterystudies||spoilers?"":"none"
-	for (i=41; i>0; i--) {
+	for (i=40; i>0; i--) {
 		if (i != 7) {
 			if (!displayed) {
 				if (i < 5) displayed = 1
@@ -75,25 +101,22 @@ function updateSpoilers() {
 					if (player.masterystudies) {
 						if (i == 21 && player.dilation.upgrades.includes("ngpp4")) displayed = 1
 						if (i == 23 && player.quantum) if (player.quantum.times > 0) displayed = 1
-						if (i == 24 && player.masterystudies.includes("d7")) displayed = 1
-						if (i == 25 && player.masterystudies.includes("d8")) displayed = 1
-						if (i == 26 && player.masterystudies.includes("d9")) displayed = 1
-						if (i == 27 && player.masterystudies.includes("d10")) displayed = 1
-						if (i == 28 && player.masterystudies.includes("d11")) displayed = 1
-						if (i == 29 && NF.unl()) displayed = 1
-						if (i == 30 && player.masterystudies.includes("d13")) displayed = 1
-						if (i == 31 && player.masterystudies.includes("d14")) displayed = 1
-						if (i == 32 && player.quantum) if (player.quantum.breakEternity) if (player.quantum.breakEternity.unlocked) displayed = 1
+						if (i >= 24 && i <= 31 && player.masterystudies.includes("d"+(i-17))) displayed = 1
 					}
 					if (ghSave) {
-						if (i == 36 && ghSave.times > 0) displayed = 1
-						if (i == 37 && ghSave.ghostlyPhotons && ghSave.ghostlyPhotons.unl) displayed = 1
-						if (i == 38 && ghSave.wzb && ghSave.wzb.unl) displayed = 1
-						if (i == 39 && ghSave.gravitons && ghSave.gravitons.unl) displayed = 1
+						if (i == 35 && ghSave.times > 0) displayed = 1
+						if (i == 36 && ghSave.ghostlyPhotons && ghSave.ghostlyPhotons.unl) displayed = 1
+						if (i == 37 && ghSave.wzb && ghSave.wzb.unl) displayed = 1
+						if (i == 38 && ghSave.gravitons && ghSave.gravitons.unl) displayed = 1
+						if (i == 39 && ghSave.hb && ghSave.hb.higgs >= 60) displayed = 1
 						if (i == 40 && ghSave.breakDilation && ghSave.breakDilation.unl) displayed = 1
 					}
 				}
 			}
+			if (displayed) {
+				max = Math.max(i, max)
+			}
+			if (max >= i + 5 && !spoilers) displayed = 0
 			if (displayed) {
 				if (i == 22) {
 					var msg = "When you reach "
@@ -110,17 +133,7 @@ function updateSpoilers() {
 	}
 }
 
-document.getElementById("importbtn").onclick = function () {
-    var save_data = prompt("Input your save.");
-	save_data = JSON.parse(atob(save_data), function(k, v) { return (v === Infinity) ? "Infinity" : v; });
-	if (!save_data) {
-		alert('could not load the save..');
-		return;
-	}
-	player = save_data;
-	updateSpoilers()
-};
-
+//Loading
 load_game();
 save()
 updateSpoilers()

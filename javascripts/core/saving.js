@@ -140,7 +140,7 @@ function changeSaveDesc(saveId, placement) {
 				var data=temp.ghostify.ghostlyPhotons
 				var lights=0
 				for (var l=0;l<8;l++) lights+=data.lights[l]
-				msg+="Photons: "+shortenDimensions(E(data.amount))+", Dark Matter: "+shortenDimensions(E(data.darkMatter))+", Photonic Waves: "+shortenDimensions(E(data.ghostlyRays))+", Lights: "+getFullExpansion(lights)+", Light Empowerments: "+getFullExpansion(data.enpowerments)
+				msg+="Photons: "+shortenDimensions(E(data.darkMatter))+", Frequency: "+shortenDimensions(E(data.amount))+", Waves: "+shortenDimensions(E(data.ghostlyRays))+", Lights: "+getFullExpansion(lights)+", Spectral Ions: "+getFullExpansion(data.enpowerments)
 			} else msg+="Elementary Particles: "+shortenDimensions(E(temp.ghostify.ghostParticles))+", Neutrinos: "+shortenDimensions(Decimal.add(temp.ghostify.neutrinos.electron, temp.ghostify.neutrinos.mu).add(temp.ghostify.neutrinos.tau).round())
 		} else if (isSaveQuantumed) {
 			if (!temp.masterystudies) msg+="Endgame of NG++"

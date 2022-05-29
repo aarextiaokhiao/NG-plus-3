@@ -113,7 +113,7 @@
     <b>Hotkey: S</b>
   </div>
   <hr id='div5hr'>
-  <button onclick='changestate(6)' id='div6btn' class="storebtn">Infinity</button>
+  <button onclick='changestate(6)' id='div6btn' class="storebtn infinity">Infinity</button>
   <div style="text-align: left" id='div6' class='hidden'>
   Once you have too much Antimatter for the world to handle (2^1024, or 1.7976931348623159e308) you’ll reach infinity and be able to perform a “Big Crunch”.
   <br>
@@ -131,7 +131,7 @@
   You will receive a x1.5 multiplier to all dimensions for each completed row. In addition, some achievements have their own rewards.
   </div>
   <hr id='div7hr'>
-  <button onclick='changestate(8)' id='div8btn' class="storebtn">Challenges</button>
+  <button onclick='changestate(8)' id='div8btn' class="storebtn infinity">Challenges</button>
   <div style="text-align: left" id='div8' class='hidden'>
   Challenges are unlocked after first infinity; they change in-game mechanics in different ways to create more difficult infinity circumstances.
   <br>
@@ -140,7 +140,7 @@
   The rightmost row of Infinity Upgrades does not work in challenges.
   </div>
   <hr id='div8hr'>
-  <button onclick='changestate(9)' id='div9btn' class="storebtn">Autobuyers</button>
+  <button onclick='changestate(9)' id='div9btn' class="storebtn infinity">Autobuyers</button>
   <div style="text-align: left" id='div9' class='hidden'>
   <b>Autobuyers:</b>
   <br>
@@ -170,7 +170,7 @@
     <b>Hotkey: A</b> (for toggle all autobuyers)
   </div>
   <hr id='div9hr'>
-  <button onclick='changestate(10)' id='div10btn' class="storebtn">Breaking Infinity</button>
+  <button onclick='changestate(10)' id='div10btn' class="storebtn infinity">Breaking Infinity</button>
   <div style="text-align: left" id='div10' class='hidden'>
   Originally Antimatter Dimensions was restricted by "Infinity". Since a significant update, you can now "Break Infinity" once your Big Crunch autobuyer has been maxed. This opens up a selection of new upgrades as well as the ability to gain more than 1 infinity point per run.
   <br>
@@ -179,7 +179,7 @@
   <b>IP Gain Formula:</b>10^(log(current antimatter)/n-0.75)*bonuses, where n is 308 at default, 307.8 with the "This achievement doesn't exist II" achievement, or 290 with the relevant timestudy.
   </div>
   <hr id='div10hr'>
-  <button onclick='changestate(11)' id='div11btn' class="storebtn">Infinity Dimensions</button>
+  <button onclick='changestate(11)' id='div11btn' class="storebtn infinity">Infinity Dimensions</button>
   <div style="text-align: left" id='div11' class='hidden'>
   <b>Unlocking Infinity Dimensions:</b>Infinity Dimensions are unlocked by reaching a certain amount of antimatter.
   <br>
@@ -190,14 +190,14 @@
   Infinity Power gives a boost to all dimensions equal to (power^7).
   </div>
   <hr id='div11hr'>
-  <button onclick='changestate(12)' id='div12btn' class="storebtn">Infinity Challenges</button>
+  <button onclick='changestate(12)' id='div12btn' class="storebtn infinity">Infinity Challenges</button>
   <div style="text-align: left" id='div12' class='hidden'>
   Infinity Challenges are like regular challenges, but they have higher end goals and are generally harder than regular challenges (but have a different kind of reward).
   <br>
   They unlock at set amounts of antimatter - the ones unlocking later are (generally) more difficult.
   </div>
   <hr id='div12hr'>
-  <button onclick='changestate(13)' id='div13btn' class="storebtn">Replicanti</button>
+  <button onclick='changestate(13)' id='div13btn' class="storebtn infinity">Replicanti</button>
   <div style="text-align: left" id='div13' class='hidden'>
   Each replicanti has an upgradable chance to update every replicanti tick. You will gain a bonus to infinity dimensions based on how much replicanti you have.
   <br>
@@ -213,7 +213,7 @@
   <br><b>Galaxy upgrade cost:</b>1e(170+n*25+n^2*5)
   </div>
   <hr id='div13hr'>
-  <button onclick='changestate(14)' id='div14btn' class="storebtn">Eternity</button>
+  <button onclick='changestate(14)' id='div14btn' class="storebtn eternity">Eternity</button>
   <div style="text-align: left" id='div14' class='hidden'>
   Upon reaching infinity Infinity Points, you can eternity. Eternities will reset everything before this point except challenge times, achievements, and total antimatter. You also unlock a new tab.
   <br>
@@ -222,7 +222,7 @@
   <b>EP gain formula:</b> floor(5^(floor(log10(IP))/308-0.7)*bonuses. The x10 EP time study gives the bonus before the outer floor.
   </div>
   <hr id='div14hr'>
-  <button onclick='changestate(15)' id='div15btn' class="storebtn">Milestones</button>
+  <button onclick='changestate(15)' id='div15btn' class="storebtn eternity">Milestones</button>
   <div style="text-align: left" id='div15' class='hidden'>
     To make eternities faster and more convenient, you will unlock various buffs as you get more eternities. These buffs are either making you start with something on eternity or unlock an autobuyer.
     <br>
@@ -231,7 +231,7 @@
     The last milestone is at 100 eternities and allows full automation.
     </div>
     <hr id='div15hr'>
-    <button onclick='changestate(16)'id='div16btn' class="storebtn">Time Dimensions</button>
+    <button onclick='changestate(16)'id='div16btn' class="storebtn eternity">Time Dimensions</button>
   <div style="text-align: left" id='div16' class='hidden'>
     After your first eternity, you unlock Time Dimensions. You buy them with EP and they provide time shards, which give free tickspeed upgrades (which don't increase the price). These free tickspeed upgrades stay on infinity (applying retroactively to your tickspeed mult through more galaxies).
     <br>
@@ -240,7 +240,7 @@
     Each tick threshold takes 33% more time shards than the previous (25% with the relevant time study).
     </div>
     <hr id='div16hr'>
-  <button onclick='changestate(17)' id='div17btn' class="storebtn">Time Study</button>
+  <button onclick='changestate(17)' id='div17btn' class="storebtn eternity">Time Study</button>
   <div style="text-align: left" id='div17' class='hidden'>
     A Time Study is a powerful post-eternity upgrade, which costs Time Theorems. Time Studies are laid out in a tree-like fashion, where you must buy prerequisites before continuing. There are sometimes choices to make with which Time Study to buy, as you cannot get all of them even if affordable.
     <br>
@@ -251,12 +251,12 @@
     <b>Costs:</b> (1e20000^times bought) for antimatter, (1e100^times bought) for IP, (2^times bought) for EP.
     </div>
     <hr id='div17hr'>
-  <button onclick='changestate(18)' id='div18btn' class="storebtn">Eternity Challenges</button>
+  <button onclick='changestate(18)' id='div18btn' class="storebtn eternity">Eternity Challenges</button>
   <div style="text-align: left" id='div18' class='hidden'>
     Eternity Challenges are a new type of Challenges where you must eternity at specified amount of IP to finish the challenge. There is a time study that unlocks an Eternity Challenge when bought, called "Eternity Challenge study", but there is a prerequisite for every Eternity Challenge study. Each time you complete an Eternity Challenge, the goal increases and you need to reach bigger prerequisite values to do it again.
     </div>
     <hr id='div18hr'>
-    <button onclick='changestate(19)' id='div19btn' class="storebtn">Time Dilation</button> 
+    <button onclick='changestate(19)' id='div19btn' class="storebtn eternity">Time Dilation</button> 
 <div style="text-align: left" id='div19' class="hidden"> 
 Time dilation is unlocked when you purchase the 5,000 TT time study after beating both EC11 and EC12 five times, and after acquiring a total of 13,000 TT. Dilating time will start a new eternity, and all of your Dimension/Infinity/Time Dimension multipliers’ exponents and tickspeed multipliers’ will be reduced to ^0.75.  
  <br>
@@ -267,99 +267,99 @@ Tachyon Particles generate another currency, Dilated Time. Dilated time is trans
 Dilation Upgrades are upgrades that are purchasable with Dilated Time. Some upgrades improve the amount of Dilated Time you gain or reset your free galaxies but decrease the threshold required to get to them. In addition, there is also a TT generator as one of the Dilation upgrades. The first row of dilation upgrades is purchasable as many times as possible, but the rest cannot. 
 </div> 
 <hr id='div19hr'> 
-    <button onclick='changestate(20)' id='div20btn' class="storebtn">Meta Dimensions</button>
+    <button onclick='changestate(20)' id='div20btn' class="storebtn eternity">Meta Dimensions</button>
     <div style="text-align: left" id='div20' class='hidden'>
     Meta Dimensions are a new type of dimensions that resemble Normal Dimensions, but there is no meta-tickspeed and meta-galaxies. They can be unlocked by buying 1e24 TT dilation study. meta-dimension 1 produces meta-antimatter, which makes dimension boosts more powerful. A meta-dimension 2 produces  a meta-dimension 1 and so on until the 8th. Unlike Normal Dimensions, resetting meta-dimensions (with meta-dimension shifts/boosts) does not reset anything outside of it. Only meta-dimensions will reset.
     </div>
     <hr id='div20hr'>
-    <button onclick='changestate(21)' id='div21btn' class="storebtn">Mastery Studies</button>
+    <button onclick='changestate(21)' id='div21btn' class="storebtn eternity">Mastery Studies</button>
     <div style="text-align: left" id='div21' class='hidden'>
     Mastery Studies are a new type of Time & Dilation studies, but the cost will rise each time you buy a time study. When you respec, the costs of all time studies will decrease.
     </div>
     <hr id='div21hr'>
-    <button onclick='changestate(22)' id='div22btn' class="storebtn">Quantum</button>
+    <button onclick='changestate(22)' id='div22btn' class="storebtn quantum">Quantum</button>
     <div style="text-align: left" id='div22' class='hidden'>
     </div>
     <hr id='div22hr'>
-    <button onclick='changestate(23)' id='div23btn' class="storebtn">Quarks & Gluons</button>
+    <button onclick='changestate(23)' id='div23btn' class="storebtn quantum">Quarks & Gluons</button>
     <div style="text-align: left" id='div23' class='hidden'>
     When you go quantum, you receive a number of quarks based on meta-antimatter. At any time, you can assign all your quarks to be either red, green, or blue quarks. Your quarks will produce an amount of color power based on the difference between the color quarks you have the most of and the color you have the second-most of. So, if you had 4 red quarks and 1 blue quark, you would get 3 red charge, producing 3 red power per second. Each color power provides a boost: red provides stronger galaxies, green provides more replicated galaxies, and blue provide faster dilated time production. Note that even if you aren't generating a particular color power, the color power you have already generated is still effective.
     <br>
     If you have two or more quark colors, upon quantum some quarks will fuse to become gluons. There are three types of gluons: red-green, green-blue, and blue-red. T form them you must have both of the specified colors; when you quantum, only the first color in the gluon's name will be removed, however. For example, if you had 4 green quarks and 2 blue quarks, two green-blue gluons would form, and you'd have 2 green quarks left over. If you had 4 red, 3 green, and 2 blue, you'd end up with 3 red-green gluons, 2 green-blue gluons and 2 blue-red gluons, with 1 red and 1 green quark left. You can spend your accumulated gluons on various upgrades to increase your production further, as well as an upgrade that doubles the amount of quarks you gain on quantum.
     </div>
     <hr id='div23hr'>
-    <button onclick='changestate(24)' id='div24btn' class="storebtn">Electrons</button>
+    <button onclick='changestate(24)' id='div24btn' class="storebtn quantum">Electrons</button>
     <div style="text-align: left" id='div24' class='hidden'>
     You unlock electrons by purchasing the first new dilation study under mastery studies that costs 2e82 time theorems. Electrons provide a boost to your multiplier per 10 dimensions bought, but in order to use them, you have to sacrifice your regular galaxies. The number of electrons you get is equal to the number of galaxies you sacrificed times the number of electrons per galaxy you currently have. This number starts at 2 electrons per galaxy, and can be upgraded using either time theorems, dilated time, meta-antimatter, or meta-dimension boosts. Each upgrade increases the electrons per galaxy by 0.25.
     </div>
     <hr id='div24hr'>
-    <button onclick='changestate(25)' id='div25btn' class="storebtn">Quantum Challenges</button>
+    <button onclick='changestate(25)' id='div25btn' class="storebtn quantum">Quantum Challenges</button>
     <div style="text-align: left" id='div25' class='hidden'>
     Like infinity challenges, there are quantum challenges where you must reach a certain amount of antimatter and then do a quantum reset (you must also reach 9.31e446 meta-antimatter). To start a QC you must spend a certain number of electrons, increasing from one challenge to the next. In addition to the conditions of each individual challenge, electrons don't do anything during quantum challenges.
     </div>
     <hr id='div25hr'>
-    <button onclick='changestate(26)' id='div26btn' class="storebtn">Paired Challenges</button>
+    <button onclick='changestate(26)' id='div26btn' class="storebtn quantum">Paired Challenges</button>
     <div style="text-align: left" id='div26' class='hidden'>
     Paired challenges consist of two quantum challenges whose conditions are applied at once. You can assign each of the four paired challenges to any pair of quantum challenges, though the same challenge can't be used twice. The cost to start a PC is based on the sum of costs for the component challenges, and the goal is also based on the goals of the component challenges. You can respec PC assignments at any time, though you will lose the PCs you already completed.
     </div>
     <hr id='div26hr'>
-    <button onclick='changestate(27)' id='div27btn' class="storebtn">Duplicants</button>
+    <button onclick='changestate(27)' id='div27btn' class="storebtn quantum">Duplicants</button>
     <div style="text-align: left" id='div27' class='hidden'>
     Upon buying the appropriate mastery study, you can make duplicants to gather preons which provide a boost to extra replicated galaxies. To get a duplicant you have to reset your replicanti amount after reaching certain requirements (starts at e3,000,000, increases e100,000 each time).
     <br>
     You can spend gluons to buy quantum food, which, when used, turns normal duplicants into worker duplicants. Worker duplicants gather more preons, and also produce eggons, which turn into baby duplicants. Baby duplicants will eventually become normal duplicants. You can also spend gluons to make eggons hatch faster.
     </div>
     <hr id='div27hr'>
-    <button onclick='changestate(28)' id='div28btn' class="storebtn">Emperor Dimensions</button>
+    <button onclick='changestate(28)' id='div28btn' class="storebtn quantum">Emperor Dimensions</button>
     <div style="text-align: left" id='div28' class='hidden'>
     As with other types of dimensions, each emperor dimension produces the one below it, and there are 8 total emperor dimensions. First emperor dimensions are the same as worker duplicants, second emperor dimensions produce worker duplicants, etc. To get the highest emperor dimension available, you must spend quantum food, similar to promoting a normal duplicant to a worker duplicant. You increase the amount of the highest dimension you can get, as well as unlocking the ability to buy higher dimensions, by spending gluons.
     </div>
     <hr id='div28hr'>
-    <button onclick='changestate(29)' id='div29btn' class="storebtn">Nanofield</button>
+    <button onclick='changestate(29)' id='div29btn' class="storebtn quantum">Nanofield</button>
     <div style="text-align: left" id='div29' class='hidden'>
     Nanofield allows you to gain further bonuses by getting preon energy, produced by preon charge. You can enable the production of preon charge, which produces preon energy, but also preon anti-energy. Preon anti-energy slows down preon energy production until a cap of anti-energy is reached, where preon energy production completely stops.. When this happens, the only way to get more preon energy is to get more preon charge. You can get rewards from your preon energy, with the first one requiring 50 preon energy, and each subsequent one requiring 4 times as much preon energy. Note: Preon charge, energy, and anti-energy reset on quantum, but you keep whatever rewards you have already earned on previous quantums.
     </div>
     <hr id='div29hr'>
-    <button onclick='changestate(30)' id='div30btn' class="storebtn">Tree of Decay</button>
+    <button onclick='changestate(30)' id='div30btn' class="storebtn quantum">Tree of Decay</button>
     <div style="text-align: left" id='div30' class='hidden'>
     Upon unlocking this feature, you can convert your normal quarks into unstable quarks. there are three kinds of unstable quarks, one for each kind of normal quark. Unstable quarks will give you same-colored quark spins as long as you have them, but they also decay at an exponential rate (until 1, then decreases linearly to 0). You can use quark spins to buy two new kinds of upgrades: Branch upgrades which affect only one type of quark and always cost that type of spin, and tree upgrades which upgrade something else (not related to unstable quarks or quark spins), whose cost rotates between different quark spins. There are a total of 3 branch upgrades for each color, and 8 tree upgrades, all of which are repeatable. You keep your unspent quark spins and all tree upgrades on each quantum.
     </div>
     <hr id='div30hr'>
-    <button onclick='changestate(31)' id='div31btn' class="storebtn">Big Rip</button>
+    <button onclick='changestate(31)' id='div31btn' class="storebtn quantum">Big Rip</button>
     <div style="text-align: left" id='div31' class='hidden'>
     Once you unlock this feature by buying a mastery study, you can big rip the universe. To do this, you must have one of your paired challenges assigned to be QC6+QC8, which is the hardest paired challenge to complete. When you big rip, You start a new quantum inside PC6+8, with only your quantum mechanics working (from quarks and gluons on), but nothing before that (it all comes back upon exiting the big rip). At any time, you can exit the big rip to gain an amount of space shards based on your best antimatter amount while big ripped. You can spend space shards to buy various upgrades that make big rips easier, either by giving a boost that only applies in big rips, or letting you keep something inside big rips.
 	<br><br>
 	There is also a mini-feature called Break Eternity, unlocks at e1,215 EP. While eternity is broken, time dimensions will now work in big rips, as will galaxies (though galaxy costs scale much faster in big rips). When you eternity, you gain eternal matter based on your time shards. You can spend this eternal matter to buy 7 new big-rip-exclusive upgrades (one of which is repeatable).
     </div>
     <hr id='div31hr'>
-    <button onclick='changestate(32)' id='div32btn' class="storebtn">Fundament</button>
+    <button onclick='changestate(32)' id='div32btn' class="storebtn fundament">Fundament</button>
     <div style="text-align: left" id='div32' class='hidden'>
-    This section is currently empty. You can write this and I will probably accept it!
+    This is a prestige layer beyond Quantum that unlocks when you can complete Big Rip (reach MA and AM requirements). This resets all previous progress, and gives you Elementary Particles based on your antimatter. 
     </div>
     <hr id='div32hr'>
-    <button onclick='changestate(33)' id='div33btn' class="storebtn">Brave Milestones</button>
+    <button onclick='changestate(33)' id='div33btn' class="storebtn fundament">Brave Milestones</button>
     <div style="text-align: left" id='div33' class='hidden'>
-    This section is currently empty. You can write this and I will probably accept it!
+    Brave Milestones unlock on Fundament, and they can be achieved by fundamenting while under a certain amount of Quantums. Each Brave Milestone provides you with a reward that greatly boosts progress and makes Fundaments much faster and more efficient.
     </div>
     <hr id='div33hr'>
-    <button onclick='changestate(34)' id='div34btn' class="storebtn">Neutrinos</button>
+    <button onclick='changestate(34)' id='div34btn' class="storebtn fundament">Neutrinos</button>
     <div style="text-align: left" id='div34' class='hidden'>
-    This section is currently empty. You can write this and I will probably accept it!
+    There are three types of Neutrinos: Tau, Muon, and Electron. You gain one type of Neutrino at a time, gaining 1 of that type every time you gain a galaxy. Once you go quantum or fundament, the type of Neutrino you are gaining cycles between the three. Neutrino Boosts are more powerful based on the total amount of Neutrinos you have, and you can unlock more Neutrino Boosts by spending Elementary Particles. You can also spend Elementary Particles on Neutrino mult upgrades, which multiply Neutrino gain. You can spend Neutrinos on Elementary Particle gain multipliers and Neutrino upgrades, more of which unlock as you Fundament more and more.
     </div>
     <hr id='div34hr'>
-    <button onclick='changestate(35)' id='div35btn' class="storebtn">Automator Ghosts</button>
+    <button onclick='changestate(35)' id='div35btn' class="storebtn fundament">Automator Ghosts</button>
     <div style="text-align: left" id='div35' class='hidden'>
-    This section is currently empty. You can write this and I will probably accept it!
+    Automator Charge is gained based on your Quantum Worth, resets on fundament, and when it passes certain thresholds, Automator Ghosts unlock. Automator Power is your best Automator Charge, however when Automator Ghosts are used, Automator Power is used up. Automator Ghosts automate various features such as Nanofield and Big Rips.
     </div>
     <hr id='div35hr'>
-    <button onclick='changestate(36)' id='div36btn' class="storebtn">Photons</button>
+    <button onclick='changestate(36)' id='div36btn' class="storebtn fundament">Photons</button>
     <div style="text-align: left" id='div36' class='hidden'>
-    Photons are a mini-feature of Fundament, where Lights boost prior Lights dependent on Photonic Waves. Photonic Waves are produced by Photons, capped with Dark Matter. You gain Dark Matter based on dilated time, or Photons if you are in Big Rips.
+    Photons are a mini-feature of Fundament, where Lights boost prior Lights dependent on Waves. Waves are produced by Frequency, capped with Photons. You gain Photons based on dilated time, or Frequency if you are in Big Rips.
 	<br><br>
-	Having enough Ultraviolet Light allows you to do a Light Empowerment prestige for greater boosts.
+	Having enough Ultraviolet Light allows you to do a Spectral Ion prestige for greater boosts.
     </div>
     <hr id='div36hr'>
-    <button onclick='changestate(37)' id='div37btn' class="storebtn">Bosonic Lab</button>
+    <button onclick='changestate(37)' id='div37btn' class="storebtn fundament">Bosonic Lab</button>
     <div style="text-align: left" id='div37' class='hidden'>
 	You can start experimenting Bosonic Lab with enough Radioactive Decays, sped up by antimatter.
 	<br>
@@ -376,19 +376,31 @@ Dilation Upgrades are upgrades that are purchasable with Dilated Time. Some upgr
 	At e20 Bosons, you can prestige for Higgs; in exchange of new content and greater boosts.
     </div>
     <hr id='div37hr'>
-    <button onclick='changestate(38)' id='div38btn' class="storebtn">Gravity Well</button>
+    <button onclick='changestate(38)' id='div38btn' class="storebtn fundament">Gravity Well</button>
     <div style="text-align: left" id='div38' class='hidden'>
-    This section is currently empty. You can write this and I will probably accept it!
+    In Gravity Well, you start with 3 adjustable nerfs, each with 3 tiers. Choosing one increases Gravity Pull, and you must get e20 Bosons to complete. At last tier, you can exchange them which reduces other tiers.
+	<br>
+	Later, you will unlock denerfs, fourth tier, and new slots; all coming from Higgs.
+	<br><br>
+	<b>Gravitons</b>: Same formula as Higgs, but added with Gravity Pull. [log(Bosons) + Gravity Pull]
     </div>
     <hr id='div38hr'>
-    <button onclick='changestate(39)' id='div39btn' class="storebtn">Break Dilation</button>
+    <button onclick='changestate(39)' id='div39btn' class="storebtn fundament">Higgs Field</button>
     <div style="text-align: left" id='div39' class='hidden'>
-    This section is currently empty. You can write this and I will probably accept it!
+    Higgs Field is an extension to Higgs; continuing the development of Higgs we left off.
+	<br><br>
+	<b>// UNDER CONSTRUCTION //</b>
     </div>
     <hr id='div39hr'>
+    <button onclick='changestate(40)' id='div40btn' class="storebtn fundament">Break Dilation</button>
+    <div style="text-align: left" id='div40' class='hidden'>
+    This section is currently empty. You can write this and I will probably accept it!
+    </div>
+    <hr id='div40hr'>
     <a href="http://antimatter-dimensions.wikia.com/wiki/Guide">Strategy Guide</a>
     <a id='ng3pguide' href="https://ng-plus-plus-plus.wikia.com/wiki/Guide">NG+++ Guide</a>
   </body>
+  <script src='javascripts/core/helper.js'></script>
   <script src='javascripts/howto.js?3'></script>
   </html>
   

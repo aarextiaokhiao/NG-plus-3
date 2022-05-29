@@ -834,13 +834,13 @@ function showAntTab(tabName) {
 
 function getGhostifiedGain() {
 	let r = 1
-	if (hasBosonicUpg(15)) r = nN(tmp.blu[15].gh)
+	if (hasBU(15)) r = nN(tmp.blu[15].gh)
 	return r
 }
 
 function toggleLEConf() {
 	aarMod.leNoConf = !aarMod.leNoConf
-	el("leConfirmBtn").textContent = "Light Empowerment confirmation: O" + (aarMod.leNoConf ? "FF" : "N")
+	el("leConfirmBtn").textContent = "Spectral Ion confirmation: O" + (aarMod.leNoConf ? "FF" : "N")
 }
 
 //Anti-Preonius' Lair
@@ -988,7 +988,7 @@ var ngp3Features = {
 	},
 	bl: {
 		name: "Bosonic Lab",
-		threshold: () => "Get " + shortenCosts(pow10(5e10)) + " " + getUQNameFromDecays(5) + " quarks and 3 Light Empowerments",
+		threshold: () => "Get " + shortenCosts(pow10(5e10)) + " " + getUQNameFromDecays(5) + " quarks and 3 Spectral Ions",
 		next: "gw",
 		tab() {
 			showTab("ghostify")

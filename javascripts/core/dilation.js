@@ -32,7 +32,7 @@ function getBaseDTProduction(){
 	if (tmp.ngp3 && (!brSave.active || hasRipUpg(11))) {
 		gain = gain.times(getDTMultPostBRU11())
 	}
-	if (hasBosonicUpg(15)) gain = gain.times(tmp.blu[15].dt)
+	if (hasBU(15)) gain = gain.times(tmp.blu[15].dt)
 	if (tmp.newNGP3E && hasAch("r138") && gain.lt(1e100)) gain = gain.times(3).min(1e100)
 	if ((tmp.ngp3 || tmp.newNGP3E) && hasAch("ngpp13")) gain = gain.times(2)
 
@@ -491,7 +491,7 @@ function updateDilationUpgradeCosts() {
 
 function getFreeGalaxyThresholdIncrease(){
 	let thresholdMult = inQC(5) ? Math.pow(10, 2.8) : !canBuyGalaxyThresholdUpg() ? 1.35 : 1.35 + 3.65 * Math.pow(0.8, getDilUpgPower(2))
-	if (hasBosonicUpg(12)) thresholdMult -= tmp.blu[12]
+	if (hasBU(12)) thresholdMult -= tmp.blu[12]
 	if (player.exdilation != undefined) thresholdMult -= Math.min(.1 * exDilationUpgradeStrength(2), 0.2)
 	if (thresholdMult < 1.15 && aarMod.nguspV !== undefined) thresholdMult = 1.05 + 0.1 / (2.15 - thresholdMult)
 	return thresholdMult

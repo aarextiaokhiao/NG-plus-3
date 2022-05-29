@@ -52,7 +52,7 @@ function updateTemp() {
 	updateInfiniteTimeTemp()
 	updateAntiElectronGalaxiesTemp()
 	updateIntergalacticTemp() // starts with if (tmp.ngp3)
-	if (hasBosonicUpg(41)) {
+	if (hasBU(41)) {
 		tmp.blu[41] = bu.effects[41]()
 		tmp.it = tmp.it.times(tmp.blu[41].it)
 		tmp.ig = tmp.ig.times(tmp.blu[41].ig)
@@ -225,7 +225,7 @@ function updateIntergalacticTemp() {
 
 function updateAntiElectronGalaxiesTemp(){
 	tmp.aeg = 0
-	if (hasBosonicUpg(14) && !brSave.active) tmp.aeg = Math.max(tmp.blu[14] - quSave.electrons.sacGals, 0)
+	if (hasBU(14) && !brSave.active) tmp.aeg = Math.max(tmp.blu[14] - quSave.electrons.sacGals, 0)
 	tmp.effAeg = tmp.aeg
 }
 
@@ -299,7 +299,7 @@ function updateGhostifyTempStuff(){
 	updatePPTITemp() //preon power threshold increase
 	if (ghSave.ghostlyPhotons.unl) {
 		var x = getLightEmpowermentBoost()
-		var y = hasBosonicUpg(32)
+		var y = hasBU(32)
 		tmp.free_lights = 0
 		if (tmp.leBoost !== x || tmp.hasBU32 !== y || tmp.updateLights) {
 			tmp.leBoost = x
@@ -400,7 +400,7 @@ function updateBreakEternityUpgrade2Temp(){
 
 function updateBreakEternityUpgrade3Temp(){
 	var ep = player.eternityPoints
-	var nerfUpgs = !tmp.be && hasBosonicUpg(24)
+	var nerfUpgs = !tmp.be && hasBU(24)
 	var log = ep.div("1e1370").add(1).log10()
 	if (nerfUpgs) log /= 2e6
 	var exp = Math.pow(log, 1/3) * 0.5
@@ -430,7 +430,7 @@ function updateBreakEternityUpgrade5Temp(){
 function updateBreakEternityUpgrade6Temp(){
 	var ep = player.eternityPoints
 	var em = beSave.eternalMatter
-	var nerfUpgs = !tmp.be && hasBosonicUpg(24)
+	var nerfUpgs = !tmp.be && hasBU(24)
 	var log1 = ep.div("1e4900").add(1).log10()
 	var log2 = em.div(1e45).add(1).log10()
 	if (nerfUpgs) log1 /= 2e6
@@ -461,7 +461,7 @@ function updateBreakEternityUpgradesTemp() {
 	var ts = player.timeShards
 	var ss = brSave && brSave.spaceShards
 	var em = beSave.eternalMatter
-	var nerfUpgs = !tmp.be && hasBosonicUpg(24)
+	var nerfUpgs = !tmp.be && hasBU(24)
 
 	updateBreakEternityUpgrade1Temp()
 	updateBreakEternityUpgrade2Temp()
@@ -551,7 +551,7 @@ function updateNanoEffectUsages() {
 	nanoRewards.effectToReward = {}
 
 	//First reward
-	var data2 = [hasBosonicUpg(21) ? "supersonic_start" : "hatch_speed"]
+	var data2 = [hasBU(21) ? "supersonic_start" : "hatch_speed"]
 	nanoRewards.effectsUsed[1] = data2
 
 	//Fifth reward
@@ -560,7 +560,7 @@ function updateNanoEffectUsages() {
 	nanoRewards.effectsUsed[5] = data2
 
 	//Seventh reward
-	var data2 = [hasBosonicUpg(22) ? "neutrinos" : "remote_start", "preon_charge"]
+	var data2 = [hasBU(22) ? "neutrinos" : "remote_start", "preon_charge"]
 	nanoRewards.effectsUsed[7] = data2
 
 	//Used Nanofield rewards

@@ -228,7 +228,7 @@ function getNanoRewardPower(reward, rewards) {
 
 function getNanoRewardPowerEff() {
 	let x = 1
-	if (hasBosonicUpg(31)) x *= tmp.blu[31]
+	if (hasBU(31)) x *= tmp.blu[31]
 	return x
 }
 

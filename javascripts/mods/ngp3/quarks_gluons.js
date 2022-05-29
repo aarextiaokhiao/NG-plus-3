@@ -113,7 +113,7 @@ function assignAll(auto) {
 
 function getQuarkAssignMult() {
 	let r = E(1)
-	if (hasBosonicUpg(23)) r = r.times(tmp.blu[23])
+	if (hasBU(23)) r = r.times(tmp.blu[23])
 	return r
 }
 
@@ -247,7 +247,7 @@ function updateColorPowers(log) {
 	let softcapStartLog = tmp.ngp3l ? Math.log10(1300) : 3
 	let softcapPower = 1
 	if (ghSave.ghostlyPhotons.unl) softcapPower += tmp.le[4]
-	if (hasBosonicUpg(11)) softcapPower += tmp.blu[11]
+	if (hasBU(11)) softcapPower += tmp.blu[11]
 	if (bLog > softcapStartLog) {
 		bLog = E_pow(bLog/softcapStartLog,softcapPower/2).times(softcapStartLog)
 		if (bLog.lt(100)) bLog = bLog.toNumber()

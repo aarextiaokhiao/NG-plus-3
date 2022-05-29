@@ -3456,7 +3456,7 @@ function nanofieldProducingChargeUpdating(diff){
 		el("produceQuarkCharge").innerHTML="Start production of preon charge.<br>(You will not get preons when you do this.)"
 	} else {
 		let chGain = toSub.div(loss).times(rate)
-		if (!hasBDUpg(3)) quSave.replicants.quarks = quSave.replicants.quarks.sub(toSub)
+		if (!hasAch("ng3p71")) quSave.replicants.quarks = quSave.replicants.quarks.sub(toSub)
 		nfSave.charge = nfSave.charge.add(chGain)
 	}
 }
@@ -3557,7 +3557,7 @@ function replicantBabiesGrowingUpUpdating(diff){
 		quSave.replicants.ageProgress = quSave.replicants.ageProgress.add(getGrowupRatePerMinute().div(60).times(diff)).min(quSave.replicants.babies)
 		var toAdd = quSave.replicants.ageProgress.floor()
 		if (toAdd.gt(0)) {
-			if (!hasBDUpg(3)) {
+			if (!hasAch("ng3p71")) {
 				if (toAdd.gt(quSave.replicants.babies)) quSave.replicants.babies = E(0)
 				else quSave.replicants.babies = quSave.replicants.babies.sub(toAdd).round()
 			}
@@ -3848,7 +3848,7 @@ function doGhostifyButtonDisplayUpdating(diff){
 	var ghostifyGains = []
 	if (ghostified) ghostifyGains.push(shortenDimensions(getGHPGain()) + " Elementary Particles")
 	if (ghostified && hasAch("ng3p78")) ghostifyGains.push(shortenDimensions(Decimal.times(6e3 * brSave.bestGals, getGhostifiedGain()).times(getNeutrinoGain())) + " Neutrinos")
-	if (hasBosonicUpg(15)) ghostifyGains.push(getFullExpansion(getGhostifiedGain()) + " Ghostifies")
+	if (hasBU(15)) ghostifyGains.push(getFullExpansion(getGhostifiedGain()) + " Ghostifies")
 	el("ghostifybtnFlavor").textContent = ghostifyGains.length > 1 ? "" : (ghostifyGains.length ? "" : "I need to research further... ") + "I need to fundament"
 	el("GHPGain").textContent = ghostifyGains.length ? "Gain " + ghostifyGains[0] + (ghostifyGains.length > 2 ? ", " + ghostifyGains[1] + "," : "") + (ghostifyGains.length > 1 ? " and " + ghostifyGains[ghostifyGains.length-1] : "") + "." : ""
 	var showGHPPeakValue = GHPminpeakValue.lt(1e6) || player.options.theme=="Aarex's Modifications"
@@ -4202,14 +4202,12 @@ function passiveQuantumLevelStuff(diff){
 		ghSave.neutrinos.mu = ghSave.neutrinos.mu.add(ngain.mul(diff))
 		ghSave.neutrinos.tau = ghSave.neutrinos.tau.add(ngain.mul(diff))
 	}
-	if (brSave.active || hasBosonicUpg(24)) brSave.spaceShards = brSave && brSave.spaceShards.add(getSpaceShardsGain().times(diff / 100))
+	if (brSave.active || hasBU(24)) brSave.spaceShards = brSave && brSave.spaceShards.add(getSpaceShardsGain().times(diff / 100))
 	if (!brSave.active) {
 		quSave.quarks = quSave.quarks.add(quarkGain().sqrt().times(diff))
 		var p = ["rg", "gb", "br"]
 		for (var i = 0; i < 3; i++) {
-			var r = quSave.usedQuarks[p[i][0]].min(quSave.usedQuarks[p[i][1]])
-			if (hasAch("ng3p71")) r = r.div(100)
-			else r = r.sqrt()
+			var r = quSave.usedQuarks[p[i][0]].min(quSave.usedQuarks[p[i][1]]).div(100)
 			quSave.gluons[p[i]] = quSave.gluons[p[i]].add(r.times(diff))
 		}
 		if (ghSave.milestones>15) quSave.quarks=quSave.quarks.add(quarkGain().times(diff / 100))

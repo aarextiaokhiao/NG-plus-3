@@ -551,7 +551,7 @@ function getTreeUpgradeEfficiencyText(){
 	if (ghSave.neutrinos.boosts >= 7) text += "Neutrino Boost 7: +" + shorten(tmp.nb[7]) + ", "
 	if (!tmp.ngp3l) {
 		if (hasAch("ng3p62") && !brSave.active) text += "Finite Time Reward: +10%, "
-		if (hasBosonicUpg(43)) text += "Bosonic Lab Upgrade 18: " + shorten(tmp.blu[43]) + "x, "
+		if (hasBU(43)) text += "Bosonic Lab Upgrade 18: " + shorten(tmp.blu[43]) + "x, "
 	}
 	if (text == "") return "No multipliers currently"
 	return text.slice(0, text.length-2)
@@ -562,7 +562,7 @@ function getTreeUpgradeEfficiency(mod) {
 	if (ghSave.neutrinos.boosts >= 7 && (brSave.active || mod == "br") && mod != "noNB") r += tmp.nb[7]
 	if (!tmp.ngp3l) {
 		if (hasAch("ng3p62") && !brSave.active) r += 0.1
-		if (hasBosonicUpg(43)) r *= tmp.blu[43]
+		if (hasBU(43)) r *= tmp.blu[43]
 	}
 	return r
 }
