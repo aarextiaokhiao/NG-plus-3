@@ -1738,7 +1738,7 @@
 				<br><br>
 				(Update v2.41R: Gravitional Relativity)
 				<br>
-				<b class="red">(Beta: 5/29/22a Build)</b>
+				<b class="red">(Beta: 6/2/22 Build)</b>
 				<br><br>
 			</p>
 			<div id="footercontainer">
@@ -5581,14 +5581,14 @@
 						<span style="font-size: 18px">You have <b id="gravAmt" class="gv" style="font-size: 24px">0</b> best Gravitons.</span><br>
 						(current: <span style="font-size:15px">0</span>)
 						<br><br>
-						<button class="storebtn">Rollback</button>
-						<button class="storebtn">Exit</button>
-						<button class="storebtn">Replace</button>
+						<button class="storebtn" id="gw_rollback" onclick="rollbackGrav()">Rollback</button>
+						<button class="storebtn" id="gw_exit" onclick="exitGrav()">Exit</button>
+						<button class="storebtn" id="gw_replace" onclick="exchangeGrav()">Exchange</button>
 						<table style="margin: auto">
 							<tr>
-								<td><button class="storebtn gw" ach-tooltip="On entering this depth, some nerfs will be applied in a Gravity Well.">Enter Newtonian Depth 1</button></td>
-								<td><button class="storebtn gw" ach-tooltip="On entering this depth, some nerfs will be applied in a Gravity Well.">Enter Relativity Depth 1</button></td>
-								<td><button class="storebtn gw" ach-tooltip="On entering this depth, some nerfs will be applied in a Gravity Well.">Enter Intergalactic Depth 1</button></td>
+								<td><button class="storebtn gw" ach-tooltip="W Bosons have a weaker effect." onclick="pullGrav(0)">Enter Newtonian Depth 1</button></td>
+								<td><button class="storebtn gw" ach-tooltip="Placeholder." onclick="pullGrav(1)">Enter Relativity Depth 1</button></td>
+								<td><button class="storebtn gw" ach-tooltip="Placeholder." onclick="pullGrav(2)">Enter Intergalactic Depth 1</button></td>
 							</tr>
 						</table>
 					</div>

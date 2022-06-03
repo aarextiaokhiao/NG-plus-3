@@ -20,7 +20,7 @@ const BD_UPGS = [
         desc: "Graviton will reduce Cherenkov Radiation’s effect.",
         cost: E(1e9),
         eff() {
-            let x = ghSave.gravitons.amount.add(1).pow(2)
+            let x = E(ghSave.gravitons.amt).add(1).pow(2)
             return x
         },
         effDesc(x) { return "/"+shorten(x) },

@@ -4,12 +4,6 @@ function updatePostNGp3TempStuff() {
 }
 
 function postNGp3Updating(dt) {
-	/*if (tmp.gv.core) {
-		ghSave.gravitons.amount = ghSave.gravitons.amount.add(tmp.gv.gain.mul(dt))
-		ghSave.gravitons.best = ghSave.gravitons.amount.max(ghSave.gravitons.best)
-		ghSave.gravitons.tog = Math.max(ghSave.gravitons.tog, tmp.gv.bulk)
-	}*/
-
     if (ghSave.breakDilation.break) {
         setTachyonParticles(player.dilation.tachyonParticles.max(getDilGain()));
         ghSave.breakDilation.cr = ghSave.breakDilation.cr.add(tmp.bd.crGain.mul(dt))
@@ -49,6 +43,7 @@ function conToDeciPostNGP3() {
         ghSave.breakDilation = deepUndefinedAndDecimal(ghSave.breakDilation, getBrandNewBDData())
         if (ghSave.gravitons===undefined) ghSave.gravitons={}
         else if (ghSave.gravitons.tog===undefined) ghSave.gravitons={}
+        else if (ghSave.gravitons.his===undefined) ghSave.gravitons={}
         ghSave.gravitons = deepUndefinedAndDecimal(ghSave.gravitons, getBrandNewGravitonsData())
     }
 }

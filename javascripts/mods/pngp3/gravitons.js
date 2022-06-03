@@ -9,20 +9,62 @@ function doGravitonsUnlockStuff(){
 function getBrandNewGravitonsData() {
 	return {
 		unl: false,
-		amount: E(0),
+		amt: 0,
 		cur: 0,
-		slot: [],
+		slot: [1,2,3,null,null],
+		his: [],
 		well: {}
 	}
 }
 
-//Functions
-function hasGrav(x) {
-	return false
+let gWell = {
+	1: {
+		req: 0,
+		hb_req: 0,
+		exchanges: [],
+		title: "Newtonian",
+		desc: "W Bosons have a weaker effect.",
+	},
+	2: {
+		req: 0,
+		hb_req: 0,
+		exchanges: [],
+		title: "Relativity",
+		desc: "Placeholder.",
+	},
+	3: {
+		req: 0,
+		hb_req: 0,
+		exchanges: [],
+		title: "Intergalactic",
+		desc: "Placeholder.",
+	},
+	4: {
+		req: 1/0,
+		hb_req: 1/0,
+		exchanges: [],
+		title: "Einstein",
+		desc: "Placeholder.",
+	},
+	5: {
+		req: 0,
+		hb_req: 0,
+		exchanges: [],
+		title: "Lunarian",
+		desc: "Placeholder.",
+	},
+	6: {
+		req: 0,
+		hb_req: 0,
+		exchanges: [],
+		title: "Strange",
+		desc: "Placeholder.",
+	}
 }
 
-function getGrav(x, type) {
-	return tmp.gv.core[x][type + "eff"]
+//Functions
+function inGrav() {
+	return tmp.ngp3 && ghSave.gravitons.cur
 }
 
 function exitGrav() {
@@ -33,7 +75,11 @@ function exitGrav() {
 }
 
 function pullGrav(x) {
+	alert("Soon.")
+	return
+
 	if (ghSave.gravitons.cur) return
+	if (!ghSave.gravitons.well[x] && !confirm("On entering this depth, some nerfs will be applied in a Gravity Well.")) return
 	ghSave.gravitons.cur = x
 	bosonicLabReset()
 }
@@ -44,8 +90,14 @@ function compGrav() {
 	ghSave.gravitons.well[cur] = (ghSave.gravitons.well[cur] || 0) + 1
 }
 
-function exchangeGrav(x) {
-	//Soon.
+function exchangeGrav(x, y) {
+	ghSave.gravitons.slot[x] = y
+	ghSave.gravitons.his.push([[...ghSave.gravitons.well], x, y])
+	//WIP
+}
+
+function rollbackGrav(x) {
+	alert("Soon.")
 }
 
 //Temp
@@ -61,5 +113,7 @@ function updateGravitonsTemp() {
 
 //Displays
 function updateGravitonsTab() {
-	return
+	el("gw_rollback").style.display = ghSave.gravitons.his ? "" : "none"
+	el("gw_exit").style.display = ghSave.gravitons.cur ? "" : "none"
+	el("gw_replace").style.display = "none"
 }
