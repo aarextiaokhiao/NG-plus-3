@@ -11,7 +11,7 @@ function updateQuantumWorth(mode) {
 			if (!tmp.ngp3l) colorCharge.qwBonus = quantumWorth.pow(.8).div(100)
 		}
 		if (ghSave.times) {
-			var automaticCharge = Math.max(Math.log10(quantumWorth.add(1).log10() / 150) / Math.log10(2), 0) + Math.max(brSave.spaceShards.add(1).log10() / 20 - 0.5, 0)
+			var automaticCharge = Math.max(Math.log10(quantumWorth.add(1).log10() / 150) / Math.log10(2), 0) + Math.max(brSave.spaceShards.add(1).log10() / 15 - 0.5, 0)
 			ghSave.automatorGhosts.power = Math.max(automaticCharge, ghSave.automatorGhosts.power)
 			if (mode != "quick") {
 				el("automaticCharge").textContent = automaticCharge.toFixed(2)
@@ -244,7 +244,7 @@ function updateColorPowers(log) {
 	if (tmp.ngp3l) bLog = Math.sqrt(bLog)
 	else bLog = Math.sqrt(log.b + 1.5) - 1.5
 
-	let softcapStartLog = tmp.ngp3l ? Math.log10(1300) : 3
+	let softcapStartLog = 3
 	let softcapPower = 1
 	if (ghSave.ghostlyPhotons.unl) softcapPower += tmp.le[4]
 	if (hasBU(11)) softcapPower += tmp.blu[11]

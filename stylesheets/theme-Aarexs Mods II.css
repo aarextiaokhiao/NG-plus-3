@@ -196,7 +196,7 @@ button, div.storebtn {
     color: #e5e5e5 !important
 }
 
-#singularityPower, #darkMatterAmount, #darkMatterPerSecond, #nextUpgrade, #darkMatterDT, #nextDiscounts, #blackholePowAmount, #replicantAmount, #workerReplAmount, #hatchProgress, #babyReplAmount, #growupRate, #replicantAmountED, .dmAmount {
+#singularityPower, #darkMatterAmount, #darkMatterPerSecond, #nextUpgrade, #darkMatterDT, #nextDiscounts, #blackholePowAmount, #replicantAmount, #workerReplAmount, #hatchProgress, #babyReplAmount, #growupRate, #replicantAmountED {
 	color: #0c0c0c !important;
 	text-shadow: 0px 0px 3px #0c0c0c, 0px 0px 4.5px #e5e5e5
 }
@@ -362,7 +362,7 @@ button, div.storebtn {
 	color: #00e5e5 !important
 }
 
-#metadimensions table #quantum.storebtn, .quantumbtn, #pastquantums, #dilstudy8.dilationupgbought, #qctabbtn, #qcsbtn, #dilstudy9.dilationupgbought, #pccompletionsbtn {
+#metadimensions table #quantum.storebtn, .quantumbtn, #pastquantums, #dilstudy8.dilationupgbought, #qctabbtn, #qcsbtn, #dilstudy9.dilationupgbought, #pctabbtn, #pccompletionsbtn {
 	background-color: #009900 !important;
 	color: #191919 !important
 }
@@ -373,7 +373,7 @@ button, div.storebtn {
 	color: #191919 !important
 }
 
-#metadimensions table #quantum.storebtn:hover, .quantumbtn:hover, #pastquantums:hover, #dilstudy8.dilationupg, #qctabbtn:hover, #qcsbtn:hover, #dilstudy9.dilationupg, #pccompletionsbtn:hover {
+#metadimensions table #quantum.storebtn:hover, .quantumbtn:hover, #pastquantums:hover, #dilstudy8.dilationupg, #qctabbtn:hover, #qcsbtn:hover, #dilstudy9.dilationupg, #pctabbtn:hover, #pccompletionsbtn:hover {
 	background-color: #269926 !important
 }
 
@@ -536,13 +536,13 @@ button, div.storebtn {
 	box-shadow: 1px 2px rgba(229,229,229,0.4)
 }
 
-#dilstudy14.dilationupg, .bigripbtn:hover, .gluonupgrade.bigrip {
+#dilstudy14.dilationupg, #riptabbtn button, .bigripbtn:hover, .gluonupgrade.bigrip {
 	background-color: #7ee586 !important;
 	color: #191919 !important;
 	box-shadow: 1px 2px rgba(229,229,229,0.4)
 }
 
-#dilstudy14.dilationupg:hover, .gluonupgrade.bigrip:hover {
+#dilstudy14.dilationupg:hover, #riptabbtn button:hover, .gluonupgrade.bigrip:hover {
 	background-color: #a0e5a6 !important
 }
 
@@ -605,6 +605,11 @@ button, div.storebtn {
 	color: #ffffdf !important;
 	text-shadow: 0 0 24px #7f7f00, 0 0 60px #bfbf3f, 0 0 90px #ffff00 !important;
 	box-shadow: inset 0px 0px 0px 0px #ffffdf, 1px 2px rgba(229,229,229,0.4)
+}
+
+.dmAmount {
+	color: black !important;
+	text-shadow: 0 0 6px #ffff00 !important;
 }
 
 .gphAmount {

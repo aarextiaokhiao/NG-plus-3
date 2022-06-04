@@ -85,8 +85,8 @@ function updateGPHUnlocks() {
 
 function getGPHProduction() {
 	let b = brSave && brSave.active
-	if (b) var ret = player.dilation.dilatedTime.div("1e450")
-	else var ret = player.dilation.dilatedTime.div("1e940")
+	if (b) var ret = player.dilation.dilatedTime.div("1e475")
+	else var ret = player.dilation.dilatedTime.div("1e900")
 	if (ret.gt(1)) ret = ret.pow(b ? 0.02 : 0.025)
 	return ret
 }

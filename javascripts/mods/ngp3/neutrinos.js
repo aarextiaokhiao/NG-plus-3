@@ -86,7 +86,7 @@ function onNotationChangeNeutrinos() {
 	el("neutrinoUnlockCost").textContent=shortenDimensions(E(tmp.nbc[ghSave.neutrinos.boosts]))
 	el("neutrinoMult").textContent=shortenDimensions(E_pow(5, ghSave.neutrinos.multPower - 1))
 	el("neutrinoMultUpgCost").textContent=shortenDimensions(E_pow(4, ghSave.neutrinos.multPower-1).times(2))
-	el("ghpMult").textContent=shortenDimensions(pow2(ghSave.multPower-1))
+	el("ghpMult").textContent=shortenDimensions(getGHPBaseMult())
 	el("ghpMultUpgCost").textContent=shortenDimensions(getGHPMultCost())
 	for (var u = 1; u < 18; u++) el("neutrinoUpg" + u + "Cost").textContent=shortenDimensions(E(tmp.nuc[u]))
 }
@@ -145,15 +145,15 @@ function buyNeutrinoMult() {
 	if (!ghSave.ghostParticles.gte(cost)) return
 	ghSave.ghostParticles=ghSave.ghostParticles.sub(cost).round()
 	ghSave.neutrinos.multPower++
-	el("neutrinoMult").textContent=shortenDimensions(E_pow(5, ghSave.neutrinos.multPower-1))
-	el("neutrinoMultUpgCost").textContent=shortenDimensions(E_pow(4, ghSave.neutrinos.multPower-1).times(2))
+	el("neutrinoMult").textContent=shortenDimensions(E_pow(5, ghSave.neutrinos.multPower - 1))
+	el("neutrinoMultUpgCost").textContent=shortenDimensions(E_pow(4, ghSave.neutrinos.multPower - 1).times(2))
 }
 
 function maxNeutrinoMult() {
-	let cost = E_pow(4,ghSave.neutrinos.multPower-1).times(2)
+	let cost = E_pow(4, ghSave.neutrinos.multPower-1).times(2)
 	if (!ghSave.ghostParticles.gte(cost)) return
 	let toBuy = Math.floor(ghSave.ghostParticles.div(cost).times(3).add(1).log(4))
-	let toSpend = E_pow(4,toBuy).sub(1).div(3).times(cost)
+	let toSpend = E_pow(4, toBuy).sub(1).div(3).times(cost)
 	ghSave.ghostParticles = ghSave.ghostParticles.sub(toSpend.min(ghSave.ghostParticles)).round()
 	ghSave.neutrinos.multPower += toBuy
 	el("neutrinoMult").textContent = shortenDimensions(E_pow(5, ghSave.neutrinos.multPower - 1))
@@ -217,8 +217,7 @@ var neutrinoBoosts = {
 			return nb8
 		},
 		9: function(nt) {
-			var nb9 = (nt[0].add(1).log10()+nt[1].add(1).log10()+nt[2].add(1).log10())/10
-			if (tmp.ngp3l && nb9 > 4096) nb9 = Math.pow(Math.log2(nb9) + 4, 3)
+			var nb9 = nt[0].add(1).log10()+nt[1].add(1).log10()+nt[2].add(1).log10()
 			if (isLEBoostUnlocked(9)) nb9 *= tmp.leBonus[7]
 			return nb9
 		},

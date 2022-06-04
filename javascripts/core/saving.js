@@ -1311,12 +1311,6 @@ function doNGPlusThreeNewPlayer(){
 	player.eternityBuyer.dilationMode = false
 	player.eternityBuyer.statBeforeDilation = 0
 	player.eternityBuyer.dilationPerAmount = 10
-	player.eternityBuyer.dilMode = "amount"
-	player.eternityBuyer.tpUpgraded = false
-	player.eternityBuyer.slowStop = false
-	player.eternityBuyer.slowStopped = false
-	player.eternityBuyer.ifAD = false
-	player.eternityBuyer.presets = {on: false, autoDil: false, selected: -1, selectNext: 0, left: 1, order: []}
 	quSave.autobuyer = {enabled: false, limit: 1, mode: "amount", peakTime: 0}
 	quSave.electrons = getBrandNewElectronData()
 	quSave.disabledRewards = {}

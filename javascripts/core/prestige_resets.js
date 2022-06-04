@@ -821,12 +821,6 @@ function doGhostifyResetStuff(implode, gain, amount, force, bulk, nBRU, nBEU){
 		isOn: false,
 		dilationMode: false,
 		dilationPerAmount: player.eternityBuyer.dilationPerAmount,
-		dilMode: player.eternityBuyer.dilMode,
-		tpUpgraded: player.eternityBuyer.tpUpgraded,
-		slowStop: player.eternityBuyer.slowStop,
-		slowStopped: player.eternityBuyer.slowStopped,
-		ifAD: player.eternityBuyer.ifAD,
-		presets: player.eternityBuyer.presets
 	}
 	player.eterc8ids = 50
 	player.eterc8repl = 40

@@ -417,9 +417,8 @@ function setR20Tooltip(){
 	let pls = el("Please answer me why you are dying.")
 
 	let willenoughReward = [] // for the achievement "Will it be enough?"
-	willenoughReward.push("replicated galaxies doesn't divide replicantis")
-	willenoughReward.push("you keep all your replicated galaxies on Infinity")
-	willenoughReward.push("keep all your replicanti upgrades on Eternity only when you start a normal Eternity run")
+	willenoughReward.push("Replicated Galaxies don't reset until next Eternity")
+	willenoughReward.push("keep Replicanti upgrades on normal Eternity runs")
 	if (aarMod.ngudpV&&!aarMod.ngumuV) willenoughReward.push("keep Black Hole Dimensions on Quantum")
 	willenoughReward = wordizeList(willenoughReward, true)
 

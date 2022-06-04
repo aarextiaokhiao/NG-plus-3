@@ -605,12 +605,13 @@ function exdilationDisplay(){
 
 function mainDilationDisplay(){
 	if (player.dilation.active) uponDilationDisplay()
-	else el("enabledilation").textContent = "Dilate time."+((player.eternityBuyer.isOn&&player.eternityBuyer.dilationMode&&!player.eternityBuyer.slowStopped&&player.eternityBuyer.dilMode=="amount"?!isNaN(player.eternityBuyer.statBeforeDilation):false) ? " " + (player.eternityBuyer.dilationPerAmount - player.eternityBuyer.statBeforeDilation) + " left before dilation." : "")
+	else el("enabledilation").textContent = "Dilate time."+((player.eternityBuyer.isOn&&player.eternityBuyer.dilationMode?!isNaN(player.eternityBuyer.statBeforeDilation):false) ? " "+player.eternityBuyer.statBeforeDilation+ " left before dilation." : "")
 	if (player.exdilation==undefined||aarMod.ngudpV?false:player.blackhole.unl) {
 		exdilationDisplay()
 	} else el("reversedilationdiv").style.display = "none"
-	var fgm=getFreeGalaxyGainMult()
-	el('freeGalaxyMult').textContent = fgm == 1 ? "free galaxy" : Math.round(fgm * 10) / 10 + " free galaxies"
+
+	var fgm = getFreeGalaxyGainMult()
+	el('freeGalaxyMult').textContent = fgm == 1 ? "Tachyonic Galaxy" : Math.round(fgm * 10) / 10 + " Tachyonic Galaxies"
 }
 
 function breakEternityDisplay(){
@@ -762,10 +763,6 @@ function ABTypeDisplay(){
 	else el("galaxybulk").style.display = "none"
 	if (getEternitied() > 99 && player.meta) el("toggleautoetermode").style.display = "inline-block"
 	else el("toggleautoetermode").style.display = "none"
-	if (getEternitied() > 99 && hasAch("ng3p52")) el('aftereternity').style.display = "inline-block"
-	else el('aftereternity').style.display = "none"
-	if (getEternitied() > 99 && hasAch("ng3p52")) el('autoEternityTabbtn').style.display = ""
-	else el('autoEternityTabbtn').style.display = "none"
 }
 
 function infPoints2Display(){

@@ -646,11 +646,6 @@ function doNGP3NewPlayerStuff(){
         player.eternityBuyer.dilationMode = false
         player.eternityBuyer.statBeforeDilation = 0
         player.eternityBuyer.dilationPerAmount = 10
-        player.eternityBuyer.dilMode = "amount"
-        player.eternityBuyer.tpUpgraded = false
-        player.eternityBuyer.slowStop = false
-        player.eternityBuyer.slowStopped = false
-        player.eternityBuyer.ifAD = false
         quSave.autobuyer = {
                 enabled: false,
                 limit: 1,
@@ -1190,8 +1185,6 @@ function doNGp3v19995tov21(){
         if (aarMod.newGame3PlusVersion < 2) {
                 player.eternityBuyer.dilMode = "amount"
                 player.eternityBuyer.tpUpgraded = false
-                player.eternityBuyer.slowStop = false
-                player.eternityBuyer.slowStopped = false
                 player.eternityBuyer.ifAD = false
                 quSave.reached = quSave.times > 0
                 quSave.nonMAGoalReached = {}
@@ -1744,9 +1737,8 @@ function doNGp3Init2(){
         updateTemp()
         
         if (tmp.ngp3) {
-                if (player.eternityBuyer.presets === undefined) player.eternityBuyer.presets = {on: false, autoDil: false, selected: -1, selectNext: 0, left: 1, order: []}
+                delete player.eternityBuyer.presets
                 el('prioritydil').value=player.eternityBuyer.dilationPerAmount
-                if (hasAch("ng3p52")) el("autoDilValue").value=player.eternityBuyer.dilationPerAmount
                 if (player.meta.bestOverQuantums === undefined) player.meta.bestOverQuantums = player.meta.bestAntimatter
                 updateColorPowers()
                 tmp.be=brSave.active&&beSave.break
@@ -2029,7 +2021,7 @@ function updateNGp3DisplayStuff(){
                 if (u%3==1) el("neutrinoUpg"+u).parentElement.parentElement.style.display=u>ghSave.times+2?"none":""
                 else el("neutrinoUpg"+u).style.display=u>ghSave.times+2?"none":""
         }
-        el("gphUnl").textContent="To unlock Photons, you need to get "+shortenCosts(pow10(7.5e9))+" antimatter while your universe is Big Ripped first."
+        el("gphUnl").textContent="To unlock Photons, you need to get "+shortenCosts(pow10(4.5))+" antimatter while your universe is Big Ripped first."
         updateBLUnlockDisplay()
         el("bpc68").textContent=shortenMoney(quSave.pairedChallenges.pc68best)
         el("odSlider").value=Math.round((tmp.bl.odSpeed-1)/4*50)
@@ -2076,7 +2068,6 @@ function setSomeQuantumAutomationDisplay(){
         el('autoAssign').style.display = autoAssignUnl ? "" : "none"
         el('autoAssignRotate').style.display = autoAssignUnl ? "" : "none"
         el('autoReset').style.display=hasAch("ng3p47")?"":"none"
-        el('aftereternity').style.display=hasAch("ng3p52")?"":"none"
 }
 
 function setReplAutoDisplay(){
@@ -2725,21 +2716,7 @@ function loadAutoBuyerSettings() {
         el("prioritySac").value = player.autoSacrifice.priority
         el("bulkgalaxy").value = player.autobuyers[10].bulk
         el("priority13").value = formatValue("Scientific", E(player.eternityBuyer.limit), 2, 0)
-        if (hasAch("ng3p52") && player.eternityBuyer.presets !== undefined) {
-                el("autoEterIfAD").textContent = "Auto-eternity only if able to auto-dilate: O" + (player.eternityBuyer.ifAD ? "N" : "FF")
-                el("autoEterValue").value = formatValue("Scientific", E(player.eternityBuyer.limit), 2, 0)
-                el("autodilatemode").textContent = "Mode: " + (player.eternityBuyer.dilMode == "upgrades" ? "Upgrades" : "Amount of eternities")
-                el("slowstop").textContent = "Stop auto-dilate if a little bit of TP is gained: O" + (player.eternityBuyer.slowStop ? "N" : "FF")
-                el("toggleAP").textContent = player.eternityBuyer.presets.on ? "Disable" : "Enable"
-                el("eternitiesLeft").textContent = getFullExpansion(player.eternityBuyer.presets.left)
-                apLoaded = false
-                clearInterval(apInterval)
-                if (el("eternitystore").style.display === "block" && el("autoEternity").style.display === "block") loadAP()
-        }
-        if (player.eternityBuyer.dilationPerAmount !== undefined) {
-                el('prioritydil').value=player.eternityBuyer.dilationPerAmount
-                if (hasAch("ng3p52")) el("autoDilValue").value=player.eternityBuyer.dilationPerAmount
-        }
+        if (player.eternityBuyer.dilationPerAmount !== undefined) el('prioritydil').value=player.eternityBuyer.dilationPerAmount
         if (player.autobuyers[12] !== undefined) el("priority14").value = formatValue("Scientific", E(player.autobuyers[12].priority), 2, 0)
         if (player.autobuyers[13] !== undefined) {
                 el("priority15").value = player.autobuyers[13].priority

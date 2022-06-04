@@ -122,7 +122,6 @@
 					<td id="dilationTabbtn"><button class="secondarytabbtn" onclick="showEternityTab('dilation')">Time Dilation</button></td>
 					<td id="blackHoleTabbtn"><button class="secondarytabbtn" onclick="showEternityTab('blackhole')">Black Hole</button></td>
 					<td><button class="secondarytabbtn" onclick="showEternityTab('milestones')">Milestones</button></td>
-					<td id="autoEternityTabbtn"><button class="secondarytabbtn" onclick="showEternityTab('autoEternity')">Auto-Eternity</button></td>
 				</tr>
 			</table>
 			<div class="eternitytab" id="timestudies" style="font-size: 15px">
@@ -1100,66 +1099,6 @@
 					</table>
 				</div>
 			</div>
-			<div class="eternitytab" id="autoEternity">
-				<table id="autoEternityTable">
-					<tr>
-						<td>
-							<b>Main options</b><br>
-							<button class="storebtn" id="autoEterToggle" onclick="toggleABEter()">Enable</button><br>
-							<button class="storebtn" id="autoEterMode" style="width:400px" onclick="toggleAutoEterMode()"></button>
-							<button class="storebtn" id="autoEterIfAD" style="width:400px" onclick="toggleAutoEterIfAD()"></button>
-							<span id='autoEterCond'></span><br>
-							<input type="text" onchange="updateAutoEterValue()" id="autoEterValue"></input>
-						</td>
-						<td>
-							<div style="height:75px"><b>Preset automation</b><br><button id="toggleAP" class="storebtn" onclick="toggleAPs()">Enable</button> <button class="storebtn" onclick="createAP()">Add preset</button> <button class="storebtn" onclick="createAP(true)">Import preset</button><br>Eternities left to select the next preset: <span id="eternitiesLeft">2</span></div>
-							<div style="height:225px; overflow-y:auto">
-								<table id='automatedPresets'>
-								</table>
-							</div>
-						</td>
-					</tr>
-					<tr>
-						<td>
-							<b>Dilation options</b><br>
-							<button class="storebtn" id="autoDilToggle" onclick="toggleAutoDil()">Enable</button><br>
-							<button class="storebtn" id="autodilatemode" style="width:400px" onclick="changeAutoDilateMode()">Mode: Amount of eternities</button>
-							<button class="storebtn" id="slowstop" style="width:400px; font-size: 11px" onclick="toggleSlowStop()">Stop auto-dilate if a little bit of TP is gained: OFF</button>
-							Amount of eternities to wait until dilate time:<br>
-							<input type="text" onchange="updateAutoDilValue()" id="autoDilValue"></input>
-						</td>
-						<td>
-							<div style="height:50px"><b>Special preset automation</b></div>
-							<div>
-								<table>
-									<tr>
-										<td id='apDilSelected'></td>
-										<td id='apDil'></td>
-									</tr>
-									<tr>
-										<td id='apGrindSelected'></td>
-										<td id='apGrind'></td>
-									</tr>
-								</table>
-							</div>
-						</td>
-					</tr>
-				</table>
-				<div id="footercontainer">
-					<table id="footer">
-						<tr>
-							<td>
-								<div style="text-align:center">
-									<a href="http://aarextiaokhiao.github.io/IvarK.github.io" target="_newtab">NG+3R</a> |-|
-									<a href="howto.html" target="_newtab">Help</a> |
-									<a href="about.html" onclick="giveAchievement('A sound financial decision')" target="_newtab">About</a> |
-									<a href="http://discord.gg/KsjcgskgTj" target="_newtab">Discord</a>
-								</div>
-							</td>
-						</tr>
-					</table>
-				</div>
-			</div>
 		</div>
 		<div id="dimensions" class="tab">
 			<table class="table" align="center" style="margin: auto" id="dimTabButtons">
@@ -1738,7 +1677,7 @@
 				<br><br>
 				(Update v2.41R: Gravitional Relativity)
 				<br>
-				<b class="red">(Beta: 6/2/22 Build)</b>
+				<b class="red">(Beta: 6/3/22 Build)</b>
 				<br><br>
 			</p>
 			<div id="footercontainer">
@@ -2497,7 +2436,7 @@
 								<div id="To the new dimension!" class="achievement achievementlocked" style="background-image: url(images/143.png)" ach-tooltip='Big Rip the universe. Reward: Keep your Infinity Upgrades and autobuyers, Time Theorem production is multiplied by 100, unlock the "X times eternitied" mode of the Eternity autobuyer, and every completion of EC11 gives a completion of EC12.'></div>
 							</td>
 							<td>
-								<div id="Quantum doesn't take so long" class="achievement achievementlocked" style="background-image: url(images/144.png)" ach-tooltip="Quantum in under 1 second. Reward: Unlock an advancement to auto-Eternity, and Duplicants no longer decrease."></div>
+								<div id="Quantum doesn't take so long" class="achievement achievementlocked" style="background-image: url(images/144.png)" ach-tooltip="Quantum in under 1 second. Reward: Duplicants no longer decrease."></div>
 							</td>
 							<td>
 								<div id="Gonna go fast" class="achievement achievementlocked" style="background-image: url(images/145.png)"></div>
@@ -3944,7 +3883,6 @@
 			<br>
 			<button class="storebtn" id="togglecrunchmode" style="font-size: 100%; width: 150px; height: 40px;margin: 3px; display: none" onclick="toggleCrunchMode()">Auto crunch mode: amount</button>
 			<button class="storebtn" id="toggleautoetermode" style="font-size: 100%; width: 150px; height: 40px;margin: 3px; display: none" onclick="toggleAutoEterMode()">Auto eternity mode: amount</button>
-			<button class="storebtn" id="aftereternity" style="font-size: 100%; width: 150px; height: 40px;margin: 3px; display: none" onclick="openAfterEternity()">After-eternity automation</button>
 			<button class="storebtn" id="toggleautoquantummode" style="font-size: 100%; width: 150px; height: 40px;margin: 3px; display: none" onclick="toggleAutoQuantumMode()"></button>
 			<br>
 			<table class="table" style="margin: 0 auto">
@@ -5098,7 +5036,7 @@
 					<td id="gphtabbtn"><button class="secondarytabbtn" onclick="showGhostifyTab('gphtab')">Photons</button></td>
 					<td id="bltabbtn"><button class="secondarytabbtn" onclick="showGhostifyTab('bltab')">Bosonic Lab</button></td>
 					<td><button class="secondarytabbtn" onclick="showGhostifyTab('bravemilestones')">Brave Milestones</button></td>
-					<td><button class="secondarytabbtn" onclick="showGhostifyTab('automaticghosts')">Automator Ghosts</button></td>
+					<td><button class="secondarytabbtn" onclick="showGhostifyTab('automaticghosts')">Automators</button></td>
 				</tr>
 			</table>
 			<div id="neutrinos" class="ghostifytab">
@@ -5133,7 +5071,7 @@
 					<tr>
 						<td><button id="neutrinoUnlock" class="gluonupgrade unavailablebtn" onclick="unlockNeutrinoBoost()">Unlock a new boost based on your neutrinos.<br>Cost: <span id="neutrinoUnlockCost">2</span> ElP</button></td>
 						<td><button id="neutrinoMultUpg" class="gluonupgrade unavailablebtn" onclick="buyNeutrinoMult()">You gain 5x more neutrinos.<br>Currently: <span id="neutrinoMult">1</span>x<br>Cost: <span id="neutrinoMultUpgCost">3</span> ElP</button><br><button class="storebtn" onclick='maxNeutrinoMult()' style='width:190px'>Max Neutrino mult</button></td>
-						<td><button id="ghpMultUpg" class="gluonupgrade unavailablebtn" onclick="buyGHPMult()">You gain 2x more ElP.<br>Currently: <span id="ghpMult"></span>x<br>Cost: <span id="ghpMultUpgCost"></span> of any neutrinos</button><br><button class="storebtn" onclick='maxGHPMult()' style='width:190px'>Max ElP mult</button></td>
+						<td><button id="ghpMultUpg" class="gluonupgrade unavailablebtn" onclick="buyGHPMult()">You gain 3x more ElP.<br>Currently: <span id="ghpMult"></span>x<br>Cost: <span id="ghpMultUpgCost"></span> of any neutrinos</button><br><button class="storebtn" onclick='maxGHPMult()' style='width:190px'>Max ElP mult</button></td>
 					</tr>
 					<tr>
 						<td><button class="gluonupgrade unavailablebtn" id="neutrinoUpg1" onclick="buyNeutrinoUpg(1)" style="font-size: 10px">Meta-Dimension Boosts cost cheaper.<br>Currently: -<span id="neutrinoUpg1Pow"></span><br>Cost: <span id="neutrinoUpg1Cost"></span> of any neutrinos</button></td>
@@ -5159,7 +5097,8 @@
 						<td><button class="gluonupgrade unavailablebtn" id="neutrinoUpg13" onclick="buyNeutrinoUpg(13)">100 RG upgrade doesn't nerf the 100 BR upgrade.<br>Cost: <span id="neutrinoUpg13Cost"></span> of any neutrinos</button></td>
 						<td><button class="gluonupgrade unavailablebtn" id="neutrinoUpg14" onclick="buyNeutrinoUpg(14)" style="font-size: 10px">Gain more neutrinos based on your ElP and color powers.<br>Currently: <span id="neutrinoUpg14Pow"></span>x<br>Cost: <span id="neutrinoUpg14Cost"></span> of any neutrinos</button></td>
 						<td><button class="gluonupgrade unavailablebtn" id="neutrinoUpg15" onclick="buyNeutrinoUpg(15)">Your Nanofield rewards speed up Nanofield.<br>Currently: <span id="neutrinoUpg15Pow"></span>x<br>Cost: <span id="neutrinoUpg15Cost"></span> of any neutrinos</button></td>
-					</tr><tr id="gravRow">
+					</tr>
+					<tr id="gravRow">
 						<td><button class="gluonupgrade unavailablebtn" id="neutrinoUpg16" onclick="buyNeutrinoUpg(16)" style="font-size: 10px">Fundaments boosts Gravitons gain. Gravitons effect base is increased by 1.<br>Currently: <span id="neutrinoUpg16Pow"></span>x<br>Cost: <span id="neutrinoUpg16Cost"></span> of any neutrinos</button></td>
 						<td><button class="gluonupgrade unavailablebtn" id="neutrinoUpg17" onclick="buyNeutrinoUpg(17)">Free Nanofield rewards also makes the Anti-Preon Ghost wake 1/3 later.<br>Cost: <span id="neutrinoUpg17Cost"></span> of any neutrinos</button></td>
 					</tr>
@@ -5169,40 +5108,40 @@
 				<div>Your quantum worth (sum of quarks, colored quarks, and gluons) is currently <b class="QKAmount" id="quantumWorth3">0</b>.</div>
 				<table class='qtable'>
 					<tr>
-						<td>You have <span id="automatorGhostsAmount" style="font-size:35px">1</span> Automator Ghosts.<br>Next Automator Ghost at <span id="nextAutomatorGhost"style="font-size:35px">?.?</span>.</td>
+						<td>You have <span id="automatorGhostsAmount" style="font-size:35px">1</span> Automators.<br>Next Automator at <span id="nextAutomatorGhost"style="font-size:35px">?.?</span>.</td>
 						<td>You have <span id="automaticCharge" style="font-size:35px">0.0</span> Automator Charge.</td>
-						<td>You have <span id="automaticPower" style="font-size:35px">0.0</span> Automator Power.<br>Automator Ghosts are using <span id="consumedPower" style="font-size:35px">0.0</span> Automator Power.<br><b id="tooMuchPowerConsumed" class="warning">WARNING: NOT ENOUGH POWER TO AUTOMATE!</b></td>
+						<td>You have <span id="automaticPower" style="font-size:35px">0.0</span> Automator Power.<br>Automators are using <span id="consumedPower" style="font-size:35px">0.0</span> Power.<br><b id="tooMuchPowerConsumed" class="warning">WARNING: NOT ENOUGH POWER TO AUTOMATE!</b></td>
 					</tr>
 				</table>
 				<table style="margin: 0 auto">
 					<tr>
 						<td id="autoGhost1"><div class="autoBuyerDiv" style="display:block">
-							<b>Auto-Red Unstabilize Ghost</b><br>
+							<b>Auto-Red Unstabilize</b><br>
 							(unstabilizes if you have no red unstable quarks)<br>
-							Power usage: 1<br>
+							Power usage: 0.75<br>
 							Is active: <input id="isAutoGhostOn1" type="checkbox" onchange="toggleAutoGhost(1)"></input>
 						</div></td>
 						<td id="autoGhost2"><div class="autoBuyerDiv" style="display:block">
-							<b>Auto-Green Unstabilize Ghost</b><br>
+							<b>Auto-Green Unstabilize</b><br>
 							(unstabilizes if you have no green unstable quarks)<br>
-							Power usage: 1<br>
+							Power usage: 0.75<br>
 							Is active: <input id="isAutoGhostOn2" type="checkbox" onchange="toggleAutoGhost(2)"></input>
 						</div></td>
 						<td id="autoGhost3"><div class="autoBuyerDiv" style="display:block">
-							<b>Auto-Blue Unstabilize Ghost</b><br>
+							<b>Auto-Blue Unstabilize</b><br>
 							(unstabilizes if you have no blue unstable quarks)<br>
-							Power usage: 1<br>
+							Power usage: 0.75<br>
 							Is active: <input id="isAutoGhostOn3" type="checkbox" onchange="toggleAutoGhost(3)"></input>
 						</div></td>
 						<td id="autoGhost4"><div class="autoBuyerDiv" style="display:block">
-							<b>Auto-Unstabilize Rotate Ghost</b><br>
+							<b>Auto-Unstabilize Rotate</b><br>
 							Power usage: 1<br>
 							Auto-rotate: <button class="storebtn" id="autoGhostMod4" onclick="changeAutoGhost('4m')" style="font-size: 100%; width: 120px; height: 20px">Every quantum</button><br>
 							Direction: <button class="storebtn" id="autoGhostRotate4" onclick="changeAutoGhost('4r')" style="font-size: 100%; width: 120px; height: 20px">Right</button><br>
 							Is active: <input id="isAutoGhostOn4" type="checkbox" onchange="toggleAutoGhost(4)"></input>
 						</div></td>
 						<td id="autoGhost5"><div class="autoBuyerDiv" style="display:block">
-							<b>Auto-Branch Upgrade Ghost</b><br>
+							<b>Auto-Branch Upgrade</b><br>
 							(buys if possible)<br>
 							Power usage: 2<br>
 							Is active: <input id="isAutoGhostOn5" type="checkbox" onchange="toggleAutoGhost(5)"></input>
@@ -5210,31 +5149,31 @@
 					</tr>
 					<tr>
 						<td id="autoGhost6"><div class="autoBuyerDiv" style="display:block">
-							<b>Auto-Tree Upgrade Ghost</b><br>
+							<b>Auto-Tree Upgrade</b><br>
 							(buys if possible)<br>
 							Power usage: 2<br>
 							Is active: <input id="isAutoGhostOn6" type="checkbox" onchange="toggleAutoGhost(6)"></input>
 						</div></td>
 						<td id="autoGhost7"><div class="autoBuyerDiv" style="display:block">
-							<b>Auto-QK Multi Upgrade Ghost</b><br>
+							<b>Auto-QK Multi Upgrade</b><br>
 							(buys if possible)<br>
 							Power usage: 0.5<br>
 							Is active: <input id="isAutoGhostOn7" type="checkbox" onchange="toggleAutoGhost(7)"></input>
 						</div></td>
 						<td id="autoGhost8"><div class="autoBuyerDiv" style="display:block">
-							<b>Auto-Food Ghost</b><br>
+							<b>Auto-Food</b><br>
 							(buys if possible)<br>
 							Power usage: 0.5<br>
 							Is active: <input id="isAutoGhostOn8" type="checkbox" onchange="toggleAutoGhost(8)"></input>
 						</div></td>
 						<td id="autoGhost9"><div class="autoBuyerDiv" style="display:block">
-							<b>Auto-Worker Duplicant Ghost</b><br>
+							<b>Auto-Worker Duplicant</b><br>
 							(feeds if possible)<br>
 							Power usage: 0.5<br>
 							Is active: <input id="isAutoGhostOn9" type="checkbox" onchange="toggleAutoGhost(9)"></input>
 						</div></td>
 						<td id="autoGhost10"><div class="autoBuyerDiv" style="display:block">
-							<b>Auto-Limit Upgrade Ghost</b><br>
+							<b>Auto-Limit Upgrade</b><br>
 							(buys if possible)<br>
 							Power usage: 1<br>
 							Is active: <input id="isAutoGhostOn10" type="checkbox" onchange="toggleAutoGhost(10)"></input>
@@ -5242,31 +5181,31 @@
 					</tr>
 					<tr>
 						<td id="autoGhost11"><div class="autoBuyerDiv" style="display:block">
-							<b>Auto-Nanoreward Ghost</b><br>
+							<b>Auto-Nanoreward</b><br>
 							Power usage: 0.5<br>
 							Every <input id="autoGhost11pw" onchange="changeAutoGhost('11pw')"></input> seconds, producing preon charge for <input id="autoGhost11cw" type="text" onchange="changeAutoGhost('11cw')"></input> seconds.<br>
 							Is active: <input id="isAutoGhostOn11" type="checkbox" onchange="toggleAutoGhost(11)"></input>
 						</div></td>
 						<td id="autoGhost12"><div class="autoBuyerDiv" style="display:block">
-							<b>Auto-Radioactive Decay Ghost</b><br>
+							<b>Auto-Radioactive Decay</b><br>
 							(buys if possible)<br>
 							Power usage: 0.5<br>
 							Is active: <input id="isAutoGhostOn12" type="checkbox" onchange="toggleAutoGhost(12)"></input>
 						</div></td>
 						<td id="autoGhost13"><div class="autoBuyerDiv" style="display:block">
-							<b>Auto-Big Rip Ghost</b><br>
+							<b>Auto-Big Rip</b><br>
 							Power usage: 0.5<br>
 							Big Rip in <input id="autoGhost13t" onchange="changeAutoGhost('13t')"></input> seconds and undo after <input id="autoGhost13u" onchange="changeAutoGhost('13u')"></input> seconds.<br>
 							Stop after <input id="autoGhost13o" onchange="changeAutoGhost('13o')"></input> times.<br>(0 = always)<br>
 							Is active: <input id="isAutoGhostOn13" type="checkbox" onchange="toggleAutoGhost(13)"></input>
 						</div></td>
 						<td id="autoGhost14"><div class="autoBuyerDiv" style="display:block">
-							<b>Auto-BE Multi Upgrade Ghost</b><br>
+							<b>Auto-BE Multi Upgrade</b><br>
 							Power usage: 0.5<br>
 							Is active: <input id="isAutoGhostOn14" type="checkbox" onchange="toggleAutoGhost(14)"></input>
 						</div></td>
 						<td id="autoGhost15"><div class="autoBuyerDiv" style="display:block">
-							<b>Auto-Ghostify Ghost</b><br>
+							<b>Auto-Ghostify</b><br>
 							Power usage: 0.5<br>
 							Amount of ElP to wait until reset: <input id="autoGhost15a" onchange="changeAutoGhost('15a')"></input><br>
 							Is active: <input id="isAutoGhostOn15" type="checkbox" onchange="toggleAutoGhost(15)"></input>
@@ -5274,42 +5213,42 @@
 					</tr>
 					<tr>
 						<td id="autoGhost16"><div class="autoBuyerDiv" style="display:block">
-							<b>Auto-Neutrino Multi Ghost</b><br>
+							<b>Auto-Neutrino Multi</b><br>
 							Power usage: 6<br>
 							Is active: <input id="isAutoGhostOn16" type="checkbox" onchange="toggleAutoGhost(16)"></input>
 						</div></td>
 						<td id="autoGhost17"><div class="autoBuyerDiv" style="display:block">
-							<b>Auto-Extractor Ghost</b><br>
+							<b>Auto-Extractor</b><br>
 							Power usage: 3<br>
 							This also changes runes at a complete extraction on 2s after last change<br>
 							or change immediately at X seconds remaining for extracting: <input id="autoGhost17s" onchange="changeAutoGhost('17s')"></input><br>
 							Is active: <input id="isAutoGhostOn17" type="checkbox" onchange="toggleAutoGhost(17)"></input>
 						</div></td>
 						<td id="autoGhost18"><div class="autoBuyerDiv" style="display:block">
-							<b>Auto-Electron Multi Ghost</b><br>
+							<b>Auto-Electron Multi</b><br>
 							Power usage: 6<br>
 							Is active: <input id="isAutoGhostOn18" type="checkbox" onchange="toggleAutoGhost(18)"></input>
 						</div></td>
 						<td id="autoGhost19"><div class="autoBuyerDiv" style="display:block">
-							<b>Auto-Enchanter Ghost</b><br>
+							<b>Auto-Enchanter</b><br>
 							(doesn't consume your Hypotheses, enchant per 2 seconds)<br>
 							Power usage: 3<br>
 							Is active: <input id="isAutoGhostOn19" type="checkbox" onchange="toggleAutoGhost(19)"></input>
 						</div></td>
 						<td id="autoGhost20"><div class="autoBuyerDiv" style="display:block">
-							<b>Auto-Bosonic Upgrader Ghost</b><br>
+							<b>Auto-Bosonic Upgrader</b><br>
 							Power usage: 9<br>
 							Is active: <input id="isAutoGhostOn20" type="checkbox" onchange="toggleAutoGhost(20)"></input>
 						</div></td>
 					</tr>
 					<tr>
 						<td id="autoGhost21"><div class="autoBuyerDiv" style="display:block">
-							<b>Auto-W & Z Boson Ghost</b><br>
+							<b>Auto-W & Z Boson</b><br>
 							Power usage: 3<br>
 							Is active: <input id="isAutoGhostOn21" type="checkbox" onchange="toggleAutoGhost(21)"></input>
 						</div></td>
 						<td id="autoGhost22"><div class="autoBuyerDiv" style="display:block">
-							<b>Auto-Spectral Ions Ghost</b><br>
+							<b>Auto-Spectral Ions</b><br>
 							Power usage: 3<br>
 							Is active: <input id="isAutoGhostOn22" type="checkbox" onchange="toggleAutoGhost(22)"></input>
 						</div></td>

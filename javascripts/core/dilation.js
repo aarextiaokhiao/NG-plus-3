@@ -535,18 +535,9 @@ function startDilatedEternity(auto, shortcut) {
 	failsafeDilateTime = true
 	var onActive = player.dilation.active
 	if (!onActive && aarMod.dilationConf && !auto) if (!confirm("Dilating time will start a new Eternity where all of your Normal/Infinity/Time Dimension multiplier's exponents and the Tickspeed multiplier's exponent will be reduced to ^ 0.75. If you can Eternity while dilated, you'll be rewarded with tachyon particles based on your antimatter and tachyon particles.")) return
-	if (tmp.ngp3) {
-		if (onActive) player.eternityBuyer.statBeforeDilation++
-		else player.eternityBuyer.statBeforeDilation = 0
-		player.eternityBuyer.tpUpgraded = false
-	}
-	eternity(true, true, undefined, true)
-	if (!onActive) player.dilation.active = true;
+
+	eternity(true, true, false, !player.dilation.active)
 	resetUP()
-	if (tmp.ngp3 && quantumed) {
-		updateColorCharge()
-		updateColorDimPowers()
-	}
 }
 
 function updateDilationDisplay() {

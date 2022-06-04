@@ -535,7 +535,6 @@ function showTab(tabName, init) {
 			if (el('timestudies') !== "none" || el('masterystudies') !== "none" || el('dilation') !== "none" || el("blackhole") !== "none") resizeCanvas()
 			if (el("dilation") !== "none") requestAnimationFrame(drawAnimations)
 			if (el("blackhole") !== "none") requestAnimationFrame(drawBlackhole)
-			if (el("autoEternity").style.display === "block") loadAP()
 		}
 		if (tabName=="quantumtab") {
 			if (el('uquarks') !== "none") resizeCanvas()
@@ -1579,16 +1578,15 @@ function updateAutobuyers() {
     	}
     	player.eternityBuyer.isOn = el("eternityison").checked
     	if (tmp.ngp3) {
-		if (hasAch("ng3p52")) el("autoEterToggle").textContent=player.eternityBuyer.isOn?"Disable":"Enable"
-		player.eternityBuyer.dilationMode = el("dilatedeternityison").checked
-		if (hasAch("ng3p52")) el("autoDilToggle").textContent=player.eternityBuyer.dilationMode?"Disable":"Enable"
-        	player.eternityBuyer.dilationPerAmount = Math.max(parseInt(el("prioritydil").value),2)
-		if (player.eternityBuyer.isOn&&player.eternityBuyer.dilationMode&&player.eternityBuyer.statBeforeDilation>=player.eternityBuyer.dilationPerAmount&&!player.eternityBuyer.slowStopped&&player.eternityBuyer.dilMode=="amount") {
-			startDilatedEternity(true)
-            		return
+			player.eternityBuyer.dilationMode = el("dilatedeternityison").checked
+			player.eternityBuyer.dilationPerAmount = Math.max(parseInt(el("prioritydil").value),2)
+			player.eternityBuyer.statBeforeDilation = Math.min(player.eternityBuyer.statBeforeDilation, player.eternityBuyer.dilationPerAmount)
+			if (player.eternityBuyer.isOn&&player.eternityBuyer.dilationMode&&player.eternityBuyer.statBeforeDilation<=0) {
+				startDilatedEternity(true)
+				return
+			}
+			if (quSave && quSave.autobuyer) quSave.autobuyer.enabled = el("quantumison").checked
 		}
-		if (quSave && quSave.autobuyer) quSave.autobuyer.enabled = el("quantumison").checked
-	}
     	priorityOrder()
     	ndAutobuyersUsed=0
     	for (i = 0; i < 9; i++) if (player.autobuyers[i] % 1 !== 0 && player.autobuyers[i].isOn) ndAutobuyersUsed++
@@ -1740,19 +1738,13 @@ function updatePriorities() {
 	}
 	player.autobuyers[10].bulk = parseFloat(el("bulkgalaxy").value)
 	const eterValue = fromValue(el("priority13").value)
-	if (!isNaN(break_infinity_js ? eterValue : eterValue.l)) {
-		player.eternityBuyer.limit = eterValue
-		if (hasAch("ng3p52")) el("autoEterValue").value = el("priority13").value
-	}
+	if (!isNaN(break_infinity_js ? eterValue : eterValue.l)) player.eternityBuyer.limit = eterValue
 	if (tmp.ngp3) {
 		const dilValue = parseFloat(el("prioritydil").value)
-		if (dilValue == Math.round(dilValue) && dilValue > 1) {
-			player.eternityBuyer.dilationPerAmount = dilValue
-			if (hasAch("ng3p52")) el("autoDilValue").value = dilValue
-		}
+		if (dilValue == Math.round(dilValue) && dilValue > 1) player.eternityBuyer.dilationPerAmount = dilValue
 		const quantumValue = fromValue(el("priorityquantum").value)
 		if (!isNaN(break_infinity_js ? quantumValue : quantumValue.l) && quSave.autobuyer) quSave.autobuyer.limit = quantumValue
-		if (player.eternityBuyer.isOn&&player.eternityBuyer.dilationMode&&player.eternityBuyer.statBeforeDilation>=player.eternityBuyer.dilationPerAmount&&!player.eternityBuyer.slowStopped&&player.eternityBuyer.dilMode=="amount") {
+		if (player.eternityBuyer.isOn&&player.eternityBuyer.dilationMode&&player.eternityBuyer.statBeforeDilation<=0) {
 			startDilatedEternity(true)
 			return
 		}
@@ -2145,7 +2137,7 @@ function doCheckECCompletionStuff(){
 }
 
 
-function eternity(force, auto, presetLoad, dilated) {
+function eternity(force, auto, presetLoad, dil) {
 	var id7unlocked = player.infDimensionsUnlocked[7]
 	if (tmp.ngp3) if (brSave.active) id7unlocked = true
 	var canEternity = force || (player.infinityPoints.gte(Number.MAX_VALUE) && id7unlocked && (auto || !player.options.eternityconfirm || confirm("Eternity will reset everything except achievements and challenge records. You will also gain an Eternity point and unlock various upgrades.")))
@@ -2190,28 +2182,26 @@ function eternity(force, auto, presetLoad, dilated) {
 	}
 	player.challenges = temp
 	player.infinitiedBank = nA(player.infinitiedBank, gainBankedInf())
+
 	if (player.dilation.active && (!force || player.infinityPoints.gte(Number.MAX_VALUE))) {
 		let gain = getDilGain()
 		if (gain.gte(player.dilation.totalTachyonParticles)) {
 			if (player.dilation.totalTachyonParticles.gt(0) && gain.div(player.dilation.totalTachyonParticles).lt(2)) player.eternityBuyer.slowStopped = true
-			if (tmp.ngp3) player.dilation.times++
+			if (tmp.ngp3) player.dilation.times = (player.dilation.times || 0) + 1
 			player.dilation.totalTachyonParticles = gain
 			setTachyonParticles(gain)
 		}
 	}
-	if (tmp.ngp3 && player.dilation.studies.includes(1) && !force) if (player.eternityBuyer.isOn && player.eternityBuyer.dilationMode) {
-		if (player.eternityBuyer.dilMode == "amount" && !player.eternityBuyer.slowStopped) {
-			player.eternityBuyer.statBeforeDilation++
-			if (player.eternityBuyer.statBeforeDilation >= player.eternityBuyer.dilationPerAmount) {
-				startDilatedEternity(true)
-				return
-			}
-		}
-		if (player.eternityBuyer.dilMode=="upgrades"&&player.eternityBuyer.tpUpgraded) {
-			startDilatedEternity(true)
-			return
+	if (!player.dilation.studies.includes(1)) dil = false
+	else if (!force && !dil) {
+		if (player.eternityBuyer.dilationMode) {
+			player.eternityBuyer.statBeforeDilation--
+			if (player.eternityBuyer.statBeforeDilation <= 0) dil = true
+			if (player.eternityBuyer.alwaysDilCond) dil = true
 		}
 	}
+	if (dil) player.eternityBuyer.statBeforeDilation = player.eternityBuyer.dilationPerAmount
+
 	var oldStat = getEternitied()
 	player.eternities = nA(player.eternities, gainEternitiedStat())
 	updateBankedEter()
@@ -2219,69 +2209,11 @@ function eternity(force, auto, presetLoad, dilated) {
 	player.infinityPoints = E(hasAch("r104") ? 2e25 : 0);
 
 	doEternityResetStuff()
-		
+
+	player.dilation.active = dil
 	if (player.galacticSacrifice && getEternitied() < 2) player.autobuyers[12] = 13
 	if (player.tickspeedBoosts != undefined && getEternitied() < 2) player.autobuyers[13] = 14
-	var dilated2 = player.dilation.active
-	if (dilated2) {
-		player.dilation.active = false
-		if (tmp.ngp3 && quantumed) updateColorCharge()
-	}
-	if (presetLoad === undefined) {
-		var pData = player.eternityBuyer.presets
-		if (pData !== undefined ? pData.on : false) {
-			var dilActive = pData.dil !== undefined ? pData.dil.on : false
-			var grindActive = pData.grind !== undefined ? pData.grind.on : false
-			if (dilated && dilActive) {
-				if (pData.selected > -1) {
-					pData.reselect=pData.selected
-					if (apLoaded && loadedAPs > pData.selected) el("apselected" + pData.selected).textContent = ""
-				}
-				pData.selected = "dil"
-				el("apDilSelected").textContent = ">>"
-				forceRespec = true
-				presetLoad = pData.dil.preset
-			} else if (player.masterystudies.includes("t291") && player.eternityPoints.log10() >= oldEP.log10() * 1.01 && !dilated2 && grindActive) {
-				if (pData.selected > -1) {
-					pData.reselect=pData.selected
-					if (apLoaded && loadedAPs > pData.selected) el("apselected" + pData.selected).textContent = ""
-				}
-				pData.selected = "grind"
-				el("apGrindSelected").textContent = ">>"
-				forceRespec = true
-				presetLoad = pData.grind.preset
-			} else {
-				if (pData.reselect !== undefined) {
-					pData.selected = pData.reselect
-					forceRespec = true
-					presetLoad = pData[pData.order[pData.selected]].preset
-					el("apDilSelected").textContent = ""
-					el("apGrindSelected").textContent = ""
-					if (apLoaded && loadedAPs > pData.selected) el("apselected" + pData.selected).textContent = ">>"
-					delete pData.reselect
-				}
-				if (pData.selectNext > -1 && ((pData.selected < 0 && pData.order.length) || pData.reselect !== undefined || pData.order.length > 1)) {
-					pData.left--
-					if (pData.left < 1) {
-						if (apLoaded && loadedAPs > pData.selected && pData.selected > -1) el("apselected" + pData.selected).textContent = ""
-						pData.selected = pData.selectNext
-						for (var p = 1; p < pData.order.length; p++) {
-							if (pData[pData.order[(pData.selectNext + p) % pData.order.length]].on) {
-								pData.selectNext = (pData.selectNext + p) % pData.order.length
-								if (apLoaded && loadedAPs > pData.selectNext) el("apselected" + pData.selectNext).textContent = ">"
-								break
-							} else if (p == pData.order.length - 1) pData.selectNext = -1
-						}
-						pData.left = pData[pData.order[pData.selected]].length
-						forceRespec = true
-						presetLoad = pData[pData.order[pData.selected]].preset
-						if (apLoaded && loadedAPs > pData.selected) el("apselected" + pData.selected).textContent=">>"
-					}
-					el("eternitiesLeft").textContent = getFullExpansion(pData.left)
-				}
-			}
-		}
-	}
+
 	if (player.respec || player.respecMastery || forceRespec) respecTimeStudies(forceRespec, presetLoad)
 	if (typeof(presetLoad) == "string") importStudyTree(presetLoad)
 	if (player.respec) respecToggle()
@@ -2366,7 +2298,9 @@ function eternity(force, auto, presetLoad, dilated) {
 	}
 	Marathon2 = 0;
 	doAutoEterTick()
+	resetUP()
 	if (tmp.ngp3 && player.dilation.upgrades.includes("ngpp3") && getEternitied() >= 1e9) player.dbPower = E(1)
+	if (tmp.ngp3 && quantumed) updateColorCharge()
 	if (tmp.ngp3) updateBreakEternity()
 }
 
@@ -2767,8 +2701,8 @@ function startEternityChallenge(n) {
 	el("eternityPoints2").innerHTML = "You have <span class=\"EPAmount2\">" + shortenDimensions(player.eternityPoints) + "</span> Eternity point" + ((player.eternityPoints.eq(1)) ? "." : "s.")
 	updateEternityChallenges()
 	Marathon2 = 0
-	resetUP()
 	doAutoEterTick()
+	resetUP()
 	if (tmp.ngp3 && player.dilation.upgrades.includes("ngpp3") && getEternitied() >= 1e9) player.dbPower = getDimensionBoostPower()
 }
 
@@ -2934,7 +2868,7 @@ function doBosonsUnlockStuff() {
 	ngp3_feature_notify("bl")
 	giveAchievement("Even Ghostlier than before")
 
-	updateTmp()
+	updateTemp()
 	updateNeutrinoBoosts()
 	updateBLUnlocks()
 	updateBosonicLimits()
@@ -2945,8 +2879,7 @@ function doPhotonsUnlockStuff(){
 	ngp3_feature_notify("ph")
 	giveAchievement("Progressing as a Ghost")
 	
-	updateTmp()
-	QCs.updateDisp()
+	updateTemp()
 	updateBreakEternity()
 	updateGPHUnlocks()
 }
@@ -3000,7 +2933,7 @@ function doNGP3UnlockStuff(){
 	var inEasierModeCheck = !inEasierMode()
 	if (player.masterystudies && (player.masterystudies.includes("d14")||hasAch("ng3p51")) && !metaSave.ngp4 && !inEasierModeCheck) doNGP4UnlockStuff()
 	if (player.eternityPoints.gte("1e1200") && brSave.active && !beSave.unlocked) doBreakEternityUnlockStuff()
-	if (player.money.gte(pow10(7.5e9)) && brSave.active && !ghSave.ghostlyPhotons.unl) doPhotonsUnlockStuff()
+	if (player.money.gte(pow10(4.5)) && brSave.active && !ghSave.ghostlyPhotons.unl) doPhotonsUnlockStuff()
 	if (canUnlockBosonicLab() && !ghSave.wzb.unl) doBosonsUnlockStuff()
 	if (!tmp.ng3l) unlockHiggs()
 }
@@ -3849,7 +3782,7 @@ function doGhostifyButtonDisplayUpdating(diff){
 	if (ghostified) ghostifyGains.push(shortenDimensions(getGHPGain()) + " Elementary Particles")
 	if (ghostified && hasAch("ng3p78")) ghostifyGains.push(shortenDimensions(Decimal.times(6e3 * brSave.bestGals, getGhostifiedGain()).times(getNeutrinoGain())) + " Neutrinos")
 	if (hasBU(15)) ghostifyGains.push(getFullExpansion(getGhostifiedGain()) + " Ghostifies")
-	el("ghostifybtnFlavor").textContent = ghostifyGains.length > 1 ? "" : (ghostifyGains.length ? "" : "I need to research further... ") + "I need to fundament"
+	el("ghostifybtnFlavor").textContent = ghostifyGains.length > 1 ? "" : (ghostifyGains.length ? "" : "Research time! ") + "I need to fundament."
 	el("GHPGain").textContent = ghostifyGains.length ? "Gain " + ghostifyGains[0] + (ghostifyGains.length > 2 ? ", " + ghostifyGains[1] + "," : "") + (ghostifyGains.length > 1 ? " and " + ghostifyGains[ghostifyGains.length-1] : "") + "." : ""
 	var showGHPPeakValue = GHPminpeakValue.lt(1e6) || player.options.theme=="Aarex's Modifications"
 	el("GHPRate").textContent = ghostifyGains.length == 1 && showGHPPeakValue ? getGHPRate(currentGHPmin) : ""
@@ -4773,7 +4706,6 @@ function showEternityTab(tabName, init) {
 		if (tabName === 'timestudies' || tabName === 'masterystudies' || tabName === 'dilation' || tabName === 'blackhole') resizeCanvas()
 		if (tabName === "dilation") requestAnimationFrame(drawAnimations)
 		if (tabName === "blackhole") requestAnimationFrame(drawBlackhole)
-		if (tabName === "autoEternity" && el("eternitystore").style.display === "block") loadAP()
 	}
 	closeToolTip()
 }
@@ -5048,6 +4980,7 @@ function resetUP() {
 	clearInterval(updatePowerInt)
 	updatePowers()
 	updateTemp()
+	updateColorDimPowers()
 	mult18 = 1
 	updatePowerInt = setInterval(updatePowers, 100)
 }

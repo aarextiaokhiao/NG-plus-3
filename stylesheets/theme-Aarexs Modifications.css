@@ -181,7 +181,7 @@ strong { color: #0072e5 }
 }
 #singularitytabbtn, #singularityunlock.storebtn, #sacrificeIP.storebtn, #blackHoleTabbtn button, #blackholeunlock.storebtn, #blackholediv table .storebtn, #replicantstabbtn button, #replicantReset.storebtn, #edtabbtn button, #edtabbtn_dim button { border: 2px solid #333333 !important }
 #singularitytabbtn:hover, #singularityunlock.storebtn:hover, #sacrificeIP.storebtn:hover, #blackHoleTabbtn button:hover, #blackholeunlock.storebtn:hover, #blackholediv table .storebtn:hover, #replicantstabbtn button:hover, #replicantReset.storebtn:hover, #edtabbtn button:hover, #edtabbtn_dim button:hover { background-color: #333333 !important }
-#singularityPower, #darkMatter, #darkMatterPerSecond, #darkMatterDT, #nextDiscounts, #darkMatterMult, #blackholePowAmount, #DilMultAmount, #InfAndReplMultAmount, #replicantAmount, #workerReplAmount, #babyReplAmount, #workerProgress, #hatchProgress, #growupProgress, #replicantAmountED, #normalReplicantsNanofield, .dmAmount { 
+#singularityPower, #darkMatter, #darkMatterPerSecond, #darkMatterDT, #nextDiscounts, #darkMatterMult, #blackholePowAmount, #DilMultAmount, #InfAndReplMultAmount, #replicantAmount, #workerReplAmount, #babyReplAmount, #workerProgress, #hatchProgress, #growupProgress, #replicantAmountED, #normalReplicantsNanofield { 
 	color: #333333 !important;
 	text-shadow: 0px 0px 3px #333333, 0px 0px 4.5px #e5e5e5
 }
@@ -393,10 +393,10 @@ strong { color: #0072e5 }
 #metaAntimatterAmount, #metaAntimatterBest, #metaAntimatterPower, #metaAntimatterEffect {
     color: #00e5e5 !important
 }
-#quantum.storebtn, .quantumbtn, #pastquantums, #dilstudy8.dilationupg, #qctabbtn, #dilstudy9.dilationupg, #pccompletionsbtn {
+#quantum.storebtn, .quantumbtn, #pastquantums, #dilstudy8.dilationupg, #qctabbtn, #dilstudy9.dilationupg, #pctabbtn, #pccompletionsbtn {
     border-color: #009900 !important
 }
-#quantum.storebtn:hover, .quantumbtn:hover, #pastquantums:hover, #dilstudy8.dilationupg:hover, #dilstudy8.dilationupgbought, #qctabbtn:hover, #dilstudy9.dilationupg:hover, #dilstudy9.dilationupgbought, #pccompletionsbtn:hover {
+#quantum.storebtn:hover, .quantumbtn:hover, #pastquantums:hover, #dilstudy8.dilationupg:hover, #dilstudy8.dilationupgbought, #qctabbtn:hover, #dilstudy9.dilationupg:hover, #dilstudy9.dilationupgbought, #pctabbtn:hover, #pccompletionsbtn:hover {
     background-color: #009900 !important
 }
 #progressbar.quantumProgress {
@@ -524,7 +524,7 @@ strong { color: #0072e5 }
 	background-color: #0000e5 !important;
 	color: #191919 !important
 }
-#dilstudy14.dilationupg, .gluonupgrade.bigrip {
+#dilstudy14.dilationupg, #riptabbtn button, .gluonupgrade.bigrip {
 	border: 1px solid #5be567 !important;
 	color: #e5e5e5 !important;
 	box-shadow: none !important
@@ -535,7 +535,7 @@ strong { color: #0072e5 }
 	color: #e5e5e5 !important;
 	box-shadow: none !important
 }
-#dilstudy14.dilationupg:hover, #dilstudy14.dilationupgbought, .bigripbtn:hover, .gluonupgrade.bigrip:hover, .gluonupgradebought.bigrip {
+#dilstudy14.dilationupg:hover, #dilstudy14.dilationupgbought, #riptabbtn button:hover, .bigripbtn:hover, .gluonupgrade.bigrip:hover, .gluonupgradebought.bigrip {
 	background-color: #5be567 !important;
 	color: #191919 !important;
 	box-shadow: none !important
@@ -611,6 +611,10 @@ strong { color: #0072e5 }
 .gluonupgrade.gph:hover {
 	color: #e5e5e5 !important;
 	text-shadow: 0px 0px 3px #e5e5e5, 0px 0px 6px #191919;
+}
+.dmAmount {
+	color: black !important;
+	text-shadow: 0 0 6px #ffff00 !important;
 }
 .gphAmount {
 	color: #bfaf5f

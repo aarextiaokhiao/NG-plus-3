@@ -105,7 +105,7 @@ function showRipTab(tabName) {
 	closeToolTip()
 }
 
-let bigRipUpgCosts = [0, 2, 3, 5, 20, 30, 45, 60, 150, 300, 2000, 1e9, 3e14, 1e17, 3e18, 3e20, 5e22, 1e32, 1e145, 1e150, Number.MAX_VALUE]
+let bigRipUpgCosts = [0, 2, 3, 5, 20, 30, 45, 60, 150, 300, 2000, 1e9, 3e14, 1e17, 3e18, 3e20, 5e22, 1e32, 1e145, 1e150, 1e90]
 function buyBigRipUpg(id) {
 	if (brSave.spaceShards.lt(bigRipUpgCosts[id]) || hasRipUpg(id)) return
 	brSave.spaceShards = brSave && brSave.spaceShards.sub(bigRipUpgCosts[id])

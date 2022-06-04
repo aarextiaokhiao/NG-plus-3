@@ -220,54 +220,6 @@ function autoECToggle() {
 }
 
 var nanospeed = 1
-
-function openAfterEternity() {
-	showEternityTab("autoEternity")
-	showTab("eternitystore")
-}
-
-function toggleABEter() {
-	el("eternityison").checked = !player.eternityBuyer.isOn
-	updateAutobuyers()
-}
-
-function updateAutoEterValue() {
-	el("priority13").value = el("autoEterValue").value
-	updatePriorities()
-}
-
-function toggleAutoEterIfAD() {
-	player.eternityBuyer.ifAD = !player.eternityBuyer.ifAD
-	el("autoEterIfAD").textContent = "Auto-eternity only if able to auto-dilate: O" + (player.eternityBuyer.ifAD ? "N" : "FF")
-}
-
-function toggleAutoDil() {
-	el("dilatedeternityison").checked = !player.eternityBuyer.dilationMode	
-	updateAutobuyers()
-}
-
-function updateAutoDilValue() {
-	el("prioritydil").value = el("autoDilValue").value
-	updatePriorities()
-}
-
-function changeAutoDilateMode() {
-	if (player.eternityBuyer.dilMode == "amount") player.eternityBuyer.dilMode = "upgrades"
-	else player.eternityBuyer.dilMode = "amount"
-	el("autodilatemode").textContent = "Mode: " + (player.eternityBuyer.dilMode == "amount" ? "Amount of eternities" : "Upgrades")
-}
-
-function toggleSlowStop() {
-	player.eternityBuyer.slowStop = !player.eternityBuyer.slowStop
-	player.eternityBuyer.slowStopped = false
-	el("slowstop").textContent = "Stop auto-dilate if a little bit of TP is gained: O" + (player.eternityBuyer.slowStop ? "N" : "FF")
-}
-
-function toggleAPs() {
-	player.eternityBuyer.presets.on = !player.eternityBuyer.presets.on
-	el("toggleAP").textContent = player.eternityBuyer.presets.on ? "Disable" : "Enable"
-}
-
 function bigRip(auto) {
 	if (!player.masterystudies.includes("d14") || quSave.electrons.amount < 62500 || !inQC(0)) return
 	if (ghSave.milestones > 1) {
@@ -338,22 +290,8 @@ function switchAB() {
 		amount: player.eternityBuyer.limit,
 		dilation: player.eternityBuyer.dilationMode,
 		dilationPerStat: player.eternityBuyer.dilationPerAmount,
-		dilMode: player.eternityBuyer.dilMode,
-		tpUpgraded: player.eternityBuyer.tpUpgraded,
-		slowStop: player.eternityBuyer.slowStop,
-		slowStopped: player.eternityBuyer.slowStopped,
-		ifAD: player.eternityBuyer.ifAD,
-		presets: Object.assign({}, player.eternityBuyer.presets),
 		on: player.eternityBuyer.isOn
 	}
-	data.eternity.presets.order = []
-	for (var i = 0; i < player.eternityBuyer.presets.order.length; i++) {
-		var id = player.eternityBuyer.presets.order[i]
-		data.eternity.presets[id] = Object.assign({}, player.eternityBuyer.presets[id])
-		data.eternity.presets.order.push(id)
-	}
-	if (data.eternity.presets.dil !== undefined) data.eternity.presets.dil = Object.assign({}, data.eternity.presets.dil)
-	if (data.eternity.presets.grind !== undefined) data.eternity.presets.grind = Object.assign({}, data.eternity.presets.grind)
 	var data = brSave["savedAutobuyers" + (bigRip ? "No" : "") + "BR"]
 	for (var d = 1; d < 9; d++) if (data["d" + d]) player.autobuyers[d - 1] = {
 		interval: player.autobuyers[d - 1].interval,
@@ -430,19 +368,8 @@ function switchAB() {
 			dilationMode: data.eternity.dilation,
 			dilationPerAmount: data.eternity.dilationPerStat,
 			statBeforeDilation: data.eternity.dilationPerStat,
-			dilMode: data.eternity.dilMode ? data.eternity.dilMode : "amount",
-			tpUpgraded: data.eternity.tpUpgraded ? data.eternity.tpUpgraded : false,
-			slowStop: data.eternity.slowStop ? data.eternity.slowStop : false,
-			slowStopped: data.eternity.slowStopped ? data.eternity.slowStopped : false,
-			ifAD: data.eternity.ifAD ? data.eternity.ifAD : false,
-			presets: data.eternity.presets ? data.eternity.presets : {on: false, autoDil: false, selected: -1, selectNext: 0, left: 1, order: []},
 			isOn: data.eternity.on
 		}
-		if (player.eternityBuyer.presets.selectNext === undefined) {
-			player.eternityBuyer.presets.selected = -1
-			player.eternityBuyer.presets.selectNext = 0
-		}
-		if (player.eternityBuyer.presets.left === undefined) player.eternityBuyer.presets.left = 1
 		player.autoEterMode = data.eternity.mode
 	}
 	brSave["savedAutobuyers" + (bigRip ? "No" : "") + "BR"] = {}
@@ -480,8 +407,12 @@ function getGHPGain() {
 	return x.floor()
 }
 
+function getGHPBaseMult() {
+	return E_pow(3, ghSave.multPower - 1)
+}
+
 function getGHPMult() {
-	let x = pow2(ghSave.multPower - 1)
+	let x = getGHPBaseMult()
 	if (hasAch("ng3p93")) x = x.times(500)
 	if (hasAch("ng3p83")) x = x.times(ranking + 1)
 	if (hasAch("ng3p97")) x = x.times(E_pow(ghSave.times + 1, 1/3))
@@ -652,7 +583,7 @@ function buyGHPMult() {
 	ghSave.multPower++
 	ghSave.automatorGhosts[15].a = ghSave.automatorGhosts[15].a.times(5)
 	el("autoGhost15a").value = formatValue("Scientific", ghSave.automatorGhosts[15].a, 2, 1)
-	el("ghpMult").textContent = shortenDimensions(pow2(ghSave.multPower-1))
+	el("ghpMult").textContent = shortenDimensions(getGHPBaseMult())
 	el("ghpMultUpgCost").textContent = shortenDimensions(getGHPMultCost())
 }
 
@@ -660,22 +591,15 @@ function maxGHPMult() {
 	let sum = ghSave.neutrinos.electron.add(ghSave.neutrinos.mu).add(ghSave.neutrinos.tau).round()
 	let cost = getGHPMultCost()
 	if (sum.lt(cost)) return
-	if (ghSave.multPower < 85) {
-		let toBuy=Math.min(Math.floor(sum.div(cost).times(24).add(1).log(25)),85-ghSave.multPower)
-		subNeutrinos(E_pow(25,toBuy).sub(1).div(24).times(cost))
-		ghSave.multPower+=toBuy
-		ghSave.automatorGhosts[15].a=ghSave.automatorGhosts[15].a.times(E_pow(5,toBuy))
-		el("autoGhost15a").value=formatValue("Scientific", ghSave.automatorGhosts[15].a, 2, 1)
-		cost=getGHPMultCost()
-	}
-	if (ghSave.multPower>84) {
-		let toBuy=Math.floor(sum.div(cost).times(624).add(1).log(625))
-		subNeutrinos(E_pow(625,toBuy).sub(1).div(624).times(cost))
-		ghSave.multPower+=toBuy
-		ghSave.automatorGhosts[15].a=ghSave.automatorGhosts[15].a.times(E_pow(5,toBuy))
-	}
-	el("ghpMult").textContent=shortenDimensions(pow2(ghSave.multPower-1))
-	el("ghpMultUpgCost").textContent=shortenDimensions(getGHPMultCost())
+
+	let toBuy=Math.min(Math.floor(sum.div(cost).times(24).add(1).log(25)),85-ghSave.multPower)
+	subNeutrinos(E_pow(25,toBuy).sub(1).div(24).times(cost))
+	ghSave.multPower+=toBuy
+	ghSave.automatorGhosts[15].a=ghSave.automatorGhosts[15].a.times(E_pow(5,toBuy))
+
+	el("autoGhost15a").value = formatValue("Scientific", ghSave.automatorGhosts[15].a, 2, 1)
+	el("ghpMult").textContent = shortenDimensions(getGHPBaseMult())
+	el("ghpMultUpgCost").textContent = shortenDimensions(getGHPMultCost())
 }
 
 function setupAutomaticGhostsData() {
@@ -694,7 +618,7 @@ function setupAutomaticGhostsData() {
 
 var autoGhostRequirements=[2,4,4,4.5,5,5,6,6.5,7,7,7.5,8,20,24,28,32,36,40,45]
 var powerConsumed
-var powerConsumptions=[0,1,1,1,1,2,2,0.5,0.5,0.5,1,0.5,0.5,0.5,0.5,0.5,6,3,6,3,9,3,3]
+var powerConsumptions=[0,0.75,0.75,0.75,1,2,1.5,0.5,0.5,0.5,1,0.5,0.5,0.5,0.5,0.5,6,3,6,3,9,3,3]
 function updateAutoGhosts(load) {
 	var data = ghSave.automatorGhosts
 	if (load) {
@@ -805,7 +729,7 @@ function startEC10() {
 
 function getGHPMultCost(offset=0) {
 	let lvl=ghSave.multPower+offset
-	return E_pow(5, lvl * 2 + Math.max(lvl - 85, 0) * 2 - 1).times(25e8)
+	return E_pow(5, lvl * 2 - 1).times(25e8)
 
 }
 

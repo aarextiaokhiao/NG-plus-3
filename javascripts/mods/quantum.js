@@ -351,14 +351,6 @@ function quantumReset(force, auto, challid, bigRip, implode = false) {
 	updateQuarkDisplay()
 	el("galaxyPoints2").innerHTML = "You have <span class='GPAmount'>0</span> Galaxy points."
 	if (tmp.ngp3) {
-		var aea = {
-			dilMode: player.eternityBuyer.dilMode,
-			tpUpgraded: player.eternityBuyer.tpUpgraded,
-			slowStop: player.eternityBuyer.slowStop,
-			slowStopped: player.eternityBuyer.slowStopped,
-			ifAD: player.eternityBuyer.ifAD,
-			presets: player.eternityBuyer.presets
-		}
 		if (!quSave.gluons.rg) {
 			quSave.gluons = {
 				rg: E(0),
@@ -540,8 +532,6 @@ function quantumReset(force, auto, challid, bigRip, implode = false) {
 		if ((!challid && ghSave.milestones < 6) || bigRip != brSave && brSave.active) quSave.replicants.amount = E(0)
 		replicantsResetOnQuantum(challid)
 		nanofieldResetOnQuantum()
-		player.eternityBuyer.tpUpgraded = false
-		player.eternityBuyer.slowStopped = false
 		if (brSave.active != bigRip) {
 			if (bigRip) {
 				for (var u = 0; u < brSave.upgrades.length; u++) tweakBigRip(brSave.upgrades[u])
@@ -574,20 +564,13 @@ function quantumReset(force, auto, challid, bigRip, implode = false) {
 		if (!oheHeadstart) {
 			player.eternityBuyer.dilationMode = false
 			player.eternityBuyer.dilationPerAmount = 10
-			if (tmp.ngp3) {
-				player.eternityBuyer.dilMode = aea.dilMode
-				player.eternityBuyer.tpUpgraded = aea.tpUpgraded
-				player.eternityBuyer.slowStop = aea.slowStop
-				player.eternityBuyer.slowStopped = aea.slowStopped
-				player.eternityBuyer.presets = aea.presets
-			}
 		}
 		player.eternityBuyer.statBeforeDilation = 0
 		if ((player.autoEterMode=="replicanti"||player.autoEterMode=="peak")&&(speedrunMilestonesReached<18||!isRewardEnabled(4))) {
 			player.autoEterMode="amount"
 			updateAutoEterMode()
 		}
-		el('dilationmode').style.display = speedrunMilestonesReached > 4 ? "" : "none"
+		el('dilationmode').style.display = speedrunMilestonesReached > 4 ? "block" : "none"
 		el('rebuyupgauto').style.display = speedrunMilestonesReached > 6 ? "" : "none"
 		el('toggleallmetadims').style.display = speedrunMilestonesReached > 7 ? "" : "none"
 		el('metaboostauto').style.display = speedrunMilestonesReached > 14 ? "" : "none"

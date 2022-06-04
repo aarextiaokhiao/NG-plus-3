@@ -170,7 +170,8 @@ function formatValue(notation, value, places, placesUnder1000, noInf) {
 	if (notation === "Same notation") notation = player.options.notation
 	if (notation === 'Iroha' && (onPostBreak() || Decimal.lt(value, getLimit()) || noInf)) return iroha(value, 5)
 
-	if (Decimal.eq(value, INF)) return "Infinite"
+	if (E(value).l == 1/0) return "Infinite"
+	if (Decimal.eq(value, INF) && !player.break) return "Infinite"
 	if ((onPostBreak() || Decimal.lt(value, getLimit()) || noInf) && (Decimal.gte(value,1000))) {
 		if (notation === "AF2019") {
 			var log = Decimal.log10(value)
@@ -996,7 +997,7 @@ function onNotationChange() {
 		updateBreakEternity()
 		onNotationChangeNeutrinos()
 		updateBosonicStuffCosts()
-		if (!ghSave.ghostlyPhotons.unl) el("gphUnl").textContent="To unlock Photons, you need to get "+shortenCosts(pow10(7.5e9))+" antimatter while your universe is Big Ripped first."
+		if (!ghSave.ghostlyPhotons.unl) el("gphUnl").textContent="To unlock Photons, you need to get "+shortenCosts(pow10(4.5e9))+" antimatter while your universe is Big Ripped first."
 		else if (!ghSave.wzb.unl) updateBLUnlockDisplay()
 		else if (!tmp.hb.unl) updateHiggsUnlockDisplay()
 	}
