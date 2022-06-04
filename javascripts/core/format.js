@@ -997,7 +997,7 @@ function onNotationChange() {
 		updateBreakEternity()
 		onNotationChangeNeutrinos()
 		updateBosonicStuffCosts()
-		if (!ghSave.ghostlyPhotons.unl) el("gphUnl").textContent="To unlock Photons, you need to get "+shortenCosts(pow10(4.5e9))+" antimatter while your universe is Big Ripped first."
+		if (!ghSave.ghostlyPhotons.unl) el("gphUnl").textContent="To unlock Photons, you need to get "+shortenCosts(pow10(4.7e9))+" antimatter while your universe is Big Ripped first."
 		else if (!ghSave.wzb.unl) updateBLUnlockDisplay()
 		else if (!tmp.hb.unl) updateHiggsUnlockDisplay()
 	}

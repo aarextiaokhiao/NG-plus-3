@@ -2021,7 +2021,7 @@ function updateNGp3DisplayStuff(){
                 if (u%3==1) el("neutrinoUpg"+u).parentElement.parentElement.style.display=u>ghSave.times+2?"none":""
                 else el("neutrinoUpg"+u).style.display=u>ghSave.times+2?"none":""
         }
-        el("gphUnl").textContent="To unlock Photons, you need to get "+shortenCosts(pow10(4.5))+" antimatter while your universe is Big Ripped first."
+        el("gphUnl").textContent="To unlock Photons, you need to get "+shortenCosts(pow10(4.7e9))+" antimatter while your universe is Big Ripped first."
         updateBLUnlockDisplay()
         el("bpc68").textContent=shortenMoney(quSave.pairedChallenges.pc68best)
         el("odSlider").value=Math.round((tmp.bl.odSpeed-1)/4*50)

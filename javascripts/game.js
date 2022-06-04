@@ -2933,7 +2933,7 @@ function doNGP3UnlockStuff(){
 	var inEasierModeCheck = !inEasierMode()
 	if (player.masterystudies && (player.masterystudies.includes("d14")||hasAch("ng3p51")) && !metaSave.ngp4 && !inEasierModeCheck) doNGP4UnlockStuff()
 	if (player.eternityPoints.gte("1e1200") && brSave.active && !beSave.unlocked) doBreakEternityUnlockStuff()
-	if (player.money.gte(pow10(4.5)) && brSave.active && !ghSave.ghostlyPhotons.unl) doPhotonsUnlockStuff()
+	if (player.money.gte(pow10(4.7e9)) && brSave.active && !ghSave.ghostlyPhotons.unl) doPhotonsUnlockStuff()
 	if (canUnlockBosonicLab() && !ghSave.wzb.unl) doBosonsUnlockStuff()
 	if (!tmp.ng3l) unlockHiggs()
 }
