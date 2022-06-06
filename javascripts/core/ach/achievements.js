@@ -117,6 +117,7 @@ const allAchievements = {
   ngpp16 : "It will never be enough",
   ngpp17 : "GAS GAS GAS",
   ngpp18 : "Universal harmony",
+
   ng3p11 : "I don't have enough fuel!",
   ng3p12 : "Sub-atomic",
   ng3p13 : "Hadronization",
@@ -125,6 +126,7 @@ const allAchievements = {
   ng3p16 : "And the winner is...",
   ng3p17 : "Old age",
   ng3p18 : "I already got rid of you...",
+
   ng3p21 : "Special Relativity",
   ng3p22 : "We are not going squared.",
   ng3p23 : "This achievement doesn't exist 3",
@@ -133,6 +135,7 @@ const allAchievements = {
   ng3p26 : "Infinity Morals",
   ng3p27 : "Intergalactic",
   ng3p28 : "Seriously, I already got rid of you.",
+
   ng3p31 : "ERROR 500: INTERNAL DIMENSION ERROR",
   ng3p32 : "The truth of anti-challenged",
   ng3p33 : "Never make paradoxes!",
@@ -141,6 +144,7 @@ const allAchievements = {
   ng3p36 : "I can’t get my multipliers higher!",
   ng3p37 : "No dilation means no production.",
   ng3p38 : "I don't want you to live anymore.",
+
   ng3p41 : "Time is not relative",
   ng3p42 : "ERROR 404: DIMENSIONS NOT FOUND",
   ng3p43 : "Impossible expectations",
@@ -149,6 +153,7 @@ const allAchievements = {
   ng3p46 : "Hardly marked",
   ng3p47 : "Stop blocking me!",
   ng3p48 : "Are you currently dying?",
+
   ng3p51 : "To the new dimension!",
   ng3p52 : "Quantum doesn't take so long",
   ng3p53 : "Gonna go fast",
@@ -157,6 +162,7 @@ const allAchievements = {
   ng3p56 : "Time Immunity",
   ng3p57 : "You're not really smart.",
   ng3p58 : "And so your life?",
+
   ng3p61 : "Kee-hee-hee!",
   ng3p62 : "Finite Time",
   ng3p63 : "This achievement doesn't exist 4",
@@ -165,6 +171,7 @@ const allAchievements = {
   ng3p66 : "I rather oppose the theory of everything",
   ng3p67 : "Will it be enough?",
   ng3p68 : "Please answer me why you are dying.",
+
   ng3p71 : "Progressing as a Ghost",
   ng3p72 : "Underchallenged",
   ng3p73 : "Meta-Infinity confirmed?",
@@ -173,6 +180,7 @@ const allAchievements = {
   ng3p76 : "Running through Big Rips",
   ng3p77 : "The Theory of Ultimate Studies",
   ng3p78 : "Aren't you already dead?",
+
   ng3p81 : "Even Ghostlier than before",
   ng3p82 : "Overchallenged",
   ng3p83 : "Pulling an All-Nighter",
@@ -181,6 +189,7 @@ const allAchievements = {
   ng3p86 : "Back to Challenge One",
   ng3p87 : "The Deep Challenge",
   ng3p88 : "I give up.",
+
   ng3p91 : "The Holy Particle",
   ng3p92 : "Bright as the Anti-Sun",
   ng3p93 : "Are these another...",
@@ -189,6 +198,20 @@ const allAchievements = {
   ng3p96 : "Not-so-very-challenging",
   ng3p97 : "The Ghostliest Side",
   ng3p98 : "Meta-Quintillion",
+
+  ng3p101 : `The Layer of Recreation`,
+  ng3p102 : `Ungraceful Mistake`,
+  ng3p103 : `ng3p103`,
+  ng3p104 : `This achievement doesn't exist 5`,
+  ng3p105 : `Quantized Reproduction`,
+  ng3p106 : `Spectral Phasing`,
+  ng3p107 : `Mega Boo!`,
+  ng3p108 : `Temporality`,
+
+  ng3p111 : `Baby Age`,
+  ng3p112 : `Scammed Tickspeed`,
+  ng3p113 : `Microfield`,
+
   s11 : "The first one's always free",
   s12 : "Just in case",
   s13 : "It pays to have respect",
@@ -213,6 +236,7 @@ const allAchievements = {
   s36 : "While you were away... Nothing happened.",
   s37 : "You followed the instructions",
   s38 : "Professional bodybuilder",
+
   ng3ps11 : "Blanked out",
   ng3ps12 : "Lie the news",
   ng3ps13 : "Two tickers",
@@ -221,6 +245,7 @@ const allAchievements = {
   ng3ps16 : "Up and Down and Up and Down...",
   ng3ps17 : "Did you not understand the automation?",
   ng3ps18 : "The Ultimate Challenge",
+
   ng3ps21 : "The Forbidden Layer",
   ng3ps22 : "400% Breaking News",
   ng3ps23 : "keyboard broke?",
@@ -230,18 +255,7 @@ const allAchievements = {
   ng3ps27 : "Revolution, when?",
   ng3ps28 : "Prestige No-lifer",
 
-  ng3p101 : `The Layer of Recreation`,
-  ng3p102 : `Ungraceful Mistake`,
-  ng3p103 : `ng3p103`,
-  ng3p104 : `This achievement doesn't exist 5`,
-  ng3p105 : `Quantized Reproduction`,
-  ng3p106 : `Spectral Phasing`,
-  ng3p107 : `Mega Boo!`,
-  ng3p108 : `Temporality`,
-
-  ng3p111 : `Baby Age`,
-  ng3p112 : `Scammed Tickspeed`,
-  ng3p113 : `Microfield`,
+  ng3ps31 : "Waiting, I see..."
 };
 const secretAchievementTooltips = {
 	s11 : "Click on this achievement.",
@@ -283,7 +297,8 @@ const secretAchievementTooltips = {
 	ng3ps25 : "Click the antimatter display 10 times in a single session.",
 	ng3ps26 : "Deny the Ghostify confirmation 15 times in a single session.",
 	ng3ps27 : "Type 1776 on your keyboard.",
-	ng3ps28 : "Quantum 10,000 times."
+	ng3ps28 : "Quantum 10,000 times.",
+	ng3ps31 : "Skip a v2.X version by not playing it directly."
 };
 const allAchievementNums = Object.invert(allAchievements)
 // to retrieve by value: Object.keys(allAchievements).find(key => allAchievements[key] === "L4D: Left 4 Dimensions");
@@ -483,6 +498,7 @@ function updateAchievements() {
 				var achId = "s" + achNum
 				if (achNum > 40) achId = "ng3ps" + (achNum - 30)
 				var name = allAchievements[achId]
+                if (!el(name)) continue
 				if (hasAch(achId)) {
 					n++
 					el(name).setAttribute('ach-tooltip', secretAchievementTooltips[achId])

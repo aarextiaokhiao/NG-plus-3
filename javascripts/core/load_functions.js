@@ -982,7 +982,7 @@ function doQuantumRestore(){
         }
 }
 
-function doNGp3v15tov199(){
+function doQuantumUpdates(){
         if (aarMod.newGame3PlusVersion < 1.511) if (player.autoEterMode !== undefined) player.autoEterMode = "amount"
         if ((quSave ? !quSave.electrons : false) && player.masterystudies) {
                 quSave.electrons = {
@@ -1020,9 +1020,6 @@ function doNGp3v15tov199(){
                 quSave.challenges=newChallenges
                 quSave.metaAutobuyerWait=0
         }
-}
-
-function doNGp3v199tov19995(){
         if (aarMod.newGame3PlusVersion < 1.997) {
                 quSave.pairedChallenges = {
                         order: {},
@@ -1145,10 +1142,6 @@ function doNGp3v199tov19995(){
                 quSave.notrelative = false
                 quSave.wasted = false
         }
-}
-
-function doNGp3v19995tov21(){
-        var setTTAfterQuantum = 0
         if (aarMod.newGame3PlusVersion < 1.9997) {
                 player.dilation.times = 0
                 quSave.tod = {
@@ -1182,61 +1175,154 @@ function doNGp3v19995tov21(){
                         setTTAfterQuantum = 2e94
                 }
         }
-        if (aarMod.newGame3PlusVersion < 2) {
-                player.eternityBuyer.dilMode = "amount"
-                player.eternityBuyer.tpUpgraded = false
-                player.eternityBuyer.ifAD = false
-                quSave.reached = quSave.times > 0
-                quSave.nonMAGoalReached = {}
-                quSave.pairedChallenges.fastest = {}
-                quSave.qcsNoDil = {}
-                quSave.pairedChallenges.pc68best = 0
-                quSave.bigRip = {
-                        active: false,
-                        conf: true,
-                        times: 0,
-                        bestThisRun: 0,
-                        totalAntimatter: 0,
-                        savedAutobuyersNoBR: {},
-                        savedAutobuyersBR: {},
-                        spaceShards: 0,
-                        upgrades: []
-                }
-                quSave.breakEternity = {
-                        unlocked: false,
-                        break: false,
-                        eternalMatter: 0,
-                        upgrades: [],
-                        epMultPower: 0
-                }
-                player.ghostify = {
-                        reached: false,
-                        times: 0,
-                        time: player.totalTimePlayed,
-                        best: 9999999999,
-                        last10: [[600*60*24*31, 0], [600*60*24*31, 0], [600*60*24*31, 0], [600*60*24*31, 0], [600*60*24*31, 0], [600*60*24*31, 0], [600*60*24*31, 0], [600*60*24*31, 0], [600*60*24*31, 0], [600*60*24*31, 0]],
-                        milestones: 0,
-                        disabledRewards: {},
-                        ghostParticles: 0,
-                        multPower: 1,
-                        neutrinos: {
-                                electron: 0,
-                                mu: 0,
-                                tau: 0,
-                                generationGain: 1,
-                                boosts: 0,
-                                multPower: 1,
-                                upgrades: []
-                        },
-                        automatorGhosts: setupAutomaticGhostsData()
-                }
-                brSave = quSave.bigRip
-                beSave = quSave.breakEternity
-                ghSave = quSave.ghostify
-                player.options.animations.ghostify = true
-                aarMod.ghostifyConf = true
-        }
-        if (aarMod.newGamePlusVersion < 2) {
+}
+
+function doFundamentUpdates(){
+	let skip = 0
+
+	//v2.0: Fundament
+	if (aarMod.newGame3PlusVersion < 2) {
+		player.eternityBuyer.dilMode = "amount"
+		player.eternityBuyer.tpUpgraded = false
+		player.eternityBuyer.ifAD = false
+		quSave.reached = quSave.times > 0
+		quSave.nonMAGoalReached = {}
+		quSave.pairedChallenges.fastest = {}
+		quSave.qcsNoDil = {}
+		quSave.pairedChallenges.pc68best = 0
+		quSave.bigRip = {
+			active: false,
+			conf: true,
+			times: 0,
+			bestThisRun: 0,
+			totalAntimatter: 0,
+			savedAutobuyersNoBR: {},
+			savedAutobuyersBR: {},
+			spaceShards: 0,
+			upgrades: []
+		}
+		quSave.breakEternity = {
+			unlocked: false,
+			break: false,
+			eternalMatter: 0,
+			upgrades: [],
+			epMultPower: 0
+		}
+		player.ghostify = {
+			reached: false,
+			times: 0,
+			time: player.totalTimePlayed,
+			best: 9999999999,
+			last10: [[600*60*24*31, 0], [600*60*24*31, 0], [600*60*24*31, 0], [600*60*24*31, 0], [600*60*24*31, 0], [600*60*24*31, 0], [600*60*24*31, 0], [600*60*24*31, 0], [600*60*24*31, 0], [600*60*24*31, 0]],
+			milestones: 0,
+			disabledRewards: {},
+			ghostParticles: 0,
+			multPower: 1,
+			neutrinos: {
+				electron: 0,
+				mu: 0,
+				tau: 0,
+				generationGain: 1,
+				boosts: 0,
+				multPower: 1,
+				upgrades: []
+			},
+			automatorGhosts: setupAutomaticGhostsData()
+		}
+		brSave = quSave.bigRip
+		beSave = quSave.breakEternity
+		ghSave = quSave.ghostify
+		player.options.animations.ghostify = true
+		aarMod.ghostifyConf = true
+		skip++
+	}
+
+	//v2.1: Ghostly Photons
+	if (aarMod.newGame3PlusVersion < 2.1) {
+		ghSave = player.ghostify
+		ghSave.ghostlyPhotons = {
+			unl: false,
+			amount: 0,
+			ghostlyRays: 0,
+			darkMatter: 0,
+			lights: [0,0,0,0,0,0,0,0],
+			maxRed: 0,
+			enpowerments: 0
+		}
+		skip++
+	}
+	if (aarMod.newGame3PlusVersion < 2.101) {
+		var newAchievements=[]
+		for (var a=0;a<player.achievements.length;a++) if (player.achievements[a]!="ng3p67") newAchievements.push(player.achievements[a])
+		player.achievements=newAchievements
+		skip++
+	}
+
+	//v2.2: Bosonic Lab
+	if (aarMod.newGame3PlusVersion < 2.2) {
+		ghSave.bl = {
+			watt: 0,
+			ticks: 0,
+			speed: 1,
+			am: 0,
+			typeToExtract: 1,
+			extracting: false,
+			extractProgress: 0,
+			autoExtract: 0,
+			glyphs: [],
+			enchants: {},
+			usedEnchants: [],
+			upgrades: [],
+			battery: 0,
+			odSpeed: 1
+		}
+		ghSave.wzb = {
+			unl: false,
+			dP: 0,
+			dPUse: 0,
+			wQkUp: true,
+			wQkProgress: 0,
+			zNeGen: 1,
+			zNeProgress: 1,
+			zNeReq: E(1),
+			wpb: 0,
+			wnb: 0,
+			wb: 0
+		}
+		tmp.bl=ghSave.bl
+		skip++
+	}
+	if (aarMod.newGame3PlusVersion < 2.21) {
+		var oldBRUpg20Bought = brSave && brSave.upgrades.pop()
+		if (oldBRUpg20Bought != 20) brSave.upgrades.push(oldBRUpg20Bought)
+		skip++
+	}
+
+	//v2.3: Higgs
+	if (aarMod.newGame3PlusVersion < 2.3) {
+		ghSave.hb = setupHiggsSave()
+		skip++
+	}
+	if (ghSave.hb.amount !== undefined) ghSave.hb = setupHiggsSave()
+	else {
+		tmp.hb = ghSave.hb
+
+		delete tmp.hb.higgsUnspent
+		delete tmp.hb.particlesUnlocked
+		delete tmp.hb.field
+	}
+
+	//v2.41R: Gravity Well + Break Dilation
+	if (ghSave.gravitons === undefined) skip++ //v2.4 adds Gravitons
+	if (ghSave.breakDilation === undefined) skip++ //v2.41 adds Break Dilation
+	if (aarMod.newGame3PlusVersion < 2.41) skip++ //v2.41R reworks them
+	aarMod.newGame3PlusVersion = 2.41
+
+	if (skip > 1) giveAchievement("Waiting, I see..")
+}
+
+function doPostNGP3Versions() {
+	if (aarMod.newGamePlusVersion < 2) {
                 if (player.masterystudies!==undefined?!quSave.reached&&!ghSave.reached:true) {
                         player.money=Decimal.max(player.money,1e25)
                         player.infinitiedBank=nMx(player.infinitiedBank,1e6)
@@ -1261,64 +1347,6 @@ function doNGp3v19995tov21(){
                 if (!hasAch("r131")) player.achievements.push("r131")
                 aarMod.newGamePlusVersion=2
         }
-        if (aarMod.newGame3PlusVersion < 2.1) {
-	            ghSave = player.ghostify
-                ghSave.ghostlyPhotons = {
-                        unl: false,
-                        amount: 0,
-                        ghostlyRays: 0,
-                        darkMatter: 0,
-                        lights: [0,0,0,0,0,0,0,0],
-                        maxRed: 0,
-                        enpowerments: 0
-                }
-        }
-}
-
-function doNGp3v21tov221(){
-        if (aarMod.newGame3PlusVersion < 2.101) {
-                var newAchievements=[]
-                for (var a=0;a<player.achievements.length;a++) if (player.achievements[a]!="ng3p67") newAchievements.push(player.achievements[a])
-                player.achievements=newAchievements
-        }
-        if (aarMod.newGame3PlusVersion < 2.2) {
-                ghSave.bl = {
-                        watt: 0,
-                        ticks: 0,
-                        speed: 1,
-                        am: 0,
-                        typeToExtract: 1,
-                        extracting: false,
-                        extractProgress: 0,
-                        autoExtract: 0,
-                        glyphs: [],
-                        enchants: {},
-                        usedEnchants: [],
-                        upgrades: [],
-                        battery: 0,
-                        odSpeed: 1
-                }
-                ghSave.wzb = {
-                        unl: false,
-                        dP: 0,
-                        dPUse: 0,
-                        wQkUp: true,
-                        wQkProgress: 0,
-                        zNeGen: 1,
-                        zNeProgress: 1,
-                        zNeReq: E(1),
-                        wpb: 0,
-                        wnb: 0,
-                        wb: 0
-                }
-                tmp.bl=ghSave.bl
-        }
-        if (aarMod.newGame3PlusVersion < 2.21) {
-                var oldBRUpg20Bought = brSave && brSave.upgrades.pop()
-                if (oldBRUpg20Bought != 20) brSave.upgrades.push(oldBRUpg20Bought)
-                aarMod.newGame3PlusVersion = 2.21 // Keep that line forever due to NG+3.1 / NG+3L compatibility
-        }
-        if (tmp.ngp3) setupNGP31Versions()
         if (aarMod.newGameMinusMinusVersion === undefined && !player.meta) {
                 if (player.exdilation == undefined && player.version == 13) player.version = 12
                 if (player.galacticSacrifice) {
@@ -1698,30 +1726,32 @@ function dov12tov122(){
 }
 
 function updateVersionsONLOAD(){
-        dov7tov10()
+	dov7tov10()
 	doNGM1Versions()
 	if (aarMod.newGamePlusVersion === undefined) if (player.eternities < 20 && ECComps("eterc1") > 0) aarMod.newGamePlusVersion = 1
 	doInitNGp2NOT3Stuff()
-        doNGP2v2tov2302()
-        doQuantumRestore()
-        doNGp3v15tov199()
-        doNGp3v199tov19995()
-        doNGp3v19995tov21()
-        doNGp3v21tov221()
-        doNGm2v11tov3()
-        doNGm3v21tov3202()
-        doERSv0tov102()
-        doNGExpv0tov111()
-        doNGUdv0tov11()
-        doExdilationIfUndefined()
-        if (aarMod.ngudpV < 1.12) aarMod.ngudpV = 1.12
-        if (aarMod.nguepV < 1.03) aarMod.nguepV = 1.03
-        doIRSv0tov12()
-        doNGM4v0tov2111()
-        doNGM5v0tov052()
-        doNGSPUpdatingVersion()
-        doInitInfMultStuff()
-        dov12tov122()
+	doNGP2v2tov2302()
+
+	//NG+3
+	doQuantumRestore()
+	doQuantumUpdates()
+	doFundamentUpdates()
+
+	doPostNGP3Versions()
+	doNGm2v11tov3()
+	doNGm3v21tov3202()
+	doERSv0tov102()
+	doNGExpv0tov111()
+	doNGUdv0tov11()
+	doExdilationIfUndefined()
+	if (aarMod.ngudpV < 1.12) aarMod.ngudpV = 1.12
+	if (aarMod.nguepV < 1.03) aarMod.nguepV = 1.03
+	doIRSv0tov12()
+	doNGM4v0tov2111()
+	doNGM5v0tov052()
+	doNGSPUpdatingVersion()
+	doInitInfMultStuff()
+	dov12tov122()
 }
 
 function doNGp3Init2(){
@@ -2301,19 +2331,6 @@ STUFF
 STUFF
 END OF ONLOAD
 */
-
-function setupNGP31Versions() {
-	if (aarMod.newGame3PlusVersion < 2.3 || ghSave.hb.amount !== undefined) {
-		ghSave.hb = setupHiggsSave()
-		aarMod.newGame3PlusVersion = 2.3
-	} else {
-		tmp.hb = ghSave.hb
-
-		delete tmp.hb.higgsUnspent
-		delete tmp.hb.particlesUnlocked
-		delete tmp.hb.field
-	}
-}
 
 function checkNGM(imported) {
 	var temp = (imported) ? imported : player
