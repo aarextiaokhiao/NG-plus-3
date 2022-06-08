@@ -85,9 +85,9 @@ function updateGPHUnlocks() {
 
 function getGPHProduction() {
 	let b = brSave && brSave.active
-	if (b) var ret = player.dilation.dilatedTime.div("1e475")
+	if (b) var ret = player.dilation.dilatedTime.div("1e480")
 	else var ret = player.dilation.dilatedTime.div("1e900")
-	if (ret.gt(1)) ret = ret.pow(b ? 0.02 : 0.025)
+	if (ret.gt(1)) ret = ret.pow(b ? 0.01 : 0.025)
 	return ret
 }
 
@@ -164,7 +164,7 @@ function updateLEmpowermentBoosts(){
 }
 
 function getGHRProduction() {
-	var log = ghSave.ghostlyPhotons.amount.sqrt().div(2).log10()
+	var log = ghSave.ghostlyPhotons.amount.cbrt().div(2).log10()
 	if (ghSave.neutrinos.boosts >= 11) log += tmp.nb[11].log10()
 	return pow10(log).mul(Math.max(log+1,1))
 }
