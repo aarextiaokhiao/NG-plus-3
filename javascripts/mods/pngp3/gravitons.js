@@ -30,35 +30,35 @@ let gWell = {
 		hb_req: 0,
 		exchanges: [],
 		title: "Relativity",
-		desc: "Placeholder.",
+		desc: "Gain less Bosons.",
 	},
 	3: {
 		req: 0,
 		hb_req: 0,
 		exchanges: [],
 		title: "Intergalactic",
-		desc: "Placeholder.",
+		desc: "Gain less Hypotheses.",
 	},
 	4: {
 		req: 1/0,
 		hb_req: 1/0,
 		exchanges: [],
 		title: "Einstein",
-		desc: "Placeholder.",
+		desc: "Dimensions are dilated.",
 	},
 	5: {
 		req: 0,
 		hb_req: 0,
 		exchanges: [],
 		title: "Lunarian",
-		desc: "Placeholder.",
+		desc: "Electrons have a weaker effect.",
 	},
 	6: {
 		req: 0,
 		hb_req: 0,
 		exchanges: [],
 		title: "Strange",
-		desc: "Placeholder.",
+		desc: "Fundament effects are weaker.",
 	}
 }
 
