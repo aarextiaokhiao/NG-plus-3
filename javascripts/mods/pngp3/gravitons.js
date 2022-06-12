@@ -100,6 +100,10 @@ function rollbackGrav(x) {
 	alert("Soon.")
 }
 
+function gravLength() {
+	return 3
+}
+
 //Temp
 function updateGravitonsTemp() {
 	let data = {}
