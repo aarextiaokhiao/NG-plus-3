@@ -108,16 +108,15 @@ let tmp = {
 }
 
 function updateRedLightBoostTemp(){
-	var light0multiplier = tmp.newNGP3E ? .155 : .15
-	var lighteffect0 = Math.pow(tmp.effL[0].best, .25) * light0multiplier + 1
+	var light0multiplier = tmp.newNGP3E ? .19 : .18
+	var lighteffect0 = Math.log10(tmp.effL[0].best + 1) / Math.log10(3) * light0multiplier + 1
 	
 	if (lighteffect0 > 1.5 && !tmp.newNGP3E) lighteffect0 = Math.log10(lighteffect0 * 20 / 3) * 1.5
 	tmp.le[0] = lighteffect0
 }
 
 function updateOrangeLightBoostTemp(){
-	if (tmp.effL[1] > 64) big = tmp.newNGP3E ? 10 + Math.pow(tmp.effL[1], 1/3) : Math.log10(tmp.effL[1] / 64) + 14
-	tmp.le[1] = tmp.effL[1] > 64 ? big : tmp.effL[1] > 8 ? Math.sqrt(tmp.effL[1]) + 6 : tmp.effL[1] + 1
+	tmp.le[1] = Math.pow(Math.log2(tmp.effL[1] + 1) + 1, 1.5)
 }
 
 function updateYellowLightBoostTemp(){
