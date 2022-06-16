@@ -87,7 +87,7 @@ function getGPHProduction() {
 	let b = brSave && brSave.active
 	if (b) var ret = player.dilation.dilatedTime.div("1e480")
 	else var ret = player.dilation.dilatedTime.div("1e900")
-	if (ret.gt(1)) ret = ret.pow(b ? 0.01 : 0.025)
+	if (ret.gt(1)) ret = ret.pow(b ? 0.013 : 0.025)
 	return ret
 }
 
