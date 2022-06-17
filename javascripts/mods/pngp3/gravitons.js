@@ -1,23 +1,5 @@
 //Core
-function doGravitonsUnlockStuff(){
-	ghSave.gravitons.unl=true
-	ngp3_feature_notify("gw")
-	updateBLParticleUnlocks()
-	updateTemp()
-}
-
-function getBrandNewGravitonsData() {
-	return {
-		unl: false,
-		amt: 0,
-		cur: 0,
-		slot: [1,2,3,null,null],
-		his: [],
-		well: {}
-	}
-}
-
-let gWell = {
+const gWell = {
 	1: {
 		req: 0,
 		hb_req: 0,
@@ -59,6 +41,24 @@ let gWell = {
 		exchanges: [],
 		title: "Strange",
 		desc: "Fundament effects are weaker.",
+	}
+}
+
+function doGravitonsUnlockStuff(){
+	ghSave.gravitons.unl=true
+	ngp3_feature_notify("gw")
+	updateBLParticleUnlocks()
+	updateTemp()
+}
+
+function getBrandNewGravitonsData() {
+	return {
+		unl: false,
+		amt: 0,
+		cur: 0,
+		slot: [1,2,3,null,null],
+		his: [],
+		well: {}
 	}
 }
 
@@ -104,7 +104,7 @@ function gravLength() {
 	return 3
 }
 
-//Temp
+//Temp and Displays
 function updateGravitonsTemp() {
 	let data = {}
 	let save = ghSave && ghSave.gravitons
@@ -115,7 +115,6 @@ function updateGravitonsTemp() {
 	data.gain = E(0)
 }
 
-//Displays
 function updateGravitonsTab() {
 	el("gw_rollback").style.display = ghSave.gravitons.his ? "" : "none"
 	el("gw_exit").style.display = ghSave.gravitons.cur ? "" : "none"
