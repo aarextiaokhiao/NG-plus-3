@@ -1,7 +1,6 @@
 //Bosonic Lab
 function canUnlockBosonicLab() {
-	let max = getMaximumUnstableQuarks()
-	return (max.decays > 5 || max.quarks.e >= 5e10) && max.decays > 4 && ghSave.ghostlyPhotons.enpowerments >= 3
+	return ghSave.ghostlyPhotons.enpowerments >= 4
 }
   
 function updateBLUnlocks() {
@@ -13,7 +12,7 @@ function updateBLUnlocks() {
 }
 
 function updateBLUnlockDisplay() {
-	el("blUnl").textContent = "To unlock Bosonic Lab, you need to get " + shortenCosts(pow10(5e10)) + " " + getUQNameFromDecays(5) + " quarks and 3 Spectral Ions first."
+	el("blUnl").textContent = "To unlock Bosonic Lab, you need to get " + getFullExpansion(4) + " Spectral Ions first."
 }
 
 function getBosonicWattGain() {
