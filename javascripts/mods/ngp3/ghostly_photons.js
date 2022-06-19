@@ -88,6 +88,7 @@ function getGPHProduction() {
 	if (b) var ret = player.dilation.dilatedTime.div("1e480")
 	else var ret = player.dilation.dilatedTime.div("1e900")
 	if (ret.gt(1)) ret = ret.pow(b ? 0.013 : 0.025)
+	if (hasAch("ng3p72")) ret = ret.mul(2)
 	return ret
 }
 
@@ -107,8 +108,8 @@ function updateRaysPhotonsDisplay(){
 	el("gphProductionType").textContent = brSave.active ? "frequency" : "Photons"
 	el("gph").textContent = shortenMoney(gphData.amount) + " Hz"
 	el("dm").textContent = shortenMoney(gphData.darkMatter)
-	el("ghrProduction").textContent = shortenMoney(getGHRProduction())
-	el("ghrCap").textContent = shortenMoney(getGHRCap())
+	el("ghrProduction").textContent = shortenMoney(getWVProduction())
+	el("ghrCap").textContent = shortenMoney(getWVCap())
 	el("ghr").textContent = shortenMoney(gphData.ghostlyRays)
 }
 
@@ -163,13 +164,14 @@ function updateLEmpowermentBoosts(){
 	if (boosts >= 9) el("leBoost9").textContent = tmp.leBonus[9].toFixed(2)
 }
 
-function getGHRProduction() {
+function getWVProduction() {
 	var log = ghSave.ghostlyPhotons.amount.cbrt().div(2).log10()
 	if (ghSave.neutrinos.boosts >= 11) log += tmp.nb[11].log10()
-	return pow10(log).mul(Math.max(log+1,1))
+	if (hasAch("ng3p72")) log += Math.log10(2)
+	return pow10(log)
 }
 
-function getGHRCap() {
+function getWVCap() {
 	var log = ghSave.ghostlyPhotons.darkMatter.pow(0.4).times(1e3).log10()
 	if (ghSave.neutrinos.boosts >= 11) log += tmp.nb[11].log10()
 	return pow10(log)

@@ -3370,7 +3370,7 @@ function ghostlyPhotonsUpdating(diff){
 	var data = ghSave.ghostlyPhotons
 	var type = brSave && brSave.active ? "amount" : "darkMatter"
 	data[type] = data[type].add(getGPHProduction().times(diff))
-	data.ghostlyRays = data.ghostlyRays.add(getGHRProduction().times(diff)).min(getGHRCap())
+	data.ghostlyRays = data.ghostlyRays.add(getWVProduction().times(diff)).min(getWVCap())
 	for (var c = 0; c < 8; c++) {
 		if (data.ghostlyRays.gte(getLightThreshold(c))) {
 			data.lights[c] += Math.floor(data.ghostlyRays.div(getLightThreshold(c)).log(getLightThresholdIncrease(c)) + 1)

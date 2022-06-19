@@ -187,7 +187,7 @@ function metaBoost() {
 		}
 		if (inQC(4)) if (player.meta[8].bought >= getMetaShiftRequirement().amount) player.meta.resets++
 	} else player.meta.resets++
-	if (hasAch("ng3p72")) return
+	if (hasAch("ng3p52")) return
 	player.meta.antimatter = getMetaAntimatterStart()
 	clearMetaDimensions()
 	if (!tmp.ngp3 || !brSave.active) el("quantumbtn").style.display="none"

@@ -89,7 +89,7 @@ let tmp = {
 	nbc: [1,2,4,6,15,50,1e3,1e14,1e35,"1e500","1e2500","1e20000"],
 	nu: [],
 	nuc: [null,1e6,1e7,1e8,2e8,5e8,2e9,5e9,75e8,1e10,7e12,1e18,1e45,1e100,1e150,1e280,"e10000","e13000"],
-	lt: [100,1e4,1e5,1e6,1e7,1e8,1e9,1e10],
+	lt: [100,3e3,1e5,1e6,1e7,1e8,1e9,1e10],
 	lti: [2,4,1.5,10,4,1e3,2.5,3],
 	effL: [0,0,0,0,0,0,0],
 	ls: [0,0,0,0,0,0,0],
@@ -108,15 +108,13 @@ let tmp = {
 }
 
 function updateRedLightBoostTemp(){
-	var light0multiplier = tmp.newNGP3E ? .19 : .18
-	var lighteffect0 = Math.log10(tmp.effL[0].best + 1) / Math.log10(3) * light0multiplier + 1
-	
-	if (lighteffect0 > 1.5 && !tmp.newNGP3E) lighteffect0 = Math.log10(lighteffect0 * 20 / 3) * 1.5
+	var light0multiplier = tmp.newNGP3E ? .1 : .07
+	var lighteffect0 = Math.log2(tmp.effL[0].best + 1) * light0multiplier + 1
 	tmp.le[0] = lighteffect0
 }
 
 function updateOrangeLightBoostTemp(){
-	tmp.le[1] = Math.pow(Math.log2(tmp.effL[1] + 1) + 1, 1.5)
+	tmp.le[1] = Math.pow(Math.log10(tmp.effL[1] + 1) + 1, 1.5)
 }
 
 function updateYellowLightBoostTemp(){
@@ -160,7 +158,7 @@ function updateEffectiveLightAmountsTemp(){
 		var y = tmp.leBoost
 		if ((c == 6 && !isLEBoostUnlocked(4)) || c == 7) y += 1
 		else if (leBonus5Unl) y += Math.pow(tmp.effL[c + 1] * tmp.leBonus[5].mult + 1, tmp.leBonus[5].exp)
-		else y += Math.sqrt(tmp.effL[c + 1] + 1)
+		else y += Math.sqrt(tmp.effL[c + 1] / 2 + 1)
 		tmp.ls[c] = y
 		if (c == 0) {
 			tmp.effL[0] = {
