@@ -364,8 +364,7 @@ function updateNU12Temp(){
 
 function updateNU14Temp(){
 	var base = ghSave.ghostParticles.add(1).log10()
-	var colorsPortion = Math.pow(quSave.colorPowers.r.add(quSave.colorPowers.g).add(quSave.colorPowers.b).add(1).log10(),1/3)
-	tmp.nu[5] = E_pow(base, colorsPortion * 0.8 + 1).max(1) //NU14
+	tmp.nu[5] = Math.max(base / 75, 1) //NU14
 }
 
 function updateNU15Temp(){

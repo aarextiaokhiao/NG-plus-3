@@ -94,9 +94,7 @@ function onNotationChangeNeutrinos() {
 function getNeutrinoGain() {
 	let ret = E_pow(5, ghSave.neutrinos.multPower - 1)
 	if (ghSave.ghostlyPhotons.unl) ret = ret.times(tmp.le[5])
-	if (hasNU(14)) ret = ret.times(tmp.nu[5])
 	if (isNanoEffectUsed("neutrinos")) ret = ret.times(tmp.nf.effects.neutrinos)
-	ret = doStrongerPowerReductionSoftcapDecimal(ret, E("e45000"), 0.25)
 	return ret
 }
 

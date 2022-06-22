@@ -89,6 +89,7 @@ function getGPHProduction() {
 	else var ret = player.dilation.dilatedTime.div("1e900")
 	if (ret.gt(1)) ret = ret.pow(b ? 0.013 : 0.025)
 	if (hasAch("ng3p72")) ret = ret.mul(2)
+	if (hasNU(14)) ret = ret.mul(tmp.nu[5])
 	return ret
 }
 
@@ -168,6 +169,7 @@ function getWVProduction() {
 	var log = ghSave.ghostlyPhotons.amount.cbrt().div(2).log10()
 	if (ghSave.neutrinos.boosts >= 11) log += tmp.nb[11].log10()
 	if (hasAch("ng3p72")) log += Math.log10(2)
+	if (hasNU(14)) log += tmp.nu[5].log10()
 	return pow10(log)
 }
 
