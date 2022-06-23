@@ -273,7 +273,7 @@ function export_file() {
     window.URL = window.URL || window.webkitURL;
     let a = document.createElement("a")
     a.href = window.URL.createObjectURL(file)
-    a.download = "Post-NG+3R - "+new Date().toGMTString()+".txt"
+    a.download = "Post-NG+3R Beta - "+new Date().toGMTString()+".txt"
     a.click()
 }
 
@@ -494,7 +494,7 @@ function new_save() {
 }
 
 function new_game(type) {
-	if (!type && mods.ngmm == 4 && !confirm("Warning: NG-5 is currently in work in progress! It is not recommended to play this mod until a more stable version has been released. However, if you want to help test NG+5, you can disregard this message. You can contribute by talking in the NG-5 channel on the NG+3 Discord Server.")) return
+	if (!type && modes.ngmm == 4 && !confirm("Warning: NG-5 is currently in work in progress! It is not recommended to play this mod until a more stable version has been released. However, if you want to help test NG+5, you can disregard this message. You can contribute by talking in the NG-5 channel on the NG+3 Discord Server.")) return
 
 	save_game(true)
 	clearInterval(gameLoopIntervalId)
@@ -531,136 +531,6 @@ function new_game(type) {
 	showBranchTab('red')
 	showGhostifyTab('neutrinos')
 	showBLTab('bextab')
-}
-
-function show_mods(type) {
-	modsShown = type
-
-	el("savesTab").style.display = modsShown ? "none" : ""
-	el("modsTab").style.display = modsShown === 'basic' ? "" : "none"
-	el("advModsTab").style.display = modsShown === 'adv' ? "" : "none"
-
-	el("newSaveBtn").style.display = modsShown ? (modsShown === 'adv' ? "" : "none") : ""
-	el("newAdvSaveBtn").style.display = modsShown === "basic" ? "" : "none"
-	el("newImportBtn").style.display = modsShown ? "none" : ""
-	el("cancelNewSaveBtn").style.display = modsShown ? "" : "none"
-}
-
-var ngModeMessages=[]
-function showNextModeMessage() {
-	if (ngModeMessages.length > 0) {
-		el("welcome").style.display = "flex"
-		el("welcomeMessage").innerHTML = ngModeMessages[ngModeMessages.length-1]
-		ngModeMessages.pop()
-	} else el("welcome").style.display = "none"
-}
-
-var modsShown = false
-var modPresets = {
-	vanilla: {},
-	pngp3: {ngpp: 2, ngp: 2},
-	ngp3: {ngpp: 2, ngp: 1},
-	grand_run: {ngpp: 2},
-}
-var modFullNames = {
-	rs: "Respecced",
-	arrows: "NG↑",
-	ngpp: "NG++",
-	ngp: "NG+",
-	ngmm: "NG--",
-	ngm: "NG-",
-	ngud: "NGUd",
-	nguep: "NGUd↑'",
-	ngmu: "NG*",
-	ngumu: "NGUd*'",
-	aau: "AAU",
-	ngprw: "NG+ Reworked"
-}
-var modSubNames = {
-	ngp: ["OFF", "ON", "NG+4"],
-	ngpp: ["OFF", "ON", "Post-NG+++"],
-	arrows: ["Linear (↑⁰)", "Exponential (↑)"/*, "Tetrational (↑↑)"*/],
-	ngmm: ["OFF", "ON", "NG---", "NG-4", "NG-5"],
-	rs: ["NONE", "Eternity", "Infinity"],
-	ngud: ["OFF", "ON", "Prime (')", "Semiprime (S')"/*, "Semiprime.1 (S'.1)"*/],
-	nguep: ["Linear' (↑⁰')", "Exponential' (↑')"/*, "Tetrational' (↑↑')"*/]/*,
-	ngmu: ["OFF", "ON", "NG**", "NG***"],
-	ngumu: ["OFF", "ON", "NGUd**'", "NGUd***'"],
-	ngex: ["OFF", "ON", "DEATH MODE 💀"]*/ // modes that aren't even made yet
-}
-
-function toggle_mod(id) {
-	hasSubMod = Object.keys(modSubNames).includes(id)
-	// Change submod
-	var subMode = ((modes[id] || 0) + 1) % ((hasSubMod && modSubNames[id].length) || 2)
-	if (id == "ngp" && subMode == 2 && modes.ngpp < 2) subMode = 0
-	else if (id == "ngpp" && subMode == 1 && (modes.ngud || modes.ngex)) subMode = 2
-	else if (id == "ngpp" && subMode == 3 && modes.ngex) subMode = 0
-	else if (id == "arrows" && subMode == 2 && modes.rs) subMode = 0
-	modes[id] = subMode
-	// Update displays
-	el(id+"Btn").textContent=`${modFullNames[id]}: ${hasSubMod?modSubNames[id][subMode] : subMode ? "ON" : "OFF"}`
-	if (id=="ngex"&&subMode) {
-		modes.ngp=0
-		modes.aau=0
-		el("ngpBtn").textContent = "NG+: OFF"
-		el("aauBtn").textContent = "AAU: OFF"
-	}
-	if ((id=="ngp"||id=="aau"||((id=="ngpp"||(id=="ngud"&&subMode>1))&&!metaSave.ngp3ex))&&subMode) {
-		modes.ngex=0
-		el("ngexBtn").textContent = "Expert Mode: OFF"
-	}
-	if ((id=="ngpp"||id=="ngud")&&subMode) {
-		if (!modes.ngp&&!modes.ngex) toggle_mod("ngp")
-		modes.rs=0
-		el("rsBtn").textContent = "Respecced: NONE"
-	}
-	if (((id=="ngpp"&&!subMode)||(id=="rs"&&subMode))&&modes.ngp==2) {
-		modes.ngp=1
-		el("ngpBtn").textContent = "NG+: ON"
-	}
-	if ((id=="ngpp"&&subMode==2)&&modes.ngp!==2) {
-		modes.ngp=2
-		el("ngpBtn").textContent = "NG+: NG++++"
-	}
-	if (((id=="ngud"&&((subMode>1&&!modes.ngpp)||modes.ngpp==1))||(id=="ngex"&&(modes.ngpp==1||modes.ngpp==3)&&metaSave.ngp3ex))&&subMode) {
-		modes.ngpp=2
-		el("ngppBtn").textContent = "NG++: NG+++"
-	}
-	if (id=="ngex"&&!metaSave.ngp3ex&&subMode) {
-		modes.ngpp=0
-		el("ngppBtn").textContent = "NG++: OFF"
-	}
-	if (id=="rs"&&subMode) {
-		modes.ngpp=0
-		modes.ngud=0
-		el("ngppBtn").textContent = "NG++: OFF"
-		el("ngudBtn").textContent = "NGUd: OFF"
-	}
-	if (((id=="ngpp"||id=="ngud")&&!subMode)||((id=="rs"||(id=="ngex"&&!metaSave.ngp3ex))&&subMode)) {
-		if (modes.ngud>1) {
-			modes.ngud=1
-			el("ngudBtn").textContent = "NGUd: ON"
-		}
-		if (id=="rs"&&modes.arrows>1) {
-			modes.arrows=1
-			el("arrowsBtn").textContent = "NG↑: Exponential (↑)"
-		}
-		modes.nguep=0
-		modes.ngumu=0
-		el("nguepBtn").textContent = "NGUd↑': Linear' (↑⁰')"
-		el("ngumuBtn").textContent = "NGUd*': OFF"
-	}
-	if ((id=="ngumu"||id=="nguep")&&!(modes.ngud>1)&&subMode) {
-		modes.ngud=1
-		toggle_mod("ngud")
-	}
-
-	var ngp3ex = modes.ngex&& modes.ngpp
-	if (modes.ngp3ex != ngp3ex) {
-		if (ngp3ex) $.notify("A space crystal begins to collide with reality...")
-		modes.ngp3ex = ngp3ex
-	}
 }
 
 //Saving Options
