@@ -171,7 +171,7 @@ var nanoRewards = {
 			return "Dimension Supersonic starts " + getFullExpansion(Math.floor(x)) + " later"
 		},
 		neutrinos: function(x) {
-			return "gain " + shorten(x) + "x more neutrinos"
+			return "gain " + shorten(x) + "x more Neutrinos"
 		},
 		light_threshold_speed: function(x) {
 			return "Light threshold scales " + x.toFixed(2) + "x slower"
