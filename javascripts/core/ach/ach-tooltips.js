@@ -428,7 +428,7 @@ function setR20Tooltip(){
 	grind.setAttribute('ach-tooltip', "Get the 21st Nanofield reward without having Tree Upgrades. Reward: Gain more Quarks based on Radioactive Decays.")
 	willenough.setAttribute('ach-tooltip', "Reach " + shortenCosts(pow10(aarMod.ngudpV ? 268435456 : 36000000))+" replicanti." + (willenoughReward != "" ? " Reward: " + willenoughReward + "." : ""))
 	oppose.setAttribute('ach-tooltip', "Become a ghost with at most 1x quantumed stat. Reward: You gain more Quarks based on your quantumed stat.")
-	pls.setAttribute('ach-tooltip', "Reach " + shortenCosts(pow10(9.5e5)) + " IP in Big Rip while dilated, with no EP multiplier upgrades, time studies, and Break Eternity within this Fundament. Reward: Each time you become a ghost, you gain "+shortenDimensions(2e3)+" galaxies worth of generated Neutrinos, multiplied by your best-ever galaxy amount across all Big Rips.")
+	pls.setAttribute('ach-tooltip', "Reach " + shortenCosts(pow10(9.5e5)) + " IP in Big Rip while dilated, with no EP multiplier upgrades, time studies, and Break Eternity within this Fundament. Reward: Gain "+shortenDimensions(2e3)+" galaxies worth of Neutrinos on Fundament. (multiplied by best galaxies in Big Rip)")
 	keeheehee.setAttribute('ach-tooltip', "Become a ghost. Reward: Multiply Eternities gained by 100x (weakens as you have more), all quantum mechanic unlocks only require Time Theorems, assignation options are kept permanently, Nanofield is 3x faster until you reach 16 rewards, get all achievements prior to Paired Challenges, and start with 1 Eighth Time Dimension in Big Rips.")
 }
 
