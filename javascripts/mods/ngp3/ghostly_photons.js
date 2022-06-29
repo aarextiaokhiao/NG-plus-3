@@ -120,7 +120,7 @@ function updateLightBoostDisplay(){
 	el("lightBoost1").textContent = tmp.le[0].toFixed(3)
 	el("lightBoost2").textContent = tmp.le[1].toFixed(2)
 	el("lightBoost3").textContent = getFullExpansion(Math.floor(tmp.le[2]))
-	el("lightBoost4").textContent = (tmp.le[3] * 100 - 100).toFixed(1)
+	el("lightBoost4").textContent = "+"+(tmp.le[3] * 100 - 100).toFixed(1)+"%"
 	el("lightBoost5").textContent = (tmp.le[4] * 100).toFixed(1) + (hasBU(11) ? "+" + (tmp.blu[11] * 100).toFixed(1) : "")
 	el("lightBoost6").textContent = shorten(tmp.le[5])
 	el("lightBoost7").textContent = shorten(tmp.le[6])
@@ -152,10 +152,7 @@ function updateLEmpowermentBoosts(){
 		if (unlocked) boosts++
 		el("le"+e).style.visibility = unlocked ? "visible" : "hidden"
 	}
-	if (boosts >= 1) {
-		el("leBoost1").textContent = getFullExpansion(Math.floor(tmp.leBonus[1].effect))
-		el("leBoost1Total").textContent = getFullExpansion(Math.floor(tmp.leBonus[1].total))
-	}
+	if (boosts >= 1) el("leBoost1").textContent = getFullExpansion(Math.floor(tmp.leBonus[1].total))
 	if (boosts >= 2) el("leBoost2").textContent = (tmp.leBonus[2] * 100 - 100).toFixed(1)
 	if (boosts >= 3) el("leBoost3").textContent = tmp.leBonus[3].toFixed(2)
 	if (boosts >= 5) el("leBoost5").textContent = "(" + shorten(tmp.leBonus[5].mult) + "x+1)^" + tmp.leBonus[5].exp.toFixed(3)
