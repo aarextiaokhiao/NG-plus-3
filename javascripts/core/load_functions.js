@@ -1315,10 +1315,13 @@ function doFundamentUpdates(){
 	//v2.41R: Gravity Well + Break Dilation
 	if (ghSave.gravitons === undefined) skip++ //v2.4 adds Gravitons
 	if (ghSave.breakDilation === undefined) skip++ //v2.41 adds Break Dilation
-	if (aarMod.newGame3PlusVersion < 2.41) skip++ //v2.41R reworks them
+	if (aarMod.newGame3PlusVersion < 2.41) {
+		skip++ //v2.41R reworks them
+		if (player.ghostify.times) giveAchievement("A ghost fate")
+	}
 	aarMod.newGame3PlusVersion = 2.41
 
-	if (skip > 1) giveAchievement("Waiting, I see..")
+	if (skip > 1) giveAchievement("Waiting, I see...")
 }
 
 function doPostNGP3Versions() {
