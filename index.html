@@ -1677,7 +1677,7 @@
 				<br><br>
 				(Update v2.41R: Gravitional Relativity)
 				<br>
-				<b class="red">(Beta: 6/29/22 Build)</b>
+				<b class="red">(Beta: 7/7/22 Build)</b>
 				<br><br>
 			</p>
 			<div id="footercontainer">
@@ -5136,9 +5136,9 @@
 				<div>Your quantum worth (sum of quarks, colored quarks, and gluons) is currently <b class="QKAmount" id="quantumWorth3">0</b>.</div>
 				<table class='qtable'>
 					<tr>
-						<td>You have <span id="automatorGhostsAmount" style="font-size:35px">1</span> Automators.<br>Next Automator at <span id="nextAutomatorGhost"style="font-size:35px">?.?</span>.</td>
-						<td>You have <span id="automaticCharge" style="font-size:35px">0.0</span> Automator Charge.</td>
-						<td>You have <span id="automaticPower" style="font-size:35px">0.0</span> Automator Power.<br>Automators are using <span id="consumedPower" style="font-size:35px">0.0</span> Power.<br><b id="tooMuchPowerConsumed" class="warning">WARNING: NOT ENOUGH POWER TO AUTOMATE!</b></td>
+						<td><span id="automaticCharge" style="font-size:25px">0.0</span> Automator Charge</td>
+						<td><span id="automaticPower" style="font-size:25px">0.0</span> Automator Power<br><span id="consumedPower" style="font-size:15px">0.0</span> used<br><b id="tooMuchPowerConsumed" class="warning">WARNING: NOT ENOUGH POWER TO AUTOMATE!</b></td>
+						<td id="nextAutomatorGhostDiv">Next Automator: <span id="nextAutomatorGhost" style="font-size:25px">?.?</span> Charge</td>
 					</tr>
 				</table>
 				<table style="margin: 0 auto">
@@ -5162,7 +5162,7 @@
 							Is active: <input id="isAutoGhostOn3" type="checkbox" onchange="toggleAutoGhost(3)"></input>
 						</div></td>
 						<td id="autoGhost4"><div class="autoBuyerDiv" style="display:block">
-							<b>Auto-Unstabilize Rotate</b><br>
+							<b>Auto-Unstable Rotate</b><br>
 							Power usage: 1<br>
 							Auto-rotate: <button class="storebtn" id="autoGhostMod4" onclick="changeAutoGhost('4m')" style="font-size: 100%; width: 120px; height: 20px">Every quantum</button><br>
 							Direction: <button class="storebtn" id="autoGhostRotate4" onclick="changeAutoGhost('4r')" style="font-size: 100%; width: 120px; height: 20px">Right</button><br>
@@ -5183,7 +5183,7 @@
 							Is active: <input id="isAutoGhostOn6" type="checkbox" onchange="toggleAutoGhost(6)"></input>
 						</div></td>
 						<td id="autoGhost7"><div class="autoBuyerDiv" style="display:block">
-							<b>Auto-QK Multi Upgrade</b><br>
+							<b>Auto-QK Mult</b><br>
 							(buys if possible)<br>
 							Power usage: 0.5<br>
 							Is active: <input id="isAutoGhostOn7" type="checkbox" onchange="toggleAutoGhost(7)"></input>
@@ -5195,13 +5195,13 @@
 							Is active: <input id="isAutoGhostOn8" type="checkbox" onchange="toggleAutoGhost(8)"></input>
 						</div></td>
 						<td id="autoGhost9"><div class="autoBuyerDiv" style="display:block">
-							<b>Auto-Worker Duplicant</b><br>
+							<b>Auto-Worker</b><br>
 							(feeds if possible)<br>
 							Power usage: 0.5<br>
 							Is active: <input id="isAutoGhostOn9" type="checkbox" onchange="toggleAutoGhost(9)"></input>
 						</div></td>
 						<td id="autoGhost10"><div class="autoBuyerDiv" style="display:block">
-							<b>Auto-Limit Upgrade</b><br>
+							<b>Auto-Worker Limit</b><br>
 							(buys if possible)<br>
 							Power usage: 1<br>
 							Is active: <input id="isAutoGhostOn10" type="checkbox" onchange="toggleAutoGhost(10)"></input>
@@ -5209,7 +5209,7 @@
 					</tr>
 					<tr>
 						<td id="autoGhost11"><div class="autoBuyerDiv" style="display:block">
-							<b>Auto-Nanoreward</b><br>
+							<b>Auto-Nanofield</b><br>
 							Power usage: 0.5<br>
 							Every <input id="autoGhost11pw" onchange="changeAutoGhost('11pw')"></input> seconds, producing preon charge for <input id="autoGhost11cw" type="text" onchange="changeAutoGhost('11cw')"></input> seconds.<br>
 							Is active: <input id="isAutoGhostOn11" type="checkbox" onchange="toggleAutoGhost(11)"></input>
@@ -5228,12 +5228,12 @@
 							Is active: <input id="isAutoGhostOn13" type="checkbox" onchange="toggleAutoGhost(13)"></input>
 						</div></td>
 						<td id="autoGhost14"><div class="autoBuyerDiv" style="display:block">
-							<b>Auto-BE Multi Upgrade</b><br>
+							<b>Auto-BE Mult</b><br>
 							Power usage: 0.5<br>
 							Is active: <input id="isAutoGhostOn14" type="checkbox" onchange="toggleAutoGhost(14)"></input>
 						</div></td>
 						<td id="autoGhost15"><div class="autoBuyerDiv" style="display:block">
-							<b>Auto-Ghostify</b><br>
+							<b>Auto-Fundament</b><br>
 							Power usage: 0.5<br>
 							Amount of ElP to wait until reset: <input id="autoGhost15a" onchange="changeAutoGhost('15a')"></input><br>
 							Is active: <input id="isAutoGhostOn15" type="checkbox" onchange="toggleAutoGhost(15)"></input>
@@ -5241,19 +5241,19 @@
 					</tr>
 					<tr>
 						<td id="autoGhost16"><div class="autoBuyerDiv" style="display:block">
-							<b>Auto-Neutrino Multi</b><br>
+							<b>Auto-Neutrino Mult</b><br>
 							Power usage: 6<br>
 							Is active: <input id="isAutoGhostOn16" type="checkbox" onchange="toggleAutoGhost(16)"></input>
 						</div></td>
 						<td id="autoGhost17"><div class="autoBuyerDiv" style="display:block">
-							<b>Auto-Extractor</b><br>
+							<b>Auto-Experiment</b><br>
 							Power usage: 3<br>
-							This also changes runes at a complete extraction on 2s after last change<br>
-							or change immediately at X seconds remaining for extracting: <input id="autoGhost17s" onchange="changeAutoGhost('17s')"></input><br>
+							Changes hypotheses at a complete experiment on 2s after last change<br>
+							or change immediately at X seconds remaining: <input id="autoGhost17s" onchange="changeAutoGhost('17s')"></input><br>
 							Is active: <input id="isAutoGhostOn17" type="checkbox" onchange="toggleAutoGhost(17)"></input>
 						</div></td>
 						<td id="autoGhost18"><div class="autoBuyerDiv" style="display:block">
-							<b>Auto-Electron Multi</b><br>
+							<b>Auto-Electron Mult</b><br>
 							Power usage: 6<br>
 							Is active: <input id="isAutoGhostOn18" type="checkbox" onchange="toggleAutoGhost(18)"></input>
 						</div></td>

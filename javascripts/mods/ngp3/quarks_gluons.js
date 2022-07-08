@@ -21,11 +21,7 @@ function updateQuantumWorth(mode) {
 				ghSave.automatorGhosts.ghosts++
 				el("autoGhost"+ghSave.automatorGhosts.ghosts).style.display=""
 				if (ghSave.automatorGhosts.ghosts>=getMaxAutoGhosts()) el("nextAutomatorGhost").parentElement.style.display="none"
-				else {
-					el("automatorGhostsAmount").textContent=ghSave.automatorGhosts.ghosts
-					el("nextAutomatorGhost").parentElement.style.display=""
-					el("nextAutomatorGhost").textContent=autoGhostRequirements[ghSave.automatorGhosts.ghosts-3].toFixed(1)
-				}
+				else el("nextAutomatorGhostDiv").style.display=""
 			}
 		}
 	}

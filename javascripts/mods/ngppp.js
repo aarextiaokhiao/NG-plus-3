@@ -625,8 +625,7 @@ function updateAutoGhosts(load) {
 		for (var x = 1; x <= getMaxAutoGhosts(); x++) if (data[x] === undefined) data[x] = {on: false}
 		if (data.ghosts >= getMaxAutoGhosts()) el("nextAutomatorGhost").parentElement.style.display="none"
 		else {
-			el("automatorGhostsAmount").textContent=data.ghosts
-			el("nextAutomatorGhost").parentElement.style.display=""
+			el("nextAutomatorGhostDiv").style.display=""
 			el("nextAutomatorGhost").textContent=autoGhostRequirements[data.ghosts-3].toFixed(2)
 		}
 	}
